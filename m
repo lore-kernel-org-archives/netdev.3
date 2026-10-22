@@ -1,61 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792691193;
-	b=1VtJokvK82i29Qh0dp09P5ZsESPDuKJS5rDF5D3beZH7wC/pBFDej+mZaejl60D72Zjo
-	 69IewPgHzkqc6+XDdfeqtPkN/frJNJO9R+RjRuX4Xtou6vFM0hFTmRxYfev9jfn9bGx5U
-	 ByjIZtZVHuHRwIt/OaWG/mWGPJiixI0rvc1OvVIi+ENZ4E0t2CBfmhw3Kgtk8M/Ge7Q3B
-	 IFiRibNjDTzhm0i56el8W+CFfKSvB3Zc/KvbmaIWffoKNakTqe9xwFkCKuPy+VpxcSitw
-	 u3WQywehS0FpMJQzui03+AFpdYxlpWYUoLbyMFVbOBy9p6r+GmsL3IWBgA0WgxrsUeQ==
+	t=1792691247;
+	b=meYH4HmksPlmzQmRB61cbYQN0/bFZGbzhfXloxkFZMg5rkV0Aru0BY7S7QiqDL+TWiCG
+	 fVKa4EzoMDnJdGuh+MOiBuKB+Ddovzaws9MXXWWeCHKI3c3CPq1TwwUVcdf9hCI0rBcmx
+	 84vtShpI/YAV7CyJA8NCpAMALtrX7NQP2Zgz4OrWw2IG8fdyjJ3OdREO1o+qR6K04CVSI
+	 2gpbIz//uTbRwA7fN4NmbxyAsA1uHvdt7RKasVKoLJ7dA9j0jXe0+7BWCdlPorBEi9/xv
+	 85IekLwajOmzaMj9Mc5TLxItP8M/0EA2BnG/ZTTFv/BFSChZsNfdsZWsBO69pM1jl6A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792691193;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=RN1roBnXGHM2RUIZqsOiBG/dxCptL71UAyh6p8TcQBA=;
-	b=SGVZKISAwxDTma8NOCCFW3zpAneUhzwTy3EcvCGVMMinxY/Cp/xWwD8qIu08V2/DTJAf
-	 M9SnIO+g0yLa4sTKw4u1IaVimT/e29Pgu/hBcLRvr5wpux0RCc/KJ/ciikSSkAv2vTtYB
-	 o9FAcTc7TkklNnmp0NGFBB8+jaHPaaq+uThWr4XoGhdh4OjpecfKmPwBRku27/2fPfUcD
-	 lHr1qiVmJCAMA1M6Wx3+aEfZcZO+uhP1KXRngZox9kzQpyBIrS0hWzngR5n5BuDhDwEK0
-	 A37mIfbCh/smX9N3/FlT7vQNZiOkH/iJDg2F5JkJthPOKkTNTRg5Zp+IvBo0RQcoRyQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792691247;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=K9Hb+3tFHqiNZnvx+AmgZckWtXWfwUcWzjWNrOSq04g=;
+	b=rI43Mchbumppaby4mcRwj8dH2uzCpTGdvdJsKvhmPg8mhtsYgNi1k8ZxowxiKmqSxXd7
+	 xyGQx00fzeiZAOO3kvp+4UZabAZ2KRAXBdG3lAfZb1i7/h0efyh8C2SY4T7WnqfmR28oI
+	 Im7zTZpfPe4g7rKOWIsRdK9+kpQVN+ZNeF/7ala0Zg4cXViK/GgOG9zjb+YrxtHGIwnxh
+	 KLG1ooFHWmSXqvk/OfT+uG6VO1aQgwnpr8L2F4D4HLMr8RKOIYdRM/P6RgGJSdWPxcld9
+	 mi6OKWTaeNb9MRqB+Q1z6YnlDwJrIS0bZw727s/A2jtZUX5aG6ACSKDSYkyBPLVj/VA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O+KSrfRF;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bNTtSjx7;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9858F606A319;
-	Thu, 22 Oct 2026 17:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05392606A31B
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O+KSrfRF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C18C11F01825;
-	Thu, 22 Oct 2026 17:46:32 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bNTtSjx7
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A011A1F031E0
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:47:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792691193;
-	bh=RN1roBnXGHM2RUIZqsOiBG/dxCptL71UAyh6p8TcQBA=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=O+KSrfRF3uctHI9NPm2SH/1HZi2ZQzfYWRpILKCbF2c+/Q5vG/euq5rH4PzgLpaYL
-	 Ilh2P4kxtFtGGeMkjMTATdVBXAfFoMXmfgOaWtlkSu4EUhLpZv2qcz0DiXTY86n4Bq
-	 DWSvuK+f6ca825pfR2EfK0HFXfUNmI4oQ6a2jpKAh7y5k75YbFpG1sfGRjrZm80lJ4
-	 XqDp9b2FNMlE9KmTQWv9YaaRTsMy/UxairqYjQIOLFoZ5C6Ua3to32hUeatDufzwAV
-	 zb4ozOLbHJikIKdF7ulMooMD0KCA/4JDv8Wp1mq2vS4OZw5w1mwfp3D3ifblGrECI9
-	 mGukJHIhzQnpQ==
-Subject:
- Re: [PATCH net v6] net: schedule a purge when the defer queue rejects a free
-From: netdev-bot+sashiko@kernel.org
-To: jkain@nuro.ai
-Cc: netdev@vger.kernel.org, edumazet@kernel.org, davem@davemloft.net,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, kuniyu@google.com,
- kerneljasonxing@gmail.com, bigeasy@linutronix.de, clrkwllms@kernel.org,
- rostedt@goodmis.org, linux-rt-devel@lists.linux.dev,
- linux-kernel@vger.kernel.org
-Date: Thu, 22 Oct 2026 17:46:32 +0000
-Message-ID: <179269119233.3135.4255107020079411339@kernel.org>
-In-Reply-To: <20261019174400.1377093-1-jkain@nuro.ai>
-References: <20261019174400.1377093-1-jkain@nuro.ai>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1792691246;
+	bh=K9Hb+3tFHqiNZnvx+AmgZckWtXWfwUcWzjWNrOSq04g=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=bNTtSjx7tH7I0gFWJ876CO/rUgqbfMs+LcJfcy8C98/+mDmSxIw/Qbr/9Q6Ri+tFX
+	 +hZk6nJ9YX+zH+KcWFau9Cy10iq8OrruiOqyFqq0It+jQNT9Bvm73dxOs3/Td+o6jh
+	 vdgOqTf7Cmpa3+1oFzQFIy8NgIWdpKnjwtdd45zkHxWHROz6/CLOYuVOlsFDAXY/zc
+	 n7xXWbw6rB9RdCt1j5K+GZd2AF2hIUsrj3iC0zza4huw6CtzT92zx5fC3a7VMV1Zmh
+	 8flUiHJwLEH5tzSgGsAcA6SGWyfUjoCon3G6Jim1a8rHmhHdj9zeOFS/0hmtVPj9lr
+	 3dsyNvBKtQ5kQ==
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-3aae7df0971so17747691fa.1
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:47:26 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwk38+3d5dKQFtrvswgnF1prgAJlJY+uXRPCt/c7zKRvaZz+o0Ch2R7ZEkpQaB/A8VyXO4LibM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJTLw81mCop7kBBJDA9NR5M4HTh8jWAEMFkr3XDkpzz87o5SwNd
+	rd68KjhqHXZJ2CnZjiBTsjk6TWGj3mnDTcxSircrh65CEO/WxFE+AqdZKnbSOoItdxaEu6YfrMV
+	Lam3s4fEZSwl1e62R2S8PNbxH5ScJYvA=
+X-Received: by 2002:a2e:a98b:0:b0:3ac:4da3:864f with SMTP id
+ 38308e7fff4ca-3ac4da386b4mr11295731fa.4.1792691245380; Thu, 22 Oct 2026
+ 10:47:25 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,215 +59,98 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+References: <ACT-N6N4.v1.r0.20261022051412@mojatatu.com> <ACT-N6N4.v1.r0.20261022051412-1@mojatatu.com>
+ <ACT-N6N4.v1.r0.20261022051412-2@mojatatu.com> <ACT-N6N4.v1.r0.20261022051412-3@mojatatu.com>
+ <ACT-N6N4.v1.r0.20261022051412-4@mojatatu.com> <372c6019-2ee1-46ec-bf5f-ccbf9b4d8659@ovn.org>
+In-Reply-To: <372c6019-2ee1-46ec-bf5f-ccbf9b4d8659@ovn.org>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Thu, 22 Oct 2026 19:47:11 +0200
+X-Gmail-Original-Message-ID: <CAL4WiiorJUG=pXc4kKa68qFcrNfKUA0CJB5NiZRr6oXjn_fzPw@mail.gmail.com>
+X-Gm-Features: AclHuK_3dax7s3y99xzrNpjL0T6a8qGSUewPq2Lr_WKQe2E8h3vXFm7qwrBoFHA
+Message-ID: <CAL4WiiorJUG=pXc4kKa68qFcrNfKUA0CJB5NiZRr6oXjn_fzPw@mail.gmail.com>
+Subject: Re: [PATCH net 4/5] net: openvswitch: ensure a linear inner Ethernet
+ header on TEB pop
+To: Ilya Maximets <i.maximets@ovn.org>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, netdev@vger.kernel.org, 
+	Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>, 
+	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Martin Varghese <martin.varghese@nokia.com>, 
+	Jiri Pirko <jiri@resnulli.us>, Victor Nogueira <victor@mojatatu.com>, dev@openvswitch.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
-
-Critical: 0 · High: 1 · Medium: 1 · Low: 0 (1)
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The patch does not remove the absorbing state that its commit
-  message names in its first sentence (defer_count at or above…
-- [Medium] skb_attempt_defer_free() (net/core/skbuff.c:7399-7400) now
-  calls kick_defer_list_purge(cpu) on every rejected deferred free while…
-
-Pre-existing issues:
-- [Low] Documentation/admin-guide/sysctl/net.rst (lines 362-368)
-  describes skb_defer_max as the 'Max size (in skbs) of the per-cpu…
-
---
-
-net: schedule a purge when the defer queue rejects a free
-
-This patch makes skb_attempt_defer_free() call kick_defer_list_purge()
-when a deferred free is rejected and the defer_list is not empty. It also
-changes the limit test from >= to >, so the effective limit becomes
-skb_defer_max. Finally, __skb_defer_free_flush() now drains the list
-before zeroing defer_count, so that defer_count no longer stays above
-skb_defer_max while the defer_list is empty.
-
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index e76762e29360..a5912b728ddd 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -6940,8 +6940,11 @@ static void __skb_defer_free_flush(struct skb_defer_node *sdn, int budget)
->  
->  	if (llist_empty(&sdn->defer_list))
->  		return;
-> -	atomic_long_set(&sdn->defer_count, 0);
->  	free_list = llist_del_all(&sdn->defer_list);
-> +	/* Racy on purpose, as in __dev_xmit_skb(): a producer landing between
-> +	 * the del_all and this store stays queued but uncounted.
-> +	 */
-> +	atomic_long_set(&sdn->defer_count, 0);
-
-[Severity: Low]
-This is a pre-existing issue, but the commit message says the new > test
-matches "what Documentation/admin-guide/sysctl/net.rst describes". The
-net.rst text is:
-
-    Max size (in skbs) of the per-cpu list of skbs being freed
-    by the cpu which allocated them.
-
-skb_attempt_defer_free() actually enforces the limit per (owner cpu,
-producer node):
-
-    sdn = per_cpu_ptr(net_hotdata.skb_defer_nodes, cpu) + cpu_to_node(my_cpu);
-
-net.rst also doesn't say that 0 disables the feature through
-skb_defer_disable_key in proc_do_skb_defer_max().
-
-Should net.rst be updated to describe the per-node scope and what 0
-means?
-
-With the new ordering, a producer that calls llist_add() between
-llist_del_all() and atomic_long_set() stays queued but uncounted. A list
-can then go a few skbs past skb_defer_max. The old clear-then-drain order
-allowed the same thing (increment before the clear, llist_add() after
-the del_all). The new order only makes that window slightly larger, and
-the new comment marks it as intentional.
-
->  
->  	llist_for_each_entry_safe(skb, next, free_list, ll_node) {
->  		prefetch(next);
-> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index 41beaf625421..596f99811bac 100644
-> --- a/net/core/skbuff.c
-> +++ b/net/core/skbuff.c
-> @@ -7392,8 +7392,14 @@ nodefer:	kfree_skb_napi_cache(skb);
->  	defer_max = READ_ONCE(net_hotdata.sysctl_skb_defer_max);
->  	defer_count = atomic_long_inc_return(&sdn->defer_count);
->  
-> -	if (defer_count >= defer_max)
-> +	if (unlikely(defer_count > defer_max)) {
-> +		/* The kept increment only comes back down when a flush zeroes
-> +		 * it, and this is the one path that sees a full queue.
-> +		 */
-> +		if (!llist_empty(&sdn->defer_list))
-> +			kick_defer_list_purge(cpu);
-
-[Severity: High]
-Can defer_count still get stuck above skb_defer_max while the
-defer_list is empty?
-
-This path only kicks when the list is not empty. The only reset of
-defer_count is in __skb_defer_free_flush(), and that function returns
-before the reset when the list is empty:
-
-net/core/dev.c:__skb_defer_free_flush() {
-    if (llist_empty(&sdn->defer_list))
-        return;
-    free_list = llist_del_all(&sdn->defer_list);
-    ...
-    atomic_long_set(&sdn->defer_count, 0);
-    ...
-}
-
-So an increment that is rejected while the list is empty never triggers
-a kick and is never cleared.
-
-The Fixes: tag targets the 6.18 to 7.0 trees, which don't have
-skb_defer_disable_key. There, net.core.skb_defer_max=0 seems to lead to
-this sequence:
-
-  - the first reject sees a non-empty list and kicks
-  - the flush empties the list and sets defer_count to 0
-  - every later cross-CPU free increments, rejects (count > 0), finds
-    the list empty, and sends no kick
-
-defer_count then grows without bound. Restoring 128 leaves it far above
-128 with an empty list. That is the same "setting 0 and restoring the
-previous value" case the commit message describes.
-
-On mainline, proc_do_skb_defer_max() stores the new value before the
-static key changes:
-
-net/core/sysctl_net_core.c:proc_do_skb_defer_max() {
-    ...
-    ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
-    nval = !net_hotdata.sysctl_skb_defer_max;
-
-    if (nval != oval) {
-        if (nval)
-            static_branch_enable(&skb_defer_disable_key);
-    ...
-}
-
-Producers that run between that store and static_branch_enable() taking
-effect can read defer_max == 0 and raise the counter while the list is
-empty. If a limit at or below the stranded count is then restored (for
-example 0 followed by 1), would that latch in the same way?
-
-If so, the claims "From v7.1 on, 0 is safe" and "The reject-path kick
-recovers both" don't seem to hold. Some possible fixes:
-
-  - undo the increment on reject
-  - reset the counter, and kick, even when the list is empty
-  - have proc_do_skb_defer_max() reset the counters or schedule flushes
-
-Would one of these work?
-
-[Severity: Medium]
-Does this add a remote lock or a remote cmpxchg to every rejected free
-while the list is full?
-
-Before this patch, a reject only called kfree_skb_napi_cache(). Now every
-reject with a non-empty list calls kick_defer_list_purge(). The commit
-message says:
-
-  kick_defer_list_purge() already coalesces through
-  sd->defer_ipi_scheduled, so a burst of rejects costs one IPI.
-
-When use_backlog_threads() is true, defer_ipi_scheduled is not used at
-all. That is always the case on PREEMPT_RT, or with thread_backlog_napi
-on the command line. The remote lock is also taken before
-NAPI_STATE_SCHED is tested:
-
-net/core/dev.c:kick_defer_list_purge() {
-    if (use_backlog_threads()) {
-        backlog_lock_irq_save(sd, &flags);
-
-        if (!__test_and_set_bit(NAPI_STATE_SCHED, &sd->backlog.state))
-            __napi_schedule_irqoff(&sd->backlog);
-
-        backlog_unlock_irq_restore(sd, flags);
-    } else if (!cmpxchg(&sd->defer_ipi_scheduled, 0, 1)) {
-    ...
-}
-
-Every over-limit cross-CPU free (napi_consume_skb() on TX completion,
-tcp_eat_recv_skb(), skb_consume_udp()) would then take the owner CPU's
-sd->input_pkt_queue.lock with IRQs disabled, until that CPU's backlog
-thread flushes. enqueue_to_backlog() and process_backlog() on the owner
-CPU use the same lock.
-
-In IPI mode, every reject does a cmpxchg on the remote
-sd->defer_ipi_scheduled. trigger_rx_softirq() clears the flag before the
-flush runs:
-
-net/core/dev.c:trigger_rx_softirq() {
-    __raise_softirq_irqoff(NET_RX_SOFTIRQ);
-    smp_store_release(&sd->defer_ipi_scheduled, 0);
-}
-
-When threadirqs or ksoftirqd defers NET_RX, each reject in that gap
-would send another IPI.
-
-The notes below the cut line report about 756k kicks over about 750k
-skb_attempt_defer_free() calls at skb_defer_max=1. That looks like one
-kick per call rather than one per burst. Was the cost on PREEMPT_RT
-measured?
-
->  		goto nodefer;
-> +	}
->  
->  	llist_add(&skb->ll_node, &sdn->defer_list);
+Le jeu. 22 oct. 2026 =C3=A0 14:42, Ilya Maximets <i.maximets@ovn.org> a =C3=
+=A9crit :
 >
+> On 10/22/26 11:22 AM, Jamal Hadi Salim wrote:
+> > The issue:
+> > pop_mpls() restores MAC_PROTO_ETHERNET when the popped ethertype is
+> > ETH_P_TEB, but skb_mpls_pop() only guarantees that the MPLS shim is in
+> > the linear area.  When the inner Ethernet header sits in a page
+> > fragment, the datapath now claims an Ethernet header it cannot access
+> > linearly.
+> >
+> > Output to an OVS internal vport then calls eth_type_trans(), which
+> > pulls ETH_HLEN from an empty linear area and triggers the BUG in
+> > __skb_pull():
+> >
+> >   kernel BUG at ./include/linux/skbuff.h:2830!
+> >   RIP: 0010:eth_type_trans+0x335/0x500
+> >   internal_dev_recv
+> >   ovs_vport_send
+> >   do_output
+> >   do_execute_actions
+> >   ovs_execute_actions
+> >   ovs_dp_process_packet
+> >   ovs_vport_receive
+> >   internal_dev_xmit
+> >
+> > Conditions to recreate the bug:
+> > On a system with 4 KiB pages and CONFIG_OPENVSWITCH and CONFIG_PACKET
+> > enabled, use CAP_NET_ADMIN to create an OVS datapath and bring its loca=
+l
+> > internal port up with MTU 9000.  Install a flow matching an Ethernet/MP=
+LS
+> > packet with one bottom-of-stack label and actions pop_eth,
+> > pop_mpls(0x6558), output to the local port.  With CAP_NET_RAW, send a
+> > 4128-byte AF_PACKET/SOCK_RAW frame containing outer Ethernet, the MPLS
+> > label, inner Ethernet and 4096 payload bytes.  The two pops consume the
+> > linear headers and expose the inner Ethernet header in page fragments.
+> >
+> > The Fix:
+> > Pull the inner Ethernet header into the linear area before restoring
+> > MAC_PROTO_ETHERNET.
+> >
+> > Fixes: f66b53fdbb22 ("openvswitch: New MPLS actions for layer 2 tunnell=
+ing")
+> > Link: https://lore.kernel.org/netdev/e85fa16e-df3c-43dd-bb3a-9edca07200=
+ea@kernel.org/
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> > ---
+> >  net/openvswitch/actions.c | 5 ++++-
+> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
+> > index 27152bca8a8c..03b31e33e880 100644
+> > --- a/net/openvswitch/actions.c
+> > +++ b/net/openvswitch/actions.c
+> > @@ -153,8 +153,11 @@ static int pop_mpls(struct sk_buff *skb, struct sw=
+_flow_key *key,
+> >       if (err)
+> >               return err;
+> >
+> > -     if (ethertype =3D=3D htons(ETH_P_TEB))
+> > +     if (ethertype =3D=3D htons(ETH_P_TEB)) {
+> > +             if (!pskb_may_pull(skb, ETH_HLEN))
+> > +                     return -ENOMEM;
+> >               key->mac_proto =3D MAC_PROTO_ETHERNET;
+> > +     }
+> >
+> >       invalidate_flow_key(key);
+> >       return 0;
+>
+> Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
 
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261019174400.1377093-1-jkain%40nuro.ai
+Reviewed-by: Eric Dumazet <edumazet@kernel.org>
