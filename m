@@ -1,58 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792664361;
-	b=mJKr0gLqwVhZ3PtcU+KRmwByg1OaSgpg+zgJTHMp01fc16EfF2RFciBvynLUKLWQbA0J
-	 ZJ7tYjsoxJfr2Z0Xe9vegs8jLPY9oDRN/BdY323pOX6Z2eJjWTU8Vq9cLYL2KpumIzxgU
-	 zlpt5ivbzCfCbw5wTaJ9ums6Dz3EAhpcibsaP+YdfSOZcibj8MxbCE2DfZQ2guQVdGaHm
-	 bcSj65fdRKLrOJ+9++liSfVIDgHfpPSbjguct5XUoEqHW6uhbN2QI/qes4t3GqsnB/CRy
-	 myhOrbBCC7SLXJ4HlV94VEIgBjnkomtui78rMRgWqlJvgq0IZ9Inuko4Q+ELODCR5Ag==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792664361;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=+RfBOdb+jBzd/ieyymYqVh+qhtFAqnJNDc6I2YUHE+U=;
-	b=dQ3bViBM4rdP3nyYtYKm5pbwb6aJ2zkItaW+wzY1K30lfgoWyklJ0dU4y17DAivAogDe
-	 wPwZPMC45wJ0JCVbkCjrkVkHNNmEbBpxO2a/QkKEf4uEe5n4lrM20C5HaWnXPX8LPfozy
-	 FvdyBB0vIcG9TOmS1EfUkXDQ3Z+xQMAfqsaOWt22IiX7niWzgPjYmlvfHL7raJyQU9fKn
-	 X3QK2KutCbngVEnR/OFZMDjYiNz77ljtnbzlhJNb9Uhj/Xi6MzE9PlT68SjIDXsVOwxEA
-	 eMZl02Y4wv0m2mWFNh4LYQ/GlEYddQE9wDIWlLOhBAzHVnv4605VB/OjvPuXGg4gT0g==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LHTKymez;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.170
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792664397;
+	b=Hs1ooeDfMLBv9jB9ZyJ0ZyswOtLPkf0cfrlhoVrgdR9LIQxTMNyATUe5bMh3ofH6VD/j
+	 dokAgVV1FUp75idOLuOauPp0K9qQuP5bgC17CWRwp/XxIV7ef3Z6EEPhyFxGDKwmDbN4P
+	 TZzAtQPo0UxEYkb5HDfYGVT1QReh9CdbZqyV4+6uAHnIvzAN5qbPy5iUILgy+A02ZMygf
+	 ZMuwuOABQzj/dOWjcMyuY+JNp3vOADz0zXHp6ZXI3Q2p7IPU7uD7Xx36hKqYqHPn6OiZu
+	 o5DfUU8Ml0Mh5jFHC6PcbwLIwQWbu0S9PnidmPr/wIiRnYF1QLn4sJpXImbBoNkSGRw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792664397;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=8RseLjNm8lG/7UmlycVln9er/NWi2dNp7MDnl6ITlr8=;
+	b=ieb4A51EFNz5JjDclZlTu8aR6EvNzNJDKbyCeVcuCQJwjlVFBW9eDea2NA9cX/HrZwUt
+	 A63VUf2Fm6jXSJkqbhLx0WW9cuNBZdQnXHEECK1DNP5c0dnhcD5JmLmALQp9nsUmd7Jv0
+	 FBn9FPP28yBZHkboq33auBjQKg/TKFQ5+iegEs1BGLtIDDuLu+5JmtasmoXKe7oUPyaBl
+	 gQARZ7VMR8v7qk6B3kRrt+O3ibp0YOyaTBm/1xS4W5jdNcBuANOVtl2UQht0UddWFCtmP
+	 jO5hmoMMGu2eoVSfIJxvM5KPrecVYicgpWWDpcBLtIZoQpP/V9TMYXUBNdeIggj5i8Q==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=aUJzr1v9;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.170
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D425E606A319;
-	Thu, 22 Oct 2026 10:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29380606A319
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:19:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 29380606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LHTKymez
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 290B71F000C1;
-	Thu, 22 Oct 2026 10:19:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792664360;
-	bh=+RfBOdb+jBzd/ieyymYqVh+qhtFAqnJNDc6I2YUHE+U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=LHTKymezZyGY17PnqmuH/Lzxr0GlKLRF4EphWEOhZUAOtKND+9H5qiXY5i+zjodcK
-	 ZAPMV0zGIodTbcMyrZ6guSE9D6Yv7XncwQGRQaQElvKiZJgpQWp/SuHLL/tOVqOxMs
-	 qIeivexw25wL3qurO5BRfeigpp02p3AF7JHKzAfdAO95sUtewv44wUOsP5iSF1EHev
-	 dmwr5OD2v7WHtNsTkZ8INbU6flEFHj74q9/NgZeRqqFg52wHLW4gPeaIZx2YT7ziwb
-	 wwXnWrjzAgwjoqHuA7zEyI/CJf7sIq/f4EuRM4FCp8EQn/lGh27ZyWpAlH2ACVFABo
-	 xjqByno+03Utw==
-Date: Thu, 22 Oct 2026 11:19:15 +0100
-From: Simon Horman <horms@kernel.org>
-To: Peter Morrow <pdmorrow@gmail.com>
-Cc: Tariq Toukan <tariqt@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>, Yishai Hadas <yishaih@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org, regressions@lists.linux.dev
-Subject: Re: [PATCH net] net/mlx4: always create the eth and ib auxiliary
- devices
-Message-ID: <20261022101915.GD708417@horms.kernel.org>
-References: <20261020164239.3808903-1-pdmorrow@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=aUJzr1v9
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-53512cd2f85so18613331cf.1
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 03:19:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792664396; cv=none;
+        d=google.com; s=arc-20260327;
+        b=CsF2cg1oimvidp01gVem5np5edgYqUoLK4Oy/uiW1pH1B/9qJP/x7aVSPUCPxBiOt9
+         ODusx3B932E5b+sh3oaBeHINQ46PMfbu8AkFywUJqqTrf8AwPOD78B8IcP6Ogk9i50VK
+         eFyIc503cv2fVPj82TQf6nqJjhvwcRPDx9I4sutxY9daRHBMrVcEiOrLGoZwQahe3ZRo
+         RlFgGhm6iLWVjxgwSec21vvBtEdSZcp31fscgrskk/vN2bTur6Aaj/ClZiBYtpNRKIOG
+         ruZYf12wNu4zcIr3MAqID9vag1fah1P1raCZU9SP9B3C8xCk5jbsrNWNUdx8JZcCa2EJ
+         57GA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=8RseLjNm8lG/7UmlycVln9er/NWi2dNp7MDnl6ITlr8=;
+        fh=+GTl32xhB0PQyfLkznza3cGvOGpdz8qXOUq4ugwNBWk=;
+        b=VbjMBtr8lq4pG5F4byol5Ayy+57894kZmNyA7rNWRKnP+yQHug6oKIYEq2F7KkQwE6
+         ukL4Zf+53C/BDWNWlXxvnAZAMVhmrKPxnS/jiXB5us12MKrIgXCZDnbi0fK1XFsZ3h6q
+         ZU4ztHX/wjs35OwiV7kKOsd2xldD4wBWmdFt/mGoHwqVDGKrV0a46dQtxY+fecmi0BVs
+         0EvVMxNVSqT5tTm+24PtOgvfFkxjtme+F6SzeWyMrLO61xyEgH5gAsFAai0b5R6XB7oR
+         zVofAr6Fbc2ncMNobHFykfK0GC8lLj1envd82/fn6TRV1aeYYhZDJRvmqTHSz1jcja8f
+         XT7g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792664396; x=1793269196; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8RseLjNm8lG/7UmlycVln9er/NWi2dNp7MDnl6ITlr8=;
+        b=aUJzr1v9HCvAKgJ2UTSl8mUeU+wQVplCGtZ0YUMOEGg5oZysXD+REwtONRHf2+MJaZ
+         TwbRR8NGkA5aslgmvc+A3rI2NLGykz2FM0Y235FgmMy2pN6yoonoSjsMkmV2qHLsrzrS
+         ArykiZlvdF6zdtSVaQuQdjwN0UYexGcAi4UAXOwm2Rq7EYHU6ABZDFMkZb+dXNcPUJbj
+         I1ZRscTqYWKBiZM5BvMddh0R4SUTA/SazjdbXcWkdOpBVSA+escj8OFMeCdv2lKxXlsB
+         kAhaw/CBDr14ZkanQZgTp0YPRdGdSF7aqYsnAceXTbiW8azyhku13EGgH6W3WZJP3d3e
+         dBTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792664396; x=1793269196;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=8RseLjNm8lG/7UmlycVln9er/NWi2dNp7MDnl6ITlr8=;
+        b=Pnij/2MqrjkxgKYS2b42zMgaBO+QpTXLLAQQUNoSrfv6jAhNwJSuNv6rIv4EjpUzal
+         NOHEcTO8THh/wkyG/uYWym2QHdTCVMXHpoj4Yh6Ac7QzU2FDqaLd6PyrX3NgCEClB7Ve
+         ZIgVpQaF/s4/sip51X39Cp+X3tuT/iJtZpP4oh2Ihb6RrsfEYEDj4vUC/BzohkqNkJAO
+         TQrmYla0Ca5FfT/6GelGI2gEQfTEo6vaBUIAaYDWqQd1gdoF7UI05RbcdmtANQ+RivvP
+         znGaAqeff7YzVw9nMh9lkb1PwBxo5pTVhdzkwkU3XS46XY737Hu6/AlkktVuuZ9NlxFL
+         J+8Q==
+X-Forwarded-Encrypted: i=1; AKwUvBzG9m+XRfJdlexI471YK7EA1cgF8YSRQQ3636dBE8WK3vOWxZXSM6tf0u7qaR9hEayne89V964=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIahqUOi+CkFjSrzh7pbpy9nNLxdlDJbZ3Pcca193Op8LiGO8ev
+	KrkcXEG5yyL5w0bhGjrJFmzvC+d3meahgfxVScF9aajWy9YnZIJZzNBZY6hT4XZAtPzaM/VltWc
+	EQLMu4nj1XUhBIWZZU08CIY3/+jXHCdY=
+X-Gm-Gg: AYBFou11YOxgRKQNcK0M0grrqX2N40npg4AXbkXPbLiw/yWwwtQ3HjO8e9vz75ZHBua
+	BxKs9wkXSGpjDEy6Od9QmLZr6PSc488RYC5jOtv0lM35mHTW2rprfalZ/PL8YonEd/Lar8UVlwS
+	u6KQwgzgkBHvxXMMfoXeq0bG1wwhqfkcpLt1m5JqSXHT1Iyjx9CdeIWnDzZSki7epa4djGU3arE
+	pTYCySaLbyXy823bRtf++SgzMfQIulyrhJFJCvEzIOTynbefAq5k4JY7LY6kO8ApkBZ5fFAHS6C
+	pcmG9lgXf5vvAJGQ5zt+rFP5Qt872LwH0R7L+WO7oB42tGNYdnDBfyskzlLi9/l6th1QYdocXne
+	yeDdnW66GzkgEVtO/sRFZkwdwYl1s2335GaodnI8=
+X-Received: by 2002:a05:620a:6504:b0:93f:277b:313d with SMTP id
+ af79cd13be357-93f57e404e7mr834687385a.2.1792664395296; Thu, 22 Oct 2026
+ 03:19:55 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,159 +103,57 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261020164239.3808903-1-pdmorrow@gmail.com>
+References: <20261021085458.196742-1-physicalmtea@gmail.com> <d58ea6de-e17c-4426-afd1-0b67ead16b7c@oracle.com>
+In-Reply-To: <d58ea6de-e17c-4426-afd1-0b67ead16b7c@oracle.com>
+From: Jia Jia <physicalmtea@gmail.com>
+Date: Thu, 22 Oct 2026 18:19:19 +0800
+X-Gm-Features: AclHuK9FeuqH6i9COjZB1uH64DnGhDow9zmoJpb-bjLKr8MhdWEwBKDQwH0c-T0
+Message-ID: <CAJwVaM+nBJ15=XwdV_wefNxd8iyxxSWjd-K8k_VAAc8yoyUZJg@mail.gmail.com>
+Subject: Re: [PATCH] vhost-scsi: fix page reference leak in misaligned I/O fallback
+To: Mike Christie <michael.christie@oracle.com>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
+	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+	virtualization@lists.linux.dev, kvm@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Oct 20, 2026 at 05:42:39PM +0100, Peter Morrow wrote:
-> Since commit 7d22b1cb9d84 ("mlx4: Connect the infiniband part to the
-> auxiliary bus"), mlx4_core creates the "ib" auxiliary device only for
-> an IB port or a device that advertises IBoE. Before it, each mlx4
-> interface was offered every device and decided in its own add callback.
-> mlx4_ib_add() accepted Ethernet ports without IBoE and registered them
-> for raw packet QPs only.
-> 
-> ConnectX-3 VFs on Azure have an Ethernet port and no IBoE, so since
-> v6.6 they get no RDMA device. DPDK's mlx4 PMD, which needs only raw
-> packet QPs, then cannot open them:
-> 
->   net_mlx4: cannot access device, is mlx4_ib loaded?
-> 
-> Restore the old behaviour by creating both auxiliary devices for every
-> device and letting mlx4_en and mlx4_ib decide in probe, as their add
-> callbacks did. mlx4_ib_probe() returns -ENODEV when there are no usable
-> ports, and mlx4_en_probe() binds a device without Ethernet ports but
-> creates no netdevs, as mlx4_en_add() did.
-> 
-> Tested on 6.12.111 on an Azure VM with two ConnectX-3 VFs: each gets an
-> eth and an ib auxiliary device, and DPDK attaches both VFs and passes
-> traffic through them.
-> 
-> Fixes: 7d22b1cb9d84 ("mlx4: Connect the infiniband part to the auxiliary bus")
-> Closes: https://lore.kernel.org/r/20261014133951.3219055-1-pdmorrow@gmail.com
-> Suggested-by: Leon Romanovsky <leon@kernel.org>
-> Assisted-by: LLM
-> Signed-off-by: Peter Morrow <pdmorrow@gmail.com>
+>
+> On 10/21/26 3:54 AM, Jia Jia wrote:
+> > diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+> > index 4f8c0260bc9e..b7e41c0a91d4 100644
+> > --- a/drivers/vhost/scsi.c
+> > +++ b/drivers/vhost/scsi.c
+> > @@ -883,11 +883,16 @@ vhost_scsi_map_to_sgl(struct vhost_scsi_cmd *cmd,
+> >       vhost_scsi_revert_map_iov_to_sgl(iter, *sgl, sg);
+> >
+> >       iov_iter_revert(iter, bytes);
+> > +     /*
+> > +      * pages[npages] is the first page not added to the SG list.  The
+>
+> Just a minor nit. There's an extra space before "The" in the comment.
+>
 
-Thanks, this looks good to me.
-And I think the minimal approach taken here is appropriate for net.
+Thanks for pointing this out. I'll remove it and send a v2.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
-
-I do, however, wonder if a follow-up is warranted.
-It seems to me that the is_supported callback could
-be removed entirely. Leaving either:
-1. struct mlx4_adev_device with a single member, .suffix
-2. mlx4_adev_devices as an array of of strings
-
-To explore this idea a little further I tried coding-up approach 2.
-Which lead to the following (compile tested only):
-
-diff --git a/drivers/net/ethernet/mellanox/mlx4/intf.c b/drivers/net/ethernet/mellanox/mlx4/intf.c
-index 82e467c45d23..f2f35306aeb3 100644
---- a/drivers/net/ethernet/mellanox/mlx4/intf.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/intf.c
-@@ -41,34 +41,7 @@
- static DEFINE_MUTEX(intf_mutex);
- static DEFINE_IDA(mlx4_adev_ida);
- 
--static bool is_eth_supported(struct mlx4_dev *dev)
--{
--	for (int port = 1; port <= dev->caps.num_ports; port++)
--		if (dev->caps.port_type[port] == MLX4_PORT_TYPE_ETH)
--			return true;
--
--	return false;
--}
--
--static bool is_ib_supported(struct mlx4_dev *dev)
--{
--	for (int port = 1; port <= dev->caps.num_ports; port++)
--		if (dev->caps.port_type[port] == MLX4_PORT_TYPE_IB)
--			return true;
--
--	if (dev->caps.flags & MLX4_DEV_CAP_FLAG_IBOE)
--		return true;
--
--	return false;
--}
--
--static const struct mlx4_adev_device {
--	const char *suffix;
--	bool (*is_supported)(struct mlx4_dev *dev);
--} mlx4_adev_devices[] = {
--	{ "eth", is_eth_supported },
--	{ "ib", is_ib_supported },
--};
-+static const char * const mlx4_adev_devices[] = { "eth", "ib" };
- 
- int mlx4_adev_init(struct mlx4_dev *dev)
- {
-@@ -109,8 +82,8 @@ static void adev_release(struct device *dev)
- 
- static struct mlx4_adev *add_adev(struct mlx4_dev *dev, int idx)
- {
-+	const char *suffix = mlx4_adev_devices[idx];
- 	struct mlx4_priv *priv = mlx4_priv(dev);
--	const char *suffix = mlx4_adev_devices[idx].suffix;
- 	struct auxiliary_device *adev;
- 	struct mlx4_adev *madev;
- 	int ret;
-@@ -222,7 +195,7 @@ int mlx4_do_bond(struct mlx4_dev *dev, bool enable)
- 		priv->adev[i] = add_adev(dev, i);
- 		if (IS_ERR(priv->adev[i])) {
- 			mlx4_warn(dev, "Device[%d] (%s) failed to load\n", i,
--				  mlx4_adev_devices[i].suffix);
-+				  mlx4_adev_devices[i]);
- 			priv->adev[i] = NULL;
- 			continue;
- 		}
-@@ -269,21 +242,13 @@ static int add_drivers(struct mlx4_dev *dev)
- 	int i, ret = 0;
- 
- 	for (i = 0; i < ARRAY_SIZE(mlx4_adev_devices); i++) {
--		bool is_supported = false;
--
- 		if (priv->adev[i])
- 			continue;
- 
--		if (mlx4_adev_devices[i].is_supported)
--			is_supported = mlx4_adev_devices[i].is_supported(dev);
--
--		if (!is_supported)
--			continue;
--
- 		priv->adev[i] = add_adev(dev, i);
- 		if (IS_ERR(priv->adev[i])) {
- 			mlx4_warn(dev, "Device[%d] (%s) failed to load\n", i,
--				  mlx4_adev_devices[i].suffix);
-+				  mlx4_adev_devices[i]);
- 			/* We continue to rescan drivers and leave to the caller
- 			 * to make decision if to release everything or
- 			 * continue. */
-@@ -297,23 +262,15 @@ static int add_drivers(struct mlx4_dev *dev)
- static void delete_drivers(struct mlx4_dev *dev)
- {
- 	struct mlx4_priv *priv = mlx4_priv(dev);
--	bool delete_all;
- 	int i;
- 
--	delete_all = !(dev->persist->interface_state & MLX4_INTERFACE_STATE_UP);
-+	if (dev->persist->interface_state & MLX4_INTERFACE_STATE_UP)
-+		return;
- 
- 	for (i = ARRAY_SIZE(mlx4_adev_devices) - 1; i >= 0; i--) {
--		bool is_supported = false;
--
- 		if (!priv->adev[i])
- 			continue;
- 
--		if (mlx4_adev_devices[i].is_supported && !delete_all)
--			is_supported = mlx4_adev_devices[i].is_supported(dev);
--
--		if (is_supported)
--			continue;
--
- 		del_adev(&priv->adev[i]->adev);
- 		priv->adev[i] = NULL;
- 	}
+> Patch looks ok otherwise. Thanks.
+>
+> Reviewed-by: Mike Christie <michael.christie@oracle.com>
+>
+>
+> > +      * remaining data starts at offset in that page.
+> > +      */
+> >       while (bytes) {
+> > -             n = min_t(unsigned int, PAGE_SIZE, bytes);
+> > +             n = min_t(unsigned int, PAGE_SIZE - offset, bytes);
+> >
+> >               put_page(pages[npages++]);
+> >               bytes -= n;
+> > +             offset = 0;
+> >       }
+> >
+> >       return -EINVAL;
+> > --
+> > 2.47.0
+> >
+>
