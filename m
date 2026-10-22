@@ -1,94 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.179
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792660632;
-	b=ZONnwTb9RqMPRO4E9BwBtl1G/UO522NnnMM8sNQX+3pKTZfPiB0zdy2oT5lyNjgP9ony
-	 jEIbtQHFp2OR8MsUHNYKWKTg0P9BP+5fs6ooQbwPPD5VR0SFQ1nwNTIVw6NEHNQIwpbJR
-	 wCNNnzcod1tSlazlmh1jn/m98mJ/zqQu7OEztJsdx6ATgfH251jKFW79LMl9Yb5pyclB/
-	 P2u4JBTQOvkrn3CtiAbVsDxC7AmaeSZ9rj6ziQSmjE9+euT7HcZn8zKevaLHnnHYMmL3w
-	 LBSSkppxBdMv+c+JWBcfrcHA7ZtonZqZ7hNmXtbA0BJz7FdHB0c1nd/Ep9ImeU2jBXQ==
+	t=1792660626;
+	b=0h3fGPIKWZPsX8jw1pyAHQn/gE/HaU26I5HL4yPWJ3yts5WhaP+YOs5F5mBw5PuA30c7
+	 iP+PYqFoviIuiBk/AYwpoC1VnyWu+ibEQiF4ShULWDtrvf8ZSjymVJD5CP/Fx8bIpTspK
+	 sBTGV50esy6vcyG+S5ESApKEgnNHe9+uEpvVIG5HSnAta35GiWEkaXF4T+Y+olgn9eFNY
+	 O0MTSwjwjZNqmqUwxxtnnfKgYaHD996NfdHKqVYHD/x1SKB0fZxOE4w8IcppQpGlhE4XM
+	 nQZrBDly7syX1cPnkHpliqkGC7UN+++v7tgs3dMI6KLarqfSXaV81i+fQkwD0kX9X7A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792660632;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792660626;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=sI+0nhto7gjQ/pA9pTOXfHoPEuc8oDO28HfBE2X7SBY=;
-	b=wNmFTiw1TFYamca2ntiQASRBxjSFE9YF3J3xQPE2vy0efJA9nMtHt9aYvdz+jTvJoL1l
-	 ZFp2mTigzO6wjmcRSNIOpLALSTBaWllf/V195bOOvQn0Hx4tV59gstQWg85K2PI65fDIl
-	 1PTpBUhgY2WV2Ytb/1aQ1+dvrXS6dbMMOpIUNTaaFv2QAnrZLsr1UExS4OHU3SI2wLJgw
-	 +XVNYGKqXCalFmCyIGuJxYjx99ID7wiyZ8tzOwH/6HImHKLLEQEdvE8BPz4VxPdZ1tESJ
-	 /IEvP0A4gJ0EPP3yd+ZxIX+JEP5NbgUOhPKWjXRrMZ4LW17Mp4glPM8NVcB+CzvGawg==
+	bh=74Vw0j5rE4cQu4U2NNcGbj29GdZNeea1qUhNAa2u8VA=;
+	b=XqbHIKtfOks7urSNyaacKFKRDURo17J8TYeOWdZm5t3VxXvTEl0IIzSMgf3HLUUQtB9H
+	 VAm4JAae+1CIHrGkVV65q3RpImwFzG3DheE1IApjSJMfIQffzWkHDonYjTsAMSCF4hfAG
+	 XwFcSLPuI3jX2DUm4cimHJQX0xwaVKFAvH75s+yBm0BFL8cV2OYRtqEft1O0nMMJQX410
+	 nqRuz0wrU7sayL/RDvkc3d+PzB3V+Haj8r7JvUWmT88zxQlhlcILE0q3OuLBZWQpBACUt
+	 ttVSSmRY8g7hSs3UJuhMkS2jjhRfznLauCOTNgAVIl/Sn3tB3lVygcQREwL8YZ95jaw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=GGeP4B3q;
-	arc=none smtp.remote-ip=74.125.82.178
-Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=hBhy5ypY;
+	arc=none smtp.remote-ip=74.125.82.179
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD096606A338
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:17:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DD096606A338
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22B7606A31E
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:17:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C22B7606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=GGeP4B3q
-Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-35d0be18c71so783875eec.1
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 02:17:11 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=hBhy5ypY
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-35943f55c06so916696eec.0
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 02:17:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792660631; x=1793265431; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792660620; x=1793265420; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=sI+0nhto7gjQ/pA9pTOXfHoPEuc8oDO28HfBE2X7SBY=;
-        b=GGeP4B3qkwTiZhwWcvqnzJSVW0R2IzkWw3Bf7cB64xWCiQndWBRC1DlZ6Ox5881tIm
-         1s1waCMODbbT0DlQzy3RvnPxVXvo46TPSiI6opLRtgMv2PvWzBJ44kOtBr6vRsjLvCKI
-         62PL3k6Mz+he2q4IW5cEcaZpXwyS3lVg0pML8eruurCZxMxZHkbbRr8Z8ZoxDuw62sR0
-         zHNlh9ejWmOC/lTPqmD7fJOwVOZtN7mCSkqJdjrC900qrw73DgNu7W1VNHpET3fZpWJz
-         Dtr/ZQPI4hLspTxGSLHAx8weG+fghbOdRNQLeO0aVoitAWz1xKCgxT4JP25FjQzKna83
-         athg==
+        bh=74Vw0j5rE4cQu4U2NNcGbj29GdZNeea1qUhNAa2u8VA=;
+        b=hBhy5ypYXncRiYmIbapRlcQE46DIqBPNYMXjj0YperJhiElOGSByawpFQkZOhrd7ZF
+         raidv5wjumP0e+/xF4C8bKZMhpNOKrzmgJIThRFLCzjxuNiW00QPwAvaOC9ISYsNS9uH
+         wef0d8VmA/Adb3Oz3F5S6EwsxwXPxemesi7Ni4pMdinKMOdZhmXh8c9u7EV3Equ0qz7c
+         ey2HLceyg8SmILm64uEFz6DdoAAiggL9yJz5RlNSoGX2IebOli46rAstSdLDm/bwhi1K
+         JE1KuJQtwDh40tlsY8ZlERp8KTqHrlU9d4oyvcEoFbXnow72bOPtpW8JzihTBqwy4xqt
+         FF0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792660631; x=1793265431;
+        d=1e100.net; s=20260707; t=1792660620; x=1793265420;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=sI+0nhto7gjQ/pA9pTOXfHoPEuc8oDO28HfBE2X7SBY=;
-        b=MRie1Z/vQ0JFcvDGB+ZKWvootFyvjtUHLYCvQqzgUhXHzUY70dim25uTdHZVOwhhqz
-         6EKNY1FbiabO2PqX/kU5qk0Zo6Z0LHCIOiASJ0Gi87zUXxWSUDKNWRJSRc3/rSAMODQ6
-         ei6/Ap2uqOdMuxJOsyX24fMjw73jXaQi+hWdT8/JwpBiU9YEt/W7vguAipvJemm6n7SZ
-         TcoOllfZAY+ckjes6fjiB8G3G9Gr/6RZB8TRVtRrtNJZXYmraTibNINLlY8rOrRxIm4n
-         XwNH44OC3yYS2KyfJbberxskQ6QjqEpE0DZoBZgdiKn0VDp3QM3c3C6cwekmJ00zMKz2
-         y2Fw==
-X-Forwarded-Encrypted: i=1; AKwUvBwRk3lHHJ+MkwSJqW7JU6wBbcRsY2o0lTKCzbCFQjZE25PNjUl8ruZrsPocbUm9+S0CF43nw40=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLB0NA7Lty6ulAskChHngWczpYetWpYUL1S7UJtkkCzm5S5Nn5B
-	qu5aT7ok45hS2WFC6WLvRaWi+ZmKDOuIgZuCusEBfOi/yK4U1HcSf94d
-X-Gm-Gg: AYBFou33aWxYMrpvmheI0BK3g5Bg6gAbE5SxnrHzJXWzkCXBdt6zPgV0Dw7RJT1R2GE
-	zGmGRECTS1zKb0okOiuBhPc9Nprlv6TkWUpEbhQITOd7mV+u5XiTZRpRW7hynqs973R1Ja9GqFg
-	FFG6TC4gXRvzmoMSW9HAzU0FmYuFs6EDX34yloD2Jen7VD4wJxszWxcNzBE/J4cn1COzfOLmdbQ
-	5osuoDekId8L1wTC5LdEMayvsXxhZbwX92eXJ+90UizfPDN8TPF1tZMShAGT4srRJ8NNT09wwwX
-	AZ9QaIxqHXL6RBwzdpvv+J6sWgR1M+fFushefhZWdpw0fn/X5nQgxjjZphgaZEVFyuFQ3TwYR3b
-	ukA07I2WGV3CTa7Lbnw5F2js16YzCEJKlpTwtyVdS+xY6lvl8o5yK692UuDkJn3SqS5ubxlzzWC
-	VlfNhiMUqZxCMvoaIVJJ3Xa/JgctMm4dUH4UpLhbbY1tiIY0ci9GDIJ6geZR/+BjYsX/mJdMaf8
-	MhyGi0+A3RhigLMPrlvy+6EOrzhB1fTkndGoeC12ZFt+9CDUn9UlUCQagqDJTshG4FekcgSBFS1
-	fVej978TrLVvG6BczgI=
-X-Received: by 2002:a05:7022:ed0d:b0:182:d0a8:d1a9 with SMTP id a92af1059eb24-192e88a169dmr2506797c88.0.1792660631101;
-        Thu, 22 Oct 2026 02:17:11 -0700 (PDT)
+        bh=74Vw0j5rE4cQu4U2NNcGbj29GdZNeea1qUhNAa2u8VA=;
+        b=tCazHbQaWd9wEKnvWBiUb4cO7vtkEfsNgF4NaSxR4f4O8Sm4vyLFm0fzvS2RA42vL5
+         M6Sr5DI54Dzs5HGA1QSy0sPTJtk0wMDdKTqtqSnUcKSzwx9QsR881anK6Q+3kKpJo8zk
+         V5TOVldAm4i8Nb8teHr4edoAkAjw2P5AjDisW1JqcND4xA/wvkdyNKmPoriP4OcXFDPQ
+         yguIyHJRf3t1qw/4Yde30ALaJDJuoQkyg5Ok8TdAH+d8l8u6CqOzQ2B/f3MmpwbuZBy9
+         RNMd6CPrGleM9x/B1fNZInRW1OIVqM/T86eO1VnC9sns8ZrP9AtYw5KThVOTRmDI9ihR
+         f4Rg==
+X-Forwarded-Encrypted: i=1; AKwUvByejKMzyipGLOHUoxSCMgoqjSub+lHgryQEMdEyR93ZV3nLIbDDP8nNf/6bc6Klu0oCfHm9nqc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLwPK4I8gYb/CR8hHtLBGl4P7Faf12hdpZ4lsr9coD1k97/MkvQ
+	ih5I6vMspR+oQwjc6X1kLrvCi0QwcI+/kJezIeK7J9xqUN97mQVlnhZ7
+X-Gm-Gg: AYBFou0utRbgUqIspK7e6ijj9uh7IYP3zyBn9dFOuuNNj6/2PYbfqOJ1QVQZcETPk+b
+	BSIxvY3ZevR1sNDCnsr75IIm5oO/B0rWQ+0Gz/SwWL8FrG6W8zM9xTjm2w8gj4ICppA1MDbEc8P
+	KweOBp+4F8TAwBfgeZ72FpAEdkuj2r9FgobjtgRQNQfgfbMpWm/9B3em5vFUdKWWk6X36VIW1S5
+	SJo0JvkG0t0jGKkZFIUC6OprvclN78BpFWT/kYmk+a5ElZTyGODWvsmFTak6cCCZWGuB9u2F8Ru
+	MMv9RT1X6Xui7Hkx+oT+Mg7bY0QqwnTyYtJEf9gAkdw095p6f7v4KBYnW4X7nWxauumoDZ+slGh
+	rr48nlXIJO9a51TUIu49XlPIBwbJHyQurPI8xHjhvIKVrnxcmGFj0r+LcFOSc749h1jyVYpJZmB
+	h8N3+skJ4MYbmtO36kjyAu6HRIvNv8k6DCcIXGtGBrytd+idr5K5xXKMNs+Mnr4gxR5rG/Bncgs
+	4EomZM8BpvJgXJROuVQMo4v41FZqrqSJXb5NiRCqhb8qAL9ba/0gAOeQ0UrvOC44j+3WjbXZd+h
+	UVK/13lerIWg6+RKLac=
+X-Received: by 2002:a05:7301:7e17:b0:366:6c79:212b with SMTP id 5a478bee46e88-368b122ff22mr2280564eec.25.1792660619861;
+        Thu, 22 Oct 2026 02:16:59 -0700 (PDT)
 Received: from youngkk-vm.localdomain (67.216.200.102.16clouds.com. [67.216.200.102])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3673e15353csm25692692eec.2.2026.10.22.02.17.08
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36740cc8439sm15295791eec.11.2026.10.22.02.16.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 02:17:10 -0700 (PDT)
+        Thu, 22 Oct 2026 02:16:59 -0700 (PDT)
 From: Cheng Yongkang <teel4res@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>
+To: Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>
 Cc: "David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	bridge@lists.linux.dev,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [BUG] net: ipvlan: failed newlink leaves shared port state changed
-Date: Thu, 22 Oct 2026 02:17:04 -0700
-Message-Id: <20261022091704.3652547-1-teel4res@gmail.com>
+Subject: [BUG] net: bridge: CFM CCM transmission state races with delayed work
+Date: Thu, 22 Oct 2026 02:16:53 -0700
+Message-Id: <20261022091653.3652341-1-teel4res@gmail.com>
 X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -104,52 +107,54 @@ Content-Transfer-Encoding: 8bit
 
 Hi all,
 
-Two failure paths in creation of a new ipvlan slave mutate shared
-ipvl_port state even though the requested device is not created.
+br_cfm_cc_ccm_tx() and ccm_tx_work_expired() mutate
+mep->ccm_tx_end and mep->cc_ccm_tx_info.period without a common lock.
+The start path also queues ccm_tx_dwork before saving the new
+cc_ccm_tx_info.
 
-1. ipvlan_link_new() publishes the new mode/flags and existing slaves'
-   IFF_NOARP/L3S state.  A later do_set_master() failure deletes only
-   the new device.  The existing slave keeps the port alive, so none of
-   the shared changes are rolled back.
+One reachable interleaving is:
 
-2. If L3S hook registration fails inside ipvlan_set_port_mode(), the
-   per-slave IFF_NOARP change is reverted, but the newly written shared
-   port->flags value is not.
+  writer: store ccm_tx_end
+  writer: queue ccm_tx_dwork
+  worker: observe an expired end, store period = 0, do not requeue
+  writer: store the requested nonzero period
+
+The final state reports an active nonzero CCM period, but no delayed
+work remains and no CCM frames are sent.  The keep-alive branch has the
+mirror interleaving: it can update ccm_tx_end and return success while
+the worker subsequently clears period and stops transmitting.
 
 Observed on Linux v7.3, commit
-08ab31164c55f20c7a2653de3186ae333470e2c1.
+08ab31164c55f20c7a2653de3186ae333470e2c1.  A self-checking userspace
+program exercised the start-path ordering and found six phantom states
+in 384 attempts:
 
-For the first path, an RTM_NEWLINK requesting L3S+VEPA with a nonexistent
-IFLA_MASTER returned -EINVAL and no second link was created.  The
-pre-existing slave nevertheless changed from:
+  start_period=67108864
+  probe_period=12738873
+  two readbacks remained 12738873
+  keepalive returned success
+  final period remained 12738873 with no pending work
 
-  mode=L2 flags=0 noarp=0
+Four independent snapshot-VM boots produced 98 explicit confirmations
+in total.  KASAN and UBSAN were clean, as expected for a control-plane
+liveness defect.  The target lacked KCSAN, so the report does not rely
+on a KCSAN warning: the queue-before-save ordering is directly visible
+in source and the inconsistent externally visible state was observed.
 
-to:
+The worker and configuration path need serialization, and the new CCM
+state should be stored before the delayed work can execute.
 
-  mode=L3S flags=VEPA noarp=1
+This is distinct from candidate BR-038, which reports the 32-bit period
+conversion overflow in the same state fields; that arithmetic bug needs
+a separate fix.
 
-For the second path, fault injection in nf_hook_entries_grow() made hook
-registration return -ENOMEM.  The failed request left the existing
-slave's shared port at mode=L2 flags=VEPA while correctly restoring
-IFF_NOARP.
+I found no matching upstream fix or CVE.
 
-The newlink operation should be transactional: defer shared-port
-publication until all generic netlink steps can no longer fail, or
-restore the full previous mode, flags, NOARP, hook, and l3mdev state if
-the outer path deletes the new device.
+The self-contained reproducer and complete logs are available on
+request.
 
-The 2026-10-01 ipvlan review thread notices the narrower flags-ordering
-problem, but does not cover the later do_set_master() failure or the
-complete L3S/mode rollback.
-
-Candidate BR-011 and BR-012 reproduce the two distinct failure sizes;
-they are presented as one transactional-state bug here.
-
-The PoCs, failslab runner, and logs are available on request.
-
-This was found with a multi-agent workflow; both state
-transitions were reproduced under QEMU.
+This was found with a multi-agent workflow; the state
+mismatch was reproduced in QEMU.
 
 Thanks,
 Cheng Yongkang
