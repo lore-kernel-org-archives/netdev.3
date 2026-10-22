@@ -1,61 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792658242;
-	b=Mri0WldE6I1WPzQsQGG3MPsRAd+G9KP1f3WNsga5Mn/CdAmKjWSeIF2hsrX7CRfB/Hva
-	 wI0SfNvLCMphT8rn1F8mlCVuo0vOs6kOSG7SfVbXN/b7OtC9dX7kwYJahFTd5Apx5l1jy
-	 r4cOEg7k7u9gAx304eZMSh6mF/hTugjkOduzn8RYZnOYpwpvSS4d+O71oS7TF4vbPbvSx
-	 D+0J7PJ7A+TuBzPHoZVqa0HP/gpu9zorBXjmCUtEA75NjCM60vwnjmbBJc8hgoHscOM6S
-	 o3OYJ4Z/IS6yyMqHwM3Ispk9C0XgZo8imGZl8FiNn0MQky62SfxBNsndqLQnAXecBMA==
+	t=1792658272;
+	b=yJyAgHh1JBUGy3PStaCfdpz1IjV6XNq3lBxDegSFsAdoN/fd6TqLTbmG3ur4Ut9ooyj9
+	 x0GKQZ2Z7e6XWUf5JnT5ZWTRxh4yjatXdlN/SY1iIddaMmRAXVZLKkVgIeDmJnfUkp9Ou
+	 Wslrc+SMqZWwUIr21Aogx8V2ezU00vJh90tteZKuA0fe8x/yEazk2G64CbvN6WFV7PWcT
+	 lzBg/WIVJe3YQcrGB/iRSm0lgRCB5Qh2CvzKvh2vZX0pNYLcjVTHTTrBIm3vOwnNG9eJ2
+	 8CcTszc0OCGgGaqpU3+kqeberOOqD+mD5dCBNqpJlouDmNyVsfL4CfU54lgByesFm2w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792658242;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=IOEXCVhtNogAF9n7evnbF1KwICnoSgaiuPuP05wrMmU=;
-	b=W0JSv+7xnnmicsj1GopT1x28Nxm4m6f9d/ip2vGfLwRNo8znoZ3FCItbsEfU4OFmwPZO
-	 91o5P+o0Fez7q8i+vm9PhE2mihVyT69OtNeqFpeBX2UEfxgJErn5yTyF4bdc6zSOuwjKX
-	 NExYcTbqRM/IghezFKvNQo8ceYVlbxvHTwjC2cu+L6wLrZT9pdagZijgFv6AZftc8fTp4
-	 t9dS8TZ/3j/MBF+1uYWLdRzI4e8mimh75wniEvxI/MWmMaguxX6Xiw1m/0laCNcfHemYE
-	 zW5TYICVIsY2KB5b56jHvYg/GgAHhezoJvKr51A+ZvrIacXKA5lkiPI1lpduJGK8T6Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792658272;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=DOooTUff7X5TAnLovj39ayLbqx8ey/Hg8MJZZ+hSrak=;
+	b=E9GLg3/iZSUY+lSz9n43wM/+a/sjcCuYLdk5cz8Q+KYtsKM+1ocYf8kW8C9bIqie3uAv
+	 rwnw3UAS8aTfmj5pmuei31QcEbaCKipVeKNP9SpGSuVjTXZt4BVcuR1vAp+KmmTPgSmZ0
+	 qdce5t90qh25sXLEVYtN7NheldgGEftdSKw9+z0RW1nv2zfb3Ik57AJyCkDhKDD2QD+Bl
+	 z9nF+rX1oHK+r/Gu+RGpMFyQzbSPwJ5crsblXN03mlNlD1ZRdOEaHMhSUWztwCHXRj4GS
+	 49OpQb0vgqIMToY7UkRHFUvQ7kpOeQkmXUty5B9MiMmSWoPVMCQF3hJw6I6fwyi32JA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MDVxjPkr;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="A/Mmwau1";
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=ej0LLEa1;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B0E606A31A;
-	Thu, 22 Oct 2026 08:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0973606A31B
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 08:37:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B0973606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MDVxjPkr
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD671F000C1;
-	Thu, 22 Oct 2026 08:37:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792658242;
-	bh=IOEXCVhtNogAF9n7evnbF1KwICnoSgaiuPuP05wrMmU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=MDVxjPkrVwS3bvxYbf8b+MGqbCRhbOJG7TuxZOJyfxmPrzJDHF+Ov2696VwDkRTtp
-	 uUWjPS2KES/Mecq0QI+n48fJs5RV7oBMx1yRrNlF2NkUQTJlFcV1QaKsHD4pEx+E2R
-	 izdgFsCHMh8OQ1Ymc7H6ulp4hLRsk9NfXd57mm6M68GDETY8fKOmosN43dzgWBsZyl
-	 CZE+jijaOmppUm1AkQpogHCQPFh5HzF87LL69kX+rA7vvKUN55EBN2azVdimvtzVRh
-	 UQVBjMOOMNJcuxNZkULgVHbHbbquW/DmzSPL/ulAmOJikHHG+G/q+BIXFS5jtTiI7C
-	 7TiEBFWcShxqw==
-Subject:
- Re: [PATCH net v6] net: dsa: qca8k: preserve port state across MTU changes
-From: netdev-bot+sashiko@kernel.org
-To: yongzhao.derek@gmail.com
-Cc: netdev@vger.kernel.org, ansuelsmth@gmail.com, andrew@lunn.ch,
- olteanv@gmail.com, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, linux@armlinux.org.uk,
- florian.fainelli@broadcom.com, linux-kernel@vger.kernel.org,
- hzyitc@outlook.com
-Date: Thu, 22 Oct 2026 08:37:21 +0000
-Message-ID: <179265824122.3135.15072303811434404600@kernel.org>
-In-Reply-To: <20261019173716.198475-1-yongzhao.derek@gmail.com>
-References: <20261019173716.198475-1-yongzhao.derek@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A/Mmwau1;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=ej0LLEa1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792658265;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DOooTUff7X5TAnLovj39ayLbqx8ey/Hg8MJZZ+hSrak=;
+	b=A/Mmwau1ifS5fM8g5xYGJ4DNLg+F8zsFs6054zqh/xOgAkmVA/g22xMWYUrK6iKzHckxA/
+	T/AsmdjYQTjIQpFxONdR1htTfP/wIY8WbHlCGzmEs0kFTPXuzEH0tmTN6By/tfytfv7ZqZ
+	rPOOnuszDmDOOVY/umi+x4Ow/2d6I3E=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-691-nQarUHZKO1-iO_IYxICg_A-1; Thu, 22 Oct 2026 08:37:44 +0000
+X-MC-Unique: nQarUHZKO1-iO_IYxICg_A-1
+X-Mimecast-MFC-AGG-ID: nQarUHZKO1-iO_IYxICg_A_1792658263
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4a1f03f2e8aso14836045e9.1
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 01:37:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1792658263; x=1793263063; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DOooTUff7X5TAnLovj39ayLbqx8ey/Hg8MJZZ+hSrak=;
+        b=ej0LLEa1COd0miBtYfh/Re7eVCX43R1PVUXERJQsuuzdKKJq/B1lf1gSgoGiaw+ADB
+         8ROJZyF++ZY0Ksx+LsYy4gmPWE9UFt4r/6/4RpjEqMv9tut4Bn+oM+0n3zdwFTeTX1Md
+         XG2NGzh+5odOVOu8sWSglmAWUHtw67EoV2lX+c3EopAfsr9C41UNfboXSF2ZOaYHmn9U
+         1+7GpTyRJMZS4FOFpzPgnib8mHMiFKb+GC76V9bD5rYO9JpulVxcVoYVWlfqQCO7Afwc
+         76KJoft4PY4fb75dixUVQv8McMHZ/1GxpIbZFxMG+KJMNvyoAgF93GGLy//zN900VA5e
+         01dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792658263; x=1793263063;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=DOooTUff7X5TAnLovj39ayLbqx8ey/Hg8MJZZ+hSrak=;
+        b=zUFAtffqM04GRQWUC+teSu2QtovcXjWQ/PGS9v172thPo8e6iXOuSlmkVFAlM+15vj
+         13RkylIOW85+KxUNDvOYJqKT19kwGpH8eqwRCpro+1PR9WnDApy1U9+cSp5jMoVVSxI0
+         +qQUabki0YI9+H/tXNGVeLYCNMtu6Glu+qV1dcKvAr/wni07chi/22hfoeeXoTNy9kSf
+         xuw0iaY9Zpua+9oAJFVs65fHyMcfzqe0fUv9elYRFDKXYPwuXR6tyCTgvyXt09FSupsZ
+         fCcUwbCjab9XLR4XjCi7F8cEIvWyaSpcLWToCQxH9VZXFx+sZQBjxKJdivr+3hGXqeR4
+         UgSA==
+X-Forwarded-Encrypted: i=1; AKwUvBw2tQUdd9EsNw3WbnphLHCdPqISnegMMeacaZfsr3lT0hTHYNI0lap5tING8/aEwwmDcMDHKKc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLxSOLByUJP9b1swKY3Bmva4sHhZfC4HimrY0EtonJjDaTMCnT1
+	4FnEk+rFIAg7iXd3TWstg9OVdPRUVEpM3YE8DD5aJ3e5tPjdKiC4l+mLs7+m63LEam4PYggIMBk
+	fNcMr0U6ZOILpnQOJXWhC4P2B/FiNnN6uTWxX0OBDVYOimTWwc5TbRJX2nA==
+X-Gm-Gg: AYBFou3VGpLnc/Ndlz/vkF+Tms2b+2cy5Ox3rdIB/vuClM3EittC1FC3Zz/FDR+Zaij
+	4v4OPxHAOZRMBB0m3Hqjv0LvTO24iMkkmHsdCeTf6D4ZfmHAeja+IelLyUDOG/XLMeFBg/XknX/
+	GzAlaJKZWo3aBxvARNzY2trV6TkC1pMg3YnQ2Mdvuymw/WSb3aY0K8QCAPkABn+l8T2CkyLu0ZG
+	gJdnaejoBvYa/rV/Sp4Lr37HBHvHRky1efamjoaryzCptm9EYWo0GxMG2+gsODMV0IgLStr9kAv
+	0tQ4WFvadEgsSYQoBNNnSeMm1gxzT6Rk4SJ3905QQ+qYtsvpG4ezDwDL/Ut+0jFLQRjqlimOva7
+	wqUw3lMIzo2/8WybaW2WKQhhz9HyUrWv3Pl7YFKjV+VixzMTXlYAsktyo6NEoIF852ikO5qkIQw
+	==
+X-Received: by 2002:a05:600c:138e:b0:4a1:dec1:4e1 with SMTP id 5b1f17b1804b1-4a1fdb132a1mr95784495e9.22.1792658263072;
+        Thu, 22 Oct 2026 01:37:43 -0700 (PDT)
+X-Received: by 2002:a05:600c:138e:b0:4a1:dec1:4e1 with SMTP id 5b1f17b1804b1-4a1fdb132a1mr95784235e9.22.1792658262599;
+        Thu, 22 Oct 2026 01:37:42 -0700 (PDT)
+Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a207b29276sm58527255e9.6.2026.10.22.01.37.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 22 Oct 2026 01:37:42 -0700 (PDT)
+Message-ID: <eb3b2eee-3460-4b03-a180-1d3806a7f8f7@redhat.com>
+Date: Thu, 22 Oct 2026 10:37:40 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,223 +112,54 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 0/11] pull-request: can-next 2026-10-22
+To: Marc Kleine-Budde <mkl@pengutronix.de>, netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, linux-can@vger.kernel.org,
+ kernel@pengutronix.de
+References: <20261021231130.2085690-1-mkl@pengutronix.de>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261021231130.2085690-1-mkl@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On 10/22/26 01:07, Marc Kleine-Budde wrote:
+> Hello netdev-team,
+> 
+> this is a pull request of 11 patches for net-next/main and obsoletes
+> pull-request: linux-can-next-for-7.4-20261021.
+> 
+> The first patch is by Vincent Mailhol and drops CAN-XL frames on non
+> CAN-XL devices.
+> 
+> A patch by Sang-Heon Jeon removes a redundant NULL check before
+> netdev_hold() in the CAN RAW protocol.
+> 
+> A patch by Kaixuan Li for the CAN ISOTP protocol improves the check
+> for the correct CAN CC/FD frames.
+> 
+> The next 3 patches are by Cunhao Lu and make CAN skb freeing safe in
+> any context in several CAN helper functions.
+> 
+> A series by Oliver Hartkopp et al fixes several problems in the CAN
+> net-layer:
+> 
+> 3 patches target the CAN procfs: A patch by Runyu Xiao resets the CAN
+> pkg_stats using atomics, a patch by Oliver Hartkopp fixes the stats
+> calculation after a statistics reset. Followed by a patch to remove
+> kernel pointers from the output.
+> 
+> The last 2 patches are by Oliver Hartkopp as well, they convert the
+> unreliable ARPHRD_CAN type check to the robust can_get_ml_priv() and
+> protect the CAN receive lists with a per-device lock.
+I'm wrapping-up the net-next PR right now, and this will not make the
+cut. Still all the material here, after forwarding the trees post PR,
+looks like 'net' worthy. We could merge it afterwards.
 
-Critical: 0 · High: 0 (1) · Medium: 2 · Low: 0
+Note that there is other net-next material in the same status.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Thanks,
 
-- [Medium] On a dual-CPU qca8k (ports 0 and 6 both declared as DSA CPU
-  ports), the patch does not keep its own promise that an MTU change…
-- [Medium] qca8k_port_status_restore() (qca8k-common.c:491-492) calls
-  regmap_update_bits(priv->regmap, PORT_STATUS(port), mask,…
+Paolo
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but bringing up a
-  qca8k user port that has no PHY dereferences a NULL phy_device.
-
---
-
-net: dsa: qca8k: preserve port state across MTU changes
-
-This patch adds a dedicated mutex that serializes PORT_STATUS writers with
-the MTU update in qca8k_port_change_mtu(). The MTU path now saves and
-restores the MAC bits on ports 0 and 6 instead of enabling them
-unconditionally. Failed PORT_STATUS writes are cached and retried from a
-delayed work item.
-
-> diff --git a/drivers/net/dsa/qca/qca8k-common.c b/drivers/net/dsa/qca/qca8k-common.c
-> index 13005f10edb7..04001c345dd6 100644
-> --- a/drivers/net/dsa/qca/qca8k-common.c
-> +++ b/drivers/net/dsa/qca/qca8k-common.c
-
-[ ... ]
-
-> @@ -471,10 +471,74 @@ void qca8k_port_set_status(struct qca8k_priv *priv, int port, int enable)
->  	if (port > 0 && port < 6)
->  		mask |= QCA8K_PORT_STATUS_LINK_AUTO;
->  
-> -	if (enable)
-> -		regmap_set_bits(priv->regmap, QCA8K_REG_PORT_STATUS(port), mask);
-> +	return mask;
-> +}
-> +
-> +static int qca8k_port_status_restore(struct qca8k_priv *priv, int port)
-> +{
-> +	u32 mask = priv->port_status_mask[port];
-> +	int ret;
-> +
-> +	lockdep_assert_held(&priv->port_status_lock);
-> +
-> +	if (!mask)
-> +		return 0;
-> +
-> +	if (mask == U32_MAX)
-> +		ret = qca8k_write(priv, QCA8K_REG_PORT_STATUS(port),
-> +				  priv->port_status_value[port]);
->  	else
-> -		regmap_clear_bits(priv->regmap, QCA8K_REG_PORT_STATUS(port), mask);
-> +		ret = regmap_update_bits(priv->regmap, QCA8K_REG_PORT_STATUS(port),
-> +					 mask, priv->port_status_value[port]);
-
-[Severity: Medium]
-Can this write bits outside of mask into PORT_STATUS?
-
-For a partial mask, the whole cached priv->port_status_value[port] is
-passed as the value. qca8k_port_status_update() below only refreshes the
-bits inside the current mask. That leaves the bits from the last full
-link_up write (mask U32_MAX) in the cache: the forced SPEED field, DUPLEX,
-TXFLOW, RXFLOW, and LINK_AUTO on ports 0 and 6.
-
-The qca8k regmap has no cache and provides a .reg_update_bits callback.
-PORT_STATUS is therefore treated as volatile, and _regmap_update_bits()
-passes the raw value to the driver without applying val & mask:
-
-drivers/base/regmap/regmap.c:_regmap_update_bits() {
-    if (regmap_volatile(map, reg) && map->reg_update_bits) {
-        ...
-        ret = map->reg_update_bits(map->bus_context, reg, mask, val);
-    ...
-}
-
-qca8k_regmap_update_bits_eth() and qca8k_regmap_update_bits_mii() then
-both do this without masking write_val:
-
-	val &= ~mask;
-	val |= write_val;
-
-The old regmap_set_bits() and regmap_clear_bits() calls only passed mask
-or 0. With this change, every partial PORT_STATUS update ORs the cached
-non-mask fields into the live register. That covers link_down,
-port_enable/disable, qca8k_set_pm(), the MTU pause restore and the retry
-worker.
-
-The live non-mask bits can differ from the cache. For example, the switch
-may lose state across suspend before qca8k_set_pm(priv, 1). Or a port 1-5
-may be in LINK_AUTO with hardware-updated speed bits while the cache
-still holds forced speed bits.
-
-In those cases, could this turn on flow control or duplex bits that no
-phylink decision requested? Could it also combine two SPEED encodings
-into the reserved value 3, until the next full link_up write?
-
-Would passing priv->port_status_value[port] & mask avoid this?
-
-[ ... ]
-
-> @@ -751,8 +815,10 @@ int qca8k_port_enable(struct dsa_switch *ds, int port,
->  {
->  	struct qca8k_priv *priv = ds->priv;
->  
-> -	qca8k_port_set_status(priv, port, 1);
-> +	mutex_lock(&priv->port_status_lock);
-> +	__qca8k_port_set_status(priv, port, 1);
->  	priv->port_enabled_map |= BIT(port);
-> +	mutex_unlock(&priv->port_status_lock);
->  
->  	if (dsa_is_user_port(ds, port))
->  		phy_support_asym_pause(phy);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but can phy be NULL here for a
-user port that has no PHY?
-
-Take a fixed-link port, or an in-band/SFP port on 0 or 6 without a
-phy-handle. For these, phylink_fwnode_phy_connect() returns 0 without
-attaching a PHY:
-
-	if (!phylink_expects_phy(pl))
-		return 0;
-
-dsa_user_phy_setup() then succeeds without taking its -ENODEV fallback,
-so dev->phydev stays NULL. Bringing the interface up then goes:
-
-dsa_user_open()
-  dsa_port_enable_rt(dp, dev->phydev)
-    qca8k_port_enable(ds, port, NULL)
-      phy_support_asym_pause(NULL)
-        phy_copy_pause_bits(phydev->advertising, phydev->supported)
-
-phy_support_asym_pause() has no NULL check. This would oops in ndo_open
-with RTNL held. The code has looked like this since commit b3a302b171f7
-("net: dsa: qca8k: move set age/MTU/port enable/disable functions to
-common code").
-
-Would it be enough to check phy as well as dsa_is_user_port() here?
-
-[ ... ]
-
-> @@ -782,27 +852,53 @@ int qca8k_port_change_mtu(struct dsa_switch *ds, int port, int new_mtu)
->  	if (!dsa_is_cpu_port(ds, port))
->  		return 0;
->  
-
-[ ... ]
-
-> +	mutex_lock(&priv->port_status_lock);
-> +
-> +	ports = BIT(0) | BIT(6);
-> +
-> +	/* Do not mistake a failed restore for a new link-down decision. */
-> +	for_each_set_bit(i, &ports, QCA8K_NUM_PORTS) {
-> +		ret = qca8k_port_status_restore(priv, i);
-> +		if (ret)
-> +			goto unlock;
-> +	}
-
-[Severity: Medium]
-If ports 0 and 6 are both CPU ports, can qca8k_port_change_mtu() return
-an error after the frame size has already been committed?
-
-dsa_switch_mtu() calls port_change_mtu once for every port that
-dsa_port_mtu_match() accepts, and that includes every CPU port. It returns
-the first error:
-
-net/dsa/switch.c:dsa_switch_mtu() {
-    ...
-		if (dsa_port_mtu_match(dp, info)) {
-			ret = ds->ops->port_change_mtu(ds, dp->index,
-						       info->mtu);
-			if (ret)
-				return ret;
-    ...
-}
-
-QCA8K_MAX_FRAME_SIZE is a single global register, so the sequence could
-be:
-
-call 1, port 0:
-  qca8k_write(priv, QCA8K_MAX_FRAME_SIZE, ...) succeeds
-  qca8k_port_status_update() restore fails, mask stays pending
-  returns 0
-
-call 2, port 6:
-  qca8k_port_status_restore() on the pending port fails again
-  goto unlock, returns the error
-
-If the regmap_read() snapshot or regmap_clear_bits() fails in call 2,
-the result is the same.
-
-dsa_user_change_mtu() then jumps to out_cpu_failed, which only does:
-
-	if (new_conduit_mtu != old_conduit_mtu)
-		dev_set_mtu(conduit, old_conduit_mtu);
-
-The user and conduit netdevs keep their old MTU while MAX_FRAME_SIZE
-keeps the new value. If the MTU was being shrunk, the switch would drop
-frames that the netdev MTUs still allow, until the next MTU change.
-
-Isn't this the mismatch that the "A restore failure must not report a
-committed frame size as rejected" comment and the commit message are
-meant to prevent?
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261019173716.198475-1-yongzhao.derek%40gmail.com
