@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792629027;
-	b=VnaOjEzo7321Wk40+KlG+Uzv3TaV+dQiVh9jbN+Zb8+xTHqrwVVrLAcobdlr+Ekdr8HM
-	 +Cac4nCn4a4xRlgApdSRj0Jthhg5eXX4ruZ8Wvlt2adNJKVjaP816bXs7eWVUSevmzUpi
-	 idH8ZF/bGiJQXvUdFXjK9tsVvvoEggvnxGugqFFgXtzOWCgF/wZypEFg6QME5YQfxWl3k
-	 FXMgWK7xlMeSJ8ZJl44EX98+8LfDWIXX/8aZnMmXqcqTsGLtYZ/e8MkqhsOqKVkVjDfay
-	 diylxPu0wJTZlpT8OwvbEUCShoK61xOjSWyqoZNCjO6RsM5uocm6AuqbVZFnICTNitA==
+	t=1792629024;
+	b=hiNCsLT5TYzdAKGlzhGAEHgP84efU6IKgL4+yxeyPuZXWVg3jCpWvn0A1VbCRcc161ja
+	 ktzvVk2fu4ktEtJjwDhY9JdsRSwN/9OyvVNcUzHSNUokjcHyG4wvLM+yl7FUPXmeB4kde
+	 na8CimsyhgL405baBleAkbw5NLdkKI0D0VwgDYdTyCjk8tTJV5pQQuqwJdwLYPlW7yE5z
+	 qK1odOhYInWqfuPFW6vUkpMHe8KBx3w/oBwYOXx+CDf6vEbbTT2FC28GuNAbIT8GHImVS
+	 SHsoLWh4mjHiMvaZvUPLNbjMXPCU9GqSqvpsqsPuA5IYoMqYhdhFfyFqGZ9wcbQxXpw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792629027;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792629024;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=ydO0eraG8WZOqDtntjgt0/RZkDKkzqBP3kzZ637E/uM=;
-	b=5f92wwcFz+mnmdAmelH3SAqTWMXPOTrJxW+7E8SvxG/hNbhuTYM5E9QOeBQdLgbjtXoF
-	 duxZczVbH0W5qJIfKF8bKbSKlshvweWCrsZ7TOSwT6R9FmkrPckDTNcWw8IcljhzrAPcd
-	 y2j74pGIkfEKPAZNxNtoAU3RdrBavG1pfzgEDn85G+PHnExLG4SRJ4JAI103s2P/NCJZt
-	 mFeb0D/CN7dx6DuHlbTGy0w/6ekBGNxc5UFbM0oOobsdpcaGHNw8LZsP2BGqOFy/bm8jm
-	 f4CFsjFY/h38ibsYhCXvhotB3FzqZn7j4zeWwldOH6CxgY09axymcoMaYWmZH9V9/Eg==
+	bh=em8Yw734Aiee0fgKvAc61E0pqQSrkUSzNQGy5AB+nfQ=;
+	b=qGLJ7HhYY9FGxtACNPQRVOsiFWoe9DD+d3+ysvRjE79eZkU4p+I3zeBJcc7AbYsFJpbu
+	 BZE8dLbT29wg6Z9OOUUSqdftqZqsw8SLM035ZHpe3/7y2+zDBF1L3UOPcQJzpIFhBWU5h
+	 k502tkcYG2fqi9q70hJaazX6QtSB6d1suIqVd2hKCPcxk3FRqfERQC+stJnQy5u3Af7BT
+	 x5lmkjSL0o15BU4PFu7VEW5IvqLOKrdytKl3jMbQBjCICHpgt16NtoETbBnm8TqZVVPnu
+	 CH8Jxnu6UOYC4ues+0EDDT3yrRjuBzeMovSnaBCll4NEkK4FVpZc1+M+lzwAPNGePVA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bybPJTrc;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XYcJ1ZpF;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341A2606A31B;
-	Thu, 22 Oct 2026 00:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628A9606A326
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 00:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bybPJTrc
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF6D61F000C2;
-	Thu, 22 Oct 2026 00:30:26 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XYcJ1ZpF
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07B8B1F000C5;
+	Thu, 22 Oct 2026 00:30:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792629026;
-	bh=ydO0eraG8WZOqDtntjgt0/RZkDKkzqBP3kzZ637E/uM=;
+	s=k20260515; t=1792629024;
+	bh=em8Yw734Aiee0fgKvAc61E0pqQSrkUSzNQGy5AB+nfQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=bybPJTrcaRjvtcBX5J2JDrzVGmjeNy9U4LuVcwNJ28AOYdawmjm+PBTSe7V4wd340
-	 GVnDFHryU3k2UUjmodK3UiWsWVxisu1g51LXmOyVfopvkPszfCbQuVobzfIUUwqZdb
-	 fCvABp09JxBJSJqTHEYnaoeu7DEsMlUUa/7f9NeafaLXP4HoMpTM69gt/6zYO3XwTy
-	 FG2fKX0DzgjqerdreAH6DBT4JIhP66hIeNg3DY8FDBALk1LrzakmrIUFudy+2QvZev
-	 PUIV8FqP3PiUVUOyEI6EHNKbx1Gu4g2svCADb5FNOQ+MvLExrik165/bNBQxRBCoRm
-	 LL3OuaZVXIZcw==
+	b=XYcJ1ZpFIKflKFDHxFJYgFXTZb/gSpe1c/YAwBK1TqO7FzRGZOl6zIP+Czh1DpHQh
+	 N+6f6jt2s7XR9/nRY6SbbrQ6H/DptdXFMe6DpEBpzxGE7b3IcQXsBD1JsAd8XlKX+V
+	 36ZY2CVZWPjl93bVHA57D4paMyFohzodn9xdXA75bdXHSwSsk8921svw/qwEj0of6h
+	 WFL7c3RtnzROkKx2sm9WdTI9YXgGjaXH48QGr1vDd4w6dCg646QFyV4zlfjYToS1AV
+	 EZwVEE7AoSEXAfn/yFL/uB1PNPl3CedgR4ABYrI12vqWsKvsBSwXG2iBSf6j+rTe7i
+	 FXLw8fp2FPArw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B42ED380A963;
-	Thu, 22 Oct 2026 00:30:26 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F13F4380A963;
+	Thu, 22 Oct 2026 00:30:23 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,42 +54,41 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: sparx5/lan969x: do not clobber the PSFP cycle
- timer update period
+Subject: Re: [PATCH net v2 0/2] ionic: fix port_info lifetime bugs
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179262902520.1378903.18369274366620935912.git-patchwork-notify@kernel.org>
-Date: Thu, 22 Oct 2026 00:30:25 +0000
-References: <20261020-sparx5-psfp-cycle-timer-v1-1-00f2908f096a@microchip.com>
-In-Reply-To: 
- <20261020-sparx5-psfp-cycle-timer-v1-1-00f2908f096a@microchip.com>
-To: Daniel Machon <daniel.machon@microchip.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, Steen.Hegelund@microchip.com,
- UNGLinuxDriver@microchip.com, horms@kernel.org, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+ <179262902262.1378903.17959804366477138316.git-patchwork-notify@kernel.org>
+Date: Thu, 22 Oct 2026 00:30:22 +0000
+References: <20261015-ionic-port-info-lifetime-v2-0-57232013fd79@amd.com>
+In-Reply-To: <20261015-ionic-port-info-lifetime-v2-0-57232013fd79@amd.com>
+To: Eric Joyner <eric.joyner@amd.com>
+Cc: netdev@vger.kernel.org, brett.creeley@amd.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ nikhil.rao@amd.com, vadim.fedorenko@linux.dev, edumazet@kernel.org
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 20 Oct 2026 10:58:58 +0200 you wrote:
-> sparx5_psfp_init() enables the periodic stream gate cycle timer update,
-> which keeps the cycle start time of each stream gate within one cycle
-> time of the current time. SG_CT_CLKS sets the update period, in system
-> clock cycles.
+On Thu, 15 Oct 2026 16:03:29 -0700 you wrote:
+> Two fixes for the lifetime of the ionic port_info DMA buffer.
 > 
-> Before this patch, the update is enabled with a full register write of
-> SG_CT_UPDATE_ENA only, which also sets SG_CT_CLKS to zero. That is below
-> the documented minimum, the number of stream gates (1024 on sparx5 and
-> 256 on lan969x).
+> Patch 1 fixes a use-after-free. ionic_port_init() allocates port_info
+> only when the pointer is NULL, but its error path frees the buffer
+> unconditionally. On the firmware recovery paths,
+> ionic_lif_handle_fw_up() and ionic_reset_done(), the buffer belongs to
+> an earlier successful init, so a failed PORT_INIT frees it under any
+> ethtool op that is already reading it. The error path now frees only
+> what the same call allocated.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: sparx5/lan969x: do not clobber the PSFP cycle timer update period
-    https://git.kernel.org/netdev/net-next/c/5a3dcad8e101
+  - [net,v2,1/2] ionic: fix port_info use-after-free on firmware recovery
+    https://git.kernel.org/netdev/net-next/c/d90d1a768b3b
+  - [net,v2,2/2] ionic: free port_info when probe fails after the port is set up
+    https://git.kernel.org/netdev/net-next/c/4e15e0a941ce
 
 You are awesome, thank you!
 -- 
