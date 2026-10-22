@@ -1,49 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=66.228.49.9
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792633025;
-	b=DyRRbGDL2WQI0tG3i0JiCqIgrIyIwL+lErQOZ54StZ6/j7TMqckPDepy7NlqnL80V0uI
-	 Ws/q8bMiuph4g6oSuXBVXtmd4sYOhcUkL6TVWx7OKQUJmRM5gRg+zQA2HbBVJVxEti0MI
-	 dNBQjSButtMXjaIQs9n2BJgJOF2JIZQoJjVFUfM85ZxrqdbmiLjW1Wigp0V9R1pDiKu9y
-	 1XY/bWvEgc5o4nFUhWPGJyUxq8GZnY1OITw/2I/+mEb0sL1zztZMyIkDH1XaaU5CnHPVp
-	 x7TaHRZRMN4yEo5+eR1iB7z+vALSb2Gm+q6oIapIxqB1xYaAuy2liI6DMft2wNUpJ3Q==
+	t=1792633581;
+	b=i0sXvHmPcLPUeKdReVwDH2gOoWC4di8hUUQenNbe5HppRmfulr4wrI0nwAmZaAQ+iC/J
+	 StIJndw5ZwoqFb6EPCREX+h78hPZZgsPfvZqqUAYEirpU6qxH4sSAxZklaDNC3jg3Ik8A
+	 1aPgdIb/DadTIRkKy2FhnvJrmF8xTmOIfaOb4ySJeSxIiScv2MQGd/rMVaJIz46EhPAna
+	 RwS/CPywCvw1mMXGgB0wNozRJ52iXsHykfmNWSlWH3AQTyqqDBgAaPM62F6N2mHweBF/I
+	 NHp5Wex1WVMOmG1pFmi2WM6933phpWA5udauizZBbkDVwcReXac97TcZCZpcDwGiE7Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792633025;
-	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:From:To:Cc:References:Content-Language:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=nnW4VcwHbkk2DHavEEkUKXNZPZrDj8F0/wl71Ri5e/E=;
-	b=EwZ0U3NXSEcGQyBrjplGSg2ka6lLl6TsVtSXmLZG28i2vylTZ391Sdd1b6gaZcQXVQE1
-	 soC5/WKBW09lLNJUTVA/K7KVuH1YRKIskF1mQfk/+eOIF/cl2T1GgZyf7Jy+R0naSzlmE
-	 Fit3HqHXx+sCqW/+Bd0k4BcREOE36EcXMfR+AWKf02mYUtxQrQ1s3jr5Z8rSPbeGuHxDt
-	 bzkAYRkobXDrin+5X7UCsOKUZCOGEYSaUwADCm6U2i5FD8ekULRBuZT+hraQn9YIg5hd+
-	 fN+hX3VD+TNFaKtWswwYYtxTvi/uzgC87n+ih7MuyXzRwDj/jnyNuyOU42+FeZVsVqg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792633581;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=3t/lhtMwUqFTKoF3uLxNOnCU7ZEEEAgxIpdnalajtQ8=;
+	b=SVD/FJEuEomvenWrnLeKUlAWrMw6dsZzPwMZlSLK8CqZw8nuEuxtSGwGm9vsXsLJ2Lis
+	 fZMSlbhJvIigYx8VLwGnFp2CqaIWZQLL7hZacgo+12bdSI25+HsW77fhpEOLwquM1s7pe
+	 +eUadhaojmJgyOss+hBRERE7Rz/oIU40JH09IKZnm1nz+Fl9G7ypTls+Y228iV7uoeHJC
+	 YdmGVHc1j4hiR9Yr+5vL1Vp+PKgCBnu/uRdfXXsKcMPFamdnzQI8apekWvbddY1LB0dwY
+	 tqfVZHDAu9WjieubjmEUAzzVenxJFg3CBr3Qi3KHyXmfALIGwONM4nlr8hovtDQiTcg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=6bit.com;
-	spf=pass smtp.mailfrom=6bit.com;
-	dkim=pass header.d=6bit.com header.i=@6bit.com header.a=rsa-sha256 header.s=dkim header.b=qInkceLN;
-	arc=none smtp.remote-ip=66.228.49.9
-Received: from mail.6bit.com (www.6bit.com [66.228.49.9])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lEZ06Np6;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1432A606A31A;
-	Thu, 22 Oct 2026 01:37:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1432A606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6bit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6bit.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205D6606A319;
+	Thu, 22 Oct 2026 01:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=6bit.com header.i=@6bit.com header.a=rsa-sha256 header.s=dkim header.b=qInkceLN
-Received: from [10.0.2.245] (unknown [143.105.105.29])
-	by mail.6bit.com (Postfix) with ESMTPSA id DDC12945CF;
-	Wed, 21 Oct 2026 19:36:56 -0600 (MDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=6bit.com; s=dkim;
-	t=1792633017; bh=RdgdE9wO/hgi3O1MxEmLdNMt5z4BOtTeJVms7OjvJGM=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=qInkceLN5nIN09rB36JK7hx7zloayLzTBJxvJRwM1gejsIs9xzW9lVpFA5cMyOE9r
-	 YkmYiNl+MBkmb1FEXt/g4NC4ruUBZ5FT4G+oNngDw3WgnukcrsN7dbWyBzcDLgYfSh
-	 ONfw/LH+lwL9WSMQ0oxNFD750wEsYkBIZAX0u8pY=
-Message-ID: <b859285b-e43e-43f2-a4f7-af82705d3513@6bit.com>
-Date: Wed, 21 Oct 2026 19:36:55 -0600
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lEZ06Np6
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 732E91F000C1;
+	Thu, 22 Oct 2026 01:46:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792633581;
+	bh=3t/lhtMwUqFTKoF3uLxNOnCU7ZEEEAgxIpdnalajtQ8=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=lEZ06Np6OmQu82WP1TS+x1kPF57zJwSzvw4Oiz1T/hIDZ98jWutoeqkT6kW/cfm3o
+	 xdQueKD8+6iZYiVPHj6ETY6IE/iBq43duTOIlLQflbLoGdBpYJpX+i4GpdvMs3bwFe
+	 xtk30aKYHGDO+/fEI32SRWsr0A+CvOLJNboSNADnU0zDAFBqUgeDOp8VcZtu7+MAa3
+	 gHpYsqA1tEktweRIfr5SIWiJVEj3XOQjJIK8ucz/jVRneL8E9acBA+0ETNj8MdrMx0
+	 U9ix6fyhr2fBW8vPb8MR1VOdhwHV2Y/Qus7ZYKSh6nBRuVWdicopcZuswlBLS+IfQ3
+	 E1k7z3ZvQBqtw==
+Subject:
+ Re: [PATCH net] net: ag71xx: reallocate rx buffers when changing the MTU
+From: netdev-bot+sashiko@kernel.org
+To: rosenp@gmail.com
+Cc: netdev@vger.kernel.org, chris.snook@gmail.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ o.rempel@pengutronix.de, linux-kernel@vger.kernel.org
+Date: Thu, 22 Oct 2026 01:46:20 +0000
+Message-ID: <179263358000.3135.15720043539701773895@kernel.org>
+In-Reply-To: <20261019014438.199718-1-rosenp@gmail.com>
+References: <20261019014438.199718-1-rosenp@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,98 +63,176 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: =?UTF-8?Q?Re=3A_=5BREGRESSION_6=2E16=5D_r8169_RTL8168h/8111h_fails_?=
- =?UTF-8?Q?to_probe_=E2=80=94_=22Unable_to_change_power_state_from_D3cold_to?=
- =?UTF-8?Q?_D0=22_=E2=80=94_bisected_to_4d4c10f763d7?=
-From: Josh Perry <josh@6bit.com>
-To: mario.limonciello@amd.com, bhelgaas@google.com
-Cc: hkallweit1@gmail.com, nic_swsd@realtek.com, rafael@kernel.org,
- linux-pci@vger.kernel.org, netdev@vger.kernel.org,
- regressions@lists.linux.dev
-References: <d4aaa5e8-7366-461c-94b1-ccf3631c8bf9@6bit.com>
-Content-Language: en-US
-In-Reply-To: <d4aaa5e8-7366-461c-94b1-ccf3631c8bf9@6bit.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-On 6/11/26 19:07, Josh Perry wrote:
-> #regzbot introduced: 4d4c10f763d7
-> 
-> Since v6.16 one of two onboard RTL8168h/8111h NICs on this board fails 
-> to probe on boot; the device drops to D3cold and the driver can't bring 
-> it back:
-> 
->    r8169 0000:02:00.0 eth0: RTL8168h/8111h, 00:2b:67:48:40:01, XID 541, 
-> IRQ 137
->    r8169 0000:04:00.0: Unable to change power state from D3cold to D0, 
-> device inaccessible
->    r8169 0000:04:00.0: Mem-Wr-Inval unavailable
->    r8169 0000:04:00.0: error -EIO: PCI read failed
->    r8169 0000:04:00.0: probe with driver r8169 failed with error -5
-> 
-> The board has two identical RTL8168h NICs (both XID 541): 0000:02:00.0 
-> and 0000:04:00.0. Only 04:00.0 fails — its sibling 02:00.0, on a 
-> different root port, probes and works normally on the very same kernel 
-> and boot. The failing NIC then does not appear (no enp4s0), taking the 
-> machine's WAN offline. This strongly suggests the problem is port/ 
-> topology-specific rather than device- or driver-specific: the upstream 
-> port behind 04:00.0 is placed in D3cold and the endpoint cannot be 
-> resumed to D0.
-> 
-> Hardware: RTL8168h/8111h, XID 541, PCI 04:00.0 (onboard 1GbE).
-> Platform: Lenovo ThinkCentre M90n-1 (11AHS0B200), BIOS M2AKT49A 
-> (2026-03-25, latest available). Firmware is current, so this is not a 
-> platform-firmware issue.
-> 
-> Bisection: v6.15 good, v6.16 bad (verified by booting both). I then 
-> reverted 4d4c10f763d7 ("PCI: Explicitly put devices into D0 when 
-> initializing") together with its follow-up 907a7a2e5bf4 ("PCI/PM: Set up 
-> runtime PM even for devices without PCI PM") on top of 6.16.7: the NIC 
-> probes and links at 1Gbps/Full normally, with no workaround:
-> 
->    r8169 0000:04:00.0 eth1: RTL8168h/8111h, 00:2b:67:48:40:02, XID 541, 
-> IRQ 138
->    r8169 0000:04:00.0 enp4s0: Link is Up - 1Gbps/Full - flow control rx/tx
-> 
-> Workaround: booting an unmodified v6.16+ kernel with pcie_port_pm=off 
-> also restores the NIC, which is consistent with the upstream port being 
-> placed in D3cold and the device failing to resume to D0 after the 
-> explicit-D0 init change.
-> 
-> The follow-up 907a7a2e5bf4 does not fix this resume case: v6.18.33 is 
-> still affected (retested today on current firmware).
-> 
-> Happy to test patches or provide full dmesg / lspci.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
+Critical: 0 · High: 2 · Medium: 0 · Low: 0
 
-Hey guys,
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Thanks, and apologies for the slow follow-up. Multiple of you asked me 
-to test on the latest mainline.
+- [High] ag71xx_change_mtu() does not handle a failed reopen.
+- [High] ag71xx_change_mtu() calls ag71xx_stop() and ag71xx_open()
+  directly while the netdev is still running and its qdisc and TX path…
 
-I had a chance to do just that today with the latest mainline v7.3. 
-Verdict is that it's still broken, same messages as in the original 
-report. pcie_port_pm=off on the same build still works around it.
+--
 
-dmesg, "sudo lspci -vvv" and the sysfs PM state for both boots (same 
-v7.3 build, only the command line differs) are attached here:
+net: ag71xx: reallocate rx buffers when changing the MTU
 
-   https://bugzilla.kernel.org/show_bug.cgi?id=222179
+This patch makes ag71xx_change_mtu() stop and reopen a running interface.
+The rx rings are then refilled with buffers sized for the new MTU before
+the MAC frame length register is programmed. Before this, the new max frame
+length was written straight to the MAC while the rings still held buffers
+sized for the old MTU.
 
-New detail from the failing boot: the root port above the dead NIC 
-(00:1d.3) is in D0 but its link shows DLActive-, and the endpoint's 
-config space reads all-ones ("Unknown header type 7f"). With 
-pcie_port_pm=off the port shows DLActive+ and the NIC is in D0 at 
-2.5GT/s x1. So the port seems to come back but the link to 04:00.0 
-doesn't retrain.
+> diff --git a/drivers/net/ethernet/atheros/ag71xx.c b/drivers/net/ethernet/atheros/ag71xx.c
+> index 4e4794c4dfdce..6db5ab8be6aef 100644
+> --- a/drivers/net/ethernet/atheros/ag71xx.c
+> +++ b/drivers/net/ethernet/atheros/ag71xx.c
+> @@ -1766,11 +1766,19 @@ static irqreturn_t ag71xx_interrupt(int irq, void *dev_id)
+>  
+>  static int ag71xx_change_mtu(struct net_device *ndev, int new_mtu)
+>  {
+> -	struct ag71xx *ag = netdev_priv(ndev);
+> +	bool running = netif_running(ndev);
+> +
+> +	/* The rx buffers are sized for the MTU at open time and the rx
+> +	 * descriptors carry no buffer length, so a larger MTU must not
+> +	 * reach the MAC before the rings have been refilled.
+> +	 */
+> +	if (running)
+> +		ag71xx_stop(ndev);
 
-#regzbot link: https://bugzilla.kernel.org/show_bug.cgi?id=222179
+[Severity: High]
 
-Thanks again!
+Is it safe to call ag71xx_stop() here while the qdisc and tx path are
+still live?
 
-Josh
+On the normal ndo_stop path, __dev_close_many() clears __LINK_STATE_START
+and runs dev_deactivate_many() before it calls ndo_stop, so no xmit is in
+flight. This path skips that step. ag71xx_hw_disable() only does this:
 
-P.S. I'm relying on claude for formalisms like the bot tags and digging 
-up the CC list, but I'm pretty noob so please let me know if I'm doing 
-things wrong.
+ag71xx_hw_disable() {
+	netif_stop_queue(ag->ndev);
+
+	ag71xx_hw_stop(ag);
+	ag71xx_dma_reset(ag);
+
+	napi_disable(&ag->napi);
+	timer_delete_sync(&ag->oom_timer);
+
+	ag71xx_rings_cleanup(ag);
+}
+
+netif_stop_queue() does not take the tx lock, so it doesn't wait for a CPU
+that is already inside ag71xx_hard_start_xmit().
+
+NAPI is also still enabled during ag71xx_hw_stop() and ag71xx_dma_reset(),
+which can mdelay for several ms. A poll in that window can re-open the
+queue:
+
+ag71xx_poll()
+  ag71xx_tx_packets()
+    if ((ring->curr - ring->dirty) < (ring_size * 3) / 4)
+        netif_wake_queue(ag->ndev);
+
+ag71xx_hard_start_xmit() takes no driver lock. It writes
+ring->buf[i].tx.skb and the descriptors, updates ring->curr and BQL, and
+sets TX_CTRL_TXE. That restarts the tx DMA engine that ag71xx_dma_reset()
+just stopped.
+
+Could this let an xmit run at the same time as ag71xx_rings_cleanup() and
+ag71xx_rings_free(), which kfree(tx->buf) and dma_free_coherent() the
+descriptors?
+
+If the queue was woken, an xmit after the rings are freed but before
+ag71xx_open() would dereference tx->descs_cpu and tx->buf after they have
+been set to NULL. An xmit that races with ag71xx_ring_tx_init() and
+netdev_reset_queue() during the reopen could also corrupt curr/dirty and
+the BQL state.
+
+On DSA setups this can happen while other user ports are still
+transmitting through the conduit, because dsa_user_change_mtu() calls
+dev_set_mtu() on the conduit.
+
+ag71xx_restart_work_func() already uses the same unquiesced
+hw_disable/hw_enable pattern. This patch adds a new trigger for it that is
+reached routinely.
+
+>  
+>  	WRITE_ONCE(ndev->mtu, new_mtu);
+> -	ag71xx_wr(ag, AG71XX_REG_MAC_MFL,
+> -		  ag71xx_max_frame_len(ndev->mtu));
+> +
+> +	if (running)
+> +		return ag71xx_open(ndev);
+
+[Severity: High]
+
+What happens to the device if ag71xx_open() fails here?
+
+ag71xx_open() can fail in two places:
+
+- phylink_of_phy_connect()
+- ag71xx_hw_enable()->ag71xx_rings_init(), which returns -ENOMEM if any
+  rx buffer allocation fails. Those buffers are now sized for the new,
+  possibly larger, MTU.
+
+Both failure paths return before napi_enable():
+
+ag71xx_hw_enable() {
+	ret = ag71xx_rings_init(ag);
+	if (ret)
+		return ret;
+
+	napi_enable(&ag->napi);
+	...
+}
+
+netif_set_mtu_ext() just passes the error up and does not close the device.
+So netif_running() stays true while NAPI is disabled, the rings are freed
+and the PHY is detached.
+
+Any later ag71xx_hw_disable() would then call napi_disable() a second time.
+That can come from ifdown or unregister through ag71xx_stop(), from another
+MTU change, or from a pending restart_work that ag71xx_stop() doesn't
+cancel.
+
+Wouldn't napi_disable_locked() then spin forever with RTNL held?
+
+net/core/dev.c:napi_disable_locked() {
+    ...
+		while (val & (NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC)) {
+			usleep_range(20, 200);
+			val = READ_ONCE(n->state);
+		}
+    ...
+}
+
+The device state is also left inconsistent. ndev->mtu is already set to
+new_mtu even though an error is returned, and NETDEV_CHANGEMTU is never
+sent. Retrying with the same MTU returns 0 right away because of this
+check in netif_set_mtu_ext():
+
+	if (new_mtu == dev->mtu)
+		return 0;
+
+After a NETDEV_CHANGEMTU veto, netif_set_mtu_ext() rolls back by calling
+__netif_set_mtu(dev, orig_mtu) and ignores the result. A failed reopen on
+that path would leave the device in the same state without any error being
+reported.
+
+Before this patch, the handler could not fail. Should the error path
+restore the old MTU and bring the device back up? Or should it at least
+leave NAPI and the rings in a state that a later ag71xx_stop() can handle?
+
+>  
+>  	return 0;
+>  }
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261019014438.199718-1-rosenp%40gmail.com
