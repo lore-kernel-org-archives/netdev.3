@@ -1,58 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792640048;
-	b=NCV6BtaBMsRoYmIlrVhW8DXGHCva3WnVAOubwZl6KAIP65n2C/0T6DIzbhXeZ0nZezd4
-	 rPc2DufRwhvYQR8qk38MXGdkFjgNAKqKUXG6+JmvHtoDtG3WX4anh7L9VI2JDHL3dQ4lA
-	 L0ErevuLrdCz3dZlGE9pYgWkGCqHJ72v5lFJ61JxUlT378cXmXAwFY0/VfXURNoWmv9YT
-	 zFT1uy69kflE4UGqVwKsM168Z5h8wuu6o3TQxQZWC9/BmaKWaaiBYv1VhLJ8cznuAMsNE
-	 xUWurll8dGLFPu/1pbewuN1uAr6W1CL4E4eCj/0CwvzvSvaoD7VEsKjWYnsyxdl3MWg==
+	t=1792640235;
+	b=E+o5fbHjOV7ny4uYczyrJpB+9O2grxYRLeLjG6gRuI+WfnXeswyn3md1DoQBd0NAgVbT
+	 KxhvnoCemMXZi7vtzidbRPaX6zwGbK2T9x8hVxOYHJVjL1I9toa8ZHEEi/geb7qySAqUo
+	 kVh5u7FucVS7/0p9sZ4rKL9F1v4A1EPK8jhtJHtmD45Wkb4DGOm0udlo/ERshu594xbbJ
+	 JqOZCQbmaTlZg5qYkRKcpmbRB2w8jznwfuxOctDb32Pk9dCKBxocnUfedMIiPRFQLbdRN
+	 +kAJ0udFB/r6RLt3BygIkjZzOAd0kRgOlbGCHK64MRkTEMSs5w0Ii/Y1wO2WUP1sotw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792640048;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792640235;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=SEGrhXgHJfgMBBg2vcUQnnN5b9aVBxoqnDNEUXIG1Fk=;
-	b=K67Id/euOnjJnUYeyRImC7PWovx/nr4lsNS/0ZCGHb3q95Rl/A6WXFhUXPSGYbkQ0dRD
-	 SPNiAKFDQlq6yT5xnw0Ndd+HBAzpLGnw9B7YX6GVk5nM6tuutXGxrhd+ThlMB0RPAK9nl
-	 2c28ugrMKOUIKT5y4onvdckDLGX9FTI8QzV3pv/gwqlIcFXZhe+eDD9tsH1QctYal/UOd
-	 lZEOKX31YA7pWIvaELjwrDu01UNdaFoKaOErp9ueSqhOtnctW3TyvVi++sOHk9F6M/E4R
-	 sfCBJtt6p4k+b6k5mfxXeyBYNtAFvyEyWjlRCUkn8VuICvr7NftxkAeJVIJA+AwsR9g==
+	bh=wiOrzvAWE54RUecfoYSwa4qYrJQIt8QNmZHHKyYFVK0=;
+	b=LD4BoA5mkn+aJHt+mMxRM2LMYI3YSIJZNwsV7cDABbGkEEl4Ydv10gmKM7IH6GrKaAmY
+	 I+wGVutKQn2/MJPnYmNSu2jmZiFkLxVctk0CN+Ln9sdpKm6AzK5Jn1ttAFw8i/xsJRMuG
+	 sgYA2Gv558WtcWxGghu9XIWOYIeY0SQcVxabRw+vjZn1HONwIK2fzINCkXjcND4svfDdS
+	 /IQuqMMK5XjWbHv+PKxCDqMMRwEaSd7W6iGEhRoPC8wneNmISPyHfcsoHYekjEKyTaaTy
+	 DJ/Sl2wXgTJ5RBmcQdDpb+8k7TlT7+ikB201urGEhwo104Lk2iIYsihuJx8ecDYk5LQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MYyd79HP;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nTvaCW2A;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16888606A319;
-	Thu, 22 Oct 2026 03:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BFD1606A31B;
+	Thu, 22 Oct 2026 03:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MYyd79HP
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 039C81F000C2;
-	Thu, 22 Oct 2026 03:34:06 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nTvaCW2A
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1965F1F000C1;
+	Thu, 22 Oct 2026 03:37:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792640047;
-	bh=SEGrhXgHJfgMBBg2vcUQnnN5b9aVBxoqnDNEUXIG1Fk=;
+	s=k20260515; t=1792640234;
+	bh=wiOrzvAWE54RUecfoYSwa4qYrJQIt8QNmZHHKyYFVK0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=MYyd79HPlugYkAxFMWmbH2I5w5e3UrgAY3xPtHyAR+oX+9n/wwhb426Jthvx13bx6
-	 qBjEJgbxeZGfrdWwWXtVtJBWu/1deZYNcdyaUpUu/uj0nlamsYoQSiS0DTwGA03m1V
-	 ICd/nwXjYmezea0JebH1TbeN7Vm5TbEf2qN18ChG75qBDPrrJ7AyGpiiFYDQEeVAar
-	 Gp6Syfx26MEB87rNkpaVHN/qFJhyrm7u4oehEiKdj/h+A8kO9xOZH6dcmSD7RseD7x
-	 qGYA89RzD/YWxDwZDSU6CXIfLRd/bhyQ2oKJeSzZrGu+EbsmsMNlfiju8tY7PTRwEO
-	 X6UsRgEKry4pA==
-Subject: Re: [PATCH net v5 1/3] xfrm: run the receive callback before dropping
- the skb->dev reference
+	b=nTvaCW2A8PtFlz2WBPFWTQKpyVIVR2r8NgeRnmsZfqMR4MY5ntT96Wkm+8rQDboSS
+	 KKQzN2Gnbt26IsIfre9+xrjhGBVXt4sggbZhJQ0AhAaZIo2FfY87bCGK2VywdgEYhg
+	 nKJaRQGBp6ErXezG83eUQ17Pb+d+w+NKG4gcQ8lOKAIptCzgkEU/zp87ZdyHqhCam5
+	 cVk4qqUONgK9Ep5Ak0iXYXtLkIIHsHoq2APv7zlnACCo2PRtdVqKiR5hnqafvTXi0o
+	 0f2rqT8QbgxgBEFRr6Rrwwp8m7VOujOhegcP5v0rjMUkpNtURoXFAIgp9y42MQ+XQ0
+	 jMNam+/q5e7+g==
+Subject: Re: [PATCH net] net: ethernet: ti: am65-cpts: fix support for
+ PTP_EXTTS_REQUEST2 ioctl
 From: netdev-bot+sashiko@kernel.org
-To: q.h.hack.winter@gmail.com
-Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com, chopps@labn.net,
- herbert@gondor.apana.org.au, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
- idosch@nvidia.com, linux-kernel@vger.kernel.org
-Date: Thu, 22 Oct 2026 03:34:06 +0000
-Message-ID: <179264004653.3135.12987803127398532748@kernel.org>
-In-Reply-To: <20261019153247.89957-2-q.h.hack.winter@gmail.com>
-References: <20261019153247.89957-2-q.h.hack.winter@gmail.com>
-X-sashiko-severity: High
+To: jjc@jclark.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, richardcochran@gmail.com,
+ jacob.e.keller@intel.com, kory.maincent@bootlin.com, s-vadapalli@ti.com,
+ c-vankar@ti.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 22 Oct 2026 03:37:13 +0000
+Message-ID: <179264023362.3135.17895429756190814680@kernel.org>
+In-Reply-To: <20261020003525.1237742-1-jjc@jclark.com>
+References: <20261020003525.1237742-1-jjc@jclark.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -68,7 +68,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -76,97 +76,80 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The tunnel-mode (decaps) success exit of xfrm_input() in
-  net/xfrm/xfrm_input.c still runs `if (async) dev_put(dev);` before…
+- [Medium] Adding PTP_STRICT_FLAGS to am65_ptp_info.supported_extts_flags
+  in drivers/net/ethernet/ti/am65-cpts.c also changes the legacy…
 
 --
 
-xfrm: run the receive callback before dropping the skb->dev reference
+net: ethernet: ti: am65-cpts: fix support for PTP_EXTTS_REQUEST2 ioctl
 
-On the drop path of xfrm_input(), this commit moves xfrm_rcv_cb() so it
-runs before the async skb->dev reference is released. It also changes
-the early drop for a state that is no longer valid: instead of calling
-dev_put() itself, that path now leaves the reference to the drop label.
+This patch sets .supported_extts_flags for am65-cpts to
+PTP_RISING_EDGE | PTP_STRICT_FLAGS. The PTP core then stops rejecting every
+PTP_EXTTS_REQUEST2 for this driver. After the change, PTP_EXTTS_REQUEST2
+succeeds for the rising edge and fails with -EOPNOTSUPP for the falling
+edge or for both edges.
 
-> diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
-> index 5ed87d51392a..94de4f698c33 100644
-> --- a/net/xfrm/xfrm_input.c
-> +++ b/net/xfrm/xfrm_input.c
+> diff --git a/drivers/net/ethernet/ti/am65-cpts.c b/drivers/net/ethernet/ti/am65-cpts.c
+> index efbf2ef976a3..df5659ead72f 100644
+> --- a/drivers/net/ethernet/ti/am65-cpts.c
+> +++ b/drivers/net/ethernet/ti/am65-cpts.c
+> @@ -779,6 +779,7 @@ static long am65_cpts_ts_work(struct ptp_clock_info *ptp);
+>  static struct ptp_clock_info am65_ptp_info = {
+>  	.owner		= THIS_MODULE,
+>  	.name		= "CTPS timer",
+> +	.supported_extts_flags = PTP_RISING_EDGE | PTP_STRICT_FLAGS,
 
-[ ... ]
+[Severity: Medium]
+Does this also change what the legacy PTP_EXTTS_REQUEST ioctl accepts?
 
-> @@ -779,9 +779,9 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
->  drop_unlock:
->  	spin_unlock(&x->lock);
->  drop:
-> +	xfrm_rcv_cb(skb, family, xfrm_proto, -1);
->  	if (async)
->  		dev_put(dev);
-> -	xfrm_rcv_cb(skb, family, xfrm_proto, -1);
->  	kfree_skb(skb);
->  	return 0;
->  }
+In ptp_extts_request(), the v1 branch keeps the edge bits and never sets
+PTP_STRICT_FLAGS. Whether the edge bits count only as hints depends just on
+the driver's mask:
 
-[Severity: High]
-The commit message says the new order matches what "the success path
-does". Is that true of the tunnel mode (decaps) exit of xfrm_input()?
-That exit still drops the async reference before it passes the skb to
-gro_cells_receive():
-
-net/xfrm/xfrm_input.c:xfrm_input() {
+drivers/ptp/ptp_chardev.c:ptp_extts_request() {
     ...
-	if (decaps) {
-		...
-		if (async)
-			dev_put(dev);
-		gro_cells_receive(&gro_cells, skb);
-		rcu_read_unlock();
-		return 0;
+	} else {
+		req.extts.flags &= PTP_EXTTS_V1_VALID_FLAGS;
+		memset(req.extts.rsv, 0, sizeof(req.extts.rsv));
+	}
+    ...
+	if (!(supported_extts_flags & PTP_STRICT_FLAGS))
+		supported_extts_flags |= PTP_EXTTS_EDGES;
+	/* Reject unsupported flags */
+	if (req.extts.flags & ~supported_extts_flags)
+		return -EOPNOTSUPP;
     ...
 }
 
-gro_cells_receive() then dereferences skb->dev:
+Before this patch, supported_extts_flags was 0 for am65-cpts. A v1 request
+with PTP_ENABLE_FEATURE | PTP_FALLING_EDGE, or with both edges set, was
+accepted and reached am65_cpts_extts_enable(), which ignores the flags.
 
-net/core/gro_cells.c:gro_cells_receive() {
-	struct net_device *dev = skb->dev;
-	...
-	if (unlikely(!(dev->flags & IFF_UP)))
-		goto drop;
-	...
-drop:
-	dev_core_stats_rx_dropped_inc(dev);
-	...
-}
+Now the mask has PTP_STRICT_FLAGS but not PTP_FALLING_EDGE, so those same
+v1 requests return -EOPNOTSUPP before ops->enable() is ever called.
 
-In plain policy-based ESP/AH tunnel mode, no xfrmi or vti callback
-replaces skb->dev. So skb->dev is the same lower device whose reference
-was just released.
+The same check runs when PTP_ENABLE_FEATURE is clear. Through either ioctl,
+a disable request that still carries PTP_FALLING_EDGE is now rejected.
 
-Suppose an async crypto completion runs while the lower device is being
-unregistered:
+One in-tree example is tools/testing/selftests/ptp/testptp.c run with
+-e N -E 2 or -E 3. That sends a legacy request with PTP_FALLING_EDGE set:
 
-esp_input_done()
-  xfrm_input_resume()
-    xfrm_input(skb, nexthdr, 0, -1)
+			extts_request.flags = PTP_ENABLE_FEATURE | edge;
+			if (ioctl(fd, PTP_EXTTS_REQUEST, &extts_request)) {
+				perror("PTP_EXTTS_REQUEST");
 
-Can the device refcount reach 1 after this dev_put()?
+On am65-cpts this worked before the patch. It now fails with
+"PTP_EXTTS_REQUEST: Operation not supported".
 
-netdev_wait_allrefs_any() in net/core/dev.c returns as soon as
-netdev_refcnt_read(dev) == 1. netdev_run_todo() then frees the device
-without waiting for a grace period, so the rcu_read_lock() held here
-does not seem to keep the device alive.
+Rejecting falling edge requests that the hardware can't honour matches how
+the core treats other strict, rising-only drivers. However, the commit
+message says:
 
-If the device is going away, IFF_UP is already clear. In that case
-gro_cells_receive() would take its drop branch and write the core stats
-of a net_device that may already be freed.
+    Only the PTP_EXTTS_REQUEST ioctl still works.
 
-This ordering came in with 1c428b038400, the commit named in the Fixes:
-tag, and 8045c0df98d4 kept it. It also seems to survive the later commit
-"xfrm: hold the tunnel device reference across the input path", which
-only adds tdev handling around gro_cells_receive().
-
-Since dev is already saved in a local variable, could the decaps branch
-also move the if (async) dev_put(dev) below gro_cells_receive()?
+This suggests v1 behaviour does not change. The patch has a Fixes: tag and
+is likely to go to stable. Could the commit message say that v1 requests
+carrying PTP_FALLING_EDGE are now rejected as well?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261019153247.89957-1-q.h.hack.winter%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261020003525.1237742-1-jjc%40jclark.com
