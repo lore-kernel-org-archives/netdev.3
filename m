@@ -1,59 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=121.127.44.66
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792672982;
-	b=3nXSSWKtiUgWfiMkBr2BB8Xv9FeC5wQfFkpK7HghLNqhqFG4bkt8r71jLyOY+AGjNBK3
-	 hlCzPI61F/9JUP39Jp0KlksvGe6w63P2qhR6WcWaeJtNG8jb41LvaHeGmwW4YwGia6bRN
-	 RJ1I4V5sOdjf4Pu6qs2HjVibgroGjS7YTal2cJOVSWbRF0evt3Jn4GrbemMN8k+cQ7vB9
-	 2Nsr2YCfauKFfyYe1salJPyssZNK+I/KQqDRuA+yRmFRnXPEQddOcWfTQwv7yGF6QNoXr
-	 wUyw3lQ6LRcpbIkF4Uf4b4lLdEbzAMdXjn8wIStC7rjqfU2mpn0RKpdJ66lSFeES4JQ==
+	t=1792673275;
+	b=0Ycy4Sh1tO++ms7qQSk4hu/J5irahaH+pc0EzPlpe1acOr5bV+z1GWMitHpe3nOjXhYK
+	 t4LywE4UL9vQpLegmwsQIO10GL/KhxHUKugYF+bzjy+QIzxve3q4u6otDv8qHb2jGP5hD
+	 XXteGYklRpYVwFkUtflvlJLFqFzhGGy1JjiL1HDTPDkK0WN1HN+twSLkhJ9BxLC6cwV+D
+	 y6p1BtYZdoZwD1Vo3FLaZ6UjGDwDFUHf87cqVJXCcvcVoThIEzpjiYZ95IAP4HS6fdN0q
+	 fD3YpjGOjxVEG5nUuPik+oeKy73+mJ+8NPEZ2qO0itBmyM7LQ5rYh6Xj8Xrz8m9l8CQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792672982;
-	h=DMARC-Filter:DKIM-Signature:X-Forward-Email-ID:
-	 X-Forward-Email-Sender:X-Forward-Email-Version:
-	 X-Forward-Email-Website:X-Complaints-To:X-Report-Abuse:
-	 X-Report-Abuse-To:Message-ID:Date:MIME-Version:User-Agent:Subject:To:
-	 Cc:References:Content-Language:From:Autocrypt:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=sm6x0zpAx8Au8KNOP/HOPnoM5JFyq1dL0hJTwYK1axI=;
-	b=bnBj19l3+Rqe8KhnC9iVcA9vZFn5OKpGfsP+4g4YOJNm2FQZ8rNfDFP6Fl6YJYCdJwpb
-	 SkWRO3WgfCn7HBF/HgEUWUOARWfyqgwkH09E2UQ9JowOs90Amimp9uEaE83TSw22nfQRE
-	 Bc5d8eb9MQvhK+u9NmKF1A/yPNWOFw/JNtETXlQeqWSWezpBngorCx8R3Y9aHXjb3hdm3
-	 KuEp30oDT6wCkYpsDyuA//RkKug35RErY5u9vcaR3ndA2/sZauoCqQQUGA95uYoxbQZdC
-	 w6pTmujbdKOd/mK1KdBtYy8R+08hN/vcC0DS3pBMbjBWh7nQk4upctXFDt/+cNRl2Dg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792673275;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=knmTPdSDWxbSo01ERLMzHjnDCwtfybqi3/93JrjvSpg=;
+	b=E3pxcALJlahhBaG21nekSloguLRmAv08I/1YWgEHkdvouO5wK3sXq4mYYhMbpI0A3wu6
+	 S9qNJEeLb/hrp49RI80QX4ZxXlew/8/i+ZVSVIfLrhlHrvrKsBErqhphDGkh/I/YvMEBS
+	 Dluwnh97NscA96Dj1hl1TYL4MrjrqRIEYdURVJVBrOt6U141nO6SfxoRsJBbYnPSsTiwS
+	 v0U+4MXeBaksxngwnPL5B4qi9NC3f0/aQrvxjDCvD27Mfs26aBX4nIfQGs+xNTcxTIsZl
+	 11obXskkb0eI0yMm6FXOlF0k9AZZ/DA64e0gCLuOzqPvRJA7zOtpngaPMTUU8r0HXpA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=ovn.org;
-	spf=pass smtp.mailfrom=fe-bounces.ovn.org;
-	dkim=pass header.d=ovn.org header.i=@ovn.org header.a=rsa-sha256 header.s=fe-13eddc7e57 header.b=SEJ1n84s;
-	arc=none smtp.remote-ip=121.127.44.66
-Received: from smtp.forwardemail.net (smtp.forwardemail.net [121.127.44.66])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="aKUa/bJG";
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=NwrUaG83;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5998F606A319
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 12:43:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5998F606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.ovn.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88FA606A31D
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 12:47:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D88FA606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=ovn.org header.i=@ovn.org header.a=rsa-sha256 header.s=fe-13eddc7e57 header.b=SEJ1n84s
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ovn.org;
- h=Content-Transfer-Encoding: Content-Type: In-Reply-To: From: References:
- Cc: To: Subject: MIME-Version: Date: Message-ID; q=dns/txt;
- s=fe-13eddc7e57; t=1792672980;
- bh=sm6x0zpAx8Au8KNOP/HOPnoM5JFyq1dL0hJTwYK1axI=;
- b=SEJ1n84s7qLE6umob7Vo+4/wqkUjy8UoIdljQxa8oBykZu5mRH2cLt/RbiN/q664N+ABgqBSY
- F12Bt9go2AJzuH6KiDdPFfazXUhT4sCGsIeFZuOS6P82dGYg732UxGQqGE/mdTtli3p1SG3NZ54
- GHkyK/D62HwMb/VQZGWW9q4=
-X-Forward-Email-ID: 6ada04d3f2b12bda233557f6
-X-Forward-Email-Sender: rfc822; i.maximets@ovn.org, smtp.forwardemail.net,
- 121.127.44.66
-X-Forward-Email-Version: 2.18.9
-X-Forward-Email-Website: https://forwardemail.net
-X-Complaints-To: abuse@forwardemail.net
-X-Report-Abuse: abuse@forwardemail.net
-X-Report-Abuse-To: abuse@forwardemail.net
-Message-ID: <0225eac7-1432-4d46-8649-2ad864aa26d4@ovn.org>
-Date: Thu, 22 Oct 2026 14:42:53 +0200
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aKUa/bJG;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=NwrUaG83
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792673269;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=knmTPdSDWxbSo01ERLMzHjnDCwtfybqi3/93JrjvSpg=;
+	b=aKUa/bJGvKUDfqIbEIQMHvmW56C0T0v6AU4DjxSmaL34C03BHBvShsq22/FFSQUIwByqOA
+	0jbMl38VAIUeTlFcHaYx4QhPiZ6KTXXxmdpkDIsxDidtwpc/gx6fs2BLG72VFsOhoXg1vF
+	3pHJtAJ+iJYvivZ2J/LFHxgP/SyaQH8=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-582-Y8jAS6mNMQe25cynwWdjwA-1; Thu, 22 Oct 2026 12:47:47 +0000
+X-MC-Unique: Y8jAS6mNMQe25cynwWdjwA-1
+X-Mimecast-MFC-AGG-ID: Y8jAS6mNMQe25cynwWdjwA_1792673266
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48e17d30a79so1197396f8f.3
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 05:47:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1792673266; x=1793278066; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=knmTPdSDWxbSo01ERLMzHjnDCwtfybqi3/93JrjvSpg=;
+        b=NwrUaG83jbWFrqnQu/YcUypkM8/sZ6PVE2zAiyG7lltsynKLGijmKSFuV98vnQvc5/
+         FXYTQ4v0sixejO3NdShq8G8kluFCAioZAGIokPSkIUvnYRhXx1VRLKIvwR3QFHapG39c
+         WTxuntCzeowy3iIMruugR8Heo1r6vKJiwIXXqsBJ+DDBPfdetwhiTxFtmaKDD13fmlz5
+         6/EtCRp00L8ba/V18qeZvcWpLTGkGsWHSBUwhcz9XrFk1QK1s2RfumC/B3sKzti1zn4v
+         FHP7PM6wFeM4wGHx0aIVE5wxc+u1flROu+toAK99KciJddYpXQhPihw/uR2eeQ0Y6/Nm
+         fIqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792673266; x=1793278066;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=knmTPdSDWxbSo01ERLMzHjnDCwtfybqi3/93JrjvSpg=;
+        b=h4nEXWbrz64IzR3tWuRn6q7Rlh3iUvwiP+y8pLau1DpCZ/0jE+goCp3MhW45ruH1SU
+         kpKzaQZao3mv5yNQKbMqwLdlKRZpP+R66f1BJzqN3cUfOi4FXphCy5ePNLzPzs/GYPGR
+         NE3KyG5/SZla9EKkMGZ84IIKMcRNyrk0sIuWDyouzj5+2xQ0PnqgAqZvgr0knFTmtrdX
+         sOxeiFNxg2C4/2FZ3Pq2MmWhd/XIAt+LZkIvS+2Ai15qhe2ci02uYr9OkjUtlN+r+EyT
+         +ssDEGB6OX+XuqUcpPIyrT7TuQ0NwklZslOyG3IwlteWI2Esyo296l1wr+O+jD0Tx4B+
+         ONwg==
+X-Forwarded-Encrypted: i=1; AKwUvBxR9uyJKBuFFBuXWLe7Z5yv2bv255GZGJqI9Q7n1xymmobmeQwdfc+aT55wjMgbA4aqTj61l8E=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKjspVAKJ5yibhPe4rQCafMv30/Es1pXl8C6+c1ZqJx+akfdTvh
+	2I9Fzy7IhTxCiwpgHxpZUr5KVfUQtR38xG1ncHNnm40Pe7j3CDcgkHXcSuAQ/P0P7ImI8uxpkJC
+	OtYXkn565NRv/p0ynV8p/FYDoHtBrmIf9ZAdWQfFrALCj4wfA5L9/NKSL6A==
+X-Gm-Gg: AYBFou33noR+8il1sIA+L0fd+nxZrA+95ysxrTVHhSl7dN0zjRo22irxublyokZP6Uh
+	ao+T2jea1NXNOl6/xQi+farTv9BtsFuoY8UjYstPKZ0RIvYvomar4aLIjbe4+ZvsSylPwg7EHeQ
+	dl6UtmjuoxV5oV2ocxrI2svnZpWZo+M2bS8QRB2XvRDEvf7EWgcsbeM9a7Biy/w1bHQoLywxodQ
+	xjI1teduJ8BB9DSf9guJRYGMAojl5OrZITR2KRSAYc3SNf9ZBHCVwbPw2GJqGaA6gGoaTPYP7T1
+	L4cQHMCnmsd+7ByF8y7iTBG2W7cQliU8KNRNUFKsgalmAhCU3N2rvdXe3ALhmSz5hPBT87nJPpd
+	Fwtq7YH06z6kkySUZ+Ly2gIGoNMfO8vvn30X9BIDfzSMkrziJEfbgAYBOmffBh8TEJZeHGGYvHg
+	==
+X-Received: by 2002:a5d:5f05:0:b0:48d:f14a:917d with SMTP id ffacd0b85a97d-48e264c96c4mr10362142f8f.16.1792673266272;
+        Thu, 22 Oct 2026 05:47:46 -0700 (PDT)
+X-Received: by 2002:a5d:5f05:0:b0:48d:f14a:917d with SMTP id ffacd0b85a97d-48e264c96c4mr10362076f8f.16.1792673265657;
+        Thu, 22 Oct 2026 05:47:45 -0700 (PDT)
+Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e25828e2esm11945581f8f.30.2026.10.22.05.47.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 22 Oct 2026 05:47:45 -0700 (PDT)
+Message-ID: <51c656b8-2801-4edf-bbb8-f5e4309e910c@redhat.com>
+Date: Thu, 22 Oct 2026 14:47:44 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,139 +113,69 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 5/5] net: openvswitch: ensure a linear inner Ethernet
- header on NSH pop
-To: Jamal Hadi Salim <jhs@mojatatu.com>, netdev@vger.kernel.org
-Cc: Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>,
- Ilya Maximets <i.maximets@ovn.org>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Eric Garver <e@erig.me>,
- Yi Yang <yi.y.yang@intel.com>, Jiri Benc <jbenc@redhat.com>,
- Pravin Shelar <pshelar@ovn.org>, Jiri Pirko <jiri@resnulli.us>,
- Victor Nogueira <victor@mojatatu.com>, dev@openvswitch.org,
- stable@vger.kernel.org
-References: <ACT-N6N4.v1.r0.20261022051412@mojatatu.com>
- <ACT-N6N4.v1.r0.20261022051412-1@mojatatu.com>
- <ACT-N6N4.v1.r0.20261022051412-2@mojatatu.com>
- <ACT-N6N4.v1.r0.20261022051412-3@mojatatu.com>
- <ACT-N6N4.v1.r0.20261022051412-4@mojatatu.com>
- <ACT-N6N4.v1.r0.20261022051412-5@mojatatu.com>
+Subject: Re: [PATCH net-next 0/11] pull-request: can-next 2026-10-22
+To: Oliver Hartkopp <socketcan@hartkopp.net>,
+ Marc Kleine-Budde <mkl@pengutronix.de>, netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, linux-can@vger.kernel.org,
+ kernel@pengutronix.de
+References: <20261021231130.2085690-1-mkl@pengutronix.de>
+ <eb3b2eee-3460-4b03-a180-1d3806a7f8f7@redhat.com>
+ <5fdffd4b-7f80-471b-93b3-706c00cb51da@hartkopp.net>
 Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <ACT-N6N4.v1.r0.20261022051412-5@mojatatu.com>
-Content-Type: text/plain; charset=UTF-8
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <5fdffd4b-7f80-471b-93b3-706c00cb51da@hartkopp.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 10/22/26 11:22 AM, Jamal Hadi Salim wrote:
-> The issue:
-> pop_nsh() restores MAC_PROTO_ETHERNET when the popped NSH next-protocol
-> is TUN_P_ETHERNET, but nsh_pop() only guarantees that the NSH header is
-> in the linear area.  When the inner Ethernet header sits in a page
-> fragment, the datapath then claims an Ethernet header it cannot access
-> linearly.
+On 10/22/26 13:19, Oliver Hartkopp wrote:
+> On 22.10.26 10:37, Paolo Abeni wrote:
+>> On 10/22/26 01:07, Marc Kleine-Budde wrote:
+>>> Hello netdev-team,
+>>>
+>>> this is a pull request of 11 patches for net-next/main and obsoletes
+>>> pull-request: linux-can-next-for-7.4-20261021.
+>>>
+>>> The first patch is by Vincent Mailhol and drops CAN-XL frames on non
+>>> CAN-XL devices.
+>>>
+>>> A patch by Sang-Heon Jeon removes a redundant NULL check before
+>>> netdev_hold() in the CAN RAW protocol.
+>>>
+>>> A patch by Kaixuan Li for the CAN ISOTP protocol improves the check
+>>> for the correct CAN CC/FD frames.
+>>>
+>>> The next 3 patches are by Cunhao Lu and make CAN skb freeing safe in
+>>> any context in several CAN helper functions.
+>>>
+>>> A series by Oliver Hartkopp et al fixes several problems in the CAN
+>>> net-layer:
+>>>
+>>> 3 patches target the CAN procfs: A patch by Runyu Xiao resets the CAN
+>>> pkg_stats using atomics, a patch by Oliver Hartkopp fixes the stats
+>>> calculation after a statistics reset. Followed by a patch to remove
+>>> kernel pointers from the output.
+>>>
+>>> The last 2 patches are by Oliver Hartkopp as well, they convert the
+>>> unreliable ARPHRD_CAN type check to the robust can_get_ml_priv() and
+>>> protect the CAN receive lists with a per-device lock.
+>> I'm wrapping-up the net-next PR right now, and this will not make the
+>> cut. Still all the material here, after forwarding the trees post PR,
+>> looks like 'net' worthy. We could merge it afterwards.
 > 
-> Output to an OVS internal vport then calls eth_type_trans(), which
-> pulls ETH_HLEN from an empty linear area and triggers the BUG in
-> __skb_pull():
+> Thanks Paolo!
 > 
->   kernel BUG at ./include/linux/skbuff.h:2830!
->   RIP: 0010:eth_type_trans+0x335/0x500
->   internal_dev_recv
->   ovs_vport_send
->   do_output
->   do_execute_actions
->   ovs_execute_actions
->   ovs_dp_process_packet
->   ovs_vport_receive
->   internal_dev_xmit
+> Yes the patches are indeed mostly 'net' worthy fixes.
 > 
-> Conditions to recreate the bug:
-> On a system with 4 KiB pages and CONFIG_OPENVSWITCH and CONFIG_PACKET
-> enabled, use CAP_NET_ADMIN to create an OVS datapath and bring its local
-> internal port up with MTU 9000.  Install a flow matching an Ethernet/NSH
-> packet with a 24-byte MD1 header whose next-protocol is TUN_P_ETHERNET,
-> and actions pop_eth, pop_nsh, output to the local port.  With
-> CAP_NET_RAW, send a 4148-byte AF_PACKET/SOCK_RAW frame containing outer
-> Ethernet, the NSH header, inner Ethernet and 4096 payload bytes.  The
-> two pops consume the linear headers and expose the inner Ethernet header
-> in page fragments.
-> 
-> The fix:
-> Pull the inner Ethernet header into the linear area before restoring
-> MAC_PROTO_ETHERNET.  This is the NSH counterpart of the MPLS/TEB
-> producer fix in the previous patch.
-> 
-> Fixes: b2d0f5d5dc53 ("openvswitch: enable NSH support")
-> Link: https://lore.kernel.org/netdev/e85fa16e-df3c-43dd-bb3a-9edca07200ea@kernel.org/
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-> ---
->  net/openvswitch/actions.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
-> index 03b31e33e880..cb7e16c6a8ef 100644
-> --- a/net/openvswitch/actions.c
-> +++ b/net/openvswitch/actions.c
-> @@ -314,10 +314,13 @@ static int pop_nsh(struct sk_buff *skb, struct sw_flow_key *key)
->  		return err;
->  
->  	/* safe right before invalidate_flow_key */
-> -	if (skb->protocol == htons(ETH_P_TEB))
-> +	if (skb->protocol == htons(ETH_P_TEB)) {
-> +		if (!pskb_may_pull(skb, ETH_HLEN))
-> +			return -ENOMEM;
->  		key->mac_proto = MAC_PROTO_ETHERNET;
-> -	else
-> +	} else {
->  		key->mac_proto = MAC_PROTO_NONE;
-> +	}
->  	invalidate_flow_key(key);
->  	return 0;
->  }
+> Unfortunately sashiko-bot complained about something new in my patch 11/11 and suggests to move some release_sock() calls 4 lines down behind sk_error_report(sk) :-/
 
-Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
+Talking about the obsoleted version, right?
+> Would you like to have that re-spin PR to be named as "net" PR ?
+> And when would it be best to be sent?
+No need to respin just for changing the prefix tag, we can apply
+this one to net as needed. Generally speaking we are trying to
+avoid unneeded reposting to avoid nipa resources overloading.
+
+Thanks,
+
+Paolo
+
