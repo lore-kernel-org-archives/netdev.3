@@ -1,102 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792646928;
-	b=nV/C5TGHFo7nAjegU8E3wtkQreGqnsw2OX2nV01otZz5Y10KF5KgxCakb2yPH+ewZ4bo
-	 Qu3EYlP1Mt7UewaqKHixO34GR9OM2X/IC6qvsJI0PnUXk0JpKXf2KzS8vQOscIR05EfL7
-	 3fTx9cyt1jyC+qejk2fk54bloqZ8IA0o4zmVMxlNDKQwnASXUZJUIgryfHQfJ8YSPnF0g
-	 EddayLBrja2TB6vy5GwUM12YCpNpO4E7W22uJ1SchF2+3jdX677TW/Fhdu5IAJL1iJEmx
-	 Wx1EYY9RboJifaWlIba42JhH5P9MFBjxtI9TOFW1poeWvSH22IuNJ95Q2qMhaiJi93A==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792646928;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Sent-From:X-URL:X-Accept-Language:
-	 X-Accept-Content-Type;
-	bh=nrZ90vxW5F0O0qymJ+TK7fg60kgFlpMGsZONq7pZ5CE=;
-	b=BW1vVTh2N0O3gtFW40U4Ul6RPSsjM9lKEYcxL8FcDOVhXV+nnZdvjls9idgTg/CV95TG
-	 h9hkfLXn6Ap7I06RPJNymEnrSOtbQhgT5B6dsU9m6C1ZPMrW40HAw6EE2fuo2hr1EVcxk
-	 qXtrumHzNilMcScJtK7PlN1etUThSIOlEUiHU5GB/yvWKR4vUoXmJYJdTiS8VlbJz9/Ek
-	 jcOk9pUPQ+shJ57fOezGoLGK+A5GqzyZU8GHehYvF/LmAeZ8qHvKRzjn/6bRqBuMux1Im
-	 G1d3odEMMqrP969U0sfsC9OvS+hQYBBIJILakSCrUPlCviIhBGATTbzK95iDuUwf9rw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=Z8hRfSWR;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=43.163.128.49
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792647253;
+	b=KlrHVFBcC5cNQGK48Yxph1ztB8BE1KI37gRBEQb11VrokFGd6sjutT3LsmjmoGWOkZHe
+	 G+7iCAYd8lXQOyqNc61Z2vA4fTUAelB9jcy0pN2dLNq268aWHJAkmVRvxZCDR5PDhTexN
+	 oU9Kh1uzexCMoA/5KkHCQf/Oadw2Kj0Y73ExeVC3MvZshyTOitiVqVOuiSauIWgkOVBro
+	 Dz3oNcLyJUOMPPK2QMNrMQmi39CumTPaGi7n59jsHYN5oY64Csg7+ZBzrzat9PLHgMVDi
+	 bpr16c5EpVIaPQKh1mHguxgsOixSPnZTIRRArdH7zWLG/O51bDITbEl/FW2DL7NW/Ig==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792647253;
+	h=DMARC-Filter:DKIM-Signature:X-QQ-XMRINFO:X-QQ-XMAILINFO:From:To:Cc:
+	 Subject:Mime-Version:Content-Type:Content-Transfer-Encoding:Date:
+	 X-Priority:Message-ID:X-QQ-MIME:X-Mailer:X-QQ-Mailer:References:
+	 In-Reply-To:X-QQ-mid;
+	bh=ds0gPqcUBP6L02Z/8E2crybbPUoGn59iBftHI08WL+0=;
+	b=i1HApVAStE/fheYitrmUwA05i7/aTbmAjp8T7cq+br38WiIeC3grNTBe67vS74JpFuqD
+	 Xr9nMlJHQAbPjedZge10T/rqYU9h1QNKgJ942u5l1a4hSCRfgKr3zVNip209HfaKF+bbd
+	 JqFcSgZfyhwaMxV7dZngbrZthVYrSG0WWy7FsgWqpMjKOZ9vfbw3j+en4yIpg/Qsu+72E
+	 hm80BVr8gU/4LupN2vG/7XLF0SXyd8lO9Ujt+rx2T4IJ0fkvI0nKX2iNtyUBl6fxASU+t
+	 4DGDczLTrEiCxyb1JkTNf/vj4ajJ8ubORGaaMps9pwbeXyRScwP6dhDZtSBLZPJzM7A==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=qq.com;
+	spf=pass smtp.mailfrom=qq.com;
+	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=h+FwYlqT;
+	arc=none smtp.remote-ip=43.163.128.49
+Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.49])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8127606A319;
-	Thu, 22 Oct 2026 05:28:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B8127606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99BBE606A31B;
+	Thu, 22 Oct 2026 05:34:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 99BBE606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=Z8hRfSWR
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id BBFB62009B1;
-	Thu, 22 Oct 2026 07:28:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792646923;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nrZ90vxW5F0O0qymJ+TK7fg60kgFlpMGsZONq7pZ5CE=;
-	b=Z8hRfSWRqyKEG2BpmZ4mOchFCkURjjophHm/2DrSpIUd0MLRTqod8gT+M1Ag1VS0DOkehE
-	RJ3jyVsPkbogE3wzyj5dVuKsnelGFu7JPWmwVj9iJuMQF27iYug6hNkg7Dn/pA4TG1lb5s
-	jqzX6y5lj35cbyc3LcCIjfDvIl/6IEcNkSs7YSRy2wl/hPOZf/o8mlQciEMG6z0et45dLM
-	NZqBhU0KQYNdFPyn5Ulyqju24NTPc38wDcIAqcFCxOsKlZcMB1wkQ5Aiw/DEzgPlUKMw7v
-	FLcQTDR0aXs/mv1U7VuPGpxhnzJOgvtpb1PK/B6KCPo6ju1SLLeWSzRPmzHClQ==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792646923; a=rsa-sha256;
-	cv=none;
-	b=FdkAsQ/tHah4m1UwMFmzClIo8bAr+WbAICReatEwfHIA+NFB4xO8f268OlxhMKT7YaW7d3
-	BNMR2vA3b5PWlshazHTTmlhtewXa5m8kUvXhOO4bw5XwP4pGUefBvRisMMlQNQheCZcJb2
-	F+HQxUprRPKZXT2ITG7kMmcyUpGeaU3SH2Y0iss3jD6+woS+z6oeB+SYy8/ETN4N4g7WNg
-	fSejQkdZs+W7eRHU2127Bh05Tat1MfUZBfgNIoyZHchIMTa0j6pzOmqJ//KSfZfdsyDRW6
-	KfxqFWAdkglOcpHvCLSbv4Dz5Rd11HPFXpULFqxB3MxOw45vVIQoz2kSC6tO3w==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=ore@pengutronix.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792646923;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nrZ90vxW5F0O0qymJ+TK7fg60kgFlpMGsZONq7pZ5CE=;
-	b=FKUzo1oyhvEOGbstDK+XSY+f6Z6oXTR/kW86kwYhVFkzgjMNWPKYk1dwkxz58wDQEyfXWj
-	5WGgAuC65dMrC4sEs9ukpP8A++kYeoj22jzFPGOCoPAgBsN2GZgRLiWQYAnq149oADPEml
-	izQ/TkL8O7MPcLzUvlKSNv/WJvBHQHn3ml/4jbhCpn+Rfy1dzimNym1U5hFrLnotgHwT68
-	ZgNNzFDiq3R2BYQShlHRqPg0roIeVSCXBMNOvarfs/I1wjDYH36zPVpGbrW7rV1ygJEW61
-	BKRzVjMPtwUACqVTRz8BUeAxlHHad8UaL6N4V/vREzT0LVn73usQea7+kD2XrA==
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1xJlM3-000ewZ-27;
-	Thu, 22 Oct 2026 07:28:43 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1xJlM3-00000009PzD-2FYv;
-	Thu, 22 Oct 2026 07:28:43 +0200
-Date: Thu, 22 Oct 2026 07:28:43 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Carlo Szelinsky <github@szelinsky.de>
-Cc: Kory Maincent <kory.maincent@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kyle Swenson <kyle.swenson@est.tech>, Ross Cawston <ross@r-sc.ca>,
-	netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2 09/14] net: pse-pd: unregister from the controller
- list before freeing PI data
-Message-ID: <atmfC4HmHr6RoIvm@pengutronix.de>
-References: <20261020171249.853085-1-github@szelinsky.de>
- <20261020171249.853085-10-github@szelinsky.de>
+	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=h+FwYlqT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1792647243; bh=ds0gPqcUBP6L02Z/8E2crybbPUoGn59iBftHI08WL+0=;
+	h=From:To:Cc:Subject:Date:References:In-Reply-To;
+	b=h+FwYlqTXgik5If3mRRsEVYopsIgtFSMYaP28ZusSHv97d6QMxi1q5+lQrRojqo0i
+	 Lote634BZGuOddK1Yxmt+rdrq/5kMqIyam1vRK9bNh1qz3LJ8OjX9Hv0UgBUK8K15t
+	 LnvekWnyUNS0m+DYfJrDJbnbnXX5pkEqcGkf7r8A=
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+X-QQ-XMAILINFO: MhG7PnEq6uVZHX1/fLwaNH4gNTfoyBXS9ICP9bBvYMJm10JGRqKmUPNfnZovbK
+	 nS7LD3DnZM7PG6RiQaSUv5jA6wcYID4CXviFq5wgLYtO/p9oKsmGavyZL23IQr7d0d0757wXjmQq7
+	 yQ7P4DlSJst9LAB48rnkgVe6bMMGzgnOMnx2w510aEb7WmMOZugA+FKA7dFvUSF3uk29l84MQCVWa
+	 jQFL/6ymo+L5sPEnKeO+fuYDDV04n5JfOPyZEFeAEmfXWUAB8OTy/p4ZQ0lksVvz66JR0MwPQoyDb
+	 n5LAxPqjoQkDSVYojlFvKE3QRWo8Nw4pbcgx4sO7HHLYRRdk9PdPe1dl9Oz8L3gwwLZpO2vxs5hei
+	 qATp4aaTQFXj3yXC1oG+ha4AW+3PduUTMWV52PMWa7MyzJ6vjj4gJqIyME5EoA42vB0JgxZ7NY2Wo
+	 9myLFVs1KHj6pNKchD7+yXWnERL3VjkJvvBiZMlLb+FmlEJNA1LZYvJvP7REb9kMKka3Qc/kMWdpw
+	 ME+RFtbLfk9lZ3u5hhUqIRHqnTf9HAtOaX3qkfGVxMghLWghcRkCcjp4YduvxdIgqa1UNak48VkSA
+	 TlF32t4i+7UTKw6wipXCWXomB5M6/VJB6cp/POqY8gU7URPIvvU4LD0ukvML2czWLuGUYH6r30P/m
+	 bXX6boLd8ugiSZw7/nbZ+RGDcnBecAq+r9/slaKApRUKH7s6zm7GotVwmdnJX9S+l+rdESnP8wViE
+	 9vbJL80OFI3AlQqnZEpKIeUtv1OELzKLi9bW/Ak0ZE/uS42Sx35Z7jFPP1A6vwGu63jbHjFK2hvdT
+	 aBnJvGGAzxze/RxDGZcoRUCiglOCmYcbCRxQ+BkyuLIVrFgllCCVH4GP9So5GCpK4pC842+2Woz3H
+	 /x0wBngA2q2A7jL3A4irwZ7fQe06KnNpbK6/KiHbsZ/CwDFMDYmJAPFfRA/yGUucc0EF5M1edwKPd
+	 c8e3odi6IFHoUhzcHqXa1FRKkNwZNlZ1NgdSi1gSFjCRn53/lCjp4yXQ+W6Ng6LzXU9RbIkD7soUE
+	 HaUAEHfrtNxYdCY9egQi/AEZt8oWCx2fFBPqR3sDpr3zBscPLFvJxBqm6q1PwCEUu0SMeN+rBHNVM
+	 iuzehjqgE1gJVCUlbFuba+5M
+From: "=?utf-8?B?Q3VuaGFvIEx1?=" <1579567540@qq.com>
+To: "=?utf-8?B?QW5kcmV3IEx1bm4=?=" <andrew@lunn.ch>
+Cc: "=?utf-8?B?U3RlcGhlbiBCb3lk?=" <sboyd@kernel.org>, "=?utf-8?B?QnJpYW4gTWFzbmV5?=" <bmasney+clk@redhat.com>, "=?utf-8?B?SmVyb21lIEJydW5ldA==?=" <jbrunet+clk@baylibre.com>, "=?utf-8?B?Um9iIEhlcnJpbmc=?=" <robh@kernel.org>, "=?utf-8?B?S3J6eXN6dG9mIEtvemxvd3NraQ==?=" <krzk+dt@kernel.org>, "=?utf-8?B?Q29ub3IgRG9vbGV5?=" <conor+dt@kernel.org>, "=?utf-8?B?SGVpa28gU3R1ZWJuZXI=?=" <heiko@sntech.de>, "=?utf-8?B?UGhpbGlwcCBaYWJlbA==?=" <p.zabel@pengutronix.de>, "=?utf-8?B?RWxhaW5lIFpoYW5n?=" <zhangqing@rock-chips.com>, "=?utf-8?B?TGVlIEpvbmVz?=" <lee@kernel.org>, "=?utf-8?B?TGludXMgV2FsbGVpag==?=" <linusw@kernel.org>, "=?utf-8?B?QmFydG9zeiBHb2xhc3pld3NraQ==?=" <brgl@kernel.org>, "=?utf-8?B?UmljaGFyZCBDb2NocmFu?=" <richardcochran@gmail.com>, "=?utf-8?B?VWxmIEhhbnNzb24=?=" <ulfh@kernel.org>, 
+	"=?utf-8?B?QW5kaSBTaHl0aQ==?=" <andi.shyti@kernel.org>, "=?utf-8?B?R3JlZyBLcm9haC1IYXJ0bWFu?=" <gregkh@linuxfoundation.org>, "=?utf-8?B?SmlyaSBTbGFieQ==?=" <jirislaby@kernel.org>, "=?utf-8?B?SmlzaGVuZyBaaGFuZw==?=" <jszhang@kernel.org>, "=?utf-8?B?QW5kcmV3IEx1bm4=?=" <andrew+netdev@lunn.ch>, "=?utf-8?B?RGF2aWQgUy4gTWlsbGVy?=" <davem@davemloft.net>, "=?utf-8?B?RXJpYyBEdW1hemV0?=" <edumazet@kernel.org>, "=?utf-8?B?SmFrdWIgS2ljaW5za2k=?=" <kuba@kernel.org>, "=?utf-8?B?UGFvbG8gQWJlbmk=?=" <pabeni@redhat.com>, "=?utf-8?B?RGF2aWQgV3U=?=" <david.wu@rock-chips.com>, "=?utf-8?B?UmFmYWVsIEouIFd5c29ja2k=?=" <rafael@kernel.org>, "=?utf-8?B?RGFuaWVsIExlemNhbm8=?=" <daniel.lezcano@kernel.org>, "=?utf-8?B?WmhhbmcgUnVp?=" <rui.zhang@intel.com>, "=?utf-8?B?THVrYXN6IEx1YmE=?=" <lukasz.luba@arm.com>, 
+	"=?utf-8?B?TWF4aW1lIENoZXZhbGxpZXI=?=" <maxime.chevallier@bootlin.com>, "=?utf-8?B?TWF4aW1lIENvcXVlbGlu?=" <mcoquelin.stm32@gmail.com>, "=?utf-8?B?QWxleGFuZHJlIFRvcmd1ZQ==?=" <alexandre.torgue@foss.st.com>, "=?utf-8?B?Vmlub2QgS291bA==?=" <vkoul@kernel.org>, "=?utf-8?B?TmVpbCBBcm1zdHJvbmc=?=" <neil.armstrong@linaro.org>, "=?utf-8?B?TWFuaXZhbm5hbiBTYWRoYXNpdmFt?=" <mani@kernel.org>, "=?utf-8?B?VGhpbmggTmd1eWVu?=" <Thinh.Nguyen@synopsys.com>, "=?utf-8?B?SmFlaG9vbiBDaHVuZw==?=" <jh80.chung@samsung.com>, "=?utf-8?B?U2hhd24gTGlu?=" <shawn.lin@rock-chips.com>, "=?utf-8?B?bGludXgtY2xr?=" <linux-clk@vger.kernel.org>, "=?utf-8?B?ZGV2aWNldHJlZQ==?=" <devicetree@vger.kernel.org>, "=?utf-8?B?bGludXgtYXJtLWtlcm5lbA==?=" <linux-arm-kernel@lists.infradead.org>, 
+	"=?utf-8?B?bGludXgtcm9ja2NoaXA=?=" <linux-rockchip@lists.infradead.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?bWZk?=" <mfd@lists.linux.dev>, "=?utf-8?B?bGludXgtZ3Bpbw==?=" <linux-gpio@vger.kernel.org>, "=?utf-8?B?bmV0ZGV2?=" <netdev@vger.kernel.org>, "=?utf-8?B?bGludXgtcG0=?=" <linux-pm@vger.kernel.org>, "=?utf-8?B?bGludXgtaTJj?=" <linux-i2c@vger.kernel.org>, "=?utf-8?B?bGludXgtc2VyaWFs?=" <linux-serial@vger.kernel.org>, "=?utf-8?B?bGludXgtbW1j?=" <linux-mmc@vger.kernel.org>, "=?utf-8?B?bGludXgtc3RtMzI=?=" <linux-stm32@st-md-mailman.stormreply.com>, "=?utf-8?B?bGludXgtcGh5?=" <linux-phy@lists.infradead.org>, "=?utf-8?B?bGludXgtdXNi?=" <linux-usb@vger.kernel.org>
+Subject: Re: [PATCH 16/27] net: stmmac: dwmac-rk: Add RK3572 support
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,39 +71,29 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261020171249.853085-10-github@szelinsky.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
+Date: Thu, 22 Oct 2026 13:33:59 +0800
+X-Priority: 3
+Message-ID: <tencent_DC0344109BFDE09B646864649812CA465409@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+References: <20261022-add-board-ok3572-c-v1-0-0b0fd85a31ee@qq.com>
+ <20261022-add-board-ok3572-c-v1-16-0b0fd85a31ee@qq.com>
+	<b1ab0503-628c-4f96-af38-727d4be06f8a@lunn.ch>
+In-Reply-To: <b1ab0503-628c-4f96-af38-727d4be06f8a@lunn.ch>
+X-QQ-mid: xmsezb41-0t1792647239txf7q5rwo
 
-On Tue, Oct 20, 2026 at 07:12:44PM +0200, Carlo Szelinsky wrote:
-> pse_controller_unregister() frees the PI array while the controller is
-> still on pse_controller_list, and only removes it from the list
-> afterwards. of_pse_control_get() walks that list under pse_list_mutex
-> and reads pcdev->pi[i].np in of_pse_match_pi(). A consumer that probes
-> at that moment can read the freed PI array.
-> 
-> Remove the controller from the list first, before the worker is
-> drained, the power domains are flushed and the PI array is freed. Both
-> sides take pse_list_mutex, so once the controller is off the list, no
-> new lookup can find it, and a lookup that is already running finishes
-> before the PI array is freed.
-> 
-> Found by code inspection. Not reproduced.
-> 
-> Fixes: 9be9567a7c59 ("net: pse-pd: Add support for PSE PIs")
-> Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-> Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
+SGkgQW5kcmV3LAoKPiBZb3UgbmVlZCB0byBzcGxpdCB0aGlzIHBhdGNoZXMgcGVyIHN1YnN5
+c3RlbS4gUGxlYXNlIHNlbmQgYWxsCj4gbmV0d29ya2luZyBwYXRjaGVzIHRvIG5ldGRldiwg
+b25jZSB0aGUgbWVyZ2Ugd2luZG93IGNsb3Nlcy4KPgo+IGh0dHBzOi8vd3d3Lmtlcm5lbC5v
+cmcvZG9jL2h0bWwvbGF0ZXN0L3Byb2Nlc3MvbWFpbnRhaW5lci1uZXRkZXYuaHRtbAoKVGhh
+bmsgeW91IGZvciB0aGUgZ3VpZGFuY2UuIEkgYXBvbG9naXplIGZvciB0aGUgaW5jb252ZW5p
+ZW5jZS4gSSdsbCBzcGxpdCB0aGUKc2VyaWVzIGJ5IHN1YnN5c3RlbSBhbmQgc2VuZCB0aGUg
+UkszNTcyIEV0aGVybmV0IGJpbmRpbmcgYW5kIGR3bWFjLXJrIGRyaXZlcgpjaGFuZ2VzIHRv
+Z2V0aGVyIGFzIGEgc2VwYXJhdGUgc2VyaWVzIHRvIG5ldGRldiBhZnRlciBOb3ZlbWJlciA5
+LCAyMDI2LgoKQmVzdCByZWdhcmRzLApDdW5oYW8=
 
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-
-Thank you!
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
