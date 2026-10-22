@@ -1,62 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792683393;
-	b=mvackGjdNJVqI294Wv1HXyRDOoWw97EhDH90wqOo1jPJ+521832WlRx0ESUI21Bu70el
-	 n2khz82Gm3I0D/5TMs3ibDeGFBngna2w6SQ8fwtnVnyXddMiKaAE7Q4mWkINZvDrP3ntO
-	 NzAZXiW1zeP+AlU6FZCz3Nu5oHxIUvs80RF849d3ZDFMxEu1+SR7SfemlWorWAbE6wdv1
-	 LkvJaS76Eweokd785T0+SjURkEfnKFlyVmSTxkly6uhrt/zvLmBja/y9Y/iTluDa9kB7v
-	 4gHuimxAzdgrO/zz5i/p+NWz8zpslQsL5l1qJT5Yl4em/XuqQrx93LxhN1bdlp+C8mA==
+	t=1792683498;
+	b=HpXqhDRhyry7KRRBDebh3UhMP0IU0W+ToSSWVcWP8w8ojCNbbR087WYmwvdYrNtjyNYA
+	 03r8OVfUHXtQMueu5ht+zT+UcBTcabOM71UuHkoDPcA35T19ftMNd6+mFNkk1ZN76cv0s
+	 Il6nLzyePRHEH+cYtvolcm0+pIdKhiIA9A5S/ISZ8JzYgrwvnUm5gODMedrXBmwB1SxXd
+	 5dtggX3fAd9bg52UjHJHhv1T9ZRDAwKky2BmXafc2Siz4z6nrra2MRxTCLo5BwWDC/+Jc
+	 1T7M3PRTIL5PvWe3An6Utnzf2uyMEknErUOOcSvRkJtte9GYxX+95NhHqM3JM7EpOpA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792683393;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=BlPHtfzLH8dsb30F83yqKhUEwXui1hXO5a4OUJGPcFc=;
-	b=MNDttxobSheDW9MHb7VZK3/BS9ULNoYBBqUOlptf6sdVTRAc+AtSPJPn7y+F6YuO+phG
-	 DvYyxPWNNvMINEOJK8Dc5926VCu7c3pmLpMudYNTnnRmG04exiWuH4UgwRCHHbqwBzT1U
-	 rutKEiSLl9f3gDehZva0ZOGVVKjbeuaRfDXgaqDggHLY6cFxaT1VTydZuGNYpov7uhuPE
-	 8uRjU/WkP327Q+MpsvTaLwJxF5jdyzyDX3igaZwS3bowCEsPi14Opk1aZ8vJVLo22WBWn
-	 x04YPhRlqCmtybVxutQHkm9vRUPE6Nken4VGMwPdNGg5dZYn+q1q/egueCk7vDeVsrg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792683498;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:MIME-Version:Content-Transfer-Encoding:X-Scanned-By;
+	bh=am6bUwTFl5dI3z4kAL5lsdvsU6q8fwpiKH4lHfohTvE=;
+	b=4oHiLvIa7H6FozV3hJk3ABoRjIAOqEXgMifOxIjt7P9C6xghUV/VECXUzDubSajee3q4
+	 19Oq8eB6U8qGh+qJ2Bk2OXjvWeKhQdJQnKz4gYdZngBLecQl8WtdIhuaGLVrKBz1neDpC
+	 r1tC1e6JHAMYLY5/yjua5wvkr8CGaURM2EnbZK37y98zUZyGKeeZcOZZ+SFAT53eLH7Aa
+	 8FEU8nK6O6F8lUgTM9NudcLqu1cZ+szqLwQGPJQlS8gBwujETGVk6vIf/yvGV+Nnb51JS
+	 AjnBAGck+Ig61MDvHXRpnkn+zKoJB+XWSc+k9aeR5BuCKC69J2GiJuLSE7ZN3rN09EA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=heZTRl0r;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aJ0fuz49;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0EDE606A31A;
-	Thu, 22 Oct 2026 15:36:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C0EDE606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C695A606A319
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 15:38:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C695A606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=heZTRl0r
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=BlPHtfzLH8dsb30F83yqKhUEwXui1hXO5a4OUJGPcFc=; b=heZTRl0r7SNZtglBRzLGDzf7jR
-	6sFtHsMvhpI3sbMk6XJNHScjLhcwmoPWsLWTpyeP/F6wzdwTZ5o3j/9CMgTj7OIyPF3UGEsMU5Orf
-	WZByC9txKcEpZXE1efLSs7MFOTR9bQ+M11gW0DRIzvqLQTy+TYrxh1E1ZLO79OpYvWVY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xJuq2-00CHfF-5V; Thu, 22 Oct 2026 17:36:18 +0200
-Date: Thu, 22 Oct 2026 17:36:18 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: shaos <shawnq1@163.com>
-Cc: jhs@mojatatu.com, Jiri Pirko <jiri@resnulli.us>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, security@kernel.org
-Subject: Re: [BUG] net/sched: act_csum can checksum beyond a short IPv6
- jumbogram skb
-Message-ID: <76f5a903-90cc-4eeb-8afc-99b5cd89b75d@lunn.ch>
-References: <20261022144653.60550-1-shawnq1@163.com>
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aJ0fuz49
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792683496;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=am6bUwTFl5dI3z4kAL5lsdvsU6q8fwpiKH4lHfohTvE=;
+	b=aJ0fuz49tu+vEBHsmCTeNaRGtm1wRZyIzD9WkaT0adP3rGljKC5J/hlApOwKNtEiew1Ylz
+	ArM/SpiVEyVytbhGmwsTmE9opzU2FmsPwnxb8T6i3eG1aqvf6ImBdiKKWoYvFE4qxsrk6t
+	5AhWam3ZfcH5aFoRqaMe4W/PZwrh/Lk=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-573-0alGndIDPyqanwoj-xusvA-1; Thu,
+ 22 Oct 2026 11:38:15 -0400
+X-MC-Unique: 0alGndIDPyqanwoj-xusvA-1
+X-Mimecast-MFC-AGG-ID: 0alGndIDPyqanwoj-xusvA_1792683494
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E517F1955DAC;
+	Thu, 22 Oct 2026 15:38:13 +0000 (UTC)
+Received: from pabeni-thinkpadp1gen8.rmtit.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 90FAC472;
+	Thu, 22 Oct 2026 15:38:12 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: Marcel Holtmann <marcel@holtmann.org>
+Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	linux-bluetooth@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH net-next] Bluetooth: btusb: disable by default Qualcomm multi-subsystem
+Date: Thu, 22 Oct 2026 17:38:06 +0200
+Message-ID: <50f92fe870de717fca6368e750e0a6cbc8f46597.1792683340.git.pabeni@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,23 +75,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261022144653.60550-1-shawnq1@163.com>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-On Thu, Oct 22, 2026 at 02:46:53PM +0000, shaos wrote:
-> Hello,
-> 
-> An unprivileged process with namespace-scoped CAP_NET_ADMIN and CAP_NET_RAW installs a csum action for UDP-Lite and sends a 300-byte IPv6 frame with a Jumbo Payload value of 0xffffffca and UDP-Lite coverage longer than the bytes present. The jumbo-length addition wraps the pull-length check, while the later checksum path still uses the unwrapped length.
+New knobs should default to 'n'. The mentioned one depends on
+BT_HCIBTUSB, but the latter is enabled on most systems.
 
-Please configure your editor to wrap lines at around 70
-characters. Standard netiquette rules should be used on mailing lists.
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+---
+this is a last minute fixlet to avoid breaking expectation for the
+upcoming net-next PR. I'll merge it in a matter of minutes unless
+someone scream very loudly very soon!
+---
+ drivers/bluetooth/Kconfig | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Flooding the netdev list with bug reports like this will just result
-in them being directed to /dev/null.
+diff --git a/drivers/bluetooth/Kconfig b/drivers/bluetooth/Kconfig
+index db0189ca3cbe..0dca5e43edc5 100644
+--- a/drivers/bluetooth/Kconfig
++++ b/drivers/bluetooth/Kconfig
+@@ -96,13 +96,12 @@ config BT_HCIBTUSB_QCOM
+ 	select FW_LOADER
+ 	select GPIOLIB
+ 	select WANT_DEV_COREDUMP
+-	default y
++	default n
+ 	help
+ 	  Enables various required support, such as configuration, firmware
+ 	  download, and error recovery, for Qualcomm Bluetooth controllers.
+ 
+ 	  Say Y here to compile support for Qualcomm protocol.
+-	  If unsure, say Y.
+ 
+ config BT_HCIBTSDIO
+ 	tristate "HCI SDIO driver"
+-- 
+2.56.0
 
-If you want to do something useful, fix the issue. Please do it
-slowly, one bug report at a time, so you can learn how to do it
-correctly without wasting peoples time.
-
-   Andrew
