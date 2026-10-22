@@ -1,55 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792653915;
-	b=YKebJqPbLtxzK7NEIRnXWVD878ZCabM3fhGQUq6Fi28MZsOCIdqptum+NM7sKJN+EUIP
-	 Lmx2AYsvtP2m18IBuYKQYSpRjnLftZ5x0IPYsUaAjoTMtg90wILqFdEfg1MlPvsulEGVw
-	 MxOAfo8QYGaDKi3XUTXw9TrShAMdJh0rjDKEqkT3IkyPVnwoXxk8NI81KooDfptDWaWI1
-	 2etfFoxUJYilz8NSpJeelVklNwaMZbxTMYDihhjz27hl57U9/PG85Btvfakqeb3qofOdM
-	 scP+Eh0azHEFsHA1ZcOZm7fFvP6fqNiY3v6hrLonjn/5UNPSAIOlLi86E+3ArhbKvmw==
+	t=1792653918;
+	b=YyZC0aQ7oaIB2xIfa0h066MjJfLKtDVBB73MIxR3C53y5l/YPGoJMkR4G5ru8Is/fdQ2
+	 M4SHB1zf19vARtak9rxQ2vy8UWXGvjEwoQFoxiHBnAENDWwAmzk5ntzNgmrB6vDJmIi3H
+	 YRUTBVbCwoWFBXmNA5V2eXkNsbHJaHg1dDaA8A+rblvuDP/yPi1W+Vy/GnZo9tvc+QiId
+	 YfLgspYRWUhvAkZHYNrXBEYFvTgbKiyiQP5MS5kOIOB3TGE6mUCk8QJOfuZ09KO/bK7bH
+	 JWqljLNstdCi857TKvuvlHn/w4dznszvPmX0ai2j9KVwOl/IfJtsBGpKej1gMh6ausQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792653915;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792653918;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=xLB6QY4d4CvT3WOgrmnQWFVCi+2+aEn7UHs0/QDERSI=;
-	b=w3kZvB5Kfvrwwgk2SI7nuDKZNMEsXg8TiYnIL43/ZS7WXTa3CFGsdSFgsRuPUo69InA3
-	 92mjdSuNrdMPLEG0GZxXC57ecyWFhloO4wkzH58cHeW8CErPnUV7rlIA3JRklPij7KETi
-	 AEHoHoWswBHhSklMF1O02F8EB0+ZKTmoVQ1/nVQfEHM2dJqpxxeemeavCANBno0e4ehQU
-	 2yTQzW8rFXjA4NoBSvyx/ohM9AZXFFrzDiQZThc3Klh9DROKkKRjerHw0rOv2O5CxaURK
-	 s7Z9ZPo3gfGFL5u6q0DGCDoXw1ar87Sgtw1hCe9Ue5a/Mke9zpdXAiE3uF2vpiciQNw==
+	bh=3+sI12mDcyiWW+7rUXYLDI24xLKvRl6Qlbizw4n1tjU=;
+	b=fczCgmWh7i0ptCkg24NVEXktOgWJkGIyHiDQluHRV2xoJp+NQ4i+5g+Eo7aHfRidb82c
+	 MVDebz5zWpk/O5yaCu/fb67HfzwybQ/HeNGSO2KpItA0kimbm8hfQJE3mc0GWyo1U0MNJ
+	 4J6D9C3y0Gk0cVyZks7wBU5UMCbW+dp7EDnyKNLVRubhWFiZV2B4U9hCG/SHPsJhBTTnb
+	 uuBPcLQ1AvywQ+DhLR26MHrt127oGkV+KDEtFn6CztgXhd08+N/YCd2xyigF50KfGcerD
+	 JLSdNNY6iZAmabX9UqVEY4eWuYoN5XpQVMzdoXMZgBoM1J96ya37z9PvzZwVjLb4Qag==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FoHnPMvm;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZrvXmHSJ;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF681606A32A;
-	Thu, 22 Oct 2026 07:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2694606A33F;
+	Thu, 22 Oct 2026 07:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FoHnPMvm
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 413A41F000C3;
-	Thu, 22 Oct 2026 07:25:14 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZrvXmHSJ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF0D1F000C9;
+	Thu, 22 Oct 2026 07:25:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792653914;
-	bh=xLB6QY4d4CvT3WOgrmnQWFVCi+2+aEn7UHs0/QDERSI=;
+	s=k20260515; t=1792653917;
+	bh=3+sI12mDcyiWW+7rUXYLDI24xLKvRl6Qlbizw4n1tjU=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=FoHnPMvmurzaYZ6ZRlGvGEJ11DJsdNsB/pI+48uxJ7HC58JVkr+qLuVsG2XY24125
-	 NXUXUSMf6Du8wAhz408u5VG6LZaGGGdHTVW/bm7u0c29yi9Q/jMct0ou8dF9UPz5Jk
-	 MnDE4VwKtiqqINw/1UdraMYD8zZSyVG2nBROWMlQygnFuvSYPCdfJThm0i72OQKwbS
-	 3ejnfnBliG1gghz80yPGiOszlJkMN6/euqq2/QgraFQL9RwCq+ObB3mK/n8ZtZci3E
-	 TGIsdofAYmR7SbMFiUPy9i4lQgIrDFja6LqsVOm2BmedvFWyjCm8acLhOvutsJDsA2
-	 Ose80bkwBle/A==
-Subject:
- Re: [PATCH] ipv6: icmp: use skb_dst_dev_net_rcu() for echo reply and unreach
+	b=ZrvXmHSJGSjbI+sMVod0u0OAzSFZQKd0AljLQMqU/sssGFDJtwoe1no2KdWHc40X2
+	 1pHfxlJpP8CLLESSRCi/LN6iB8dQYJbuQ1Q8jG3M6vy2rvuxeFc+FXvSmRVdL2/KH3
+	 3kBP3Rr77eqeztOwuNWspjKWbixPekqvb/rSNpCJQ/IL7AfrNmJfTm68X96akEzJH+
+	 nPwsKlpLlz27gElQuFRE5bMI5r9g5aDQF9VbFCkeA8RTRNqxQTJxhLP5IPg/Q3fmuo
+	 TdeKPtsTJOynGWML5JLgqdJmIjLYJCLNHyNv4Ab/Nwq+Dos6RNrv9d7WzOxFQJFKCi
+	 I9MIW/6EyOOug==
+Subject: Re: [PATCH] libcxgb: use raw_cpu_ptr() in ppm_get_cpu_entries()
 From: netdev-bot+sashiko@kernel.org
 To: haoranwangsec@gmail.com
-Cc: dsahern@kernel.org, idosch@nvidia.com, netdev@vger.kernel.org,
+Cc: varun@chelsio.com, bigeasy@linutronix.de, clrkwllms@kernel.org,
+ rostedt@goodmis.org, linux-rt-devel@lists.linux.dev,
+ linux-scsi@vger.kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, kuba@kernel.org
-Date: Thu, 22 Oct 2026 07:25:13 +0000
-Message-ID: <179265391376.3135.13185703852786757866@kernel.org>
-In-Reply-To: <179241613335.5916.18191480036849517944@whr>
-References: <179241613335.5916.18191480036849517944@whr>
+Date: Thu, 22 Oct 2026 07:25:16 +0000
+Message-ID: <179265391648.3135.4737238756305443681@kernel.org>
+In-Reply-To: <179241614797.5916.13928836073297916808@whr>
+References: <179241614797.5916.13928836073297916808@whr>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -63,10 +64,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 2 · Low: 0 (2)
+Critical: 0 · High: 1 · Medium: 0 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -74,230 +75,122 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The patch now takes the netns in icmpv6_echo_reply() and
-  ip6_err_gen_icmpv6_unreach() from skb_dst(skb)->dev_rcu (via…
-- [Medium] The commit message's premise is wrong.
-- [Medium] The netns conversion is partial, so the changes are internally
-  inconsistent.
-
-Pre-existing issues:
-- [Low] This problem wasn't introduced by this patch, but it is on the
-  line the patch rewrites.
-- [Low] This problem wasn't introduced by this patch, but the comment
-  above ip6_err_gen_icmpv6_unreach() (net/ipv6/icmp.c:852-857) says the…
+- [High] The patch introduces a cpu/pool mismatch race in
+  ppm_get_cpu_entries()…
+- [Low] The commit is a bug fix for a user-visible 'BUG: sleeping
+  function called from invalid context' on PREEMPT_RT.
 
 --
 
-ipv6: icmp: use skb_dst_dev_net_rcu() for echo reply and unreach
+libcxgb: use raw_cpu_ptr() in ppm_get_cpu_entries()
 
-This patch changes how ip6_err_gen_icmpv6_unreach() and
-icmpv6_echo_reply() pick the network namespace. They now use
-skb_dst_dev_net_rcu(skb) instead of dev_net_rcu(skb->dev). The commit
-message says that under a VRF the ingress device netns differs from the
-destination netns, and that the IPv4 echo path already uses the dst
-netns.
+This patch changes ppm_get_cpu_entries(). It drops get_cpu(),
+per_cpu_ptr() and put_cpu() and uses raw_smp_processor_id() and
+raw_cpu_ptr() instead. The aim is to stop spin_lock_bh() from being taken
+with preemption disabled, which triggers a sleeping-in-atomic BUG on
+PREEMPT_RT.
 
-> Under a VRF, skb->dev is the VRF master device, so dev_net_rcu(skb->dev)
-> returns the netns of the master rather than the netns the packet is
-> destined to.  The route lookup for the unreach and the send policy for
-> the echo reply (ratelimit, IPsec, route) then run against the wrong
-> namespace.  The rt6_lookup may miss the route to the source, leaving
-> skb2->dev unset, and the echo reply is emitted/routed per the ingress
-> netns instead of the destination netns.
-
-[Severity: Medium]
-Can a VRF master actually be in a different netns from the packet's
-destination?
-
-do_set_master() looks the master up in the slave's own netns:
-
-net/core/rtnetlink.c:do_set_master() {
-    ...
-	upper_dev = __dev_get_by_index(dev_net(dev), ifindex);
-    ...
-}
-
-VRF devices can't change netns:
-
-drivers/net/vrf.c:vrf_setup() {
-    ...
-	dev->netns_immutable = true;
-    ...
-}
-
-A slave that moves to another netns gets NETDEV_UNREGISTER, and
-vrf_device_event() removes it from the VRF. vrf_ip6_input_dst() also
-does its lookup in dev_net(vrf_dev). Packets that cross netns go through
-skb_scrub_packet(), which drops the dst.
-
-So on live receive paths, skb->dev and skb_dst(skb)->dev seem to be in
-the same netns, and both expressions return the same struct net.
-
-If rt6_lookup() really misses the VRF route, wouldn't that be because it
-is called with oif=0 and no l3mdev? Then the l3mdev FIB rule can't pick
-the VRF table, and this patch doesn't change those arguments.
-
-Is there a reproducer for the VRF case described here? There is no
-Fixes: tag either. Could the description be reworked so the patch isn't
-picked for stable based on this scenario?
-
-> diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
-> index a95b0351824f..5bdfbb656301 100644
-> --- a/net/ipv6/icmp.c
-> +++ b/net/ipv6/icmp.c
-> @@ -882,7 +882,7 @@ int ip6_err_gen_icmpv6_unreach(struct sk_buff *skb, int nhs, int type,
->  	skb_pull(skb2, nhs);
->  	skb_reset_network_header(skb2);
->  
-> -	rt = rt6_lookup(dev_net_rcu(skb->dev), &ipv6_hdr(skb2)->saddr,
-> +	rt = rt6_lookup(skb_dst_dev_net_rcu(skb), &ipv6_hdr(skb2)->saddr,
->  			NULL, 0, skb, 0);
+> Signed-off-by: Haoran Wang <haoranwangsec@gmail.com>
 
 [Severity: Low]
-This isn't a bug introduced by this patch, but this line is being
-rewritten anyway. The skb passed to rt6_lookup() here is the original
-IPv4 ICMP skb. On multipath routes the lookup goes:
+This fixes a user-visible BUG on PREEMPT_RT, but the commit has no Fixes:
+tag. The get_cpu()/per_cpu_ptr()/spin_lock_bh()/put_cpu() sequence has
+not changed since it was added in:
 
-rt6_lookup()
-  fib6_rule_lookup()
-    ip6_pol_route_lookup()
-      fib6_select_path()
-        rt6_multipath_hash()
-          ip6_multipath_l3_keys(skb, ...)
-            outer_iph = ipv6_hdr(skb);
+Fixes: 47da7e62b391 ("cxgb4: add iSCSI DDP page pod manager")
 
-This reads the outer IPv4 header as an IPv6 header to build the ECMP
-hash keys. The pskb_may_pull() at the top keeps the read inside the
-linear area. So the only effect is on which nexthop device ends up in
-skb2->dev.
+Should that tag be added, possibly with a Cc: stable?
 
-Would it be better to pass skb2 or NULL here?
-
-[Severity: Low]
-This is also a pre-existing issue, not one introduced by this patch. The
-comment above ip6_err_gen_icmpv6_unreach() only mentions type/code
-ICMPV6_DEST_UNREACH/ICMPV6_ADDR_UNREACH. The function also sends
-ICMPV6_TIME_EXCEED/ICMPV6_EXC_HOPLIMIT, and the SIT and GRE callers do
-pass ICMP_TIME_EXCEEDED:
-
-	if (type == ICMP_TIME_EXCEEDED)
-		icmp6_send(skb2, ICMPV6_TIME_EXCEED, ICMPV6_EXC_HOPLIMIT,
-			   info, &temp_saddr, IP6CB(skb2));
-
-Should that comment be updated?
-
+> diff --git a/drivers/net/ethernet/chelsio/libcxgb/libcxgb_ppm.c b/drivers/net/ethernet/chelsio/libcxgb/libcxgb_ppm.c
+> index 2e3973a32d9d..5f68c5d5766e 100644
+> --- a/drivers/net/ethernet/chelsio/libcxgb/libcxgb_ppm.c
+> +++ b/drivers/net/ethernet/chelsio/libcxgb/libcxgb_ppm.c
+> @@ -125,10 +125,9 @@ static int ppm_get_cpu_entries(struct cxgbi_ppm *ppm, unsigned int count,
+>  	if (!ppm->pool)
+>  		return -EINVAL;
 >  
->  	if (rt && rt->dst.dev)
-> @@ -920,7 +920,7 @@ EXPORT_SYMBOL(ip6_err_gen_icmpv6_unreach);
->  
->  static enum skb_drop_reason icmpv6_echo_reply(struct sk_buff *skb)
->  {
-> -	struct net *net = dev_net_rcu(skb->dev);
-> +	struct net *net = skb_dst_dev_net_rcu(skb);
+> -	cpu = get_cpu();
+> -	pool = per_cpu_ptr(ppm->pool, cpu);
+> +	cpu = raw_smp_processor_id();
+> +	pool = raw_cpu_ptr(ppm->pool);
 
 [Severity: High]
-Can net end up as &init_net here if the dst has been invalidated?
+Can cpu and pool refer to different CPUs here?
 
-skb->dev is pinned while the packet is in flight, but dst->dev_rcu can
-change. When a route is torn down, dst_dev_put() repoints it:
+The new code reads the current CPU twice, with preemption and migration
+both enabled. Say the task moves from CPU A to CPU B between
+raw_smp_processor_id() and raw_cpu_ptr(). The bit is then reserved in CPU
+B's bitmap under CPU B's lock, but the returned index is built from the
+old cpu value:
 
-net/core/dst.c:dst_dev_put() {
+drivers/net/ethernet/chelsio/libcxgb/libcxgb_ppm.c:ppm_get_cpu_entries() {
     ...
-	rcu_assign_pointer(dst->dev_rcu, blackhole_netdev);
-    ...
-}
-
-blackhole_netdev is never registered, so its netns stays &init_net.
-
-Here is one path in netns X:
-
-  An echo request to a local address is queued by NFQUEUE at
-  NF_INET_LOCAL_IN. __nf_queue() calls skb_dst_force() and dev_hold()s
-  skb->dev.
-
-  The local address or route is deleted. After the grace period,
-  fib6_info_destroy_rcu()->fib6_nh_release()->fib6_nh_release_dsts()
-  calls dst_dev_put() on the pcpu rt6_info that the queued skb still
-  holds. nh_rt_cache_flush() also reaches fib6_nh_release_dsts() when an
-  IPv6 nexthop group is replaced.
-
-  On NF_ACCEPT, nf_reinject() calls ip6_input_finish() directly.
-  nf_ip6_reroute() only does anything for NF_INET_LOCAL_OUT, so the dead
-  dst is not checked again.
-
-  icmpv6_rcv() still uses dev_net_rcu(skb->dev), which is X, so the
-  echo_ignore_all check passes. icmpv6_echo_reply() then sets
-  net = &init_net.
-
-After that, icmpv6_xmit_lock() sets the shared per-cpu ICMPv6 socket's
-netns to init_net. The sysctls, IP6_REPLY_MARK, ratelimits,
-ip6_dst_lookup() and xfrm_lookup() all run in init_net.
-
-fl6.saddr is X's address, and flowi6_oif is an ifindex from X that gets
-resolved in init_net. The reply carries the requester's payload and is
-routed and sent from the host namespace.
-
-The unreach hunk above looks affected the same way. The IPv4 input dst
-of a queued ICMP error can go through dst_dev_put() via
-rt_fibinfo_free()/rt_fibinfo_free_cpus(). ipip6_err() and ipgre_err()
-still find the tunnel in dev_net(skb->dev), but rt6_lookup() would then
-run in init_net. skb2->dev can then become an init_net device, and
-icmp6_send() also runs in init_net.
-
-All of this needs only CAP_NET_ADMIN in X, which an unprivileged user can
-get through a user namespace. A route teardown running at the same time
-(nh_rt_cache_flush(), rt6_remove_exception()) can also open the window
-without nfqueue.
-
-Before this patch, the netns came from skb->dev. That device is pinned
-and can't change netns while the packet is queued. Isn't that the more
-reliable source for the receiving netns?
-
-The IPv4 sites cited in the commit message seem to have the same
-weakness, so matching them doesn't make this change safe.
-
-[Severity: Medium]
-The commit message says this now matches the IPv4 path. Is the
-conversion complete, though? IPv4 icmp_rcv() takes net from the dst for
-the whole receive decision:
-
-net/ipv4/icmp.c:icmp_rcv() {
-    ...
-	struct net *net = dev_net_rcu(rt->dst.dev);
+	i += cpu * ppm->pool_index_max;
+	ppm_mark_entries(ppm, i, count, caller_data);
     ...
 }
 
-IPv6 icmpv6_rcv() still uses the ingress device:
+The index and the ppod_data[] entry now point into CPU A's slice, while
+bit i in CPU A's bitmap is still clear.
 
-net/ipv6/icmp.c:icmpv6_rcv() {
-	...
-	struct net *net = dev_net_rcu(skb->dev);
-	...
-	case ICMPV6_ECHO_REQUEST:
-		if (!net->ipv6.sysctl.icmpv6_echo_ignore_all)
-			reason = icmpv6_echo_reply(skb);
-	...
-}
+Could a task on CPU A then get the same index, hardware page pod and
+ppod_data slot while the first transfer is still in flight?
 
-That net is used for xfrm6_policy_check() and for the echo_ignore_all
-and sysctl_icmp_echo_enable_probe checks. Those checks decide whether
-icmpv6_echo_reply() runs at all.
+cxgbi_ppm_ppods_reserve() turns this index into hwidx and the DDP tag.
+cxgbit_ddp_reserve() and cxgbi_ddp_reserve() then program that tag into
+the adapter. The caller_data in ppod_data[] is also what
+cxgbi_parse_pdu_itt() uses later to match responses to tasks.
 
-Inside icmpv6_echo_reply(), idev and flowi6_oif still come from
-skb->dev. The shared icmp_build_probe() also still uses
-dev_net_rcu(skb->dev).
+On release, ppm_unmark_entries() gets the pool back from the index:
 
-On the unreach path, ipip6_err() and ipgre_err() find the tunnel in
-dev_net(skb->dev), rt6_lookup() now uses the dst netns, and icmp6_send()
-uses dev_net_rcu(skb2->dev). skb2->dev is set to the lookup's device only
-when rt6_lookup() succeeds. So the netns used for sending depends on
-whether the lookup succeeded.
+	cpu = i / ppm->pool_index_max;
+	i %= ppm->pool_index_max;
 
-The two sources can differ, for example in the invalidated dst case
-above. Then a single packet is gated by X's echo_ignore_all, probe and
-xfrm settings but answered under init_net's policy.
+	pool = per_cpu_ptr(ppm->pool, cpu);
+	spin_lock_bh(&pool->lock);
+	bitmap_clear(pool->bmap, i, count);
 
-Shouldn't all of these sites use the same netns source?
+That would clear the bit in CPU A's pool, which may free another
+transfer's live entry. The bit that was really set in CPU B's pool would
+never be cleared.
+
+One preemptible caller that holds no spinlock is the iSCSI target TX
+path:
+
+iscsit_send_r2t()
+  cxgbit_get_r2t_ttt()
+    cxgbit_ddp_reserve()
+      cxgbi_ppm_ppods_reserve()
+        ppm_get_cpu_entries()
+
+iscsit_get_r2t_from_list() drops r2t_lock before it returns, so this
+whole chain runs unlocked. A remote initiator can drive it simply by
+sending WRITE commands to a Chelsio-offloaded target.
+
+The raw_ accessors are not checked by CONFIG_DEBUG_PREEMPT, so nothing
+would warn. The race exists on any SMP kernel built with CONFIG_PREEMPT,
+PREEMPT_LAZY or PREEMPT_RT.
+
+Given that, do these parts of the commit message still hold?
+
+    The preemption disable exists only to stabilize the per-CPU accessor,
+    the pool is serialized by pool->lock, not by preemption.
+
+    ...the defect is PREEMPT_RT-specific.
+
+The returned index encodes cpu, so cpu and pool still have to match even
+though pool->lock serializes the bitmap.
+
+Would it work to keep the saved cpu and derive the pool from it? For
+example:
+
+	cpu = raw_smp_processor_id();
+	pool = per_cpu_ptr(ppm->pool, cpu);
+
+Another option would be to wrap the lookup in
+migrate_disable()/migrate_enable().
+
+[ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/179241613335.5916.18191480036849517944%40whr
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/179241614797.5916.13928836073297916808%40whr
