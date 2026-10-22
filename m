@@ -1,83 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.135
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792660652;
-	b=k09Z5zX/w1DfM2wXzfBw/WmGO4LN58VhkeRhUqW0ajUroF9NbF6pgdd1k9dpzt9m0yZ1
-	 YxeNN2sJ7s77Xk6LCxQ6uyYFOIsZn0DFqx77PEh3JFOgs9kJlUecqN+V11+IDYyJAXsVZ
-	 edJ31Y3qbtPh87c+r+eGb10Nxlvx//hlTRrQGklm1FdNmwTytsG1x3RTiHzMisGFefHDu
-	 yrMYChdM49MLx1IiLmP3XDp4Ea7BARxKcuiN8TDTIczhtlSPNz3bC0GOLG0ugKtcKAY5+
-	 gCnqajk931Iaz9O3vKNtgUYZGVmzF46FedbVqQuBIHz98OyKCuh+odp13w9bioqW55Q==
+	t=1792660664;
+	b=Wa9j9PTNiMQqmFbFFu71GeoBXiYfkbzWGe5jkDcAfa3C43d6jlzW371idxtzg7US0rhY
+	 Fu4NLEinP0zvIfz6TZESLs1O/QksZtueGdVISkD4hflgmYpYQaLArVMqcoKf8YjoEMnb9
+	 6v7ohlW7hHFpKq9KMHcii9WlQ0UE+yUgKPS9HEuPgGAFcio6gdPsY7KZL2N/qmS5GCCBF
+	 +QL/B7z+f7OjXnbumNnEssPxLj8mDlnCqqbO5R9vtfn2nDCdcuKoFMo8KouwjQStDsrK9
+	 HwSxHnKp0NQxotcnsLanTs7DoxewcZvkHvsAH1T4j7CBrjIdoTJnMXpQFLO/n2MYl2A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792660652;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792660664;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=YrU9NXkLhPc11UNj4ze98iYIGfoVOje0QPpEBEMUH0Q=;
-	b=vYQf29ti6CYXFS7dpaCbXLkBKIr/i+u6+yYAknM0SmKgvlU37CvvRwlGMG+ajt2cH/Bt
-	 r9XLEzXlBcligPXlknK5nHLH2H6Wh9RXjQSzWJ3EWAPFdLHC8QCYk8O/IfJM/4FsS9Zn4
-	 crelfBVsAqTY8/AfyOudgZ6BQiPkrXgHIqseP+dRY5wUWj4BmhVLshrhJ8rmdBWe3mauG
-	 2QeJwvHeroiB+kD5BX5XLekmszKCvUdxBL2Yf8H1ClJQs7P5x3hqQEbI3LJledpFXv8tT
-	 jbUTdnqEegTZemuVIV6DsTs8Y3rZelzyCwH4aUwLPzIPls/9patlsQ2thvbe6KSJvHg==
+	bh=ydSllVnxJwUmROhHxhg7pIdiTiTIT+tFa1S9Tfrhzkk=;
+	b=PipMnN62HsFz2I4JWBlcJM+w5QI/qjoDxIOLKmcUvqjSBaYdDQp53zaV9+9w8UzZAFGd
+	 sODJIV4Kmnf9oeW5l5z9LszZdim9T2sTcBM0/1omSENS97g3WyxnAPADmRaT2w3JoHK1P
+	 cZszHg5TnOSVLXW/cQE9C4UuzPAQvreb7SXIrDqDBBet9rDxLinNB59OuRSzh5FjI4wsa
+	 Y5qitL1J7HHCDV2Z6ejeekxywscqfsZ0lWv3Zvco2xiAhNpAqSF5XvfHkReDC0e323tUt
+	 vkt/PNrHWKGKYC8mqOP66PMZbG0EOdn48tBCnsgCAwWaedpYWWn8wT3JehcYdnoaunw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=YoqQ2qEo;
-	arc=none smtp.remote-ip=74.125.82.44
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=kPiKtKO5;
+	arc=none smtp.remote-ip=74.125.229.135
+Received: from mail-dl2-f7.google.com (mail-dl2-f7.google.com [74.125.229.135])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666C1606A320
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:17:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 666C1606A320
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC0F606A320
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:17:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DCC0F606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=YoqQ2qEo
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-1517bda04a0so1765301c88.0
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 02:17:32 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=kPiKtKO5
+Received: by mail-dl2-f7.google.com with SMTP id a92af1059eb24-13985f8229aso1509039c88.1
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 02:17:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792660651; x=1793265451; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792660663; x=1793265463; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=YrU9NXkLhPc11UNj4ze98iYIGfoVOje0QPpEBEMUH0Q=;
-        b=YoqQ2qEoUEfKXEqbta2HMACEfMy+lta0Cv6sAawZGIhlTO61tZUOyOPCCiiMxW7Cdg
-         Ew9z2G5Ob7q5DTIGNmZcPFSgoWmBbGiihn91T/Oe1rKc51mtUQFvsM7c8uEgOZKGSfw+
-         0VR8xm2hETmRmDJyP6b83Im8rpVOhKB7RxnbKvg3YWAjWzZrk44jbnUk5Rf2CW2PmTy0
-         ChHcvJlJXNp21zKMK29jVvbCO6IHpx9+8QlNcCkOwzRRfs/Ppb57C+QMM649U2AqgMt/
-         lsg+C0ZdnybAUSjrB9QIdOt/5GNWZKvQE2Mh6ndUGnCOyNaQjOX9oZTR+pt4Hoh8b4Dw
-         MtrQ==
+        bh=ydSllVnxJwUmROhHxhg7pIdiTiTIT+tFa1S9Tfrhzkk=;
+        b=kPiKtKO5Rb6lsY5ec6uXIph35wXgBO8niiwzM+/FTJEEmYLw4ZEUibPsKIpXJRP1QJ
+         E66wE9fkB/medbvdzQcGd3vgJh4CvZJ42hyutBHAnrtOrpQVBtg5X/CezxuPfJh1xIsf
+         YrkH5OSwm+tbcB8fjjuVOhRICDwjuwyqB9TKgWPh8nSv07CcTzH+6HkZUWR5wFtpna/t
+         bOWwavwu8o1XsT4KuLig20dRzTEcDCNo4ijxgvdBNQC21VV3+5R8Jtcy2NGyTdsuTYkn
+         bBGsbBTo+bKIjVsRs+GxUuasEDGfxRoEQqFuL7Fv5xa6RWhJkInlWhB2uVgYRp33Lo8z
+         mQrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792660651; x=1793265451;
+        d=1e100.net; s=20260707; t=1792660663; x=1793265463;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=YrU9NXkLhPc11UNj4ze98iYIGfoVOje0QPpEBEMUH0Q=;
-        b=ylBWmh8zbA9qs0XpeeOi9r2zN5ZdgWB/mhQGL4qfGPFfHXHva59tqgqi7G74TaUDjD
-         9a8X34OUgtlPIu0VPXrmlX5rij4Hl/YYTVEuoHwvt0lBaaFWtLTs1Edh2o1eLyEnNMAa
-         /0ETBnDLYfVsfpm4rRR1DISM8Je308/CJNIENap18H+mz6xVgo/GoaF+QRtq+LkIghYG
-         R1h4FIjQxCcN6jeePWvc/UdTtqjDIIAIluW6BGt/iQaLyp7AEmRRGvX8YTDvFK7Q+q1J
-         71hyXUbiZVrvSEMsdR6B+zOnHnhe2FfD/OSj3rMoEfwpsxYsDXjlE9wYgce6xgVvy+no
-         6fbg==
-X-Forwarded-Encrypted: i=1; AKwUvByOVmCkavcVWekbYW08jGI/bBEdcufJx4ZtVNBDy8D5vN0y2TLbYRBnNww5+wl/MGdlv8yPVPY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIdqUwwYKm1FCg5twS1fh5H2y/YEykBGyoPlPWrDxhVdXI0bvYL
-	Mvu0AkO0efTf1NlsMPfK2ZSFszvQSEbHp5aT9WILdlzO79wixqr8MBMC
-X-Gm-Gg: AYBFou3id/vaCzVPzZmHpeFs3CdaHYEhboe9Gr/rxGQap45tFC0rD440ESODEFnXE1i
-	NvF4hLZofFnhlu81M16xk6xjtK15kjCG9hQPCV5PwKl/7EktHzQUjbenLh49EGfYlNhwjbnEKWK
-	HdJhFB+hAKqjRbIVNrmGop7HkaLRbw35EyYY336p1OFIXr97vRZFgkFSmVrqyEpy9gr3EhFbd1Y
-	S7acXRDYhElQ8hB+ufbO4FTAwi2Lc+kkgfEBuR00c5sOvtSPPWnz4zWFv5eckEO+B02NP4OXe1m
-	3KMCJMuLGQjK/gMbMUpnrvM/HvgY1BOXLaeVKgitUuuiEZVHMbqahVHjwsrhLyV0QWMHClQhmzp
-	1UsZ5sRxbm8uFu4CctwXpUOfP+q2uiw6892hovyWl1Al9NlZ85G6aIvuI3Vbkzbs4aASlDNcsGG
-	n2Xp14YJSRPHw8a7j8lsrhkvQgBl8Bqzg9HEyoKRW6q4WvwOlOIYZ6imRwSXYbXTFvNI85pn4+e
-	L5ntkVfU8WO1kARE0cerv/z19FrLeGQZk2kCQqLUviXC93Md6WohycWXvQo2sPKZELX0jTxfy1r
-	H2OdHl43TPzuH8IMMDU=
-X-Received: by 2002:a05:7023:a82:b0:149:1b5b:1f25 with SMTP id a92af1059eb24-190a4c1fa39mr5950603c88.15.1792660651419;
-        Thu, 22 Oct 2026 02:17:31 -0700 (PDT)
+        bh=ydSllVnxJwUmROhHxhg7pIdiTiTIT+tFa1S9Tfrhzkk=;
+        b=L1L50UoKT1ZyY8n4DXTse2D6yHjIK3+NgF0A0JJO/9JaxKf3LOBkmD9L8+2XuBFSO9
+         S+Ggbg8y+znDrVY5eKF+7d1YScCnx3ORZe7tb4fui+aw+dKQg+USigrc6dAG7e/tuqIW
+         aMo4FjKfmwtU1Yqt+kg3DH7yAw0wUyDM4L7Gu3G38yY1G1HRcgAs75GQeE3neCodGOqg
+         umL8VNPjIO9gLxjfzeF5FWTj7MrhKlAMsr1k1tcsxg1KbIkJcQntsqhgm/MYnNPN6t7a
+         /BZpI/dphAikNXG+wFBAfKlgS8l1ZjLgwo/Te5+nMPkSwXuTIA24pbXJ2Q76fdW7pxsF
+         6BxA==
+X-Forwarded-Encrypted: i=1; AKwUvBzQnd2oIf64YmrVeaWLOFBzWS1WUzz473wB3OVIsMbO3DP59BY2PWydUdRl1JXEKI7fTgFjZB0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJgDRCDnBddIiXxgfhZ3BhlQNRPNTn45Z9o8F3Kg8GFnx4IF/7f
+	rMseg1MxrXbQTGd70pVWQeaO3dtXyF6tIE/6OW4HUheIJHak+BRLlWhq
+X-Gm-Gg: AYBFou1PiU3wy8b9Fju6tSkZNCINbuZUzmErIPxgOs5R5h6v8EcfHkG2TH43XIdiRSp
+	1IrowLj/qhuNaaO6mDgol/9RrwyYi2l9+dQZ5kb0eYEPJPmxKN8l7uy/YBxSSM49+CwMQw/onkO
+	tUwwOPUctGLS3kFb7rkpQrW8xmrr4CuJal+3TQsXEyY7qnMNzQ4NYBHsTyQIJeWCe7zqCkSTcMw
+	s+wrDJpa50fndfORBDGgy431UCioU9ioxEbp5CZ9uUkQRZAgSzCzw4IESz2LGh61MqFwQevsJlv
+	91nhTWkVtpkPxsq9S2M1haNeW591DcFjn6b1kGkwtv0c8np5HQwqpTGioPOX+mk+G/ZR5xI65Uh
+	fwC7FeXCoO7aMtlZJ0QI+Ou9PU2kIl5d822+CA2UufYtV71NYP2VTxs/oXBUe2BMFE5e8MMTvxM
+	B9TRpc7mvLmYuYNxGVHk3H4fasf1+epCyryKLXO2qpDpVJ83FWsPgqSJPM1iLlcqNozqlM8+VFp
+	mS0f08Lfy/0WI3wsElNUuN8xorbRB1It2cZG6xa9IxTrki9jGPiYKHqwQ0LW5Cb1LpjW9TqKvVA
+	z1HDf9iq/UO/lr8L9zn2jmKKYbQzu4L3w8jzh4Mv
+X-Received: by 2002:a05:7022:3804:b0:17e:6de6:6a1a with SMTP id a92af1059eb24-190a4f064a9mr5160458c88.8.1792660662898;
+        Thu, 22 Oct 2026 02:17:42 -0700 (PDT)
 Received: from youngkk-vm.localdomain (67.216.200.102.16clouds.com. [67.216.200.102])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1903e4f2eacsm12227509c88.23.2026.10.22.02.17.28
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1903a275026sm19890469c88.5.2026.10.22.02.17.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 02:17:30 -0700 (PDT)
+        Thu, 22 Oct 2026 02:17:42 -0700 (PDT)
 From: Cheng Yongkang <teel4res@gmail.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>
 Cc: "David S . Miller" <davem@davemloft.net>,
@@ -86,9 +86,9 @@ Cc: "David S . Miller" <davem@davemloft.net>,
 	Paolo Abeni <pabeni@redhat.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [BUG] net: ipvlan: down-slave deletion leaks parent allmulti state
-Date: Thu, 22 Oct 2026 02:17:25 -0700
-Message-Id: <20261022091725.3652834-1-teel4res@gmail.com>
+Subject: [BUG] net: ipvlan: ambiguous external multicast frame is dropped
+Date: Thu, 22 Oct 2026 02:17:36 -0700
+Message-Id: <20261022091736.3652981-1-teel4res@gmail.com>
 X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -104,40 +104,48 @@ Content-Transfer-Encoding: 8bit
 
 Hi all,
 
-ipvlan_change_rx_flags() increments the parent netdevice's allmulti
-reference for an ipvlan slave with IFF_ALLMULTI.  Unlike macvlan,
-ipvlan_stop() does not release that reference and ipvlan_open() does not
-reacquire it as an ownership pair.
-
-If the slave is brought down while IFF_ALLMULTI remains set and is then
-deleted, netif_close_many() skips the already-down device, so
-ipvlan_stop() is never run.  ipvlan_uninit(), __ipvlan_link_delete() and
-ipvlan_port_destroy() also contain no decrement.  The parent therefore
-stays in all-multicast mode after every such cycle.
+ipvlan_external_frame() classifies an ingress multicast frame as local
+when its Ethernet source equals the shared ipvlan parent/slave MAC and
+its L3 source is present in the port-wide address hash.  An external
+sender can produce the same tuple.  The frame is then returned with
+RX_HANDLER_PASS and is not queued to any L2 ipvlan slave.
 
 Observed on Linux v7.3, commit
-08ab31164c55f20c7a2653de3186ae333470e2c1.  Three
-create/allmulti-on/down/delete cycles changed the parent's
-IFLA_ALLMULTI count from 0 to 1, 2, and 3.  A later live-slave
-allmulti-on/off test changed it 3 -> 4 -> 3, showing that only an
-explicit off transition releases one reference.  The leaked reference
-survived deletion.
+08ab31164c55f20c7a2653de3186ae333470e2c1, with two ipvlan L2 slaves
+and a veth peer acting as the external sender:
 
-The 2019 review of ipvlan multicast propagation already noted that a
-dev_set_allmulti(1/-1) open/stop pair was missing.  Current source still
-has the asymmetry.
+  external ARP broadcast, source MAC == ipvlan MAC,
+  sender address configured on a slave:
 
-A fix should pair acquisition/release in open/stop, as macvlan does, or
-provide one release path that runs for deletion in both up and down
-states.
+    parent RX +1
+    slave 0 RX +0
+    slave 1 RX +0
 
-Candidate BR-014 is the broader deletion-path description of the same
-root cause.
+  identical frame with a different sender MAC:
 
-The self-checking reproducer and serial log are available on request.
+    parent RX +1
+    slave 0 RX +1
+    slave 1 RX +1
 
-This was found with a multi-agent workflow; the
-refcount growth was reproduced in QEMU.
+Packet-socket marker captures agreed with the RX counters.  The frame
+is lost only when the ambiguous source tuple is used.
+
+The macvlan sibling documents that source-MAC ambiguity cannot be
+resolved and prefers delivery, accepting possible duplicates.  ipvlan
+currently chooses the opposite behavior and can cause packet loss.
+The same classifier also explains the duplicate direction in candidate
+BR-015 when a reflected local frame has an address that is not in the
+port hash.
+
+The classifier should use an unambiguous local-origin indication or
+make the ambiguity policy consistent with macvlan.  Candidate BR-016 is
+canonical because packet loss is the more important symptom.
+
+The self-checking reproducer and complete console log are available on
+request.
+
+This was found with a multi-agent workflow; the packet
+delivery differential was reproduced in QEMU.
 
 Thanks,
 Cheng Yongkang
