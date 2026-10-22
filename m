@@ -1,101 +1,106 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.171
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792660740;
-	b=P6AI2lx4hZlEIOe+gb9zDjTl7Z+fk0XnuZygd0mbHrdUI4m8P0knL6UqvTgwc+oSoecV
-	 tnVn3e1e8svy4VOD2B1yS3Zfht8aLqwQbfgElm3Y7yCtAUU8vZyqsZebuTrlA0gVCU4jV
-	 0v2PdVdgArNR+yMgKe+40Mo3GP/jrzgdWzt3fB65L9SO1xo0TgR8rDD9s7yE3NDM8XYHG
-	 78g5FLAbz4Y62b7+CfO68r4YOCIT+RnqWOzSJTLfu/VVBi1y7Xuy3HqC9ybYZ9JBCi33V
-	 T/S41/k5oUBPn8tBDQ6ggfso4JVTDDwmBXmEZ0NtUd1JYnA62YZtSoXlTn27fxNh6Mg==
+	t=1792660949;
+	b=wY/XnR3WH6tJtqXtS4KNnYtSE8PPrktZzsabDWqQVMPA3+4DbfB5ORqMpKzXeEYaQ6dz
+	 P5FgrmoPGqcNDoVhjMjYfbCKfPTipdXmYwI8ObltdWW8hLKtubDtkckVlsarbDfaYjiNv
+	 9jlT4RbupS9fgSJDiGK3FUVmW60SyiGBuOQaMcGi8ZvaISbhLQ8HBayEMPp+N38mjHQ8e
+	 tjyd6mtK5hadpz0xg4UashwrB+oo2SZTdz/RIcVrum1XeyPonX8p4PXvXwPPHRiq3xLmy
+	 DScPNbayDdCdRTEqjFKbv13Yxf6P9gJDrf1Wto9mWK9FSH4DkjrWG5kcA41aLrqjDZQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792660740;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792660949;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=+3+RimD4u8oBrFVN6CFkCZt6Ny3U/0D/dKYnMLBj9z0=;
-	b=yO5c5Ly/J4QfemJn7dcoAw9JlJ3sdcnM2mta4PzmHry2cU4/Nt5cMiAWGd2oVpzyDY54
-	 vVHs7Nvfva2l0Zko2VMCPXbQQLZII5w5NdL8xLoH7a0NMfpKpwFlk7BCYUyDabLd12SrM
-	 SuAh00ygBPkM2poQaennRkdbaHg1aQzrmwdyKLMuSOla8Y88qP44qOng842lOZf24Z5S6
-	 J0o3r+DZ7zgEfMAhpx+vcNDnHJvQDXsjnSdai0CUs5o6VyiYNST2HGaxapq6k7Q1bVCnJ
-	 cqJHhYTzooIv2PAM2OsXYUZ4uZvBCby0LMLfYDO8qQBwZYid+BdHv1w8Fr04PN/yCTQ==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=0FK1E4HafU/gDAYLjqfdLFPs2u2/Ks6IJ2norac6D48=;
+	b=Z9YmbcASbwZrb/Kf6DXmWveElpvDTU4mqSGXtaxV/QdGbGaxDTc0A6AmOruDqWvgg7iL
+	 SPjYhHTLhLlnIc89BRk+iBVAX0S3h0J6vuNVqrgSkDKBkfZCHpCBcu2oSpH/26iNoIm1k
+	 6UK8xJjR2AWUgjIbr70qlaRuiWnUGjxxgqn6VoeqG+1hEQM2CyVGrI62lgf1oQp8J3zKU
+	 MQnexV20lA6e6NnSmnxualeMhUrwFw18464inHJsXwhvPzTw+ek93sDAFWq/tN19UvkxY
+	 iDQFpArYv+wnmw3SYT0aclOfJE2vSLfdHOLDG9vsGU7s12kReK/qECmcNbcO5X85QRg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=e1FUsMFr;
-	arc=none smtp.remote-ip=74.125.82.41
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+	dmarc=none header.from=mojatatu.com;
+	spf=none smtp.mailfrom=mojatatu.com;
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=naMusfyD;
+	arc=none smtp.remote-ip=209.85.222.171
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA22606A326
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:18:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EDA22606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFEE7606A31A
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:22:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AFEE7606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=e1FUsMFr
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-16079d54c17so3058168c88.0
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 02:18:59 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=naMusfyD
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-93f30660e69so101138785a.0
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 02:22:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792660738; x=1793265538; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+3+RimD4u8oBrFVN6CFkCZt6Ny3U/0D/dKYnMLBj9z0=;
-        b=e1FUsMFrTAW6QUpswIa27YiiEcGG5ijLLfxGR6RmpqWQsR4NH+jWQrxhV4Cd+WZeqY
-         SilvJXZEpx8dcyIkaaG3dqf/oi7lQCdZL+hVZunr6sh4Xz9x5EkYUgclVMFHIEoFcMqR
-         WqjZl8Cd1Grb3KGpm5TB3loCliDh2wioVKem9bzi8huMz+rIPBvWX4cJnJ0k659DA7Xc
-         y5M61fbbg/QUgdxQdy5EkaEHvmYzS+AJBOM3weQgQR0F6yzcdhkdN6S25ZJY8SSkNGeh
-         LVESuY1D4biD13sEGWrOUFQsr+/HnjxyVx0rlOXU2oXSzxWSKgm+Q6/OsvgJEdaxt2C3
-         xorw==
+        d=mojatatu.com; s=google; t=1792660947; x=1793265747; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0FK1E4HafU/gDAYLjqfdLFPs2u2/Ks6IJ2norac6D48=;
+        b=naMusfyDTxsNKa2YjsTrbzZz5uVWUPeL+KObvcgNgN49PF27GZ0vJ0uUw0/+Ssqwfs
+         BocOAm23beY3zHsrnDOhOIlSKfH/vk7mHxWsoGuPxvPSqU1S8SvWvVXnUZ03x9rRIAmY
+         ThIhlllFaF78HxOxEWl4ty9dGDlsmInwxh6s4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792660738; x=1793265538;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+3+RimD4u8oBrFVN6CFkCZt6Ny3U/0D/dKYnMLBj9z0=;
-        b=D2R0T8/xQRKGMPw6zv46Hhj5P0YYMFBNHYeA6NuRiulwLL6ykO2kK3+XH7Rh2hqihc
-         VSoxNBaxJnnXeTNdJj7qt5QbSM0yoVjHZxHbJh1PbdvpFt6h4ZM1EcsBnkp3Xw+ytOAA
-         ZPu4gxjGFtOxMlgirn/niVpv7SnRWQHKPX1x/bewMCiPgDuYVm+AvIccSLxPew3DsemC
-         lArGPGqSc2P8rwZAzu8lKBzQva0k8AVtzwH62OtcPKNoSKGQQWY+5pGaWMv7Yw2A3QLM
-         8Mpv/YYyXw0sv+ZNDgS6F7jANBxF9HTwFIHZo3VniQotCsQpqJYC71dzDE+L3FWeiN1x
-         4aUg==
-X-Forwarded-Encrypted: i=1; AKwUvBzUPpgxJPCqwxgLXHySKSPs6MAYZcHXOWXrPhbMhdap4XixMmHJZOcSD9iCLJHSQdpLmeynRlQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLZ7B8M/l+2n6QVEjlMiR2hDIdrpRRc+xp5+y/d/qdWKPsKzBy/
-	lKXTkIVE1c0go1bzzGv3esAlYJ/HdWra/MH81lGXwnkM/ytUUbk+4czZ
-X-Gm-Gg: AYBFou1UNQrner171RzTgTLv1BtgAu1VIQNWJ362ieMNIE855gPDYsgIwBL/9Lxbh4X
-	i4HINCC068Z4B2Jlfm8h3l0/fBx/cWvjwXAtudNGsh60xm4vRDyEv4q68wFb/8GETzQzhOebCyV
-	w6LWHmI1MlRTJeGhF4gSxFJ30/Q8FkJe1SMxNukDbjTTtocwBcSXaL8jBqDG6XD5kylDtuNCKQV
-	Nep8T+iBQ1VL71Km4iJcGrkMFUwjF3tlOUtUir7VgJLAgTU0pfof3xbmiSdKOldJfWf1EM99c8k
-	CijJZhc4yAks1ms382AqgpHgfpM+6Yp2NzMIr6GXiK9Vv6+wbrUoaNNkJL35SbM73ou2yyOLhF/
-	nxEoFPauSfxdCRPl1alR20HoJRfQLejnmX1w/cP9yE6+SWaxwpwOAQ5SbNXBTBoNQpBQt/WLwcC
-	QiZ/yr9P04iZZhDc9uZRLuI2HG9si7OGFTB+8JyVTAc9f+FTuWR6h3b9qklSu13q2He9Hyn1W/z
-	qqtmY/gfUpWH0XkQNyci7o5h/cFfmPYPxXH1sdwzzddGvADRof2fnwJwX1oMv0Y0LHKWd46E1Au
-	jnreI7kY2MuhN1xsBAJMkLSiNM0yV47EI6ceyvEI
-X-Received: by 2002:a05:7022:ea57:b0:144:f089:b189 with SMTP id a92af1059eb24-190a74775b8mr5453836c88.36.1792660736253;
-        Thu, 22 Oct 2026 02:18:56 -0700 (PDT)
-Received: from youngkk-vm.localdomain (67.216.200.102.16clouds.com. [67.216.200.102])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-19035926035sm11607230c88.1.2026.10.22.02.18.51
+        d=1e100.net; s=20260707; t=1792660947; x=1793265747;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0FK1E4HafU/gDAYLjqfdLFPs2u2/Ks6IJ2norac6D48=;
+        b=Ud/ihJwnUjpOSigrj7wWBG+k08yWI4W1thon325RaXyhxtsuYKAFb0jV7c8pDVVZNq
+         JdyoLMZYvmwnI4aCn5QQKhSdRgIOPya/u+pLYOTUa+dDx1jS8SUdKoGzUx7CZGvO0n6+
+         06D5bEvq3G89WtnhWo4NHHszCsA95pu3cCEyxCk4S07iDOKE5ZAPIQdK3ivBQvCJ/+/x
+         XVtoLTq+/jm8VqBupuG2fVXrC1V9ysgW63AoGQ9KhBKZ7O5j6zogrxDfMiYmmG+0ZJMO
+         BglGAyTpk0ygGhxm1VWzFJhcsZFnULh69k41s9+FFNvJbkrPIyQLNFk42kgKPKE6gPIZ
+         pW4Q==
+X-Gm-Message-State: AFq9FYJISqyUNgq6WWflZZVgd1XLoMPZRU88u8NcoVrsxQbM1kCcaqwx
+	QIcspRuAyw/dOaFj2TwJf5MPLH8GAlSIYBypy9LtC5/Ovi3YuiC7S/w878i2Jn/a78IFBqXW+Eo
+	vjfk=
+X-Gm-Gg: AYBFou0wHZY4Shfcvl99OCK0B9zFcF/1aXJZEIrZ88l6/NFch3sMqDhBCzhZ40mt2f3
+	SPMpfSqVtaKlV4X9LENUcrFDV4j89rgBsc0EOqk+eVjhH5zseSykgYOUUSjy9ht9G9YXx28kvEU
+	g7P64/XDO9T8Z4JhBpzNnMYWXZ5YDunoJI3/WYklutXIM5ivAvTVsyGXzd2PmKWWg/UaT01f9xB
+	l3/NrT9Jbjqi6r8AR4w2EPpsPPsxkjF7TUviJfF+DRUEKK0HJH+D586ZjX8281481AlyYXT2mOz
+	eE10QhheZOTGeq+gMI5DmowK/zso9uBDn3disuSLTNWe3UGzEskOBtzr/f/xgKeedtfrR78gkLv
+	6KNRO2UghkDhs3ab44D9ZiHhlXWdRgXFfQMvqnhDCCBUJrBinA6ywmsyCjM1SAVnRYQmh52ti9I
+	nGunLPBYVu02oQkchkaN/0zVjwbq4y7qR0aouf1St+m92uviAQToHFrD5MNVCzlQwkt7WPV8bhZ
+	BkC/Z66whf5uheE5t3D6SzlNaB2R89Ijoy1TmlXYZfnrHl7hJcTyIDWf0o5wxYstnIZ1+e3TTjA
+	ZyE0JbTHSrD38ina1LloUP+o3/2O7Mse/NUzzGXpbdEheh2A
+X-Received: by 2002:a05:620a:2a0b:b0:93e:e394:78df with SMTP id af79cd13be357-93f57f62359mr848019985a.58.1792660947621;
+        Thu, 22 Oct 2026 02:22:27 -0700 (PDT)
+Received: from mbili.waya ([64.203.83.2])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93f56e2a60fsm469884685a.41.2026.10.22.02.22.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 02:18:55 -0700 (PDT)
-From: Cheng Yongkang <teel4res@gmail.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	"Michael S . Tsirkin" <mst@redhat.com>,
-	Eugenio Perez <eperezma@redhat.com>
-Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        Thu, 22 Oct 2026 02:22:26 -0700 (PDT)
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+To: netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Vega <vega@nebusec.ai>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Guillaume Nault <gnault@redhat.com>,
+	Simon Horman <horms@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [BUG] net: tun: zero-copy path can expose uninitialized packet data
-Date: Thu, 22 Oct 2026 02:18:47 -0700
-Message-Id: <20261022091847.3654028-1-teel4res@gmail.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Jason Wang <jasowangio@gmail.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Martin Varghese <martin.varghese@nokia.com>,
+	Eric Garver <e@erig.me>,
+	Yi Yang <yi.y.yang@intel.com>,
+	Jiri Benc <jbenc@redhat.com>,
+	dev@openvswitch.org
+Subject: [PATCH net 0/5] net: reject short linear Ethernet headers from tc actions, tun and OVS
+Date: Thu, 22 Oct 2026 05:22:17 -0400
+Message-Id: <ACT-N6N4.v1.r0.20261022051412@mojatatu.com>
 X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -106,58 +111,34 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi all,
+A recent flurry of bug fixes for dealing with kernel crashes around
+eth_type_trans() showed up on the list. The earliest attempt to fix
+this came from Ren Wei <n05ec@lzu.edu.cn>. There are many others
+(but i lost track of them). Ren Wei's latest attempt hit a roadblock
+with a NACK from Eric[1] asking to fix at the "producers"
 
-The experimental vhost-net TX zero-copy path can hand TUN a user buffer
-whose effective vhost virtio header size is smaller than the TUN
-device's configured vnet_hdr_sz.  TUN computes an skb copylen that
-remains larger than the bytes actually available after stripping its
-configured header, publishes skb->len from that copylen, and
-zerocopy_sg_from_iter() initializes only the real payload.
+These producers can hand a packet to a shared consumer with less than a
+full Ethernet header in the linear area.
+This series identifies and fixes the following producers:
 
-The resulting frame contains an uninitialized tail.  The tail can be
-read by userspace from the TAP peer through normal forwarding.
+  1. act_vlan POP_ETH rejects a short linear Ethernet header at the tc
+     action boundary.
+  2. act_mpls POP does the same, standalone or chained after POP_ETH.
+  3. tun keeps the no-offload copy hint safe (raising a short hint instead
+     of rejecting a valid write) while guaranteeing a linear Ethernet
+     header for the redirected consumer.
+  4. OVS pop_mpls(ETH_P_TEB) pulls the inner Ethernet header before
+     restoring MAC_PROTO_ETHERNET.
+  5. OVS pop_nsh(TUN_P_ETHERNET) does the same for the NSH producer.
 
-Observed on Linux v7.3, commit
-08ab31164c55f20c7a2653de3186ae333470e2c1, with:
+1: https://lore.kernel.org/netdev/e85fa16e-df3c-43dd-bb3a-9edca07200ea@kernel.org/
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 
-  init_on_alloc=0
-  vhost_net.experimental_zcopytx=1
-  TAP vnet_hdr_sz=200
-  vhost TX total length=256
-  real payload length=56
-  TUN copylen / skb len=128
-
-The exact control with vnet_hdr_sz=10 delivered the expected 246-byte
-frame.  The corrected trigger delivered 128 bytes after submitting only
-56 payload bytes.
-
-Sixteen of sixteen corrected triggers produced the overlong skb.
-Eleven of sixteen had nonzero bytes in the 72-byte uninitialized tail.
-Several contained recognizable stale kernel allocation content from
-previous skbuff_small_head users, including fragments of environment
-entries.  Those bytes were never supplied in the virtio TX buffer.
-
-This is a userspace-observable kernel-memory disclosure on a
-network-forwarding path.  It is configuration-gated by experimental
-zero-copy and an enlarged TAP vnet header, but the overlong skb occurs
-regardless of init_on_alloc; init_on_alloc=0 is needed to observe the
-stale tail in this test build.
-
-This is distinct from candidate BR-023/BR-025, which exercise
-IFF_NAPI_FRAGS.  This reproducer uses the non-frags tun_alloc_skb() /
-zerocopy_sg_from_iter() branch.
-
-I found no direct upstream fix or CVE.
-
-The vhost ring reproducer and complete program/console logs are
-available on request.
-
-This was found with a multi-agent workflow; the
-information disclosure was reproduced in QEMU/KVM.
-
-Thanks,
-Cheng Yongkang
+Jamal Hadi Salim (5):
+  net/sched: act_vlan: reject short linear Ethernet headers after POP_ETH
+  net/sched: act_mpls: reject short linear Ethernet headers after pop
+  net: tun: keep TUN short linear copy hints safe
+  net: openvswitch: ensure a linear inner Ethernet header on TEB pop
+  net: openvswitch: ensure a linear inner Ethernet header on NSH pop
