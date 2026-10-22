@@ -1,54 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792641251;
-	b=n866RDxeFCZlL4yNMGShtKs8dtUIIPp5tNU56I65cNB5J0IF1KhzwHy1uTJJw5lzL7Nu
-	 jnFKOEXSIIGYrW0DclmWOQ4+TptUEU+tRTvxYTacVL6RMbI2oqjqPvCM78XORcscvpTbC
-	 Y0Br3pR2rTUoOPmHFGL/0jOtAhMlgU/Wu7BrlcuhX/0dXIamTukBZ0StotwWckYEgHHnU
-	 rKqUa0dkzMRqSBC+zPWagSC5seUCVRk9mTb36CfwQyZbZ6nzYj6SNTwgJKO3xlFpjHj+4
-	 gjGRW65sf3eJqYI53DocOHbpK5PM3+kKZR47Zm2tlICmJbjeFOIoTTTH43upQb+qmvw==
+	t=1792641949;
+	b=NIzARM/NjxxwB9dXteLFsdzPhRUaaoqxKkpnt/m5RjCWuYoGRie1lWlMF+trsTr/Xf7N
+	 o0UrTO39Z4tqQJqrDdGSDAhHYv8sDCuUDiEbMFX2JGhvbbUrAHGt/d36wef3VRE6Yge/q
+	 CHJoxvKqfVKU1gf1edcIile8QxVUrHv4tNO1y8ddeEjVdgLv/kCKXO66UqRvlQ8dIqBNB
+	 uBSQWhBefUs5IStYtx2hPqVrEEbYitfL8rgsyOUxZ4twC4YRd+v7VG1QyGUBHj6n2nWuH
+	 5TcQNX0q/ZUcNCS5SZg+a+j9WvAz9kHjv00EE2qTqeGDypg8FPTSAcNGTYtFyE+ZBHw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792641251;
-	h=Received:DKIM-Signature:Received:X-Gm-Message-State:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=xEoTQ9N/Tf+sH4oyVMEnoem256sSy7IUWX9i50eKFv8=;
-	b=derzU9HOXLN/c6AroiNoR9gz+xzjh6PXoiT/Tt3Rily4OMpvCubiiqgvzFmjsAlYPg6o
-	 u+XXEmS+UeXahjLVCsUuLEpmeHkYx3HD3aF9LxC7fv9nYprgC9MCy7rZSQQ9y28ndAS4c
-	 i72wHXjfY87fo5FOMycqN1OLCjOtrDtfCu4A96irshiKAf84W+3Rlu3m2xGa1SN+7D0JI
-	 yV0Xp2Vf18tg2dz9IPfyrOI4mRJ6BwqxGn56CvIWoaxWCYt+5U6rGnJdOvPlCzZuKZr3Y
-	 9iFa0ovDI5vAglU80VPIEXF2MklDj94pGuCxBAsSvHp1Y+rZvCgn0qwQSqg/riP2oFw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792641949;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=TiImOToCOTXq8bZ8fUxI8UXbwrtFjndQ9HG7GJvNlgM=;
+	b=BPQGFqhr4TYxtvR+vyLHfNQHX3pOdRRwLJHEJ8/wWvuKgHxxluwP0MOAExxGLEf1Oz3o
+	 klCKyO1k8A7P8+4+3kIJ0YHQs7xRK6d147VZtdQpYTFdCepaLZ5Y0OB5kHy0P199bJw8H
+	 dG7/yIH9Tliaz3EGrGUazYrYOuF+gQ40JZp6yMj0QoXY+jrdHaIDuylhS3QfmzDppOVjf
+	 iw3ZySA0I15hEkrGsHOmry87k8b4yzYzewSwqjICUuI/CnzfxaBtX2C4StW0I4/ivtzyL
+	 1BAoCQPsJLlYW+FyfzwYedVsJ2HFNRDIhdGB1mEtOhet/7531vqBTLB+u21WNuLxGvw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=baBKQxV+;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aqA8ksLh;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51911606A327
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 03:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58823606A31A
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 04:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=baBKQxV+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D451F000CD
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 03:54:09 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aqA8ksLh
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 189BF1F000C2
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 04:05:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792641249;
-	bh=xEoTQ9N/Tf+sH4oyVMEnoem256sSy7IUWX9i50eKFv8=;
+	s=k20260515; t=1792641949;
+	bh=TiImOToCOTXq8bZ8fUxI8UXbwrtFjndQ9HG7GJvNlgM=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=baBKQxV+L2zV88aADSZl53MJEoBXHTQUWT553YgvDZ4Fub7KVSSh/iwPCIo61JpGi
-	 iaUKQSnlHxkfFa89o6QfoJzwnYvbQHnxoq3JlLItBhR4KNky6ros29878rdmM3Zain
-	 01zgmpKMWCm+RKOtwWlB7nj8XuQuPmW8JEkpw/9VBVXtXjPFdVKC9qwRT2Ku+9WWuE
-	 /maDT98FV74H7Gyjrw0VSeuXcoNjUhwyJId6k3TxJwcxhnN3usnK7zF5XU05+qWZW2
-	 8iaEI9cjUPvy3H0iQ5TKGH03ZZOm8eJWMTB0dL3PoLnWGdL9Xd5m53LJ+3yDT/NxYv
-	 V68zO2A1sNp2w==
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-6df7f544919so803838eaf.1
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 20:54:09 -0700 (PDT)
-X-Gm-Message-State: AFq9FYJNxGB4cIHxfwhp62W8Dpb1XGyrBTS+FGjk35fgu4+LDApl1Qxc
-	GtOOPVBL4J/6k9NXkQ0e+floeecaHAMlvVBjdfbilp8jHZca6oFCCGSuXMDC0BD7+EzhTDVTQU1
-	Now25Hqln1G9DAaS9ACfpW6f2rCyH2U4=
-X-Received: by 2002:a05:6820:c8b:b0:6d6:bd40:5cc9 with SMTP id
- 006d021491bc7-709422cb82emr2490276eaf.90.1792641249241; Wed, 21 Oct 2026
- 20:54:09 -0700 (PDT)
+	b=aqA8ksLhKuHUbU6bZOKjQXxcXqn8Id8c1bUUvY9hat1DfTv9isV63FcmNeYv3wVL6
+	 ic2KSePquJ+MxmtmazVKzTKqUxZ+5QzskEKV8mgmuQ15sHWHBhEH2kyIHNmr+/t+XP
+	 KumYoYrhAXWkwPz2GlYD+LGufP1RbyFv7tX2qWsL1qeQhcV/cdO767Jcmbg49fL2L9
+	 cbKfqofFFBIYxcuPPOn33DTxZ2WOOIO0cNVzSloP4spWj6QZRIsbdXKiexUjvBn5WO
+	 hciWzcrhRzHHHgqUgttwrS3iv14ROzkrerFj6hduhU5Q74uueW26JViz98cMcBB4RS
+	 nI4sv7LGpP9fw==
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-4a76f63b243so358889fac.0
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 21:05:49 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvByF2JOFLEZQVHYMUqRE66KJ8gj4evic7FxO/Hh9IHuLfAaHq00Ykbh5HDJhUvpQ+Fv1+SOL/AU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLv7ko1vp0AelxHcf+KAhrdF+o9dSt6AM+sOWBZ5KZzNpGr/Qmu
+	3JVJ3tLHuJhA3AKu09HYBuOLyhdenonhyblB6oZqNx/CFm9RDpRo/GoCD38NzqPXtmRI2P+3m/C
+	toFYulC9uI7FAiQRdxyN2eikKZj4Feug=
+X-Received: by 2002:a05:6871:5212:b0:467:2b0b:d07d with SMTP id
+ 586e51a60fabf-4a7fbd19e5fmr799364fac.1.1792641948284; Wed, 21 Oct 2026
+ 21:05:48 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,101 +59,58 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <cover.1792607608.git.zhilinz@nebusec.ai> <2773af2572ff59055933e407a135b39bca537381.1792607608.git.zhilinz@nebusec.ai>
-In-Reply-To: <2773af2572ff59055933e407a135b39bca537381.1792607608.git.zhilinz@nebusec.ai>
+References: <20261021023608.55867-1-qingfang.deng@linux.dev>
+ <179255036282.3290.8488375760281728576@kernel.org> <c0f348bf-0e13-4cb1-8014-cd9b7787bfe6@linux.dev>
+ <CAL4WiirRPnbSBgcoh8Aiq8zGVzsy34w9uaqAgSKQwpgJ0ht7aA@mail.gmail.com>
+ <315a8794-db40-4d0f-9e4c-0cad66174bff@linux.dev> <CAL4WiiouaJ5QU24uKt=CuxpfgHmWHS5oxoE2E_C6KFCLbDh0+w@mail.gmail.com>
+ <51ccddcc-53b0-47cd-9526-ccd825f0f6d9@linux.dev> <CAL4Wiip2F59XO3BrjUHVrFqYMuD-LxNmZXhtftkV-JG0Ya84Yg@mail.gmail.com>
+ <b3091ab0-0e1b-4835-ae36-14978af46fa3@linux.dev>
+In-Reply-To: <b3091ab0-0e1b-4835-ae36-14978af46fa3@linux.dev>
 From: Eric Dumazet <edumazet@kernel.org>
-Date: Thu, 22 Oct 2026 05:53:57 +0200
-X-Gmail-Original-Message-ID: <CAL4WiioBzbo81K2EVw8UQG6w70JS3D80GNoDndXFfcG-qAhUEw@mail.gmail.com>
-X-Gm-Features: AclHuK8N5ds3Fw9LF2Dx9sFZR46QYMs5QxSl65xz5Fzea10VnJ8VVtAmE9IYTNI
-Message-ID: <CAL4WiioBzbo81K2EVw8UQG6w70JS3D80GNoDndXFfcG-qAhUEw@mail.gmail.com>
-Subject: Re: [PATCH net 1/1] tcp: release congestion control reference on rejection
-To: Zhiling Zou <zhilinz@nebusec.ai>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, ncardwell@google.com, 
-	kuniyu@google.com, davem@davemloft.net, pabeni@redhat.com, horms@kernel.org, 
-	jonathon.reinhart@gmail.com, vega@nebusec.ai
+Date: Thu, 22 Oct 2026 06:05:37 +0200
+X-Gmail-Original-Message-ID: <CAL4WiirdFXnCnDNFGvzWQWcao3mO28RtRUxW3SMQhA=5dytRMw@mail.gmail.com>
+X-Gm-Features: AclHuK9wNLzQ4G2rAXhCVxnW_W1Zrh82nJcNVv3s2smPAoJUev7jcw2ED7nE4ms
+Message-ID: <CAL4WiirdFXnCnDNFGvzWQWcao3mO28RtRUxW3SMQhA=5dytRMw@mail.gmail.com>
+Subject: Re: [PATCH net] ppp: linearize bridged packets when required
+To: Qingfang Deng <qingfang.deng@linux.dev>
+Cc: netdev-bot+sinfo@kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Breno Leitao <leitao@debian.org>, Kees Cook <kees@kernel.org>, Taegu Ha <hataegu0826@gmail.com>, 
+	Tom Parkin <tparkin@katalix.com>, linux-ppp@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, James Chapman <jchapman@katalix.com>, 
+	Sashiko <sashiko-bot@kernel.org>, Felix Fietkau <nbd@nbd.name>, 
+	Pablo Neira Ayuso <pablo@netfilter.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Le mer. 21 oct. 2026 =C3=A0 20:57, Zhiling Zou <zhilinz@nebusec.ai> a =C3=
-=A9crit :
+Le jeu. 22 oct. 2026 =C3=A0 04:18, Qingfang Deng <qingfang.deng@linux.dev> =
+a =C3=A9crit :
 >
-> tcp_set_default_congestion_control() takes a reference to the selected
-> algorithm before checking whether a non-init netns may select a
-> restricted algorithm. When the check fails, the function returns -EPERM
-> without dropping the reference.
+> On 2026/10/22 1:55, Eric Dumazet wrote:
+> >> What about NETIF_F_FRAGLIST?
+> > I do not see your point. Can you elaborate?
+> >
+> > There=E2=80=99s also nothing left to gain on fraglist packets.
+> >
+> > SKB_GSO_FRAGLIST packets already go through skb_segment_list(),
+> > which just unchains the original skbs without copying, as the fraglist
+> > test run showed.
+> >
+> > Frag_list skbs that aren=E2=80=99t fraglist GRO go through skb_segment(=
+),
+> > which with NETIF_F_SG already shares the pages of the chained skbs
+> > instead of copying them.
 >
-> For BPF struct_ops algorithms this keeps the struct_ops map and its
-> programs alive. For module-backed algorithms it leaks the module
-> reference as well. A network namespace administrator can repeatedly
-> trigger the rejected request after the algorithm has been loaded.
+> I've run selftests and confirmed that NETIF_F_FRAGLIST is unnecessary her=
+e.
 >
-> Drop the reference on the rejection path.
+> One extra finding: passing NETIF_F_SG conditionally can avoid an extra
+> reallocation in skb_linearize().
 >
-> Fixes: 8d432592f30f ("net: Only allow init netns to set default tcp cong =
-to a restricted algo")
-> Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
-> Assisted-by: LLM
-> Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
-> ---
->  net/ipv4/tcp_cong.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/net/ipv4/tcp_cong.c b/net/ipv4/tcp_cong.c
-> index 8e83ef81fc187..907c63af14785 100644
-> --- a/net/ipv4/tcp_cong.c
-> +++ b/net/ipv4/tcp_cong.c
-> @@ -293,6 +293,7 @@ int tcp_set_default_congestion_control(struct net *ne=
-t, const char *name)
->         } else if (!net_eq(net, &init_net) &&
->                         !(ca->flags & TCP_CONG_NON_RESTRICTED)) {
->                 /* Only init netns can set default to a restricted algori=
-thm */
-> +               bpf_module_put(ca, ca->owner);
->                 ret =3D -EPERM;
->         } else {
->                 prev =3D xchg(&net->ipv4.tcp_congestion_control, ca);
+> segs =3D skb_gso_segment(skb, chan->direct_xmit ? NETIF_F_SG : 0);
 
-Thanks for the report.
+Yep, I can do this, thanks.
 
-Instead of taking a reference only to drop it, please move the
-restricted check before bpf_try_module_get(), as
-tcp_set_congestion_control() already does:
-
-        if (!ca) {
-                ret =3D -ENOENT;
-        } else if (!net_eq(net, &init_net) &&
-                   !(ca->flags & TCP_CONG_NON_RESTRICTED)) {
-                /* Only init netns can set default to a restricted algorith=
-m */
-                ret =3D -EPERM;
-        } else if (!bpf_try_module_get(ca, ca->owner)) {
-                ret =3D -EBUSY;
-        } else {
-
-Also for v2:
-
-- BPF is not needed to trigger this, and the module case is the
-  interesting one. Any restricted module CC already loaded by root
-  (e.g. tcp_bbr, not listed in tcp_allowed_congestion_control) leaks
-  a module reference on each rejected write from a non-init netns.
-
-  module->refcnt is a plain atomic_t: after 2^31 rejected writes it
-  becomes negative, and every following module_put() hits the
-  WARN_ON() in module_put(). An rmmod would then hit the BUG_ON()
-  in try_release_module_ref().
-
-  BPF struct_ops use an atomic64_t refcount, so they cannot overflow
-
-  Please describe this in the changelog instead of the
-  struct_ops/OOM scenario.
-
-- No need for a cover letter for a single trivial patch.
-  Your cover letter is adding noise, any LLM is able to rebuild a POC just =
-fine.
-
-Please wait 24 hours before sending v2.
-
-Thanks.
-
-pw-bot: cr
+I was hesitant to duplicate the logic for something that has never
+worked in the past,
+and at very low rates, unless in emulators/fuzzers perhaps.
