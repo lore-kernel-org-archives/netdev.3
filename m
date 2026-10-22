@@ -1,59 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792647920;
-	b=qnedYSQdjLf1/iePyIAoL4SHd/nVO8P1m0wC82XAlkgc7HiDOlhxvFwWvZOIvSC7pqX6
-	 gATC2l3wL5Mb5LvW3sYf0SEcCOS6c57E+TD0yEGhBLIgcIMaOefIYzYAab45nALDKisOo
-	 aWtptc/vjzY4YkVsIfMWs0gUO8Q4jrPFamhv6wTiK4urka/sq+i2VBZyo1b68hyu5V4yu
-	 NUjzsdK0g/41ay8M0j3mJnUpjAq90RYZ16kiPgBobhzi2a+z8gq33kzWtju1Q6iuE92lZ
-	 fys2fxRKlQbKwx5y+vaPTU+STpNYQ3aM/rfcZ5V8q4JhHkXVCjo0Bmwmucv7dzPs1pQ==
+	t=1792648020;
+	b=yiB+8o/Yq+zScD3Es0z/HD7feJj79Tt2JTLlRsAvwnrD2sCtLX1jDYn4WsBzgM/4ZdWa
+	 AKlhDSzJE+cPbSe/8u546eZLCPCylGEqxlb/IXrNtCMbUCEjcxBnysqekY2BGMLA1UR2a
+	 U65zmLS0kFEJYbzmLydzmJn/5FKupmvy6LPHXf8B1FCslCG2DQMdprTByGrGQy54AIzqf
+	 i37FJXg0JrFrxNReB4N3L+2/1ko5M8/eswxVVTZxSuTwApB9UPSAMphtDMQI5eZJFzIjt
+	 rYXiZoXJQAG6NEeZ3GOLdgz6uxzz52fMrsLzsUmgn2DezEdqaeLDnGZVv6SUdk58t4g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792647920;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=XO9HFPUF4+hpZOrjYKiB3h14ahCEy7YjYReUr1uq2so=;
-	b=N4+QTG309Yi/phv5OTuK+1t+vf47feFMsQ/IG0WeWqcrKb47fZD8eEWra+ZGjCKppTD/
-	 MfMkHianFZQGksNo9JJBuHbGaxdzPCAMb4zxuD0ab98zl6xSZNDi7O9faI52kDb2DUTtu
-	 DVc/nxjvOdTTgfTxrU/PZRCkmSDXr+7vvLo/f6QbA2/FzmTUi30aBFIvf7JJcQIrNJead
-	 yEQyPcnP4gi0w0HMMfaASxogUCO3UftjShwhf02C8v5M0665XDITxNPKX8noupf6GLAXU
-	 qAEfNYXsf4l1drNMM1ZOjNwUSc/5OaIRkAM23R8nofohKzbBrcgNvxETFy/nDBLzsjg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792648020;
+	h=DMARC-Filter:X-Alimail-AntiSpam:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=PXGqLfpOLa85o7qHqLpl4wq5+Jg/AU69UwfCg9ZXivA=;
+	b=NgkmaWyQJzV4lwZ4mN8zxT9kSAfPJyqSeTajp0tq8B9iTuA3bdr8GoooDkZF3ZFQ7Frd
+	 eOXquKhyrteA2ztsdjk5h9gTtFg6Z9JyS7ud2L6+AIAShEu7INhcuBKDJLKFNbaBKVDq5
+	 k3zV1LkS24deuNWHm6tJyC7npVnNEqWY9B2uBquSJVv0yQb5UuHgFxIPyMzONVhoBtaSl
+	 e9RO+jJyPzD2KeqQ+KosXCYFN0uOWGl9fUb/PuWCoLo9eFTJW3SfRmz3qPQErXCiyshHU
+	 HZOrvuwumqLLuMWq7D7T4LSP66vEWt0QAQ5u8KgJqJF9zL69LwF0UNbfp5JDdG/gn6A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YjOiGxfB;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=motor-comm.com;
+	spf=pass smtp.mailfrom=motor-comm.com;
+	arc=none smtp.remote-ip=115.124.28.4
+Received: from out28-4.mail.aliyun.com (out28-4.mail.aliyun.com [115.124.28.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF7D606A31A;
-	Thu, 22 Oct 2026 05:45:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YjOiGxfB
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C24221F000C1;
-	Thu, 22 Oct 2026 05:45:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792647919;
-	bh=XO9HFPUF4+hpZOrjYKiB3h14ahCEy7YjYReUr1uq2so=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=YjOiGxfBrLc+EuesZdH/kYrdpm0LsyvRh8jK6IdJAGomoBixBj+vI+mKdPV3PBcyI
-	 rHdtbbpVNHLJLdGxpX/cNQuvvIT8rnpToePXfU0e7XEbHw8bB88qmoBjytNXiRVaAf
-	 iX19BPLz5kGlmPTI7ySNbqpPs9TmnZugTMiAzfOd1hGr8K7SBmTKNUPwYhUXy417bu
-	 hvqzq5TNxslSRxXj5/AWQl7YnunDk8XkcRuJFCmhEoRHAocXUMHiTJdLfzdAYveXfg
-	 Ror4azhC1trx9/qi0UW9aT+bRAQNU9JNI9Mnvvc4/C22V5ZE7HiGYdH+sj8fslS1fp
-	 njnKY6x/RcJVg==
-Subject: Re: [PATCH v1] qlcnic: Protect loopback filter hashes
-From: netdev-bot+sashiko@kernel.org
-To: 18983559317@163.com
-Cc: shshaikh@marvell.com, manishc@marvell.com, GR-Linux-NIC-Dev@marvell.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Thu, 22 Oct 2026 05:45:18 +0000
-Message-ID: <179264791828.3135.11094725561677433933@kernel.org>
-In-Reply-To: <20261020024417.517941-1-18983559317@163.com>
-References: <20261020024417.517941-1-18983559317@163.com>
-X-sashiko-severity: Critical
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978C8606A319;
+	Thu, 22 Oct 2026 05:46:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 978C8606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436259|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.011315-0.188511-0.800174;FP=13869783043050834034|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037034254;MF=frank.sae@motor-comm.com;NM=1;PH=DS;RN=12;RT=12;SR=0;TI=SMTPD_---.jn8fddc_1792648002;
+Received: from motor-comm.com(mailfrom:frank.sae@motor-comm.com fp:SMTPD_---.jn8fddc_1792648002 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Thu, 22 Oct 2026 13:46:43 +0800
+From: "Frank.sae" <frank.sae@motor-comm.com>
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@kernel.org,
+	davem@davemloft.net,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	lingyu.zou@motor-comm.com,
+	xiaoyong.li@motor-comm.com,
+	jie.han@motor-comm.com
+Subject: [PATCH net-next v?] [PATCH net-next] net: phy: motorcomm: add YT8831 2.5G PHY support
+Date: Thu, 22 Oct 2026 05:46:42 +0000
+Message-ID: <20261022054642.1332801-1-frank.sae@motor-comm.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,352 +59,678 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
-
-Critical: 1 · High: 1 · Medium: 1 (3) · Low: 0 (2)
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Critical] The patch leaves mac_learn_lock held on one return path in
-  qlcnic_send_filter() (drivers/net/ethernet/qlogic/qlcnic/qlcnic_io.c).
-- [High] On 82xx adapters the patch makes an AB-BA deadlock between
-  mac_learn_lock and the TX queue 0 lock much easier to hit.
-- [Medium] qlcnic: memory leak of struct qlcnic_filter in loopback filter
-  removal
-
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but all three
-  periodic callers of qlcnic_prune_lb_filters() check only…
-- [Medium] This problem wasn't introduced by this patch, but two places
-  unhash a struct qlcnic_filter and decrement its counter without…
-- [Medium] This problem wasn't introduced by this patch, but
-  qlcnic_prune_lb_filters() and qlcnic_delete_lb_filters() ignore the…
-- [Low] This problem wasn't introduced by this patch, but in the loopback
-  branch of qlcnic_add_lb_filter() the capacity check `if…
-- [Low] This problem wasn't introduced by this patch, but no teardown
-  path frees rx_fhash nodes.
-
---
-
-qlcnic: Protect loopback filter hashes
-
-This commit widens mac_learn_lock and rx_mac_learn_lock so that each one
-covers a whole hash-table operation on the learned MAC filter tables.
-Aging and teardown now hold the lock across the firmware delete, the
-unhash and the kfree(). The TX and loopback RX paths hold it across the
-count check, the lookup, the timestamp update and the insertion.
-
-> diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_hw.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_hw.c
-> index e58176badc1f..c7309ecf6023 100644
-> --- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_hw.c
-> +++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_hw.c
-> @@ -635,6 +635,7 @@ void qlcnic_prune_lb_filters(struct qlcnic_adapter *adapter)
->  	unsigned long expires;
->  	u8 cmd;
->  
-> +	spin_lock_bh(&adapter->mac_learn_lock);
->  	for (i = 0; i < adapter->fhash.fbucket_size; i++) {
->  		head = &(adapter->fhash.fhead[i]);
->  		hlist_for_each_entry_safe(tmp_fil, n, head, fnode) {
-> @@ -646,14 +647,14 @@ void qlcnic_prune_lb_filters(struct qlcnic_adapter *adapter)
->  							  tmp_fil->faddr,
->  							  tmp_fil->vlan_id,
->  							  cmd);
-> -				spin_lock_bh(&adapter->mac_learn_lock);
-
-[Severity: High]
-
-mac_learn_lock is now held across qlcnic_sre_macaddr_change(). Can this
-deadlock against the transmit path on 82xx adapters?
-
-On 82xx, change_macvlan is qlcnic_82xx_sre_macaddr_change(). That calls
-qlcnic_send_cmd_descs(), which takes the TX queue 0 lock:
-
-qlcnic_prune_lb_filters()
-  spin_lock_bh(&adapter->mac_learn_lock)
-  qlcnic_sre_macaddr_change()
-    qlcnic_82xx_sre_macaddr_change()
-      qlcnic_send_cmd_descs()
-        tx_ring = &adapter->tx_ring[0];
-        __netif_tx_lock_bh(tx_ring->txq);
-
-qlcnic is not LLTX, so qlcnic_xmit_frame() runs with the txq lock held.
-qlcnic_send_filter() now takes mac_learn_lock on every transmitted packet:
-
-CPU0                                CPU1
-HARD_TX_LOCK(txq0)                  qlcnic_fw_poll_work()
-qlcnic_xmit_frame()                   qlcnic_prune_lb_filters()
-  qlcnic_send_filter()                  spin_lock_bh(&mac_learn_lock)
-    spin_lock(&mac_learn_lock)          qlcnic_send_cmd_descs()
-                                          __netif_tx_lock_bh(txq0)
-
-The same inversion already existed between the non-loopback branch of
-qlcnic_add_lb_filter() and the TX insert path. This patch adds a periodic
-holder that issues firmware commands under the lock. It also widens the TX
-side from insert-only to every packet.
-
-Given that, does this part of the commit message hold up?
-
-  "The existing firmware-command path is already called under these
-  spinlocks, so no new lock class or lock ordering is introduced."
-
-Could the expired entries be moved to a private list under the lock, with
-the firmware deletes and kfree() done after the lock is dropped? An
-RCU-protected lookup on the TX side would be another option.
-
-qlcnic_delete_lb_filters() has the same mac_learn_lock -> txq0 nesting. In
-__qlcnic_down() the earlier netif_tx_disable() makes this unlikely, but
-lockdep will still record the order.
-
->  				adapter->fhash.fnum--;
->  				hlist_del(&tmp_fil->fnode);
-> -				spin_unlock_bh(&adapter->mac_learn_lock);
->  				kfree(tmp_fil);
-
-[Severity: Medium]
-
-This isn't a bug introduced by this patch, but the return value of
-qlcnic_sre_macaddr_change() is ignored here and in
-qlcnic_delete_lb_filters(). The software record is always unhashed and
-freed, and fhash.fnum is always decremented.
-
-On 82xx, qlcnic_send_cmd_descs() can return before anything is posted:
-
-	if (!test_bit(__QLCNIC_FW_ATTACHED, &adapter->state))
-		return -EIO;
-	...
-		} else {
-			adapter->stats.xmit_off++;
-			__netif_tx_unlock_bh(tx_ring->txq);
-			return -EBUSY;
-		}
-
-The 83xx/VF mailbox path can also fail with -ENOMEM or -EIO.
-
-In those cases, does the MAC/VLAN stay programmed in the adapter's L2
-filter table after the driver has forgotten it? The driver would then go
-on learning more entries up to fmax.
-
-The non-loopback branch of qlcnic_add_lb_filter() unhashes only on success
-(if (!ret)).
-
->  			}
->  		}
->  	}
-> +	spin_unlock_bh(&adapter->mac_learn_lock);
-> +	spin_lock_bh(&adapter->rx_mac_learn_lock);
->  	for (i = 0; i < adapter->rx_fhash.fbucket_size; i++) {
->  		head = &(adapter->rx_fhash.fhead[i]);
-
-[Severity: Medium]
-
-This is a pre-existing issue, but does this rx_fhash aging loop ever run
-when only RX loopback records exist? All three periodic callers,
-qlcnic_fw_poll_work(), qlcnic_83xx_periodic_tasks() and
-qlcnic_sriov_vf_periodic_tasks(), skip the whole function based on the TX
-table count:
-
-	if (adapter->fhash.fnum)
-		qlcnic_prune_lb_filters(adapter);
-
-Loopback RX can fill rx_fhash while fhash stays empty. One example is a
-host that only transmits from adapter->mac_addr, which qlcnic_send_filter()
-skips.
-
-In that state stale RX records are never aged. Once rx_fhash reaches fmax,
-would every newly seen loopback MAC be rejected indefinitely?
-
-[ ... ]
-
-> @@ -679,6 +679,7 @@ void qlcnic_delete_lb_filters(struct qlcnic_adapter *adapter)
->  	int i;
->  	u8 cmd;
->  
-> +	spin_lock_bh(&adapter->mac_learn_lock);
->  	for (i = 0; i < adapter->fhash.fbucket_size; i++) {
->  		head = &(adapter->fhash.fhead[i]);
-
-[Severity: Low]
-
-This is a pre-existing issue, but this teardown only walks adapter->fhash.
-Are the qlcnic_filter nodes in rx_fhash ever freed other than by aging?
-
-__qlcnic_down() calls this only when fhash.fnum is non-zero.
-qlcnic_remove()->qlcnic_free_lb_filters_mem() then frees the bucket arrays
-without walking them:
-
-	if (adapter->rx_fhash.fmax)
-		kfree(adapter->rx_fhash.fhead);
-
-Any nodes still linked in rx_fhash, or in fhash if this function was
-skipped, would be leaked on device removal.
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_io.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_io.c
-> index 761ef3bc8193..2aefb6e9a2eb 100644
-> --- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_io.c
-> +++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_io.c
-> @@ -207,27 +207,33 @@ static void qlcnic_add_lb_filter(struct qlcnic_adapter *adapter,
->  		 (adapter->fhash.fbucket_size - 1);
->  
->  	if (loopback_pkt) {
-> -		if (adapter->rx_fhash.fnum >= adapter->rx_fhash.fmax)
-> -			return;
->  
->  		head = &(adapter->rx_fhash.fhead[hindex]);
->  
-> +		spin_lock(&adapter->rx_mac_learn_lock);
-> +		if (adapter->rx_fhash.fnum >= adapter->rx_fhash.fmax) {
-> +			spin_unlock(&adapter->rx_mac_learn_lock);
-> +			return;
-> +		}
-> +
->  		tmp_fil = qlcnic_find_mac_filter(head, &src_addr, vlan_id);
-
-[Severity: Low]
-
-This isn't a bug introduced by this patch, but the capacity check still
-runs before qlcnic_find_mac_filter(). When rx_fhash is full, a loopback
-packet from a MAC already in the table returns without refreshing
-tmp_fil->ftime.
-
-Could qlcnic_prune_lb_filters() then age out those active RX records after
-QLCNIC_FILTER_AGE, even though loopback traffic continues? Until the
-record is re-added, a non-loopback packet from that MAC would miss the
-qlcnic_delete_rx_list_mac() handling.
-
-Should the fmax check reject only new insertions, after the lookup fails?
-
-[ ... ]
-
->  		hlist_add_head(&(fil->fnode), head);
->  		adapter->rx_fhash.fnum++;
->  		spin_unlock(&adapter->rx_mac_learn_lock);
-
-[Severity: Medium]
-This is a pre-existing issue, but are the qlcnic_filter nodes leaked
-when they are unhashed outside the aging and teardown paths?
-
-In the non-loopback branch of qlcnic_add_lb_filter(), a match in
-adapter->fhash is removed like this:
-
-	if (!ret) {
-		hlist_del(&tmp_fil->fnode);
-		adapter->fhash.fnum--;
-	}
-
-A match in adapter->rx_fhash goes through qlcnic_delete_rx_list_mac(),
-which does the same thing with fil and adapter->rx_fhash.fnum. Neither
-site calls kfree(), and the pointer is dropped on return. These
-objects come from GFP_ATOMIC allocations in qlcnic_send_filter() and
-the loopback branch of qlcnic_add_lb_filter(). Both
-qlcnic_prune_lb_filters() and qlcnic_delete_lb_filters() pair
-hlist_del() with kfree().
-
-Because fnum is decremented, fmax does not bound this. One filter
-would leak per MAC move event, for example a VM migration. Ordinary RX
-traffic can reach this whenever drv_mac_learn or rx_mac_learn is
-enabled.
-
-Teardown has a similar gap. __qlcnic_down() calls
-qlcnic_delete_lb_filters() only when fhash.fnum is non-zero, and that
-function drains adapter->fhash but never walks adapter->rx_fhash. On
-removal, qlcnic_free_lb_filters_mem() then frees the bucket arrays
-without walking them:
-
-	if (adapter->rx_fhash.fmax)
-		kfree(adapter->rx_fhash.fhead);
-
-Any nodes still linked in rx_fhash would be leaked at that point. The
-same applies to fhash if the drain was skipped.
-
-This patch already reworks the locking in these paths. Could the
-missing kfree() calls, and an rx_fhash drain under rx_mac_learn_lock,
-be added here or in a follow-up?
-
-[Severity: Medium]
-
-This is a pre-existing issue, but is tmp_fil leaked after the
-non-loopback branch just below unhashes it?
-
-qlcnic_add_lb_filter() {
-	...
-			if (!ret) {
-				hlist_del(&tmp_fil->fnode);
-				adapter->fhash.fnum--;
-			}
-	...
-}
-
-qlcnic_delete_rx_list_mac() does the same with fil:
-
-	if (!ret) {
-		hlist_del(&fil->fnode);
-		adapter->rx_fhash.fnum--;
-	}
-
-Neither site calls kfree(), and the pointer is dropped afterwards.
-qlcnic_prune_lb_filters() and qlcnic_delete_lb_filters() both pair
-hlist_del() with kfree().
-
-Because fnum is decremented, fmax does not bound this. One filter would
-leak per MAC move event, for example a VM migration.
-
-[ ... ]
-
-> @@ -330,6 +336,7 @@ static void qlcnic_send_filter(struct qlcnic_adapter *adapter,
->  	hindex = hval & (adapter->fhash.fbucket_size - 1);
->  	head = &(adapter->fhash.fhead[hindex]);
->  
-> +	spin_lock(&adapter->mac_learn_lock);
->  	hlist_for_each_entry_safe(tmp_fil, n, head, fnode) {
->  		if (ether_addr_equal(tmp_fil->faddr, (u8 *)&src_addr) &&
->  		    tmp_fil->vlan_id == vlan_id) {
-> @@ -337,6 +344,7 @@ static void qlcnic_send_filter(struct qlcnic_adapter *adapter,
->  				qlcnic_change_filter(adapter, &src_addr,
->  						     vlan_id, tx_ring);
->  			tmp_fil->ftime = jiffies;
-> +			spin_unlock(&adapter->mac_learn_lock);
->  			return;
->  		}
->  	}
-
-[Severity: Critical]
-
-With spin_lock() now taken before the bucket walk, is mac_learn_lock
-released on the table-full path right after this loop? The unchanged code
-in qlcnic_send_filter() still returns without an unlock:
-
-	if (unlikely(adapter->fhash.fnum >= adapter->fhash.fmax)) {
-		adapter->stats.mac_filter_limit_overrun++;
-		return;
-	}
-
-Once fhash.fnum reaches fhash.fmax, the next transmitted frame with a new
-source MAC/VLAN would return from qlcnic_xmit_frame() with the lock still
-held. On 82xx, fmax is QLCNIC_LB_MAX_FILTERS divided by the number of
-active PCI functions, so only a few dozen entries.
-
-Would every later user of the lock then spin forever? That covers the next
-qlcnic_send_filter() call, the non-loopback branch of
-qlcnic_add_lb_filter() in NAPI, qlcnic_prune_lb_filters() from
-qlcnic_fw_poll_work(), and qlcnic_delete_lb_filters() from __qlcnic_down().
-
-__qlcnic_set_multi() sets drv_mac_learn automatically in accept-all mode
-when FDB learning is off, for example when the port is in a bridge. In a
-bridged or VM setup, frames with varied source MACs forwarded out of this
-port could fill the table.
-
-The commit message says the transmit path holds the lock "while checking
-the count, looking up, updating timestamps, and inserting a new node". The
-count-check return looks like it is missing a spin_unlock().
-
+Content-Transfer-Encoding: 8bit
+
+Add a driver for motorcomm yt8831/yt8821-vd ethernet phy.
+Verified the driver in BPI-R3(with MTK Filogic-830 Soc)development board
+YT8831 works in AUTO_BX2500_SGMII or FORCE_BX2500 interface,
+supports 2.5G/1000M/100M/10M speeds, and wol(magic package)
+
+Signed-off-by: Frank.sae <frank.sae@motor-comm.com>
+---
+ drivers/net/phy/motorcomm.c | 548 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 546 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
+index 463e1ea3efc9..04852b4a5ba5 100644
+--- a/drivers/net/phy/motorcomm.c
++++ b/drivers/net/phy/motorcomm.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0+
+ /*
+- * Motorcomm 8511/8521/8522/8531/8531S/861x/8821 PHY driver.
++ * Motorcomm 8511/8521/8522/8531/8531S/861x/8821/8831 PHY driver.
+  *
+  * Author: Peter Geis <pgwipeout@gmail.com>
+  * Author: Frank <Frank.Sae@motor-comm.com>
+@@ -22,6 +22,7 @@
+ /* Live captured from YT921x switch internal MDIO bus */
+ #define PHY_ID_INT861X		0x01e04281
+ #define PHY_ID_YT8821		0x4f51ea19
++#define PHY_ID_YT8831		0x4f51e938
+ /* YT8521/YT8531S/YT8821 Register Overview
+  *	UTP Register space	|	FIBER Register space
+  *  ------------------------------------------------------------
+@@ -171,6 +172,11 @@
+ #define YT8521_RSSR_UTP_SPACE			(0x0 << 1)
+ #define YT8521_RSSR_TO_BE_ARBITRATED		(0xFF)
+ 
++#define YT8831_REG_SPACE_SELECT_REG		0x8020
++#define YT8831_RSSR_SPACE_MASK			(BIT(1) | BIT(0))
++#define YT8831_RSSR_FIBER_SAPCE			BIT(1)
++#define YT8831_RSSR_UTP_SAPCE			BIT(0)
++
+ #define YT8521_CHIP_CONFIG_REG			0xA001
+ #define YT8521_CCR_SW_RST			BIT(15)
+ #define YT8531_RGMII_LDO_VOL_MASK		GENMASK(5, 4)
+@@ -258,6 +264,53 @@
+ #define YTPHY_WCR_INTR_SEL			BIT(6)
+ #define YTPHY_WCR_ENABLE			BIT(3)
+ 
++#define YT8831_WOL_CONFIG_REG			0x160a
++#define YT8831_WOL_ENABLE_MASK			BIT(0)
++#define YT8831_WOL_ENABLE			BIT(0)
++#define YT8831_WOL_DISABLE			0x0
++#define YT8831_WOL_PULSE_WIDTH_MASK             (BIT(3) | BIT(2))
++#define YT8831_WOL_PULSE_WIDTH_168MS            BIT(2)
++#define YT8831_WOL_OUTPUT_TYPE_SEL_MASK         BIT(1)
++#define YT8831_WOL_OUTPUT_TYPE_SEL_PULSE        BIT(1)
++
++#define YT8831_WOL_MACADDR2_REG	                0x1604
++#define YT8831_WOL_MACADDR1_REG			0xA006
++#define YT8831_WOL_MACADDR0_REG			0xA008
++
++#define YT8831_WCR_INTR_REG                     0x8301
++#define YT8831_WCR_INTR_SEL_MASK		(BIT(1) | BIT(0))
++#define YT8831_WCR_INTR_SEL_WOL_ONLY		0x2
++#define YT8831_WCR_INTR_SEL_ALL			0x1
++
++
++#define YT8831_SDS_WRITE_PROTECT_REG		0x873
++#define YT8831_SDS_SGMII_OUTPUT_REG		0x1002
++
++#define YT8831_UTP_WRITE_PROTECT_REG			0x1
++#define YT8831_UTP_DAC_DATA_DLY_REG			0x0
++#define YT8831_UTP_REF_DLAY_SEL_REG			0x3
++#define YT8831_UTP_REF_DLAY_SEL_FEXT_REG		0x4
++#define YT8831_UTP_COE_MANUAL_SHIFT_SEL_2500_REG	0x723
++#define YT8831_UTP_EEE_OPTIM_1_REG			0x727
++#define YT8831_UTP_EEE_OPTIM_2_REG			0x339
++#define YT8831_UTP_EEE_MSE1_REG				0xc3
++#define YT8831_UTP_EEE_MSE2_REG				0x32
++#define YT8831_UTP_EEE_OPTIM_3_REG			0xff
++#define YT8831_UTP_EEE_OPTIM_4_REG			0x372
++#define YT8831_UTP_EEE_OPTIM_5_REG			0x336
++#define YT8831_UTP_EEE_OPTIM_6_REG			0x340
++#define YT8831_UTP_PSAN_OPTIM_REG			0x1e58
++#define YT8831_UTP_1000M_TEMPLATE_OPTIM_1_REG		0x209e
++#define YT8831_UTP_1000M_TEMPLATE_OPTIM_2_REG		0x20a4
++#define YT8831_UTP_1000M_TEMPLATE_OPTIM_3_REG		0x20a9
++#define YT8831_UTP_1000M_TEMPLATE_OPTIM_4_REG		0x20af
++#define YT8831_UTP_1000M_TEMPLATE_OPTIM_5_REG		0x20b4
++#define YT8831_UTP_1000M_TEMPLATE_OPTIM_6_REG		0x20ba
++#define YT8831_UTP_1000M_TEMPLATE_OPTIM_7_REG		0x20bf
++#define YT8831_UTP_1000M_TEMPLATE_OPTIM_8_REG		0x20c5
++#define YT8831_UTP_2500M_TEMPLATE_OPTIM_1_REG		0x20ff
++#define YT8831_UTP_2500M_TEMPLATE_OPTIM_2_REG		0x2100
++
+ /* 2b00 84ms
+  * 2b01 168ms  *default*
+  * 2b10 336ms
+@@ -397,6 +450,16 @@
+ #define YT8821_CHIP_MODE_AUTO_BX2500_SGMII	0
+ #define YT8821_CHIP_MODE_FORCE_BX2500		1
+ 
++#define YT8831_CHIP_MODE_SEL				0x8802
++#define YT8831_CHIP_MODE_SEL_MASK			GENMASK(2, 0)
++#define YT8831_CHIP_MODE_AUTO_BX2500_SGMII		0x0
++#define YT8831_CHIP_MODE_FORCE_2500BASEX		BIT(0)
++#define YT8831_CHIP_MODE_UTP_TO_FIBER_FORCE		(BIT(2) | BIT(0))
++
++#define YT8831_MDIO_ADDRESS_CTL				0x8004
++#define YT8831_MDIO_ADDRESS_CTL_EN_BROADCAST_MASK	BIT(8)
++#define YT8831_MDIO_ADDRESS_CTL_EN_BROADCAST		BIT(8)
++
+ struct yt8521_priv {
+ 	/* combo_advertising is used for case of YT8521 in combo mode,
+ 	 * this means that yt8521 may work in utp or fiber mode which depends
+@@ -543,6 +606,29 @@ static int ytphy_modify_ext_with_lock(struct phy_device *phydev, u16 regnum,
+ 	return ret;
+ }
+ 
++/**
++ * yt8831_get_wol() - report whether wake-on-lan is enabled
++ * @phydev: a pointer to a &struct phy_device
++ * @wol: a pointer to a &struct ethtool_wolinfo
++ *
++ * NOTE: YT8831_WOL_CONFIG_REG is common ext reg.
++ */
++static void yt8831_get_wol(struct phy_device *phydev,
++			  struct ethtool_wolinfo *wol)
++{
++	int wol_config;
++
++	wol->supported = WAKE_MAGIC;
++	wol->wolopts = 0;
++
++	wol_config = ytphy_read_ext_with_lock(phydev, YT8831_WOL_CONFIG_REG);
++	if (wol_config < 0)
++		return;
++
++	if (wol_config & YT8831_WOL_ENABLE_MASK)
++		wol->wolopts |= WAKE_MAGIC;
++}
++
+ /**
+  * ytphy_get_wol() - report whether wake-on-lan is enabled
+  * @phydev: a pointer to a &struct phy_device
+@@ -704,6 +790,74 @@ static int yt8531_set_wol(struct phy_device *phydev,
+ 	return 0;
+ }
+ 
++/**
++ * yt8831_set_wol() - turn wake-on-lan on or off
++ * @phydev: a pointer to a &struct phy_device
++ * @wol: a pointer to a &struct ethtool_wolinfo
++ *
++ * NOTE: YT8831_WOL_CONFIG_REG is common ext reg.
++ */
++static int yt8831_set_wol(struct phy_device *phydev,
++			  struct ethtool_wolinfo *wol)
++{
++	const u16 mac_addr_reg[] = {
++		YT8831_WOL_MACADDR2_REG,
++		YT8831_WOL_MACADDR1_REG,
++		YT8831_WOL_MACADDR0_REG,
++	};
++	const u8 *mac_addr;
++	u16 mask, val;
++	int ret;
++	u8 i;
++
++	if (wol->wolopts & WAKE_MAGIC) {
++		mac_addr = phydev->attached_dev->dev_addr;
++
++		/* Store the device address for the magic packet */
++		for (i = 0; i < 3; i++) {
++			ret = ytphy_write_ext_with_lock(phydev, mac_addr_reg[i],
++							((mac_addr[i * 2] << 8)) |
++							(mac_addr[i * 2 + 1]));
++			if (ret < 0)
++				return ret;
++		}
++
++		/* Enable WOL feature */
++		mask = YT8831_WOL_ENABLE_MASK
++			| YT8831_WOL_PULSE_WIDTH_MASK
++			| YT8831_WOL_OUTPUT_TYPE_SEL_MASK;
++
++		val = YT8831_WOL_ENABLE
++			| YT8831_WOL_PULSE_WIDTH_168MS
++			| YT8831_WOL_OUTPUT_TYPE_SEL_PULSE;
++
++		ret = ytphy_modify_ext_with_lock(phydev, YT8831_WOL_CONFIG_REG,
++						 mask, val);
++		if (ret < 0)
++			return ret;
++
++		/* Enable WOL interrupt */
++		ret = ytphy_modify_ext_with_lock(phydev, YT8831_WCR_INTR_REG,
++				YT8831_WCR_INTR_SEL_MASK,
++				YT8831_WCR_INTR_SEL_WOL_ONLY);
++		if (ret < 0)
++			return ret;
++	} else {
++		/* Disable WOL feature */
++		mask = YT8831_WOL_ENABLE_MASK;
++		ret = ytphy_modify_ext_with_lock(phydev, YT8831_WOL_CONFIG_REG,
++							mask, YT8831_WOL_DISABLE);
++
++		/* Disable WOL interrupt */
++		ret = ytphy_modify_ext_with_lock(phydev, YT8831_WCR_INTR_REG,
++					YT8831_WCR_INTR_SEL_MASK, YT8831_WCR_INTR_SEL_ALL);
++		if (ret < 0)
++			return ret;
++	}
++
++	return 0;
++}
++
+ static int yt8511_read_page(struct phy_device *phydev)
+ {
+ 	return __phy_read(phydev, YT8511_PAGE_SELECT);
+@@ -798,6 +952,27 @@ static int yt8521_read_page(struct phy_device *phydev)
+ 	return YT8521_RSSR_UTP_SPACE;
+ };
+ 
++/**
++ * yt8831_read_page() - read reg page
++ * @phydev: a pointer to a &struct phy_device
++ *
++ * returns current reg space of yt8831 (YT8831_RSSR_FIBER_SAPCE/
++ * YT8831_RSSR_UTP_SAPCE) or negative errno code
++ */
++static int yt8831_read_page(struct phy_device *phydev)
++{
++	int old_page;
++
++	old_page = ytphy_read_ext(phydev, YT8831_REG_SPACE_SELECT_REG);
++	if (old_page < 0)
++		return old_page;
++
++	if ((old_page & YT8831_RSSR_SPACE_MASK) == YT8831_RSSR_FIBER_SAPCE)
++		return YT8831_RSSR_FIBER_SAPCE;
++
++	return YT8831_RSSR_UTP_SAPCE;
++};
++
+ /**
+  * yt8521_write_page() - write reg page
+  * @phydev: a pointer to a &struct phy_device
+@@ -818,6 +993,26 @@ static int yt8521_write_page(struct phy_device *phydev, int page)
+ 	return ytphy_modify_ext(phydev, YT8521_REG_SPACE_SELECT_REG, mask, set);
+ };
+ 
++/**
++ * yt8831_write_page() - write reg page
++ * @phydev: a pointer to a &struct phy_device
++ * @page: The reg page(YT8831_RSSR_FIBER_SAPCE/YT8831_RSSR_UTP_SAPCE) to write.
++ *
++ * returns 0 or negative errno code
++ */
++static int yt8831_write_page(struct phy_device *phydev, int page)
++{
++	int mask = YT8831_RSSR_SPACE_MASK;
++	int set;
++
++	if ((page & YT8831_RSSR_SPACE_MASK) == YT8831_RSSR_FIBER_SAPCE)
++		set = YT8831_RSSR_FIBER_SAPCE;
++	else
++		set = YT8831_RSSR_UTP_SAPCE;
++
++	return ytphy_modify_ext(phydev, YT8831_REG_SPACE_SELECT_REG, mask, set);
++};
++
+ /**
+  * struct ytphy_cfg_reg_map - map a config value to a register value
+  * @cfg: value in device configuration
+@@ -2554,6 +2749,187 @@ static int yt8521_get_features(struct phy_device *phydev)
+ 	return ret;
+ }
+ 
++static int yt8831_config_aneg(struct phy_device *phydev)
++{
++	int ret;
++
++	ret = genphy_config_aneg(phydev);
++	if (ret < 0)
++		return ret;
++
++	return genphy_c45_config_aneg(phydev);
++}
++
++/**
++ * yt8831_serdes_init() - serdes init
++ * @phydev: a pointer to a &struct phy_device
++ *
++ * Returns: 0 or negative errno code
++ */
++static int yt8831_serdes_init(struct phy_device *phydev)
++{
++	int old_page = YT8831_RSSR_UTP_SAPCE;
++	int ret = -EINVAL;
++
++
++	old_page = phy_select_page(phydev, YT8831_RSSR_FIBER_SAPCE);
++	if (old_page < 0) {
++		phydev_err(phydev, "Failed to select page: %d\n",
++				old_page);
++		goto err_restore_page;
++	}
++
++	ret = ytphy_write_ext(phydev, YT8831_SDS_WRITE_PROTECT_REG, 0x1);
++	if (ret < 0)
++		goto err_restore_page;
++
++	ret = ytphy_write_ext(phydev, YT8831_SDS_SGMII_OUTPUT_REG, 0xc4);
++	if (ret < 0)
++		goto err_restore_page;
++
++	/* softreset sds space */
++	ret = ytphy_modify_ext(phydev, MII_BMCR, BMCR_RESET, BMCR_RESET);
++	if (ret < 0)
++		goto err_restore_page;
++
++
++err_restore_page:
++	return phy_restore_page(phydev, old_page, ret);
++}
++
++/**
++ * yt8831_utp_init() - utp init
++ * @phydev: a pointer to a &struct phy_device
++ *
++ * Returns: 0 or negative errno code
++ */
++static int yt8831_utp_init(struct phy_device *phydev)
++{
++	int ret = -EINVAL;
++
++	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_WRITE_PROTECT_REG, 0x3);
++	if (ret < 0)
++		goto err;
++
++	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_DAC_DATA_DLY_REG, 0xc8d);
++	if (ret < 0)
++		goto err;
++
++	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_REF_DLAY_SEL_REG, 0xa426);
++	if (ret < 0)
++		goto err;
++
++	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_REF_DLAY_SEL_FEXT_REG, 0x8009);
++	if (ret < 0)
++		goto err;
++
++	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_COE_MANUAL_SHIFT_SEL_2500_REG, 6);
++	if (ret < 0)
++		goto err;
++
++	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_EEE_OPTIM_1_REG, 0x1001);
++	if (ret < 0)
++		goto err;
++
++	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_EEE_OPTIM_2_REG, 0x7c52);
++	if (ret < 0)
++		goto err;
++
++	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_EEE_MSE1_REG, 0x3848);
++	if (ret < 0)
++		goto err;
++
++	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_EEE_MSE2_REG, 0xa8e8);
++	if (ret < 0)
++		goto err;
++
++	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_EEE_OPTIM_3_REG, 0x5200);
++	if (ret < 0)
++		goto err;
++
++	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_EEE_OPTIM_4_REG, 0x5849);
++	if (ret < 0)
++		goto err;
++
++	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_EEE_OPTIM_5_REG, 0xb00a);
++	if (ret < 0)
++		goto err;
++
++	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_EEE_OPTIM_6_REG, 0x3022);
++	if (ret < 0)
++		goto err;
++
++	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_PSAN_OPTIM_REG, 0x1f10);
++	if (ret < 0)
++		goto err;
++
++	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_1000M_TEMPLATE_OPTIM_1_REG, 0x22c8);
++	if (ret < 0)
++		goto err;
++
++	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_1000M_TEMPLATE_OPTIM_2_REG, 0x2437);
++	if (ret < 0)
++		goto err;
++
++	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_1000M_TEMPLATE_OPTIM_3_REG, 0x22c8);
++	if (ret < 0)
++		goto err;
++
++	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_1000M_TEMPLATE_OPTIM_4_REG, 0x2437);
++	if (ret < 0)
++		goto err;
++
++	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_1000M_TEMPLATE_OPTIM_5_REG, 0x22c8);
++	if (ret < 0)
++		goto err;
++
++	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_1000M_TEMPLATE_OPTIM_6_REG, 0x2437);
++	if (ret < 0)
++		goto err;
++
++	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_1000M_TEMPLATE_OPTIM_7_REG, 0x22c8);
++	if (ret < 0)
++		goto err;
++
++	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_1000M_TEMPLATE_OPTIM_8_REG, 0x2437);
++	if (ret < 0)
++		goto err;
++
++	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_2500M_TEMPLATE_OPTIM_1_REG, 0x1111);
++	if (ret < 0)
++		goto err;
++
++	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_2500M_TEMPLATE_OPTIM_2_REG, 0x1111);
++	if (ret < 0)
++		goto err;
++
++err:
++	return ret;
++}
++
++/**
++ * yt8831_get_rate_matching - read register to get phy chip mode
++ * @phydev: target phy_device struct
++ * @iface: PHY data interface type
++ *
++ * Returns: rate matching type or negative errno code
++ */
++static int yt8831_get_rate_matching(struct phy_device *phydev,
++				    phy_interface_t iface)
++{
++	int val;
++
++	val = ytphy_read_ext_with_lock(phydev, YT8831_CHIP_MODE_SEL);
++	if (val < 0)
++		return val;
++
++	if (FIELD_GET(YT8831_CHIP_MODE_SEL_MASK, val) ==
++	    YT8831_CHIP_MODE_FORCE_2500BASEX)
++		return RATE_MATCH_PAUSE;
++
++	return RATE_MATCH_NONE;
++}
++
+ /**
+  * yt861x_config_init() - apply the auto sleep setting to the PHY
+  * @phydev: a pointer to a &struct phy_device
+@@ -2992,6 +3368,67 @@ static int yt8821_soft_reset(struct phy_device *phydev)
+ 					  YT8521_CCR_SW_RST, 0);
+ }
+ 
++/**
++ * yt8831_config_init() - phy initializatioin
++ * @phydev: a pointer to a &struct phy_device
++ *
++ * Returns: 0 or negative errno code
++ */
++static int yt8831_config_init(struct phy_device *phydev)
++{
++
++	u8 mode = YT8831_CHIP_MODE_AUTO_BX2500_SGMII;
++	int ret;
++
++
++	__set_bit(PHY_INTERFACE_MODE_2500BASEX,
++			phydev->possible_interfaces);
++
++
++	__set_bit(PHY_INTERFACE_MODE_SGMII,
++			phydev->possible_interfaces);
++
++	switch (phydev->interface) {
++	case PHY_INTERFACE_MODE_2500BASEX:
++		mode = YT8831_CHIP_MODE_FORCE_2500BASEX;
++		phydev->rate_matching = RATE_MATCH_PAUSE;
++		break;
++	case PHY_INTERFACE_MODE_SGMII:
++		mode = YT8831_CHIP_MODE_AUTO_BX2500_SGMII;
++		phydev->rate_matching = RATE_MATCH_NONE;
++		break;
++	default:
++		mode = YT8831_CHIP_MODE_AUTO_BX2500_SGMII;
++		phydev->rate_matching = RATE_MATCH_NONE;
++		break;
++	}
++
++	ret = ytphy_modify_ext_with_lock(phydev,
++					 YT8831_CHIP_MODE_SEL,
++					 YT8831_CHIP_MODE_SEL_MASK,
++					 mode);
++	if (ret < 0)
++		return ret;
++
++	/* Disable broadcast*/
++	ret = ytphy_modify_ext_with_lock(phydev,
++					 YT8831_MDIO_ADDRESS_CTL,
++					 YT8831_MDIO_ADDRESS_CTL_EN_BROADCAST_MASK,
++					 0);
++	if (ret < 0)
++		return ret;
++
++	ret = yt8831_serdes_init(phydev);
++	if (ret < 0)
++		return ret;
++
++	ret = yt8831_utp_init(phydev);
++	if (ret < 0)
++		return ret;
++
++	return genphy_soft_reset(phydev);
++}
++
+ /**
+  * yt8821_config_init() - phy initializatioin
+  * @phydev: a pointer to a &struct phy_device
+@@ -3102,6 +3539,50 @@ static void yt8821_update_interface(struct phy_device *phydev)
+ 	}
+ }
+ 
++/**
++ * yt8831_read_status() -  determines the negotiated speed and duplex
++ * @phydev: a pointer to a &struct phy_device
++ *
++ * Returns: 0 or negative errno code
++ */
++static int yt8831_read_status(struct phy_device *phydev)
++{
++	int ret;
++	int val;
++
++	phydev->speed = SPEED_UNKNOWN;
++	phydev->duplex = DUPLEX_UNKNOWN;
++
++	ret = genphy_read_status(phydev);
++	if (ret < 0)
++		return ret;
++
++	ret = phy_read(phydev, YTPHY_SPECIFIC_STATUS_REG);
++	if (ret < 0)
++		return ret;
++
++	val = ret;
++	phydev->link = val & YTPHY_SSR_LINK;
++	if (phydev->link)
++		yt8821_adjust_status(phydev, val);
++
++	phydev_dbg(phydev,
++		"%s, phy addr: %d, link %s\n",
++		__func__, phydev->mdio.addr, phydev->link ? "up" : "down");
++
++
++	val = ytphy_read_ext_with_lock(phydev, YT8831_CHIP_MODE_SEL);
++	if (val < 0)
++		return val;
++
++	if (FIELD_GET(YT8831_CHIP_MODE_SEL_MASK, val) ==
++	    YT8831_CHIP_MODE_AUTO_BX2500_SGMII)
++		yt8821_update_interface(phydev);
++
++
++	return 0;
++}
++
+ /**
+  * yt8821_read_status() -  determines the negotiated speed and duplex
+  * @phydev: a pointer to a &struct phy_device
+@@ -3190,6 +3671,29 @@ static int yt8821_modify_utp_fiber_bmcr(struct phy_device *phydev,
+ 					mask, set);
+ }
+ 
++/**
++ * yt8831_suspend() - suspend the hardware
++ * @phydev: a pointer to a &struct phy_device
++ *
++ * Returns: 0 or negative errno code
++ */
++
++static int yt8831_suspend(struct phy_device *phydev)
++{
++	struct ethtool_wolinfo wol = {0};
++	int ret;
++
++	yt8831_get_wol(phydev, &wol);
++
++	/* if wol enable, do nothing */
++	if (wol.wolopts & WAKE_MAGIC)
++		ret = 0;
++	else
++		ret = genphy_suspend(phydev);
++
++	return ret;
++}
++
+ /**
+  * yt8821_suspend() - suspend the hardware
+  * @phydev: a pointer to a &struct phy_device
+@@ -3212,6 +3716,29 @@ static int yt8821_suspend(struct phy_device *phydev)
+ 	return yt8821_modify_utp_fiber_bmcr(phydev, 0, BMCR_PDOWN);
+ }
+ 
++/**
++ * yt8831_resume() - resume the hardware
++ * @phydev: a pointer to a &struct phy_device
++ *
++ * Returns: 0 or negative errno code
++ */
++static int yt8831_resume(struct phy_device *phydev)
++{
++	struct ethtool_wolinfo wol = {0};
++	int ret;
++
++	yt8831_get_wol(phydev, &wol);
++
++	/* if wol enable, do nothing */
++	if (wol.wolopts & WAKE_MAGIC)
++		ret = 0;
++	else
++		ret = genphy_resume(phydev);
++
++	return ret;
++}
++
++
+ /**
+  * yt8821_resume() - resume the hardware
+  * @phydev: a pointer to a &struct phy_device
+@@ -3337,11 +3864,28 @@ static struct phy_driver motorcomm_phy_drvs[] = {
+ 		.suspend		= yt8821_suspend,
+ 		.resume			= yt8821_resume,
+ 	},
++	{
++		PHY_ID_MATCH_EXACT(PHY_ID_YT8831),
++		.name			= "YT8831/YT8821-VD 2.5Gbps PHY",
++		.get_features		= yt8821_get_features,
++		.read_page		= yt8831_read_page,
++		.write_page		= yt8831_write_page,
++		.get_wol		= yt8831_get_wol,
++		.set_wol		= yt8831_set_wol,
++		.config_aneg		= yt8831_config_aneg,
++		.aneg_done		= genphy_aneg_done,
++		.config_init		= yt8831_config_init,
++		.get_rate_matching	= yt8831_get_rate_matching,
++		.read_status		= yt8831_read_status,
++		.soft_reset		= genphy_soft_reset,
++		.suspend		= yt8831_suspend,
++		.resume			= yt8831_resume,
++	},
+ };
+ 
+ module_phy_driver(motorcomm_phy_drvs);
+ 
+-MODULE_DESCRIPTION("Motorcomm 8511/8521/8531/8531S/861x/8821 PHY driver");
++MODULE_DESCRIPTION("Motorcomm 8511/8521/8531/8531S/861x/8821/8831 PHY driver");
+ MODULE_AUTHOR("Peter Geis");
+ MODULE_AUTHOR("Frank");
+ MODULE_LICENSE("GPL");
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261020024417.517941-1-18983559317%40163.com
+2.43.0
+
