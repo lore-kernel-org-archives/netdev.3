@@ -1,48 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.3
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792680488;
-	b=zLXG3K8Kt4D0MlTVkzESLlz6GTfFgrFm0S/BUTwcYxbvtX+ywnSNX+reObmvNhM4+dkP
-	 NAD13yRSNOjvTY2hdN8q2X4vZHYzmZvzqueaibJNr9FOrognVNbRMDRs0uG0Xrn0kbEYM
-	 lZBTPaySccp8wnNHnHURwEawbOYXIOu2ObOlW5410H9zk0pMGhap25QCgZtNG9IVtzbyE
-	 OkvLZ76Qxwe/gCDeRASclnLlqrFt6eE7h+7G4Vp+zJsaSkEQzEFF3ZPBmHbk2CxGvDjfN
-	 H8FfVWQXmbLqKZEau6msmt5ZJ9ODDDG7Xmz6bv+2dccsr0w37ZqqS3+JSeSnlGbikJA==
+	t=1792680502;
+	b=juKQdclOvSjJ2/nDihn2BGQ8+oE4IofISdSLwvrcNycTck4PAYs0JZVeYptAH52IS4YC
+	 Sw/VLd+bmdlgRjM3CF+qBfv4wXN2riJaNMbMhtR29M1GuGqrHKBZ9XDHBM2ZBfbDHlTD/
+	 7y5+Rh7qR1aPyyTJRR9Tb1V+2INvTL+/dcF6OEsCOffW4obm+qWziXxo9reEVKNrMWTIm
+	 NbdwIkUO0iMHgwQ8LN1vt4M8bd6Z0zETik0itqeJmKAyxuwarl9R72G7T4CaklZTKTR6I
+	 J3lS2U94VSl+b6tqVd5O9mmgaSnfAwAdJ7XQZe8+ji9o7kA9CYGl4+AouYHDnWY0wDA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792680488;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792680502;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
-	 X-CM-SenderInfo;
-	bh=77ETMQ3vO2jZDZE1V2nqF3MQlazT7Wo40RJuuWC1z20=;
-	b=NEmSQomLh/lj+1rUP2lv/2jXkJHYKBHl9u+XkjPajj6engvdpklACacotGnU48ibTaEY
-	 pfMOIikx9URgjX5AGgB6o+qmtX1IX8UfRtv+d5keVqKP6mIWTbxsxuWRKsPWCNcnDPxbz
-	 6EEirMe3nOyRqkQYfyokDgTpss0Ba9IMAQgBi20yJb18ILfI9eePquLViC04BhDpSwMBX
-	 HSXT5ETHeyUuK/UrtbLo91QV9+eumwRYs5ARClKPrZXKUfuiPqlS6qo/w5VDtKJbcmK9F
-	 agpaeaf48UqmHe6VByFzxyEFywsyCf3V7I7wHtXMcCFJTwoHwdYBvmQdB2j6sDIz8ag==
+	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=W5/eA65Cr2py92E4BQkH/p5RHwcqj734bB7a1FhByO8=;
+	b=yjlZR1vN6/SbJ/8l49dWOuQwI17kR25s+Nepx7XSq3WC+Yij/Xc9Rxs+f4PfzLrZKNan
+	 a8OGY/KaQ86FJEUxf0Dj5TUxtyoZza0mDduLOjHWXRRv+zxzYqUHwsQX9KUecIMz5fGD2
+	 0EbeDAPLZ756uCrLkG1EMp9Ju+P6+X7RFQvLsSu+4mzpDIQ3+UDitmEIxnIRPU2+50cTe
+	 WGw1quXGNNEw09mlmeFykt4CSC7JQRtPiCXp+8PMsa/CwiUSYYUqc2AwhSNK1o5BEB0Bh
+	 fsX5Mb5vsQX2hM2OLq6eQBoO2YzZF6O0dE/bk32hx1bCKw1kKqMbJcfSORYUiRU3GXg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=163.com;
 	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=Cn9F2IS1;
-	arc=none smtp.remote-ip=117.135.210.5
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=czGBgBwG;
+	arc=none smtp.remote-ip=117.135.210.3
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163BD606A319;
-	Thu, 22 Oct 2026 14:48:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 163BD606A319
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC03606A31A;
+	Thu, 22 Oct 2026 14:48:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CDC03606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=Cn9F2IS1
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=czGBgBwG
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
-	Content-Type; bh=77ETMQ3vO2jZDZE1V2nqF3MQlazT7Wo40RJuuWC1z20=;
-	b=Cn9F2IS12WzcWS+U35aLYrRVOGVfSjkN6L47X7VRPslk1LsOxo3CNwxpaKQUuE
-	wI2M0bL4D2gJeLJE412Qpo3tBBCmCjQiZbxy5+lH0mBO80bTeIx96+HcSe5qf/8M
-	aNQVBGd6bNe4epBn2/ivlMtAtL+U8352CWRYSy1WAT6gw=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=W5
+	/eA65Cr2py92E4BQkH/p5RHwcqj734bB7a1FhByO8=; b=czGBgBwG3OylLtl3hm
+	kQ4edxHO9VbOmq5fpzMW9530P5qmGMV0fBRyEjnP1GBD+Z/KxEgzG2mTnjjBc3GL
+	TJjfbdxQcS07+fj/jkqGUnWrydlxKvqB/MDQnDxzM7zoCdhtedubxJ4T7NYBJpZy
+	qXelqEdgOrPKUixhTSoo/0MUQ=
 Received: from shaos.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wD33_MBItpqGScvBw--.57072S2;
-	Thu, 22 Oct 2026 22:47:30 +0800 (CST)
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wD313sIItpqZSsvBw--.16907S2;
+	Thu, 22 Oct 2026 22:47:36 +0800 (CST)
 From: shaos <shawnq1@163.com>
 To: jhs@mojatatu.com
 Cc: Jiri Pirko <jiri@resnulli.us>,
@@ -52,10 +51,11 @@ Cc: Jiri Pirko <jiri@resnulli.us>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [BUG] net/sched: duplicate RTM_DELACTION entries underflow action refcount
-Date: Thu, 22 Oct 2026 14:47:29 +0000
-Message-Id: <20261022144729.61125-1-shawnq1@163.com>
+	linux-kernel@vger.kernel.org,
+	security@kernel.org
+Subject: [BUG] net/sched: act_ife reads stale tailroom from short egress skbs
+Date: Thu, 22 Oct 2026 14:47:36 +0000
+Message-Id: <20261022144736.61227-1-shawnq1@163.com>
 X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,18 +66,17 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD33_MBItpqGScvBw--.57072S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7CryDtFWfGrW5KF13WrW7urg_yoW8CryUpF
-	WFvF13t3Z3CFn8Jw1kKF48X3ZY9rs7ta15Gas8Xr4rC39Ik3ZFkryIyry0yay7AFykWryv
-	v34UKF4xWw45uaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j5sqXUUUUU=
-X-CM-SenderInfo: pvkd40jtr6il2tof0z/xtbC8gLZ52raIgI0xgAA3s
+X-CM-TRANSID:_____wD313sIItpqZSsvBw--.16907S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7ZF48JFW7Gry3Gr1UuryxuFg_yoW8ZF1UpF
+	9YvFW5WwsxGF1DJF1ktFW8Xw1S9395Jay5G34DXw18Zr1Y9w1j9FyxtrW7ZFyxZryxK390
+	y3yDWayxKan8ZFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j55rxUUUUU=
+X-CM-SenderInfo: pvkd40jtr6il2tof0z/xtbCzwnb6WraIgnJxwAA3h
 
 Hello,
 
-Create one standalone gact action, then send one RTM_DELACTION request containing three entries with the same action kind and index. The duplicate references cause the delete path to drop the object’s reference more times than the batch owns.
+A UID 60000 victim in one network namespace sends an 11-byte random marker through an IFE encode action and releases its skb. A UID 65534 attacker in a separate user/network namespace then sends a one-byte TUN packet through mirred to loopback egress. The egress IFE action copies ETH_HLEN bytes from skb->data without checking skb->len, and the emitted frame contains the victim's marker in the stale tailroom.
 
 HEAD commit:    c03c1a14507dfaf8b856c2608f9ac216021fc222
 git tree:       30fd2ef82912c26cf3a58ad0ba6afc375fa851ac
@@ -85,18 +84,18 @@ source version: Linux 7.3.0, local master
 compiler:       gcc 11.4.0, GNU ld 2.38
 
 console output:
-https://gist.githubusercontent.com/shaos26/c37510312cb6cdfcc7a8dfa8567c0bfd/raw/b8fd79ae905833e51d6db058b2a6f715168b39cf/console-output.txt
+https://gist.githubusercontent.com/shaos26/3961afdf0773e9f65bdfe152e05356da/raw/65466e4e5bd3843400c036ba31c64108ae4d57e4/console-output.txt
 kernel config:
-https://gist.githubusercontent.com/shaos26/c37510312cb6cdfcc7a8dfa8567c0bfd/raw/1acf6d132666c0f60829ca94c0995f5c5f31f5ff/kernel-config.txt
+https://gist.githubusercontent.com/shaos26/3961afdf0773e9f65bdfe152e05356da/raw/7d8abdee14fcf83f61e27fce20dee98b4bccea8c/kernel-config.txt
 reproducer:
-https://gist.githubusercontent.com/shaos26/c37510312cb6cdfcc7a8dfa8567c0bfd/raw/a46ac914f3b3cd2abdf52898f90a993038d7f442/poc.c
+https://gist.githubusercontent.com/shaos26/82ce293b417cd5a2d19c0978d562bc1c/raw/b65492b33b91aad0479423ccf92d2910c1c9d656/poc.c
 
-Build the tested kernel with the attached configuration and run the static poc.c in a disposable guest with CAP_NET_ADMIN in the tested network namespace. The program creates the action and sends a duplicate-index RTM_DELACTION batch.
+Build the tested kernel with the attached configuration, compile the reproducer statically, and boot a disposable QEMU guest with TUN, veth, mirred, IFE and packet-socket support. The test uses separate victim and attacker network namespaces.
 
 Impact and prerequisites:
-The kernel reports a refcount underflow from __tcf_action_put() while processing a user-controlled rtnetlink request. panic_on_warn can turn the warning into a panic. The evidence does not establish controlled use-after-free, memory corruption or privilege escalation; CAP_NET_ADMIN in the initial user namespace is required; an ordinary user namespace does not pass this action API capability check.
+The attacker recovered 11 bytes from a random marker generated by a different UID in another network namespace. This is a cross-principal kernel-memory disclosure through an emitted frame, reachable with namespace-scoped CAP_NET_ADMIN and CAP_NET_RAW when user/network namespaces and TUN are available. No arbitrary-address read or privilege escalation is demonstrated.
 
-Validation: Two fresh exact-revision boots reproduced the underflow warning; the two-duplicate close control returned without the warning.
+Validation: Two fresh QEMU boots recovered different victim markers byte-for-byte. The no-prime control did not recover the victim marker.
 
 Thanks,
 
