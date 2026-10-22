@@ -1,59 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.156.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792642487;
-	b=Ar0H1TEONkBT+zkE9tR+zvWbOxAkCd2DIWEPhqQx8i3Wf4doVBdfQxbi+e7zPUtTuYvo
-	 X+FJs0hSZH3LmxM4o1YAjwRzcORDPjynkdxha3cVzgXH9GnskEyHhF+njFOvi2p+sA4+j
-	 DzfVyMP41KZtfZq3gSdixR0P47hqRthXqCBPd3LqYaUaooiPbfy4tiLD5Z3X2DaNLE3yr
-	 Z4LpSVgrS4s+g7W6Sfb84O1Lb6jUPYmCyki0w34rb97x/TNehl7rDYyt8MllpDvobVks1
-	 BLBkjjLw2X3QhwszVeLBUtbb1+RmaYtqg0pTI7Ic/bOkk+3NMAK0lghPu6jbpAcpcHg==
+	t=1792643229;
+	b=WS8iYkSbk4a2NJ4crbdOs7IVmjVPFBOm2gFHr7WUFYDQbNVV8ynbDh7Ws5FTtt0IcpHe
+	 e6JhDGo/wnMPa9R2T1QyVeczQhNbmNsOJHLcD7R5KhePd48ir43r70YV1BGvsZE0AD7yG
+	 zscu46QmV5CRtbHLj2w+4I6/Rl6VSpeNMsat6zRCbn8XP/DjkCv+MwirOqCGeUQfkBQmc
+	 PqMsnX6MBB/ZUM8PZsQQmfcter6ZX32ad6QapmFumY7SHEjnZKgw+RpFa5VurlZ0/DHA9
+	 dE8imFjAoNKobnlQVL/AFpMO2uK+kc++LZ82HSJF5ja8Evstd89oUAjtXJhtVI+9drQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792642487;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=YZjboky+GQgVL4lwRvMRR6hTyGlQu2N7RmoF2P95Nzo=;
-	b=OZX8s7KXrtr71YlUCtuyf7K+k1II//iPIiMdaMrCRy0WLellI5HCErwcEEk1clm12VzO
-	 zDi2+i6l5NZIbztRzD18hz9S13rApG/1ZWEe62iZmPlSH+tWVgHQxkAedB73XCnBWt77x
-	 fT9PYEcJOqiiEHwL1VXa43BJhnTLJv91/kt3yuTUdzi+0nVAffrmG57xjyf8o0eUN07+H
-	 h/Q+V+Ec64z4sDnPbkU6KimhrhP95hZ3cw9sJTt7lu2Dlj03pahMbsGntiQHwoOSTKNBZ
-	 Rt8DGv2N30PostP0zwcMIpasxTbEWAYPgFTB10403KWDTEsti9/rJHIvafPSdzfsSYQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792643229;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Info:X-Authority-Analysis:
+	 X-Proofpoint-Virus-Version;
+	bh=rH8pGjEtidnpy0V8mnZxHHovkrrmWnKjEbxiezsTATo=;
+	b=ZleicoMjVh4Ud8QXkObRaeJXkLL9Fg1pHsYDNOzBIkZj9+mvyjliRxxWJP48JA+ZWemM
+	 3TrAHI9+vPGSLJCEqS4O/ca/E8M1q2m+kTe+Nv9vhyYSlLiW2KZ8FQHx49tD6nvqGqnx1
+	 uqJDxBbFxq3DvV8NLyoa09e0gGBVL0cXtdj+wb0Wu79dZvJ5A+yJUe0O3S8WcnX1TQQ4S
+	 JMeJw0cTVij/sR9uOr73R9jldByiEvgU4kiZbSu7i6Ap3jSOoIrFnkrd2GER5hJjgcGLv
+	 mRUTXG3mbPBPal23jHOkiuDrHMKKYC866fTJ9LTPryClYzyWFY0GUC5ucpYe4maa9fA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QBYYMTYC;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=marvell.com;
+	spf=pass smtp.mailfrom=marvell.com;
+	dkim=pass header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=pfpt0220 header.b=X86vWshC;
+	arc=none smtp.remote-ip=67.231.156.173
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1876606A31A;
-	Thu, 22 Oct 2026 04:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558D6606A31A;
+	Thu, 22 Oct 2026 04:27:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 558D6606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QBYYMTYC
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D10321F000C1;
-	Thu, 22 Oct 2026 04:14:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792642486;
-	bh=YZjboky+GQgVL4lwRvMRR6hTyGlQu2N7RmoF2P95Nzo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=QBYYMTYCsaVayqoZySFOSC66YM7q5fQQhzoKd09JRMAS7ZL6bVSC2L+cErtbXttoy
-	 Aa8pYLqu+9Nls7X1xW2gTcbJUHkRZEtge5fxvJPQSdlIjV80BOuPMdxRrOo/WlOru7
-	 Cx/uUM0Cz+1+dSFiT17u1q3pgGvR9kpaJ5vpdrpGiGODlbUziF60ewOkhPrSZA3a9m
-	 x478Yv93+pEkrzXB6xtX27HpHiytucEW7ilGMI+QK6G1XfG9iNsl+61aQv0GUyDpAd
-	 404I7I6o4yChajpPIFq5BXVD+mocwLcXIrE6jlnVOrmDwaQ2cIHNwktsF0cOcRQDGa
-	 iRs4aW7QxyzKg==
-Subject: Re: [PATCH] net: wwan: iosm: fix NULL skb deref in ul_td_process
-From: netdev-bot+sashiko@kernel.org
-To: liuc63@xiaopeng.com
-Cc: m.chetan.kumar@intel.com, loic.poulain@oss.qualcomm.com,
- ryazanov.s.a@gmail.com, johannes@sipsolutions.net, zhugl3@xiaopeng.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- kuba@kernel.org
-Date: Thu, 22 Oct 2026 04:14:45 +0000
-Message-ID: <179264248532.3135.6948322337342491907@kernel.org>
-In-Reply-To: <20261020101150.16967-1-liuc63@xiaopeng.com>
-References: <20261020101150.16967-1-liuc63@xiaopeng.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=pfpt0220 header.b=X86vWshC
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69M3id033826206;
+	Wed, 21 Oct 2026 21:26:59 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=rH8pGjEtidnpy0V8mnZxHHo
+	vkrrmWnKjEbxiezsTATo=; b=X86vWshC/M7q02cs1z2BH95kJoV8+KVTiHTtuPb
+	703BQdBo+7hTNx5XXrK4RQyXOChyazZ6G8oK6yGnbi+9tWrCryRrY9w7g9h1N5cO
+	5UXGrorA5ATVKoo67qH+ZXQQHbdqpr00JQHM25Xy3ir3s+CMtKZV2QQ0XWTqyQSn
+	9lC/PcjA9sgEJVgOcRUXfFIx/U3NWmJDZRFZT+Ar4TbNTzKYr1MQNPZIQrAHKUKg
+	FxRdxt9hwf07kxYUHYeHIfeUCs9qiX9t2h5bEoMdYBGarNKOnAR8rSWEVoRUe39A
+	GhbrDQw00T1TbKj9PDdYQnB2kJPU1Dle1LXlIO1qpPRPhmg==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4hf94b0mvf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 21 Oct 2026 21:26:58 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Wed, 21 Oct 2026 21:26:58 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Wed, 21 Oct 2026 21:26:58 -0700
+Received: from sjc4ccscust-vm07.sclab.marvell.com (unknown [10.110.24.160])
+	by maili.marvell.com (Postfix) with ESMTP id A7ECF3F7055;
+	Wed, 21 Oct 2026 21:26:57 -0700 (PDT)
+From: kmahammadraf <kmahammadraf@marvell.com>
+To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
+CC: Sunil Goutham <sgoutham@marvell.com>,
+        Ratheesh Kannoth
+	<rkannoth@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        "Subbaraya
+ Sundeep" <sbhatta@marvell.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David
+ S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>,
+        "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        Satha Rao
+	<skoteshwar@marvell.com>,
+        kmahammadraf <kmahammadraf@marvell.com>
+Subject: [PATCH net] Subject: [PATCH] octeontx2-af: fix TX scheduler queue index mask for 2K schedulers
+Date: Thu, 22 Oct 2026 04:26:53 +0000
+Message-ID: <20261022042653.2640537-1-kmahammadraf@marvell.com>
+X-Mailer: git-send-email 2.25.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,145 +92,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: ZgIZUDW2KJOCSl8TpC71_Jmm7F5w1Bov
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIyMDAxNyBTYWx0ZWRfX6OeQMX/NN1yk
+ a96uWq5ZGTsXwcnA7jKolCNCEYSAssEjJuiASWbVfyZH1fnCd6WgwaO9fiF5Ptj2r2CSC5b34W6
+ wYtp3yBtGJa6DwjdIy7Vs3CWO0L73yGJjIAHrasAMvDLTbrh1z2PQDwRpa24umwS06A45/LzXC5
+ A0W/Xxn/3RD7puD0xXOhuZpBDy8q34BubuudxL4GJ3WQOB4V7fu/F/VTwfPd4MbCicTvxzNC9he
+ 7ZB/BK1AsM4rgDk2CZpEV8SUZLh9BMM+4pk1M3rnIdxgsdcl6Lp7IUvMZhHCk9cpFGXDkcedO6f
+ fIWqd/+U9vNlkguc8J1PVjUlPvkPXYrQIcOxa0W2dSGq+FRxOrIi0mpZiJKCYW538s6X2nJsCFj
+ eCO0uXiyN+CyRkLfOgNrxCrNje95fzah+wLn2cbtX+N/mE/cs+G5/rnyIfJnsxPJinv9q5bGbI5
+ kxYsmbWd3/NbUPTnTqw==
+X-Proofpoint-ORIG-GUID: ZgIZUDW2KJOCSl8TpC71_Jmm7F5w1Bov
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIyMDAxNyBTYWx0ZWRfX5yyWVvgZ8A4Q
+ Nc4kOMa/T4AopZiqAxl9ZjuFQ9azuOLogzZ2j+AZ73rHo2jWFRQWzbLjLTb4EfDfvwDQpenZ3FP
+ AD7LX3Y9CCYlV+6/T1gaTbf0LC8mR3E=
+X-Authority-Analysis: v=2.4 cv=OrDaWC/t c=1 sm=1 tr=0 ts=6ad99093 cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=QXcCYyLzdtTjyudCfB6f:22 a=M5GUcnROAAAA:8 a=hU_0wQR7ThAvaC2VLwYA:9
+ a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-10-22_02,2026-10-21_02,2025-10-01_01
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+From: Satha Rao <skoteshwar@marvell.com>
 
-Critical: 0 · High: 1 (1) · Medium: 0 · Low: 0
+In CN20K, the maximum number of TX schedulers per layer increased from
+1K to 2K, so the scheduler queue index field is now 11 bits wide.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Update the TX scheduler masks used for mailbox/config register access:
 
-- [High] The fix does not handle the 'already consumed' case that its
-  commit message says it covers.
+Increase TXSCHQ_IDX_MASK from 10-bit to 11-bit
+Expand NIX_TX_SCHQ_MASK to include bit 26
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but UL completion
-  processing in the IRQ tasklet is not synchronized with pipe teardown.
+Signed-off-by: kmahammadraf <kmahammadraf@marvell.com>
+Signed-off-by: Satha Rao <skoteshwar@marvell.com>
+---
+---
+ drivers/net/ethernet/marvell/octeontx2/af/mbox.h    | 2 +-
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---
-
-net: wwan: iosm: fix NULL skb deref in ul_td_process
-
-This commit adds a NULL check on the skb taken from the UL ring slot in
-ipc_protocol_ul_td_process() before IPC_CB(skb) is dereferenced. The
-goal is to avoid a NULL pointer dereference when the slot was never
-populated or has already been consumed.
-
-> diff --git a/drivers/net/wwan/iosm/iosm_ipc_protocol_ops.c b/drivers/net/wwan/iosm/iosm_ipc_protocol_ops.c
-> index f2f86f41fd10..dee2e6607f77 100644
-> --- a/drivers/net/wwan/iosm/iosm_ipc_protocol_ops.c
-> +++ b/drivers/net/wwan/iosm/iosm_ipc_protocol_ops.c
-> @@ -302,6 +302,11 @@ struct sk_buff *ipc_protocol_ul_td_process(struct iosm_protocol *ipc_protocol,
->  	if (pipe->old_tail >= pipe->nr_of_entries)
->  		pipe->old_tail = 0;
->  
-> +	if (!skb) {
-> +		dev_err(ipc_protocol->dev, "skb is null");
-> +		return NULL;
-> +	}
-> +
-
-[Severity: High]
-Does this check catch the "already consumed" case that the commit message
-mentions?
-
-The UL path never resets the ring slot after taking the skb:
-
-drivers/net/wwan/iosm/iosm_ipc_protocol_ops.c:ipc_protocol_ul_td_process() {
-	struct ipc_protocol_td *p_td = &pipe->tdr_start[pipe->old_tail];
-	struct sk_buff *skb = pipe->skbr_start[pipe->old_tail];
-
-	pipe->nr_of_queued_entries--;
-	pipe->old_tail++;
-    ...
-}
-
-The DL sibling does reset it, so a NULL there really does mean "already
-consumed":
-
-drivers/net/wwan/iosm/iosm_ipc_protocol_ops.c:ipc_protocol_dl_td_process() {
-    ...
-	/* Reset the ring elements. */
-	pipe->skbr_start[pipe->old_tail] = NULL;
-    ...
-}
-
-The only place that writes a UL slot is ipc_protocol_ul_td_send(). It
-also sets td->buffer.address = IPC_CB(skb)->mapping, and nothing clears
-that field on completion. The caller, ipc_imem_ul_pipe_process(), then
-frees each returned skb with ipc_pcie_kfree_skb() or passes it to
-ipc_mux_ul_encoded_process().
-
-So a consumed UL slot keeps a stale, non-NULL skb pointer and a non-zero
-TD address. If the slot is processed again, the new !skb check passes.
-IPC_CB(skb)->mapping is then read from freed memory. If the stale mapping
-still matches the stale TD address, the freed skb is returned and freed a
-second time.
-
-Slots can be processed again because the loop count in
-ipc_imem_ul_pipe_process() comes straight from the device-written tail:
-
-	if (pipe->old_tail != tail) {
-		if (pipe->old_tail < tail)
-			cnt = tail - pipe->old_tail;
-		else
-			cnt = pipe->nr_of_entries - pipe->old_tail + tail;
-	}
-
-cnt is never checked against nr_of_queued_entries. A misbehaving
-endpoint, which is the case this patch is meant to guard against, can
-reach this path.
-
-Would it be better to clear pipe->skbr_start[pipe->old_tail] after
-reading it, the way the DL path does, and/or to cap cnt by
-pipe->nr_of_queued_entries?
-
-[Severity: High]
-This is a pre-existing issue and was not introduced by this patch, but
-the new check does not protect against it. Is UL completion processing in
-the IRQ tasklet synchronized with pipe teardown?
-
-ipc_imem_handle_irq() checks is_open without holding a lock:
-
-	if (ul_pipe->is_open)
-		ipc_imem_ul_pipe_process(ipc_imem, ul_pipe);
-
-It then goes on into ipc_protocol_ul_td_process(), which reads
-pipe->tdr_start[] and pipe->skbr_start[].
-
-ipc_imem_sys_devlink_close() runs in process context. It waits on
-ul_pend_sem with a timeout but never sets app_notify_ul_pend, so the wait
-just times out. It then frees the pipes directly:
-
-	ipc_imem_pipe_cleanup(ipc_imem, &channel->ul_pipe);
-	ipc_imem_pipe_cleanup(ipc_imem, &channel->dl_pipe);
-
-ipc_protocol_pipe_cleanup() frees the in-flight skbs, kfree()s
-skbr_start and dma_free_coherent()s tdr_start. No lock or tasklet
-quiescing waits for a tasklet that has already passed the is_open check.
-
-ipc_imem_cleanup() has the same ordering:
-
-	ipc_imem_channel_reset(ipc_imem);
-
-	ipc_protocol_deinit(ipc_imem->ipc_protocol);
-	ipc_task_deinit(ipc_imem->ipc_task);
-
-Here the channels are freed before tasklet_kill() in ipc_task_deinit(),
-and the IRQ is still live until ipc_pcie_cleanup() runs afterwards.
-
-Can a running tasklet then dereference freed or NULL tdr_start and
-skbr_start, or free the same skb that the cleanup loop frees? The local
-skb pointer it holds would be non-NULL, so the new !skb check would not
-catch it.
-
->  	if (!p_td->buffer.address) {
->  		dev_err(ipc_protocol->dev, "Td buffer address is NULL");
->  		return NULL;
-
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+index cece197d1074..1b62f9d7f00a 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+@@ -1164,7 +1164,7 @@ struct nix_txschq_config {
+ 	u8 lvl;	/* SMQ/MDQ/TL4/TL3/TL2/TL1 */
+ 	u8 read;
+ #define TXSCHQ_IDX_SHIFT	16
+-#define TXSCHQ_IDX_MASK		(BIT_ULL(10) - 1)
++#define TXSCHQ_IDX_MASK		(BIT_ULL(11) - 1)
+ #define TXSCHQ_IDX(reg, shift)	(((reg) >> (shift)) & TXSCHQ_IDX_MASK)
+ 	u8 num_regs;
+ #define MAX_REGS_PER_MBOX_MSG	20
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+index 95f782d47927..a1d68afd7c9e 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+@@ -2850,9 +2850,9 @@ static void nix_tl1_default_cfg(struct rvu *rvu, struct nix_hw *nix_hw,
+ }
+ 
+ /* Register offset - [15:0]
+- * Scheduler Queue number - [25:16]
++ * Scheduler Queue number - [26:16]
+  */
+-#define NIX_TX_SCHQ_MASK	GENMASK_ULL(25, 0)
++#define NIX_TX_SCHQ_MASK	GENMASK_ULL(26, 0)
+ 
+ static int nix_txschq_cfg_read(struct rvu *rvu, struct nix_hw *nix_hw,
+ 			       int blkaddr, struct nix_txschq_config *req,
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261020101150.16967-1-liuc63%40xiaopeng.com
+2.25.1
+
