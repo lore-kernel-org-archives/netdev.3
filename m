@@ -1,98 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=51.159.188.251
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792693957;
-	b=mhDKiBht6xAmSc4uYLvFXyQ16FHj0zzBlVBGsDsJW7qRh8/DOga616wm5knB6QqxVBB+
-	 aGz8EwovW+8C8T94NngEgWWzx9Nrlph9UWTItqZFMpBie5VojjXVX5AOlJHiozVd0gy3t
-	 ZWyx05olwixqQ658gshdEyGuDQ/TF4xNgmR0rRVSmWg1/894pSnWBS6XDaL5dg2Nj1/5b
-	 +DxBFV1WdXdqgkP8vB3eGSSpoFOpmH/S1LQBFbGc0NFV8uiQ72Hh9mo+oE+HyZQDa5+KH
-	 a1wyesBT9grGc7mEckROW7lgOekAHpqbQEosqsrkDdiolTdiZtVOH4e+uuY32ctGXIg==
+	t=1792694216;
+	b=uWwxQWFhzmWGO5b6aEi+wa8MpZGzDy9pz5UeZSgqqoVlVoMPnKee8UcmW+bBg+R+gnrj
+	 Ec0nbZUeT6wY6xxgo29p4aSekdJ36Muh7z5GzuN0JvsQUkxW67Y0vKUowFkqp5pYOCCN0
+	 wpdimrNdXIETz3JyhhC4ij3DtyX9wPwsrFWfIj4pKfIOZ/RgG2kG0/VBs9nUWBAgJsQfT
+	 vyluOvkMoQMeZSn9g1uJbFlPoLupyH2i3dI2mpRqgPluAoYtIKTUsWZvdMpA6h5n1t4eh
+	 wcXMuPhrCyjzTJJXQs1T5rpQVekGKkUdYLYBcIwBA5F/muQQhHO43F5cge6zyBVx7pg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792693957;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=D4ebXgpyO3igDhP3z8XtyBcXciVo7ucHsU9A+ZflO/0=;
-	b=2fmU9UYCD9WMZSy+j61Ctr1ZsVYgAdAwA/VjbyY43xrs9jdc7Q3iYuIp0DAoKRSxlQiP
-	 v814ImuF7e70m/fpGR12gFBILkRx6UcLF9gPdHNvj4CJMFwzb32Fh1O5w11lskZuqSL/1
-	 ays6EKlz9wDiMyNW/ypVKa+VC57d8SeldMIJiXNXe6dj/ngwjsmHd8+JyscLXZvBKt1Mt
-	 48g7Jwnp58KzRoqsn7Xn1hGn1nbMvfQvQAqMCXYf/oec1KAil8bnWK/JWICQwMaKtzE+3
-	 do9RmvVNPtprFdyAhBQ4v+P7R8onNEDoFl4nRlDoJecAhp6W4vLaH9hjWR/vBPUXniA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792694216;
+	h=DMARC-Filter:DKIM-Signature:Received:MIME-Version:Date:From:To:Cc:
+	 Subject:In-Reply-To:References:User-Agent:Message-ID:X-Sender:
+	 Content-Type:Content-Transfer-Encoding:X-AntiAbuse:X-AntiAbuse:
+	 X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:X-Get-Message-Sender-Via:
+	 X-Authenticated-Sender:X-Source:X-Source-Args:X-Source-Dir;
+	bh=V8UYp7qVy64yxBL1iZ5RNTwYBzXsnnh4TVvEsNUf1A8=;
+	b=wcfhKjE7e+xIVoGbM9Tdcbm1OjudgE8scNxlCkcQ3mcpLRSMswlm4zos/ZIZqlbNly8B
+	 /jo9ZTt2sM4K24sjSQK0YPJDqAqnex8Kz5Ey6spIVt/BB2/YuS6sTJI/wXq5rKhzt9UT5
+	 xUb/Q4PAItAJrAVum+4BO7PTpC2D95cK0cvN7O7JFWF8Zobg2nsodkRq1HsqH/put73Wj
+	 xXZV69uC+Hsqa7pI9Id0z3e3JYMFjhQRQ/vYrC1cF9xS3jzOOVHWO6pRQ5SLWOnQnV0gZ
+	 PVFiMN1r9+JPGSCXMsKxAO/s/yBFT5lG7pK9EO7dQXcToG6I2K4pyQNlmMgJFtYOMQg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nebusec.ai;
-	spf=pass smtp.mailfrom=nebusec.ai;
-	dkim=pass header.d=nebusec.ai header.i=@nebusec.ai header.a=rsa-sha256 header.s=google header.b=iuAqHaYc;
-	arc=none smtp.remote-ip=209.85.216.42
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=oss.cyber.gouv.fr;
+	spf=pass smtp.mailfrom=oss.cyber.gouv.fr;
+	dkim=pass header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.a=rsa-sha256 header.s=default header.b=HT8csTrz;
+	arc=none smtp.remote-ip=51.159.188.251
+Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92E9F60A261D
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 18:32:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 92E9F60A261D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C8360A2615;
+	Thu, 22 Oct 2026 18:36:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C5C8360A2615
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=nebusec.ai header.i=@nebusec.ai header.a=rsa-sha256 header.s=google header.b=iuAqHaYc
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-3ad787e0593so72295a91.3
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 11:32:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1792693956; x=1793298756; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=D4ebXgpyO3igDhP3z8XtyBcXciVo7ucHsU9A+ZflO/0=;
-        b=iuAqHaYcXqlIDQnMM6Gcn89/QovibgQR1vxpljFc8yXWe7kHwQ/VQc2MiZdHC2vJ8U
-         Ue/UeQv4216ihq5wWhmCwuWfWCw8g0BUiqD6A02Mwr+oE33z7bknpA9LKzH2zfBZuHp8
-         iv7Hb0q0sehuJu11RIVWmFuKAZgWnfDTkB323hfR9xnYkxZMbaWARMmJtORgK7391QCv
-         LWCT1FPAJfgdTl96adXOlD8ng4y5dpux2KCGlMc8bDlGjyc6hDAfvGw534GeDJ38oq4y
-         IA1BrBONmN/1Az1ADgD1O8vx8HbN6Y8cE4hdASXW/4/yU/BJInShZrFDNxruHThW3r3s
-         kWuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792693956; x=1793298756;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=D4ebXgpyO3igDhP3z8XtyBcXciVo7ucHsU9A+ZflO/0=;
-        b=NA8BE1I1w9avk1id2GmRUstNKImfKTGuLHo9bKyEJQLTQASiz3jXhAZbpYB2D6QU5/
-         BY9n9rFuwpXZAtZjws3uw4uv7FC42ZIjgJBiDeEnIc8tnU3y76AKmamp/4KKKrdvFFIS
-         6iTdGbIzGmj9BuWyhNiI4q6Vsl3eCR/P7dlgxo2NwSuVGkNVr0L5V922IiAeE8LhT20o
-         Ykhm1MTPbypAW3CAjzOAjMaNcUgKHmqVm+vaWPZuJzc0mEx5BvPfqsY3UM1RUdy0hrOl
-         /3JA4Xra27QAXdN3glx8Fq2WpQbejk4vaUTdleF1AMs1FdXV4Y8ynCFJwkx7pioOfp0v
-         urUw==
-X-Gm-Message-State: AFq9FYJPhp4yASMbEgWtE6wgvWL4h27NL59FVYngtN+HICmPq+shIAiL
-	b5HJn1bEKAP7AvvW4egmBYG7DLOFQE+OP9/udqWAHOXNWF7bj3TCXdEaCbgAs2lTYBJTEAxXTkh
-	6FtuiJKj2GIU=
-X-Gm-Gg: AYBFou3GOy437S4qKEeXOE+QFTJ3QFQ9J2SZpjD+aVq7asCAmoU+Tmk9rbVrDsR8QAH
-	e2DtOlrkVYDGp6KgKOYRjyYMrPzSDOUxTMXWnStFNeieHRwadSiJIjdqRBYeEb7m+CHBrHJiLKj
-	mSBl3cbflAheoSOId2+8WIbC70zpZ0/MkbfIY5agaxM3KGLxB4PFnCvc8FTK5uhizlNDX1fnJGE
-	3j/uZlHFtS/SzVtJ5pn6xH5U4TG9H+IC+seruBiaxgGmgSjqL4dPQcehVBlr7KMPZ287v93HfuL
-	W7EQHOk7YSA/SZ8EUkp+ChKinZg71clmkYIBdsNfN5sNj5M+5sMJbw67yxmE+VWpM8EpPwMe9h/
-	gI9OZfq3TZLDErMjDkZjxO3lBcc+EuLr7BFMXKa2Ad8/CyKh3Hla17zlxK1SNSd0oqdJslTNHMD
-	nD0ooJuRIOcloeFgUw8kt5UA3JpIEeA8cnAAz6DBGgvZpkmaqG9Ca6MrGwg8V1epmJrW743f9z+
-	1AuKeHNtDNgtczE6gGPkrpa77mV63yghFox6ecnMAETPzchdB1kB92dwgGfI6IVKSaI
-X-Received: by 2002:a17:90b:4b0d:b0:39d:f08e:e6e7 with SMTP id 98e67ed59e1d1-3ad86dbca24mr4710256a91.9.1792693955844;
-        Thu, 22 Oct 2026 11:32:35 -0700 (PDT)
-Received: from Roxy.sysu.edu.cn ([2001:49f0:d0db:ffab:2834:5ac2:f726:a005])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ada49314besm5275608a91.11.2026.10.22.11.32.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 11:32:35 -0700 (PDT)
-From: Zhiling Zou <zhilinz@nebusec.ai>
-To: netdev@vger.kernel.org
-Cc: steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	vega@nebusec.ai,
-	zhilinz@nebusec.ai
-Subject: [PATCH net 1/1] xfrm: ipcomp: account full fragment pages in truesize
-Date: Fri, 23 Oct 2026 02:32:17 +0800
-Message-ID: <7f2686a7d3d393a0ef9eb7a2a2abe82caa7874b2.1792692779.git.zhilinz@nebusec.ai>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <cover.1792692779.git.zhilinz@nebusec.ai>
-References: <cover.1792692779.git.zhilinz@nebusec.ai>
+	dkim=pass (2048-bit key, unprotected) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.a=rsa-sha256 header.s=default header.b=HT8csTrz
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
+	Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:
+	Reply-To:Sender:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=V8UYp7qVy64yxBL1iZ5RNTwYBzXsnnh4TVvEsNUf1A8=; b=HT8csTrzXZtDDxrBa9FBDoxRbX
+	o+8tyr5/Th61ko7LJS71QLW+4GwHxIKzL5eqs571eSv14Fma/4pnv6Ai7EyUEF1ZjYIE+lVblxXEJ
+	rifipuahKXrxq513U2fgW0nUMXWpuIOIbjnQw2k0baWUK35AmgROl20nH8KadFnUWweEP62DSoKbD
+	cCbFml9j2gTYtH/bhmvZj7jGUTe/5BgQa9jCF0Pv2FeXECgp7itGrgk4nQoUvJfT1EV62yR4zNw+K
+	k86lothh+an0hffCDqVLhLEkZXkwB6Y+GqWMf5JGLfjak8dFEfQ2zRtlmwi5HEOAc9jkvyte2FJZP
+	WPCBeS4w==;
+Received: from [::1] (port=41390 helo=pf-012.whm.fr-par.scw.cloud)
+	by pf-012.whm.fr-par.scw.cloud with esmtpa (Exim 4.100.1)
+	(envelope-from <jeremy.jean@oss.cyber.gouv.fr>)
+	id 1xJxeo-0000000BPPs-17qD;
+	Thu, 22 Oct 2026 20:36:53 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,39 +60,166 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Date: Thu, 22 Oct 2026 20:36:53 +0200
+From: =?UTF-8?Q?J=C3=A9r=C3=A9my_Jean?= <jeremy.jean@oss.cyber.gouv.fr>
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima
+ <kuniyu@google.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] tcp: fix authentication bypass via unsupported TCP auth
+ options
+In-Reply-To: <CAL4WiiqYwtZ0851Y0M1gOAQ5uU=kjU29Puwjx7+kyR7BqKEpUg@mail.gmail.com>
+References: <20261021193151.1819085-2-Jeremy.Jean@oss.cyber.gouv.fr>
+ <CAL4WiiqYwtZ0851Y0M1gOAQ5uU=kjU29Puwjx7+kyR7BqKEpUg@mail.gmail.com>
+User-Agent: Roundcube Webmail/1.6.19
+Message-ID: <76cd85fa3315cd7efbd99c791514f22e@oss.cyber.gouv.fr>
+X-Sender: jeremy.jean@oss.cyber.gouv.fr
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
 Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
+X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
+X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-ipcomp_post_acomp() allocates order-0 pages for decompressed skb
-fragments, but on input charges truesize by the decompressed byte count.
-When the output ends partway through a page, the unused tail of its final
-page is not accounted to the receiving socket. Repeated IPComp packets
-can therefore retain more memory than the socket receive-memory limits
-charge.
+On 2026-10-22 16:46, Eric Dumazet wrote:
+> Le mer. 21 oct. 2026 à 21:32, Jérémy Jean
+> <Jeremy.Jean@oss.cyber.gouv.fr> a écrit :
+>> 
+>> tcp_inbound_hash() parses both TCP-MD5 and TCP-AO options when at
+>> least one of the two features is enabled. With TCP_MD5SIG=y and
+>> TCP_AO=n, a packet with an AO option reaches the disabled
+>> tcp_inbound_ao_hash() stub. That stub returns success, so sockets
+>> configured to require MD5 authentication end up accepting
+>> unauthenticated data.
+>> 
+>> The inverse configuration with TCP_MD5SIG=n and TCP_AO=y has the same
+>> problem for an MD5 option on AO sockets.
+>> 
+>> Make the disabled stubs reject options for the unsupported
+>> authentication scheme.
+>> 
+>> Fixes: 0a3a809089eb ("net/tcp: Verify inbound TCP-AO signed segments")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+>> ---
+>>  include/net/tcp_ao.h | 2 +-
+>>  net/ipv4/tcp.c       | 2 +-
+>>  2 files changed, 2 insertions(+), 2 deletions(-)
+>> 
+>> diff --git a/include/net/tcp_ao.h b/include/net/tcp_ao.h
+>> index 9a2333e62e994..bb249d6df8723 100644
+>> --- a/include/net/tcp_ao.h
+>> +++ b/include/net/tcp_ao.h
+>> @@ -303,7 +303,7 @@ static inline enum skb_drop_reason 
+>> tcp_inbound_ao_hash(struct sock *sk,
+>>                 const struct request_sock *req, int l3index,
+>>                 const struct tcp_ao_hdr *aoh)
+>>  {
+>> -       return SKB_NOT_DROPPED_YET;
+>> +       return SKB_DROP_REASON_TCP_AOUNEXPECTED;
+>>  }
+>> 
+>>  static inline struct tcp_ao_key *tcp_ao_do_lookup(const struct sock 
+>> *sk,
+>> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+>> index 87ef6d5cbfeba..7d800b6283bd2 100644
+>> --- a/net/ipv4/tcp.c
+>> +++ b/net/ipv4/tcp.c
+>> @@ -4962,7 +4962,7 @@ tcp_inbound_md5_hash(const struct sock *sk, 
+>> const struct sk_buff *skb,
+>>                      const void *saddr, const void *daddr,
+>>                      int family, int l3index, const __u8 
+>> *hash_location)
+>>  {
+>> -       return SKB_NOT_DROPPED_YET;
+>> +       return SKB_DROP_REASON_TCP_MD5UNEXPECTED;
+>>  }
+>> 
+>>  #endif
+>> --
+>> 2.47.3
+>> 
+> 
+> Good catch, thanks.
+> 
+> The forged AO option makes us skip the unsigned fast path, which is
+> the only place where tcp_md5_do_lookup() can return MD5NOTFOUND.
+> An attacker able to hit the window of an MD5-protected session (BGP...)
+> can therefore inject RST or data with a junk AO option, which is
+> exactly what RFC 2385 is supposed to prevent.
+> 
+> Please mention in the changelog that TCP_AO depends on 64BIT: every
+> 32-bit kernel with TCP_MD5SIG=y is in the vulnerable configuration.
+> 
+> With your patch the stubs now return what the real helpers return for
+> a socket without keys (AOUNEXPECTED / MD5UNEXPECTED), so behavior
+> becomes consistent across configs. One visible change is that MD5=n,
+> AO=y kernels will now drop segments carrying an MD5 option to unkeyed
+> sockets, as MD5=y kernels already do. That is fine, but worth one
+> sentence.
+> 
+> Optional: bumping LINUX_MIB_TCPAOKEYNOTFOUND / 
+> LINUX_MIB_TCPMD5UNEXPECTED
+> from the stubs would make these drops visible in nstat.
+> 
+> This is a fix, please send v2 as [PATCH net].
+> 
+> Also please CC TCP-AO folks from Arista
+> 
+> Reviewed-by: Eric Dumazet <edumazet@kernel.org>
 
-Round the decompressed length up to page size when charging input skb
-truesize, matching the pages attached to the skb. Leave output accounting
-unchanged.
+Hello Eric,
 
-Fixes: 7d7e5a60c62e ("ipsec: ipcomp - Decompress into frags if necessary")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Link: https://bugtracker.nebusec.ai/f/13830
-Assisted-by: LLM
-Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
+Thanks for the quick review.
+
+I have prepared a v2, which only adds some bits to the commit message,
+and leave the actual patch untouched.
+
+Noted for the Cc:, I will use the 3 @arista.com addresses at the top of
+the tcp_ao.c file.
+
+For your optional remark, I was thinking of adding a second commit as
+a 2/2 in a 2-patch series. Something like the below diff, which AFAICT,
+would make the drops visible under TCPAOKeyNotFound and TCPMD5Unexpected
+in nstat. Is it what you had in mind? I am not particularly familiar
+with that subsystem; yet, while getting this kind of feedbacks in nstat
+seems good, I am opened for advice. Do you prefer that I add this
+in the same fix instead?
+
+Regards,
+Jérémy
+
 ---
- net/xfrm/xfrm_ipcomp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/xfrm/xfrm_ipcomp.c b/net/xfrm/xfrm_ipcomp.c
-index 671d48f8c9374..c2cc88c8c360f 100644
---- a/net/xfrm/xfrm_ipcomp.c
-+++ b/net/xfrm/xfrm_ipcomp.c
-@@ -67,7 +67,7 @@ static int ipcomp_post_acomp(struct sk_buff *skb, int err, int hlen)
- 
- 	/* Only update truesize on input. */
- 	if (!hlen)
--		skb->truesize += dlen;
-+		skb->truesize += PAGE_ALIGN(dlen);
- 	skb->data_len = dlen;
- 	skb->len += dlen;
- 
+diff --git a/include/net/tcp_ao.h b/include/net/tcp_ao.h
+index 9a2333e62e994..xxxxxxx 100644
+--- a/include/net/tcp_ao.h
++++ b/include/net/tcp_ao.h
+@@ -303,6 +303,7 @@ static inline enum skb_drop_reason 
+tcp_inbound_ao_hash(struct sock *sk,
+               const struct request_sock *req, int l3index,
+               const struct tcp_ao_hdr *aoh)
+  {
++     NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPAOKEYNOTFOUND);
+       return SKB_DROP_REASON_TCP_AOUNEXPECTED;
+  }
+
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 87ef6d5cbfeba..xxxxxxx 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -4962,6 +4962,7 @@ tcp_inbound_md5_hash(const struct sock *sk, const 
+struct sk_buff *skb,
+                    const void *saddr, const void *daddr,
+                    int family, int l3index, const __u8 *hash_location)
+  {
++     NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPMD5UNEXPECTED);
+       return SKB_DROP_REASON_TCP_MD5UNEXPECTED;
+  }
