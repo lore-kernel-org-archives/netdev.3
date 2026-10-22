@@ -1,55 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=13.77.154.182
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792681046;
-	b=ssXI5T+U+iHHyGHPW0YrDt04GkbwiynZLKG/r4rpplpmTsIynl1AG5yTfkXKpEltEspD
-	 yWGNeIUci6ApIE2MYe9SyuZAVk4uJRksP16X2+kCpQemKOy6qcOw6rnCimQHrAwcOJ7rK
-	 El+ZI8I3E//MnGzQFt0AYCUhs+nYkyHUDb0/9miqPe5zR0AhxPIC9jG16EZqlmrtUz3f6
-	 BF8oxxLvl3jud5FZAEtrIQaUeVDYNPAfhiboINuKY9qfX85qVTzZ34IHqNX7yR6OMuoEO
-	 pGsoFuHgzu//uxPjPgl0d+rz+EEakguU0UWiD0jHQcW6NXZfefEqW/6s8U26CSyYV9w==
+	t=1792681391;
+	b=txLZxpxXMUI6O+IqFnntjtuFuKuQB8nQB37Jxc4zShXVgT9V0EQ+1DYZdiH1ypVzQRUR
+	 syRgab6Q3qkNsAh+KilxEt7hJWqs0ckZv9mXTSoUk/gmbm1Jmf6fyVFx9X0xNtVEVSmVS
+	 S+eUDWgO+d9p+wARGVJlPWgUKhadi5Vr4aj9uUuXOHcbhnsPzRv7/3Z0ctvDxAs+oS5dQ
+	 UmfP2WcGeBelWFMLRtweGfudR14l10UNgKluyN8kmUFmpwApGaLXEqnpOnjio6Hg2zfoi
+	 Nl/phvH040EDdplzsPJ5CFVrUbTlVJ01utWC96GRnjs65pvfDts5AB9q2ME549XONow==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792681046;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=lSB1/qSQSVVMedalAK+a89GjHY0Aht+HPppY0CFMDs4=;
-	b=OIOG3MSrnQpN0P8vMxvUPk0isgd/r5+AwBy1VBEmEQl976m9mc4+H7p1reQckmNHerwg
-	 Gd9SdSV5Kc+J+A/6PiTzhcAKppn51YwOdf5yvD7C88AJur6MvAwbreF8Wllnr11/ZFqK0
-	 D3cOkRL9Z8Noo8Ne4DJyplEI7c3/Fbr0q4tICRfa9xJ8C6smPfnoiNs8zW0XrgETAC3iw
-	 xAZPPavCWQe30SMiFF38ihEUipKAy/UJxZv8n6AdxFaQZo5EUexXX+ZulkqGpXXNYyAkc
-	 2mjtQISzG8fTB2ubqFNDDMe4zWkdmDMjM3eyNXu2eRs0DOYV9zrUC+oPgjvtsZDL4/w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792681391;
+	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-Spam-Status:X-Spam-Checker-Version;
+	bh=fGLjRwMYowHqgQeaj0mToA9QAIYNGDXlao2noz3GoI0=;
+	b=GkEKreA+AculOLsivZUTsgVDspDmwlk7HwJ3Xv+uSwfPANwZxPKxrPmXZjIaUZF7kfeR
+	 IO2H7N1T12oOptko9qnpNoiOtkomndRPWimOyI94v97DriPLdSbyNiJ7NaOySysHwIFR8
+	 SCnXH3slr1vbn5mQ94ESvvq9vZ2eaBWzDnyOxEajaoIf1WiMwzv6ifIj8AudIs6EWg/Up
+	 PWR/83FrzOzMwJMGL4GJqyrhwvnEabRM1Q74+yvs6zTbZY7PGUVPVuZTEliB3TXcmVkDG
+	 lOeaWH9dMiqV0desP/U0iz8TBHOWsKIhWT0or9ZEUpECg6WIZP6aqYZ9mT3bGnwNxig==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Spa0GefT;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A3E606A319
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 14:57:26 +0000 (UTC)
+	dmarc=pass header.from=linux.microsoft.com;
+	spf=pass smtp.mailfrom=linux.microsoft.com;
+	dkim=pass header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=pXoD4ixC;
+	arc=none smtp.remote-ip=13.77.154.182
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A1F8606A328;
+	Thu, 22 Oct 2026 15:03:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0A1F8606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Spa0GefT
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF95E1F000C1
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 14:57:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792681045;
-	bh=lSB1/qSQSVVMedalAK+a89GjHY0Aht+HPppY0CFMDs4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Spa0GefTgAjge9vB8SL83iquJ2oDN2KWw2R3G9fzs84ZGdYnoKpqD0E0WRFUpkx+1
-	 QHPKEPPx++wBzTPu59hvZC8s4TlBKUc9dg6yGOehjRAWtH/KnKJU8WOs9Re9EP8vQQ
-	 1rx+Evuw1DjIanV+dsaSXQqanlRadUKfMuWL/D5ylnpYDfB+WNiXOZ2VerSc0wuRj7
-	 6YGSyInixYz0Ier+DO/lGxehRL5qAEE4iCknO9k/pnqfC7DQZKL+4W+ts1Zs8lrGAi
-	 /xk8DxVUOUtz9O+YnqcZvDxygb2LLjYxhs/lEHiPIu68I9pJcSIBt44Y7JEj+8oTMa
-	 0F3BL7FP4d7Nw==
-Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-6dd4f3f696aso1044916eaf.1
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 07:57:25 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBx9P6D1OCp721Mjr2stgE5mfxJmVANQ3fnAS5k+G+VzRhxQ6Vfxj/144MI64I/+OoNAyoapl7Q=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKOs0BM/L6Bg4RwkRT3hy2YXas3qFIoFLy+G9vL0UYo9e8Yo4cB
-	dydf/Pho6uTludz9s2j436YHrnYsGrrYSaeFT6twDtRQa80MlgRBLHFWAt7xiUMpXp9bGLYax2v
-	ZVMUArVsATzrvLHOcYPhujzVssa3mZIQ=
-X-Received: by 2002:a05:6820:4b81:b0:703:b7b6:3093 with SMTP id
- 006d021491bc7-709413c4d40mr2962513eaf.65.1792681044587; Thu, 22 Oct 2026
- 07:57:24 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=pXoD4ixC
+Received: from weh-cvm-dev-vm.y50bckvjo0hefgfnzfztsfttff.phxx.internal.cloudapp.net (unknown [20.169.55.37])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 2507B20B7167;
+	Thu, 22 Oct 2026 08:03:01 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 2507B20B7167
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1792681382;
+	bh=fGLjRwMYowHqgQeaj0mToA9QAIYNGDXlao2noz3GoI0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=pXoD4ixCF5m0oBKb10WtUuJxi4FS/nffmPBdmiqtjcrVPYYR0jkEv7h7oqrHikdzy
+	 BEvlsdleIB7Xg2DTY8aFlCTnLviT6hfjqj+lCChgJcaGm7Uh3jQTE12B9CleHMOlQE
+	 Th2Y2N2ttYTWigRRLf66ssRpiCZx+uuuBrHRlL+M=
+From: Wei Hu <weh@linux.microsoft.com>
+To: longli@kernel.org,
+	kotaranov@microsoft.com,
+	kuba@kernel.org,
+	davem@davemloft.net,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	jgg@ziepe.ca,
+	leon@kernel.org,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	shradhagupta@linux.microsoft.com,
+	horms@kernel.org,
+	ernis@linux.microsoft.com,
+	stephen@networkplumber.org
+Cc: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	gargaditya@linux.microsoft.com,
+	kees+treewide@kernel.org,
+	kees@kernel.org,
+	mawasthi@linux.microsoft.com,
+	weh@microsoft.com,
+	edumazet@kernel.org
+Subject: [PATCH net-next v9 0/4] net: mana: concurrent HWC requests and dynamic queue depth
+Date: Thu, 22 Oct 2026 15:02:58 +0000
+Message-ID: <cover.1792679388.git.weh@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,76 +81,94 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261022144755.65025-1-shawnq1@163.com>
-In-Reply-To: <20261022144755.65025-1-shawnq1@163.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Thu, 22 Oct 2026 16:57:13 +0200
-X-Gmail-Original-Message-ID: <CAL4WiipjAy2M5kok3bkB1Ny=9ryJvrWkt1jz_awuSoPY3Nx_vQ@mail.gmail.com>
-X-Gm-Features: AclHuK_ZymQtBac5SLmvPX2cY8IcEsAwKR4_uxsEP0hW1yO_0q-mPrvDW3qvIJ4
-Message-ID: <CAL4WiipjAy2M5kok3bkB1Ny=9ryJvrWkt1jz_awuSoPY3Nx_vQ@mail.gmail.com>
-Subject: Re: [BUG] net/sched: malformed UFO GSO geometry can soft-lock DRR dequeue
-To: shaos <shawnq1@163.com>, Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Jiri Pirko <jiri@resnulli.us>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	security@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Le jeu. 22 oct. 2026 =C3=A0 16:48, shaos <shawnq1@163.com> a =C3=A9crit :
->
-> Hello,
->
-> A PACKET_VNET_HDR AF_PACKET send supplies UFO GSO with gso_size=3D1 and h=
-dr_len=3D65532 for a 524275-byte frame. qdisc_pkt_len_segs_init() computes =
-an accounted length of 4,294,574,091 bytes. With DRR quantum 256, the deque=
-ue path needs about 16.8 million deficit refills before it can dequeue the =
-skb, keeping the CPU in the qdisc path long enough to trigger the soft-lock=
-up watchdog.
->
-> HEAD commit:    c03c1a14507dfaf8b856c2608f9ac216021fc222
-> git tree:       30fd2ef82912c26cf3a58ad0ba6afc375fa851ac
-> source version: Linux 7.3.0, local master
-> compiler:       gcc 11.4.0, GNU ld 2.38
->
-> console output:
-> https://gist.githubusercontent.com/shaos26/8a4f7f445aa23601bfe8e04f9c6a52=
-02/raw/f4ca89881f7b8163ddea72fbc54b204385142bb8/console-output.txt
-> user-namespace positive output:
-> https://gist.githubusercontent.com/shaos26/8a4f7f445aa23601bfe8e04f9c6a52=
-02/raw/14de8e3a06e7e73c540ebf408e73d301bae3922d/userns-positive.log
-> kernel config:
-> https://gist.githubusercontent.com/shaos26/8a4f7f445aa23601bfe8e04f9c6a52=
-02/raw/6ea0e3da68f1e239d565c64f7906d0f9c73bf784/kernel-config.txt
-> reproducer sources:
-> https://gist.githubusercontent.com/shaos26/e2add470a38b7aab41f2b79ef021ac=
-cf/raw/7153646b9233fa53aca81c9af879d48e8f95dd80/poc.c
-> https://gist.githubusercontent.com/shaos26/e2add470a38b7aab41f2b79ef021ac=
-cf/raw/e8acddd986023c10a43b5106b4734a456a063deb/drop_priv.c
->
-> Build the tested kernel with the attached configuration and boot a dispos=
-able QEMU guest. Compile the linked userspace reproducer and privilege-drop=
- helper, then run the AF_PACKET/VNET_HDR test from a fresh user/network nam=
-espace.
->
-> Impact and prerequisites:
-> A process with only namespace-scoped CAP_NET_ADMIN and CAP_NET_RAW can ke=
-ep a CPU in the DRR dequeue path long enough to trigger a host soft-lockup.=
- With softlockup_panic=3D1, as used in the test configuration, the watchdog=
- panics the kernel. This is a local denial-of-service issue; no memory corr=
-uption or privilege escalation is demonstrated.
->
-> Validation: Two fresh positives reproduced the soft lockup, including one=
- run from an unprivileged UID mapped to namespace UID 0. The same-frame non=
--GSO control completed in milliseconds.
->
-> Thanks,
->
+This four-patch series adds concurrent HWC request ownership and
+PF-directed HWC queue depth to MANA. It starts with depth-one bootstrap
+queues and keeps setup private until the final channel is tested.
 
-Related recent work:
+I am continuing Long Li's series. Original per-patch author identities,
+dates and sign-offs are retained.
 
-commit 8f735d64382dcf162f4276d6699d03ad2f859c0b
-Author: Jamal Hadi Salim <jhs@mojatatu.com>
-Date:   Tue Aug 25 04:14:03 2026 -0400
+Changes in v9 (v8 -> v9):
+ - Rebase onto net-next 207dd12bc195153fe6ca614d8add9ecb0b636270.
+   This base already includes MANA BQL support (799cdeaa5c39).
+ - In patch 3, replace the independent admission deadline with
+   bitmap/waitqueue admission. Healthy contention waits for a free slot
+   instead of returning EBUSY before a destructive command is posted.
+ - Wake admission on slot release, recorded response abandonment,
+   cancellation and channel stop. With no available slot, abandonment
+   or cancellation returns ETIMEDOUT; a stopped channel returns ENODEV.
+ - Preserve available-slot best-effort posting after cancellation and
+   keep the response timeout for a posted command.
+ - Suppress expected ETIMEDOUT/ENODEV logging after cancellation or HWC
+   unpublication, while retaining live-channel and other diagnostics.
+ - Correct the eight reported source-line length warnings across all
+   four patches under netdev's explicit 80-column check.
 
-    net/sched: bound qdisc_pkt_len to prevent qdisc soft lockup
+Healthy admission no longer has a separate elapsed-time deadline,
+matching the upstream waiting policy rather than treating healthy
+contention as a channel failure. Response ownership, timed-out slot
+quarantine and sender draining remain in place.
+
+The PF specifies the HWC queue depth and corresponding ring sizes. It
+reports the required depth through HWC_INIT_DATA_QUEUE_DEPTH, and the
+VF rebuilds the rings to implement that PF requirement. Ring-sizing and
+establishment behavior is unchanged from v8.
+
+The pre-existing individual Ethernet/RDMA CQ publication and lifetime
+issues, malformed-response RX reposting, and wider control-command DMA
+failure policy remain separate work. This series does not claim to fix
+them. Existing protections introduced later in the series are preserved
+in their owning patches.
+
+Validation on this revision:
+ - Clean application of all four patches to the net-next base above,
+   with no conflict resolution or three-way fallback.
+ - GCC and Clang W=1 builds of the MANA Ethernet/RDMA target objects at
+   the baseline and each of the four intermediate commits.
+ - Full-patch netdev-style checkpatch with --strict --codespell and
+   --max-line-length=80: no errors, warnings or CHECK diagnostics.
+ - Bounded actual-source C models cover admission and response
+   ownership, cancellation/logging, destructive callers, retained state,
+   initialization, rebuild and producer limits, with negative controls.
+ - Exact application and author/date/message checks on the outgoing
+   patch emails.
+
+These checks are static/offline. The models use typed userspace
+substitutes and modeled hardware acknowledgments; no new full-kernel,
+hardware, performance or runtime qualification is claimed for v9.
+
+This HWC series remains independent of queue-set replacement. The
+separately prepared queue-set series is not included here; its dependency
+and shared CQ-table changes must be reconciled separately.
+
+v8:
+https://lore.kernel.org/all/cover.1791998462.git.weh@linux.microsoft.com/
+v7:
+https://lore.kernel.org/all/cover.1791561995.git.weh@linux.microsoft.com/
+v6:
+https://lore.kernel.org/all/cover.1790665894.git.weh@linux.microsoft.com/
+
+Long Li (4):
+  net: mana: prepare HWC ownership for safe reinitialization
+  net: mana: give each HWC message slot its own completion state
+  net: mana: support concurrent HWC requests
+  net: mana: add dynamic HWC queue depth with reinit path
+
+ drivers/infiniband/hw/mana/main.c             |   19 +-
+ .../net/ethernet/microsoft/mana/gdma_cdx.c    |    5 +-
+ .../net/ethernet/microsoft/mana/gdma_main.c   |  158 ++-
+ .../net/ethernet/microsoft/mana/gdma_pci.c    |   15 +-
+ .../net/ethernet/microsoft/mana/hw_channel.c  | 1025 ++++++++++++++---
+ .../net/ethernet/microsoft/mana/shm_channel.c |   58 +-
+ include/net/mana/gdma.h                       |   17 +
+ include/net/mana/hw_channel.h                 |   70 +-
+ include/net/mana/shm_channel.h                |   10 +-
+ 9 files changed, 1155 insertions(+), 222 deletions(-)
+
+
+base-commit: 207dd12bc195153fe6ca614d8add9ecb0b636270
+-- 
+2.43.0
+
