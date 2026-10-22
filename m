@@ -1,61 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.2
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792680551;
-	b=qq9djyG/Zt6kGET7i+LAunXpUvOZfoISFdy2KYaQbzUVlQPt9etnNlFuszWpnqT5VhN5
-	 IApuI0F0xjc7vCnPKaFhO6avXZDZO/qTHNB6M2fw9bKygpcAhKTWj7wyOIJooRiSf1Gtu
-	 +Z6jm6G64PMJBhXzObNvfoWQJxCZ3gZhNBkbeMSs+m4+XdvhE/igti4qU+IXm897tZM2I
-	 r9xx6mKOPhdaSx75B6gRrGnurxc58J57198JEzmpaDaQCpBR5oMB46yELLq/3uMuQDlu7
-	 84F4jL8nKVyssHD1bCKs0hYQ5dlnY9weQlOAeIQYHnqir9Ip5XMsopT+nuJ/dOAbP4Q==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792680551;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=VPRO3PXa2/zji34oyXe+9F8Yh09iar2A/K8GvPXivFM=;
-	b=xTLLhk5DaZDcw85RHXpHP3tlzy8nPkoTUYI2yEPDplKz8IyTGPVA9TZxkYcD9FQCQQ+2
-	 hNl1geYhPWzxYHs3QB+lpibFSo3x8PPvfgVs76CRrPRsxvg4bReETA+ld5Gf3Dft/2PFQ
-	 sQJrUq3QX7f5BLCv7WB5QEd9ltEa3BMNOjk9Z0GfNGYXTebNsHg6YgOSR8SlIHwPxBBUG
-	 8Gvi6pDMpn1tH4GIGfVI1iL2YiZ1xvgqA3XDCfnFjanMtqxZnunfmXtyhyUf6jd9Tu+cQ
-	 Agru7LpyV3yEwAe9fqBBPuAi1WfFl5ag3hT25ulybb9FYO4umqoqgCJWKEb6tIwjAVw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=163.com;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=iVqaUuIK;
-	arc=none smtp.remote-ip=220.197.31.2
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.47
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792680626;
+	b=UYc+8h7hYSPTLC6ByKJNV2SktgCGbdmhhaH+QeUpBC1ngKjkxSP/PzS/GCQqdPNwlbj+
+	 GtN8uOs5HWDlFhLDAiCL1F6PzwvPKU7whtpVFUJ/SyaSjeSeUEapGGKonfpwqpuhpQa4u
+	 LjrCXc14sHsigaFCZY+5ZtH658mmcVfmVB+0T7HjAuVJccNpH/+EB8J7mzsU8i32TEPT4
+	 Cr+wKna0vnUkVxP0xIaTeqsyCEKj6h2hz9SFw7CeokzfgQjlisum9Inl6PjDDfeCG/e1j
+	 KrLViROA8QIfcEo+pgdBCDnSadnhINA+HLuYhz+vMkFPbk/sXSy0d9faDY5wNEE0n3w==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792680626;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=fTPl7nX2j8f1ccT/JaBHrgE1Z1eaSsJiiHGLZJRZflE=;
+	b=JHhtO8XeAz3Ur6vSCWUQYC+CO0yvGRwtjCYdXq6kwfuJfqGhsXC/QOZcJUJNwD/FRWoU
+	 oW54dxlYHuRJq+dJhQBKmILnd3uV8ouwiscRAllHmMmFDAwq0HRm7YVz3RJb8R5dx1TXF
+	 Kd0/9R3eTu/NzNYMoPJezUeiNXprEf3skHVPXGZIVET+YMN+mcqcmzpgasSg0rr3sbEup
+	 tCGiURctIASjSyuCzYkCDhj8LJ1qQvkDcntmJN/k7/M4CAuIZXDNHS/uInNIME7qLZMPg
+	 ccJjHYVVR04w1IhY3Cbpv9lg0Ctq+L+PJONAKNWbm1SuwSePwJSuST1PA1EeGr2KhCQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b="h7+rpi/a";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.47
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10FEB606A328;
-	Thu, 22 Oct 2026 14:49:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 10FEB606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267AE606A329
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 14:50:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 267AE606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=iVqaUuIK
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=VP
-	RO3PXa2/zji34oyXe+9F8Yh09iar2A/K8GvPXivFM=; b=iVqaUuIKuvHM1uKkKw
-	KWHbolbzNZNxxkqSXDzgtm1dGrEP/6b9Idq0lq3lE0oleqnDDFg7Uv8y7QcBICqR
-	Borezo+qqZLGvnc4s7a01jPLuE9JIfHiPyUEKPLUXqK6oJgiaqWlCR4bVTfl1T+r
-	/0HbosZUNUHIBOepcHEftbi2k=
-Received: from shaos.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wD3P+ExItpqnVr8Bw--.21753S2;
-	Thu, 22 Oct 2026 22:48:18 +0800 (CST)
-From: shaos <shawnq1@163.com>
-To: jhs@mojatatu.com
-Cc: Jiri Pirko <jiri@resnulli.us>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [BUG] net/sched: malformed TCA_STAB can leave failed qdisc change committed
-Date: Thu, 22 Oct 2026 14:48:17 +0000
-Message-Id: <20261022144817.66648-1-shawnq1@163.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=h7+rpi/a
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso11606a12.1
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 07:50:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792680624; cv=none;
+        d=google.com; s=arc-20260327;
+        b=F0QCCN+NvCwUAAjNLjYCgRcufNjupuAW2u0RNqnEjET0yu+INjrE1mEN0gvTEiL5TT
+         ylWglYhHsQSBzIZXV4vYFOpblGhEd4NuRVzocseP3wSRvamLuGBjbFzpiDhdoS50FMUt
+         bDa6xgGubjFHI+4EgxUHQ85AiGY+KKrmG2mZJkj3OTwDBc0zr63lDfeCAyENlC3yN2VH
+         fGRTgsZXZJtiMg4akXtd1CszWqIQh11/3CQof3938AFOzCvlK/0RP85pRQrDVhML4awD
+         bFVZ7Jaa6mk0lTtUVp8HpPtXYIvsLJPxUpOAewHn7EdfrVyGpCDpX62jtru9ltCvOlNP
+         RR0g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=fTPl7nX2j8f1ccT/JaBHrgE1Z1eaSsJiiHGLZJRZflE=;
+        fh=9Cx8LedUGEK8DViS1cd9NEHn5HbOVlN+eanI4iOTUF0=;
+        b=HICRVhdfkT5sfnWxCWfkN82ebchXnwNiujUMaFdSvFd5gNTivuLg88zYlRo5vABiZ1
+         PrQNaCuh+0pC/8+MeUKYiMZfNKLruLFJcNXDQhmmPKnB4X/+N++0b282dsz09e9hI2CR
+         2wxWoM1NaoiBIX6QWVNLU8E6A02HzFizb+6JKRGqVdWx54Ynz1lz8pmEHeSJcLwNNanW
+         Se7pf1IWnVlYAbOSnMZhO/nzbzTXHMRTllYc0vvJF/x46oen0maZTHbPyvfw+poexJli
+         b6z5YVAL7MbxX/HwHJiYQ7ihYrkPyh5xgWA7fCwJeV8gYATvEz7eARAn4+IMTd0P+Kp/
+         Mn3Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792680624; x=1793285424; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=fTPl7nX2j8f1ccT/JaBHrgE1Z1eaSsJiiHGLZJRZflE=;
+        b=h7+rpi/aL3Z0vsNXi5TLNo8MUFo5yPvsjz3SnBlOd7KqX7GgB6hE9A/K90auQGbEfR
+         iEYnQoJf+uHDsbPJD0JsT8mhXuWOtfflCW/54aN8FZpjE3NrKasq/FtnFHm/L/ZYE613
+         BAgzJp9hPm9Ll8/d1sy/Ott2VrB6hEwO4/dVzWF/++baeUPw/EY42HUx6k+KjkLpg7Yi
+         ZXCj1wE4ESLcr/sH3laEcv5UYzgO7+4iVlTPUQyz13rAMCXFUZxXrQDPY7HwA0EVxSXQ
+         /dCi7KDfqUsbHRWEz2Oz+ruHFZNccU3loQpTbEfppOiO0j4MA2yILF7uHvEofv75V+n8
+         izrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792680624; x=1793285424;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fTPl7nX2j8f1ccT/JaBHrgE1Z1eaSsJiiHGLZJRZflE=;
+        b=OpPpAZHvR4yhcrtMpKRLSpSPKLoBG9Lw2KYqVSbDwZaOMgELiPcWSiTzzZDAcnOd0W
+         6zcuaKqOBLOyRwZ2QEsBMZXEs8M/fXZ516JVQI2qGk49kCDiLoKDnAGco+XRahuIRCey
+         JUEVRAJNydfqpE239iOt1im2cauPA8jg+l4QaG08P7C62zHSMmSP3GWbO7rWJ8XW2Mo5
+         OE4WTWADUTWmKpDUK3GL1+lQUwZoSJmJBFj+V/2dmVBd2y3YtiJqnGMC9oOqq8+J4gTI
+         CnmiJoSd5Nq25MKu8OTi3JLv0m949Oi6M9PPkJGyoy1Z5aI264JvvvzmKg7mOIp+TYSC
+         df3Q==
+X-Gm-Message-State: AFq9FYL/Um0xJfEZ7ySF8QG7jcpYOGpQW+t0UcjjDs88xBrBG7vjXo79
+	hgMV8fC5wlbsfKa1dkOh0yq1b/r0GzWaycomLgUjej/84vRG6bS6ZaKfESeiNExbxBR0nJNJ39M
+	Q+8hcTEI77GH4L8T9at22EZ5M7R8sB0VpoIhHps5T
+X-Gm-Gg: AYBFou2CzY9PAfUpKLsnHSYC7G89j2sKFCatgrkVdtLpf8ouw5NfqUQ5TLGJgltXftD
+	A3kpUtyPOwLIEObKduZj2tEQg5V2idLxxwZl6frf4h1g5WaB7lKLPl72U4pAo7IIF/Oikhbzuts
+	61gMv4lazwPrU7igxmMsIgFRHxSvYR1/Z+1Ypfi+peAFcOb3+0++fh0bUGaPKQxnmmvWI6LjnIh
+	Gz1MDOa03Uwa2UvWlAuQvMPn9zu8KhWBCCdrlOBxsbESFoJpt/27huhx/k0SV06dnGR5l5U7MGr
+	NVWSvdCStG+xF+QMsUIMG3YpYPYN2l+8yFTvJGRewdp4ewei32Qy/li/e+FMpyxHjhqE1q8h3ji
+	sqih7Ix6odNiYErYsUJQMH0LjR7XgBYLDF2kx4fDJkOcxYKBdgqutZlgx1yA2iomcQQ4RSYO0eF
+	Hw2HNdcAHRyXdiOBH0oM7rSzciRkB5lS+PlpV24NX/XSe2JMWz
+X-Received: by 2002:a05:6402:a54c:10b0:6b3:f12d:7405 with SMTP id
+ 4fb4d7f45d1cf-6b42036d21fmr48386a12.14.1792680623946; Thu, 22 Oct 2026
+ 07:50:23 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,38 +104,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3P+ExItpqnVr8Bw--.21753S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Ar13JrWDWw18GFyrKFWrGrg_yoW8Ar18pr
-	Wvya43tF1UKF45JFs7KF48u3W5Wrs7Ca1UKas5Gw48ZF98Cw1jkryrK347ZryUGr97K395
-	Za90gayxKan5WaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07josjbUUUUU=
-X-CM-SenderInfo: pvkd40jtr6il2tof0z/xtbC8RLl82raIjJK7QAA3y
+References: <tencent_53CDCF8AA0022B75CF72A294CB9993D2FF07@qq.com> <f97b13ca-90b2-4bac-91bb-70c9d26095f9@linux.dev>
+In-Reply-To: <f97b13ca-90b2-4bac-91bb-70c9d26095f9@linux.dev>
+From: Neal Cardwell <ncardwell@google.com>
+Date: Thu, 22 Oct 2026 10:50:01 -0400
+X-Gm-Features: AclHuK-6EcHqcPlmvEXPLfwRmauh9ZbMdTBp1Y9Jf-G-MgNT2rEI-Eq-Myoux3M
+Message-ID: <CADVnQymQ_DDEijpjL1ubo-Oh8SLUTKM+-BY4-5c_U5Q6f0mbXw@mail.gmail.com>
+Subject: Re: [PATCH net] tcp: limit tcp_tso_rtt_log to a valid shift count
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+On Thu, Oct 22, 2026 at 8:51=E2=80=AFAM Jiayuan Chen <jiayuan.chen@linux.de=
+v> wrote:
+...
+> > --- a/net/ipv4/sysctl_net_ipv4.c
+> > +++ b/net/ipv4/sysctl_net_ipv4.c
+...
+> > @@ -778,6 +779,7 @@ static const struct ctl_table ipv4_net_table[] =3D =
+{
+> >               .maxlen         =3D sizeof(u8),
+> >               .mode           =3D 0644,
+> >               .proc_handler   =3D proc_dou8vec_minmax,
+> > +             .extra2         =3D &tcp_tso_rtt_log_max,
+> >       },
+> >       {
+> >               .procname       =3D "ip_early_demux",
+>
+>
+> Wait a minute, is my tree too old, or did you land tcp_tso_rtt_log_max
+> in the wrong place?
+>
+> It looks like you are adding it to the ip_dynaddr entry.
 
-Change an existing netem qdisc from 20 ms to 100 ms and include a malformed empty TCA_STAB in the same RTM_NEWQDISC request. qdisc_change() calls the qdisc callback before validating TCA_STAB, returns -EINVAL, but leaves the 100 ms option live.
+Agreed. It seems the patch adds the new line in the wrong place.
 
-HEAD commit:    c03c1a14507dfaf8b856c2608f9ac216021fc222
-git tree:       30fd2ef82912c26cf3a58ad0ba6afc375fa851ac
-source version: Linux 7.3.0, local master
-compiler:       gcc 11.4.0, GNU ld 2.38
-
-console output:
-https://gist.githubusercontent.com/shaos26/faf3f124983448070e5242af5b3dd68d/raw/498cec333b632cbea7ffa02539d860e44d84c864/console-output.txt
-kernel config:
-https://gist.githubusercontent.com/shaos26/faf3f124983448070e5242af5b3dd68d/raw/5e0a640b23f7635af2334f3e1ff7cf185a620f1e/kernel-config.txt
-reproducer:
-https://gist.githubusercontent.com/shaos26/faf3f124983448070e5242af5b3dd68d/raw/ee84d2095025cc488421c5c2d9470604b456e73a/poc.c
-
-Build the tested kernel with the attached configuration, boot it in disposable QEMU, compile poc.c statically and run in a network namespace with CAP_NET_ADMIN. The program creates netem, submits the mixed request and reads state back with RTM_GETQDISC.
-
-Impact and prerequisites:
-A caller with CAP_NET_ADMIN in the target namespace can receive an error while the device continues with the changed qdisc configuration. This is a control-plane atomicity/correctness defect; it does not cross a privilege boundary.
-
-Validation: Four fresh exact-revision boots reproduced the state change. Invalid-STAB-only and patched-order controls left the old 20 ms setting unchanged.
-
-Thanks,
-
-shaos
-
+neal
