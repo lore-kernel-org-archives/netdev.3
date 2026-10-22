@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792695773;
-	b=dWtc537QHKXrDLvIRb5gL0E9yln1MR35xMJwqkoFVPPPUZuMKZpTj25Lo5sJgBUWgBc4
-	 KMwowevY+K9BWtsKy5SBGKfEQP0fAyva9xmYv2y86ToFCEGdc8MG1Zd+zLZVZ9vpWIZcb
-	 /CQYuop3QVjEr/ZgVEZRT4fN6zg5aEsG6tRalijO7QkGWja5rwY29F6LJsM2UCiMv/iNw
-	 mbppiOxPvyI8m0hOpngqj8TKiKbrBzSf+EBU+oiOYa9fatWdCNLZNEKm6B6gHV0KXlgI2
-	 9jYHJp//7w0Kd7hWNAx9Go6N/wTME8mutyVAKuM4ayxpTQn/1ZCNxocZt0fIVTHkM0A==
+	t=1792695774;
+	b=d1C1TL3EW6Gkr+U3lZZ/QkS3Pvdy/29uDTFZXNoTGVYDpfQxZjjCfqoEH5JfEl5B3lQp
+	 Pl5D91kAe32H1xuUC0bZysbuA7DZqBHtQ//pdvSr9UCWAg1o/73RIpFohqIL5AtX2AZyt
+	 hSceMNMHnF97UIBksOOaCe+nUm6R9wqCoVu4K12rsn82TWE2zZ6AnpeyUMYEQOQyzmR6s
+	 z8lus1qWXG1gWu9B0xDjUhzSJCZywKqxRMzFe47Uj2pLL8LJ6jJShX9SMZfcs6ZiStz4y
+	 B0D3UoJl+DTgm59nna7ofOLYKNfJwNsNm92k3RKhnltkqKRspjoAhRRbvdiGkRAQPEA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792695773;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792695774;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=nLZ8jXTTFcnMa4WgNgZefvmsMAB9BXoZPjsIiow8nm0=;
-	b=dEWiT9x6dfKPZz9KHOGm17lrXvF/mZ2YHsXpqv6kddgbzhdyXu3bYOwgKv3md8Pcm13d
-	 1HwGxyUxHBTvYSKLFJJFR9xxkkHgqBZDh4Nb2nLGDiO9IVmcO2WFfEaPXz5EjlGqvDMhs
-	 MzbVJxCySrrrFqEjmyCkTmNSr8TYSIGVCeXnozacgHRH9tnXS0DpGDO3SAiOik94xhmhC
-	 GKDEH7fjc8p5YkBmko+o2fvlken4PhxxFXQmgdJUbPCtFR9XHn1rmaX8lHjXs+1jom2nR
-	 +cUHhpCwXNacHnpk4O6zPbykyUbSSZ8zRVuaU/s6EzIBCY5fNS9qUFvHOmKI/qvKwMA==
+	bh=NDpuli4IqtoNpm+YHK8wWRZYUu/reWo+WKo0tRkJcOA=;
+	b=fMiIqCpNqztR8Vc4GmL0qwPUX+mv8+TkGUw/bMQf9VOifVArjO/RlwJg1MRFCSMcXbvK
+	 137jdow876oTOanHaUl1QBYWvuCHxAn1PzXOnB1Cni2WDfQHzE5/cVjOtGWiZqY1ZR8m9
+	 b5sQF2LVx9F8fmeGclmuRy+4WDU7H9MUI0lfegVstt1lbR/iDQODvQFpblZgaqrUZnupG
+	 CTIAV80vefzBYRaP+ZycLC3BlmvpYtWUJXneKLVWruEhvyoIpqm+eG/Nqx8VTceb5tUDF
+	 8QkZ4SSChHimYVnARs1qYkTLfjlISq9F3Cq13nX7C7rIi9JR/9Of9DlsJG1rduuadng==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CqLUqTUi;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O9VGrljH;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7056606A323
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 19:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65EE606A329
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 19:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CqLUqTUi
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C65D61F01825;
-	Thu, 22 Oct 2026 19:02:51 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O9VGrljH
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 263FB1F01828;
+	Thu, 22 Oct 2026 19:02:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792695772;
-	bh=nLZ8jXTTFcnMa4WgNgZefvmsMAB9BXoZPjsIiow8nm0=;
+	s=k20260515; t=1792695773;
+	bh=NDpuli4IqtoNpm+YHK8wWRZYUu/reWo+WKo0tRkJcOA=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=CqLUqTUi2b4cUxq4sJqPNLdJWKAU8ReoxUHuoMhWoAskAMtnBmoJCA3B7s1eBiGTe
-	 Yf0MI0oP5KP/O7vNlkI36wBtAMK8Y1/rObdmztphUCan2gihetksm7U6+5SWzDlvBG
-	 RvTY4xu/MsYt6uYH6o7Z2mrMW7op88LE+k0q8D5pXa3SbEXRrHCnHIyc3kHKukTdJT
-	 iozmE4v9FIJdAE926qOibcxFjIb7rWMlEXDYTnxclHuCQusMhOOYU+PZ8hrFKefq15
-	 OtCGFm+YYXT1LX3ltK51LAUJlIr96gZx6EyeGClnFo34dhYAKxYBcx4+pLxIoNBeJx
-	 AMayUjOOQo2jw==
-Subject: Re: [PATCH net-next v7 3/4] net/sched: cap the accounted backlog
- before it can wrap
+	b=O9VGrljHODp2tLS5reDAAqxzVZB3fQV6NDVvVdbalxAPIiHTyq4H3entF3XQqsJGm
+	 nCtjprRnyoFEKQXq7SxFmQOejuBHBqRn9FQhq+n/nbVm/Z6w8ZwGnd3dCGHr5c1Ddp
+	 TO1qVjeUMvsgu0VjZ9EpEvbsWpfxgExT4n3yY30SBdVgmMQBdbvQMyrLJdjhteBmxd
+	 fYwDCaGGSFjk8O6skhMdCarj6oRKbgAiPB6uESC8A6oq5qoIp6FCeoWogXQGSxGyw3
+	 GAyj0aLm01JT81UAvYrlN/rf0I8OFz0c50WIJeQTajRKukg7EBQ4njG9paNO07z+1L
+	 /Rdbc68bfOAlg==
+Subject: Re: [PATCH net-next v7 4/4] net/sched: cake: hash before segmenting
+ and reject an overlong split
 From: netdev-bot+sashiko@kernel.org
 To: jhs@mojatatu.com
 Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net,
  edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
  victor@mojatatu.com, toke@toke.dk, bjorn@kernel.org, sashiko-bot@kernel.org
-Date: Thu, 22 Oct 2026 19:02:51 +0000
-Message-ID: <179269577131.3135.3967915390403138015@kernel.org>
-In-Reply-To: <QDISC-BA27.v7.r0.20261019115505-3@mojatatu.com>
-References: <QDISC-BA27.v7.r0.20261019115505-3@mojatatu.com>
+Date: Thu, 22 Oct 2026 19:02:52 +0000
+Message-ID: <179269577270.3135.16072065138845192450@kernel.org>
+In-Reply-To: <QDISC-BA27.v7.r0.20261019115505-4@mojatatu.com>
+References: <QDISC-BA27.v7.r0.20261019115505-4@mojatatu.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -67,7 +67,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 (1) · Low: 1
+Critical: 0 · High: 0 · Medium: 1 · Low: 2
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -75,242 +75,169 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] In this patch, cake_enqueue() (net/sched/sch_cake.c) runs the
-  new qdisc_backlog_overflow() check on the original skb, using its…
-- [Medium] net/sched: red_enqueue() fails to bound child backlog on
-  NET_XMIT_CN
-- [Low] The commit "net/sched: cap the accounted backlog before it can
-  wrap" fixes a user-triggerable bug in about ten qdiscs: u32…
-
-Pre-existing issues:
-- [Medium] red_enqueue() (net/sched/sch_red.c:79) checks RED's own
-  backlog once and reserves only the original qdisc_pkt_len() L (line…
+- [Medium] cake_enqueue() (net/sched/sch_cake.c:1825-1827): when
+  skb_gso_segment() fails with IS_ERR_OR_NULL(segs), the original skb is…
+- [Low] The commit presents itself as a bug fix ('The Fix:') with user-
+  visible effects but has no Fixes: trailer.
+- [Low] The commit message says cake_enqueue() reads q->config->flow_mode
+  'once with READ_ONCE()'.
 
 --
 
-net/sched: cap the accounted backlog before it can wrap
+net/sched: cake: hash before segmenting and reject an overlong split
 
-This patch adds qdisc_backlog_overflow() and calls it at enqueue in
-fq_codel, cake, codel, pie, fq_pie, dualpi2, RED, pfifo, plug and gred.
-These qdiscs now drop a packet once the u32 sch->qstats.backlog can no
-longer represent its accounted length. RED also reserves the packet length
-in its aggregate backlog before handing the packet to its child.
+This commit splits cake_hash() into a side-effect-free cake_hash_keys(),
+which runs on the unsegmented skb, and cake_hash_resolve(), which runs
+only once the packet is admitted. The split-GSO path moves ahead of the
+resolution: it sums the segment list, checks the total against
+QDISC_MAX_BACKLOG and, on rejection, defers the whole list to to_free
+with every segment tagged QDISC_DROP_OVERLIMIT. flow_mode is read once
+with READ_ONCE() and passed to both hash helpers.
 
-Closes: https://lore.kernel.org/netdev/20260818101130.16203-1-jhs@mojatatu.com/
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260818101130.16203-1-jhs@mojatatu.com
-Link: https://lore.kernel.org/netdev/CANn89iLfMJV7ancKH1Gjzzm7ZUG-gKcrczkJjJEWN5sCuWd-ug@mail.gmail.com/
-Link: https://lore.kernel.org/netdev/CANn89i+GOFH_8g+vSV0jUj0aBqLYVWuFOrHuDggZu9kPC_m6tQ@mail.gmail.com/
-Link: https://lore.kernel.org/netdev/87a4oottcj.fsf@toke.dk/
-Link: https://lore.kernel.org/netdev/87pkxks68f.fsf@toke.dk/
-Link: https://lore.kernel.org/netdev/179231932946.3135.7497478990186385688@kernel.org/
+Link: https://lore.kernel.org/netdev/179231933068.3135.80340792633077986@kernel.org/
 
-> Reported-by: Sashiko (nipa) <sashiko-bot@kernel.org>
-> Closes: https://lore.kernel.org/netdev/20260818101130.16203-1-jhs@mojatatu.com/
+> net/sched: cake: hash before segmenting and reject an overlong split
+>
+> The Fix:
+> with CAKE_FLAG_SPLIT_GSO, cake computes the flow/host hash keys, then
+> splits a GSO skb into segments it accounts individually.
+
+[ ... ]
+
+> Link: https://lore.kernel.org/netdev/179231933068.3135.80340792633077986@kernel.org/
+> Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 
 [Severity: Low]
+This isn't a bug, but the commit is presented as a fix and has no Fixes:
+tag.
 
-Should this have a Fixes: tag?
+It adds the missing check of the segment sum against QDISC_MAX_BACKLOG on
+the CAKE_FLAG_SPLIT_GSO path. It also stops cake_hash() state from being
+committed for packets that are then dropped. The split-GSO accounting
+dates back to when CAKE_FLAG_SPLIT_GSO was added to sch_cake.
 
-The commit message describes a backlog wrap that users can trigger in about
-ten qdiscs, including a NULL flow->head dereference in fq_codel_drop(). The
-trailers only carry Reported-by, Closes and Link.
-
-The commit this patch follows up on, 709f34f7c28d ("net/sched: fq: add
-overflow bounds to quantum and initial quantum"), carries
-"Fixes: afe4fd062416". Without a Fixes: tag here, it isn't clear which
-stable releases need this change.
-
-> diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
-> index 1acaadb3e2cf..a5a6bdf55e0a 100644
-> --- a/include/net/sch_generic.h
-> +++ b/include/net/sch_generic.h
-> @@ -915,6 +915,26 @@ static inline unsigned int qdisc_pkt_len(const struct sk_buff *skb)
-
-[ ... ]
-
-> +static inline bool qdisc_backlog_overflow(const struct Qdisc *sch,
-> +					  const struct sk_buff *skb)
-> +{
-> +	u32 backlog = READ_ONCE(sch->qstats.backlog);
-> +	u32 len = qdisc_pkt_len(skb);
-> +
-> +	if (likely(len <= QDISC_PKT_LEN_MAX))
-> +		return backlog > QDISC_MAX_BACKLOG;
-> +	return len > U32_MAX - backlog;
-> +}
-
-[ ... ]
+Could a Fixes: tag be added so backporters know which kernels need this?
 
 > diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-> index 0d13c4b0bfe3..91c33295b30b 100644
+> index 91c33295b30b..730c90af14bd 100644
 > --- a/net/sched/sch_cake.c
 > +++ b/net/sched/sch_cake.c
-> @@ -1777,6 +1777,13 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
->  		return ret;
->  	}
->  
-> +	/* Drop before touching the hash or shaper state. */
-> +	if (unlikely(qdisc_backlog_overflow(sch, skb))) {
-> +		qdisc_qstats_overlimit(sch);
-> +		return qdisc_drop_reason(skb, sch, to_free,
-> +					 QDISC_DROP_OVERLIMIT);
-> +	}
-> +
 
-[Severity: Medium]
-On NET_XMIT_CN, red_enqueue() now undoes the reservation with
-qstats_backlog_sub(sch, len). That leaves RED's backlog where the old
-code left it. Both versions assume the child has already told its
-ancestors about anything it dropped. Does that hold for every qdisc
-red_graft() accepts?
+[ ... ]
 
-hhf_enqueue() queues the new skb, then hhf_drop() drops the head of
-the heaviest bucket. If that is the bucket it just queued to, it
-returns NET_XMIT_CN without calling qdisc_tree_reduce_backlog():
+> @@ -1761,13 +1784,17 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+>  {
+>  	u32 idx, tin, prev_qlen, prev_backlog, drop_id;
+>  	struct cake_sched_data *q = qdisc_priv(sch);
+> +	int flow_mode = READ_ONCE(q->config->flow_mode);
 
-	if (hhf_drop(sch, to_free) == idx)
-		return NET_XMIT_CN;
+[Severity: Low]
+The commit message says:
 
-skbprio_enqueue() does the same when it evicts the tail of a lower
-priority band. In both cases child->qstats.backlog moves by
-qdisc_pkt_len(skb) minus the evicted packet's length, while RED's
-backlog does not move.
+  Read q->config->flow_mode once with READ_ONCE() in cake_enqueue() and
+  pass that value to both cake_hash_keys() and cake_hash_resolve().
 
-Two things follow.
-
-First, the new guard reads RED's own backlog, but red_calc_qavg()
-reads child->qstats.backlog. Neither hhf nor skbprio checks
-qdisc_backlog_overflow(). Suppose a stab inflates the arriving
-packets to 1 MiB while the queued ones stay small. Each eviction of a
-small packet for a 1 MiB one then grows the child backlog by about
-1 MiB and leaves RED's untouched. Can the child backlog wrap mod 2^32
-and hand red_calc_qavg() a small value?
-
-Second, red_dequeue() later subtracts the full qdisc_pkt_len() of a
-packet RED never counted. Once the queue drains, RED's backlog sits
-at 2^32 minus the net drift. Any drift from 1 byte to 1 MiB leaves it
-above QDISC_MAX_BACKLOG. Evicting one 64 byte packet to admit a
-1500 byte one is enough, and no stab is needed.
-
-Before this patch a wrapped RED backlog mostly affected the reported
-stats. Now it gates admission. Wouldn't red_enqueue() drop every
-packet from then on, with nothing left queued to bring the counter
-back?
-
-The commit message adds pfifo because RED reads a grafted child's
-backlog. Doesn't the same reasoning apply to hhf and skbprio? Should
-those children correct their ancestors on NET_XMIT_CN, or should RED
-check the child's backlog as well as its own?
-
-[Severity: Medium]
-
-Does this check also bound what the CAKE_FLAG_SPLIT_GSO branch adds to the
-backlog later in cake_enqueue()?
-
-The check uses the original skb's qdisc_pkt_len(). When a size table is
-attached, that length is recomputed from skb->len and capped:
-
-net/sched/sch_api.c:__qdisc_calculate_pkt_len() {
-    ...
-	pkt_len = clamp_t(int, pkt_len, 1, QDISC_PKT_LEN_MAX);
-	qdisc_skb_cb(skb)->pkt_len = pkt_len;
-}
-
-So qdisc_backlog_overflow() takes the len <= QDISC_PKT_LEN_MAX branch and
-only guarantees 1 MiB of headroom.
-
-The split path then adds the raw segment sum, and nothing compares that sum
-against the remaining headroom:
+Is the snapshot complete? Further down in the same cake_enqueue() call,
+the flowchain code still reloads the live config with plain loads:
 
 net/sched/sch_cake.c:cake_enqueue() {
     ...
-		skb_list_walk_safe(segs, seg, nskb) {
-		    ...
-			slen += seg->len;
-		    ...
-		}
-
-		/* stats */
-		qstats_backlog_add(sch, slen);
-		...
-		WRITE_ONCE(b->tin_backlog, b->tin_backlog + slen);
-		WRITE_ONCE(b->backlogs[idx], b->backlogs[idx] + slen);
+		WRITE_ONCE(flow->deficit, cake_get_flow_quantum(b, flow, q->config->flow_mode));
+	} else if (flow->set == CAKE_SET_SPARSE_WAIT) {
+    ...
+		cake_inc_srchost_bulk_flow_count(b, flow, q->config->flow_mode);
+		cake_inc_dsthost_bulk_flow_count(b, flow, q->config->flow_mode);
+	}
     ...
 }
 
-Take cake with split_gso and a stab that inflates small packets to 1 MiB.
-About 4095 queued packets bring the backlog near QDISC_MAX_BACKLOG.
+cake_config_change() publishes the new mode with WRITE_ONCE() before
+cake_change() takes sch_tree_lock(). A concurrent tc change can therefore
+let cake_hash_resolve() run with a mode that lacks the dual src/dst bits,
+so flow->srchost and flow->dsthost are not updated. The later reload can
+then see the dual mode and charge hosts[] bulk counts at stale indices.
 
-Could one small-MSS GSO skb with slen above the remaining headroom then wrap
-sch->qstats.backlog, b->tin_backlog and b->backlogs[idx] mod 2^32?
+These plain loads also race with the WRITE_ONCE() store, which KCSAN can
+report.
 
-If b->backlogs[idx] happens to wrap to exactly zero, could cake_drop() keep
-selecting an empty flow from the overflow heap? Nothing is freed in that
-case:
+Would passing the local flow_mode to these three calls as well keep one
+mode for the whole enqueue?
 
-	skb = dequeue_head(flow);
-	if (unlikely(!skb)) {
-		/* heap has gone wrong, rebuild it next time */
-		q->overflow_timeout = 0;
-		return idx + (tin << 16);
-	}
-
-The buffer_limit drop loop in cake_enqueue() would then make no progress.
-
-The last patch in the series, "net/sched: cake: hash before segmenting and
-reject an overlong split", sums slen before any segment is linked. It
-rejects the split when (u64)sch->qstats.backlog + slen > QDISC_MAX_BACKLOG,
-so this only affects this intermediate commit.
+>  	int len = qdisc_pkt_len(skb), ret;
+>  	u16 flow_override, host_override;
+> +	struct sk_buff *segs = NULL;
 
 [ ... ]
 
-> diff --git a/net/sched/sch_red.c b/net/sched/sch_red.c
-> index d7598214270b..72990d0db4fd 100644
-> --- a/net/sched/sch_red.c
-> +++ b/net/sched/sch_red.c
-
-[ ... ]
-
-> @@ -136,14 +142,21 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
->  	}
->  
->  	len = qdisc_pkt_len(skb);
-> +	/* Reserve the length before the child sees the packet: netem
-> +	 * can re-enqueue a clone here before the backlog is updated.
-> +	 * Undo it if the child drops the packet.
-> +	 */
-> +	qstats_backlog_add(sch, len);
->  	ret = qdisc_enqueue(skb, child, to_free);
+> +	if (qdisc_pkt_segs(skb) > 1 && q->config->rate_flags & CAKE_FLAG_SPLIT_GSO) {
+> +		struct sk_buff *nskb, *seg;
+> +		netdev_features_t features = netif_skb_features(skb);
+> +
+> +		segs = skb_gso_segment(skb, features & ~NETIF_F_GSO_MASK);
+> +		if (IS_ERR_OR_NULL(segs))
+> +			return qdisc_drop(skb, sch, to_free);
 
 [Severity: Medium]
+The comment a few lines below says SKB_GSO_CB sits over
+tc_skb_cb.drop_reason. Doesn't the same aliasing affect this failure
+return?
 
-This is a pre-existing issue and was not introduced by this patch. The
-commit message already says this path is left to a separate change.
+__skb_gso_segment() writes the headroom into that slot before calling
+skb_mac_gso_segment(), and that call can still fail. Examples are
+-EINVAL on malformed SKB_GSO_DODGY headers from tun/virtio, or -ENOMEM in
+skb_segment():
 
-red_enqueue() runs qdisc_backlog_overflow() once and reserves only the
-original qdisc_pkt_len(). A child that segments the skb can raise the
-queued bytes after that point. With corruption enabled, netem re-enqueues
-each segment with pkt_len = seg->len and then does:
-
-net/sched/sch_netem.c:netem_enqueue() {
+net/core/gso.c:__skb_gso_segment() {
     ...
-		/* Parent qdiscs accounted for 1 skb of size @prev_len */
-		qdisc_tree_reduce_backlog(sch, -(nb - 1), -(len - prev_len));
+	SKB_GSO_CB(skb)->mac_offset = skb_headroom(skb);
+    ...
+	segs = skb_mac_gso_segment(skb, features);
     ...
 }
 
-qdisc_tree_reduce_backlog() applies that negative delta to every ancestor
-and never checks the headroom:
+This overwrites the QDISC_DROP_GENERIC that __dev_xmit_skb() set before
+enqueue. qdisc_drop() does not write a reason back. __tcf_kfree_skb_list()
+then reads the headroom value, finds no qdisc subsystem bits, and passes it
+to kfree_skb_reason() as a core skb_drop_reason:
 
-	qstats_backlog_sub(sch, len);
+net/sched/sch_generic.c:__tcf_kfree_skb_list() {
+    ...
+		if ((reason & SKB_DROP_REASON_SUBSYS_MASK) == __QDISC_DROP_REASON) {
+			trace_qdisc_drop(q, txq, dev, skb, (enum qdisc_drop_reason)reason);
+			skb_reason = SKB_DROP_REASON_QDISC_DROP;
+		} else {
+			skb_reason = (enum skb_drop_reason)reason;
+		}
+		kfree_skb_reason(skb, skb_reason);
+    ...
+}
 
-Suppose RED's backlog is near QDISC_MAX_BACKLOG, for example because a stab
-inflates packets to 1 MiB, and a GSO skb's segment sum is above 1 MiB.
+As a result, the drop gets an unrelated core reason and trace_qdisc_drop
+is not emitted.
 
-Can RED's backlog and the child backlog that red_calc_qavg() reads both
-still wrap mod 2^32? RED would then base its mark and drop decisions on the
-wrapped value until the counters drain. tbf_segment() appears to grow the
-parent backlog the same way.
+This return is unchanged from the old code. Since the patch moves this
+block and re-tags the reject path for this exact aliasing, could this path
+use qdisc_drop_reason(skb, sch, to_free, QDISC_DROP_GENERIC) or a more
+specific reason?
+
+> +
+> +		/* The split path accounts the segment sum, not the
+> +		 * stab-adjusted qdisc_pkt_len(), so check it here.
+> +		 */
+> +		skb_list_walk_safe(segs, seg, nskb)
+> +			slen += seg->len;
+> +
+> +		if (unlikely((u64)sch->qstats.backlog + slen > QDISC_MAX_BACKLOG)) {
+> +			qdisc_qstats_overlimit(sch);
+> +			/* __skb_gso_segment() puts SKB_GSO_CB at cb
+> +			 * offset 32, over tc_skb_cb.drop_reason; every
+> +			 * segment inherits it. Tag each one with the
+> +			 * qdisc drop reason.
+> +			 */
+> +			skb_list_walk_safe(segs, seg, nskb)
+> +				tcf_set_qdisc_drop_reason(seg,
+> +							  QDISC_DROP_OVERLIMIT);
 
 [ ... ]
 
