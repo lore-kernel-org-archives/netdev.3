@@ -1,105 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792660957;
-	b=thNBSIxOGvdZFOL/puljH3ttjCSQ3J94Pgmgo599zZrejwq20IO5cwYC0Lhe07heMyI/
-	 jgJC7PyF4Hpd+zWwQYkbNsdrC0RJPz7yPoeUZoXuFmIZN7pYSfEmYP1NKXjMfEXOwNkp0
-	 nAnuGPoDN6lEzE26cBUT5BoVivZGQACKeqyFoCBFW7d/RyaS7E++i8NOvsrVmRSP2q6HK
-	 7YejIXlqna481VrDjvBFJAOEIZcQyxoDQJ7502t3VRVqJ+smYQVexdFxs18MhlrjhBvuq
-	 ZTca4rVeOtsefzROmnvXZJwDeyq8BADCD7VakvojVHwME89vp0jakqBZ/7afeVNqSLA==
+	t=1792661290;
+	b=bhJx1EkeGvz5bAWMjSoGWTCDCwMn+eAm5v2SjPCwwu7Z/tQTnMWIYssScei9GQT2T9oN
+	 z0ThXgFyB0ZGLy8UlzXkM4zAAnp3oOzHy291ecwRmiKKZFBzv5u3rY3W6LY2PgFEQIzJ6
+	 QWTCsAbhCW2lC6kPtanUZCKUYQ9yH05JhtBgwSCCdMtTKrPPnGSl6o9LWzolwmcdq7N0L
+	 OLaHaCfeYfHUZloC7q61M7okGF0gbI0q//ci7KaUCmOkAhGZtyfbRJUHQvIe7jKP3xQgS
+	 qP9BnpCLFBRo6Gmik7SZj4u8EKf3WL4HtPCemVefnQNyX+mQfICjT/sjW1aDtiKsEYA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792660957;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=icU9YO4XysvgHIVlrdyvNfTHVdM7KlIy9zFDYV/1joU=;
-	b=0OaKBWmpExm1irsRnCjRH+mYc73tea1CII4HPXlEP6gdUxpBA/hjSilRNtB4Pp3sPnMg
-	 ZlJJvzntYESsXXjdAV0ln+YukVo7k+beT8doGgjW0euZMTxhNjGzV3WS+VimbGtqh2+zW
-	 FIXSGqEwXA0EhTSo+hLMhAQ51C8UgoV8FlRX2kOxTweY6AppmdagfUJCpZDkRATGuYwqI
-	 9ff6nr3CldjLRC+puSk6yGcRZmtSUiJp7FdS+AH4U+nc27Ml+ZFnHzCP66B5i9Yha69Eq
-	 2RHv/kcf3m709TX2Gr9DAb/AQ9GXWYU5lyzLio/VB2WayABVkjRz7Lq/LEZ+OURI1dw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792661290;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=b16AqzWrmx6PCjjmVkdtVIc26QQOCuhEY/Lbc4sfw0A=;
+	b=5tB+qpMqT6dNqlN/QFmK/hE43L5VIZK0ErlajBai7oz0BUVHla1PLjMPHbSWElYtJPcg
+	 GaUqcRVo/3jh/VNSos/xhANryPnn7LCIlUc+drd1SCs3G15TURZ0djcU5zHdejgCNe5e9
+	 7H/2bS7i7eQrNK4/8TRS2f3aOmKdqKyqW0k06U/kJOy9C0zzu1Tl5lIf9w/+clxDRB3Ls
+	 IUZUH0Ye/DJ2WGsX0QMr/UNE/8jAYdeSOZNZ5fY8ESkqZI6e1ZD99rDQQWO3xdeaTNQHi
+	 cISVV6Z5SrblZThqcBUZmZ+AArZ2t/rH0or25YU1FK7v0eOuITa8AgjyjpvYZUp4Lbg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mojatatu.com;
-	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=ANhnSiVf;
-	arc=none smtp.remote-ip=209.85.222.180
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dTGPpB2y;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557C0606A332
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:22:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 557C0606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B1EC606A324
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=ANhnSiVf
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-93cb1c0e851so115988085a.0
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 02:22:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1792660956; x=1793265756; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=icU9YO4XysvgHIVlrdyvNfTHVdM7KlIy9zFDYV/1joU=;
-        b=ANhnSiVfzgB9MNcKy4OsRyOoBJPY3Gg2xPECaa9IuD/0Y94JUV7KpwwC9JBBmgXKX3
-         7R/T+gVz2BoscttxgoKYb3emHKYJkgGxHjkGjDpcOePbaweY4/AHbAYIts1hoD2KbBKI
-         1JF8gqqozwanGCLuNbgyS5FTNNwMW38eXf4Js=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792660956; x=1793265756;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=icU9YO4XysvgHIVlrdyvNfTHVdM7KlIy9zFDYV/1joU=;
-        b=W333ac+WBbQjkf4bltaZt2McTrp+J8fj3s8KYK6cQZBQsQ7VikYptbRcQpUDNKjE2B
-         hSJWMBCwkGwpnS39RK7y2ANezZJwkDUMXWthkNE7wZXgBrS7nzJEvGq8xm9Qfv0P8qPh
-         zldnlvukoqvXh/TXg28IGGxDnZ8WCLh1YSS9jjosr3Wmz6JfqrM8dux7hsa4Yj3LfXIA
-         njXthCgmj8qkedQ0G65YcT4P9TnKdXMJIX2FkBw1/3sfNA8Mah8bv6vvWEcd4m1AivHx
-         nbi4LWP3v2oLRPdIm6xmlYd5fzegM9PIVahIvU7QUGybhuxo7coZ4JrAlBI5RHl8FLWh
-         ElpQ==
-X-Gm-Message-State: AFq9FYLC4mIJlyKGBvyIa0mjk4Fc33Q+vU6jvjoWKraUIFgNrOaT6vyU
-	kCHm+y6+YPyrRNp5b+aDy3OAv5dz4B4zkrJ3Xa9uwEzgPUi65GuZbTyxC8mcTyxdFYAbW3Ao/PH
-	PK3I=
-X-Gm-Gg: AYBFou3LhiWciUxjTsQEuu44OzTt5rwPM9sqpoLdzs2JLadbkRs0E00YX8Pmv33buSz
-	6Lels9lLef3Pk7D+d3pyuQnkK4q1o82evAFTX/fXuchjrSIv3WlXCZzshTrnZH9gM+UuC0P9ox3
-	w4X7fG4WV0bF1oQ+/I2KvckYrnB7ooEvXR5u0CwyDK8d0hrCk/S4YaIIFiHH/cmJg2QZGIwEiIw
-	a3lcfL+F3V2Y82EI4Ee4esLAtF+LyneRZbCmaLjudWy9sfSFfxeSStfZRGN5alnloUfz4alJMeJ
-	+TyT61mx8IkT826AZRX6oF5pTck/sOTR5E1EeMhbc8w6X9mrxsfY7qIUsd37sI6/0l/QvaD98kp
-	hoPKX/jaKH35cYoTbI5tavOV8sXkiNhoIm6s1VfbXspJhbRtGXi2eH/vM6fOJehW71Jui5WEz9G
-	JiZZsZpi1EJJZDgfaTX6F0KrK1rTTnTqslgxGoGzaQ1UFYtYuvt+78TB/m5QIj9ubb0gK+dCjro
-	KhYCeaXSV8kjA4N82Mm79h+x45xM85s0yHowEvnnsYLd9qmkgIQIuh9QP693spiZioS4ezahd/Z
-	CV4GaE41B3HAhr32G+Wcgg89qH2Tbb3ez1XcGNS3S16WwrU=
-X-Received: by 2002:a05:620a:294b:b0:93c:735c:2477 with SMTP id af79cd13be357-93f57f6fbd4mr922058985a.21.1792660956306;
-        Thu, 22 Oct 2026 02:22:36 -0700 (PDT)
-Received: from mbili.waya ([64.203.83.2])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93f56e2a60fsm469884685a.41.2026.10.22.02.22.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 02:22:35 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Aaron Conole <aconole@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Eric Garver <e@erig.me>,
-	Yi Yang <yi.y.yang@intel.com>,
-	Jiri Benc <jbenc@redhat.com>,
-	Pravin Shelar <pshelar@ovn.org>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Victor Nogueira <victor@mojatatu.com>,
-	dev@openvswitch.org,
-	stable@vger.kernel.org
-Subject: [PATCH net 5/5] net: openvswitch: ensure a linear inner Ethernet header on NSH pop
-Date: Thu, 22 Oct 2026 05:22:22 -0400
-Message-Id: <ACT-N6N4.v1.r0.20261022051412-5@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <ACT-N6N4.v1.r0.20261022051412-4@mojatatu.com>
-References: <ACT-N6N4.v1.r0.20261022051412@mojatatu.com> <ACT-N6N4.v1.r0.20261022051412-1@mojatatu.com> <ACT-N6N4.v1.r0.20261022051412-2@mojatatu.com> <ACT-N6N4.v1.r0.20261022051412-3@mojatatu.com> <ACT-N6N4.v1.r0.20261022051412-4@mojatatu.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dTGPpB2y
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A891F000C2
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:28:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792661290;
+	bh=b16AqzWrmx6PCjjmVkdtVIc26QQOCuhEY/Lbc4sfw0A=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=dTGPpB2yuOtIRTiVRcSqefJbTmZDIzw2DXMa/Te82wylzlryq+uHX6Dw6UGlNUrB1
+	 o2k8VB0bGsLf1c0WpRuCEv50CCKqa64IEkYw3RpQ3IA1mAuqnrN0VYZjpytvK/sxor
+	 C5zVoJd4M48lVV48WCX8f5wBSeo5rk878wPUYGsYqEeINlKaFGKLv9O9J31OcrTcLE
+	 GqUm6YAESSVuRG+WY6SWKQTaFztUbMNq5TcJvfaRghhk+aTgd8aBWIjtxt45MHteEw
+	 nSiRN2EO8tcaDwR8XqvwM63yZOUT83MS5xZZUL8yRHeHI9e2H1p4dkibZ8siY18+ql
+	 cmjnbDaMgXifQ==
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-48e2d5a69c4so846021fac.3
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 02:28:09 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBy62a9cPaTUNJyaWe1HjJU6nq9CM6PWZsxUZTkzHv/IYlP/OajFXMwJgw6/sXN+ofgOW1xIJqo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKesgot8+ClHWWYSOWGEfDv+8y9LK44hqmTVLCjbmFNMrJMsJjo
+	kgaINOTeKv/e6e9wYoDnKmLrUSvE0sW2eJvGTglLaeqYKlWAUh0E87bTpb2m596WAuKSaQEe1iD
+	ZCcfRjvZr/NHESP0kXS34DMWCzGMsTLU=
+X-Received: by 2002:a05:6871:6681:b0:49d:c3f6:4191 with SMTP id
+ 586e51a60fabf-4a7dc15cb9emr2583880fac.18.1792661289186; Thu, 22 Oct 2026
+ 02:28:09 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -109,74 +59,84 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261022090431.3641707-1-teel4res@gmail.com>
+In-Reply-To: <20261022090431.3641707-1-teel4res@gmail.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Thu, 22 Oct 2026 11:27:57 +0200
+X-Gmail-Original-Message-ID: <CAL4Wiip9-oGNjrgQV-VSkDR_hfq35d_+ymX_itYk29u9scY=Mg@mail.gmail.com>
+X-Gm-Features: AclHuK-mJUESD7RYwjo_wmXzNyLsWvwMRTYfXqXRI4IDUC_o01XXw1PdqN8O9Bg
+Message-ID: <CAL4Wiip9-oGNjrgQV-VSkDR_hfq35d_+ymX_itYk29u9scY=Mg@mail.gmail.com>
+Subject: Re: [BUG] net: bridge: late FDB learning can outlive an MRP port
+To: Cheng Yongkang <teel4res@gmail.com>
+Cc: Nikolay Aleksandrov <razor@blackwall.org>, Ido Schimmel <idosch@nvidia.com>, 
+	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, bridge@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The issue:
-pop_nsh() restores MAC_PROTO_ETHERNET when the popped NSH next-protocol
-is TUN_P_ETHERNET, but nsh_pop() only guarantees that the NSH header is
-in the linear area.  When the inner Ethernet header sits in a page
-fragment, the datapath then claims an Ethernet header it cannot access
-linearly.
+Le jeu. 22 oct. 2026 =C3=A0 11:04, Cheng Yongkang <teel4res@gmail.com> a =
+=C3=A9crit :
+>
+> Hi all,
+>
+> An MRP-aware bridge port can remain in BR_STATE_FORWARDING during
+> del_nbp().  The terminal br_fdb_delete_by_port() runs before
+> netdev_rx_handler_unregister(), so a frame received in that window can
+> learn a new FDB entry whose dst is the port being deleted.  No second
+> FDB sweep follows.  The port is then RCU-freed, leaving the FDB entry
+> with a stale net_bridge_port pointer.
+>
+> Observed on Linux v7.3, commit
+> 08ab31164c55f20c7a2653de3186ae333470e2c1, with KASAN+UBSAN:
+>
+>   BUG: KASAN: slab-use-after-free in br_forward+0x55/0x3c0
+>   Read of size 8
+>     br_forward
+>     br_handle_frame_finish
+>     br_handle_frame
+>   Allocated by:
+>     new_nbp
+>     br_add_if
+>   Freed by:
+>     kfree
+>     kobject_put
+>     rcu_core
+>
+> The failing sequence is:
+>
+>   br_stp_disable_port() leaves the MRP-aware port forwarding
+>   br_mrp_del_impl() restores BR_STATE_FORWARDING
+>   br_fdb_delete_by_port()
+>   ... late ingress frame learns fdb->dst =3D=3D p ...
+>   netdev_rx_handler_unregister()
+>   call_rcu(&p->rcu, destroy_nbp_rcu)
+>   later frame -> br_forward(stale dst)
+>
+> This reproduced in three independent VM boots.  The target bridge code
+> was unchanged.  Because the test VM has no driver that accepts
+> SWITCHDEV_OBJ_ID_MRP, a small diagnostic switchdev endpoint claimed the
+> MRP object and widened the already-existing post-FDB-flush/pre-unregister
+> window.  It did not replace bridge logic, modify FDB entries, or alter
+> net_bridge_port lifetime.
+>
+> The deletion path should stop new RX processing before the final FDB
+> sweep, or drain the deferred/FDB state after the RX handler is
+> unregistered and before queueing the port for RCU free.
+>
+> I found no matching upstream fix.  Candidate BR-007, BR-040 and BR-058
+> are consequences of this same root cause.  BR-040 gives the forwarding
+> window; BR-058 independently describes the stale-FDB lifetime.
+>
+> The reproducer, module source, and complete serial logs are available
+> on request.
+>
+> This was found with AI-assisted source analysis and fuzzing; the kernel
+> behavior above was reproduced under KASAN.
+>
+> Thanks,
+> Cheng Yongkang
 
-Output to an OVS internal vport then calls eth_type_trans(), which
-pulls ETH_HLEN from an empty linear area and triggers the BUG in
-__skb_pull():
+I suggest you stop sending these emails, we all have LLM you know.
 
-  kernel BUG at ./include/linux/skbuff.h:2830!
-  RIP: 0010:eth_type_trans+0x335/0x500
-  internal_dev_recv
-  ovs_vport_send
-  do_output
-  do_execute_actions
-  ovs_execute_actions
-  ovs_dp_process_packet
-  ovs_vport_receive
-  internal_dev_xmit
-
-Conditions to recreate the bug:
-On a system with 4 KiB pages and CONFIG_OPENVSWITCH and CONFIG_PACKET
-enabled, use CAP_NET_ADMIN to create an OVS datapath and bring its local
-internal port up with MTU 9000.  Install a flow matching an Ethernet/NSH
-packet with a 24-byte MD1 header whose next-protocol is TUN_P_ETHERNET,
-and actions pop_eth, pop_nsh, output to the local port.  With
-CAP_NET_RAW, send a 4148-byte AF_PACKET/SOCK_RAW frame containing outer
-Ethernet, the NSH header, inner Ethernet and 4096 payload bytes.  The
-two pops consume the linear headers and expose the inner Ethernet header
-in page fragments.
-
-The fix:
-Pull the inner Ethernet header into the linear area before restoring
-MAC_PROTO_ETHERNET.  This is the NSH counterpart of the MPLS/TEB
-producer fix in the previous patch.
-
-Fixes: b2d0f5d5dc53 ("openvswitch: enable NSH support")
-Link: https://lore.kernel.org/netdev/e85fa16e-df3c-43dd-bb3a-9edca07200ea@kernel.org/
-Cc: stable@vger.kernel.org
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
----
- net/openvswitch/actions.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
-index 03b31e33e880..cb7e16c6a8ef 100644
---- a/net/openvswitch/actions.c
-+++ b/net/openvswitch/actions.c
-@@ -314,10 +314,13 @@ static int pop_nsh(struct sk_buff *skb, struct sw_flow_key *key)
- 		return err;
- 
- 	/* safe right before invalidate_flow_key */
--	if (skb->protocol == htons(ETH_P_TEB))
-+	if (skb->protocol == htons(ETH_P_TEB)) {
-+		if (!pskb_may_pull(skb, ETH_HLEN))
-+			return -ENOMEM;
- 		key->mac_proto = MAC_PROTO_ETHERNET;
--	else
-+	} else {
- 		key->mac_proto = MAC_PROTO_NONE;
-+	}
- 	invalidate_flow_key(key);
- 	return 0;
- }
--- 
-2.43.0
-
+What is the point, if you do not send patches?
