@@ -1,47 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792680523;
-	b=MOjt9hRhuJvs4Dp2FcCGvO7IXnQfjGoVnHhUCMWYPKrPQivPyq60maPS4Bsub8yoyjnV
-	 9WjTkYhAhz8pmibMLaffEQa3OdqFz1M6P7G/W1GhWe8KYoT897chyasYB1/hkPLCnNdiC
-	 /8TefjDll572C0kw6UVCzvvCAZ6PfsFUcK2dN8OJlBDQOSRogrj52+PDbd050GgqyUtZw
-	 f5eHDr+ZLlgSsp4GZY/w0rLvGZfylE6/nyT92VxYQGzLLA1Pk3p2mBDpiAm202e9tE8+q
-	 il6mFJHblGDMyi4gt4CWzmw/v6yJ63yyRnTfIil7lPBNAC2HtktBiVhEn4Ja7Zg3cww==
+	t=1792680525;
+	b=Fu/O4FHPo8PYDCVdUwHAW6CI6UMggWMfGdEM1lCQgQncRUu6Hcek7GTI/3x49XE77ruZ
+	 AmBT6h0RQ3JBSJA7XkUEpzXfoLKTzyY/k2I84uSnillPc0zv0Nhj94pv7MzSgr+A9aR2L
+	 kq3Ol7Ba+qRO0OR9HPILiLVW9RH3TmLRC1CfxvRBGlKN2kt4FLDWw+16a8QQu3ONttBzW
+	 mL4/owGCvyPIitF4bNNkbFOw9P2k8uBtKNdpHG214P35LTXOZCsCYXIxljA60+M1IwDpj
+	 F2rCGuTcsMIAbx8I2X3IG/1eabkuOsnDaqCZe63NjCPJ7N3KrDXXh0V9rkybLR39Cnw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792680523;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792680525;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
 	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=5c3xQVElowUfLrTzEWstHGeY2ZjYqm7kADYcumVcXW0=;
-	b=ageLDP8l/GSq0yH7ASSk4bzXrjMoIgg98+f6jWa/txOlQCrPHq3ieb6JLBiLw4B0aB2p
-	 uFHPXpIEKs1mtKmTI8b/MGD66TOB/Jrf1RWfIIzbNlGsc8helOLJt7CoWAP3Jtt89B7i3
-	 lyMavfe2K0eRGocWyjSw94t67Ft5UeZWbWuUgOVUh0aWKQxl4L2KLBn+arMqRYw3RCOIS
-	 ckVbIPiEQdtc734fqYOkKGf/qOhqjnjjaRFmHKdC7CjnX+1CkcTvZRqGP9mPWCMPhTRQR
-	 xOLlwj2cn0ogZGwRAq/1tm8E36mQoNyEWT7/Rf93VnnTeM2Th6hCEFanwOtQrRDyhew==
+	bh=q0UUKJNedWOp93M4Fe4rzELLr6YIIS1dOssZ4nDapOA=;
+	b=AjTTVqRorOc7vyUZyVsotRFazCUZfNOdDA8ZrOteBiB6BtbtejmvCs/kXG5am7PdKQRv
+	 FL1lrSWkCtoGPxvTTxRueZzMX7c9y3Wh1ZTYYobtvY0CFVFGl698dLyzB+h9Xm/9fZq6g
+	 kDRr//DJiOvOk4ZIM5KTahrur8ulqF8T848+lSQHfkqSO4in146TqnpLWJTHGivz2PdVT
+	 ATbU6PlAZuOqBzFcpLqlze/4Uaql/+sN2XwkTrdkkfaKsbSvhbCruGLiLWYBmCsmnC5MK
+	 BBmE6T6Yr1KS9CUtdIlFBRxGsnpuuOkw7MgHfE3SW8TiJGqTVuC687tVJghcVBR+DbA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=163.com;
 	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=doedaK+U;
-	arc=none smtp.remote-ip=220.197.31.3
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=Ua9fqT6F;
+	arc=none smtp.remote-ip=220.197.31.4
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8210B60A4AD2;
-	Thu, 22 Oct 2026 14:48:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8210B60A4AD2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C7260A4AE1;
+	Thu, 22 Oct 2026 14:48:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 35C7260A4AE1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=doedaK+U
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=Ua9fqT6F
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=5c
-	3xQVElowUfLrTzEWstHGeY2ZjYqm7kADYcumVcXW0=; b=doedaK+UUhIbfvBndN
-	Iv4gmZW5OyfVt7NYX5bg6rXwaWBfpea3vYBczXBD5ccqoTQUJINXLZi9GMzdN/sm
-	snyjAEyv8Z+HzQGPQgWUHXk6NU/GBc8WLYhAc2zvY50qnJSgi6zV5zTYpdbdaZvF
-	K0P8oO3Gnf+ayXqvF0G7ULYOY=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=q0
+	UUKJNedWOp93M4Fe4rzELLr6YIIS1dOssZ4nDapOA=; b=Ua9fqT6FAze/40J4ZN
+	l6E0b1m9ziL1AHfdqSteYTmHxDquqw/NrAb2BJaYoLm8/U4e/BL5GoBVrz1adVBQ
+	Ypd/SEU3Xt6D6ATo99Pt0T+DC7eqR/Q1MjNmhSIZmcJYTND/eRmjuT4m4yXn9b4s
+	qqqUAUzShJQlbL/y8Wc7k2nmA=
 Received: from shaos.localdomain (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id PSgvCgDnph0oItpql9hbBQ--.32871S2;
-	Thu, 22 Oct 2026 22:48:09 +0800 (CST)
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wD3Xy8rItpqJG2SCA--.61716S2;
+	Thu, 22 Oct 2026 22:48:12 +0800 (CST)
 From: shaos <shawnq1@163.com>
 To: jhs@mojatatu.com
 Cc: Jiri Pirko <jiri@resnulli.us>,
@@ -52,9 +52,9 @@ Cc: Jiri Pirko <jiri@resnulli.us>,
 	Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [BUG] net/sched: rejected GRED change can still update TCA_GRED_LIMIT
-Date: Thu, 22 Oct 2026 14:48:08 +0000
-Message-Id: <20261022144808.65885-1-shawnq1@163.com>
+Subject: [BUG] net/sched: GRED VQ shrink can orphan queued packets and wrap backlog
+Date: Thu, 22 Oct 2026 14:48:11 +0000
+Message-Id: <20261022144811.66149-1-shawnq1@163.com>
 X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,16 +66,16 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PSgvCgDnph0oItpql9hbBQ--.32871S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7AF1xZF47XF1rKF4rGw4DJwb_yoW8Xw1Up3
-	9Yv398tay8uF45Xas7KrW8W3WUWrZay3y7Gwn5Xw1DZFsxuw1qkryxt3y2kF9xWry8GFWI
-	v3y0gaykGayrWr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jo7KsUUUUU=
-X-CM-SenderInfo: pvkd40jtr6il2tof0z/xtbCzwnj8WraIinLzgAA3q
+X-CM-TRANSID:_____wD3Xy8rItpqJG2SCA--.61716S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Cr47tr1rWFy7CryxKFykKrg_yoW8uF1Dpr
+	yvy34aqa18KFs8Jryq9rW8Ww1jgws8Cr4UJ3yUJFWfCrs8Wwn0yrWIk3y3AFZ5XF1kGF9Y
+	y34ku3Z7Xws0gaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07josjbUUUUU=
+X-CM-SenderInfo: pvkd40jtr6il2tof0z/xtbC0Azk8mraIizeGAAA3y
 
 Hello,
 
-On an existing GRED qdisc, RTM_NEWQDISC sets TCA_GRED_LIMIT=1234 while supplying invalid TCA_GRED_DPS.DPs=0. gred_change() commits the limit before table validation returns -EINVAL.
+Queue packets on GRED virtual queue 5, shrink the table from eight VQs to one, re-expand it and recreate VQ 5. The queued skbs retain the DP number but the old per-VQ accounting object has been freed; dequeue subtracts from the new zeroed u32 backlog.
 
 HEAD commit:    c03c1a14507dfaf8b856c2608f9ac216021fc222
 git tree:       30fd2ef82912c26cf3a58ad0ba6afc375fa851ac
@@ -83,18 +83,22 @@ source version: Linux 7.3.0, local master
 compiler:       gcc 11.4.0, GNU ld 2.38
 
 console output:
-https://gist.githubusercontent.com/shaos26/563fcf9f7c2144e0750f9ce9aef7f6ff/raw/18bf75ffee3a3587a962770c34af2301fb1c098d/console-output.txt
+https://gist.githubusercontent.com/shaos26/160abad19ad184cfbb6ef6c9be204b80/raw/82b323a9f5e2dce8b71893aeb0bf841eb019e691/console-output.txt
 kernel config:
-https://gist.githubusercontent.com/shaos26/563fcf9f7c2144e0750f9ce9aef7f6ff/raw/817a9271004049a448c2124d7a51e6d62e8ddc7e/kernel-config.txt
+https://gist.githubusercontent.com/shaos26/160abad19ad184cfbb6ef6c9be204b80/raw/ac2ef52ac9d01812eef68d5a10de2fb3e5e8be4c/kernel-config.txt
 reproducer:
-https://gist.githubusercontent.com/shaos26/563fcf9f7c2144e0750f9ce9aef7f6ff/raw/0b53273f9f8cd884092267d61110aed70f6233a4/poc.c
+https://gist.githubusercontent.com/shaos26/160abad19ad184cfbb6ef6c9be204b80/raw/e3f8a8dbb72be235d802784cb4265435f82de27d/poc-init
+auxiliary reproducer (sender.c):
+https://gist.githubusercontent.com/shaos26/160abad19ad184cfbb6ef6c9be204b80/raw/7028d32b386af449ac9097ae336dfa2d520b3e51/sender.c
+auxiliary reproducer (run-qemu.sh):
+https://gist.githubusercontent.com/shaos26/160abad19ad184cfbb6ef6c9be204b80/raw/abe3ba54cf34d873da1378b66ed0a1e3524e70b0/run-qemu.sh
 
-Build the tested kernel with the attached configuration and run static poc.c in a disposable network namespace with CAP_NET_ADMIN. It creates the GRED qdisc, sends the invalid mixed request and reads the limit back.
+Build the tested kernel with the attached test configuration and boot a disposable QEMU guest with a minimal BusyBox initramfs. poc-init configures TBF/GRED and the VQ resize sequence; sender.c generates the AF_PACKET traffic. The run-qemu.sh wrapper in this bundle records a complete run.
 
 Impact and prerequisites:
-A caller with CAP_NET_ADMIN in the namespace receives an error but the packet limit changes from 2000 to 1234. This is a control-plane atomicity defect with no demonstrated privilege escalation.
+The new VQ reports backlog 2^32-3000 and rejects subsequent packets assigned to it. This requires CAP_NET_ADMIN and CAP_NET_RAW in the network namespace and affects the configured qdisc; it is not a privilege escalation.
 
-Validation: Two fresh exact-revision QEMU boots reproduced the change; omitting the limit and using a patched validation order both preserved 2000.
+Validation: Two fresh-boot positives produced VQ 5 backlog 4294964296b and additional drops; a no-resize control drained to zero and transmitted the probe.
 
 Thanks,
 
