@@ -1,55 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.54
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792691288;
-	b=D8HgDhmQW4JODP67GyNDiENLISrZPWAm8NLFgE5vg/7s1rIleorxho8mHuAN+21HmBjy
-	 FpVoJkBPTHpTVufhczy33xynh1qwU0bM++6/G2HzCNhtTqOVJSsASV7QZPVB46x6hOrQO
-	 GiSgw5ynklo21gGUAk/4wSrj/BpBFtDy4PSIUYWDZtQm13VohI8cuUDonD7eO3fDhACiM
-	 5mCS8mnfbBpTrGIY34qlM8l1SNh15LR3vBRdEJEXdRJwfwgN7ThDMETA7cYF80Y2fQRJU
-	 zk4fJnnA0BbtixNr2bqs2XyoKgIHvJw0K/luPv2CWFNMGPwA7eKANfaZjrCVDwsJOkg==
+	t=1792691327;
+	b=UYYsh9ogKf6XDuRQO+jb98s7w5ZwQvGAl88Yvq/YSse49XrpLmz9DoTddWGM87mh82l0
+	 Qdil5SYNBZYAqgDoxZe63KGs2tmtGPv30ci33kPVC+bZyEyCMgK8Dkiq/0/cA+zuglJ5v
+	 noqlmwgHHHJHmxpNL2VsR2U4KijEJAqelFHF/U/2ybdYjLs7I7PpDQZ/4x0WGpwpvixUM
+	 ve6Fam1SuYVTFtdsfCi4uvjyTNalyFQGkIrD1UltlWycpa+de8HiNGYNwq3GQup7UND50
+	 24+41jiAJ2m9RimJNSunAFafCx6UYG7j7k2PAUu3aABb0+Iz4HtY5rcM2QVPgbbrmhQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792691288;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=MGotvCzhWr/lonfJnRU59oPcrOTBROzb2+c6xsa3Gm8=;
-	b=l9MRdrgy7COTwc9Krw510824C+vsghJR1O4bDfULthgZJB02Xl/kBto96nKHp/whJtkK
-	 mYgsPugOji7bT2t3qvQinx/Okjy7NVZhsfd/QlZzIZAduOKNjnyY0VH8PunvHgaIcmVhJ
-	 aKRKE/RhseKN/vz86nukUDR2Fb+vs3P1zyKX175nipKIBUnic2bv8sF4eKNX2CxEVOPTh
-	 7zZIfhLIvwA2s81H+iKGilXlFRfycWhVsmdaWTCIgfOac5qmF51dv/bq77LC/akTJ2dGs
-	 ar//X9Aof73AKB3rq4hHxI0TM4GsSpAbylf4zVQk7RxPiHi6etIUWfvaalhMBodVPbw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792691327;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=EPri+pnxfg/GkSkcUBWyDRaSPhtWuHho0ObTvb26NIc=;
+	b=mXwSdVPmhgkDfkYFWD6wXtjUHrPo4ukqpUVRgK6mHCX4RqwGIrrJuY6n2+Ff4TU/HJ2V
+	 /Fd9FcGLwIzU5Epp5jkbAsd3aMMajpsatPvoVgXdab1XaH3YXcO3ZdTP7rgA6QhjCQBp3
+	 P7OcMwfk3igHCyih9cXtPOyfj6CognqUgnCsbjUm1ujymU/j9KTTweXzj1F7y/knxXxet
+	 6sY9HHhXZblGSJniTggAJQkt5Mz4l6jSI6VUunO+lc5Hj2D5CA7pZR8A/NiV3nzzJGUvw
+	 /7c7fG1oHnRlxcPXZ0+AWYSJjNyrNNJyR0k4eUVUdnYeAkR5YP0J7z+xk40vf0c8ovQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G2ZmsuqW;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=fail header.from=linux.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	arc=none smtp.remote-ip=209.85.128.54
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC2F606A31A
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:48:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G2ZmsuqW
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2DD91F031E6
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:48:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792691287;
-	bh=MGotvCzhWr/lonfJnRU59oPcrOTBROzb2+c6xsa3Gm8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=G2ZmsuqWEkBNHwHLkDIFwTgdwWMAd3VNDMwaCMWpekNralQaK67EgcCV65cGgVuvE
-	 Z1t4l+1ZaspZDFN+aExiW1/gzzI8+zKtPOP6pqWyU5MA/tUfYkLXCYYJmBVhVtLw7F
-	 wkYsKr/O0pFcd6I1qGPFnd2xcbVJ3SzKFDsMKzE4oSLjm1jMKrdQ3BsGddjo+7vWbt
-	 4csvW/KjdE1ca6xD1BLQ1AYh62VR3KYJC29nAqEpcYS9NA3vjLZv6BhuC6p1UCrweR
-	 VI96xsUqb8q+e06o9xbKIUxqB0WWBg2ALwreAZu2V/QOMgHqiUCp56/5wkv7KEDc7l
-	 cvBD8yWEqNB5g==
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5ba35c0df4fso2242867e87.0
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:48:07 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBy/vlYfs4eA6WA11cXUhqKRJcptuXNqMiaiDZyC4BPTuKOJ8Gx5roAe+im0+DERsPmpIH3dzQQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYINatprmGTRGGt/Aolm/qzEEJkZ4XFoOLvEI+J8ru3vUdA4aVam
-	sXc8j4Cy4MgTwkOk4f4HjoBsREZ1zo/woCw1jJTCFWf0G2j22lPipMVTAi83OPyeLV+xTl0aN6Q
-	6IryORRqvHdTNg82TFaUlJYTwLz5X8aI=
-X-Received: by 2002:a2e:b88b:0:b0:3ac:4ce6:8b73 with SMTP id
- 38308e7fff4ca-3ac4ce68e14mr12334331fa.22.1792691286350; Thu, 22 Oct 2026
- 10:48:06 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C214F606A31A
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:48:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C214F606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4a1df4c0966so21855e9.1
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:48:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792691325; x=1793296125;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=EPri+pnxfg/GkSkcUBWyDRaSPhtWuHho0ObTvb26NIc=;
+        b=FvFnBrrK5wHKun9LJzwZoVpw2XBsbo7PapLrGe+1jFCSsjCKyk+4AgONm7CL3KVhrH
+         A159SdDQU4FjneIUVzKK+eDdG0HFrObgcexIHFzs5Si25MSFAwO4X1jfMZYZH5epUFRJ
+         bgSJkDwSgdvyzlr+YgMwyomKHbuJVBqbkju62a01FpEvMa7eHTFpaIcjSVA1ZRswiFvk
+         Sz9n1C2ctVrkaHYP/wl/JUMbWk9BRomIOp23+UAXiNBzcXnQT1DxUBXVU9acAI31sbiW
+         Y6osDZLUAO6mKUAOgsMZX5WPDiOtSrWnBUVNG/cvdavlwHt7HVb/ZsIETp7BKy9fDd3l
+         x+BQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxgGeI4egQpSUgoZgsztfpSvZciHwEmZjJ2c9smCZqASYbxC9ov3zMoeUUGTRjHibH75LR2C/g=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKT1Qz/EiAQqdL8qDfT22xq7J9GORsIv9ZZcGzuSucABwucyVlO
+	jncxe3Mm+b/Y9Ox0rHfbRKxwkghy2CkLqLi1BbzhwWUymuXE0574AwuBhARnqSVNMw0=
+X-Gm-Gg: AYBFou1eM1N50Sc/BH5upBHa4rNv7tBiTBwR4w48wnS5h9F8fnEv/b26iGUTGy031hp
+	DZEx1dgngxAOD9kGoCYuVRMqCSzGizuj/dbAwt28dYaNMmdinW26gnfjzuDtS9wMFNealh/dysv
+	AZQAHOZrZiQ9h28ypzobhwQNm87O9YDod9FlaHgcHT1D0WtL7xHUrRs+xy2C070T6cOJacca+j3
+	bevizQmDW1nxq2mIpAychdbC+jDWrNwXbauHgaCIEetFoNl3uBDuY7N7yNO5vkx1hVqJRyhDJZe
+	mI1DzbkSB/GzdhfmmWsVQ6n+0JEtATvT7LlRR73aagfRSgnRJ0hDtgSZ1QEsci9fYuVKEJ71lDQ
+	Gy1n5UXfEEC5dCt72Vt7rW0bh4gJA5jl4LEi/3TR/0k5d6V8MxevF3MRmSY2T3+Phb6aivGbfgV
+	CSmHFsUbNF0MqkgNZLcTm4SYST6sVL2YVrele438dYh0RoD+oJFFDoZEViGNdGBH1Hg2kWMdGFR
+	vplSYOpUMvqtapAVITwKBuqc4daxwzzOrc8SXWUnWo8GFtEr8g+lsGOAc2GxacLZ5HuKosAh+Od
+	qBHox4OYxA==
+X-Received: by 2002:a05:600c:3e0c:b0:49f:c5aa:9ef4 with SMTP id 5b1f17b1804b1-4a204b042e5mr54395825e9.8.1792691325102;
+        Thu, 22 Oct 2026 10:48:45 -0700 (PDT)
+Received: from [192.168.1.135] ([81.79.62.202])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a210327422sm14119865e9.14.2026.10.22.10.48.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 22 Oct 2026 10:48:43 -0700 (PDT)
+Message-ID: <9b5fe9c2-aca1-4460-81fa-826e05e88c1a@linux.com>
+Date: Thu, 22 Oct 2026 18:48:43 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,104 +75,72 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <ACT-N6N4.v1.r0.20261022051412@mojatatu.com> <ACT-N6N4.v1.r0.20261022051412-1@mojatatu.com>
- <ACT-N6N4.v1.r0.20261022051412-2@mojatatu.com> <ACT-N6N4.v1.r0.20261022051412-3@mojatatu.com>
- <ACT-N6N4.v1.r0.20261022051412-4@mojatatu.com> <ACT-N6N4.v1.r0.20261022051412-5@mojatatu.com>
- <0225eac7-1432-4d46-8649-2ad864aa26d4@ovn.org>
-In-Reply-To: <0225eac7-1432-4d46-8649-2ad864aa26d4@ovn.org>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Thu, 22 Oct 2026 19:47:50 +0200
-X-Gmail-Original-Message-ID: <CAL4Wiipm9x5LekCb2WTo1CfqihwRY1=rV0W+KdS-FVA_pRCj3A@mail.gmail.com>
-X-Gm-Features: AclHuK-omgKLVDEOSqFcU4jhRjUPSbk60eGlMwcbvEyU8LVQvfW9BHbpDh38hkk
-Message-ID: <CAL4Wiipm9x5LekCb2WTo1CfqihwRY1=rV0W+KdS-FVA_pRCj3A@mail.gmail.com>
-Subject: Re: [PATCH net 5/5] net: openvswitch: ensure a linear inner Ethernet
- header on NSH pop
-To: Ilya Maximets <i.maximets@ovn.org>
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>, netdev@vger.kernel.org, 
-	Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>, 
-	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Eric Garver <e@erig.me>, Yi Yang <yi.y.yang@intel.com>, 
-	Jiri Benc <jbenc@redhat.com>, Pravin Shelar <pshelar@ovn.org>, Jiri Pirko <jiri@resnulli.us>, 
-	Victor Nogueira <victor@mojatatu.com>, dev@openvswitch.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 8/8] dt-bindings: net: ethernet-controller: tabulate
+ who adds the RGMII delays
+To: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc: xianwei.zhao@amlogic.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20261010105900.247342-1-tanure@linux.com>
+ <20261010105900.247342-9-tanure@linux.com>
+ <CAFBinCB8203vL6YK3+V2zDhz=qqeAwJoufPM60cD0Vz3s-OS6g@mail.gmail.com>
+Content-Language: en-US
+From: Lucas Tanure <tanure@linux.com>
+In-Reply-To: <CAFBinCB8203vL6YK3+V2zDhz=qqeAwJoufPM60cD0Vz3s-OS6g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Le jeu. 22 oct. 2026 =C3=A0 14:43, Ilya Maximets <i.maximets@ovn.org> a =C3=
-=A9crit :
->
-> On 10/22/26 11:22 AM, Jamal Hadi Salim wrote:
-> > The issue:
-> > pop_nsh() restores MAC_PROTO_ETHERNET when the popped NSH next-protocol
-> > is TUN_P_ETHERNET, but nsh_pop() only guarantees that the NSH header is
-> > in the linear area.  When the inner Ethernet header sits in a page
-> > fragment, the datapath then claims an Ethernet header it cannot access
-> > linearly.
-> >
-> > Output to an OVS internal vport then calls eth_type_trans(), which
-> > pulls ETH_HLEN from an empty linear area and triggers the BUG in
-> > __skb_pull():
-> >
-> >   kernel BUG at ./include/linux/skbuff.h:2830!
-> >   RIP: 0010:eth_type_trans+0x335/0x500
-> >   internal_dev_recv
-> >   ovs_vport_send
-> >   do_output
-> >   do_execute_actions
-> >   ovs_execute_actions
-> >   ovs_dp_process_packet
-> >   ovs_vport_receive
-> >   internal_dev_xmit
-> >
-> > Conditions to recreate the bug:
-> > On a system with 4 KiB pages and CONFIG_OPENVSWITCH and CONFIG_PACKET
-> > enabled, use CAP_NET_ADMIN to create an OVS datapath and bring its loca=
-l
-> > internal port up with MTU 9000.  Install a flow matching an Ethernet/NS=
-H
-> > packet with a 24-byte MD1 header whose next-protocol is TUN_P_ETHERNET,
-> > and actions pop_eth, pop_nsh, output to the local port.  With
-> > CAP_NET_RAW, send a 4148-byte AF_PACKET/SOCK_RAW frame containing outer
-> > Ethernet, the NSH header, inner Ethernet and 4096 payload bytes.  The
-> > two pops consume the linear headers and expose the inner Ethernet heade=
-r
-> > in page fragments.
-> >
-> > The fix:
-> > Pull the inner Ethernet header into the linear area before restoring
-> > MAC_PROTO_ETHERNET.  This is the NSH counterpart of the MPLS/TEB
-> > producer fix in the previous patch.
-> >
-> > Fixes: b2d0f5d5dc53 ("openvswitch: enable NSH support")
-> > Link: https://lore.kernel.org/netdev/e85fa16e-df3c-43dd-bb3a-9edca07200=
-ea@kernel.org/
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-> > ---
-> >  net/openvswitch/actions.c | 7 +++++--
-> >  1 file changed, 5 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
-> > index 03b31e33e880..cb7e16c6a8ef 100644
-> > --- a/net/openvswitch/actions.c
-> > +++ b/net/openvswitch/actions.c
-> > @@ -314,10 +314,13 @@ static int pop_nsh(struct sk_buff *skb, struct sw=
-_flow_key *key)
-> >               return err;
-> >
-> >       /* safe right before invalidate_flow_key */
-> > -     if (skb->protocol =3D=3D htons(ETH_P_TEB))
-> > +     if (skb->protocol =3D=3D htons(ETH_P_TEB)) {
-> > +             if (!pskb_may_pull(skb, ETH_HLEN))
-> > +                     return -ENOMEM;
-> >               key->mac_proto =3D MAC_PROTO_ETHERNET;
-> > -     else
-> > +     } else {
-> >               key->mac_proto =3D MAC_PROTO_NONE;
-> > +     }
-> >       invalidate_flow_key(key);
-> >       return 0;
-> >  }
->
-> Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
+On 10/10/2026 23:37, Martin Blumenstingl wrote:
+> Hi Andrew, Hi Lucas,
+> 
+> On Sat, Oct 10, 2026 at 12:59 PM Lucas Tanure <tanure@linux.com> wrote:
+> [...]
+>> +#   phy-mode    tx-internal-delay-ps  rx-internal-delay-ps  TX delay    RX delay
+>> +#   rgmii       -                     -                     PCB trace   PCB trace
+>> +#   rgmii-id    -                     -                     PHY         PHY
+>> +#   rgmii-id    present               -                     MAC         PHY
+>> +#   rgmii-id    -                     present               PHY         MAC
+>> +#   rgmii-id    present               present               MAC         MAC
+>> +#   rgmii-txid  -                     -                     PHY         PCB trace
+>> +#   rgmii-txid  present               -                     MAC         PCB trace
+>> +#   rgmii-rxid  -                     -                     PCB trace   PHY
+>> +#   rgmii-rxid  -                     present               PCB trace   MAC
+> We have some boards where the PCB traces result in part (1200ps) of
+> the delay needed for RGMII (2000ps).
+> The remainder (800ps) has to be added by either PHY or MAC: the
+> (RTL8211F) PHY can only generate 0 or 2000ps delay so the MAC has to
+> take over.
+> For the three boards I have in mind, please see $ git grep
+> rx-internal-delay-ps arch/arm64/boot/dts/amlogic/
+> 
+>> +# A property for a clock the PCB already delays is not in this table.
+> Can you please explain this sentence (I'm not a native English speaker)?
+> How I interpret the sentence: The PCB may add delays but those are
+> implicit and not part of the {rx,tx}-internal-delay-ps properties. If
+> the delays added by the PCB don't cover the full 2ns requirement then
+> either MAC or PHY need to add the remainder, see fine-tuning below.
+> 
+>> +# It is either the fine tuning described next, or a mistake the MAC
+>> +# should report as a fatal error.
+> How can I differentiate between "fine tuning" and "mistake"?
+> 
+> 
+> Best regards,
+> Martin
+The patch is wrong. It assumes a present property moves the 2ns from
+the PHY to the MAC, and Andrew's reply on patch 4 says it does not.
+I am dropping it in v4.
 
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+thanks
+Lucas
+
