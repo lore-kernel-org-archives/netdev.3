@@ -1,66 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=199.89.1.14
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792638124;
-	b=dZri3hYhw3K6JCLQlSdmfCBw0B9jJ4xIur/r6eWqGiaRItDKn0O50qpA8vZar51ybCWg
-	 qfVpvFuoRC+pi935QGg3OxYiWo487+7Y7IVvG11fxOBjmE7ivC5e1bOCNRVMr/m+5ToMY
-	 z7AsMwCLXEPTE22jdDXNa6Lu986floMKMathuNoNDtJ9rHQzaHYWDGJfHepvKgMijtNIs
-	 wl5m7MAtv16wcNQKknRZABm30stOvr7fOMyv2BuXdbDVzxmfucOBAhP0OXo1hE0olHcHg
-	 kQciRVwHt0EnsQFbkdGsvlj38sjasyp5LdduqEq3AxQFFPhS/5V6ZBQkGtzr94SYl6g==
+	t=1792638585;
+	b=lyFCW6j5IuF4E+qs7NjHpppzXMcniVBLO3fzWZAVjV7I0LfcE0gLqOeS9VVa/oFLqsBQ
+	 KWJhYclGabvO6OvvE0iVvpVOkQBIek/0kK68KE7YkRg4cHN5Fp179PXfY5JfGckVEkLKa
+	 jrWIJRrB6O2gxkTFsFUuHqNqxjKBV3I2UJEp/7wN14O2567XrhM51O9hGIomikZEv6dEi
+	 alnvgTWiE6gEsyicPVmgUYCsDMyCqb6CY1wImGHuebqNSR61I+TM7t2JcWGQ4PGsspuR4
+	 SxSqEAhhxbOa3D/JqYPz5VDZOPT9OpIeJnRI14WAsYUO0qF2tUXOUoTWD9CO95HY7bg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792638124;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Virus-Scanned:Received:
-	 Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:
-	 References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=zwVRCRk2MVhRxyoH0H2D7Zbdx1Ah594UWQaso51Xgy8=;
-	b=z5dKzsB1mnQ/NXV2/olM7uyKo6PvF5OjovxrVd1VjsvU7qNBE4H1uFFxbLHltr7/lW+Z
-	 RYDfWAG4eT+e9qJhZ3ylceCXPO/IpvxNYYDV2UPMW+c0QahWyOXtyc+wH+3fFoYlDuLN9
-	 APdYq0ufwY+IFJgWx/p3/1FiSbIEoPe8FqIGfd9OovAiNJ/p9Horg2vvl7dnj4YAeL1pK
-	 bWjbom/ZtNUe17ABEF0lIN9CAlY+l85ql4ychJ67CsyMp1CSU85tzGpDU/Ld/jVrNGaWW
-	 BxAymJtaZugxpoC+41GYULBYGM6PkjOmOPQhUpfAnClEjPnA0WeuCcaVNv2q5zAqsBA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792638585;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer;
+	bh=MUJZAYrAzAHox5NbWunOTBXkvjjHAyJ/e+1fwM5DNtI=;
+	b=DTAG6RXlfrteCiXr2R2aD5eIBEGmDUbjuAZZmk7jUVNuchmIpcPvWqy7auaXXhq5O1+q
+	 5TnnmPsPyIFj32yN1IG3IU3CjwLr9d6IicCNeAdHn+cIsbZFdhkikFdi8+a48IWL3F8th
+	 te8taIx2HO7NzPLCNO4ZeKD/exQ92Ve0lVeo9maISrAILFM3JyYkarPdwKIbwOQt49bEa
+	 qoZp3O6BpskaqBWRVOW4XgXDG1rMN6FSwGldeWGPwOX2BuRJrKWfLmVIk1aFDw9Uuh1wO
+	 iz9xuyC76gh2gVzntc5ADGKLW9DTe56UItSr1iiaT7sm7eit+ofmhEmT3hVcbdhdlHg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=acm.org;
-	spf=pass smtp.mailfrom=acm.org;
-	dkim=pass header.d=acm.org header.i=@acm.org header.a=rsa-sha256 header.s=mr01 header.b=sL2tsQl3;
-	arc=none smtp.remote-ip=199.89.1.14
-Received: from 011.lax.mailroute.net (011.lax.mailroute.net [199.89.1.14])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=DGmL0Cvv;
+	arc=none smtp.remote-ip=95.215.58.197
+Received: from mta1.migadu.com (out-197.mta1.migadu.com [95.215.58.197])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44452606A31A;
-	Thu, 22 Oct 2026 03:02:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 44452606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6471606A31A
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 03:09:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D6471606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=acm.org header.i=@acm.org header.a=rsa-sha256 header.s=mr01 header.b=sL2tsQl3
-Received: from localhost (localhost [127.0.0.1])
-	by 011.lax.mailroute.net (Postfix) with ESMTP id 4j99t33m5Mz1XM4Tn;
-	Thu, 22 Oct 2026 03:02:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1792638119; x=1795230120; bh=zwVRCRk2MVhRxyoH0H2D7Zbd
-	x1Ah594UWQaso51Xgy8=; b=sL2tsQl3mrcfsRH2OLiit5Cwz/mZaLw4nbd3/p+3
-	Fyz1FZjQJGkjhwrE0kGJjRMY4c1gMQIoCOYwbRNV/P6M+zHoGdNJ3iNgybwr7S7W
-	kziCy8IZ4g2asvCh1+MGV1Q3c4YTZHwjv6LblqRtDsCx3aKAePnXnA8fVfyaeDDL
-	MhzZCWB4oB9KnaO1+HAzEywMGg7Am9jYzEKtC3IL1PsaS7tWq4laawnja2Ie5sCM
-	Wsa5Hr7bh47+0cn3+P8/XKqsdcyZuLYnssznyoJaIdt7X602SR8XT1/pntgdb27z
-	EQMt3MneX/yKjuVae3vTUeDLLudXmbdz5excGYmYNiXOHg==
-X-Virus-Scanned: by MailRoute
-Received: from 011.lax.mailroute.net ([127.0.0.1])
- by localhost (011.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id P1caIBMA6g-9; Thu, 22 Oct 2026 03:01:59 +0000 (UTC)
-Received: from [192.168.51.14] (c-24-6-239-25.hsd1.ca.comcast.net [24.6.239.25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 011.lax.mailroute.net (Postfix) with ESMTPSA id 4j99sy3NWLz1XM4Tl;
-	Thu, 22 Oct 2026 03:01:58 +0000 (UTC)
-Message-ID: <ef57e0ab-f0b4-46d6-a2f8-f6c97fec8d8e@acm.org>
-Date: Wed, 21 Oct 2026 20:01:56 -0700
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=DGmL0Cvv
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=Ix6esvmcmYVkZDYk3pa2wudzAplpDNzwTlH4FWpONAw=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792638582; v=1; x=1793243382;
+ b=DGmL0CvvS3Xj+xHTQWrWmACkPQ01Fv5o7HfwuLmikomZpUKML0eV8gFjUCeu3JUNTNvI6UM6
+ IuNRSHnoSRAas812/CyOU4G82RyfEtJqKNnRRe7qAYhH+GNbBXk11k52qx9Jzns+Qv8eDTWrEZp
+ BtYlyxbE/gH1n3MzBwll/zH0=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta11.migadu.com with ESMTPS id 8ac16d0dcb93197d;
+	Thu, 22 Oct 2026 03:09:41 +0000
+X-Mizu-Trace-ID: 8ac16d0dcb93197d
+X-Migadu-Flow: FLOW_OUT
+From: Hangbin Liu <hangbin.liu@linux.dev>
+Date: Thu, 22 Oct 2026 11:09:35 +0800
+Subject: [PATCH net] selftests: gro: remove unused variable total_data
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,36 +59,64 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] lockdep: Keep dynamic key hash nodes in lockdep-owned
- storage
-To: Vlad Poenaru <vlad.wing@gmail.com>, Peter Zijlstra
- <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>,
- Waiman Long <longman@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Eric Dumazet <edumazet@kernel.org>, Davide Caratti <dcaratti@redhat.com>,
- Breno Leitao <leitao@debian.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20261021115621.3194947-1-vlad.wing@gmail.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20261021115621.3194947-1-vlad.wing@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20261022-self_unused_var-v1-1-8ab10a6b7f44@kylinos.cn>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMQQrCMBQFr1Le2kATbBCvIlJi86JfJEp+U4TSu
+ xt1OQMzK5RFqDh2KwoXUXnmBnbXYbqFfKWR2Biud972zhnlI401V2Ucl1BMHPYhHaK3YfBo1as
+ wyft3PCFzxvkvtV7unObvC9v2AVngXid4AAAA
+X-Change-ID: 20261022-self_unused_var-d54af8d61a56
+To: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Shuah Khan <shuah@kernel.org>, Willem de Bruijn <willemb@google.com>
+Cc: Hangbin Liu <hangbin.liu@linux.dev>, netdev@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Hangbin Liu <liuhangbin@kylinos.cn>
+X-Mailer: b4 0.16.0
 
-On 10/21/26 4:56 AM, Vlad Poenaru wrote:
->   #define MAX_LOCKDEP_ENTRIES	16384UL
->   #define MAX_LOCKDEP_CHAINS_BITS	15
-> +#define MAX_LOCKDEP_DYNAMIC_KEYS	1024UL
->   #define MAX_STACK_TRACE_ENTRIES	262144UL
->   #define STACK_TRACE_HASH_SIZE	8192
+From: Hangbin Liu <liuhangbin@kylinos.cn>
 
-This patch introduces a new hard upper limit on the number of dynamic
-lockdep keys. That's unfortunate but I assume it's not possible to
-eliminate this hard upper bound if the key storage is owned by
-lockdep?
+I hit a build warning when building the net selftests.
 
-Thanks,
+  gro.c: In function 'check_capacity_pkts':                                                                                                                                                                                     gro.c:1249:13: warning: variable 'total_data' set but not used [-Wunused-but-set-variable=]
+   1249 |         int total_data = 0;
+        |             ^~~~~~~~~~
 
-Bart.
+Remove the total_data variable, as it is no longer used.
+
+Fixes: d97348474708 ("selftests: drv-net: gro: always wait for FIN in the capacity test")
+Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+---
+ tools/testing/selftests/net/lib/gro.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/tools/testing/selftests/net/lib/gro.c b/tools/testing/selftests/net/lib/gro.c
+index 7a333155de1a..1bc92e7a625f 100644
+--- a/tools/testing/selftests/net/lib/gro.c
++++ b/tools/testing/selftests/net/lib/gro.c
+@@ -1246,7 +1246,6 @@ static void check_capacity_pkts(int fd)
+ 	int coalesced[num_flows];
+ 	struct tcphdr *tcph;
+ 	int ip_ext_len = 0;
+-	int total_data = 0;
+ 	int pkt_size = -1;
+ 	int data_len = 0;
+ 	int flow_id;
+@@ -1309,7 +1308,6 @@ static void check_capacity_pkts(int fd)
+ 		}
+ 
+ 		num_pkt++;
+-		total_data += data_len;
+ 	}
+ 
+ 	/* Check flow ordering. We expect to see all non-coalesced first segs
+
+---
+base-commit: e0a958ddfc89f2e1c43448cdaeb5b30e54e19448
+change-id: 20261022-self_unused_var-d54af8d61a56
+
+Best regards,
+--  
+Hangbin Liu <liuhangbin@kylinos.cn>
+
