@@ -1,58 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792705636;
-	b=fMcDCQ40usNRpXJ2RR2NdkkDV94Ksqnstwl8EuQujqZWhD9KI4i6Yw1ely0BbfTiUhsK
-	 j+M3udPU7bjX/bLjEGgkzJ4vOM+7OSrcEjwhzQh8D6FI18vPxsF5NEO7eA09HVyOs3uyC
-	 9mrZb/7lvn3ZzN+mhTBUhxMLV2bSFZ+8+uy1px/9WQWUjfnMYgOjtRZfMDv2mSWqC8KFq
-	 yfkj/f5BIpH/fYp9STeSVueSncSf6DqF2h+fqpXzTl8wujQYceWuTgFk3q/uFJ12Dxbil
-	 635dvM5pk/Mmhh88AH0Gt750mWc2cxhdDvA1HHQJMy/o87vq30GvEbIxLbTBV8xrHvA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792705636;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=wKPqJqJRsRIftiybgm74ZKb3ZfigwGYYnrH0NmLs6/4=;
-	b=wzRnG8Nnn6mZ2Pfb898yf6BWOHGy55Wg53muVbFPIy/Aj882vGy4T0Y5y9djbR1RZ7Cy
-	 S0LEBEW6iRKnIxd2VXIJf084zldmS9/CDmlaPK1Nwow8vLOi3pBEEASWyEQBgbMcxHFcc
-	 pKvjcVfnFoBtEALSAkGD6tmKyJmTIE9xD3QM27FbMCNhVd0qlR5GJRFVyvlyj3EPyquWg
-	 MRetqhqnKuSqFlMLAYQybk1whdQ5VFmQY+BbU1tMjO0ttgRNFrr8ZzWKZ6OTiGNwRpuh9
-	 5FuWw80ms4W8zZae7syRa5moBc0G3hj/r16j2pwi37UKYKi34FjMZJZZrlg1mF9a7mw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CN7FfGEO;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.176
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792705938;
+	b=wSHCeu/ZKVbEXR2um7nihmmfEBPpFhNs+jhNgww+vox5jqdlBm0ADnu5oQ8AIIu1INdR
+	 ptlfjpfGF6a916oLzdEY8zA16PTG3A8dSGFFeVyDVxO6P0DLCQtKntrnAFoeoxCD5HTD5
+	 h7JnprDkVKFlc79FD/RyPI14ZGiaaZQgGmCIHDbp9/cMAEMvp46JgOkY6o/fwlisXiZiU
+	 PrByujL2JvIZMRaS4Vff+aOY+p+5/mm6V06UccLDMnTKGkB3cABEnXZchZLh+VAF4hCQn
+	 L/67F/u12gCBNhXZNLnNRxBYwNJRGTzM9YosXPxGye6bBpURoi05ezYQz2k3e59WAZA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792705938;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=enf2YbTyhYZro8noMVoZG0AyfViHUg43We1xb8wdUb4=;
+	b=4uAZDE99vOatFPCD6EkRsG9jEBhhuRWwwvJ5hSFBzD2hKjjiVWzo5SZkX8pWHC2JTeoE
+	 C6eQZYY3n7ikRPkFRGbBnFYZj18kA4ZWcIO306ljfwt5qK0jodHtH/gHUefu8rZgaaCqe
+	 JUmRfu3UH1U+SwlW4zlmpTaerBwlYR1TXNJh3ly5/SADF6u/qJYBlxrlJNvD3rebtYISH
+	 6yCPxrpOf5mhlDk03dKcexv7quZbRpBVQwKEJgRI/HmkstfwJEBXRmHj6YOSP2R4vE9uC
+	 YkLPSF20ibwBGJBUfQhCV0AE93MVb6hmw9gjGGPsZAYIXpVpYohmW7fNqFRdiY/rQtA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b="vR4/0e5/";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.176
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FD9606A31A;
-	Thu, 22 Oct 2026 21:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0E260A2615
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 21:52:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7B0E260A2615
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CN7FfGEO
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 463C61F01825;
-	Thu, 22 Oct 2026 21:47:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792705635;
-	bh=wKPqJqJRsRIftiybgm74ZKb3ZfigwGYYnrH0NmLs6/4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=CN7FfGEO8O7/O1GpltV64CiqG9EaCgrrEDHNnF3fOUQYK0ZK8Ae7ThjguevVwgXN0
-	 Dl0lgOh0G4AP7WfJy/DTxsKW5m/NTGjG/NYGwjaj8Z0Qz0h7d7RZJFhEsDVgoMLWXz
-	 7MS5q68VJ6o5okIlPxw41AUA/vj2ZI0xi8Rx1xmIUfQJkBHbjVvhkk+ZAbHrT7B7wy
-	 6KIQHYun7L9w+tMRaHgXfNn/c25arMQCNGDpHDd9iqH3SiD1Po7wMY1zkWy1vC9KdH
-	 KgeDZILRauCfvsNT0/Qsk7HUvtLAz083/O5GQgJXcQyPuu/JWfm46WnYcKBBtcPFXG
-	 AQAqMxFW0jizg==
-Subject: Re: [PATCH v1] qed: Protect iSCSI connection hash operations
-From: netdev-bot+sashiko@kernel.org
-To: 18983559317@163.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Thu, 22 Oct 2026 21:47:14 +0000
-Message-ID: <179270563482.1189532.4852760296170154407@kernel.org>
-In-Reply-To: <20261020064701.535531-1-18983559317@163.com>
-References: <20261020064701.535531-1-18983559317@163.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=vR4/0e5/
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2e9f6a16afcso9735ad.1
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 14:52:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792705938; cv=none;
+        d=google.com; s=arc-20260327;
+        b=gwCS8P9xTD+Vs+vmZqK9M/p+f5sH8R0JZiswVPv2z8mJFIybv71w9yETM8HmKrt8Xo
+         Er0QfYAl4Yqw/elcax/j+F4Y2XFQj2PX/R/IMYAPCGjeFYwJz1q/BGoYxnR/s2bKwOrp
+         rDptHLIXp3Xtarj5iMzMszHus5nW3hAcaJs2pgLZJi3BIfTBaURvfCh+5xXbJeuJtm3y
+         DIBfTxKlG1O7iTw8IdANBTzpxgpFz/iG1/j4V2+RHkaOeVEZkGxu+ytpxHQLGSzgdlMV
+         I2VWz3L8GL6H/PNtjuMreHMHApefvuKvHJjvoQnD0+kOwJnl0Lz207JT1891+xYqwL4k
+         P7jA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=enf2YbTyhYZro8noMVoZG0AyfViHUg43We1xb8wdUb4=;
+        fh=8urZVQXuBsYHf4wiFJFgN0GWYpDnhoAZ2qi4h5fczHY=;
+        b=P0AO0cd3V1JmNZInShMHFy5ZK5bT/Ag3bwZC+DofqJw8B/cmSNF10y8jTRLPcc5J/q
+         CYbwMXw38eut5ykS+1rbMXQ64XjAgVDqMkfnwCUu1YKIl/Dv6IuZKfHKnudTj1QA8hyS
+         3pQwAYF8hYNtC7mUR7d2K03wV/ovJgDBiqwp6Ny+XW+hsjsSgFE5Rj+mbKfbODqLjz4e
+         UnOGNIKuUmQQKVs8jBJjJYLLJk5p23cIz/XJs1ZXDPH5KGOQngMmBJgKPr7MZQPL1Tyr
+         65Fg0IyD14cRGsRz9Gw/FsAcdM+2m9UPAl96Xg3xmIBRqpKqF9ia1O7WEHSdxb/A91x8
+         M94w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792705938; x=1793310738; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=enf2YbTyhYZro8noMVoZG0AyfViHUg43We1xb8wdUb4=;
+        b=vR4/0e5/JRr2Dvd4ShtgOGqzPoNeNshuP/PbMN+6K27p+PRJxj0xOLZjLQ/0htGd/f
+         uxta0kWk2v6K//ugXcRm+sW0jKp0P3QNBL6voAO3LLb4nuRCm4UFAVXfUpOZJywQYAnC
+         3btTEhQJA+D19G47JVsMiU1n0aUXjxiQG/VEmTkjvn/pN1ZXsXI/18HpyxiWmc4vSMg6
+         U2e62gj9byzpQnohPAaQGDH+cIei+N7NR2J056FqjaB1E1v9J+SP2T/xSC0pagBnoX0G
+         3ZXOX8cppcTK/h6fDPvw2QXvsjcpJlPxLdL6RlMJLljJrIh2z9pvnW79r4DpkITY4dUY
+         N/UQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792705938; x=1793310738;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=enf2YbTyhYZro8noMVoZG0AyfViHUg43We1xb8wdUb4=;
+        b=vVOdFcj67HCPOYDGwEK+kuFucYGPVBe/UHqwfnj3WEvU2kQ3pMOxvI2flvVPWr7gPV
+         7/qck+aFi70+VigxWShhWuXLubIlDmvhDDl/IJpvSFzTcQxaovjBbfjRtJAINdaiFa8G
+         z++FXN/4qfM5LYPF18w0HrbWGrKvXDENEzio7NaedGLwtviqjtUh1sG2YOyAZ8b+JRGg
+         m+hyxoanSnjmXHlJIAbRvX4sXtxuYQ0uTyaqeTd9reVQyk5PW0isjtE1A+Sm1EPbZFtQ
+         vIcocruAn4LNiHvmTEc6VikWE4MOgLz60Lcv9Bw5Ihy3jjuwFV9KMLjg6dhhGIIUj+ZK
+         SL3Q==
+X-Forwarded-Encrypted: i=1; AKwUvBy7+7E/HF1DpOIOLvP7MeFplkCpASp5U37Hd+yyjhSV/3FLpMrxHxA0lXUQ74ZInK9qgewbxcA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJoeP7Up6IfkVKllNRdmYrpRSBf8vBioBJUFA8SB8CqcQnZ7NPH
+	CXTmid44RdtelObk6PRAGgB/K6BUpogAM+zw49kgiPtlbD0sf7MBIvkXIPlkGm8ji83TYDzbjoK
+	8OOutCg276s8GWAsjKL6gFuDM9ozJl2aJGqJ4XlEl
+X-Gm-Gg: AYBFou2Lw54sxmtvzdfUes+iLS40GXKoYqH2TZnLrC+6x2eePeqzBEWMunfwycZwN0g
+	fTNj5MG2j1JD3WtDW4ckYFU+MVxupNjszTJ3goo+UGQT/yOfGvHrMRlYcIUcqqqSNC4eIMvZz2/
+	m8JxTr2xLTAHM2sJ6Pg9M5CYVVnvLx6oZ7M23ZTADg6VJ2pE51CwnqHLNlk/odheR9Kj4Ro7L9y
+	jgzg0M/HxbB18jW1P60zSrVNIH47a4Oe6zy7ZCmStPhDjmR8dunUnX7xzK9z/W3g2UoLDh7p2wx
+	AGNHqw8Z3qOnoxGxYER2ZnBX/qXs7H3drgiauTEAiOpHS+oV+hX38yCF4LTRcpbI/sNWb8mkjJ1
+	t/QS76PP13P3bUEHlUxJNT855cfzXZhf3NE0KHBAcuDd1aT2u70e7D4Vc/uU=
+X-Received: by 2002:a17:902:e881:b0:2e6:1917:fa with SMTP id
+ d9443c01a7336-2ea7ed0feb4mr728955ad.7.1792705937217; Thu, 22 Oct 2026
+ 14:52:17 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,199 +104,170 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+References: <20261003212241.3432303-1-lrizzo@google.com> <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
+ <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com>
+ <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org> <CAMOZA0+6kAbwgNwGTsCT5AqpwcZKz4pziEGC9UpHkNCVoqrF-Q@mail.gmail.com>
+ <20261022201229.GH3381610@ziepe.ca>
+In-Reply-To: <20261022201229.GH3381610@ziepe.ca>
+From: Luigi Rizzo <lrizzo@google.com>
+Date: Thu, 22 Oct 2026 23:51:40 +0200
+X-Gm-Features: AclHuK-9aqzBfV-60_dzPgAjNzAFJyPZLZoLZFY0CUqnWbJGyVX0XJhPkps5rLY
+Message-ID: <CAMOZA0KaanmevmvWS=M3gKfBeborzfCQTiF_xbSeYMWbozG7Mg@mail.gmail.com>
+Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Luigi Rizzo <rizzo.unipi@gmail.com>, 
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
+	Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
+	Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, 
+	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+	Alexander Lobakin <aleksander.lobakin@intel.com>, Michael Chan <michael.chan@broadcom.com>, 
+	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-mm@kvack.org, driver-core@lists.linux.dev, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+On Thu, Oct 22, 2026 at 10:12=E2=80=AFPM Jason Gunthorpe <jgg@ziepe.ca> wro=
+te:
+>
+> On Sat, Oct 17, 2026 at 07:11:28PM +0200, Luigi Rizzo wrote:
+> > > We should probably just find a way to describe that this is a POOL th=
+at focuses
+> > > on physical contiguity in some configured granularity.
+> >
+> > Before embarking in a global renaming, I would like to get opinions on
+> > acceptable alternative names (possibly with a short prefix usable for
+> > identifiers in the code). I could think of the following
+> >
+> > DMA_PMAP (for PreMapped or Persistent Mapped)
+> > or, ahemm...
+> > DMA_PISA (Pooled IOMMU Superpage Allocator)
+> > both using dmap_ for internal name prefixes
+>
+> Can someone explain what outside netdev would use this? And why you
+> couldn't do this in the netdev page pool?
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 1 (1)
+I can try.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Regarding users, the next target is disks (not included in this series)
 
-- [Medium] The patch adds one global lock, `static
-  DEFINE_MUTEX(qed_iscsi_conn_lock)` (qed_iscsi.c:122), but the data it…
-- [Medium] The commit says the mutex "serializes connection acquisition
-  with storage stop", but qed_iscsi_acquire_conn() never checks…
-- [Low] qed_iscsi_start() still writes state the new lock is meant to
-  protect, without taking qed_iscsi_conn_lock: `cdev->flags |=…
+Regarding why not just pagepool, see below.
 
-Pre-existing issues:
-- [Low] Peer code: qed_fcoe.c and qed_nvmetcp.c use the same unlocked
-  lookup/use/hlist_del+kfree pattern on cdev->connections, and the new…
+FWIW when I started this (after the previous work on swiotlb copy elision
+https://lore.kernel.org/all/20260824152932.1583506-1-lrizzo@google.com/ )
+I thought this would take only some simple tweaks to pagepool and
+skb_page_frag_refill, a couple of days with some agents tops.
+But the agents did point out that there were a ton of corner
+cases to handle (device detach, reconfiguration, memory
+reclaiming, reducing locking contention...).
 
---
+As a reminder my goals are the following:
+- reduce DMA map/unmap costs in strict iommu mode without the DMA-FQ
+  compromise on security
+- address the IOTLB thrashing problem when using 4K mappings
+  (very serious even with DMA-FQ)
+- help reduce bounce buffer usage in confidential computing and
+overcommitted VMs.
 
-qed: Protect iSCSI connection hash operations
+With that in mind:
 
-This adds a static mutex to qed_iscsi.c. The mutex is taken with guard()
-in qed_iscsi_stop() and in each iSCSI connection operation (acquire,
-release, offload, update, clear_sq, destroy, change_mac). Hash lookup,
-firmware submission and wrapper free are then serialized against
-connection release.
+> It is not a common workload to have the DMA allocator be the one that
+> allocates the memory. Usually we are DMA'ing from memory that was
+> allocated someplace else.
 
-> diff --git a/drivers/net/ethernet/qlogic/qed/qed_iscsi.c b/drivers/net/ethernet/qlogic/qed/qed_iscsi.c
-> index 34f1217227bc..f7b97883e4b9 100644
-> --- a/drivers/net/ethernet/qlogic/qed/qed_iscsi.c
-> +++ b/drivers/net/ethernet/qlogic/qed/qed_iscsi.c
+Aside from the fact that dma_alloc_attr()/dma_alloc_coherent()
+does memory allocation + iova allocation/mapping,
+this is not what happens here.
+Maybe the confusion comes from one function name
+(dma_map_alloc_pages()), but it doesn't map any thing.
 
-[ ... ]
+My code (in this version, and more in the upcoming release)
+mainly implements a specialized memory allocator with an
+API equivalent to alloc_pages() and variants, but ensures that
+the order-N blocks come from contiguous 2MB blocks reserved on the fly.
 
-> @@ -118,6 +119,8 @@ struct qed_iscsi_conn {
->  	u8 abortive_dsconnect;
->  };
->  
-> +static DEFINE_MUTEX(qed_iscsi_conn_lock);
-> +
+The physical addresses of these blocks are recognized by the
+"dma allocator" (I suppose you meant the entity that allocates the IOVA ran=
+ge)
+so that it can apply specialized IOMMU mappings backed by 2MB IOMMU leaves.
 
-[Severity: Medium]
-This is one global lock, but the state it protects belongs to each
-device. cdev->connections is declared in struct qed_dev as
-DECLARE_HASHTABLE(connections, 10), and QED_FLAG_STORAGE_STARTED lives in
-cdev->flags.
+And finally, it hooks into existing kernel subsystem (pagepool,
+the skb transmit buffer allocation, dma_alloc_*(), dma_map_*()
+so that devices can opt-in to use it without any driver code change.
 
-The lock is also held across blocking QED_SPQ_MODE_EBLOCK ramrods: conn
-offload, update, clear_sq, terminate, mac update and FUNC_STOP. For
-example:
+Regarding pagepool:
+For the receive path, I do use my allocator to feed pagepool
+(in the next version I have wrapped it into a proper memory provider
+interface. Non-pagepool NICs can either use a few trivial changes
+to call dma_map_alloc_pages() when filling their rings,
+or convert to pagepool (slightly bigger change; anyways
+there are options).
 
-qed_iscsi_offload_conn()
-    guard(mutex)(&qed_iscsi_conn_lock);
-    ...
-    qed_sp_iscsi_conn_offload(..., QED_SPQ_MODE_EBLOCK, NULL)
-        qed_spq_post()
-            qed_spq_block()
+Note that just feeding the pagepool with 2MB pages is not efficient because
+the fragmentation in pagepool is done with a bump
+allocator, so recycling blocks from a 2MB page is difficult
+(it has to wait until all 512 blocks to become idle). My code
+has a bitmap to track usage, so it naturally recycles at the block level.
 
-qed_spq_block() polls with 1000 x msleep(5), drains the MCP, then polls
-again before it declares the ramrod stuck. One stalled ramrod can
-therefore hold the mutex for about 10 seconds or more.
+Then there is the transmit path.
 
-Doesn't this serialize iSCSI connection setup, teardown and
-qed_iscsi_stop() across every qed adapter in the system? If one PF's
-firmware stalls, these would all wait behind it on unrelated adapters:
+For skb heads, one simple solution is to use tx head bounce buffers
+some of the patches in the series show that option (the next version
+implements a proper tx-copybreak).
 
-- qedi offload work
-- ep_disconnect driven by cleanup work
-- __qedi_remove()->qedi_ops->stop()
+Otherwise we need to populate skb heads with pre-mapped
+memory. In the next version I have a simple modification to
+the slub code to accept an opt-in alternative to alloc_pages().
+I considered using the pagepool, but the changes would be
+similar and the layering seemed really odd, with a cache on top
+of a cache.
 
-The netlink-driven paths are already serialized by rx_queue_mutex in
-scsi_transport_iscsi.c. The extra cost therefore lands mostly on offload
-work, cleanup-work disconnects and stop.
+For transmit, there is a bit of impedance mismatch as well:
+skb_page_frag_refill() does not know which device
+we want to use (in fact, it is a per-task so there may be
+many netdevs used by a task). We could tweak the pagepool
+to be device-agnostic, but that would be a bit more
+intrusive (more architecturally than in terms of code);
+also we need to make sure dma_map() on those pages does the right thing
+without trying to map/unmap the individual 4K fragments,
+and we need to make sure the skb_free() etc does
+not leak those pages into free_pages().
 
-The commit message calls this a "file-local mutex", but it doesn't
-mention the coupling across devices. Would a lock per device, in struct
-qed_dev or struct qed_iscsi_info, close the same race without it?
+>
+> I think Robin is right, this is just a special case of the dma pool,
+> and it certainly shouldn't be something as grandiose as a subsystem..
+>
 
-[Severity: Low]
-This is a pre-existing issue and was not introduced by this patch.
-qed_fcoe.c and qed_nvmetcp.c use the same unlocked pattern on
-cdev->connections: lookup, use, then hlist_del() and kfree(). That
-covers qed_fcoe_get_hash(), qed_fcoe_acquire_conn(),
-qed_fcoe_release_conn(), qed_nvmetcp_get_hash() and
-qed_nvmetcp_acquire_conn(). The new mutex does not cover any of them.
+dma_pool() could be tweaked to allocate 2MB and return order-N fragments,
+so maybe that could be a provider for pagepool, but it has some caveats:
+- when fragmenting, the freelist is constructed in-band, ie using
+  memory exposed to the IO device. That is really a no-go if we use the IOM=
+MU
+  because we don't trust the device, so we would also need to
+  allocate extra memory for the freelist (no big deal, but
+  that is basically what my dma_pmd_meta supports)
+- memory is never released until the pool is destroyed,
+  so there is a problem of stranded idle memory.
 
-No in-tree race was found there. qedf only reaches the FCoE connection
-ops from qedf_rport_event_handler(). libfc runs that handler on the
-ordered rport_event_queue created in fc_setup_rport(). The NVMe-TCP ops
-from qed_get_nvmetcp_ops() have no in-tree users.
+Trying to use dma_pool for the transmit path has all the problems
+listed above: lack of device, inefficient release of memory,
+coarse grained locking...
 
->  static int qed_iscsi_async_event(struct qed_hwfn *p_hwfn, u8 fw_event_code,
->  				 __le16 echo, union event_ring_data *data,
->  				 u8 fw_return_code)
-> @@ -1080,6 +1083,7 @@ static int qed_iscsi_stop(struct qed_dev *cdev)
->  {
->  	int rc;
->  
-> +	guard(mutex)(&qed_iscsi_conn_lock);
->  	if (!(cdev->flags & QED_FLAG_STORAGE_STARTED)) {
->  		DP_NOTICE(cdev, "iscsi already stopped\n");
->  		return 0;
+In summary: of course we could tweak existing subsystems, trying
+to reuse them in ways that were probably not anticipated
+(see the above partial list of missing features).
 
-[Severity: Low]
-qed_iscsi_stop(), the qed_iscsi_get_hash() callers, acquire and release
-now all hold qed_iscsi_conn_lock. qed_iscsi_start() still writes the
-same state without the lock, and it sets the flag before it initializes
-the table:
+I think that once one addresses the functional and performance
+problems, the changes would become quite intrusive and the risk
+of penalizing the currently supported code path might become significant.
 
-qed_iscsi_start() {
-    ...
-	cdev->flags |= QED_FLAG_STORAGE_STARTED;
-	hash_init(cdev->connections);
-    ...
-}
-
-In a normal probe this can't overlap any connection op, because
-ops->start runs before iscsi_host_add().
-
-Recovery is different. qedi_recovery_handler() calls
-__qedi_probe(QEDI_MODE_RECOVERY), which assigns a new qedi->cdev and
-calls qedi_ops->start while the iSCSI host is still registered.
-
-A qedi_ep_connect() that passed its QEDI_IN_RECOVERY check earlier could
-call acquire_conn() on the new cdev at the same moment. hash_init() would
-then drop that entry. Can this leak the wrapper and the CID?
-
-Should qed_iscsi_start() take the lock, and set QED_FLAG_STORAGE_STARTED
-only after hash_init()? This matters mostly together with a STARTED
-check in qed_iscsi_acquire_conn() (see below).
-
-The error paths in qed_iscsi_start() call qed_iscsi_stop(), which now
-takes this mutex, and the mutex is not recursive. Would that need a
-__qed_iscsi_stop() helper that runs with the lock already held?
-
-[ ... ]
-
-> @@ -1158,6 +1162,7 @@ static int qed_iscsi_acquire_conn(struct qed_dev *cdev,
->  	struct qed_hash_iscsi_con *hash_con;
->  	int rc;
->  
-> +	guard(mutex)(&qed_iscsi_conn_lock);
->  	/* Allocate a hashed connection */
->  	hash_con = kzalloc_obj(*hash_con, GFP_ATOMIC);
->  	if (!hash_con)
-
-[Severity: Medium]
-The commit message says "The mutex also serializes connection
-acquisition with storage stop". However, qed_iscsi_acquire_conn() never
-checks QED_FLAG_STORAGE_STARTED. What happens if qed_iscsi_stop() gets
-the mutex first?
-
-CPU1 (recovery)
-__qedi_remove(QEDI_MODE_RECOVERY)
-    qedi_ops->stop()
-        qed_iscsi_stop()
-            guard(mutex)(&qed_iscsi_conn_lock);
-            hash_empty() is true
-            qed_sp_iscsi_func_stop()
-            cdev->flags &= ~QED_FLAG_STORAGE_STARTED;
-
-CPU2, waiting on the mutex in this path:
-qedi_ep_connect()
-    qedi_ops->acquire_conn()
-        qed_iscsi_acquire_conn()
-            kzalloc_obj()
-            qed_iscsi_acquire_connection()
-            hash_add()
-
-Once CPU2 has inserted the entry, qed_iscsi_get_hash() returns NULL for
-it because the started flag is clear:
-
-	if (!(cdev->flags & QED_FLAG_STORAGE_STARTED))
-		return NULL;
-
-Every operation on that handle then fails with "Failed to find
-connection": offload, update, clear_sq, destroy, change_mac and
-release_conn. qedi only logs the release_conn failure.
-qed_iscsi_free() only frees free_list entries.
-
-Doesn't this leak the hash wrapper, the CID, and the connection's chains
-and DMA buffers? Should qed_iscsi_acquire_conn() return an error while
-holding the lock if the function isn't started?
-
-This ordering is possible because qedi_ep_connect() checks
-QEDI_IN_RECOVERY only once. That check can run before
-qedi_schedule_recovery_handler() sets the bit.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261020064701.535531-1-18983559317%40163.com
+cheers
+luigi
