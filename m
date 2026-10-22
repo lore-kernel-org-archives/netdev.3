@@ -1,102 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792655234;
-	b=fUZwCdQbb0H0JPnOpFiJmtcsYyBFGCVVoLrdiQ1gSHoaLf4sAtQO1k6KCWymWrs/yCjH
-	 2pnUfirtM9nKMq2l+jdTuHUTcG54iyW5kq/e4+XcAeowClCyFUYXkf3cOPDsZkv1LiTuN
-	 DCUZpyjVWIUIhbSuXWigXgwJhkOvOLUohbD2EPiDWXkM2zEe9Z9J+MnydZlNw7la1IT9J
-	 5b57vtQPyAXLs7dU0CHr6EH9DtNlrA7Ypz2I+9WjUVqXLEfl6lDjqwtfcIsdlmeQzsaeX
-	 IZ/z3sHFGqtdAo5x1Jxws4JKwed1++PxlbH87AiP3YTpw2yzMSBwHiXEzTymTY6P15Q==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792655234;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Sent-From:X-URL:X-Accept-Language:
-	 X-Accept-Content-Type;
-	bh=+BbNV4BqiEr/2H0FdCmiPOL6zTitlHPpnUkXuLtKcHQ=;
-	b=JYtI/tAaKOV2HsS2nGgCZ2IN82SZ7sUhB1F0UZdC50IJCexdFpSc6QXBREtMnnAuT86N
-	 jz5N/XW+q1c2p8Q2RL/rm/19wsblJW3iRtCDwp2FElr5TnylB8wlAL4rH18QmOdAADmiH
-	 JXGCekfHWyjAAWzcQHIUCQZx2cOehrGghCZOPsVVHm/pJfhojP0ukgiNySPoybFef9Kz3
-	 JTdjWYZNOSyxE+ETkEGUL64l1z0yw8mqNDToiebwooeVkQm2R9kKRts2ersCQuscrK5Ky
-	 e5aP/BZ68bLPp68IBFMBNU5kmchZJsXXKOJhjpTFO0Cl4ZeJp9fHIDP5PToVTLwqO6g==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=RbasnzTA;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792655541;
+	b=CtIUIWL6/AaDCkygseEPivdwH8ONZoEnGeXN9jBUUX2gyGJjRS963zpOfj8bM11Q2B5a
+	 wJbnU9c+XEFLiGe74jSgb8hqi/si92LOowOKSsG+66SBUPUqDw2HzKggOOqU42dA3IGXz
+	 y/U6Q5y+T+6zsru35eyW5ONj/u7iyhdebsULdNhLxX7JEW4OwUzSDKgrMtuIBnA7/ShhI
+	 RW/TSc42JbkrscZNFC39jU/A/OUdJLXtmhYF/mnyjEvqjO6N6CXU1y9RgCaKFM4TkzCp/
+	 iztg1NprXBmyNZfbleRLKHGsxoaN13WSCAYE62h+iDO+ikmsNf9YXgyhg9fsRzDgRQA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792655541;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=72aFLp27/R8ZjB6rNWZA1eIaUhpL3oNIObCJ0g+GS6I=;
+	b=h0mO8kOhti771nfKAjIil6rz417WBblOgNbI/ZOsMUmepnRMSCckyWIlbywhr68Fvcq+
+	 3taM1WBtuEYzQ9AaJn09uIjxGUEDadzdQsfkNRiKaQ6epZl4eKQlfARC0PLvcGTPkoe6o
+	 jAteVc+N3Rzb7VemQuB3MbFh06niL6VpEHXlkBcY/nfaknSNtaYZIjalwjwRf1ddeb7Ld
+	 AwL4nTTBd1XBQWLNgHYT+nGJ5hRqkmu7+M0cuH2p3hIVvwnO+5H99PS2RMru6dWDIG1oj
+	 l/dQbGW3pxxQsZpygGjeJkA/t5cfoERHOejTbqwPCqyCkljJMOokJ3+2sTdr00X5UAw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZgE59edo;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A543606A319;
-	Thu, 22 Oct 2026 07:47:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3A543606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF12606A321;
+	Thu, 22 Oct 2026 07:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=RbasnzTA
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 39CE22006AF;
-	Thu, 22 Oct 2026 09:47:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792655230;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+BbNV4BqiEr/2H0FdCmiPOL6zTitlHPpnUkXuLtKcHQ=;
-	b=RbasnzTAioGLXfOudxCDWKQjx3YOhZ7PiBZPLB0sSAge2zcxil8dwivFr7OjmYPHO18zr5
-	5zqd02ZFPK7jtMG+vD6xcfmB3MyDla92th/63xNEenI3OCJStk5mjOhMNo+daycnKJ8C8P
-	h7N9dFFldkb4cDz0RdR0TyzpXGw+lzDaPUCmFvhb9MwZRjxfBgTltr6UB1T97DJ5CZuvxF
-	VprA7t4t8TGJWrGFu7LlbzCvy5X+bzuOQA5UY2o9XvSDlL8b1LqkfrkETozyOvZ4AbbAfB
-	s89hE0WXs/5mFzpOT6IXintVQ7FgJPTQ8tuXN3gzwBRf2T+q4V4rK3xFVheiBQ==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792655230; a=rsa-sha256;
-	cv=none;
-	b=RvslJXTj5OwoPxxXIB3UIKjerXmDXWgqppWCjeRXCJBVUL8u9Aj6XZetEixVwoT16och37
-	+uTEDI73oLH+2zyl74V5LYotN7DPscFJcrdhQHMbLEpdKdnOosIhsV4iZo9bRwOMkWQnKr
-	yr9H14QP7mN3W0ci0uTDU6mhARpsC1Scyr6gojghZNq5nVZLZak9ytQ+iypGM9NcHHAobA
-	fzTyFwpzK4g6zLQNHL6VfoU+HJWsKqaqZJcuH7SHKpZ/SH1vf7m4yCcXslvChlm3xjSlzr
-	Yp8Ao4Jo7wW64qH80yB/Zp0P8fCbnzXsIAJrAJq/T3Y6hdUq/Qqd8EjHmftHVw==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=ore@pengutronix.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792655230;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+BbNV4BqiEr/2H0FdCmiPOL6zTitlHPpnUkXuLtKcHQ=;
-	b=AsKAdeP55X19IAgcz6MkuUpCumkEwO5NYbY58xG9j0aMKhSuD+zCyfOJbTQSpZFwGuxOua
-	6ZuHts2V4j7Uxd+uQFYlqfJqzJXlaVwg02eHchkvagVALtYEyzlMNoq4OcMtEIn7n0mgxW
-	V99esmFZ1+aqYHwsBtgMUE+5efIjQqM6xiE/cuP8r3FV8B8Pel2d3pcRfTkFq1bWakuVOZ
-	9tOjjdkc1YZY+GiMKCa8RjZavt+Z4FYAZlCdlCrvRhtd34E3+NW73hT+qWYoPoBMsqhPtq
-	fgm4Dt8BQwY7l4aGe2AoAmfeCqd5ZDK9nG0qAqfS7paTgjIlvUUY65knFiZoLA==
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1xJnW2-000fl2-0U;
-	Thu, 22 Oct 2026 09:47:10 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1xJnW2-00000009R2D-07hj;
-	Thu, 22 Oct 2026 09:47:10 +0200
-Date: Thu, 22 Oct 2026 09:47:10 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Carlo Szelinsky <github@szelinsky.de>
-Cc: Kory Maincent <kory.maincent@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kyle Swenson <kyle.swenson@est.tech>, Ross Cawston <ross@r-sc.ca>,
-	netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2 11/14] net: pse-pd: unwind allocations when
- controller registration fails
-Message-ID: <atm_fvCOBwH1S0Ry@pengutronix.de>
-References: <20261020171249.853085-1-github@szelinsky.de>
- <20261020171249.853085-12-github@szelinsky.de>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZgE59edo
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDE761F000C2;
+	Thu, 22 Oct 2026 07:52:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792655541;
+	bh=72aFLp27/R8ZjB6rNWZA1eIaUhpL3oNIObCJ0g+GS6I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZgE59edo0VoZGNbFZua/HV3eM6MFXhh387eRzNtOtDKX4te01aAj3rqBVczj02RRR
+	 fi4zR5Qnfk9vQwL1rnFj1tzg81oVVNCOQ4/PaO1Gj35+22kwqDophr7AToG89fjLl3
+	 i+DcA3dI33SYUFaVipG37XRrwnI9NleSVs2UMSLRn161PXNDxQGMlUARvyzPH8U2Ax
+	 b5YSjSsZRbIaa1wHpdyULtVPuzjXfzmYp3MoDuhK57SP4AzGRp5kRIe2BLNFIACqcK
+	 dX9LYP9oyPWCs278TvLycjm3tjhz8i//XoHu/wNq8DSQiYKqtU/lop3hYFEQrxkUhl
+	 vVwP435G4YJXw==
+Date: Thu, 22 Oct 2026 09:52:18 +0200
+From: Antoine Tenart <atenart@kernel.org>
+To: Hangbin Liu <hangbin.liu@linux.dev>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>
+Subject: Re: [PATCH net] selftests: gro: remove unused variable total_data
+Message-ID: <atnAmOuzTuL-0f4u@kwain>
+References: <20261022-self_unused_var-v1-1-8ab10a6b7f44@kylinos.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,54 +59,56 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261020171249.853085-12-github@szelinsky.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+In-Reply-To: <20261022-self_unused_var-v1-1-8ab10a6b7f44@kylinos.cn>
 
-On Tue, Oct 20, 2026 at 07:12:46PM +0200, Carlo Szelinsky wrote:
-> When pse_controller_register() fails, it does not free the
-> notification kfifo. Worse, if pse_register_pw_ds() fails part way, the
-> power domains it already set up stay in the global map. Their supply
-> handle belongs to a PI regulator that devres then frees, so the next
-> user of the map reads freed memory.
+On Thu, Oct 22, 2026 at 11:09:35AM +0800, Hangbin Liu wrote:
+> From: Hangbin Liu <liuhangbin@kylinos.cn>
 > 
-> Free the kfifo on every error path, and let pse_register_pw_ds() undo
-> its own power domains while it still holds pse_pw_d_mutex, so no other
-> controller can pick one up first. The PI array is already freed by
-> devres.
+> I hit a build warning when building the net selftests.
 > 
-> Found by code inspection and AI review. Triggered in QEMU (arm64,
-> KASAN) with a test-only PSE controller and an injected failure in
-> pse_register_pw_ds() at the third PI: reading the regulator summary in
-> debugfs then gives
+>   gro.c: In function 'check_capacity_pkts':                                                                                                                                                                                     gro.c:1249:13: warning: variable 'total_data' set but not used [-Wunused-but-set-variable=]
+>    1249 |         int total_data = 0;
+>         |             ^~~~~~~~~~
 > 
->   BUG: KASAN: slab-use-after-free in regulator_summary_show_subtree+0x770/0x9c4
+> Remove the total_data variable, as it is no longer used.
 > 
-> With this patch the failure is undone, and kmemleak reports nothing.
-> 
-> Fixes: 50f8b341d268 ("net: pse-pd: Add support for PSE power domains")
-> Fixes: ffef61d6d273 ("net: pse-pd: Add support for budget evaluation strategies")
-> Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
+> Fixes: d97348474708 ("selftests: drv-net: gro: always wait for FIN in the capacity test")
+> Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
 
-Besides the pse_pi_power_off() call (see my reply to patch 10), two
-small things for the next version.
+Reviewed-by: Antoine Tenart <atenart@kernel.org>
 
-Helpers that expect pse_pw_d_mutex to be held should check it with
-lockdep_assert_held(), not only say so in a comment: please add it to
-pse_pw_d_release_locked() here, and to pse_pw_d_leave() in patch 12.
-
-Once patch 12 removes __pse_pw_d_release(), only one release function
-is left, so the _locked suffix has nothing to tell apart. Please
-rename pse_pw_d_release_locked() to pse_pw_d_release() in patch 12 and
-keep the assert.
-
-pw-bot: cr
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> ---
+>  tools/testing/selftests/net/lib/gro.c | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/net/lib/gro.c b/tools/testing/selftests/net/lib/gro.c
+> index 7a333155de1a..1bc92e7a625f 100644
+> --- a/tools/testing/selftests/net/lib/gro.c
+> +++ b/tools/testing/selftests/net/lib/gro.c
+> @@ -1246,7 +1246,6 @@ static void check_capacity_pkts(int fd)
+>  	int coalesced[num_flows];
+>  	struct tcphdr *tcph;
+>  	int ip_ext_len = 0;
+> -	int total_data = 0;
+>  	int pkt_size = -1;
+>  	int data_len = 0;
+>  	int flow_id;
+> @@ -1309,7 +1308,6 @@ static void check_capacity_pkts(int fd)
+>  		}
+>  
+>  		num_pkt++;
+> -		total_data += data_len;
+>  	}
+>  
+>  	/* Check flow ordering. We expect to see all non-coalesced first segs
+> 
+> ---
+> base-commit: e0a958ddfc89f2e1c43448cdaeb5b30e54e19448
+> change-id: 20261022-self_unused_var-d54af8d61a56
+> 
+> Best regards,
+> --  
+> Hangbin Liu <liuhangbin@kylinos.cn>
+> 
