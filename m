@@ -1,95 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.100
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.161.99
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792709837;
-	b=Z+ZFt/T4yOQj5nmJQnH2dc6yo6V6X+SySxqpktSYK99DyixHFrRLo+K+Hkwak1i2k5hK
-	 C/mCsC3JCHlf3lNmPXaFNFrDr8I/KSMjeH2zqj+lz6XplD+0ndk7l9Q80TmtulgqCkwwn
-	 HTvKN6WbsY/bSYDqU4pjfrIafTEC1W8PjmpHl+mUnJixnAgymZY8cwxrAJ7Ul+w3Z7sa7
-	 wfGuHvst1k2DIKbQ7eJ1yAqnx+2g0e2uhg03jEHz3RY2tcFsqadkMs9DVH3wPK1SX3B+a
-	 FPaLSruhxDp+gpycXNNHAu35QMba18BJk+C1ilo/ItSYvuChtjw6vPGvgHqLEZM5GPA==
+	t=1792709840;
+	b=pc4ZDOl2nGxws4Wzel2cevQPHulWR817LPkMSTJf6iO7F1D9cH6aVfXxUk/+GzsDaJgv
+	 ugIGdNf1kBjwpRVFTZhouAJIjoPyQRtjtg0SDua2qcOyO8+qbPGwRF+y0ENPjfSKjNFN1
+	 235dtgPxAJwFG3aTtGzWveTPYJotrmyBvLd0tLl51WySfAEKDUfyf35vyDt5d5h6JUtKk
+	 0c+ca4HMZQT6v6SM1500IOAFIqKT9kuFXNQh0+QylvEymUwNR42mekZEDcShnPAoXa3f3
+	 WZlTTsxWdI3Y2pFz964M3LJyZqmtseQigE4W4tjU4p5HM5p3De5d/kK2Mi6ELajAD2A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792709837;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792709840;
 	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
 	 X-Gm-Gg:X-Received:Received:X-Relaying-Domain:X-CFilter-Loop:Received:
 	 DKIM-Signature:X-Received:X-Received:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-DetectorID-Processed;
-	bh=h8gPfI9JeQ9XOUZVTcwz6/7mOX9l24c3JGDHItgBJZ0=;
-	b=0bPzKpaOCjbulVFuHkITpXVhCzx8KikMgIxcdOfmVRg/79Nme+IIaoYtQonak7u4xuaM
-	 q7/LeH/FFrSVrXdZFePRK+i+VmcOYVxUOGycs8NuKe8NG0gRv7e2WSLAs/UHO0wCmtv+K
-	 +zzVJfH33ORaJmXrIisT216YOIgTafPM9YVPw8q4knmYI3Au/PU7Xte2ksICG5ijCH4uI
-	 KNtamsIdvOLVMyLfa3zf/f7KSJQu32sW3feKD15e++QvFasZnkFFXc9Jb6FXZux+cLPjD
-	 YD0VX0ZZiDx+CI4eZ0jpFo2dOA1IOSnfs/W1Ym27L5VGKSORtroLIlHKUEkt3W1JE1g==
+	bh=LZQ/9I91mNUcuhP0G3lEHnlf3oltqe6NJe/9E63RKNY=;
+	b=Yg8K6tbCiEQ+Ah1yRIZhxITN5+1Sfno2o9M9k/jsvmNByhqyezSfUXJRsCeOnsxOT274
+	 VD7P+Oa9PHf9W0xdOsNstlmdRwrckxjhZTatjeLYXTbZ8ZIRBxo9eXqUBqUdIfZl0npgR
+	 WM1WXNN9Oqjc2e1u/yF4x5RhbtlqNisPlKFoZOouyrcLunToBFDNncsC24XY6l1Idw+QX
+	 ackyjbTQhdO4GyLZWb1gL5xSq8N0O1lGOWPDx5F7DtwKDrUNF9zJn1ruZnkvtt9p2EcmB
+	 K0rXjYBRWIX4qHZ3hL5mhy8TFoJQ+SBMNT5uJ2lCuS1NWi/aOqNikChON/5+iZzPC4w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=broadcom.com;
 	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=UwrIjysM;
-	arc=none smtp.remote-ip=209.85.216.100
-Received: from mail-pj1-f100.google.com (mail-pj1-f100.google.com [209.85.216.100])
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=HA5KHy0t;
+	arc=none smtp.remote-ip=209.85.161.99
+Received: from mail-oo1-f99.google.com (mail-oo1-f99.google.com [209.85.161.99])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30045606A33B
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 22:57:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 30045606A33B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7D8606A32C
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 22:57:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DA7D8606A32C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=UwrIjysM
-Received: by mail-pj1-f100.google.com with SMTP id 98e67ed59e1d1-3a4b3ac8fb7so181958a91.0
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 15:57:17 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=HA5KHy0t
+Received: by mail-oo1-f99.google.com with SMTP id 006d021491bc7-70b875f6f13so212744eaf.0
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 15:57:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792709836; x=1793314636;
+        d=1e100.net; s=20260707; t=1792709839; x=1793314639;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=h8gPfI9JeQ9XOUZVTcwz6/7mOX9l24c3JGDHItgBJZ0=;
-        b=ufyi5YtATxF1NsiujihXvAQh9n93ztbuSlN8U0e/l6fsSA7/rIpvSNwg55lijFxkFn
-         HlGXDA2mzFZMcvmaOloGAwvVlKnTI4c8deCkmWcSdTTyFAbhYGNtDinFp6mMuBLJLePe
-         kr9LtWqb8m2ZgfR9yEO5aQXnp7iJnDymLaY+Sz5LNyE6MV15Yb7NHhPr6AcNNxwEKspz
-         oMJQzoBiJI9SR3qGCIUAFKmX7BYKuQdsecc9hlS5xqFZowJ0WIGCp7M2L42+AaoAKX67
-         CFcj2WoJLkB5aDf1wUDcpOuvei/bVKAdUGO+fwUUfpQ0OZQTO6yuzouUJFOJlv4ifjQd
-         pLmw==
-X-Gm-Message-State: AFq9FYKIlh0FqXHBitnfnG502IEt2wzRC0ZGS3edy1ZBCdvE8b7saeyb
-	DWiX0rGy5tILHV/WmwXJMuFgAzSkShxEzbif3F4FeH8W24aa0qxis/CXAQIBv9Tu2ja2Cz8VBV2
-	mlx71R4X82/yQn2u5ZKMKBNjkWh93M3tU9GA+UgHUKl6+DOjs4gNDAeb5Vz1dA+ZZsyX05pOUUq
-	VQAChTSK4Q9/gPjoFxS9/jYywEdwrZqlTEgQuLlCORI/sH31XKhg+34IqMqedC7JnVaukFoSMHs
-	tEnS9/oYJPUg8hc
-X-Gm-Gg: AYBFou0K6pUosDh6OdLub9jianPh1MEqWxsCbiMlkjNS3f2dUnU9l2IJAhAknPSMSck
-	MnFpOffEbDfK4O3gnYfrAfbeHiCSuppNzNGS4I816y5GS94G0ZEoZYEH0qy/3EEPtYueRvilYQV
-	9hjG6fey52gaMUT8Jvqi99qUiCrLOAR2Foxuq+fJeaaE0Tqf1rsahtVWjo3tr4apdSWWtKMb9o8
-	BsotFZ8l7mHUMIrI1OuzzboleT20Yzzul/CDSR49aJmbMv3LMLo1kW9b+BkPBkzyjIUDS6KwOnC
-	FfikwLXBY1klz44G/ag7hGV0CAnjk1bzWUTTC3cYL7BNzdM4zZ+hS5bLt5l5wm743CFsTR0bX27
-	R2LuC9gn8mhmwHQAJbuTWtdP3xqVzoKmhh+LNqd2toT32ZFePOz2PLYtq2Dm0fKraoFv+dtQvyr
-	EnoN3aUoQr9zKf93sHE72ziMxY86YUnwQKh9diVYO5
-X-Received: by 2002:a17:90b:4d8f:b0:3ad:8ecc:5907 with SMTP id 98e67ed59e1d1-3adce0a078amr283895a91.56.1792709836460;
-        Thu, 22 Oct 2026 15:57:16 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-17.dlp.protect.broadcom.com. [144.49.247.17])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3adcddb117asm127086a91.4.2026.10.22.15.57.15
+        bh=LZQ/9I91mNUcuhP0G3lEHnlf3oltqe6NJe/9E63RKNY=;
+        b=gPRahO7WjmWCnp8yYMuDstRUAfeG5A3hU1oPddpyKvgJzcauTNEwv3X+lR0ljt4hs5
+         p5T3rExqQYxugId+iBAdGBYa98IABOr55HnOkua6Q02YxoFobKsP92MsN+xj1rotJslP
+         bYv6evC0HHKKAodhT0GzQKxIPcv2kb46Jo0iUs5OdYYODYSduaMi9PdmqIdNhADnOEMX
+         1hlOu4ZZb+jRzH2yLRpmEcAi3GVl58/2Gmz1iojbR1wEfLAD2w3RkvOydm3IUOUrcUj+
+         AMd49rdr86jOx/auQT7F0hT+EmVohBkJmHXENpKIf4hP6ny1IOhtB4plcX51Q5FAV5ik
+         lGvQ==
+X-Gm-Message-State: AFq9FYKGHfidIAD5XauDa7bkY2u91hVicPJHufjILpJ1kxicch/fGyfS
+	x1LtRHUrkL3nObuHzNk9nC76wS7VopISwR8fnfHUUCaUb6UMnd6v7hP7S6goEZl+fTTH3ZTsVz7
+	qK7mXSaAh3cV1/Bgm7oC7O2+sHcRnskhwu2c8Ep3aqDe4PQKuYEF87p43IHX8P/gDWMj5abN+OB
+	KEbiAXmmbyOe912QtUhZDMxwJB0CramzqcrpFpeZA36VAN/obbeeHak0M5i72KJ/PsQ21xI33ut
+	uHydW8wRduiEugL
+X-Gm-Gg: AYBFou2CEEjWJ9W4mV+NTJYtAKuftqRswHK2okesq8gVoW6iO78oMTqdnXtdlmhrhJj
+	hX6xiu/Y4HcQAZJhx/E+TI7y1q0rYhGFLFuwrEgVwSyZ6gQVX2XD7zrqOTw996+RRsccfyrns9U
+	qsjc2uJsbhOSPhsLeg1rZeXL2EyrtgK4/kUzOUgOVeMcXv8zsrSjdr9dwkF6I3cAKvmYEmmaNsO
+	KS2T+wnMV9T10OViV1P6bQLE2xBnDqdRkwNPrSvJOD+/WgeW5MKmycc8FoGfAjc0qVli+NbZQyY
+	/i16ma/VdTUTIokURFN3A85a2m9pkHWYw+5l1kZc/HEKFQMUqxdooK0dSOJzfAVZt3xupnb6kU0
+	npydgq0WGt4rgEqyfXCEFfXx7aVIY/KdG/nAIuOocur20zzgX0vJ9qr1zuO1OQFa8FROMS0NcOK
+	wUu/nmvgbkDsdVXa8YhOaAPkDuByCwS6nkQTvS15ioPUs=
+X-Received: by 2002:a05:6820:a111:b0:700:371e:ee11 with SMTP id 006d021491bc7-70b88b615c0mr407254eaf.78.1792709838761;
+        Thu, 22 Oct 2026 15:57:18 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-120.dlp.protect.broadcom.com. [144.49.247.120])
+        by smtp-relay.gmail.com with ESMTPS id 46e09a7af769-84fbb28e27fsm3725a34.1.2026.10.22.15.57.17
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 22 Oct 2026 15:57:16 -0700 (PDT)
+        Thu, 22 Oct 2026 15:57:18 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-91c01778cefso7182146d6.2
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 15:57:15 -0700 (PDT)
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-91b861c0618so6493436d6.0
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 15:57:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1792709835; x=1793314635; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1792709837; x=1793314637; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=h8gPfI9JeQ9XOUZVTcwz6/7mOX9l24c3JGDHItgBJZ0=;
-        b=UwrIjysM19iId6G/Rnif5y/xVCCeBLph48QCTrP6pscMB3s5t1HIYLSYi7n+C+gkDC
-         rVr8gre86GXlJfU0VcCUgiTqeK8Bo5oIGlGa97mbafVxIiNr2nJWIx0jT/SmWDfelpJS
-         r8GaUkW4nTamzKsZC7Ybbn6o0HS4Gl6N1VdQU=
-X-Received: by 2002:a05:6214:b6a:b0:91c:20ef:2020 with SMTP id 6a1803df08f44-91c3a63b1aamr4204896d6.6.1792709834735;
-        Thu, 22 Oct 2026 15:57:14 -0700 (PDT)
-X-Received: by 2002:a05:6214:b6a:b0:91c:20ef:2020 with SMTP id 6a1803df08f44-91c3a63b1aamr4204486d6.6.1792709834117;
-        Thu, 22 Oct 2026 15:57:14 -0700 (PDT)
+        bh=LZQ/9I91mNUcuhP0G3lEHnlf3oltqe6NJe/9E63RKNY=;
+        b=HA5KHy0tDbYh93rNm2fK8GiW7bg1d3sbZ/Oq+nku+aq/RfWAF8gpJzzzS8TKIIaqAC
+         mGIcgXVFr1xmrmhi1YSchcgyuWQUV5bM4tnj2DFh1MeZfQEmSg25a3oxmBDEvzkUx2H6
+         9RhVtJ5P43E2lB/ajCbIrNMWGS5xyApDXS4Z4=
+X-Received: by 2002:a05:6214:2526:b0:91c:359a:3263 with SMTP id 6a1803df08f44-91c3a643b9emr4215816d6.7.1792709836807;
+        Thu, 22 Oct 2026 15:57:16 -0700 (PDT)
+X-Received: by 2002:a05:6214:2526:b0:91c:359a:3263 with SMTP id 6a1803df08f44-91c3a643b9emr4215546d6.7.1792709836304;
+        Thu, 22 Oct 2026 15:57:16 -0700 (PDT)
 Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c395025d0sm4501656d6.5.2026.10.22.15.57.11
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c395025d0sm4501656d6.5.2026.10.22.15.57.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 15:57:13 -0700 (PDT)
+        Thu, 22 Oct 2026 15:57:15 -0700 (PDT)
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 To: netdev@vger.kernel.org
 Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
@@ -103,9 +103,9 @@ Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
 	Russell King <linux@armlinux.org.uk>,
 	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
 	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net 1/6 RESEND] net: dsa: b53: serialize SerDes register transactions
-Date: Thu, 22 Oct 2026 15:56:51 -0700
-Message-ID: <20261022225656.1387306-2-florian.fainelli@broadcom.com>
+Subject: [PATCH net 2/6 RESEND] net: dsa: b53: manage SerDes power through the PCS callbacks
+Date: Thu, 22 Oct 2026 15:56:52 -0700
+Message-ID: <20261022225656.1387306-3-florian.fainelli@broadcom.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261022225656.1387306-1-florian.fainelli@broadcom.com>
 References: <20261022225656.1387306-1-florian.fainelli@broadcom.com>
@@ -121,141 +121,99 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-The lane and block selectors are shared by both SerDes lanes. Taking
-reg_mutex separately for each register access allows another port to
-change either selector before the data access. Hold the mutex across the
-complete transaction and use the raw bus operations while it is held.
+Powering down the SerDes from mac_link_down() prevents the PCS from
+observing link recovery. This also ties PCS power management to in-band
+802.3z mode, leaving SGMII and other negotiation modes inconsistent.
 
-Propagate bus errors instead of returning uninitialized register contents,
-only cache a successfully selected lane, and invalidate the cache after
-failed accesses. Make the PCS callbacks fail configuration or report link
-down on read errors, and reject out-of-range lane indices at discovery.
+Implement pcs_enable() and pcs_disable() so that phylink controls the
+lane lifetime independently of individual link transitions. Remove the
+MAC-to-SerDes power callback and perform read-modify-write operations
+under the register mutex.
 
 Fixes: 0e01491de646 ("net: dsa: b53: Add SerDes support")
 Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 ---
- drivers/net/dsa/b53/b53_common.c |   1 +
- drivers/net/dsa/b53/b53_serdes.c | 148 ++++++++++++++++++++++++-------
- 2 files changed, 115 insertions(+), 34 deletions(-)
+ drivers/net/dsa/b53/b53_common.c |  8 ----
+ drivers/net/dsa/b53/b53_priv.h   |  3 --
+ drivers/net/dsa/b53/b53_serdes.c | 70 +++++++++++++++++++++++---------
+ drivers/net/dsa/b53/b53_serdes.h |  2 -
+ drivers/net/dsa/b53/b53_srab.c   |  1 -
+ 5 files changed, 51 insertions(+), 33 deletions(-)
 
 diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 0880310c9ce3..3f8f956aab82 100644
+index 3f8f956aab82..09de3520e71a 100644
 --- a/drivers/net/dsa/b53/b53_common.c
 +++ b/drivers/net/dsa/b53/b53_common.c
-@@ -3203,6 +3203,7 @@ struct b53_device *b53_switch_alloc(struct device *base,
- 	dev->ds = ds;
- 	dev->priv = priv;
- 	dev->ops = ops;
-+	dev->serdes_lane = B53_INVALID_LANE;
- 	ds->ops = &b53_switch_ops;
- 	ds->phylink_mac_ops = &b53_phylink_mac_ops;
- 	dev->vlan_enabled = true;
+@@ -1630,10 +1630,6 @@ static void b53_phylink_mac_link_down(struct phylink_config *config,
+ 		b53_force_link(dev, port, false);
+ 		return;
+ 	}
+-
+-	if (phy_interface_mode_is_8023z(interface) &&
+-	    dev->ops->serdes_link_set)
+-		dev->ops->serdes_link_set(dev, port, mode, interface, false);
+ }
+ 
+ static void b53_phylink_mac_link_up(struct phylink_config *config,
+@@ -1672,10 +1668,6 @@ static void b53_phylink_mac_link_up(struct phylink_config *config,
+ 		b53_force_link(dev, port, true);
+ 		return;
+ 	}
+-
+-	if (phy_interface_mode_is_8023z(interface) &&
+-	    dev->ops->serdes_link_set)
+-		dev->ops->serdes_link_set(dev, port, mode, interface, true);
+ }
+ 
+ int b53_vlan_filtering(struct dsa_switch *ds, int port, bool vlan_filtering,
+diff --git a/drivers/net/dsa/b53/b53_priv.h b/drivers/net/dsa/b53/b53_priv.h
+index 29cca7945df7..cebbebe4ae0f 100644
+--- a/drivers/net/dsa/b53/b53_priv.h
++++ b/drivers/net/dsa/b53/b53_priv.h
+@@ -54,9 +54,6 @@ struct b53_io_ops {
+ 						      int port,
+ 						      phy_interface_t interface);
+ 	u8 (*serdes_map_lane)(struct b53_device *dev, int port);
+-	void (*serdes_link_set)(struct b53_device *dev, int port,
+-				unsigned int mode, phy_interface_t interface,
+-				bool link_up);
+ };
+ 
+ struct b53_arl_entry;
 diff --git a/drivers/net/dsa/b53/b53_serdes.c b/drivers/net/dsa/b53/b53_serdes.c
-index 7460122f6abc..c90894877626 100644
+index c90894877626..87771e3788f7 100644
 --- a/drivers/net/dsa/b53/b53_serdes.c
 +++ b/drivers/net/dsa/b53/b53_serdes.c
-@@ -22,47 +22,96 @@ static inline struct b53_pcs *pcs_to_b53_pcs(struct phylink_pcs *pcs)
- 	return container_of(pcs, struct b53_pcs, pcs);
+@@ -107,6 +107,39 @@ static int b53_serdes_read(struct b53_device *dev, u8 lane,
+ 	return ret;
  }
  
--static void b53_serdes_write_blk(struct b53_device *dev, u8 offset, u16 block,
--				 u16 value)
-+/* The caller holds reg_mutex across lane, block and data accesses. */
-+static int b53_serdes_write_blk(struct b53_device *dev, u8 offset, u16 block,
-+				u16 value)
- {
--	b53_write16(dev, B53_SERDES_PAGE, B53_SERDES_BLKADDR, block);
--	b53_write16(dev, B53_SERDES_PAGE, offset, value);
-+	int ret;
-+
-+	lockdep_assert_held(&dev->reg_mutex);
-+
-+	ret = dev->ops->write16(dev, B53_SERDES_PAGE, B53_SERDES_BLKADDR,
-+				block);
-+	if (ret)
-+		return ret;
-+
-+	return dev->ops->write16(dev, B53_SERDES_PAGE, offset, value);
- }
- 
--static u16 b53_serdes_read_blk(struct b53_device *dev, u8 offset, u16 block)
-+static int b53_serdes_read_blk(struct b53_device *dev, u8 offset, u16 block)
- {
- 	u16 value;
-+	int ret;
-+
-+	lockdep_assert_held(&dev->reg_mutex);
- 
--	b53_write16(dev, B53_SERDES_PAGE, B53_SERDES_BLKADDR, block);
--	b53_read16(dev, B53_SERDES_PAGE, offset, &value);
-+	ret = dev->ops->write16(dev, B53_SERDES_PAGE, B53_SERDES_BLKADDR,
-+				block);
-+	if (ret)
-+		return ret;
- 
--	return value;
-+	ret = dev->ops->read16(dev, B53_SERDES_PAGE, offset, &value);
-+	return ret ? ret : value;
- }
- 
--static void b53_serdes_set_lane(struct b53_device *dev, u8 lane)
-+static int b53_serdes_set_lane(struct b53_device *dev, u8 lane)
- {
-+	int ret;
-+
-+	lockdep_assert_held(&dev->reg_mutex);
-+
-+	if (lane >= B53_N_PCS)
-+		return -EINVAL;
-+
- 	if (dev->serdes_lane == lane)
--		return;
-+		return 0;
- 
--	WARN_ON(lane > 1);
-+	ret = b53_serdes_write_blk(dev, B53_SERDES_LANE,
-+				   SERDES_XGXSBLK0_BLOCKADDRESS, lane);
-+	if (ret)
-+		return ret;
- 
--	b53_serdes_write_blk(dev, B53_SERDES_LANE,
--			     SERDES_XGXSBLK0_BLOCKADDRESS, lane);
- 	dev->serdes_lane = lane;
-+	return 0;
- }
- 
--static void b53_serdes_write(struct b53_device *dev, u8 lane,
--			     u8 offset, u16 block, u16 value)
-+static int b53_serdes_write(struct b53_device *dev, u8 lane,
-+			    u8 offset, u16 block, u16 value)
- {
--	b53_serdes_set_lane(dev, lane);
--	b53_serdes_write_blk(dev, offset, block, value);
-+	int ret;
++/* Return one if the register changed, zero if unchanged, or an error. */
++static int b53_serdes_modify(struct b53_device *dev, u8 lane, u8 offset,
++			     u16 block, u16 mask, u16 set)
++{
++	int ret, old;
++	u16 new;
 +
 +	mutex_lock(&dev->reg_mutex);
 +	ret = b53_serdes_set_lane(dev, lane);
-+	if (!ret)
-+		ret = b53_serdes_write_blk(dev, offset, block, value);
 +	if (ret)
-+		dev->serdes_lane = B53_INVALID_LANE;
-+	mutex_unlock(&dev->reg_mutex);
++		goto out;
 +
-+	return ret;
- }
- 
--static u16 b53_serdes_read(struct b53_device *dev, u8 lane,
-+static int b53_serdes_read(struct b53_device *dev, u8 lane,
- 			   u8 offset, u16 block)
- {
--	b53_serdes_set_lane(dev, lane);
--	return b53_serdes_read_blk(dev, offset, block);
-+	int ret;
++	old = b53_serdes_read_blk(dev, offset, block);
++	if (old < 0) {
++		ret = old;
++		goto out;
++	}
 +
-+	mutex_lock(&dev->reg_mutex);
-+	ret = b53_serdes_set_lane(dev, lane);
++	new = (old & ~mask) | set;
++	if (new == old)
++		goto out;
++
++	ret = b53_serdes_write_blk(dev, offset, block, new);
 +	if (!ret)
-+		ret = b53_serdes_read_blk(dev, offset, block);
++		ret = 1;
++out:
 +	if (ret < 0)
 +		dev->serdes_lane = B53_INVALID_LANE;
 +	mutex_unlock(&dev->reg_mutex);
@@ -263,141 +221,85 @@ index 7460122f6abc..c90894877626 100644
 +	return ret;
 +}
 +
-+static void b53_serdes_error(struct b53_device *dev, u8 lane, int ret)
-+{
-+	if (ret < 0)
-+		dev_err_ratelimited(dev->dev, "SerDes lane %u access failed: %pe\n",
-+				    lane, ERR_PTR(ret));
+ static void b53_serdes_error(struct b53_device *dev, u8 lane, int ret)
+ {
+ 	if (ret < 0)
+@@ -202,32 +235,31 @@ static void b53_serdes_get_state(struct phylink_pcs *pcs, unsigned int neg_mode,
+ 		state->pause |= MLO_PAUSE_TX;
  }
  
- static int b53_serdes_config(struct phylink_pcs *pcs, unsigned int neg_mode,
-@@ -72,31 +121,37 @@ static int b53_serdes_config(struct phylink_pcs *pcs, unsigned int neg_mode,
+-void b53_serdes_link_set(struct b53_device *dev, int port, unsigned int mode,
+-			 phy_interface_t interface, bool link_up)
++static int b53_serdes_enable(struct phylink_pcs *pcs)
  {
- 	struct b53_device *dev = pcs_to_b53_pcs(pcs)->dev;
- 	u8 lane = pcs_to_b53_pcs(pcs)->lane;
--	u16 reg;
-+	int reg;
- 
- 	reg = b53_serdes_read(dev, lane, B53_SERDES_DIGITAL_CONTROL(1),
- 			      SERDES_DIGITAL_BLK);
-+	if (reg < 0)
-+		return reg;
-+
- 	if (interface == PHY_INTERFACE_MODE_1000BASEX)
- 		reg |= FIBER_MODE_1000X;
- 	else
- 		reg &= ~FIBER_MODE_1000X;
--	b53_serdes_write(dev, lane, B53_SERDES_DIGITAL_CONTROL(1),
--			 SERDES_DIGITAL_BLK, reg);
--
--	return 0;
-+	return b53_serdes_write(dev, lane, B53_SERDES_DIGITAL_CONTROL(1),
-+				SERDES_DIGITAL_BLK, reg);
- }
- 
- static void b53_serdes_an_restart(struct phylink_pcs *pcs)
- {
- 	struct b53_device *dev = pcs_to_b53_pcs(pcs)->dev;
- 	u8 lane = pcs_to_b53_pcs(pcs)->lane;
--	u16 reg;
-+	int reg;
- 
- 	reg = b53_serdes_read(dev, lane, B53_SERDES_MII_REG(MII_BMCR),
- 			      SERDES_MII_BLK);
-+	if (reg < 0)
-+		goto out;
-+
- 	reg |= BMCR_ANRESTART;
--	b53_serdes_write(dev, lane, B53_SERDES_MII_REG(MII_BMCR),
--			 SERDES_MII_BLK, reg);
-+	reg = b53_serdes_write(dev, lane, B53_SERDES_MII_REG(MII_BMCR),
-+			       SERDES_MII_BLK, reg);
-+out:
-+	b53_serdes_error(dev, lane, reg);
- }
- 
- static void b53_serdes_get_state(struct phylink_pcs *pcs, unsigned int neg_mode,
-@@ -104,12 +159,23 @@ static void b53_serdes_get_state(struct phylink_pcs *pcs, unsigned int neg_mode,
- {
- 	struct b53_device *dev = pcs_to_b53_pcs(pcs)->dev;
- 	u8 lane = pcs_to_b53_pcs(pcs)->lane;
--	u16 dig, bmsr;
-+	int dig, bmsr;
- 
- 	dig = b53_serdes_read(dev, lane, B53_SERDES_DIGITAL_STATUS,
- 			      SERDES_DIGITAL_BLK);
-+	if (dig < 0) {
-+		state->link = false;
-+		b53_serdes_error(dev, lane, dig);
-+		return;
-+	}
-+
- 	bmsr = b53_serdes_read(dev, lane, B53_SERDES_MII_REG(MII_BMSR),
- 			       SERDES_MII_BLK);
-+	if (bmsr < 0) {
-+		state->link = false;
-+		b53_serdes_error(dev, lane, bmsr);
-+		return;
-+	}
- 
- 	switch ((dig >> SPEED_STATUS_SHIFT) & SPEED_STATUS_MASK) {
- 	case SPEED_STATUS_10:
-@@ -140,19 +206,24 @@ void b53_serdes_link_set(struct b53_device *dev, int port, unsigned int mode,
- 			 phy_interface_t interface, bool link_up)
- {
- 	u8 lane = b53_serdes_map_lane(dev, port);
--	u16 reg;
-+	int reg;
- 
- 	if (lane == B53_INVALID_LANE)
- 		return;
- 
- 	reg = b53_serdes_read(dev, lane, B53_SERDES_MII_REG(MII_BMCR),
- 			      SERDES_MII_BLK);
-+	if (reg < 0)
-+		goto out;
-+
- 	if (link_up)
- 		reg &= ~BMCR_PDOWN;
- 	else
- 		reg |= BMCR_PDOWN;
--	b53_serdes_write(dev, lane, B53_SERDES_MII_REG(MII_BMCR),
--			 SERDES_MII_BLK, reg);
-+	reg = b53_serdes_write(dev, lane, B53_SERDES_MII_REG(MII_BMCR),
-+			       SERDES_MII_BLK, reg);
-+out:
-+	b53_serdes_error(dev, lane, reg);
- }
- EXPORT_SYMBOL(b53_serdes_link_set);
- 
-@@ -213,16 +284,25 @@ int b53_serdes_init(struct b53_device *dev, int port)
- {
- 	u8 lane = b53_serdes_map_lane(dev, port);
- 	struct b53_pcs *pcs;
--	u16 id0, msb, lsb;
-+	int id0, msb, lsb;
+-	u8 lane = b53_serdes_map_lane(dev, port);
+-	int reg;
++	struct b53_pcs *priv = pcs_to_b53_pcs(pcs);
++	int ret;
  
 -	if (lane == B53_INVALID_LANE)
-+	if (lane >= B53_N_PCS)
- 		return -EINVAL;
+-		return;
++	ret = b53_serdes_modify(priv->dev, priv->lane,
++				B53_SERDES_MII_REG(MII_BMCR), SERDES_MII_BLK,
++				BMCR_PDOWN, 0);
++	return ret < 0 ? ret : 0;
++}
  
- 	id0 = b53_serdes_read(dev, lane, B53_SERDES_ID0, SERDES_ID0);
-+	if (id0 < 0)
-+		return id0;
-+
- 	msb = b53_serdes_read(dev, lane, B53_SERDES_MII_REG(MII_PHYSID1),
- 			      SERDES_MII_BLK);
-+	if (msb < 0)
-+		return msb;
-+
- 	lsb = b53_serdes_read(dev, lane, B53_SERDES_MII_REG(MII_PHYSID2),
- 			      SERDES_MII_BLK);
-+	if (lsb < 0)
-+		return lsb;
-+
- 	if (id0 == 0 || id0 == 0xffff) {
- 		dev_err(dev->dev, "SerDes not initialized, check settings\n");
- 		return -ENODEV;
+-	reg = b53_serdes_read(dev, lane, B53_SERDES_MII_REG(MII_BMCR),
+-			      SERDES_MII_BLK);
+-	if (reg < 0)
+-		goto out;
++static void b53_serdes_disable(struct phylink_pcs *pcs)
++{
++	struct b53_pcs *priv = pcs_to_b53_pcs(pcs);
++	int ret;
+ 
+-	if (link_up)
+-		reg &= ~BMCR_PDOWN;
+-	else
+-		reg |= BMCR_PDOWN;
+-	reg = b53_serdes_write(dev, lane, B53_SERDES_MII_REG(MII_BMCR),
+-			       SERDES_MII_BLK, reg);
+-out:
+-	b53_serdes_error(dev, lane, reg);
++	ret = b53_serdes_modify(priv->dev, priv->lane,
++				B53_SERDES_MII_REG(MII_BMCR), SERDES_MII_BLK,
++				BMCR_PDOWN, BMCR_PDOWN);
++	b53_serdes_error(priv->dev, priv->lane, ret);
+ }
+-EXPORT_SYMBOL(b53_serdes_link_set);
+ 
+ static const struct phylink_pcs_ops b53_pcs_ops = {
++	.pcs_enable = b53_serdes_enable,
++	.pcs_disable = b53_serdes_disable,
+ 	.pcs_get_state = b53_serdes_get_state,
+ 	.pcs_config = b53_serdes_config,
+ 	.pcs_an_restart = b53_serdes_an_restart,
+diff --git a/drivers/net/dsa/b53/b53_serdes.h b/drivers/net/dsa/b53/b53_serdes.h
+index 3d367c4df4d9..6c851838457e 100644
+--- a/drivers/net/dsa/b53/b53_serdes.h
++++ b/drivers/net/dsa/b53/b53_serdes.h
+@@ -107,8 +107,6 @@ static inline u8 b53_serdes_map_lane(struct b53_device *dev, int port)
+ 	return dev->ops->serdes_map_lane(dev, port);
+ }
+ 
+-void b53_serdes_link_set(struct b53_device *dev, int port, unsigned int mode,
+-			 phy_interface_t interface, bool link_up);
+ struct phylink_pcs *b53_serdes_phylink_mac_select_pcs(struct b53_device *dev,
+ 						      int port,
+ 						      phy_interface_t interface);
+diff --git a/drivers/net/dsa/b53/b53_srab.c b/drivers/net/dsa/b53/b53_srab.c
+index 83a03fca142a..9988a83fa7b7 100644
+--- a/drivers/net/dsa/b53/b53_srab.c
++++ b/drivers/net/dsa/b53/b53_srab.c
+@@ -493,7 +493,6 @@ static const struct b53_io_ops b53_srab_ops = {
+ #if IS_ENABLED(CONFIG_B53_SERDES)
+ 	.phylink_mac_select_pcs = b53_serdes_phylink_mac_select_pcs,
+ 	.serdes_map_lane = b53_srab_serdes_map_lane,
+-	.serdes_link_set = b53_serdes_link_set,
+ #endif
+ };
+ 
 -- 
 2.53.0
 
