@@ -1,49 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.59
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792629607;
-	b=dAQknozzccIZ0leXfh52PpCnlpTfxkqmeI2fG1f5T4LTRR4acYku9FRu5Vwe7fvs140W
-	 R6lDFe5jxQ7vxrlkI5JVBlMFJFEqEhyaKzXiW85UwXGL0SEf/CQqz2x4eZE2fqkJrLkae
-	 WRQZWO62SPj01NWdl73En9TR0/8OZwxgnss4TiPpLxBt1ECGujt19iG4Y5tGMy5VIYZKW
-	 w5bP4JjILL7xTSCHSvxZeq0WfnCViIeW03ktuipLb0F3dCUseDcgP02gi5UO6BfyXBtBf
-	 LazYoW1XPtIIlI86By1riatI2wxQCnQFUrPfWZat04G6HJL+RukEtNrGcBggjPTLq7w==
+	t=1792630052;
+	b=IWm2YBKT7KBJ5lSjZiMh2diQWlbpASCu+y+DPY0DDqZ6Zvu3fHnO/JFD7j1zTtCfLyXH
+	 3ggt9qYd0G8DPjY3QwOuHwaWKFCWAWQQ/EtXSqxms1Ikdz3g0p/mvQkV/K7QpZT/E0FNi
+	 cZ3Dc/5/Y45zjjVQUWUZgLUkLBY6d4E+GNa3cvCYpX6TjOiTzzVaxG8O9vlqmtKCRIXmR
+	 5qOiDUZGAyPcedYZWavkctCIY7o4hy2e31VsgNRjwyfVFETeXOEZ0ai9f1q8KucfJtZ7F
+	 aYAVdR9uF1sdqoA3xG9KyGTJYUSUVSU0iudyJVCoon8bj7H+qN5ud8omos50xQAnoqA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792629607;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=klp9h556s2dmmsj3dIxpAq/gnwvQTRBEk3BCnmqimjQ=;
-	b=2Az4PCP+z1rcomQWG+gjaBHVCMDepp+Zd/MWHKyp6l26cBBdVrLI38o+F+uxXDqcayXg
-	 vUFxSp3eMvEMZdGR825JsrJF5w8HGG4aqJSfHKzhyGddp6q0tQu18yocOCBeTqx02Usfz
-	 8xAnbV/VWvX2ZfXj+LiIUZWqth4AI5FhIsPLqhRrKEkM6RdqhmOtIYDpZvE/ZHfwde5T9
-	 1a1tNFNmnMlpW++jtO7kdVJHko5Z2Up0pgFUpifsIZFamdT/SmLoMFTTImUH/Frd/6Hp7
-	 aBDBuQW+/E9FSXUqzX6YNXlcf30yBy6AyipOFm2NN44UXS4Wty3HuNMz/GMtPxkjZ4w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792630052;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=fccNkRIzbL1uVdjGLSaZSq1bbXrNDwuFn9uqm1aWWUk=;
+	b=SKb9u+hwj7v+VKm61D9a6Fro2m4lbjh6HchMyNKm2LEBb4ipDyUeiJfBuFVoYjLTtKgj
+	 DuByaCo9V8AXHCxb4cR8WAL+KFx60dSsZ7dy9L0Uir3lKftZm2Tt/C6flPW1zilPaV74W
+	 JCUU8leoFTb9lFEm0V2ryANjA6h1Y7evyNz2SYJzh4M3TYkhBQameygxyC1wNaSPuiNig
+	 wS/q8H1h5jzxAGRl6GmMBQkeRM8tpExcIZ6gEIU2AF8tUpzPvckCz/vr9kb/1D/LgRopf
+	 DKRGIlHov4pRTNuOqQtkr4nedV+4qRrvHMjFmWCdqGnWZDfhnt1OCj4MWywMZDESgzw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dJFzU+j+;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=v9aNKs75;
+	arc=none smtp.remote-ip=91.218.175.59
+Received: from mta0.migadu.com (out-59.mta0.migadu.com [91.218.175.59])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E3CE606A329;
-	Thu, 22 Oct 2026 00:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736F5606A319
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 00:47:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 736F5606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dJFzU+j+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 454691F000C3;
-	Thu, 22 Oct 2026 00:40:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792629607;
-	bh=klp9h556s2dmmsj3dIxpAq/gnwvQTRBEk3BCnmqimjQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=dJFzU+j+Ojm+kqvGzgUK2upk7XOosNqQ94rKuHbC/83jXPCXYbs+NQ0lBxzU7ASNG
-	 d4Q0DdTUoMcOHtaij9+d5vomwQziECmWzWbfV9VYCuFSuOfdqAfFpYPyM23ilptOgQ
-	 KRgAjZSgisgLW7NOlaOdFENjJh8MXkU6ReR0NpSgcW2RbnXzrK4LfMyOXj5LLsHnFn
-	 yJov5jaerk7Itxzb/GK379iEtVoOT+P2EtHpVFfnGQCyD0r7zBGOmTGpV7tt8/a3BF
-	 zcAgiDX24lSCek+kgZNMzif9M2o9h8QTaFtd7QgKYaO5wU1F1lTsryHwmd1buNOh/U
-	 r3SdULZQdCUgw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A385380A963;
-	Thu, 22 Oct 2026 00:40:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=v9aNKs75
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=6tkczwA2q6u+IycSsvI/27MATZ11ACORQeuZVFrGy5Y=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792630049; v=1; x=1793234849;
+ b=v9aNKs756roknew3ibwPRUx73nSsC9mqHhkSfWIFuHMt+bb81THUhFzGlLDtLlsUiWndk/Kt
+ OJ82ZqXpvh0V4qW7iMF+qBmr7BDbFUaAkW8eTAk9KBw1pdu51NgaG2Hh7KWPY0UfcgpgD/HTrQN
+ HCVGZhkGloRaiEizHlm0GR2U=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id f972ac63ba462e2d;
+	Thu, 22 Oct 2026 00:47:29 +0000
+X-Mizu-Trace-ID: f972ac63ba462e2d
+X-Migadu-Flow: FLOW_OUT
+Date: Thu, 22 Oct 2026 08:47:21 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: netdev <netdev@vger.kernel.org>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+	Matthieu Baerts <matttbe@kernel.org>
+Subject: Re: [ANN] stmmac enters the Netdev CI
+Message-ID: <atldGZy2tH1FYTnf@fedora>
+References: <bdc75e18-8ae7-4056-8f43-dc280a3414f5@bootlin.com>
+ <atgaQZiiuMDC6wiv@fedora>
+ <3e98563d-36f6-49d1-bf0c-f161016ca926@bootlin.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,46 +71,98 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: wwan: iosm: validate msg_head before indexing
- msg_ring
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179262960577.1381785.17602246093034540225.git-patchwork-notify@kernel.org>
-Date: Thu, 22 Oct 2026 00:40:05 +0000
-References: <20261020094254.4017726-1-liuc63@xiaopeng.com>
-In-Reply-To: <20261020094254.4017726-1-liuc63@xiaopeng.com>
-To: liuc63 <liuc63@xiaopeng.com>
-Cc: m.chetan.kumar@intel.com, loic.poulain@oss.qualcomm.com,
- ryazanov.s.a@gmail.com, johannes@sipsolutions.net, fangxy@xiaopeng.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <3e98563d-36f6-49d1-bf0c-f161016ca926@bootlin.com>
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Tue, 20 Oct 2026 17:42:49 +0800 you wrote:
-> From: Liu Chao <liuc63@xiaopeng.com>
+Hi Maxime,
+On Wed, Oct 21, 2026 at 08:49:22AM +0200, Maxime Chevallier wrote:
+> On 10/21/26 03:49, Hangbin Liu wrote:
+> > Hi Maxime,
+> > On Tue, Oct 20, 2026 at 11:07:16AM +0200, Maxime Chevallier wrote:
+> >> Hi everyone,
+> >>
+> >> It's my pleasure to inform you that the stmmac driver now has a runner
+> >> that feeds into the Netdev CI. It runs in a lab I maintain, and the results
+> >> are hosted by Bootlin, accessible here :
+> >>
+> >> https://netdevci.bootlin.com/stmmac/results.json
+> >>
+> >> What that means is that now contributions will be subject to CI
+> >> validation, by having the kernel selftests run on real hardware.
+> >>
+> >> Results are already aggregated in the patchwork contest, and can also
+> >> be found here :
+> >>
+> >> https://netdev.bots.linux.dev/devices.html
+> >> https://netdev.bots.linux.dev/status.html
+> > 
+> > Thanks for your update!
+> > 
+> >>
+> >> As stmmac is an off-the-shelf IP from Synopsys and is integrated in a lot
+> >> of different platforms out there, the CI currently runs on 9 different
+> >> boards that include the following SoCs :
+> >>
+> >>  - Starfive JH7110, riscV, dwmac 5.20 (rgmii-id w/ YT8531 PHY)
+> >>  - LoongSon 2K0300, Loongarch, dwmac 3.70a (rgmii-id w/ YT8531 PHY)
+> >>  - Amlogic S905X, arm64, dwmac 3.70a (rgmii-txid w/ RTL8211F PHY)
+> >>  - Rockchip RK3566, arm64, dwmac4.20a (rgmii-id w/ RTL8211F PHY)
+> >>  - Altera AgileX5, arm64, dwxgmac 2.10 (rgmii-id w/ KSZ9031 PHY)
+> >>  - Altera cycloneV, arm, dwmac 3.70a (rgmii-id w/ KSZ9031 PHY)
+> >>  - ST stm32mp157a, arm, dwmac 4.20a (rgmii-id </ RTL8211F PHY)
+> >>  - Allwinner A20, arm, dwmac1000 (rgmii-id w/ RTL8211E PHY)
+> >>  - Allwinner H2+, arm, Allwinner specific version (mii w/ internal PHY)
+> > 
+> > 
+> > I’m curious about how our lab is maintained. Do we stick to a single distro
+> > across all machines, or reinstall systems periodically?
+> > And how are > reinstalls done, manually or via BMC?
+> > 
+> > Also, do we run all selftests via virtme-ng or docker? Does virtme-ng support
+> > all the architectures?
 > 
-> ipc_protocol_free_msg_get() reads msg_head from shared memory and
-> uses it directly as an index into msg_ring[]. If the head is out
-> of range, the subsequent memset() writes beyond the message ring.
+> Tests are run baremetal on the hardware directly. All the SoCs mentionned above
+> are on single-board computers, devkits, or just some products out there that
+> have the right HW.
 > 
-> Validate head against IPC_MEM_MSG_ENTRIES before using it as an
-> index. The ring is a circular buffer, so a value outside the valid
-> range indicates a corrupted head pointer; report the error and fail
-> the allocation instead of writing out of bounds.
+> We're talking embedded devices here, so there's no BMC at all :)
 > 
-> [...]
+> The distro used is based on Buildroot, a build-system similar to Yocto, I can share
+> the configs if need be. It allows me to generate small images fast, that that
+> work on the plethora of CPU archs the lab has.
+> 
+> All the boards in the lab are booting an initramfs image through the network, and
+> the whole test session runs in it. Using a pure ram-stored rootfs allows bringing
+> the network down afterwards, while the tests are running. It also allows easily
+> updating the rootfs running on the boards when a new selftest get added for example.
+> 
+> All the boards are controlled through dedicated relays for power. As we're dealing
+> with embedded devices that consume only a few watts, it's only a matter of switching
+> some low-level DC voltages on/off (5V/12V/24V). I have a few mains-powered boards, also
+> controlled through relays.
+> 
+> The whole lab is managed via labgrid + some custom software on top of that to manage
+> the jobs, the builds, reporting results, etc.
 
-Here is the summary with links:
-  - net: wwan: iosm: validate msg_head before indexing msg_ring
-    https://git.kernel.org/netdev/net-next/c/46cbf85155e5
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Thanks for sharing. Labgrid looks quite promising for embedded device control.
 
+> 
+> I'd say, this setup is quite different to ones used for server-class HW, but the
+> whole thing runs on very simple hardware, cheap to acquire and run.
 
+Yes, I’m looking for a stable lab controller that can manage servers with
+poor BMC support. It needs to support OS installation, system reboot, and
+automated test execution.
+
+> 
+> To give you an idea, the build machine I'm using is based on Intel Core Ultra 9 185H,
+> a laptop-class 22-core CPU that's in a NUC, and this is more than enough to build
+> kernels/rootfs for 10+ boards every 8 hours, with lots of time to spare :)
+
+Thanks, very glad to know these.
+
+Cheers
+Hangbin
