@@ -1,55 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792648020;
-	b=yiB+8o/Yq+zScD3Es0z/HD7feJj79Tt2JTLlRsAvwnrD2sCtLX1jDYn4WsBzgM/4ZdWa
-	 AKlhDSzJE+cPbSe/8u546eZLCPCylGEqxlb/IXrNtCMbUCEjcxBnysqekY2BGMLA1UR2a
-	 U65zmLS0kFEJYbzmLydzmJn/5FKupmvy6LPHXf8B1FCslCG2DQMdprTByGrGQy54AIzqf
-	 i37FJXg0JrFrxNReB4N3L+2/1ko5M8/eswxVVTZxSuTwApB9UPSAMphtDMQI5eZJFzIjt
-	 rYXiZoXJQAG6NEeZ3GOLdgz6uxzz52fMrsLzsUmgn2DezEdqaeLDnGZVv6SUdk58t4g==
+	t=1792648098;
+	b=whHYnfZToEYzLi2+BNMTiiB8Ia28OBqmgqGyVh79mtThKeKs0H1KkaQSPv25Uqs3MrbP
+	 ygyEvkkDFipXYyCitiOGUEFrAOkaa+xGX2vZGm7YtPmIUoumIKqJJbmq2O7JCDdFWfoS0
+	 yTXB/JEXIEVQxeRP4t/13FDVtsEvt4BaBjdmZSQPrAuRkIj3M1695eHT6iZvnm4C1Ldi0
+	 cZoo+yj6v/pL7ZLfJZUFqa7unM/X8XBB7u8vqX0gdUsi+GPuk2b/bPJG40OrybnDdwR1w
+	 qyMFgPQx16L3RPKhbtJH0wsdKL98pgSnSFTavzczWsG+mCaocd/DQQgeuGO3/vSiuFA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792648020;
-	h=DMARC-Filter:X-Alimail-AntiSpam:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=PXGqLfpOLa85o7qHqLpl4wq5+Jg/AU69UwfCg9ZXivA=;
-	b=NgkmaWyQJzV4lwZ4mN8zxT9kSAfPJyqSeTajp0tq8B9iTuA3bdr8GoooDkZF3ZFQ7Frd
-	 eOXquKhyrteA2ztsdjk5h9gTtFg6Z9JyS7ud2L6+AIAShEu7INhcuBKDJLKFNbaBKVDq5
-	 k3zV1LkS24deuNWHm6tJyC7npVnNEqWY9B2uBquSJVv0yQb5UuHgFxIPyMzONVhoBtaSl
-	 e9RO+jJyPzD2KeqQ+KosXCYFN0uOWGl9fUb/PuWCoLo9eFTJW3SfRmz3qPQErXCiyshHU
-	 HZOrvuwumqLLuMWq7D7T4LSP66vEWt0QAQ5u8KgJqJF9zL69LwF0UNbfp5JDdG/gn6A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792648098;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=9iUZRB7DdZpj4oQEX0/Fw+dU5phcWs0bFKzSNLar0ak=;
+	b=S5ZXa1Q5J6c4w96/3Z42dPb5/AF4sf9hNwJu51zQX1jxZ3Tw5x8mDxaQHkn2e+tSTEOP
+	 F9gI072UxUpS3jBl5TdJi5egWFZ/uwjzy0W8Xyc0S9VdhlTR0ngNjovH9gnVqOwGzuEyx
+	 bj+0hUop/aiTJOJAQ6Erj020m8jCplMU1aZaHPg6mHunHg0q/LMqvyemMt0Pm2IJwFt5y
+	 E8HQLhf/wMFgJqW8cFylKo5abqIIo22ONIhhB7eY2SS2/u4D5/3VZ8wMczGNKutxD/vLl
+	 oCCQwm6cbsabMoN2/pTYSc0yDeEXikfNsJ+coGpvcOwcJpkiC/23wVirUZ9TMAwWR3w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=motor-comm.com;
-	spf=pass smtp.mailfrom=motor-comm.com;
-	arc=none smtp.remote-ip=115.124.28.4
-Received: from out28-4.mail.aliyun.com (out28-4.mail.aliyun.com [115.124.28.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=R0+lGWax;
+	arc=none smtp.remote-ip=209.85.216.52
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978C8606A319;
-	Thu, 22 Oct 2026 05:46:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 978C8606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436259|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.011315-0.188511-0.800174;FP=13869783043050834034|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037034254;MF=frank.sae@motor-comm.com;NM=1;PH=DS;RN=12;RT=12;SR=0;TI=SMTPD_---.jn8fddc_1792648002;
-Received: from motor-comm.com(mailfrom:frank.sae@motor-comm.com fp:SMTPD_---.jn8fddc_1792648002 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Thu, 22 Oct 2026 13:46:43 +0800
-From: "Frank.sae" <frank.sae@motor-comm.com>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@kernel.org,
-	davem@davemloft.net,
-	netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	lingyu.zou@motor-comm.com,
-	xiaoyong.li@motor-comm.com,
-	jie.han@motor-comm.com
-Subject: [PATCH net-next v?] [PATCH net-next] net: phy: motorcomm: add YT8831 2.5G PHY support
-Date: Thu, 22 Oct 2026 05:46:42 +0000
-Message-ID: <20261022054642.1332801-1-frank.sae@motor-comm.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE04F606A31B
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 05:48:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CE04F606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=R0+lGWax
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3acb512a7a0so850607a91.1
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 22:48:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792648097; x=1793252897; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=9iUZRB7DdZpj4oQEX0/Fw+dU5phcWs0bFKzSNLar0ak=;
+        b=R0+lGWaxSnQVRvcQbN9nHZHI4Chs+KJm3LGQjWazWEz/D7zVpm2Ef2ZnknMBbuID/0
+         E/jCL9vEbNvQBLIt2ziHaYNutcA8WMR2KXzT4U708IApBYutEaW3lRZDIZyIEUMEfy8H
+         0bFBR5L942+38NB4e3KeLAp9sAqdaVVNR7uhivvxlY8J5YI7UtliYRBkMF/s8gIr6wjN
+         la+TUUWmFaauUnwN0jYz8dP7v1dQkq702kWWxhbm8m4obS2grrXrjjLfzFfNRg/WsppN
+         ClZRFv+FscTmbXCR8EK8UdjnZibcxA40Fa5NF0+jSCaDHIQiVVm2FiYvSq4PgBdho9/e
+         UMyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792648097; x=1793252897;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9iUZRB7DdZpj4oQEX0/Fw+dU5phcWs0bFKzSNLar0ak=;
+        b=cDonSfy9yl3xHHM1gZsFKjZjQn8s45PsPossYGwPIGc9VdJ0pb0fLnYye9xZHi0GVR
+         MpSsD4YwYw2l9LMOL/6fbgtJXS8YyTpGJDXvcS5HA+5Ti+wZpmPnsrPVw1WyR5+EVsVV
+         cdrCOL+U9Xd/CfcAz5Rj3qVJCuzsP9UmgbHM6UlYJG1TKMHGweDfniHQrctJ7jOk8P5y
+         SL1a3THuWyA8O/hn9M2cZ3BeH/ykUDUsorFzpjhI1gANqqzEhFEe/33mCaiH5mP5XoSi
+         7GmFfwXWXr/Z4oOitFt3d0tRrKXzgVKox/niFaZRSdbJ54MFeEfe23gb/Qps/wFBK3km
+         Oflw==
+X-Gm-Message-State: AFq9FYLBj/fbiuKjNdjzZmNhb6Szqyx8bDTEsSMTWtislWH0ETx0/ICg
+	xPsvWTLEg50YJtWwVt8TlC3wTegYfJbZn2g+5otuuZ/ruuFgJ/Jq7muz
+X-Gm-Gg: AYBFou1Pk298seEtgO5ZSeGYvn4pn90KmDUm4wMFULRPAHU73jVAaF+wATL7GZ7H82T
+	9BjON9X5PxAHGTB5Gb7xOWwoT/nMRcgPWYzZOx0HzTX5hX5JSEmHwe87jJT0vdbyL8X79p7315R
+	NS1tG1gi2/sDjux9BcJ9yDLhSjQ9m1bapcgw0Yduu+HDQkHwOa6/YnRRq8Df+oUVfONwNvu/6kt
+	/zQecNZr/8da/VOFK0Q2c+14Nh8EdsPqOqD3LXtCSNSp2y8aiJQFA3eyXdQ0DWWlYxfflXqiRC8
+	PLhao5qTH9F0qYxVPAXNByfS5v3zNIBtZJpRAJOr20RrURgiV4E2uqIBmRqafXnIq+cliBWqHT/
+	tx9IzQeM2Enf8JZ/5FS64/lxBURa82jqMuYuuPtyBN/Ilrf7hKacrBvkLzYd5xzxCQo3E9g60eB
+	kt4GLqYjEo4AJoSkJ+XhxtM8ZaMKTV6q9TOD+EzSM35Ex8fPSbjIFrF1/Gb+9hxELrf5PQMCBWB
+	xQF20qpKw0WzKvGMrMQig3tCXwDs7w18tbICS31UskWpWHNrqwytkjSdgZ4vdzW+6oLfZEB9VZj
+	jujBh52OlD+DzB+y/JKhtWpZ1gP3Fbqvv7gO3RWYwkgpfKjaASYMya7CuHvUvekTTqC1Q14hMkQ
+	TwnQFBtMrFwM=
+X-Received: by 2002:a17:90b:4b92:b0:3a7:d2b5:2e99 with SMTP id 98e67ed59e1d1-3ad86c7abf9mr3317341a91.20.1792648097005;
+        Wed, 21 Oct 2026 22:48:17 -0700 (PDT)
+Received: from localhost.localdomain ([218.253.131.218])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea3b434e67sm18767215ad.27.2026.10.21.22.48.14
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 21 Oct 2026 22:48:16 -0700 (PDT)
+From: Dudu Lu <phx0fer@gmail.com>
+To: john.fastabend@gmail.com,
+	jakub@cloudflare.com,
+	jiayuan.chen@linux.dev
+Cc: netdev@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH bpf v2] bpf, sockmap: annotate the psock teardown data races
+Date: Thu, 22 Oct 2026 13:48:11 +0800
+Message-Id: <20261022054811.35008-1-phx0fer@gmail.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-145)
+In-Reply-To: <20261021155629.68813-1-phx0fer@gmail.com>
+References:  <20261021155629.68813-1-phx0fer@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,678 +100,293 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Add a driver for motorcomm yt8831/yt8821-vd ethernet phy.
-Verified the driver in BPI-R3(with MTK Filogic-830 Soc)development board
-YT8831 works in AUTO_BX2500_SGMII or FORCE_BX2500 interface,
-supports 2.5G/1000M/100M/10M speeds, and wol(magic package)
+The sockmap link/unlink paths touch three psock fields from one CPU while
+another CPU touches them under a different lock.  A KCSAN run with two
+SOCKMAPs sharing one socket reports all three:
 
-Signed-off-by: Frank.sae <frank.sae@motor-comm.com>
+  BUG: KCSAN: data-race in sock_map_link / sock_map_unref
+  BUG: KCSAN: data-race in sock_map_link / unix_dgram_bpf_update_proto
+  BUG: KCSAN: data-race in sk_psock_start_verdict / sock_map_unref
+
+  - psock->psock_update_sk_prot: written in sock_map_init_proto() without
+    sk->sk_callback_lock, read in sock_map_del_link() under it.
+  - psock->saved_data_ready: written by sk_psock_start_verdict() under
+    sk->sk_callback_lock, read in sock_map_del_link() under
+    psock->link_lock -- a different lock instance.
+  - sk->sk_prot: replaced by sock_replace_proto() (via the protocol's
+    psock_update_sk_prot()) under sk->sk_callback_lock, read by
+    sock_map_link() / sock_map_sk_is_suitable() outside it.
+
+Annotate every one of these accesses with READ_ONCE()/WRITE_ONCE(),
+matching the existing convention for the same fields: sk->sk_data_ready
+and sk->sk_write_space were already annotated this way, as were the
+sk_psock_stop_strp() accesses to saved_data_ready.  The indirect calls
+read the pointer once into a local, so the guard and the call cannot see
+different values.
+
+No Fixes: tag: the three fields were introduced by three different
+commits, so no single one is the origin.  psock->saved_data_ready was
+folded into struct sk_psock by commit 5a685cd94b21 ("skmsg: Get rid of
+struct sk_psock_parser"); the psock->psock_update_sk_prot read in
+sock_map_del_link() came with commit c0d95d3380ee ("bpf, sockmap:
+Re-evaluate proto ops when psock is removed from sockmap"); the lockless
+sk->sk_prot reads are older still.
+
+Assisted-by: LLM
+Signed-off-by: Dudu Lu <phx0fer@gmail.com>
 ---
- drivers/net/phy/motorcomm.c | 548 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 546 insertions(+), 2 deletions(-)
+v2:
+ - Drop the Fixes: tag; the three fields came from three different
+   commits, so explain the provenance in the message instead (bpf-ci).
+ - Read the function pointer once into a local before the guard and the
+   call, so the two cannot see different values: psock->saved_data_ready
+   in sk_psock_stop_strp() and sk_psock_stop_verdict(), and
+   psock->psock_update_sk_prot in sk_psock_restore_proto(),
+   sock_map_del_link() and sock_map_init_proto() (Jakub).
+ - READ_ONCE() the source sk->sk_data_ready in sk_psock_start_strp()
+   and sk_psock_start_verdict() (Jakub).
+ - Annotate the sock_map.c accesses that KCSAN actually reports:
+   sock_map_init_proto(), sock_map_del_link(), sock_map_link(),
+   sock_map_psock_get_checked() and sock_map_sk_is_suitable()
+   (Alexei).
 
-diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
-index 463e1ea3efc9..04852b4a5ba5 100644
---- a/drivers/net/phy/motorcomm.c
-+++ b/drivers/net/phy/motorcomm.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0+
- /*
-- * Motorcomm 8511/8521/8522/8531/8531S/861x/8821 PHY driver.
-+ * Motorcomm 8511/8521/8522/8531/8531S/861x/8821/8831 PHY driver.
-  *
-  * Author: Peter Geis <pgwipeout@gmail.com>
-  * Author: Frank <Frank.Sae@motor-comm.com>
-@@ -22,6 +22,7 @@
- /* Live captured from YT921x switch internal MDIO bus */
- #define PHY_ID_INT861X		0x01e04281
- #define PHY_ID_YT8821		0x4f51ea19
-+#define PHY_ID_YT8831		0x4f51e938
- /* YT8521/YT8531S/YT8821 Register Overview
-  *	UTP Register space	|	FIBER Register space
-  *  ------------------------------------------------------------
-@@ -171,6 +172,11 @@
- #define YT8521_RSSR_UTP_SPACE			(0x0 << 1)
- #define YT8521_RSSR_TO_BE_ARBITRATED		(0xFF)
- 
-+#define YT8831_REG_SPACE_SELECT_REG		0x8020
-+#define YT8831_RSSR_SPACE_MASK			(BIT(1) | BIT(0))
-+#define YT8831_RSSR_FIBER_SAPCE			BIT(1)
-+#define YT8831_RSSR_UTP_SAPCE			BIT(0)
-+
- #define YT8521_CHIP_CONFIG_REG			0xA001
- #define YT8521_CCR_SW_RST			BIT(15)
- #define YT8531_RGMII_LDO_VOL_MASK		GENMASK(5, 4)
-@@ -258,6 +264,53 @@
- #define YTPHY_WCR_INTR_SEL			BIT(6)
- #define YTPHY_WCR_ENABLE			BIT(3)
- 
-+#define YT8831_WOL_CONFIG_REG			0x160a
-+#define YT8831_WOL_ENABLE_MASK			BIT(0)
-+#define YT8831_WOL_ENABLE			BIT(0)
-+#define YT8831_WOL_DISABLE			0x0
-+#define YT8831_WOL_PULSE_WIDTH_MASK             (BIT(3) | BIT(2))
-+#define YT8831_WOL_PULSE_WIDTH_168MS            BIT(2)
-+#define YT8831_WOL_OUTPUT_TYPE_SEL_MASK         BIT(1)
-+#define YT8831_WOL_OUTPUT_TYPE_SEL_PULSE        BIT(1)
-+
-+#define YT8831_WOL_MACADDR2_REG	                0x1604
-+#define YT8831_WOL_MACADDR1_REG			0xA006
-+#define YT8831_WOL_MACADDR0_REG			0xA008
-+
-+#define YT8831_WCR_INTR_REG                     0x8301
-+#define YT8831_WCR_INTR_SEL_MASK		(BIT(1) | BIT(0))
-+#define YT8831_WCR_INTR_SEL_WOL_ONLY		0x2
-+#define YT8831_WCR_INTR_SEL_ALL			0x1
-+
-+
-+#define YT8831_SDS_WRITE_PROTECT_REG		0x873
-+#define YT8831_SDS_SGMII_OUTPUT_REG		0x1002
-+
-+#define YT8831_UTP_WRITE_PROTECT_REG			0x1
-+#define YT8831_UTP_DAC_DATA_DLY_REG			0x0
-+#define YT8831_UTP_REF_DLAY_SEL_REG			0x3
-+#define YT8831_UTP_REF_DLAY_SEL_FEXT_REG		0x4
-+#define YT8831_UTP_COE_MANUAL_SHIFT_SEL_2500_REG	0x723
-+#define YT8831_UTP_EEE_OPTIM_1_REG			0x727
-+#define YT8831_UTP_EEE_OPTIM_2_REG			0x339
-+#define YT8831_UTP_EEE_MSE1_REG				0xc3
-+#define YT8831_UTP_EEE_MSE2_REG				0x32
-+#define YT8831_UTP_EEE_OPTIM_3_REG			0xff
-+#define YT8831_UTP_EEE_OPTIM_4_REG			0x372
-+#define YT8831_UTP_EEE_OPTIM_5_REG			0x336
-+#define YT8831_UTP_EEE_OPTIM_6_REG			0x340
-+#define YT8831_UTP_PSAN_OPTIM_REG			0x1e58
-+#define YT8831_UTP_1000M_TEMPLATE_OPTIM_1_REG		0x209e
-+#define YT8831_UTP_1000M_TEMPLATE_OPTIM_2_REG		0x20a4
-+#define YT8831_UTP_1000M_TEMPLATE_OPTIM_3_REG		0x20a9
-+#define YT8831_UTP_1000M_TEMPLATE_OPTIM_4_REG		0x20af
-+#define YT8831_UTP_1000M_TEMPLATE_OPTIM_5_REG		0x20b4
-+#define YT8831_UTP_1000M_TEMPLATE_OPTIM_6_REG		0x20ba
-+#define YT8831_UTP_1000M_TEMPLATE_OPTIM_7_REG		0x20bf
-+#define YT8831_UTP_1000M_TEMPLATE_OPTIM_8_REG		0x20c5
-+#define YT8831_UTP_2500M_TEMPLATE_OPTIM_1_REG		0x20ff
-+#define YT8831_UTP_2500M_TEMPLATE_OPTIM_2_REG		0x2100
-+
- /* 2b00 84ms
-  * 2b01 168ms  *default*
-  * 2b10 336ms
-@@ -397,6 +450,16 @@
- #define YT8821_CHIP_MODE_AUTO_BX2500_SGMII	0
- #define YT8821_CHIP_MODE_FORCE_BX2500		1
- 
-+#define YT8831_CHIP_MODE_SEL				0x8802
-+#define YT8831_CHIP_MODE_SEL_MASK			GENMASK(2, 0)
-+#define YT8831_CHIP_MODE_AUTO_BX2500_SGMII		0x0
-+#define YT8831_CHIP_MODE_FORCE_2500BASEX		BIT(0)
-+#define YT8831_CHIP_MODE_UTP_TO_FIBER_FORCE		(BIT(2) | BIT(0))
-+
-+#define YT8831_MDIO_ADDRESS_CTL				0x8004
-+#define YT8831_MDIO_ADDRESS_CTL_EN_BROADCAST_MASK	BIT(8)
-+#define YT8831_MDIO_ADDRESS_CTL_EN_BROADCAST		BIT(8)
-+
- struct yt8521_priv {
- 	/* combo_advertising is used for case of YT8521 in combo mode,
- 	 * this means that yt8521 may work in utp or fiber mode which depends
-@@ -543,6 +606,29 @@ static int ytphy_modify_ext_with_lock(struct phy_device *phydev, u16 regnum,
- 	return ret;
- }
- 
-+/**
-+ * yt8831_get_wol() - report whether wake-on-lan is enabled
-+ * @phydev: a pointer to a &struct phy_device
-+ * @wol: a pointer to a &struct ethtool_wolinfo
-+ *
-+ * NOTE: YT8831_WOL_CONFIG_REG is common ext reg.
-+ */
-+static void yt8831_get_wol(struct phy_device *phydev,
-+			  struct ethtool_wolinfo *wol)
-+{
-+	int wol_config;
-+
-+	wol->supported = WAKE_MAGIC;
-+	wol->wolopts = 0;
-+
-+	wol_config = ytphy_read_ext_with_lock(phydev, YT8831_WOL_CONFIG_REG);
-+	if (wol_config < 0)
-+		return;
-+
-+	if (wol_config & YT8831_WOL_ENABLE_MASK)
-+		wol->wolopts |= WAKE_MAGIC;
-+}
-+
- /**
-  * ytphy_get_wol() - report whether wake-on-lan is enabled
-  * @phydev: a pointer to a &struct phy_device
-@@ -704,6 +790,74 @@ static int yt8531_set_wol(struct phy_device *phydev,
- 	return 0;
- }
- 
-+/**
-+ * yt8831_set_wol() - turn wake-on-lan on or off
-+ * @phydev: a pointer to a &struct phy_device
-+ * @wol: a pointer to a &struct ethtool_wolinfo
-+ *
-+ * NOTE: YT8831_WOL_CONFIG_REG is common ext reg.
-+ */
-+static int yt8831_set_wol(struct phy_device *phydev,
-+			  struct ethtool_wolinfo *wol)
-+{
-+	const u16 mac_addr_reg[] = {
-+		YT8831_WOL_MACADDR2_REG,
-+		YT8831_WOL_MACADDR1_REG,
-+		YT8831_WOL_MACADDR0_REG,
-+	};
-+	const u8 *mac_addr;
-+	u16 mask, val;
-+	int ret;
-+	u8 i;
-+
-+	if (wol->wolopts & WAKE_MAGIC) {
-+		mac_addr = phydev->attached_dev->dev_addr;
-+
-+		/* Store the device address for the magic packet */
-+		for (i = 0; i < 3; i++) {
-+			ret = ytphy_write_ext_with_lock(phydev, mac_addr_reg[i],
-+							((mac_addr[i * 2] << 8)) |
-+							(mac_addr[i * 2 + 1]));
-+			if (ret < 0)
-+				return ret;
-+		}
-+
-+		/* Enable WOL feature */
-+		mask = YT8831_WOL_ENABLE_MASK
-+			| YT8831_WOL_PULSE_WIDTH_MASK
-+			| YT8831_WOL_OUTPUT_TYPE_SEL_MASK;
-+
-+		val = YT8831_WOL_ENABLE
-+			| YT8831_WOL_PULSE_WIDTH_168MS
-+			| YT8831_WOL_OUTPUT_TYPE_SEL_PULSE;
-+
-+		ret = ytphy_modify_ext_with_lock(phydev, YT8831_WOL_CONFIG_REG,
-+						 mask, val);
-+		if (ret < 0)
-+			return ret;
-+
-+		/* Enable WOL interrupt */
-+		ret = ytphy_modify_ext_with_lock(phydev, YT8831_WCR_INTR_REG,
-+				YT8831_WCR_INTR_SEL_MASK,
-+				YT8831_WCR_INTR_SEL_WOL_ONLY);
-+		if (ret < 0)
-+			return ret;
-+	} else {
-+		/* Disable WOL feature */
-+		mask = YT8831_WOL_ENABLE_MASK;
-+		ret = ytphy_modify_ext_with_lock(phydev, YT8831_WOL_CONFIG_REG,
-+							mask, YT8831_WOL_DISABLE);
-+
-+		/* Disable WOL interrupt */
-+		ret = ytphy_modify_ext_with_lock(phydev, YT8831_WCR_INTR_REG,
-+					YT8831_WCR_INTR_SEL_MASK, YT8831_WCR_INTR_SEL_ALL);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
- static int yt8511_read_page(struct phy_device *phydev)
+Tested base
+-----------
+Detected on Linux 7.3-rc4 (commit 93f51579e7df), arm64 QEMU guest.
+Re-checked against mainline f47d223627f8 (v7.3-341): the affected code
+is unchanged between the two, so the bug is still present there.
+Checked against linux-next next-20261021 (commit 9a482184d910): the
+affected code is unchanged there as well, so the bug is still present in
+linux-next too.
+
+Reproducer status
+-----------------
+A reproducer was written and executed on an arm64 QEMU guest (KCSAN); it
+reported the races above.  The reproducer source is not posted here per
+Documentation/process/security-bugs.rst; it is available on request.
+
+Post-fix verification
+---------------------
+Tested: the patch was built for arm64 and booted in a QEMU guest with
+KCSAN; the reproducer passes.  Concretely, the reproducer was re-run on
+the guest, once on the base tree and once with this patch applied.  On
+the base tree the sockmap-path races are five -- the three listed above,
+plus
+
+  BUG: KCSAN: data-race in sock_map_update_elem_sys / unix_dgram_bpf_update_proto
+  BUG: KCSAN: data-race in sk_psock_stop_verdict / sock_map_unref
+
+With this patch all five are gone and no new race is introduced.  The map
+operations complete identically in both runs (same op counts, no failures,
+no KASAN memory errors), so the annotation does not change behaviour.
+
+The reproducer also reports four unrelated races that this patch does not
+touch and that fire the same way with or without it: three are the
+socket-lock fast path (the 8-byte try_cmpxchg on sk_lock.combined against
+the slock-protected sk_lock.owned write, by design), and one is a plain
+sk->sk_prot read in generic release_sock(), which is a different scope
+from the sockmap paths annotated here.
+
+Triggering conditions
+---------------------
+CAP_BPF / the ability to update sockmap and attach verdict programs.
+The two writers run on separate CPUs (the guest has 2), one cycling a
+map with a verdict program, the other a bare map, on the same socket.
+
+Notes
+-----
+Built and checkpatch-clean: this patch was applied on top of 7.3-rc4
+(commit 93f51579e7df) and the affected objects were rebuilt for arm64
+with the KCSAN config -- no new warnings or errors.  scripts/checkpatch.pl
+reports 0 errors, 1 warning (its 'BUG: KCSAN:' commit-message
+heuristic, i.e. it is asking for a Fixes: tag, which we deliberately omit).
+
+ include/linux/skmsg.h |  7 +++++--
+ net/core/skmsg.c      | 24 +++++++++++++++---------
+ net/core/sock_map.c   | 34 +++++++++++++++++++++-------------
+ 3 files changed, 41 insertions(+), 24 deletions(-)
+
+diff --git a/include/linux/skmsg.h b/include/linux/skmsg.h
+index d5e35f24738d..cb17426f63be 100644
+--- a/include/linux/skmsg.h
++++ b/include/linux/skmsg.h
+@@ -488,8 +488,11 @@ static inline void sk_psock_cork_free(struct sk_psock *psock)
+ static inline void sk_psock_restore_proto(struct sock *sk,
+ 					  struct sk_psock *psock)
  {
- 	return __phy_read(phydev, YT8511_PAGE_SELECT);
-@@ -798,6 +952,27 @@ static int yt8521_read_page(struct phy_device *phydev)
- 	return YT8521_RSSR_UTP_SPACE;
- };
- 
-+/**
-+ * yt8831_read_page() - read reg page
-+ * @phydev: a pointer to a &struct phy_device
-+ *
-+ * returns current reg space of yt8831 (YT8831_RSSR_FIBER_SAPCE/
-+ * YT8831_RSSR_UTP_SAPCE) or negative errno code
-+ */
-+static int yt8831_read_page(struct phy_device *phydev)
-+{
-+	int old_page;
+-	if (psock->psock_update_sk_prot)
+-		psock->psock_update_sk_prot(sk, psock, true);
++	int (*update_proto)(struct sock *sk, struct sk_psock *psock, bool restore);
 +
-+	old_page = ytphy_read_ext(phydev, YT8831_REG_SPACE_SELECT_REG);
-+	if (old_page < 0)
-+		return old_page;
-+
-+	if ((old_page & YT8831_RSSR_SPACE_MASK) == YT8831_RSSR_FIBER_SAPCE)
-+		return YT8831_RSSR_FIBER_SAPCE;
-+
-+	return YT8831_RSSR_UTP_SAPCE;
-+};
-+
- /**
-  * yt8521_write_page() - write reg page
-  * @phydev: a pointer to a &struct phy_device
-@@ -818,6 +993,26 @@ static int yt8521_write_page(struct phy_device *phydev, int page)
- 	return ytphy_modify_ext(phydev, YT8521_REG_SPACE_SELECT_REG, mask, set);
- };
- 
-+/**
-+ * yt8831_write_page() - write reg page
-+ * @phydev: a pointer to a &struct phy_device
-+ * @page: The reg page(YT8831_RSSR_FIBER_SAPCE/YT8831_RSSR_UTP_SAPCE) to write.
-+ *
-+ * returns 0 or negative errno code
-+ */
-+static int yt8831_write_page(struct phy_device *phydev, int page)
-+{
-+	int mask = YT8831_RSSR_SPACE_MASK;
-+	int set;
-+
-+	if ((page & YT8831_RSSR_SPACE_MASK) == YT8831_RSSR_FIBER_SAPCE)
-+		set = YT8831_RSSR_FIBER_SAPCE;
-+	else
-+		set = YT8831_RSSR_UTP_SAPCE;
-+
-+	return ytphy_modify_ext(phydev, YT8831_REG_SPACE_SELECT_REG, mask, set);
-+};
-+
- /**
-  * struct ytphy_cfg_reg_map - map a config value to a register value
-  * @cfg: value in device configuration
-@@ -2554,6 +2749,187 @@ static int yt8521_get_features(struct phy_device *phydev)
- 	return ret;
++	update_proto = READ_ONCE(psock->psock_update_sk_prot);
++	if (update_proto)
++		update_proto(sk, psock, true);
  }
  
-+static int yt8831_config_aneg(struct phy_device *phydev)
-+{
-+	int ret;
-+
-+	ret = genphy_config_aneg(phydev);
-+	if (ret < 0)
-+		return ret;
-+
-+	return genphy_c45_config_aneg(phydev);
-+}
-+
-+/**
-+ * yt8831_serdes_init() - serdes init
-+ * @phydev: a pointer to a &struct phy_device
-+ *
-+ * Returns: 0 or negative errno code
-+ */
-+static int yt8831_serdes_init(struct phy_device *phydev)
-+{
-+	int old_page = YT8831_RSSR_UTP_SAPCE;
-+	int ret = -EINVAL;
-+
-+
-+	old_page = phy_select_page(phydev, YT8831_RSSR_FIBER_SAPCE);
-+	if (old_page < 0) {
-+		phydev_err(phydev, "Failed to select page: %d\n",
-+				old_page);
-+		goto err_restore_page;
-+	}
-+
-+	ret = ytphy_write_ext(phydev, YT8831_SDS_WRITE_PROTECT_REG, 0x1);
-+	if (ret < 0)
-+		goto err_restore_page;
-+
-+	ret = ytphy_write_ext(phydev, YT8831_SDS_SGMII_OUTPUT_REG, 0xc4);
-+	if (ret < 0)
-+		goto err_restore_page;
-+
-+	/* softreset sds space */
-+	ret = ytphy_modify_ext(phydev, MII_BMCR, BMCR_RESET, BMCR_RESET);
-+	if (ret < 0)
-+		goto err_restore_page;
-+
-+
-+err_restore_page:
-+	return phy_restore_page(phydev, old_page, ret);
-+}
-+
-+/**
-+ * yt8831_utp_init() - utp init
-+ * @phydev: a pointer to a &struct phy_device
-+ *
-+ * Returns: 0 or negative errno code
-+ */
-+static int yt8831_utp_init(struct phy_device *phydev)
-+{
-+	int ret = -EINVAL;
-+
-+	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_WRITE_PROTECT_REG, 0x3);
-+	if (ret < 0)
-+		goto err;
-+
-+	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_DAC_DATA_DLY_REG, 0xc8d);
-+	if (ret < 0)
-+		goto err;
-+
-+	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_REF_DLAY_SEL_REG, 0xa426);
-+	if (ret < 0)
-+		goto err;
-+
-+	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_REF_DLAY_SEL_FEXT_REG, 0x8009);
-+	if (ret < 0)
-+		goto err;
-+
-+	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_COE_MANUAL_SHIFT_SEL_2500_REG, 6);
-+	if (ret < 0)
-+		goto err;
-+
-+	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_EEE_OPTIM_1_REG, 0x1001);
-+	if (ret < 0)
-+		goto err;
-+
-+	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_EEE_OPTIM_2_REG, 0x7c52);
-+	if (ret < 0)
-+		goto err;
-+
-+	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_EEE_MSE1_REG, 0x3848);
-+	if (ret < 0)
-+		goto err;
-+
-+	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_EEE_MSE2_REG, 0xa8e8);
-+	if (ret < 0)
-+		goto err;
-+
-+	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_EEE_OPTIM_3_REG, 0x5200);
-+	if (ret < 0)
-+		goto err;
-+
-+	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_EEE_OPTIM_4_REG, 0x5849);
-+	if (ret < 0)
-+		goto err;
-+
-+	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_EEE_OPTIM_5_REG, 0xb00a);
-+	if (ret < 0)
-+		goto err;
-+
-+	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_EEE_OPTIM_6_REG, 0x3022);
-+	if (ret < 0)
-+		goto err;
-+
-+	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_PSAN_OPTIM_REG, 0x1f10);
-+	if (ret < 0)
-+		goto err;
-+
-+	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_1000M_TEMPLATE_OPTIM_1_REG, 0x22c8);
-+	if (ret < 0)
-+		goto err;
-+
-+	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_1000M_TEMPLATE_OPTIM_2_REG, 0x2437);
-+	if (ret < 0)
-+		goto err;
-+
-+	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_1000M_TEMPLATE_OPTIM_3_REG, 0x22c8);
-+	if (ret < 0)
-+		goto err;
-+
-+	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_1000M_TEMPLATE_OPTIM_4_REG, 0x2437);
-+	if (ret < 0)
-+		goto err;
-+
-+	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_1000M_TEMPLATE_OPTIM_5_REG, 0x22c8);
-+	if (ret < 0)
-+		goto err;
-+
-+	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_1000M_TEMPLATE_OPTIM_6_REG, 0x2437);
-+	if (ret < 0)
-+		goto err;
-+
-+	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_1000M_TEMPLATE_OPTIM_7_REG, 0x22c8);
-+	if (ret < 0)
-+		goto err;
-+
-+	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_1000M_TEMPLATE_OPTIM_8_REG, 0x2437);
-+	if (ret < 0)
-+		goto err;
-+
-+	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_2500M_TEMPLATE_OPTIM_1_REG, 0x1111);
-+	if (ret < 0)
-+		goto err;
-+
-+	ret = ytphy_write_ext_with_lock(phydev, YT8831_UTP_2500M_TEMPLATE_OPTIM_2_REG, 0x1111);
-+	if (ret < 0)
-+		goto err;
-+
-+err:
-+	return ret;
-+}
-+
-+/**
-+ * yt8831_get_rate_matching - read register to get phy chip mode
-+ * @phydev: target phy_device struct
-+ * @iface: PHY data interface type
-+ *
-+ * Returns: rate matching type or negative errno code
-+ */
-+static int yt8831_get_rate_matching(struct phy_device *phydev,
-+				    phy_interface_t iface)
-+{
-+	int val;
-+
-+	val = ytphy_read_ext_with_lock(phydev, YT8831_CHIP_MODE_SEL);
-+	if (val < 0)
-+		return val;
-+
-+	if (FIELD_GET(YT8831_CHIP_MODE_SEL_MASK, val) ==
-+	    YT8831_CHIP_MODE_FORCE_2500BASEX)
-+		return RATE_MATCH_PAUSE;
-+
-+	return RATE_MATCH_NONE;
-+}
-+
- /**
-  * yt861x_config_init() - apply the auto sleep setting to the PHY
-  * @phydev: a pointer to a &struct phy_device
-@@ -2992,6 +3368,67 @@ static int yt8821_soft_reset(struct phy_device *phydev)
- 					  YT8521_CCR_SW_RST, 0);
+ static inline struct sk_psock *sk_psock_get(struct sock *sk)
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index df385a5a961e..54d832039f09 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -1167,22 +1167,25 @@ int sk_psock_init_strp(struct sock *sk, struct sk_psock *psock)
+ 
+ void sk_psock_start_strp(struct sock *sk, struct sk_psock *psock)
+ {
+-	if (psock->saved_data_ready)
++	if (READ_ONCE(psock->saved_data_ready))
+ 		return;
+ 
+-	psock->saved_data_ready = sk->sk_data_ready;
++	WRITE_ONCE(psock->saved_data_ready, READ_ONCE(sk->sk_data_ready));
+ 	WRITE_ONCE(sk->sk_data_ready, sk_psock_strp_data_ready);
+ 	WRITE_ONCE(sk->sk_write_space, sk_psock_write_space);
  }
  
-+/**
-+ * yt8831_config_init() - phy initializatioin
-+ * @phydev: a pointer to a &struct phy_device
-+ *
-+ * Returns: 0 or negative errno code
-+ */
-+static int yt8831_config_init(struct phy_device *phydev)
-+{
+ void sk_psock_stop_strp(struct sock *sk, struct sk_psock *psock)
+ {
++	void (*saved_data_ready)(struct sock *sk);
 +
-+	u8 mode = YT8831_CHIP_MODE_AUTO_BX2500_SGMII;
-+	int ret;
+ 	psock_set_prog(&psock->progs.stream_parser, NULL);
+ 
+-	if (!psock->saved_data_ready)
++	saved_data_ready = READ_ONCE(psock->saved_data_ready);
++	if (!saved_data_ready)
+ 		return;
+ 
+-	WRITE_ONCE(sk->sk_data_ready, psock->saved_data_ready);
++	WRITE_ONCE(sk->sk_data_ready, saved_data_ready);
+ 	WRITE_ONCE(psock->saved_data_ready, NULL);
+ 	strp_stop(&psock->strp);
+ }
+@@ -1260,22 +1263,25 @@ static void sk_psock_verdict_data_ready(struct sock *sk)
+ 
+ void sk_psock_start_verdict(struct sock *sk, struct sk_psock *psock)
+ {
+-	if (psock->saved_data_ready)
++	if (READ_ONCE(psock->saved_data_ready))
+ 		return;
+ 
+-	psock->saved_data_ready = sk->sk_data_ready;
++	WRITE_ONCE(psock->saved_data_ready, READ_ONCE(sk->sk_data_ready));
+ 	WRITE_ONCE(sk->sk_data_ready, sk_psock_verdict_data_ready);
+ 	WRITE_ONCE(sk->sk_write_space, sk_psock_write_space);
+ }
+ 
+ void sk_psock_stop_verdict(struct sock *sk, struct sk_psock *psock)
+ {
++	void (*saved_data_ready)(struct sock *sk);
 +
-+
-+	__set_bit(PHY_INTERFACE_MODE_2500BASEX,
-+			phydev->possible_interfaces);
-+
-+
-+	__set_bit(PHY_INTERFACE_MODE_SGMII,
-+			phydev->possible_interfaces);
-+
-+	switch (phydev->interface) {
-+	case PHY_INTERFACE_MODE_2500BASEX:
-+		mode = YT8831_CHIP_MODE_FORCE_2500BASEX;
-+		phydev->rate_matching = RATE_MATCH_PAUSE;
-+		break;
-+	case PHY_INTERFACE_MODE_SGMII:
-+		mode = YT8831_CHIP_MODE_AUTO_BX2500_SGMII;
-+		phydev->rate_matching = RATE_MATCH_NONE;
-+		break;
-+	default:
-+		mode = YT8831_CHIP_MODE_AUTO_BX2500_SGMII;
-+		phydev->rate_matching = RATE_MATCH_NONE;
-+		break;
-+	}
-+
-+	ret = ytphy_modify_ext_with_lock(phydev,
-+					 YT8831_CHIP_MODE_SEL,
-+					 YT8831_CHIP_MODE_SEL_MASK,
-+					 mode);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Disable broadcast*/
-+	ret = ytphy_modify_ext_with_lock(phydev,
-+					 YT8831_MDIO_ADDRESS_CTL,
-+					 YT8831_MDIO_ADDRESS_CTL_EN_BROADCAST_MASK,
-+					 0);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = yt8831_serdes_init(phydev);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = yt8831_utp_init(phydev);
-+	if (ret < 0)
-+		return ret;
-+
-+	return genphy_soft_reset(phydev);
-+}
-+
- /**
-  * yt8821_config_init() - phy initializatioin
-  * @phydev: a pointer to a &struct phy_device
-@@ -3102,6 +3539,50 @@ static void yt8821_update_interface(struct phy_device *phydev)
+ 	psock_set_prog(&psock->progs.stream_verdict, NULL);
+ 	psock_set_prog(&psock->progs.skb_verdict, NULL);
+ 
+-	if (!psock->saved_data_ready)
++	saved_data_ready = READ_ONCE(psock->saved_data_ready);
++	if (!saved_data_ready)
+ 		return;
+ 
+-	WRITE_ONCE(sk->sk_data_ready, psock->saved_data_ready);
+-	psock->saved_data_ready = NULL;
++	WRITE_ONCE(sk->sk_data_ready, saved_data_ready);
++	WRITE_ONCE(psock->saved_data_ready, NULL);
+ }
+diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+index 38df84284328..4dc69316ac17 100644
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -145,6 +145,7 @@ static void sock_map_del_link(struct sock *sk,
+ {
+ 	bool strp_stop = false, verdict_stop = false;
+ 	struct sk_psock_link *link, *tmp;
++	int (*update_proto)(struct sock *sk, struct sk_psock *psock, bool restore);
+ 
+ 	spin_lock_bh(&psock->link_lock);
+ 	list_for_each_entry_safe(link, tmp, &psock->link, list) {
+@@ -152,11 +153,11 @@ static void sock_map_del_link(struct sock *sk,
+ 			struct bpf_map *map = link->map;
+ 			struct sk_psock_progs *progs = sock_map_progs(map);
+ 
+-			if (psock->saved_data_ready && progs->stream_parser)
++			if (READ_ONCE(psock->saved_data_ready) && progs->stream_parser)
+ 				strp_stop = true;
+-			if (psock->saved_data_ready && progs->stream_verdict)
++			if (READ_ONCE(psock->saved_data_ready) && progs->stream_verdict)
+ 				verdict_stop = true;
+-			if (psock->saved_data_ready && progs->skb_verdict)
++			if (READ_ONCE(psock->saved_data_ready) && progs->skb_verdict)
+ 				verdict_stop = true;
+ 			list_del(&link->list);
+ 			sk_psock_free_link(link);
+@@ -171,8 +172,9 @@ static void sock_map_del_link(struct sock *sk,
+ 		if (verdict_stop)
+ 			sk_psock_stop_verdict(sk, psock);
+ 
+-		if (psock->psock_update_sk_prot)
+-			psock->psock_update_sk_prot(sk, psock, false);
++		update_proto = READ_ONCE(psock->psock_update_sk_prot);
++		if (update_proto)
++			update_proto(sk, psock, false);
+ 		write_unlock_bh(&sk->sk_callback_lock);
  	}
  }
+@@ -189,10 +191,13 @@ static void sock_map_unref(struct sock *sk, void *link_raw)
  
-+/**
-+ * yt8831_read_status() -  determines the negotiated speed and duplex
-+ * @phydev: a pointer to a &struct phy_device
-+ *
-+ * Returns: 0 or negative errno code
-+ */
-+static int yt8831_read_status(struct phy_device *phydev)
-+{
-+	int ret;
-+	int val;
+ static int sock_map_init_proto(struct sock *sk, struct sk_psock *psock)
+ {
+-	if (!sk->sk_prot->psock_update_sk_prot)
++	int (*update_proto)(struct sock *sk, struct sk_psock *psock, bool restore);
 +
-+	phydev->speed = SPEED_UNKNOWN;
-+	phydev->duplex = DUPLEX_UNKNOWN;
-+
-+	ret = genphy_read_status(phydev);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = phy_read(phydev, YTPHY_SPECIFIC_STATUS_REG);
-+	if (ret < 0)
-+		return ret;
-+
-+	val = ret;
-+	phydev->link = val & YTPHY_SSR_LINK;
-+	if (phydev->link)
-+		yt8821_adjust_status(phydev, val);
-+
-+	phydev_dbg(phydev,
-+		"%s, phy addr: %d, link %s\n",
-+		__func__, phydev->mdio.addr, phydev->link ? "up" : "down");
-+
-+
-+	val = ytphy_read_ext_with_lock(phydev, YT8831_CHIP_MODE_SEL);
-+	if (val < 0)
-+		return val;
-+
-+	if (FIELD_GET(YT8831_CHIP_MODE_SEL_MASK, val) ==
-+	    YT8831_CHIP_MODE_AUTO_BX2500_SGMII)
-+		yt8821_update_interface(phydev);
-+
-+
-+	return 0;
-+}
-+
- /**
-  * yt8821_read_status() -  determines the negotiated speed and duplex
-  * @phydev: a pointer to a &struct phy_device
-@@ -3190,6 +3671,29 @@ static int yt8821_modify_utp_fiber_bmcr(struct phy_device *phydev,
- 					mask, set);
++	update_proto = READ_ONCE(sk->sk_prot)->psock_update_sk_prot;
++	if (!update_proto)
+ 		return -EINVAL;
+-	psock->psock_update_sk_prot = sk->sk_prot->psock_update_sk_prot;
+-	return sk->sk_prot->psock_update_sk_prot(sk, psock, false);
++	WRITE_ONCE(psock->psock_update_sk_prot, update_proto);
++	return update_proto(sk, psock, false);
  }
  
-+/**
-+ * yt8831_suspend() - suspend the hardware
-+ * @phydev: a pointer to a &struct phy_device
-+ *
-+ * Returns: 0 or negative errno code
-+ */
-+
-+static int yt8831_suspend(struct phy_device *phydev)
-+{
-+	struct ethtool_wolinfo wol = {0};
-+	int ret;
-+
-+	yt8831_get_wol(phydev, &wol);
-+
-+	/* if wol enable, do nothing */
-+	if (wol.wolopts & WAKE_MAGIC)
-+		ret = 0;
-+	else
-+		ret = genphy_suspend(phydev);
-+
-+	return ret;
-+}
-+
- /**
-  * yt8821_suspend() - suspend the hardware
-  * @phydev: a pointer to a &struct phy_device
-@@ -3212,6 +3716,29 @@ static int yt8821_suspend(struct phy_device *phydev)
- 	return yt8821_modify_utp_fiber_bmcr(phydev, 0, BMCR_PDOWN);
+ static struct sk_psock *sock_map_psock_get_checked(struct sock *sk)
+@@ -202,7 +207,7 @@ static struct sk_psock *sock_map_psock_get_checked(struct sock *sk)
+ 	rcu_read_lock();
+ 	psock = sk_psock(sk);
+ 	if (psock) {
+-		if (sk->sk_prot->close != sock_map_close) {
++		if (READ_ONCE(sk->sk_prot)->close != sock_map_close) {
+ 			psock = ERR_PTR(-EBUSY);
+ 			goto out;
+ 		}
+@@ -303,7 +308,8 @@ static int sock_map_link(struct bpf_map *map, struct sock *sk)
+ 	}
+ 
+ 	write_lock_bh(&sk->sk_callback_lock);
+-	if (stream_parser && stream_verdict && !psock->saved_data_ready) {
++	if (stream_parser && stream_verdict &&
++	    !READ_ONCE(psock->saved_data_ready)) {
+ 		if (sk_is_tcp(sk))
+ 			ret = sk_psock_init_strp(sk, psock);
+ 		else
+@@ -314,9 +320,11 @@ static int sock_map_link(struct bpf_map *map, struct sock *sk)
+ 			goto out;
+ 		}
+ 		sk_psock_start_strp(sk, psock);
+-	} else if (!stream_parser && stream_verdict && !psock->saved_data_ready) {
++	} else if (!stream_parser && stream_verdict &&
++		   !READ_ONCE(psock->saved_data_ready)) {
+ 		sk_psock_start_verdict(sk,psock);
+-	} else if (!stream_verdict && skb_verdict && !psock->saved_data_ready) {
++	} else if (!stream_verdict && skb_verdict &&
++		   !READ_ONCE(psock->saved_data_ready)) {
+ 		sk_psock_start_verdict(sk, psock);
+ 	}
+ 	write_unlock_bh(&sk->sk_callback_lock);
+@@ -536,7 +544,7 @@ static bool sock_map_redirect_allowed(const struct sock *sk)
+ 
+ static bool sock_map_sk_is_suitable(const struct sock *sk)
+ {
+-	return !!sk->sk_prot->psock_update_sk_prot;
++	return !!READ_ONCE(sk->sk_prot)->psock_update_sk_prot;
  }
  
-+/**
-+ * yt8831_resume() - resume the hardware
-+ * @phydev: a pointer to a &struct phy_device
-+ *
-+ * Returns: 0 or negative errno code
-+ */
-+static int yt8831_resume(struct phy_device *phydev)
-+{
-+	struct ethtool_wolinfo wol = {0};
-+	int ret;
-+
-+	yt8831_get_wol(phydev, &wol);
-+
-+	/* if wol enable, do nothing */
-+	if (wol.wolopts & WAKE_MAGIC)
-+		ret = 0;
-+	else
-+		ret = genphy_resume(phydev);
-+
-+	return ret;
-+}
-+
-+
- /**
-  * yt8821_resume() - resume the hardware
-  * @phydev: a pointer to a &struct phy_device
-@@ -3337,11 +3864,28 @@ static struct phy_driver motorcomm_phy_drvs[] = {
- 		.suspend		= yt8821_suspend,
- 		.resume			= yt8821_resume,
- 	},
-+	{
-+		PHY_ID_MATCH_EXACT(PHY_ID_YT8831),
-+		.name			= "YT8831/YT8821-VD 2.5Gbps PHY",
-+		.get_features		= yt8821_get_features,
-+		.read_page		= yt8831_read_page,
-+		.write_page		= yt8831_write_page,
-+		.get_wol		= yt8831_get_wol,
-+		.set_wol		= yt8831_set_wol,
-+		.config_aneg		= yt8831_config_aneg,
-+		.aneg_done		= genphy_aneg_done,
-+		.config_init		= yt8831_config_init,
-+		.get_rate_matching	= yt8831_get_rate_matching,
-+		.read_status		= yt8831_read_status,
-+		.soft_reset		= genphy_soft_reset,
-+		.suspend		= yt8831_suspend,
-+		.resume			= yt8831_resume,
-+	},
- };
- 
- module_phy_driver(motorcomm_phy_drvs);
- 
--MODULE_DESCRIPTION("Motorcomm 8511/8521/8531/8531S/861x/8821 PHY driver");
-+MODULE_DESCRIPTION("Motorcomm 8511/8521/8531/8531S/861x/8821/8831 PHY driver");
- MODULE_AUTHOR("Peter Geis");
- MODULE_AUTHOR("Frank");
- MODULE_LICENSE("GPL");
--- 
-2.43.0
-
+ static bool sock_map_sk_state_allowed(const struct sock *sk)
