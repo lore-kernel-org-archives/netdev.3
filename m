@@ -1,102 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.100
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.228
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792706811;
-	b=uxCXrH+QPBLHLBFN7OQLP4/ACenHctLuHdMLaaZ2nAbJvAm21j6j5cdbE18QktJ/xhFw
-	 NDc1G0OlGFPcw+EDKJVxmk77drCFK6InTDqrgKTmgbb1iisNakmvXOq2l/bccBsNEFECe
-	 h1zIqM2AyQvKILEM+++MG7/BqLPIWtl3deavgbPAPB6KNTnwxe8kZuRcGm6b5Qb/AaqFH
-	 j1NdqhIUCGnioKQlaLV4CJ6keSe2/X/XFzjK1dDzyey8hemIloZ39okHdqSIup51EmZ3m
-	 2ZenZN2u89bVefec5ferpiUZ2O2GVagQNZE9Vlbdgg/+bwK61Kpr4cEvoPiiWS6A8AQ==
+	t=1792707460;
+	b=5fwwNgVB9w9ev7NN2Xkm07bHLYn2D13gKizsQEOv6coZeNdGqA66ZO7V3xAwfRgq9JYF
+	 zwMlbbtsk/JRkgYRI5/hPFVALKQewPAIJHpA7InbIgWq7QATKU+UZEFFYMl+VH6gOMncj
+	 A0uDZPkUmdWrq69CfGKqd1h21YJ6yrIpF0raK4M578AIyqZec8vEAM9ADXnXvcBnMUJPq
+	 WxpQtONy4ABTQ/iOyEUC+xXCDcKGPSXV47sOhhxmhRgG29IeaxzXdVe27xHVd1VeVII17
+	 BviltGaLJmwW3NQpX7sdO33SbpnDFy8C14Jcx2NA7FroB977GeoCiGzJ+dHGE/kHQ4A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792706811;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	a=rsa-sha256; c=relaxed/relaxed; t=1792707460;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
-	 X-CFilter-Loop:Received:DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Received:X-Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:Autocrypt:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-DetectorID-Processed;
-	bh=Iia+/3SGKV6BH0FuXkiJp6KPLJIcRH5RkOpfzGcqdio=;
-	b=hAcYRwWx49XQYQLL3jOKcgCl8pA8hgiMWoN6DQnUXKtD0MWGzKgBjRWu0pNcLOf/oHA8
-	 pLUarIXeYF1ALe5zGNGiofDjR9MslhgfGfIqUU+WNzMwoi63Z4pUVOprSnQTqEVj3T5Vw
-	 F1HJZ5kEoG7KaWGuibsS2evh94Oj4pq2lI4rXiqnpizCUdOAEa5FCypndkZGvBEfHhwut
-	 tP84B1e+Pke0/cgC3jrzVS6whuUc8nfXUOXzjbHAGm45Iik4NVnXAj/+ndgJWvyLJOcPi
-	 zB41ph/4k9HOK8au10s1o03Bm2oKe4IeqCjHHsegayfXo9iVfvdNw6CgD3kqb0fIHHw==
+	 Received:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=7OKZKq5bWJRvPZZK5dWDJTjLJm7QlhYtPLN2j1VdgDY=;
+	b=E/1KiX1987IC4gDGX3HqVbV1FqDlIq+q/oYVZMJ0cMS8azm/wLq14fi/jpRiz8eB7w6c
+	 kiENg5XVSNtPa6rS4SzwDIuQltnEM5QO/2NBjLpbwspJOM84vof6cktBTeKhgoKRogNRy
+	 BO6iVuhvIeaJhORmYWEjHPjmR5OHBjOh0kOP6MRPTMlwUncqw8Wkh+Nco5DOJpQzMK7f3
+	 lILmSt6qfWpuJ2jkoihWUIHynDZwheYzw4+M3EAYqWwh2ZCtpkbvb8DjDCfcWTpWZKj3P
+	 HJcFgBUuTSks6/N8ttZ3p4TSBC35TZ4dwO75x3ih7klsjqt1aSz538p1nRY7zvXQjkA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=broadcom.com;
-	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=g9KJ9C2+;
-	arc=none smtp.remote-ip=209.85.216.100
-Received: from mail-pj1-f100.google.com (mail-pj1-f100.google.com [209.85.216.100])
+	dmarc=pass header.from=purestorage.com;
+	spf=pass smtp.mailfrom=purestorage.com;
+	dkim=pass header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=X7iwt3K8;
+	arc=none smtp.remote-ip=209.85.215.228
+Received: from mail-pg1-f228.google.com (mail-pg1-f228.google.com [209.85.215.228])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D146606A320
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 22:06:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6D146606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8D9606A331
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 22:17:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5D8D9606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=g9KJ9C2+
-Received: by mail-pj1-f100.google.com with SMTP id 98e67ed59e1d1-3ac91ac8924so170405a91.1
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 15:06:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792706811; x=1793311611;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=Iia+/3SGKV6BH0FuXkiJp6KPLJIcRH5RkOpfzGcqdio=;
-        b=XwGKdp26gWyUT9NqhrOynq8znEhJF2JOkMlPgYFp+9QH5FJE+EoY3qcd4PEpKWOIC3
-         f+YUwGqjJqeI1ncDf8UU4gB6iRk5YQ2Za9w5NX6koX4NQSmTvk3R9SL/ddi7GKN2lQev
-         /HqlKy7Doxkp1zhFuZk1WnrF5ZnVy3rtPRHkeWuLdQQJjmTNwHn4Yv9uoMyznMiOOTtV
-         KHsIIIn6v8gNc8Lt+bew44hNkTpfpJ6C7Gc+AQ3mtYSEicQCDmzkbFdixXSj6fteUVDJ
-         FGfoAoZEDS0DJQsPa3057kHD9b7JW9AsgmEiiJRCTgC0idHDnkVzVFzbGHssOX/gJ5Ay
-         CO/w==
-X-Forwarded-Encrypted: i=1; AKwUvBxehk/1tzqIqzin7PHq2U4mwEk1wIchUjij98ZN1hpAZMJtPyNsQJI72icspc+BcUYUSXg8Ouw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJb/v6qvsbBW990q0DBnl7GsFQnu4qB6mQ0eKoMbLYxntfpDZnE
-	ZDt10j2gDCakvETUVsh13Um9CcjUzEL3gFZWwdqA9AVrDVwV22Eceo977N+W/fK4ABmZItLyz/C
-	eRC/wC45on+/QYZq3yn/jSzSG3PknrY7CyfPvJwCZxQrhMkQKgMRojBi397QwYDOq5gQgypJpLe
-	f8hM0RTTF64TM8RfAzXZRlD08jc6EnBpB67CkGsintMJMUasBqdkYDczcq/heOupKiEJmNSF9i0
-	U6tNv1h96Jyvkfs
-X-Gm-Gg: AYBFou0313a9IiBUKamI75Bh7W0FyKuNz0cMKllT5rzTMHLqlG6JmDTlX02mThAXZ1s
-	0MX0YMCYk9tH2rCAu6zKlWzW7AdNatEu9S5DkxsAwx1LnYnlpghPbJnzZRoGA588gRcnZgZYJAI
-	gGT//qbllSFNIM63eYd1lfPfLP4Ux4WwvMIrYTmGD2dIclp0BIt36DV80ujtgr/YO5vSEXGzXoJ
-	SfnKQzoS5Z4vGbS6BNLNO4tkJk+N8jP3e2nfegCThx3YnRgcK8rcq367SwMu/9EmZNUP6N1Fb3Q
-	G1XbCcgr54gzHK05JH1j8foQbdRpt59tX7XsjzhRTgl51ipL9ASWaaBfPisnALA/Fa3KqFSTz0D
-	H2Wx6rlBwhI87pdaozKmrgalHKTY+FGrb1aCees0DfearMvvjW9L16Lru+GmMAWqK+1pWoyeplU
-	tkmFPFsutM450tauDjtpSGVmBjLvnjqCg91dh84wWz
-X-Received: by 2002:a17:90b:268a:b0:3ab:f38:2b3b with SMTP id 98e67ed59e1d1-3adce5e9355mr142230a91.21.1792706810603;
-        Thu, 22 Oct 2026 15:06:50 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-17.dlp.protect.broadcom.com. [144.49.247.17])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3adca634dbasm353271a91.2.2026.10.22.15.06.49
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 22 Oct 2026 15:06:50 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-5363fa3d3e4so4578671cf.0
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 15:06:48 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=X7iwt3K8
+Received: by mail-pg1-f228.google.com with SMTP id 41be03b00d2f7-cd5cd8d89a7so107855a12.1
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 15:17:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1792706808; x=1793311608; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Iia+/3SGKV6BH0FuXkiJp6KPLJIcRH5RkOpfzGcqdio=;
-        b=g9KJ9C2+soB4zORwsKBW92UABfqqADgY2mxC7pYTqnmc11G0gxpiUgEytzqF55tmEA
-         D7fKw9o+f0iSoesU61pxWCQPtPa3hIesuw+WDIoBdg1nZU+MRENxAggABnCiJz0mTX9s
-         6IegmS3kejn76oID82AtoYa6Tc4QTR2AasmBk=
-X-Forwarded-Encrypted: i=1; AKwUvByMT3JNtDRMmSPpp7i1D2cUMK7wQ/J+HZZtmifraypAFDO9BygvNAKJQ2el+gMQGlCwJex//Is=@vger.kernel.org
-X-Received: by 2002:a05:622a:5c10:b0:516:ed02:c85d with SMTP id d75a77b69052e-536c2694d64mr4475521cf.3.1792706808570;
-        Thu, 22 Oct 2026 15:06:48 -0700 (PDT)
-X-Received: by 2002:a05:622a:5c10:b0:516:ed02:c85d with SMTP id d75a77b69052e-536c2694d64mr4475031cf.3.1792706808133;
-        Thu, 22 Oct 2026 15:06:48 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-536c1835c23sm3113161cf.17.2026.10.22.15.06.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Oct 2026 15:06:47 -0700 (PDT)
-Message-ID: <8b061dc1-73a9-4823-abb9-535eb4677b13@broadcom.com>
-Date: Thu, 22 Oct 2026 15:06:45 -0700
+        d=purestorage.com; s=google2022; t=1792707459; x=1793312259; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7OKZKq5bWJRvPZZK5dWDJTjLJm7QlhYtPLN2j1VdgDY=;
+        b=X7iwt3K8FL9YCiFt7mb9M+OmKYmHxZALBh7bVXJeBJqMS/wbK4IDmW+cZTzYjWNA/D
+         8BpB97oCGWr4FsknaXP4iMuonV6o7qZpwuGhp92ozZS+bQdRGWvUJZISD/tQADLkh7Mm
+         +GIzrh4EJOovp3mbem6jl/5lwNCyu2GCjFcn4I0qO45YSiUn132q2WOhSXFvQh/BzBHB
+         MRgSW22Q2ZNS2sQwbMYU0WWxa/f2IeurFIqz0gw4elaBGhWuhlwOjZ0PfgZA9N0tIogP
+         FVPjPkTGj7Enw4+qk65CrEIdqjxi0ebrJizXM4HbdA2SUNoitzh0Ckk3FJKfn4kFT91M
+         js5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792707459; x=1793312259;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=7OKZKq5bWJRvPZZK5dWDJTjLJm7QlhYtPLN2j1VdgDY=;
+        b=z/z5pos4VUrFYgtXxUpoz+9OcZW/9wfIuc0gJINV5AW9r9WK89I7DVSIx9FQy5Bd07
+         BK/RZ6Oxy/Tb+QNKUfVDLxcL/u0NA0YUUKN24We/Y5j9K/YiN0Oh9mgYypphhO/GPWxp
+         zy1ApB2GqHr+VpD32ThJZx9Je071iQMEUo1h+dqMdFgQ5cbgwukMNeKxHGB3pkAwT5jE
+         ru3yUxGcRj7J7L1MUnBhXVzjJqaQuB3HBstLiLs5rwo5BNvjJYnhZ/yq8Zch59c2BG+K
+         LfMfqMX4QfYRQjZzm7rA/SJdPpVwoUZSVtGSehIDF0Yt6UqApUkkAAkYlPjntmwJMBYu
+         EW0A==
+X-Gm-Message-State: AFq9FYKTLrzhNWNy4IgzlbglXKEYNBIqPqrhpuWaq515c2ASFx4Ahhcn
+	u5pi3s2C2gK5NLkRk1b1wgh8lgqT/130dw5OhrW2fpZGXTir43NztCg2FypJuKaJgtCDBNFv8cx
+	t2KPBanseBWTbgjuzU9D48WiOsbhys7e1DCcl
+X-Gm-Gg: AYBFou1jdWnfMq9NY8X91O2C41JMTWIqjbmWJPTjaPDIOX73tVCiNHS3TCpniy6o1n8
+	HtJZcA9aK0Rm+s8kU1HgfoJURDj3xXky7ChAziVc9H6QeH4AKb4nbut7OVL068Ugicz/SXjCgJh
+	l0jh/WIEMFFlcpqmJIwCgl/L14Om5/O7DPVPXARnFCSsrUtuChGEGmt3X37Bvxy3iydi11mJQu/
+	04O9cbh1MEDTuE5Em2p6LFPNCeWykLSptcoyVstplwDkAonZkueUdk6u6E2DqLGdDb5IklsU6yD
+	hrueYkRioGPGg9o0cxN+vYxpab4YSm79cihD37atgIGo8g09qA/2PnMoPsXGVBhLBCQ9DU6Adva
+	8FpgqnVJcWPdYnL1EO/tQVn5DDuT1rwGZup0=
+X-Received: by 2002:a17:90b:1805:b0:3a7:a6bc:9d58 with SMTP id 98e67ed59e1d1-3adce7eb299mr151951a91.54.1792707458760;
+        Thu, 22 Oct 2026 15:17:38 -0700 (PDT)
+Received: from c7-smtp-2026.dev.purestorage.com ([208.88.159.129])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ada47f5737sm2921987a91.0.2026.10.22.15.17.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Oct 2026 15:17:38 -0700 (PDT)
+X-Relaying-Domain: purestorage.com
+Received: from dev-rjethwani.dev.purestorage.com (dev-rjethwani.dev.purestorage.com [IPv6:2620:125:9025:23::2ea])
+	by c7-smtp-2026.dev.purestorage.com (Postfix) with ESMTP id 1E1C2402BB;
+	Thu, 22 Oct 2026 16:17:38 -0600 (MDT)
+Received: by dev-rjethwani.dev.purestorage.com (Postfix, from userid 1557719937)
+	id 1AF1FDC48A1; Thu, 22 Oct 2026 16:17:38 -0600 (MDT)
+From: Rishikesh Jethwani <rjethwani@purestorage.com>
+To: netdev@vger.kernel.org
+Cc: Rishikesh Jethwani <rjethwani@purestorage.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v2 3/4] tls: device: fix record start reported to RX resync in copy mode
+Date: Thu, 22 Oct 2026 16:14:59 -0600
+Message-ID: <20261022221732.1397620-4-rjethwani@purestorage.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20261022221732.1397620-1-rjethwani@purestorage.com>
+References: <20261022221732.1397620-1-rjethwani@purestorage.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,106 +107,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: bgmac: rate limit RX error messages
-To: Rosen Penev <rosenp@gmail.com>, netdev@vger.kernel.org
-Cc: =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Felix Fietkau <nbd@openwrt.org>,
- open list <linux-kernel@vger.kernel.org>
-References: <20261018231629.39734-1-rosenp@gmail.com>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
- xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
- M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
- JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
- PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
- KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
- AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
- IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
- ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
- bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
- Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
- tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
- TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
- zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
- WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
- IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
- U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
- 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
- pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
- MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
- IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
- gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
- obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
- N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
- CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
- C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
- wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
- EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
- fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
- MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
- 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
- 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <20261018231629.39734-1-rosenp@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Transfer-Encoding: 8bit
 
-On 10/18/26 16:16, Rosen Penev wrote:
-> When the RX ring is full the RX FIFO overflows. With RX overflow
-> continue enabled, the DMA engine then writes one frame with a bogus
-> length (always 0x45c2 on a BCM4716), which the driver drops with
-> "Found oversized packet at slot %d, DMA issue!".
-> 
-> Under sustained overload this happens on every NAPI poll. On an Asus
-> RT-N16 a 950 Mbit/s UDP stream to the router printed about 1450 such
-> lines in 20 seconds. The messages are printed from NAPI context, so
-> with a serial console the router spends most of its time printing.
-> 
-> The frames are already accounted in rx_length_errors and rx_errors.
-> Rate limit both RX error messages. With this change the same flood
-> printed 60 lines while rx_length_errors counted 14297 dropped frames.
-> 
-> Fixes: 6a6c708469c9 ("bgmac: add check for oversized packets")
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> ---
->   drivers/net/ethernet/broadcom/bgmac.c | 10 ++++++----
->   1 file changed, 6 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/broadcom/bgmac.c b/drivers/net/ethernet/broadcom/bgmac.c
-> index 1835266fdd09..b3a92ae95de3 100644
-> --- a/drivers/net/ethernet/broadcom/bgmac.c
-> +++ b/drivers/net/ethernet/broadcom/bgmac.c
-> @@ -447,16 +447,18 @@ static int bgmac_dma_rx_read(struct bgmac *bgmac, struct bgmac_dma_ring *ring,
->   
->   			/* Check for poison and drop or pass the packet */
->   			if (len == 0xdead && flags == 0xbeef) {
-> -				netdev_err(bgmac->net_dev, "Found poisoned packet at slot %d, DMA issue!\n",
-> -					   ring->start);
-> +				if (net_ratelimit())
-> +					netdev_err(bgmac->net_dev, "Found poisoned packet at slot %d, DMA issue!\n",
-> +						   ring->start);
->   				put_page(virt_to_head_page(buf));
->   				bgmac->net_dev->stats.rx_errors++;
->   				break;
->   			}
->   
->   			if (len > BGMAC_RX_ALLOC_SIZE) {
-> -				netdev_err(bgmac->net_dev, "Found oversized packet at slot %d, DMA issue!\n",
-> -					   ring->start);
-> +				if (net_ratelimit())
-> +					netdev_err(bgmac->net_dev, "Found oversized packet at slot %d, DMA issue!\n",
-> +						   ring->start);
+tls_rx_msg_size() tells the device layer where each new record starts,
+via tls_device_rx_resync_new_rec(), as TCP_SKB_CB(skb)->seq +
+strp->stm.offset. skb is the strparser anchor, whose cb is copied from
+the first queued skb by tls_strp_load_anchor_with_queue(), and
+stm.offset is where the record starts within that skb.
 
-No objection, but the issue is that we are going over 
-BGMAC_RX_ALLOC_SIZE, and I believe the check should actually be 
-BGMAC_RX_MAX_FRAME_SIZE because we have the skb_shared_info at the end 
-of the packet, if we start overflowing that, we will call 
-skb_over_panic() very soon.
+When the header cannot be parsed in place, tls_strp_read_copy() moves
+the strparser to copy mode and resets stm.offset to 0, but the anchor
+keeps the first skb's cb. The header is then parsed from the copied
+data, and the reported start is the first byte of that skb rather than
+of the record. If the record does not begin at an skb boundary, the
+sequence is too low by the record's offset into the skb.
+
+Every resync type compares or advances that sequence. With
+TLS_OFFLOAD_SYNC_TYPE_DRIVER_REQ and DRIVER_REQ_ASYNC the device's
+request no longer matches and the resync is missed until a later
+record. With TLS_OFFLOAD_SYNC_TYPE_CORE_NEXT_HINT the device is given a
+next-record boundary that is off by the same amount.
+
+The header is parsed in copy mode when fewer bytes than the TLS header
+plus explicit IV, where applicable, are queued under memory pressure or
+with a collapsed receive window, or when the header straddles skbs that
+overlap or differ in decrypted status. The latter is most likely right
+around a loss of device sync, when resync is needed. Commit 9466ef3ec972
+("tls: fix RX desync on overlapping skbs") added that queue-consistency
+check before the header is parsed; before it only a short queue led
+here.
+
+The strparser now records the start of each record before it can enter
+copy mode, so report strp->seq instead.
+
+Found by code inspection while working on TLS 1.3 hardware offload
+support.
+
+Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
+Signed-off-by: Rishikesh Jethwani <rjethwani@purestorage.com>
+---
+ net/tls/tls_sw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index d1ad31986cf2..5db4a6897b29 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -2232,7 +2232,7 @@ int tls_rx_msg_size(struct tls_strparser *strp, struct sk_buff *skb)
+ 	}
+ 
+ 	tls_device_rx_resync_new_rec(strp->sk, data_len + TLS_HEADER_SIZE,
+-				     TCP_SKB_CB(skb)->seq + strp->stm.offset);
++				     strp->seq);
+ 	return data_len + TLS_HEADER_SIZE;
+ 
+ read_failure:
 -- 
-Florian
+2.50.1
+
