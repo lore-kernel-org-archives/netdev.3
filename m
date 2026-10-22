@@ -1,53 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792653780;
-	b=gAkt4p8i5uAyrqGy7jtEzfM8yZsB8PW9pwSkhqACnTKU4YAKWqSqwn8Ve/Ifi2M5Ne2f
-	 wBh2MnmvN7wp178Wu4Ban09tyQ30jXVcZQItEmnLM4xINrm6My59viVlKdJx/pvzwhTDs
-	 ztQanYQ9do9hVrs2uDI2ch2Qs+fAWhvQ2z6eulH2sN2b3sVzF4aWLmXedNSbdUQ9uVaww
-	 0L/Jw6N8t5+YW8N5uEdoPludo7jUZr3RbuZQDVOowCz4z5AW5vfsKqhKMDS5cvM6ei+ed
-	 BtadXecBr44sSd5/55i5+UJSXNzmhlOxWghjAfzQMNY1kcQNZN3OichBUqbDJgEgMXg==
+	t=1792653916;
+	b=1fzYWHGZeXmw3ednyn4YP0LvsjolYBEPBqoAWVccQ625K53qazY2b1qluGReenw5lBTC
+	 eT/VNEOcLb/ncOWn6p2zp3EDu3PfEmtTfyqiqS1cMLwSa5+p3OH2ir2wZKBw4sUnqnjWy
+	 av9ZxbT6y9qTDZC0DO/XBps93utCV7eLVsxBK2S3zdaCR/DIx31FDYUJgfo+PZToC6t8f
+	 693fZhCtk4cwQbAuF+gah7jKFmW2OJfjyAFSZT6IIyz1W806YU5jS99ZhQE39GemK6J2o
+	 20M381p0QM1Dqdm1DalLojTbhpS2eVLHACp24J18P23wqqmApQocB9IWlV+ZkXtqwAw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792653780;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=PW5neJ7JMxScbtg4OaowkQDxwAtD/GfPxcBg2b3OZkA=;
-	b=Q66nkAulzJrZrOWcLRqcOShGacWAoM2PA+JtkE0o5uj4CCJAFY80AANQllBx3uAMnE+Q
-	 AUJdj6UwPBqwuQ+sZ98RvwA3kkh6KVwCAHH9nWJHK0n+7p9d7EcLMl+s1SOPBNcRP8aAj
-	 ZkimRiLlH7+RHrAyc20/IqDUikInbAoShLUIQav6560JXU2zFcZIaffRe4ciI1u1nLKG4
-	 Acax6b8NnnrQStQ/lfP1z9+848KvQ3JiRRvkJC16nXANDLxR5Hsxt2LyPxzaOOWaJF/7T
-	 9ra235BRI39/UmMwQZOSWcGfXy0YO+l6MUdPBBvXVdTiJzfCLyDz0UrUcLfutT8vWBQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792653916;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=yGPjtW4dPyExBLHegpCAYaoNHXzJvfRMMf+pf+UEbrQ=;
+	b=kTVzE/uu0BeVY2N7IV9PtHQ4h1QyhgT+Odv7kO+RHGrrWdwaf4o9LQVt3EFJFIZcjoeX
+	 mivO4xA31lYLRxu6V1zoJRElv9E0sfFQdCI1xrf4ZZgaNMlGQVa1b1tNHFeUupRbObGFU
+	 lBp9Oo3wejEiFaXZ8tOf68Up/Vw15R01gfKRmf1AuNDYv/MCfQyrh4QWbebwYYhv23yg9
+	 6Cq58y6lr6NgHrOScbfRkf9oJac3el9JUMLrHsEQ/krvLAJcY9F/b4Y/OW3oXITVbJTJF
+	 19M8Eiga8yqhctQ0eE7yvLLaXu7G/pmbmXa4T5r9GMtEDa3tXe2rztn+NAsZFC8NcLw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GYYXx3FH;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bBhz2xlM;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161AF606A31B;
-	Thu, 22 Oct 2026 07:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4876F606A336;
+	Thu, 22 Oct 2026 07:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GYYXx3FH
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 597601F000C1;
-	Thu, 22 Oct 2026 07:22:59 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bBhz2xlM
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 995401F000C1;
+	Thu, 22 Oct 2026 07:25:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792653779;
-	bh=PW5neJ7JMxScbtg4OaowkQDxwAtD/GfPxcBg2b3OZkA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GYYXx3FHcklShDfkx6667nxK913Fg6GQf7tja4PqlZNxuYe6SRNnuiPl/w5URpHqw
-	 lUxLIXF1EBVypfo3J8lZCHZPXuvPwyiua4s+6rKyV2Viz/ASGQPNrGJiKT1sJOai0U
-	 CLBWPX3G5NTzOKGmd5Ca5tGQQ/zc73REa3xNt7t0o4JhOmD2vUOIzKw4uZ5ZcmjTkA
-	 OvHlB0kxUcJRygcoaqtTV8Tz2yNklyMajNG8LW+hJuhHJPqs7TZy5ySoyNT/fs+4mE
-	 8X0WOq7aMBlG3c4jFGa7z2JrIulEbHzMU/hcFiQLY6Tzp1jCCV7+q6KbRj9hgZaBEF
-	 SOy9MssAuf77g==
-Date: Thu, 22 Oct 2026 09:22:54 +0200
-From: Joel Granados <joel.granados@kernel.org>
-To: Allison Henderson <achender@kernel.org>
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, pabeni@redhat.com, 
-	edumazet@google.com, kuba@kernel.org, horms@kernel.org, oleg@redhat.com
-Subject: Re: [PATCH net 1/2] net/rds: do not fail init when CONFIG_SYSCTL=n
-Message-ID: <atm5EFVaz2USohS_@hobbes>
-References: <20261021195837.142802-1-achender@kernel.org>
- <20261021195837.142802-2-achender@kernel.org>
+	s=k20260515; t=1792653915;
+	bh=yGPjtW4dPyExBLHegpCAYaoNHXzJvfRMMf+pf+UEbrQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=bBhz2xlM2v082BJnf1rR1dE4irElqCWR565Z0tgwFxjgAO98FknqeCOFsh0jMKlbi
+	 aSn3IViQmWIITFsxaBT5aBZprh6Vg655nBGRUIBzocUcTFLJItcqBIxY6H7C8Sg+WR
+	 fNkXFpzMBo/y522vdvNtj/4mkd3HGaCR3xVIN+9nsp9qXaBYCz3JrywyVCDkQ7ImsA
+	 tOplc0lxxstVuF0HL1BLFebOuaV8CzkRJFZJnuk5ZoNroHiZEiI9O0tRsEy6KqIzhO
+	 O8jypKeBADDHMzzWOrvyNtbccq3h2/aIkpYuBHFLrTVQ40mn3ifQJNmuosBPUd8x+q
+	 E2Bz8FlLNFtGg==
+Subject: Re: [PATCH] ipv4: icmp: use skb_dst_dev_net_rcu() in icmp_build_probe
+From: netdev-bot+sashiko@kernel.org
+To: haoranwangsec@gmail.com
+Cc: dsahern@kernel.org, idosch@nvidia.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kuba@kernel.org
+Date: Thu, 22 Oct 2026 07:25:15 +0000
+Message-ID: <179265391520.3135.6406546959065554687@kernel.org>
+In-Reply-To: <179241614083.5916.6651154069510905781@whr>
+References: <179241614083.5916.6651154069510905781@whr>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -57,136 +61,175 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="lgjygsa544j27wnn"
-Content-Disposition: inline
-In-Reply-To: <20261021195837.142802-2-achender@kernel.org>
 
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
---lgjygsa544j27wnn
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH net 1/2] net/rds: do not fail init when CONFIG_SYSCTL=n
-MIME-Version: 1.0
+Critical: 0 · High: 0 · Medium: 2 · Low: 1
 
-On Wed, Oct 21, 2026 at 12:58:36PM -0700, Allison Henderson wrote:
-> With CONFIG_SYSCTL=3Dn, register_net_sysctl() and register_net_sysctl_sz()
-> are inline stubs that return NULL.  rds_sysctl_init(),
-> rds_ib_sysctl_init() and rds_tcp_init_net() all treat that NULL as
-> -ENOMEM, so RDS refuses to initialize at all even though every tunable
-> has a sane compiled-in default.
->=20
-> When RDS is built in, that is worse than a missing feature: the failed
-> rds_init() destroys rds_wq, but the rds_rdma initcall still runs, and
-> when rds_ib_sysctl_init() fails the same way, the error path in
-> rds_ib_init() flushes the already freed workqueue:
->=20
->   BUG: KASAN: slab-use-after-free in touch_wq_lockdep_map
->   ...
->    __flush_workqueue
->    rds_ib_init
->    rds_rdma_init
->   ...
->   Allocated by task 1:
->    alloc_workqueue_noprof
->    rds_threads_init
->    rds_init
->   ...
->   Freed by task 0:
->    kfree
->    rcu_do_batch
->=20
-> Only treat the NULL return as a failure when sysctl support is actually
-> compiled in.  The exit paths need no change: unregister_net_sysctl_table()
-> is an empty stub with CONFIG_SYSCTL=3Dn and already tolerates a NULL head=
-er
-> otherwise.
->=20
-> The underlying problem of built-in transports initializing after
-> rds_init() has failed is independent of sysctl and is addressed
-> separately.
->=20
-> Reported-by: kernel test robot <yi1.lai@intel.com>
-> Closes: https://lore.kernel.org/oe-lkp/202610190310.9737b2e3-lkp@intel.com
-> Fixes: 3e5048495c85 ("RDS: sysctls")
-> Fixes: e6babe4cc4ce ("RDS/IB: Stats and sysctls")
-> Fixes: c6a58ffed536 ("RDS: TCP: Add sysctl tunables for sndbuf/rcvbuf on =
-rds-tcp socket")
-> Suggested-by: Joel Granados <joel.granados@kernel.org>
-> Assisted-by: LLM
-> Signed-off-by: Allison Henderson <achender@kernel.org>
-> ---
->  net/rds/ib_sysctl.c | 2 +-
->  net/rds/sysctl.c    | 2 +-
->  net/rds/tcp.c       | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
->=20
-> diff --git a/net/rds/ib_sysctl.c b/net/rds/ib_sysctl.c
-> index 2af678e71e3c..bc97a3eecad6 100644
-> --- a/net/rds/ib_sysctl.c
-> +++ b/net/rds/ib_sysctl.c
-> @@ -114,7 +114,7 @@ void rds_ib_sysctl_exit(void)
->  int rds_ib_sysctl_init(void)
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The commit message describes a netns bug that does not exist.
+- [Medium] icmp_build_probe() is a shared helper; its comment says
+  'Helper for icmp_echo and icmpv6_echo_reply'.
+- [Low] icmp_build_probe() now takes the netns for the remote-controlled
+  interface lookups from skb_dst(skb)->dev_rcu, and that pointer can…
+
+--
+
+ipv4: icmp: use skb_dst_dev_net_rcu() in icmp_build_probe
+
+This commit changes icmp_build_probe() so that it gets the network
+namespace from the skb's dst device via skb_dst_dev_net_rcu(), not from
+skb->dev. The commit message says this fixes PROBE device lookups and
+reply policy running in the wrong namespace under a VRF.
+
+> The ICMP Extended Echo (RFC 8335) PROBE replies identify the queried
+> interface by name/index/address and should look it up and apply policy
+> in the netns the packet is destined to, not the netns of the ingress
+> device.  Under a VRF, skb->dev is the VRF master, so dev_net_rcu(skb->dev)
+> returns the master's netns and the device lookup / reply policy run in
+> the wrong namespace.
+>
+> The rest of the IPv4 ICMP echo path already uses skb_dst_dev_net_rcu(skb)
+> (net/ipv4/icmp.c:1123, :1267, :1437), while icmp_build_probe() is the
+> exception.
+
+[Severity: Medium]
+Can the VRF master actually be in a different netns from the dst device
+here?
+
+vrf_ip_rcv() does set skb->dev = vrf_dev. But the master always sits in
+the same netns as its slaves, because do_set_master() looks it up in the
+slave's own netns:
+
+net/core/rtnetlink.c:do_set_master() {
+    ...
+	upper_dev = __dev_get_by_index(dev_net(dev), ifindex);
+    ...
+}
+
+A slave that moves to another netns gets NETDEV_UNREGISTER, and
+vrf_device_event() unlinks it.
+
+For local-input routes, ip_rt_get_dev() returns either the l3mdev master
+or the loopback device of the same netns:
+
+net/ipv4/route.c:ip_rt_get_dev() {
+    ...
+	dev = l3mdev_master_dev_rcu(nhc->nhc_dev);
+	return dev ? : net->loopback_dev;
+}
+
+ip6_rt_get_dev_rcu() does the same thing with dev_net(dev)->loopback_dev.
+
+So on normal receive paths, dev_net_rcu(skb->dev) and
+skb_dst_dev_net_rcu(skb) appear to return the same struct net.
+
+Would it be more accurate to describe this as a consistency cleanup? The
+other option is to show a setup where the two pointers really differ. As
+written, the change reads like a VRF netns fix and could be queued for
+net or stable on that basis.
+
+The cited precedent also looks inaccurate. Of the three call sites, only
+the one in icmp_echo() is on the echo path. The first is in
+icmp_unreach(), which handles ICMP_DEST_UNREACH and similar errors. The
+last is the error stats path in icmp_timestamp():
+
+	__ICMP_INC_STATS(skb_dst_dev_net_rcu(skb), ICMP_MIB_INERRORS);
+
+> diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+> index 90c0e22c29be..a577dfc652b2 100644
+> --- a/net/ipv4/icmp.c
+> +++ b/net/ipv4/icmp.c
+> @@ -1293,7 +1293,7 @@ static enum skb_drop_reason icmp_echo(struct sk_buff *skb)
+>  
+>  bool icmp_build_probe(struct sk_buff *skb, struct icmphdr *icmphdr)
 >  {
->  	rds_ib_sysctl_hdr =3D register_net_sysctl(&init_net, "net/rds/ib", rds_=
-ib_sysctl_table);
-> -	if (!rds_ib_sysctl_hdr)
-> +	if (!rds_ib_sysctl_hdr && IS_ENABLED(CONFIG_SYSCTL))
->  		return -ENOMEM;
->  	return 0;
->  }
-> diff --git a/net/rds/sysctl.c b/net/rds/sysctl.c
-> index 025f518a4349..968d6279bbd3 100644
-> --- a/net/rds/sysctl.c
-> +++ b/net/rds/sysctl.c
-> @@ -103,7 +103,7 @@ int rds_sysctl_init(void)
-> =20
->  	rds_sysctl_reg_table =3D
->  		register_net_sysctl(&init_net, "net/rds", rds_sysctl_rds_table);
-> -	if (!rds_sysctl_reg_table)
-> +	if (!rds_sysctl_reg_table && IS_ENABLED(CONFIG_SYSCTL))
->  		return -ENOMEM;
->  	return 0;
->  }
-> diff --git a/net/rds/tcp.c b/net/rds/tcp.c
-> index 774a71f88d37..34815b4f658b 100644
-> --- a/net/rds/tcp.c
-> +++ b/net/rds/tcp.c
-> @@ -637,7 +637,7 @@ static __net_init int rds_tcp_init_net(struct net *ne=
-t)
->  	tbl[RDS_TCP_RCVBUF].data =3D &rtn->rcvbuf_size;
->  	rtn->rds_tcp_sysctl =3D register_net_sysctl_sz(net, "net/rds/tcp", tbl,
->  						     ARRAY_SIZE(rds_tcp_sysctl_table));
-> -	if (!rtn->rds_tcp_sysctl) {
-> +	if (!rtn->rds_tcp_sysctl && IS_ENABLED(CONFIG_SYSCTL)) {
->  		pr_warn("could not register sysctl\n");
->  		err =3D -ENOMEM;
->  		goto fail;
-> --=20
-> 2.50.1
->=20
+> -	struct net *net = dev_net_rcu(skb->dev);
+> +	struct net *net = skb_dst_dev_net_rcu(skb);
 
-This LGTM
+[Severity: Medium]
+icmp_build_probe() is shared with IPv6; the comment above it says
+"Helper for icmp_echo and icmpv6_echo_reply". Is the change in IPv6
+behaviour intended? The subject and commit message only mention IPv4.
 
-Reviewed-by: Joel Granados <joel.granados@kernel.org>
+The IPv6 caller still gets its netns from skb->dev:
 
---lgjygsa544j27wnn
-Content-Type: application/pgp-signature; name="signature.asc"
+net/ipv6/icmp.c:icmpv6_echo_reply() {
+	struct net *net = dev_net_rcu(skb->dev);
+    ...
+	if (icmph->icmp6_type == ICMPV6_EXT_ECHO_REQUEST)
+		if (!icmp_build_probe(skb, (struct icmphdr *)&tmp_hdr))
+			goto out_dst_release;
+    ...
+}
 
------BEGIN PGP SIGNATURE-----
+icmpv6_rcv() does the same. After this patch, a single ICMPv6 Extended
+Echo request uses two netns sources:
 
-iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmrZucYACgkQupfNUreW
-QU9mdgv/Zv1clsJ61kjW2j5pVJXo8dLSowVRYq9YSV7mjHRR/Hf1krRQvxnJaRXC
-Nhranb4rDeMd1+D5AXvzk1a3fM9YQbuXgnQ10hMFxZp9IrkI4l7ThcaRh12kAp0G
-dIaj4C19p6Lmrn0KXmklxN3Ik5Nk8ATdS7p+X+EmkXAwUy+zUd+gxa5lwI7cKbsh
-/fCwdUjsqPJz0mCaSYAIFUccAsSviZsFjj00ysf/mQ9HQbm0Hl1zys5GBp1OsyVG
-Okr5pracCX4YN1wwjkGMDf5BARfkpvzPkx36Gx/rfAGL1XkQI0IF1V85Ov4nGGmc
-HPsT6AkGPZgdIEEA+NltLQ42dvDQ5uHm0jGh71g0qqhxFVNYQ3vzgDOOogH9VZhH
-w6jOuqUbazMFOMRhRPrWPYcmQzJ0vnjUnv6vELeT7HGZM3bJ8+f3OqP+kSaDHNUe
-/S9reU1gVPYSwj3Acb1pBzTzRHsLcMcFd+HI5seh/aiQErJU/WUNLJy7eNDvpfl7
-H3dG+eHf
-=GTvb
------END PGP SIGNATURE-----
+The dst netns controls the sysctl_icmp_echo_enable_probe check and the
+dev_get_by_name(), dev_get_by_index(), ip_dev_find() and ipv6_dev_find()
+lookups.
 
---lgjygsa544j27wnn--
+The skb->dev netns controls everything else:
+icmpv6_echo_ignore_multicast/anycast, IP6_REPLY_MARK, sock_net_uid(),
+icmpv6_xmit_lock(), the route and xfrm lookup, icmpv6_global_allow() and
+the ICMP6 MIB counters.
+
+Before the patch, the helper and its IPv6 caller used the same netns.
+
+If the two netns can differ, as the commit message says, wouldn't IPv6
+keep the problem the patch claims to fix, and also split one reply
+across two namespaces? Would it be cleaner to pass net in from each
+caller, or to convert both callers the same way?
+
+[Severity: Low]
+Can skb_dst_dev_net_rcu() return init_net here for a packet that was
+received in another netns?
+
+dst_dev_put() switches the dst device to blackhole_netdev, even though
+skbs may still hold the dst:
+
+net/core/dst.c:dst_dev_put() {
+    ...
+	rcu_assign_pointer(dst->dev_rcu, blackhole_netdev);
+    ...
+}
+
+rt_fibinfo_free() and fib6_nh_release_dsts() call it.
+rt_flush_dev() and rt6_uncached_list_flush_dev() make the same switch
+when a device is unregistered. blackhole_netdev is allocated through
+alloc_netdev, which calls dev_net_set(dev, &init_net), so it belongs to
+init_net.
+
+A PROBE skb in netns X can keep its dst across this switch through
+NFQUEUE, because __nf_queue() calls skb_dst_force(). Suppose the local
+address or route is deleted while the packet is queued, and the packet
+is then reinjected at LOCAL_IN:
+
+icmpv6_rcv()
+  icmpv6_echo_reply()     net = dev_net_rcu(skb->dev)      /* netns X */
+    icmp_build_probe()    net = skb_dst_dev_net_rcu(skb)   /* init_net */
+
+icmp_build_probe() would then check init_net's
+sysctl_icmp_echo_enable_probe and resolve the name, index or address
+chosen by the sender in init_net. The reply would say whether that
+init_net interface exists, whether it is up, and whether it has IPv4 or
+IPv6 addresses.
+
+icmpv6_echo_reply() still builds and routes the reply in netns X, so the
+sender would receive it. Before the patch the helper used skb->dev, so
+these lookups stayed in netns X.
+
+This only happens if init_net has icmp_echo_enable_probe=1, which is off
+by default, and the window is narrow. On IPv4, icmp_rcv(), icmp_echo()
+and icmp_reply() already used the dst netns, so this patch extends that
+existing exposure to the probe lookups.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/179241614083.5916.6651154069510905781%40whr
