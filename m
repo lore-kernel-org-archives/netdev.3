@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792693808;
-	b=rltPnpL1PZSm0FgD+pLUPF4kOdeGRjsl/FrGOtzQb9d7zi06F0psC0ck3ryTAKYJW28e
-	 1ssjqPIVPMc1RhX2sPYwzjaSiYz8ZZmPNytB+lIfzTBdQUy1PCPhAcCb8fhpUeE0UDDhK
-	 obYke0CaEDXli2cCGguDQ+qaFPp3Nj0zGM4gUe5nqn+92bIxQrfdTUaIrwv0rekkomE4S
-	 rj/cxWfzkU81lgSE/E9aNfQlkiZRMceGe6m3P9Y/Mwf76FZkoaoQATuUbix+6HsbaxKHO
-	 peq6SpZklvw+FoZJZ1JfRU+HLsGvvmooauV/6AhLOzqxTWLVxWqZQqMMi6m/YX0gAZQ==
+	t=1792693809;
+	b=hnaK1Azql2hHMCmvQyKroUeFZT2Qr6kkkqkMq/WeUA0ZoxfSAcsKf2rJkKwQFE/jf/4g
+	 7lUy1v2PkfRkqliutKu/CS8ja9UTUb5Pds/kPG7shqQqUSY34eVkPBKwtgfcOS6KYhyln
+	 Ay3mezvD2zRpMv48zJMBULIqQzoWsJbgxxMRWCTwmtYkgqGO6C+wkoAB7C7Qbfg9WA8S7
+	 bLWmDjHAdlDa7PucpEUb2n2w8g6cTgRP66HOrvN5L6wzAJrNSjyaZxO4z8JjuM3XcqKAp
+	 B+8aYnQO8FkLbGqftsoNAuCtqpFcidux3RwkADM6yav72y5a668rBaAjCPfsqoSkMbA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792693808;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792693809;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=mm3CIEpjoFlJg53ARDMGtP1Pmmn5bpt9P0/yTS20nsc=;
-	b=WBdZcAp1Slp9Cme+m8XXENJoHrgVpyPFa3Rjz654bqvYoteH5BSH2wIYdQRAQr3Df4WH
-	 kU1pNiUoI4aLRfeL9dcFBpfGL8Q1AhWbsGXg0XLXM1XvN4A9bgK+8aKwfI2FN+IeN519y
-	 KCxye2wm4oyf42c3UPOlr4w70ACJbcxPzOtHGLSBcU4JjjgKVZmxVjlq9KP9s7AXzUsy/
-	 2lx/WV2/0PNy1NhDui3jYsKaE8FhjiaBc5bieV4GQg16Yb6LyJTBIobzaNON9d7AYIyL8
-	 qGgHloo6BfW3AlrmOpCt23g7ZMk+QqiajgImpjkZdddKS01iXBu8i83yAr0Btj8zHSQ==
+	bh=V4uiAV9aQm/yT3YxAR1l2UWns8mGT1BtwiQhbF6onIE=;
+	b=fuNBvk7ng7+JehD6wTPGoqHXmNMUXyzJ4vrEwC/YoGvhT9t5yIdhqhuM/fkPk3vCBgWK
+	 8RSo3OzfrJak3S0Qx8/CD7oQmRDAbMfkd+MpxaZspTMXGFYlwns6dDU9doqgbEnYwo+iP
+	 sNCe/XQ/aTLbi6sIBQrB/GuvzLCjm6/ghYWeyhPWqCDVSTdQNfu5rZGqRyW8k2JDOUhcs
+	 pvRtS43/uRQfim6xEI1lb66F3fi3koyGs7/vMe2RMAvDj4I+01Bjwu8ULJMywtCV9cmq/
+	 lZqOKUikQheZbRTmDIQ+XxgcyaBr8HI4bAmwtob0ulKQ1Aiw7gu4QRmCH3gOmgUNJVw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YoYnmCIZ;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y74wNOwv;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E249F606A320
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 18:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AAA6606A31E
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 18:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YoYnmCIZ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B9861F01829;
-	Thu, 22 Oct 2026 18:30:07 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y74wNOwv
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DE0B1F01825;
+	Thu, 22 Oct 2026 18:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792693807;
-	bh=mm3CIEpjoFlJg53ARDMGtP1Pmmn5bpt9P0/yTS20nsc=;
+	s=k20260515; t=1792693809;
+	bh=V4uiAV9aQm/yT3YxAR1l2UWns8mGT1BtwiQhbF6onIE=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=YoYnmCIZLR+pfDdp1yJMYDFWKU2eKRcq5X/bnL/05ttkJqOHKvWj0lymLSPSGRbkA
-	 eBshbX5P/BJlslNSIM7m4SviuoZFftzkXtUg/5vPTcH3J1SPD1MRnBYxveCG8riHSA
-	 A3pofUP/WQiYdpQqf4os7cJ5o9jAHredeYAMFVdT62KO2EOm0KXc8sIcquyRcQaXRc
-	 NNCtNqoWQDfty9jY7LArkrk4tIc1D4VsA71GmgCR5t0tKTw7qykAFb1h9me+TP/fzr
-	 ws1GBGCzT3mLyFDPtaC21e8O90Jdc3TDvNxFKvGmNLeRHBtWAdN1mfYtYEEwY/Ua1c
-	 PNWhBq0oQ6/5g==
+	b=Y74wNOwvtjZSI44QVSvXqZZtnrcOySYEE7V5lvzQhc/j8W8vUZufJDPAlp4aonbqM
+	 sfP8zDg6hKu1Fb7IJjdc+mh95KvcvQRGpal0YiQTWF4SDYt2XGRuNzLclWH6iD8P0E
+	 Z/Y3Fo3ThMThfpuSLbq5Y3H0Tmwk8JkLYLa+XNvcJpTILpQNSSXCAS1OK8EaguNCXM
+	 UN5+DQz8ZeoZqic4p5W9Fdz6B929pMPnKM18ojD9wzFJwnCOMifmJ5TUEOE8r1gm5k
+	 eJa+5ThHShgNmQwe3IhfH393prManh/r6weWip/O4NwMoYBTwBHYWdiXVJ31MEDwNL
+	 ko1TrIXznmHew==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 8154E3808222;
-	Thu, 22 Oct 2026 18:30:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 073953808222;
+	Thu, 22 Oct 2026 18:30:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,35 +54,37 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH iproute2] lib/fs: drop unused full argument from
- get_cgroup2_path
+Subject: Re: [PATCH iproute2 0/2] use get_task_name in ss
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179269380620.87273.1808231480893279444.git-patchwork-notify@kernel.org>
-Date: Thu, 22 Oct 2026 18:30:06 +0000
-References: <20261021153943.3754990-1-stephen@networkplumber.org>
-In-Reply-To: <20261021153943.3754990-1-stephen@networkplumber.org>
+ <179269380756.87273.3721149238282164503.git-patchwork-notify@kernel.org>
+Date: Thu, 22 Oct 2026 18:30:07 +0000
+References: <20261021160020.3838946-1-stephen@networkplumber.org>
+In-Reply-To: <20261021160020.3838946-1-stephen@networkplumber.org>
 To: Stephen Hemminger <stephen@networkplumber.org>
 Cc: netdev@vger.kernel.org, dsahern@kernel.org
 
 Hello:
 
-This patch was applied to iproute2/iproute2.git (main)
+This series was applied to iproute2/iproute2.git (main)
 by Stephen Hemminger <stephen@networkplumber.org>:
 
-On Wed, 21 Oct 2026 08:39:43 -0700 you wrote:
-> The only caller, cg_id_to_path(), passes false, and no caller has
-> ever passed true. Remove the argument and always return the path
-> relative to the cgroup2 mount.
+On Wed, 21 Oct 2026 08:57:21 -0700 you wrote:
+> Recent proposed patch by Prashanth showed that ss command parsing of
+> proc with fscanf is fragile. Here is a pair of patches which allows
+> reusing existing code in iproute2 lib/fs for that instead.
 > 
-> Assisted-by: Claude:claude-opus-5-5
-> Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+> Stephen Hemminger (2):
+>   lib: add root path argument to get_task_name
+>   ss: use get_task_name instead of parsing stat
 > 
 > [...]
 
 Here is the summary with links:
-  - [iproute2] lib/fs: drop unused full argument from get_cgroup2_path
-    https://git.kernel.org/pub/scm/network/iproute2/iproute2.git/commit/?id=eb6a29fe096a
+  - [iproute2,1/2] lib: add root path argument to get_task_name
+    https://git.kernel.org/pub/scm/network/iproute2/iproute2.git/commit/?id=c92418663848
+  - [iproute2,2/2] ss: use get_task_name instead of parsing stat
+    https://git.kernel.org/pub/scm/network/iproute2/iproute2.git/commit/?id=89d08bac1661
 
 You are awesome, thank you!
 -- 
