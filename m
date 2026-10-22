@@ -1,97 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792674059;
-	b=koTczatmk9tmRNsPPg9H3URCAurHFdLgQzo0H1O7+InLh4Wmvt+5Z/3ZUpP/h0V1tm3x
-	 IIdCedj/Vr7JqbUFPwztFg3G9tC8U3DsQDPFBYXNmSA52zBHF5oInMbIk+mX9+2kU46Sb
-	 AzSijKIO6LbBBGVIAJIF4gmPukztOG0onchucFI5pKYaqyVA0pegcqAT44aX91JZ42go8
-	 cbh36DKsO7yuABLBxtFShHYoPYC+PGfD1/p2Znsb3oI58c4N3TUF5stfNJz3T4knjEYSG
-	 hpxsjzidFCIM5WGHCKiZs7QPCVy5OXkJf160oNlhu979kQdjR8qdy1o+Kcw7XeXhrsQ==
+	t=1792674556;
+	b=WZHuPLb74/F4hvDfZEuy5CsOWqPQRBo1PdYeneNmT7gwk3mi+fNLquT/PKuGWnJQfNK/
+	 FqzEYc3oJpStug2yTAnfBhq3M37fpcA8nF/0l0OFxEbs7LVLtw6StRWb2B3UWTVH4/LYU
+	 /Oj/BtVlucRQF9mIIvHp6shab8wzOOgQRQqzcfzdevqH84QFieyd+t9/Ys0IxD/LBVHA4
+	 Ah4lRXuy9gaKdkpPmyuBdjDhuqxTK/Qvf0R/cvXkmUR4rov5MmKoPHhRCchBDLSbSeuX8
+	 qYJLo1kpxXNtjMtOvkeZrQfakISS0SmewsRTsAvMhUlYmODgmvofQxS9lzLcNuhlmFg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792674059;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	bh=3AzPZ01hTSAgsWEyu0h9Ofjn43zkYv9zMoDNLsEz7YQ=;
-	b=TyqfFXg66zxf6ABpXESz86Wppj1808GEkGlDeW+RG4UqyauN+B23HoSa02dlygD/ipnL
-	 ZqNTSKUlSDTJJg6gY+TQoP1M+Pv5QnIv4Xgo2pJ2TzH693RtlCqSjJt+7poFCvNrPd6sP
-	 lDjFo2NYT+IKv/0zAM+JCVJQ4RfWHRL78CKyIrNMJgZ0xOIF2VSg+b6E5W1zn15khuCmf
-	 8UygtwCfN+vzjuVuf20CSHyvOvEpozoiY+UQXOKum1RCWoG5O5NsCj7kqyVITIiwtAsPW
-	 QyuwIOcg/FJXr98SFsJeEQYIk3++1FpmvLBnM0SM8Xu4huS8Jiypzia3hiwYxJbl7ag==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792674556;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
+	 X-CM-SenderInfo;
+	bh=WeRbh/wN0/oqV/y3B6lUalfWMI187ISQqMh5if+ga/E=;
+	b=l8oL+YIue1Ar1ThXRxdTLccYYSWkpdcLUm15M8WE4X5l4tq4FsfqPs2M7i7hfKwhTDKm
+	 KljPH5Nf/ENVBw7KEPh6XPr+TZkrzW512BOgg5uZYcVafLA/5mPiwFHUUQKF7SOrulDSW
+	 gjHlrA1eMHzKzaED3+p+d9w2hmtlOH60yGXz7doOxlpd0glA3QAmaEAuviBrxsx6i/Xvc
+	 qgmfAqS0278xJou32a6RtPl1NUtDQU+RNNzDSbFr7LSLBxSlaZQ7fQcD9aqLamywf38YJ
+	 tGgXKkDj9KTo5xWeh8xT/ShA7w+4rlrQlaTFqVqWGi8yrYsavldEA2DQ7ZmI+tSoLlA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=toxicpanda.com;
-	spf=pass smtp.mailfrom=toxicpanda.com;
-	dkim=pass header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=cTLbrift;
-	arc=none smtp.remote-ip=209.85.222.179
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=B4f7CQTx;
+	arc=none smtp.remote-ip=220.197.31.4
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B8E606A321
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 13:00:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 99B8E606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toxicpanda.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98CE606A31E;
+	Thu, 22 Oct 2026 13:09:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E98CE606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=cTLbrift
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-93cb9e9405fso93544185a.2
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 06:00:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda.com; s=google; t=1792674057; x=1793278857; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:content-type:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=3AzPZ01hTSAgsWEyu0h9Ofjn43zkYv9zMoDNLsEz7YQ=;
-        b=cTLbriftFr1LV8G0roNHwM20QIFC/tuPgaoDNV401sC9eeB7eaeLQJO2buW+6dPlCx
-         5Af/zw5Usyi8VhsLnKmWLnu0F+ARE83VEl7OBNvKUMwCNIrr7Ty8pyPHtnWKLMnnzWCH
-         4fxXJLKvuWGdtgp5aVzAZYWZZ97a9diknRvCfd8ik2k67KyKpqP3EN0OvM9isNVmnm/Z
-         UqmfPPR+MMr9l4AVN76ylHBufwNklPWZk61e8r2Iv2V+IMW85gr8Jwgci30WvFvKNs2k
-         Rkds7TVbVlEvEZkeJrXLdkzuk3a35Rv/FQa8NRvCqVcb9ZxOHY0Nt9OD20aePD1xh/En
-         ViPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792674057; x=1793278857;
-        h=mime-version:content-transfer-encoding:content-type:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3AzPZ01hTSAgsWEyu0h9Ofjn43zkYv9zMoDNLsEz7YQ=;
-        b=TZ3hwSEksAeZ1OFFp5bk+CDhtZeabaeRqX46996JnmmZ1iV8Nl+iKK7SaiRirAJxlk
-         QOAu3NTQWRF6TVNs6ZzOBQ6Exp2ClrO0NhesyyomZtdNa5LTPIqWXoVGtaFc04a7pyfE
-         Z4eOEnlnErWbXndcRXJF2y9eG6rAgmwQqGn3xDEnE2yHFJ5ChEXHPV/QcA2NFn9ncxT6
-         dFokTMIIzaNBVYZk3WSCM/cwkWWUCMTE8qRSvBQldTLQPXKw+oMnRQG6BZwaKMhvC5YE
-         E1pHurv7bs+5ubkJijgrQBvZxs7ESMmLvVBRMIyuWoK3dFj9A82HM+N+4yha3ap9xq1s
-         0iMQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxPSeJjcWAMkxG31niEDwcATMDSf1BXHO7cLEsoM/kgUUezegQG9bKfBuJrBmpOLIw/z8NuE6w=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIkf5OPw7Spym+A5jyZKTqm1pxYEehnPGxcwCELUMF/h8BA3+El
-	LeLCZthFqbBMu6HR+7lZ5tzv4cPKsYB+FBQZpJ60JRAmbzPMePl8EcxSyWcWQ3Xqo74=
-X-Gm-Gg: AYBFou08Kyjy/eA4rDNjz5Ln6hNHdMkAFvUTMGAhphBI9exYvAFzGf9wNxl4heTpGDm
-	/AIe/q9lUBAAcS0tX/EHf4EIwtgfb9hBDo7VkT9pvmtlgtF2PvNYDyK3zDa80/mk5R1sqaXknyx
-	YRR3D3BE9/VT9FnhaAsw6+5ES0l0y+Qf+DDryMhkAJ7rRUFu7IU5mQUyfM4BVB+mX+gnTiDLmX5
-	41P7zR6fGM72Lw1J7ohqqdDlsWXjFThl7lID+fZQooMWplRDroIXpSFsikRsmL7oDdqkb4GLWWK
-	yurpLF6adoow3HjbhZOOgX5h4p+FwXJswS8Yu7xJB8uslH1bgTTz7ZOG3iPVcGSKJdNNLqs8HF9
-	gZDltPviYB37fW0JyItIb2auK3eLRS58RXv+pmKFCCeBED+j9VDhnQYd4PBv4skUZ7Uldl9Vd52
-	KOLdICbJkQgCTv2Qw1T7Dg8J6X7qh/HHITQSWO9rZqfHzpzxZCc45NAXWeFheRLucXgG1g5m6vk
-	+6sQelV5KRCEPRv6KoEhNRyJwldOR5AfEjr+h6iCNDhZ7aPaYAbq4LI4iyukb0LAt7u/4xP
-X-Received: by 2002:a05:620a:a986:10b0:93f:5e6d:880f with SMTP id af79cd13be357-93f5e6d89a6mr457592785a.74.1792674057333;
-        Thu, 22 Oct 2026 06:00:57 -0700 (PDT)
-Received: from toxicpanda.com ([153.61.196.251])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93f56d9acd3sm515283385a.14.2026.10.22.06.00.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 06:00:56 -0700 (PDT)
-From: Josef Bacik <josef@toxicpanda.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: Saeed Mahameed <saeedm@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
- Leon Romanovsky <leon@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Jakub Kicinski <kuba@kernel.org>, =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- netdev@vger.kernel.org, linux-rdma@vger.kernel.org
-Subject: Re: [PATCH net] net/mlx5e: Fix stalled channels with threaded NAPI
-Date: Thu, 22 Oct 2026 12:56:49 +0000
-Message-ID: <17926738093796.1.mlx5e-threaded-napi-stall@toxicpanda.com>
-In-Reply-To: <cd140948-317a-49d8-885e-0ded451195c6@nvidia.com>
-References: <20261021-b4-mlx5e-threaded-napi-stall-v1-1-d719c17b3ec4@toxicpanda.com>
- <cd140948-317a-49d8-885e-0ded451195c6@nvidia.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=B4f7CQTx
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=We
+	Rbh/wN0/oqV/y3B6lUalfWMI187ISQqMh5if+ga/E=; b=B4f7CQTx5dydLOhn9M
+	SL2hK+yNiAAr7DxEGR2HXY6TqCVoqItYnNXLfQGywqsZwriQGlosG2KAC27ha/7Q
+	pWApG9JhpZsYANrTHniHkF9JlNZKo+r3xRa6O4vuMhsY0VlSVroKcBiqR/bdB4Fy
+	mft0tj9Cjtl6R0+lOMlmj63Fc=
+Received: from u2.. (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wDnb3XQCtpqMEjsBw--.50219S2;
+	Thu, 22 Oct 2026 21:08:34 +0800 (CST)
+From: taozj888@163.com
+To: theo.lebrun@bootlin.com
+Cc: andrew+netdev@lunn.ch,
+	conor.dooley@microchip.com,
+	linux-kernel@vger.kernel.org,
+	maintainer@kernel.org,
+	netdev@vger.kernel.org,
+	taozj888@163.com
+Subject: Reply to Theo's questions
+Date: Thu, 22 Oct 2026 13:08:24 +0000
+Message-Id: <20261022130824.589241-1-taozj888@163.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <DLKVCOXTNGVZ.3CC6KFXDIFJ3X@bootlin.com>
+References: <DLKVCOXTNGVZ.3CC6KFXDIFJ3X@bootlin.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,60 +66,145 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-CM-TRANSID:_____wDnb3XQCtpqMEjsBw--.50219S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCr4DWrW5WryrCr17Xw47Arb_yoWrAFy8p3
+	y5Gr1jvr1kJr1fKws7Cay2v3WrXr95GF43Wr15GryIka45XFnIgrW7t3yYqFy8u348Wa40
+	vr4UZasak3yqgaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUSfO5UUUUU=
+X-CM-SenderInfo: hwdr6yqyyyqiywtou0bp/xtbC+RQJ0GraCtQOvgAA3q
 
-On Thu, Oct 22, 2026 at 02:38:41PM +0300, Tariq Toukan wrote:
-> The arm doorbell carries the consumer counter, and the device tracks the
-> last index it reported an event for. Arming while CQEs posted after the
-> last event are still unconsumed generates an event right away.
->
-> The affinity path depends on exactly that, since commit a8c2eb15797a
-> ("net/mlx5e: Stop NAPI when irq balancer changes affinity").
->
-> Event moderation can delay that event, but not drop it.
->
-> So the root analysis doesn't match the mlx5 device behavior.
+=0D
+Hi Theo:=0D
+=0D
+=0D
+Sorry for having missed important things. =0D
+I would like to append some explanations here.=0D
+Please see my answer inline.=0D
+=0D
+=0D
+Thanks,=0D
+Zijin Tao=0D
+=0D
+=0D
+At 2026-10-14 01:55:03, "Th=C3=A9o Lebrun" <theo.lebrun@bootlin.com> wrote:=
+=0D
+>Hello Zijin,=0D
+>=0D
+> - I'll stop replying inline because you seem to be having issues with=0D
+>   your mailer. Please fix it to ease the discussion.=0D
+>=0D
+>   See here how your email looks:=0D
+>   https://lore.kernel.org/netdev/63731290.3f0c.1a1198fe993.Coremail.taozj=
+888@163.com/=0D
+>=0D
+> - Your V4 commit message says "Fixes: 89e5785fc8a6" but that is wrong=0D
+>   with the current patch, it shold use 4df95131ea80. I don't=0D
+>   understand why you are talking about the changelog at the same time,=0D
+>   this is unrelated.=0D
+>=0D
+=0D
+=0D
+Yes, I made a mistake in V4 commit message with an oversight, it should use=
+ 4df95131ea80, so=0D
+I just revised it to 4df95131ea80 in the V5 patch, and I will use it in pos=
+sible later patches.=0D
+=0D
+=0D
+=0D
+=0D
+> - You skipped over explaining why your dropped the start_xmit diff.=0D
+>=0D
+>I'll have to stop reviewing if you skip over parts of the messages.=0D
+>I gave you a TLDR and you skipped over the first bulletpoint.=0D
+>=0D
+=0D
+=0D
+Sorry, I forgot to make an explanation here, maybe due to an omission.=0D
+Now I would like to amend it:=0D
+Actually when I started to rate limit the error messages in the data path, =
+I saw =0D
+the netdev_err message print in both the gem_rx_refill and at91ether_start_=
+xmit,=0D
+and I knew they are also in the data path.=0D
+But for the following reasons I just omitted adding rate limits for them:=0D
+1. For the netdev_err in the gem_rx_refill, there is a "unlikely(!skb)" to =
+check if=0D
+the skb is NULL which is a rare case,  so I think it's not so needed to add=
+ a =0D
+rate limit here;=0D
+2. For the netdev_err in the at91ether_start_xmit, I think it belongs to an=
+other vendor=0D
+which I am not familiar with, and I didn't know how popular it was used, ev=
+en I was not authorized to =0D
+change it with my will also.=0D
+=0D
+=0D
+If you think it's better or needed to add a rate limit for them, I would li=
+ke to do it in later possible=0D
+patches. =0D
+Would you please give your opinion here?=0D
+=0D
+=0D
+=0D
+=0D
+>Thanks,=0D
+>=0D
+>--=0D
+>Th=C3=A9o Lebrun, Bootlin=0D
+>Embedded Linux and Kernel engineering=0D
+>https://bootlin.com=0D
+>=0D
+>text:=0D
+>Mime-Version: 1.0=0D
+>Content-Transfer-Encoding: quoted-printable=0D
+>Content-Type: text/plain; charset=3DUTF-8=0D
+>Date: Thu, 08 Oct 2026 14:59:55 +0200=0D
+>Message-Id: <DLZH4LPJ36YW.1CP7RL0J77DHN@bootlin.com>=0D
+>Subject: Re: [PATCH net v4] net: macb: rate limit netdev error info print =
+in=0D
+> the data path=0D
+>Cc: <stable@vger.kernel.org>, "Conor Dooley" <conor.dooley@microchip.com>,=
+=0D
+> "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S. Miller"=0D
+> <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub=0D
+> Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Jeff=0D
+> Garzik" <jeff@garzik.org>, "Haavard Skinnemoen" <hskinnemoen@atmel.com>,=
+=0D
+> "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>, "open list"=0D
+> <linux-kernel@vger.kernel.org>=0D
+>To: "taozj888" <taozj888@163.com>=0D
+>From: =3D?utf-8?q?Th=C3=A9o_Lebrun?=3D <theo.lebrun@bootlin.com>=0D
+>X-Mailer: aerc 0.22.0-0-gc2f86b7abde3=0D
+>References: <20261007053211.572073-1-taozj888@163.com>=0D
+> <DLYI3O7PFN94.V7VH3HSLKEMD@bootlin.com>=0D
+> <63731290.3f0c.1a1198fe993.Coremail.taozj888@163.com>=0D
+>In-Reply-To: <63731290.3f0c.1a1198fe993.Coremail.taozj888@163.com>=0D
+>X-TUID: tHkCkOndXaQQ=0D
+>=0D
+>Hello Zijin,=0D
+>=0D
+> - I'll stop replying inline because you seem to be having issues with=0D
+>   your mailer. Please fix it to ease the discussion.=0D
+>=0D
+>   See here how your email looks:=0D
+>   https://lore.kernel.org/netdev/63731290.3f0c.1a1198fe993.Coremail.taozj=
+888@163.com/=0D
+>=0D
+> - Your V4 commit message says "Fixes: 89e5785fc8a6" but that is wrong=0D
+>   with the current patch, it shold use 4df95131ea80. I don't=0D
+>   understand why you are talking about the changelog at the same time,=0D
+>   this is unrelated.=0D
+>=0D
+> - You skipped over explaining why your dropped the start_xmit diff.=0D
+>=0D
+>I'll have to stop reviewing if you skip over parts of the messages.=0D
+>I gave you a TLDR and you skipped over the first bulletpoint.=0D
+>=0D
+>Thanks,=0D
+>=0D
+>--=0D
+>Th=C3=A9o Lebrun, Bootlin=0D
+>Embedded Linux and Kernel engineering=0D
+>https://bootlin.com=0D
 
-The CQ has a backlog much deeper than one poll, about 6900 CQEs in the
-run in the changelog.  The thread polls 64, is off the IRQ's CPU,
-completes and arms.  There are CQEs posted after the last event, so the
-event comes right away, and the device now remembers the current
-producer index.  The thread polls another 64, completes and arms again.
-If nothing has arrived in between there is no CQE posted after the last
-event, only older ones that are still unconsumed, so there is no event.
-The rest of the backlog waits for the next arrival.
-
-That matches the counters of the stalled channel.  It had 0 polls and 0
-events for 150 seconds.  New connections then gave it 16 events, 16
-polls and 1018 packets, so one poll of 64 per event.  It was armed the
-whole time, it just took a new completion to get an event.  Then nothing
-for 14 seconds, then 93 polls and 5917 packets, and it was empty.
-
-Is that how the device behaves, no event on arm when everything that is
-unconsumed was posted before the last event?  That part is my reading of
-your description, I haven't got a way to check it.
-
-> Is it a degradation? Did you have any "good"/working version?
-
-I don't know.  I've only run threaded NAPI on these machines on the
-7.3-rc5 based kernel, I have no older kernel that I know to be good.
-
-> If arming really doesn't raise an event here, softirq NAPI would stall
-> the same way when the IRQ affinity changes under load, for example by
-> irqbalance.
-> Was it seen there too? I believe not, so it must be something else
-> causing the stall...
-
-I haven't seen it there, and I haven't tried changing the affinity under
-load.  If the above is right I wouldn't expect it.  With softirq the
-path is taken once, that arm raises the event, the interrupt lands on
-the new CPU, and from then on the check passes and the poll goes on
-until the CQ is empty without arming again.  A NAPI thread takes the
-path at every poll, so it needs a second event for a backlog that the
-first one already covered.
-
-I'll fix the changelog and the comment in v2 once I know I've got the
-device's side of it right, and move the check into
-mlx5e_channel_no_affinity_change() as Jakub asked.
-
-Thanks,
-Josef
