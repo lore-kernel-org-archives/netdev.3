@@ -1,86 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.228
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.227
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792707460;
-	b=5fwwNgVB9w9ev7NN2Xkm07bHLYn2D13gKizsQEOv6coZeNdGqA66ZO7V3xAwfRgq9JYF
-	 zwMlbbtsk/JRkgYRI5/hPFVALKQewPAIJHpA7InbIgWq7QATKU+UZEFFYMl+VH6gOMncj
-	 A0uDZPkUmdWrq69CfGKqd1h21YJ6yrIpF0raK4M578AIyqZec8vEAM9ADXnXvcBnMUJPq
-	 WxpQtONy4ABTQ/iOyEUC+xXCDcKGPSXV47sOhhxmhRgG29IeaxzXdVe27xHVd1VeVII17
-	 BviltGaLJmwW3NQpX7sdO33SbpnDFy8C14Jcx2NA7FroB977GeoCiGzJ+dHGE/kHQ4A==
+	t=1792707458;
+	b=gXOI04RrJsBro/4fLG9wAWrIc0+FayYZ9MrQw+SBj5KDh7WutG3nU3C5Mp2fL+pwot7W
+	 9sxFXK+N/7NkJOYuM8WhsVmQixE3vFR+hDZ3eKMyTazKrxNsqJC0TRgXuprOOZ8/I+oeL
+	 1iK5lzoQpIXHbPpvpXGG6iSEL8OUFRSYnK1PQT0jHCtXTwtfGIx5EJ/kS1A4FACWuMcAB
+	 epXHAoldIcxgbB7VrpDSRsQFTm6UWIYTPj4bd+4bJWG9bfSXHmqDf314veQPA/vtX//BV
+	 YmDEmjtg5srxVgrP0Lf+7xNw28qSFcI3zsD4shNyyuWQWiOXrjpqp6u+ARiKSGQmvJQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792707460;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792707458;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
 	 Received:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=7OKZKq5bWJRvPZZK5dWDJTjLJm7QlhYtPLN2j1VdgDY=;
-	b=E/1KiX1987IC4gDGX3HqVbV1FqDlIq+q/oYVZMJ0cMS8azm/wLq14fi/jpRiz8eB7w6c
-	 kiENg5XVSNtPa6rS4SzwDIuQltnEM5QO/2NBjLpbwspJOM84vof6cktBTeKhgoKRogNRy
-	 BO6iVuhvIeaJhORmYWEjHPjmR5OHBjOh0kOP6MRPTMlwUncqw8Wkh+Nco5DOJpQzMK7f3
-	 lILmSt6qfWpuJ2jkoihWUIHynDZwheYzw4+M3EAYqWwh2ZCtpkbvb8DjDCfcWTpWZKj3P
-	 HJcFgBUuTSks6/N8ttZ3p4TSBC35TZ4dwO75x3ih7klsjqt1aSz538p1nRY7zvXQjkA==
+	bh=YNahYpdiHw66I6uTFiHrxOfpUUmCwHBpQrn5JBUBdX0=;
+	b=g1qhYtBJ88G+8HQuGyrKR5Ph6Nv98ujj5g827ASqEZCzC0EXitBKhoc+2YgqBXdnOwZi
+	 jQ3nTM8bewfFTVxKkQ4cxg6F2uGMzHSfXRK6L1BXNWtBGIlmO19fbfRp+wjuEBuwz3d54
+	 LR9rCtphGD/R/WnxMI/UtnR0r5b5qJkP0Zv4bPK8YlveZllNrO2eG6+lUyYIDaf4qvlDF
+	 Je9JHmnI8T8LZWf60jLei8DabaNX9sDf73/0KXqL59iYcpY8y46COSIF/Q99te5mXgqJP
+	 qLAVsZEwZcuU2lmbQH4VSc0IqLrSS5xTacq7EQaf9LhYNbDrE28Kl34LGPT4CAhVl5g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=purestorage.com;
 	spf=pass smtp.mailfrom=purestorage.com;
-	dkim=pass header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=X7iwt3K8;
-	arc=none smtp.remote-ip=209.85.215.228
-Received: from mail-pg1-f228.google.com (mail-pg1-f228.google.com [209.85.215.228])
+	dkim=pass header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=ITdXEEFw;
+	arc=none smtp.remote-ip=209.85.214.227
+Received: from mail-pl1-f227.google.com (mail-pl1-f227.google.com [209.85.214.227])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8D9606A331
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 22:17:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5D8D9606A331
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57D4D606A31D
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 22:17:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 57D4D606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=X7iwt3K8
-Received: by mail-pg1-f228.google.com with SMTP id 41be03b00d2f7-cd5cd8d89a7so107855a12.1
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 15:17:39 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=ITdXEEFw
+Received: by mail-pl1-f227.google.com with SMTP id d9443c01a7336-2e831e86ebfso1283525ad.1
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 15:17:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1792707459; x=1793312259; darn=vger.kernel.org;
+        d=purestorage.com; s=google2022; t=1792707457; x=1793312257; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=7OKZKq5bWJRvPZZK5dWDJTjLJm7QlhYtPLN2j1VdgDY=;
-        b=X7iwt3K8FL9YCiFt7mb9M+OmKYmHxZALBh7bVXJeBJqMS/wbK4IDmW+cZTzYjWNA/D
-         8BpB97oCGWr4FsknaXP4iMuonV6o7qZpwuGhp92ozZS+bQdRGWvUJZISD/tQADLkh7Mm
-         +GIzrh4EJOovp3mbem6jl/5lwNCyu2GCjFcn4I0qO45YSiUn132q2WOhSXFvQh/BzBHB
-         MRgSW22Q2ZNS2sQwbMYU0WWxa/f2IeurFIqz0gw4elaBGhWuhlwOjZ0PfgZA9N0tIogP
-         FVPjPkTGj7Enw4+qk65CrEIdqjxi0ebrJizXM4HbdA2SUNoitzh0Ckk3FJKfn4kFT91M
-         js5A==
+        bh=YNahYpdiHw66I6uTFiHrxOfpUUmCwHBpQrn5JBUBdX0=;
+        b=ITdXEEFwOsKvT22iHUZFrynJxZnWnuXSRIjKtFYLTUPo+CPVpGf4DJwgUQK+asp28r
+         rxfE1Q820IdErvASV5C0Nb5Yi1+B+5cK3QyA4UGS7U68YSI2vAOab3c6BjurOxQQ4OU2
+         ySAwgGVlP4vX1MbiKQop7GR9GlGYCHs99BSCCuw8nnPtkZhbOXSjhO1t7qme1+83tecA
+         gRC07vMD/kfFDpl45eS76+ZAcs2crPcvQD6TgnJXzpAJPpwboU+eFgRrhRjSVB4Umov3
+         CkSsdQXSVQioBPhdFTWrKpnQHAPvZO1Nvn1H9EG9crVvlszx1lJFyJsJA4swEbkmeJYG
+         km8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792707459; x=1793312259;
+        d=1e100.net; s=20260707; t=1792707457; x=1793312257;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7OKZKq5bWJRvPZZK5dWDJTjLJm7QlhYtPLN2j1VdgDY=;
-        b=z/z5pos4VUrFYgtXxUpoz+9OcZW/9wfIuc0gJINV5AW9r9WK89I7DVSIx9FQy5Bd07
-         BK/RZ6Oxy/Tb+QNKUfVDLxcL/u0NA0YUUKN24We/Y5j9K/YiN0Oh9mgYypphhO/GPWxp
-         zy1ApB2GqHr+VpD32ThJZx9Je071iQMEUo1h+dqMdFgQ5cbgwukMNeKxHGB3pkAwT5jE
-         ru3yUxGcRj7J7L1MUnBhXVzjJqaQuB3HBstLiLs5rwo5BNvjJYnhZ/yq8Zch59c2BG+K
-         LfMfqMX4QfYRQjZzm7rA/SJdPpVwoUZSVtGSehIDF0Yt6UqApUkkAAkYlPjntmwJMBYu
-         EW0A==
-X-Gm-Message-State: AFq9FYKTLrzhNWNy4IgzlbglXKEYNBIqPqrhpuWaq515c2ASFx4Ahhcn
-	u5pi3s2C2gK5NLkRk1b1wgh8lgqT/130dw5OhrW2fpZGXTir43NztCg2FypJuKaJgtCDBNFv8cx
-	t2KPBanseBWTbgjuzU9D48WiOsbhys7e1DCcl
-X-Gm-Gg: AYBFou1jdWnfMq9NY8X91O2C41JMTWIqjbmWJPTjaPDIOX73tVCiNHS3TCpniy6o1n8
-	HtJZcA9aK0Rm+s8kU1HgfoJURDj3xXky7ChAziVc9H6QeH4AKb4nbut7OVL068Ugicz/SXjCgJh
-	l0jh/WIEMFFlcpqmJIwCgl/L14Om5/O7DPVPXARnFCSsrUtuChGEGmt3X37Bvxy3iydi11mJQu/
-	04O9cbh1MEDTuE5Em2p6LFPNCeWykLSptcoyVstplwDkAonZkueUdk6u6E2DqLGdDb5IklsU6yD
-	hrueYkRioGPGg9o0cxN+vYxpab4YSm79cihD37atgIGo8g09qA/2PnMoPsXGVBhLBCQ9DU6Adva
-	8FpgqnVJcWPdYnL1EO/tQVn5DDuT1rwGZup0=
-X-Received: by 2002:a17:90b:1805:b0:3a7:a6bc:9d58 with SMTP id 98e67ed59e1d1-3adce7eb299mr151951a91.54.1792707458760;
-        Thu, 22 Oct 2026 15:17:38 -0700 (PDT)
-Received: from c7-smtp-2026.dev.purestorage.com ([208.88.159.129])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ada47f5737sm2921987a91.0.2026.10.22.15.17.38
+        bh=YNahYpdiHw66I6uTFiHrxOfpUUmCwHBpQrn5JBUBdX0=;
+        b=tkmcgl0KQlxE1hH7lH2HQmxFpGdDDltniQzpNU8N9OLJcDjmKpXhTTQkHyMM84A06F
+         vjs4Kboenf5OmW4L/zKTvXYR8mxHWoydKeuzDJbcmjygZz/8hw2U5hcLSaUcdORmi09W
+         2pBYkU76VU8jYcH9pCyEYmf0rDVytTvwaeSNEqfn1KPW/EafahyneJapw576nKPasSpZ
+         AbindNJA7EQudkD2bnght//8+U3ltbRPo6w9wVn1ZI7HhNufXUEzgWFbwyX4v9WtujCL
+         7yMgSeOVL92QlsRPPkv0hzMSpWJvAAolPknHrVVOU4F9FOK4VCofpeKT9GZg6seoZHKs
+         QM1A==
+X-Gm-Message-State: AFq9FYLCCB4XjwCljii0487c2WhfJjWUVanvJT3u3LyMrYMcvcpGsqB6
+	t2ei7f/vH8QgrMy5XDoqz47e3P+nAw4SJi0ffgXtIEJIli/wUPy0LGT3YxuyMRLjLD8NpCQBtRO
+	UaBFSGKhN8jP54F2INsGrf/0YnlyVXpzQ3Msmo+A1vjP6Srw4ia+1
+X-Gm-Gg: AYBFou0s/7zdYOPkiDQE/M7015pQLGOazBBvDZ5JuULi1o60QZywDdEQokOL7iD1toL
+	9/2reQs9up2KbA7BRCqUAhY/KaCeVhukx+vj4wLv0QAupgV+HkxBGa2CgJneRxxwelN1e22jo94
+	J5j5mVQMwj1z/QEnfZ4s3XX8SBRcMfmk0ZRDXLOk+9i6sBeke14Zj/QlPrhy8Sej+l3c9b+oBax
+	ub7hSMe+HX2AzEwZuDpjrW42w0cxOhwd+2I6DtflK4v2eSN8dOdMNjMnkBDXP6Z8ofkT7sJbx6F
+	QetGvaZ/PvV6FbPYfWW2UUylCuGvn4zbP0hg9r9BDYxvaKv0n7/wEHlmqZWJreAlAD9f55Utm3f
+	VA/Vge1JoiXG8LeveLKA=
+X-Received: by 2002:a17:90b:1d01:b0:3a4:b30b:b501 with SMTP id 98e67ed59e1d1-3adce0c8601mr212606a91.9.1792707456674;
+        Thu, 22 Oct 2026 15:17:36 -0700 (PDT)
+Received: from c7-smtp-2026.dev.purestorage.com ([2620:125:9017:12:36:3:6:0])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ada48fcfd9sm2854915a91.6.2026.10.22.15.17.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 15:17:38 -0700 (PDT)
+        Thu, 22 Oct 2026 15:17:36 -0700 (PDT)
 X-Relaying-Domain: purestorage.com
-Received: from dev-rjethwani.dev.purestorage.com (dev-rjethwani.dev.purestorage.com [IPv6:2620:125:9025:23::2ea])
-	by c7-smtp-2026.dev.purestorage.com (Postfix) with ESMTP id 1E1C2402BB;
-	Thu, 22 Oct 2026 16:17:38 -0600 (MDT)
+Received: from dev-rjethwani.dev.purestorage.com (dev-rjethwani.dev.purestorage.com [10.17.2.234])
+	by c7-smtp-2026.dev.purestorage.com (Postfix) with ESMTP id 01C50439BE;
+	Thu, 22 Oct 2026 16:17:36 -0600 (MDT)
 Received: by dev-rjethwani.dev.purestorage.com (Postfix, from userid 1557719937)
-	id 1AF1FDC48A1; Thu, 22 Oct 2026 16:17:38 -0600 (MDT)
+	id F374ADC48A1; Thu, 22 Oct 2026 16:17:35 -0600 (MDT)
 From: Rishikesh Jethwani <rjethwani@purestorage.com>
 To: netdev@vger.kernel.org
 Cc: Rishikesh Jethwani <rjethwani@purestorage.com>,
@@ -92,9 +92,9 @@ Cc: Rishikesh Jethwani <rjethwani@purestorage.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2 3/4] tls: device: fix record start reported to RX resync in copy mode
-Date: Thu, 22 Oct 2026 16:14:59 -0600
-Message-ID: <20261022221732.1397620-4-rjethwani@purestorage.com>
+Subject: [PATCH net v2 1/4] tls: device: fix record start in the tls_device_decrypted tracepoint
+Date: Thu, 22 Oct 2026 16:14:57 -0600
+Message-ID: <20261022221732.1397620-2-rjethwani@purestorage.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20261022221732.1397620-1-rjethwani@purestorage.com>
 References: <20261022221732.1397620-1-rjethwani@purestorage.com>
@@ -109,36 +109,32 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-tls_rx_msg_size() tells the device layer where each new record starts,
-via tls_device_rx_resync_new_rec(), as TCP_SKB_CB(skb)->seq +
-strp->stm.offset. skb is the strparser anchor, whose cb is copied from
-the first queued skb by tls_strp_load_anchor_with_queue(), and
-stm.offset is where the record starts within that skb.
+tls_device_decrypted() reports the TCP sequence of the record it is
+classifying as tcp_sk(sk)->copied_seq - rxm->full_len. The original
+strparser read every record out of the TCP receive queue before the TLS
+layer looked at it, so copied_seq had already moved past the record.
 
-When the header cannot be parsed in place, tls_strp_read_copy() moves
-the strparser to copy mode and resets stm.offset to 0, but the anchor
-keeps the first skb's cb. The header is then parsed from the copied
-data, and the reported start is the first byte of that skb rather than
-of the record. If the record does not begin at an skb boundary, the
-sequence is too low by the record's offset into the skb.
+The TLS-specific strparser leaves the record in the TCP receive queue in
+its normal mode and only calls tcp_read_done() from
+tls_strp_msg_consume(), after decryption. When the tracepoint fires,
+copied_seq still points at the first byte of the record, and the
+reported tcp_seq is one record length too low.
 
-Every resync type compares or advances that sequence. With
-TLS_OFFLOAD_SYNC_TYPE_DRIVER_REQ and DRIVER_REQ_ASYNC the device's
-request no longer matches and the resync is missed until a later
-record. With TLS_OFFLOAD_SYNC_TYPE_CORE_NEXT_HINT the device is given a
-next-record boundary that is off by the same amount.
+In copy mode (e.g. when the receive queue is short under memory
+pressure or with a collapsed receive window, or the record spans
+overlapping or mixed decrypted/undecrypted skbs), tcp_read_sock() has
+already advanced copied_seq past the record. It can also consume a FIN
+that ends the record's last skb, which adds one byte of sequence space
+absent from the record length, so subtracting the length reports a
+start one byte too high. copied_seq cannot tell whether a FIN was
+consumed, so the start must be saved before the read.
 
-The header is parsed in copy mode when fewer bytes than the TLS header
-plus explicit IV, where applicable, are queued under memory pressure or
-with a collapsed receive window, or when the header straddles skbs that
-overlap or differ in decrypted status. The latter is most likely right
-around a loss of device sync, when resync is needed. Commit 9466ef3ec972
-("tls: fix RX desync on overlapping skbs") added that queue-consistency
-check before the header is parsed; before it only a short queue led
-here.
+Record the TCP sequence in the strparser whenever it starts parsing a
+new record, before anything can switch it to copy mode, and report that
+via a new tls_strp_msg_seq() helper. The value is then valid in both
+modes without having to track which path entered copy mode.
 
-The strparser now records the start of each record before it can enter
-copy mode, so report strp->seq instead.
+No functional change beyond the tracepoint argument.
 
 Found by code inspection while working on TLS 1.3 hardware offload
 support.
@@ -146,22 +142,69 @@ support.
 Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
 Signed-off-by: Rishikesh Jethwani <rjethwani@purestorage.com>
 ---
- net/tls/tls_sw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/tls.h    | 2 ++
+ net/tls/tls.h        | 6 ++++++
+ net/tls/tls_device.c | 2 +-
+ net/tls/tls_strp.c   | 3 +++
+ 4 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index d1ad31986cf2..5db4a6897b29 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -2232,7 +2232,7 @@ int tls_rx_msg_size(struct tls_strparser *strp, struct sk_buff *skb)
+diff --git a/include/net/tls.h b/include/net/tls.h
+index e57bef58851e..e1e48a25cafa 100644
+--- a/include/net/tls.h
++++ b/include/net/tls.h
+@@ -123,6 +123,8 @@ struct tls_strparser {
+ 	bool msg_ready;
+ 
+ 	struct strp_msg stm;
++	/* TCP sequence of the first byte of the current record. */
++	u32 seq;
+ 
+ 	struct sk_buff *anchor;
+ 	struct work_struct work;
+diff --git a/net/tls/tls.h b/net/tls/tls.h
+index 60a37bdaaa25..a9f7fd79c69e 100644
+--- a/net/tls/tls.h
++++ b/net/tls/tls.h
+@@ -227,6 +227,12 @@ static inline bool tls_strp_msg_mixed_decrypted(struct tls_sw_context_rx *ctx)
+ 	return ctx->strp.mixed_decrypted;
+ }
+ 
++static inline u32 tls_strp_msg_seq(struct tls_sw_context_rx *ctx)
++{
++	DEBUG_NET_WARN_ON_ONCE(!ctx->strp.msg_ready);
++	return ctx->strp.seq;
++}
++
+ #ifdef CONFIG_TLS_DEVICE
+ int tls_device_init(void);
+ void tls_device_cleanup(void);
+diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
+index f11d0528fc43..fbfe6ec3df04 100644
+--- a/net/tls/tls_device.c
++++ b/net/tls/tls_device.c
+@@ -990,7 +990,7 @@ int tls_device_decrypted(struct sock *sk, struct tls_context *tls_ctx)
+ 		is_encrypted = 0;
  	}
  
- 	tls_device_rx_resync_new_rec(strp->sk, data_len + TLS_HEADER_SIZE,
--				     TCP_SKB_CB(skb)->seq + strp->stm.offset);
-+				     strp->seq);
- 	return data_len + TLS_HEADER_SIZE;
+-	trace_tls_device_decrypted(sk, tcp_sk(sk)->copied_seq - rxm->full_len,
++	trace_tls_device_decrypted(sk, tls_strp_msg_seq(sw_ctx),
+ 				   tls_ctx->rx.rec_seq, rxm->full_len,
+ 				   is_encrypted, is_decrypted);
  
- read_failure:
+diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
+index 6cc222008d95..5d5e8c3fd5ad 100644
+--- a/net/tls/tls_strp.c
++++ b/net/tls/tls_strp.c
+@@ -526,6 +526,9 @@ static int tls_strp_read_sock(struct tls_strparser *strp)
+ 
+ 	tls_strp_load_anchor_with_queue(strp, inq);
+ 	if (!strp->stm.full_len) {
++		/* Save the record start before copy mode advances copied_seq. */
++		strp->seq = tcp_sk(strp->sk)->copied_seq;
++
+ 		if (inq < TLS_HEADER_SIZE)
+ 			return tls_strp_read_copy(strp, true);
+ 		if (!tls_strp_check_queue_ok(strp, TLS_HEADER_SIZE))
 -- 
 2.50.1
 
