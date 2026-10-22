@@ -1,58 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792699059;
-	b=5bMYupvgrGSe5erurRxUsjcFmoTNIJedUCzixHKsVKaqYYWUxCrdwA8zgdKsVHjBkRmP
-	 7k6saCvFBKKDFsRpfM+CPZb0gitvQ6BcgPX4I+bPxptYNo8mXzV1o8Gkrwo45LVUmgU7O
-	 lIkR2Di3Vev89Gk/9rp/87giT/5wbwOweJWjC1UbjRt5UVGrpUp/Wx1yTUcCNOWKlNHWg
-	 0y31OAr5wfUfxLK5Vzh8S4YGPs19o7omc50oqNSJnaG15S1U7/D4wOtz50kLvpS9kyY4x
-	 dFg6W3COBbyC/A4Hmvjyv7pHfzH+YMcc7otUsXhu2xGBm3fG8b27TKs8cC4gMp5KAuQ==
+	t=1792699057;
+	b=CgpyerjdSkuforNYGAEHuzOAQI3c2sChAxmY2m9gxkfycYjDDwaB2e7+v/tHV5WkuS1o
+	 i3q2vTFuGn+nlVAtO7OoZpNQTDJLfxm0BDy1m4mW0AXdzXnMRriLTjrUIAIMUaCZ4Rvgl
+	 CbxIbxQrDwXon/XMpPqrdHET5oe3Z/2TSJmzuAq7elddG/9LsT0ydqLSbOXqjmHVo5Fnj
+	 fNSunhdyHj40gkQsWrXMQCOqCd5H29FFlyLrVnnqGl/IOdI3S2l2VmFFgCXZEPBBOM4E8
+	 TOVoYWlEvw3r7PGpV4wr/MZxr6qp9IuzdVc1dFFDmxUaVXMIBMBq1Wcgq4pq/tnkFew==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792699059;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792699057;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=iBvVCxS8o32Gutem6VL4VG0g7X95pS786Gjq6RUsRSc=;
-	b=zzuQkHxlPqhQ7jwhDoPwH0ErYBzNHAGQJnOPVA4tHqNmttlIiZTD+LUTRrgzx7l7Lpdy
-	 mcxfJfHwXIRmjsReV0ul1ADUtlwuPnFQjPS1qlf9akvfdj/YZ3mRsyp/nIUfkwUPj7YDO
-	 0n0gtJpPvBvm9ILAHo6J8w/rLYdmGNTTIzh48HY94jTwWvrAzWeFAVcONZSrf4nf3d6/E
-	 UNrLp1sj2stkpQUjPRvpBPDopE74tRrdM+Cwu4ATbwbZNez3mA2yPjlASMHDZHeVlHxXS
-	 VM+wek79owWaPeVtQtF9S2PCfZ/SxkRCCUkiY2kHfF53S22w6hKDIdllz+u74SRnpPg==
+	bh=Mckqm5Ve1KQcboHq94jGqkE4GT7V9HEqzykEjVbhuvg=;
+	b=1Qzz5JlCfr4FwMxNjrADSL3GoJzM11fXR6YoHuovA+W0XN7otcOSCeuxVJUgC4r2wQoM
+	 VvaXKjpO/lCzWKujOsVWIPbFhJCfSliYh8TYF4Q5JVIjK0rFD8sOW3eqznT8I/XzVeEO6
+	 kkrS07DoQsFX9bCfTB5k+BUI8vsCdw+qDC9enGWarEUR2TioNp4zqnlBlLp7hNnQex72E
+	 F19nmJF6vFkrXEEZMEovkw2Ia+xPTl/d7Agan/HR0lV1OLl833SlVW3oHnlvjFjcAQ1Q1
+	 oBE4A+5QcCvsAJEZ9UMAOruR9SRjPGL0dpGka71p/gvgzLHlBJY1IpMU8oYT0kFynhg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ooaoLVY3;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Lc/xERVm";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6677A606A324;
-	Thu, 22 Oct 2026 19:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A37606A319;
+	Thu, 22 Oct 2026 19:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ooaoLVY3
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D56E1F01825;
-	Thu, 22 Oct 2026 19:57:38 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Lc/xERVm
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C08111F01825;
+	Thu, 22 Oct 2026 19:57:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792699059;
-	bh=iBvVCxS8o32Gutem6VL4VG0g7X95pS786Gjq6RUsRSc=;
+	s=k20260515; t=1792699056;
+	bh=Mckqm5Ve1KQcboHq94jGqkE4GT7V9HEqzykEjVbhuvg=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ooaoLVY3787X3TWnKxSb2ExdSGsZTtIsg+0vK3sumyR5UR3Pqfx8gvc70YOxwg6II
-	 qYo+nAPURAV8cxu9JX4lG8uEyQQhp13usMokO9QobOTtwjgSDIArFLJvQ5T0RN++Rr
-	 KNC+3G8JGIGcD6fzJeDygFkECms7kcE1ANqPOcwuh81vxFCqBL9NFLu7fzG7zKCMZO
-	 /NJLEfWVX8kePYf2rMZcEfxS4s1oi3s/j/gtOi6LefRhso4vuujxIKZb243CwOc1MD
-	 McbwX9IGl13sLFq9X97ypHmTyUdY9fp9+fszKkb8OCx/Ae41eygJiLxsSgXzkJrNS2
-	 Cs6ML/DIot5FA==
-Subject: Re: [PATCH net-next v6 8/9] selftests: tls: Extend coverage for
- zero-length records
+	b=Lc/xERVm3ndG1kY4xWhEG8todD/JwC7qtaJMXzu7MBm/M1xC4rggTyYvVF1WyxHHu
+	 wzhnYzga6qMi+cpNSEJGLOnGqpeqw9o+q5ydniWtavk08kIQpip8Ksqwxrylab3hvI
+	 LI2H46R69H5t2BxQp9MJXBiEjhLHYfukShDwKrx3G3K6yvP7BF9ajocmYovUTCpxXe
+	 1EH0CsDrYY+v9UTkMDi1MGd5V7rtzRnh6k+abzHPhZDpmGYSMjSdte/MG9hky34h4T
+	 5kwn9d9btVnvV/2+vfQbJb0bMrSVG7Xxnm969jgp/3uInIzalSdfwo39jeNoXSsHlg
+	 XYgJZfqcV4UTQ==
+Subject: Re: [PATCH net-next v6 1/9] tls: Bound consecutive no-data records in
+ tls_sw_read_sock()
 From: netdev-bot+sashiko@kernel.org
 To: cel@kernel.org
 Cc: john.fastabend@gmail.com, kuba@kernel.org, sd@queasysnail.net,
  davem@davemloft.net, pabeni@redhat.com, horms@kernel.org, davejwatson@fb.com,
  shuah@kernel.org, qingfang.deng@linux.dev, edumazet@kernel.org,
  netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
-Date: Thu, 22 Oct 2026 19:57:37 +0000
-Message-ID: <179269905793.1189532.10522541488678622443@kernel.org>
-In-Reply-To: <20261019-tls-follow-on-v6-8-ab01c4ecca0c@kernel.org>
-References: <20261019-tls-follow-on-v6-8-ab01c4ecca0c@kernel.org>
-X-sashiko-severity: Low
+Date: Thu, 22 Oct 2026 19:57:35 +0000
+Message-ID: <179269905526.1189532.975361221217060549@kernel.org>
+In-Reply-To: <20261019-tls-follow-on-v6-1-ab01c4ecca0c@kernel.org>
+References: <20261019-tls-follow-on-v6-1-ab01c4ecca0c@kernel.org>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -65,102 +65,101 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Low] This patch adds TEST_F(zero_len_splice, test) in
-  tools/testing/selftests/net/tls.c.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] When the new TLS_RX_NODATA_LIMIT break fires,
+  tls_sw_read_sock() queues data_ready_work only if…
 
 --
 
-selftests: tls: Extend coverage for zero-length records
+tls: Bound consecutive no-data records in tls_sw_read_sock()
 
-This adds the zero_len_splice and zero_len_peek fixtures to the TLS
-selftests. They check that splice() and MSG_PEEK get past runs of
-zero-length application_data records. It also adds a data_0data_data
-variant to zero_len, which checks that recv() does not read through an
-empty record sitting between two data records.
+This patch stops tls_sw_read_sock() after TLS_RX_NODATA_LIMIT consecutive
+zero-length data records. If a parsed record is ready when the loop stops,
+a work item on tls_strp_wq runs the consumer's current sk_data_ready(),
+because tls_rx_reader_release() only wakes saved_data_ready.
 
-> diff --git a/tools/testing/selftests/net/tls.c b/tools/testing/selftests/net/tls.c
-> index 0bc43728262e..aa66d0bbd1b5 100644
-> --- a/tools/testing/selftests/net/tls.c
-> +++ b/tools/testing/selftests/net/tls.c
+> diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+> index 312e51270f29..0ef0edd51edd 100644
+> --- a/net/tls/tls_sw.c
+> +++ b/net/tls/tls_sw.c
 
 [ ... ]
 
-> +/* Splicing must skip a run of empty data records to reach the payload
-> + * behind it, since a zero-byte splice reads as EOF. Splice reports
-> + * EAGAIN for a run with no payload behind it, and EINVAL for a control
-> + * record behind the run.
-> + */
-> +TEST_F(zero_len_splice, test)
-> +{
-> +	struct pollfd pfd = { .fd = self->cfd, .events = POLLIN };
-> +	const struct raw_rec *payload;
-> +	unsigned char buf[128];
-> +	ssize_t ret;
-> +	int p[2];
-> +
-> +	if (self->notls)
-> +		SKIP(return, "no TLS support");
-> +
-> +	ASSERT_GE(pipe(p), 0);
-> +
-> +	payload = zero_len_send_recs(_metadata, self->fd, variant->recs);
-> +
-> +	if (variant->splice_ret < 0) {
-> +		ret = splice(self->cfd, NULL, p[1], NULL, sizeof(buf),
-> +			     SPLICE_F_NONBLOCK);
-> +		EXPECT_EQ(ret, -1);
-> +		EXPECT_EQ(errno, -variant->splice_ret);
-> +	} else {
-> +		/* ASSERT so a zero return stops the test before the read
-> +		 * below blocks until the harness timeout.
-> +		 */
-> +		ASSERT_EQ(splice(self->cfd, NULL, p[1], NULL, sizeof(buf),
-> +				 SPLICE_F_NONBLOCK), variant->splice_ret);
+> @@ -2144,6 +2161,16 @@ int tls_sw_read_sock(struct sock *sk, read_descriptor_t *desc,
+>  		 */
+>  		if (rxm->full_len == 0) {
+>  			consume_skb(skb);
+> +			if (++nodata >= TLS_RX_NODATA_LIMIT) {
+> +				/* tls_rx_reader_release() wakes only the
+> +				 * callback saved when TLS_RX was set up,
+> +				 * not one installed since.
+> +				 */
+> +				if (tls_strp_msg_ready(ctx))
+> +					queue_work(tls_strp_wq,
+> +						   &ctx->data_ready_work);
+> +				break;
+> +			}
 
-[Severity: Low]
-Both splice() calls in TEST_F(zero_len_splice, test) pass
-SPLICE_F_NONBLOCK, and nothing sets O_NONBLOCK on cfd. Is the socket
-O_NONBLOCK path in tls_sw_splice_read() ever covered by this test?
+[Severity: Medium]
+Can this break return 0 while the next record is still being parsed, with
+nothing left to wake nvme-tcp?
 
-net/tls/tls_sw.c:tls_sw_splice_read() {
+data_ready_work is only queued if msg_ready is already set. For the 16th
+empty record, tls_rx_rec_done() calls tls_strp_check_rcv(&ctx->strp, false).
+If tls_strp_read_sock() returns -ENOMEM, the parse is handed off to
+strp->work and msg_ready stays 0:
+
+net/tls/tls_strp.c:tls_strp_check_rcv() {
     ...
-	nonblock = (flags & SPLICE_F_NONBLOCK) ||
-		   (sock->file->f_flags & O_NONBLOCK);
+	if (tls_strp_read_sock(strp) == -ENOMEM)
+		queue_work(tls_strp_wq, &strp->work);
     ...
 }
 
-The earlier commit "tls: Honor O_NONBLOCK in tls_sw_splice_read()"
-added the f_flags check above. It names this selftest, run on a
-nonblocking socket, as its reproducer.
+That -ENOMEM can come from alloc_page(sk->sk_allocation) in
+tls_strp_read_copy(), and nvme-tcp sets sk_allocation to GFP_ATOMIC. The
+copy path runs in copy_mode, or when tls_strp_check_queue_ok() fails on a
+fully received record.
 
-As of this patch, SPLICE_F_NONBLOCK on its own makes the wait return
--EAGAIN. A kernel that lost the O_NONBLOCK term would still pass every
-zero_len_splice variant.
+Once the loop breaks, tls_strp_msg_ready(ctx) is false and the work item is
+not queued. tls_rx_reader_release() calls tls_rx_msg_maybe_announce(),
+which also returns early:
 
-This looks resolved later in the series. "selftests: tls: Cover splice
-on a nonblocking socket" moves the body into zero_len_do_splice() with
-a splice_flags parameter. It also adds TEST_F(zero_len_splice,
-nonblock_socket), which sets O_NONBLOCK on cfd with fcntl(F_SETFL) and
-then splices with flags 0.
+	if (!READ_ONCE(strp->msg_ready) || strp->msg_announced)
+		return;
 
-Would it make sense to fold that coverage into this patch, so the
-reproducer named by the fix is in place from the start?
+Later, tls_strp_work() parses the record via tls_strp_check_rcv(strp, true).
+It announces the record only through ctx->saved_data_ready, which for
+nvme-tcp is the pre-handshake callback and not nvme_tcp_data_ready(). The
+commit message makes the same point.
 
-> +		ret = read(p[0], buf, sizeof(buf));
-> +		EXPECT_EQ(ret, variant->splice_ret);
-> +		if (ret == variant->splice_ret)
-> +			EXPECT_EQ(memcmp(buf, payload->plain_data,
-> +					 variant->splice_ret), 0);
-> +
-> +		/* The empty records were consumed, not left queued */
-> +		EXPECT_EQ(poll(&pfd, 1, 0), 0);
-> +	}
+nvme_tcp_io_work() sees a 0 result from read_sock and does not requeue
+itself. Does the fully received record then sit until another TCP segment
+arrives or the I/O times out?
+
+Before this patch, the loop went back into tls_rx_rec_wait(). With
+sk_receive_queue non-empty, that retried tls_strp_check_rcv()
+synchronously, so this state needed two allocation failures in a row. With
+the early break, a single failure is enough.
+
+A related case, with empty records left on ctx->rx_list by MSG_PEEK, can be
+reached at this commit. It goes away later in the series, because "tls:
+Consume empty data records in tls_sw_recvmsg()" keeps empty records off
+rx_list.
+
+>  			continue;
+>  		}
+>  
 
 [ ... ]
 
