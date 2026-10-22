@@ -1,59 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792633581;
-	b=i0sXvHmPcLPUeKdReVwDH2gOoWC4di8hUUQenNbe5HppRmfulr4wrI0nwAmZaAQ+iC/J
-	 StIJndw5ZwoqFb6EPCREX+h78hPZZgsPfvZqqUAYEirpU6qxH4sSAxZklaDNC3jg3Ik8A
-	 1aPgdIb/DadTIRkKy2FhnvJrmF8xTmOIfaOb4ySJeSxIiScv2MQGd/rMVaJIz46EhPAna
-	 RwS/CPywCvw1mMXGgB0wNozRJ52iXsHykfmNWSlWH3AQTyqqDBgAaPM62F6N2mHweBF/I
-	 NHp5Wex1WVMOmG1pFmi2WM6933phpWA5udauizZBbkDVwcReXac97TcZCZpcDwGiE7Q==
+	t=1792633637;
+	b=D9AhJ71kwCjo2C7BuZ5rI46GTbzKtX74AbRiYoYFo1n9whhKbNANHQ/+R6c0WufSAcWA
+	 2U/d1ngM/qxEzYE1a/Lz0GzxY1+ato7yUR1EtlUk+97A6poCaibN2rReOET+QjHiv4W93
+	 mVkWB83FmQWeNtNUqLEHKWyeMvrEWheeJOwlBBT0is+LqniqKQOv6TdhrIqL7d+ACKbTk
+	 nE6ZW6+tqXZZTV6li75gp24Y1a8M0ezwocSgPOD+vcKdzY71r83PXSnBiQzfxSW9eueMA
+	 J+uzNHUFN3bkV+d/MD3hJDLXu/G4N+zS/mhWZe42+45MQhgQAK3IzNjzqiKSMWw3Wew==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792633581;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=3t/lhtMwUqFTKoF3uLxNOnCU7ZEEEAgxIpdnalajtQ8=;
-	b=SVD/FJEuEomvenWrnLeKUlAWrMw6dsZzPwMZlSLK8CqZw8nuEuxtSGwGm9vsXsLJ2Lis
-	 fZMSlbhJvIigYx8VLwGnFp2CqaIWZQLL7hZacgo+12bdSI25+HsW77fhpEOLwquM1s7pe
-	 +eUadhaojmJgyOss+hBRERE7Rz/oIU40JH09IKZnm1nz+Fl9G7ypTls+Y228iV7uoeHJC
-	 YdmGVHc1j4hiR9Yr+5vL1Vp+PKgCBnu/uRdfXXsKcMPFamdnzQI8apekWvbddY1LB0dwY
-	 tqfVZHDAu9WjieubjmEUAzzVenxJFg3CBr3Qi3KHyXmfALIGwONM4nlr8hovtDQiTcg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792633637;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=jCKRYOUlKmoPJSnDi6pvpqUte660v3ToEOh1Wa/1TdM=;
+	b=SK6eb8vq5EVLJ4qfjbEZOjKFQZjQlA/8P9noXev7Cxgd7Il4HelWoPD1BK+SHUlH83Ms
+	 m2py4gauynLvC52Cr1BwcGomi3LwJZGj4u+UpO95llwM4M6qRZFJOMp5ROLIiHj06SfaN
+	 RN87iFWZFAre4rzckX47JI6Yb+hgyiVzx0Ohpr+/5GhabHyHrhvYqdgMiIsI9CEufk2Q3
+	 dxuAts4rrzEPqIk0ZlGocgHpBjUR5jCwL6ooT8MC9trz3Wy2cXpQ4i5+iAfL14VYds9Z0
+	 l5tbQjZ08Beq6OoGi0SpFz/kpJDwjkeQonnMFxVepjkzYQtqCrbYlUX4hbU2HRz7VzA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lEZ06Np6;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=e8bkoLYx;
+	arc=none smtp.remote-ip=209.85.221.173
+Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205D6606A319;
-	Thu, 22 Oct 2026 01:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5554B606A319
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 01:47:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5554B606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lEZ06Np6
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 732E91F000C1;
-	Thu, 22 Oct 2026 01:46:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792633581;
-	bh=3t/lhtMwUqFTKoF3uLxNOnCU7ZEEEAgxIpdnalajtQ8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=lEZ06Np6OmQu82WP1TS+x1kPF57zJwSzvw4Oiz1T/hIDZ98jWutoeqkT6kW/cfm3o
-	 xdQueKD8+6iZYiVPHj6ETY6IE/iBq43duTOIlLQflbLoGdBpYJpX+i4GpdvMs3bwFe
-	 xtk30aKYHGDO+/fEI32SRWsr0A+CvOLJNboSNADnU0zDAFBqUgeDOp8VcZtu7+MAa3
-	 gHpYsqA1tEktweRIfr5SIWiJVEj3XOQjJIK8ucz/jVRneL8E9acBA+0ETNj8MdrMx0
-	 U9ix6fyhr2fBW8vPb8MR1VOdhwHV2Y/Qus7ZYKSh6nBRuVWdicopcZuswlBLS+IfQ3
-	 E1k7z3ZvQBqtw==
-Subject:
- Re: [PATCH net] net: ag71xx: reallocate rx buffers when changing the MTU
-From: netdev-bot+sashiko@kernel.org
-To: rosenp@gmail.com
-Cc: netdev@vger.kernel.org, chris.snook@gmail.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- o.rempel@pengutronix.de, linux-kernel@vger.kernel.org
-Date: Thu, 22 Oct 2026 01:46:20 +0000
-Message-ID: <179263358000.3135.15720043539701773895@kernel.org>
-In-Reply-To: <20261019014438.199718-1-rosenp@gmail.com>
-References: <20261019014438.199718-1-rosenp@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=e8bkoLYx
+Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-5eaefe5b523so845885e0c.0
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 18:47:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792633636; x=1793238436; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=jCKRYOUlKmoPJSnDi6pvpqUte660v3ToEOh1Wa/1TdM=;
+        b=e8bkoLYx7ax0rHmA5TVR5sVFCMou4ByuTnwIf3iAcEpdWK+SFphmKlwpW7HJBj8mn2
+         eH5E+xrhrJjWibsOnefdCOeheNZyN0+D/b8y09ssUcRUmEIw7iBrsgZrT9icLNw1BJMR
+         MSdImODSw8S5llUMVkn4uKfDZ9il1/XKx6cwK89XvSDs+/lrSk3jZVKMsHdBhJYBnkmq
+         wz2N41cM1YyT2pP3WKb9J4bINV0gLk3WepaRZ34hDCh7hqImMZ+98sa6ExwpRUw7A5W5
+         lnU2RJiZPAdgX25/0JNNuKea0G2V3cyP8LjSfWjerY5bYBcz/Hyrk5O9q7QbCP/D7s64
+         /xAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792633636; x=1793238436;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jCKRYOUlKmoPJSnDi6pvpqUte660v3ToEOh1Wa/1TdM=;
+        b=GZOvIPh+1ChOi+v0U1OpD4Mkfm61/CkzogJqhQLKp9UVbSRupQrSdkMLgmpxNTR4vE
+         kL3bejujw+JaBCdtxp5K/g7w0RvtQFoKGDmyqRnTxzwOuGvPyCkOvctW+CxPYvgbedfR
+         U8e3D8vCw1p+O24emukox1qfmd8dJJfwKzMPMwFWB6Opae1QzHEOw4annB5MsECyVhs1
+         8UT/7UomAmr9aCmkuekBFZBAT+rM6gWpVhvaKK/kERwYxDJWdDz+499oPoOsmCMfWrKR
+         upPfzZ3DFa2Iv5xMDp1jpSCjU+JgE5coXD5PyZkwD7R7O9tRNRLSFl6WQ8bTydxfAnWS
+         MV7w==
+X-Forwarded-Encrypted: i=1; AKwUvBwvQMlh+hrzFdKb0BGqTOCfuvhgqJ/A0m6LGX0wCfWmX184eChZSscWoJMcdiAgycswonYqhgE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ+ze5dv9GQeF8+BJZUROl/8h2S4TXMVjyvjYHwIIGTMhI0OhHi
+	tdOJO3Yf4de659hlSDq50gfBjMrJArBe5OBG0JhzKEwutgiw9z4osZIo
+X-Gm-Gg: AYBFou36r5awL31iZoqhGKbGlDoipZGWimH70mx/Rn4F+iGdbrHgJ3m+FiBN13gshBm
+	PPw8mC7xJny3Y2VaN0kfMOw3kui9exipSOm1Fy6EUFkMn9QUKyqa1u7lWhRkxIi3PV3fHmEUKfq
+	DdcMmD7W/T8564C5RWZpJMqbrk9Qj5jPyq/z9HdIK45a6ir/+n0e3gxch5otN2ZH16v0IQRyl8K
+	DpimCauMz3AErFdoOr4fhpo545G5Je/d1LBbtTsS9OyJceZ/co3u54gxnpVYDk11VTeXF9mHO8M
+	3cH7lQ4tK2OKOOQNQvJiLYTnwENRnVj1zIXaUron+LU1aNMvn5nBXSZlkGiGacfkP34xqwAHNpc
+	x9OwLReI1IkqiWQx9f/qsDtQTZ9leVQfEqTNd58Z9jDMWXx3VWOcy8PJNzrDFlSlCysBqHe3FvE
+	/EQqvhs+Ht9dLJRaYwF6AUug5nZ/oF++2Rzad9dpu0Ma+rwHAlICpnQt118oMBJrz1HG0e4tqPc
+	QUKl5Jxeurh/tKlfycPWVpxmT2pXmkvTDDfSVuawDfAQ8T/XO0Ak1rKyX7vEOisViKZzysy50Bu
+	t6FnVWUruNICmppLdvwMWfkCF4VtFs4l/MaUCAxtCIyTThG0YqXC0z7OMHYP5UjopQN83GDBgrX
+	Ap+35gUwwmpAtONX94W0=
+X-Received: by 2002:a05:6122:1d9f:b0:5e6:82ca:c551 with SMTP id 71dfb90a1353d-5eaebef16acmr1695454e0c.22.1792633636272;
+        Wed, 21 Oct 2026 18:47:16 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5eae980f64esm5275613e0c.13.2026.10.21.18.47.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 18:47:15 -0700 (PDT)
+Date: Wed, 21 Oct 2026 21:47:15 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Josef Bacik <josef@toxicpanda.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Juergen Gross <jgross@suse.com>, 
+ Stefano Stabellini <sstabellini@kernel.org>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Fernando Fernandez Mancera <fmancera@suse.de>, 
+ Mina Almasry <almasrymina@google.com>, 
+ David Laight <david.laight.linux@gmail.com>, 
+ netdev@vger.kernel.org, 
+ xen-devel@lists.xenproject.org, 
+ Willem de Bruijn <willemb@google.com>, 
+ Josef Bacik <josef@toxicpanda.com>
+Message-ID: <willemdebruijn.kernel.11bad1f39601b@gmail.com>
+In-Reply-To: <20261021-b4-skbuff-bug-on-followups-v2-11-2aa780a03524@toxicpanda.com>
+References: <20261021-b4-skbuff-bug-on-followups-v2-0-2aa780a03524@toxicpanda.com>
+ <20261021-b4-skbuff-bug-on-followups-v2-11-2aa780a03524@toxicpanda.com>
+Subject: Re: [PATCH net-next v2 11/15] net: skbuff: refuse to segment a nested
+ frag_list
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,176 +114,99 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
-
-Critical: 0 · High: 2 · Medium: 0 · Low: 0
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] ag71xx_change_mtu() does not handle a failed reopen.
-- [High] ag71xx_change_mtu() calls ag71xx_stop() and ag71xx_open()
-  directly while the netdev is still running and its qdisc and TX path…
-
---
-
-net: ag71xx: reallocate rx buffers when changing the MTU
-
-This patch makes ag71xx_change_mtu() stop and reopen a running interface.
-The rx rings are then refilled with buffers sized for the new MTU before
-the MAC frame length register is programmed. Before this, the new max frame
-length was written straight to the MAC while the rings still held buffers
-sized for the old MTU.
-
-> diff --git a/drivers/net/ethernet/atheros/ag71xx.c b/drivers/net/ethernet/atheros/ag71xx.c
-> index 4e4794c4dfdce..6db5ab8be6aef 100644
-> --- a/drivers/net/ethernet/atheros/ag71xx.c
-> +++ b/drivers/net/ethernet/atheros/ag71xx.c
-> @@ -1766,11 +1766,19 @@ static irqreturn_t ag71xx_interrupt(int irq, void *dev_id)
+Josef Bacik wrote:
+> skb_segment() walks head_skb's frag_list, but for each member it only
+> looks at the linear part and frags[], never at the member's own
+> frag_list.  head_skb->len still counts those bytes, so with a nested
+> frag_list the walk runs out of members while it still owes data, sets
+> list_skb to NULL, and dereferences it on a later pass, before any of
+> the layout checks get a chance to catch it.  When the member is taken
+> whole with skb_clone(), the pskb_trim() that follows also drops its
+> nested data.
+> 
+> Nothing in the tree is known to build such an skb; GRO flushes instead
+> of chaining an skb that already has a frag_list.  Check each member as
+> the walk takes it, in the GSO_BY_FRAGS, clone and frag paths, and fail
+> the segmentation with -EINVAL if there's no member left or it has its
+> own frag_list, with a DEBUG_NET_WARN_ON_ONCE() for debug kernels, like
+> the other frag_list layout checks.  Without SG the payload is copied
+> with helpers that do recurse into nested frag_lists, so that path is
+> left alone.
+> 
+> Suggested-by: Willem de Bruijn <willemb@google.com>
+> Assisted-by: LLM
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> ---
+>  net/core/skbuff.c | 22 ++++++++++++++++++++--
+>  1 file changed, 20 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> index 56cec58bccb7..c5e28a52114b 100644
+> --- a/net/core/skbuff.c
+> +++ b/net/core/skbuff.c
+> @@ -5087,6 +5087,15 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
+>  		int size;
 >  
->  static int ag71xx_change_mtu(struct net_device *ndev, int new_mtu)
->  {
-> -	struct ag71xx *ag = netdev_priv(ndev);
-> +	bool running = netif_running(ndev);
+>  		if (unlikely(gso_by_frags)) {
+> +			/* The walk only goes one level deep: running out of
+> +			 * members, or finding one with its own frag_list, means
+> +			 * a nested frag_list that head_skb->len counts.
+> +			 */
+> +			if (unlikely(!list_skb || skb_has_frag_list(list_skb))) {
+> +				DEBUG_NET_WARN_ON_ONCE(1);
+> +				err = -EINVAL;
+> +				goto err;
+> +			}
+
+This patch became quite a bit more complex because of my request.
+More than I anticipated.
+
+Are you sure this first block is needed?
+
+
+>  			len = list_skb->len;
+>  		} else {
+>  			len = head_skb->len - offset;
+> @@ -5096,9 +5105,11 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
+>  
+>  		hsize = skb_headlen(head_skb) - offset;
+>  
+> -		if (hsize <= 0 && i >= nfrags && skb_headlen(list_skb) &&
+> +		if (hsize <= 0 && i >= nfrags && list_skb &&
+
+this test for list_skb != NULL is new. Previously this code already
+tested skb_headlen(list_skb) without it. Likely not needed for
+anything new in this patch?
+
+> +		    skb_headlen(list_skb) &&
+>  		    (skb_headlen(list_skb) == len || sg)) {
+> -			if (unlikely(skb_headlen(list_skb) > len)) {
+> +			if (unlikely(skb_headlen(list_skb) > len ||
+> +				     skb_has_frag_list(list_skb))) {
+>  				DEBUG_NET_WARN_ON_ONCE(1);
+>  				err = -EINVAL;
+>  				goto err;
+> @@ -5216,6 +5227,13 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
+>  
+>  		while (pos < offset + len) {
+>  			if (i >= nfrags) {
+> +				if (unlikely(!list_skb ||
+> +					     skb_has_frag_list(list_skb))) {
+> +					DEBUG_NET_WARN_ON_ONCE(1);
+> +					err = -EINVAL;
+> +					goto err;
+> +				}
 > +
-> +	/* The rx buffers are sized for the MTU at open time and the rx
-> +	 * descriptors carry no buffer length, so a larger MTU must not
-> +	 * reach the MAC before the rings have been refilled.
-> +	 */
-> +	if (running)
-> +		ag71xx_stop(ndev);
+>  				if (skb_orphan_frags(list_skb, GFP_ATOMIC) ||
+>  				    skb_zerocopy_clone(nskb, list_skb,
+>  						       GFP_ATOMIC))
+> 
+> -- 
+> 2.55.0
+> 
 
-[Severity: High]
 
-Is it safe to call ag71xx_stop() here while the qdisc and tx path are
-still live?
-
-On the normal ndo_stop path, __dev_close_many() clears __LINK_STATE_START
-and runs dev_deactivate_many() before it calls ndo_stop, so no xmit is in
-flight. This path skips that step. ag71xx_hw_disable() only does this:
-
-ag71xx_hw_disable() {
-	netif_stop_queue(ag->ndev);
-
-	ag71xx_hw_stop(ag);
-	ag71xx_dma_reset(ag);
-
-	napi_disable(&ag->napi);
-	timer_delete_sync(&ag->oom_timer);
-
-	ag71xx_rings_cleanup(ag);
-}
-
-netif_stop_queue() does not take the tx lock, so it doesn't wait for a CPU
-that is already inside ag71xx_hard_start_xmit().
-
-NAPI is also still enabled during ag71xx_hw_stop() and ag71xx_dma_reset(),
-which can mdelay for several ms. A poll in that window can re-open the
-queue:
-
-ag71xx_poll()
-  ag71xx_tx_packets()
-    if ((ring->curr - ring->dirty) < (ring_size * 3) / 4)
-        netif_wake_queue(ag->ndev);
-
-ag71xx_hard_start_xmit() takes no driver lock. It writes
-ring->buf[i].tx.skb and the descriptors, updates ring->curr and BQL, and
-sets TX_CTRL_TXE. That restarts the tx DMA engine that ag71xx_dma_reset()
-just stopped.
-
-Could this let an xmit run at the same time as ag71xx_rings_cleanup() and
-ag71xx_rings_free(), which kfree(tx->buf) and dma_free_coherent() the
-descriptors?
-
-If the queue was woken, an xmit after the rings are freed but before
-ag71xx_open() would dereference tx->descs_cpu and tx->buf after they have
-been set to NULL. An xmit that races with ag71xx_ring_tx_init() and
-netdev_reset_queue() during the reopen could also corrupt curr/dirty and
-the BQL state.
-
-On DSA setups this can happen while other user ports are still
-transmitting through the conduit, because dsa_user_change_mtu() calls
-dev_set_mtu() on the conduit.
-
-ag71xx_restart_work_func() already uses the same unquiesced
-hw_disable/hw_enable pattern. This patch adds a new trigger for it that is
-reached routinely.
-
->  
->  	WRITE_ONCE(ndev->mtu, new_mtu);
-> -	ag71xx_wr(ag, AG71XX_REG_MAC_MFL,
-> -		  ag71xx_max_frame_len(ndev->mtu));
-> +
-> +	if (running)
-> +		return ag71xx_open(ndev);
-
-[Severity: High]
-
-What happens to the device if ag71xx_open() fails here?
-
-ag71xx_open() can fail in two places:
-
-- phylink_of_phy_connect()
-- ag71xx_hw_enable()->ag71xx_rings_init(), which returns -ENOMEM if any
-  rx buffer allocation fails. Those buffers are now sized for the new,
-  possibly larger, MTU.
-
-Both failure paths return before napi_enable():
-
-ag71xx_hw_enable() {
-	ret = ag71xx_rings_init(ag);
-	if (ret)
-		return ret;
-
-	napi_enable(&ag->napi);
-	...
-}
-
-netif_set_mtu_ext() just passes the error up and does not close the device.
-So netif_running() stays true while NAPI is disabled, the rings are freed
-and the PHY is detached.
-
-Any later ag71xx_hw_disable() would then call napi_disable() a second time.
-That can come from ifdown or unregister through ag71xx_stop(), from another
-MTU change, or from a pending restart_work that ag71xx_stop() doesn't
-cancel.
-
-Wouldn't napi_disable_locked() then spin forever with RTNL held?
-
-net/core/dev.c:napi_disable_locked() {
-    ...
-		while (val & (NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC)) {
-			usleep_range(20, 200);
-			val = READ_ONCE(n->state);
-		}
-    ...
-}
-
-The device state is also left inconsistent. ndev->mtu is already set to
-new_mtu even though an error is returned, and NETDEV_CHANGEMTU is never
-sent. Retrying with the same MTU returns 0 right away because of this
-check in netif_set_mtu_ext():
-
-	if (new_mtu == dev->mtu)
-		return 0;
-
-After a NETDEV_CHANGEMTU veto, netif_set_mtu_ext() rolls back by calling
-__netif_set_mtu(dev, orig_mtu) and ignores the result. A failed reopen on
-that path would leave the device in the same state without any error being
-reported.
-
-Before this patch, the handler could not fail. Should the error path
-restore the old MTU and bring the device back up? Or should it at least
-leave NAPI and the rings in a state that a later ag71xx_stop() can handle?
-
->  
->  	return 0;
->  }
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261019014438.199718-1-rosenp%40gmail.com
