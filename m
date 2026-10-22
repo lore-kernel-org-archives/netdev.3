@@ -1,55 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.57
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792637615;
-	b=5CZCX0hh7vhgpxQo5rPj1d4W3xAL94bVWtsjeXlF0x3FhSmE0LYlP/bWwhziIEDz+SXV
-	 hlHAJq/vG0/2+x8vxiAWfNXfc3oXsUt04iBIIMxYn1c0OAZDsIHyDRQ+hM+/eptgqcImj
-	 g9VKb22GMD1Dtykd8gr6/gMnl41YOEcFtVgrW/2HD5EF3KhDD58Bz1gqfFbiq0c8mgWjS
-	 y7mD0bGzeWzI7vV6b+gE0gFdZrXT7CDXxaonbmt6pgny2weY7hZuDU7wFy7GbxlpLXlkP
-	 qi182nO+ycaUoTou3WYe6po9gxbfAUu+1jqt8UlTwIdksbZkk5W2y1gwvuNYeJ3flNQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792637615;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer;
-	bh=V+vcOaCoDLPBFNtk+RYjfvQrB5pE2yYjOy7S2DnCAsE=;
-	b=fsCc6sAJ82zE0NaTiyl6OJfPYuad0l++regg0RZIZk/jNX7o3wd8SzqE3tJqcW37bRFu
-	 JRipQ/LWRwsXIG8VQdDMd0dVPEGTwVaHdcKXVaPNvLRZOXkcCCC9+E5Uq94d7f3SQT6/C
-	 TS/AEhfnuQBiz3Qn02o52V7vCXHApJ7ipI8p9qhf0M4i61hqEvvjjcNocJMvv9ji5c3ht
-	 8VpJc93f+fRYOVZQqJL5lS2K7tGjruXHK5y1PhCVHel+YR+sb2HbpR6LtccpaZ1joIPkW
-	 Ck5uZVhr7Nn9dY6bPSYNj8owEOQbakGeUSbvOKlWRJ9ZOghzfBV/I6IzvBFZNmeDFHA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=EdZB8hG7;
-	arc=none smtp.remote-ip=95.215.58.57
-Received: from mta1.migadu.com (out-57.mta1.migadu.com [95.215.58.57])
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.218.44
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1792637632;
+	b=h10YT4u8MXfLQt7A1WVyGmoXXTGqJfiux13ybOuGGZs1jBazd2sc/kbFhxhcGU/03mVC
+	 znn9nBeyVFd2wzIsCFW9bL2nBAfF6SaN3Tfo+kuAy+442UPeo5WXYDg64GQUoPWvX1hSc
+	 oTTJMSX5Kn+2PiLcxAUIvXJ0Ex1OF07LuCfoJFT6CuxaKvtSNDEQRIZcJ/YZg1Mjv0vgQ
+	 6SGudGnjjCTJL4//fhmyD7+OWS9uOMnEie305FhVpZKLgVPF0mAyPo/bI/+qsqmjJvP9R
+	 SezVS5qhVsjz12DtfuWm97UMXSUPsik1IWOy6cXSiEJOfjXTawIsgyn+fODOUldNaPQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792637632;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=NnU6rs3hrQM9btLPDOKgfodkMRYa3+dqaWM6BzIydXs=;
+	b=OOW87EXuiLDVQSrBnXHs16P/dvbsytZJfbxagiLf4rrwMbcZW6AvLyfbaiflcIs9scU8
+	 jLtVuhjuoGlsud2Zj4y4kWB0ynjlRIjGVQaxq/dDDgvIMAA/z0yZasLfSjPw9n9QEpuAQ
+	 5E8b5/K906WK8IIrcp+YzXEoBn2LCOG8p/8R373rvC+wP4RH/I1fxJLxEGuVVFhBtM9Sw
+	 uXwlWBG6dYwU1qoqm5Ng5tbuLa2/ivwm/dHf1I1rDY8SqfVn128jQ0D0ifI3mIeMOw3Fn
+	 lQND9lDie+7GemmN8mG9gFOOxtsywExzdvptbWmJ+n+7ntQ0Nes8OLP2GRcM6bxq3pg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="DTOI/Pek";
+	arc=fail smtp.remote-ip=209.85.218.44
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A50606A31A
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 02:53:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 47A50606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B8C606A31D
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 02:53:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 77B8C606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=EdZB8hG7
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=DZENdIxdxEVjEEelsGvTWold6bU898Lu0B1b0NdbO9s=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792637611; v=1; x=1793242411;
- b=EdZB8hG7x37BjimPX6YoXLgvVadxZTpoP8oUiARlyivSWYJ2s3e5k4h6qsLAqBRNEV++sdEm
- SUfVjUAT3hXh4trn13ZQ03lGrtNxQuQH1BumR8VBNtSAWrgSxqfzlJSjX1NR6/rAFM4UZb/GbMI
- 5lxCrRM9+cXo9pruX90MDwj4=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta11.migadu.com with ESMTPS id 8211905b97b66d5e;
-	Thu, 22 Oct 2026 02:53:30 +0000
-X-Mizu-Trace-ID: 8211905b97b66d5e
-X-Migadu-Flow: FLOW_OUT
-From: Hangbin Liu <hangbin.liu@linux.dev>
-Date: Thu, 22 Oct 2026 10:53:16 +0800
-Subject: [PATCH iproute2-next] lwt: ioam6: allow options in any order
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=DTOI/Pek
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c3f04e0e65fso178646866b.2
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 19:53:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792637631; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Xpa6IfO/T5sr04kRN3zA5Ny0L9zCq/bWTz2kHS0/lqwnvnTeSbzA47vgh2GohpYi/e
+         JWNi+O1V/YxfR8fk0R4fFcX3IrYRyrTIJ7VtVeMIIasuUGzabwmnoAHTpL26UcJjMvBu
+         hpjDWBOmw2+jyD2m5yx+Qmoh3TGfWSqnDfmsbMxZELXfVgA5AEGaaDeWMahudywe/UTl
+         NnJSoTQZz86CpHRvMH5a0eOJJx69yfUxxhlPmqvFJajpZfemRHGr1uYHtZozXPB/2cg9
+         yl5kHcaIWm2Wb4RwUMA+JO5MiOrIH9E4jE9l5hvG2Qm+Y1jltrSpyLwPSGa2oRG3Ysna
+         EZvA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=NnU6rs3hrQM9btLPDOKgfodkMRYa3+dqaWM6BzIydXs=;
+        fh=mqaWikxOzz/NiKt4svzlfNDf7kL1yKtQ0coE3whyTpE=;
+        b=CQbjJZiOPeZri97tbRHP6ZEK3HcV+kkUnJIzCb9QdKoVSlC9hkkseyOmQsCzEKVhC/
+         AOmeuAAM5zEVHboAyTmjM6pApje5jL8UQ7iKM7pxj0qoUQH1G36kCNNFSkXu38qBpNXZ
+         yeJpHm2KrVoc0yUhvH3ClrUnbZP8MQOGwabA+711Dw+r0A1+CY+veXYzM+qEfUYOlMc3
+         kIboI1yGm0jbrkprILCdUTaqekAXkHKUBgt5g6JT7oPsOBFhAnApoXbvynb/huLDRIN2
+         Ro0hv/rYp4ONtsftF5+Q4Ij1Sss7OWBMkgrABPD3xgfq3dZpA5lsjX4FVzba1g61udL1
+         Va/A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792637631; x=1793242431; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=NnU6rs3hrQM9btLPDOKgfodkMRYa3+dqaWM6BzIydXs=;
+        b=DTOI/PekpHCFwbCxS6btLnjWQNCiYVc9jJXCEYwAmPekEK8t/PxBNEKZNgCm5yMo5O
+         ZHRqWqq6Sa4prnp5961iu97eKvO2fCe1P/oDhQUuXQyhe3en4gFePLH+ndAycKrOkdLY
+         ZBtVPzCtW837QZIUsvIlXqXaajHAOKuqlnaym36x90uyaZGBsQGk0lDoH47TKDdTDSv/
+         +bNghojo2jLNQuKI4CGPrg7pLnnWdQfj43K8C91aQyr5qb1zEo8L/J/KSRypGRSRs42E
+         gu3hUif099K3NIyvd05k0+GuTWcbFOAPWaSRNh9N1gfC8G9MuampVJBqQHApn7d+PZp0
+         CiAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792637631; x=1793242431;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NnU6rs3hrQM9btLPDOKgfodkMRYa3+dqaWM6BzIydXs=;
+        b=mhIBAwGGI7ZKd4s15RBXIUznd4Imu8C7SAOdMuY38UgJJUUct/Iqjmo50MYjSes8UW
+         Z8uGvwZnp/ox2I3XTgtMQoUGDftCcQPyHtd98rO/IFYcJ9uY5pl447F5sZZfvaFGs/Rz
+         tBsbsimuJB/mcIOehrBZC7zVqutJo/px8a/cOQ+zybLwD2LcQhEi/jsjESktxC707fZ1
+         QR4lXUIO7Hh+tEuVX3UnTGAnVatHb1iOsNIPntc/D6rSmakHPgGdNuKHohe1/3Bs8HBw
+         lfmgIfh0t7WOVGnzGKdo4ytCkjHSf2MwrdsuhRoA217e2CsET7OWrb45seLwILyNAFRc
+         zUTQ==
+X-Forwarded-Encrypted: i=1; AKwUvByQ16+wrMu8vIuB7Qb07n18LVw0QCcwr7ddfFX4YE0just+3nu1Qh64Ss1I5TF3Xw+fORsIBuI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKSmKLOc7ZTzRQp+bBcBDe+i2cIfSIQT2c0j+lZ4cQPZ1O6+Hl5
+	byRnvjTSY8DB+VxCKPmfYOmdQtyND/xfSPxgOUlWC8H48d5fImLbMvPhSeyHJYGr0lgAEXUNovn
+	n8ignqnm41qmX2BEtF2gKluj5JOe8gvA=
+X-Gm-Gg: AYBFou0U8rg6k6CLUJQiNdTejMv6wCTLSfVx7USEhAE2R5jK6C2DcE9JUCKp1MFVSac
+	q01mUFgFBS409jXoSWSqZTPPrHfq0wCIwUgw3ICvK1XUjgSyQNuvMesQTD/e16Wv4Jr8Q8OtrRS
+	0WaFWkFci+gd3P6UcLFuJUEMyWkFj1bnAPCPnc1dS4YrPx4njiw5naSw6cvFhlcj1BrMEbKzoth
+	PRT1iGe9e9ML5Gqvo53yaZPfgKTWjYPCtOZL71Auk93Ok6jd8m0oMI/quD1OWXvamizlKPxNA+X
+	ppvVgKtl85bp4SNawV2i5wyIcxv2ZAgX3M7uiBcIs7AKZcYQGkraM8wn0WLgF8aiR+QlSTqwyCn
+	EaI1jfShoAbYOxb3gM2L7CuHcWROJbDdyEiX+utFtoEHUN7buHbXlQtvVIA==
+X-Received: by 2002:a17:906:ba84:b0:c41:8e21:4d60 with SMTP id
+ a640c23a62f3a-c46791326c1mr341731966b.1.1792637630664; Wed, 21 Oct 2026
+ 19:53:50 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,265 +104,63 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20261022-ioam_fix_order-v1-1-6eac1e00455b@kylinos.cn>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMUQrCMBAFr1Let4EmiqJXESm1u9EVTMomLYXSu
- 7vq5zDMrCiswgWXZoXyLEVyMvC7BsOzTw92QsYIbTj6NngnuX93UZYuK7G6GM90OJndE8GiUdn
- kb3iFjJqnysElXipuf12m+4uH+p1i2z41XipGgQAAAA==
-X-Change-ID: 20261021-ioam_fix_order-ff9d472023dd
-To: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>
-Cc: Stephen Hemminger <stephen@networkplumber.org>, 
- Justin Iurman <justin.iurman@gmail.com>, 
- Justin Iurman <justin.iurman@uliege.be>, 
- Hangbin Liu <hangbin.liu@linux.dev>, Hangbin Liu <liuhangbin@kylinos.cn>
-X-Mailer: b4 0.16.0
+References: <cover.1792552161.git.jan.koester@tuxist.de> <f444dffc8e6bf98bf44c02456adc2de40e4ecd95.1792552161.git.jan.koester@tuxist.de>
+ <fd20b840-350e-469c-9fd2-008fa0ded62a@slotpi15m67>
+In-Reply-To: <fd20b840-350e-469c-9fd2-008fa0ded62a@slotpi15m67>
+From: Takeshi Nishimura <takeshi.nishimura.linux@gmail.com>
+Date: Thu, 22 Oct 2026 04:52:00 +0200
+X-Gm-Features: AclHuK8zMCY_XzKvgZWVeEW29rK2WIKSmZA1a7YbTdfyZ3EtSnPZJ1CNUxd7pQ8
+Message-ID: <CALWcw=FYKcDNXeArpsabHiQOAL+cWkF=L3stL6MB0OvVaHei1g@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 40/41] nfsd, nfs: carry UUID and GUID owners as
+ their text form
+To: Chuck Lever <cel@kernel.org>
+Cc: Jan Koester <jan.koester@tuxist.de>, Christian Brauner <brauner@kernel.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, "Serge E. Hallyn" <serge@hallyn.com>, Jan Kara <jack@suse.cz>, 
+	"Theodore Y. Ts'o" <tytso@mit.edu>, Paul Moore <paul@paul-moore.com>, Arnd Bergmann <arnd@arndb.de>, 
+	linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-ext4@vger.kernel.org, linux-nfs@vger.kernel.org, 
+	linux-cifs@vger.kernel.org, netdev@vger.kernel.org, audit@vger.kernel.org, 
+	keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Hangbin Liu <liuhangbin@kylinos.cn>
+On Wed, Oct 21, 2026 at 7:44=E2=80=AFPM Chuck Lever <cel@kernel.org> wrote:
+>
+> On 10/20/26 11:16 PM, Jan Koester wrote:
+> > Encode such an id as its text form -- "xxxxxxxx-xxxx-xxxx-xxxx-
+> > xxxxxxxxxxxx" for a UUID, the same in braces for a GUID -- in both
+> > directions on the server and the client, and take such a string (it
+> > has no '@', so it can't be a user@domain name) as that id again.
+>
+> A bare UUID in an owner, owner_group, or ACE 'who' string is a new
+> owner-string syntax for NFSv4, one that only Linux would recognize.
+> Thus it isn't interoperable with other NFSv4 stacks as proposed
+> here.
+>
+> RFC 8881 Section 5.9 says a string without an '@' that is not a
+> decimal number means no translation was available and the receiver
+> "should not use that string as a basis for translation into its
+> own internal format." RFC 8000 Section 6.1 forbids bare numeric
+> ids in multi-domain deployments because they collide; the same
+> applies to bare UUIDs, and more so to GUIDs.
+>
+> If you are serious about pursuing this, you'll have to start by
+> raising the proposed wire format on nfsv4@ietf.org before the
+> Linux kernel's NFS stack commits to it.
 
-The ioam6 encap options must be given in a fixed order (freq, mode,
-tunsrc, tundst, trace, prealloc, type, ns, size). If a user uses a
-different order, the command fails with a misleading error even
-though every option is present:
+I recall rumors of MS wanting to stick Windows SID in text form into
+the NFSv4 protocol.
 
-  # ip -6 route change 2001:db8:2:1::/64 encap ioam6 mode encap \
-      trace prealloc tundst 2001:db8:2:1::2 type 0x800000 ns 0 size 12 \
-      via 2001:db8:1::3 dev dummy0
-  Error: argument "tundst" is required
+THIS proposal is even worse, in every imaginable way:
+Stuff an unreadable 128bit blob everywhere. I am sure people having to
+debug that in the kernel will LOVE the idea (compare blob a with blob
+b as human,YAY!), and admins facing the 128bit hexdump will send
+marriage proposals to the author, for making their lives even more
+heartless and miserable.
 
-Parse all options in a single while loop instead, then run the
-cross-option and missing-argument checks after the loop, reporting
-the missing arguments in the order the options are documented in
-ip-route(8).
-
-Use while (argc > 0), same with parse_encap_ip(), so that a
-valueless option in the last position (trace, prealloc) is not
-skipped, and reject duplicated options the same way type/ns/size
-already did.
-
-Rename ns_found and has_src to x_ok to align with other variable names.
-
-Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
----
-This change fixes one main issue plus several related mirror updates.
-I grouped them into a single patch, but the diff is a bit unwieldy for
-review. Let me know if you’d prefer I split this into smaller patches.
-
-Run kernel selftest ioam6.sh and all tests passed.
----
- ip/iproute_lwtunnel.c | 142 +++++++++++++++++++++++---------------------------
- 1 file changed, 66 insertions(+), 76 deletions(-)
-
-diff --git a/ip/iproute_lwtunnel.c b/ip/iproute_lwtunnel.c
-index 9a1e747c6951..798ef8143ce1 100644
---- a/ip/iproute_lwtunnel.c
-+++ b/ip/iproute_lwtunnel.c
-@@ -1170,7 +1170,8 @@ static int parse_ioam6_freq(char *buf, __u32 *freq_k, __u32 *freq_n)
- static int parse_encap_ioam6(struct rtattr *rta, size_t len, int *argcp,
- 			     char ***argvp)
- {
--	int ns_found = 0, argc = *argcp;
-+	int tunsrc_ok = 0, tundst_ok = 0, trace_ok = 0, prealloc_ok = 0;
-+	int freq_ok = 0, mode_ok = 0, ns_ok = 0, argc = *argcp;
- 	__u16 trace_ns, trace_size = 0;
- 	struct ioam6_trace_hdr *trace;
- 	inet_prefix saddr, daddr;
-@@ -1178,94 +1179,65 @@ static int parse_encap_ioam6(struct rtattr *rta, size_t len, int *argcp,
- 	__u32 trace_type = 0;
- 	__u32 freq_k, freq_n;
- 	char buf[16] = {0};
--	bool has_src;
- 	__u8 mode;
- 
--	if (strcmp(*argv, "freq") != 0) {
--		freq_k = IOAM6_IPTUNNEL_FREQ_MIN;
--		freq_n = IOAM6_IPTUNNEL_FREQ_MIN;
--	} else {
--		NEXT_ARG();
--
--		if (strlen(*argv) > sizeof(buf) - 1)
--			invarg("Invalid frequency (too long)", *argv);
--
--		strncpy(buf, *argv, sizeof(buf));
--
--		if (parse_ioam6_freq(buf, &freq_k, &freq_n))
--			invarg("Invalid frequency (malformed)", *argv);
--
--		if (freq_k < IOAM6_IPTUNNEL_FREQ_MIN ||
--		    freq_k > IOAM6_IPTUNNEL_FREQ_MAX)
--			invarg("Out of bound \"k\" frequency", *argv);
-+	mode = IOAM6_IPTUNNEL_MODE_INLINE;
-+	freq_k = IOAM6_IPTUNNEL_FREQ_MIN;
-+	freq_n = IOAM6_IPTUNNEL_FREQ_MIN;
- 
--		if (freq_n < IOAM6_IPTUNNEL_FREQ_MIN ||
--		    freq_n > IOAM6_IPTUNNEL_FREQ_MAX)
--			invarg("Out of bound \"n\" frequency", *argv);
--
--		if (freq_k > freq_n)
--			invarg("Frequency with k > n is forbidden", *argv);
--
--		NEXT_ARG();
--	}
--
--	if (strcmp(*argv, "mode") != 0) {
--		mode = IOAM6_IPTUNNEL_MODE_INLINE;
--	} else {
--		NEXT_ARG();
--
--		mode = read_ioam6mode_type(*argv);
--		if (!mode)
--			invarg("Invalid mode", *argv);
--
--		NEXT_ARG();
--	}
--
--	if (strcmp(*argv, "tunsrc") != 0) {
--		has_src = false;
--	} else {
--		has_src = true;
-+	while (argc > 0) {
-+		if (strcmp(*argv, "freq") == 0) {
-+			NEXT_ARG();
- 
--		if (mode == IOAM6_IPTUNNEL_MODE_INLINE)
--			invarg("Inline mode does not need tunsrc", *argv);
-+			if (freq_ok++)
-+				duparg2("freq", *argv);
- 
--		NEXT_ARG();
-+			if (strlen(*argv) > sizeof(buf) - 1)
-+				invarg("Invalid frequency (too long)", *argv);
- 
--		get_addr(&saddr, *argv, AF_INET6);
--		if (saddr.family != AF_INET6 || saddr.bytelen != 16)
--			invarg("Invalid IPv6 address for tunsrc", *argv);
-+			strncpy(buf, *argv, sizeof(buf));
- 
--		NEXT_ARG();
--	}
-+			if (parse_ioam6_freq(buf, &freq_k, &freq_n))
-+				invarg("Invalid frequency (malformed)", *argv);
- 
--	if (strcmp(*argv, "tundst") != 0) {
--		if (mode != IOAM6_IPTUNNEL_MODE_INLINE)
--			missarg("tundst");
--	} else {
--		if (mode == IOAM6_IPTUNNEL_MODE_INLINE)
--			invarg("Inline mode does not need tundst", *argv);
-+			if (freq_k < IOAM6_IPTUNNEL_FREQ_MIN ||
-+			    freq_k > IOAM6_IPTUNNEL_FREQ_MAX)
-+				invarg("Out of bound \"k\" frequency", *argv);
- 
--		NEXT_ARG();
-+			if (freq_n < IOAM6_IPTUNNEL_FREQ_MIN ||
-+			    freq_n > IOAM6_IPTUNNEL_FREQ_MAX)
-+				invarg("Out of bound \"n\" frequency", *argv);
- 
--		get_addr(&daddr, *argv, AF_INET6);
--		if (daddr.family != AF_INET6 || daddr.bytelen != 16)
--			invarg("Invalid IPv6 address for tundst", *argv);
-+			if (freq_k > freq_n)
-+				invarg("Frequency with k > n is forbidden", *argv);
-+		} else if (strcmp(*argv, "mode") == 0) {
-+			NEXT_ARG();
- 
--		NEXT_ARG();
--	}
-+			if (mode_ok++)
-+				duparg2("mode", *argv);
- 
--	if (strcmp(*argv, "trace") != 0)
--		missarg("trace");
-+			mode = read_ioam6mode_type(*argv);
-+			if (!mode)
-+				invarg("Invalid mode", *argv);
-+		} else if (strcmp(*argv, "tunsrc") == 0) {
-+			NEXT_ARG();
- 
--	NEXT_ARG();
-+			if (tunsrc_ok++)
-+				duparg2("tunsrc", *argv);
- 
--	if (strcmp(*argv, "prealloc") != 0)
--		missarg("prealloc");
-+			get_addr(&saddr, *argv, AF_INET6);
-+			if (saddr.family != AF_INET6 || saddr.bytelen != 16)
-+				invarg("Invalid IPv6 address for tunsrc", *argv);
-+		} else if (strcmp(*argv, "tundst") == 0) {
-+			NEXT_ARG();
- 
--	while (NEXT_ARG_OK()) {
--		NEXT_ARG_FWD();
-+			if (tundst_ok++)
-+				duparg2("tundst", *argv);
- 
--		if (strcmp(*argv, "type") == 0) {
-+			get_addr(&daddr, *argv, AF_INET6);
-+			if (daddr.family != AF_INET6 || daddr.bytelen != 16)
-+				invarg("Invalid IPv6 address for tundst", *argv);
-+		} else if (strcmp(*argv, "type") == 0) {
- 			NEXT_ARG();
- 
- 			if (trace_type)
-@@ -1276,7 +1248,7 @@ static int parse_encap_ioam6(struct rtattr *rta, size_t len, int *argcp,
- 		} else if (strcmp(*argv, "ns") == 0) {
- 			NEXT_ARG();
- 
--			if (ns_found++)
-+			if (ns_ok++)
- 				duparg2("ns", *argv);
- 
- 			if (get_u16(&trace_ns, *argv, 0))
-@@ -1296,14 +1268,32 @@ static int parse_encap_ioam6(struct rtattr *rta, size_t len, int *argcp,
- 
- 			if (trace_size > IOAM6_TRACE_DATA_SIZE_MAX)
- 				invarg("Trace size is too big", *argv);
-+		} else if (strcmp(*argv, "trace") == 0) {
-+			if (trace_ok++)
-+				duparg("trace", *argv);
-+		} else if (strcmp(*argv, "prealloc") == 0) {
-+			if (prealloc_ok++)
-+				duparg("prealloc", *argv);
- 		} else {
- 			break;
- 		}
-+
-+		NEXT_ARG_FWD();
- 	}
- 
-+	if (mode == IOAM6_IPTUNNEL_MODE_INLINE && tunsrc_ok)
-+		invarg("Inline mode does not need tunsrc", "tunsrc");
-+	if (mode == IOAM6_IPTUNNEL_MODE_INLINE && tundst_ok)
-+		invarg("Inline mode does not need tundst", "tundst");
-+	if (mode != IOAM6_IPTUNNEL_MODE_INLINE && !tundst_ok)
-+		missarg("tundst");
-+	if (!trace_ok)
-+		missarg("trace");
-+	if (!prealloc_ok)
-+		missarg("prealloc");
- 	if (!trace_type)
- 		missarg("type");
--	if (!ns_found)
-+	if (!ns_ok)
- 		missarg("ns");
- 	if (!trace_size)
- 		missarg("size");
-@@ -1319,7 +1309,7 @@ static int parse_encap_ioam6(struct rtattr *rta, size_t len, int *argcp,
- 	if (rta_addattr32(rta, len, IOAM6_IPTUNNEL_FREQ_K, freq_k) ||
- 	    rta_addattr32(rta, len, IOAM6_IPTUNNEL_FREQ_N, freq_n) ||
- 	    rta_addattr8(rta, len, IOAM6_IPTUNNEL_MODE, mode) ||
--	    (mode != IOAM6_IPTUNNEL_MODE_INLINE && has_src &&
-+	    (mode != IOAM6_IPTUNNEL_MODE_INLINE && tunsrc_ok &&
- 	     rta_addattr_l(rta, len, IOAM6_IPTUNNEL_SRC, &saddr.data, saddr.bytelen)) ||
- 	    (mode != IOAM6_IPTUNNEL_MODE_INLINE &&
- 	     rta_addattr_l(rta, len, IOAM6_IPTUNNEL_DST, &daddr.data, daddr.bytelen)) ||
-
----
-base-commit: 204a721033556114c81c47d00375f2d52e98e463
-change-id: 20261021-ioam_fix_order-ff9d472023dd
-
-Best regards,
---  
-Hangbin Liu <liuhangbin@kylinos.cn>
-
+NAK, -1, for the whole patch series.
+--=20
+Internationalization&localization dev / =E5=A4=A7=E9=98=AA=E5=A4=A7=E5=AD=
+=A6
+Takeshi Nishimura <takeshi.nishimura.linux@gmail.com>
