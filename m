@@ -1,97 +1,118 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.51
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792685397;
-	b=L1hMV1ZwCJrytk9Ft3VKrH3sYZc9gSV93sNuXgBj0Fu1Ixlw663Tf5XayBBgXCeKstD+
-	 9BOfyV1R9lug0tEz3SGaA1B/0gpr8ijftuztXo9Q830u4BTTiq+HFeBGZqRtmbgr8sRvO
-	 wv2wMZnQ/P/S3mM5yQYXTC1dem5918zdzo6WjB9o0aU/IiYJZwmyBRqa1oWIgVnWi6287
-	 LrqoWNKlWx1OvSEQvcs776RxH0sOSQEkkhIGWFlCK9qWcWSUQxvKAaIAqSV0iMtchvAVL
-	 XlawVj+qyVT1Aao9wVpx291QBpBLsmEx1WSJZSAIB47ZLTua4S2mWyUQ8yJB4KOLNag==
+	t=1792685495;
+	b=YFhUVdd6OIyILL/v50Kkb6ZhbdeRBVuiDgFgeZIGKeZyV+QJUrDstcSLH95be+NP62o2
+	 IRHdFsGgVleJB8YNpWzESAd35jSE14OYEc34zQuR82fu65++Ty0vOClQ67PIfy313LDep
+	 Y1+2924457cdZH+o+DivHUwugI2sYCLBq5Ba6ianis6kdIdumRUVUEpCBV71OiTjvzLdm
+	 A6e7mrhdetnMcqIksF+ShsV6LSpVO67bk1qoVQ2qPkqV2f68eQf7FLlbCRolMsIGxPDP3
+	 HYT7CgRxrhxwdumeGq32FMRQmdeXjT9lYzbBwplZATXf7TEnASbth06JMxi9Ukbphxw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792685397;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Subject:Date:Message-ID:X-Mailer:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=TIhLtdd73+BRgQ3n33WlKdoMKFDFngH6r5DDdY1gqoc=;
-	b=I6Kpl+4ltmjUmiUjJNfwGaLXB5wzZum/1Mw1amTEf6W/ksGqyC7RHzf2eCqb5tXF6L7K
-	 ayxjujjjq2Bpk3CHPFIhtKeRXUJj/8cIZdB/Sk5GbxcaBEkAFm+j3Tc8YqrwWloIZrr5H
-	 jzEmxliXs9NN9spHS/wh+oN4S5Map8FGhC/MdUc1shI4nOnatQW0ZsFOengec8tvx7bRY
-	 4RI+sZcO71xG5AaJgQNcneT1Ef6rAySWjL661SW27T9p0uDhUfhJTnoSmKmZnZl0sTCgl
-	 VyfBiqAQvlSSQpYlOvh+OzLRHnetiw89OlUrVQN/DcxlNsbyjceUd3wrWxbUhYT/PNg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792685495;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=ZolVYJhL5yPQgM/2Gp/lmOIhd5O8wGaOXv+Tfsjy2X0=;
+	b=wnlAbE9kkwy7MwVqxaYQc9SlqF3PHPgqxfFC6Pw3gPwEfBNQSpyao5dK+1B7i4gA7VEi
+	 ziEk+FoPgyRHVVYaQrQwEBIiRmHo4MikxtDAiPUkmu3/cV4ugqluFYGMN2dVvQWd1gZ/c
+	 YirQCM1STKH7PguD5OH43+5aGLLuiIX/p3ZcOkMoP5g9pgv1HQoyhkdWWDu8HD1Jya+pS
+	 UqXFbBd8nKrTIOnUu4OWLH97GKOo6dFk6QYPG66sphwNfnv0N4+bKi4B8Xjol0naY3Cwq
+	 kYbKbOqMPSJ/n13PW1EXX3RRtea4Br2VBhXZHHc78WB+gUhPwtFm3p1UutKGD2/Wsnw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=fws4Q0b8;
-	arc=none smtp.remote-ip=74.125.82.51
-Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cSSObIE7;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Wm3xLdkS;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55B9606A320
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 16:09:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E55B9606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C39606A319
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 16:11:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06C39606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=fws4Q0b8
-Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-18cdcfc05ffso2269248c88.1
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:09:56 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cSSObIE7;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Wm3xLdkS
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792685488;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZolVYJhL5yPQgM/2Gp/lmOIhd5O8wGaOXv+Tfsjy2X0=;
+	b=cSSObIE72kYP7W3whM9h7EYnm8n2hLV97yQF3zeVSg6HPbR+vFZtCPfFnUKbIygGZabwqQ
+	ACfvQHYtbDsuSl2nPPghr5hNnFZkTqt2NbxDm5Xdi9Lef4bWT3ptG9lSzs4ENe28CuRsl/
+	hl54Aydg+CPuO03l4jFbd9E3u23OY8c=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-573-Fthb6zj5NlWstlUrmscfcw-1; Thu, 22 Oct 2026 12:11:20 -0400
+X-MC-Unique: Fthb6zj5NlWstlUrmscfcw-1
+X-Mimecast-MFC-AGG-ID: Fthb6zj5NlWstlUrmscfcw_1792685479
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48e0389d6f9so1237319f8f.1
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:11:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792685396; x=1793290196; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:content-type:message-id:date
-         :subject:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TIhLtdd73+BRgQ3n33WlKdoMKFDFngH6r5DDdY1gqoc=;
-        b=fws4Q0b8g9s5I5mCl9U/tX8R77A68BHnAZRwCmIFqYo8FJFAlZJgB5RBbV6TDRHKP9
-         Hb05EBprBImY90nAxjoS9BZQ2dmRFcUAUWsA2emBapps0UMu5dQYoYUf2xkWdPvH3vuQ
-         eb34ASKJRnOaL6BDuTe1j36T2nqTwTkvvirpK78w0a7P+d7t6QyaPtIIGif0dOn2SR6j
-         SuHscAOcrhRXEgwl7K27cJKugD/lA7COSw3Tsf1ZRWShHGRXHwR84ELZq9V1MAWU5NSx
-         1anzO1aOt6MljYMRBBwDM0TzafcFl6YhLabVWSSA4RhrX8KztVrUjnWOvpC6SyJhV4wF
-         kP2w==
+        d=redhat.com; s=google; t=1792685479; x=1793290279; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ZolVYJhL5yPQgM/2Gp/lmOIhd5O8wGaOXv+Tfsjy2X0=;
+        b=Wm3xLdkSV0OCBazHQwWI17CgdpSMK5TM9eCoLyzlgOXTyaBhc1bBEHB0ioHfuDOi+n
+         chvs3zBwGvvekWC7XeEViZrjskNa91SXu86r2nH3rHa4YBtzOJhtvNUuAmZIct6gItqd
+         qIifk8wkOniLaZyUI/eyMX0Ifsfz7fKXS0bBQyPb0MlO730an+tRzT6AbX5J0qfIo5Ok
+         NVzHG8S3Xjx4FqzZcuSASD4xPXYsQopMpevP7Am8h2BaUiOANxS6pNlSeytqtjNH5rYo
+         o6o8fHN0Ho6pCebqxePGSeKHmCGHMPpqDOYOilysv7Vi+415wjH2QpWYwa3vVa6tLgar
+         gBDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792685396; x=1793290196;
-        h=mime-version:content-transfer-encoding:content-type:message-id:date
-         :subject:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=TIhLtdd73+BRgQ3n33WlKdoMKFDFngH6r5DDdY1gqoc=;
-        b=Vh3wJeNRdE6eQo6HSuZwlYxTaFIJHy7In0QYQeVjH950Em0AjTHHye/7GwkRw3Q6JS
-         kBTXePXQBIX7zQHQptKc0Bxomjaj3jjtqMIDjwmEr6TQVQFYGg4sWacDfxL0isTMj0FS
-         Hf83kMOMuFS0591clq1w5gk4jFWJ+yJ7qVfxm1tZSrWZrT5F4zjeLcnf8ipmRG1FDRax
-         6UCm9H+apKnYtD9kFeEW4NEKPkHN9DZnZ4jkQjeaafok52s0f3AEhnB1FJIP5hwxurxT
-         4WtHeNe3OVQTEmX3F2y4V4UqjCYy1MywCilJX5FJUBEbPj/EUJ8dZV/H0YV/mh9Alp4G
-         Ydgw==
-X-Forwarded-Encrypted: i=1; AKwUvBz4X/tgKCOL3T3jzqxGmmi1N5XIyP51mp0+V8lzzMThDrhWiPsoLrPIrlzNCvszq75E6W5wruY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJaz4ymIx5sPLvCum5LDrR4fpASNaL9oWc2IMLagdJ+J6Wh2vzI
-	sO8VQ4DJ+3CKfh7La2uKB65YOsugGpyZrU7IAmpk5FGyEoXINLJGSin8fkFfkK72rh8=
-X-Gm-Gg: AYBFou27LigSJuvkkcoeB/YrdS7oHVbnDtlAMDEP/r6iBRyN4u5sI2iyhb08I7T3rPC
-	+AJQ0+/jSxjY43hEn0sEfsQ5KdAl1UuARA1L6LeK6eT1u8ISj0MZbX5oqxangVjVtqs3KTFvUoH
-	nt1/KnTlcv6fd0wNuJjU9A5SxaCh9DEOyv9iLN17iR0vLbxR9YSdoR5+Wcgplo81ISd3i6o3ChX
-	uPzE+DldHgJniOvp5Y8pdp+TKkKW2EfRxaK0tGmtXY/LuecsxKUgugeoGm2zNDuO+k+MTP0Cthe
-	r4YslF+M7MUpCESFU8GBVkV2VqKanz4fq8IcHWoaBNVI2HUzt7Ito9+d02+RjoXWAjhTTaM9Q8o
-	/Oulc5kZhEIe3JchW4DW9fajlsLp/kuESrCNfTF6otTbZCse4WD1C5bm2snE1bLQmz+wKI7mT4K
-	HgTqWR4e1GMwGufNKEKlums7eUpz5s5tMj0rgyZiFExrZBodEGQdB5VpM8UosDGrWqPHiW9PZ5f
-	NSw20TDrvsH5Bi+lIHjLbBvVNn1Tch2+Z3Mhx5SuKb/coePUgRG4W2Pz06LmdeknZIup8+Hy42g
-	LeWc
-X-Received: by 2002:a05:7022:6b96:b0:188:ecb4:489 with SMTP id a92af1059eb24-190a73812b2mr10005892c88.34.1792685395834;
-        Thu, 22 Oct 2026 09:09:55 -0700 (PDT)
-Received: from [127.0.1.1] (67.216.200.102.16clouds.com. [67.216.200.102])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1903e4f2eacsm14594124c88.23.2026.10.22.09.09.52
+        d=1e100.net; s=20260707; t=1792685479; x=1793290279;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ZolVYJhL5yPQgM/2Gp/lmOIhd5O8wGaOXv+Tfsjy2X0=;
+        b=hF3euqPCJAjT6CuhK+gtLBDWTocdhwu3Bc5wK8CTpK92LVGlxwTqcZ/rV5AxVt0RE3
+         tn33kMiA0fgVGXaeb6QHlj9E6l1ywBC0vURnKsTepN0O2Kn4NcV901MA6TeOXIHtORuH
+         S9oHhn0DWZhearBju20edQJzSarDbflIFdEBQ06+5EIgTEbZNdB3w13iRX03Ymu2xVxz
+         BbxXO4Ta1xQrFfCxi2gKJHfqLX2r/EOndrtv8cUDfJNHyRsxM6J3VwJa89SqdUYWnXCL
+         mNVIgwZaKA2lR9/+n28SDqQ5eueBR8qLVmJEoWKIrU78VkEpNa3jQlTKDrUeQwldWWQy
+         iHqA==
+X-Forwarded-Encrypted: i=1; AKwUvBxI0YuIncRPnUYrFBjd4jglJwYb2oo6xp1lduAWzJik0FVQpGDyFpijLTdTHD+lWXV4RPA1+kw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ8pGIxQOPM2EODkIxKkBXTbR8cE3JVnrUeG+MFS97sS9hNYFr+
+	czjn6ehelGZGFiqS1RUzTKCfIiLa3Tf44FeZjazHRivd9AtisPSLMw+RoPQ/1oI/Ej6VrWAeWNh
+	0uYU0khvh8rOD4/VyWbQQ1HPiKL2eNVIbdhJY0xMffcewLKKFKgXTmaj2pQ==
+X-Gm-Gg: AYBFou24+bpaogS/JNookJA7V5nW0QLi6LMZ++N/MWVD2uNZ6hIuAE+S2JuBfsHFss9
+	ZzdUFW6yJHwndeGb4y3VEIPuwMwXrNkiy9sxPCGN0RgSbZ2Ny9NHVMlxt9JpfM1pBPJYi7Bxx/6
+	4gderbenaVRAo4XuXmUMrDITEPMxh6TccQYuxYeXQhWv7QQ1Id78oW79yV5x9b8q1NiCTXzexpU
+	d9BpIYz/vjcIY/2nWQcfgp++CD+QDNYURXKNOvvyQoAnomczX5/RWSMSBrZxBBPRad64BgGlnjA
+	qio0ry21zk4e97DlvLqovrW00r45NrU0PEjnrUvPvucTJYHhmg8ylcMKdjAy9RiRT1g=
+X-Received: by 2002:a05:6000:200c:b0:48a:f8fb:cd49 with SMTP id ffacd0b85a97d-48e264d53efmr12352941f8f.22.1792685478897;
+        Thu, 22 Oct 2026 09:11:18 -0700 (PDT)
+X-Received: by 2002:a05:6000:200c:b0:48a:f8fb:cd49 with SMTP id ffacd0b85a97d-48e264d53efmr12352904f8f.22.1792685478333;
+        Thu, 22 Oct 2026 09:11:18 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1536:fc00:b838:383:1c7:6e81])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e25835b1dsm14376089f8f.40.2026.10.22.09.11.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 09:09:55 -0700 (PDT)
-From: Cheng Yongkang <teel4res@gmail.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- Jason Wang <jasowangio@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Petar Penkov <peterpenkov96@gmail.com>
-Subject:
- [PATCH net] net: tun: hold napi_mutex when deleting NAPI in tun_detach_all()
-Date: Thu, 22 Oct 2026 08:26:48 -0700
-Message-ID: <179268538303.70821.16548460883330758972@gmail.com>
-X-Mailer: git-send-email 2.34.1
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        Thu, 22 Oct 2026 09:11:17 -0700 (PDT)
+Date: Thu, 22 Oct 2026 12:11:13 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Cheng Yongkang <teel4res@gmail.com>
+Cc: Jason Wang <jasowangio@gmail.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	virtualization@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>
+Subject: Re: [PATCH net] net: virtio_net: decode tunnel csum_start as
+ little-endian
+Message-ID: <20261022121057-mutt-send-email-mst@kernel.org>
+References: <179268538303.70821.1734486381476363942@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,69 +122,64 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <179268538303.70821.1734486381476363942@gmail.com>
 
-With IFF_NAPI_FRAGS, tun_get_user() takes tfile->napi_mutex, gets the
-skb from napi_get_frags() and copies the user data into it before it
-enters the RCU read-side section around napi_gro_frags().
+On Thu, Oct 22, 2026 at 08:26:48AM -0700, Cheng Yongkang wrote:
+> virtio_net_hdr_tnl_to_skb() decodes hdr->csum_start with the caller's
+> little_endian argument when it validates the inner header offsets, but
+> then calls __virtio_net_hdr_to_skb() with little_endian hard-coded to
+> true.  The other tunnel offsets are always decoded as little-endian as
+> well.
+> 
+> tun passes tun_vnet_is_little_endian(), which is false when the device
+> uses big-endian legacy headers: by default on big-endian hosts, and
+> after TUNSETVNETBE on little-endian hosts with CONFIG_TUN_VNET_CROSS_LE.
+> The validation and the parser then disagree on csum_start.  For
+> example, the bytes 14 00 decode as 5120 for the validation and as 20
+> for the parser, so an inner_nh_offset beyond the data pulled into the
+> linear area passes the check, and the USO branch reads iphdr->version
+> out of bounds:
+> 
+>   BUG: KASAN: slab-out-of-bounds in tun_vnet_hdr_tnl_to_skb+0x74b/0x830
+>   Read of size 1 at addr ffff88807999d044 by task kvd-program/9399
+>   Call Trace:
+>    tun_vnet_hdr_tnl_to_skb+0x74b/0x830
+>    tun_get_user+0x1827/0x3d00
+>    tun_chr_write_iter+0x113/0x200
+>    vfs_write+0x5c9/0xb30
+> 
+> Decode csum_start as little-endian, matching the parser.  Callers that
+> pass little_endian == true are unaffected.
+> 
+> Fixes: a2fb4bc4e2a6 ("net: implement virtio helpers to handle UDP GSO tunneling.")
+> Assisted-by: LLM
+> Signed-off-by: Cheng Yongkang <teel4res@gmail.com>
 
-tun_detach_all() waits with synchronize_net() and then calls
-tun_napi_del() without napi_mutex.  netif_napi_del() frees napi->skb
-through napi_free_frags().  A writer that is still copying has not yet
-entered its RCU section, so synchronize_net() does not wait for it, and
-deleting the device frees the skb while the writer is using it:
 
-  BUG: KASAN: slab-use-after-free in skb_copy_datagram_from_iter+0x175/0x720
-  Read of size 8 at addr ffff888077def990 by task br029-poc/9406
-  Call Trace:
-   skb_copy_datagram_from_iter+0x175/0x720
-   tun_get_user+0xb42/0x3d00
-   tun_chr_write_iter+0x113/0x200
-  ...
-  Freed by task 9405:
-   kmem_cache_free+0x184/0x670
-   __netif_napi_del_locked+0x2bb/0x3c0
-   tun_net_uninit+0x566/0xa70
-   unregister_netdevice_many_notify+0x1a26/0x2090
-   rtnl_dellink+0x514/0x710
+duplicate of
+dfcede18b8d54519bf586b8e5099e89ec63bf014.1792668082.git.mst@redhat.com ?
 
-__tun_detach() also calls tun_napi_del() without the mutex, but only
-from tun_chr_close(), when no write on that file can be in flight.
-
-Take napi_mutex around tun_napi_del() in tun_detach_all() for both
-attached and disabled queues.
-
-Fixes: 90e33d459407 ("tun: enable napi_gro_frags() for TUN/TAP driver")
-Assisted-by: LLM
-Signed-off-by: Cheng Yongkang <teel4res@gmail.com>
----
- drivers/net/tun.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index 7cca1a6f72ff..850318482697 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -688,14 +688,18 @@ static void tun_detach_all(struct net_device *dev)
- 	synchronize_net();
- 	for (i = 0; i < n; i++) {
- 		tfile = rtnl_dereference(tun->tfiles[i]);
-+		mutex_lock(&tfile->napi_mutex);
- 		tun_napi_del(tfile);
-+		mutex_unlock(&tfile->napi_mutex);
- 		/* Drop read queue */
- 		tun_queue_purge(tfile);
- 		xdp_rxq_info_unreg(&tfile->xdp_rxq);
- 		sock_put(&tfile->sk);
- 	}
- 	list_for_each_entry_safe(tfile, tmp, &tun->disabled, next) {
-+		mutex_lock(&tfile->napi_mutex);
- 		tun_napi_del(tfile);
-+		mutex_unlock(&tfile->napi_mutex);
- 		tun_enable_queue(tfile);
- 		tun_queue_purge(tfile);
- 		xdp_rxq_info_unreg(&tfile->xdp_rxq);
-
-base-commit: f4377bf85887f57b59abb5479f7660a81ffe4449
--- 
-2.34.1
+> ---
+>  include/linux/virtio_net.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+> index d6466f96cdd0..ddc6341747e5 100644
+> --- a/include/linux/virtio_net.h
+> +++ b/include/linux/virtio_net.h
+> @@ -324,7 +324,7 @@ virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
+>  	inner_l3min = virtio_l3min(inner_isv6);
+>  	outer_l3min = ETH_HLEN + virtio_l3min(outer_isv6);
+>  
+> -	inner_th = __virtio16_to_cpu(little_endian, hdr->csum_start);
+> +	inner_th = le16_to_cpu(hdr->csum_start);
+>  	inner_nh = le16_to_cpu(vhdr->inner_nh_offset);
+>  	outer_th = le16_to_cpu(vhdr->outer_th_offset);
+>  	if (outer_th < outer_l3min ||
+> 
+> base-commit: f4377bf85887f57b59abb5479f7660a81ffe4449
+> -- 
+> 2.34.1
 
