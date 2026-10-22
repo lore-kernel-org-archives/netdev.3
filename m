@@ -1,55 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792691247;
-	b=meYH4HmksPlmzQmRB61cbYQN0/bFZGbzhfXloxkFZMg5rkV0Aru0BY7S7QiqDL+TWiCG
-	 fVKa4EzoMDnJdGuh+MOiBuKB+Ddovzaws9MXXWWeCHKI3c3CPq1TwwUVcdf9hCI0rBcmx
-	 84vtShpI/YAV7CyJA8NCpAMALtrX7NQP2Zgz4OrWw2IG8fdyjJ3OdREO1o+qR6K04CVSI
-	 2gpbIz//uTbRwA7fN4NmbxyAsA1uHvdt7RKasVKoLJ7dA9j0jXe0+7BWCdlPorBEi9/xv
-	 85IekLwajOmzaMj9Mc5TLxItP8M/0EA2BnG/ZTTFv/BFSChZsNfdsZWsBO69pM1jl6A==
+	t=1792691288;
+	b=D8HgDhmQW4JODP67GyNDiENLISrZPWAm8NLFgE5vg/7s1rIleorxho8mHuAN+21HmBjy
+	 FpVoJkBPTHpTVufhczy33xynh1qwU0bM++6/G2HzCNhtTqOVJSsASV7QZPVB46x6hOrQO
+	 GiSgw5ynklo21gGUAk/4wSrj/BpBFtDy4PSIUYWDZtQm13VohI8cuUDonD7eO3fDhACiM
+	 5mCS8mnfbBpTrGIY34qlM8l1SNh15LR3vBRdEJEXdRJwfwgN7ThDMETA7cYF80Y2fQRJU
+	 zk4fJnnA0BbtixNr2bqs2XyoKgIHvJw0K/luPv2CWFNMGPwA7eKANfaZjrCVDwsJOkg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792691247;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792691288;
 	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
 	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
 	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
 	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=K9Hb+3tFHqiNZnvx+AmgZckWtXWfwUcWzjWNrOSq04g=;
-	b=rI43Mchbumppaby4mcRwj8dH2uzCpTGdvdJsKvhmPg8mhtsYgNi1k8ZxowxiKmqSxXd7
-	 xyGQx00fzeiZAOO3kvp+4UZabAZ2KRAXBdG3lAfZb1i7/h0efyh8C2SY4T7WnqfmR28oI
-	 Im7zTZpfPe4g7rKOWIsRdK9+kpQVN+ZNeF/7ala0Zg4cXViK/GgOG9zjb+YrxtHGIwnxh
-	 KLG1ooFHWmSXqvk/OfT+uG6VO1aQgwnpr8L2F4D4HLMr8RKOIYdRM/P6RgGJSdWPxcld9
-	 mi6OKWTaeNb9MRqB+Q1z6YnlDwJrIS0bZw727s/A2jtZUX5aG6ACSKDSYkyBPLVj/VA==
+	bh=MGotvCzhWr/lonfJnRU59oPcrOTBROzb2+c6xsa3Gm8=;
+	b=l9MRdrgy7COTwc9Krw510824C+vsghJR1O4bDfULthgZJB02Xl/kBto96nKHp/whJtkK
+	 mYgsPugOji7bT2t3qvQinx/Okjy7NVZhsfd/QlZzIZAduOKNjnyY0VH8PunvHgaIcmVhJ
+	 aKRKE/RhseKN/vz86nukUDR2Fb+vs3P1zyKX175nipKIBUnic2bv8sF4eKNX2CxEVOPTh
+	 7zZIfhLIvwA2s81H+iKGilXlFRfycWhVsmdaWTCIgfOac5qmF51dv/bq77LC/akTJ2dGs
+	 ar//X9Aof73AKB3rq4hHxI0TM4GsSpAbylf4zVQk7RxPiHi6etIUWfvaalhMBodVPbw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bNTtSjx7;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G2ZmsuqW;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05392606A31B
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:47:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC2F606A31A
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bNTtSjx7
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A011A1F031E0
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:47:26 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G2ZmsuqW
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2DD91F031E6
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:48:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792691246;
-	bh=K9Hb+3tFHqiNZnvx+AmgZckWtXWfwUcWzjWNrOSq04g=;
+	s=k20260515; t=1792691287;
+	bh=MGotvCzhWr/lonfJnRU59oPcrOTBROzb2+c6xsa3Gm8=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=bNTtSjx7tH7I0gFWJ876CO/rUgqbfMs+LcJfcy8C98/+mDmSxIw/Qbr/9Q6Ri+tFX
-	 +hZk6nJ9YX+zH+KcWFau9Cy10iq8OrruiOqyFqq0It+jQNT9Bvm73dxOs3/Td+o6jh
-	 vdgOqTf7Cmpa3+1oFzQFIy8NgIWdpKnjwtdd45zkHxWHROz6/CLOYuVOlsFDAXY/zc
-	 n7xXWbw6rB9RdCt1j5K+GZd2AF2hIUsrj3iC0zza4huw6CtzT92zx5fC3a7VMV1Zmh
-	 8flUiHJwLEH5tzSgGsAcA6SGWyfUjoCon3G6Jim1a8rHmhHdj9zeOFS/0hmtVPj9lr
-	 3dsyNvBKtQ5kQ==
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-3aae7df0971so17747691fa.1
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:47:26 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwk38+3d5dKQFtrvswgnF1prgAJlJY+uXRPCt/c7zKRvaZz+o0Ch2R7ZEkpQaB/A8VyXO4LibM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJTLw81mCop7kBBJDA9NR5M4HTh8jWAEMFkr3XDkpzz87o5SwNd
-	rd68KjhqHXZJ2CnZjiBTsjk6TWGj3mnDTcxSircrh65CEO/WxFE+AqdZKnbSOoItdxaEu6YfrMV
-	Lam3s4fEZSwl1e62R2S8PNbxH5ScJYvA=
-X-Received: by 2002:a2e:a98b:0:b0:3ac:4da3:864f with SMTP id
- 38308e7fff4ca-3ac4da386b4mr11295731fa.4.1792691245380; Thu, 22 Oct 2026
- 10:47:25 -0700 (PDT)
+	b=G2ZmsuqWEkBNHwHLkDIFwTgdwWMAd3VNDMwaCMWpekNralQaK67EgcCV65cGgVuvE
+	 Z1t4l+1ZaspZDFN+aExiW1/gzzI8+zKtPOP6pqWyU5MA/tUfYkLXCYYJmBVhVtLw7F
+	 wkYsKr/O0pFcd6I1qGPFnd2xcbVJ3SzKFDsMKzE4oSLjm1jMKrdQ3BsGddjo+7vWbt
+	 4csvW/KjdE1ca6xD1BLQ1AYh62VR3KYJC29nAqEpcYS9NA3vjLZv6BhuC6p1UCrweR
+	 VI96xsUqb8q+e06o9xbKIUxqB0WWBg2ALwreAZu2V/QOMgHqiUCp56/5wkv7KEDc7l
+	 cvBD8yWEqNB5g==
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5ba35c0df4fso2242867e87.0
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:48:07 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBy/vlYfs4eA6WA11cXUhqKRJcptuXNqMiaiDZyC4BPTuKOJ8Gx5roAe+im0+DERsPmpIH3dzQQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYINatprmGTRGGt/Aolm/qzEEJkZ4XFoOLvEI+J8ru3vUdA4aVam
+	sXc8j4Cy4MgTwkOk4f4HjoBsREZ1zo/woCw1jJTCFWf0G2j22lPipMVTAi83OPyeLV+xTl0aN6Q
+	6IryORRqvHdTNg82TFaUlJYTwLz5X8aI=
+X-Received: by 2002:a2e:b88b:0:b0:3ac:4ce6:8b73 with SMTP id
+ 38308e7fff4ca-3ac4ce68e14mr12334331fa.22.1792691286350; Thu, 22 Oct 2026
+ 10:48:06 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -61,34 +61,35 @@ Precedence: list
 MIME-Version: 1.0
 References: <ACT-N6N4.v1.r0.20261022051412@mojatatu.com> <ACT-N6N4.v1.r0.20261022051412-1@mojatatu.com>
  <ACT-N6N4.v1.r0.20261022051412-2@mojatatu.com> <ACT-N6N4.v1.r0.20261022051412-3@mojatatu.com>
- <ACT-N6N4.v1.r0.20261022051412-4@mojatatu.com> <372c6019-2ee1-46ec-bf5f-ccbf9b4d8659@ovn.org>
-In-Reply-To: <372c6019-2ee1-46ec-bf5f-ccbf9b4d8659@ovn.org>
+ <ACT-N6N4.v1.r0.20261022051412-4@mojatatu.com> <ACT-N6N4.v1.r0.20261022051412-5@mojatatu.com>
+ <0225eac7-1432-4d46-8649-2ad864aa26d4@ovn.org>
+In-Reply-To: <0225eac7-1432-4d46-8649-2ad864aa26d4@ovn.org>
 From: Eric Dumazet <edumazet@kernel.org>
-Date: Thu, 22 Oct 2026 19:47:11 +0200
-X-Gmail-Original-Message-ID: <CAL4WiiorJUG=pXc4kKa68qFcrNfKUA0CJB5NiZRr6oXjn_fzPw@mail.gmail.com>
-X-Gm-Features: AclHuK_3dax7s3y99xzrNpjL0T6a8qGSUewPq2Lr_WKQe2E8h3vXFm7qwrBoFHA
-Message-ID: <CAL4WiiorJUG=pXc4kKa68qFcrNfKUA0CJB5NiZRr6oXjn_fzPw@mail.gmail.com>
-Subject: Re: [PATCH net 4/5] net: openvswitch: ensure a linear inner Ethernet
- header on TEB pop
+Date: Thu, 22 Oct 2026 19:47:50 +0200
+X-Gmail-Original-Message-ID: <CAL4Wiipm9x5LekCb2WTo1CfqihwRY1=rV0W+KdS-FVA_pRCj3A@mail.gmail.com>
+X-Gm-Features: AclHuK-omgKLVDEOSqFcU4jhRjUPSbk60eGlMwcbvEyU8LVQvfW9BHbpDh38hkk
+Message-ID: <CAL4Wiipm9x5LekCb2WTo1CfqihwRY1=rV0W+KdS-FVA_pRCj3A@mail.gmail.com>
+Subject: Re: [PATCH net 5/5] net: openvswitch: ensure a linear inner Ethernet
+ header on NSH pop
 To: Ilya Maximets <i.maximets@ovn.org>
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>, netdev@vger.kernel.org, 
 	Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>, 
 	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Martin Varghese <martin.varghese@nokia.com>, 
-	Jiri Pirko <jiri@resnulli.us>, Victor Nogueira <victor@mojatatu.com>, dev@openvswitch.org, 
-	stable@vger.kernel.org
+	Simon Horman <horms@kernel.org>, Eric Garver <e@erig.me>, Yi Yang <yi.y.yang@intel.com>, 
+	Jiri Benc <jbenc@redhat.com>, Pravin Shelar <pshelar@ovn.org>, Jiri Pirko <jiri@resnulli.us>, 
+	Victor Nogueira <victor@mojatatu.com>, dev@openvswitch.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Le jeu. 22 oct. 2026 =C3=A0 14:42, Ilya Maximets <i.maximets@ovn.org> a =C3=
+Le jeu. 22 oct. 2026 =C3=A0 14:43, Ilya Maximets <i.maximets@ovn.org> a =C3=
 =A9crit :
 >
 > On 10/22/26 11:22 AM, Jamal Hadi Salim wrote:
 > > The issue:
-> > pop_mpls() restores MAC_PROTO_ETHERNET when the popped ethertype is
-> > ETH_P_TEB, but skb_mpls_pop() only guarantees that the MPLS shim is in
-> > the linear area.  When the inner Ethernet header sits in a page
-> > fragment, the datapath now claims an Ethernet header it cannot access
+> > pop_nsh() restores MAC_PROTO_ETHERNET when the popped NSH next-protocol
+> > is TUN_P_ETHERNET, but nsh_pop() only guarantees that the NSH header is
+> > in the linear area.  When the inner Ethernet header sits in a page
+> > fragment, the datapath then claims an Ethernet header it cannot access
 > > linearly.
 > >
 > > Output to an OVS internal vport then calls eth_type_trans(), which
@@ -110,46 +111,51 @@ Le jeu. 22 oct. 2026 =C3=A0 14:42, Ilya Maximets <i.maximets@ovn.org> a =C3=
 > > On a system with 4 KiB pages and CONFIG_OPENVSWITCH and CONFIG_PACKET
 > > enabled, use CAP_NET_ADMIN to create an OVS datapath and bring its loca=
 l
-> > internal port up with MTU 9000.  Install a flow matching an Ethernet/MP=
-LS
-> > packet with one bottom-of-stack label and actions pop_eth,
-> > pop_mpls(0x6558), output to the local port.  With CAP_NET_RAW, send a
-> > 4128-byte AF_PACKET/SOCK_RAW frame containing outer Ethernet, the MPLS
-> > label, inner Ethernet and 4096 payload bytes.  The two pops consume the
-> > linear headers and expose the inner Ethernet header in page fragments.
+> > internal port up with MTU 9000.  Install a flow matching an Ethernet/NS=
+H
+> > packet with a 24-byte MD1 header whose next-protocol is TUN_P_ETHERNET,
+> > and actions pop_eth, pop_nsh, output to the local port.  With
+> > CAP_NET_RAW, send a 4148-byte AF_PACKET/SOCK_RAW frame containing outer
+> > Ethernet, the NSH header, inner Ethernet and 4096 payload bytes.  The
+> > two pops consume the linear headers and expose the inner Ethernet heade=
+r
+> > in page fragments.
 > >
-> > The Fix:
+> > The fix:
 > > Pull the inner Ethernet header into the linear area before restoring
-> > MAC_PROTO_ETHERNET.
+> > MAC_PROTO_ETHERNET.  This is the NSH counterpart of the MPLS/TEB
+> > producer fix in the previous patch.
 > >
-> > Fixes: f66b53fdbb22 ("openvswitch: New MPLS actions for layer 2 tunnell=
-ing")
+> > Fixes: b2d0f5d5dc53 ("openvswitch: enable NSH support")
 > > Link: https://lore.kernel.org/netdev/e85fa16e-df3c-43dd-bb3a-9edca07200=
 ea@kernel.org/
 > > Cc: stable@vger.kernel.org
 > > Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 > > ---
-> >  net/openvswitch/actions.c | 5 ++++-
-> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> >  net/openvswitch/actions.c | 7 +++++--
+> >  1 file changed, 5 insertions(+), 2 deletions(-)
 > >
 > > diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
-> > index 27152bca8a8c..03b31e33e880 100644
+> > index 03b31e33e880..cb7e16c6a8ef 100644
 > > --- a/net/openvswitch/actions.c
 > > +++ b/net/openvswitch/actions.c
-> > @@ -153,8 +153,11 @@ static int pop_mpls(struct sk_buff *skb, struct sw=
-_flow_key *key,
-> >       if (err)
+> > @@ -314,10 +314,13 @@ static int pop_nsh(struct sk_buff *skb, struct sw=
+_flow_key *key)
 > >               return err;
 > >
-> > -     if (ethertype =3D=3D htons(ETH_P_TEB))
-> > +     if (ethertype =3D=3D htons(ETH_P_TEB)) {
+> >       /* safe right before invalidate_flow_key */
+> > -     if (skb->protocol =3D=3D htons(ETH_P_TEB))
+> > +     if (skb->protocol =3D=3D htons(ETH_P_TEB)) {
 > > +             if (!pskb_may_pull(skb, ETH_HLEN))
 > > +                     return -ENOMEM;
 > >               key->mac_proto =3D MAC_PROTO_ETHERNET;
+> > -     else
+> > +     } else {
+> >               key->mac_proto =3D MAC_PROTO_NONE;
 > > +     }
-> >
 > >       invalidate_flow_key(key);
 > >       return 0;
+> >  }
 >
 > Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
 
