@@ -1,83 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.173
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.8
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792660493;
-	b=YaAkE6w6wdHdUVfoDwgbvYcO9/Y0xHz2ajlJokqt+zdEkMXx171O+NCVUGot0jClM5j1
-	 GgIGpTATbpm4HU2xWgUeCY8sHwTsUr+Mw40AlvnjjW20qBsJDmAmZe8E2XYDvMGJ81ySz
-	 nHHMeFYQlGqToq8CdV8xIwxvHz5bQojzsxs/udj5/KSzhEwGfBoz7vbUkXpoPa/bYWs5S
-	 ZwTGgE/Lb1AElPOsljiWPUUBF9vWxcxP8htEBB2+MEgHCf2cawrWRHaMDdqCAgr4PdIdu
-	 EZI+teDmEKhkNvpRB19q+tBZTw6GKjM51KkNmFIgBgiNDihtnmuq+3Y+6pejvswIDiQ==
+	t=1792660513;
+	b=qkwyo6EdkOOR0dqyVwAmmBsPuDmowTuIqkVF8PsUIZxiu9+tPebbUBDDr8WTzALU6tnx
+	 BGo6MxZ61TPsWTrsyIU3sH/qUhf6YRWcaSd4s3lQ55coS4GLbUl59DXzx/QNKAteE4XZ8
+	 CxNJ7gbNHqro+k7UqAQqtGFNDUljCvYmGPGj5k/ddGJD2yqm9An9qDD1j8XDQZ4/Y2oXa
+	 cFbGVK4rbJlzQQT8vow2dElexw1MAI3SGS+AFVQSMXkGSELAGcAC6OzmWAWB/puX398p8
+	 isBmzFmOulM34O52XIOIot3IjQR8YT6nfQtsK8MarTLqM8bXMUusPb9INID/guMzYqQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792660493;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792660513;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=fUpHgJn4/5UVMTDClUybGN+1JsPzSxgZqen/j5U67+4=;
-	b=0dhMvy3vHL4w1Fw6LfoBB8iGVu3f87qB4jduETnAKS+qZgvWhMLm4NAPEiqWH4/JwI5W
-	 6iypw94efopBYW2S7ILmYG4YlDimGURNlSIn95vPJMvNgjwU0Yfm9K++ECYt6JGUetm9Z
-	 MvmjeffphZT6UTmEgooO/cgYKWDR719674zbWiNj0H3ShTSavUzw5cugA7NowO7Kf56JL
-	 w+qlhAK9MwMcZyDwr4LdePU8RdJKrMYC0qZsYS17K/tyajzWdnGMfoNEERCGRt+PssosX
-	 johwC7RSo79kuJwLD9ZjJYFi9lXbp5f7Rj/lJjPBAPJb3DnsZuo7QjFn/plig1mAJDA==
+	bh=e7NVZjs7NMYnhNT7+IbNDUXDeXgt96yTHJb2bsDwWM4=;
+	b=zjIwc06G6zl17P0+Dwg1OxAs7NSCJsbcsu5s5EWMaeGglnekDT6jzrfkhdGOc69jKG0T
+	 hCweKpcH2lY/4fJryjsrebJxxLvUGe3vOmnlydxEtY0LZ1CpYFkYuFeiqztspSY9J7P0X
+	 TITMNSSonynR+o0Hfogd8g1Zgk4crBevkM1OfvIqZWNjKVAbqR+i25xEmFxyjZgLWyzDh
+	 Ly+BxD3+notmMkLeGHlgR2ctqUGm5MjwQKLy9KURSxCHsdooC6Hnv1BF91t3tngXzxt5K
+	 NRXDrfbg9CliaYC25rUvg4LqIN2h7wdTV06WasGxA4i8ui7hSUvmaubnPd+6qCNib7w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=OPLZIOW9;
-	arc=none smtp.remote-ip=74.125.82.173
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=QhriTMCq;
+	arc=none smtp.remote-ip=74.125.229.8
+Received: from mail-dy2-f8.google.com (mail-dy2-f8.google.com [74.125.229.8])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F81D606A327
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:14:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F81D606A327
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5585B606A320
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:15:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5585B606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=OPLZIOW9
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-36661f953e4so2991745eec.1
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 02:14:53 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=QhriTMCq
+Received: by mail-dy2-f8.google.com with SMTP id 5a478bee46e88-33baa8eb238so947443eec.0
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 02:15:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792660492; x=1793265292; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792660507; x=1793265307; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=fUpHgJn4/5UVMTDClUybGN+1JsPzSxgZqen/j5U67+4=;
-        b=OPLZIOW9Y86Du66N6PpGEv2rrXIzo7DC/u9Rtm6Goq4g8e31ID2NCNFY9uCn8zHX5J
-         Q3K5fWA5s0/tnaqEN3SpmOPRI6/JUnFxozHd9kPO+KkFLynHq0zP1eQLl4DJPMzNVvGI
-         Mlx9R3Q6rQaW3ImGGmJ9TpMeeHMQMsKk73KGnldSxUjjlSp33RHeCqLJsAgzqOBchuTH
-         8wO1IKtg55FCfnS4Em09lrDnlxtmQjG25v6RQ8z1EtCIAEowcyPQXycahSZW4h0O+Bv2
-         17+tSg8bwfG+Arr+nGReidwwtIJwrsqMN8qXnKZxzXgdOLsVzsPunysI/Tr0mTYbHSmK
-         AbPg==
+        bh=e7NVZjs7NMYnhNT7+IbNDUXDeXgt96yTHJb2bsDwWM4=;
+        b=QhriTMCqanFSHGj1/mrQRgaQJRQT0WGi/+TulRag7c9OqGnMfhLtzqL2CQSYXPG6Oq
+         2oXDyR0DXl0LFIusx1pdmqEn8ORXXo3WHfTKUJkOTpqyQ2l4Lo7nAJ7cdorxLVTMt419
+         bBErp20v5DH8EY/5Uev9R9XizbWPirgqzHl+Deo4lLIXIC3YR/FFIidiPdAFsPH+tdL6
+         FsSFXG36ym2ubJdn8vDk2n+2J5jSlBlidpM/Fz+5IsAGCMBT+nZtrCjbWVadua/1zQHk
+         pBMwq5kn1ZMVnBMMLWvcGu+or+/yplXBh0AmfpP7Ew4YpLYohlDAzgJCfDJrzJp05Wam
+         mMMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792660492; x=1793265292;
+        d=1e100.net; s=20260707; t=1792660507; x=1793265307;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=fUpHgJn4/5UVMTDClUybGN+1JsPzSxgZqen/j5U67+4=;
-        b=ROYt+M7l/BcOdXc+CXt3El+hKHzQIZDudcqT4rNofhg5n2yt2fx52TcRpANFED5Qj9
-         C5kSx2M6QIHR+pBsIs7fhmMgjEH8ZZbCe9Y6IxSiMX8x7c09q0AkZBRSa9M3tcHdn/IM
-         +TAgK9KxetZU8N3BSadqSG3mMhCYs3eAlerleenra8ey/VVp9akebIrBRD5kD+HKkEnb
-         ZDewx7lE9lkzL95udI9jl/dlMxeoi3lMMOhC0KAzXElYLHfTQk5sZypu3u37NPuum8yT
-         5yQKEDklc8OYp17ek8VwxEYVLfUGm0s3z09ec5hOjZMNqQhYU7pC5Klt+jYEI789pjdZ
-         0a6w==
-X-Forwarded-Encrypted: i=1; AKwUvBzGbtwMef33qNcgOaNLS7bf32+BSnOY4rJE8QBE5TDfS+8hq1DpY9GWD9Z7KtodPwzKbTrooZk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI0X//5DaAvkYMnI+UiCEzSi+einxRpV7j1COBrcgQSpM1FpdRI
-	P8cr40CEubxBkxqgVCiFylRzz8ra1nZRj9dfMRxaASC88cOc9WeHNCcc
-X-Gm-Gg: AYBFou2OTUtbbm3cyybo7jjxpwmSVe+P7rBPKDea3eLcaHQWOsVFbsHH87OFGZrYgQG
-	mhfmAiks9xeJkt00dUWSUxVv+h0TrlobhSRYGmTM3o5QikRhuvz7wWy7pmDw0/G0V7WTmICcFWL
-	Qm0euaivdoePkw12OMhAH67ftxNVaWPkXMFhbca7GG2SdFm++uZNYp0n9kbYcxJaSGgvdx1cDUz
-	pFackqzVpMkx3UVVVBOpR5EeIP6uo1IcDjMKHUFuinXpv4FO+KwDLHi+hziXVCxI7SwuTKCU0ou
-	ahoDjRZ/dywCXkhdZVFaynZ5LeDxLZcriNhDArwcfE+TOinLYz4jhCTI9mJ8UZ3bq0fXmqCwPvj
-	HWjCnF9F3vvjyLeixPO/FvXM9unKEwRQ5wJw9CXZWoIB4BiFDrcp0eawDlGcq5j1pPlDak0kUL8
-	fpmeucC8sejhbfwiKbaM41zXAaRvABUwMmJQHBhrvgDXWUe6OoSFAX/wz0IyugyP4MrpfjHAO72
-	H9wEXYsDVt4PSOeo3Z7m375PTN9ER7plHmTQeqvvmj7L5rqHfnM7dfYnpNwIjIeP0qCFvAvi1ZQ
-	loD3ICl1nmE0V0RXN1Y=
-X-Received: by 2002:a05:7022:1608:b0:166:37d2:3b72 with SMTP id a92af1059eb24-190a6add68bmr5187470c88.27.1792660492388;
-        Thu, 22 Oct 2026 02:14:52 -0700 (PDT)
+        bh=e7NVZjs7NMYnhNT7+IbNDUXDeXgt96yTHJb2bsDwWM4=;
+        b=Q3GDmAmcoBmfu7iW2OvbxO0mRzkhLt86Zozyu+zaghzAHud4S46MWaqhEmZNebQ1ek
+         vzCT8sp+HSS793DV0CvD8Uo4IvMlTr6pLJ4UahEQMw8R2PKv08mb9ZgpVJz8P+0BLB0F
+         lGnzx2DfLVbNqGyoaLkXoep0R7VPsgz0f6Cwb9/f1ZZj7wP7hw/jTlz1YX72pONA3vH8
+         +8oq54sLSJrbYsAZ64wXcsRoNL0dRW3XQTIHGKQTQPq+M70iT2a8lYzh+R3/OIBe4zO1
+         4M7sfbjp2F6AYs7TPGNA27sQ0gz0cdBM1Lq/qgyazYJYRo33LTsM6Axi4F0nxmYfWL5Z
+         +FjA==
+X-Forwarded-Encrypted: i=1; AKwUvBy8BgolzjJzSGy7YjeT2CkIsFJBkdATddfMEwSVCYz50QwCBJulZgoLYb95fwvU3q4XazGyluw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLsdY4DUofdE5TOgRL5APyaEl5bp7i1y5c+6t8dS6mcZr0eMEIl
+	erySrNlSV7BdvFMhSZC1/QarkHTlGBjBnvzlzxS7rf5eprQZcb0+EfhtKC3JBTBY6OM=
+X-Gm-Gg: AYBFou0uFFlOKT8AIrPlXUAvqsPKkLtPLiK7BWQlJXPFzF/h0v8jVvEGk1PtVWd1n+q
+	fSrMolUofAKWQvMDEKbFQtVQg1mHYENMYx4gRC3+0+XtDp52w3LxDVlxkvG0hUi/yAKQsgM2ndO
+	Grmnq7JlqTIFSvLVDWsDqQuwRjOk8oqSsKb8rWEB/pIv8+6uytzpt/FzyZrT6dvZXLOUs4tCDaH
+	x1gVhs5GuWlRJwODltE+RaSGjhxpJYUuHXJDxf3P2Gz36hsXKsc83E0ODVBrPkS6hTWb6l0fYyj
+	NABSlyHZMLnIos3BfPNn94rvxSlGe69uPDwi8DfbRfuWEvz2dXLxtMyrRXhBUrzPBddG3T6YnGU
+	u/f6b89ZRtrP0FetfsiylGmQ9Zf0m7Ad845PwPx7VPQw6HuLO8WamLioJXoas8UwfMBq7biBQzi
+	PHy5hTWPbKOjYw6wI2EgkoeXFZRsOGt5nVv2k7SRD+RYFFZd65M5MUwsF1fH85u4QQxFnV0dLdV
+	yVCCOnoJxmD0xrxnVBK5AuoMR6ttltK/4Sb/NAME7OeKBVPSXma/1RyoF+3Lk6xgnKojAz+oiPR
+	CavQle4RHOjacNfWjWRgaNhG+aFieeIAfrcSsmwB
+X-Received: by 2002:a05:693c:4199:10b0:35e:1807:cedf with SMTP id 5a478bee46e88-3674a405bbamr7360868eec.1.1792660507440;
+        Thu, 22 Oct 2026 02:15:07 -0700 (PDT)
 Received: from youngkk-vm.localdomain (67.216.200.102.16clouds.com. [67.216.200.102])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1903c71421asm13121003c88.16.2026.10.22.02.14.48
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36740cca3d8sm14612471eec.14.2026.10.22.02.15.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 02:14:51 -0700 (PDT)
+        Thu, 22 Oct 2026 02:15:06 -0700 (PDT)
 From: Cheng Yongkang <teel4res@gmail.com>
 To: Nikolay Aleksandrov <razor@blackwall.org>,
 	Ido Schimmel <idosch@nvidia.com>
@@ -89,9 +89,9 @@ Cc: "David S . Miller" <davem@davemloft.net>,
 	bridge@lists.linux.dev,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [BUG] net: bridge: failed attach leaks slave promiscuity
-Date: Thu, 22 Oct 2026 02:14:45 -0700
-Message-Id: <20261022091445.3650534-1-teel4res@gmail.com>
+Subject: [BUG] net: bridge: MST bypasses blocking when VLAN filtering is off
+Date: Thu, 22 Oct 2026 02:15:01 -0700
+Message-Id: <20261022091501.3650765-1-teel4res@gmail.com>
 X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -107,42 +107,49 @@ Content-Transfer-Encoding: 8bit
 
 Hi all,
 
-br_add_if() can acquire a promiscuity reference for the new slave before
-a later error sends it to the err6 unwind.  nbp_vlan_init() allocation
-failure is one reachable point.
+MST can be enabled while VLAN filtering is disabled and no port VLAN
+entries exist.  nbp_vlan_init() still installs a port VLAN group, so
+br_mst_is_enabled() returns true even though BROPT_VLAN_ENABLED is off.
 
-The successful prefix does:
+With that configuration:
 
-  list_add_rcu(&p->list, &br->port_list)
-  nbp_update_port_count()
-  br_manage_promisc()
-  br_port_set_promisc()
-  dev_set_promiscuity(dev, +1)
+  ingress skips the normal p->state check and forces forwarding
+  br_allowed_ingress() accepts the unfiltered frame
+  br_allowed_egress() accepts the unfiltered frame
 
-The err6 path then removes the port from port_list before the remaining
-nbp_update_port_count() call, so the removal path cannot see or clear
-the port's promiscuous state.  The later dev_set_allmulti(dev, -1)
-balances only the separate allmulti reference.
+A port in BR_STATE_BLOCKING therefore still forwards data in both
+directions.  STP/MRP loop protection is defeated.
 
 Observed on Linux v7.3, commit
-08ab31164c55f20c7a2653de3186ae333470e2c1.  Failslab forced an
-allocation failure in the first nbp_vlan_init() allocation.  The failed
-attach returned an error and left no master, but the slave's
-IFLA_PROMISCUITY grew 0 -> 1 -> 2 -> 3 across repeated failures.
+08ab31164c55f20c7a2653de3186ae333470e2c1, with
+vlan_filtering=0, default_pvid=0, mst_enabled=1, and a port whose
+IFLA_BRPORT_STATE read back as BR_STATE_BLOCKING:
 
-A later successful attach/detach moved the counter 3 -> 4 -> 3.  Another
-successful cycle returned to 3, proving the first attach/detach pair was
-balanced and could not remove the references leaked by failed attaches.
+  MST on:     egress=3 ingress=3
+  MST off:    egress=0 ingress=0
+  MST on:     egress=3 ingress=3
 
-The error path must explicitly release the promiscuous reference before
-unlinking the port, or reorder teardown so the normal promiscuous update
-still includes the failing port.
+Each direction sent three matching broadcast frames.  This is a
+deterministic configuration/state mismatch, not a race.
 
-The PoC, fault-injection runner, and complete program/serial logs are
-available on request.
+The MST fast path should require both MST and VLAN filtering, while
+retaining the existing non-NULL port VLAN-group lifetime check.  The
+MST configuration itself should also be rejected if it is unusable with
+VLAN filtering disabled.
 
-This was found with a multi-agent workflow; the state
-leak was reproduced under KASAN+UBSAN (no crash is expected).
+CVE-2025-40297 used the same broad predicate for a port-deletion UAF,
+but its fix only added the vlgrp lifetime check.  The normal data-plane
+forwarding bypass remains in current source; I found no separate fix or
+CVE.
+
+The test used a diagnostic switchdev endpoint only to establish the MRP
+ring state.  It did not replace bridge, VLAN, MST or packet-forwarding
+code.
+
+The PoC and full program/console logs are available on request.
+
+This was found with a multi-agent workflow; the
+forwarding differential was reproduced in QEMU.
 
 Thanks,
 Cheng Yongkang
