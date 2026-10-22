@@ -1,71 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792691327;
-	b=UYYsh9ogKf6XDuRQO+jb98s7w5ZwQvGAl88Yvq/YSse49XrpLmz9DoTddWGM87mh82l0
-	 Qdil5SYNBZYAqgDoxZe63KGs2tmtGPv30ci33kPVC+bZyEyCMgK8Dkiq/0/cA+zuglJ5v
-	 noqlmwgHHHJHmxpNL2VsR2U4KijEJAqelFHF/U/2ybdYjLs7I7PpDQZ/4x0WGpwpvixUM
-	 ve6Fam1SuYVTFtdsfCi4uvjyTNalyFQGkIrD1UltlWycpa+de8HiNGYNwq3GQup7UND50
-	 24+41jiAJ2m9RimJNSunAFafCx6UYG7j7k2PAUu3aABb0+Iz4HtY5rcM2QVPgbbrmhQ==
+	t=1792691353;
+	b=BqmY+x1SMuOXGYgvLJgIkra5Wy1qiuJS/DT/bTX7jE/X7ZtXcQtN5DDb4Ipu2QE1u7+7
+	 tADAUhJW2D6N+PCDk+sClPnyOucIixfXRlaSzN6lue8Y3hTxzRXMlaZ7e2nK7dRrb/0NL
+	 T78qafL70jmmYcrAbvnuIGB9q4HBW3V+vLitlxvrnXEfGdAgfgKzwagF3Jdd1hALFmEPy
+	 +opgAb/voqeGi7/CHeoTmxTYQeuxD1ZjPbMWmkDZnSVnS0Ifa+gcIAcrexp9I7lun4Ydj
+	 OfK1u1kl3swTiy6mkl/o2wJFhqjBS/MreIqTBKJC1ELaty9bkQWkkAsk2F7uIVAFMGQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792691327;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=EPri+pnxfg/GkSkcUBWyDRaSPhtWuHho0ObTvb26NIc=;
-	b=mXwSdVPmhgkDfkYFWD6wXtjUHrPo4ukqpUVRgK6mHCX4RqwGIrrJuY6n2+Ff4TU/HJ2V
-	 /Fd9FcGLwIzU5Epp5jkbAsd3aMMajpsatPvoVgXdab1XaH3YXcO3ZdTP7rgA6QhjCQBp3
-	 P7OcMwfk3igHCyih9cXtPOyfj6CognqUgnCsbjUm1ujymU/j9KTTweXzj1F7y/knxXxet
-	 6sY9HHhXZblGSJniTggAJQkt5Mz4l6jSI6VUunO+lc5Hj2D5CA7pZR8A/NiV3nzzJGUvw
-	 /7c7fG1oHnRlxcPXZ0+AWYSJjNyrNNJyR0k4eUVUdnYeAkR5YP0J7z+xk40vf0c8ovQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792691353;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=f0ZLBISeyce6U7/hTVm4ywHVaFNN2V0ZlhVxxqx6eaw=;
+	b=TusR5trwuDAMte8biFWQDWDLAWekYzICrHsWgKk7dsL4OcRdXyDNJ1jh8OaUvy8xzDec
+	 dJjE0Ed71z3daIbOBj+qHayBCWqu2zO9A1HY51v/AwFcTz3iRIr8gLoCgR1Qwdj/8x3YC
+	 EClWIcmDhYAx7VsrszuIQ+9AVWItR9ub8uhKdWr+zBX1g9qr1mWmk0QQZWUo7Ql/GqtM7
+	 JBfvL16ucrxvO3nqxceIDksxr/KXTnyGDcPk8VjKN6wHjdj/P/MgB5B0JqoxxOAm6GYRI
+	 UYNqqPXOWxCLolE+eK0DfE61bfAjlTBhnuTojuRslv62DZ604SejvvvlAl9unLvA8CA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=fail header.from=linux.com;
+	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	arc=none smtp.remote-ip=209.85.128.54
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=BzfT9vcQ;
+	arc=none smtp.remote-ip=209.85.214.172
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C214F606A31A
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:48:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C214F606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FF8606A322
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:49:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 44FF8606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4a1df4c0966so21855e9.1
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:48:46 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=BzfT9vcQ
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ea759cc9b6so3105ad.3
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:49:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792691353; x=1793296153; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=f0ZLBISeyce6U7/hTVm4ywHVaFNN2V0ZlhVxxqx6eaw=;
+        b=BzfT9vcQo0dX9K6hykJfFHWOLKclttgOrxAGaeJvwHPh40AsSaB2+B6F9Pxqkm7hb8
+         YF/EKuS3WzwcPYEUI8mQTzKQe57H7DY2pRVx9fKu2nFT96xhQgLhXITu7gs0lhAsElfh
+         uATNeLWjFzfIEHZiN6z89LhNyNM39SBZCGe3mpU2mHEuJBeqdt5Q6CWVotqLk2Sdyw29
+         o6+Vuz73ku9T1FK0v1w02r2HKp5n2hEk0T404r5gRbt4CykpuinAHNPT1HaWYCjfO8OT
+         LTLvQHdDMTG30GSCGhC2peA8PWMd3dWf4DPJopyezHSD4rzWwsCcE4QjbbcwLTWAnQfe
+         eHOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792691325; x=1793296125;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1792691353; x=1793296153;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=EPri+pnxfg/GkSkcUBWyDRaSPhtWuHho0ObTvb26NIc=;
-        b=FvFnBrrK5wHKun9LJzwZoVpw2XBsbo7PapLrGe+1jFCSsjCKyk+4AgONm7CL3KVhrH
-         A159SdDQU4FjneIUVzKK+eDdG0HFrObgcexIHFzs5Si25MSFAwO4X1jfMZYZH5epUFRJ
-         bgSJkDwSgdvyzlr+YgMwyomKHbuJVBqbkju62a01FpEvMa7eHTFpaIcjSVA1ZRswiFvk
-         Sz9n1C2ctVrkaHYP/wl/JUMbWk9BRomIOp23+UAXiNBzcXnQT1DxUBXVU9acAI31sbiW
-         Y6osDZLUAO6mKUAOgsMZX5WPDiOtSrWnBUVNG/cvdavlwHt7HVb/ZsIETp7BKy9fDd3l
-         x+BQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxgGeI4egQpSUgoZgsztfpSvZciHwEmZjJ2c9smCZqASYbxC9ov3zMoeUUGTRjHibH75LR2C/g=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKT1Qz/EiAQqdL8qDfT22xq7J9GORsIv9ZZcGzuSucABwucyVlO
-	jncxe3Mm+b/Y9Ox0rHfbRKxwkghy2CkLqLi1BbzhwWUymuXE0574AwuBhARnqSVNMw0=
-X-Gm-Gg: AYBFou1eM1N50Sc/BH5upBHa4rNv7tBiTBwR4w48wnS5h9F8fnEv/b26iGUTGy031hp
-	DZEx1dgngxAOD9kGoCYuVRMqCSzGizuj/dbAwt28dYaNMmdinW26gnfjzuDtS9wMFNealh/dysv
-	AZQAHOZrZiQ9h28ypzobhwQNm87O9YDod9FlaHgcHT1D0WtL7xHUrRs+xy2C070T6cOJacca+j3
-	bevizQmDW1nxq2mIpAychdbC+jDWrNwXbauHgaCIEetFoNl3uBDuY7N7yNO5vkx1hVqJRyhDJZe
-	mI1DzbkSB/GzdhfmmWsVQ6n+0JEtATvT7LlRR73aagfRSgnRJ0hDtgSZ1QEsci9fYuVKEJ71lDQ
-	Gy1n5UXfEEC5dCt72Vt7rW0bh4gJA5jl4LEi/3TR/0k5d6V8MxevF3MRmSY2T3+Phb6aivGbfgV
-	CSmHFsUbNF0MqkgNZLcTm4SYST6sVL2YVrele438dYh0RoD+oJFFDoZEViGNdGBH1Hg2kWMdGFR
-	vplSYOpUMvqtapAVITwKBuqc4daxwzzOrc8SXWUnWo8GFtEr8g+lsGOAc2GxacLZ5HuKosAh+Od
-	qBHox4OYxA==
-X-Received: by 2002:a05:600c:3e0c:b0:49f:c5aa:9ef4 with SMTP id 5b1f17b1804b1-4a204b042e5mr54395825e9.8.1792691325102;
-        Thu, 22 Oct 2026 10:48:45 -0700 (PDT)
-Received: from [192.168.1.135] ([81.79.62.202])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a210327422sm14119865e9.14.2026.10.22.10.48.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Oct 2026 10:48:43 -0700 (PDT)
-Message-ID: <9b5fe9c2-aca1-4460-81fa-826e05e88c1a@linux.com>
-Date: Thu, 22 Oct 2026 18:48:43 +0100
+        bh=f0ZLBISeyce6U7/hTVm4ywHVaFNN2V0ZlhVxxqx6eaw=;
+        b=kqDUqUkeNbFgqRosLyLWDvaJXpaUEgd5oSBeWR4fhRhSr8wE2acLV+tAPSp68yxsg3
+         1+SWmrpTsfhQjFQ0SPxvHjtmdMSk73wbjkzSeQ5cNlloKHMtNKVcg/uXUzr1mB7+AJ+O
+         DSROks8Bfu0MuxYuX9XiKmT6bKSY+41rJNIUkEJeRUavpw39ni865PWZ1UdjS2MJPzG7
+         e/8dEsJa6Ks/A7HDopqH6Rs3XUB4uuBcKXgn76BvSkLPnMkChI7cPHzN9LTeVxQzsvLD
+         LEzDgHklSXAhO49H9t6t/7oZ3anPogaSCi+H/HTP5jEpFtSNWYIgRN7qp1nVhQh8sw0n
+         phuw==
+X-Forwarded-Encrypted: i=1; AKwUvBxLpNl2lqLY01N/mpNZeeOQKADlkLYf+b/MRddWQMoixLN+SWigsThdILgSZon2eBm3c3vumpM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIS0GcsQIdind4HC7LA5RcUdZPggxsRU0Z9saygIyX6p++sjY2P
+	6LcBOqry9Kz78F9WEnOCblflftI0E6xMpV4lYWoNzTdSO0Bawo6oeZJE
+X-Gm-Gg: AYBFou1UlPuFvaZYmsbpi2Nvexg+zMAbZAFl7Y6VFsAzkUmAW591FWnLQSFPq7SSE7Y
+	Ekdf6Tt7gVXUl9N2Aupf1j6isYJh2+PQFDrIV7uhlMFgzF+U+ng3+kVPJQw9U2F/amCz278Q6Rn
+	NqcDntzIVe8TJR3MqyW+vaYelhyWmPBm4FVxeOg7OhAd1EPs+71z54+X8Fryx6UdarFFOWctW+3
+	Fwa8XUp43SMGoS3+8Vq2S+o9AO/7no2wxg2/ufVyAwX8oA8zEEEWTb7TQnZqXoUXyKtPMk1LBuG
+	OGMGOuz3er4x/7BiZJU/Rx0QO75MfqDXsalj+73M23R6u1wqWDP7qU7KOYu9gyTztOG4WafgbVs
+	fBK9Qek7e5OrVmdGcD75tPTKBTLrSUL0VriEaNEZ6Mi2O0iJibl+B08pa96yXgZfQWc7+cq+mAI
+	D+6C7BcPZ3MxB+db2cT10mV5u0wG28K3MqIVWGIQ2A9OoO7gikjoCzMs/KOSl7kldMAjNAivXaG
+	ng/m8rtOvGtaQn0W3QClZoRfOcRPGCx2/SnNxqbfmukGf4xDnjrE47sayfphBu6xTQABgqJzL2k
+	erJCTZoItNoWvZffZIp+sN9i7YWSQ6QXlEndNZbpixC0em7gu0c4OQUhhYhKNvBsjM+GRSPhLG8
+	kkgRZSw3GfAI=
+X-Received: by 2002:a17:903:2f8f:b0:2db:733c:fd1f with SMTP id d9443c01a7336-2ea7c169201mr1589395ad.8.1792691352522;
+        Thu, 22 Oct 2026 10:49:12 -0700 (PDT)
+Received: from test.. ([118.68.116.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea7af67e12sm1722565ad.10.2026.10.22.10.49.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Oct 2026 10:49:12 -0700 (PDT)
+From: Duc Anh Luu <luuducanh05051995@gmail.com>
+To: pablo@netfilter.org,
+	fw@strlen.de
+Cc: netfilter-devel@vger.kernel.org,
+	phil@nwl.cc,
+	coreteam@netfilter.org,
+	eric.sesterhenn@x41-dsec.de,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Duc Anh Luu <luuducanh05051995@gmail.com>
+Subject: [PATCH] netfilter: nf_conntrack_h323: fix out-of-bounds read in get_bitmap()
+Date: Fri, 23 Oct 2026 00:48:55 +0700
+Message-ID: <20261022174855.615855-1-luuducanh05051995@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -75,72 +101,68 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 8/8] dt-bindings: net: ethernet-controller: tabulate
- who adds the RGMII delays
-To: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc: xianwei.zhao@amlogic.com, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20261010105900.247342-1-tanure@linux.com>
- <20261010105900.247342-9-tanure@linux.com>
- <CAFBinCB8203vL6YK3+V2zDhz=qqeAwJoufPM60cD0Vz3s-OS6g@mail.gmail.com>
-Content-Language: en-US
-From: Lucas Tanure <tanure@linux.com>
-In-Reply-To: <CAFBinCB8203vL6YK3+V2zDhz=qqeAwJoufPM60cD0Vz3s-OS6g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 10/10/2026 23:37, Martin Blumenstingl wrote:
-> Hi Andrew, Hi Lucas,
-> 
-> On Sat, Oct 10, 2026 at 12:59 PM Lucas Tanure <tanure@linux.com> wrote:
-> [...]
->> +#   phy-mode    tx-internal-delay-ps  rx-internal-delay-ps  TX delay    RX delay
->> +#   rgmii       -                     -                     PCB trace   PCB trace
->> +#   rgmii-id    -                     -                     PHY         PHY
->> +#   rgmii-id    present               -                     MAC         PHY
->> +#   rgmii-id    -                     present               PHY         MAC
->> +#   rgmii-id    present               present               MAC         MAC
->> +#   rgmii-txid  -                     -                     PHY         PCB trace
->> +#   rgmii-txid  present               -                     MAC         PCB trace
->> +#   rgmii-rxid  -                     -                     PCB trace   PHY
->> +#   rgmii-rxid  -                     present               PCB trace   MAC
-> We have some boards where the PCB traces result in part (1200ps) of
-> the delay needed for RGMII (2000ps).
-> The remainder (800ps) has to be added by either PHY or MAC: the
-> (RTL8211F) PHY can only generate 0 or 2000ps delay so the MAC has to
-> take over.
-> For the three boards I have in mind, please see $ git grep
-> rx-internal-delay-ps arch/arm64/boot/dts/amlogic/
-> 
->> +# A property for a clock the PCB already delays is not in this table.
-> Can you please explain this sentence (I'm not a native English speaker)?
-> How I interpret the sentence: The PCB may add delays but those are
-> implicit and not part of the {rx,tx}-internal-delay-ps properties. If
-> the delays added by the PCB don't cover the full 2ns requirement then
-> either MAC or PHY need to add the remainder, see fine-tuning below.
-> 
->> +# It is either the fine tuning described next, or a mistake the MAC
->> +# should report as a fatal error.
-> How can I differentiate between "fine tuning" and "mistake"?
-> 
-> 
-> Best regards,
-> Martin
-The patch is wrong. It assumes a present property moves the 2ns from
-the PHY to the MAC, and Andrew's reply on patch 4 says it does not.
-I am dropping it in v4.
+When get_bitmap() decodes a bitmap whose end falls on a byte boundary,
+it reads one byte past the position that the caller's
+nf_h323_error_boundary() check validated.
 
-thanks
-Lucas
+For a bitmap of b bits starting at bit offset bs->bit, let
+l = bs->bit + b.  The caller guards the call with
+nf_h323_error_boundary(bs, 0, b), which reserves ceil(l / 8) bytes.
+In the (l < 32) path get_bitmap() first consumes l >> 3 whole bytes in
+the loop and then unconditionally reads one more byte:
+
+	if (l < 32) {
+		v |= (unsigned int)(*bs->cur) << shift;
+		...
+
+When l is a multiple of 8 (l == 16 or l == 24), l >> 3 already equals
+ceil(l / 8), so the loop has consumed every byte the boundary check
+reserved and the extra read touches *bs->end -- one byte out of bounds.
+The value read is shifted below the final mask (0xffffffff << (32 - b))
+and discarded, so this is a pure over-read, but it still crosses the
+boundary nf_h323_error_boundary() is meant to enforce.
+
+The extra byte is only needed when the bitmap spills partial bits into
+a further byte, i.e. when (l & 7) is non-zero; for a byte-aligned end
+the loop has already read everything.  Guard the read accordingly.
+
+Both get_bitmap() call sites in decode_seq() (the field bitmap and the
+extension bitmap) are affected, and the decoder runs on
+attacker-supplied H.323/H.245/RAS payloads when the nf_conntrack_h323
+helper is active.
+
+Reachability and behavioural equivalence were verified with a userspace
+libFuzzer/ASan harness driving the unmodified decoder against
+exactly-sized buffers; the fix removes the over-read while producing
+byte-identical decode output across the whole corpus.
+
+This was found by incomplete-fix analysis -- reviewing the recent
+out-of-bounds read fixes in this decoder (decode_choice(), decode_int(),
+DecodeQ931()) for sibling sites of the same class. The code review and
+harness work were LLM-assisted.
+
+Fixes: ec8a8f3c31dd ("netfilter: nf_ct_h323: Extend nf_h323_error_boundary to work on bits as well")
+Signed-off-by: Duc Anh Luu <luuducanh05051995@gmail.com>
+---
+ net/netfilter/nf_conntrack_h323_asn1.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/net/netfilter/nf_conntrack_h323_asn1.c b/net/netfilter/nf_conntrack_h323_asn1.c
+index 6830c9da3507..8c04925b7007 100644
+--- a/net/netfilter/nf_conntrack_h323_asn1.c
++++ b/net/netfilter/nf_conntrack_h323_asn1.c
+@@ -229,7 +229,8 @@ static unsigned int get_bitmap(struct bitstr *bs, unsigned int b)
+ 			v |= (unsigned int)(*bs->cur++) << shift;
+ 
+ 		if (l < 32) {
+-			v |= (unsigned int)(*bs->cur) << shift;
++			if (l & 7)
++				v |= (unsigned int)(*bs->cur) << shift;
+ 			v <<= bs->bit;
+ 		} else if (l > 32) {
+ 			v <<= bs->bit;
+-- 
+2.43.0
 
