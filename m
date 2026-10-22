@@ -1,59 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792653918;
-	b=YyZC0aQ7oaIB2xIfa0h066MjJfLKtDVBB73MIxR3C53y5l/YPGoJMkR4G5ru8Is/fdQ2
-	 M4SHB1zf19vARtak9rxQ2vy8UWXGvjEwoQFoxiHBnAENDWwAmzk5ntzNgmrB6vDJmIi3H
-	 YRUTBVbCwoWFBXmNA5V2eXkNsbHJaHg1dDaA8A+rblvuDP/yPi1W+Vy/GnZo9tvc+QiId
-	 YfLgspYRWUhvAkZHYNrXBEYFvTgbKiyiQP5MS5kOIOB3TGE6mUCk8QJOfuZ09KO/bK7bH
-	 JWqljLNstdCi857TKvuvlHn/w4dznszvPmX0ai2j9KVwOl/IfJtsBGpKej1gMh6ausQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792653918;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=3+sI12mDcyiWW+7rUXYLDI24xLKvRl6Qlbizw4n1tjU=;
-	b=fczCgmWh7i0ptCkg24NVEXktOgWJkGIyHiDQluHRV2xoJp+NQ4i+5g+Eo7aHfRidb82c
-	 MVDebz5zWpk/O5yaCu/fb67HfzwybQ/HeNGSO2KpItA0kimbm8hfQJE3mc0GWyo1U0MNJ
-	 4J6D9C3y0Gk0cVyZks7wBU5UMCbW+dp7EDnyKNLVRubhWFiZV2B4U9hCG/SHPsJhBTTnb
-	 uuBPcLQ1AvywQ+DhLR26MHrt127oGkV+KDEtFn6CztgXhd08+N/YCd2xyigF50KfGcerD
-	 JLSdNNY6iZAmabX9UqVEY4eWuYoN5XpQVMzdoXMZgBoM1J96ya37z9PvzZwVjLb4Qag==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZrvXmHSJ;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792654456;
+	b=AOGNCXvHV75+8wtRbgxDhKfQwS6l6yncXhEbXClzfJ33OtxdyP7ZKuqkUvAVGb+KYfQx
+	 GmxjU6spfovqFkUYS8jOapfUxc/eFS1fiapbdi7vaNup5q1mIFaoFrE69tq3/OwJeUPGA
+	 FIIz6TD7TOxllqvA3rXP3JYlegtjyBqkEP++wP+KN9il+RR1aWWPLxzTGsC4FJS26gwOU
+	 2MWuoac0sKBKDw7SklOxdAsnz/N27UOmAJDxqqEKCda3VviguXnPbZ4Sm5t0N92+hiIHl
+	 nriS/mjgEZyqpnll0x+A+UEAioEyLxjvdLJKjOjbBOfli3Pe5gSEPBNR9gpwuxjNhDA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792654456;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:X-Sent-From:X-URL:X-Accept-Language:
+	 X-Accept-Content-Type;
+	bh=xROOygMrC7yI0A+nFF4ZYUpCmGBkajWRjJ/AHQXTEQ4=;
+	b=JwsB/wP4dcpE9Hmfwoplp2PZq5HO083qFxR+GDleth7CZfB5D5lacybO773CbyK6Gy6l
+	 exBx1JUK9yne2BN1s/zZ9jQkDHPLbs70pJDdUlT38I+wV8v0JNHxIvr3Yc1F23RB0/pUr
+	 10Zg9JXO368PUqs0wNcXH8r8SxKEDtjzXMShILnnxSGpJ1v0lPfwsa65J0uy34BXgJDri
+	 v3asMOEEebpRgnWnJCUUdawzDNm8MNzWecSSxTNb5zfKP7YwlxedZ/jtSkVYHFidqcl/F
+	 5zgxM5TpoK/+10WpjgPbFLzwZIm8h9NHOnxt1+Gs3RkAEaxdKFrTqlER6u8MqFEVIBA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=pengutronix.de;
+	spf=pass smtp.mailfrom=pengutronix.de;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=Gdj024Nn;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2694606A33F;
-	Thu, 22 Oct 2026 07:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3FB606A319;
+	Thu, 22 Oct 2026 07:34:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1E3FB606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZrvXmHSJ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF0D1F000C9;
-	Thu, 22 Oct 2026 07:25:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792653917;
-	bh=3+sI12mDcyiWW+7rUXYLDI24xLKvRl6Qlbizw4n1tjU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ZrvXmHSJGSjbI+sMVod0u0OAzSFZQKd0AljLQMqU/sssGFDJtwoe1no2KdWHc40X2
-	 1pHfxlJpP8CLLESSRCi/LN6iB8dQYJbuQ1Q8jG3M6vy2rvuxeFc+FXvSmRVdL2/KH3
-	 3kBP3Rr77eqeztOwuNWspjKWbixPekqvb/rSNpCJQ/IL7AfrNmJfTm68X96akEzJH+
-	 nPwsKlpLlz27gElQuFRE5bMI5r9g5aDQF9VbFCkeA8RTRNqxQTJxhLP5IPg/Q3fmuo
-	 TdeKPtsTJOynGWML5JLgqdJmIjLYJCLNHyNv4Ab/Nwq+Dos6RNrv9d7WzOxFQJFKCi
-	 I9MIW/6EyOOug==
-Subject: Re: [PATCH] libcxgb: use raw_cpu_ptr() in ppm_get_cpu_entries()
-From: netdev-bot+sashiko@kernel.org
-To: haoranwangsec@gmail.com
-Cc: varun@chelsio.com, bigeasy@linutronix.de, clrkwllms@kernel.org,
- rostedt@goodmis.org, linux-rt-devel@lists.linux.dev,
- linux-scsi@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, kuba@kernel.org
-Date: Thu, 22 Oct 2026 07:25:16 +0000
-Message-ID: <179265391648.3135.4737238756305443681@kernel.org>
-In-Reply-To: <179241614797.5916.13928836073297916808@whr>
-References: <179241614797.5916.13928836073297916808@whr>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=Gdj024Nn
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id E1A60200208;
+	Thu, 22 Oct 2026 09:34:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792654451;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xROOygMrC7yI0A+nFF4ZYUpCmGBkajWRjJ/AHQXTEQ4=;
+	b=Gdj024NnjPJEMCrSkozLYT9/WBzs9FO1ppOoT49t0QpZLCA0xTLzxP1EEZLbcOYavI/BMV
+	YR/dlWITmq6Hjzp0AUBN6laD4H41EDyDFzkYWR1r87C6FyU8vKJcvhhNcXtVIQ89g6CVj4
+	kpB8RgcOsiU82kgg71M1fAlmHZ+DqCGglsvf+Dj4kacIc81bkOOy2v5+dzcDFh23L6TM1b
+	K8nTJ9xPTsHHq2hcTxiylI/5v1FDelwuRKfS2c3jeDRGsox486yu+AiMykmTcUOzbJ8q4A
+	4m13khCmaUgfi1sn9G/o92UxQX7On5YVHjXndBwhnH5SLoI1cT8Mou5cgUZL8g==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792654451; a=rsa-sha256;
+	cv=none;
+	b=K6tDTmGVqttjIvUA0277WHeDrW3c+DgDD27uydGhNehJBcJ8Gxv0S3C7d6OwD/qofX91Vn
+	u8vVR53KchcdYnKixAgG9wHVSymtWBQSm2WcFw81eilE6g/MvSlu26bWJNv4Uxf7o6vnJ8
+	skxSl5hmyaLt3ViGImyI6+M158H5948PNRZB+Twfl2ZF1AQcZPdaqBmWR11CtuRoTveLab
+	hF3zX26qmlJGP6h2ny+ofR9lZblP1J4ggYdkGtGOMm2Pp7SmCAWFVhHis4BgQECOYWJ+VA
+	OHCRpTKC8ZZE1IwV/qTv3NrzwkBWJ+kDNURLt6c05N0PwzrBS278tFFcYUGpsg==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=ore@pengutronix.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792654451;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xROOygMrC7yI0A+nFF4ZYUpCmGBkajWRjJ/AHQXTEQ4=;
+	b=MfEaOCMl7VqKc0pwv8/hpBfooUhVlnIPhn5l0aiCUHmHZ7kSWZ0A6PWlWzni8oB1wa98PE
+	RnGd4kqB0nNCK0vwXdVwcoNi55TDTv/FdeS6DNfrw0OX0oL8RW1H4xzf5Z2P2dHH2iPzCN
+	K1M2r13Ru1bl7pLr7MQxyRuZje1Fr8CndEHvPLMjAJbhYxqQ+/3uOCrIsXTD9bsB3TyMw4
+	3N8OHflOeO22sAdmawTbjsw++AI0vlxnNxzYguzHJ6JZZ1AziGUiPViLoE4+373lSrLseT
+	WEhjUqwXU8qm2Q4ARRAF/Q3NJWYnH2lu+TrowA945riRiNigqQ6Yk9RkWx0Vxg==
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1xJnJT-000fgG-2h;
+	Thu, 22 Oct 2026 09:34:11 +0200
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1xJnJT-00000009QzU-2zGy;
+	Thu, 22 Oct 2026 09:34:11 +0200
+Date: Thu, 22 Oct 2026 09:34:11 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Carlo Szelinsky <github@szelinsky.de>
+Cc: Kory Maincent <kory.maincent@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Kyle Swenson <kyle.swenson@est.tech>, Ross Cawston <ross@r-sc.ca>,
+	netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2 10/14] net: pse-pd: keep the PI data until the PI
+ regulators are gone
+Message-ID: <atm8c3oJomYY3RH6@pengutronix.de>
+References: <20261020171249.853085-1-github@szelinsky.de>
+ <20261020171249.853085-11-github@szelinsky.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,134 +106,87 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261020171249.853085-11-github@szelinsky.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Tue, Oct 20, 2026 at 07:12:45PM +0200, Carlo Szelinsky wrote:
+> pse_controller_unregister() frees the PI array, but the PI regulators
+> are only unregistered after it, by devres. Until then their ops still
+> run, for example on a read of the regulator's sysfs "state" or when a
+> consumer enables or disables the PI, and they read the freed array.
+> 
+> Free the PI array from a devm action that is added before the PI
+> regulators, so devres frees it after them. This also frees it when
+> registration fails, where it was leaked before.
+> 
+> While the controller goes away, the PSE core must not power a PI.
+> pse_controller_unregister() now first sets pcdev->unregistering under
+> pcdev->lock. After that, enabling a PI fails with -ENODEV, and so does
+> _pse_pi_delivery_power_sw_pw_ctrl(), which pse_isr(), a priority change
+> and the retry after a disable use to power a PI. Disabling a PI still
+> switches it off and frees its budget.
+> 
+> pse_flush_pw_ds() also switches off each PI that holds budget and gives
+> the budget back before it drops the power domain. Nothing controls such
+> a PI once its controller is gone, and before, its budget stayed
+> reserved on the supply. If a PI cannot be switched off, its budget
+> stays reserved, as the PI may still draw it.
+> 
+> Triggered in QEMU (arm64, KASAN) with a test-only PSE controller:
+> reading the PI regulators' sysfs "state" while the controller unbinds
+> gives
+> 
+>   BUG: KASAN: slab-use-after-free in pse_pi_is_enabled+0x294/0x2d4
+> 
+> and unbinding it with budget reserved leaves that budget on the
+> supply. With this patch both are gone, the PIs are off after the
+> unbind, and a priority change during the unbind no longer powers a PI.
+> pse_isr() is not covered by the test, as the test controller has no
+> IRQ.
+> 
+> Fixes: d83e13761d5b ("net: pse-pd: Use regulator framework within PSE framework")
+> Fixes: ffef61d6d273 ("net: pse-pd: Add support for budget evaluation strategies")
+> Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 1
+Freeing the PI array from devres after the PI regulators, and refusing
+to power a PI once unregistering has started, look good to me.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Please drop pse_pi_power_off() from this patch, and the text about it
+in the commit message and the cover letter.
 
-- [High] The patch introduces a cpu/pool mismatch race in
-  ppm_get_cpu_entries()…
-- [Low] The commit is a bug fix for a user-visible 'BUG: sleeping
-  function called from invalid context' on PREEMPT_RT.
+The PI regulators follow the regulator model. A regulator that goes
+away does not switch its output off; the consumer has to disable it
+before it calls regulator_put(). For a PI the consumer is the PSE core
+itself, on pcdev->dev. So on unbind every enabled PI should go off
+through the normal disable path, before pse_flush_pw_ds() clears
+pi->pw_d. The disable path also gives the budget back.
 
---
+pse_pi_power_off() switches off only the PIs that hold budget. That is
+not enough: a PI under hardware control, or under software control
+without pi_get_pw_req(), can deliver power with no budget allocated.
 
-libcxgb: use raw_cpu_ptr() in ppm_get_cpu_entries()
+Switching the PIs off on unbind belongs to the fix for a pse_control
+outliving its controller, not to this patch. Patch 11 calls
+pse_pi_power_off() from pse_pi_take_pw_d(), so patch 11 needs to drop
+that call, and the comment above it, too.
 
-This patch changes ppm_get_cpu_entries(). It drops get_cpu(),
-per_cpu_ptr() and put_cpu() and uses raw_smp_processor_id() and
-raw_cpu_ptr() instead. The aim is to stop spin_lock_bh() from being taken
-with preemption disabled, which triggers a sleeping-in-atomic BUG on
-PREEMPT_RT.
+Here "off" means what IEEE 802.3 calls mr_pse_enable = disable: no
+power and no detection, as if there was no PSE. pi_disable() does not
+do this on every driver today. tps23881 turns detection and
+classification back on after power off, and the core relies on
+detection staying on, since it also uses pi_disable() to power off a
+PI that stays admin enabled. Fixing tps23881 is not part of this
+series.
 
-> Signed-off-by: Haoran Wang <haoranwangsec@gmail.com>
-
-[Severity: Low]
-This fixes a user-visible BUG on PREEMPT_RT, but the commit has no Fixes:
-tag. The get_cpu()/per_cpu_ptr()/spin_lock_bh()/put_cpu() sequence has
-not changed since it was added in:
-
-Fixes: 47da7e62b391 ("cxgb4: add iSCSI DDP page pod manager")
-
-Should that tag be added, possibly with a Cc: stable?
-
-> diff --git a/drivers/net/ethernet/chelsio/libcxgb/libcxgb_ppm.c b/drivers/net/ethernet/chelsio/libcxgb/libcxgb_ppm.c
-> index 2e3973a32d9d..5f68c5d5766e 100644
-> --- a/drivers/net/ethernet/chelsio/libcxgb/libcxgb_ppm.c
-> +++ b/drivers/net/ethernet/chelsio/libcxgb/libcxgb_ppm.c
-> @@ -125,10 +125,9 @@ static int ppm_get_cpu_entries(struct cxgbi_ppm *ppm, unsigned int count,
->  	if (!ppm->pool)
->  		return -EINVAL;
->  
-> -	cpu = get_cpu();
-> -	pool = per_cpu_ptr(ppm->pool, cpu);
-> +	cpu = raw_smp_processor_id();
-> +	pool = raw_cpu_ptr(ppm->pool);
-
-[Severity: High]
-Can cpu and pool refer to different CPUs here?
-
-The new code reads the current CPU twice, with preemption and migration
-both enabled. Say the task moves from CPU A to CPU B between
-raw_smp_processor_id() and raw_cpu_ptr(). The bit is then reserved in CPU
-B's bitmap under CPU B's lock, but the returned index is built from the
-old cpu value:
-
-drivers/net/ethernet/chelsio/libcxgb/libcxgb_ppm.c:ppm_get_cpu_entries() {
-    ...
-	i += cpu * ppm->pool_index_max;
-	ppm_mark_entries(ppm, i, count, caller_data);
-    ...
-}
-
-The index and the ppod_data[] entry now point into CPU A's slice, while
-bit i in CPU A's bitmap is still clear.
-
-Could a task on CPU A then get the same index, hardware page pod and
-ppod_data slot while the first transfer is still in flight?
-
-cxgbi_ppm_ppods_reserve() turns this index into hwidx and the DDP tag.
-cxgbit_ddp_reserve() and cxgbi_ddp_reserve() then program that tag into
-the adapter. The caller_data in ppod_data[] is also what
-cxgbi_parse_pdu_itt() uses later to match responses to tasks.
-
-On release, ppm_unmark_entries() gets the pool back from the index:
-
-	cpu = i / ppm->pool_index_max;
-	i %= ppm->pool_index_max;
-
-	pool = per_cpu_ptr(ppm->pool, cpu);
-	spin_lock_bh(&pool->lock);
-	bitmap_clear(pool->bmap, i, count);
-
-That would clear the bit in CPU A's pool, which may free another
-transfer's live entry. The bit that was really set in CPU B's pool would
-never be cleared.
-
-One preemptible caller that holds no spinlock is the iSCSI target TX
-path:
-
-iscsit_send_r2t()
-  cxgbit_get_r2t_ttt()
-    cxgbit_ddp_reserve()
-      cxgbi_ppm_ppods_reserve()
-        ppm_get_cpu_entries()
-
-iscsit_get_r2t_from_list() drops r2t_lock before it returns, so this
-whole chain runs unlocked. A remote initiator can drive it simply by
-sending WRITE commands to a Chelsio-offloaded target.
-
-The raw_ accessors are not checked by CONFIG_DEBUG_PREEMPT, so nothing
-would warn. The race exists on any SMP kernel built with CONFIG_PREEMPT,
-PREEMPT_LAZY or PREEMPT_RT.
-
-Given that, do these parts of the commit message still hold?
-
-    The preemption disable exists only to stabilize the per-CPU accessor,
-    the pool is serialized by pool->lock, not by preemption.
-
-    ...the defect is PREEMPT_RT-specific.
-
-The returned index encodes cpu, so cpu and pool still have to match even
-though pool->lock serializes the bitmap.
-
-Would it work to keep the saved cpu and derive the pool from it? For
-example:
-
-	cpu = raw_smp_processor_id();
-	pool = per_cpu_ptr(ppm->pool, cpu);
-
-Another option would be to wrap the lookup in
-migrate_disable()/migrate_enable().
-
-[ ... ]
+pw-bot: cr
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/179241614797.5916.13928836073297916808%40whr
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
