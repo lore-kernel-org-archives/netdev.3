@@ -1,91 +1,112 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=81.169.146.167
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792667965;
-	b=NheWSnAsqZAlFIFIAF5HX7sCvIPYBBBCNcrOrlaPkNmT87DipML0QXuq5d+x1bELbBaW
-	 5t/DPYBhy2Dy4z6f5/RLZnayjh8i62yzXSr92f/nHQ0CdMnjdFbytRyL8l3xeLMuoEO15
-	 ZwOliRW556hz+QPSZ7ldYsl4j9JI2cLrPfumwCMVwBrzw1Gy1m0HlGlItOksGuCnuTKSL
-	 OMR6f0NCC1igsL3At2eV3NbIqwSY5Ci7q4CMz5IdHAnXw7Z6TlvCLC/aZn5HF3I5VylFK
-	 wMbJKV+1t92spou5i9vdvUFPoGPmlkJCMAjAlkdenLCsdyE55z78PASBP5PBT95u2FA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792667965;
-	h=DMARC-Filter:X-RZG-CLASS-ID:DKIM-Signature:DKIM-Signature:X-RZG-AUTH:
-	 Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:
-	 References:Content-Language:From:In-Reply-To:Content-Type:
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.53
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792668230;
+	b=QwfcoXnuFlHQIs1jeODu69EERQkeZhIrtlhXyBQc0Mj1O3HQgRb+O5sJNgWpaT/o2VEB
+	 bxjwni3wwDvSXY7GiEco6pmTb13Mn+AiB+HhzaJzHCpZ3G/AHKEVoR+KyYUqvgEwoSwom
+	 PxSHRGOi7dJNKEojqicYDZ3/cS0M89DXNeAyjZQ48yw9fwf2tFxov+4XQ9I/9ApjxSUhZ
+	 QxPiFM/UmOW72Yg1/oXsbRpitypy9skNxeYZlhXCgMYqFjRnjPmzppX7tnRHziVQ2ChKw
+	 eYlwhpGT/4SvNZp2+TEmos6Erwc5Q8jhcPqxeQW1l5QarOUwl7n9Y6p74XxjTNY+kDw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792668230;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=QgZ0jOzTA3j8lsPkqLnQSh5uin8BlG/xtueUHJGlDQ4=;
-	b=ItECNtYE+4fLt1xfh5RKGqiCPBwzqmhJY2e9M+qSVq5L5nePYYIHxxfJlMeihr97BNsG
-	 UQ6YpkInqb+zebhMY4gqDdWMM9cw+Y4oqEgZT1w9q3HzSGaOD0YSh0fc+CFlYzpmeazDC
-	 781cxdTf2KB/ep3KJUqWNbqilda+VlspnH611yAuVrVDn61mSvUCy9wim4mBxr+LG5PMp
-	 oBMMcUXVZbF3Vxxqa+IVMeXoS5lcrp9wNOHMUUFRXhUWkVUF8nRf0jCiTPVcTEcz1a+Vj
-	 FYstfGB3c0NmmodR+64qc0hMyor9a0d4OJMkEzcHSYzeZGLzETSHVswBMZAEUgzWwpQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=hartkopp.net;
-	spf=fail smtp.mailfrom=hartkopp.net;
-	dkim=pass header.d=hartkopp.net header.i=@hartkopp.net header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=PVLTEleG;
-	dkim=pass header.d=hartkopp.net header.i=@hartkopp.net header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=e5MjWzla;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=81.169.146.167
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.167])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	bh=xPX5Pyvu3KPuA/BeOQ2DAl4emTBwilJ3yODW3aKnjPs=;
+	b=MSgjCMK1buTpJQsrzNtiZVVwOoelAWdO64yENffw44A2o8BhLpSHjx7VGMvkISP3tYHo
+	 j13BoPhsk1HY5hYZ0evyO/gk6yBWXddKorMiiG3BAB23v07j4aI6GCjm3mCmpKTtpBJ78
+	 Pgf5qlswNSbBwNk+EMO574rKeEabNhuyGlCKRL4XcIATUGAviOyRMui7/6p/2GBFXDncF
+	 t5H7XPKPNAuifDaTKAzNulNP6aR5E1BgUNIWWnYlIZycXfKxd7eO+muoVol55CUqwgxxT
+	 xx8q0Dhg9l7AU2sxegaToDGtrnQ7000VyQTYEou8CWCsVP329N/uOM0ziXR8qK2NbyA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=qnMao6zB;
+	arc=none smtp.remote-ip=74.125.82.53
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD61606A319;
-	Thu, 22 Oct 2026 11:19:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CFD61606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hartkopp.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B792606A31F
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 11:23:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4B792606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=hartkopp.net header.i=@hartkopp.net header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=PVLTEleG;
-	dkim=pass header.d=hartkopp.net header.i=@hartkopp.net header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=e5MjWzla
-ARC-Seal: i=1; a=rsa-sha256; t=1792667954; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=MHkyChibbg0VPI/DDcBk0da/NH3CuSRC1fcqfwMiqwwtOUoOsBPsAhcYWgNmIYQCol
-    bzC04CO2Ctb+dXGknq+pbo/flpWf16n053MIcmeZxrGvAv37jFdbpEHxESfacprFrdYD
-    XJnkmFUqSCaeuM8Nz/jnkSrBgi+MhgNCr/r7lzeCxncqFxmUFtiF4tl/4GvsynqE/91H
-    OJdxA5/UI1ESnKsmJz8OnIB50Xhqr8vja2GQjLnBcfLDuNSPh/baEDxrDddZG7hMwgA6
-    lyGtxJiNizVQNF2geoyDmUomvb4kIsl5ufBinMrFzXqjaEnrhVId74Vghfe5H2mtcmVu
-    eYiA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1792667954;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=QgZ0jOzTA3j8lsPkqLnQSh5uin8BlG/xtueUHJGlDQ4=;
-    b=AVKJRvK9PCM2m8rcvWWhYHWICe7QouygEZYqYZ9hr+W50CCsrC7tIbo9suPsMInl6q
-    MPPnHCNTCPQKL2VYJ9aMLTVPbvmxhj+PNwbRLbqhhJki7+4/D0RTB2foVjtdLAu2a+az
-    BSs+FEHoEvOy3BhfpWT7YSOiBZUJ2L9u/NljX5W74dS14iyYTGaHsU4dIEsgkDM4FeEW
-    +bH1xos2BF4J0kk8/RCVuLAhhgmTwLZAdLb6c/7tnMgj/gd/mMbuS32BAjNxstbiZbAK
-    sUqyrrhHSJJOmYcv23fhJ7BlTZ9+CerreCqUHH6NXJE5RBVciBoJYZKw9pRUkaeAhGOz
-    DhnQ==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1792667954;
-    s=strato-dkim-0002; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=QgZ0jOzTA3j8lsPkqLnQSh5uin8BlG/xtueUHJGlDQ4=;
-    b=PVLTEleGd6pvtHTZguzaPW5SNYG0SUsgRg3+xwJZJX9vLUmkSZxOTtU8yticVlscJh
-    8CviqbhsOecA5xDi3HQVNuxCBAVV42LalHqWugHOs1ERm8kAXR27/46rb9iLHDB07Os+
-    SLpMmEudiRPhIQWXwJiVK32oN0TxHauociCpxfSbNzG698vHA4UblK7swFORWRjRME8i
-    QN/CsIk04XospxHuPIw2IJ5KyHeB/ZAkfZjIlHq0tfJn3AciG6bCXJUduHikFTBL1iWI
-    yrz71rZ/iLcockenUuFgvOnDWlQ3NUfZUggTnWfMbzsHi1xM05YQhDWKKNynX5GweNzH
-    W9qg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1792667954;
-    s=strato-dkim-0003; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=QgZ0jOzTA3j8lsPkqLnQSh5uin8BlG/xtueUHJGlDQ4=;
-    b=e5MjWzla49EaPeIDcCHOZG5f0DrrmjGJ8S0Y+w8VnPsn1XWKnMp5rokBYQjrD7bE2E
-    2JSewEXoynwatHZ/pQCA==
-X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeEQ7s8bDup0Q=="
-Received: from [IPV6:2a00:6020:4a38:6810::989]
-    by smtp.strato.de (RZmta 55.6.3 AUTH)
-    with ESMTPSA id Kfdf2a29MBJDnx0
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Thu, 22 Oct 2026 13:19:13 +0200 (CEST)
-Message-ID: <5fdffd4b-7f80-471b-93b3-706c00cb51da@hartkopp.net>
-Date: Thu, 22 Oct 2026 13:19:08 +0200
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=qnMao6zB
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-15dd124bbe7so3239725c88.1
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 04:23:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792668228; x=1793273028; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xPX5Pyvu3KPuA/BeOQ2DAl4emTBwilJ3yODW3aKnjPs=;
+        b=qnMao6zBmkB8laPqkwE731uNdh2Rfbbc/wwRETP88zq+ppjznHTWEr74A9TFIiCXKs
+         8QTyqZmT91XGxm47SdmAOIzeCMOFOlxkkg0GbWzlUDocTOnSqkK1gzuTirc/ts5/jfBg
+         jrjSM5OdRHUF0wwJnas3KFENmnU0Dvz2EtprKgPTymzylLeVcq5wIKvVeUGRrdtYpRoY
+         TdiyFajkatu7UxuFuOxvT3PVmTH+ErB4kS7LsXyIwale85eQm+5E8u1r3RbpYo++PQoR
+         bguTebPwKYv7/iWhGZ8xFpD0xTGIgDf5do/g/wMJapjt+qG/8M4L5A0HTIP7ql+3dpw0
+         qePA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792668228; x=1793273028;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xPX5Pyvu3KPuA/BeOQ2DAl4emTBwilJ3yODW3aKnjPs=;
+        b=sn4CNdIGEcnP+8d0IwmM09pjxOXRVLKknBlT8iRuvjhD7ji6YeHK0T6dK8lrDmgSO1
+         zRA/NyD6VevSf9ZsLcy0npqQAl++FIRCTdTjgQZLYjiuR48rjMUeCx27x5mNXWMDz5dM
+         FGryts4m8czdYXoJGetQBMxVQQqFrJpRcB0h5mj+mSeUenScYOK7MNlmdpKctJJeLqqu
+         gtEHzfIevrSEUNKmuLLAK15W6NzuDcveaJ3iBMOpHn2AnaPIRh7DorREjACJmZ99LhGg
+         W4wXl33jP0IPZYWywVbBIF2bmINlHsP4bhZcRoZQs0FXwC4W3q7xoNVkuYV+RgJqhbAm
+         Wo/A==
+X-Forwarded-Encrypted: i=1; AKwUvBwLcoBZwCAivk9B9e9PrYXSzkS94dlYoGB1t+IKzF7xUWaVFb6O4MLso/kTbyesxx6TYANiZYM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKiO1RdLpQIMQgYbD/HOEroOrDOFK7XGYOWeBkbvbMJHYTnyhiQ
+	t0pZvXm395brL0AEyYy0VfVho1p1n7s55pB6jjvDs9JKTM6XW2VNhfRI
+X-Gm-Gg: AYBFou0clFBVmXaUeJuX3mo1enjR5sxOQw/A38hqPUDHcMuiop7KlwPAv5IC/x9/Tuh
+	cCWWLUiLAAMxACh9O1jRkaOXUhxxs6kY3hkk7L36lnowlHMSm/Jhy5tZzoeihdloifNqsSH1eis
+	IwSardoif1c4PpXt7Nir3xQ6BQu8ohoa0lN6Fv9cgOjsK2hzDAvD907p4vUw782z10bxBZyh/+E
+	9gUOiN+UHE6dqAvEGm4irs+rdl3JYetbVO+FN7U1qTMaoi3zItVRUopfLgqyrDuLSZUwoA4LDyx
+	HoYUeHJI0Vu3WLNAZ6g/mNKKAR2keTzVM4sc9joFtMkfJc8LbPzdrkYubMi7RitIssqDeNlETO2
+	JaB0jL8EFW+XkMn16nSLSXfS3rCZcJ3VH1kVgjKhTdYb1bnLWuWkGxxqgB0ZCf9BnZi5HzXMqsD
+	CpH0nMNq42TQx0Cz8xllxQLHaUn4P0Js8SjffmzwukNym2Pmgx3XmONhXLTDf/3fMFDz1hrUFqN
+	djJ+GUanNXIDQPzkOPF0wvfj8w1rlyRO5jqoDIXRr+YOh6rYgXfn3sMK9zGOshz11yEUwEu53kv
+	WgVYU6qlQ/j4elugCSvDLEj2XrHb1uOSPoY6VMKS9mc50Czcci698yUHvf7a0jcBdOWM5kdHm0I
+	=
+X-Received: by 2002:a05:7022:1187:b0:194:3a84:e67d with SMTP id a92af1059eb24-1943a84ea04mr1111760c88.44.1792668228302;
+        Thu, 22 Oct 2026 04:23:48 -0700 (PDT)
+Received: from nixos ([2405:201:c40d:9039:d12e:70e6:689a:f754])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1903a275026sm21529104c88.5.2026.10.22.04.23.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Oct 2026 04:23:47 -0700 (PDT)
+From: Ayushman Rout <ayushmanrout27@gmail.com>
+To: bpf@vger.kernel.org
+Cc: Ayushman Rout <ayushmanrout27@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Daniel Rosenberg <drosen@google.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH bpf-next v2] bpf: Use memmove() to load bytes from an skb and an xdp_buff
+Date: Thu, 22 Oct 2026 16:53:11 +0530
+Message-ID: <20261022112312.31563-1-ayushmanrout27@gmail.com>
+X-Mailer: git-send-email 2.54.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -95,75 +116,73 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 0/11] pull-request: can-next 2026-10-22
-To: Paolo Abeni <pabeni@redhat.com>, Marc Kleine-Budde <mkl@pengutronix.de>,
- netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, linux-can@vger.kernel.org,
- kernel@pengutronix.de
-References: <20261021231130.2085690-1-mkl@pengutronix.de>
- <eb3b2eee-3460-4b03-a180-1d3806a7f8f7@redhat.com>
-Content-Language: en-US
-From: Oliver Hartkopp <socketcan@hartkopp.net>
-In-Reply-To: <eb3b2eee-3460-4b03-a180-1d3806a7f8f7@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+bpf_dynptr_read() on an skb or xdp dynptr ends in bpf_skb_load_bytes()
+or bpf_xdp_load_bytes(). The destination can be a slice of the same
+packet, so it can overlap the source, which memcpy() does not allow.
+On x86 with FSRM memcpy() copies forward, so a destination above the
+source gets the first bytes repeated:
 
+  p = bpf_dynptr_slice_rdwr(&ptr, 8, NULL, 64);
+  bpf_dynptr_read(p, 64, &ptr, 0, 0);
 
-On 22.10.26 10:37, Paolo Abeni wrote:
-> On 10/22/26 01:07, Marc Kleine-Budde wrote:
->> Hello netdev-team,
->>
->> this is a pull request of 11 patches for net-next/main and obsoletes
->> pull-request: linux-can-next-for-7.4-20261021.
->>
->> The first patch is by Vincent Mailhol and drops CAN-XL frames on non
->> CAN-XL devices.
->>
->> A patch by Sang-Heon Jeon removes a redundant NULL check before
->> netdev_hold() in the CAN RAW protocol.
->>
->> A patch by Kaixuan Li for the CAN ISOTP protocol improves the check
->> for the correct CAN CC/FD frames.
->>
->> The next 3 patches are by Cunhao Lu and make CAN skb freeing safe in
->> any context in several CAN helper functions.
->>
->> A series by Oliver Hartkopp et al fixes several problems in the CAN
->> net-layer:
->>
->> 3 patches target the CAN procfs: A patch by Runyu Xiao resets the CAN
->> pkg_stats using atomics, a patch by Oliver Hartkopp fixes the stats
->> calculation after a statistics reset. Followed by a patch to remove
->> kernel pointers from the output.
->>
->> The last 2 patches are by Oliver Hartkopp as well, they convert the
->> unreliable ARPHRD_CAN type check to the robust can_get_ml_priv() and
->> protect the CAN receive lists with a per-device lock.
-> I'm wrapping-up the net-next PR right now, and this will not make the
-> cut. Still all the material here, after forwarding the trees post PR,
-> looks like 'net' worthy. We could merge it afterwards.
+leaves bytes 8-71 of the packet as bytes 0-7 repeated, not bytes 0-63.
+Reproduced with BPF_PROG_TEST_RUN on both an xdp and a tc program.
 
-Thanks Paolo!
+Use memmove(), as the store side does since commit 1db084f42884
+("bpf: Use memmove() to store bytes in an skb") and commit ab08863c58b1
+("bpf: Use memmove() to store bytes in an xdp_buff"). A read that spans
+xdp frags still goes through bpf_xdp_copy_buf() and is not changed
+here.
 
-Yes the patches are indeed mostly 'net' worthy fixes.
+bpf_skb_load_bytes_relative() has the same pattern and is reachable
+from tc and sk_filter programs, so use memmove() there as well.
+Reproduced with BPF_PROG_TEST_RUN on a tc program: loading into a
+slice at offset 8 gave wrong bytes before the change and correct
+bytes after.
 
-Unfortunately sashiko-bot complained about something new in my patch 
-11/11 and suggests to move some release_sock() calls 4 lines down behind 
-sk_error_report(sk) :-/
+Fixes: 2012c867c800 ("bpf: verifier: Accept dynptr mem as mem in helpers")
+Signed-off-by: Ayushman Rout <ayushmanrout27@gmail.com>
+Assisted-by: LLM
+---
+v1: https://lore.kernel.org/bpf/20261021103957.17532-1-ayushmanrout27@gmail.com/
+v1 -> v2: also use memmove() in bpf_skb_load_bytes_relative() (review by bot and Alexei)
 
-Would you like to have that re-spin PR to be named as "net" PR ?
-And when would it be best to be sent?
+ net/core/filter.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Best regards,
-Oliver
-
-> Note that there is other net-next material in the same status.
-> 
-> Thanks,
-> 
-> Paolo
-> 
-> 
+diff --git a/net/core/filter.c b/net/core/filter.c
+index b7ac145b68b1..09c60a58c82a 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -1789,7 +1789,7 @@ BPF_CALL_4(bpf_skb_load_bytes, const struct sk_buff *, skb, u32, offset,
+ 	if (unlikely(!ptr))
+ 		goto err_clear;
+ 	if (ptr != to)
+-		memcpy(to, ptr, len);
++		memmove(to, ptr, len);
+ 
+ 	return 0;
+ err_clear:
+@@ -1871,7 +1871,7 @@ BPF_CALL_5(bpf_skb_load_bytes_relative, const struct sk_buff *, skb,
+ 	ptr = start + offset;
+ 
+ 	if (likely(ptr + len <= end)) {
+-		memcpy(to, ptr, len);
++		memmove(to, ptr, len);
+ 		return 0;
+ 	}
+ 
+@@ -4298,7 +4298,7 @@ BPF_CALL_4(bpf_xdp_load_bytes, struct xdp_buff *, xdp, u32, offset,
+ 	if (!ptr)
+ 		bpf_xdp_copy_buf(xdp, offset, buf, len, false);
+ 	else
+-		memcpy(buf, ptr, len);
++		memmove(buf, ptr, len);
+ 
+ 	return 0;
+ }
+-- 
+2.54.0
 
