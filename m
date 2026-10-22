@@ -1,67 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.94
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792646369;
-	b=FzmK6RB/tV65xs695lQBZyhaFG9i9qJ2yyv4z9BxP2PRKh8NVK3dp7v7399EmVTseWC0
-	 SiCU7+Wt6Rk5gDzXZVV5bMVHYcMLV5EXMhzLreoBxWNLvr49w2bWTXbw4b90NcXRIbMDR
-	 7ZGsyi0Tjneqk0iRBxYBuJplJ328fkGgurBPw2B/a+xu2/gZNKsfmG0nxDMdzZ67LMlAk
-	 bb1KTH3b/lE6/chfBiUr9UEztY86hAk+7l67WnCMWj4+Izkl0BZZVkHJE5EjnQhWsYyTB
-	 JKgOIm9+lf4P9j2btHu0Y4+1Yk1wH2UwPYJKtR/Kt/bnaczdCOcAu8NmbzxyIlAbedQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792646369;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=ClJ0+mcbYLWCO6jCQUFPvJuHbyK+fvSWo7IOSpnbA+o=;
-	b=NBlwnkf2RGN5vF1w9JIVARJb4WMbLYYknrsHLRG4w4Z3w2yET5jHA4WzxkcyVEAledv7
-	 28EM+Zj4lJU4F/7l8DeHPU23gjVsDOfz3blIH1I5H4lbv+T/yGIV0INtHG2h27PuhalyU
-	 InghcVkwIV9IpkT8zdKaqQO8lqShO2Thi6iqiaQdzRxCXBJWe2aQ6QZA+Tu92oIFmGcnS
-	 waYFcPRckImmJ8WQAzD2yGEcRyopyrzrmnq6Z1bi/fY/+vtxCtXW0Lls0X4NXBcWFrrUg
-	 AY8ysdKZxIy/ki/+52bI65ZRpUAPNUL9aL8yJ/hwXfWsffCH1BbbQOMHcux4hA4mVlQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=VgYMGP8E;
-	arc=none smtp.remote-ip=95.215.58.94
-Received: from mta1.migadu.com (out-94.mta1.migadu.com [95.215.58.94])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792646451;
+	b=a7KzYs9is+w66XJ1eoBHt4li2oWKejLMob2MSJFwC/njreNqkDEmXBr40ZEB3pSbzvll
+	 w6/zcN4BKX8zd9yFhX/nhxZTHqc8gO6tkRptu7QloKfVGAeSsKA/UBvv8xiDBMdXRswEA
+	 4IjJwaTjFF1+1WIojp57cymdOw+LN0EXv8u98iJ/hoWN2dXEUvpwMcVDVv5FYyPZXp7lk
+	 6z+hw0m1axp5fMECznCjszkNO12ZppOOQBrey4w/DKB1HebxkNa7BnIWWow0glNZl6O1r
+	 Vgz2rBcQoX9blMG86gZ12cJhDXOItPiB9twNxWFpkGJJ75KZpRdugjfizUk0xkJCPrw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792646451;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:X-Sent-From:X-URL:X-Accept-Language:
+	 X-Accept-Content-Type;
+	bh=NQGD0qfscRrFswdmrZ7wBUXG+FDtegg7roj0OrW3evk=;
+	b=0MdEiTsYlpW0pQ0/NzhPZVrMEuWuCIHzahA+83vWwDGvam6+nZwjosv5soXoT0r6GYnm
+	 SRgU8A23NvTaXFEaOH0n2UbTh1yOvm1mGqAuYhlt7GWCd4s5yyU7m3CGo6RaPwXewCwqL
+	 hlDbaWeONNJMy00DZviiwJp3UFg8J00emEHW89w8ysastk4p4b4cKuwCajZ3jkDceS6df
+	 c4NX6pjxfYHjkuu3pqB+brOLl7aQu0vdBjD0+Y/ZQbTRwonQZxr1fIkLZJshqg7h4WWXk
+	 VMCN9rDs3nxpOOgr1Fzb9CYxcdiW9cBtWcE9bYgtpTJ96RF2yDauHRfdiw04jkOsz9w==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=pengutronix.de;
+	spf=pass smtp.mailfrom=pengutronix.de;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=DrZEJN6d;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09704606A31D
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 05:19:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 09704606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA46606A319;
+	Thu, 22 Oct 2026 05:20:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8EA46606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=VgYMGP8E
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=RHVFBTbh8FahNaw5EWUek8qDsF+0xAqaAJBJ+B7LQbA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792646366; v=1; x=1793251166;
- b=VgYMGP8Eru0vGOlKUhCo/dh0h5L7Q56p9YixEMyBhb90zgBQ4YddKpjUGjoGo7sazo9OvfM7
- pvPOo9azFeQHu/KU+TSJcEO1bhlkt8fqtDon8rdneC3/mQJfIqB9GcLigT9kyDzPZ0Hugf5AjOB
- Z38rQrpI6aJM0LiHU7XtlRkQ=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta12.migadu.com with ESMTPS id 5914cadf4b4e6497;
-	Thu, 22 Oct 2026 05:19:25 +0000
-X-Mizu-Trace-ID: 5914cadf4b4e6497
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 22 Oct 2026 13:19:09 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Boyan Liu <yymhvert@gmail.com>
-Cc: Andrea Mayer <andrea.mayer@uniroma2.it>,
-	David Ahern <dsahern@kernel.org>,
+	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=DrZEJN6d
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id E38C32008E4;
+	Thu, 22 Oct 2026 07:20:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792646441;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NQGD0qfscRrFswdmrZ7wBUXG+FDtegg7roj0OrW3evk=;
+	b=DrZEJN6d6YhT035oVTbH2tOPFnADJL2K7u8txVruSYNuM2QSD/tARbFkfcrZMnyr5Jgtsq
+	8SnHyzNTE9bs92/HSJJRAi60WduyjKyxOVOlyImbM7VU3O5zdNYUiIeZRF6JsDhnUCp93d
+	EiTDqSAF/hk/tIO5035GGG7rlEpLqdXlaNnZ4Q1uMVHo3ZGaP0fDmqCSBWTcpB5ZU8ooKn
+	xlTRmRWmd3ydPjtZhlSAnyB2Yk/7W73R1Mm+/4Up5HLz4OLeeyr9fQtd3Q0ND+wR0/FZs2
+	DXmhqGxXHt13kRwLYT0rlnb/G94YHyzI7jhdYHrUws3037MOTMODzSY+lsyu4A==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792646441; a=rsa-sha256;
+	cv=none;
+	b=WeL/1KQVW5Csew3sJgzXJQAhd07r5XXlYBPleuHgR5kB4Dzl0F5zhHq0/2d33Pc7+JfKnL
+	POK7E8s/kgqdnUkgmB89rh4tgN4l+GwiGvgJCtTkdgbALJ60yhYMicQJXIyqqiVcQ0d45c
+	yJc5Fi6kJKVLGybhpMxrQpT8LyYhSeU9TDMpQZ1T/jX4a9OLdJi7qvWPWNGluqOAR9xO5W
+	Bh67L3s5DGUtsKVZ3TW71dSiADFUbxc1Ri7KFsO1Hdb24+SP2BRetJgQUxdyQ3NzjKrCX5
+	Wx9rM71RvxpLuZpGX4mbwbU5RGTrd9lZQxEhdJzU95pHJaCMbfCNlP94JXv4kQ==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=ore@pengutronix.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792646441;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NQGD0qfscRrFswdmrZ7wBUXG+FDtegg7roj0OrW3evk=;
+	b=hDyjYvm5guN3ZbCujP4BArHQfLLGv0CIOZHYgEZ8NXIWXy2OgN4TU++eUZp6jmR/u2s5nU
+	jLgh8L4nzrn/5Way1p7uhmwbHiA6AuCNQ+KY+LECxazxxUAFDdCcVYjiF611cZ4MqZxO+l
+	q2pGxgf8hfPIcmaFv9zz8yUSQFVj+OyPhO67w04QYNXcrkpSSQQckmqHrnyjfWbf6lCig/
+	nFRP3Vxr6G+UZw15BS0Lo79MDxRuXucssKzChGFrbdgkuvBD0GWmk6V97Kkgljj4Bkqe2z
+	Z/JaLjxDlB8GEARzn/OlQRwvLhOBb3QhW2/CGcHF2p4Xd3KO0MagFTAqt+R9ZA==
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1xJlEH-000ewI-2d;
+	Thu, 22 Oct 2026 07:20:41 +0200
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1xJlEH-00000009PqR-2aLY;
+	Thu, 22 Oct 2026 07:20:41 +0200
+Date: Thu, 22 Oct 2026 07:20:41 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Carlo Szelinsky <github@szelinsky.de>
+Cc: Kory Maincent <kory.maincent@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
+	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	co+98d7de09cd94fec5@bugs.sh
-Subject: Re: [PATCH net v3] seg6: Fix unset mac header in SRv6 End.DT VRF
- decapsulation
-Message-ID: <atmczawXBSexpfPw@fedora>
-References: <20261021024738.17266-1-yymhvert@gmail.com>
+	Kyle Swenson <kyle.swenson@est.tech>, Ross Cawston <ross@r-sc.ca>,
+	netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2 08/14] net: pse-pd: stop async event sources
+ before freeing PI data in unregister
+Message-ID: <atmdKXGU3jMOKB91@pengutronix.de>
+References: <20261020171249.853085-1-github@szelinsky.de>
+ <20261020171249.853085-9-github@szelinsky.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -71,96 +106,36 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261021024738.17266-1-yymhvert@gmail.com>
+In-Reply-To: <20261020171249.853085-9-github@szelinsky.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 
-On Wed, Oct 21, 2026 at 10:47:38AM +0800, Boyan Liu wrote:
-> SRv6 End.DT4/End.DT6 VRF decapsulation unsets the mac header in
-> end_dt_vrf_rcv() so that the VRF device can rebuild it for packet
-> sniffers. The VRF rx handler only performs the rebuild when a
-> sniffer is actually attached to the VRF device (ptype_all
-> non-empty); otherwise the packet continues up the stack with
-> mac_header == 0xffff.
+On Tue, Oct 20, 2026 at 07:12:43PM +0200, Carlo Szelinsky wrote:
+> pse_controller_unregister() flushes the power domains and frees the PI
+> array before it disables the IRQ, while pse_isr() uses both. No in-tree
+> driver hits this: tps23881, the only user of devm_pse_irq_helper(),
+> requests its IRQ after it registers the controller, so devres frees
+> the IRQ before unregister runs. A driver that keeps its IRQ across
+> unregister would read freed memory.
 > 
-> Every other receive path delivers packets with a valid mac header:
-> NIC drivers set it in eth_type_trans(), and tunnels without an L2
-> header (ipip, sit, gre, tun) reset it to the network header after
-> decapsulation. skb_mac_header() even warns on the unset state with
-> DEBUG_NET_WARN_ON_ONCE().
+> Disable the IRQ and drain the notification worker first, and only then
+> flush the power domains and release the PI array. The next patches in
+> this series build on this order.
 > 
-> If the decapsulated packet is an unexpected UDP GSO packet,
-> udp_queue_rcv_skb() re-segments it after restoring skb->data to the
-> mac header with __skb_push(skb, -skb_mac_offset(skb)). With the mac
-> header unset, skb_mac_offset() returns a large positive value,
-> which the unsigned __skb_push() argument turns into a huge length:
-> skb->data moves far outside the buffer and skb->len is corrupted,
-> so segmentation reads out of bounds:
+> Found by code inspection. Not reproduced.
 > 
->     BUG: KASAN: slab-out-of-bounds in inet_gso_segment (net/ipv4/af_inet.c:1383)
->     Read of size 1 at addr ffff88800da7ffff by task exploit/149
->     Call Trace:
->      inet_gso_segment (net/ipv4/af_inet.c:1383)
->      skb_mac_gso_segment (net/core/gso.c:53)
->      __skb_gso_segment (net/core/gso.c:124)
->      udp_queue_rcv_skb (net/ipv4/udp.c:2476 net/ipv4/udp.c:2466)
->      udp_unicast_rcv_skb (net/ipv4/udp.c:2620)
->      ip_local_deliver (net/ipv4/ip_input.c:262)
->      seg6_local_input_core (net/ipv6/seg6_local.c:1640)
->      lwtunnel_input (net/core/lwtunnel.c:465)
->      ipv6_rcv (net/ipv6/ip6_input.c:351)
-> 
-> Restore a valid mac header once the VRF rx handler returns: point
-> it at the network header, and reset mac_len, which still holds the
-> ingress frame's L2 header length. The sniffer rebuild happens
-> inside the handler while the header is still unset, so tap behavior
-> is unchanged; when no rebuild happened, the packet now carries the
-> same mac header state as any packet received on an L3 device.
-> 
-> Fixes: 664d6f86868b ("seg6: add support for the SRv6 End.DT4 behavior")
-> Cc: stable@vger.kernel.org
-> Reported-by: co+98d7de09cd94fec5@bugs.sh
-> Signed-off-by: Boyan Liu <yymhvert@gmail.com>
-> ---
-> v3:
-> - Also reset skb->mac_len with skb_reset_mac_len(), as suggested by
->   Andrea Mayer: it still held the ingress frame's L2 header length.
-> v2: https://lore.kernel.org/netdev/20261017120144.3059-1-yymhvert@gmail.com/
-> - Move the fix from the UDP GSO path to seg6local.
-> - Restore the mac header after the VRF rx handler returns, preserving
->   the VRF sniffer behavior.
-> - Verify the original reproducer, datagram delivery, and VRF sniffer
->   output under QEMU.
-> v1: https://lore.kernel.org/netdev/20261010073015.7665-1-yymhvert@gmail.com/
-> 
->  net/ipv6/seg6_local.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-> index 7b5212220185..4ef9d32907e5 100644
-> --- a/net/ipv6/seg6_local.c
-> +++ b/net/ipv6/seg6_local.c
-> @@ -1113,6 +1113,16 @@ static struct sk_buff *end_dt_vrf_rcv(struct sk_buff *skb, u16 family,
->  		/* the skb buffer was consumed by the handler */
->  		return NULL;
->  
-> +	/* the VRF device had its chance to rebuild the mac header for
-> +	 * sniffers; restore a valid one pointing at the network header,
-> +	 * like any L3 device without an L2 header, before the packet
-> +	 * continues up the stack.
-> +	 */
-> +	if (!skb_mac_header_was_set(skb)) {
-> +		skb_reset_mac_header(skb);
-> +		skb_reset_mac_len(skb);
-> +	}
-> +
->  	/* when a packet is received by a VRF or by one of its slaves, the
->  	 * master device reference is set into the skb.
->  	 */
-> -- 
-> 2.43.0
-> 
+> Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+> Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
 
-Thanks for the fix.
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+Thank you!
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
