@@ -1,94 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.196.54
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792669135;
-	b=bkmeqVHQ3wijk722fGL0LBPBBVCY+RpOKtJCgsTZJj77RrN5y3nShXtMHFcAF7jc6NlO
-	 67PC50aZEs4OgzQTh1Ve1I7RTgDM628+ChFA6ZnM8mUeRWfXjrpu/TuliBacCch5+cAq5
-	 txQajZCbQzcdkkES8zY0hVwN03C0MT66KAWEKYiBK9wEt99+6COwX2g4nAGrPH/8mIcZy
-	 OU5bN1vSO67pg2XuWDpeQLE4wOPB9QPL9QqpmO1HhBJV885/xkHQLJCIidhf+sZ+/sXNa
-	 vZgUV71BUtQxbx1T6lbWfNui55NfxsisbR+XBzu+c6FxYl/cfi+v0Rlxpr2e1Lt2WRg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792669135;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=/wonTGd3XQlW2nAWIkNg2DOZNRWEezYDaLQMsyW+xIQ=;
-	b=B04cy+Mrz92AosnWbihz6ruDfhAvZTvxL6zys6+C0YCxfD/hgwbPLbgwWH7RHtl9EjfY
-	 wyhXbYwXVuu1MQdbjL2rbEw+DniOCg04DQQbllkYHhEtoLnTtqAQsl9PqN+Tl2ZES4CL0
-	 N7HSPn5LQKW91UGQMTrvRvZJv6sLYwiBg53AcbgpV8riDI5chs+Ts5+w9DGzx9/ouowUh
-	 Pa3Oe/Mlyti+4CYUOYVirWUUzc+Gaymsqz74F9xi7CKb/JUfGQ7XJnpVjZGsYS9ktXAVt
-	 wxV2sZ5PSIJ4vTkxwaICkQpcV89bWDcdMg4rze2Y6EQQyEtD+4EDBqRdYGd/k0+cuZw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=A2d9xKI5;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.196.54
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013054.outbound.protection.outlook.com [40.93.196.54])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.153.233
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792669763;
+	b=PC0xztcJotFLLHCKamH6F6OPqpKRKt2DefV8q+ve3zJ3rNilBYe+mlaR9bZBNsuPoZDR
+	 McKBmCYxZT9fjCabx0Zh7RaL2DHTm9/Qd2LKnkHpGFL3OLq/CtRVfy4fzcFT8WEjcpVaf
+	 0T6JEbrNxyjTTxNlo+Lfxwq6IGci1n0rm57Wvfm2B/oPIUVIRJKnIQQJkv4zepXnBAXoa
+	 s6E5LVRZQYk2xo2hl2CnfkagsEIYVRV0CWQQjDj2KJQAfv8fBX/njmOJBDzysfkip8FOr
+	 iDwjzoN5w5Bgvt8daS9KuFjaqYtkltr+9zjFc0jYSYtOwk/pibQxS8PNsds/k4IYh3A==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792669763;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:Message-ID:
+	 Subject:From:To:CC:Date:In-Reply-To:References:Content-Type:
+	 Content-Transfer-Encoding:User-Agent:MIME-Version;
+	bh=/VzV/VZMHqvvinJUfuaB6erP4g4VoHvf1SyJvfY8DD8=;
+	b=pCfJx7G6gkzhhefpxYmc/qiJpGTbfq3Vzz+ixNOXET9k6zHMhZWHQfFRnN8EGSgzhg32
+	 Mr0Y0ElYaFB1H4jXaKV7kN/PuAaj1iNk7hgdt7bV7NLcoQBstfkUIskbC8VKKj6thvPBg
+	 jDTAhv04WwqPUQSbyxuAva6JF7zhNZB9819C7Bnd2Ii9Bv4iNtQkr7/Nx2yu+dNQjBm4l
+	 dkvR5U1zn3m1SBoylowiEVzsjSczjA5kSsRvRsdVyUECVUXkH+SHP4GKtiAvjYcaUD4mS
+	 /4hI8J2ISanCaxDlLxtkkCNabnty8gaQCmXXzn8wMwTI9SO0vT8BOnsvYMYnyvP4zcA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=microchip.com;
+	spf=pass smtp.mailfrom=microchip.com;
+	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=Kt7O2QTv;
+	arc=none smtp.remote-ip=68.232.153.233
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B7F606A319;
-	Thu, 22 Oct 2026 11:38:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 68B7F606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94DA4606A31A;
+	Thu, 22 Oct 2026 11:49:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 94DA4606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=A2d9xKI5
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WMdR5nDOOglL9nt6yqCdbyuFmNq74lVnaOcObh0lQFd/4nowJA9I5HBZyQoP67DbU5GnASND1eWsK/pa9j0uy9jPBkeU0hm6u32XkanXUArkTFNX4g9cca+m0Zi32f0PQduV+3e9b+QaGZeShuf0ia1xpVJuUdyZLDS8jhHLJnQXnmTvkjcHwXhD3VRtLFUCHhvFSNnvnTgmtQnutJzp5KOTA0bSfMABdELHAbjUDpdP8AW2UKFN49c/2PBGVpQ896LF0IHCiXZ52uhQgQ0Dm5vUa4NE8rG9tOELXXRAVR/XM582+fbk3xUYtjcfeOUuAUxrVC/2/29FIyGj29MTkw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/wonTGd3XQlW2nAWIkNg2DOZNRWEezYDaLQMsyW+xIQ=;
- b=CFqMwoEfUS1Iw67BBbLZWrrT/7vAfPGwXEkPIuYtVnXoGDdVnSAaSp4/deoGNgm933l4X3puoLcYFWZqAq6Q+wpj0hFUePwKiyc2caF5IH9bGhSXWfBcnW9Nfbq2IudxCA2lMuExRj+NPje3bNl7y4kvRqtHOPLhhQTY036TBiMJjpI6/t7V2QIli74y0IJVqblbZgsT4UvCsmnXGpWZdUEFwtyG4KhpjUshbQzNOjXPXKkfkyYZuLk6L2mTqVWgxgvRJ9GYL1UnJPNGRggevtJ9d4Nm4E3xGu4DJ0EYo0PyQY1aoZ1LLV0FL2g1naDCazjV6pn5L1sQcMTrCznLXw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/wonTGd3XQlW2nAWIkNg2DOZNRWEezYDaLQMsyW+xIQ=;
- b=A2d9xKI5BaE6bKnqzOT7+y1t5DXwnyXU7TtXpb2k3rd/HNBNGkmfV6QB8IIcLoQIhPDija4XGItFxfJh0SITndeY4mSZH8AVakWhn2AUcGZ1UzLkMGEC2HOCizE4MVMDwhUf/4uJrKaC3n5Cr9w5Rr8FoOJos32PifgbzkgUOk7eyVAyRxaP/U2WM4iSd3vX9KAsS8YQKgWsfM/ubhvtRF+vchrDGk9JJbAEe2O+vgpzzCHZ6AtfqB3MIY1y1b4TgGXFEhRXJArhj8G8TaEoH3h0SSf2NZbBzUq4I5flqkieGPJPBoYpQxFasB72eJDwiCYilC9R5T01i0rvvKP+uA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from IA4PR12MB932075.namprd12.prod.outlook.com
- (2603:10b6:207:12d::15) by CH3PR12MB7572.namprd12.prod.outlook.com
- (2603:10b6:610:144::17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.14; Thu, 22 Oct
- 2026 11:38:51 +0000
-Received: from IA4PR12MB932075.namprd12.prod.outlook.com
- ([fe80::5a6f:1f74:6ccb:cf2f]) by IA4PR12MB932075.namprd12.prod.outlook.com
- ([fe80::5a6f:1f74:6ccb:cf2f%5]) with mapi id 15.21.0546.016; Thu, 22 Oct 2026
- 11:38:51 +0000
-Message-ID: <cd140948-317a-49d8-885e-0ded451195c6@nvidia.com>
-Date: Thu, 22 Oct 2026 14:38:41 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net/mlx5e: Fix stalled channels with threaded NAPI
-To: Josef Bacik <josef@toxicpanda.com>, Saeed Mahameed <saeedm@nvidia.com>,
- Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
- Leon Romanovsky <leon@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org
-References: <20261021-b4-mlx5e-threaded-napi-stall-v1-1-d719c17b3ec4@toxicpanda.com>
-Content-Language: en-US
-From: Tariq Toukan <tariqt@nvidia.com>
-In-Reply-To: <20261021-b4-mlx5e-threaded-napi-stall-v1-1-d719c17b3ec4@toxicpanda.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PNYP287CA0058.INDP287.PROD.OUTLOOK.COM
- (2603:1096:c01:23e::34) To IA4PR12MB932075.namprd12.prod.outlook.com
- (2603:10b6:207:12d::15)
+	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=Kt7O2QTv
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1792669763; x=1824205763;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=F4PgbJZxNEcw7r/FJGAa1kPqX9XUD/yLnSSc69tX1Mc=;
+  b=Kt7O2QTvll9TKkjoYJJylWCPHayiMlUZJ4Lymni1GuChXI3NswVGoqJj
+   EGG4V68+it7SGs0/U5iih/qq25bstKNFyIPGIoMNqncqkHqw8LCNqSzMj
+   EbFReMSk5AWzleKaXfgYFhqoyqqBAB744cNhka6RHye9v3i3/8MS4uRBQ
+   whbbX4w90jxvCyMXp4D1lJ5SxLf9YkdncQfr4b9s8rBECP3uytKzs7DMV
+   DNGQ32tCX6meN+QFEj4r6dYLMdA8JB4wxDW1VuzTLVHb00pnaQQotXru8
+   aRBE5hd7wK89vU4XUZXASI4XpIXySLALqm1ZJWicgx5Yde+X6Opl2PVzz
+   A==;
+X-CSE-ConnectionGUID: 6ulqlsPTSq6pnolVVnUwfA==
+X-CSE-MsgGUID: 4oOqcB5GT3S9/oW8xdZ84Q==
+X-IronPort-AV: E=Sophos;i="6.27,172,1787036400"; 
+   d="scan'208";a="296840505"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 22 Oct 2026 04:49:16 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Thu, 22 Oct 2026 04:49:15 -0700
+Received: from DEN-DL-M77643.microsemi.net (10.10.85.11) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Thu, 22 Oct 2026 04:49:11 -0700
+Message-ID: <4503da3fc0e046494829c9368756df7fabc6d596.camel@microchip.com>
+Subject: Re: [PATCH net-next v15 1/9] net: dsa: add tag driver for LAN9645X
+From: Jens Emil Schulz Ostergaard <jensemil.schulzostergaard@microchip.com>
+To: <netdev-bot+sashiko@kernel.org>
+CC: <UNGLinuxDriver@microchip.com>, <andrew@lunn.ch>, <olteanv@gmail.com>,
+	<davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<horms@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+	<conor+dt@kernel.org>, <woojung.huh@microchip.com>, <linux@armlinux.org.uk>,
+	<Steen.Hegelund@microchip.com>, <daniel.machon@microchip.com>,
+	<geert+renesas@glider.be>, <magnus.damm@gmail.com>, <edumazet@kernel.org>,
+	<richardcochran@gmail.com>, <linux-kernel@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-renesas-soc@vger.kernel.org>
+Date: Thu, 22 Oct 2026 13:49:11 +0200
+In-Reply-To: <179240452203.3135.15637760949369416187@kernel.org>
+References: <20261015-dsa_lan9645x_switch_driver_base-v15-1-562f316f78b9@microchip.com>
+	 <179240452203.3135.15637760949369416187@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2.1 
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -98,175 +90,195 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA4PR12MB932075:EE_|CH3PR12MB7572:EE_
-X-MS-Office365-Filtering-Correlation-Id: cc338589-6cab-46f4-4edb-08df30310b5c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|261021121427099003|56012099006|5023799004|261009223027099003|11063799006|10067099003|18002099003|22082099003|261021123027099003;
-X-Microsoft-Antispam-Message-Info:
-	XFvoZy0Ft+ky59OFr8+KfJfG8WJ6zeg2nJwT5IqqsdY/TO8AAbq1xuD1h+zvRj4s8yoGvs8PYpgZR4SdyVlThu2F+MPColYNBgP1IP8y+uynncEhkMo/F75p/K3AYPA+MrgL2XS7k2jDLJwmtnk78xzMHy2j3mLK6sgR+VwIAadN9dkub67V31TPFTd/y/5W/IezTtOIuXnHJCQrODnXsJ9X4kmshsK67rDPFE0u9QCOCbkA+xJ/T50vm7LOahNhdiD/NmDsGX2HI/gkoLdNA85Ohud+vBfFHIcCQIRildNTMGirkms0cK89BwEMr6jHalZSqjCTu+8tVA1IEkr6RLgDNqfqeGZf0H5LE6rPEvU7lrENzcuCVaZaqv7k/6tDQnzJ2gV+fgfgEC7KJcwQmmgErJvDhiWADBXqJuueYP0uAKG/leMnnrROEPiw2A3dkwsR6hItOTIRncL1hwn9hu//CC6Ysh8IaBJOlf6mj2Vk87OnGaJV5cD4CB0ZBvFQkg71aPPRiTbD1h4L6uZdxmkWeHbZwL7DdI8/icACczC2oRxo8WOov2xw1mNWgksq3vmDrTlyyB/pENtz1zVTq952siQPfs5J9nZPPBVKU5x+empxZSaYRzQQVLpSd8CSQOSyiSv9Z1tNj1Wh21N1nwGhAg9j0m5AdNT+1SAjNFM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA4PR12MB932075.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(261021121427099003)(56012099006)(5023799004)(261009223027099003)(11063799006)(10067099003)(18002099003)(22082099003)(261021123027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bHUxYkF5a1JRV0h2c21GaVVUZGl6QlFiR3ZTNWozUkg5Nnl5bzVYeFcwUWdm?=
- =?utf-8?B?dkJrSTFYUEFKVmhMcEpwWmNaOE9iazZIUHFXZHdBZzlMMVNkWHdtVnd2TmRZ?=
- =?utf-8?B?Z1ArS3c3MkxjTGN0eFRveTBCaWtNMW1aUDVzakF3K202VWNiUHRiUzF0Vzd5?=
- =?utf-8?B?Y1Y0T0VlMnZZRTFjako5dGtFMCtNaEl4eFQ4dGRIZEJzZ0pYWFUySk4yNnhS?=
- =?utf-8?B?V1Fvd0ZWc1JZdytQdURCY292MlM1RUlYOHBwcEZCb1BLeDZwUlEvZ2VrY2li?=
- =?utf-8?B?OFV0TS91b21MR0VPN1RKRmIyTW9idHAxUFZ4ZTMxaVlIWHJuK2k4TGt6WkRi?=
- =?utf-8?B?eStKQnlXTUhmUVJpM3VQTjI2b3FHeTUrZWxqMHNYZE5WK25MWnJpTHdKdDFN?=
- =?utf-8?B?ekJJcTNabTd0TFFIUlR1YmFCQksvRlQyL3NURzk4ZGIwWTFmbnNETUlDTTNF?=
- =?utf-8?B?bWhoRXhhdVB6S0tnUFlKemNEZWVMNjljaTFiY1lYTFU2ZnlSRXZ2QWl3Nnhr?=
- =?utf-8?B?NUF6dXBUdVNLM1N3THFnV2dmZmtkaE5IRXYrUDBZcUZmNWU2VU44ZkpxZ1pJ?=
- =?utf-8?B?ZnRIZk1oL09RbmJjcWxXWmhoME51TmtXa1ZIMXFnRXM3dUJVYm92Vm92QktW?=
- =?utf-8?B?NXFkMkx6emlIZ2pSL3ovYUQ5VlFWeXNDMnNvVTJxaXp1ZXV3SFptVzVoREtJ?=
- =?utf-8?B?SU5paVRqWUlSbU9qNDU5M0VlWkhwK2ZIQ1RKR0d2aCtkQVQ0MnJ5Q0d6bEVt?=
- =?utf-8?B?ZC9OWUgyTU1oemhXUXlnU2NQaUI3T2VIeGFzQllpNUt4Y0RMemxDNnBLSEFG?=
- =?utf-8?B?V1lrUWlDUHVOTjlVZUd5bitoNUx5NXkySlgrMGRaRWFBQTlQUXJuNkhQMGdx?=
- =?utf-8?B?RmxES05aQ2VHZGI3U3N0aGxNMWgweEVERWJBYTRWN1FMNFNQL0Z3UXNnNkxq?=
- =?utf-8?B?VWFYejVsOS9zVDU3eUxURTFpMVlyc2lmd0trQm1VMzRJL1IxK1dEQWNqTFVy?=
- =?utf-8?B?Wk13cERGYm8raDlJbXdYRVZmSUdaQW9Xd043ZjZFaEVsSSs0b2ovZ3NLdit0?=
- =?utf-8?B?eGpCclBKYzdOZEJlTEk1V090am81SnhBTlRJckJQTTBta3NhZmh0S2krN1dB?=
- =?utf-8?B?cUd4WGJtOW9QYXlmSVJoOWtvUVp5NkkrZUszVnpnZUhhcUttaDdkVFQzMFFF?=
- =?utf-8?B?a2MvLy9qdXdFSnJhRU5XWTRUc0RpOW4wbGtXOFVWUUUzOXpzZEdpQ3ZkVkZK?=
- =?utf-8?B?NmlyTnRMdUNFNXZwbVltMmdGNG5EWDM0R1duRzZxN2d1b042YXJFa0E5azhp?=
- =?utf-8?B?WXlyMDM2K3VtMWVQVnFmQUcyaWlRcGVHT3dFMzdnc1JyMldsTWN3aXRldkxo?=
- =?utf-8?B?OGl4d3VCS2puczlsY2wrRk82d3Y5Vy9ROFZkV2Rta0pXWVZ0aWVZTENEY04w?=
- =?utf-8?B?cjVPS2NrcXlNYmVXYVQrVDFNazNJS01IZVVFajZLZ1c4UDhaQXdmd0dVdFVM?=
- =?utf-8?B?U1UvYUpZYldYMkZRQmpjZUdZUDYxZU5ISUFyVGhjc3pjRzNkTG5oa3N6OUt6?=
- =?utf-8?B?bFZVbTZjSHg1dGZraU9BRWpLblZyNTdJWDJLUkFmNTZEU2ZBQnl2YzJUc0Rt?=
- =?utf-8?B?a2wvSzZUa01rdHNZbklEZGh1b2dTTlgxeGx3a3JmUnFaUnJ4aEtRcFgrL0pI?=
- =?utf-8?B?dVY2UUR4aHF6SjduUTQyalo5cE52Z2YyRkl2bDNzMzRXM0dnNDAxNndhS0V2?=
- =?utf-8?B?RTc0aU9nSFJBUVN4QTZiS2tUZXRzQUhRbEJMU3ZsR0o0MTdDVDd4V2JHWWlm?=
- =?utf-8?B?d1lqV01hUnJFNThkTTRTL1gyTlZDaThjenRjN1BidFgrTWg3cDFGNHlOM3M0?=
- =?utf-8?B?UC9naCtwUlg1OWtIUVV0REtwZWtROGhLdTFmQUZjc2xKT2cwM2U3aFhKUy9E?=
- =?utf-8?B?WGJzZUw1WVpWMjYwSE1HaDJaVU5reVY2OUg0TWRWZnB3aWZKV0d6K0FxZHJ2?=
- =?utf-8?B?M2g3VjR1aG45Z2piVEl0MTVKT0lJdU5nQVY2bEVpcWdWbVhDb1dEY3RHdmtF?=
- =?utf-8?B?bUlvT0VQYUttODdEU1p0Yk43T3pja2sxUG43QTJTYXF5M1dIZ1VXYVZiL0tQ?=
- =?utf-8?B?TEhWNmNQcEp2UjBUVkd1UUNoWmVSZHdiZkVHNjUzZ0lXUll4RkJ6YkpaUzVz?=
- =?utf-8?B?ZG9YVUhhOVYwY2FaVCsvQUtWQXlzV1ZjYi9ZZitPMHFMWlJJZVR6MCtRTVlD?=
- =?utf-8?B?Wm1XZk51ZXhNbG5zZGdrSDRGK0pZd3pFaUh3d3FJYUI1QlVqaXM2bEdaVjdn?=
- =?utf-8?B?K1M0WTVUY3lkaDI2Q0pGZ2hvL3VEVFZnMU52cGhjK2d5R2E1enRhUT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cc338589-6cab-46f4-4edb-08df30310b5c
-X-MS-Exchange-CrossTenant-AuthSource: IA4PR12MB932075.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2026 11:38:51.2830
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hVvCxUAcruDATTlJBQH7d0/+zeNrZao/AMLSGwnfmErZXJ09GunEGTY4B7cLrNWKeIsAiKnwYI3RAEvmsK68cg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7572
+
+On Mon, 2026-10-19 at 10:08 +0000, netdev-bot+sashiko@kernel.org wrote:
+> EXTERNAL EMAIL: Do not click links or open attachments unless you know th=
+e content is safe
+>=20
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
+>=20
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 (1) =C2=B7 Low: 1
+>=20
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>=20
+> - [Medium] In lan9645x_rcv() (net/dsa/tag_lan9645x.c), the VLAN tag is
+>   restored only if the software VLAN-filtering flag is set: `if=E2=80=A6
+> - [Low] In lan9645x_rcv() (net/dsa/tag_lan9645x.c), the comment above
+>   skb_postpull_rcsum() lists what is subtracted from skb->csum as "what=
+=E2=80=A6
+>=20
+> Pre-existing issues:
+> - [Medium] This problem wasn't introduced by this patch, but
+>   lan9645x_xmit() calls dsa_port_bridge_dev_get(dp) (`dp->bridge ?
+>=20
+> --
+>=20
+> net: dsa: add tag driver for LAN9645X
+>=20
+> This adds a DSA tag driver for the Microchip LAN9645x switch. A front por=
+t
+> is used as the NPI (CPU) port. Extraction uses a 16 byte long prefix plus
+> a 28 byte IFH, and injection uses only the IFH.
+>=20
+> On receive, a VLAN tag popped by the hardware is restored from the IFH as
+> a hwaccel C-tag. On transmit, the VLAN tag of a VLAN-aware port is moved
+> from the payload into the IFH.
+>=20
+> > diff --git a/net/dsa/tag_lan9645x.c b/net/dsa/tag_lan9645x.c
+> > new file mode 100644
+> > index 0000000000000..00339daecfcbd
+> > --- /dev/null
+> > +++ b/net/dsa/tag_lan9645x.c
+> > @@ -0,0 +1,514 @@
+>=20
+> [ ... ]
+>=20
+> > +static struct sk_buff *lan9645x_xmit(struct sk_buff *skb,
+> > +                                  struct net_device *ndev)
+> > +{
+> > +     struct dsa_port *dp =3D dsa_user_to_port(ndev);
+> > +     u32 vlan_tci, tag_type;
+> > +     u32 qos_class;
+> > +     void *ifh;
+> > +
+> > +     skb =3D lan9645x_xmit_get_vlan_info(skb, dsa_port_bridge_dev_get(=
+dp),
+> > +                                       &vlan_tci, &tag_type);
+>=20
+> [Severity: Medium]
+> This isn't a bug introduced by this patch, but is it safe to dereference
+> dp->bridge here?
+>=20
+> lan9645x_xmit() runs without rtnl, and dsa_port_bridge_dev_get() uses
+> plain loads with no READ_ONCE() or RCU:
+>=20
+> include/net/dsa.h:dsa_port_bridge_dev_get() {
+>         return dp->bridge ? dp->bridge->dev : NULL;
+> }
+>=20
+> At the same time, dsa_port_bridge_leave()->dsa_port_bridge_destroy() runs
+> under rtnl and frees the dsa_bridge with no grace period:
+>=20
+> net/dsa/port.c:dsa_port_bridge_destroy() {
+>         ...
+>         dp->bridge =3D NULL;
+>=20
+>         if (!refcount_dec_and_test(&bridge->refcount))
+>                 return;
+>         ...
+>         kfree(bridge);
+> }
+>=20
+> Suppose a transmit loads dp->bridge before the NULL store, and the last
+> port leaves the bridge before it reads bridge->dev. Could that read be a
+> use-after-free of the dsa_bridge?
+>=20
+> tag_dsa.c, tag_ocelot.c, tag_sja1105.c, tag_vsc73xx_8021q.c and
+> dsa_software_vlan_untag() in net/dsa/tag.h already use this pattern. The
+> root cause looks like the way DSA core manages the lifetime of struct
+> dsa_bridge, not this tagger.
 
 
+Dismissed, preexisting.
 
-On 21/10/2026 20:37, Josef Bacik wrote:
-> With threaded NAPI an mlx5e channel can stop receiving when a burst of
-> traffic ends. It stays dead for minutes on an idle machine, while the
-> connections hashed to it time out.
-> 
+As the review notes, this is the DSA core pattern shared with tag_dsa,
+tag_ocelot, tag_sja1105, tag_vsc73xx_8021q and
+dsa_software_vlan_untag(). dsa_port_bridge_destroy() frees the
+dsa_bridge without a grace period, so a tagger cannot fix it locally.
+The fix belongs in the DSA core.
 
-Hi,
 
-Thanks for this interesting report and patch.
+>=20
+> [ ... ]
+>=20
+> > +     /* Reset skb->data past the actual ethernet header. */
+> > +     skb_pull(skb, ETH_HLEN);
+> > +
+> > +     /* We must deliver the skb so skb->csum only covers the data beyo=
+nd the
+> > +      * real ethernet header. The fake ethernet header in the prefix i=
+s
+> > +      * not part of skb->csum already. We must subtract what remains o=
+f the
+> > +      * prefix, the ifh and the gap. The start is derived from the cur=
+rent
+> > +      * skb->data rather than saved on entry, because the pskb_may_pul=
+l()
+> > +      * calls above may have reallocated skb->head.
+> > +      */
+> > +     skb_postpull_rcsum(skb,
+> > +                        skb->data - LAN9645X_TOTAL_TAG_LEN - ifh_gap_l=
+en,
+> > +                        LAN9645X_TOTAL_TAG_LEN + ifh_gap_len);
+>=20
+> [Severity: Low]
+> This isn't a bug, but the comment in lan9645x_rcv() doesn't match the
+> length passed here. "what remains of the prefix, the ifh and the gap"
+> comes to 2 + 28 + gap bytes.
+>=20
+> The call subtracts LAN9645X_TOTAL_TAG_LEN + ifh_gap_len, which is
+> 44 + gap bytes. That range also covers the 14 byte real ethernet header.
+>=20
+> The code looks correct, because dsa_switch_rcv() later calls
+> skb_push(ETH_HLEN) and eth_type_trans() without adjusting csum. Could the
+> comment also list the real ethernet header?
+>=20
+> [ ... ]
+>=20
+> > +     dp =3D dsa_user_to_port(skb->dev);
+> > +
+> > +     if (dsa_port_is_vlan_filtering(dp) && ifh_gap_len) {
+>=20
+> [Severity: Medium]
+> Can a frame lose its VLAN tag here while VLAN filtering is being turned
+> on?
+>=20
+> lan9645x_rcv() strips the gap whenever the hardware reports a pop, but
+> it only restores the tag if the software flag is also set. Turning on
+> vlan_filtering happens in this order:
+>=20
+> br_vlan_filter_toggle()
+>   br_opt_toggle(br, BROPT_VLAN_ENABLED, !!val)  /* bridge VLAN-aware */
+>   switchdev_port_attr_set()
+>     dsa_port_vlan_filtering()
+>       ds->ops->port_vlan_filtering()
+>         lan9645x_port_vlan_filtering()
+>           lan9645x_vlan_port_apply()
+>             lan9645x_vlan_port_apply_ingress()
+>               ANA_VLAN_CFG_VLAN_POP_CNT_SET(1)  /* hw starts popping */
+>       dp->vlan_filtering =3D vlan_filtering;      /* tagger flag set */
+>=20
+> Take a frame extracted after the POP_CNT write but handled before the
+> dp->vlan_filtering store. It arrives with ifh_gap_len =3D=3D 4.
+> lan9645x_rcv() strips the gap but skips __vlan_hwaccel_put_tag().
+>=20
+> The bridge is already VLAN-aware, so it sees an untagged frame. It
+> classifies the frame to the port pvid, or drops it if there is no pvid,
+> and the original VID and PCP are lost.
+>=20
+> The same window opens when a port joins a bridge that already filters,
+> through dsa_port_switchdev_sync_attrs()->dsa_port_vlan_filtering().
+>=20
+> The hardware only pops tags on a bridged, VLAN-aware port. Would it be
+> enough to restore the tag based on ifh_gap_len alone?
 
-> When mlx5e_napi_poll() has more to do, it checks that it runs on a CPU of
-> its interrupt's affinity mask. If it does not, it takes the affinity to
-> have been changed: it completes the NAPI after at most budget - 1 packets
-> and arms the CQs, so that the next interrupt moves the poll to the new CPU.
-> 
-> A NAPI thread runs wherever the scheduler puts it, so with threaded NAPI a
-> busy queue takes this path at nearly every poll. That costs an interrupt
-> for every 64 packets. Worse, it counts on an interrupt for the CQEs that
-> are still in the CQ when it is armed, and none comes: the next event is
-> raised by the next new completion. While packets keep arriving this goes
-> unnoticed. When a flood stops, what is in the CQ stays there, and is worked
-> off one poll of 64 packets per new arrival. If the RQ has run dry as well,
-> arrivals are dropped (rx_out_of_buffer) and bring no completion either.
-> 
-> Seen on a 50 Gbit/s port (firmware 22.47.1088) with 63 channels, threaded
-> NAPI and rx-usecs 64: a CPU-bound task bound to each of the 128 CPUs and
-> 32 Gbit/s of UDP in 8 flows for 7 seconds, then both stopped. After the
-> second round one channel had 0 polls and 0 events for 150 seconds on an
-> idle machine, while TCP connections hashed to it timed out and
-> rx_out_of_buffer counted their SYNs. Later arrivals took it 16 polls and
-> 1018 packets further, it stood still again for 14 seconds, and another 93
-> polls and 5917 packets emptied it. In a longer test 22 of 48 iperf3 runs
-> failed with "unable to connect stream: Connection timed out", with no ping
-> to the same address lost.
-> 
-> i40e and iavf force an interrupt at this point, and mlx5e does for XSK.
-> Doing that here would cure the stall and keep the interrupt per 64 packets.
-> 
+Correct. The next version restores the tag whenever ifh_gap_len is non-zero=
+,
+without looking at dp->vlan_filtering.
 
-The arm doorbell carries the consumer counter, and the device tracks the 
-last index it reported an event for. Arming while CQEs posted after the 
-last event are still unconsumed generates an event right away.
 
-The affinity path depends on exactly that, since commit a8c2eb15797a 
-("net/mlx5e: Stop NAPI when irq balancer changes affinity").
+>=20
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/20261015-dsa_lan9645x_switch_driver_base-v15-0-562f316f78b9%40microchip=
+.com
 
-Event moderation can delay that event, but not drop it.
-
-So the root analysis doesn't match the mlx5 device behavior.
-
-> Fix by going on polling when the NAPI is threaded. With that, 8 of 8
-> rounds leave every channel alive, ch_aff_change stays 0, rx_out_of_buffer
-> does not move once the flood is over, none of the 48 runs fails, and the
-> interrupts taken during the flood halve.
-> 
-> Fixes: 29863d41bb6e ("net: implement threaded-able napi poll loop support")
-> Assisted-by: LLM
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> ---
-> I hit this while comparing threaded NAPI with softirq on two bare metal
-> machines.  The runs in the changelog are from a 7.3-rc5 based kernel, with
-> and without this change.  The patch applies to net unchanged, there I've
-> only compiled it.
-
-Is it a degradation? Did you have any "good"/working version?
-
-> 
-> I don't have the PRM, so "arming the CQ raises no event for the CQEs that
-> are already there" is what the counters showed and not something I checked
-> against the documentation.
-> ---
->   drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c | 9 ++++++++-
->   1 file changed, 8 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-> index 185105606469..3142e90e68ce 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-> @@ -207,7 +207,14 @@ int mlx5e_napi_poll(struct napi_struct *napi, int budget)
->   				rq);
->   
->   	if (busy) {
-> -		if (likely(mlx5e_channel_no_affinity_change(c))) {
-> +		/* A NAPI thread runs where the scheduler puts it, which says
-> +		 * nothing about the affinity of the interrupt. Completing here
-> +		 * would leave the CQEs that are pending to the next interrupt,
-> +		 * and arming the CQs raises none for those, only for a new
-> +		 * completion.
-> +		 */
-> +		if (likely(mlx5e_channel_no_affinity_change(c)) ||
-> +		    test_bit(NAPI_STATE_THREADED, &napi->state)) {
->   			work_done = budget;
->   			goto out;
->   		}
-> 
-
-If arming really doesn't raise an event here, softirq NAPI would stall 
-the same way when the IRQ affinity changes under load, for example by 
-irqbalance.
-Was it seen there too? I believe not, so it must be something else 
-causing the stall...
-
-> ---
-> base-commit: abeacca61eea4f6803df4a595b656ea45c2d3249
-> change-id: 20261021-b4-mlx5e-threaded-napi-stall-7d0a14c7674d
+pw-bot: cr
 
