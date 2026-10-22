@@ -1,110 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792661600;
-	b=RNEMOWZlmwkovN2856oMhJLv5+KccimV7SAnomJquTIxX5Iv7ym+0Q33Qy+DaA6GShG5
-	 d7dUUUDdwSTZhJOjaq7KSP64IxYe8ijRgeezNnrz3rWH+apduprZcG83DlXHi3GyjFMST
-	 CGKfDEcBzaAzTpLnY5Ste5p/gso8pBL4o1xO3Jq5B8uB8M9gsOYYEfD7OtEYls7JSI2E9
-	 t0MWqrg2c1R30ZEPi4Z7MCW0Y4aXX7lQn2q/3XPYPAqD7o46S74KVwC8Qxzxe4F468GJJ
-	 /yqLPyV5DJdWLLijSYEfAgMqDlwi6TS8FfsFQxjJksf5VhOoyGly9lgmw6x5AVSKm2g==
+	t=1792661689;
+	b=HqEvcdP3vGKO8XdhJqS5lK8HSym+Hx5z4Ybnbk2so+1uHc3h+buX7xwVYqyNuxotMBpZ
+	 gABzf/9Ciw8mKn6VXLpVyQJpV4Qr7fLZQGKGrTWtKqEYxwYtMNNVVUa0x8V5uwwgjDg0m
+	 lYdAbfTn7NsYR6cybyAmjvOy40I6xT0Gk6fd5LM1YpAy76kvTKMoGWClZbpOUxshmHtBa
+	 BJYEGlNTsYGor5p7FW4s59yJ/VK4rAQvGMmvD+YY0OkqqEPntOLEmwsN5LACqls8W2ncw
+	 wPWqqd9dTDi6BlCB6CzkkZXheSVi6emV5A2k7pfaDvL9rzh/VPePRtyMo0ZynvqojVw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792661600;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Gm-Message-State:X-Gm-Gg:
-	 X-Received:X-Received:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
-	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=it/icbLfuO7zXriCFppfnrdl0soBaT5iCjZVgkzuDBc=;
-	b=ezpJh0+lP2SJS+NAYHr218tRthQRXlzvG9Xkm6o7umbwRJtSm5AFrK9rW3cpst5oVZ1w
-	 7hM1V0PA/CnNXg++AfXqN0m3Uix34a4oZVfCNKBhPoaGqtmobnOPEXl8yeESnoSgSQKKK
-	 FBIfj0CyaBTpKrq5Py/BLoesqIsHgBq31gZeIEH48RbvGq79IU/sfBmsfUuFtTfOArjnF
-	 /0TG7pfAFmSIHabvxrQs3fc6ftGEt0bGmqnfqUxi/ZUB13lr/pHbsz/gJf9ebeecl5AWS
-	 JdjY5ul69KL1bMO4K1I5SFbkm/CEfpg4JFxqxShogDPUVaiijguoZOGVqcHZwA4ftmA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792661689;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:X-Mailer:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=pVN1mqrOhYalxYFr7VReSIpfsAYguArpSUX3xTADh9w=;
+	b=2KihHD3lB1CLusnO7bueTyi9PoC5gRESXYq2og4scYYHECKEXPmzvJDCG+HfkxKkrAAv
+	 oo341nU1HkcD5aPUqsc6G/sHGQ6wNqJo5h9MsWfiTKf6qz61+x1Kz6I68/0ddTzBY44mJ
+	 eJAHFvtRrC30h0UrDYbv2fpDnT/Z0PzkpchaWHnHMx3DCUtRM2MOBSfpyg7vLIJ2nm4UO
+	 gtkUu8F0l6MlfAYMs9CbbFCBZAHeCQb5ZV+ZFQxKZVHGrvMNhuJ1mi5PBjv7+8aogBK0D
+	 AY5m8EpQLX7ces22AJJffRxgYw5f8R1hE1Xph5yfNdTyL0TrelhRzEN7OtCBdUqMSew==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=Z2UWOBNV;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=hR5TD3Hk;
-	arc=none smtp.remote-ip=205.220.180.131
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=QOuNwM+u;
+	arc=none smtp.remote-ip=209.85.221.50
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB1E606A33E
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:33:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AEB1E606A33E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754D5606A31D
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:34:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 754D5606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=Z2UWOBNV;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=hR5TD3Hk
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69M7G4qL3061843
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:33:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	it/icbLfuO7zXriCFppfnrdl0soBaT5iCjZVgkzuDBc=; b=Z2UWOBNVKgkBTWvI
-	1kRnqRU/Ndr0LmFB/OvodU9B5ZDAG509yDDtzwlorCEqwj2uTu15jZPTD4eMVWJL
-	Jm2v8EXSiKRuvSB7fQUkJWEOvMlYiDPUYhBJ4UV/G14Z3LeqWI2nyWvW6HRU3nV+
-	RTXYdFQunMfmlShUjeWWk5+dh1b+2/pFDSTV82vfOhY6Wn5WlPBoRzUvTrZ3uDun
-	czHKrVoMTPKBQYkarrBEklSAKyC+6VtpKzoa5DsfkZ/CsRX/68jREOMJzg1NB4Ps
-	MwafJp9m1DCNuJzWLZIcKHVUfdgoXzMG/A/CmZ7EWiGzgqsueamXx1pBlMOYCDRu
-	17ggNw==
-Received: from mail-dl1-f70.google.com (mail-dl1-f70.google.com [74.125.82.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hf93asnm3-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:33:18 +0000 (GMT)
-Received: by mail-dl1-f70.google.com with SMTP id a92af1059eb24-151ba226e1bso2971756c88.0
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 02:33:18 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=QOuNwM+u
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-48e0d1c095dso1046615f8f.1
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 02:34:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1792661598; x=1793266398; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=it/icbLfuO7zXriCFppfnrdl0soBaT5iCjZVgkzuDBc=;
-        b=hR5TD3HkWMvhhDjMr81hpJDXkiGYneb2M/pp+3+rwKZuyePadDiuMmLKeMNF6ybjGr
-         ePJAC+fF+M7eNTw9t/JNd4sa2hxrEumxZFS+D0WabBf/2TMxh+7cDnDS8x6f0kaMWu6A
-         6DB+GmT3zbgiI+7F2pwIMJOggIMpZIVPJWN4cyOBiiTBdooW8S5NXjmjDdTf6+BEoqQy
-         /66o8e4wi8TqNo+/1LjDY3IBCkjIGhQgUcwH/LkvvnbJ7dsWk+lelkdffW88XUohqBRr
-         K2S98mLHf4Gwi6y3MuisFMGcS3O6uQKm+mh3evNqoFWvsAM6FWZpgD9NncliCRXbnnD7
-         WF2Q==
+        d=gmail.com; s=20251104; t=1792661688; x=1793266488; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=pVN1mqrOhYalxYFr7VReSIpfsAYguArpSUX3xTADh9w=;
+        b=QOuNwM+ut/XXfjXB039CTGSCzy8xsloaZdU5WvFi47yBZN9UVjzOndqXFgzO7mDjp5
+         mkutKz5IeyUOk3yIX3FqigGFlDAW6BuAque+RcAG0Fyrqhu2KjuybfY0iLX2peTAqiPZ
+         4rPEkh0A78fmZ1DkUT9wSb6gklNxpI6WiCIByQVRI7Gp9UG443Inw24cO7jHgVlQbFe7
+         NRjqhAXVpHoIjq0U+UpLmUlk0LLBDAdzkrfo1m96BT0jXmhH1fj7+hwmlKcgFVQunGnE
+         woL0qJRQibe9q87rMmdOiUojPzGBKF1qZy8PZl5WDQoZNzsbOk4/QZEQO7b1a+Aoxgb0
+         hxXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792661598; x=1793266398;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
+        d=1e100.net; s=20260707; t=1792661688; x=1793266488;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=it/icbLfuO7zXriCFppfnrdl0soBaT5iCjZVgkzuDBc=;
-        b=opyi732l88sT/l6e/rDCMy6Sl9xBeN7LI2ST7HrqWG9R1nDnp764cIbIfcOTO6yyD2
-         OZPl2MdKKfrciGjNVSTWqy9e6jW3QGLFVPekXxEDlphd3AwwU0Yqi69vLwJdi1yk19U8
-         mRpIFgMVO1UJ/vYehjA0b05WOrurDX34nyg6juptKHMBot48ZLu13nV1ZCYjJX2AY8YD
-         VtJbdrNaTHIeMPl1Ls7VXwrsROQjp1DtUfpCXfIV8nFpty6ETPZnG2qHz3e/WO+DR2zf
-         IQyqGWYcIzG5iYHbqbygPjuBBBgw+5ZIjpi/9jdmUwhQ+MSi/Ww6JE2td5JHOEOKZxsJ
-         iZvg==
-X-Gm-Message-State: AFq9FYLQiOok39EZtTZelaNwsIjdzYj9jvmS3ly+lvl4s7JBv39skrUc
-	iHBwBkrzrUgFv/7OLybXsk5ws/mHjPP7SXfDm9E09HZe3TVPxcvxeo8dvejm8loTCMJh2aeCjeh
-	oIM8cfnGxlRPRNfEYhIKTCkFtVP7m6FuObnsz2lnVZRVOzYH0pCndyQQsVDI=
-X-Gm-Gg: AYBFou1JBqJpGbGhn2CcerxEHLlVO8j9EoXOmNTWstFvwX0Ewwl0MFDKzephL520l81
-	6lSrwiroEf6+dxtKIvVsgQtSoG2bMXV4DhN3QbKZayTmvJA9aej4B3Y0/mNHBfpBKCFVc7kRACt
-	bbwbupc9h9FXoP41j9m1y6rq4CBT10ulffMZFioNS84cAvrbb4rQ4aOAG77AC9j5WePjPIXj8Zx
-	Ow6lVkd5qc0bw9aIYtM/fEoPzocejWZM9e9IjZvM/DxLg7HDJG4nsAml9ctmlvx7vjWDg1jUAPV
-	omCP4Ead/dTkaKRLWK8gBCGy9bk4BvfOEqYb/MDamyicrsR5cy82F8BAy/dOENFviaXmbw1mrSn
-	cOTU4t0o4YLZyBbFO/uwrTy5T+MX9VqSWSSUk0+NKOzydQbWiugfW6eB0Dig=
-X-Received: by 2002:a05:7023:907:b0:184:992:c9ec with SMTP id a92af1059eb24-190a6eb59efmr6039507c88.38.1792661597595;
-        Thu, 22 Oct 2026 02:33:17 -0700 (PDT)
-X-Received: by 2002:a05:7023:907:b0:184:992:c9ec with SMTP id a92af1059eb24-190a6eb59efmr6039476c88.38.1792661596987;
-        Thu, 22 Oct 2026 02:33:16 -0700 (PDT)
-Received: from alfred-sh01-lnx.ap.qualcomm.com (i-global052.qualcomm.com. [199.106.103.52])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3673e15353csm25904494eec.2.2026.10.22.02.33.14
+        bh=pVN1mqrOhYalxYFr7VReSIpfsAYguArpSUX3xTADh9w=;
+        b=ZN9RWu+nSaQzyPy3/aZ0bxgHTkgccng3PytcLR9WRfkhaAJP7M91cOoynnNunt8zSL
+         TMwr8vhpQL3Juczz237FHVmmA3sz7JDRLkaKkRhwKNDL9wLe/iGIFWV5jQ/90P/EGNVi
+         c1fS1ygYk6mKoTSEPbkWBuDTYh7UQ8Kpp/MsuO3gz/KQhhUZWTnJaxpzFynZH8JeT6on
+         sc7zAPZerlJYY2Bixqb6soQ5M5wFa7thZncGoRcxJ/fy4CJowNccuZ/pOa5s/tbS8+SF
+         daXoxAkIgXvwnM7FOpPUQNNdpqCA2soPwZ2L0Mn/Cz45DAkFE/bHE1NAduqoIFBH57Ra
+         15WQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwoyMx/YljI9MW1U74sreq57uFajH8iipOlMa8HoRgxQaiQwUwmer2IL7VtS+SQfgiVoMf97ak=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKEffgfN2eUFf+pl7o6HasygIQr561bIxCKyDC2EhWHS0Ddygd5
+	IwXaB3Tv4TNX23peyZMK9NT9tJeqYox/sOkrxa9WDRVFZQsY62LwTM7h
+X-Gm-Gg: AYBFou20QmmbjEM30d+CiTKlitxS4NEM77FQQqcpwhkB1JSfjL3eOXmpYfME39uD/Wi
+	ZUnrr6GXxh9DUI7D82yAyrKkRfCiqQa0oI1XDlYEL1OC15q2vMKRCHpzotq1NEuhn+hFhnz1i3M
+	6MyxySAkgrmz87LqIhyt/TJktuPFmpm5bfBep187jW5M+ZxAhGF5jWynZz3ShLyFearfP9Rq5lr
+	G9x1D/su70upGSxLblUba2pARA9ha1j3KRhcMlHqnd21bwYK2F7uSDo5ziV361ATj1THvDlakyA
+	/Ko8hpfJg1o8NxBPaxE81KGarqPT/4a+oVP6OB4XdUbuGWvBEO/tGRpgHa8WvLW42N4PT94SVtV
+	WHNTo7RBB8Wpl5SNdR7lIYjO9Ea0cBdtHMEdcZR60VY6Ly9KfcK0ejm2acDETfbvY7+PhDGnMFz
+	IG0wzC82eDmlP29jX3DpCDFFiyYxb9dGWLVXV6u/W7WfOQMhlWsH0dP4o1WlnP/rpJldU18f7YD
+	72ileH7RiCqt4vVBiV19HHWz8lhC4Xwhmll720IR5I/WR60VNsV88mo1F2U+9idiqx0AjP70JtV
+	ISdh1tg+URvsFnYs
+X-Received: by 2002:a05:6000:4806:b0:48b:451:4f19 with SMTP id ffacd0b85a97d-48e264e2f10mr9528690f8f.51.1792661687521;
+        Thu, 22 Oct 2026 02:34:47 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e25828e72sm10420288f8f.26.2026.10.22.02.34.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 02:33:16 -0700 (PDT)
-From: Hongmei Xu <hongmei.xu@oss.qualcomm.com>
-Date: Thu, 22 Oct 2026 17:33:08 +0800
-Subject: [PATCH net-next v4 1/2] net: phy: aquantia: restore EEE discovery
- in get_features callbacks
+        Thu, 22 Oct 2026 02:34:46 -0700 (PDT)
+Date: Thu, 22 Oct 2026 10:34:45 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Fil Dunsky <filipp.dunsky@gmail.com>
+Cc: nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com,
+ shayne.chen@mediatek.com, sean.wang@mediatek.com, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+Subject: Re: [PATCH] wifi: mt76: dma: run threaded NAPI kthreads with
+ SCHED_FIFO low priority
+Message-ID: <20261022103445.34cede9d@pumpkin>
+In-Reply-To: <179259275334.35963.15413466304986880275@gmail.com>
+References: <20261020-b4-mt76-napi-fifo-v1-1-ac8a24e2062a@gmail.com>
+	<179259275334.35963.15413466304986880275@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -114,116 +103,52 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261022-net-phy-aqr113c-fix-pma-capability-v4-1-95a17f75dd7a@oss.qualcomm.com>
-References: <20261022-net-phy-aqr113c-fix-pma-capability-v4-0-95a17f75dd7a@oss.qualcomm.com>
-In-Reply-To: <20261022-net-phy-aqr113c-fix-pma-capability-v4-0-95a17f75dd7a@oss.qualcomm.com>
-To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Hongmei Xu <hongmei.xu@oss.qualcomm.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792661591; l=2347;
- i=hongmei.xu@oss.qualcomm.com; s=20260917; h=from:subject:message-id;
- bh=metYIqaXeyP43pnJ0wLjM99u+BeRf05eZ9uzQ0wdxpM=;
- b=YO7QeiFzRlKNfsw1jWiZHldtFnLd4IhgxZlWvygOT1kRqrKPXyC+cRAhaz742iPwVDDBM7lRD
- JVfjm0g2GK9B9ir/N31WdG1YtsHpynaRMb195YbMlI6YRdSCeGyE6qw
-X-Developer-Key: i=hongmei.xu@oss.qualcomm.com; a=ed25519;
- pk=8J3IzbyuOOHSwLvktng8AEQIdStEQDAGNCSOlkASmk4=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIyMDAzNyBTYWx0ZWRfX7F/CYDwraQwV
- zm6yGg4bX0AFzziGVlXnCmTwPZP/9QbCqtNQ8KgEhtkCDnU2ntzwGJTTvHYT5GTjlR8sTwVbYzI
- TZzwztk8t5IqDo8prPUcgpal0s2ns9+TixFblSWVBOkm04Ba2wCgYnyPedvTSQnhuQP8FysNZmU
- MdKWqBiNvgvaxU90nUreNn66QSudm7aTivzs1wliEvRBhYK53677nhrNxsG7OHEUpypV+D0x4kL
- cddwJO5XDBBAkETGN9SqIQgl+ZPjtXnKg/TEbuf0kQFU0y9dbo1z5i2/2va9NVBDzl6uP5iSHDL
- jleSRH17XRiSVG9EdbkAVtatECyOlffkQt2pi+hlbFQ1vm36Vpm96TKbg2VsP1lsa/ksKtvOvY8
- ys3PfGaR37j5FQetEsHt+Tymxc9XbVC3Kp47sY4fAPKC2DUb1bo5fuzFdiqSSND9rdqUBTziPpB
- FMFnIDL6AuXn0ibExZw==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIyMDAzNyBTYWx0ZWRfX5LngWbKmCcvu
- w8xyY+noULwOH5xC45tZT5uc+/I2OWi5sw4DcAi5HnxargkLHMr8YCUz30lmwDTbn84REq7uUie
- h9mZCVQbQPNAe/sJ/J3lTO/eFv36pcY=
-X-Authority-Analysis: v=2.4 cv=QPn91QLL c=1 sm=1 tr=0 ts=6ad9d85e cx=c_pps
- a=SvEPeNj+VMjHSW//kvnxuw==:117 a=b9+bayejhc3NMeqCNyeLQQ==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
- a=EUspDBNiAAAA:8 a=dClg1jYS9o94HfY0LlEA:9 a=QEXdDO2ut3YA:10
- a=Kq8ClHjjuc5pcCNDwlU0:22
-X-Proofpoint-GUID: 4T6PgTvZTewHjrh0-mvHf7Vi9y2LygTa
-X-Proofpoint-ORIG-GUID: 4T6PgTvZTewHjrh0-mvHf7Vi9y2LygTa
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-22_03,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0 clxscore=1015 bulkscore=0 impostorscore=0
- suspectscore=0 lowpriorityscore=0 priorityscore=1501 phishscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610190000
- definitions=main-2610220037
 
-aqr115c_get_features() populates phydev->supported by ORing in
-phy_gbit_features and setting the 2.5G bit directly. This skips
-genphy_c45_read_eee_abilities(), which fills phydev->supported_eee.
+On Wed, 21 Oct 2026 17:25:53 +0300
+Fil Dunsky <filipp.dunsky@gmail.com> wrote:
 
-As a result, phy_probe() never populates supported_eee for AQR111,
-AQR111B0, AQR114C, AQR115, AQCS109 and AQR115C. The kernel then
-clears advertising_eee:
+> Adding netdev to Cc, as suggested on the GitHub mirror of this patch [1],
+> since it touches the scheduling policy of threaded NAPI kthreads.
 
-  linkmode_and(phydev->advertising_eee, phydev->supported_eee,
-               phydev->advertising_eee);
+I had to fix the same thing for other NAPI threads when doing some
+tests that were receiving 'silly numbers' of RTP (aka very short UDP)
+packets.
 
-This means EEE advertisement registers cannot be changed via ethtool
-and ethtool --show-eee reports no supported modes.
+There is a similar problem with the softint threads.
+Softint callbacks drop form being the very highest priority items
+to things that really won't be run in a timely manner.
 
-genphy_c45_pma_read_abilities() is not used to build the supported mask
-because these PHYs misreport PMA capabilities. The supported and
-advertised link modes are intentionally unchanged; only EEE discovery
-is restored.
+David
 
-Fix this by calling genphy_c45_read_eee_abilities() at the end of
-aqr115c_get_features(), after the final supported mask is built so that
-2500baseT_Full is already set when the EEE cap2 register is read.
-
-Also fix aqr111_get_features() to propagate the return value of
-aqr115c_get_features().
-
-Fixes: 17cbfcdd85f6 ("net: phy: aquantia: AQR115c fix up PMA capabilities")
-Fixes: 8f61d73306c6 ("net: phy: aquantia: remove usage of phy_set_max_speed")
-Signed-off-by: Hongmei Xu <hongmei.xu@oss.qualcomm.com>
----
- drivers/net/phy/aquantia/aquantia_main.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/phy/aquantia/aquantia_main.c b/drivers/net/phy/aquantia/aquantia_main.c
-index e95d391a6dc2..099ee919de94 100644
---- a/drivers/net/phy/aquantia/aquantia_main.c
-+++ b/drivers/net/phy/aquantia/aquantia_main.c
-@@ -1079,15 +1079,17 @@ static int aqr115c_get_features(struct phy_device *phydev)
- 	linkmode_or(supported, supported, phy_gbit_features);
- 	linkmode_set_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT, supported);
- 
--	return 0;
-+	return genphy_c45_read_eee_abilities(phydev);
- }
- 
- static int aqr111_get_features(struct phy_device *phydev)
- {
--	/* PHY supports speeds up to 5G with autoneg. PMA capabilities
--	 * are not useful.
--	 */
--	aqr115c_get_features(phydev);
-+	int ret;
-+
-+	ret = aqr115c_get_features(phydev);
-+	if (ret)
-+		return ret;
-+
- 	linkmode_set_bit(ETHTOOL_LINK_MODE_5000baseT_Full_BIT,
- 			 phydev->supported);
- 
-
--- 
-2.34.1
+> 
+> For context on why this is done in the driver rather than left to the
+> admin (chrt / sysfs): mt76 already does exactly this for its other
+> rx/status and tx workers (sched_set_fifo_low() for the usb and sdio
+> workers and for the tx worker), so the dma napi kthreads were the only
+> mt76 rx path left at SCHED_OTHER. A userspace chrt also has to race
+> the creation of the napi threads at boot and module reload.
+> 
+> Numbers from the setup in the commit message (MT7621 + MT7612E as 5 GHz
+> client, 3 runs x 5 min each, ~200-280 Mbit/s rx with userspace load):
+> 
+>   stock:                  ~500 full-ring events / 5 min, watchdog
+>                           resets and MCU timeouts, occasional hard hang
+>   this patch:             0 resets in 3 runs, rx 276-288 Mbit/s
+>   stock + chrt -f 1:      0 resets in 3 runs, rx 249-273 Mbit/s
+>   napi_threaded=0:        0 resets
+>   rx ring 1024 (stock):   800-1300 full-ring events / run, more resets
+> 
+> A similar restart pattern is reported on single-core MT7620 at much
+> lower rates [2], which fits CPU contention rather than throughput as the
+> trigger.
+> 
+> [1] https://github.com/openwrt/mt76/pull/1164
+> [2] https://github.com/openwrt/mt76/issues/457
+> 
+> Thanks,
+> Fil
+> 
+> 
 
