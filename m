@@ -1,73 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792679307;
-	b=R+hH5bs6jk1EqgPP1y0zGzNMpykQRn7nYICv4vpUcDeCfHCCTP2j5PQCaIYDsM2PqsCg
-	 35PEF729udr2OHy7bY71VIhVUMMcbJ1GabyJAMdOV6m2N+mkaBnZPwqfQWxh7Lkl+mdun
-	 NgN4E/p6GN0t61aHN+fbNTuLOt2RrEB8lQuw2VsMheZVKh5AEjqfyDFS3ahi1bWZ7T2FH
-	 Yq6SaNq/RP7Ktn0KdnrI/sgxwLv+hjReICfzaCVZW+zQwApMNbdkNHsoY8VuoltL/vQO1
-	 PmI6S8RuiA8I0iylKvzhPO2euzVPOZLPuTc/qKFby8ShkmM6WQHp/q6NfnFVt2tGM2Q==
+	t=1792679816;
+	b=maH8LrV+lplPDbrEi1eCIJ4it09siq9I6yWTleXiwJl7Jg75diVV+es0r3I083pzNRvF
+	 qWjZVFVDq7rn1m2kvCBz7KgLdICaJFdGXbymCnNIlQacdCtRo6CpzEHrCukwT3Plc9cHi
+	 qauxz1jf7GVa5ftVOU22o7qUjfTuBWEJgMTBvABeXiAxUFsvmA2re2KrKxL8mq4Ohxfaj
+	 IjW/1UZMuym5c3oyL3cWyzbT4SQLj27+7k/kWRMohSORdeaIKW6286SAijXX9E8lrb8oa
+	 7tbKwneobaiKVbe8qwXPtJDGoiE4249h9/EtlsTeOMQR0yz6B9maB0W+j2hB9jgl8MA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792679307;
-	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:
-	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
-	 MIME-Version:X-ThreadId:Date:From:To:Cc:Message-Id:In-Reply-To:
-	 References:Subject:Content-Type:Content-Transfer-Encoding;
-	bh=6kMmhq36VYEj0XOQSzT3CA4zRST8TSDIcFSnbh3nHTY=;
-	b=zv95RThJwKxSnSsM2ZVWHU81hY5rVX04zRBOMg92zWKe2wtLAr+pSlQegXHMt2jTRbLK
-	 Wf2AmDla6B3RlVB4jcSOO9s2Oj+DJLyEAiA0BQeAYtl4baVvLTeIDdWQvKCQLNySiYJX0
-	 pWS8lNM/55gxhmUBDRXx5aL6Z9uxJJ/vMFPIRTCmQTZ9oIrAPIjZpJcUSVG8MzEtOlzTW
-	 7aV4awn1FJMZ1Sq0ACLXol/E1MmI5PIEe5VyN3KSqVKwoVbSOfNc1VC2jRs39FQrd50hW
-	 a4Ux6MIhfpzf/e+lm/ZV2zZ48K3nyl8IT1QPwpxPENmsLRwfp3GXoQBZTYrFKWnex+A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792679816;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=mvAGYPaHlikIZq5QDERlND46MryykUYmthk/Ww6XUqk=;
+	b=LZRfVaom8oQ+eDfSX1msHF+XR821d7zYLycODG7JWIfMavpAdt4oAZjDCHILr3+RDUc9
+	 3GX0dVPfhOH+qWn4TPDm+F/JU/bsVeg+Pjuo6Jc7+DwSyQY4VlKZokk+q+KC8yzgZFWwO
+	 ObxUq8/nHD++Gc9nW1mPf2xopW5fnjsvK2yn2JNOuzZkgn+K8Ylicd/zeVcxn8/TCd0R9
+	 qV1w1UgFloweiyL73nYoHnyImWzzEmt3Pm9tvjv7a4YVEAzx4jnQwJIerlA6A8N7ehIHG
+	 +NxAL8WpqFY5CdEM4reBNL+16d7nBheEVBPvdZ+1PhWXHVdUcBhxXUmHDdScdI+zbng==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FQKXY5Y3;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=rWzOsQYX;
+	arc=none smtp.remote-ip=209.85.218.45
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ADE860A2605
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 14:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829D6606A31B
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 14:36:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 829D6606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FQKXY5Y3
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EE3D1F000C2;
-	Thu, 22 Oct 2026 14:28:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792679306;
-	bh=6kMmhq36VYEj0XOQSzT3CA4zRST8TSDIcFSnbh3nHTY=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=FQKXY5Y3jaDD6bOdfmqj7/w3d0KwDEDdQ5B/4sukBlEXTOm+Uq6PPDWJW2kTGaJw2
-	 iki3ReR6nY3844VGnZ/KgezJH9kAblfSaVy0p6VzfZ4EvCXqZ+kaJbxNasGt6pwEnV
-	 61nKbeR0N4PL9GzksT1qBTingayfj180/YL4kJhpXpaMRJYkXGuBrKusThk63fxXH/
-	 bZF8++foHkbMlbqeOCsRRvM18MPvwAe5+YmiaSaM1ReyixKhOL4LMxgQm+aWIakZYL
-	 G3KJkI2pRDj1HS/Gcokt5QwumGZLdNttI+Flt36LeJnMcBgeMO6Fkqwi4tYak54WgB
-	 uP7rmf/wMiXeA==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 9C2F6F40066;
-	Thu, 22 Oct 2026 10:28:25 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Thu, 22 Oct 2026 10:28:25 -0400
-X-ME-Sender: <xms:iR3aarVjmvMd4uHzTveQm3aUQiMX38v0ZuuqDjEnUbXGXorjgpc0ag>
-    <xme:iR3aaubluyphnDtJd7S7j-s2Flmwhr3j9Dv2lsU_q6urwdRVY0cSp8o15KuqQYnbu
-    T9sg8cMMFb9rxiIDFDJv641OJHZgXhkvAn3waN6DCIR1y2RYKEhEiOU>
-X-ME-Proxy-Cause: dmFkZTEBkP7DGtODa2WUaVOxDTTxBpmdRrLk4G+uNgRAvwhvKqbcfXe3M1e+wE4og1hlaN
-    LHFUNwMS/uWFyo83mTkNFdUj+sVDJyhjvWgFa5vGpyohYMiKAroubejRm9VsrozcW/L+Of
-    1XoOnaPcgjw3htHF39OwaRCec9ItjkG5efEzKfZp8vTfeXUVhbQF2xqn3vhWviRuEjhKzd
-    hwPZu+3TybMjOXkdRuFVdQxV5IUPAsF7p87ZwU4pgZtWN8B0XrT/5fkoMBFP/3UpZyGOBv
-    zw2lg0sAeRo1dnL/cGi2ECHFEN9sw5IryS8uMHczlA1qYaESeXOTlSB95IdaNATEbxblts
-    Y5tg9Uhtu4fWaXj/4LF7sh6i370e3nP2Fpj95o87kH5eYDNbaq/RUvTdTq3lmpwNk172Uc
-    l5SmhHaS/waf4n6hiNmM15JJt5uy1MmWd0TjTrhuOw4iq34ENFzmxGC5OdiWxXU11lbgW0
-    1z6hOFcFtiKlhG+IUX68rOwlyBhv/FWxusA3vTQ1iFCTymLE19TzeqqilXKplXNDlaYhBm
-    l5Bb2ZNXFcepVydP5SvP7ZV0wTL8SuEWEbHzUrSnxCIQ760f+MtDIIfmAKkP8pEs1Rf37u
-    lG+UtVKcjimUMTR9PNrLjkMcVdZ+nYV90jCVPt+m9KEqfqiCC8gSAVKwi82g
-X-ME-Proxy: <xmx:iR3aarAItw2CSSZ-8-Eq5TPxs3-YwZBFH1RILGhKHquUrFRQe7uXWA>
-    <xmx:iR3aagARg8pB8czUmCtU-N0LSmo0bqTH81fTJEX5E-72hc8hekXOcQ>
-    <xmx:iR3aatZYEB1s5GS5JQyj3bKxh1WjBh0ngCP5w6nj2IlweaTQ5GY37Q>
-    <xmx:iR3aatxidFqBbSC3PGXzQ037wSyyR9n--gHp1fMnxRaD0xhvSVzJGQ>
-    <xmx:iR3aaof9Ls-ekSXVkHKcluBSVAZBltSwfyjfpnBBRNuGYwntfQCnQ5vx>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 78C7C782738; Thu, 22 Oct 2026 10:28:25 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=rWzOsQYX
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c434376dbebso221157566b.1
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 07:36:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792679815; x=1793284615; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mvAGYPaHlikIZq5QDERlND46MryykUYmthk/Ww6XUqk=;
+        b=rWzOsQYXQqTVdPHfBv4oBRlk7alBl9C7/EGhfrE8iN/K9/eKdRFqvZLFyRwDFPZwtU
+         VBf455BTddg6zUW8/A5bTMmZyJ1WxnNI7fJqcYf5W8vn0R835CpG0egI6j6gZscYSvud
+         sguFmG5aBPUQkoapBZSSqsx9pCiifvytK6KoDRZJ60JMmCCsuWLDj0jrTsFDZ2qu9s6k
+         vIJZwJ6WA+b+C0w5piTFqTsLgBcYDrPBlfCM1pJAYOeBTDkCdrZWwvasn4J89U0AJwGV
+         qjGWaRjPxnNF0icCnOZx45Ku7BO5l/cb9GebiRA+tVLKqrPpLx4F0aV6s9ze5CtB+Rb0
+         fREg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792679815; x=1793284615;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=mvAGYPaHlikIZq5QDERlND46MryykUYmthk/Ww6XUqk=;
+        b=lnpqoUvJdoo72XpeO/5I4Scimxn7c2dRtfR/li2dCtTEFuvQzFrfcJ6OOxuFft05sJ
+         3Ih0VVCO/8AXxBsHIs421iKV11l1jO0amf9+JNl8e0zUts+uqEgNr7VvQnPBYXNAI1Dd
+         dA6ZtpaAxqtF4heWtSEn/5kQEh7+5Lv63ZxhBNFhE2PoRxQt0Dvm4GxLN9rcGYBO2/cB
+         sUjtRoThapfOb7ww6vfZH5CRwgzlIuKb/xlY09ntx3y095voaoHPAiaC5Muk/zwtmY9+
+         77YG4r+H7839WGR995wATbKSpblUxwt99iOuXeKrg5ppcg4/w3VWFL8DPTDeJg8vaZup
+         Vkug==
+X-Forwarded-Encrypted: i=1; AKwUvBwuHjT6vl4TVhSHB66UQ+yF7u5hk35LEcl95i2/xgWcJXjevxrnBNoEwiUaRQ792Rlsa1R6cbA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJNjr6J3T7BPKL0S3y145EwnpfAerbXyCwT94sQxo3tqCOCo/+W
+	sOUzq8/Vt4nGVdxAnxx5m0qhu1u1zx9bsdGcVOgCHtJoJ4f9u874sbDd
+X-Gm-Gg: AYBFou3RBJWJvo6JskIT4jt6h7cDY1YhbPOkhozBVHyIJhbx2BJHq+crp6W0JpUtHsu
+	ENkQq3h0QxqqTFMx0ZZC/ZbsLOtAyHg1GP9iO7FSNj4yJ9w+cORDyS3jno5N4jFD0Oc+h7SSNHS
+	Ffdc8nSq/CBMnYb5Dne45EeTlZRmSXYsPaDMYT+ncbVBCVvYE4luyXuCiv/ut8shjpYBOZrpYhG
+	E05PLk/h7lKEi0CJUHTejvsYlcEBS3lP+120/UJI58+MigxXz8cvP+MXMdXswyYrGQIyU2bi1tU
+	oZLGYCKfambwTqYaZs8FigREOeJNI7lwJcX2Qa3w9HaT37w+skXrVvvXQro5ll9SrIkYduSwwmC
+	Gvf2KxeTHZnPybPjfyNHFhMzc47eKbTCpsa3MtRQwiebRxHaV3gl+jj5peKmkfGPXHCT0GZgAKU
+	NQkwZssbrsTPFtUCLD44Fu/zYlQSYzavcfYbziI4Tfs9MRfWa4iv0xTPIGehaEp5K0o6v9467vz
+	z5Dcncp2moAjDOwroLIxN7rkK6wu9B4ZSf2uO2KHvmWzR1jBjR6WjFssVZiLO3yRms7fyvQ8Bd1
+	i34azqF8MLOFY0GIqJLYtIbJzz+Vh06P8P448AA4pg==
+X-Received: by 2002:a17:907:6d05:b0:c40:9b35:ad91 with SMTP id a640c23a62f3a-c468d76a6bdmr355258666b.13.1792679814548;
+        Thu, 22 Oct 2026 07:36:54 -0700 (PDT)
+Received: from [192.168.1.122] (cpc159313-cmbg20-2-0-cust161.5-4.cable.virginm.net. [82.0.78.162])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c468a4ffcddsm112143966b.14.2026.10.22.07.36.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 22 Oct 2026 07:36:53 -0700 (PDT)
+Message-ID: <46fdec20-c37b-4d7a-afa1-3caadcfc4640@gmail.com>
+Date: Thu, 22 Oct 2026 15:36:52 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,53 +92,52 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-ThreadId: AXYV5AzNqYhJ
-Date: Thu, 22 Oct 2026 10:28:05 -0400
-From: "Chuck Lever" <cel@kernel.org>
-To: michael.d.lowman@gmail.com, "Jeff Layton" <jlayton@kernel.org>,
- NeilBrown <neil@brown.name>, "Olga Kornievskaia" <okorniev@redhat.com>,
- "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>,
- "Trond Myklebust" <trondmy@kernel.org>, "Anna Schumaker" <anna@kernel.org>,
- "David S. Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>
-Cc: linux-nfs@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Message-Id: <bfc542d3-4be3-4887-bc93-81403b5a8c11@app.fastmail.com>
-In-Reply-To: <20261022-integ-page-reuse-v1-1-fbe571857d4f@gmail.com>
-References: <20261022-integ-page-reuse-v1-1-fbe571857d4f@gmail.com>
-Subject: Re: [PATCH] SUNRPC: avoid possible page reuse from svcauth_gss_wrap_integ()
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] sfc: fix use-after-free of filter_work in
+ efx_realloc_channels()
+To: Sicong Huang <congei42@163.com>, netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Kees Cook <kees@kernel.org>,
+ linux-net-drivers@amd.com, linux-kernel@vger.kernel.org
+References: <20261022133927.3860186-1-congei42@163.com>
+Content-Language: en-GB
+From: Edward Cree <ecree.xilinx@gmail.com>
+In-Reply-To: <20261022133927.3860186-1-congei42@163.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+On 22/10/2026 14:39, Sicong Huang wrote:
+> With CONFIG_RFS_ACCEL, each channel has a delayed work item,
+> channel->filter_work, that expires aRFS filters. efx_poll() queues it
+> with mod_delayed_work(), and efx_filter_rfs_expire() always re-arms it
+> with schedule_delayed_work(dwork, 30 * HZ). Once efx_poll() has queued
+> it, the work is therefore always pending, queued or running. It is
+> only cancelled in efx_remove_filters(), which is not called on the ring
+> resize path.
+...
+> Fix this in both drivers by calling cancel_delayed_work_sync() on
+> filter_work before freeing an unused channel. The work does not take
+> the RTNL. It only trylocks efx->rps_mutex, and the filter table locks
+> it takes are never held while waiting for the RTNL, so waiting for it
+> under the RTNL cannot deadlock. On the copy failure and rollback paths,
+> the freed channels are new copies whose filter_work was never queued,
+> so the cancel does nothing there.
+> 
+> Signed-off-by: Sicong Huang <congei42@163.com>
 
+The analysis looks correct, but I wonder if rather than placing the
+ cancel_delayed_work_sync() inline in efx_realloc_channels(), it should
+ be done by efx_remove_channel() (or rolled up with the kfree() into a
+ new efx_free_channel(), since it's undoing efx_alloc_channel() rather
+ than efx_probe_channel()), to reduce the risk of the same race popping
+ up elsewhere.  Consumers of the channels API should not need to know
+ that they have to do this 'magic' cancel to safely free a channel,
+ that's a layering violation.
 
-On Thu, Oct 22, 2026, at 9:10 AM, Michael Lowman via B4 Relay wrote:
-> From: Michael Lowman <michael.d.lowman@gmail.com>
->
-> Commit 7702378ac4d4 ("SUNRPC: Convert svcauth_gss_wrap_integ() to
-> use xdr_stream()") and its parent changed from calculating the
-> integrity checksum in-place in an unused part of the response buffer
-> to calculating in a scratch buffer and appending it to the response
-> stream. While the unused part of the response buffer happened to
-> always end on the first page, the append always occurs on the last.
->
-> If less than 32 bytes remain before the page boundary, some or all
-> of the checksum will be written to the next page. But since the xdr
-> functions do not update the response's page accounting, the page
-> will be immediately available for reuse. Data from another request
-> will overwrite the portion of the checksum on the new page.
->
-> Avoid this by marking the page as used when needed.
->
-> Signed-off-by: Michael Lowman <michael.d.lowman@gmail.com>
-> Fixes: 7702378ac4d4 ("SUNRPC: Convert svcauth_gss_wrap_integ() to use 
-> xdr_stream()")
+(Actually, it's a layering violation that filter_work even lives in the
+ efx_channel and not its efx_rx_queue, but I never had time to fix that
+ and am now not likely to — I commend the idea to future maintainers.)
 
-Commit d1eafc3bab9f "SUNRPC: in svcauth_gss_wrap_integ() resync
-rq_next_page after the GSS wrap", now in the nfsd-testing branch,
-already addresses this issue. Thanks for confirming the finding!
-
-
--- 
-Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
+-ed
