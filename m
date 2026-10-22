@@ -1,60 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.7
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792665822;
-	b=AME7gpsnGJtAMAyL1R0r1YpXOvP37lDEhk1xkl+p+3lDmbXr3p4CzRSoi5kR8+9VMm+9
-	 ai+AohdCHSpMQsPQwZxkeDPFHgduytTvpbCCiklXFPFuSoyDFGq7K32omkSw3Q24uEOgw
-	 Kb5OWbycZh3VUm1iCouUOMmgqIgn+glQwjdPuxHEDv+ZQrRbb4k/yQ+jQWQu0KeENPT5V
-	 PX7jZacQZY0TtHg5MNQRA/6XcW0tIZjq+aajOTOZ4vVaaiEBXGsujXYO7StIwqL/8k1vE
-	 L2o6MaD23oYrB/24OpHMFRcVnYGrA699co1TUhNHLy2hGwSWhA827m0aR6dO5Xq0p7Q==
+	t=1792666041;
+	b=WQJ0APATiX6nleashNo+v/a3GE4IHswLAu9D5PvyiHiWPF/YhHDDStC6pUyRHnkZHofW
+	 9xWQJdtBadCK4h1AX3CE+zqUst2QycJe1fwH+DAN/HWyBeP8j1FDz9D9w3JGFyCD6TBM6
+	 Ps/wBVXzceba5Gi6Ibynh3fQTdy+ZUMG5FgWLio8nUDd4NdpVbS+uk9VPD0RbBcvNyDkG
+	 O5kyvoIY+b3WF7hgIFh3UVeWpnTzsuIw9d+HHeuFAgZ7jSS0unZ6VwKo7mHGxLYTMsBwH
+	 CG6w4/eBI7OF92tREMp5gz0vWQ5MuBE3kvzwvDzwWv2vCIEdjkvZ4gxjB5PTaxFsBbw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792665822;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=3/p5mS2UtaKK8ga0geIIBPHy7+y2uNkLHYXs3L170Jw=;
-	b=EV76sOhTxcAOhQBScZRtbXrqOss7f+RdGF+Tl/rmHggIzGK4EObbjxl8KQMIPu1OF1ib
-	 Ew53SIE3S7yh8TWIogrSLk29m8oeAVr4LqVMBfBMTnPTUPk8c686Us7EIzrpD0CC7k7aI
-	 VFLJlkrJUlj/lRF7UEul1OPgpdaL9OvvjqamcNb3x0w+59NEmmjYOAPbqYdMIOZywoGuI
-	 R0jo8pt2dToIrBH4sXkXmsAIDg4Ky1WFvZRYe3hYf0qCRC9kTQaegHqexkfihbL/BluPO
-	 h1cokfLCBf/Xs4Al+Sbrjuf+UXmBOYt/Tpyf8fgTUq7ocIR6WNCWW6B5DZI+htU/12Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792666041;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	b=DbQBlTu+57OoY+5wJbIdCiFCnmP6urNtPyXAL05TVnnzcFVHX7mT6mjkTqqR3nwAL7YZ
+	 /OaXat5nh92+14hfJtc9hTwGiO5jIT/QAEiI6XCg+naOnVrXITG785ke4I0WaQQp7MKQp
+	 tcxJ7ClU3z6XdJKzdNNS4+YR20rlNp2ZNz9E0bcLFL2YvUre/9OiJUAbswprwtD5zBE3r
+	 CdhGqqVehAsZNZ1h0fLBvwQ5jNyhtlqsBWMhsWRmllmaRiLDd1fRD/iYi6a5BVfnBQir7
+	 sz+YzLWy2XQ5woYlDK7lZkunhtcAOhKpPG6OMcrgmUTTPQwFnZUjqKdgXbs7QnruAdQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=126.com;
-	spf=pass smtp.mailfrom=126.com;
-	dkim=pass header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=bLk+kYhO;
-	arc=none smtp.remote-ip=117.135.210.7
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.7])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SFZbHdfv;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27753606A31F
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:43:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 27753606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6E5606A319
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=bLk+kYhO
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=3/
-	p5mS2UtaKK8ga0geIIBPHy7+y2uNkLHYXs3L170Jw=; b=bLk+kYhO6egvewS0L5
-	iwBmlDrSTfYDdcD+kcPESb9RoW102sovYjafjzIs6pXQP6OOD1RgWAR/XUEzOBhS
-	SY9HCqwikGkDUXbQ2Bjuy+HTMnh6jBj5Os2TzQWuhwLi/qUYZu38/1A6/9yo2euz
-	PfzdN1elJ8IExFm1m1hhAU09c=
-Received: from pbo.. (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wDXv8O76NlqORPxBg--.38234S2;
-	Thu, 22 Oct 2026 18:43:08 +0800 (CST)
-From: Zizhen Liu <pointerliu@126.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	Zizhen Liu <pointerliu@126.com>,
-	stable@kernel.org
-Subject: [PATCH v2 net] net: skbuff: propagate shared-frag marker in skb_zerocopy()
-Date: Thu, 22 Oct 2026 18:42:17 +0800
-Message-Id: <20261022104217.1852191-1-pointerliu@126.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SFZbHdfv
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE091F000C3;
+	Thu, 22 Oct 2026 10:47:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792666040;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=SFZbHdfvgigGQnNn+tj4kZJenUQAHnAnHWSBvNzSU1D/+ZG3qTRM6N8vP1SlpsGkm
+	 xTaf4xFvOi5vF0tBY6Ozrf1OWqEpma8oJP4jg7u23tnUBHibUvE4vXJUT9kAy3AP4o
+	 S30ICcwJSpqyYQshZMrOYhniiieEtjt3nVXOASYDsxegkPTwfoLgl++q/2MC0dutF4
+	 ZcJEza9ZN3wLkwBpfw1eJwU4E+NwthFO8S71zxEI88dsalqfrzSrFhtA09f27sUjVg
+	 I0UW3h6vLMzvD7s07i0ELHuO1MeXSbeJBHaeAJt/Jr4G6yKrxmPvgOxBNUYMgQLuCi
+	 dJ5PkhMpMYm5g==
+From: netdev-bot+sinfo@kernel.org
+To: Zizhen Liu <pointerliu@126.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, stable@kernel.org
+Subject: Re: [PATCH v2 net] net: skbuff: propagate shared-frag marker in
+ skb_zerocopy()
+Date: Thu, 22 Oct 2026 10:47:19 +0000
+Message-ID: <179266603967.3290.10967918397860377995@kernel.org>
+In-Reply-To: <20261022104217.1852191-1-pointerliu@126.com>
+References: <20261022104217.1852191-1-pointerliu@126.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,56 +62,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDXv8O76NlqORPxBg--.38234S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7tr48tFW3KryftF4DtF48tFb_yoW8Ar18pr
-	s5KryUKrsrKr929rykJw4Igr1YyFs8JF4Y9FWFv3WrZ39IgrW0gr1xCr45ZFWUCrW2krW0
-	qF4jvryDur98WaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jOTmfUUUUU=
-X-CM-SenderInfo: hsrl035huox3a6rslhhfrp/xtbBqxx6AmrZ6Ly00AAA3M
 
-skb_zerocopy() moves frag descriptors from @from into @to and takes a
-reference on each frag, but it does not copy skb_shinfo(from)->flags into
-skb_shinfo(to)->flags.  A destination skb holding the same page-cache
-backed frags as the source therefore reports skb_has_shared_frag() as
-false.
+Hi!
 
-That breaks the invariant relied on by later in-place writers.  ESP input
-checks skb_has_shared_frag() before deciding whether an uncloned
-nonlinear skb can skip skb_cow_data(); with the marker lost, an skb that
-skb_zerocopy() built for nfnetlink_queue or for an openvswitch upcall is
-decrypted in place, letting an unprivileged user write into the page
-cache of a root-owned read-only file.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Propagate SKBFL_SHARED_FRAG when frag descriptors are copied, as done for
-the other frag-transfer helpers.
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-Fixes: af2806f8f90a ("net: Export skb_zerocopy() to zerocopy from one skb to another")
-Fixes: f4c50a4034e6 ("xfrm: esp: avoid in-place decrypt on shared skb frags")
-Cc: stable@kernel.org
-Signed-off-by: Zizhen Liu <pointerliu@126.com>
----
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
-v2:
- - correct the first Fixes tag to af2806f8f90a, which introduced
-   skb_zerocopy(); the function did not exist when cef401de7be8 was merged.
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
- net/core/skbuff.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 41beaf625..2bfabde31 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -3942,6 +3942,8 @@ skb_zerocopy(struct sk_buff *to, struct sk_buff *from, int len, int hlen)
- 	}
- 	skb_shinfo(to)->nr_frags = j;
- 
-+	skb_shinfo(to)->flags |= skb_shinfo(from)->flags & SKBFL_SHARED_FRAG;
-+
- 	if (i > 0 && from->unreadable)
- 		to->unreadable = 1;
- 
--- 
-2.43.0
-
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
