@@ -1,99 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.177
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792688552;
-	b=BeRNl/WjTsoObXBWnIk1p3mwB6WqZc3BG5R9fKKfQDoO4GfU/v4E7Ahhqe7uS7ihKzUk
-	 L17pETg1PUAJdUYrLcLimluuEIEkPxKA0hREbIBgDVn1904QORowwKujd4xlvLdHUbdiL
-	 ldzKSouP/EI7ddaM4KVOnvDUoHlT2RCmmD08De8Y3dQS5e4GTR42ulc9QtutP+I9+dsZo
-	 vOKtL3UCbV1b8V0lJmTTpcL0pSWyNTT+F1F5GSmvH/B84Y0lvDFbJBkCe+HC9MS8o/LYH
-	 73PwW9J4ejiOK8kMZHpPGCAXqEQeFNZekC4mQ22y7n2hefYhyOzMe+4+2wAo+zuf65w==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792688552;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=kSWxRjaE/IbCSPMaNuU9AixW3+O1lzhb2zsYAgN97Mw=;
-	b=sK+wrzoCgJVmsoZ0wrPQTyEV/gdorOMxwjUzhDEO5o4DCS8wA27zE0Oqzh7w09Eu5Fjc
-	 ZSwrzG6XyRbZ/s4OkUCXmLvmCRPkTz4IEPdMJWnE/+ZpzuDLjv6dPggyLcL8BRZJe8GdO
-	 /8ZsjQRxxqFb3L2B+oR6rSOcIs7GxtFFeK50i8qEGgAphFwVVa3C5AXltpyKgvWTNk0hB
-	 Vx+M72gXKzUtU02PWiXTPX8veJVPUyLHUW2FNukAlBepMoFKNH9F2YEwa3eu/aouZoZxn
-	 MRv1SnwNGHmuBI+su8Z5nHCX6Ld61LUJVWOH1GheCne/Emo3ZpzvqNviJoLL+EQ6GEg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=bL2KxbVP;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.177
-Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.100
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792688635;
+	b=2PtZdFEP9YVN8UROc7ZB98XFaGM593AxBQc01Gpb4S/fKdD8bw3f5lvkCYbRrDUAhWS0
+	 CNs4/UoHn5tSW+PISbZOvLpPgNzCWcVN2fwgJt/LClfLRoFUVV3AS9yWVbk/ginux7H0q
+	 KstnDd7lT2bRNS/wnrvkTcD0Q2MTvod/CoSa5uiait026AUtthlxBiGRlGxSUOIMgQXCS
+	 pBLLkTJytxAlxcMZuC2YYmUdRfTVT6CgZ/Ac7iHBhAeb/HFkTBZene1TM/OQJ2AEDSEYT
+	 8hAf15+EeJ/GJgkYj8XMmWBC2bnzqKbVSlFBYUAFxkpdhXvFzO+4s2yH5hGkfdzf0dA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792688635;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
+	 X-Gm-Gg:X-Received:Received:X-Relaying-Domain:X-CFilter-Loop:Received:
+	 DKIM-Signature:X-Received:X-Received:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:Autocrypt:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-DetectorID-Processed;
+	bh=KhrZm0zHiTnRcguhPzPRKqxL4jUA63f4qsM2/mVl/S4=;
+	b=cV3WAwtDr569jDxGnxxBRXrKRU7+IklN/JP5Vuv3OlzKKjkrVj/Skqlz3Zk1rwnZJ6aY
+	 nuPrnndBZq6Rq+vGbBTxqg/tKYKwh7e28sFKENK5iygDRArQjIDlqj2ZttbMUx1pSKFQ+
+	 PKGM9T5tHTIw+gHWwzC3YGxJPkZSrMD0aE5Ch49KKRQ/iF6LCt91oWuMSCf7mmT9CjzwF
+	 lLw4KZPUnzEjKeB9iaNcxfNS/9nfDD4jJSMPOT2n4yIE5bKgatCr5Pot4B8iejuLkv2np
+	 1hhNmXio2Yh0RT1hVmwP6wARop/uWfJh5D1kth8Pdm60WKj/M5O16N1FkWziYCE8IrA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=broadcom.com;
+	spf=fail smtp.mailfrom=broadcom.com;
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=HrM8gcJy;
+	arc=none smtp.remote-ip=74.125.224.100
+Received: from mail-yx1-f100.google.com (mail-yx1-f100.google.com [74.125.224.100])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C02606A31D
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:02:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C2C02606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D9D606A319
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:03:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C0D9D606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=bL2KxbVP
-Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-5eadef147ffso69417e0c.3
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:02:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792688551; cv=none;
-        d=google.com; s=arc-20260327;
-        b=WnzWZZfs0frurxab/Ng6RaSIhgb2JjggbenxPGRfpz6RqcK6E3fgWfVYA+b0PCP70X
-         rZPf3KHuCjeCmiha9mQhwvqW+oua0k/s5xbYZLr/os2+yH5EP3ZCzM1zDxRjUE/I1JGc
-         bdq/09+nFSEcBZWZHtXPSW3oJBQQ3tFDt8WMXu3l2fLjosLwL//vJZ3QT+4FjK3c8VBd
-         mzJasj52KO5sWsPEB7sWhaS+KlmL+pwx29F80SqTN/s7vteEANkm4XNIYKkNgDJvZvzU
-         7UXr2Y7QhkUJse8+thySxwBn26EHfnsWfIEz0dNp9bcWwo8OQ+lwqOeB18eaTSr/Hwpk
-         1RdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=kSWxRjaE/IbCSPMaNuU9AixW3+O1lzhb2zsYAgN97Mw=;
-        fh=v1NJo0Lx3PYS1ubKaXxDf2CWWLRUwCataFnKJZozLS8=;
-        b=VwSMSR0BTeKqWaYjQSPkJRS76rGVfWCCi8Qrj6gJNEhno08rmWYF04tYtlACusOiRB
-         1CC9/BdB6xxwKhJNU9i1TqksFM15jkFjn6VBmbdt4YDcWj3HXAQOGYUl8igLypF3Wppr
-         ukUe3V+i8DCyJjM0GEj+o/+jb6KvI+3DCxZfyCWHXHqrMBzOPkn6J+r/0viN28Hg802B
-         4Klmu+WZ3wbODiFwozlBQD7dn66cnvlmJW+VgsuGgTkgvPD8g5r0Du76xCH6BHbpKwxk
-         zUaleI0dsZrdRt/yQyXN6o4x/QbfvoOP2RObeVGfgAV5cu5PIw/uDNgq6oGeEAh3cF2Z
-         AbKw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792688551; x=1793293351; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kSWxRjaE/IbCSPMaNuU9AixW3+O1lzhb2zsYAgN97Mw=;
-        b=bL2KxbVP9vJXHCaLh07m4xx/lCLFALTPsNyJ2XYD8QvTEBVm+8P8ssFZj3w0RKWQE8
-         gxTxQ6OqJYdkrO8jB9C0p3oyjqyWGfFuV0I8D4EG3DxE+e/9MbTWn5JvjowPqYMzlyBG
-         J3QmLYIwFbmohWkRIEX1dVxFy0RJlgXctETERcOfbImA2sz1EpNjy6plK+tLpjm1+2D/
-         d3NK9es0sgtr/2QleNIMSh2s0AaL53i6Z0ARxkxKOfl8VmNOBqwteUDGzls8INyddhHv
-         d0aMT0xVBKLoidLyyzmufwhIkIZBo1MezEgYkxHxy0fEYuppLbB/qM4AMy/iP8u14ClB
-         qyhg==
+	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=HrM8gcJy
+Received: by mail-yx1-f100.google.com with SMTP id 956f58d0204a3-67a2bd0c297so92439d50.2
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:03:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792688551; x=1793293351;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=kSWxRjaE/IbCSPMaNuU9AixW3+O1lzhb2zsYAgN97Mw=;
-        b=2MS6aYbiiQst6E2+vm/W30GMgSD9I0581ADWlb513MInYbqYRB/rjlcvd19w2NAcQ1
-         1dSJgrnuSui46Pf1U/SR/AmvvpWRePls19osFzfbJ/+SUWzRb4uQANqVtZUiXfm+0t1i
-         1JoA+xbw98Uy5RlEN4+TyoanGzNYjpu1CubWdBERoNH3493XVjqNEb4ExKSfVdJ2yX73
-         EpAvVJgfAecPniAnAbhusSDKTdMJQCdyFdqJDOQ+1lH4cJyjautXnr/JnyLINYpPc9+n
-         ljV4JMQ/eOuwMBAaU1lvHAzhHeryKQdE5QXgpj9hPcFKFhp56whz/Of+PrI3+Nhm4tgM
-         rgpA==
-X-Forwarded-Encrypted: i=1; AKwUvBxpBtiAPTmkEcqLrB1pKpKwOHOrVUfGr90AEU7GIs3WE/Xbe2UxEG/W01Ef0J+u5RVMrjst2Y8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLktEk7eZXHl1IhtdbDobloTakfqjQ74/hEwEV8jN0aXyWtlh5u
-	E1iQvYxPkGennWc1W9rrKgR2LFxk+6lUoVzpc1WLQxrqOKExHVlO/AeOuRCELfpYQkNW3WPWayO
-	Vr1vuHM+lGOuow83g03Qv/lDj6ET/Lk8=
-X-Gm-Gg: AYBFou35Hv3saqJW9pbO9fQIesZLYY+NHZqCvBxHPoU7vy+vCtnDmGZVsTW9Csa/LZr
-	5MqWlJrc2QJjkwxLnxRtSRp2vpWiFrpeuOviO246oMAYo9cMuVaR/O4oV2xtxXJDJHruH79aqE/
-	76zR6oOvJQwx0ZyL0rWsockYrY6nQkuK1dqXC1mUJVszhJSkQ+yPJEd1P8qToM29FjIaIuuTg4B
-	9/t7u2kMSHBTP9yEKn4U68cX4T0EwsUezlwtqU7Cz4ak3neohhJas7s6VIKmdmCQQEup7m7u2lm
-	dBP0hgazip63oV4gZzfb823bfE9lQNJHicnWTCItIAsUZd7FA5YFm7UXz9rOy7Z7jzVYkNsVLTE
-	JosDfp4cc4V+cY95210HG59wDTyt2ARLLoWvkdQRaZRNCd6rsBFFH3Iu4CR8aowCOSQs9Cw==
-X-Received: by 2002:a05:6122:1b8e:b0:5ea:9a2c:27a8 with SMTP id
- 71dfb90a1353d-5eaebe4278cmr2430756e0c.14.1792688550608; Thu, 22 Oct 2026
- 10:02:30 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792688634; x=1793293434;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=KhrZm0zHiTnRcguhPzPRKqxL4jUA63f4qsM2/mVl/S4=;
+        b=NjKGxhCYmYj5REIIuAUNtKIHf/EY17wfS7iRsZyi9p+vlhu+vxb1pw0LjJb68OcNws
+         aKjXsOJYTYlFXpqXRU1NIebvXwvwqI46kVKY+tKc2p8Nb+Bpis6SwPd8/+PxNCYaTMZ/
+         Q2moshL48Lcdrbwl0A1vo/+tSm4FcmSEMuDRwxI00XPuRTGB0F007wAgqcpgv4E1FRub
+         8lnt9C2VbHcGss2vwwWOs5jlMoBWtKm48vNuL2woGlxocZgqcLSVH5wOUZ8+alWS7SZ8
+         BCPnqQypONotEp87AnpKsDQxLxLTdPIbgiIT1JcNKnpt4fjbbs8IN4HltXS7irAUI6oI
+         j+pg==
+X-Gm-Message-State: AFq9FYJxVjEh8LmmqBNxTvKlyw815xLx4hBKuHhoskcYvvQ9NielmUmp
+	PqS8vloHO6S3wNLW39jX1TtPXrDH9eHP6q6jOOyE7xBsSpEGzlUMxZG717wX/qiJfMi1JnAZ1IX
+	MU0Ycx13V1G5Ac0jjklNzz7LvfATy4miFGUumoKSpLXIuTSkQD8h01qBlV69+vI/2cJtya2eEsh
+	t3VCabuYVFl82Jdbqh/onlMPNQT+VtPNW07q/eJNbnYcqKXaeoTZStZMgpVleRKrCnnoxPnXB1r
+	8/YpVNl07WRiyeD
+X-Gm-Gg: AYBFou1xJUUL9mxXeaUS+Y65pcwNbntLFCzoPE7ANDV2Ses71AsbOkQcPaZycmoUYPc
+	hrUvf7ga0yFVWlJR7uRhLn+HyPHGKgTAEd4YkDuy9nNnkFepJyL971mm2zhSYIppMAU1WIVbHdk
+	2OmSeecrbmmA5uyjxMlNL1LgHuVPpgrk8mI+OVDV5LyBxY0DWEzu3MS0tx2jZJfT5KgHu86F/2J
+	aUH3ch8gVNQL/IrJzjV+89qz2HgRtA6HBINaBfuURdhuKBHMf2O1foboABbFy3BqI5IZMBWkKOg
+	JU+eFMMAutPiJL7VWUoK051MgFABD4xSBPwibaWFIaSXOvYiuI7aLxjiQVJfBnH0P/e5S5MMC3J
+	/YctrIVANckkEo6upVBaXkYWK7ponPYBTRZD9vOWWh06W5MTeTDj+Kb3XeWfhWg5hmn9QY+gxDL
+	IodhrRPbFtfILBSn9legT7LXEXP4KwblCb8pOdPXJj9DI=
+X-Received: by 2002:a05:690e:251a:20b0:679:c12b:ec0c with SMTP id 956f58d0204a3-67a0e4bf57cmr2458112d50.53.1792688633665;
+        Thu, 22 Oct 2026 10:03:53 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-120.dlp.protect.broadcom.com. [144.49.247.120])
+        by smtp-relay.gmail.com with ESMTPS id 6a1803df08f44-91c3710c63bsm23546d6.46.2026.10.22.10.03.53
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 22 Oct 2026 10:03:53 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-91b92acedd9so2366586d6.2
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:03:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1792688633; x=1793293433; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KhrZm0zHiTnRcguhPzPRKqxL4jUA63f4qsM2/mVl/S4=;
+        b=HrM8gcJyT7vAHXqDlemgwwECPHHqP+7XJI81eltLuirjuMXOloxcnbkepr6O5eRMcI
+         J9e4op2XZ/7lX0I5UsVs0OmNC5opt8zbSLLzP6CC9J/izDLKBdqjrDdCyqf4TwZgsx8A
+         lXhwLcufI112y37+vME2+4hjNFmyBp3hTb8ag=
+X-Received: by 2002:a05:6214:19e1:b0:91b:efa3:a608 with SMTP id 6a1803df08f44-91c12f0db8fmr97404396d6.44.1792688632794;
+        Thu, 22 Oct 2026 10:03:52 -0700 (PDT)
+X-Received: by 2002:a05:6214:19e1:b0:91b:efa3:a608 with SMTP id 6a1803df08f44-91c12f0db8fmr97403596d6.44.1792688632108;
+        Thu, 22 Oct 2026 10:03:52 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c3705e80dsm1945456d6.23.2026.10.22.10.03.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 22 Oct 2026 10:03:51 -0700 (PDT)
+Message-ID: <2580c2fb-0ffe-4867-83c7-368643854dff@broadcom.com>
+Date: Thu, 22 Oct 2026 10:03:48 -0700
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,169 +103,68 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <6aa9c7f8.a211d2ce.1a5198.02b5.GAE@google.com> <6ada3d82.d1c214cc.659fa.00db.GAE@google.com>
-In-Reply-To: <6ada3d82.d1c214cc.659fa.00db.GAE@google.com>
-From: mixalhs <mike.michalo@gmail.com>
-Date: Thu, 22 Oct 2026 19:02:18 +0200
-X-Gm-Features: AclHuK8O7NwRbWIfFzmBEJxz6JrwfkQQtk4I4dUTZ1jjiRYQl1sxYC0LmHe1Uj0
-Message-ID: <CAO+rqLgLRszT2U_x49hYVULuJ6Lm-80EdokzQUyNO_mECKEvKA@mail.gmail.com>
-Subject: Re: [syzbot] [netfilter?] WARNING in nf_flow_table_extend_ct_timeout
-To: syzbot <syzbot+521f7e7e2b974abde99a@syzkaller.appspotmail.com>
-Cc: coreteam@netfilter.org, davem@davemloft.net, edumazet@google.com, 
-	edumazet@kernel.org, fw@strlen.de, horms@kernel.org, kuba@kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	netfilter-devel@vger.kernel.org, pabeni@redhat.com, pablo@netfilter.org, 
-	phil@nwl.cc, stable@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: multipart/mixed; boundary="00000000000040a347065e70d4ec"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 1/2] net: ethernet: bgmac: preserve forced 2.5 Gbps
+ link speed
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, Jonas Gorski <jonas.gorski@gmail.com>,
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?=
+ <rafal@milecki.pl>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Russell King
+ <linux@armlinux.org.uk>, Jon Mason <jon.mason@broadcom.com>,
+ Arnd Bergmann <arnd@arndb.de>, open list <linux-kernel@vger.kernel.org>
+References: <20261021191035.751684-1-florian.fainelli@broadcom.com>
+ <20261021191035.751684-2-florian.fainelli@broadcom.com>
+ <20261022082908.5bc9f6d6@kernel.org>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
+ xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
+ M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
+ JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
+ PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
+ KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
+ AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
+ IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
+ ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
+ bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
+ Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
+ tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
+ TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
+ zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
+ WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
+ IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
+ U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
+ 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
+ pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
+ MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
+ IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
+ gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
+ obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
+ N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
+ CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
+ C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
+ wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
+ EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
+ fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
+ MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
+ 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
+ 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
+In-Reply-To: <20261022082908.5bc9f6d6@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
---00000000000040a347065e70d4ec
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 10/22/26 08:29, Jakub Kicinski wrote:
+> On Wed, 21 Oct 2026 12:10:34 -0700 Florian Fainelli wrote:
+>> Subject: [PATCH net 1/2] net: ethernet: bgmac: preserve forced 2.5 Gbps link speed
+> 
+> Does not apply & not correctly threaded
 
-#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git mai=
-n
-
-On Thu, Oct 22, 2026 at 6:44=E2=80=AFPM syzbot
-<syzbot+521f7e7e2b974abde99a@syzkaller.appspotmail.com> wrote:
->
-> syzbot has found a reproducer for the following issue on:
->
-> HEAD commit:    abeacca61eea Merge branch 'net-mlx5-hws-fix-modify-header=
--..
-> git tree:       net
-> console+strace: https://syzkaller.appspot.com/x/log.txt?x=3D111f4d0d58000=
-0
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=3Dc4b098695335c=
-89f
-> dashboard link: https://syzkaller.appspot.com/bug?extid=3D521f7e7e2b974ab=
-de99a
-> compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.=
-8
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D1491e029580=
-000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D157d410d58000=
-0
->
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/22930d0e9391/dis=
-k-abeacca6.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/d2e18d51f288/vmlinu=
-x-abeacca6.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/69879bb16225/b=
-zImage-abeacca6.xz
->
-> IMPORTANT: if you fix the issue, please add the following tag to the comm=
-it:
-> Reported-by: syzbot+521f7e7e2b974abde99a@syzkaller.appspotmail.com
->
-> ------------[ cut here ]------------
-> 1
-> WARNING: net/netfilter/nf_flow_table_core.c:553 at nf_flow_table_extend_c=
-t_timeout+0x1ee/0x2f0 net/netfilter/nf_flow_table_core.c:553, CPU#1: kworke=
-r/1:2/123
-> Modules linked in:
-> CPU: 1 UID: 0 PID: 123 Comm: kworker/1:2 Not tainted syzkaller #0 PREEMPT=
-(full)
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS G=
-oogle 10/07/2026
-> Workqueue: events_power_efficient nf_flow_offload_work_gc
-> RIP: 0010:nf_flow_table_extend_ct_timeout+0x1ee/0x2f0 net/netfilter/nf_fl=
-ow_table_core.c:553
-> Code: 00 00 00 41 83 ff 06 0f 84 9a 00 00 00 41 83 ff 05 0f 85 b0 00 00 0=
-0 e8 e0 10 a9 f7 41 bf 30 75 00 00 eb 0f e8 d3 10 a9 f7 90 <0f> 0b 90 41 bf=
- 01 00 00 00 48 c7 c0 80 f2 a0 8f 48 c1 e8 03 42 80
-> RSP: 0018:ffffc90002dcf930 EFLAGS: 00010293
-> RAX: ffffffff8a1effad RBX: ffff888027a52900 RCX: ffff88801ffa1f40
-> RDX: 0000000000000000 RSI: ffffffff912fa640 RDI: 000000000000002f
-> RBP: 0000000000000737 R08: ffff88801ffa1f40 R09: 0000000000000002
-> R10: 0000000000000011 R11: 0000000000000000 R12: dffffc0000000000
-> R13: 1ffff11004f4a538 R14: ffff888027a52948 R15: 000000000000002f
-> FS:  0000000000000000(0000) GS:ffff888123bbd000(0000) knlGS:0000000000000=
-000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 00007f926bd5bd3c CR3: 000000000fb48000 CR4: 00000000003526f0
-> Call Trace:
->  <TASK>
->  nf_flow_offload_gc_step+0x5aa/0x840 net/netfilter/nf_flow_table_core.c:5=
-93
->  nf_flow_table_iterate+0x13c/0x1f0 net/netfilter/nf_flow_table_core.c:459
->  nf_flow_table_gc_run net/netfilter/nf_flow_table_core.c:616 [inline]
->  nf_flow_offload_work_gc+0x22/0x70 net/netfilter/nf_flow_table_core.c:624
->  process_one_work kernel/workqueue.c:3396 [inline]
->  process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3479
->  worker_thread+0xa47/0xfb0 kernel/workqueue.c:3560
->  kthread+0x38b/0x480 kernel/kthread.c:436
->  ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
->  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
->  </TASK>
->
->
-> ---
-> If you want syzbot to run the reproducer, reply with:
-> #syz test: git://repo/address.git branch-or-commit-hash
-> If you attach or paste a git patch, syzbot will apply it before testing.
-
---00000000000040a347065e70d4ec
-Content-Type: application/octet-stream; 
-	name="0001-netfilter-flowtable-extend-ct-timeout-of-offloaded-G.patch"
-Content-Disposition: attachment; 
-	filename="0001-netfilter-flowtable-extend-ct-timeout-of-offloaded-G.patch"
-Content-Transfer-Encoding: base64
-Content-ID: <f_mvjsgn1g0>
-X-Attachment-Id: f_mvjsgn1g0
-
-RnJvbTogTWljaGFpbCBBbmRyZWFzIE1pY2hhbG9wb3Vsb3MgPG1pa2UubWljaGFsb0BnbWFpbC5j
-b20+ClN1YmplY3Q6IFtQQVRDSCBuZl0gbmV0ZmlsdGVyOiBmbG93dGFibGU6IGV4dGVuZCBjdCB0
-aW1lb3V0IG9mIG9mZmxvYWRlZCBHUkUgZmxvd3MKClNpbmNlIGNvbW1pdCAwMzQyOGNhNWNlZTkg
-KCJuZXRmaWx0ZXI6IGNvbm50cmFjazogcmV3b3JrIG9mZmxvYWQgbmZfY29ubgp0aW1lb3V0IGV4
-dGVuc2lvbiBsb2dpYyIpLCB0aGUgZmxvd3RhYmxlIGdjIHdvcmtlciBleHRlbmRzIHRoZSB0aW1l
-b3V0Cm9mIGFuIG9mZmxvYWRlZCBjb25udHJhY2sgZW50cnkgZnJvbSBuZl9mbG93X3RhYmxlX2V4
-dGVuZF9jdF90aW1lb3V0KCkKb25jZSBpdCBmYWxscyBiZWxvdyA1IG1pbnV0ZXMuIFRoYXQgZnVu
-Y3Rpb24gb25seSBrbm93cyBhYm91dCBUQ1AgYW5kClVEUCBhbmQgaGl0cyBXQVJOX09OX09OQ0Uo
-KSBmb3IgYW55IG90aGVyIGxheWVyIDQgcHJvdG9jb2wuIEhvd2V2ZXIsCkdSRSBmbG93cyBjYW4g
-YmUgb2ZmbG9hZGVkIHRvbywgYm90aCB2aWEgbmZ0X2Zsb3dfb2ZmbG9hZCBhbmQgYWN0X2N0LApz
-aW5jZSBjb21taXQgNGU4ZDk1ODRkMTU0ICgibmV0ZmlsdGVyOiBmbG93dGFibGU6IFN1cHBvcnQg
-R1JFIikuCgpUaGUgdGltZW91dCBvZiBhbiBvZmZsb2FkZWQgR1JFIGVudHJ5IGRyb3BzIGJlbG93
-IHRoYXQgdGhyZXNob2xkIGFzIHNvb24KYXMgYSBwYWNrZXQgb2YgdGhlIGZsb3cgc3RpbGwgZ29l
-cyB0aHJvdWdoIGNvbm50cmFjay4gV2l0aCBpcDZncmUKdHVubmVscyB1c2luZyB0aGUgZGVmYXVs
-dCBlbmNhcHN1bGF0aW9uIGxpbWl0IHRoaXMgaXMgb3JkaW5hcnkgdHJhZmZpYzoKdGhlIGZsb3d0
-YWJsZSBkb2VzIG5vdCBwYXJzZSB0aGUgRGVzdGluYXRpb24gT3B0aW9ucyBoZWFkZXIgaW4gZnJv
-bnQgb2YKR1JFLCBzbyBldmVyeSBwYWNrZXQgb2YgdGhlIGZsb3cgdGFrZXMgdGhlIGNsYXNzaWMg
-Zm9yd2FyZGluZyBwYXRoLiBJdAphbHNvIGhhcHBlbnMgZm9yIGEgcGFja2V0IHdpdGggdHRsIDw9
-IDEsIHdoaWNoIHRoZSBmbG93dGFibGUgZmFzdCBwYXRoCnBhc3NlcyB1cCB0byB0aGUgY2xhc3Np
-YyBmb3J3YXJkaW5nIHBhdGguIG5mX2Nvbm50cmFja19ncmVfcGFja2V0KCkgdGhlbgpyZWZyZXNo
-ZXMgY3QtPnRpbWVvdXQgdG8gdGhlIEdSRSBzdHJlYW0gdGltZW91dCAoMTgwIHNlY29uZHMgYnkg
-ZGVmYXVsdCksCmFuZCB0aGUgbmV4dCBnYyBydW4gdHJpZ2dlcnMsIGFzIHJlcG9ydGVkIGJ5IHN5
-emJvdDoKCiAgV0FSTklORzogbmV0L25ldGZpbHRlci9uZl9mbG93X3RhYmxlX2NvcmUuYzo1NTMg
-YXQgbmZfZmxvd190YWJsZV9leHRlbmRfY3RfdGltZW91dCsweDFlZS8weDJmMAogIFdvcmtxdWV1
-ZTogZXZlbnRzX3Bvd2VyX2VmZmljaWVudCBuZl9mbG93X29mZmxvYWRfd29ya19nYwogIENhbGwg
-VHJhY2U6CiAgIG5mX2Zsb3dfb2ZmbG9hZF9nY19zdGVwKzB4NTQ1LzB4N2IwCiAgIG5mX2Zsb3df
-dGFibGVfaXRlcmF0ZSsweDEzYy8weDFmMAogICBuZl9mbG93X29mZmxvYWRfd29ya19nYysweDIy
-LzB4NzAKICAgcHJvY2Vzc19zY2hlZHVsZWRfd29ya3MrMHhjM2QvMHgxNjMwCiAgIHdvcmtlcl90
-aHJlYWQrMHhhNDcvMHhmYjAKICAga3RocmVhZCsweDM4Yi8weDQ4MAoKQmVzaWRlcyB0aGUgc3Bs
-YXQsIHdoaWNoIHBhbmljcyB0aGUgbWFjaGluZSB3aXRoIHBhbmljX29uX3dhcm4sIHRoZQpkZWZh
-dWx0IGJyYW5jaCBzZXRzIHRoZSBuZXcgdGltZW91dCB0byAxIGppZmZ5LCBzbyB0aGUgY29ubnRy
-YWNrIGVudHJ5CmV4cGlyZXMgcmlnaHQgYXdheSBhbmQgdGhlIG9mZmxvYWRlZCBmbG93IGlzIHRv
-cm4gZG93bi4KCkhhbmRsZSBHUkUgbGlrZSBVRFAgYW5kIGV4dGVuZCB0aGUgdGltZW91dCB0byBO
-Rl9DVF9EQVkuIEdSRSBjb25udHJhY2sKaGFzIG5vIHByb3RvY29sIHN0YXRlIHRvIHRha2UgaW50
-byBhY2NvdW50LCBhbmQgTkZfQ1RfREFZIGlzIGFsc28gd2hhdApmbG93X29mZmxvYWRfYWRkKCkg
-YWxyZWFkeSBzZXRzIGZvciBldmVyeSBvZmZsb2FkZWQgZW50cnksIEdSRSBpbmNsdWRlZC4KVGhp
-cyBhbHNvIHJlc3RvcmVzIHRoZSBiZWhhdmlvdXIgZnJvbSBiZWZvcmUgY29tbWl0IDAzNDI4Y2E1
-Y2VlOSwgd2hlbgp0aGUgY29ubnRyYWNrIGdjIHdvcmtlciBleHRlbmRlZCBvZmZsb2FkZWQgZW50
-cmllcyBvZiBhbnkgcHJvdG9jb2wgdG8KTkZfQ1RfREFZLgoKRml4ZXM6IDAzNDI4Y2E1Y2VlOSAo
-Im5ldGZpbHRlcjogY29ubnRyYWNrOiByZXdvcmsgb2ZmbG9hZCBuZl9jb25uIHRpbWVvdXQgZXh0
-ZW5zaW9uIGxvZ2ljIikKUmVwb3J0ZWQtYnk6IHN5emJvdCs1MjFmN2U3ZTJiOTc0YWJkZTk5YUBz
-eXprYWxsZXIuYXBwc3BvdG1haWwuY29tCkNsb3NlczogaHR0cHM6Ly9zeXprYWxsZXIuYXBwc3Bv
-dC5jb20vYnVnP2V4dGlkPTUyMWY3ZTdlMmI5NzRhYmRlOTlhCkNjOiBzdGFibGVAdmdlci5rZXJu
-ZWwub3JnCkFzc2lzdGVkLWJ5OiBMTE0KU2lnbmVkLW9mZi1ieTogTWljaGFpbCBBbmRyZWFzIE1p
-Y2hhbG9wb3Vsb3MgPG1pa2UubWljaGFsb0BnbWFpbC5jb20+Ci0tLQogbmV0L25ldGZpbHRlci9u
-Zl9mbG93X3RhYmxlX2NvcmUuYyB8IDEgKwogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCsp
-CgpkaWZmIC0tZ2l0IGEvbmV0L25ldGZpbHRlci9uZl9mbG93X3RhYmxlX2NvcmUuYyBiL25ldC9u
-ZXRmaWx0ZXIvbmZfZmxvd190YWJsZV9jb3JlLmMKaW5kZXggMzZiYmM3YmUyZi4uOTQ1MDJjOTdi
-YSAxMDA2NDQKLS0tIGEvbmV0L25ldGZpbHRlci9uZl9mbG93X3RhYmxlX2NvcmUuYworKysgYi9u
-ZXQvbmV0ZmlsdGVyL25mX2Zsb3dfdGFibGVfY29yZS5jCkBAIC01NDQsNiArNTQ0LDcgQEAgc3Rh
-dGljIHZvaWQgbmZfZmxvd190YWJsZV9leHRlbmRfY3RfdGltZW91dChzdHJ1Y3QgbmZfY29ubiAq
-Y3QpCiAKIAkJc3dpdGNoIChsNHByb3RvKSB7CiAJCWNhc2UgSVBQUk9UT19VRFA6CisJCWNhc2Ug
-SVBQUk9UT19HUkU6CiAJCQluZXdfdGltZW91dCA9IE5GX0NUX0RBWTsKIAkJCWJyZWFrOwogCQlj
-YXNlIElQUFJPVE9fVENQOgotLSAKMi40My4wCg==
---00000000000040a347065e70d4ec--
+I believe it's another case of some emails not making it to netdev, I 
+will resubmit with patch #2 applying to net/main.
+-- 
+Florian
