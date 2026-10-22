@@ -1,49 +1,52 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792660207;
-	b=DXkBnxZbHns+Fp4NzZBpIYLwQ9dq8onuzkx202R5V+VkKS0G/9zstNjQ3rRLGGqQVcyT
-	 QgrjrPX9g0Dz/Lnf2ByQhKQ4wol70ZuSX6jHRv/fthvC7emxaH9XFOx8reY8AHXND2/QI
-	 3FP6hN/VsA3Q8xqeHVNfJmJEY6G6Ic4v/RmRNPWNjQPlvdNOcJCz3LQU7w7dDtOGKoeRM
-	 TctVmTJKneL9xmIAFqUU03bdiy2mcjVpjNxjsVZvCFQErMLoVeZXpuxgr42SopPr+4XFi
-	 P2AhozsSudyKsd4WlHqUAeqwtVMssAFUFXyRbEJ0gz8QRZ17dJyC5onEXjNdSKZI8Uw==
+	t=1792660371;
+	b=TzdhDLjS+fyVfTNBQtvVrLhQIbNE9seTWf0uxppIFuLxGpSDEL2azAJ8ZSL3cRjwPMdn
+	 dOgWD+aqTzJO/8kEhZWF/PqipWeVGcCodETbTzp2IlUMreu4O3jx8IH+Ci13QIj7QxQb7
+	 Q5pQYPPy9tVT16nCFyanCBljT9hGF9r9nfO3WiuZtB62DSIloe0Oek4Cid71q7HmpMV7+
+	 T/O4fEeg/9Qw4RwZseqapBSGKlKHGVwruwc704SI20Kd3H9zQI89fDi3+vbjwBiL1kyzs
+	 9FOHuODQfsn7+Td1XDZ8tPk6pVoZNUKkWinbLBPf7BBOMH7N/aDRigPBWjk4Rs/6vZA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792660207;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=pfjhQGxprB6OEE7+13kybOYl138N6Xpw872x1WZ4avA=;
-	b=mZEcpO6KamvuXF2Nkafp+hDWkM/Zs4DkhCmQgGi+5YbzUtHyA98xGAdgx0HXRc4YFVlb
-	 L8VfYClBBF0wmEX48QwVJRpkJpTW/NE/e7tsD1rCviUsVy6ngCgCnkbWp0qsU5L9JKFtC
-	 yhSTYhNv9BMSiXpKyRIRfcXiYPd4pNhQpV+0kGvDB3G+CaM6qCyscqc6I3x1lGE8WjcoA
-	 3K3YfVGUMxV+FLMJDRoV7jiqMOXe5BaCl8ozxmCMMc3XfGv/8w78yq+bOIoTlYk1P47+z
-	 fBSbh2z4nPzYSmtRHWWu6GcnVBw4DFeqM6OaaB7LRHDnDNus3OB2TVL3iGpT+czz6GA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792660371;
+	h=DMARC-Filter:Received:DKIM-Signature:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Last-TLS-Session-Version;
+	bh=QxIVZi956bm1gCgqK2NJrL5eCNIcMpvqgqerM8iP2DE=;
+	b=pQaz9UdzZBTvaIf8MsdZvvZPkJOw0fH5Mech82fdQiHkxA6J/dO+XnfprkNSX6tRZx2q
+	 z/uKoTj5sC+Ex270cMDqRDSaMkdwTOagrMM+8dSEat6XJ0uIqD5fpaNyvpZHoAjX4TsKF
+	 vBAzkAwAvcF0lNKRmYyGn1YzVF2/X+q8vXf5KbW/tSsDSVo70QsQhOtQETZKFKKY3L1dU
+	 QWlRrb291lRriOKy+BKSrO5yFGXgm77ttkBM93M0pO7jlARibVYlR14NSO2ATbZrqd9tk
+	 9LbWaTYCIYC7uzVebzuml0R0PYFZ4YJSwurtvxeo5IdpKQ1Tk4qvE4nF2FGFtmGiqkw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hgAuUTg5;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=tipi-net.de;
+	spf=pass smtp.mailfrom=tipi-net.de;
+	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=F0fS+8SR;
+	arc=none smtp.remote-ip=194.13.80.246
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FDA606A325;
-	Thu, 22 Oct 2026 09:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A29BA606A319;
+	Thu, 22 Oct 2026 09:12:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A29BA606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hgAuUTg5
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45BEE1F000C6;
-	Thu, 22 Oct 2026 09:10:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792660206;
-	bh=pfjhQGxprB6OEE7+13kybOYl138N6Xpw872x1WZ4avA=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=hgAuUTg5qk+4RgfNZeek2sT1nzMJQuk+QHlXgxWQ+l3QcAJ+xaT3DIz4gTe3hXYcJ
-	 FE+AV5OqpdwHlxrC8HYehvBZExca53cDcVUoFqiyDvIAGzCUCPMWRmGye92KWT7vEz
-	 yC/1sCz6NxiMDqtvNp5rBZr87vVhSQD4FeklbtN6dtg5LC8s210dWhqLLqZtTqgBgY
-	 JYjfYIpVIcxupWVS49dcXxEd8hdUjTNNe2siqk/A8UfGr9UjlQ62dFS7OJk6ZTJJQi
-	 S2pI7D7vAb1FAiaB41VG8U9tYi69lat1aiXNYs+ZGCOFQcifQ6UBmf1c2BJu/1Noqc
-	 SozgKJAQ29f9g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A206380A97D;
-	Thu, 22 Oct 2026 09:10:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=F0fS+8SR
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BE64BA0190;
+	Thu, 22 Oct 2026 11:12:45 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1792660367; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=QxIVZi956bm1gCgqK2NJrL5eCNIcMpvqgqerM8iP2DE=;
+	b=F0fS+8SR7/eyPrVn4eviPfx+XSgCvWKP/MqEzlXKqK2yW1/fN7G+H6Pa2rQzp0ouP1Nk+q
+	e3FhtUwhfzE7qwV/0bVT3fqvptQVC3GJQ/DdKksWQ0j1+ZNYhhMJ0jMnKQMUHYIyrZKXTw
+	4oGNRPxOuHXNfX3CBbhxqGGYeSpO8a8anmGr9eKYSgPsR+pGLyltVNaOOUWXRjRA8qqEJs
+	HzmMEssf6LgtkF/o1wT3GR2u8EjgIl3KGULH4aTF2ROkUpg86odwbD80ds7zYcSgHKb2n/
+	cBpGXETJe0A4dDvZpRfoS3eZ1FpT8Og0DDYaeq4lwH3blbHeQxj+Ujmj17zKvg==
+From: Nicolai Buchwitz <nb@tipi-net.de>
+Date: Thu, 22 Oct 2026 11:12:41 +0200
+Subject: [PATCH net v2] octeontx2-pf: fix skb use-after-free with ipsec
+ crypto offload
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,51 +56,108 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v4] tipc: fix broadcast sender hang on last acker
- departure
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179266020503.1559266.4916570736972457348.git-patchwork-notify@kernel.org>
-Date: Thu, 22 Oct 2026 09:10:05 +0000
-References: <20261019115859.3471295-1-bsdhenrymartin@gmail.com>
-In-Reply-To: <20261019115859.3471295-1-bsdhenrymartin@gmail.com>
-To: Henry Martin <bsdhenrymartin@gmail.com>
-Cc: jmaloy@redhat.com, tung.quang.nguyen@est.tech, davem@davemloft.net,
- kuba@kernel.org, edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org,
- ying.xue@windriver.com, netdev@vger.kernel.org,
- tipc-discussion@lists.sourceforge.net, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261022-nb-otx2-xfrm-unshare-net-v2-1-5590c9325bcd@tipi-net.de>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WOwQ6CMBBEf4Xs2TW0kmI9+R+GQwuLrImFtIVgC
+ P9uix/gcWbfzM4GgTxTgFuxgaeFA48uCXkqoB2MexJylzTIUipRCo3O4hhXiWvv3zi7MBhP6Ci
+ isnVltDLXThOk+OSp5/WofkACoPmZYbYvamMuzdjAIY7+cwxYxAH//7UIFEikrax6Taq+3CNPn
+ E/njqDZ9/0Lw/6QytkAAAA=
+X-Change-ID: 20261019-nb-otx2-xfrm-unshare-net-6b74a96a8d9e
+To: Sunil Goutham <sgoutham@marvell.com>, 
+ Geetha sowjanya <gakula@marvell.com>, 
+ Ratheesh Kannoth <rkannoth@marvell.com>, 
+ Subbaraya Sundeep <sbhatta@marvell.com>, 
+ Bharat Bhushan <bbhushan2@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Nicolai Buchwitz <nb@tipi-net.de>
+X-Mailer: b4 0.16.0
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hello:
+otx2_dma_map_skb_frag() calls skb_unshare() on its own copy of the skb
+pointer. For a cloned skb, for example with tcpdump running on the
+interface, this frees the skb and the new copy is lost on return. The
+transmit path then uses the freed skb and the copy leaks.
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Make the skb writable in place in otx2_sq_append_skb() instead, so the
+pointer stays valid. Also do this for skbs with shared frags, as the
+hardware writes the encrypted data back into them.
 
-On Mon, 19 Oct 2026 19:58:59 +0800 you wrote:
-> TIPC group broadcast senders are blocked while a replicast still has
-> outstanding member acks: tipc_group_bc_cong() returns true as long as
-> grp->bc_ackers is non-zero, and clears *grp->open, which is what
-> tipc_poll() uses to report EPOLLOUT (via tsk->group_is_open).
-> 
-> When the last outstanding acker departs before acking,
-> tipc_group_delete_member() decrements grp->bc_ackers to zero but
-> never restores *grp->open.  As a result poll(EPOLLOUT) never fires
-> again.  A writer blocked in sendmsg() is only released if some other
-> wakeup happens after the deletion: with TIPC_GROUP_MEMBER_EVTS the
-> leave event delivery calls sk_data_ready() and wakes it, but without
-> member events nothing does and it sleeps indefinitely, since the
-> default send timeout is MAX_SCHEDULE_TIMEOUT.
-> 
-> [...]
+Fixes: 195c3d463181 ("octeontx2-pf: map skb data as device writeable")
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+---
+This was flagged in the clashiko review of my skb_unshare() rename patch [1].
 
-Here is the summary with links:
-  - [net,v4] tipc: fix broadcast sender hang on last acker departure
-    https://git.kernel.org/netdev/net/c/f4377bf85887
+Compile-tested only, I have no octeontx2 hardware.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+[1] https://lore.kernel.org/all/20261015-nb-skb-unclone-full-v1-1-0dfbf01f60f2@tipi-net.de/
+---
+Changes in v2:
+- Also handle skbs with shared frags (Jakub)
+- Note: conflicts with "net: rename skb_unshare() to skb_unclone_full()"
+  in net-next, the resolution is to drop the skb_unclone_full() line
+- Link to v1: https://patch.msgid.link/20261019-nb-otx2-xfrm-unshare-net-v1-1-ee9b24f9e673@tipi-net.de
 
+To: Sunil Goutham <sgoutham@marvell.com>
+To: Geetha sowjanya <gakula@marvell.com>
+To: Ratheesh Kannoth <rkannoth@marvell.com>
+To: Subbaraya Sundeep <sbhatta@marvell.com>
+To: Bharat Bhushan <bbhushan2@marvell.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+To: "David S. Miller" <davem@davemloft.net>
+To: Eric Dumazet <edumazet@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+---
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c | 4 +---
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c   | 8 ++++++++
+ 2 files changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+index b11389a841d15..91ebf247f5f90 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+@@ -2121,10 +2121,8 @@ dma_addr_t otx2_dma_map_skb_frag(struct otx2_nic *pfvf,
+ 	int offset;
+ 
+ 	/* Crypto hardware need write permission for ipsec crypto offload */
+-	if (unlikely(xfrm_offload(skb))) {
++	if (unlikely(xfrm_offload(skb)))
+ 		dir = DMA_BIDIRECTIONAL;
+-		skb = skb_unshare(skb, GFP_ATOMIC);
+-	}
+ 
+ 	/* First segment is always skb->data */
+ 	if (!seg) {
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
+index 8d2d607bc92f9..b98842c7e40e0 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
+@@ -1205,6 +1205,14 @@ bool otx2_sq_append_skb(void *dev, struct netdev_queue *txq,
+ 	if (free_desc < otx2_get_sqe_count(pfvf, skb))
+ 		return false;
+ 
++	/* Crypto hardware need write permission for ipsec crypto offload */
++	if (unlikely(xfrm_offload(skb)) &&
++	    (skb_cloned(skb) || skb_has_shared_frag(skb)) &&
++	    skb_ensure_writable(skb, skb->len)) {
++		dev_kfree_skb_any(skb);
++		return true;
++	}
++
+ 	num_segs = skb_shinfo(skb)->nr_frags + 1;
+ 
+ 	/* If SKB doesn't fit in a single SQE, linearize it.
+
+---
+base-commit: 82e31923c0553fdbfcddcd910ca07952880ca9b9
+change-id: 20261019-nb-otx2-xfrm-unshare-net-6b74a96a8d9e
+
+Best regards,
+--  
+Nicolai Buchwitz <nb@tipi-net.de>
 
