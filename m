@@ -1,59 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=149.28.215.223
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=121.127.44.66
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792672930;
-	b=TAGFu3ToLg3gD6cUgdYDNsiayjmTXhMcJXxBkAwAdAKQhapj9jhsYebSDtGxGguzkEBZ
-	 7c9Ts1ZabKkzq6xRULR4LeMH5SRPqm3du70UIOlOma5c7Bd9bHnGkFQuT84zZBZEEefQF
-	 6uqFbdkbhoELwM7vVuj6wnL+E2AD6VTj8gym9f/LrYAnvcXvEk+nhaY9WJA1N/5mm/rmP
-	 8jLlLudWML83XqoTSiTg/6iC+ZBX+rHapFpbJw2a0Oki/QzH5kd7/rzju5KidqN62XOYi
-	 NMdfrYhmEtOLn91XnJI05VyQLsJH6gGHeUrJOq3VD6/M4XBK8s2xJ99iiiVYDcKi/rg==
+	t=1792672982;
+	b=3nXSSWKtiUgWfiMkBr2BB8Xv9FeC5wQfFkpK7HghLNqhqFG4bkt8r71jLyOY+AGjNBK3
+	 hlCzPI61F/9JUP39Jp0KlksvGe6w63P2qhR6WcWaeJtNG8jb41LvaHeGmwW4YwGia6bRN
+	 RJ1I4V5sOdjf4Pu6qs2HjVibgroGjS7YTal2cJOVSWbRF0evt3Jn4GrbemMN8k+cQ7vB9
+	 2Nsr2YCfauKFfyYe1salJPyssZNK+I/KQqDRuA+yRmFRnXPEQddOcWfTQwv7yGF6QNoXr
+	 wUyw3lQ6LRcpbIkF4Uf4b4lLdEbzAMdXjn8wIStC7rjqfU2mpn0RKpdJ66lSFeES4JQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792672930;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792672982;
 	h=DMARC-Filter:DKIM-Signature:X-Forward-Email-ID:
 	 X-Forward-Email-Sender:X-Forward-Email-Version:
 	 X-Forward-Email-Website:X-Complaints-To:X-Report-Abuse:
 	 X-Report-Abuse-To:Message-ID:Date:MIME-Version:User-Agent:Subject:To:
 	 Cc:References:Content-Language:From:Autocrypt:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=kUqgr6Ebn72/WlEz4GBlEk/lhIUVm9v26hY/9pAXckQ=;
-	b=X4G41mwn7YBRZEP/HIuckdqdKUVBeXSRSrHzIZ/Yob9Lhmi0uFRAAsmrmBZEiuPkEi3V
-	 mayg0z+pbBCGRPaG6kMk22p9ZEEc2U4VbQ0e7UtB0f1IG2GuxaSRL4B+t0szo9T8nPYKZ
-	 QoH12OBerACwPnuORSC1shrkszXucFMt8M3f06RP2S3A+G7Sptz6Qjil0TVTajmrDJJCo
-	 kE5Z92HVj5ox9QdWEtpZ8fAjzawVnxwO+i6Oda/5nroUrVAb7ef5ZFvIgdbl74OsrOuzu
-	 aAnVCt78c7/fK529Q47UkvhPPhCeN1hDjskaWktvdWUWsIu/Km3EjNc94Au3IbaprfQ==
+	bh=sm6x0zpAx8Au8KNOP/HOPnoM5JFyq1dL0hJTwYK1axI=;
+	b=bnBj19l3+Rqe8KhnC9iVcA9vZFn5OKpGfsP+4g4YOJNm2FQZ8rNfDFP6Fl6YJYCdJwpb
+	 SkWRO3WgfCn7HBF/HgEUWUOARWfyqgwkH09E2UQ9JowOs90Amimp9uEaE83TSw22nfQRE
+	 Bc5d8eb9MQvhK+u9NmKF1A/yPNWOFw/JNtETXlQeqWSWezpBngorCx8R3Y9aHXjb3hdm3
+	 KuEp30oDT6wCkYpsDyuA//RkKug35RErY5u9vcaR3ndA2/sZauoCqQQUGA95uYoxbQZdC
+	 w6pTmujbdKOd/mK1KdBtYy8R+08hN/vcC0DS3pBMbjBWh7nQk4upctXFDt/+cNRl2Dg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=ovn.org;
 	spf=pass smtp.mailfrom=fe-bounces.ovn.org;
-	dkim=pass header.d=ovn.org header.i=@ovn.org header.a=rsa-sha256 header.s=fe-13eddc7e57 header.b=V11bMTVB;
-	arc=none smtp.remote-ip=149.28.215.223
-Received: from smtp.forwardemail.net (smtp.forwardemail.net [149.28.215.223])
+	dkim=pass header.d=ovn.org header.i=@ovn.org header.a=rsa-sha256 header.s=fe-13eddc7e57 header.b=SEJ1n84s;
+	arc=none smtp.remote-ip=121.127.44.66
+Received: from smtp.forwardemail.net (smtp.forwardemail.net [121.127.44.66])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B854D606A31A
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 12:42:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B854D606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5998F606A319
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 12:43:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5998F606A319
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ovn.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.ovn.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=ovn.org header.i=@ovn.org header.a=rsa-sha256 header.s=fe-13eddc7e57 header.b=V11bMTVB
+	dkim=pass (1024-bit key, unprotected) header.d=ovn.org header.i=@ovn.org header.a=rsa-sha256 header.s=fe-13eddc7e57 header.b=SEJ1n84s
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ovn.org;
  h=Content-Transfer-Encoding: Content-Type: In-Reply-To: From: References:
  Cc: To: Subject: MIME-Version: Date: Message-ID; q=dns/txt;
- s=fe-13eddc7e57; t=1792672922;
- bh=kUqgr6Ebn72/WlEz4GBlEk/lhIUVm9v26hY/9pAXckQ=;
- b=V11bMTVBkaqmLWtYjxrW7lLQQa4j1kxIuhNXsWAr+qLwO1u2h7FbN8pqB94E0uS9Jd3u9DRGG
- 43/2A/2Z+o7Mt0n5Ax51kpRVXvu72L9dcdbPwk5AtjKIuvtcRQXfzRA7F9b7uXq+3KjHvpCKPvk
- kMQRkG5NixTlS1ELxLUL0z4=
-X-Forward-Email-ID: 6ada04971a70b93336fa8f72
+ s=fe-13eddc7e57; t=1792672980;
+ bh=sm6x0zpAx8Au8KNOP/HOPnoM5JFyq1dL0hJTwYK1axI=;
+ b=SEJ1n84s7qLE6umob7Vo+4/wqkUjy8UoIdljQxa8oBykZu5mRH2cLt/RbiN/q664N+ABgqBSY
+ F12Bt9go2AJzuH6KiDdPFfazXUhT4sCGsIeFZuOS6P82dGYg732UxGQqGE/mdTtli3p1SG3NZ54
+ GHkyK/D62HwMb/VQZGWW9q4=
+X-Forward-Email-ID: 6ada04d3f2b12bda233557f6
 X-Forward-Email-Sender: rfc822; i.maximets@ovn.org, smtp.forwardemail.net,
- 149.28.215.223
+ 121.127.44.66
 X-Forward-Email-Version: 2.18.9
 X-Forward-Email-Website: https://forwardemail.net
 X-Complaints-To: abuse@forwardemail.net
 X-Report-Abuse: abuse@forwardemail.net
 X-Report-Abuse-To: abuse@forwardemail.net
-Message-ID: <372c6019-2ee1-46ec-bf5f-ccbf9b4d8659@ovn.org>
-Date: Thu, 22 Oct 2026 14:41:54 +0200
+Message-ID: <0225eac7-1432-4d46-8649-2ad864aa26d4@ovn.org>
+Date: Thu, 22 Oct 2026 14:42:53 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,15 +64,16 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 4/5] net: openvswitch: ensure a linear inner Ethernet
- header on TEB pop
+Subject: Re: [PATCH net 5/5] net: openvswitch: ensure a linear inner Ethernet
+ header on NSH pop
 To: Jamal Hadi Salim <jhs@mojatatu.com>, netdev@vger.kernel.org
 Cc: Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>,
  Ilya Maximets <i.maximets@ovn.org>, "David S . Miller"
  <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Martin Varghese
- <martin.varghese@nokia.com>, Jiri Pirko <jiri@resnulli.us>,
+ Simon Horman <horms@kernel.org>, Eric Garver <e@erig.me>,
+ Yi Yang <yi.y.yang@intel.com>, Jiri Benc <jbenc@redhat.com>,
+ Pravin Shelar <pshelar@ovn.org>, Jiri Pirko <jiri@resnulli.us>,
  Victor Nogueira <victor@mojatatu.com>, dev@openvswitch.org,
  stable@vger.kernel.org
 References: <ACT-N6N4.v1.r0.20261022051412@mojatatu.com>
@@ -80,6 +81,7 @@ References: <ACT-N6N4.v1.r0.20261022051412@mojatatu.com>
  <ACT-N6N4.v1.r0.20261022051412-2@mojatatu.com>
  <ACT-N6N4.v1.r0.20261022051412-3@mojatatu.com>
  <ACT-N6N4.v1.r0.20261022051412-4@mojatatu.com>
+ <ACT-N6N4.v1.r0.20261022051412-5@mojatatu.com>
 Content-Language: en-US
 From: Ilya Maximets <i.maximets@ovn.org>
 Autocrypt: addr=i.maximets@ovn.org; keydata=
@@ -125,16 +127,16 @@ Autocrypt: addr=i.maximets@ovn.org; keydata=
  yWOKeCw9bCZX4a/uFw77TZMEq3upjeq21oi6NMTwvvWWMYuEKNi0340yZRrBdcDhbXkl9x/o
  skB2IbnvSB8iikbPng1ihCTXpA2yxioUQ96Akb+WEGopPWzlxTTK+T03G2ljOtspjZXKuywV
  Wu/eHyqHMyTu8UVcMRR44ki8wam0LMs+fH4dRxw5ck69AkV+JsYQVfI7tdOu7+r465LUfg==
-In-Reply-To: <ACT-N6N4.v1.r0.20261022051412-4@mojatatu.com>
+In-Reply-To: <ACT-N6N4.v1.r0.20261022051412-5@mojatatu.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 10/22/26 11:22 AM, Jamal Hadi Salim wrote:
 > The issue:
-> pop_mpls() restores MAC_PROTO_ETHERNET when the popped ethertype is
-> ETH_P_TEB, but skb_mpls_pop() only guarantees that the MPLS shim is in
-> the linear area.  When the inner Ethernet header sits in a page
-> fragment, the datapath now claims an Ethernet header it cannot access
+> pop_nsh() restores MAC_PROTO_ETHERNET when the popped NSH next-protocol
+> is TUN_P_ETHERNET, but nsh_pop() only guarantees that the NSH header is
+> in the linear area.  When the inner Ethernet header sits in a page
+> fragment, the datapath then claims an Ethernet header it cannot access
 > linearly.
 > 
 > Output to an OVS internal vport then calls eth_type_trans(), which
@@ -155,41 +157,46 @@ On 10/22/26 11:22 AM, Jamal Hadi Salim wrote:
 > Conditions to recreate the bug:
 > On a system with 4 KiB pages and CONFIG_OPENVSWITCH and CONFIG_PACKET
 > enabled, use CAP_NET_ADMIN to create an OVS datapath and bring its local
-> internal port up with MTU 9000.  Install a flow matching an Ethernet/MPLS
-> packet with one bottom-of-stack label and actions pop_eth,
-> pop_mpls(0x6558), output to the local port.  With CAP_NET_RAW, send a
-> 4128-byte AF_PACKET/SOCK_RAW frame containing outer Ethernet, the MPLS
-> label, inner Ethernet and 4096 payload bytes.  The two pops consume the
-> linear headers and expose the inner Ethernet header in page fragments.
+> internal port up with MTU 9000.  Install a flow matching an Ethernet/NSH
+> packet with a 24-byte MD1 header whose next-protocol is TUN_P_ETHERNET,
+> and actions pop_eth, pop_nsh, output to the local port.  With
+> CAP_NET_RAW, send a 4148-byte AF_PACKET/SOCK_RAW frame containing outer
+> Ethernet, the NSH header, inner Ethernet and 4096 payload bytes.  The
+> two pops consume the linear headers and expose the inner Ethernet header
+> in page fragments.
 > 
-> The Fix:
+> The fix:
 > Pull the inner Ethernet header into the linear area before restoring
-> MAC_PROTO_ETHERNET.
+> MAC_PROTO_ETHERNET.  This is the NSH counterpart of the MPLS/TEB
+> producer fix in the previous patch.
 > 
-> Fixes: f66b53fdbb22 ("openvswitch: New MPLS actions for layer 2 tunnelling")
+> Fixes: b2d0f5d5dc53 ("openvswitch: enable NSH support")
 > Link: https://lore.kernel.org/netdev/e85fa16e-df3c-43dd-bb3a-9edca07200ea@kernel.org/
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 > ---
->  net/openvswitch/actions.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+>  net/openvswitch/actions.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
 > 
 > diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
-> index 27152bca8a8c..03b31e33e880 100644
+> index 03b31e33e880..cb7e16c6a8ef 100644
 > --- a/net/openvswitch/actions.c
 > +++ b/net/openvswitch/actions.c
-> @@ -153,8 +153,11 @@ static int pop_mpls(struct sk_buff *skb, struct sw_flow_key *key,
->  	if (err)
+> @@ -314,10 +314,13 @@ static int pop_nsh(struct sk_buff *skb, struct sw_flow_key *key)
 >  		return err;
 >  
-> -	if (ethertype == htons(ETH_P_TEB))
-> +	if (ethertype == htons(ETH_P_TEB)) {
+>  	/* safe right before invalidate_flow_key */
+> -	if (skb->protocol == htons(ETH_P_TEB))
+> +	if (skb->protocol == htons(ETH_P_TEB)) {
 > +		if (!pskb_may_pull(skb, ETH_HLEN))
 > +			return -ENOMEM;
 >  		key->mac_proto = MAC_PROTO_ETHERNET;
+> -	else
+> +	} else {
+>  		key->mac_proto = MAC_PROTO_NONE;
 > +	}
->  
 >  	invalidate_flow_key(key);
 >  	return 0;
+>  }
 
 Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
