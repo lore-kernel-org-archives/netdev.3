@@ -1,56 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792653914;
-	b=x8EksNXHPvIu2m4whx0c5qkWKobP7RzQWWgtEj4JB41ByxTC5MkPQAOh3iySlFBUgC/g
-	 RTFOnVTKfrDI6ydklmliT3X8o0O8Wo7RtmZK7kH9wek+n/9mcJToN+2CWUNftQuMcAAvq
-	 6/8KN3KD+/tqy5f+WoyH+rYJx7lPj1NOqmAIDj+OCjvB8KI2K3oaIMq972YVNVKURUhbW
-	 Q57Pb47dgr0BpMqDUWG/zjD9JJRH6bQrx+yfTbYYtaeqR8eyIKVjBJvyDGPnUK9MdNjNg
-	 +bM+TlYLx9mosytGGtQwnyicWTjaS2XXIzVJXBrVawnRtRQ/R8Eq+CHM6FeMR97XSeA==
+	t=1792653915;
+	b=YKebJqPbLtxzK7NEIRnXWVD878ZCabM3fhGQUq6Fi28MZsOCIdqptum+NM7sKJN+EUIP
+	 Lmx2AYsvtP2m18IBuYKQYSpRjnLftZ5x0IPYsUaAjoTMtg90wILqFdEfg1MlPvsulEGVw
+	 MxOAfo8QYGaDKi3XUTXw9TrShAMdJh0rjDKEqkT3IkyPVnwoXxk8NI81KooDfptDWaWI1
+	 2etfFoxUJYilz8NSpJeelVklNwaMZbxTMYDihhjz27hl57U9/PG85Btvfakqeb3qofOdM
+	 scP+Eh0azHEFsHA1ZcOZm7fFvP6fqNiY3v6hrLonjn/5UNPSAIOlLi86E+3ArhbKvmw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792653914;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792653915;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=kY3rxeufBWnulhzLNXslToghbLfgKp38Kw8D+5p+OLA=;
-	b=x82Buc68AqXg1wM4CAm6MTlP5IB9wp9Z+1QrZ1P2ueCB1Eb/2OGo8IQ2N3EFoLaajLo8
-	 Yqm+n6jWetqBKCiKVh8hKN8HRPKL90eH2CQm0r8FRP38oyHhIfnBP9KYcsbUuk7yMx8ru
-	 x5O2hAzODJLt/7cbNa0E92Vy+6LddWdrBuuwHQSXeTK6tVoLou1Nk0YfJXZ7hFw8nneIw
-	 gSUWOET6FOu6ETkDO65ItDBKVLSnLOoadzk7e4eh/d6rU0Qx4ioWuKhSvwxSsK67nIZ2v
-	 hMn4Y1NoVkEW8hKS2fAdVEOgyMXbac7ucSrErs7yJqeZ4GoeZMAbe16eBpe6x9K+xsw==
+	bh=xLB6QY4d4CvT3WOgrmnQWFVCi+2+aEn7UHs0/QDERSI=;
+	b=w3kZvB5Kfvrwwgk2SI7nuDKZNMEsXg8TiYnIL43/ZS7WXTa3CFGsdSFgsRuPUo69InA3
+	 92mjdSuNrdMPLEG0GZxXC57ecyWFhloO4wkzH58cHeW8CErPnUV7rlIA3JRklPij7KETi
+	 AEHoHoWswBHhSklMF1O02F8EB0+ZKTmoVQ1/nVQfEHM2dJqpxxeemeavCANBno0e4ehQU
+	 2yTQzW8rFXjA4NoBSvyx/ohM9AZXFFrzDiQZThc3Klh9DROKkKRjerHw0rOv2O5CxaURK
+	 s7Z9ZPo3gfGFL5u6q0DGCDoXw1ar87Sgtw1hCe9Ue5a/Mke9zpdXAiE3uF2vpiciQNw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AG1lraI8;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FoHnPMvm;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97ED7606A31E;
-	Thu, 22 Oct 2026 07:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF681606A32A;
+	Thu, 22 Oct 2026 07:25:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AG1lraI8
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C9E51F000C1;
-	Thu, 22 Oct 2026 07:25:12 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FoHnPMvm
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 413A41F000C3;
+	Thu, 22 Oct 2026 07:25:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792653913;
-	bh=kY3rxeufBWnulhzLNXslToghbLfgKp38Kw8D+5p+OLA=;
+	s=k20260515; t=1792653914;
+	bh=xLB6QY4d4CvT3WOgrmnQWFVCi+2+aEn7UHs0/QDERSI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=AG1lraI8+UjpC5FCk1hv1QZorsZYrs9nv8g4ADtlR17dPO0GhMmmfILvHM5nLeKWN
-	 SMX2uRvSGiJ2YI9pLxNo8cZEduejciJBLHVBN4lP98zChOLAjl9wYb2Duj9HdHoSWE
-	 DS3TywAXwXVvgX2rKTZI4s4ltMg1NkJcQ6p7zrETREvC6hsdqhozF1/WO5et7pywh5
-	 RMH+flt/TUpavP2GWJwpimmrJ//9Kjv2ZfQ1wXA5OVtvO5dSsmRaii0dUnrFNJ9wLX
-	 1ssLk+cuR5dADrkOF1sQTfD07GNoueHUdl8YJxwlWLvfp/SEyHq270SrU4Xw8AWgMY
-	 AVGlwHoZ4/HAQ==
-Subject: Re: [PATCH] iucv: fix lockless sk_for_each in afiucv_netdev_event
+	b=FoHnPMvmurzaYZ6ZRlGvGEJ11DJsdNsB/pI+48uxJ7HC58JVkr+qLuVsG2XY24125
+	 NXUXUSMf6Du8wAhz408u5VG6LZaGGGdHTVW/bm7u0c29yi9Q/jMct0ou8dF9UPz5Jk
+	 MnDE4VwKtiqqINw/1UdraMYD8zZSyVG2nBROWMlQygnFuvSYPCdfJThm0i72OQKwbS
+	 3ejnfnBliG1gghz80yPGiOszlJkMN6/euqq2/QgraFQL9RwCq+ObB3mK/n8ZtZci3E
+	 TGIsdofAYmR7SbMFiUPy9i4lQgIrDFja6LqsVOm2BmedvFWyjCm8acLhOvutsJDsA2
+	 Ose80bkwBle/A==
+Subject:
+ Re: [PATCH] ipv6: icmp: use skb_dst_dev_net_rcu() for echo reply and unreach
 From: netdev-bot+sashiko@kernel.org
 To: haoranwangsec@gmail.com
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, netdev@vger.kernel.org, hca@linux.ibm.com,
- gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
- svens@linux.ibm.com, linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Thu, 22 Oct 2026 07:25:12 +0000
-Message-ID: <179265391209.3135.1121448339141763327@kernel.org>
-In-Reply-To: <179241612354.5916.12881323209252769976@whr>
-References: <179241612354.5916.12881323209252769976@whr>
+Cc: dsahern@kernel.org, idosch@nvidia.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kuba@kernel.org
+Date: Thu, 22 Oct 2026 07:25:13 +0000
+Message-ID: <179265391376.3135.13185703852786757866@kernel.org>
+In-Reply-To: <179241613335.5916.18191480036849517944@whr>
+References: <179241613335.5916.18191480036849517944@whr>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -64,10 +63,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 5 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 2 · Medium: 2 · Low: 1
+Critical: 0 · High: 1 · Medium: 2 · Low: 0 (2)
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -75,220 +74,230 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] Race with concurrent close() that can dereference a NULL hs_dev,
-  in afiucv_netdev_event() (net/iucv/af_iucv.c).
-- [High] Self-deadlock on iucv_sk_list.lock in afiucv_netdev_event()
-  (net/iucv/af_iucv.c, lines 2229 and 2244).
-- [Medium] New failure path in afiucv_netdev_event() (net/iucv/af_iucv.c,
-  lines 2240-2242) that skips the whole disconnect.
-- [Medium] In afiucv_netdev_event() (net/iucv/af_iucv.c), the second pass
-  stops at `if (n == count) break;`, but count was taken in an earlier,…
-- [Low] The commit fixes a user-reachable use-after-free: the lockless
-  sk_for_each() in afiucv_netdev_event() races with iucv_sock_kill() ->…
+- [High] The patch now takes the netns in icmpv6_echo_reply() and
+  ip6_err_gen_icmpv6_unreach() from skb_dst(skb)->dev_rcu (via…
+- [Medium] The commit message's premise is wrong.
+- [Medium] The netns conversion is partial, so the changes are internally
+  inconsistent.
+
+Pre-existing issues:
+- [Low] This problem wasn't introduced by this patch, but it is on the
+  line the patch rewrites.
+- [Low] This problem wasn't introduced by this patch, but the comment
+  above ip6_err_gen_icmpv6_unreach() (net/ipv6/icmp.c:852-857) says the…
 
 --
 
-iucv: fix lockless sk_for_each in afiucv_netdev_event
+ipv6: icmp: use skb_dst_dev_net_rcu() for echo reply and unreach
 
-This patch takes iucv_sk_list.lock around the sk_for_each() traversal in
-afiucv_netdev_event(). Matching sockets are counted in a first pass. An
-array is then allocated and filled with sock_hold() references in a second
-pass, and iucv_send_ctrl(), the state change and sock_put() run after the
-lock is dropped.
+This patch changes how ip6_err_gen_icmpv6_unreach() and
+icmpv6_echo_reply() pick the network namespace. They now use
+skb_dst_dev_net_rcu(skb) instead of dev_net_rcu(skb->dev). The commit
+message says that under a VRF the ingress device netns differs from the
+destination netns, and that the IPv4 echo path already uses the dst
+netns.
 
-> Signed-off-by: Haoran Wang <haoranwangsec@gmail.com>
-
-[Severity: Low]
-This isn't a bug, but this fixes a use-after-free in the lockless
-traversal. Should it carry a Fixes: tag, and possibly Cc: stable? The
-function and its lockless sk_for_each() were added by:
-
-Fixes: 9fbd87d41392 ("af_iucv: handle netdev events")
-
-The sk_for_each() line itself was changed later by b67bfe0d42cac.
-
-> diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
-> index db261ecd19af..20c8943b85cd 100644
-> --- a/net/iucv/af_iucv.c
-> +++ b/net/iucv/af_iucv.c
-> @@ -2222,18 +2222,49 @@ static int afiucv_netdev_event(struct notifier_block *this,
->  
->  	switch (event) {
->  	case NETDEV_REBOOT:
-> -	case NETDEV_GOING_DOWN:
-> +	case NETDEV_GOING_DOWN: {
-> +		struct sock **matches;
-> +		int i, n = 0, count = 0;
-> +
-> +		read_lock(&iucv_sk_list.lock);
-
-[Severity: High]
-Can this deadlock against a softirq writer on the same CPU?
-
-The notifier runs in process context under RTNL with BH enabled. The same
-rwlock is also write-locked from softirq context:
-
-afiucv_hs_rcv()                 /* netif RX softirq */
-  afiucv_hs_callback_syn()
-    iucv_sock_alloc(NULL, ..., GFP_ATOMIC, 0)
-      iucv_sock_link()
-        write_lock_bh(&l->lock);
-
-The IUCV tasklet path iucv_callback_connreq()->iucv_sock_alloc() reaches
-the same writer. So do the error branches through
-iucv_sock_kill()->iucv_sock_unlink().
-
-Suppose a HiperSockets SYN arrives and NET_RX softirq runs on the CPU that
-holds the read lock in either pass. Wouldn't the writer then spin forever,
-waiting for a reader that can't run again on that CPU?
-
-The commit message says this matches the other two sites, but
-iucv_callback_connreq() and afiucv_hs_rcv() already run with BH disabled.
-The other process context users, iucv_sock_bind(), iucv_sock_autobind()
-and iucv_sock_link()/iucv_sock_unlink(), all use the _bh variants.
-
-Should both passes use read_lock_bh()/read_unlock_bh() instead?
-
->  		sk_for_each(sk, &iucv_sk_list.head) {
->  			iucv = iucv_sk(sk);
-> -			if ((iucv->hs_dev == event_dev) &&
-> -			    (sk->sk_state == IUCV_CONNECTED)) {
-> -				if (event == NETDEV_GOING_DOWN)
-> -					iucv_send_ctrl(sk, AF_IUCV_FLAG_FIN);
-> -				sk->sk_state = IUCV_DISCONN;
-> -				sk->sk_state_change(sk);
-> +			if (iucv->hs_dev == event_dev &&
-> +			    sk->sk_state == IUCV_CONNECTED)
-> +				count++;
-> +		}
-> +		read_unlock(&iucv_sk_list.lock);
-> +
-> +		if (!count)
-> +			break;
-> +		matches = kmalloc_array(count, sizeof(*matches), GFP_KERNEL);
-> +		if (!matches)
-> +			break;
+> Under a VRF, skb->dev is the VRF master device, so dev_net_rcu(skb->dev)
+> returns the netns of the master rather than the netns the packet is
+> destined to.  The route lookup for the unreach and the send policy for
+> the echo reply (ratelimit, IPsec, route) then run against the wrong
+> namespace.  The rt6_lookup may miss the route to the source, leaving
+> skb2->dev unset, and the echo reply is emitted/routed per the ingress
+> netns instead of the destination netns.
 
 [Severity: Medium]
-If this allocation fails, does every socket bound to event_dev stay in
-IUCV_CONNECTED?
+Can a VRF master actually be in a different netns from the packet's
+destination?
 
-The break skips the FIN, the move to IUCV_DISCONN and sk_state_change()
-for all matching sockets. __dev_close_many() ignores the notifier's return
-value and carries on with the shutdown. NETDEV_DOWN and NETDEV_UNREGISTER
-do nothing in this notifier, so nothing retries later.
+do_set_master() looks the master up in the slave's own netns:
 
-iucv_sock_poll() only sets EPOLLIN once sk_state is IUCV_DISCONN. Readers
-waiting for that would stay blocked.
-
-The previous loop did no allocation, so it could not fail this way.
-
-> +
-> +		read_lock(&iucv_sk_list.lock);
-> +		sk_for_each(sk, &iucv_sk_list.head) {
-> +			if (n == count)
-> +				break;
-
-[Severity: Medium]
-Can this cap skip sockets that were counted in the first pass?
-
-count comes from a separate critical section, and the lock is dropped
-around kmalloc_array(). NETDEV_GOING_DOWN is sent before
-__dev_close_many() clears __LINK_STATE_START, so RX is still active.
-
-In that window, afiucv_hs_callback_syn() can link a new socket on the same
-device:
-
-	niucv->hs_dev = iucv->hs_dev;
-	...
-	nsk->sk_state = IUCV_CONNECTED;
-
-Also, afiucv_hs_callback_synack() can move an existing BOUND socket to
-IUCV_CONNECTED.
-
-iucv_sock_link() uses sk_add_node(), which inserts at the head, so the new
-sockets fill matches[] first. Once n reaches count, the walk stops before
-it reaches older sockets that are still IUCV_CONNECTED on event_dev. Those
-sockets would get no FIN and no move to IUCV_DISCONN.
-
-> +			iucv = iucv_sk(sk);
-> +			if (iucv->hs_dev == event_dev &&
-> +			    sk->sk_state == IUCV_CONNECTED) {
-> +				sock_hold(sk);
-> +				matches[n++] = sk;
->  			}
->  		}
-> +		read_unlock(&iucv_sk_list.lock);
-> +
-> +		for (i = 0; i < n; i++) {
-> +			sk = matches[i];
-> +			if (event == NETDEV_GOING_DOWN)
-> +				iucv_send_ctrl(sk, AF_IUCV_FLAG_FIN);
-> +			sk->sk_state = IUCV_DISCONN;
-> +			sk->sk_state_change(sk);
-> +			sock_put(sk);
-> +		}
-
-[Severity: High]
-Can a concurrent close() set hs_dev to NULL before this loop runs?
-
-sock_hold() keeps the struct sock allocated, but this loop does not take
-lock_sock(). It also does not recheck hs_dev or sk_state after the list
-lock is dropped.
-
-close() goes through iucv_sock_release()->iucv_sock_close(). That path
-holds only lock_sock(), not RTNL, and ends with:
-
-net/iucv/af_iucv.c:iucv_sock_close() {
+net/core/rtnetlink.c:do_set_master() {
     ...
-	if (iucv->hs_dev) {
-		dev_put(iucv->hs_dev);
-		iucv->hs_dev = NULL;
-		sk->sk_bound_dev_if = 0;
-	}
+	upper_dev = __dev_get_by_index(dev_net(dev), ifindex);
     ...
 }
 
-If that runs between the second pass and this loop, iucv_send_ctrl() then
-computes:
+VRF devices can't change netns:
 
-	blen = sizeof(struct af_iucv_trans_hdr) +
-	       LL_RESERVED_SPACE(iucv->hs_dev);
+drivers/net/vrf.c:vrf_setup() {
+    ...
+	dev->netns_immutable = true;
+    ...
+}
 
-That reads through a NULL hs_dev before afiucv_hs_send() gets to check
-skb->dev.
+A slave that moves to another netns gets NETDEV_UNREGISTER, and
+vrf_device_event() removes it from the VRF. vrf_ip6_input_dst() also
+does its lookup in dev_net(vrf_dev). Packets that cross netns go through
+skb_scrub_packet(), which drops the dst.
 
-The loop also writes sk->sk_state = IUCV_DISCONN on a socket that
-iucv_sock_close() has already moved to IUCV_CLOSED, which moves its state
-backwards. iucv_send_ctrl() also changes sk->sk_shutdown without the
-socket lock.
+So on live receive paths, skb->dev and skb_dst(skb)->dev seem to be in
+the same netns, and both expressions return the same struct net.
 
-The old code had the same check-then-use race, but the check and the use
-were back to back. Here the check happens during collection, and the use
-only comes after the whole list has been walked.
+If rt6_lookup() really misses the VRF route, wouldn't that be because it
+is called with oif=0 and no l3mdev? Then the l3mdev FIB rule can't pick
+the VRF table, and this patch doesn't change those arguments.
 
-For comparison, afiucv_hs_callback_fin() does this transition under the
-socket lock:
+Is there a reproducer for the VRF case described here? There is no
+Fixes: tag either. Could the description be reworked so the patch isn't
+picked for stable based on this scenario?
 
-	bh_lock_sock(sk);
-	if (sk->sk_state == IUCV_CONNECTED) {
-		sk->sk_state = IUCV_DISCONN;
+> diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
+> index a95b0351824f..5bdfbb656301 100644
+> --- a/net/ipv6/icmp.c
+> +++ b/net/ipv6/icmp.c
+> @@ -882,7 +882,7 @@ int ip6_err_gen_icmpv6_unreach(struct sk_buff *skb, int nhs, int type,
+>  	skb_pull(skb2, nhs);
+>  	skb_reset_network_header(skb2);
+>  
+> -	rt = rt6_lookup(dev_net_rcu(skb->dev), &ipv6_hdr(skb2)->saddr,
+> +	rt = rt6_lookup(skb_dst_dev_net_rcu(skb), &ipv6_hdr(skb2)->saddr,
+>  			NULL, 0, skb, 0);
 
-The commit message says:
+[Severity: Low]
+This isn't a bug introduced by this patch, but this line is being
+rewritten anyway. The skb passed to rt6_lookup() here is the original
+IPv4 ICMP skb. On multipath routes the lookup goes:
 
-  sock_hold() pins each sk for the out-of-lock work, so a concurrent
-  close can no longer free it from under the notifier.
+rt6_lookup()
+  fib6_rule_lookup()
+    ip6_pol_route_lookup()
+      fib6_select_path()
+        rt6_multipath_hash()
+          ip6_multipath_l3_keys(skb, ...)
+            outer_iph = ipv6_hdr(skb);
 
-Given the above, does that claim hold for the fields used here? Would it
-make sense to take lock_sock(sk) in this loop and recheck
-sk->sk_state == IUCV_CONNECTED and iucv->hs_dev == event_dev before
-acting?
+This reads the outer IPv4 header as an IPv6 header to build the ECMP
+hash keys. The pskb_may_pull() at the top keeps the read inside the
+linear area. So the only effect is on which nexthop device ends up in
+skb2->dev.
 
-> +		kfree(matches);
->  		break;
-> +	}
+Would it be better to pass skb2 or NULL here?
 
-[ ... ]
+[Severity: Low]
+This is also a pre-existing issue, not one introduced by this patch. The
+comment above ip6_err_gen_icmpv6_unreach() only mentions type/code
+ICMPV6_DEST_UNREACH/ICMPV6_ADDR_UNREACH. The function also sends
+ICMPV6_TIME_EXCEED/ICMPV6_EXC_HOPLIMIT, and the SIT and GRE callers do
+pass ICMP_TIME_EXCEEDED:
+
+	if (type == ICMP_TIME_EXCEEDED)
+		icmp6_send(skb2, ICMPV6_TIME_EXCEED, ICMPV6_EXC_HOPLIMIT,
+			   info, &temp_saddr, IP6CB(skb2));
+
+Should that comment be updated?
+
+>  
+>  	if (rt && rt->dst.dev)
+> @@ -920,7 +920,7 @@ EXPORT_SYMBOL(ip6_err_gen_icmpv6_unreach);
+>  
+>  static enum skb_drop_reason icmpv6_echo_reply(struct sk_buff *skb)
+>  {
+> -	struct net *net = dev_net_rcu(skb->dev);
+> +	struct net *net = skb_dst_dev_net_rcu(skb);
+
+[Severity: High]
+Can net end up as &init_net here if the dst has been invalidated?
+
+skb->dev is pinned while the packet is in flight, but dst->dev_rcu can
+change. When a route is torn down, dst_dev_put() repoints it:
+
+net/core/dst.c:dst_dev_put() {
+    ...
+	rcu_assign_pointer(dst->dev_rcu, blackhole_netdev);
+    ...
+}
+
+blackhole_netdev is never registered, so its netns stays &init_net.
+
+Here is one path in netns X:
+
+  An echo request to a local address is queued by NFQUEUE at
+  NF_INET_LOCAL_IN. __nf_queue() calls skb_dst_force() and dev_hold()s
+  skb->dev.
+
+  The local address or route is deleted. After the grace period,
+  fib6_info_destroy_rcu()->fib6_nh_release()->fib6_nh_release_dsts()
+  calls dst_dev_put() on the pcpu rt6_info that the queued skb still
+  holds. nh_rt_cache_flush() also reaches fib6_nh_release_dsts() when an
+  IPv6 nexthop group is replaced.
+
+  On NF_ACCEPT, nf_reinject() calls ip6_input_finish() directly.
+  nf_ip6_reroute() only does anything for NF_INET_LOCAL_OUT, so the dead
+  dst is not checked again.
+
+  icmpv6_rcv() still uses dev_net_rcu(skb->dev), which is X, so the
+  echo_ignore_all check passes. icmpv6_echo_reply() then sets
+  net = &init_net.
+
+After that, icmpv6_xmit_lock() sets the shared per-cpu ICMPv6 socket's
+netns to init_net. The sysctls, IP6_REPLY_MARK, ratelimits,
+ip6_dst_lookup() and xfrm_lookup() all run in init_net.
+
+fl6.saddr is X's address, and flowi6_oif is an ifindex from X that gets
+resolved in init_net. The reply carries the requester's payload and is
+routed and sent from the host namespace.
+
+The unreach hunk above looks affected the same way. The IPv4 input dst
+of a queued ICMP error can go through dst_dev_put() via
+rt_fibinfo_free()/rt_fibinfo_free_cpus(). ipip6_err() and ipgre_err()
+still find the tunnel in dev_net(skb->dev), but rt6_lookup() would then
+run in init_net. skb2->dev can then become an init_net device, and
+icmp6_send() also runs in init_net.
+
+All of this needs only CAP_NET_ADMIN in X, which an unprivileged user can
+get through a user namespace. A route teardown running at the same time
+(nh_rt_cache_flush(), rt6_remove_exception()) can also open the window
+without nfqueue.
+
+Before this patch, the netns came from skb->dev. That device is pinned
+and can't change netns while the packet is queued. Isn't that the more
+reliable source for the receiving netns?
+
+The IPv4 sites cited in the commit message seem to have the same
+weakness, so matching them doesn't make this change safe.
+
+[Severity: Medium]
+The commit message says this now matches the IPv4 path. Is the
+conversion complete, though? IPv4 icmp_rcv() takes net from the dst for
+the whole receive decision:
+
+net/ipv4/icmp.c:icmp_rcv() {
+    ...
+	struct net *net = dev_net_rcu(rt->dst.dev);
+    ...
+}
+
+IPv6 icmpv6_rcv() still uses the ingress device:
+
+net/ipv6/icmp.c:icmpv6_rcv() {
+	...
+	struct net *net = dev_net_rcu(skb->dev);
+	...
+	case ICMPV6_ECHO_REQUEST:
+		if (!net->ipv6.sysctl.icmpv6_echo_ignore_all)
+			reason = icmpv6_echo_reply(skb);
+	...
+}
+
+That net is used for xfrm6_policy_check() and for the echo_ignore_all
+and sysctl_icmp_echo_enable_probe checks. Those checks decide whether
+icmpv6_echo_reply() runs at all.
+
+Inside icmpv6_echo_reply(), idev and flowi6_oif still come from
+skb->dev. The shared icmp_build_probe() also still uses
+dev_net_rcu(skb->dev).
+
+On the unreach path, ipip6_err() and ipgre_err() find the tunnel in
+dev_net(skb->dev), rt6_lookup() now uses the dst netns, and icmp6_send()
+uses dev_net_rcu(skb2->dev). skb2->dev is set to the lookup's device only
+when rt6_lookup() succeeds. So the netns used for sending depends on
+whether the lookup succeeded.
+
+The two sources can differ, for example in the invalidated dst case
+above. Then a single packet is gated by X's echo_ignore_all, probe and
+xfrm settings but answered under init_net's policy.
+
+Shouldn't all of these sites use the same netns source?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/179241612354.5916.12881323209252769976%40whr
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/179241613335.5916.18191480036849517944%40whr
