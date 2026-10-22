@@ -1,65 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792640806;
-	b=Vp0Hvnv8ocmFdrDvUbXZMqa8sP0IogxRHjzMDT5Lm4M8R+xDolPj9jODbZP8ioX1NTVM
-	 v0+iixDbuHOra8qXfGmGQtBnKJV7VkArLQ0nluyJN3Ce6cFW87JK8z+mNjJBiVfh67D2d
-	 EdOW+YK7s6bKM3+nAP8CuiiBrZM4aitNGhpD0URsKLdrLTfDEfydiQNe3NqwWk7P2zRpJ
-	 l2rVtnPgyuyje0A9jj+EWouB7Ptkn+DQPy9Y/yg76kk/KPQT672sNHZCkfJSMDhc3+AXO
-	 d2rd4il5E2VLgMtRyM/05XXOqqaqzKU3C5oCw/+jWnHF984ZrjjZ0ZlkcgqHgVbKykg==
+	t=1792641155;
+	b=pHOH47gIYZYFRgBpCVBOpNZoOgNDohqlRBVlc3v9QF0UuTVCk3AmZkPEEooX00Ze/1n8
+	 JSFHpcdNtAjRfttWlZqk/pQL5l/jkKQV0LpUU8PCiyhxSfn4KaBWv4Mmhc0ka/Up/J1Jh
+	 YrlYKm8BrlhmejeEyRXkUYvYh48112WV20RFrqPZQ/IVobp6wHSxHTKsZI2B31dcK0sv2
+	 pvLJu1Y1nqLSPL+k6GNzSO5Sp4ZQ5QWPfm9Fy5uc0EBKmQOAN+q8vjxYXD9P8CaLzEkx5
+	 QANBIOJYN55TUHuyn7WRSL4u4GsP39R/AZn+OkouuQau7cXl5MeObR1bI1TW2/YVUMA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792640806;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=4fcTMVzHIhmN5IoyyVLlVIfM3MPNNXbJtiu5nB9jYtM=;
-	b=XEkxw1lIcry9NiTsGtCTwxNHqf5vmsul2Hgj1828mXByMn1WlNMl5T3vE/pExAuau5fb
-	 PFVIHijfGPvv+MXXQRP3ZbfwJAmLSGZMotZI52WX0BmB2WUXBf7UwsdilsqhDlVFEtESi
-	 7uTu9eu/CHM6ZG3X36s2AH+QGOiWaOp+Dhi1zKgcaMxBBmOSatzBJDCN+B9tfNADWL61o
-	 OnW//q7L8x3ObOWQeOm09IDFe/flEjxoUcNTJeZQXN1omPIxjHX4Ndv0/wlpvHHa3L5Pb
-	 q4bCCbCCXUd2BevkyjV2RILCPiBZQWtLXiZpN7KI01AjupvYf3HDyA4MmXVfhJoMP5Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792641155;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=m55ckm2hWwRwlWXje/91Y/X/pTafwYoOrwnzD1J7sek=;
+	b=e8pAdOCN8FKUWMEPshtknP0x2hS0eNti1co5tN0xE++qrgutD+kpfD7bGbKVqAfmpP4h
+	 LLXpoouIgdPKTCm/HTMefGMUGZIQu5pOOEDqvkhdNpLiPOiVdfqy3ubfoUm8ulK+0H7WM
+	 CbjTGjOwhGRFNQ+IoIu2rDHM33JCLgj1WVHUl7fLByeU3lv0er+WD7jjmsfv/u0PYCXQv
+	 gP5Ap1yDpNMmSjxTuVr7MPoCl5QgNu5uAzRJKKAPDBgwVYjds3TZ6S9oFRFdT3Bu9RTX5
+	 LTvNHemS6CoU/8zvhl8DcwPpVRfUBrPZnopbYMWNebbVyW2uOuJoh9WTs5tcNzbaeoA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ghz0bZcF;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=none header.from=jclark.com;
+	spf=pass smtp.mailfrom=jclark.com;
+	dkim=pass header.d=jclark-com.20251104.gappssmtp.com header.i=@jclark-com.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=o4jg0qH9;
+	arc=none smtp.remote-ip=209.85.215.169
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FB0606A332;
-	Thu, 22 Oct 2026 03:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B80606A325
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 03:52:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D5B80606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jclark.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jclark.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ghz0bZcF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D3601F000C1;
-	Thu, 22 Oct 2026 03:46:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792640805;
-	bh=4fcTMVzHIhmN5IoyyVLlVIfM3MPNNXbJtiu5nB9jYtM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ghz0bZcFO2ICLR9nS07ZUgDU767zCaPKEsyCKqsacmuuH8982hXAxsATTzSaaW0ZN
-	 JTw7DZP834wt0E4BgbJr4MP1UZ7tpbfuhHw0h1FhHdBt9HAiQepHpzmA5OX5TKVf9f
-	 v27UtsWzvdJTfAEyEglRy40Aabu/0KU5Wgafn3CVNEc3D1TZV3kRILqZ7MeZS/D7UW
-	 0GUyCCR6dQArj7wv0HB9vs4JUW38vt7wNKrZpFpPKDUcJ1WO5g7jY6ustHCwrgK8OB
-	 oV3XE93uK8DpGpj4L6o4s2iQHscSob73JCNciJv3ixdmHVIr+UOkdi7+fjGUyG0MX8
-	 WS2a8fZjKmtUA==
-Subject: Re: [PATCH net-next v17 2/2] hinic3: Add ethtool statistic ops part2
-From: netdev-bot+sashiko@kernel.org
-To: gongfan1@huawei.com
-Cc: wudi234@huawei.com, tengpeisen@huawei.com, netdev@vger.kernel.org,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, andrew+netdev@lunn.ch, ioana.ciornei@nxp.com,
- maxime.chevallier@bootlin.com, mohsin.bashr@gmail.com,
- dimitri.daskalakis1@gmail.com, hramamurthy@google.com,
- larysa.zaremba@intel.com, vadim.fedorenko@linux.dev,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- zhoushuai28@huawei.com, wulike1@huawei.com
-Date: Thu, 22 Oct 2026 03:46:43 +0000
-Message-ID: <179264080395.3135.834074310009074435@kernel.org>
-In-Reply-To:
- <abc78c964dec55e440f8023db505632186d53d89.1792378301.git.gongfan1@huawei.com>
-References:
- <abc78c964dec55e440f8023db505632186d53d89.1792378301.git.gongfan1@huawei.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=jclark-com.20251104.gappssmtp.com header.i=@jclark-com.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=o4jg0qH9
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-ccce6d9abfeso830984a12.1
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 20:52:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=jclark-com.20251104.gappssmtp.com; s=20251104; t=1792641154; x=1793245954; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=m55ckm2hWwRwlWXje/91Y/X/pTafwYoOrwnzD1J7sek=;
+        b=o4jg0qH9RepSu7e+y05SP8CWFOwSfBHhQlE487zCf4bGf4DUd4KTlCdlvc+jsQYlJx
+         +QWa0e1dnazLwmK/hO+1aYt97hIIMszuKmFqEl4YtuUI1LySb7wUyNC2QRMfefBv6VQw
+         Ipmlf5A+0CFM+Lk8VlxOTV2zQujONn7z//HXM7/s9Z10y4Y1EBeXI333ziO4dD6lMZJc
+         UqYDwlvcfI7OXBkp8XxxX93gH88BoA1gA2WWwexXH4pnjtrmAFiVDX6uA8h5Y09OtIhY
+         OO2aExVlI5/f214dwqGz5j0aEXTFe/aabGskJZK99bBaNPV3AhzRqtsvBNHIrWw+fGqb
+         mMxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792641154; x=1793245954;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=m55ckm2hWwRwlWXje/91Y/X/pTafwYoOrwnzD1J7sek=;
+        b=hc9xJR5sQNuCBxvvCHx1pJMUTJ4KocOHhTG0dr93bKAhOQTroloOHJum5j7nu4fhmb
+         pmWbjcQj6P85mutVP9+W8WCzvfASWDo0upwShslUGKu/gXJYnZu0DzGtMoLTwFB+5pAo
+         3jii9oBVyfWAS7hhMafJMdYZv0tq0ihXIwSYIVY71W1wT6M0tGDymz0tH85ohKGnCMx6
+         EI+rQxzptn7LB3T/H6vvjBhdHYkUrLVapMs80KyylqevUZEWEWlGrBzgKfMcKjB3jSUy
+         p7cLzN0AMeV8xxDP3ncEVNp1A6VLkh2EAGDKjYPD/egtTzwUSpqMXJxyXstaXY79DyaU
+         qptQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzPJ5KJ6UcEvJB7Nb/phWL/bR6VyA4ojQm8pJwDb0rxQ5TRHWikJwooIxj0OBiIzPO9/PPYrD0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIAYSYWBHXPbFPy4QsAfgicTshJ1EbSe+pFSGzufe0K4ltWyUDx
+	jqapJHKZWpKe8ZdE1k9fHWiij2KAeqKXIKU2j7a1Vm2G6eATF90dmAoyeqF8HfQ+eA==
+X-Gm-Gg: AYBFou2ntd8RTcJHrlFXZXTm6NKjfaXmSMkJLJ7bi6IhTsXpaZs2sdJlObXWaZwvA7M
+	ywUsKcGgzf4vPS9gtq9ap3v4GvcUHTij1ne0b09jyimXuQ4KAh2CV7Zg/FhCE+9JCUoFQJ8q5lR
+	toe3QwJHdyi9glbYLkKxQm4RzAJYAmMS1hO77SGHWQZ6S5utpPXCp8Yfdo7bzfrlGZ9U3/gudik
+	FRLUXbpfs8X2UsOEdybCpWqk14FTfYyalEoG7GW+YF0uHPjLBjA5wNMxRbjMRm8+q6cymHOsJ3f
+	RRqlox7emmQLNhXRvC4AvFAKFHAfKzFLVK37iKqAyjOacMHJI09JEqOoa4RPZFvvHj+sPeoawzX
+	j9cL9YVGsmtoj5JaJ8qHMD673+zNEa1QHRySEQ3mEPJEGiBvtMIPsjo6+7AgIL3p2Y1WitQa48R
+	Kq8E79SV0f8lzzbz/zg5p0BIj7eh4/nSu46rss93VRF51npq4ojCe+j0DEO03ouaQxS4oBq5+X6
+	uFoCNT0xggc21ctcbuQD8O83G4a196MIUfqdok8RLGSbbgIP/pgYzNxshQFjzEnfbWWYN1DaHR/
+	a90jTADmAo22/lTEELR89Fvz7pjwPGJn28lI27eJZx/M
+X-Received: by 2002:a17:90b:2886:b0:3ad:818f:3daf with SMTP id 98e67ed59e1d1-3ad86ee2eecmr3201690a91.14.1792641153683;
+        Wed, 21 Oct 2026 20:52:33 -0700 (PDT)
+Received: from cantal.lan ([58.136.73.153])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd6b85d56c4sm588649a12.16.2026.10.21.20.52.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 20:52:32 -0700 (PDT)
+From: James Clark <jjc@jclark.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Richard Cochran <richardcochran@gmail.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Chintan Vankar <c-vankar@ti.com>,
+	Aksh Garg <a-garg7@ti.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: ethernet: ti: am65-cpts: fix support for PTP_EXTTS_REQUEST2 ioctl
+Date: Thu, 22 Oct 2026 10:52:26 +0700
+Message-ID: <20261022035226.1388675-1-jjc@jclark.com>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <179264023362.3135.17895429756190814680@kernel.org>
+References: <20261020003525.1237742-1-jjc@jclark.com> <179264023362.3135.17895429756190814680@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,98 +108,31 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Thu, 22 Oct 2026 03:37:13 +0000, netdev-bot+sashiko@kernel.org wrote:
+> Before this patch, supported_extts_flags was 0 for am65-cpts. A v1 request
+> with PTP_ENABLE_FEATURE | PTP_FALLING_EDGE, or with both edges set, was
+> accepted and reached am65_cpts_extts_enable(), which ignores the flags.
+>
+> Now the mask has PTP_STRICT_FLAGS but not PTP_FALLING_EDGE, so those same
+> v1 requests return -EOPNOTSUPP before ops->enable() is ever called.
+[...]
+> However, the commit message says:
+>
+>     Only the PTP_EXTTS_REQUEST ioctl still works.
+>
+> This suggests v1 behaviour does not change. The patch has a Fixes: tag and
+> is likely to go to stable. Could the commit message say that v1 requests
+> carrying PTP_FALLING_EDGE are now rejected as well?
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+The sentence that Sashiko quotes is part of the paragraph describing the
+state before this patch, so it has no such implication.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+With this patch, PTP_EXTTS_REQUEST rejects a request for PTP_FALLING_EDGE
+instead of accepting it and reporting rising edges. This is part of the
+purpose of 7c571ac57d9d. The equivalent bcm-phy-ptp fix, 3200fdd4021d
+("broadcom: fix support for PTP_EXTTS_REQUEST2 ioctl"), made the same
+change without mentioning it.
 
-- [Medium] hinic3_get_pause_stats() can never be called.
-
---
-
-hinic3: Add ethtool statistic ops part2
-
-This commit adds five standard ethtool statistics callbacks to the hinic3
-driver: get_eth_phy_stats, get_eth_mac_stats, get_eth_ctrl_stats,
-get_rmon_stats and get_pause_stats. Each callback reads the physical port
-counters from firmware and copies them into the standard ethtool
-structures.
-
-> diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c b/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c
-> index 64c862052f1e8..2ae4d5afe90df 100644
-> --- a/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c
-> +++ b/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c
-
-[ ... ]
-
-> +static void hinic3_get_pause_stats(struct net_device *netdev,
-> +				   struct ethtool_pause_stats *pause_stats)
-> +{
-
-[ ... ]
-
-> +	pause_stats->tx_pause_frames = le64_to_cpu(ps->mac_tx_pause_pkts);
-> +	pause_stats->rx_pause_frames = le64_to_cpu(ps->mac_rx_pause_pkts);
-> +
-> +	kfree(ps);
-> +}
-
-[ ... ]
-
-> @@ -707,6 +904,11 @@ static const struct ethtool_ops hinic3_ethtool_ops = {
->  	.get_strings                    = hinic3_get_strings,
->  	.get_sset_count                 = hinic3_get_sset_count,
->  	.get_ethtool_stats              = hinic3_get_ethtool_stats,
-> +	.get_eth_phy_stats              = hinic3_get_eth_phy_stats,
-> +	.get_eth_mac_stats              = hinic3_get_eth_mac_stats,
-> +	.get_eth_ctrl_stats             = hinic3_get_eth_ctrl_stats,
-> +	.get_rmon_stats                 = hinic3_get_rmon_stats,
-> +	.get_pause_stats                = hinic3_get_pause_stats,
-
-[Severity: Medium]
-Can hinic3_get_pause_stats() actually be reached by the ethtool core?
-
-hinic3_ethtool_ops sets .get_pause_stats but has no .get_pauseparam, and
-nothing under drivers/net/ethernet/huawei/hinic3/ implements one. The
-generic caller of get_pause_stats, pause_prepare_data() in
-net/ethtool/pause.c, bails out before it gets to the stats callback:
-
-net/ethtool/pause.c:pause_prepare_data() {
-    ...
-	if (!dev->ethtool_ops->get_pauseparam)
-		return -EOPNOTSUPP;
-    ...
-	dev->ethtool_ops->get_pauseparam(dev, &data->pauseparam);
-	if (req_base->flags & ETHTOOL_FLAG_STATS &&
-	    dev->ethtool_ops->get_pause_stats)
-		dev->ethtool_ops->get_pause_stats(dev, &data->pausestat);
-    ...
-}
-
-The only other user, ethtool_aggregate_pause_stats(), is a helper that
-MAC-merge-capable drivers call themselves, and hinic3 doesn't call it.
-Pause stats also aren't one of the ETHTOOL_MSG_STATS_GET groups.
-
-So "ethtool -I -a <dev>" would fail with -EOPNOTSUPP. That means
-mac_tx_pause_pkts and mac_rx_pause_pkts never reach userspace, even though
-the commit message lists get_pause_stats as one of the five added
-callbacks.
-
-The driver already has hinic3_get_pause_info() in hinic3_nic_cfg.c, which
-hinic3_ethtool.c already calls elsewhere. Could that be used to add a
-get_pauseparam implementation? Otherwise, could get_pause_stats wait until
-one exists?
-
->  };
->  
->  void hinic3_set_ethtool_ops(struct net_device *netdev)
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1792378301.git.gongfan1%40huawei.com
+I don't plan to do a v2 for this.
