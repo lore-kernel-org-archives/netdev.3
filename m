@@ -1,104 +1,104 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792673921;
-	b=s7J+Jq36LCaYJZeKOarfOe48EYoKP3ZgDn1aQUcpnCv1ScIQATdiUGxdJWKKH3GXOaQu
-	 /JyLIZcagyQa1w7Cg3LbCrkoGzX0p9F+Axwcz6CCmeZjeaIfAuYzHAkbRxXJGkOQXf39t
-	 tqG34lJVbKNhOYiNJyEAiUbrw6HLS5vXfgvpwBHbvs7j+Gubx9jfxhUsqU0Jpdtj9R0aS
-	 RMksoooyEl6j5ALUuk8N+qscM0TPzQqXgOCYH3eXudLiHwDJxpkimy88M/HtWK4LhZvUS
-	 Luu+zX13wMMoe19es39tl6nQhbjRHFcQ23wa306QfFRKkQgjJuNwR2W2rlBcsUEon6A==
+	t=1792673925;
+	b=ir/8WqJ8KY1MUT8cxi1KsjiONaMdBoW1tvQyfrR9tg/wMtEnqLatdZH+xFEgOq3vQo7P
+	 yZlDpEEg9alw9YypWYMeQEJXgWzsj3d7Kr4sbB6D9G9xDNki3M5iy4S+0iDPCa+56kwlR
+	 1XxRZILPbVPApQvuZYY+F7P7nJKtgPCic5satjLdOoN00Isp1iLYn3iuh3IoEvX6Dy4CH
+	 eTym80GReAxVbJQEsIj5B71qBkRDmsNPywiOvufbdvn4VypYTySZPzXNV3C6C7RsQzYJ2
+	 tVAPHmN7mEfwaevg1QMxbSQPCRF16a4VLz1qtdWI4y2TV8uW9OpZD7ZTiRSI5d31TdA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792673921;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792673925;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
 	 MIME-Version:Content-Type:Content-Disposition:
 	 Content-Transfer-Encoding:In-Reply-To:X-Mailer:X-Mutt-Fcc;
-	bh=WsotF0ejH7vcgdu3Tl8WXCv39gHwci5cDXLJnOZO04U=;
-	b=3BAsy6PfmRptgjIU+0xhlinVOndH5gT3xUlAqeo2bcbNGnmd/g7lOCFlkCr0HWWYlLgv
-	 SNVHX7u8ndWEVg3phFdCA8SfYmpp6XAWa9gyukJXxjwMVQ86B5yjAwQc1nzZ00uUn42Rz
-	 wwDAJMEyWoM7BXng21vMohWfX8gPwFXy4Oe5P3GXPPEFU+qN2MBMu4EGCaa6Z0oZcqFI8
-	 FO7jDwiwXF9itJF8Cu6BXv6yB/aNeP8gmkttwfY7FmOO2iGXqDxlJZfl7EBP7KI6rhKVk
-	 irqd3mRh4j0logaFkR1pIGR7qJVLMpPbHiQx4QL5mjktrD/B8sWxGmCTQJ2G3Z5HB7g==
+	bh=Wm2lsA+w7xm6rhMTdU3cXhV3KJ+IpR+CE+ng3KKGWSc=;
+	b=VkxWEi47iceY9tgCJOPM0qEwq3hGHVBS8GJCRLg40k9JEP+QeO7qQceN13n8CMzh5M15
+	 swaOIDof/u83D7Lt9n11heLwDgo8ICZv+9bP3O3sjU1nbnIjU7BQGJlZrHefcympvHfsO
+	 dH+U5IxjzjXl2sESWccDa2O9SdBNUy/Fu4SIE3XT3ljcVlj/U6I8yldHEnIfSIbDT/JSS
+	 0BwB2KetxtBSxL8agK0/BeWJ4e+5v8JVQ5WsSot0kpNtK9j02xZz1HlhhgowOaU+4YL+h
+	 +33sYc6x6Q6w2Ujn7ln29egO588+HuPFhONjDj+mxwlu0x41g/YSGCFbwVsWtbcg1Bg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RfcxjDlk;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=m82JtQer;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PTmKuuKk;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=sVwcwAZQ;
 	arc=none smtp.remote-ip=170.10.129.124
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF9260A3806
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 12:58:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7CF9260A3806
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A0260A3806
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 12:58:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 50A0260A3806
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RfcxjDlk;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=m82JtQer
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PTmKuuKk;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=sVwcwAZQ
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792673919;
+	s=mimecast20190719; t=1792673924;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WsotF0ejH7vcgdu3Tl8WXCv39gHwci5cDXLJnOZO04U=;
-	b=RfcxjDlkzjDZL5fz2KXP19dlZN1Oc9DRTkiM2dOlPlDgJe4bhfn1Qs/v+ZtlihH8NhI8CP
-	05dTxMjiZJ6Gg0TbIkTtpC6YktCE8HbWjZOSAbOfSOX4qGar+T1WD/huF9Py3RvMxq8074
-	iJKkafHlhlaB6Djtx7wXaB6BZaG2QMg=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=Wm2lsA+w7xm6rhMTdU3cXhV3KJ+IpR+CE+ng3KKGWSc=;
+	b=PTmKuuKk/Lv7kMtclHpDyz/9oaBylwrRrHY2GCP+YjgzNpb7DqUTtsLPTFuKLaLzt/wlrO
+	vCurUTaDOUP46hd4RVJn9JT6/3pS88IISEzoE7PRx7Pd/ZwFfWy3FajFhu8+5KL06OzS5t
+	UKa4stNMo+ujQsxNFDisX+c+uD5Xpvs=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-413-fetOQg4KMOKm3VDmKRDIlg-1; Thu, 22 Oct 2026 12:58:38 +0000
-X-MC-Unique: fetOQg4KMOKm3VDmKRDIlg-1
-X-Mimecast-MFC-AGG-ID: fetOQg4KMOKm3VDmKRDIlg_1792673917
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48b01a74792so1229754f8f.0
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 05:58:38 -0700 (PDT)
+ us-mta-671-qeorMzfINWi6_Zz4TNPlog-1; Thu, 22 Oct 2026 12:58:43 +0000
+X-MC-Unique: qeorMzfINWi6_Zz4TNPlog-1
+X-Mimecast-MFC-AGG-ID: qeorMzfINWi6_Zz4TNPlog_1792673922
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a1895ffc83so12521115e9.3
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 05:58:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792673917; x=1793278717; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1792673922; x=1793278722; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :content-type:mime-version:references:message-id:subject:cc:to:from
          :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=WsotF0ejH7vcgdu3Tl8WXCv39gHwci5cDXLJnOZO04U=;
-        b=m82JtQerdVG9BzchLvJi9YjqTkX5VgszI5k1GxiHDiXlcbqILR15nXanUhEbFPXulY
-         FaUk7Cs1K/JbOMtuc7a7m/reFv8CGTsQGbuaj+tjLd2ONe8PMQuDCkdd077u1rQFmdo2
-         pa5SnnVT5aArDf1qymfvMW5pxQUhZ9J1vWE49wpBb5s9igbliq5dTkjt5W9CMiig3n7D
-         BZZVMKjPmZ3bePD3foeO7EiCmKMoPZAaciX8+n6uCksX/U3a+1ZDW6HLjodaj76XOO2F
-         vexc0XI1vOAcIOnt856eJKZ/ej+sQmzwpdwxJ7XOKsxH3fCbrXVJHFruGVIfgWhmcvIs
-         oaQg==
+        bh=Wm2lsA+w7xm6rhMTdU3cXhV3KJ+IpR+CE+ng3KKGWSc=;
+        b=sVwcwAZQhTs/O2+eL8iiHNYEuYXjpLOtcs/sTjpZAHC/YnK1MwdcOPe6LsosJtz55V
+         y2PT8jdpEgnaLP32JCcgJIiE51q3jw6KgCJ80LTeJmRhSFCvKoKM0XN+OqObDDKA3nFz
+         Fw+JM2SEnbyUKGuY+QJxztRr87u5yyEvIfysWhNBv0JrWcdHWQ2gBjtP7InL5B6zZ2Aa
+         +v+r4BkvNCZ+GKVD/KpZjPthMgzymD7PaCyVRoSz/ZnIpWHoBYgkRm0FkEfhPy+FGVCH
+         SF5BkiTldp1I/SgJT0t5NDPTKtAL7zCTO/GYQykZGkWPITFupdCzKscJTpgrLICVbSre
+         aXzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792673917; x=1793278717;
+        d=1e100.net; s=20260707; t=1792673922; x=1793278722;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :content-type:mime-version:references:message-id:subject:cc:to:from
          :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=WsotF0ejH7vcgdu3Tl8WXCv39gHwci5cDXLJnOZO04U=;
-        b=NtHj915WlmvWh1wceZHWyYGOXnBTri0uvQXkXTYHYis3OoyaIaPKRdq/Wnizu60tUh
-         y39dc6IABwOukU/jkIPOsfrv8mtcekEgpiDloPJWnrS0UXDvpztP6YLO2jxJ0wXq0D3S
-         R5JdtC2E87QR3cv9Lbuh3kBHuhxneJiXzYdfgKxutZYqQci4M9lUW7ApY7Q1MaFZkCu7
-         6b87WL+8jI+2RzgTV/xotg3FJ21t758CB1PIdH36uuX6GTLqvdmzI80s7yxUfsXpnzZV
-         b3YC4knK5bHSWn1QSF9GAw1UE4nM/EuJ+R5t7sDdFD61FmYZ2B0h9SM4FOwQpxV5MhZz
-         JW3g==
-X-Forwarded-Encrypted: i=1; AKwUvBwC5/J7m3G72EZ2ZAqt0H9FuR5V70PlK+/FnybMcvx3f1mhuivehDKt8O/30Pyn19+vEVDXCgM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLwe4JiCFdJuifCwDwLKXnEw/A71FWoW99na/ef8OFNxF9NVK9t
-	La52g22goCHoaIBbZldJ79s9ucUFeSEWVw1tcNS3Y1GXANbTpleoAN3MArHRkzvM1RpxtPMroiF
-	kjqd8FAwNL9CZES4tLLTTJWItP2I1WDCSVJM7lD/LzqWnoy/fKl7WZbuO8w==
-X-Gm-Gg: AYBFou3tNyBW2paffFVM6YBe4YVCNx4trsB//b0hGrri4BE9Y4+t4GIeEkOqO6wI62E
-	HR0jLTjfYMeDmHGlDKrS7qYnMb7bd/rlDd9x+8uhnl6xn2obz4HAUiD97fcY6ZJ0slff1juMTj0
-	pzzUt+pOFDbYy09Lt7n4JHJEyl+Am6akwiIF3kTRQwvbjrtkF0RZ+YnHDY1oeDgR5GKmZuguK4S
-	E9AallE3NoMfFC1iGzsrWYaMJZu029++kOTYRn9+wUPK2bVAdfn0DMB0UMg2EtR5pAMICnx3fh+
-	Wi/SC7C/Je3YeMNXDQddrHPzvyZu4C1FA7PxslCudlr4NlNZXQOWuYhzb/3gJheO4tY=
-X-Received: by 2002:a05:600c:c16e:b0:49f:cbf3:551c with SMTP id 5b1f17b1804b1-4a1fdd2aa12mr112849435e9.12.1792673916787;
-        Thu, 22 Oct 2026 05:58:36 -0700 (PDT)
-X-Received: by 2002:a05:600c:c16e:b0:49f:cbf3:551c with SMTP id 5b1f17b1804b1-4a1fdd2aa12mr112848885e9.12.1792673916165;
-        Thu, 22 Oct 2026 05:58:36 -0700 (PDT)
+        bh=Wm2lsA+w7xm6rhMTdU3cXhV3KJ+IpR+CE+ng3KKGWSc=;
+        b=hWrfPcAf6hJ2inGjLXUJkN3eKKwz6Ei+iO5MxrjC90pO2AKtqtds5XvBgG/g4uTmpu
+         vwW3Av10E2uonik1ah9px9zHPENOdKoXBXg8gKQ8LIW8ddj71euA/AOY/NrDp8wd0sRc
+         i2+WjJeHrQfPPhqf9AktTQwvXsAD0X/0LMFChN1Owhu+yLZFuUHw/fiKvzmWdldvlmC4
+         Sh+oU8IqTzYdqivDbZlYd1lRrSJRscHSoAbgMWufF+w6dMQBZAx2c5cHSWll7Nk/wsvb
+         /z8Nl2kOEIWMGmezpRGshw09scB1O2sRvN8ORBMA1GS3voLqDZh6vatMVizMDPgJxy99
+         y3UA==
+X-Forwarded-Encrypted: i=1; AKwUvBxc0kCoiTjDAQLlLBwUhoTT7odeMnQa6MXA4XfzbqYaImKke7UV3b+SjUKjSFOWl/PT9cbE0ek=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJe7Yi4iSq1ZLHEC9ZqpzxlZrbAD9v9PRFDjc7kUvF0uBSxdu8D
+	C6pu2FtJ87yA+FPtu0PFVoWAEAxdeUF3IZuCPDEko/yY0L8y2aVzn/kb21GKhtgMz6YSgjjpo/J
+	yJkxmBdv1IQJ2CnztNlCZYoL35FV457XRFH9kuHP0cmhf+gUEu8Q84evhHQ==
+X-Gm-Gg: AYBFou2QLQ+RybSd2nbOYvkt+o8E/FL6xJbFhQj02ydjwLXL2HVtdPTIeTuvg9VIDFp
+	q4HEALZqGjX3vhLnPbWvdMMtAhvAvAaixQcd9hfSWfeufpfX6kUdZiZXPn8QORhSUXTtd5mYeqF
+	UTpoupMKaZ9qmy/JCz9zuqp2znKl4c1HL6y83MpApYFuQD/reh9kqqSOKz/FCXNhxzyCSlT9Jon
+	kSNPOhdC4T2sUvHHLaL7CDPLcfLC+EBBRLCX9EMSKWSM0WBUqMhhyxeCFu49fAGJ06VyHHwx57f
+	rxgtuxM51iTRMioUAEMk02kFJbchEZZT8fIEiEzrcIdaB15bEGm1hcpW2IuzMvfoW/g=
+X-Received: by 2002:a7b:cbd0:0:b0:4a1:f9e6:f418 with SMTP id 5b1f17b1804b1-4a1fdd22fb0mr76175155e9.34.1792673921675;
+        Thu, 22 Oct 2026 05:58:41 -0700 (PDT)
+X-Received: by 2002:a7b:cbd0:0:b0:4a1:f9e6:f418 with SMTP id 5b1f17b1804b1-4a1fdd22fb0mr76174745e9.34.1792673921125;
+        Thu, 22 Oct 2026 05:58:41 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1536:fc00:b838:383:1c7:6e81])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e25828e2esm11998353f8f.30.2026.10.22.05.58.29
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a203a62aaasm69570865e9.15.2026.10.22.05.58.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 05:58:32 -0700 (PDT)
-Date: Thu, 22 Oct 2026 08:58:29 -0400
+        Thu, 22 Oct 2026 05:58:38 -0700 (PDT)
+Date: Thu, 22 Oct 2026 08:58:36 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
@@ -113,15 +113,9 @@ Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	netdev@vger.kernel.org, virtualization@lists.linux.dev,
 	Max Krasnyansky <maxk@qualcomm.com>,
-	Rusty Russell <rusty@rustcorp.com.au>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>, Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>, netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org, bridge@lists.linux.dev
-Subject: [PATCH net v5 6/7] net: add ip4_parse()
-Message-ID: <65a4d0ba37073c48d75251039882161efe5a4025.1792668082.git.mst@redhat.com>
+	Rusty Russell <rusty@rustcorp.com.au>
+Subject: [PATCH net v5 7/7] virtio_net: cleanup protocol calculation
+Message-ID: <f8621d16cf0c67335641d07c1555ec1e43f17628.1792668082.git.mst@redhat.com>
 References: <cover.v5.git.mst@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -139,247 +133,37 @@ In-Reply-To: <cover.v5.git.mst@redhat.com>
 X-Mailer: git-send-email 2.51.2.2891.g4157995a80.dirty
 X-Mutt-Fcc: =sent
 
-Multiple places in the net stack open-code the same minimal IPv4 header
-validation: pull the fixed header, check version 4 and IHL >= 5 (where 5
-is the fixed header size in 32-bit units) - and locate the transport
-header at IHL * 4 past the network header.
-
-Add a helper for doing that: it returns the validated header and
-the transport header offset, or NULL if truncated or malformed.
-
-As noted by Phil Sutter, there are more places that could use this
-helper, e.g. ip_mc_check_iphdr(). They will be converted in a follow-up
-patch.
+A trivial cleanup removing a duplicated code line.
 
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Reviewed-by: Björn Töpel <bjorn@kernel.org>
-Reviewed-by: Phil Sutter <phil@nwl.cc>
 ---
+ include/linux/virtio_net.h | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-Notes (changelog):
-    v4->v5:
-        pull the options as well, so that the transport header
-        offset is within the linear data (Willem de Bruijn)
-
- include/linux/ip.h                  | 37 +++++++++++++++++++++++++++++
- include/linux/virtio_net.h          | 28 +---------------------
- net/bridge/br_netfilter_hooks.c     | 15 ++++--------
- net/ipv4/ip_input.c                 | 13 ++++------
- net/ipv4/netfilter/nf_reject_ipv4.c | 13 ++++------
- 5 files changed, 53 insertions(+), 53 deletions(-)
-
-diff --git a/include/linux/ip.h b/include/linux/ip.h
-index d11c25f5030a..7e047d18a61c 100644
---- a/include/linux/ip.h
-+++ b/include/linux/ip.h
-@@ -56,4 +56,41 @@ static inline void iph_set_totlen(struct iphdr *iph, unsigned int len)
- {
- 	iph->tot_len = len <= IP_MAX_MTU ? htons(len) : 0;
- }
-+
-+/**
-+ * ip4_parse - pull and minimally validate an IPv4 header
-+ * @skb: buffer to parse
-+ * @nhoff: offset of the IPv4 header within the linear data
-+ * @thoff: returns the transport header offset
-+ *
-+ * The whole header, options included, is guaranteed linear on
-+ * return, so the transport header offset is within the linear
-+ * data.  Callers that need to read the transport header must
-+ * pull further.
-+ *
-+ * Return: the validated IPv4 header, or NULL if truncated or
-+ * malformed.
-+ */
-+static inline struct iphdr *ip4_parse(struct sk_buff *skb,
-+				      unsigned int nhoff,
-+				      unsigned int *thoff)
-+{
-+	struct iphdr *iph;
-+
-+	if (!pskb_may_pull(skb, nhoff + sizeof(struct iphdr)))
-+		return NULL;
-+
-+	iph = (struct iphdr *)(skb->data + nhoff);
-+	if (iph->version != 4 || iph->ihl < sizeof(struct iphdr) / sizeof(u32))
-+		return NULL;
-+
-+	/* Pull the options as well: the transport header offset
-+	 * returned below must be within the linear data.
-+	 */
-+	if (!pskb_may_pull(skb, nhoff + iph->ihl * sizeof(u32)))
-+		return NULL;
-+
-+	*thoff = nhoff + iph->ihl * sizeof(u32);
-+	return (struct iphdr *)(skb->data + nhoff);
-+}
- #endif	/* _LINUX_IP_H */
 diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-index cea70ccf0ed4..063cc116e51a 100644
+index 063cc116e51a..e984e446ba44 100644
 --- a/include/linux/virtio_net.h
 +++ b/include/linux/virtio_net.h
-@@ -53,32 +53,6 @@ static inline int virtio_net_hdr_set_proto(struct sk_buff *skb,
- 	return 0;
- }
- 
--/* TODO: nothing virtio specific here, move to ip.h */
--
--/*
-- * Pull and minimally validate the IPv4 header at @nhoff.
-- * Returns the header and stores the transport header offset in
-- * @thoff, or NULL if truncated or malformed.  Only the fixed header
-- * is guaranteed linear; callers that need the options or the
-- * transport header must pull further.
-- */
--static inline struct iphdr *virtio_net_ip4_parse(struct sk_buff *skb,
--						  unsigned int nhoff,
--						  unsigned int *thoff)
--{
--	struct iphdr *iph;
--
--	if (!pskb_may_pull(skb, nhoff + sizeof(struct iphdr)))
--		return NULL;
--
--	iph = (struct iphdr *)(skb->data + nhoff);
--	if (iph->version != 4 ||
--	    iph->ihl < sizeof(struct iphdr) / sizeof(u32))
--		return NULL;
--
--	*thoff = nhoff + iph->ihl * sizeof(u32);
--	return iph;
--}
- /* Defined in net/core/dev.c, enabled while any network namespace
-  * has net.core.virtio_net_hdr_validate set to 0.
-  */
-@@ -161,7 +135,7 @@ virtio_net_l4_start(struct sk_buff *skb, unsigned int nhoff, __be16 proto,
- 		    unsigned int *thoff, int *ip_proto)
- {
- 	if (proto == htons(ETH_P_IP)) {
--		const struct iphdr *iph = virtio_net_ip4_parse(skb, nhoff, thoff);
-+		const struct iphdr *iph = ip4_parse(skb, nhoff, thoff);
- 
- 		if (!iph || ip_is_fragment(iph))
- 			return false;
-diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
-index 0a394e5f4391..e89da0e41542 100644
---- a/net/bridge/br_netfilter_hooks.c
-+++ b/net/bridge/br_netfilter_hooks.c
-@@ -206,18 +206,13 @@ static inline void nf_bridge_pull_encap_header_rcsum(struct sk_buff *skb)
- static int br_validate_ipv4(struct net *net, struct sk_buff *skb)
- {
- 	const struct iphdr *iph;
--	u32 len;
-+	u32 len, thoff;
- 
--	if (!pskb_may_pull(skb, sizeof(struct iphdr)))
-+	iph = ip4_parse(skb, 0, &thoff);
-+	if (!iph)
- 		goto inhdr_error;
- 
--	iph = ip_hdr(skb);
--
--	/* Basic sanity checks */
--	if (iph->ihl < 5 || iph->version != 4)
--		goto inhdr_error;
--
--	if (!pskb_may_pull(skb, iph->ihl*4))
-+	if (!pskb_may_pull(skb, thoff))
- 		goto inhdr_error;
- 
- 	iph = ip_hdr(skb);
-@@ -228,7 +223,7 @@ static int br_validate_ipv4(struct net *net, struct sk_buff *skb)
- 	if (skb->len < len) {
- 		__IP_INC_STATS(net, IPSTATS_MIB_INTRUNCATEDPKTS);
- 		goto drop;
--	} else if (len < (iph->ihl*4))
-+	} else if (len < thoff)
- 		goto inhdr_error;
- 
- 	if (pskb_trim_rcsum(skb, len)) {
-diff --git a/net/ipv4/ip_input.c b/net/ipv4/ip_input.c
-index 9860178752b8..5adf01763e85 100644
---- a/net/ipv4/ip_input.c
-+++ b/net/ipv4/ip_input.c
-@@ -500,7 +500,7 @@ static struct sk_buff *ip_rcv_core(struct sk_buff *skb, struct net *net)
- {
- 	const struct iphdr *iph;
- 	int drop_reason;
--	u32 len;
-+	u32 len, thoff;
- 
- 	/* When the interface is in promisc. mode, drop all the crap
- 	 * that it receives, do not try to analyse it.
-@@ -520,10 +520,6 @@ static struct sk_buff *ip_rcv_core(struct sk_buff *skb, struct net *net)
+@@ -613,8 +613,8 @@ virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
+ 			return -EINVAL;
  	}
  
- 	drop_reason = SKB_DROP_REASON_NOT_SPECIFIED;
--	if (!pskb_may_pull(skb, sizeof(struct iphdr)))
--		goto inhdr_error;
--
--	iph = ip_hdr(skb);
- 
- 	/*
- 	 *	RFC1122: 3.2.1.2 MUST silently discard any IP frame that fails the checksum.
-@@ -536,7 +532,8 @@ static struct sk_buff *ip_rcv_core(struct sk_buff *skb, struct net *net)
- 	 *	4.	Doesn't have a bogus length
+-	skb_set_inner_protocol(skb, inner_isv6 ? htons(ETH_P_IPV6) :
+-			    htons(ETH_P_IP));
++	inner_proto = inner_isv6 ? htons(ETH_P_IPV6) : htons(ETH_P_IP);
++	skb_set_inner_protocol(skb, inner_proto);
+ 	if (hdr->flags & VIRTIO_NET_HDR_F_UDP_TUNNEL_CSUM) {
+ 		if (!tnl_csum_negotiated)
+ 			return -EINVAL;
+@@ -638,7 +638,6 @@ virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
+ 	 * We know VIRTIO_NET_HDR_F_NEEDS_CSUM was set so __virtio_net_hdr_to_skb
+ 	 * set CHECKSUM_PARTIAL.
  	 */
- 
--	if (iph->ihl < 5 || iph->version != 4)
-+	iph = ip4_parse(skb, 0, &thoff);
-+	if (!iph)
- 		goto inhdr_error;
- 
- 	BUILD_BUG_ON(IPSTATS_MIB_ECT1PKTS != IPSTATS_MIB_NOECTPKTS + INET_ECN_ECT_1);
-@@ -546,7 +543,7 @@ static struct sk_buff *ip_rcv_core(struct sk_buff *skb, struct net *net)
- 		       IPSTATS_MIB_NOECTPKTS + (iph->tos & INET_ECN_MASK),
- 		       max_t(unsigned short, 1, skb_shinfo(skb)->gso_segs));
- 
--	if (!pskb_may_pull(skb, iph->ihl*4))
-+	if (!pskb_may_pull(skb, thoff))
- 		goto inhdr_error;
- 
- 	iph = ip_hdr(skb);
-@@ -559,7 +556,7 @@ static struct sk_buff *ip_rcv_core(struct sk_buff *skb, struct net *net)
- 		drop_reason = SKB_DROP_REASON_PKT_TOO_SMALL;
- 		__IP_INC_STATS(net, IPSTATS_MIB_INTRUNCATEDPKTS);
- 		goto drop;
--	} else if (len < (iph->ihl*4))
-+	} else if (len < thoff)
- 		goto inhdr_error;
- 
- 	/* Our transport medium may have padded the buffer out. Now we know it
-diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
-index 59ec465a9df9..42d639854ddf 100644
---- a/net/ipv4/netfilter/nf_reject_ipv4.c
-+++ b/net/ipv4/netfilter/nf_reject_ipv4.c
-@@ -25,22 +25,19 @@ nf_reject_ip_tcphdr_get(struct sk_buff *oldskb,
- static int nf_reject_iphdr_validate(struct sk_buff *skb)
- {
- 	struct iphdr *iph;
--	u32 len;
-+	u32 len, thoff;
- 
--	if (!pskb_may_pull(skb, sizeof(struct iphdr)))
--		return 0;
--
--	iph = ip_hdr(skb);
--	if (iph->ihl < 5 || iph->version != 4)
-+	iph = ip4_parse(skb, 0, &thoff);
-+	if (!iph)
+-	inner_proto = inner_isv6 ? htons(ETH_P_IPV6) : htons(ETH_P_IP);
+ 	if (virtio_net_csum_partial_ok_at_offset(skb, gso_inner_type, inner_nh,
+ 						 inner_proto))
  		return 0;
- 
- 	len = ntohs(iph->tot_len);
- 	if (skb->len < len)
- 		return 0;
--	else if (len < (iph->ihl*4))
-+	else if (len < thoff)
- 		return 0;
- 
--	if (!pskb_may_pull(skb, iph->ihl*4))
-+	if (!pskb_may_pull(skb, thoff))
- 		return 0;
- 
- 	return 1;
 -- 
 MST
 
