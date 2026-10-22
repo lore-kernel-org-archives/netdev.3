@@ -1,113 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=185.125.188.123
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1792657094;
-	b=ppCsN375xXNsQHQP9kTOHs0qSWLXGZxqZYNMrNvPo9ZOwFhOZMOEtueGeqG4J1FEACwx
-	 P7yO5tw6Il5Ms7bmbKZ+ve4xiaMCatIxcgOsnlG4ozxSqEE5kRUgcfowN0d8RvHyfkQFf
-	 9Io5XlC+3ugtbtixeKcPalTlNHujQNcag027f55HBNxnBy14jdXr/UBmZBNISBuxnCezQ
-	 TTwHRmG+fIwlxhmuD5i1VobCIKqjiTWQfHOMoq1jZ9I9/RjQ1bk7fgyTc2lA+0HrtCrQ+
-	 jP1N2QY2Ie8Wmfumxh0+db3xEJgUEP2rrEsX34vGQgjEwmvxS+gdg1q/31GA7qlvhAg==
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792657265;
+	b=0Il4ntSTv476+2Y3cnKHL/8YrOYrxuoZDD0jwxHv01yWjVDBfHLm0EOKWeK4HOg+xf4+
+	 U3y13I0TEiUmIt9nZ+QRUrbx/5XcOAvvGZQCPXJm70yRRhjktN73IWc3ocQeq2JCgT8oQ
+	 C7pFwceJ3cG5xxOk58lqziOLnm9co7IA2iaGgkxZG7e++HZbn7l3dJKQ/+HuV1PVqnkJD
+	 0+ZQVlfoH+h/xlUJu+r/RtoVsY1padZlOdTIAaENH7SBw5cpsMO9GCaQrSmHKeWaYiC4u
+	 wzPdw3JT4E33laIWMuvxBXNFj2xuJHD7f9d5MbSOfA4n3/h3mT9NraBUP1TEO8glqPg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792657094;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:
-	 X-Google-DKIM-Signature:X-Forwarded-Encrypted:X-Gm-Message-State:
-	 X-Gm-Gg:X-Received:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=w9B1rmI6/iXDz2kHocCk6wWqdAYeBySRJ/WPhz1fjQc=;
-	b=qukIzkCpmbo9RCW9cQDAj5q2Nc1QoR05ZTuA2HQBIlcd0HByu0aw+c8EthzR5iRy+7CP
-	 GbK27RyBMkcy4Rxh/rPgGCkJLt+wwtk+X/da3PMmeHt8oRklRx29QMwiLWXktwMowKDB7
-	 mM9WbUPjVcwWoV9MiSwX88MftKwqkkjWLZD/c4cx2iec9xsxnpPnobEV1xNxyMTYVHAh1
-	 970PKicXyj5MSeNBBO10hgMRIqo4Cgg5Wu0SHvYZsqZ5PYiKBUiG+IVp3ko6tfxVJdARP
-	 vVE0K2mpZiuw4gdSkb0wM1wBudHVwYBAKH41vH4fGugpe1Yd+JtoPOaMhKyn0oa8gNA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792657265;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:X-Sent-From:X-URL:X-Accept-Language:
+	 X-Accept-Content-Type;
+	bh=vQw780fnK2+GGA3/S3RVInPZ/5Hnzu3X3H2xLsK6ygo=;
+	b=Ss2c4YTZbLQwbPN6KUfjsJakCYOF3NlFSw7horzNZC2ydthr2/abZkDo0OniEn3cfGky
+	 1thlciV3YluYmLf1GGC4JpOHksORnWDULwPj7zZHODcke1bHWVrK9GyywJhnOkQ1NjF6W
+	 ewXJg0rgZBGE/gIOoMqO+MqSRezWP9EccuUPvZg22tawdwDhvEGfmoEV6VOWn0AqgOjuk
+	 IkdtKlhufw7IIflxtD2LBHDGD4rQf4Sgjb6psptQG87o5kmgIMrD3mf5/wjLFCDwjWDTV
+	 CQQxdzg861cOiInSeL26e6ndegmBw4MiL1aQjfFDSa2yv5ixjgjnl/qfD6bxpX7uFMA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=canonical.com;
-	spf=pass smtp.mailfrom=canonical.com;
-	dkim=pass header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20251003 header.b=bZ390a8C;
-	arc=fail smtp.remote-ip=185.125.188.123
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+	dmarc=none header.from=pengutronix.de;
+	spf=pass smtp.mailfrom=pengutronix.de;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=SMdzTta+;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0D1606A319
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 08:18:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DE0D1606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25FF2606A31B;
+	Thu, 22 Oct 2026 08:21:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 25FF2606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key, unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20251003 header.b=bZ390a8C
-Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 2D0543FB7B
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 08:18:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20251003; t=1792657085;
-	bh=w9B1rmI6/iXDz2kHocCk6wWqdAYeBySRJ/WPhz1fjQc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type;
-	b=bZ390a8CAZTJpXzmD8CBlsSHB2OqlSuB7HfenpJcqESalb8pwDrbNVVRVLM+dEshN
-	 QAw52mcXEztgzIgbfEKwMaf3ASS0qvInAX1Zog3nThI2uMizD6y3h8SkzgfMMF/VHA
-	 TosbI4cdfhVXfkFNaiSrjGi27WlpWNU6o8akxSr93VA+ehFvPciwarIKKUmCQ9InJ9
-	 Y9lDt9Bd8lfZ1/EAmS+Bq7lGFVC7XWb3+Bd71Y5X12Awa+cmn+kUcXEx37xK7+rwNj
-	 ialPXdUvGnjDc9Caq7hvE7WNQ5PeEi7oM8HKFZVkIotqg9qtSMPJfDUNOiCgiVWBs1
-	 kvPm6da+qe1WF7ZMzJiAx7iBHPuKHhL2JAiAfcae9OHA98607tQnLmiasmJOJjVQe5
-	 WdhAuxiQIvN1wqJR4cPHfKLgzMXXsDRE8hH1p5Kc6kdN1963U7jBKOgWT8Y6NE6Lcn
-	 lNDR9h1GteL1cK/k2d62YlPwugvXCLnUyU3yTTPWZQOqyzt9PZF+nRPK3Uh1ScQdos
-	 Zl9l8A3IAQaRymSz584vqPO24NSeUx4VMnQi7t1HCtl/SAIhPsegCmAmuk5ec9Y+81
-	 7fi16BfuEsjA6344xfKqSgrySjA1BYfNBWSFihEiVWmR5IzIz419mMP1tTY1p/BHLv
-	 +n/AAUNLNRKb8C0S8aj3KV6c=
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-359b81ad4e8so2708504eec.0
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 01:18:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792657083; cv=none;
-        d=google.com; s=arc-20260327;
-        b=EiZUs3repgPgdkagV+IEpfJJtm3UKgakrKVDwIJFAj5I80Zq9zb8JtdoUBA6GA5AfY
-         vkPa0ioZ3uC2zB14IMkPYlMWOsfNiBengJjNCzDqolAMEGdTbgRCyepK+66RRxCZ/JNP
-         zpQmZrZj/9bpw/P7dneqfXtvNcOuHISgW2Aiv5C56vb4NtC33P05q1+pVrX44SWsuWA5
-         zobmJ9eQNDG7SscwgZVPNTMTPq3wbsvMV2yTXSYowfld4+8UqRbBkJWLySV3sTlU2jTt
-         wPhEa6Hf6aA/1RH27mgS9CYgsRH+eFEyaLPRb/TDiUT37tQ9jmuv2NlSbHWGtE/HCMDK
-         EPDQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=w9B1rmI6/iXDz2kHocCk6wWqdAYeBySRJ/WPhz1fjQc=;
-        fh=zt2jicfkqjVhYI1OieBaldttYseFW5rhMiXU9f8Jpi8=;
-        b=EQlgPusxElKF+NghW6zCxMfXyISY/6kWbuBT36BXvp96sPHmDWjvvnnETk1iqirhRo
-         +P0hb5FLOSCxYffyO1IFnXLw6gC9KvLkBw275FheuZn2O8hVpUtV//7nhAyqCRDjzs4u
-         8NSswO73pVy2pEDpE2xoiM5s8O5cLae2foD1VG3Gu6W4KM81Cxekcu5twjroGQ9XBe6L
-         mOUUy0c6YNAAQnNOu/+cwrbUSpgTCzVgtdSsmEICATONlN3wTURDvJdvP2camOH+B3qi
-         fHWnoOKc0pTF9CaujLtFzJujw4LRTkcwr8k2WC94xc0Y2oiVIH5ymGacN3uhDO6eDKa5
-         9y4g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792657083; x=1793261883;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=w9B1rmI6/iXDz2kHocCk6wWqdAYeBySRJ/WPhz1fjQc=;
-        b=FPyGkRJ6gQDqTLzsQekEalL4qxces020lP7SL9BIqMxyOtxjku50jgbRr+Ws42G+jg
-         0vgk2bvvLAB5uSdoLG9YeATX1P9U6MWkxv65aZKIWRXMHmOnXtACEHFFES4dx5BvypQ6
-         nR5U1a+tSs4ASdVk/4LcB/urAEW2ExUmGpaUpQ+xrkcsv0qBbfpwlvSsuQjylQkR3e7a
-         4Pp2S6Sieu5EkDkyg9DFA6QRyaH37oGkV6ecejxRyPcpzDOJhDD6VWVxJ5F7OnjREkTO
-         ZLCyW0x40+z2TkI4cda0QnKAFvbS/HnfT5mfEMlC9Cy8xdH0SvSr1gAXUprgcjxJXYjU
-         jphg==
-X-Forwarded-Encrypted: i=1; AKwUvByGfaeqRrGYIwiRsZmuiKUyLbnxbq3zvZM8zmCAkqfP6eBsXTNl+7U45yp+PCOtLJH+Kgafe34=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKvAIAZ0Imz+j9k83bfY4dogGbiMw+ogY3W7qIW9kR0MnoBloki
-	MBVykGDO31n6zrQUENNJNTbxmNL7/odvGIJKMr9CM4NtcvOXJEFby5Z1orlUx5vZd/16p0z3WP5
-	SEK1VXejM8HrUUGSc8lM8d5LaXhs3tiQRqVzk+uzVdf4m7ddk7A1UZ51YbmqRijnb8B59EdrzXv
-	AhhR0aB2iaVOidMIv5kpdKr/3GZANzCiCAKkNlHS+L7Biu4zXk
-X-Gm-Gg: AYBFou0PgXUp79yNtQkNb2dzlLB1yGZibJLYLDwWa40DdXWryI7Wv84ELFtovVVjxV+
-	A0ZzQV9bbCUXtN1dlhb4MH7H657EcrRdMLdU8cuFZr0onSNINYoklxFKVm/dvS3gEB5CYlNzgdE
-	QbagzH5B/dII/1X12BdvBCnGR2UBeXCikpSFPacJGZ6oBp79MlSd/xmlWqiuGBui2njeV4qAn9/
-	usPqgonVypR8lx/q4oMfs2ozah58mCJ+L+Rd2hPixPq3d5xOxGiaCdLGxITOvAb5DKMTF0OiRJv
-	TotA/o3LuIM5lrj3/yYYhVQMcvDh5eIUHVwnYZvbmJA1nzWdpUd3KdC7BKfQVbzNSxBp/Ms=
-X-Received: by 2002:a05:7022:158d:b0:193:9568:b42a with SMTP id a92af1059eb24-1939568b477mr1517909c88.8.1792657083320;
-        Thu, 22 Oct 2026 01:18:03 -0700 (PDT)
-X-Received: by 2002:a05:7022:158d:b0:193:9568:b42a with SMTP id
- a92af1059eb24-1939568b477mr1517875c88.8.1792657082883; Thu, 22 Oct 2026
- 01:18:02 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=SMdzTta+
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 398C72004FF;
+	Thu, 22 Oct 2026 10:21:02 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792657262;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vQw780fnK2+GGA3/S3RVInPZ/5Hnzu3X3H2xLsK6ygo=;
+	b=SMdzTta+XYflBlw900ldTuFfUPZjqA/sk77hkzKwMLOJfZ5OkxxXD8uqBnOE0s8BXTtGng
+	OrKcqIWz5HUr+ZD1+8YeSbbWqFET03pGqiwwhdzdnvzK7r3FTbYGydC0UxJcZ96m8sbQ1u
+	Ap4OyikoziCVKNHXSK/Wzt8Tly/aDb0V6sM4C2BRNXzLwJdnNSCKfIoV2nkQgD7ITgNup3
+	xtseRF8KkK2hV6HlTgB4WnempN3KxtrsFztEzQZkx4dJZ+AksCYyUbRR8weKyHlxO5X/+Q
+	vt+QTit7nD8V+GK1g2nywEmwW7OLikZNnV/2A38t27GSOqo2Bd8YatRwAu+qFA==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792657262; a=rsa-sha256;
+	cv=none;
+	b=Ieoe7gMUTG5cOQtwXJP2D8TpH6eXIHu3GuxhJgEBtf98BwTMFNM6dK9t5IHSPF+M5qpiIn
+	45tmzNAExc66jbto/O3t5z475XtwSjyF31Qh1Ipbd9wzi6Bj2O818d8dxGlvqIR5KW5l74
+	wiJhUAQC3kpeYrTA7ufd7YHjV2zA9A4lWhJ48DXq+C2FYzzNdlaMJy4nZ3W27s7k2p/Nu/
+	sIVmFyBskHe18LBBDy49vGLH3n7Il0zio8IkDIf7nWOtyR3XY5gxqWTGtvU+hipIkpvxp8
+	XC/xVYBsfcuDdNDbRHoexI/oJXivmewFh0R69qdm33OUFpV/Zd9w3pGVScO2bg==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=ore@pengutronix.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792657262;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vQw780fnK2+GGA3/S3RVInPZ/5Hnzu3X3H2xLsK6ygo=;
+	b=e/2KoHJC0/jeMPmUeOwajwbnQjsLMwMFCfaSy9RwajuHUMO7N/qr2lvituyqqDKvaWxfVM
+	WNT5FkDT+Uujyy4dkqhN1knQ0TpNnxHAKH1gkv93vrAwBSuXaDti73nUSdUMtfv9NZZPBS
+	pu/txVwcFlZuaeUKo1qKjIGFjGOX+50AiW80M+a+qzlMY3xl59obNToeWzBNvxLp7CqdM2
+	S/G/NYHlQcjgTv85mpOwdElH1V0EDfmCCeisBLQ7UyD8QHtCEg5g3qR12zlnjMucC4ceSO
+	u/KbX0CVnV+ZUOjgrZCP9htFghr3S7CdcJmDlM0KfdIwPf647MMCYRd7yyQ+GA==
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1xJo2o-000g29-0U;
+	Thu, 22 Oct 2026 10:21:02 +0200
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1xJo2o-00000009RM4-08DS;
+	Thu, 22 Oct 2026 10:21:02 +0200
+Date: Thu, 22 Oct 2026 10:21:02 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Carlo Szelinsky <github@szelinsky.de>
+Cc: Kory Maincent <kory.maincent@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Kyle Swenson <kyle.swenson@est.tech>, Ross Cawston <ross@r-sc.ca>,
+	netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2 11/14] net: pse-pd: unwind allocations when
+ controller registration fails
+Message-ID: <atnHbhdUejaCw1AH@pengutronix.de>
+References: <20261020171249.853085-1-github@szelinsky.de>
+ <20261020171249.853085-12-github@szelinsky.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -117,141 +106,53 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261019105155.3793063-1-aaron.ma@canonical.com>
- <20261019105155.3793063-4-aaron.ma@canonical.com> <CH3PR11MB56689592183937149141CA5D6DE5662@CH3PR11MB566895.namprd11.prod.outlook.com>
-In-Reply-To: <CH3PR11MB56689592183937149141CA5D6DE5662@CH3PR11MB566895.namprd11.prod.outlook.com>
-From: Aaron Ma <aaron.ma@canonical.com>
-Date: Thu, 22 Oct 2026 16:17:51 +0800
-X-Gm-Features: AclHuK_MWaUe4Kt9JlOwlYzMGPqVeUahl-zxhu0V2P8ckRAI2qMspUXp9TfYrYA
-Message-ID: <CAJ6xRxUcCpwdxpiNijA8G+h8wS=RM8T+uGKc+-t-7Gd2_4ovAw@mail.gmail.com>
-Subject: Re: [PATCH 3/5] ice: scope global configuration lock to the adapter
-To: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-Cc: "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, 
-	"Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	"Lobakin, Aleksander" <aleksander.lobakin@intel.com>, Richard Cochran <richardcochran@gmail.com>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Dan Nowlin <dan.nowlin@intel.com>, 
-	Brett Creeley <brett.creeley@intel.com>, "Keller, Jacob E" <jacob.e.keller@intel.com>, 
-	"moderated list:INTEL ETHERNET DRIVERS" <intel-wired-lan@lists.osuosl.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261020171249.853085-12-github@szelinsky.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 
-On Wed, Oct 21, 2026 at 7:12=E2=80=AFPM Loktionov, Aleksandr
-<aleksandr.loktionov@intel.com> wrote:
->
->
->
-> > -----Original Message-----
-> > From: Aaron Ma <aaron.ma@canonical.com>
-> > Sent: Monday, October 19, 2026 12:52 PM
-> > To: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw
-> > <przemyslaw.kitszel@intel.com>; Andrew Lunn <andrew+netdev@lunn.ch>;
-> > David S. Miller <davem@davemloft.net>; Eric Dumazet
-> > <edumazet@kernel.org>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni
-> > <pabeni@redhat.com>; Lobakin, Aleksander <aleksander.lobakin@intel.com>=
-;
-> > Richard Cochran <richardcochran@gmail.com>; netdev@vger.kernel.org;
-> > linux-kernel@vger.kernel.org
-> > Cc: Dan Nowlin <dan.nowlin@intel.com>; Brett Creeley
-> > <brett.creeley@intel.com>; Keller, Jacob E <jacob.e.keller@intel.com>;
-> > moderated list:INTEL ETHERNET DRIVERS <intel-wired-lan@lists.osuosl.org=
->
-> > Subject: [PATCH 3/5] ice: scope global configuration lock to the adapte=
-r
-> >
-> > ice_global_cfg_lock_sw is a module-global mutex, so a package download
-> > on one E810 adapter blocks Admin Queue commands on unrelated adapters i=
-n
-> > the same system. In addition, the mutex is acquired only after firmware
-> > grants the Global Configuration Lock and dropped before firmware
-> > releases it, while the opcode exemption list in ice_aq_send_cmd() does
-> > not check whether the caller is the lock owner. Non-owning PFs on the
-> > same adapter can therefore submit exempted Admin Queue commands or
-> > sideband requests while another PF holds firmware ownership.
-> >
-> > Move the software mutex to struct ice_adapter and record the owning tas=
-k
-> > across the entire Global Configuration Lock acquisition and release
-> > sequence, including the core reset path in ice_cfg_tx_topo(). In
-> > ice_aq_send_cmd(), require non-owning tasks to wait on the adapter mute=
-x
-> > while allowing the owning task to issue the permitted configuration
-> > commands. Route the Admin Queue fallback in ice_sbq_send_cmd() through
-> > ice_aq_send_cmd() as well.
-> >
-> > This patch depends on the previous patch in this series.
-> >
-> > Fixes: c76488109616 ("ice: Implement Dynamic Device Personalization
-> > (DDP) download")
-> > Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
-> > ---
-> >  drivers/net/ethernet/intel/ice/ice_adapter.c |  2 +
-> > drivers/net/ethernet/intel/ice/ice_adapter.h |  6 ++
-> > drivers/net/ethernet/intel/ice/ice_common.c  | 63 +++++++++++++-------
-> > drivers/net/ethernet/intel/ice/ice_common.h  |  3 +-
-> >  drivers/net/ethernet/intel/ice/ice_ddp.c     |  7 +--
-> >  5 files changed, 55 insertions(+), 26 deletions(-)
-> >
-> > diff --git a/drivers/net/ethernet/intel/ice/ice_adapter.c
-> > b/drivers/net/ethernet/intel/ice/ice_adapter.c
-> > index 7de9223e971a7..17819c3a172fa 100644
-> > --- a/drivers/net/ethernet/intel/ice/ice_adapter.c
-> > +++ b/drivers/net/ethernet/intel/ice/ice_adapter.c
-> > @@ -65,6 +65,7 @@ static struct ice_adapter *ice_adapter_new(struct
-> > pci_dev *pdev)
-> >       for (int i =3D 0; i < ARRAY_SIZE(adapter->cpi_phy_lock); i++)
-> >               mutex_init(&adapter->cpi_phy_lock[i]);
-> >       mutex_init(&adapter->rebuild_lock);
->
-> ...
->
-> >  /**
-> >   * ice_should_retry_sq_send_cmd
-> >   * @opcode: AQ opcode
-> > @@ -1895,17 +1894,24 @@ ice_aq_send_cmd(struct ice_hw *hw, struct
-> > libie_aq_desc *desc, void *buf,
-> >               u16 buf_size, struct ice_sq_cd *cd)
-> >  {
-> >       struct libie_aqc_req_res *cmd =3D libie_aq_raw(desc);
-> > -     bool lock_acquired =3D false;
-> > -     int status;
-> > +     struct ice_pf *pf =3D hw->back;
-> > +     struct ice_adapter *adapter =3D pf->adapter;
->
->
-> pf->adapter can be NULL during ice_init_hw(), is it ok?
+On Tue, Oct 20, 2026 at 07:12:46PM +0200, Carlo Szelinsky wrote:
+> When pse_controller_register() fails, it does not free the
+> notification kfifo. Worse, if pse_register_pw_ds() fails part way, the
+> power domains it already set up stay in the global map. Their supply
+> handle belongs to a PI regulator that devres then frees, so the next
+> user of the map reads freed memory.
+> 
+> Free the kfifo on every error path, and let pse_register_pw_ds() undo
+> its own power domains while it still holds pse_pw_d_mutex, so no other
+> controller can pick one up first. The PI array is already freed by
+> devres.
+> 
+> Found by code inspection and AI review. Triggered in QEMU (arm64,
+> KASAN) with a test-only PSE controller and an injected failure in
+> pse_register_pw_ds() at the third PI: reading the regulator summary in
+> debugfs then gives
+> 
+>   BUG: KASAN: slab-use-after-free in regulator_summary_show_subtree+0x770/0x9c4
+> 
+> With this patch the failure is undone, and kmemleak reports nothing.
+> 
+> Fixes: 50f8b341d268 ("net: pse-pd: Add support for PSE power domains")
+> Fixes: ffef61d6d273 ("net: pse-pd: Add support for budget evaluation strategies")
+> Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
 
-Patch 2/5 moves ice_adapter_get() and the pf->adapter assignment before
-ice_init_hw() in ice_probe(), and retains the reference until after
-hardware teardown. The reference is also retained across Tx-topology
-reinitialization and devlink reload, so pf->adapter is valid during
-ice_init_hw() with that patch applied.
+Besides the pse_pi_power_off() call (see my reply to patch 10), two
+small things for the next version.
 
-Thanks for review,
-Aaron
+Helpers that expect pse_pw_d_mutex to be held should check it with
+lockdep_assert_held(), not only say so in a comment: please add it to
+pse_pw_d_release_locked() here, and to pse_pw_d_leave() in patch 12.
 
->
-> > +
-> > +     if (READ_ONCE(adapter->global_cfg_owner) !=3D current) {
-> > +             guard(mutex)(&adapter->global_cfg_lock);
-> > +             return ice_sq_send_cmd_retry(hw, &hw->adminq, desc, buf,
-> > +                                          buf_size, cd);
-> > +     }
-> >
-> >       /* When a package download is in process (i.e. when the
-> > firmware's
-> >        * Global Configuration Lock resource is held), only the Download
-> >        * Package, Get Version, Get Package Info List, Upload Section,
-> >        * Update Package, Set Port Parameters, Get/Set VLAN Mode
-> > Parameters,
->
-> ...
->
-> >       /* Since we triggered a CORER, re-initialize hardware */
-> >       ice_deinit_hw(hw);
-> >       if (ice_init_hw(hw)) {
-> > --
-> > 2.53.0
->
+Once patch 12 removes __pse_pw_d_release(), only one release function
+is left, so the _locked suffix has nothing to tell apart. Please
+rename pse_pw_d_release_locked() to pse_pw_d_release() in patch 12 and
+keep the assert.
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
