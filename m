@@ -1,70 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792691430;
-	b=HYD9687W7Ag9/EnBjiRMJd9Wyp0op4G9VEH6bEKUC5pYFEe2Lq4ioAKS85NTXg1e4l8G
-	 C7R5jHJAEx/hEx0eUTL8st8Er20eLgnpKK9SzwR9FWyQUx+QR0RewlmaUgEVO6XsvAyVS
-	 pKPc6FeMr/cdm513EKVXB1FwIn5eN3rJF97NHztRZ+ikhy0eeyb0qVO6yozD5YMxXWdJR
-	 fuZyhgtX9athlVz9ONrRYMecQproHyVAHfiiwjFA66a9i2IsAj44OF6pDmUgLLbbOtcmM
-	 XjOf95oUCnUHUcqPYNQ/J2hG0ZeOJC6hnkVQ7aeAL6/5q4t0ZUreMvJ3uOiee7VgJfA==
+	t=1792691552;
+	b=LqbpZEIQWf0gMbsi/yi3SPSd/ffAh6QvHAf6buYfRJF4FP6bKmr1fqHJ4SS0QlICEU5m
+	 cLeHHE0suOsFxagydi81UEkH/+paM6KlB9eDtZulil3P/4Ql3twCHDvB/g/+aOrC1AX0f
+	 Jy4uQbUVRHHQ5X1+SP+jb1FqzgbWqppKemRYKFpakTHxY/Fuydd1WxtEmPUW5dAPr6sCP
+	 ZPqIzE+gEzXD8evdeoMtoH/04JmgMKy1vaP4eoXKmi05X06K07dZABkwNEwlU1vXw0QJm
+	 HaPGKyJWtDPayWjpjankiTVDB5nfbHqpINCBcFZYhmkssFHS7Dg6eL4K2zcAMzWGXyQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792691430;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
-	 X-Gm-Gg:X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	a=rsa-sha256; c=relaxed/relaxed; t=1792691552;
+	h=Received:DKIM-Signature:Received:X-Gm-Message-State:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=Wd3oLS+dcFTXkdvGEDZ+0YYIQNbTTyKN39PEruh5N40=;
-	b=Ly23+b6t1LwRvbbHxmsHyGET5zIuKWTZP0Bedm46K3z86CbITlhTuiasOWxUZAXGBMMP
-	 AcwDdFyy1Wagzl/p/Ng1pR0LW66lMyOQodZNFT5zkvIW3g0dskv+nf3m+uvMnMB5Ec3Va
-	 bP4RSgsLLYIr0kRE1MTpdPxozLaWJVpmW6A3wpI+h3KJWKCqbiaEytcUBTJVV83Mfm4Ia
-	 nv4QJsyBqME11Qf107Rm8yrtqYrZn9TeWm/S4BWwQGfSTDzgSbcZv62yLht/PldOF33vq
-	 m6mEeOWZTavxFd8PE38pHRy0HZv4jUyj9AX3/uUSUrYxHTS30GfZDi9E8Ca6p45Xq2Q==
+	bh=sVf47aEsd+XkYlW1t6M73q5BRuGgvCqtUM6WXvYFTSA=;
+	b=OqEKbtyAF9KT/nycY1b3xIcXgQJa+R2M/9xugN++WWQ740FmXq6LyPLUF00w3WXZ/gjg
+	 toDB9nlVZgAWE2HeWDbDPfcEeyjNJL15aJLJVHNfRXldHtiYzZFzR41GifODneg1W0J3o
+	 9Hm2mriNVeZYjxUtKw9qCXarT1SD2Ex9o32zeFBb3RwlvgZnKs2QF0H9gvXjr097cl8Ds
+	 666wIlAVw9a4VOTZ5D8WQX+dwDpmzDN2eecvtv2ET8XlmO5Xs8onvtlmlDBDFH1Zx+s89
+	 aZ0eBNKTQESxRSNJQuoZxSB1twQlEeR5DMmZdpOYiXSsIVRzaPrPFDTzANZipqFLhLg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=fail header.from=linux.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	arc=none smtp.remote-ip=209.85.221.52
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bT3YR+nh;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30AD4606A31B
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:50:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 30AD4606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-48df4e9d2d4so34206f8f.3
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:50:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792691428; x=1793296228;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Wd3oLS+dcFTXkdvGEDZ+0YYIQNbTTyKN39PEruh5N40=;
-        b=PMxJ2VVuS+I336204T5ETkLQOvCvMeBcsMKksQGNCHeFEU6JK8DCZJrnYuzXgA1b2L
-         B/5VcYa2ZFd4UACiBcU0Uz4BzZzpoJ7dOOUwqH4Zh9Bt+3swTL+TtwNY+U8axfvbrSK7
-         nYIL+UyKwtoalSlDQi2t1Qv9JIZH7TBOx5HpiWTGxdM8cJTbY7tYOwQuwHT3u4QCFD7s
-         +cCa35JmVttPtUPsgm3VpCVUi82chaRDMXrHRxNX5R9bztlGI3jZy5aPHnCBdM2+6p7Y
-         SE0+kmOP6uWFvuS4Iz7uF7K4v7YE0pZSn1uxgWYYybstogx0brynMSuHW0PUd10tlTCS
-         GZ1A==
-X-Gm-Message-State: AFq9FYKf6Au78dSmgPk91J1CwutFJO7EHvSJhurgSAvJTokSBtO5vWDk
-	O+0C8vqFY8aJPk9/0sBYOJ6Vrxgl0wICvs77FOVMvaRhGRORZJOquLnY
-X-Gm-Gg: AYBFou2oj34/Qqel8br4MmzOGhKaRoJZFswE4ogC5laNlOuLaS6fcKtWdxKWqu2/u0/
-	4J0a4w3Uiq9PLFITdZEhVjkgYg80+qBkgr4g1ODgiC3d3ce86/1GQCr7TFZvw/ovDCle1WxXPZD
-	vEWWlUAfO0oyY3B7gx6krAsfeMV7FxDT4UdpuHBuefAm/a8504HZLSgQANHG/e/b6y+7h3A33p7
-	5pqDEZjwREBJWNCVGlne9t8aUa5IKg+oNxNyYUjj5I4/BuFcLdxZWXcECXJAyXEaQNo0LLaFfmk
-	RialOFEwSDBXRQ2VQGXOuqo2J1zFebNjZFDjykTK9ss3VF8X565CnBBZWGQg+MgIpLuDiCOlkYD
-	nZmdjy5rtUeMrAza9ou7/V6VePnh6m4R1cL40PnaoN7jRQKy/O0TA2OXhFioLviUojoGiSl7rxj
-	SiHgBoQIMWI8oY9D3ceBIkcaa3nd5VLfUuOB9zE2OYfdQaBP0acVhb/+nadlhLWuM+hyWzmqNj6
-	IoAsbEmlv0PQXFDQg3iTLsrlVaB0a/0eNoyUNx6PuAaAPnZ3Fkiqj1pe8pglLg4OY2u3iPqKcnn
-	ES33VBDSLA==
-X-Received: by 2002:a05:6000:1866:b0:48e:412:37f4 with SMTP id ffacd0b85a97d-48e2641de1amr14015136f8f.1.1792691428424;
-        Thu, 22 Oct 2026 10:50:28 -0700 (PDT)
-Received: from [192.168.1.135] ([81.79.62.202])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e25835247sm13834966f8f.41.2026.10.22.10.50.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Oct 2026 10:50:27 -0700 (PDT)
-Message-ID: <c9d2b1dd-c733-454a-9281-80787f5c432e@linux.com>
-Date: Thu, 22 Oct 2026 18:50:26 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0845E606A31A
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:52:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bT3YR+nh
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C00B81F031E5
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:52:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792691551;
+	bh=sVf47aEsd+XkYlW1t6M73q5BRuGgvCqtUM6WXvYFTSA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=bT3YR+nh7EgwWufP7iOtZ7C2DcZbDKhWlSvAM253FgDLenF4BRs37VOu/Q6RDMs6t
+	 eRIzO2IdzT8OwWzwbATCt0InnIyFhSfYOgcaUN0JExoYl7SBUHcynH56J4y8vmnIjf
+	 JJMCWobry35HDzz15PjowDd0yGcbCFxeRMPPVrEdk/IsYfu4+L6oIWWsVKfxjbnIE1
+	 75mx162WzUELP+eM2sT+YBDw0KlHFjx2uWsBYQ84JxRBhSacpJ1MeNnd+s8K0MoxnI
+	 VGTb01BVde+lP3XZAitfl50/pxDWlHDCTVWoiTNfruuQDWMsAqfiAsiFcwgUWwcEbF
+	 Z7bvDdHgkjLbw==
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5be47aa555cso2387034e87.3
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:52:31 -0700 (PDT)
+X-Gm-Message-State: AFq9FYLmhxxJ1Yu6HDZWsLgUPP++9lPW/R/kmrQLtLMwA+fCM/tIlS+K
+	FR2IBq3SpfAOsCJMdmJB+F11NYCQxCmllsGV6TdFeYLJFaNNVGWB2nbMuxi9ly9IiOmDX6zia1e
+	ViT2fJ9A0emL7DgIrsXQgSlJk/q/xI5w=
+X-Received: by 2002:a05:6512:2392:b0:5be:5184:8c23 with SMTP id
+ 2adb3069b0e04-5bfa1c5b7bdmr2526996e87.3.1792691550457; Thu, 22 Oct 2026
+ 10:52:30 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -74,97 +58,124 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 8/8] dt-bindings: net: ethernet-controller: tabulate
- who adds the RGMII delays
-To: Jerome Brunet <jbrunet@baylibre.com>, xianwei.zhao@amlogic.com,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Kevin Hilman <khilman@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20261010105900.247342-1-tanure@linux.com>
- <20261010105900.247342-9-tanure@linux.com>
- <1jqzhu9in5.fsf@starbuckisacylon.baylibre.com>
-Content-Language: en-US
-From: Lucas Tanure <tanure@linux.com>
-In-Reply-To: <1jqzhu9in5.fsf@starbuckisacylon.baylibre.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <ACT-N6N4.v1.r0.20261022051412@mojatatu.com> <ACT-N6N4.v1.r0.20261022051412-1@mojatatu.com>
+ <ACT-N6N4.v1.r0.20261022051412-2@mojatatu.com>
+In-Reply-To: <ACT-N6N4.v1.r0.20261022051412-2@mojatatu.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Thu, 22 Oct 2026 19:52:16 +0200
+X-Gmail-Original-Message-ID: <CAL4WiiqSMdYQYeeW0Fk_GK6ekR4xiS4zPrGKrbB9wZknpqf1-w@mail.gmail.com>
+X-Gm-Features: AclHuK-HAodO7ZT4F82zTy6LKJNz-xrSusqBzXNSUa99LviiCuG6cFZ6fapMU2M
+Message-ID: <CAL4WiiqSMdYQYeeW0Fk_GK6ekR4xiS4zPrGKrbB9wZknpqf1-w@mail.gmail.com>
+Subject: Re: [PATCH net 2/5] net/sched: act_mpls: reject short linear Ethernet
+ headers after pop
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
+	Victor Nogueira <victor@mojatatu.com>, "David S . Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Martin Varghese <martin.varghese@nokia.com>, Pravin B Shelar <pshelar@ovn.org>, Vega <vega@nebusec.ai>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 13/10/2026 08:14, Jerome Brunet wrote:
-> On sam. 10 oct. 2026 at 11:59, Lucas Tanure <tanure@linux.com> wrote:
-> 
->> The informative section explains in prose how phy-mode, the delay
->> properties in the MAC node and the mode handed to the PHY fit together,
->> and says itself that developers often get this wrong. A reader has to
->> work through several paragraphs before answering the one question they
->> usually have: for this phy-mode and these properties, which part adds
->> which delay.
->>
->> Add a table that answers it at a glance, with one row for every
->> combination the properties allow.
->>
->> Assisted-by: LLM
->> Signed-off-by: Lucas Tanure <tanure@linux.com>
->> ---
->>   .../bindings/net/ethernet-controller.yaml      | 18 ++++++++++++++++++
->>   1 file changed, 18 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/net/ethernet-controller.yaml b/Documentation/devicetree/bindings/net/ethernet-controller.yaml
->> index 1bafd687dcb1..bba27a9feb61 100644
->> --- a/Documentation/devicetree/bindings/net/ethernet-controller.yaml
->> +++ b/Documentation/devicetree/bindings/net/ethernet-controller.yaml
->> @@ -339,6 +339,24 @@ additionalProperties: true
->>   # has added. Failure to remove the delay will result in a
->>   # non-functioning link.
->>   #
->> +# Put together, with the two properties in the MAC node, this is who
->> +# adds each delay:
->> +#
->> +#   phy-mode    tx-internal-delay-ps  rx-internal-delay-ps  TX delay    RX delay
->> +#   rgmii       -                     -                     PCB trace   PCB trace
->> +#   rgmii-id    -                     -                     PHY         PHY
->> +#   rgmii-id    present               -                     MAC         PHY
->> +#   rgmii-id    -                     present               PHY         MAC
->> +#   rgmii-id    present               present               MAC         MAC
->> +#   rgmii-txid  -                     -                     PHY         PCB trace
->> +#   rgmii-txid  present               -                     MAC         PCB trace
->> +#   rgmii-rxid  -                     -                     PCB trace   PHY
->> +#   rgmii-rxid  -                     present               PCB trace   MAC
->> +#
-> 
-> That would match how the HW is working on the A733 Allwinner too but I'm
-> not entirely sure this is what Andrew had in mind from our previous
-> discussion [1]. Adding him to the thread
-> 
-> [1]: https://lore.kernel.org/linux-sunxi/491f043e-6dc6-4936-a490-31a3362c5b6e@lunn.ch/
-> 
->> +# A property for a clock the PCB already delays is not in this table.
->> +# It is either the fine tuning described next, or a mistake the MAC
->> +# should report as a fatal error.
->> +#
->>   # Sometimes there is a need to fine tune the delays. Often the MAC or
->>   # PHY can perform this fine tuning. In the MAC node, the Device Tree
->>   # properties 'rx-internal-delay-ps' and 'tx-internal-delay-ps' should
-> 
-> Acked-by: Jerome Brunet <jbrunet@baylibre.com>
-> 
+Le jeu. 22 oct. 2026 =C3=A0 11:22, Jamal Hadi Salim <jhs@mojatatu.com> a =
+=C3=A9crit :
+>
+> The issue:
+> act_mpls POP can leave fewer than ETH_HLEN linear bytes after
+> skb_mpls_pop(), either standalone on an Ethernet device or chained after
+> act_vlan POP_ETH.  A subsequent eth_type_trans() can then BUG in
+> __skb_pull().
+>
+> The Fix:
+> After the pop, when the skb started as MPLS, drop it if the linear head
+> is shorter than ETH_HLEN.  Non-MPLS pops and pushes are unaffected.
+>
+> Conditions to recreate the bug:
+> - egress tc filter on lo: action mpls pop (standalone), or
+>   action vlan pop_eth action mpls pop (chained).
+> - AF_PACKET SOCK_RAW with PACKET_VNET_HDR, hdr_len=3D28, and a non-linear
+>   eth / mpls / inner-eth frame.
+> - The pop leaves skb_headlen(skb) < ETH_HLEN; a following
+>   eth_type_trans() can BUG in __skb_pull().
 
-Thanks, But I will drop this as it is wrong.
-Lucas
+skb_mpls_pop() calls skb_ensure_writable(skb, mac_len + MPLS_HLEN),
+then memmove()s the mac header and pulls MPLS_HLEN.
+So after the pop we still have at least mac_len bytes in the linear part.
 
->> -- 
->> 2.56.0
->>
-> 
+If mac_len >=3D ETH_HLEN, the new check can never trigger.
+It only matters when mac_len < ETH_HLEN, ie after POP_ETH
+or on an L3 device.
 
+Do you have a standalone repro? If yes, which path ends up with
+mac_len < ETH_HLEN on an Ethernet device?
+
+
+>
+> Fixes: 040b5cfbcefa ("Fixed updating of ethertype in function skb_mpls_po=
+p")
+
+This commit only added the @ethernet parameter to fix the ethertype update.
+The pop leaving a short linear part dates back to act_mpls introduction:
+
+Fixes: 2a2ea50870ba ("net: sched: add mpls manipulation actions to TC")
+
+> Reported-by: Vega <vega@nebusec.ai>
+> Link: https://lore.kernel.org/r/40fe2d7dfce13411bfbe9271c0f7c54fb7e88e3b.=
+1782548651.git.bronzed_45_vested@icloud.com/
+> Cc: stable@vger.kernel.org
+> Suggested-by: Jakub Kicinski <kuba@kernel.org>
+> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> ---
+>  net/sched/act_mpls.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/net/sched/act_mpls.c b/net/sched/act_mpls.c
+> index 4ea8b2e08c3a..4d375033400b 100644
+> --- a/net/sched/act_mpls.c
+> +++ b/net/sched/act_mpls.c
+> @@ -57,6 +57,7 @@ TC_INDIRECT_SCOPE int tcf_mpls_act(struct sk_buff *skb,
+>         struct tcf_mpls *m =3D to_mpls(a);
+>         struct tcf_mpls_params *p;
+>         __be32 new_lse;
+> +       bool was_mpls;
+>         int mac_len;
+>
+>         tcf_lastuse_update(&m->tcf_tm);
+> @@ -76,9 +77,12 @@ TC_INDIRECT_SCOPE int tcf_mpls_act(struct sk_buff *skb=
+,
+>
+>         switch (p->tcfm_action) {
+>         case TCA_MPLS_ACT_POP:
+> +               was_mpls =3D eth_p_mpls(skb->protocol);
+>                 if (skb_mpls_pop(skb, p->tcfm_proto, mac_len,
+>                                  skb->dev && skb->dev->type =3D=3D ARPHRD=
+_ETHER))
+>                         goto drop;
+> +               if (was_mpls && unlikely(skb_headlen(skb) < ETH_HLEN))
+> +                       goto drop;
+
+Same remark as Willem's on patch 1: please pull instead of dropping.
+
+skb_mpls_pop() only guarantees the popped label was in the linear part.
+On an L3 device (mac_len =3D=3D 0) with a label stack, the next label and
+the following headers can legitimately sit in a frag.
+These packets work today, and this patch would silently drop them.
+
+Something like:
+
+        if (mac_len < ETH_HLEN && !pskb_may_pull(skb, ETH_HLEN))
+                goto drop;
+
+This would also remove the need for @was_mpls: if the packet
+was not MPLS, skb_mpls_pop() did not change anything, and pulling
+only drops packets shorter than ETH_HLEN.
+
+Thanks.
+
+>                 break;
+>         case TCA_MPLS_ACT_PUSH:
+>                 new_lse =3D tcf_mpls_get_lse(NULL, p, !eth_p_mpls(skb_pro=
+tocol(skb, true)));
+> --
+> 2.43.0
+>
