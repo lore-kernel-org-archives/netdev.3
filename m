@@ -1,59 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792695774;
-	b=d1C1TL3EW6Gkr+U3lZZ/QkS3Pvdy/29uDTFZXNoTGVYDpfQxZjjCfqoEH5JfEl5B3lQp
-	 Pl5D91kAe32H1xuUC0bZysbuA7DZqBHtQ//pdvSr9UCWAg1o/73RIpFohqIL5AtX2AZyt
-	 hSceMNMHnF97UIBksOOaCe+nUm6R9wqCoVu4K12rsn82TWE2zZ6AnpeyUMYEQOQyzmR6s
-	 z8lus1qWXG1gWu9B0xDjUhzSJCZywKqxRMzFe47Uj2pLL8LJ6jJShX9SMZfcs6ZiStz4y
-	 B0D3UoJl+DTgm59nna7ofOLYKNfJwNsNm92k3RKhnltkqKRspjoAhRRbvdiGkRAQPEA==
+	t=1792697280;
+	b=Zukd1KkPstDfe07TtVZ9gJKpgAi1FkcI78yJ8k+w132ViHH+8c9M6fEy8PeWajsxyj39
+	 08T5kgePL17Y5jNsjUZ55UIOzcis5DIrikYltDthVBP76yS1Q2hu1iRVJTB1xMFQ5GDQz
+	 MZQjbU7NMMlFgRYI6aYAnX3l8vr30CXw3CYxFWNlm1T3mnvI/AkoT2OEG+JJotiWkgeJY
+	 qyUor8VIvJGtbwGXPF496VxrWIFWttXndpS11iHIAHkT2oOSL+HixenXnUQO0K6xrOqbA
+	 ALUji4OZFKGT33Fg86I1oisjtANYioj65yB6Z9GKQThZFUSNnf/iSjl+0uZCE11wSvQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792695774;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=NDpuli4IqtoNpm+YHK8wWRZYUu/reWo+WKo0tRkJcOA=;
-	b=fMiIqCpNqztR8Vc4GmL0qwPUX+mv8+TkGUw/bMQf9VOifVArjO/RlwJg1MRFCSMcXbvK
-	 137jdow876oTOanHaUl1QBYWvuCHxAn1PzXOnB1Cni2WDfQHzE5/cVjOtGWiZqY1ZR8m9
-	 b5sQF2LVx9F8fmeGclmuRy+4WDU7H9MUI0lfegVstt1lbR/iDQODvQFpblZgaqrUZnupG
-	 CTIAV80vefzBYRaP+ZycLC3BlmvpYtWUJXneKLVWruEhvyoIpqm+eG/Nqx8VTceb5tUDF
-	 8QkZ4SSChHimYVnARs1qYkTLfjlISq9F3Cq13nX7C7rIi9JR/9Of9DlsJG1rduuadng==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792697280;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=7i5zp/nMBoh4FpTzc2q5LQUaQs09zWC1CfEISFvjXJc=;
+	b=qLXm3qafsmtaIry1CI3jb1SVoxjOESrKUurkBlKzijkyiofA2jo3JY0a8jx4Uej5trvD
+	 tvRjreCwbe7ityRZLYxLWL2+4mclzFoADG9NMwucvv5XvY8VVc07AyadEDPYa2x/554BW
+	 yzZJLq2/2tQT9ZDCYNnLtzaylk2W1XxCjEXJyJiL+Wt6p1Bt1NlAdGNjWY/Ferd0OXFgs
+	 BamoUWqITGYiEvetl8osLOtRc4qZLcJ1N5ZUO4Ps3l0fLUeFiOmf/Rfp5QIVdkeFfqEyj
+	 /Rm0KCHu9rs1wLBB8cVEf9yurOOhMj+Tjs60LcVLClEDzRDnEvRIENBjLf2LTK3m6jQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O9VGrljH;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=jcVNGsST;
+	arc=none smtp.remote-ip=209.85.219.48
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65EE606A329
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 19:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CEB5606A319
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 19:28:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5CEB5606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O9VGrljH
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 263FB1F01828;
-	Thu, 22 Oct 2026 19:02:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792695773;
-	bh=NDpuli4IqtoNpm+YHK8wWRZYUu/reWo+WKo0tRkJcOA=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=O9VGrljHODp2tLS5reDAAqxzVZB3fQV6NDVvVdbalxAPIiHTyq4H3entF3XQqsJGm
-	 nCtjprRnyoFEKQXq7SxFmQOejuBHBqRn9FQhq+n/nbVm/Z6w8ZwGnd3dCGHr5c1Ddp
-	 TO1qVjeUMvsgu0VjZ9EpEvbsWpfxgExT4n3yY30SBdVgmMQBdbvQMyrLJdjhteBmxd
-	 fYwDCaGGSFjk8O6skhMdCarj6oRKbgAiPB6uESC8A6oq5qoIp6FCeoWogXQGSxGyw3
-	 GAyj0aLm01JT81UAvYrlN/rf0I8OFz0c50WIJeQTajRKukg7EBQ4njG9paNO07z+1L
-	 /Rdbc68bfOAlg==
-Subject: Re: [PATCH net-next v7 4/4] net/sched: cake: hash before segmenting
- and reject an overlong split
-From: netdev-bot+sashiko@kernel.org
-To: jhs@mojatatu.com
-Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- victor@mojatatu.com, toke@toke.dk, bjorn@kernel.org, sashiko-bot@kernel.org
-Date: Thu, 22 Oct 2026 19:02:52 +0000
-Message-ID: <179269577270.3135.16072065138845192450@kernel.org>
-In-Reply-To: <QDISC-BA27.v7.r0.20261019115505-4@mojatatu.com>
-References: <QDISC-BA27.v7.r0.20261019115505-4@mojatatu.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=jcVNGsST
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-9196d8543cbso2413656d6.1
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 12:28:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792697279; x=1793302079; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=7i5zp/nMBoh4FpTzc2q5LQUaQs09zWC1CfEISFvjXJc=;
+        b=jcVNGsSTUgOJZcsD4vjQuyUcr+VHbKW452Ay+18BZmBjCtAmtShccx2Mm2NqZJqVrL
+         iA0pkDn622MxPFIfy2TOVL8bEutW1ghtxtQRpbTilXonVWn6Pi3WZ6M6NXcjDjui0fUq
+         GDfocVuIHpVgJtVD3OvAuGo9GBEyOM4Bugcy52PrhM6KS76zbcrDXkPzVwmazuFERIMp
+         QTGwZUp/pwg/X3m9uyy8q2qjO3p7oKuT9+YpuaTKAu+eQ57cg+/vbTsw42DJtwVYX6oX
+         2ByBAGegWuUra3lxMOOJtliqlhHHFSy/Peg0tKviIpbbNYFkYe/yCoJrvA+TtvB9lwd3
+         Lnyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792697279; x=1793302079;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7i5zp/nMBoh4FpTzc2q5LQUaQs09zWC1CfEISFvjXJc=;
+        b=bDgNW8ogBp9RojpqJ2W1GTsAZ5lxzzdd7X5JOP0kIKTPMWIc6SxljzzgRSdz8pEnEI
+         P3hSXpaj1FCDCgf5hQtuqPUo2wr6NrGx0CM1PTnXeuLq1Vt6mlz4voKEub7pKCL/aXMs
+         WFVZG+B8/r5q1sJEIsOBucxH/YVuQXo9vt5YBym5XHCBrPvDwqN9og2CmssQpWkFJGJx
+         C0Cc6M+wK51Xc/StSwMt8v3+9A5mgJ0Ilon4GqD9GQuyGJjeF2RVRmZYEM6//LhEyZ5U
+         HJVFmVlZhvHVtZMdQdO9N7P2Xt4QbqT60J8jy6jS7I/xgbfrO/wNn4oXR4Ofu/G/xnv+
+         ajrg==
+X-Forwarded-Encrypted: i=1; AKwUvBzjkAPhnWSs1YEAC0bZ+VjYvipFU/jtdsdftkq+LIFvPRTO7c1s6WmAjWuQXJIHv1fXUBInedY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJIolVc9QiZxUX2K6GhY+OimZC1LiNW3X5GPx1C4h0xU387BwJB
+	u3/vCMMXCmIi9DE0lS6z9udNbYE/gPLj7Hk1qGtmMUq6aTRkyd6UEFr9
+X-Gm-Gg: AYBFou3BKuG4LC48nHiwIyzGdJWBdRbavTwvp2ZBg8fQ8EBvjUGNlQdPd5U2ZfAgKhg
+	bT7n/JZZCjT/V0mYNBp2cRa9tu8jOL97cjXUbVKIx6s2X8zXLHoVeUzexaPKzh2EiZUZFl7YJiy
+	+mwJT1ObykgdwHyrGMpnZg+sagUJb3+XIX4nFL6XFTzrFIoMSwxp1nBRl9pBj33ScYNgRpgMSuY
+	+eIksFS9uyPIgZqhx5ZHaPEycaO3xs5da5jYGQna3NxNnZ4PGY2nA2/FARxg+OCVRSBGEiO0An6
+	M+lRI7RiKaNoYDIKFqPkSOZ1yqq1o25YgUPZsKRIsCzX/p32458MS7VLBXsdtpYl0LdFaXlicnT
+	H+8VY7BcoCqDHZHP0jcSDpN2RfqzI65JQSKtZy+IDd5sS/a81MAMJS14Sh1sZE0Ro8NXcTzHSGJ
+	4PGc5aqldWt0xU88p9DnSovqsjQMJqFlmDDDny22LAMh1vdMFeAR2noFHZx6s3U+LpbdFBinpvQ
+	o1e4fX1UrFcgAOVibH4hWnMs2jWSgMO3ND2HRrBUdyyS6HTAsNw2kBOoPr8+AiIbw8DXMonP0Xo
+	EyQ=
+X-Received: by 2002:a05:6214:509d:b0:919:5a24:d20d with SMTP id 6a1803df08f44-91c12eb53a6mr104325966d6.11.1792697279221;
+        Thu, 22 Oct 2026 12:27:59 -0700 (PDT)
+Received: from i4-gl-tmk5904.ad.psu.edu ([130.203.156.186])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c396afa91sm370296d6.11.2026.10.22.12.27.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Oct 2026 12:27:58 -0700 (PDT)
+From: Yuho Choi <oss.patchbox@gmail.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yuho Choi <oss.patchbox@gmail.com>
+Subject: [PATCH iwl-net v1] iavf: reset the VF instead of freeing rings when queue disable fails
+Date: Thu, 22 Oct 2026 15:27:46 -0400
+Message-ID: <20261022192753.69765-2-oss.patchbox@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,183 +102,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+iavf_close() leaves the Tx/Rx rings in place because the hardware can
+still DMA into them, and iavf_virtchnl_completion() frees them once the
+PF has answered VIRTCHNL_OP_DISABLE_QUEUES. It does so whatever the PF
+answered: for a non-zero v_retval the error is only logged and the
+DISABLE_QUEUES case runs anyway.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 2
+The PF can fail the request while queues are still running. ice and
+i40e give up before the Rx queues when a Tx queue cannot be stopped,
+and ice also fails when an Rx queue does not stop in time. The rings
+and Rx buffers are then freed while the queues still point at them, and
+received packets and descriptor write-backs land in freed memory.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Keep the rings when the PF reports an error and request a VF reset
+instead. The reset makes the PF stop all queues of the VF, and
+iavf_reset_step() frees the rings once it has completed. Until then
+iavf_close() may warn that the resources are not yet released, and
+iavf_open() returns -EBUSY. During removal no reset is scheduled, but
+iavf_remove() resets the VF itself before it frees the rings.
 
-- [Medium] cake_enqueue() (net/sched/sch_cake.c:1825-1827): when
-  skb_gso_segment() fails with IS_ERR_OR_NULL(segs), the original skb is…
-- [Low] The commit presents itself as a bug fix ('The Fix:') with user-
-  visible effects but has no Fixes: trailer.
-- [Low] The commit message says cake_enqueue() reads q->config->flow_mode
-  'once with READ_ONCE()'.
+Fixes: e284fc88dfb6 ("i40evf: delay releasing rings")
+Assisted-by: LLM
+Signed-off-by: Yuho Choi <oss.patchbox@gmail.com>
+---
+This was found by code inspection as part of ongoing, not yet
+published research. It has not been reproduced, as that needs a PF
+that fails VIRTCHNL_OP_DISABLE_QUEUES.
+Compile-tested only (x86_64 defconfig with IAVF, I40E and ICE, W=1).
 
---
+ drivers/net/ethernet/intel/iavf/iavf_virtchnl.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-net/sched: cake: hash before segmenting and reject an overlong split
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+index e6b7e8f82c7c..178bba609677 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+@@ -2718,6 +2718,15 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
+ 		adapter->flags &= ~IAVF_FLAG_QUEUES_DISABLED;
+ 		break;
+ 	case VIRTCHNL_OP_DISABLE_QUEUES:
++		/* If the PF could not stop the queues, the hardware may still
++		 * access the rings and Rx buffers. Keep them and request a VF
++		 * reset; the reset path releases them after the PF has reset
++		 * the VF.
++		 */
++		if (v_retval) {
++			iavf_schedule_reset(adapter, IAVF_FLAG_RESET_NEEDED);
++			break;
++		}
+ 		iavf_free_all_tx_resources(adapter);
+ 		iavf_free_all_rx_resources(adapter);
+ 		if (adapter->state == __IAVF_DOWN_PENDING) {
 
-This commit splits cake_hash() into a side-effect-free cake_hash_keys(),
-which runs on the unsegmented skb, and cake_hash_resolve(), which runs
-only once the packet is admitted. The split-GSO path moves ahead of the
-resolution: it sums the segment list, checks the total against
-QDISC_MAX_BACKLOG and, on rejection, defers the whole list to to_free
-with every segment tagged QDISC_DROP_OVERLIMIT. flow_mode is read once
-with READ_ONCE() and passed to both hash helpers.
-
-Link: https://lore.kernel.org/netdev/179231933068.3135.80340792633077986@kernel.org/
-
-> net/sched: cake: hash before segmenting and reject an overlong split
->
-> The Fix:
-> with CAKE_FLAG_SPLIT_GSO, cake computes the flow/host hash keys, then
-> splits a GSO skb into segments it accounts individually.
-
-[ ... ]
-
-> Link: https://lore.kernel.org/netdev/179231933068.3135.80340792633077986@kernel.org/
-> Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-
-[Severity: Low]
-This isn't a bug, but the commit is presented as a fix and has no Fixes:
-tag.
-
-It adds the missing check of the segment sum against QDISC_MAX_BACKLOG on
-the CAKE_FLAG_SPLIT_GSO path. It also stops cake_hash() state from being
-committed for packets that are then dropped. The split-GSO accounting
-dates back to when CAKE_FLAG_SPLIT_GSO was added to sch_cake.
-
-Could a Fixes: tag be added so backporters know which kernels need this?
-
-> diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-> index 91c33295b30b..730c90af14bd 100644
-> --- a/net/sched/sch_cake.c
-> +++ b/net/sched/sch_cake.c
-
-[ ... ]
-
-> @@ -1761,13 +1784,17 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
->  {
->  	u32 idx, tin, prev_qlen, prev_backlog, drop_id;
->  	struct cake_sched_data *q = qdisc_priv(sch);
-> +	int flow_mode = READ_ONCE(q->config->flow_mode);
-
-[Severity: Low]
-The commit message says:
-
-  Read q->config->flow_mode once with READ_ONCE() in cake_enqueue() and
-  pass that value to both cake_hash_keys() and cake_hash_resolve().
-
-Is the snapshot complete? Further down in the same cake_enqueue() call,
-the flowchain code still reloads the live config with plain loads:
-
-net/sched/sch_cake.c:cake_enqueue() {
-    ...
-		WRITE_ONCE(flow->deficit, cake_get_flow_quantum(b, flow, q->config->flow_mode));
-	} else if (flow->set == CAKE_SET_SPARSE_WAIT) {
-    ...
-		cake_inc_srchost_bulk_flow_count(b, flow, q->config->flow_mode);
-		cake_inc_dsthost_bulk_flow_count(b, flow, q->config->flow_mode);
-	}
-    ...
-}
-
-cake_config_change() publishes the new mode with WRITE_ONCE() before
-cake_change() takes sch_tree_lock(). A concurrent tc change can therefore
-let cake_hash_resolve() run with a mode that lacks the dual src/dst bits,
-so flow->srchost and flow->dsthost are not updated. The later reload can
-then see the dual mode and charge hosts[] bulk counts at stale indices.
-
-These plain loads also race with the WRITE_ONCE() store, which KCSAN can
-report.
-
-Would passing the local flow_mode to these three calls as well keep one
-mode for the whole enqueue?
-
->  	int len = qdisc_pkt_len(skb), ret;
->  	u16 flow_override, host_override;
-> +	struct sk_buff *segs = NULL;
-
-[ ... ]
-
-> +	if (qdisc_pkt_segs(skb) > 1 && q->config->rate_flags & CAKE_FLAG_SPLIT_GSO) {
-> +		struct sk_buff *nskb, *seg;
-> +		netdev_features_t features = netif_skb_features(skb);
-> +
-> +		segs = skb_gso_segment(skb, features & ~NETIF_F_GSO_MASK);
-> +		if (IS_ERR_OR_NULL(segs))
-> +			return qdisc_drop(skb, sch, to_free);
-
-[Severity: Medium]
-The comment a few lines below says SKB_GSO_CB sits over
-tc_skb_cb.drop_reason. Doesn't the same aliasing affect this failure
-return?
-
-__skb_gso_segment() writes the headroom into that slot before calling
-skb_mac_gso_segment(), and that call can still fail. Examples are
--EINVAL on malformed SKB_GSO_DODGY headers from tun/virtio, or -ENOMEM in
-skb_segment():
-
-net/core/gso.c:__skb_gso_segment() {
-    ...
-	SKB_GSO_CB(skb)->mac_offset = skb_headroom(skb);
-    ...
-	segs = skb_mac_gso_segment(skb, features);
-    ...
-}
-
-This overwrites the QDISC_DROP_GENERIC that __dev_xmit_skb() set before
-enqueue. qdisc_drop() does not write a reason back. __tcf_kfree_skb_list()
-then reads the headroom value, finds no qdisc subsystem bits, and passes it
-to kfree_skb_reason() as a core skb_drop_reason:
-
-net/sched/sch_generic.c:__tcf_kfree_skb_list() {
-    ...
-		if ((reason & SKB_DROP_REASON_SUBSYS_MASK) == __QDISC_DROP_REASON) {
-			trace_qdisc_drop(q, txq, dev, skb, (enum qdisc_drop_reason)reason);
-			skb_reason = SKB_DROP_REASON_QDISC_DROP;
-		} else {
-			skb_reason = (enum skb_drop_reason)reason;
-		}
-		kfree_skb_reason(skb, skb_reason);
-    ...
-}
-
-As a result, the drop gets an unrelated core reason and trace_qdisc_drop
-is not emitted.
-
-This return is unchanged from the old code. Since the patch moves this
-block and re-tags the reject path for this exact aliasing, could this path
-use qdisc_drop_reason(skb, sch, to_free, QDISC_DROP_GENERIC) or a more
-specific reason?
-
-> +
-> +		/* The split path accounts the segment sum, not the
-> +		 * stab-adjusted qdisc_pkt_len(), so check it here.
-> +		 */
-> +		skb_list_walk_safe(segs, seg, nskb)
-> +			slen += seg->len;
-> +
-> +		if (unlikely((u64)sch->qstats.backlog + slen > QDISC_MAX_BACKLOG)) {
-> +			qdisc_qstats_overlimit(sch);
-> +			/* __skb_gso_segment() puts SKB_GSO_CB at cb
-> +			 * offset 32, over tc_skb_cb.drop_reason; every
-> +			 * segment inherits it. Tag each one with the
-> +			 * qdisc drop reason.
-> +			 */
-> +			skb_list_walk_safe(segs, seg, nskb)
-> +				tcf_set_qdisc_drop_reason(seg,
-> +							  QDISC_DROP_OVERLIMIT);
-
-[ ... ]
-
+base-commit: c03c1a14507dfaf8b856c2608f9ac216021fc222
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-BA27.v7.r0.20261019115505%40mojatatu.com
+2.43.0
+
