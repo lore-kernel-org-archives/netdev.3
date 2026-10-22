@@ -1,87 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.47
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792645273;
-	b=p2AyAtwI5YX7F6uUFhWwJIlYnzq/7ferO0CoQjI+l3ZBMDnby3g8ko9eKAfgsTuRdn6Q
-	 Pcskx6/11calOgAFypK6fNeNsqGClkyrPo1e+vmYULyvv22eQ6z6ulGvK+BL+a1nIVnYW
-	 eMSVY+U+axP8GmsK2ReANbXJyPnN4o+EDxMIhxKOcz5ub9WHt7HD3mSH/CpsG0o/lkA/y
-	 VUHT4M/EbActlBGX5woEBI8+yjVpZK/3/TxdVTtW17C3ieVs4eWUlQolUbrX0wT95ir9d
-	 eQUg8vLspmENzOY1torFzV/sE4Fyhtztc6DhY7EShXz2LiqOx1wQeBQgAPsVT3z4QeQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792645273;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Content-Transfer-Encoding:Message-Id:References:To:X-Mailer;
-	bh=JRNz4Z0YTve9TXUlcKdgeKzQtPhMmG2xuxSs8nFX8bo=;
-	b=zrYNK2cVaSvTthOCIDT8zSgCyV94boGnoI6TfWBeKmYKumFXoezJpn6wSHSgKcSImEPF
-	 ycdo8CCLsDb2qVXWvB4a2j/1plBF8k5NxJKxo5CFnxxB+ZlqCQhIcT20xYAHohMC6GTBV
-	 +TR2x85MPo69t123rKJCluFEdCJWSC45gRdSojj2oy9C6q1tD1/zB0QGDN604hV1edlvp
-	 QzMVRQPdmazZlvsoabVMWmYSBH5Fy9KGh2qmDqQ+rz+MU0aFVo5fQaxazJmzTSsmMYDkD
-	 residtchjpsKm+o4GY3yxr+Fda5UDsBIeMOuUtHUUOItcjRBgrPxBmBqfv50pFsF1IQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=TJL7z1yn;
-	arc=none smtp.remote-ip=209.85.216.47
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792646033;
+	b=G3hXnxz713reaoLxaumZHfXHFcHaCE+U56qXILF+GrNRVtvqCuV2e8nT5MlJM1Vd419s
+	 H9e5npgfh+KAAvPBCUuR0Nbw4tVX5Mwej8kkCGuu2U024PxrC7sejRRviS0Rg1TeogIZH
+	 RNMvhbgr5wzA5JWmqBT6tWKD5gqMMgmcYPQW2XF8N/sXsxVkpF9Zpg1600ov74fG/ecZJ
+	 qCt7AnTxw1ZarNQnWoKk/mlwTFzSx+rGetsQy32oAKruguHVa8ouImP7PbTH7kcPkc5iP
+	 meOdii/gdtzo1kCfiqrrqrwzyo7ONs3r28Y3WTL/oSOYPKqh6IHErU5mHVOltdEe4mg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792646033;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:X-Sent-From:X-URL:X-Accept-Language:
+	 X-Accept-Content-Type;
+	bh=kM5hLomAlXMbgEq6K/ztPMcKepXPs6JaIWjAwYMbfC4=;
+	b=4YhMcRSJcnSLwp5LqKICs6sBJ4qyp6iiqCAXwERkJaKEKsM984Cv3bWf3a42hsqEQKAl
+	 QqtwNUIRKVHe2V90GaMR51jTWUI7d+LxoBodthGXGOTYviwmXub5ojvEzzf5/fKlOAfgS
+	 wX5hQEAe8DCVD2XvV1rtETg9dTFMu49hWVR9xRejaeP7j8ptYRgULcAf+HEilJVvkeZ01
+	 87YjuPw/iqNtyP9IM41Nelygx4W/o8295EErlX7w9PDSQAEHLACa6vOw7ObcF4ExytFwm
+	 XF41LRzDDgHooD6MP567pgUGu/tFyyrjHEqcX7R3MB1I0MtiAv7MUf2H87ap8mFc2+Q==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=pengutronix.de;
+	spf=pass smtp.mailfrom=pengutronix.de;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b="D61QvE1/";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F4F606A319
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 05:01:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 71F4F606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B20606A319;
+	Thu, 22 Oct 2026 05:13:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 77B20606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=TJL7z1yn
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3ab60ff4273so1283120a91.0
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 22:01:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792645272; x=1793250072; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:content-type:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=JRNz4Z0YTve9TXUlcKdgeKzQtPhMmG2xuxSs8nFX8bo=;
-        b=TJL7z1ynPVieI1JZg+gE/wubbyoYb7lZW3teGyPkqOGr7FXuVvgLzY65fxa1TOYamE
-         yZQ+fYcXiQ30AnlLM2suSc8gctIuvAfuXiJUenMmYiCzIp+q5zGbNhlFn8qB3lNI6feO
-         gbqPkJp5cnsDcF2i63nw1MKLBM2XJpymkL0kHEpSvIZbi/TAYkbaVBY97L2hp1gExV2Z
-         VoJb/GzeW4l3EQ/YgWk+CYxsmg1qzYmOpgyfR1dZyMVEVVD7PUAonqKNXuaajo3LN8O1
-         3ttnzDNTr+FZBeo7xV2L8aeVlEapkOx25R0fGid5K9NXvX2LIo/yWT7EGDqErVNrK5Wu
-         V/ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792645272; x=1793250072;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=JRNz4Z0YTve9TXUlcKdgeKzQtPhMmG2xuxSs8nFX8bo=;
-        b=TmlyWHaIsUShWelfN/buawBTEx2wZTU2WO3GrczKu3W3KSfOTcqbDEl5Jn6AjZ5yOI
-         ePbAcheSx4az1MghNe//3FQQXODteVz27o3+XyT3BkmzA++LT7my/JZc3sHExQYCiWoP
-         6tDJ36L350HBlC9lXcdmSPBCfQ3EfI13hRlcSobONoSSrobNNxSXlg662jAbe2z94czJ
-         0zeLPAuuUPNWFWrxo3pm0/Tlg3BC9/1Mm/R9IGghNQyFc/dRoGB+hph0Zf7RGkxFhv/s
-         3XYWpV3EU3sAd1ZU5Z/wJplypRTCUcj16ydtX/T7zxhIDcYaNzOamGi5rmeki8S19b6O
-         bw3w==
-X-Forwarded-Encrypted: i=1; AKwUvBzHYKqyZzJJsY3UxoeU6BBLZPl8FQRzrtlUv44ugefiJwFp4XjcMoeA5PurWR5yyuHlTz/+Ryk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIkigShx57/dNYnz9ambvYF55E+hSJ5fQOomb7QMvifarPqAwIU
-	z4RiBB7YW70Fn9DYdJtXvnmgajawsndBiBdaYYrhRtfKbJMHKGOcWQcU
-X-Gm-Gg: AYBFou22MCtVYbrLSrmkxwImO7p0hxtTjIRcqpOAxR9m2C0tPrLhUmSy7P/ilCOwi0u
-	jX68lW4Nci3t6kYa3rIblC8OxZ8vUBgNVrmfzbpQtkfRC2X6h3iZJNQM1bXgld8LO8XrIKVZ9ip
-	GXpdf7e+CYkLX7/iUvQdqUJ3tDRla6/hk3AKr/HLcbftHWxxctsX64GAx5srdFws+A5TlfZxsXv
-	B6FMLaHziad+fSg6Gy4iDOQeht1KDeI1UA2hqtiGD1jjGvVkBbnPy1rRGz4p2M75qF/bImMsL46
-	67X7sdWMp4Du2M8ZKfJcW/qCzT2aZ/rbuQXRXK6TxG66cSgZovXJn+Q5Wx+U5v9kEEfr7N5v9Ci
-	efr4O43Uxh1qYDKUHtOklRWmWLXzh3fqDJcjZcGazSQHTJ5TjoGjhmpjc9tkZ6hMO5P/yckeXxJ
-	U8VrWNX4E/43RI+d3L7r5WmIEXQxZIZKdcjVmEOcjbSDnbKGVyfs+eGd1cgHWKnk3V2dysC06zE
-	17UC+XEag2qaQ5+xSpvs/J8E7oeSiF+urbB3xj98FS2ESBgZOG1V+Eig5+XFdUs9UeeCDhzA3pX
-	9Oic8Vmk6y0yjztFDk8RrR70M017v2SJu9D6ulJwlc8DEd4+KsZoGZECJ2fqLGTvfEZHx8pWBwQ
-	ULM/oJo7+FaImtOjM1gTa
-X-Received: by 2002:a17:90b:5205:b0:3a4:b0f3:6597 with SMTP id 98e67ed59e1d1-3ad86cc1b3fmr3516475a91.0.1792645272096;
-        Wed, 21 Oct 2026 22:01:12 -0700 (PDT)
-Received: from smtpclient.apple (ec2-43-199-181-133.ap-east-1.compute.amazonaws.com. [43.199.181.133])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ada4887669sm2389165a91.2.2026.10.21.22.01.08
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 21 Oct 2026 22:01:11 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=D61QvE1/
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 88BD52017C1;
+	Thu, 22 Oct 2026 07:13:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792646029;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kM5hLomAlXMbgEq6K/ztPMcKepXPs6JaIWjAwYMbfC4=;
+	b=D61QvE1/2baMZeCOTG3Yj6l/GK7mVx8vcZxvh5LXR4MNIliAK9UWejIi1uLbNnk65VBDPJ
+	GgM0sRCYTXe8eJUBzq7SSYFPUPRLHWCm+lrFjcKuN6432B5ufNBHkUmrj6N7Cx9JOY+mce
+	miZj4KhVrdnJGSrKRZtY9wAGw9t0K1Pu/CoFW6rp+ytnEhX/1gYI6U66dm3QWE7cMHxGgX
+	RDDNIefRxqieVIvQMK11GWNvAwkY9qhMcoCILb14GtSRyFSaEmuKj2QgKVmccZXD8Du7j6
+	PYRmOzngXDb2YibfuOgVYZ38ryHeVztAW9m521o3qc8RGJrEMwLzc9jH8VXyBQ==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792646029; a=rsa-sha256;
+	cv=none;
+	b=T/BFzQKKbcgRnY0Ocj2D5MQHFl/3FKeHyaXs4gEI70Efxw25sxBlGzTi7B41xnfkh2BQNp
+	aGyLtBizXcCHH5NLf1aUHu5zOxyQca4Q7pg4sWPA2aaD9bEl0HGoGHZ3SVkw1dzMpm0KNY
+	tfEti5szpVDIMUyPGCp/vaXql/P9XrKXepOcKv4jSYeC7TT9isH+/qAYRVlfpBcGphB1TN
+	Q41AC/7R+2nR8LLx3PstJce6jNZFxfVlQ6wlT3bqc0kmfwhomzsTy3hKmDC/SMo0YlC8lu
+	MpPyQAKnUr4RvI7KF8/3ZuK/riY+eTpYVuY1oqzKXtUbZud/Nf//O3enD7ufNQ==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=ore@pengutronix.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792646029;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kM5hLomAlXMbgEq6K/ztPMcKepXPs6JaIWjAwYMbfC4=;
+	b=evwTAmbpYPgM4AOHW8FbmU0N4P7jpI+4+GxuJTbPWzAfJTAo0YChTyEvWLzfhuEWNpgkIm
+	2ZfdZSH5nnmexxa62N3mkEVG8Dd7q6qKEc/NqctmoLqUgyE4XzxQQUXxXSrEJKaGXAgsTH
+	HGMz6pam9YLg2MXSxTXDfTwcOgz5fOvi/JF+zY0Nl3ZzghiZTGw8Ncv/9xFfvuneor40OR
+	GeqKEdEMBdm/Gm6kM7CkrUtFkOVDjdfNbZxTuo8hKpLsV3Zkw48DvuVrYbBNKaz3FMAKLc
+	K4a+uefUZAsaWzHyxXOmjS7H46iDp1IeDldCWcybdokMYhWodCaN8wx6cr/iOw==
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1xJl7d-000ew1-1S;
+	Thu, 22 Oct 2026 07:13:49 +0200
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1xJl7d-00000009Poi-1Pcf;
+	Thu, 22 Oct 2026 07:13:49 +0200
+Date: Thu, 22 Oct 2026 07:13:49 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Carlo Szelinsky <github@szelinsky.de>
+Cc: Kory Maincent <kory.maincent@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Kyle Swenson <kyle.swenson@est.tech>, Ross Cawston <ross@r-sc.ca>,
+	netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2 07/14] net: pse-pd: do not tie a shared power
+ domain to its creator's devres
+Message-ID: <atmbjbxVUCXRq-3m@pengutronix.de>
+References: <20261020171249.853085-1-github@szelinsky.de>
+ <20261020171249.853085-8-github@szelinsky.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -90,47 +105,52 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
-Subject: Re: [PATCH net] net: page_pool: bound queue_idx before indexing
- dev->_rx[]
-From: phx <phx0fer@gmail.com>
-In-Reply-To: <179259845250.3290.4918122391861397887@kernel.org>
-Date: Thu, 22 Oct 2026 13:00:55 +0800
-Cc: hawk@kernel.org,
- ilias.apalodimas@linaro.org,
- netdev@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <D95B3BD4-75D6-4DAA-974E-1DA5B0A9F665@gmail.com>
-References: <20261021155611.68473-1-phx0fer@gmail.com>
- <179259845250.3290.4918122391861397887@kernel.org>
-To: netdev-bot+sinfo@kernel.org
-X-Mailer: Apple Mail (2.3864.700.51.1.1)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261020171249.853085-8-github@szelinsky.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 
-Hi, The issue was found by LLM-assisted review of this code path (static =
-analysis), not from a production hit or a syzbot report. I then wrote a =
-reproducer and ran it on an arm64 QEMU guest under KASAN; it fired at =
-the claimed sink (page_pool_create_percpu). The "Assisted-by: LLM" =
-trailer reflects that assistance. Thanks.
+On Tue, Oct 20, 2026 at 07:12:42PM +0200, Carlo Szelinsky wrote:
+> A power domain is shared by all controllers on the same supply and
+> counted with a kref, but it is devm memory of the controller that
+> created it. When that controller unbinds while another one still uses
+> the domain, devres frees it anyway, and the other controller and the
+> global map keep pointing at freed memory. The same happens when
+> pse_register_pw_ds() fails part way.
+> 
+> Allocate the domain with kzalloc() and free it on its last kref_put().
+> A domain left over from a failed pse_register_pw_ds() is now leaked
+> instead of freed while still in the map.
+> 
+> Because the domain can now be freed at the put, pse_flush_pw_ds() clears
+> pi[].pw_d under pcdev->lock before the put, and pse_ethtool_set_prio()
+> checks it under that lock. The PI regulator ops and pse_isr() use it
+> under the same lock.
+> 
+> Triggered in QEMU (arm64, KASAN) with two test-only PSE controllers
+> on one supply: after the one that created the domain unbinds, binding
+> it again gives
+> 
+>   BUG: KASAN: slab-use-after-free in pse_controller_register+0xb98/0x1274
+> 
+> With this patch it is gone.
+> 
+> Fixes: 50f8b341d268 ("net: pse-pd: Add support for PSE power domains")
+> Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
 
-> 2026=E5=B9=B410=E6=9C=8822=E6=97=A5 =
-=E4=B8=8A=E5=8D=8812:00=EF=BC=8Cnetdev-bot+sinfo@kernel.org =E5=86=99=E9=81=
-=93=EF=BC=9A
->=20
-> Hi!
->=20
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
->=20
-> - How the issue was discovered, e.g. hit in production, hit during
->   development, syzbot report, manual code inspection, LLM or static
->   analysis tool scan.
->=20
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
->=20
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+The power domain lifetime changes in 7 and 10-12 build on each
+other; if there is another round, folding them into fewer patches
+would make them easier to review.
 
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+
+Thank you!
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
