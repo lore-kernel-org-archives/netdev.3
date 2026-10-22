@@ -1,95 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.231
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792707458;
-	b=2ZdOxQBTwY/pTiK6/tkM8NBnaTCO/luZkd1GopRBw+ke0wVTGKZ1GVbq04nWCFpD/2FH
-	 ny8R4J0LPneAHuKdakPk06ihjncz9epkGvomr1V1mXix7vN7+NhmzOxKkhupKEt8rSnNm
-	 C8M3uRip4P5+8ORkkWS3C8vprTe6T8q1Ie7M7CuerchuM6q7YLfkypot0CK0CdeuMw3KQ
-	 0p2ytcyR2Br8+FwoJEtkT4Kjr5o4HyY2xeG6ynBjCw/77bZpNj2kFum+VVY8vFxewB1Fo
-	 bar0YttTzvrd0VA8BMdWmjsTkAq7tESBbnEENoKdFk56LQ0yD3vV97iuaV9wtcgAyVw==
+	t=1792708212;
+	b=FgQyAtYGYtc5PEov2UmU/z1Dyazc9SYUQNEydTYL9ryp7eSH7kSNrovw90sSQclhi7Cp
+	 MsYc56/pnxdWSXWNBzneWgchTopYd8NzsgG6jE6r/qvxQdjDhSgIH1/FIn0BL74NPLhOV
+	 5amoLxaymES2LGjRcjTQK6PhU03ZL2j2b4byg56c/bJk8IYmVKFuErCZnZ9KbnlAgbSW+
+	 GBEt1+rVOezlSwKnGE7MHDemCGei2lUTIP1OIzEt8TGOGLTTBzxnygqt0pmD/QTTcQKVn
+	 0K12L8NFZXp44pmisTDE6udx4WlSi6+KSjGLIt4t/9cMtMzI4h6SFKD4AgZxzbrNFvA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792707458;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792708212;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
-	 Received:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=VHaeZGgjerZ5PlElz/VM+qJtbp4LLZwii715TTrJtLE=;
-	b=HmgY1sW9GRKfuTmSGsScxfNIL5QaAMjwOKhQnR/SATcVaQrZX57Y8jb9BYYb474Mephs
-	 VE0omm2SEnNk0xY6gVxXE0yFvAXRmPbfCW1Ln5YyryIK+buV2aqVXquBTOzLmaq//sPQK
-	 hDi3hLXpk9NNP57yLa5Y2n27PF/1FXwJyzCvw6ANJnZjc+ePmdXZxP6qsunys2G613AR2
-	 9wB3ECcRpSxttY/zyyM1bR86HJKJiXboUxiR0aJgIgVV7TKoRskgfFhmGw5xiq0BAcxfo
-	 HVGrGdMbma8DYfP+3OaLzu7EjhlOKfECtSN6/BQowwKqSC2KcOOcYQ6tChyJ4FLaJjA==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=pJNO182l6e+8BfE6OvTk4EQHBvr1+MR3R8s/7W0jVHc=;
+	b=qdrUm64qfslosVyB4UDggbL6+DNO4e7VPe+q71uXJnvv2yP9ocbnRf664zUA4VCX6kY0
+	 deDW56iwbr1B6NNqxMMpYS+XvkXX0Tezp7RIfoU8jV1hx1u0ItTxuJiOMDAg+j0/2qnM3
+	 R81o3F0++y8WJOKE6x5FqWjzLe+b0MXeF0yNmtquUdV6kJAHuj21250+d34XrQ/KtJZeK
+	 3XuxPYRR26Pb4wUaKL5rdKUzvFOWMDybHQz4iH+i4DAVBgWZhBTYNI8gdzUB3DPOiHIzc
+	 ILt0HFEukj52DwywG8ZorYSCGXBCxA5TY8utIo135xCMSxYesHYHi7DCRZyTceeytNg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=purestorage.com;
-	spf=pass smtp.mailfrom=purestorage.com;
-	dkim=pass header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=LQZJyh59;
-	arc=none smtp.remote-ip=209.85.215.231
-Received: from mail-pg1-f231.google.com (mail-pg1-f231.google.com [209.85.215.231])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=XH24dlhs;
+	arc=none smtp.remote-ip=209.85.128.43
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 180DF606A31E
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 22:17:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 180DF606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=purestorage.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7216606A31A
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 22:30:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C7216606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=LQZJyh59
-Received: by mail-pg1-f231.google.com with SMTP id 41be03b00d2f7-cd6a7e1f4e4so131705a12.2
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 15:17:36 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=XH24dlhs
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a2069b9710so2278235e9.2
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 15:30:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1792707456; x=1793312256; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792708210; x=1793313010; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=VHaeZGgjerZ5PlElz/VM+qJtbp4LLZwii715TTrJtLE=;
-        b=LQZJyh591EaLfct1rUy67PvZZjeQLBLlyfgKYDmVehyElSbn9xeHi+iKYzIB5FfBgG
-         Yf3yneVygpN2dFSHaaCD21+Xdx/7zXDzblZN0nDOF503xQiqspxxWQ8lR+mbDxzij2wb
-         Tm1zYL10qsR6KUyklRrxjh/5ZnibGhE3HYtA1kqJ8WMSD9pv84gr6sHAGWQ93OMH5XBM
-         +aVH6myzHsqPOrc1izZfSQ2iHc3CbYphp7kRewDjhYz3rCfNKB1LF82XYZgPXjdFf9mr
-         K0AcitJApwAc7f79x8nLuHvXEu2JDOFSKD1A79AGgd/E575MRk6emqt/P5hqNDmNxyhb
-         /UFg==
+        bh=pJNO182l6e+8BfE6OvTk4EQHBvr1+MR3R8s/7W0jVHc=;
+        b=XH24dlhsl0rGpsdUho5fD+KZ9Y2ksuLmods8dMH9niSGUi9bPiH0J2UPXGfHg2gLa1
+         cWApmr10wl6W9xiWLUoJrn6nCJsJ4dEn9Mm47LjAv0W4wTiAyfJBdmTUnO9cAzkrk4om
+         v6BSwtvEJNmdyTBJUsZuFIwUsldeARfg9cA42gYhGXz7rNCByTtNgG8ISn/ljLOlGleQ
+         s0W7bMgFI0TUdVJc58bV6mK0fAdJ+neZSSuFV20r2vjbLudWgt5R8n5C3FpDVGHGS6oZ
+         17UQ+Kzv3HUa2X8T5Hfca8NjE8zhRk2rGa4/vDJ6kTo9a5YGzXdonKMKq1HrdvI425zw
+         +JXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792707456; x=1793312256;
+        d=1e100.net; s=20260707; t=1792708210; x=1793313010;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=VHaeZGgjerZ5PlElz/VM+qJtbp4LLZwii715TTrJtLE=;
-        b=VCGD+KrU8CvMFE6XkOysOSD4DsXIFSjGvKuGZYfOyvtnOiLC1V4G7SCnb1Mt4q8HGY
-         LZi0cSyR4FuAqwF18L0K/NwQ6kpC+Jsc4Fa8Dn2zjF7Z1Vr6V54Askj/Bj5Fmzsduen0
-         P2UxvtX9g7PDe+zHBaqVUhTYncyDxgkNshctDAr1stqu+bWbiCjjFO1R2AWU3NbG4iy6
-         cwfFIK6URSnFySRQbqCqare+VH00yurFA0etEJVQ/94IhiCfQt4hYycxYXJr8/qYA/BG
-         l9aHOtt4ETj5DRcZ/Lh7y2v9nwj1VVIDvaFQXHYjfRLHzqnv7ZaO57Da/QaT2Mk2qb/T
-         XUNQ==
-X-Gm-Message-State: AFq9FYLHJQFfMbTc77poNdt/rIyNfq/42M9sQE09uao6PkTMiGIfsglf
-	eqsMPY2EswADK29hw+UGfcb62tWDE90g4xG+iFr3V8taqhuY1XIoAMNw34XvmT04RU8pDeR0QMs
-	AX4YUOEKJYasXZJhV7y/qVOuyYWVIL0xZqjRwPyTjQPeJ9/b/636cPcb6i+lQRKLKkz6cOhttvw
-	9HHlfo0aI514eoDAvpNo1PMf0/Jh3CRzAUv628qKa1C1lBpXnZkt2iKNTHmJUjVajywOz4ma1/d
-	nbpz9iY3Gw6paGJI2IbXrKWtUdXh7vDHw==
-X-Gm-Gg: AYBFou38Pf1N9e+V1ATuklG+4/PKFsLdiqWSVzJTDt0mqz+FkxY77tt4m1et2n1fh42
-	QNSp6XF0Yn96QnZjo40F5zJj/NHZG/48SNzaXKJ0tLPN5CXN3oV72Q0znB4rkaSXEnvxp9Lup+j
-	js0+G+SZJ0pS2TC2nk91v87WdiQQ+8gkh1vwU1LYvNn87Fk/fCozgjRM6nVCN8PTWmhPctwbcL8
-	9idNjny+FhGH2SYgURaudgin+0ba3QOROTtvjwHX9N6VhaTzTgEV5sfhr//sJTqpAhJCKYSvvba
-	dcEJ7qul/+oQ3rICPyPbKMZFy6WRiilDBB9ZsjFYjXpCKSNq6PBwb8Da4JE4hLnEdIBpm1FOO0T
-	LgQcTSDgDouH5D0NeUzk=
-X-Received: by 2002:a05:6a21:3d85:b0:3e1:fcec:c724 with SMTP id adf61e73a8af0-3e369354483mr186171637.31.1792707456192;
-        Thu, 22 Oct 2026 15:17:36 -0700 (PDT)
-Received: from c7-smtp-2026.dev.purestorage.com ([2620:125:9017:12:36:3:6:0])
-        by smtp-relay.gmail.com with ESMTPS id 41be03b00d2f7-cd8ba7f4e4esm11560a12.12.2026.10.22.15.17.35
-        for <netdev@vger.kernel.org>
+        bh=pJNO182l6e+8BfE6OvTk4EQHBvr1+MR3R8s/7W0jVHc=;
+        b=VUTmtouE3riTBHEAI6RKaXvL7v/C8pmBLxAFJB/SK0pGFtIhbzOoI4iNeuL16o6FVE
+         w7JhF3hWUSAuSTZPV0ogCvOHQ+LGIaS2z2mBmLQ2AsjvtHXUzZsE3aU2mBPHD5DjLkTr
+         +PYz9UNo21PCbJhlWvqQfVPIUzmXmfbGKscGBEn1Uw1x/KKilsHN0WyzZYKc6ok8n1DK
+         LgxHdLiqqyUTqpWX0yGpF+4/kPrTkQ/VidGPuo64yBWXpLsOhFUWy5602jgSX0iB6Jmx
+         KIDHC8BM+L2nEbMGcaGuo7BE7OtGbPB5jpWczD/fFZ+e0uKjz5gJ0HWCKbt/KiEX+yd0
+         ReOg==
+X-Forwarded-Encrypted: i=1; AKwUvBw1MesXcchvLNb4Z7KPea1Kp2M14zesEz04DWvLGL3glcTWnKoezwSrdJcUOS7es8lR10H+NAw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKjc+3l541ycgi6alC3s5I9t3DOjPFNNXenO50Li9gkNtRgCvVp
+	/EEI9Avbz98SszXKR6Bkn7dTxrUEOsS3/U7304i6Fw7YbNE7tlVvn/LO
+X-Gm-Gg: AYBFou1wQf3x9Tu+ya04RApXu3jAmAjVfRp6jEotLaeftEmqrnJvEliK1drtLe7GlxN
+	e8An1batWAOXqlO7tvk6+QfMZsWz76/stxMxu6x4nN13S3Z8t+B+T8NLH2VmtfOPG2yCHvTSWrG
+	km6JQoOdmNeqsWoNRm1wQRYiBurucB97qaAAyJtcZQZ4ZYXnjr9tL4IMreBqqL4GkhObupTEor8
+	FRXRGlkZfH76ApHS7XZ7wNjKiGECj22bzRC5fBu8hmVGJUFLsFJl+v/impMZFUWK0TfP0x5yfCi
+	/1o7biKo+RCzTgchVTGMQHg2O5uodqErF6W4D6jjsaPbCuAJgp6bNF6788JTySkoZlVAf2q8Hgm
+	IEkm91EgjazzD/PvrIQc8icmrOFJdvmX5eHx5bE7ziiOwVl+4ojTuGqo6TjoFs348Rg7utb4Hug
+	PPA4J+Q5HiPQ6mKtsMUfTQxnmuEokbISwnkkG7+xuQL1j76wN3YM4mm/0viznuKqPpcKV2Oc06I
+	vNQH+X3qWUAWZwppJigEkldx60QWBp5rNNQU2gk9sxYloa+r8K7mwQTgouwYKz0Seymqb7LWJWo
+	/nvN/a7rKOtPPQL7FY8U04MQqZmGXVeFOKmMrOhSgu8dqwDGkqx2cSCeI3bv
+X-Received: by 2002:a05:600c:1911:b0:4a1:9663:7633 with SMTP id 5b1f17b1804b1-4a211caf95cmr6181475e9.11.1792708209901;
+        Thu, 22 Oct 2026 15:30:09 -0700 (PDT)
+Received: from Ansuel-XPS24.localdomain (93-34-92-187.ip49.fastwebnet.it. [93.34.92.187])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4a211be8f79sm11958795e9.14.2026.10.22.15.30.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 15:17:36 -0700 (PDT)
-X-Relaying-Domain: purestorage.com
-Received: from dev-rjethwani.dev.purestorage.com (dev-rjethwani.dev.purestorage.com [10.17.2.234])
-	by c7-smtp-2026.dev.purestorage.com (Postfix) with ESMTP id E43954029F;
-	Thu, 22 Oct 2026 16:17:34 -0600 (MDT)
-Received: by dev-rjethwani.dev.purestorage.com (Postfix, from userid 1557719937)
-	id DF1CFDC48A1; Thu, 22 Oct 2026 16:17:34 -0600 (MDT)
-From: Rishikesh Jethwani <rjethwani@purestorage.com>
-To: netdev@vger.kernel.org
-Cc: Rishikesh Jethwani <rjethwani@purestorage.com>
-Subject: [PATCH net v2 0/4] tls: device: fix RX record start tracking after strparser rework
-Date: Thu, 22 Oct 2026 16:14:56 -0600
-Message-ID: <20261022221732.1397620-1-rjethwani@purestorage.com>
-X-Mailer: git-send-email 2.50.1
+        Thu, 22 Oct 2026 15:30:08 -0700 (PDT)
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Christian Marangi <ansuelsmth@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Subject: [PATCH net v2 1/4] net: phy: as21xxx: handle corner case with link and autoneg complete
+Date: Fri, 23 Oct 2026 00:29:51 +0200
+Message-ID: <20261022222955.698722-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.55.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,94 +104,37 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Since commit 84c61fe1a75b ("tls: rx: do not use the standard
-strparser"), the record being processed stays in the TCP receive queue
-in the strparser's normal mode, so tcp_sk(sk)->copied_seq points at the
-start of the current record rather than past it. In copy mode it is past
-the record, plus one if TCP consumed a FIN with it. Several places in
-tls_device.c still derive record positions from copied_seq, and the
-copy-mode header parse reports a record start that ignores where the
-record begins within the first skb.
+Add missing case in custom read_link, when autoneg is started, autoneg
+complete bit is reset but link is still not up.
 
-Patch 1 makes the strparser save each record's TCP sequence when it
-starts parsing the record, before anything can switch it to copy mode,
-and adds tls_strp_msg_seq() to return it. It uses that to fix the record
-start reported by the tls_device_decrypted tracepoint.
+Fixes: 830877d89edc ("net: phy: Add support for Aeonsemi AS21xxx PHYs")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+---
+Changes v2:
+- Add Review tag
 
-Patch 2 uses the helper to fix the next-record TCP sequence passed to
-the device by core-driven RX resync (TLS_OFFLOAD_SYNC_TYPE_CORE_NEXT_HINT,
-used only by nfp). In normal mode the device was told that the next
-record starts where the current one does.
+ drivers/net/phy/as21xxx.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Patch 3 fixes the record start passed to tls_device_rx_resync_new_rec()
-when the header is parsed in copy mode. It was the start of the first
-queued skb rather than of the record, so DRIVER_REQ and
-DRIVER_REQ_ASYNC resyncs could be missed and CORE_NEXT_HINT given a
-wrong boundary. Commit 9466ef3ec972 ("tls: fix RX desync on overlapping
-skbs") made this path more likely right around a loss of device sync.
-
-Patch 4 fixes the checks that decide whether the next record is already
-queued before a CORE_NEXT_HINT hint is sent. They used tcp_inq(), which
-counts from copied_seq, and now count from the record start, so the
-result no longer depends on how much of the record has been consumed.
-These checks were already wrong with the original strparser, so this
-patch fixes the commit that added them rather than the rework. It
-depends on patches 1-3.
-
-Testing:
-
-tools/testing/selftests/net/tls passed 655/655 on each host over
-loopback, covering TLS 1.2 and 1.3 with AES-GCM-128/256, AES-CCM
-and ChaCha20-Poly1305. SM4 and ARIA variants were excluded as those
-algorithms are not enabled in the test kernel configuration.
-
-On two mlx5 hosts with TLS 1.2 AES-GCM RX offload, all 28 cases
-(1,344 records) passed plaintext and sequence checks. 26 cases reached
-hardware decryption, four of them after a DRIVER_REQ_ASYNC resync. In
-the other two, offload was installed mid-record and later headers were
-split after two bytes; the NIC never issued a resync request, so these
-cases cover only the sequence argument, not recovery.
-
-Patch 1: all 1,344 tracepoint record starts matched the TCP captures,
-covering normal parsing, copy mode, and three records where the copy
-also consumed a FIN.
-
-Patch 3: in 192 copied-header calls the old expression would have
-reported a wrong record start; the fixed argument matched the wire
-sequence in each. Hardware recovery through one of these repaired
-calls was not observed.
-
-Patches 2 and 4: these affect only TLS_OFFLOAD_SYNC_TYPE_CORE_NEXT_HINT,
-which mlx5 does not use, so they are verified by analysis only.
-Review of the device-side effect from anyone with nfp kTLS RX would be
-welcome.
-
-Changes in v2:
-- Save the record start whenever the strparser starts a new record
-  instead of on entry to copy mode, and keep the tracking in the
-  strparser; rename tls_device_rx_rec_start() to tls_strp_msg_seq()
-  (Sabrina).
-- Say in each commit message how the issue was found.
-- Add patch 3 (record start reported to RX resync in copy mode) and
-  patch 4 (next-record queued checks for CORE_NEXT_HINT).
-- Expand hardware testing on mlx5 (28 cases, tracepoint and
-  resync-argument checks) and add software selftest results.
-
-v1: https://lore.kernel.org/netdev/20261015201135.2744031-1-rjethwani@purestorage.com/
-
-Rishikesh Jethwani (4):
-  tls: device: fix record start in the tls_device_decrypted tracepoint
-  tls: device: fix next-record sequence in core-driven RX resync
-  tls: device: fix record start reported to RX resync in copy mode
-  tls: device: fix next-record queued checks in core-driven RX resync
-
- include/net/tls.h    |  2 ++
- net/tls/tls.h        |  6 ++++++
- net/tls/tls_device.c | 16 +++++++++-------
- net/tls/tls_strp.c   |  3 +++
- net/tls/tls_sw.c     |  2 +-
- 5 files changed, 21 insertions(+), 8 deletions(-)
-
+diff --git a/drivers/net/phy/as21xxx.c b/drivers/net/phy/as21xxx.c
+index d5738117eca6..0db82da8dbdf 100644
+--- a/drivers/net/phy/as21xxx.c
++++ b/drivers/net/phy/as21xxx.c
+@@ -658,6 +658,13 @@ static int as21xxx_read_link(struct phy_device *phydev, int *bmcr)
+ 		return status;
+ 
+ 	phydev->link = !!(status & MDIO_STAT1_LSTATUS);
++	phydev->autoneg_complete = !!(status & MDIO_AN_STAT1_COMPLETE);
++
++	/* Consider the case that autoneg was started and "aneg complete"
++	 * bit has been reset, but "link up" bit not yet.
++	 */
++	if (phydev->autoneg == AUTONEG_ENABLE && !phydev->autoneg_complete)
++		phydev->link = 0;
+ 
+ 	return 0;
+ }
 -- 
-2.50.1
+2.55.0
 
