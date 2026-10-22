@@ -1,102 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792644382;
-	b=j6ZSweV1baMyK1J14WsvZZx5nAxj7ZvhKv/h3WpZzkpUcKKSaMkgJEgVgmygvYRF0fxl
-	 o1obed8tbmWS+Nzj3aDXLS8jh5fM++FE9OnX8OLsh0APJ0JwBEhlwcnGLIK9A9T3FvSFy
-	 VUrLZU12O/6gCJR7wbJ5PdKfDf36nuPEYwAYNbxqb3ksD57vTlsOmuJdFIjYDZpPvj8Ul
-	 qrbDHoY7nqoVtDjUt3lY0mfAhBg+YZra3Fl96+qIIYlxVMNfeO9Z135qHUTT4R1Kikf04
-	 rVCCCX4mnaXfsSkfpsAf/aV9xiXw9UqvgSSQfgLk9NKPdI+FjQWOsV7wMfDltMFKwwQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792644382;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Sent-From:X-URL:X-Accept-Language:
-	 X-Accept-Content-Type;
-	bh=wdFwRrD+BVfZHQwBM5w0aHj2+wi05TOz4Yc/Uggdreo=;
-	b=g+tIyzOVjQB8pi9bQka3HXI/oGv+D4DKfbT7N3DR5gD0aKIN8iUpWq4/Ogt67wzxcn79
-	 F1RB/eHEy6l/MpLndGD7e2juHAmg4eBziphE8ZAJIMjVh9gvtsfg7j5jEBQlqudbr/R0d
-	 0eOSMsDbwxBfLAK9bkz2iJr/NNwuPSn8sUDh847DzE0fpX4tHl7T38dRehv5Rd/maVtNg
-	 UyXyPqN6a62OPZnudga6z4jI0ej1DLCmnr8vdyc8GKQ332f6WnfMnYBY8yv+9AIY8Ch7l
-	 URuxIH7jWVHuQoziu3cfGhnrCcUjea5LgxOpkvztm02qxUQBGiH4zeRMv4dM5wMVO6A==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=Ft8Y7DbV;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.182
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792645200;
+	b=eePlo1mz3AUDBj7cIH7nmNSXeyLzhxlWWMDBMVUPuEPP4SFCk5u1V+lUQpA4gV62n9ip
+	 jHciwsnkYpojlmkeEkYpNUD/COwkqEFyD2fRL/xPhgj4k6dgcY4ny/17lgFJ6Tnqr4r30
+	 FxRs7QcjRYOHg7cH9W9+c+1Vp2XWz5DnTem11ZdJJUZTR4gHqpWZvFJ1Y82RfeZJGp5Dl
+	 sIS17nfEZbh0Z79m8EKJ8Znaif/8bYykD/i7ZK0/fZ/a5BdyarY+UDb0I8qVAiVpCYPeW
+	 Pc9aZh4Pl0d4zVoWp/Odpg3ZOOVpz7LQ1jNYmsDtOxmrgFnktGlXcyH8tlqCPR7UT0g==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792645200;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Content-Transfer-Encoding:Message-Id:References:To:X-Mailer;
+	bh=mXOPLkCq7ZEBM7fN1+M34aOvLAaufrn8cAGu232pIRM=;
+	b=DOF7CciLjOGwWYsTd73Bz9uC3USJOzeb0A/yq2h857oj6WajjGxxSDOgVQCZhBvaHyI6
+	 ifgowQEkFn5jpfL+TSEz0LgYmzRMGKTPzqsQnv7aMy9yvdcLUsKJbiDy/bf9I6q79OsEe
+	 eA3F94RWIZ5iLALu9LNQ/VTBmJbORlTcWutUogk6A2KOsigXPscYC3SoCpev+oFzWOK0B
+	 /6pJyH1pUuymYy49vnxhuKWPYPbCRKXH3yFnIQVHrBLeBqolsm0whRm5PXzQNCG71vRzF
+	 am6qAigb1NDTv3E+fTREo78CN2mKBL0nlRa+4FhI2YQrM3igX98KLSAC8gm2GXMIeSg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=JrBlAJWx;
+	arc=none smtp.remote-ip=209.85.210.182
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461E6606A319;
-	Thu, 22 Oct 2026 04:46:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 461E6606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DC1606A319
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 05:00:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 55DC1606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=Ft8Y7DbV
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 605D4200BBC;
-	Thu, 22 Oct 2026 06:46:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792644378;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wdFwRrD+BVfZHQwBM5w0aHj2+wi05TOz4Yc/Uggdreo=;
-	b=Ft8Y7DbVLg1SOtmQLD7h+4S3iEhbc1/WiTPk4G96QPmH1lrEI7zMG0TD1orIxv8uBSgMQy
-	5XFZRLLsutRcURTmkl2L1FOnCqL10vjPaeFTcJ8OqaClr1oj/qNZD9TzTqitH3Qi1HEvPi
-	KM48hlrVL24/+VJ2lH/OBlT9I+xtl6QMMHB0oo+v8fLcmXbJxH/JCVdWwxZ1XItNz6NoDP
-	oA9ARuXeK4jD4unbXDh//xXVgiR+bhC/k9CMEBS3nbiGlWyrO+rBmFSxv3kfIRNXHfBVaU
-	p9rGpJdRZVJLlRje9k31vksqxj8Raf8bSj7leL+MoOa1yAlRvT67Gt+3+9dubQ==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792644378; a=rsa-sha256;
-	cv=none;
-	b=TwUwG6Au+OgaP0h5lKiTqy8hjH/PwRnVzfor0Nonw2U/m99dD8lj85VYhj/4IpFaApxxB4
-	Lzpg04XxrM5SUcz0sEAtmgJJcAd88eSzF6EgGCrxHBkE35TEjcueZxt3hsu3OtpTddiwsC
-	eA5+yyY0cejEoKidieujf7Ruylt5fsAgYyG3bMwhTrtlAY5xQ537T0sFQa51TOtt8tQIZ/
-	e3bBVTV0ZdKpOO8AgC1Es5VCTb+gE4jvYHkdI6sDxPBMV3BGTXLX28wmKHGOxEYUP3ICQd
-	A2Lj/No5mkWe/3n+hWHqp+FgeltK/gRTxVCf0PYtJRWylp9ShtKDUmETJ9oTxQ==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=ore@pengutronix.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792644378;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wdFwRrD+BVfZHQwBM5w0aHj2+wi05TOz4Yc/Uggdreo=;
-	b=RS0vpSRZaXmSpVvLQ4I7PRhPXdd7Eb/K7D+Sb6zFtdsoCb8CoWlWcCsfKvmoRz3pMX8gZM
-	6Yqvn+EoK7edbmi5Y/FWVj2gSbUzDcPA7n1cIa+Bc+SwtAp9WnbsWweK4DkhcUm+gOdukY
-	WiZf4T1geR/fo40Ij6QIGmfIJHYzGsISI9n9Cmcu6gBErCaX4gLOzKv0xjxCMKhpqEdZcZ
-	gFVccULjTgG/fuj5hDMsX+Ljt4874PUTEeLF2Bz3etWNN0M69Qn4n9Omj0b8XDFg/B5HQ7
-	jPMp4yDmWk/sDeL0Iuw3xWYi1cb5px2L/qn9s2wSUc9ooLaFBd2kPVTx6l61mw==
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1xJkh0-000efM-0z;
-	Thu, 22 Oct 2026 06:46:18 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1xJkh0-00000009PVz-0ojq;
-	Thu, 22 Oct 2026 06:46:18 +0200
-Date: Thu, 22 Oct 2026 06:46:18 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Carlo Szelinsky <github@szelinsky.de>
-Cc: Kory Maincent <kory.maincent@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kyle Swenson <kyle.swenson@est.tech>, Ross Cawston <ross@r-sc.ca>,
-	netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2 06/14] net: pse-pd: check the PI state under the
- lock when setting a power limit
-Message-ID: <atmVGoQry_V_Ktu_@pengutronix.de>
-References: <20261020171249.853085-1-github@szelinsky.de>
- <20261020171249.853085-7-github@szelinsky.de>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=JrBlAJWx
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-878b44611ffso856842b3a.3
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 22:00:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792645200; x=1793250000; darn=vger.kernel.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:content-type:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=mXOPLkCq7ZEBM7fN1+M34aOvLAaufrn8cAGu232pIRM=;
+        b=JrBlAJWxwwNyUxTFEkX5wczZKR8kR4LaDS5yCli4KqlDD5+rg3JUInRx2bZifDhPnD
+         gBJawZZrQpRUmFudSh52bs9IDjBDTDPZnsquYFP+IGd/FP/OMtmccNXmceUoOkdkXKFb
+         8n7zrMZZkroDXlgdghKS7EN2T4DJZazNzDomBccJMzbPZfGMGqPO0e81EcJpMz/tYR8F
+         Lw34Yw5p4teatdSZU/yFWJDwmbDR9819jvJsRDn3DVAH1Qc0eZGWJ5XmzGDTbYgLvPaB
+         S1V/0PjRiEHlRuWrOk7gPC9epw9TjS99lS/hDh1HD2jgOqas3IVRUyLUHE5VOlsITpAd
+         e1sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792645200; x=1793250000;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:content-type:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mXOPLkCq7ZEBM7fN1+M34aOvLAaufrn8cAGu232pIRM=;
+        b=avXZ8jPUZKvx5TkJPgUCBMJMY4WMftKnLYfDweicXFXcn3W2q82wKrj2o5oyZHu2XV
+         yvMcGm2k9q0uqc7I+CF7cDouQ6LtZkQSoTz/HUxUxb/uEqzdeZOdVYkeqplq9DMsq8Ue
+         rmT8sioW6ck0TRB2FUJGpFIb9iu9bydOHbqHXw6FRq0evIys2XS10x5AP6YO1CVcToSJ
+         VvAva6cC939Z9wlbl3A9DpAs3U7d5x6eKgRDoJTn0XAFSF/s83DYBj7+Ykqq6ly5a+FX
+         A5eL4lT5LGc3TkNteV12VOtfe53tfDcQ5oU++uYUnYtukh0tvKTW5UY7hyZ3NN9ku1wZ
+         zDbA==
+X-Forwarded-Encrypted: i=1; AKwUvBzsmp8ti2uI58gweIXVQj9UvsDRNwMx/evrUBlQAMRfxP9rWX5qa4QAhMlfh0qcLo7a2cG/0Bk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI3z5BqBT8U3rQpJsgxHLtPKVAb3573UaKj8FrvNgpjK3g6PbpE
+	y6hqGJ+fLwJYoiZ6xvFjy29t9bJWx6M7j3fVdGvtfL0d/mlVReSntfY5
+X-Gm-Gg: AYBFou06t50ilqLkm893MOgNZLNoVaM5hw8YfmKg2lnG5xjXfA4NB1jglxoDs0gNAyE
+	y8s/giegkQIY2dAtLHfX3jl4tI5YFUMAlaSbvhctRnedSlZa66jiLRijaaCGwdABxsd5uGbdgJM
+	4FAPK732I627cXqer+IFwec46OwenhCZG2xE7MVpE3UBa6hU1nbpYfP3iM1FN58C9Yh7ugZEipf
+	hNW7UDVNEyda+wRa9S1o7Am/kGwnbDb9NwyaW8v2LAuak8wS/mCLcfnniHVmwaNSw3pDixC0noi
+	ae8w9RLyi2EHEl2ws2TtLicJoHgU2My/r4lPoBxtcW547IZsJ1uSWiDd9PoiDQ10tr4YntdCppK
+	sTmrHn5eQ+Y9BBxC5sENiMTg2tp/expJoSOD4YpGPXr15DDSKPsyGpEv6iQixK+7PuXlHHDsGsC
+	dCpXFd7XEiesElQSBbu0WQK2CB0WQs2VSuDsPvyJ9jp3JIEz5/Kbj/59fc/1VMkbJO9MqPSKZCN
+	02299fRKk3YA1P4RSkAi48bKm1Al8x/N7WRMiWBZVW36MB2WVbf2qmliCcgzjEawum0nDwIbu4L
+	yDkJ2mZmPLUkMJY0bmk/WSKhYzwParVhiUc9nrDpcPyOVEUXOeWiyrY2XVzYPkNAY2rhPPhbvag
+	pxzzscJGOB3GNtbXAgPY9
+X-Received: by 2002:a05:6a00:139d:b0:886:9939:caa2 with SMTP id d2e1a72fcca58-8a089ed50f0mr3692072b3a.52.1792645199600;
+        Wed, 21 Oct 2026 21:59:59 -0700 (PDT)
+Received: from smtpclient.apple (ec2-43-199-181-133.ap-east-1.compute.amazonaws.com. [43.199.181.133])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a0894b3749sm1597116b3a.15.2026.10.21.21.59.54
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 21 Oct 2026 21:59:58 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,37 +90,48 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261020171249.853085-7-github@szelinsky.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
+Subject: Re: [PATCH net] net/sched: taprio: unwind the netdevice notifier if
+ register_qdisc() fails
+From: phx <phx0fer@gmail.com>
+In-Reply-To: <179259829934.3290.5380861866339404482@kernel.org>
+Date: Thu, 22 Oct 2026 12:59:41 +0800
+Cc: vinicius.gomes@intel.com,
+ jhs@mojatatu.com,
+ jiri@resnulli.us,
+ netdev@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <4E594EF6-5635-44DD-91B5-D98A6FDDA49F@gmail.com>
+References: <20261021155417.66254-1-phx0fer@gmail.com>
+ <179259829934.3290.5380861866339404482@kernel.org>
+To: netdev-bot+sinfo@kernel.org
+X-Mailer: Apple Mail (2.3864.700.51.1.1)
 
-On Tue, Oct 20, 2026 at 07:12:41PM +0200, Carlo Szelinsky wrote:
-> pse_ethtool_set_pw_limit() checks whether the PI is powered without
-> pcdev->lock. pse_isr() changes that state under the lock, so if the PD
-> disconnects in between, budget is reserved for a port that is no longer
-> powered.
-> 
-> Do the check in pse_pi_update_pw_budget() under the lock, and report
-> whether the budget was changed, so the rollback after a failed
-> regulator_set_current_limit() runs only then. This also rolls back a
-> budget that started from zero, which the old code skipped.
-> 
-> Found by code inspection. Not reproduced.
-> 
-> Fixes: ffef61d6d273 ("net: pse-pd: Add support for budget evaluation strategies")
-> Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-> Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
+Hi, The issue was found by LLM-assisted review of this code path (static =
+analysis), not from a production hit or a syzbot report. I then wrote a =
+reproducer and ran it on an arm64 QEMU guest under KASAN; it fired at =
+the claimed sink (notifier_call_chain, vmalloc-out-of-bounds). The =
+"Assisted-by: LLM" trailer reflects that assistance. Thanks.
 
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> 2026=E5=B9=B410=E6=9C=8821=E6=97=A5 =
+=E4=B8=8B=E5=8D=8811:58=EF=BC=8Cnetdev-bot+sinfo@kernel.org =E5=86=99=E9=81=
+=93=EF=BC=9A
+>=20
+> Hi!
+>=20
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+>=20
+> - How the issue was discovered, e.g. hit in production, hit during
+>   development, syzbot report, manual code inspection, LLM or static
+>   analysis tool scan.
+>=20
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+>=20
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
 
-Thank you!
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
