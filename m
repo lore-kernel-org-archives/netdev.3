@@ -1,76 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=66.163.187.152
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792688426;
-	b=eUvyEcE1y7ifbr51uACxjBLzHD7NjsjOz7Q0RVrVkY1dQBFTJiUDZ3vbWw4c0gD4yw6J
-	 9zSBle9FFDiDwX7VD1oNJ5vWnodkoGtMo4WHUvayw4t8TcoAG178yipvW177lIJTjj91d
-	 LGwV8NV5Sp4Rt692T7YxGAHeVGjxZ7RAlhwzOWnP9yP6aSkLGD2gXykMWMvSJgMQylJjw
-	 Bfvc7GpV5LBy5WrzH65w7nmq5mDg0G1QrxlKTjJ7engJWzSG4h0dkJjU9Rb35NCOmN0h8
-	 oUQMiGQ3dSLmIa5g0yN9DzJnGHEGJOcRyeDnXffLRtSlmLmVVGtEOIz1VxN8hXmiKhQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792688426;
-	h=DMARC-Filter:DKIM-Signature:X-SONIC-DKIM-SIGN:X-YMail-OSG:X-Sonic-MF:
-	 X-Sonic-ID:Received:Received:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-Mailer;
-	bh=RLhaJlQZZNoYg6hcgIAk04w24uGo5Qnp+frkN1FOTxs=;
-	b=UlR/OFQwJQnMdejenz4OjFLKex91P7ygjlgo8iAoRhZc+leojdHEptPPnnd7wcndOgf6
-	 7V9PT+Iw2Za2O3hyfx5uyCCyLtQ56ViOn6PtnAgETmplxXs/f6iYzNFFb+WbbRHuLr8Id
-	 /Oi7eW8HerZkc1dZYaQjGTCdoBf+qpQ8uQ2H6KWHAqp8u+POxrDUh4dv0KZG3Y0hsWLEU
-	 1LU35eWFPCXE/9dKLA9GgTzt2HS9wsAGmV/vZCrrgi2ROsAngwLx/3zy7Bx9ZAAc0lJvI
-	 rpdX+5DTB0jDG/8/uK0Md+KQK2aefFGHKBxewfPxF4Mhwg+gHLw6KZ3yiOVawy/Gvsw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=schaufler-ca.com;
-	spf=pass smtp.mailfrom=schaufler-ca.com;
-	arc=none smtp.remote-ip=66.163.187.152
-Received: from sonic316-26.consmr.mail.ne1.yahoo.com (sonic316-26.consmr.mail.ne1.yahoo.com [66.163.187.152])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.177
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792688552;
+	b=BeRNl/WjTsoObXBWnIk1p3mwB6WqZc3BG5R9fKKfQDoO4GfU/v4E7Ahhqe7uS7ihKzUk
+	 L17pETg1PUAJdUYrLcLimluuEIEkPxKA0hREbIBgDVn1904QORowwKujd4xlvLdHUbdiL
+	 ldzKSouP/EI7ddaM4KVOnvDUoHlT2RCmmD08De8Y3dQS5e4GTR42ulc9QtutP+I9+dsZo
+	 vOKtL3UCbV1b8V0lJmTTpcL0pSWyNTT+F1F5GSmvH/B84Y0lvDFbJBkCe+HC9MS8o/LYH
+	 73PwW9J4ejiOK8kMZHpPGCAXqEQeFNZekC4mQ22y7n2hefYhyOzMe+4+2wAo+zuf65w==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792688552;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=kSWxRjaE/IbCSPMaNuU9AixW3+O1lzhb2zsYAgN97Mw=;
+	b=sK+wrzoCgJVmsoZ0wrPQTyEV/gdorOMxwjUzhDEO5o4DCS8wA27zE0Oqzh7w09Eu5Fjc
+	 ZSwrzG6XyRbZ/s4OkUCXmLvmCRPkTz4IEPdMJWnE/+ZpzuDLjv6dPggyLcL8BRZJe8GdO
+	 /8ZsjQRxxqFb3L2B+oR6rSOcIs7GxtFFeK50i8qEGgAphFwVVa3C5AXltpyKgvWTNk0hB
+	 Vx+M72gXKzUtU02PWiXTPX8veJVPUyLHUW2FNukAlBepMoFKNH9F2YEwa3eu/aouZoZxn
+	 MRv1SnwNGHmuBI+su8Z5nHCX6Ld61LUJVWOH1GheCne/Emo3ZpzvqNviJoLL+EQ6GEg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=bL2KxbVP;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.177
+Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C656606A31A
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:00:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8C656606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=schaufler-ca.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=schaufler-ca.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1792688424; bh=RLhaJlQZZNoYg6hcgIAk04w24uGo5Qnp+frkN1FOTxs=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=EPxXXTv2yOAfkDeBVlGeldcmNKyITO49k9DX4W1JG3YiE2Z74mj7AwH3HL1ng4JuL4XxI3I2isrYof/PHPDdpVN996WJqCpMr0pkAFvfwFV5SZwp46MjvTMeRQ1GAR9zWWRo2FJCRnFND+/SktiTxIiWFnlf6zJXk7OnBYGNhvJQAnPIKH2weZ2rIVCG114sIM4XTNPZeFllAM6QUMRqMiXedWD6b/nwKU/1Rawon/5NquZ9uPQA/EwsDnXni/1UMKx8zZ7u+NlrBG67+RD4mNZntTeEcqw1rJ1tjqkse2NY9afIeqwb598x3ZMaZSUOdkg6HOr+ubgMCK5VFGysJw==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1792688424; bh=NrkW7Nzc52jx8owV4g5TQ09TCsBPGhlT5UFiu1qUhoH=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=J0fJxifRcTTaKtm1kfx9ZO5CcKbTJMtfN18e9pWizD1uERM7sGK7bnuACDtqKSMxG+tL6Hy+iXDn0i1QM11uB/3ZiH1zb5BWyuvJEiQF6uL57etcG/GTtwLmHKIA+ra+3JKSOYo5rJhod2/xvS/4gu84qPKamy1shn0r662FSD191d0r/Qu1oFRHYOknkPo5Ccfe4FICXhvLChyIseUzh8oIbLwWdcePDbYO5UpdZ7QZq8Y0+NhQVvkbZXPIiiYqa7eA3FNVN/+AQ1OYqhzlYBqmx1/R+Vo+oOZzbU+xmNaDpfS3LG5AZNq72SvA21YMSlBfdqfJ9BRQXY53D/eSfA==
-X-YMail-OSG: xRD30LcVM1l1oAWUFc3wSEmkOWJMjiD2Jw1_JGIU9Bdii66XxC5fX401cOGqfnB
- W4hkfMQKIcRII8bT.rM1fo.855tYR0AsXM5AG5UG6WzBitDsVK2h7Wjx0s37e1372WH_8mlt7JX6
- _6jRINfXlTnxTR_21HJwSLhWQThvcWhBT2zsXPC5LYdjE4N7Gj4br9VVpYumqpUgjIlBOj6p5krK
- aNHtytIbJ..6O2nnRC1PmkkfILLQ62ZGoPtM1uhFCc3Xjwg7am7Era7juk2bFyI9FSTboGets_zm
- AhhfffgPfIr.RiYkKOZM3sG2W0sovPZPZwgb_DHu1pvsAbsJN119nN8dlJ3XlGc7X4uZT2d4oKZK
- F0aRM0Z7zXFfG2S_5iib_3a9_s3ptZi.K0Zy35ekZh_rDQICVey1vlANnUpuIV8WibgDK06yPdno
- ap29UZlv7P.xsaYVTWU4_AGVX1fHV0cXuiqYZE.zLonqzqnQM..e38uwxx9OCyMi8A4PdyyBY.Dl
- Zs9k.G69vmbM6oJqYPnQ5AsNDS.kdW.IuhxIdW.7DrsP_PHBGZBGmxr3dCeBNHpKQBM1I5dQK.WT
- VuI3c_4lX.Vbej9sn9BNpMMPf4P2djGeKXOFjib_d9G1KXuU2VUEpCWTpnGAKWN.P72xQLPNtRso
- yYN2svrh4sPjWXhnH1g6GauSpLPf64jyzs86EtT_Wea0htZ_180xUpFJ.dOtcxv6a7BjQ6wW.USw
- enbtthrK0owLhL2HWC0.z1I.MBapxkZM7d41Djh7hiRZHyULXOp5AhqWVNk.RauEQGMYXwyOzHq3
- LRuDUZxNE_BbMfol99ddoBDvLyNk0qONeuU0qT0GGBPwJu4J6t.9Jy6ZReHksf3C5pse8IcnUWpJ
- oiVak20A8O0z82cBUMMPCq5mrJhaopEEjAtomXD8asxCgmOwbLDwMNpaTPMw_pGsi_VdIs6_28RL
- TuA8CaMXHGMSRA71Ic4aOGUXqECu0PudSoQs.uqjXnNnLHnypRxns6kbJUHBWVdoFTxFFo5hQR0N
- JCvfRnIwGfZ2hDFMNLSp2c.zRJ2HjBCGtLayGcFM3rD9.rP3uTQ6GCuKe_7pQgfCbVNbxjRzxsgS
- Obo3VPPf0GtkxoO40P.33d5dMb116c.0y2HIIzG4b_0mVAZmhr8ECM8_oL_74oDzXHgkNIcRuGMw
- ADNkAH4KfWAI1xaSFM3PUM0xA8wK24KEeOG6GbGHKg6nE2R4eSAEwKhme3rwMdP4kv3qpLnWr4GH
- eaM3ZtVYjDlXjMQHOS2JfWYHn8oNto9ZV6NCcZPc2sEOhIHp9cyudxIDTgiTpFRj1V54Bi_eai4Z
- HBxTUzS7tmHZ72ylhKjwgJrSbpJogTzD9BFKYDvFlWmLAd213iaHFTAX5Mz47ywgusMAqmLhwHV0
- jV5YJZcSSQnVap5iiecEXGI_1NigxWNhtYR7fDNHw0QZz3IEWh01sI8SHI4yibnh.YuTSR5qecoC
- 2O6q4yD0Gki77xehQHLlekwqIiOuKNZVEWvg4PqGxLW6NwnMor9q0WTpleTQhMZWBFCTxQRub9XG
- PVGsC0w4bAqIz55qdZDgRM9vwy801Bhe0nb52zQqoOBH0KX0sOmwCLSLaycKTzwWdMTOsW8u9sPI
- QCWyQJ3A5aUCDmMG6bLwmidewITkoRGE.1JH6er9_3gzJtrh02TOjUYsZQbKY_ECIs6MA8vOZ0Nb
- veczfcbR9IMqtdArlPM9Vnq4COpIpnlDjd7lNDodwAokDwCqTmzF6lKaDI4coWoaVzc84axARzS7
- lpmxdvAhDwr_unQu_3UAAD4bzArovBsOBvvjB.J5pWDQyKMPh0u0DwfoiJhO_pEPlRYGIlVHGbyW
- _DNJ.C00e4RhbKOnLWG5HjNzDpuaMXqg.YQXDb8H49fOCq0LbXwgtISGQzL0KRTsjCEmuT279hfK
- WRgWseJ3cTB.XuCCb4v54PgI6L19VIVuD1WHvDuelGQX3_j0_gFiRcUpW_Gzr35PJAsnyvD6IrAP
- xjDKCMLU611h1cfL2Y2Zp8VcB_M1tga3Fn5y1tRIcyNO0xJYATmHWwk3wNBW9SAwBTvFttcbSUH7
- _0H0_Dnx_YrIZN4whokDOFEzjGbKb5sMjH9W2wcuAsUpAlqfMboL2WcZZa2vgR_AlJSOGt1DffQm
- sxr1vQZe1ZsTq3yVIoz7hsl..S6bA2N2bLevEq7L4IM8zaRmvlQd6SuI3NGEdQde4sUeuvoQDh7d
- pa00D8_nGDTxFDWGfGA61OH6654zf.YQIVLkRaa1bB2LtWAsAipxG1Tq1pZqHpQVXqxG_eQ--
-X-Sonic-MF: <casey@schaufler-ca.com>
-X-Sonic-ID: f4d52385-1c22-46e9-a768-7fe9b7b03ed3
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic316.consmr.mail.ne1.yahoo.com with HTTP; Thu, 22 Oct 2026 17:00:24 +0000
-Received: by hermes--production-gq1-fd7994565-wwgbc (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID b52a058941d94202e488719cef4d9678;
-          Thu, 22 Oct 2026 17:00:19 +0000 (UTC)
-Message-ID: <018ca365-ce9b-424c-b600-bd9c8aefc9a1@schaufler-ca.com>
-Date: Thu, 22 Oct 2026 10:00:16 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C02606A31D
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:02:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C2C02606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=bL2KxbVP
+Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-5eadef147ffso69417e0c.3
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:02:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792688551; cv=none;
+        d=google.com; s=arc-20260327;
+        b=WnzWZZfs0frurxab/Ng6RaSIhgb2JjggbenxPGRfpz6RqcK6E3fgWfVYA+b0PCP70X
+         rZPf3KHuCjeCmiha9mQhwvqW+oua0k/s5xbYZLr/os2+yH5EP3ZCzM1zDxRjUE/I1JGc
+         bdq/09+nFSEcBZWZHtXPSW3oJBQQ3tFDt8WMXu3l2fLjosLwL//vJZ3QT+4FjK3c8VBd
+         mzJasj52KO5sWsPEB7sWhaS+KlmL+pwx29F80SqTN/s7vteEANkm4XNIYKkNgDJvZvzU
+         7UXr2Y7QhkUJse8+thySxwBn26EHfnsWfIEz0dNp9bcWwo8OQ+lwqOeB18eaTSr/Hwpk
+         1RdQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=kSWxRjaE/IbCSPMaNuU9AixW3+O1lzhb2zsYAgN97Mw=;
+        fh=v1NJo0Lx3PYS1ubKaXxDf2CWWLRUwCataFnKJZozLS8=;
+        b=VwSMSR0BTeKqWaYjQSPkJRS76rGVfWCCi8Qrj6gJNEhno08rmWYF04tYtlACusOiRB
+         1CC9/BdB6xxwKhJNU9i1TqksFM15jkFjn6VBmbdt4YDcWj3HXAQOGYUl8igLypF3Wppr
+         ukUe3V+i8DCyJjM0GEj+o/+jb6KvI+3DCxZfyCWHXHqrMBzOPkn6J+r/0viN28Hg802B
+         4Klmu+WZ3wbODiFwozlBQD7dn66cnvlmJW+VgsuGgTkgvPD8g5r0Du76xCH6BHbpKwxk
+         zUaleI0dsZrdRt/yQyXN6o4x/QbfvoOP2RObeVGfgAV5cu5PIw/uDNgq6oGeEAh3cF2Z
+         AbKw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792688551; x=1793293351; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kSWxRjaE/IbCSPMaNuU9AixW3+O1lzhb2zsYAgN97Mw=;
+        b=bL2KxbVP9vJXHCaLh07m4xx/lCLFALTPsNyJ2XYD8QvTEBVm+8P8ssFZj3w0RKWQE8
+         gxTxQ6OqJYdkrO8jB9C0p3oyjqyWGfFuV0I8D4EG3DxE+e/9MbTWn5JvjowPqYMzlyBG
+         J3QmLYIwFbmohWkRIEX1dVxFy0RJlgXctETERcOfbImA2sz1EpNjy6plK+tLpjm1+2D/
+         d3NK9es0sgtr/2QleNIMSh2s0AaL53i6Z0ARxkxKOfl8VmNOBqwteUDGzls8INyddhHv
+         d0aMT0xVBKLoidLyyzmufwhIkIZBo1MezEgYkxHxy0fEYuppLbB/qM4AMy/iP8u14ClB
+         qyhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792688551; x=1793293351;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=kSWxRjaE/IbCSPMaNuU9AixW3+O1lzhb2zsYAgN97Mw=;
+        b=2MS6aYbiiQst6E2+vm/W30GMgSD9I0581ADWlb513MInYbqYRB/rjlcvd19w2NAcQ1
+         1dSJgrnuSui46Pf1U/SR/AmvvpWRePls19osFzfbJ/+SUWzRb4uQANqVtZUiXfm+0t1i
+         1JoA+xbw98Uy5RlEN4+TyoanGzNYjpu1CubWdBERoNH3493XVjqNEb4ExKSfVdJ2yX73
+         EpAvVJgfAecPniAnAbhusSDKTdMJQCdyFdqJDOQ+1lH4cJyjautXnr/JnyLINYpPc9+n
+         ljV4JMQ/eOuwMBAaU1lvHAzhHeryKQdE5QXgpj9hPcFKFhp56whz/Of+PrI3+Nhm4tgM
+         rgpA==
+X-Forwarded-Encrypted: i=1; AKwUvBxpBtiAPTmkEcqLrB1pKpKwOHOrVUfGr90AEU7GIs3WE/Xbe2UxEG/W01Ef0J+u5RVMrjst2Y8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLktEk7eZXHl1IhtdbDobloTakfqjQ74/hEwEV8jN0aXyWtlh5u
+	E1iQvYxPkGennWc1W9rrKgR2LFxk+6lUoVzpc1WLQxrqOKExHVlO/AeOuRCELfpYQkNW3WPWayO
+	Vr1vuHM+lGOuow83g03Qv/lDj6ET/Lk8=
+X-Gm-Gg: AYBFou35Hv3saqJW9pbO9fQIesZLYY+NHZqCvBxHPoU7vy+vCtnDmGZVsTW9Csa/LZr
+	5MqWlJrc2QJjkwxLnxRtSRp2vpWiFrpeuOviO246oMAYo9cMuVaR/O4oV2xtxXJDJHruH79aqE/
+	76zR6oOvJQwx0ZyL0rWsockYrY6nQkuK1dqXC1mUJVszhJSkQ+yPJEd1P8qToM29FjIaIuuTg4B
+	9/t7u2kMSHBTP9yEKn4U68cX4T0EwsUezlwtqU7Cz4ak3neohhJas7s6VIKmdmCQQEup7m7u2lm
+	dBP0hgazip63oV4gZzfb823bfE9lQNJHicnWTCItIAsUZd7FA5YFm7UXz9rOy7Z7jzVYkNsVLTE
+	JosDfp4cc4V+cY95210HG59wDTyt2ARLLoWvkdQRaZRNCd6rsBFFH3Iu4CR8aowCOSQs9Cw==
+X-Received: by 2002:a05:6122:1b8e:b0:5ea:9a2c:27a8 with SMTP id
+ 71dfb90a1353d-5eaebe4278cmr2430756e0c.14.1792688550608; Thu, 22 Oct 2026
+ 10:02:30 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -80,46 +103,169 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 00/41] UUID and GUID user and group ids (*_r system
- calls)
-To: Jan Koester <jan.koester@tuxist.de>,
- Christian Brauner <brauner@kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>, "Serge E. Hallyn"
- <serge@hallyn.com>
-Cc: Jan Kara <jack@suse.cz>, "Theodore Y. Ts'o" <tytso@mit.edu>,
- Paul Moore <paul@paul-moore.com>, Arnd Bergmann <arnd@arndb.de>,
- linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
- linux-security-module@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-ext4@vger.kernel.org, linux-nfs@vger.kernel.org,
- linux-cifs@vger.kernel.org, netdev@vger.kernel.org, audit@vger.kernel.org,
- keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
- Casey Schaufler <casey@schaufler-ca.com>
-References: <cover.1792552161.git.jan.koester@tuxist.de>
-Content-Language: en-US
-From: Casey Schaufler <casey@schaufler-ca.com>
-In-Reply-To: <cover.1792552161.git.jan.koester@tuxist.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.26740 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+References: <6aa9c7f8.a211d2ce.1a5198.02b5.GAE@google.com> <6ada3d82.d1c214cc.659fa.00db.GAE@google.com>
+In-Reply-To: <6ada3d82.d1c214cc.659fa.00db.GAE@google.com>
+From: mixalhs <mike.michalo@gmail.com>
+Date: Thu, 22 Oct 2026 19:02:18 +0200
+X-Gm-Features: AclHuK8O7NwRbWIfFzmBEJxz6JrwfkQQtk4I4dUTZ1jjiRYQl1sxYC0LmHe1Uj0
+Message-ID: <CAO+rqLgLRszT2U_x49hYVULuJ6Lm-80EdokzQUyNO_mECKEvKA@mail.gmail.com>
+Subject: Re: [syzbot] [netfilter?] WARNING in nf_flow_table_extend_ct_timeout
+To: syzbot <syzbot+521f7e7e2b974abde99a@syzkaller.appspotmail.com>
+Cc: coreteam@netfilter.org, davem@davemloft.net, edumazet@google.com, 
+	edumazet@kernel.org, fw@strlen.de, horms@kernel.org, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	netfilter-devel@vger.kernel.org, pabeni@redhat.com, pablo@netfilter.org, 
+	phil@nwl.cc, stable@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: multipart/mixed; boundary="00000000000040a347065e70d4ec"
 
-On 10/20/2026 8:15 PM, Jan Koester wrote:
-> Hi,
+--00000000000040a347065e70d4ec
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git mai=
+n
+
+On Thu, Oct 22, 2026 at 6:44=E2=80=AFPM syzbot
+<syzbot+521f7e7e2b974abde99a@syzkaller.appspotmail.com> wrote:
 >
-> this RFC series lets a user or group id be a UUID (RFC 9562, version 4)
-> or a Microsoft GUID as well as a classic 32-bit number. Processes can run
-> as such a user, files can be owned by one, and credentials, ACLs, keys,
-> System V IPC, sockets, signals, audit and procfs carry the whole id.
+> syzbot has found a reproducer for the following issue on:
+>
+> HEAD commit:    abeacca61eea Merge branch 'net-mlx5-hws-fix-modify-header=
+-..
+> git tree:       net
+> console+strace: https://syzkaller.appspot.com/x/log.txt?x=3D111f4d0d58000=
+0
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=3Dc4b098695335c=
+89f
+> dashboard link: https://syzkaller.appspot.com/bug?extid=3D521f7e7e2b974ab=
+de99a
+> compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.=
+8
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D1491e029580=
+000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D157d410d58000=
+0
+>
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/22930d0e9391/dis=
+k-abeacca6.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/d2e18d51f288/vmlinu=
+x-abeacca6.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/69879bb16225/b=
+zImage-abeacca6.xz
+>
+> IMPORTANT: if you fix the issue, please add the following tag to the comm=
+it:
+> Reported-by: syzbot+521f7e7e2b974abde99a@syzkaller.appspotmail.com
+>
+> ------------[ cut here ]------------
+> 1
+> WARNING: net/netfilter/nf_flow_table_core.c:553 at nf_flow_table_extend_c=
+t_timeout+0x1ee/0x2f0 net/netfilter/nf_flow_table_core.c:553, CPU#1: kworke=
+r/1:2/123
+> Modules linked in:
+> CPU: 1 UID: 0 PID: 123 Comm: kworker/1:2 Not tainted syzkaller #0 PREEMPT=
+(full)
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS G=
+oogle 10/07/2026
+> Workqueue: events_power_efficient nf_flow_offload_work_gc
+> RIP: 0010:nf_flow_table_extend_ct_timeout+0x1ee/0x2f0 net/netfilter/nf_fl=
+ow_table_core.c:553
+> Code: 00 00 00 41 83 ff 06 0f 84 9a 00 00 00 41 83 ff 05 0f 85 b0 00 00 0=
+0 e8 e0 10 a9 f7 41 bf 30 75 00 00 eb 0f e8 d3 10 a9 f7 90 <0f> 0b 90 41 bf=
+ 01 00 00 00 48 c7 c0 80 f2 a0 8f 48 c1 e8 03 42 80
+> RSP: 0018:ffffc90002dcf930 EFLAGS: 00010293
+> RAX: ffffffff8a1effad RBX: ffff888027a52900 RCX: ffff88801ffa1f40
+> RDX: 0000000000000000 RSI: ffffffff912fa640 RDI: 000000000000002f
+> RBP: 0000000000000737 R08: ffff88801ffa1f40 R09: 0000000000000002
+> R10: 0000000000000011 R11: 0000000000000000 R12: dffffc0000000000
+> R13: 1ffff11004f4a538 R14: ffff888027a52948 R15: 000000000000002f
+> FS:  0000000000000000(0000) GS:ffff888123bbd000(0000) knlGS:0000000000000=
+000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00007f926bd5bd3c CR3: 000000000fb48000 CR4: 00000000003526f0
+> Call Trace:
+>  <TASK>
+>  nf_flow_offload_gc_step+0x5aa/0x840 net/netfilter/nf_flow_table_core.c:5=
+93
+>  nf_flow_table_iterate+0x13c/0x1f0 net/netfilter/nf_flow_table_core.c:459
+>  nf_flow_table_gc_run net/netfilter/nf_flow_table_core.c:616 [inline]
+>  nf_flow_offload_work_gc+0x22/0x70 net/netfilter/nf_flow_table_core.c:624
+>  process_one_work kernel/workqueue.c:3396 [inline]
+>  process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3479
+>  worker_thread+0xa47/0xfb0 kernel/workqueue.c:3560
+>  kthread+0x38b/0x480 kernel/kthread.c:436
+>  ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+>  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+>  </TASK>
+>
+>
+> ---
+> If you want syzbot to run the reproducer, reply with:
+> #syz test: git://repo/address.git branch-or-commit-hash
+> If you attach or paste a git patch, syzbot will apply it before testing.
 
-I can't see this being acceptable for a variety of reasons, including
-but not limited to performance and configuration complexity. It's a
-general solution for a special case or two, and the impact is significant.
+--00000000000040a347065e70d4ec
+Content-Type: application/octet-stream; 
+	name="0001-netfilter-flowtable-extend-ct-timeout-of-offloaded-G.patch"
+Content-Disposition: attachment; 
+	filename="0001-netfilter-flowtable-extend-ct-timeout-of-offloaded-G.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_mvjsgn1g0>
+X-Attachment-Id: f_mvjsgn1g0
 
-If you're willing to use a UUID and/or GUID in addition to a UID/GID
-instead of in place of it you could consider implementing this as an
-LSM. There are a number of issues you'd still run into there (e.g. UDS
-attributes) and I can't say if the resulting behavior would be what
-you're looking for. I also can't say that the security community would
-necessarily be any happier with it than the general population, but if
-you really want this it might be worth a shot.
-
+RnJvbTogTWljaGFpbCBBbmRyZWFzIE1pY2hhbG9wb3Vsb3MgPG1pa2UubWljaGFsb0BnbWFpbC5j
+b20+ClN1YmplY3Q6IFtQQVRDSCBuZl0gbmV0ZmlsdGVyOiBmbG93dGFibGU6IGV4dGVuZCBjdCB0
+aW1lb3V0IG9mIG9mZmxvYWRlZCBHUkUgZmxvd3MKClNpbmNlIGNvbW1pdCAwMzQyOGNhNWNlZTkg
+KCJuZXRmaWx0ZXI6IGNvbm50cmFjazogcmV3b3JrIG9mZmxvYWQgbmZfY29ubgp0aW1lb3V0IGV4
+dGVuc2lvbiBsb2dpYyIpLCB0aGUgZmxvd3RhYmxlIGdjIHdvcmtlciBleHRlbmRzIHRoZSB0aW1l
+b3V0Cm9mIGFuIG9mZmxvYWRlZCBjb25udHJhY2sgZW50cnkgZnJvbSBuZl9mbG93X3RhYmxlX2V4
+dGVuZF9jdF90aW1lb3V0KCkKb25jZSBpdCBmYWxscyBiZWxvdyA1IG1pbnV0ZXMuIFRoYXQgZnVu
+Y3Rpb24gb25seSBrbm93cyBhYm91dCBUQ1AgYW5kClVEUCBhbmQgaGl0cyBXQVJOX09OX09OQ0Uo
+KSBmb3IgYW55IG90aGVyIGxheWVyIDQgcHJvdG9jb2wuIEhvd2V2ZXIsCkdSRSBmbG93cyBjYW4g
+YmUgb2ZmbG9hZGVkIHRvbywgYm90aCB2aWEgbmZ0X2Zsb3dfb2ZmbG9hZCBhbmQgYWN0X2N0LApz
+aW5jZSBjb21taXQgNGU4ZDk1ODRkMTU0ICgibmV0ZmlsdGVyOiBmbG93dGFibGU6IFN1cHBvcnQg
+R1JFIikuCgpUaGUgdGltZW91dCBvZiBhbiBvZmZsb2FkZWQgR1JFIGVudHJ5IGRyb3BzIGJlbG93
+IHRoYXQgdGhyZXNob2xkIGFzIHNvb24KYXMgYSBwYWNrZXQgb2YgdGhlIGZsb3cgc3RpbGwgZ29l
+cyB0aHJvdWdoIGNvbm50cmFjay4gV2l0aCBpcDZncmUKdHVubmVscyB1c2luZyB0aGUgZGVmYXVs
+dCBlbmNhcHN1bGF0aW9uIGxpbWl0IHRoaXMgaXMgb3JkaW5hcnkgdHJhZmZpYzoKdGhlIGZsb3d0
+YWJsZSBkb2VzIG5vdCBwYXJzZSB0aGUgRGVzdGluYXRpb24gT3B0aW9ucyBoZWFkZXIgaW4gZnJv
+bnQgb2YKR1JFLCBzbyBldmVyeSBwYWNrZXQgb2YgdGhlIGZsb3cgdGFrZXMgdGhlIGNsYXNzaWMg
+Zm9yd2FyZGluZyBwYXRoLiBJdAphbHNvIGhhcHBlbnMgZm9yIGEgcGFja2V0IHdpdGggdHRsIDw9
+IDEsIHdoaWNoIHRoZSBmbG93dGFibGUgZmFzdCBwYXRoCnBhc3NlcyB1cCB0byB0aGUgY2xhc3Np
+YyBmb3J3YXJkaW5nIHBhdGguIG5mX2Nvbm50cmFja19ncmVfcGFja2V0KCkgdGhlbgpyZWZyZXNo
+ZXMgY3QtPnRpbWVvdXQgdG8gdGhlIEdSRSBzdHJlYW0gdGltZW91dCAoMTgwIHNlY29uZHMgYnkg
+ZGVmYXVsdCksCmFuZCB0aGUgbmV4dCBnYyBydW4gdHJpZ2dlcnMsIGFzIHJlcG9ydGVkIGJ5IHN5
+emJvdDoKCiAgV0FSTklORzogbmV0L25ldGZpbHRlci9uZl9mbG93X3RhYmxlX2NvcmUuYzo1NTMg
+YXQgbmZfZmxvd190YWJsZV9leHRlbmRfY3RfdGltZW91dCsweDFlZS8weDJmMAogIFdvcmtxdWV1
+ZTogZXZlbnRzX3Bvd2VyX2VmZmljaWVudCBuZl9mbG93X29mZmxvYWRfd29ya19nYwogIENhbGwg
+VHJhY2U6CiAgIG5mX2Zsb3dfb2ZmbG9hZF9nY19zdGVwKzB4NTQ1LzB4N2IwCiAgIG5mX2Zsb3df
+dGFibGVfaXRlcmF0ZSsweDEzYy8weDFmMAogICBuZl9mbG93X29mZmxvYWRfd29ya19nYysweDIy
+LzB4NzAKICAgcHJvY2Vzc19zY2hlZHVsZWRfd29ya3MrMHhjM2QvMHgxNjMwCiAgIHdvcmtlcl90
+aHJlYWQrMHhhNDcvMHhmYjAKICAga3RocmVhZCsweDM4Yi8weDQ4MAoKQmVzaWRlcyB0aGUgc3Bs
+YXQsIHdoaWNoIHBhbmljcyB0aGUgbWFjaGluZSB3aXRoIHBhbmljX29uX3dhcm4sIHRoZQpkZWZh
+dWx0IGJyYW5jaCBzZXRzIHRoZSBuZXcgdGltZW91dCB0byAxIGppZmZ5LCBzbyB0aGUgY29ubnRy
+YWNrIGVudHJ5CmV4cGlyZXMgcmlnaHQgYXdheSBhbmQgdGhlIG9mZmxvYWRlZCBmbG93IGlzIHRv
+cm4gZG93bi4KCkhhbmRsZSBHUkUgbGlrZSBVRFAgYW5kIGV4dGVuZCB0aGUgdGltZW91dCB0byBO
+Rl9DVF9EQVkuIEdSRSBjb25udHJhY2sKaGFzIG5vIHByb3RvY29sIHN0YXRlIHRvIHRha2UgaW50
+byBhY2NvdW50LCBhbmQgTkZfQ1RfREFZIGlzIGFsc28gd2hhdApmbG93X29mZmxvYWRfYWRkKCkg
+YWxyZWFkeSBzZXRzIGZvciBldmVyeSBvZmZsb2FkZWQgZW50cnksIEdSRSBpbmNsdWRlZC4KVGhp
+cyBhbHNvIHJlc3RvcmVzIHRoZSBiZWhhdmlvdXIgZnJvbSBiZWZvcmUgY29tbWl0IDAzNDI4Y2E1
+Y2VlOSwgd2hlbgp0aGUgY29ubnRyYWNrIGdjIHdvcmtlciBleHRlbmRlZCBvZmZsb2FkZWQgZW50
+cmllcyBvZiBhbnkgcHJvdG9jb2wgdG8KTkZfQ1RfREFZLgoKRml4ZXM6IDAzNDI4Y2E1Y2VlOSAo
+Im5ldGZpbHRlcjogY29ubnRyYWNrOiByZXdvcmsgb2ZmbG9hZCBuZl9jb25uIHRpbWVvdXQgZXh0
+ZW5zaW9uIGxvZ2ljIikKUmVwb3J0ZWQtYnk6IHN5emJvdCs1MjFmN2U3ZTJiOTc0YWJkZTk5YUBz
+eXprYWxsZXIuYXBwc3BvdG1haWwuY29tCkNsb3NlczogaHR0cHM6Ly9zeXprYWxsZXIuYXBwc3Bv
+dC5jb20vYnVnP2V4dGlkPTUyMWY3ZTdlMmI5NzRhYmRlOTlhCkNjOiBzdGFibGVAdmdlci5rZXJu
+ZWwub3JnCkFzc2lzdGVkLWJ5OiBMTE0KU2lnbmVkLW9mZi1ieTogTWljaGFpbCBBbmRyZWFzIE1p
+Y2hhbG9wb3Vsb3MgPG1pa2UubWljaGFsb0BnbWFpbC5jb20+Ci0tLQogbmV0L25ldGZpbHRlci9u
+Zl9mbG93X3RhYmxlX2NvcmUuYyB8IDEgKwogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCsp
+CgpkaWZmIC0tZ2l0IGEvbmV0L25ldGZpbHRlci9uZl9mbG93X3RhYmxlX2NvcmUuYyBiL25ldC9u
+ZXRmaWx0ZXIvbmZfZmxvd190YWJsZV9jb3JlLmMKaW5kZXggMzZiYmM3YmUyZi4uOTQ1MDJjOTdi
+YSAxMDA2NDQKLS0tIGEvbmV0L25ldGZpbHRlci9uZl9mbG93X3RhYmxlX2NvcmUuYworKysgYi9u
+ZXQvbmV0ZmlsdGVyL25mX2Zsb3dfdGFibGVfY29yZS5jCkBAIC01NDQsNiArNTQ0LDcgQEAgc3Rh
+dGljIHZvaWQgbmZfZmxvd190YWJsZV9leHRlbmRfY3RfdGltZW91dChzdHJ1Y3QgbmZfY29ubiAq
+Y3QpCiAKIAkJc3dpdGNoIChsNHByb3RvKSB7CiAJCWNhc2UgSVBQUk9UT19VRFA6CisJCWNhc2Ug
+SVBQUk9UT19HUkU6CiAJCQluZXdfdGltZW91dCA9IE5GX0NUX0RBWTsKIAkJCWJyZWFrOwogCQlj
+YXNlIElQUFJPVE9fVENQOgotLSAKMi40My4wCg==
+--00000000000040a347065e70d4ec--
