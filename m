@@ -1,108 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792661352;
-	b=Nh8z7pzKqNE3ssHxiz01kApAEE21EmmFGfrzAMylR+3xJFh3r2AVNmhRT/MJTleOvO3g
-	 SJ2mNrfaRNvnX8mq2Db8fadc0Wt0NC8OT7lO5sYaKearhS86wjJlY4J+DvwI/jpcFcGrE
-	 sjlEc+gCBOLhoCJqADDWUZWWHGxf8bevdmVTKWXnU/avRqlHS1885+CfKJIcjBmosTbnP
-	 OfbOPReNOyWnVTCttMZIhz6jLpzd7jG08tE1pd2wzQVQxdsTtXdyd0WGvA89TBV/JpPSf
-	 uvh9Y4gcU4Eh5B91RNs/Nh6GNUEcN2oSYSiI9L3PNCM992zM0YebyXYfD5TC0JAQb3w==
+	t=1792661597;
+	b=x16sAdmPh4b2xQwevrrVZjX/1bLAUF4ixoZV3syh8iIp2ktX/RmceRq0rm40rNmA6ReP
+	 C9PFMEZv5ZIhT5TuZRSBa0g7cbqHWgMh/PC/9PqcA7XXYAYjDAjV7vM/hfldS5FzRTt2m
+	 u4q4SHG7qJRTOiCViEgjGq9VasGWKLvtCzbOGqgt19BjgVUdxcQ1jRVbxUOCT3U03cFQT
+	 eIomW8FnoBZVFMRdx0Gl44n0Ldj17DQveRKa7yBf4CgQMMat12exss1w/5VP77nExPNbo
+	 KHYJdUSn/MQda8G37Bfzi50u6QEh422GJT6OdoWiomi4GYrCxaAC8GkHWPI0JIfftKg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792661352;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
-	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=6C0nwTWJOi88sDum8VGip3YZoxwI0Nc79E5HIgWtPfM=;
-	b=hdNFCQCBVdCpJ2ItxF3qefIRiqIL4n1jBAmDHJ2jUDuop9Xd+uJLbPRw0Mw2g7cCAfMf
-	 yQszQ6Bbo/6r4hT9M+6C5kGYt1k3gPdY+OuzzMCAoq51R0qM/aH8pCR5hlpTUmAEb+fCE
-	 yGY63cHnaKPXYdH0YtcNw7XP5+vb1U0Mmdj1Wyv7zAaH1DJ2EGFexDaePTMqv7Q6dBgkc
-	 B21bnN9MCWtuMBP7thUWLyOHJW5JKmkc+0ObsfYE/YiQPHoekDnWYzUxdC2T5sATiJviR
-	 CWLpUyCWDEBWoJJrYbKDQ1PBIfxjhMUVb2NHhVrHAg0v+mDBk2rhGTKLXZe+fEmJUjg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792661597;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 DKIM-Signature:X-Google-DKIM-Signature:X-Gm-Message-State:X-Gm-Gg:
+	 X-Received:X-Received:Received:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Proofpoint-GUID:X-Proofpoint-Spam-Info:X-Authority-Analysis:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=pxeHPu72hzHe03AD6HAsRMMpCMUek2XkaAeZNt/w6uo=;
+	b=Muuo1JA+pWTiS6YI+FAFRgnISfhD07JeAOiDp3I8HBNxN9aZ36D2kvCXg3Zu7IgbNGdc
+	 CoI2phkB54Rky4Dwm+rO8PSPfYizn6tEDFlfqE33SyoqwFC+O0IG9MsGJR19419CkUCEu
+	 0A3wRBqhVizizgxCRfhQ7j8Q83JETRkOi+v5tU3wR30rZgeSrxxTtu5W+SlBj5dM4aNlQ
+	 WKp7yhI0PuQN+pApir4D4Z5Hc7sMMpqcVb2OftTGAx36bYJFpF/nSVPKLesajWlK4D2Tn
+	 RCCO4g1qCvcum7jHssGOpZS28MrYBchK4ES76CZ8R7vzAzU4EH+37TglQbiVPHPatBQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hyMf04X6;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b="fW6/HOpL";
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=oss.qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=N2tuw6rJ;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b="F/ZJ1WmD";
+	arc=none smtp.remote-ip=205.220.180.131
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1965606A31D
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:29:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A1965606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9138606A31B
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:33:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C9138606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hyMf04X6;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=fW6/HOpL
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792661350;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6C0nwTWJOi88sDum8VGip3YZoxwI0Nc79E5HIgWtPfM=;
-	b=hyMf04X6mgLpHqkAivlQqoL+Q05Rd4b+RtRcPhaTIj+siQ4jGkHSZuxXF4jHfgRMOlbYfE
-	3YlEhw5EfSDyasHfyPwafkmx9BPWLI95zENeQVwXuHe9PIsYVmtnfiDBvOYcDMd6g3bdsu
-	Lzr6LBbdKSfMLEZ3kLFsEsOZcPxzN/o=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-586-0_6K4nWBO4aRylZTUjniEQ-1; Thu, 22 Oct 2026 09:29:09 +0000
-X-MC-Unique: 0_6K4nWBO4aRylZTUjniEQ-1
-X-Mimecast-MFC-AGG-ID: 0_6K4nWBO4aRylZTUjniEQ_1792661348
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a2065a2ef9so5381045e9.3
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 02:29:09 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=N2tuw6rJ;
+	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=F/ZJ1WmD
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69M705941995964
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:33:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=pxeHPu72hzHe03AD6HAsRM
+	MpCMUek2XkaAeZNt/w6uo=; b=N2tuw6rJ949QiMqE2H+n+gni/wAapLN6ElqGp6
+	ItCL6ntJn0vaZzXekJ0+7Q+JYUYSAClnGFe0uXG4MXOWXW1amqvuHpjfpOLqwLrW
+	zowlLpOt3lqJqtFZYmIxAP8S9NqGaSe/h1L3MPojrWDGWvGPsPPvlc/jVyscoxM0
+	LJWChkTGQqnH/l3fwC/8Yen7vHgbvpOgtw9m1KlYQldB0RJ8lOQFgIUNeR2hZ+vV
+	jey2+ZR74U7vJQCMgYIOsrddC0ifFg3mFudT7BzMOJ83fjsUSVqODAC35sb44qKe
+	IwGZCws0CaO9GCpGCYE6TGmoyQbkuchLPg+sznty1epwPcog==
+Received: from mail-dl1-f71.google.com (mail-dl1-f71.google.com [74.125.82.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hf93bsp8d-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:33:15 +0000 (GMT)
+Received: by mail-dl1-f71.google.com with SMTP id a92af1059eb24-155a75f91e1so701814c88.1
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 02:33:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792661348; x=1793266148; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6C0nwTWJOi88sDum8VGip3YZoxwI0Nc79E5HIgWtPfM=;
-        b=fW6/HOpL8dIxGuiiDpKI03pmgLFA64DVP3w/EeHlzc+k192QYqX3x57BU8tRCmA4dA
-         AZf5L+g3jLxNIq5RpLhbFvbzpKSMP60lFldlNeMGERpCjaGXaFKm129m8zlmoBKRDVBA
-         S5QC7cOUn5c2cBmZ9V/pCAqjxbnkqBkfGJ2UKImZpQWB8abN66TUfpZhHBeUIOWsaQUI
-         lI1ErMP1HX85uZsAVAgMgdL3qI2T7qEh7C5d+ns9zSR4JheX7rcIup9v31pB+FMDGtkQ
-         52CMpE8Mxg1WUw3YQ6P804l40b2nYk0SWpONRfTRQWsb5Jd1/WZOOJTCwnGpEHqioowi
-         3SJQ==
+        d=oss.qualcomm.com; s=google; t=1792661595; x=1793266395; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=pxeHPu72hzHe03AD6HAsRMMpCMUek2XkaAeZNt/w6uo=;
+        b=F/ZJ1WmDwx1Y+S2HpsdcN4IrQ7pURBa+aoUmBitGKTEbBytRz41mLz1qbjEZ0V48CF
+         Qp4/FeoGT3ENLmtyfC/7Aim/pLB8ODoeox/F9P3cXYgVfRwqVH2C88EjFGjLijgtwmVY
+         0v/SRhDrqVcD+URCbYUkm4aBgUFtOS+UCBbHmQWGO3TZwEE13x5N4eK4LFjckPsx8KYb
+         vl2EDzDtoigQE6rRZdSnbJaQT9KBpcxrM07+qIe67gCGBQrrlq2CZPkgSEao3RdGM+Uw
+         qvrXfLh/oBbzkWkXLw+GhVWkb5sIyXkeV42bhf4u/UjDP2o/3/iHO5KMLaTUf9ryC9Rj
+         4xyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792661348; x=1793266148;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6C0nwTWJOi88sDum8VGip3YZoxwI0Nc79E5HIgWtPfM=;
-        b=sKfa6rsOolH/Op1lEeLzHLKuLsb5JxEmG+WLulbFdOWepFTY/aBhtPJKGrwfSTXFYA
-         OoZuGplEZmr7R3d6Z/CiwgvM4tEiSmthBnrcuXXkoQEAIlpo+ZrJe7VmOHaYVbEbKup3
-         KHC8YZDTh9O74g7kx9kC+/0KDGvnHnPABpAtoaqp0heyRQM+NnKm/RSyrRBYIxqboQ4l
-         jKiRiM2N3k91D+pxlSlb6+O1ZnBjFfVVXHcPIZy41az313jGEhslLQ4uXHxKXKC2ieJ5
-         obwn8Mm9Z1bNP54ftYvbksMhrZr1hZVSiGX1CCRizjWj+ym96MaXSUZ/nFcuOYezgyCZ
-         lECA==
-X-Forwarded-Encrypted: i=1; AKwUvByITpm8NBbJ1re5tM5E3EG3ml8R0J1KAr82LSReMyOQmu9iwAHcKaPYLOCKeV0fxR+Y+Yt1yh4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLvje9DY3HgUSgTfiqGlC/0fI7K0fpxHe9I2LBtpnyPyAJCv7PS
-	UoRS3FIlsGq+XWb9XTKukKVRk3cvfLsBHXLeiGn+VZ6LP3fgB8tZFqnlV9ZVJ5S3vJu4iEw2O+N
-	DaSI5kgNZHjfjperm7YuIA/wu6TV2N4jOMT+3c+fYjZBhuWzddLA8GtalVg==
-X-Gm-Gg: AYBFou0x9gEQQrLYIVvRpxZq4bVxHr+ce1HzokAeoG/T9Dm6BRLJk4N0nEJ4+DOYUiX
-	uyd3l70I6b+9kD9ogaI6rI11roZ5zDVFUwSSr7WRzJIJs1S74eAWVGcHsZrJpDcIBk0D7vzmSan
-	k9xpEy/vGgZohEa5HeH05jmxRgB1hrGYnQwY45VtA3uq7r5qn2S1oQyuvTxGv/VQAaFojxjG8MV
-	buIK5JXRm4A3oD6nQwwIA6E5lvc0RLTe5BeXjuGRTomd8HmuF/f5m8No4htWzJTZGMPbFi0B+QL
-	z7pKbUpYGfhiqpe5tufktSAf06gYmCl+eGNIPt4quVRbh/tQRvaq6/7q4HdZAzS360Jh7c4l7nP
-	xzs41H/IiaHm7nVMh5qtac9bt4XDXli3GK4lmL2gkHLUxnd9hmgVoMOkOEO+tU1K5jK6r8B6EMw
-	==
-X-Received: by 2002:a05:600c:620a:b0:4a1:706f:b40d with SMTP id 5b1f17b1804b1-4a1fdb1a609mr83563705e9.7.1792661347973;
-        Thu, 22 Oct 2026 02:29:07 -0700 (PDT)
-X-Received: by 2002:a05:600c:620a:b0:4a1:706f:b40d with SMTP id 5b1f17b1804b1-4a1fdb1a609mr83563385e9.7.1792661347465;
-        Thu, 22 Oct 2026 02:29:07 -0700 (PDT)
-Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a203b42befsm54154205e9.8.2026.10.22.02.29.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Oct 2026 02:29:07 -0700 (PDT)
-Message-ID: <9756cf25-6951-4330-959b-3260f4760c3e@redhat.com>
-Date: Thu, 22 Oct 2026 11:29:05 +0200
+        d=1e100.net; s=20260707; t=1792661595; x=1793266395;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=pxeHPu72hzHe03AD6HAsRMMpCMUek2XkaAeZNt/w6uo=;
+        b=V2KVaBvn3QyTZf/svs9yNACAQySq9Y7wlVMym4XXl52RIg7BkufzEta22eK/zLIDjP
+         bpxWZGfKQm66zwfwaUo54VdznVxVw1oimGlHO0Ii/XkfWocGOulQ90jObQE9ePts2YsX
+         WCPXqNDwMM3fQ3f2f/nwEIooSy7Mho0vn1ENgwKfMe6TaQhzhqY9iVr5d/dkXQkNlRjW
+         itOYQ0lxosXuE+2k4Oe4DnimG5PmMrFCqOnkfXYlI70/DJwv/nmF0Y8L5oelPDHrc54f
+         AT34AofotrYQm7iycK8TE52pL4YP87S7Dt7kW1CpvZI5EOaBw2XvIB/+hDpBLRoOU71W
+         Zakg==
+X-Gm-Message-State: AFq9FYKTGAJ68yuXhOcLHTQjBbBtnhB0H8CSAIdjNQMGs5LCYgitLl4H
+	fwaJ2OKhoG5uxSEJDZWuR1uBLSEuHWOq+Jc6PSesqrzcttSRxScwnK1JWbuLHmC0WCOZr0E8QqJ
+	Z2IZdK51/uQabslBnEPmU/7kqqx/Xn3l+7iueDXZABt9QLeOH6Vz0h0Fu9ik=
+X-Gm-Gg: AYBFou23ePUYbh7n2Pjw8QNN5c+4w/6/HvMKpeINneIDtzLH1RU+qNBUzi3cg10+aoI
+	Z90BRfSehybWpwQqBz9DeOJpWgFzyJ8eigL8ZLrfenAImWfqWps/makbwUbNi36lYtVEN+nkcU4
+	0eE5P8y9z8silDmP4xvv+NbPzcB5gzgKK2SaGuJHeGDPNO5sJ4FgJ0olK+xcadNi5VwrAIdnQ3t
+	Zz0N8jBLMUlqgB9F+7x2MnBu4I6zKylxzLZsf+LyiHLwz/VTSosNAAbr7iga4EuHdLQv/rabkoZ
+	jmMDV//sUSfQA95mr1ylJ6OzpJg4GXRsqBO6i24PJHKTTaiaqCvfiPQNtc3hdJN9O4Ckd0vEX+R
+	T3pOaymSk9MrRn4ynh4c1Eykk/8Ay42frEQX/amB+gQAe2c0RQf/5dxHShdw=
+X-Received: by 2002:a05:7022:995:b0:14b:355e:2888 with SMTP id a92af1059eb24-192f5e1493dmr3047445c88.27.1792661594517;
+        Thu, 22 Oct 2026 02:33:14 -0700 (PDT)
+X-Received: by 2002:a05:7022:995:b0:14b:355e:2888 with SMTP id a92af1059eb24-192f5e1493dmr3047406c88.27.1792661593948;
+        Thu, 22 Oct 2026 02:33:13 -0700 (PDT)
+Received: from alfred-sh01-lnx.ap.qualcomm.com (i-global052.qualcomm.com. [199.106.103.52])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3673e15353csm25904494eec.2.2026.10.22.02.33.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Oct 2026 02:33:13 -0700 (PDT)
+From: Hongmei Xu <hongmei.xu@oss.qualcomm.com>
+Subject: [PATCH net-next v4 0/2] net: phy: aquantia: fix PMA capability
+ reporting and EEE discovery
+Date: Thu, 22 Oct 2026 17:33:07 +0800
+Message-Id: <20261022-net-phy-aqr113c-fix-pma-capability-v4-0-95a17f75dd7a@oss.qualcomm.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -112,91 +113,111 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG] net: tun: zero-copy path can expose uninitialized packet
- data
-To: Cheng Yongkang <teel4res@gmail.com>,
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- Jason Wang <jasowangio@gmail.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Eugenio Perez <eperezma@redhat.com>
-Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
- virtualization@lists.linux.dev, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20261022091847.3654028-1-teel4res@gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20261022091847.3654028-1-teel4res@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFPY2WoC/42Oy47CMAxFfwVlPUZ2UtpmVvMfiEWSpjQj+iAJF
+ RXqv5MWCc1ikLqxdGXfc/xgwXpnA/vePZi3owuu71LIvnbMNKo7W3BVyowjz1FSAZ2NMDQTqKs
+ nEgZqd4ehVWDUoLS7uDhBVVRYGm1kWUiWQIO36WqVHNnS7+w9stNrE27615q4OJbbxoXY+2n9Z
+ 6S18VJzsUU9EhBkshAHKQhrzH/6EPbXm7qYvm33aazekf8lZ5vIPJG51JjzUmisxQeyeJMJKd9
+ EFoCAWmvSZYbiUP1Dnuf5CViVA/erAQAA
+X-Change-ID: 20260917-net-phy-aqr113c-fix-pma-capability-d7d08cbc9879
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Hongmei Xu <hongmei.xu@oss.qualcomm.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792661591; l=2456;
+ i=hongmei.xu@oss.qualcomm.com; s=20260917; h=from:subject:message-id;
+ bh=imazqWx1QzR1C8tFiACB+D5otXOIrb2gIqpGREoOoO4=;
+ b=4pPpvTK3vdoAgWVvXy+AxSVSsbQm7kQUvaBE4Tin/iXlWnKDDW/ZF9CDskq1SS4r2CMJsf6Gp
+ Z2ART9Ai0B6Bvn41Ir2VEaoBkEpDCdt+xLQk0RwxfdLo07yiA79YVqJ
+X-Developer-Key: i=hongmei.xu@oss.qualcomm.com; a=ed25519;
+ pk=8J3IzbyuOOHSwLvktng8AEQIdStEQDAGNCSOlkASmk4=
+X-Proofpoint-GUID: 8au-kSFmunqR-TgwtICa4XqDZsSszxF6
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIyMDAzNyBTYWx0ZWRfXxErfxHj1hdFo
+ STfbIk4JpQVVY/b4zd7CcRsj6R5MANnyK+KfPBgB0m1100+9yGwURiA/JGovh98qETFtgjhZJPQ
+ AJA801QcoVAUBSrX+T0capdzMUCXUOc=
+X-Authority-Analysis: v=2.4 cv=F4fC5ahN c=1 sm=1 tr=0 ts=6ad9d85b cx=c_pps
+ a=JYo30EpNSr/tUYqK9jHPoA==:117 a=b9+bayejhc3NMeqCNyeLQQ==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
+ a=bC-a23v3AAAA:8 a=EUspDBNiAAAA:8 a=pGLkceISAAAA:8 a=PHq6YzTAAAAA:8
+ a=J1Y8HTJGAAAA:8 a=1XWaLZrsAAAA:8 a=VwQbUJbxAAAA:8 a=20KFwNOVAAAA:8
+ a=LtJoxy8KcpIoDjkYT3AA:9 a=QEXdDO2ut3YA:10 a=Fk4IpSoW4aLDllm1B1p-:22
+ a=FO4_E8m0qiDe52t0p3_H:22 a=ZKzU8r6zoKMcqsNulkmm:22 a=y1Q9-5lHfBjTkpIzbSAN:22
+X-Proofpoint-ORIG-GUID: 8au-kSFmunqR-TgwtICa4XqDZsSszxF6
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIyMDAzNyBTYWx0ZWRfX8A4Owtf7Y2ju
+ ECBUMXKVkC5ymrb6qy2HYRbZd0uO1koKdFv4AYXRv+SSVYh+04I7ATYsUr3v+Y/ix9WOC6dH29K
+ iqx7LPIL9Lz8ciTUnSIY21YDw0Vjcrt4tl2BAl1Raf7AsJqKdkiPt06VfM9E85uvOy0JVDsLNs7
+ x59A3EUPq3wNcZJNZCwPZ3QBmfK3nAF3rZAO9/ZVBcKw0ayH6/o0n2B4tm+X6OhyKNxmIUJWC9S
+ kAGzOaZrMbMOYz/Fh6rIAPdYH3ICwSlaM8cvzYrgPSOBNiufcdlBIcdL4WAF/89RjBLbi8oX+4R
+ CQAInPrlbObZziIvvvP+2NXX4PnjXIv3HmYphda9jWQjCwqprdSWrwql95HpmBCTjnRRiNwbRsu
+ PktA/UGWHd1g76gWBgHdmB6lH/lKPAocByNXUWQtk+Jdy9uuoMQPJ9wWSd0BF5SI+EkPe+WpCpc
+ podrO+mx/BlOFET+DoQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-10-22_03,2026-10-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 spamscore=0 malwarescore=0 priorityscore=1501 adultscore=0
+ phishscore=0 bulkscore=0 clxscore=1015 impostorscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610220037
 
-On 10/22/26 11:18, Cheng Yongkang wrote:
-> The experimental vhost-net TX zero-copy path can hand TUN a user buffer
-> whose effective vhost virtio header size is smaller than the TUN
-> device's configured vnet_hdr_sz.  TUN computes an skb copylen that
-> remains larger than the bytes actually available after stripping its
-> configured header, publishes skb->len from that copylen, and
-> zerocopy_sg_from_iter() initializes only the real payload.
-> 
-> The resulting frame contains an uninitialized tail.  The tail can be
-> read by userspace from the TAP peer through normal forwarding.
-> 
-> Observed on Linux v7.3, commit
-> 08ab31164c55f20c7a2653de3186ae333470e2c1, with:
-> 
->    init_on_alloc=0
->    vhost_net.experimental_zcopytx=1
->    TAP vnet_hdr_sz=200
->    vhost TX total length=256
->    real payload length=56
->    TUN copylen / skb len=128
-> 
-> The exact control with vnet_hdr_sz=10 delivered the expected 246-byte
-> frame.  The corrected trigger delivered 128 bytes after submitting only
-> 56 payload bytes.
-> 
-> Sixteen of sixteen corrected triggers produced the overlong skb.
-> Eleven of sixteen had nonzero bytes in the 72-byte uninitialized tail.
-> Several contained recognizable stale kernel allocation content from
-> previous skbuff_small_head users, including fragments of environment
-> entries.  Those bytes were never supplied in the virtio TX buffer.
-> 
-> This is a userspace-observable kernel-memory disclosure on a
-> network-forwarding path.  It is configuration-gated by experimental
-> zero-copy and an enlarged TAP vnet header, but the overlong skb occurs
-> regardless of init_on_alloc; init_on_alloc=0 is needed to observe the
-> stale tail in this test build.
-> 
-> This is distinct from candidate BR-023/BR-025, which exercise
-> IFF_NAPI_FRAGS.  This reproducer uses the non-frags tun_alloc_skb() /
-> zerocopy_sg_from_iter() branch.
-> 
-> I found no direct upstream fix or CVE.
-> 
-> The vhost ring reproducer and complete program/console logs are
-> available on request.
-> 
-> This was found with a multi-agent workflow; the
-> information disclosure was reproduced in QEMU/KVM.
-Please stop this AI-generated test-walls dump: it's not very helpful
-except for other agents consumption.
+This series fixes two related issues in the Aquantia PHY driver:
+- Patch 1 restores EEE discovery for AQR111, AQR111B0, AQR114C,
+  AQR115, AQR115C and AQCS109 by calling genphy_c45_read_eee_abilities()
+  after the final supported mask is built. The phy_gbit_features base is
+  preserved because these PHYs misreport PMA capabilities.
+- Patch 2 adds get_features() for AQR113C to correctly declare 10G/5G/
+  2.5G/1G support, since the PHY misreports these speeds in PMA extended
+  abilities registers.
 
-Really, please stop now.
+---
+Changes in v4:
+- Fix the comments from netdev-bot+sashiko
+- Patch 1: keep phy_gbit_features base instead of genphy_c45_pma_read_abilities();
+  call genphy_c45_read_eee_abilities() explicitly after supported mask is built
+- Patch 1: update commit message to accurately describe the fix; add missing
+  affected PHYs (AQR111B0, AQR115, AQCS109); add Fixes: tags
+- Patch 2: fix commit message PMA reads still used as base and add Fixes: tag
+- Link to v3: https://patch.msgid.link/20261016-net-phy-aqr113c-fix-pma-capability-v3-0-0bbb1b84035d@oss.qualcomm.com
 
-Please instead ask your LLMs to try to generated fixes for each of them,
-manually review the generate code if you have the skills, and share
-the patches on the ML, at a very limited rated (no more than a couple
-of series in flight at any given time, with no more than an handful of
-patches overall).
+Changes in v3:
+- Add patch 1 to fix EEE discovery regression in aqr115c_get_features()
+  affecting AQR111, AQR114C and AQR115C
+- Extend commit message to note AQR113 may have the same PMA issue
+- Link to v2: https://patch.msgid.link/20260924-net-phy-aqr113c-fix-pma-capability-v2-1-29b06283b0f3@oss.qualcomm.com
 
-Please consider collaborating with other already in place projects
-(i.e. nebusec) to make you finding available to the community in a
-responsible way.
+Changes in v2:
+- Fix subject prefix to [PATCH net-next]
+- Limit scope to AQR113C only as AQR113 not tested
+- Link to v1: https://patch.msgid.link/20260923-net-phy-aqr113c-fix-pma-capability-v1-1-497359310f06@oss.qualcomm.com
 
-Thanks,
+To: Andrew Lunn <andrew@lunn.ch>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+To: Russell King <linux@armlinux.org.uk>
+To: "David S. Miller" <davem@davemloft.net>
+To: Eric Dumazet <edumazet@google.com>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
 
-Paolo
+---
+Hongmei Xu (2):
+      net: phy: aquantia: restore EEE discovery in get_features callbacks
+      net: phy: aquantia: add get_features() for AQR113C
 
+ drivers/net/phy/aquantia/aquantia_main.c | 30 +++++++++++++++++++++++++-----
+ 1 file changed, 25 insertions(+), 5 deletions(-)
+---
+base-commit: 944ae66642b726bd6b25ae71b1e9ff88a0e0bdb0
+change-id: 20260917-net-phy-aqr113c-fix-pma-capability-d7d08cbc9879
+
+Best regards,
+--  
+Hongmei Xu <hongmei.xu@oss.qualcomm.com>
 
