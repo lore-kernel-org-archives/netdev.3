@@ -1,67 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.59
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792630052;
-	b=IWm2YBKT7KBJ5lSjZiMh2diQWlbpASCu+y+DPY0DDqZ6Zvu3fHnO/JFD7j1zTtCfLyXH
-	 3ggt9qYd0G8DPjY3QwOuHwaWKFCWAWQQ/EtXSqxms1Ikdz3g0p/mvQkV/K7QpZT/E0FNi
-	 cZ3Dc/5/Y45zjjVQUWUZgLUkLBY6d4E+GNa3cvCYpX6TjOiTzzVaxG8O9vlqmtKCRIXmR
-	 5qOiDUZGAyPcedYZWavkctCIY7o4hy2e31VsgNRjwyfVFETeXOEZ0ai9f1q8KucfJtZ7F
-	 aYAVdR9uF1sdqoA3xG9KyGTJYUSUVSU0iudyJVCoon8bj7H+qN5ud8omos50xQAnoqA==
+	t=1792630206;
+	b=C7pnWh5KA+fTUhJReWcbjPEhqFlZTkyj44C7HkNl74PfujPFBKOMqqaj3/tiyC/vNey2
+	 FFzYWyWD3GIbL/hKuwubnYyiQhr7dw70vKdCj22T5z5Oeugc1fr78zRYre1yWbn1v5/3b
+	 qTrtR9eSFhzA2hKkQSCkTuLbhhPzATP5yVRH1kLPXfE1vKR/ndIeeblPTv7Q0XomkuXS/
+	 G5Z9J0ZUqp4VNrCIEksgQZ9lfX/dA02VOa9J1I9NpOAycmKF7xSU1vpjWgTn923C67uCn
+	 tRjJ8z/mob8/01EEtDw6A7OZjWasIC8fm5qQsj+Zm8iLX+7BSfpmDkVL9RLiZ6fZL6A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792630052;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=fccNkRIzbL1uVdjGLSaZSq1bbXrNDwuFn9uqm1aWWUk=;
-	b=SKb9u+hwj7v+VKm61D9a6Fro2m4lbjh6HchMyNKm2LEBb4ipDyUeiJfBuFVoYjLTtKgj
-	 DuByaCo9V8AXHCxb4cR8WAL+KFx60dSsZ7dy9L0Uir3lKftZm2Tt/C6flPW1zilPaV74W
-	 JCUU8leoFTb9lFEm0V2ryANjA6h1Y7evyNz2SYJzh4M3TYkhBQameygxyC1wNaSPuiNig
-	 wS/q8H1h5jzxAGRl6GmMBQkeRM8tpExcIZ6gEIU2AF8tUpzPvckCz/vr9kb/1D/LgRopf
-	 DKRGIlHov4pRTNuOqQtkr4nedV+4qRrvHMjFmWCdqGnWZDfhnt1OCj4MWywMZDESgzw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792630206;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=tPIulb5aO07nDBTsaR3BgvvSevctw9HTVGRwm+45BBI=;
+	b=S2CgTtjARhcOhOtvfG72XDpsfB5uZFLnkPvzR4yejM+NKYE1Edo8mm1PLVceFH8KpzH+
+	 JY6GMOqMOOu4eU3wWwlsGea/H6xVFrqvKA+DkOKqRajQ0bW5jwjz4qLLyMo+F3hfGuzIE
+	 4/0PAVpKhpGO1fL+TnYxM+dqNtTdXcW8Dy23pGFKs5fM7BiYndPF/eeAwU+LqfFb8IBkw
+	 ahn3atwCaoXqj673bxG6A4w2LxV14zVxZMIKKLJ47/7YksIsdhKHON2HNT+1hcG3QsIWa
+	 XH/AYBlFNP92qT3GMP1tSwY4Octl2eJRxZg+T39RCoZxHvwGFMTXWGbWvSOnmYewS8Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=v9aNKs75;
-	arc=none smtp.remote-ip=91.218.175.59
-Received: from mta0.migadu.com (out-59.mta0.migadu.com [91.218.175.59])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y6jhDnSb;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736F5606A319
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 00:47:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 736F5606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76446606A319;
+	Thu, 22 Oct 2026 00:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=v9aNKs75
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=6tkczwA2q6u+IycSsvI/27MATZ11ACORQeuZVFrGy5Y=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792630049; v=1; x=1793234849;
- b=v9aNKs756roknew3ibwPRUx73nSsC9mqHhkSfWIFuHMt+bb81THUhFzGlLDtLlsUiWndk/Kt
- OJ82ZqXpvh0V4qW7iMF+qBmr7BDbFUaAkW8eTAk9KBw1pdu51NgaG2Hh7KWPY0UfcgpgD/HTrQN
- HCVGZhkGloRaiEizHlm0GR2U=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id f972ac63ba462e2d;
-	Thu, 22 Oct 2026 00:47:29 +0000
-X-Mizu-Trace-ID: f972ac63ba462e2d
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 22 Oct 2026 08:47:21 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: netdev <netdev@vger.kernel.org>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	Matthieu Baerts <matttbe@kernel.org>
-Subject: Re: [ANN] stmmac enters the Netdev CI
-Message-ID: <atldGZy2tH1FYTnf@fedora>
-References: <bdc75e18-8ae7-4056-8f43-dc280a3414f5@bootlin.com>
- <atgaQZiiuMDC6wiv@fedora>
- <3e98563d-36f6-49d1-bf0c-f161016ca926@bootlin.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y6jhDnSb
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 449C31F000C1;
+	Thu, 22 Oct 2026 00:50:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792630206;
+	bh=tPIulb5aO07nDBTsaR3BgvvSevctw9HTVGRwm+45BBI=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=Y6jhDnSbd58nzbJx+oMOkkI7/T/fH9b2uyehRG3iqcvaz30T/mNthQ2fHA4okQI1A
+	 VSQrfSXB5X3QRAtC6MYexTLr1wjW3UPC0rCIv4Cl3DUVt44pgIRy7jNpjeLM/mc2zD
+	 gp2h/xK6ewbfCLMIb1Nb/H0ge67z++6TcY4Uf+ow7vL55VPM9y1xQL+6/yQYzgJsW+
+	 TVUctpTaZiH1kbQXz35oSmg8uE+fQSXT44dDlmTpqusICgmTueYtaNyAhv4pQAxpOX
+	 f3vXANexMtUF7mbvRutm+6gn0DYF0MuiUYjDpbrmdzSMZ2t8jUtZ+FkGH2Tb5N/7TD
+	 WLEAWkrPTRtMA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A48D380A963;
+	Thu, 22 Oct 2026 00:50:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -71,98 +53,44 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <3e98563d-36f6-49d1-bf0c-f161016ca926@bootlin.com>
+Subject: Re: [PATCH net] net/mlx5e: Stop asserting for RTNL when closing
+ channels
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179263020503.1386998.12592459643971579447.git-patchwork-notify@kernel.org>
+Date: Thu, 22 Oct 2026 00:50:05 +0000
+References: <20261020153659.3440902-1-tariqt@nvidia.com>
+In-Reply-To: <20261020153659.3440902-1-tariqt@nvidia.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+ cjubran@nvidia.com, cratiu@nvidia.com, dtatulea@nvidia.com, gal@nvidia.com,
+ leon@kernel.org, linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
+ mbloch@nvidia.com, saeedm@nvidia.com
 
-Hi Maxime,
-On Wed, Oct 21, 2026 at 08:49:22AM +0200, Maxime Chevallier wrote:
-> On 10/21/26 03:49, Hangbin Liu wrote:
-> > Hi Maxime,
-> > On Tue, Oct 20, 2026 at 11:07:16AM +0200, Maxime Chevallier wrote:
-> >> Hi everyone,
-> >>
-> >> It's my pleasure to inform you that the stmmac driver now has a runner
-> >> that feeds into the Netdev CI. It runs in a lab I maintain, and the results
-> >> are hosted by Bootlin, accessible here :
-> >>
-> >> https://netdevci.bootlin.com/stmmac/results.json
-> >>
-> >> What that means is that now contributions will be subject to CI
-> >> validation, by having the kernel selftests run on real hardware.
-> >>
-> >> Results are already aggregated in the patchwork contest, and can also
-> >> be found here :
-> >>
-> >> https://netdev.bots.linux.dev/devices.html
-> >> https://netdev.bots.linux.dev/status.html
-> > 
-> > Thanks for your update!
-> > 
-> >>
-> >> As stmmac is an off-the-shelf IP from Synopsys and is integrated in a lot
-> >> of different platforms out there, the CI currently runs on 9 different
-> >> boards that include the following SoCs :
-> >>
-> >>  - Starfive JH7110, riscV, dwmac 5.20 (rgmii-id w/ YT8531 PHY)
-> >>  - LoongSon 2K0300, Loongarch, dwmac 3.70a (rgmii-id w/ YT8531 PHY)
-> >>  - Amlogic S905X, arm64, dwmac 3.70a (rgmii-txid w/ RTL8211F PHY)
-> >>  - Rockchip RK3566, arm64, dwmac4.20a (rgmii-id w/ RTL8211F PHY)
-> >>  - Altera AgileX5, arm64, dwxgmac 2.10 (rgmii-id w/ KSZ9031 PHY)
-> >>  - Altera cycloneV, arm, dwmac 3.70a (rgmii-id w/ KSZ9031 PHY)
-> >>  - ST stm32mp157a, arm, dwmac 4.20a (rgmii-id </ RTL8211F PHY)
-> >>  - Allwinner A20, arm, dwmac1000 (rgmii-id w/ RTL8211E PHY)
-> >>  - Allwinner H2+, arm, Allwinner specific version (mii w/ internal PHY)
-> > 
-> > 
-> > I’m curious about how our lab is maintained. Do we stick to a single distro
-> > across all machines, or reinstall systems periodically?
-> > And how are > reinstalls done, manually or via BMC?
-> > 
-> > Also, do we run all selftests via virtme-ng or docker? Does virtme-ng support
-> > all the architectures?
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Tue, 20 Oct 2026 18:36:59 +0300 you wrote:
+> From: Cosmin Ratiu <cratiu@nvidia.com>
 > 
-> Tests are run baremetal on the hardware directly. All the SoCs mentionned above
-> are on single-board computers, devkits, or just some products out there that
-> have the right HW.
+> mlx5e_close_channels() has an ASSERT_RTNL() from the time when RTNL was
+> required for closing channels.
+> But the driver has been switched to using the netdev lock a while back,
+> and this fired from a flow which was forgotten during the conversion:
 > 
-> We're talking embedded devices here, so there's no BMC at all :)
-> 
-> The distro used is based on Buildroot, a build-system similar to Yocto, I can share
-> the configs if need be. It allows me to generate small images fast, that that
-> work on the plethora of CPU archs the lab has.
-> 
-> All the boards in the lab are booting an initramfs image through the network, and
-> the whole test session runs in it. Using a pure ram-stored rootfs allows bringing
-> the network down afterwards, while the tests are running. It also allows easily
-> updating the rootfs running on the boards when a new selftest get added for example.
-> 
-> All the boards are controlled through dedicated relays for power. As we're dealing
-> with embedded devices that consume only a few watts, it's only a matter of switching
-> some low-level DC voltages on/off (5V/12V/24V). I have a few mains-powered boards, also
-> controlled through relays.
-> 
-> The whole lab is managed via labgrid + some custom software on top of that to manage
-> the jobs, the builds, reporting results, etc.
+> [...]
+
+Here is the summary with links:
+  - [net] net/mlx5e: Stop asserting for RTNL when closing channels
+    https://git.kernel.org/netdev/net/c/e0a958ddfc89
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-Thanks for sharing. Labgrid looks quite promising for embedded device control.
-
-> 
-> I'd say, this setup is quite different to ones used for server-class HW, but the
-> whole thing runs on very simple hardware, cheap to acquire and run.
-
-Yes, I’m looking for a stable lab controller that can manage servers with
-poor BMC support. It needs to support OS installation, system reboot, and
-automated test execution.
-
-> 
-> To give you an idea, the build machine I'm using is based on Intel Core Ultra 9 185H,
-> a laptop-class 22-core CPU that's in a NUC, and this is more than enough to build
-> kernels/rootfs for 10+ boards every 8 hours, with lots of time to spare :)
-
-Thanks, very glad to know these.
-
-Cheers
-Hangbin
