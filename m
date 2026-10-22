@@ -1,58 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792695224;
-	b=mPtk6UoELe0VNd+a/6JGvMA6XGayq7a3INPZczP+nRAI11trc84p8tXQbVANlr0FZYMS
-	 vXuWJSVgHfZVMgFNJEZIYyKdSJ/xZ+D6/QrtBWX3a8vZtK+N3JrFOl0D9/Q9zNb3DSlfO
-	 JYn+LY6CK+pY+8pdOhc+1s6kM63VEkrDs2tIzSYS2ZA7p3+eURlHIzg7z89ssODUWUV44
-	 XitJUqspuXoO2rtU934rbFQ0Sbg86y9J4Tq3rh3ppVORcwrfdpeuP/0rRvAuTdY6AoixE
-	 tAfnSKKXtqn7QXdDxlSvYioTP85beWy3PMtqnNem2pLYW4r+9gqwuRxw6spV81MsKAQ==
+	t=1792695709;
+	b=buuZ0gzqY2OhgPKoBXqeXnOBzt/AQgTcXKOyFc3MNT0Ur++8WsIO5cxulwkLk733206Z
+	 KPuwEfXIRr/M1Vg+XgfFrzZL2aBnw/tP2X4uyH1qR8aDpF9f72qBzedr1EBPF4A6cr/5e
+	 8k4YwoBUVqwi2qewBzOr+Kiwpz+KNbeY1Rn3m4MZ5fQ/67TwmxwqaKigUeWaBlGM0ZvFi
+	 3Kz0krTikLZzXU+K11CPIDkKBLWxRNoGkm7YJrSHKdWKaFjuIwSRWH0qVEDTIqfmJ/HOM
+	 XAAOX7i5UPLq+0WkNHoQA2Sde+KBBOPl5gVdEzFARz6vhXAr7A2EhZmTTnHsQhgn2cQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792695224;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	b=GfDDKfeStG6fy+Jj7J3VfCr9+DWXcTw+jJ+F94QlR6F274PqRxvVSULRcj12oTBfMy05
-	 xIQouQDdLnhbSwLR8Z5AXbDtLouqVmGdO3cBViHKRnTGou5kV1BOS8EVn9rQhoX701+9a
-	 bKx7cTmiwuJ24w+PVycZPZm2GmMI8fGBxT9UDr1zaSHcR5ScCod/kX0mOCZVW0C57qFcy
-	 jJBvJhqAkz1HhwiT10CbJ7fMD/NTcCSWyEUhgUUIIREhmzKY6UTuN7LF2qGaAGthomo1v
-	 z8OWC/SEBk81/UNt5Z6U6RaM6mj4oAfpNtNOyeVylTILQDnEvWX5762s7mYAORO1eUA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792695709;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=zGl6wnVyXS+Nhqd3FrSqOXcqC1CFxdM29kEn0+f7MxQ=;
+	b=GyV0D/bnARTPicKYyJ6fcGJ/7qizmT2+A5iAI4NUQnd0b/3eNmCyKsQrxSG3F9dTuy/H
+	 9cyFVlK96Qx45UGJIKD/qO9ebdR3om+4+BRpqgsGtv9YGce2yEhSO3COP/H8DFyXSW1V3
+	 W/FT72y7qm6SJxkm0BGGU67Hb4Ehj27TO/bFNuRjZz3cnSs1wAxu+KxcDOrYUcvXA26ZZ
+	 D7wcYqV9MaZFRsFax2rEbmemTySVyHzLLT/rq6i0kDs0J+R8pgr1U8B5gnCw2F8XUhNX4
+	 I70aAzw64c+tAn/6J2tVcxL6jbkTtB3CNCw7hDcSK9kE1USona8u33IGtUmF+Hxkoqw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Rhnb1Kuf;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dpaQqmXt;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE85606A319
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 18:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93CCC606A32E
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 19:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Rhnb1Kuf
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9C01F01825;
-	Thu, 22 Oct 2026 18:53:43 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dpaQqmXt
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 089FB1F01828;
+	Thu, 22 Oct 2026 19:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792695224;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Rhnb1KufJsks3u1WvNLkU86ysSl7CROpb9WQNO5ilYBRYEmEQbqZ6IQqDBXCVifuO
-	 njQ2IVXLfvU81HYB1UJpXXo3k9t9OmuH1un+Xlv+seQtI8kqHs/twDVuChiMUoF/xg
-	 8LqEFis+FpIN1H+B//sLUPzyXSnLfFJjHdxlv+cfe2AWBWLSBuNXy4mSIAkDvDvRxW
-	 1xHaU98BFUX+72U+8OKWzHB3/dejOizKZOTlxdqBCaUCCBJmycZvUcHLfKN4dfKijy
-	 tzm1+dhkdJR7GTnNbmiTLTLsV15Bc5Eb//1biDp5O41+OzPAA8Efc+eAzUWOzvbV8o
-	 FfpnU0gQ+EQnw==
-From: netdev-bot+sinfo@kernel.org
-To: Zhiling Zou <zhilinz@nebusec.ai>
-Cc: linux-afs@lists.infradead.org, netdev@vger.kernel.org, dhowells@redhat.com,
- marc.dionne@auristor.com, davem@davemloft.net, edumazet@kernel.org,
- pabeni@redhat.com, horms@kernel.org, vega@nebusec.ai
-Subject: Re: [PATCH net 0/1] rxrpc: fix null-security challenge leak
-Date: Thu, 22 Oct 2026 18:53:43 +0000
-Message-ID: <179269522324.3290.14429115095311549674@kernel.org>
-In-Reply-To: <cover.1792694708.git.zhilinz@nebusec.ai>
-References: <cover.1792694708.git.zhilinz@nebusec.ai>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=k20260515; t=1792695709;
+	bh=zGl6wnVyXS+Nhqd3FrSqOXcqC1CFxdM29kEn0+f7MxQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=dpaQqmXt0Xz1g8sKcKhV2uquVgpO71dUFYUHBLoVbPf3NxkD67Q/Dad/A4PJeiT8S
+	 xc7rP5sLz9PaJ3f0oLIjclefzh1usoEu53DR9Bv3BkaQS+Qf4/1HajSU/JPOalsOgL
+	 5hTty1xDUd44oT1vtHEvdzkfA4T7EwRZ+Oo8xLjABcc/HAEeH2klBFW7M7f9uOlYjc
+	 5pNdaXafRH/uSJsC4fhIP8xYWHailUDvh6uy4fwkQZswDMF+RbpYDpm63jA/p83bkP
+	 U3VVTv8RCDD/OlIvE8pk4qNU60o4LNZD+F5+3nbnNwCffMqhHuVImXLmi8+6d4At15
+	 7bj9ONnKpkJiA==
+Date: Thu, 22 Oct 2026 12:01:48 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Potnuri Bharat Teja <bharat@chelsio.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch
+Subject: Re: [PATCH net-next v5 00/12] cxgb4: Add T7 adapter support
+Message-ID: <20261022120148.365b30a6@kernel.org>
+In-Reply-To: <20261023023829.1242622-1-bharat@chelsio.com>
+References: <20261023023829.1242622-1-bharat@chelsio.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,21 +58,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi!
+On Thu, 22 Oct 2026 22:38:17 -0400 Potnuri Bharat Teja wrote:
+> This series adds support for Chelsio T7 adapters to the cxgb4 driver.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+## Form letter - net-next-closed
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+The merge window for Linux v7.4 has begun, and the net-next
+tree is now closed for new drivers, features, code refactoring
+and optimizations. We are currently accepting bug fixes only.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+Please repost when net-next reopens. There is some uncertainty
+about how long this merge window will last, so please check
+https://netdev.bots.linux.dev/net-next.html
+before reposting. net-next _may_ reopen on Nov 2nd.
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
+-- 
+pw-bot: defer
+pv-bot: closed
+
