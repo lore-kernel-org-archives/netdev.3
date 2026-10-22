@@ -1,46 +1,46 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=13.77.154.182
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792681391;
-	b=txLZxpxXMUI6O+IqFnntjtuFuKuQB8nQB37Jxc4zShXVgT9V0EQ+1DYZdiH1ypVzQRUR
-	 syRgab6Q3qkNsAh+KilxEt7hJWqs0ckZv9mXTSoUk/gmbm1Jmf6fyVFx9X0xNtVEVSmVS
-	 S+eUDWgO+d9p+wARGVJlPWgUKhadi5Vr4aj9uUuXOHcbhnsPzRv7/3Z0ctvDxAs+oS5dQ
-	 UmfP2WcGeBelWFMLRtweGfudR14l10UNgKluyN8kmUFmpwApGaLXEqnpOnjio6Hg2zfoi
-	 Nl/phvH040EDdplzsPJ5CFVrUbTlVJ01utWC96GRnjs65pvfDts5AB9q2ME549XONow==
+	t=1792681395;
+	b=xREEL1afrIihp8hWs2Db95Mv6votw7oDT1t76gin4V0qCgTHP8NbL60nRQb0Mo43ptY5
+	 70KOCNxrObnQQrzrYFtElE3wL4ABC+ZoQ8LRVrfE8JNknrI7jmlArTjJVczP0Hn/LEoi9
+	 sV7ALbHpS0APFuKFqZLdoAhO37LXsa7Tz2EdMgY1wZdnW4rI8lilUFJE+qYmTxDO2TJqF
+	 16F08pTqZlJFhCVrPDKsi8lp3/40yOpSm24twDymE2xldkPOSkoVbkh0BjLZ6bCK2/1Ar
+	 wN0AtJ3Z6gk8OiVnX7CsuhYblMlvrDyZyZJwZuqSTEaM6USlS3RNsEYhVa+P5LdNCdA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792681391;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792681395;
 	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-Spam-Status:X-Spam-Checker-Version;
-	bh=fGLjRwMYowHqgQeaj0mToA9QAIYNGDXlao2noz3GoI0=;
-	b=GkEKreA+AculOLsivZUTsgVDspDmwlk7HwJ3Xv+uSwfPANwZxPKxrPmXZjIaUZF7kfeR
-	 IO2H7N1T12oOptko9qnpNoiOtkomndRPWimOyI94v97DriPLdSbyNiJ7NaOySysHwIFR8
-	 SCnXH3slr1vbn5mQ94ESvvq9vZ2eaBWzDnyOxEajaoIf1WiMwzv6ifIj8AudIs6EWg/Up
-	 PWR/83FrzOzMwJMGL4GJqyrhwvnEabRM1Q74+yvs6zTbZY7PGUVPVuZTEliB3TXcmVkDG
-	 lOeaWH9dMiqV0desP/U0iz8TBHOWsKIhWT0or9ZEUpECg6WIZP6aqYZ9mT3bGnwNxig==
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-Spam-Status:X-Spam-Checker-Version;
+	bh=h/mpCH1+FPINm3+rB8cMpXeQUIUsTApHYV7Wrq3EmC4=;
+	b=wOOPuhSNIAGtKIt90/F9sOaRQT0BylhuFEyhb7E2AmBDl4Zr/A5MwzSGy0o+7S+X+xgH
+	 1FsfCTvgcKnvfxHu+BFvDDN/v+8RJzooabdIYV7zXfVPEh7rabvr9doQbrYR0IA6nxDGb
+	 f8PF6VSmuL8Gq1TAhr5n+cGPgsB4EFcuqidCPxNXClHTBXnj7hNix+OWbKZjrSFAVVeMV
+	 SRuW5ZVSUo3RzeEUsC7/mMavwuCOKDhemnSRvedAeHJAcBnr19PiN8g2m4zHoOUsBeZv0
+	 jzU5ElkMp+BGh0bElxhMGyPd3pKj6J2zV3lgTDDrlZk+PUBvKiUy5ed8BF7qaKU4gEQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.microsoft.com;
 	spf=pass smtp.mailfrom=linux.microsoft.com;
-	dkim=pass header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=pXoD4ixC;
+	dkim=pass header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=aY7dgiFq;
 	arc=none smtp.remote-ip=13.77.154.182
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A1F8606A328;
-	Thu, 22 Oct 2026 15:03:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0A1F8606A328
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC6E4606A33F;
+	Thu, 22 Oct 2026 15:03:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AC6E4606A33F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=pXoD4ixC
+	dkim=pass (1024-bit key, unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=aY7dgiFq
 Received: from weh-cvm-dev-vm.y50bckvjo0hefgfnzfztsfttff.phxx.internal.cloudapp.net (unknown [20.169.55.37])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 2507B20B7167;
-	Thu, 22 Oct 2026 08:03:01 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 2507B20B7167
+	by linux.microsoft.com (Postfix) with ESMTPSA id D7D6320B716A;
+	Thu, 22 Oct 2026 08:03:04 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D7D6320B716A
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1792681382;
-	bh=fGLjRwMYowHqgQeaj0mToA9QAIYNGDXlao2noz3GoI0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=pXoD4ixCF5m0oBKb10WtUuJxi4FS/nffmPBdmiqtjcrVPYYR0jkEv7h7oqrHikdzy
-	 BEvlsdleIB7Xg2DTY8aFlCTnLviT6hfjqj+lCChgJcaGm7Uh3jQTE12B9CleHMOlQE
-	 Th2Y2N2ttYTWigRRLf66ssRpiCZx+uuuBrHRlL+M=
+	s=default; t=1792681385;
+	bh=h/mpCH1+FPINm3+rB8cMpXeQUIUsTApHYV7Wrq3EmC4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=aY7dgiFqiYhlBvk+axgWY3Amclc3vQA7tv4AKOr2ekQznqyvk8H4uxM3lIAmICw9Y
+	 iFSH3lB6HOZOxtAeEYuze0H/WoUuuImgcsLtFCMxSpXjUmxn4JyofShGCUwpnIsF8s
+	 ojiUcW8wemeuXquJQ0s4DW/cjxzklyAaBp7UYN2Y=
 From: Wei Hu <weh@linux.microsoft.com>
 To: longli@kernel.org,
 	kotaranov@microsoft.com,
@@ -68,10 +68,12 @@ Cc: netdev@vger.kernel.org,
 	mawasthi@linux.microsoft.com,
 	weh@microsoft.com,
 	edumazet@kernel.org
-Subject: [PATCH net-next v9 0/4] net: mana: concurrent HWC requests and dynamic queue depth
-Date: Thu, 22 Oct 2026 15:02:58 +0000
-Message-ID: <cover.1792679388.git.weh@linux.microsoft.com>
+Subject: [PATCH net-next v9 2/4] net: mana: give each HWC message slot its own completion state
+Date: Thu, 22 Oct 2026 15:03:00 +0000
+Message-ID: <e3b82aeab9323eb1c70203e90942df5f6a4a01f8.1792679388.git.weh@linux.microsoft.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1792679388.git.weh@linux.microsoft.com>
+References: <cover.1792679388.git.weh@linux.microsoft.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,92 +85,279 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This four-patch series adds concurrent HWC request ownership and
-PF-directed HWC queue depth to MANA. It starts with depth-one bootstrap
-queues and keeps setup private until the final channel is tested.
+From: Long Li <longli@microsoft.com>
 
-I am continuing Long Li's series. Original per-patch author identities,
-dates and sign-offs are retained.
+Concurrent requests require the response handler and the waiting sender to
+agree on the lifetime and result state of each message slot.
 
-Changes in v9 (v8 -> v9):
- - Rebase onto net-next 207dd12bc195153fe6ca614d8add9ecb0b636270.
-   This base already includes MANA BQL support (799cdeaa5c39).
- - In patch 3, replace the independent admission deadline with
-   bitmap/waitqueue admission. Healthy contention waits for a free slot
-   instead of returning EBUSY before a destructive command is posted.
- - Wake admission on slot release, recorded response abandonment,
-   cancellation and channel stop. With no available slot, abandonment
-   or cancellation returns ETIMEDOUT; a stopped channel returns ENODEV.
- - Preserve available-slot best-effort posting after cancellation and
-   keep the response timeout for a posted command.
- - Suppress expected ETIMEDOUT/ENODEV logging after cancellation or HWC
-   unpublication, while retaining live-channel and other diagnostics.
- - Correct the eight reported source-line length warnings across all
-   four patches under netdev's explicit 80-column check.
+Protect the caller's output buffer, Linux error and device status with a
+per-slot lock. Publish the output buffer only while the sender is waiting
+and withdraw it before every return. A late response cannot copy through a
+pointer to caller storage whose lifetime has ended.
 
-Healthy admission no longer has a separate elapsed-time deadline,
-matching the upstream waiting policy rather than treating healthy
-contention as a channel failure. Response ownership, timed-out slot
-quarantine and sender draining remain in place.
+Reinitialize completion and result state under both the allocation and
+per-slot locks when acquiring the slot. A response handler can still hold
+the per-slot lock after the previous sender has returned its admission
+permit, so an unpublished bitmap bit alone is not sufficient protection.
+If the response records its result while the timed wait expires, return
+that result instead of reporting a false timeout.
 
-The PF specifies the HWC queue depth and corresponding ring sizes. It
-reports the required depth through HWC_INIT_DATA_QUEUE_DEPTH, and the
-VF rebuilds the rings to implement that PF requirement. Ring-sizing and
-establishment behavior is unchanged from v8.
+Keep the baseline's post-timeout admission behavior at this step rather
+than introducing a temporary channel-wide latch that suppresses subsequent
+teardown commands. This does not solve late-response correlation after ID
+reuse. The next patch adds response ownership, per-slot quarantine and the
+associated admission and teardown rules together.
 
-The pre-existing individual Ethernet/RDMA CQ publication and lifetime
-issues, malformed-response RX reposting, and wider control-command DMA
-failure policy remain separate work. This series does not claim to fix
-them. Existing protections introduced later in the series are preserved
-in their owning patches.
+Split response-status handling and request cleanup into helpers so the send
+path has structured returns rather than phase-jumping gotos.
 
-Validation on this revision:
- - Clean application of all four patches to the net-next base above,
-   with no conflict resolution or three-way fallback.
- - GCC and Clang W=1 builds of the MANA Ethernet/RDMA target objects at
-   the baseline and each of the four intermediate commits.
- - Full-patch netdev-style checkpatch with --strict --codespell and
-   --max-line-length=80: no errors, warnings or CHECK diagnostics.
- - Bounded actual-source C models cover admission and response
-   ownership, cancellation/logging, destructive callers, retained state,
-   initialization, rebuild and producer limits, with negative controls.
- - Exact application and author/date/message checks on the outgoing
-   patch emails.
+Link: https://lore.kernel.org/r/20260908035201.402424-3-longli@microsoft.com
+Link: https://lore.kernel.org/r/20260908035201.402424-4-longli@microsoft.com
+Link: https://lore.kernel.org/r/179196575434.434549.4428132041097324407@kernel.org
+Link: https://lore.kernel.org/r/179196575640.434549.9102950927041409151@kernel.org
+Signed-off-by: Long Li <longli@microsoft.com>
+Signed-off-by: Wei Hu <weh@microsoft.com>
+Copilot-Session: 8c2361e6-c0f4-4b0c-bf01-b5e4cdacec50
+---
+ .../net/ethernet/microsoft/mana/hw_channel.c  | 125 +++++++++++++-----
+ include/net/mana/hw_channel.h                 |   4 +-
+ 2 files changed, 95 insertions(+), 34 deletions(-)
 
-These checks are static/offline. The models use typed userspace
-substitutes and modeled hardware acknowledgments; no new full-kernel,
-hardware, performance or runtime qualification is claimed for v9.
-
-This HWC series remains independent of queue-set replacement. The
-separately prepared queue-set series is not included here; its dependency
-and shared CQ-table changes must be reconciled separately.
-
-v8:
-https://lore.kernel.org/all/cover.1791998462.git.weh@linux.microsoft.com/
-v7:
-https://lore.kernel.org/all/cover.1791561995.git.weh@linux.microsoft.com/
-v6:
-https://lore.kernel.org/all/cover.1790665894.git.weh@linux.microsoft.com/
-
-Long Li (4):
-  net: mana: prepare HWC ownership for safe reinitialization
-  net: mana: give each HWC message slot its own completion state
-  net: mana: support concurrent HWC requests
-  net: mana: add dynamic HWC queue depth with reinit path
-
- drivers/infiniband/hw/mana/main.c             |   19 +-
- .../net/ethernet/microsoft/mana/gdma_cdx.c    |    5 +-
- .../net/ethernet/microsoft/mana/gdma_main.c   |  158 ++-
- .../net/ethernet/microsoft/mana/gdma_pci.c    |   15 +-
- .../net/ethernet/microsoft/mana/hw_channel.c  | 1025 ++++++++++++++---
- .../net/ethernet/microsoft/mana/shm_channel.c |   58 +-
- include/net/mana/gdma.h                       |   17 +
- include/net/mana/hw_channel.h                 |   70 +-
- include/net/mana/shm_channel.h                |   10 +-
- 9 files changed, 1155 insertions(+), 222 deletions(-)
-
-
-base-commit: 207dd12bc195153fe6ca614d8add9ecb0b636270
+diff --git a/drivers/net/ethernet/microsoft/mana/hw_channel.c b/drivers/net/ethernet/microsoft/mana/hw_channel.c
+index 85d2b7506793..ec1cc9aa0ddd 100644
+--- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
++++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
+@@ -9,6 +9,7 @@
+ static int mana_hwc_get_msg_index(struct hw_channel_context *hwc, u16 *msg_id)
+ {
+ 	struct gdma_resource *r = &hwc->inflight_msg_res;
++	struct hwc_caller_ctx *ctx;
+ 	unsigned long flags;
+ 	u32 index;
+ 
+@@ -19,8 +20,17 @@ static int mana_hwc_get_msg_index(struct hw_channel_context *hwc, u16 *msg_id)
+ 	index = find_first_zero_bit(hwc->inflight_msg_res.map,
+ 				    hwc->inflight_msg_res.size);
+ 
++	ctx = &hwc->caller_ctx[index];
++	spin_lock(&ctx->lock);
++	reinit_completion(&ctx->comp_event);
++	ctx->output_buf = NULL;
++	ctx->output_buflen = 0;
++	ctx->error = -EINPROGRESS;
++	ctx->status_code = 0;
++
+ 	bitmap_set(hwc->inflight_msg_res.map, index, 1);
+ 
++	spin_unlock(&ctx->lock);
+ 	spin_unlock_irqrestore(&r->lock, flags);
+ 
+ 	*msg_id = index;
+@@ -90,14 +100,21 @@ static void mana_hwc_handle_resp(struct hw_channel_context *hwc, u32 resp_len,
+ 	}
+ 
+ 	ctx = hwc->caller_ctx + msg_id;
+-	err = mana_hwc_verify_resp_msg(ctx, resp_msg, resp_len);
+-	if (err)
+-		goto out;
+ 
+-	ctx->status_code = resp_msg->status;
++	spin_lock(&ctx->lock);
++	if (!ctx->output_buf) {
++		spin_unlock(&ctx->lock);
++		mana_hwc_post_rx_wqe(hwc->rxq, rx_req);
++		return;
++	}
+ 
+-	memcpy(ctx->output_buf, resp_msg, resp_len);
+-out:
++	err = mana_hwc_verify_resp_msg(ctx, resp_msg, resp_len);
++	if (!err) {
++		ctx->status_code = resp_msg->status;
++		memcpy(ctx->output_buf, resp_msg, resp_len);
++	}
++
++	ctx->output_buf = NULL;
+ 	ctx->error = err;
+ 
+ 	/* Must post rx wqe before complete(), otherwise the next rx may
+@@ -106,6 +123,7 @@ static void mana_hwc_handle_resp(struct hw_channel_context *hwc, u32 resp_len,
+ 	mana_hwc_post_rx_wqe(hwc->rxq, rx_req);
+ 
+ 	complete(&ctx->comp_event);
++	spin_unlock(&ctx->lock);
+ }
+ 
+ static void mana_hwc_init_event_handler(void *ctx, struct gdma_queue *q_self,
+@@ -694,8 +712,10 @@ static int mana_hwc_test_channel(struct hw_channel_context *hwc, u16 q_depth,
+ 	if (!ctx)
+ 		return -ENOMEM;
+ 
+-	for (i = 0; i < q_depth; ++i)
++	for (i = 0; i < q_depth; ++i) {
+ 		init_completion(&ctx[i].comp_event);
++		spin_lock_init(&ctx[i].lock);
++	}
+ 
+ 	hwc->caller_ctx = ctx;
+ 
+@@ -998,6 +1018,37 @@ void mana_hwc_free_retained_channel(struct gdma_context *gc)
+ 	gc->hwc.gdma_context = NULL;
+ }
+ 
++static int mana_hwc_response_status(struct hw_channel_context *hwc,
++				    u32 command, int error, u32 status)
++{
++	if (error)
++		return error;
++
++	if (!status || status == GDMA_STATUS_MORE_ENTRIES)
++		return 0;
++
++	if (status == GDMA_STATUS_CMD_UNSUPPORTED)
++		return -EOPNOTSUPP;
++
++	if (command != MANA_QUERY_PHY_STAT)
++		dev_err(hwc->dev, "Command 0x%x failed with status: 0x%x\n",
++			command, status);
++
++	return -EPROTO;
++}
++
++static void mana_hwc_finish_request(struct hw_channel_context *hwc,
++				    struct hwc_caller_ctx *ctx, u16 msg_id)
++{
++	unsigned long flags;
++
++	spin_lock_irqsave(&ctx->lock, flags);
++	ctx->output_buf = NULL;
++	spin_unlock_irqrestore(&ctx->lock, flags);
++
++	mana_hwc_put_msg_index(hwc, msg_id);
++}
++
+ int mana_hwc_send_request(struct hw_channel_context *hwc, u32 req_len,
+ 			  const void *req, u32 resp_len, void *resp)
+ {
+@@ -1005,26 +1056,32 @@ int mana_hwc_send_request(struct hw_channel_context *hwc, u32 req_len,
+ 	struct hwc_wq *txq = hwc->txq;
+ 	struct gdma_req_hdr *req_msg;
+ 	struct hwc_caller_ctx *ctx;
++	unsigned long flags;
+ 	u32 dest_vrcq;
+ 	u32 dest_vrq;
+ 	u32 command;
++	u32 status;
+ 	u16 msg_id;
+ 	int err;
+ 
+-	mana_hwc_get_msg_index(hwc, &msg_id);
++	err = mana_hwc_get_msg_index(hwc, &msg_id);
++	if (err)
++		return err;
+ 
+ 	tx_wr = &txq->msg_buf->reqs[msg_id];
++	ctx = hwc->caller_ctx + msg_id;
+ 
+ 	if (req_len > tx_wr->buf_len) {
+ 		dev_err(hwc->dev, "HWC: req msg size: %d > %d\n", req_len,
+ 			tx_wr->buf_len);
+-		err = -EINVAL;
+-		goto out;
++		mana_hwc_finish_request(hwc, ctx, msg_id);
++		return -EINVAL;
+ 	}
+ 
+-	ctx = hwc->caller_ctx + msg_id;
++	spin_lock_irqsave(&ctx->lock, flags);
+ 	ctx->output_buf = resp;
+ 	ctx->output_buflen = resp_len;
++	spin_unlock_irqrestore(&ctx->lock, flags);
+ 
+ 	req_msg = (struct gdma_req_hdr *)tx_wr->buf_va;
+ 	if (req)
+@@ -1046,11 +1103,24 @@ int mana_hwc_send_request(struct hw_channel_context *hwc, u32 req_len,
+ 	err = mana_hwc_post_tx_wqe(txq, tx_wr, dest_vrq, dest_vrcq, false);
+ 	if (err) {
+ 		dev_err(hwc->dev, "HWC: Failed to post send WQE: %d\n", err);
+-		goto out;
++		mana_hwc_finish_request(hwc, ctx, msg_id);
++		return err;
+ 	}
+ 
+ 	if (!wait_for_completion_timeout(&ctx->comp_event,
+-					 (msecs_to_jiffies(hwc->hwc_timeout)))) {
++					 msecs_to_jiffies(hwc->hwc_timeout))) {
++		spin_lock_irqsave(&ctx->lock, flags);
++		ctx->output_buf = NULL;
++		err = ctx->error;
++		status = ctx->status_code;
++		spin_unlock_irqrestore(&ctx->lock, flags);
++
++		if (err != -EINPROGRESS) {
++			mana_hwc_finish_request(hwc, ctx, msg_id);
++			return mana_hwc_response_status(hwc, command, err,
++							status);
++		}
++
+ 		if (hwc->hwc_timeout != 0)
+ 			dev_err(hwc->dev, "Command 0x%x timed out: %u ms\n",
+ 				command, hwc->hwc_timeout);
+@@ -1059,27 +1129,16 @@ int mana_hwc_send_request(struct hw_channel_context *hwc, u32 req_len,
+ 		if (hwc->hwc_timeout > 1)
+ 			hwc->hwc_timeout = 1;
+ 
+-		err = -ETIMEDOUT;
+-		goto out;
++		mana_hwc_finish_request(hwc, ctx, msg_id);
++		return -ETIMEDOUT;
+ 	}
+ 
+-	if (ctx->error) {
+-		err = ctx->error;
+-		goto out;
+-	}
++	spin_lock_irqsave(&ctx->lock, flags);
++	ctx->output_buf = NULL;
++	err = ctx->error;
++	status = ctx->status_code;
++	spin_unlock_irqrestore(&ctx->lock, flags);
+ 
+-	if (ctx->status_code && ctx->status_code != GDMA_STATUS_MORE_ENTRIES) {
+-		if (ctx->status_code == GDMA_STATUS_CMD_UNSUPPORTED) {
+-			err = -EOPNOTSUPP;
+-			goto out;
+-		}
+-		if (command != MANA_QUERY_PHY_STAT)
+-			dev_err(hwc->dev, "Command 0x%x failed with status: 0x%x\n",
+-				command, ctx->status_code);
+-		err = -EPROTO;
+-		goto out;
+-	}
+-out:
+-	mana_hwc_put_msg_index(hwc, msg_id);
+-	return err;
++	mana_hwc_finish_request(hwc, ctx, msg_id);
++	return mana_hwc_response_status(hwc, command, err, status);
+ }
+diff --git a/include/net/mana/hw_channel.h b/include/net/mana/hw_channel.h
+index 1320bdfa9d2a..c7570a5f7376 100644
+--- a/include/net/mana/hw_channel.h
++++ b/include/net/mana/hw_channel.h
+@@ -168,10 +168,12 @@ struct hwc_wq {
+ 
+ struct hwc_caller_ctx {
+ 	struct completion comp_event;
++	/* Protects initialization, output storage and response state. */
++	spinlock_t lock;
+ 	void *output_buf;
+ 	u32 output_buflen;
+ 
+-	u32 error; /* Linux error code */
++	int error; /* Linux error code */
+ 	u32 status_code;
+ };
+ 
 -- 
 2.43.0
 
