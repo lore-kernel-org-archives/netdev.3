@@ -1,66 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792699608;
-	b=n5j2Ki+eh/wIhtjnkuoTYer7O+7APOTxZDSm4soWNoxg9GQrC2iSXK7hdodQen9NmfaP
-	 sSygZPR3nIUPgWlU1w1gOKGRmz7GV/rodQRCHOLv84me4P5N0OrMW02iHBnVUBcfY3dzp
-	 elx7KQ4em1vMIDJBi4ebNPHP34UXFYe/5MPwxrUvo9MQ6iNWctq8Y/OiO8vtjpHDVf6sx
-	 aag2tGPPVDuncVls9M34ySPEsBRfiJMBHl+9vocP67NHFJsO8CyV/+6Lylcp0vNJ7DrPY
-	 Wj9eFTFb4Qnh5yBNkg74h43Ixd7O9om8kMsFqxaY+oG/gFfTzjAjXQlI/9qjyunBXow==
+	t=1792699615;
+	b=JNTAE+u0F1hNN8bAhsMK7xnKYq+TCriCB/QBuHWsacjtpMePhMIl93eFFd8nAbblP3cZ
+	 0BnhQ5g9tY9JmFYjVEc2zO1k8cktKZHhCqHbaZojHBNxD0od2s7c+geMA6FzWC0chENK7
+	 xhu7ARqlb0ZGl3YhpzDRKHi7eOJdZ8G4qB/oLob6AoGzlk5WzH7pOV/KWSfzWWdffzKi0
+	 HaEhDzmVf2rQ1EDHlwUypy0Yn7XKET3Ht7V+0ktkz9qf++pSOpI29t+NM4rEfdYgmXeBP
+	 zyNrgyhRVXGXJzT2WOkqnV74MKhmZFIspoNxsPgt/Bikl2Q8LBzMUlxDL2bmoPUakBA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792699608;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792699615;
 	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
 	 X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=XlLc/FPyLGvA2r8haINizk1+kzXPPQVxnilYmb128Q0=;
-	b=ot6of3CAtB4LzBvzql2fCPvKyA9DzGwe1bgIg5BaUnMtJ/2m3FWh/7p1EN8IPv1iJHIL
-	 vKQzgBOXCrzMChsHEq1/b4wphREJ7ceQwUg5RFJuIUG7uTKDvOTJO57DEznmSTqGQYY4q
-	 k/ywEN5uf99NoDHCNX3+NipdJNxGy1mUjOtO2FDGjrONoJJOS9MIzlTh8bJym9xlLlGLd
-	 ncbIlHuHU/QurdO0Q1br9hgu2VYjBKtobuwsugtifNSUHwiJyGriMapNX9BM+NMcjejen
-	 WOJd/jezGjn6/f2wXrUnczB5dOBeJ75tCa9gvjogmenvSXiUT+OwAbAeDLs1YoOu9yw==
+	 X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=B88mpadYYWmyEssRGoyIfGe+/tgPvAtSdH5NBRIaaYg=;
+	b=tsldIwIr8IhR9p6luoSae9W9H73ffVNhvTeVzSkKclyB9NjexKjSlGsgkNAszr/n46FT
+	 8c7sYr7o/EGWZZ30lZonni7eQkyBUmkbEAZBbPhKtL5M4m/UJypjFZ0Ph4t1Pn9a5HLv9
+	 aRa5Wf7RaGtEKOcpZz5WcV7czLuDKJvF8hCLMwDr+JBHr7vll9AO8ihXvmHWE5OFakKbv
+	 TPhC+T+LKasa6fxbKjId9A6nRZUo7MQyc9kDJzxH81rlL5iDciDCiO6ctPq1rY9HqqGl5
+	 WKAk37iTV1OwqLi2QaKQo709NHszkNfcePn18ju27oXYn+MDTncJGZckua/FMHpGBKg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=fail header.from=linux.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	arc=none smtp.remote-ip=209.85.128.42
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	arc=none smtp.remote-ip=209.85.128.52
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2268C606A31B
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 20:06:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2268C606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 069FE60A3838
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 20:06:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 069FE60A3838
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a1698ea378so1408425e9.2
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 13:06:47 -0700 (PDT)
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a1ec92f655so1324185e9.0
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 13:06:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792699606; x=1793304406;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XlLc/FPyLGvA2r8haINizk1+kzXPPQVxnilYmb128Q0=;
-        b=FgmXkysSreeCBMsTR7lIDuoj7kC38WycmvWybbpAo9EcLVOAOWwJsnUQOoNmxUo1dh
-         5QTqD0oRCSX36JtQ9PHoBEsgG4i9cv5u2oEn/cwXZD19y57yUuzF8MS6Lm49L10JsPG4
-         ZEqmU3LD6kaIrOXBLt5ow7gipdHFmgMFW8WaxYKq+YEuq+x6f1mFMcPtmgl5iYMADe1Y
-         bCS4PmfAEZPi1e6hUtzL5Gf4irdin+6FFi+EqiE3SUo797A4lkewQDpvp/ZwrCtNyl1u
-         hp7YdDRpN34d4PNXQnaTPFt5h8l2AXNoPr8bx+eJNjFRn+MkM1B7Pg5z283HTZ6wufM8
-         2aVA==
-X-Gm-Message-State: AFq9FYI/7dSalZL4fYqSNipritc/1v+KEYRtz34xdJi5LvSgHFxmMxBA
-	A2ArKITAhfLK5ssLV6j2gTXDsQcsO4pq3D0htEtfvUSFXFKVDMK/C95u
-X-Gm-Gg: AYBFou00w+ljxFDTG7Uy9PksL8cvdxfbja6j3TXuWRC77Axi5NxlRG76kHz8onJYPVb
-	muVBsyUyuw4Lfc0o/9kb+5s3HDQctICwgeq3oVa2hgA7Q+LXw2q7clLnDp79m/RnwLmuq76BwNu
-	YvZCi1IiYSFYorD+d9/nDTy5C9Wl55H2GRyb/VPE+7R0g2/BeRrU7Zpt3zfc4JgW9THW0UtgFF/
-	dtPseRkYJzDFmjDj+axIeGwPJXh+kVFquVUvBTQIvrWnMSvcoLkysDqTDVZtO2sOqcFYrQYTyUX
-	6j4R/nr6vTk7+Hm5X9x8VjSpD8EEahOkkIcHSoUPbQhlJ8SFoELiJ7OhF8VGcAA9du41/sCcbB5
-	qKbf4z670RJab+VjgPaRFNnKw6wVQVVlOhwOLSW44vn7VyvhaNpmh3bC2FlskeyauC6/CSkL4Vr
-	i3pkYTaQliF8Bekm9KDTPyB5F32N3odO7fdf1uz0ploc2oNMggYnf56fmxoZH/9WkVPUPyMUG6V
-	r5EF6PyKIMAwS8D//inYxKYoPH1C01CEzkv4AuenPZohJuOgunVqvhome+jkRE67ut3qQSKLd6b
-	kY3NZBT5wzo/d98=
-X-Received: by 2002:a05:600c:3114:b0:4a1:a39b:e75b with SMTP id 5b1f17b1804b1-4a211cb296bmr2188745e9.21.1792699606184;
-        Thu, 22 Oct 2026 13:06:46 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792699613; x=1793304413;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=B88mpadYYWmyEssRGoyIfGe+/tgPvAtSdH5NBRIaaYg=;
+        b=K1ghoDVnVGjbW+ecV7koEH8Cpvz6JxHfu43zW/pzHL15sfDUVmO/p4PvN4oT8fSPRq
+         JWU6lXR+25h5mx8aVgFfos2zVlqemQps+VxAMuqPA2GVF73T2Kz6I4KiGh5YcsPmbXmK
+         zrmlMptp6Du22id0mZ029Y/9Jgi8FXcpy6g0S1My2z7pIMOZjFhQ5cTOjsVuBsR5DuwL
+         vEptHW7prQZqaEGVdaQ75QZO034gs0HwEACVOjfj4Ho461MwP27reyG7jEDqz0vKhI/H
+         Y4aTCieufBh6+cuQqUiv/4kyqCc5JwumGmSBYO1qUFcPQ1x3akWLVHvRCg9UFWSwLHRK
+         U02A==
+X-Gm-Message-State: AFq9FYJTB/ImIFJ9T2yfLN/bAz3xOK3rY6GPWyIFqJNidqSsVfvd2MVw
+	Csy8CKTiooIvgXBcO+y+eTZeLWb8WMg/A2PazLEFrb2BJCfphoym8xov
+X-Gm-Gg: AYBFou2LN25pbwYKAjGnAvr9cQOGswD67pdir5/4OyWCMK86bUwKfIjva0O+rU/vZKn
+	oDtI4MJbTHtpqxaVBsWOQPOFBl93ZdVV9Vr/6RWLhE81yHadb/eHa2DxZ4Cto3Oequ8UqpHqu8n
+	nUUVNej4tyYCglstbl0lPAmygpcY9e3DkW7ETcM+LurVE9rDiR/WSz66r9ITlYAB+JaE7/DHHTo
+	tx4MWD8R8HnvOUy4489d2gdTInslD/nzsrAakOnp+Pt5UAo0FN3+kaK7UCFOviR8/u+bK28Sh1/
+	BM7qY5ZKzEIPxrgREosIVUfrx93EUTVosow4G/b3XZOXd+cNhAQ9NCGN4iFPFO4wDTbYOuR9sqd
+	s2P950/fgWvD2oMYsnxM4WOe9fW9J6R8Rrv27NoRtTUeL08bNndss33A8t/Nc77DAHQrqp8J25z
+	CgmbhrroRxc608sh5YDyul66XGn8XxgKnoANi1VYshoPEQ7BgAJ9wqBDClmCt7h6aQ9f6nGNSL4
+	j0MQvFn8vD8QnWeZ39C5/iWT1cs94YB8hkb1UW1AFcb9DA1aWG3Qf02HiYTvG1A6GXG56XGp1Q9
+	Fo7oyop39247yEg=
+X-Received: by 2002:a05:600c:3b0a:b0:4a0:20b4:ba93 with SMTP id 5b1f17b1804b1-4a211c869d9mr2350165e9.16.1792699613390;
+        Thu, 22 Oct 2026 13:06:53 -0700 (PDT)
 Received: from threads.localdomain ([81.79.62.202])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a2123a1797sm35965e9.1.2026.10.22.13.06.45
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a2123a1797sm35965e9.1.2026.10.22.13.06.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 13:06:45 -0700 (PDT)
+        Thu, 22 Oct 2026 13:06:52 -0700 (PDT)
 From: Lucas Tanure <tanure@linux.com>
 To: xianwei.zhao@amlogic.com,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -83,10 +84,12 @@ Cc: netdev@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-amlogic@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 0/7] Add ethernet support for the Amlogic T7
-Date: Thu, 22 Oct 2026 21:06:33 +0100
-Message-ID: <20261022200640.3101932-1-tanure@linux.com>
+Subject: [PATCH v4 7/7] arm64: dts: amlogic: t7: khadas-vim4: enable the ethernet port
+Date: Thu, 22 Oct 2026 21:06:40 +0100
+Message-ID: <20261022200640.3101932-8-tanure@linux.com>
 X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261022200640.3101932-1-tanure@linux.com>
+References: <20261022200640.3101932-1-tanure@linux.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -98,87 +101,60 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The T7 has the same ethernet glue as the G12A. This adds the binding,
-the driver support and the device tree nodes, and enables the port on
-the Khadas VIM4.
+The board carries a Realtek RTL8211F gigabit PHY on the external
+management bus, connected to the MAC over RGMII.
 
-Two clocks are new. The pipeline stage between the controller and the
-DRAM has its own gate, which nothing else claims. The glue registers
-sit in a block gated by sys_ethphy, so far claimed only by the MDIO
-mux, which probes after the glue is programmed: every write to
-PRG_ETH0/1 was lost. The T7 node lists that clock as "pclk".
+Enable the controller, hand it the ethernet pins and point it at the
+PHY. RGMII needs a delay on each of its two clocks. The board traces
+add none, so the PHY adds both, which is what rgmii-id asks of it.
 
-The delays follow ethernet-controller.yaml: phy-mode is never changed,
-the PHY adds the 2ns, and the T7 accepts only rx-internal-delay-ps, as
-fine tuning. Its TX side is a quarter-period phase selector with no
-small step, so tx-internal-delay-ps is not valid for it. The VIM4 is
-plain rgmii-id. v3 said the RTL8211F TX delay did not work; that test
-ran with the glue registers gated, so the bootloader's MAC TX delay
-stayed on and the link had 4ns on TX.
+The PHY interrupt output is wired to GPIOH_6, so link changes are
+reported instead of polled. The PHY reset is an RC network on the
+board, not a SoC pin, so there is no reset line to describe.
 
-Tested on v7.3-4494-g2a08195e4db5 plus "clk: meson: t7: keep the
-memory fabric clocks running" (clk-meson-next): 940/941Mbit/s with
-iperf3, no CRC error in 421k frames.
+Assisted-by: LLM
+Signed-off-by: Lucas Tanure <tanure@linux.com>
+---
+ .../amlogic/amlogic-t7-a311d2-khadas-vim4.dts | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-Overlaps with Xianwei Zhao's "[PATCH v2 0/3] t7: add some nodes for
-Amlogc t7."; I will drop or rebase whatever overlaps once we agree.
-
-Changes since v3:
- - phy-mode untouched, the PHY adds the 2ns, rx-internal-delay-ps is
-   tuning only, tx-internal-delay-ps not valid for the T7
- - 0 dropped from rx-internal-delay-ps; vendor delay
-   properties explicitly false for the T7
- - init_delays callback; the old parsing moved into the older-SoC
-   function, marked not for new SoCs; patch 4 renamed
- - VIM4 without tx-internal-delay-ps, the PHY TX delay works
- - Meson8m2 moved to the dwmac-3.70a list; its boards warn in
-   dtbs_check until Martin's dtsi patch lands
- - the delay table in ethernet-controller.yaml dropped
- - Martin's Reviewed-by on patch 3
-
-Changes since v2:
- - the controller-side delays are applied on a T7-only path instead of
-   changing every Amlogic board (Andrew); the PHY mode left over comes
-   from phy_fix_phy_mode_for_mac_delays() (Maxime)
- - tx-internal-delay-ps is checked against the four values the hardware
-   has, in the binding and in the driver, instead of being truncated
-   (Sashiko)
- - amlogic,tx-delay-ns and amlogic,rx-delay-ns are not valid for the T7
-   (Neil, Andrew)
- - the on-chip PHY no longer carries max-speed, phylib reads what the
-   chip reports (Andrew); same for the RTL8211F on the VIM4
- - the PHY interrupt line, GPIOH_6, is described on the VIM4 (Sashiko)
- - new: the T7 node owns sys_ethphy as "pclk", see above
- - new patch 8: the delay ownership table in ethernet-controller.yaml
- - no longer RFC
- - Conor's Acked-by dropped from patch 2 and Neil's Reviewed-by from
-   patch 6, as both patches changed. Patches 1, 3 and 5 only moved in
-   the series, so their tags stay.
-
-Changes since v1:
- - new patch 1: honour tx-internal-delay-ps and rx-internal-delay-ps in
-   the rgmii-*id modes, and pass the PHY whatever delay is left over
- - vim4: phy-mode rgmii -> rgmii-id, and amlogic,tx-delay-ns plus
-   rx-internal-delay-ps replaced by tx-internal-delay-ps = <2000>.
-   Neil's Reviewed-by dropped from this one, the change is not cosmetic
-
-Lucas Tanure (7):
-  dt-bindings: net: amlogic,meson-dwmac: list the compatible
-    combinations
-  dt-bindings: net: amlogic,meson-dwmac: add amlogic,t7-dwmac
-  net: stmmac: dwmac-meson8b: add support for the Amlogic T7
-  net: stmmac: dwmac-meson8b: follow the generic RGMII delay rules on
-    the T7
-  arm64: dts: amlogic: t7: add the ethernet pinctrl nodes
-  arm64: dts: amlogic: t7: add the ethernet controller
-  arm64: dts: amlogic: t7: khadas-vim4: enable the ethernet port
-
- .../bindings/net/amlogic,meson-dwmac.yaml     |  89 +++++++++--
- .../amlogic/amlogic-t7-a311d2-khadas-vim4.dts |  19 +++
- arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi   |  88 +++++++++++
- .../ethernet/stmicro/stmmac/dwmac-meson8b.c   | 139 +++++++++++++-----
- 4 files changed, 284 insertions(+), 51 deletions(-)
-
+diff --git a/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts b/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
+index 0fa83362b417..4914b0dff8a8 100644
+--- a/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
++++ b/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
+@@ -14,6 +14,7 @@ / {
+ 	compatible = "khadas,vim4", "amlogic,a311d2", "amlogic,t7";
+ 
+ 	aliases {
++		ethernet0 = &ethmac;
+ 		serial0 = &uart_a;
+ 		mmc0 = &sd_emmc_c;
+ 		mmc1 = &sd_emmc_b;
+@@ -256,6 +257,24 @@ xtal: xtal-clk {
+ 	};
+ };
+ 
++&ethmac {
++	status = "okay";
++	pinctrl-0 = <&eth_pins>, <&eth_rgmii_pins>;
++	pinctrl-names = "default";
++	phy-mode = "rgmii-id";
++	phy-handle = <&external_phy>;
++};
++
++&ext_mdio {
++	external_phy: ethernet-phy@0 {
++		/* Realtek RTL8211FD-CG */
++		reg = <0>;
++
++		interrupt-parent = <&gpio_intc>;
++		interrupts = <GPIOH_6 IRQ_TYPE_LEVEL_LOW>;
++	};
++};
++
+ &i2c_m_ao_a {
+ 	status = "okay";
+ 	pinctrl-0 = <&i2c0_ao_d_pins>;
 -- 
 2.56.0
 
