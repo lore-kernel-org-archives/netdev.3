@@ -1,45 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792694736;
-	b=KgkXJof7mm90Km3dkWFMueoyXS69uVOZqA/BvBivgrva8BjxUWVTKkGe2QKU9oM1B7Pj
-	 lAjpcgvrVJzNSvkM8bDCWX9PyXt0WDitV7tWzB0eyfZ4XKiF6kgEyhj5zGH29mpDg4p/b
-	 SVohUomZv131C9amOuvb9MeYgW1bJ492Elg8ghcUQLcPNHwV2LxOJJGO+JMGuwOntwlIp
-	 CCtbLG7RzfsceUEJ1NmcpzRxB4iPRMnCotIe5GoM1TCEunDU2tFu40pclvOeXbJtjzt37
-	 3+adywQMuI0FtvgGiXZML8L/CjVRMJpzPcyUJ5C25Owsfjbq95GXtv9KSumK6R+UV1A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792694736;
-	h=Received:DKIM-Signature:Content-Type:MIME-Version:Message-Id:
-	 In-Reply-To:References:Subject:From:To:Cc:Date;
-	bh=G28HEn/VXJld9jkYtD/8yZsBEWZtFggug0SssZsruNY=;
-	b=SkJ7jvtaAc21WN8/3HMuTi2IS8qvPShY29amGl3DkOHMqxSBhbzoDOmAkOtbPTas+tIN
-	 Tl8+rBVKmnt5o7Me1QwJmr8aRUFVKLN5cjjcLzEOhJDjoObRFM9Q63fJPOY9tO2OUVOAJ
-	 lwdKk3wu16F6XO9lHQeERm7Akk5AvywnthURq3re0mVANKLrT8SlHDJ1Fpke291d7CX51
-	 hisj0e8tkjS4JZe6zwBouj83Ul7qpAGBPIMyBEMtJ6kUO5W3w+4QYkNpidfeWAjc3Cu9m
-	 TdlpXAFsez7OU6x1/X4+IS9/vOcdXYofDBhOIaMMCQGH9DpEXNzE8ylB4JJbfPi8nmA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h9U6yV6z;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.173
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792694805;
+	b=O26em1N6i9PRQoMI1qTnpNMfNTxCLkk/xPuJW9mL676fyPgyKm+MtJJ+v7eoqe/2GYWQ
+	 myHm1uSAR5fy62H7L8ICTDpbKcjWfR7OozUnE8ne+zid7HHcwhPJ8WSK0Dym3ADcgvsEF
+	 wGL/XT+pSHI6aST466dQ2UFPW81+ySppyXW0shnkCyoXW/XjYOhStN5ONfQztqGb0V5Xm
+	 DquzkF6tGygM/2DEtyz56X+aH3lNC6Y9whrF85iVU0eefCxqjtIPU6DXn/JSBWrzIQuRQ
+	 TTev2VqSyzL3WFcF+DkJ1WlmkK8LhgcCZEWnD5VLElIjPKjyxt9+mJpXdYivaq/RtJg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792694805;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=VJ3fHdUL5SmQAXabxpkgaJOcxdg9wUPTydhIVNe9+f4=;
+	b=QEnFNfMcoSd5fIXyVKYiW6W5IfiKGeDzetK51OKk1Ym4eCtC4aogxwP0fy3zsYlKtStD
+	 sCWxqdvZmSCZJYvRldL5apPLvOOT0eciloxSHd/Ro5E9IGv2aX9bpIuw2IwEkxIaeKLW7
+	 pWPf4KYH3kPUUQN2b26VDtBlgHiN8a9Y5JIwOwEPXtxyhhP+tOJFEeXNUTrSBEBKmB3TA
+	 MjAma7EsbAXYVQNNYG3HzbIFBckUalyHPPZgE71whKQMoWhnbEfjZRj/5qAw0SPQ+B48U
+	 aO/ZKLSacaY52EJss7hGtAMEfyIgGk4eqI1RKfgM2LMfeU1Pb0w48tD2Ki+y/ee8zyA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=eCUYLTzw;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.173
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F1F6606A31B;
-	Thu, 22 Oct 2026 18:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CC6606A319
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 18:46:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 65CC6606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h9U6yV6z
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76AE81F01825;
-	Thu, 22 Oct 2026 18:45:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792694735;
-	bh=G28HEn/VXJld9jkYtD/8yZsBEWZtFggug0SssZsruNY=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=h9U6yV6zctGDT2s7FTFQvlXT/pcrtKGrr/d4BaOX6gvREBJ3jce3VwauedN+iElUr
-	 tyEFBos984982QJRYf+xj2sjb6P8y6x+9gaF+wu5KkN4cxDjtuMAdn4PaMYOfyX1/h
-	 ZVZ23TPw4t7+QHQkEtu1NUYWFjqJ+zqRP+E04PeX5idWkGqsWLaa6ybUAQt4IWAmOv
-	 12qZhnJomhUI8ZwysUlQBoTvipZUaP84fHOD/aYkVPiaFh7neTBZBdVqf7aDgHrllV
-	 r1iDHHQ4+RFuNSs0muMfpGboKIaSQvnsAdJrVLljYVkHGIEJtBCgDasmd0rZa26LLe
-	 Lz5caL7PrK9Kw==
-Content-Type: multipart/mixed; boundary="===============8279392703451209759=="
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=eCUYLTzw
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-8a06c60065fso154700b3a.1
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 11:46:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792694805; cv=none;
+        d=google.com; s=arc-20260327;
+        b=SzID4RYjPPXL8U9+jPh32aeZhBRVS1FYDT54+nfXE6tDsOhFQf+rUnQbiLS9IwDIjy
+         qdlM2ymA2scHMdXagHj+ywjL3bHcfsSqQvVqRfjnaOokMzw+/9iqKIevjYq+r7ql3AbF
+         jf2UaqPomsdWCA8HGqyP/aJfvnhCN/RfmNBvHZL0I/l4JwlAxsr1KhU4TaVW9yIfuqHZ
+         Z+Q8i4Bv72Sd9ofx7+p/+l63ZkPNKfzBfla/I/m9SP0FHWcsHAVr5UGpv6HkO2CxzEJY
+         9+aeXnLKU1VuKpe7jolqcJHX9VKGHytHrIMEP8FtRQQt0vNEEz1zoT2TnVfFQhjnuJfI
+         yPow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=VJ3fHdUL5SmQAXabxpkgaJOcxdg9wUPTydhIVNe9+f4=;
+        fh=EAEdreS9u4Q/+427YsCA/E+CbT8IoT5z4TC01r2vpg8=;
+        b=JDrzACzXBPvGRAWeIYZufIorW/COhuZFicekYXiOLyLZ96VT6iqrVhTIzMmP5JYwmZ
+         lKE9uq0uKpLOp/qJQ6EczAOpwUYaAs7eH5k5hxxCAleR61MgbL8H2qU5u1xpEjBDgsps
+         tUSI+ciE6WOEtf3FBcH5Q5MyfTaS8HoNGIOnKwHi1b3aNoevT9nmugo8xUtW6VMWkE4v
+         g+OLBjAznjk8Tc7mYBPVq/Z+Yn35pJbIbCUnnEvmLZMAzC6OEbufUQbUu/6IjPB/AKBx
+         Co8xoRqVfMwSyJSxvfdHPtiI0vRdywGJVbCDxyZoADYMXfgFgqdeSndXgVCg5JoL9UoS
+         MATA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792694805; x=1793299605; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=VJ3fHdUL5SmQAXabxpkgaJOcxdg9wUPTydhIVNe9+f4=;
+        b=eCUYLTzwJZfnxmvJY9lif6asT9vcmB2mq2KLsm86LPWGVoZxPtjKpSerjQHYcsIj4D
+         egiAzCIIJObZgpd+Fnb/+IzuoC43KA53Onhu2BPNR8wXUQSNWmxQxU8J4demSlU4Jyvy
+         Rk+qcJh6IfWE5OLhY8ZZvXS1tXDSz3IvgXCBf2wwB6+/ZXUVp+P26GASmU5c+X4/jnig
+         SPJbKfm4LqSDhKuzVRvqs5qsR9LPgJrgYOa0sODJKY3QyAw33Jy4gDcNtFKRSk6Xz9gV
+         Srk07x5b+lqGu/n0bH9Fywbd7BiKbTwKfU6aWAlya8HEHokfXZngpHgeZ61W3KK9yLmm
+         Z6LQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792694805; x=1793299605;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VJ3fHdUL5SmQAXabxpkgaJOcxdg9wUPTydhIVNe9+f4=;
+        b=U7rkWZP+x9kyVbf18XvGbLQ7yva/JaOa1/hz2pDXtmBtFbiDywnkpLP2z5SfKot1Ub
+         Adi0XvcjIBHEU10kmUgQFlYsOeFbwlAlJ6yYv5bcz5N65rFYe1Igz2koH6n9W88gGJ0r
+         g55UzFe6DOtlzpi0INqCL4K3XYkZPPMyAoTqDsoRJVGFhHJrfr1ax3cVvvn3ysTGCpzD
+         tQ+rltcbkKjDaTf7JxiVqj72OfmvzB9iOy8+1A4ZJZv0FzDbL2Sv45kBp7mk78j/6opa
+         wohSi+viJMTB5q7aUkwsNO9zC/OQaoVaX7HMJrUmP/Vqrdjj0GbLVXtzuQdLtXFz+jFP
+         sIeg==
+X-Forwarded-Encrypted: i=1; AKwUvBzVFOTkLHfNXG/lTv/VNDCidl2XiqyWsjfd0CVS4/HqoldPzaCfdit+SIKgrwvoFj392edV2+4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKjxycd2yUib0qwvgPZw++bY1LcbX+M1QoFFY575xQ9321OODrH
+	iUThXQLvvyi1bohdhYX9k9OBwfZhMzOuOXr5x+xMEKjDQl8ECTiH0DEcYMrPamWRalOSBc0JnLG
+	EoUzkVTieCvbV6FDpmkfnQtjPUVONZo0=
+X-Gm-Gg: AYBFou1QetO8BDW/biVPSU/LWW3LrjhFHCtKDMSfT/33hw5WHFkOq5ASOjwlQQvD33w
+	8r62/eiF6GCXdWarUDEHO9+y/zyQUqnVN6zi92NFIf8kzPZh7pWnF4rZPQRJW4hoe2VNzsIt1gn
+	dI56ijaRzfxNEvFqb95qACmErhYHWHxUvVhdqvyzXPmkNWcwfKd+xuNOE9YipwB3Ae4xKoCZsPU
+	rXJDgfUKF1Ck+JdSgDy93eXIwI2AgMKGtGoD2wY1ZFtHB+zmbV7jWF9dKut4TRAMg59hr01IZwy
+	DDjtpUOevD6xLqMjjbAw4abe47RuJMrqILwySf9Bu8Ag7FUvYsbPoLo4t4rVyCcGQhiFHONxQBd
+	0zHLk6WkJQ5G9P/GLLat2+9LAJ/7U26lXD479IWFZoD0Y9XKtlBbeoEm3l5ing5Zif/SxBmRuMC
+	5VrPlRlHqbc0gMqsJNkIx2nrPg1YUapUQziME=
+X-Received: by 2002:a05:6a00:428f:b0:8a0:70ff:aaf0 with SMTP id
+ d2e1a72fcca58-8a2c7656184mr31128b3a.49.1792694804726; Thu, 22 Oct 2026
+ 11:46:44 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -49,115 +105,73 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Message-Id: <e31194dd72efd3c182707e870b7e7a6d67b78be23cea06aded0275678373c64c@mail.kernel.org>
-In-Reply-To: <20261022181620.247201-1-mahe.tardy@gmail.com>
-References: <20261022181620.247201-1-mahe.tardy@gmail.com>
-Subject: Re: [PATCH bpf-next 1/2] bpf: Add bpf_ksock_bind() kfunc
-From: bot+bpf-ci@kernel.org
-To: mahe.tardy@gmail.com,bpf@vger.kernel.org
-Cc: andrii@kernel.org,ast@kernel.org,daniel@iogearbox.net,davem@davemloft.net,willemb@google.com,eddyz87@gmail.com,edumazet@google.com,john.fastabend@gmail.com,kuba@kernel.org,horms@kernel.org,liamwisehart@meta.com,martin.lau@linux.dev,pabeni@redhat.com,song@kernel.org,netdev@vger.kernel.org,sdf.kernel@gmail.com,yonghong.song@linux.dev,jolsa@kernel.org,kuniyu@google.com,memxor@gmail.com,emil@etsalapatis.com,almagui@kernel.org,mahe.tardy@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Thu, 22 Oct 2026 18:45:34 +0000 (UTC)
+References: <20261019073747.178626-1-hdthky0@gmail.com>
+In-Reply-To: <20261019073747.178626-1-hdthky0@gmail.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Thu, 22 Oct 2026 14:46:33 -0400
+X-Gm-Features: AclHuK-PDx0jP5an3A6M6WQQwIMwVAosfNCvGR5QppU0ezO-BznZ8wHlN5NdZ1U
+Message-ID: <CADvbK_ft9t1ipGawiOGsKU+qf0PFhctvewV6v+P0XmSMZOyA3Q@mail.gmail.com>
+Subject: Re: [PATCH v5] sctp: reject forged cookie peer_addr with unknown
+ address family
+To: Xingyuan Mo <hdthky0@gmail.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, "open list:SCTP PROTOCOL" <linux-sctp@vger.kernel.org>, 
+	"open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
---===============8279392703451209759==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-> bpf: Add bpf_ksock_bind() kfunc
-
-TL;DR: bpf_ksock_bind() called from a bpf_wq callback runs with kworker's full
-capabilities, so a CAP_BPF-only SYSCALL program may bypass the privileged-port
-(CAP_NET_BIND_SERVICE) check; the review asks whether to block it.
-
-> diff --git a/net/core/bpf_ksock.c b/net/core/bpf_ksock.c
-> index 37168f43c16c..c7b487d90cd0 100644
-> --- a/net/core/bpf_ksock.c
-> +++ b/net/core/bpf_ksock.c
-
-[ ... ]
-
-> @@ -178,6 +178,33 @@ bpf_ksock_create(const struct bpf_ksock_create_opts *opts, u32 opts__sz,
->  	return NULL;
->  }
+On Mon, Oct 19, 2026 at 3:38=E2=80=AFAM Xingyuan Mo <hdthky0@gmail.com> wro=
+te:
 >
-> +/**
-> + * bpf_ksock_bind() - Bind a BPF kernel socket to a local address.
+> When cookie authentication is disabled, COOKIE-ECHO peer_addr is
+> attacker-controlled. An invalid sa_family made sctp_get_af_specific()
+> return NULL and crash in sctp_transport_init() on
+> af_specific->sockaddr_len. Validate it with af->addr_valid() in
+> sctp_unpack_cookie(), which also rejects a mismatched family, e.g.
+> an AF_INET6 peer_addr on an IPv4 socket that would later crash in
+> sctp_v6_get_dst() on inet6_sk(sk)->opt. Validate a copy of peer_addr,
+> since addr_valid() rewrites a v4-mapped v6 address in place and the
+> cookie still lives in the received skb, which is not guaranteed to
+> be unshared. Store the validated copy in the new association and
+> pass it to sctp_process_init() instead of the raw cookie, so a
+> v4-mapped v6 address is normalised to AF_INET before the association
+> and its primary transport are built from it.
+>
+> For that, sctp_v6_addr_valid() has to return 0 for a non-v4-mapped
+> address when it is called with a socket that is not PF_INET6, so that
+> IPv6 addresses are never used on IPv4 sockets. The check is done after
+> the v4-mapped handling, so v4-mapped addresses passed to an IPv4
+> socket through the socket API keep being accepted. As addr_valid()
+> now also checks sk_family and ipv6_only_sock, simplify the address
+> handling in sctp_process_param() with it, as it additionally filters
+> out non-unicast addresses. As a side effect, a v4-mapped address in
+> an IPv6 address parameter is now normalised to AF_INET before the
+> transport is created, matching what the socket API paths already do.
+>
+> Also add the missing !af check in sctp_process_init(), as
+> sctp_get_af_specific(AF_INET6) returns NULL on CONFIG_IPV6=3Dn builds.
+>
+>   BUG: KASAN: null-ptr-deref in sctp_transport_new+0xa7/0x350
+>   Read of size 4 at addr 00000000000000b4 by task poc/682
+>   Call Trace:
+>    <IRQ>
+>    sctp_transport_new+0xa7/0x350
+>    sctp_assoc_add_peer+0x153/0x850
+>    sctp_process_init+0xf9/0x1180
+>    sctp_sf_do_5_1D_ce+0x464/0xbc0
+>    sctp_do_sm+0x114/0x2990
+>    sctp_endpoint_bh_rcv+0x280/0x430
+>    sctp_inq_push+0xdd/0x100
+>    sctp_rcv+0x17f5/0x1ae0
+>    sctp4_rcv+0x2b/0x40
+>    ip_protocol_deliver_rcu+0x25b/0x270
+>    ip_local_deliver+0xd1/0xe0
+>    </IRQ>
+>   Kernel panic - not syncing: Fatal exception in interrupt
+>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Assisted-by: opencode:deepseek-v4
+> Signed-off-by: Xingyuan Mo <hdthky0@gmail.com>
 
-[ ... ]
-
-> +__bpf_kfunc int bpf_ksock_bind(struct bpf_ksock *ks,
-> +			       const union bpf_ksock_addr *addr, u32 addr__sz)
-> +{
-> +	struct sockaddr_storage sa;
-> +	int addrlen;
-> +
-> +	addrlen = bpf_ksock_addr_to_sockaddr(addr, addr__sz, &sa);
-> +	if (addrlen < 0)
-> +		return addrlen;
-> +
-> +	return __sys_bind_socket(ks->sock, &sa, addrlen);
-> +}
-> +
-
-Can the CAP_NET_BIND_SERVICE check for privileged ports be bypassed when
-this runs from a bpf_wq callback?
-
-bpf_ksock_bind() is added to ksock_init_kfunc_btf_ids, the same set as
-bpf_ksock_connect().  Commit 60bbe76a3f9e ("bpf: Allow ksock connect/send
-calls from wq") made the kfuncs in this set callable from bpf_wq callbacks
-of SYSCALL programs, and tools/testing/selftests/bpf/progs/ksock_wq.c
-already calls bpf_ksock_connect() from such a callback.
-
-bpf_wq_work() runs that callback in a kworker, where current->cred is
-init_cred with cap_effective set to CAP_FULL_SET (see init/init_task.c).
-
-The bind path is:
-
-  bpf_ksock_bind()
-    __sys_bind_socket()
-      security_socket_bind()
-      inet_bind() -> inet_bind_sk() -> __inet_bind()
-
-and __inet_bind() then does:
-
-    snum = ntohs(addr->sin_port);
-    err = -EACCES;
-    if (!(flags & BIND_NO_CAP_NET_BIND_SERVICE) &&
-        snum && inet_port_requires_bind_service(net, snum) &&
-        !ns_capable(net->user_ns, CAP_NET_BIND_SERVICE))
-            goto out;
-
-__inet6_bind() has the same check.  With init_cred, cap_capable_helper()
-walks up to init_user_ns and finds the capability raised, so the check
-passes for any netns.
-
-For example, a task holding only CAP_BPF can load a SYSCALL program, since
-is_net_admin_prog_type() does not ask for CAP_NET_ADMIN for that type.
-Such a program could bind its ksock to UDP port 53, 123 or 514 from a wq
-callback, while the same call made synchronously from the SYSCALL program
-returns -EACCES.  A bpf_task_work callback looks like it has the same
-problem in a different form, since the check would be evaluated against
-whichever task the work was scheduled on.
-
-Commit 60bbe76a3f9e only argued about LSM checks ("bypassing LSM checks for
-BPF-created sockets could be acceptable"), and connect and send on a UDP
-ksock have no capability gate.  bind appears to be the first ksock
-operation that does, and the commit message does not address the wq
-context.
-
-Should bpf_ksock_bind() refuse to run from kthread context, the way
-bpf_ksock_create() does with its PF_KTHREAD check?  Alternatively, should
-it be kept out of the set that is reachable from wq callbacks, or should
-the commit message state that bypassing the privileged-port check is
-intended?
-
-No fix for this was found in the provided range; 76406b1f799f
-("selftests/bpf: Test bpf_ksock_bind() kfunc") only adds tests.
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/39831790314
---===============8279392703451209759==--
+Acked-by: Xin Long <lucien.xin@gmail.com>
