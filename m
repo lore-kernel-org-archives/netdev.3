@@ -1,60 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=51.159.59.229
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.175
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792686285;
-	b=KpPrSXNMFoPDIvYb6QHuqiuPizphRuL9aXsyHzB7suDq6finkt8fO9zbcsBo6e7tY0MF
-	 XYnxeJGLPhonMfQ0Hi8xvcp6bKvtLySS8lZPtt0TWvwE4AWHxOHJLqfDxs9yO/eiDT/Un
-	 s0NS+faq0mar6Dl2M+j+3oPL902bZdIsk2Z0TjQb6uWniNeu45D/Yj3Mhay7iaX5qlzu+
-	 H+dAZyM+MX8gVqRCXcXSopNzJ7SC7KyKcyQ8otJfxno7Pqj6NyHBktMmxZAhWg6WVAf9E
-	 lS0qY5gQHlpF4lOkXzrYcCpJVtiHwidMKrtsHayHlnzyrof2lXrTOXeSv7g35HxQv6A==
+	t=1792686682;
+	b=Bsn4o28YqWSLs0x30bJRouwq7SVF7homT2u68cyvhKuUQwZSW3FjDlp3xz0bUvNSilgp
+	 Mf/YU+jb27E1yGlH3oRm4Hylve0hhGsnv19XRsGj39ujeTPqx2dFXBpFAdON14thDv+qs
+	 QKHlxue2Y/RJud7rhAWjuctyXj4vbbBfe2NwhFv7Bi1QprxooKewRj7JqYYb5sG+/cYJw
+	 1uqOne8n1dfacsqawmWV+BYfg1K/jwuRiq6yTdFb1g25n2O9S9OAZHfO86w1vBnnJ8/y4
+	 HacBZpZs22nWZ9Q+trgwiz7y3prZWXI1uRpUAY7kFalYrC9L04u6kcvBcuWhcW0CPJw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792686285;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=e34/LbT2KiVBxSjoVzxoxlm+/Dhj+RXEgBl1nd9xMFk=;
-	b=NoOFxzS6nbxpdG7V/TkLRUlqUBlPKB5mWBIbXvtwJFkpqRI6hWeuWT+nIpfSdUttsBok
-	 L6hxfWAh1PDlMAcWHEhAUjuv6ViWZfoB4xN1a71iIdzygSh8B2nsLUGWi2dqiB6n8zdRH
-	 xYP0QMomNbT2euC3zgelaI/E0yuO0nho0+rr1mz7gN6AxtJzGJQRIGYA/eHNReQyNVCqB
-	 sR8/v9DBPRkP+a3e7+rH3lgelGZOIUpS1KnBu1S4WjadjtGPnr/0gmQpe7y2uYd1rP/eZ
-	 3fMIWyOXYeSgwnZcTCkPwCpGpgTk6oQaoHXBtAfO/ajmnfQyihBeQz1SpWLV/Xm1dKQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792686682;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=aleyTKbyUPwkKdibUq3IwvSz2dQSx+D+0Ibacr1mokc=;
+	b=D1OFk15PLHxDbK8YZvk1rX2GL9/7rIyQF6d2ohHB0H7SkVGJ8hMBfxlY4/LrWqEb6fHd
+	 YaboUMh9rW3+tr5IomScmdcgo28laojIyNJdsqsJf+JYkOfjTgOKudltngmVGHHarWThX
+	 UCucsea2GyeguFgCHBQ57S0QfsWFbjQnS/AaHxyycjphXVWgZjSdemsRM0O52XTcxcLoY
+	 XT/hXxs0suLc1l31OFrFIlfKDNRM8R+/f/Wu+2Avoio/96dJtU1LXLczo77O5Z0FlJaNC
+	 /wBWSJr+25rp/CxryhKZ3rXCR1gqcuP5scduGdWe+aLmhE0QsPXgynD2l+a9ObEfI8g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=1wt.eu;
-	spf=pass smtp.mailfrom=1wt.eu;
-	dkim=pass header.d=1wt.eu header.i=@1wt.eu header.a=rsa-sha256 header.s=mail header.b=qD2QFerf;
-	arc=none smtp.remote-ip=51.159.59.229
-Received: from mta1.formilux.org (mta1.formilux.org [51.159.59.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=qxpOClJj;
+	arc=none smtp.remote-ip=74.125.82.175
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF15606A319;
-	Thu, 22 Oct 2026 16:24:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3AF15606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=1wt.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1wt.eu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83A00606A31D
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 16:31:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 83A00606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=1wt.eu header.i=@1wt.eu header.a=rsa-sha256 header.s=mail header.b=qD2QFerf
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1wt.eu; s=mail;
-	t=1792686281; bh=e34/LbT2KiVBxSjoVzxoxlm+/Dhj+RXEgBl1nd9xMFk=;
-	h=From:Message-ID:From;
-	b=qD2QFerfVpFjf88aQeV9orCfkWw0pAb1o0/fxq+hS0pR9d4WPtS38yaf4Wv5Jv/nR
-	 QzR4zbj/RZ4YGyl68tjm0pbE3lxP8RqBhkypcS1Zi0+KCzp0Cp5TPvGlOh/8s0+tZG
-	 p7VcTMvBT3Ozst5zM8JYwLQ5bnfc54eUm8oSoEiQ=
-Received: from 1wt.eu (ded1.1wt.eu [163.172.96.212])
-	by mta1.formilux.org (Postfix) with ESMTP id 9F0C9C0944;
-	Thu, 22 Oct 2026 18:24:41 +0200 (CEST)
-Date: Thu, 22 Oct 2026 18:24:41 +0200
-From: Willy Tarreau <w@1wt.eu>
-To: shaos <shawnq1@163.com>
-Cc: jhs@mojatatu.com, Jiri Pirko <jiri@resnulli.us>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        security@kernel.org
-Subject: Re: [BUG] net/sched: TEQL qdisc can modify init-net teql0 from
- another netns
-Message-ID: <ato4yRBZ6iz-F77o@1wt.eu>
-References: <20261022144830.67948-1-shawnq1@163.com>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=qxpOClJj
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-3514b90bb89so5174243eec.1
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:31:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792686682; x=1793291482; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=aleyTKbyUPwkKdibUq3IwvSz2dQSx+D+0Ibacr1mokc=;
+        b=qxpOClJjtfeOQfM044rAVrZ8LpRzlycX9HpUGrUusQc3d6Jrn+XIsSWVsOGux2SBaH
+         b8LZaKGD3dnhMoeCA3rch0Q91EpYMlq8uUtE7pCBcZ2pp1gllF4irMGlmR8Xh9ZuSY3y
+         71BdHuYB4qT/a8JcMytVm80z2vSTcEXxnxerXiE6MV+MmR+Gc385HsLfmC/6n+iKE3mg
+         y0jIq2I6DH6QjXvrzbprSEVsFQJ6Jz5EYl3LZ6FjnGb3cUjCxiP2DrsYtF/mi9+MeAQm
+         L0M2NuH+dQox3obSqNWDZ6pcckmCC1QAXqVis53tmJ1NzVNUC+shLbSu0QX7d0xk19VU
+         jTjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792686682; x=1793291482;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=aleyTKbyUPwkKdibUq3IwvSz2dQSx+D+0Ibacr1mokc=;
+        b=tnPhBZx0LqTz1OyiPvD07jGy4GbtQ3XB6kU5hLfrV4dsAfPpg/oUoBepAv5gpZLjzX
+         TKjKrNe+1dY+VUxApP9lMj6RptXIzOJVtaTQaeomtnjLufHVzkDu1/h/uwjMVYpadmuV
+         yTuU6tSui5aqziJVPrWApf4XV8OU8+oQW5uPMr7c1Y9tyywpoHKvwEdsVSyJPBzVX82w
+         6tTiF003r2hPU/NtBKRd1hGo4lKE9bgRFfNgvoG227YL/OBcmRnqB6yF8NL+8Jq9zvwc
+         TFwgyyiveq83BRv47DBbpdA1GvCwf5Npj8TpUr8m1MlgdbLCfIPQ8csB/CaI9nns/I1h
+         5jVg==
+X-Forwarded-Encrypted: i=1; AKwUvBx3bwGLHSrJZxg+EdFPBu1q3+g7CuVJQrNbIerzoWyCgxj4MMsjPdL7YqgLwQ0KgD2wfanYVBo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJhU4bGP5HfId3BFn+6+CPAsMvpE6iRx+VpinbH9tGH6IUuJsPk
+	nFySjq3c/oyyrPQ3Z/N0L70BZV7lUzD/+ya+/fH2rorXLm6iFXtw/zI8
+X-Gm-Gg: AYBFou2+0uQ2pfktUdIrxvdqtXduZauok6SvemzupS4CNjYfbexAZ9K987BojOCxhBD
+	+0vjLU3B4ZgMK7buWZlxjsbqZg2+VHkq+MS5C2WwqSNU0Z6xRhuPtdxG/WgIBQ24VL1gjxIHTof
+	6oXQOuZMfiyECcZKJwGavUMZRWdzBBGp0Jzr/qk/bCE4aOFpotSYFOI/ZaMEFykUrUycxQFar+G
+	ssoDLZafJ5HjaykAQ+ZijaCZW57FBzNC0bqKdNSPD++s03tFGz+xJnmve2PupkJypnuk1461bO8
+	Okt/0cLqdU+m9nq4ciP2UoU3p2CuhdQdNSYyBdEr8+O/UQXEFEd5ioEiZGpOBUfJK3cBaTRVupA
+	1Ay3hH8wHdINYhhdeF7hnrAlIi3J59rR+1ItK1vtUWMyQg6RFj3fbgbUyxXwGmiFjoV8PREjMlK
+	zQ3EMN/8Ku36xeyJRGu3baxzuKm01ewQjDJ1dPfbDMNMrmQup5OCbDPKSUitBswO6lmoOeFu/Iv
+	d9eEdk5DjKbuDeW/HqsYDT1XzArgGcnu/qRMaxSuIyU/H5NodXl5BDO2PIG1x14AE4/cR8=
+X-Received: by 2002:a05:701b:260d:b0:14a:8df8:56c5 with SMTP id a92af1059eb24-190a599a5admr5852299c88.26.1792686680599;
+        Thu, 22 Oct 2026 09:31:20 -0700 (PDT)
+Received: from DESKTOP-NM9EKIA ([125.134.240.130])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1903d87ab1bsm17079981c88.21.2026.10.22.09.31.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Oct 2026 09:31:20 -0700 (PDT)
+From: Joonhoe Kim <26rote@gmail.com>
+To: mani@kernel.org,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: horms@kernel.org,
+	christopher.lew@oss.qualcomm.com,
+	deepak.singh@oss.qualcomm.com,
+	pranav.phansalkar@oss.qualcomm.com,
+	andersson@kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	regressions@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] net: qrtr: announce local services again once our HELLO is sent
+Date: Fri, 23 Oct 2026 01:31:16 +0900
+Message-ID: <20261022163116.1042-1-26rote@gmail.com>
+X-Mailer: git-send-email 2.55.0.windows.5
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,31 +105,109 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261022144830.67948-1-shawnq1@163.com>
+Content-Transfer-Encoding: 8bit
 
-Hello,
+Since commit 544d85de4dc2 ("net: qrtr: Send HELLO message on endpoint
+register"), qrtr_node_enqueue() drops every packet but HELLO with
+-EAGAIN until our HELLO has gone out to the node. When the remote's
+HELLO arrives first, the NEW_SERVER replies from the name service are
+dropped, and so are the broadcasts for services registered before our
+HELLO goes out. Nothing announces these services again, so the remote
+never learns about them.
 
-On Thu, Oct 22, 2026 at 02:48:30PM +0000, shaos wrote:
-> Hello,
-> 
-> A process running as UID/GID 65534 creates a user and network namespace, sets
-> a namespace-local dummy device to MTU 60000, and installs a root qdisc of
-> kind teql0. TEQL reuses its global master and changes the init network
-> namespace teql0 device from MTU 1500 to 60000.
-(...)
+On Kaanapali the modem sends its HELLO before it accepts ours. With
+rmtfs started first, the modem never learns about rmtfs and its
+watchdog resets the SoC about 40 s later.
 
-I know this was mentioned elsewhere, but since you're sending so many
-reports at once:
+Remember that the remote has sent a HELLO. Once our HELLO has been
+sent to such a node, pass a HELLO from it to the local name service
+again, so that it announces the services it has at that point.
 
-   please oh please stop CCing the security list for messages that
-   you're already sending to public lists. It serves no purposes
-   and adds extra work for several of us (review, triage, response).
+The flag is not cleared when qrtr_endpoint_hello() restarts the
+handshake on resume, so a HELLO that the remote sent before then is
+not lost. The cost is that the remote gets the same NEW_SERVER
+announcements twice when its HELLO arrives before ours goes out but
+the name service handles it after, and on every resume.
 
-Ccing the security list for a public message won't get your message
-handled faster and might even cause the opposite by showing that you
-don't read docs and seem to post in a hurry.
+Fixes: 544d85de4dc2 ("net: qrtr: Send HELLO message on endpoint register")
+Cc: stable@vger.kernel.org
+Signed-off-by: Joonhoe Kim <26rote@gmail.com>
+---
+Changes in v2:
+- Replay the remote's HELLO to the name service from the core once our
+  HELLO is out, instead of retrying in announce_servers(). Replaying
+  the announcements once hello_sent is set was suggested in the Sashiko
+  review of v1. This is also not the delayed work in the name service
+  that I mentioned to Mani: that would still miss the broadcasts
+  dropped before our HELLO. Nothing sleeps in the name service worker
+  and there is no time limit.
+- v1: https://lore.kernel.org/all/20261016124600.31-1-26rote@gmail.com/
 
-Thanks,
-Willy
+Tested on a Lenovo Legion Tab Y700 Gen 5 (out-of-tree board support)
+with rmtfs started before the modem: the modem's HELLO is still handled
+before ours is out ("failed to announce new service"), the replayed
+HELLO follows right after, rmtfs gets the modem_fs1/2 opens, and the
+modem stays up.
+
+ net/qrtr/af_qrtr.c | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
+
+diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
+index e7b364742..508a2dd2d 100644
+--- a/net/qrtr/af_qrtr.c
++++ b/net/qrtr/af_qrtr.c
+@@ -122,6 +122,7 @@ static DEFINE_XARRAY_ALLOC(qrtr_ports);
+  * @qrtr_tx_flow: xarray of qrtr_tx_flow, keyed by node << 32 | port
+  * @qrtr_tx_lock: lock for qrtr_tx_flow inserts
+  * @hello_sent: hello packet send successful
++ * @hello_rcvd: remote has sent a hello packet
+  * @rx_queue: receive queue
+  * @item: list item for broadcast list
+  * @say_hello: delayed work for sending hello packet
+@@ -136,6 +137,7 @@ struct qrtr_node {
+ 	struct mutex qrtr_tx_lock; /* for qrtr_tx_flow */
+ 
+ 	bool hello_sent;
++	bool hello_rcvd;
+ 
+ 	struct sk_buff_head rx_queue;
+ 	struct list_head item;
+@@ -541,6 +543,11 @@ int qrtr_endpoint_post(struct qrtr_endpoint *ep, const void *data, size_t len)
+ 		qrtr_node_assign(node, le32_to_cpu(pkt->server.node));
+ 	}
+ 
++	if (cb->type == QRTR_TYPE_HELLO) {
++		/* Pairs with smp_load_acquire() in qrtr_hello_work() */
++		smp_store_release(&node->hello_rcvd, true);
++	}
++
+ 	if (cb->type == QRTR_TYPE_RESUME_TX) {
+ 		qrtr_tx_resume(node, skb);
+ 	} else {
+@@ -619,7 +626,20 @@ static void qrtr_hello_work(struct work_struct *work)
+ 	pkt->cmd = cpu_to_le32(QRTR_TYPE_HELLO);
+ 	from.sq_node = qrtr_local_nid;
+ 	to.sq_node = node->nid;
+-	qrtr_node_enqueue(node, skb, QRTR_TYPE_HELLO, &from, &to);
++	if (qrtr_node_enqueue(node, skb, QRTR_TYPE_HELLO, &from, &to))
++		goto out;
++
++	/* Pairs with smp_store_release() in qrtr_endpoint_post() */
++	if (!smp_load_acquire(&node->hello_rcvd))
++		goto out;
++
++	skb = qrtr_alloc_ctrl_packet(&pkt, GFP_KERNEL);
++	if (skb) {
++		pkt->cmd = cpu_to_le32(QRTR_TYPE_HELLO);
++		to.sq_node = READ_ONCE(node->nid);
++		qrtr_local_enqueue(NULL, skb, QRTR_TYPE_HELLO, &to, &from);
++	}
++out:
+ 	qrtr_port_put(ctrl);
+ }
+ 
+
+base-commit: abeacca61eea4f6803df4a595b656ea45c2d3249
+-- 
+2.43.0
+
