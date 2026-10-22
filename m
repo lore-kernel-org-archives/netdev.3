@@ -1,128 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=192.198.163.12
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1792658075;
-	b=g+iptyinLgb4TZlIVwxo/jxldpsuH7EH3g1qDYQEDfi5rYdZf1oB106ardUBR1jcZijP
-	 aJKe/WhDvGINmua0U1kJm9arzs0L+rDdEYAajXoUYcrifJmmz24sL7U02Fuv/eoP4l3bd
-	 BdCbwGZciFu8ctMqmJwHX+k1n+7zTmMv/0KUUk34I3FLD75V12QZPwCgOMMnTDEf+gui/
-	 04/ibfP6BHirNw3C0ZuNzvrs89wpTEX/OR8qFJyun6lE4LC9dy8FO6DQUWms79UvIvYpW
-	 pgfyLuEjq1gZdE2bqMXtnpKHhdaxgL8A/j8d779iAu6isIA7b3tJTuvWbULM5hHlbyw==
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792658170;
+	b=svmKBEsRs6zhaENSlP1WTImIS5LP465jDcxITbHnCmuT1q81Pkt51SFaCuWuGK1Kmhch
+	 9ACna28j7w6ZHdS3gKUnOmV8ZJ5pfUrHi2hzvU2mgMSFJ4MVG2VVk5/YY8zS/KL1TUncN
+	 UqKiIz372qzaquvLAp+kxpSCcphWB8KIahKA4W6lzbWimfB1epiYA9rV3PH9iqKSGACLn
+	 hf52mqHHlzvxJQMPhNBCSq1S257j3ruG3XDxEnKy8kSZP+CCtbt+iGM3MMQcbl4mmR+Ax
+	 1pL7+PnHm5zT/8NtgIdDANRkCMlySQSlltF9DNLtVaRwJPuYZqXTc22t+nR0eq+9dxA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792658075;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
-	 Received:Received:Received:Date:From:To:CC:Subject:Message-ID:
-	 References:Content-Type:Content-Disposition:In-Reply-To:
-	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=QRVRhh2d5xAKNgv8ZKl5xZsYEjNO5Qwg0yeTu+l0RW8=;
-	b=qQ4n/OteXmFSWdlEo439ewRdXhLkQ9qOdlqB4ovglxR7nVq+6qyhbPnSOgNsYr/L5Xth
-	 iN22nigiYjCQme0q3rrUcKUTzmIppw13cVQZZVFi2mHf71s46lVIdzaDzNY7I0uNVUlfx
-	 VP+gY4nzf+/3v8I4eaa+mK4c6dvE5dqiId8YNLZT4LkdtznR8LqYphQPzsCTzZssvkZdB
-	 qMQyevdFv3YvLbO1bf9V8ahqamMRFWS4ab4gYZIEFHqiDp/TRjnDyZqOa/dxEMxe6lCle
-	 3YTtW8GLskB34m9rkWqzlWx97SkFv4xwXta2Nss0VRHEMwkndBUx9P7WmPXOyvSyq7A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792658170;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:X-Sent-From:X-URL:X-Accept-Language:
+	 X-Accept-Content-Type;
+	bh=4y1bO0yWIY1avAnVM6Yv6aBJIGT7qri+v5Fo5JrwfOA=;
+	b=CRFdICmzKEt3mwHDavT2yUD7TkfYYV9+m7lIDQPPvpSafLZKWmI7cIxGmoxTHEq5tlyK
+	 i/TvJUVn7KDaE4Whi/jsoAQm057k+4gI8a8OuXKJO49GHgs8WSx/wCphZx5eRzkjISHRH
+	 97N1Q0XEKMWPQF//m+HIOQ78XLWUMXuEN9rXuXXOEMYZ4hXAXokV0mhVMhywgavwF1icj
+	 XS/xYtR21sclkfULFGyzlk6QSB9mRiPIIQeJAoayay82bp+DAGdebxh2W5Anf84IvHt++
+	 UJow28+OSYr2PIIqrQfHDzmUyHpMWUNZfag39KGQmTSbcEBLjlAQIxdcoWoeRn3INfw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FnrIrkFq;
-	arc=fail smtp.remote-ip=192.198.163.12
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=none header.from=pengutronix.de;
+	spf=pass smtp.mailfrom=pengutronix.de;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=dhM5w5Pa;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC409606A31D;
-	Thu, 22 Oct 2026 08:34:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CC409606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE125606A31A;
+	Thu, 22 Oct 2026 08:36:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AE125606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FnrIrkFq
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792658073; x=1824194073;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=GKSNm/dVWDzCOY8sNr7FyAV28X8qVH1akCGz0zLbTa8=;
-  b=FnrIrkFqG50LnJaMVYjUZuctDayyrFGBqEqskvgMoxkZpEd88Xd6VhaY
-   /OONCLrv0GOr8UPG93mMPXv0MCBrmXywk3Gqc8FWLC7sypv/GXnqvQ6wb
-   PKSsLY8rf2Kn15uM7blT7Rh7yTdoKQ202ZxUOVVjjx+OGaOPuI2CtvurY
-   SzJeLUEpiOBph4L0aUgZoPRhNRwilrlNW+yHPqxPMYtOj067Ov3nLSiBC
-   4UeVMLzSBfP/3n3I1URxH8iy6Sh5eCEHZ9Ul/mMvrWnUgMDOOp6DaFcmT
-   vVisvZFJBlf9M5FPW+8udPTEa+/TZ0QJhyy/J4wrUSci0Lk+ne7qLqxNz
-   w==;
-X-CSE-ConnectionGUID: OKUfDH9GSCS/ujR9rETUEw==
-X-CSE-MsgGUID: 6XopRN6eS7O86fKC7Otb0w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11942"; a="1301562"
-X-IronPort-AV: E=Sophos;i="6.27,171,1787036400"; 
-   d="scan'208";a="1301562"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2026 01:34:24 -0700
-X-CSE-ConnectionGUID: nVPz2PtLRnenSkSq2m5EMQ==
-X-CSE-MsgGUID: x4Wt06V9RsiA9xSi7/tZmw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,171,1787036400"; 
-   d="scan'208";a="3431397"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2026 01:34:25 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Thu, 22 Oct 2026 01:34:23 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Thu, 22 Oct 2026 01:34:23 -0700
-Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.0) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Thu, 22 Oct 2026 01:34:23 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jkGOje2z4JWHnW+A9lfrEPzEzUIX9X38nDKCVoHlPmgceT+CD75t8szSrxlttK3dIuI66Zl8JMvlwL02Xc1zAFabFyu/bMutpFa/drW6sfOGrGutpSgYlYeZknKp+U8FJPmmVJR7bBqcQghYPqhGDyJrcBJg8xtNZuRjHkz2d0twn7Q9LJT0fD1wXNYWJ0zK2CC+gSlPZe0vPOznf1FMxAFjkz2S0SzoZCNhemYf9Z8kgXwf69VhKVDq86H4qnd7bEG/MZSkWnmkNYRjWZtSwa0gTsXDb34TM5SGOXdOxDQ/y7HoHmQg/nF2nMnYlUZvRlESbcFL9TMdZMOGWjxHqg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QRVRhh2d5xAKNgv8ZKl5xZsYEjNO5Qwg0yeTu+l0RW8=;
- b=QmTWLjlcdPEwHH3ySGUnlpqANBjnocsNKxQpMKf9eNj8+VvTY9Gxgx2+Vye6/y0D9yoBvennK/xeywdfRdh2uNT5LyTv4A7AR1MwVD2vXN7oJOvIVj2DWj7hWZGKc3RKCa9kUvFFO9iIktyU4zX6edClGe7dR9gcDRpI4LxOPSwxW0dVDb/A4AsPmISq0+HcoajU5FqtNwosDerhi/gKdhmpopMEGYnGMm0lzTfE+cBFCeVL/FkmCYS8b5L7LStgwUQ2RuGNaIgfAYhBbJOgYr6fVc7vbl7Hb++tmPFgwP8fMium1mggDhXFZ0WHbAnu/Rplse63G1DXX/GJs08acw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM4PR11MB6117.namprd11.prod.outlook.com (2603:10b6:8:b3::19) by
- CYYPR11MB8431.namprd11.prod.outlook.com (2603:10b6:930:c7::17) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.546.15; Thu, 22 Oct 2026 08:34:21 +0000
-Received: from DM4PR11MB6117.namprd11.prod.outlook.com
- ([fe80::d9b3:e942:2686:3cdd]) by DM4PR11MB6117.namprd11.prod.outlook.com
- ([fe80::d9b3:e942:2686:3cdd%6]) with mapi id 15.21.0546.012; Thu, 22 Oct 2026
- 08:34:21 +0000
-Date: Thu, 22 Oct 2026 10:34:07 +0200
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-To: Paul Moses <p@1g4.org>
-CC: <netdev@vger.kernel.org>, <magnus.karlsson@intel.com>, <sdf@fomichev.me>,
-	<davem@davemloft.net>, <edumazet@kernel.org>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>, <bpf@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH net] xsk: restore UMEM flags after failed pool assignment
-Message-ID: <atnKf5dNv0Vk1sCo@boxer>
-References: <20261021224705.2078753-1-p@1g4.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20261021224705.2078753-1-p@1g4.org>
-X-ClientProxiedBy: VI5PEPF00000912.AUTP296.PROD.OUTLOOK.COM
- (2603:10a6:808:1::936) To DM4PR11MB6117.namprd11.prod.outlook.com
- (2603:10b6:8:b3::19)
+	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=dhM5w5Pa
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id C49C22004FF;
+	Thu, 22 Oct 2026 10:36:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792658166;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4y1bO0yWIY1avAnVM6Yv6aBJIGT7qri+v5Fo5JrwfOA=;
+	b=dhM5w5PavV9Nq564P6Slrq8GHT4IJCkW3R6mEwSmkEFqAoSrqXwjSs0FUCCOmT02aqlpmj
+	WlkKOvaUp7tFzu7CZHCrkxLii1BQyRzd1xPuqGzxK+TRYaLtmPQGNjJgOko/OnpQ8JR31D
+	pUUCmcmeKUaBm8/M2zBx1IVqpX0j+QmzNXsk4W8lPBsmmFLNCTtUpTxcQh0vD5wZUQTsAs
+	Ex+3XyP26FdQBpzvh1ydLmEDk8sHa9ijdXgvV+lUwPHbrgG9JOoeMjvwSN8rOk3Gqi6j7u
+	qqo6+a71WhyXDMMLPfMZ+JWyzU/KCt/ESrbpLzBOZ6ARobJNzomCe1NhzbmQrA==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792658166; a=rsa-sha256;
+	cv=none;
+	b=g1B+e4OI7fShN+FYRQzknX2rvl7jIhSuN7liK8DgR85wMPgd7So/FygYUBCQCABCf7oT0T
+	zJVinpH577eJnTeVwJgw6lgTwHpKCXR63fVTGiM0/lZBVgUm199WHMyqkR+hL6fEbQ8fr+
+	GV9VCNqWGwlDNNQhFP+jRp+UiXvN+aTWT4Bk4kCECQuCdcHcOYxx8LbivJ14WxX6NuxqLL
+	2/aEic623gYg58nyOlMNFNYC32vcaYFxioL3Upa2ME/wLsWEsPL15rZ7h+YwECvH5M+jp3
+	hJwk29vZa7IQX22lOuQ4lBWvmgZy/X8ioV9kZyampTrxy+hLLNVh/K0dxMEr3A==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=ore@pengutronix.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792658166;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4y1bO0yWIY1avAnVM6Yv6aBJIGT7qri+v5Fo5JrwfOA=;
+	b=VtfgbW7RNyYAhT9XLygj1GrJeWjI+uln5aKMIbL7Zo2dfOsPm1J1yskrkRr9enNdzvq7uY
+	+QA/xLDrwl6Fj7e/w3qOnMyQMnT4JT6/SeDvFQJeVKZQoZRkZ6Fc5mjsmj7yrW5lqt/RO0
+	D4RDurDG2lIXURQy6tJet/ZeLCH1eIvEY7X9rPf9PBFXy5nUugO3ts4cErWZR3s4C0urLH
+	i3KRahyng4EDh/mYL0WMtNdcRQc9zEUHseilH3RdZ8v7XofU+f3uJSjMFUyaQUDz1e7KVo
+	zYnKftT9+zXHjZWwavw5Q55DajJ7dw+hA8RgQUeMpyUHBw3u34Z83eDi3pxfyw==
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1xJoHO-000g7W-2L;
+	Thu, 22 Oct 2026 10:36:06 +0200
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1xJoHO-00000009RVw-2XbY;
+	Thu, 22 Oct 2026 10:36:06 +0200
+Date: Thu, 22 Oct 2026 10:36:06 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Carlo Szelinsky <github@szelinsky.de>, Mark Brown <broonie@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>
+Cc: Kory Maincent <kory.maincent@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Kyle Swenson <kyle.swenson@est.tech>, Ross Cawston <ross@r-sc.ca>,
+	netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2 12/14] net: pse-pd: use each PI's own supply
+ handle for the power budget
+Message-ID: <atnK9lEinSLgx5yK@pengutronix.de>
+References: <20261020171249.853085-1-github@szelinsky.de>
+ <20261020171249.853085-13-github@szelinsky.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -132,118 +107,296 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR11MB6117:EE_|CYYPR11MB8431:EE_
-X-MS-Office365-Filtering-Correlation-Id: 359cd654-487e-4e4e-8dec-08df301744fd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|23010399003|1800799024|18002099003|10067099003|261021121427099003|22082099003|261021123027099003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info: JBR6+WOtVYDmIxLz2MFeGe+5oB9UxSGG5haQoUXfEBjJVfKEawMbaZJJ1204B9DOZfnNZupJIXKgv2iRZY8e4zcKzqy1Yf3sY5qgG5SG70ZHxqbSeoHcFW7eb1gOQr73nYIM0GX3lvDHXHVG/WhrbUDIsX6+MB42ZgieK0ZO13SdXVUWvS0vIh0a77RGRAcIcHXLw4irV6s54ago+dASidJBnACYqUN+oUx/Y0DQmySdu6s/wzeWmpLens64Ju+P3nL0AuMQdeCawPP+0/BcM7cCr4txASVPM6TVPjEEF1LxWxktHigRtNoAxzwGxnmQB10kRAJHEidZNizJvvQiu5YlPmM72li1jOImUXW01JuFpUPwHDQcCYzU1Meq+J5kouGjBntN2qHBY0l7+Akr6fL6aTq5BtchhzY4Wg3tEzx0mBb3wHgbM7NufkApE9ic3VJj+oHRRaRnzOxCFED1IbNTzZkqBM4ceRilFdFNer5Fprg6lnyzDd6OxQeOsFxHDiWQR0rTO1oh++6NKYup3r2Wc/WlBtRW++N2UvO5hQEKV4xHcjU5Vl8I9QLjxGkYiIFf14l24k06cvbTjGNK5A7mSm48YvIvUcQBoHDO8uQPC03WXax9MOqOKBEs9cLm0PFphWNYestnh64kl4ZNZrreVLVte/R0R343vwF2wDc=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB6117.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(23010399003)(1800799024)(18002099003)(10067099003)(261021121427099003)(22082099003)(261021123027099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?o76H96+81zJMCP+IjOymU0WN8WdQZ6fgkcjv1sMQ5vpapVg6jClGo+RRennA?=
- =?us-ascii?Q?lCf38bS6LutQf7UmAAv+Ku0HJ+XJEIxDAFVCMPgZsspS+Hp+6XENyveJV15S?=
- =?us-ascii?Q?I2eLLxhth1/33y5OZFSiSsPbOK7U3Tlp5wxRST9tszvlAXdgERdizURR5JRm?=
- =?us-ascii?Q?KbQ1J3IGoSXpNZm0i/qkmKqax/4Wf+NCgYWPTUTR9ZIZz6uQ2GrHp6X6tAeC?=
- =?us-ascii?Q?Dg4aH2vmpPpM1QucDj2rAwrWY6zxHA8Y1mYPuU1tAmS6uNPJfbsyDSOriYUU?=
- =?us-ascii?Q?ZvPH4FgApsb0jIjakM/2ubGzyn7s7rudMhg5Wv40Llt7jR4WGoGreihSmloi?=
- =?us-ascii?Q?7PK+JocTNuhuGupUzX+4woyfulRwNj2BUCBXBgTLKtpWc7NYmYTWU16oiLbl?=
- =?us-ascii?Q?yJ9Mpn2ae5qJN3t+e6PBnd46VQuRJl4kwVASxe/tqmKdVGxreVte9I88zrHT?=
- =?us-ascii?Q?fWc6r8qYPeGA2CFMzxTaR1YZLOfkhi04aWmnh74R7BV3eX4szJEIKptpK8O5?=
- =?us-ascii?Q?sL/+NrUJGeBJiCxIAmu/OGbIccJrk9CiRpJjqvyeWqUydlK1OglT4q57np8U?=
- =?us-ascii?Q?bQCMeJJe+uh4k5mIQ5Bb70/LZvJf2YuflvyF7bCOuuVqIlwxJSBB6Y/yHomV?=
- =?us-ascii?Q?r+mZQXJvasKYU/onDZ34FFEACZLFdRaVJXbG1vRB3pOV0NEzEQnuMBV/2K2f?=
- =?us-ascii?Q?gnvV2oDrizOY1P8nVcby7cEOrH0GacbbkzZhvn+bJad9GM4f+yfUqXQ4CtrY?=
- =?us-ascii?Q?1xOSCd2KffONiJongVawwOPB27i1g67iDOEJFEFODnb8birKI1vQiTXkRqib?=
- =?us-ascii?Q?1QiEGBuSnhOe8mckhxRIzTfz9k4FF4YDWXK8A87B0N1UVKEBf1oX9Iz9zZ7E?=
- =?us-ascii?Q?cNzaEEbXHJLIDe17Tn5m/8CBhxkBw8aPLupDppGTfI55ZJqtHTXllZJq3olE?=
- =?us-ascii?Q?mSrIN1EXKnc1xRpDlmoyTF3b6C5e3mqbFAHZrkZpEdPV9JbNRd7mOjOjBDxJ?=
- =?us-ascii?Q?OWXW3/MS28TFt2qtf9qa9D+g9U0LJknMnaOV0bG3idGEzvZ15VCrUu5ky/cN?=
- =?us-ascii?Q?6BaHvf5BmUzSuZQYmyCuG+FaWQGhu9jfbmXOMjgqDhUjkiQXQEpr7FVnYUDD?=
- =?us-ascii?Q?dhMGZuPslyHzaZENdoFLMo6oKsS3edxJOkoN260b5igBoZJ+bX29rUHXxGF7?=
- =?us-ascii?Q?No7DaloBMbFZXF8xuaVHY7BUnGqW9Qtz+V7tVwSz1V9Feh2KcfvRKWkFqOVz?=
- =?us-ascii?Q?aQOKLtcayHpNK8moipZU907saBY7UJVDXqEZ4+90DyshSkUMfh6arXf2NSb1?=
- =?us-ascii?Q?GgeRaqJ0s/qlrTG5h0XCazu6KNyp3ZJGKpugm7ydeRwhymCtxtdl7Oo2O70B?=
- =?us-ascii?Q?KAUUcFxf2lRmKi2bg1jzkPsTUf+l1nqC8QbWsrZTBNQHH1HsIZeoNcpuU7bi?=
- =?us-ascii?Q?lWLkOYOmQg0hsXat0Fo1VJv0rIJS9tLaeF9oBfo1yfQlJliEUOoy8sK26dJ9?=
- =?us-ascii?Q?nw8LoUzD1phq8kBBqdVTc/USQJcaq5IzPs3M7OcJQEsj6OBMWcSZqsLr2hJ/?=
- =?us-ascii?Q?6oFC7ED2jQKurZwY+/M+T69Bf5o7q+MqKqLEJO9UOUquFB6uxXjA004WrZtt?=
- =?us-ascii?Q?w/wzwRTrviCTqcSDrVxG4M0FgLILbea2TVFyOmfV21qpYnKkYz3t/TIZkmE0?=
- =?us-ascii?Q?A+X/69YDERBFKjm5qN+NvsECBJlufeAjV3vPqgRglVAgAIKwzt9fV0A/Vhs2?=
- =?us-ascii?Q?qtIFkXstZ/K8RBWEJvc8fL6+8zE1PHQ=3D?=
-X-Exchange-RoutingPolicyChecked: bJrc34NTuEoxX1k0OOCUl7ss808a+SDM9KQU5NTm81ayNWvjDXtT5cqHuXVHv9l1fim/GlW+XLKOUA9PcX4USv5jNj3lLMgKqXcQ4Ak9XDRYGXHjxOySzsL5zLQ0e84Z0Pt9Jy+m332DIXZFE8uwTAUL58F/74huYtfYvN/21MVDP8D6e8QCf4Nr9Jn9QNZ1EEXuMguu6mbH5sh2f/pogkl+z14yhsbETKCDUmDUqkWN/CV1XKP3L2yDDkD7mNnyVwc/HAxXeZ8rWAwOAmhrKFoCbQCKKDvz2902mLbG3UrVQkqRwuxpOUe4aS6H7uQ+7hjpvMZiXQjODk4EKN/Fpg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 359cd654-487e-4e4e-8dec-08df301744fd
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6117.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2026 08:34:21.0718
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FCFjNKRBj3N/aQnypofOjofKiOSgNGoQ9GkDRMlNI8Rx0a1THCKo6xu4KGaczDDcXhJBGSzpY64GV7CTduhNps9ZXTGnBSp050Kt8SgIMMk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR11MB8431
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261020171249.853085-13-github@szelinsky.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 
-On Wed, Oct 21, 2026 at 10:47:33PM +0000, Paul Moses wrote:
-> xp_assign_dev() sets XDP_UMEM_SG_FLAG before checking whether the
-> device supports multibuffer zero-copy. If assignment fails, xsk_bind()
-> destroys the pool but retains the registered UMEM. A subsequent bind
-> without XDP_USE_SG inherits the stale flag.
-
-so you opened a socket, tried binding with XDP_USE_SG, failed then retried
-without the flag and you noticed unexpected rx frame size due to kept
-XDP_UMEM_SG_FLAG - do i get this right?
-
-socket not being closed kept the umem alive...
-
+On Tue, Oct 20, 2026 at 07:12:47PM +0200, Carlo Szelinsky wrote:
+> A power domain shared by several controllers holds one supply handle.
+> Its consumer device is a PI regulator of the controller that created
+> the domain. When that controller unbinds, devres frees the regulator,
+> but the other controllers still use the domain and its handle, which
+> now points at a freed device. Reading the regulator summary in debugfs
+> then reads freed memory.
 > 
-> The flag also changes RX buffer sizing after DMA mapping. On igc, a
-> failed SG bind followed by a non-SG retry with 4096-byte chunks and
-> 1792 bytes of headroom passes admission with 2048 bytes, but programs
-> a 1024-byte RX buffer. On I225-V hardware, an ordinary 1514-byte frame
-> is truncated to 1024 bytes or 1008 with RX timestamps enabled.
-> Restoring the original flags eliminates the truncation in both cases.
-
-It should be enough to state that sg flag presence takes into account
-tailroom size and therefore has influence on final rx frame size provided
-to driver.
-
+> The domain does not need a handle of its own. The budget is counted in
+> the supply's regulator_dev, and each PI regulator already holds a
+> handle to that supply, which lives as long as the PI regulator. Use
+> that handle for the budget, and drop the domain's handle.
+> pse_flush_pw_ds() clears a PI's pw_d before devres unregisters the PI
+> regulator, so the budget is never used through a handle that is gone.
 > 
-> Save the UMEM flags before assignment and restore them on failure.
-
-Regarding the patch content:
-Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-
+> To find the domain of a new PI, compare its supply with the supply of a
+> PI already in the domain. For this, keep a list of the PIs of each
+> domain under pse_pw_d_mutex, which pse_flush_pw_ds() now holds for its
+> whole loop.
 > 
-> Fixes: d609f3d228a8 ("xsk: add multi-buffer support for sockets sharing umem")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Paul Moses <p@1g4.org>
+> Triggered in QEMU (arm64, KASAN) with two test-only PSE controllers on
+> one supply: after the one that created the domain unbinds, reading
+> /sys/kernel/debug/regulator/regulator_summary gives
+> 
+>   BUG: KASAN: slab-use-after-free in regulator_summary_show_subtree+0x770/0x9c4
+> 
+> With this patch the report is gone. A second test, where one controller
+> changes its power limit in a loop while the other one unbinds, is clean
+> too.
+> 
+> Fixes: 50f8b341d268 ("net: pse-pd: Add support for PSE power domains")
+> Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
+
+Adding Mark and Liam, as this patch uses regulator core internals.
+Carlo, please keep them on Cc for the next version.
+
+Mark, Liam: the PSE (Power Sourcing Equipment, for PoE and PoDL) core
+registers each PI (power interface) as a regulator, and the PIs on one
+supply share a power budget. This patch drops the PSE core's own
+struct regulator handle to that supply. It now calls
+regulator_request_power_budget() and regulator_free_power_budget() on
+pi->rdev->supply instead. The comment above struct regulator_dev in
+include/linux/regulator/driver.h says it should not be used by
+anything except the regulator core. pse_core.c already reads
+pi->rdev->supply to find which PIs share a supply. With this patch it
+also relies on the regulator core keeping that handle valid for as
+long as the PI regulator exists.
+
+Is it OK for the PSE core to use rdev->supply directly, or should the
+regulator core provide an API for it? If you do not object, I am fine
+with this patch going to net as a fix.
+
+Carlo: apart from rebasing on the patch 10 and 11 changes, the only
+changes I ask for here are the ones from my reply to patch 11:
+lockdep_assert_held() in pse_pw_d_leave(), and renaming
+pse_pw_d_release_locked() to pse_pw_d_release(). Nothing else unless
+Mark or Liam object.
+
+Mark, Liam, an alternative for later, not for this series: a PI
+regulator has no budget limit of its own, and
+regulator_request_power_budget() already passes a request on to the
+supply. So the PSE core could request the budget through a consumer
+handle to the PI regulator instead, but it would have the same lock
+ordering problem the PSE core already has between its own lock and the
+regulator locks.
+
+
 > ---
->  net/xdp/xsk_buff_pool.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  drivers/net/pse-pd/pse_core.c | 61 ++++++++++++++++-------------------
+>  include/linux/pse-pd/pse.h    |  2 ++
+>  2 files changed, 29 insertions(+), 34 deletions(-)
 > 
-> diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
-> index 0ebd4d46f7ab..7750d2ec4ee2 100644
-> --- a/net/xdp/xsk_buff_pool.c
-> +++ b/net/xdp/xsk_buff_pool.c
-> @@ -166,6 +166,7 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
->  {
->  	u32 needed = netdev->mtu + ETH_PAD_LEN;
->  	u32 segs = netdev->xdp_zc_max_segs;
-> +	u8 umem_flags = pool->umem->flags;
->  	bool mbuf = flags & XDP_USE_SG;
->  	bool force_zc, force_copy;
->  	struct netdev_bpf bpf;
-> @@ -268,6 +269,7 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
->  	if (!force_zc)
->  		err = 0; /* fallback to copy mode */
->  	if (err) {
-> +		pool->umem->flags = umem_flags;
->  		xsk_clear_pool_at_qid(netdev, queue_id);
->  		hlist_del(&pool->dev_node);
->  		pool->netdev = NULL;
-> 
+> diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
+> index 116ad2d1984a..15539dd75c08 100644
+> --- a/drivers/net/pse-pd/pse_core.c
+> +++ b/drivers/net/pse-pd/pse_core.c
+> @@ -45,16 +45,17 @@ struct pse_control {
+>  /**
+>   * struct pse_power_domain - a PSE power domain
+>   * @id: ID of the power domain
+> - * @supply: Power supply the Power Domain
+>   * @refcnt: Number of gets of this pse_power_domain
+>   * @budget_eval_strategy: Current power budget evaluation strategy of the
+>   *			  power domain
+> + * @pis: PIs that use the power domain, under pse_pw_d_mutex. The supply
+> + *	 handles of their regulators all point at the same supply.
+>   */
+>  struct pse_power_domain {
+>  	int id;
+> -	struct regulator *supply;
+>  	struct kref refcnt;
+>  	u32 budget_eval_strategy;
+> +	struct list_head pis;
+>  };
+>  
+>  static int of_load_single_pse_pi_pairset(struct device_node *node,
+> @@ -442,7 +443,7 @@ static void pse_pi_deallocate_pw_budget(struct pse_pi *pi)
+>  	if (!pi->pw_d || !pi->pw_allocated_mW)
+>  		return;
+>  
+> -	regulator_free_power_budget(pi->pw_d->supply, pi->pw_allocated_mW);
+> +	regulator_free_power_budget(pi->rdev->supply, pi->pw_allocated_mW);
+>  	pi->pw_allocated_mW = 0;
+>  }
+>  
+> @@ -555,7 +556,7 @@ pse_pi_allocate_pw_budget_static_prio(struct pse_controller_dev *pcdev, int id,
+>  	int ret, _prio;
+>  
+>  	_prio = pcdev->nr_lines;
+> -	while (regulator_request_power_budget(pi->pw_d->supply, pw_req) == -ERANGE) {
+> +	while (regulator_request_power_budget(pi->rdev->supply, pw_req) == -ERANGE) {
+>  		if (_prio <= pi->prio) {
+>  			NL_SET_ERR_MSG_FMT(extack,
+>  					   "PI %d: not enough power budget available",
+> @@ -896,7 +897,6 @@ static void pse_pw_d_release_locked(struct kref *kref)
+>  						     struct pse_power_domain,
+>  						     refcnt);
+>  
+> -	regulator_put(pw_d->supply);
+>  	xa_erase(&pse_pw_d_map, pw_d->id);
+>  	kfree(pw_d);
+>  }
+> @@ -922,12 +922,6 @@ static void pse_pi_power_off(struct pse_controller_dev *pcdev, int id)
+>  	pse_pi_deallocate_pw_budget(&pcdev->pi[id]);
+>  }
+>  
+> -static void __pse_pw_d_release(struct kref *kref)
+> -{
+> -	pse_pw_d_release_locked(kref);
+> -	mutex_unlock(&pse_pw_d_mutex);
+> -}
+> -
+>  /* Switch off the PI, give back its budget and clear pi[id].pw_d before
+>   * the domain's reference is dropped. The PI regulator ops and pse_isr()
+>   * hold pcdev->lock while they use it.
+> @@ -946,6 +940,13 @@ pse_pi_take_pw_d(struct pse_controller_dev *pcdev, int id)
+>  	return pw_d;
+>  }
+>  
+> +/* Drop @pi from @pw_d, with pse_pw_d_mutex held */
+> +static void pse_pw_d_leave(struct pse_power_domain *pw_d, struct pse_pi *pi)
+> +{
+> +	list_del(&pi->pw_d_node);
+> +	kref_put(&pw_d->refcnt, pse_pw_d_release_locked);
+> +}
+> +
+>  /**
+>   * pse_flush_pw_ds - flush all PSE power domains of a PSE
+>   * @pcdev: a pointer to the initialized PSE controller device
+> @@ -955,18 +956,13 @@ static void pse_flush_pw_ds(struct pse_controller_dev *pcdev)
+>  	struct pse_power_domain *pw_d;
+>  	int i;
+>  
+> +	mutex_lock(&pse_pw_d_mutex);
+>  	for (i = 0; i < pcdev->nr_lines; i++) {
+>  		pw_d = pse_pi_take_pw_d(pcdev, i);
+> -		if (!pw_d)
+> -			continue;
+> -
+> -		pw_d = xa_load(&pse_pw_d_map, pw_d->id);
+> -		if (!pw_d)
+> -			continue;
+> -
+> -		kref_put_mutex(&pw_d->refcnt, __pse_pw_d_release,
+> -			       &pse_pw_d_mutex);
+> +		if (pw_d)
+> +			pse_pw_d_leave(pw_d, &pcdev->pi[i]);
+>  	}
+> +	mutex_unlock(&pse_pw_d_mutex);
+>  }
+>  
+>  /**
+> @@ -1014,7 +1010,6 @@ static int pse_register_pw_ds(struct pse_controller_dev *pcdev)
+>  	for (i = 0; i < pcdev->nr_lines; i++) {
+>  		struct regulator_dev *rdev = pcdev->pi[i].rdev;
+>  		struct pse_power_domain *pw_d;
+> -		struct regulator *supply;
+>  		bool present = false;
+>  		unsigned long index;
+>  
+> @@ -1025,10 +1020,14 @@ static int pse_register_pw_ds(struct pse_controller_dev *pcdev)
+>  			continue;
+>  
+>  		xa_for_each(&pse_pw_d_map, index, pw_d) {
+> +			struct pse_pi *pi = list_first_entry(&pw_d->pis,
+> +							     struct pse_pi,
+> +							     pw_d_node);
+> +
+>  			/* Power supply already registered as a PSE power
+>  			 * domain.
+>  			 */
+> -			if (regulator_is_equal(pw_d->supply, rdev->supply)) {
+> +			if (regulator_is_equal(pi->rdev->supply, rdev->supply)) {
+>  				present = true;
+>  				pcdev->pi[i].pw_d = pw_d;
+>  				break;
+> @@ -1036,6 +1035,7 @@ static int pse_register_pw_ds(struct pse_controller_dev *pcdev)
+>  		}
+>  		if (present) {
+>  			kref_get(&pw_d->refcnt);
+> +			list_add_tail(&pcdev->pi[i].pw_d_node, &pw_d->pis);
+>  			continue;
+>  		}
+>  
+> @@ -1045,20 +1045,13 @@ static int pse_register_pw_ds(struct pse_controller_dev *pcdev)
+>  			goto out;
+>  		}
+>  
+> -		supply = regulator_get(&rdev->dev, rdev->supply_name);
+> -		if (IS_ERR(supply)) {
+> -			xa_erase(&pse_pw_d_map, pw_d->id);
+> -			kfree(pw_d);
+> -			ret = PTR_ERR(supply);
+> -			goto out;
+> -		}
+> -
+> -		pw_d->supply = supply;
+>  		if (pcdev->supp_budget_eval_strategies)
+>  			pw_d->budget_eval_strategy = pcdev->supp_budget_eval_strategies;
+>  		else
+>  			pw_d->budget_eval_strategy = PSE_BUDGET_EVAL_STRAT_DISABLED;
+>  		kref_init(&pw_d->refcnt);
+> +		INIT_LIST_HEAD(&pw_d->pis);
+> +		list_add_tail(&pcdev->pi[i].pw_d_node, &pw_d->pis);
+>  		pcdev->pi[i].pw_d = pw_d;
+>  	}
+>  
+> @@ -1068,7 +1061,7 @@ static int pse_register_pw_ds(struct pse_controller_dev *pcdev)
+>  		struct pse_power_domain *pw_d = pse_pi_take_pw_d(pcdev, i);
+>  
+>  		if (pw_d)
+> -			kref_put(&pw_d->refcnt, pse_pw_d_release_locked);
+> +			pse_pw_d_leave(pw_d, &pcdev->pi[i]);
+>  	}
+>  	mutex_unlock(&pse_pw_d_mutex);
+>  	return ret;
+> @@ -1962,7 +1955,7 @@ static int pse_pi_update_pw_budget(struct pse_controller_dev *pcdev, int id,
+>  	if (!pw_diff) {
+>  		goto out;
+>  	} else if (pw_diff > 0) {
+> -		ret = regulator_request_power_budget(pi->pw_d->supply, pw_diff);
+> +		ret = regulator_request_power_budget(pi->rdev->supply, pw_diff);
+>  		if (ret) {
+>  			NL_SET_ERR_MSG_FMT(extack,
+>  					   "PI %d: not enough power budget available",
+> @@ -1971,7 +1964,7 @@ static int pse_pi_update_pw_budget(struct pse_controller_dev *pcdev, int id,
+>  		}
+>  
+>  	} else {
+> -		regulator_free_power_budget(pi->pw_d->supply, -pw_diff);
+> +		regulator_free_power_budget(pi->rdev->supply, -pw_diff);
+>  	}
+>  	pi->pw_allocated_mW = pw_req;
+>  	*updated = true;
+> diff --git a/include/linux/pse-pd/pse.h b/include/linux/pse-pd/pse.h
+> index a917ac32dc0c..17738ffcd224 100644
+> --- a/include/linux/pse-pd/pse.h
+> +++ b/include/linux/pse-pd/pse.h
+> @@ -247,6 +247,7 @@ struct pse_pi_pairset {
+>   * @rdev: regulator represented by the PSE PI
+>   * @admin_state_enabled: PI enabled state
+>   * @pw_d: Power domain of the PSE PI
+> + * @pw_d_node: entry in the list of PIs that use @pw_d
+>   * @prio: Priority of the PSE PI. Used in static budget evaluation strategy
+>   * @isr_pd_detected: PSE PI detection status managed by the interruption
+>   *		     handler. This variable is relevant when the power enabled
+> @@ -261,6 +262,7 @@ struct pse_pi {
+>  	struct regulator_dev *rdev;
+>  	bool admin_state_enabled;
+>  	struct pse_power_domain *pw_d;
+> +	struct list_head pw_d_node;
+>  	int prio;
+>  	bool isr_pd_detected;
+>  	int pw_allocated_mW;
 > -- 
-> 2.56.GIT
+> 2.43.0
 > 
 > 
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
