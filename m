@@ -1,47 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.2
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792680520;
-	b=b/E+37EfYkBHJkVh+aikQ11JePKieSBvorzCFZiGt8sFVhtek6S402iVuqVPSgKwR7Tt
-	 2U7vRG1ElUbkPmo1CkVn6569DVYTj7u22mVqU2WIde7ewP+sSkqppZKNyUZ+CHP+Kv9hs
-	 9j2Q2VWbTc340iSpUOL5FVVf5kqQM2W7EuR05TdDbNTLOzHx3kXzHnQFmeUjL6fAX5JkL
-	 pIJFECbJzFQ225Ln2U1sUq4Ym2swOeM8LDg2BtSbNTXtdW94ADTqnUeW44Pj0xNb2Cltg
-	 EyxRoGNuig3oRw0azn8LL9E5fz+5csKqdDtBoB/s4DMP8LYFVMhbUfl/LhnZpn2O2kA==
+	t=1792680540;
+	b=3POpmnwi6e4BQHC8NKz0xqoHYlTVGJuDB5LooipWGmUL6ukOBE8cA3mlb98beEGEO/5C
+	 9TlnAXswdC+ZhsdMR7hKuDpfVcX5bg3GYJrQN9z3av+7kCRQNKGOa0i1WO5LgMbDJS5D2
+	 sY0w5Jp6muTPeeha4+tLDxCJL1C/J5YQNP50XsE1V/I/kZth9j0AjYqzpIV1bNQl/ihp4
+	 feXGfqXAhhZqmAwGXjkSd3HqFsi40rF35xULYM2wUpjF2fmGCgTTmaYzCnw2Sgs+PxSL5
+	 KeDw0mxHxghuPlmiV8bZ1x7D+uMZhl1tVLVK88YH/n6UgdXUcOrYGnN/ujVE5lV38Cw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792680520;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792680540;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
 	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=Cf99JJBQHA8reXbSZeA4i7nmGdCSdeC8pjhp03xP1tM=;
-	b=c6CS3h/GHx0saxsRNVBZO5nbNcMt6AEotuvBrCgn/GuEfbV3G6od0E9XA2C/2qmtw0xY
-	 mDVmARQykxuqU9qcu5tIZSU698v8p6E5iJ1FaoWGCDQ6PDaV1EMPNcjoaGPHq1+s/hFu0
-	 xECM9+bBe2atTb1hANjDrsRwGB7ELGAr6aDRU7eF70B2hmI7WgrWSApqbmAJAHgYkqiA+
-	 lB8G4CWlPe8tXmwGu54KE94BvQKhN8yKH9YQvGOJqx7f9DWIa/QQaFiT+DufU4Mc0LRYv
-	 tslTHp50jumaPEbSG0P5BzBK3Yuml12NdvEuN4u6dFoRn2tkYNtkdI1P+CRVOdMLpYQ==
+	bh=GKi/ofm15B962rnTZ6pz7sBCLjR4QVY0SWHqOf6JCUk=;
+	b=pFbprEADbFhYkvEUw2x+yxge+JnEJM0MWPqNdvuwzmCx1jANG6C61p4V+tY2dT1mTJ/V
+	 r0oKiiR5A/i5s6fT3pSU/LwgOahaBCLmafpYw9R3K3A9WZeQhRpvB6SHxvmELkOZqL8Rg
+	 7P8Vb2dE8jz2bS0Pog9u+hxD/B+tSm+ZJbfHC6abH1M5ITsk60r7hyBKTAdWQPlBJOlv4
+	 MYNiJ5QlM6IeLLIG9WqPBMilkVCJoYzhWb2gSOyKu3mgLIzVEoY0wDnyhVTZ59ajT/RiH
+	 jMLEvJUEOg1XjLRjXX5A2f0FQa8UdFziwwElFtv1Do3/U+zDyD2dskmHC34CaiK/7rA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=163.com;
 	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=i5q9b8eS;
-	arc=none smtp.remote-ip=220.197.31.4
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b="KD+/7fdb";
+	arc=none smtp.remote-ip=220.197.31.2
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474EF60A3831;
-	Thu, 22 Oct 2026 14:48:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 474EF60A3831
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8A760A380C;
+	Thu, 22 Oct 2026 14:48:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6E8A760A380C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=i5q9b8eS
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=KD+/7fdb
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Cf
-	99JJBQHA8reXbSZeA4i7nmGdCSdeC8pjhp03xP1tM=; b=i5q9b8eS/78aa99uuB
-	CULXrRmoRDKJQPh2oE1vH2IjkMyPMChbgb3iJOZXAunxA2c80rKmvOe44EXEQNDG
-	3C96MXyY7CDnXgHy3vTOSAN4Uoc/2GpG/iX08xc6QTP9y8YKF3gJ38t/WVpvc7Cn
-	NMoYseZ/9aSPrHlGiCApe/E+0=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=GK
+	i/ofm15B962rnTZ6pz7sBCLjR4QVY0SWHqOf6JCUk=; b=KD+/7fdbp5aIBfYShw
+	3yxXZMl0L0gIkBI3m+Qw/OnZSmQCt5DDi10KHEJlrie23YQLad0URPnJCWIEKRRU
+	iK5qx5FVqpdwagL3TcuhRjXlPecUE22Vc65bQyzu8o6pEx47YCXDS2W9RpMQ5MaO
+	Z3xaPFvs27feIoNKjG+Z3LsK4=
 Received: from shaos.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wDn31ceItpqHPYSCA--.13546S2;
-	Thu, 22 Oct 2026 22:47:59 +0800 (CST)
+	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wDn77w7ItpqP6HzBw--.6871S2;
+	Thu, 22 Oct 2026 22:48:28 +0800 (CST)
 From: shaos <shawnq1@163.com>
 To: jhs@mojatatu.com
 Cc: Jiri Pirko <jiri@resnulli.us>,
@@ -52,9 +52,9 @@ Cc: Jiri Pirko <jiri@resnulli.us>,
 	Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [BUG] net/sched: DualPI2 memory accounting underflows after TBF peek
-Date: Thu, 22 Oct 2026 14:47:58 +0000
-Message-Id: <20261022144758.65248-1-shawnq1@163.com>
+Subject: [BUG] net/sched: failed RTM_DELTCLASS clears binding and makes retry succeed
+Date: Thu, 22 Oct 2026 14:48:27 +0000
+Message-Id: <20261022144827.67604-1-shawnq1@163.com>
 X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,16 +66,16 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDn31ceItpqHPYSCA--.13546S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7uw1fKFW3AryUJF1UWFyUKFg_yoW8ZF13pF
-	9ay3yakw1YgFs5JF4vkFWxXwnYg395C3y5Gas5Xr18ua1rGw18ArWxKayYvF1xZr4kXa4r
-	ZFZF9a40vr4jkF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07josjbUUUUU=
-X-CM-SenderInfo: pvkd40jtr6il2tof0z/xtbC0B-g7mraIh-dOgAA3r
+X-CM-TRANSID:_____wDn77w7ItpqP6HzBw--.6871S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7ZrykCw1rCw48KFykXF17GFg_yoW8Cr1fpr
+	Z29as0ka4UtF15tan2kFW8X3WagFZakF47Ca4UX34DZa13uw1jkrWfK34Y9FW7ZrykCFWF
+	vw4Ygas2gF4rKaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jo7KsUUUUU=
+X-CM-SenderInfo: pvkd40jtr6il2tof0z/xtbCzxzo9mraIjzNPQAA3T
 
 Hello,
 
-A TBF parent peeks a DualPI2 child packet, causing DualPI2 to subtract its truesize while parking it in gso_skb. Reducing the DualPI2 memory limit drains the parked skb and subtracts its truesize again, wrapping the u32 memory_used counter.
+A class referenced by an HTB filter rejects RTM_DELTCLASS with -EBUSY, but __tc_ctl_tclass() unconditionally runs the reverse binding walk. The filter binding is cleared despite the failure, so an identical delete retry succeeds while the filter remains configured.
 
 HEAD commit:    c03c1a14507dfaf8b856c2608f9ac216021fc222
 git tree:       30fd2ef82912c26cf3a58ad0ba6afc375fa851ac
@@ -83,20 +83,18 @@ source version: Linux 7.3.0, local master
 compiler:       gcc 11.4.0, GNU ld 2.38
 
 console output:
-https://gist.githubusercontent.com/shaos26/6f3e3d3667401ad3325959e321928400/raw/c50aae5c021dee0b3ab97e76d260da585d1fde98/console-output.txt
+https://gist.githubusercontent.com/shaos26/6621bf128af29e1959e1040ab721e8e4/raw/7b5cbc2be7590c9773c8c1245c3e03649b10a21d/console-output.txt
 kernel config:
-https://gist.githubusercontent.com/shaos26/6f3e3d3667401ad3325959e321928400/raw/6b13332e308ed8ce37b28ea2d7c8fb50265a8b88/kernel-config.txt
+https://gist.githubusercontent.com/shaos26/6621bf128af29e1959e1040ab721e8e4/raw/28677abefb68039a69abe240b0770567dac89348/kernel-config.txt
 reproducer:
-https://gist.githubusercontent.com/shaos26/6f3e3d3667401ad3325959e321928400/raw/937e24e9b0dcfcd847a80e74ad2707f6b4781030/poc.c
-auxiliary reproducer (init):
-https://gist.githubusercontent.com/shaos26/6f3e3d3667401ad3325959e321928400/raw/17fb0deae08ba739b9e044cfd6c93be24eff2e6e/init
+https://gist.githubusercontent.com/shaos26/6621bf128af29e1959e1040ab721e8e4/raw/c69106d421daff43d46c200ae3e1d341cac56769/poc.sh
 
-Build the tested kernel with the attached configuration and CONFIG_NET_SCH_DUALPI2 and CONFIG_NET_SCH_TBF enabled. Run poc.c as a static /init in the attached minimal initramfs inside disposable QEMU; the test creates a user/network namespace and reports the counter through rtnetlink.
+Build the tested kernel with the attached configuration. Run poc.sh with iproute2 tc and CAP_NET_ADMIN in a disposable network namespace (for example unshare -Urn). It configures HTB, a bound basic filter and two identical class deletion requests.
 
 Impact and prerequisites:
-After the rejected/in-progress accounting state wraps, packets continue to fail with ENOBUFS even after restoring the original memory limit; replacing the qdisc is required. The test is reachable by a caller with CAP_NET_ADMIN in a user-created network namespace and is a namespace-local availability issue.
+A privileged network-namespace administrator receives inconsistent control-plane results and can remove a class through a request that first reported failure. Independent HFSC and HTB reproductions exercise the same generic sch_api.c path; no privilege escalation or memory-safety issue is shown.
 
-Validation: Two exact-revision fresh boots reproduced the same counter wrap and persistent enqueue failures; no-drain and close accounting controls passed.
+Validation: Repeated fresh boots showed first delete -EBUSY and second delete success. A source-patched control kept both requests at -EBUSY; no-filter and explicit-unbind controls passed.
 
 Thanks,
 
