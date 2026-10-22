@@ -1,58 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792671687;
-	b=iqnuZsYjTW1waXQVDYJKYr9Y2kj38jah4ED4Nb2cAfzJ6oU5yFiDL7qS8fvWeIH+V8HE
-	 35nHCM1y6yhHyoEzW4dgiM4ZjQtDnDrnEOEGX7hpBdeF14pFXURW17/kyvXCTn4CprgZ7
-	 t8EvuSAqFxhUld5l0dzN/XBy15C0fA1yZ/dixkSQCYEDGibw2v1Sr0ppmEyVG2Va6EnIo
-	 1Km9mJrP+rFhuhevGHRps9cVENDTEYoEp7g+lDsuHjANFy4RZv6OlhEanndKabAa/pfWU
-	 3Qp42bNbL/amjdW9Xcmcd9RaxIyxjDyn39U8AWjU54jQ/Ur6i4QS29B041Da9Kns4zQ==
+	t=1792671762;
+	b=AgKJzERbiPZ7Yyo6pgTILWvVMrzGNK4cQkTBfqjQS+6+saR9mXNFYF99FrzhSVpXXPce
+	 U44rnYl+L+hCbGD/wxUEznPeQjeGpwsgkxWbnPSe8coCQoHz6fnxaZP4MwlNK7EuKX/FR
+	 QQjHrrr60EzptYOfo6Rx94gvEwuKSQEj2fQNjdoex0gf2LmjMsQwkZtBUob8anZC4MXzo
+	 7cxdEpo6PZScsZd9bh0OD81OMTc5L5Z1mP3ts71gUQxV3VnzJVwTVWHguN9KfZkoEjP4D
+	 ENl8Iv4qAh5S/lDwq1fT5gx+O40qbtpTz/NKezgsqtfcsEHK0QRXYl5+3Mwi7oJHTSw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792671687;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-Last-TLS-Session-Version;
-	bh=1VTsfeIcf9nFY7Rv1wMZ4skGRa0nTl0ky4r8SPGR3hc=;
-	b=UjpXRNEDqhYtE4n/VdqhQuwy3t3lAF2d+bUNKnSiT2Bv2mdjA31fizWLIRJK/dujWRBY
-	 6im0G6ZBvB6rBjbimKC5cbIN6OFqAlM5Nxd3ihKiJ5JmqQ2y+1BZwRSUUkWIPxADHxopc
-	 XrgvZUFJVu4scRbtmvddvYVmWL0sr4D67tkb1wE+K0VEKReoS50UF3j8j1EOdzgyl25gh
-	 tfsW6DRto8PwLg7qIOgV1SahZOsgUjlEidJmtqkyY9WfVs650fpwETgKs01xjsUR/aWWj
-	 DeO5KqT1TrWAQi/FnsEvjUTqkRQYr941iNGZ8LFX6KvccrrceLfvIgKVjpSZVKyzUKw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792671762;
+	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:
+	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
+	 MIME-Version:X-ThreadId:Date:From:To:Cc:Message-Id:In-Reply-To:
+	 References:Subject:Content-Type:Content-Transfer-Encoding;
+	bh=lL31NV31uswmFcMG4uuUkHmQjZyahNmfA5NSd7S2PCE=;
+	b=coaUzpBHmATN4kXK+eLSFErLRlHzCyYggv4c7xQlKUocpyuvPzoE8bE8ZWi8KNqAgpjP
+	 8G0PcANtgpybrMAWALXd0E5DCHY2xkIbBS/53x7V/elC6f31hbkf1A6dvyU2xISKMKw2T
+	 n732fnlT40NpBnr+K64AOXbkoS11dZF34YP47DkT/D4cazANROmw4dR34mSS03IAaxCX3
+	 kbLHgTLpks8TJAXxK6m/ybriyiE79+hJ9SX2FuploIw2UK/ykybcEkBWVnOk7K38ZysX6
+	 EZ+wQ1dOv5ePU4rBGy5had3DUlWiwEEH6OvwHinBS6y7OTZV1YG4qGsPruMWaQ6t6OA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b="v/vkvFg4";
-	arc=none smtp.remote-ip=185.171.202.116
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Bt0jWbiz;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE62606A31B
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 12:21:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5DE62606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F93606A332;
+	Thu, 22 Oct 2026 12:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=v/vkvFg4
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id E594EC58476;
-	Thu, 22 Oct 2026 12:22:21 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8B7D560360;
-	Thu, 22 Oct 2026 12:21:22 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 90EEF10328EFA;
-	Thu, 22 Oct 2026 14:21:13 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1792671677; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=1VTsfeIcf9nFY7Rv1wMZ4skGRa0nTl0ky4r8SPGR3hc=;
-	b=v/vkvFg4cURUfgmRhuPtPSwfjiFpjkuw/55sY2/cT/mPqpRRDFwnTTcLby7SnO5yw+ndnW
-	C/OlluRS+DNtb5VLK5nYMRBZjmDV1551uu8bp9JDEx0BV2fKSdNUJEerDT/o9FcxBJ+vtc
-	aJuUeGwbcJF/Z/EVl78l1ibzw7clkB4RrhX2LEvfEzWxhxkLvIvcdDTLoBjINUrVI4yDN2
-	brY3FgViNXRNfFhog/jnZNCTMltztu/B9jXqLqS20c8RIjAppp0BJ0HwELi1owiAsLanKV
-	EC5cOIIgG9OmNEGko1YB/z1B/yd+gRjhv/Klu//uJ90KUgCcx3U0Yzuz2asVdQ==
-Message-ID: <3a9f47f0-884a-49c0-a0a3-d68ea8bdf015@bootlin.com>
-Date: Thu, 22 Oct 2026 14:21:12 +0200
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Bt0jWbiz
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 684B61F000C7;
+	Thu, 22 Oct 2026 12:22:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792671761;
+	bh=lL31NV31uswmFcMG4uuUkHmQjZyahNmfA5NSd7S2PCE=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=Bt0jWbizqx66731kLA6kosw5my+SlsB/HO8xOpeR3vZEp39NxsXpl8DESXCe7H9Hn
+	 JTaeZkqkkt69uyt7SwCyzy88aEo/W2K8nbpsC8cCd/j662Xsn48Xric4mMspRIqBJz
+	 63Tb6hkvaNNKQEXghIMoPUHVmTTQ3G1Gfk60jwr6H88obzgjk2UL+cXGzCihJqGjZo
+	 TKKgLOCqwUUBLJTnEyYvidFFqrUQ6FuIkolNyumv96enHU+5CiIGxiI5u+V7ZH0N+3
+	 oA4/nN5M77GBybn6yacx8sHvnIyBsv3ijZwV4B3PabBCu5pzrgzs/lCvNFFy2c7Spo
+	 MBVV4I01ymxEw==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id A6318F40066;
+	Thu, 22 Oct 2026 08:22:40 -0400 (EDT)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Thu, 22 Oct 2026 08:22:40 -0400
+X-ME-Sender: <xms:EADaaqo4P5HBSsoNBgXPIudVHkM40F8o3QPUBTZrV9j6H6BwiCvnmA>
+    <xme:EADaajewGikZPo64jHwVqJ-bfg96T1gskx5ifsdUTaHBtkpiXCh6IIRhOlpjkw2VA
+    kmx0_u5a0RqL_HumYw1QTN5uTk8rZk7g2ZY8daAqiGyai4lCFOb0dSg>
+X-ME-Proxy-Cause: dmFkZTE3Fpze23TlqyVGyIy3s5PLt5OWXDy2UHCpyIE5k6lPzEIPomiBsHPATLF2K1H1Hd
+    18SnlC+P96utND4XNW8QhOm18ZzRAcjg8CyAXuQhZLsHbQ5l3RS7x9D+rBYGBsBZRdsWH8
+    /+InIJuZqt1on3Keyt0g6cFzrK977OTPXZycnLgTK373M5uaM1IcDeEWvQwuwlH1tPyN1o
+    rNlw4u5yzp6BQEF7SSFFvkzqOPB3mfCLS/E1MqC5N0eYaYfKctZl0HDbpSP77OyLKNIEob
+    c7X/iKNQ6EJqB6zwrNTuXHpe3mgFLrmI6sZ5tGQWW13WZBnieG1IiBHwaNoHR6t+pcRMb2
+    8hVOp2+EAczRf/hbBvVV1LPK2dJW0NWDpkU9oqE7do8UQWYqU0LHH0mMGP51K+J5IjF5Fv
+    MuTQh5CIOJ7HWWu8Bia5oY5cwyc6zWJV2lCDA348r12KL90wh+ja+INtnB90hkZSNZ0Hco
+    TOk5hvFohtP/ulks6Af13LFag2HMpfCQNUWHv4jG4tXXAnXeRnVQEseRUxzdBd28KB2KEg
+    axArrD03vbz7QQhRxusooSQ55fCt78F8sqSV5tODL24PEhsGxxsUXyDxTFw9LKuayY+veM
+    kCb6QdJsMtsttBYRbNmUbxFAc+8h2qXeJ/Gq6sb88eUlajTO+FUOQJzedK4A
+X-ME-Proxy: <xmx:EADaapN_PmoHOmf9UNR0fY0WRns62xO1e8mq0kzAPS7PqX21sUoT8A>
+    <xmx:EADaatigbKtdPJSrw-bQE739vn6sABgaIyoB5B4dAYWu8niEvwWnhg>
+    <xmx:EADaangibXOc70IRgrN3AyhJopla7ssf5dpdRd09ASTFNgUwAdn5wg>
+    <xmx:EADaasJODjQ5vnn1TtRk15rwv2WTpd3IVpEYK0Xr2ELx20UxP6UE-w>
+    <xmx:EADaamniSqU9BHobPa5tOa0mgiLLjABXDk3vl6Wh6mYR6ORTlUf3tHEq>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 84B50782738; Thu, 22 Oct 2026 08:22:40 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,55 +77,68 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Betterbird (Linux)
-Subject: Re: [PATCH net v2] net: pse-pd: don't enable a PI again while
- disabling it
-To: netdev-bot+sashiko@kernel.org, ross@r-sc.ca
-Cc: netdev@vger.kernel.org, github@szelinsky.de, o.rempel@pengutronix.de,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, linux-kernel@vger.kernel.org
-References: <20261019220835.613-1-ross@r-sc.ca>
- <179266373570.3135.5306089916848589884@kernel.org>
-From: Kory Maincent <kory.maincent@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <179266373570.3135.5306089916848589884@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-ThreadId: Ag9yIq03xO8V
+Date: Thu, 22 Oct 2026 08:22:20 -0400
+From: "Chuck Lever" <cel@kernel.org>
+To: "Giorgi Kobakhia" <gkobakhi@asu.edu>, "Jeff Layton" <jlayton@kernel.org>
+Cc: NeilBrown <neil@brown.name>, "Olga Kornievskaia" <okorniev@redhat.com>,
+ "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>,
+ "Xiang Mei" <xmei5@asu.edu>, linux-nfs@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Message-Id: <d8952be8-7ee8-4c57-aea3-9f19011b377f@app.fastmail.com>
+In-Reply-To: <20261021203817.3898293-1-gkobakhi@asu.edu>
+References: <20261021203817.3898293-1-gkobakhi@asu.edu>
+Subject: Re: [PATCH] svcrdma: bound check rc_curpage in svc_rdma_build_read_segment
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
 
 
-On 10/22/26 12:08, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 1 · Medium: 0 (4) · Low: 0
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [High] The fix is incomplete: the PI being disabled is still enabled
->    again, and the power budget still leaks, on the priority-eviction path.
-> 
-> Pre-existing issues:
-> - [Medium] The priority cut-off in pse_pw_d_retry_power_delivery()
->    (drivers/net/pse-pd/pse_core.c) never takes effect.
+On Wed, Oct 21, 2026, at 4:38 PM, Giorgi Kobakhia wrote:
+> The existing guard in the end of loop is not enough for bounding
+> rc_curpage, because it only checks if some part of the chunk goes beyond
+> the rq_maxpages.
+>
+>     if (len && ((head->rc_curpage + 1) > rqstp->rq_maxpages))
+> 	goto out_put;
+>
+> If the chunk exactly fills up the pages, then len is 0, guard is skipped
+> and the next chunk makes head->rc_curpage go over rq_maxpages.
+>
+> Commit 81381d1a90de ("svcrdma: Adjust the number of entries in
+> svc_rdma_recv_ctxt::rc_pages") made OOB accessible, since it
+> shrunk the rc_pages array size to rc_maxpages.
+>
+> Commit d1bea0ce35b6 ("svcrdma: bound check rq_pages index in inline
+> path") added a loop-top "rc_curpage >= rq_maxpages" guard in nearby
+> function svc_rdma_copy_inline_range(). The same check would guard it in
+> svc_rdma_build_read_segment().
+>
+> OOB write is triggered in svc_rdma_process_read_list():
+>
+>  BUG: KASAN: slab-out-of-bounds in svc_rdma_process_read_list
+>         (svc_rdma_rw.c:1148 svc_rdma_rw.c:1197)
+>  Write of size 8
+>
+>  Call Trace:
+>   svc_rdma_process_read_list (svc_rdma_rw.c:1148 svc_rdma_rw.c:1197)
+>   svc_rdma_recvfrom (net/sunrpc/xprtrdma/svc_rdma_recvfrom.c:1022)
+>   svc_recv (net/sunrpc/svc_xprt.c:870 net/sunrpc/svc_xprt.c:968)
+>   nfsd (fs/nfsd/nfssvc.c:919)
+>
+> Add bound check for rc_curpage in the beginning of the loop.
+>
+> Fixes: 81381d1a90de ("svcrdma: Adjust the number of entries in 
+> svc_rdma_recv_ctxt::rc_pages")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Tested-by: Xiang Mei <xmei5@asu.edu>
+> Signed-off-by: Giorgi Kobakhia <gkobakhi@asu.edu>
 
-Can you take a look at the above issues?
-The other ones are currently in discussion with Kyle due to similar 
-report he faced on his series.
+Commit 4e84914d70a0 "svcrdma: account for inline bytes in Read chunk page
+budget" in the nfsd-testing branch already carries this guard and addresses
+the same KASAN report. Thanks for the independent confirmation.
 
-> - [Medium] pse_set_config_isr() (drivers/net/pse-pd/pse_core.c line 1211)
->    tests `notifs & PSE_BUDGET_EVAL_STRAT_DYNAMIC`.
-> - [Medium] pse_pi_disable() (drivers/net/pse-pd/pse_core.c lines 701-719)
->    always returns 0, even when _pse_pi_disable() fails (for example an…
-> - [Medium] In the disconnection branch of pse_set_config_isr()
->    (drivers/net/pse-pd/pse_core.c lines 1233-1243), isr_pd_detected is…
-> -- 
-Köry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
 
+-- 
+Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
