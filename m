@@ -1,100 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.161.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792691560;
-	b=PnilnJ0OxMivm3aQ3OItux/w/aCaQ4I3i57BF1+TKmqyHczUz8c/MwzTtqybANo1GKmG
-	 KY4/JEiwbFQq+tH1npISsipHIlgNkysJYNFgvfUTgqQdOpjftJbTdC6VjGtVKMR6ic39w
-	 1lHO9AV7fczbYXG3+KW6HEbEzc0TUqEn/ZaFJ2BlGH75lPLUArRZYHQZ1vtZqgybclec8
-	 QE3yLAg2+DX0sc+AINJpD4nzKTXPLYE5ojYrhs3HstXiNuoWcOerHUkR4eLl72a9f6dqY
-	 WPx4cucLwdMdR6Pf6O9Av6a7yClei718quJyzKTsXeHUavF+nDMOxwgL/27AIS5N1xQ==
+	t=1792691678;
+	b=RQ8plcPlcvm0nvYYyIW8OSRnLHzs3MkGqhUlhA2tdr3HC5srtYUgKaMwewNv5whJIzrR
+	 qrjBybRJ2QA+rvRrYwTe1cR00rBxBQTXlx6H9YXKd1B1VRBk1YFgbyYd5uSUmftjLyY5r
+	 9nNdUCqQN9WzmzPPVR02i7qfZ8BiCtCzXM+E/9urP6fpzJV+WFfyBjzzUhutaKmFImDkc
+	 0OZSuRgOAcc5Vkee67HtKPHhhGQ0UQPBCpoqvqMP+GCTmClooAoD+xCCqrw4sKBgq9Wz3
+	 e1Pnzc2+mhNX2s/umePsHLIUWoh8fADd+C7s3cc9VCMK2NaXRvMwtyOyZqfnL/JPtNA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792691560;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792691678;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=MqVL75eRfY5RlQzwz0AzqlWd4VvivqbuVKbFrmfl20I=;
-	b=GhYqgbqfVLxygaGueNIZA+ME3HZpKXHMp766E0sZMJu7XxG23pCaUkWDOAWRmKOcgzZT
-	 nI5eHbP07eU6u0Yev7jkLyYdysvkIuhJMJPxbKWk/fvYoBB+t3mW8qtyQU6vmfiV/RtjS
-	 1A3813fIIBKVWOJ6bGi9AdSyxaEhArY2jmoXyyKgYUeefpWC0RarmSBk47mINlqdmyW+y
-	 lfLVzZ18ItY6KYmS81reZCneO+/wEACeAHp1vu2QiubKP7XntiYcb8bBIn+o0MquxcQ4U
-	 NuNXav8uE8Bathbt4ziDknnUrPbBgp0MxT6CDsW19MQM+vdsePeB7Do/EGFtwJNC03A==
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
+	 In-Reply-To;
+	bh=e2YlE3a8sEe/lSSTI4eekpIROK5ojeg1ho/PymbBpoI=;
+	b=ed3Xzdq+1mbqlQVRBG9aEGSPHpVLg72W4mBpEPFILUEHqrdb/YFl59oP+62EKwniFIgA
+	 6Y+0YjmS3LlxIjuQ9lS5HOZYV5BPUtkV8ODbTml3w0ju24RrYPkKZ7QkRJtIVsgb5Se1E
+	 7SRTUh0OzFzqNdw0QHCTQAiYGv5ii0gv0vlfSS98Y/m+KD8SwlcXuSMcPfD5bg7FwbysY
+	 zKf1mN10aTe27Cgdxda6RoLzVayrKheGPL7yJf9auyFSBNqj/QfR9NyPeIPT2KAdutsK4
+	 FnbDiBiU6g7nYTAZXpJTCLv3YD29pzwSGffYTshfUmnUZ7oJ21qZRTHnedtmUQNI1Yg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=cloudflare.com;
 	spf=pass smtp.mailfrom=cloudflare.com;
-	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=UkDpS5DW;
-	arc=none smtp.remote-ip=209.85.161.53
-Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
+	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=H1a4b2OF;
+	arc=none smtp.remote-ip=209.85.160.48
+Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2AC606A31E
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:52:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2C2AC606A31E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A23DA606A32E
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:54:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A23DA606A32E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=UkDpS5DW
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-6dd4f3f696aso40934eaf.1
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:52:39 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=H1a4b2OF
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-4949f037131so51368fac.3
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:54:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1792691559; x=1793296359; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=MqVL75eRfY5RlQzwz0AzqlWd4VvivqbuVKbFrmfl20I=;
-        b=UkDpS5DW48bKXi+jrJWuYzMmAZuxWc0wOjmAd8BabPJYe7NGYuMnLRy3fCZ1CP2mLj
-         n3Nk0lGpD7bfske95Tsd8xKppMymoSYBsZkVa4avEuLUYSejOWmoscSI9pfQCDnTcwbY
-         K6vIqE3u6cTXaFYGtTaw4EKMu++9UcJXLrwn8Jz9A9ZVLCd9ZPmKsmQIDs0jxhRyfq7J
-         5V8y5HmCBFvSGyVe276F1ys5xp3/1A5fcUXtGHENjSj5EvSwVxnsKLK5YtM4nWA/lUg/
-         /dCgzLaAyAanc3y8pBQzBIbGCiie0hTmEMISx1t6qOdTwVHsfS12OZic8o3fXvx1YqDp
-         va/w==
+        d=cloudflare.com; s=google09082023; t=1792691676; x=1793296476; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=e2YlE3a8sEe/lSSTI4eekpIROK5ojeg1ho/PymbBpoI=;
+        b=H1a4b2OFFYCRiw1h6natqv6aY2lzZhUVieVGIIhqHFof6GnEFEtfp2YPVWsQeXX6jk
+         GQe3pCZw1WGUD5S7pGM1rnS1Z5c8e6wbb2nSJkaBzCscpjcnAnYmv0qA8sRoM1EeFsa6
+         zqiXcxt6q329RrmfWzo0qa5J55GctjQGD8zIKKADsSuonWRMWvIO9X6S5PBIkFIPf5Az
+         LGU3FEhUi/q7MlnIBS/6qZ4w2Hbca28bol8/KiOyskrZ4/fUU62c4r9OZVPz7uK4ZYnL
+         Fxu1JH5uHm9jG9mHQ9+oJX8B9JP243UOpWRJvWL9com0vP6j7Yj42dRDlW78bwSveMJM
+         e1VA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792691559; x=1793296359;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MqVL75eRfY5RlQzwz0AzqlWd4VvivqbuVKbFrmfl20I=;
-        b=MWLiLMiHBY91ykCJ4m0zTCo3hkMgievmsPl/oyBtCiAoXzZR7Ey9ERij1NcEaxx6u8
-         /wRTHlPSjR5Jvq9E6dGYHrb99TikPNFKuMa09qL6wQnwGCkP39fry7law5aih5FmkXRO
-         mrr/kKfpWJvg6Dh9UC9y/3TACK6UC7SLsVA5u+RL+hg23rS1Bxd1Pg2ft1S0m37JbISI
-         Cvn9YF3m57gmf8z1kIA1cPGpQUJUmZrbfMVKws1BzScesnc3NkcPL+8Rmp9hKZFaetuo
-         WWoFLItteY+Sw8lIU2uGYckUCwoV5bKPC7R4kgGhrDzoUcOVsXTcwkE5sIIdOAdTVs2b
-         a+1Q==
-X-Forwarded-Encrypted: i=1; AKwUvBwC7C14ksnC2tSypbwlY3BizuJ/5D/PN0K68rL5oPYE7XYSFEvjlU0DUZnriJQEH0qJPPSkgew=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL6m8MR0mbmnKZWbYvtZxVC4mz0UYbHg4eiaBlzNq5ouRAKHddc
-	9uaou90jXlhkoOxukWf1vQbS7PHlIzMolLCHZXbEt+do4uQM+hbVxPySV9913byUcyQ=
-X-Gm-Gg: AYBFou0Ge/qQd8nGbR/7xHcJ4Ft8/eCQAK6y/CmASLD7GEeDx2vkEX/vfPw2yGE1RCT
-	kzrwu+/k9Xn7dCZ44uBAauFDtSSciMJ4tfNV6bcJuVP00jo+bQIsYX7V6GyCdCSWJyM4etsTOS7
-	+DINMcs0GIGlYZp/wTWSqu3adl9rrUqeC5t9/PvaX7P0olhfvkSImA7HnwngMAoHzRdyysMlfb2
-	Vt80IesENT+S4oObsWZCMztA8NsuX5+9WIhGTkFShitem1up1GbwlMHRhVNzqOIjWpDIcmydfIG
-	WTlQemVlU0/vq0LABOAUvn+NHzlnrpMzxY2bYZLaFQgtcJRvSfYURe9GWWvh97A/Gn2u/L/wN+0
-	FqhCgNPx/D3FJU4zQrITaDFt9Ro9KfozN3m9qUjG8WHvny22eK+YvryHTH16JNb9WXjp7acls5E
-	N+onmLe7DDg3Guzkw9YnMn+hGbNBE9wo7BGn7eYSfZeKIPZaoUVVFdbHC9hiRWSTWpWi3cdhndy
-	qXE0ZmJW3GMESeczFln8Ha0Inx3BvdILbKyNCujAyfIv80Gdolj9+0pZsMO
-X-Received: by 2002:a05:6820:c445:20b0:6de:3bb0:aa41 with SMTP id 006d021491bc7-70b88adf4d6mr60495eaf.87.1792691558911;
-        Thu, 22 Oct 2026 10:52:38 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792691676; x=1793296476;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=e2YlE3a8sEe/lSSTI4eekpIROK5ojeg1ho/PymbBpoI=;
+        b=JNEfWXRV35jdP/Ynbz3FCXFzm0SUBZ86UG/i/09FD4pwnruULDxwCLuXoJSu8jgHj1
+         4piJn8QMDf8hYoaOzbyo9QftrBmVIJdilgVbu7x6brOM7LAOEa5AVoJ5pQQGksySl1na
+         MpZmFh9CgbrfLgHISLpiJk4/Bp8LYYNLgcT0DUaK+SQc+xAjJHGgc+8dKjjTmAn7nnEW
+         dM86e1/X3kN7mhKmgVYx2UQ3qnRB9ygPnD9hVJGZPUMG7dCBm00jQyEbcAFBmmTWWaS/
+         Vh+ufQED9HfhoP/U33rlJ05ILdVfSuZDAMf34qF8XQr4UB/14HCTWMFbeMc67fdojO+H
+         psWg==
+X-Forwarded-Encrypted: i=1; AKwUvBzoVAbNtWXi7+f6+gobBIlcXh5hlL8GMo0thmKST2mg2t2D9LHWPiUYDf4a9mmEMvx5KYVBv6o=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLz5NwJdTD2w++TWvwfQD9on3KWk7V3SpThufK+8+/tOD3FtvnD
+	NKjAawJneyA456gP0or9TJDDbbSjb6EYSFdttc3xWk/GlvwyMlhHp/zbAWQADXyIaiw=
+X-Gm-Gg: AYBFou0zAum63f5buS9dFjyLgXVDBZz8JZaaMGEFQ9ZxrsNvLXk5Q/KmBjITcQDfu2+
+	7E44ARvB+Vb0wDEn14bZnWJ8APwhTKz6YDykqNUYw7aI12MZMEHQ9hKkiy4RMjlFBi/P3SivyEK
+	5w73Ory/A64JqKEEY8La0V0DgdfPAWuSiNLhrbBUqNggwz1uBOz1dbL259JJEdnVgJqjPDidKOb
+	ExD+fqOms0Z5RhmVlc9VkDigjVQlQDYt5QkOTlcaLEyokdKXBUGfGGAj18wIge/x7767KJOxxib
+	nD3kpAzHWauoTtnpdgPKOz0nC6fJwp6zBlWWMLLPhZZUfnZ0+x+/u7C1gNAw1SksZo3B7NAThN8
+	A7O2STVSrrg8IipoynaBoPny5bFKWbgLQuBeOJk/KfCehmCgHpp5tuDOk+t5dJridUHPiojfzbV
+	5AKtXT0UpU+feFCGK58vCaMzXyoo8jVGmDbFP75rLu5hAQs8XqvrVl3X56dTSoJ45OtPhHeyNm4
+	pRTNjeK/4KUle6+hALTu2dMPGE52z+WvLhWFIQ=
+X-Received: by 2002:a05:6870:8a29:b0:4a7:4730:affa with SMTP id 586e51a60fabf-4a7dc1d4bf8mr3955050fac.24.1792691676439;
+        Thu, 22 Oct 2026 10:54:36 -0700 (PDT)
 Received: from 20HS2G4 ([2a09:bac6:bf21:3737::580:4b])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-709f34eeb5csm3492957eaf.0.2026.10.22.10.52.37
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4a7d61dc6ddsm5070888fac.13.2026.10.22.10.54.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 10:52:38 -0700 (PDT)
-Date: Thu, 22 Oct 2026 12:52:36 -0500
+        Thu, 22 Oct 2026 10:54:35 -0700 (PDT)
+Date: Thu, 22 Oct 2026 12:54:33 -0500
 From: Chris Arges <carges@cloudflare.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org, 
-	=?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, Phil Sutter <phil@nwl.cc>, Jason Wang <jasowangio@gmail.com>, 
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, 
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
+	Phil Sutter <phil@nwl.cc>, Jason Wang <jasowangio@gmail.com>, 
 	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
 	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
 	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, virtualization@lists.linux.dev, 
-	Max Krasnyansky <maxk@qualcomm.com>, Rusty Russell <rusty@rustcorp.com.au>, 
-	Paulos Yibelo <habte.yibelo@gmail.com>
-Subject: Re: [PATCH net v5 4/7] net: resolve uncommon partial checksums at
- ingress
-Message-ID: <atpIiwcUlH5ttBb6@20HS2G4>
+	Max Krasnyansky <maxk@qualcomm.com>, Rusty Russell <rusty@rustcorp.com.au>
+Subject: Re: [PATCH net v5 0/7] more virtio-net csum hardening
+Message-ID: <atpNckkhSp0aq2Hw@20HS2G4>
 References: <cover.v5.git.mst@redhat.com>
- <342bf5331e12b2e5b940510293233bb8bce46127.1792668082.git.mst@redhat.com>
- <willemdebruijn.kernel.2987fc5710162@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,478 +102,211 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <willemdebruijn.kernel.2987fc5710162@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <cover.v5.git.mst@redhat.com>
 
-On 2026-10-22 10:52:25, Willem de Bruijn wrote:
-> Michael S. Tsirkin wrote:
-> > As reported first by Paulos Yibelo <habte.yibelo@gmail.com> (after which
-> > others, credited below, found more ways the bug can affect users) a
-> > virtio net header can place CHECKSUM_PARTIAL at any in-packet offset.
-> > If that state is retained, later checksum completion can modify the
-> > packet after protocol processing has made decisions from it.
-> > 
-> > Let's fix that: let's validate csum_start and csum_offset and only keep
-> > CHECKSUM_PARTIAL when csum_start and csum_offset match a parsed TCP or
-> > UDP header, while handling VLAN headers, IPv4 options and IPv6 extension
-> > headers.  Complete other non-GSO checksums immediately, before any
-> > protocol processing runs.
-> > 
-> > We can't easily "complete the checksum" for GSO we don't recognize - GSO
-> > assumes knowledge of the protocol. We could segment ignoring the
-> > checksum then do whatever csum_start and csum_offset say, but that
-> > seems like an overkill for something that shouldn't happen.
-> > 
-> > There's some risk here:
-> > - non-gso packets which can't be parsed get checksum calculated in
-> >   software, adding performance overhead
-> > - gso packets which can't be parsed get dropped
-> > 
-> > Note that for zero copy, userspace can change the data after the
-> > checksum has been calculated.  This is fundamental to zero copy by
-> > design, and the only outcome is a bad checksum and a packet drop.
-> > 
-> > To mitigate the risks, the following patch will add a sysctl knob to
-> > bypass the resolution. This is reasonable if the setup is such that
-> > there is no protocol processing at all.
-> > 
-> > UDP tunnel headers get the same handling on the inner header.
-> > 
-> > Packets without VIRTIO_NET_HDR_F_NEEDS_CSUM are unaffected.
-> > 
-> > Reported-by: Paulos Yibelo <habte.yibelo@gmail.com>
-> > Reported-by: Chris Arges <carges@cloudflare.com>
-> > Tested-by: Chris Arges <carges@cloudflare.com>
-> > Fixes: f43798c27684 ("tun: Allow GSO using virtio_net_hdr")
-> > Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > ---
-> > 
-> > Notes (changelog):
-> >     v4->v5:
-> >         caller changes moved to "account for ingress-resolved
-> >         virtio net hdr state" (Willem de Bruijn)
-> >         a packet too small to be GSO: ignore the tunnel GSO request,
-> >         complete wild metadata in place (sashiko)
-> >         document the zero copy interaction (sashiko)
-> >         honor a preset skb->protocol on ethernet: the stack uses it,
-> >         except on loopback which re-parses the frame (sashiko)
-> > 
-> >  include/linux/virtio_net.h | 283 ++++++++++++++++++++++++++++++++++++-
-> >  1 file changed, 279 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-> > index 013c6c7e2dea..52852a33a2db 100644
-> > --- a/include/linux/virtio_net.h
-> > +++ b/include/linux/virtio_net.h
-> > @@ -5,7 +5,11 @@
-> >  #include <linux/if_vlan.h>
-> >  #include <linux/ip.h>
-> >  #include <linux/ipv6.h>
-> > +#include <linux/netdevice.h>
-> >  #include <linux/udp.h>
-> > +#include <net/gso.h>
-> > +#include <net/ip.h>
-> > +#include <net/ipv6.h>
-> >  #include <net/tcp.h>
-> >  #include <uapi/linux/tcp.h>
-> >  #include <uapi/linux/virtio_net.h>
-> > @@ -48,6 +52,205 @@ static inline int virtio_net_hdr_set_proto(struct sk_buff *skb,
-> >  	return 0;
-> >  }
-> >  
-> > +/* TODO: nothing virtio specific here, move to ip.h */
-> > +
-> > +/*
-> > + * Pull and minimally validate the IPv4 header at @nhoff.
-> > + * Returns the header and stores the transport header offset in
-> > + * @thoff, or NULL if truncated or malformed.  Only the fixed header
-> > + * is guaranteed linear; callers that need the options or the
-> > + * transport header must pull further.
-> > + */
-> > +static inline struct iphdr *virtio_net_ip4_parse(struct sk_buff *skb,
-> > +						  unsigned int nhoff,
-> > +						  unsigned int *thoff)
-> > +{
-> > +	struct iphdr *iph;
-> > +
-> > +	if (!pskb_may_pull(skb, nhoff + sizeof(struct iphdr)))
-> > +		return NULL;
-> > +
-> > +	iph = (struct iphdr *)(skb->data + nhoff);
-> > +	if (iph->version != 4 ||
-> > +	    iph->ihl < sizeof(struct iphdr) / sizeof(u32))
-> > +		return NULL;
-> > +
+On 2026-10-22 08:57:54, Michael S. Tsirkin wrote:
+> Okay this seems to be converging.... But sashiko did find some issues I
+> thought are best fixed. Specifically I thought of a better way to handle
+> short gso in a tunnel - just clear tunnel gso! As a side effect we now
+> fix up the checksum for these dodgy packets like we did before, instead
+> of a drop. Good. And more false positives that prompted me to write a
+> bit more comments. So here goes.
 > 
-> Pulling again if ihl != 0 should probably have been here too.
+> Apologies for reposting so frequently, I know netdev bot will be unhappy
+> with that.  But Paulos's report made a lot of publicity, there is a lot
+> of people looking into this, so I feel there's value in defending
+> against all this class of issues sooner rather than later.
 > 
-> Else we have to verify that all callers safely pull. Note that
-> iph will become stale after another pull.
-> 
-> > +	*thoff = nhoff + iph->ihl * sizeof(u32);
-> > +	return iph;
-> > +}
-> > +
-> > +/* Where does the L3 header start, and what protocol is it?
-> > + * Handles Ethernet and VLAN headers; other devices use the
-> > + * network header offset the caller set up.
-> > + */
-> > +static inline bool
-> > +virtio_net_l3_start(struct sk_buff *skb, int *nhoff, __be16 *proto)
-> > +{
-> > +	/* skb->dev is only guaranteed to be set since 44378d02c5aa
-> > +	 * ("net: always dissect GSO packets in
-> > +	 * __virtio_net_hdr_to_skb()"), do not crash when it is not.
-> > +	 */
-> > +	if (WARN_ON_ONCE(!skb->dev))
-> > +		return false;
-> > +
-> > +	/* A preset protocol is what the stack will use, except on
-> > +	 * loopback which re-parses the frame: loopback_xmit() calls
-> > +	 * eth_type_trans() on it.
-> > +	 */
-> > +	if (skb->dev->type == ARPHRD_ETHER ||
-> > +	    skb->dev->type == ARPHRD_LOOPBACK) {
-> > +		if (!pskb_may_pull(skb, ETH_HLEN))
-> > +			return false;
-> > +		*nhoff = ETH_HLEN;
-> > +		*proto = skb->protocol;
-> 
-> Why this change now?
-> 
-> skb->protocol cannot be trusted (to be consistent with actual packet
-> content).
-> 
-> Express goal is to take the actual packet content instead of relying
-> on this spoofable field.
-> 
-> On top of that there are issues around setting protocol to IP and
-> inserting VLAN headers. That would skip the eth_type_vlan branch.
-> 
-> IMHO, we should only use skb->protocol if no other source to detect
-> protocol exist, i.e., if no L2 header exists.
-> 
-> Also, instead of preferring one over the other, we could actually
-> read both and
-> 
->     if (skb->protocol &&
->         skb->protocol != eth_hdr(skb)->h_proto)
->             return false;
-> 
-> 
-> > +		if (!*proto || skb->dev->type == ARPHRD_LOOPBACK)
-> > +			*proto = eth_hdr(skb)->h_proto;
-> > +		if (eth_type_vlan(*proto)) {
-> > +			*proto = __vlan_get_protocol(skb, *proto, nhoff);
-> > +			if (!*proto)
-> > +				return false;
-> > +		}
-> > +	} else {
-> > +		*nhoff = skb_network_offset(skb);
-> > +		/* An unset network header shows up as an offset
-> > +		 * outside of the packet.
-> > +		 */
-> > +		if (*nhoff < 0 || (unsigned int)*nhoff >= skb->len)
-> > +			return false;
-> > +		*proto = skb->protocol;
-> 
-> Same
-> 
-> > +		if (!*proto) {
-> > +			const struct iphdr *iph;
-> > +
-> > +			/* A packet socket bound to ETH_P_ALL leaves the
-> > +			 * protocol unset: infer it from the IP version
-> > +			 * at the network header.
-> > +			 */
-> > +			if (!pskb_may_pull(skb, *nhoff + 1))
-> > +				return false;
-> > +			iph = (const struct iphdr *)(skb->data + *nhoff);
-> > +			if (iph->version == 4)
-> > +				*proto = htons(ETH_P_IP);
-> > +			else if (iph->version == 6)
-> > +				*proto = htons(ETH_P_IPV6);
-> > +		}
-> > +	}
-> > +	return true;
-> > +}
-> > +
-> > +/* Walk the L3 header at @nhoff: where does its transport header
-> > + * start, and which protocol is it?  Returns false if the header
-> > + * is truncated, malformed or fragmented.
-> > + */
-> > +static inline bool
-> > +virtio_net_l4_start(struct sk_buff *skb, unsigned int nhoff, __be16 proto,
-> > +		    unsigned int *thoff, int *ip_proto)
-> > +{
-> > +	if (proto == htons(ETH_P_IP)) {
-> > +		const struct iphdr *iph = virtio_net_ip4_parse(skb, nhoff, thoff);
-> > +
-> > +		if (!iph || ip_is_fragment(iph))
-> > +			return false;
-> > +		*ip_proto = iph->protocol;
-> > +		return true;
-> > +	}
-> > +
-> > +	if (proto == htons(ETH_P_IPV6)) {
-> > +		const struct ipv6hdr *iph;
-> > +		int flags = 0;
-> > +
-> > +		if (!pskb_may_pull(skb, nhoff + sizeof(*iph)))
-> > +			return false;
-> > +		iph = (const void *)(skb->data + nhoff);
-> > +		if (iph->version != 6)
-> > +			return false;
-> > +		*thoff = nhoff + sizeof(*iph);
-> > +		*ip_proto = iph->nexthdr;
-> > +		if (*ip_proto != IPPROTO_TCP && *ip_proto != IPPROTO_UDP) {
-> > +			*thoff = nhoff;
-> > +			/* Find the transport header behind any
-> > +			 * extension headers, AH included.
-> > +			 */
-> > +			*ip_proto = ipv6_find_hdr(skb, thoff, -1, NULL,
-> > +						  &flags);
-> > +			if (*ip_proto < 0 || flags & IP6_FH_F_FRAG)
-> > +				return false;
-> > +		}
-> > +		return true;
-> > +	}
-> > +
-> > +	return false;
-> > +}
-> > +
-> > +/* Does checksum metadata match a known TCP or UDP header? */
-> > +static inline bool
-> > +virtio_net_csum_partial_ok_at_offset(struct sk_buff *skb, u8 hdr_gso_type,
-> > +				     unsigned int nhoff, __be16 proto)
-> > +{
-> > +	unsigned int thoff;
-> > +	int ip_proto;
-> > +
-> > +	if (!virtio_net_l4_start(skb, nhoff, proto, &thoff, &ip_proto))
-> > +		return false;
-> > +
-> > +	if (skb_checksum_start_offset(skb) != thoff)
-> > +		return false;
-> > +
-> > +	switch (ip_proto) {
-> > +	case IPPROTO_TCP:
-> > +		if (skb->csum_offset != offsetof(struct tcphdr, check) ||
-> > +		    !pskb_may_pull(skb, thoff + sizeof(struct tcphdr)))
-> > +			return false;
-> > +		break;
-> > +	case IPPROTO_UDP:
-> > +		if (skb->csum_offset != offsetof(struct udphdr, check) ||
-> > +		    !pskb_may_pull(skb, thoff + sizeof(struct udphdr)))
-> > +			return false;
-> > +		break;
-> > +	default:
-> > +		return false;
-> > +	}
-> > +
-> > +	switch (hdr_gso_type & ~VIRTIO_NET_HDR_GSO_ECN) {
-> > +	case VIRTIO_NET_HDR_GSO_NONE:
-> > +		return true;
-> > +	case VIRTIO_NET_HDR_GSO_TCPV4:
-> > +		return proto == htons(ETH_P_IP) && ip_proto == IPPROTO_TCP;
-> > +	case VIRTIO_NET_HDR_GSO_TCPV6:
-> > +		return proto == htons(ETH_P_IPV6) && ip_proto == IPPROTO_TCP;
-> > +	case VIRTIO_NET_HDR_GSO_UDP:
-> > +	case VIRTIO_NET_HDR_GSO_UDP_L4:
-> > +		return ip_proto == IPPROTO_UDP;
-> > +	default:
-> > +		return false;
-> > +	}
-> > +}
-> > +
-> > +static inline bool
-> > +virtio_net_csum_partial_ok(struct sk_buff *skb, u8 hdr_gso_type)
-> > +{
-> > +	int nhoff;
-> > +	__be16 proto;
-> > +
-> > +	if (!virtio_net_l3_start(skb, &nhoff, &proto))
-> > +		return false;
-> > +
-> > +	return virtio_net_csum_partial_ok_at_offset(skb, hdr_gso_type, nhoff,
-> > +						   proto);
-> > +}
-> > +
-> > +/*
-> > + * Handle a packet whose checksum metadata does not match the packet:
-> > + * GSO packets are dropped, as segmentation needs one checksum per
-> > + * segment; others are completed in software.
-> > + */
-> > +static inline int __virtio_net_resolve_csum_partial_mismatch(struct sk_buff *skb)
-> > +{
-> > +	if (skb_is_gso(skb))
-> > +		return -EINVAL;
-> > +
-> > +	return skb_checksum_help(skb) ?: 1;
-> > +}
-> > +
-> >  static inline int __virtio_net_hdr_to_skb(struct sk_buff *skb,
-> >  					  const struct virtio_net_hdr *hdr,
-> >  					  bool little_endian, u8 hdr_gso_type)
-> > @@ -194,11 +397,35 @@ static inline int __virtio_net_hdr_to_skb(struct sk_buff *skb,
-> >  	return 0;
-> >  }
-> >  
-> > +/*
-> > + * Return value:
-> > + * 0 - success
-> > + * >0 - checksum was completed in software (slow path)
-> > + * <0 - failure
-> > + */
-> >  static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
-> >  					const struct virtio_net_hdr *hdr,
-> >  					bool little_endian)
-> >  {
-> > -	return __virtio_net_hdr_to_skb(skb, hdr, little_endian, hdr->gso_type);
-> > +	typeof(skb->transport_header) old_transport = skb->transport_header;
-> > +	int ret = __virtio_net_hdr_to_skb(skb, hdr, little_endian,
-> > +					  hdr->gso_type);
-> > +
-> > +	if (ret < 0)
-> > +		return ret;
-> > +
-> > +	if (skb->ip_summed != CHECKSUM_PARTIAL ||
-> > +	    virtio_net_csum_partial_ok(skb, hdr->gso_type))
-> > +		return 0;
-> > +
-> > +	/*
-> > +	 * Here we do not trust the checksum metadata.
-> > +	 * __virtio_net_hdr_to_skb set the transport header to csum_start
-> > +	 * from virtio hdr, restore it to a known good value.
-> > +	 */
-> > +	skb->transport_header = old_transport;
-> > +
-> > +	return __virtio_net_resolve_csum_partial_mismatch(skb);
-> >  }
-> >  
-> >  /* This function must be called after virtio_net_hdr_from_skb(). */
-> > @@ -282,6 +509,35 @@ static inline unsigned int virtio_l3min(bool is_ipv6)
-> >  	return is_ipv6 ? sizeof(struct ipv6hdr) : sizeof(struct iphdr);
-> >  }
-> >  
-> > +/* Do the tunnel offsets match the outer headers in the frame?
-> > + * The L3 header the tunnel claims must be the one the frame
-> > + * carries, with UDP following it at @outer_th.
-> > + */
-> > +static inline bool
-> > +virtio_net_tnl_offsets_ok(struct sk_buff *skb, bool outer_isv6,
-> > +			  unsigned int outer_th)
-> > +{
-> > +	int nhoff;
-> > +	__be16 proto;
-> > +	unsigned int thoff;
-> > +	int ip_proto;
-> > +
-> > +	if (!virtio_net_l3_start(skb, &nhoff, &proto))
-> > +		return false;
-> > +	if (outer_isv6 != (proto == htons(ETH_P_IPV6)))
-> > +		return false;
-> > +	if (!virtio_net_l4_start(skb, nhoff, proto, &thoff, &ip_proto))
-> > +		return false;
-> > +
-> > +	return ip_proto == IPPROTO_UDP && outer_th == thoff;
-> > +}
-> > +
-> > +/*
-> > + * Return value:
-> > + * 0 - success
-> > + * >0 - checksum was completed in software (slow path)
-> > + * <0 - failure
-> > + */
-> >  static inline int
-> >  virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
-> >  			  const struct virtio_net_hdr_v1_hash_tunnel *vhdr,
-> > @@ -293,6 +549,7 @@ virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
-> >  	unsigned int inner_nh, outer_th, inner_th;
-> >  	unsigned int inner_l3min, outer_l3min;
-> >  	u8 gso_inner_type, gso_tunnel_type;
-> > +	__be16 inner_proto;
-> >  	bool outer_isv6, inner_isv6;
-> >  	int ret;
-> >  
-> > @@ -335,9 +592,12 @@ virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
-> >  	/* Let the basic parsing deal with plain GSO features. */
-> >  	ret = __virtio_net_hdr_to_skb(skb, hdr, true,
-> >  				      hdr->gso_type & ~gso_tunnel_type);
-> > -	if (ret)
-> > +	if (ret < 0)
-> >  		return ret;
-> >  
-
-One other case I found in testing is that a producer can set gso_size
-larger than the remaining packet data. __virtio_net_hdr_to_skb() then
-succeeds, but intentionally does not install GSO state because the packet
-is too small to segment. NEEDS_CSUM has still left the skb with
-CHECKSUM_PARTIAL.
-
-The following check fixes my test case:
-
-	if (!virtio_net_hdr_validate_disabled(skb) &&
-	    !skb_is_gso(skb))
-		return -EINVAL;
-
-A concern I have is this may reject valid packets, so maybe there's a better
-place for this.
-
-> > +	if (!virtio_net_tnl_offsets_ok(skb, outer_isv6, outer_th))
-> > +		return -EINVAL;
-> > +
-> >  	/* In case of USO, the inner protocol is still unknown and
-> >  	 * `inner_isv6` is just a guess, additional parsing is needed.
-> >  	 * The previous validation ensures that accessing an ipv4 inner
-> > @@ -353,7 +613,7 @@ virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
-> >  	}
-> >  
-> >  	skb_set_inner_protocol(skb, inner_isv6 ? htons(ETH_P_IPV6) :
-> > -						 htons(ETH_P_IP));
-> > +			    htons(ETH_P_IP));
-> >  	if (hdr->flags & VIRTIO_NET_HDR_F_UDP_TUNNEL_CSUM) {
-> >  		if (!tnl_csum_negotiated)
-> >  			return -EINVAL;
-> > @@ -368,7 +628,22 @@ virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
-> >  	skb->inner_mac_header = inner_nh + skb_headroom(skb);
-> >  	skb->transport_header = outer_th + skb_headroom(skb);
-> >  	skb->encapsulation = 1;
-> > -	return 0;
-> > +
-> > +	if (!skb_is_gso(skb))
-> > +		skb_shinfo(skb)->gso_type &= ~(SKB_GSO_UDP_TUNNEL_CSUM |
-> > +					       SKB_GSO_UDP_TUNNEL);
-> > +
-> > +	/*
-> > +	 * We know VIRTIO_NET_HDR_F_NEEDS_CSUM was set so __virtio_net_hdr_to_skb
-> > +	 * set CHECKSUM_PARTIAL.
-> > +	 */
-> > +	inner_proto = inner_isv6 ? htons(ETH_P_IPV6) : htons(ETH_P_IP);
-> 
-> on second thought, if having to respin, might as well fold the trivial
-> fix in patch 7 in here from the start.
-> 
-> > +	if (virtio_net_csum_partial_ok_at_offset(skb, gso_inner_type, inner_nh,
-> > +						 inner_proto))
-> > +		return 0;
-> > +
-> > +	/* A tunnel header implies GSO, so drop. */
-> 
-> no longer true for the above !skb_is_gso(skb) case
+> The issues were mostly found by code inspection, but all reproduced by
+> me in a VM.
 >
 
-virtio_net_csum_partial_ok_at_offset()
+Tested this series again (minus UM) and it fixes my original test cases. Added
+one comment after digging a bit deeper into the code. Again thank you for the
+work here.
+
+Tested-by: Chris Arges <carges@cloudflare.com>
 
  
-> > +	return __virtio_net_resolve_csum_partial_mismatch(skb);
-> >  }
-> >  
-> >  /* Checksum-related fields validation for the driver */
-> > -- 
-> > MST
-> > 
+> ------
 > 
+> As reported first by Paulos Yibelo <habte.yibelo@gmail.com> (after which
+> others, credited below, found more ways the bug can affect users):
+> 
+> allowing untrusted hardware to specify csum start/offset for
+> CHECKSUM_PARTIAL was not a good idea, because, if it edits the packet
+> outside the actual checksum, and depending on the setup, the networking
+> stack could be looking at the packet both before and after the edit, and
+> seeing different results.
+> 
+> Previously, commit 6785011f8b16 ("ipv4: validate checksum_start before
+> completing checksum") validated all known instances where this
+> causes the most grief, but the real fix is to make sure
+> that either only actual checksum fields are ever edited,
+> or the checksum is completed before the net stack looks at it,
+> so it is always consistent.
+> 
+> 
+> This basically goes back to
+> what we did before f43798c27684 ("tun: Allow GSO using virtio_net_hdr"),
+> except in a narrow list of specified known good cases.
+> 
+> 
+> Summary of the patchset:
+> 
+> These are probabably net material (and seem to be too big for stable,
+> or I would recommend backporting there, too):
+> 
+>   net: account for ingress-resolved virtio net hdr state
+> 	- accounting, not the fix itself, dependency of the fix
+>   um: vector: trim skbs before verifying the header
+> 	- fixes the um receive path: without it the checksum would be
+> 	  completed over the unreceived tail of the buffer
+>   virtio_net: parse tunnel csum_start little-endian
+> 	- bugfix, a dependency of validating the header
+>   net: resolve uncommon partial checksums at ingress
+> 	- fix itself
+>   net: add a sysctl to opt out of virtio net hdr checksum validation
+> 	- reducing risk of the fix by adding a sysctl to disable it
+> 
+> These are cleanups, can be deferred to net-next, too:
+> 
+>   net: add ip4_parse()
+>   virtio_net: cleanup protocol calculation
+> 	- cleanup resulting code duplication
+> 	 (kept separate to simplify backporting)
+> 
+> Fixes: f43798c27684 ("tun: Allow GSO using virtio_net_hdr")
+> 
+> Changes since v1:
+> 	- reorder patches to fix bisectability, addressing
+> 	  a comment by Björn Töpel.
+> 	- code refactoring, different patch splitup,
+> 	  a sysctl knob to disable as suggested by Willem de Bruijn.
+> 	- fix a bunch of minor issues spotted by LLMs
+> 
+> 
+> Changes since v2:
+> 
+> virtio_net: parse tunnel csum_start little-endian
+>   - new patch. correctly parsing the header is a dependency
+>     of validating it, otherwise i do not know what to validate
+> 
+> net: account for ingress-resolved virtio net hdr state
+>   - make rx_csum_sw counter 64 bit so it won't wrap
+>     (spotted by LLM review)
+> 
+> net: resolve uncommon partial checksums at ingress
+>   - tunnel fixes to bugs noticed by Willem de Bruijn and
+>     Chris Arges
+>   - restore the csum_offset checks as suggested by Willem
+> 
+> net: add a sysctl to opt out of virtio net hdr checksum validation
+>   - the knob is no longer writable by root inside a user
+>     namespace: changing it now requires capable(CAP_NET_ADMIN)
+>     suggested by Willem de Bruijn
+> 
+> net: add ip4_parse()
+>   - comment converted to kernel-doc format (Willem de Bruijn)
+> 
+> um: vector: trim skbs before verifying the header
+>   - new patch, found by code review
+> 
+> 
+> Changes since v3:
+> 
+> net: account for ingress-resolved virtio net hdr state
+>   - um: vector: honor virtio net hdr conversion failures
+>     folded in (Björn Töpel)
+>   - count on tap and virtio_net, too (Willem de Bruijn)
+> 
+> net: resolve uncommon partial checksums at ingress
+>   - walk the frame on loopback, too: loopback_xmit() runs
+>     eth_type_trans() on it (Willem de Bruijn)
+>   - return the mismatch handling directly, GSO is implied in
+>     the tunnel path so drop there outright, and fold the helper
+>     into its one remaining caller (Willem de Bruijn)
+>   - read the IP version through struct iphdr (Willem de Bruijn)
+>   - document the ipv6_find_hdr() flags choice
+> 
+> net: add a sysctl to opt out of virtio net hdr checksum validation
+>   - renamed to virtio_net_hdr_validate, in case more validation
+>     is gated by the same knob later (Willem de Bruijn)
+>   - point .data at the value like the neighboring entries,
+>     the per-netns registration rebases it, and the handler reads
+>     the value directly - no ctl_table copy (Björn Töpel,
+>     Willem de Bruijn)
+>   - check the opt-out before parsing: with the knob off, packets
+>     the parser cannot handle were still dropped (Willem de Bruijn)
+>   - include virtio_net.h in net/core/dev.c so the static key
+>     definition sees its declaration (build warning reported by
+>     Jakub Kicinski)
+> 
+> net: add ip4_parse()
+>   - add the missing kernel-doc Return: section
+>     (Jakub Kicinski)
+> 
+> 
+> Changes since v4:
+> 
+> net: account for ingress-resolved virtio net hdr state
+>   - count on tun only: dropped the tap, macvtap, ipvtap and
+>     virtio_net counters (Willem de Bruijn)
+>   - the driver side branches are in their final form here now,
+>     moved from "net: resolve uncommon partial checksums at
+>     ingress" (Willem de Bruijn)
+> 
+> net: resolve uncommon partial checksums at ingress
+>   - no longer touches the drivers (Willem de Bruijn)
+>   - a packet too small to be GSO: ignore the tunnel GSO request,
+>     same as plain GSO ones, and complete wild metadata in place
+>     (sashiko)
+>   - document the zero copy interaction (sashiko)
+>   - honor a preset skb->protocol on ethernet: the stack uses it,
+>     except on loopback which re-parses the frame (sashiko)
+> 
+> net: add a sysctl to opt out of virtio net hdr checksum validation
+>   - document the netns lifetime requirement (sashiko)
+> 
+> net: add ip4_parse()
+>   - pull the whole header, options included, so that the
+>     transport header offset is within the linear data
+>     (Willem de Bruijn)
+> 
+> Tested: full suite on the final tree, tunnel included.
+> um part compiled only.
+> 
+> 
+> Michael S. Tsirkin (7):
+>   net: account for ingress-resolved virtio net hdr state
+>   um: vector: trim skbs before verifying the header
+>   virtio_net: parse tunnel csum_start little-endian
+>   net: resolve uncommon partial checksums at ingress
+>   net: add a sysctl to opt out of virtio net hdr checksum validation
+>   net: add ip4_parse()
+>   virtio_net: cleanup protocol calculation
+> 
+>  Documentation/admin-guide/sysctl/net.rst |  19 ++
+>  arch/um/drivers/vector_kern.c            |   6 +-
+>  arch/um/drivers/vector_transports.c      |   4 +-
+>  drivers/net/tap.c                        |   4 +-
+>  drivers/net/tun.c                        |  41 +++-
+>  drivers/net/virtio_net.c                 |   2 +-
+>  include/linux/ip.h                       |  37 +++
+>  include/linux/virtio_net.h               | 287 ++++++++++++++++++++++-
+>  include/net/netns/core.h                 |   1 +
+>  net/bridge/br_netfilter_hooks.c          |  15 +-
+>  net/core/dev.c                           |   7 +
+>  net/core/net_namespace.c                 |   1 +
+>  net/core/sysctl_net_core.c               |  50 ++++
+>  net/ipv4/ip_input.c                      |  13 +-
+>  net/ipv4/netfilter/nf_reject_ipv4.c      |  13 +-
+>  net/packet/af_packet.c                   |   4 +-
+>  16 files changed, 461 insertions(+), 43 deletions(-)
+> 
+> -- 
+> MST
 > 
