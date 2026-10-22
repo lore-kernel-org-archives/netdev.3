@@ -1,69 +1,69 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.153.233
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792669931;
-	b=zPWWDHJ/k5KrSttNClwJ4OpQvAA0LCGnW79ua6KchiXDjXgH6+CuByMQWXBzKv4eGw5G
-	 lIgdqbQnUyha5UbTOOzf6BeiNydvVV5IlqbaGEAuuEILM5YDmHz8O5AdEXLnZNm9Kn7Zu
-	 ijYxFMcP9kz8uBA/oM++AP8SI64phHdX/Ev+kmkvAkLr8vPFEOI9H2vnRjmvb2QTTLfU4
-	 RmuZDg+B+a2FlBGQ6EPKd1ZRj6oymqfouNuAQ5EAQKPnLSFoed5FX9/6IckgaKBkf8AIY
-	 VQw06eav9/pamjuU1ywvWi2fNmZuv+qMCnbfCU9yZZ3aXNH5WA+zHUsVxvQ/X1EAjAQ==
+	t=1792670022;
+	b=HBoa31Pgu7FIH+WxOfWmR5aUU4aTyOEbGq/lVH+5D1YGhn10POP7D1XgmxUsFU9LqT8e
+	 FZdamjLv+CwneLEGYDgUVUqLVrBdOlRK1vS2wJUwW+RlfVbQT/lU2OSjqNDqmr+Kmy4By
+	 +v0eLSyK1uPE4YAH4C4NwBojj+4gckIV/2GOuCZkLvwCdOVL4azpS0e+cCpb4R5LrTOGD
+	 1SVrzbOz6o47tkSYvVpvT3yKMcfvcAEqCNGod9IQj/BM6vLlwTEeZGnB919E9XckZpuTD
+	 O/Rn4nSlfjE5I/Yqzgb85AQRzh07UivFa4djTdcjzprRSH2j6skmEOAlPrrmuHd2GVg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792669931;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792670022;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:Message-ID:
 	 Subject:From:To:CC:Date:In-Reply-To:References:Content-Type:
 	 Content-Transfer-Encoding:User-Agent:MIME-Version;
-	bh=p5tTWHAcP3up0aXcHETS/TW5nhe+pEJEUCXg8wqne3k=;
-	b=NRBFgbixjj4FbcuTwhwjhspnbw1yF9NPh7wVfY1SKF1CEV/n3+gv9a2cYodg4QphzvQW
-	 dUoALQZu1DZn9uDZMTyS6HoSnunsy22cYRvijPV50Bkr85feMQJ9PXvo+0fmlK1nUE8FZ
-	 X1YPSok3thHv2ofYJRKMonORjt7d5oaMVRNz1/0cV4pC+VmUT35zegrJuq/969105OzUC
-	 rpPQk/b+DMvmbnddumla0vAKFvYLKxZIYu3GC/zWYm1+nS+BgCGx37YLj3oeJu+04Dq8f
-	 VsLSkTnlfsWdBWjW/RVHr0waXb++kdCqcZ7SuIhtOFSWpB6PP53R05kF9tWyluvR18g==
+	bh=upfwtUV8EbGVUbWxxpiKAfBnHEyn8vCFzWrktWT3e7Q=;
+	b=FhsZVpHX3HDVacKSH4K/sJgfY8xLVC8WYB/wUCOaBRsUXGdhRZYpbTxBpcVs90guNuEi
+	 kwwX59ZDNpq77RH7Vm2C8C/n2bc6PaGYlgcKzZqCMw4C5KzFFpJKRuIEQdVt+HB07fhCt
+	 1/ldNsyakiXC4AmILMJDuLqIC4Acw/eIHcw95q8dvZ+J5ZjikdU78+x/UIgJViF1zMAv2
+	 E+VeoWOkpoOQnKLpCYB1a/P3dAiZ2CPHShbbKUx0FnUWlaQz3z1Mi21SBHpLJqR9OoopI
+	 icHvDZgfE+HuHMRbFe+nysJVU/FgNEHKBC3g94NFncWrmYffqm2UhP8vRucwMMQtbBw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=microchip.com;
 	spf=pass smtp.mailfrom=microchip.com;
-	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=pmZwlbVI;
+	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=WpM4Orvt;
 	arc=none smtp.remote-ip=68.232.153.233
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4B4606A31F;
-	Thu, 22 Oct 2026 11:52:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0B4B4606A31F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B60606A319;
+	Thu, 22 Oct 2026 11:53:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A3B60606A319
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=pmZwlbVI
+	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=WpM4Orvt
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1792669931; x=1824205931;
+  t=1792670022; x=1824206022;
   h=message-id:subject:from:to:cc:date:in-reply-to:
    references:content-transfer-encoding:mime-version;
-  bh=qvSLYwQyZw17pBQ+bwSsK6HBoBcM99ELUEMZG7MTcVE=;
-  b=pmZwlbVIP+CzXAlm+M3bhe4a4pmKkIyLFad8cCyrHAyKYxKT4czCqqPu
-   sNNwWei277y+pmXlPQCG7y6S+9ckQkNT4tLZDdrlqhmHzWEmABN+kooRY
-   a6fbVCEJCksOPJSs+6ySCvsqX9KK1vSww7X2tD3LTzrvAfn/g0A9KkrrR
-   YvktWSWMFodilAPMYS/AS4LPFPpIaVApEMvLSxCMhk/HYkINeZfKSZrDi
-   UxxOU0q+8tNrNwlXHEtcrAPm4au7WhxcVPMZ35BV45G+Yw+5Fi17cyvzb
-   FpueAyUgH0qSTLaEZTCNGsESqj874YrRjE9hzB+6RucZYmas0hPMuwKNh
-   w==;
-X-CSE-ConnectionGUID: CMRa0V6VSTCQRzDlkb4RrA==
-X-CSE-MsgGUID: 0unnfKbAQ3eaIWARu00bdA==
+  bh=GmV0QCXgHw916achcJk5p19Gm0if1pq+xAF7kR4jJCc=;
+  b=WpM4OrvtaAv4aiRB22ys+K1nUswmf0ZshStasZx4aeaboAIVhdHIgpEN
+   JJJPlRGeHzirBRRYsE8AlY+MlPqSFNzqOiaaadSC0NJtb2+aMrA2+/24/
+   Jm3FqEwOxpTo8FisuBmgIehTLbNtF9D992Rp9YKR50lQDzptxLdRLWRkn
+   kqCRReLU4YN/0rDzPFfCXKu2W7K4GeCFPh10IHC6GMhiHPEJOg7/C96Yz
+   onCCmzHadZSueT3RvMAnIaZSyrgP6hBFciOR03JnuXvNyJltKM6Jl1Tsv
+   zUsQLkrpAfvY3ngH9B6qfF7qG8gltA8xO1oz10zRqUtjfdxfLVh0cjv6z
+   Q==;
+X-CSE-ConnectionGUID: dxq2WxxfQpiG7F6Qp0kFlg==
+X-CSE-MsgGUID: Ym6nutdVTqakjpbYD/eCpg==
 X-IronPort-AV: E=Sophos;i="6.27,172,1787036400"; 
-   d="scan'208";a="65412090"
+   d="scan'208";a="65412134"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2026 04:52:10 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.87.152) by
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2026 04:53:41 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
  chn-vm-ex4.mchp-main.com (10.10.87.33) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.49; Thu, 22 Oct 2026 04:52:09 -0700
+ 15.2.2562.49; Thu, 22 Oct 2026 04:53:40 -0700
 Received: from DEN-DL-M77643.microsemi.net (10.10.85.11) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Thu, 22 Oct 2026 04:52:05 -0700
-Message-ID: <9856209f2cb1ee581c70d4f71aa7674cd86be685.camel@microchip.com>
-Subject: Re: [PATCH net-next v15 2/9] dt-bindings: net: dsa: add Microchip
- LAN9645x switch
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Thu, 22 Oct 2026 04:53:36 -0700
+Message-ID: <abd2fba0ee9e1cb736eb9443d0af11fbbc7068d4.camel@microchip.com>
+Subject: Re: [PATCH net-next v15 4/9] net: dsa: lan9645x: add basic dsa
+ driver for LAN9645X
 From: Jens Emil Schulz Ostergaard <jensemil.schulzostergaard@microchip.com>
 To: <netdev-bot+sashiko@kernel.org>
 CC: <UNGLinuxDriver@microchip.com>, <andrew@lunn.ch>, <olteanv@gmail.com>,
@@ -75,10 +75,10 @@ CC: <UNGLinuxDriver@microchip.com>, <andrew@lunn.ch>, <olteanv@gmail.com>,
 	<richardcochran@gmail.com>, <linux-kernel@vger.kernel.org>,
 	<netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
 	<linux-renesas-soc@vger.kernel.org>
-Date: Thu, 22 Oct 2026 13:52:04 +0200
-In-Reply-To: <179240452378.3135.9892080157783163049@kernel.org>
-References: <20261015-dsa_lan9645x_switch_driver_base-v15-2-562f316f78b9@microchip.com>
-	 <179240452378.3135.9892080157783163049@kernel.org>
+Date: Thu, 22 Oct 2026 13:53:35 +0200
+In-Reply-To: <179240452564.3135.4025477777348146503@kernel.org>
+References: <20261015-dsa_lan9645x_switch_driver_base-v15-4-562f316f78b9@microchip.com>
+	 <179240452564.3135.4025477777348146503@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.44.4-0ubuntu2.1 
@@ -96,10 +96,10 @@ On Mon, 2026-10-19 at 10:08 +0000, netdev-bot+sashiko@kernel.org wrote:
 > EXTERNAL EMAIL: Do not click links or open attachments unless you know th=
 e content is safe
 >=20
-> Thank you for your contribution! Sashiko AI review found 2 potential
+> Thank you for your contribution! Sashiko AI review found 1 potential
 > issue(s) to consider.
 >=20
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 1
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 0
 >=20
 > If you believe none of the issues are legitimate, please reply to each
 > issue of Medium severity or higher and explain why the AI is wrong.
@@ -109,164 +109,112 @@ k
 y
 > (one such reply per series is enough).
 >=20
-> - [Medium] The binding (microchip,lan96455s-switch.yaml) and its RGMII
->   delay design contradict the in-tree RGMII contract in ethernet-=E2=80=
-=A6
-> - [Low] The binding (microchip,lan96455s-switch.yaml) does not reject
->   port nodes beyond port 8, and those nodes escape its RGMII delay=E2=80=
-=A6
+> - [Medium] Nothing in the tree can bind or exercise this driver.
 >=20
 > --
 >=20
-> dt-bindings: net: dsa: add Microchip LAN9645x switch
+> net: dsa: lan9645x: add basic dsa driver for LAN9645X
 >=20
-> This adds a YAML binding for the Microchip LAN9645x DSA switch family,
-> with microchip,lan96455s-switch as the fallback compatible. The switch
-> registers are described with one reg entry per register target. RGMII
-> ports may set a fixed 0 or 2000 ps MAC internal delay.
+> This adds a basic DSA driver for the Microchip LAN9645x switch. It covers
+> switch initialization, NPI, CPU and front port setup, and phylink MAC
+> configuration for the internal CuPHYs and the RGMII ports. All register
+> access goes through named regmaps requested from a parent device, which
+> is meant to be an MFD driver submitted in a later series.
 >=20
-> > diff --git a/Documentation/devicetree/bindings/net/dsa/microchip,lan964=
-55s-switch.yaml b/Documentation/devicetree/bindings/net/dsa/microchip,lan96=
-455s-switch.yaml
+> > diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c b/drive=
+rs/net/dsa/microchip/lan9645x/lan9645x_main.c
 > > new file mode 100644
-> > index 0000000000000..517bc4c00de30
+> > index 0000000000000..c7de3836e6967
 > > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/net/dsa/microchip,lan96455s-swi=
-tch.yaml
-> > @@ -0,0 +1,208 @@
+> > +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
+> > @@ -0,0 +1,456 @@
 >=20
 > [ ... ]
 >=20
-> > +  ethernet-ports:
-> > +    type: object
-> > +    additionalProperties: true
-> > +    patternProperties:
-> > +      "^(ethernet-)?port@[0-8]$":
->=20
-> [Severity: Low]
-> Can port nodes above port 8 get past this schema?
->=20
-> The local pattern only matches port@0 through port@8. However,
-> ethernet-ports has additionalProperties: true, and the inherited
-> dsa.yaml#/$defs/ethernet-ports checks "^(ethernet-)?port@[0-9a-f]+$"
-> against dsa-port.yaml. That means port@9 through port@f are evaluated
-> and pass.
->=20
-> Those nodes also skip the local RGMII if/then. For example, port@9 with
-> phy-mode =3D "rgmii" and rx-internal-delay-ps =3D <5000> passes, because
-> ethernet-controller.yaml only types that property as uint32.
->=20
-> The hardware has only 9 ports, so these nodes are rejected only at probe
-> time:
->=20
-> net/dsa/dsa.c:dsa_switch_parse_ports_of() {
->     ...
->                 if (reg >=3D ds->num_ports) {
->                         dev_err(ds->dev, "port %pOF index %u exceeds num_=
-ports (%u)\n",
->     ...
-> }
->=20
-> The description says the last SKU digit gives 5, 7 or 9 usable front
-> ports. No compatible-based if block limits which port@N nodes the 5-port
-> and 7-port SKUs may declare, so a bare microchip,lan96455s-switch node ca=
-n
-> describe all nine ports.
->=20
-> renesas,rzn1-a5psw.yaml, which the changelog names as the model, has the
-> same pattern.
->=20
-> Should the schema reject port nodes outside the range each SKU supports?
->=20
-> > +        type: object
-> > +        description: Ethernet switch ports
-> > +        additionalProperties: true
+> > +static int lan9645x_reset_switch(struct lan9645x *lan9645x)
+> > +{
+> > +     u32 val =3D 0;
+> > +     int err;
 > > +
-> > +        allOf:
-> > +          - if:
-> > +              properties:
-> > +                phy-mode:
-> > +                  contains:
-> > +                    enum:
-> > +                      - rgmii
-> > +                      - rgmii-rxid
-> > +                      - rgmii-txid
-> > +                      - rgmii-id
-> > +            then:
-> > +              properties:
-> > +                rx-internal-delay-ps:
-> > +                  $ref: "#/$defs/internal-delay-ps"
-> > +                tx-internal-delay-ps:
-> > +                  $ref: "#/$defs/internal-delay-ps"
+> > +     /* The parent must reset the whole chip before instantiating its
+> > +      * children, so the switch core is disabled when we get here. The
+> > +      * sequence below must not run more than once: initializing the
+> > +      * memories on a running core corrupts pointers inside the queue
+> > +      * system, which eventually fills up and stops passing traffic. I=
+f the
+> > +      * core is already enabled the chip was not reset, so skip it.
+> > +      */
+> > +     if (SYS_RESET_CFG_CORE_ENA_GET(lan_rd(lan9645x, SYS_RESET_CFG)))
+> > +             return 0;
 >=20
 > [ ... ]
 >=20
-> > +$defs:
-> > +  internal-delay-ps:
-> > +    description:
-> > +      Disable the delay line using 0 ps, or enable the 2000 ps delay. =
-The
-> > +      delay line is not tunable, so no other phase can be selected.
-> > +    enum: [0, 2000]
-> > +    default: 0
+> > +static int lan9645x_request_target_regmaps(struct lan9645x *lan9645x)
+> > +{
+> > +     const char *resource_name;
+> > +     struct regmap *tgt_map;
+> > +
+> > +     for (int i =3D 0; i < NUM_TARGETS; i++) {
+> > +             resource_name =3D lan9645x_resource_names[i];
+> > +             if (!resource_name)
+> > +                     continue;
+> > +
+> > +             tgt_map =3D dev_get_regmap(lan9645x->dev->parent, resourc=
+e_name);
+> > +             if (IS_ERR_OR_NULL(tgt_map)) {
+> > +                     dev_err(lan9645x->dev, "Failed to get regmap=3D%s=
+\n",
+> > +                             resource_name);
+> > +                     return -ENODEV;
+> > +             }
 >=20
 > [Severity: Medium]
-> Does this delay definition conflict with the RGMII rules in
-> ethernet-controller.yaml?
+> Does anything in the tree provide these regmaps?
 >=20
-> The if/then above applies this 0/2000 ps enum to all four RGMII modes.
-> That means the schema accepts phy-mode =3D "rgmii" together with
-> tx-internal-delay-ps =3D <2000>. The informative section of
-> ethernet-controller.yaml says:
+> lan9645x_probe()->lan9645x_request_target_regmaps() asks the parent for 1=
+7
+> named regmaps: gcb, qs, chip_top, rew, sys, hsio, dev0..dev8, qsys and an=
+a.
 >=20
->   # be used to indicate fine tuning performed by the MAC. The values
->   # expected here are small. A value of 2000ps, i.e 2ns, and a phy-mode
->   # of 'rgmii' will not be accepted by Reviewers.
+> A search of drivers/mfd/ for lan9645x or lan96455s finds nothing. That is
+> still true at the end of the series, through "net: dsa: lan9645x: add por=
+t
+> statistics".
 >=20
-> That section also says delays not added by the PCB are software
-> configuration and are not described in DT. If the MAC adds the delay, it
-> has to remove that delay from the phy-mode it passes to the PHY.
+> The new microchip,lan96455s-switch binding requires reg and reg-names, bu=
+t
+> the driver never reads them. A DT node that follows the binding would
+> therefore always fail probe with "Failed to get regmap=3Dgcb".
 >=20
-> The schema also accepts rgmii-id, rgmii-rxid or rgmii-txid with a 2000 ps
-> MAC delay. In the driver added later in the series ("net: dsa: lan9645x:
-> add basic dsa driver for LAN9645X"), nothing seems to remove that delay
-> again. lan9645x_parse_mac_delay() in lan9645x_port.c sets the flag only
-> from the DT property:
+> dev_get_regmap() returns NULL, not -EPROBE_DEFER, so the probe is not
+> retried if a parent appears later.
 >=20
->         *out =3D val =3D=3D 2000;
+> lan9645x_reset_switch() above relies on the same missing parent. When
+> CORE_ENA is already set, it skips the RAM init without logging anything.
+> That precondition also can't be checked without the parent driver.
 >=20
-> lan9645x_phylink_mac_config() in lan9645x_phylink.c then calls
-> lan9645x_rgmii_dll_config() for any RGMII mode. That function enables the
-> DLL delay whenever the flag is set:
+> The commit message says:
 >=20
->         if (phy_interface_mode_is_rgmii(state->interface))
->                 lan9645x_rgmii_dll_config(p);
+>     The MFD driver will come in a later series, because there are
+>     requirements on the number of child devices before a driver qualifies=
+ as
+>     a MFD device.
 >=20
-> Meanwhile phylink passes the unmodified phy-mode to the PHY.
->=20
-> Take port 7 or 8 with an external PHY, phy-mode =3D "rgmii-id" and
-> tx-internal-delay-ps =3D <2000>. Both the MAC and the PHY would add 2 ns,
-> for about 4 ns of skew. Wouldn't that give a non-working link, even
-> though the DT passes dt_binding_check?
->=20
-> The if also has no else branch. Non-RGMII ports (gmii, rmii, BASE-X,
-> QSGMII) therefore accept any uint32 value for rx-internal-delay-ps and
-> tx-internal-delay-ps.
->=20
-> Could the MAC delay be derived from phy-mode instead of these properties,
-> with the phy-mode passed to the PHY adjusted to match?
+> Until that series lands, the driver can't be bound or tested on any in-tr=
+ee
+> configuration. Could this be merged together with the parent driver, or i=
+s
+> there another way to bind it in the meantime?
 
 Dismissed, intended.
 
-This is the binding model of sja1105 and microchip,lan937x.yaml, which
-also limits the values to 0 and 2000 ps on RGMII ports. sja1105 and ksz
-configure the MAC delay lines from rx/tx-internal-delay-ps and pass
-phy-mode unmodified to the PHY in the same way.
+the driver is meant to be instantiated by a parent MFD that owns the
+register IO and registers the named regmaps before it adds its
+children, similar to ocelot_ext. The parent is kept out of this series
+on purpose, to avoid a series across the net and mfd trees.The MFD
+support is planned as a follow-up.
 
 
-
->=20
-> [ ... ]
 >=20
 > --
 > Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
