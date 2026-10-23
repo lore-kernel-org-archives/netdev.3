@@ -1,70 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792730262;
-	b=xft8LvxoBmAlpF0hqFe5UjdH6y10F5Znno1zGmYyHzTau+3wDQnVzWxPHqSE8cgnMX79
-	 KjdM5ILOiHYvbNcRYBhTL+1VB3hhFwOcLadADbp+uHPNDebesRN2TJ9+FI98T1b+pnmb2
-	 HEyahUdbpsGDyZUd7+VEWxc2bjn6OwT0kUKMqWcsjnYIKp4gn5dHxgmfZkwbrs2LzO1zG
-	 gs+l9SD4gUG01rTth3r533+vcemow5X8X8oUr5ei1RpJ1SITO0GN1gHf+ZBVQswRkGM/b
-	 +rmXmPaX3cBSmrmpljdhbtaJkFQ2dupdCK3r+rpsWtK4x+2aByKGGqsbPKkfPq/IqeQ==
+	t=1792731119;
+	b=kOtnys/rdhV3snT2wdupa6s3zcGunZOvuv11jSgTkRwqOGKVz6m9jAXehpJlPPR6Sn7r
+	 4Ytvb8qJGbmMsE55wsjqRUYaVd7SSj7zQSMrG3fSZVzaQx4tphsUk3cG0lF6JHZmjZlnf
+	 Yah/YXQN7Cv2CisD33WmpRYnDHNnruZPC3bvwzb5YSmOM727iFuYJbE94RjymNz/hexM5
+	 wBjZ3z8s1YrncRe9YNnPplY6FcX3QOCpNnTVTePmEUmjKNoDu9iEXeSv08PGtYkrFqswe
+	 QEq/Cjc116YaEartWxhurhV1UNgVT1CB23AobvBUj6qSsye4rgnafM5C0JS3XH2ZNQg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792730262;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=f123tdsbUST4XIUSI+zBPuw01Yi2GUfKPUwb5NzT2Rs=;
-	b=OYS+GoRWYk6GIKLEMRF83eEOCfvVTPuCHtY2CkCeFFIF7Yl+zrK5c5LILAxLK3vIHop7
-	 vSX9qAMULHPgg/iPE1JMgmCpaGauquRBiovlVrRytmPalLiE1NLRpsGGG08TSW5vYqR87
-	 xqZ4m8PpQK0cWPVgmkyCZPqLUYaEL/a/n6FrjSfYyAPgaRmmEKhmrip8IChlCu05I6SNs
-	 d+QEErtCrUA6UEpu2XS/mz46wOecWrwAJkbYkpNnTq1Gt/xQ6fokbPZgQGKfinwqlzXIy
-	 n7iAIuXslPY2w7N0cMepOBQJRqtSCt8Pqz0SlNcGa3Hg/FnU0tmjgBWVe/QlF1VUpFQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792731119;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=l5UCn3s3YyxcyE6vweegr4A1rPRcjt6h9F7KPsMd5KY=;
+	b=mN2Tl2/UerD/XE57+IRxbuki6prRjkIGkhfnVMVHYEtJaa6emX07T+TT/9ZrJ++4J7hV
+	 r2m8cIOhP+zF74LOpqJjepibu7CNfehnhnK6aAVVGNTxJ/JKjmgUADrg31I3W1HxYKb1w
+	 6eHWqpVE9ppvBqHCwNWZ28ebJUJ/ETCA6xgLL/ECEJ73gCrrAxaHC/NtvvpgV3rT2DBT6
+	 0mwhApkuFKsmD74Y7XH2/ITUYkGMCWmIfIemcKLquc5dmZ7DxALOSQPDTqQcrRoZorfNl
+	 bhDfKLbct8f/Nbi86QP1O8BZW7zMqeUgFY+V8ZOqxt5FY9DG3+yWu0Hqlz975IA8LOg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=smylZh74;
-	arc=none smtp.remote-ip=91.218.175.199
-Received: from mta0.migadu.com (out-199.mta0.migadu.com [91.218.175.199])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g9IF7uFF;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2CD606A336
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 04:37:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AF2CD606A336
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A5A606A319
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 04:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=smylZh74
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=hI8lFW79eKCI4bBWDUvXpaoorI5+2uT+zu+nDueEt08=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792730258; v=1; x=1793335058;
- b=smylZh74r6ZvVqUl30ub0GCDSSt78EzeTIXYS4lkwHATPi0k3Tt1sPu4xdKCEgT5a+2KyYa1
- Iskxh7imnbdrOOu22xyULrjtuLMTPX+Mi/PdfoRb8ZTO+BioTN1k72gaXWFpwV8bmLJddfkzcex
- Izo6TrSqCKx5kcIrvRYykA44=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id c621be0b7a2731b2;
-	Fri, 23 Oct 2026 04:37:38 +0000
-X-Mizu-Trace-ID: c621be0b7a2731b2
-X-Migadu-Flow: FLOW_OUT
-From: Qingfang Deng <qingfang.deng@linux.dev>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Qingfang Deng <qingfang.deng@linux.dev>,
-	Kees Cook <kees@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Eric Woudstra <ericwouds@gmail.com>,
-	Asim Viladi Oglu Manizada <manizada@pm.me>,
-	Felix Fietkau <nbd@nbd.name>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH net] pppoe: wait for RCU readers before reusing a socket
-Date: Fri, 23 Oct 2026 12:37:27 +0800
-Message-ID: <20261023043729.219660-1-qingfang.deng@linux.dev>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g9IF7uFF
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48EF11F01825;
+	Fri, 23 Oct 2026 04:51:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792731118;
+	bh=l5UCn3s3YyxcyE6vweegr4A1rPRcjt6h9F7KPsMd5KY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=g9IF7uFF9+WPeewAagqf7C9jK+UL4Yc9xwbzrV2wTgTEZHIsI3StVz8RYNbRqLD1y
+	 ZT/z/gtLR8fmAUx8n1LLfM+C9U2C0s0iAoOqTE2eIrLCwS710pc4j+WCR7k6JpEXBi
+	 jybOBH0KSK6ReliEUHAaEcrL7hDF2YXHjUI3b52ci6q/qjWqiykJtkMTiqDnBskIDo
+	 tq1A+WGsMnhTQ3RmAr3ikdjzDWGycUSMt0zu3QzuiWBdQVfcurM1AuhUjja3xFQAFw
+	 abrc4XwH6LfzBGCKAbUY92A1FlhoYh3+SzUJX5SgFL6HeeykSWmDYZpB25LXRyy0ae
+	 vW8LVJ3g00YTg==
+Subject: Re: [PATCH net-next 01/15] net: skbuff: make skb_copy_and_csum_bits()
+ report unreadable frags
+From: netdev-bot+sashiko@kernel.org
+To: josef@toxicpanda.com
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, andrew+netdev@lunn.ch, jgross@suse.com,
+ sstabellini@kernel.org, willemdebruijn.kernel@gmail.com, fmancera@suse.de,
+ almasrymina@google.com, david.laight.linux@gmail.com, netdev@vger.kernel.org,
+ xen-devel@lists.xenproject.org
+Date: Fri, 23 Oct 2026 04:51:56 +0000
+Message-ID: <179273111683.3134.7255247218847744918@kernel.org>
+In-Reply-To:
+ <20261019-b4-skbuff-bug-on-followups-v1-1-41dbef50b9f7@toxicpanda.com>
+References:
+ <20261019-b4-skbuff-bug-on-followups-v1-1-41dbef50b9f7@toxicpanda.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -74,62 +67,137 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-When pppoe_connect() disconnects or reuses a socket, it removes the old
-session from the hash table and resets the socket's fields. An RCU
-reader that reached the entry before it was unlinked can still be using
-its address, ifindex or next pointer.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-If sockets A and B share a hash bucket with A preceding B, a concurrent
-__get_item() looking for B can be traversing A when it is removed.
-Clearing A->next then makes the lookup miss B and drop the packet.
-Reinserting A can similarly redirect the reader into another hash chain.
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-Call synchronize_net() after unlinking the old session and before
-resetting its fields. This allows existing receive-path and
-/proc/net/pppoe readers to finish before the socket is cleared or reused.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-This was found by Sashiko's static analysis, and reproduced on a VM
-stress test with KCSAN.
+- [Medium] Missing Fixes: and Cc: stable tags on a data-integrity fix.
+- [Low] The new comment in skb_copy_and_csum_dev() reads: "On failure the
+  rest of @to is zeroed; leave the checksum alone so the frame goes out…
 
- BUG: KCSAN: data-race in hash_item+0x1c/0x60
+--
 
- race at unknown origin, with read to 0xffff888000a1c566 of 2 bytes by task 147 on cpu 2:
-  hash_item+0x1c/0x60
-  pppoe_seq_next+0x112/0x1b0
-  seq_read_iter+0x595/0x700
-  seq_read+0xb0/0xe0
-  proc_reg_read+0xd0/0xf0
-  vfs_read+0xbd/0x220
-  ksys_read+0xa9/0x100
-  __x64_sys_read+0x47/0x60
-  x64_sys_call+0x98/0x1fd0
-  do_syscall_64+0x5b/0x260
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+net: skbuff: make skb_copy_and_csum_bits() report unreadable frags
 
- value changed: 0x0002 -> 0x0000
+skb_copy_and_csum_bits() now returns 0 or -EFAULT, hands the checksum
+back through a pointer, and is marked __must_check. On error, the callers
+in skb_segment(), the ICMP code, the IP append paths, sunvnet and sunrpc
+take the failure paths they already have. skb_copy_and_csum_dev() returns
+early without storing a checksum. With this change, software GSO of a
+devmem TCP skb fails instead of silently replacing the payload with
+zeroes.
 
-Fixes: 72cdc67e7fa7 ("pppoe: remove rwlock usage")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261020092118.47416-1-qingfang.deng@linux.dev
-Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
----
- drivers/net/ppp/pppoe.c | 1 +
- 1 file changed, 1 insertion(+)
+Link: https://lore.kernel.org/all/179148235783.434549.14322374227477832817@kernel.org/
 
-diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
-index ee0e318d6a2a..99600fb40c4b 100644
---- a/drivers/net/ppp/pppoe.c
-+++ b/drivers/net/ppp/pppoe.c
-@@ -622,6 +622,7 @@ static int pppoe_connect(struct socket *sock, struct sockaddr_unsized *uservaddr
- 			dev_put(po->pppoe_dev);
- 			po->pppoe_dev = NULL;
- 		}
-+		synchronize_net();
- 
- 		po->pppoe_ifindex = 0;
- 		memset(&po->pppoe_pa, 0, sizeof(po->pppoe_pa));
+> Link: https://lore.kernel.org/all/179148235783.434549.14322374227477832817@kernel.org/
+> Suggested-by: Mina Almasry <almasrymina@google.com>
+> Reviewed-by: Mina Almasry <almasrymina@google.com>
+> Assisted-by: LLM
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+
+[Severity: Medium]
+This fixes the silent payload replacement in the !sg && !csum branch of
+skb_segment(), but there is no Fixes: or Cc: stable tag.
+
+The commit message says commit ab9414ed70bd ("net: skbuff: don't leave
+stale bytes in skb_copy_and_csum_bits()") is what made the replacement
+silent. That commit carries:
+
+    Fixes: 65249feb6b3d ("net: add support for skbs with unreadable frags")
+    Cc: stable@vger.kernel.org
+
+Could stable trees take ab9414ed70bd without this patch? Devmem TX would
+then send a zeroed payload under a valid TCP checksum, and the peer would
+accept it.
+
+Other patches in this series carry Fixes: tags, for example "net: skbuff:
+reject a negative length in skb_copy_and_csum_bits()" and "net: skbuff:
+check csum_start against len in skb_copy_and_csum_dev()".
+
+Should this one also name ab9414ed70bd (or 65249feb6b3d) in a Fixes: tag
+and Cc stable, so that both changes are backported together?
+
+> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> index 93c2f440b9ec..a2b52a5a61a9 100644
+> --- a/net/core/skbuff.c
+> +++ b/net/core/skbuff.c
+
+[ ... ]
+
+> @@ -4006,9 +4025,13 @@ void skb_copy_and_csum_dev(const struct sk_buff *skb, u8 *to)
+>  	skb_copy_from_linear_data(skb, to, csstart);
+>  
+>  	csum = 0;
+> -	if (csstart != skb->len)
+> -		csum = skb_copy_and_csum_bits(skb, csstart, to + csstart,
+> -					      skb->len - csstart);
+> +	/* On failure the rest of @to is zeroed; leave the checksum alone so
+> +	 * the frame goes out with a bad one.
+> +	 */
+> +	if (csstart != skb->len &&
+> +	    skb_copy_and_csum_bits(skb, csstart, to + csstart,
+> +				   skb->len - csstart, &csum))
+> +		return;
+
+[Severity: Low]
+Does this early return actually make the frame go out with a bad
+checksum?
+
+It skips the csum_fold() store, but nothing marks the checksum as invalid.
+The sanity check earlier in skb_copy_and_csum_dev() only bounds csstart
+by skb_headlen():
+
+	if (unlikely(csstart < 0 || csstart > skb_headlen(skb) ||
+		     (skb->ip_summed == CHECKSUM_PARTIAL &&
+		      csstart + skb->csum_offset + sizeof(__sum16) >
+		      skb->len))) {
+
+For CHECKSUM_PARTIAL, the field at csstart + csum_offset can therefore sit
+past the linear area. That puts it inside the region that
+skb_copy_and_csum_bits() zero-fills on failure:
+
+	if (!skb_frags_readable(skb)) {
+		/* Don't hand the caller a buffer with stale bytes in it. */
+		if (len > 0)
+			memset(to, 0, len);
+		return -EFAULT;
+	}
+
+For UDP over IPv4, a checksum of 0x0000 means "no checksum". Wouldn't the
+receiver then accept the zeroed payload?
+
+The same applies to a CHECKSUM_NONE UDP skb sent without a checksum. The
+headers are copied intact, only the payload is zeroed, and nothing marks
+the frame as bad.
+
+The commit message makes the same claim:
+
+    skb_copy_and_csum_dev() can't return an error, so it leaves the
+    checksum alone and the frame goes out with a bad one.
+
+None of the current callers (ep93xx_eth, ec_bhf, ksz884x, 8139too,
+sc92031, via-rhine) sets netmem_tx. validate_xmit_unreadable_skb()
+therefore drops unreadable skbs before they reach these drivers, and the
+remaining failure case needs an skb whose lengths are inconsistent.
+
+Should the comment and the commit message be narrowed? Alternatively,
+this path could store a non-zero value at csstuff that is known not to
+match, for CHECKSUM_PARTIAL. The code is unchanged at the end of the
+series.
+
+>  
+>  	if (skb->ip_summed == CHECKSUM_PARTIAL) {
+>  		long csstuff = csstart + skb->csum_offset;
+
+[ ... ]
+
 -- 
-2.43.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261019-b4-skbuff-bug-on-followups-v1-0-41dbef50b9f7%40toxicpanda.com
