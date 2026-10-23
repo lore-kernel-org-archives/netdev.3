@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792789807;
-	b=d9QRRMa77/sh4EhGTu6xMY5Js2MLWtWEOImGLS8jDgCpOkixq5wzjnZ6D/VwqUvYkxbM
-	 yW6np8JYPeIqmsnXfMm6HUQwJWKnog9tZZnjhQK73X3xrLxpxi6UExjoyZyNacyTuEgmt
-	 HtwZyGQ3gqLJMTT8HhiQr6GOkznfY+QAcRtO9KGeWVCmZQRsHsYawQRa+e/2WxDzgF1tm
-	 KJcBjf1UQEvn2+QLkMeU2BDy1fVDtI7grj6eo0lEHQogxhABB/Jm+dqwHfphf3FhHwN+d
-	 C0E6/bf+sSecKzNTsB0SgxmJJSdwcIpYG22IZe0KTiyoWDT7FyGFGEDUnKZbZ5pBI+w==
+	t=1792789808;
+	b=fAOpenLyuGqaXAI3ifFvirgBG/w7z36ZO4o0uZd+BxPypMTRhFgZEtH4EXP0SWsskSyt
+	 gaDtZ68lDUP1br4dU0MB0KZmaVnurUK9+Z7MTxPhf8phFRW6GR86xw1QtjHLeIor6FQNa
+	 Lanx73Ifd9qYyHZliUHE7vEhMI/Ng/JXUrUHFZizwrQk4peG3RwZuRM3M1DeSeOLFnWVZ
+	 gPO96yLPwX+Iq4I4gJjFBdxkIjPzpm9OY4zQWJqieahCBciq9EWia3tWPL2Avaf5v+FMU
+	 y+RXZ3skLRRxjNn+WRjVhjk5oszBfRAG6dnGwXRylNuMzQBknksGu7H3zQkWRFST/QA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792789807;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792789808;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=hTEhseTLH7HIhksF18xyE38vjWMf35frnF21UfwVqGE=;
-	b=LtbgnT8S5YE6BNVsRIoE2bcHEs/gDmw1bKUjCUryYSSYR3pcsgROmPaoO13XmoToKIGI
-	 C2xwdp5Obc7cBbcib8C9EKXmVhRQa6DK3h4lLGlGV/L4eC3XPH6sHEXfT5e+9lsQ+rlOh
-	 JtE5cQP2lyGiR6mU0pzB6bNc47RVLYLyA/OroIxdSBANHtbzRDomJgS2nRivs3Osb7Kkw
-	 lr0DaRljZl0oQN5rOfCuuaaNHRyF0WQ0AewNVtNlHhzpBfrdAPfqnrm2ngunajgFRjWjI
-	 stXeEk+I+HAnbLkIM3tDvyfaqHbQrivWnJ8Dqdl4weBTywz7P+YfbRtcrdAQM80TI3w==
+	bh=aNINpD0OqmqNIeIsXPCMxFESLxmzCmTKDHZXUaQzoLQ=;
+	b=TJuJ7W6TvkBrRmWBeR7Cce5j540d3x8/l4zLP+wSziu8nmRFOkeSkuPCppzCcXx25ZJL
+	 ra2Ewhngy9F22uIe1FM0GAAFx2kiII9kkXJgNQJ527uzfINxoD/VMH9BR6N3rKoU9RbbT
+	 TuN8tuFweja6dwjOwnaXkLEIOK1bnZxufu8z5vCTjEzQTQV7EXJocMqiqdsj2AKnlCDXM
+	 tFr9p8HNK0lJQONvzi6ma1Ha6vIH6Kofo/tTyNV8mQpOaRwpJAncFEPWZNyQFH8I1cGOn
+	 vgBJB8yJLfi87MwkR+k0Ng/DnyM3/PTzbuZp6AGFtO95JonnOFx2vP0KdK+ERXmtY4w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A1BQ3sPg;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gXhLbcs+;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C73E8606A31B;
-	Fri, 23 Oct 2026 21:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F316606A328;
+	Fri, 23 Oct 2026 21:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A1BQ3sPg
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5488B1F01825;
-	Fri, 23 Oct 2026 21:10:06 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gXhLbcs+
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C80101F01825;
+	Fri, 23 Oct 2026 21:10:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792789806;
-	bh=hTEhseTLH7HIhksF18xyE38vjWMf35frnF21UfwVqGE=;
+	s=k20260515; t=1792789807;
+	bh=aNINpD0OqmqNIeIsXPCMxFESLxmzCmTKDHZXUaQzoLQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=A1BQ3sPguMRmn369LTM6GD9Dns8bi7n3k9S0dN3chfx4SShfFJDICqvfs8syG0O72
-	 XLs0pRNo78IAnsrw6swJ4UipJAxUuXv3oW/eLHTeE41+gVs9ikn7yvDk3lj97IGq+n
-	 iL6y1ewN6FW8IEbWJuQfInrs3V3uMMGTsz8sRpheVlgmQlyEep43Zg+btU3Az2/per
-	 9k2Obq1wWylDSQHpar5NvMSMkpvJ59YkrHiKMnzJAidmHssUtuig/29kVvk6gHR4q+
-	 7mto9tz10dxqX6QqUKVlH+ctmfGuE8tO1G28r44wWdMlJGFWGMExvL8fjF0cbEwsEG
-	 /MLoe7AiQkTTA==
+	b=gXhLbcs+2GvBbodeWXnIW1pHMKWi4m5LdZZuN/0istfhdEOzdKs8rWUr2AvJOsLJj
+	 98m6a3Bw/omDsOuC//vDA4p2sO6Oa8Vphj72M5z3cty0DxMpXXNoSFQMb/V6if6B0O
+	 c1GPh+UjvulHJmeOsKJUBpcGFAzfenKjvjvrXzy+AYtTV70FzAR9OTJn1xypnjusii
+	 mKwVE+yuP157bK9MEf6YINU9FQxnpeQdi8mp5wFtNbjIIgIzH5BMl7kmBT8GJnayHr
+	 tVAwsbtIpE9N4DKfKkb6TEBY8HtNobRxp1CzVPUvYcVnvVpMaVp+xqbFuA2NVGzQH8
+	 B2qP5LKQ97r+w==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 445C2391B157;
-	Fri, 23 Oct 2026 21:10:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BE56F391B157;
+	Fri, 23 Oct 2026 21:10:07 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,38 +54,38 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] selftests: gro: remove unused variable total_data
+Subject: Re: [PATCH net v2] net: sparx5: fix tx DCB index drift in fdma xmit
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179278980508.1272863.2218189663922008581.git-patchwork-notify@kernel.org>
-Date: Fri, 23 Oct 2026 21:10:05 +0000
-References: <20261022-self_unused_var-v1-1-8ab10a6b7f44@kylinos.cn>
-In-Reply-To: <20261022-self_unused_var-v1-1-8ab10a6b7f44@kylinos.cn>
-To: Hangbin Liu <hangbin.liu@linux.dev>
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, shuah@kernel.org, willemb@google.com,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, liuhangbin@kylinos.cn
+ <179278980631.1272863.10742886644709270848.git-patchwork-notify@kernel.org>
+Date: Fri, 23 Oct 2026 21:10:06 +0000
+References: <20261021-sparx5-fdma-last-dcb-v2-1-7b8fabdb9239@microchip.com>
+In-Reply-To: <20261021-sparx5-fdma-last-dcb-v2-1-7b8fabdb9239@microchip.com>
+To: Daniel Machon <daniel.machon@microchip.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, Steen.Hegelund@microchip.com,
+ UNGLinuxDriver@microchip.com, jensemil.schulzostergaard@microchip.com,
+ horatiu.vultur@microchip.com, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 22 Oct 2026 11:09:35 +0800 you wrote:
-> From: Hangbin Liu <liuhangbin@kylinos.cn>
-> 
-> I hit a build warning when building the net selftests.
-> 
->   gro.c: In function 'check_capacity_pkts':                                                                                                                                                                                     gro.c:1249:13: warning: variable 'total_data' set but not used [-Wunused-but-set-variable=]
->    1249 |         int total_data = 0;
->         |             ^~~~~~~~~~
+On Wed, 21 Oct 2026 16:04:59 +0200 you wrote:
+> sparx5_fdma_xmit() advances dcb_index before checking that the FDMA is
+> done with the DCB, and does not undo the advance when the check fails.
+> Before commit f4aa7e361ae2 ("net: sparx5: use FDMA library for adding
+> DCB's in the tx path") the next DCB was always the one after last_dcb.
+> Since then dcb_index drifts one DCB further away from last_dcb on every
+> failed transmit.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] selftests: gro: remove unused variable total_data
-    https://git.kernel.org/netdev/net/c/86537a8fb247
+  - [net,v2] net: sparx5: fix tx DCB index drift in fdma xmit
+    https://git.kernel.org/netdev/net/c/1df26063ab9b
 
 You are awesome, thank you!
 -- 
