@@ -1,67 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=130.117.225.111
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792714222;
-	b=dFms6N15kUpYjVQoGbm/e8e+qEP3mc1P9EiAH1G0yHXv1zl72nyqyPLyIy9jxcaFXXpt
-	 WU3UpwcPafY9v76EBR9xRSKLfWxJLJbW/erNi4fCVusnWuqzOK54Ng5eZGBNDjH+RX+NB
-	 MGjeYQSL3D8BCa8sjlfUNPAk+3xD9/CkZAVHdyKz6RIcnyrCSbvYYvsUqJ71E8d2xuwwK
-	 X/kp32jqSzKSKmbA8n/blTnvNbIAaiwn8M5hfLc3r3ZdU8rYJ/vK9JSBkwdio1zXvJ1uI
-	 Lv0ZS4BU6BQiLRnaTb1CyXlsYHb1/fUlSB7YXau86frhepiGu7aPrLbNutM5txFPh/w==
+	t=1792715889;
+	b=3SW8Dl+c7JPpGjfelrwiVBcdpeN/qlpOgMrFc3IzhhVAu7lckWHKqfzUqM7qWP9XHTBv
+	 P+ub0ESr+zCS4ANMxYZmkjWXt6mDuqV73yjLGybrb/dFRJCuvTxqTbfdQTiPK9Cs0H4yu
+	 KWTr4qIxDD+YQSR9yjA83+dzxlEiegO5ZEVh9TeGh218jORFqKiNnwSy++rP2uCNZV8IE
+	 rwJ5rnp0msRRQctCNut/xWfNmsTNapTiB6XZj22Rcqy2XXfm0ewbd6o8V3eySSGjfZv7U
+	 NxBE850hjzKDXSnuJpAE6jf1dDqHeM6gsF+ewNKQqSeqOT7hI//bXAX2iE5E+1MuItA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792714222;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=OIBSFohu5Q9kAcAnC9laJfzHMojn+bgUV5gqQvvzvDE=;
-	b=Dv74quRfuLOtBL8fgpnZNCXdmVI2OA7Frx1ao2yCM0essXYjKF76He9PEqpp7QtPldES
-	 a3RTWFcUXHOtYRuUNkthYUdOC3X4Ac5QvVgxMH/9i7PwfMqCSEI9I6wNxutiXZkcEoSsI
-	 bmOyGtggMskaDt4VurHZlXWdC2l/uL44dGJlbkhGpZPenAzvy0VNBtTRS+S81LRIVMY4T
-	 9q0AUD51aOjtoc89AXmt+2SdscuxxR4pPE+qd+oZwcoONXcS9g5PE/P3JktGY4PEEusju
-	 J72H75qdEPOCdV/OY1tXVlYIdxhciPQnj0J2qQ9X+s9gTTgW7NvBiBp9ZGEMJzkh6xg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792715889;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=l0aNMUBAxnuhYZ7xObvgrWURvAm+XNeo6dvH8GTH4Hg=;
+	b=1vsIuPK1oCCh3xVVeGCdJimWzFO6tMrtULwgxXR7dQa6Uqo0Ta91+mY6w/cdDxilIJti
+	 zdqywKdasqSj92HkAwNlUUraY6SC3F4Uv7C1i3FA0fqvPPWCePg7NC4yBbvO40EKlZGAX
+	 mVuBphfLd9b/EVyj95yRqJuJzW61jClzhg8VT/dtGOqvEyqpln0f2JoZjFzaEVj1lr1FQ
+	 wnQ1uj3ZwlBvuVz3g0Q7itVeeBiiFR2Rv4Fc1WwglQHvPPrC2N7nzCTZFAi49pdnrkRYE
+	 UbdUnwvfW2wtDrCiggwGzmTfr/lmPZSGfbBr4qH6XBNt3QDJRjG7QUboYjG7rC4y7Zw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=virtuozzo.com;
-	spf=pass smtp.mailfrom=virtuozzo.com;
-	dkim=pass header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=relay header.b=hxAUwxzo;
-	arc=none smtp.remote-ip=130.117.225.111
-Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=N39aVhdl;
+	arc=none smtp.remote-ip=209.85.208.42
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8651606A319;
-	Fri, 23 Oct 2026 00:10:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D8651606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92143606A319
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 00:38:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 92143606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=relay header.b=hxAUwxzo
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
-	Content-Type; bh=OIBSFohu5Q9kAcAnC9laJfzHMojn+bgUV5gqQvvzvDE=; b=hxAUwxzoqFCv
-	ScpuTX+tzy5eaos1xz/buQ5KYzMoTTdMH3AblIpthF8so7MjibU28tsJo3SOMBBTCG8Zy/zZyJKie
-	Isn0goM3Iu9oQSq+AW8N6+gS/YWcQT8W71NE3EfajpydxL1GH2CgMhxMztRaOvSXIxZTaJcvhOfjL
-	ERafw+5kPMuhP9l+RlcRV4Pp2VIliggvfM/2naC/C++3AjEFLmgebmunhFLYEpQcMflVStDlpWQhB
-	3lmTIlmT/whs3NExc7VlEQICDZJrHzcn8V/aKmg/++02SLMGuf+6JJ+Z8ylJUDN7cME4IGwlBLPSb
-	MPAMeaBhlt4UeKdmpo6dWg==;
-Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=LekKit-T14)
-	by relay.virtuozzo.com with esmtp (Exim 4.96)
-	(envelope-from <eva.kurchatova@virtuozzo.com>)
-	id 1xK2nX-009rzx-1a;
-	Fri, 23 Oct 2026 02:09:58 +0200
-From: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Cosmin Ratiu <cratiu@nvidia.com>
-Cc: linux-kernel@vger.kernel.org,
-	syzbot+c6c86a1c56b5131f2d97@syzkaller.appspotmail.com,
-	Eva Kurchatova <eva.kurchatova@virtuozzo.com>,
-	netdev@vger.kernel.org
-Subject: [PATCH] net: fix self-deadlock when an upper disables a feature of its lower
-Date: Fri, 23 Oct 2026 03:09:36 +0300
-Message-ID: <20261023000951.237641-1-eva.kurchatova@virtuozzo.com>
-X-Mailer: git-send-email 2.56.0
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=N39aVhdl
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6b3dc272dcfso376629a12.3
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:38:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792715887; x=1793320687; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=l0aNMUBAxnuhYZ7xObvgrWURvAm+XNeo6dvH8GTH4Hg=;
+        b=N39aVhdl6IMd1M3+qfnOig0hSPZ8DfQ4o3cZzy4IfaAaA58Zkumr/8RhACNraKvlZq
+         4kSQ7L+0lz/ih6rAGcHcTVoOnUf6JFopsdRgfJnP+rPay+j+nl4NA+8GDuAGSH5aQ8hX
+         l8wtF2nb5to4RA1Ce9A4QXiL26sE08Ee+tKdVo95umJJ3S0i2v6nEmX5S2ClpeU9rs74
+         N8w2ETQSFQ2P4f2Vpc7PyD1yXRZ4+ThW3OoBuStEsGvykPgdDRU7CmuQWirvxhviJGdj
+         0gejf1+7/R4xr/uZas4WO1g+rcT0SauHvN9nNmzDJmS/Rrms1MB3EqiZP5H6An7qfx/S
+         BcbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792715887; x=1793320687;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=l0aNMUBAxnuhYZ7xObvgrWURvAm+XNeo6dvH8GTH4Hg=;
+        b=e7T8rLWEd3b5vb2LpwDaWPwKNodrkKSMoHdgD255MznhovvyuuhFcSdV8hnZ1gTDZv
+         mQ+TIVl4oK8tFGKEgGwFLXTEzCaWqpN6NQF732tCGDfhZGKfwyAtwORTJsAIh+8Do/KJ
+         KpSZkD4hV/MGV3lOEjmdR+cwG2Zs8MlRMBcZ8a5AoXgbgRfVXOJE7aaayvuRZLAo23ZZ
+         FpZVjFyAnPuSV3E0Wrje4H2fCH9q6XNa2rnl5VmDanq/l7STpkeOFWB9QugmStvMhryB
+         3tVOMcVmrJGLQiI2PhLH2QVA2DZFS2r/ge/BS3kg0NcRB/qxbSUxpHsxFwlh3zvOEboc
+         LxYw==
+X-Gm-Message-State: AFq9FYLuPKPqLMesAmzjYMjn0oBByiJJ8G3g6bbC0xXNEZdqvA5Wej5T
+	ktVXqctfK9jpNLwjHSrrF1UlEiOTye2E1YrL+ujAXCimBm0067gzyfNQs6bThg==
+X-Gm-Gg: AYBFou0N6eIh212RDCjNnarABiK6Izwj7I+g+7YNCjE9MMcxoMPuG9W6J99TAMhOlB3
+	TvoO9I0fyZxuJHgznEczeesIHUVwo/ciRq/e3fQZXbFOnMeth4AEBV2vWGY9WoWC/k4jF3TbvOR
+	vizBiy3WLp5hyPgTHXGkz3NWeyxOVSBD2IvJgurAlzUMCSSp/4vo2yqAhOO+c5dHhVAeyhiWhp+
+	py6U5H+Yh5hBmbO+vS5wh+gNW3o2hPyAekoMOFAK8LMdVeLw5h3MQgav/B70g5hZnPAh/Nmzdn1
+	yC3JRhHfDqJ6ollvU36OVvkUh514BfFT4xB0RZ9A+05cI3XZIPrSYyyWlrw+OBKEjjiijXyo2Tm
+	1kJEoIqNE9we/eIDu/CEO/E4YqNd23+Q+q+bCsnMBWfiOtVuNuZEKSsusln9wWbMRUrCOD4mAS2
+	Kc2p+8aMvcozGGzszTggyWY9i9kSFOguLieAqmCpmcFZNvOqBv1MhkneVW4drnSxGqECl4VGqlb
+	9TwltRpx/3O01f41K895OZJN5D51Xonh1zUIBOAGwqFs2OATGCzW/c77YQZDAbiGpLG/i0YHtjH
+	alDmJRXDLshpHVn6jZldsiLVeF2NCNo3BE0ZGw==
+X-Received: by 2002:a05:6402:2421:b0:6b2:e2:d965 with SMTP id 4fb4d7f45d1cf-6b432c5c21emr1409169a12.32.1792715886836;
+        Thu, 22 Oct 2026 17:38:06 -0700 (PDT)
+Received: from kali (83.8.59.162.ipv4.supernova.orange.pl. [83.8.59.162])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b432c77780sm435691a12.13.2026.10.22.17.38.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Oct 2026 17:38:05 -0700 (PDT)
+From: Kamil Sawicki <user148783812897@gmail.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Subject: [PATCH net] net: limit priority VLAN untag depth
+Date: Thu, 22 Oct 2026 20:37:50 -0400
+Message-ID: <20261023003750.1133904-1-user148783812897@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -73,163 +97,70 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When an upper device ends up without a NETIF_F_UPPER_DISABLES feature
-(LRO) that its lower device has, netdev_sync_lower_features() disables
-it on the lower device, taking the lower's instance lock since commit
-af5f54b0ef9e ("net: Lock lower level devices when updating features").
+The priority VLAN receive path can repeatedly remove VID 0 tags and retry
+packet processing. Unlike the read-only VLAN protocol parser, this path has
+no limit on the number of nested tags it consumes.
 
-Upper devices recompute their features in response to NETDEV_FEAT_CHANGE
-of the lower device, and for ops locked devices that notification is
-sent with the lower's instance lock held, e.g. from ethtool. The task
-then blocks on the lock it already holds:
+Each skb_vlan_untag() advances skb->data and resets header offsets. The
+offsets are stored in 16-bit fields. With enough nested tags, the network
+or transport offset can wrap. A later protocol handler can then derive a
+large pull length from the wrapped offsets and access memory outside the
+skb allocation.
 
-  dev_ethtool()                        takes lower's instance lock
-    netdev_features_change(lower)
-      <upper>_device_event()
-        netdev_update_features(upper)
-          netdev_sync_lower_features()
-            netdev_lock_ops(lower)     deadlock
+Apply the existing VLAN_MAX_DEPTH limit to the exceptional VID 0 retry.
+Count the tag already stored in skb VLAN metadata as the first level, then
+stop before untagging a ninth level. Keep the accounting inside this
+uncommon branch so the regular VLAN receive path is unaffected.
 
-Triggered by enabling mlx5 LRO on a host with VM macvtaps on top of it:
-
-  INFO: task ethtool:5963 blocked for more than 122 seconds.
-  Call Trace:
-   __mutex_lock.constprop.0
-   __netdev_update_features
-   netdev_update_features
-   macvlan_device_event
-   notifier_call_chain
-   netdev_features_change
-   ethnl_set_features
-  INFO: task ethtool:5963 is blocked on a mutex likely owned by task ethtool:5963.
-
-Reproduced with these upper device configurations, and netdevsim as the
-ops-locked lower device.
-
- - macsec with LRO in hw_features, but masked by macsec_fix_features().
- - macvtap without LRO enabled via TUNSETOFFLOAD.
- - macvlan, bond or team enslaved to a VRF or batman-adv device.
-
-There is no way to tell whether the current task owns the lower instance
-lock. Try to take it, and otherwise leave the job to netdev_work, which
-disables the features the uppers lack under the lower's instance lock.
-In the deadlock case above, the lock holder is the context that sent
-NETDEV_FEAT_CHANGE, so steal the pending work at the end of
-netdev_features_change() and run it inline, like netif_rx_mode_sync()
-does for rx_mode. The lower device's features are then consistent with
-its uppers when the operation returns, as before. The work only runs
-asynchronously if an unrelated task held the lock.
-
-Tested in QEMU with lockdep enabled. The stacks above hang without this
-patch, and with it the features end up disabled on the lower device
-without lockdep reports.
-
-Stacks with bridge, bond, team, ipvlan and VLAN on top of netdevsim
-behave as before: these call dev_disable_lro() on their ports.
-
-Fixes: af5f54b0ef9e ("net: Lock lower level devices when updating features")
-Reported-by: syzbot+c6c86a1c56b5131f2d97@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6a6be82b.77639fcc.3d4fd0.0014.GAE@google.com/
-Signed-off-by: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
+Fixes: 36b2f61a42c2 ("net: handle 802.1P vlan 0 packets properly")
+Cc: stable@vger.kernel.org
+Assisted-by: openai:gpt-5.6-sol
+Signed-off-by: Kamil Sawicki <user148783812897@gmail.com>
 ---
- net/core/dev.c         | 39 ++++++++++++++++++++++++++++++++++++++-
- net/core/dev.h         |  3 +++
- net/core/netdev_work.c |  2 ++
- 3 files changed, 43 insertions(+), 1 deletion(-)
+Tested on net/main f4377bf85887 (7.3-rc7) with KASAN. The patched kernel
+blocked the nested vhost/TAP trigger after eight untag calls on five fresh
+boots, with no tcp_v4_rcv call. The eight/nine-tag boundary, nonlinear
+GSO, 32 MiB BIG TCP and fragmented-head tests passed.
+
+An unpatched protocol-253 control executed 31 calls to
+skb_copy_and_csum_bits() with offset 65516 and length 548. A direct shadow
+probe recorded a 20-byte wrapped linear source outside the skb allocation;
+all four Generic-KASAN shadow bytes were zero. The patched control completed
+the same workload with zero matching sink calls and zero shadow-probe hits.
+
+Allyesconfig and allmodconfig W=1 builds completed with CONFIG_WERROR=
+because unrelated existing warnings stopped the default full builds. Both
+produced vmlinux and bzImage, and net/core/dev.c emitted no warnings.
+
+ net/core/dev.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/net/core/dev.c b/net/core/dev.c
-index e76762e29360..d3945140766f 100644
+index e76762e29360ea..b40efea27dc292 100644
 --- a/net/core/dev.c
 +++ b/net/core/dev.c
-@@ -1610,6 +1610,12 @@ int dev_get_alias(const struct net_device *dev, char *name, size_t len)
- void netdev_features_change(struct net_device *dev)
- {
- 	call_netdevice_notifiers(NETDEV_FEAT_CHANGE, dev);
-+
-+	/* Uppers reacting to the notification couldn't take our instance
-+	 * lock to disable features they lack, do it now.
-+	 */
-+	if (__netdev_work_core_cancel(dev, NETDEV_WORK_SYNC_UPPERS))
-+		netif_sync_upper_disables(dev);
- }
- EXPORT_SYMBOL(netdev_features_change);
+@@ -6198,6 +6198,8 @@ static int __netif_receive_skb_core(struct sk_buff **pskb, bool pfmemalloc,
+ 	}
  
-@@ -10968,6 +10974,28 @@ static netdev_features_t netdev_sync_upper_features(struct net_device *lower,
- 	return features;
- }
- 
-+/* Disable the features of @dev which any of its upper devices has disabled,
-+ * deferred from netdev_sync_lower_features().
-+ */
-+void netif_sync_upper_disables(struct net_device *dev)
-+{
-+	netdev_features_t disable = 0;
-+	struct net_device *upper;
-+	struct list_head *iter;
+ 	if (unlikely(skb_vlan_tag_present(skb)) && !netdev_uses_dsa(skb->dev)) {
++		unsigned int vlan_depth = 1;
 +
-+	netdev_for_each_upper_dev_rcu(dev, upper, iter)
-+		disable |= ~upper->features;
-+	disable &= NETIF_F_UPPER_DISABLES & dev->features;
-+	if (!disable)
-+		return;
+ check_vlan_id:
+ 		if (skb_vlan_tag_get_id(skb)) {
+ 			/* Vlan id is non 0 and vlan_do_receive() above couldn't
+@@ -6209,6 +6211,10 @@ static int __netif_receive_skb_core(struct sk_buff **pskb, bool pfmemalloc,
+ 			 * 802.1Q or 802.1AD and vlan_do_receive() above could
+ 			 * not find vlan dev for vlan id 0.
+ 			 */
++			if (unlikely(vlan_depth >= VLAN_MAX_DEPTH))
++				goto drop;
 +
-+	dev->wanted_features &= ~disable;
-+	netdev_update_features(dev);
-+
-+	if (unlikely(dev->features & disable))
-+		netdev_WARN(dev, "failed to disable %pNF!\n", &disable);
-+}
-+
- static void netdev_sync_lower_features(struct net_device *upper,
- 	struct net_device *lower, netdev_features_t features)
- {
-@@ -10980,7 +11008,16 @@ static void netdev_sync_lower_features(struct net_device *upper,
- 		if (!(features & feature) && (lower->features & feature)) {
- 			netdev_dbg(upper, "Disabling feature %pNF on lower dev %s.\n",
- 				   &feature, lower->name);
--			netdev_lock_ops(lower);
-+			/* The caller may hold the lower's instance lock already,
-+			 * e.g. when the upper reacts to NETDEV_FEAT_CHANGE of
-+			 * the lower. Don't wait for it, let netdev_work disable
-+			 * the feature instead.
-+			 */
-+			if (netdev_need_ops_lock(lower) && !netdev_trylock(lower)) {
-+				__netdev_work_core_sched(lower,
-+							 NETDEV_WORK_SYNC_UPPERS);
-+				continue;
-+			}
- 			lower->wanted_features &= ~feature;
- 			__netdev_update_features(lower);
- 
-diff --git a/net/core/dev.h b/net/core/dev.h
-index 04fb0e9a571e..c3d9d66bfb5b 100644
---- a/net/core/dev.h
-+++ b/net/core/dev.h
-@@ -174,8 +174,11 @@ void netif_rx_mode_cancel_retry(struct net_device *dev);
- /* Events for the async netdev work, tracked in netdev->work_core_pending. */
- enum netdev_work_core {
- 	NETDEV_WORK_RX_MODE	= BIT(0),	/* run the rx_mode update */
-+	NETDEV_WORK_SYNC_UPPERS	= BIT(1),	/* disable features uppers lack */
- };
- 
-+void netif_sync_upper_disables(struct net_device *dev);
-+
- void __netdev_work_core_sched(struct net_device *dev, unsigned long event);
- unsigned long
- __netdev_work_core_cancel(struct net_device *dev, unsigned long mask);
-diff --git a/net/core/netdev_work.c b/net/core/netdev_work.c
-index e721a06d58df..5a608ba40389 100644
---- a/net/core/netdev_work.c
-+++ b/net/core/netdev_work.c
-@@ -123,6 +123,8 @@ static void netdev_work_run(struct net_device *dev, unsigned long events,
- 
- 	if (core & NETDEV_WORK_RX_MODE)
- 		netif_rx_mode_run(dev);
-+	if (core & NETDEV_WORK_SYNC_UPPERS)
-+		netif_sync_upper_disables(dev);
- 	if (events && dev->netdev_ops->ndo_work)
- 		dev->netdev_ops->ndo_work(dev, events);
- }
++			vlan_depth++;
+ 			__vlan_hwaccel_clear_tag(skb);
+ 			skb = skb_vlan_untag(skb);
+ 			if (unlikely(!skb))
+
+base-commit: f4377bf85887f57b59abb5479f7660a81ffe4449
 -- 
-2.56.0
+2.53.0
 
