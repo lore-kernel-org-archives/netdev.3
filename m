@@ -1,58 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792786886;
-	b=g4cBGNPQnJLI+dnguFuEju5CU8nk3ANhAmyHCOPSV2lI/GZ7xC7lelIw9rPSZ4+8grwO
-	 BCfB7h0q4IBQ+DVwg2BfPssuWpaMjyA08ZxCJ7pNgJQam+wFIxNS1SIFwyjAviqPlg2bw
-	 cTIdxswq9GFI4YHYFcU9tB5XjWhC0SPb3vUKNuvQK5VMSU6aVPSgHmbbFiog3EL41D50C
-	 WPUvb6dQNLvagdElXSDbrygdYVrHfogGop600xDQ0ki/bZOz8L7UF+c8s51Y3v+anV5Mi
-	 xXnDLsaCWxlf1zrqseQplYxhLg1LKv6tW/ykEwdkz1KJbIDFEtgebVpRoT3tYwjM1Gg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792786886;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=dVP3Ft8QhHtFHSq/MFQh+wRKC9dVjM8Wg5lboJkdPNE=;
-	b=t6KfQ1XNu8/eesKI4+sy5yz+W3cWtj2uKo4z69IDc2VwN/PTlE1APtTgQ7UqPjimLmdB
-	 Ugy9i6Pbz3zVaSNew0qG/IzOIR8dx/LSAkC9Y+Jb06RGvPB/sAGCi1srb32M897cHq0lx
-	 Ln+Gme7zCJQyFvpp27equK1F6+Hzb1coFm93wrvdDrxSJaZt4ECc20qAJM244v6ds5an5
-	 UC9jC1T7y0Q9sw1dYG8o9Kt+xIRaRjE8Gk7dXrJeqnkg4jh4Sjr6Uha6etqet4BMD9GKm
-	 aI5TwcrvNBQzCRaSpyDmuGs3MUGyrOAkER3zppESsFj2V+kdF3tzeHNCtIb82VF0IVA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="dpIPZD/Z";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.214.170
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1792786997;
+	b=Y4JpBk7KOAXKxqen/AdoOcu3MNEX5zEr2xZmjIGfo8oH+iumE78vt8k0QlEijxz6V3TV
+	 ywG2GNl5dq/6lkh12WelE2m/x7WtxuCRMibYMsXoS6izYWw+0lt2N/Mrud3SP7se/g+X5
+	 3nweteNtkEe4nwNELTzN7YdvFKiYUj3bhsPvlOp6dTtUmFW8HcM036gPkUNeSNxAXR6/L
+	 fOHRZFIDow+pCUbyDT1GkP98zfHOhKBJT+Do11TLeouyfN0UgbDzFyQ4WhzGDDVEtAWO+
+	 DNBnzb4M04c4As8dgYre7eDtDhr5s2+lnZ4SEPPo6hWPJkAXCqLZsMuwWatVorKk9mA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792786997;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=eVhNp0GGNRD3+5V43/lt1UQnV2SdTxNQyX5GFb3QiFw=;
+	b=eLP9sFnXI5gjX6ePpuvIR/W+Tm74CqdE4C7CkKz7rLYwm8yIz3dmXXs/fd8ZQlsG8oQk
+	 DXSGOUHHOKKRBQ7Wp55XgCUd/TC8O7eZSrlgwHFdsAGlGNSL8UZPfw03d36aEeFKuAXqw
+	 pIV3qvigJSDEmYNzmF3sQc/62oaATMhIJGznO9OXcFz0WFLNMrQ5AI9wGQPj2Aie4sWn3
+	 YpzlMsYdFH7UcB9Mjo8Zdd/ZZDBZ4Ddf/bZNxHZnwStk9f2ZUReEgZtxgYYE85l0tDLTT
+	 +OnJh4cUoaqZbOZYVcSYshu+Wbt5sPiXuFGu8vdDbqxHz4N15feLqeLZRv4xTlyg1pg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=eHsEekrz;
+	arc=fail smtp.remote-ip=209.85.214.170
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B6E606A321
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 20:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E7C606A31F
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 20:23:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 97E7C606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dpIPZD/Z
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD3D71F01828;
-	Fri, 23 Oct 2026 20:21:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792786886;
-	bh=dVP3Ft8QhHtFHSq/MFQh+wRKC9dVjM8Wg5lboJkdPNE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=dpIPZD/ZlhPZuQvD/AfeD2CfaSFss5YNJT04QlD5XFBGFLYXGAsnX0Q18xVg0m9gT
-	 E0dl5TyfaraSGJ2Wk0RZ5c1CO9d0kYsX27egPYVVR0G0BOVScd2jiW+hkMjWx0uffD
-	 hrkoQgVsNf0gB1lFNPSi33Ilml2E1XNTvpPDbdplTKIxxuNuPE5Xx5zKe1sQ4DKIbm
-	 6gfqpTASrhsNu//Uqk1OckrGlofD0fO3D+kVlF8VCivHhiLnFLNFTk48xJx0YhiiA1
-	 Fwg+PVSF1adFum5a9zAMZJw1FLth6JX0uN7aZtqGt1kRYsGWpFdijlugbkn6vKjEPR
-	 pnk838e/BDKLA==
-Subject:
- Re: [PATCH net 2/2] net: dsa: mxl862xx: reject bridge_id 0 from BRIDGE_ALLOC
-From: netdev-bot+sashiko@kernel.org
-To: memoriaru@foxmail.com
-Cc: netdev@vger.kernel.org, daniel@makrotopia.org, andrew@lunn.ch,
- olteanv@gmail.com, johan@kernel.org, kuba@kernel.org
-Date: Fri, 23 Oct 2026 20:21:25 +0000
-Message-ID: <179278688542.3134.16248009385402335155@kernel.org>
-In-Reply-To: <tencent_920A69A08AE91025A2F5D4ADC3E555862E07@qq.com>
-References: <tencent_920A69A08AE91025A2F5D4ADC3E555862E07@qq.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=eHsEekrz
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2db33db4de9so14545ad.0
+        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 13:23:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792786996; cv=none;
+        d=google.com; s=arc-20260327;
+        b=D4asTm8cGIyS5IEUaoHPzH2/OfSgpjIrNpiA/cKRIx8eP+0juqCSdzqq03y9EKPeTO
+         mGXQCXmi7a4bmBuX1uFmoK0LgFbMt7i85rNwfhLkXZyU11S8chWEwap5vNWpqE+3KF7+
+         eNotU5DfVT0qRz6cNpsyMOBxZlWDqFQjcg8mXK0XLoGdz9N5d35/Dv96y1f2dNbenhLa
+         GLodN+g0AMAcFCam6eYuq1ZTosHzSsDyy3BYEtiDvoR0PVe1qoJkz3rgcnN6WgHNYw3H
+         9zuvGJt6zFYlcStFF2yeRwKop8UVpMM3gcjMDgUB/qeAxWqZa5xeWB3L3Dp5hbHTbP2J
+         ilYQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=eVhNp0GGNRD3+5V43/lt1UQnV2SdTxNQyX5GFb3QiFw=;
+        fh=4iEuEw3LFanWNczsr6J8e1ecx/qokkVS8jWKOsAML3Q=;
+        b=hTt7AUMe+uiuMif2fGOFI9OniCLne40IxqHzpbZ3WgCHYgI81jQnqnxqXPca+UxsJu
+         wQnRlt7rMu+vM8Cvp/nbPsD4bvN6vRgorPEcmAlrh3JStHVAEO4xUf6kaakBk4E19x+H
+         hmR8ekJD3FsZzZerifXf1VXC03HjBapsQWSjXaEG4JTLVzFCYaJmJ4PvpAsC/wyQQ17W
+         m7mia/1Pc40Ppz8J9zARrL3OK/n0sKZhXyOzrsShFOsCItzPBKVnCnyxBaMo7zE2cUDz
+         nmD0lnWOFWterRmZoSe5BEuDNBdpPpA/o242Ptb2MuxvlOfjDp17/JvIT4tgMJkGlOx7
+         iJsA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792786996; x=1793391796; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=eVhNp0GGNRD3+5V43/lt1UQnV2SdTxNQyX5GFb3QiFw=;
+        b=eHsEekrzH+WNvOVjVTKwBC09LBMfF8W64lcj+llyrf0t9Ik2ourunpLhQbKexVNbyR
+         8Ucx7wNPOkO4Eh5RblGLupEv/ctI+T6wqj07oW8dYvDHLtvODPLjRnSpVTaIXI8hqco6
+         96iW15hHb/6TakyOBRivdCbVKZyhSEh0KdidrLUGHm+oVkwe1j/ms7JkVSBAgHta+C8O
+         9nsIELnEwV4UDTUUL2fqly/kGcUz4zA5xWRU06wNmY9N8knVcrTOlui4Czl9HDMGh9E6
+         BMxRTQyEIEksBH7zMxG1oHeRFOekmyykS6/V4Nk71zuPjRBu5MhgH1JL6BpwAeuRezUm
+         7Rjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792786996; x=1793391796;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=eVhNp0GGNRD3+5V43/lt1UQnV2SdTxNQyX5GFb3QiFw=;
+        b=AnFJD6eqix67m0tRFv+PK5dhoFNJge/3ZhbEmrAIvdbluyhWsa5g9kluIO9UZRAyvg
+         sdrlTl8Dl54E71zGySK/XlyJwnITmSX8b9r0rByO7QWiyoleT2cPqbcFFwouhCj2eR1a
+         JtmRFreJ3ZbPOLhapzDJXD6hi2ZUogtUoUigaIbeYIA9Xd0jSJXXHd8lK2IAZdmgvrv0
+         Qii+n9NCdMD/M7s2z19abzrqOtbuTp64kY7YWhaLERMY/JUJy5RS9Dwi2TYKeMg9RnJc
+         DXhXZeNOCYfs6Aa/zwEsFBTOsntNnOjU6i5zcl30bY37JRHin3dRcE//lgTAQEolI6+z
+         heEw==
+X-Forwarded-Encrypted: i=1; AKwUvBySrJf2Ase7U8fWDgIjipH0+2+vO+CKsJDcw5ByTM3dC1ibWP/9XcP6NcKZdWAjoa9r1oMDx0o=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLWpI61FfBN7nnZVMsjzno3sAcH1u4JfPZEUUVWj81TmSS4+4dm
+	Mf2KyschFvASqBAdt9JEYp+AnYNVFMPpjHI7kxqxisHoMnm+xUT2tiT+97n5xYZW/+sHSiC5jXL
+	CYIeb3YGf8VciRjbGD7O4/VJONCTFm4pZ8KO2Bnqf
+X-Gm-Gg: AYBFou0T/qJqbIRj6OQbeiLRSJIYsVse9gibL7HYwbG8vNPpJ8TtX0fV+adyX2Z4sWI
+	YTjTzOKRlUnGach+U4IW5eHKdDyv4k5OCge8647qQlgPXv8ybf4ZbO9AnR6Wor/wYQFemr8BoaW
+	l2s4sOi4+PJiL+mOf4FIgPxYbjeUZ+iB//81xHhIdk67fNLQr9WE2SIQpSyCXMyAg3duSyCRXli
+	CLWN5HyO5RwhIPnGrtqshPsXIANIiFHSOTulZNzAIQCshCK15V6ut/cbhEsUSCtNXZf2WdwgoTw
+	KR+T1VPlSIqi6T0tUjtJfJi1uqO5et1m6r8x9P1jDXIDOOOe6zQ8KT8G7aYiP3pWVCdEM5aOyjF
+	GvO7JcoNs6dTlVMx5/ghjAR8rZrfOjVzXH47Hgg==
+X-Received: by 2002:a17:903:3c6f:b0:2e5:4604:c37a with SMTP id
+ d9443c01a7336-2ea9c34d519mr322665ad.18.1792786995276; Fri, 23 Oct 2026
+ 13:23:15 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,193 +104,92 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+References: <20261003212241.3432303-1-lrizzo@google.com> <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
+ <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com>
+ <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org> <CAMOZA0+6kAbwgNwGTsCT5AqpwcZKz4pziEGC9UpHkNCVoqrF-Q@mail.gmail.com>
+ <20261022201229.GH3381610@ziepe.ca> <CAMOZA0KaanmevmvWS=M3gKfBeborzfCQTiF_xbSeYMWbozG7Mg@mail.gmail.com>
+ <20261023140107.GC3977851@ziepe.ca> <CAMOZA0J+MOLv+s4PAvsAK1jbasnbQRyHffZw1VEKutH9Vr6ODw@mail.gmail.com>
+ <20261023145023.GH3977851@ziepe.ca> <20261023102756.201315d7@kernel.org>
+In-Reply-To: <20261023102756.201315d7@kernel.org>
+From: Luigi Rizzo <lrizzo@google.com>
+Date: Fri, 23 Oct 2026 22:22:38 +0200
+X-Gm-Features: AclHuK8d6JZsEGtM0KlZDv9ie7EsPXi4sNCVttMkACFig7Laogxgi1nYEIBjAsw
+Message-ID: <CAMOZA0KZi1EkJaAFKfwOm8jo1ydyGh=W1RE0iMfte-ZQkOx9AA@mail.gmail.com>
+Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, "David Hildenbrand (Arm)" <david@kernel.org>, Luigi Rizzo <rizzo.unipi@gmail.com>, 
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
+	Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
+	Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, 
+	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+	Alexander Lobakin <aleksander.lobakin@intel.com>, Michael Chan <michael.chan@broadcom.com>, 
+	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-mm@kvack.org, driver-core@lists.linux.dev, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
+On Fri, Oct 23, 2026 at 7:27=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> On Fri, 23 Oct 2026 11:50:23 -0300 Jason Gunthorpe wrote:
+> > > Anyways, reading your next comments, are you suggesting that all
+> > > these functionalities should be implemented as pagepool extensions?
+> > > (2MB mappings and iommu backing, proper allocator of fragments out of=
+ larger
+> > > pages, device-less pagepools, multi-domain mappings, pagepool
+> > > as memory provider for skb heads, pagepool as memory provider for des=
+criptor
+> > > rings ?)
+> >
+> > netdev shouldn't be touching iommu, it can get a 2M page and map it
+> > using the normal DMA API. AFAIK there is not such a big reason to need
+> > any of these layering violations. They just make it easier on page
+> > pool..
+>
+> FWIW we're entirely happy on the netdev side to add this to page pool.
+> In fact the initial RFC I posted for "page pool memory providers"
+> was addressing this exact use case. I didn't push it forward due
+> to low time and suspicion that IOMMU folks would prefer a more generic
+> solution. Since then memory providers were pushed forward and merged
+> for dmabuf, and we have netlink APIs to configure things. So adding
+> large mappings should be SMOC.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 2
+Maybe technicalities, maybe not...
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Getting a 2MB contiguous and aligned page is only the first step, and
+the easy one.
 
-- [Medium] mxl862xx_allocate_bridge()
-  (drivers/net/dsa/mxl862xx/mxl862xx.c:587-606) still checks the device-…
-- [Medium] net: dsa: mxl862xx: off-by-one check order in
-  mxl862xx_port_fdb_dump()
-- [Low] The commit message does not mention one of the two hunks, and
-  that hunk has nothing to do with bridge_id.
-- [Low] The commit message has several gaps.
+Next we need to split it into 4K fragments that can be recycled
+without waiting for the entire 512 of them to be returned.
+This is not rocket science, but requires much more state
+that what fits in the struct page, so that's another layer that needs
+to be added to quickly access the state from the pfn.
+Essentially my dma_pmd_meta (because I could not/did not want to/ use
+fields in struct page to access ).
+Doing it in pagepool could reuse some fields in
+struct page to point to the metadata and simplify the implementation,
+but maybe leave people unhappy because now something may
+require an extra indirection.
 
---
+Then there is a question of resource management: when 512 fragments
+come out of a much larger page, deciding which one to recycle matters a lot=
+.
+Without a strategy, there is a significant risk of stranding a
+lot of lightly used 2M pages that cannot be returned because some
+fragments are in use.
+Again no rocket science but that takes some compromises (sorting
+based on usage ? periodically drain old pages ? etc) between
+effectiveness, code complexity and runtime cost.
 
-net: dsa: mxl862xx: reject bridge_id 0 from BRIDGE_ALLOC
+And then of course adapting to zero or many devices...
 
-This patch makes mxl862xx_allocate_bridge() return -EIO when the
-BRIDGE_ALLOC response carries bridge_id 0. That value is reserved by the
-API and collides with MXL862XX_DEFAULT_BRIDGE, which the CPU port uses.
-The patch also rewrites the comment on the iteration bound in
-mxl862xx_port_fdb_dump().
-
-> mxl862xx_allocate_bridge() only checks the transport status (ret < 0)
-> and returns le16_to_cpu(bridge_id) verbatim.
-
-[Severity: Low]
-I have a few small questions about the commit message.
-
-The code being replaced checks "if (ret) return ret;", not ret < 0.
-Should the description match the code?
-
-Should this have a Fixes: tag? git blame shows all of
-mxl862xx_allocate_bridge() came from:
-
-Fixes: 340bdf984613 ("net: dsa: mxl862xx: implement bridge offloading")
-
-The message doesn't mention that 0 is also the "not allocated" value
-for priv->bridges[]:
-
-mxl862xx_port_bridge_join() {
-    ...
-	if (!priv->bridges[bridge.num]) {
-		ret = mxl862xx_allocate_bridge(priv);
-    ...
-}
-
-mxl862xx_get_fid() {
-    ...
-	case DSA_DB_BRIDGE:
-		if (!priv->bridges[db.bridge.num])
-			return -ENOENT;
-    ...
-}
-
-So with an id of 0, the bridge also looked unallocated. Each later join
-allocated it again, and bridge FDB and MDB operations failed with -ENOENT.
-Would it be worth describing this as well?
-
-Firmware that follows the API never returns 0, so this change guards
-against firmware that breaks the API. Could the message say so? It would
-help with net vs net-next and stable decisions.
-
-The Reported-by: trailer has the author's own address and there's no
-Closes: link. Is that intended?
-
-> diff --git a/drivers/net/dsa/mxl862xx/mxl862xx.c b/drivers/net/dsa/mxl862xx/mxl862xx.c
-> index 12cd40756a0c9..dbe20014d090e 100644
-> --- a/drivers/net/dsa/mxl862xx/mxl862xx.c
-> +++ b/drivers/net/dsa/mxl862xx/mxl862xx.c
-> @@ -593,7 +593,16 @@ static int mxl862xx_allocate_bridge(struct mxl862xx_priv *priv)
->  	if (ret)
->  		return ret;
->  
-> -	return le16_to_cpu(br_alloc.bridge_id);
-> +	/* Per the API spec, id 0 is not used for historic reasons. Accepting
-> +	 * it verbatim collides with MXL862XX_DEFAULT_BRIDGE (the CPU port),
-> +	 * silently merging the port's FID with the CPU port's filtering
-> +	 * domain.
-> +	 */
-> +	ret = le16_to_cpu(br_alloc.bridge_id);
-> +	if (ret == 0)
-> +		return -EIO;
-> +
-> +	return ret;
->  }
-
-[Severity: Medium]
-Is rejecting only 0 enough to cover what the commit message describes?
-Every other u16 value is still returned as a valid FID.
-
-The kernel-doc for struct mxl862xx_bridge_alloc in mxl862xx-api.h says:
-
- * @bridge_id: If the bridge allocation is successful, a valid ID will be
- *             returned in this field. Otherwise, INVALID_HANDLE is
- *             returned.
-
-The driver doesn't define or check INVALID_HANDLE. If it is ~0, as in
-the MaxLinear GSW API, 65535 would be accepted as a FID.
-
-The commit message also says "duplicate non-zero ids returned for two
-ports collapse their per-port FID isolation". However, nothing compares
-the returned id with priv->ports[*].fid or priv->bridges[*], so
-duplicates still get through.
-
-There's also no upper bound check against the hardware FID range.
-Commit 340bdf984613 says the switch supports at most 63 bridges.
-
-Both callers only check for ret < 0 and then use the value:
-
-mxl862xx_port_setup()
-    priv->ports[port].fid = ret;
-    -> mxl862xx_bridge_config_fwd(), mxl862xx_set_bridge_port()
-
-mxl862xx_port_bridge_join()
-    priv->bridges[bridge.num] = ret;
-    -> mxl862xx_sync_bridge_members(), mxl862xx_get_fid(), BRIDGE_FREE
-
-mxl862xx_port_fdb_del() matches an entry only by FID, VID and MAC. So if
-two domains get the same FID, deleting an FDB entry in one domain can
-remove an entry belonging to the other.
-
-Should this check also reject INVALID_HANDLE, ids outside the hardware
-range, and ids that are already in use?
-
-[ ... ]
-
-> @@ -1513,9 +1522,11 @@ static int mxl862xx_port_fdb_dump(struct dsa_switch *ds, int port,
->  		if (ret)
->  			return ret;
->  
-> -		/* The MAC table capacity is fixed by the device. A walk longer
-> -		 * than that means the device (or its firmware) is not
-> -		 * responding correctly; bail out instead of looping forever
-> +		/* The exact MAC table capacity is not part of the public
-> +		 * driver API. Use a conservative upper bound: 16k entries is
-> +		 * well above any documented table size for this family, while
-> +		 * a device that stopped responding correctly (e.g. firmware
-> +		 * crash mid-walk) would otherwise keep us looping forever
->  		 * with RTNL held.
->  		 */
->  		if (count++ >= MXL862XX_MAC_TABLE_FDB_SIZE) {
-
-[Severity: Medium]
-The previous patch introduced this, not this one, but this hunk
-rewrites the comment above it anyway. Is the bound checked in the
-right place?
-
-In mxl862xx_port_fdb_dump() the count check runs before the
-param.last test. The final MXL862XX_MAC_TABLEENTRYREAD response only
-sets last and carries no entry, but it is still counted against
-MXL862XX_MAC_TABLE_FDB_SIZE.
-
-With N valid entries the loop does N + 1 reads. On the last read,
-count is already N. If the table holds exactly
-MXL862XX_MAC_TABLE_FDB_SIZE entries, the dump returns -EIO and logs
-"FDB dump exceeded table capacity". The firmware ended the walk
-correctly, yet bridge fdb show fails on a full table.
-
-The macro name and the error message both call 16384 the table
-capacity. A full table is exactly the case the bound is meant to
-allow. Should the param.last test be moved above the count check?
-
-[Severity: Low]
-This isn't a bug, but this hunk has nothing to do with bridge_id, and the
-commit message doesn't mention it. It rewrites the comment that the
-previous patch in the series added ("net: dsa: mxl862xx: bound FDB dump
-walk by table capacity").
-
-Should it be squashed into that patch instead?
-
-The new comment says 16384 is not the table capacity, but the code
-around it still says it is:
-
-#define MXL862XX_MAC_TABLE_FDB_SIZE 16384
-...
-			dev_err(ds->dev, "FDB dump exceeded table capacity\n");
-
-The previous patch's subject also says "by table capacity". Should the
-macro name and the error message be changed to match the new comment?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/tencent_A56873DA4A296F5D794B6A5989A180A21C05%40qq.com
+cheers
+luigi
