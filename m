@@ -1,98 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.169
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792778526;
-	b=WOAn+Y0ewsOK2A9YYfwQ9DboNZGfPM+gTN85HFplNSZR645pF38OIJ4KrawJNHtgoxqf
-	 +eY48Ek8ZVHahIwPc35ba0PbBGcgc8sMZePoxwRls0TR9oHUQRqmwTzGdPqewxph7NUDi
-	 40rXZLvEw8Dk95laH6edgOUPatwwtznkUfZXHr+Qfnu6FioABMrewOqssnoT9Bff6Z41y
-	 +bxQcTzT1dQ7PwNZTmpBbMTfLQplgZ9tq5+nx+mtBHdaNtzkO5RumQWHOJEFHzRyVjTJI
-	 +7wtVyIAhhFjl1bQJnx9yjjVZ/YwqIwThHfNyPP9ABvJePIf0NFukomL3enu7Cgvssw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792778526;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=F8kKKkeVRH1C1ujyKt/WTDLWrsF0jQEilWBMIPiH9zQ=;
-	b=X2Zz/YQbxIuHz3pJEjzSl9j3MJnKPtLWv18v7YtBVWIe5lHw/T4mxG5qgt2yb1OoSZKA
-	 u7gP04+rL+XGKs2fz1rI8eDfXdVAdhLORLpkx8y/ZMeKAobq6DIAOdEkm/l98mPvgxkuL
-	 lEgmPJCtJ9+IHKHfzraXEkY35fpPwVEVDLizk1EyJq9WFIsbVm3iqU58nTy5iWBOX7S66
-	 p1UH6pNuU6rfegoOvudYWytq88gwy4M0zkN/VZ2S82MQSffgLREu2z/93/HmLEau2W6Cd
-	 5ACPGVD06SEZWNMowsGfEzCvt7E7HWSmuEse6rAzkqwubZN714WUzs3G5u3fGFDZXOw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mojatatu.com;
-	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=iLherPiJ;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.169
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792778551;
+	b=A3aVCNfhAGtQHRY8B7KnHJ0086ONGx9E2IVORw24eGtV92f7nR4rryidD9z+0ESsw87q
+	 tLz0zEDw+JItddCN/1KHbwOQO1ZluWqjSxmtjhZ2aN7NhHKvwjuyN/CgwSwrAp/xSoHzD
+	 CI9wK1MvS7fia4MBsko2BLIpiiJ99vfn4jKVBOC6LWRKDoAKnHoJIYmjPecfNilXx5TLc
+	 1Agg0ZD/JrCWPAV8jcNzVSa91XzpwEyoFLBD24DQR3yVKe/5xwAQr96ayBk18ovXBj/vV
+	 WwRBHzvYRWFaC0Bw87v7vu7mjFO8PkTnY/dQ+kIIGrV1wyyUbsF6/KOYJx3gHvGfDMg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792778551;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:From:
+	 Content-Language:To:Cc:Subject:Autocrypt:Organization:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=CMEcjyqbYi7Q+N1JbhJsvHIHtYi9Y7RyWzFbFSJN1OE=;
+	b=yi/Aoene9/jO2d3OBOaskrqmFNCFcaygC49U3EzsLIqxmS0b65HazMzWW/6lNjGa+e31
+	 1k7pysuMRPL9nFoytrfOLae7pUpRcsdlgqsluj/ug8PiFCYrxsmENOk+5gQzEpVI5xObg
+	 24ApWJVxySpmj+KfpRNBtT+Xq0yl5Hk7ipoF9O+3MSvCKNaE9dZOzFPt+W3gBFxhBBWJM
+	 tHKnkcDBX2Z432vpS/qVB3RaEWzA+UJy369zPH2LduF3Bk2UYR3AOuLuK7iEbQ0uG/0RN
+	 OVcWTvWqAeWFOzXP/ynRbI3p3+u6hX99ovRyS/A+g540gqB1qP3N9X1g7LY9aQDhq5Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JcodOzdl;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A524606A31B
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 18:02:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1A524606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A1FD606A31A
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 18:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=iLherPiJ
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-8a064fac8cbso670351b3a.1
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 11:02:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792778525; cv=none;
-        d=google.com; s=arc-20260327;
-        b=llJc9/iCAjcGDaxchtmF1lUq8awlWnNM0aYcJ+RMeTVfHQSLhB2aZxxo8Aa260wg+y
-         HIj4KR4B0mEoLwPT+OWsaODUqnJd1iq55zSLO4iOoyZvJF7MpHwMHvWwQgHNRLO2p5cT
-         x6Y3upDUP4AIU47k9pzFqJSZ5uGBWw/s7mbC6biA5dnD/O+VkHW735DvJd+wCFVwGqGS
-         qcaOqBN3JRqx1rOl53EcxBtAT2sNg4ot7z+oRCLw/boVY388j4IN47qLsCvlFhQ2w/of
-         qTi2WHigJ+jUG8CSPwBispzHxYMZ7kfHE8QR1reitruSR5G5kj+Q5mIxuZw3JPOUuG2w
-         cKvQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=F8kKKkeVRH1C1ujyKt/WTDLWrsF0jQEilWBMIPiH9zQ=;
-        fh=vRECJD16v2TSCK3PA2E216a4xPrseSw/C7vzaRh5znc=;
-        b=nL+D2zMYg8Q3SkpRxbnNJcE1hCAmL2l2cLwlsR44fbE8zLAZIYBtFg6W2lInlx4m9M
-         hJKIYcvSjEL3rgTu2CCEPPgKfONTB8gdl2QxwJ5ohiS27CwYrwKWJcDLEfHR9RoqJ/kd
-         rgILLmJy+UiIltI6Tz7pqu1LVc0JMPTLO2C/Q69vlYqwaKEMKNNvFLXfRuKtSVM4zKNj
-         HRjn4f8QCct6F3wAeEBH6LVp4QQRCo6MoyVh4LeVLT0DNkVt26suM9Ya8SqcfmeUuVZg
-         mKCb/WN2a9gG7l+dRMf/9+QBKrYV3Z2//4oaq8QSH89USaSFKfEfuJQSDR8X21Gd2jEO
-         +H8g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1792778525; x=1793383325; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=F8kKKkeVRH1C1ujyKt/WTDLWrsF0jQEilWBMIPiH9zQ=;
-        b=iLherPiJazIvBi/OrLC/L1EUCDN6c5EYuyrQAtv2gV735sg88WEkZCXOuviNrDbmta
-         74IJ2+IrblOk2tCK3R2d6j+wEfW55OukdYW/jvrTobnnuRBAHAa1mtcJ/7ieJm7v2aDu
-         OospGnmpYWGC8IAEVNAG2zWtbj7b9Bx3wCtSY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792778525; x=1793383325;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=F8kKKkeVRH1C1ujyKt/WTDLWrsF0jQEilWBMIPiH9zQ=;
-        b=zUHQElljoNM0f7sYvRJ/Y7f9jmbC9W2twH4vWMxLRVaFHX7oPcWv0tABIyZsWoNmyL
-         SfkqJKwJa31U7+WgnijHIWl94C2gWkzuNt0BLezALRTbpBwNhY+AYLI4/+52Sm5v3dRN
-         aFYU0fWWmbpfptorJJ2UgcDRCm4LBUU/RRdS+rJ4mIPyfYq1BAvpSfhdkP7AGQVQxazB
-         Xjpl4KIVbbeZ+G+b92y2sFQh5XPw7IsTwJFw5ZVHER1h1klxXNfXz7mV6ZprpM6lGY/E
-         DTiLfXN/1xKl2pIbR3GZeDvXSDlt1Y71YM3fb03AS9jcwcy5Ns1tsTqKngvjIcRvRUs3
-         sBiQ==
-X-Forwarded-Encrypted: i=1; AKwUvBx1tkD/KfLBqO1UQQiUzT9jeBQriOUbi0D01uEAgRf0eYnD5507YA4IG1ZLJ8039UY5tdzYj5w=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJDEdpSjP9rZGPs+gD3K7xvrT22MhfEs5+DzLONnAtT9Az3uSyG
-	1MWzRl4Ut72thPbFqSL1TsnSk37DmH+IAiZ1zSZvPtGYrOtNo/G2fQXBTqAGey2OfDU4DSdS8WO
-	qJEqfQ/By8zbTabp0wmwqGB5/A6LSWlPIoxdsnbmUfYmzDngmsnW+TA==
-X-Gm-Gg: AYBFou3DBLsJ5B32b2dSsEWWE50Pugl+zuXlqUoZPSG+mh1mtNPUL3rhrMV39cRml2r
-	oOP6DarwZSB1C62F1N3SVAE1FmcjL1cyJvkfEBOlXTCBFiyrd+sNYmaMZPpL77wRPQCdoDrbDzR
-	B0O+HhmJWf8SdLjLTvT8AFNHW+KKtdsKNHIwsEou1YenX+ZyQsddCeux5rYTuQjj91JDJPGE6WA
-	VuGoqL9o06tX7amlc088avfl3FNYIwquYuSNq0ke+fIjxjgjv7gOdjwu4JaeWxPMTK2ytGI0fuw
-	wu06yZ7sTsLmTPb3zjcu80lOiIHfo/K6ENZEKZO4bQzideOdhOsRjBnpBihO9EBAv7lCYA7nw8j
-	wa3cXclzKFg1eSZHOHLqV1Fj8EM/f9NGV/uUJUFLMY7NBlK3HeQgDjU7WIDhlrtjbOkJjdE2CM+
-	ogfJlY18HL148554I=
-X-Received: by 2002:a05:6a20:4328:b0:3e1:8a96:7bbb with SMTP id
- adf61e73a8af0-3e37669ae93mr2719334637.51.1792778525406; Fri, 23 Oct 2026
- 11:02:05 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JcodOzdl
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D2451F01825;
+	Fri, 23 Oct 2026 18:02:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792778551;
+	bh=CMEcjyqbYi7Q+N1JbhJsvHIHtYi9Y7RyWzFbFSJN1OE=;
+	h=Date:From:To:Cc:Subject;
+	b=JcodOzdlAPTeRCrnMRzc0z1UmeSSY4N8JK1cxe4sxmDRIOfE+ZYoT5DgQtAQ4LC3W
+	 y127dcw3YC2d8/gLTnmpSK9ARzo2WPjMi8PcO02I2AqyMMCFX09+DGszv3qMgvyj+/
+	 tcgQCNLVGcIWIy76sWhzIqkcPh/GkMhGiDzVe84wqTDp5YLxVn2yxTJ+DW1HkCDmts
+	 1HLPUdAnMDGanyryTGNPNR8F7dUn8Bct6Lr8w0BbhOmBxgXCJQH/JOE3WbI6UhFSF4
+	 1vP/vnm4ZDKDyKY9GMTmirrG95nNAGTR694bufFE2FbmmsQIJVYGjRt2Ggzuyxl2b4
+	 WT0eUOm/qHi/w==
+Message-ID: <861390d1-1fdc-4dcc-a431-236ddca42dfd@kernel.org>
+Date: Fri, 23 Oct 2026 20:02:27 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,112 +51,80 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261021155450.66934-1-phx0fer@gmail.com>
-In-Reply-To: <20261021155450.66934-1-phx0fer@gmail.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Fri, 23 Oct 2026 14:01:53 -0400
-X-Gm-Features: AclHuK-ubfVgOu4vslU3ch3G-Bg_NGM92UpB-RTtvTN9YazG8Y9e1DYiHE9MfEo
-Message-ID: <CAM0EoM=XC7V630n8P7_UhECTFDuJcP8XqeYnU+jUG68a78YteA@mail.gmail.com>
-Subject: Re: [PATCH net] net/sched: re-cap skb->queue_mapping before indexing dev->_tx[]
-To: Dudu Lu <phx0fer@gmail.com>
-Cc: jiri@resnulli.us, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird Beta
+From: Matthieu Baerts <matttbe@kernel.org>
+Content-Language: fr
+To: Gustavo Padovan <gus@collabora.com>
+Cc: Netdev <netdev@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>
+Subject: [TEST] Collabora's Netdev-CI: missing results
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 21, 2026 at 11:54=E2=80=AFAM Dudu Lu <phx0fer@gmail.com> wrote:
->
-> qdisc_restart() computes txq =3D skb_get_tx_queue(dev, skb), which indexe=
-s
-> dev->_tx[] with skb->queue_mapping and no bound.  A tc BPF program
-> attached to a transmit qdisc can store an arbitrary __sk_buff.queue_mappi=
-ng
-> after the tx queue was picked; that store is not re-capped on this path
-> (the existing cap in netdev_tx_queue_mapping() only covers the
-> skip_txqueue path), so an out-of-range mapping indexes past dev->_tx[]:
->
->   BUG: KASAN: slab-out-of-bounds in sch_direct_xmit+0x744/0x89c
->   Read of size 8 at addr ffff00000e0802d0 by task A-254-2_S4/100
->    sch_direct_xmit+0x744/0x89c
->    __qdisc_run+0x34c/0x1d04
->    __dev_queue_xmit+0x1aec/0x306c
->   Allocated by task 1: alloc_netdev_mqs+0x758/0xfa0
->
-> The same stale value is then handed to dev_hard_start_xmit(), which
-> reports the same fault.  Re-cap the mapping with netdev_cap_txqueue()
-> before it is used to pick the tx queue.
->
-> Fixes: 10c51b56232d ("net: add skb_get_tx_queue() helper")
-> Assisted-by: LLM
-> Signed-off-by: Dudu Lu <phx0fer@gmail.com>
-> ---
+Hi Gustavo,
 
-I did not look closely at the rest of your posting, I suspect there
-are similar issues in some of them:
-please please since you are using AI ask it to check if there is
-already a submission for what you are trying to fix on the list.
-See:
-https://lore.kernel.org/netdev/QDISC-MD1X.v4.r0.20261021042722-1@mojatatu.c=
-om/
+I'm working on the Netdev CI, and it looks like the Nvidia NVME runner
+on Collabora's side is frequently missing results:
 
-I got my report from sashiko after submitting a fix for a related
-area; hopefully your guy is not just scanning the mailing list...
+https://netdev.bots.linux.dev/flakes.html?tn-needle=collabora-nvidia-nvme&min-flip=0&br-pfx=net-next-hw
 
-cheers,
-jamal
+(Look at the non-coloured blocks.)
 
-> Tested base
-> -----------
-> Detected on Linux 7.3-rc4 (commit 93f51579e7df), arm64 QEMU guest.
-> Re-checked against mainline f47d223627f8 (v7.3-341): the affected code
-> is unchanged between the two, so the bug is still present there.
-> Checked against linux-next next-20261021 (commit 9a482184d910): the
-> affected code is unchanged there as well, so the bug is still present in
-> linux-next too.
->
-> Reproducer status
-> -----------------
-> A reproducer was written and executed on an arm64 QEMU guest (KASAN,
-> CONFIG_NET_SCH_PRIO=3Dy, cls_bpf); it fires at the claimed sink, and stil=
-l fires on
-> a kernel built with ea4d4b5dddb5 applied.  The reproducer source is not p=
-osted
-> here per Documentation/process/security-bugs.rst; it is available on requ=
-est.
->
-> Triggering conditions
-> ---------------------
-> CAP_NET_ADMIN (attach the classifier and qdisc).  The residual is the
-> store made by a tc BPF program attached to a transmit qdisc, which ea4d4b=
-5dddb5
-> explicitly scopes out.
->
-> Notes
-> -----
-> Built and checkpatch-clean: this patch was applied on top of 7.3-rc4
-> (commit 93f51579e7df) and a full arm64 kernel (defconfig) was built with
-> it -- no new warnings or errors.  scripts/checkpatch.pl reports 0 errors,
-> 0 warnings.
->
->  net/sched/sch_generic.c | 7 +++++++
->  1 file changed, 7 insertions(+)
->
-> diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
-> index 6f6a6f0d5eb0..c326d12942e5 100644
-> --- a/net/sched/sch_generic.c
-> +++ b/net/sched/sch_generic.c
-> @@ -432,6 +432,13 @@ static inline bool qdisc_restart(struct Qdisc *q, in=
-t *packets, int budget)
->                 root_lock =3D qdisc_lock(q);
->
->         dev =3D qdisc_dev(q);
-> +       /* A tc BPF program attached to a transmit qdisc can store an
-> +        * arbitrary skb->queue_mapping after the tx queue was picked, so
-> +        * the value reaching here is not necessarily one the device can
-> +        * serve.  Re-cap it before it indexes dev->_tx[].
-> +        */
-> +       skb_set_queue_mapping(skb,
-> +                             netdev_cap_txqueue(dev, skb_get_queue_mappi=
-ng(skb)));
->         txq =3D skb_get_tx_queue(dev, skb);
->
->         return sch_direct_xmit(skb, q, dev, txq, root_lock, validate);
+Is it normal? Do you mind looking at that please? :)
+
+I hope you are the right person to contact for this kind of issues. If
+not, could you please Cc the right people please?
+
+Apart from that, the single test seems to be stable!
+
+Note that when an active runner doesn't process a branch, we cannot mark
+the whole batch being validated as "not causing regression" because it
+is lacking some validations. So when this happens, the end result is
+marked as "pending". That's not an issue when it is once in a while, but
+here, it looks "too frequent" not to be reported.
+
+Cheers,
+Matt
