@@ -1,82 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.135
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792741992;
-	b=GYhFzZfzkqurnQry4EDcYAwKUN6Hstql8rK+Jg1fEK4gjJMoY+qWLU9Z3BTfOqIvkpMq
-	 ZUVpoPjTPoS6WIrimDsUzjPa12NnbxMDAKpMno6e+K5c7I/BxKw7OOlvbnkSCMXYy2x8c
-	 jKdSMapkvWGpajCZ5FgNCWWY+8+mhVdoonk6qKLWs7tE8T8r2H4ytE6k0KDxiPjuHzHMR
-	 lPRvToV8aVwz0pJZ7iYJTbS56I33OMk2JZLoG9omQdaokJaz42u74aYffeN9WkmtAvdwB
-	 AXdInVeUz36aGsdJ2QzhEPAlYXl1AcEvESiSHyLoDvY4y9JVS5X85xCs8CTS1k8xftg==
+	t=1792741997;
+	b=WIXn8tHMkVTTqk+NKY1TpQpww3qN3xZT6LJ72cjO1zBPaIiGLcTj1OXSVTf5Lu8TYa2/
+	 fY5ZhdPCR9TFkgw2KcUFCVqYMj3Q0fWfH4VbE/gMQ+EDj/sFdsg7elZ9ghqbnoSkNL6lk
+	 IeQau/tnev8cyoAb/AISD6q3f7bruga1wXtRk7QqakIH2/xZcB18fqxHZP0QjvOEFxiRm
+	 78QzHGI20fMss0jc9NxUZs3SYaK1ZiEJKX0u2dgj2bpQqOd2C6yF10etnNARylaNO5kQQ
+	 ybDcYrCOEFOAm0gOJTDsZhxLEi0uE3hurvgNVqvZrGnTQdhHS3MmQJLpS18X+R96V7Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792741992;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792741997;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=oKDGcISKRXyb1sB9uqlDY+pTllRaTOFvJWwaXJaklRE=;
-	b=jDy3F0Zdfjh5bKHNCfKpS62feP4ZXGCYpm+hqd9Ysk88Cm68FpFtPHBGFhyENJrF2kVm
-	 fAKZ3+foaUDTmFQkg9Tnd3GYvGXkWqNTVwbVLuY+SG47OE808ldtMgYoyVzjRiEtCnh8e
-	 VkMItOInbPeZd/s5CHu0VTkHaXCErgnOARKuJ1qcbOOpQkC8foNCHR/Nub40d3ALinsIK
-	 d0ttsaCTUFk3Oh8Md+kJufXBmCYoo5N8NNsVh8TtdqTaZv5E0U3M9vovfVwj9G6GlEISE
-	 6mMFf+P3aeQAsnlq0T6WVUNUcSSOynFxeHUokqcJI8WihmkSRok5IEHtAciftoQmUVQ==
+	bh=gccHhk1zXKvI2lBwqqMmtzgSCLGdxT+o/5IMCODfY24=;
+	b=XomR5g6tnt1uKpt2Hlso/lhAwEUjOV9INhLxHjpnRvsJsEhdfAA7ni+bY4DQ16S37gBp
+	 J+O1QmAWpyZ7wQxFxG6vZECSvjDvZmURLqWFfIpOLQTOu2lugespadOylX345nyJDLbKp
+	 FCLYHUKoTjMKyvZ/O23USJYohN6bVgXjq0K0U7+FbV1UXwjanBSOGG6yRaf6rjgNC81IS
+	 9eJTRyRPtAYta7uUKUNY4abxvdhQ3oIoUxGzbC3vwi+8ZEHIIoFGIMZNiXTyHcmw4p8cF
+	 sUrYsYdz3wOC/InX+J1w94frGreG5LAQMISHChBUmbWSrOZ2k6taXbQoA94yGmmRXiA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=eiOS3Opq;
-	arc=none smtp.remote-ip=74.125.229.5
-Received: from mail-dy2-f5.google.com (mail-dy2-f5.google.com [74.125.229.5])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=LBWfTOJH;
+	arc=none smtp.remote-ip=74.125.229.135
+Received: from mail-dl2-f7.google.com (mail-dl2-f7.google.com [74.125.229.135])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF5B606A334
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 07:53:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BDF5B606A334
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF05606A333
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 07:53:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CEF05606A333
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=eiOS3Opq
-Received: by mail-dy2-f5.google.com with SMTP id 5a478bee46e88-35c95a3a303so64293eec.0
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 00:53:11 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=LBWfTOJH
+Received: by mail-dl2-f7.google.com with SMTP id a92af1059eb24-13985f8229aso501949c88.1
+        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 00:53:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792741991; x=1793346791; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792741996; x=1793346796; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=oKDGcISKRXyb1sB9uqlDY+pTllRaTOFvJWwaXJaklRE=;
-        b=eiOS3OpqahCkc2IWWON/xelWyX4TPHoReJ28ISX+sQhBpCwrMIc6mPlvZRiBn8vvvL
-         0QGmy6UNMBp+cwKIgTcHduqgWZNsD+75bVsJ8LwWnepmdHPxwkf3QHFboHpB6/uluIbY
-         vZ6geobCl5/VQ04nodhtLqypj8NDEOHMJaopbIOA35Lou0fIqCLKD+TDv9hOLvfuPU2U
-         G9dEc3+/bnU/mpAC7hyCkioI2g+Tr1z26urE+J4hO+JhETrc8PCMoPsx7o47y19vDHfi
-         Tm9k0axGaB1h9s1Cu7GDvk0DGS5UK/7eHj2bbxe6PMlIjn8e6s9xwZVsS8lg008okPtw
-         QZ2A==
+        bh=gccHhk1zXKvI2lBwqqMmtzgSCLGdxT+o/5IMCODfY24=;
+        b=LBWfTOJHBn2220bqeCMn50DefPC2tvZT67Uro55yezV2FbLKmnjdRUloaKJ4dKiayW
+         4uzH0rAH3os/w7/fGkmpHkcwQbXvytbB8XBTDrWEC+OM1EOVF8zTLcteWo3zryuyl1rc
+         0QNkJHrOdTUl7ed+bKsJQDP+4++awIpspLAgg2xlRwhFcxcnoBNbiKVc/7LlqD37F+Kx
+         7aTSxz+eAcElZzgccyegYhcUH9jc4P7MUjJrXEZKYi+fd5Wt4ybdqmW6hywEcuMn/6Qd
+         /yJ6fEUYj70ULTJxrNxO+vv0hIpkW4AjgiD1EO/uBws/ACPtWoEhXL1Ziuk8+ZFSIlIL
+         vhGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792741991; x=1793346791;
+        d=1e100.net; s=20260707; t=1792741996; x=1793346796;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=oKDGcISKRXyb1sB9uqlDY+pTllRaTOFvJWwaXJaklRE=;
-        b=rW+AViqbjFpdyUg01kmlIEUuPUBjDKNoDrCQJiCtcv1npOoQb3IIDnjYFYaWoaV7jo
-         QLKxv9mAbezc4Ni222+uATI1I/cm3MBJXu5iWpbPCPUJq9lY03IxUo6Eox+sPIdInv4H
-         sdFRm1Pxj+HWksaW+pFvG8hXow2ahb0Q3+iEB0NyZC7SE0YwrvTDXmITWIpMz0EOljXZ
-         r7T8Zej7H+6nwjSc7tr9//dux8PkGVM2I/xmn86bmN2T0R6Z6IthTTc/1jqlE7zOU6iH
-         eqGjo90Yc2hgqaxISzuINeHyKoHopfuey3oz844MZ8yzIYK+/Esn8MVamzmP8yOBCxit
-         1iGg==
-X-Forwarded-Encrypted: i=1; AKwUvBxVvK8QG5aefIEHJVAwmujRctQwDZalTqaSW0wkVxmDrOgJjHMaXfYKocd3YuIncXCuLG+svNk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIcuXKMXOR3n3SWmQ8lEFrKu/bagfMDdfHojjdFxFUxlbdFQroR
-	TYyu+6Rxp7j2J9VbmAScx8Ips+HfsU63XEsuChowgBwgRL8rIkCCUjhh
-X-Gm-Gg: AYBFou1nFRARXzjgOWiwWUMtRyvwqGx3wYhtOxCxhNufXIo3QyhxkJXDYvkf1f/jrvk
-	rDf9ebIETSWhJRfFIANTdjjBXrlzrLgBwdnoRs6C2lVgA71c6EnBVKHzofpgaz1ojYU0KOtcgoV
-	w3fV0rOzR/s8/q5cd9p2eZjfzBGf1B/LbV7n6BTNVOTEIkOL4DKrIkTTz+jjCe10r7VN43ipFHp
-	Nrv/d7BP54XvUVT33neiARxaAWJDhVanMN8Q8+X2zxFT4FdqE4qdEBJKiVSli/GAfreRNtoMjOy
-	W+BMe7smPJ7JqP1G2Siz+OHO/qZXY181yETiTNQQNH3gueNG7oi9f/A42Kf98CgX6iJ/fqZM6cF
-	LlL2te6wrh4oZOAm7fz08AUIfqlux0nzMYEWlDkA17Qg93ENCUH1y9SMnH/TQOrshFn5dU46Ptn
-	mbf86CnpXgwJnfoEG+eYmqgHcMFmzVEXYnm1Mj/djsQwAH2cH9FwsKmxbQvKLQy97334RrKM8Bc
-	kiKIrrsp9mcqxCiTo0VApygmwyEGvKsSFA6Z5O7d1fAdUGtJSsF78U=
-X-Received: by 2002:a05:7022:3b89:b0:196:b805:9546 with SMTP id a92af1059eb24-196b814d873mr867259c88.10.1792741990964;
-        Fri, 23 Oct 2026 00:53:10 -0700 (PDT)
+        bh=gccHhk1zXKvI2lBwqqMmtzgSCLGdxT+o/5IMCODfY24=;
+        b=cYzk6aA78qjz9mentF8jNvwqrflYY5la1UdNYCTtjWdQLFfKspQKZ4e6Z22wMb/+Kx
+         g6F+EeLe4Wf7oBRFNLLsQGgGyQwVDrcTENpVv3FdlWaVELAXluO5ln9XsNKFkeWSWRgK
+         gERzL/yw80hbIibhJ0A8kDUDNUFtPDX1SFQGn6P+97D7Ig2OnAmB/ttn4SiZluV9Djlo
+         mIgLWl9Ejg/8FUmb8w2lXa/XfLGbAigEMimbr4KieE4pPy5J9f0E9x4dqXTRwY/5o/uJ
+         YYVbHdkWEENsrHGE1kjFeQz274iy17bw+2E3iyuVB2FL7AlwKBv7RdsyvCw+gFmLEBp2
+         OcvQ==
+X-Forwarded-Encrypted: i=1; AKwUvBx4Az4jZu5inSRWDbU0PGneNxl0Qd+85pLb7VcA/drciS71GxvgupFdFMqpm2LCOFdqACUrO9o=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJKLmv6cU2PewZ2Pb0D7Ib0+xbdYmOwPKu1tzqfPwfWhX5x6pHi
+	qeHrqLuKiudRinZrMSDfGWivQ3s1oLSniPX8etQaA4citunvX3l7Oh17
+X-Gm-Gg: AYBFou2o5IrncOMvRPetnEns0BTfuJFAhsRubu96EegYvru6codWVT1LsfVfN7Ms3lO
+	IYqGDw8LbGJdwEwDSfPFp/evev0T4k7JI2zQ4TcPZs2SiC7cpQaGu2KczWnwGvgUwrfbd0NUobx
+	JqHijtF4DgcAu0SszzOYqWT/QmO2ptKnhwj8gdcVtRufIfN4H2P3BoEIb3rVPLDgsBerAxRcLKo
+	ysSKMzkbhlIF0wKMbxqaiPUSy2NZdt3wO6I4wMjVb2/fuCdvXPfVtZXXC++BVP2XwCxaCE+Yot0
+	JXg8jNupUAa/0VyPiSJNRq6h7ObIz+Wwb6kfjOlRdCNhqlmE4E+o1XEzPMXRbjh0fLQN7N8GNqa
+	cN+fjlSom8tfQZqg6QKlFXwlXOuGRYqelFlR7LBLCnhL+nx2Q5SbwJbcnSRX8wcXRr0YhMvCxew
+	DYe/wG/ppLrUURRRKGPwxMWps1hkYvOH5Oy+uqGdoleTqNfP1ypkcU+A+XLDWchpcIuUm0Mjqjq
+	kJqZkME2eN80KKzdtmDyhwlxX4Y4IyGQMc5MM6yFk4vciSRlmb3eg==
+X-Received: by 2002:a05:7022:e803:b0:165:4b88:abc2 with SMTP id a92af1059eb24-195c1e5520fmr2349281c88.26.1792741995686;
+        Fri, 23 Oct 2026 00:53:15 -0700 (PDT)
 Received: from server.lan ([168.138.199.194])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-195eae0e830sm4122132c88.10.2026.10.23.00.53.06
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-195eae0e830sm4122132c88.10.2026.10.23.00.53.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2026 00:53:10 -0700 (PDT)
+        Fri, 23 Oct 2026 00:53:15 -0700 (PDT)
 From: Coia Prant <coiaprant@gmail.com>
 To: Andrew Lunn <andrew@lunn.ch>,
 	Heiner Kallweit <hkallweit1@gmail.com>,
@@ -91,9 +91,9 @@ Cc: Eric Dumazet <edumazet@kernel.org>,
 	linux-rockchip@lists.infradead.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2 3/4] net: pcs: xpcs-rk: fix cleanup action error message
-Date: Fri, 23 Oct 2026 15:52:14 +0800
-Message-ID: <20261023075214.1793922-5-coiaprant@gmail.com>
+Subject: [PATCH net v2 4/4] MAINTAINERS: list DW XPCS platform driver and binding under XPCS entry
+Date: Fri, 23 Oct 2026 15:52:15 +0800
+Message-ID: <20261023075214.1793922-6-coiaprant@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261023075214.1793922-2-coiaprant@gmail.com>
 References: <20261023075214.1793922-2-coiaprant@gmail.com>
@@ -108,29 +108,31 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The devm action registered by xpcs_rk_init_clk() force-suspends the
-device and disables the EEE clock, but the current error message only
-mentions the EEE clock. Point at the cleanup action by name instead,
-so the message covers both parts of what the action does.
+The Synopsys DW XPCS entry covers pcs-xpcs.c, pcs-xpcs.h and the public
+header, but not pcs-xpcs-plat.c or its DT binding. pcs-xpcs-plat.c only
+matches the ETHERNET PHY LIBRARY entry today, and the binding is only
+matched by the generic DT and networking rules.
+
+Add both files so the entry covers the whole driver.
 
 Signed-off-by: Coia Prant <coiaprant@gmail.com>
 ---
- drivers/net/pcs/pcs-xpcs-rk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ MAINTAINERS | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/pcs/pcs-xpcs-rk.c b/drivers/net/pcs/pcs-xpcs-rk.c
-index 698a43b75334..6f0a110e32d2 100644
---- a/drivers/net/pcs/pcs-xpcs-rk.c
-+++ b/drivers/net/pcs/pcs-xpcs-rk.c
-@@ -365,7 +365,7 @@ static int xpcs_rk_init_clk(struct dw_xpcs_rk *pxpcs)
- 
- 	ret = devm_add_action_or_reset(dev, xpcs_rk_exit_clk, pxpcs);
- 	if (ret) {
--		dev_err(dev, "Failed to register devm for EEE clock: %d\n", ret);
-+		dev_err(dev, "Failed to register devm for xpcs_rk_exit_clk: %d\n", ret);
- 		return ret;
- 	}
- 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 7336600952c8..4f24656f7653 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -26729,6 +26729,8 @@ F:	drivers/net/ethernet/synopsys/
+ SYNOPSYS DESIGNWARE ETHERNET XPCS DRIVER
+ L:	netdev@vger.kernel.org
+ S:	Orphan
++F:	Documentation/devicetree/bindings/net/pcs/snps,dw-xpcs.yaml
++F:	drivers/net/pcs/pcs-xpcs-plat.c
+ F:	drivers/net/pcs/pcs-xpcs.c
+ F:	drivers/net/pcs/pcs-xpcs.h
+ F:	include/linux/pcs/pcs-xpcs.h
 -- 
 2.47.3
 
