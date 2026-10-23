@@ -1,60 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792755584;
-	b=LfWb2z8wC/I+1nURZrecr4SPSC6MZ2XnlzKPvuOMcIBzs+d2U4m0ykg+hF2hwl3WiQyA
-	 lMiWVdEta29diYtEnWu+E/NL0bvAwfnIh4BRViGPIHYSYjjDK1tBQPUytn9YQsDi+0sH0
-	 3jj5bqF2mhnJoQ+S+e5QxLVq/il7sOX3VkwUxew47gxNzO8TTlsBcAKCbzPaYoQ6GAc2q
-	 ehPdga8FR3W+y+n9C0cs5WN0W4opugyRuxS1n4w0dvN9wibCaeW09RV8lE6r6RrlilEnl
-	 ArLhuni6B/6lHBAvXWlM6NeGn6RaTKjMMsmrV6rRrp1INyFIBrsDPZ4ggSnwmJhbiOA==
+	t=1792755826;
+	b=nhprkcfG1AB3P7QfoKYgg7PUW08qkm61/+YoLuHvMeRuMyri1QEbihGwOVPAmU+xRPVu
+	 cuhzLLW2IGtboCed5DAKdncYszZFoUaVTsLTUjqMIwsw8lsNBbqgmAbpJuBGiD4Vd0be6
+	 RMp0qUcrS1lonXqDyGWHxhQ2RBS66IG1DZrmfEtFnpy/tfz8YdGeLN6hFqtwktNfaxNZA
+	 MMj6ayIeLakX1ORQppqFzNmSPcFcHLFoBvM3nEefsAG887cEOVkd4W2R7z0OOvHVMVhin
+	 UgqQjvArIF5sd7JI058u8EWBFTEr1OHG1HEoUMHo9AC226Y0T14TZ1P7nz3LgNYR9lg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792755584;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Q6S79bbMaNSuqrqpLiqNPimBxEwlH1ndoIlreZhWFgs=;
-	b=EMoD9DBb/BZfokuuCP6gRaTG0ad4keFy9USaeiAHJQe4sFfvSKoAeYCRwGjwZHGsSPqC
-	 ZDOM+KGYtqOyWNUedU2lQ/Uj4s8HO6qXtD4y7u8h9M8QENN1R9Xy3H6VhUtkdpXRhSDVd
-	 P3fCeyOVDJlFJaQMzKLqQ3ASKU5faxA6NQJa94xuE4ykWp3zLOd7uRU9n4e+Q84slB9LJ
-	 DWnJhtkPE7qvIb9evy2dcK7CD0vclFCuzLId6bHQiQonBL2Uv1+RP1HWyBukWFDGVv/Py
-	 foULRxsKv1H6OD+Xxq+Q21z3Lcyqyi2AvR7pHyz/DzN4UHQc+6MIBFmRUEFoCGOnRhg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792755826;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=KgpBrfHk3ZcXVJb3OFlcK7UTRxl4zauHGFlDn82kZWc=;
+	b=2bMw6UrmUydsFX5Qx2+/LNq81nhS6/nNgj00z43WftLqmSE6vel4LpJWgvqX7XDyyA5c
+	 KgMHBhKrrqg09Hf9JCVNUdqSyLW6dUl4AuWzDR2+CbPrZqiddmgAquJbQJzFoes6sHOSx
+	 BqYOENJZzfxJxrVk4xKsQFgiv4pqbUvEWpH5Lt+s8hFo3PbD3GIWkmPVSufwRs26RSgi4
+	 yOpX4Uo+HUVPzPhOFZDAZqEIYp/mwtVYcDmAPfM80zysU5W9LDUh+F6M46w2d02Rwsqjb
+	 Bh3dJxE9LftU13PQJLaBrcwMZfwWn4X1MajwkEW+xEwychWAuTjeI4v4hr53b7amgOw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dXbu00Fg;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=MFFslLEz;
+	arc=none smtp.remote-ip=95.215.58.169
+Received: from mta1.migadu.com (out-169.mta1.migadu.com [95.215.58.169])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9FC606A31A
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 11:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81578606A31E
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 11:43:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 81578606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dXbu00Fg
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DEFF1F01825;
-	Fri, 23 Oct 2026 11:39:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792755583;
-	bh=Q6S79bbMaNSuqrqpLiqNPimBxEwlH1ndoIlreZhWFgs=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=dXbu00FgxNz/J6C1nxky8UQOXaBC40ne0Z/z/88qchfSIY000BuEmYr5UqMV9/eMH
-	 5nKX5ieIviSs5jqALqBjXMc5XifeBvJGWgbTWx3gNv4IPM/kT+OFn5hR8ukHO2k/TX
-	 NJ0uat0w/hXw/ZF+rvv39bCEQfmAnV5Nm0S1O8gpejnyhZZq9dT6qBMUy7YItD3trg
-	 053zDTwbn32HPCbqUIBy8OWPYZcnb0EMxtJzpSI9A5W6Igb/EtB+06ou7ZDOYr0J5a
-	 h3DhK3DSF6voUToL7zVvVucGgpMYMvvUIKSOVXD4IEOLZHW9UAXlogaNrHEj7ADXz9
-	 Grrtx4sDGrFyg==
-Subject:
- Re: [PATCH net] inet: reject unhashed sockets during established lookups
-From: netdev-bot+sashiko@kernel.org
-To: imv4bel@gmail.com
-Cc: edumazet@kernel.org, ncardwell@google.com, kuniyu@google.com,
- davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- martin.lau@linux.dev, john.fastabend@gmail.com, weiwan@google.com,
- sd@queasysnail.net, jiayuan.chen@linux.dev, netdev@vger.kernel.org
-Date: Fri, 23 Oct 2026 11:39:42 +0000
-Message-ID: <179275558269.3134.17308052093423946226@kernel.org>
-In-Reply-To: <ath58Egc-oI6p3Jl@v4bel>
-References: <ath58Egc-oI6p3Jl@v4bel>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=MFFslLEz
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=8wMLzGll6jVNiO5BAgyO9Sjgdz2dhskrMMCjXCL9Bh0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792755822; v=1; x=1793360622;
+ b=MFFslLEzMO0GKqk0EVgs4mBCP5Qqe7TWOWNQg3GWnYwzvNa8WUQmSkRCDuMn9kX1CX4MuTDk
+ ZF7GG9JwwOOKuoZDkT4h1xdQw1lh4vtv+iOUqYL3FnY+NHR5p+6EWtngOc04p8M5xHANf2zekXC
+ GMBk2NcxUMlpqAdBbiJ9xvQM=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 27d1656d2bb95f51;
+	Fri, 23 Oct 2026 11:43:42 +0000
+X-Mizu-Trace-ID: 27d1656d2bb95f51
+X-Migadu-Flow: FLOW_OUT
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: netdev@vger.kernel.org
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
+	stable@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Joel Granados <joel.granados@kernel.org>,
+	Matthias Tafelmeier <matthias.tafelmeier@gmx.net>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] net: reject dev_weight products that overflow int
+Date: Fri, 23 Oct 2026 19:42:25 +0800
+Message-ID: <20261023114228.289161-1-jiayuan.chen@linux.dev>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,146 +73,73 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+proc_do_dev_weight() sets the backlog NAPI weight and the qdisc quota
+to dev_weight * dev_weight_rx_bias and dev_weight * dev_weight_tx_bias.
+The three sysctls only have a lower bound of 1, so the products can
+overflow int and end up <= 0, e.g. dev_weight=65536 and
+dev_weight_rx_bias=65536 give a backlog weight of 0.
 
-Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
+With a weight <= 0, __napi_poll() never sees work < weight. Once
+process_backlog() drains the queue and completes the NAPI by itself,
+__napi_poll() still asks for a repoll, so net_rx_action() keeps putting
+back a NAPI that is no longer scheduled and NET_RX spins on that CPU
+with nothing to do. Restoring the sysctls does not help, as napi->weight
+is only refreshed by process_backlog(), which is never called again.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+After 3 pings over lo on CPU 2, with CONFIG_DEBUG_NET:
 
-- [Medium] The new reader-side check does not order later loads of socket
-  fields.
+  (NULL net_device): NAPI poll function process_backlog+0x0/0x1200 returned 1, exceeding its budget of 0.
+  repoll requested for device (efault) process_backlog but napi is not scheduled.
+  repoll requested for device (efault) process_backlog but napi is not scheduled.
+  ...
 
-Pre-existing issues:
-- [Medium] When a tuple matches but refcount_inc_not_zero_acquire()
-  fails, __inet_lookup_established()…
+and with nothing queued anymore, NET_RX keeps running on CPU 2:
 
---
+  NET_RX on cpu2: +454190 in 5s, ksoftirqd/2 at ~82% CPU
 
-inet: reject unhashed sockets during established lookups
+Reject writes that make either product overflow int, and print the
+values involved.
 
-This patch changes __inet_lookup_established() and
-__inet6_lookup_established() to take the reference with
-refcount_inc_not_zero_acquire(). After taking it, the lookup now restarts
-if the nulls node is unhashed. It also switches the initial nonzero
-refcount stores in the SYN cookie, TFO, request migration and TIME_WAIT
-paths to refcount_set_release(), and frees published requests with
-reqsk_put().
+Fixes: 3d48b53fb2ae ("net: dev_weight: TX/RX orthogonality")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+---
+ net/core/sysctl_net_core.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-[ ... ]
-
-> diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
-> index ba0faa9ae2bb3..7ffa9171d6de1 100644
-> --- a/net/ipv4/inet_hashtables.c
-> +++ b/net/ipv4/inet_hashtables.c
-> @@ -550,10 +550,11 @@ struct sock *__inet_lookup_established(const struct net *net,
->  		if (sk->sk_hash != hash)
->  			continue;
->  		if (likely(inet_match(net, sk, acookie, ports, dif, sdif))) {
-> -			if (unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
-> +			if (unlikely(!refcount_inc_not_zero_acquire(&sk->sk_refcnt)))
->  				goto out;
-
-[Severity: Medium]
-This is a pre-existing issue and was not introduced by this patch. When
-the tuple matches but the refcount increment fails, the lookup still
-does goto out and returns NULL instead of restarting.
-Documentation/RCU/rculist_nulls.rst restarts the lookup in this case.
-
-Can this miss a live socket that is in the same chain? Here is one window.
-In reqsk_timer_handler(), inet_reqsk_clone() does:
-
-    memcpy(nreq_sk, req_sk,
-           offsetof(struct sock, sk_dontcopy_begin));
-
-This copies skc_hash and the tuple from oreq, but not skc_refcnt. Until
-reqsk_timer_handler() reaches this line:
-
-    refcount_set_release(&nreq->rsk_refcnt, 2 + 1);
-
-nreq carries oreq's hash and tuple with a refcount of 0 left over from its
-previous life. During that time oreq is still hashed in the same chain.
-
-A reader whose stale pointer lands on nreq passes the hash and tuple
-checks and fails the increment. It then returns NULL without reaching
-oreq.
-
-tcp_v4_rcv() then falls back to the listener. For an ACK,
-tcp_rcv_state_process() in TCP_LISTEN returns 1, so a RST is sent for a
-valid handshake. A similar window exists for a replaced req whose
-refcount has already dropped to 0.
-
-A restart has a cost of its own. reqsk_queue_hash_req() hashes a req
-before it sets the refcount, so a restarting reader would have to spin
-past that window. The window is kept short with preempt_disable_nested().
-
-The same goto out exists in __inet6_lookup_established().
-
-> -			if (unlikely(!inet_match(net, sk, acookie,
-> -						 ports, dif, sdif))) {
-> +			if (unlikely(hlist_nulls_unhashed_lockless(&sk->sk_nulls_node) ||
-> +				     !inet_match(net, sk, acookie, ports, dif,
-> +						 sdif))) {
-
-[Severity: Medium]
-On weakly ordered CPUs such as arm64 and POWER, does this check order the
-caller's later loads of socket fields?
-
-hlist_nulls_unhashed_lockless() is only:
-
-    return !READ_ONCE(h->pprev);
-
-Branching on it creates a control dependency. That orders later stores,
-but not later loads.
-
-For full child sockets, the acquire in refcount_inc_not_zero_acquire()
-does not seem to pair with a release either. sk_clone() publishes the
-refcount with a plain store:
-
-    smp_wmb();
-    refcount_set(&newsk->sk_refcnt, 2);
-
-After that store, inet_csk_clone_lock() writes the child's tuple, clears
-icsk_accept_queue, and changes sk_state from the TCP_LISTEN value copied
-from the parent to TCP_SYN_RECV. tcp_v4_syn_recv_sock() hashes the child
-last.
-
-A stale reader could then see a non-NULL pprev and the new tuple, but
-still load the parent's TCP_LISTEN when tcp_v4_rcv() reads sk_state:
-
-    if (sk->sk_state == TCP_LISTEN) {
-        ret = tcp_v4_do_rcv(sk, skb);
-        goto put_and_return;
-    }
-
-That path skips bh_lock_sock_nested(). The packet is processed on the
-child without its lock while the creating CPU still holds that lock and
-is finishing setup. The result is either a RST from listener handling or
-unlocked SYN_RECV processing that races with the creator.
-
-The commit message says:
-
-    This rejects the SYN cookie
-    request socket and blocks the child socket path observed in the x86
-    test.
-
-Does this hold only under x86 TSO? Is an smp_rmb() (or an acquire load of
-pprev) needed after the hashed check, with matching ordering on the
-writer side?
-
-The same check in __inet6_lookup_established() has the same ordering
-question.
-
->  				sock_gen_put(sk);
->  				goto begin;
->  			}
-
-[ ... ]
-
+diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
+index 473c162736d6..4f3796bc8870 100644
+--- a/net/core/sysctl_net_core.c
++++ b/net/core/sysctl_net_core.c
+@@ -318,14 +318,23 @@ static int proc_do_dev_weight(const struct ctl_table *table, int write,
+ 			   void *buffer, size_t *lenp, loff_t *ppos)
+ {
+ 	static DEFINE_MUTEX(dev_weight_mutex);
+-	int ret, weight;
++	int ret, weight, old, rx, tx;
+ 
+ 	mutex_lock(&dev_weight_mutex);
++	old = *(int *)table->data;
+ 	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
+ 	if (!ret && write) {
+ 		weight = READ_ONCE(weight_p);
+-		WRITE_ONCE(net_hotdata.dev_rx_weight, weight * dev_weight_rx_bias);
+-		WRITE_ONCE(net_hotdata.dev_tx_weight, weight * dev_weight_tx_bias);
++		if (check_mul_overflow(weight, dev_weight_rx_bias, &rx) ||
++		    check_mul_overflow(weight, dev_weight_tx_bias, &tx)) {
++			pr_warn("dev_weight(%d) * (rx_bias(%d) or tx_bias(%d)) overflows int\n",
++				weight, dev_weight_rx_bias, dev_weight_tx_bias);
++			WRITE_ONCE(*(int *)table->data, old);
++			ret = -EINVAL;
++		} else {
++			WRITE_ONCE(net_hotdata.dev_rx_weight, rx);
++			WRITE_ONCE(net_hotdata.dev_tx_weight, tx);
++		}
+ 	}
+ 	mutex_unlock(&dev_weight_mutex);
+ 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/ath58Egc-oI6p3Jl%40v4bel
+2.43.0
+
