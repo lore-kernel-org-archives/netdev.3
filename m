@@ -1,65 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.135
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.3
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792725333;
-	b=rd2ZFr9fKrUaItDxd98iqv7nkQa213612sdpkYh0EZd1q2QCHoj5RAi1TSQrCzlUulu9
-	 JXshtj9AZCLanfIEF5mdk/VtWdrxmJfbdMhAmwo/bTbqAP4D3SBzGoPNl+uGJZSIlZOZx
-	 awYxejnL+xypQP+xDoFX4z6XwavZX/RIbIbJ8qjr35zQzAV8p3bO+Ob64AJd8rXmhU9kt
-	 gXbe1s6RUz+i7sq/8Kt8Z6SnPzXR3NXyehUKcw3gb0B5TGUGCGen+Du9TFXPSeg0bV27u
-	 AJWxD94YQfzgOraSSThPF/FU84sknkjI2Qv4vH4Lnh6P3jjqnWTJr3pMAT1Fwk+D9Wg==
+	t=1792725753;
+	b=XImMlWNNb6wXY3stcIzs0FC2xyC2fAb1WdrLiXXmWZh2sgxOUm631YWTTzP3KLdViCDS
+	 B8SZkUfINem/0UrgnujpO/xGVZkWgXKCOOqJVqjnefdiSElVJD893fQ+feek9n+BW8RNG
+	 FypkPDn3ZNg0w26TY9uYvLbTM2DNlq3OnOoQNW3L/QTJbxksIMOuOk+/8HNspx7MZZN91
+	 QRA22Aibr7AGWZLkr199fK/xYvFuOVSmsygLKDaDCU2lz8cBJxmEouKYp1PYkd0FLjxRt
+	 Fe03ANwls+oeCYv3ZYYFNxQ55MXu2jYxa5s7I5zEUPTikdrLJjYjdjQwfPXWZy8NocQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792725333;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=zVAKIg7XqiPBVNuocH1Hoh+zfouG9OOWB6QRApYQMW8=;
-	b=A/J8qiGaL0CR+SihXpD7cLSluIGi5ZuxqKYeNMUU/l8DdQ48sk1fsRAXies5+S83agdL
-	 fK3SkrBpocAcekQJF+Koa1ftfeZ44LiVtDYFJQI232vSHzvTXlYr9BZ+rLMcKECUOucbT
-	 Hs1ruLUxGAb2qKvtRcYVg5TwF1fTt886aq7wee/YMZnjH372BVP4+fN/bFIEVnYnTG8WV
-	 mA2UpLM8Azrb+lATVzp4deDv9TmRJlOBzrXRiMnKhDJ+S9/BxWpQs1ArSySyI9oF/ix5I
-	 HAs585MTjq/RMx3xao85z47lTGm3BYL1OQOqSTQIm+TYCpD5rnlyfmmmEmNOfu1KdRA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792725753;
+	h=DMARC-Filter:DKIM-Signature:Date:From:To:Cc:Subject:X-Priority:
+	 X-Mailer:In-Reply-To:References:X-NTES-SC:Content-Transfer-Encoding:
+	 Content-Type:MIME-Version:Message-ID:X-Coremail-Locale:X-CM-TRANSID:
+	 X-CM-SenderInfo:X-Coremail-Antispam;
+	bh=NKw6Awa/XyRaLtap3xFrz6SKY4+OYkIh300uWwcDCIQ=;
+	b=c8RphHqGsuKQFNsJcNim0ACOhOz+XQ6n2iDjHufF6qj3SBZks9iKpgIAxbb3kwJN8+qs
+	 8NOq+gG/IijYE9DlYGgtAQJaNTcSuA1n2sxCzCwtqb6yOiq+o8MdclneWVLIWFlw+Xc4w
+	 wu6nIlFBf1OGYFegM8aznJQSNYd2P2jIO98gSFHsnaIwWH0VGfudE5w1n8cQGjwQEaLSA
+	 zXyk1K6KPMJHCxarF9aymDMKsY0K/3jrdDRuAyK8if+4XtjW8G1rXNQfmkILxtSdHn5Hy
+	 I+kwpH21XgcSt6kAhSoPl5APJkcCwPKrnzH0v7Xj2XWC5isqlzflR2zavpboEeNBudg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b="uSSb/ZMG";
-	arc=none smtp.remote-ip=91.218.175.135
-Received: from mta0.migadu.com (out-135.mta0.migadu.com [91.218.175.135])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=A4316bx0;
+	arc=none smtp.remote-ip=220.197.31.3
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DED6606A31B
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 03:15:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7DED6606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AADB606A31A;
+	Fri, 23 Oct 2026 03:22:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3AADB606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=uSSb/ZMG
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=/Zq1baKOLuThcBsVDU3+UzpzigXWioU0C5AmZNp+Tio=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792725330; v=1; x=1793330130;
- b=uSSb/ZMGsbNrgeAUaaRKb5W9WcaCySULnJRVa87p12wsAqBHGvEeSbxkwabxqxTvkf4Z1918
- O4YwYGeoQUsMBlsGeWlpgfjCYOBmedfzQkOgaa2o2OVLNBLFd7nQoDf8f0jEgpbYkN3Cckfhev6
- gPUzbx2ivbFijSEWdRsYyuRQ=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta11.migadu.com with ESMTPS id 2050942c7c50d671;
-	Fri, 23 Oct 2026 03:15:26 +0000
-X-Mizu-Trace-ID: 2050942c7c50d671
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 23 Oct 2026 11:15:15 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Xia Yan <yana06070@163.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@kernel.org, horms@kernel.org, kuba@kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	pabeni@redhat.com, shuah@kernel.org
-Subject: Re: [PATCH net v3 2/2] selftests: net: check veth carrier after
- changing channel counts
-Message-ID: <atrRQzn2prYbF1vF@fedora>
-References: <20261022085842.2527-1-yana06070@163.com>
- <20261022085842.2527-2-yana06070@163.com>
- <atq8yKbnqtLBVucH@fedora>
- <20261023023350.7225-1-yana06070@163.com>
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=A4316bx0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
+	Message-ID; bh=NKw6Awa/XyRaLtap3xFrz6SKY4+OYkIh300uWwcDCIQ=; b=A
+	4316bx018ooGp73dbny+znnyS4NS71EEObUhEcymHQWtraQfzVE5AIMK/tnJlL3P
+	V8dYErrCiItEMqVjY+Nv/Sf5oPSoYonuAcHuYvn1NJyH/iQ1QDL5QsWMZM2XAuEp
+	MYY6ux4zb4AjhIHMLKyrD5bCS9GKA6XnNytkpKImuY=
+Date: Fri, 23 Oct 2026 11:21:53 +0800 (CST)
+From: sicong  <congei42@163.com>
+To: "Edward Cree" <ecree.xilinx@gmail.com>
+Cc: netdev@vger.kernel.org, "Andrew Lunn" <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	"Eric Dumazet" <edumazet@kernel.org>,
+	"Jakub Kicinski" <kuba@kernel.org>,
+	"Paolo Abeni" <pabeni@redhat.com>, "Kees Cook" <kees@kernel.org>,
+	linux-net-drivers@amd.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] sfc: fix use-after-free of filter_work in
+ efx_realloc_channels()
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
+ 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 163com
+In-Reply-To: <46fdec20-c37b-4d7a-afa1-3caadcfc4640@gmail.com>
+References: <20261022133927.3860186-1-congei42@163.com>
+ <46fdec20-c37b-4d7a-afa1-3caadcfc4640@gmail.com>
+X-NTES-SC: AL_Qu2SAPuZuk8q5SOaY+kfm0YUj+44Wsa4uvgk2YJeOpt4jD3p5jwdY11FGGPR9MC+Ow+dlwmpeTprx/x8eI5CQak03Rl+jHrlvDRZAXm07Qr/8g==
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,28 +69,32 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261023023350.7225-1-yana06070@163.com>
+Message-ID: <5a7bfee.32ee.1a166c781b9.Coremail.congei42@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:dCgvCgDn1__R0tpqu5BeAA--.1187W
+X-CM-SenderInfo: 5frqwvrlusqiywtou0bp/xtbC9RE6LWra0tHXcwAA3k
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 
-On Fri, Oct 23, 2026 at 10:33:50AM +0800, Xia Yan wrote:
-> Hi Hangbin,
-> 
-> Thanks for reproducing the issue and reviewing the driver fix.
-> 
-> > Why do you do gro setting in rx/tx set ups?
-> 
-> I included GRO off/on to cover both queue reconfiguration paths.
-> No XDP program is attached in these cases. With GRO on,
-> veth_enable_range_safe() and veth_disable_range_safe() set up or tear
-> down per-RX-queue NAPI instances as the RX queue count changes. With
-> GRO off, those helpers do not need to reconfigure NAPI.
-> 
-> The carrier bug reproduces in both configurations, so the test checks
-> the same carrier state with and without the NAPI resource changes.
-
-I mean this doesn't seem related to the carrier on/off (LOWER_UP) issue.
-Or did I miss something?
-
-Thanks
-Hangbin
+QXQgMjAyNi0xMC0yMiAyMjozNjo1MiwgIkVkd2FyZCBDcmVlIiA8ZWNyZWUueGlsaW54QGdtYWls
+LmNvbT4gd3JvdGU6Cj5UaGUgYW5hbHlzaXMgbG9va3MgY29ycmVjdCwgYnV0IEkgd29uZGVyIGlm
+IHJhdGhlciB0aGFuIHBsYWNpbmcgdGhlCj4gY2FuY2VsX2RlbGF5ZWRfd29ya19zeW5jKCkgaW5s
+aW5lIGluIGVmeF9yZWFsbG9jX2NoYW5uZWxzKCksIGl0IHNob3VsZAo+IGJlIGRvbmUgYnkgZWZ4
+X3JlbW92ZV9jaGFubmVsKCkgKG9yIHJvbGxlZCB1cCB3aXRoIHRoZSBrZnJlZSgpIGludG8gYQo+
+IG5ldyBlZnhfZnJlZV9jaGFubmVsKCksIHNpbmNlIGl0J3MgdW5kb2luZyBlZnhfYWxsb2NfY2hh
+bm5lbCgpIHJhdGhlcgo+IHRoYW4gZWZ4X3Byb2JlX2NoYW5uZWwoKSksIHRvIHJlZHVjZSB0aGUg
+cmlzayBvZiB0aGUgc2FtZSByYWNlIHBvcHBpbmcKPiB1cCBlbHNld2hlcmUuICBDb25zdW1lcnMg
+b2YgdGhlIGNoYW5uZWxzIEFQSSBzaG91bGQgbm90IG5lZWQgdG8ga25vdwo+IHRoYXQgdGhleSBo
+YXZlIHRvIGRvIHRoaXMgJ21hZ2ljJyBjYW5jZWwgdG8gc2FmZWx5IGZyZWUgYSBjaGFubmVsLAo+
+IHRoYXQncyBhIGxheWVyaW5nIHZpb2xhdGlvbi4KClRoYW5rcyBmb3IgdGhlIHJldmlldywgdGhh
+dCBtYWtlcyBzZW5zZS4KCkkgd2VudCB3aXRoIGVmeF9mcmVlX2NoYW5uZWwoKS4gSXQgY2FuY2Vs
+cyBmaWx0ZXJfd29yayBzeW5jaHJvbm91c2x5CmFuZCB0aGVuIGZyZWVzIHRoZSBjaGFubmVsLCBh
+bmQgYm90aCBlZnhfcmVhbGxvY19jaGFubmVscygpIGFuZAplZnhfZmluaV9jaGFubmVscygpIG5v
+dyB1c2UgaXQgaW5zdGVhZCBvZiBjYWxsaW5nIGtmcmVlKCkgZGlyZWN0bHkuClRoZSBTaWVuYSBk
+cml2ZXIgZ2V0cyB0aGUgc2FtZSBjaGFuZ2UuCgo+KEFjdHVhbGx5LCBpdCdzIGEgbGF5ZXJpbmcg
+dmlvbGF0aW9uIHRoYXQgZmlsdGVyX3dvcmsgZXZlbiBsaXZlcyBpbiB0aGUKPiBlZnhfY2hhbm5l
+bCBhbmQgbm90IGl0cyBlZnhfcnhfcXVldWUsIGJ1dCBJIG5ldmVyIGhhZCB0aW1lIHRvIGZpeCB0
+aGF0Cj4gYW5kIGFtIG5vdyBub3QgbGlrZWx5IHRvIKGqIEkgY29tbWVuZCB0aGUgaWRlYSB0byBm
+dXR1cmUgbWFpbnRhaW5lcnMuKQoKVGhhdCBzZWVtcyBsaWtlIGEgYmlnZ2VyIHJlZmFjdG9yIHRo
+YW4gYmVsb25ncyBpbiBhIGZpeCBmb3IgbmV0LCBzbwpJJ3ZlIGxlZnQgaXQgb3V0IG9mIHRoaXMg
+cGF0Y2guCgpJJ2xsIHNlbmQgdjIgYXMgYSBzZXBhcmF0ZSB0aHJlYWQuCgpUaGFua3MsClNpY29u
+ZwoKCgoK
