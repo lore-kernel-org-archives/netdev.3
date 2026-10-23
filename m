@@ -1,60 +1,71 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792777980;
-	b=xGtBGZ1Uwe2qw27p6ZTDnitjsIUpLA1cL7FCe1O8x8PiNm4G6X1M18uRmyxyv+3Gp+yt
-	 h3XG3S52TFCiovvqQiVCQBMmlHtYw8FuHKXtciSqxXXvmyjAdjX9h3k3rxmXx2kYwvGE8
-	 wZmVpebII8SRR0LrR8Hj68lkRHIa8Q8QF2gxfUvXNtUljFrswz2aCM48VbLasFQbLx8Go
-	 r9vjotAL7oveY8hD0RjNKP5eGCgHwn2oEiFSKs2Ugqvw5nENV6BpFVoZ/twnuuHc4cwnc
-	 xFaJvswKC6usu4sleffPh+vy/75W+ptCXsYdnNEg4YOawcgEhjo40JIlk0HyDAs7KVA==
+	t=1792778212;
+	b=TqQTAUzPIsCd0qNuq1bZ1Dfnh0fLpO4yZmwUMnDH3MjfMiT7YkR450XYpDlYekRc4H+d
+	 DvFBE+pVDukou+zdXsxr/GDH7CpA5OkA2osy/AZHJduspIp9OeKWQTJeY+dm9Da3M/QEd
+	 xE+Kng4BajdL6AZ5DjB+Mt6md8lKHOnsqSXsXqu7/bHq1HuHszqBGQFQTWb4OAJCTrYwr
+	 HMUqOYta1oDrwEVSuVpo8KoMJxzGy3OGJ9hdth/mGwm7MIEdDmCP7uPzfQcwYoWD4pDWJ
+	 Hn3693TnqHnoh/CAItv6d6OUW2T3NElgmWHX9lH6xwsfJu45XsTNx4ZOA2f0KvE+YYA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792777980;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792778212;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=zfbSS3RV3vTYd7uVbgoNjRsvAB3uNZqAW+R3s+y6inM=;
-	b=r1VkZ3vz3bs3lk3w5A/fbSpOVUwz2Dagl6sYRssKUUktp9fxOP2WFJHsY9F/K2V4bqqM
-	 r8UB5Dixqj1wMwo6QZQhQHZami1JnX2cqHvtfj0EnreAcqTx7Mwv3fEQ+g0QNF8oiAIFm
-	 yhQ7au4kr13ndAqRe/dXVhJ/wa5akR+fKD39CDaSn6qIBH8AZlAho8I1gYlrnUNyeu/5G
-	 nhFq4CG1x+N2vkeKh+lGwm3+9OIpM5PoIwQagu5y1nWlOeWIg11dQn7wlehsCmNHyBCUk
-	 aezw09DWqIwqy4GxeWAOjR6QmE3HW7nSO0GKfJqD5Ix4skKR8uNs58tf8UVCPMuultw==
+	bh=6dF6ilgg1hCkDWkXW/uBaYSBlAJ46T4Q2XsH6HK8HOg=;
+	b=XDSe+QnwNShIwBoPNzstLi+Psa3cACw8hWJeIceBwIMW+5Q4ofOFANtO6pVHFNJhFWCg
+	 28gLbu1cnVg7ulVvUd2FqMaYCQXBwpGWk850SxSqHOmSnS5izEQsb2UVrI4I9yi/qqPf7
+	 Fpparvx7bFnn0KiAkI8PLmTsHlAoLosywGMUkyJjzGKVLToS1hpM/CjToaMtdzRD3XDJZ
+	 riqhN4CppCqMq5rd9fsEZBBgicC/o3eZxyUqh5qQtX0j6ta1vutPMMjhZi3tnTqV8RWvn
+	 Ggf3g1af4pJN1zTNJgpSLqevgTDQgZSLAHd8vshCs34adFlXypUOsgGeM3EehUsiOUQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PKny6dER;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cSS0Ck+N;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E66606A31A;
-	Fri, 23 Oct 2026 17:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389C160A3838;
+	Fri, 23 Oct 2026 17:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PKny6dER
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B0491F01829;
-	Fri, 23 Oct 2026 17:52:59 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cSS0Ck+N
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC88E1F01825;
+	Fri, 23 Oct 2026 17:56:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792777979;
-	bh=zfbSS3RV3vTYd7uVbgoNjRsvAB3uNZqAW+R3s+y6inM=;
+	s=k20260515; t=1792778211;
+	bh=6dF6ilgg1hCkDWkXW/uBaYSBlAJ46T4Q2XsH6HK8HOg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=PKny6dER+6L/Mjcok1LxNLmAR9TlSETIeARYYC8lZz/POezFlqcvt6LtFRk2DgP9M
-	 PjTOKdDvRSdM2o4kD9CFl9weMLBIppzuchXQP9RO+iP23ESPmXwfjed3nxEEqtFrei
-	 ZCxUHgO+GJ4zfcDajn118QmnT8WLlfsM/O5BisvPFKOtRAsy2llaD6L/TE5HbdfGuv
-	 Qde6CcjDa7qtaNkoiLW+g3o/LVcRjrkRRVFqUxf9zqeorPub02nNy9I53CHSP838OS
-	 bRtk+9NRgc59eYsaj0eiETH0YJEHAxmvMO9FvCb9qvcAQbZM40E4bSmWSTNFGrmd+Z
-	 ejyycknZ4S5hA==
-Date: Fri, 23 Oct 2026 10:52:58 -0700
+	b=cSS0Ck+NSrHUjM87ec4oK+tVdxn6iGBvpBVeHnRpI22pz+cl9kv1k0ewBZ6D1dP+H
+	 bVCrhcxC+JX6TIeI103IOMyfzAmdk506bzOeqKt/MOMquKKvT1H3qIU73fAK3GAQD3
+	 UQlqk7gxESl8jGzFOcBtz2W413JkJo6jZRh/xmnMPIYxFkrcqf1glg89nY6LY2l/0X
+	 aJ/9uKUiEryCHOLmtUz1ro8l08+ntqMmWItaBiiLJxqhRJGDs9MBDrmv54p8TOFGhD
+	 QyQb0Jsgts77moGbNmbU+g5dVigMmtm4cqWEQPd5/mN5PVJ1CnseuSeozwbX/TfRV1
+	 lwu628+jAAQiw==
+Date: Fri, 23 Oct 2026 10:56:50 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, davem@davemloft.net, Eric Dumazet
+To: Harry Yoo <harry@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, Suren Baghdasaryan <surenb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Roman Gushchin
+ <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>, Christoph Lameter
+ <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Muchun Song
+ <muchun.song@linux.dev>, Hao Ge <hao.ge@linux.dev>, Pedro Falcato
+ <pfalcato@suse.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kernel-team@meta.com, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
  <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Russell King <linux@armlinux.org.uk>, Shuah Khan
- <skhan@linuxfoundation.org>, Bobby Eshleman <bobbyeshleman@meta.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Breno Leitao <leitao@debian.org>,
- thomas.petazzoni@bootlin.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net] selftests: drv-net: devmem: Skip when hugetlbfs
- isn't supported
-Message-ID: <20261023105258.2a6349f9@kernel.org>
-In-Reply-To: <20261021090852.996899-1-maxime.chevallier@bootlin.com>
-References: <20261021090852.996899-1-maxime.chevallier@bootlin.com>
+ <horms@kernel.org>, Jason Xing <kerneljasonxing@gmail.com>, Willem de
+ Bruijn <willemb@google.com>, Mina Almasry <almasrymina@google.com>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, Sebastian Andrzej
+ Siewior <bigeasy@linutronix.de>, Jiayuan Chen <jiayuan.chen@linux.dev>,
+ netdev@vger.kernel.org
+Subject: Re: [PATCH slab/for-next 05/14] net: skbuff: specify
+ SLAB_MAY_ACCOUNT for skbuff_head_cache
+Message-ID: <20261023105650.393c8fc8@kernel.org>
+In-Reply-To: <atoHqLrf70QSkn8F@thinkstation>
+References: <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-0-096800aa3330@kernel.org>
+	<20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-5-096800aa3330@kernel.org>
+	<20261021121941.4d8f8edf@kernel.org>
+	<atoHqLrf70QSkn8F@thinkstation>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,19 +78,25 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 21 Oct 2026 11:08:51 +0200 Maxime Chevallier wrote:
-> The devmem selftest requires accessing /proc/sys/vm/nr_hugepages,
-> which is only available when hugetlbfs is supported. This isn't the
-> case on all CPU architectures, for example it isn't supported on ARM
-> 32-bits on cores that don't support LPAE.
+On Thu, 22 Oct 2026 14:43:42 +0100 Harry Yoo wrote:
+> On Wed, Oct 21, 2026 at 12:19:41PM -0700, Jakub Kicinski wrote:
+> > On Wed, 21 Oct 2026 12:46:46 +0100 Harry Yoo (Meta) wrote:  
+> > > AF_UNIX sets sk->sk_allocation to GFP_KERNEL_ACCOUNT, so skbs can be
+> > > allocated from skbuff_head_cache with __GFP_ACCOUNT. Specify
+> > > SLAB_MAY_ACCOUNT when the object may be charged to a memcg.
+> > > __GFP_ACCOUNT without SLAB_MAY_ACCOUNT will not be allowed.  
+> > 
+> > Could you please skip this for the first batch and resend
+> > later to net-next?  
 > 
-> On these devices, the devmem kselftest doesn't skip gracefully
+> Apologies. Wasn't keen to the net-next development process.
+> 
+> I can resubmit later, but hmm, actually, do you mind if we let it go
+> through slab/for-next with Acked-by: from networking folks?
+> 
+> It's only few lines of change and it'll create a lot of dependency for
+> pull requests if each patch goes through each subsystem's tree...
 
-We don't require graceful skipping. If anything IMO hiding the stack
-traces isn't great.
+Think I misread the cover letter.
 
-If the check is extraneous and makes us fail some tests which don't
-actually require huge pages please make that clear in the commit
-message. Otherwise the net benefit of the changes is unclear.
--- 
-pw-bot: cr
+Acked-by: Jakub Kicinski <kuba@kernel.org>
