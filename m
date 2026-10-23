@@ -1,49 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792755568;
-	b=PEI4nPdqGsMr21MdMCGwHEt+FweVP/UhXddVKik/4JT/xvNP9NvIL3I3jcf9lFt11FZU
-	 XyiyGD5KtN9lCVTn3ccGxiVtC+FcjDOyl8q07fCEEDnha++dPUl7vaqSLBzsmrvDF01ej
-	 acd0KgFcpmUiavh9JLm3EH7YiSt75Y0dzZhPd0RSVkaKslZtqwQSNigeBSD7p0lnZ10pH
-	 i9S1qlIVNJSXBbQW6/6nXLK2C7IrkQh9vQleQOSVSB7n7D2Bh/vkCzeH1lSqQXLbCVSUp
-	 Zizu4F2LUWkEpsVFLJKC3XU7Mw9QRDu8EwQQ6GxTcRaPjsz4yyvCHvQ0WLvpuq97MQw==
+	t=1792755584;
+	b=LfWb2z8wC/I+1nURZrecr4SPSC6MZ2XnlzKPvuOMcIBzs+d2U4m0ykg+hF2hwl3WiQyA
+	 lMiWVdEta29diYtEnWu+E/NL0bvAwfnIh4BRViGPIHYSYjjDK1tBQPUytn9YQsDi+0sH0
+	 3jj5bqF2mhnJoQ+S+e5QxLVq/il7sOX3VkwUxew47gxNzO8TTlsBcAKCbzPaYoQ6GAc2q
+	 ehPdga8FR3W+y+n9C0cs5WN0W4opugyRuxS1n4w0dvN9wibCaeW09RV8lE6r6RrlilEnl
+	 ArLhuni6B/6lHBAvXWlM6NeGn6RaTKjMMsmrV6rRrp1INyFIBrsDPZ4ggSnwmJhbiOA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792755568;
-	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Spam-Status:
-	 X-Spam-Checker-Version;
-	bh=vymAhzImNpIaaRDSE6vVjtEbhGC/HWEOd5Jc5ou0oRM=;
-	b=GAeSMM6UOXqkylxBFypYLDHmKrMyDNiVBk+BYvnaaLhMGqFF1CvoE6U/MKg5RXLgvkXT
-	 IYqAxRka7rL+XWgHpAkLJo7upnxu5UaoiQi+28sE3TaeImFSbaZl+pHz5/iMf+nj2aNwQ
-	 /vY25CoQQBfRcCiCNM9JFNs1N33i5P++xoIQ7tHIeCxYxCF3ly+tv3ftclL1rBKFrTJd8
-	 A3iinSLb8FQ/sz3aeATVlPUJbyfxjZWB463t1jGfnH+XfBezn9DgT/gY/UctGzSwzEulp
-	 h38yIVEJVlryY7lc3AoUM5PPTKaguU85m7VhIigxLQDokRzpL2UYHyQJq18jzjecVxQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792755584;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Q6S79bbMaNSuqrqpLiqNPimBxEwlH1ndoIlreZhWFgs=;
+	b=EMoD9DBb/BZfokuuCP6gRaTG0ad4keFy9USaeiAHJQe4sFfvSKoAeYCRwGjwZHGsSPqC
+	 ZDOM+KGYtqOyWNUedU2lQ/Uj4s8HO6qXtD4y7u8h9M8QENN1R9Xy3H6VhUtkdpXRhSDVd
+	 P3fCeyOVDJlFJaQMzKLqQ3ASKU5faxA6NQJa94xuE4ykWp3zLOd7uRU9n4e+Q84slB9LJ
+	 DWnJhtkPE7qvIb9evy2dcK7CD0vclFCuzLId6bHQiQonBL2Uv1+RP1HWyBukWFDGVv/Py
+	 foULRxsKv1H6OD+Xxq+Q21z3Lcyqyi2AvR7pHyz/DzN4UHQc+6MIBFmRUEFoCGOnRhg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.microsoft.com;
-	spf=pass smtp.mailfrom=linux.microsoft.com;
-	dkim=pass header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=HZf8n3AI;
-	arc=none smtp.remote-ip=13.77.154.182
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3336B606A31B;
-	Fri, 23 Oct 2026 11:39:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3336B606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dXbu00Fg;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9FC606A31A
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 11:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=HZf8n3AI
-Received: from [10.26.7.43] (unknown [4.213.232.17])
-	by linux.microsoft.com (Postfix) with ESMTPSA id C7B1D20B7166;
-	Fri, 23 Oct 2026 04:39:08 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C7B1D20B7166
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1792755553;
-	bh=vymAhzImNpIaaRDSE6vVjtEbhGC/HWEOd5Jc5ou0oRM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HZf8n3AI3ZnnksEkPTQnGbZXYh1kJnOmV1BzgOcquy7RV/ZqhdKeFcDL/+gd6ovZg
-	 NJszsCGR7sSsoxxXetM9o0ZfNDMZdEYcilkvrrD1hKAKKMis4Xa3XMs8tPXlOcneVj
-	 G4Id0Npr62RFpA4vphfAuXaJWRjVgnTL/6Cj+oMQ=
-Message-ID: <466dfe8c-1071-4b80-8425-fcd52b9289ad@linux.microsoft.com>
-Date: Fri, 23 Oct 2026 17:09:14 +0530
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dXbu00Fg
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DEFF1F01825;
+	Fri, 23 Oct 2026 11:39:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792755583;
+	bh=Q6S79bbMaNSuqrqpLiqNPimBxEwlH1ndoIlreZhWFgs=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=dXbu00FgxNz/J6C1nxky8UQOXaBC40ne0Z/z/88qchfSIY000BuEmYr5UqMV9/eMH
+	 5nKX5ieIviSs5jqALqBjXMc5XifeBvJGWgbTWx3gNv4IPM/kT+OFn5hR8ukHO2k/TX
+	 NJ0uat0w/hXw/ZF+rvv39bCEQfmAnV5Nm0S1O8gpejnyhZZq9dT6qBMUy7YItD3trg
+	 053zDTwbn32HPCbqUIBy8OWPYZcnb0EMxtJzpSI9A5W6Igb/EtB+06ou7ZDOYr0J5a
+	 h3DhK3DSF6voUToL7zVvVucGgpMYMvvUIKSOVXD4IEOLZHW9UAXlogaNrHEj7ADXz9
+	 Grrtx4sDGrFyg==
+Subject:
+ Re: [PATCH net] inet: reject unhashed sockets during established lookups
+From: netdev-bot+sashiko@kernel.org
+To: imv4bel@gmail.com
+Cc: edumazet@kernel.org, ncardwell@google.com, kuniyu@google.com,
+ davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ martin.lau@linux.dev, john.fastabend@gmail.com, weiwan@google.com,
+ sd@queasysnail.net, jiayuan.chen@linux.dev, netdev@vger.kernel.org
+Date: Fri, 23 Oct 2026 11:39:42 +0000
+Message-ID: <179275558269.3134.17308052093423946226@kernel.org>
+In-Reply-To: <ath58Egc-oI6p3Jl@v4bel>
+References: <ath58Egc-oI6p3Jl@v4bel>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,197 +64,146 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3] net: mana: Add support to process throttled EQEs
-To: Haiyang Zhang <haiyangz@microsoft.com>,
- "wei.liu@kernel.org" <wei.liu@kernel.org>, Dexuan Cui <DECUI@microsoft.com>,
- "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
- "davem@davemloft.net" <davem@davemloft.net>,
- "edumazet@kernel.org" <edumazet@kernel.org>,
- "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com"
- <pabeni@redhat.com>, Konstantin Taranov <kotaranov@microsoft.com>,
- "horms@kernel.org" <horms@kernel.org>,
- "ernis@linux.microsoft.com" <ernis@linux.microsoft.com>,
- "gargaditya@linux.microsoft.com" <gargaditya@linux.microsoft.com>,
- "mawasthi@linux.microsoft.com" <mawasthi@linux.microsoft.com>,
- "leitao@debian.org" <leitao@debian.org>,
- "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20261022145428.323576-1-sahilchandna@linux.microsoft.com>
- <LV5PR21MB47047DE99D8622E45CB41ECBCA652@LV5PR21MB4704.namprd21.prod.outlook.com>
-Content-Language: en-US
-From: Sahil Chandna <sahilchandna@linux.microsoft.com>
-In-Reply-To: <LV5PR21MB47047DE99D8622E45CB41ECBCA652@LV5PR21MB4704.namprd21.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 23-10-2026 01:12, Haiyang Zhang wrote:
-> 
-> 
->> -----Original Message-----
->> From: Sahil Chandna <sahilchandna@linux.microsoft.com>
->> Sent: Thursday, October 22, 2026 10:54 AM
->> To: Haiyang Zhang <haiyangz@microsoft.com>; wei.liu@kernel.org; Dexuan Cui
->> <DECUI@microsoft.com>; andrew+netdev@lunn.ch; davem@davemloft.net;
->> edumazet@kernel.org; kuba@kernel.org; pabeni@redhat.com; Konstantin
->> Taranov <kotaranov@microsoft.com>; horms@kernel.org;
->> ernis@linux.microsoft.com; gargaditya@linux.microsoft.com;
->> mawasthi@linux.microsoft.com; leitao@debian.org; linux-
->> hyperv@vger.kernel.org; netdev@vger.kernel.org; linux-
->> kernel@vger.kernel.org; linux-rdma@vger.kernel.org
->> Cc: stable@vger.kernel.org
->> Subject: [PATCH net v3] net: mana: Add support to process throttled EQEs
->>
->> When an event queue nears full, the hardware coalesces the per-CQ
->> GDMA_EQE_COMPLETION notifications into a single throttle EQE (type 4)
->> that carries no cq_id. The driver does not handle this event type, so
->> it falls through to the default case and is dropped. Any CQ whose
->> completion notification was replaced by the throttle EQE can remain
->> unserviced, causing its queue to stall.
->> The issue was observed internally and following Tx stall logs were
->> seen:
->>
->> 2026-10-03T05:29:01 hv_netvsc eth0: VF slot 0 removed
->> 2026-10-03T05:29:23 mana 7870:00:00.0 ens1: NETDEV WATCHDOG: CPU: 45:
->>                     transmit queue 1 timed out 15133 ms
->> 2026-10-03T05:31:05 mana 7870:00:00.0: HWC: Request timed out: 60000 ms
->> 2026-10-03T05:31:05 mana 7870:00:00.0: Gf stats wk handler: gf stats
->> query timed out.
->> 2026-10-03T05:31:21 ens1: NETDEV WATCHDOG: CPU: 20: transmit queue 0
->> timed out 15859 ms
->> 2026-10-03T05:31:37 ens1: NETDEV WATCHDOG: CPU: 15: transmit queue 0
->> timed out 31731 ms
->> 2026-10-03T05:31:53 ens1: NETDEV WATCHDOG: CPU: 21: transmit queue 0
->> timed out 47603 ms
->> 2026-10-03T05:32:08 ens1: NETDEV WATCHDOG: CPU: 42: transmit queue 0
->> timed out 62451 ms
->>
->> Add support to process the CQs which belong to a throttled EQE of type 4
->> advertise the capability bit, also add a counter to store the throttled
->> EQEs count.
->>
->> Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network
->> Adapter (MANA)")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Sahil Chandna <sahilchandna@linux.microsoft.com>
->> ---
->> Changes in v3:
->> - Resolve race for cq in mana_gd_destroy_cq and irq handler using cq.
->> - Rebase to net branch
->> Link to v2:
->> https://lore.ker/
->> nel.org%2Fall%2F20261014134304.4177657-1-
->> sahilchandna%40linux.microsoft.com%2F&data=05%7C02%7Chaiyangz%40microsoft.
->> com%7C534992a49c0340631e2f08df304e3c73%7C72f988bf86f141af91ab2d7cd011db47%
->> 7C1%7C0%7C639282784768349454%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRyd
->> WUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C
->> 0%7C%7C%7C&sdata=w2NpUCx%2FCNtqeFQSR0fIMOYnbHLP7XsFl90sL%2F%2F7Y0g%3D&rese
->> rved=0
->>
->> Changes in v2:
->> - Use WRITE_ONCE() when clearing max_num_cqs and add RCU
->>   grace period wait during HWC teardown.
->> - Use synchronize_net() during CQ destroy only when the CQ was
->>   attached to its parent EQ.
->> - Use WRITE_ONCE() and READ_ONCE() for the throttle-event counter.
->> - Add Fixes tag and net instead of net-next.
->> - Fix commit message to describe capability bit and counter.
->> Link to v1:
->> https://lore.ker/
->> nel.org%2Fall%2F20261008083315.306076-1-
->> sahilchandna%40linux.microsoft.com%2F&data=05%7C02%7Chaiyangz%40microsoft.
->> com%7C534992a49c0340631e2f08df304e3c73%7C72f988bf86f141af91ab2d7cd011db47%
->> 7C1%7C0%7C639282784768392174%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRyd
->> WUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C
->> 0%7C%7C%7C&sdata=oj6Ei41iOntNjgoAWNaLSZdvptpbZSkkZMOCa6c2PDw%3D&reserved=0
->>
->>  .../net/ethernet/microsoft/mana/gdma_main.c   | 62 +++++++++++++++++--
->>  .../net/ethernet/microsoft/mana/hw_channel.c  |  6 +-
->>  .../ethernet/microsoft/mana/mana_ethtool.c    |  9 +++
->>  include/net/mana/gdma.h                       | 12 +++-
->>  include/net/mana/mana.h                       |  1 +
->>  5 files changed, 81 insertions(+), 9 deletions(-)
->>
->> diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c
->> b/drivers/net/ethernet/microsoft/mana/gdma_main.c
->> index 8e9bfc1d6a2a..d74ed00bb783 100644
->> --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
->> +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
->> @@ -904,6 +904,27 @@ ssize_t mana_gd_read_ring(struct gdma_queue *q, char
->> __user *buf,
->>       return copied;
->>  }
->>
->> +static void mana_gd_schedule_eq_cqs(struct gdma_queue *eq)
->> +{
->> +     struct gdma_context *gc = eq->gdma_dev->gdma_context;
->> +     struct gdma_queue *cq;
->> +     u8 i;
->> +
->> +     for (i = 0; i < GDMA_EQ_MAX_CHILD_CQ; i++) {
->> +             cq = rcu_dereference(eq->eq.child_cq[i]);
->> +
->> +             if (!cq)
->> +                     continue;
->> +
->> +             if (cq->id >= READ_ONCE(gc->max_num_cqs) ||
->> +                 !gc->cq_table || gc->cq_table[cq->id] != cq)
->> +                     continue;
->> +
->> +             if (cq->cq.callback)
->> +                     cq->cq.callback(cq->cq.context, cq);
->> +     }
->> +}
->> +
->>  static void mana_gd_process_eqe(struct gdma_queue *eq)
->>  {
->>       u32 head = eq->head % (eq->queue_size / GDMA_EQE_SIZE);
->> @@ -934,6 +955,11 @@ static void mana_gd_process_eqe(struct gdma_queue
->> *eq)
->>
->>               break;
->>
->> +     case GDMA_EQE_THROTTLE:
->> +             WRITE_ONCE(eq->eq.throttle_count, eq->eq.throttle_count + 1);
-> Please use u64_stats_update_begin / end() for stats, which is the standard
-> way -- see other stats code in this driver.
-> 
-Ack, will update it in v4.>> +             mana_gd_schedule_eq_cqs(eq);
->> +             break;
->> +
->>       case GDMA_EQE_TEST_EVENT:
->>               gc->test_event_eq_id = eq->id;
->>               complete(&gc->eq_test_event);
-> [...]
-> 
-> 
->> @@ -250,6 +252,7 @@ static void mana_get_ethtool_stats(struct net_device
->> *ndev,
->>       u64 short_pkt_fmt;
->>       u64 csum_partial;
->>       u64 mana_map_err;
->> +     u64 throttle_events;
->>       int q, i = 0, j;
->>
->>       if (!apc->port_is_up)
->> @@ -261,6 +264,12 @@ static void mana_get_ethtool_stats(struct net_device
->> *ndev,
->>        */
->>       mana_query_phy_stats(apc);
->>
->> +     throttle_events = 0;
->> +     for (q = 0; q < num_queues; q++)
->> +             throttle_events += READ_ONCE(apc->eqs[q].eq-
->>> eq.throttle_count);
-> 
-> Since you already have per queue throttle_count, please output them for
-> each EQ.
-> 
-> Thanks,
-> - Haiyang
-Ack, i will drop accumulated throttle count and report per EQ in v4.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-The patch needs rebase again for net branch, i will rebase in v4.
+Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The new reader-side check does not order later loads of socket
+  fields.
+
+Pre-existing issues:
+- [Medium] When a tuple matches but refcount_inc_not_zero_acquire()
+  fails, __inet_lookup_established()…
+
+--
+
+inet: reject unhashed sockets during established lookups
+
+This patch changes __inet_lookup_established() and
+__inet6_lookup_established() to take the reference with
+refcount_inc_not_zero_acquire(). After taking it, the lookup now restarts
+if the nulls node is unhashed. It also switches the initial nonzero
+refcount stores in the SYN cookie, TFO, request migration and TIME_WAIT
+paths to refcount_set_release(), and frees published requests with
+reqsk_put().
+
+[ ... ]
+
+> diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
+> index ba0faa9ae2bb3..7ffa9171d6de1 100644
+> --- a/net/ipv4/inet_hashtables.c
+> +++ b/net/ipv4/inet_hashtables.c
+> @@ -550,10 +550,11 @@ struct sock *__inet_lookup_established(const struct net *net,
+>  		if (sk->sk_hash != hash)
+>  			continue;
+>  		if (likely(inet_match(net, sk, acookie, ports, dif, sdif))) {
+> -			if (unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
+> +			if (unlikely(!refcount_inc_not_zero_acquire(&sk->sk_refcnt)))
+>  				goto out;
+
+[Severity: Medium]
+This is a pre-existing issue and was not introduced by this patch. When
+the tuple matches but the refcount increment fails, the lookup still
+does goto out and returns NULL instead of restarting.
+Documentation/RCU/rculist_nulls.rst restarts the lookup in this case.
+
+Can this miss a live socket that is in the same chain? Here is one window.
+In reqsk_timer_handler(), inet_reqsk_clone() does:
+
+    memcpy(nreq_sk, req_sk,
+           offsetof(struct sock, sk_dontcopy_begin));
+
+This copies skc_hash and the tuple from oreq, but not skc_refcnt. Until
+reqsk_timer_handler() reaches this line:
+
+    refcount_set_release(&nreq->rsk_refcnt, 2 + 1);
+
+nreq carries oreq's hash and tuple with a refcount of 0 left over from its
+previous life. During that time oreq is still hashed in the same chain.
+
+A reader whose stale pointer lands on nreq passes the hash and tuple
+checks and fails the increment. It then returns NULL without reaching
+oreq.
+
+tcp_v4_rcv() then falls back to the listener. For an ACK,
+tcp_rcv_state_process() in TCP_LISTEN returns 1, so a RST is sent for a
+valid handshake. A similar window exists for a replaced req whose
+refcount has already dropped to 0.
+
+A restart has a cost of its own. reqsk_queue_hash_req() hashes a req
+before it sets the refcount, so a restarting reader would have to spin
+past that window. The window is kept short with preempt_disable_nested().
+
+The same goto out exists in __inet6_lookup_established().
+
+> -			if (unlikely(!inet_match(net, sk, acookie,
+> -						 ports, dif, sdif))) {
+> +			if (unlikely(hlist_nulls_unhashed_lockless(&sk->sk_nulls_node) ||
+> +				     !inet_match(net, sk, acookie, ports, dif,
+> +						 sdif))) {
+
+[Severity: Medium]
+On weakly ordered CPUs such as arm64 and POWER, does this check order the
+caller's later loads of socket fields?
+
+hlist_nulls_unhashed_lockless() is only:
+
+    return !READ_ONCE(h->pprev);
+
+Branching on it creates a control dependency. That orders later stores,
+but not later loads.
+
+For full child sockets, the acquire in refcount_inc_not_zero_acquire()
+does not seem to pair with a release either. sk_clone() publishes the
+refcount with a plain store:
+
+    smp_wmb();
+    refcount_set(&newsk->sk_refcnt, 2);
+
+After that store, inet_csk_clone_lock() writes the child's tuple, clears
+icsk_accept_queue, and changes sk_state from the TCP_LISTEN value copied
+from the parent to TCP_SYN_RECV. tcp_v4_syn_recv_sock() hashes the child
+last.
+
+A stale reader could then see a non-NULL pprev and the new tuple, but
+still load the parent's TCP_LISTEN when tcp_v4_rcv() reads sk_state:
+
+    if (sk->sk_state == TCP_LISTEN) {
+        ret = tcp_v4_do_rcv(sk, skb);
+        goto put_and_return;
+    }
+
+That path skips bh_lock_sock_nested(). The packet is processed on the
+child without its lock while the creating CPU still holds that lock and
+is finishing setup. The result is either a RST from listener handling or
+unlocked SYN_RECV processing that races with the creator.
+
+The commit message says:
+
+    This rejects the SYN cookie
+    request socket and blocks the child socket path observed in the x86
+    test.
+
+Does this hold only under x86 TSO? Is an smp_rmb() (or an acquire load of
+pprev) needed after the hashed check, with matching ordering on the
+writer side?
+
+The same check in __inet6_lookup_established() has the same ordering
+question.
+
+>  				sock_gen_put(sk);
+>  				goto begin;
+>  			}
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/ath58Egc-oI6p3Jl%40v4bel
