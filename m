@@ -1,75 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=51.159.188.251
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792781595;
-	b=pAf3xOa6id2y2s/hCOSXHVfoA+ZpxBnfKBUwFzHmfFQLwNErIlRENVFZ/Ydwkht16GxG
-	 EXJ3XvZ3d95Bh4g850UeYdFTX/pFbHO2Mv+bE6PkUL9DDOuFiRmrC4msoj8en7wpOB5bn
-	 iWg5GC05i66he+3Ea9GXFPIV0qkFR6y5+48oLKuvvdQiLuc+4MG/a/TlQGcFxObc+beGW
-	 aEJVcaqO3Hd+xGobwdvOQpAevQVw22JCiV687OFKo+JmeGRHixkTQ41RraQgUZaBqD6I6
-	 vliiD2KNDZG/Dg+JDd92fI86WXACxVm17zK1gQVUhDNZhfGpxeREAOHiLrCj9jBizgg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792781595;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:
-	 X-AntiAbuse:X-AntiAbuse:X-Get-Message-Sender-Via:
-	 X-Authenticated-Sender:X-Source:X-Source-Args:X-Source-Dir;
-	bh=IxmE0gHiyjGXuLsm3BhAiy//lMTqa7LOKZbu4aeGXxg=;
-	b=1z52qsR2hXf2ZKlfYEghUNQcGZXKCncSVVuiPPrfrtVnzwfrG5zf4BmRm8ENPhTWSwsB
-	 eCl68azQFmi5cqpOYm0ogS6PK6vR+avMnO7k6FtmBbW8820UHzVn6mtf3tbMp4abFdqTE
-	 P2TUcJNNiFImtj+fkxbW1wbNJf5FWwVbFjfT/Mv3lGale4DcJH3/43uFcYsOLz7svGQmx
-	 iCZcfqd7B+kTGlGKFkvyuEPNnAWCFNyOMQMSkA/Hr8jzc5nZjW5JP/4HjBLZQUZI/U+KB
-	 KrnXxI2sL/K6cGXm3SbKzLYL93kg3h7ulkOYV7hIZ2N0ymKRFjvuINt1Iny2JOCTqXg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.cyber.gouv.fr;
-	spf=pass smtp.mailfrom=oss.cyber.gouv.fr;
-	dkim=pass header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.a=rsa-sha256 header.s=default header.b=HVvl64GW;
-	arc=none smtp.remote-ip=51.159.188.251
-Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.181
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792781652;
+	b=isxGjxUErhJpMioxCweAVLm1N4bfFypcRrtwmIfhqmw+/yzX6boSnYwHtYmkVOppPJwQ
+	 IHQPQ9EKYwBGQ7VOHRPtEBHwny+JUyuYR0e2T8Eh6Z85D9bxH2BNzyHBISGNy+NT1PGKO
+	 LdsZ45+IMhdvCALpzur0kGqoPv9VhkbFtbtEKQwq0pCKPpX7UlaLEdUwB5P0F3zV+krSM
+	 2ta9OZF1p2q0CDctMN7QTmNePpoyuyLOx9cXco4y6vQageGY0yhtfaeuTzXU24gmqBMon
+	 kncjvNtpbsiFCoT2QL7qm+ELV1ikAgnfmtlbS1pKSbiGKgW9D6koKJv1OQkxQkd0WPQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792781652;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=rU1MJkNETayS5var2MLHM73zlvbHQxyivwE/jbKWRfI=;
+	b=KvqHIjfSTL3bCLhQThscbse5kR9PxTZK3e9Z/lNSXFgZi7xhcUT51S2mAGXtrIGfwAfn
+	 iVZS89zbAkOShYXyZi0rXpqYqH5Ne+Uf4vLCFQf7jcGuqPBNXCG5Rje1MtK1duiBZzibM
+	 TQIQDMRnHGXHp+SsgX7giulwPyN48PBNUuANXF2umhBm2sYdgWnl3Ii6wbSmQV9tShggF
+	 +uhpM4jvV3FS6ox6W5C+tOLLMkr0spu6oiK4qSf+jFCbvNyS/PVCy30PXYyaQXqe3X1BS
+	 VMa2G3IhZGZc6PsoQhbnkW7hMygCgydIt9U1sps+D3udkWjpa5c/wlAjSK8VaL+Xa+g==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=tH2PzqGf;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.181
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96339606A31A;
-	Fri, 23 Oct 2026 18:53:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 96339606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB60606A31B
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 18:54:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3BB60606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.a=rsa-sha256 header.s=default header.b=HVvl64GW
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Sender:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=IxmE0gHiyjGXuLsm3BhAiy//lMTqa7LOKZbu4aeGXxg=; b=HVvl64GWNiTcaT1nDCRkxHRQTi
-	U6cXZBKj1WgLkfdhEpQQbWKr721AL53saG2JBOdDMAxID6PKB6gZg3vpHSSO8a6BDdJEJyVsRI47i
-	nKtRtmsm0fCQs51IimUTBVyVI0nX4Zjgm2ZZl/NUMzvSeco7J8Ua22l+7W5RvMLWRtm2VbwMdVhgr
-	KClZvbCHXBmbVMn0QOBcUDaVZQamC87PqEZ+bM+3A+j654lAE8A93CsG0nU6Bj7RQTL3CHQ7xUJcf
-	WZQn+B8moV67IoLhnNnnJd6P0Gomvf128wafJxs/w8SZ9f/YknYfF7949GIzhtwACBdz1CRQ4oP0t
-	TKM7JXLw==;
-Received: from [151.115.150.205] (port=56522 helo=gepetto..)
-	by pf-012.whm.fr-par.scw.cloud with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.100.1)
-	(envelope-from <Jeremy.Jean@oss.cyber.gouv.fr>)
-	id 1xKKO9-00000003uG7-26Ca;
-	Fri, 23 Oct 2026 20:53:12 +0200
-From: =?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
-To: Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] inet: frags: prevent acceptance of partially authenticated reassembly
-Date: Fri, 23 Oct 2026 18:51:19 +0000
-Message-ID: <20261023185118.2588450-2-Jeremy.Jean@oss.cyber.gouv.fr>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=tH2PzqGf
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2e8f2c3ad6bso7772655ad.1
+        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 11:54:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792781651; cv=none;
+        d=google.com; s=arc-20260327;
+        b=GuT+uMcC03B7+WyuQCEU/0k6r0j65ICPxMtTysbUmPv6yL2B89yI0hOTiKTVkmsqIJ
+         prjPxJA0YVnUSVLOKg2asDcUFOQVPaZ8vUo8KfLe1QjX83H6qdpbXg+xUSZ1jBQITbvd
+         EZSl6jz5Jnyvr7XssliLp3RhoxT4cy7X3U51hGFI/8qk+bY2HbYxCjJFbWinup/oEx7H
+         7oE5J04Xdhh/MNVtMuKxCG7yXbHmwL9kRVrXPI9KPaZOxVpYUYvkFWlAfGI/7xq8Qa0p
+         3FCfMuGZMUfSJB0D9YrO/DbpRNCq/XluuyjHUtgo0x0O8qDtR6NKxf39QeWgGbTf0dqx
+         7p4g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=rU1MJkNETayS5var2MLHM73zlvbHQxyivwE/jbKWRfI=;
+        fh=Q7hDqG9WdXSmdug5d5kxBEF2qM0ZV/72Jx+V1rHqgEg=;
+        b=Sw052Tf6RsNXhNw59uGXE1esZtRLlR9DahO75BOiO5DvGzndx1ZrRpxnsGgRntL2+7
+         ZGh0dLMmzSvRV8xo20pttdRCtVh2I4yDNuIzgJ9TLgryZVhxwEqb62aca3AuSrtDXxpG
+         cnUp09dLwAN45j3cFi299fl1KOfR0Gv0kNqUvwWYkHFNozRoalBxzKDyFaBfMMsKGPUc
+         tcfcfqbGViKlfspaj66NjsuaLyPtNrI3VWysGMtK7wacQKVJ/Uhk+Q4bkhySYW3fm6ng
+         sQJfhHT6LxEzELcPIhf/ryn1IyJUO05BMsra2/K9c5otUjGpn/btFZCPpHckhVw/PDLe
+         k2Lw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792781651; x=1793386451; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=rU1MJkNETayS5var2MLHM73zlvbHQxyivwE/jbKWRfI=;
+        b=tH2PzqGfBFXUmYs+U0jgxOiwBUXW3Sw78Br9mxWPzz5zt2F/svzbOMPh7lEjoo0ZZF
+         j4GnojgKAHeLSLFGyEgfvcNDViTPG1998Y3gip182ruBL9vYQn2kZhwzRfOeE9Uesj/R
+         vdFD5yriZ0SkT4bVJF06piBN3APb0Kw5Mm83EkuGYOwakhTMz9WbsK3KFfPGnF3mozS2
+         yClmI9XRaHQq6aP5NTLJiyg+MsU4X2lC8YHiDGHaePt3mfBVrlpQLArFbSkgnitcTgY9
+         S7fliGBzS+AFcqouePcT12CLNclcTaRsKMMIchljQFSpeFzidMIwVg/2q+9HutAJZWLk
+         I9pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792781651; x=1793386451;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rU1MJkNETayS5var2MLHM73zlvbHQxyivwE/jbKWRfI=;
+        b=ckOyfKQUsoYa2Hbb9ENyfwALXhZFAlV9H5ZhqVCVEG74DyIG3S5uhsFMoFfTtZUAOQ
+         YeqZrCumZvKzg3RwMlBsoEo5PCrN+Fn5nj4khuOPt7LfSrJghaHtEodV4TZs1+zI+SU4
+         3Gy+KGSB8PjYkJriVbx062ksj9Wg77tJ9p+lEXdcv86WQYMAVUhSJd1QPK8mxLS052S9
+         9Vifg6jAZoN8V/aHwByGd9NFTDHaME3i7FeDQDpg3Rc7YNzYa9pG9UOWnN4d7AS4JAaZ
+         tsvHRqUN6RYgsXu/Y808IYiYecou9mPiifgX6hMN//ziz5bN+koaX5rCaU6OWz44Knk4
+         MRDA==
+X-Forwarded-Encrypted: i=1; AKwUvBypEioc/LuZeUSWDc0SQ/8wYh1Dh2AWKX7TBAADSKs96PLfWJySkiLeS7UP+yUC4LR5p2yj+Qk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLvN0SY4Tdndv5NM0Vy6SVR6n83DcMMQIijG4E8g4ZjWujlRr0G
+	SNKkyHOLUnOB2SPZGHjVIP+iACmyEWkf6a+CdVjyaJhhg5OwVEDk5vQytcP7DAjQ2qWx3cF7EkI
+	6ku1FOSDUpSU/zhf5TdgnZkMtPgSAycs=
+X-Gm-Gg: AYBFou0f6ELyuAuhd3slbSIoM+Kwhq+9QDN21cg58VXljHKR/YdbIThEudUdLivyt5U
+	b/BOS7jXa6OjBeBiSinzi8uErHb5PwZVLUSozyJGFkMfsD+X9x5wPUcfF5Pk0cof1rrp9TfXFdI
+	P63S/2L5YTggQ4NhytzsrmsViiWc/AESWPS/NSC0MTgSR1YbmarEpmKalJjpBUdTQagqyKKhWTC
+	5KLZziM3deDwwVH2x16/5EZ2WBobvXB4lK/RLME2v73b3Pm+ffNLXijWyNSQZMeAHnzaE2bYTtz
+	ZTbb+5BSF+e7H9l6ctt5JygNJ3JPiS7ZMuk0X1pUaBcVQRmGdHllp9X2j8RA0XVGMwaGz5leZqW
+	d0ZMhZ1a7rNg/VnBHkCV2RRnJGFouavA3zX0lqEV/abvZ2Ob8T2m37J0O7+2riaHHyGIv/hhaQm
+	aFth+mfDTIaI5FYC47RemnW0QrOJ1b8Y3q7KZGw39BZxNHGpVEbtE=
+X-Received: by 2002:a17:902:e88d:b0:2e2:fc90:11a4 with SMTP id
+ d9443c01a7336-2ea7c1a473dmr29006745ad.48.1792781651387; Fri, 23 Oct 2026
+ 11:54:11 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -79,138 +105,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
-X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
-X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+References: <20261021155629.68813-1-phx0fer@gmail.com> <20261022054811.35008-1-phx0fer@gmail.com>
+ <DMBHB0TQOV1L.38MECMYFGUS5B@gmail.com> <871p9g6ym1.fsf@cloudflare.com>
+In-Reply-To: <871p9g6ym1.fsf@cloudflare.com>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Fri, 23 Oct 2026 11:53:59 -0700
+X-Gm-Features: AclHuK9Z1e1uuin3xKQj50QTuiC83gSWuOAbPYUtr_-0P4Nt2Rm5eucO2azxltI
+Message-ID: <CAADnVQLTe611mm0iJEf5gJi2GtW42kxNHH3sUPevD039FvzL7g@mail.gmail.com>
+Subject: Re: [PATCH bpf v2] bpf, sockmap: annotate the psock teardown data races
+To: Jakub Sitnicki <jakub@cloudflare.com>
+Cc: Dudu Lu <phx0fer@gmail.com>, John Fastabend <john.fastabend@gmail.com>, 
+	Jiayuan Chen <jiayuan.chen@linux.dev>, Network Development <netdev@vger.kernel.org>, 
+	bpf <bpf@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-A reassembled skb retains the secpath from its first fragment, which
-makes it possible for the final policy check to accept bytes that were
-not covered by the transform recorded on the skb. This can affect IPsec
-tunnel traffic, including AH and ESP, and allow a packet to be accepted
-even though only part of its payload was authenticated.
+On Fri, Oct 23, 2026 at 11:49=E2=80=AFAM Jakub Sitnicki <jakub@cloudflare.c=
+om> wrote:
+>
+> >
+> >  static bool sock_map_sk_state_allowed(const struct sock *sk)
+>
+> Code LGTM
 
-Reject a fragment when its secpath differs from the fragments already
-in the queue, and keep overlap statistics limited to actual overlaps.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
----
-Changes in v2, after review by Eric Dumazet:
- - Remove check on verified_cnt.
-
-v1: https://lore.kernel.org/all/20261023074515.2347924-2-Jeremy.Jean@oss.cyber.gouv.fr/
-
- include/net/inet_frag.h  |  1 +
- include/net/xfrm.h       | 17 +++++++++++++++++
- net/ipv4/inet_fragment.c |  5 +++++
- net/ipv4/ip_fragment.c   |  3 ++-
- net/ipv6/reassembly.c    |  3 ++-
- 5 files changed, 27 insertions(+), 2 deletions(-)
-
-diff --git a/include/net/inet_frag.h b/include/net/inet_frag.h
-index 365925c9d2628..b02d2472b003e 100644
---- a/include/net/inet_frag.h
-+++ b/include/net/inet_frag.h
-@@ -171,6 +171,7 @@ extern const u8 ip_frag_ecn_table[16];
- #define IPFRAG_OK	0
- #define IPFRAG_DUP	1
- #define IPFRAG_OVERLAP	2
-+#define IPFRAG_MIXED_SECPATH	3
- int inet_frag_queue_insert(struct inet_frag_queue *q, struct sk_buff *skb,
- 			   int offset, int end);
- void *inet_frag_reasm_prepare(struct inet_frag_queue *q, struct sk_buff *skb,
-diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index a6d69aaa6cd2d..298ca9bb00835 100644
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -1201,6 +1201,23 @@ secpath_reset(struct sk_buff *skb)
- #endif
- }
- 
-+static inline bool
-+secpath_equal(const struct sk_buff *skb1, const struct sk_buff *skb2)
-+{
-+	const struct sec_path *sp1 = skb_sec_path(skb1);
-+	const struct sec_path *sp2 = skb_sec_path(skb2);
-+	int i;
-+
-+	if (!sp1 || !sp2)
-+		return sp1 == sp2;
-+	if (sp1->len != sp2->len)
-+		return false;
-+	for (i = 0; i < sp1->len; i++)
-+		if (sp1->xvec[i] != sp2->xvec[i])
-+			return false;
-+	return true;
-+}
-+
- static inline int
- xfrm_addr_any(const xfrm_address_t *addr, unsigned short family)
- {
-diff --git a/net/ipv4/inet_fragment.c b/net/ipv4/inet_fragment.c
-index b286ee429da8f..c18da91c1f031 100644
---- a/net/ipv4/inet_fragment.c
-+++ b/net/ipv4/inet_fragment.c
-@@ -23,6 +23,7 @@
- #include <net/inet_ecn.h>
- #include <net/ip.h>
- #include <net/ipv6.h>
-+#include <net/xfrm.h>
- 
- /* Use skb->cb to track consecutive/adjacent fragments coming at
-  * the end of the queue. Nodes in the rb-tree queue will
-@@ -441,6 +442,10 @@ int inet_frag_queue_insert(struct inet_frag_queue *q, struct sk_buff *skb,
- {
- 	struct sk_buff *last = q->fragments_tail;
- 
-+	/* The reassembled skb keeps the first fragment's secpath. */
-+	if (last && !secpath_equal(last, skb))
-+		return IPFRAG_MIXED_SECPATH;
-+
- 	/* An IP fragment is never a GSO packet, but an untrusted source
- 	 * (virtio_net_hdr) may have attached GSO metadata to it. Do not let
- 	 * that reach the reassembled skb, whose head keeps the first
-diff --git a/net/ipv4/ip_fragment.c b/net/ipv4/ip_fragment.c
-index c790d2f494870..36105dd192823 100644
---- a/net/ipv4/ip_fragment.c
-+++ b/net/ipv4/ip_fragment.c
-@@ -378,8 +378,9 @@ static int ip_frag_queue(struct ipq *qp, struct sk_buff *skb, int *refs)
- 		err = -EINVAL;
- 		goto err;
- 	}
-+	if (err == IPFRAG_OVERLAP)
-+		__IP_INC_STATS(net, IPSTATS_MIB_REASM_OVERLAPS);
- 	err = -EINVAL;
--	__IP_INC_STATS(net, IPSTATS_MIB_REASM_OVERLAPS);
- discard_qp:
- 	inet_frag_kill(&qp->q, refs);
- 	__IP_INC_STATS(net, IPSTATS_MIB_REASMFAILS);
-diff --git a/net/ipv6/reassembly.c b/net/ipv6/reassembly.c
-index 05c51f669754a..53a685f5c6b7f 100644
---- a/net/ipv6/reassembly.c
-+++ b/net/ipv6/reassembly.c
-@@ -240,8 +240,9 @@ static int ip6_frag_queue(struct net *net,
- 		err = -EINVAL;
- 		goto err;
- 	}
-+	if (err == IPFRAG_OVERLAP)
-+		__IP6_INC_STATS(net, idev, IPSTATS_MIB_REASM_OVERLAPS);
- 	err = -EINVAL;
--	__IP6_INC_STATS(net, idev, IPSTATS_MIB_REASM_OVERLAPS);
- discard_fq:
- 	inet_frag_kill(&fq->q, refs);
- 	__IP6_INC_STATS(net, idev, IPSTATS_MIB_REASMFAILS);
--- 
-2.47.3
-
+Jakub,
+Could you commandeer it ?
+Dudu is clearly a bot and doesn't care.
