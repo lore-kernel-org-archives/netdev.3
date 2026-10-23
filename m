@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792743216;
-	b=OITjaO5/KKim/Hp65pZS1ISvfbPESKF78vjwp5+8eVbrmSWluyzjvnhoE+a7lmBjlfAG
-	 lqugX/SOZYwdec7wFLEo24UO0BGU5PYtroB7hdBmi3llNivEYRp/gymfIVhM25zP0BvXt
-	 +R2gdwANR6qjtujDKgnleTQu+OlFXxM6rRFjauIGAVXZErLkjtqYPCXrcVdPCg+z3Ieth
-	 3KpSlDfsPWhqgcqw5rT0S/w+dvW1l6xXT9s2LkPa3qGk/Bdl78vp9TxS5MSoOHDq5GxMA
-	 n60FebtOImI6S3moiTfkizgfY89Ci1bLe4pYX59VV0g1doSe5hQ+aXFGkA7c/dorabw==
+	t=1792743217;
+	b=mm6qIgyxF17N6Xm4dbUXftHMuOhQO8a/K0GDPKB4q2/xX8YT2uvVNqhdu6YFNlVoRuip
+	 nuasHc20xx1Nb9WoDXc6F9rj3WVxQq9H7e9WRYw1VeIxzUmcLbN0PJZk/3pPNByBCl9Ao
+	 FluolEgNOeXFqCI3pN1EzuRicqwpCXgSIrIdmum1ZComAqdu5ZNz3vLh3h+XgfZXqM6TO
+	 SmGGvfvJekGCkFK/xN71F8OpSi9KNkZdTi7+gWt0FNAoLFcaOMsN01+2QN4GxNYZZdrvA
+	 UXf1ZqcYPXeurkE9FPIlSvQOUeINx/X3GLjovbPo86XgelT6mCvY1gbzksG/cc2t+NQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792743216;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792743217;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=7NexUVuvDPnYcH5TpaHV6T3xbSzprjsyYDQbk6xgnow=;
-	b=O2pQY0gjHeM9VsBXkFJSJRXbOyKN+VgCOrmwC2xIk1nWecqsJRA1FKZyFcnx8z0v6hcd
-	 a24JIM2IpnGkY9mpuKqJQ4toypKv1hSaqbvH4hUFBsyTr7JrFz2QNJ0NixIJlIsveo4sg
-	 oS8izjor5j3bME86cRLxY5sTGdZDUC4NL+a8dXUIw16Yb/2093kyXkm3HsUK9EwEeeMYP
-	 0FAzL1v+0c/uxakdHQSQB/53Mcs/6XaG47paWnw6ZSL6QxVEo+SvaaTH3ZDZwudWl/Tjx
-	 nzeXO+OBBITjoVuQOFhgK/QiyyaI5gugV96TyXwyD8QVG132q30i09NDw3tIq3GFOvg==
+	bh=xy/icg2FgLnwhxYRw7WOqFpBG1mDn+HJbXpbcFTIaWo=;
+	b=2aui23v0BPpCjcgC3l+edQehKLW3ko1N3SyNrttUUR9Xwg8/5i2HZtfZ1qt4/tymNKV+
+	 2D1H/Fy+UJ7J/rbsTMg0pnTMMre62IaXliL5vC4JgW7RZ1RlVh5W9MWJ+6AsRNRL8fWlz
+	 v+UiU+w9BFzNUYAFvOGEGhN8sNetIfFXtJ2nC4uvvmUeIXWiyyT3Y54rGSnVm4R8Atcxg
+	 SDoHtNitWCGmctDOt3dE8PP44aJNSSYmdUPI52s8KZ7g4LZWZaxBf6eoB49/wlJOr1YyE
+	 26ySNPUuQP33pTtamMMfWuGC5B10yMntJ7QLCwxPou0AIqYxkqpOC9ETQ0YPC3ZT+DA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O6zoDF6v;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D8b7AQCV;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234CA606A31D;
-	Fri, 23 Oct 2026 08:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689E5606A32A;
+	Fri, 23 Oct 2026 08:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O6zoDF6v
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8F531F031E0;
-	Fri, 23 Oct 2026 08:13:34 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D8b7AQCV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E86E1F031E2;
+	Fri, 23 Oct 2026 08:13:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792743215;
-	bh=7NexUVuvDPnYcH5TpaHV6T3xbSzprjsyYDQbk6xgnow=;
+	s=k20260515; t=1792743217;
+	bh=xy/icg2FgLnwhxYRw7WOqFpBG1mDn+HJbXpbcFTIaWo=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=O6zoDF6veRo/4X7SMn9BvzY4eYV0ROzr3LFec0b1+F30A+6RBO6vTcX4j3wWtkj/H
-	 gghQ+vl6w7Vn/i9RNCthu1bHgVZ2U6P4BJMmdzW329iX3qsZIbVIf+oYS8tPgFsTJP
-	 b4teXZhbkAU/1CoNXJWOAluAHCQQFQXsc0fxwaCPwmu/Qb8cMlX/pE+VYpSMREIuXQ
-	 G4HTLiBw9w1LZUr/ReeY5LERfBEA2mEbH5or4Qvc6ryXQtx0qpH5tPzx58XEi/nW4I
-	 xdgf0UIn1+0SyotOPEuOYJKMJSJ6aeveQFElYegc5r69C9paPmr5LcyddDrrVRb4gA
-	 LcdLr08QkB6qg==
-Subject: Re: [PATCH net v2 06/14] net: pse-pd: check the PI state under the
- lock when setting a power limit
+	b=D8b7AQCVJx38VP95XIiQ/Gn72ayw+yQLKLXeNPzrLkEcOqw6K+NjG7RZwAeJZ8K6l
+	 VNPA2C0RxNMbLtRROVyBvjfl9yLyQLiXkOwongO6mv2Q58QlavglOgt3s6NAEW+fDq
+	 R3AhS/T30gSkmclGaI2Jvg7rlIDBLWjK9bHX/SJTamfqqRPq+ykZ/4ut8kw/hHaBkv
+	 pzHTBBOfcSp7/pLMKPpGUXBDYKVdn084G1QJ2ild9oI0FRPRB4bkusSPYpBCgBVYdw
+	 gQoWroyxJUoHwLV3vgRAgmALK2G+XzUeM//WlZ1FOAVgUZ11QBz+CEBz8LPav1zSQj
+	 ZTmf+KyXv//AQ==
+Subject: Re: [PATCH net v2 07/14] net: pse-pd: do not tie a shared power
+ domain to its creator's devres
 From: netdev-bot+sashiko@kernel.org
 To: github@szelinsky.de
 Cc: o.rempel@pengutronix.de, kory.maincent@bootlin.com, andrew+netdev@lunn.ch,
@@ -49,10 +49,10 @@ Cc: o.rempel@pengutronix.de, kory.maincent@bootlin.com, andrew+netdev@lunn.ch,
  horms@kernel.org, kyle.swenson@est.tech, ross@r-sc.ca,
  netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Date: Fri, 23 Oct 2026 08:13:34 +0000
-Message-ID: <179274321449.3134.2737207729630977183@kernel.org>
-In-Reply-To: <20261020171249.853085-7-github@szelinsky.de>
-References: <20261020171249.853085-7-github@szelinsky.de>
+Date: Fri, 23 Oct 2026 08:13:35 +0000
+Message-ID: <179274321586.3134.1876025605279648825@kernel.org>
+In-Reply-To: <20261020171249.853085-8-github@szelinsky.de>
+References: <20261020171249.853085-8-github@szelinsky.de>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -66,10 +66,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 (1) · Medium: 1 (1) · Low: 1
+Critical: 0 · High: 1 (1) · Medium: 1 · Low: 0 (1)
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -77,289 +77,192 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The new check in pse_pi_update_pw_budget() (drivers/net/pse-
-  pd/pse_core.c:1849-1851) only tests `pse_pw_d_is_sw_pw_control() &&…
-- [Medium] pse_ethtool_set_pw_limit() still races pse_isr() after the
-  change.
-- [Low] The new eligibility check in pse_pi_update_pw_budget() also
-  applies to the rollback call, so the rollback can be skipped while the…
+- [High] At this commit, the shared power domain still depends on its
+  creator's lifetime through pw_d->supply.
+- [Medium] At this commit, a partial failure in pse_register_pw_ds()
+  leaks the power domains that were already set up.
 
 Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but there is an
-  AB-BA deadlock between pcdev->lock and the supply regulator's ww_mutex.
-- [Medium] This problem wasn't introduced by this patch, but the rollback
-  call to pse_pi_update_pw_budget() in pse_ethtool_set_pw_limit() (lines…
+- [High] At this commit, pse_controller_unregister() calls
+  pse_flush_pw_ds() and then pse_release_pis(), which kfree()s pcdev->pi…
+- [Low] pse_register_pw_ds() publishes pcdev->pi[i].pw_d (line 978 for a
+  shared domain, line 1007 for a new one) holding only pse_pw_d_mutex,…
 
 --
 
-net: pse-pd: check the PI state under the lock when setting a power limit
+net: pse-pd: do not tie a shared power domain to its creator's devres
 
-This patch moves the "PI is powered" check from pse_ethtool_set_pw_limit()
-into pse_pi_update_pw_budget(), where it runs under pcdev->lock. The helper
-now reports through a new updated argument whether the budget changed. The
-rollback after a failed regulator_set_current_limit() uses that flag
-instead of a non-zero previous allocation.
+This commit allocates PSE power domains with kzalloc() instead of
+devm_kzalloc(), and frees them from __pse_pw_d_release() on the last
+kref_put(). pse_flush_pw_ds() now clears pi[].pw_d under pcdev->lock
+before the put, and pse_ethtool_set_prio() checks pw_d under that lock.
 
 > diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-> index af9eb29792706..36f7dba8190a2 100644
+> index 36f7dba8190a2..13d6bd29525f3 100644
 > --- a/drivers/net/pse-pd/pse_core.c
 > +++ b/drivers/net/pse-pd/pse_core.c
-> @@ -1821,22 +1821,35 @@ EXPORT_SYMBOL_GPL(pse_ethtool_set_config);
 
 [ ... ]
 
->  static int pse_pi_update_pw_budget(struct pse_controller_dev *pcdev, int id,
-> -				   const unsigned int pw_req,
-> +				   const unsigned int pw_req, bool *updated,
->  				   struct netlink_ext_ack *extack)
->  {
->  	struct pse_pi *pi = &pcdev->pi[id];
->  	int previous_pw_allocated;
->  	int pw_diff, ret = 0;
+> @@ -893,10 +894,18 @@ static void pse_flush_pw_ds(struct pse_controller_dev *pcdev)
+>  	int i;
 >  
-> +	*updated = false;
-> +
->  	/* We don't want pw_allocated_mW value change in the middle of an
->  	 * power budget update
->  	 */
->  	mutex_lock(&pcdev->lock);
-> +	/* Only a PI under software power control that is enabled and has a
-> +	 * PD detected gets a budget. Check this here, as pse_isr() changes
-> +	 * it under the same lock.
-> +	 */
-> +	if (!pse_pw_d_is_sw_pw_control(pcdev, pi->pw_d) ||
-> +	    !pi->admin_state_enabled || !pi->isr_pd_detected)
-> +		goto out;
+>  	for (i = 0; i < pcdev->nr_lines; i++) {
+> -		if (!pcdev->pi[i].pw_d)
+> +		/* Clear it before the put that may free the domain. The PI
+> +		 * regulator ops and pse_isr() hold pcdev->lock while they
+> +		 * use it.
+> +		 */
+> +		mutex_lock(&pcdev->lock);
+> +		pw_d = pcdev->pi[i].pw_d;
+> +		pcdev->pi[i].pw_d = NULL;
+> +		mutex_unlock(&pcdev->lock);
 
 [Severity: High]
-Do admin_state_enabled and isr_pd_detected really mean the PI is powered?
+This is a pre-existing issue, but pcdev->lock here protects the pw_d
+pointer, not the pcdev->pi array that holds it. Can the PI regulator ops
+or pse_isr() still reach a freed pcdev->pi after this?
 
-Both flags can stay set while the port is off in hardware.
-pse_set_config_isr() hides -ERANGE from the static budget allocation:
+pse_controller_unregister() does:
 
-	pcdev->pi[id].isr_pd_detected = true;
-	if (pcdev->pi[id].admin_state_enabled) {
-		ret = _pse_pi_delivery_power_sw_pw_ctrl(pcdev, id,
-							&extack);
-		if (ret == -ERANGE)
-			ret = 0;
-	}
+	pse_flush_pw_ds(pcdev);
+	pse_release_pis(pcdev);
+	if (pcdev->irq)
+		disable_irq(pcdev->irq);
 
-pse_pi_enable() also sets admin_state_enabled on -ERANGE. In both cases
-the PI is left pending, with pw_allocated_mW == 0 and pi_enable() never
-called.
+pse_release_pis() ends with kfree(pcdev->pi) and does not take
+pcdev->lock.
 
-pse_disable_pi_pol() is another case. It turns off a powered PI through
-_pse_pi_disable() to shed budget, but it leaves both flags set.
+The IRQ is disabled only after the free. The devm-registered PI
+regulators are unregistered even later by devres, because
+devm_pse_controller_release() runs before them in reverse devres order.
 
-The core already treats this as a separate state in
-pse_pi_is_admin_enable_pending():
+In that window, a sysfs "state" read or a consumer's regulator_disable()
+can reach pse_pi_is_enabled() or pse_pi_disable(). They do:
 
-	if (!pcdev->pi[id].admin_state_enabled ||
-	    !pcdev->pi[id].isr_pd_detected)
-		return false;
+	mutex_lock(&pcdev->lock);
+	if (pse_pw_d_is_sw_pw_control(pcdev, pcdev->pi[id].pw_d)) {
 
-	ret = pse_pi_is_hw_enabled(pcdev, id);
-	/* PSE PI is already enabled at hardware level */
-	if (ret == 1)
-		return false;
+and that reads the freed array. If the driver's IRQ outlives unregister,
+pse_isr() also reads pcdev->pi[i] under the same lock.
 
-A pending PI passes this check. regulator_request_power_budget() then
-reserves pw_limit, and pi->pw_allocated_mW is set to pw_limit, while no
-power is delivered.
-
-pse_pw_d_retry_power_delivery() can power the port later. It is called
-from _pse_pi_disable() of another PI and from pse_ethtool_set_prio(). The
-path is _pse_pi_delivery_power_sw_pw_ctrl() ->
-pse_pi_allocate_pw_budget_static_prio():
-
-	while (regulator_request_power_budget(pi->pw_d->supply, pw_req) == -ERANGE) {
-	...
-	pi->pw_allocated_mW = pw_req;
-
-This requests the full pw_req again and overwrites pw_allocated_mW. The
-earlier ethtool reservation is never freed. pse_pi_deallocate_pw_budget()
-only frees the overwritten value.
-
-Does the pw_limit reserved through ethtool then stay charged to the supply
-for good?
-
-The commit message says the patch stops budget being reserved "for a port
-that is no longer powered". That still seems possible, for example right
-after pse_disable_pi_pol() turns a port off. The same flag test existed
-before the patch, outside the lock.
-
-Would checking pse_pi_is_hw_enabled() == 1 here, under the lock, close
-this?
-
-The comment kept in pse_ethtool_set_pw_limit() ("if a Power Device is
-powered") also doesn't match what this check tests.
+Later commits in the series fix this. "net: pse-pd: stop async event
+sources before freeing PI data in unregister" moves disable_irq() and
+cancel_work_sync() to the start. "net: pse-pd: keep the PI data until the
+PI regulators are gone" frees pcdev->pi from a devm action registered
+before the PI regulators, and sets pcdev->unregistering under
+pcdev->lock. One of those commit messages shows a KASAN
+slab-use-after-free in pse_pi_is_enabled().
 
 [Severity: Low]
-The rollback call in pse_ethtool_set_pw_limit() also goes through this
-check. Can the rollback be skipped while the increased reservation is still
-held?
+This is also a pre-existing issue. The comment says pw_d users rely on
+pcdev->lock, but the writer in pse_register_pw_ds() doesn't take it. It
+publishes the pointer while holding only pse_pw_d_mutex:
 
-pse_ethtool_set_pw_limit()
-  pse_pi_update_pw_budget()      raises P -> L, updated = true, unlock
+		if (pcdev->supp_budget_eval_strategies)
+			pw_d->budget_eval_strategy = pcdev->supp_budget_eval_strategies;
+		else
+			pw_d->budget_eval_strategy = PSE_BUDGET_EVAL_STRAT_DISABLED;
+		kref_init(&pw_d->refcnt);
+		pcdev->pi[i].pw_d = pw_d;
 
-pse_isr()                        DISCONNECTION
-  pse_set_config_isr()
-    _pse_pi_disable()
-      ops->pi_disable() fails (e.g. an I2C error), returns before
-      pse_pi_deallocate_pw_budget()
-    pcdev->pi[id].isr_pd_detected = false;
+The shared-domain branch does the same with pcdev->pi[i].pw_d = pw_d.
 
-pse_ethtool_set_pw_limit()
-  regulator_set_current_limit()  fails
-  pse_pi_update_pw_budget(previous_pw_allocated)
-    !pi->isr_pd_detected -> goto out
+devm_pse_pi_regulator_register() has already registered the PI
+regulators earlier in pse_controller_register().
 
-pw_allocated_mW then stays at L. The pre-patch rollback would have restored
-it to P. Failing this check doesn't always mean the PI's reservation has
-been released.
+So a concurrent sysfs "state" read could run pse_pi_is_enabled() and see
+a non-NULL pw_d with a stale budget_eval_strategy. Would it then fall back
+to the pse_pi_is_hw_enabled() path?
 
-> +
->  	previous_pw_allocated = pi->pw_allocated_mW;
->  	pw_diff = pw_req - previous_pw_allocated;
->  	if (!pw_diff) {
-> @@ -1854,6 +1867,7 @@ static int pse_pi_update_pw_budget(struct pse_controller_dev *pcdev, int id,
->  		regulator_free_power_budget(pi->pw_d->supply, -pw_diff);
->  	}
+The impact looks limited to one wrong is_enabled answer during probe. The
+publish path is still unlocked at the end of the series.
 
-[Severity: High]
-This is a pre-existing issue and was not introduced by this patch. Is
-there an AB-BA deadlock between pcdev->lock and the supply regulator's
-lock?
-
-Path A, ethtool set_config under rtnl:
-
-pse_ethtool_c33_set_config()
-  regulator_enable(psec->ps)
-    regulator_lock_dependent()
-      regulator_lock_recursive()    locks PI rdev, then its supply rdev
-    _regulator_enable()->_regulator_do_enable()
-      pse_pi_enable()
-        mutex_lock(&pcdev->lock)
-
-regulator_disable() -> pse_pi_disable() takes the locks in the same order.
-
-Path B, the threaded IRQ:
-
-pse_isr()
-  mutex_lock(&pcdev->lock)
-  pse_set_config_isr()
-    _pse_pi_delivery_power_sw_pw_ctrl()
-      pse_pi_allocate_pw_budget_static_prio()
-        regulator_request_power_budget(pi->pw_d->supply)
-          regulator_lock(supply rdev)
-
-On DISCONNECTION, _pse_pi_disable() -> regulator_free_power_budget() takes
-the same supply lock.
-
-pw_d->supply comes from regulator_get(&rdev->dev, rdev->supply_name). It
-is the same supply rdev that path A already holds.
-
-If A holds the supply rdev and waits for pcdev->lock, while B holds
-pcdev->lock and waits for the supply rdev, both tasks hang for good. A
-also holds rtnl_lock.
-
-pse_pi_update_pw_budget(), including its new rollback use, keeps the same
-pcdev->lock -> supply order.
-
->  	pi->pw_allocated_mW = pw_req;
-> +	*updated = true;
->  	ret = previous_pw_allocated;
+>  			continue;
 >  
->  out:
+> -		pw_d = xa_load(&pse_pw_d_map, pcdev->pi[i].pw_d->id);
+> +		pw_d = xa_load(&pse_pw_d_map, pw_d->id);
 
 [ ... ]
 
-> @@ -1900,21 +1915,17 @@ int pse_ethtool_set_pw_limit(struct pse_control *psec,
->  	/* Update power budget only in software power control case and
->  	 * if a Power Device is powered.
->  	 */
-> -	if (pse_pw_d_is_sw_pw_control(psec->pcdev,
-> -				      psec->pcdev->pi[psec->id].pw_d) &&
-> -	    psec->pcdev->pi[psec->id].admin_state_enabled &&
-> -	    psec->pcdev->pi[psec->id].isr_pd_detected) {
-> -		ret = pse_pi_update_pw_budget(psec->pcdev, psec->id,
-> -					      pw_limit, extack);
-> -		if (ret < 0)
-> -			return ret;
-> -		previous_pw_allocated = ret;
-> -	}
-> +	ret = pse_pi_update_pw_budget(psec->pcdev, psec->id, pw_limit,
-> +				      &updated, extack);
-> +	if (ret < 0)
-> +		return ret;
-> +	previous_pw_allocated = ret;
+> @@ -969,7 +984,7 @@ static int pse_register_pw_ds(struct pse_controller_dev *pcdev)
+>  			continue;
+>  		}
 >  
->  	ret = regulator_set_current_limit(psec->ps, 0, uA);
-> -	if (ret < 0 && previous_pw_allocated) {
-> +	if (ret < 0 && updated) {
->  		pse_pi_update_pw_budget(psec->pcdev, psec->id,
-> -					previous_pw_allocated, extack);
-> +					previous_pw_allocated, &updated,
-> +					extack);
->  	}
+> -		pw_d = devm_pse_alloc_pw_d(pcdev->dev);
+> +		pw_d = pse_alloc_pw_d();
+>  		if (IS_ERR(pw_d)) {
+>  			ret = PTR_ERR(pw_d);
+>  			goto out;
+> @@ -978,6 +993,7 @@ static int pse_register_pw_ds(struct pse_controller_dev *pcdev)
+>  		supply = regulator_get(&rdev->dev, rdev->supply_name);
+
+[Severity: High]
+Is the shared domain still tied to its creator's lifetime through
+pw_d->supply?
+
+regulator_get() is called with &rdev->dev, and rdev is this controller's
+devm-registered PI regulator. The regulator core records rdev->dev as the
+consumer device and adds the handle to the parent supply's consumer_list.
+The handle is then stored in pw_d->supply.
+
+With this patch the domain can outlive its creator. Suppose the creating
+controller unbinds while another controller still holds a reference. Its
+PI rdev is unregistered and freed, but pw_d->supply->dev still points to
+it.
+
+Would a read of the debugfs regulator_summary then dereference the freed
+device through consumer->dev in regulator_summary_show_subtree()? And
+would the final put also use the stale dev pointer?
+
+__pse_pw_d_release()
+  regulator_put(pw_d->supply)
+    destroy_regulator()
+
+This conflicts with the new kernel-doc on pse_alloc_pw_d(), which says
+the domain "must not be tied to the lifetime of the controller that
+happened to create it".
+
+The later commit "net: pse-pd: use each PI's own supply handle for the
+power budget" removes the supply member from struct pse_power_domain. Its
+commit message shows a KASAN slab-use-after-free in
+regulator_summary_show_subtree().
+
+>  		if (IS_ERR(supply)) {
+>  			xa_erase(&pse_pw_d_map, pw_d->id);
+> +			kfree(pw_d);
+>  			ret = PTR_ERR(supply);
+>  			goto out;
+>  		}
 
 [Severity: Medium]
-pcdev->lock is still dropped between three steps: the budget update,
-regulator_set_current_limit() (which takes the lock again in
-pse_pi_set_current_limit()), and the rollback.
+Does a failure partway through this loop leak the domains already set up
+for earlier PIs?
 
-Can updated and previous_pw_allocated be stale by the time the rollback
-runs? The rollback also applies an absolute value to whatever PD session
-exists at that point.
+Each earlier iteration either kref_init()s a new kzalloc'd domain or
+kref_get()s a shared one, and stores it in pcdev->pi[j].pw_d. If
+pse_alloc_pw_d() or regulator_get() then fails for a later PI, the code
+jumps to:
 
-Two interleavings with pse_isr() look possible.
+out:
+	mutex_unlock(&pse_pw_d_mutex);
+	return ret;
 
-(a) After the budget update, pse_isr() handles DISCONNECTION, which frees
-the budget, and then CLASSIFICATION. _pse_pi_delivery_power_sw_pw_ctrl()
-budgets the new PD as min(pi_get_pw_req, pi_get_pw_limit), using the old
-hardware limit.
+That label does no unwinding, and pse_controller_register() returns
+without calling pse_flush_pw_ds():
 
-If regulator_set_current_limit() then fails, the rollback forces the new
-session's allocation back to the old session's value.
+	ret = pse_register_pw_ds(pcdev);
+	if (ret)
+		return ret;
 
-The patch adds a rollback-from-zero case (previous_pw_allocated == 0 and
-updated == true, e.g. for a pending PI). In that case the rollback can
-free the new PD's whole budget while the PD is powered, so the supply is
-oversubscribed.
+The domain is no longer devm memory, so nothing frees it. The struct, its
+supply handle and its xarray slot all leak, and a shared domain keeps one
+extra reference.
 
-(b) A PD is classified between the budget update and the hardware limit
-write. It is budgeted from the old limit, and then the new, higher limit
-is programmed. The hardware then allows more power than is reserved.
-
-These windows existed before the patch. The rollback driven by updated is
-new.
-
-The commit message describes the pse_isr() race. Would it make sense to do
-the budget update and the hardware limit write in one pcdev->lock section,
-so that race is fully closed?
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but the return value of the
-rollback pse_pi_update_pw_budget() call is ignored. What happens if the
-rollback's re-request fails?
-
-When the limit is lowered from P to L, the first call frees P - L mW and
-drops pcdev->lock. A concurrent pse_isr() on another PI in the same domain
-can take that freed budget.
-
-regulator_set_current_limit() can then fail.
-pse_pi_set_current_limit() returns -ERANGE for max_uA > MAX_PI_CURRENT or a
-null voltage, and ops->pi_set_pw_limit() can also fail. The rollback's
-regulator_request_power_budget(P - L) then returns -ERANGE.
-
-pw_allocated_mW stays at L, but the hardware keeps the old limit P.
-
-The rollback also overwrites extack with "not enough power budget
-available". That hides the real regulator_set_current_limit() error.
-
->  
->  	return ret;
+The commit message mentions this ("is now leaked instead of freed while
+still in the map"). The later commit "net: pse-pd: unwind allocations
+when controller registration fails" adds an unwind loop using
+pse_pi_take_pw_d() and pse_pw_d_leave() before pse_pw_d_mutex is dropped.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261020171249.853085-1-github%40szelinsky.de
