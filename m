@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792789226;
-	b=p0hWUlQ3zYf5YpdCBL6SAUJDNaK0iTnXkQqzLRPKgnhH9sCw8uxrlN8+CrNznCbtGSaD
-	 Tevyp+HZBrZZo7LVbba9HlhjL0rBa8C2lbPXDzJoliVoPgxGlTCH3cUxSNGGU0r+ii/g4
-	 0+FHb19QyWMRewn43iPddKsEqKlMxqSuGd9UB4ACMKrwdpvull5shz294s1NXZAph60KC
-	 Q3dEFyIoxNzhoLmpwI7rcQsKqKfjS3aiWNELOSwxLDg+KknZ94hJQz3GWRDQphOE+n+w1
-	 Elv8TQTBjUtEwnM8EbwWEBA91hIFpYIMy8vpm3/cvNUGh2JfEobnhqsR6rh2BAkdDFA==
+	t=1792789221;
+	b=XqkW5Ld6N9Q0Pi3e8EYhHXTk/cqAuYWEgB8IUKxsUMjrOGP1DE94YOJQwHYxoSaS85QE
+	 gJOKggw0U+SRzu1RZhv3Z8f2ODuhl6CsqLFIHORKNJgdbWdNtTXnjWu/Cz6ZKBN1nGOAT
+	 LUViPKTdbDgBnnZ+Z+bMrOlvrUuF9/f2jEODrz3Eb/PQ58mlvAmK2BlSL2dqmSQ8R1pkM
+	 jqRZEPGPXMT4k0JpHy1pMPi+5WtK/N9f4tg29MiApjMd1OKuNP4tzOgguxleK7EM1a9Zj
+	 1kf/9T+mMMS/3yd8/SFk6OlYbIneBacjym2bsLOFhZP/FGFUCJnXiYFxtlLD1211UQQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792789226;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792789221;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=wMxatn9ZBgj5mTbs6ATeEIyXX0vaFfQVORNtXX+SfPY=;
-	b=zTwIWP0l4qQ/UfGgXTka8CLOkLiqXmCc0G9LS279i4wUIzxc6WKkaDNOjsF2eq9XckYW
-	 CXeu0W7+C9cV/4aiYhM4Lf+1gvYyDJDX9i/nVJOCuwt2Tqd9luyMC5hERlR/BVSVSzpSj
-	 Ck8faHgk8QDjpfpvTzaM8SODa6sahec/3NfCHOx45Pbyw9qSNbfxn1HM3AC9SgHBs3zkI
-	 revouiLh4PSK7trcTui7MNxa9h16HoCVsVLDWCs0EzKC2RsjUyil94sqB4mojF5EqDio3
-	 Qhr8zoxcjmafx9gZZh9jSz2DWSX1lBU0bgoG9xteG8CCKt6ADvWrQ8yp3wufdnz8vyQ==
+	bh=/zRNtfPAXTthuW4uanzpc66x09wuudOPAK79gmQZrRI=;
+	b=S8xj77V6CEKgBn1qA9wlZjq8y2XbbVEop2qK38Jlqtu0XotcS9ftXcAJcmRAizCryqsb
+	 e628C/zq2LjgJOgBrOyAzBnsRz/jko6pQ2HRJUaPHn7An2UXs2NrxEk35/D6e0Y6GyFdg
+	 Epx+Xs1mRHLC36V1L5sNAZkT2JfH4SbCxs8dROPhlrQoMTmT2ciBarvLRmgGIriTz/PBJ
+	 QgbbUK28OKKrgxOJhYIJDiDZQolywnrPlU3lFfWxBdyLOz/pMfHkDSedMKfSnBhFjVY9M
+	 H7AzHd2qW0pVL9gFK9ramTqzn/hcvqc/+neU9N7gw1BeJwW7c6mfYAd435iuwejvxGA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Twk5Chpi;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YFYRfzCY;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCBC4606A336;
-	Fri, 23 Oct 2026 21:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846A5606A31F;
+	Fri, 23 Oct 2026 21:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Twk5Chpi
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A8651F031E0;
-	Fri, 23 Oct 2026 21:00:25 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YFYRfzCY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 104201F01828;
+	Fri, 23 Oct 2026 21:00:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792789225;
-	bh=wMxatn9ZBgj5mTbs6ATeEIyXX0vaFfQVORNtXX+SfPY=;
+	s=k20260515; t=1792789221;
+	bh=/zRNtfPAXTthuW4uanzpc66x09wuudOPAK79gmQZrRI=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Twk5ChpiEY7kvnfQzH1fP0t11NZBt/4OZAUPgaTYOicR84dfvLo0W3MDNoLFQiOV1
-	 rJ7wx5x/ZnOhk0lm6IJIL1iO1wcShildb4EOEzIEyFPu50t+I8xVBsv0upailKrgJx
-	 2+5KFkaPVAjPijNF17lATASjFV8a7rQ3DSZ7e2LLj+X35Jl6ILlreBJNejt8gkDxAl
-	 3c5VfputP/93/LWJUFOBjUZCQ7UcJJh1qPoXWPW6f+HiF+NDkSWK7gV1gwZJkXLaPh
-	 X5LaOo4+gcid3UM+bCiOUPCs9mX6VlypoQS73evK9UjpTu2/K0hoxuubl1qDGlyUV0
-	 Jcc7DI34f+coA==
+	b=YFYRfzCYnXyURdqNWs7hnCa3Z5NRRwVwm+2+QYwbOrmuvfcqf3z8+1VsLXhYtsc1w
+	 na2hv0CIQ39ZPBSatuvpXr+BhEFHIjczDz7IxRa6rg+EyD1ZDsj1/ATsvKjpYG0JIp
+	 uqyvaFQTU+/1GHTq+OraO+2CGKuxHxd3n3OENDlTDzTXAMfIeq6JF5Zj4HhAXlC2iP
+	 P5cq+R/7+c5O7AcpxGMg0GRTgACGA6pkmLkisoe/lpORy5ktpnGGNFoTqPRNlTrzlX
+	 eYmri4DKy8QT0zQvAnRcuV/serlfrsNBqUlgX9rLhRFvLrariIJYRO5+ZcAv1RpF8q
+	 Y2EVEriTWMXIA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 815FD391B157;
-	Fri, 23 Oct 2026 21:00:25 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 074A8391B157;
+	Fri, 23 Oct 2026 21:00:21 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,44 +54,39 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: sparx5/lan969x: do not read past skb->len when
- injecting a frame
+Subject: Re: [PATCH net 0/2] net: pse-pd: si3474: two driver fixes
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179278922406.1268720.4078185766615858241.git-patchwork-notify@kernel.org>
-Date: Fri, 23 Oct 2026 21:00:24 +0000
-References: 
- <20261021-sparx5-inject-tail-bytes-v1-1-7dcc035c8ddf@microchip.com>
-In-Reply-To: 
- <20261021-sparx5-inject-tail-bytes-v1-1-7dcc035c8ddf@microchip.com>
-To: Daniel Machon <daniel.machon@microchip.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, Steen.Hegelund@microchip.com,
- UNGLinuxDriver@microchip.com, bjarni.jonasson@microchip.com,
- lars.povlsen@microchip.com, steen.hegelund@microchip.com,
- netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
+ <179278921957.1268720.1927086301810125998.git-patchwork-notify@kernel.org>
+Date: Fri, 23 Oct 2026 21:00:19 +0000
+References: <20261019162453.1244120-1-piotr@kubik.pl>
+In-Reply-To: <20261019162453.1244120-1-piotr@kubik.pl>
+To: Piotr Kubik <piotr@kubik.pl>
+Cc: netdev@vger.kernel.org, o.rempel@pengutronix.de,
+ kory.maincent@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org, github@szelinsky.de
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 21 Oct 2026 12:48:26 +0200 you wrote:
-> sparx5_inject() writes the frame to the injection FIFO one 32-bit word
-> at a time, and pads frames shorter than 60 bytes with zero words.
+On Mon, 19 Oct 2026 18:24:51 +0200 you wrote:
+> Two fixes for the Si3474 PSE driver, found while preparing 2-pair and
+> semi-auto support for it.
 > 
-> Before this patch, the last word is loaded whole even when skb->len is
-> not a multiple of four, so 1 to 3 bytes past the end of the frame are
-> read. For a frame shorter than 60 bytes those bytes are also
-> transmitted, as VLD_BYTES marks the whole last word valid and the
-> padding starts at the next word.
+> Patch 1 stops si3474_pi_enable() from clearing detection and
+> classification of the other PI in the same quad. Without it, a PD on
+> that PI gets no power after a later plug-in.
 > 
 > [...]
 
 Here is the summary with links:
-  - net: sparx5/lan969x: do not read past skb->len when injecting a frame
-    https://git.kernel.org/netdev/net/c/9642ce6cb51e
+  - [net,1/2] net: pse-pd: si3474: keep detection enabled on the other PIs
+    https://git.kernel.org/netdev/net/c/b530456be771
+  - [net,2/2] net: pse-pd: si3474: validate the channels of a PI
+    https://git.kernel.org/netdev/net/c/110eb808324f
 
 You are awesome, thank you!
 -- 
