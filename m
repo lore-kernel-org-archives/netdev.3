@@ -1,133 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.153
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792761894;
-	b=quNh12oK9RXYMTffIq2AFO6C7cpmoZCviK8ItxAhHBNoCo5P9PTZMgJt+JYGvT3zJIEV
-	 jDAyapgIUHPcf2IkKJIikcBslrXCBlZ5W3isxeyKWVyI7hR55H8q8MP9x7ApNesueyvxp
-	 1Sahy1Su4K8kDGWzXlH1YTXCZ46YnpAVEsbzm5IJB0yKXp6Z7ME3U9gbw1jV7fDaFWGnC
-	 jPARkJWQ/v1JuwJ5LpbB73Jh5AwTwzBI1t9Rz4ZgnIsN41SQlpio7UFgMklplpC56vOPI
-	 jDPjhfBcWWNDprWj4ZCkSlNlz+eKVbNhiX+UPeyWWcpkYBI8du307LVj7zw/CB29QMA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792761894;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Received:Received:From:To:cc:Subject:In-reply-to:References:
-	 Comments:X-Mailer:MIME-Version:Content-Type:Content-ID:
-	 Content-Transfer-Encoding:Date:Message-ID;
-	bh=YQZoc8oDyvtiN6C54b6XV3T4O1nL9hPbml+fJcWO+Bs=;
-	b=NzN5gygHCzBUq1O1+WgxR4az9DaQ4tYZzW1k71T1kucONf3L0ktlRja73ssPwmofIIPI
-	 3f70pI52KMDC5aM+KsCaLytJ83P4JaIxsC/dXc3FnYoobdiiORFWwDQA2arE+fvSte8YZ
-	 5aMBdDPoxdzAoJKLKxtiBudpa7DCUh9k+ecWnc6wCe4EM7zY+nL4lkPWATQjTWJq9oE7P
-	 APOg6J4MBLcuw0A0ekhzFvq8fZW3qfXW1JLJIofN0+8Sr3Jrx7++9ekY2x//HVJvXK6aG
-	 D88EdoIc059nmrnUOQgNBDM1DCgOZYlgqItU7M7sJLpFEEUcqSdq/XnUbNvMc4vj19A==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=jvosburgh.net;
-	spf=pass smtp.mailfrom=jvosburgh.net;
-	dkim=pass header.d=jvosburgh.net header.i=@jvosburgh.net header.a=rsa-sha256 header.s=fm3 header.b=S9JZIFXP;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=MSzcgAa1;
-	arc=none smtp.remote-ip=202.12.124.153
-Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.216.52
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792762244;
+	b=BLgT6EfZ9IwVH1tpNJJmoBcG0ERsmYhFQbspHy2URP6QISn4cJdbcATM2Deb6cfds3hf
+	 I/bgd2hIEq0L6ze0qtDVkDkFI6NJ+lm8z2QbsS8aOvBBjxRVjNWuFkvph7JpsPV2BUhpe
+	 a/3YrvY64Q970tV9sM+RTZwlTH3aSSlA5OJY6JS1rMMel6iEI3o7g32vOHi0oqeurygRw
+	 5QwkZUgon60xCqx1rrQ/cTLJxIeKgLeYfX2C/uSEdKydCGzWYNcYoaAJ1kkfAYS8B7DiG
+	 F650QcfpaEXt/8gciCOCzi8v+e2PSaWE6fIAeFqT34KTy35/eecwSzMiZYpmqrL7c0g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792762244;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=EzyUwj4JVUO6rIYPoKDgIaRZk8W7xi8lTeg5fGqGBVQ=;
+	b=cYQV5iRge5W/mH80nj1qF7svAUJ9C47KEdz67D6bMSVzeuNsBQkiWhT/Ik1CyOfNm6rM
+	 PFli6+epCi5K0F+fgTcRTB1ffBx48Reg/Kv3MnF+sEd2sPQ6y2KF8GVd1i5n7cTtH+PzN
+	 BTXcFULqa3cdV7Bnc264EDz30xZ4+0V6OQOtTCjBQdBJbAneU+gaRvdxWXYdF/a649RHz
+	 n2QNo+dF3DkLltR2VA37BgLgsJ0dr7M3nYbeXDmgPO2gm/dpqoQDxhciQNhlJ0yOF2t+s
+	 JviN9Ne+e0INiA8GAdNDPuG1xIn4tsyM4uRNrbeZlZsl64I50wj02w7dG5ldQGrI2EQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=mojatatu.com;
+	spf=none smtp.mailfrom=mojatatu.com;
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b="fs6Y/1ZR";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.216.52
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED31606A31D
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 13:24:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2ED31606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jvosburgh.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F85606A31B
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 13:30:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C5F85606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=jvosburgh.net header.i=@jvosburgh.net header.a=rsa-sha256 header.s=fm3 header.b=S9JZIFXP;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=MSzcgAa1
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 97CB07A01F0
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 09:24:53 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Fri, 23 Oct 2026 09:24:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jvosburgh.net;
-	 h=cc:cc:content-id:content-transfer-encoding:content-type
-	:content-type:date:date:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to; s=fm3; t=1792761891; x=1792848291; bh=YQZoc8oDyvtiN6C54b6XV
-	3T4O1nL9hPbml+fJcWO+Bs=; b=S9JZIFXPVsT7xY0mgOGxtvPFAhu/+thpZe8Ni
-	3jfwD6r1rnfKox59TvjvT4VtFW53ufhmJSOi4CNTgHthIex9u10YGgJyp/DZoYlR
-	lW2FFvBn7hbmA/KmDUvvEht7mKHRN2mQFhhO6PYHQ/310+9JBePCWHG40mXTsE/C
-	fSnT7aYAZ6QVvXnp2urrttPWWYwGMzvmH5cmORRbylfhI7k7g8m9E01nfo3K+SOv
-	V/TKoL8bb83Ga9XSPHmWrGPb4QZ0HRjrDD+ImoUalDTRkQzllesYAXPSg5ILRi4y
-	ZZed7/DAAVuq09xyWLfUuyGge35uxAP29VXimq5W3ROMcW6Qw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-id
-	:content-transfer-encoding:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1792761891; x=1792848291; bh=YQZoc8oDyvtiN6C54b6XV3T4O1nL9hPbml+
-	fJcWO+Bs=; b=MSzcgAa1mgI05aTKWCrHYAHATE70RBcq7CYKeEdjHaoyocPx6/5
-	sJh2uaYafXQEtiqmo96i0nbWV1YmTKPqK3uOUTFEs6rxyjf9QxobdF8brOcUYW7H
-	y00UM5G03KLXr2Ws9hPZoK0U6FbNGfRp8C4iFeiMNQX+/pdpmNlaiqLTpFfBxURD
-	GbHfJL33SA6XITnmrH2eRkiZ2USmYhMDmpZ5Q//pk9MZynNjvQGkRucl8TlLyXOy
-	9o7vFPar/lej0QpN2YOP1yTCZa8mSW5DAmhwWB9Lfod7k50BmeKEhse3sxUwtukx
-	ntewP6FqI1nZy85uauOvHTrr7+XGe20J9MQ==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=sign d=jvosburgh.net a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1792761891; d=jvosburgh.net;
-	mf=PGp2QGp2b3NidXJnaC5uZXQ+;
-	rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm3:rsa-sha256:veSY10z0hl3bKRylTA9C1oya5NaUMyrZntiZUII1SaDnWsP
-	3awb2E4zjCQ98o1t0juIAvFPG7RpKWAOoSN88XXXYAYkY7uNNuoVTc2Y9bFmle+w
-	1WyTS4mGLirQ9zeQ1z3V0LBT+Cta38kzW5qn2DmYNHPEjBzVngX9CUgjxs13O38z
-	sg6bNDV5MedhNe5h37iu7CzBIROJ0lWmsiJOBqmJJU9s+7+nfDx4XMP0++Kg29sF
-	9FGz91Jg48lO0vD5lGKAjwK7rF8WW+ki2tL2z2Bij5My2veD1VDyirzjhN6gV3F7
-	h+g/m6Lu4G+1p6NqDAPsQhuQ2fZ/mdgDTvkIpxg==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=mi-m=1; hc=14;
-	hn=cc,comments,content-id,content-transfer-encoding,
-	content-type,date,feedback-id,from,in-reply-to,message-id,
-	mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:tjHa6qCs1tuYLdVfuZqXrptBsLl87rIRIC4tdJB/k7I=:FfNwvr1fiBNaXLGB1xX3G9EIhU5MfvVMtS+j/fLAArY=;
-X-ME-Sender: <xms:I2DbavRSSbvshMsuex95OdxxdRWF0OHpRWec8lJ8CIG82QRrEtadPQ>
-    <xme:I2DbavAPKBLYNQu22zVl2vaLx5tb7akGPFvdbgxPX-KAw4S8r7t7fieXdcPULTzUv
-    RtzjVMxUyfiH0f4_6IK2kDmJAmn79YMNEeTFNnKBTLlhkKA-8lWuNG8>
-X-ME-Received: <xmr:I2DbauKs7oHpqHSlFCmtwAsn0chFZ0NJz3yUMhnigkIhVgD7AxwGPF3GViHwYmx1RNhKsAU>
-X-ME-Proxy-Cause: dmFkZTEyVNNMufcBESKHjKCCl9qhJCQdeBMxSu8KbuasyvRpad34WaZwRSZgJzNaP1Afxt
-    tIwIAn+YIef9KCbthXK78QyFuRHX787csjai5KY/8+8M7yl2lPjwncTJ5Udr0oZcchsyo5
-    irKU31YLC3gAn1ZUcYOx2yNI2ROF1diclaVFt07FD8gwWEOchMZGkr8SPrw7g5xG/8rINJ
-    IF4S5xHec5sNdSrxrA4gOriqv0iwLdVSjBuevYUEwBjq2su+zfRKfdIQfUNgbZZUqH+NYa
-    bLutXdgHPx6zWTLQysl6LZ76noWzkjsU7Iu7QlRa6KcncRJO0fXg4k50+vlQWjwZ8Ij6IJ
-    mNCr12tPwWJd5N8hFYUqdJ/ubonPP+mLwFCHY9MhwN8uVsorkCxW5Ce3inthYaUm7hhrdD
-    Vq1H95KPzpVuOz6fm694h4NHfCzZNQvSKQgBZWK/XH4ESiO+3EVqMim1KgIJTEgijaHyyj
-    6sUgUifAWmqrsBDvSOoJrm9B3ffI6dA27ZrRcrRrwnjNq68UhEJ2toeCQrEa292ugJLk4q
-    Yr8WUCDdtMsNe2m64MoZ4kkGl+uY9DI0TNN9qx7C8gvizDUH4bAMWP5z0Hx7Sn9PdAu7Mw
-    cPB92E5+kqrN55jN9/pP9vUa+CNN2MQ3RVI6tRH110wiJV5fhUstzBChY3oA
-X-ME-Proxy: <xmx:I2DbaiB7LxVBFafiuL_5MvOtqkpuv8pOwhQy2lXf8ouxCP0aQgbSBg>
-    <xmx:I2DbartHIb8POL4jDAd_Q-FHVg1ZOCI4C9a5CiiNg0JLWcj0RXDgpw>
-    <xmx:I2DbaoT3Mk92J-NB_StHhStEKHmnHmGxqlcoOQScHOONBQXUd5UgHg>
-    <xmx:I2DbaqI0FfF4aXjE6L2qv215KcnEq3mDiiL17OTxTEUQDClzBSep8Q>
-    <xmx:I2DbasFLPNyGKF1ptQBObaX4pRHsBmrsjunztTbzZM4NOgC-hE4L1zKN>
-Feedback-ID: i53714940:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 23 Oct 2026 09:24:51 -0400 (EDT)
-Received: by vermin.localdomain (Postfix, from userid 1000)
-	id 1C4961C0479; Fri, 23 Oct 2026 06:24:49 -0700 (PDT)
-Received: from vermin (localhost [127.0.0.1])
-	by vermin.localdomain (Postfix) with ESMTP id 1A4151C044C;
-	Fri, 23 Oct 2026 08:24:49 -0500 (EST)
-From: Jay Vosburgh <jv@jvosburgh.net>
-To: Timur Stukan <timur.stukan.linux@gmail.com>
-cc: netdev@vger.kernel.org, Hangbin Liu <liuhangbin@gmail.com>,
-    Fernando Fernandez Mancera <fmancera@suse.de>,
-    Andrew Lunn <andrew+netdev@lunn.ch>,
-    "David S. Miller" <davem@davemloft.net>,
-    Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-    Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-    linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] bonding: fix missing down path on speed/duplex failure after FAIL->UP
-In-reply-to: <20261022103821.89552-1-timur.stukan.linux@gmail.com>
-References: <20261022103821.89552-1-timur.stukan.linux@gmail.com>
-Comments: In-reply-to Timur Stukan <timur.stukan.linux@gmail.com>
-   message dated "Thu, 22 Oct 2026 13:38:21 +0300."
-X-Mailer: MH-E 8.6+git; nmh 1.7+dev; Emacs 29.0.50
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=fs6Y/1ZR
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3a4cdc9025bso598447a91.0
+        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 06:30:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792762243; cv=none;
+        d=google.com; s=arc-20260327;
+        b=OzY2kcMFaBz56oUxF26rK5hzo80gcotkELbq3fINKRGKuPetJCGUVaIjSrxDeo701T
+         YcNf43STZRqpyD/HVmr1aGTpau/4ZE7ipTgaPzWDnhEbykSfsdQbwQaPWDNEYVMoRoey
+         uCnZEx8OrP9/jU0x/cMjMC2gu+D/peCfQQ0OGn56ksFbHUHMBe+Rm5dJFliRe4opt2Jj
+         RJ1GUl6jIkHWIkwIvlG2zk6TmsYVY7ZFetPLdyTw1VPqprJStjso4D9D2D1N6++uCZmn
+         HkMxZzlDIf++qZRITLWAjkl7QsU4UU1ycB6sz+RPeOC4GgGb6NWVlrUXvQL/006JwrgC
+         APRA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=EzyUwj4JVUO6rIYPoKDgIaRZk8W7xi8lTeg5fGqGBVQ=;
+        fh=HWSE11/8Tl8bzQtUm1zUaABiO+SGGnAq5YkMhh9kPBE=;
+        b=Pu3JRBsXAExCZjrlnLAtsTAzPN0I5UqYXo/hMBLi9eTnFJekTeDxXWA2qmeUQ76nan
+         OdrlDay2UjTxUvHTOmCMwNvlDWbROT9hoSXvBD9zYRL2HtGlz+8jKoj0RMWcAtAnFySN
+         tzW2u7+wsJtvmq4FNyeiXISMqsXwxPc4OUzkZxhb3v2NO729VHI71KUeMCYg7dwui6Ur
+         Y8Y7VeR+3m3gOL8Zu7yDnQJMON0zFESkPmqvbWJJOIwXhJX7QQ47tNfKDxkzmmdQgZOh
+         MGlUJ34g6/fR2MLS69Fdx4WFofLHrSZfp9l3eY+x3ttREVa2GkGnbzaGChtxsiDtnpzF
+         rlIw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1792762243; x=1793367043; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=EzyUwj4JVUO6rIYPoKDgIaRZk8W7xi8lTeg5fGqGBVQ=;
+        b=fs6Y/1ZRnc/bW5mPINgu5toojKOWvH2+D0bLnUiuVCaR7JrSN0hq4FJCZqSGq0/mMk
+         H+0svpBzSzGnciiCRb8xn+HS3tpNU0eQJZUAqxjqDHor+Z+IupsOv2sqFzPB67N8yFzM
+         netOzE5HSuKx4tJni6HSW8RVrumn0ir7oxASo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792762243; x=1793367043;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=EzyUwj4JVUO6rIYPoKDgIaRZk8W7xi8lTeg5fGqGBVQ=;
+        b=FBH8KBSImFeEJvf10oSdRstKXO5nNNc8bsQRAMXWeSp3LitxROEUWl3Dwe/7klIWcW
+         r4uEpAuxSClVToTtGtszI2q4Byp7xeo/PbUueYPdb8NARLkKdU2LfYQtEmP4Pqcf1zuo
+         z34tTzMTtIHsiS4RLFJ3mBsdIYbAMJeb17AqQVBXi/wuTrwFExhzuQ+5Uv/W3sNi/tuQ
+         rrCRqWXqTgDYDJkbWDRIyYhAOXNigGH8fEV1G9+RQKzdRQR5rfi9Abr71phtdLn65Y26
+         ERumwPSH4DzZz2dA5nPutZG8HySodVDrBA8pFDitwIby5gAwQAgpt42zoCISQCjuB+hq
+         e9hQ==
+X-Gm-Message-State: AFq9FYJ5ypLVfPBLasGvQrYYBhgC1RqNwx9Vi54hi5vRw0SEFmDuDFMs
+	No6ou40xiWsv78lFL3Z4LQDNZ1LJ/rBiBxhsfw2t68JpjVWDsGk+L4lXHsdAnW+c1VeX70q4pIF
+	SMx10sPzVajtSoaoIwY4yiWLhXSehtwHn/seY2KQt
+X-Gm-Gg: AYBFou2tX5t0g38DNcPG62PCU3gn2fNwUv1xwoSL+qz1kTybMBlm0Fq5MNHCzEKNAgU
+	Y2cM/Lmz/gSHkHPexJUnmblfwRw2XVjTg/qBLj/qKRSyjIuoZL46EiI0Xz5cmqXvSXvW9DH1Cqx
+	A5tPzdUDjtl9sbXbeBqKebrZxb9Ug3gk4lA1CsZs6MNRqk0/AE8REQEVJc0iI6KdKcSm0g7u2nL
+	hS2LQ+o0vFSOBH8OE3/JjsRTWE8xL1n5MrBb63nj7cTZSgvmmENzsodD8JGI8LwnY/Zjv0jux1w
+	N8B8ENcYpek9USDjGACWQ2iUUHS9RUhgCL/ZV4bKUYiQj6Rkr+Ztd9G5YO+BcCC0m/v13qLSh1I
+	LslzsRyqWpsHzjyMglz3RCHSnmQJ1jzist7SDJRysehwEP369tbb9Htejfw4OyDCagz/7f45n3l
+	T8vt7amXhpO6E+rqs=
+X-Received: by 2002:a17:90b:5586:b0:3ad:53e2:78c1 with SMTP id
+ 98e67ed59e1d1-3adce3cabc0mr1925448a91.10.1792762242957; Fri, 23 Oct 2026
+ 06:30:42 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -137,205 +101,118 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <53030.1792761889.1@vermin>
+References: <ACT-N6N4.v2.r0.20261022191829@mojatatu.com> <ACT-N6N4.v2.r0.20261022191829-1@mojatatu.com>
+ <ACT-N6N4.v2.r0.20261022191829-2@mojatatu.com> <ACT-N6N4.v2.r0.20261022191829-3@mojatatu.com>
+ <CAL4Wiiq3h_OoVo9BpBy0pqFe=AeyN25QxsU86h63qEf05uCJRA@mail.gmail.com>
+In-Reply-To: <CAL4Wiiq3h_OoVo9BpBy0pqFe=AeyN25QxsU86h63qEf05uCJRA@mail.gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Fri, 23 Oct 2026 09:30:31 -0400
+X-Gm-Features: AclHuK-AtjMVPTuxOQIAGGLhH7jsTp8sIy1-bsoXjryMRSrFvhxDPlKmWOEc5gU
+Message-ID: <CAM0EoM=T4TNbkj98y=65OZnppkZ=5b7q=Kvk2k7A982pApSZ8g@mail.gmail.com>
+Subject: Re: [PATCH net v2 3/6] net/sched: act_mirred: reject redirects
+ without a link-layer header
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
+	Victor Nogueira <victor@mojatatu.com>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+	Shmulik Ladkani <shmulik.ladkani@gmail.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 23 Oct 2026 08:24:49 -0500
-Message-ID: <53031.1792761889@vermin>
 
-Timur Stukan <timur.stukan.linux@gmail.com> wrote:
-
->In bond_miimon_commit(), when a slave is proposed as BOND_LINK_UP but
->bond_update_speed_duplex() fails in bonding mode that needs speed/duplex
->(802.3ad, tlb, alb), the slave is set to BOND_LINK_DOWN directly. This
->bypasses bond_set_slave_link_state(), bond_miimon_link_change() and
->failover.
+On Fri, Oct 23, 2026 at 9:17=E2=80=AFAM Eric Dumazet <edumazet@kernel.org> =
+wrote:
 >
->This is fine for slave that coming from BOND_LINK_BACK, which was never
->brought up and is not in use. But since commit 1899bb325149 ("bonding:
->fix state transition issue in link monitoring") the commit phase also
->handles BOND_LINK_FAIL -> BOND_LINK_UP which means a slave that is still
->in use and may be curr_active_slave.
+> Le ven. 23 oct. 2026 =C3=A0 13:59, Jamal Hadi Salim <jhs@mojatatu.com> a =
+=C3=A9crit :
+> >
+> > The issue:
+> > tcf_mirred_to_dev() may redirect a packet that has no link-layer header=
+ to
+> > a device that expects one.  TUN builds a valid L3 skb with mac_len =3D=
+=3D 0;
+> > mirred then pushes zero bytes and the IP header is parsed as Ethernet b=
+y
+> > eth_type_trans().  The same happens after a VLAN POP_ETH or MPLS POP ch=
+ain
+> > whose producer did not leave a full inner Ethernet header.
+> >
+> > The Fix:
+> > After the existing push/pull adjustment, when the target expects data a=
+t
+> > the MAC header, require a link-layer header of at least
+> > dev->min_header_len bytes and pull it into the linear area.  Drop the
+> > packet otherwise.  This mirrors the check bpf_redirect() already perfor=
+ms
+> > and keeps the legitimate push_eth-then-mirred case working.
+> >
+> > Conditions to recreate the bug:
+> > - create a TUN device with IFF_TUN | IFF_VNET_HDR | IFF_NO_PI;
+> > - attach egress mirred redirect to an Ethernet device (for example lo);
+> > - write a virtio_net_hdr with hdr_len=3D1 and an 8192-byte payload.
+> > The unfixed kernel parses the IP header as Ethernet and can BUG in
+> > eth_type_trans() via loopback_xmit.
+> >
+> > Fixes: 53592b364001 ("net/sched: act_mirred: Implement ingress actions"=
+)
+> > Suggested-by: Eric Dumazet <edumazet@kernel.org>
+> > Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> > ---
+> >  net/sched/act_mirred.c | 7 +++++++
+> >  1 file changed, 7 insertions(+)
+> >
+> > diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
+> > index 553342c55cf7..e3e0e4aa70a1 100644
+> > --- a/net/sched/act_mirred.c
+> > +++ b/net/sched/act_mirred.c
+> > @@ -316,6 +316,11 @@ static int tcf_mirred_to_dev(struct sk_buff *skb, =
+struct tcf_mirred *m,
+> >                 }
+> >         }
+> >
+> > +       if (!expects_nh &&
+> > +           (unlikely(skb_network_offset(skb_to_send) < dev->min_header=
+_len) ||
+> > +            !pskb_may_pull(skb_to_send, dev->min_header_len)))
+> > +               goto err_cant_do;
+> > +
 >
->If the link recovers within downdelay and goes down again before the
->commit phase reads speed/duplex, the slave is silently marked down while
->remaining the active slave in worst cases. In alb/tlb the bond MAC stays
->on the dead port, no failover happens and TLB/RLB state is not cleaned,
->so the bond stops passing traffic until that link comes back even though
->other slaves are up. A non-active slave is affected too, in alb, RLB
->clients assigned to it are not reassigned and become unreachable.
+> Oops, sorry this breaks tools/testing/selftests/net/forwarding/tc_mpls_l2=
+vpn.sh
 >
->Reproduced in tlb and alb mode with miimon=3D100 and downdelay=3D10000 by
->flapping a slave within downdelay and dropping it again before commit
->(a longer delay was added between inspect and commit to make window
->wider and easier to test):
->  bond0: (slave enp0s3): link status down for interface, disabling it in =
-10000 ms
->  bond0: (slave enp0s3): link status up again after 3400 ms
->  bond0: (slave enp0s3): failed to get link speed/duplex
+> My bad, the skb_network_offset() part I suggested in v1 is wrong.
 >
->procfs then shows the active slave with "MII Status: down" and "Link
->Failure Count: 0", and all traffic is lost.
+> Please remove it:
 >
->Fix this by recording the link state before the miimon commit and when
->the speed/duplex update fails for a slave coming from BOND_LINK_FAIL,
->taking it through the regular down path, including failover. The
->BOND_LINK_BACK case keeps the current behaviour. The down path is moved
->into bond_miimon_slave_down() so both callers share it.
+> diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
+> index b0390b08600c4a709b18f6d92aebe6629081c735..0bd73c5072a90d3e952d0a724=
+461adcf0307592e
+> 100644
+> --- a/net/sched/act_mirred.c
+> +++ b/net/sched/act_mirred.c
+> @@ -317,8 +317,7 @@ static int tcf_mirred_to_dev(struct sk_buff *skb,
+> struct tcf_mirred *m,
+>         }
 >
->After the fix:
->  bond0: (slave enp0s3): failed to get link speed/duplex
->  bond0: (slave enp0s3): link status definitely down, disabling slave
->  bond0: (slave enp0s4): making interface the new active one
+>         if (!expects_nh &&
+> -           (unlikely(skb_network_offset(skb_to_send) < dev->min_header_l=
+en) ||
+> -            !pskb_may_pull(skb_to_send, dev->min_header_len)))
+> +           !pskb_may_pull(skb_to_send, dev->min_header_len))
+>                 goto err_cant_do;
 >
->Fixes: 1899bb325149 ("bonding: fix state transition issue in link monitor=
-ing")
->Signed-off-by: Timur Stukan <timur.stukan.linux@gmail.com>
->---
-
-	Reading the description and patch, I'm concerned that this patch
-is introducing the same sort of issue that 1899bb325149 was solving: two
-state variables that end up becoming unsynchronized.
-
-	For example, here you set link_prev_state in one place, inspect
-it in another, but never clear it.  Thus, once set, it will remain set
-forever, raising the possibility of false matches in the future.  Not
-necessarily from this patch, which appears to always set then check in
-that order, but from subsequent changes down the road that inadvertently
-break this guarantee.
-
-	Yes, that can be resolved by clearing it after use, but I'd
-first ask whether there is an effective solution that does not require
-keeping additional state?
-
-	-J
-
+>         skb_to_send->skb_iif =3D skb->dev->ifindex;
 >
->Notes:
->    sizeof(struct slave) grows from 608 to 616 bytes due to padding.
->    I kept link_prev_state next to link/link_new_state for readability;
->    it can be moved into the hole after 'delay' if preferred.
->
-> drivers/net/bonding/bond_main.c | 53 ++++++++++++++++++++++-----------
-> include/net/bonding.h           |  1 +
-> 2 files changed, 36 insertions(+), 18 deletions(-)
->
->diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_m=
-ain.c
->index 09aa45d71fab..602ad697a9c2 100644
->--- a/drivers/net/bonding/bond_main.c
->+++ b/drivers/net/bonding/bond_main.c
->@@ -2779,6 +2779,27 @@ static void bond_miimon_link_change(struct bonding=
- *bond,
-> 	}
-> }
-> =
-
->+static bool bond_miimon_slave_down(struct bonding *bond,
->+				   struct slave *slave)
->+{
->+	if (slave->link_failure_count < UINT_MAX)
->+		slave->link_failure_count++;
->+
->+	bond_set_slave_link_state(slave, BOND_LINK_DOWN,
->+				  BOND_SLAVE_NOTIFY_NOW);
->+
->+	if (BOND_MODE(bond) =3D=3D BOND_MODE_ACTIVEBACKUP ||
->+	    BOND_MODE(bond) =3D=3D BOND_MODE_8023AD)
->+		bond_set_slave_inactive_flags(slave,
->+					      BOND_SLAVE_NOTIFY_NOW);
->+
->+	slave_info(bond->dev, slave->dev, "link status definitely down, disabli=
-ng slave\n");
->+
->+	bond_miimon_link_change(bond, slave, BOND_LINK_DOWN);
->+
->+	return slave =3D=3D rcu_access_pointer(bond->curr_active_slave);
->+}
->+
-> static void bond_miimon_commit(struct bonding *bond)
-> {
-> 	struct slave *slave, *primary, *active;
->@@ -2807,10 +2828,21 @@ static void bond_miimon_commit(struct bonding *bo=
-nd)
-> 			err =3D bond_update_speed_duplex(slave);
-> 			netdev_unlock_ops(slave->dev);
-> 			if (err && bond_needs_speed_duplex(bond)) {
->-				slave->link =3D BOND_LINK_DOWN;
-> 				if (net_ratelimit())
-> 					slave_warn(bond->dev, slave->dev,
-> 						   "failed to get link speed/duplex\n");
->+				/* Coming from FAIL, the slave is still in
->+				 * use and may be curr_active_slave, so take
->+				 * it through the full down path. Coming from
->+				 * DOWN/BACK, it was never brought up, so just
->+				 * revert it to DOWN.
->+				 */
->+				if (slave->link_prev_state =3D=3D BOND_LINK_FAIL) {
->+					if (bond_miimon_slave_down(bond, slave))
->+						do_failover =3D true;
->+					continue;
->+				}
->+				slave->link =3D BOND_LINK_DOWN;
-> 				continue;
-> 			}
-> 			bond_set_slave_link_state(slave, BOND_LINK_UP,
->@@ -2839,24 +2871,8 @@ static void bond_miimon_commit(struct bonding *bon=
-d)
-> 			continue;
-> =
-
-> 		case BOND_LINK_DOWN:
->-			if (slave->link_failure_count < UINT_MAX)
->-				slave->link_failure_count++;
->-
->-			bond_set_slave_link_state(slave, BOND_LINK_DOWN,
->-						  BOND_SLAVE_NOTIFY_NOW);
->-
->-			if (BOND_MODE(bond) =3D=3D BOND_MODE_ACTIVEBACKUP ||
->-			    BOND_MODE(bond) =3D=3D BOND_MODE_8023AD)
->-				bond_set_slave_inactive_flags(slave,
->-							      BOND_SLAVE_NOTIFY_NOW);
->-
->-			slave_info(bond->dev, slave->dev, "link status definitely down, disab=
-ling slave\n");
->-
->-			bond_miimon_link_change(bond, slave, BOND_LINK_DOWN);
->-
->-			if (slave =3D=3D rcu_access_pointer(bond->curr_active_slave))
->+			if (bond_miimon_slave_down(bond, slave))
-> 				do_failover =3D true;
->-
-> 			continue;
-> =
-
-> 		case BOND_LINK_FAIL:
->@@ -2919,6 +2935,7 @@ static void bond_mii_monitor(struct work_struct *wo=
-rk)
-> =
-
-> 		if (commit) {
-> 			bond_for_each_slave(bond, slave, iter) {
->+				slave->link_prev_state =3D slave->link;
-> 				bond_commit_link_state(slave,
-> 						       BOND_SLAVE_NOTIFY_LATER);
-> 			}
->diff --git a/include/net/bonding.h b/include/net/bonding.h
->index 598d56b1bc97..b2b102946fe1 100644
->--- a/include/net/bonding.h
->+++ b/include/net/bonding.h
->@@ -165,6 +165,7 @@ struct slave {
-> 	unsigned long target_last_arp_rx[BOND_MAX_ARP_TARGETS];
-> 	s8     link;		/* one of BOND_LINK_XXXX */
-> 	s8     link_new_state;	/* one of BOND_LINK_XXXX */
->+	s8     link_prev_state; /* one of BOND_LINK_XXXX */
-> 	u8     backup:1,   /* indicates backup slave. Value corresponds with
-> 			      BOND_STATE_ACTIVE and BOND_STATE_BACKUP */
-> 	       inactive:1, /* indicates inactive slave */
->-- =
-
->2.43.0
+> Keep only the pskb_may_pull() which is enough to prevent
+> eth_type_trans() from crashing on a short linear part.
 >
 
----
-	-Jay Vosburgh, jv@jvosburgh.net
+Grrr.. Eric, you are not allowed to comment after this.
+I should include running those tests going forward when appropriate. I
+only test tdc and reproducers.
+
+cheers,
+jamal
+> Thanks!
