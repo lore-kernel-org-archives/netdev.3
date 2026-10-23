@@ -1,96 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792785159;
-	b=b79zKN27L9ppFPBYnrP+45jfDmQWs0xjMIWSdxICbPNHOdd6r1ElR/Pucl5RRydnceC7
-	 ty/bJ8vjWgJf1gieXX2crLo6tL3Hh1c+YIrI4VgMjRMSpGMYTYW6Qhur4WrWrv/XeDt/1
-	 OmnBwL/7SKMZ0nGUwnDDzmRrOMEsmJ20fMgogJu9cv0tqkG9fZlxBXJL/ApWaNehkIgBC
-	 Q3G40NHq154EzPfA1PJAAKtFlAo660kXPJvLcN2bOlIbdzt6WXYYGEyWMNPsFtepR2qzx
-	 gCjTR4Zh0Ag7ixOYv7jlWMRVTzWxQNKWUy+u+uX3lTFtjYK98CH6CnXFjJSGO3vxiGQ==
+	t=1792785194;
+	b=lwE5IvcRPv+Hz2K+5kD0RnlaLuIXjrqeOYEPrdrpad1s2CQ//A1P0++Tr4r3WGIZnC1C
+	 I/HmP2+Kfo3bj+nPfv1WStbuVvnHAzmWldXeARkNxjCLa+mFQqp0O343Ss03uPjA5HrAV
+	 XJsDxjImqlUaqt9WGyCqgtYC15L4i5pGkZ8XnoMm9f1piLzE5Lqj5ssZCmjm59thqEHpe
+	 l1jyvhSqK8W+JvXTUZgKy5DqhJNtP0e9RSYftgvS9cZS3jChEXjbeRkSnWb6OhiiEZL1/
+	 +Ioi9Zs+FVOIQZbchnx2/z/YPmY3W9iNgLbtsdYEHPn8xEbPETeN1hIqnjMZCcFKmLQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792785159;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792785194;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=yTcmuMnkNzSebcUDGuE3JkhELdrXB8BWi9yU8pBIEF0=;
-	b=o2jFRXtt+OOWz9dONfxG9S1DfCoZan20Ww/jGR7lzUtWrJ4FUyvcDVFtn9kLsxyxgMoF
-	 J6PyH6rzwyDg8KlwRkdG9JMHsNvvTw5+ybQUnjMS81OQFNRms3qHPvBKK5kH8GMgP+p0u
-	 0jVJiYX3y3AXfS25XTFZtm+PYaHBa9ntEoUcE8Jjj1iG6ZIUPSPKG0UT3l/eWuyZPa+D+
-	 9GOAHFkuuS/+NR+IlMqKj5Dn6P71rxve27lYTfaSEUMK9ddfqmQFKjOGjaebK7xPWvO9A
-	 ihcMRJFqypiz27eJxChzXqvTaofgiGVVILFs8aFDbLC2lsHWoTdwq+XK9G/5whEPTiw==
+	bh=MYMvGahXwl+NkKbqUxWpkDAanrsDHqw5aIx8j0gxjPs=;
+	b=z4mUTD5SW4URdluRCGPQQAN4bGoHK3iiT9cezYlfSpR6Hfqe3blMd715nqiccgVl4OVq
+	 HBI7WeSkDl+AcoV/oQtolp2qqU01kyP1RRoXXo7zgOMzIlWfQ+2f6QxnzMs3OoQ0xJRg3
+	 5n3dEPyb4+fA2PP0IGwlDeuZ6s0yGD3iebrziBWFHpUMh5UDQQddPb8lPz11GMcVbZe+h
+	 H5NqHvJV4CyhqW760+b9IF7+65xPz3pCRiD/odS2V5/ZJ3hDSvqD/5keoShq1hIyJWy5K
+	 cQLvmWi+FxxBOZkkn2fL55LKtPZNqPIXDmxYXhCY16jka9FZ/GItFlYJrlkeWiDeoFw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=p92V9elp;
-	arc=none smtp.remote-ip=209.85.128.53
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=SNymd6a1;
+	arc=none smtp.remote-ip=209.85.221.46
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23E3606A31A
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 19:52:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D23E3606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9758606A31B
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 19:53:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B9758606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=p92V9elp
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4a0286c981dso12602885e9.2
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 12:52:38 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=SNymd6a1
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-487049569b6so736240f8f.1
+        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 12:53:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792785157; x=1793389957; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792785192; x=1793389992; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yTcmuMnkNzSebcUDGuE3JkhELdrXB8BWi9yU8pBIEF0=;
-        b=p92V9elpkIZgjPPLwyJYhCG1WQ4TdS/FVWcP3yGdKv1GCNPjYYEILmBuLyoXZZwWFF
-         5yPiN0IQ1VjWirdmS7oUDCbgYrD6vwKLEl1quhL4mtFDLa93heV8SyOXvZvgKpPGwEJi
-         TQh0Fpahizq124s8SkHz0NwGO/8t+smsWHt4NaD09ODzFxZGn8zyODGgi/yGXR2JgqQr
-         l5X+DKhjS6AHNBF10xKI5nQiNdGhNExmGAN2N2HbM+KXIkCQjD1aMKgyPAFSw4xaqear
-         YakK2fxOSMzbqtNvWjBHSHi3dOmPp+oYbJ98YDjq8qHYI2YVTxsxFx4J6XaAkcxr8+Ah
-         PJFQ==
+        bh=MYMvGahXwl+NkKbqUxWpkDAanrsDHqw5aIx8j0gxjPs=;
+        b=SNymd6a1wWN4/3R20ghV9hJHANXsMHNZSjpLs7ikUYUtr6b9oz82iVM8+eYTK/D3vU
+         IGsAk8eCbL0wRGWa2VkqZqGYenDcQblbEh7NY5P5CnCrzU0GVQJd8GQdSa9LiNUopKf4
+         H+smT8EN7qxVHmRrLBcf8NQKwog626n7OpXx7vMBHc3nJNf4Ek+rT6LmoMS5Z1OSQAkX
+         /vhr8qGpafrpNzpFK/lC3P8bxKvBmvsJGKTJoKns+JWDQ7uGfMcy3Ble1kF/ytdKyupE
+         4LNMEbbDLPq2dsN94uKUpxZoySsaQkttM4MnXwwrNGH90oR3nHt597WX+Ij+22CRbRl2
+         pKdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792785157; x=1793389957;
+        d=1e100.net; s=20260707; t=1792785192; x=1793389992;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=yTcmuMnkNzSebcUDGuE3JkhELdrXB8BWi9yU8pBIEF0=;
-        b=B9Og9L0E1+UtHU/aa+m+LKgohZdyagYOtSqhZfVGcwnP+vdsLdPBQ5cvh1zyqes9Jr
-         Hb7cEbt4yRQKKCHhhBwJF68YjVNWnRgdFx8JvgKkLbv9qxYuhZ2wu7of2NwFuUNoRFc1
-         zQs+6jFGG9LS9R3B1olk5vyKk1OXhCp14kEYDWoHNiytG1C9IjslugPM1X6cAPG2AyW8
-         6pntCdvN3kCPn/O9G0bzo/ExuL3u8jizDyI21NJsYlPQRNUuE0rxJoHxaTcyhZMqWWpg
-         xM6O9KCdbvpqSEFn/11wX7+hoskW1L8+DSyzNFqXkgSDOrFh7HmwOpaPTxYxdm5G0DBC
-         a3Dw==
-X-Forwarded-Encrypted: i=1; AKwUvBwrUqHQZ6apITorEQaX5pHKPiLgxhuM577zUgvuFiSpGy7t9S4zb+XaSot4PPDOLRg1ZZR2beY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK1WatcU1TZs4cfwAoaHJX5japkLxLi+KPhJh07RIkF75nEaRqM
-	9iD66Rt4HelRL+U9V7430pv9U8UIXX+FMUAtjWoK+MjPGO4kMsuUeQ8=
-X-Gm-Gg: AYBFou2aUp089U+OHEyNqBLop/MDpeDHbMTvmPDU8G9C3DN3qgiMTFmkaLcfBl8abA7
-	pAj24tD/y9n3Ssvc+B2Uu0/Vq7n7z0/VPWh23Os4X4PzQmmXZqgE2iuzGmsI5Br5PkIIBzVNONu
-	0Cik//+y0Ab3uS18SiP7XFFeewavBmrzbVFOzeLNWyYuC0WP+BtBEmXtCzRq3M6Ne/pJF0AxC45
-	AA27dzghrXsUDPGX6U8S8LEjd2P4482mShsYY06vYZmetC3rgLPs8jBHxEJ3aqLeLKIn2+y8qcD
-	RCu5CfWvNo7JpxDqL69IAkP+/ogR6N2BgD8uFef4++uXLYpyq6gu2NLc9Q3LjsLcBVoxM0a4Xad
-	LhvnUccyM3TxFGuIQ8om5ZRMqPIfiYPKmoC7aqjx5jrB+ZwGXFPgIcXOWDTOhNyaxfF3GSbizBP
-	8xIeuXdI0+OWCFMd8qjnK961dg67STwVerC52W9ke+OVyAXYXqCeDQsVsT/FzCdUHAIStU2yBKg
-	qiffC/0HYEknczYJgwWBOUz
-X-Received: by 2002:a05:600c:3f16:b0:4a2:1960:6db with SMTP id 5b1f17b1804b1-4a2196007e7mr25760645e9.26.1792785157088;
-        Fri, 23 Oct 2026 12:52:37 -0700 (PDT)
+        bh=MYMvGahXwl+NkKbqUxWpkDAanrsDHqw5aIx8j0gxjPs=;
+        b=p3zmvk8CoLuo5hwfAYtA9h8E4zN6puHOyBcBGbWv0IjaZeGP814ekgFSmB80qv+w0r
+         P27gx49aO37/9GSHxJAXDDOuXnaxikBPCzmgZOGOIhOTHvtYqU/Tm71vLJiFSlfXnd4B
+         aYPbUq2q4WU6eZS8Nt4613OaGTaDr40Jv24zNw18m/dbBHUI/G8IlUOddOIFSO51HCwz
+         jpUIyYhAV9l17R/Iv0+l4C0V4XYXzyz5VWS2dyzF1C4d/fcNP/ytUGzgfyDCbEgMXLji
+         M7HywUXat8jqjM1nRhIQQl3hgPCRRjtE8fMArW4fjttSJhWlRi5ZEGN2bYb9Mm3wuFmH
+         PTQw==
+X-Forwarded-Encrypted: i=1; AKwUvBySOK4cy7zlLAv+45VcQIQI16NL3fNtcXqXhhARX2SFS/EScvOAcvo8h7hWfLhpUIL4eiLuiSk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIn7LwmNLmy33wI85Z4DWslVF8XUB/c2Yr6KKW7QChZru1hCHtp
+	LyOqJ/e+tGL3gDDNgEmdF4t5DQat59DJagHmJu9nA1EqVAVP+L5EDJUuPUZE
+X-Gm-Gg: AYBFou1V06dLnvgxA89FHwH80R4LaTgTY4iWjmLkrmqRK/XvBvYXaiP+cgZ05R67uoT
+	Wxo/sS9nh5JEtT5VbiI61AxsBW68LCw1vl54e/HzaK2eZdAHWENZptGFz4FO1ceDKdK9mCTM51i
+	ma8+QxpvJuNWwzN8F1PTsMalp6K3O9fEHSvM/njysdYk3Pv+xjnnysMhsDEzCDUspBIvDog7wOc
+	VgDOqfe0gtVj8mYIyfFQ5sQ+f5qo7srniRskr0/05N7/NW7DexSc+NawzRJcg9cixrZ+QLYOY0b
+	KIoAcw+GrQbk+eR2yzTGwlWoB2ZAVGGCW1C1pze5TWCbcN04Omgwi0eKsfB1qLX40HKr4jEp7wK
+	TolroV/7UIEAiYx/OzKsevhnXgWmchc91NaENJeAIAkut6TLLVyE21nysHkNPqBxOBcf31uc3Xu
+	GP5gQKpEDwPuJNAzqVh4AMh3zbvsHLFyl0bgIzkQ55cNIQ6B/gIlnxJLwdOEDNT/Y8Uk3FNEpbh
+	Imr/iPgK0HhrHYU1alWwJh27A==
+X-Received: by 2002:a05:600c:19d4:b0:4a3:5a42:b29c with SMTP id 5b1f17b1804b1-4a35a42b345mr2557955e9.26.1792785192118;
+        Fri, 23 Oct 2026 12:53:12 -0700 (PDT)
 Received: from debian.. ([2001:41d0:303:db6b::])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a35a55e9aasm3892025e9.5.2026.10.23.12.52.35
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a359fc1207sm4434875e9.1.2026.10.23.12.53.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2026 12:52:36 -0700 (PDT)
+        Fri, 23 Oct 2026 12:53:11 -0700 (PDT)
 From: Tristan Madani <tristmd@gmail.com>
-To: Andrea Mayer <andrea.mayer@uniroma2.it>,
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	David Lebrun <david.lebrun@uclouvain.be>,
+Cc: Qingfang Deng <qingfang.deng@linux.dev>,
+	linux-ppp@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
 	Tristan Madani <tristan@talencesecurity.com>
-Subject: [PATCH net] seg6: fix tun_src RCU lifetime on namespace teardown
-Date: Fri, 23 Oct 2026 19:52:34 +0000
-Message-ID: <20261023195234.3524462-1-tristmd@gmail.com>
+Subject: [PATCH net] ppp: fix stale pointer access after pskb_may_pull in ppp_ccp_peek
+Date: Fri, 23 Oct 2026 19:53:09 +0000
+Message-ID: <20261023195309.3527129-1-tristmd@gmail.com>
 X-Mailer: git-send-email 2.47.3
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -105,71 +105,36 @@ Content-Transfer-Encoding: 8bit
 
 From: Tristan Madani <tristan@talencesecurity.com>
 
-seg6_net_exit() frees tun_src directly, but set_tun_src() in
-seg6_iptunnel.c reads it under rcu_read_lock(). The pointer may
-be freed while a concurrent reader is still accessing it.
+ppp_ccp_peek() caches a pointer to skb->data in dp after the first
+pskb_may_pull(), then uses dp after a second pskb_may_pull(skb, len + 2)
+in the CCP_CONFACK handler. If the second pull triggers
+pskb_expand_head() due to a cloned skb or frag linearization,
+skb->head is freed and reallocated, leaving dp stale.
 
-Add a pre_exit callback to clear the tun_src pointer before the
-implied synchronize_rcu_expedited(), so all RCU readers complete
-before the actual kfree in the exit callback. Save the original
-pointer in tun_src_old so exit can free it after the grace period,
-since the RCU pointer is already NULL at that point. The init
-error path frees tun_src directly since pre_exit has not run.
+The stale dp is subsequently used in CCP_OPT_LENGTH() and passed to
+decomp_init()/comp_init() which read from the freed memory.
 
-Fixes: 915d7e5e5930 ("ipv6: sr: add code base for control plane support of SR-IPv6")
+Re-derive dp from skb->data after the second pskb_may_pull.
+
+Fixes: 1da177e4c3f41 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
 Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
 ---
- include/net/seg6.h |  1 +
- net/ipv6/seg6.c    | 12 +++++++++++-
- 2 files changed, 12 insertions(+), 1 deletion(-)
+ drivers/net/ppp/ppp_generic.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/net/seg6.h b/include/net/seg6.h
-index 82b3fbbcbb935..210f4fa0d4dd7 100644
---- a/include/net/seg6.h
-+++ b/include/net/seg6.h
-@@ -36,6 +36,7 @@ static inline void update_csum_diff16(struct sk_buff *skb, __be32 *from,
- struct seg6_pernet_data {
- 	struct mutex lock;
- 	struct in6_addr __rcu *tun_src;
-+	struct in6_addr *tun_src_old;
- #ifdef CONFIG_IPV6_SEG6_HMAC
- 	struct rhashtable hmac_infos;
- #endif
-diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
-index 8c2b156c227a7..670052290e43c 100644
---- a/net/ipv6/seg6.c
-+++ b/net/ipv6/seg6.c
-@@ -447,18 +447,28 @@ static int __net_init seg6_net_init(struct net *net)
- 	return 0;
- }
- 
-+static void __net_exit seg6_net_pre_exit(struct net *net)
-+{
-+	struct seg6_pernet_data *sdata = seg6_pernet(net);
-+
-+	/* Save tun_src for exit to free after the RCU grace period. */
-+	sdata->tun_src_old = rcu_dereference_raw(sdata->tun_src);
-+	RCU_INIT_POINTER(sdata->tun_src, NULL);
-+}
-+
- static void __net_exit seg6_net_exit(struct net *net)
- {
- 	struct seg6_pernet_data *sdata = seg6_pernet(net);
- 
- 	seg6_hmac_net_exit(net);
- 
--	kfree(rcu_dereference_raw(sdata->tun_src));
-+	kfree(sdata->tun_src_old);
- 	kfree(sdata);
- }
- 
- static struct pernet_operations ip6_segments_ops = {
- 	.init = seg6_net_init,
-+	.pre_exit = seg6_net_pre_exit,
- 	.exit = seg6_net_exit,
- };
- 
+diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
+index 1a610a18893ba..3998ce4332f42 100644
+--- a/drivers/net/ppp/ppp_generic.c
++++ b/drivers/net/ppp/ppp_generic.c
+@@ -3157,6 +3157,7 @@ ppp_ccp_peek(struct ppp *ppp, struct sk_buff *skb, int inbound)
+ 		len = CCP_LENGTH(dp);
+ 		if (!pskb_may_pull(skb, len + 2))
+ 			return;		/* too short */
++		dp = skb->data + 2;
+ 		dp += CCP_HDRLEN;
+ 		len -= CCP_HDRLEN;
+ 		if (len < CCP_OPT_MINLEN || len < CCP_OPT_LENGTH(dp))
 -- 
 2.47.3
 
