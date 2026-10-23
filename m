@@ -1,58 +1,62 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792788301;
-	b=RT+Vbproq+0rTNEtNOY3kH9/cXFx9cQYsIjhJ4abRmnsRfUOy1OWQ9v63E3oCKjC7cND
-	 WDpzlf6DsOJJoTOma1YeuCvJjHvPUNT0maDvpkstUKehQeVo0F0sP1imT4+/DRLJjAdKG
-	 Z7SHj7680DXOX071BtAzJq56wQTQT2WzAICcRFS+XQoDghFiOxXtpbxZpXYEzsr2mOD1+
-	 42lSP5wYTvbJFt2Ss9z05vBgksBHz6ZffUzWhwQCxAU83b0DkVbVJu+EVN1+X+HxRBIZE
-	 gDEqbdUztsViE3E+0xaLCpCPAvFWj+yvdncpsIjYY10UpsW4Ysb0k4+tLsASn++IDwQ==
+	t=1792788403;
+	b=ndvE9ZCsQt/LOOBuqA3n6lTH2uVTzribCi8GaI4qBCjAtVSUGhzyevekgwWR2PxJmodc
+	 H8gJO6RSLXmznnoYoIDGjRJKAmySmTaz37ssgtEfKx+5CFmFBm56PYUp6xU34MFmPhOkT
+	 JnCaC5Hwu1oMeHQtRVeXVLRHHDkC3oCN33FozGzWNKnzoscaniAxQkp8r/mGmnrKuUsw9
+	 l3xWqx+OQQtyOkuKVNCsdVnK5YzblHair5HtdN0EDo8k9Omr6qMvotNQvXZDon2x0r1yJ
+	 jFBjKjOnRhnwGziPQ/DYpD+zef6cgDF96IP9hK1aBGsXVSfYgfsiRhR9t/H0Ewxp5cg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792788301;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	b=pBgUYyfyHagwR3lFCt4EA2b/VFxEf+mmUVQ3yBrw0dYKCVUU7lVdiZs6VJ+YJGRcsEXi
-	 0L4t4OnmLmkzZ9FzP6ZflmwDq0kr+P9BUVclreW3/SiqzV47L+g/+rQmRvOknqfAWvz6u
-	 ybp8sJa0h7XUqINXStwBpXzIpPg1b93LHm4hloZbZcmNaxIdI4+fivyy32f9g5QxX3PiR
-	 G9BIByDX+pgANPwv6ugqeQthlgVmVO7Uh4DOauWqE5QCdDguUvQOmG6bFprkZS4jVB+De
-	 awu+S+1Up1yB+0fkTOKRD9zOuOnq7uROlV1k87pGaFlAxQ0WXAQYHZkRBJJJS12OFdg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792788403;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=OOrBgVIZ+5GFZQ2Ei4auzJjSzt/8ZsdJTOLeQUj42io=;
+	b=igCOIzVMlvBXOl49JPMveWWD4WwwOpo1u88bdlIPfv8iVMUHj7yWlX6lqqViYN8uDNTx
+	 TW+eQLgP+0dLTFRcurf4g6Ah0n9jrvIhd1BbyX5IyWz4gulHadMk6l670nOKtD45wU6xQ
+	 CWtSQXXFzC1SRtXuoEXcTzcJMV051Ne9lFw+HRZDWyw/vt0O6p5+zBf7LQZMPzYdDV4A0
+	 L65mxjQkAHZMjlNjXMe6031wB6uu7boOo3ZWtO07dWFEsQF41A3Fy/EApukhKz5fTIKEV
+	 yBgtcwABNm2Awaf6D2IhITVZYsKIx/iTTnV+NqMDUFbZT9r5tzqwmvmv5Cp3WZWO3cQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RjXEV0lj;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NRyxz1CV;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B17606A322
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 20:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC4E606A31B;
+	Fri, 23 Oct 2026 20:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RjXEV0lj
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AAA91F031E4;
-	Fri, 23 Oct 2026 20:45:00 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NRyxz1CV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 099AB1F01825;
+	Fri, 23 Oct 2026 20:46:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792788300;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RjXEV0ljWE4HVW3geglnBboEQXvr7D038HYyQNZTaTL4lDaZEP+fRZF+6KQOewOh/
-	 LqiTKdal6nCnzgH7DhmXWLPoNpTNCqHPLNJGqJIV8bmqKzTPP8OyQOUyuQHgQfYF4T
-	 iYFwy6hxTPgJyfDceNIfNBykL8L/qY2ATNxfYYCos4engxq0n9pjJityfTvKjLioHq
-	 Bi87NGNv7WUrK889LH1VNtyjEIwTkvWdwfa2O924v4ffM3hfJ4w1cutCuZ2HDLpLAp
-	 /FreXazasFkSswlYEulmZdPlE/sQ/300eEhQDB3s+tgfH8AEivn0axpiInktJOYA6u
-	 Xk3QsYuVyHrmg==
-From: netdev-bot+sinfo@kernel.org
-To: memoriaru@foxmail.com
-Cc: netdev@vger.kernel.org, daniel@makrotopia.org, andrew@lunn.ch,
- olteanv@gmail.com, johan@kernel.org, kuba@kernel.org
-Subject: Re: [PATCH net v2 0/2] net: dsa: mxl862xx: bound FDB dump walk and
- validate BRIDGE_ALLOC ids
-Date: Fri, 23 Oct 2026 20:44:59 +0000
-Message-ID: <179278829990.3327.14694215720214654641@kernel.org>
-In-Reply-To: <tencent_6030CC520C02054D1B2925AEEF6FA92DC30A@qq.com>
-References: <tencent_6030CC520C02054D1B2925AEEF6FA92DC30A@qq.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=k20260515; t=1792788402;
+	bh=OOrBgVIZ+5GFZQ2Ei4auzJjSzt/8ZsdJTOLeQUj42io=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=NRyxz1CVk7OUj1Ho0JA9ipiZ8cXedzU4ixCRaaAx+fS88LbYEQVonzSnbS6kvGAK4
+	 uI5gms4ARQtIeoK1VFD+SbcACPkKEryt6LEpHVdAlsm54W3pw+SK++EljoS20GF9z4
+	 9NfQ5Jj5vGzbZKyeulrToTYyjjNSBmJf+NQG2j1FzbPvEGFhUqa6wtX8Dno6icPVhi
+	 F2IYnctZpRrQ5ubxoyfTEucA61fXvOaRAwrT/PmmugqaIv3m/QZBw55LC+OaBsfWJt
+	 GrHQz9DD9yTWZRAOOMdOYzMUYDv1JFfsv4xEDw0fi5dHcdcM6qG9pDnCO1La7bEmJ+
+	 qa4NDUEjNEaxA==
+Date: Fri, 23 Oct 2026 13:46:41 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: Oliver Neukum <oliver@neukum.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Sjur
+ =?UTF-8?B?QnLDpm5kZWxhbmQ=?= <sjur.brandeland@stericsson.com>, Alexey
+ Orishko <alexey.orishko@gmail.com>, =?UTF-8?B?QmrDuHJu?= Mork
+ <bjorn@mork.no>, Greg Suarez <gsuarez@smithmicro.com>, Breno Leitao
+ <leitao@debian.org>, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2 2/2] net: usb: cdc_mbim: don't enable BHs in
+ tx_fixup under netpoll
+Message-ID: <20261023134641.4c08e3b9@kernel.org>
+In-Reply-To: <20261021-cdc-ncm-netpoll-v2-2-8818965bbb69@tipi-net.de>
+References: <20261021-cdc-ncm-netpoll-v2-0-8818965bbb69@tipi-net.de>
+	<20261021-cdc-ncm-netpoll-v2-2-8818965bbb69@tipi-net.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,25 +66,18 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi!
+On Wed, 21 Oct 2026 09:56:19 +0200 Nicolai Buchwitz wrote:
+> -	spin_lock_bh(&ctx->mtx);
+> +	/* IRQs are off and BHs on under netpoll, see cdc_ncm_tx_fixup() */
+> +	spin_lock_irqsave(&ctx->mtx, irqflags);
+>  	skb_out = cdc_ncm_fill_tx_frame(dev, skb, sign);
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
-
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
-
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Sashiko is concerned that we are now running cdc_ncm_fill_tx_frame()
+with IRQs disabled, I think the suggestion to use plain spin_lock()
+would work? The xmit lock shields us from recursion here.
+Same for patch 1.
+-- 
+pw-bot: cr
