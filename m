@@ -1,47 +1,53 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792748394;
-	b=mXE2FbT+D1PAWFIacNKguGjBvqzqAXiVpdo/tg6Lacalr2JENKjiF0+HND+Hgz09/G5+
-	 gCu+LFpA08v6ZT7lmM9CsjORWwqAxN0o0kW0yfG/PeExhXqe2Q+SpGdA07Lu/iQZn0ery
-	 ZpcQHhcciGYJzdfNCS0bRCwKhdeQeK1T4Qc981g2gh6RnNBcUqWcqcyoU7iJp60HUFmyQ
-	 c5TYF7N2bSrz2o18YfFo+GzdT3ZFjTTQijrnV2S8lftbl8Cq/eMmMHxJdDk5Wvqa6XAmm
-	 uuMcKTYImvdnXVsBWI6cQynVtjKASG1KpayfYZUcvlXzfqOc54kZFuPWDEQmrah6byA==
+	t=1792748996;
+	b=yIxpSvCYdXKCUdOix+y4fKthNgrk8Pqdaq4b46aXiBsMr7N3KzE+a2776ucha/BQn6L3
+	 nitF6EYeKHbi9iROu4nQR5f6DGAh0kch0PFOUbvCsDq4BP9xdbpJUOlgotZquz2G7W1Ig
+	 9dpFjJUZeHdux/hAL1LBjpVDT1h/pEyk0hMZVWS2HiInLfurRIHyqoGOu6i797NhTcFHr
+	 a2U4CuAZ/3zWo7mG/1xjiks7MtM3Af1zff7gLfIrTiax3067lq1j8sscXO+/9qUjDY08H
+	 fShuuAhgP/yvZrlrf5czop/Lgw6fIFveSb9bkT6ZJvNLL6aTkGX+C7Cw0i/8z32GNvw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792748394;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=Zbo4H69cUqvzI4mr1Z35AeXw7zrN9617F5T5W5xQxQI=;
-	b=IV0NNWLzcD5Q0CJ3yEZCTupMoZ95VreIvSS8zqbGofpo15YnIEf4hA6u8dKcFRv1DBo6
-	 zgqtYfnvDsJgEdkoPVsRFwJTeYg9f9A9kYPHteuGfbsPRQ+LIdbdf3sXibUhuK3kg3IPG
-	 VSqbExs748nTXGAuXTELE2q0XWe32Zzkn/jf8bIIEQ0odEmWL1IqrD3hn6k+v1XCucPCQ
-	 TiDcV5Sk4J5ng+tKG1BuWO3ZfsxXDIVNbTiu/UYNh/IDjD11yWTl421FYlUhyjORzpTMh
-	 ijcWm20imyKipOLAklPoI6obTFlYo6aeccrD7hk/yDiE0LSszQ9aVeb6/xMU/uk4uqw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792748996;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=MZSppzeOjSzp/2G1hrnHubj44+dbtoGWV37pcWW8TSU=;
+	b=hmRIwNFFsH+Xo7PMSCdwHZuPbsu0Oq0FgcyiymPypqVSG0akQTWxu/zdNMQy233CKWOH
+	 xp1jnkHMlypwLGSXJRj3I8F7fHA/l+gi+6u6v8IT/ThEAdm6kFTDakybZ812D6fF30XxN
+	 DbDC9yTQJDpOzX3f0LcI3UOftf2BJQNHpemJT2f6otEqlJFqL7sTsLd7NHcF8RTyLjlJc
+	 g6sN4EI8G+Rfif1UYj8rIKI5vqGnbjkTCdDWgDNI9zt4/6HthubvVm1lmRHJmdswggglh
+	 i3LcEuPzgAMDR0AWIiOmY2gikgx8tekgsNEshJ/enq79KSD6v/R0aDHLo3862cA6k8g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VytnqpKY;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TSGBUPOP;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B924606A31B;
-	Fri, 23 Oct 2026 09:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF20606A31A
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 09:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VytnqpKY
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 399CD1F01825;
-	Fri, 23 Oct 2026 09:39:48 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TSGBUPOP
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D90491F01825;
+	Fri, 23 Oct 2026 09:49:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792748394;
-	bh=Zbo4H69cUqvzI4mr1Z35AeXw7zrN9617F5T5W5xQxQI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=VytnqpKYpIHRPkeXyRIulPMzndR+eR+KkSB5eWRJF0fIGARDHMUlfit0DH9rcGzej
-	 ZEDWt/Ma2mi89dL9tIE2HZ806LYUfYSCYxikbxamsZ7LN3OG7g9hzQspm7MLJ56B6g
-	 8yLZU2g5QN3XZ7S0Z5QY5mhyfXSpDwzFWbzuKIRmbArYFA3q0IMTl8ds/T5isuRfmv
-	 zzfbQ7+9M72iHcoAnkA8/X6YxK3AuGrcGZnbfuf3ATV/HAaOHoKEx7vT/7hKkLZmER
-	 dLgbxRbqV1Kh30CRsgKmLuvqrXzArNAjrIJYzcDuFZTSS4yOg07AjJFGQt1Up49775
-	 o3k9vgs2beZww==
-Message-ID: <aa76425c-0579-42c2-832d-cc767703f3f5@kernel.org>
-Date: Fri, 23 Oct 2026 11:39:47 +0200
+	s=k20260515; t=1792748996;
+	bh=MZSppzeOjSzp/2G1hrnHubj44+dbtoGWV37pcWW8TSU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=TSGBUPOP5z9ltW8KQDBXPe+YNugNY15rAfSozG/P7MIFDkBrz/c7Ddxj7OF2Ggl69
+	 higO7q7eYnrKs3GXhRuTnNDwFLsBw9zb3Iyym4DvybCM/hx+sHVYqhwOkllrqDrbB8
+	 yXAxTi4E9cH3saBDE61a7rinGxUHx+NMjVOn5byWNLm4CQCz/3PdZhezBEA2KRCFiz
+	 D/tHPEgA4n3VuLiq3TpCEQDAJ3lNdEa52t9Q65mWtkiTEVPFRWdpkP6dZlWKK17z8M
+	 9nc75ij5n89Q2ObJN4oWNwPp+0DkFZY9EIzBYbFl1XsUcQxq+DDFkKYPb24bm2D8lY
+	 GCZgW2JEDf2AQ==
+Date: Fri, 23 Oct 2026 11:49:53 +0200
+From: Antoine Tenart <atenart@kernel.org>
+To: Dudu Lu <phx0fer@gmail.com>
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, 
+	pabeni@redhat.com, netdev@vger.kernel.org
+Subject: Re: [PATCH net] net: xps: re-validate the queue index after
+ switching to the subordinate device
+Message-ID: <atsptRW6mM-JBxhE@kwain>
+References: <20261021155555.68167-1-phx0fer@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -51,136 +57,100 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/6] dt-bindings: ptp: Document the TSCSS on Qualcomm
- Lemans and Monaco SoCs
-To: Imran Shaik <imran.shaik@oss.qualcomm.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Richard Cochran <richardcochran@gmail.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: Ajit Pandey <ajit.pandey@oss.qualcomm.com>,
- Taniya Das <taniya.das@oss.qualcomm.com>,
- Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-References: <20260727-tscss-v1-0-beed14e72510@oss.qualcomm.com>
- <20260727-tscss-v1-1-beed14e72510@oss.qualcomm.com>
- <02792987-7ad8-4a6b-81ad-559c63174bb0@kernel.org>
- <640acacb-1704-4ee6-aa34-d6be3b30b44b@oss.qualcomm.com>
- <f5aa313d-0e23-41fa-b59b-9388839b2525@kernel.org>
- <7f6839fb-59b0-4f6d-a3f8-7579f6d40857@oss.qualcomm.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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
-In-Reply-To: <7f6839fb-59b0-4f6d-a3f8-7579f6d40857@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261021155555.68167-1-phx0fer@gmail.com>
 
-On 13/10/2026 13:49, Imran Shaik wrote:
->>>>> +
->>>>> +patternProperties:
->>>>> +  "^etu-slice@[0-9a-f]+$":
->>>>> +    type: object
->>>>> +    description: ETU slice configuration
->>>>> +    properties:
->>>>> +      reg:
->>>>> +        maxItems: 1
->>>>> +
->>>>> +      pinctrl-0: true
->>>>> +
->>>>> +      pinctrl-names:
->>>>> +        items:
->>>>> +          - const: default
->>>>
->>>> Heh? Which code do you copy?
->>>>
->>>
->>> Each ETU slice has its own external event pin config, so kept pinctrl-0
->>> and pinctrl-names on the slice subnode. Please suggest if you prefer
->>> otherwise.
-
-Just drop both pinctrl properties, because you should not need them. You
-define them only if they are different than default.
-
->>
->> No, from where did you get this code? Why are you sending bindings which
->> are different then all other bindings?
->>
+On Wed, Oct 21, 2026 at 11:55:55PM +0800, Dudu Lu wrote:
+> __netif_set_xps_queue() reassigns dev to the subordinate device
+> (netdev_get_tx_queue(dev, index)->sb_dev) but keeps using index, which
+> was only validated against the ORIGINAL device's queue count.  A
+> subordinate with fewer TX queues than the parent's index then overflows
+> sb_dev->_tx[] / the XPS map:
 > 
-> I was referring to the example in [1] when adding the pinctrl properties
-> under the etu-slice sub node.
+>   BUG: KASAN: slab-out-of-bounds in __netif_set_xps_queue+0x178c/0x1ee8
+>   Write of size 4 at addr ffff000005d3fae0 by task A-26-F1-S2/162
+>    __netif_set_xps_queue+0x178c/0x1ee8
+>    netif_set_xps_queue+0x38/0x58
+>    xps_cpus_store+0x1dc/0x2b8
 > 
-> [1] - 
-> Documentation/devicetree/bindings/media/samsung,exynos4212-fimc-is.yaml
-
-That's like 13 years old device binding, so unfortunately likely
-antipattern.
-
-
-
+> The store is netdev_queue_numa_node_write() on sub->_tx[index].  The
+> top-of-function WARN_ON_ONCE(index >= dev->num_tx_queues) only checks the
+> parent and is a debug assertion.  Re-check index against the device that
+> is actually indexed once dev has been rebound.
 > 
-> On checking further, I found that our etu-slice sub node deviates from
-> that example, since we don't have a compatible string for the sub node.
+> Note this is a different defect from the "reject an out of range traffic
+> class" guard (4da3b7b8b50f), which bounds tc, not index.
 > 
-> Please let me know if we should move the pinctrl properties under the
-> tscss node with per-slice names, or instead keep them under the
-> etu-slice sub node and add a compatible there.
+> Fixes: ffcfe25bb50f ("net: Add support for subordinate device traffic classes")
+> Assisted-by: LLM
+> Signed-off-by: Dudu Lu <phx0fer@gmail.com>
+> ---
+> Tested base
+> -----------
+> Detected on Linux 7.3-rc4 (commit 93f51579e7df), arm64 QEMU guest.
+> Re-checked against mainline f47d223627f8 (v7.3-341): the affected code
+> is unchanged between the two, so the bug is still present there.
+> Checked against linux-next next-20261021 (commit 9a482184d910): the
+> affected code is unchanged there as well, so the bug is still present in
+> linux-next too.
+> 
+> Reproducer status
+> -----------------
+> A reproducer was written and executed on an arm64 QEMU guest (KASAN); it
+> fires at the claimed sink, and still fires on a kernel built with 4da3b7b8b50f
+> applied (identity established by disassembling both kernels: same store, same
+> target offset #0x160).  The guest has no SR-IOV NIC, so the reproducer stands
+> in for that hardware with a small module that binds an sb_dev the same way
+> netdev_bind_sb_channel_queue() does for i40e/ixgbe.  The reproducer source is
+> not posted here per Documentation/process/security-bugs.rst; it is available on
+> request.
+> 
+> Triggering conditions
+> ---------------------
+> CAP_NET_ADMIN to set the XPS mask.  An sb_dev is bound in-tree by
+> netdev_bind_sb_channel_queue(), which the i40e and ixgbe SR-IOV paths call
+> when a VF's channel is bound to the PF.  The QEMU guest used for the
+> reproducer has no SR-IOV NIC, so the sb_dev binding was set up through a
+> small module; the defect itself is reached in-tree on that hardware.
+> 
+> Notes
+> -----
+> Built and checkpatch-clean: this patch was applied on top of 7.3-rc4
+> (commit 93f51579e7df) and a full arm64 kernel (defconfig) was built with
+> it -- no new warnings or errors.  scripts/checkpatch.pl reports 0 errors,
+> 0 warnings.
+> 
+>  net/core/dev.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index e76762e29360..d5ce25144806 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -2900,6 +2900,14 @@ int __netif_set_xps_queue(struct net_device *dev, const unsigned long *mask,
+>  		/* If queue belongs to subordinate dev use its map */
+>  		dev = netdev_get_tx_queue(dev, index)->sb_dev ? : dev;
+>  
+> +		/* dev may now be the subordinate device, whose queue
+> +		 * count can be smaller than the parent's.  index was only
+> +		 * validated against the parent above, so re-check it before
 
-etu-slice does not feel like device at all unfortunately. I see only
-address space, so one resource, which might be enough but lack of
-description for the subnode is not helping. I have doubts that separate
-subnodes should be there in the first place, but if they stay, describe
-the child node fully - what sort of device it is. Just because there is
-independent timestamping counter does not make it separate device, just
-like independent interrupt in GIC is not itself an independent device.
+The check is a WARN, not really validating against oob.
 
+> +		 * it is used to index the (possibly different) dev->_tx[].
+> +		 */
+> +		if (index >= dev->real_num_tx_queues)
+> +			return -EINVAL;
 
-Best regards,
-Krzysztof
+I don't know that area well but my understanding is while the mapping is
+stored on the sb_dev, it points to queues on the dev; this would reject
+valid configurations.
+
+> +
+>  		tc = netdev_txq_to_tc(dev, index);
+>  		if (tc < 0 || tc >= num_tc)
+>  			return -EINVAL;
+
+Shouldn't netdev_queue_numa_node_write operate on the dev txqs instead
+of the sb_dev ones?
