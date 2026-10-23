@@ -1,106 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=67.231.153.30
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792776060;
-	b=a0zXO4cIRF0ca9QtMSrpZhtl+M/nAN3718NYv/j7jrrAMss30z/WGu9uAJOGHCGqksBc
-	 di44sJtkp8doypO+d51C5yBEAUCOXo8Lqdsq0xg41ZWtiEZcibLSMLJB+hf1H566olDZL
-	 rMfVghOShxYRnervG+YBA28WY9f2fm0CqTyVvScw9Yqwc+XlwGZ13DalXTWDHK1Ej7i9K
-	 p5IcLCKRq/l5WhRqkcZVGME8Dta8D2avWG4hPRkPwKeEjyOfId3mC9p6EU5ed6wXk0e0d
-	 XiTsc//8ybolbiasZUL2UfyJSEsNoYVu2piD2pOMP20R4woV/7oVUExprl4vG44W3/g==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792776060;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 X-Google-DKIM-Signature:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type:X-Proofpoint-GUID:
-	 X-Authority-Analysis:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Virus-Version;
-	bh=0nbb1+gmo3RWuWZWMTmbysNnHRUp8yuozX3bwCuD0eE=;
-	b=ZRyvgJIJAUPI4GG0tdEAKmVvzZALOUpVU1uyfZ1qh9r1UrwLSnf7D2N6Zk6xRgeVJ4yX
-	 kWQ4PtHl8TZvZ5Wyx7k4kHP5jU/S4a1zYJn9glOqx/BcJoBss1M4IrTZQK0Q6qEPHdno2
-	 Rzxj+Widyg3qtV2BqIydJ6S/ATXTVvorl0L0hyN77o0Qe577yr0+jiVzym8FbBguxJPh/
-	 cINkfA2gaczkr1WreObsWXH2CED0i2MQmDnwBhoCNNv1MN68TuUiyxl02Gv/rbBJKWeBr
-	 nHK07qtS789aLGC+5CkXVdq9XNEWaYNKomDwZNvyEyb3JeprNWf9DjegUmITaqO5wHA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=meta.com;
-	spf=pass smtp.mailfrom=meta.com;
-	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=h3kNNRZv;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=67.231.153.30
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792776194;
+	b=05yZ3p+FVj9xnG4BGEXGNbSNZZCz7F+eyDHFZzq/OlZzrxBhKhJ1//owPkdwjofqCE3z
+	 6KW8q1JoNufynbRj0vJXCBVJV90sJTRIGal+NjXgQe2IyLX1yRbVyndQKaoCNhQ1smTxr
+	 P7kHujr8OcUrjUys+NHiAtkMYqNKajQ/rvNMRS+v43A1EeKA0+uqzikxzS5NAbFjPWGq2
+	 HfzoQso3gERy2xvQ2KGxu/FO5EFELJBfWSEhwuAzDJ0RpAICiIRjomwrrAPUfnl1X7lPH
+	 bBjPWownwPl+FikiIGBCYm1+1viBXz/QXYtJu/xzVZ86qHGF/AZL8jiHhl9DHSK0pcQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792776194;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=e9CHgVUiuUr9z0N9kziykHeUFdcQZLlPHyMU3G/0OGQ=;
+	b=DJ29wBC6rdfFnKwB0E7kaguPp3FZatzB9iBxoKV5V0/WtDYBj6smgRl37lHQ1znzi2kT
+	 wdcs2z1hWgmxIjPXqHz1+QATFM+FcdSvL30rdVUISHqLJsDZiKVEwolRCESS47XgsX55e
+	 iFV25HCG7OhVUEaKebks5niiLQ+E9kN1GqCBnqIRqWyI/V8WgP50ob7M2SvqrJlSJxrx3
+	 KSPAeUlN8+RpcpU2azkUwLy3xsHCTR+Tt/NSjuZsQMmEn7czdceYKlWLM0afhyeHFkVSH
+	 +wbvWtKzQo3kvdTxjgXjFyxl5ZDf6z+6REXxzyw+0psurpceC1aJD7LnjryUSFak2Pw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Lf47zUJY;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14813606A32E
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 17:20:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 14813606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F398606A31A;
+	Fri, 23 Oct 2026 17:23:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=h3kNNRZv
-Received: from pps.filterd (m0109331.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69NE6haD000515
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 10:20:58 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pps82601-s2048-2026-q3; bh=0nbb1+gmo3R
-	WuWZWMTmbysNnHRUp8yuozX3bwCuD0eE=; b=h3kNNRZvutJwWAllbDFrnQwAZTw
-	LG+gBqrvftpvkVL2Dj7rqcYubAM29ajILxm6v6nsanzUkBIpg/GCbDS1qVcDXwm+
-	VGaWd2n0sEFU2xw78bl/HyX/fYYAcLSdJnkYRPo27n0TzdrJWVk3H2xhd2CuJo84
-	aIK+kKO8TNgQKua3fQkgSyQb2AtLi46S7f955iyyr6qeRE6rR8qU3TP0vZyDWSfY
-	53asbrSxz8jlpPYUtbPkGhrKeW/oGOrXR7PrtXj/IcHFFTMzNlwUth43qkugZ/U6
-	syPiY8YaLwHhXU0xXQbf5DUS9WaF2jSp1USV9GmOL+cNuUBohsK9vhSnYBw==
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hf9mxchb1-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 10:20:57 -0700 (PDT)
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2ea71803effso10734465ad.3
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 10:20:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792776057; cv=none;
-        d=google.com; s=arc-20260327;
-        b=DLKws2Vj9NFXGfDHst3/3BhxII9VeT6CEvk6G7Cq3QajyjDOdGygPS+tS7YWAykjvc
-         OpE93pGX07zcSDfOMBUCBoN+YdPA+Ea/bD5ZwGcqFRhnoLsCYnSKeack6shvPjGmRIql
-         bEO7/95nucGa9WrFUPKeDykmGaT1+vm+0/jShZanniOosE9urJ1N/sWLt9tjW8jqa8qt
-         v5CPxfMGf7UtNufKO56axkf//hmmjJ8cZ8qTdnONFKA8sHwEh5IJELI7Q9pmy8h3luBx
-         g6fwO5lgAbC+YtmL4xNigXMtZEEagnoMbKNJOc63MNZ7DMco0MoRHvmX+ZWiMl3ZP0dw
-         jzVA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version;
-        bh=0nbb1+gmo3RWuWZWMTmbysNnHRUp8yuozX3bwCuD0eE=;
-        fh=Gy957YhP/bIcmyJ7BgG3Dfjg1w3vremvzYvdibXp9YY=;
-        b=qb1UHSni2MF3OU6T04LAKEtlYcd3FCXtROdvqW+6y/qepQmR/uFhG1QDnI09fj9/dL
-         KruZFdvVxwCsttrBNQpS4FzEk4GgSnld7a50+5+kSvHWKFRoa35zg85ML7SumbsfpKiY
-         ELPJT6ccVtAd6JaJXyQiGS7okD5NR0u1hHgTX+PumTEJ75l+dM4jJv19m4LFswhFAlmX
-         h8xYwI5hlczbUdxq6ObwuqJE1Q7Xvi6ceXb6mG9y2dMzAJlLaiTkeCrOoItkdv3/420e
-         lLvCNuLf1eQJroJmvRiVVz92sKGGbSopV9uqFDdkkzSk6s66LF5yYvyjIf5nP5Qv6ok7
-         vsuA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792776057; x=1793380857;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=0nbb1+gmo3RWuWZWMTmbysNnHRUp8yuozX3bwCuD0eE=;
-        b=0dON9T6TVwHGYdRDQGv7/N6+Hx4ycB204PXH/9PNqmVW3ilyvwWxgFinTEgDRBie2Z
-         Cpz/66JiSsjUD5PMde6iAZulScuSiIRZx+K0mDwDyY5bIyAx3Bs4k/3YYc/Zxpzh5yoD
-         0kBe5Ti5wyJTbQiXy8AQCQYTO2Udi8H7veq4MKRlKVr2/7ssNDdV/IxiG8Q68UZvPnpd
-         +fa6D6eCwaX/Lz3iiaCYmBZkwJhmg5VVy0kqS+BDf/KqG40Va9NKmaZRtH5Bu/dXxopt
-         C+slTRLwmIkTDMlivOf9T0KhUjsasNRB/5p5L6Ib4eYExYCwx+0xaZbZckawpFLcNyLm
-         Nu+Q==
-X-Gm-Message-State: AFq9FYKs6EUHDwjNWvCfPSY9QRvVvmaJgHw+bJSXIegQz8ByJ1B33HRA
-	DTLSR0WB2/r8hiTuAqt1qq6PRDPlOV23iu466CwrPjpc5vJxN1l0RmMedFATEFIz+Iaa1mVV9IT
-	X5RvNPFvT+heiTGecyaufWBoFkY7qDEdDFZA1jceWPRMgTym8qb6NoHylVLQDSj0nzGnpRUJDY0
-	Q+deTsMBcIQ22yXA573zXM9fLCIrZtsYs=
-X-Gm-Gg: AYBFou2+aNbrC/Ba8BuJ6YKWCHbFegNJ1GOZvdvrpXfP6Z1DfT8hlJbTAkF7UqGT//r
-	mDK4A36HDdP2EJIOF3qZbpHKE37Prjk79r2eexj0YBh/REJPonCMqc06G5B0sj6DRxNpKHPtpLw
-	DmUZNJWrJBM/u3n2R0jvOorUqxU5qz9GBiVMj0QOMpPJZO5z89RQgxr/vICgXYv0O4wwf0sRvme
-	leMN9twtSNZASrk57sXZTCu7KB+zFrR
-X-Received: by 2002:a17:902:ffcf:b0:2e9:658f:c33e with SMTP id d9443c01a7336-2ea7ce435ebmr26441455ad.8.1792776056567;
-        Fri, 23 Oct 2026 10:20:56 -0700 (PDT)
-X-Received: by 2002:a17:902:ffcf:b0:2e9:658f:c33e with SMTP id
- d9443c01a7336-2ea7ce435ebmr26441315ad.8.1792776056075; Fri, 23 Oct 2026
- 10:20:56 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Lf47zUJY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB4441F01825;
+	Fri, 23 Oct 2026 17:23:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792776194;
+	bh=e9CHgVUiuUr9z0N9kziykHeUFdcQZLlPHyMU3G/0OGQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Lf47zUJY+b8Bje9PmDyS9i4Yc8Cek+co4EKCjYbZdpzfOTGDTk0E819ITQgyQPCEK
+	 Gp67JgfrWhN5UOM+6B0GRm4Sz01NAbGpYEqRWjeshmcygRg7AsWpYmrU3LgCzeLSvK
+	 hYUSiJXYoIc+PJfrrlBkqeo08CQpKxJpQA/FXSVr9nf8mMEUPrbLObZDZ7OWK2QTNB
+	 wdt9lg7gC+ArwBFseNv/svO2YbDqY3uqlNsF7NmQ1Pzb0GdhieySORaNVcGLiqrvIv
+	 UkOBGnixkH+OCKXAS0eY29y/1i4FRnwHtJ7u6Ae9lc1+or5zyuA8rdEpEXwQbzbBRO
+	 6L0H0EhazrSGw==
+Date: Fri, 23 Oct 2026 18:23:09 +0100
+From: Simon Horman <horms@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: mhun512@gmail.com, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+	pabeni@redhat.com, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, ae878000@gmail.com,
+	daniel.machon@microchip.com
+Subject: Re: [PATCH net v3 2/2] net: nixge: wait for DMA reset before
+ releasing buffers
+Message-ID: <20261023172309.GC888721@horms.kernel.org>
+References: <20261018020840.3851552-3-mhun512@gmail.com>
+ <179237585255.3135.18388695192416186276@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -110,90 +62,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261022223014.556388-1-toddfreed@meta.com> <20261022223014.556388-2-toddfreed@meta.com>
- <DMC6H9OT57RA.30RKA7CO0856R@gmail.com>
-In-Reply-To: <DMC6H9OT57RA.30RKA7CO0856R@gmail.com>
-From: Todd Bert Freed <toddfreed@meta.com>
-Date: Fri, 23 Oct 2026 10:20:44 -0700
-X-Gm-Features: AclHuK88YhWMifFuKF48zzEpiv1AW4dXYQLz0yCHzxNvKSvxsDASMAUa-8p8mZU
-Message-ID: <CADh2yMyVZawNObS1WOjahqsO=XJjpwoxSFMXyc=kOzWhXMOc3Q@mail.gmail.com>
-Subject: Re: [PATCH net v2 1/2] psp: fix transport mode encap with ipv6
- extension headers
-To: Daniel Zahka <daniel.zahka@gmail.com>
-Cc: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-        Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
-        Shuah Khan <shuah@kernel.org>, Raed Salem <raeds@nvidia.com>,
-        Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-        Cosmin Ratiu <cratiu@nvidia.com>, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org,
-        =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Proofpoint-GUID: UWX05UGzDKMeBYbiH2B0jIMyKotVfLOb
-X-Authority-Analysis: v=2.4 cv=G7iJgNk5 c=1 sm=1 tr=0 ts=6adb9779 cx=c_pps
- a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=wpfVPzegXHpEFt3DAXn9:22
- a=glYwtrVRrWtjULxB9TQA:9 a=QEXdDO2ut3YA:10 a=GvdueXVYPmCkWapjIL-Q:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIzMDA2NyBTYWx0ZWRfX7u6ODC5yF37u
- jTHE3C8wgqt3sGAvcv2F4rMjoAl1Tx64akGEsaVpLOYkmrSIGBojcP4pYS9krgDgEaY+iOICCY/
- h3WFzqVIx6WcxCOFkhNLjB9whMcN2/s=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIzMDA2NyBTYWx0ZWRfXz7MPr3G1IK/L
- vuw6tRwdWSI8XkD7NJ1JQoemW0p0tZ+6XpHpKJtbTlBAYifPNyi6y9Xj1f7feXoPziox9paUiwB
- CFcApiR3GZkYzEpK39oegTgIgFEzkzuvFiWmgZlGny6FbQiiA74yrxRLzUQ0oj5Duad3CralivE
- 2lPogpl+gl/UcchMP6l8Sv1FeDDaEpfGS26g+njluDWrjG3H45F8rrLXbtHnH2IEbjisy/5WQ4r
- XDZInbIaO/ngT4Wx8AcpWMVYq4Po9Gh0ADvoPQ5yYCBfgDTUj3OWwRTskN80diDT1FjmlWUKyFn
- rxerenjC0tqkU6w7JCck691nRmqbiWLEVO8JYGhdjx4UqVkwz5ACeNy8fHDzBkqJzWEd3u2C2hn
- viD3Ks/oXsJi5D0EDPmZMrCpNDSsoTW/Mod6AedbTe371Cf0Tm3rrE1ZAqtz+kDlmCDh+/J5Ssu
- 6hFFGVIajujDjNYifSw==
-X-Proofpoint-ORIG-GUID: UWX05UGzDKMeBYbiH2B0jIMyKotVfLOb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-23_04,2026-10-21_02,2025-10-01_01
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <179237585255.3135.18388695192416186276@kernel.org>
 
-> > - NEXTHDR_ROUTING. the tcp checksum covers the final destination, but
-> >   drivers seed tso checksums from the daddr in the fixed hdr
-> >   (mlx5e_psp_handle_tx_skb()), so this would produce bad checksums.
-> >   could be supported with more work.
-> >
->
-> The stack should seed the tcp check correctly with the sk dst addr. If
-> mlx5's lso implementation can't take that into account, I'm not sure a
-> generic helper should be the one rejecting the skb.
+Hi Myeonghun,
 
-Fair enough. In v3 I will fix the mlx5 bug, and accept routing headers, too.
+On Mon, Oct 19, 2026 at 02:10:52AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 1 (3) · Medium: 1 (2) · Low: 1
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [High] The patch only partly closes the hole it describes.
 
-Or if it's more suitable in a bugfix, to effect the narrower behavior change
-e.g. drop, please let me know (ack that such a drop should be in the driver
-though).
+I believe the issue above was covered in your response to the AI-generated
+review of v1.
 
-> > +             if (!ipv6_ext_hdr(type) || type == NEXTHDR_NONE ||
-> > +                 type == NEXTHDR_FRAGMENT || type == NEXTHDR_ROUTING)
-> > +                     return -1;
->
-> return an error code instead of -1?
+https://lore.kernel.org/netdev/179108725013.434549.7036380491047031962@kernel.org/
 
-ack
+> - [Medium] One reset timeout in nixge_stop() now disables the port for
+>   good, and nothing in the driver can recover it.
 
-> > +             rem = len - off;
-> > +             if (rem < sizeof(*eh))
-> > +                     return -1;
-> > +
-> > +             nh = off + offsetof(struct ipv6_opt_hdr, nexthdr);
-> > +             if (type == NEXTHDR_AUTH)
-> > +                     off += ipv6_authlen(eh);
->
-> I was expecting auth header to be part of the reject list.
+And I tend to think the above is an intentional implementation trade-off.
+But could you comment on it?
 
-I will do more testing with auth header.
 
-> > @@ -331,8 +375,23 @@ int psp_dev_rcv(struct sk_buff *skb, u16 dev_id, u8 generation, bool strip_icv)
-> >                       return -EINVAL;
->
-> If you send a v3, I think you should put the psp_dev_rcv() in a
-> serparate patch.
+> - [Low] On reset timeout, nixge_stop() now returns the error from
+>   ndo_stop (line 959).
+> 
+> Pre-existing issues:
 
-Okay.
-
--Todd
+...
