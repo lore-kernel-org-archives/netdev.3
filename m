@@ -1,61 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792738684;
-	b=mwLANRdXv3lt6E+U3+COXRW3k/EY8yPaQN/HppDMgDGj896ZomXbHh7JH27FDhsmzhrQ
-	 J0CICkcm2n5Loo+ZPQ/Uz6/l6p4G1OwJKkZu8zgyOPA7Me7gA5slFIlfu4cwy0Zne6JTu
-	 ICAcZ3Uz4X08tX13GNiv7UEts0ibprp/7XqYRbG3g34VyuVhkSrkYhfOqMJQHVtlQvDT9
-	 cUfDKIhsz63dDNU0Uu7m2Z9/4vnC65Upeefky6drNlpX7reri+pvpqUML+2koLZgnYm9j
-	 EpkG2cjqPPDlXEj28GUiyujNCiRdzZBXkieMi+eNyAwC8HzZDuGKIR1mB/G02UQD73Q==
+	t=1792739002;
+	b=W5Q4oumkR2iygudCPUKVclw1/YeiX+hRm/rRlJz8vSn4O3U8JtSHu2oIgcn01jiMtwQ7
+	 KT4nLVr4wR56aW708yMEx4lvdm4qK1pERZS1EMubieIVglLeITZbNPD1+CI/b4rpzVxGw
+	 mjDgeQAh49rkLu7menrBPeYZzvVi1apjVjDvbuYs312M5SMqbOex2ly+H016cDNoR1CKc
+	 L3Zi20nLHbN4bpjZYaGTsWDLhKf63bKynnmGi6vmjXsUewT7l7PtamuzOC5frhDVFcuQC
+	 ZbfLewSkpEr6moYe4/9pA4+gl1GiDCHAHY7iPneb+84xwJ4xqyuj93FsLsrpC2tsk9g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792738684;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=GvGhgvgqdiZI8S/8r1XTBktylfHDeaibo3EwQVJVMIs=;
-	b=oNc79wtLPU8TZTElk/Xc//J6qZACy7M6oNXMEN5tbjcqH5v2z/gK0Xsx39Jyfg33dfRB
-	 BS6Mtg97EWdYVig0/oRo3dgE0J/A5GmuLZexXWs+7nYhQOSB0OpZOj390jqkR3eV/Uawr
-	 7OUy03mkJnURR8EJbiVPXWr8doMh9wyI6KvTvWcJnAquHHogqRFDNMd/9GBEGeEG55iFW
-	 ueK9EBuseyJrCLXBuqqW/9ODJgfAYCSOyPkRDEF83aJkVxXUmXeFQlYgGraYlvVO3Co8b
-	 07IyCboferNuzKGxeZ71CQ3x/UAHeEg5bAvmz9MWUh8u6F0CbsaoOF8hDrrEm8HaxGg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792739002;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-Scanned-By;
+	bh=fjvVqcSfa+2zBtBR5VJVLHJipBPKH87jRFs97wxFpX8=;
+	b=UmwPWCs2rvPFGqt95CNEwIlbQ5yXjoFuLMgMhSziY/xe3Xbe1lDJqg74LkfaNgESZPVC
+	 xrWqL7RKT4A95CGNrhRDARIe0kpb6TEhejpuMSHd2rwfyeyAqQytcXR27xMFPT+XDxjm9
+	 TvKnzOTbQhw+1qHJ1D6pKFkDAFgLnYeUUx8HCgdJVV2w6UJc0jSdLbkqjg3Aka7sN+bfC
+	 YTH2qo5vR4gwPi8aWGenKF4FW9WcT6UVko5OUfpSzHQKpjtSGv7iE0/5RyrnJlbGyvbzI
+	 Z48sPoRTwUcd/028SHYghMe6zytA02jv/xxgy9866HxNCjEpt/N2qvm4XS4LWHw82pw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Je3loqsd;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QSHeUKOZ;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6084606A31A;
-	Fri, 23 Oct 2026 06:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D95D607E949
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 07:03:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4D95D607E949
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Je3loqsd
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898821F01825;
-	Fri, 23 Oct 2026 06:58:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792738683;
-	bh=GvGhgvgqdiZI8S/8r1XTBktylfHDeaibo3EwQVJVMIs=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Je3loqsd+wWZ95t9BFYyms+wrOvTkMKoAXYab1VhqKMNxKAV9la6aRmHJmOvDwkwf
-	 hFcy2gturait/kJ0xheKkpiSl5xs/ihaXL06qk6k/s2lNKNt618HW3FRhg5igVKyvF
-	 ruCiklQO4Aw7Gi3Ki5zJKYqbzC4zd/FOIUEEBixTpJx7ykspPmA3qCNNWrKDrmpL5c
-	 keaHqm/HMuKt83LzwEyW2gxTJhjxY66+eTuWLVrXQIb/OOY3wYi9VRvVZOrY9GKcxn
-	 C9VE5LhMHPzHeZyQaKhCmaFevhmHwdg3dNMvzcZt96436OWJp++ygHS99rD/o2edpN
-	 zwbFhiBkAHdtA==
-Subject: Re: [PATCH net] gtp: Require 'CAP_NET_ADMIN' when joining the gtp
- multicast group
-From: netdev-bot+sashiko@kernel.org
-To: anilkaushikwireless@gmail.com
-Cc: pablo@netfilter.org, laforge@gnumonks.org, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- andrew+netdev@lunn.ch, horms@kernel.org, nicolas.dichtel@6wind.com,
- osmocom-net-gprs@lists.osmocom.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Fri, 23 Oct 2026 06:58:02 +0000
-Message-ID: <179273868210.3134.12145105670992560597@kernel.org>
-In-Reply-To: <20261021065750.2069795-1-anilkaushikwireless@gmail.com>
-References: <20261021065750.2069795-1-anilkaushikwireless@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QSHeUKOZ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792739001;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fjvVqcSfa+2zBtBR5VJVLHJipBPKH87jRFs97wxFpX8=;
+	b=QSHeUKOZmj+CYwn6igoe7a/aRNpey77DIVov5jpE59+0fMUoVye6h5h77770DVYjZefQuz
+	OK4B0DCgGLhocP3SnuokyC896/ercAfji8If8OrHZMKPaT68LF24hh7+cbiTyQCmaJJBH+
+	dWNqmCkVisBchfqPglCQ+yAx3J6Z6f4=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-329-mX9E7ey5N4iP5lpaaMmYTQ-1; Fri,
+ 23 Oct 2026 03:03:17 -0400
+X-MC-Unique: mX9E7ey5N4iP5lpaaMmYTQ-1
+X-Mimecast-MFC-AGG-ID: mX9E7ey5N4iP5lpaaMmYTQ_1792738994
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B731E1800149;
+	Fri, 23 Oct 2026 07:03:14 +0000 (UTC)
+Received: from poros-thinkpadp16vgen1.tpbc.com (unknown [10.44.32.22])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BED8E180029C;
+	Fri, 23 Oct 2026 07:03:09 +0000 (UTC)
+From: Petr Oros <poros@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Petr Oros <poros@redhat.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Dave Ertman <david.m.ertman@intel.com>,
+	Mateusz Palczewski <mateusz.palczewski@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Rafal Rogalski <rafalx.rogalski@intel.com>,
+	Shiraz Saleem <shiraz.saleem@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	intel-wired-lan@lists.osuosl.org,
+	linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Subject: [PATCH iwl-net v2 1/5] ice: check the auxiliary device pointer under adev_mutex
+Date: Fri, 23 Oct 2026 09:02:53 +0200
+Message-ID: <20261023070258.730168-2-poros@redhat.com>
+In-Reply-To: <20261023070258.730168-1-poros@redhat.com>
+References: <20261023070258.730168-1-poros@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,102 +96,127 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+ice_set_channels() and the mqprio path of ice_setup_tc() test
+cdev->adev before taking pf->adev_mutex and dereference it afterwards.
+ice_unplug_aux_dev() clears the pointer under the mutex from the
+service task, from ice_prepare_for_reset() and from the devlink RoCE
+and iWARP parameter handlers, none of which hold the RTNL lock, so the
+pointer can go away between the test and the device_lock() call.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Take pf->adev_mutex first and test the pointer under it. Without a
+device the mutex is released again and the rebuild runs unlocked as
+before.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Fixes: a6a0974aae42 ("ice: Prevent set_channel from changing queues while RDMA active")
+Fixes: 4b31fd4d77ff ("ice: Fix RDMA VSI removal during queue rebuild")
+Signed-off-by: Petr Oros <poros@redhat.com>
+---
+v2:
+- new patch, the pointer test raced with ice_unplug_aux_dev()
+---
+ drivers/net/ethernet/intel/ice/ice_ethtool.c | 22 +++++++++++++-------
+ drivers/net/ethernet/intel/ice/ice_main.c    | 22 +++++++++++++-------
+ 2 files changed, 28 insertions(+), 16 deletions(-)
 
-- [Medium] After this patch, the multicast group and GETPDP carry the
-  same PDP-context data but are guarded by different checks.
-
---
-
-gtp: Require 'CAP_NET_ADMIN' when joining the gtp multicast group
-
-This commit marks the gtp generic netlink "gtp" multicast group with
-GENL_MCAST_CAP_NET_ADMIN, so joining it requires CAP_NET_ADMIN in the user
-namespace owning the network namespace. The goal is to stop unprivileged
-users from reading PDP context notifications that GETPDP restricts to
-CAP_NET_ADMIN holders.
-
-> diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
-> index 69fe5717846b5..e5ff1621ed620 100644
-> --- a/drivers/net/gtp.c
-> +++ b/drivers/net/gtp.c
-> @@ -118,7 +118,8 @@ enum gtp_multicast_groups {
->  };
->  
->  static const struct genl_multicast_group gtp_genl_mcgrps[] = {
-> -	[GTP_GENL_MCGRP] = { .name = GTP_GENL_MCGRP_NAME },
-> +	[GTP_GENL_MCGRP] = { .name = GTP_GENL_MCGRP_NAME,
-> +			     .flags = GENL_MCAST_CAP_NET_ADMIN, },
-
-[Severity: Medium]
-Does this make the multicast group check the same as the one on GETPDP?
-The commit message says:
-
-  GETPDP requires CAP_NET_ADMIN, but generic netlink lets any user join a
-  multicast group by default
-
-All of gtp_genl_ops (NEWPDP, DELPDP, GETPDP doit/dumpit, ECHOREQ) use
-GENL_ADMIN_PERM. genl_family_rcv_msg() checks it like this:
-
-net/netlink/genetlink.c:
-	if ((op.flags & GENL_ADMIN_PERM) &&
-	    !netlink_capable(skb, CAP_NET_ADMIN))
-		return -EPERM;
-
-netlink_capable() ends up in netlink_ns_capable(skb, &init_user_ns, cap),
-so it needs CAP_NET_ADMIN in the initial user namespace.
-
-genl_bind() checks the new flag against the netns owner instead:
-
-net/netlink/genetlink.c:genl_bind() {
-    ...
-		if ((grp->flags & GENL_MCAST_CAP_NET_ADMIN) &&
-		    !ns_capable(net->user_ns, CAP_NET_ADMIN))
-			ret = -EPERM;
-    ...
-}
-
-Take a gtp device in a netns owned by a non-init user namespace, where an
-init-ns daemon installs PDP contexts through GTPA_NET_NS_FD (gtp_find_dev()
-calls get_net_ns_by_fd()). gtp_tunnel_notify() multicasts to
-dev_net(pctx->dev):
-
-	ret = genlmsg_multicast_netns(&gtp_genl_family, dev_net(pctx->dev), msg,
-				      0, GTP_GENL_MCGRP, GFP_ATOMIC);
-
-Root inside that container would get -EPERM from GETPDP and the dump. It
-could still join the "gtp" group and receive every NEWPDP, DELPDP and echo
-response notification. These carry the MS and peer addresses, the TEIDs,
-and the TID and flow label.
-
-When the UDP socket lives in the host netns, container root has no other
-way to see the TEIDs and peer addresses.
-
-Genetlink has no init_user_ns scoped GENL_MCAST_* flag. Making the two
-checks match would need a core change, or moving the ops to
-GENL_UNS_ADMIN_PERM if userns scope is the intended policy.
-net/ipv6/ioam6.c already pairs GENL_ADMIN_PERM ops with a
-GENL_MCAST_CAP_NET_ADMIN group in the same way.
-
-This patch does block fully unprivileged users. The commit message also
-says "in the user namespace owning the network namespace".
-
-Could the commit message say that the multicast check is still weaker than
-the GETPDP check?
-
->  };
->  
->  static void pdp_context_delete(struct pdp_ctx *pctx);
-
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+index bf9a821c543b7f..5482a64c81c95a 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+@@ -3888,6 +3888,7 @@ static int ice_vsi_set_dflt_rss_lut(struct ice_vsi *vsi, int req_rss_size)
+ static int ice_set_channels(struct net_device *dev, struct ethtool_channels *ch)
+ {
+ 	struct ice_netdev_priv *np = netdev_priv(dev);
++	struct auxiliary_device *adev = NULL;
+ 	struct ice_vsi *vsi = np->vsi;
+ 	struct ice_pf *pf = vsi->back;
+ 	int new_rx = 0, new_tx = 0;
+@@ -3942,14 +3943,19 @@ static int ice_set_channels(struct net_device *dev, struct ethtool_channels *ch)
+ 		return -EINVAL;
+ 	}
+ 
+-	if (pf->cdev_info && pf->cdev_info->adev) {
++	if (pf->cdev_info) {
+ 		mutex_lock(&pf->adev_mutex);
+-		device_lock(&pf->cdev_info->adev->dev);
+-		locked = true;
+-		if (pf->cdev_info->adev->dev.driver) {
+-			netdev_err(dev, "Cannot change channels when RDMA is active\n");
+-			ret = -EBUSY;
+-			goto adev_unlock;
++		adev = pf->cdev_info->adev;
++		if (adev) {
++			device_lock(&adev->dev);
++			locked = true;
++			if (adev->dev.driver) {
++				netdev_err(dev, "Cannot change channels when RDMA is active\n");
++				ret = -EBUSY;
++				goto adev_unlock;
++			}
++		} else {
++			mutex_unlock(&pf->adev_mutex);
+ 		}
+ 	}
+ 
+@@ -3965,7 +3971,7 @@ static int ice_set_channels(struct net_device *dev, struct ethtool_channels *ch)
+ 
+ adev_unlock:
+ 	if (locked) {
+-		device_unlock(&pf->cdev_info->adev->dev);
++		device_unlock(&adev->dev);
+ 		mutex_unlock(&pf->adev_mutex);
+ 	}
+ 	return ret;
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index d88835482d3aac..984479f1e1f6d9 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -9406,6 +9406,7 @@ ice_setup_tc(struct net_device *netdev, enum tc_setup_type type,
+ 	struct ice_netdev_priv *np = netdev_priv(netdev);
+ 	enum flow_block_binder_type binder_type;
+ 	struct iidc_rdma_core_dev_info *cdev;
++	struct auxiliary_device *adev = NULL;
+ 	struct ice_pf *pf = np->vsi->back;
+ 	flow_setup_cb_t *flower_handler;
+ 	bool locked = false;
+@@ -9438,14 +9439,19 @@ ice_setup_tc(struct net_device *netdev, enum tc_setup_type type,
+ 		}
+ 
+ 		cdev = pf->cdev_info;
+-		if (cdev && cdev->adev) {
++		if (cdev) {
+ 			mutex_lock(&pf->adev_mutex);
+-			device_lock(&cdev->adev->dev);
+-			locked = true;
+-			if (cdev->adev->dev.driver) {
+-				netdev_err(netdev, "Cannot change qdisc when RDMA is active\n");
+-				err = -EBUSY;
+-				goto adev_unlock;
++			adev = cdev->adev;
++			if (adev) {
++				device_lock(&adev->dev);
++				locked = true;
++				if (adev->dev.driver) {
++					netdev_err(netdev, "Cannot change qdisc when RDMA is active\n");
++					err = -EBUSY;
++					goto adev_unlock;
++				}
++			} else {
++				mutex_unlock(&pf->adev_mutex);
+ 			}
+ 		}
+ 
+@@ -9456,7 +9462,7 @@ ice_setup_tc(struct net_device *netdev, enum tc_setup_type type,
+ 
+ adev_unlock:
+ 		if (locked) {
+-			device_unlock(&cdev->adev->dev);
++			device_unlock(&adev->dev);
+ 			mutex_unlock(&pf->adev_mutex);
+ 		}
+ 		return err;
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021065750.2069795-1-anilkaushikwireless%40gmail.com
+2.56.0
+
