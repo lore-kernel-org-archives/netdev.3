@@ -1,63 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.11
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792720090;
-	b=y5tfcYnnIuKChBjXeKC1Y8fHZeXi+mhIsLzOKZzSDRAx8Lmo6WTNY4zNOhB7Wda/ayyC
-	 z3hnR3IJmxwkVzBiXPyaH27sEfh/JMU+kEnXdLfetmGwr6TMwGx93Eu2Xt+rkKi85lIjn
-	 8+7rgy+Rr5NmCMUlGc2byB05ZJaTdVkS23SIltOQUvlvjfntHhg6MMLq7thSif9n+pQu8
-	 SGOW3bew3FVBkeUfA1SKD0uukc430elOTcrsVOUytkaHZkKKiMzpF8Fb/k5mk2mZYOhNl
-	 CdqHPfUlxC+3ggsK2naIGS2entB/Bf7861rQe8JT9OEY/1LWs5aRAF6nOBMN5D4OGRg==
+	t=1792720607;
+	b=TOM+se+cYtncmGxdlhE3OFpA0qBDMHC30RfpZsFEBjA1sLkPkdEOks6DlcBC5TsOgxiR
+	 L7uZMJt6ydvXK0YeJBYRUtRSXGFFyfQOsSHN4zlr1Y2hymLBoarPti7VfCq9R9nCXgGMS
+	 0S2/tdSksnuJ6FzI3yHEuCQHXIV8L+wzvBlsGgCdCPU+S2nmW42bFxfdduFmn0ZuQBGF3
+	 gE35Najka4Gka3zPx4c/DMjLesvpzxf7tuUvahkj+A8YzucKW7OdVAaA5EtaA7L6s+Vsd
+	 wnmcJfqs0yq5C8P8jhIp4S4vr23I2rhnmwtxHqVLg0sFVkgAqLf1KhpjNPwPUUH8QYg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792720090;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792720607;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=K974vEkl7HviH9zH+bkMsQvo+7f18yyRhOODa6fRHas=;
-	b=ZC2eRznu1N4y/hH5ONRhAhCv3jPMStISWRu2VIQuFczhHJgNoGJnzsikx6m2GCF6Rkgc
-	 RpHOdGz/MftQ2yVM8dSu6tChdJOIAacfiUTZOb0X3Qbhf5z5qeEk2bbBtgKiDPtWJuPDZ
-	 HC2CE7AZ/yZRLY7P2Qf7GpmHpHbFPm8QPkMXlO/y6iZTV4e9ypkcsV6HCEqB6bZj2JnlX
-	 L2LYVrfTCyJRWwU4P3bt37C85lllHBFa9/SjYtRHmzOsErt3c61wzwj7o+OAEm3YPcQdR
-	 WGwySo/Jj63cwWGGpLPvmcTjw8leS53ed96MARCLBcPhtgg117WvwFpR6g2oJ4gPKAw==
+	bh=oJFZy9ViA1hdkCiyEzcB0JcdRGfXjVzuA0WGwLAmCs4=;
+	b=3Tbv6NvZHefNekGQ1MOn5oAiwQYTPsRGW/PAQ1cCPo06CNeCNZgBScppRRMcMLeGQoUC
+	 NcAQP0b17ZGzODbBNwBUPPtA8285FrDrsSe7SbNErSklaN/PFNCarFbzx/rZRP6w1NmGA
+	 /uJm1x4LSFHrxibXWx77JUYJC5k3vk/YMamj91kAMsza5r2skDVwcTqvOYk68B632cyyI
+	 Ppz35Tf3T0Uw5Hs8RqmCf0a/ghbELC1rFWKp00Oo683fFC13aY/zfZudNzdUb7V0btsZK
+	 tEueBUCFOwF27ahWhO/+aNRgNewkK7TGDZuC/GhnMa2/yyViQ6VZyfInhExrFQG6WZg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=mzlksBhs;
-	arc=none smtp.remote-ip=91.218.175.11
-Received: from mta0.migadu.com (out-11.mta0.migadu.com [91.218.175.11])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=lFDEReVK;
+	arc=none smtp.remote-ip=95.215.58.173
+Received: from mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409F6606A31F
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 01:48:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 409F6606A31F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90358606A31F
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 01:56:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 90358606A31F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=mzlksBhs
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=lFDEReVK
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=VPNQpDtmsXoZKn9VI7oWOvmenOOysxW0h45w0IjOb3A=;
+DKIM-Signature: a=rsa-sha256; bh=uX9E3o73V748llMETRdDfpWjDG+k2zeZTW03xJwVkb0=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792720086; v=1; x=1793324886;
- b=mzlksBhsOKZ7TfQewEzzrNsWjwR2XIdgDP6GxZdOK4P7kWvAQ5SYDbGF3gzAywwpGzvVFW5B
- Vp1h7pCw9L7CIXNIae9od5XmAi+nSPwanQFGPkpSt9aRFhubdsXxU/nlNszcgyopGqtBTz7NB37
- E4o2g+LcZc71C0xWa1NIZ8ZE=
+ t=1792720603; v=1; x=1793325403;
+ b=lFDEReVKixlCCV8aln0VUOKnuYSlp8pGFtrke7nXPTicTCunZ0H8IlsIY4l4xMkG6xCOdQub
+ qnGxz1sHC4r301LLvNBrT/Au2ztMkB7/IAGCmIC3V7Ws1h61Pjg4urSiVsPv8Lf/Z/reEb56Vtk
+ q48DpLvM5j1fEAqr7eg9wOq4=
 X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id cd0afe3d7227279f;
-	Fri, 23 Oct 2026 01:48:06 +0000
-X-Mizu-Trace-ID: cd0afe3d7227279f
+Received: by mta12.migadu.com with ESMTPS id 1f1f20d373d9e1ae;
+	Fri, 23 Oct 2026 01:56:43 +0000
+X-Mizu-Trace-ID: 1f1f20d373d9e1ae
 X-Migadu-Flow: FLOW_OUT
-Date: Fri, 23 Oct 2026 09:47:52 +0800
+Date: Fri, 23 Oct 2026 09:56:32 +0800
 From: Hangbin Liu <hangbin.liu@linux.dev>
 To: Xia Yan <yana06070@163.com>
 Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
 	edumazet@kernel.org, horms@kernel.org, kuba@kernel.org,
 	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	pabeni@redhat.com, shuah@kernel.org
-Subject: Re: [PATCH net v3 2/2] selftests: net: check veth carrier after
- changing channel counts
-Message-ID: <atq8yKbnqtLBVucH@fedora>
+	pabeni@redhat.com, shuah@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v3 1/2] veth: keep carrier off when resizing channels
+ with a down peer
+Message-ID: <atq-0HbV71AcQi5t@fedora>
 References: <20261022085842.2527-1-yana06070@163.com>
- <20261022085842.2527-2-yana06070@163.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,34 +68,41 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261022085842.2527-2-yana06070@163.com>
+In-Reply-To: <20261022085842.2527-1-yana06070@163.com>
 
-Hi Yan Xia,
-On Thu, Oct 22, 2026 at 04:58:42PM +0800, Xia Yan wrote:
-> Extend veth.sh to check carrier state after changing channel counts.
-> A running interface must keep carrier off while its peer is down.
+On Thu, Oct 22, 2026 at 04:58:41PM +0800, Xia Yan wrote:
+> veth_set_channels() temporarily turns carrier off while reconfiguring a
+> running interface. It then turns carrier on for both ends without
+> checking whether the peer is administratively up. If only one end is up,
+> changing its channel counts therefore reports LOWER_UP even though the
+> peer remains down.
 > 
-> Cover up/up and both mixed up/down combinations with GRO on and off.
-> Resize RX and TX queues in both directions on each endpoint, and check
-> that rejecting an out-of-range request also preserves carrier state.
-> Use two queues explicitly so these cases also run on single-CPU systems.
+> For example, after creating a pair with two RX and TX queues per end:
 > 
-> Keep these cases with the existing veth tests and reuse their namespace
-> setup, cleanup and aggregate failure status. Only check LOWER_UP on
-> running interfaces, where that flag exposes carrier state.
+>   ip link set vca up
+>   ethtool -L vca rx 1 tx 1
 > 
-> The four mixed up/down cases fail with the unfixed driver. All six
-> carrier cases and the existing checks pass with the fix.
+> vca incorrectly reports LOWER_UP while vcb is still down.
 > 
+> Only restore carrier when the peer has IFF_UP, matching veth_open().
+> The local interface is already known to be running at this point.
+> 
+> Found during LLM-assisted source review and reproduced with a veth pair
+> in network namespaces, without kernel instrumentation or error injection.
+> With the complete default veth.sh on x86_64 QEMU/KVM (three vCPUs), the
+> four mixed up/down cases fail before the fix and all six carrier cases
+> pass after it. All 55 existing checks pass on both kernels.
+> 
+> Fixes: 4752eeb3d891 ("veth: implement support for set_channel ethtool op")
+> Cc: stable@vger.kernel.org
 > Assisted-by: LLM
 > Signed-off-by: Xia Yan <yana06070@163.com>
 > ---
 > 
 > Notes:
 >     Changes in v3:
->     - Move the six carrier cases into veth.sh following review of v2.
->     - Reuse namespace setup, cleanup and error reporting.
->     - Allow explicit queue counts in create_ns().
+>     - Driver code is unchanged from v2.
+>     - The companion selftest is now part of veth.sh.
 > 
 >     v2: https://lore.kernel.org/netdev/20261020135544.24441-1-yana06070@163.com/
 > 
@@ -115,79 +121,32 @@ On Thu, Oct 22, 2026 at 04:58:42PM +0800, Xia Yan wrote:
 >     the tests completed; the exit codes above are the veth.sh results.
 > 
 > 
->  tools/testing/selftests/net/veth.sh | 84 ++++++++++++++++++++++++++++-
->  1 file changed, 83 insertions(+), 1 deletion(-)
+>  drivers/net/veth.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 > 
-> diff --git a/tools/testing/selftests/net/veth.sh b/tools/testing/selftests/net/veth.sh
-> index 8b867e0..901ba51 100755
-> --- a/tools/testing/selftests/net/veth.sh
-> +++ b/tools/testing/selftests/net/veth.sh
-> @@ -41,13 +41,15 @@ create_ns() {
->  		ip -n $ns link set dev lo up
->  	done
+> diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+> index 643b97d..4e75830 100644
+> --- a/drivers/net/veth.c
+> +++ b/drivers/net/veth.c
+> @@ -1372,9 +1372,10 @@ static int veth_set_channels(struct net_device *dev,
+>  		 * to identify the range we have to disable
+>  		 */
+>  		veth_disable_range_safe(dev, new_rx_count, old_rx_count);
+> -		netif_carrier_on(dev);
+> -		if (peer)
+> +		if (peer && (peer->flags & IFF_UP)) {
+> +			netif_carrier_on(dev);
+>  			netif_carrier_on(peer);
+> +		}
+>  	}
 >  
-> -	ip link add name veth$SRC type veth peer name veth$DST
-> +	ip link add name veth$SRC "$@" type veth peer name veth$DST "$@" || return 1
->  
->  	for ns in $SRC $DST; do
->  		ip link set dev veth$ns netns $BASE$ns up
->  		ip -n $BASE$ns addr add dev veth$ns $BM_NET_V4$ns/24
->  		ip -n $BASE$ns addr add dev veth$ns $BM_NET_V6$ns/64 nodad
->  	done
-> +
-> +	return 0
->  }
->  
->  __chk_flag() {
-> @@ -130,6 +132,80 @@ chk_channels() {
->  	fi
->  }
->  
-> +chk_carrier() {
-> +	local target=$1
-> +	local state=$2
-> +	local expected=$3
-> +	local carrier=0
-> +	local link
-> +
-> +	# IFF_LOWER_UP is reported only for running interfaces.
-> +	[ "$state" = up ] || return 0
-> +
-> +	if ! link=$(ip -n $BASE$target -o link show dev veth$target); then
-> +		echo " fail - cannot read veth$target link state"
-> +		return 1
-> +	fi
-> +	case "$link" in
-> +		*LOWER_UP*) carrier=1 ;;
-> +	esac
-> +	if [ "$carrier" -ne "$expected" ]; then
-> +		echo " fail - veth$target carrier is $carrier, expected $expected"
-> +		return 1
-> +	fi
-> +}
-> +
-> +chk_channels_carrier() {
-> +	local src_state=$1
-> +	local dst_state=$2
-> +	local gro=$3
-> +	local expected=0
-> +	local err=0
-> +	local target count
-> +	local msg="carrier after channel change ($src_state/$dst_state, GRO $gro)"
-> +
-> +	if ! create_ns numtxqueues 2 numrxqueues 2; then
-> +		printf "%-60s" "$msg"
-> +		echo " skip - cannot create veth pair"
-> +		cleanup
-> +		return
-> +	fi
-> +
-> +	ip -n $NS_SRC link set dev veth$SRC "$src_state" || err=1
-> +	ip -n $NS_DST link set dev veth$DST "$dst_state" || err=1
-> +	ip netns exec $NS_SRC ethtool -K veth$SRC gro "$gro" >/dev/null || err=1
-> +	ip netns exec $NS_DST ethtool -K veth$DST gro "$gro" >/dev/null || err=1
+>  	/* update XDP supported features */
+> 
+> base-commit: 513444cc62e231a11c9b15ea88de0890da9b2b4f
+> -- 
+> 2.43.0
+> 
 
-Why do you do gro setting in rx/tx set ups?
+This one looks good to me. I can reproduce the report issue.
 
-Thanks
-Hangbin
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
