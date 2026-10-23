@@ -1,55 +1,53 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792773594;
-	b=p9sh93hcw1/ImGq6hoyYFii823Jpr1tEE8E/2V2GiDnsqhustPWoRh5Q0N+gk3wMUJBh
-	 uMiWs1OlaRCJhLsYGgj1REuQQwbq+zfF5q9NS6T0VDfL3pjz93r7/e0ndCqkDPbzaZAAI
-	 VtY0/l5UmnBh8tfO2/GQVe+9hCjFgagSWpjVJrTEOwW0X2lyvaaexKxTN+ZXvf2FcZNqI
-	 54SYnmAYP/I4kNPpSLk4i6ODbSISisQ42t07TH3naIR34ru63y7RAAdRIYLvIRuC4h/Q1
-	 wZiEMOekhHhexrhCZHstjM0G/w+M1OrL8Rp9YvqyQRGtXqBdEw/bx3CyrUkE2rimKTw==
+	t=1792773755;
+	b=l7L8RN23Dor36ND+DLcJ4DZahjby3V3ffEOp4q6us/coRNrNaIe6NbVcFs0y4h1jIm0m
+	 sEPD7BP+A54sEOlU/1QGp8biQTXEOaFCjnySghpbnbJm/tYXfnzaGNS2kvZev1/amqn/d
+	 H/XcTiCcXCZED3WDAypwjx+dOiuIWP+BRCVzGVo2ZhWrGZSWpAmPqxAKxcA5yc5YEESjp
+	 9aBPE7LrYb4QGJMc1olZ42kRMiLZaQM3LOo0ZDXjWuqFUyoxnyF/O9eEvTUF2EzFL5BlI
+	 uuSah8k/wYcJ0UQRC+Uo9W62JeE7Aq4XDHZN7V3Ng3uoMUCb+2rINoOEiD6xEhSpGgQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792773594;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=eLoXF0D1za+hi3iGHkuVmbEpDQaUboIZtZF11tK6egI=;
-	b=fAMVoS4iaX2UOh4d3qLxsQqikIqbNYzXJveQTYtVlt+N3eM2n55Tsma0ahTkJDqk905k
-	 G1mPz9W9V9MS6G8G0YcTJLrQgHlWrpCWViz3Ayc4+NaobK6LQpN1oxleNPKQy5z9ZNOk1
-	 fa7l4Fp1SI2TUEZy42tNyH7NYKBgZNhjheVBYIJRiPviRTexVCmFnIhnqQSWOTWW2/KMl
-	 ApVWn9IPWhiNFhoOM8jN6yrIKGXuLIY47uBizeuB3uIYdKFf4TOEVEbI3KFFw/+qXSFqR
-	 cruE6FUiozyW77aONnstc78s0cEZaah2z+NfrmpXACAv/PfxoA/ilEMp+Cfl3Ce1vDg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792773755;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=Fvb7YIbuQNqXe0X0lqpdVo9LwpxBSbbeEYovcdWAiCs=;
+	b=WrixgcxejsWtmDXiyJsAz5M00/Wc6x35OO8c4llMJ5BZztOR2qhdtFjgCH2mBdqC4R8F
+	 iGcsQav+5x+a49x+94mOQH4owodghVf0UB9tbP68jytUiqehCXJtXB34nCbhwYhBBwj42
+	 Pc8x6NYI7IrvtKFm0/Me3i1zvzS7iIBb99WvS5Y0AG5KwgBx0UNnUIl+6dkH1qgTfeOzr
+	 fHFAN/QVANYATEWvE1XeD5IyXwQgJXxqHuACbmiHj7du+Hk1q5QNie9dMQANkcMU24g4p
+	 kNkZ3NFWlVqInA54Sh/KZiDabDK4Hv/UZ4hglztLpkcgBqhKYJLIu4kU0vXPOggbCnQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LF1HFsFR;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OALD0rte;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF00606A31B
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 16:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D1E606A31B;
+	Fri, 23 Oct 2026 16:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LF1HFsFR
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C1611F031E2
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 16:39:54 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OALD0rte
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 210B31F01825;
+	Fri, 23 Oct 2026 16:42:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792773594;
-	bh=eLoXF0D1za+hi3iGHkuVmbEpDQaUboIZtZF11tK6egI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=LF1HFsFRgVR247xGn5yUnHwE7uAVqBmIEP0ehd03WjbzyKMHRbR7nUibe7KnT0+0u
-	 k6neao6LWEzpGPDlY92HwlAYOZDtR/jo9mXgpkgKFWi8R1zxibvxkEef1R07zndnJI
-	 gDEyIyCenitIQR3q7E4jntodUP9Ix/Z3t45+PSN0Lay1HcHh3PcjHrGY3Hz7wJEgzr
-	 1pKIwxBz8mlaNBZ6bql63JOLjkuI1CbiUSOEXqsFzFzP3Tu+R9mKtERMmcH64dKvbJ
-	 0flHtdX9GhlaldIbj6XQ1aEUcSvXE+IQWxuaPfwD6516jrep/WbuZArZNZff9ltSdh
-	 VuSDkUpuAjNEw==
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-70059e4dab6so715635eaf.3
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 09:39:54 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxMWJ/NtMB07KmkyQXTPiA3Ow/ljHSyOjghWoXhGscucPUFhH7TNfcBQXcgjZS7TQIaYJNZ654=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIJXLHxvhy/C7pKHF4UViEeFD4bEqdsN51prvlivSP+Pi1RuHsy
-	sYyoakuDi5YWJeT6fvqv62L3WpUMOmyn4AvQGn2BMerkLueet2ZdRpzfCXZpk7nAtvGWo3oKFzX
-	xvkg9dLXMMrkQGbNXqAmOr0K5vTEynaE=
-X-Received: by 2002:a05:6820:1612:b0:707:27c7:86d9 with SMTP id
- 006d021491bc7-70b88ab80e7mr1916749eaf.48.1792773593385; Fri, 23 Oct 2026
- 09:39:53 -0700 (PDT)
+	s=k20260515; t=1792773755;
+	bh=Fvb7YIbuQNqXe0X0lqpdVo9LwpxBSbbeEYovcdWAiCs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=OALD0rtekB14Pw9Bzl7amXP1L6rNyA1HsmaNxN2J2ptxRjzEgUbBWHZUs9t1dmhFI
+	 MA5ul6fIZ8cj2jIZenxj8wIE+3ybQW0OY8xvIqDwHYuWmhv4fJhnhXlVmScNZuL4C0
+	 8SfrD9GQsG1TclYolIMqYUjncXemUsm5lcdamzeUhAIsaH6nfxaCCt0IMHvjYIhaGv
+	 cHina/Ft282Ax6izmauJPH6v3+dcjxWkJjI9Hnrz8eBJiba5COJi6S8zrnRbNu81+Z
+	 a0it1vZFlDJxOXK79k1KNP2x7N2sdTQK5hEnHVtc+zlXp/sbSQFhWXmy3YmVjmGUC2
+	 DxdjRWTMOowKg==
+Date: Fri, 23 Oct 2026 17:42:31 +0100
+From: Simon Horman <horms@kernel.org>
+To: Hanson Wang <hanson.wang@ugreen.com>
+Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org, oneukum@suse.com,
+	kuba@kernel.org, andrew@lunn.ch
+Subject: Re: [PATCH net v2] net: usb: aqc111: fix set_mac_address return value
+Message-ID: <20261023164231.GO708417@horms.kernel.org>
+References: <20260703073936.462231-1-hanson.wang@ugreen.com>
+ <20261016124858.1939743-1-hanson.wang@ugreen.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,227 +57,55 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261023052542.3505250-1-imv4bel@gmail.com> <20261023052542.3505250-2-imv4bel@gmail.com>
-In-Reply-To: <20261023052542.3505250-2-imv4bel@gmail.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Fri, 23 Oct 2026 18:39:41 +0200
-X-Gmail-Original-Message-ID: <CAL4Wiio_6_a3-w9RqtC3Qpe=NXqtgBwqmSiKVbfbuPK60kSN5g@mail.gmail.com>
-X-Gm-Features: AclHuK8_oAEk4nDhnB9KV9J3Amo3OdhyF8APHYjDQSj_Ehe4KSD5B3ictQTU8Vs
-Message-ID: <CAL4Wiio_6_a3-w9RqtC3Qpe=NXqtgBwqmSiKVbfbuPK60kSN5g@mail.gmail.com>
-Subject: Re: [PATCH net v2 1/2] inet: reject unhashed sockets during
- established lookups
-To: Hyunwoo Kim <imv4bel@gmail.com>
-Cc: ncardwell@google.com, kuniyu@google.com, davem@davemloft.net, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, martin.lau@linux.dev, 
-	john.fastabend@gmail.com, weiwan@google.com, sd@queasysnail.net, 
-	jiayuan.chen@linux.dev, netdev@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261016124858.1939743-1-hanson.wang@ugreen.com>
 
-Le ven. 23 oct. 2026 =C3=A0 07:26, Hyunwoo Kim <imv4bel@gmail.com> a =C3=A9=
-crit :
->
-> TCP established ehash lookups are lockless. The socket caches involved
-> use SLAB_TYPESAFE_BY_RCU, so memory can be reused before an RCU reader
-> that retained its old address has finished.
->
-> After a tuple match, __inet_lookup_established() and
-> __inet6_lookup_established() acquire a reference and repeat the tuple
-> check. They do not check whether the new object is hashed. If the
-> address is reused for a socket with the same tuple, the lookup can
-> acquire a reference to the new object and return it while its nulls node
-> is unhashed.
->
-> A PoC that drives reuse with a SYN cookie request socket reproduced the
-> crash. The new request socket is unhashed and has a NULL rsk_listener.
-> A lookup that had loaded the address of the old request socket acquired
-> the reference published by tcp_get_cookie_sock() and returned the new
-> object. tcp_v4_rcv() then read sk_state through the NULL listener.
->
-> The resulting crash was:
->
->   BUG: kernel NULL pointer dereference, address: 0000000000000012
->   #PF: supervisor read access in kernel mode
->   #PF: error_code(0x0000) - not-present page
->   ...
->   Oops: Oops: 0000 [#1] SMP NOPTI
->   CPU: 4 UID: 0 PID: 0 Comm: swapper/4 Not tainted 7.3.0-00591-g0e135910d=
-eec #1 PREEMPT(lazy)
->   ...
->   RIP: 0010:tcp_v4_rcv+0x44e/0x1280
->   ...
->   R10: 0000000000000001 R11: 00000000024ca8c0 R12: 0000000000000000
->   ...
->   CR2: 0000000000000012 CR3: 0000000103d50004 CR4: 0000000000770ef0
->   ...
->   Call Trace:
->    <IRQ>
->    ? raw_local_deliver+0xae/0x240
->    ip_protocol_deliver_rcu+0x2d/0x180
->    ip_local_deliver_finish+0x84/0x100
->    ip_sublist_rcv_finish+0x5f/0x70
->    ip_sublist_rcv+0x12a/0x1d0
->    ip_list_rcv+0xfd/0x130
->    __netif_receive_skb_list_core+0x223/0x250
->    netif_receive_skb_list_internal+0x1d2/0x2c0
->    ? try_fill_recv+0x39/0x7b0
->    napi_complete_done+0x74/0x170
->    virtnet_poll+0x445/0x600
->    __napi_poll+0x27/0x1e0
->    net_rx_action+0x2fe/0x3b0
->    handle_softirqs+0xc2/0x2c0
->    __irq_exit_rcu+0x74/0xd0
->    common_interrupt+0x7f/0x90
->    </IRQ>
->   ...
->   Kernel panic - not syncing: Fatal exception in interrupt
->
-> After taking a reference, check whether the nulls node is unhashed in
-> both IPv4 and IPv6 established lookups. If it is unhashed or the tuple
-> no longer matches, drop the reference and restart the lookup.
->
-> Lookups racing with the TIME_WAIT hashdance, or with a request being
-> replaced by its child, now restart and find the new socket instead of
-> returning the old one.
->
-> Request sockets that were never inserted into ehash can have a nonzero
-> refcount, and a stale lookup can hold a transient reference. Therefore,
-> when SYN cookie, Fast Open, and request migration paths fail after
-> setting a nonzero refcount, release the references held by those paths
-> with reqsk_put() instead of freeing the request directly.
->
-> Fixes: 079096f103fa ("tcp/dccp: install syn_recv requests into ehash tabl=
-e")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-> ---
->  net/ipv4/inet_connection_sock.c | 10 +++++++---
->  net/ipv4/inet_hashtables.c      |  5 +++--
->  net/ipv4/syncookies.c           |  2 ++
->  net/ipv4/tcp_input.c            |  4 +++-
->  net/ipv6/inet6_hashtables.c     |  4 +++-
->  5 files changed, 18 insertions(+), 7 deletions(-)
->
-> diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_s=
-ock.c
-> index 6a30f1138454..cff02f4c5ac8 100644
-> --- a/net/ipv4/inet_connection_sock.c
-> +++ b/net/ipv4/inet_connection_sock.c
-> @@ -1136,10 +1136,14 @@ static void reqsk_timer_handler(struct timer_list=
- *t)
->          */
->         if (nreq) {
->                 __NET_INC_STATS(net, LINUX_MIB_TCPMIGRATEREQFAILURE);
-> +               /* The timer was not armed, drop its reference here. */
-> +               reqsk_put(nreq);
->  no_ownership:
->                 reqsk_migrate_reset(nreq);
->                 reqsk_queue_removed(queue, nreq);
-> -               __reqsk_free(nreq);
-> +               /* Drop the ehash and temporary references. */
+On Fri, Oct 16, 2026 at 08:48:58PM +0800, Hanson Wang wrote:
+> aqc111_set_mac_addr() returns the result of aqc111_write_cmd() on
+> success. That function wraps usb_control_msg(), which returns the
+> number of bytes transferred (6 for ETH_ALEN) rather than zero.
+> 
+> Callers such as netif_set_mac_address() and bonding treat any
+> non-zero return value as failure when setting the MAC address.
+> 
+> Return 0 on success and propagate negative error codes on failure.
+> 
+> Link: https://lore.kernel.org/netdev/20260703073936.462231-1-hanson.wang@ugreen.com
+> 
+> Signed-off-by: Hanson Wang <hanson.wang@ugreen.com>
 
-Lets change this comment to :
-/* Drop the temporary reference and the one reserved for ehash. */
+Overall this looks good to me, thanks for your contribution.
 
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-> +               reqsk_put(nreq);
-> +               reqsk_put(nreq);
->         }
->
->  drop:
-> @@ -1447,7 +1451,7 @@ struct sock *inet_csk_complete_hashdance(struct soc=
-k *sk, struct sock *child,
->
->                         __NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPMIGRAT=
-EREQFAILURE);
->                         reqsk_migrate_reset(nreq);
-> -                       __reqsk_free(nreq);
-> +                       reqsk_put(nreq);
->                 } else if (inet_csk_reqsk_queue_add(sk, req, child)) {
->                         return child;
->                 }
-> @@ -1502,7 +1506,7 @@ void inet_csk_listen_stop(struct sock *sk)
->                                         __NET_INC_STATS(sock_net(nsk),
->                                                         LINUX_MIB_TCPMIGR=
-ATEREQFAILURE);
->                                         reqsk_migrate_reset(nreq);
-> -                                       __reqsk_free(nreq);
-> +                                       reqsk_put(nreq);
->                                 }
->                                 rcu_read_unlock();
->
-> diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
-> index ba0faa9ae2bb..58d54965036a 100644
-> --- a/net/ipv4/inet_hashtables.c
-> +++ b/net/ipv4/inet_hashtables.c
-> @@ -552,8 +552,9 @@ struct sock *__inet_lookup_established(const struct n=
-et *net,
->                 if (likely(inet_match(net, sk, acookie, ports, dif, sdif)=
-)) {
->                         if (unlikely(!refcount_inc_not_zero(&sk->sk_refcn=
-t)))
->                                 goto out;
-> -                       if (unlikely(!inet_match(net, sk, acookie,
-> -                                                ports, dif, sdif))) {
-> +                       if (unlikely(hlist_nulls_unhashed_lockless(&sk->s=
-k_nulls_node) ||
-> +                                    !inet_match(net, sk, acookie, ports,=
- dif,
-> +                                                sdif))) {
->                                 sock_gen_put(sk);
->                                 goto begin;
->                         }
-> diff --git a/net/ipv4/syncookies.c b/net/ipv4/syncookies.c
-> index 73e129768184..644030561537 100644
-> --- a/net/ipv4/syncookies.c
-> +++ b/net/ipv4/syncookies.c
-> @@ -218,6 +218,8 @@ struct sock *tcp_get_cookie_sock(struct sock *sk, str=
-uct sk_buff *skb,
->
->                 bh_unlock_sock(child);
->                 sock_put(child);
-> +               reqsk_put(req);
-> +               return NULL;
->         }
->         __reqsk_free(req);
->
-> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-> index 99baf14afdfd..3583867487d7 100644
-> --- a/net/ipv4/tcp_input.c
-> +++ b/net/ipv4/tcp_input.c
-> @@ -7777,7 +7777,9 @@ int tcp_conn_request(struct request_sock_ops *rsk_o=
-ps,
->                 if (!inet_csk_reqsk_queue_add(sk, req, fastopen_sk)) {
->                         bh_unlock_sock(fastopen_sk);
->                         sock_put(fastopen_sk);
-> -                       goto drop_and_free;
-> +                       /* tcp_disconnect() already dropped one reqsk ref=
-. */
-> +                       reqsk_put(req);
-> +                       goto drop;
->                 }
->                 READ_ONCE(sk->sk_data_ready)(sk);
->                 bh_unlock_sock(fastopen_sk);
-> diff --git a/net/ipv6/inet6_hashtables.c b/net/ipv6/inet6_hashtables.c
-> index b111b51d69fc..aa5fa1dd062f 100644
-> --- a/net/ipv6/inet6_hashtables.c
-> +++ b/net/ipv6/inet6_hashtables.c
-> @@ -108,7 +108,9 @@ struct sock *__inet6_lookup_established(const struct =
-net *net,
->                 if (unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
->                         goto out;
->
-> -               if (unlikely(!inet6_match(net, sk, saddr, daddr, ports, d=
-if, sdif))) {
-> +               if (unlikely(hlist_nulls_unhashed_lockless(&sk->sk_nulls_=
-node) ||
-> +                            !inet6_match(net, sk, saddr, daddr, ports, d=
-if,
-> +                                         sdif))) {
->                         sock_gen_put(sk);
->                         goto begin;
->                 }
-> --
-> 2.43.0
->
+Some points on process to keep in mind.
+There is no need to repost to address these.
+
+1. Please respond to netdev-bot+sinfo.
+   It's not too late to do so!
+
+   https://lore.kernel.org/netdev/179215519735.408196.139629932849333374@kernel.org/
+
+2. Please post new versions to patches in new email threads,
+   not as a reply to an earlier versions.
+
+3. Please don't repost within 24h.
+
+4. Please don't repost the same version, without either
+   incrementing the version number or including repost in the subject.
+
+   [PATCh net v2 repost] ...
+
+5. Please do include a summary of what has changed below the scissors ('---').
+   Ideally including lore.kernel.org links to earlier versions.
+
+   v2: Fixes indentation
+   v1: https://lore.kernel.org/netdev/43a0904c-de59-4b40-b186-edd130f6c0cb@lunn.ch/
+
+6. Please don't use the Link tag to link to an earlier version.
+   Instead use it if there is some extra information,
+   e.g. an otherwise unrelated email thread that lead to this patch.
+
+For more information on Netdev processes please see
+https://docs.kernel.org/process/maintainer-netdev.html
