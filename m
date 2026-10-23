@@ -1,64 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792729842;
-	b=rJNeTBrqavNeRX9R6VD3AOvVYH4gyDVeRXx8cq8OyQ7mXDV+frIwaIOF18zcy70ws9Ac
-	 0CwYEA5GbL31g35QpZDfJu5U6f2/wiIonKg4YzgfWDpRMIB3ciz3gHZyLgVso2zgc4s8H
-	 zGvXKWySuobaZrnI9fIFV9qi9cHZ4kzX+SNfSJUzBqChGkW/FRKIk7WYyQfObcHEhXGQx
-	 oxf0yOhAxaF6VjB/u2s4BtHVFjvLrEh8xGjqu96PBcWBb/Iii5NZ4ub0MrW4VrVOmFGo8
-	 OjYVRN2/tT74JSEJL3vASzdZ0SpZL2cifeZF+teMOK3KXuxSZRS9nJGFJ0TUxjJlEVA==
+	t=1792730262;
+	b=xft8LvxoBmAlpF0hqFe5UjdH6y10F5Znno1zGmYyHzTau+3wDQnVzWxPHqSE8cgnMX79
+	 KjdM5ILOiHYvbNcRYBhTL+1VB3hhFwOcLadADbp+uHPNDebesRN2TJ9+FI98T1b+pnmb2
+	 HEyahUdbpsGDyZUd7+VEWxc2bjn6OwT0kUKMqWcsjnYIKp4gn5dHxgmfZkwbrs2LzO1zG
+	 gs+l9SD4gUG01rTth3r533+vcemow5X8X8oUr5ei1RpJ1SITO0GN1gHf+ZBVQswRkGM/b
+	 +rmXmPaX3cBSmrmpljdhbtaJkFQ2dupdCK3r+rpsWtK4x+2aByKGGqsbPKkfPq/IqeQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792729842;
-	h=Received:DKIM-Signature:Received:Subject:From:In-Reply-To:References:
-	 X-PR-Tracked-List-Id:X-PR-Tracked-Message-Id:X-PR-Tracked-Remote:
-	 X-PR-Tracked-Commit-Id:X-PR-Merge-Tree:X-PR-Merge-Refname:
-	 X-PR-Merge-Commit-Id:Message-Id:Date:To:Cc;
-	bh=SZonGDeYkiVrpAok1a08VJJlBwfGQXXk9/9sOW5ZJx4=;
-	b=w5XII5ZjcgvAK+PySBBjJH0LaE53va0A/e5SGzeJnaAbKs1IXTNHSbz2yKq3KPm+bqxI
-	 FDw34IwaZIUr8BTWmYXBLmwRio28nNI9tF4tBrLThtZSvmXnnJK66SKujqyZ6SlmGKNle
-	 9RIp0VJBwgmPWxD/p1trNT5M70yCr1iEJa+bf9iWWava5dVLUT6yIjJjc5u0xSYdZAafc
-	 EuwO/y1boBV8khD7wzWEuIRNmLsRV8bBEbGboZywhFVwsOhkpIcaR6xoUNZVXKLFKqBYv
-	 hjrIyOQEWVBaVEOli9n2YQIMfpqkRUETh+zO5LuCFJdgZkWgJnIduwq9ZEGREGRldow==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792730262;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=f123tdsbUST4XIUSI+zBPuw01Yi2GUfKPUwb5NzT2Rs=;
+	b=OYS+GoRWYk6GIKLEMRF83eEOCfvVTPuCHtY2CkCeFFIF7Yl+zrK5c5LILAxLK3vIHop7
+	 vSX9qAMULHPgg/iPE1JMgmCpaGauquRBiovlVrRytmPalLiE1NLRpsGGG08TSW5vYqR87
+	 xqZ4m8PpQK0cWPVgmkyCZPqLUYaEL/a/n6FrjSfYyAPgaRmmEKhmrip8IChlCu05I6SNs
+	 d+QEErtCrUA6UEpu2XS/mz46wOecWrwAJkbYkpNnTq1Gt/xQ6fokbPZgQGKfinwqlzXIy
+	 n7iAIuXslPY2w7N0cMepOBQJRqtSCt8Pqz0SlNcGa3Hg/FnU0tmjgBWVe/QlF1VUpFQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TZ8kDupO;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=smylZh74;
+	arc=none smtp.remote-ip=91.218.175.199
+Received: from mta0.migadu.com (out-199.mta0.migadu.com [91.218.175.199])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655B7606A31D;
-	Fri, 23 Oct 2026 04:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2CD606A336
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 04:37:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AF2CD606A336
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TZ8kDupO
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE2A1F031E0;
-	Fri, 23 Oct 2026 04:30:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792729842;
-	bh=SZonGDeYkiVrpAok1a08VJJlBwfGQXXk9/9sOW5ZJx4=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc;
-	b=TZ8kDupOtIdSGuviXgP2XmVUPs82XRa321DcluanrkfxYFCVuCtaMSPwS06vESiop
-	 nUNPydpB7sCGNrphpgu3X9DElYXyn2qbCv8BJGjKBDB8hc0X5nIgycf4e99sh+seZU
-	 fD+3KCpDpN8k2A+p4K/Mtp9fRYVnGqBuaSueoo722mhMyEjRqZJnb/CsnfQ6KiUVOl
-	 G1YJidDH3ln2GrX8wWrwc+S99Lakk/j1W7mEOD9kwnG8yEPPY7VweJwDC4ow74JpgE
-	 oQchiJoS7FMsNGban8mMc7OMZgaejXoMKxUJ9vzQr1QfyB9CCUYx1nuoMAZLcddV71
-	 cNJCWTXeu69+w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 4487338068DB;
-	Fri, 23 Oct 2026 04:30:42 +0000 (UTC)
-Subject: Re: [GIT PULL] Networking for 7.4
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20261022160928.231626-1-pabeni@redhat.com>
-References: <20261022160928.231626-1-pabeni@redhat.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20261022160928.231626-1-pabeni@redhat.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git tags/net-next-7.4
-X-PR-Tracked-Commit-Id: 1a2c35c49cc7c6be860038b8442b52424a8f123c
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
-Message-Id: <179272984097.350559.4140930284972532012.pr-tracker-bot@kernel.org>
-Date: Fri, 23 Oct 2026 04:30:40 +0000
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: torvalds@linux-foundation.org, kuba@kernel.org, davem@davemloft.net, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=smylZh74
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=hI8lFW79eKCI4bBWDUvXpaoorI5+2uT+zu+nDueEt08=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792730258; v=1; x=1793335058;
+ b=smylZh74r6ZvVqUl30ub0GCDSSt78EzeTIXYS4lkwHATPi0k3Tt1sPu4xdKCEgT5a+2KyYa1
+ Iskxh7imnbdrOOu22xyULrjtuLMTPX+Mi/PdfoRb8ZTO+BioTN1k72gaXWFpwV8bmLJddfkzcex
+ Izo6TrSqCKx5kcIrvRYykA44=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id c621be0b7a2731b2;
+	Fri, 23 Oct 2026 04:37:38 +0000
+X-Mizu-Trace-ID: c621be0b7a2731b2
+X-Migadu-Flow: FLOW_OUT
+From: Qingfang Deng <qingfang.deng@linux.dev>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Qingfang Deng <qingfang.deng@linux.dev>,
+	Kees Cook <kees@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Eric Woudstra <ericwouds@gmail.com>,
+	Asim Viladi Oglu Manizada <manizada@pm.me>,
+	Felix Fietkau <nbd@nbd.name>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Sashiko <sashiko-bot@kernel.org>
+Subject: [PATCH net] pppoe: wait for RCU readers before reusing a socket
+Date: Fri, 23 Oct 2026 12:37:27 +0800
+Message-ID: <20261023043729.219660-1-qingfang.deng@linux.dev>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,16 +73,63 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-The pull request you sent on Thu, 22 Oct 2026 18:09:28 +0200:
+When pppoe_connect() disconnects or reuses a socket, it removes the old
+session from the hash table and resets the socket's fields. An RCU
+reader that reached the entry before it was unlinked can still be using
+its address, ifindex or next pointer.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git tags/net-next-7.4
+If sockets A and B share a hash bucket with A preceding B, a concurrent
+__get_item() looking for B can be traversing A when it is removed.
+Clearing A->next then makes the lookup miss B and drop the packet.
+Reinserting A can similarly redirect the reader into another hash chain.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/734bef548a96e8774d6eef5dfa2026c6edc4e80b
+Call synchronize_net() after unlinking the old session and before
+resetting its fields. This allows existing receive-path and
+/proc/net/pppoe readers to finish before the socket is cleared or reused.
 
-Thank you!
+This was found by Sashiko's static analysis, and reproduced on a VM
+stress test with KCSAN.
 
+ BUG: KCSAN: data-race in hash_item+0x1c/0x60
+
+ race at unknown origin, with read to 0xffff888000a1c566 of 2 bytes by task 147 on cpu 2:
+  hash_item+0x1c/0x60
+  pppoe_seq_next+0x112/0x1b0
+  seq_read_iter+0x595/0x700
+  seq_read+0xb0/0xe0
+  proc_reg_read+0xd0/0xf0
+  vfs_read+0xbd/0x220
+  ksys_read+0xa9/0x100
+  __x64_sys_read+0x47/0x60
+  x64_sys_call+0x98/0x1fd0
+  do_syscall_64+0x5b/0x260
+  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+ value changed: 0x0002 -> 0x0000
+
+Fixes: 72cdc67e7fa7 ("pppoe: remove rwlock usage")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261020092118.47416-1-qingfang.deng@linux.dev
+Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
+---
+ drivers/net/ppp/pppoe.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
+index ee0e318d6a2a..99600fb40c4b 100644
+--- a/drivers/net/ppp/pppoe.c
++++ b/drivers/net/ppp/pppoe.c
+@@ -622,6 +622,7 @@ static int pppoe_connect(struct socket *sock, struct sockaddr_unsized *uservaddr
+ 			dev_put(po->pppoe_dev);
+ 			po->pppoe_dev = NULL;
+ 		}
++		synchronize_net();
+ 
+ 		po->pppoe_ifindex = 0;
+ 		memset(&po->pppoe_pa, 0, sizeof(po->pppoe_pa));
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.43.0
+
