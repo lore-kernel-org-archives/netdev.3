@@ -1,87 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792749688;
-	b=oaBrIhDSQZU8ZE6OmUl0hbNiTTVGQsl6mUnTRo3x74RDw9zA10siBuyqNBRmIYlXtpT1
-	 YDlNeL1bV0Ifc4jTt6UIlXmeciD+VEbIw+Rec3zkjKIeA95c3VkBwk+E3ByVdaUoP2agJ
-	 jewhP6OQ0iVaH84rUPRoEOsc1AZ56YgLdfGzgnWmA6/3VNX1BUSSbfc07JkuZtAq6Hvmd
-	 WCK8W8lKwUBDagrVYkrs52kiQ49BlqcBgN4GeMjE6LDIULt32Ta1U9rNwn5CRwQ7pV4iI
-	 LTvGEjzXa36FIKsUbwICwQvuyy6r6yWTow5B4SjkU9x6VLhHydJro6a2hpcyV3TmzAg==
+	t=1792749732;
+	b=bGLWycJpDcWerZ7NOUm4sdYnFVOdjBwSwiPX7rrIJxLRfqyltgK+FpqOhLbgPJiiCFN9
+	 cqE3ayxwogXL1L2SbyEj6uydcYwFyyth8W/hI0upj0JkMFYRYGSCnuvis62hvhhFeoQyi
+	 yHXkdtJTBOCYaamEPK7HUPxKi8DmEI8xJ6Sxc7eeN5n214LMR2qvrDgifHc39EkOFAaTq
+	 PptoRcVbpdkP+aZ1NNCK7iJMSO9EWqI47bvaBVF7aALD9x2dRkh7/GSKy0sdnTnlVDAYa
+	 DYvgDHkLF4oy/TTU0jHa0aIqh3xxADjUu06fcZHycVcDiJw4lVH6Rz6hL1blHR3mcPw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792749688;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
-	 X-Proofpoint-ORIG-GUID:X-Authority-Analysis:
-	 X-Proofpoint-Virus-Version;
-	bh=6iq612J16q5nGpq9ukoIawRWHB2fhQA00l1lXotI5tM=;
-	b=aD+O7MzyHx8beC6QFMKB5c6hV0SRHFeSqMOhamHHu8qW/sMgyugzQxkXHlUE16V44vPy
-	 +1hQzCngwYQyGgfoKwQq4cyZqZ5Yy35kFs5IlByNsYtwZ3KAncR6/kYWufjvdLMJqsnNB
-	 MKX0L5iGXSej/+JnV0X+EW66nA+9yxkPC1JKNaoXVko6TBk9NpcKv4PfAOdQAOxjbaAmU
-	 OKu6MCnnh8RA95M66TK5pRZeVOVoIMohE45oOxE2EUrgwTjRsyV4SNA+8RjTo2uNv3mI2
-	 JRt0DoPSns5LuLIQGYUBSKQP+bcCMGxbEEJVCRDv37nMExZd5vRxvjNLiGx4BGqMY+g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792749732;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=NSR56nnQnUR0d6l59Po8MuoMPblQ7AEGRUC1M2Gh/5A=;
+	b=zN0Btomy4MocCIuVi57axQAFDICeMwX1K+PBjIYkiDHNsQDsaS/QPfCviYCNi6fMdGnn
+	 5ehrrQJ1Mps1v/ElZqxurPRuvkJ1itLh6WgU2DSMqgsdApKLnn7b6ExS8VuxPcWVIUz8a
+	 6Bx3z1xsGssfKrOuI094bG5h2ungcdV81tuzxrShvoVBmaMd3sOFo2J3SOHnyr1FegilU
+	 DEPevGQugx/7RfcW9QRjoar/7tkt3vTSuEGbHm2FyyN+Z1vheU6HS0J9ubfW9TqnFizI1
+	 g2m8KFmoXXLQN26SEbftjS3I5TZ4jHjltKLLkyJ7kC32RvzizB8dPCd03AFTe4wlAYw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=marvell.com;
-	spf=pass smtp.mailfrom=marvell.com;
-	dkim=pass header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=pfpt0220 header.b=Rea2Zsl+;
-	arc=none smtp.remote-ip=67.231.148.174
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="e/VonHDs";
+	arc=none smtp.remote-ip=209.85.221.45
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A42606A31B;
-	Fri, 23 Oct 2026 10:01:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 42A42606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6901A606A31D
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 10:02:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6901A606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=pfpt0220 header.b=Rea2Zsl+
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69N7FgD43411314;
-	Fri, 23 Oct 2026 03:01:17 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=6iq612J16q5nGpq9ukoIawR
-	WHB2fhQA00l1lXotI5tM=; b=Rea2Zsl+IXp7sjJJsI3/84goQVornVEeGbPim/X
-	mCKGyZJI+qYL2KEPTo1OtUY0ZYwpw1lATspCaXHirGBuiFfoV37sbutXW8Do2d+B
-	6mDdIUbK+yqkqT8P7VSEok9R527x3yDmFhmgQsprr7ejvzjoU6JeE/EkMc5055fe
-	gU3g/MH3vWqfSGUyWEbBxwTxO3gfMaEZ0PnyGGQaGFKt3prmHS6mzn2dYn2C9Onp
-	S0Z2YrgjZr+xjjJY8Rt1N7XZkluxNR75AJ7OTiCVgpRS/oGkeTzSnNTkrstYoxZy
-	6wwvVKHrurdAmknAMbXalVORCWCBHlC71OdoxuYFceUT/4A==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4hfmdtn7wv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 23 Oct 2026 03:01:17 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Fri, 23 Oct 2026 03:01:16 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Fri, 23 Oct 2026 03:01:16 -0700
-Received: from localhost.localdomain (unknown [10.110.24.192])
-	by maili.marvell.com (Postfix) with ESMTP id A07F73F707D;
-	Fri, 23 Oct 2026 03:01:16 -0700 (PDT)
-From: vmukunda <vmukunda@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Sunil Goutham <sgoutham@marvell.com>,
-        Ratheesh Kannoth
-	<rkannoth@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        "Subbaraya
- Sundeep" <sbhatta@marvell.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S
- . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@kernel.org>,
-        "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        vmukunda
-	<vmukunda@marvell.com>
-Subject: [PATCH net] octeontx2-af: Fix npc_delete_flow counter read for cn20k
-Date: Fri, 23 Oct 2026 10:01:12 +0000
-Message-ID: <20261023100112.3402726-1-vmukunda@marvell.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=e/VonHDs
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-48df8fe8513so611623f8f.0
+        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 03:02:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792749731; x=1793354531; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=NSR56nnQnUR0d6l59Po8MuoMPblQ7AEGRUC1M2Gh/5A=;
+        b=e/VonHDsRcN+yoJTQWlImqGswC0azS4maOfw8sqzWjYxI6m5YuadKrBI3wsSM3Kdol
+         f33SjPRNQxiHbtG11cEW+zNdfA23IggN6VxfY3En5xqzUkNQjoLBFnxZrKC5c9d1F1V7
+         86QW95Gbn9QaUG9ctmVajG+TWYF6O4wMl4E9wCXtM/ggiJy83O1M7KoOCEEZhmH6ktC8
+         cKid5ORUaDulA4AP9ZuFDgZETyGdnxoMqBJ3o8/L/4TBRe0qbsDDA4MdnpjVbKJXg6rQ
+         mYLzpj+FHbvk7j4suWqlh0SE8DUiQ6SOGeFjx11DANc0OWJsFUa+XYK05vE848HgShw5
+         xciA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792749731; x=1793354531;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=NSR56nnQnUR0d6l59Po8MuoMPblQ7AEGRUC1M2Gh/5A=;
+        b=ORbyjE1EZfOCX0DgrjF3eFyLZ7guMMh7oEbbDbuSj3GKnqqF7yiRKpMzUNCEv296mT
+         PU5Oh5hsMTLsYnLuC3I8CJxm3xN9RVYkiQ9c/dFAvq7muBX079u1p5DoIOewnqzZ0k7f
+         7Xj9fQh/AEeJ2kVwbId5QMHh7qXVg9WCX+43wFnEuVL92/IDU369Yp2eIlQ8lBscUocd
+         GT9HzUV/++m531tA+8kZ8PqQTKl8Ha7cGjqudvIm/9uKP0YtLefqvSP8O8woGBGzzM37
+         IDQ+P6rfzaazY9FNo9QdTQNhizSYUHa8lWa5zvggi3WTpJSQoAXErM3RPr/B63p+8zUc
+         sTRg==
+X-Forwarded-Encrypted: i=1; AKwUvBwC8cKcB3oaKRtJoYVwI2W7Y2ZoSf5HE7OE9DSGZd0mLMS7gO3NiOuBIbFOKjqARrgRav6xX9I=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI03OOdXLh3ycwPAC7jL64i9vEInpRz4SD0vBXR5qPWfa0LRF8B
+	H6JulyGBMWbtDJFt+HY18tX6d1E/c+yUs3+zbTcwy1E7abUexHpjxIpR
+X-Gm-Gg: AYBFou0B9co6kFWjlwVabrbcSCxfv01KzXv6de/HTIjjY6BLE//HmSi+/9BH106RJFK
+	XsJbyajXhTkNRoZoTICcIg9d3olDuhEe723l+CpXS/jtANXfzz4wZtli8IXwd1NxV+1Bqx4BzPY
+	PkXi86LYboxRfDDrZiE6OjBZdI12YZ8xiyUhLRWWc5xf8S6g33UF+nClZRO4e6PhFeum1JdszKO
+	pXoEELY0QQv7B4/ar7z7WV83W1laqkiTJ0P3iDSKAA0Kou6UAXkGOBNadh9h6Rt1UUs1Qoog4Tc
+	6llweZL+gwUl2q4+PgWd/lSBUqkH10Q1HYRaNmc0hKxOs9AWN8oOmiOHnKZ+IxmaFZXXMW0fpR5
+	DX+GVZFPNF3N5NI6/72yCQUnv4SxJwaRT+OCpFFkZiuoJkRFJqL71/b2ojXOs/RCHWekHILGqWs
+	JfcCMRiAZHwgMs4I5c2THZsCn7yHsv+qAu0foUuIvVIbDDIWJvDKqjLEj78kfR8aS4IR/IE3QKo
+	Oxx65GIfNlZDD/F6+fozfygUnq5nLdMrgxAh/sExummbHWsuzZck1Ns5A==
+X-Received: by 2002:adf:e805:0:b0:48d:f996:1814 with SMTP id ffacd0b85a97d-48e385c0cf9mr1868754f8f.57.1792749730555;
+        Fri, 23 Oct 2026 03:02:10 -0700 (PDT)
+Received: from localhost ([205.147.201.218])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e38062dc6sm3902320f8f.55.2026.10.23.03.02.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Oct 2026 03:02:09 -0700 (PDT)
+From: Eduard Zateev <hackerowskiy@gmail.com>
+To: achender@kernel.org
+Cc: davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	rds-devel@oss.oracle.com,
+	linux-kernel@vger.kernel.org,
+	Eduard Zateev <hackerowskiy@gmail.com>,
+	syzbot+221e213bf17f17e0d6cd@syzkaller.appspotmail.com
+Subject: [PATCH] net/rds: hold IB device reference through deferred cleanup
+Date: Fri, 23 Oct 2026 12:02:06 +0200
+Message-ID: <20261023100206.126692-1-hackerowskiy@gmail.com>
+X-Mailer: git-send-email 2.55.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -92,56 +103,52 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIzMDAzOSBTYWx0ZWRfXxyUHtSiexsmL
- adNQOoA1ThznkVSu07qnbPMVNFB8JaUzDC8EfDb1t/iCSdKrhmKVGSQ/GqvBbTpjrXb62j56c+t
- KoVBl8omdrcflVCFCmyAg2RJyaDT7eg=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIzMDAzOSBTYWx0ZWRfX2UXQzpKsM4ws
- Lu4t3lMsnQIW8AxwBrdT3FxSaeeDJeaMm4lTG3XK4EU4n7zkF1tAIH3JD7ckcWLFA0CXBj6PqdV
- ptZovzg1dq064z/jHBtdBbGPXpSU9OM328A/kEY/9GHhz6/Zy6F5D2KgA67D7mPCbf7p+XE6Hfu
- cwFvD/oE5MRcVzEwLvYygxv19DsF61lsw40Lad+doOAkJoejkGt5budbT9ULibLuj3kaudoxyI2
- 2xlLGHjuUpcax48KQrR7eQYe/dobVgm5OuAVhkIoX1GvqZx3RlSdaAEYe0ftWp0xPcOywlL3JpH
- WmJ3rINUPV+6FCiBdbEOve0fSZqp4rXD88CdjakOCOi+utOjTO4/8yt8o42AksVNosIHIeNTyrU
- AHkoRVGiIEPy8esEumrpI6wI6c3nTQpmoQcr9vIzFOKvrl07IjSJDz3HxyzLe1DCL0lBJ1ntyix
- 5YhXag8PD+EiGXjK5Lg==
-X-Proofpoint-GUID: CXvk2G0y0xCJAedXx4zy1Y-wMHe-_Cux
-X-Proofpoint-ORIG-GUID: CXvk2G0y0xCJAedXx4zy1Y-wMHe-_Cux
-X-Authority-Analysis: v=2.4 cv=PalqFShd c=1 sm=1 tr=0 ts=6adb306d cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=EAYMVhzMl8SCOHhVQcBL:22 a=M5GUcnROAAAA:8 a=j3AFsqOYKst2VyhahHcA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-23_02,2026-10-21_02,2025-10-01_01
 
-From: Subbaraya Sundeep <sbhatta@marvell.com>
+RDS device teardown queues rds_ib_dev_free() on rds_wq. Hold a
+reference to the underlying IB device until deferred cleanup releases
+its resources. This prevents device removal from freeing it while the
+work is running.
 
-On cn20k, the MCAM match counter cannot be read from
-NPC_AF_MATCH_STATX. Skip reading the counter value in
-npc_delete_flow on cn20k. Counter support for cn20k is TBD.
-
-Fixes: 5f83b4729440 ("octeontx2-af: Do not access match stats for cn20k")
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Signed-off-by: vmukunda <vmukunda@marvell.com>
+Reported-by: syzbot+221e213bf17f17e0d6cd@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=221e213bf17f17e0d6cd
+Signed-off-by: Eduard Zateev <hackerowskiy@gmail.com>
 ---
----
- drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/rds/ib.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-index ea5d462a66ee..06916b38ae2c 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-@@ -1960,7 +1960,7 @@ int rvu_mbox_handler_npc_delete_flow(struct rvu *rvu,
- 			/* single rule */
- 			} else if (req->entry == iter->entry) {
- 				blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
--				if (blkaddr)
-+				if (blkaddr && !is_cn20k(rvu_pdev))
- 					rsp->cntr_val = rvu_read64(rvu, blkaddr,
- 								   NPC_AF_MATCH_STATX(iter->cntr));
- 				list_move_tail(&iter->list, &del_list);
+diff --git a/net/rds/ib.c b/net/rds/ib.c
+index 786f39169bc..597872e4fe9 100644
+--- a/net/rds/ib.c
++++ b/net/rds/ib.c
+@@ -115,6 +115,7 @@ static void rds_ib_dev_free(struct work_struct *work)
+ 
+ 	kfree(rds_ibdev->vector_load);
+ 
++	ib_device_put(rds_ibdev->dev);
+ 	kfree(rds_ibdev);
+ }
+ 
+@@ -142,6 +143,12 @@ static int rds_ib_add_one(struct ib_device *device)
+ 				 ibdev_to_node(device));
+ 	if (!rds_ibdev)
+ 		return -ENOMEM;
++	/* Keep the device registered until the deferred cleanup completes. */
++	if (!ib_device_try_get(device)) {
++		kfree(rds_ibdev);
++		return -ENODEV;
++	}
++	rds_ibdev->dev = device;
+ 
+ 	spin_lock_init(&rds_ibdev->spinlock);
+ 	refcount_set(&rds_ibdev->refcount, 1);
+@@ -180,7 +187,6 @@ static int rds_ib_add_one(struct ib_device *device)
+ 		goto put_dev;
+ 	}
+ 
+-	rds_ibdev->dev = device;
+ 	rds_ibdev->pd = ib_alloc_pd(device, 0);
+ 	if (IS_ERR(rds_ibdev->pd)) {
+ 		ret = PTR_ERR(rds_ibdev->pd);
 -- 
-2.25.1
+2.55.0
 
