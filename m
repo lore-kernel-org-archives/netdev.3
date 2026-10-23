@@ -1,100 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792744972;
-	b=bMdCL8wiPg0AfWWFWYak+efkE0UT7q+mWRS8Gwq5n57QbXtoVqQnAJevpxkep2jVpQSX
-	 ZDPsIecp6Duz2lI77242PmcAm/dHqH8rYVhjMSYDVwU7ppPpAIvw7IL2mEsCun2S2jTFl
-	 Zn4hR7zyzO84al58iG1KJKFcZf4rCEaE+nXHrElqBpsCFeV3YWH/ShMQIXJnB3h/FSeEv
-	 zdYXRPe97vbujYWowTTwZPDj5veGyPUWXkna/+feRiyo0b8wrDptSFp774bhPnpJ2m4IN
-	 /8kEadbh18s2disvwac9P5G79tr/mvMCtFuKZ416ULsBZtvC4IT6SrOem94PIx5EaHQ==
+	t=1792745077;
+	b=iFY1nSZWu9JkccWiILd/oBLUvftEuBGGXrcXc3hRdfWIjdWGtXfN88Vcqru/DyD+ry+u
+	 73u8Gwpc7zvPBSuy0wn6IsFLEIjldCL2wO4jzshRypzZGKWZlkIEXyQSCUEU4q0E6PEFt
+	 msVPfSnXz4Wbnl9oYREz731NBkLZZClQAfQBjTL6f45vyNvM2g7qjQb5ojOk0ewyyelbc
+	 VMaWk5NJN5SVylxHmOhzml04UYodwMK/1KFJwIDi9cYOb75TWjCZx+FeQxWT+X6kaoDe8
+	 cQsN3jFwvl4RCu+dcZqDtb6NxJZ1RUDVcpByaRP2QLIDKTdSp/aX7F4jB6xfaC+9zSg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792744972;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=DOXFLcMdzp97ScI6g7OdqTG+VcIwt6mpvGRghEu/arU=;
-	b=D+TPhktCIA3K8LCI5BDOU7nzIJ7UqyEZ+F6JA04bx7I8AIzyWp7vZN4RofP5YgBG4QSz
-	 NyH52ohwD+7Jad0tdyhqDeXhH0SI7XKJCC9coXTl0DSLhmjsIrwocrCaXbpw/Yhka45tZ
-	 1W5XdltVTQwT3oW6PiE1j+pnx/q8hI29rhzg+K/uW37I3NECY3SeysxlJESI8aF8RRHQq
-	 svWu2V186yCf1E+qgAHT8BXiTiA++U/q6DhtSsROmOrU5QwYBMTXVLObjIekT5Q5DbuUq
-	 rVliGeDNzex+z4gHHY/8xbEW4A5ntdTC60jCkziHtTENwcB5WNyuaNC2iJUIeaJDcdQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792745077;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:MIME-Version:Content-Transfer-Encoding:X-Scanned-By;
+	bh=UScnVTA48/9N0/q8geSQdYaErbbmVJfcMv3/8Ch/hxY=;
+	b=xhyQHCSDfeekhdFHuAzJ8xCUR3DB1pfy3vOh9X5noj3jInaV4nG127jCWhEGi876kDG+
+	 EdyOcJIB3EDtTvY/u/xmOu5pOPmz/gTjiPnnNK4NQnO8uhQTkf7thU7mEcSBR7N/nEyS4
+	 saiUZUOf1yFPO0oNR+vPDWkQv/4b3PeeLAQLYJ7MnRQVgnOutq6b+jltj8yFQvKRLTUfr
+	 BIEbxlCSTbf2pPpPMWRlTnvIfs1vZuc6OJizb7RfX3p9FYjFTqawr105F1wNqcin3XdVb
+	 1zDM6JlGwZHz+D+W6tEtjOKl9KHcQC+ExWQfut+uWZ9KixRdBBsetERV6d3mBi/J0oQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=VJqLCa3f;
-	arc=none smtp.remote-ip=209.85.221.53
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZP1dOoe6;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603CA606A31B
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 08:42:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 603CA606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7165606A31A
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 08:44:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D7165606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=VJqLCa3f
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-48df54150dfso301897f8f.0
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 01:42:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792744971; x=1793349771; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=DOXFLcMdzp97ScI6g7OdqTG+VcIwt6mpvGRghEu/arU=;
-        b=VJqLCa3f1s7x1UWu6dzQX+eVQtVRBs3tDsT2/kibrG0GQ3VJRSsXqoKuikw2Zt7zj2
-         Ewrd/aZtxuLupdenCUYqfraGlr4mwE2NPwRE84wx9Qr8cmhaHtcsKECWrgdg/rq04t9Y
-         193tYNi+GbAx7RmTDJlsKD2JuzIbYai+quvBKg1H0g51ALGejWRKNHXptihpJgr/6ZJ1
-         o9tQDsMpIwsRDstE4pyccL/bm4Dqqcs3/B9DLrLBX/r4TAuJ5g3tpv7XZe5pVfIWxBjV
-         7Zg8j8mFX2Zs+TzJt3EZWwXdiIgRk5S+cy3NWm2SiTdgJLXF5qh2tN0KwWvXaIzng6ei
-         hU/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792744971; x=1793349771;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DOXFLcMdzp97ScI6g7OdqTG+VcIwt6mpvGRghEu/arU=;
-        b=dKVfIcuyIjA+yjOxA+cB3Od5HVw0Hj2iIRXwq63QBRTHKpOVhB3noGIBOVJ+qh4W05
-         nQpJeKDPTV1JlHvnQy0e9kcLeklylnnqXo6N3UwPd07Cy968Uh7I+CCsjEgROXjLHmtJ
-         x44O2nwrgOirL5Z/WEo2Mj2pBSOiKidDGpLMw6bV0iKRvvhs9Rl1TnY3hmESYs3r06kf
-         JwcKKPtYYicGtzUUWh6FTrj3//3QwRRYauIoLqyUpvJz+E4DvRWBu/vfIjnN8t7yW5E6
-         wX6KNoQ7YK84Nt5KkfPuyKG4ggywP0GOwuepUdYLSJLLnrVdzjJxCywDofYdEoCYQI4I
-         wZ0A==
-X-Forwarded-Encrypted: i=1; AKwUvByjn+qDJH3fj9/G7gaZfwtp4yOozaPs2PlyfgAGk4VDX/dzARA/z4HhH0f0ZeG5xMl9u1MngfE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIpFuhDQgTLd6yoyVYlisrQYHC5MwT2AFuo2GURenyok9kt1SvT
-	adRt6aX5cmkFqF1vaFwuJvKsR3Db8FU1lq2fzKvgl6CHBKmlN7m1948x
-X-Gm-Gg: AYBFou1GQURoKBXrJu8w3aDTq32Hqh7mkB4DZSDDD41fIgwNGA/A3E1sJlW8VkrebB7
-	XcNah5pIYzR4sryYpapwSvpJHz1D92lJRhSDi5nY10hPd8blFfLTu1PlYapQ/AJ+EOcl2FV1AiW
-	ZPMwmN3AVqcTTanoFnnclGzHztg1kESoze7GeqUCMdiTV15qKhbJ1HycoQf/Si//LPneTKdho/p
-	TQKBR3cCNlnyte6RRug4ENoFMdyJnxu/g9cx32289kMDzTLTteG46jUPMY3pk+2FTE4KwAlaBip
-	S1CIr1oYt+Cb8fvxiF5l9keCNcU2r1BDTerItU+X4B6b7Z/YwgK2k8mvosx4wcl3k2VsxUADxto
-	TMwhf0FN0vIB/ekZLUVz4x/GR8LAtFyKOZM7tFrswSAENSLO/rGEwlBijeFXxbGNw80FG4zR4oe
-	kCbX7tzuKdQA6EoS5NWQy8Kk/T5MogaV75gpAkIUxc81h90gzVucxg+dylcWMjYnZPurY+krds2
-	tzyrRIvN9rZLRSpocNtlvZeC+whO7dCWZwGNdtGdudToq5YqouumMNkV7IOJtuS9sSj5MjM7gMl
-	nxQBRrXX1ZyMsAxLQYQ=
-X-Received: by 2002:adf:f6c1:0:b0:48e:f07:160e with SMTP id ffacd0b85a97d-48e385b1528mr1642537f8f.38.1792744970559;
-        Fri, 23 Oct 2026 01:42:50 -0700 (PDT)
-Received: from gmail.com (deskosmtp.auranext.com. [195.134.167.217])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e37edef81sm4070033f8f.5.2026.10.23.01.42.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2026 01:42:50 -0700 (PDT)
-Date: Fri, 23 Oct 2026 10:42:48 +0200
-From: Mahe Tardy <mahe.tardy@gmail.com>
-To: bot+bpf-ci@kernel.org
-Cc: bpf@vger.kernel.org, andrii@kernel.org, ast@kernel.org,
-	daniel@iogearbox.net, davem@davemloft.net, willemb@google.com,
-	eddyz87@gmail.com, edumazet@google.com, john.fastabend@gmail.com,
-	kuba@kernel.org, horms@kernel.org, liamwisehart@meta.com,
-	martin.lau@linux.dev, pabeni@redhat.com, song@kernel.org,
-	netdev@vger.kernel.org, sdf.kernel@gmail.com,
-	yonghong.song@linux.dev, jolsa@kernel.org, kuniyu@google.com,
-	memxor@gmail.com, emil@etsalapatis.com, almagui@kernel.org,
-	martin.lau@kernel.org, mason@kernel.org, ihor.solodrai@linux.dev
-Subject: Re: [PATCH bpf-next 1/2] bpf: Add bpf_ksock_bind() kfunc
-Message-ID: <atseCFvfx9FbTXP3@gmail.com>
-References: <20261022181620.247201-1-mahe.tardy@gmail.com>
- <e31194dd72efd3c182707e870b7e7a6d67b78be23cea06aded0275678373c64c@mail.kernel.org>
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZP1dOoe6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792745075;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=UScnVTA48/9N0/q8geSQdYaErbbmVJfcMv3/8Ch/hxY=;
+	b=ZP1dOoe64rVsUcwkfPn0LmpkKPnaetvxHuwBgHKFlkTpZn1qxDjeNi7CqpLP14HH8GCYLw
+	gs0rf3EwMNi0OMadZRN4SpoL88gY+OvTJIufPeBLo0xEr/BCPb7ta9gtktj2RJ2xPp2zYr
+	DyKF7M/4FKXPZNLgR/1Lms6n9nHDoEE=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-328-twH5tx3SOLWcoVn3nki2AQ-1; Fri,
+ 23 Oct 2026 04:44:29 -0400
+X-MC-Unique: twH5tx3SOLWcoVn3nki2AQ-1
+X-Mimecast-MFC-AGG-ID: twH5tx3SOLWcoVn3nki2AQ_1792745067
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E67BD180074A;
+	Fri, 23 Oct 2026 08:44:26 +0000 (UTC)
+Received: from pabeni-thinkpadp1gen8.rmtit.csb (unknown [10.44.32.68])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F34361800643;
+	Fri, 23 Oct 2026 08:44:22 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Harald Welte <laforge@gnumonks.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	osmocom-net-gprs@lists.osmocom.org
+Subject: [PATCH net] gtp: hold RCU in gtp_genl_send_echo_req()
+Date: Fri, 23 Oct 2026 10:44:09 +0200
+Message-ID: <ed27d133fe73afd377d3fa4e553c34e7987b6dd9.1792744478.git.pabeni@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,116 +81,172 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e31194dd72efd3c182707e870b7e7a6d67b78be23cea06aded0275678373c64c@mail.kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Thu, Oct 22, 2026 at 06:45:34PM +0000, bot+bpf-ci@kernel.org wrote:
-> > bpf: Add bpf_ksock_bind() kfunc
-> 
-> TL;DR: bpf_ksock_bind() called from a bpf_wq callback runs with kworker's full
-> capabilities, so a CAP_BPF-only SYSCALL program may bypass the privileged-port
-> (CAP_NET_BIND_SERVICE) check; the review asks whether to block it.
+Such function is invoked in process context, performs an RCU device
+lookup and dereference the found device with no additional protection.
 
-Honestly don't know if it makes sense to prevent it given you are
-creating this kernel socket from a BPF context, if anyone with more
-experience on this can help?
+  =============================
+  WARNING: suspicious RCU usage
+  7.3.0-virtme #7 Not tainted
+  -----------------------------
+  net/core/dev.c:1047 RCU-list traversed in non-reader section!!
 
-If the answer is yes, I imagine preventing bind() to run from a
-workqueue is the easy answer so that all creds are respected as usual
-and it's not a huge limitation (we mostly care about being able to
-send()/sendto() from a wq).
+  other info that might help us debug this:
 
-> 
-> > diff --git a/net/core/bpf_ksock.c b/net/core/bpf_ksock.c
-> > index 37168f43c16c..c7b487d90cd0 100644
-> > --- a/net/core/bpf_ksock.c
-> > +++ b/net/core/bpf_ksock.c
-> 
-> [ ... ]
-> 
-> > @@ -178,6 +178,33 @@ bpf_ksock_create(const struct bpf_ksock_create_opts *opts, u32 opts__sz,
-> >  	return NULL;
-> >  }
-> >
-> > +/**
-> > + * bpf_ksock_bind() - Bind a BPF kernel socket to a local address.
-> 
-> [ ... ]
-> 
-> > +__bpf_kfunc int bpf_ksock_bind(struct bpf_ksock *ks,
-> > +			       const union bpf_ksock_addr *addr, u32 addr__sz)
-> > +{
-> > +	struct sockaddr_storage sa;
-> > +	int addrlen;
-> > +
-> > +	addrlen = bpf_ksock_addr_to_sockaddr(addr, addr__sz, &sa);
-> > +	if (addrlen < 0)
-> > +		return addrlen;
-> > +
-> > +	return __sys_bind_socket(ks->sock, &sa, addrlen);
-> > +}
-> > +
-> 
-> Can the CAP_NET_BIND_SERVICE check for privileged ports be bypassed when
-> this runs from a bpf_wq callback?
-> 
-> bpf_ksock_bind() is added to ksock_init_kfunc_btf_ids, the same set as
-> bpf_ksock_connect().  Commit 60bbe76a3f9e ("bpf: Allow ksock connect/send
-> calls from wq") made the kfuncs in this set callable from bpf_wq callbacks
-> of SYSCALL programs, and tools/testing/selftests/bpf/progs/ksock_wq.c
-> already calls bpf_ksock_connect() from such a callback.
-> 
-> bpf_wq_work() runs that callback in a kworker, where current->cred is
-> init_cred with cap_effective set to CAP_FULL_SET (see init/init_task.c).
-> 
-> The bind path is:
-> 
->   bpf_ksock_bind()
->     __sys_bind_socket()
->       security_socket_bind()
->       inet_bind() -> inet_bind_sk() -> __inet_bind()
-> 
-> and __inet_bind() then does:
-> 
->     snum = ntohs(addr->sin_port);
->     err = -EACCES;
->     if (!(flags & BIND_NO_CAP_NET_BIND_SERVICE) &&
->         snum && inet_port_requires_bind_service(net, snum) &&
->         !ns_capable(net->user_ns, CAP_NET_BIND_SERVICE))
->             goto out;
-> 
-> __inet6_bind() has the same check.  With init_cred, cap_capable_helper()
-> walks up to init_user_ns and finds the capability raised, so the check
-> passes for any netns.
-> 
-> For example, a task holding only CAP_BPF can load a SYSCALL program, since
-> is_net_admin_prog_type() does not ask for CAP_NET_ADMIN for that type.
-> Such a program could bind its ksock to UDP port 53, 123 or 514 from a wq
-> callback, while the same call made synchronously from the SYSCALL program
-> returns -EACCES.  A bpf_task_work callback looks like it has the same
-> problem in a different form, since the check would be evaluated against
-> whichever task the work was scheduled on.
-> 
-> Commit 60bbe76a3f9e only argued about LSM checks ("bypassing LSM checks for
-> BPF-created sockets could be acceptable"), and connect and send on a UDP
-> ksock have no capability gate.  bind appears to be the first ksock
-> operation that does, and the commit message does not address the wq
-> context.
-> 
-> Should bpf_ksock_bind() refuse to run from kthread context, the way
-> bpf_ksock_create() does with its PF_KTHREAD check?  Alternatively, should
-> it be kept out of the set that is reachable from wq callbacks, or should
-> the commit message state that bypassing the privileged-port check is
-> intended?
-> 
-> No fix for this was found in the provided range; 76406b1f799f
-> ("selftests/bpf: Test bpf_ksock_bind() kfunc") only adds tests.
-> 
-> 
-> ---
-> AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-> 
-> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/39831790314
+  rcu_scheduler_active = 2, debug_locks = 1
+  locks held by python3/233: 2, last CPU#5:
+   #0: ffffffffbab93268 (cb_lock){++++}-{4:4}, at: genl_rcv+0x19/0x40
+   #1: ffffffffbab93320 (genl_mutex){+.+.}-{4:4}, at:
+                                                genl_rcv_msg+0x12c/0x160
+
+  stack backtrace:
+  CPU: 5 UID: 0 PID: 233 Comm: python3 Not tainted 7.3.0#7 PREEMPT(full)
+  Hardware name: Bochs, BIOS Bochs 01/01/2011
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x6f/0xb0
+   lockdep_rcu_suspicious.cold+0x37/0x8e
+   dev_get_by_index_rcu+0x135/0x180
+   gtp_find_dev+0xe7/0x360 [gtp]
+   gtp_genl_send_echo_req+0x298/0xb30 [gtp]
+   genl_family_rcv_msg_doit+0x20f/0x310
+   genl_family_rcv_msg+0x3a8/0x640
+   genl_rcv_msg+0xbb/0x160
+   netlink_rcv_skb+0x154/0x3a0
+   genl_rcv+0x28/0x40
+   netlink_unicast+0x54b/0x860
+   netlink_sendmsg+0x7fb/0xf60
+   __sys_sendto+0x3d6/0x450
+   __x64_sys_sendto+0xe4/0x1f0
+   do_syscall_64+0xff/0x530
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+  RIP: 0033:0x7ffa43b0256e
+  Code: 4d 89 d8 e8 d4 bd 00 00 4c 8b 5d f8 41 8b 93 08 03 00 00 59 5e 48 83
+   f8 fc 74 11 c9 c3 0f 1f 80 00 00 00 00 48 8b 45 10 0f 05 <c9> c3 83 e2 39
+   83 fa 08 75 e7 e8 03 ff ff ff 0f 1f 00 f3 0f 1e fa
+  RSP: 002b:00007ffd3b8828d0 EFLAGS: 00000202 ORIG_RAX: 000000000000002c
+  RAX: ffffffffffffffda RBX: 00007ffd3b8829e0 RCX: 00007ffa43b0256e
+  RDX: 0000000000000034 RSI: 00007ffa3519d0d0 RDI: 0000000000000006
+  RBP: 00007ffd3b8828e0 R08: 0000000000000000 R09: 0000000000000000
+  R10: 0000000000000000 R11: 0000000000000202 R12: 00007ffa351cc0c0
+  R13: 00007ffd3b8829e0 R14: 00007ffa354ca130 R15: 00007ffa4433d498
+   </TASK>
+
+Add the missing RCU guards and keep it for the whole function body,
+while the RCU-protected device is used.
+
+Found by code inspection, validated explicitly testing the relevant
+code path.
+
+Fixes: d33bd757d362 ("gtp: Implement GTP echo request")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+---
+ drivers/net/gtp.c | 44 ++++++++++++++++++++++++++++++--------------
+ 1 file changed, 30 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+index 15b5d845fc3b..86c8c88b702c 100644
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -2355,9 +2355,9 @@ static int gtp_genl_send_echo_req(struct sk_buff *skb, struct genl_info *info)
+ 	struct gtp_dev *gtp;
+ 	struct flowi4 fl4;
+ 	struct rtable *rt;
++	int len, ret = 0;
+ 	struct sock *sk;
+ 	__be16 port;
+-	int len;
+ 
+ 	if (!info->attrs[GTPA_VERSION] ||
+ 	    !info->attrs[GTPA_LINK] ||
+@@ -2369,14 +2369,21 @@ static int gtp_genl_send_echo_req(struct sk_buff *skb, struct genl_info *info)
+ 	dst_ip = nla_get_be32(info->attrs[GTPA_PEER_ADDRESS]);
+ 	src_ip = nla_get_be32(info->attrs[GTPA_MS_ADDRESS]);
+ 
++	rcu_read_lock();
+ 	gtp = gtp_find_dev(sock_net(skb->sk), info->attrs);
+-	if (!gtp)
+-		return -ENODEV;
++	if (!gtp) {
++		ret = -ENODEV;
++		goto unlock;
++	}
+ 
+-	if (!gtp->sk_created)
+-		return -EOPNOTSUPP;
+-	if (!(gtp->dev->flags & IFF_UP))
+-		return -ENETDOWN;
++	if (!gtp->sk_created) {
++		ret = -EOPNOTSUPP;
++		goto unlock;
++	}
++	if (!(gtp->dev->flags & IFF_UP)) {
++		ret = -ENETDOWN;
++		goto unlock;
++	}
+ 
+ 	if (version == GTP_V0) {
+ 		struct gtp0_header *gtp0_h;
+@@ -2385,8 +2392,10 @@ static int gtp_genl_send_echo_req(struct sk_buff *skb, struct genl_info *info)
+ 			sizeof(struct iphdr) + sizeof(struct udphdr);
+ 
+ 		skb_to_send = netdev_alloc_skb_ip_align(gtp->dev, len);
+-		if (!skb_to_send)
+-			return -ENOMEM;
++		if (!skb_to_send) {
++			ret = -ENOMEM;
++			goto unlock;
++		}
+ 
+ 		sk = gtp->sk0;
+ 		port = htons(GTP0_PORT);
+@@ -2402,8 +2411,10 @@ static int gtp_genl_send_echo_req(struct sk_buff *skb, struct genl_info *info)
+ 			sizeof(struct iphdr) + sizeof(struct udphdr);
+ 
+ 		skb_to_send = netdev_alloc_skb_ip_align(gtp->dev, len);
+-		if (!skb_to_send)
+-			return -ENOMEM;
++		if (!skb_to_send) {
++			ret = -ENOMEM;
++			goto unlock;
++		}
+ 
+ 		sk = gtp->sk1u;
+ 		port = htons(GTP1U_PORT);
+@@ -2413,7 +2424,8 @@ static int gtp_genl_send_echo_req(struct sk_buff *skb, struct genl_info *info)
+ 		memset(gtp1u_h, 0, sizeof(struct gtp1_header_long));
+ 		gtp1u_build_echo_msg(gtp1u_h, GTP_ECHO_REQ);
+ 	} else {
+-		return -ENODEV;
++		ret = -ENODEV;
++		goto unlock;
+ 	}
+ 
+ 	rt = ip4_route_output_gtp(&fl4, sk, dst_ip, src_ip);
+@@ -2421,7 +2433,8 @@ static int gtp_genl_send_echo_req(struct sk_buff *skb, struct genl_info *info)
+ 		netdev_dbg(gtp->dev, "no route for echo request to %pI4\n",
+ 			   &dst_ip);
+ 		kfree_skb(skb_to_send);
+-		return -ENODEV;
++		ret = -ENODEV;
++		goto unlock;
+ 	}
+ 
+ 	local_bh_disable();
+@@ -2435,7 +2448,10 @@ static int gtp_genl_send_echo_req(struct sk_buff *skb, struct genl_info *info)
+ 				    dev_net(gtp->dev)),
+ 			    false, 0);
+ 	local_bh_enable();
+-	return 0;
++
++unlock:
++	rcu_read_unlock();
++	return ret;
+ }
+ 
+ static const struct nla_policy gtp_genl_policy[GTPA_MAX + 1] = {
+-- 
+2.56.0
 
