@@ -1,63 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792752759;
-	b=PbfbxkqblJDK30VwGTBHLrru2H3DIdA2M7giCygAAxQS0EQqrX4ND8N86Pvs3VukhC6T
-	 OX7ONAoVQL0nW/oIxRTJBHH0r1XK2vd3zIhqw6rcLTJkQZbV1bxszt8Oj3A0P6qC0cCPq
-	 uy/GbOnKoxhWdaov8rlXjf1TuRCyTVJArf8i7SulPw9QAWgbdrPHcKYmHQq+dT6XZJjaV
-	 AJBjF0xCZf2Gcbn54pdUmImd67MiCXkNL+LYdQ8XMRAY7jB0s8XQRrSUBUTF+yqLSVCqb
-	 Ej0DB0oWueL0/afph6UxW7tHcONUa1OH49tfQYGGqCpQE2TC6oPNVB7iGHbWrsTzxww==
+	t=1792752842;
+	b=bLCu3ZqHO6ScgHFUxj+GlftJCowZ3bSt1a3QpXSJzfJ9xIr/LxoNBehOCtr9fG0yqZFt
+	 6uItwpyxYwFlMoP9F5CSCS6Q6R1zxXFxyeJEoq2/UOB0xKqbl9yEsRztN2CxWZhENMqop
+	 mB/G+yl+EgaFfO+kt5fAeXPJH3RUQlprFLCOdn1PDZZHcghAR/BwfxdAeVJbDHop1GT9i
+	 V6Zdp6h9jgPt/FbkeTkTYpzAEP9jpNVvM8RSTULpkgTrGlkwH4PW9w3TItmnxpAwrsIkI
+	 4StEPhi5E90w2lRyhU7hKguG0mV71r+qyMh11kZ9ujA7GN4iTIHPUq5TmgmbhbqrcGQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792752759;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=KsVEsBPcGVK4EAwjzqdM3Y1x7rQhCpb3ibnQ5cA96g0=;
-	b=hEjRHBr7iV95oZfoIlHorWWpAoGO6offpi6aveYt126AfTkT/ujwOwDGRPSRsyuCSl77
-	 9uZzQBCb+NELTVTYVBaPb+NFXHeGr1h5X2zGxLfpatxCdjzGM8HRcwpQXZossFMZKMBLH
-	 m31lWYpgRxCfq0hOrU+gg+77MIyJJarZH9zAm9TGviY2O7nIOV+FpvPAg3+ZHoWqAZ/cq
-	 SxvtyhCzSc5rP/BQKkK2dTAo1mtRfMxRXCFV9i9CV0CibxA+aJfZ0Wg5QpGjRI5rAKh6V
-	 vi48TwJrcdKhz+F3xzM0zbb0l/GLIpxzln4++8aLIPiFS1ki3CSvlpNY9ni0MckHPHQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792752842;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=MZ8NpIYPnlGXMQOlUfqmQ9hbqT25RKQJ31W0QHbqyC4=;
+	b=ar4bauuQ4MYLg6nip5ymxVFLSVc6IalGmBqIFcROSTtpHQgSNj9IJEQo9u0VzAuCXHw8
+	 KMiZ5mAgy7lQilROudBpdCeyeFoWVKdg4Qvzat/hKo86wrjpj+wHZudgDKcCpmamX8tG1
+	 4NjiiXf/x4EVzWtIooDbnBwYgCSBWPAuD6fOmprz0uJS1VhS6P2y9moqQI8aJnETrXSiZ
+	 G+bVwMKYuu68sYRbMXdpNUAtEHx/lz05ZN5B5EG66luevy+Qe/BQbTGAkYowHL3BMjUFW
+	 oZMAvc9bQonFWyhdUWf4d+jsq2Ne0QQHDGEltYMVPio8N9ovE2mhLTSP7R7ma2h8kqg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="hvwJ/5lF";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mSaHLEWP;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9438C606A32F;
-	Fri, 23 Oct 2026 10:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B08606A31B;
+	Fri, 23 Oct 2026 10:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hvwJ/5lF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B9831F01825;
-	Fri, 23 Oct 2026 10:52:37 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mSaHLEWP
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DBCA1F01825;
+	Fri, 23 Oct 2026 10:53:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792752759;
-	bh=KsVEsBPcGVK4EAwjzqdM3Y1x7rQhCpb3ibnQ5cA96g0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=hvwJ/5lFaTSWVxSsk2Dhy466WEayc7Aokq8UUSPIBA9Fge6UFKUNNqQWEN22+M7Ei
-	 CmE2nXhegKd0hBSRdRi1jF55rQvMkP3wC5YqNpANmz69ZUAw3OpesRKZapgfsSWYrr
-	 124yl1va2uDTEEmY6HbbJKVKjfFZ6s93Z9PsG5axng2mFdMIjID4QicBwMv3taW8Pp
-	 V4wSfm/FL+pNheFSooM0/+/2czuf7YUc/n/TtIEtj1K8vrwxokJZhxWb8FQQeZHJLl
-	 jvXfORFkZ3mnuGHWRjfKGZtSXF9wh3jmM8ICwkBqlo7BIr7+Xm5+vg+QCI5mo/H6Zj
-	 o32rRXG+fN8EQ==
-Subject: Re: [PATCH net 3/3] net/mlx5: DR, Fix out-of-bounds write when sync
- to HW fails
-From: netdev-bot+sashiko@kernel.org
-To: tariqt@nvidia.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
- acassen@corp.free.fr, valex@nvidia.com, erezsh@nvidia.com, gal@nvidia.com,
- igozlan@nvidia.com, kees@kernel.org, kees+treewide@kernel.org,
- leon@kernel.org, linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
- mbloch@nvidia.com, moshe@nvidia.com, prathameshdeshpande7@gmail.com,
- saeedm@nvidia.com, william@theesfeld.net, kliteyn@nvidia.com
-Date: Fri, 23 Oct 2026 10:52:37 +0000
-Message-ID: <179275275762.3134.7548579754182364985@kernel.org>
-In-Reply-To: <20261021074949.3471704-4-tariqt@nvidia.com>
-References: <20261021074949.3471704-4-tariqt@nvidia.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1792752841;
+	bh=MZ8NpIYPnlGXMQOlUfqmQ9hbqT25RKQJ31W0QHbqyC4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=mSaHLEWPI9H8m0bPTSzjL1qh53dmhcdPOwx60K4UZ2rMjMqoIxTXdT0WLjExSSW4z
+	 s9tfW85JTIznEhF18GRfFhrP8TtTnUburywjmV9IzSGkhboGz1+siHMm/0lc2exLgx
+	 Q5fOWEBs1kZql/XTMDT3HRmjgK4bES6KbaSvtfKcKwgv10ul7UX5K/hOacF+3U4NME
+	 J8rmMM9k8T2is6arL3SKVUsr0Zlv7oTYQa5qgItEhSEhrmfcGtjJxY77EdgGOvBpDT
+	 kwUcBB556cbjnoJaaFPepBQgIMf7btxZmtxClKx2etV9wyQ0seg5sNoe7/Ifrbw9uk
+	 V39Xd9/A1bdJg==
+Date: Fri, 23 Oct 2026 11:53:57 +0100
+From: Simon Horman <horms@kernel.org>
+To: Daniel Machon <daniel.machon@microchip.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Steen Hegelund <Steen.Hegelund@microchip.com>,
+	UNGLinuxDriver@microchip.com,
+	Jens Emil Schulz =?utf-8?Q?=C3=98stergaard?= <jensemil.schulzostergaard@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2] net: sparx5: fix tx DCB index drift in fdma xmit
+Message-ID: <20261023105357.GI708417@horms.kernel.org>
+References: <20261021-sparx5-fdma-last-dcb-v2-1-7b8fabdb9239@microchip.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,182 +64,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261021-sparx5-fdma-last-dcb-v2-1-7b8fabdb9239@microchip.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Wed, Oct 21, 2026 at 04:04:59PM +0200, Daniel Machon wrote:
+> sparx5_fdma_xmit() advances dcb_index before checking that the FDMA is
+> done with the DCB, and does not undo the advance when the check fails.
+> Before commit f4aa7e361ae2 ("net: sparx5: use FDMA library for adding
+> DCB's in the tx path") the next DCB was always the one after last_dcb.
+> Since then dcb_index drifts one DCB further away from last_dcb on every
+> failed transmit.
+> 
+> While the ring is full, this drops frames even though completed DCBs
+> sit behind dcb_index. After a run of failures, dcb_index can also land
+> on last_dcb itself. Re-adding last_dcb loses the frame, because the
+> FDMA has already passed the tail of the chain, and that DCB is never
+> completed again.
+> 
+> Fix this by making dcb_index the next DCB to use, and advancing it only
+> after the DCB has been added, as the rx path does. dcb_index and
+> last_dcb now only move together, so dcb_index always points at the DCB
+> after last_dcb.
+> 
+> The issue was found by an AI code review agent. It was reproduced on a
+> sparx5 PCB135 board with a modified kernel that forces 63 consecutive
+> transmit failures. Afterwards, about 1 in 64 frames is lost for good.
+> With the fix, the same test loses no frames.
+> 
+> Fixes: f4aa7e361ae2 ("net: sparx5: use FDMA library for adding DCB's in the tx path")
+> Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
+> ---
+> Changes in v2:
+> - Advance dcb_index only after the DCB has been added, instead of
+>   rejecting last_dcb. This fixes the drift itself (AI review).
+> - Reword the subject and commit message to match.
+> - Link to v1: https://lore.kernel.org/r/20261020-sparx5-fdma-last-dcb-v1-1-fb9a956196dd@microchip.com
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0 (1)
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The new comments promise that a failed pool stops serving
-  chunks, but nothing enforces this.
-- [Medium] After a single SYNC_STEERING failure the pool latches into a
-  permanent error state while allocation stays open, so device SW ICM…
-
-Pre-existing issues:
-- [Low] This problem wasn't introduced by this patch, but the patch now
-  relies on it.
-
---
-
-net/mlx5: DR, Fix out-of-bounds write when sync to HW fails
-
-If the sync to HW fails, mlx5dr_icm_free_chunk() keeps appending to
-hot_chunks_arr past its end. This patch adds a sync_failed flag to the
-ICM pool. A failed sync sets it, and once it is set, freed chunks are
-no longer queued and their ICM stays reserved until the pool is
-destroyed.
-
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/sws/dr_icm_pool.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/sws/dr_icm_pool.c
-> index 1b928b40686e5..375ab8c2043f9 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/steering/sws/dr_icm_pool.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/sws/dr_icm_pool.c
-> @@ -33,6 +33,10 @@ struct mlx5dr_icm_pool {
->  	u64 hot_memory_size;
->  	/* hot memory size threshold for triggering sync */
->  	u64 th;
-> +	/* Set when a sync to HW fails - no new chunks are served,
-> +	 * and freed chunks are no longer queued.
-> +	 */
-> +	bool sync_failed;
->  };
->  
->  struct mlx5dr_icm_dm {
-> @@ -369,6 +373,12 @@ static int dr_icm_pool_sync_all_buddy_pools(struct mlx5dr_icm_pool *pool)
->  	err = mlx5dr_cmd_sync_steering(pool->dmn->mdev);
->  	if (err) {
->  		mlx5dr_err(pool->dmn, "Failed to sync to HW (err: %d)\n", err);
-> +		/* The hot chunks could not be flushed. Put the pool in an error
-> +		 * state so that no further chunks are queued (which would
-> +		 * overflow hot_chunks_arr) or served (which could reuse ICM
-> +		 * that HW may still reference).
-> +		 */
-> +		pool->sync_failed = true;
->  		return err;
->  	}
-
-[Severity: Medium]
-
-This comment and the comment on the new sync_failed field both say that
-no new chunks are served once the flag is set. What enforces that?
-
-mlx5dr_icm_alloc_chunk() never reads pool->sync_failed:
-
-	mutex_lock(&pool->mutex);
-	/* find mem, get back the relevant buddy pool and seg in that mem */
-	ret = dr_icm_handle_buddies_get_mem(pool, chunk_size, &buddy, &seg);
-
-When the existing buddies are full, dr_icm_handle_buddies_get_mem() goes
-on to call dr_icm_buddy_create(). The only reader of the flag is
-mlx5dr_icm_free_chunk().
-
-The reason given for not serving chunks also looks inaccurate. The
-segments of the hot chunks, and any segments freed after the failure,
-stay allocated in the buddy bitmap. For freed chunks, mlx5dr_buddy_free_mem()
-is only reached through dr_icm_pool_clear_hot_chunks_arr(), so the
-buddy cannot hand that ICM out again anyway.
-
-Should these comments be changed, or is mlx5dr_icm_alloc_chunk() missing
-a sync_failed check?
-
-[ ... ]
-
-> @@ -475,6 +485,14 @@ void mlx5dr_icm_free_chunk(struct mlx5dr_icm_chunk *chunk)
->  	/* move the chunk to the waiting chunks array, AKA "hot" memory */
->  	mutex_lock(&pool->mutex);
->  
-> +	/* If a previous sync to HW failed, the pool is in an error state.
-> +	 * The chunk must not be queued. ICM memory is not returned to the
-> +	 * buddy allocator - it is reclaimed only when the pool is destroyed.
-> +	 * Just free the chunk's bookkeeping struct.
-> +	 */
-
-[Severity: Low]
-
-This is a pre-existing issue and was not introduced by this patch, but
-the new error handling now depends on it.
-
-The commit message says ICM may only be returned after a sync has
-confirmed that HW no longer references it. At teardown,
-mlx5dr_domain_destroy() ignores the result of its own sync:
-
-	/* make sure resources are not used by the hardware */
-	mlx5dr_cmd_sync_steering(dmn->mdev);
-	...
-	dr_domain_uninit_resources(dmn);
-
-mlx5dr_icm_pool_destroy() then calls dr_icm_pool_clear_hot_chunks_arr()
-unconditionally. After that, dr_icm_buddy_destroy()->dr_icm_pool_mr_destroy()
-gives the SW ICM back to the device through mlx5_dm_sw_icm_dealloc().
-
-So when the patch says the quarantined ICM is reclaimed "when the pool
-is destroyed", that ICM can go back to the device even though no sync
-has ever succeeded.
-
-Teardown behaved the same way before this patch. Also,
-mlx5dr_domain_destroy() returns -EBUSY unless dmn->refcount is 1, so
-the tables and matchers that referenced this ICM are already gone by
-that point.
-
-Is it acceptable to rely on teardown here, given that it doesn't check
-whether the final sync succeeded?
-
-> +	if (pool->sync_failed)
-> +		goto out;
-> +
-
-[Severity: Medium]
-
-Once sync_failed is set, can this pool keep growing device SW ICM and
-host memory with no limit?
-
-Nothing clears the flag. mlx5dr_icm_free_chunk() is the only runtime
-caller of dr_icm_pool_sync_all_buddy_pools(), and it now jumps to out
-before reaching the sync. A transient SYNC_STEERING failure, such as a
-FW timeout or an error status, is therefore never retried.
-
-mlx5dr_cmd_sync_steering() returns 0 when the device is in
-MLX5_DEVICE_STATE_INTERNAL_ERROR. A non-zero return therefore means the
-command failed on a device that is still running, and the pool can stay
-in service for a long time.
-
-In this state, every mlx5dr_icm_free_chunk() frees only the kmem_cache
-object. The segment never reaches mlx5dr_buddy_free_mem(), and
-buddy->used_memory is never decremented. This also applies to chunks
-that were allocated after the failure.
-
-Meanwhile mlx5dr_icm_alloc_chunk() keeps serving chunks. When the
-buddies fill up, it takes this path:
-
-mlx5dr_icm_alloc_chunk()
-  dr_icm_handle_buddies_get_mem()
-    dr_icm_buddy_create()
-      dr_icm_pool_mr_create()
-        mlx5_dm_sw_icm_alloc()
-
-That path also allocates a new mkey, buddy bitmaps and, for STE pools,
-the kvzalloc'd ste_arr/hw_ste_arr/miss_list caches.
-
-With ongoing rule add/delete or hash table rehash, each alloc/free cycle
-permanently uses up more ICM. Eventually mlx5_dm_sw_icm_alloc() fails
-and the domain can no longer insert rules until it is destroyed.
-
-The commit message covers reclaim being deferred to pool destruction,
-but it doesn't mention that allocation keeps going in the meantime.
-
-Would it make sense to either fail allocation once sync_failed is set,
-or retry the sync on later frees and clear the flag when it succeeds?
-
->  	pool->hot_memory_size += mlx5dr_icm_pool_get_chunk_byte_size(chunk);
->  
->  	hot_chunk = &pool->hot_chunks_arr[pool->hot_chunks_num++];
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021074949.3471704-1-tariqt%40nvidia.com
