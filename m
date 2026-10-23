@@ -1,49 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.57.64
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792789221;
-	b=XqkW5Ld6N9Q0Pi3e8EYhHXTk/cqAuYWEgB8IUKxsUMjrOGP1DE94YOJQwHYxoSaS85QE
-	 gJOKggw0U+SRzu1RZhv3Z8f2ODuhl6CsqLFIHORKNJgdbWdNtTXnjWu/Cz6ZKBN1nGOAT
-	 LUViPKTdbDgBnnZ+Z+bMrOlvrUuF9/f2jEODrz3Eb/PQ58mlvAmK2BlSL2dqmSQ8R1pkM
-	 jqRZEPGPXMT4k0JpHy1pMPi+5WtK/N9f4tg29MiApjMd1OKuNP4tzOgguxleK7EM1a9Zj
-	 1kf/9T+mMMS/3yd8/SFk6OlYbIneBacjym2bsLOFhZP/FGFUCJnXiYFxtlLD1211UQQ==
+	t=1792789410;
+	b=vaE2ukwcr4TlfPns4v3O0aQEyZWYvrawGva25Rzzewna7ULedhvqnaAbDZ6vGaD/bz2Q
+	 bhJ1dQFC24JWB3g+RcPF/XXuRDx9VqvxBw+FiDt+fUQ4iIJ2pGWUeg9cbjVycpYdRtYdB
+	 aTWaa/5PlnN3jwHwMcWLyGyYNt1IV1CGtdE+c/TG2ZDejwJS4g4lV8yyzYOG2agogc+p9
+	 PzEEAkjbUmmLvtnf22KM3zLb28hC03gqu6oZ/7LfbBqhaaeZCn3AB/QJxxKF7nBdONUzF
+	 fFItKuawIOZGlFV9i1qvjYvrwPDV+kRw/7s6gHLlCN4pgNtH7bEEXSFyVZ0rkozALgA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792789221;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=/zRNtfPAXTthuW4uanzpc66x09wuudOPAK79gmQZrRI=;
-	b=S8xj77V6CEKgBn1qA9wlZjq8y2XbbVEop2qK38Jlqtu0XotcS9ftXcAJcmRAizCryqsb
-	 e628C/zq2LjgJOgBrOyAzBnsRz/jko6pQ2HRJUaPHn7An2UXs2NrxEk35/D6e0Y6GyFdg
-	 Epx+Xs1mRHLC36V1L5sNAZkT2JfH4SbCxs8dROPhlrQoMTmT2ciBarvLRmgGIriTz/PBJ
-	 QgbbUK28OKKrgxOJhYIJDiDZQolywnrPlU3lFfWxBdyLOz/pMfHkDSedMKfSnBhFjVY9M
-	 H7AzHd2qW0pVL9gFK9ramTqzn/hcvqc/+neU9N7gw1BeJwW7c6mfYAd435iuwejvxGA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792789410;
+	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
+	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Subject:Date:X-OQ-MSGID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=AInmA40ZqY/lMrocMvl4Jq6XnvgXz9DNdeesj0ndxFQ=;
+	b=yavSu1birRDI/xp8/uFEKT+s9w0/hQ/CGmb5bIrygz3t6VG2Q5FIBFGJU26FWFgJQ1rg
+	 UpJD+4mgODRpgP5I4ArnNzXoYlXx45bQXorNUMcL4gRIGTzZefmehXMt2p8tQJ5g6kSpA
+	 MS7ljNGjEgh+shbB5ch7ZMt2P6FsJNHj+Qk12ThU3A9rwppammtTafXqWRVO5UgdT6uCv
+	 idPa7zejM0IX32Oh7mTgBFGBPBJWWiOKUfqYvjd3zUAlgVW3WueZcB5L1HiduEy/uRKy6
+	 fwL7NODuxMbOQJIcdwwQFlFii60/QbqBbQaDl/OC3xKOZrblgMmTSbf32NapYAjyMcw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YFYRfzCY;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=foxmail.com;
+	spf=pass smtp.mailfrom=foxmail.com;
+	dkim=pass header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=pf19SbFB;
+	arc=none smtp.remote-ip=162.62.57.64
+Received: from out162-62-57-64.mail.qq.com (out162-62-57-64.mail.qq.com [162.62.57.64])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846A5606A31F;
-	Fri, 23 Oct 2026 21:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C610606A31D
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 21:03:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6C610606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YFYRfzCY
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 104201F01828;
-	Fri, 23 Oct 2026 21:00:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792789221;
-	bh=/zRNtfPAXTthuW4uanzpc66x09wuudOPAK79gmQZrRI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=YFYRfzCYnXyURdqNWs7hnCa3Z5NRRwVwm+2+QYwbOrmuvfcqf3z8+1VsLXhYtsc1w
-	 na2hv0CIQ39ZPBSatuvpXr+BhEFHIjczDz7IxRa6rg+EyD1ZDsj1/ATsvKjpYG0JIp
-	 uqyvaFQTU+/1GHTq+OraO+2CGKuxHxd3n3OENDlTDzTXAMfIeq6JF5Zj4HhAXlC2iP
-	 P5cq+R/7+c5O7AcpxGMg0GRTgACGA6pkmLkisoe/lpORy5ktpnGGNFoTqPRNlTrzlX
-	 eYmri4DKy8QT0zQvAnRcuV/serlfrsNBqUlgX9rLhRFvLrariIJYRO5+ZcAv1RpF8q
-	 Y2EVEriTWMXIA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 074A8391B157;
-	Fri, 23 Oct 2026 21:00:21 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key, unprotected) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=pf19SbFB
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1792789404;
+	bh=AInmA40ZqY/lMrocMvl4Jq6XnvgXz9DNdeesj0ndxFQ=;
+	h=From:To:Subject:Date:In-Reply-To:References;
+	b=pf19SbFBKUAtFSs91VC4qNbpR02Jg1bkxK8aclT5P00bm5SWGx3e6uZMIQNLfOCDE
+	 y5IlHBwh1pO0NLgHQGqAxnAMuGCIQpAakQKvc+UG1erX04ta0stmqmEjEcN8UTFwgr
+	 Tyrv7G0rGfz336ae1W5hXV5zpLmWtnJvofoJEEhY=
+Received: from localhost.localdomain ([180.165.29.111])
+	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
+	id D62EE9E; Sat, 24 Oct 2026 05:03:22 +0800
+X-QQ-mid: xmsmtpt1792789402tw7pjqcnd
+Message-ID: <tencent_A40150C474B4D2DDBAEA56D8B20F03130506@qq.com>
+X-QQ-XMAILINFO: NnYhxYSyuBnLTqtZTgLlM/1VbUnaBIrZ7YXjuHU7+eMQFz5ruNtoeTx7synsNG
+	 OsVWSdlDi3pKZPyzM6/YkCc0ixGn8gP20KAK9dfcSRPpUobwXo9syG13pOS6osvJlsDYbFWWfljI
+	 ai0NqQuOo40HFBVWSRMkx92P0/ECGQNN6eU8iT8sKgIMEjV7+RwuPlP/Wp/eFJuEz72ju88xgkhg
+	 LuzFIc1w/D82374lZ4Z5Uh7Fxo2NNUlpzSnGDTQPUof7qilcKUqtWpAHh7b+d5z8b/E8xGWFRMSv
+	 7wLBahdYN/9y6RGoEeKasHCxOzZOGoIURkwLsan5hp58IzWqXrO553O0EH8hTdK6qnFHuWwulztp
+	 UkUQilEV8vAM/LYByf79m1zJr8go/YU/eCs+HLE0ax40gGCJIBN51oEorOAW/1gwkAcG/38If0nj
+	 G9LFXAQZqmN5YDF5GXfWFM3hiHHAUDBYvHjjNypsTDSLoeEA91ej+or3tO/Urk4vlGIV5XPFUJbf
+	 k6XvYzB80p2MsX+DkHAp1JmYDei2CRhb9+IOOA2n2vSqxcBqLTt3DqcDVyEQq7UVQ6BefEXcOIQp
+	 Q+e7pnW8/m2C29Fecepm5gvizjSwehWL2B5zEqxXNHWozxtswYwl63oQe5gnIU1FBaI2uSMuqlzn
+	 1UhxVrhQ/Qwqmpg+itM5dp+dvB+0x3yCotsUUq3P373NoRVV4DdrMuXY8EfSD77SrEk7frBdU9mK
+	 WcyE7fdGsxSpHaUn8I7PJ4fJLS5ljNE8TP1Y0IeipibyyOArVNnVVEXsvx9rBfyGhlQfS2QWWR9Q
+	 m3Wot2zwfq1MSAtWkAaCFWb1xOPvrFRemhvbWFg2i9OGmEaIs3ZSJRRbWbXLha37EBG5xKHblR3k
+	 I8ZIeUDmEpSUVAsSogCKO/PRt1a/5ssJMuxpEtnk6aInlKKx5GBLUslxQbvlrcMeLNmXd2k9t3si
+	 biMjyPj+uJ0WUKCa20Tsz1zt4TnfJfbYN3qze+2ljRigbbpAE7fHpO62K3szf0WnL6iQHBSRuuRN
+	 dkB+mMLssQT400mVay9yppBmxAJsk=
+X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
+From: memoriaru@foxmail.com
+To: netdev@vger.kernel.org
+Subject: Re: [PATCH net v2 0/2] net: dsa: mxl862xx: bound FDB dump walk and validate BRIDGE_ALLOC ids
+Date: Sat, 24 Oct 2026 05:03:22 +0800
+X-OQ-MSGID: <20261023210322.42971-1-memoriaru@foxmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <179278829990.3327.14694215720214654641@kernel.org>
+References: <179278829990.3327.14694215720214654641@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -54,43 +78,38 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/2] net: pse-pd: si3474: two driver fixes
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179278921957.1268720.1927086301810125998.git-patchwork-notify@kernel.org>
-Date: Fri, 23 Oct 2026 21:00:19 +0000
-References: <20261019162453.1244120-1-piotr@kubik.pl>
-In-Reply-To: <20261019162453.1244120-1-piotr@kubik.pl>
-To: Piotr Kubik <piotr@kubik.pl>
-Cc: netdev@vger.kernel.org, o.rempel@pengutronix.de,
- kory.maincent@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- linux-kernel@vger.kernel.org, github@szelinsky.de
 
-Hello:
+From: Zhang Hewei <memoriaru@foxmail.com>
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Hi,
 
-On Mon, 19 Oct 2026 18:24:51 +0200 you wrote:
-> Two fixes for the Si3474 PSE driver, found while preparing 2-pair and
-> semi-auto support for it.
-> 
-> Patch 1 stops si3474_pi_enable() from clearing detection and
-> classification of the other PI in the same quad. Without it, a PD on
-> that PI gets no power after a later plug-in.
-> 
-> [...]
+Same context as the v1 thread, replying here for the v2 series:
 
-Here is the summary with links:
-  - [net,1/2] net: pse-pd: si3474: keep detection enabled on the other PIs
-    https://git.kernel.org/netdev/net/c/b530456be771
-  - [net,2/2] net: pse-pd: si3474: validate the channels of a PI
-    https://git.kernel.org/netdev/net/c/110eb808324f
+Discovery: manual code inspection, while auditing this driver's
+handling of device-controlled responses (the MAC table walk and the
+BRIDGE_ALLOC reply).
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Trigger status: the unbounded-walk mechanism was reproduced in-kernel
+-- a self-contained module carrying the verbatim loop shape of
+mxl862xx_port_fdb_dump() (device transport stubbed) built against the
+official Ubuntu 6.8.0-71 headers and run under QEMU (TCG, unmodified
+official vmlinuz) never terminated on its own (100M iterations logged;
+a real table holds 4-16k entries). The reproduction is automated in
+Docker and needs no special hardware. I do not have access to mxl862xx
+hardware, so this exercises the driver-side loop logic, not a real
+device.
 
+The BRIDGE_ALLOC validation is logic-level: the driver consumed the
+firmware-supplied id with only a transport status check, so the
+reserved id 0 (which doubles as the "not allocated" sentinel and the
+CPU-port bridge) was accepted verbatim. Whether compliant firmware can
+be made to return such values is unknown without hardware; the checks
+guard against firmware that breaks the API.
+
+The v2 diffs themselves are small and mechanical and have not been
+compile-tested against a full kernel tree (no hardware here); the
+reproduction module compiles and runs on the official kernel.
+
+Thanks,
+Zhang Hewei
 
