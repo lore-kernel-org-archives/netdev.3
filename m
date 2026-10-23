@@ -1,100 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.153.233
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792754305;
-	b=qF/KMlVPV4QpIG/lmGd+apspJ9SvgKxaEVe1s4dImJbabYkacn41eN97oJURvon1WDmd
-	 1O+JCqSGz1X08lQyJkuioR5trqpODUKpych/H32FtGBtKqIN1n52hon9BMPem1wLsRJ5l
-	 gzuozjJW779UsBIPTyCeAa5lIvZAiU+1pX5qwlSR6EcK10Daui7Tlow/hQDCCUBqvnDtE
-	 rjg2GCcNOZm+kYJv4+lha8ywzVeCrfxg2JcBI2Uqz4AmfPEt+q0AY2bEGMylBzutdbTGi
-	 xuN4Va6gCttlL8kLKjq3koNY0QdnQ9vdffFUhSw8LCgcqDzBkIcSROhs5yjq9YnQnBA==
+	t=1792754546;
+	b=bk0Zw0E1gGhcGmBx+OK+x19/9WIhkdyYXT38o3waEsrK7UyFQND/NVcUEAuqNn/vfYvW
+	 sY/gq46EVMTr2yXA24yKhRBzo+J9WWNwSrMMxuz9lXkzNDKl+zH+tEOSuoO5hd6grrl6Z
+	 LUsRDV+UwB9Fr5OA7710GImMB8J/2sWSUuqRIe3Nb1dkXBRDvSUtZx4xhnAOil8VgWvb/
+	 W7HLLwlvp/niRSfKhQInMidAx99+qR2opRSwbVEOO5WWc990FyUkog29ADLe+n1LkgItV
+	 tL6YOq0rkw3eLDoIWWNbx0aNWzRhwPCiRFIkfWeJq6yLIpEX2iDr336qADEoP5WmRXw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792754305;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=PIkt9+Fx/YCYAbZPoTX6F+aKXP9x+sAWjt1ugbmEx8k=;
-	b=DFlxNPrtpFmiUD5wsbfRZNk/NPc1K4LnQ3U3+SSraKN7WPTIvUFabC9hr1egx0WwI+xh
-	 JcGptLrPdoF0rOhgzqa8Qr4uJTLX7422XN2dKUORDZ4Fkc8Xw244bfgWt/k5iAMUXYQXu
-	 GN+S1IFeXm92Pn21ol+B8UcSetVkrbNR/4rDKElu9km1f0nVzGCC/4a9tF0UgSiypIgaP
-	 tez6ibRetW5qdlL17jgzaSjrXw1pH41v4w/6qx1JqdSvpXQ4z8r2v6Vh8J9345eGh2BkX
-	 XyBtiIh5+5NqWn1IEXUOAOO5N6BTKwWFBQYKZp/SouBCgon05V5OS5/gSdE63Bm9Lbg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792754546;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:Date:From:To:CC:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=p0TlihYYQqoSl/ttb9fRh6qgpKKXc6u8KsO4l12hhhQ=;
+	b=OvXiW8fan8rs38OnIFNJklO1XNHYqOXDVnt69arbhneY8VFEgIN7uVUBT9dNQAuRVkfz
+	 aQEwvQi1oK6jU/Y7ixwIL9uoMwsktjY0mMb3qq+ra7LJDILRAorHxCFieib6OZ2IMmBNv
+	 6J5KQY8kaMtIu/JqrFvj7hCkmFb0Gr/t3hhz5bHXOzU/Y2CYtt5qIFu6gNfKEJ7T1U3jA
+	 o1e/R6+WMrc9V+ns3GBD9YOLXOelO/NqYsDO1o1PfHA3wr0Mk9BbtmotEGvO3SfUZlh7+
+	 pdnnIcsXHU/YwjR9TIBE2lmkPBvjBv+l9Cb3trnnoAvlE7hMLEvSsRqe8wgX9bOCOSA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=qhzd2UlF;
-	arc=none smtp.remote-ip=209.85.221.42
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=microchip.com;
+	spf=pass smtp.mailfrom=microchip.com;
+	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=gvQXlc0q;
+	arc=none smtp.remote-ip=68.232.153.233
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDF5606A31D
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 11:18:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8FDF5606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C31606A31A;
+	Fri, 23 Oct 2026 11:22:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D7C31606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=qhzd2UlF
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48c45111bebso406819f8f.0
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 04:18:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792754304; x=1793359104; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=PIkt9+Fx/YCYAbZPoTX6F+aKXP9x+sAWjt1ugbmEx8k=;
-        b=qhzd2UlFNglAdwJNuwK1g+JNcFDsL1dmaLYPEk+opN0WEKigikFeo/zmpm755GJJQ3
-         IzWwxzdbniPhW/lWe+vPXzOzcoFYU4MKGwmWUcrH2Us+tzA0nWnmmno0zPxXPixqQJN5
-         o2zHtNtRRZSKIixfMyHog55mdzLH6q2/n/1OTdgEVT1octFwAA4xoXCLwRM4YjB/ae1C
-         MOpNiRNfQYkuE89ksvt6mKAuVBW00k/uwrWm47v+iEUl2DKHIKQ3fnPI6wjnKc6PijTN
-         XGtr/G6G3QSMw7/mcHWQu3T610Fjbrf9cGxwrtDum6+brOmt5EWAZAZq7ovfJForpGa0
-         tKBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792754304; x=1793359104;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=PIkt9+Fx/YCYAbZPoTX6F+aKXP9x+sAWjt1ugbmEx8k=;
-        b=VBsqeYW7Oplx2OjQHJDTIAfRPny+v8+xcM3CI79D/tyfpR0dG1W5dhwzUtSVXG36N8
-         oLQb8FQQRbBrEfdNQidZVSWLKlub3LR6YYhV5099fUFTkaT/l87If9trtsqcO12P1KLN
-         Ros3SHuf2Lkczm9cs2s+30O+LgSAFo+6c/em4Potnp5ohwCDQh8RM8ydF5KRYHMmQdOu
-         6P+hH0V1+7sdwKUyvg+c0eHqqqRATDT9Qzvh+22ZGtZaswueaVpuHvTg5t8lgQoZXn66
-         aN9uV5EH0K2MYsvUrxyofCeoKsqGgijIpdqqcQFr2bdpPA6LzntRur+/MgIbMeEM0rR+
-         SasA==
-X-Forwarded-Encrypted: i=1; AKwUvBw1cCeykl64/mLsP6Hk2y/iflsLadd5pROxnWO+WM4s/gcPMuJ+M5+bYRzGU8M6stamW6/DkNo=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJpMqTCqxgHFwuM7T8PpwsstSkXmXTEHC8OIReNIL4yy4YZfBmD
-	Hlx3nQsDiKSRIsZmFpBN0fwtkxCPzUCnlOvWat7fEzPOwYOcb3duwBez
-X-Gm-Gg: AYBFou1OONG1+NXBNetDkCuk+9M33IWnZO745rcmr4Z9YRhQK6H73KwcNjWXtA1Cnk6
-	V9V90UMD7gwtSko+7cM2w/gWhFmCf35gTSXdz7avCDcGAew4OaUWf/YNXjpuQPxfs1PlxkBn2ZX
-	CwKyo0vDfTUujuerXo35f05Ufcc3zx1ENypPplUFz9XaJETwBPcGIGE994DpZENRZFiUdm7tQAw
-	RJhMh9b50NZVDA+XyxJkARBhs0PBC7YFgClkc+ONkeTmU2mSfwkQtLRHwVdsfOs4aBx877vn/WK
-	abEM9et969yr/3J0p2WiB+r1NJg4DM2OtzABV6MRCEUAALlG5HXzP+4k9vWIaLTp+vfq77Pd2BD
-	mwNZcaJEljgmJyeXGkPGcFhZeO45IeCmnvuA2rDP04JS1DDkUBAO5zmBHv2NY+Z53t01R33atSf
-	YCbGk2fEiB+rW4htmiHSx/b+7jrEF7vgXN1/LuqGUd2yPjMzbiw40eth9h24NaWHKqAR8r1Nhe9
-	e0SwpUnWcYnyFhF7Aa42eUIz6xL37C6pt0xZxUpRwzk7gk1yHIb1BLfe5RBVAHy+YlQl8u3+suh
-	Xw==
-X-Received: by 2002:a05:6000:3105:b0:488:654b:ccd8 with SMTP id ffacd0b85a97d-48e3854cdb4mr2949659f8f.6.1792754303172;
-        Fri, 23 Oct 2026 04:18:23 -0700 (PDT)
-Received: from VivoBook-ASUS-X712UA-M712UA.lan ([2a00:f44:c12:cf67:3b23:18e7:a7a0:65af])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e38048ad9sm4621612f8f.35.2026.10.23.04.18.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2026 04:18:22 -0700 (PDT)
-From: Stanislaw Pal <kuncy7@gmail.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: Christian Marangi <ansuelsmth@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 1/2] net: dsa: qca8k: serialize register access
-Date: Fri, 23 Oct 2026 13:18:20 +0200
-Message-ID: <20261023111820.10630-1-kuncy7@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <179266392377.3135.12848522239467347386@kernel.org>
-References: <20261019191137.307514-2-kuncy7@gmail.com> <179266392377.3135.12848522239467347386@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=gvQXlc0q
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1792754546; x=1824290546;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=bf1jKkqSPO64+JjX7Tm+y62ZjvX2n1Tqkctim9DDrvs=;
+  b=gvQXlc0qWVXH9Hkf4r/UF2Tai+1jnnkR0rCa+PfOmQ/I/pnTu2BVVct0
+   IJzqFzgMf6NjpJJjvZrqKhk7krwa0EhKaXvZ0dG1xchO1NB7Nwj7DCCc5
+   ue8nO8Xmm6F4c38dxgIeAePAzTesjPrJuL4nzi1SYwGTYIy0nOL2GPBpQ
+   CJ1RVHccSZ2y4t0igOvjiAHyB4T4u1WFsOyx4vL+n6rR1PkxECnoJC6s5
+   6TK5RWnZoeYpvFIjM6xDfDsl2TdNIKaQKfKWLEKoXWJYapfqteINKdZEG
+   Po3GSR1ezJJFHvh7pYCQwhiO1Ym5Vn1FefKZRidRZcX7JUwV7UM7otyi1
+   Q==;
+X-CSE-ConnectionGUID: EPZTHebzRjWrJwg6QVAQtQ==
+X-CSE-MsgGUID: Ll5NRThAStOJaameua4CTQ==
+X-IronPort-AV: E=Sophos;i="6.27,174,1787036400"; 
+   d="scan'208";a="65461676"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 23 Oct 2026 04:22:25 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Fri, 23 Oct 2026 04:22:24 -0700
+Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex01.mchp-main.com
+ (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Fri, 23 Oct 2026 04:22:21 -0700
+Date: Fri, 23 Oct 2026 13:22:21 +0200
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>
+CC: "David S. Miller" <davem@davemloft.net>, Alexander Duyck
+	<alexanderduyck@fb.com>, Jakub Kicinski <kuba@kernel.org>,
+	<kernel-team@meta.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet
+	<edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
+	Mohsin Bashir <mohsin.bashr@gmail.com>, Bobby Eshleman
+	<bobbyeshleman@meta.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Dimitri Daskalakis <daskald@meta.com>
+Subject: Re: [PATCH net] eth: fbnic: Correct packet header prefetch
+Message-ID: <20261023112221.cqjcgqtano75hlkn@DEN-DL-M70577>
+References: <20261020172706.1090951-1-dimitri.daskalakis1@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,19 +84,24 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261020172706.1090951-1-dimitri.daskalakis1@gmail.com>
 
-Thanks for the review. The issues that exist in released kernels now go
-to net as a separate series [1]: the regmap locking from this patch,
-with Fixes: c766e077d927; dropping late autocast frames once a request
-is over; and a length check on MIB frames.
+> From: Dimitri Daskalakis <daskald@meta.com>
+> 
+> The existing call to net_prefetch() fetched a stale address. The data
+> pointer is not initialized until after the call to xdp_prepare_buff().
+> Thus, making the prefetch ineffective.
+> 
+> Open code the address calcuation to give the prefetch as much time
+> as possible.
+> 
+> This was found by manual code inspection. No issues have been observed
+> from this.
+> 
+> Fixes: 9064ab485f04 ("eth: fbnic: Prefetch packet headers on Rx")
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> Signed-off-by: Dimitri Daskalakis <daskald@meta.com>
 
-v3 of the MIB statistics will be rebased on top of them once net-next
-reopens, and will address the points raised on 2/2: requests from the
-poll and from ethtool sharing req_port and data, 32-bit deltas and
-counter resets, the register fallback on link loss, the teardown of
-the work, and locking of the raw buffer.
-
-[1] https://lore.kernel.org/netdev/20261022192933.384898-1-kuncy7@gmail.com/
-
-pw-bot: cr
+Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
