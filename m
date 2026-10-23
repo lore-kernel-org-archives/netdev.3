@@ -1,98 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.172
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792778611;
-	b=K48ov92mJYoc077dJbY+AipbP05h+Uza5bmufDZ7rBPFMIPfNAxcHWVJgltdQvcm/xXJ
-	 JvMeQjPsV3Lsn00AjIuE1pf0cExCRAJ537oSt4pZteOCigAeraUdqW27r5Z7J8qtpN38M
-	 NM7JDsfoU0POav+kbXf3fkwGN0WhUUikoMdaY5ma3iTujDXZEmvLDXHVqBzutUMJLKhRg
-	 ViGn0qVKyC+nyhvZ0uWR7G0sNh3pmM3tqIPtQsR1TCgu2GKNCosUJOFqPKBtdkfj6MC7g
-	 6x3m7UCQiaXK5nh6yZ0plOuCUgAxtxaBDS9SSMoaPkfKhfE0DkteXxVLeMRitu7/nGw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792778611;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.41
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792778869;
+	b=nPrE+TvmEG6ynusiA+aqCY+knTspgfaUvisp+FfttgKX3Qx9OT2Kre6IP5xeedZTcfPi
+	 xqomavPtJ0YHt8YAAbMw4pNKjQTe5xlEUmBJUqFBxMvuz5N6rDz5NRjRCD9qr6FJq9b75
+	 ygkE5/W/zkZrSYp1DYY8h/TOs54kVfHRA4D9bdtsJ5hvsuwGbX88KLHNrf+iit5sJ0Euv
+	 DoHlmuG5gjK0DcdL9xS6PKybtVuUYjTXLRvpXlO4p73zpwk0gFEB5iAyXO/bEPjUVtxLV
+	 fqiUJqTNQdMIyZPjTOwKeLTZ+WyawiaCVr5shxYOTRIej0b8+zCGFrkNV+0lL++aocA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792778869;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=QtYaJnNe8xkPBPNyUxj5jlp0lFkEB43F9v5MzV6TxeY=;
-	b=UZPV1idpeOXKlGjK9qPziizYLhu9o1+G0sQshlWEonYvgfyHT1jGTCT/onQ2ucm7HLzm
-	 mStkyyeIDBpke2SlF0xSmEK5FcrgHl2/jHLTQwN3yf0wmcluOCF3PSc1OAVf12L+sb7RA
-	 +EahZE9WIM8jcXLnoNM3yCrMEAt1BT9bvKDwEXrkLuTBShMOG4fnQS54DQav/KxBN5U1o
-	 oiOXvDWqRusa0VugYWDMLdVH8ycF7Hebg7vvZEe7mCFB4gAqT8jOJC4iK8UcWzJLa5ESh
-	 W+XZwPvMFF++bEV4fziQ/3U6cP4SIlJTbmkfiZqGffjBc2c9ku1hylnctgfXSee8Q4Q==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mojatatu.com;
-	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=G9L6Pghl;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.172
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
+	 In-Reply-To;
+	bh=l8yh+J8SSNLKfskLT/Z2Pcy1PDMooIjufZ+RCRIv0iE=;
+	b=NxA3Eq7RYIGfZ29aL8HSYhB7Tw5zkKg5L4B3ulo0jq/mcJn0ej2hzb7c75tBJ0a5GBAE
+	 Fa8vj34oCOGvmZNYJzZHnbtQUjBzWjz8Od1fgPboLXBrx7Y2/NFtEr3F++y0GhIxkbju7
+	 6AZKu4ctE/QDzfB2Jly4meKCF3qWruQpfgzrQcryKkxE8YglToAD1r67ue6DQs/tjoJBr
+	 b8OAywLcxhGYMwPCuRFEG57vaeo07KvcKiVM72NyTQz0marirVqwM9buLKPoEoXY9ChcV
+	 S2Ve+M63crH40KY1EgbDInK0e0pOMDYQxGGRMrYOplNXs+SL1vqUgEa5XpENaE28WOQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=lPZbBEpC;
+	arc=none smtp.remote-ip=74.125.82.41
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C6D606A31A
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 18:03:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 35C6D606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B891606A328
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 18:07:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2B891606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=G9L6Pghl
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-8a05da1cc1fso457865b3a.2
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 11:03:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792778610; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Ac8XIAtcymEXqR189q20GFHGLpcf6tpmidefWVTB8I5FCm5TYiB5Rk9Lm754r9qwVn
-         EsVU07h/5QvBVRF2zllV8BdJU5AvDW61XN2gO7ULtrnQEHdCwN4qzNSei6U+Ic2ecQox
-         naeAcSbJklLcEUIgQMZvG46B5dUNSFrQqbDO6VwvXl1YsObUfCPKF/pIaOUHvyyPXebK
-         povmTsmiFGrFENiEs7+pRW51El4BNkgZn0Edi5q6JHIpyicxg96ip1Uf4OzMsMfvrLsq
-         V5a2r+mcegTFdW+4uZCiFFWRxGpxWu+RbiTQ3b9Tc0CPFmEk5OR656YkWcYzmGUpWWrv
-         t0CQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=QtYaJnNe8xkPBPNyUxj5jlp0lFkEB43F9v5MzV6TxeY=;
-        fh=OA7RTjWtf0ekFJVRLS7svWvrNYIaG0/9kTRmAanWNS4=;
-        b=gYLuFh4yTDtDGW7ErWx0xwt3BykyjDFJC577+MrpCpbfMVzW4rnXKcSPy3kKeM4Q7Z
-         DtIsePHWEU6I0wDbNg19/AS2bqF70/EqxiOMAbEUeLjn2q9yDfTYP6xi5yutrhdnN/JD
-         G5nvUSiJd+OGP8C04YjdjpCw2NCm3oZ8w3X/f9TTDXhUeoXCn1252evzbHa4O4zwpqBZ
-         qUREze+4yuMic37AA/aiZCB7OgRGEIc/SoPPQuAJxG7HTRYSKqySAobqTPhdfWfY/ENX
-         2yTo6mZDT5IAz+FfUAld92Gse0aCztc1ucuXruSSok3LR7uguutzP3W1HTDhp+yx4g+F
-         GcDw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=lPZbBEpC
+Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-18cdcfc05ffso1327559c88.1
+        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 11:07:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1792778610; x=1793383410; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=QtYaJnNe8xkPBPNyUxj5jlp0lFkEB43F9v5MzV6TxeY=;
-        b=G9L6PghliHUJNINa+jhehfq3UiRowAVvbQ9GlO0GNXlsRciHnAZaRDh37F1kUqiDhJ
-         axOQ5iGD+cmkz7txURKXDoYE+M95zrR6CrBE5gANXs8KYrFec4BmVX09ClNoaTgmuDxv
-         OxcoUnyCOLdII91ST1jgaf9pXEbKlzeXJOgIw=
+        d=gmail.com; s=20251104; t=1792778868; x=1793383668; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=l8yh+J8SSNLKfskLT/Z2Pcy1PDMooIjufZ+RCRIv0iE=;
+        b=lPZbBEpCXSmjLCMTay3uooK8s96fbEKE6OAo9MCbUAhyVEINNWSYI0RLkJVWmU9nik
+         1iMw7TCEUWr4SCYV4G9ChwQ6ZdbldyjTZl4bHsRj6HyvzcATfQP8jjAOwSDDExSxp2SD
+         gbZXjVrmvVfgW2IiMs8qO0/J7gr9IghG0ZhGa/7wu7VtEiAHytKBy37Pa7JeuNfZQuT2
+         nspyqCmib51TtqozDzKUPqRfnU26iqToUARxHY28kejr6NkAOhAne+t87oeGd2ALsLkx
+         HWi+18h3pknGEaKOTDL6GLRCFMGx4qbv0AcbB3TBJXRSutA2jiIlgQCt6YdZCG49ELAO
+         BXgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792778610; x=1793383410;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QtYaJnNe8xkPBPNyUxj5jlp0lFkEB43F9v5MzV6TxeY=;
-        b=niaBrasjJEgiWiFZ6CvyX9NJL24LONBZXrvvCtinkgnsxDVDIpQh2Yb1xypfX1kbHt
-         SEf3h5kDcDHqWldWFdt8PSxjz9dsE4YUCqrITfB3oKXRMkJo3yWTyFKLsBTycyzx8pEn
-         y5wKmDG5Mg9VyR9orskI/nQX+nD6ttjs+6MLfdxzV6sPTwIupPgAXO0v6w20Qx3Baa8Z
-         G25iEl1EmLZcy6MBHgZvsWZu9smBkZs0BwYFMQFJtwIytT9QdwbVQ9qoSiDgaNrWlEet
-         SVedQxxBEpPBJ0W0rN1DeDahDGqQCPr+11Kg49kNc2PlQ3W+rR02+z7vkHyICev58Z3N
-         fuUQ==
-X-Forwarded-Encrypted: i=1; AKwUvBztsxj2Ax3yVnh/lnVQRVyyVkqyA8E/CXKzY4iCyk/6jJmumxBx2fIptqmnbQ+e0o9/Rt24qHM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJYSBDOT9ReMwTuL71CMFKRz43IaVgqO1W5FOKC9O8Cu7XeeBVk
-	Ym/DVMPiUBSdLvOOkFoa/N0e+NDTfH9l3HRLiaGqTsBlithqmw4P78t7mAi2Q6ssN06o+nwN57C
-	tZ9YbJxHHpUcga2qk/+1ZJ3By8k2UKvpWVANgrIGf
-X-Gm-Gg: AYBFou3gIdoXUBzRxrOQiNYPwL+2YtacCO+BtdMC8hz9bItsbkw6cRlQNHxBug5cewv
-	yFd6xqlclFHgXwsJBUm3F1NMNk3paYN/q43CpjhWqipoJx+k4blKPINEs9BxyeBXknPru1j/Cdz
-	YFmD3UzIH6uhBxhw8GpDj5yjUngwZUTDufEGKKaMQ+Va2GnydBMLYg9UQEZsfBZ5f5m/h0HouUI
-	B09tSmVWm+j6aAcCNeTWlXEiRzaJi41Cp1BxajSTeQf13yJpeXtb0ymTewoVDVIMXTK3IwSUwRF
-	GlRtncel62QGz0iy/ZeOHHAVt+7ZgaVl5WLIf0k/+NO6OijS9iYCNMjpoYdUdriktgSZr8d2sxA
-	3/EdsHZywLHBU57tXMkIs37O7sZmgq4BV6NjEPJO9nVmrvjrrtcrqly6PZH9MBxeg0nnnMB7vbw
-	j5U8iL65nAxY/9qyg=
-X-Received: by 2002:a05:6a21:6b87:b0:3e2:799:f2dc with SMTP id
- adf61e73a8af0-3e3766e1161mr2230711637.40.1792778610518; Fri, 23 Oct 2026
- 11:03:30 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792778868; x=1793383668;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=l8yh+J8SSNLKfskLT/Z2Pcy1PDMooIjufZ+RCRIv0iE=;
+        b=cfuMSshDRX3fem6UN1n3BmsP03M9SfGi7v5u0tca6lFY5lrFW+tWSR9/gd1cF6ijak
+         wnvAQdZVyqSi5KvjGWipRQPSR5oviT0iUnwRPPGs4U2nsz3lRtV6mb0ZeFxSSDK3Kq5N
+         YOOuyiUpmjWNqtOcaYULOSV/KrqmDvVYfhRfS9gY/jMF7tvUa9MzvA888Jxy1ACRB/ia
+         G2ZpAm+Pa+HrmB3dvCQDT8FN6ydPdH3PC7+j4i28atcNcYWgRR6o4h895Pfe1HZvRmnl
+         BbC7VyQt40cZDZVMb/O2nW3X69M0fKcTmJyYwAQB3TEvy86mZXpgQlP8XvC49IQ3jFz2
+         k4lg==
+X-Forwarded-Encrypted: i=1; AKwUvBzy0SewEKDczTOnF1oxOwH6maHZa54y/oQxWY146IsQX0V0f76U+tmOZ/2UsFmW1hu44ey5VGI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI/dObt4C38VLhhNVKubzBvzqaFylwnAS98GgVBb4ZKJcaIRHQK
+	6wCO87u/nWwFPNbxASJBYr7S0l+tHA/oTFiRRhmGjflxmxM3IdY2N6yf
+X-Gm-Gg: AYBFou1jiLFW5t//BUpzHw9OegEpla5V2cfLtwzOcdtAMEzSa9xLOVCVsHyYh4+XKAs
+	lp6BONOv2jDnU2nKX2XnfpveNYMeWWX8TsI5mc/twbzR+E2faN73BtbEImq4z9QhUCYba5mu/84
+	6s0V1ITQPNTiwsflLZyLkEm9q20BrBI4+8mIw5D+4vCd2sWp10KtAxOc6oaxKEx5psMi/S8K8Nh
+	Icdb3nIjMu9qR8015R+ljbqxZQ91omJIzJN8Y0fIDJHlajJB79rYmGstGWhqERShwYWtLV+5VI1
+	HWcYvlTo8YHeqxvkvKF5lo2xbh4/EZE+hIGY7cprbBGzAqkbqomrroageJub3YKgPgqR2QhrFxE
+	uU5p9QRQsfhBlHTlkSTcKCl+Exai1j4WObKG7q1oNRIqbjK35qn93YE9srB5qIlyZ5sD11KHLVG
+	G2D2kwlIuL5ad7kzqYb80x46RYg5H0pFqfPHlfX8cQPqLXmVy1eEU59iSOb9VDTYa98CjvKTBXC
+	IWM5eE7UlK9MvRvv2J1YF+I/Y4jcDwQRagPQoM99Zhj6Ij2mHX/hWZhTXE8NY5D4/XsBWHdPrw=
+X-Received: by 2002:a05:7022:3b85:b0:187:efba:9ba2 with SMTP id a92af1059eb24-195c6f00fa6mr4476139c88.44.1792778868167;
+        Fri, 23 Oct 2026 11:07:48 -0700 (PDT)
+Received: from v4bel ([58.123.110.97])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-198a249c331sm612623c88.17.2026.10.23.11.07.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Oct 2026 11:07:47 -0700 (PDT)
+Date: Sat, 24 Oct 2026 03:07:42 +0900
+From: Hyunwoo Kim <imv4bel@gmail.com>
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: ncardwell@google.com, kuniyu@google.com, davem@davemloft.net,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	martin.lau@linux.dev, john.fastabend@gmail.com, weiwan@google.com,
+	sd@queasysnail.net, jiayuan.chen@linux.dev, netdev@vger.kernel.org,
+	stable@vger.kernel.org, imv4bel@gmail.com
+Subject: Re: [PATCH net v2 2/2] inet: restore refcount ordering for
+ established lookups
+Message-ID: <atuibj7fzdSpOHN9@v4bel>
+References: <20261023052542.3505250-1-imv4bel@gmail.com>
+ <20261023052542.3505250-3-imv4bel@gmail.com>
+ <CAL4WiipDcvmNMeeC1znRmtykFg1uwb5XOZVOoi9y0dVECXtHVw@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,130 +102,179 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261021155450.66934-1-phx0fer@gmail.com> <CAM0EoM=XC7V630n8P7_UhECTFDuJcP8XqeYnU+jUG68a78YteA@mail.gmail.com>
-In-Reply-To: <CAM0EoM=XC7V630n8P7_UhECTFDuJcP8XqeYnU+jUG68a78YteA@mail.gmail.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Fri, 23 Oct 2026 14:03:19 -0400
-X-Gm-Features: AclHuK8rCUXyiRobPy7djtua1zoM8eZkl552yg6LsQqdmkpna6KRX0N-ecNhXzg
-Message-ID: <CAM0EoMk4AK_REXaq1FuGWQEzbxvYgZ+b-sjfv7Ws0uuptG4ryA@mail.gmail.com>
-Subject: Re: [PATCH net] net/sched: re-cap skb->queue_mapping before indexing dev->_tx[]
-To: Dudu Lu <phx0fer@gmail.com>
-Cc: jiri@resnulli.us, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAL4WiipDcvmNMeeC1znRmtykFg1uwb5XOZVOoi9y0dVECXtHVw@mail.gmail.com>
 
-On Fri, Oct 23, 2026 at 2:01=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.com>=
- wrote:
->
-> On Wed, Oct 21, 2026 at 11:54=E2=80=AFAM Dudu Lu <phx0fer@gmail.com> wrot=
-e:
+On Fri, Oct 23, 2026 at 06:33:53PM +0200, Eric Dumazet wrote:
+> Le ven. 23 oct. 2026 à 07:26, Hyunwoo Kim <imv4bel@gmail.com> a écrit :
 > >
-> > qdisc_restart() computes txq =3D skb_get_tx_queue(dev, skb), which inde=
-xes
-> > dev->_tx[] with skb->queue_mapping and no bound.  A tc BPF program
-> > attached to a transmit qdisc can store an arbitrary __sk_buff.queue_map=
-ping
-> > after the tx queue was picked; that store is not re-capped on this path
-> > (the existing cap in netdev_tx_queue_mapping() only covers the
-> > skip_txqueue path), so an out-of-range mapping indexes past dev->_tx[]:
+> > When commit 3ab5aee7fe84 ("net: Convert TCP & DCCP hash tables to use
+> > RCU / hlist_nulls") was written, atomic_inc_not_zero() provided full
+> > memory ordering. Even after commit 41c6d650f653 ("net: convert
+> > sock.sk_refcnt from atomic_t to refcount_t"), default builds used
+> > atomic_add_unless() and retained that ordering.
 > >
-> >   BUG: KASAN: slab-out-of-bounds in sch_direct_xmit+0x744/0x89c
-> >   Read of size 8 at addr ffff00000e0802d0 by task A-254-2_S4/100
-> >    sch_direct_xmit+0x744/0x89c
-> >    __qdisc_run+0x34c/0x1d04
-> >    __dev_queue_xmit+0x1aec/0x306c
-> >   Allocated by task 1: alloc_netdev_mqs+0x758/0xfa0
+> > Commit fb041bb7c0a9 ("locking/refcount: Consolidate implementations
+> > of refcount_t") consolidated the refcount_t implementations in v5.5.
+> > On weakly ordered architectures, this removed the ordering required
+> > by validation after a successful reference acquisition.
 > >
-> > The same stale value is then handed to dev_hard_start_xmit(), which
-> > reports the same fault.  Re-cap the mapping with netdev_cap_txqueue()
-> > before it is used to pick the tx queue.
+> > Use refcount_inc_not_zero_acquire() in the IPv4 and IPv6 established
+> > lookups. Use refcount_set_release() when setting initial refcounts in
+> > sk_clone(), SYN cookie, and request migration paths. In the TCP Fast
+> > Open path, move the refcount update after the required initialization
+> > and use release ordering.
 > >
-> > Fixes: 10c51b56232d ("net: add skb_get_tx_queue() helper")
-> > Assisted-by: LLM
-> > Signed-off-by: Dudu Lu <phx0fer@gmail.com>
+> > The TIME_WAIT path already has an smp_wmb() between refcount_set() and
+> > hash publication, so leave it unchanged.
+> 
+> This is not accurate. The smp_wmb() in inet_twsk_hashdance_schedule()
+> orders the tw_refcnt store against the ehash publication, not the tw
+> identity stores done in inet_twsk_alloc() against the tw_refcnt store.
+> 
+> The latter is what a lookup holding a stale pointer needs. Today we get it
+> more or less by accident from the bhash spin_unlock() followed by
+> spin_lock() of the ehash lock.
+> 
+> Please either reword this paragraph, or simply use
+> refcount_set_release(&tw->tw_refcnt, 3) there; it is free under the lock
+> and makes the pairing explicit.
+
+OK, I'll switch to refcount_set_release().
+
+> 
+> 
+> >
+> > Fixes: fb041bb7c0a9 ("locking/refcount: Consolidate implementations of refcount_t")
+> 
+> refcount_inc_not_zero_acquire() and refcount_set_release() were only
+> added in 7f8ceea0c580 ("refcount: provide ops for cases when object's
+> memory can be reused"), in v6.15.
+> 
+> 
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
 > > ---
->
-> I did not look closely at the rest of your posting, I suspect there
-> are similar issues in some of them:
-> please please since you are using AI ask it to check if there is
-> already a submission for what you are trying to fix on the list.
-> See:
-> https://lore.kernel.org/netdev/QDISC-MD1X.v4.r0.20261021042722-1@mojatatu=
-.com/
->
-> I got my report from sashiko after submitting a fix for a related
-> area; hopefully your guy is not just scanning the mailing list...
->
+> >  net/core/sock.c                 | 3 +--
+> >  net/ipv4/inet_connection_sock.c | 6 +++---
+> >  net/ipv4/inet_hashtables.c      | 2 +-
+> >  net/ipv4/syncookies.c           | 2 +-
+> >  net/ipv4/tcp_fastopen.c         | 3 +--
+> >  net/ipv6/inet6_hashtables.c     | 2 +-
+> >  6 files changed, 8 insertions(+), 10 deletions(-)
+> >
+> > diff --git a/net/core/sock.c b/net/core/sock.c
+> > index 3c25d66ba31a..f3ef9601ab73 100644
+> > --- a/net/core/sock.c
+> > +++ b/net/core/sock.c
+> > @@ -2622,8 +2622,7 @@ struct sock *sk_clone(const struct sock *sk, const gfp_t priority,
+> >         /* Before updating sk_refcnt, we must commit prior changes to memory
+> >          * (Documentation/RCU/rculist_nulls.rst for details)
+> >          */
+> > -       smp_wmb();
+> > -       refcount_set(&newsk->sk_refcnt, 2);
+> > +       refcount_set_release(&newsk->sk_refcnt, 2);
+> 
+> This part is not a fix: the writer side only needs store->store ordering,
+> which smp_wmb() already provides.
+> 
+> I do not mind the conversion, but then reqsk_queue_hash_req() (which has
+> the same smp_wmb() + refcount_set() pattern) should be converted as well
+> for consistency. Otherwise please drop this hunk to keep the stable
+> backport minimal.
+> 
+> 
+> >
+> >         sk_set_socket(newsk, NULL);
+> >         sk_tx_queue_clear(newsk);
+> > diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+> > index cff02f4c5ac8..2d8e54d3a31b 100644
+> > --- a/net/ipv4/inet_connection_sock.c
+> > +++ b/net/ipv4/inet_connection_sock.c
+> > @@ -1056,8 +1056,8 @@ static void reqsk_timer_handler(struct timer_list *t)
+> >                  * hold another count to prevent use-after-free and
+> >                  * call reqsk_put() just before return.
+> >                  */
+> > -               refcount_set(&nreq->rsk_refcnt, 2 + 1);
+> >                 timer_setup(&nreq->rsk_timer, reqsk_timer_handler, TIMER_PINNED);
+> > +               refcount_set_release(&nreq->rsk_refcnt, 2 + 1);
+> >                 reqsk_queue_migrated(&inet_csk(nsk)->icsk_accept_queue, req);
+> >
+> >                 req = nreq;
+> > @@ -1441,7 +1441,7 @@ struct sock *inet_csk_complete_hashdance(struct sock *sk, struct sock *child,
+> >                                 goto child_put;
+> >                         }
+> >
+> > -                       refcount_set(&nreq->rsk_refcnt, 1);
+> > +                       refcount_set_release(&nreq->rsk_refcnt, 1);
+> >                         if (inet_csk_reqsk_queue_add(sk, nreq, child)) {
+> >                                 __NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPMIGRATEREQSUCCESS);
+> >                                 reqsk_migrate_reset(req);
+> > @@ -1494,7 +1494,7 @@ void inet_csk_listen_stop(struct sock *sk)
+> >                 if (nsk) {
+> >                         nreq = inet_reqsk_clone(req, nsk);
+> >                         if (nreq) {
+> > -                               refcount_set(&nreq->rsk_refcnt, 1);
+> > +                               refcount_set_release(&nreq->rsk_refcnt, 1);
+> >
+> >                                 rcu_read_lock();
+> >                                 if (inet_csk_reqsk_queue_add(nsk, nreq, child)) {
+> > diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
+> > index 58d54965036a..7ffa9171d6de 100644
+> > --- a/net/ipv4/inet_hashtables.c
+> > +++ b/net/ipv4/inet_hashtables.c
+> > @@ -550,7 +550,7 @@ struct sock *__inet_lookup_established(const struct net *net,
+> >                 if (sk->sk_hash != hash)
+> >                         continue;
+> >                 if (likely(inet_match(net, sk, acookie, ports, dif, sdif))) {
+> > -                       if (unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
+> > +                       if (unlikely(!refcount_inc_not_zero_acquire(&sk->sk_refcnt)))
+> >                                 goto out;
+> >                         if (unlikely(hlist_nulls_unhashed_lockless(&sk->sk_nulls_node) ||
+> >                                      !inet_match(net, sk, acookie, ports, dif,
+> > diff --git a/net/ipv4/syncookies.c b/net/ipv4/syncookies.c
+> > index 644030561537..4b2d2713653b 100644
+> > --- a/net/ipv4/syncookies.c
+> > +++ b/net/ipv4/syncookies.c
+> > @@ -205,7 +205,7 @@ struct sock *tcp_get_cookie_sock(struct sock *sk, struct sk_buff *skb,
+> >         child = icsk->icsk_af_ops->syn_recv_sock(sk, skb, req, dst,
+> >                                                  NULL, &own_req, NULL);
+> >         if (child) {
+> > -               refcount_set(&req->rsk_refcnt, 1);
+> > +               refcount_set_release(&req->rsk_refcnt, 1);
+> >                 sock_rps_save_rxhash(child, skb);
+> >
+> >                 if (rsk_drop_req(req)) {
+> > diff --git a/net/ipv4/tcp_fastopen.c b/net/ipv4/tcp_fastopen.c
+> > index 471c78be5513..2506f415f410 100644
+> > --- a/net/ipv4/tcp_fastopen.c
+> > +++ b/net/ipv4/tcp_fastopen.c
+> > @@ -364,8 +364,6 @@ static struct sock *tcp_fastopen_create_child(struct sock *sk,
+> >         tcp_reset_xmit_timer(child, ICSK_TIME_RETRANS,
+> >                              req->timeout, false);
+> >
+> > -       refcount_set(&req->rsk_refcnt, 2);
+> > -
+> >         sk_mark_napi_id_set(child, skb);
+> >
+> >         /* Now finish processing the fastopen child socket. */
+> > @@ -378,6 +376,7 @@ static struct sock *tcp_fastopen_create_child(struct sock *sk,
+> >         tcp_rsk(req)->rcv_nxt = tp->rcv_nxt;
+> >         tp->rcv_wup = tp->rcv_nxt;
+> >         tp->rcv_mwnd_seq = tp->rcv_wup + tp->rcv_wnd;
+> > +       refcount_set_release(&req->rsk_refcnt, 2);
+> >         /* tcp_conn_request() is sending the SYNACK,
+> 
+> Moving this is harmless, but not needed. The lookup never looks at
+> rcv_nxt, and this req is never hashed, so after patch 1/2 a stale lookup
+> will reject it anyway. A plain conversion in place would be enough.
+> 
+> Let's keep code churn minimal, to lower risk of merge conflicts.
 
-I should have added, for that reason:
+I'll submit v3 with all unnecessary changes removed. Thanks for the review.
 
-NACKed-by: Jamal Hadi Salim <jhs@mojatatu.com>
 
-Sorry, I am overloaded enough dont have time to look at the rest.
-
-cheers,
-jamal
-> cheers,
-> jamal
->
-> > Tested base
-> > -----------
-> > Detected on Linux 7.3-rc4 (commit 93f51579e7df), arm64 QEMU guest.
-> > Re-checked against mainline f47d223627f8 (v7.3-341): the affected code
-> > is unchanged between the two, so the bug is still present there.
-> > Checked against linux-next next-20261021 (commit 9a482184d910): the
-> > affected code is unchanged there as well, so the bug is still present i=
-n
-> > linux-next too.
-> >
-> > Reproducer status
-> > -----------------
-> > A reproducer was written and executed on an arm64 QEMU guest (KASAN,
-> > CONFIG_NET_SCH_PRIO=3Dy, cls_bpf); it fires at the claimed sink, and st=
-ill fires on
-> > a kernel built with ea4d4b5dddb5 applied.  The reproducer source is not=
- posted
-> > here per Documentation/process/security-bugs.rst; it is available on re=
-quest.
-> >
-> > Triggering conditions
-> > ---------------------
-> > CAP_NET_ADMIN (attach the classifier and qdisc).  The residual is the
-> > store made by a tc BPF program attached to a transmit qdisc, which ea4d=
-4b5dddb5
-> > explicitly scopes out.
-> >
-> > Notes
-> > -----
-> > Built and checkpatch-clean: this patch was applied on top of 7.3-rc4
-> > (commit 93f51579e7df) and a full arm64 kernel (defconfig) was built wit=
-h
-> > it -- no new warnings or errors.  scripts/checkpatch.pl reports 0 error=
-s,
-> > 0 warnings.
-> >
-> >  net/sched/sch_generic.c | 7 +++++++
-> >  1 file changed, 7 insertions(+)
-> >
-> > diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
-> > index 6f6a6f0d5eb0..c326d12942e5 100644
-> > --- a/net/sched/sch_generic.c
-> > +++ b/net/sched/sch_generic.c
-> > @@ -432,6 +432,13 @@ static inline bool qdisc_restart(struct Qdisc *q, =
-int *packets, int budget)
-> >                 root_lock =3D qdisc_lock(q);
-> >
-> >         dev =3D qdisc_dev(q);
-> > +       /* A tc BPF program attached to a transmit qdisc can store an
-> > +        * arbitrary skb->queue_mapping after the tx queue was picked, =
-so
-> > +        * the value reaching here is not necessarily one the device ca=
-n
-> > +        * serve.  Re-cap it before it indexes dev->_tx[].
-> > +        */
-> > +       skb_set_queue_mapping(skb,
-> > +                             netdev_cap_txqueue(dev, skb_get_queue_map=
-ping(skb)));
-> >         txq =3D skb_get_tx_queue(dev, skb);
-> >
-> >         return sch_direct_xmit(skb, q, dev, txq, root_lock, validate);
+Best regards,
+Hyunwoo Kim
