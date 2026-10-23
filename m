@@ -1,73 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792778573;
-	b=GPSRQZbjTQwjsYsYOmESmikVMcCcjK3coGCGySGZOZxgO+0vsKjNJCA8VOe2FVcSeHOs
-	 mypltDsqjTFEnArSbbCeLtXLWgPPGo+dl6rPgEBqAMYamUeH+RhDjDUd36J2P1UvJ1Fci
-	 YykDoNr9QgI+cJpuebZkAwLzaPiGEI6Eyyj18JDCYcWB5bZdrOdYGPbBRZsVamfQwm0vk
-	 qUIr9efj/ZnyoocN7nbrcbOl3hDWfX2MlRiEtcU6NK16lyTCOz/KflBORybOBEqFiILQL
-	 3kS3VqcCUP24qSzbUTNB+y+sv0+1tJ/5l52p8/XWXUuAjuwByu3s1IBkVXZh4YRoWng==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792778573;
-	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:
-	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
-	 MIME-Version:X-ThreadId:Date:From:To:Cc:Message-Id:In-Reply-To:
-	 References:Subject:Content-Type:Content-Transfer-Encoding;
-	bh=bZrsg2pWespOvQA5Cm/os7o0gRFOlPEwnPF14eOssXg=;
-	b=2hFasL52EwtqIiEjawvRzk1f8mILXqHWEcFAbaeJNP5oWfBDkxUeIc0+7JHCLATrSflp
-	 w7YtGfXBNyDGNzMb+DOyKZIngB3wJ0YNpCR09CAV7AhN/uGTY2sql1jTiS5aApdJ3OAwE
-	 hA8Z9ADJ8Ez5vsi1Koh13TgnZqDmFHpDXod9XTvcGLWOxqSF56pUk1JwvVdxSbobgHCbG
-	 Lcbv1xsUWVs4QCXrK/+r+qPGduAQJsG6mk0enljjng17B0Gz8m+3luz6ya3QLLzKh8MpE
-	 37GaxFjiLPKgdxtodK8hgpNppXTEjES0iiejGF9c0BSoa4lRTAhwM53D89vVIAEZYaA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Aj+dSzOM;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.172
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792778611;
+	b=K48ov92mJYoc077dJbY+AipbP05h+Uza5bmufDZ7rBPFMIPfNAxcHWVJgltdQvcm/xXJ
+	 JvMeQjPsV3Lsn00AjIuE1pf0cExCRAJ537oSt4pZteOCigAeraUdqW27r5Z7J8qtpN38M
+	 NM7JDsfoU0POav+kbXf3fkwGN0WhUUikoMdaY5ma3iTujDXZEmvLDXHVqBzutUMJLKhRg
+	 ViGn0qVKyC+nyhvZ0uWR7G0sNh3pmM3tqIPtQsR1TCgu2GKNCosUJOFqPKBtdkfj6MC7g
+	 6x3m7UCQiaXK5nh6yZ0plOuCUgAxtxaBDS9SSMoaPkfKhfE0DkteXxVLeMRitu7/nGw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792778611;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=QtYaJnNe8xkPBPNyUxj5jlp0lFkEB43F9v5MzV6TxeY=;
+	b=UZPV1idpeOXKlGjK9qPziizYLhu9o1+G0sQshlWEonYvgfyHT1jGTCT/onQ2ucm7HLzm
+	 mStkyyeIDBpke2SlF0xSmEK5FcrgHl2/jHLTQwN3yf0wmcluOCF3PSc1OAVf12L+sb7RA
+	 +EahZE9WIM8jcXLnoNM3yCrMEAt1BT9bvKDwEXrkLuTBShMOG4fnQS54DQav/KxBN5U1o
+	 oiOXvDWqRusa0VugYWDMLdVH8ycF7Hebg7vvZEe7mCFB4gAqT8jOJC4iK8UcWzJLa5ESh
+	 W+XZwPvMFF++bEV4fziQ/3U6cP4SIlJTbmkfiZqGffjBc2c9ku1hylnctgfXSee8Q4Q==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=mojatatu.com;
+	spf=none smtp.mailfrom=mojatatu.com;
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=G9L6Pghl;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.172
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086EC606A31A;
-	Fri, 23 Oct 2026 18:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C6D606A31A
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 18:03:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 35C6D606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Aj+dSzOM
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39CB81F01825;
-	Fri, 23 Oct 2026 18:02:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792778572;
-	bh=bZrsg2pWespOvQA5Cm/os7o0gRFOlPEwnPF14eOssXg=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=Aj+dSzOMnsNbCR85xA/8UlAwulQhgqVg6s0SrBEqHv9mtw8ZgcDexSbb4CkRT//wi
-	 v3kUyDg+++Ja0Q75FYiSDv71UehLwrfB+O7Gnv4AXBNWJMzILACZrSllAliLZkCa15
-	 o6aqE2Q/cmr/gIzJqK2q2lQLU0kJAZDMyeKL6yHlOFnWn1CTDHldHlYOIgWBYu4vZP
-	 Tc+pMFBrp3jqked8wbIVFEIj2TjVLnjHOzE3Uwp8nuQbfD+MM088uof+nmBDktRrJe
-	 Rte9BZoHmWClW4bAguJv/+eSu3vaONzWwBgVGsoFSpLCYyQGwpBVtk7i8ELyfBfOQq
-	 yfff6/eg9SPkg==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 80E54F40067;
-	Fri, 23 Oct 2026 14:02:51 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Fri, 23 Oct 2026 14:02:51 -0400
-X-ME-Sender: <xms:S6HbagXwiaqr3QQa8mcKJMCCl0A5tExUO_ARWNRgWdnxCmCwXt3mbw>
-    <xme:S6HbavaDigAlOx9NBgiqLnf9j_nbj46ULziwWS7rv6GhMyjeixANJLCLDoRNg_pYO
-    gM-WYPMEefKPWVAYpObjVfbEFLaSg_XHynorfWcIEqt1Ll898H2Phs>
-X-ME-Proxy-Cause: dmFkZTEsjtUgDJBYap9qhUMKtLl9jqAKBBCnlwmhLjGIDNZw3TLRNdHTHOB8CQWCO1JeDp
-    N3Pu+F5dM5iHuZcPbzp9i09R+ylsLhkbbtgt/zFNnqdc8eceJNMzrbAVEPDIH5Lo83I8O0
-    fTnjURMbv4p45dKB7JImhqCVy+ht/Nzc3MVaFRSHcGDE7qDBLc2gE8rjAXGydetLjSn+Re
-    r957l+gjjUzVbZ7iJ+oRwxWPDUyed3S795zKEv0bK0lWx17hc1QXWn78cGXMy3fZe+4UcP
-    i2hXydb20Ke7aQ4kI+xbLKOBui3Gki6zQaeK/i1HxT6zkn97Ax8VvXKgE2MsP+mUfXh7c2
-    yPlu8bKhhcspbdWoLwtnPqs0s+3j706W+cAsMKIhXDzHm6U4PaJCpWnY7L4bRikigB43T8
-    WkEG1JyeAcOBksaEIOy2x3njkWVZYaSen1VNLp9eovWmKbs6D/hkmChVaITVz5l5syJDsm
-    fRiJNrZ307xbgdS7lM6cj45h7YaRXyN+IjvfKlMwLf0YVJhj3rVsImoBsGRUXscOZhtMJa
-    oRBKGreY2k2//AdPdV1m4JGXwNNVQno6iW5bTbP8L1YeyOoSU1ABe2h4F9aM2N4LL6j9Tk
-    Qm8PiJU+ircvFjjLUtztJ/bzzRX61lY604tCKmiyuxsjUTjQPuTRu3pHKCMw
-X-ME-Proxy: <xmx:S6HbakR-jYIoYwXIRdBhFKTcjqGhAL6u0dfa31zw7pk954ikuv1N-w>
-    <xmx:S6HbahP_xi-y2UaJmrV_FSuf-jz7hgZTqxB1RnNVkKUFkp0Hk69eJw>
-    <xmx:S6Hbai6ylFS0lDbDCtRkMPvMb29bzbEuCQ2VXyR_3mRouaNnGlmjAg>
-    <xmx:S6HbasWkd_WwvzEwPKt1PG9Seb72hy94Og311jgMPKo6Gm9aBDagKQ>
-    <xmx:S6HbahOWeR7JGc9YMaKxwne2Er0gWAC_-flNWaIl_1fAxLJ9WOwKmhd9>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 5945D782738; Fri, 23 Oct 2026 14:02:51 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=G9L6Pghl
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-8a05da1cc1fso457865b3a.2
+        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 11:03:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792778610; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Ac8XIAtcymEXqR189q20GFHGLpcf6tpmidefWVTB8I5FCm5TYiB5Rk9Lm754r9qwVn
+         EsVU07h/5QvBVRF2zllV8BdJU5AvDW61XN2gO7ULtrnQEHdCwN4qzNSei6U+Ic2ecQox
+         naeAcSbJklLcEUIgQMZvG46B5dUNSFrQqbDO6VwvXl1YsObUfCPKF/pIaOUHvyyPXebK
+         povmTsmiFGrFENiEs7+pRW51El4BNkgZn0Edi5q6JHIpyicxg96ip1Uf4OzMsMfvrLsq
+         V5a2r+mcegTFdW+4uZCiFFWRxGpxWu+RbiTQ3b9Tc0CPFmEk5OR656YkWcYzmGUpWWrv
+         t0CQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=QtYaJnNe8xkPBPNyUxj5jlp0lFkEB43F9v5MzV6TxeY=;
+        fh=OA7RTjWtf0ekFJVRLS7svWvrNYIaG0/9kTRmAanWNS4=;
+        b=gYLuFh4yTDtDGW7ErWx0xwt3BykyjDFJC577+MrpCpbfMVzW4rnXKcSPy3kKeM4Q7Z
+         DtIsePHWEU6I0wDbNg19/AS2bqF70/EqxiOMAbEUeLjn2q9yDfTYP6xi5yutrhdnN/JD
+         G5nvUSiJd+OGP8C04YjdjpCw2NCm3oZ8w3X/f9TTDXhUeoXCn1252evzbHa4O4zwpqBZ
+         qUREze+4yuMic37AA/aiZCB7OgRGEIc/SoPPQuAJxG7HTRYSKqySAobqTPhdfWfY/ENX
+         2yTo6mZDT5IAz+FfUAld92Gse0aCztc1ucuXruSSok3LR7uguutzP3W1HTDhp+yx4g+F
+         GcDw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1792778610; x=1793383410; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=QtYaJnNe8xkPBPNyUxj5jlp0lFkEB43F9v5MzV6TxeY=;
+        b=G9L6PghliHUJNINa+jhehfq3UiRowAVvbQ9GlO0GNXlsRciHnAZaRDh37F1kUqiDhJ
+         axOQ5iGD+cmkz7txURKXDoYE+M95zrR6CrBE5gANXs8KYrFec4BmVX09ClNoaTgmuDxv
+         OxcoUnyCOLdII91ST1jgaf9pXEbKlzeXJOgIw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792778610; x=1793383410;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=QtYaJnNe8xkPBPNyUxj5jlp0lFkEB43F9v5MzV6TxeY=;
+        b=niaBrasjJEgiWiFZ6CvyX9NJL24LONBZXrvvCtinkgnsxDVDIpQh2Yb1xypfX1kbHt
+         SEf3h5kDcDHqWldWFdt8PSxjz9dsE4YUCqrITfB3oKXRMkJo3yWTyFKLsBTycyzx8pEn
+         y5wKmDG5Mg9VyR9orskI/nQX+nD6ttjs+6MLfdxzV6sPTwIupPgAXO0v6w20Qx3Baa8Z
+         G25iEl1EmLZcy6MBHgZvsWZu9smBkZs0BwYFMQFJtwIytT9QdwbVQ9qoSiDgaNrWlEet
+         SVedQxxBEpPBJ0W0rN1DeDahDGqQCPr+11Kg49kNc2PlQ3W+rR02+z7vkHyICev58Z3N
+         fuUQ==
+X-Forwarded-Encrypted: i=1; AKwUvBztsxj2Ax3yVnh/lnVQRVyyVkqyA8E/CXKzY4iCyk/6jJmumxBx2fIptqmnbQ+e0o9/Rt24qHM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJYSBDOT9ReMwTuL71CMFKRz43IaVgqO1W5FOKC9O8Cu7XeeBVk
+	Ym/DVMPiUBSdLvOOkFoa/N0e+NDTfH9l3HRLiaGqTsBlithqmw4P78t7mAi2Q6ssN06o+nwN57C
+	tZ9YbJxHHpUcga2qk/+1ZJ3By8k2UKvpWVANgrIGf
+X-Gm-Gg: AYBFou3gIdoXUBzRxrOQiNYPwL+2YtacCO+BtdMC8hz9bItsbkw6cRlQNHxBug5cewv
+	yFd6xqlclFHgXwsJBUm3F1NMNk3paYN/q43CpjhWqipoJx+k4blKPINEs9BxyeBXknPru1j/Cdz
+	YFmD3UzIH6uhBxhw8GpDj5yjUngwZUTDufEGKKaMQ+Va2GnydBMLYg9UQEZsfBZ5f5m/h0HouUI
+	B09tSmVWm+j6aAcCNeTWlXEiRzaJi41Cp1BxajSTeQf13yJpeXtb0ymTewoVDVIMXTK3IwSUwRF
+	GlRtncel62QGz0iy/ZeOHHAVt+7ZgaVl5WLIf0k/+NO6OijS9iYCNMjpoYdUdriktgSZr8d2sxA
+	3/EdsHZywLHBU57tXMkIs37O7sZmgq4BV6NjEPJO9nVmrvjrrtcrqly6PZH9MBxeg0nnnMB7vbw
+	j5U8iL65nAxY/9qyg=
+X-Received: by 2002:a05:6a21:6b87:b0:3e2:799:f2dc with SMTP id
+ adf61e73a8af0-3e3766e1161mr2230711637.40.1792778610518; Fri, 23 Oct 2026
+ 11:03:30 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,71 +102,130 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-ThreadId: A-i9QTM-Cdfw
-Date: Fri, 23 Oct 2026 14:02:31 -0400
-From: "Chuck Lever" <cel@kernel.org>
-To: "Zhiling Zou" <zhilinz@nebusec.ai>, linux-nfs@vger.kernel.org,
- netdev@vger.kernel.org
-Cc: "Trond Myklebust" <trondmy@kernel.org>,
- "Anna Schumaker" <anna@kernel.org>, "Jeff Layton" <jlayton@kernel.org>,
- NeilBrown <neil@brown.name>, "Olga Kornievskaia" <okorniev@redhat.com>,
- "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>,
- davem@davemloft.net, "Eric Dumazet" <edumazet@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
- vega@nebusec.ai
-Message-Id: <5f83b574-224f-4db1-a2f9-60f11a236197@app.fastmail.com>
-In-Reply-To: 
- <1106d411594bbf7d4ee8deb7f3a0281475c258c4.1792734713.git.zhilinz@nebusec.ai>
-References: <cover.1792734713.git.zhilinz@nebusec.ai>
- <1106d411594bbf7d4ee8deb7f3a0281475c258c4.1792734713.git.zhilinz@nebusec.ai>
-Subject: Re: [PATCH net 1/1] SUNRPC: reject AUTH_TLS on backchannel requests
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+References: <20261021155450.66934-1-phx0fer@gmail.com> <CAM0EoM=XC7V630n8P7_UhECTFDuJcP8XqeYnU+jUG68a78YteA@mail.gmail.com>
+In-Reply-To: <CAM0EoM=XC7V630n8P7_UhECTFDuJcP8XqeYnU+jUG68a78YteA@mail.gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Fri, 23 Oct 2026 14:03:19 -0400
+X-Gm-Features: AclHuK8rCUXyiRobPy7djtua1zoM8eZkl552yg6LsQqdmkpna6KRX0N-ecNhXzg
+Message-ID: <CAM0EoMk4AK_REXaq1FuGWQEzbxvYgZ+b-sjfv7Ws0uuptG4ryA@mail.gmail.com>
+Subject: Re: [PATCH net] net/sched: re-cap skb->queue_mapping before indexing dev->_tx[]
+To: Dudu Lu <phx0fer@gmail.com>
+Cc: jiri@resnulli.us, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-
-On Fri, Oct 23, 2026, at 1:55 AM, Zhiling Zou wrote:
-> svc_process_bc() processes reverse-direction calls with rqstp->rq_xprt
-> set to NULL. A backchannel caller can supply RPC_AUTH_TLS, which selects
-> svcauth_tls_accept(). That handler dereferences rq_xprt while checking
-> for transport handshake support, causing a NULL pointer dereference
-> before the RPC program can reject the request.
+On Fri, Oct 23, 2026 at 2:01=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.com>=
+ wrote:
 >
-> Reject AUTH_TLS credentials when no service transport is present. The
-> backchannel request is then denied without accessing rq_xprt.
+> On Wed, Oct 21, 2026 at 11:54=E2=80=AFAM Dudu Lu <phx0fer@gmail.com> wrot=
+e:
+> >
+> > qdisc_restart() computes txq =3D skb_get_tx_queue(dev, skb), which inde=
+xes
+> > dev->_tx[] with skb->queue_mapping and no bound.  A tc BPF program
+> > attached to a transmit qdisc can store an arbitrary __sk_buff.queue_map=
+ping
+> > after the tx queue was picked; that store is not re-capped on this path
+> > (the existing cap in netdev_tx_queue_mapping() only covers the
+> > skip_txqueue path), so an out-of-range mapping indexes past dev->_tx[]:
+> >
+> >   BUG: KASAN: slab-out-of-bounds in sch_direct_xmit+0x744/0x89c
+> >   Read of size 8 at addr ffff00000e0802d0 by task A-254-2_S4/100
+> >    sch_direct_xmit+0x744/0x89c
+> >    __qdisc_run+0x34c/0x1d04
+> >    __dev_queue_xmit+0x1aec/0x306c
+> >   Allocated by task 1: alloc_netdev_mqs+0x758/0xfa0
+> >
+> > The same stale value is then handed to dev_hard_start_xmit(), which
+> > reports the same fault.  Re-cap the mapping with netdev_cap_txqueue()
+> > before it is used to pick the tx queue.
+> >
+> > Fixes: 10c51b56232d ("net: add skb_get_tx_queue() helper")
+> > Assisted-by: LLM
+> > Signed-off-by: Dudu Lu <phx0fer@gmail.com>
+> > ---
 >
-> Fixes: 74aaf96feaca ("SUNRPC: Teach server to recognize RPC_AUTH_TLS")
-> Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
-> Assisted-by: LLM
-> Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
-> ---
->  net/sunrpc/svcauth_unix.c | 5 +++++
->  1 file changed, 5 insertions(+)
+> I did not look closely at the rest of your posting, I suspect there
+> are similar issues in some of them:
+> please please since you are using AI ask it to check if there is
+> already a submission for what you are trying to fix on the list.
+> See:
+> https://lore.kernel.org/netdev/QDISC-MD1X.v4.r0.20261021042722-1@mojatatu=
+.com/
 >
-> diff --git a/net/sunrpc/svcauth_unix.c b/net/sunrpc/svcauth_unix.c
-> index 31a1bc60a5f6d..bac38f3ce9a6c 100644
-> --- a/net/sunrpc/svcauth_unix.c
-> +++ b/net/sunrpc/svcauth_unix.c
-> @@ -1128,6 +1128,11 @@ svcauth_tls_accept(struct svc_rqst *rqstp)
->  		rqstp->rq_auth_stat = rpc_autherr_badcred;
->  		return SVC_DENIED;
->  	}
-> +	if (unlikely(!xprt)) {
-> +		/* Backchannel requests do not have a service transport. */
-> +		rqstp->rq_auth_stat = rpc_autherr_badcred;
-> +		return SVC_DENIED;
-> +	}
-> 
->  	/* Signal that mapping to nobody uid/gid is required */
->  	cred->cr_uid = INVALID_UID;
-> -- 
-> 2.55.0
+> I got my report from sashiko after submitting a fix for a related
+> area; hopefully your guy is not just scanning the mailing list...
+>
 
-Commit a54a573bceaf, "sunrpc: reject AUTH_TLS on backchannel to prevent
-NULL-deref in svcauth_tls_accept", now in the nfsd-testing branch,
-already addresses this issue. Thanks for confirming the finding!
+I should have added, for that reason:
 
+NACKed-by: Jamal Hadi Salim <jhs@mojatatu.com>
 
--- 
-Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
+Sorry, I am overloaded enough dont have time to look at the rest.
+
+cheers,
+jamal
+> cheers,
+> jamal
+>
+> > Tested base
+> > -----------
+> > Detected on Linux 7.3-rc4 (commit 93f51579e7df), arm64 QEMU guest.
+> > Re-checked against mainline f47d223627f8 (v7.3-341): the affected code
+> > is unchanged between the two, so the bug is still present there.
+> > Checked against linux-next next-20261021 (commit 9a482184d910): the
+> > affected code is unchanged there as well, so the bug is still present i=
+n
+> > linux-next too.
+> >
+> > Reproducer status
+> > -----------------
+> > A reproducer was written and executed on an arm64 QEMU guest (KASAN,
+> > CONFIG_NET_SCH_PRIO=3Dy, cls_bpf); it fires at the claimed sink, and st=
+ill fires on
+> > a kernel built with ea4d4b5dddb5 applied.  The reproducer source is not=
+ posted
+> > here per Documentation/process/security-bugs.rst; it is available on re=
+quest.
+> >
+> > Triggering conditions
+> > ---------------------
+> > CAP_NET_ADMIN (attach the classifier and qdisc).  The residual is the
+> > store made by a tc BPF program attached to a transmit qdisc, which ea4d=
+4b5dddb5
+> > explicitly scopes out.
+> >
+> > Notes
+> > -----
+> > Built and checkpatch-clean: this patch was applied on top of 7.3-rc4
+> > (commit 93f51579e7df) and a full arm64 kernel (defconfig) was built wit=
+h
+> > it -- no new warnings or errors.  scripts/checkpatch.pl reports 0 error=
+s,
+> > 0 warnings.
+> >
+> >  net/sched/sch_generic.c | 7 +++++++
+> >  1 file changed, 7 insertions(+)
+> >
+> > diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
+> > index 6f6a6f0d5eb0..c326d12942e5 100644
+> > --- a/net/sched/sch_generic.c
+> > +++ b/net/sched/sch_generic.c
+> > @@ -432,6 +432,13 @@ static inline bool qdisc_restart(struct Qdisc *q, =
+int *packets, int budget)
+> >                 root_lock =3D qdisc_lock(q);
+> >
+> >         dev =3D qdisc_dev(q);
+> > +       /* A tc BPF program attached to a transmit qdisc can store an
+> > +        * arbitrary skb->queue_mapping after the tx queue was picked, =
+so
+> > +        * the value reaching here is not necessarily one the device ca=
+n
+> > +        * serve.  Re-cap it before it indexes dev->_tx[].
+> > +        */
+> > +       skb_set_queue_mapping(skb,
+> > +                             netdev_cap_txqueue(dev, skb_get_queue_map=
+ping(skb)));
+> >         txq =3D skb_get_tx_queue(dev, skb);
+> >
+> >         return sch_direct_xmit(skb, q, dev, txq, root_lock, validate);
