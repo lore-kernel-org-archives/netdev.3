@@ -1,80 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792754770;
-	b=zlX2C5V/7Z+8WgREvBMo3A4jVVurqK8yyFaF38uJit1gWHCGdiweFuv0iuYyanETJ0F9
-	 HIDmvUb+YV3mns3G/X1ke3nfQQTsIDF+SD1yM8zbHmMkXPLPdn3bgFT50SLiuFxtqSMHC
-	 c7rXuuGrhfxoEAGZCNRjJ0D4f5d2RsypiEAMQ8C9LNrLqw/JOZYozRqhwNo4EykEQB32c
-	 qdr8mSTY+hdZgYep3VCIXaVINYPwtaqIhd/XnzcqOf+6qqFgFyjnJTqbhHLxOIWSLWzhW
-	 mu1ZLtveR+hwhB3fwEuZmz9xtr2QcllrkAXSgGzw4/wvOdKqQeI8F1DuWk1EOdKqvbQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792754770;
-	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
-	 X-Endpoint-Received:X-Original-From:Reply-To;
-	bh=Hl6OwVZ5bfma7dS04u2M8Jjs+LO+1NmT4CFYhcIGnKw=;
-	b=a8rOZHjxi2lXpLer+qNrjoSVBg2NcV1/YQIZ1obWBIRFHPfCEx9pgWl9+BbQ2ehBnDQK
-	 ATUq0S5GMat54512t+Jh9STzjNUavDQmHY/ktN5gXqrmay2PkXmRG6dzF0U0w+80iJ7zQ
-	 ay4L4sznNXmobgYnYGUGlFeqeO8VY7auzRUaJK6QK5CRGwEBnP8Sh2DS5exkuq5zZbpCl
-	 tFNpGt6E4x4387BbDU8fludf9WFCtPL8QhSSPsoduNOU/GbcHmiK3eNqTJGxMciNEEI2x
-	 6ssHZAzDIU2T5F9m+5E1nfSdnY+a9d3MmKJj14d1DAZOsG2YtmIZiHIpaMd5vGoCPLg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gn7xKKDL;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.57.252
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792755450;
+	b=wvlduGfTRMlQTIFtrRgmDVdKGDtQ+VSkEBn+CUH3Uq5BGakqBm8fEVnY0HO8RwYbY/ft
+	 K7wMCio9sBhPlOrn1JesrrAnpHlmPb2YwZIBIokNtHX3EBR5G8LiFQ5LhNyKn5Z8EXB2C
+	 BR6eHkH782iyhBgJsZf7yflIQDmKURqCDV+NIzqWcI0hkb71y6vTOqcs1P41hYJNPojdp
+	 rvvPlc/7ZSQSH5xLhn1ZlZbJ0VHRTO0h3Lkt8bIH/LT16bRKOz6KKuLPPCD8T2LRqWIbt
+	 nZt7Y1O2aqxwUqEpUP+32G9tSGjDKdOs5n6JwTRF/K7cTwefixfQx4Q5m4t0v+Q1aSg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792755450;
+	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
+	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=XLlV9O6j8cojHKstWOoQP9wgp5SmAko7Hyc+l00NrYs=;
+	b=RGv3G/FHFGgaDSRx20//gHgrxBNzfJ8PA5FQaaa6dU+DClCFDiXo1c3HSxMEMWf8nYiB
+	 3ONF7TZnEBW6zjzR8ff07/15Vk9JELe8fDd7MDiOqku8ZJjUgPYmNvkPG8NnM9yFAAaL3
+	 j1WHhYbLjnwUTYoCLuTerICic5vUYjRIYG/+H8EPiz0irS2Kmw6DjBpABlyyQjiI/pAQW
+	 2v+/xDlTMuS2mhpDDkPH5lrMgepvWX2U8jiKDdU70l0D+vYSJSiR+0xkZeHsmo5we/Zk4
+	 B3BMK/YXlY+Sa63DVedHADL3QCVl14iNRBxes1HPlvJsQXmpjpdRtWvw1rtTrJe6ueg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=qq.com;
+	spf=pass smtp.mailfrom=qq.com;
+	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=e7BYo4bN;
+	arc=none smtp.remote-ip=162.62.57.252
+Received: from out162-62-57-252.mail.qq.com (out162-62-57-252.mail.qq.com [162.62.57.252])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9761B606A320;
-	Fri, 23 Oct 2026 11:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 387F6606A31A;
+	Fri, 23 Oct 2026 11:37:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 387F6606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gn7xKKDL
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1792754770;
-	b=HAlkIuiO3pLskaN6bTRxPJUvDHrvgi2lytPezK5VrkFPIrsn+VJcVC2i+cAj1abjBEy2
-	 38zbFmxKecgDy5+6fjt7y6CDsR5ytwmegwRnqJZNTRwFBKQb9hO9/A5Lbu667k+ZFFok3
-	 o5lrvWALfGvedd5T3oUgHNaWV5YmRvEiANWhPDbRzyX8KfoaPBCgeYzgPreLO4fsJXRkl
-	 Z1mViKCsT01PZB0g0kRIIIFuCE917nUb4GGmvIU27YzEInfQCWUdB5AVm8JJ2NK8IjwW7
-	 9RaLpx1Ejwo3iqq2jT0GbevyYHt0rkYh/2pEtUhZ6wbhCeLPl3eiOVFvql3v9Cu/fRw==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1792754770;
-	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
-	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To;
-	bh=Hl6OwVZ5bfma7dS04u2M8Jjs+LO+1NmT4CFYhcIGnKw=;
-	b=EzjQPkKfnd9wU5fOrvhCfKjtT0JkT/godhynxe7E8CRRJRczDR74YAHNgbRZbREJSD2s
-	 bONiu1N6k4r7PTE1dW7YgwxjJ5HjjlYv4de56pDKd+3cE2pgPmU10xdQ8bP8Oqe0HySTi
-	 oigU0hG+y8HcQ0Yw7deNZFDQ/TIFpw6YjjWmmC3n6UUEt+11Ji1weO3RoPGirRVJ1UigG
-	 iEtRwBFLmkOtA7DRRP8Vij4fhKvbhDBZlYlwyashQTE3ywZbZuPVWEHV2rGqC0zrvueZC
-	 cMJ7rmXuckS74miHVTWFb7yJk3wbXEOW6fkZ2m5VGOohJFjkLCLkRAaDJ0vtZcM919w==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 2FB961F01825;
-	Fri, 23 Oct 2026 11:26:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792754770;
-	bh=Hl6OwVZ5bfma7dS04u2M8Jjs+LO+1NmT4CFYhcIGnKw=;
-	h=From:Subject:Date:To:Cc:Reply-To;
-	b=gn7xKKDLwn8H0xl/njw3q3rdkUUI19SWcznrivux7PZgZoKvZDdkOBmbDKNRdhsNs
-	 JwJJvk70yfU8y8wFwHiUpHqM71hdXJJIr8FH7st7vUlN18rxdZaK4I+bfuujqQEtvg
-	 xmhIoXKoUczDIzLvXffOugu1Ja9XtF1+mGvRRSiu15WOhkZgEPMjUDeA+xQwnCWfJL
-	 cron273w/+fWYbllKOBsvLOJSb38uN4hzwZjLNLNs8e09pPH6OnbRWt+2HyKsufa0c
-	 mxLCUfZHn9FlrgnaFlDnkmW6k4tISYDnmsbLR8hgrYKp8JyXWBKq07zESrXKi54y6U
-	 WOinIHTQwuyKg==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 8837F444E3;
-	Fri, 23 Oct 2026 11:26:08 +0000 (UTC)
-From: Jhonata Poma-Hansen via B4 Relay <devnull+jhonata.poma.gmail.com@kernel.org>
-Subject: [PATCH net 0/2] netlink: fix a dump livelock with a notification
- queued
-Date: Fri, 23 Oct 2026 13:26:06 +0200
-Message-Id: <20261023-netlink-dump-livelock-v1-0-478214a635d2@gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=e7BYo4bN
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1792755444; bh=XLlV9O6j8cojHKstWOoQP9wgp5SmAko7Hyc+l00NrYs=;
+	h=From:To:Cc:Subject:Date;
+	b=e7BYo4bNDl1P+pXOJHoF1uMV78YoOV4PWzR1FzMsepUr11xgoerjSPYS5cIrv+fYY
+	 C+afxrmr6WmUDlSYwqEsPuXgcAqSDK5dOzB5j/paveUZqXDWW/i2lBjJyKuKAYDUYi
+	 iapkjEM1CCIigUD/MxbqTKOgpD93orpVNFVCCwlo=
+Received: from [172.18.4.77] ([111.31.227.58])
+	by newxmesmtplogicsvrszb51-1.qq.com (NewEsmtp) with SMTP
+	id 9559A08E; Fri, 23 Oct 2026 19:37:21 +0800
+X-QQ-mid: xmsmtpt1792755441tkuckw11p
+Message-ID: <tencent_803981983647D9F9444561A4227F138C600A@qq.com>
+X-QQ-XMAILINFO: OV65e10zTgieRLB/ISjk57I3I/ACNqrV9ETr8cRtQhEGIMkbue3N1uA9CWsDL6
+	 gxXXR0JzHir1WmRwzcMYeoRgEc1AD+GsZFoBGNBhy3ych4dOmoviNqNIOHOZqLHDUX1Ve3R54jmb
+	 vKqvUcYSFrsIkbH72Xf3tkMFuRVPEOvo0f8aD8XD0fqTfxW5kq2oH/YoH7JbgDm3Iz+7WzwkCfpr
+	 VZWNKKpW7GnhRiK4F+wafNQHDHDWn789DmgMXpUwjX4CXTWD/bmIpFi3GcjeJEp1hE5vAX21se6A
+	 2xAfnF35bWILeF6x5NMsi6oK+siXcQYq09Ip+JzohXtKXfWRjNaioODjBnPVlhmDgyYtOkApIzKw
+	 TdWAGJMBEpCjX9ZF5SQAWbmVe9iQRTh268iFVWej7//Lw5onR3YFv6HuQ3RgQx1yBRPGrXKcSW18
+	 cGLWKnFoVeclDhq5G2NeeZGxnU3avoC4Jn4c2zZBccRYAA2zR0Tca4m8bxS1ujA4f1nA4+2VUUCJ
+	 MDyWqCMFq8b+VDRt5tNbjTR9IQ0u3oGTjd3RQJgySPW2luu0p3HdQ6cEDvoi83uqrm1+li4YL62z
+	 Z336c2uxDhsO9SoZgu9E+Fbmd7IFHXP4YvSPtXchNFwc0+NHcTuT5v4nRqI93lD/G6MV/1Ufhto3
+	 5zx2y4W87AuwxKgond+xSTG2DdVF7aflUNYQwlj9mko0wV2ThWFlTzjwANN51Lg5PJqpO4w3VrDs
+	 yP49B3lmvZjmFp3uDjjLtni/70fs49q8ZL5ZSCluI06Sn+FID6mNOR5b/eZqYRBHWas3aHbzom4Y
+	 ciIQj9rhYLpOX2TmNp75XsiGQUBA2K+5zU/q6RMCiE/YC6iy9fBAYlOlopSaDHphTarudOdBKJbG
+	 Xlvteow+vM7V3+5iB5i0mgfPkOEqWd59OkTO5scMV/W9XCR8yJPacIh+9jnNezz/Rtgq7lJk1e6P
+	 bMVC6weZNzr3f39D1CdoP0x7DtkUw7UxruNkup0oXxTZm6kTh/JY5uefhAm9vcTFlCo7pvVfUsEJ
+	 7bie9zybauGEXBCluj+Tm7aIIUoEbbcfRepWNfUQfJeTeokXpk
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
+From: Guikun Yang <yangguikun19@qq.com>
+To: Michael S. Tsirkin <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>,
+ Eugenio Perez <eperezma@redhat.com>
+Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] vhost/net: initialize the whole negotiated RX vnet header
+Date: Fri, 23 Oct 2026 19:37:20 +0800
+X-OQ-MSGID: <20261023193720.39712-vhost-yangguikun19@qq.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -85,68 +77,93 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAE5E22oC/yWMQQqDMBQFryJ/3Q8mgVq9SulC40v7axolUSmId
- ze2yxmY2SghChI1xUYRqyQZQwZ1Kci+2vAES5+ZdKmvqtSGA2YvYeB++UzsZYUf7cC4GeuUcXV
- VtZTbKcLJ9/e9U07o8Zdp6d6w83mkfT8A6i94qX4AAAA=
-X-Change-ID: 20261023-netlink-dump-livelock-e83cf13f977a
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, Kuniyuki Iwashima <kuniyu@google.com>, 
- Jhonata Poma-Hansen <jhonata.poma@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1647;
- i=jhonata.poma@gmail.com; h=from:subject:message-id;
- bh=UT0ToEDk7Z7G4Gj0wKFXaMDLxsm+hOMUG0sgMAFq9eI=;
- b=owGbwMvMwCX21S6Y7aK9oS7jabUkhqzbLv5Gktuebv9ufmJaWvKHSO97p1pyn3etSgnK2jQ1Y
- 9WCg4+XdJSyMIhxMciKKbL4nH3cw634ccf/hzsuw8xhZQIZwsDFKQAT2fWH4Z+WKmu2XcWpknWb
- Eq3XvjvEnnXQwMrh9Y4Fvy1NDnEcjzjHyPDr4cYzvueNNZiL78YfMqrbslzMz//xhK7Eqw1fdjL
- OOcsBAA==
-X-Developer-Key: i=jhonata.poma@gmail.com; a=openpgp;
- fpr=4CCDE38C0B21F1B8FFE1B8D3F53E5306D13F312D
-X-Endpoint-Received: by B4 Relay for jhonata.poma@gmail.com/default with
- auth_id=1288
-X-Original-From: Jhonata Poma-Hansen <jhonata.poma@gmail.com>
-Reply-To: jhonata.poma@gmail.com
+Content-Transfer-Encoding: 8bit
 
-A netlink dump that starts while data is still charged to the reader's
-socket fails with ENOBUFS when the reader's receive buffer is small,
-even though a minimum size skb would fit. The dump stays marked as
-running, every recvmsg() retries it, and a reader that peeks before
-reading, as libnl does, spins forever.
+When VHOST_NET_F_VIRTIO_NET_HDR is negotiated, handle_rx() builds the
+virtio-net header itself and writes it into the guest buffer.  Since
+commit bbca931fce26 ("vhost/net: enable gso over UDP tunnel support.")
+vhost_net_set_features() raises vhost_hlen to
+sizeof(struct virtio_net_hdr_v1_hash_tunnel) as soon as one of the UDP
+tunnel GSO features is enabled, but handle_rx() still copies only
+sizeof(struct virtio_net_hdr) (10 bytes) and then writes num_buffers at
+offset 10.
 
-I hit this with "iw dev wlan0 scan" on an arm64 board with a 6.6 based
-kernel: iw hung at 100% CPU in 5 to 10 scans out of 15. A kprobe trace
-showed the scan dump starting with the NEW_SCAN_RESULTS notification
-still charged to iw's 16KiB socket, because iw had preempted the sender
-before netlink_broadcast() returned.
+The remaining 12 bytes of the 24 byte header (hash_value_lo,
+hash_value_hi, hash_report, padding, outer_th_offset and
+inner_nh_offset) are therefore never initialized, and the guest sees
+whatever its RX buffer contained before in fields whose layout the
+negotiated feature set defines.
 
-Patch 1 retries the dump skb with the minimum size before failing.
-Patch 2 adds a selftest which starts a link dump with a link
-notification queued and reads it like libnl does.
+Reproduced on 7.3.0-rc7 with a userspace vhost-net "guest" that fills its
+RX buffer with 0xaa and negotiates VHOST_NET_F_VIRTIO_NET_HDR,
+VIRTIO_F_VERSION_1 and VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO: offsets 0..9
+hold the vnet header, num_buffers is at 10..11, the payload correctly
+starts at offset 24, and offsets 12..23 still contain 0xaa.  Without the
+tunnel features the payload starts at offset 12 and nothing is left
+uninitialized.
 
-Tested on net 734bef548a96 in a KVM guest: without patch 1 the new test
-fails and a standalone reproducer livelocks in 3 runs out of 3; with
-it, netlink-dumps passes 5 of 5 and the reproducer completes. The
-existing netlink-dumps tests pass with and without the fix.
+Copy the whole vhost_hlen out of a zero initialized header of the
+largest layout, and rewind the iterator so that num_buffers keeps its
+position right after the legacy header.
 
+Fixes: bbca931fce26 ("vhost/net: enable gso over UDP tunnel support.")
+Signed-off-by: Guikun Yang <yangguikun19@qq.com>
 ---
-Jhonata Poma-Hansen (2):
-      netlink: retry a dump skb that does not fit with the minimum size
-      selftests: net: netlink-dumps: start a dump with a notification queued
+ drivers/vhost/net.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
- net/netlink/af_netlink.c                    | 11 ++++
- tools/testing/selftests/net/netlink-dumps.c | 93 +++++++++++++++++++++++++++++
- 2 files changed, 104 insertions(+)
----
-base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
-change-id: 20261023-netlink-dump-livelock-e83cf13f977a
-
-Best regards,
---  
-Jhonata Poma-Hansen <jhonata.poma@gmail.com>
-
+diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
+--- a/drivers/vhost/net.c
++++ b/drivers/vhost/net.c
+@@ -1161,9 +1161,15 @@ static void handle_rx(struct vhost_net *net)
+ 		.msg_controllen = 0,
+ 		.msg_flags = MSG_DONTWAIT,
+ 	};
+-	struct virtio_net_hdr hdr = {
+-		.flags = 0,
+-		.gso_type = VIRTIO_NET_HDR_GSO_NONE
++	/*
++	 * The negotiated header is struct virtio_net_hdr when only the legacy
++	 * layout is used, but struct virtio_net_hdr_v1_hash_tunnel (or the
++	 * v1/v1_hash layouts) when the corresponding features are enabled:
++	 * size it for the largest layout and let vhost_hlen select how much
++	 * of it is sent.
++	 */
++	struct virtio_net_hdr_v1_hash_tunnel hdr = {
++		.hash_hdr.hdr.gso_type = VIRTIO_NET_HDR_GSO_NONE,
+ 	};
+ 	size_t total_len = 0;
+ 	int err, mergeable;
+@@ -1260,17 +1266,26 @@ static void handle_rx(struct vhost_net *net)
+ 		}
+ 		/* Supply virtio_net_hdr if VHOST_NET_F_VIRTIO_NET_HDR */
+ 		if (unlikely(vhost_hlen)) {
+-			if (copy_to_iter(&hdr, sizeof(hdr),
+-					 &fixup) != sizeof(hdr)) {
++			/*
++			 * vhost_hlen is never larger than the header above.
++			 * Copy all of it: the fields vhost does not provide
++			 * (hash and UDP tunnel information) have to be zeroed
++			 * instead of being left with the previous content of
++			 * the guest buffer.
++			 */
++			if (copy_to_iter(&hdr, vhost_hlen, &fixup) != vhost_hlen) {
+ 				vq_err(vq, "Unable to write vnet_hdr "
+ 				       "at addr %p\n", vq->iov->iov_base);
+ 				goto out;
+ 			}
++			/* num_buffers follows the legacy header */
++			iov_iter_revert(&fixup,
++					vhost_hlen - sizeof(struct virtio_net_hdr));
+ 		} else {
+ 			/* Header came from socket; we'll need to patch
+ 			 * ->num_buffers over if VIRTIO_NET_F_MRG_RXBUF
+ 			 */
+-			iov_iter_advance(&fixup, sizeof(hdr));
++			iov_iter_advance(&fixup, sizeof(struct virtio_net_hdr));
+ 		}
+ 		/* TODO: Should check and handle checksum. */
+ 
+--
+2.39.5
 
