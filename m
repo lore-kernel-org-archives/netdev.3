@@ -1,111 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792732190;
-	b=E/lQuLZj5nd5eIon8rdKiZpbuWioSTPodvUVxfC9hlHc8XGb+JSmxy/30XEJcy5+eD9y
-	 g7VdLQeLVkHIeVGi8w3RcHS3D4Xmehp2hnPzA36YYnLdMOmPo/RzrKqX1bAwCUG9RKyUW
-	 +YTMv2PDQVm7EKbM3g8iDfA6lOLX2BIcDpdMrCXGNyuGh+tSHA6eC+o/U9Qg8s5grfgDl
-	 Y8oo7FQWdY0vSiZkU4r9U9DFAJ8VpsJ5O06//OAH8PYnsRD1+4wVcv5BaK1M2qTlbqRYn
-	 ZvkFublzb01GUUz8Xs/95pxAi0evUUvObE5ZyxZ2lWiICwmLEChVfdM74C87hdLmv3w==
+	t=1792732451;
+	b=ZSE2PPRpGzpr6DumhZ5XqnG/8h8OEI+cVJjAaCHMMv+DS++jn1Cw/wtVB50LcXosUDVL
+	 dxItnJ1mB7EbpX4XvR0K7/zcA4q3bjoC8xTdODrZCo0BPUXn7e6EvqAAuVRkEIyxV6lRX
+	 lo31EaSAJx6+xeVaDJgGS5sUFZu7jbf6TU54RSPLrFXwd90wGSgy//FaZjuFlvtN5mhhU
+	 vekailCqJivcMGEzx0NQZ145zZalxsgsRDtqHGugQaOr23y5QFF6neeEwlVLuLCMuqXRB
+	 6btdt67E+USObFEXJpzeiF0on9IiUsNMR8v7z8iY39pM6s9oJfAAvEm820ZMRSk+k8A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792732190;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:X-Authority-Analysis:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=LALDteG/UZkflF4BJzSKAZvIyXFZw8pks8R9WPb8HHc=;
-	b=rQJoF0VqxvOm/QMiyXZTBeGBWjM2TY3JSW5oxUk5j0ZAuVLtriPBimGa3QdEDzRM+CEx
-	 o/LFb8OQZkQChwI+CyUhHNnDahhSmME46uiHRIDWDnO6FTlqb4dTFZrcPbryoLpu0uSpp
-	 +cVrnXHSmOR5pEpluLpWnfLLcG4G6HMDIhU8ZCnZLR479HZlL1gkBsQVEEKLOquGhL3sj
-	 EGoWL42R8EG42x57AUP7RcrRqMon2rN47ZJNZIbXA7HNwie3GKyoDWq/IhbRepRNYkw4M
-	 ONmCxEqMziDe3TpDPAVPC1REwLAU+/3y/vCrd8dMmyb/vDeNEDCGG1QKnRYj5B7Ih1A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792732451;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=XmOqjm4WHiCD0kYoV42fLK9W2WlzXMBzTDJHyAOsiDY=;
+	b=Q6xHSN6KRP04jmCzVkStMCW6Z2MRJroahJCRoogqdwNyB3f37LyOk+AkZzNHwB/WqanF
+	 AahEAFo2raGobiH47GZTrFfrJGW9aSF6H/pYOfxnDa5Dxby/+KTGuCZLavLnzRdNE09Z4
+	 2XI7MZeafUT5C0PkZN5h21aDTQNgz2MIPsZoRDmDZnFwelHNyju2nh1SHJHFwT4kQDWnB
+	 XmPbYzd2LX61J86DMW2Fm1c4rV7mGX59IIZKKDEPZnF+wBsN37VikLeFt4YB1+ekhhHlN
+	 SNjdxDqrjiKr6lxSt9rHueUFFea/fO7KQRh3m1LVDsU8oRfmrWcCQwN0J6CrxnQREuA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=RJeS5+Eo;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=JPUkT2RF;
-	arc=none smtp.remote-ip=205.220.180.131
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E9SBfMhd;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A65606A31A
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 05:09:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 52A65606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1AB7606A320;
+	Fri, 23 Oct 2026 05:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=RJeS5+Eo;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=JPUkT2RF
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69N1F939988705
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 05:09:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	LALDteG/UZkflF4BJzSKAZvIyXFZw8pks8R9WPb8HHc=; b=RJeS5+EoDeJi1vMg
-	Eiz3d3BfH+lSlytnorw2SryWcFbynI/dVqxcy0fjgIC57r2LwsLH1vdfRQqWpc/3
-	XtT33eqAUXP0og0TFQfwbjN/I5yOCqv0q+EWg2TN50oH4Os+BXyp6EvmxddK3TkO
-	DAfkD4foA3KcF8+IYejIyfJo7QBe+Yicvz+gWU+BFXSAw0eU+3c4SWH8Y5O4dKLc
-	EV7QxeumnzfGLH91sexZ+ZTcQiHRxPitRxUmPFWcu2LKxG/I32amDVqdyzXsXFgm
-	tNo02jRB0B1ojUjcs0+3zXAkPHcRyU4I2M0s+ATF6DBH8y4wYmnWaAMGTIXRXGWc
-	of3Qhw==
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hfpahtdm0-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 05:09:49 +0000 (GMT)
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3ab08c4aca5so127143a91.0
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 22:09:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1792732188; x=1793336988; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LALDteG/UZkflF4BJzSKAZvIyXFZw8pks8R9WPb8HHc=;
-        b=JPUkT2RFfnDkEYnsIe1uPVXZwSbW8bVDshmIMFoxfTg+nPg4wq1FDZg8bBQKhXh+pA
-         fsqBSZEiSAqg5jxMjL/FCBff9W0NjYbTt6IyIi1uND/sjVZZrcg/W5Xs3634sbc+I0iO
-         PT5CvIHB4aVvMeSxCl8HFZ8YHI9r8XMtCbeykptY4+W8cgRAwcWreTlBkKH56WQNHb66
-         FmMNkaZJxTuud32eI79jY2lvjdmrpn09Xf2NjZN9hQG/sIpx/MaXi3+weRsDfUQsiebj
-         lsJI6mLNO51RpFstTiFlUjl3dvgoei2jDeoSo+5LMcYfRRIEpdgve06tPMeoQjMXKyxe
-         N/Aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792732188; x=1793336988;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LALDteG/UZkflF4BJzSKAZvIyXFZw8pks8R9WPb8HHc=;
-        b=LSzwieC4qD57IzoV/7StQLa93aU5zlaB+gHFLUgthGwsltu6DIDn2bxHB6P2JqNh43
-         GLH4795W3PPOdOtme0GKuleed/oY7XJJCEg2DW2QYFyPTH0bjqK4eWS4e9YaM2fJOFFj
-         6HfBxJINNQKQ2mn/zgrSGAayNZRtSfP/DZVmT+Y8RCeunFqGOGqt2l5QLtVFUNMsJQYl
-         PjQE6hZvYT3kSwLyUkgf+aia1NZNhxMx/7RWwC+yYoeU3TaNCe/j9496jJML+n5E1Hup
-         btGTWUf3qq9q3jWkyln/e10qhUBu24/APoyWxXYhWI9NM6d5jx7ZyB3CQSKijNQZu+kJ
-         1bLg==
-X-Forwarded-Encrypted: i=1; AKwUvBxGohvpFpEwz6dw9y+INW0GkXw0OdgKoL4+3+QaLuFraDwdcuf3UbyEXJar5rq8P6cRrk6J54w=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJZNumTbtheeY4PDMbStoQCPM9CwzeN9Fo4NDRI2G7bwbfii9pj
-	NZheqUUaU345AKkEr5duQplRSNP4IysVChQbqlTdXzHXs2/B+vChzktxrIvLkmp2naX79Z8FKdy
-	3I4oyS6MnZ+BycfonBWCFmpgW3zg/GG9gljYCGG4N7efWH9JRKrZ2hwf7CCnx0PJ2n4o=
-X-Gm-Gg: AYBFou16sA++SEfg3UiqJZFkCfApIAmib9uwY4b4u1Vbki9hGrshSj1ourKj7XtZcsZ
-	cfubfGF9IuVir8Eoj/G9bnEU9uo9h53DxDZF6eyrhJpFVpBiLoRyBIgPg+DIRQVRDlF4XhQnM5K
-	dTM0Ec5EtUc4J7gJdaOfPs/OR4HLFLx9EEOKg0lUc9S7RNfm+QB0tdoPqBbxJUIxbw/5LTGWVVH
-	XBQIzR/SLIqKJbeiNFGeour1gCvYLMQ4gV4BQOUhBgLmYfqS9f9c33JzDjE7joJ9CEVG+0MmJLN
-	xh2/UjR47Hw9tUtH+COPb+LzPnoug6zFH+9D7mPluhwOpSeeHH+dUlU24zHeGhe1m2/HrEhaBPD
-	SofgwPLdTWGZPbX/C67QIanLq0kKsHmzLVKZyHjJRqKJuA4j9g20eJbY8+iyS/sPw
-X-Received: by 2002:a17:90b:4407:b0:3ad:50ef:f5ef with SMTP id 98e67ed59e1d1-3adce08123cmr1517871a91.3.1792732188109;
-        Thu, 22 Oct 2026 22:09:48 -0700 (PDT)
-X-Received: by 2002:a17:90b:4407:b0:3ad:50ef:f5ef with SMTP id 98e67ed59e1d1-3adce08123cmr1517840a91.3.1792732187636;
-        Thu, 22 Oct 2026 22:09:47 -0700 (PDT)
-Received: from [10.249.18.99] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3adcb1f93e0sm1803501a91.15.2026.10.22.22.09.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Oct 2026 22:09:47 -0700 (PDT)
-Message-ID: <8c868c2a-d5f5-442b-b7cf-997f377ac90c@oss.qualcomm.com>
-Date: Fri, 23 Oct 2026 13:09:44 +0800
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E9SBfMhd
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAFFB1F01828;
+	Fri, 23 Oct 2026 05:14:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792732450;
+	bh=XmOqjm4WHiCD0kYoV42fLK9W2WlzXMBzTDJHyAOsiDY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=E9SBfMhdaeXijwTiDxd6JAnOZS4oHp1ESRlG2s4Jti+NZn614SjnsJ2/5sd0WyAT1
+	 hBflTigqeufbQM4lX6OPhDYHlJeDfhmveXMe7v9mhJJm8B7RPBcXgzL8L90w5yQtMG
+	 APPmxfEVqgfEu8eNJOEcQBUVwmEH/ijMF1BS62P25RyHhds7JynLvUox8b2ZZZhvp2
+	 0kpZUD1UL32vtZPDHWnObVP2JIj8KxawDsqTZjvBVQIFbu5tVGtAP+lyO/FvywvtmC
+	 9BvUZsMTBcpI5SAfV359TA27inPv1kHA0n13nZb/B7mygkGJlSJq63Orq7k5AqUgDx
+	 UeHjx7iBv5z2g==
+Subject: Re: [PATCH 2/2] net: qrtr: hold control packets behind the HELLO gate
+ instead of dropping them
+From: netdev-bot+sashiko@kernel.org
+To: igor.opaniuk@oss.qualcomm.com
+Cc: mani@kernel.org, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, pranav.phansalkar@oss.qualcomm.com,
+ christopher.lew@oss.qualcomm.com, deepak.singh@oss.qualcomm.com,
+ linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Fri, 23 Oct 2026 05:14:09 +0000
+Message-ID: <179273244924.3134.5322268137744281672@kernel.org>
+In-Reply-To:
+ <20261019-upstream-qrtr-hello-gate-fix_b4-v1-2-bd420aec171b@oss.qualcomm.com>
+References:
+ <20261019-upstream-qrtr-hello-gate-fix_b4-v1-2-bd420aec171b@oss.qualcomm.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -115,55 +67,291 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] Bluetooth: btusb: disable by default Qualcomm
- multi-subsystem
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc: Marcel Holtmann <marcel@holtmann.org>, linux-bluetooth@vger.kernel.org,
-        netdev@vger.kernel.org
-References: <50f92fe870de717fca6368e750e0a6cbc8f46597.1792683340.git.pabeni@redhat.com>
- <CABBYNZL_EV5LHaXO4rUGu1jg7domF_h1xfmg1m9odHBfgFPA4Q@mail.gmail.com>
-Content-Language: en-US
-From: Zijun Hu <zijun.hu@oss.qualcomm.com>
-In-Reply-To: <CABBYNZL_EV5LHaXO4rUGu1jg7domF_h1xfmg1m9odHBfgFPA4Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIzMDAyMCBTYWx0ZWRfX94EkpKpLohtq
- KD+igA7pV+ikhG6u6AdF2BHQUdDRrX/xsE1a5zopqCph/Pt0NlKrndbpnvBlZ78IYT1hHDs9sNl
- qHXqpgIIqdT7xAgbph+gEI6/H98xIIE=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIzMDAyMCBTYWx0ZWRfX9eATSk5Y6o22
- 9mgwpGwwVav1LBUPpZEz+IFT2/Y9d9zEi25B7kFAOEOa8ukFqKc8UATGh8o36cEK1wyoN1h0baR
- iiZinQpCcxXBzGw2C6C9UQsdXn8GnCclLhDSS2YtUZWzn1I1synDE9PmhjvKI+fvXF4UhqnN8Cn
- ma5zraYtNrL1JShdK2nN7WOOu3PUZBlM3Qp4YTWG/u02GaWd6kDW36tAEWwY4FgXAZ2/gOiG/qK
- WEEWze64bDnVTNyNtN8X5xrmk2G9LC6GeCLZRO6m+F16ue3U0/xNnz6N1YZXtsxhy+xrB4343Rp
- ryjt2qwAfrwpyaLs6UTtj8mTPZrjAkV1EFC15jlkhwagriWXdb07RVudfsLw077Pcd62iDKSXJ6
- Y4/h39R/sZkJCFiu7wD8ILNr81UOCznma6F35wBg0+UwVjkge+E9UeYtwj21gWBARJMw5PW1Cz+
- rkuH2ynNJWWTBpxba5w==
-X-Proofpoint-GUID: MZzb-sIzUOBybxlIbb2MCbLtgLOxaDon
-X-Authority-Analysis: v=2.4 cv=YIMKWhGx c=1 sm=1 tr=0 ts=6adaec1d cx=c_pps
- a=vVfyC5vLCtgYJKYeQD43oA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
- a=MPfgTQqCwHivTDeqJUUA:9 a=QEXdDO2ut3YA:10 a=zZCYzV9kfG8A:10
- a=rl5im9kqc5Lf4LNbBjHf:22
-X-Proofpoint-ORIG-GUID: MZzb-sIzUOBybxlIbb2MCbLtgLOxaDon
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-23_01,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0 phishscore=0 lowpriorityscore=0 malwarescore=0
- impostorscore=0 bulkscore=0 suspectscore=0 clxscore=1011 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610230020
 
-On 10/22/2026 11:44 PM, Luiz Augusto von Dentz wrote:
-> @Zijun Hu lets us know if you have any problem with it being default
-> n, perhaps it can be default y for a specific Qualcomm platform but
-> not in general.
-Hi Luiz,Paolo,Jakub
+Thank you for your contribution! Sashiko AI review found 5 potential
+issue(s) to consider.
 
-Default to y for the following reasons:
-1) Avoid regressions when moving support for many existing Qualcomm controllers from btusb_main.c to btusb_qcom.c
-2) Align with BT_HCIBTUSB_BCM and BT_HCIBTUSB_RTL, which also default to y.
-3) USB devices are hotpluggable
+Critical: 0 · High: 1 · Medium: 2 · Low: 2
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] In net/qrtr/af_qrtr.c, held socket buffers keep their owner
+  socket (skb->sk) and do not take a reference on it.
+- [Medium] The HELLO is only re-armed when qrtr_node_enqueue() returns
+  -EAGAIN (`if (rc == -EAGAIN && type == QRTR_TYPE_HELLO)…
+- [Medium] qrtr_node_flush_backlog() (af_qrtr.c:353-364) sends each held
+  control packet once.
+- [Low] The check that refuses DATA packets before the HELLO
+  (af_qrtr.c:379-385) and the later decision to queue into the backlog…
+- [Low] qrtr_node_flush_backlog() sends up to 64 queued packets through
+  node->ep->xmit() in one ep_lock critical section, the same one that…
+
+--
+
+net: qrtr: hold control packets behind the HELLO gate instead of dropping them
+
+With this commit, control packets sent to a node whose HELLO has not gone
+out yet are put on a new per-node tx_backlog, bounded to 64 entries.
+Before, they were refused with -EAGAIN. The backlog is flushed right after
+the HELLO succeeds and purged when the endpoint goes away, and data
+packets are still refused before the HELLO.
+
+> diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
+> index e7b3647424b8f..071fa980fae2e 100644
+> --- a/net/qrtr/af_qrtr.c
+> +++ b/net/qrtr/af_qrtr.c
+
+[ ... ]
+
+> @@ -340,6 +343,26 @@ static void qrtr_tx_flow_failed(struct qrtr_node *node, int dest_node,
+>  	}
+>  }
+>  
+> +/*
+> + * Control packets for a node whose HELLO has not gone out yet are held back
+> + * and sent right after it; this bounds how many.
+> + */
+> +#define QRTR_TX_BACKLOG_MAX	64
+> +
+> +/* Send the control packets held back until the HELLO, in order. */
+> +static void qrtr_node_flush_backlog(struct qrtr_node *node)
+> +{
+> +	struct sk_buff *skb;
+> +
+> +	lockdep_assert_held(&node->ep_lock);
+> +
+> +	while ((skb = skb_dequeue(&node->tx_backlog))) {
+> +		if (node->ep->xmit(node->ep, skb))
+> +			pr_warn_ratelimited("qrtr: held control packet to node %u lost\n",
+> +					    node->nid);
+
+[Severity: Medium]
+If ep->xmit() fails here, the held packet is gone. The original sender got
+rc == 0 when the packet was queued, so nobody retries it. The flush also
+keeps going and qrtr_tx_flow_failed() is not called.
+
+Are transient errors likely right after the HELLO? On glink the HELLO uses
+up a remote rx intent. The next send can then go through
+qcom_glink_request_intent(), which returns -ETIMEDOUT after 10 seconds or
+-EAGAIN when the remote declines:
+
+drivers/rpmsg/qcom_glink_native.c:qcom_glink_request_intent() {
+    ...
+	} else {
+		ret = READ_ONCE(channel->intent_req_result) ? 0 : -EAGAIN;
+	}
+    ...
+}
+
+This patch retries the HELLO every 100 ms for that same condition.
+
+On MHI, qcom_mhi_qrtr_send() uses the non-blocking mhi_queue_skb(), and
+mhi_queue() fails once the ring is full:
+
+drivers/bus/mhi/host/main.c:mhi_queue() {
+    ...
+	ret = mhi_is_ring_full(mhi_cntrl, tre_ring);
+	if (unlikely(ret))
+		return -EAGAIN;
+    ...
+}
+
+pci_generic.c configures the IPCR UL channel with 8 elements:
+
+	MHI_CHANNEL_CONFIG_UL(20, "IPCR", 8, 0),
+
+Sending up to QRTR_TX_BACKLOG_MAX packets back to back can overflow that
+ring.
+
+Could the RMTFS NEW_SERVER announcement still be lost this way? Would it
+make sense to stop the flush on error and leave the remaining packets
+queued for a retry?
+
+> +	}
+> +}
+
+[ ... ]
+
+> @@ -349,8 +372,12 @@ static int qrtr_node_enqueue(struct qrtr_node *node, struct sk_buff *skb,
+>  	size_t len = skb->len;
+>  	int rc, confirm_rx;
+>  
+> +	/*
+> +	 * Data before the HELLO is refused: it would count against the flow
+> +	 * control window. Control packets are held back further down.
+> +	 */
+>  	mutex_lock(&node->ep_lock);
+> -	if (!node->hello_sent && type != QRTR_TYPE_HELLO) {
+> +	if (!node->hello_sent && type == QRTR_TYPE_DATA) {
+>  		mutex_unlock(&node->ep_lock);
+>  		kfree_skb(skb);
+>  		return -EAGAIN;
+
+[ ... ]
+
+> @@ -383,13 +410,29 @@ static int qrtr_node_enqueue(struct qrtr_node *node, struct sk_buff *skb,
+>  
+>  	if (!rc) {
+>  		mutex_lock(&node->ep_lock);
+> -		rc = -ENODEV;
+> -		if (node->ep)
+> -			rc = node->ep->xmit(node->ep, skb);
+> -		else
+> +		if (!node->ep) {
+>  			kfree_skb(skb);
+> -		if (!rc && type == QRTR_TYPE_HELLO)
+> -			node->hello_sent = true;
+> +			rc = -ENODEV;
+> +		} else if (!node->hello_sent && type != QRTR_TYPE_HELLO) {
+
+[Severity: Low]
+Can a DATA packet end up on tx_backlog here? The DATA check at the top of
+qrtr_node_enqueue() and this check are in separate ep_lock sections. For
+DATA, qrtr_tx_wait() can sleep between them.
+
+Suppose qrtr_endpoint_hello() runs in that gap, as it does on the MHI
+resume path:
+
+qrtr_endpoint_hello()
+	mutex_lock(&node->ep_lock);
+	node->hello_sent = false;
+	mutex_unlock(&node->ep_lock);
+
+The DATA packet then matches this condition and is queued with rc == 0
+instead of being refused. That contradicts "Keep refusing data packets" in
+the commit message and the new comment above the first check.
+
+That packet has already been counted in flow->pending and may carry
+confirm_rx. If its xmit fails later in qrtr_node_flush_backlog(),
+qrtr_tx_flow_failed() is never called. It also takes one of the 64 backlog
+slots.
+
+Should the DATA refusal be checked again here?
+
+> +			/*
+> +			 * The remote may not take traffic yet (a freshly
+> +			 * booted remoteproc without rx intents). Dropping
+> +			 * here would lose name server announcements for
+> +			 * good, so hold them until the HELLO is out.
+> +			 */
+> +			if (skb_queue_len(&node->tx_backlog) < QRTR_TX_BACKLOG_MAX) {
+> +				skb_queue_tail(&node->tx_backlog, skb);
+
+[Severity: High]
+Can the queued skb outlive the socket that owns it? The skb keeps skb->sk,
+and no socket reference is taken before it goes on tx_backlog.
+
+One path is closing a bound qrtr socket while a node with an assigned nid
+still has hello_sent == false:
+
+qrtr_release()
+  qrtr_port_remove()
+    skb_set_owner_w(skb, &ipc->sk);
+    qrtr_bcast_enqueue()
+      skb_set_owner_w(skbn, skb->sk);
+      qrtr_node_enqueue()
+        skb_queue_tail(&node->tx_backlog, skb);   <- returns 0
+    __sock_put(&ipc->sk);
+  sock_put(sk);                                   <- sk_refcnt reaches 0
+
+>From then on, only the sk_wmem_alloc charge of the queued skb keeps the
+struct sock in memory.
+
+When the HELLO later succeeds, qrtr_node_flush_backlog() calls ep->xmit().
+For MHI that is qcom_mhi_qrtr_send():
+
+net/qrtr/mhi.c:qcom_mhi_qrtr_send() {
+    ...
+	if (skb->sk)
+		sock_hold(skb->sk);
+    ...
+}
+
+Wouldn't this hit the "refcount_t: addition on 0; use-after-free" warning
+and saturate sk_refcnt?
+
+The !hello_sent window can be open at three points:
+
+- at probe, after the remote's first packet assigns the nid but before
+  the HELLO succeeds
+- while the HELLO is being retried every 100 ms
+- after qrtr_endpoint_hello() sets hello_sent = false on MHI resume
+
+Before this patch, these skbs were sent or freed synchronously while the
+sender still held its references. Would calling skb_orphan() before
+skb_queue_tail(), or holding a socket reference for each queued skb, avoid
+this?
+
+> +			} else {
+> +				kfree_skb(skb);
+> +				rc = -EAGAIN;
+> +			}
+
+[Severity: Medium]
+What happens to the held packets if the HELLO fails with an error other
+than -EAGAIN? The retry is only armed for -EAGAIN:
+
+	if (rc == -EAGAIN && type == QRTR_TYPE_HELLO)
+		schedule_delayed_work(&node->say_hello, msecs_to_jiffies(100));
+
+qrtr_hello_work() also ignores the return value of qrtr_node_enqueue().
+
+There are a few ways to get a different error. On glink,
+qcom_glink_request_intent() returns -ETIMEDOUT when the remote does not
+answer the intent request within 10 seconds. skb_put_padto() or
+skb_linearize() can also fail with -ENOMEM.
+
+hello_sent then stays false until the endpoint is unregistered or
+qrtr_endpoint_hello() is called. Only mhi.c calls it, on resume.
+
+The first 64 control packets to that node are queued with rc == 0 and
+never sent. These include announce_servers() replies and the NEW_SERVER,
+DEL_SERVER and DEL_CLIENT broadcasts.
+
+Before this patch the senders got -EAGAIN, and ns.c logged "failed to
+announce new service". Now the name server sees success for packets that
+never go out.
+
+The held skbs also stay charged to their senders' sk_wmem_alloc with no
+time limit, and that includes the in-kernel name server socket.
+
+Does the backlog depend on the -EAGAIN retry always succeeding in the end?
+
+> +		} else {
+> +			rc = node->ep->xmit(node->ep, skb);
+> +			if (!rc && type == QRTR_TYPE_HELLO) {
+> +				node->hello_sent = true;
+> +				qrtr_node_flush_backlog(node);
+
+[Severity: Low]
+This sends up to 64 packets through ep->xmit() while still holding the
+ep_lock taken for the HELLO. It runs from qrtr_hello_work() on the system
+workqueue.
+
+On glink each send can sleep up to 10 seconds, either in qcom_glink_tx()
+waiting for FIFO space or in qcom_glink_request_intent(). The case this
+patch targets is a remote that is alive but short of intents. Such a
+remote could keep ep_lock held for a long time.
+
+Every other sender to this node blocks on the first
+mutex_lock(&node->ep_lock) in qrtr_node_enqueue() for the whole flush,
+not for a single xmit as before. That includes the name server worker.
+
+Teardown on glink is not blocked, because qcom_glink_native_remove() sets
+abort_tx first, and MHI xmit does not block.
+
+Is it intended to hold ep_lock for the whole drain?
+
+> +			}
+> +		}
+>  		mutex_unlock(&node->ep_lock);
+>  	}
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261019-upstream-qrtr-hello-gate-fix_b4-v1-0-bd420aec171b%40oss.qualcomm.com
