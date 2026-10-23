@@ -1,54 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792760425;
-	b=wOPvCIC9Hbs6KpKVMfcv5DTCiiSOwa0k0pS6Qqh98KaiuOvV1nw1XMh28F8Yc3bvQnh6
-	 PLDoeRraf/JxkANRpHKrdTrHcEAt0xkXzeEVSCQV8D5m1PWT9Xq3hqC0WOLupuqS56JhA
-	 RfrAnCqKhf1cfyO0YSDZ/vCUt2GLf/ETAgX2SjAs3YzJhrdvtztZgDG1+kKrSjknpJB7k
-	 A0MUEw+7WytLDoiXtNJdNorv1z+Ybuor6gHfo0bUlKrVMh0CCU8wLfp7s2I8ohsAG7dyU
-	 yPdfFU1rp0hQsjN5f0YvzfP3Fdi4Ywecxbp4rO4jX+4mPmzd+Fayb7eKQLi+M3NMUrQ==
+	t=1792760493;
+	b=C9Wd+DO5G1c7u7i3nnwxeH/zyy6DYMJlDZC6iwVw7UAiEBoupkau7Z70QnNmBqqZsaP5
+	 XowvrLiMIskYwbUEUYKjlrNxpdtiNTeUX8e8Vh50Qtu4JxUL1VyDSZSmD7yC+TwYHZlme
+	 CVBvd/KI2Og/DxQ5+jOZ4dZrOpSJQlZjk1blPwREXf4HP72bBm1rx98LRyNgYXTogOmLt
+	 XnikXmlNKxBDa7gafg9fm0PsplG/kbKV12Bnwmf5YlLo+UomHZV5IfTPcN3hEsFC1KAcx
+	 /pxFLlGNS0BEHFjjIWWj4Bshu1eKAaxN5lVCjB8O/oOPvs7Ey5bNjj4jXs6JTlYI/vg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792760425;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792760493;
 	h=Received:DKIM-Signature:Received:X-Gm-Message-State:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:
 	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=Zl5pLkUydRuIR6YXYymKP7PujdRxecXVpxWXkRO589g=;
-	b=Wy2uFBM2kr8HE5nSf2h3sx0c2bqnE9MgYM1GV1YQn6lAID7486xFuwP3JTyfsRXbtfJy
-	 q+CfZCAObAX9egXgq46FQpkL7mPOG1TWeEzuLB1CTg2Guv/cZhY5UrkvDUv7pZONDv7a+
-	 wkMWPR8ZfDPFigqtyR1ImiXMtYWGYSA3Ylq9RDT4s3jiH2I503Z/YfChLIrjZTidRV6WD
-	 ALNgicu6YsAAsGeLMVUCJRiTtAvNK7COP1vkC8zT6j/Ddrec0BI4xrQXdtFyNKKZzjnXa
-	 ckn9zKKHgc/U1QIrAQo3KbIO9g8uKY/N9gWyF1D7RwWa/hhrFNWthbcQ5DKCxCEp+Xg==
+	bh=zW/Tu6G2P143M5yOiwqhQlrPzgSe2ppBT7C/fkz52fE=;
+	b=VNpXKfUwvQRbviqoDgNIal6L369/fLwsCN0xx/euO8a2XIGnAFGfLGeCLws6xq05BIjr
+	 XZA8M1PtDSBMaFsPVosh7PoTJWb1eWhWtXCrluxmlR7jjq6aP0CXF5STpT0ImRv4Vw3o3
+	 PO0MSNIZ15XV3RMJg/xDuwtSdsf+XKz1Dh8NFJiDSthWw1Cr0bIMP6qCcVS1kL8C3CFmq
+	 YtVFCR275autJ1KWfaIOPZ3wbie2BEv2XcT8lx0Hlr9uvWQFsE2xButMWTMLf2W1cUVt4
+	 XsECLiu4AHJOrfJvNBKuWK9AZwF/HIeoJoq10etAPKwuYhcJbfdf8QLM5jlWDJo1yVQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a0WgrZG+;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mgpaWphN;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7302C606A31E
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 13:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCF2F606A31A
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 13:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a0WgrZG+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425491F031E9
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 13:00:25 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mgpaWphN
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA3661F031E0
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 13:01:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792760425;
-	bh=Zl5pLkUydRuIR6YXYymKP7PujdRxecXVpxWXkRO589g=;
+	s=k20260515; t=1792760492;
+	bh=zW/Tu6G2P143M5yOiwqhQlrPzgSe2ppBT7C/fkz52fE=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=a0WgrZG+/FGfspkK7aqmYHFYSSMVPmRIWP6Dl2hoMcWRgBRlpjKIr+Pv061Icp0SE
-	 BMWuCcyq24yIS0o9UYcZBrTk3XwABZBIDu8YFRkOmSBNdglR3arWjEiVQQxAQhlA89
-	 R2XO3cKjRKcJF2i69pQhccVTRfqceWxCI+eJj4aMi2+nFOWb/wXZM6VvGdMubRSs9+
-	 UM56Q09fTV52Cswz4XQp6Xk6x7rFVjyxW2j+BeQBC84pW2eNtCVDkjfxzNdA1HNMMM
-	 v2vr2JASoJRsr3U3fPtdhbTcqixYZKl5BLZKkmbMQSHkalXWp7gc0bBNnOGcFOYLj5
-	 vvcH1L96HnKYg==
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-4a76f63b243so1417308fac.0
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 06:00:25 -0700 (PDT)
-X-Gm-Message-State: AFq9FYLtZGN9DjeEvJ1VFpxuFALt6+DpKUorXhEVNceBZfGeHAETJtjY
-	/EmwwBhnkBJGzy/V4ZxRpVPukRkWy2uBYTLjUBR+tfqJwAOhn7pxlPPfL0jDpFxpTMNfuQz02fG
-	oS91uJqRJwiAf0/9yLT2jKtAcI8nYJpc=
-X-Received: by 2002:a05:6870:8264:b0:470:e96b:43e2 with SMTP id
- 586e51a60fabf-4a8223efc18mr814148fac.14.1792760424478; Fri, 23 Oct 2026
- 06:00:24 -0700 (PDT)
+	b=mgpaWphN+KbA2Dbt2SqY6GT75J1EmnwjkTpCzBcp7sEwG0NWjKfvD1pyIbZU1WQ9M
+	 bZDHG0Xq60r0XGrJpxxiGPi//3E+EZgB1xyxiaplLOsi0SOmCDixAd7I+zP8NG4e2C
+	 ABKG7j6Ld3yqJ9/R2lEa8FsWGEz+Q3PTCSQgb2b2cXFpLzDpxkhTV7oeRGVTqYE62Q
+	 ndx21hmdIuyzr4xrp+SvEnIU/dW41cybPbvCy0WFrcvXU2CzRoIzBUpojD36mHWgSQ
+	 JwFzVcqwr8KJ4RaKxPTZiurXt5cqybWj7B2cdRDmXZE8W6VCeJsjtYz+M1qYmAa86p
+	 yFI8N6posa1TQ==
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-4f55a53898cso414315b6e.3
+        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 06:01:32 -0700 (PDT)
+X-Gm-Message-State: AFq9FYJHxiySfswxg7rbdIXO8jFSKYmJk26ywUFpzXz/WZJ7vbSE1hTP
+	0kcz88pri5me+KmPmG42EsJWj5EkUqcr1pBECXkuxswl6xCzUWCbbsiKO/RORqvQBptsTerwdGA
+	S9l1qRUlYXQtosRbbaXL7zWVhB1zs40s=
+X-Received: by 2002:a05:6808:c3f3:b0:503:8f9d:f11a with SMTP id
+ 5614622812f47-55be83732famr1312266b6e.29.1792760492126; Fri, 23 Oct 2026
+ 06:01:32 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,22 +59,22 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 References: <ACT-N6N4.v2.r0.20261022191829@mojatatu.com> <ACT-N6N4.v2.r0.20261022191829-1@mojatatu.com>
-In-Reply-To: <ACT-N6N4.v2.r0.20261022191829-1@mojatatu.com>
+ <ACT-N6N4.v2.r0.20261022191829-2@mojatatu.com>
+In-Reply-To: <ACT-N6N4.v2.r0.20261022191829-2@mojatatu.com>
 From: Eric Dumazet <edumazet@kernel.org>
-Date: Fri, 23 Oct 2026 15:00:13 +0200
-X-Gmail-Original-Message-ID: <CAL4Wiip2h1yRQ=WP6eL6Has0tK204PXDP1GnhmJc8Jvvz_o+7A@mail.gmail.com>
-X-Gm-Features: AclHuK-s2_zfIqkfP574i6yy4BjuRsx0dQx-WTwQQlxkrc12tbwL7CENfyappz4
-Message-ID: <CAL4Wiip2h1yRQ=WP6eL6Has0tK204PXDP1GnhmJc8Jvvz_o+7A@mail.gmail.com>
-Subject: Re: [PATCH net v2 1/6] net/sched: act_vlan: pull the inner Ethernet
- header after POP_ETH
+Date: Fri, 23 Oct 2026 15:01:19 +0200
+X-Gmail-Original-Message-ID: <CAL4WiipmpDUeT3au2yPQFi=is1tiMZRTd8SuD+14n_09gFfGEQ@mail.gmail.com>
+X-Gm-Features: AclHuK_emv7YwmEpyMuOD169Cb1tzAQTRU7DNCg5vkj8MB2QytjcxoGYSV4Q--U
+Message-ID: <CAL4WiipmpDUeT3au2yPQFi=is1tiMZRTd8SuD+14n_09gFfGEQ@mail.gmail.com>
+Subject: Re: [PATCH net v2 2/6] net/sched: act_mpls: pull the inner Ethernet
+ header after POP
 To: Jamal Hadi Salim <jhs@mojatatu.com>
 Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Guillaume Nault <gnault@redhat.com>, Simon Horman <horms@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Victor Nogueira <victor@mojatatu.com>, Vega <vega@nebusec.ai>, 
-	Ren Wei <n05ec@lzu.edu.cn>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	Jason Wang <jasowangio@gmail.com>, Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
-	stable@vger.kernel.org
+	Victor Nogueira <victor@mojatatu.com>, "David S . Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Martin Varghese <martin.varghese@nokia.com>, Pravin B Shelar <pshelar@ovn.org>, Vega <vega@nebusec.ai>, 
+	John Hurley <john.hurley@netronome.com>, Willem de Bruijn <willemb@google.com>, 
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -82,39 +82,25 @@ Le ven. 23 oct. 2026 =C3=A0 13:59, Jamal Hadi Salim <jhs@mojatatu.com> a =
 =C3=A9crit :
 >
 > The issue:
-> act_vlan POP_ETH removes the outer Ethernet header and leaves the inner
-> Ethernet header at the head of the packet.  A non-linear skb can have the
-> inner header in a page fragment, so a following eth_type_trans() may find
-> less than ETH_HLEN bytes in the linear area and BUG in __skb_pull().
+> act_mpls POP can leave the inner Ethernet header in a page fragment after
+> skb_mpls_pop(), either on an L3 device (mac_len =3D=3D 0) or chained afte=
+r
+> act_vlan POP_ETH.  A following eth_type_trans() can then BUG in
+> __skb_pull().
 >
 > The Fix:
-> Pull the inner Ethernet header into the linear area after skb_eth_pop():
-> drop the packet only when pskb_may_pull(skb, ETH_HLEN) fails.  This keeps
-> valid non-linear packets whose inner header sits in frags.
+> After the pop, if the original MAC header is shorter than ETH_HLEN, pull
+> the inner Ethernet header into the linear area and drop only when
+> pskb_may_pull(skb, ETH_HLEN) fails.  skb_mpls_pop() does nothing when the
+> skb was not MPLS, so no separate state is needed.
 >
 > Conditions to recreate the bug:
-> - egress tc filter on lo: action vlan pop_eth.
+> - egress tc filter on lo: action vlan pop_eth action mpls pop
+>   (chained), or on an L3 device where mac_len =3D=3D 0.
 > - AF_PACKET SOCK_RAW with PACKET_VNET_HDR, hdr_len=3D28, and a non-linear
->   eth / inner-eth frame.
+>   eth / mpls / inner-eth frame.
 > - The inner header is in page frags; a following eth_type_trans() can BUG
 >   in __skb_pull().
 >
-> Fixes: 19fbcb36a39e ("net/sched: act_vlan: Add {POP,PUSH}_ETH actions")
-> Reported-by: Vega <vega@nebusec.ai>
-> Link: https://lore.kernel.org/r/40fe2d7dfce13411bfbe9271c0f7c54fb7e88e3b.=
-1782548651.git.bronzed_45_vested@icloud.com/
-> Link: https://lore.kernel.org/netdev/willemdebruijn.kernel.38722ee638a21@=
-gmail.com/
-> Link: https://lore.kernel.org/netdev/CAL4WiipJLzZ9ywOPaFHZ+wePTOuO+6+aaRC=
-VXMHz+xmmQm2hcA@mail.gmail.com/
-> Cc: stable@vger.kernel.org
-> Suggested-by: Jakub Kicinski <kuba@kernel.org>
-> Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-> Suggested-by: Eric Dumazet <edumazet@kernel.org>
-> Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
->
 
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
-
-Thanks!
+Reviewed-by: Eric Dumazet<edumazet@kernel.org>
