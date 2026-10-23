@@ -1,51 +1,51 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=94.136.29.106
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=87.76.132.165
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792767442;
-	b=0jbbKa6g1t8BD/LnRg8P9MKnIX6PiYO/oJsNYxum69WzRaomjyiH90gruOn2jQ/gbkDN
-	 lFqFmJslgu9j4VDjk8NozjdfLZPM+98r9uODfJr96M8NYQ3du4n69BFio6GDwBo0SwQvK
-	 GjxqwxOgjcG4XmXGzg1VvjLPYzwvsjcsVn31xk1OMzXu5gCGhsEK+2M+KqZCAH21pB6N6
-	 qeUfgWbMJ+3+se3+xplOLwH1Dh8buuk791OMb3lJ8ZYAGii49qRbXvHf8oPm70zY6YFGW
-	 9s3akYb20ldqGyi5uw9eqjKF4dnz26m0PCD2zHlY690gGcRI0LI2tymKdAUxNTdYdTA==
+	t=1792767648;
+	b=uL+1XKYP0MPfGz8dEeiQATx6VVJ1RX9nIeR37FOhNkodY02c01TiOPgx8DxMQCxH0Yk7
+	 pzjCYbX/OZe/L4af3NRGTpJ2nrmKqbEkzL9OPbL00PlghoQhbdrBE/M1qm7Le3Fl1JvkC
+	 BZK7YBqMIiSlyLSpG9LT+Ni2x6Zw5fqQ5pncJzOCGnrn74WZa5D/MWsFuXB/hfnzhVSfF
+	 Wfx5DIsPl+LQOXXJeE/vcJAOlNw4mn7LwJ4S+LXTRks3CPWccZi21bHqbjL4HLGczqQWu
+	 4AFwdeWIYMZrvRwRlIwL74I+QY7AcR/pGM+QuFi0stk9TPz4viq8HVjMMW9UJcTgMgg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792767442;
-	h=DMARC-Filter:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To:User-Agent:
-	 X-Bm-Milter-Handled:X-Bm-Transport-Timestamp;
-	bh=0lwMOiNkthhctaKLDDOIKiUMr88TjVYuo1oUG7xr05Q=;
-	b=vTcaWNj5Xazf0U6vakZPuJ1cZi6XDeGPTA3msMWlEla9HXTRY3YYwaSoPAfpHGYX2K7x
-	 C3u9IJGNF21+sKQOT6xSLrxAhfBryXP6/Orv5SzzDGjPsDKLq0vfVDH601zQlPlSd8yra
-	 S3oduMUOMtv7rHKZaeQWIVKOBt8J+m/ARvsufu3WPdk/E2oCUteEmCBVq4KNQzfvrnIlg
-	 vRvhKUiOLY+GJjrLxzdoCjpz1zYf87WlvPMLwB0geuDyw/UkjnksT7+XZ8aU1pYuCSoBH
-	 PMHoC7b+aoro5Ksgm/4V0WaIkiOmUBanLoUXWfZaZNRuQt6ar2E7lGSPbc26q+iKXkQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792767648;
+	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
+	 User-Agent:Content-Language:To:Cc:From:Subject:Content-Type:
+	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=1cGbL1tfVHtvj8sZrOWH+MPb01DqaMLDrPMvrw1f+Sk=;
+	b=XLmlxqElWk5vaF+KzjsA8aAhNHlM061kDyhUZkDnf3jzG4O7oT4BMonxj1Mg4dFVKENX
+	 VXV45jDbhW7Yf4vT7ZDPnSQqYfyO/9pUSy7zno6FRpMZfGULddOx/IJ4W592Xntyg8jxD
+	 lQLyeGbQdYVrvQqWV36D7KRTX8LLUULWzxXXdhmmJDGq/nx2kqQIb0jQNWbSErqK/I4wh
+	 EDoHdc7+CiW6vS0fMnEIZ6jx4HQ3noj/oyCI8tbSCj7qoSQNxlhBO0KIlMeSF1yNMp+BJ
+	 NxLPwEHYyvbn+C1zynykQmfEUCOj8tNovLKzQpQF3hCQUVpC68ThJ2oTGYcWL+K8qKg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=proxmox.com;
-	spf=pass smtp.mailfrom=proxmox.com;
-	arc=none smtp.remote-ip=94.136.29.106
-Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
+	dmarc=pass header.from=auth.ink;
+	spf=pass smtp.mailfrom=auth.ink;
+	dkim=pass header.d=auth.ink header.i=@auth.ink header.a=rsa-sha256 header.s=dkim header.b=B2tTUowt;
+	arc=none smtp.remote-ip=87.76.132.165
+Received: from mail.netskyway.net (mail.netskyway.net [87.76.132.165])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8265606A31D;
-	Fri, 23 Oct 2026 14:57:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A8265606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
-	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 81EF440EB5;
-	Fri, 23 Oct 2026 16:57:18 +0200 (CEST)
-Date: Fri, 23 Oct 2026 16:57:16 +0200
-From: Gabriel Goller <g.goller@proxmox.com>
-To: Hannes Laimer <h.laimer@proxmox.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Nikolay Aleksandrov <razor@blackwall.org>, Ido Schimmel <idosch@nvidia.com>, 
-	Petr Machata <petrm@nvidia.com>, David Ahern <dsahern@kernel.org>, 
-	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net 0/2] vxlan: keep reserved_bits on changelink
-Message-ID: <att1fackTBBZxPgy@luna.proxmox.com>
-References: <20261023-b4-vxlan-changelink-gbp-v1-0-f0d13951c09b@proxmox.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D07606A31D;
+	Fri, 23 Oct 2026 15:00:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 62D07606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=auth.ink
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=auth.ink
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=auth.ink header.i=@auth.ink header.a=rsa-sha256 header.s=dkim header.b=B2tTUowt
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CF83E3001B0;
+	Fri, 23 Oct 2026 12:00:39 -0300 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=auth.ink; s=dkim;
+	t=1792767640; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language;
+	bh=1cGbL1tfVHtvj8sZrOWH+MPb01DqaMLDrPMvrw1f+Sk=;
+	b=B2tTUowtU4kkxBIlAXhOf/pP5Ph2TfO6QS+txZlNTXqxUoxuRMhyA9EGeSnQ636Yl8Pz5e
+	R7w+Bdt5RpQ9vvEMyxPvFe/ctTm9lgJgA5MVXz7HwAlyEGSyUvhPEU+QbJWP34KFcayewG
+	PyVkO3150pB4Bw76KPQ7DyjzUqzVVMok9IhhHNgsw3lhyMq2PTCFU2clyHmOvtLwzxvbVp
+	I/kRh7FCG0DAr5nq3kqDJvyySm7OkaKWAtKacanTGWv9iWvJ4REEhA0xB4fqdBnYQBGEkl
+	ubPep4AASUWVjjbE8iNnMdOXHEXHOn+gQJtQm2lKW2NgFF6vXVO4mGgTbsfA3w==
+Message-ID: <7fa31470-872a-4fb8-9c8f-51dce38e9190@auth.ink>
+Date: Fri, 23 Oct 2026 18:00:34 +0300
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -55,39 +55,97 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261023-b4-vxlan-changelink-gbp-v1-0-f0d13951c09b@proxmox.com>
-User-Agent: NeoMutt/20260504
-X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
-X-Bm-Transport-Timestamp: 1792767437956
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: stable@vger.kernel.org
+Cc: kuniyu@amazon.com, lee@kernel.org, netdev@vger.kernel.org,
+ Rodrigo Zaiden <rodrigo.zaiden@canonical.com>
+From: Tamir Awad <security@auth.ink>
+Subject: [PATCH 5.15.y] af_unix: Clear oob_skb in scan_inflight()
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 23.10.2026 13:14, Hannes Laimer wrote:
-> Currently reserved_bits are reset on every changelink. This leads to
-> packets using extensions that were enabled on creation being dropped
-> after a changelink. The first commit describes the problem and
-> solution in more detail and the second just adds a selftest for this.
-> 
-> Signed-off-by: Hannes Laimer <h.laimer@proxmox.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-Gave it a quick spin in a vng instance, consider:
+unix_gc() accesses oob_skb after dropping sk_receive_queue.lock. This
+can race with queue_oob(). Clear oob_skb in scan_inflight() while the
+lock is held.
 
-Tested-by: Gabriel Goller <g.goller@proxmox.com>
-Reviewed-by: Gabriel Goller <g.goller@proxmox.com>
+This resends Kuniyuki Iwashima's March 2025 fix for the old GC. The
+code diff is unchanged.
 
-> ---
-> Hannes Laimer (2):
->       vxlan: keep reserved_bits across changelink
->       selftests: forwarding: vxlan_reserved: add gbp changelink test
-> 
->  drivers/net/vxlan/vxlan_core.c                           |  2 +-
->  tools/testing/selftests/net/forwarding/vxlan_reserved.sh | 15 +++++++++++++++
->  2 files changed, 16 insertions(+), 1 deletion(-)
-> ---
-> base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
-> change-id: 20261023-b4-vxlan-changelink-gbp-de5e81eed8d1
-> 
-> Best regards,
-> --  
-> Hannes Laimer <h.laimer@proxmox.com>
+On 5.15.223, the reproducer panicked three unpatched QEMU guests. Three
+patched guests completed 8,000 rounds each without a kernel warning.
+Both builds used the same config and guest image. An instrumented run
+traced the harness's failed racing sends to EPIPE and ECONNRESET and
+confirmed all 8,000 iterations reached the race.
+
+Fixes: 314001f0bf92 ("af_unix: Add OOB support")
+Link: https://lore.kernel.org/all/20250304030149.82265-1-kuniyu@amazon.com/
+Reported-by: Lei Lu <llfamsec@gmail.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Tamir Awad <security@auth.ink>
+---
+  net/unix/garbage.c | 20 ++++++++++----------
+  1 file changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/net/unix/garbage.c b/net/unix/garbage.c
+index d2fc795..a733d0d 100644
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -102,13 +102,14 @@ static void scan_inflight(struct sock *x, void 
+(*func)(struct unix_sock *),
+              /* Process the descriptors of this socket */
+              int nfd = UNIXCB(skb).fp->count;
+              struct file **fp = UNIXCB(skb).fp->fp;
++            struct unix_sock *u;
+
+              while (nfd--) {
+                  /* Get the socket the fd matches if it indeed does so */
+                  struct sock *sk = unix_get_socket(*fp++);
+
+                  if (sk) {
+-                    struct unix_sock *u = unix_sk(sk);
++                    u = unix_sk(sk);
+
+                      /* Ignore non-candidates, they could
+                       * have been added to the queues after
+@@ -122,6 +123,13 @@ static void scan_inflight(struct sock *x, void 
+(*func)(struct unix_sock *),
+                  }
+              }
+              if (hit && hitlist != NULL) {
++#if IS_ENABLED(CONFIG_AF_UNIX_OOB)
++                u = unix_sk(x);
++                if (u->oob_skb) {
++                    WARN_ON_ONCE(skb_unref(u->oob_skb));
++                    u->oob_skb = NULL;
++                }
++#endif
+                  __skb_unlink(skb, &x->sk_receive_queue);
+                  __skb_queue_tail(hitlist, skb);
+              }
+@@ -299,17 +307,9 @@ void unix_gc(void)
+       * which are creating the cycle(s).
+       */
+      skb_queue_head_init(&hitlist);
+-    list_for_each_entry(u, &gc_candidates, link) {
++    list_for_each_entry(u, &gc_candidates, link)
+          scan_children(&u->sk, inc_inflight, &hitlist);
+
+-#if IS_ENABLED(CONFIG_AF_UNIX_OOB)
+-        if (u->oob_skb) {
+-            kfree_skb(u->oob_skb);
+-            u->oob_skb = NULL;
+-        }
+-#endif
+-    }
+-
+      /* not_cycle_list contains those sockets which do not make up a
+       * cycle.  Restore these to the inflight list.
+       */
+-- 
+2.56.0.windows.2
+
 
