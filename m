@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792789224;
-	b=Av6sM+8uUfvHds1gMMTGf3BsabhqWmgWMKwQvwbBkFcLpDMALMZeC1MmH2yv4Vew2cKl
-	 AwfQN44e6+9r7R5ZSmLhlwi7Sy0lZuZLcZyXZXJBqczEzzJdlXLWzioeDwFFLj4EDs5e7
-	 s0n3OZDDJzvlzmoQjKUVpIEzcamKMiSRFoo0PMg0fRw563P2VWGDeFjShXfV07V0B2ppv
-	 YgR7fgWN1FsHdRybhNYOWtEj6W4lYebR8x2CVdBe3eFJ2305rjRSRkR3SqLpGB52hVo5I
-	 gLVOSWecHdOLvCns0rlyXrrak378ulvHB+vdfwNw+Y62MR+bPRUOWN3t8t+WopsNdmQ==
+	t=1792789223;
+	b=LlIQ1LTpj0eCdapC36xEPg/zxH2gC1+/9M8SES5oanvvsICTHXuPeJk7WH50+HD4Xmrt
+	 He+RjO5/JekUq2jzDw1hpSgrnlE/LpJvllWZ3UDnY3mVh10z6l42d4TLtGg88/yChkzAR
+	 l9o27XsXTf3X30+35cS+BkBVePgXiGx+LWkoNuAn4sR0HIvd52nq6yTaILfVGR+Jl3krv
+	 UXBI83YtVoCEm5RnXfjtBaVHR6Uz0r8U0WZLPaPlHXiYNgSaoBgJlSNQ4oOeBKYwPQ0Qs
+	 eP9V+RamwEY8aH4K89MZznhfP+7BtL/P9t4j3dSIEP8NyBhXy/GqtgoQKy6aWT+ha+g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792789224;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792789223;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=o7nH0Y526ovdbMYjYOuS2cc9y1ur4eOXOL5barl5Nn8=;
-	b=n/dPV2BCXV9arG5812mzkFShS7SrScWLJjlUlCeWM6tS9rXtXqs60ZCKWoNsZoNYCLUn
-	 1TLAB6dp7PvwiPpDW4/UZSwljse6VgM4DXbri02ZEbBwnLUbZd8nAbs/gueMWg4vagUIP
-	 zo3gAbeLGZMFGDXZr/8gjQDNY9W7/zXBLq03kXV38EDWuS/Gdg2NFVmmTuHqJREzuqHHw
-	 pmkzP3ADiwbxQYW+C3MCaeqG18avy1WK0xd/v0lugaNC89HchxBWkDHMaDG/avMOsLpTO
-	 gd4AXYkbgdcuLTRp5rV5tqyPkS6NELTVPPqSKvnKO044s7pfKUV0ypsjKroPMxCm3vg==
+	bh=jYZIYMBd8UVK6BNo8UCuf5+CZmWdq5SaCGptMRiApvg=;
+	b=jSJIvXODCmLuMuoZVOXcyrqehaI0LNUZb2GGTyMc5gEDMUbJuL7PbYYbwnZbVrIxHgIG
+	 5r7TsJ3OfN2edGcOyqTi/svOy1vRa3X6jy863fi84g0+oObYK2TbukVJMgS0OQgSkVRDV
+	 zb0gzxiiTjh341apA88n/doAcrfBv8lI4kx1KhU6pSA85I7uJ+Zn1LNALEb7q0qvTa7Fv
+	 kMcVawoe8bA3y0vyN4/gyERxmNeEMy+7B7NaVmgcz/iNVkx1lW8Gc0q+YEb5825C36x+4
+	 QYjPI94RkJylJicUIszfpxcQ0L4ntwRCa6apEfuvjoLIgVCjiBw2dzX3t4Si+qmjFxg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L4ubuYkE;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cj8Ta3rK;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F781606A330;
-	Fri, 23 Oct 2026 21:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5C0606A31D;
+	Fri, 23 Oct 2026 21:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L4ubuYkE
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 117CC1F01828;
-	Fri, 23 Oct 2026 21:00:24 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cj8Ta3rK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 897CB1F01825;
+	Fri, 23 Oct 2026 21:00:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792789224;
-	bh=o7nH0Y526ovdbMYjYOuS2cc9y1ur4eOXOL5barl5Nn8=;
+	s=k20260515; t=1792789222;
+	bh=jYZIYMBd8UVK6BNo8UCuf5+CZmWdq5SaCGptMRiApvg=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=L4ubuYkECll+Y0SwOTbBfudrUoVKQ8r1xCLjjLSMNhwksEUBl6a2dSxPMs/aITQjJ
-	 aC1R7TTdGKZgLmPMqIWspPtm3snEQfMr7I9oY12b4v03xXyVmbb0Y5JYiebT3poKgj
-	 +AbSsRCKO75OzHSBU/KOlMXDO+tePBjmeenScCVxOSK2SfxrswbgGxVjqcnnRtAzua
-	 tJTqEMGHgyeAMSrPM4rVesL1SN8pfQlHG5OEUrzBZB+XwiNUuDOkeye2TydYUO10OQ
-	 xzDu+1/xjaLGYhmU8VAgec2Fc/N8NoeSyHXLO5lPUwFzwnn/XI+klP6FlHUrjw/Bf0
-	 YEtxcgwO3ZhzA==
+	b=cj8Ta3rKCWsYnSXSk1mSV3LnwSX19itCnyXb5OX5n+KEBm1m6Mt/SYG5xqFpde/bv
+	 rDFtNjfCyGOtJiGDMJfAC+w2nzncR85+Sim4ak6Wmotw7g+vHYd0E+q8l7dSW+nzjC
+	 0etCEkKUTfmHIwzGEXzdkAwOr28ad7juj/YoWC4JBtdIxO66tmdq3KkfeCJqWQuYkQ
+	 gB8OjmtjGEp1MKegI68ENsuDDJmXzzgcHFpxm59IvxTi/X9Wnhg3enHphWM6N/ci2M
+	 7RcChHAhdJ6aUU9vNyxLS46jU5emYnPhhMJBjknF/kjUtfJXXyu+GUyUmqnSeA0Mow
+	 F20mk/kUOQxzw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 0748B391B157;
-	Fri, 23 Oct 2026 21:00:24 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 81705391B157;
+	Fri, 23 Oct 2026 21:00:22 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,40 +54,40 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] eth: fbnic: Correct packet header prefetch
+Subject: Re: [PATCH net] gve: fix out-of-bounds read in
+ gve_get_flow_rule_entry()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179278922256.1268720.4517362239739055956.git-patchwork-notify@kernel.org>
-Date: Fri, 23 Oct 2026 21:00:22 +0000
-References: <20261020172706.1090951-1-dimitri.daskalakis1@gmail.com>
-In-Reply-To: <20261020172706.1090951-1-dimitri.daskalakis1@gmail.com>
-To: Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>
-Cc: davem@davemloft.net, alexanderduyck@fb.com, kuba@kernel.org,
- kernel-team@meta.com, andrew+netdev@lunn.ch, edumazet@kernel.org,
- pabeni@redhat.com, horms@kernel.org, bjorn@kernel.org,
- mohsin.bashr@gmail.com, bobbyeshleman@meta.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, daskald@meta.com
+ <179278922106.1268720.5910307752725835435.git-patchwork-notify@kernel.org>
+Date: Fri, 23 Oct 2026 21:00:21 +0000
+References: 
+ <AS8P251MB0001135AF3233180DC42DCD1C8672@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
+In-Reply-To: 
+ <AS8P251MB0001135AF3233180DC42DCD1C8672@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
+To: Aamir Ahmed <elb12345@hotmail.co.uk>
+Cc: netdev@vger.kernel.org, joshwash@google.com, hramamurthy@google.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, stable@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 20 Oct 2026 10:27:06 -0700 you wrote:
-> From: Dimitri Daskalakis <daskald@meta.com>
-> 
-> The existing call to net_prefetch() fetched a stale address. The data
-> pointer is not initialized until after the call to xdp_prepare_buff().
-> Thus, making the prefetch ineffective.
-> 
-> Open code the address calcuation to give the prefetch as much time
-> as possible.
+On Tue, 20 Oct 2026 23:33:46 +0100 you wrote:
+> gve_get_flow_rule_entry() checks the requested location against the
+> first and last cached rules, but rules_cache_num can be 0 while
+> rules_cache_synced is true: GVE_FLOW_RULE_QUERY_RULES returns the rules
+> from the requested location onwards, so a request past the last
+> installed rule - or any request when no rules are installed - returns
+> zero rules, which the driver accepts and marks as synced.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] eth: fbnic: Correct packet header prefetch
-    https://git.kernel.org/netdev/net/c/286154ae6998
+  - [net] gve: fix out-of-bounds read in gve_get_flow_rule_entry()
+    https://git.kernel.org/netdev/net/c/45e0a63f9c86
 
 You are awesome, thank you!
 -- 
