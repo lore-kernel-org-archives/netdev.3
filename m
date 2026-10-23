@@ -1,102 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792775435;
-	b=aU0qqxfneWXxusQTm08RC+f4OgVOg+nN8uq3my/V8SEhhRaJbsuiJ7EfupDkcnp+Fno4
-	 DhwbHsKcJnD1oDHjv3GXp98Jat7xf8xzfvQlDllVQmzXtQbLCPtsUI4tLdrMwP5Ayn0O6
-	 98feav3sk0vU6cviFHssVue8OEwuau51hIZ6ixqpwGCplMImK44+QeL2/U5/7PK+B+5xw
-	 O3lpOjXoXy83jnw+p9NfIci8xOzooiDVi/WFYQrYoovsk0MKw3x/VVNcVfMgVDTOjM7gb
-	 dZ+UPf4j6Y4mJYzWGvoJMQJcCCgUt/9SiFTSQRIiSOSljoCu7eVT+5QWFiWri+14Z5g==
+	t=1792775921;
+	b=stOCSYe4PtL284Utd4F719k+M2J5RvEOa/EFPucQDMxeLttQ+TL2GKmS+oNE07AjZ9bc
+	 UQHBoqG3HJo7sCEU3jpb+zto0QvfJiktLIkqqyMB8uqSGK6hI8XEQOT3Sq/J8CMYoWieP
+	 Nc6dsis8LUXVyHoRziQIm5EBcucJ1dxOiVBVK51C3rvOtZPdUdgq+vlH50WBtDjAm/CRk
+	 TWK8pc6MhTeMUVi1l4BSBRLyPRDQJU7E43qyBgrU0YS8YMuYXtHPVLbTEKzQe68w4gRGu
+	 X2xMV8m6DUaOdx9jzGZwDVU2POmgAb7TM+FBlCHfbKImOL6MfFRXt+gPgyJVkOBtXLQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792775435;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=Btr7hr0LuMAaYdMP/tMMJLFSICUnfP+fAjhqSakVwX4=;
-	b=eIoGvAhhAtzRF1c0NC5+BmuKO7FqG94mVh6m6VJrEAweIfRf10jTbvQZWjR6lnC34etN
-	 oxjvjE28XwWtkD/uSh647t+3Fz490T571Lpmmf+1NA2/eNW+ZBRXmt7PBgF90lKeqISUY
-	 kbxRyTkk9v+tJP/p7dx+ORI4+q3aoNIlM8WtS11dou9gB+pSZeiCZUiNW52SW1qGLSiJV
-	 4INi/shtuzexnidoK2c+5yL/Ty5YPi+BElSKxKmUV9ctX5NMEc+UWbwovRQWNSfYf6t0p
-	 WIN0yoQN1Qycz7DeUzGBVD816aXeWOuE8lKLoht2vVTQSkOl0nqL3m3xEqhdYjv3+0Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792775921;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
+	 X-Proofpoint-Reinject:X-Proofpoint-GUID:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
+	 X-Authority-Analysis:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=+PpTXqmlLnD1gkK9da5UA4ivV9Yaq55UolUi13Wutkg=;
+	b=bmWYUbWaw1n6Daz5T1XMrlF4eKV3l0iYhvZHIvbA3Pl7XNOMX1Pv3pWoARUnP2ySOPvp
+	 Lki9f/3dWed+vdAar3J52zXYKYnvnS7BvXRsIyuteFMse/5aBiPuzb3kjW/lvpHk2WSVl
+	 9OSFgc6xapxoB8PrN0R/asdhOwf6bdS8LrS/d3xjBxY9SAIfU3U2ZJSuEp9ugmj7vUbRY
+	 dei4XLdhlkafKGVWVOreT9GM7sQ4aPJ2F6SMFg9SSJBi0usTT6LGx1RPDgdLbLdYhuYDw
+	 jYaqSiADmcQ784JVooVO5/fpaf5WdOFT1z2mcHhtr+a85cqotAnpx/TVT4W2KqEWdxg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=AgxEKTUH;
-	arc=none smtp.remote-ip=209.85.214.174
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b="AoFg/Mh0";
+	arc=none smtp.remote-ip=148.163.156.1
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07DD8606A31D
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 17:10:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 07DD8606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED0360A2608;
+	Fri, 23 Oct 2026 17:18:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CED0360A2608
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=AgxEKTUH
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2e60f9af6e6so8810345ad.3
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 10:10:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792775434; x=1793380234; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Btr7hr0LuMAaYdMP/tMMJLFSICUnfP+fAjhqSakVwX4=;
-        b=AgxEKTUHy8ctoDubMdjyFor88pmJ1RUyuatzX0e1CxVswHag9pSZt/fX79EjQFEGNU
-         UeU4P9O/uPbnk7q2aER+bvaCtX2F4ZXJ2BoPAL8LIUZmukK6ssFsHs8iApGCIRb9OBix
-         RcZn56fnq9qRI1pqtDeAf+LiZrK5ClPHVu8o7KvZXU4GVrxpMYMjq4u+UQszTMoXvlaN
-         7NaDsCWT7jwkU0bVC5uBrYfFAvM9qoBViOgJ510w99hI+Y6HDdNk2eO4KGKlPhDmvB9C
-         C41eXmKdNvYwOPy3XERwh+Ns+0VoJU7ggY2oHXg2tWndpPaAyd8pbgSr0iP0O2nquuQ3
-         GbVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792775434; x=1793380234;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Btr7hr0LuMAaYdMP/tMMJLFSICUnfP+fAjhqSakVwX4=;
-        b=vOhWhCb1jGAGmL5ddMhI2njVyuNIndhDq+6jMwdv1sg74E9unMjBOY54kyS++L6Zfq
-         EBjFrVZnGGCKq/g2kkBLn8ds8nTzQz2KP7778cqMz1xVZvKChNkZ+wBgxqc76uwwqw4z
-         YqPyilV9nimWmS6p15bGnlsNiYnUvIuPoGQT+ZOVF3MnMJouKS8jh9Y/ElygKY4KB6bN
-         2x685iEfwdVOusBya6LNh32J/Y2KhVqDbVHTaI80qLRhgGwEvaXxCbSKUPSEoqIbW/bK
-         ZaEv5s9e9zc741AJ603YwabVJHSft2gaJt5LZsNVnibCqqsgBzZVmWVRPiprtqr4vO22
-         GUxw==
-X-Forwarded-Encrypted: i=1; AKwUvByIrT0LUH2boWHqCJz2UOxWFgrx5uLkGxmnbuaYHjgAne0CSxvgqh7ufjN4tvkeUdKBFJFgMrY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYItEEdZy9xg9LaKyfxqGm3M+4GvYWUTKgcl6N9z640pUyZ+ATVO
-	5GL8Z8RY7K3FryafWLth6TsofH9xy90rqLWk8M9V6SjznxKmVBpwdYCU
-X-Gm-Gg: AYBFou0zv8Xl3tq5t83PbWCqXu6U5fTwSkLNG8p13lgPp8/lOTRdrvQDVtrPfcpGZfp
-	/K4LzSrZ5Jnrf+THVvcdhGQl4lvcOgXIbWC7J0wYYQ/X/O/xDcNmhNW2HguhZtHIHCRJ+qgeyTF
-	DhXIDZ2Xx3awGUPu+BTpLBKv+H5IJevPRbc+pjX7AKPhIx9G1lRkYIDV4yVShslJG6VTVyQXHJA
-	XvxY+BI/Llc1JRMB5t7lKyoETQrtEcoNqAGNKmUc1CHSzb3PjAY312cR/mefbKZSuOzWqqbImx4
-	YiKt3p+U8vAgURYJuFmZbPIGNHpQ5in2nuEu94BSGJLHjpKbrNjudtjLyUkn2vdXoGWWCrQSpJ3
-	yoZe4IUdBOfm7BvrsvhYfA6a31rJZG8TdkP1qujpcUHaw/ATTOMpDVtjjZXqRVkMEvjdmyQG3En
-	gjB7/u10/8aYxtaOA9XeRWr+bvTi7QQkZ2FFuwJDiMdFGGUVh3JJYgr51f2xKnJKHMflChB2BBG
-	8ZmD+4etiw63VCTsF0PGn1Yl83Uu4f5nXbxhMmteS0xbjNcMCpuq0h3RVW3Na6/AIGcYnCnWWm1
-	bWGdtU/2d360nyeT
-X-Received: by 2002:a17:90b:1344:b0:3a8:c0cd:57fb with SMTP id 98e67ed59e1d1-3adce0cff80mr2343177a91.42.1792775434342;
-        Fri, 23 Oct 2026 10:10:34 -0700 (PDT)
-Received: from gmail.com (deskosmtp.auranext.com. [195.134.167.217])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3addd78d4a5sm919619a91.0.2026.10.23.10.10.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2026 10:10:33 -0700 (PDT)
-Date: Fri, 23 Oct 2026 19:10:16 +0200
-From: Mahe Tardy <mahe.tardy@gmail.com>
-To: Alan Maguire <almagui@kernel.org>
-Cc: bot+bpf-ci@kernel.org, bpf@vger.kernel.org, andrii@kernel.org,
-	ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net,
-	willemb@google.com, eddyz87@gmail.com, edumazet@google.com,
-	john.fastabend@gmail.com, kuba@kernel.org, horms@kernel.org,
-	liamwisehart@meta.com, martin.lau@linux.dev, pabeni@redhat.com,
-	song@kernel.org, netdev@vger.kernel.org, sdf.kernel@gmail.com,
-	yonghong.song@linux.dev, jolsa@kernel.org, kuniyu@google.com,
-	memxor@gmail.com, emil@etsalapatis.com, martin.lau@kernel.org,
-	mason@kernel.org, ihor.solodrai@linux.dev
-Subject: Re: [PATCH bpf-next 1/2] bpf: Add bpf_ksock_bind() kfunc
-Message-ID: <atuU-BE4wssJaH4_@gmail.com>
-References: <20261022181620.247201-1-mahe.tardy@gmail.com>
- <e31194dd72efd3c182707e870b7e7a6d67b78be23cea06aded0275678373c64c@mail.kernel.org>
- <atseCFvfx9FbTXP3@gmail.com>
- <b28db1fb-ea02-4f83-be99-c8d4b180dc6b@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AoFg/Mh0
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69NGoToR3668699;
+	Fri, 23 Oct 2026 17:18:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=+PpTXq
+	mlLnD1gkK9da5UA4ivV9Yaq55UolUi13Wutkg=; b=AoFg/Mh0pNfHGvARrKU9rN
+	REmBY0KHAOdJTdNcXPEetMTT9VflTtuAt7wqK+D3l6CWUqZyP9hU4P9MGw8JFH9L
+	sAIq1HFCp0sIMO+qAU/2/F4ZZnRiHJdamDI0HwmA4C06KWpHDYqVIghSf/5fwljy
+	grzFO5BPje6MHOdncbAIKMydAtG6Jb/Pp692LkeVo77WMbykkZH6iT3gPvYryy9V
+	V1gJX0JpkI4+JgiE5TBVTx0V6FTT5KawcxFqKGUfUpEhF2S50EvqPCu5tTGIamL+
+	btL7N8p00+kskZtZbjjpZPqWcT0ADLuwbaGxxHd8/dz2iUkFWWlbc2+V6sHRmjmA
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hdw596ke0-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 23 Oct 2026 17:18:23 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69NE64fV1018552;
+	Fri, 23 Oct 2026 17:18:23 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hg5exsn5u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 23 Oct 2026 17:18:22 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69NHIL5o15008382
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 23 Oct 2026 17:18:21 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 213B758059;
+	Fri, 23 Oct 2026 17:18:21 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 86F6C5805B;
+	Fri, 23 Oct 2026 17:18:13 +0000 (GMT)
+Received: from [9.124.220.1] (unknown [9.124.220.1])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 23 Oct 2026 17:18:13 +0000 (GMT)
+Message-ID: <498db6da-c461-4bba-a2aa-2415e99aeb97@linux.ibm.com>
+Date: Fri, 23 Oct 2026 22:48:11 +0530
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,59 +86,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b28db1fb-ea02-4f83-be99-c8d4b180dc6b@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v13] net/smc: fix lgr/lnk lifetime vs diag reader race
+To: netdev-bot+sinfo@kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
+        dust.li@linux.alibaba.com, sidraya@linux.ibm.com,
+        hidayath@linux.ibm.com, pasic@linux.ibm.com, horms@kernel.org,
+        tonylu@linux.alibaba.com, guwen@linux.alibaba.com,
+        stable@vger.kernel.org, netdev@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
+References: <20261023150317.1163397-1-mjambigi@linux.ibm.com>
+ <179276799858.3327.5559074809059802819@kernel.org>
+Content-Language: en-US
+From: Mahanta Jambigi <mjambigi@linux.ibm.com>
+In-Reply-To: <179276799858.3327.5559074809059802819@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: 9_nVIsYayCM8tqTaQpAz10y9qEi_Oj3z
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIzMDA2NyBTYWx0ZWRfX4gNvBXi7Rv7z
+ KsycYt2DKAE+PIzvggabMavLgIJfL99QbfgGOb41VwU4G+ztlHtG2BOXWvDK8UgL0XvgWakRGzj
+ zTiWcvkIGat5FvDhH9GynEvRlHJQidg=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIzMDA2NyBTYWx0ZWRfX0mU0URRhcLQy
+ EpNvllxGNODaJx26ZnEPr7CSjLdLB1osXDCEedneduhAl1Ae50ZpBc4uqu6F8P+kDO33er3bsvn
+ 5amuDZmiTG4+nkG6RntAjkQnmrMjwL3Juhly/dNLYcyDKZwVdXxE/9KoCVnwD8zmvB6atEs5LRW
+ GxRaE9O2rzPVwBcF8uchyHVCGZO8EWxa+vU0gIinwdKPuuFuA9gUXmL7B5h9y/B4pApCaLPBpLV
+ wpok8foBxHg2k27wFgND6SY8j/4Ulk3DLkHLR3NTdDHwcy5BSXpl1U1ZFzxZLjNf6/mndNj8/f/
+ SBpJAi07MkemnikS5qGOagreskCEnGxS3NrdaoLOVNGzAXyzuSQaB7+t/Rx/kcDD5lngYKl8qxf
+ F77AovduAdS8GTVuSmNpLi5l3lI83U6b4gqa/mDwj+omSAAAvW5yZa35WrhFoqH51+FZyKBvoNr
+ 74py7VFjJjAx+ItC2PA==
+X-Proofpoint-ORIG-GUID: xcgnfAcm4n7m6sQxpLMWvQpIQzoJl6Ih
+X-Authority-Analysis: v=2.4 cv=Ob4NnRTY c=1 sm=1 tr=0 ts=6adb96e0 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
+ a=8WImSUdLa4LpenjYlHkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-10-23_04,2026-10-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 adultscore=0 phishscore=0 spamscore=0 suspectscore=0
+ lowpriorityscore=0 clxscore=1015 impostorscore=0 priorityscore=1501
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610190000
+ definitions=main-2610230067
 
-On Fri, Oct 23, 2026 at 05:05:10PM +0100, Alan Maguire wrote:
-> On 10/23/26 9:42 AM, Mahe Tardy wrote:
-> > On Thu, Oct 22, 2026 at 06:45:34PM +0000, bot+bpf-ci@kernel.org wrote:
-> >>> bpf: Add bpf_ksock_bind() kfunc
-> >>
-> >> TL;DR: bpf_ksock_bind() called from a bpf_wq callback runs with kworker's full
-> >> capabilities, so a CAP_BPF-only SYSCALL program may bypass the privileged-port
-> >> (CAP_NET_BIND_SERVICE) check; the review asks whether to block it.
-> > 
-> > Honestly don't know if it makes sense to prevent it given you are
-> > creating this kernel socket from a BPF context, if anyone with more
-> > experience on this can help?
-> > 
-> > If the answer is yes, I imagine preventing bind() to run from a
-> > workqueue is the easy answer so that all creds are respected as usual
-> > and it's not a huge limitation (we mostly care about being able to
-> > send()/sendto() from a wq).
-> > 
+
+
+On 23/10/26 8:36 pm, netdev-bot+sinfo@kernel.org wrote:
+> Hi!
 > 
-> I suppose one way out of this would be to forbid bind()ing to the privileged
-> port range; that would sidestep the issue I think. Hard to know how restrictive
-> that would be in terms of real use cases, what do you think?
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+> 
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
 
-Yeah this is another way around it but I wonder if keeping the ability
-to bind from a wq is more important than beeing able to bind on a
-privileged port.
+The issue was found by manual code inspection while reviewing the diag
+dump path in net/smc/smc_diag.c.
 
-Otherwise we can probably guard bind with:
-
-	if (current->flags & PF_KTHREAD)
-		no
-
-If the assumption is correct i.e. you can load and run any SYSCALL bpf
-program with just CAP_BPF, then indeed having this would allow you to
-circumvent a CAP_NET_BIND_SERVICE check which is kinda unexpected even
-if we could maybe discuss that those are BPF sockets, which are pretty
-limited for now, etc. The reason why I'm thinking like this:
-- I already tried to import existing network resources limitation when
-  writing the initial patch set, like limit the number of BPF sockets,
-  and I was told it was unecessary.
-- I did this whole annoying dance with LSM hooks so that ksock goes
-  through them and I was kinda told that it was maybe also unecessary.
-But the more I think about this the more I think the concern is valid.
-
-> >>
-> >>> diff --git a/net/core/bpf_ksock.c b/net/core/bpf_ksock.c
-> >>> index 37168f43c16c..c7b487d90cd0 100644
-> >>> --- a/net/core/bpf_ksock.c
-> >>> +++ b/net/core/bpf_ksock.c
-> >>
-
-[...]
+> 
+>  - Whether the issue was actually triggered, or is only theoretical
+>    (e.g. found by code inspection). If it was triggered please include
+>    the symptoms, like the stack trace or error messages.
+The races are theoretical — none of the three windows were triggered in
+practice. The smc_conn_kill() / smcd_buf_detach() race requires an
+active smcss poll to coincide with an SMC-D lgr termination on the
+dmb_nocopy path; the smc_close_active_abort() and
+smc_close_passive_work() races require a concurrent diag dump during the
+narrow teardown window between sk_state = SMC_CLOSED and
+smc_conn_free(). No stack trace or error message is available since the
+bugs were not hit in a running system.
