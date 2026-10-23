@@ -1,65 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792783701;
-	b=zQt7M20kZxbV1obBzIZ7s/aUkGJ/kUWONFuk+UhuxOP8u2AYm0sKSeGAaiEaRoxB40OV
-	 KcNGkCp5rwqmKa8bCxn4q0ECbQQcli8Ptu3zUPzYiF2I7g5WIpuaIlFN8AhC4GgyLM3AH
-	 vHEfFIHc6SovTb4gkg4Fetauz8uG60hrWStWrcsp5lLCPb9FgUVIyunnqn5nmKQjLXwsp
-	 YXGPOxEZ6wsx44EygwvB43DPpJpYzBEekFmymW7ZNLnLGPMRAfAyvFHI5y8PlusHzRdTk
-	 Lm871CE75NUYJjKkZGK9TnNoyTq37CBOK1It0ABPtO4zx5/P+4AT9iws1ENFW2oV4gQ==
+	t=1792783807;
+	b=HLnZ3DcKNeVXWiIrUhkf7SykjmrXmdVG6HktJFacpmgNb85f9ZNrI1FUrXX5gVo22c0P
+	 RYjb5ZOV3An8MKqwMKSl/xAbBauSPN95pwTR5wiQ635/3XJOW+4TJt0bfX1DnqKRYFwnC
+	 bEU5zurnfSmI6A3agCh2kknZPIn+Bjdf45giFTSFO9JnA3ajr03KscHh+fW7IuWPWPIgT
+	 E/jb8/2gn0KLRfEox4oxh9IYRlxmbRAKGukw6jcaLL0ap87mItwrAe7mJ8y4m7PhWqbBw
+	 ADHmK12yx7EURzyMB6rRinspABE+wDynqS2AadxPk7Rbtn3uAAedCgz1v6aX+GqLxNQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792783701;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=QCUO9koXJEjic7Y8rskQ370+egV/LCuM74NkA6fYd3k=;
-	b=t8FJkCgPzWe2JZ7mTdqcls6T+yYXwdzrUxbj/aIBQKvPox1fCC9+MlHY39OIE7aIbozw
-	 NwOBlKT8kSxR+2tbF97jJl2XI6ZzDDPQ7pohpiYPdICyLG5xBBqfXQUAmhkckGmGiSZ8e
-	 r3OjJITEQQjbswWTcWUcbQqaP2HsT8nttuIsc7ntsDM194jvp06y/e5XDbtuTssB/bDCL
-	 ajrw/aaIXsqKFRpZRmn7SwzziKfZyNnpfIejLL9BnO1bVocAR6G0UBORrtPagWQuAqo/J
-	 Wn655Md128T9hzrTJkyNAwR+VgVcMM+k0X3BtCYhdUPkJQK7G80fxOm8HFGLVdafLMA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792783807;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=Awlx3j9nTCCze7NhMfrT6cxk8XyydYWqaAK3fkXJVy0=;
+	b=YIWOAv+agy/jgOupAvdB42WcshwOMAI1ogqj2OQKRzNRB5ctXw6Q2U2TgGTQ4xcK7I+a
+	 xiG4k0hic428lBhroEv6Rsr/7eZi93Vv353HVxLtyyElaW6Vd31NMOTl1AZ62WqXumGZ/
+	 0KjAj3iEAXW6P61MKDe14ChFag5Ab82Ap54sabMr1FlyDzslTmocUPDz5eKSXjmxfkRow
+	 Jv0DR4RwBNjHCOxEKRoHL4MNzGHGIGIyUhh5M8C4KHJV1p7RDwngihc3uOHsSrktDHglA
+	 BiKAqDFi0lHgWFALGvFUytMbl6VPRt2pnkilq1RtSFrMxalg5yaKzQxc0pYPk7hBz5w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=faWtXKFx;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Y84eeUa/";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAEE0606A31D;
-	Fri, 23 Oct 2026 19:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16E5606A31E;
+	Fri, 23 Oct 2026 19:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=faWtXKFx
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7B7C1F01825;
-	Fri, 23 Oct 2026 19:28:19 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y84eeUa/
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE671F01825;
+	Fri, 23 Oct 2026 19:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792783700;
-	bh=QCUO9koXJEjic7Y8rskQ370+egV/LCuM74NkA6fYd3k=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=faWtXKFxdICbmTEKMgXhgkn0mMBdvAXVi17vlJ6SI5zw9k/c0KtFGlNq2meSuOPCn
-	 /986U79B5nDQOfQnAcj8LOxQwIDt7+XdLd9oMMbeC8xO0Vp+stvq6krq1ZRO9yuOcT
-	 QYORjbFizBDhNg8uF/nngNfsrcbWQX8ZCLmMQz9ZXb5V1rESJAkVObiJWxmIcGvuAA
-	 /BfXfJMr839pD9QmhH2VJDK3QIHhNFNg7GxJNHiEIPjw1I4SjQhAuI2Thzh+mkB6gW
-	 +FLsHiR2zyl560gKjLKduLt20kOxwdXMVCPZXBSRfNQ0wsIIgDhHnidyZmIKRVWSmW
-	 wPmFOFAbk4E1Q==
-Date: Fri, 23 Oct 2026 12:28:19 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@kernel.org>, Guillaume Nault <gnault@redhat.com>, Simon
- Horman <horms@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Victor Nogueira
- <victor@mojatatu.com>, Vega <vega@nebusec.ai>, Ren Wei <n05ec@lzu.edu.cn>,
- Herbert Xu <herbert@gondor.apana.org.au>, Jason Wang
- <jasowangio@gmail.com>, Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- stable@vger.kernel.org, Martin Varghese <martin.varghese@nokia.com>, Pravin
- B Shelar <pshelar@ovn.org>, Shmulik Ladkani <sladkani@proofpoint.com>,
- Yotam Gigi <yotam.gi@gmail.com>, Aaron Conole <aconole@redhat.com>, Eelco
- Chaudron <echaudro@redhat.com>, Ilya Maximets <i.maximets@ovn.org>,
- dev@openvswitch.org, Jiri Benc <jbenc@redhat.com>
-Subject: Re: [PATCH net v2 0/6] net: pull short linear Ethernet headers
- before eth_type_trans()
-Message-ID: <20261023122819.5e48ea9e@kernel.org>
-In-Reply-To: <ACT-N6N4.v2.r0.20261022191829@mojatatu.com>
-References: <ACT-N6N4.v2.r0.20261022191829@mojatatu.com>
+	s=k20260515; t=1792783806;
+	bh=Awlx3j9nTCCze7NhMfrT6cxk8XyydYWqaAK3fkXJVy0=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=Y84eeUa/wCzRDtNKakgHk2A3pAdJ2vinXjYLtmACtztqwrXQjh9q6FIqkHwnXhVQ0
+	 F+3PvLqwD99+TyPaTbOssKgNUDsKiLK1hiPlZn6jsehg3vY183V2vmqqBtXNYwrZi6
+	 uQTI6Mi/AclOsz0L823Vh4bjg8DjUMv7V+/OY5ARGI1JyKGpYiwB4mIAPzc4KhGiO5
+	 G2jaCrbTgjqGYkDVEuTuyfLhcCmUERO/R46sg9a3DzZHYBrkQVBPu/SzfAUtk9WD/5
+	 PC0FnPU3AKyO07B7h5yEoeTdmzWh9moFvYeelo36sdohyEuV5U1gprzOiL9DNUu/Bg
+	 dOL4nWDl7GS+A==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 81706391B14F;
+	Fri, 23 Oct 2026 19:30:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,61 +53,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v5] sctp: reject forged cookie peer_addr with unknown
+ address
+ family
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179278380532.1224496.16148284450790135756.git-patchwork-notify@kernel.org>
+Date: Fri, 23 Oct 2026 19:30:05 +0000
+References: <20261019073747.178626-1-hdthky0@gmail.com>
+In-Reply-To: <20261019073747.178626-1-hdthky0@gmail.com>
+To: Xingyuan Mo <hdthky0@gmail.com>
+Cc: marcelo.leitner@gmail.com, lucien.xin@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ linux-sctp@vger.kernel.org, netdev@vger.kernel.org
 
-On Fri, 23 Oct 2026 07:59:15 -0400 Jamal Hadi Salim wrote:
-> This series fixes a class of producer/consumer bugs in which an outer
-> header is popped and the packet is then handed to a consumer with fewer
-> than ETH_HLEN bytes in the linear area.  eth_type_trans() pulls ETH_HLEN
-> from that area and can BUG in __skb_pull() when the inner Ethernet header
-> is not linear.  The affected producers are act_vlan POP_ETH, act_mpls POP,
-> act_ife egress decode, and the Open vSwitch MPLS/TEB and NSH pops.  A
-> consumer-side guard in act_mirred rejects redirecting a headerless packet
-> to a device that expects a link-layer header.
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Mon, 19 Oct 2026 15:37:57 +0800 you wrote:
+> When cookie authentication is disabled, COOKIE-ECHO peer_addr is
+> attacker-controlled. An invalid sa_family made sctp_get_af_specific()
+> return NULL and crash in sctp_transport_init() on
+> af_specific->sockaddr_len. Validate it with af->addr_valid() in
+> sctp_unpack_cookie(), which also rejects a mismatched family, e.g.
+> an AF_INET6 peer_addr on an IPv4 socket that would later crash in
+> sctp_v6_get_dst() on inet6_sk(sk)->opt. Validate a copy of peer_addr,
+> since addr_valid() rewrites a v4-mapped v6 address in place and the
+> cookie still lives in the received skb, which is not guaranteed to
+> be unshared. Store the validated copy in the new association and
+> pass it to sctp_process_init() instead of the raw cookie, so a
+> v4-mapped v6 address is normalised to AF_INET before the association
+> and its primary transport are built from it.
 > 
-> Patch 1 makes act_vlan POP_ETH pull the inner Ethernet header after the
-> pop and drop only when the packet is genuinely shorter than ETH_HLEN.
-> Patch 2 does the same for act_mpls, gated on the pre-pop MAC length.
-> Patch 3 adds the act_mirred guard at the redirect boundary.  Patch 4
-> keeps act_ife egress decode from consuming the inner Ethernet header and
-> restores the header metadata.
-> 
-> Patches 5 and 6 establish the same linear-header invariant for the OVS
-> MPLS/TEB and NSH pops before restoring MAC_PROTO_ETHERNET.
+> [...]
 
-NIPA CI flagged a regression that appears to be introduced by this patch
-(or one of the closely related act_vlan/act_mirred patches in the same
-series).
+Here is the summary with links:
+  - [v5] sctp: reject forged cookie peer_addr with unknown address family
+    https://git.kernel.org/netdev/net/c/9802123ceca8
 
-The selftest tools/testing/selftests/net/forwarding/tc_mpls_l2vpn.sh now
-fails reliably (both the "ping" and "ping6" sub-tests, on both the
-regular and debug forwarding test configs, consistently on retry as
-well):
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-  # TEST: ping    [FAIL]
-  # TEST: ping6   [FAIL]
 
-The test builds an Ethernet-over-MPLS L2VPN using exactly the tc action
-sequence this series touches:
-
-  - ingress: mpls mac_push + vlan push_eth + mirred egress redirect
-  - ingress: vlan pop_eth + mpls pop protocol teb + mirred egress redirect
-
-dmesg on the test run shows mirred failing to redirect the traffic:
-
-  tc mirred to Houston: device veth2 is down
-  tc mirred to Houston: device veth3 is down
-
-This is the same "vlan pop_eth followed by mpls pop" chain described in
-this patch's own commit message as the bug reproduction scenario, so it
-looks like the mac_len/pskb_may_pull bookkeeping added here may not be
-correctly handling the ingress case used by this test, causing otherwise
-valid packets built by this chain to be mishandled and the redirect to
-fail.
-
-Could you take a look at whether the new POP header-pull logic correctly
-handles the "vlan pop_eth -> mpls pop protocol teb -> mirred redirect"
-chain on ingress? It would also be worth double-checking this alongside
-the companion act_vlan POP_ETH and act_mirred link-layer-header patches
-from the same series, since they touch the same pipeline.
