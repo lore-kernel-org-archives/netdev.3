@@ -1,102 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.43
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792788429;
-	b=Cd4VFurFWZHMXUygVPg8RPk7Mfh/qr5kJ7bvD1K74BW+pMI6xnGyEpzVCoDT0z7uAnA5
-	 bne0M9vv0gSwmsbkz4Af3R4pFihWTebGonZ7HBPo/L5Ef7wtWdB4Qie6M9oQEYbXTRLcG
-	 WSfayxxdd/C01O64a5zEjgMlW/g9D9uDQd01t+hRfvvncEbHfj2rSNcWwdQopgSMddOSw
-	 DRaoJwxFLbuCvh/NJQhDGVWpz1cL7o4/f/gc6gzscKHCwB50sJ1afrqBcgvkzA/YJJHYx
-	 ntM+o0hC+2FgKmLtMsALOxZZ5nJSUx6zp7hZWAT3xe0ZdPROGaDS/ziMYnW8xiINwzQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792788429;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.199
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792788430;
+	b=nozIL3IbyyPl7gKk/myBItYmY1NUIsW9KcZpYvIZfTxuuGgINR7MCBnukl7xqhq1h5Cf
+	 5FjcNet96r5IpMbIJSx/IlkFmYKbU5bQzvLdIOSPsNXzoQU4QZJ26IWWPL9rBf8kh4MLS
+	 aaLHpICK81l03USUb9RMDEsokH3AyJCe3Uy2q7yeKnrVVfczZIYiTcfwOb23BWzYFWNRJ
+	 Za5CiyUQdPKaESZUhkRSYBiqfyc3vLoc5whb7qBLzWCcc6UVF2NCl5ypYZPSJo5kZhJVL
+	 yoc3N6mxATrq+gMLt5Km/Y2XsZEZ4QM6JbTa5lcH2ZjsLmF0QgiqqrXxw283qeoXFyQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792788430;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=TCEbxm8avzTummi3Y3lCnYO6mye35k+RSerUFk+JTQ0=;
-	b=wfIPgBh5dBRtEOfZ1T8lqMzs13/ohbox0z81IgVYHL/gmlGBTSXWWam5S7N2bFdFjOxc
-	 rdsDgz5iP9NRCGPU5jpxCiJJ+yhYBszt62j8yjvMRaFkKcFcjqUvJfImU6x9jIpoFmCcU
-	 thicXGyelcoatLum03fMmwxaLTrwPtB6EUCYocejPetbWeXfnk2cGCbq2McDzJopFQknK
-	 QA89NOumopZHeF5KhpXzcIpYWmFYWGOJjb4JsPGglePtyW7Oz48uPJiqPeYxjDYl0bIOE
-	 ZGoByKlAvl0W2crSnuGx27rxeJiJFo2XO0MkI2pd5HFY1MTdOs5qPkEd/IlYkidPAdQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=oyY+LF3R;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.43
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	 X-Gm-Message-State:X-Received:Date:Mime-Version:X-Mailer:Message-ID:
+	 Subject:From:To:Cc:Content-Type;
+	bh=IZesByycO+LPzFMOrxyzTveWeZ5n5x8B7eGfO0YnZQo=;
+	b=45DmGxwkqntx328q68RC4huOEQl4s0Fgr087Zk0eKLuY3e6ifp2RiiAODEniqYudHY5N
+	 yS/dlJ/ikmeDBKaCscQ2eQtpi+RcE6O92MUoTFj6n0BeTz5axA/Ig+YFX7jat5byzlZdf
+	 /mVP6U6Y2qQPfRjLXaY4Zrr3HtG8JYe4jWBqNEbyILG+eXRQBG/4jOO2zJx9vxb4JETRd
+	 xt+71wJYPvQpToOWRh/yvp+mvoQZF/24eiv/Mx8hraaHEAZ2+KnTbvTgmiFA2guB6vL8i
+	 ufgVLH2ZxzGdQNsQj85IR6G30UHT5UXYQPnfw/+5/8nz4hinLV2dPvDfsCEZ7mSHkfw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b="V8c5K/e+";
+	arc=none smtp.remote-ip=209.85.210.199
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1639606A31A
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 20:47:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A1639606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA0B606A320
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 20:47:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4BA0B606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=oyY+LF3R
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c4322d310e7so195419766b.0
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 13:47:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792788426; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ifcro6kg0CYlrGbD1WOEkfVwdDW16ZMRCd1aBMPAz4WJjA6de3g/YvDK0ZaT0nuWFj
-         5bYi4T8XUvto372bCQ37Sr9t7itI/yWkVsOE6u8j2LrelygJFAp8rdftsZyka9X97Csf
-         TSx79+ldsnU5w5KvWj6mIdbyc3A7sPOknU7SNT76NaIdaweVoo/cdN8PzuU+sKEfi6ny
-         4xQXQq68+IuGMe06/4m3srcnoF4K1V1tCGPjgBSp1pwV7H2eOyz1H09n+3rgBnsIh8Kz
-         VU8RZ8vjglBjokKX2NFL2PnJV0hSYrcSYe/fQ/mCQHqI7ZcU/7XztZJoNpmOQYzL2ngg
-         vPYA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=TCEbxm8avzTummi3Y3lCnYO6mye35k+RSerUFk+JTQ0=;
-        fh=+jdvrnWoETLz2fwWZq35EzYOm7QEXUmQY4MDvC6Ez+Q=;
-        b=qEvpwCAwsXKcYMWYNf4YtffdduBqVpKMKbJEWE2VXsx4FvgVEpQUc0vEMJjtpwwNHF
-         VZsyCodHFIfW+863u9Y5bBkZhA4dOFANbegaIY78ij217QH5DwoaGMEKe0OSHUlmXdLM
-         KdWmmYG/gAg5oEohoCUl5L4Tn/w88+gD0EMVfzfuVXRwcBLMc21ZbrPHqRu2dP2lxpzn
-         velpctwKDat3nS5dGZFc4mYmvYfSiY+mN3D1dY2I1jKZx1ASWe2Xq5gTkXTfdpMXVeO2
-         RERGuPqb6XGGOumB5sR+l1xOCbgw6qfKg0ziYQ1BRi2v6Zv4oaAECLofYJ1/yUQRhMzj
-         ySDg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=V8c5K/e+
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-89fb6a45c48so1233645b3a.1
+        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 13:47:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792788426; x=1793393226; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=TCEbxm8avzTummi3Y3lCnYO6mye35k+RSerUFk+JTQ0=;
-        b=oyY+LF3RBLKVUchgpkrZgHuXUdI3UhZ6sDH8n5vdQRyhJ702pqsWIZlC0Zo1JYcBqy
-         zWYIKFKmIfbmDKAwvihtYud0XXU0ugl+GgJSFXWFPMtauTSwJHYCiZNXt+SXBw3BD7m6
-         LThfv5zU3BkBH+tAC8OYLJgqi0fsp0izHfnUYufYTwFrw2nhltZ9d9iPBvFqRg89UYQu
-         Q9zKKfJRFoonqequfrUZBvFMJhMgii0wwfcjvh5bKPTN6COi0g9KjksenOOXtWtCZH7j
-         EMs7vlFV/J5VdEMlJXd5fUn8JNSg1I62nV9Jyov3HqZB2qy+f/AIzsjE1eyApoA8Fbu9
-         I/YQ==
+        d=google.com; s=20251104; t=1792788429; x=1793393229; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=IZesByycO+LPzFMOrxyzTveWeZ5n5x8B7eGfO0YnZQo=;
+        b=V8c5K/e+wW0CaDapSsM1QWQpymmKnF2LTar/d5t91pBrzlY5j4HFDrApsLX0aNwNik
+         yKgazbyKwgnMV7P6EBb7yPPqzgq4TVV1P1iyDkGuPYoGFxHD7rumtJOwcbAY8AaVTTjo
+         EUCri0Iw2Ka8YitLlEopvJWuDf4MU71+79rmqIk7p59sMQLtttTViPXmEdX+oAuQXse8
+         R7yFjcdQnRIgv7iA1qE/zUOl08ys5xyPfAsYihPCdeNJpqt4VNoyICVAYKki798pa0rh
+         +zOCIE4kYf110o6APAkqA7NAD7UaX6jf+PkshSCA5ea9ziUGJh1HzX1FFe2IAzZm91TB
+         vbUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792788426; x=1793393226;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1792788429; x=1793393229;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=TCEbxm8avzTummi3Y3lCnYO6mye35k+RSerUFk+JTQ0=;
-        b=pF2qwguhjPxNKz3t+kNR2kwxYXeyqkIq2I2GR36v8uxVwkErz2f4o6qT0WnyyLn8Vj
-         QkJTyARwVoX68henwyIpfK+8+vHsv9jsIGVtARKeBxL4/uxxTeBMJorApHeuso0GeXFA
-         hC9p0ipW2IO69Q5OZnpcsQfcGhHZXB3ibVN3wu+6wPMd9hI/+jOb936PiO4tvgTahEXp
-         blqYLPd7tGqVaBDMVraGfckP2Cl2UgW9FKRyqK4JW1wShYwRX+hIiU05UF43tQWpXPlz
-         u7hcyfqUtjV7pKP75itr9ODAkvIfF+jyq5fdqM895sIy9S6ba+pi3gxbS1430B4n8EHm
-         2uHA==
-X-Forwarded-Encrypted: i=1; AKwUvBxLuf/5ntWD95dVKx6/HI/GJkTGs6XwxTWDxqBF81WB7j3Qcf7xPfI9pHvvlVZDr2Y0HwA1JWY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJktHvmEhN7gN9A4lOu/SUUY0f3WwoCObnZAXAFw50EcjvK+dfR
-	F5cXimV8jGstK6PC9/bZfGOxa334TTWsoWrnqxLBfrzO/UMfTEnr0g/n5PVTBbfrEzpGQNZq8Ii
-	hcbhd3t3JxYaha+AR3rC/vkofsY9YGJU=
-X-Gm-Gg: AYBFou0OSx3AfSR+t94V4RyeYtdfytJOxndQnGIukGLwejQKYjnBdLHpQdK5FdOpcQn
-	P0FP4QoS1tFrJgRWduTEZL3pfMd4sSVvn4gXD0d93l4HoBpI5T1Aq/sYVNsnBz5/kAuRGVJUHop
-	yA4YKgzTOyXbFcTnWyWHU7bB0VpK1vB6unfa21/TuMgNq1TnZNNwD7UXj/SxwqR8BJqQKlnW/Ed
-	6jZCjJ66WL0t4B8YKypaQBQqK8OLvopWkQqMNihOHL2UHOxBkjSURN3Hkcl5fiamwMRNq5ZoE9U
-	iXUQ6qOjGvSTTEblNUXojgpuw+ZCnLInTOTi/3L+PgAcibbgsgjSJlBZvURvpwKEaaxVUGRvtE1
-	Cx1uy60hufXmtyEsDRkGgdORUzCct8Sd73mvaCOFpcYfr8y629lIuPySJ8iNI2Wl6yboawFkrZq
-	vvp34z5LI/S1wBVeSgFvInYM1fkK3hbY2NQppe1Vwz8k22e+3olIp1648OJzniff9vGlTDdQvvw
-	g2MPM99QOIWfBOZV7tDr2ZxznPcx8Puzz/RMLtofGQqWyD9GQ==
-X-Received: by 2002:a17:907:a0c9:b0:c1c:4a80:30c4 with SMTP id
- a640c23a62f3a-c46bddf651cmr6811166b.11.1792788425687; Fri, 23 Oct 2026
- 13:47:05 -0700 (PDT)
+        bh=IZesByycO+LPzFMOrxyzTveWeZ5n5x8B7eGfO0YnZQo=;
+        b=Gku4ThF1nu5hqCTsaqgtsU+CQa/NSUAYjrbuNAz3o8EdQJw7m7aZ5C6cS3Xq1lY61+
+         vEKJbMC1n4FakayUjp1dBtGuw0dQ88kN1ztXCs5+WFXtjRaaflMyoxsbJEc9xq5LuHBg
+         o3GIRMMyQX5bfoVgGm/8K9XXnGoWgiAu4yfikKrJDHo//I+KZSfpUeG87r6AU+lM12wq
+         krG1BhXz9RR0uwVA/78szWoW5RvCTZunvV6OqqUmcetkt6KPCNVXOjUvjmLrKcAC5EwX
+         hZeg2fuOT8eMBzgtRHW8/HoEGSG3kUax1+lzsEfUJSchhPRHfMmy3hKOJudpSYXKjKri
+         PvOw==
+X-Gm-Message-State: AFq9FYLOZjURMkQaLrGOZKsh+9cFarTdDkK7qv0jdqbC6TmNVHWJymnB
+	FUhqFJn59CcAzeZeNsAuej6fvIYJkVe8jwoAjKyo0C3e7Plxe1Ob0MSXCTuNOwqM6zpmJwVENWt
+	sZUH+Y8PrD/5xP0Z9eX0P/6pfNtNHM9W5y+5qyo3bLosWA3QfkVaUCgMAH6KC4hfxJAoXYOG2pO
+	yTiOYsvJ1FAtE4pHw5xAXrZcQHnNKKdSmyqYgEyEfGxM6Ps5mD/I60S5m5Sm4O4kY=
+X-Received: from pfww6-n2.prod.google.com ([2002:a05:6a00:8886:20b0:890:ac21:250c])
+ (user=hramamurthy job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a21:3f95:b0:3e2:aa08:8040 with SMTP id adf61e73a8af0-3e7cd4f4b9dmr123609637.46.1792788428424;
+ Fri, 23 Oct 2026 13:47:08 -0700 (PDT)
+Date: Fri, 23 Oct 2026 20:47:02 +0000
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,40 +75,79 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20261023005313.3946390-1-rosenp@gmail.com> <179271707120.3327.4775409276963055481@kernel.org>
- <CAKxU2N-_Th-ksPst_1KR3W1nYWoZpWR2Sjfo=RWroot5A1RR8w@mail.gmail.com>
- <20261023123637.1aba3995@kernel.org> <bbc66ce1-8d8d-4d35-9314-98fe14082690@broadcom.com>
-In-Reply-To: <bbc66ce1-8d8d-4d35-9314-98fe14082690@broadcom.com>
-From: Rosen Penev <rosenp@gmail.com>
-Date: Fri, 23 Oct 2026 13:46:54 -0700
-X-Gm-Features: AclHuK-ivruJl9X9jCViXiK5EZAfSDg6147raVZhkKBY9-G9io85x7I6pMGwWMo
-Message-ID: <CAKxU2N-aNWtZUc0bkkc5H9mFWUn7RDti_ZzX4UHXhNyPPq3s8g@mail.gmail.com>
-Subject: Re: [PATCH net] net: bgmac: fix oversized RX frame check
-To: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, netdev-bot+sinfo@kernel.org, netdev@vger.kernel.org, 
-	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Felix Fietkau <nbd@openwrt.org>, linux-kernel@vger.kernel.org
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.257.gf7497c7d27-goog
+Message-ID: <20261023204706.3112215-1-hramamurthy@google.com>
+Subject: [PATCH net v3 0/4] gve: Fixes for issues discovered via net selftests
+ and Sashiko
+From: Harshitha Ramamurthy <hramamurthy@google.com>
+To: netdev@vger.kernel.org
+Cc: joshwash@google.com, hramamurthy@google.com, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
+	jordanrhee@google.com, willemb@google.com, przemyslaw.kitszel@intel.com, 
+	nktgrg@google.com, maolson@google.com, jacob.e.keller@intel.com, 
+	pkaligineedi@google.com, yangchun@google.com, patricion@google.com, 
+	awogbemila@google.com, stable@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Pin-yen Lin <treapking@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 23, 2026 at 1:08=E2=80=AFPM Florian Fainelli
-<florian.fainelli@broadcom.com> wrote:
->
-> On 10/23/26 12:36, 'Jakub Kicinski' via BCM-KERNEL-FEEDBACK-LIST,PDL wrot=
-e:
-> > On Thu, 22 Oct 2026 18:00:53 -0700 Rosen Penev wrote:
-> >>>   - How the issue was discovered, e.g. hit in production, hit during
-> >>>     development, syzbot report, manual code inspection, LLM or static
-> >>>     analysis tool scan.
-> >> I added Suggested-by in the commit. LLM only used for the description.
-> >
-> > Suggested by is for suggestion of how to write the code,
-> > if Florian reported it appropriate tag is Reported-by
->
-> This was a suggestion, so I think it is appropriately being used here.
-So do I apply both tags?
-> --
-> Florian
+From: Pin-yen Lin <treapking@google.com>
+
+This patch series addresses several issues in the gve driver. All four of
+these fixes were either uncovered by running the net selftests or
+suggested by Sashiko in the previous version.
+
+The series includes the following changes:
+
+- Patch 1 introduces a spinlock (stats_lock) to robustly synchronize stats
+  queries (including ndo_get_stats64 and queue stats) against queue
+  teardown and restart, preventing UAF and out-of-bounds reads. This was
+  discovered by the drivers/net/stats.py selftest.
+- Patch 2 fixes an issue where interface stats would go backwards when the
+  interface was brought down or its configuration was adjusted. This was
+  also discovered by the drivers/net/stats.py selftest.
+- Patch 3 ensures the driver falls back to the default minimum ring size if
+  the corresponding device option values are exposed as 0. This prevents
+  userspace from configuring unexpectedly small ring sizes. This was
+  discovered by the drivers/net/ring_reconfig.py selftest.
+- Patch 4 makes sure ethtool configuration modifications are done
+  synchronously before returning to the userspace. This was discovered by
+  the drivers/net/ping.py selftest.
+
+Changes in v3:
+- Link to v2: https://lore.kernel.org/netdev/20260425002450.163421-1-hramamurthy@google.com/
+- Protect all stats queries and queue lifecycle updates with a spinlock
+  (Sashiko)
+- Drop u64_stats_sync for the base stats and use the spinlock instead
+- Save base stats in gve_queues_mem_remove() and gve_rx_queue_stop()
+- Drop unused rx_dropped and tx_dropped accumulation in
+  gve_add_base_stats()
+- Fix the Fixes tag of patch 4
+- Refined the commit messages
+- Rebased to the latest net tree
+
+Changes in v2:
+- Add a NULL pointer check in gve_get_ring_err_stats() (Sashiko)
+- Use local variable to prevent inflates from u64_stats_fetch_retry()
+  (Sashiko)
+- Add u64_stats_fetch/begin to protect base stats (Sashiko)
+
+Debarghya Kundu (1):
+  gve: Fix backward stats when interface goes down or configuration is
+    adjusted
+
+Pin-yen Lin (3):
+  gve: Fix race between stats query and queue reconfig
+  gve: Block invalid ring sizes when device options are 0
+  gve: Fix link flap after ethtool ops
+
+ drivers/net/ethernet/google/gve/gve.h        |   8 +
+ drivers/net/ethernet/google/gve/gve_adminq.c |   4 +-
+ drivers/net/ethernet/google/gve/gve_main.c   | 179 ++++++++++++++-----
+ 3 files changed, 148 insertions(+), 43 deletions(-)
+
+
+base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
+-- 
+2.56.0.257.gf7497c7d27-goog
+
