@@ -1,103 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792719489;
-	b=QE4/p9F2Rfsk6pIVUZmDEzjQ+sXqF+Vbr+y3kB5ncevHcjSrW8iMwLcE/Vao6mres0SC
-	 LdKNx/f4Of2cxiwnm6xTomlWWQlLr2qbW/evZbKaGBiwa3XMTia5qi/tqKp22TR0n53Tz
-	 tQbm+DTPm6QoGifvJuuVbFzwWXBY5ywwrsGhFnfNggxFI7XDXH+k8TwaWZw0EuQI+awzo
-	 w76VnX9Bxc/tvR1ombcqzXilhCe8pg9y548xynCboe5FxL7/HfMdwPykVVpsK1pi2T10B
-	 B+zkyCsR2upuAUTFK2rj7IMVEq3oTUkpUscPvoWO7F3Cs4QYeUfJ/Qk9w/V2v1QWI4A==
+	t=1792719642;
+	b=rcwKJuDXEnk3EjMo31RK5M72y9omWg5dTfYW/FIm6bqArahL7pMX0amvhGSgg49vctpR
+	 NZaUc08S+G0AU6lXyRAeB1fzIWVmRpuFZKhw6/3kRVNMkCSvukUD6Q1T9e5T/5eRiUdOD
+	 tCwCQqmccKuk9xaX+xPx3EOCKlmBTgNpvAavisUJQK+Zm+3JdJeOzWfBwnbijneYf0kog
+	 RlLQcjgyUclvXsjByFbcRT1095zhJ4Mlvix/wazRpRScjWUVh6Ux7faPPhN2jyzJ9kvbB
+	 RpdDbWKbG6+94mtJ/1niFdlG0Z8BUOJOjBV+4bd7Odj+PJ1a4sA8zaGaLNWz2BmYz1g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792719489;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792719642;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=VyS6G3Kx6WPq1nBIZXm3hw0RmZ6T3d+8BhWqtGP+Tt4=;
-	b=TBEO+6ngPc+QWAw/xKjYS5LQNBRcPmXzg7nupvTZdMEdIKSPI3BEB2QgD/+ChYxkODjm
-	 LJxN/YGHKTs1KlykphXTcLIquKsGv1YLPtvbY0F6xN4Fk85X0oq0Cgw6ZXncONnme2QR0
-	 NvkEgypOUGU/R8VsVUabKErwaRiwuZVTyGVTFxr66KN/GubAF6KH3jw2H0BAXZbEAbY3F
-	 GtJ1Lo3zNf+3oFN6seepYvs4X87IcXahTjocI0b3JCQqz5DvbRwonOvshctZAJcEh8Mzk
-	 l1drbcuQaUDaTZKZ7tKifyAMGSVr0a9TAbQT+cxKP4KoTpR0D0TFnSuUVpUgcZPLsoA==
+	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=o9HAgtxaNemPxZckyLHTmWLvComr9TU6eoU06fiYdlY=;
+	b=ToCVPLed4nKYJwGdg6RWNSgRCDrk0DqjVhEDP1l5JZe6e76RcnjxwvsU5swur6YCctwl
+	 znxo56vx/ucXixqcPAAQ0wlKDtmzP7dz5aKQSD6AKtTyjuECrCYvOU6GHuINlVp2PLziY
+	 6Ua9l0TScS98HhTbGKi7duPU64d5MrSITjVPuYv6046i4LfRDYMdwOB1n50c7xLmiJmLO
+	 LG7fNsGTjgMfNGWFM2/wNd5CahZdOC+RXSYLt5jpcC9doy5TJy/nnhAapYU9ZEwhslJW5
+	 MIsYuDua9IYKGUxtLHnnLfPWCAoEA/+WpQ5x6cJJDgA39HEXU90AkSdhF0d0i5WGsyA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cloudflare.com;
-	spf=pass smtp.mailfrom=cloudflare.com;
-	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=NS4IRFub;
-	arc=none smtp.remote-ip=209.85.210.44
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=s1SsSein;
+	arc=none smtp.remote-ip=209.85.217.46
+Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B09606A319
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 01:38:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 59B09606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D7D606A319
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 01:40:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E2D7D606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=NS4IRFub
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-8256106635eso192489a34.0
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 18:38:08 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=s1SsSein
+Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-7cccb2c96d0so1608137.0
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 18:40:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1792719487; x=1793324287; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=VyS6G3Kx6WPq1nBIZXm3hw0RmZ6T3d+8BhWqtGP+Tt4=;
-        b=NS4IRFubSNO2j9Y1WVfgO6Awpo3hnuCUulnPg4eByIxHDtOwxZOdWL4UoKe1Adbhp4
-         xCnMZ5IuP/e9cEYfwwR5qi+85GwzSDYRfb7FHzEkqxC1SaasJk01AezXkpJCr0++wswi
-         QsHVXluMi9q3rz+c0KuCyFS5VP4sFSUY/S/WaUDqGacY7dbnytqOIFRZ/O8WAa4En9Ez
-         CwnxTZk9XNb2DV6ApTf+KT1MyysDlqIHsizc4zrngtmjpWuvPI2z0WP/1HFToV1qH+5v
-         ml0Iq6VBpUD9Mp6+GsXfBJsq3NZkpQfVMg3h8O3J2wMpj4PHzcU1YR4pqPcy2QWu6qXy
-         YqfQ==
+        d=gmail.com; s=20251104; t=1792719641; x=1793324441; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=o9HAgtxaNemPxZckyLHTmWLvComr9TU6eoU06fiYdlY=;
+        b=s1SsSeini4HLlNWI2u/4CcTuFPnLRQPe1ni/5caqVQWmRcnRQCpgIPhjnFkYU+CzQu
+         ofwAsKvpr5nj5jXBnaDsEbCidMQtLqw0/DS1HN3lC87YcARIbeCGj+kV+gkXCKyftZiS
+         orES2IV0PfRKyjqNBXLvbjs5KWXMyPmdmCpIIJsxNNUJdVBBwu/guaxmqapF5472FuZP
+         0tuqiPmP4Qae34lXs1rrDRXl2Rh0zZbe46kJwHmXClaW6i/vlq8YTuXG4e4ADHazIWxZ
+         GX7zv93mHoWv6UX2Atpx48/Ui5QES38fa/5iWxJg+mZavh+g9BeOS84PU4Ium+sOYOAM
+         RKqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792719487; x=1793324287;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1792719641; x=1793324441;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=VyS6G3Kx6WPq1nBIZXm3hw0RmZ6T3d+8BhWqtGP+Tt4=;
-        b=u/ZWMGBOAoh57JwJHzewVV4porJcwOmcszmZX5vKdZ/tFIWvNSpbOmmH9Aw9PG5A4Q
-         4btRsqWx6AyaAJdOgXhvo1gMEv82JGTI/PoQjisqr3AJqATLnKlUrIaRkTXYPDIJxZty
-         jkRI0GSBhOeC7G2PM0KEJROGbFlQtUCDvmrSONMlK/3yLl21tcuB+pXgtZn7+gP/A/Lm
-         y8OQ5xBjBSnTL8dCMkz1GKGaYLNJpG9qU3wGc4OWpoTKtqCyO9I6qag5lkrAqoR7A60m
-         qeo4Zu/7qHxQvBI8MsvewVLPp+/elKZULJHRd8i2quZzvYON2610yLowHS8r01nRWFK/
-         lluQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwsDM7KFvxPUnrz2ZY2V55HadikKgJFoaIqks7uy4Ib8ZCYwYQd8HvVi1ChVBornQnMnJ2d6YM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYINuPk52ztjdrWKe4weNTImoF18TIcXqsiDbII213TFRS1otBLr
-	9RppIi7tBEUBTzeBxssT3k63LuF6eT5NMwsTrD99ReGvUppzFfe7coF1GG+GgZRXr7k=
-X-Gm-Gg: AYBFou3uishiE2dxUge+STq1JMmjlH1kIUTUh9U/9Xf04brdvIA1DcL+XgUXnsMBazP
-	Dt8QPfepKHoujvmJqIIwmOBjN7TijNBTk5mW8XKnJA4VjBmdrQoFKcSRj53SGDgNgBARcbDFQW8
-	aQaFX1gaKr3kigUs0UXfJH3Gm9oOkXmR6dMSlXz/Wssm7n93IKVEH2cCh1iyhB1SCAulPo0TPaW
-	HcyAX/3h6iAwoaWlSjRfSAB3XDGOLgLQmWB3L8hP5v4XIc5OvfK2/MvgFGeAf1B5K81KYIugT0M
-	J/lYl8ldesK8QyUCcwA9NJQA7VS9GdFIz20lZBIpO1jztXWY2g1oNLx01pHqkZxRAWvCXuUym56
-	yPYlxJqq0SYHAvUX+HraUxYBh7yQHy1OHOvkjFhGNZWD64c8pMqZRSWdWZuZXspJOL+MwD0Q8MW
-	fCezrrarAyNIdoQGTcqHkS+8vbsrmlqWfmoCho0oWEAtneA/A5zv6vKKKiHrn3xgEpMVB1J9t8E
-	mTFqsl0wbpI3GqXxKYLT3OHBwuzy6n2xVc=
-X-Received: by 2002:a05:6830:4412:b0:7eb:9464:ac2e with SMTP id 46e09a7af769-84fb0d542femr668994a34.11.1792719487276;
-        Thu, 22 Oct 2026 18:38:07 -0700 (PDT)
-Received: from 20HS2G4 ([2a09:bac6:bf21:96::f:3b8])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-84fbdf59d82sm770666a34.15.2026.10.22.18.38.05
+        bh=o9HAgtxaNemPxZckyLHTmWLvComr9TU6eoU06fiYdlY=;
+        b=hPKp9UCoAjB/E9n424t5Q9oM5FCB8I1fGauGZfmGUF6I0AhT4uqbyc9V2qvQ0BCtI8
+         GRyNydCzMyLyHIuv99Zuvx3DKBfJUFoLEX5BMmx29qrzYr0y1zvQgIzj3vOAtr3c69fU
+         t32TX32jXj0zElIbr885lhqtahNDeMvCyBnselMI291QKw8K+F2y8tdu8rONvScqhSyj
+         97ukQ9DyxN/CBp6YusCmhrTJIoDbx66zQ3roVYgPS8wfVJ6ImHPikye1nJVA5OCxI9rS
+         VvjByyhdjETJ8F7e60+yBN1ziJQberGa9pLLmgc9iwK5iag7l9lxulS3EiUHP4ksaVDe
+         pHRA==
+X-Forwarded-Encrypted: i=1; AKwUvBwNxdCJrX4UBZOLei5F6zXcg+3JLV2f372xGz18v4M+vtqQ+kVq+C3qPxe+kRMTRUJuWggC8pg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKGwr2eoI1TLZm4F6thyQT4pe75Q70Q2UOhpr2E/eSSaT3Bci6R
+	lvV3eGjn2rsMgBw3dasZFnf4gDTz+rG9Zel+4Q+Av/RWsXfRKcHpujrwkgvtXg==
+X-Gm-Gg: AYBFou2Qtr/74c5yxd3X/qs9j0vvnnr3cHw18tQKvIbBts1mUGGr7ALZuGgAjVbEtR1
+	mdu06KsE5hKnH0gs7Li1kq+pnT7oWuZpdzzEavtcuusFe3VX0AT762LOQ1E8pHt52P3DRg41iqc
+	a4nYHty/NwjJMSlnvc/0sVp5GkHWXFKf7httNR4/jELwkM0jnPpS0brjTJL0xCpj/myxjy/zzgW
+	tarPkbAFan1RcY1upPLOJOO8btBdYG0PPLPDlBu/YOkax2rB0SK0C3trgvJQwUg5UKgPfEcjZut
+	j0NZFWcs1TDkdWT+YvYfkYH7B+8O2ocKrl8vfVkJIv8G9HoxyPFZyXMfW8g2F3Rcmus20HYsMFc
+	uN3ls6rytXGpOVZouycGRTg8/c0MIwAZMPIpmEAG6/SrBnK0wDriW44+J0wUV/Ja0DPO9hCXVnG
+	uhl/H7Fewulx105wVAQwXHtOSuIjw9WaSDcABpS3NQmvPV6Kv2+BA3mHvHSkGsp1CcahJ3iUNU6
+	Yy3Wjn1kzYAA3jBFYjML5lefMW0Fhaq2k0XEZltMKxYTJLf7SmCaZAYnA+ATj6rMjGtuzkSJO4a
+	RbeeOV7GXzVJHnNpMDJ6OB8Aoq/Z2p2Lqrid3mT9ML96zPx+EuPGyH7r1wKFY7Q8jLzQHviDotv
+	xPA3TgiuSC/ol7Ihqmrk=
+X-Received: by 2002:a05:6102:548a:b0:7ba:d953:edd8 with SMTP id ada2fe7eead31-7ccc32dfa8fmr440445137.27.1792719640718;
+        Thu, 22 Oct 2026 18:40:40 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec13f674c5sm906104e0c.16.2026.10.22.18.40.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 18:38:05 -0700 (PDT)
-Date: Thu, 22 Oct 2026 20:38:03 -0500
-From: Chris Arges <carges@cloudflare.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
-	linux-kernel@vger.kernel.org, =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
-	Phil Sutter <phil@nwl.cc>, Jason Wang <jasowangio@gmail.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, virtualization@lists.linux.dev, 
-	Max Krasnyansky <maxk@qualcomm.com>, Rusty Russell <rusty@rustcorp.com.au>, 
-	Paulos Yibelo <habte.yibelo@gmail.com>
-Subject: Re: [PATCH net v5 4/7] net: resolve uncommon partial checksums at
- ingress
-Message-ID: <atq3hiJcsVi_1v0u@20HS2G4>
-References: <cover.v5.git.mst@redhat.com>
- <342bf5331e12b2e5b940510293233bb8bce46127.1792668082.git.mst@redhat.com>
- <willemdebruijn.kernel.2987fc5710162@gmail.com>
- <atpIiwcUlH5ttBb6@20HS2G4>
- <20261022193052-mutt-send-email-mst@kernel.org>
+        Thu, 22 Oct 2026 18:40:40 -0700 (PDT)
+Date: Thu, 22 Oct 2026 21:40:39 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Kamil Sawicki <user148783812897@gmail.com>, 
+ netdev@vger.kernel.org
+Cc: davem@davemloft.net, 
+ edumazet@kernel.org, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ horms@kernel.org
+Message-ID: <willemdebruijn.kernel.23b75f0b6c0cd@gmail.com>
+In-Reply-To: <20261023003750.1133904-1-user148783812897@gmail.com>
+References: <20261023003750.1133904-1-user148783812897@gmail.com>
+Subject: Re: [PATCH net] net: limit priority VLAN untag depth
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -107,114 +102,101 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261022193052-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On 2026-10-22 19:38:53, Michael S. Tsirkin wrote:
-> On Thu, Oct 22, 2026 at 12:52:36PM -0500, Chris Arges wrote:
-> > > > @@ -335,9 +592,12 @@ virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
-> > > >  	/* Let the basic parsing deal with plain GSO features. */
-> > > >  	ret = __virtio_net_hdr_to_skb(skb, hdr, true,
-> > > >  				      hdr->gso_type & ~gso_tunnel_type);
-> > > > -	if (ret)
-> > > > +	if (ret < 0)
-> > > >  		return ret;
-> > > >  
-> > 
-> > One other case I found in testing is that a producer can set gso_size
-> > larger than the remaining packet data. __virtio_net_hdr_to_skb() then
-> > succeeds, but intentionally does not install GSO state because the packet
-> > is too small to segment. NEEDS_CSUM has still left the skb with
-> > CHECKSUM_PARTIAL.
+Kamil Sawicki wrote:
+> The priority VLAN receive path can repeatedly remove VID 0 tags and retry
+> packet processing. Unlike the read-only VLAN protocol parser, this path has
+> no limit on the number of nested tags it consumes.
 > 
-> So why is this a problem? If checksum offset is correct we leave
-> packet as CHECKSUM_PARTIAL. That's intentional.
-> What does your test do that makes this a problem?
+> Each skb_vlan_untag() advances skb->data and resets header offsets. The
+> offsets are stored in 16-bit fields. With enough nested tags, the network
+> or transport offset can wrap. A later protocol handler can then derive a
+> large pull length from the wrapped offsets and access memory outside the
+> skb allocation.
+> 
+> Apply the existing VLAN_MAX_DEPTH limit to the exceptional VID 0 retry.
+> Count the tag already stored in skb VLAN metadata as the first level, then
+> stop before untagging a ninth level. Keep the accounting inside this
+> uncommon branch so the regular VLAN receive path is unaffected.
+> 
+> Fixes: 36b2f61a42c2 ("net: handle 802.1P vlan 0 packets properly")
 
-The problem I saw used this case and setting inner_nh_offset incorrectly.
-I'll dig more into this, and follow-up separately if this indeed is a
-real problem.
+Thanks for the patch. Agreed on the general approach.
 
-> 
-> > The following check fixes my test case:
-> > 
-> > 	if (!virtio_net_hdr_validate_disabled(skb) &&
-> > 	    !skb_is_gso(skb))
-> > 		return -EINVAL;
-> > 
-> > A concern I have is this may reject valid packets, so maybe there's a better
-> > place for this.
-> 
-> 
-> Indeed, it's not uncommon to have small packets with !gso.
-> 
-> See also:
-> commit 7c6d2ecbda83150b2036a2b36b21381ad4667762
->     net: be more gentle about silly gso requests coming from user
->     
+One small suggestion for the drop_reason is worth a respin imho.
+But aside from that
 
-Ok this is helpful, I can see why that doesn't work.
-Thanks
+Reviewed-by: Willem de Bruijn <willemb@google.com>
 
+Just curious: is more than one 802.1P vlan 0 packet preceding a real
+vlan tag even something that would occur in practice?
+
+> Cc: stable@vger.kernel.org
+> Assisted-by: openai:gpt-5.6-sol
+> Signed-off-by: Kamil Sawicki <user148783812897@gmail.com>
+> ---
+> Tested on net/main f4377bf85887 (7.3-rc7) with KASAN. The patched kernel
+> blocked the nested vhost/TAP trigger after eight untag calls on five fresh
+> boots, with no tcp_v4_rcv call. The eight/nine-tag boundary, nonlinear
+> GSO, 32 MiB BIG TCP and fragmented-head tests passed.
 > 
+> An unpatched protocol-253 control executed 31 calls to
+> skb_copy_and_csum_bits() with offset 65516 and length 548. A direct shadow
+> probe recorded a 20-byte wrapped linear source outside the skb allocation;
+> all four Generic-KASAN shadow bytes were zero. The patched control completed
+> the same workload with zero matching sink calls and zero shadow-probe hits.
 > 
-> > 
-> > > > +	if (!virtio_net_tnl_offsets_ok(skb, outer_isv6, outer_th))
-> > > > +		return -EINVAL;
-> > > > +
-> > > >  	/* In case of USO, the inner protocol is still unknown and
-> > > >  	 * `inner_isv6` is just a guess, additional parsing is needed.
-> > > >  	 * The previous validation ensures that accessing an ipv4 inner
-> > > > @@ -353,7 +613,7 @@ virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
-> > > >  	}
-> > > >  
-> > > >  	skb_set_inner_protocol(skb, inner_isv6 ? htons(ETH_P_IPV6) :
-> > > > -						 htons(ETH_P_IP));
-> > > > +			    htons(ETH_P_IP));
-> > > >  	if (hdr->flags & VIRTIO_NET_HDR_F_UDP_TUNNEL_CSUM) {
-> > > >  		if (!tnl_csum_negotiated)
-> > > >  			return -EINVAL;
-> > > > @@ -368,7 +628,22 @@ virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
-> > > >  	skb->inner_mac_header = inner_nh + skb_headroom(skb);
-> > > >  	skb->transport_header = outer_th + skb_headroom(skb);
-> > > >  	skb->encapsulation = 1;
-> > > > -	return 0;
-> > > > +
-> > > > +	if (!skb_is_gso(skb))
-> > > > +		skb_shinfo(skb)->gso_type &= ~(SKB_GSO_UDP_TUNNEL_CSUM |
-> > > > +					       SKB_GSO_UDP_TUNNEL);
-> > > > +
-> > > > +	/*
-> > > > +	 * We know VIRTIO_NET_HDR_F_NEEDS_CSUM was set so __virtio_net_hdr_to_skb
-> > > > +	 * set CHECKSUM_PARTIAL.
-> > > > +	 */
-> > > > +	inner_proto = inner_isv6 ? htons(ETH_P_IPV6) : htons(ETH_P_IP);
-> > > 
-> > > on second thought, if having to respin, might as well fold the trivial
-> > > fix in patch 7 in here from the start.
-> > > 
-> > > > +	if (virtio_net_csum_partial_ok_at_offset(skb, gso_inner_type, inner_nh,
-> > > > +						 inner_proto))
-> > > > +		return 0;
-> > > > +
-> > > > +	/* A tunnel header implies GSO, so drop. */
-> > > 
-> > > no longer true for the above !skb_is_gso(skb) case
-> > >
-> > 
-> > virtio_net_csum_partial_ok_at_offset()
+> Allyesconfig and allmodconfig W=1 builds completed with CONFIG_WERROR=
+> because unrelated existing warnings stopped the default full builds. Both
+> produced vmlinux and bzImage, and net/core/dev.c emitted no warnings.
 > 
-> Sorry I don't get what you are saying.
+>  net/core/dev.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
-> >  
-> > > > +	return __virtio_net_resolve_csum_partial_mismatch(skb);
-> > > >  }
-> > > >  
-> > > >  /* Checksum-related fields validation for the driver */
-> > > > -- 
-> > > > MST
-> > > > 
-> > > 
-> > > 
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index e76762e29360ea..b40efea27dc292 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -6198,6 +6198,8 @@ static int __netif_receive_skb_core(struct sk_buff **pskb, bool pfmemalloc,
+>  	}
+>  
+>  	if (unlikely(skb_vlan_tag_present(skb)) && !netdev_uses_dsa(skb->dev)) {
+> +		unsigned int vlan_depth = 1;
+> +
+
+nit: since this does not count the actual vlan tags removed with jumps
+to another_round, slightly confusing naming. Maybe 8021p_depth
+or so.
+
+>  check_vlan_id:
+>  		if (skb_vlan_tag_get_id(skb)) {
+>  			/* Vlan id is non 0 and vlan_do_receive() above couldn't
+> @@ -6209,6 +6211,10 @@ static int __netif_receive_skb_core(struct sk_buff **pskb, bool pfmemalloc,
+>  			 * 802.1Q or 802.1AD and vlan_do_receive() above could
+>  			 * not find vlan dev for vlan id 0.
+>  			 */
+> +			if (unlikely(vlan_depth >= VLAN_MAX_DEPTH))
+> +				goto drop;
+
+consider
+
+        if (unlikely(vlan_depth >= VLAN_MAX_DEPTH)) {
+            drop_reason = SKB_DROP_REASON_RECURSION_LIMIT;
+            goto drop;
+        }
+
+> +
+> +			vlan_depth++;
+>  			__vlan_hwaccel_clear_tag(skb);
+>  			skb = skb_vlan_untag(skb);
+>  			if (unlikely(!skb))
 > 
+> base-commit: f4377bf85887f57b59abb5479f7660a81ffe4449
+> -- 
+> 2.53.0
+> 
+
+
