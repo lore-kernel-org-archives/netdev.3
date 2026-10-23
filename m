@@ -1,59 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=46.14.198.178
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792747390;
-	b=SMGiKxxJ+1HjI59AOBbTD5d0+qgIycfOmCeyiNHr4BvIAeccjXaDqSLskiSPl2VWNJjq
-	 57UgyQfhNLmY4L8R+8fjR6adK41GCQ9cPdCxt1ExjbBLdHSzfl+ntkM8j1tzoBeDbAT68
-	 e9uxVEX6qyf3SjKZGYgvbW89OkZzM+plNwjAe91G7Mvwwk6f3EtSfouTXypi1t0YsFoB6
-	 W2KP4TmRWzyA94NuKXcgjw7Y/EILotT9+9ijaalQ84t+lwqBL5foWL1Mza/ZW2H4uQaxh
-	 /w75UdMTB1qmskCWnbHpNEhoR+8PYI5LyR+ceMIY/0pC8KOErnWEWHX1WzVJDYW2czQ==
+	t=1792747810;
+	b=FdbKYL/vr4HQ3uhf82OpGaa8AZ7tuLLzJSKNTtGZ4QGMEvUGrSZMXPvWu7XdzGCTHZkm
+	 RO8j6A2rAudtzump5RZeJHrnl0yo4GVcLRY78y/WVvuaxiosOS2+sU4VpzGTr88iQPGyy
+	 N/c0nd620Egi6boylEW0MsoASTe1AZh7TBaqeES7IGymUs3KZxfb0ijLRpC8Krk+KT8vZ
+	 BgoBid4Ylhs6PnJ1KItDOEaUTOHMwfP6NyrsCr+MmTVoeM+e8Vn7XsEC8pXWcndKtJ/sA
+	 Ec5TRIEiJH2h7c5JhzK5DKILLVyDIFUrsQeUwUFwYZ0embZynSqp8Ml0xeUMKenvdJA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792747390;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=Gt+qDUVF+X+thPBdjlM/bI5nSYkOxZFq1oh4C1QxK18=;
-	b=iUcokFVur1TAnB7UIg0Q0lcGPZWBWEZ3b9D3oNA+AXTCG3PNHTHIXIcbYO3j6YW2abD2
-	 uIAwclBmEpjs3kft8/7o5zi+rZzD7kaVvCliEPO+VI55xbX5zXDHUc4rJq8vo4UFJW0u0
-	 +BeOomSaJ3dRnxjK8OpL4C3fXZRNoMN1ziP6vgJdHxawyspfbDs9ym9Nr1WUDNJh2TPDN
-	 etrARjuZbvvNdCmaSnAYkBeg81gD4iMNffbRWmP67rLyEttHAXauByDb6H+QQio8O9KKE
-	 hFNsJE67Oqh0xMN+jroEYp2v094Vmg7jVr4tfmX/vbfXf95wuJlUG2Wb+d7CAzfjpcg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792747810;
+	h=DMARC-Filter:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding:Received:DKIM-Signature;
+	bh=SAN9x3ekDFh3dDV1s/JTsWUi3o0RzXXkeiuG0T7yyWQ=;
+	b=MLfNjOzHjRLmhudsuhSxXbcE0bs4s8GWHm2H9UAePskboL0jy2z/LCtC2JHTrYjA9Nf1
+	 cSAQVxVzYnBnELuHPQVGao3vmcUzY3yzR/DodLzfyvGxKpAH2NzkCcq5e07g4GnW0NlNx
+	 8IjHlmbAUQNyM/+9IOBDvXWbfHdp43XKoj3B+3AV9zqmRgItSUCDOaeYchGlNQEz1YN9+
+	 Bgl9/bfk4CYXdDbvnJ0cE5aERbRERftrwMFiyfDbn/KscSjIrEIhInb5aNPSEiyuxjVCD
+	 mg8aLT51n61ubLIubDBBH2cebXKJVWdJoj9ZkVQsGLOLalsluX0HIlSuCzA5GefNSkg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=163.com;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=bUrp6bYw;
-	arc=none smtp.remote-ip=220.197.31.3
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	dmarc=pass header.from=rimpianto.com;
+	spf=pass smtp.mailfrom=rimpianto.com;
+	dkim=pass header.d=rimpianto.com header.i=@rimpianto.com header.a=rsa-sha256 header.s=s20260314391 header.b=WzA1Mrbn;
+	arc=none smtp.remote-ip=46.14.198.178
+Received: from mail.rimpianto.com (mail.rimpianto.com [46.14.198.178])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99F0606A31B
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 09:23:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A99F0606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 329C2606A325;
+	Fri, 23 Oct 2026 09:30:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 329C2606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rimpianto.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rimpianto.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=bUrp6bYw
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Gt
-	+qDUVF+X+thPBdjlM/bI5nSYkOxZFq1oh4C1QxK18=; b=bUrp6bYw5oM/SHDLd3
-	/g64S/BvT0gQogsPuix7S1fHOjSs1uke2ILsKwPDOIQskVhCWay4Y7MWpXFqJjx6
-	O+Q4BF6yXdYiGvX6aRwKYzqTB+pR0iCbHYxMF9dDdNvsux/9rWp2tvAGImI4SNwS
-	e8AZwZP6UhVg7EpkEXxrcBQJk=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wDHL7xgJ9tqkyFtCQ--.53366S2;
-	Fri, 23 Oct 2026 17:22:42 +0800 (CST)
-From: Rongguang Wei <clementwei90@163.com>
-To: netdev@vger.kernel.org
-Cc: willemdebruijn.kernel@gmail.com,
-	jasowangio@gmail.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	Rongguang Wei <weirongguang@kylinos.cn>
-Subject: [PATCH net v7 0/2] tun: fix re-attaching the socket filter
-Date: Fri, 23 Oct 2026 17:22:37 +0800
-Message-Id: <20261023092239.186665-1-clementwei90@163.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key, unprotected) header.d=rimpianto.com header.i=@rimpianto.com header.a=rsa-sha256 header.s=s20260314391 header.b=WzA1Mrbn
+Authentication-Results: mail.rimpianto.com;
+	auth=pass (plain)
+From: Federico Musto <federico@rimpianto.com>
+To: Chris Snook <chris.snook@gmail.com>,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Federico Musto <federico@rimpianto.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] net: atl1c: drop oversized RX frames instead of panicking
+Date: Fri, 23 Oct 2026 11:30:00 +0200
+Message-ID: <20261023093000.73535-1-federico@rimpianto.com>
+X-Mailer: git-send-email 2.54.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,102 +54,96 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDHL7xgJ9tqkyFtCQ--.53366S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxAF43Xr1kuFyDCr17AF4DXFb_yoWrCr17pF
-	WrW345Kw4kW347uana93yxA34Yyws7GF45uwnrG34rZan8Wry093yS9a4Yv3ZrArZ7Ww1j
-	yF1YvFnFg3WDAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07joGQDUUUUU=
-X-CM-SenderInfo: 5fohzv5qwzvxizq6il2tof0z/xtbC-gNz3mrbJ2OODAAA3n
+Received: from localhost (Unknown [127.0.0.1])
+	by mail.rimpianto.com (Haraka) with ESMTPSA id 82A81DC2-D8CA-4B74-884B-87864EDA0078.1
+	envelope-from <federico@rimpianto.com>
+	tls TLS_AES_256_GCM_SHA384 (authenticated bits=0);
+	Fri, 23 Oct 2026 11:30:00 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rimpianto.com;
+ h=Content-Transfer-Encoding: MIME-Version: Message-ID: Date: Subject: Cc:
+ To: From; q=dns/txt; s=s20260314391; t=1792747800;
+ bh=SAN9x3ekDFh3dDV1s/JTsWUi3o0RzXXkeiuG0T7yyWQ=;
+ b=WzA1Mrbnk6w57cxp4x57C2b7HExNTzm6NxZkOeVjl+v5mcitOClFYas7OD1mWqIDu8FbH1gj4
+ 8iBEVIloRvAdQprS/1AmUK4N1P2iJWlEmz/4ExWEv4j/ldiOo5Lt31Y1qs9C7e1GBuJo06HQdum
+ MG7wG9LkbaVrVgC96D85CFGYdwccCQN2cof1VX/rM0A/fI1lfbEu4aK/j69Zkznftayps+MRZ43
+ eGxUl3N+vOzataGHVlI+iSSCd6W2Pzb93jNHheIFuWnYaKSGpdq7rWSX76a2TxaZWQLcWv161r8
+ 3+3MnCFbNmxJN9kTZ0xTU9QDzlZjdOghhVDRt3Eu91YQ==
 
-From: Rongguang Wei <weirongguang@kylinos.cn>
+atl1c sizes its receive buffers from the netdev MTU plus a fixed set of
+L2 overheads, which comes to 1522 bytes at the default MTU.  A link
+partner that sends a longer frame - in practice a MikroTik
+CCR2004-1G-2XS-PCIe, whose RouterOS side defaults to l2mtu 1600 while
+the host stays at MTU 1500 - makes the length reported by the RX return
+descriptor exceed skb_tailroom(), and skb_put() then trips
+skb_over_panic and takes the host down.
 
-This is v7 of the series that fixes attaching a queue to a TAP device which
-re-installs the socket filter of a persistent device.
+Validate the descriptor length against skb_tailroom() before calling
+skb_put() and drop, counting it in rx_length_errors/rx_dropped, any
+frame that does not fit.  Such a frame cannot be delivered with the
+current MTU anyway - the buffers were sized for it - but losing the
+frame is preferable to losing the host.
 
-Patch 1 keeps a copy of the program in the kernel when it is configured,
-instead of reading tun->fprog from user space again on every later attach,
-and fixes the inverted error check in tun_attach(). The two changes are
-one patch on purpose: with only the kernel copy every re-attach returns 0
-without publishing the queue, and with only the check fixed a re-attach
-that used to succeed without a filter starts to fail. IFF_NOFILTER keeps
-working and is no longer needed to work around the re-attach bug. The
-program is verified with bpf_prog_validate_classic() when it is copied in,
-so a program that no verifier accepts is rejected even when no queue is
-attached.
+Tested on a MikroTik CCR2004-1G-2XS-PCIe (4x AR8151) in a Proxmox VE
+host, with atl1c built from a DKMS tree carrying this change: the
+l2mtu-1600 traffic that panics the stock driver is dropped and counted
+with the patch applied, and received normally once the host MTU is
+raised to match.
 
-Patch 2 adds selftests: it re-attaches a queue after the buffer the program
-was copied from was made unreadable, attaches a second queue from a fresh
-socket to check that the filter is rebuilt from the kernel copy, and checks
-that a TUNATTACHFILTER with a bad length or bad instructions keeps the
-saved program, plus the ways to attach a queue without a filter.
+This complements 36c2009d90f2 ("net: atl1c: fix soft lockup on
+out-of-range tpd_cons read"), which fixed the TX side of the same
+"host dies while the card resets" problem.
 
-Thanks to Willem de Bruijn for the reviews, and to the CI reviews for
-the comments they raised.
-
-Rongguang Wei (2):
-  tun: keep a kernel copy of the socket filter program
-  selftests: net: add TAP socket filter attach tests
-
+Fixes: 43250ddd75a3 ("atl1c: Atheros L1C Gigabit Ethernet driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Federico Musto <federico@rimpianto.com>
 ---
-v7:
-  - validate the program with bpf_prog_validate_classic() in
-    tun_copy_filter(), so an invalid program is rejected even when no
-    queue is attached
-  - fix the kernel-doc of sk_attach_filter_kern(): drop a reference to a
-    function that does not exist and complete the Return section
-  - make bpf_prog_validate_classic() reject a program whose length is out
-    of range, like bpf_prog_create() does, and say so in its kernel-doc
-  - document why the filter is dropped when a later step of tun_attach()
-    fails, and why filter_accept[] has three instructions
-  - selftests: add a case for a rejected program with valid length and
-    bad instructions
-v6:
-  - add description for return value of sk_attach_filter_kern(); no code
-    change is involved
-  - https://lore.kernel.org/netdev/aa6f8ef9-56d8-4edb-9ae2-d3f3b7dc1721@163.com/
-v5:
-  - add kernel-doc for sk_attach_filter_kern() describing what the missing
-    original program means for SO_GET_FILTER and sock_diag
-  - mention in the message that a rejected header now leaves the installed
-    filter alone
-  - fix the wording of the mprotect() comment and note what the IFF_NOFILTER
-    and TUNGETFILTER checks in the re-attach test
-  - https://lore.kernel.org/netdev/20261012021113.45939-1-clementwei90@163.com/
-v4:
-  - merge the kernel copy and the error check into one patch, so that no
-    step of the series turns a re-attach into a silent no-op or into a new
-    failure
-  - charge the kernel copy to the caller's memory cgroup
-  - selftests: check that the queue is attached again, and attach a new
-    queue to see that the filter was installed from the kernel copy
-  - https://lore.kernel.org/netdev/20261003063859.136895-1-clementwei90@163.com/
-v3:
-  - reorder: the kernel copy of the program comes before the corrected
-    error check
-  - add sk_attach_filter_kern() in the patch that first uses it
-  - address the review of the selftests
-  - https://lore.kernel.org/netdev/20260930080746.135017-1-clementwei90@163.com/
-v2:
-  - roll back the filter attach when a later step of tun_attach() fails
-  - keep a copy of the program in the kernel, so that a later attach does
-    not depend on the address space of the process that set the filter
-  - add selftests for the re-attach and for a rejected TUNATTACHFILTER
-  - https://lore.kernel.org/netdev/20260929093712.131096-1-clementwei90@163.com/
-v1:
-  - https://lore.kernel.org/netdev/20260923025653.59348-1-clementwei90@163.com/
+Notes for reviewers (not part of the commit message):
+
+This is my first kernel patch, so process nitpicks are as welcome as
+technical ones.
+
+Scope: this is the minimal version of the change - only the descriptor
+bounds check.  My local patch also touched atl1c_set_rxbufsize() and
+atl1c_change_mtu(); both are independent of the panic and I can send
+them separately if there is interest (raising the host MTU to 1600 is
+what actually lets such frames through, and the driver handles that
+today without changes).
+
+Reproduction data, kernel logs and the DKMS package used for testing:
+https://github.com/rimpianto/mikrotik.CCR2004-1G-2XS-PCIe
 ---
- drivers/net/tun.c                 |  76 +++++++++-
- include/linux/filter.h            |   2 +
- net/core/filter.c                 |  62 +++++++++
- tools/testing/selftests/net/tun.c | 223 ++++++++++++++++++++++++++++++
- 4 files changed, 358 insertions(+), 5 deletions(-)
+ .../net/ethernet/atheros/atl1c/atl1c_main.c    | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-
-base-commit: 7be4bc52fd9e0e55dc9a2e0232b89427d2c4b614
+diff --git a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
+index e58f1d2..11de643 100644
+--- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
++++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
+@@ -1934,6 +1934,24 @@ rrs_checked:
+ 			break;
+ 		}
+ 		atl1c_clean_rfd(rfd_ring, rrs, rfd_num);
++
++		/* A peer with a larger L2 MTU than ours can hand us a frame
++		 * that does not fit the buffer allocated for this MTU.  The
++		 * driver used to skb_put() it anyway, which trips
++		 * skb_over_panic and takes the host down; drop it instead.
++		 */
++		if (unlikely(length < ETH_HLEN + ETH_FCS_LEN) ||
++		    unlikely(length - ETH_FCS_LEN > skb_tailroom(skb))) {
++			netdev->stats.rx_length_errors++;
++			netdev->stats.rx_dropped++;
++			if (netif_msg_rx_err(adapter))
++				dev_warn_ratelimited(&pdev->dev,
++						     "bad rx frame: len %u tailroom %d\n",
++						     length, skb_tailroom(skb));
++			dev_kfree_skb(skb);
++			continue;
++		}
++
+ 		skb_put(skb, length - ETH_FCS_LEN);
+ 		skb->protocol = eth_type_trans(skb, netdev);
+ 		atl1c_rx_checksum(adapter, skb, rrs);
 -- 
-2.43.0
-
-
-No virus found
-		Checked by Hillstone Network AntiVirus
+2.54.0 (Apple Git-157)
 
