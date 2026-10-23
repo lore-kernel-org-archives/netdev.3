@@ -1,61 +1,131 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792743220;
-	b=TqC5sprhXXVWzXetJnGEI6stAnE8Ep3ZCNtBgs6A1yrtODrS2b+MvpIgRHnbGbtsIHH3
-	 IGa5a3tx3YHRi3dKAdaA0LFaylJpJEyXyFQRYuzTM5+mq4JENDNhUV4GXw73xsNcjL0h3
-	 bUiexNI+vuRgthlLd174lPhrSot2d10KLpcjtHfV8+aDVmziIup/swnD8JdxChTH2X6L6
-	 QVbG3144f0kNS1XpWQlgPwk9TNr0UyENnz06Xu8gIpqEmGDDi5tFEuds39sejABebvRWn
-	 pE2jEpN1t//xgZ5XIJ162a11P9jepoU+T55lW6WLdtD7YCoLGT1JERKRV8T+6FTZFlQ==
+	t=1792744459;
+	b=RxEynZOkcRsPSjPo0xiaFXxx13aaubm8nYVG2sve/V9OnFTTWzSTQIVQUYrlDqrSvU9c
+	 2fhIQfTrPFp/IjmMNfr17Vhic7LYTNJfnTWUKj7f7ojD/7QVoAkSur8XihKye/oAS4nf7
+	 mPbQcN3wCNklWTdKDLy30MAxIn0ml2CNzGQwvVjHRYNLDMznldhFWumbC419aC6AXxkoD
+	 lpmWnCSJfJN/PdOSOUO6da/EaPVhdfkCE7Cdh0Y1JRNfgpa6Cyr9f2AuWJ9oGov7qcZio
+	 rdheFe0X27Kpx36o0Bv/3rcPiY0pF4K3mFybEg1hBj4qKp/AMMZLmHvrtGXHP4ZrChg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792743220;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=27SXA+vmEGuB/iEyIhBUtt3xXLRW8UU2/MI+0coluyY=;
-	b=IP0EpbnDmX2ULNxiqqw1OXiU5xdYElIKlBOpyYMefPuoiCRBOl/rGJzElDKU9vhcCHsl
-	 qrr7Pc4UP/9zyzPrAmKtO7u3sWoLONiq44l7tn5FsbfFqKQ0o4AVl6t56iUasJC7IfZcj
-	 FRl40r5M4j2d3HjQs0Uk8JT16W0wuuhiCf7RhHAYDsiVS7r9SnjpqKUqpadxBi30Z0V0F
-	 EeA+DAC1NOogfSPdzhzN1XhbpBJVj/fuuYciTh+vcFEkq09kPaDX/5A5Ryohaglhk7RnH
-	 GaOPKOLSsng4iKPTQl3m1fEIhPRyVZY4H/FLCWgjrfpPiVYTHEynD8BSL9Ql/MxfS+Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792744459;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Date:From:
+	 To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:X-Proofpoint-GUID:
+	 X-Authority-Analysis:X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=JLouBngFmyzeStR7jpDFnM6B5NYmg7+fEs/IrATZkD4=;
+	b=ftVctHMp0qSv5vv6D0XHKpyIy3mOkRA6tQ3X2Rd08LKdrNMRFhtxK1tXzcGiHFa4WyY0
+	 /x0Q6d2X4ynvmNfw5QeI4ICXTk0k37SPAv4QI70HmXB0JWw590/4KikDDJ6GyGQ86iSD7
+	 EKYd9C2zUr5+B0SEQiXbXDfn5ubd0K+dqugyEVGeiSjA4U0Gf+n3jM7C1VPX+yqADU2u6
+	 j2VTZhWJay9UZd1x2HqcJuENOrHPE/Uo52I3pcURgAUbb32rv7owYd0FYaPOK9F7VErDn
+	 bmAoXwDMSjpiFP+T8EQCy0uEOgkeuXz+S/rrvzC6q6ML1nFs8Xs8BDfcIgj8M7EsZng==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cqK7yQj4;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=oss.qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=VlNNsFPt;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=UimSwaIC;
+	arc=none smtp.remote-ip=205.220.180.131
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09431606A33C;
-	Fri, 23 Oct 2026 08:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28189606A31B
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 08:34:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 28189606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cqK7yQj4
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E972D1F031E5;
-	Fri, 23 Oct 2026 08:13:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792743219;
-	bh=27SXA+vmEGuB/iEyIhBUtt3xXLRW8UU2/MI+0coluyY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=cqK7yQj4UCJaAbbQleOvboM7kEt7dB+RBWAU/xf4tVlEfNfIhrAJBMODPCG7PZrR0
-	 83jKIxTDFqSQ+7p3HcSgHql079xOvmEP7WaQn1+6NmMSZ2I6jZjfTf+3y/e1YZZRqE
-	 qmPV+4DDWC2Pe//vbVlEQxNIc6ggTUSlE19O/46KoxhwequqJdyY+86OP5P7/8fu/0
-	 S0/UD+d0h6S9S7ijifdgDl9txFFqFt3ML2efNjjdakaP+14SxSyEzXHiCbaYc2HOKi
-	 +ycyi03f3vhoCBl3P1kxLBPKd8SRg37xdFAb4fxY2+L587ePqx5K46GHx71dtGr5Uu
-	 nPfz0bcdjZwBA==
-Subject: Re: [PATCH net v2 10/14] net: pse-pd: keep the PI data until the PI
- regulators are gone
-From: netdev-bot+sashiko@kernel.org
-To: github@szelinsky.de
-Cc: o.rempel@pengutronix.de, kory.maincent@bootlin.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, kyle.swenson@est.tech, ross@r-sc.ca,
- netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Fri, 23 Oct 2026 08:13:38 +0000
-Message-ID: <179274321851.3134.15617739337399120885@kernel.org>
-In-Reply-To: <20261020171249.853085-11-github@szelinsky.de>
-References: <20261020171249.853085-11-github@szelinsky.de>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=VlNNsFPt;
+	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=UimSwaIC
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69N7FTTd2650383
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 08:34:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=JLouBngFmyzeStR7jpDFnM6B
+	5NYmg7+fEs/IrATZkD4=; b=VlNNsFPtHpOEOLBQPIEyP7I/jaEfftcF7F+mvdHm
+	sGsdlHAs/Xooz0LLYCCk0jG7pQSMecK7TOhIkM/90it1WQcsFKptZxtQkdK/bVhE
+	9U3kHoD0zyE6n9EmF7MqoIdDhA3CBcaruxo+7hgNQTLQpAvHmfGecb/DCZ5OWj9d
+	p+9k5t8Ov35d9WRSTgUfhM/ptvkDejcm8wx52XVo3Ty6tOIwQ3TrjjYwWaOzuXVv
+	mCcgFtmO7y0KI6n9vXmBYZcann6XoaBaYgKWmT0LwPXze5N89qDVgyEtytOdD0hN
+	v6wbu34r1auqFe773kYRjNGYeTmtntTDC6kxG+TVOdb+WQ==
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hfqmjasuv-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 08:34:17 +0000 (GMT)
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-5364605e74bso17475301cf.3
+        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 01:34:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1792744457; x=1793349257; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=JLouBngFmyzeStR7jpDFnM6B5NYmg7+fEs/IrATZkD4=;
+        b=UimSwaICix95Qu4VURNh7MAuQXMsVcZYaxXdPffeIEeJbiCQbsG7A4yYiXOKKoubf1
+         1if0kqWVBHMKP7Diz/w22taPESwmkzrAiwwdggIXxJdJGGQNWF07OAkIwdH8VWe1X2m/
+         AmTNeSX8/lFAiHmxL5xwvhaH36YaAGA5KVLuzFcf4gXr7O98uwAQjvbDcCuHk0R8MBxa
+         dxDt51Exb7zERT6CSwcuimlPOWPE2EbwluNlh2wNFCwgfneX9x5TT0TH8EtOQePjUzra
+         +6RXNgDc6WYU/7YTpJG9ta0RkGpX01Kti8Mx4Dua+Qx3PuFOGRvJjnnHkEEwouFNZyfC
+         /L1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792744457; x=1793349257;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JLouBngFmyzeStR7jpDFnM6B5NYmg7+fEs/IrATZkD4=;
+        b=INs39ebm9RETQHHFTn0TxmYGkUpulfFvSOBywuKe8Y4LNDuCJOnd/4mw4i/Cn6lNml
+         qtGLVnb/w5ZvI1VlIQA7H95/Cj/3iTST0QrhZ+ofhV4nAfPErtaYUV2OGTBcliGXWNXL
+         2AlN4DAD9AloDhAVUdV9T+YtZWy8sOfJM9SMcSqUwKG4e+NkTJi+58eaQkglwN/w3uBU
+         91jHMd5Mi9opgAcjPIyQISBhlpZaTjUVwo7owUfiigNc4yIqNkwgVxOijDiD5BMuChGn
+         BbJ3Zz4E4PJsizbNxi0SZbGL1tOipiJfbzvwSZIgos/jFhq79O2kCzPGJSzQ0KhLQK6n
+         V1yA==
+X-Forwarded-Encrypted: i=1; AKwUvBysZqBL5LV8SKkWAkyRFT/aOKpbSrIrJ1tKJqjCda4FwlDcSo64Bkkdnk5mzNlOcZID6WL0RFs=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI3ax1myIBLB8CQffI9v22QNp0mmCO/9TfWhCBP14pGWBVCBYTc
+	XczxFVpVt1VOeU3fItGGt8VvAiR1gq6uZl76UJssFfy11XhySaaolEA5b/pMgHzlRa071VCUzwH
+	OE0v9NPTa0CICikvHM3yg3CRiZE6t3+2NFFTzl5xPIBrA23WRmk7kBtDzfjM=
+X-Gm-Gg: AYBFou0aK9f2/Qvr9BwQr8XJLCp9NYtW+YTXoTC3C9YQFJg8fmdeTaT5ZeUtioEToQQ
+	mY60QGMCuZ0FhFmadf+alN+yBP2wWZFejTrYDYQyUalYYs+u1XTWm22A+4kGTcwWPEWfxwMRaju
+	qtzT/1UdfBu/9WHln0ak9UuB11QvQdf7e7sYAgLfreSTjG17zUvajEnEPA9fR5SfeDUjzZ2kfeF
+	hjiAR2EXIbNlt/2BtI/mX5XPdPVUCdo+ZTyRDZJnrS/zjfiTEeAf8K+fp7qsz6iPIZpQujxMky/
+	h2kUB6GhMddlZ1oXvUOB+JVnR5Hwwosk+nK4jXKeyTsF005jXcyiK4DOFiW21drtDH2ApuvNksR
+	pg9VUlGNq9AU=
+X-Received: by 2002:a05:620a:1d09:b0:93c:c96c:a5a8 with SMTP id af79cd13be357-93f6f8249cdmr284071485a.53.1792744457056;
+        Fri, 23 Oct 2026 01:34:17 -0700 (PDT)
+X-Received: by 2002:a05:620a:1d09:b0:93c:c96c:a5a8 with SMTP id af79cd13be357-93f6f8249cdmr284069085a.53.1792744456592;
+        Fri, 23 Oct 2026 01:34:16 -0700 (PDT)
+Received: from localhost ([93.144.6.81])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a2104627e0sm58222525e9.9.2026.10.23.01.34.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Oct 2026 01:34:15 -0700 (PDT)
+Date: Fri, 23 Oct 2026 10:34:14 +0200
+From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+To: netdev-bot+sinfo@kernel.org
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Stanislav Fomichev <sdf@fomichev.me>,
+        Jose Abreu <Jose.Abreu@synopsys.com>,
+        Ong Boon Leong <boon.leong.ong@intel.com>,
+        Oleksij Rempel <o.rempel@pengutronix.de>, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org,
+        James Hilliard <james.hilliard1@gmail.com>,
+        Nicolai Buchwitz <nb@tipi-net.de>
+Subject: Re: [PATCH net 0/6] net: stmmac: XDP path fixes
+Message-ID: <atscBtA8faGJ4o01@lore-desk>
+References: <20261023-stmmac-xdp-fixes-v1-0-efb37e19f5bd@oss.qualcomm.com>
+ <179274313871.3327.10475535220969393247@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,212 +135,89 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="lRlEkSG0nrXxOB84"
+Content-Disposition: inline
+In-Reply-To: <179274313871.3327.10475535220969393247@kernel.org>
+X-Proofpoint-GUID: NNY_0ZhIOj0fCvV1RrtGFLH8ta3VTvOr
+X-Authority-Analysis: v=2.4 cv=cPR1IVeN c=1 sm=1 tr=0 ts=6adb1c09 cx=c_pps
+ a=WeENfcodrlLV9YRTxbY/uA==:117 a=7fYLNvKHbgS61GKHX+yayQ==:17
+ a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22 a=jeKYxtEjmYGD5WCmXysA:9
+ a=CjuIK1q_8ugA:10 a=TGL2fYcsFtN_zcw-cNEA:9 a=kacYvNCVWA4VmyqE58fU:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIzMDAzMyBTYWx0ZWRfXw2bMG+t0cE7H
+ 7Bt8NlMhQGdC/2ENY1DlnwVlFSpk64KOJEYdZMV9coTpX64N8HxPAUO/mzAuQ1qezCk76un1IqV
+ aIVTINZ3hfik+Y8HlT2+Ke6LLL0Dfng=
+X-Proofpoint-ORIG-GUID: NNY_0ZhIOj0fCvV1RrtGFLH8ta3VTvOr
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIzMDAzMyBTYWx0ZWRfX+R+Rh79TgE9S
+ ly9AyjsgRiRr/Nu3SqAe4kuNShxW/vqBUFXPM/fJuK46yBiyBPGEkScm/CT8iyKrQ5FXdo2YusO
+ k0khwbI4HXqE14OUX+ldU+/E6IQ41Tj9BotXa8coojFce7Y8rtFPLcvLNI2UvwL3YfbzfUP6N31
+ tgr3N6tUH6/wedenR3m9jif9eFGgW2xBazbUsZYK4EXK4P+rI5SFMrlipVMjBYxwIrAjl19KzC0
+ XC+COZoueUzrUxHW6NmBDXyk1rTev/+zNAnkZD5Hx4EaQfRIO5b1FgLu7COhuo7DWxq8yLG6LqW
+ 56HzZRP3GlcaDt07tYkCUQN+Yk6yw1sZ1P9XocxRKpu6gV5U1+AYcumSkq+sCDOwX9768sP53FZ
+ Z/cs68i7fGxPA7YIUpgPg0a73wj+YgG6Q68SVzWlNNJoCEReenvHEFxY9BDv+GntiVSAUZvf04t
+ wEwweIjbvGLWNvbZ2lw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-10-23_02,2026-10-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 suspectscore=0
+ impostorscore=0 priorityscore=1501 malwarescore=0 clxscore=1015 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610230033
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+--lRlEkSG0nrXxOB84
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Critical: 0 · High: 1 (1) · Medium: 1 · Low: 0 (1)
+> Hi!
+>=20
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+>=20
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+The issues are reported by sashiko or spotted during code development
 
-- [High] New AB-BA deadlock between controller unbind and a concurrent
-  consumer regulator_enable()/regulator_disable() on a PI.
-- [Medium] If pi_disable() fails during unbind, the budget kept on the
-  supply can never be given back.
+>=20
+>  - Whether the issue was actually triggered, or is only theoretical
+>    (e.g. found by code inspection). If it was triggered please include
+>    the symptoms, like the stack trace or error messages.
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but the patch does
-  not fix it either.
-- [Low] pse_controller_register() returns without kfifo_free() on every
-  failure after kfifo_alloc() (missing callbacks, of_load_pse_pis(), the…
+They are real issues reported by sashiko or found by code inspection
 
---
+>=20
+>  - What hardware the change was tested on. For driver fixes please
+>    mention the device (and if relevant firmware version) used for
+>    testing, or say that the change was not tested on real hardware.
 
-net: pse-pd: keep the PI data until the PI regulators are gone
+The series has been tested on Qualcomm Rb3-gen2 board.
 
-This patch moves the free of the PSE PI array into a devm action that is
-registered before the PI regulators, so the regulator ops no longer read
-freed memory during unbind. It adds a pcdev->unregistering flag, and once
-unregistration starts the PI enable paths fail with -ENODEV. It also makes
-pse_flush_pw_ds() switch off each PI that holds power budget and give that
-budget back to the supply.
+Regards,
+Lorenzo
 
-> diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-> index f266cc24f6a27..63217a4808e3f 100644
-> --- a/drivers/net/pse-pd/pse_core.c
-> +++ b/drivers/net/pse-pd/pse_core.c
+>=20
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+>=20
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
 
-[ ... ]
+--lRlEkSG0nrXxOB84
+Content-Type: application/pgp-signature; name=signature.asc
 
-> @@ -884,6 +901,27 @@ static void __pse_pw_d_release(struct kref *kref)
->  	kfree(pw_d);
->  }
->  
-> +/* A PI that holds budget is under software power control, and nothing
-> + * controls it once its controller is gone: switch it off, then give the
-> + * budget back. If it cannot be switched off, keep the budget reserved,
-> + * as the PI may still draw it.
-> + */
-> +static void pse_pi_power_off(struct pse_controller_dev *pcdev, int id)
-> +{
-> +	int ret;
-> +
-> +	if (!pcdev->pi[id].pw_allocated_mW)
-> +		return;
-> +
-> +	ret = pcdev->ops->pi_disable ? pcdev->ops->pi_disable(pcdev, id) :
-> +				       -EOPNOTSUPP;
-> +	if (ret) {
-> +		dev_warn(pcdev->dev, "PI %d: cannot switch off: %d\n", id, ret);
-> +		return;
-> +	}
+-----BEGIN PGP SIGNATURE-----
 
-[Severity: Medium]
-If pi_disable() fails here, can anything release this budget later?
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCatscBgAKCRA6cBh0uS2t
+rIpOAPwODAt8L3TAMPYqpuMKG9zg5Q3KhWAnQEHWpI/u7fuNCgEA/kCIx4D8M9eR
+jTH9fhWjO4Baz9wjR/8WD+NaIz3Hegw=
+=X5cW
+-----END PGP SIGNATURE-----
 
-pse_flush_pw_ds() clears pw_d right after this returns, whether or not the
-switch-off worked:
-
-	pse_pi_power_off(pcdev, i);
-	pw_d = pcdev->pi[i].pw_d;
-	pcdev->pi[i].pw_d = NULL;
-
-After that, pse_pi_deallocate_pw_budget() always returns early:
-
-	if (!pi->pw_d || !pi->pw_allocated_mW)
-		return;
-
-So neither a later successful _pse_pi_disable() nor a rebind gives the
-budget back to the supply. regulator_put() does not touch
-pw_requested_mW either.
-
-Also, is "the PI may still draw it" true for tps23881?
-tps23881_pi_disable() first writes PWOFF to TPS23881_REG_PW_EN. Only after
-that does it do several I2C read-modify-writes (DISC_EN, DET_CLA_EN,
-power policy). If any of those fails, it returns an error even though the
-port is already unpowered.
-
-pse_pi_take_pw_d() still handles it the same way at the end of the series.
-
-> +	pse_pi_deallocate_pw_budget(&pcdev->pi[id]);
-> +}
-> +
->  /**
->   * pse_flush_pw_ds - flush all PSE power domains of a PSE
->   * @pcdev: a pointer to the initialized PSE controller device
-> @@ -899,6 +937,7 @@ static void pse_flush_pw_ds(struct pse_controller_dev *pcdev)
->  		 * use it.
->  		 */
->  		mutex_lock(&pcdev->lock);
-> +		pse_pi_power_off(pcdev, i);
->  		pw_d = pcdev->pi[i].pw_d;
->  		pcdev->pi[i].pw_d = NULL;
->  		mutex_unlock(&pcdev->lock);
-
-[Severity: High]
-Can this deadlock with a consumer that calls regulator_disable() on the
-same PI?
-
-When a PI has pw_allocated_mW set, this takes the supply regulator lock
-while pcdev->lock is held:
-
-pse_flush_pw_ds()
-  mutex_lock(&pcdev->lock)
-  pse_pi_power_off()
-    pse_pi_deallocate_pw_budget()
-      regulator_free_power_budget(pi->pw_d->supply, ...)
-        regulator_lock(rdev)
-
-The regulator core takes the same locks in the other order. One example
-is an ethtool admin disable, which runs with rtnl held:
-
-pse_ethtool_c33_set_config()
-  regulator_disable(psec->ps)
-    regulator_lock_dependent()
-      regulator_lock_recursive()   /* PI rdev, then supply rdev */
-    _regulator_disable()
-      pse_pi_disable()
-        mutex_lock(&pcdev->lock)
-
-Suppose the ethtool task holds the PI and supply rdev locks and waits on
-pcdev->lock, while the unbind holds pcdev->lock and waits in
-regulator_lock() for the supply rdev. Then neither task can make
-progress. regulator_lock() passes a NULL ww_acquire_ctx, so there is no
--EDEADLK back-off, and the ethtool task keeps holding rtnl.
-
-pse_controller_unregister() does not remove the PHY's pse_control, so
-this consumer call can run during the unbind. __pse_control_release()
-on PHY removal also calls regulator_disable().
-
-pse_isr() and pse_pi_update_pw_budget() already take these locks in this
-order, but this adds a new case on the teardown path. At the end of the
-series pse_pi_take_pw_d() still calls pse_pi_power_off() under
-pcdev->lock, and the supply handle it uses is the same supply rdev.
-
-> @@ -1088,6 +1127,13 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
->  	if (ret)
->  		return ret;
->  
-> +	/* The PI regulator ops use pcdev->pi until devres unregisters the
-> +	 * regulators, so free it from devres too, after them.
-> +	 */
-> +	ret = devm_add_action_or_reset(pcdev->dev, devm_pse_release_pis, pcdev);
-> +	if (ret)
-> +		return ret;
-
-[Severity: Low]
-This is a pre-existing issue, but this new return skips
-kfifo_free(&pcdev->ntf_fifo), as do the other error returns after
-kfifo_alloc() in pse_controller_register(). devm_pse_controller_register()
-does not call pse_controller_unregister() when registration fails. Does
-that leak the ntf_fifo buffer on every probe failure, including
--EPROBE_DEFER retries?
-
-This seems to be fixed later in the series by "net: pse-pd: unwind
-allocations when controller registration fails", where every error path
-goes to free_kfifo.
-
-[ ... ]
-
-> @@ -1152,7 +1205,6 @@ void pse_controller_unregister(struct pse_controller_dev *pcdev)
->  	mutex_unlock(&pse_list_mutex);
->  	cancel_work_sync(&pcdev->ntf_work);
->  	pse_flush_pw_ds(pcdev);
-> -	pse_release_pis(pcdev);
->  	kfifo_free(&pcdev->ntf_fifo);
->  }
-
-[Severity: High]
-This isn't a bug introduced by this patch, and the patch doesn't fix it
-either: pse_control objects that a PHY still holds after the controller
-unbinds.
-
-pse_controller_unregister() only takes pcdev off pse_controller_list. It
-never walks pcdev->pse_control_head, so each psec keeps its psec->pcdev
-pointer.
-
-After the unbind, devres frees pcdev->pi through devm_pse_release_pis().
-It also frees the driver private data that contains pcdev. The psec is
-only dropped later, in phy_device_remove()->pse_control_put().
-
-Can a later ETHTOOL_MSG_PSE_GET then access freed memory? That command
-has no admin permission flag, and it reaches:
-
-pse_get_pse_attributes()
-  pse_ethtool_get_status()
-    pi = &pcdev->pi[psec->id];
-    mutex_lock(&pcdev->lock);
-
-It then calls ops function pointers loaded from the freed pcdev.
-
-Removing the PHY later has the same problem. __pse_control_release()
-reads psec->pcdev->pi[psec->id].admin_state_enabled and calls
-regulator_disable()/regulator_put() on a regulator whose rdev has
-already been unregistered.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261020171249.853085-1-github%40szelinsky.de
+--lRlEkSG0nrXxOB84--
