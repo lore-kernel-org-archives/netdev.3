@@ -1,98 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792756786;
-	b=VgJB93nh1X28p/xwe8Vt4D7cmEEDAvxeguD0hOmm8EZNRXgGblXaTgWotTsTC9H6rZy6
-	 LjLHavCSCpd9zlAUYxQeuxCiJRzRcTZZSJlVSx5fd6M0YqTu5i38czLlRKY7uIFTU/SDy
-	 lj7IoBx8SiBn1BSh/ATFgPdN4FwG3u8FSsjJI2iLGG8EtZ8XRsxT/1bTgoTFqyTWwv5aP
-	 nRMwpNgHw3+ruvciDRJEK+u6JV3kj42vN6zzN425d/g3vJR7Zwp0XX2R0qSRvgJX48z19
-	 ii6hUajsQFLm7RD3qtVuguRDuZuZQReZd2f7pGKZjAFRJ2u6vgBoWwUqFhSze4Rupfw==
+	t=1792757081;
+	b=vlshY8Gcd8B/2IeKNEpoOmUHkb/bUTitT1vZ41kRCK2GkfRVAq0m+Wznu3zvWRTc7hap
+	 ieS2ABHElqh1rTR6cOKiQBel2008crTQo1fxDysbXEKtFv0Y/1mQICIpZ3ehsa5azYfYg
+	 zkOO8I/5deiHdxlLwYiAby6WSA8eyTmblC6W9Xd6gfhigGw88KJy/BdUaD7CcDTk/2ONj
+	 FHo++goKgiOSHGx48D9OhurB1Rodj3A22H6eH6Zuf8uBoGUBhYqysGL9w4ZLxW83MnGn1
+	 v/I0xFKMztcS+fNvTly7plAD3YFgJvX+UXTJXJuslAcAunPl3F+H3JvTHq9qe6gBQAg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792756786;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=CWsdl952wtvjN6N+gHzMg8QSBVTcgUU9JWbb59bA4rg=;
-	b=lc+jX9F8fIXcVBtdvNSpJemXO7PPLZxG8LzkDdpDdo+BLFj9MgXx+nUckRBRzO+JySqY
-	 lvuUPy7vm22znPwQ11yDHpA9uL8vKEEu6lTQaOdSvMuPvElEPcJBhpLAWgrGPXE/qSTBo
-	 klqRlw4F6dD7DsYT5G3hLdR1EbEkYSf78xLuqs95uSlSB/xStccUlcCoTcCX0laOmWEqk
-	 VjJDD7imY73r3FUb5PkrE+LokdCstIE47YGdZO3BuoPwb7OxPw3mvPXYnLpGsHCxNZ0A2
-	 nzeF0mfIZukizd+hgroMSYXgtJ7flyHyUogi7jaz8zqZRAlHcti/aw7xDeWhb+8eQHg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792757081;
+	h=DMARC-Filter:Received:DKIM-Signature:MIME-Version:Date:From:To:Cc:
+	 Subject:In-Reply-To:References:Message-ID:X-Sender:Content-Type:
+	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=ycGpS7m1sazcu7mkgUYYOYML6LDBpyZoHUVl6pqsqzQ=;
+	b=cgvOCywd8z35oJOrx6tU9TuUf3PIFqRn8tLZ+GSxeguuzgxJpDvBgtuB4t5bZU2HVMh7
+	 YedIrdWwJsXhd9cKBr0rZs2BMBm4tQOibFCAJKjxtNAJfq6t0rCWEVVYxXyWmzKPOkZh+
+	 12zxx9uEdU5muuZg4fiE07LQGH4cbhwtPth0WCKxnr0PmplmvsrXtPig9K10oUVuT6DoJ
+	 CHtLrqsGJa38wCLlOiwVg+s2UnMKovp2Jaso64hsstr0F1CNJUCDIVxeO0RnSmgdh9HkX
+	 +KhtPptnSEXe4Vuoan3O4QWAem+qvZspEpt37VkfaIC1vXfSZf+4HWLPMYyqosQpVBA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mojatatu.com;
-	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=nBgUe0mT;
-	arc=none smtp.remote-ip=209.85.219.50
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=none header.from=tipi-net.de;
+	spf=pass smtp.mailfrom=tipi-net.de;
+	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=QJMUxINU;
+	arc=none smtp.remote-ip=194.13.80.246
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E334606A32C
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 11:59:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4E334606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B851B606A31A;
+	Fri, 23 Oct 2026 12:04:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B851B606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=nBgUe0mT
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-91b83459526so10118676d6.2
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 04:59:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1792756773; x=1793361573; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=CWsdl952wtvjN6N+gHzMg8QSBVTcgUU9JWbb59bA4rg=;
-        b=nBgUe0mTADJl4ddyHy6UPd5rx6Iqavbz+zHKePt2nBRcXCipAzgq7s0KUA9aKlnPDG
-         uGT1KX/YwEp/JCK7W1+PqoS2gswSwQjDsqgkC36gQMVdhWQnW9US6ZPyW9gyVwfKn9Yf
-         8t7zgDnmRYxzuCmGa/s00BnvT/+jH6NiN7vgo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792756773; x=1793361573;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CWsdl952wtvjN6N+gHzMg8QSBVTcgUU9JWbb59bA4rg=;
-        b=mTFQB4PM6OH2Skep3oC/xcG8saj4wPmankXjsIlRgjSvBxDNcMMs/s7rvcRObW9zrX
-         8bHmcz0BiuYj89C3I1mjOIE9e4U5KxoBaRqasRnOQNdav5w5tgma0Tuw9JvfJXgJzcM2
-         Y371ECZUSTcJwHZ7gvYlbLhBi/Cp67rN2Ii/TtA4f4BenD/7vgZZNP2sXuGgeXbxKkn2
-         Sp5x4GlubmLQ7CVqLGBk27wC2YtjBT8l8+bsxJ3A8ImJDNjMNq9a2Zzv1o+7okqpROpT
-         54CM0LVq2taTZhueBiTzIZuefb7Q+uCq1npqQ37TQMOzt6FXpl/Ks0bwTpjYFM/sf6pH
-         kV7Q==
-X-Gm-Message-State: AFq9FYKPP0Swg0ANmTRufD4a8+a5suM+Ysv0bgULIy5oMdqw06yiUZsF
-	E94MTeGintPpV0Dm+QnjyF0RQJW1H4c7XpYwm9+nvgYUjrcXScbWfs/Tw7Gkh+dZi9ZaTm2puqY
-	SD44=
-X-Gm-Gg: AYBFou38ISDxzzpDIdmYk9WmJkXYnGViFQf7+fcS8TCaq6pNdyyK7ga929VH65j5NW/
-	uyH87mI4i4beTIbyr5fCGU622inZvxp5HEx780DCXO0uc80WAZ+GtCPcI2fkKozEx/rrVlwVl+J
-	OBr+9rIYyK/J8GVRFah6nXfr8uZTGq60pZAE+NJYmBtT4q1lOpqe2gbpdmbEGu2aFwmQ2aNKKNh
-	E1TFOCkoq4Z2Am0u9KEfSb7NznDupO0ljT0LKQEWXSr7P22XafqE7Y8rKEg56VrGy9AyxUgmUEX
-	lO6GgC7eTp4V8HK+uI56WABOCUO5Z/8mG3l5pPWq+t3WKqPDp5qTLHO8+ANOwxEqkT/woPOG3e5
-	EVDNSiLgjomT56/1pdPE1KUyAAJA7IFIB3sGqJLim3A2FPv57WSfls3qUwF1VJOiFWjFdqRYcSe
-	2h3FyliGlvbfEXLHXJDK60nILTSpnZArgPqCu9q3Ni+TlRc+UwH8jpaWMZC38ztBfZCvshWqlkx
-	MpJf28EpuKmsabCrbd0zQFrkMW1LxzjBpnYZ8G5EWTFUMBiUpuwzdQ6f+mtpthdGIMViU8Onc6/
-	wIjD+7WESCGBFKtvE/HW0gnUzJluePw/vtvAI5pPlb0=
-X-Received: by 2002:ad4:5fcf:0:b0:914:5769:dcee with SMTP id 6a1803df08f44-91c3a82d162mr24656846d6.17.1792756773198;
-        Fri, 23 Oct 2026 04:59:33 -0700 (PDT)
-Received: from mbili.tail33bf8.ts.net ([64.203.83.2])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c396af493sm18358246d6.9.2026.10.23.04.59.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2026 04:59:32 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Yotam Gigi <yotam.gi@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2 4/6] net/sched: act_ife: do not consume the inner header on egress
-Date: Fri, 23 Oct 2026 07:59:19 -0400
-Message-Id: <ACT-N6N4.v2.r0.20261022191829-4@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <ACT-N6N4.v2.r0.20261022191829-3@mojatatu.com>
-References: <ACT-N6N4.v2.r0.20261022191829@mojatatu.com> <ACT-N6N4.v2.r0.20261022191829-1@mojatatu.com> <ACT-N6N4.v2.r0.20261022191829-2@mojatatu.com> <ACT-N6N4.v2.r0.20261022191829-3@mojatatu.com>
+	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=QJMUxINU
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BC4E9A0956;
+	Fri, 23 Oct 2026 14:04:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1792757077; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=ycGpS7m1sazcu7mkgUYYOYML6LDBpyZoHUVl6pqsqzQ=;
+	b=QJMUxINU5RSW7wDNpwFRUl/HAYtKVfvyH7AG/PbbRicLGcGnnxeq6gKY1Y/ZbEPkhIJ1zE
+	MG98EbZkza/JjxetgPrliEK4gsbzR17wp/PeEqle9ZKTpBviHMgIUrGGUDnOJkgsR+fAUc
+	e/IkQnbBJ2GJ4azxfRHEThxAIcHvBTAclbw3laxeBXsfxjaCyi/ZPVO+kG50J9aj/Oc29n
+	LT9qq0XhC84HuZva2n+SPS4jTjH9iPoX1DCrawmxsNrA61oYhSHkyD/qIrgco3Pwwl1iaL
+	GPmDe31Abnk/C29UqOsAuzeN4vFXXsll0nY8TyHCT1tpFqgwCK+9rWtQY+3jHQ==
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,55 +53,88 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Fri, 23 Oct 2026 14:04:34 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: netdev-bot+sashiko@kernel.org
+Cc: opendmb@gmail.com, florian.fainelli@broadcom.com,
+ bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, justin.chen@broadcom.com, f.fainelli@gmail.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v3 1/2] net: bcmgenet: recover from a failed resume
+In-Reply-To: <179275652332.3134.3420351260504788140@kernel.org>
+References: <20261022-nb-genet-fini-dma-net-v3-1-6e9fc89c0156@tipi-net.de>
+ <179275652332.3134.3420351260504788140@kernel.org>
+Message-ID: <7a86dc120223465e88cc265a6f597657@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-The issue:
-tcf_ife_decode() unconditionally calls eth_type_trans(), which pulls
-ETH_HLEN.  On egress this consumes the inner Ethernet header; a following
-eth_type_trans() from loopback_xmit() then parses L3 data as Ethernet and
-can BUG in __skb_pull() when the remaining linear area is short.
+On 23.10.2026 13:55, netdev-bot+sashiko@kernel.org wrote:
+> [...]
 
-The Fix:
-Parse the inner Ethernet header with eth_type_trans() in both directions,
-then restore the egress data position and MAC length.  On ingress the
-existing behavior is unchanged.  On egress, push the inner Ethernet header
-back after parsing so the xmit path sees the original frame and later
-actions see a consistent network header.
+> [Severity: Medium]
+> 
+> After a failed non-WoL resume, can the next non-WoL suspend leave an
+> external PHY powered up with its link active?
+> 
+> On the normal non-WoL path, bcmgenet_suspend() halts and suspends the
+> PHY:
+> 
+> bcmgenet_netif_stop(dev, true)
+>   phy_stop()
+>     PHY_HALTED -> phy_suspend()   (BMCR power-down)
+> 
+> The failed resume has already done this before bcmgenet_init_dma()
+> fails:
+> 
+> bcmgenet_resume()
+>   phy_init_hw()          drv->soft_reset() clears BMCR_PDOWN and sets
+>                          phydev->suspended = 0
+>   genphy_config_aneg()   restarts autoneg
+>   bcmgenet_init_dma()    fails -> return ret
+>                          (phy_resume() is never reached)
+> 
+> This new early return then skips any PHY power-down. Calling phy_stop()
+> here would not work either, because the PHY is still in PHY_HALTED.
+> 
+> Nothing else seems to power the PHY down. bcmgenet_mii_probe() sets
+> mac_managed_pm = true, so mdio_bus_phy_suspend() returns early, and
+> bcmgenet_suspend_noirq() only powers down an internal GPHY via
+> GENET_POWER_PASSIVE.
+> 
+> So an external PHY whose driver has both .soft_reset and .suspend (for
+> example genphy_soft_reset with genphy_suspend) would stay powered with
+> its link up through system sleep.
+> 
+> This would not show up with the bcm54xx PHY on CM4, which has no
+> .soft_reset, or with the Generic PHY driver.
+> 
+> Does the !priv->tx_cbs path need a phy_suspend() call (or similar) when
+> WoL is not in use?
+> 
+>> 
+>>  	netif_device_detach(dev);
+>> 
+>>  	if (device_may_wakeup(d) && priv->wolopts) {
+> 
+> [ ... ]
 
-Decode is a receive-side operation; the egress branch keeps the frame
-intact for transmit paths such as loopback.  tcf_ife_is_eth_skb() accepts
-Ethernet and loopback devices generally.
+Same as in v2: pre-existing, phy_init_hw() powers it up in the failed
+resume and nothing starts it again. Fair that it's reachable now, before
+this series that suspend just hung. Nobody seems to have hit it either, 
+it
+needs a failed resume plus a PHY with soft_reset, so pretty much an edge
+case, don't you think?
 
-Conditions to recreate the bug:
-- egress tc filter on lo: action ife decode pipe;
-- AF_PACKET SOCK_RAW frame: outer Ethernet with ETH_P_IFE, IFE metadata,
-  inner Ethernet and an 8192-byte payload;
-- the egress pipe re-enters eth_type_trans() via loopback_xmit() after the
-  action consumed the inner header.
+I'd rather not add a phy_suspend() I can't test ... the CM4's bcm54xx 
+has
+no soft_reset, so the PHY never gets powered up there anyway. The proper
+fix is to stop leaving the half state behind, that's on my list after 
+the
+MTU series.
 
-Fixes: ef6980b6becb ("introduce IFE action")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
----
- net/sched/act_ife.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/net/sched/act_ife.c b/net/sched/act_ife.c
-index 2afd68983ece..3946a9589bb8 100644
---- a/net/sched/act_ife.c
-+++ b/net/sched/act_ife.c
-@@ -769,6 +769,10 @@ static int tcf_ife_decode(struct sk_buff *skb, const struct tc_action *a,
- 
- 	skb->protocol = eth_type_trans(skb, skb->dev);
- 	skb_reset_network_header(skb);
-+	if (!skb_at_tc_ingress(skb)) {
-+		skb_push(skb, ETH_HLEN);
-+		skb_reset_mac_len(skb);
-+	}
- 
- 	return action;
- }
--- 
-2.43.0
-
-
+Thanks,
+Nicolai
