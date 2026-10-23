@@ -1,61 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.11
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792720071;
-	b=jTiVEj54LireDR2/Ck2mMfg+ZWiBBhz+YbJTbYZVyUlwcqEf05Y8wbX7rTGnc+yyG/hF
-	 k/y4nXnr7tjtnlk82hBl7Rj2WdeKzc92T7Fos/CyZOCWIhedUs0+hGei4TsLvdxJl7NZY
-	 CyWzkOh+CdOLPJ/u0d8NBv91p7V4Ayqv/euGlIBNqNlbHlXqHuCv3qn3rRyGsC2xA2hVr
-	 hUd+eup6qWGBMCpPS8Io3jkTTEmzisil9CFUtomTF8vkPakv9i+jBuray/tzQ7Ht99xV4
-	 1k3wZCanTVjLXBoJxmzboUQkZwsH6G2Pkz+IO8VdmMnHTAaPXa4l06RRhcnNqH7hfvA==
+	t=1792720090;
+	b=y5tfcYnnIuKChBjXeKC1Y8fHZeXi+mhIsLzOKZzSDRAx8Lmo6WTNY4zNOhB7Wda/ayyC
+	 z3hnR3IJmxwkVzBiXPyaH27sEfh/JMU+kEnXdLfetmGwr6TMwGx93Eu2Xt+rkKi85lIjn
+	 8+7rgy+Rr5NmCMUlGc2byB05ZJaTdVkS23SIltOQUvlvjfntHhg6MMLq7thSif9n+pQu8
+	 SGOW3bew3FVBkeUfA1SKD0uukc430elOTcrsVOUytkaHZkKKiMzpF8Fb/k5mk2mZYOhNl
+	 CdqHPfUlxC+3ggsK2naIGS2entB/Bf7861rQe8JT9OEY/1LWs5aRAF6nOBMN5D4OGRg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792720071;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	b=dQ7KkT6GrFWwijC1PtzIUFnfNvc0aDRF2y82iv2Uq8Zbtk5UPAk/qR0E0DWnmuXXMHOS
-	 51whzgBfR3fuqdQR83rxk19aTo4AmP4hfBffMiFPbwVf/dOSfX76rnl4zBI9dbrrSZ7z/
-	 jgX6CbMfuf22y/aqdceMAXLukNqIJWgqgi1iqQufE1DhOgTg/KCHbdGDXOpZrAL6QDBZW
-	 cksiKkUGlpaMyu4qHpg0qqj7Q96D7u+rsOg2f/xr4H1f3U26/GyXDeV6tXbQ0w6Ja1q8z
-	 WkRqOcMYNuc5Uq2a3ZmLwXwGsmNMV567ibhj+1Gw4AwQ43AI5aeWqKU41TcTa7wplJw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792720090;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=K974vEkl7HviH9zH+bkMsQvo+7f18yyRhOODa6fRHas=;
+	b=ZC2eRznu1N4y/hH5ONRhAhCv3jPMStISWRu2VIQuFczhHJgNoGJnzsikx6m2GCF6Rkgc
+	 RpHOdGz/MftQ2yVM8dSu6tChdJOIAacfiUTZOb0X3Qbhf5z5qeEk2bbBtgKiDPtWJuPDZ
+	 HC2CE7AZ/yZRLY7P2Qf7GpmHpHbFPm8QPkMXlO/y6iZTV4e9ypkcsV6HCEqB6bZj2JnlX
+	 L2LYVrfTCyJRWwU4P3bt37C85lllHBFa9/SjYtRHmzOsErt3c61wzwj7o+OAEm3YPcQdR
+	 WGwySo/Jj63cwWGGpLPvmcTjw8leS53ed96MARCLBcPhtgg117WvwFpR6g2oJ4gPKAw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EivCozqC;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=mzlksBhs;
+	arc=none smtp.remote-ip=91.218.175.11
+Received: from mta0.migadu.com (out-11.mta0.migadu.com [91.218.175.11])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC20606A319;
-	Fri, 23 Oct 2026 01:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409F6606A31F
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 01:48:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 409F6606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EivCozqC
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C4951F01825;
-	Fri, 23 Oct 2026 01:47:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792720071;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EivCozqCvOFIeZF0iWmtKjKWEbn04u6/NlCwWcs1Nr8huUwoAyIv53JA1LnLHqdzQ
-	 Y1j8QwKaHN4TEGAGBzrhDP9ru/blMFyXF89rLNExAvp+Un6RsAidfF6MPl/sVwVngJ
-	 9xEorUg02W8rsSl1yrfRq7vArMj+4T1ungi6A0uCLPF09KnlAEtnjudmWBa8hPCGxc
-	 ad4NgHnVjnhZcsJ1X44UwW9BFlKKRdAzgGbsYKoDMvQYdzaQ+YWu+cJWFara2nTRLN
-	 UgZTH1gf4uTmJz+91Oc12Ubf39vvY4ccS4RAKVM8nqoXp9MHRMVa/KMMXF42+flP2U
-	 rN9+RPQhcAubw==
-From: netdev-bot+sinfo@kernel.org
-To: David Corvaglia <david@corvaglia.dev>
-Cc: netdev@vger.kernel.org, bridge@lists.linux.dev,
- Nikolay Aleksandrov <razor@blackwall.org>, Ido Schimmel <idosch@nvidia.com>,
- Horatiu Vultur <horatiu.vultur@microchip.com>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] bridge: mrp: fix silent truncation of IN_ID
-Date: Fri, 23 Oct 2026 01:47:49 +0000
-Message-ID: <179272006987.3327.3277225611746854121@kernel.org>
-In-Reply-To: <20261023014536.72444-1-david@corvaglia.dev>
-References: <20261023014536.72444-1-david@corvaglia.dev>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=mzlksBhs
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=VPNQpDtmsXoZKn9VI7oWOvmenOOysxW0h45w0IjOb3A=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792720086; v=1; x=1793324886;
+ b=mzlksBhsOKZ7TfQewEzzrNsWjwR2XIdgDP6GxZdOK4P7kWvAQ5SYDbGF3gzAywwpGzvVFW5B
+ Vp1h7pCw9L7CIXNIae9od5XmAi+nSPwanQFGPkpSt9aRFhubdsXxU/nlNszcgyopGqtBTz7NB37
+ E4o2g+LcZc71C0xWa1NIZ8ZE=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id cd0afe3d7227279f;
+	Fri, 23 Oct 2026 01:48:06 +0000
+X-Mizu-Trace-ID: cd0afe3d7227279f
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 23 Oct 2026 09:47:52 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Xia Yan <yana06070@163.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@kernel.org, horms@kernel.org, kuba@kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	pabeni@redhat.com, shuah@kernel.org
+Subject: Re: [PATCH net v3 2/2] selftests: net: check veth carrier after
+ changing channel counts
+Message-ID: <atq8yKbnqtLBVucH@fedora>
+References: <20261022085842.2527-1-yana06070@163.com>
+ <20261022085842.2527-2-yana06070@163.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,25 +67,127 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261022085842.2527-2-yana06070@163.com>
 
-Hi!
+Hi Yan Xia,
+On Thu, Oct 22, 2026 at 04:58:42PM +0800, Xia Yan wrote:
+> Extend veth.sh to check carrier state after changing channel counts.
+> A running interface must keep carrier off while its peer is down.
+> 
+> Cover up/up and both mixed up/down combinations with GRO on and off.
+> Resize RX and TX queues in both directions on each endpoint, and check
+> that rejecting an out-of-range request also preserves carrier state.
+> Use two queues explicitly so these cases also run on single-CPU systems.
+> 
+> Keep these cases with the existing veth tests and reuse their namespace
+> setup, cleanup and aggregate failure status. Only check LOWER_UP on
+> running interfaces, where that flag exposes carrier state.
+> 
+> The four mixed up/down cases fail with the unfixed driver. All six
+> carrier cases and the existing checks pass with the fix.
+> 
+> Assisted-by: LLM
+> Signed-off-by: Xia Yan <yana06070@163.com>
+> ---
+> 
+> Notes:
+>     Changes in v3:
+>     - Move the six carrier cases into veth.sh following review of v2.
+>     - Reuse namespace setup, cleanup and error reporting.
+>     - Allow explicit queue counts in create_ns().
+> 
+>     v2: https://lore.kernel.org/netdev/20261020135544.24441-1-yana06070@163.com/
+> 
+>     Testing on the v2 baseline 513444cc62e2:
+>     - Complete default veth.sh on x86_64 QEMU/KVM, three vCPUs:
+>       before: 57 checks pass, four mixed up/down carrier checks fail;
+>       after: all 61 checks pass. The 55 existing checks pass on both.
+>     - bash -n and git diff --check pass.
+>     - If creating the veth pair fails, the case is skipped without
+>       masking failures from earlier test cases.
+> 
+>     Both patches also apply to net/main ffdf678dd166
+>     (application check only, checked on 2026-10-22).
+> 
+>     The QEMU guests failed to power off cleanly (initramfs issue) after
+>     the tests completed; the exit codes above are the veth.sh results.
+> 
+> 
+>  tools/testing/selftests/net/veth.sh | 84 ++++++++++++++++++++++++++++-
+>  1 file changed, 83 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/net/veth.sh b/tools/testing/selftests/net/veth.sh
+> index 8b867e0..901ba51 100755
+> --- a/tools/testing/selftests/net/veth.sh
+> +++ b/tools/testing/selftests/net/veth.sh
+> @@ -41,13 +41,15 @@ create_ns() {
+>  		ip -n $ns link set dev lo up
+>  	done
+>  
+> -	ip link add name veth$SRC type veth peer name veth$DST
+> +	ip link add name veth$SRC "$@" type veth peer name veth$DST "$@" || return 1
+>  
+>  	for ns in $SRC $DST; do
+>  		ip link set dev veth$ns netns $BASE$ns up
+>  		ip -n $BASE$ns addr add dev veth$ns $BM_NET_V4$ns/24
+>  		ip -n $BASE$ns addr add dev veth$ns $BM_NET_V6$ns/64 nodad
+>  	done
+> +
+> +	return 0
+>  }
+>  
+>  __chk_flag() {
+> @@ -130,6 +132,80 @@ chk_channels() {
+>  	fi
+>  }
+>  
+> +chk_carrier() {
+> +	local target=$1
+> +	local state=$2
+> +	local expected=$3
+> +	local carrier=0
+> +	local link
+> +
+> +	# IFF_LOWER_UP is reported only for running interfaces.
+> +	[ "$state" = up ] || return 0
+> +
+> +	if ! link=$(ip -n $BASE$target -o link show dev veth$target); then
+> +		echo " fail - cannot read veth$target link state"
+> +		return 1
+> +	fi
+> +	case "$link" in
+> +		*LOWER_UP*) carrier=1 ;;
+> +	esac
+> +	if [ "$carrier" -ne "$expected" ]; then
+> +		echo " fail - veth$target carrier is $carrier, expected $expected"
+> +		return 1
+> +	fi
+> +}
+> +
+> +chk_channels_carrier() {
+> +	local src_state=$1
+> +	local dst_state=$2
+> +	local gro=$3
+> +	local expected=0
+> +	local err=0
+> +	local target count
+> +	local msg="carrier after channel change ($src_state/$dst_state, GRO $gro)"
+> +
+> +	if ! create_ns numtxqueues 2 numrxqueues 2; then
+> +		printf "%-60s" "$msg"
+> +		echo " skip - cannot create veth pair"
+> +		cleanup
+> +		return
+> +	fi
+> +
+> +	ip -n $NS_SRC link set dev veth$SRC "$src_state" || err=1
+> +	ip -n $NS_DST link set dev veth$DST "$dst_state" || err=1
+> +	ip netns exec $NS_SRC ethtool -K veth$SRC gro "$gro" >/dev/null || err=1
+> +	ip netns exec $NS_DST ethtool -K veth$DST gro "$gro" >/dev/null || err=1
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Why do you do gro setting in rx/tx set ups?
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
-
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Thanks
+Hangbin
