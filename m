@@ -1,104 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792757638;
-	b=m9hN+DRdWrvyy3NDSZd8pD/VykskzNQn4oxT5HRcPH2csK2N4uBypX0DaD0/kCbJYwMX
-	 WbOcd1BRHp5YWDI8XhEnX6lUax6x5JsjdRbmVO/1rN1dNDa07TbZJYzRT3TMiw5mHWrO5
-	 hzUioDkIMNcxhcXAY6koqY+PTZ5zRmxOsvmyUY5BcEUZkI6sgd+e2gw86L+GQolgiKOvK
-	 9j69L9QyyokwQitlir5Gq3BTt5qlvs7+6Hg7D+us/3eU1O4UvCi4ETPh08MGwgaa0xGel
-	 RYTN0UmBswxbDw5JJn7nTZOPti7vDNXFXjdMoXGpTLv7cybcRpqZUHe/EjnsD3+d8IQ==
+	t=1792757800;
+	b=ej8o2SVbs5hmnKS1lI8ZMkC44mNGI44X+WaLHFs0bvjM3r54ThGlKBUl/oWuiTpYKa4F
+	 kB9ri9N1bhKIoSfLX2xcBPRN7mkHJEaZlsZKfSZZORZi7rXGo3+rQlBM5yre0b/LZLlc6
+	 KHXcXm7MByrvwQ5ZUFQ+2z9LcXUwtoFtu2bVfB0s7ilLBZfoZ6d5Ol+uvIT0+Ie8K2yK9
+	 EGmvQ2QoQn16yssqajtd3rDVmW4Bev2BkI5tJ4obGtouE7w0s/sNinZLMtg50WzuI6EFA
+	 S0C30NaSYzDT75Fug2owyf0yeGsO5OoB5Ca/1iqlMerYaiP/KLXA7YcnyYzZVMQMW1g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792757638;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-Rspamd-Queue-Id:X-Spam-Level:
-	 X-Rspamd-Server:X-Rspamd-Action:X-Spam-Flag:X-Spamd-Result:
-	 X-Spam-Score;
-	bh=JA0j/epUYMxDVQZCp6JnqXfw6s/tPM4WL64oDbL7xvU=;
-	b=hRdtF2c/qArJwXOQiy60ou3bl69Gmxk0RARkR6Fm5gJpLH/tMSnckVPD1omH4+QXGKhD
-	 ePrjEHdyJUbPdRA0UdQhYqL7jxGwRvVJwTOmRYDKGmHqT045Jul9Wdf2BICeNwfiUNiES
-	 2tDYvP+CBx1eJnjlzsNERwVwe4TW16x/eoBCCXdJsL7gcdH2tGZVAg8hGmacpGg4e2Q8t
-	 D1/myDeBA5/PWJRNcdn495RF6vdEo4qoE+il+atqONeCYfig04yiFlBCbJSrSelx+ipeX
-	 HGlGDO+dRDulY1Ydt0uvgx0+nb791GsjP4HOZCmbr7eVB8X3qH8bqXJXGp2BYG8N8zQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792757800;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=pH7C+Ic+skXIiL+8yDLrJvoIJ/Xi8EZtJUFQlV0QBE0=;
+	b=vMHebYO3AgdMo3e2mFcihcZVudb04A+T/NoBLKTGNzmT3kg3B763ZVk86O3qx/xF9NjP
+	 1joNdePvhZ+znSj+Fnic2yZtMM35UVDuFzcoR93hdTpc+DYwtpfSfDd9X5RXvOIiBMCcd
+	 vJyJw37D+fFEav/68cYckvu9ezzSrjdRnEMqAtRI3s5FskoBeKAvEQrPpOHXpTFPWc9GF
+	 8wurhKXofxcOG8B8TREBWmylLLJHVGmd3d6vd5IDo/uCI3LkB/54d1ykV0w3y3vA4MdwH
+	 u9j/47bPuC6Q6TQ25/lYzN4RannX5IdHvCS3yma6LA8VUKAibxGqTX/ohdvELeqO/8g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=suse.de;
-	spf=pass smtp.mailfrom=suse.de;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=z41Swyve;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=IiABPwp2;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=WBwPcYR3;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=NmsCdFn2;
-	arc=none smtp.remote-ip=195.135.223.130
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=KW995WiV;
+	arc=none smtp.remote-ip=209.85.218.45
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9AF5606A31A;
-	Fri, 23 Oct 2026 12:13:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A9AF5606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FF7606A31B
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 12:16:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B9FF7606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=z41Swyve;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=IiABPwp2;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=WBwPcYR3;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=NmsCdFn2
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 8C4CB22187;
-	Fri, 23 Oct 2026 12:13:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1792757635; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JA0j/epUYMxDVQZCp6JnqXfw6s/tPM4WL64oDbL7xvU=;
-	b=z41SwyveHK/kpypWojGfEreU7zJSa01M3ApWrNWTN2rcfFkEsnJLuRYTSul44oyNySZSDm
-	ozZ7xkD0CDSmORxJ1oP+Iz/dVHci+5kCGQWM0S7QXSm660tQfHJJnV0OA0/PPbhqKDT3WS
-	++NVgtiN56oJhJrBq20vedapqMAq5VE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1792757635;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JA0j/epUYMxDVQZCp6JnqXfw6s/tPM4WL64oDbL7xvU=;
-	b=IiABPwp2bbcaONDNHSCko4k3w9RMPo+zxq/YsiTDTVv1rrzBhHFAg2pTv7eHAV8GvhaM0S
-	RfXvwwJek7ReYuAw==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=WBwPcYR3;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=NmsCdFn2
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1792757634; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JA0j/epUYMxDVQZCp6JnqXfw6s/tPM4WL64oDbL7xvU=;
-	b=WBwPcYR3z3EMkYY+JmVrl1jMJlZbIwHiB/1jBqWXjcV5odkwP8R0Y/QSiRN9oIUrdCYafb
-	r0fPvKNVCJ9BPGu1PiguuaFNEHJ9fRDKwXOCcCAYtqk1ow+K1ii9r01TUvThA55EiR3ylF
-	90jrccW97CIFkmAOoRXo+BfF1LOf2C0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1792757634;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JA0j/epUYMxDVQZCp6JnqXfw6s/tPM4WL64oDbL7xvU=;
-	b=NmsCdFn2//rNQC52v+GapdrRmi/KRoY+6ED94HzUAuST3i1aCRAH5TDKp4yPxfumnJ+mVS
-	K2zmcEe8mI38JGAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D0BCA133F3;
-	Fri, 23 Oct 2026 12:13:53 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id hLiQJ4FP22o4eAAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Fri, 23 Oct 2026 12:13:53 +0000
-Message-ID: <2bb3284c-b55a-4358-9b6a-d1def1e83c4e@suse.de>
-Date: Fri, 23 Oct 2026 14:12:47 +0200
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=KW995WiV
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c4322d310e7so122989666b.0
+        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 05:16:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792757798; x=1793362598; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=pH7C+Ic+skXIiL+8yDLrJvoIJ/Xi8EZtJUFQlV0QBE0=;
+        b=KW995WiV+2FKvyP/wgDtPTisweGN15FcNyMcGyClqJusS2poI0hz2xccJKOyCiI8Pv
+         MqChXnM36N3LKhLeA3IZ0Xk4pnF8RWFkyj8Q69NAruevjjSaB2ttKASmsWper5vSfGhD
+         Jz55nnvno4+UoxIFirw6wrTT0NMXfzI0L1sUd9/cmYHESFmkqHBm0sTPd/Sq9yEv7JC8
+         8ZKUjFoprG35SN44ahrR4rNebW1k3645bCEZt+RAn4PufSpxNXeTdhzh32T8QTsaWlka
+         twwdtrPXQaN7hhH/6wfANSkuq/zE28bvyJBU9X+tGSK0eSoVl7zYGk2/bhim0dny6MOx
+         KiDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792757798; x=1793362598;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=pH7C+Ic+skXIiL+8yDLrJvoIJ/Xi8EZtJUFQlV0QBE0=;
+        b=gaVyvZQlXdm5sL/Hw/wk9+jzoBITMOduXkrBptm7ZaUTnOwUiCwPf82EGAk8AlGJZ0
+         8787h6Lw2xeojDSXHRISlbTwel31ms81cqDNx+SNGMFtLqXmTDcuYNvvJ4nxPp1McOP3
+         HveXKMYXfO3naYeTiUqiuUE0VqVkLxPPCRcr7YS+y9EArpGNSThZ7oa8ToVTjhNgR+7q
+         BPo+lI4mwtaxidrjzfl/re29A+2sF2HE64SbD/Y5buUc13dxL/t6HnO3Tw3jmfnwBZ+F
+         jtAbIbQjA9P3sYjygmVCXQmxxIeUsnqyTSVcMqi56Nv0VfJ3C2XMpNvXtNUWyuSyv244
+         6dqw==
+X-Forwarded-Encrypted: i=1; AKwUvBxmXJPKf57b7RYnpRB5SEtCCMUU+2PtNKNuiySTJ76psB1Rrm4+DW62GU0J3WxAAWi9fVZmNng=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI5TSCjnpvvh1MIbpy6OrtmC2LlzR+6BVr5pm9YmzPw3sD2h1Qe
+	zUQgIG1JxlpIXB5Vbs+UVVpnO3dTz5doLm02EDhWsi3L51+wsQER1mQ4
+X-Gm-Gg: AYBFou3D+gir1be3g4VgFK982bxaM30AanXsyZe4Rjoj0pJDWqhmD0lTTyl9ElUeYgE
+	fOG3OufT3TwoVm9gRfYuVPNlvw7/2hLfSb/UZ6qRi0a8pD+LFUNSTMxySGAfzXOa+j0yUwq6hiP
+	zAZmeioNCivswpunezZR6Mo2wDMSA/E/kbqR8rPWyJHcrsPTwg2um/yxxoX5oNbSofzQkWEQeRP
+	7CUOErAuE8HM/fx6RBWuV1sMow99UG6vA3vj4t5V/RvQRrospeWKU0tLLVb90zwpbRQrXP6Gf6m
+	4hlhkWmur4m9fBBVSHYB1iOW2J6cv/oAhIsFd4cKt2+BuvcIaQu6MxCXE4k7Mt8fgmS56SXz2WZ
+	y+4xPfNkfyQ4BxA2OFkHvQQA645jIjkuxocR/n5GUBbPhDe4xNtjhK3qbNVCa7kc5HQpnlJX0TY
+	brM4Aa85nG+3/D2hGhCSlE/Ay5APSlr7ldAVf/+qKEcNVP2ffZy2Izbm2nWQ3FvABmX4t3Sb2c0
+	nXvVzYm0DbuLrdH40sbewmetqdH8hwqna6cUbYKXQlju2+01Q==
+X-Received: by 2002:a17:907:9309:b0:c2e:63ba:1f90 with SMTP id a640c23a62f3a-c46a92d5849mr287640866b.48.1792757797774;
+        Fri, 23 Oct 2026 05:16:37 -0700 (PDT)
+Received: from localhost ([2a03:2880:32ff:4f::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c46a5cf5540sm95824066b.78.2026.10.23.05.16.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Oct 2026 05:16:37 -0700 (PDT)
+From: Vlad Poenaru <vlad.wing@gmail.com>
+To: Jinqian Yang <yangjinqian1@huawei.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Marc Zyngier <maz@kernel.org>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Andrew Preece <apreece@meta.com>,
+	netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	regressions@lists.linux.dev
+Subject: Re: [PATCH] irqchip/gic-v3-its: Enable dynamic MSI-X allocation
+Date: Fri, 23 Oct 2026 05:16:35 -0700
+Message-ID: <20261023121635.2190639-1-vlad.wing@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261022193620.2152038-1-vlad.wing@gmail.com>
+References: <20261022193620.2152038-1-vlad.wing@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -108,64 +106,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] ipv6: Add NETCONFA_FORCE_FORWARDING to netconf
- messages
-To: Gabriel Goller <g.goller@proxmox.com>, David Ahern <dsahern@kernel.org>,
- Ido Schimmel <idosch@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261023-ipv6_add_netconfa-v1-1-94d14b07d621@proxmox.com>
-Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <20261023-ipv6_add_netconfa-v1-1-94d14b07d621@proxmox.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 8C4CB22187
-X-Spam-Level: 
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-13.50 / 50.00];
-	SUSE_INTERNAL_BYPASS(-9.00)[];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	XM_UA_NO_VERSION(0.01)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,proxmox.com:email,suse.de:dkim,suse.de:email]
-X-Spam-Score: -13.50
+Content-Transfer-Encoding: 8bit
 
-On 10/23/26 12:59 PM, Gabriel Goller wrote:
-> Since force_forwarding was added, changing the sysctl sends an
-> RTM_NEWNETCONF notification of type NETCONFA_FORCE_FORWARDING, but
-> inet6_netconf_fill_devconf() never emits the attribute. Listeners only
-> receive NETCONFA_IFINDEX without the new value, and RTM_GETNETCONF
-> replies and dumps omit it as well.
-> 
-> Fixes: f24987ef6959 ("ipv6: add `force_forwarding` sysctl to enable per-interface forwarding")
-> Signed-off-by: Gabriel Goller <g.goller@proxmox.com>
+Two updates on this report.
 
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+First, a correction: it is not specific to our debug config. Our
+production config hits it as well, on every Grace + BCM57508 machine
+we tried, at the same point in boot.
 
-Thanks!
+Second, the root cause is in bnxt_en, and this commit only exposes it.
+When the channel count is raised, bnxt_check_rings() allocates the
+extra MSI-X vectors before firmware has reserved them for the
+function. On BCM57508, writes to MSI-X table entries beyond the
+reserved IRQs don't stick, so the message written when the vectors
+are activated is lost, and the entries stay zero after the
+reservation.
+x86 never notices because GENERIC_IRQ_RESERVATION_MODE makes the PCI
+MSI domains MSI_FLAG_MUST_REACTIVATE and the message is written again
+at request_irq() time. With this commit, arm64 GICv3 takes the same
+dynamic path but writes the message only once, at allocation.
 
+Instrumenting the driver showed it directly. After the channel count
+went from 18 to 32, MSI-X entries 18-31 read back as all zero, while
+the cached msi_msg and the ITS LPI mapping were correct. Exactly the
+14 rings on those vectors lost their completions.
+
+The fix is posted to netdev:
+
+  https://lore.kernel.org/all/20261023121321.2127263-1-vlad.wing@gmail.com/
+
+With it, the same machine runs cleanly through the channel change and
+the ring resize. I don't think the ITS change needs to be reverted.
+
+#regzbot monitor: https://lore.kernel.org/all/20261023121321.2127263-1-vlad.wing@gmail.com/
+
+Thanks,
+Vlad
