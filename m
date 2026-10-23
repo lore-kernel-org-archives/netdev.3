@@ -1,101 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.181
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792781652;
-	b=isxGjxUErhJpMioxCweAVLm1N4bfFypcRrtwmIfhqmw+/yzX6boSnYwHtYmkVOppPJwQ
-	 IHQPQ9EKYwBGQ7VOHRPtEBHwny+JUyuYR0e2T8Eh6Z85D9bxH2BNzyHBISGNy+NT1PGKO
-	 LdsZ45+IMhdvCALpzur0kGqoPv9VhkbFtbtEKQwq0pCKPpX7UlaLEdUwB5P0F3zV+krSM
-	 2ta9OZF1p2q0CDctMN7QTmNePpoyuyLOx9cXco4y6vQageGY0yhtfaeuTzXU24gmqBMon
-	 kncjvNtpbsiFCoT2QL7qm+ELV1ikAgnfmtlbS1pKSbiGKgW9D6koKJv1OQkxQkd0WPQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792781652;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=rU1MJkNETayS5var2MLHM73zlvbHQxyivwE/jbKWRfI=;
-	b=KvqHIjfSTL3bCLhQThscbse5kR9PxTZK3e9Z/lNSXFgZi7xhcUT51S2mAGXtrIGfwAfn
-	 iVZS89zbAkOShYXyZi0rXpqYqH5Ne+Uf4vLCFQf7jcGuqPBNXCG5Rje1MtK1duiBZzibM
-	 TQIQDMRnHGXHp+SsgX7giulwPyN48PBNUuANXF2umhBm2sYdgWnl3Ii6wbSmQV9tShggF
-	 +uhpM4jvV3FS6ox6W5C+tOLLMkr0spu6oiK4qSf+jFCbvNyS/PVCy30PXYyaQXqe3X1BS
-	 VMa2G3IhZGZc6PsoQhbnkW7hMygCgydIt9U1sps+D3udkWjpa5c/wlAjSK8VaL+Xa+g==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=tH2PzqGf;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.181
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792781693;
+	b=4ctGOb/WtPLkPLSqYO9sxfh+q7yOGUbpudiJ8+SBw8Bua+QC7sjVPtqvcrAgfotT1p7f
+	 7kLaE0hzDq880V4MeH5UR+44sv/H0S9JUGTTwi2FTt68rwxFL2xfvrcRZ9loTMCi4ES4U
+	 wuMyAGCsssKbv1NzUpEUV2XGc/7vHmI/GdojV5/syjat1EaA6V3aTXl9lbKG0xuSo2b7e
+	 rXOll5bTFjwoYJWnMxyqF2CkIP04W0FNzcIIUOJkRR4Op0l1C84Z0qiFtdLInfGrki3Gn
+	 2I44aOENLCF3GoGbc4IECYUoOeIsCnkLs4a6MDMwl3Qg8zZ4/Z3L+1/ZdNLGFLkCzGA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792781693;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	b=5JeCLuqqMDUTG5R1UF22Ayp5Yo1Dsg+yKJhacFl6/Cis3RfymOnJKpza8yAVhC1wiSaJ
+	 KnQX8JKd2vCOL7iGUrc8s0EZGYqRlJ5G2xXIIpvHQxVjsKWTy3jU3mSEVd+fnDwY2TnyO
+	 mEaUTLdr8S2Ws+dPSCTMD477fPH8iBSkI5EDSzMa7aqcD+6jnGG1bvyLUjc7hZE5BlmXX
+	 c5oy9mkIrGToqjo192PLMtu3oOBXm0DSlMGTZsLAz21BJJn5hJL86lSNTTbq3C52Ro3aI
+	 sfL9OD2/t4iVFD1ccgN2sIriaMiux6rmDQazypakhms754lDViJydu7+3xXrlls4NSg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="h/kuyFSY";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB60606A31B
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 18:54:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3BB60606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46032606A31A;
+	Fri, 23 Oct 2026 18:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=tH2PzqGf
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2e8f2c3ad6bso7772655ad.1
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 11:54:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792781651; cv=none;
-        d=google.com; s=arc-20260327;
-        b=GuT+uMcC03B7+WyuQCEU/0k6r0j65ICPxMtTysbUmPv6yL2B89yI0hOTiKTVkmsqIJ
-         prjPxJA0YVnUSVLOKg2asDcUFOQVPaZ8vUo8KfLe1QjX83H6qdpbXg+xUSZ1jBQITbvd
-         EZSl6jz5Jnyvr7XssliLp3RhoxT4cy7X3U51hGFI/8qk+bY2HbYxCjJFbWinup/oEx7H
-         7oE5J04Xdhh/MNVtMuKxCG7yXbHmwL9kRVrXPI9KPaZOxVpYUYvkFWlAfGI/7xq8Qa0p
-         3FCfMuGZMUfSJB0D9YrO/DbpRNCq/XluuyjHUtgo0x0O8qDtR6NKxf39QeWgGbTf0dqx
-         7p4g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=rU1MJkNETayS5var2MLHM73zlvbHQxyivwE/jbKWRfI=;
-        fh=Q7hDqG9WdXSmdug5d5kxBEF2qM0ZV/72Jx+V1rHqgEg=;
-        b=Sw052Tf6RsNXhNw59uGXE1esZtRLlR9DahO75BOiO5DvGzndx1ZrRpxnsGgRntL2+7
-         ZGh0dLMmzSvRV8xo20pttdRCtVh2I4yDNuIzgJ9TLgryZVhxwEqb62aca3AuSrtDXxpG
-         cnUp09dLwAN45j3cFi299fl1KOfR0Gv0kNqUvwWYkHFNozRoalBxzKDyFaBfMMsKGPUc
-         tcfcfqbGViKlfspaj66NjsuaLyPtNrI3VWysGMtK7wacQKVJ/Uhk+Q4bkhySYW3fm6ng
-         sQJfhHT6LxEzELcPIhf/ryn1IyJUO05BMsra2/K9c5otUjGpn/btFZCPpHckhVw/PDLe
-         k2Lw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792781651; x=1793386451; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=rU1MJkNETayS5var2MLHM73zlvbHQxyivwE/jbKWRfI=;
-        b=tH2PzqGfBFXUmYs+U0jgxOiwBUXW3Sw78Br9mxWPzz5zt2F/svzbOMPh7lEjoo0ZZF
-         j4GnojgKAHeLSLFGyEgfvcNDViTPG1998Y3gip182ruBL9vYQn2kZhwzRfOeE9Uesj/R
-         vdFD5yriZ0SkT4bVJF06piBN3APb0Kw5Mm83EkuGYOwakhTMz9WbsK3KFfPGnF3mozS2
-         yClmI9XRaHQq6aP5NTLJiyg+MsU4X2lC8YHiDGHaePt3mfBVrlpQLArFbSkgnitcTgY9
-         S7fliGBzS+AFcqouePcT12CLNclcTaRsKMMIchljQFSpeFzidMIwVg/2q+9HutAJZWLk
-         I9pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792781651; x=1793386451;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rU1MJkNETayS5var2MLHM73zlvbHQxyivwE/jbKWRfI=;
-        b=ckOyfKQUsoYa2Hbb9ENyfwALXhZFAlV9H5ZhqVCVEG74DyIG3S5uhsFMoFfTtZUAOQ
-         YeqZrCumZvKzg3RwMlBsoEo5PCrN+Fn5nj4khuOPt7LfSrJghaHtEodV4TZs1+zI+SU4
-         3Gy+KGSB8PjYkJriVbx062ksj9Wg77tJ9p+lEXdcv86WQYMAVUhSJd1QPK8mxLS052S9
-         9Vifg6jAZoN8V/aHwByGd9NFTDHaME3i7FeDQDpg3Rc7YNzYa9pG9UOWnN4d7AS4JAaZ
-         tsvHRqUN6RYgsXu/Y808IYiYecou9mPiifgX6hMN//ziz5bN+koaX5rCaU6OWz44Knk4
-         MRDA==
-X-Forwarded-Encrypted: i=1; AKwUvBypEioc/LuZeUSWDc0SQ/8wYh1Dh2AWKX7TBAADSKs96PLfWJySkiLeS7UP+yUC4LR5p2yj+Qk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLvN0SY4Tdndv5NM0Vy6SVR6n83DcMMQIijG4E8g4ZjWujlRr0G
-	SNKkyHOLUnOB2SPZGHjVIP+iACmyEWkf6a+CdVjyaJhhg5OwVEDk5vQytcP7DAjQ2qWx3cF7EkI
-	6ku1FOSDUpSU/zhf5TdgnZkMtPgSAycs=
-X-Gm-Gg: AYBFou0f6ELyuAuhd3slbSIoM+Kwhq+9QDN21cg58VXljHKR/YdbIThEudUdLivyt5U
-	b/BOS7jXa6OjBeBiSinzi8uErHb5PwZVLUSozyJGFkMfsD+X9x5wPUcfF5Pk0cof1rrp9TfXFdI
-	P63S/2L5YTggQ4NhytzsrmsViiWc/AESWPS/NSC0MTgSR1YbmarEpmKalJjpBUdTQagqyKKhWTC
-	5KLZziM3deDwwVH2x16/5EZ2WBobvXB4lK/RLME2v73b3Pm+ffNLXijWyNSQZMeAHnzaE2bYTtz
-	ZTbb+5BSF+e7H9l6ctt5JygNJ3JPiS7ZMuk0X1pUaBcVQRmGdHllp9X2j8RA0XVGMwaGz5leZqW
-	d0ZMhZ1a7rNg/VnBHkCV2RRnJGFouavA3zX0lqEV/abvZ2Ob8T2m37J0O7+2riaHHyGIv/hhaQm
-	aFth+mfDTIaI5FYC47RemnW0QrOJ1b8Y3q7KZGw39BZxNHGpVEbtE=
-X-Received: by 2002:a17:902:e88d:b0:2e2:fc90:11a4 with SMTP id
- d9443c01a7336-2ea7c1a473dmr29006745ad.48.1792781651387; Fri, 23 Oct 2026
- 11:54:11 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h/kuyFSY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B9031F01825;
+	Fri, 23 Oct 2026 18:54:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792781692;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=h/kuyFSYxROdjj8btkzQ8jS9IqFVU2SoKrWR6SfdS+hAtSfj0DdFdt/sIEsCuJHH3
+	 bjiO32/jDDDq/tDHMHhRTA8iAyeeWjAOjC9zd4y7mj9WHuMrk8AQysW2mbwbpTHJYR
+	 LI1jP6vcMm4yMF8JhmHffnkGI4Y21cIjtb0N31Gy20ySWPYYH+MajKOfi4sqrtVKgK
+	 vjfT7ffPk9bV0iZQSFnoX9yNl9vGgXliT8rNOHaSr+nwpBxxEZ3xP3tsu/G4Iwtij7
+	 qpz4eeipcAqqT5+L22EPDqvOD7ORAIYHjc0t4gbK0+cXZSrebEJTMm49z9f6GCtW2H
+	 XsXUMel7bf9tQ==
+From: netdev-bot+sinfo@kernel.org
+To: =?utf-8?q?J=C3=A9r=C3=A9my?= Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, David Ahern <dsahern@kernel.org>,
+ Ido Schimmel <idosch@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v2] inet: frags: prevent acceptance of partially
+ authenticated reassembly
+Date: Fri, 23 Oct 2026 18:54:51 +0000
+Message-ID: <179278169172.3327.18212871676528933059@kernel.org>
+In-Reply-To: <20261023185118.2588450-2-Jeremy.Jean@oss.cyber.gouv.fr>
+References: <20261023185118.2588450-2-Jeremy.Jean@oss.cyber.gouv.fr>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,29 +66,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261021155629.68813-1-phx0fer@gmail.com> <20261022054811.35008-1-phx0fer@gmail.com>
- <DMBHB0TQOV1L.38MECMYFGUS5B@gmail.com> <871p9g6ym1.fsf@cloudflare.com>
-In-Reply-To: <871p9g6ym1.fsf@cloudflare.com>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Fri, 23 Oct 2026 11:53:59 -0700
-X-Gm-Features: AclHuK9Z1e1uuin3xKQj50QTuiC83gSWuOAbPYUtr_-0P4Nt2Rm5eucO2azxltI
-Message-ID: <CAADnVQLTe611mm0iJEf5gJi2GtW42kxNHH3sUPevD039FvzL7g@mail.gmail.com>
-Subject: Re: [PATCH bpf v2] bpf, sockmap: annotate the psock teardown data races
-To: Jakub Sitnicki <jakub@cloudflare.com>
-Cc: Dudu Lu <phx0fer@gmail.com>, John Fastabend <john.fastabend@gmail.com>, 
-	Jiayuan Chen <jiayuan.chen@linux.dev>, Network Development <netdev@vger.kernel.org>, 
-	bpf <bpf@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 23, 2026 at 11:49=E2=80=AFAM Jakub Sitnicki <jakub@cloudflare.c=
-om> wrote:
->
-> >
-> >  static bool sock_map_sk_state_allowed(const struct sock *sk)
->
-> Code LGTM
+Hi!
 
-Jakub,
-Could you commandeer it ?
-Dudu is clearly a bot and doesn't care.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
+
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
+
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
+
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
