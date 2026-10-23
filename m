@@ -1,55 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792772506;
-	b=wD9jdVSAc7B64/2NNNfVzHOxXCJhWViJdn4JXxawT7kCB8nphS6H4AJT3thPO4V7Xi+K
-	 3VzxIsAR/31uRLif5SLVtmslPO54Tv3+QzjwYAXCBrkzRR20GC9Vf6AyQvIkvi8Z0gjZr
-	 alt96+9cWrVEwcf5+b3sXNgIBOU/lTc2BBTzoRa5h+8gwStBZR4tVUF3Hroh3JtH5iUUO
-	 IXxQFb/mwgzTI2LjcxZUPbhLLoofJ6btfc4ts0YyTZ9JkYkcAAvkwsa3MvFDOV5AgZYSq
-	 iQjk6FprdwWuE03KOcMBdLsRU3gQtX3bGxtFFVufPQbVkkwd09nikCD75w/OhmA0r3A==
+	t=1792772906;
+	b=baWKJbvCcrIP78GX03285APwEfhVWabdm4kh/dA/zBzx+WTtrC/nWK1ncKCnewJX/X5d
+	 611mFClCLO+CHj1gXCFq0dKZoDN1JQ+ptavakw3+BuHAA7nRZ+iGY728W051ggvIKkYuF
+	 r5x0dKnQru7CHmyrnkTsk2VfZWSEMPntADmvlCmxnlEtfaYhJF398pz5LWGHFpII48+oU
+	 +xdociMK7dOM4U1Tfn39k85dmQw7VF6vk6BlIeHKKKJ772/LJ5X1i2FcMY33P7jLaZY2B
+	 LO9mmZIJDr/RSULuqxeG+TxjXW9ni4ubPmzMZ5VJ8jfGH/D9VPw3715iI1dnGSA6Eew==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792772506;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=Tf5fTI11AZRTr+M5HKlJWhT3pOd4N99OrUGmhNOVbAY=;
-	b=fd1aih2vz67RZHZNytfpaRZEngaBje0lJ4626jPMY5SZCbRx759TVZpUmMJXxQ3LLjFw
-	 2tmK9Aj2RAy9LrWlxYDWHgbY3gi8cPOA5ABOps28ceM+oVxVS1YV0f40XbA8yf/SMbpeI
-	 8ijB75nl9TDwPVQHXuo+SYx11Yv6QNZnLf9Whkh+QjALobbPFJ5KWNXMRnMjQ4UhGtVDu
-	 DgNG2mCGvxo2aur0wiNS6+qpIvEHbPxJ7ISGquIQz59XD5G5GqsNGudfmobrNDRIoHK/J
-	 TSbl+H31jGGLR7Z8EEi/KkfPA9Wbly8QA8M9DLjcVU+DUh8pwcGMcHr8Xz+YA3zsk5g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792772906;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=Co97Y0p41uorR92GJeOhUDahiBIaQEoa0saPKr2noM8=;
+	b=W/rVsNUWl2WhJpF1+qWC/vuM/nUin/itpeuUtgK7TMktEMoQq1KIj744nhgj/NeZTs+v
+	 223dkV6/eKosGWrLaEJD9s2v/BzVzDsbGuO0hWbdwXV3yDUcBmVqkVmmXfgZDeolm1gu6
+	 oEeqXHuoyDJCHodRq5toDIa1dsFOCz3cN/pjWc9t9GVqITr06sGMr25DhBIH1keVRTtKy
+	 8ZsGtvXgTlKxVPu6dr+BF3xisVHwMguwKVgX55VcCEgurLkXiar+4knbh0Ssd9cKLmXHc
+	 ST9QzkDoAAq2O6HS0cIvE2mp2vh/He4hP51Jd1dnEyPON6FAzGC43Bu208QuY29jjdg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DUcydec6;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OojpiN35;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99DC2606A332
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 16:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DEB8606A324;
+	Fri, 23 Oct 2026 16:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DUcydec6
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 463AA1F01829
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 16:21:45 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OojpiN35
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAEFC1F01825;
+	Fri, 23 Oct 2026 16:28:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792772505;
-	bh=Tf5fTI11AZRTr+M5HKlJWhT3pOd4N99OrUGmhNOVbAY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=DUcydec62e9Z3jYUjIG4gFSufzUGRWqeEbIBnl2OBWtlHo4cE25QZRLSrghtxwbUq
-	 ROri1zrQJJLSuqyshoaW/qaXbVwFsuwVnWgPDo2kJBEnv6FQ4O0+VEq5miAbhWWVlF
-	 a0rYju/WX5RpPu/qRA6CmEfJ+GRIjYGCygm3KLTEb4Mq7V2yung9VbrJ03Jn4TEns9
-	 UHWJ0h61b3520cv9t82YjXbHHbnL5AcJ9mmf/mFvSnDPuBCH170sxdN4lBhFBqLs4X
-	 1qqIRK0jYVDl85ttFrwjDScLAGOniple+HaFhRpvluFXPri/gfbtD1vs0KdhhBzGV1
-	 YchQMHbNBTuMw==
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-486f013db83so482583fac.0
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 09:21:45 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzvAdEk6aBbarwSNbeSNg4giWe8Xn/uHCtMxgm1XfxCd7/4P8ailsvP1PqjO9YqB5yN8B1QZgk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJUyaSk+Q0DAuAy3ibulEpabjOG7Wlk9guaP5FdAq0ibLR161qM
-	0uu6K2koa8wrX4rAVi2f6FnZJ0xt5rblrAbBoGnpbyReIEx+LG/UdJaaCEnrnop7dTf9skv7Jk6
-	wru5Q3gLjNTTtl5JHT7LRcSPYcksQR+8=
-X-Received: by 2002:a05:6871:79d:b0:48f:e24e:6b6a with SMTP id
- 586e51a60fabf-4a8224ea80fmr1602443fac.61.1792772504596; Fri, 23 Oct 2026
- 09:21:44 -0700 (PDT)
+	s=k20260515; t=1792772906;
+	bh=Co97Y0p41uorR92GJeOhUDahiBIaQEoa0saPKr2noM8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=OojpiN35R5m9Yj0Ve6tqyjOGsScUD1AEIt+CecU0CVUjyrDZnLoNaOlJyH699BiWW
+	 Y64Rxr1/hs+JXyrQHG/AuDtFDj1KoAU2VIRD9f/yPvDDkIg2w7Jfeq52ukwgNnzp69
+	 VoZGtaIgbUcvWGoRWmG4rLj69/Z92fnq+bqU4IF2n55mBJRlaIUpVJwss/zVy4+92I
+	 v+PGgM0xND6gzNNOSv8Fj3WEjL2nPzTech//bKrpdraaMlof0/YqWrYFyF0SAPp/rv
+	 pQSb+RD6RLHpuH2nj9/9T9G04ywIiAjS6hQGaW+tofWloizuyQZBxjnqoYKbmEE8J2
+	 eXFFL6TCS4+Yg==
+Date: Fri, 23 Oct 2026 17:28:21 +0100
+From: Simon Horman <horms@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: jhs@mojatatu.com, netdev@vger.kernel.org, owen@verialabs.com,
+	jiri@resnulli.us, victor@mojatatu.com, davem@davemloft.net,
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+	kaber@trash.net, stable@vger.kernel.org
+Subject: Re: [PATCH net 2/2] net/sched: sch_teql: fix use-after-free on lower
+ qdisc drop
+Message-ID: <20261023162821.GN708417@horms.kernel.org>
+References: <QDISC-Y0BY.v1.r0.20261015184107-2@mojatatu.com>
+ <179248763469.3135.1739559328868319628@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,157 +61,102 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261023074515.2347924-2-Jeremy.Jean@oss.cyber.gouv.fr>
-In-Reply-To: <20261023074515.2347924-2-Jeremy.Jean@oss.cyber.gouv.fr>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Fri, 23 Oct 2026 18:21:33 +0200
-X-Gmail-Original-Message-ID: <CAL4WiioOu48M55PUHNJY3B-e_PJVqc0BZYWmgpkDpFj=bz_5_Q@mail.gmail.com>
-X-Gm-Features: AclHuK9JCAxJ-YMpRHctjjSF-nP7EZBfB7migQ3rYOkVPPQdYDjvEVAI0GVA6K0
-Message-ID: <CAL4WiioOu48M55PUHNJY3B-e_PJVqc0BZYWmgpkDpFj=bz_5_Q@mail.gmail.com>
-Subject: Re: [PATCH net] inet: frags: prevent acceptance of partially
- authenticated reassembly
-To: =?UTF-8?B?SsOpcsOpbXkgSmVhbg==?= <Jeremy.Jean@oss.cyber.gouv.fr>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <179248763469.3135.1739559328868319628@kernel.org>
 
-Le ven. 23 oct. 2026 =C3=A0 09:45, J=C3=A9r=C3=A9my Jean
-<Jeremy.Jean@oss.cyber.gouv.fr> a =C3=A9crit :
->
-> A reassembled skb retains the secpath from its first fragment, which
-> makes it possible for the final policy check to accept bytes that were
-> not covered by the transform recorded on the skb. This can affect IPsec
-> tunnel traffic, including AH and ESP, and allow a packet to be accepted
-> even though only part of its payload was authenticated.
->
-> Reject a fragment when its secpath differs from the fragments already
-> in the queue, and keep overlap statistics limited to actual overlaps.
->
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: J=C3=A9r=C3=A9my Jean <Jeremy.Jean@oss.cyber.gouv.fr>
-> ---
->  include/net/inet_frag.h  |  1 +
->  include/net/xfrm.h       | 17 +++++++++++++++++
->  net/ipv4/inet_fragment.c |  5 +++++
->  net/ipv4/ip_fragment.c   |  3 ++-
->  net/ipv6/reassembly.c    |  3 ++-
->  5 files changed, 27 insertions(+), 2 deletions(-)
->
-> diff --git a/include/net/inet_frag.h b/include/net/inet_frag.h
-> index 365925c9d2628..b02d2472b003e 100644
-> --- a/include/net/inet_frag.h
-> +++ b/include/net/inet_frag.h
-> @@ -171,6 +171,7 @@ extern const u8 ip_frag_ecn_table[16];
->  #define IPFRAG_OK      0
->  #define IPFRAG_DUP     1
->  #define IPFRAG_OVERLAP 2
-> +#define IPFRAG_MIXED_SECPATH   3
->  int inet_frag_queue_insert(struct inet_frag_queue *q, struct sk_buff *sk=
-b,
->                            int offset, int end);
->  void *inet_frag_reasm_prepare(struct inet_frag_queue *q, struct sk_buff =
-*skb,
-> diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-> index a6d69aaa6cd2d..493faac0faa45 100644
-> --- a/include/net/xfrm.h
-> +++ b/include/net/xfrm.h
-> @@ -1201,6 +1201,23 @@ secpath_reset(struct sk_buff *skb)
->  #endif
->  }
->
-> +static inline bool
-> +secpath_equal(const struct sk_buff *skb1, const struct sk_buff *skb2)
-> +{
-> +       const struct sec_path *sp1 =3D skb_sec_path(skb1);
-> +       const struct sec_path *sp2 =3D skb_sec_path(skb2);
-> +       int i;
-> +
-> +       if (!sp1 || !sp2)
-> +               return sp1 =3D=3D sp2;
-> +       if (sp1->len !=3D sp2->len || sp1->verified_cnt !=3D sp2->verifie=
-d_cnt)
-> +               return false;
+On Tue, Oct 20, 2026 at 09:13:54AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 0 · Medium: 1 · Low: 0
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] In teql_master_xmit() (net/sched/sch_teql.c), the patch
+>   replaces `== NETDEV_TX_OK` with `dev_xmit_complete(rc)`.
 
-verified_cnt is policy check bookkeeping (written by
-__xfrm_policy_check()), it says nothing about which states
-authenticated the payload. I would only compare len and xvec[].
+Hi Jamal,
 
-With the verified_cnt part removed:
+Maybe things have moved on for some reason.
+But this concern does seem to warrant a response.
 
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
-
-
-
-> +       for (i =3D 0; i < sp1->len; i++)
-> +               if (sp1->xvec[i] !=3D sp2->xvec[i])
-> +                       return false;
-> +       return true;
-> +}
-> +
->  static inline int
->  xfrm_addr_any(const xfrm_address_t *addr, unsigned short family)
->  {
-> diff --git a/net/ipv4/inet_fragment.c b/net/ipv4/inet_fragment.c
-> index b286ee429da8f..c18da91c1f031 100644
-> --- a/net/ipv4/inet_fragment.c
-> +++ b/net/ipv4/inet_fragment.c
-> @@ -23,6 +23,7 @@
->  #include <net/inet_ecn.h>
->  #include <net/ip.h>
->  #include <net/ipv6.h>
-> +#include <net/xfrm.h>
->
->  /* Use skb->cb to track consecutive/adjacent fragments coming at
->   * the end of the queue. Nodes in the rb-tree queue will
-> @@ -441,6 +442,10 @@ int inet_frag_queue_insert(struct inet_frag_queue *q=
-, struct sk_buff *skb,
->  {
->         struct sk_buff *last =3D q->fragments_tail;
->
-> +       /* The reassembled skb keeps the first fragment's secpath. */
-> +       if (last && !secpath_equal(last, skb))
-> +               return IPFRAG_MIXED_SECPATH;
-> +
->         /* An IP fragment is never a GSO packet, but an untrusted source
->          * (virtio_net_hdr) may have attached GSO metadata to it. Do not =
-let
->          * that reach the reassembled skb, whose head keeps the first
-> diff --git a/net/ipv4/ip_fragment.c b/net/ipv4/ip_fragment.c
-> index c790d2f494870..36105dd192823 100644
-> --- a/net/ipv4/ip_fragment.c
-> +++ b/net/ipv4/ip_fragment.c
-> @@ -378,8 +378,9 @@ static int ip_frag_queue(struct ipq *qp, struct sk_bu=
-ff *skb, int *refs)
->                 err =3D -EINVAL;
->                 goto err;
->         }
-> +       if (err =3D=3D IPFRAG_OVERLAP)
-> +               __IP_INC_STATS(net, IPSTATS_MIB_REASM_OVERLAPS);
->         err =3D -EINVAL;
-> -       __IP_INC_STATS(net, IPSTATS_MIB_REASM_OVERLAPS);
->  discard_qp:
->         inet_frag_kill(&qp->q, refs);
->         __IP_INC_STATS(net, IPSTATS_MIB_REASMFAILS);
-> diff --git a/net/ipv6/reassembly.c b/net/ipv6/reassembly.c
-> index 05c51f669754a..53a685f5c6b7f 100644
-> --- a/net/ipv6/reassembly.c
-> +++ b/net/ipv6/reassembly.c
-> @@ -240,8 +240,9 @@ static int ip6_frag_queue(struct net *net,
->                 err =3D -EINVAL;
->                 goto err;
->         }
-> +       if (err =3D=3D IPFRAG_OVERLAP)
-> +               __IP6_INC_STATS(net, idev, IPSTATS_MIB_REASM_OVERLAPS);
->         err =3D -EINVAL;
-> -       __IP6_INC_STATS(net, idev, IPSTATS_MIB_REASM_OVERLAPS);
->  discard_fq:
->         inet_frag_kill(&fq->q, refs);
->         __IP6_INC_STATS(net, idev, IPSTATS_MIB_REASMFAILS);
+> 
 > --
-> 2.47.3
->
+> 
+> net/sched: sch_teql: fix use-after-free on lower qdisc drop
+> 
+> This patch changes the check on the slave's netdev_start_xmit() return
+> value in teql_master_xmit(). It now uses dev_xmit_complete() instead of
+> comparing against NETDEV_TX_OK, so a slave that consumes the skb and
+> returns NET_XMIT_DROP is no longer treated as still owning it. This fixes
+> a use-after-free when a VLAN slave's lower qdisc drops the packet.
+> 
+> > diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
+> > index c7dcec25ef420..b3efd5c281988 100644
+> > --- a/net/sched/sch_teql.c
+> > +++ b/net/sched/sch_teql.c
+> > @@ -350,8 +350,8 @@ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
+> >  
+> >  				skb->dev = slave;
+> >  				if (!netif_xmit_frozen_or_stopped(slave_txq) &&
+> > -				    netdev_start_xmit(skb, slave, slave_txq, false) ==
+> > -				    NETDEV_TX_OK) {
+> > +				    dev_xmit_complete(netdev_start_xmit(skb, slave,
+> > +									slave_txq, false))) {
+> 
+> [Severity: Medium]
+> This closes the use-after-free. Does the same condition now also count
+> dropped packets as successful transmits on teql0?
+> 
+> dev_xmit_complete() returns true for any rc < NET_XMIT_MASK. That covers
+> NET_XMIT_DROP and negative errno values as well as NETDEV_TX_OK. All of
+> these now take the success block in teql_master_xmit():
+> 
+>     netif_wake_queue(dev);
+>     master->tx_packets++;
+>     master->tx_bytes += length;
+>     rcu_read_unlock();
+>     return NETDEV_TX_OK;
+> 
+> They also advance master->slaves to the next slave.
+> 
+> teql_master_stats64() copies these counters directly into struct
+> rtnl_link_stats64. There, tx_packets is defined as "Number of packets
+> successfully transmitted".
+> 
+> With the reproducer from the commit message (a VLAN slave on a dummy
+> device with a pfifo limit 0 root), every packet the lower qdisc drops
+> would appear as a good transmit in ip -s link show teql0. tx_dropped and
+> tx_errors would stay at zero.
+> 
+> The VLAN slave counts the same rc as a drop in vlan_dev_hard_start_xmit():
+> 
+>     if (likely(ret == NET_XMIT_SUCCESS || ret == NET_XMIT_CN)) {
+>         ...
+>         u64_stats_inc(&stats->tx_packets);
+>         ...
+>     } else {
+>         this_cpu_inc(vlan->vlan_pcpu_stats->tx_dropped);
+>     }
+> 
+> Could the rc be saved once? dev_xmit_complete(rc) would then decide only
+> whether the skb is still owned, which keeps the use-after-free fix. In
+> that case, tx_packets and tx_bytes would only grow for NETDEV_TX_OK and
+> NET_XMIT_CN. The other consumed codes would go to tx_dropped (or
+> tx_errors), without touching the skb.
+> 
+> The commit message describes this only as a use-after-free fix. Could it
+> also mention that teql0's counters behave differently now?
+> 
+> >  					__netif_tx_unlock(slave_txq);
+> >  					raw_spin_lock_irqsave(&master->slaves_lock, flags);
+> >  					if (rcu_dereference_protected(master->slaves,
+> 
+> -- 
+> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-Y0BY.v1.r0.20261015184107%40mojatatu.com
