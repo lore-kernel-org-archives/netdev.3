@@ -1,54 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792768989;
-	b=2ZXy1Zqk2eJ6WASdrcAXrwGs9EYvoI0xcZP37SIR9spWJin66Xamej3eOtbDcRzMivvh
-	 Dn4ykzxRn6kOhz3e41Jgv3gGM2DYnwcYg3eQvaHgAzjjCl92CIT/lSy+jZmTvO+D0zcFr
-	 PkrBwfBaRo7anukFie2fXjvc0E1QybheUlATteZD0w/EjRxlA+Nl52T4Kam4EjAlzU3xg
-	 prrLNhIUMwTQXVYYCj9+A5iDGJlSTR1wm6u1aZE9pwszCQB7/jeItOSh+BJYy52qo4tDq
-	 uE5LKJWkg+DLCIgO3QKbCIchInDUetk67Gc87hfPbKHNck5OzbbHaIA1a99y45M9NoA==
+	t=1792769256;
+	b=Tbt1jDoY7X6mQGbBMLDMj5VBfG+qZRE5agpSYqWkCKGZSIF4RtIvONrXggr8CYDxFvIW
+	 TpAPTDXfpR2GsE1ZDUpZubnDx0cEyyiVE6MKSVVWuNNANpm5IpO7cIXlLX024YOcIUOjn
+	 1IYzEQfkoGZmZenluGJWjpiZC7qeUUol6yhku721zxdbsrFdMlC5Ahp9VKzHqta6ziVOR
+	 12FS7Npn+EK/MLEYGXFrTJotfzy3l89yLYqPqleaLAjxkLJMzxdj1OXgAVf0YMtkc1xs8
+	 BWIhxdOkZCF2mpYZp7DZL68G3+ROCss22shxx5h1RpxLRAKhz5Rc3zka939c7OECa0Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792768989;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792769256;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=ImYyqoKQZ/Bt5xgS+fKb1wTFQh3Ewq+y9Md4D4SvTSw=;
-	b=41ObNMzS26I7ioUzb1SzbuCQmLWI7amfMWPBs03eafZZNXbWdZ9ewccFlvXr/NykK9r9
-	 9se2s73tPggMQZA7EKL9E2RkkdbqM86EJQr6HS/frlu42DmR7jcDJyl/zzeCTjoG/zrhh
-	 XFWrojX59dGK+zii6hlsCAZWxzEAfVOFzeHhm/yUwMCBk04VbO5ExFRroaJq+YFxKLTfx
-	 J78MOXjQo3mNDw00JPYyAM9fsUp1N1EsYl2WVIHgLEIEqgLa3jmfmJJ/Jn5E3IdcJPyWd
-	 FHoWLSZFrNENass7MwPWSx8ZFgMBSBAFUVxCfQo8H+3g0XE8WhJeWhYr0v05+78leCg==
+	bh=NTuOzIACSQffEqMs+V167GzN1sC4z8a1DCfw0E3F1G4=;
+	b=oE695LV2L09+E1fYjtK8lgCMPVFEIOw2gLnaQu9LMpKO0bqal8fbsaKtMih/ANhH++uD
+	 VC1V3IXt5mR1itOldpCSGhI2Zn0orpbFQGQ7uDIGOAaLlEsDn86O0lw1SCLvtXS7aEGtw
+	 oOtqyH+v+0Z9YQDpkobPt1pxjM1OX2Sg2qpDONqw63OnHD3+MLcmgBQ3Z5CX4RH4d374H
+	 4EQvyq8A0iFUbI1kDBegb4P/7zjp4QkwLYB1aqfhl/gw4KCwaFV479u6GJv4jIbt4HjYX
+	 Nlk16k2GKKUNA4RI7kxS1Po65zoRsIUQsEtRuZRp+8Hk9LwM+HouQ/pvwmZVwurSkrg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SIovx3HP;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F10bZnce;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7F6606A31A
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 15:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447A3606A31A
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 15:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SIovx3HP
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01A3B1F01825;
-	Fri, 23 Oct 2026 15:23:08 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F10bZnce
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A858F1F01825;
+	Fri, 23 Oct 2026 15:27:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792768989;
-	bh=ImYyqoKQZ/Bt5xgS+fKb1wTFQh3Ewq+y9Md4D4SvTSw=;
+	s=k20260515; t=1792769255;
+	bh=NTuOzIACSQffEqMs+V167GzN1sC4z8a1DCfw0E3F1G4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=SIovx3HPaETbiLhSB9xbo5wuNkWTmmpkLKTwbQ9aZuJiNTqwpjfLs6B7el2kymRBm
-	 WqlagcdSSHXAvAUTkywCmI2pTyVajJ/amO1e72IC2Fp+kWgTeyIIvE1bEGTJTzpaS2
-	 6iqjkswSstjGioRYzMAQ/yoIGLR+Zq6iw2qtSBJ2L+30OcDkcnM0soC/Fa7Cmg1tXC
-	 E09UsGuIzGEDF+5tfW3SC8OkZkhFXt9yVAAllqTd2MiDEjyTigsZ1C7RSCMFY2AhVv
-	 u8/LXxiYb7nFc+52r+zMS7k/Gqi99Z1jsyTyQKpZcaPkCNiS5Juz3hDf4MlVeHYdRo
-	 7lhBvgLavmAow==
-Date: Fri, 23 Oct 2026 08:23:08 -0700
+	b=F10bZncexROB0xaMiYkj8gJDhNwJg9sRmEMrjnUp+4Xyw48r1CUU6qxC2AcgeAcva
+	 LBUCyD2Jx+oP1lQ/BeOCjDxcxlDGp6Chtt/8+0xCZT0xJwL2MHRewz8oo0MVelvhv6
+	 fNv6SrqAsvwnT2glcRb4GM1rEbWpeanP6CQGJC1wEkWJw7vKLnqxv6p2h/Kw7IEEEW
+	 Ppe5k/Bf+87Y2dPMwcOXfeNBj81vnUolUIqsYov0DBJvyDMdvwTB3D3T3qD6tpqsNB
+	 JTb0iMHCTZhfI2wrUu2OSisuD+8cCdiN2zumSfz/3ez63kh8XcEeHBYycUTuOeSZP6
+	 RSv/qaevADnUA==
+Date: Fri, 23 Oct 2026 08:27:35 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Dudu Lu <phx0fer@gmail.com>
-Cc: hawk@kernel.org, ilias.apalodimas@linaro.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net] net: page_pool: bound queue_idx before indexing
- dev->_rx[]
-Message-ID: <20261023082308.23080670@kernel.org>
-In-Reply-To: <20261021155611.68473-1-phx0fer@gmail.com>
-References: <20261021155611.68473-1-phx0fer@gmail.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Tariq Toukan <tariqt@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+ Saeed Mahameed <saeedm@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, network
+ dev <netdev@vger.kernel.org>, Matthieu Baerts <matttbe@kernel.org>
+Subject: Re: nipa H/W testing suddenly failing on CX7
+Message-ID: <20261023082735.7103e573@kernel.org>
+In-Reply-To: <06502f83-f22a-4522-9a30-60b2478a8c2c@redhat.com>
+References: <06502f83-f22a-4522-9a30-60b2478a8c2c@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -61,20 +62,30 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 21 Oct 2026 23:56:11 +0800 Dudu Lu wrote:
-> queue_idx is supplied by the driver alongside PP_FLAG_ALLOW_UNREADABLE_NETMEM
-> (the gve, bnxt, bnge, fbnic and mlx5 rx paths all set both); it is the
-> driver's own rx queue index, so an in-tree driver passes a valid value.
-> page_pool_init() still indexes dev->_rx[] with it while only asserting that
-> the netdev lock is held, never checking it against real_num_rx_queues, so
-> the exported API trusts the caller for the bound.  This is a sink-side
-> hardening fix for page_pool_create_percpu(); the QEMU guest used for the
-> reproducer has no such NIC, so the pool was created through a small module.
+On Fri, 23 Oct 2026 16:01:48 +0200 Paolo Abeni wrote:
+> Hi,
+> 
+> Mat noted that H/W self-tests suddenly started failing on the
+> mentioned NIC:
+> 
+> https://netdev.bots.linux.dev/flakes.html?min-flip=0&br-cnt=20&br-pfx=net-next-hw&ld-remote=netdev-CX7
+> 
+> Judging from the test output, GRO stopped aggregating and the
+> driver exposes a single queue?!?
+> 
+> I could not spot anything obviously wrong in the relevant
+> batch:
+> 
+> https://netdev.bots.linux.dev/branch_deltas/net-next-hw-2026-10-22--00-00.html
+> 
+> Could you please have a look?
 
-If all consumer (obviously!) pass the right index - why are you
-bothering us with this patch?
+FWIW I think it's the garbage check added to page pool, which Paolo
+already identified. Please ignore.
 
-Please do not send any patches to linux networking for next 2 months,
-and until you learn basic coding skills.
--- 
-pv-ban: 2mo
+Side note, I don't think we should be expecting vendors to pay
+attention to netdev CI. We can set up a group of community developers
+who would be willing / able to jump on such issues if maintainers
+are overloaded. Vendor help is obviously welcome if voluntary
+but I feel like I implied/promised in the past that the CI will not 
+be a burden to vendors, and this email goes against that.
