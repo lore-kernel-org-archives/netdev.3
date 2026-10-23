@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792797008;
-	b=PLHzrXB2tqJKxjEGUiFhq6qT5Byw8Qd37zkQTbyIoKvuI7bwOXHQo8BEYccvKGVOExvg
-	 uxGQiSAMv6WPen1UxbHFhAI3ZhFWQe+QKgPjAD77Cp8gJf952ylGSLVDO2mFgMKfY2ly9
-	 fMOQufeQhykZKaQywNMHVPCnuzwxhGgyKWue/hy37du/pw2Gf2OrzEBI1V4S4lTs/fst8
-	 MbZ44j7Y76dc/EocBPvNHL4rb6DyNgmxVmmwfyXrbxx3YPyI+6Y4poDK7a96mC+2CJJE9
-	 OuLphgBLbFp1Z7V05M52tJP+0AGxodCcbTy2PuotTFTUuCSQZxqKAHWthzZfO6FYKbw==
+	t=1792797010;
+	b=XroEU0xLGh3bX6LWp2vFf9LSMq6v0yRFWOy8mQQ//fpakf1aAhxklPClMNeDjc6igREK
+	 jp1tD3QsQN/ag3Mmvp3JrNq3BgYkUv2Hnszf3ctl6nbWe/sAZwCj8c4Rw2m4QjzN4aNej
+	 YN/lVv+HCLEhJCeWcJVUwqraBqhlk9tgAr7EzrLD6BXPxtLdOweR3DaYMXLFeSxjUQnAT
+	 vvAkJBpkMn4l5NIL5AN7EtvprYT5nqz3kva41km+DMc3fneVjL42uyqp4VryrW2cDj/ej
+	 5LbxxM2v3tsBSZMl6bXXe673aqnqqXx8zGuwVzaiXh8LrjjasLCjyGIcMIrTdOPQzkw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792797008;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792797010;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=zkOj/dPqDeR2z1raHppz6UsxzcG4JxFkGnpVOXS/y7E=;
-	b=ZfYK9qn6duAwUVMvoc1jznJ5MsHWF9/PDjNXebG5xuBov5fFOiO4nxROe+dnoMOtm5TE
-	 5lF9CXmQEITdTAi/jBnsTCloylMMnb4sZUANcv6awKzWqw0X7CF1P8LJ4q9TNXpxBY2yp
-	 76zrVAb9UdZTmpo2SL+Yp8hD0FtlOI7D7RZqi7oGMy/BFY8JNJV4jvRMkXbRLIiHfNLGx
-	 v39cJF1PRpuv6pjmfdqb/zhgiKlhB7z7OgZB413dfY+1iAcZ/+h7STx6AqV9MeLaASlVd
-	 3RvFc4JTyu6H9NNFQsf5jiG/sViUcFNJ0WlLHYtVsijDWYvDe2kGBVa9iC5wcWCCZKg==
+	bh=MIrAFhWXAPIb7lEuheQJc4PPEjxhRvQnGG7L3QhTTS0=;
+	b=3CFm6r63lDg0csYzU9ZfNB1ZTfiffce+/M49PqFwRjcbOBC+RKtKO6IeK0/Mu4FBY03S
+	 KrbO7vQeT8oDfOxZntzCZ0P5sPMWvp0WC5FTH60huVfDjK06MA1c/ZIi7c3KfxnPMJFmq
+	 Mg4qWCCjkeIirSSMzm02t6rSN7pWLGNX4oD+PSc7jPolahzVEOA7gYGJVLVpdJRLe1eHk
+	 ZMh4CDxK2t2bfK1LvqmsP9K6KHffi1qn4NEHc+R9r1dmGiFOvqepk1WEBKfO4ORElOznv
+	 +XZFHpiCzaIFkhUb5EjK+Ix8AkV4GFio88h6m1NtMGjs2YhmU4WV5XXCTPJ09P7yUFw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PUO49j5u;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Tk1mxgaO;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C795606A32F;
-	Fri, 23 Oct 2026 23:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB9C606A334;
+	Fri, 23 Oct 2026 23:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PUO49j5u
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5DEB1F01829;
-	Fri, 23 Oct 2026 23:10:07 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Tk1mxgaO
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA6B1F031E2;
+	Fri, 23 Oct 2026 23:10:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792797007;
-	bh=zkOj/dPqDeR2z1raHppz6UsxzcG4JxFkGnpVOXS/y7E=;
+	s=k20260515; t=1792797009;
+	bh=MIrAFhWXAPIb7lEuheQJc4PPEjxhRvQnGG7L3QhTTS0=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=PUO49j5uQ/za0H789lXGXaBqS0RIluAG5jy3JttaajrHkfXVSMjXrfwr9/BlPr8+H
-	 SIwJmETSpT0ZS4U1TqXnnJKUbYo+YtnzsFaXjhJHSeLqdfDJMvF9PBKU3OaRGjVY5K
-	 VbJPoQlKuxV39AH8wbFtqXe6A/ovW3q50/urP0m/4hBOnWwj/PDdssXFr1GncrXJvD
-	 afNQ+OKRLDe18jiQEir880In+Mp2rI6FuYBs5IDQaS1NRidxqa2+3a3ii/IHfofZfy
-	 iKVTX2fc7Xc870Ua0HJzR4KAvezqjGcapdUkMf0Tx8Ffsta2510iWVXaIHJe1vZkzb
-	 n3smp6ak3+17g==
+	b=Tk1mxgaOl0SDRmoaEBsgEEIIES2z/ZAHOArtAag04sG953btzUd5zLyLbGYJqZe4u
+	 yp7qeKz+bpBYAmJW2lf6632XWrKqdroOrMlCxjwReRd1EZ9MzHwqVO3r5PoTSI3Hdk
+	 JI0ct+DgU3jLWF45gWWYTzoNPjFvT2zQTiKB5wJ2ZkiEqvxETct7nyZT2pMrTlQZTi
+	 o8otwmSe6xepkfSHQ6qPJbDsQU3UmLKrJ8LJaopLuQ2aZ37vLKfzPd0j5fFAmvuUq6
+	 PlGWRZX2P2mZ/rKa74x4pI3W/rCy0oDT2saDrxjFXrcUL0xoHQOAcEjw26NYsKXpoK
+	 rrZ/hfCIXtiCg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BE521391B16B;
-	Fri, 23 Oct 2026 23:10:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 4449F391B16B;
+	Fri, 23 Oct 2026 23:10:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,43 +54,42 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] tls: avoid field-spanning write when copying crypto
- info
+Subject: Re: [PATCH net] veth: fix stale peer max_mtu on XDP program
+ replacement
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179279700631.1316845.12189047756278316943.git-patchwork-notify@kernel.org>
-Date: Fri, 23 Oct 2026 23:10:06 +0000
-References: <20261021073233.16720-1-nandor@riptides.io>
-In-Reply-To: <20261021073233.16720-1-nandor@riptides.io>
-To: Nandor Kracser <nandor@riptides.io>
-Cc: netdev@vger.kernel.org, john.fastabend@gmail.com, kuba@kernel.org,
- sd@queasysnail.net, davem@davemloft.net, edumazet@kernel.org,
- pabeni@redhat.com, horms@kernel.org, linux-kernel@vger.kernel.org
+ <179279700781.1316845.9472584301770180599.git-patchwork-notify@kernel.org>
+Date: Fri, 23 Oct 2026 23:10:07 +0000
+References: <20261020020147.790274-1-yanxia@cmss.chinamobile.com>
+In-Reply-To: <20261020020147.790274-1-yanxia@cmss.chinamobile.com>
+To: Xia Yan <yanxia@cmss.chinamobile.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, ast@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
+ sdf@fomichev.me, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ lorenzo@kernel.org, stable@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 21 Oct 2026 09:32:33 +0200 you wrote:
-> do_tls_setsockopt_conf() copies the cipher-specific part of the crypto
-> info to crypto_info + 1, where crypto_info points at the 4-byte info
-> member of union tls_crypto_context. When optval is a kernel sockptr,
-> copy_from_sockptr_offset() is a memcpy(), and FORTIFY_SOURCE bounds the
-> destination by that member:
+On Tue, 20 Oct 2026 10:01:47 +0800 you wrote:
+> veth_xdp_set() calculates the peer MTU limit from the incoming program's
+> XDP fragment capability, but only stores it when no program was attached.
+> Replacing a program with one having a different fragment capability
+> therefore leaves the peer's max_mtu stale.
 > 
->   [    6.948348] memcpy: detected field-spanning write (size 52) of single field "dst" at include/linux/sockptr.h:49 (size 0)
->   [    6.948480] WARNING: include/linux/sockptr.h:49 at tls_setsockopt+0x9b2/0xa30, CPU#1: init/1
->   [    7.001355] Call Trace:
->   [    7.003146]  do_sock_setsockopt+0xb0/0x190
->   [    7.003975]  __sys_setsockopt+0x76/0xc0
->   [    7.005368]  do_syscall_64+0xda/0x4b0
+> Replacing a regular program with an xdp.frags program keeps rejecting
+> otherwise valid jumbo MTUs. The opposite replacement leaves a larger
+> limit in place and permits MTUs which a fresh attachment of the regular
+> program would reject.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] tls: avoid field-spanning write when copying crypto info
-    https://git.kernel.org/netdev/net/c/c43c1c24f3cd
+  - [net] veth: fix stale peer max_mtu on XDP program replacement
+    https://git.kernel.org/netdev/net/c/c955325db639
 
 You are awesome, thank you!
 -- 
