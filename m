@@ -1,71 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=82.76.27.144
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792794181;
-	b=dFyMvddXL/iTpYbwAtieX32FqN8/zfS4kN9spAPGEF7prqUepIBqtYR7gJofbKKPvj5S
-	 DOSrEHb80DIbEAVZp6B0OnER9SV89zOu/GLAyNXPWX1pQ9nq/3utyaITR1w1rVD41KOg3
-	 bHTK4QuZ9SZ+snOg0+1C166Zplab903w8BZtqF6t7VYiGfbgy+ihQY3Q6/iE3/lzoSGKD
-	 oclxmNc7Rxc/ZmY2jVPc8Dcii6ygo98suoOx48t/X1qnkVg0qfWI9KM0QPXN1NjDvjzKm
-	 HiwghqxeRE6pFuMmMmFsNng9RhrJexRcGPrrSblY4EKI/nQN5dVYQDw4zPZ5a0clPKg==
+	t=1792794574;
+	b=pnaA/XiJjD4E8+P8JjF70+9x22HbEb65EiJXkWqoHXpY+welta8UBwBjDvZxkmfTB3XM
+	 6IhhCnRkWwf9UeDmTQZo4HVg+ytASONc1aqe4oawzil6mfNWUbYTgucj1nO4UWLOxMZNY
+	 qGPkgihOGgU1EmfcFCX5DASbN1KkcQ4/B8AD+yNcYcEtxs8dSf+bH4EXyzoCDkYalwFFn
+	 uRqXVo1EWvfZsFAKTlcncAPO0FroOhBUE2K6nBvC4EzhTVFZeoYiF12yR4MahMnZHAYw/
+	 UD+m+Xh3imfwpRZYyd+jzsm9AdE8TQGFzG8aUACD6Z7cPGVdfycLcg3+7AG7TJPjIeg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792794181;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:To:CC:
-	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
-	 X-ClientProxiedBy;
-	bh=NOXq3GB19d77y3Iz4Ur6hSHpD6Dl4HBXAEowizutA1Q=;
-	b=eTI2uASjyn5Z+LQW1wipaWSfZFPnx1EMaAovWdqqoSbnBhPSeLG17LvrW9uTAUS3/70s
-	 g4eO7XIJYptclQfp1FPuC56hO5y/agX4F4pM4bpxNGeYMBcbwz8bZgcbCOM9l/A5hoMXG
-	 b8ifghCBVK9WbjjkV40V/KHPoF4fey0nOWp6B4PkqIyEp0AJwKhfXT5J3TDW/+dvinUPv
-	 H71tYlm/jnXYoJq8sqRL8af9HU+btTVR9r8ka9aAjRrS+le04vYAveTIl7RDlSfjwV5uq
-	 cdXhkkfOkyhFfAfLjRgtSYyQAzyjBtBo8mAi0itVtRaA34sO77OgaQhfB939Vo9nY9Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792794574;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=yO8/3UjBnXkWO9R0y13x9W0JK5UzRvNulcz22iWa8S4=;
+	b=sP8AJWS8jhUEuPJDAAbwvwSYGFMNkQDBpqwbQ4v0/Dyv3QDwcbuPpc48JDuot0NApwyI
+	 6HSH7KbZ6gIWS/FujdWDRoDgIz15zbbq4a9H9aDf9yZ82ubC7/Gb/f+5Ttk4tg0HkKQG2
+	 lHSygmomJ2Fgzk1RJLie6H3EDrg5SWO1lhJQUdjQrHNzxitXTZyLA1apY/qmucK59tPFh
+	 iIP0mgPWaNVepLZ8PUAHNANTzzvYC+LgPnGYkOvqlRY3yjin4HDK99iScP8/drROe0rES
+	 FqsmRN5YZSeBEs7EeN81j6mY8kuZmh02CZTTyefhpLLW6RXj3J4YLDMfLdRf89QnKbw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=andrei-z.com;
-	spf=pass smtp.mailfrom=andrei-z.com;
-	dkim=pass header.d=andrei-z.com header.i=@andrei-z.com header.a=rsa-sha256 header.s=sig1 header.b=OkQM9rcG;
-	arc=none smtp.remote-ip=82.76.27.144
-Received: from vtj.irix.systems (vtj.irix.systems [82.76.27.144])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZGydxJEx;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18CEE606A31A
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 22:23:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 18CEE606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=andrei-z.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=andrei-z.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18454606A31D;
+	Fri, 23 Oct 2026 22:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=andrei-z.com header.i=@andrei-z.com header.a=rsa-sha256 header.s=sig1 header.b=OkQM9rcG
-Received: from MAILGW-HP.hp.vtj.corp.irix.systems (localhost [127.0.0.1])
-	by vtj.irix.systems (Proxmox) with ESMTP id 8837923B83;
-	Sat, 24 Oct 2026 01:22:58 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=andrei-z.com; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=sig1; bh=NOXq3GB19d77y3Iz4Ur6hSHpD6Dl4HBXAEowizutA1Q=; b=
-	OkQM9rcGAwcKEgqE2ANE2u4tJYZSzsgzwoAaNnTKmy8DwEtir4yN9B5cJEN1hZ2i
-	xUHtOgW0zJsIh30dPJa6FK63iOw/l7f/BbRiGs2EqBptI5tfZar20kqmp8Tztp3F
-	aNlr+qhCrUOTYELxBq8jhgEYWB1NYOLTujqy5nOCJTXMeSVBFGnKiPCOrZM2JSA5
-	weysTCGnl8mu+RXVoOguBp2VGk0L/R1sHJfWtHgIdP8d2KKcWWEGfVgy2M5QDDvm
-	Nd7CFnvSX6byhfRkzhfhQnUfNcBrCgE9XQVF3eqqDrtRU7iF3Cp7QhDF4NidS4qB
-	5zUfSZou5MqivXmZlOct2A==
-Received: from VTJ-MX.corp.irix.systems (unknown [IPv6:2a02:2f04:1:9c24::6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by vtj.irix.systems (Proxmox) with ESMTPS id 3BC4023B37;
-	Sat, 24 Oct 2026 01:22:58 +0300 (EEST)
-Received: from workspace.corp.irix.systems (2a02:2f04:1:9c23::c) by
- VTJ-MX.corp.irix.systems (2a02:2f04:1:9c24::6) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Sat, 24 Oct 2026 01:22:57 +0300
-From: Andrei-Alexandru Bleortu <me@andrei-z.com>
-To: <intel-wired-lan@lists.osuosl.org>
-CC: <netdev@vger.kernel.org>, Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Vitaly Lifshits
-	<vitaly.lifshits@intel.com>, Sasha Neftin <sasha.neftin@intel.com>, Dima
- Ruinskiy <dima.ruinskiy@intel.com>
-Subject: [BUG] e1000e: I219 with jumbo MTU: RX CRC errors for unicast DAs not in the RAR (promiscuous/bridged ports)
-Date: Sat, 24 Oct 2026 01:22:52 +0300
-Message-ID: <20261023222252.2528909-1-me@andrei-z.com>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZGydxJEx
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9821F1F01825;
+	Fri, 23 Oct 2026 22:29:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792794573;
+	bh=yO8/3UjBnXkWO9R0y13x9W0JK5UzRvNulcz22iWa8S4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ZGydxJExDTH26vno3gePfM1I9M7/DPUldclF22GV00+W8niwMoLOytbaAP0JN0ulr
+	 +EsECA7DfBoJ2e8n8YudJJq/4CZH5cUXDEyzTfrqth9a7JBi5PR4tHdJeBvgQ53fKx
+	 MEzd9nU7zQM9uJmISCQFVbhBIfxlo6fFar6x3ANs/FcCElOJRXMF0ymRDxM2YVm21f
+	 9WvvkyNPPXKudEmnhh+NGXhdm9TgZMwpw3uCcPN4dQL7/sTcaUAwLbNQzSAh/h1xc2
+	 U53cKcvQUUgUbdaapCxQjr1+IlEjqKlCLCWmnGwhDxEwabxQLvTGEFPeqhVvrJETTc
+	 +ChfPcBJA1POw==
+Subject: Re: [PATCH net] net/mlx5: Bridge, fix bogus MDB offload errors
+From: netdev-bot+sashiko@kernel.org
+To: tariqt@nvidia.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, alazar@nvidia.com,
+ bsoares.it@gmail.com, cratiu@nvidia.com, gal@nvidia.com, kees@kernel.org,
+ leon@kernel.org, linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
+ maord@nvidia.com, mbloch@nvidia.com, roid@nvidia.com, saeedm@nvidia.com,
+ vladbu@nvidia.com
+Date: Fri, 23 Oct 2026 22:29:32 +0000
+Message-ID: <179279457212.3134.243255340288032723@kernel.org>
+In-Reply-To: <20261021122115.3737284-1-tariqt@nvidia.com>
+References: <20261021122115.3737284-1-tariqt@nvidia.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -75,96 +65,137 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: VTJ-MX.corp.irix.systems (2a02:2f04:1:9c24::6) To
- VTJ-MX.corp.irix.systems (2a02:2f04:1:9c24::6)
 
-Hi,
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-On I219-LM (8086:15bb rev 10, pch_cnp) with MTU 9000, frames addressed
-to a unicast MAC that is not in the RAR fail with rx_crc_errors at
-roughly 0.1% of frames (rx_errors rises by exactly twice that; the
-length and alignment counters stay at 0), while the same stream
-addressed to the port's own MAC is clean. A port enslaved to a bridge or
-OVS is always in this state, since e1000e_set_rx_mode() skips
-e1000e_write_uc_addr_list() under IFF_PROMISC.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-Hardware: Dell OptiPlex 7060 (BIOS 1.32.0) and HP ProDesk 600 G5 Mini
-(BIOS R22 02.24.00), both I219-LM 8086:15bb rev 10, NVM 0.5-4. Kernel
-7.0.14 (Proxmox); e1000e_set_rx_mode(), e1000e_write_uc_addr_list(),
-e1000_rar_set_pch_lpt() and e1000_lv_jumbo_workaround_ich8lan() are
-unchanged in net-next.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Setup: lan0 (the I219) is an OVS port, so IFF_PROMISC and RCTL UPE|MPE
-are set. A VLAN device on lan0 carries the host's IP with its own MAC
-(different from lan0's). The sender is behind 10GbE switch ports; the
-receiver's switch port is 1GbE.
+- [Medium] In drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c,
+  mlx5_esw_bridge_port_mdb_add() now returns 0 when the bridge port…
 
-Test: 1 GiB of TCP (ssh, MSS 8948) pushed into the I219 host, counting
-rx_crc_errors before and after:
+--
 
-                                              host 1      host 2
-  DA = lan0's own MAC (RAR[0])                  0, 0        0, 0     per GiB
-  DA = the VLAN device's MAC (not in RAR)     438, 429    416, 417   per GiB
+net/mlx5: Bridge, fix bogus MDB offload errors
 
-Workaround, confirmed on both hosts: giving the VLAN device the port's
-own MAC, so the host's traffic is addressed to RAR[0], brings the same
-test to 0, 0 per GiB. Frames to the MACs of bridged guests behind the
-port cannot be helped that way and remain affected.
+This patch changes mlx5_esw_bridge_port_mdb_add() so that it returns 0
+instead of -EINVAL when the bridge port or the port vlan cannot be found.
+It also lowers the log level from warn to info. The goal is to stop the
+error messages that appear when a 'bridge vlan del' overtakes a deferred
+MDB add.
 
-All of the following are needed. Removing any one gives 0 errors:
-  - frame size: path MTU 3000/5000/7000/9000 -> 0 / 0 / 80 / ~370
-  - back-to-back line rate: the same jumbo frames paced at ~1000/s -> 0;
-    the same 1 GiB from a 1GbE sender through the same switch -> 0
-    (only a faster ingress port drained into the 1GbE port produces
-    minimum-IPG back-to-back frames)
-  - a DA that is not in the RAR (table above)
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c
+> index b4cf3c5ac0dde..7c32dc9db098e 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c
+> @@ -1867,26 +1867,27 @@ int mlx5_esw_bridge_port_mdb_add(struct net_device *dev, u16 vport_num, u16 esw_
+>  
+>  	port = mlx5_esw_bridge_port_lookup(vport_num, esw_owner_vhca_id, br_offloads);
+>  	if (!port) {
+> -		esw_warn(br_offloads->esw->dev,
+> +		/* MDB is added asynchronously from the switchdev deferred
+> +		 * queue while port might have been deleted concurrently.
+> +		 */
+> +		esw_info(br_offloads->esw->dev,
+>  			 "Failed to lookup bridge port to add MDB (MAC=%pM,vport=%u)\n",
+>  			 addr, vport_num);
+> -		NL_SET_ERR_MSG_FMT_MOD(extack,
+> -				       "Failed to lookup bridge port to add MDB (MAC=%pM,vport=%u)",
+> -				       addr, vport_num);
+> -		return -EINVAL;
+> +		return 0;
+>  	}
+>  
+>  	bridge = port->bridge;
+>  	if (bridge->flags & MLX5_ESW_BRIDGE_VLAN_FILTERING_FLAG && vid) {
+>  		vlan = mlx5_esw_bridge_vlan_lookup(vid, port);
+>  		if (!vlan) {
+> -			esw_warn(br_offloads->esw->dev,
+> +			/* MDB is added asynchronously from the switchdev
+> +			 * deferred queue while vlan might have been deleted
+> +			 * concurrently.
+> +			 */
+> +			esw_info(br_offloads->esw->dev,
+>  				 "Failed to lookup bridge port vlan metadata to create MDB (MAC=%pM,vid=%u,vport=%u)\n",
+>  				 addr, vid, vport_num);
+> -			NL_SET_ERR_MSG_FMT_MOD(extack,
+> -					       "Failed to lookup vlan metadata for MDB (MAC=%pM,vid=%u,vport=%u)",
+> -					       addr, vid, vport_num);
+> -			return -EINVAL;
+> +			return 0;
+>  		}
+>  	}
 
-Not affected (each tested, no change in the error rate): CPU C-states
-(holding /dev/cpu_dma_latency at 0 -> 380/GiB), the disable-k1 private
-flag, GRO, cable, switch EEE/jumbo settings. rx_missed_errors stays at
-~0, so this is not an RX FIFO/descriptor overrun.
+[Severity: Medium]
+Both of these early exits now return 0. Will the bridge then report the
+MDB entry as offloaded, even though nothing was programmed in the
+eswitch?
 
-My reading of why (please correct me): the I219's PHY-MAC interconnect
-runs at 1.25 Gb/s 8b/10b (datasheet section 2.2), i.e. no headroom over
-1000BASE-T. e1000_lv_jumbo_workaround_ich8lan() copies the RAR into the
-PHY (e1000_copy_rx_addrs_to_phy_ich8lan()), seeds PCH_RAICC(i) with
-~ether_crc_le() of each RAR address and sets FFLT_DBG; the PHY register
-fields described as "Crop ANM DA Jumbo" / "Filter on 1Gbps ... jumbo
-fix" suggest the PHY drops the DA of known addresses to gain bandwidth
-and the MAC restarts the CRC from the per-address seed. A frame whose
-DA is not in that table gets no crop, and back-to-back long frames then
-overrun the interconnect.
+The return value passes unchanged through mlx5_esw_bridge_port_obj_add()
+and switchdev_port_obj_add_deferred() to the completion callback:
 
-Two consequences in the driver, from reading the code:
+net/bridge/br_switchdev.c:br_switchdev_mdb_complete() {
+	if (err == -EOPNOTSUPP)
+		goto out_free;
+    ...
+		old_flags = p->flags;
+		br_multicast_set_pg_offload_flags(p, !err);
+    ...
+}
 
-1. Under IFF_PROMISC, secondary unicast addresses (a VLAN, macvlan or
-   bridge MAC on top of the port) are never written to the RAR, so they
-   never get the jumbo fix. This is the case measured above.
+When err == 0, br_multicast_set_pg_offload_flags() sets
+MDB_PG_FLAGS_OFFLOAD, and __mdb_entry_fill_flags() exports it to user
+space as MDB_FLAGS_OFFLOAD. 'bridge mdb show' and RTM_NEWMDB dumps would
+then show 'offload' for an entry that has no hardware rule. Before this
+patch, the same entry showed 'offload_failed'.
 
-2. Even without promiscuous mode, e1000e_write_uc_addr_list() ->
-   rar_set() writes only RAL/RAH (SHRAL/SHRAH), while PCH_RAICC and
-   the PHY's copy are refreshed only in e1000_configure_rx(). An address
-   added after the interface is up should have the same problem until
-   the next reset or MTU change. (Not tested.)
+The entry also stays in the bridge MDB after the vlan del race.
+__vlan_del() removes port groups only through
+br_multicast_toggle_one_vlan(). That function does nothing unless
+per-vlan snooping (BR_VLFLAG_MCAST_ENABLED) is enabled. So the wrong flag
+stays until the entry times out, and for a permanent entry it never goes
+away.
 
-Possible directions, if the analysis holds:
-  - while the jumbo workaround is enabled, program secondary unicast
-    addresses into RAR/SHRA even under IFF_PROMISC, and re-run the
-    PCH_RAICC + PHY copy whenever the RAR changes;
-  - for DAs that cannot be in the RAR at all (bridged guests' MACs, or
-    an ME holding SHRA via FWSM.WLOCK_MAC), is there a hardware way to
-    sustain line-rate jumbo for them? If not, a one-time warning when a
-    jumbo MTU is combined with promiscuous mode on pch2lan+ would save
-    the next person a long hunt.
+The !vlan branch can also be hit without any race:
 
-I worked through this with the help of an AI assistant (Claude); the
-numbers above were measured on my two machines.
+- With per-vlan snooping off, br_mdb_add() accepts 'bridge mdb add ...
+  vid X' for a VID that is not configured on the port.
 
-I can test patches on both machines (Secure Boot is on, so that goes
-through a MOK-signed module) and run further measurements if useful.
+- mlx5_esw_bridge_port_vlan_add() can return -EOPNOTSUPP when the
+  reformat caps are missing. __vlan_vid_add() then falls back to
+  vlan_vid_add(), and the bridge keeps a vlan that mlx5 never created.
 
-Thanks,
-Andrei
+The result also differs from mlx5_esw_bridge_port_mdb_attach(). That
+function already uses -EOPNOTSUPP for the not-offloaded case:
 
+	if (!(bridge->flags & MLX5_ESW_BRIDGE_MCAST_FLAG))
+		return -EOPNOTSUPP;
+
+The new return 0 runs before that check. With multicast offload disabled,
+the same unoffloaded entry would be marked offloaded when the vlan is
+missing, and left untouched when the vlan is present.
+
+The commit message says:
+
+    the errno only flags the entry as offload failed.
+    The end result is correct either way, ...
+
+That does not cover the case where the entry is now flagged as offloaded.
+
+The FDB precedent also seems to work differently. FDB offload state is
+set only by an explicit SWITCHDEV_FDB_OFFLOADED notification, so skipping
+an FDB offload does not leave a flag behind.
+
+Would returning -EOPNOTSUPP here work instead?
+switchdev_port_obj_add_deferred() does not log -EOPNOTSUPP, so the bogus
+netdev_err would still go away. br_switchdev_mdb_complete() would also
+leave the flags untouched.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021122115.3737284-1-tariqt%40nvidia.com
