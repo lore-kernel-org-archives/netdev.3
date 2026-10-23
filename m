@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792731127;
-	b=0rDF7jkB3L0PEqbnqFvLJ3TwSuZ/2qzQMnm0xy/QpSRCZEai8UsbJ44O56/J9ZdFCAYp
-	 XNrHw5u1Zq2j8eZ5dUv+FQceZQAUjOAgQSW18gXih6yKr0OuWToocRCzxu3J4t1bIk4UR
-	 MQqjUW2f34wAXQxfVx6XyJRdJWoyWBql2b8B8/ZK0/yc0rH5wy236dK43HcRabzBznyKa
-	 ySGs9cTLmEb8dTbnlaY6vZTZ4nAP4obxWs1Ued23wtvHXSrnEvwUatog9Y3fx7isaTr1U
-	 JQT2mfadAeZH2X5gyYh98akWrl5BrnCevA+PbLiBqXamFxBfpyd56/IUxKfBprNMGkQ==
+	t=1792731123;
+	b=UDCw9+xVWZpZs2ZEc+WvVDZmdaw5mQ80eV8gLZHcFRwGP7FVLQs2rY2kHLU2sXWiyn8b
+	 LOIz/ALd7Jij/rPT56epDgIZ84rxO66WsOFL00RwLXxGTOMcX/ZiW/l2rkqr+odx9u97u
+	 uwwLQp2fr0Oz7xraTMuCoLjmfn+AhABTmHaELZtD1yQ4PF5CVYlBAIJetSReQhpB93ruE
+	 pMmvj9fiPjjcRorXDlHoHJLHqBdrZPWyy2spfn6MG8Ec4yIwF9Pz1f9KDvxUANvGLNrtV
+	 beEhL7WSadF+aIUzTk+tNCE9TtHF8ppBpusPHkyk+Loi37akFbXhD8ot4E0WqKoZg0g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792731127;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792731123;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=D30nNXRjiP8TsE/AFA9HAZ4TRwgaJqNqJTiotkgZq6k=;
-	b=m/JXG4FYVmMGiU7BT4WNn5+vCmtVOS8NalBjeoZElvv8FsNmtk+Jl1jfgatHgTUgYGkG
-	 Hw+NJ7UXcSt2gqmRmE9bs+RlQNQYNLDasV1bEfBJBAhB+ZkBfbubUWdx5MFryNDNen/Bm
-	 iRLncnaB8L+qLQi0oNPemYKm8gb2QDDMcrT/OBGITLHi/4MyfPCu0uGws12rvSICjkWfi
-	 PvckZadtEqxFnZxpTLoznTuyxaQcxt1j19WNSVR5e8HROL7q7UkAmAouCsrCRP2S3OM+0
-	 USmGXflr95JyooF7Qp92Q3V7PO4ErztZfsyvO4BPRiiX2vMY1KvWZbZ3J9hAwDFdPBw==
+	bh=BoB/A1sIi/INkgoVC9AAFNKr7YKhQUbQ+JtYOmccKaE=;
+	b=AnA8aD5zMAHDJTxdTuDwAkrr26lUOM6vZ4sG3hbSI7Ll31HIagBIZmolJzCKE8Zp4VRl
+	 tW4qxRGfvI7y82Iv44RR6bQl+Xs9Ya6+nx6pwbBOmQERfLvuV4tH5UPWE4XdTtE7nD7Wc
+	 sLkpN/xd9VW/kRWeRYB7WKZ9oVUtor83KMgoxtXirKkwDRzHanBqZLoySsHSh+7QNnutO
+	 gFDJ/UPZ470bVV6oGueh1I3DaW/6imcfTDU7tV8RekVjJnz2jnblEWi6YwVsmS/MQ9pOu
+	 MDC1cbMDwNF1ZGP6PdKBSAp50jPEpq2oS9y57Om20qV2GAUryFb+Zds3m4HkRGv0Jbw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Di3O8UiG;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ha4V+Px4;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C66606A31B
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 04:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1CA1606A324
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 04:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Di3O8UiG
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBFA51F01825;
-	Fri, 23 Oct 2026 04:52:05 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ha4V+Px4
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92E71F01825;
+	Fri, 23 Oct 2026 04:52:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792731126;
-	bh=D30nNXRjiP8TsE/AFA9HAZ4TRwgaJqNqJTiotkgZq6k=;
+	s=k20260515; t=1792731122;
+	bh=BoB/A1sIi/INkgoVC9AAFNKr7YKhQUbQ+JtYOmccKaE=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Di3O8UiGH0C/7ezn1q4ouy3VhjZgorTtXE6VHIt0tgFf73H8bvspJh63fmQxRDkSA
-	 wWw3OMHBeED8MHBM+JVf5kCQU82ByFCHdeGBaboC1k+KtNo4FMSOlgumR0/atS4cui
-	 6Lk5mPggW7ooNY0tDROOnVcwd2d4C6meXPjguASYmztXFEO4Ke9Yt5i2hEOgx83bWm
-	 fQ0y7muPVhmaMwiUpOBPduUB2aCGdHe0J5mE/oS7TYWpL3PcG1otRTek9zISJNsNvV
-	 i4q29w38VtOCrWJN+xCDhjWUVCYz4/2uxbtzkTTxgfRyTkW6yGGH7CFx+oQRtOenp3
-	 YwRd5EnovhgRA==
-Subject: Re: [PATCH net-next 07/15] net: skbuff: let skb_zerocopy() copy a
- short skb without head_frag
+	b=ha4V+Px40uunuItMDirEmvN1G4w/6nhYdHlSNLpf8paKd/rUtTd+wHcsWbIWeh3GD
+	 LKrDwytd64GaIIfsmbD/j/9gf7BHplAqBgp3l/kTDVED007liwV2WGOermBWF5qfcO
+	 tLGgQLX1Y6A8QeXHVR2/tSCuONL96UW/Bjn/xiiVoz4Y4Kd/gnKCPhA0T96Io5fZu5
+	 KqK5I2Zbhb6R/KGZKRp/We9eIpPMEBdMj1glD5VbZUY7eRcxsXRAOmp8cPanCmDJsJ
+	 SErKFtysFh+XDSmW/y5rDCe2OyDG+E5MBzBUz2TRTWAg+64uso+iw/+/rBv+IQDT7j
+	 N/2qfuwKE/wyg==
+Subject: Re: [PATCH net-next 04/15] net: skbuff: fail segmentation when a
+ segment can't be checksummed
 From: netdev-bot+sashiko@kernel.org
 To: josef@toxicpanda.com
 Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
@@ -49,13 +49,13 @@ Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
  sstabellini@kernel.org, willemdebruijn.kernel@gmail.com, fmancera@suse.de,
  almasrymina@google.com, david.laight.linux@gmail.com, netdev@vger.kernel.org,
  xen-devel@lists.xenproject.org
-Date: Fri, 23 Oct 2026 04:52:05 +0000
-Message-ID: <179273112552.3134.3914409238087921235@kernel.org>
+Date: Fri, 23 Oct 2026 04:52:01 +0000
+Message-ID: <179273112116.3134.13075947496257634766@kernel.org>
 In-Reply-To:
- <20261019-b4-skbuff-bug-on-followups-v1-7-41dbef50b9f7@toxicpanda.com>
+ <20261019-b4-skbuff-bug-on-followups-v1-4-41dbef50b9f7@toxicpanda.com>
 References:
- <20261019-b4-skbuff-bug-on-followups-v1-7-41dbef50b9f7@toxicpanda.com>
-X-sashiko-severity: Medium
+ <20261019-b4-skbuff-bug-on-followups-v1-4-41dbef50b9f7@toxicpanda.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -68,86 +68,62 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The Fixes: tag points at the wrong commit, so stable kernels
-  will not get this fix even though they still have a BUG() that an…
+- [Low] The commit fixes a real, user-visible TX bug but has no Fixes:
+  tag (and no Cc: stable).
 
 --
 
-net: skbuff: let skb_zerocopy() copy a short skb without head_frag
+net: skbuff: fail segmentation when a segment can't be checksummed
 
-This patch moves the !from->head_frag && !hlen check in skb_zerocopy()
-below the small-payload skb_copy_bits() path. A short copy from an skb
-without a head_frag, including a zero-length one, now succeeds. The
-motivating case is an Open vSwitch OVS_PACKET_CMD_EXECUTE request doing
-POP_ETH followed by USERSPACE, which ends up calling
-skb_zerocopy(user_skb, skb, 0, 0).
+This patch changes the sg && !csum software checksum path in
+skb_segment() to use skb_checksum_full(). The segmentation now fails with
+-EFAULT when a segment can't be checksummed. This covers devmem TCP skbs
+whose payload is in unreadable frags: skb_checksum() used to warn and
+return 0, so the TCP checksum didn't cover the payload.
 
-Link: https://lore.kernel.org/all/179173804997.434549.4450793967361922984@kernel.org/
+Link: https://lore.kernel.org/all/20261009-b4-skb-segment-nosg-unreadable-v1-1-7e2334a55fe8@toxicpanda.com/
 
-> That used to BUG(), and now the
-> upcall fails and the packet is counted as lost, with a WARN on
-> CONFIG_DEBUG_NET kernels.  OVS_PACKET_CMD_EXECUTE only needs
-> CAP_NET_ADMIN in the user namespace that owns the network namespace,
-> so with the openvswitch module loaded any user can do this from their
-> own namespace.
+> Found by the Sashiko AI review of an earlier fix for the same path with
+> SG off.
+>
+> Link: https://lore.kernel.org/all/20261009-b4-skb-segment-nosg-unreadable-v1-1-7e2334a55fe8@toxicpanda.com/
+> Assisted-by: LLM
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 
-[ ... ]
+[Severity: Low]
+Should this have a Fixes: tag, and possibly Cc: stable?
 
-> Fixes: 433380f5ab8f ("net: skbuff: don't BUG() on a missing head_frag in skb_zerocopy()")
+Before this patch, the perform_csum_check branch of skb_segment() called
+skb_checksum() on segments that share the devmem skb's net_iov frags.
+zerocopy_fill_skb_from_devmem() in net/core/datagram.c never sets
+SKBFL_SHARED_FRAG, so the __skb_linearize() fallback is skipped and
+__skb_checksum() ends up here:
 
-[Severity: Medium]
-Is this the right commit for the Fixes: tag?
+    if (WARN_ON_ONCE(!skb_frags_readable(skb)))
+        return 0;
 
-433380f5ab8f only turned the existing BUG_ON() into an -EFAULT return.
-It went in through net-next as part of the "net: skbuff: replace most
-BUG_ON()s with error returns" series, with no Fixes: or Cc: stable tag,
-so no stable tree has it.
+That WARN is fatal with panic_on_warn. tcp_gso_segment() then writes a
+TCP checksum that doesn't cover the payload that goes out.
 
-The ordering problem is older than that. Before 433380f5ab8f,
-skb_zerocopy() looked like this:
+This path became reachable when unreadable-frag TX skbs were added by:
 
-    BUG_ON(!from->head_frag && !hlen);
+bd61848900bf ("net: devmem: Implement TX path")
 
-    /* dont bother with small payloads */
-    if (len <= skb_tailroom(to))
-        return skb_copy_bits(from, 0, skb_put(to, len), len);
+That looks like the right Fixes: target. Another patch in this series,
+"net: skbuff: fail checksum validation when the skb can't be checksummed",
+does carry a Fixes: tag. Without one here, the stable tooling won't pick
+up this fix.
 
-The BUG_ON() has been in that spot since af2806f8f90a1 ("net: Export
-skb_zerocopy() to zerocopy from one skb to another") in 2013.
-
-On those kernels, the path in the commit message reaches the BUG_ON():
-
-ovs_packet_cmd_execute()
-  __dev_alloc_skb(NET_IP_ALIGN + len, GFP_KERNEL)   /* head_frag == 0 */
-  ... POP_ETH leaves skb->len == 0 ...
-  ovs_dp_upcall()
-    queue_userspace_packet()
-      skb_zerocopy(user_skb, skb, 0, 0)
-        BUG_ON(!from->head_frag && !hlen)
-
-With the current tag, stable tooling would only pick this up for trees
-that already return -EFAULT. Wouldn't every stable tree without
-433380f5ab8f keep a BUG() that a user can trigger from their own
-namespace?
-
-Should this carry Fixes: af2806f8f90a1 instead, or the OVS Ethernet
-push/pop commit that made an empty-skb upcall reachable? It should also
-probably have Cc: stable and go through net rather than net-next.
-
-A stable backport would also need to move the old BUG_ON() below the
-len <= skb_tailroom(to) return, since those trees don't have the
--EFAULT conversion.
+This patch also calls skb_checksum_full(), which is added by the earlier
+patch in this series, "net: skbuff: add skb_checksum_full() that reports
+failure". Could the commit message mention that dependency, so a backport
+takes both patches?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261019-b4-skbuff-bug-on-followups-v1-0-41dbef50b9f7%40toxicpanda.com
