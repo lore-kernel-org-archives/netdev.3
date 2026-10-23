@@ -1,71 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792718353;
-	b=nbTtxWIy14eXXDssIVAoHqW/zUgYtj85NMg986gCeq7DAbXCMKKNK8+/rAnuA3CBhp2E
-	 ZawL/WNSFax/+H3P82SDAVeFicMDufb6giQuJzE8Ht7qBHIIcCnZnldGvwuQsMhiso6Lt
-	 ODjHbrYTKt19C5fBA2tSW0ceMKGCF0yDjhYnQZY4bOlxEDyLQ4eUVQ3HdmMFKdHr52ug5
-	 BC8OPPrPcRjPNHH9atPgGeVOlQ5ky8MlPMaXA5WflYAEIogfYkC1gZLvi+uvOTSAs3f/Z
-	 CVIeCgTXjTHODJ3EQbHyp3U0JjfN03HBNHJnF4zPBDFczQL25w7BSlrdDRlWL94nQww==
+	t=1792718688;
+	b=Gzqy+zxjSO2mezMLphWuP3ngk4nK6PFUWJr2QLencsAGWjyF062P9UEMLxiiIfwgPDb2
+	 4HxCvo0FSDyV3XvI9+cewbk84bV9JdHGUyCHqJMnlT1ZtMlA5H5eQmnbHo5FFR/szdHAZ
+	 zHml4nfhXdOEL8AUDLR6eZlKUKndVZ6wI6kC1cyAun7DaNa/WiJJJZUafES7ARN7pn1jn
+	 0kutKgI5XABkANWNoVWFd5yGGn/LtvPVbtXbn3ZE5NG25TvpDqERE+DtCJVpbUEZg1kIQ
+	 oGWj2gEIZ8LWCP6aqcFh6Amln9lXKiY+pvHVq7Z1C6Jxh1rg7gYsru/Vk/gWp+gR4Bw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792718353;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792718688;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=e2zDuQ/aXEEWomBrxUJGRirsqAdsyLdM9FzdN7nPUwk=;
-	b=mY2jLyjx7Ux4/8Gt3vDsvy+PuJvWeZJgpq04DdBl4he6zXWSK8BFov4xQZVzpXQRdnTB
-	 pTJVWe7W7BFTtbiWDLoZnTT8hcfpYat2Z1dG13KV/NICyXSucNPSBrUoQtjIcnexd2bCE
-	 xnAVJsMXbWVMSHLOjMIw0MeIU8k3x7CKmKFCjDP1uceqlSVu6ee+a6oAxS4kh+CAvQ0q6
-	 BziPnUqIQ92MwcfG4cDmiHSZNd5XK7EiLNMXOFMVi91pM59waybHxz+KC5M+sXXXwQwWy
-	 /pEs/+uhrUPPRcQli+WnmaBiWHpljmWP7iOVKvyGAW3bxM7Aj45Z7UEXCjZv8mUxNMw==
+	bh=QfwiiMEIJLM6wtWCzdveJsVg3jUOpd7xifwJvw6jT6c=;
+	b=OPklP/18XdlscOgHI7ALnCxXAE1hMCCHh++ZLm5CldnQcnQGBOIdf6/1cdxOfTbdzsE8
+	 MFFqsUkfzmtv5Ko9A37m9xdjVGQYJMPlmBcEfxk/pL4BNrsn3Q43z1cbXNGoiDR8ZF+W8
+	 Xuw7WYkFiSgdylKx+x4hQ+nFL/Yc9O6M64PqigviZ12pwNzU6FfyMh+/GfuwPh6pAN6iN
+	 mgsUunm+CaYwAGzca+O3qsS22Ul5UGNwVFoYCXRpIBlMVt3iz/3o4pULd0YWcJCfOoPMp
+	 fUyEd+qPzE7J5utML2SO9vczQuG8ndFNNHBbrQY295uSzDo5yLGdzL99fHTFsZE2MUA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Uc/rGAGZ";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZQSpi8UE;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E91606A319;
-	Fri, 23 Oct 2026 01:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65AC6606A319;
+	Fri, 23 Oct 2026 01:24:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Uc/rGAGZ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AE681F01825;
-	Fri, 23 Oct 2026 01:19:12 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZQSpi8UE
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BAE81F01825;
+	Fri, 23 Oct 2026 01:24:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792718352;
-	bh=e2zDuQ/aXEEWomBrxUJGRirsqAdsyLdM9FzdN7nPUwk=;
+	s=k20260515; t=1792718687;
+	bh=QfwiiMEIJLM6wtWCzdveJsVg3jUOpd7xifwJvw6jT6c=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Uc/rGAGZk8vr+E6AoXyh0t0soaQCApn2WDra6R058New8ww35F55ki8kh5lY4Rkng
-	 bX1+JIZRtXNt4lTfQGyAsaL5Hqgg9YrS/EoQ+0L+AD7cXTOhfxS+UgoPbf+f99VjqI
-	 BiM3JV0LTKvwaypqoVcmebZYTJmWVMCWnNsfKmdXYIO6fw5L5Z1zt6JPdE5rxIcu3o
-	 sxc8Pld+qO/L+7B9hJSVOMRMjG6AuwVCAbNu/KUFFCCZbnGDTIj4gR/Dofdbbo9Xg0
-	 NU9Lxbvf69hLYjNPGAf7S18Xymzqe8/ATcPRTh7ftyo94IZTtxdQsyj9LO4L6wGPBy
-	 5ZLuvkzlG6Dgw==
-Date: Thu, 22 Oct 2026 18:19:11 -0700
+	b=ZQSpi8UEwcsqoxxHVT+yb48q4b9dZZ0j0njxnfkUMKcSvlhmo6JNd3ndN19Ubbu/C
+	 fscbYwACtSeoXhplh0vPRdE7V+SZ8SBzp+mJlj5EvY7BbUawZjZWTNzH3ssQ3qaO+t
+	 0b4JoQoW80ib2f3Bs/NMT3ASfa8N+uqSf1J+yJK5O8I6eafnocI8k4McDiLi5E2a2j
+	 uloHDf+uXhuepSzQ6uNKaIj7kVTZFGFa/5nOAS9ke5JzlrwDttY9KcQmrF6RkCAEFE
+	 EAXScGwIJnyjEOBnfVgw6MFNws2W9QtG1+SEOeersyFXmQTcZX3UlfYmkcxoIDr+HE
+	 JukHHoNpAsOIA==
+Date: Thu, 22 Oct 2026 18:24:46 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Mina Almasry <almasrymina@google.com>
-Cc: Pavel Begunkov <asml.silence@gmail.com>, David Wei <dw@davidwei.uk>,
- Stanislav Fomichev <sdf@fomichev.me>, Taehee Yoo <ap420073@gmail.com>,
- Paolo Abeni <pabeni@redhat.com>, Kaiyuan Zhang <kaiyuanz@google.com>, Bobby
- Eshleman <bobbyeshleman@meta.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>, Simon Horman
- <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, Sumit Semwal
- <sumit.semwal@linaro.org>, Christian =?UTF-8?B?S8O2bmln?=
- <christian.koenig@amd.com>, Dragos Tatulea <dtatulea@nvidia.com>, Nikolay
- Aleksandrov <razor@blackwall.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Tariq Toukan <tariqt@nvidia.com>, Kaifeng Wang <kaifengw@google.com>
-Subject: Re: [PATCH net v4 3/4] netdevsim: support devmem RX and TX bindings
-Message-ID: <20261022181911.5d19ff13@kernel.org>
-In-Reply-To: <CAHS8izN_N25mm9vALax+P+W45gyxVoMbZoTXW3r6nPC2Z0A7JQ@mail.gmail.com>
-References: <20261015163915.1166043-1-almasrymina@google.com>
-	<20261015163915.1166043-4-almasrymina@google.com>
-	<20261020121858.3b9107c5@kernel.org>
-	<CAHS8izPwWT+vbgAe49m5vXsRxT3unbfjLTkVZBScgAPdQTo2dQ@mail.gmail.com>
-	<20261021132304.23e0a4e7@kernel.org>
-	<CAHS8izN_N25mm9vALax+P+W45gyxVoMbZoTXW3r6nPC2Z0A7JQ@mail.gmail.com>
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: <netdev@vger.kernel.org>, <bpf@vger.kernel.org>,
+ <magnus.karlsson@intel.com>, <stfomichev@gmail.com>, <pabeni@redhat.com>,
+ <tushar.vyavahare@intel.com>, <kerneljasonxing@gmail.com>,
+ <bjorn@kernel.org>
+Subject: Re: [PATCH v4 net-next 09/15] selftests: xsk: run one test case per
+ xskxceiver invocation
+Message-ID: <20261022182446.64516c7f@kernel.org>
+In-Reply-To: <atovTlRGERDYjB4q@boxer>
+References: <20261016174338.787135-1-maciej.fijalkowski@intel.com>
+	<20261016174338.787135-10-maciej.fijalkowski@intel.com>
+	<20261021150145.65a22a61@kernel.org>
+	<atovTlRGERDYjB4q@boxer>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -75,40 +64,52 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, 22 Oct 2026 08:41:43 -0700 Mina Almasry wrote:
-> On Wed, Oct 21, 2026 at 1:23=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> =
-wrote:
-> > On Tue, 20 Oct 2026 23:17:34 -0700 Mina Almasry wrote: =20
-> > > But on the other hand the test coverage is nice, and maybe one day if
-> > > we add enough devmem support in netdevsim we'll be able to fuzz the
-> > > data path or something. Is there a way to get the best of both worlds?
-> > > Like put a comment on top of netdevsim that this is test simulator
-> > > device and any missing functionality and/or bugs in it should be
-> > > medium criticality max or something? Or is it too much trouble and I
-> > > should drop the netdevsim support and tests? =20
-> >
-> > I already strip Fixes tags and apply the patches to net-next.
-> > But it's still a burden. If you're signing up to fix the issues /
-> > review the slop we can try. =20
->=20
-> I'm more than happy to help but I'm not sure what you have
-> specifically in mind. What I was going to do is put a comment/readme
-> in drivers/net/netdevsim with a note to sashiko and LLMs, "this is a
-> netdev simulator, used for testing; do not call out missing or
-> incomplete functionality as bugs." And then hope that the LLMs and
-> sashiko pick the directive. If not, I can tell patch submitters to
-> ignore sashiko code review bug findings in netdevsim. Is that
-> sufficient, or do you need something else from me?
+On Thu, 22 Oct 2026 17:44:14 +0200 Maciej Fijalkowski wrote:
+> > Really not loving the amount of "library" code added here.
+> > Do you need this just to run it over veth in net/ and over
+> > real HW in drivers/net/ ? Are the test cases very different?  
+> 
+> Now that you bring this up, would be good to clarify expectations of this
+> work. The lib input is what veth and hw runners share to avoid code
+> repetition. The separation comes from a fact that we still want to cover
+> SKB and DRV modes (via veth at net/test_xsk.py) and ZC mode is covered by
+> drivers/net/hw/xsk.py.
+> 
+> My assumption was that would not hurt much to carry common code within lib
+> file. I might have been wrong tho.
 
-No, the fact that it's a test harness only impacts whether fixes
-got to net & stable, not whether bugs need to be fixed.
-I was expecting you to keep an eye on the list and review any fixes
-that come, basically.
+We should try to avoid pushing things into lib whenever possible.
 
-> And we can always revert the added devmem supprot in netdev sim if it
-> becomes an issue.
+> > I wonder if we could solve this by parameterizing the env
+> > class to use veth instead of netdevsim and then have unified tests?  
+> 
+> Tell me more regarding the unified tests. Is that okay'ish to run
+> veth-based tests from drivers/net/hw ? I thought it was not and I shared
+> my insights on similar work which does the same kind of migration
+> (xdp_features bpf->drivers/net/hw) and it seemed to be heavily veth
+> dedicated - the bpf sh runner was basically veth based, but so does the
+> xskxceiver and I moved away from this after Bjorn's input (turned out to
+> be a good thing).
 
-Right.
+The other way around. We can add mixed HW and non-HW tests in
+drivers/net When run against non-HW we need to be careful to XFail
+instead of failing or Skipping, so that SW CI "is green".
+
+> each runner can have single ksft_run() call, right? So, do you think
+> separate files for veth and hw runners is still okay?
+
+SW and HW testing are done by separate executors. We'd have some
+trouble (read: we'd need extra wrapping) if we we needed multiple 
+envs for SW testing, but SW vs HW is easy. Executor will either
+run with no env exports and get the SW test, or it will be exporting
+$NETIF etc and test will run against $NETIF.
+
+> In veth runner I don't even instantiate NetDrvEpEnv as I have veth pair
+> being created 'manually', however having a param similar to existing
+> netdevsim one would be nice and xdp-features set could benefit from that
+> as well. 
+
+Yup!
