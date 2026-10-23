@@ -1,80 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792717235;
-	b=SxA/fA/uCS5/du6kXEI/dKJnR3UxqdnHmMUrWUKkgRE43aVfTLY3Y3aFM1ATuDiPP1y3
-	 RbhE9OJvQ1B23TWbzoQGipku+6KqPArJMutyshOpX2zVn1o0mSL8IFjUfZNO1uUTaCvCY
-	 rmxedPKV/pWExICCbIRIFHK8/vzu0frzbaZEYG48hjSfnUUzsD6acCayu6MQlBDUsbaQw
-	 66BuE3n9qXwJsqOmMWCryk0K8Zjs8bC92yNBS4Wem9xhwK0b7BUblzsKW1ncBXS2Fa32y
-	 G8HVSg+fuK11vTzROa3sBmYJRZ/XqXIPXUDu0A1OJ29WRiG+O1NstPw47J/h/n8IIaQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792717235;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=zVaLpAsIiVIQmfpchL86u6CwfMuZG3f6IGNtdW3duIQ=;
-	b=4S0eIO83kKAFbtAuVb+atgr+HPhfjEPV7+Jw/0yLr+bEIVGYyD0FtozbSwn0OIZR2Ujq
-	 V1QP8UbvhjFEUdQThBmFO4d2PvSO18miLS04s114xisDothb6uZ0xRIi2pGcjihYptb5e
-	 eQfaXDCssTNQQ4XCG0wXfseqzCRHsfy1mByvt9QQO9LcCaLjDlT//j4844MEjIcM6wAY+
-	 tuVjDs9t9D5vgFT9MY2oSMziftkEC09M7jjnM8imLebQeTrPlMXPrOnDoF5nPbBMtXrsj
-	 LkDLvBLflm3HR597xiHFUbf0J+lhCWDVclL8nOoG8ttLsw47L6lr69P91ZBMyzgsZgw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=aRiPIfvj;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.42
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792717266;
+	b=WOBsyr96ValWy2foEWeizcAY64totZo4PegsHKNeHt+ztAIylF53Dy5SQOIyc5SmPNXO
+	 rp277M8DGZ9akUCg6G60uVpCfEny9I23Tck5PTAP/9/4M9dMWDgDsKpGl34ifnpqRLlOw
+	 f+tQeVicpGdCarWlXlBL8XZyUNydk36rwWSNs2dKAP7OLqRCBZp3V2PZQ6P0Jx2MBoulh
+	 WqDZelWXFKy14q/I2c7ax8PM5R7HAWU98VzGOQmZncrrMkw7nJ1eiSssqWHCj2IRlauFj
+	 Mkt/OnIFJJFeqkJOHYo8gftEZkG/TQMi8Xfj9OWyCy9pWOZUYZ7f4auXA5v+RPUMQsQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792717266;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=DkhJgpFgb1NzTq+8EZOytBhrmFtUa8WLKSMncnmwEDk=;
+	b=qmqRo6akd/qsCxbfq5B02QdwydEtfPUlL0e0oS4vT9anFC179av9EuFkB0IHAlOFlpht
+	 R8+pyquFSzHxyQjBcs8Fvzl/e3YKQX9p/vx/FmMr1bvrOvc8C4Zdq+JUyicQO0M6F/OlM
+	 onGlmFT8iQ/Xbi09BQseJxZh4nMILYv9/nc37BuZC+UVBDZaFJ1qAqAMRf7EHdLkP51bW
+	 3ri06Ee+P+rRMc+z6XD29/fxOR8uvUjuLbXlpKnlTovcMaXlJjgfXI0/1eXYLrEvQxcPi
+	 CSayY3+XjtsXv916Ib8YADAKUJggIYU6RjYSlVdVvyG9Mg9crCPx8e8CyRs+jlHnjRA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Ft4RoOcD;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.42
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF518606A31E
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 01:00:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BF518606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AFD3606A31B
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 01:01:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7AFD3606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=aRiPIfvj
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=zVaLpAsIiVIQmfpchL86u6CwfMuZG3f6IGNtdW3duIQ=; b=aRiPIfvjVQA7h18uJt/1agMPLr
-	Y0DonfCYcCGiV28sjAVqzbJvrUqZ+Znre4jJIzeAj+FmYTpOMZwg8r2WE7nHAlC3+pMXdlB5dY5mx
-	+xetCuRk9iWriFyWLbzWeg5L7N60QUPubV00y2bqP3VO+Xh3fjz8lzeLZ7nv92MYdXos=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xK3dv-00CLt0-Fw; Fri, 23 Oct 2026 03:00:23 +0200
-Date: Fri, 23 Oct 2026 03:00:23 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: "Smith, Cameron T" <cameron.smith@pnnl.gov>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"horms@kernel.org" <horms@kernel.org>,
-	"ojeda@kernel.org" <ojeda@kernel.org>,
-	"boqun@kernel.org" <boqun@kernel.org>,
-	"gary@garyguo.net" <gary@garyguo.net>,
-	"bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>,
-	"lossin@kernel.org" <lossin@kernel.org>,
-	"a.hindborg@kernel.org" <a.hindborg@kernel.org>,
-	"aliceryhl@google.com" <aliceryhl@google.com>,
-	"tmgross@umich.edu" <tmgross@umich.edu>,
-	"dakr@kernel.org" <dakr@kernel.org>,
-	"daniel.almeida@collabora.com" <daniel.almeida@collabora.com>,
-	"tamird@kernel.org" <tamird@kernel.org>,
-	"acourbot@nvidia.com" <acourbot@nvidia.com>,
-	"work@onurozkan.dev" <work@onurozkan.dev>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	"Griswold, Richard L" <richard.griswold@pnnl.gov>,
-	"Phillips, Aaron R" <Aaron.Phillips@pnnl.gov>
-Subject: Re: MAC Privacy Protection Protocol Driver Announcement
-Message-ID: <8546582a-e5be-471f-87e5-5eb68433083f@lunn.ch>
-References: <PH0PR09MB114568347F3E0622F9102AF628A662@PH0PR09MB11456.namprd09.prod.outlook.com>
- <c9f7ba83-ab92-4b2a-915a-1513c90a49a4@lunn.ch>
- <B0D3346C-ACAD-4938-8B3A-501F9CD52C64@pnnl.gov>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Ft4RoOcD
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6b408f2d936so413673a12.1
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 18:01:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792717265; cv=none;
+        d=google.com; s=arc-20260327;
+        b=TRMal6SXKU+KbRJlqT410wTUJDa1mnWAXEwdI7nSOIi+HhuIrywi8mnX+B91Kn7zxr
+         TFmMmDKDPWtDAiZUbQ1wIgRJlegTA6FV7EB5MSoQA44InFmnFCM9zxTz2jHfUUye/97W
+         yDp2b2MFv/BcN7V/zLkZ/aFiRLZlmnUIOcPLFgDy4sxzsltcocDE7css29W+Wh16LerD
+         sQCnpewNo6tg/jxfqYAcR+uLeYwuVROFMvyVCFpZAhA+4T67rioR6p9xM63PETi/cuEy
+         RYX+T8Y6GfNvcy8AyIOimvuIC62u/3YcwOJ4AZqmIfsFKjMCDmI7bU8MbYxd0glp3dBF
+         J+8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=DkhJgpFgb1NzTq+8EZOytBhrmFtUa8WLKSMncnmwEDk=;
+        fh=BahDePRU/WkCF12JBChKVJRYsnchdUMY75iI7qrUROE=;
+        b=cdd9fHNhIL2AwSUgDpoMU85Va3K1E2m5NeRD/C0obnx4M5BcmQb7cTInL3mzSLsFD1
+         vu6m6kxEYH52jXA7bIfOMTIxfxAf9mxneWOfTuNAQXPxzqECXAHwDp2x5Kar8VtNB72h
+         9InqVmA0tov+sHagiDc72LzARd97wmyQzoIfyrO4BzHaojC9mj6GFS+awFwc6MxXI+gA
+         PJNHdp6ZI3ILG9DVksA5MtXTFDaqR4SLelps5EDeOAYUJCPxDyIjCp9st02I2WyQWUx7
+         OqgsCgXtMCKKii3VQ5jOwIKCWBNojXN2CQdNx6tEquftuqAuO9Doq5jipiUklej51xe0
+         pq3g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792717265; x=1793322065; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=DkhJgpFgb1NzTq+8EZOytBhrmFtUa8WLKSMncnmwEDk=;
+        b=Ft4RoOcDa25bt7XAZAzTDAU5mkaoltdYe7I1VRitTmY8itcC1NHr4YqKKfX/eO7ti1
+         rAHdC5UU30pXDC7/Uv9+9LGW8N4Aey8s4MSGwCTfzdpzO4APTwQmx2YnWdEYubrCjBtv
+         WNCkhVdhR7e1mgwx0ijQ15T+uy3AD/0PWBNkrF7BVx0NQr+FwFzcQkIr2TR/PTP9PncI
+         gAprkgIf+cTgnC18fFeuxCxd6btoImRv8yidGFWkYWB8N46DKRbFJoRTreCy3quYSxXb
+         JyGqIt9b52QMz/p/5nQ3//tglA9CaKjq2jlX4qWx4vwWzE13gWFzAODtdVMYLHVJn0He
+         /NYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792717265; x=1793322065;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DkhJgpFgb1NzTq+8EZOytBhrmFtUa8WLKSMncnmwEDk=;
+        b=QtblzRr8Y2RhYrTb5app0AOJaBZoLm+CkSu1hZzBQEfH5aU+1V16mDBV/yBRUjwPIX
+         27GMIFSDWzUbqM7Gdbhbp8Xna1aGFy4nvaTTmFZG+xB5bzEc3IOfKVFHP/1+5Ps846OQ
+         CnUiK1iBKx+4icJsqFj4oOCcgTU9zZnIy66e0bpCHgS5cO1eJK89KKVjwzcTv+AaaPKK
+         F5R8PWTCv4fUapsG0EWpNptA9VKEyqfTbxPsyN6B9I4ErzeR8HRlYWGE9JFwvFDKYgpU
+         QiW/Du4ZsH4K+WzobAPds3TtIg8zIV49Bp5Nx3KlhT8RCvP+WjEQW94RLGOCx9rXtfLh
+         QcRA==
+X-Gm-Message-State: AFq9FYJsRmmucafei4pCoBceworMta3Pjn9XVmpzqsolGZcl71w2p2j1
+	GlMSKDPMw4cxuwX6YFsYmLbbZSuITHooRn1nqravF9pwDzNafMb6bwKbSOvyGK0G4nJLr4tEcZb
+	piWv8I7EFt9DbkPzF1QxsJl/k+KLwNOs=
+X-Gm-Gg: AYBFou0W8MV58xMw/zIffHNMfKKkoD+Kx05AW6cj4XQtVya9S/hlqnwH7fNHeLSH5mG
+	q4V8OYI7WY0dtSF6yIXLQwaEHFImejEdl72GfpG6AxBSXXKw2JS/+bt8+mcSxtRXLqsfkHRPYhV
+	1TCQxQYF4NVT0moxIQrsgmbUPzPYGlKpmSyXlcephY7plvdf5LXGAEOzbZnFXsmWInzxkDBG74z
+	M0L1Oah8VI7Xc+ALHN1Zdl4PPhrlfgE+SrmH1uK9iOwe70uCoR01lHw63VIuAx3TdEncuPNEPM2
+	vh5QPLsqTVOpelCcmaa/xSvUiqfUFygKo4hRkFqaHbkr2kcxWoHWWOGH2SJqO819WcmBRmWb6Oa
+	F0Rb3tSI6YOZtvD3Gy3LY7ooglHhEiZRKUY2EvZOlx0a43S0z7nTppIWi9v/AVD9TgZwkkOXNgn
+	wa8aLEol3VPGMWfgA2ZjtvueVRmFVpWGjJNQh2Da5ukb7IkpkprzMCI01Ezvfmh25R2ovw7op0O
+	hxkF+lZiChH/TqgI8cpIKlDyggXcSYb+VrbSVnR5LrnnrWen4e8ImpxP53AC9dkC7Qek94=
+X-Received: by 2002:a05:6402:c517:10b0:6b1:d822:7c72 with SMTP id
+ 4fb4d7f45d1cf-6b432bd331emr1054781a12.24.1792717264670; Thu, 22 Oct 2026
+ 18:01:04 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,65 +105,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <B0D3346C-ACAD-4938-8B3A-501F9CD52C64@pnnl.gov>
+References: <20261023005313.3946390-1-rosenp@gmail.com> <179271707120.3327.4775409276963055481@kernel.org>
+In-Reply-To: <179271707120.3327.4775409276963055481@kernel.org>
+From: Rosen Penev <rosenp@gmail.com>
+Date: Thu, 22 Oct 2026 18:00:53 -0700
+X-Gm-Features: AclHuK8fvNbAYREOq0l26jknYmFGL_ykkYwN0WqP0BewsTW1yxD6nfVtrvGAJJ8
+Message-ID: <CAKxU2N-_Th-ksPst_1KR3W1nYWoZpWR2Sjfo=RWroot5A1RR8w@mail.gmail.com>
+Subject: Re: [PATCH net] net: bgmac: fix oversized RX frame check
+To: netdev-bot+sinfo@kernel.org
+Cc: netdev@vger.kernel.org, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Felix Fietkau <nbd@openwrt.org>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 22, 2026 at 10:55:59PM +0000, Smith, Cameron T wrote:
-> Hi Andrew,
-> 
-> Thanks for the recommendation to include Sabrina Dubroca.
-> 
-> On 10/21/26, 12:10, "Andrew Lunn" <andrew@lunn.ch <mailto:andrew@lunn.ch>> wrote:
-> > So this is part of macsec?
-> 
-> Yes and no. It's standardized by IEEE as an amendment to 802.1AE and 
-> intended for use with MACsec. However, it's defined as a separate protocol 
-> with a dedicated ethertype, and the specification allows it to be used 
-> without MACsec. 
-
-I spent maybe 10 minutes looking at standard, so i've not got a good
-understanding of it, so maybe i'm asking dumb questions.
-
-So if you use it without MACSEC, you preappend a new header, and send
-it out. Isn't the inner header than in plain text, making it somewhat
-pointless?
-
-> > Lets start with architecture. How does this interactive with macsec?
-> > Is it a layer on top? Is it integrated into the existing macsec
-> > driver? Is it layered below? Are there devices which support 802.1AEdk
-> > in hardware? There are PHYs which can do macsec and there is an API to
-> > perform this offload. Do we need to extend this API?
-> 
-> When used with MACsec, each MAC Privacy protection Protocol Data Unit
-> (MPPDU) is placed within the payload of a MACsec data unit. Also, as 
-> mentioned above, use of MACsec is not required, and one could use another 
-> protocol, such as Ethernet, instead. Because of this, I think it makes 
-> sense to implement MAC Privacy as a separate driver from MACsec. 
-
-For the timing part, how does this interact with TSN, sk_buff->tstamp
-TAPRIO and ETF Qdisc? Clearly you want to reuse as much of that as
-possible.
-
-> To my knowledge there are not currently any devices which support 802.1AEdk
-> in hardware. Implementing MAC Privacy as a separate driver means
-> hardware offload for MACsec can be used without changes while allowing
-> Linux to perform MAC Privacy.
-
-But we need a path for when MAC privacy is in hardware. However, is
-that actually possible? The encapsulation to hide the MAC addresses
-and perform padding should be possible, but what about the timing
-part? Can that be offloaded? I guess not in a PHY, but a MAC
-implementation would be possible, it pulling packets out of a queue at
-a given rate, adding the extra header and padding, and then putting it
-on the wire.
-
-What does you user configuration API look like? Can you give us
-examples of what you think iproute2 would look like, both with it
-stacked on macsec, and directly on top of Ethernet. And what tc
-commands are required.
-
-   Andrew
-
-
-
+On Thu, Oct 22, 2026 at 5:57=E2=80=AFPM <netdev-bot+sinfo@kernel.org> wrote=
+:
+>
+> Hi!
+>
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+>
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
+I added Suggested-by in the commit. LLM only used for the description.
+>
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+>
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
