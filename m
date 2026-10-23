@@ -1,133 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.151
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792761167;
-	b=Nfj9auHtMABiwAo8IAR7SZxyrewHUnW6tun3bmm/D92crQ/hqDJrXMevoN12s8/qAAGs
-	 NMaKYCXpuiHGdqad1uiQToF6qcsBhcOuWIqUP6aneU/2+qJWC5jgmF1VCuqOzeqxr/DrJ
-	 jD3BksWnyhfDTBuUgQcak+xOO0WooA/aFj+vNVao0CEq0JB7lTeUJZymMTb2Dfxh+wJsK
-	 XdQU4XALT2SgWTa4Zx4F9uPcbSBvZ5Kpbc0SpmWGveMnutecFNbavp93vZMqxGWT937So
-	 p5nrg7vt46kzPb2//lqGwF/bNdgDKHXDTI6q4rvhuEXZIBl92z3JEvTxQqKl1ubWTqg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792761167;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Received:Received:From:To:cc:Subject:In-reply-to:References:
-	 Comments:X-Mailer:MIME-Version:Content-Type:Content-ID:
-	 Content-Transfer-Encoding:Date:Message-ID;
-	bh=I7ZqURMaAeN/39DP/yFBhYf3zDxwDlmOr5MpmREWjiE=;
-	b=gowGojqXiIxRwIqdBvbBJmRruqbCwU92NlMZD/JWzFg9wHgni4Bs00AHSJeL7h5gG51F
-	 3nMUVABRjgM2ZarmBVmzBfgYKku/kyoZa6toOPpHTJktv9f9Flp0UZdyf3kNeu/0jMz9v
-	 wvjT4nOWGhn0hwTHrmQJiVCN0BlguC5oZJGURe5/iu2Ys1eVarD1hhErOTsc3z7dAGPga
-	 qypX3m+lXPdn9dIsq1Lr1wpEiLPatNTetafMHEOumD8VjMH5cm/6SnvR+LB1ZHtwsS9al
-	 3qi2C0BxCeh3TDS6rj1TxXCYopua4mfwZgI0b42wNDnpnCV+/jY0sfxG0p2kM3dB96g==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=jvosburgh.net;
-	spf=pass smtp.mailfrom=jvosburgh.net;
-	dkim=pass header.d=jvosburgh.net header.i=@jvosburgh.net header.a=rsa-sha256 header.s=fm3 header.b=rxggQ8g9;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=phJ5vHpe;
-	arc=none smtp.remote-ip=202.12.124.151
-Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.194.57
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792761308;
+	b=shW6u4gEyCXVApU2xc06faLcOJxhwmYlDFRfz3y8yFeygJ73CorMKqvtV2KS+/jEs2+G
+	 bw1XlC8NDn4fUZkxwJWEKyJ/93OZg7WR1049lI3+Oeax5kqLMMuSptZRtNOiNKKQ3mGzd
+	 sD10ibg0p8ucqUk8oLzNsYqS/TXNjTJ/KXrijwCs89XmOmWis/P3BgyAlnADIKBzlY9wc
+	 A73Nyd4jkKoXtepN4Gdv/ROxT2C1ip3pzpl+h+OVFAbz5BmQJxn0BhVz8bE96o/p/6M/z
+	 UVC9fcTtf1ifqCRfd8a6usEP2bIZh7so4ICroKucvHQnziT3FkGPSytXi7AxCRi9eUg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792761308;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=bwbHRAsrNNN/8whEZgLoj+OFIjZDkdvmA0PglfzTrEc=;
+	b=kyi4H47WFNXKjigrH2AKAfYkQw7nS1an3DGbMSi5gkL7lWOHy0v5v3CIeC4YkGqKBMs4
+	 FIwIm0YKVTjeuZ6dwkMAJTZweyzvTw5VIZsindIhsCJnE8yDdVNoYHNXwgW0kv6KBDRNJ
+	 fdbUx0UO5blJuOqFJ5ilu/eKO+gYDs6dmRr1fGoj99zb7ORi9TBf9hpTid/qSV77i+nnZ
+	 V2exvJ81JJONFZ9gm8WrE2mISxCUmS1D6PuZJidGULR/DmSda1+LwY4I0DSA1RXwOv4Cr
+	 ZhOY0mYPxhl6JdswbfCuk+YW3WFmo2kyyNjrI5SQC2fmbsjShHhMBmCjVQdXLCokz+Q==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=rp47p6Dz;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.194.57
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011057.outbound.protection.outlook.com [40.93.194.57])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F92606A31D
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 13:12:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 83F92606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jvosburgh.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80D2606A31D;
+	Fri, 23 Oct 2026 13:15:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A80D2606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=jvosburgh.net header.i=@jvosburgh.net header.a=rsa-sha256 header.s=fm3 header.b=rxggQ8g9;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=phJ5vHpe
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfout.stl.internal (Postfix) with ESMTP id 037B11D00113
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 09:12:45 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Fri, 23 Oct 2026 09:12:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jvosburgh.net;
-	 h=cc:cc:content-id:content-transfer-encoding:content-type
-	:content-type:date:date:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to; s=fm3; t=1792761164; x=1792847564; bh=I7ZqURMaAeN/39DP/yFBh
-	Yf3zDxwDlmOr5MpmREWjiE=; b=rxggQ8g92PXD2YZa7e8hWRIUodv2ny0mRg+v8
-	4Wv8efTVAseeGqmhXoZ6Q7nPt+cLZuZwnQGH4rdrKqWYR7vSDFxV9nnziS2U3gsP
-	Ohp7or/Ix1TWKLIiE5Wk2hTCmUdkN0XkXQc547vD6tk+4XJM0hMzvWvt+XLIR3gN
-	Q9kfK8Sf+1bJpxxmdbiut2c8C0nt0/DrWTSEalNJwJ8eABJ4f36t3dERVgKnO7dx
-	O5At1LOyrwT07Ap4k/Y4Oqw8n0EmOegcwHiDTwsLYN1i5w0W+Demn8YIL3mmX14V
-	d77BXxMfXH194O1+JXBgiMqxf2xCQv1lANcu0cjJcCd4Ivb+w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-id
-	:content-transfer-encoding:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1792761164; x=1792847564; bh=I7ZqURMaAeN/39DP/yFBhYf3zDxwDlmOr5M
-	pmREWjiE=; b=phJ5vHpe6oNFRwPCX/Iwvg0+zovyiPGXU+J2mPyr/lhkZT8l7hH
-	e2WeOnIs3iqwvjplr1Z7puiUlFR6sx0Or0vqk6Dv9bzMPcp99FGi3O+VMpvzSWmn
-	AlATQa4I0Dj8zZsiZuLJpLa/xQ0VweaVNJUYn7zz6aclUPipVZGCazkgbXaJ1vNw
-	ooHEg8qvFVBSx9T0Pr1zZ1yl1nM6t64Ym8gbamH5spr9CTKYcjlU/zjyOwlHehsA
-	3H9doHEEJWm1VjfipcT6D+viBy59xvSCqFdYuToOGWitaucN858Ggw/uTabPDyGZ
-	cXZWGEJRV8I9UZr4v8tbA3lC2xs/zCs1UAw==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=sign d=jvosburgh.net a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1792761164; d=jvosburgh.net;
-	mf=PGp2QGp2b3NidXJnaC5uZXQ+;
-	rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm3:rsa-sha256:VSXyFntaR20hNE0cBLgRM6QmosG2cYnMD6WxUKBVpENP2MD
-	haS+mK0Zge3nRtWStk0Ca4GNvWfYBznr2ruwamtbzEgmC2oQtNgKYxTTuL9T/O+T
-	1nTKtjZzNKHaXjLmATcBlrdqJY4c5V5l8jSKN4xbU/yUR/yHDPOpHZmHLL5tKX0G
-	uv85URnbpp+SiRy2ZpjqAqXrXEEFEP+l00+81esod8gIetTYPNZSsNTuhhY5qee/
-	W3U4Wujb7u4HK5wEPGDY5r/ZeBXjHWSAuIUmVqK6NWFrbKVn++7LwWn99Q/qgat0
-	LjIWbvm7hGn38ro9/0aj4/412T/kjlZW69vssfg==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=mi-m=1; hc=14;
-	hn=cc,comments,content-id,content-transfer-encoding,
-	content-type,date,feedback-id,from,in-reply-to,message-id,
-	mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:cyNuzwzH37Dgo4zT0uDMMUicmdl+FixBz7RYHV3mwZw=:syrr1aJ1tjIcOOSawhAcgtFuJjUz9NdQ5F2zl8WUVR0=;
-X-ME-Sender: <xms:TF3baqIyBTV1TknAk-KQckomJIbQGBn6p9Gh14CELYTQIcoBPbaIRQ>
-    <xme:TF3baoKSDkGvTlKg79BJgI2n9ODgbxIcEra1ClN-xDT_MIkZXlwwQ-JHN2IQnWaXv
-    s7zikXEoe5IglyQ0ySeEnI-oCtS-ubYgtFGyz4KCn2SCmSJIm0BJz1y>
-X-ME-Received: <xmr:TF3baliWbSquHqAew1E0nhQl8VXF1Hd29JQsTqNwcfC3p5303qYE8aGeZpW7T5ckNV5BPxU>
-X-ME-Proxy-Cause: dmFkZTFfRo1al3D2IO9ib2P99KdQTvrcUmBICI3lB8gtzUkSJFMmipja8+A2hgCvFraJbM
-    ocsAPRaWJYldc5i47n/lfsDQdW813UT75gJ7wU9zas6C8HELTgr4/PNJ49VUuTaWgSmshW
-    ucy4BqareE/h7towuyOhIUiBrjE8bYckffMWimx0Z/IuGke7hjF4MRihP06pxvTxoxrcuO
-    SA4lqYqilH+thfQ4KTFZ0iSVFOFQ97mHwZMCnzULyAHGQLI4GSnWKJoXTmwYxYnsguguXa
-    W7Q38FOPxQW5glqBeBpVJdnKzFxW90jD7uufEcg+A5JXRhMsh0B4YnOWzIghktpbjVbaRs
-    /OU2d1JwKHqBXalSebZBRsZwXj2EmIrscdCMIuPwR1TMs1r0DSxmT8ykGjBx8ZcCC/cZ3E
-    Ylpb04rOiKFAon77KR4vT41+0U020AC3jSGfZQ1J5xIzILviFT3Pv1MAjw2UB4+sYTg0OM
-    Veh/o+56M/omttmdaijpNnbwdoB34g9Y2ncVvs1dlXjnU31yV9D5oraaOuiligmmTD8+LS
-    QgVheIByz/cZ4tjcDlRMaSmWOx9HRuQgXizfbQ7X6rLfo1bUI2eyErLyfCCa5Kr2Jcd9y8
-    X/b3YqXihLEbKDgSqmjavGluHzRwSG0psmvG8Nb9Yz3Qo6KA5iUhxbWX90fw
-X-ME-Proxy: <xmx:TF3baiMkTjFtWLmiEAhwgZQy10xW6xidBPz3SjhxmtHB58_3TNbCOg>
-    <xmx:TF3bagqXe2aNXTI-A-eviLOQN4jeRTpy-ozCBd4uckYuIQMKN9peMg>
-    <xmx:TF3bak7RAvhRourKe658VSqu5Pnebxyee2VbevYTAdFSPvjq_weXgw>
-    <xmx:TF3bauh1dbABljKCS7NlYbl5MO51JnqZFara79Lbad5oo2Qi5nkiTQ>
-    <xmx:TF3bar-QRoS0Cy0tVB5C7eDcsA9jsla78pJKSdALuX5JO6cSfGzy3EiA>
-Feedback-ID: i53714940:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 23 Oct 2026 09:12:43 -0400 (EDT)
-Received: by vermin.localdomain (Postfix, from userid 1000)
-	id 5A5ED1C0479; Fri, 23 Oct 2026 06:12:41 -0700 (PDT)
-Received: from vermin (localhost [127.0.0.1])
-	by vermin.localdomain (Postfix) with ESMTP id 5977F1C044C;
-	Fri, 23 Oct 2026 08:12:41 -0500 (EST)
-From: Jay Vosburgh <jv@jvosburgh.net>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-cc: netdev@vger.kernel.org, stable@vger.kernel.org,
-    Andrew Lunn <andrew+netdev@lunn.ch>,
-    "David S. Miller" <davem@davemloft.net>,
-    Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-    Paolo Abeni <pabeni@redhat.com>,
-    Nikolay Aleksandrov <razor@blackwall.org>,
-    linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] bonding: fix out-of-bounds read of arp_ip_target
-In-reply-to: <20261023104528.232427-1-jiayuan.chen@linux.dev>
-References: <20261023104528.232427-1-jiayuan.chen@linux.dev>
-Comments: In-reply-to Jiayuan Chen <jiayuan.chen@linux.dev>
-   message dated "Fri, 23 Oct 2026 18:45:27 +0800."
-X-Mailer: MH-E 8.6+git; nmh 1.7+dev; Emacs 29.0.50
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=rp47p6Dz
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oPlll4y3kjKzD4zJNpBJhLZUWlPVDLagNHiRp+0Zv2A6gt2LJz2mrgOkgWgeyJfS1XM8ifQ9WJSFXV+0WIvl517LxMlXDeri1JOXqd4idKOwoGTHcJl+o1Q2eOHjbjGEGyucmmsgtjVrMiTVMZO9W2aWOGL8TlY+3rNC5p5weJANh8nVqZG1rq8mhlv130dhipgst6NqFUVXr7uLsqkA1swJSXRc+J/huvwmhYxAGGXaOYJDwnnDQctqijAWBLfnjoVfkR50EeuVnqwuQ5c89k5s4XzeJMQSD3JB1lsAN++sOByig2Qnx1eDdPYjyB27L2BxjYfd29rlu3auwWEipg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bwbHRAsrNNN/8whEZgLoj+OFIjZDkdvmA0PglfzTrEc=;
+ b=dBLVvXhYbiTPcBa9x9CGOn+0RgUupP4g7SNvCDLbtkgf+PGII04DLvjewNLVgWUoiyu6nt1QZIxPPBPNol3r8OyoT2lXl28Pt3F/F0YyzVKpYov1EJ/iPwgdTiKvO0IxXQAGwWE0+37ZXmIhhKHBDbv7lBG/iBROjd78LU73iP7WGlO1nPOBhSHVT/on/3BthtFO0ICO3bneyIeAID4slS9Qe+w82fqkCtoQAIgE3tGBFtWkCgQeERcogj4S2lSFD7jcF2o28Su6MtWfsO8TK1audjKnC0JjvO13m5MjekBrE1/bqdmLK3477dL0BgQ2bW/rOot3u1cILUvW4SIHow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bwbHRAsrNNN/8whEZgLoj+OFIjZDkdvmA0PglfzTrEc=;
+ b=rp47p6Dzw2u675eu8xWibPWcg8H/JBwSrHOiAXXmyeFgFBFtp9oHMIsibcrrHiTy++lwdRZEvdlHvafB0F6SKMsRsTr8zrzOgFcXV+pElQA9H2GMjNAt919/VkiIz0mW/NHRGCUUXzLZjwo8Z96C/+rh+QOgChXlM2xLWQ/+dnWq6gwY8VMHbKQ2Zh5f0ncJWgG/TdJTveABoGX7xRHAmiQE4J2o/Z5TW8xQRXWetOToUCZUBuZcvp4xC+Gy8TvPWv7yjlYIpDyFPWZEevBSki3GyfkFkOlBHrAgyjJQwlhzzfSjyIGA+7P4QPvPfDZNMHHye4aytyjj9q1biMVkTA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CHAPR12MB999248.namprd12.prod.outlook.com
+ (2603:10b6:610:2ff::22) by IA6PR12MB074433.namprd12.prod.outlook.com
+ (2603:10b6:208:5fc::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.19; Fri, 23 Oct
+ 2026 13:15:04 +0000
+Received: from CHAPR12MB999248.namprd12.prod.outlook.com
+ ([fe80::4972:8062:d74e:b205]) by CHAPR12MB999248.namprd12.prod.outlook.com
+ ([fe80::4972:8062:d74e:b205%6]) with mapi id 15.21.0546.012; Fri, 23 Oct 2026
+ 13:15:04 +0000
+Message-ID: <d6c14ede-1cfd-4800-a8bf-5093ab8c000a@nvidia.com>
+Date: Fri, 23 Oct 2026 15:14:59 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: mlx5e:zero-prefix corruption during TCP DMA-BUF RX - help
+ requested
+To: jiabin deng <dengjiabin2023@gmail.com>
+Cc: netdev@vger.kernel.org, saeedm@nvidia.com, tariqt@nvidia.com,
+ mbloch@nvidia.com, linux-kernel@vger.kernel.org
+References: <CAFxp=AY2cVRQrZvB9WNnigbsobuw11NMG-cagHx0_V+ur2ToFw@mail.gmail.com>
+ <e4054f5a-e60c-4253-bccf-d05cc7c615b7@nvidia.com>
+ <CAFxp=AapgUYLUhipVjR8oM0fRDSLDX60AQf0UP8=U4M1ASqmOA@mail.gmail.com>
+ <e6a557b3-2986-486d-9679-e7a4fd1cee5c@nvidia.com>
+ <CAFxp=AbmdmTsj4ugjxdKhRR=LJuuC1yr7DFnLCSgOpC2g9470g@mail.gmail.com>
+ <atZKOtjrb9HKSNHF@dtatulea-c5.nvidia.com>
+ <CAFxp=AYqVgR_Eahz2QsC=cCdxo5GmTwdHcgBdXRGf9P+v0OJxQ@mail.gmail.com>
+Content-Language: en-US
+From: Dragos Tatulea <dtatulea@nvidia.com>
+In-Reply-To: <CAFxp=AYqVgR_Eahz2QsC=cCdxo5GmTwdHcgBdXRGf9P+v0OJxQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0287.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:e7::12) To CHAPR12MB999248.namprd12.prod.outlook.com
+ (2603:10b6:610:2ff::22)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -137,75 +104,102 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <52801.1792761161.1@vermin>
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 23 Oct 2026 08:12:41 -0500
-Message-ID: <52802.1792761161@vermin>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CHAPR12MB999248:EE_|IA6PR12MB074433:EE_
+X-MS-Office365-Filtering-Correlation-Id: 521edfea-f057-440d-34ce-08df3107a69e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|22082099003|18002099003|10067099003|11063799006|56012099006|4143699003|261022113327099003|261022105027099003|261022075727099003|261021121427099003;
+X-Microsoft-Antispam-Message-Info:
+	zX8k6vSItw+pJ0IsrZg54ggnV85aB2VJ8fOVTBIYQ6vCmm38sWaz4ZFtwyrzAt8VOcKcjB1OA0J0JXED/1bzMNTMNCnH1KeyEcsKQba54HdvpzHaEIHzRCaFffyELLcsUK/8i7c/0IqYm/y0E8pVbFx0jv5POXLvIfTlcEc8Pc5F9hhCHZejClyl2rfqcYRQ3cuFBu9fIQKc1X9lFao2dExnKgkfRiNQQjaOvKHTSE9t5Lc32plcPurPCTnhalIBufNZR1stmqBeSRRaMXSyGJGIkSpo6nTGykWtzHjLMCPRUFoJPFhOfnZnAYUnmxtnm1B2j8LFSSv43XiSuONQfvwOC1fogjgh6FS1b9+2Mz5VS7CVl0nrbs526ux9ObICDNYMR5Bd9QYo6VV9grG/TXtVFY/NOMHT9/GOSkP5u9nHuvinBoU/zBN9mkX5pm37BCfncl0F5Mti+w5yY1XAPvjX0sw6eg2suARqIfqZPGOg6IqbCrcMUGS7Qv/CUHFrVDe+vlSYQXpTmqThJODvPdqHMr1bfIByKzXP4Nw46/HGNIOcR+TFawc3FnFf3EI63v2Uf7ol1XehXZHx6cJH5Kxjfx+KrkRzRIUjkwRGVl+/Si6MlJFvcdWz3PSn/Ng/SagIGS+c6AEpAbMHDGc348a7tyRpaFNbthQ+QT25DYU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHAPR12MB999248.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(22082099003)(18002099003)(10067099003)(11063799006)(56012099006)(4143699003)(261022113327099003)(261022105027099003)(261022075727099003)(261021121427099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SkFVTHFPT1gyUHE0Tk5qZFJkRU92cGRib2xXaWxqbHI0R1dZMVg1SkpOMFdB?=
+ =?utf-8?B?NStIMlIzUG9NVUZndm1INGhrNjRwYjhFc25sSzZ4cmQ3VkNMNFN6NnJ1a2lY?=
+ =?utf-8?B?dnBhWVlOYkY4R2dHOHViRVd0UWNBaEExL3NyckdqdDVucWRROHlBN3QycEJz?=
+ =?utf-8?B?NFB6ZUhSUmtTOFlvT3pZc2FRYjRzdVhEZWNPT21CNHhUR2JybVdheFVZT0N0?=
+ =?utf-8?B?SWwxK1ZRNlpaMzdKeGRVWHZwWGxRVWZQSXB0VFdhTmNENCtabWJFbFlhVndS?=
+ =?utf-8?B?c1BoMEFrRkpic1FNS0RLUU84MEY3bkxqUERGVGc3OE9pUDRRNmZWY2lrYWNx?=
+ =?utf-8?B?M1BCVFV0Qnp3Ny9TcHhpdmJLZzQ4b2ZKeXpPRnhSWmVDNFBUdStFaWNMb3U5?=
+ =?utf-8?B?UHY0dHN2Z1Frak5vN3RoZDVFbmN1RWRCOFZIWWo0YlRSUFpIWmNoUmdSMk90?=
+ =?utf-8?B?RDZnV3hwRkgrUU9xK3ZEQ3Y3OXFpT3BPazlWNGo4SitEeEhwMHZGRHBqb2ov?=
+ =?utf-8?B?eCtIWm9zTDYzQTAzeGF0UUJ2RXE0eHh4MEI5RDkwRzFYSVBRNE5IRCtYQnlw?=
+ =?utf-8?B?b1ZjcUsxRU5WcTlYM2luNHlHTHVXQU9tUnV1eklCdGFvTTkrSjZ2NVY5UEdK?=
+ =?utf-8?B?YldBTjFXQzhFUytWK0FFamRGbldwc1g3VElUV0U1SmhaV2hVUGt5bUVDNG1U?=
+ =?utf-8?B?d3VxLytOcGNETFRNUEd6bEl3anNGZ2hTeGF3clplNUVXaXBtWnY1bEIzMkR4?=
+ =?utf-8?B?NnZnZ1pTd1hTUDJUbUtBUC9WWTFqZmZ2cldieHVTRkpMakxBTUo5aDBvV0Yy?=
+ =?utf-8?B?alJZT09VVk9PWDV0STMwdmFEWjB6TE5BSGFHd3JtQk0wL2F1dXhQKzRIWGx5?=
+ =?utf-8?B?TkQwenZFQXlNMFpXeGcrQzlGaUwzSmVkZWZqTVJHbUQ5eUVoSDZQUW5HLy8x?=
+ =?utf-8?B?Z2pWblZqbGZpempOR1Z2bmpxWUxGSHhMR3NMdkxjUWkwZ2VPbVB6SlRrWGFh?=
+ =?utf-8?B?aDJkWCt2RytIaTU0WWJWVUM1L2xpYXdDZ2U1a1BiY0NYMFFWcVR0K0psVWdD?=
+ =?utf-8?B?U21WRzlPMnB3bytQY1d5MXB3SjIvSlZRTzF0Q2dXQnY4NzZHRjJFUTF3czJz?=
+ =?utf-8?B?SXRmZlJZNWMxSiszRFVpQXhMWnBaU0J5NjliWHV6OG5GeDViamFMbjB6dkZx?=
+ =?utf-8?B?RDBwdGxMc3ErUzNQVTV2eWZCU1VWZExJeHdXQVFML2YyM3NGU3YrYUMrUXBn?=
+ =?utf-8?B?Tlc4c0hqYWxDamtmSUZuenRVS3VYbWkwdC9JUWFTbFVoRkVBeThjb3VGWkpk?=
+ =?utf-8?B?dlp6MUVGL1JSTGFaMGxFTXh1SjllWjYrcE9ZVk8rVGRQNGdtbzBLTVlUcEgw?=
+ =?utf-8?B?THRpNnE5aG1Fb2VSaEptR3F5c2JtN1dBU2dZbHB5VWFDUHYrdHVlajBqOHll?=
+ =?utf-8?B?VDZvaGxxc2RZTXo3aE1nVzd4aG5nTHpCZkJEdGVGRjBmQ2FNUFBqaGRmUnZw?=
+ =?utf-8?B?dFJmM3lhSXBuZmZKWHFlQVFteVFWUjQrZ1VTQytkZlB5OXhmNmluRkhUTERq?=
+ =?utf-8?B?ZmNYK2htektucFVoQTBaaDArNThocnY3NHJGamMxcTBYNDlxSVovRHVHcGp5?=
+ =?utf-8?B?L2FmYW1qUGNrbDBZSGxDaVZjcVI5MHAvZ0lhbHo5bWFaWis2NVNOT3oyTkJ0?=
+ =?utf-8?B?N3l0V0ZyOUxPeFFJN1YvVitZbkgzSnJRbzlEN2QwVkFrdWRLa09UMndYM0ti?=
+ =?utf-8?B?bnRTdjBrWU91dGpuUUFMWTVwTXRqVmtTbzRzN2FZVURRR2lYbkFuQXFSZXc5?=
+ =?utf-8?B?OVJJcWFCRTkvenJXSUlIMUttQmh1S3l2MUxaNGJRcjA2bFBHZU1vUmREYWxQ?=
+ =?utf-8?B?akVKaTNHT3grUS94anhZT2lZT2lQMVE4R0xuYnBzeE1TNUd3TC9SdUxmRHVl?=
+ =?utf-8?B?UUVHNHB4eGNCZmt5Z0UzM0JNZlVOb3FIenBlbytMWVFwcE56aHFUa3UyZys5?=
+ =?utf-8?B?dnJYMldUQjhwMHBiRjZMNE5lNmR0eFNKejV5R2wyY0tLbGJoT2p2U1FUTERF?=
+ =?utf-8?B?eGkvUnBGTDZSanFiTDFEdzRvUTViTFo1MHhzVXBhVlJEaEVBMUthZU0zTU9x?=
+ =?utf-8?B?OTBiV21NL1p3NzJKUTRxbjBvcnR4d2NZSnFPemtiaGJObEZGUHh2SW5wNXl2?=
+ =?utf-8?B?N2F1UkJpbGoyU1dISkh2T0V4aHVraWFYWjU5bmJUTHQ4dHdlVGNvelRlbGlj?=
+ =?utf-8?B?OWlDWUdHNXBjaDBwbUNQdjVMN2xjY2d1VDJJM3JxMzlMaDNoQmVlTTN3NjBY?=
+ =?utf-8?B?bmhsZWI3bVB6ajFDVGFFaVVpYVBySHU4RXErSUVydnFNMUlhVUk5UT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 521edfea-f057-440d-34ce-08df3107a69e
+X-MS-Exchange-CrossTenant-AuthSource: CHAPR12MB999248.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2026 13:15:04.1637
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /CAv6wCaaMw7JgFMcYxXp85tvE37qkIduBp8VmqYjnlyRSGbZtfHayMGKODNfWTUXzE/6sjADssOo25RlBZ/3A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA6PR12MB074433
 
-Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
+On 21.10.26 07:19, jiabin deng wrote:
+> Hi Dragos,
+> 
+> I applied your suggested change to `rq_end_pad_mode()` on the receiver
+> and reran the standalone GPU-memory reproducer I sent previously. With
+> MTU set to 1500, the single-direction test covered eight message
+> sizes, with 50 transfers per size, for a total of 400 transfers.
+> 
+> All 400 transfers completed successfully. Full payload comparisons
+> found zero failing cases, zero incorrect bytes, and zero corrupted
+> intervals. The zero-prefix corruption observed in the earlier tests
+> did not recur in this patched run.
+> 
+> Thank you for continuing to investigate this issue and for suggesting
+> the fix. I also greatly appreciate the time and effort you and the
+> other maintainers dedicate to the open-source community. As a student,
+> I am excited to have the opportunity to contribute to the community
+> and to learn from this process.
+> 
+Thank you for your good analysis and fast response!
 
->arp_ip_target is a module parameter array with BOND_MAX_ARP_TARGETS
->entries. In the loop parsing it in bond_check_params(), arp_ip_count is
->the number of accepted targets, while i is the index into
->arp_ip_target. Invalid and duplicate entries are skipped without
->bumping arp_ip_count, so bounding the loop with arp_ip_count lets i run
->past the end of arp_ip_target, e.g. 16 targets with one duplicate:
->
->  BUG: KASAN: global-out-of-bounds in bond_check_params.constprop.0+0x114=
-8/0x1440
->  Read of size 8 at addr ffffffff96e9ee00 by task swapper/0/1
->  Call Trace:
->   <TASK>
->   dump_stack_lvl+0x91/0xf0
->   print_report+0xd1/0x630
->   kasan_report+0xf3/0x130
->   __asan_report_load8_noabort+0x14/0x30
->   bond_check_params.constprop.0+0x1148/0x1440
->   bonding_init+0x13/0xe0
->   do_one_initcall+0xe7/0x5b0
->   kernel_init_freeable+0xa91/0x1120
->   kernel_init+0x24/0x220
->   ret_from_fork+0x5b3/0x820
->   ret_from_fork_asm+0x1a/0x30
->   </TASK>
->
->  The buggy address belongs to the variable:
->   arp_ip_target+0x80/0xa0
->
->Bound the loop with i instead. arp_ip_count never exceeds i, so it
->stays within BOND_MAX_ARP_TARGETS too.
->
->Fixes: 5a5c5fd48e3b ("bonding: arp_ip_count and arp_targets can be wrong"=
-)
->Cc: stable@vger.kernel.org
->Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+> I would be happy to help prepare a formal patch with the test results.
+> Would you prefer to submit the fix yourself, or would it be helpful
+> for me to prepare and submit it based on your suggested change?
+> 
+I am still waiting for input from the HW folks to understand if this
+change is needed for all SHAMPO cases or only specific P2P DMA
+cases.
 
-Acked-by: Jay Vosburgh <jv@jvosburgh.net>
+I think you should submit the fix as you did most of the work. Just
+give me some time to check the above. I'll ping you hopefully next
+week.
 
-
->---
-> drivers/net/bonding/bond_main.c | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
->
->diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_m=
-ain.c
->index 09aa45d71fab..7019e5d8fdc8 100644
->--- a/drivers/net/bonding/bond_main.c
->+++ b/drivers/net/bonding/bond_main.c
->@@ -6273,7 +6273,7 @@ static int __init bond_check_params(struct bond_par=
-ams *params)
-> 	}
-> =
-
-> 	for (arp_ip_count =3D 0, i =3D 0;
->-	     (arp_ip_count < BOND_MAX_ARP_TARGETS) && arp_ip_target[i]; i++) {
->+	     (i < BOND_MAX_ARP_TARGETS) && arp_ip_target[i]; i++) {
-> 		__be32 ip;
-> =
-
-> 		/* not a complete check, but good enough to catch mistakes */
->-- =
-
->2.43.0
->
+Thanks,
+Dragos
