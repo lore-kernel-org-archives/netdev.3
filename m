@@ -1,55 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792770928;
-	b=ed6VUlbgytUIo057wjjW7pvTD7myOpsYRVp/7nxZ7lQlruC6xDfa8sB+9K+/TjyJlOAN
-	 z54ajn0LWRgv3tntAWkPK3y0btbhHHynwUoC25vUThg5a6THZ7f7nD6qrVfqtSA6nMwF9
-	 Ukvx5E3KpevfUII2WOkT+owW1XFcI/Ul8V5wmlBvBCa8ID074HgmO3xB7NmPWFmPFYS1Y
-	 Ps3pYuVdYVXMNkb+eR/BgYEHSt0rpcscnKLjMt+X0n/jo1+0T6HHGSWSbkSzBmLT5x5Dg
-	 5AqlBRMGF+dcvMH2JMn+l5vAOjqhhn6i21qXa9ju+ndX4f8RZ55B6xWrxRbP1YkiqJQ==
+	t=1792771365;
+	b=ZG7WpdqLvpPnD6lbB8oZQEMxlOaWSsbohfjdN4swKy4eZZwkv88pvZbnuj7ZXaqNfeVM
+	 jnPew8sAqcy/6YjVHPR9b7uH08DHKCmWiUwYzmBlOIzv0XMBn1WYfY1HsItr3AugOU+la
+	 BI2Ctdxh+XGmv7pq4LVTeakjUMpmYV8xhiiMevpt0TYaVJhp1gkCRMJwhrq1Qsun6G7Te
+	 fQHEIApkZxwivBTdiYxrOKPtOsPqhBzI9N250DuSOnezfTO75PsMCu5hwf9i/0foGv+KX
+	 +c0ZMqEn9od9JT0kot1DAWkUS048o5BYhg2fFrIpM0VLsM1Qk2B3XYTIHFo8xQZ7TsQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792770928;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=obYDQLkkHXiggm2S/jFGDF/Bvg5EgjJRLjpcUkuTCJI=;
-	b=AT9GQUrKKmxZdr/uLR2hUoGCYfVNN9q2l73UOGJe3ji5VdgUL6u4+jjpn49QU8kRqZQw
-	 piSe1lAx6VlwN1GGAX1Eo4wHC7j2ZQKZrnDfhQuLrzFsqiaiW8VYjlpnx2u7xtUl6KcOS
-	 yBgI+Xm1FGde+IYpAIKC6C6BjrwjkGfiNdQOz63xXnPKxy3WEx2ENmDSnEIlIzTwTq5IY
-	 zJUFg4N5g2gk6L1ujVD96bRUCjh490H0P5ir2jIJfay5JeIVmZnXJuZJr3SMFMMxOnE2l
-	 cjGZl3oFUagjTZ6ZuJN99a005ngb631odTRfoXA9yHew62FU2HHkU66w5mjwsn6z9KQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792771365;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:From:
+	 Content-Language:To:Cc:Subject:Autocrypt:Organization:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=TKIxHOQFzCfvB8JJy4zqkrCMETBIKyn62Kt9NUNU+bY=;
+	b=y3a9AgzLB8D6k+GaTLMoX8RBOpDJ0aKJb32k/ISPSOk3grObv0BGJhVmxQbwNllQbngl
+	 km4p4W0ri9Y0eGJIlbvNVRNgKdc+jNV15Ri5SknFsN8FZuoLcZz3lqUknT2RPBBVDyqBa
+	 yFUgkq5lTwpqh0brbR8bhGTn6/JyGlwto/UrfPX/K0AJnBwuJJPzmchZpLssNgX3laMc7
+	 ACILE2tFlC9vdNVOC/JbhN2g2Zlu4BA4zloMi5YKYoWbh0nAAYomF8MnmxUN59mw9ViBM
+	 1oPL3qILa8Xl6MeS7ejZfXeT0qH6tWVO/VGKikb4LOEFW1zuBR7dEmu6HJCeemB1KHQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AU76ctpS;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Aqu1r679;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE2C606A320
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 15:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1276606A31A
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 16:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AU76ctpS
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C5ED1F01825
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 15:55:27 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Aqu1r679
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66EEC1F01828;
+	Fri, 23 Oct 2026 16:02:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792770927;
-	bh=obYDQLkkHXiggm2S/jFGDF/Bvg5EgjJRLjpcUkuTCJI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=AU76ctpS+cWgn4fHG70gLMmrsKI5n07WctHHaxtbOgD3IveSc4cpmGOUCyZkf5l3T
-	 MNOT9tMBRaxpFSAEgX04bdQxmCjbrbrmf7AApk4iZe+PmMxyT+rOB1/zVPdf/XxD+e
-	 sJz9jxZAa+mAORrzsEbyoOlNzGp3CCr5QJFgb8i7pJw7hZvMXzCJFzxq8+vC4KYMFn
-	 1S4CmJz7SMCR8X/DquHqLcaUHDHVu0YhY5AcxxtZZm/Cnkbu2bCy0q2uJCMny0Enom
-	 MvBHjJ2DV6PcEFzWXBMiAdQ2o4aureDuOyFdI2s1o3B6O9trxJZW3LQyV8VzKvg/8a
-	 CD9UQWPHx6rZQ==
-Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-6dde81a6820so727653eaf.2
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 08:55:27 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBy8ZyFLRVv/c4j/vEZ41UNgxrN0+iEqoFTQieIiOu/NTusOoW9EHTOZIca9OihNlJ++a4cX8Gk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLqJm0n2Es23cTv6zQx41kX3M0+LocFq52QEwDbzJF6gt81u30y
-	zaQC3eSxuRmRY4IAvejgKHfYfZBJSEmOcoV6WxTD5BDCIQfAvpAK2EqvaAPcc6shr4xSmdwFVoJ
-	EuwaCRemAZ6lHSdjSgM0bFdczw9JthvA=
-X-Received: by 2002:a05:6820:f025:b0:70a:4973:e475 with SMTP id
- 006d021491bc7-70b887ef9femr1819515eaf.9.1792770926558; Fri, 23 Oct 2026
- 08:55:26 -0700 (PDT)
+	s=k20260515; t=1792771364;
+	bh=TKIxHOQFzCfvB8JJy4zqkrCMETBIKyn62Kt9NUNU+bY=;
+	h=Date:From:To:Cc:Subject;
+	b=Aqu1r679Q0ekK1sHcdi9ppMOWrQIbHE5lE537100B8Ov5N4AW+SfS9/zgBusV8Yqx
+	 lcIGOMp0nn3QbkbEJEWOff0/AHf+uqHgt/2QszvGK58cdJE5phTTHDkZuCDyyAovT/
+	 R17rMMV/9nQfpo6jU5iL0mIruhR77aXDYrDga/O+ZMnyy08DsCcIqJGniK5/iAQtU+
+	 fkkT+jg0bYOzxxPDBTmcYtCu3TZm2etH8S4C00ehyza67jSG8iFH1X1n1c+4a4KcrP
+	 jNrSBvNZbaFHMjm9OwhobRDXLFV3xem7bCvHqmfFzTFAxhIZLDMc2lfSM7aALxyxeM
+	 L6SClOw9JT9QA==
+Message-ID: <224334a7-150e-4794-af72-596c3821558c@kernel.org>
+Date: Fri, 23 Oct 2026 18:02:41 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,70 +51,104 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <tencent_31D2FFCCE76C50A695A1270151F825E90906@qq.com>
- <af2ec5b0-7c62-4c6e-a28d-33ed401020af@linux.dev> <CADVnQynhY17Romr6VvzAyq-9h1zQ8gd-+pfC+1qFtz8xRaqCYg@mail.gmail.com>
-In-Reply-To: <CADVnQynhY17Romr6VvzAyq-9h1zQ8gd-+pfC+1qFtz8xRaqCYg@mail.gmail.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Fri, 23 Oct 2026 17:55:14 +0200
-X-Gmail-Original-Message-ID: <CAL4WiipvuqdDerVR9AZ6H4kaPvoSEoe-2s1P4RWeB6FwCfbBxA@mail.gmail.com>
-X-Gm-Features: AclHuK_AOyMxLdHlROqLvyZU8YQki78OcLExqwM0QO9VP0-Jx78XGF_CcLHcZd4
-Message-ID: <CAL4WiipvuqdDerVR9AZ6H4kaPvoSEoe-2s1P4RWeB6FwCfbBxA@mail.gmail.com>
-Subject: Re: [PATCH net v2] tcp: limit tcp_tso_rtt_log to a valid shift count
-To: Neal Cardwell <ncardwell@google.com>
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>, Yingjie Wang <1075151112@qq.com>, netdev@vger.kernel.org, 
-	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	kuniyu@google.com, corbet@lwn.net, skhan@linuxfoundation.org, 
-	rdunlap@infradead.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird Beta
+From: Matthieu Baerts <matttbe@kernel.org>
+Content-Language: fr
+To: Sheena Mohan <sheenamo@google.com>
+Cc: Willem de Bruijn <willemb@google.com>, Netdev <netdev@vger.kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>
+Subject: [TEST] Google's Netdev-CI: a few flaky tests
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
+ YBNdx5Xl74NLSgx6y/1NiMQGuKeu+2BmtnkiGxBNanfXcnl4L4Lzz+iXBvvbtCbynnnqDDqU
+ c7SPFMpMesgpcu1xFt0F6bcxE+0ojRtSCZ5HDElKlHJNYtD1uwY4UYVGWUGCF/+cY1YLmtfb
+ WdNb/SFo+Mp0HItfBC12qtDIXYvbfNUGVnA5jXeWMEyYhSNktLnpDL2gBUCsdbkov5VjiOX7
+ CRTkX0UgNWRjyFZwThaZADEvAOo12M5uSBk7h07yJ97gqvBtcx45IsJwfUJE4hy8qZqsA62A
+ nTRflBvp647IXAiCcwWsEgE5AXKwA3aL6dcpVR17JXJ6nwHHnslVi8WesiqzUI9sbO/hXeXw
+ TDSB+YhErbNOxvHqCzZEnGAAFf6ges26fRVyuU119AzO40sjdLV0l6LE7GshddyazWZf0iac
+ nEhX9NKxGnuhMu5SXmo2poIQttJuYAvTVUNwQVEx/0yY5xmiuyqvXa+XT7NKJkOZSiAPlNt6
+ VffjgOP62S7M9wDShUghN3F7CPOrrRsOHWO/l6I/qJdUMW+MHSFYPfYiFXoLUZyPvNVCYSgs
+ 3oQaFhHapq1f345XBtfG3fOYp1K2wTXd4ThFraTLl8PHxCn4ywARAQABzSRNYXR0aGlldSBC
+ YWVydHMgPG1hdHR0YmVAa2VybmVsLm9yZz7CwZEEEwEIADsCGwMFCwkIBwIGFQoJCAsCBBYC
+ AwECHgECF4AWIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZUDpDAIZAQAKCRD2t4JPQmmgcz33
+ EACjROM3nj9FGclR5AlyPUbAq/txEX7E0EFQCDtdLPrjBcLAoaYJIQUV8IDCcPjZMJy2ADp7
+ /zSwYba2rE2C9vRgjXZJNt21mySvKnnkPbNQGkNRl3TZAinO1Ddq3fp2c/GmYaW1NWFSfOmw
+ MvB5CJaN0UK5l0/drnaA6Hxsu62V5UnpvxWgexqDuo0wfpEeP1PEqMNzyiVPvJ8bJxgM8qoC
+ cpXLp1Rq/jq7pbUycY8GeYw2j+FVZJHlhL0w0Zm9CFHThHxRAm1tsIPc+oTorx7haXP+nN0J
+ iqBXVAxLK2KxrHtMygim50xk2QpUotWYfZpRRv8dMygEPIB3f1Vi5JMwP4M47NZNdpqVkHrm
+ jvcNuLfDgf/vqUvuXs2eA2/BkIHcOuAAbsvreX1WX1rTHmx5ud3OhsWQQRVL2rt+0p1DpROI
+ 3Ob8F78W5rKr4HYvjX2Inpy3WahAm7FzUY184OyfPO/2zadKCqg8n01mWA9PXxs84bFEV2mP
+ VzC5j6K8U3RNA6cb9bpE5bzXut6T2gxj6j+7TsgMQFhbyH/tZgpDjWvAiPZHb3sV29t8XaOF
+ BwzqiI2AEkiWMySiHwCCMsIH9WUH7r7vpwROko89Tk+InpEbiphPjd7qAkyJ+tNIEWd1+MlX
+ ZPtOaFLVHhLQ3PLFLkrU3+Yi3tXqpvLE3gO3LM7BTQRV4/npARAA5+u/Sx1n9anIqcgHpA7l
+ 5SUCP1e/qF7n5DK8LiM10gYglgY0XHOBi0S7vHppH8hrtpizx+7t5DBdPJgVtR6SilyK0/mp
+ 9nWHDhc9rwU3KmHYgFFsnX58eEmZxz2qsIY8juFor5r7kpcM5dRR9aB+HjlOOJJgyDxcJTwM
+ 1ey4L/79P72wuXRhMibN14SX6TZzf+/XIOrM6TsULVJEIv1+NdczQbs6pBTpEK/G2apME7vf
+ mjTsZU26Ezn+LDMX16lHTmIJi7Hlh7eifCGGM+g/AlDV6aWKFS+sBbwy+YoS0Zc3Yz8zrdbi
+ Kzn3kbKd+99//mysSVsHaekQYyVvO0KD2KPKBs1S/ImrBb6XecqxGy/y/3HWHdngGEY2v2IP
+ Qox7mAPznyKyXEfG+0rrVseZSEssKmY01IsgwwbmN9ZcqUKYNhjv67WMX7tNwiVbSrGLZoqf
+ Xlgw4aAdnIMQyTW8nE6hH/Iwqay4S2str4HZtWwyWLitk7N+e+vxuK5qto4AxtB7VdimvKUs
+ x6kQO5F3YWcC3vCXCgPwyV8133+fIR2L81R1L1q3swaEuh95vWj6iskxeNWSTyFAVKYYVskG
+ V+OTtB71P1XCnb6AJCW9cKpC25+zxQqD2Zy0dK3u2RuKErajKBa/YWzuSaKAOkneFxG3LJIv
+ Hl7iqPF+JDCjB5sAEQEAAcLBXwQYAQIACQUCVeP56QIbDAAKCRD2t4JPQmmgc5VnD/9YgbCr
+ HR1FbMbm7td54UrYvZV/i7m3dIQNXK2e+Cbv5PXf19ce3XluaE+wA8D+vnIW5mbAAiojt3Mb
+ 6p0WJS3QzbObzHNgAp3zy/L4lXwc6WW5vnpWAzqXFHP8D9PTpqvBALbXqL06smP47JqbyQxj
+ Xf7D2rrPeIqbYmVY9da1KzMOVf3gReazYa89zZSdVkMojfWsbq05zwYU+SCWS3NiyF6QghbW
+ voxbFwX1i/0xRwJiX9NNbRj1huVKQuS4W7rbWA87TrVQPXUAdkyd7FRYICNW+0gddysIwPoa
+ KrLfx3Ba6Rpx0JznbrVOtXlihjl4KV8mtOPjYDY9u+8x412xXnlGl6AC4HLu2F3ECkamY4G6
+ UxejX+E6vW6Xe4n7H+rEX5UFgPRdYkS1TA/X3nMen9bouxNsvIJv7C6adZmMHqu/2azX7S7I
+ vrxxySzOw9GxjoVTuzWMKWpDGP8n71IFeOot8JuPZtJ8omz+DZel+WCNZMVdVNLPOd5frqOv
+ mpz0VhFAlNTjU1Vy0CnuxX3AM51J8dpdNyG0S8rADh6C8AKCDOfUstpq28/6oTaQv7QZdge0
+ JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Le ven. 23 oct. 2026 =C3=A0 17:06, Neal Cardwell <ncardwell@google.com> a =
-=C3=A9crit :
->
-> On Fri, Oct 23, 2026 at 10:50=E2=80=AFAM Jiayuan Chen <jiayuan.chen@linux=
-.dev> wrote:
-> >
-> >
-> > On 10/23/26 10:40 PM, Yingjie Wang wrote:
-> > > tcp_tso_autosize() right-shifts the u32 returned by tcp_min_rtt() by
-> > > sysctl_tcp_tso_rtt_log. The sysctl uses proc_dou8vec_minmax() without
-> > > an upper bound, so it accepts values through 255. Values above 31 mak=
-e
-> > > the shift undefined.
-> > >
-> > > A process with CAP_NET_ADMIN in the target network namespace can set =
-the
-> > > per-netns sysctl. With CONFIG_UBSAN_SHIFT=3Dy, setting it to 32 and s=
-ending
-> > > TCP data over loopback triggers:
-> > >
-> > >    UBSAN: shift-out-of-bounds in net/ipv4/tcp_output.c:2264:30
-> > >    shift exponent 32 is too large for 32-bit type 'unsigned int'
-> > >    Call Trace:
-> > >     __ubsan_handle_shift_out_of_bounds
-> > >     tcp_tso_segs
-> > >     tcp_write_xmit
-> > >     __tcp_push_pending_frames
-> > >     tcp_push
-> > >     tcp_sendmsg_locked
-> > >
-> > > Limit the sysctl to 31, the largest valid shift count for a u32, and
-> > > document the accepted range. Writes of larger values now fail with
-> > > -EINVAL.
-> > >
-> > > On a UBSAN/KASAN build of the net tree, values 0 and 31 remained
-> > > accepted, values 32 and 255 returned -EINVAL, and TCP traffic with th=
-e
-> > > valid boundary values produced no sanitizer diagnostics.
-> > >
-> > > Fixes: 65466904b015 ("tcp: adjust TSO packet sizes based on min_rtt")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Yingjie Wang <1075151112@qq.com>
-> >
-> >
-> > Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
->
-> Reviewed-by: Neal Cardwell <ncardwell@google.com>
+Hi Sheena,
 
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+I hope you are doing well.
+
+While looking at the results on the Netdev CI for the Google runners, I
+notice some tests are quite flaky or constantly failing. I marked them
+as "ignored" on the Netdev CI while this is being investigated.
+
+- IDPF: psp-py started to a month ago. I guess you are monitoring the
+  results, but then if it is normal, it might be easier if you block the
+  known bad tests from running on your side. Just in case, a few links:
+
+  https://netdev.bots.linux.dev/flakes.html?tn-needle=psp-py&br-pfx=net-next-hw&ld-remote=google-idpf
+
+  Because the previous branch didn't get tested, the regression might be
+  due to the modifications introduced in the previous branch as well:
+
+  https://netdev.bots.linux.dev/branch_deltas/net-next-hw-2026-09-23--16-00.html
+  https://netdev.bots.linux.dev/branch_deltas/net-next-hw-2026-09-23--08-00.html
+
+
+- GVE: "queues-py" test started to fail recently: I *think* it is a
+  regression due to the following patch that has just been dropped, but
+  we will only know that in a couple of hours:
+
+  https://lore.kernel.org/20261021155611.68473-1-phx0fer@gmail.com
+
+  https://netdev.bots.linux.dev/contest.html?remote=google-gve&executor=gve-nipa&test=queues-py
+
+  https://netdev.bots.linux.dev/branch_deltas/net-next-hw-2026-10-22--00-00.html
+
+
+- GVE: A few tests are unstable for a while and have been ignored: do
+  you mind looking at them, please?
+
+  https://netdev.bots.linux.dev/flakes.html?min-flip=0&pw-y=0&br-pfx=net-next-hw&ld-remote=google-gve
+
+
+- IDPF: sometimes, it takes ~4h to run the results (+1h to start).
+  That's fine because we have a 6h window, but just wondering: is it
+  normal? (The GVE runner seems to start quicker, but I guess that's
+  because one is on bare metal and the other in a VM)
+
+Thank you for your help!
+
+Cheers,
+Matt
