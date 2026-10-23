@@ -1,54 +1,133 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.151
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792760741;
-	b=xjFZJoIw4BTcxgtR6GeJR8tmCuFGE5CUy/7pZp+Fx1ADtVQDuCf6ijPE4PwOrz1nMn40
-	 Z03mkwFoUHIOWG0a9bpJZK1nq9F1eOrJRwlaQoMI6tJIp7cgfK6Jq6dL1goR59s45F/Jo
-	 FbHCfXx8seovMosD1MDWuVPGPC/2RNjkYQRXUnByyLzrr+sVOuquPB0dykSTPDMwknsFG
-	 2qs1Y+JWhKRJMasl3IdzbOR1eU/KPn3xjTLOuX4jBj2IUu92YyPZpcqr3g/aiPVCxjZoG
-	 WXR//U50lsOk+TpKjD163kgPaPAiL8zVbvLmzpGzK645pRhRB0Bz94IjTBcOPU1a2EQ==
+	t=1792761167;
+	b=Nfj9auHtMABiwAo8IAR7SZxyrewHUnW6tun3bmm/D92crQ/hqDJrXMevoN12s8/qAAGs
+	 NMaKYCXpuiHGdqad1uiQToF6qcsBhcOuWIqUP6aneU/2+qJWC5jgmF1VCuqOzeqxr/DrJ
+	 jD3BksWnyhfDTBuUgQcak+xOO0WooA/aFj+vNVao0CEq0JB7lTeUJZymMTb2Dfxh+wJsK
+	 XdQU4XALT2SgWTa4Zx4F9uPcbSBvZ5Kpbc0SpmWGveMnutecFNbavp93vZMqxGWT937So
+	 p5nrg7vt46kzPb2//lqGwF/bNdgDKHXDTI6q4rvhuEXZIBl92z3JEvTxQqKl1ubWTqg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792760741;
-	h=Received:DKIM-Signature:Received:X-Gm-Message-State:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=nxrlDr5Pv1kPW7dd5eO3qfJ6XICV5uYprA+uta9M6UQ=;
-	b=Yjyb54XfbU8m9g/urWrShx4otVGb9eKVJsc34hIxLutN0m6sQ2ynBDAhWEzBuW4GOY7o
-	 nX++mZQnMVlCzddIzmdWFsxXf16dKnCS+8AGr3Acps76R0zHqXgHc2u94SdEGeEb2n98o
-	 3TNzakSXJH5K8gwaSc6adp8woHnxe9oJuXQr/KrYc/FxPKW60ogmBJAWHKMGCADRyTU2T
-	 arcXr4UDaC9mvNsW7Qull5IZYF234pHgvcLpgarjVHXgWdOKAgZimSkcO53O5N10dibO/
-	 RUyAnGpaQcc2yp14gSLwNSKtSgSCHwFPfp93dhyWpQ4wB+leQeqtNCVOVAVfKphuFHQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792761167;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:Received:Received:From:To:cc:Subject:In-reply-to:References:
+	 Comments:X-Mailer:MIME-Version:Content-Type:Content-ID:
+	 Content-Transfer-Encoding:Date:Message-ID;
+	bh=I7ZqURMaAeN/39DP/yFBhYf3zDxwDlmOr5MpmREWjiE=;
+	b=gowGojqXiIxRwIqdBvbBJmRruqbCwU92NlMZD/JWzFg9wHgni4Bs00AHSJeL7h5gG51F
+	 3nMUVABRjgM2ZarmBVmzBfgYKku/kyoZa6toOPpHTJktv9f9Flp0UZdyf3kNeu/0jMz9v
+	 wvjT4nOWGhn0hwTHrmQJiVCN0BlguC5oZJGURe5/iu2Ys1eVarD1hhErOTsc3z7dAGPga
+	 qypX3m+lXPdn9dIsq1Lr1wpEiLPatNTetafMHEOumD8VjMH5cm/6SnvR+LB1ZHtwsS9al
+	 3qi2C0BxCeh3TDS6rj1TxXCYopua4mfwZgI0b42wNDnpnCV+/jY0sfxG0p2kM3dB96g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="mioTpND/";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=jvosburgh.net;
+	spf=pass smtp.mailfrom=jvosburgh.net;
+	dkim=pass header.d=jvosburgh.net header.i=@jvosburgh.net header.a=rsa-sha256 header.s=fm3 header.b=rxggQ8g9;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=phJ5vHpe;
+	arc=none smtp.remote-ip=202.12.124.151
+Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749B6606A31D
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 13:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F92606A31D
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 13:12:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 83F92606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jvosburgh.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mioTpND/
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 279221F031E2
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 13:05:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792760741;
-	bh=nxrlDr5Pv1kPW7dd5eO3qfJ6XICV5uYprA+uta9M6UQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=mioTpND//qWuVuc3ljq4iPyNLlJKcEF6BwqcTdsM3eLtWtwrXxMQIJO/sx2FS920+
-	 OqHnBTFCFl4WSBEn+TiyiOKjaqUatBBwmUgw0Z4P8ojhUU9v5w84rMkzDZGqCGU7Qo
-	 BqpRzt36i+az+d0FO8PwJ75O8U23jIu5l/27auuiX50iHFvM3G4dFTFqstGz1TDnCd
-	 ya/r+etVeHYBX+F762XSA/1BdF4SHF61KisAt52cABXX7xWAhUzJb+egQXTizFJE0i
-	 rX1ISsCNP32oAhG/kpIOSaWjqisDrx+RKKPKr1Al1D4gRhrD+Z1sT+J8c3R9VcvUTu
-	 QLQcnTgX/w2eA==
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-70094949641so753976eaf.0
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 06:05:41 -0700 (PDT)
-X-Gm-Message-State: AFq9FYIlsc/X3nVgpCSHmsPUyic4Oeevy3W84H1gLvxBGL0IJK3MUA/u
-	/k1x58qZznlxpz0PwwYp1MvTDSg55bPVCnDmULS2FvEzeHRnhkJOxbiyfy6XN4gr+W8svSmNRSe
-	LqwD5qKdyw2D4LzwtJXXs8aNzXfjGZT8=
-X-Received: by 2002:a05:6820:1a09:b0:6f7:384:a094 with SMTP id
- 006d021491bc7-70a8040d285mr2645443eaf.26.1792760740508; Fri, 23 Oct 2026
- 06:05:40 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=jvosburgh.net header.i=@jvosburgh.net header.a=rsa-sha256 header.s=fm3 header.b=rxggQ8g9;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=phJ5vHpe
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.stl.internal (Postfix) with ESMTP id 037B11D00113
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 09:12:45 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Fri, 23 Oct 2026 09:12:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jvosburgh.net;
+	 h=cc:cc:content-id:content-transfer-encoding:content-type
+	:content-type:date:date:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to; s=fm3; t=1792761164; x=1792847564; bh=I7ZqURMaAeN/39DP/yFBh
+	Yf3zDxwDlmOr5MpmREWjiE=; b=rxggQ8g92PXD2YZa7e8hWRIUodv2ny0mRg+v8
+	4Wv8efTVAseeGqmhXoZ6Q7nPt+cLZuZwnQGH4rdrKqWYR7vSDFxV9nnziS2U3gsP
+	Ohp7or/Ix1TWKLIiE5Wk2hTCmUdkN0XkXQc547vD6tk+4XJM0hMzvWvt+XLIR3gN
+	Q9kfK8Sf+1bJpxxmdbiut2c8C0nt0/DrWTSEalNJwJ8eABJ4f36t3dERVgKnO7dx
+	O5At1LOyrwT07Ap4k/Y4Oqw8n0EmOegcwHiDTwsLYN1i5w0W+Demn8YIL3mmX14V
+	d77BXxMfXH194O1+JXBgiMqxf2xCQv1lANcu0cjJcCd4Ivb+w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-id
+	:content-transfer-encoding:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1792761164; x=1792847564; bh=I7ZqURMaAeN/39DP/yFBhYf3zDxwDlmOr5M
+	pmREWjiE=; b=phJ5vHpe6oNFRwPCX/Iwvg0+zovyiPGXU+J2mPyr/lhkZT8l7hH
+	e2WeOnIs3iqwvjplr1Z7puiUlFR6sx0Or0vqk6Dv9bzMPcp99FGi3O+VMpvzSWmn
+	AlATQa4I0Dj8zZsiZuLJpLa/xQ0VweaVNJUYn7zz6aclUPipVZGCazkgbXaJ1vNw
+	ooHEg8qvFVBSx9T0Pr1zZ1yl1nM6t64Ym8gbamH5spr9CTKYcjlU/zjyOwlHehsA
+	3H9doHEEJWm1VjfipcT6D+viBy59xvSCqFdYuToOGWitaucN858Ggw/uTabPDyGZ
+	cXZWGEJRV8I9UZr4v8tbA3lC2xs/zCs1UAw==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=sign d=jvosburgh.net a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1792761164; d=jvosburgh.net;
+	mf=PGp2QGp2b3NidXJnaC5uZXQ+;
+	rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm3:rsa-sha256:VSXyFntaR20hNE0cBLgRM6QmosG2cYnMD6WxUKBVpENP2MD
+	haS+mK0Zge3nRtWStk0Ca4GNvWfYBznr2ruwamtbzEgmC2oQtNgKYxTTuL9T/O+T
+	1nTKtjZzNKHaXjLmATcBlrdqJY4c5V5l8jSKN4xbU/yUR/yHDPOpHZmHLL5tKX0G
+	uv85URnbpp+SiRy2ZpjqAqXrXEEFEP+l00+81esod8gIetTYPNZSsNTuhhY5qee/
+	W3U4Wujb7u4HK5wEPGDY5r/ZeBXjHWSAuIUmVqK6NWFrbKVn++7LwWn99Q/qgat0
+	LjIWbvm7hGn38ro9/0aj4/412T/kjlZW69vssfg==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=mi-m=1; hc=14;
+	hn=cc,comments,content-id,content-transfer-encoding,
+	content-type,date,feedback-id,from,in-reply-to,message-id,
+	mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:cyNuzwzH37Dgo4zT0uDMMUicmdl+FixBz7RYHV3mwZw=:syrr1aJ1tjIcOOSawhAcgtFuJjUz9NdQ5F2zl8WUVR0=;
+X-ME-Sender: <xms:TF3baqIyBTV1TknAk-KQckomJIbQGBn6p9Gh14CELYTQIcoBPbaIRQ>
+    <xme:TF3baoKSDkGvTlKg79BJgI2n9ODgbxIcEra1ClN-xDT_MIkZXlwwQ-JHN2IQnWaXv
+    s7zikXEoe5IglyQ0ySeEnI-oCtS-ubYgtFGyz4KCn2SCmSJIm0BJz1y>
+X-ME-Received: <xmr:TF3baliWbSquHqAew1E0nhQl8VXF1Hd29JQsTqNwcfC3p5303qYE8aGeZpW7T5ckNV5BPxU>
+X-ME-Proxy-Cause: dmFkZTFfRo1al3D2IO9ib2P99KdQTvrcUmBICI3lB8gtzUkSJFMmipja8+A2hgCvFraJbM
+    ocsAPRaWJYldc5i47n/lfsDQdW813UT75gJ7wU9zas6C8HELTgr4/PNJ49VUuTaWgSmshW
+    ucy4BqareE/h7towuyOhIUiBrjE8bYckffMWimx0Z/IuGke7hjF4MRihP06pxvTxoxrcuO
+    SA4lqYqilH+thfQ4KTFZ0iSVFOFQ97mHwZMCnzULyAHGQLI4GSnWKJoXTmwYxYnsguguXa
+    W7Q38FOPxQW5glqBeBpVJdnKzFxW90jD7uufEcg+A5JXRhMsh0B4YnOWzIghktpbjVbaRs
+    /OU2d1JwKHqBXalSebZBRsZwXj2EmIrscdCMIuPwR1TMs1r0DSxmT8ykGjBx8ZcCC/cZ3E
+    Ylpb04rOiKFAon77KR4vT41+0U020AC3jSGfZQ1J5xIzILviFT3Pv1MAjw2UB4+sYTg0OM
+    Veh/o+56M/omttmdaijpNnbwdoB34g9Y2ncVvs1dlXjnU31yV9D5oraaOuiligmmTD8+LS
+    QgVheIByz/cZ4tjcDlRMaSmWOx9HRuQgXizfbQ7X6rLfo1bUI2eyErLyfCCa5Kr2Jcd9y8
+    X/b3YqXihLEbKDgSqmjavGluHzRwSG0psmvG8Nb9Yz3Qo6KA5iUhxbWX90fw
+X-ME-Proxy: <xmx:TF3baiMkTjFtWLmiEAhwgZQy10xW6xidBPz3SjhxmtHB58_3TNbCOg>
+    <xmx:TF3bagqXe2aNXTI-A-eviLOQN4jeRTpy-ozCBd4uckYuIQMKN9peMg>
+    <xmx:TF3bak7RAvhRourKe658VSqu5Pnebxyee2VbevYTAdFSPvjq_weXgw>
+    <xmx:TF3bauh1dbABljKCS7NlYbl5MO51JnqZFara79Lbad5oo2Qi5nkiTQ>
+    <xmx:TF3bar-QRoS0Cy0tVB5C7eDcsA9jsla78pJKSdALuX5JO6cSfGzy3EiA>
+Feedback-ID: i53714940:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 23 Oct 2026 09:12:43 -0400 (EDT)
+Received: by vermin.localdomain (Postfix, from userid 1000)
+	id 5A5ED1C0479; Fri, 23 Oct 2026 06:12:41 -0700 (PDT)
+Received: from vermin (localhost [127.0.0.1])
+	by vermin.localdomain (Postfix) with ESMTP id 5977F1C044C;
+	Fri, 23 Oct 2026 08:12:41 -0500 (EST)
+From: Jay Vosburgh <jv@jvosburgh.net>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+cc: netdev@vger.kernel.org, stable@vger.kernel.org,
+    Andrew Lunn <andrew+netdev@lunn.ch>,
+    "David S. Miller" <davem@davemloft.net>,
+    Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+    Paolo Abeni <pabeni@redhat.com>,
+    Nikolay Aleksandrov <razor@blackwall.org>,
+    linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] bonding: fix out-of-bounds read of arp_ip_target
+In-reply-to: <20261023104528.232427-1-jiayuan.chen@linux.dev>
+References: <20261023104528.232427-1-jiayuan.chen@linux.dev>
+Comments: In-reply-to Jiayuan Chen <jiayuan.chen@linux.dev>
+   message dated "Fri, 23 Oct 2026 18:45:27 +0800."
+X-Mailer: MH-E 8.6+git; nmh 1.7+dev; Emacs 29.0.50
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,57 +137,75 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <ACT-N6N4.v2.r0.20261022191829@mojatatu.com> <ACT-N6N4.v2.r0.20261022191829-1@mojatatu.com>
- <ACT-N6N4.v2.r0.20261022191829-2@mojatatu.com> <ACT-N6N4.v2.r0.20261022191829-3@mojatatu.com>
- <ACT-N6N4.v2.r0.20261022191829-4@mojatatu.com>
-In-Reply-To: <ACT-N6N4.v2.r0.20261022191829-4@mojatatu.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Fri, 23 Oct 2026 15:05:29 +0200
-X-Gmail-Original-Message-ID: <CAL4WiirQwq=MyAn-D4voz+cctj7sj5pbpz4f1K12yhRjp-_qew@mail.gmail.com>
-X-Gm-Features: AclHuK9dKwFPAUosG0D9nbQQXD1VWaoosAHEMdMOIldlGKdqHWO2J3RhpAy5O6E
-Message-ID: <CAL4WiirQwq=MyAn-D4voz+cctj7sj5pbpz4f1K12yhRjp-_qew@mail.gmail.com>
-Subject: Re: [PATCH net v2 4/6] net/sched: act_ife: do not consume the inner
- header on egress
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
-	Victor Nogueira <victor@mojatatu.com>, Yotam Gigi <yotam.gi@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <52801.1792761161.1@vermin>
 Content-Transfer-Encoding: quoted-printable
+Date: Fri, 23 Oct 2026 08:12:41 -0500
+Message-ID: <52802.1792761161@vermin>
 
-Le ven. 23 oct. 2026 =C3=A0 13:59, Jamal Hadi Salim <jhs@mojatatu.com> a =
-=C3=A9crit :
->
-> The issue:
-> tcf_ife_decode() unconditionally calls eth_type_trans(), which pulls
-> ETH_HLEN.  On egress this consumes the inner Ethernet header; a following
-> eth_type_trans() from loopback_xmit() then parses L3 data as Ethernet and
-> can BUG in __skb_pull() when the remaining linear area is short.
->
-> The Fix:
-> Parse the inner Ethernet header with eth_type_trans() in both directions,
-> then restore the egress data position and MAC length.  On ingress the
-> existing behavior is unchanged.  On egress, push the inner Ethernet heade=
-r
-> back after parsing so the xmit path sees the original frame and later
-> actions see a consistent network header.
->
-> Decode is a receive-side operation; the egress branch keeps the frame
-> intact for transmit paths such as loopback.  tcf_ife_is_eth_skb() accepts
-> Ethernet and loopback devices generally.
->
-> Conditions to recreate the bug:
-> - egress tc filter on lo: action ife decode pipe;
-> - AF_PACKET SOCK_RAW frame: outer Ethernet with ETH_P_IFE, IFE metadata,
->   inner Ethernet and an 8192-byte payload;
-> - the egress pipe re-enters eth_type_trans() via loopback_xmit() after th=
-e
->   action consumed the inner header.
->
-> Fixes: ef6980b6becb ("introduce IFE action")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-> ---
+Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
 
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+>arp_ip_target is a module parameter array with BOND_MAX_ARP_TARGETS
+>entries. In the loop parsing it in bond_check_params(), arp_ip_count is
+>the number of accepted targets, while i is the index into
+>arp_ip_target. Invalid and duplicate entries are skipped without
+>bumping arp_ip_count, so bounding the loop with arp_ip_count lets i run
+>past the end of arp_ip_target, e.g. 16 targets with one duplicate:
+>
+>  BUG: KASAN: global-out-of-bounds in bond_check_params.constprop.0+0x114=
+8/0x1440
+>  Read of size 8 at addr ffffffff96e9ee00 by task swapper/0/1
+>  Call Trace:
+>   <TASK>
+>   dump_stack_lvl+0x91/0xf0
+>   print_report+0xd1/0x630
+>   kasan_report+0xf3/0x130
+>   __asan_report_load8_noabort+0x14/0x30
+>   bond_check_params.constprop.0+0x1148/0x1440
+>   bonding_init+0x13/0xe0
+>   do_one_initcall+0xe7/0x5b0
+>   kernel_init_freeable+0xa91/0x1120
+>   kernel_init+0x24/0x220
+>   ret_from_fork+0x5b3/0x820
+>   ret_from_fork_asm+0x1a/0x30
+>   </TASK>
+>
+>  The buggy address belongs to the variable:
+>   arp_ip_target+0x80/0xa0
+>
+>Bound the loop with i instead. arp_ip_count never exceeds i, so it
+>stays within BOND_MAX_ARP_TARGETS too.
+>
+>Fixes: 5a5c5fd48e3b ("bonding: arp_ip_count and arp_targets can be wrong"=
+)
+>Cc: stable@vger.kernel.org
+>Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+
+Acked-by: Jay Vosburgh <jv@jvosburgh.net>
+
+
+>---
+> drivers/net/bonding/bond_main.c | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+>diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_m=
+ain.c
+>index 09aa45d71fab..7019e5d8fdc8 100644
+>--- a/drivers/net/bonding/bond_main.c
+>+++ b/drivers/net/bonding/bond_main.c
+>@@ -6273,7 +6273,7 @@ static int __init bond_check_params(struct bond_par=
+ams *params)
+> 	}
+> =
+
+> 	for (arp_ip_count =3D 0, i =3D 0;
+>-	     (arp_ip_count < BOND_MAX_ARP_TARGETS) && arp_ip_target[i]; i++) {
+>+	     (i < BOND_MAX_ARP_TARGETS) && arp_ip_target[i]; i++) {
+> 		__be32 ip;
+> =
+
+> 		/* not a complete check, but good enough to catch mistakes */
+>-- =
+
+>2.43.0
+>
