@@ -1,102 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.135
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.90
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792741997;
-	b=WIXn8tHMkVTTqk+NKY1TpQpww3qN3xZT6LJ72cjO1zBPaIiGLcTj1OXSVTf5Lu8TYa2/
-	 fY5ZhdPCR9TFkgw2KcUFCVqYMj3Q0fWfH4VbE/gMQ+EDj/sFdsg7elZ9ghqbnoSkNL6lk
-	 IeQau/tnev8cyoAb/AISD6q3f7bruga1wXtRk7QqakIH2/xZcB18fqxHZP0QjvOEFxiRm
-	 78QzHGI20fMss0jc9NxUZs3SYaK1ZiEJKX0u2dgj2bpQqOd2C6yF10etnNARylaNO5kQQ
-	 ybDcYrCOEFOAm0gOJTDsZhxLEi0uE3hurvgNVqvZrGnTQdhHS3MmQJLpS18X+R96V7Q==
+	t=1792742195;
+	b=c/6G7RiLyz+ZugDLQWW93jeS2wnIr7Cb5Q612/3B7UhcTRX2ZH7REi44tBIaDM9d2pkj
+	 0cP0uCcKW4xdRjLGVbfauERuN1w1lhdo3YXvkQ9tI0NQGNa6yPTc66+dpwB4dsQLFzuLJ
+	 NLlID5Wrc7dHAbZxvKx+GmfkkXIUdkJWVz+Xnf4Vk5iVw/yRRtLcg/HaYdxbQeKc1+T8E
+	 6K0CVkeN1MBB/61fr46p/tqgYlyn2IPzjeADXlw7RUfOk7uwpgRXNZx3ZxIl5AjN9ftKo
+	 mKDhWsJOLNTNOTVN35EYUM1lmgaaPvckXcuLQt8whcweFpHSYqvuzno3YTsmqc0Uspg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792741997;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=gccHhk1zXKvI2lBwqqMmtzgSCLGdxT+o/5IMCODfY24=;
-	b=XomR5g6tnt1uKpt2Hlso/lhAwEUjOV9INhLxHjpnRvsJsEhdfAA7ni+bY4DQ16S37gBp
-	 J+O1QmAWpyZ7wQxFxG6vZECSvjDvZmURLqWFfIpOLQTOu2lugespadOylX345nyJDLbKp
-	 FCLYHUKoTjMKyvZ/O23USJYohN6bVgXjq0K0U7+FbV1UXwjanBSOGG6yRaf6rjgNC81IS
-	 9eJTRyRPtAYta7uUKUNY4abxvdhQ3oIoUxGzbC3vwi+8ZEHIIoFGIMZNiXTyHcmw4p8cF
-	 sUrYsYdz3wOC/InX+J1w94frGreG5LAQMISHChBUmbWSrOZ2k6taXbQoA94yGmmRXiA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792742195;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=a1fLNTNQuElQrkhiWKcrIu52BrjXQYMDASDkpVEAwms=;
+	b=Qf35Q29Ms0bNTWxJPaFxUBgwnRpfQNuweEqjqnlji2fFebqIEQ/BYm0AM3Fq9pzJiUw/
+	 Iz9zRJUGCKQFuygn4ndVC1lYn61B0SCj3WXouOgzGYXQdZnb+h6N/1IvE++/2mU1Criao
+	 LXbasy4Y3tnPVnkpcd55P2oQ4yOeB9u9ebP9Ec8nEj1RuocyQZs8kGvKp9nl4gOwONlRE
+	 B6/a0ZMc+C7EPndmtSKneEwVqyY6YBvvETCoYb+IHxn6atJti+NSIp473MmOVA9KInh+k
+	 7upnUsaY9H0BYHj7n+EjCt82Y/OOL94lBrBpsjrO+gm2rmUw/j1xwew1Gg1Z+5O8OOg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=LBWfTOJH;
-	arc=none smtp.remote-ip=74.125.229.135
-Received: from mail-dl2-f7.google.com (mail-dl2-f7.google.com [74.125.229.135])
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=wW2D8xx+;
+	arc=none smtp.remote-ip=95.215.58.90
+Received: from mta1.migadu.com (out-90.mta1.migadu.com [95.215.58.90])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF05606A333
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 07:53:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CEF05606A333
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D3A606A31A
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 07:56:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 07D3A606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=LBWfTOJH
-Received: by mail-dl2-f7.google.com with SMTP id a92af1059eb24-13985f8229aso501949c88.1
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 00:53:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792741996; x=1793346796; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gccHhk1zXKvI2lBwqqMmtzgSCLGdxT+o/5IMCODfY24=;
-        b=LBWfTOJHBn2220bqeCMn50DefPC2tvZT67Uro55yezV2FbLKmnjdRUloaKJ4dKiayW
-         4uzH0rAH3os/w7/fGkmpHkcwQbXvytbB8XBTDrWEC+OM1EOVF8zTLcteWo3zryuyl1rc
-         0QNkJHrOdTUl7ed+bKsJQDP+4++awIpspLAgg2xlRwhFcxcnoBNbiKVc/7LlqD37F+Kx
-         7aTSxz+eAcElZzgccyegYhcUH9jc4P7MUjJrXEZKYi+fd5Wt4ybdqmW6hywEcuMn/6Qd
-         /yJ6fEUYj70ULTJxrNxO+vv0hIpkW4AjgiD1EO/uBws/ACPtWoEhXL1Ziuk8+ZFSIlIL
-         vhGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792741996; x=1793346796;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gccHhk1zXKvI2lBwqqMmtzgSCLGdxT+o/5IMCODfY24=;
-        b=cYzk6aA78qjz9mentF8jNvwqrflYY5la1UdNYCTtjWdQLFfKspQKZ4e6Z22wMb/+Kx
-         g6F+EeLe4Wf7oBRFNLLsQGgGyQwVDrcTENpVv3FdlWaVELAXluO5ln9XsNKFkeWSWRgK
-         gERzL/yw80hbIibhJ0A8kDUDNUFtPDX1SFQGn6P+97D7Ig2OnAmB/ttn4SiZluV9Djlo
-         mIgLWl9Ejg/8FUmb8w2lXa/XfLGbAigEMimbr4KieE4pPy5J9f0E9x4dqXTRwY/5o/uJ
-         YYVbHdkWEENsrHGE1kjFeQz274iy17bw+2E3iyuVB2FL7AlwKBv7RdsyvCw+gFmLEBp2
-         OcvQ==
-X-Forwarded-Encrypted: i=1; AKwUvBx4Az4jZu5inSRWDbU0PGneNxl0Qd+85pLb7VcA/drciS71GxvgupFdFMqpm2LCOFdqACUrO9o=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJKLmv6cU2PewZ2Pb0D7Ib0+xbdYmOwPKu1tzqfPwfWhX5x6pHi
-	qeHrqLuKiudRinZrMSDfGWivQ3s1oLSniPX8etQaA4citunvX3l7Oh17
-X-Gm-Gg: AYBFou2o5IrncOMvRPetnEns0BTfuJFAhsRubu96EegYvru6codWVT1LsfVfN7Ms3lO
-	IYqGDw8LbGJdwEwDSfPFp/evev0T4k7JI2zQ4TcPZs2SiC7cpQaGu2KczWnwGvgUwrfbd0NUobx
-	JqHijtF4DgcAu0SszzOYqWT/QmO2ptKnhwj8gdcVtRufIfN4H2P3BoEIb3rVPLDgsBerAxRcLKo
-	ysSKMzkbhlIF0wKMbxqaiPUSy2NZdt3wO6I4wMjVb2/fuCdvXPfVtZXXC++BVP2XwCxaCE+Yot0
-	JXg8jNupUAa/0VyPiSJNRq6h7ObIz+Wwb6kfjOlRdCNhqlmE4E+o1XEzPMXRbjh0fLQN7N8GNqa
-	cN+fjlSom8tfQZqg6QKlFXwlXOuGRYqelFlR7LBLCnhL+nx2Q5SbwJbcnSRX8wcXRr0YhMvCxew
-	DYe/wG/ppLrUURRRKGPwxMWps1hkYvOH5Oy+uqGdoleTqNfP1ypkcU+A+XLDWchpcIuUm0Mjqjq
-	kJqZkME2eN80KKzdtmDyhwlxX4Y4IyGQMc5MM6yFk4vciSRlmb3eg==
-X-Received: by 2002:a05:7022:e803:b0:165:4b88:abc2 with SMTP id a92af1059eb24-195c1e5520fmr2349281c88.26.1792741995686;
-        Fri, 23 Oct 2026 00:53:15 -0700 (PDT)
-Received: from server.lan ([168.138.199.194])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-195eae0e830sm4122132c88.10.2026.10.23.00.53.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2026 00:53:15 -0700 (PDT)
-From: Coia Prant <coiaprant@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Eric Dumazet <edumazet@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Coia Prant <coiaprant@gmail.com>,
-	netdev@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2 4/4] MAINTAINERS: list DW XPCS platform driver and binding under XPCS entry
-Date: Fri, 23 Oct 2026 15:52:15 +0800
-Message-ID: <20261023075214.1793922-6-coiaprant@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261023075214.1793922-2-coiaprant@gmail.com>
-References: <20261023075214.1793922-2-coiaprant@gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=wW2D8xx+
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=AxDTtbQpe1Pw1Gld4FexP/rem2OpjOhFrzr3t8rvVIc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792742191; v=1; x=1793346991;
+ b=wW2D8xx+DdbRIC4AHcSsoWygNrMVamSR+kr6fATyTg+RyS24w+tgSGJSJea4RaHGc1sJGUTR
+ uzy2bS5hJ0SH08Tstg8AwLygSAn1nXcr4+uSM40DDuBP9W6GwrgQjgb2jM1Wt50KldLURcH1v9y
+ xNof3we7jE5136Rq/sttJ0m0=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta11.migadu.com with ESMTPS id 4835e8e05efbd0ae;
+	Fri, 23 Oct 2026 07:56:30 +0000
+X-Mizu-Trace-ID: 4835e8e05efbd0ae
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 23 Oct 2026 15:56:18 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Xia Yan <yanxia@cmss.chinamobile.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+	horms@kernel.org, john.fastabend@gmail.com, kuba@kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	pabeni@redhat.com, stable@vger.kernel.org, yana06070@163.com
+Subject: Re: [PATCH net] macvlan: fix passthru promiscuity accounting while
+ down
+Message-ID: <atsTIt31dw6DPENI@fedora>
+References: <20261022090809.12019-1-yanxia@cmss.chinamobile.com>
+ <atrKdb1atGzCYka4@fedora>
+ <20261023061630.350083-1-yanxia@cmss.chinamobile.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,33 +68,27 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261023061630.350083-1-yanxia@cmss.chinamobile.com>
 
-The Synopsys DW XPCS entry covers pcs-xpcs.c, pcs-xpcs.h and the public
-header, but not pcs-xpcs-plat.c or its DT binding. pcs-xpcs-plat.c only
-matches the ETHERNET PHY LIBRARY entry today, and the binding is only
-matched by the generic DT and networking rules.
+On Fri, Oct 23, 2026 at 02:16:30PM +0800, Xia Yan wrote:
+> Hi Hangbin,
+> 
+> > If we discard the MACVLAN_FLAG_NOPROMISC change, should we remove the bit
+> > before calling WRITE_ONCE(vlan->flags, flags)?
+> 
+> WRITE_ONCE() still saves the new flags. The patch only skips the
+> lower device's promiscuity count update while the macvlan is down.
+> 
+> If NOPROMISC is cleared while down, macvlan_open() takes the
+> reference on the next open and macvlan_stop() releases it. If it is
+> set while down, the next open leaves the lower device's count alone.
+> 
+> I'd keep saving the requested flags. Clearing the bit would lose
+> the user's setting. Rejecting the update would require bringing the
+> interface up before changing this option.
 
-Add both files so the entry covers the whole driver.
+Ah, I see. Thanks.
 
-Signed-off-by: Coia Prant <coiaprant@gmail.com>
----
- MAINTAINERS | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 7336600952c8..4f24656f7653 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -26729,6 +26729,8 @@ F:	drivers/net/ethernet/synopsys/
- SYNOPSYS DESIGNWARE ETHERNET XPCS DRIVER
- L:	netdev@vger.kernel.org
- S:	Orphan
-+F:	Documentation/devicetree/bindings/net/pcs/snps,dw-xpcs.yaml
-+F:	drivers/net/pcs/pcs-xpcs-plat.c
- F:	drivers/net/pcs/pcs-xpcs.c
- F:	drivers/net/pcs/pcs-xpcs.h
- F:	include/linux/pcs/pcs-xpcs.h
--- 
-2.47.3
-
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
