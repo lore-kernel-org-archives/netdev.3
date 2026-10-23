@@ -1,100 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.51
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792766257;
-	b=p6h4g/D0+QPi+h5UiEgbQjRBBWr2qB6jXsRQMF3sSVpG4HYPcxpLFTLqRYqLCbGS8DJB
-	 xs6DQE0CPlm6QU0XMioROyG8dm+3PMkC9BTaqxwQxW3mV5dHd7r5AgpVvDc3nHvc9W6YK
-	 Oo2FrevekU3Cb74u691HEb38LRdkWjClMBHEYjza6YYk6wgnQpEW66SgwvudQCtzH+ptm
-	 v68y1dujKtkKKmIXfBb3giq+u9Y0LLKm2xSlmrSbraSJ5MtmRVktZreDVGjVjMiVETqMg
-	 YaMYP7HwXvZPKLniNHvHdND639QpwLWhgPH0z2NfHipFe1poIc/muCqN7cg3L9f4aOg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792766257;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=TbyyQ/cVBjURwEkpwzvfBfCIIo+L2tVbdO6SgJnUJTQ=;
-	b=ytcqHLiuGuCCoLkQKa84W0WKlqTX87XUoXexfI/k85RKWkIJaM7z5hcw0XpZnJP+gu5a
-	 HQqwDJ0f/FHoSnA7CPNkLzKf48d+UaK5PlkcwEYcOQiSZMt6DPS+JwIDdxVAawGdeoPFo
-	 ZOqL4efmSDyfHHvEWhfwCo3aYVF6tZhFvMxrQoldBEkLpmShUN1CgW9FLwKs8xI7b68Uv
-	 XMzmUncqeYJCzd6KvLN2dQNTGj3uD1eiCq8EKP+wdycVoRxvgniNU3Jy/kBwLFt2ijuWa
-	 6gatBl7MrLAMomHj1PP5RwOs/AJSd3JNoNqLjjqZvopgw9hIY9qw4n+gEx20UOzh9xQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=p3ursIpx;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.51
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.122
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792766312;
+	b=0nJPLS0eoAoGgTxsyL9sGK6ztF9zIdN/EYIE7Zd/nD7cO+Cf9jvmwn2KG8YS1ymtt94J
+	 Nf/anibDuk0MucTmgl5m2PLXGtm5BNxgHDb2Jk7AS3p4peZ5gcEiEGIarK1AHyEb316Si
+	 Kw87BhO/RV9AuX7GMSMOY1FqBG0W5seXojNtBoSBvmSiYZ81RlAhvW+8WwfC4jNi0caOG
+	 I5Uxjb7RxImoLaPnHl0R4Oq2tPaR0pmpAktoazfwjeGaL8L6nXR5iGMFtPTuCFII+6Vnx
+	 hBLw3AAAM50nFJk3P6/OD09Kz3sxUJq5j0A98NNL1R1r5ZoRGvuv5ZjSpqT8SXwowMA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792766312;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=kQ5Euxh4eWKfjmf+VxO2FAHxL5iuRQRr7X7DBc2dmGo=;
+	b=YwoUCU4zRZWE3zsAaqKrZxZ2xXoxfWX1dxtGayO8+BfXwm1DIAwrt7iTjffFpuvKMn7O
+	 ZcgsFzpgfyNmSzvMY/46V+m+4LPTaEmM4Snjw2NiRwqf2sfrXPCnxNR7fU9g6SQ20MD1L
+	 kzWrrro58gXY64KL6quWbWE7zYXPNPZPvZ32Vr1SSASCvWLtWeu0uHgvmZeRsMsSCyZeS
+	 aFzaJ3wlXs+J4whFt3ZWc4HyHK4EdjMthAtLvc9JR7YjjxbEMfeTdSi41m2CxT4a6029t
+	 APm183/61WhuIbJqaTHUbPZONYoXrHT+rIsH+INK0Xhx3nbWq8QefTAPEXYIWAfg/1A==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=FsoU2OQ7;
+	arc=none smtp.remote-ip=95.215.58.122
+Received: from mta1.migadu.com (out-122.mta1.migadu.com [95.215.58.122])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67AAB606A31A
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 14:37:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 67AAB606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F306606A320
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 14:38:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0F306606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=p3ursIpx
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso9341a12.1
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 07:37:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792766256; cv=none;
-        d=google.com; s=arc-20260327;
-        b=H5dryrsoaeKc/I8Poxh6Zt6g1pt+6TaYDNAfw9PU3MpymsxD489l0UAJm9MdeLOmgv
-         xFsRSQrYojZneL4Dind8aCCjHPsbs2K0W3/SPpYQWpX2AXaeVRmcpHEMZ5r5x/EzrCX7
-         yw0N0lPwS2EiaGg1jzw3RsCrEFkYNWLLU8wQYywRj3v9b0B82X2HEWyTRJzTOug7qbVQ
-         OQGWvdmsHbBexokxyOUooXJ/SkUiaCZ9fojhflmLvXyMITh8RRYJOM5+h0JzsyU5kgGj
-         Km9GTa5BFEY2oFQVWpUyRKXh0xgXqQ3iyGAyX+PaV85cfzdja8DmF8sUwZQIPCXx/ZJ3
-         0HWw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=TbyyQ/cVBjURwEkpwzvfBfCIIo+L2tVbdO6SgJnUJTQ=;
-        fh=hHYs2bWYE1ARUjDBcMtpRDZEgd1bgLzTnx6FGPuKLPc=;
-        b=T6u4uVpt217pBA6g1Ugsrp4rz1jcha1EF1VRbONOBLFcUkFggUW2BpDMOjA8dVgzgm
-         rJTrsXUXsl5mw+4nfPQSsdWhd1tsgatZJv/qPgKbljcWZMaYeIUgFjb3270WenRMZUDY
-         kB360LpkK3mfBcFIXB3Lu8olQjIbm6HmY/Y+MlEtE17962n2vVWvA+54L0WU3KqJwqeC
-         seS6X7Jqfy1/IkXFD74gmgYG5OQfexlfRj+fL2w02Z6nkFQQA8PMFKqs8GAcUQfOXi/l
-         y52m1GQAga5jG8PGnQOEUtSKhGuEz1vaicQqdCL6PEF4+s+OTBdPa63hWGYhvDnQrP7t
-         htNA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792766256; x=1793371056; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=TbyyQ/cVBjURwEkpwzvfBfCIIo+L2tVbdO6SgJnUJTQ=;
-        b=p3ursIpxyJZDB2tNwn3h9XYnKrcDfE4F0YhY8A7fDALnovncAHM8aWG6K309klyU/m
-         qyw3HIRWB3ZyhvozTRXS+rHioJW2Oi1ynfmRgT/ckbl7EULGnH9YTq7hazeqLvMMbumz
-         wb6HkNhgET1IRfZDgGxplaD/ghTj3PVXJuEH/U+LB2jQimeRKIo8ItITMowY/GoaCtLV
-         reVFc+gAmWXSmEnJkH2oZAVE8cxZFSEokJ67ms9hJizfiCtne0hg0Dw9wWqGVy+ydXnN
-         PuRpMilDTK9s/0BrfJzKC+ihqbNs0u0MpzqaOfJZkxF+/kqp2909UjhMR45LiMt/n4xo
-         6WDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792766256; x=1793371056;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TbyyQ/cVBjURwEkpwzvfBfCIIo+L2tVbdO6SgJnUJTQ=;
-        b=FZR0yO0flDbodHVaRIAL4dNyzEtjd84QVbKpr4zBBnJ3hZ6pDVR7K77sdN4ltqH+ew
-         JQ2jSb/Bk/wBS1gKWGDqLtXZsbCqLiEmeCGl+JRjLxtGlIJzILBBR9fqjMDLWO99iNsM
-         L1Shb3BtfHeiRZN2k0w22P9AdJUX5oGdDLrOSO6+tWxe3mPPzVGccGCk6lmEwZeDBsk0
-         hnquhzmLvS6+QRYnaNrh8sM+LCDEbaVVhV9u0R7r6XI6Cu0k2Gr2EtuSzc0W8VuH14KT
-         J5xoHsFLSXNWsbhMpKPKDwbQwnhDA3rHoob+uKSeG9GM6RWRfimH2FSTxBZw5kTcX0eh
-         3ZHA==
-X-Forwarded-Encrypted: i=1; AKwUvBzs17q7KN7mb3cmCQYUQ4pFCuUo+xqfsEZsG1aB7XALyCCyCYdZoNtvy9QZBeEu6TF2TBPFOz8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJf4SRn7P0EDZSktKUVk/l+VkDhMH672yy9ZVzyVuzetXPUb7h+
-	i7/G1YwfokOg28SdbRlL4NIB7vfv+nLcPQWC6Dv21LLA3cLXPCTH3YJMJRGaSFyeaJzUriTRgYn
-	6ShdiMj4BDuyP6HbHIXorklzDlnv+ny9eCBxq09mG
-X-Gm-Gg: AYBFou0L81WyrrYCntabrwnXukJFZE9pIubZCkk36QDimOj06c3kcAjAoJa2OjfSRMh
-	chJcntbxVy0BjMCi9Gh/b8ErEBmwlMAPmKzVSi9NDIMS1dejpthS8LRZykAdBOvDzGT95MbGJ9A
-	zKbpP5qS+DSurzPj31NuHyEqGDJJ6X7cb00ct2N4UxvLQeZJGONkEp/v31D/zSao4Zads/P3A3q
-	hsAYJJVdI/BpZbto6Vc43vy/jWrvyivssDUmD2lPOTJ2FqSq0ut7liN1Z8VZcW0d56+VcYaoeoJ
-	79z0gzllysnMLyGeX20AoS4jGgzU5R92b8xWAqZvFsq47VUEobeSe5WVoa7J9v/yUCmKCrFBXSf
-	YIZX8c+L9daxcl1s/vNoWjbjAKHSK3CyK311hvIse2/P4AckXVJ0N2vNWVSL7HH1dBCI=
-X-Received: by 2002:aa7:d74a:0:b0:6a6:7385:3eac with SMTP id
- 4fb4d7f45d1cf-6b43503ae79mr48860a12.11.1792766255144; Fri, 23 Oct 2026
- 07:37:35 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=FsoU2OQ7
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=j8gJ27Gf/j7LIMrLxBBttSWL/fhFYRGB6DAMZu/2NvQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792766309; v=1; x=1793371109;
+ b=FsoU2OQ72xj/oBQX3lx08Z/g80MwWHKlUATyo1RQQM8szwrqDeFdCFUB+6jA8/7Ll+Z3gGRA
+ guZcutHZ4LTNOUIMzYE275z4rIfm/16ZD691pI0gdB+JcoUvIBQ557qMu5sMFenUpRAB8UZbBCE
+ ThMoa+C638zPzK6CbrtY2YyU=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 0b8dddf8b4a13adc;
+	Fri, 23 Oct 2026 14:38:29 +0000
+X-Mizu-Trace-ID: 0b8dddf8b4a13adc
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <bda9e46d-9e70-495c-84e2-e887e707d70f@linux.dev>
+Date: Fri, 23 Oct 2026 22:38:22 +0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,115 +58,100 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261019-b4-skbuff-bug-on-followups-v1-0-41dbef50b9f7@toxicpanda.com>
- <20261019-b4-skbuff-bug-on-followups-v1-3-41dbef50b9f7@toxicpanda.com>
-In-Reply-To: <20261019-b4-skbuff-bug-on-followups-v1-3-41dbef50b9f7@toxicpanda.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Fri, 23 Oct 2026 07:37:23 -0700
-X-Gm-Features: AclHuK955ZVILJAXSd5ooCPOgIzdBikAhRIkvruYzZknz6V5xNQiHJHo5To2igs
-Message-ID: <CAHS8izOEYnqfNz_57u-JNiEC4OCB8MT5Gvuhi52rXkN6aQ18OQ@mail.gmail.com>
-Subject: Re: [PATCH net-next 03/15] net: skbuff: fail checksum validation when
- the skb can't be checksummed
-To: Josef Bacik <josef@toxicpanda.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, Juergen Gross <jgross@suse.com>, 
-	Stefano Stabellini <sstabellini@kernel.org>, Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
-	Fernando Fernandez Mancera <fmancera@suse.de>, David Laight <david.laight.linux@gmail.com>, netdev@vger.kernel.org, 
-	xen-devel@lists.xenproject.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 2/5] ipv4: fix shift-out-of-bounds in
+ ip_rt_send_redirect()
+To: Fernando Fernandez Mancera <fmancera@suse.de>, netdev@vger.kernel.org
+Cc: stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+ Kuniyuki Iwashima <kuniyu@google.com>,
+ Joel Granados <joel.granados@kernel.org>,
+ Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
+ Wyatt Feng <bronzed_45_vested@icloud.com>, Yung Chih Su
+ <yuuchihsu@gmail.com>, Hannes Frederic Sowa <hannes@stressinduktion.org>,
+ Flavio Leitner <fbl@redhat.com>, "Paul E. McKenney" <paulmck@kernel.org>,
+ Petr Mladek <pmladek@suse.com>, linux-kernel@vger.kernel.org
+References: <20261023091419.167088-1-jiayuan.chen@linux.dev>
+ <20261023091419.167088-3-jiayuan.chen@linux.dev>
+ <5dda588d-e6fa-420d-a73d-b5278094b59c@suse.de>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <5dda588d-e6fa-420d-a73d-b5278094b59c@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Oct 19, 2026 at 6:51=E2=80=AFAM Josef Bacik <josef@toxicpanda.com> =
-wrote:
->
-> __skb_checksum_complete() verifies a received packet with
-> skb_checksum(), which returns 0 when the range runs into unreadable
-> frags or past the end of the skb.  0 is a valid sum, so it's treated as
-> one: it adds skb->csum, the pseudo-header sum, and folds the result.
-> With a sum of 0 that's csum_fold(skb->csum), which is 0 whenever the
-> pseudo-header sum folds to 0xffff, so a packet whose payload was never
-> checksummed is accepted, marked csum_valid, and left with a wrong
-> CHECKSUM_COMPLETE value in skb->csum.
->
-> __skb_checksum_complete_head() passes skb->csum in as the seed, so a
-> failure there folds 0 and the packet fails validation, but only because
-> skb_checksum() happened to drop the seed.
->
-> Use skb_checksum_full() in both, and report a packet that can't be
-> checksummed as having a bad checksum, so callers drop it the way they
-> drop any other bad checksum.  Clear csum_valid, and leave skb->csum and
-> ip_summed alone, since there's no full packet checksum to store.
->
-> Found by the Sashiko AI review of the series that made skb_checksum()
-> return 0 for a range past the end of the skb.
->
-> Fixes: 20ddd0fd2fcd ("net: skbuff: don't BUG() on leftover length in skb_=
-checksum() and friends")
-> Link: https://lore.kernel.org/all/20261007-b4-skbuff-bug-on-v2-0-b9a5f732=
-895b@toxicpanda.com/
-> Assisted-by: LLM
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> ---
->  net/core/skbuff.c | 21 ++++++++++++++++++---
->  1 file changed, 18 insertions(+), 3 deletions(-)
->
-> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index 061c61422a38..40d2dd20d47d 100644
-> --- a/net/core/skbuff.c
-> +++ b/net/core/skbuff.c
-> @@ -3860,9 +3860,17 @@ EXPORT_SYMBOL(skb_crc32c);
->
->  __sum16 __skb_checksum_complete_head(struct sk_buff *skb, int len)
->  {
-> +       __wsum csum =3D skb->csum;
->         __sum16 sum;
->
-> -       sum =3D csum_fold(skb_checksum(skb, 0, len, skb->csum));
-> +       /* If the data can't be checksummed it can't be valid either. */
-> +       if (skb_checksum_full(skb, 0, len, &csum)) {
-> +               if (!skb_shared(skb))
-> +                       skb->csum_valid =3D 0;
-> +               return (__force __sum16)1;
-> +       }
-> +
-> +       sum =3D csum_fold(csum);
->         /* See comments in __skb_checksum_complete(). */
->         if (likely(!sum)) {
->                 if (unlikely(skb->ip_summed =3D=3D CHECKSUM_COMPLETE) &&
-> @@ -3886,10 +3894,17 @@ EXPORT_SYMBOL(__skb_checksum_complete_head);
->   */
->  __sum16 __skb_checksum_complete(struct sk_buff *skb)
->  {
-> -       __wsum csum;
-> +       __wsum csum =3D 0;
->         __sum16 sum;
->
-> -       csum =3D skb_checksum(skb, 0, skb->len, 0);
-> +       /* If the data can't be checksummed it can't be valid either.  Le=
-ave
-> +        * skb->csum alone, it's not a full packet checksum.
-> +        */
-> +       if (skb_checksum_full(skb, 0, skb->len, &csum)) {
-> +               if (!skb_shared(skb))
-> +                       skb->csum_valid =3D 0;
-> +               return (__force __sum16)1;
-> +       }
 
-I think maybe we need to be careful here which are all the skb flags
-that we need to touch to indicate that the checksum failed.
+On 10/23/26 10:11 PM, Fernando Fernandez Mancera wrote:
+> On 10/23/26 11:13 AM, Jiayuan Chen wrote:
+>> ip_rt_redirect_number is the max number of ICMP Redirects we send to one
+>> endpoint; once we hit it we stop. Before that, ip_rt_redirect_load gives
+>> the redirects an exponential backoff:
+>>
+>>     if (peer->n_redirects == 0 ||
+>>         time_after(jiffies,
+>>                (peer->rate_last +
+>>             (ip_rt_redirect_load << peer->n_redirects)))) {
+>>
+>> n_redirects only stops growing when it reaches ip_rt_redirect_number, 
+>> and
+>> both redirect_number and redirect_load are plain proc_dointvec sysctls
+>> with no upper bound. Set redirect_number past 32 and n_redirects climbs
+>> past 31, so "ip_rt_redirect_load << peer->n_redirects" shifts a 32-bit
+>> int by >= 32 bits, which is UB:
+>>
+>>    UBSAN: shift-out-of-bounds in net/ipv4/route.c:949:6
+>>    shift exponent 32 is too large for 32-bit type 'int'
+>>    CPU: 1 UID: 0 PID: 1845 Comm: ping Not tainted 7.3.0-rc7+ #364 
+>> PREEMPT
+>>    Call Trace:
+>>     <IRQ>
+>>     dump_stack_lvl+0xc1/0xf0
+>>     dump_stack+0x10/0x20
+>>     __ubsan_handle_shift_out_of_bounds+0x1d1/0x390
+>>     ip_rt_send_redirect.cold+0x2c/0x146
+>>     ip_forward+0x1ddc/0x2430
+>>     ip_rcv+0x2b1/0x320
+>>     __netif_receive_skb_one_core+0x16b/0x1c0
+>>     __netif_receive_skb+0x21/0x150
+>>     process_backlog+0x37e/0x1200
+>>     __napi_poll.constprop.0+0xa5/0x5e0
+>>     net_rx_action+0x4c0/0xf70
+>>
+>> Fixing this from the sysctl side would mean bounding both knobs, e.g.
+>> redirect_load to [0, 65535] and redirect_number to [0, 16], which gets
+>> in the way of users who legitimately do not want to cap ICMP redirects.
+>> Instead compute the backoff in u64 with the shift count capped at 31,
+>> which cannot overflow since ip_rt_redirect_load is an int, and clamp the
+>> result to MAX_JIFFY_OFFSET.
+>>
+>
+> I think we should cap redirect_load with a minimum valid value of 0 on 
+> the sysctl. If the user want to disable ICMP redirects or do not cap 
+> them, they should use 0 or -1 in redirect_number IMHO.
+>
+> What do you think?
+>
+>> The clamp also fixes 32-bit kernels, where the same expression goes
+>> wrong long before the shift count reaches 32. With the default
+>> ip_rt_redirect_load of 20, from n_redirects == 27 on the result is
+>> either truncated or too large for time_after(), which then treats the
+>> deadline as already passed, and from 30 on it is 0, so every forwarded
+>> packet gets a redirect again until ip_rt_redirect_number is reached.
+>> This needs a raised redirect_silence to be reachable, otherwise
+>> n_redirects is reset long before. On 64-bit, ip_rt_redirect_load << 31
+>> stays below MAX_JIFFY_OFFSET, so nothing changes there.
+>>
+>
+> Isn't the same issue in 64-bit kernels too? In essence, it would be 
+> (int << u32) which results in a negative value and that is later 
+> sign-extended to a corrupted 64-bit value. Am I missing something here?
+>
 
-My LLM is recommending:
+Thanks for pointing this out, agreed. A negative redirect_load never
+meant anything: with the old int shift it just made the deadline land in
+the past, i.e. no backoff at all, which is exactly what 0 gives. And once
+converted to u64 it would turn into the maximum backoff instead, so it
+should be rejected rather than silently mapped to something.
 
-        if (!skb_shared(skb)) {
-            skb->ip_summed =3D CHECKSUM_NONE;
-            skb->csum_complete_sw =3D 0;
-            skb->csum_valid =3D 0;
-        }
 
-Seems ip_summed =3D *_NONE was caught elsewhere, but also maybe
-csum_complete_sw=3D0 makes sense.
-
---=20
-Thanks,
-Mina
