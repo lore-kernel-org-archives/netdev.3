@@ -1,123 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792779476;
-	b=pIFsdJOweVvGmV8C82uQbU3XyILRgi7saMDXEO/9tnR0wyPbJnyw1hMh3v1VOHPOgJQp
-	 eVjFcLHswmXMlFOUp18nD/JJYgHIxq8/w4XXA3f+oCuVTVBR4aPSoAdx9lYCIXBcEdLRW
-	 gDWSm8UxvQJQVrwNs6JhlyMkO4Fm6rVBkU7lZrCmScQuo0orXQTLuDjVylEyHtVRrANip
-	 61ROKEExfDwsdX39MqHrC86qAwzAc4tEbeOLMjTdyEz6VVHRnJDBHzK9h4sfISHPTt295
-	 TR1k5r3F0kNGB9EvFl4It6hxKUqGJ/LjU8u71awt30GrYvPt+jO+1Yj0XRNPgu+Wd3A==
+	t=1792780209;
+	b=SFZIpsPJxI86RoGwWRaq13MPMADcEsCAh91jeUFD8fMfh/tmlufmP4AQTtqUP+t/Zl0T
+	 /LRHzbP37IfmHLAY23wChQLewrKQ4oO/+j/5VKfuxCi8idbMvAnQp6jauX9YQmqOVoggR
+	 uNPjnBlJWyRezS8vFzY2yW/xK9naPci86FK5mB/+pfPmT6BAtLRnM4M8AUvkYdMpTPqee
+	 BRcD9ICZK4SjZ40lM9TyJz5WQAYcNsKjmtuR0V1oHvFxm8OT9E9QbmTGBr0jfFnWx0/oo
+	 CRXB0uZy6m10CQeMngJtHEjJcoH1QBmz2pTNzhAigHyoqljGZE/JP4pcZW/Hoam7MVg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792779476;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:From:To:Cc:
-	 Subject:In-Reply-To:References:Date:Message-ID:User-Agent:
-	 MIME-Version:Content-Type;
-	bh=5LxNtIZvdjONqrTpoN2AwYKMzojJ1AJCqiw4LF+p3CQ=;
-	b=Da0Gedq/D6PltfuKwmTlETqcuO+1iHOKx5guZgZkFCpbisDwkabJbOJbYMh3hQ1iOlnp
-	 3W+A1X+PmQVE6WlZa+UT6/w+WOT1ibLnr4txxbiQPG4YRG4X2eeHN6RMp08I2vRJUhRB7
-	 XGKTUGw1LKfgfRzvxtCACkcuxUCNOAWwnhwXfYmrLQ5pOM2n/ottuDekVy0Aee8r6ru4l
-	 pgpDRAYrh6JO96tZiuap5HpHU/gLjCSW/DjeV4hcFjP2J6bD3vFTGoqfUbghd/eicHbUv
-	 3p8eo97ztOwAujAtrlqlBa5G2i8Blps8EFtyDxJZVZxyhJB3/WyO3IwebzfXq7BIeEQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792780209;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:From:
+	 Content-Language:Subject:Autocrypt:Organization:To:Cc:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=RJHkW4P9rvkXZylcA2oob1/AdCb9LZb0okom+sgf/YU=;
+	b=t7HJXyGvylJ1fx845gHFzphFhc9uc70gv48zETa48Gk83GkdgiczA7D0WV5CBLENStZg
+	 COhdMQEsP/x+OpGs8MH7RkEcY9t41uDeokbUZEnNlK0Ahbd57D9n8836/mRbGB2W+t3+J
+	 38i0EfmM8zB3HZhw8ZgihK/BoSUcR9K156taGuQSo76J/N4uOhl6K5AiW5Qgi2mH/hSXp
+	 fVwKjOeS/xqrdiwXWpiQT85rulXw7AUnj6aHSGuuE7xCwJApu043SWSaLdhiJuxAxrIFA
+	 I+SJwQ7/JWfqjiW4C23ODPNd1VaKSun63sCt/4o2qnwhYGgOMuzir/XOYBqY5+hqW7Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=h1kU2J4w;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=HX4IGHDY;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LD9lu6+i;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F1F606A31E
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 18:17:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 24F1F606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980FD606A31A
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 18:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=h1kU2J4w;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=HX4IGHDY
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792779475;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5LxNtIZvdjONqrTpoN2AwYKMzojJ1AJCqiw4LF+p3CQ=;
-	b=h1kU2J4wUYRE1cIJ01iH5k9cwcvhIrwa8UnOuNgKZFIvQz6EbMYnN6IrCjYXvyeJ77TdYA
-	vMtot2ytaTCqCwetCPhZjMLhu2kfasUsVzjRO29I0QsLKwRljuvUdIuYg+SfduEe+vxgen
-	6dIuGJ7ncyei4051R5OKpS0fVBktx0w=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-531-WSf6Thz9OGKQ9k9GWfBXyQ-1; Fri, 23 Oct 2026 14:17:47 -0400
-X-MC-Unique: WSf6Thz9OGKQ9k9GWfBXyQ-1
-X-Mimecast-MFC-AGG-ID: WSf6Thz9OGKQ9k9GWfBXyQ_1792779466
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a1e295b702so11741515e9.2
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 11:17:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792779466; x=1793384266; darn=vger.kernel.org;
-        h=content-type:mime-version:user-agent:message-id:date:references
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=5LxNtIZvdjONqrTpoN2AwYKMzojJ1AJCqiw4LF+p3CQ=;
-        b=HX4IGHDYdIrjok1aszOL8xIYdFvRe9IuFtViIn98rOpyfBSQMBPPmTTdL0coieXgsy
-         y3ovUD9tVAAcV4irP49ao5VYh4y2RRJH1wAXK6Bm6mG1D22AZog9egOQu9Q5mD4IiTEy
-         9WWSvaGluO4A9MvYqfw/I1VOTfFgYpTFsgL0LzxiSmIkuEcF0stncJUmV3Xjbu6cYJXj
-         CwvUzOCk781ToU434BGnd63vIhthMoAYX8sCxWpKUlXulquSwxyJ428pUWymJLzbc0Rh
-         j/NjtDY30rPe0t69ZgxovrFlrvjgfm62m++GBGc5FK3uuTpGgmVcj0jfp0iHbnh47Zeb
-         hh8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792779466; x=1793384266;
-        h=content-type:mime-version:user-agent:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=5LxNtIZvdjONqrTpoN2AwYKMzojJ1AJCqiw4LF+p3CQ=;
-        b=Xe2gIw6vlsSQ18Q7UtSqtWVgflY/4a7KXCfnfbtLnDxzlJryOWeRxRi9ZQtaE4LZ4C
-         fn26Y99hiBSOVHcDxETni2vJtQq+rZH9QkmkhQQezw/4ruCBPPfaaYAyABH8FvRZtosX
-         Bp8CzZDdbsFqTYvunyka5YL+8rcgBRPKBi02Wm3dzkrTisgf00uLzqCWJkCRHglr0xF5
-         zwg6wBSSz1T5xt1H1UHR3rxBRkJVhYUt3V5ae42vNAiC/dbA7JQrF2Qo61AwQ6Ebyrqy
-         C2F7txgz6pgb1WwdLYXSMtnk+UU1cXFqQGnROWkqlEbZpWgsfbO0wqjTUkYyUqeVnxrx
-         A2pQ==
-X-Gm-Message-State: AFq9FYJeUkiTk7gQUAu4aniY3VYsNY0ebKpoRPEK/RFmee1vOXyEZpN6
-	ZNCKwEjm/+qWUk8OemkLBrbj936PnviRdN6bBxbYpMfmhB5yMABLKlnSKsmjDAHzf8nvqOJnWIH
-	9E0px5fZkLiVOWvAzdX8cr2MhNGBBhrGsGsOD490Lim5uE9hv3W0GYis59w==
-X-Gm-Gg: AYBFou0Z5cCsDOC1XWCTFg19AN/q4cR4E+dpcN5Ff2HUc8mSnPaVZKH6pEyWRHkZfFf
-	v+8UYwIMeODJ3Vdp3j7s0DyK4dbSHKbHq4g6sPBVeY8Etir7ax4Kg/ZRrkxsFyHcOBYFTwCMydS
-	AObw4RqVGqMpEhRqrJnGKeNJRSAW/0v48pQAXu4WhgvpaMh2HRO6SJwPEcMUQ2wokFG3F+qbm/f
-	nujpjkQbLLWkKCYph7LUsTh9V6Wu3c0qIunLSRxKJZkNzDU3OaaL7amDQJnLJh1oVUaQe2YGBKY
-	kyAoGafTRkHqhZDtZ9trsdcKCz5Dl4/A2l9vRFFNQXIvvNQQMvXmAk5H4BWviRjfpLsJNzg6r0r
-	5+Xd2OL7BbQf7aLGTP2Wgmw3bsmsuUA==
-X-Received: by 2002:a05:600c:6099:b0:4a3:59c9:a743 with SMTP id 5b1f17b1804b1-4a359c9a82cmr2965855e9.27.1792779466511;
-        Fri, 23 Oct 2026 11:17:46 -0700 (PDT)
-X-Received: by 2002:a05:600c:6099:b0:4a3:59c9:a743 with SMTP id 5b1f17b1804b1-4a359c9a82cmr2965665e9.27.1792779466176;
-        Fri, 23 Oct 2026 11:17:46 -0700 (PDT)
-Received: from aconole-thinkpadt14gen4.rmtusnh.csb ([216.212.39.190])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a35a03654fsm27225e9.2.2026.10.23.11.17.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2026 11:17:45 -0700 (PDT)
-From: Aaron Conole <aconole@redhat.com>
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: netdev@vger.kernel.org,  Eelco Chaudron <echaudro@redhat.com>,  Ilya
- Maximets <i.maximets@ovn.org>,  "David S . Miller" <davem@davemloft.net>,
-  Eric Dumazet <edumazet@kernel.org>,  Jakub Kicinski <kuba@kernel.org>,
-  Paolo Abeni <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>,  Jiri
- Benc <jbenc@redhat.com>,  Pravin Shelar <pshelar@ovn.org>,  Jiri Pirko
- <jiri@resnulli.us>,  Victor Nogueira <victor@mojatatu.com>,
-  dev@openvswitch.org,  stable@vger.kernel.org
-Subject: Re: [PATCH net v2 6/6] net: openvswitch: ensure a linear inner
- Ethernet header on NSH pop
-In-Reply-To: <ACT-N6N4.v2.r0.20261022191829-6@mojatatu.com> (Jamal Hadi
-	Salim's message of "Fri, 23 Oct 2026 07:59:21 -0400")
-References: <ACT-N6N4.v2.r0.20261022191829@mojatatu.com>
-	<ACT-N6N4.v2.r0.20261022191829-1@mojatatu.com>
-	<ACT-N6N4.v2.r0.20261022191829-2@mojatatu.com>
-	<ACT-N6N4.v2.r0.20261022191829-3@mojatatu.com>
-	<ACT-N6N4.v2.r0.20261022191829-4@mojatatu.com>
-	<ACT-N6N4.v2.r0.20261022191829-5@mojatatu.com>
-	<ACT-N6N4.v2.r0.20261022191829-6@mojatatu.com>
-Date: Fri, 23 Oct 2026 14:17:42 -0400
-Message-ID: <f7tse1ws2m1.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LD9lu6+i
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA291F01825;
+	Fri, 23 Oct 2026 18:30:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792780209;
+	bh=RJHkW4P9rvkXZylcA2oob1/AdCb9LZb0okom+sgf/YU=;
+	h=Date:From:Subject:To:Cc;
+	b=LD9lu6+iDYTy6LzHTmhGSOEm6GsciXTF/2G6u9334wT7tNjA64f6f1ckxkrCGV02K
+	 f/fjKECHJNzDYmaVKneL+THL+0jOovw8XN6OJNPmcswFMfUtv9PXLVptRd4XdTcPi1
+	 IdOIRvR1H5xI7GZe+vBCXDuQTtctjGbzEPJoWt0cy3sHkYQgUNsQWPDwLLrkiStQAo
+	 i/ocGZSj/kAXHS8RoygobRkNY5NK5gbyri7ml3uCNT8tlxJOHodCk7kMfcT+yKBXtN
+	 r3AokgN2zcjHK5dQwW/rZ9hp/aqyKwYna46Gv9b2Qp5EqS3oxSP58bRHHQ32yHAj7B
+	 S5kGezp5bCp0A==
+Message-ID: <5aec31d5-d042-4263-b3df-fa5a6a1399ec@kernel.org>
+Date: Fri, 23 Oct 2026 20:30:06 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -127,56 +51,91 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird Beta
+From: Matthieu Baerts <matttbe@kernel.org>
+Content-Language: fr
+Subject: [TEST] Intel's Netdev-CI: a few flaky tests
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+To: Adrian Pielech <adrian.pielech@intel.com>,
+ Przemyslaw Kitszel <przemyslaw.kitszel@intel.com>
+Cc: Netdev <netdev@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Jamal Hadi Salim <jhs@mojatatu.com> writes:
+Hi Adrian, Przemyslaw,
 
-> The issue:
-> pop_nsh() restores MAC_PROTO_ETHERNET when the popped NSH next-protocol
-> is TUN_P_ETHERNET, but nsh_pop() only guarantees that the NSH header is
-> in the linear area.  When the inner Ethernet header sits in a page
-> fragment, the datapath then claims an Ethernet header it cannot access
-> linearly.
->
-> Output to an OVS internal vport then calls eth_type_trans(), which
-> pulls ETH_HLEN from an empty linear area and triggers the BUG in
-> __skb_pull():
->
->   kernel BUG at ./include/linux/skbuff.h:2830!
->   RIP: 0010:eth_type_trans+0x335/0x500
->   internal_dev_recv
->   ovs_vport_send
->   do_output
->   do_execute_actions
->   ovs_execute_actions
->   ovs_dp_process_packet
->   ovs_vport_receive
->   internal_dev_xmit
->
-> Conditions to recreate the bug:
-> On a system with 4 KiB pages and CONFIG_OPENVSWITCH and CONFIG_PACKET
-> enabled, use CAP_NET_ADMIN to create an OVS datapath and bring its local
-> internal port up with MTU 9000.  Install a flow matching an Ethernet/NSH
-> packet with a 24-byte MD1 header whose next-protocol is TUN_P_ETHERNET,
-> and actions pop_eth, pop_nsh, output to the local port.  With
-> CAP_NET_RAW, send a 4148-byte AF_PACKET/SOCK_RAW frame containing outer
-> Ethernet, the NSH header, inner Ethernet and 4096 payload bytes.  The
-> two pops consume the linear headers and expose the inner Ethernet header
-> in page fragments.
->
-> The fix:
-> Pull the inner Ethernet header into the linear area before restoring
-> MAC_PROTO_ETHERNET.  This is the NSH counterpart of the MPLS/TEB
-> producer fix in the previous patch.
->
-> Fixes: b2d0f5d5dc53 ("openvswitch: enable NSH support")
-> Link: https://lore.kernel.org/netdev/e85fa16e-df3c-43dd-bb3a-9edca07200ea@kernel.org/
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Jiri Benc <jbenc@redhat.com>
-> Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
-> Reviewed-by: Eric Dumazet <edumazet@kernel.org>
-> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-> ---
+I hope you are doing well.
 
-Reviweed-by: Aaron Conole <aconole@redhat.com>
+While looking at the results on the Netdev CI for the Intel runners, I
+noticed some tests are quite flaky or constantly failing. I marked them
+as "ignored" on the Netdev CI while this is being investigated.
 
+ https://netdev.bots.linux.dev/flakes.html?tn-needle=intel&pw-y=0&br-pfx=net-next-hw
+
+Do you mind looking at them, please? :)
+
+
+Regarding tests that are constantly failing, I guess you are monitoring
+the results, and you noticed that gro_sw.py is failing most of the time
+on XL710 (i40e). If it is normal, it might be easier if you block the
+known bad tests from running on your side. Note that around September,
+there was a split of gro.py into gro_hw.py and gro_sw.py:
+
+ https://netdev.bots.linux.dev/contest.html?remote=intel-i40e&executor=i40e-XL710-Q2&test=gro-sw-py
+
+(gro.py was failing before)
+
+
+While at it, some tests running in our lab with Intel NICs are also
+flaky. Maybe that's due to the same issues?
+
+ https://netdev.bots.linux.dev/flakes.html?tn-needle=netdev-(E810%7CX710)&pw-y=0&br-pfx=net-next-hw
+
+
+Thank you for your help!
+
+Cheers,
+Matt
