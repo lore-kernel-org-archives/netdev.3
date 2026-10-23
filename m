@@ -1,82 +1,106 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792775921;
-	b=stOCSYe4PtL284Utd4F719k+M2J5RvEOa/EFPucQDMxeLttQ+TL2GKmS+oNE07AjZ9bc
-	 UQHBoqG3HJo7sCEU3jpb+zto0QvfJiktLIkqqyMB8uqSGK6hI8XEQOT3Sq/J8CMYoWieP
-	 Nc6dsis8LUXVyHoRziQIm5EBcucJ1dxOiVBVK51C3rvOtZPdUdgq+vlH50WBtDjAm/CRk
-	 TWK8pc6MhTeMUVi1l4BSBRLyPRDQJU7E43qyBgrU0YS8YMuYXtHPVLbTEKzQe68w4gRGu
-	 X2xMV8m6DUaOdx9jzGZwDVU2POmgAb7TM+FBlCHfbKImOL6MfFRXt+gPgyJVkOBtXLQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792775921;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
-	 X-Proofpoint-Reinject:X-Proofpoint-GUID:X-Proofpoint-Spam-Info:
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=67.231.153.30
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792776060;
+	b=a0zXO4cIRF0ca9QtMSrpZhtl+M/nAN3718NYv/j7jrrAMss30z/WGu9uAJOGHCGqksBc
+	 di44sJtkp8doypO+d51C5yBEAUCOXo8Lqdsq0xg41ZWtiEZcibLSMLJB+hf1H566olDZL
+	 rMfVghOShxYRnervG+YBA28WY9f2fm0CqTyVvScw9Yqwc+XlwGZ13DalXTWDHK1Ej7i9K
+	 p5IcLCKRq/l5WhRqkcZVGME8Dta8D2avWG4hPRkPwKeEjyOfId3mC9p6EU5ed6wXk0e0d
+	 XiTsc//8ybolbiasZUL2UfyJSEsNoYVu2piD2pOMP20R4woV/7oVUExprl4vG44W3/g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792776060;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 X-Google-DKIM-Signature:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type:X-Proofpoint-GUID:
+	 X-Authority-Analysis:X-Proofpoint-Spam-Info:
 	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
-	 X-Authority-Analysis:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=+PpTXqmlLnD1gkK9da5UA4ivV9Yaq55UolUi13Wutkg=;
-	b=bmWYUbWaw1n6Daz5T1XMrlF4eKV3l0iYhvZHIvbA3Pl7XNOMX1Pv3pWoARUnP2ySOPvp
-	 Lki9f/3dWed+vdAar3J52zXYKYnvnS7BvXRsIyuteFMse/5aBiPuzb3kjW/lvpHk2WSVl
-	 9OSFgc6xapxoB8PrN0R/asdhOwf6bdS8LrS/d3xjBxY9SAIfU3U2ZJSuEp9ugmj7vUbRY
-	 dei4XLdhlkafKGVWVOreT9GM7sQ4aPJ2F6SMFg9SSJBi0usTT6LGx1RPDgdLbLdYhuYDw
-	 jYaqSiADmcQ784JVooVO5/fpaf5WdOFT1z2mcHhtr+a85cqotAnpx/TVT4W2KqEWdxg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b="AoFg/Mh0";
-	arc=none smtp.remote-ip=148.163.156.1
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	 X-Proofpoint-Virus-Version;
+	bh=0nbb1+gmo3RWuWZWMTmbysNnHRUp8yuozX3bwCuD0eE=;
+	b=ZRyvgJIJAUPI4GG0tdEAKmVvzZALOUpVU1uyfZ1qh9r1UrwLSnf7D2N6Zk6xRgeVJ4yX
+	 kWQ4PtHl8TZvZ5Wyx7k4kHP5jU/S4a1zYJn9glOqx/BcJoBss1M4IrTZQK0Q6qEPHdno2
+	 Rzxj+Widyg3qtV2BqIydJ6S/ATXTVvorl0L0hyN77o0Qe577yr0+jiVzym8FbBguxJPh/
+	 cINkfA2gaczkr1WreObsWXH2CED0i2MQmDnwBhoCNNv1MN68TuUiyxl02Gv/rbBJKWeBr
+	 nHK07qtS789aLGC+5CkXVdq9XNEWaYNKomDwZNvyEyb3JeprNWf9DjegUmITaqO5wHA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=meta.com;
+	spf=pass smtp.mailfrom=meta.com;
+	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=h3kNNRZv;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=67.231.153.30
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED0360A2608;
-	Fri, 23 Oct 2026 17:18:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CED0360A2608
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14813606A32E
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 17:20:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 14813606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AoFg/Mh0
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69NGoToR3668699;
-	Fri, 23 Oct 2026 17:18:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=+PpTXq
-	mlLnD1gkK9da5UA4ivV9Yaq55UolUi13Wutkg=; b=AoFg/Mh0pNfHGvARrKU9rN
-	REmBY0KHAOdJTdNcXPEetMTT9VflTtuAt7wqK+D3l6CWUqZyP9hU4P9MGw8JFH9L
-	sAIq1HFCp0sIMO+qAU/2/F4ZZnRiHJdamDI0HwmA4C06KWpHDYqVIghSf/5fwljy
-	grzFO5BPje6MHOdncbAIKMydAtG6Jb/Pp692LkeVo77WMbykkZH6iT3gPvYryy9V
-	V1gJX0JpkI4+JgiE5TBVTx0V6FTT5KawcxFqKGUfUpEhF2S50EvqPCu5tTGIamL+
-	btL7N8p00+kskZtZbjjpZPqWcT0ADLuwbaGxxHd8/dz2iUkFWWlbc2+V6sHRmjmA
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hdw596ke0-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 23 Oct 2026 17:18:23 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69NE64fV1018552;
-	Fri, 23 Oct 2026 17:18:23 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hg5exsn5u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 23 Oct 2026 17:18:22 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69NHIL5o15008382
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 23 Oct 2026 17:18:21 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 213B758059;
-	Fri, 23 Oct 2026 17:18:21 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 86F6C5805B;
-	Fri, 23 Oct 2026 17:18:13 +0000 (GMT)
-Received: from [9.124.220.1] (unknown [9.124.220.1])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 23 Oct 2026 17:18:13 +0000 (GMT)
-Message-ID: <498db6da-c461-4bba-a2aa-2415e99aeb97@linux.ibm.com>
-Date: Fri, 23 Oct 2026 22:48:11 +0530
+	dkim=pass (2048-bit key, unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=h3kNNRZv
+Received: from pps.filterd (m0109331.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69NE6haD000515
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 10:20:58 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pps82601-s2048-2026-q3; bh=0nbb1+gmo3R
+	WuWZWMTmbysNnHRUp8yuozX3bwCuD0eE=; b=h3kNNRZvutJwWAllbDFrnQwAZTw
+	LG+gBqrvftpvkVL2Dj7rqcYubAM29ajILxm6v6nsanzUkBIpg/GCbDS1qVcDXwm+
+	VGaWd2n0sEFU2xw78bl/HyX/fYYAcLSdJnkYRPo27n0TzdrJWVk3H2xhd2CuJo84
+	aIK+kKO8TNgQKua3fQkgSyQb2AtLi46S7f955iyyr6qeRE6rR8qU3TP0vZyDWSfY
+	53asbrSxz8jlpPYUtbPkGhrKeW/oGOrXR7PrtXj/IcHFFTMzNlwUth43qkugZ/U6
+	syPiY8YaLwHhXU0xXQbf5DUS9WaF2jSp1USV9GmOL+cNuUBohsK9vhSnYBw==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hf9mxchb1-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 10:20:57 -0700 (PDT)
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2ea71803effso10734465ad.3
+        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 10:20:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792776057; cv=none;
+        d=google.com; s=arc-20260327;
+        b=DLKws2Vj9NFXGfDHst3/3BhxII9VeT6CEvk6G7Cq3QajyjDOdGygPS+tS7YWAykjvc
+         OpE93pGX07zcSDfOMBUCBoN+YdPA+Ea/bD5ZwGcqFRhnoLsCYnSKeack6shvPjGmRIql
+         bEO7/95nucGa9WrFUPKeDykmGaT1+vm+0/jShZanniOosE9urJ1N/sWLt9tjW8jqa8qt
+         v5CPxfMGf7UtNufKO56axkf//hmmjJ8cZ8qTdnONFKA8sHwEh5IJELI7Q9pmy8h3luBx
+         g6fwO5lgAbC+YtmL4xNigXMtZEEagnoMbKNJOc63MNZ7DMco0MoRHvmX+ZWiMl3ZP0dw
+         jzVA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version;
+        bh=0nbb1+gmo3RWuWZWMTmbysNnHRUp8yuozX3bwCuD0eE=;
+        fh=Gy957YhP/bIcmyJ7BgG3Dfjg1w3vremvzYvdibXp9YY=;
+        b=qb1UHSni2MF3OU6T04LAKEtlYcd3FCXtROdvqW+6y/qepQmR/uFhG1QDnI09fj9/dL
+         KruZFdvVxwCsttrBNQpS4FzEk4GgSnld7a50+5+kSvHWKFRoa35zg85ML7SumbsfpKiY
+         ELPJT6ccVtAd6JaJXyQiGS7okD5NR0u1hHgTX+PumTEJ75l+dM4jJv19m4LFswhFAlmX
+         h8xYwI5hlczbUdxq6ObwuqJE1Q7Xvi6ceXb6mG9y2dMzAJlLaiTkeCrOoItkdv3/420e
+         lLvCNuLf1eQJroJmvRiVVz92sKGGbSopV9uqFDdkkzSk6s66LF5yYvyjIf5nP5Qv6ok7
+         vsuA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792776057; x=1793380857;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=0nbb1+gmo3RWuWZWMTmbysNnHRUp8yuozX3bwCuD0eE=;
+        b=0dON9T6TVwHGYdRDQGv7/N6+Hx4ycB204PXH/9PNqmVW3ilyvwWxgFinTEgDRBie2Z
+         Cpz/66JiSsjUD5PMde6iAZulScuSiIRZx+K0mDwDyY5bIyAx3Bs4k/3YYc/Zxpzh5yoD
+         0kBe5Ti5wyJTbQiXy8AQCQYTO2Udi8H7veq4MKRlKVr2/7ssNDdV/IxiG8Q68UZvPnpd
+         +fa6D6eCwaX/Lz3iiaCYmBZkwJhmg5VVy0kqS+BDf/KqG40Va9NKmaZRtH5Bu/dXxopt
+         C+slTRLwmIkTDMlivOf9T0KhUjsasNRB/5p5L6Ib4eYExYCwx+0xaZbZckawpFLcNyLm
+         Nu+Q==
+X-Gm-Message-State: AFq9FYKs6EUHDwjNWvCfPSY9QRvVvmaJgHw+bJSXIegQz8ByJ1B33HRA
+	DTLSR0WB2/r8hiTuAqt1qq6PRDPlOV23iu466CwrPjpc5vJxN1l0RmMedFATEFIz+Iaa1mVV9IT
+	X5RvNPFvT+heiTGecyaufWBoFkY7qDEdDFZA1jceWPRMgTym8qb6NoHylVLQDSj0nzGnpRUJDY0
+	Q+deTsMBcIQ22yXA573zXM9fLCIrZtsYs=
+X-Gm-Gg: AYBFou2+aNbrC/Ba8BuJ6YKWCHbFegNJ1GOZvdvrpXfP6Z1DfT8hlJbTAkF7UqGT//r
+	mDK4A36HDdP2EJIOF3qZbpHKE37Prjk79r2eexj0YBh/REJPonCMqc06G5B0sj6DRxNpKHPtpLw
+	DmUZNJWrJBM/u3n2R0jvOorUqxU5qz9GBiVMj0QOMpPJZO5z89RQgxr/vICgXYv0O4wwf0sRvme
+	leMN9twtSNZASrk57sXZTCu7KB+zFrR
+X-Received: by 2002:a17:902:ffcf:b0:2e9:658f:c33e with SMTP id d9443c01a7336-2ea7ce435ebmr26441455ad.8.1792776056567;
+        Fri, 23 Oct 2026 10:20:56 -0700 (PDT)
+X-Received: by 2002:a17:902:ffcf:b0:2e9:658f:c33e with SMTP id
+ d9443c01a7336-2ea7ce435ebmr26441315ad.8.1792776056075; Fri, 23 Oct 2026
+ 10:20:56 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -86,77 +110,90 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v13] net/smc: fix lgr/lnk lifetime vs diag reader race
-To: netdev-bot+sinfo@kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
-        dust.li@linux.alibaba.com, sidraya@linux.ibm.com,
-        hidayath@linux.ibm.com, pasic@linux.ibm.com, horms@kernel.org,
-        tonylu@linux.alibaba.com, guwen@linux.alibaba.com,
-        stable@vger.kernel.org, netdev@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
-References: <20261023150317.1163397-1-mjambigi@linux.ibm.com>
- <179276799858.3327.5559074809059802819@kernel.org>
-Content-Language: en-US
-From: Mahanta Jambigi <mjambigi@linux.ibm.com>
-In-Reply-To: <179276799858.3327.5559074809059802819@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: 9_nVIsYayCM8tqTaQpAz10y9qEi_Oj3z
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIzMDA2NyBTYWx0ZWRfX4gNvBXi7Rv7z
- KsycYt2DKAE+PIzvggabMavLgIJfL99QbfgGOb41VwU4G+ztlHtG2BOXWvDK8UgL0XvgWakRGzj
- zTiWcvkIGat5FvDhH9GynEvRlHJQidg=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIzMDA2NyBTYWx0ZWRfX0mU0URRhcLQy
- EpNvllxGNODaJx26ZnEPr7CSjLdLB1osXDCEedneduhAl1Ae50ZpBc4uqu6F8P+kDO33er3bsvn
- 5amuDZmiTG4+nkG6RntAjkQnmrMjwL3Juhly/dNLYcyDKZwVdXxE/9KoCVnwD8zmvB6atEs5LRW
- GxRaE9O2rzPVwBcF8uchyHVCGZO8EWxa+vU0gIinwdKPuuFuA9gUXmL7B5h9y/B4pApCaLPBpLV
- wpok8foBxHg2k27wFgND6SY8j/4Ulk3DLkHLR3NTdDHwcy5BSXpl1U1ZFzxZLjNf6/mndNj8/f/
- SBpJAi07MkemnikS5qGOagreskCEnGxS3NrdaoLOVNGzAXyzuSQaB7+t/Rx/kcDD5lngYKl8qxf
- F77AovduAdS8GTVuSmNpLi5l3lI83U6b4gqa/mDwj+omSAAAvW5yZa35WrhFoqH51+FZyKBvoNr
- 74py7VFjJjAx+ItC2PA==
-X-Proofpoint-ORIG-GUID: xcgnfAcm4n7m6sQxpLMWvQpIQzoJl6Ih
-X-Authority-Analysis: v=2.4 cv=Ob4NnRTY c=1 sm=1 tr=0 ts=6adb96e0 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
- a=8WImSUdLa4LpenjYlHkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+References: <20261022223014.556388-1-toddfreed@meta.com> <20261022223014.556388-2-toddfreed@meta.com>
+ <DMC6H9OT57RA.30RKA7CO0856R@gmail.com>
+In-Reply-To: <DMC6H9OT57RA.30RKA7CO0856R@gmail.com>
+From: Todd Bert Freed <toddfreed@meta.com>
+Date: Fri, 23 Oct 2026 10:20:44 -0700
+X-Gm-Features: AclHuK88YhWMifFuKF48zzEpiv1AW4dXYQLz0yCHzxNvKSvxsDASMAUa-8p8mZU
+Message-ID: <CADh2yMyVZawNObS1WOjahqsO=XJjpwoxSFMXyc=kOzWhXMOc3Q@mail.gmail.com>
+Subject: Re: [PATCH net v2 1/2] psp: fix transport mode encap with ipv6
+ extension headers
+To: Daniel Zahka <daniel.zahka@gmail.com>
+Cc: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+        Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+        Shuah Khan <shuah@kernel.org>, Raed Salem <raeds@nvidia.com>,
+        Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+        Cosmin Ratiu <cratiu@nvidia.com>, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org,
+        =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Proofpoint-GUID: UWX05UGzDKMeBYbiH2B0jIMyKotVfLOb
+X-Authority-Analysis: v=2.4 cv=G7iJgNk5 c=1 sm=1 tr=0 ts=6adb9779 cx=c_pps
+ a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=wpfVPzegXHpEFt3DAXn9:22
+ a=glYwtrVRrWtjULxB9TQA:9 a=QEXdDO2ut3YA:10 a=GvdueXVYPmCkWapjIL-Q:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIzMDA2NyBTYWx0ZWRfX7u6ODC5yF37u
+ jTHE3C8wgqt3sGAvcv2F4rMjoAl1Tx64akGEsaVpLOYkmrSIGBojcP4pYS9krgDgEaY+iOICCY/
+ h3WFzqVIx6WcxCOFkhNLjB9whMcN2/s=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIzMDA2NyBTYWx0ZWRfXz7MPr3G1IK/L
+ vuw6tRwdWSI8XkD7NJ1JQoemW0p0tZ+6XpHpKJtbTlBAYifPNyi6y9Xj1f7feXoPziox9paUiwB
+ CFcApiR3GZkYzEpK39oegTgIgFEzkzuvFiWmgZlGny6FbQiiA74yrxRLzUQ0oj5Duad3CralivE
+ 2lPogpl+gl/UcchMP6l8Sv1FeDDaEpfGS26g+njluDWrjG3H45F8rrLXbtHnH2IEbjisy/5WQ4r
+ XDZInbIaO/ngT4Wx8AcpWMVYq4Po9Gh0ADvoPQ5yYCBfgDTUj3OWwRTskN80diDT1FjmlWUKyFn
+ rxerenjC0tqkU6w7JCck691nRmqbiWLEVO8JYGhdjx4UqVkwz5ACeNy8fHDzBkqJzWEd3u2C2hn
+ viD3Ks/oXsJi5D0EDPmZMrCpNDSsoTW/Mod6AedbTe371Cf0Tm3rrE1ZAqtz+kDlmCDh+/J5Ssu
+ 6hFFGVIajujDjNYifSw==
+X-Proofpoint-ORIG-GUID: UWX05UGzDKMeBYbiH2B0jIMyKotVfLOb
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-10-23_04,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0 phishscore=0 spamscore=0 suspectscore=0
- lowpriorityscore=0 clxscore=1015 impostorscore=0 priorityscore=1501
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610190000
- definitions=main-2610230067
 
+> > - NEXTHDR_ROUTING. the tcp checksum covers the final destination, but
+> >   drivers seed tso checksums from the daddr in the fixed hdr
+> >   (mlx5e_psp_handle_tx_skb()), so this would produce bad checksums.
+> >   could be supported with more work.
+> >
+>
+> The stack should seed the tcp check correctly with the sk dst addr. If
+> mlx5's lso implementation can't take that into account, I'm not sure a
+> generic helper should be the one rejecting the skb.
 
+Fair enough. In v3 I will fix the mlx5 bug, and accept routing headers, too.
 
-On 23/10/26 8:36 pm, netdev-bot+sinfo@kernel.org wrote:
-> Hi!
-> 
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
-> 
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
+Or if it's more suitable in a bugfix, to effect the narrower behavior change
+e.g. drop, please let me know (ack that such a drop should be in the driver
+though).
 
-The issue was found by manual code inspection while reviewing the diag
-dump path in net/smc/smc_diag.c.
+> > +             if (!ipv6_ext_hdr(type) || type == NEXTHDR_NONE ||
+> > +                 type == NEXTHDR_FRAGMENT || type == NEXTHDR_ROUTING)
+> > +                     return -1;
+>
+> return an error code instead of -1?
 
-> 
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
-The races are theoretical — none of the three windows were triggered in
-practice. The smc_conn_kill() / smcd_buf_detach() race requires an
-active smcss poll to coincide with an SMC-D lgr termination on the
-dmb_nocopy path; the smc_close_active_abort() and
-smc_close_passive_work() races require a concurrent diag dump during the
-narrow teardown window between sk_state = SMC_CLOSED and
-smc_conn_free(). No stack trace or error message is available since the
-bugs were not hit in a running system.
+ack
+
+> > +             rem = len - off;
+> > +             if (rem < sizeof(*eh))
+> > +                     return -1;
+> > +
+> > +             nh = off + offsetof(struct ipv6_opt_hdr, nexthdr);
+> > +             if (type == NEXTHDR_AUTH)
+> > +                     off += ipv6_authlen(eh);
+>
+> I was expecting auth header to be part of the reject list.
+
+I will do more testing with auth header.
+
+> > @@ -331,8 +375,23 @@ int psp_dev_rcv(struct sk_buff *skb, u16 dev_id, u8 generation, bool strip_icv)
+> >                       return -EINVAL;
+>
+> If you send a v3, I think you should put the psp_dev_rcv() in a
+> serparate patch.
+
+Okay.
+
+-Todd
