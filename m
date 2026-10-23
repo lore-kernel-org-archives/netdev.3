@@ -1,104 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792764115;
-	b=A1f39hnUpF8s0POJfpUImHir+OoJ3RVcVbQxL0HHAEVznmfGPn7ee32o6v2H5ppHC/cs
-	 lsIJbhE765sLiDzOCdjviRtFukQXjMwRqhIux8QM84X/plXxdOh0kIeJU2ymQNT8UXTIY
-	 TY36PFPsgARGq0G103eUWznGi656p+YkjEpGK7zK6+4OTftRhel3MqvYCjliVBvTKe0bh
-	 1GdYliAgq5nP5NlGPSY77DOB1/IzR6W3dbTNd9T4VAcNJyg9Zq8ABlZIwntaI237O2P+d
-	 3AX827sKVkx/U38wci+bj/gb2EKiQgfAuf+BhpL1GMwZnTKPkr9gsZsvhO2J/g+vvaA==
+	t=1792764135;
+	b=LO7BjRfRMfu4czJ9A9UmNh3v1CaIK/42JdvZehjmoGGvvb6n3QtMVNTmRg1v0NcDWemJ
+	 Y4Sredl+XOqwEOEGK40QMEQzQoi9Z/XsVXMcq6btSsLgFjGAGj8dD4WY3fOPitNZUGomM
+	 rhBHib4Fuz38bUAt9yHyklNcB1bYN3W8W6SJN8IQykpvLdoSKvlZEjpatKH/SZtD/j0gT
+	 8BeX5iwFxgIJW5+JNTS8Wc//paYP90WA0XmOuvbu8qj1Ji9eZ9cHaTZN26uVkup2+t9Uw
+	 Hul88+s6mkiPRnesE1jt3G+bEAFvhb6CiMs3vKvcToL7tlhZH6IHEjcU5HxNWqP2ODQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792764115;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Content-Language:To:Cc:From:Subject:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=lZbs7+S2JWQgMnJqiWOBZ+GTjrO4vTsXuw3OJlBG4ro=;
-	b=3cR8P9XErLNTTiOlhfvL8qFjQl8jT3n5DuTD15JgHIykvlMQgtGKOmf7IU7ggTnKyOwi
-	 3Bh5MBHLNyZX7K5yzZaIGGdJLlTCt8k8n+4qHsAgxBVBo3vK00E41sbW8UiabYMuayMYA
-	 3kbpKaenPWIjn7rrPnkWw6ywX9xX/I6ztWf/NsqyCrjfe+4VbXRbjY7DEUjCawXLcdQH8
-	 Djbpqf0EYAnSVPtrZRZ/fKuGxCUuB/2Zx3NFjJYubNj121xTbnCZ0W20R5DWsldM3SLMh
-	 6hSdJ0Wf9CUFaArtOizKSG/o1DMT7UW6BgRYnmKq7C06pHJTCqqyWKgPqRWL7BazRdw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792764135;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=nsNWSUHVr8eAmb7Rlygj3NMQOCr3IMuX87wO1+nC8Qc=;
+	b=2FUQOyyp1DsTqwK3qkfu1yEXV8DuLVcNuTQDZQE9gZBycrpTVwL7xFVb4Sc6xYfcyGdB
+	 E6JLJvBfyVEMF1v2hF6mk5JfXipr2lxErlBIkLlovYUH/0Reupt8flYyWrOz2tWdkfnju
+	 GmE0TFzuI1csZlYXZuCiP8NP6R+/T6hgQBocz29RhrSTX8hQ7HdzaSZz/kl8iWZ7VpRMe
+	 g4M0WY/xlSBQxcJtfBxkfDTkMWVzwU9rUKH/wcX0x4FAMWA/mtFkVZ7l3TLQjiYuX/1YO
+	 iyA+EmBumxWNS3UjxE/mDXqnIaBKuNCX9kB1OKy6dnInC73f7rzhEBPTxKm7hG46rag==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=h2LmkOgl;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=U7HxVhMI;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b="Buc/Rfi3";
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA48606A323
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 14:01:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4DA48606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468DA606A31B;
+	Fri, 23 Oct 2026 14:02:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 468DA606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=h2LmkOgl;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=U7HxVhMI
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792764114;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=lZbs7+S2JWQgMnJqiWOBZ+GTjrO4vTsXuw3OJlBG4ro=;
-	b=h2LmkOglm2Efsz50Aq8O4vTnVxa43KJepaGQlCEbl0abWoCl1J0XwqI7U2kJwGEB341I93
-	q+38GmK/qw4Xgmd+6VVqcqtrFT8weOksUWsE7R33xMAgjb+E4lcb2aEFELh5/TYNNppOwZ
-	CfCBdgVLqxBjua0Dh2Osck+iItwvsdc=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-657-VqiPNcRyM1mhQWL002JTCA-1; Fri, 23 Oct 2026 10:01:52 -0400
-X-MC-Unique: VqiPNcRyM1mhQWL002JTCA-1
-X-Mimecast-MFC-AGG-ID: VqiPNcRyM1mhQWL002JTCA_1792764111
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a009f82bedso5566825e9.0
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 07:01:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792764111; x=1793368911; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:subject:from:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=lZbs7+S2JWQgMnJqiWOBZ+GTjrO4vTsXuw3OJlBG4ro=;
-        b=U7HxVhMIJUwl/gN4EyN3qPQAmOr1l1PHF+uAQyepvimW0xlTUhFsMswwNVzFGx2h73
-         P+hb3h7e4nNlT8+QZdkHZG4MXMXFkhafvjdEw9BXhmFHQ/ZRd7OZXHvSiN4uEKphNhbz
-         HZ/gT+KcnrgVttvzUpGf9GmV6GRYOaY2NU7S16dEM0w8vfj+mklZmdILCtt+hvWBqfpe
-         XnPi05RHjR3MREWzL/5LvDSU8iqYr0i26PHZsVbw2dGJQqP6wRA/9imK9FmZwu1jpo9O
-         GzobYxDot5rXuTZyR/Lo4Gm4il9/GxILi1Qspoe23ZY5mPeTatFigs6vMjxBBA4DycEh
-         yS9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792764111; x=1793368911;
-        h=content-transfer-encoding:content-type:subject:from:cc:to
-         :content-language:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lZbs7+S2JWQgMnJqiWOBZ+GTjrO4vTsXuw3OJlBG4ro=;
-        b=L5lQSsxJbGAUrc1CMTt+3qf99Z2OZywIY6hGGUpqbfQxod7VvdgxnoplC0Ffmzg+WD
-         iOyud5fEEtm3z3j/AjxxheYJHmoBCWG/nuR3T11FnGN+7ot9sPjJFiPY9mFubNV6noep
-         DsvEO2JjOBH6/3dzEDT+WBT3FoJRcf1/rFjF6QwFaT6VHexkI6uL6pAPP5LIcmXPcMBF
-         lbKRiqsLU2mF5YnUfFWo8roWRI1HYR1yF/yBnXyWa4liNCPLQPL9lfbV4k6O1PJ4lb1X
-         lFRBMdnsheFYHqjOgStHdYL618aK7v13Fe50bUYcaM7Zgjl0mAsYGK3Xoppj8IOHcR7e
-         quVg==
-X-Gm-Message-State: AFq9FYL9H02grMvumfNKMxdcZuz+okuJasl2UfO3XLjLGE7G4fGyFvQr
-	SKNntG1odUy0gSSOjYEJS0m0WUCMxwRnfXVNel9IZPSuJ55pHTfST2p4Jjy8nu0EzS8BSumB51S
-	wwx9rWV3h+z+OGKfy2/O7cHLS1T/qrRsDCsoEiEfh8nRF5P9rYvUyQFBGCA==
-X-Gm-Gg: AYBFou02fZNjA5A97IW3O1yLet0UQd69A7B4HDmNXZ/dir28KxtbhMixGbVDLW1bJDw
-	tWMNc4Mx7ofLGKml6SjRoTzU+rUcDKPLnM9K1AvezQDR4HmiMtqbqh01FM0IddPXqGymlzUHflh
-	yaGE7I1J3czndzIA2ORRSJyeue0lfjA1vGi1umJJqHxBwJ+XkFHK1+/UwFpfhbw7pSI2lifua+f
-	D83NZyEBuaosug5CmHFENRmuZMGqNyTpqSRmHccsV16Gt7hOWZOPFZMOxNngZeDhY3rgJMG4Bk1
-	rI0DA0fcB5G6wNNgigfZVGJdOOw84d94wyNDoU/pithUC1O555uqdMxQQk4YSNQffRNyIQn0QLI
-	nTi6+kfH8yFc81fyB8FG9A3BM9FJR3oLZ5KIGty9nck1qxsmDDRwUGrRMhjDO7EoGMDqrb+771A
-	==
-X-Received: by 2002:a05:600c:1385:b0:4a1:ce33:1536 with SMTP id 5b1f17b1804b1-4a211cd08c3mr41353155e9.9.1792764111262;
-        Fri, 23 Oct 2026 07:01:51 -0700 (PDT)
-X-Received: by 2002:a05:600c:1385:b0:4a1:ce33:1536 with SMTP id 5b1f17b1804b1-4a211cd08c3mr41352615e9.9.1792764110821;
-        Fri, 23 Oct 2026 07:01:50 -0700 (PDT)
-Received: from [192.168.188.234] (ip174-129-192-82.pool-bba.aruba.it. [82.192.129.174])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3d3f9f28sm18240f8f.21.2026.10.23.07.01.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 23 Oct 2026 07:01:49 -0700 (PDT)
-Message-ID: <06502f83-f22a-4522-9a30-60b2478a8c2c@redhat.com>
-Date: Fri, 23 Oct 2026 16:01:48 +0200
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=Buc/Rfi3
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=nsNWSUHVr8eAmb7Rlygj3NMQOCr3IMuX87wO1+nC8Qc=; b=Buc/Rfi3awGBHhqMmwP2LdTTNt
+	MN+YXqBcLMlwba9V88w2HsT6iU8JiEiVLijQbrDB5A8PEiKZ+q8rS28gLObyG9Aht9MzBIEaiAl2C
+	6gxVQ32X0rBJ4YA1m2zgaEoC8GFHq05g/hkl133fqObyPuipXwl3Cba1M178M1V3kVFo=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xKFqU-00CQEV-ED; Fri, 23 Oct 2026 16:02:10 +0200
+Date: Fri, 23 Oct 2026 16:02:10 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: "Nimal Prabudoss [C]" <nprabudoss@marvell.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	jmeneghi@redhat.com, mschmidt@redhat.com, manishc@marvell.com,
+	palok@marvell.com, spadol@marvell.com, jtaubepe@redhat.com
+Subject: Re: [PATCH] MAINTAINERS: Update maintainers for QLogic ETHERNET
+ drivers
+Message-ID: <d1dcada0-9949-404e-b08a-7ed91d9d4e96@lunn.ch>
+References: <20261023125409.1989-1-nprabudoss@marvell.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -108,35 +63,35 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Tariq Toukan <tariqt@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
- Saeed Mahameed <saeedm@nvidia.com>, Mark Bloch <mbloch@nvidia.com>
-Cc: network dev <netdev@vger.kernel.org>, Matthieu Baerts
- <matttbe@kernel.org>, Jakub Kicinski <kuba@kernel.org>
-From: Paolo Abeni <pabeni@redhat.com>
-Subject: nipa H/W testing suddenly failing on CX7
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261023125409.1989-1-nprabudoss@marvell.com>
 
-Hi,
+On Fri, Oct 23, 2026 at 06:24:08PM +0530, Nimal Prabudoss [C] wrote:
+> From: Nimal Prabudoss <nprabudoss@marvell.com>
+> 
+> Update maintainer list for BROADCOM BNX2 GIGABIT ETHERNET DRIVER
+> and QLOGIC QL4xxx ETHERNET DRIVER to reflect current team structure.
 
-Mat noted that H/W self-tests suddenly started failing on the
-mentioned NIC:
+Why Cc: the scsi list? Who do you expect to actually merge this?
 
-https://netdev.bots.linux.dev/flakes.html?min-flip=0&br-cnt=20&br-pfx=net-next-hw&ld-remote=netdev-CX7
+>  BROADCOM BNX2 GIGABIT ETHERNET DRIVER
+> -M:	Rasesh Mody <rmody@marvell.com>
+> +M:	Nimal Prabudoss <nprabudoss@marvell.com>
+> +M:	Sharad Padol <spadol@marvell.com>
 
-Judging from the test output, GRO stopped aggregating and the
-driver exposes a single queue?!?
+~/linux/drivers/net/ethernet/broadcom$ git log --pretty=format:"%an" bnx2* | grep "Nimal"
+~/linux/drivers/net/ethernet/broadcom$ git log --pretty=format:"%an" bnx2* | grep "Sharad"
+~/linux/drivers/net/ethernet/broadcom$ git log --pretty=format:"%an" bnx2* | grep "Rasesh"
+Rasesh Mody
+Rasesh Mody
+Rasesh Mody
 
-I could not spot anything obviously wrong in the relevant
-batch:
+We generally want Maintainers who have shown they can do the work,
+posted patches, answered questions, know Mainline processes, and don't
+spam other lists etc.
 
-https://netdev.bots.linux.dev/branch_deltas/net-next-hw-2026-10-22--00-00.html
+Maybe it would be better to leave it without Maintainers, at least
+until you have reach the level Rasesh Mody achieved.
 
-Could you please have a look?
-
-Thanks,
-
-Paolo
-
+      Andrew
