@@ -1,59 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.227
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792746247;
-	b=IV+zXndMioVcEejX6eZDWSuZldauXIymh7U2rOEcAWtiZAwhEPtqgRghpB/Q2jd/Bv/t
-	 p7hwTLwZ3cUBt5jctAz4vt+xgCRe2Nnr49aMZ8SBReUbOmKJ3oF71K9HjOG0u7xIfFFp2
-	 zplUYRuYu7iLzMu4H4shpXGC+hiHYK4io7w7GMn/ojsT94Sg0E2uHzgGYWkIckohz9gPX
-	 WAm3ogaqpIXDSxUS2uuapJZDpNHloanyvj2lEsfZBMAeJUadyKfCjNw3Y1NzBx0LFabYo
-	 wwSyaKmsc0M6w3HVC0qwZya/NlE/CCz+Yg0faVfrt6Q6GNs481v0xlkmWDRTeFpsq4g==
+	t=1792746880;
+	b=qD5QW2dLX/gyQeSXHSMPhQUHrGsqNx2x6pphf23aazi3Y+3fPz0/Hy+LwWTEB79yFwHv
+	 iCoJbgdKn8POCdWpUmkpfT81ks0fl7AR8+lnL2ElquDPXhuak08VtFoQdxkkomcgzx12e
+	 5OrVm3IFhqqbv5RB4cVIYXlbKrYBANNTmuDqumDTns8XWmJAIbByUYwJueR6+tQyucsg3
+	 QeIBvVUhECmxgV/Pn/2Fje8ATFfKbBDJatp9HJuxkbBuNRcy2X4g8V6d5Yl33Mc7m+4Ey
+	 NdLkBX5sI0bbNOXU5Cr2orDD4e4oHjbhu5U1rEWmZkYlZOJOi2AGWYPKP+GheIPuftA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792746247;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=hz1aS6k9JYTIHkVB4fRMXL70ayAGOm4KjPKMJxbKxoA=;
-	b=JolpTT3VTsp7Dh7hB5rYiH3FNq+5u1l6Z9XLZuTmisA+Id/d5AvkZYeFCnmmSC7cIPhv
-	 YfvxA+jUSjI1ebxP9ZkV0KVgtAsBs0EAzjkl/u8VJpOCW11Ff6voxdfv7lZuC0wHDE/oy
-	 hITF/6lJMpX2CxXH3LwQvJVHFIHc8JegG2mLMWE4YIliQkyX7X5KiGg21S3MEhp5pj1dY
-	 ZOxFMje146x4Ovn3u8XNCo/vmvCrf04jT8uoAXc6heUiKPallRHDjy/h3mQqO3D/TnPwJ
-	 wn72MxWhCL2FpzCt9DlNRJGCqweZbtUNTFK5405itJPD5+YiPR4HiRIQ7k+tNLLJ4TQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792746880;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=4zAc3he/vCh5XQJ3xmbFTBFKdpkOc7QTrO/peAQSjfo=;
+	b=5DSgybc4cfw/mtrZNawCrvAd9ZejWXlsbed4wYu/pexWz6b7GiK9yHxaLWPTUnwE0nH2
+	 PvdAI79oS+fcKiaKfCKJQ2A1L+2MAfhVpyRZBIlw+Gt5KU3ivf3scPev6wDqKRpTQZ3GD
+	 ma6RWXRI7Z/gGn9SCeWYMdjvbJlaPxruHRtvmf6uhd/W5HnxJvvzTnFjmp8sA8E24cyVd
+	 7cGsAtWo2zRW6nDavN7tJDDBOn5C7aQYhR4IdpWCyEYvRYyLI+KOhPnjFa7cOOOyo4LYI
+	 VwpF3qUCcY8zCiGVKPWFy7BAwsDlp54GLGFi2TuEviiSQ2qhyMI2SPI9wndFYAtcQBg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IO8VGDk7;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=FvmHYpW9;
+	arc=none smtp.remote-ip=91.218.175.227
+Received: from mta0.migadu.com (out-227.mta0.migadu.com [91.218.175.227])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F418606A325;
-	Fri, 23 Oct 2026 09:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799B8606A32D
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 09:14:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 799B8606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IO8VGDk7
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A3EB1F01825;
-	Fri, 23 Oct 2026 09:04:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792746246;
-	bh=hz1aS6k9JYTIHkVB4fRMXL70ayAGOm4KjPKMJxbKxoA=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=IO8VGDk7iqV49THZhE395BZDd0Dw0uBL2CUzMpxwWxpL6SfiisurgC5jq2w72H+Bt
-	 MdoF+AeEG6lTfVp2Ky6uyi0/ABBohzd5zGhZgbbEZC3uYo+KqnctKqxS6/iJn59Zgv
-	 vIaA9sAS5+mZasinB7xHWE11eKCu77q6xso+sn/nny17lXBiYfWNlmxWqOj8jmWCNk
-	 c+JO41eyt+hOqCNTcJumemvhQnpPeqXhKBf1A8SKP87h24RD1giNfZDsofKfXW3hvR
-	 vrYaBODrIoz4sQ2fnvvw8FQliBnbE6ENMx9q2guH9NzygNfzHmDGcSvKk0D7/DvkCx
-	 djZSSaxIFRGFA==
-Subject: Re: [PATCH 1/2] netfilter: bridge: refragment packets with a vlan tag
- moved by the bridge
-From: netdev-bot+sashiko@kernel.org
-To: laveeshb@laveeshbansal.com
-Cc: pablo@netfilter.org, fw@strlen.de, razor@blackwall.org, idosch@nvidia.com,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- bridge@lists.linux.dev, netdev@vger.kernel.org, kuba@kernel.org
-Date: Fri, 23 Oct 2026 09:04:05 +0000
-Message-ID: <179274624590.3134.14861783086322416790@kernel.org>
-In-Reply-To: <20261020005403.38212-1-laveeshb@laveeshbansal.com>
-References: <20261020005403.38212-1-laveeshb@laveeshbansal.com>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=FvmHYpW9
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=bCF8cbR3CbPnLMlPgvVa1/bBaRcT7OGjsLq3olXXh6Q=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792746877; v=1; x=1793351677;
+ b=FvmHYpW9aue5DDkI54G1xWxUCkzbbIfriTbxvh0qPAEbJunpYQD84yBr9kqdtmFDdh3zuNI0
+ J+XK4IWtTWqJQof0Yu+ayZL9WCLHQVt/baf1oRKciCg0wgexG+gPkg9pIwAlU2LbvgBIfMyxnrZ
+ W08ljWi7vhC66CWhS8XTbEUE=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 5c5795b909675e0d;
+	Fri, 23 Oct 2026 09:14:36 +0000
+X-Mizu-Trace-ID: 5c5795b909675e0d
+X-Migadu-Flow: FLOW_OUT
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: netdev@vger.kernel.org
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Joel Granados <joel.granados@kernel.org>,
+	Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
+	Yung Chih Su <yuuchihsu@gmail.com>,
+	Wyatt Feng <bronzed_45_vested@icloud.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Flavio Leitner <fbl@redhat.com>,
+	Hannes Frederic Sowa <hannes@stressinduktion.org>,
+	Petr Mladek <pmladek@suse.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net 0/5] net: fix misc signed overflows caused by bad sysctl values
+Date: Fri, 23 Oct 2026 17:13:26 +0800
+Message-ID: <20261023091419.167088-1-jiayuan.chen@linux.dev>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,91 +81,31 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Recently I have reviewed quite a few fixes for variable overflows caused
+by config values, i.e. a value set from sysctl, module params or netlink
+that is accepted as valid but later overflows when it is used in a
+calculation. I believe there are more of these still out there, so I
+used an LLM to dig through the code and it found the issues fixed in
+this series.
 
-Low priority / nit picks for your consideration:
+All of them have been reproduced and verified in QEMU.
 
-- [Low] The comment above nf_ct_bridge_frag_restore()
-  (net/bridge/netfilter/nf_conntrack_bridge.c:396), "Actually only slow…
+Jiayuan Chen (5):
+  ipv6: restrict gc_elasticity to 31
+  ipv4: fix shift-out-of-bounds in ip_rt_send_redirect()
+  ipv6: restrict mld_qrv to 255
+  ipv4: restrict igmp_qrv to 255
+  net: restrict message_cost and message_burst to non-negative values
 
---
-
-netfilter: bridge: refragment packets with a vlan tag moved by the bridge
-
-With this patch, nf_ct_bridge_refrag() looks past a vlan tag that
-br_allowed_ingress() moved into the packet after prerouting
-defragmentation. It saves the tag, pulls it off, fragments the inner
-IPv4 or IPv6 packet, and then pushes the tag back onto each fragment in
-nf_ct_bridge_frag_restore() together with the outer protocol.
-
-Closes: https://syzkaller.appspot.com/bug?extid=a8ba738fe2db6b4bb27f
-
-> diff --git a/net/bridge/netfilter/nf_conntrack_bridge.c b/net/bridge/netfilter/nf_conntrack_bridge.c
-> index b5444335b86f..e16071eb2df0 100644
-> --- a/net/bridge/netfilter/nf_conntrack_bridge.c
-> +++ b/net/bridge/netfilter/nf_conntrack_bridge.c
-
-[ ... ]
-
-> +		proto = data.inband_vlan_encap_proto;
-> +		__skb_pull(skb, VLAN_HLEN);
-> +		skb->protocol = proto;
-
-[ ... ]
-
-> @@ -371,11 +399,18 @@ static int nf_ct_bridge_frag_restore(struct sk_buff *skb,
->  {
->  	int err;
->  
-> -	err = skb_cow_head(skb, ETH_HLEN);
-> +	err = skb_cow_head(skb, ETH_HLEN + (data->inband_vlan_present ? VLAN_HLEN : 0));
->  	if (err) {
->  		kfree_skb(skb);
->  		return -ENOMEM;
->  	}
-> +	if (data->inband_vlan_present) {
-> +		struct vlan_hdr *vhdr = skb_push(skb, VLAN_HLEN);
-> +
-> +		vhdr->h_vlan_TCI = htons(data->inband_vlan_tci);
-> +		vhdr->h_vlan_encapsulated_proto = data->inband_vlan_encap_proto;
-> +		skb->protocol = data->inband_vlan_proto;
-> +	}
-
-[Severity: Low]
-This isn't a bug, but the comment above nf_ct_bridge_frag_restore()
-hasn't been changed and still says:
-
-/* Actually only slow path refragmentation needs this. */
-
-Now that nf_ct_bridge_refrag() pulls the vlan header and sets
-skb->protocol to the inner ethertype before it picks the fast or slow
-path, nf_ct_bridge_frag_restore() is the only code that pushes the
-header back.
-
-The frag_list fast paths also reach this function. nf_br_ip_fragment()
-and br_ip6_fragment() call output() for the head skb and for each
-fraglist member, and that leads to:
-
-output()
-  nf_ct_bridge_refrag_post()
-    nf_ct_bridge_frag_restore()
-
-Suppose a later change skipped the restore on the fast path, as the
-comment suggests is fine. The head fragment would then go out without
-its vlan header. data->mac would still hold the vlan TPID, and
-skb->protocol would be IP or IPv6.
-
-The comment was arguably wrong even before this patch, because
-fraglist members also need the MAC copy and the hwaccel tag. Since the
-fast path now depends on the vlan restore as well, could the comment be
-updated or removed?
-
-> 	if (data->vlan_present)
-> 		__vlan_hwaccel_put_tag(skb, data->vlan_proto, data->vlan_tci);
-> 	else if (skb_vlan_tag_present(skb))
+ net/core/sysctl_net_core.c | 21 +++++++++++++++++++--
+ net/ipv4/route.c           |  7 ++++---
+ net/ipv4/sysctl_net_ipv4.c |  4 +++-
+ net/ipv6/route.c           |  6 +++++-
+ net/ipv6/sysctl_net_ipv6.c |  4 +++-
+ 5 files changed, 34 insertions(+), 8 deletions(-)
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261020000308.37362-1-laveeshb%40laveeshbansal.com
+2.43.0
+
