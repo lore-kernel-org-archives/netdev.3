@@ -1,57 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792746248;
-	b=YchPv1F7A4KMPIJyRvWzHcvswYV+pMD+oWzKchWuP4DECvAN+EXR+s+3zK52sZSgxKMo
-	 9bAVcddrj+A48b0uFqFH1y6O4ONu4D03ghf5xVRhyes3ZoZLH0DL1BVwNH1ClKhqF1duC
-	 x2jEHd9jr8QNZKYGoLraEDA788aLaiajXH3PkP324qfNuUP+vRcaIBMci5ja0ZOMwPGco
-	 Lvh/8JbVFEvQI5zYyDtJcwLhrfM+7KsVVCIuBmD8+XMAcGsFtUUc9af78gd4jc22OeKXH
-	 d3DQ6jwGvXOQdMEmdTbY2vvgX+WY9NxJIRAQ33nRtQeG5NJGp74f+hAG9o2pEs/Ht5Q==
+	t=1792746251;
+	b=Zx3Ig+82583yAFGcM80Sn0xr4uDAKjIED3cyNqTMc0d0I+H8ChYaFxnBCbgUDt6SAZIM
+	 hUv7TBhjDEn7iO4DuD1vyHUCY32uIA244tvl0kxO4lzN4Ut6YEJdWOA9vLXJBF0b5MWcl
+	 ugSFmpuSp6Yt80bwbcIEOdZQvicKMNoWoms4gQ20fjnLTobHEvg055w3f++Y4e8qTg7+B
+	 hn8win69wju1zcMEa/wOA9hTUdBhuXGsupqhzN0cPBuYC3PCTApaT5TBR9Qgyg5b9yTBX
+	 tZZO+K6bCX3bkhpBwbumqhOaUC9Xsf3IIz8TqWPrJ45KKW6mBjjlvgpi3GCwudh4AsQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792746248;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792746251;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=Qm6mggyFBa11YEU0QCjD5Fk5lL6IMH1f7dPerchKVUE=;
-	b=XTACjF06l6RKrFZdzi6ASefNNSTPnoNfR/hbJA9TDiBYbfqWCA+AYugA5KHjikI7e60C
-	 Xo7j5y2wc9db58MWPhTF/rldOHTfsQTeRzdj6VbtlBoQGonDKiwW4r7sORJ5HiaIL1hFu
-	 UJ2566UfUHEPwbpOUQbqiZE0Lhnvi49m3wFa/5upB8gb4oUlVfHGZMlWz4tJ0gR7SYFRb
-	 6ZbXTbTx9q/lFHsMAtG+5HDp3mc8ah6X6bn0RkZB4FDhekMvo+CpXd0V8hK8abkQLuMX0
-	 b77zPfNTiPDs82mWifgWOPrbNK5YQyQefdmfFBgyO31QPYqvi787WzPetZN0eNgxk8g==
+	bh=7v8wKhNfLWz/5275Zsjz7zNJ6v9XfFJf5zvD74gehpA=;
+	b=w4ygdzU/Q4dsY7nTQVUvlH5mwEHGu6EBpb3tBmGOUvBTKdKu+n6cemKFjI8efWQX9be2
+	 tnoCiEWCbtl7oPfePJPfveh+wDc/bBZGBB/zcH5lbYVrae7D5H4NepBUlgZzOFMxXZdAM
+	 4lhyiSpeXVV+gKjKmVyMkLhO0pmjDlHsE+jLauBen1BtyjDM7E8p1k7c+S0VoNcixJjJq
+	 sEA6cTy/LL5laetvh1fKUWfS7+GVGnyOPvZQpTJT67XFdam/FZO+DXc/OdWBQBW83RLt0
+	 lEk/cuy6nVRt2lkAnAWsma0qSkC9mb8noQD/P9cm5u8bks7KSuL/cF3FMGcClBJ6rkQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DnBCsOTz;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T86VNcqa;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CEE5606A31D;
-	Fri, 23 Oct 2026 09:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0389606A31D
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 09:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DnBCsOTz
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BDE01F01828;
-	Fri, 23 Oct 2026 09:04:07 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T86VNcqa
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 836521F01825;
+	Fri, 23 Oct 2026 09:04:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792746247;
-	bh=Qm6mggyFBa11YEU0QCjD5Fk5lL6IMH1f7dPerchKVUE=;
+	s=k20260515; t=1792746250;
+	bh=7v8wKhNfLWz/5275Zsjz7zNJ6v9XfFJf5zvD74gehpA=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=DnBCsOTzNMdKB2pJNE+2E9UYRrUzuWSaMMO2PcVdng+vd51zPEqpt0wkUygiGSy/l
-	 WdQQQB2NR0cgCYC5+SQoPrF+URpMM14WbtDZ1m4vNvRiwoNDkESM3fAoZ+785wF9tp
-	 ki67AFL8hFo+NICacOUVQlcxyt8T4i+M4rXpJBIdxq/GzCJZHoqOaOCSFazZ7rz4uj
-	 XyIO63lHQficXvPmvg6gw21JIhmUjsp/voXzrYf8Tfh30ifmXNtvGL9EFWnR1fBZAr
-	 Z6XYnYikEpl2YleZZKodx0CzAb2++yE1040ZQYQCy9yS4vh06rZy+xefBm1BDOfs7c
-	 p3+/9wJXgAkEA==
-Subject: Re: [PATCH 2/2] selftests: netfilter: add bridge conntrack test for
- vlan protocol mismatch
+	b=T86VNcqa5YVjQn2iY8LfJSXVJET2wQdUhnrMffmh7QYL8PO/DHWfHFs/DPwrKR4F9
+	 knrRez9Gp//+F7oPjDb55KBiim0zzcGGQUTW7QE3X1hUHv6gqgbnTDLj/IwmdgaICR
+	 Ubt6KyjK2NIYnS28vAh3ss2FwtsjwgfwK+kn/AGt6USbVAtI02X/oq7RfEuccE6Krs
+	 VP1gCtiXaosf9pfk3tqX+9lLVJZ04fQLPUjoYfSL70TXdx2SjMSUJ9KLIlrNAAaji2
+	 7qYNZaJ8OrU0wJQs5u3wOIAINolyKNckbHTEOaroS1m0DoS7qAMJ0ai/rjEr6MIlsn
+	 i2wWCXxxkMizQ==
+Subject: Re: [PATCH net v3 2/3] net: txgbe: keep MAC enabled for SP devices
+ that support NCSI
 From: netdev-bot+sashiko@kernel.org
-To: laveeshb@laveeshbansal.com
-Cc: pablo@netfilter.org, fw@strlen.de, razor@blackwall.org, idosch@nvidia.com,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- bridge@lists.linux.dev, netdev@vger.kernel.org, kuba@kernel.org
-Date: Fri, 23 Oct 2026 09:04:07 +0000
-Message-ID: <179274624702.3134.15694473086180736851@kernel.org>
-In-Reply-To: <20261020005642.39494-1-laveeshb@laveeshbansal.com>
-References: <20261020005642.39494-1-laveeshb@laveeshbansal.com>
-X-sashiko-severity: Medium
+To: jiawenwu@trustnetic.com
+Cc: netdev@vger.kernel.org, mengyuanlou@net-swift.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ linux@armlinux.org.uk, jacob.e.keller@intel.com, kees@kernel.org,
+ zhaochenguang@kylinos.cn, maxime.chevallier@bootlin.com,
+ aleksandr.loktionov@intel.com, u.kleine-koenig@baylibre.com,
+ rmk+kernel@armlinux.org.uk, maciej.fijalkowski@intel.com, horms@kernel.org
+Date: Fri, 23 Oct 2026 09:04:09 +0000
+Message-ID: <179274624909.3134.8154533861591358950@kernel.org>
+In-Reply-To: <20261020060107.25636-3-jiawenwu@trustnetic.com>
+References: <20261020060107.25636-3-jiawenwu@trustnetic.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -64,10 +67,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Critical: 0 · High: 1 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -75,142 +78,206 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] In bridge_ct_vlan_proto.sh, the check "FAIL: conntrack did not
-  reassemble the packets" cannot detect missing reassembly in the vlan…
-- [Low] In bridge_ct_vlan_proto.sh, run_all() returns ksft_skip as soon
-  as any run_case() returns ksft_skip, even after earlier cases have run.
+- [High] The NCSI TX_DISABLE override only covers
+  txgbe_gpio_direction_out().
+- [Medium] net: txgbe: TX_DISABLE asserted on NCSI devices during
+  phylink_start()
+- [Low] The new GPIO clamp in txgbe_gpio_direction_out() uses
+  WX_STATE_DOWN as a stand-in for 'host interface down and phylink/SFP…
 
 --
 
-selftests: netfilter: add bridge conntrack test for vlan protocol mismatch
+net: txgbe: keep MAC enabled for SP devices that support NCSI
 
-This adds a selftest that sends fragmented IPv4 and IPv6 pings through a
-vlan filtering bridge with bridge conntrack, using vlan tags whose
-protocol differs from (or matches) the bridge's vlan_protocol. It checks
-that the pings get through, that conntrack reassembled the packets, and
-that the kernel did not warn.
+On NCSI-capable SP devices, this commit keeps MAC Tx enabled. It skips the
+Tx disable in txgbe_mac_link_down() and turns Tx back on in
+txgbe_mac_finish(). It also makes txgbe_gpio_direction_out() ignore
+requests to assert TX_DISABLE (GPIO1) while WX_STATE_DOWN is set, so the
+optical transmitter stays on while the host interface is down.
 
-> diff --git a/tools/testing/selftests/net/netfilter/bridge_ct_vlan_proto.sh b/tools/testing/selftests/net/netfilter/bridge_ct_vlan_proto.sh
-> new file mode 100755
-> index 000000000000..19f842e17060
-> --- /dev/null
-> +++ b/tools/testing/selftests/net/netfilter/bridge_ct_vlan_proto.sh
-> @@ -0,0 +1,182 @@
+> diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
+> index dc9f24314658..589ad5d2f17b 100644
+> --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
+> +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
 
 [ ... ]
 
-> +	# Loading a ct rule in the bridge family enables bridge conntrack. The
-> +	# postrouting counter sees the packets reassembled by conntrack.
-> +	ip netns exec "$ns0" nft -f - <<EOF || return "$ksft_skip"
-> +table bridge t {
-> +	chain pre {
-> +		type filter hook prerouting priority 0; policy accept;
-> +		ct state new counter
-> +	}
-> +	chain post {
-> +		type filter hook postrouting priority 0; policy accept;
-> +		meta length > 1400 counter
-> +	}
-> +}
-> +EOF
+> @@ -368,6 +373,11 @@ static int txgbe_gpio_direction_out(struct gpio_chip *chip, unsigned int offset,
+>  	unsigned long flags;
+>  	u32 set;
+>  
+> +	/* Keep the NCSI transmitter enabled while the host interface is down. */
+> +	if (wx->ncsi_enabled && BIT(offset) == TXGBE_GPIOBIT_1 &&
+> +	    test_bit(WX_STATE_DOWN, wx->state))
+> +		val = 0;
+> +
 
 [Severity: Medium]
-Can this counter go up in the mismatch cases even when nothing was
-reassembled?
+Does phylink_start() drive TX_DISABLE before the SFP state machine
+knows the upstream is up?
 
-In the 802.1ad/802.1q, 802.1q/802.1ad and clone cases, __allowed_ingress()
-moves the tag into the packet after prerouting:
+txgbe_up_complete() clears WX_STATE_DOWN first and then calls
+phylink_start(). Inside phylink_start(), phylink_mac_initial_config()
+runs before sfp_upstream_start():
 
-net/bridge/br_vlan.c:__allowed_ingress() {
+drivers/net/phy/phylink.c:phylink_start() {
     ...
-		if (skb->vlan_proto != br->vlan_proto) {
-			/* Protocol-mismatch, empty out vlan_tci for new tag */
-			skb_push(skb, ETH_HLEN);
-			skb = vlan_insert_tag_set_proto(skb, skb->vlan_proto,
-							skb_vlan_tag_get(skb));
+	phylink_mac_initial_config(pl, true);
     ...
-}
-
-After that, skb->data sits at the 4 byte in-band vlan header. meta length
-is skb->len, so the post chain sees the IP length plus 4.
-
-With the 1400 byte mtu on eth0.100, each IPv6 fragment is
-40 + 8 + 1352 = 1400 bytes. A fragment that was never reassembled shows up
-in the post chain as 1404 bytes and matches "meta length > 1400". IPv4
-fragments come out at exactly 1400 and don't match.
-
-If bridge conntrack stopped defragmenting, nf_ct_bridge_refrag() would
-return early:
-
-net/bridge/netfilter/nf_conntrack_bridge.c:nf_ct_bridge_refrag() {
-    ...
-	if (!BR_INPUT_SKB_CB(skb)->frag_max_size)
-		return NF_ACCEPT;
+	if (pl->sfp_bus)
+		sfp_upstream_start(pl->sfp_bus);
     ...
 }
 
-The fragments would still be forwarded, both pings would succeed, and the
-"packets [1-9]" check in run_case() would still pass. The refragmentation
-path this test targets would then go untested and nothing would flag it.
+phylink_mac_initial_config() goes through phylink_major_config(). For
+interfaces with a signal rate, such as 10GBASE-R, 1000BASE-X and SGMII,
+that calls sfp_upstream_set_signal_rate(). The call chain is then
+sfp_set_signal_rate() -> sfp_mod_state() -> sfp_set_state() ->
+sfp_gpio_set_state().
 
-Also, run_case() checks this one shared counter only once, after both the
-IPv4 and IPv6 pings. So the check can't tell which family was reassembled.
+sfp_gpio_set_state() re-drives TX_DISABLE from all of sfp->state, not
+just from RS0/RS1. At this point sfp->state still has SFP_F_TX_DISABLE
+set, either from sfp_probe() or from the last phylink_stop(). So
+gpiod_direction_output() is called with 1 for GPIO1.
 
-For the mismatch cases, the comment "The postrouting counter sees the
-packets reassembled by conntrack" doesn't look accurate either.
+WX_STATE_DOWN is already clear by then, so txgbe_gpio_direction_out()
+no longer overrides the value. The optical transmitter is switched off.
 
-Would one of these work instead: put the counter in prerouting, where the
-tag is still hwaccel; use a threshold above any fragment size (for example
-> 1500); or keep separate "meta nfproto ipv4" and "meta nfproto ipv6"
-counters and check each one after its own ping?
+If the module is in SFP_MOD_PRESENT, sfp_upstream_start() deasserts
+TX_DISABLE again shortly afterwards via sfp_module_tx_enable(). That
+still leaves a TX_DISABLE pulse on every ifup and every
+txgbe_reinit_locked(), which drops the NCSI link each time.
 
-[ ... ]
+The module may not have reached SFP_MOD_PRESENT yet. Examples are the
+T_SERIAL wait in SFP_MOD_PROBE after probe, or SFP_MOD_ERROR. In that
+case sfp_sm_main() stays in SFP_S_DOWN and never calls
+sfp_module_tx_enable(), so TX_DISABLE stays asserted in hardware.
 
-> +run_all()
-> +{
-> +	local rc
-> +
-> +	# bridge protocol, protocol of the vlan devices
-> +	for case in "802.1q 802.1q" "802.1ad 802.1q" "802.1q 802.1ad" "802.1ad 802.1q clone"; do
-> +		# shellcheck disable=SC2086
-> +		run_case $case
-> +		rc=$?
-> +		if [ "$rc" -eq "$ksft_skip" ]; then
-> +			return "$ksft_skip"
-> +		fi
-> +		[ "$rc" -ne 0 ] && ret=1
-> +	done
-> +
-> +	return 0
-> +}
-> +
-> +run_all
-> +rc=$?
-> +if [ "$rc" -eq "$ksft_skip" ] && [ "$ret" -eq 0 ]; then
-> +	exit "$ksft_skip"
-> +fi
-> +
-> +read -r t < /proc/sys/kernel/tainted
-> +if [ $((t & taint_warn)) -ne 0 ]; then
-> +	echo "FAIL: kernel warned"
-> +	ret=1
-> +fi
+The interface could also be brought down again before the module comes
+up. Nothing would then drive the line low, because the new check only
+filters later writes.
+
+The commit message says the SFP state machine "stays in SFP_S_DOWN
+until the upstream is started again and then deasserts TX_DISABLE
+itself". On this path the line is asserted before the state machine
+gets that chance.
+
+Could the override be keyed on something that stays set until
+sfp_upstream_start() has run, instead of WX_STATE_DOWN? Or is there
+another way to keep the NCSI transmitter enabled across
+phylink_start()?
+
+[Severity: High]
+Is the direction_input path covered too? txgbe_gpio_direction_in() has no
+matching check, and it still turns GPIO1 into an input:
+
+drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c:txgbe_gpio_direction_in() {
+    ...
+	wr32m(wx, WX_GPIO_DDR, BIT(offset), 0);
+    ...
+}
+
+The SFP core releases TX_DISABLE to an input whenever the module is not
+present:
+
+drivers/net/phy/sfp.c:sfp_gpio_set_state() {
+	if (state & SFP_F_PRESENT)
+		/* If the module is present, drive the requested signals */
+		drive = sfp->state_hw_drive;
+	else
+		/* Otherwise, let them float to the pull-ups */
+		drive = 0;
+
+	if (sfp->gpio[GPIO_TX_DISABLE]) {
+		if (drive & SFP_F_TX_DISABLE)
+			gpiod_direction_output(sfp->gpio[GPIO_TX_DISABLE],
+					       state & SFP_F_TX_DISABLE);
+		else
+			gpiod_direction_input(sfp->gpio[GPIO_TX_DISABLE]);
+	}
+    ...
+}
+
+This happens in sfp_probe() when no module is inserted. It also happens in
+sfp_sm_main() when a module is removed while the upstream is up. The line
+then floats to the module's TX_DISABLE pull-up, which keeps the
+transmitter off.
+
+Suppose a module is then inserted while the NCSI host interface is down.
+Does anything drive the line again?
+
+  sfp_check_state() only raises SFP_E_INSERT.
+  sfp_sm_main() stays in SFP_S_DOWN because sm_dev_state != SFP_DEV_UP.
+  phylink_sfp_set_config() skips phylink_mac_initial_config() while
+  PHYLINK_DISABLE_STOPPED is set, so sfp_mod_state() never re-drives the
+  GPIOs.
+
+The first write that drives TX_DISABLE again seems to be
+sfp_module_tx_enable(), which only runs once the host brings the interface
+up. Until then the NCSI optical link can't transmit. On this path, "Keep
+TX_DISABLE deasserted while an NCSI host interface is down" doesn't seem
+to hold.
+
+Could txgbe_gpio_direction_in() handle offset 1 under the same
+ncsi_enabled && WX_STATE_DOWN condition, for example by driving it low as
+an output? Or is there another way to make sure the pin stays driven low
+on NCSI devices while down?
 
 [Severity: Low]
-Is it possible for a warning from an earlier case to get lost here?
+The commit message says:
 
-run_all() returns ksft_skip as soon as any run_case() returns ksft_skip,
-even when earlier cases have already run. The top level then exits with
-ksft_skip before it reads /proc/sys/kernel/tainted.
+  WX_STATE_DOWN is set before phylink_stop() in txgbe_down() and cleared
+  before phylink_start() in txgbe_up_complete(), so requests made while
+  the interface is up, including TX fault recovery, still reach the
+  hardware.
 
-Say an earlier case triggered a WARN but its pings still passed. ping -c 3
-exits 0 if any reply arrives, so ret stays 0. If setup then fails in a
-later case, for example because the 802.1ad bridge or vlan device can't
-be created, the test reports SKIP and the WARN never gets reported.
+Is txgbe_down() the only place that sets WX_STATE_DOWN?
+wx_soft_quiesce() also sets it while the interface is running, and it
+never calls phylink_stop():
 
-The commit message says the test checks "that the kernel did not warn".
-Could the taint check run before the skip decision, or could the test
-fail whenever TAINT_WARN appears during the run?
+drivers/net/ethernet/wangxun/libwx/wx_lib.c:wx_soft_quiesce() {
+	if (!netif_running(wx->netdev) ||
+	    test_and_set_bit(WX_STATE_DOWN, wx->state))
+		return;
+    ...
+}
+
+wx_io_error_detected() calls it. So does wx_reset_task(), when
+wx_tx_timeout() has found a PCIe error:
+
+drivers/net/ethernet/wangxun/libwx/wx_err.c:wx_reset_task() {
+    ...
+		if (wx_check_pcie_error(wx))
+			wx_soft_quiesce(wx);
+		else
+			clear_bit(WX_FLAG_NEED_PCIE_RECOVERY, wx->flags);
+    ...
+}
+
+If the PCIe error later clears, WX_FLAG_NEED_PCIE_RECOVERY is cleared.
+WX_STATE_DOWN stays set, though, while phylink and the SFP state machine
+keep running.
+
+If the module reports a TX fault in that window,
+sfp_module_tx_fault_reset() does:
+
+	sfp_set_state(sfp, state | SFP_F_TX_DISABLE);
+
+	udelay(T_RESET_US);
+
+	sfp_set_state(sfp, state);
+
+Would the new check in txgbe_gpio_direction_out() force that assert pulse
+to 0? If so, the fault reset never reaches the module, and the SFP core
+keeps retrying until it reports a persistent fault.
+
+This needs an NCSI device, a PCIe error and an SFP TX fault at the same
+time, so the window is narrow. Still, the reasoning in the commit message
+doesn't cover this path.
+
+>  	set = val ? BIT(offset) : 0;
+>  
+>  	raw_spin_lock_irqsave(&wx->gpio_lock, flags);
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261020000308.37362-1-laveeshb%40laveeshbansal.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261020060107.25636-1-jiawenwu%40trustnetic.com
