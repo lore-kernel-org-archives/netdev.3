@@ -1,104 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792764755;
-	b=3jb9/y3n4Pdi2xuNXy53rIhJ4cT74oNdTJl/EEzIQk43R4r8yjGljnMyznIX2h8M4Bb+
-	 KptjoLCr998PwODVtDEfzZugDXuKpzAavef+jwxI0/80yE+8rhy4mGNFC5nhKESoRvCpE
-	 8wWO6m/QOTXeJ9ownIQUQiTBFW+sAnJElmkcxu9B7q2JOdsoSm60V2KDO3Y8OwbJgr9/F
-	 Le9EAtuykC8Sy7fzBNl5pY6PZL56SbUos5/kzWOmAVHkQ/1D2VbBm2JhQhlv3msLxP2pw
-	 HxX7ghNrKAqIJOtuhZGEHmQCPvI4WLoSikByrz783bQEuxA2XhHXDFvBA6PJrkJHMAA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792764755;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-Spamd-Result:X-Rspamd-Server:
-	 X-Rspamd-Action:X-Spam-Flag:X-Spam-Score:X-Spam-Level:
-	 X-Rspamd-Queue-Id;
-	bh=rl+LBmXMt0s4R6vFRBmArNwMRS9jkmPZ2VnKxQORHGI=;
-	b=QsqV+tICO2vgtnZscnd+J2tsBjjzD7iDT3y4AnwmmdjcnxlqOBq28Fg+F8C58IlbaCmU
-	 6FJ6T4rAvaYa/CuqFMdaI+5Ebho9b4vBo3cccgXNy8wlGcIKInl5WZmS0sol8HI6BOkVb
-	 qAKd2YaNfW/OTAv5asKloMDV8r8jA2ioNkEAk0aM7Pqt38n7aIQnB4wrbl6BCR3bJuGk8
-	 dzwJjemIIEBVXBN3T5Ay+p/DVnGe0K6Qy0LtoCmIwI6k3zT4zELht2ZfdZWMgG9oxICGC
-	 +i/9VEBD2C4sNQxYrQQaAkB0K3fTrdU1RmQHt2BopKEkfKLHe+bojenCyZy7gabg1eA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=suse.de;
-	spf=pass smtp.mailfrom=suse.de;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=QLXWZEuz;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=KE86RIWK;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=QLXWZEuz;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=KE86RIWK;
-	arc=none smtp.remote-ip=195.135.223.131
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.52
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792764781;
+	b=vQvRxKCZUdtIlwdHRP3AZk7MXGdKAcWMdaFOc1IQH+dGoZbcxPAOUrXL4Tyk6mWreZpe
+	 kxf9Y1R7aSqeq1IDvu60awIEjZL5iFipVl0kVLIyKP7mUrgH4gkT5XGW99nbxmPDygKeY
+	 ud9LAIDz/5iTgc1qZsLC6OOGskd7n/kcWiKWudON2hFd5ks7TqSz/cbOBlkVuXJP7qCij
+	 TkLI53OtDfxbeSz+P+kp9nJyTTOB4ReI3SvTeJf+8fGmjY4it+WDHorykoFroujXIwcJR
+	 +6uwEqEULlAIaXkvMiDEpy/WE9VXOlbK8trjBm4QqA/L5kuYOKUuYkQnMelNKYBB4tw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792764781;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=xkLt3lfrbsQ7vfYdIskLImlrhPYw2t6MqVNHm8RXqsw=;
+	b=j6sbuNAMMPRiYhUMA0TgsrlNARVgSMv8QsyadIJwymzM+DcXfwyw5sQI8TlOHKMjCyY4
+	 NCAA7D2A6qC3Rbxjq+vwjySMt1JDCrmzDk43htl1kRVJ+bMMfV0dFgBth8c96ZAem2CK7
+	 nF8r3Bir5HVJ9T/Bt+FiK19LfpXkXMKcOQ5yK/6+mzEUfsiH0O0cBKQWLyBGo8rUPuab+
+	 z4XtydaRbzzf0ItlsKAmdFTsWfRd2gbs5CUfI1nWwWiKUGOSwWA6qjlG5w06gA7Pk8EuZ
+	 9OiaIakyypyIARB4Om8T/G3LoX/iB1J/5wpNQfkzr1S9nbTaJiXuOUrAXdp1Dagpv1A==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Gx+2fJ4+;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.52
+Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26CB7606A31A;
-	Fri, 23 Oct 2026 14:12:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 26CB7606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE10606A321
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 14:13:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1FE10606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=QLXWZEuz;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=KE86RIWK;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=QLXWZEuz;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=KE86RIWK
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id DCB111F458;
-	Fri, 23 Oct 2026 14:12:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1792764753; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rl+LBmXMt0s4R6vFRBmArNwMRS9jkmPZ2VnKxQORHGI=;
-	b=QLXWZEuzbWd4F8pz1RX9mmEyV4TVrx+MGR3a3/xl4xQdtNYfcGHjWFjLXi+gfIq+1Axxko
-	wpX2jjdlyMXFrisCV+8DOydUi7ZbAG55eo13tgWAHb0UphTBUcF5ftMUp/p569JxFS2nH+
-	+3WJDuqs9dReDQNIEWqKv8Dmx0CFcVI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1792764753;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rl+LBmXMt0s4R6vFRBmArNwMRS9jkmPZ2VnKxQORHGI=;
-	b=KE86RIWKV+CI+WvEuTZ9vNcscQgVpPTexnCUfAp6Nj2ths/XV3rtCyPtUIymp+NK0D5k2Z
-	jZpQGJaVi4w6nsAA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=QLXWZEuz;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=KE86RIWK
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1792764753; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rl+LBmXMt0s4R6vFRBmArNwMRS9jkmPZ2VnKxQORHGI=;
-	b=QLXWZEuzbWd4F8pz1RX9mmEyV4TVrx+MGR3a3/xl4xQdtNYfcGHjWFjLXi+gfIq+1Axxko
-	wpX2jjdlyMXFrisCV+8DOydUi7ZbAG55eo13tgWAHb0UphTBUcF5ftMUp/p569JxFS2nH+
-	+3WJDuqs9dReDQNIEWqKv8Dmx0CFcVI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1792764753;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rl+LBmXMt0s4R6vFRBmArNwMRS9jkmPZ2VnKxQORHGI=;
-	b=KE86RIWKV+CI+WvEuTZ9vNcscQgVpPTexnCUfAp6Nj2ths/XV3rtCyPtUIymp+NK0D5k2Z
-	jZpQGJaVi4w6nsAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B7BAA133F3;
-	Fri, 23 Oct 2026 14:12:31 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id xP5FIU9r22q/dwAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Fri, 23 Oct 2026 14:12:31 +0000
-Message-ID: <5dda588d-e6fa-420d-a73d-b5278094b59c@suse.de>
-Date: Fri, 23 Oct 2026 16:11:25 +0200
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Gx+2fJ4+
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-150ef97e790so6672c88.1
+        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 07:13:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792764780; cv=none;
+        d=google.com; s=arc-20260327;
+        b=HhfCxI3ut1YnkGcFdV7rjyITe/Yu1JKnADl+AI49wABY+6GpUb64eGFMeoDKI9RtKK
+         XR+Sf2WLGtRa2ZXajFmsCouWe1JFEWLL/NEc5k/OBGnY2g5tgrMv5PVxuVWVwkRgBmdh
+         kIKrfR79TqVaZ6jEwwijU5joI5ksXtk+FPl7YyiO7HhLjY7YT7zmpssJsll1YIGOerdP
+         OkC396Ivygz4ti0I9ReIh8se0IUNOkchUSyEnEF5NsRYHUY48og/SIiKqYyvrqYOKOOu
+         JM9ikgWlzILFB+dxmEWwPc+bgPS6AVhcVmfvBpskOslKX5f9FRTKcKad1RYt2d04yluU
+         zwEw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=xkLt3lfrbsQ7vfYdIskLImlrhPYw2t6MqVNHm8RXqsw=;
+        fh=I0b559lHL5EuXxufIJFl2Vh8EwXze0tBA2iHoLvo0eQ=;
+        b=CAwaF+OqTIycb0aLxl585pnjn1hdnRybgFiF0V8AvcYtB12TxVEztKayCh1BUVzJd7
+         f6PTI8JIDq9UA47JGxYJJUyv+lqVLtYKtP0YhxB0PR4xoljpqjFKVJEGKXjVDpYP9cwB
+         Sz74+J1NiP6+W5w89smGrayWx3SSisM7LNMJ/AKY1jYfqdq2nmhEIELQ8LCfuzx2otth
+         qhs7rBdYNtO0/QgLVUki69bUKTy/plUal6x+Q3NzEO0NH1ribgzybcqeDMLBSNrU+mzp
+         hH9J3glTMMpEo8fZOyq6hgyRkXP90ONG8/+UdavKutU+fWMvIe78NSjqnfZSluD6mFIY
+         /cFQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792764780; x=1793369580; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=xkLt3lfrbsQ7vfYdIskLImlrhPYw2t6MqVNHm8RXqsw=;
+        b=Gx+2fJ4+NKa9V81eYgp8m0URc4qAsxD2kQONuD8C3gU3DKEMmYWkze5ZkF+25eb7k5
+         aJGLgMQ1njzitVBSXwao/PI9cFuVbA3V+OU2/c/WnRIgzDUX8Ssvlhg5TbB5stkMYq9a
+         cL/RYKe4QUfUbEBvxU9foBBEs/D72SoOtTFatlh3oP5n9OwgJueXcH4OyxGqIsxeLyUi
+         cn5JFVvIE8U0q9IU5GkuJCFRcCBkPacVOvILN0m8SRMy4kKFtw3gakyxz/FrnYb3VsqD
+         jJOfHPA8rbQe/+yOLnt5UwsDBdBFTZSW2OebdR7wKoWscqAM8rExKV7y0scb4qClSwJ/
+         YS/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792764780; x=1793369580;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xkLt3lfrbsQ7vfYdIskLImlrhPYw2t6MqVNHm8RXqsw=;
+        b=OueAX+5qtAaPPcn27h3VtjVXdqwZb+JKbHSvm4+bs3wBq9jz90SsoMPFvRPGTmJ/RU
+         wJ+pRw6TDPYMXeiLi9EC/NSk3BW0Cez+HD7SMsfhJeh/IVhd3ssws1VjZXLnQ9uuUjgR
+         3Lhl9+3UX9iUR97YMuya8VHiSBEsloJbbX0ofL2d1T+OnbaFpIj+x6X1I7Z6XN70364J
+         SUsUmyqehGQfYVAnTYderxo9BdTupvGX8qPwT4Psnd+BGwNhANGyXdxDLVSB1si2ZQ9b
+         IgXdHQwtR8a89e3HxC3m00LpCzxoZsJDUi5G5uf2Dw2SqJWSJxkpZaoKvJTlcygM5r+P
+         vYPg==
+X-Forwarded-Encrypted: i=1; AKwUvByjP+iRRY7TumTs7/gdQE72ECCileq03Sf00aBdmncrAfNee6CWKBj62cbScO3G6wVmmFgBmnA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI77l+tg50UtmK2kbtdp94tK8mOcoDxCohc/9GDp2sOrGhD4UJ7
+	w0FVZPoOEEdg85bFeqr4nqf9Z22Gg+vqD4nR6aR8UH0rBi/73WgvbgXJNp+jHnotrgNmEKOfRdT
+	ryuTvBm0eHc3Oy9K5g3v/b+/g10sAZpdDcZvAsvFp
+X-Gm-Gg: AYBFou0qSPX4Q1bDPk6jh8g5DB/05/J4kCPBx31yHlIBK4wCxCu53D+nLDJZwr2KMKR
+	+/h8mGmXyickgmMwuQWIhprlP/F5L/TfaJVZm6eWQlxoWZpo2wQ4KFtiJzZnssLJUqNSWuK/CQy
+	cqYyDLUT9NLLV8oV3mv7EDVcdGxIILf7yW5uRBrxJaQoZdz2YBtcuZfdtPJllFnb2AGZtTiIfNY
+	0bvT7EKWKcyVokm6bx0Gv050kggQzC2+0NfKtCa2qVuGxt5z6N1agHg1gZ3cWbzizDo0z99ioxU
+	q2QJxBBkdYr8wFm4c+XX4vgwQ2htnoISEV+dz0VxKdfBuIs2XtM2esBx6YxZ4poBLmKNuSI2ICr
+	bYMMNAejnuRdg4HLusDj5MCUEsRalB22Z/5dKLd7hj/Ow8VY+UuX3TUUhKuaLHgg95dii
+X-Received: by 2002:a05:7022:6ba5:b0:144:f802:8bf1 with SMTP id
+ a92af1059eb24-195f96f6e3bmr421525c88.18.1792764777402; Fri, 23 Oct 2026
+ 07:12:57 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -108,156 +104,47 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 2/5] ipv4: fix shift-out-of-bounds in
- ip_rt_send_redirect()
-To: Jiayuan Chen <jiayuan.chen@linux.dev>, netdev@vger.kernel.org
-Cc: stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
- Kuniyuki Iwashima <kuniyu@google.com>,
- Joel Granados <joel.granados@kernel.org>,
- Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
- Wyatt Feng <bronzed_45_vested@icloud.com>, Yung Chih Su
- <yuuchihsu@gmail.com>, Hannes Frederic Sowa <hannes@stressinduktion.org>,
- Flavio Leitner <fbl@redhat.com>, "Paul E. McKenney" <paulmck@kernel.org>,
- Petr Mladek <pmladek@suse.com>, linux-kernel@vger.kernel.org
-References: <20261023091419.167088-1-jiayuan.chen@linux.dev>
- <20261023091419.167088-3-jiayuan.chen@linux.dev>
-Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <20261023091419.167088-3-jiayuan.chen@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-13.50 / 50.00];
-	SUSE_INTERNAL_BYPASS(-9.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,icloud.com];
-	RCVD_TLS_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,kernel.org,redhat.com,nvidia.com,google.com,nokia-bell-labs.com,icloud.com,gmail.com,stressinduktion.org,suse.com];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Flag: NO
-X-Spam-Score: -13.50
-X-Spam-Level: 
-X-Rspamd-Queue-Id: DCB111F458
+References: <20261019-b4-skbuff-bug-on-followups-v1-3-41dbef50b9f7@toxicpanda.com>
+ <179273111951.3134.3452028799437573017@kernel.org>
+In-Reply-To: <179273111951.3134.3452028799437573017@kernel.org>
+From: Mina Almasry <almasrymina@google.com>
+Date: Fri, 23 Oct 2026 07:12:39 -0700
+X-Gm-Features: AclHuK-tcTcrResIEJF7frxNES1XOTcAYvLS5iUmn3CVJsSLoqeepm1x0REGvsg
+Message-ID: <CAHS8izMBEkxtS_s2t9uX4-RLxxM5249U_y=G8_1qtr+y3jL6=w@mail.gmail.com>
+Subject: Re: [PATCH net-next 03/15] net: skbuff: fail checksum validation when
+ the skb can't be checksummed
+To: netdev-bot+sashiko@kernel.org
+Cc: josef@toxicpanda.com, davem@davemloft.net, edumazet@kernel.org, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, andrew+netdev@lunn.ch, 
+	jgross@suse.com, sstabellini@kernel.org, willemdebruijn.kernel@gmail.com, 
+	fmancera@suse.de, david.laight.linux@gmail.com, netdev@vger.kernel.org, 
+	xen-devel@lists.xenproject.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/23/26 11:13 AM, Jiayuan Chen wrote:
-> ip_rt_redirect_number is the max number of ICMP Redirects we send to one
-> endpoint; once we hit it we stop. Before that, ip_rt_redirect_load gives
-> the redirects an exponential backoff:
-> 
-> 	if (peer->n_redirects == 0 ||
-> 	    time_after(jiffies,
-> 		       (peer->rate_last +
-> 			(ip_rt_redirect_load << peer->n_redirects)))) {
-> 
-> n_redirects only stops growing when it reaches ip_rt_redirect_number, and
-> both redirect_number and redirect_load are plain proc_dointvec sysctls
-> with no upper bound. Set redirect_number past 32 and n_redirects climbs
-> past 31, so "ip_rt_redirect_load << peer->n_redirects" shifts a 32-bit
-> int by >= 32 bits, which is UB:
-> 
->    UBSAN: shift-out-of-bounds in net/ipv4/route.c:949:6
->    shift exponent 32 is too large for 32-bit type 'int'
->    CPU: 1 UID: 0 PID: 1845 Comm: ping Not tainted 7.3.0-rc7+ #364 PREEMPT
->    Call Trace:
->     <IRQ>
->     dump_stack_lvl+0xc1/0xf0
->     dump_stack+0x10/0x20
->     __ubsan_handle_shift_out_of_bounds+0x1d1/0x390
->     ip_rt_send_redirect.cold+0x2c/0x146
->     ip_forward+0x1ddc/0x2430
->     ip_rcv+0x2b1/0x320
->     __netif_receive_skb_one_core+0x16b/0x1c0
->     __netif_receive_skb+0x21/0x150
->     process_backlog+0x37e/0x1200
->     __napi_poll.constprop.0+0xa5/0x5e0
->     net_rx_action+0x4c0/0xf70
-> 
-> Fixing this from the sysctl side would mean bounding both knobs, e.g.
-> redirect_load to [0, 65535] and redirect_number to [0, 16], which gets
-> in the way of users who legitimately do not want to cap ICMP redirects.
-> Instead compute the backoff in u64 with the shift count capped at 31,
-> which cannot overflow since ip_rt_redirect_load is an int, and clamp the
-> result to MAX_JIFFY_OFFSET.
-> 
+On Thu, Oct 22, 2026 at 9:52=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
+te:
+>
+> Thank you for your contribution! Sashiko AI review found 4 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 2 =C2=B7 Medium: 1 =C2=B7 Low: 1
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [High] The fix does not hold when conntrack checks checksums first.
+> - [High] __skb_gro_checksum_complete() (net/core/gro.c:794-813) has the
+>   same false-accept defect this commit fixes in=E2=80=A6
 
-I think we should cap redirect_load with a minimum valid value of 0 on 
-the sysctl. If the user want to disable ICMP redirects or do not cap 
-them, they should use 0 or -1 in redirect_number IMHO.
+Both high's here seem like legitimate issue, al though the latter is
+maybe pre-existing.
 
-What do you think?
-
-> The clamp also fixes 32-bit kernels, where the same expression goes
-> wrong long before the shift count reaches 32. With the default
-> ip_rt_redirect_load of 20, from n_redirects == 27 on the result is
-> either truncated or too large for time_after(), which then treats the
-> deadline as already passed, and from 30 on it is 0, so every forwarded
-> packet gets a redirect again until ip_rt_redirect_number is reached.
-> This needs a raised redirect_silence to be reachable, otherwise
-> n_redirects is reset long before. On 64-bit, ip_rt_redirect_load << 31
-> stays below MAX_JIFFY_OFFSET, so nothing changes there.
-> 
-
-Isn't the same issue in 64-bit kernels too? In essence, it would be (int 
-<< u32) which results in a negative value and that is later 
-sign-extended to a corrupted 64-bit value. Am I missing something here?
-
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-> ---
->   net/ipv4/route.c | 7 ++++---
->   1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-> index 595a3b7f1783..76807b757046 100644
-> --- a/net/ipv4/route.c
-> +++ b/net/ipv4/route.c
-> @@ -907,6 +907,7 @@ void ip_rt_send_redirect(struct sk_buff *skb)
->   	struct inet_peer *peer;
->   	int log_martians;
->   	struct net *net;
-> +	u64 backoff;
->   	int vif;
->   
->   	rcu_read_lock();
-> @@ -945,10 +946,10 @@ void ip_rt_send_redirect(struct sk_buff *skb)
->   	/* Check for load limit; set rate_last to the latest sent
->   	 * redirect.
->   	 */
-> +	backoff = (u64)ip_rt_redirect_load << min(peer->n_redirects, 31U);
-> +	backoff = min_t(u64, backoff, MAX_JIFFY_OFFSET);
->   	if (peer->n_redirects == 0 ||
-> -	    time_after(jiffies,
-> -		       (peer->rate_last +
-> -			(ip_rt_redirect_load << peer->n_redirects)))) {
-> +	    time_after(jiffies, peer->rate_last + (unsigned long)backoff)) {
->   		__be32 gw = rt_nexthop(rt, ip_hdr(skb)->daddr);
->   
->   		icmp_send(skb, ICMP_REDIRECT, ICMP_REDIR_HOST, gw);
-
+--=20
+Thanks,
+Mina
