@@ -1,92 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.171
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792739025;
-	b=4xfXu2/JpiQWjKTnkZkywKBBafTeTFllMjOI7o+kCrHfn5YdlNmIGaseKpx9Jgm1v9MA
-	 KDVCgzLoU304HW1+n9RsYKxDhNs4nAhQw4JQdYrSvpdk6KPcFWzsQjUfQ5ENOGhEUnvmo
-	 ajii50xkHKBKDOepIhPiYXZ5U88Mqbb6ol/ibMkW9yVaUi8O9ssUYZocQsDNUfHkc4Plr
-	 IDGQxmmfk8+ns/IRAblBH+OrulmBhYCeaj1A/oNqxDjRc+5O/xjt86bZOd3cGNT7Lhi++
-	 jn+1DZHrtdX6223iOlbft2u9R4JUbveX6IiivK8zE8VnU4iY6eT4h1AvLxA/JrA/rOA==
+	t=1792739070;
+	b=EpIW09Q4LhK7ht6G1a2A6mLbELdyVnWkjEgjfjaeGW7X7S2kV/As/z7N1DmCuOOKiICp
+	 RZb2jH265CgFM0KcVMbrr0PWTb9wSAYhOpyfSf/fqkDWGhV8GCE/wHcbnPHDhSxcBuZuI
+	 hPPDK+FmwHqZdIKQ3b3JFzQiyvZqLP5WhKbGp8bgl2f4eo+SAbb10i/wGlymed38VBGGM
+	 sbnNgfKAnxZv2wHjdReokvN1GFpHG6TjJimjvMPvyH6OBJpsCVSUG6VmvV3c3mcs1Kmdv
+	 PgTlPsHznwPdeRQir4GCk+mELSFt9yR5MgpuFHwCR+M1b5XvRqd6NhKfsF5oFUzbS7g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792739025;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-Scanned-By;
-	bh=5VmmDXq4OzoNj3hj8BcuC3rJKucr2wP7gcadVhT2RHM=;
-	b=Wwsp5V3hUqK/O1rtQt2MkzsgkEVKpNMeKUFCp4hpMur0ptmBU+GesrHRtYKSFvMSNNAB
-	 NTpcDNQczvjRmH7T6PxTZNoFTmrzPB0NNCCDkvQgnGFHB2pHelUSuuiwQm7do8iuetPby
-	 sxcfowPDVXycyJoILSeUcJcWFi52XUZMMhsvLMxtFA9TwLwRnC8RU8uIl2k56vuLJTaQ4
-	 JcP4cBKiSIZRh0w9Dj7pxE/qWIxCZC2TMvVmt3mzFVCjPyexj7kV1NwgImVkW8rjnVhJc
-	 RGvmTRNy1JMe/S44UcRl1a9NStyncBXzzIIFIjAg1jPKKrW9OXt6U8CZ0io56bwOcWA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792739070;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=qG5b3GBAm10vBf9IK+PFH6C3j46v3ALudwzqDcSeLhk=;
+	b=5aPeIzYccmYYxRTtQj+brPG2tjYXqEIWaMSCrNy70jmNB6O+daywUlMCccheYG+mD5xc
+	 Ge79wpkSe04v1WASn+MSdKnTrJS7FgGf6AVEPy5yXicEtfMLxydekdjNct+lB/EZLk1v1
+	 1rY5QexriGXsJEQu+kgkXO2yIN37ZimC3TigP284jTHmF5rOnnAwmUYYmj6Z84HzVRJUa
+	 uH8re8ql2k3GauJxplMksom+SPioUEmCg7owckG8G7Yst9Nf9TYjwqe5tbnTo14K3umUj
+	 2P2aeTVFcwJriIowhyveMIWXe1jGS80DGFgOdF8WUHMRd76xdgg45jmau5NLmHcxnVw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iGjziGyK;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=HgiCm4CB;
+	arc=none smtp.remote-ip=74.125.82.171
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D02060A3829
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 07:03:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8D02060A3829
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ED1D606A31E
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 07:04:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1ED1D606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iGjziGyK
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792739023;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5VmmDXq4OzoNj3hj8BcuC3rJKucr2wP7gcadVhT2RHM=;
-	b=iGjziGyKUFxh66gavdRUrUofUWN2w1zfHj4UKr2hsSz6s3J+7mqa/oEK3sH/RDvrLQ1pOz
-	nWEcDaaRuqJyZhHAAjtZtdkn9PG7z/kX8O351LbKUKXY1NKHwKjt0OyO1P2xDJ+LMiXFpN
-	G4FXfu3ZtLS1mTI1A+8m3OlI44QPa7w=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-220-6dwtmr-BPEaaGiperbAeJA-1; Fri,
- 23 Oct 2026 03:03:39 -0400
-X-MC-Unique: 6dwtmr-BPEaaGiperbAeJA-1
-X-Mimecast-MFC-AGG-ID: 6dwtmr-BPEaaGiperbAeJA_1792739017
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1631A1956053;
-	Fri, 23 Oct 2026 07:03:37 +0000 (UTC)
-Received: from poros-thinkpadp16vgen1.tpbc.com (unknown [10.44.32.22])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C4BB11800347;
-	Fri, 23 Oct 2026 07:03:31 +0000 (UTC)
-From: Petr Oros <poros@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Petr Oros <poros@redhat.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=HgiCm4CB
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-35b2c599f43so1375889eec.0
+        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 00:04:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792739068; x=1793343868; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=qG5b3GBAm10vBf9IK+PFH6C3j46v3ALudwzqDcSeLhk=;
+        b=HgiCm4CB/WS6pRw2SWQIvkZ1zLtaW1GUKFazHOhdwUgfMlbe/K+ehi8yZssfpEPqaa
+         7aqJUyj1cDGLrh5U9k4dkSALQFRC7I5q42ZpvyIz4f69htYbNxp04eKUKtamPx1DBj+v
+         M+l2WR4CdWV2bv2AR85rgzE8nG7XWJKlgTuJRvXZQh7HqW+IJs4nsYC2AwHzrfp3qUH/
+         qIQw3eNXPkBVV/IEpTErqIqt+nEHeE9VoO/dLaCps+nlgU3yQICyx6HDL6T/LHXxmbt8
+         c5VOIveoku6z6YZCoD1Kxkh2q/xMXmgRxNqJ6MzPGLecUHiYLJX52h1hZ7Wv7Kf/kQve
+         gsDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792739068; x=1793343868;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=qG5b3GBAm10vBf9IK+PFH6C3j46v3ALudwzqDcSeLhk=;
+        b=IIJQWFTHUA5DECYOUGAUEW165Lvq6GJcSWuow+TbPUdQuEeZXevcqexEatldqx5cBN
+         uPZcGFPspPs4qigmcroiNP8GIaZV8rkuicj5rZQ+hTJrw0ysXEvsYLDC4jbsIYg+IvG8
+         0uOix587bh9HrIP78rDgpQFja+XPpSt5XXAFE4ntkqC1/HU14dFIqTTRErsKEi8ePTjO
+         NDfiwD7H7Yt23a9V1wlf1aVvffI+6sXN0As2Z+2YFs1IGMebAKgscM438rhn5n+eZhb7
+         2VcqAjeOirSS9UoTaOvL3Lw6u/B9XP+d4NrKT0OucwFirLxbbi95Lh45U644pbhacqCu
+         8AWw==
+X-Forwarded-Encrypted: i=1; AKwUvBz2YN+wbR42kv9KQIsKRm0ShUpPBioM+1KmSNKoXPL3acwlTOWE6Gbeo7P4wrOsqyB6wrdIvFA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJR/tXaVNLPt0AgVpcBTIGAEl36h02Bi0ekNroUO3RAIaQPMjX+
+	+8U1R5oEfBF2pOn8OPVnc+GxA5WXBkXYweeqDtI8ZFrM/saeI9kUSZqV
+X-Gm-Gg: AYBFou3BVhzPIETYdAw/SMCgD0bcVV0Ctk/K+uPkRIhzFbU8b8k5I2FPhrVfXjMLANH
+	OP/R+YGHUukhvznZeMlrvdzpplaFdltO6t42G3henpgTJ06/erCNhrdyAquEmSmX6DYaH4oTn56
+	zJ78MOgL882SuQsMLwPrgsrNB7jmvjV1DRWlhEIGYX/Mm3J0HMTPyYgDPOH1pDz5/crOLbZT4Ml
+	S2F4gxPPRD/iemLtOwisFuyHAIS6kJZ54nS5ld/TR0n45UkeFXIpN0Fomi/DmjKgmGXRXtOrdsN
+	5Mv9gCGjMsnnqJ/JfR7E2DFFW+CI4YkkCSlFaEsKEN0WM5xejaJ+yySJxaiAeib2aifq8dbm3Jx
+	iuXV5ursMw9aA6OrWV6SZjrMfBEFFjqwKvJo9n6fWR8Uhgt3kG5LEeicDRiY/QHXWKOnzsnIzML
+	cOl0EidTLZmmfeMmThYmepV537GIqjMxF8w30ZAOkXzcNLrt1Dn9jmGpMZ7t1ukSTQflK/331Rx
+	iJK97jjOM1dfT+TJqtU0sP7lxiaNB4R5N3OUsnsHetrEQtLqht/bSeiRToUZLDe9r8JS200QdSX
+	FnwiCpbRtrVHvdjL9TKE69ctenZXyg/Hwc8m2Q==
+X-Received: by 2002:a05:7301:f8d:b0:35a:7020:c08a with SMTP id 5a478bee46e88-369d976cd6amr2105063eec.19.1792739068048;
+        Fri, 23 Oct 2026 00:04:28 -0700 (PDT)
+Received: from SAJV1N5.lan ([14.139.240.50])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-369d9de33acsm4764472eec.20.2026.10.23.00.04.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Oct 2026 00:04:27 -0700 (PDT)
+From: Divyanshu Jha <divyanshuj2006@gmail.com>
+To: Oliver Neukum <oliver@neukum.org>,
+	netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Mateusz Palczewski <mateusz.palczewski@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Rafal Rogalski <rafalx.rogalski@intel.com>,
-	Shiraz Saleem <shiraz.saleem@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	intel-wired-lan@lists.osuosl.org,
+	linux-usb@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Subject: [PATCH iwl-net v2 5/5] ice: do not block on the aux device lock in ndo_setup_tc
-Date: Fri, 23 Oct 2026 09:02:57 +0200
-Message-ID: <20261023070258.730168-6-poros@redhat.com>
-In-Reply-To: <20261023070258.730168-1-poros@redhat.com>
-References: <20261023070258.730168-1-poros@redhat.com>
+	Divyanshu Jha <divyanshuj2006@gmail.com>
+Subject: [PATCH net-next] net: usb: cdc_ncm: add Apple Silicon MacBook Air (05ac:1903) device ID
+Date: Fri, 23 Oct 2026 12:34:19 +0530
+Message-ID: <20261023070419.235361-1-divyanshuj2006@gmail.com>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -97,60 +102,40 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-The TC_SETUP_QDISC_MQPRIO path of ice_setup_tc() takes the auxiliary
-device lock to test whether the RDMA driver is bound, and ndo_setup_tc()
-runs with the RTNL lock held. This closes the same cycle against the
-RDMA auxiliary probe as the two preceding patches.
+The Apple Silicon MacBook Air exposes a CDC-NCM interface (05ac:1903)
+when connected host-to-host over USB-C.
 
-Use device_trylock() and report the device as busy when it fails. When
-the qdisc is added, userspace gets -EBUSY and can retry. When it is
-deleted, mqprio_disable_offload() ignores the return value, so the
-hardware traffic classes and the channel VSIs stay in place until a
-later qdisc teardown gets through, the same as the existing -EBUSY for
-a bound RDMA driver. The message is a netdev_warn() because of that
-second case, nothing else reports it.
+Like other Apple CDC-NCM peripherals (0x1902 and 0x1905), Apple's
+firmware omits the CDC status interrupt endpoint. This causes the
+standard cdc_ncm probe to fail with a missing endpoint error.
 
-Fixes: 4b31fd4d77ff ("ice: Fix RDMA VSI removal during queue rebuild")
-Signed-off-by: Petr Oros <poros@redhat.com>
+Add device ID 05ac:1903 to cdc_ncm_devs binding to
+apple_private_interface_info so the driver bypasses the interrupt
+check and initializes host-to-host networking successfully.
+
+Signed-off-by: Divyanshu Jha <divyanshuj2006@gmail.com>
 ---
-v2:
-- rebased on the new patches 1 and 2
-- netdev_warn() instead of netdev_dbg(), the qdisc teardown cannot
-  retry and ignores the return value
+ drivers/net/usb/cdc_ncm.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-v1: https://lore.kernel.org/all/20261019065301.3983537-4-poros@redhat.com/
----
- drivers/net/ethernet/intel/ice/ice_main.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 9de375f5c4deb5..7eb653a7ebacd5 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -9451,7 +9451,12 @@ ice_setup_tc(struct net_device *netdev, enum tc_setup_type type,
- 			mutex_lock(&pf->adev_mutex);
- 			adev = cdev->adev;
- 			if (adev) {
--				device_lock(&adev->dev);
-+				if (!device_trylock(&adev->dev)) {
-+					mutex_unlock(&pf->adev_mutex);
-+					netdev_warn(netdev, "RDMA auxiliary device is busy, qdisc not changed\n");
-+					err = -EBUSY;
-+					goto tc_unlock;
-+				}
- 				locked = true;
- 				if (adev->dev.driver) {
- 					netdev_err(netdev, "Cannot change qdisc when RDMA is active\n");
-@@ -9471,6 +9476,7 @@ ice_setup_tc(struct net_device *netdev, enum tc_setup_type type,
- 			device_unlock(&adev->dev);
- 			mutex_unlock(&pf->adev_mutex);
- 		}
-+tc_unlock:
- 		mutex_unlock(&pf->tc_mutex);
- 		return err;
- 	case TC_SETUP_QDISC_ETF:
+diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
+index 35db38cb3..6848b9421 100644
+--- a/drivers/net/usb/cdc_ncm.c
++++ b/drivers/net/usb/cdc_ncm.c
+@@ -2019,6 +2019,12 @@ static const struct usb_device_id cdc_devs[] = {
+ 	{ USB_DEVICE_INTERFACE_NUMBER(0x05ac, 0x1902, 2),
+ 		.driver_info = (unsigned long)&apple_private_interface_info,
+ 	},
++	{ USB_DEVICE_INTERFACE_NUMBER(0x05ac, 0x1903, 0),
++		.driver_info = (unsigned long)&apple_private_interface_info,
++	},
++	{ USB_DEVICE_INTERFACE_NUMBER(0x05ac, 0x1903, 2),
++		.driver_info = (unsigned long)&apple_private_interface_info,
++	},
+ 	{ USB_DEVICE_INTERFACE_NUMBER(0x05ac, 0x1905, 0),
+ 		.driver_info = (unsigned long)&apple_private_interface_info,
+ 	},
 -- 
-2.56.0
+2.47.3
 
