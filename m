@@ -1,101 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.161.47
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792764516;
-	b=m3hXWZ50nALe4v5haMtbW10m5wV4IrknmI/7k4KPJZ19Tq1bYhWWhEZYDVv+bLE3fsku
-	 +zc+xbdKZWUYDBYBhM4rUC52mdCxQZ6UB/f4SrcbMFybZsvU1gK27TRt8unmh6uFfp2xA
-	 Ru29VlwRGlMkH6cW9KxB6rA+0+s3hzinjE2hV3EntjdBEYvySSZBfgovSvOuQkVVoDVMN
-	 oPzVIkY951iGXcCEaYq9r/Xa6WoaYWPao3QOqj7O63oXQiiMALvZP9sx+4N0nSbW8wwDV
-	 MSC/5kA9v5ukM9FMStv7gojLzyh5s+nuhUhl0n+dV/AzhCGMHS1qxspiJvgtAa/C69Q==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792764516;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.52
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792764606;
+	b=Fldj2tOXD7f6Eo8r9dIHo6yrwlfi93RsuJpiOe0sSwt6kr8hCgMR19o8NAzfhin5iKsl
+	 lQ6HYja36uZu3jFr6nTqOONrYqgbnyShRLPzhp9yC+PNonpK+wcQd10LO84oP2wtnslvv
+	 VzbXa0JYWYEIfaaH/0mfLIsuMtryZuooqO2QUBtcE+qQ85ciRJpIbWUlKx9c0Age7tzzo
+	 fyPYCLmKiMcn87VkkLS0p3djMUftyPaA1yCdBbu7KVwNCPRGBHjk9f7BGp3pXlta7jc+c
+	 x1b8vshDjUWIpL3ZanpphxH+Nwaj7xgJcIRar9u9AD/oE+xe5528araU/+fqOA+zPbg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792764606;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=S2REWJ/GvPB6717oRRTOl7lftZMNqJJK4+idsMBqa34=;
-	b=P56rd6BK43URYJpLKFTSXLVJ+gkozqeMG6Maud6Zx1Rfvrd9KT/H5pB53qR+rdF+rDHs
-	 lUhwg0lrt6xkMfJ9bDfN59DX7FDNYjcCDPXVMQ05RgzqhH8QsWNw+P/g3GRj+so8dGH6R
-	 NZXU0G447febq0UJ5ARCyCDwDwSkZlTqRtauJ1W8BzhE5OtvVoND0s/gFRSINl5EQV8LP
-	 +Tvq55hulD3rLJDTmhzy2FGlB0spNTUTTq8OSlivjVuFU7kKhBVtLr+2u2k/5M2CWXZjI
-	 hfOkKgyQDC4qLc4K6DOPR9kaAONjLSjcYTJJ+ao4COamMSTKkm7HWhVNbdn8vwJJ3Zg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=juxs7H9d;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.161.47
-Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:Autocrypt:Organization:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=XPDo1N1hT7cCAK8LkHZsP5UZtpJRXF7LrSS7WPT3zsY=;
+	b=o5fHIn2BV0VHGeUxBsRB5JcYGw13k4yL1NCB2hroiPVApPAR9tsDkGIrEKkGfQf80dJB
+	 +6/VcDQq1SIUMJBPdqcuOZEtnIgzc4Txh6R+wyiLVF5u+6SPPPzGLVqxiS51zUs273X5z
+	 b0tz51jIdSgZ5lmVgsNntAPZPLebtm3hleCl+/lqYOenAzgncNTkkUyjyf4AOD10hNuET
+	 qRA2IX4VmnGSSsJgMReT+9ZgeIWe05NOo4ekPD9+JsV+YXEHJCLOOLmmomX8o0zNbttXS
+	 d4TtUaP8Fxfoc0jWtZCWS8R07zX0c5b7AXxIueMmi6NeOsogg4CUPEzr72n0oHsyjbA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=openvpn.net;
+	spf=pass smtp.mailfrom=openvpn.com;
+	dkim=pass header.d=openvpn.net header.i=@openvpn.net header.a=rsa-sha256 header.s=google header.b=NTvzQ9Td;
+	arc=none smtp.remote-ip=209.85.128.52
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA83606A31A
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 14:08:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BEA83606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 986F9606A31B
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 14:10:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 986F9606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=juxs7H9d
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-706113e92f9so527482eaf.2
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 07:08:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792764515; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ApBofHSmzamO5L0rKZpREdEGjz3X3L9nYhEw4O3Uh/WTgqYA75VTmlsZz2UnDO2qNX
-         6iPKaTqYvqbeKrO7/uxeEnlGzy3YGPtYrG+vIkIDZ2mRNS7lJhXdmadTE9By8R1e+nT6
-         IOfWL5SYCQbvF+zbbK7wNXdrY1QEB+w91qZy9ciBo9gzzYm/1OXrXskaKZwFzBpc7I9l
-         YnV73gvyn5nB084EqYhcHc36L+wzHjJMlicGAdmZQsn82zMV4IFdzefzm+5F/Hega2kO
-         Y3jhhD5p19OU4mCGWc8jpsKSk4IKnbVHzN1LYI1aYA3td0SMec4CShS7UU+wqw9aj20h
-         gwAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=S2REWJ/GvPB6717oRRTOl7lftZMNqJJK4+idsMBqa34=;
-        fh=vaXmCKFcjPPRnNmdIyXQmBRARLJrl2fUDXWFY8PfIPw=;
-        b=EAjbSTONU33kzMywdfONRkAcACAt4Xh+AKxMBuE9Mnos8uE4jrVzjPPJXUq3/Fdbgd
-         4+e3aXwkiayDs4c68rfKuyzV5HgdAFlQ4ZZNtBBsfFV5ojHEfRD9QvCIy7wZ+QDAkORU
-         mV9uFr6NDaYlYPag8ybfwU9uTecPhF/ljR8g2frF38sx1K+7u944J5Lqm13QwGyN+n/+
-         h2s9bnHxMV4u41M6TRhFpZItUmzAyj8RZ0syb8K/RlCP0CHgnxfxpTQjjLj/A+b6opFX
-         jZw+0dCBUak5q5ZCja430APy7HcrD/FZpWeM4zChH5L1u6zurNPWe3bChqU2stodO2rc
-         utQQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=openvpn.net header.i=@openvpn.net header.a=rsa-sha256 header.s=google header.b=NTvzQ9Td
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a1fbd52ab6so5968005e9.0
+        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 07:10:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792764515; x=1793369315; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=S2REWJ/GvPB6717oRRTOl7lftZMNqJJK4+idsMBqa34=;
-        b=juxs7H9dLJSa8dQz21+iLajiQ3GOniiUswoPVMJb7ShaVdvVrtZWqQ4plXIt+WfdaS
-         xsYFuenmrFSHDHKuQZQNeMWckMNQq6szVAyWbEet/emB8jHw9MNi2iJyBCPvRHT+9OZd
-         EOXc+xe/SwI2yjBTDQxpJ1sA66saKLgUR4v1qbTmOcTx7uJKg53VeFjTLcv4w1fk0nU0
-         ucoEjPv1GSIvuKYOroFiITvGc1T+qoOguJiKqdJcfrd2VPr3eS7nznbF0+Eg90FJdDV6
-         5YVDaeUgyNJfFJkgse4DlJla+7poCHdQD5tnRtsVZhKtomvcPR2V5hkT0C2nUWLAGMl2
-         mDpQ==
+        d=openvpn.net; s=google; t=1792764604; x=1793369404; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:organization
+         :autocrypt:from:content-language:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=XPDo1N1hT7cCAK8LkHZsP5UZtpJRXF7LrSS7WPT3zsY=;
+        b=NTvzQ9TdU2e4irYs7q7441oWiK6tux+67MmXXQrw8zJ1LfSsV7SBaYxU/9PMhDSDmu
+         0hcdyppcHq6cV9461E3xbWNphSJDcIYcJ057R9L7peez0OtpKjlII1Xd4sSK478p3gUk
+         q4q6zMr7TyuOYPamkWVGJqdtnDMdH7B78ZFWVkBDdOjBKqiaTQtMds4aSu5ybaW2dZOg
+         HJ5yuPmd10r/yP5Hq7VTJThh8O1sJ6Zp1CEzqLpcLVO+DEJZrJqr5AceQLmOD78DdppG
+         a+TFUo+AVegRNQ9MEKzE4YYdDuMfMXNRY+jgKt2oifVs1G4zE+SY3nYZ2p352h5JXNLU
+         Wl8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792764515; x=1793369315;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20260707; t=1792764604; x=1793369404;
+        h=content-transfer-encoding:content-type:in-reply-to:organization
+         :autocrypt:from:content-language:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=S2REWJ/GvPB6717oRRTOl7lftZMNqJJK4+idsMBqa34=;
-        b=v3atV4mTfm+lNBVxoeCjK64l/IP9keQ8xRGV7S7+zXtCu8Exdq/FjqHZxQhxtKNFKk
-         mQjJpO5CG3+Z7bO7JRJzj5F5qAAEoQZrRqREYvETWOwp+0BEBOrr6c7fHXx55vULjPx6
-         5hQoCreUnM1tCAuw2T/vRTdfvbS+XkRHnSIdSfxQdmLGNY5VA1CA1OCJnmLE9XD84Hi3
-         pPUla7OhKGvUSXGmNxvP8IgPRwmloaL0AywXAnA6mTdXdUWBoAjkBS1SIWrqOcyGXgbP
-         NohDOecGk1/y7M1fLTZ/3etqOs7kyGGaQXP8SxuRQR4xi/l7hO7sD9RbiNClk8N8O3WI
-         CUwA==
-X-Forwarded-Encrypted: i=1; AKwUvByjQ6qkvigXrys+2260d2DZE4ifMB5nD2CddlegSuC+kyLTdR+DvHAPMNkZKWP4Lz04cjeqZ4U=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIBvIhVbA8dvVBkOY96Sm5VJTaz7UyoaUQdYg8KCIADlLLOPVHX
-	cZ4y4JY7CFMQpQ2iwQeTs/nUG41lpdX5PgnQTjPslJRJeJ4bBEMjx0ttyq6a1yrFg8dVCsY+X13
-	5W5ngqm32zlt6Bdd8vMkuc0CKrGGwJZI=
-X-Gm-Gg: AYBFou0Kdi675YyI2B8645KP+Rar+WOp5YnBX2TIP6p1tzE5bsyN6c8oXyZReXysDOd
-	21/epdt2pcXzwxYYZdcsKCeyRJLA4+b9/p3bUwgGhs4GN6wVPBEDeIaU/T7fpoD/MWoPBMS+5Gr
-	aC9KP6bxl3/g0o7hCQe6pGg1OXj3o8coRrIvepw1Vg5IbesRmB4i3Y8+oeFUUqm9fGHMG5g5pBj
-	2ui1D4viU1hQrT2VY2OUaCTSkrOIkjzAokaAmkGn71B1rZE02fV90j9wVml97nBHEzsZ4RZPJiw
-	c+Y6hflxPsPg1/+vFXkCRPyE9zeFERAVCiSA3Lf/CdVuYQQ7X7Oy0+WKM5+MbcWUBdCiHLEJn4L
-	A1FPLF06Ru35L0RmdRynOXWdF6S94CifFjrhNfFYb8gRZbueqKQY37g/0Y+Z6SGMb/Tds7u6RN0
-	WcoCyvkQLxW4cqwcsmZfCZo11quxwmIjM7tyxw1NuVbDwJznhnXMfgEv0l0/sSOA3iFd9GzfiB7
-	Tu2kSRasYjTsDOHj3ax+1fKjgDWZ8u2TD2J
-X-Received: by 2002:a05:6820:4a90:b0:6df:5b31:f4b7 with SMTP id
- 006d021491bc7-70b88ac3f67mr1281880eaf.88.1792764514641; Fri, 23 Oct 2026
- 07:08:34 -0700 (PDT)
+        bh=XPDo1N1hT7cCAK8LkHZsP5UZtpJRXF7LrSS7WPT3zsY=;
+        b=gaHflFGJwRkbZ44PMzdz5pFY3uegG/Gojw1Xfjf5rWLSiFk8Y5644mLWG617orGEmk
+         FMsi+IeJpO6KwxIHH1VkW/AiGQGXOM6y0XwJsxpWWUIVzyShv1gIU3d9h6Yx7Pq38+Pw
+         sDEGjb86TkJ3a0mMhWhREgbVI5mT8JhIEoUB37s+vle6bVJFmqH0zZ/7X8SrVut/0G7a
+         DixpjtYQMddUfuIdy2srVekg/X0eMjGyfr97/sQz0Yy+vMT+y2YHp2q8uzKnISZBEj5q
+         gvChpS+PbEJya9IdwnrE06cuJK+3s/G4iKRIonIm1zU20n1KxbbCynBW3ursfMPQlpHz
+         3wig==
+X-Gm-Message-State: AFq9FYJnyEFHMt7ui9cf3jpOMsap9uWJM+bDri/vWKMY2BoHEWoFn6jX
+	IjBuf3dapJm2vLBWvSJlsqf5CmkLQqS2N1TjzQiQ6bt+8b3lZttIbacPqmeRRs7IRnKMd2o+Nzz
+	Zh+HM4PxWFiQx5qfLhK0xzykaE1z2fL5LesqMKTCoXOLglFX1Ugs=
+X-Gm-Gg: AYBFou2pPchr2TJC5N7DvO61GKTFRnfAFOBiNR89BGCwQR5VjFs4AoAYEB/4Z1CRJtc
+	ytNYPlLSkI1wI7G/u9Vq+qQemGjmas16a7DUd1oTmOYkFKpb4yfCNOTyyHqeFqOFPF6UQYnRZth
+	1NL+RGlmuqvWoh6D7RZw2qVGa/C75ppgzCDSWbZ3gnzKSKE6AQKzw4DMBaxXow6fTJeZeWQuYbQ
+	KBBFB/hxSEvkuI83DLAsq8MeszlL7OHAQ3odBmMdc5OrHbsi0WGIPIP7kDG6hWWlAkLFEneI5TR
+	k+lpzeeis70uSjZruZpfzenem0Ve4MVaJpCnHFU5S+9j7TfG/7x9I0VPHC/x2foyq6iUpeIoTJW
+	J6+l5XBlWs3uxe5jRWc6U7VBhtU0qYrwsPEiwWo4P/i0qmLIrc0DaPMd+466+c8/vYZcKOA3gYv
+	cvq/Or9BGcXSqmnErmssG39EMoyVpCOQu/EUrU3yF8MfbJrbhdvvww9CT3ylxU5H04mg4YlRSWR
+	qG2zOBTYTnb/Es/32RPjI5HZxq06+zgIf/siPmBim5alWzKpU26PW/epu3sbbMKJxtC+m69w7O0
+	GJ7rdRb7n9z9Oi2IpNrIda1OLlY9cgMQvTjCjYQ=
+X-Received: by 2002:a05:600c:c493:b0:4a2:8f4:96c with SMTP id 5b1f17b1804b1-4a211edd672mr36756275e9.29.1792764603841;
+        Fri, 23 Oct 2026 07:10:03 -0700 (PDT)
+Received: from ?IPV6:2001:67c:2fbc:1:5940:e951:c53d:9e75? ([2001:67c:2fbc:1:5940:e951:c53d:9e75])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a2a92a4444sm7330705e9.5.2026.10.23.07.10.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 23 Oct 2026 07:10:03 -0700 (PDT)
+Message-ID: <ef4da481-9332-4e72-976b-e90d3fb571ee@openvpn.net>
+Date: Fri, 23 Oct 2026 16:10:01 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,41 +92,161 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261020164239.3808903-1-pdmorrow@gmail.com> <20261022101915.GD708417@horms.kernel.org>
-In-Reply-To: <20261022101915.GD708417@horms.kernel.org>
-From: Peter Morrow <pdmorrow@gmail.com>
-Date: Fri, 23 Oct 2026 15:08:23 +0100
-X-Gm-Features: AclHuK8R07txa0xm0_-np_t35olNW-DUc3QolGlTZDQiIjd3HXrAI5wxtlVE198
-Message-ID: <CAFcZKTyrRKS+A1cb4ZrjgbEwJpEHMVNCW=Bx+emzrBdC8H-mug@mail.gmail.com>
-Subject: Re: [PATCH net] net/mlx4: always create the eth and ib auxiliary devices
-To: Simon Horman <horms@kernel.org>
-Cc: Tariq Toukan <tariqt@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
-	Yishai Hadas <yishaih@nvidia.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Eric Dumazet <edumazet@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	regressions@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 5/7] ovpn: fix UDP TX byte accounting
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, ralf@mandelbit.com, sd@queasysnail.net,
+ kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, stable@vger.kernel.org
+References: <20261022121606.732029-6-antonio@openvpn.net>
+ <179275784775.3134.7765670827133808012@kernel.org>
+Content-Language: en-US
+From: Antonio Quartulli <antonio@openvpn.net>
+Autocrypt: addr=antonio@openvpn.net; keydata=
+ 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
+ ifS0+hzvnPVD9wXa9kdjO+0H
+Organization: OpenVPN Inc.
+In-Reply-To: <179275784775.3134.7765670827133808012@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, 22 Oct 2026 at 11:19, Simon Horman <horms@kernel.org> wrote:
->
-> Thanks, this looks good to me.
-> And I think the minimal approach taken here is appropriate for net.
->
-> Reviewed-by: Simon Horman <horms@kernel.org>
->
-> I do, however, wonder if a follow-up is warranted.
-> It seems to me that the is_supported callback could
-> be removed entirely. Leaving either:
-> 1. struct mlx4_adev_device with a single member, .suffix
-> 2. mlx4_adev_devices as an array of of strings
->
-> To explore this idea a little further I tried coding-up approach 2.
-> Which lead to the following (compile tested only):
-[...]
+I'll have a deeper look.
+Some concerns, especially about the stats, seem legit.
 
-Thanks Simon. Agreed, a cleanup here would be nice. I'm happy to test
-and send your suggested patch to net-next once/if the reviewed change is
-merged, unless you'd like to send it yourself.
+pw-bot: cr
 
-Thanks,
-Peter
+On 23/10/2026 14:17, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 0 · Medium: 1 · Low: 0
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] After this patch, the ovpn netdev's rx_bytes and tx_bytes
+>    measure different layers.
+> 
+> --
+> 
+> ovpn: fix UDP TX byte accounting
+> 
+> This commit resets the inner network header in ovpn_udp_send_skb() before
+> the skb is handed to the UDP tunnel helpers. The goal is for the ovpn
+> netdev TX byte counter to include the OpenVPN data-channel header and the
+> authentication tag.
+> 
+>> diff --git a/drivers/net/ovpn/udp.c b/drivers/net/ovpn/udp.c
+>> index 7672094a67668..05e10a2ed1791 100644
+>> --- a/drivers/net/ovpn/udp.c
+>> +++ b/drivers/net/ovpn/udp.c
+>> @@ -495,6 +495,9 @@ int ovpn_udp_send_skb(struct ovpn_peer *peer, struct sock *sk,
+>>   		return -EADDRNOTAVAIL;
+>>   	}
+>>   
+>> +	/* the encrypted openvpn packet is the UDP tunnel payload */
+>> +	skb_reset_inner_network_header(skb);
+>> +
+> 
+> [Severity: Medium]
+> With this change, do rx_bytes and tx_bytes on the ovpn netdev now measure
+> different layers?
+> 
+> UDP and TCP share the same RX path, and it counts the decrypted plaintext
+> length:
+> 
+> drivers/net/ovpn/io.c:ovpn_netdev_write() {
+>      ...
+> 	pkt_len = skb->len;
+>      ...
+> 	if (likely(ret == NET_RX_SUCCESS)) {
+> 		/* update RX stats with the size of decrypted packet */
+> 		ovpn_peer_stats_increment_rx(&peer->vpn_stats, pkt_len);
+> 		dev_dstats_rx_add(peer->ovpn->dev, pkt_len);
+> 	}
+>      ...
+> }
+> 
+> UDP TX goes through iptunnel_xmit() / ip6tunnel_xmit(), which compute:
+> 
+> 	int pkt_len = skb->len - skb_inner_network_offset(skb);
+> 
+> The inner network header now sits at the start of the encrypted packet.
+> So TX counts the opcode/peer-id (4 bytes), the packet-id (4 bytes), the
+> auth tag (16 bytes) and the ciphertext. That is about 24 bytes per packet
+> that TX counts and RX does not.
+> 
+> In effect, netdev TX now follows the per-peer link_stats semantics, while
+> netdev RX follows vpn_stats.
+> 
+> TCP TX uses yet another convention. ovpn_tcp_send_sock() calls
+> dev_dstats_tx_add(peer->ovpn->dev, skb->len) after ovpn_tcp_send_skb() has
+> pushed the 2-byte length prefix:
+> 
+> 	*(__be16 *)__skb_push(skb, sizeof(u16)) = htons(len);
+> 
+> Other users of the same UDP tunnel stats helper do the opposite. WireGuard
+> sets the inner network header before it pushes its own header, so that
+> header is not counted:
+> 
+> drivers/net/wireguard/send.c:encrypt_packet() {
+>      ...
+> 	skb_set_inner_network_header(skb, 0);
+> 	header = (struct message_data *)skb_push(skb, sizeof(*header));
+>      ...
+> }
+> 
+> Take the case the commit message calls an undercount, where the inner
+> header still points at the plaintext. Before this patch, UDP TX counted the
+> ciphertext length there. Since the tag sits in front, that equals the
+> plaintext length, so it matched RX.
+> 
+> Is TX meant to include protocol overhead when RX does not? If so, could
+> the commit message explain why? If not, should RX and TCP TX be changed
+> to use the same convention?
+> 
+> The mismatch is still there at the end of the series. "ovpn: fix TCP TX
+> accounting for locally dropped packets" leaves both the TCP TX
+> dev_dstats_tx_add(skb->len) call and the RX accounting unchanged.
+> 
+
+-- 
+Antonio Quartulli
+OpenVPN Inc.
+
