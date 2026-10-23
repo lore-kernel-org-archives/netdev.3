@@ -1,110 +1,109 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792743038;
-	b=uUSF8K6uAsxZnRY84pZVr6C0+AkgQLm650CL8RvLbtHPxlGXrQLfN8lgWELM2BytFBGK
-	 tA9pO2C0xL9o8QFXJ4dSDxxEas0DGilwyMS4KudbOiYNGgvIQcrQCybtclL9c/6QzdH5w
-	 mT1Xczo7EluQ03mZTEUOYhNeDx7bjPukos48TJJw1z8m7O6oszXGiH2oN3Ihg0RwBIqRQ
-	 pv9qLd1yaMklLfDvGFFwSKkISD6b7WpNNkxDfLIHQFIzT6MK7NVnG1hZCD8cYrQJuQi5t
-	 VZQ1KEKMyUvXSCOCD4/guQLgEQTYe/pG8ZA5WOLdYiLzz2qttELL3ZidE9UELPpwYiw==
+	t=1792743040;
+	b=KUyni0TS+6DAOHjk83pDpEGLXZbsHok30urh23j3uRDs1q/BAuDU45QwqW0lCpYTUJhD
+	 gdB9NfYPvOlbV/WGxV5azBQlczSOyYEqqJq+whVLkoTGBFUUM7yGD4BTiaC4vYhglUj8J
+	 stRXWNROGAQKQZoNm3EHn01WK34y5lCF9JOAZ6pB+dpTlS6rtOUDiCC+sT2LJHPjUfSaW
+	 HfQtaccAvB8Fr1AfImE47cVFApCWD6dgOKqLjW49OCxUNNHh+0qC+EE4OGpmj9gWzoRa8
+	 IDMT8wPlbphrRO4YMOF+diAvCaUxD3KZ22+lVKhSvmLboxVPuEISrsiW553T0wsLVqw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792743038;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792743040;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
 	 DKIM-Signature:X-Google-DKIM-Signature:X-Gm-Message-State:X-Gm-Gg:
 	 X-Received:X-Received:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:Cc:X-Mailer:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
-	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=t1HGN9k89SSRdYCs5v027mAthueeDnZ3FtFBWpQLM/E=;
-	b=BP+V+GFXLx/qxo9GE+f1bJgzGc/nci3KJ+gJFxnVs435DMCmpX3w5l4nAd6fQ8hhvekV
-	 8z0gazpTuyz1SULp0/GMKpCw0Y/ZYst9E2oRY2qkzFaB42Lhmhc2zYF6DJWe0498v5eHO
-	 WuuWVjtce1ZRTDaEaxV3xEWhOjbMsjxukWJ7SmrIE5Zu1FK41lWHkNS5sB6+spLLkEvuk
-	 +4Ouc/fYNuLi31auuUffywy5DZTjEyLXtrHNONbPv82T9qm9yra7sPxr1afjjUAvPQWA1
-	 znvO7oDqah6ethwcbeM0xLlDOsFv7pePmlSwHl+LpDKvtcNG8C6/Fw7jLwkly6Tljcw==
+	 In-Reply-To:To:Cc:X-Mailer:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Info:X-Authority-Analysis:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=1pRFcQEcu8s5P1EJubsYrvBbAclreG07J1NNugAiMfM=;
+	b=wGx3PYyjv16qBy3lJCBna/zmMSR5OQoMJ8o09XdP5uof2RihSZQze9Xj8EqyEYh2DT00
+	 v6O1M+goTX3txV9mGiqLDIvhZ+pMElSB9wpJ4uClqjSUnz6zYo5DvrsKw4oGLKbwVNaKc
+	 pPsAu6mYFQUtigCRWyekn2ZPhWBUI1IRvB6mvlb8aVGWbQKfVc0FfWOYDSnmHUmAPVWTM
+	 1EOwFw0ohzn5WlXNKjwN8esLSbBu3N/W11p5qQXZiuZAOrLFM157aEV6R8TMvknxb0TzN
+	 4fKiK831k/b15nUD4nuj6zUYU8GWvYMcYijVmNoT4FJKjmb7CgLQ5WGlQjGQBfA3t6g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=oss.qualcomm.com;
 	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=iWf80ssf;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=ka3bBCxa;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=P3xbbkAj;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=McNFQ2QS;
 	arc=none smtp.remote-ip=205.220.180.131
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1239606A32C
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 08:10:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F1239606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2402D606A335
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 08:10:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2402D606A335
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=iWf80ssf;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=ka3bBCxa
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69N7FMAl1048184
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 08:10:37 GMT
+	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=P3xbbkAj;
+	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=McNFQ2QS
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69N7FMsw2572492
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 08:10:39 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	t1HGN9k89SSRdYCs5v027mAthueeDnZ3FtFBWpQLM/E=; b=iWf80ssfOvmVKlnI
-	cab6ohzn3GukSbD5s8FwmdyjPD+fTRMpwXCweGlzIIJ9rSAKATSoCYpfAT7f8ht4
-	U2l0sX8iIdtCxHJjUxyfYmsWqp5SyCb2CdFCWkaNfC8urzOZhQQdz6sfiHOttEL/
-	u1CGNmWGmZNPtYyWSTnImsCa7CeiFnia2CEIUg18Kf9wa2w3FiyNFwj3mmO/XGad
-	R+w1kLJdIjlV4uYXmr07orj1jUY+sVHd1HbRnlFlZDI2FuOe6aJKPH55GkYcSeEG
-	8jCZ+jCTVnQr+AsTYBnxvRItjh7aPhLK4kWmKsb+JY6XQ8lTKdKIhwT1xXcvye4N
-	drkLjw==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hfqmbjpv4-1
+	1pRFcQEcu8s5P1EJubsYrvBbAclreG07J1NNugAiMfM=; b=P3xbbkAjSM6PTpwT
+	25b+uEaHBDAV6siqu+2b0KoO3acB7nnNcruCCFiNlszL9xnhNTOIDqnRQCllPR6f
+	3epEogKOiDQhNlpAiChTX/PzipfYVVmw4JICO6S7x3iXm2DxuTuyMyW7POXQoNFj
+	e+Q2a6LjaBCp2bUfCR0U50dtpcgrNTRluSX+zEhNll71P68RJ6QE5eE7BupSeF/d
+	Luygs+q4gOs6okZ4T/UxiHI5i5c4PMuiGxwW8UVYMJUkbZcK5Xltjpi5If2W9K8n
+	PJlDnmgSGv8YvAQEbwCXIAqanx9Ry2I5Bxo8N0ZAKC5+fCPqTrytQscaGaQhs1Y8
+	4rKPEA==
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hfnq0k6tj-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 08:10:36 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93cbf2fd504so113076885a.2
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 01:10:36 -0700 (PDT)
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 08:10:38 +0000 (GMT)
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-93f1e62510cso135300385a.1
+        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 01:10:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1792743036; x=1793347836; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1792743038; x=1793347838; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=t1HGN9k89SSRdYCs5v027mAthueeDnZ3FtFBWpQLM/E=;
-        b=ka3bBCxa3DSUWftZ4/jR893yrteF4/uHTYqAwPBAYZp+Y36wr2YAii4BoE/ZFkmvGm
-         EKJOtqBOjr5d91D/HDQfu4BJewNQJ37Uj/wsWl8BmHLJ5WExRA70BTw81BnVksqvsyxH
-         mP5NlFIHXYfJ2nrIh/a4qcbXoy74dqd3g63Uiknf2mS/y4nmqxrnozHulvrrUfrEQASA
-         atqF3SBWCv1c8EdQlxhnP/5wreYdB/9KByQzDoJw3XJB8vRA26iBmn2IrCWh8QImkRGn
-         j4D37IextmWubSMfKPiscg3BPOy0wNPlCcbZbj3dm8DgHIgGEsMFnK82FtAnO6AntdZO
-         UJKw==
+        bh=1pRFcQEcu8s5P1EJubsYrvBbAclreG07J1NNugAiMfM=;
+        b=McNFQ2QSaTaT1Ye/FqZguoiyjIycPYSMtNu3MWcYlWnJtnJsYv14BxHj/jWBDlxlMk
+         TfeNHb0T8zjx3OQZ6QSuPqdYc7SqcoX/fmxeYEIWStiwgo9/T1WFi3IPDpHjUrYIwih7
+         UyRAOO5rkUzAws0OIHpt78/FWNeVqIDTIM0OnWS0cNYXBKhfdqCXpZIr86hZvtXFTVAK
+         gQCM5mCVO3oywhfE7YcWEomOowSPwMCJ/7SnPBY0ycyU2rsepCPkXG/0ca6veoF8mhN6
+         CXscEc+kjL2JcdBBpcFX89jmfzWjDJcqSUL+wF4iMNH06PqmuQZMQIPtnIEDxUtncDY1
+         Ahng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792743036; x=1793347836;
+        d=1e100.net; s=20260707; t=1792743038; x=1793347838;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=t1HGN9k89SSRdYCs5v027mAthueeDnZ3FtFBWpQLM/E=;
-        b=rp6JiHDVBBYnyPYqjv6pDISJV6Yw52rKnwNT+4A1bejrFeF7MIo2uyGRpRNN/5NvHJ
-         w/i6Gj75ZTpowKPK9c/FEBkOhM7WObIre/MAdtpN1l4tQo2610izYYgpIesZLcnbqian
-         zoy+kRTJUCkYcL5a8jwaGMwnQKccoqR4phu1vwXZ57Ov7HU4WhKiLYNE/Y1Xf+bW9bRF
-         cMa0xmyl/kojGSDsBVhG3SvirXtx9hRaOSTZn7YITdjnLJHsNe02DeRgAS6voM5nf4HM
-         +3RWyycY/05PIS829tETAC3kEwv+T09/mxig5T0qB9zYgF+RMK32Rt1Mnj4b+Q7OsgSC
-         AMQw==
-X-Gm-Message-State: AFq9FYLi5o8Kwe8Z8LmYBAfIxIcn2sMmxwrxIZGd30xq/gBBCagPZxEV
-	M9V5+2O3PvEb9UHeZ44UWvWP1SV8W77HJHZj5+8H80jfgHqeSJYoWrUjLGSEabW7GQm6xPT2jk+
-	xpCA2x21Hg8oaPWNC/KmcvgGW7mtswTNnTUqu1DKY5T1g8pxnISHgFlrArhE=
-X-Gm-Gg: AYBFou35H/21Ywi08AW2tJV0hpZm069LYkIl8k3uVHYTngK1pScJRShF0xW4Nn5dY/v
-	9x/1JZc+75wGAqOvne6xBEb5P3d5LP0wn8O7d+/6RUl2ZASNUUulQCzox+mNgCGM738v+nGlq+C
-	f/OG4O4Eot8aInlNN+Uw3EbrRKeNkj2zhGgIc22KLLXhpthSFPDLb+4MuTuXP5PiDD/P9IM/9vI
-	578lk92rSJf4Mbj25oDENXwpQ5/nnxOWAFQD1NFQGbRFTF5rXWIJeZT5WEWMTqqewGOXrseNMgH
-	THCf7GfQrS328o3ovQr9oDKis4tQEjjFX2ihpfA9Z9XqX6TdfAvJvbsbDx1E/nh8nCOop2cdB7L
-	U0kYpv8TZPt+4akWT0Bpqe0WIUPRnFFzrvCkfZMjMwqVycgXK
-X-Received: by 2002:a05:620a:4109:b0:93e:c12c:4412 with SMTP id af79cd13be357-93f6f8ce27cmr271339185a.78.1792743036262;
-        Fri, 23 Oct 2026 01:10:36 -0700 (PDT)
-X-Received: by 2002:a05:620a:4109:b0:93e:c12c:4412 with SMTP id af79cd13be357-93f6f8ce27cmr271336785a.78.1792743035688;
-        Fri, 23 Oct 2026 01:10:35 -0700 (PDT)
+        bh=1pRFcQEcu8s5P1EJubsYrvBbAclreG07J1NNugAiMfM=;
+        b=ggPHeTfIeHfXc65MdxxCES+fwHVA4xPxdGI9rK3bSXykAKFxNLoHPdQgWGGhpPlmJ2
+         tbQe3aYdav3wmxBQUbDyCTMmIn0B5/Oomldw4JlNLwtu/ThJiddmSNAVf8jhQW0D246Y
+         xG5nK8iIxb/CuTu7RL/cDYSOyipm+82hXTW0glEpcBMDPH6icV4o8H5NkoaffDmNkOX9
+         PanPH2rFy57i9S1hmQRuvmhHzgxg2AptpAjyl3yaUKzduRa3VWD+f7D1uuX0APBCVxoR
+         vs5n9a00QsbtHbhstRpXk2GpexT8dpG2y89uGsJTYmX8ysYbmjHn0GEUE536gre89LV5
+         tNUw==
+X-Gm-Message-State: AFq9FYLYoug2Tg0CxFM3yQ11pOQC4OFEm4Wh3D41UC+xK34ZqZA4RDhn
+	R6Qi6w7jdV7kvYl7BDECxVdSkPAJ1bqdOdsU/4UcReeIGmnY17LFnJAVw+akiUl1+LBou6o6i23
+	mSA9l+Qeqkhe+YkslZyrPOriD7q5/7zahW4VFUD6sPQ4aeoJvZ9K6/1VkoW4=
+X-Gm-Gg: AYBFou2BIcP72DA9Rq/hrJzGKwjkqXM+sldIKF99BLib7JHozv154sFrlQNqoHVeyo/
+	15eLLZE/fLc8nmibNp7XobLJDEdbDv78HrIFI5X9cXOQ2uKoYUVsGQqd26LeB3gEQ9No2POeayY
+	6CTEJFXB0gphZbmMiv1bks9xRsup0V5mhwx1F7v2dNsX5sSl1aJuq2Fn0a5q35YCusJa8OdfEh8
+	DcNlrd18g2yIwPubnR0MqLVW+/r/42sLqChM0rSpe9fVPKJ5R0Idb6eOjH7aMjZ8OdLRQRWM9xX
+	IJINIMgXadLt5sSV2Serato7YvQ0rGHMLwY22gzyw5aiRv8qgsuoamIjCSDdoSKvTqBOipap2NC
+	VzwExz0Ios1y42MV7HkjNigwdZgJ/kqyvIxu5pNK28AQIW2tK
+X-Received: by 2002:a05:620a:8389:b0:93c:c73b:39ed with SMTP id af79cd13be357-93f6f7c4facmr264310785a.39.1792743038184;
+        Fri, 23 Oct 2026 01:10:38 -0700 (PDT)
+X-Received: by 2002:a05:620a:8389:b0:93c:c73b:39ed with SMTP id af79cd13be357-93f6f7c4facmr264306885a.39.1792743037606;
+        Fri, 23 Oct 2026 01:10:37 -0700 (PDT)
 Received: from localhost (net-93-144-6-81.cust.dsl.teletu.it. [93.144.6.81])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e38063e62sm3172727f8f.57.2026.10.23.01.10.34
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e38062dc6sm3347597f8f.55.2026.10.23.01.10.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2026 01:10:34 -0700 (PDT)
+        Fri, 23 Oct 2026 01:10:36 -0700 (PDT)
 From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Date: Fri, 23 Oct 2026 10:09:54 +0200
-Subject: [PATCH net 2/6] net: stmmac: drop split frames on AF_XDP zero-copy
- RX
+Date: Fri, 23 Oct 2026 10:09:55 +0200
+Subject: [PATCH net 3/6] net: stmmac: drop multi-buffer frames in XDP mode
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -116,7 +115,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261023-stmmac-xdp-fixes-v1-2-efb37e19f5bd@oss.qualcomm.com>
+Message-Id: <20261023-stmmac-xdp-fixes-v1-3-efb37e19f5bd@oss.qualcomm.com>
 References: <20261023-stmmac-xdp-fixes-v1-0-efb37e19f5bd@oss.qualcomm.com>
 In-Reply-To: <20261023-stmmac-xdp-fixes-v1-0-efb37e19f5bd@oss.qualcomm.com>
 To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
@@ -138,122 +137,107 @@ Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         bpf@vger.kernel.org, Nicolai Buchwitz <nb@tipi-net.de>,
         Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 X-Mailer: b4 0.14.3
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIzMDAzMiBTYWx0ZWRfX4cKtSn0P2uST
- ANkt3n258pzXklsjxjsNnSIckhURel5W+G94ioE2hGN9jZeNXlLOPEZUZAwIcv/i5vzDY6WJO7W
- cgLXOaRq978+MRXl/XpX3WQdYKq0+Mo=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIzMDAzMiBTYWx0ZWRfXw3UbKkGqFiAm
- hmoWHwkhi4Z9D4WPRRVzyTRheWsXy2+2cDXN+Dli1GVJRQhGvsr18IEIHuR8IoTA1PDkyiJILJA
- XFONa/jC+kVnXFw2UCJurQsQnVSa4y4AJuyj1OyH+XZ63Catn0zNYdpYEJd5RDKaZS7BDNshc0o
- 1j9w5HnzRWtH56KIL3l1tMoZTlZiZUT1LIfztk1K/axrtfqgIWDoI/OixK5hYFGqBvRvpkDpJkZ
- F3/CKKs198h6Fjmp8HdPtr511+e9DWD8I1kfJEKq4K10QiNfcbWcmrp3U2EvAV+ESF7qB05sh+q
- vDCw30gjTEFgYeK8JzdCcTUBUF4ktQQDhDQKxLrBdClCzTNjJV51iA9mq+Dj4/Zq/9homInCj86
- peF127ZMk6vLnZl6m4/QwGEl9FNpGSlAFB6Kg+QO12DaqUvPW2rWpJW8+1RyJguqDoFoDjmSv+n
- Xo3TRYEVe6ua1/FGkFg==
-X-Proofpoint-ORIG-GUID: 8sOiwpWWJ0PR7QeZkTEzFb3Hx5faPLXf
-X-Authority-Analysis: v=2.4 cv=Nt1E4MdJ c=1 sm=1 tr=0 ts=6adb167d cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=7fYLNvKHbgS61GKHX+yayQ==:17
+X-Proofpoint-ORIG-GUID: 1woLPilXwenaSALRvGcH0XPOtQh95Nth
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIzMDAzMiBTYWx0ZWRfX9kpTmxXLuz+0
+ i9m+6jLrKvLwjM5U3BjV8+3Oz12JSHvczIJvrRDNTBZuSPIOGF81dDxTUrVHPy2Sd5Sll/J4QX3
+ bQYK8jl8mv4YEO4B7ktXgZxiefthMkPRtx3gFkIAA46s7Z6bv1xhKJ3tqnW6wSBUbh1xaF3H13v
+ w9FRorSC1gyhrUkx2RkPDRIem49DFTJoUPIVp8eDQA8x4msoWzvjKHyhxyh4zcpvUq8NWTI2kbL
+ qhbOIu9xpN7RLmx1JeA9BZ5kL9iEwGtunkIdHmFl6DtANpCJaOPh4DFO+U3ULmFHxzqbIYx9n6D
+ MHmS26bWNv42y7Mp48co3oAIe4fG+GM5a3LlwAWazfwVt8latjZwkRKw92HonuJOgZKKm7/62cr
+ VxNEIof13tfiw44OZTJJXq+736Ur8+v240itrYFOgfh6AvoF4a4jaJKc8Vj3Pjx4oStKTPP0qp3
+ 3OP3Tw9Hs1pFVmOXjHQ==
+X-Proofpoint-GUID: 1woLPilXwenaSALRvGcH0XPOtQh95Nth
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIzMDAzMiBTYWx0ZWRfXySEMmPJTq96Q
+ dO3G8be8bsA4MLfJOZKwvlnqjtzeA59zRrnhkx2j/5nrkhGg2xv0j13XQKrdHF3orFmTQMfPGez
+ lzfk/9uNIW7icgm0d/4GoyLOBAW0qHA=
+X-Authority-Analysis: v=2.4 cv=UaHE26SN c=1 sm=1 tr=0 ts=6adb167f cx=c_pps
+ a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=7fYLNvKHbgS61GKHX+yayQ==:17
  a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
- a=EUspDBNiAAAA:8 a=6POjKhNZmwZEydtLWKIA:9 a=QEXdDO2ut3YA:10
- a=NFOGd7dJGGMPyQGDc5-O:22
-X-Proofpoint-GUID: 8sOiwpWWJ0PR7QeZkTEzFb3Hx5faPLXf
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
+ a=EUspDBNiAAAA:8 a=VR_YHCPEGhNri-7XuWcA:9 a=QEXdDO2ut3YA:10
+ a=PEH46H7Ffwr30OY-TuGO:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-10-23_02,2026-10-21_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015 impostorscore=0 suspectscore=0 malwarescore=0
- phishscore=0 priorityscore=1501 lowpriorityscore=0 bulkscore=0 adultscore=0
+ phishscore=0 priorityscore=1501 bulkscore=0 clxscore=1015 spamscore=0
+ malwarescore=0 lowpriorityscore=0 suspectscore=0 impostorscore=0 adultscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610230032
 
-stmmac_rx_zc() assumes a 1:1 mapping between a received frame and an
-XSK pool buffer and drops any frame that spans more than one RX
-descriptor:
+stmmac_rx() runs the XDP program once per descriptor buffer and uses
+skb == NULL as the only marker for the start of a frame. A frame larger
+than one buffer is split by the hardware across several descriptors;
+GMAC4 enables jumbo frames unconditionally (GMAC_CONFIG_JE in
+GMAC_CORE_INIT), so an on-link peer can deliver such a frame even when
+the interface MTU is left at 1500.
 
-        /* XSK pool expects RX frame 1:1 mapped to XSK buffer */
-        if (likely(status & rx_not_ls)) {
-                xsk_buff_free(buf->xdp);
-                buf->xdp = NULL;
-                dirty++;
-                count++;
-                goto read_again;
-        }
+When an XDP verdict ends a non-last descriptor, skb is cleared and the
+next descriptor of the same hardware frame is parsed as a new frame.
+For XDP_CONSUMED this happens via read_again with len preserved, so
+stmmac_rx_buf1_len() then returns min(dma_buf_sz, plen - len) for the
+last descriptor, which can be as small as 0-3 bytes. buf1_len -=
+ETH_FCS_LEN underflows and xdp_prepare_buff() puts data_end far past
+data; on XDP_PASS this produces an skb whose length is close to 4G that
+reaches the network stack (skb->tail and skb->len are 32-bit and wrap
+below skb->end, so skb_over_panic() does not fire). A 4+ byte tail is
+instead offered to the XDP program and delivered as a standalone
+mid-payload Ethernet frame on XDP_PASS. XDP_TX/XDP_REDIRECT instead
+falls through to the next iteration, resetting the running length, so
+the tail is re-parsed as a full-size new frame.
 
-The non-last descriptors are freed and dropped, but the frame is not
-marked as errored. When the poll reaches the last descriptor of the
-same frame, error is still 0, so the fragment is handled as a complete
-frame: it is passed to the XDP program, copied into an skb on XDP_PASS,
-or converted for XDP_TX. The tail starts in the middle of the original
-payload at a predictable offset and, parsed as a fresh frame (len == 0),
-stmmac_rx_buf1_len() reports the full dma_buf_sz length for it even
-though the DMA engine only wrote the tail remainder into that buffer, so
-the reads extend past the received bytes and can reach beyond the end of
-the XSK pool buffer. GMAC4 always enables jumbo frames (GMAC_CONFIG_JE
-in GMAC_CORE_INIT), so an on-link peer can trigger such a split even
-when the interface MTU is left at 1500.
+The same fault exists when a single descriptor uses its second buffer:
+GMAC4/XGMAC always provide a second data buffer per descriptor, so a
+frame up to 2 * dma_buf_sz can land on a single descriptor while the XDP
+program still only sees the first buffer. XDP_TX then transmits a
+truncated frame, and XDP_PASS appends the second buffer only after the
+program has already run over the first one.
 
-Set error when the 1:1 mapping check drops a descriptor, so the
-remaining descriptors of the frame - including the last one - are
-drained and released with xsk_buff_free() instead of being processed as
-a new frame. Account every freed buffer with dirty and count the
-dropped frame once in the poll budget / rx_pkt_n. The direct 1:1
-mapping drop also increments rx_dropped.
+XDP does not support scatter-gather frames until the multi-buffer
+rework, so drop the whole frame instead. When a non-last descriptor is
+seen while an XDP program is attached, mark the frame as errored and
+drain the remaining descriptors, including the last. A descriptor that
+uses its second buffer is dropped directly before the program runs as
+well; in XDP mode it is necessarily the last descriptor of the frame,
+so it does not need the error marker. Removing the re-parse lets both
+XDP verdict branches simply complete the packet via next.
 
-Normalize the legacy normal and enhanced descriptor callbacks to report
-rx_not_ls together with discard_frame for non-last descriptors. This
-allows both stmmac_rx_zc() and stmmac_rx() to drain split frames on
-dwmac100 and dwmac1000 instead of reparsing the final fragment as a new
-packet.
+The buffers consumed by the discard path are no longer returned to the
+page pool, and the new SG and second-buffer drops do not return them
+either. They stay in rx_q->buf_pool[] and stmmac_rx_refill() reuses them
+in place, allocating only when a slot is empty. This is safe because the
+drop checks run before the buffer is synced for CPU access or
+prefetched. The discard-path change and the in-place reuse apply with or
+without an XDP program attached.
 
-Fixes: bba2556efad6 ("net: stmmac: Enable RX via AF_XDP zero-copy")
-Fixes: 644b8437ccef9e ("net: stmmac: dwmac4: report Rx checksum errors in status")
+The !error guard on the discard check also changes the accounting for
+errored multi-descriptor frames on dwmac100/dwmac1000: rx_errors is
+incremented once per frame instead of once per descriptor. This too is
+independent of XDP mode.
+
+Note: the subsequent "net: stmmac: rework stmmac_rx to support XDP rx
+multi-buff" accumulates the whole frame into a single xdp_buff and
+supersedes this patch; the fix is kept so the net portion of the series
+stands on its own.
+
+Fixes: 5fabb01207a2 ("net: stmmac: Add initial XDP support")
 Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/enh_desc.c    |  2 +-
- drivers/net/ethernet/stmicro/stmmac/norm_desc.c   |  2 +-
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 21 +++++++++++++--------
- 3 files changed, 15 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 35 ++++++++++++-----------
+ 1 file changed, 19 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/enh_desc.c b/drivers/net/ethernet/stmicro/stmmac/enh_desc.c
-index 051253601225..297e2428a8f9 100644
---- a/drivers/net/ethernet/stmicro/stmmac/enh_desc.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/enh_desc.c
-@@ -184,7 +184,7 @@ static int enh_desc_get_rx_status(struct stmmac_extra_stats *x,
- 
- 	if (unlikely(!(rdes0 & RDES0_LAST_DESCRIPTOR))) {
- 		x->rx_length++;
--		return discard_frame;
-+		return discard_frame | rx_not_ls;
- 	}
- 
- 	if (unlikely(rdes0 & RDES0_ERROR_SUMMARY)) {
-diff --git a/drivers/net/ethernet/stmicro/stmmac/norm_desc.c b/drivers/net/ethernet/stmicro/stmmac/norm_desc.c
-index c4b613564f87..d19bf7ca4db3 100644
---- a/drivers/net/ethernet/stmicro/stmmac/norm_desc.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/norm_desc.c
-@@ -70,7 +70,7 @@ static int ndesc_get_rx_status(struct stmmac_extra_stats *x,
- 
- 	if (unlikely(!(rdes0 & RDES0_LAST_DESCRIPTOR))) {
- 		x->rx_length++;
--		return discard_frame;
-+		return discard_frame | rx_not_ls;
- 	}
- 
- 	if (unlikely(rdes0 & RDES0_ERROR_SUMMARY)) {
 diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index fba21599a5e1..3fa2c15222d8 100644
+index 3fa2c15222d8..30a2774d722b 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -5710,18 +5710,21 @@ static int stmmac_rx_zc(struct stmmac_priv *priv, int limit, u32 queue)
+@@ -5903,18 +5903,23 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
  		if (priv->extend_desc)
- 			stmmac_rx_extended_status(priv, &priv->xstats,
- 						  rx_q->dma_erx + entry);
--		if (unlikely(status == discard_frame)) {
--			xsk_buff_free(buf->xdp);
--			buf->xdp = NULL;
--			dirty++;
-+
+ 			stmmac_rx_extended_status(priv, &priv->xstats, rx_q->dma_erx + entry);
+ 
+-		if (unlikely(status & discard_frame)) {
+-			page_pool_put_page(rx_q->page_pool, buf->page, 0, true);
+-			buf->page = NULL;
 +		if (unlikely(!error && (status & discard_frame))) {
  			error = 1;
  			if (!priv->hwts_rx_en)
@@ -262,38 +246,54 @@ index fba21599a5e1..3fa2c15222d8 100644
  
 -		if (unlikely(error && (status & rx_not_ls)))
 -			goto read_again;
++		/* We do not support SG in XDP mode */
++		if (unlikely(!error && (status & rx_not_ls) &&
++			     stmmac_xdp_is_enabled(priv))) {
++			rx_dropped++;
++			error = 1;
++		}
+ 
  		if (unlikely(error)) {
-+			xsk_buff_free(buf->xdp);
-+			buf->xdp = NULL;
-+			dirty++;
-+
 +			if (status & rx_not_ls)
 +				goto read_again;
 +
- 			count++;
- 			continue;
+ 			dev_kfree_skb(skb);
+ 			goto next;
  		}
-@@ -5730,8 +5733,9 @@ static int stmmac_rx_zc(struct stmmac_priv *priv, int limit, u32 queue)
- 		if (likely(status & rx_not_ls)) {
- 			xsk_buff_free(buf->xdp);
- 			buf->xdp = NULL;
+@@ -5926,6 +5931,14 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+ 		buf2_len = stmmac_rx_buf2_len(priv, p, status, len);
+ 		len += buf2_len;
+ 
++		/* Drop the packet if it is split over buf1 and buf2 on a
++		 * single descriptor if the interface is running in XDP mode.
++		 */
++		if (unlikely(stmmac_xdp_is_enabled(priv) && buf2_len)) {
 +			rx_dropped++;
-+			error = 1;
- 			dirty++;
--			count++;
- 			goto read_again;
- 		}
- 
-@@ -5898,7 +5902,8 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
- 
- 		if (priv->extend_desc)
- 			stmmac_rx_extended_status(priv, &priv->xstats, rx_q->dma_erx + entry);
--		if (unlikely(status == discard_frame)) {
++			goto next;
++		}
 +
-+		if (unlikely(status & discard_frame)) {
- 			page_pool_put_page(rx_q->page_pool, buf->page, 0, true);
- 			buf->page = NULL;
- 			error = 1;
+ 		/* ACS is disabled; strip manually. */
+ 		if (likely(!(status & rx_not_ls)))
+ 			len -= ETH_FCS_LEN;
+@@ -5975,17 +5988,7 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+ 							   sync_len, true);
+ 					buf->page = NULL;
+ 					rx_dropped++;
+-
+-					/* Clear skb as it was set as
+-					 * status by XDP program.
+-					 */
+-					skb = NULL;
+-
+-					if (unlikely((status & rx_not_ls)))
+-						goto read_again;
+-
+-					count++;
+-					continue;
++					goto next;
+ 				} else if (xdp_res & (STMMAC_XDP_TX |
+ 						      STMMAC_XDP_REDIRECT)) {
+ 					xdp_status |= xdp_res;
 
 -- 
 2.56.0
