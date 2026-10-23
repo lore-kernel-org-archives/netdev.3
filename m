@@ -1,80 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.154.123
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792754546;
-	b=bk0Zw0E1gGhcGmBx+OK+x19/9WIhkdyYXT38o3waEsrK7UyFQND/NVcUEAuqNn/vfYvW
-	 sY/gq46EVMTr2yXA24yKhRBzo+J9WWNwSrMMxuz9lXkzNDKl+zH+tEOSuoO5hd6grrl6Z
-	 LUsRDV+UwB9Fr5OA7710GImMB8J/2sWSUuqRIe3Nb1dkXBRDvSUtZx4xhnAOil8VgWvb/
-	 W7HLLwlvp/niRSfKhQInMidAx99+qR2opRSwbVEOO5WWc990FyUkog29ADLe+n1LkgItV
-	 tL6YOq0rkw3eLDoIWWNbx0aNWzRhwPCiRFIkfWeJq6yLIpEX2iDr336qADEoP5WmRXw==
+	t=1792754568;
+	b=OaIbpgd9q2xE+Y8QOIPDuaFCP2s43G7STm2rDaZTJRSVmE5X8vxi7ZxUgMyMIQPpRuAW
+	 szNV6jcmMk/2UCQwONF23YAwjsLEI5Tdd4rEtK/54b9OWbqJ2dddhDnunm6oAkHb/cwGS
+	 rCwVip4Xok270YaHzbIDCtJzKteI4KX6/1GGc3XHIT4K8BleMOtxBNMBqshVOOJee2O/O
+	 GOrijyTZpsEwYWAes2KSaxMhOCm3TTdw7P/pkr+9ZCmW9VU74mVX61WuAiLzFM8rVQOx4
+	 7Z5akPFF0vpx5kSPdWt7j40yAJgw110eLTaizIRto2BjseT2/A/RRAZWc+LcgZvUXnw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792754546;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792754568;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:Date:From:To:CC:
 	 Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:In-Reply-To;
-	bh=p0TlihYYQqoSl/ttb9fRh6qgpKKXc6u8KsO4l12hhhQ=;
-	b=OvXiW8fan8rs38OnIFNJklO1XNHYqOXDVnt69arbhneY8VFEgIN7uVUBT9dNQAuRVkfz
-	 aQEwvQi1oK6jU/Y7ixwIL9uoMwsktjY0mMb3qq+ra7LJDILRAorHxCFieib6OZ2IMmBNv
-	 6J5KQY8kaMtIu/JqrFvj7hCkmFb0Gr/t3hhz5bHXOzU/Y2CYtt5qIFu6gNfKEJ7T1U3jA
-	 o1e/R6+WMrc9V+ns3GBD9YOLXOelO/NqYsDO1o1PfHA3wr0Mk9BbtmotEGvO3SfUZlh7+
-	 pdnnIcsXHU/YwjR9TIBE2lmkPBvjBv+l9Cb3trnnoAvlE7hMLEvSsRqe8wgX9bOCOSA==
+	bh=G5CSIxobeZsdLounHb4GkpO0AIF+/+Z89dEuK4yoslo=;
+	b=lJvb2G5eJFo9ryiwq/mAtpiiT5djExx63ASdOA6yy5VWHjT1N2HWMTmzlxUXIBAOW36m
+	 xakR3S0HLy9QGG/7gOZbBoTfR+uiss9/DrDrzG4vj2PoqRM3yj6fxRIxM7KETOJx6Fi3A
+	 4UCKevyV7ZmB32lBXVovPlI+njKabPoNmV4KWHFdYGn9GD0gPrMOO/vo7lAiOtNbGfPk3
+	 tdv+xSp2yqW8Lu16Ad6qixU8JCwGZwym8OHRhCtULkeoYGpUPT1f6KIKpaA/Tgex8p2gt
+	 fR1MdDquoIbbYfMJknwLBWmje+8fsTsye9c6kt9rOXDh2IrTqkhDPP20gJposSccTxQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=microchip.com;
 	spf=pass smtp.mailfrom=microchip.com;
-	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=gvQXlc0q;
-	arc=none smtp.remote-ip=68.232.153.233
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=rqZvcWTE;
+	arc=none smtp.remote-ip=68.232.154.123
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C31606A31A;
-	Fri, 23 Oct 2026 11:22:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D7C31606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2430606A31E;
+	Fri, 23 Oct 2026 11:22:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B2430606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=gvQXlc0q
+	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=rqZvcWTE
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1792754546; x=1824290546;
+  t=1792754574; x=1824290574;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=bf1jKkqSPO64+JjX7Tm+y62ZjvX2n1Tqkctim9DDrvs=;
-  b=gvQXlc0qWVXH9Hkf4r/UF2Tai+1jnnkR0rCa+PfOmQ/I/pnTu2BVVct0
-   IJzqFzgMf6NjpJJjvZrqKhk7krwa0EhKaXvZ0dG1xchO1NB7Nwj7DCCc5
-   ue8nO8Xmm6F4c38dxgIeAePAzTesjPrJuL4nzi1SYwGTYIy0nOL2GPBpQ
-   CJ1RVHccSZ2y4t0igOvjiAHyB4T4u1WFsOyx4vL+n6rR1PkxECnoJC6s5
-   6TK5RWnZoeYpvFIjM6xDfDsl2TdNIKaQKfKWLEKoXWJYapfqteINKdZEG
-   Po3GSR1ezJJFHvh7pYCQwhiO1Ym5Vn1FefKZRidRZcX7JUwV7UM7otyi1
-   Q==;
-X-CSE-ConnectionGUID: EPZTHebzRjWrJwg6QVAQtQ==
-X-CSE-MsgGUID: Ll5NRThAStOJaameua4CTQ==
+  bh=+qda/jg1Jhs1LNJh2oS73NxCLupuDNJ0kTc0oDSTNUM=;
+  b=rqZvcWTE9iD6ePSB+KCrAa4xNdvaoEuVKbxyijq3eSWj2rd/iWlfTY3o
+   H8le9KkGUHoRcMUR3KjjmOEyn83qO81GfUqiGyKTPrzHTbQVuaFceRTC1
+   ICt9paGzdO2SAM8qFZ9o5iW7bRXpzD2dJcQeMwb6MRZxTCD0hhKfun/F4
+   wIJyaaQzAXOtyrVTrdtDcN7pJwLrR+36xpEIGur5w0u+djx5JCpHXa5PU
+   q0vh5meBBYzlmGLRV2fdSWqt/sHGP33NkUCJ2tqpO5mkjv50kOaBGTQh+
+   cWzTAKfkTPa3OkdUEoaSJwRO5JNU9bp4o9FmjQ9NfFa3q19ynNtILXi13
+   w==;
+X-CSE-ConnectionGUID: a4/kPmM6QOinwLLFglvc3Q==
+X-CSE-MsgGUID: R9hzWZuySOOj5jixmaLaOQ==
 X-IronPort-AV: E=Sophos;i="6.27,174,1787036400"; 
-   d="scan'208";a="65461676"
+   d="scan'208";a="65727433"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 23 Oct 2026 04:22:25 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 23 Oct 2026 04:22:53 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
+ chn-vm-ex02.mchp-main.com (10.10.87.72) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Fri, 23 Oct 2026 04:22:24 -0700
-Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Fri, 23 Oct 2026 04:22:21 -0700
-Date: Fri, 23 Oct 2026 13:22:21 +0200
+ 15.1.2507.58; Fri, 23 Oct 2026 04:22:46 -0700
+Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex02.mchp-main.com
+ (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Fri, 23 Oct 2026 04:22:44 -0700
+Date: Fri, 23 Oct 2026 13:22:43 +0200
 From: Daniel Machon <daniel.machon@microchip.com>
-To: Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>
-CC: "David S. Miller" <davem@davemloft.net>, Alexander Duyck
-	<alexanderduyck@fb.com>, Jakub Kicinski <kuba@kernel.org>,
-	<kernel-team@meta.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet
-	<edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
-	Mohsin Bashir <mohsin.bashr@gmail.com>, Bobby Eshleman
-	<bobbyeshleman@meta.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Dimitri Daskalakis <daskald@meta.com>
-Subject: Re: [PATCH net] eth: fbnic: Correct packet header prefetch
-Message-ID: <20261023112221.cqjcgqtano75hlkn@DEN-DL-M70577>
-References: <20261020172706.1090951-1-dimitri.daskalakis1@gmail.com>
+To: Peter Morrow <pdmorrow@gmail.com>
+CC: Tariq Toukan <tariqt@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Petr
+ Pavlu <petr.pavlu@suse.com>, Yishai Hadas <yishaih@nvidia.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet
+	<edumazet@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S .
+ Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, <regressions@lists.linux.dev>
+Subject: Re: [PATCH net] net/mlx4: always create the eth and ib auxiliary
+ devices
+Message-ID: <20261023112243.bpowvi6tdcguoie3@DEN-DL-M70577>
+References: <20261020164239.3808903-1-pdmorrow@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -86,22 +85,35 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20261020172706.1090951-1-dimitri.daskalakis1@gmail.com>
+In-Reply-To: <20261020164239.3808903-1-pdmorrow@gmail.com>
 
-> From: Dimitri Daskalakis <daskald@meta.com>
+> Since commit 7d22b1cb9d84 ("mlx4: Connect the infiniband part to the
+> auxiliary bus"), mlx4_core creates the "ib" auxiliary device only for
+> an IB port or a device that advertises IBoE. Before it, each mlx4
+> interface was offered every device and decided in its own add callback.
+> mlx4_ib_add() accepted Ethernet ports without IBoE and registered them
+> for raw packet QPs only.
 > 
-> The existing call to net_prefetch() fetched a stale address. The data
-> pointer is not initialized until after the call to xdp_prepare_buff().
-> Thus, making the prefetch ineffective.
+> ConnectX-3 VFs on Azure have an Ethernet port and no IBoE, so since
+> v6.6 they get no RDMA device. DPDK's mlx4 PMD, which needs only raw
+> packet QPs, then cannot open them:
 > 
-> Open code the address calcuation to give the prefetch as much time
-> as possible.
+>   net_mlx4: cannot access device, is mlx4_ib loaded?
 > 
-> This was found by manual code inspection. No issues have been observed
-> from this.
+> Restore the old behaviour by creating both auxiliary devices for every
+> device and letting mlx4_en and mlx4_ib decide in probe, as their add
+> callbacks did. mlx4_ib_probe() returns -ENODEV when there are no usable
+> ports, and mlx4_en_probe() binds a device without Ethernet ports but
+> creates no netdevs, as mlx4_en_add() did.
 > 
-> Fixes: 9064ab485f04 ("eth: fbnic: Prefetch packet headers on Rx")
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> Signed-off-by: Dimitri Daskalakis <daskald@meta.com>
+> Tested on 6.12.111 on an Azure VM with two ConnectX-3 VFs: each gets an
+> eth and an ib auxiliary device, and DPDK attaches both VFs and passes
+> traffic through them.
+> 
+> Fixes: 7d22b1cb9d84 ("mlx4: Connect the infiniband part to the auxiliary bus")
+> Closes: https://lore.kernel.org/r/20261014133951.3219055-1-pdmorrow@gmail.com
+> Suggested-by: Leon Romanovsky <leon@kernel.org>
+> Assisted-by: LLM
+> Signed-off-by: Peter Morrow <pdmorrow@gmail.com>
 
 Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
