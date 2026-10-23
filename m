@@ -1,57 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792772906;
-	b=baWKJbvCcrIP78GX03285APwEfhVWabdm4kh/dA/zBzx+WTtrC/nWK1ncKCnewJX/X5d
-	 611mFClCLO+CHj1gXCFq0dKZoDN1JQ+ptavakw3+BuHAA7nRZ+iGY728W051ggvIKkYuF
-	 r5x0dKnQru7CHmyrnkTsk2VfZWSEMPntADmvlCmxnlEtfaYhJF398pz5LWGHFpII48+oU
-	 +xdociMK7dOM4U1Tfn39k85dmQw7VF6vk6BlIeHKKKJ772/LJ5X1i2FcMY33P7jLaZY2B
-	 LO9mmZIJDr/RSULuqxeG+TxjXW9ni4ubPmzMZ5VJ8jfGH/D9VPw3715iI1dnGSA6Eew==
+	t=1792773246;
+	b=DfCABHuaWVhVzcRHK/9YMueP1mmAPJINhjHNHze0poEpbR6d0B8Fzi9LCaM9PkHb+/gB
+	 t2a3WZzhEfaab+ppSJiwsUxGsR8epFfymXtDcLWSjRzlSU3bMvKRrM7GBE37pnlkKGrMe
+	 xTXYodK/QwEI7JQIKpF+3XsTID7mN/xWBKHKjiYu8I7nWX/w3sySuMgN9AW65/e0FGNN+
+	 lmUUwjzuZ6iu57lEsvL12/GivQYR50UBKoGjNP4xj8z40f8mAbBkIVJsNAiUkLnQxjKnA
+	 NBU19b5qkN/4UWr3nGTxuFuay1YlbzGMgg0DkX4pOwygZ9DJOEi+vIPSexGPqnsPVug==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792772906;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=Co97Y0p41uorR92GJeOhUDahiBIaQEoa0saPKr2noM8=;
-	b=W/rVsNUWl2WhJpF1+qWC/vuM/nUin/itpeuUtgK7TMktEMoQq1KIj744nhgj/NeZTs+v
-	 223dkV6/eKosGWrLaEJD9s2v/BzVzDsbGuO0hWbdwXV3yDUcBmVqkVmmXfgZDeolm1gu6
-	 oEeqXHuoyDJCHodRq5toDIa1dsFOCz3cN/pjWc9t9GVqITr06sGMr25DhBIH1keVRTtKy
-	 8ZsGtvXgTlKxVPu6dr+BF3xisVHwMguwKVgX55VcCEgurLkXiar+4knbh0Ssd9cKLmXHc
-	 ST9QzkDoAAq2O6HS0cIvE2mp2vh/He4hP51Jd1dnEyPON6FAzGC43Bu208QuY29jjdg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792773246;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=Bnv/2l/k8MEQplql5Qor6TmFNI8cwuFcJwBFY8k4dLQ=;
+	b=AUxKO+0OzRYoLcQdaZJnoZQbBvoR0SEQmH+nbmBLxJsmIR5G3nTFYIyGZfN+k8VEMiXO
+	 eRV2rHmE+ia/ROaAO91zNPc523hrTZT+kpq6Xiqfo+NlUnJkc1JckkCKmA/tp0axcfjZ5
+	 Xuw0kv234dsQUmMRVcxGeb5oBKI0AMC4Pi1todvNp1P/leeWJGLoJ6Tvg3zA7fciGrSxs
+	 5Visky92yz2bQUfBbv1/oYx5w7MDmu8GjHc6rr/isnzriTKyRfohUyuSgGRDMsCwpti4C
+	 R5deNhSX1hdOXR+lIkkBn/StjT8rNiem2Htf8X927slgB2TY46O1cvF13j2XjSrxjgg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OojpiN35;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dLZzOEQK;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DEB8606A324;
-	Fri, 23 Oct 2026 16:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2618D606A31A
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 16:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OojpiN35
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAEFC1F01825;
-	Fri, 23 Oct 2026 16:28:23 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dLZzOEQK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F36AE1F031E7
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 16:34:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792772906;
-	bh=Co97Y0p41uorR92GJeOhUDahiBIaQEoa0saPKr2noM8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=OojpiN35R5m9Yj0Ve6tqyjOGsScUD1AEIt+CecU0CVUjyrDZnLoNaOlJyH699BiWW
-	 Y64Rxr1/hs+JXyrQHG/AuDtFDj1KoAU2VIRD9f/yPvDDkIg2w7Jfeq52ukwgNnzp69
-	 VoZGtaIgbUcvWGoRWmG4rLj69/Z92fnq+bqU4IF2n55mBJRlaIUpVJwss/zVy4+92I
-	 v+PGgM0xND6gzNNOSv8Fj3WEjL2nPzTech//bKrpdraaMlof0/YqWrYFyF0SAPp/rv
-	 pQSb+RD6RLHpuH2nj9/9T9G04ywIiAjS6hQGaW+tofWloizuyQZBxjnqoYKbmEE8J2
-	 eXFFL6TCS4+Yg==
-Date: Fri, 23 Oct 2026 17:28:21 +0100
-From: Simon Horman <horms@kernel.org>
-To: netdev-bot+sashiko@kernel.org
-Cc: jhs@mojatatu.com, netdev@vger.kernel.org, owen@verialabs.com,
-	jiri@resnulli.us, victor@mojatatu.com, davem@davemloft.net,
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
-	kaber@trash.net, stable@vger.kernel.org
-Subject: Re: [PATCH net 2/2] net/sched: sch_teql: fix use-after-free on lower
- qdisc drop
-Message-ID: <20261023162821.GN708417@horms.kernel.org>
-References: <QDISC-Y0BY.v1.r0.20261015184107-2@mojatatu.com>
- <179248763469.3135.1739559328868319628@kernel.org>
+	s=k20260515; t=1792773246;
+	bh=Bnv/2l/k8MEQplql5Qor6TmFNI8cwuFcJwBFY8k4dLQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=dLZzOEQKJaWOtIy9+qkobtNm3lHDY4AhRWumVM3ZcQRWa4Je4jHM1otSuBF0w1qYu
+	 BF/xPksTJs3vlxq+nUQ5S3yuLJRCeVvXZoAbZDKViLFJxlCET0MA3Gljq2uZMKocrP
+	 HG5zs6MsujdQGIAK/AqNXk1L9ZQWSRajdTGeM8ZQUTVPCQ+NpJbDgPqxXUZQjK7ljy
+	 5PQWuKjOn0iy8GsRMaFFb6fz+w52bov2d4fWeZtDl1UjbjWX+Sj7GdE7muqdJKyhu0
+	 7m42OB24Js1mUwd1LLHeftws7ffOom4x1/eIJux2DP+ZFTZQcswdisvbVR+cWeBnDE
+	 dHxnweDY9LbXw==
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-4a75171af39so404993fac.2
+        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 09:34:05 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvByEbz6Jn+TM7OhdFav7YtuC+haEOD2HzYK9BMTtLC6JOu5MccXnp5wP400spvs4CuFVOQPayQc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJTavm0oJqOPUTDabNXSrbQ0H504wNNZAdbuvnP1E0095js3wBC
+	Xy86bIoZVbwOzDWUBrnHK7IqeM2qZoCa9pD/Hx/hESJrh7RVwa8N+lvMhzJ8p5t4i8LRt7JFAwK
+	KQvqvNFzueXAzM40kHOky2b540/6/o3c=
+X-Received: by 2002:a05:6808:f07:b0:4d6:9232:b3bc with SMTP id
+ 5614622812f47-55be864aec7mr1855434b6e.51.1792773245233; Fri, 23 Oct 2026
+ 09:34:05 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -61,102 +59,225 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <179248763469.3135.1739559328868319628@kernel.org>
+References: <20261023052542.3505250-1-imv4bel@gmail.com> <20261023052542.3505250-3-imv4bel@gmail.com>
+In-Reply-To: <20261023052542.3505250-3-imv4bel@gmail.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Fri, 23 Oct 2026 18:33:53 +0200
+X-Gmail-Original-Message-ID: <CAL4WiipDcvmNMeeC1znRmtykFg1uwb5XOZVOoi9y0dVECXtHVw@mail.gmail.com>
+X-Gm-Features: AclHuK8j0OJIInTADjUijSZdrh-TBvCvPPjm2eN4Lb9vOWvudAiLyfVYeTUust4
+Message-ID: <CAL4WiipDcvmNMeeC1znRmtykFg1uwb5XOZVOoi9y0dVECXtHVw@mail.gmail.com>
+Subject: Re: [PATCH net v2 2/2] inet: restore refcount ordering for
+ established lookups
+To: Hyunwoo Kim <imv4bel@gmail.com>
+Cc: ncardwell@google.com, kuniyu@google.com, davem@davemloft.net, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, martin.lau@linux.dev, 
+	john.fastabend@gmail.com, weiwan@google.com, sd@queasysnail.net, 
+	jiayuan.chen@linux.dev, netdev@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 20, 2026 at 09:13:54AM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 0
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] In teql_master_xmit() (net/sched/sch_teql.c), the patch
->   replaces `== NETDEV_TX_OK` with `dev_xmit_complete(rc)`.
+Le ven. 23 oct. 2026 =C3=A0 07:26, Hyunwoo Kim <imv4bel@gmail.com> a =C3=A9=
+crit :
+>
+> When commit 3ab5aee7fe84 ("net: Convert TCP & DCCP hash tables to use
+> RCU / hlist_nulls") was written, atomic_inc_not_zero() provided full
+> memory ordering. Even after commit 41c6d650f653 ("net: convert
+> sock.sk_refcnt from atomic_t to refcount_t"), default builds used
+> atomic_add_unless() and retained that ordering.
+>
+> Commit fb041bb7c0a9 ("locking/refcount: Consolidate implementations
+> of refcount_t") consolidated the refcount_t implementations in v5.5.
+> On weakly ordered architectures, this removed the ordering required
+> by validation after a successful reference acquisition.
+>
+> Use refcount_inc_not_zero_acquire() in the IPv4 and IPv6 established
+> lookups. Use refcount_set_release() when setting initial refcounts in
+> sk_clone(), SYN cookie, and request migration paths. In the TCP Fast
+> Open path, move the refcount update after the required initialization
+> and use release ordering.
+>
+> The TIME_WAIT path already has an smp_wmb() between refcount_set() and
+> hash publication, so leave it unchanged.
 
-Hi Jamal,
+This is not accurate. The smp_wmb() in inet_twsk_hashdance_schedule()
+orders the tw_refcnt store against the ehash publication, not the tw
+identity stores done in inet_twsk_alloc() against the tw_refcnt store.
 
-Maybe things have moved on for some reason.
-But this concern does seem to warrant a response.
+The latter is what a lookup holding a stale pointer needs. Today we get it
+more or less by accident from the bhash spin_unlock() followed by
+spin_lock() of the ehash lock.
 
-> 
+Please either reword this paragraph, or simply use
+refcount_set_release(&tw->tw_refcnt, 3) there; it is free under the lock
+and makes the pairing explicit.
+
+
+>
+> Fixes: fb041bb7c0a9 ("locking/refcount: Consolidate implementations of re=
+fcount_t")
+
+refcount_inc_not_zero_acquire() and refcount_set_release() were only
+added in 7f8ceea0c580 ("refcount: provide ops for cases when object's
+memory can be reused"), in v6.15.
+
+
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+> ---
+>  net/core/sock.c                 | 3 +--
+>  net/ipv4/inet_connection_sock.c | 6 +++---
+>  net/ipv4/inet_hashtables.c      | 2 +-
+>  net/ipv4/syncookies.c           | 2 +-
+>  net/ipv4/tcp_fastopen.c         | 3 +--
+>  net/ipv6/inet6_hashtables.c     | 2 +-
+>  6 files changed, 8 insertions(+), 10 deletions(-)
+>
+> diff --git a/net/core/sock.c b/net/core/sock.c
+> index 3c25d66ba31a..f3ef9601ab73 100644
+> --- a/net/core/sock.c
+> +++ b/net/core/sock.c
+> @@ -2622,8 +2622,7 @@ struct sock *sk_clone(const struct sock *sk, const =
+gfp_t priority,
+>         /* Before updating sk_refcnt, we must commit prior changes to mem=
+ory
+>          * (Documentation/RCU/rculist_nulls.rst for details)
+>          */
+> -       smp_wmb();
+> -       refcount_set(&newsk->sk_refcnt, 2);
+> +       refcount_set_release(&newsk->sk_refcnt, 2);
+
+This part is not a fix: the writer side only needs store->store ordering,
+which smp_wmb() already provides.
+
+I do not mind the conversion, but then reqsk_queue_hash_req() (which has
+the same smp_wmb() + refcount_set() pattern) should be converted as well
+for consistency. Otherwise please drop this hunk to keep the stable
+backport minimal.
+
+
+>
+>         sk_set_socket(newsk, NULL);
+>         sk_tx_queue_clear(newsk);
+> diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_s=
+ock.c
+> index cff02f4c5ac8..2d8e54d3a31b 100644
+> --- a/net/ipv4/inet_connection_sock.c
+> +++ b/net/ipv4/inet_connection_sock.c
+> @@ -1056,8 +1056,8 @@ static void reqsk_timer_handler(struct timer_list *=
+t)
+>                  * hold another count to prevent use-after-free and
+>                  * call reqsk_put() just before return.
+>                  */
+> -               refcount_set(&nreq->rsk_refcnt, 2 + 1);
+>                 timer_setup(&nreq->rsk_timer, reqsk_timer_handler, TIMER_=
+PINNED);
+> +               refcount_set_release(&nreq->rsk_refcnt, 2 + 1);
+>                 reqsk_queue_migrated(&inet_csk(nsk)->icsk_accept_queue, r=
+eq);
+>
+>                 req =3D nreq;
+> @@ -1441,7 +1441,7 @@ struct sock *inet_csk_complete_hashdance(struct soc=
+k *sk, struct sock *child,
+>                                 goto child_put;
+>                         }
+>
+> -                       refcount_set(&nreq->rsk_refcnt, 1);
+> +                       refcount_set_release(&nreq->rsk_refcnt, 1);
+>                         if (inet_csk_reqsk_queue_add(sk, nreq, child)) {
+>                                 __NET_INC_STATS(sock_net(sk), LINUX_MIB_T=
+CPMIGRATEREQSUCCESS);
+>                                 reqsk_migrate_reset(req);
+> @@ -1494,7 +1494,7 @@ void inet_csk_listen_stop(struct sock *sk)
+>                 if (nsk) {
+>                         nreq =3D inet_reqsk_clone(req, nsk);
+>                         if (nreq) {
+> -                               refcount_set(&nreq->rsk_refcnt, 1);
+> +                               refcount_set_release(&nreq->rsk_refcnt, 1=
+);
+>
+>                                 rcu_read_lock();
+>                                 if (inet_csk_reqsk_queue_add(nsk, nreq, c=
+hild)) {
+> diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
+> index 58d54965036a..7ffa9171d6de 100644
+> --- a/net/ipv4/inet_hashtables.c
+> +++ b/net/ipv4/inet_hashtables.c
+> @@ -550,7 +550,7 @@ struct sock *__inet_lookup_established(const struct n=
+et *net,
+>                 if (sk->sk_hash !=3D hash)
+>                         continue;
+>                 if (likely(inet_match(net, sk, acookie, ports, dif, sdif)=
+)) {
+> -                       if (unlikely(!refcount_inc_not_zero(&sk->sk_refcn=
+t)))
+> +                       if (unlikely(!refcount_inc_not_zero_acquire(&sk->=
+sk_refcnt)))
+>                                 goto out;
+>                         if (unlikely(hlist_nulls_unhashed_lockless(&sk->s=
+k_nulls_node) ||
+>                                      !inet_match(net, sk, acookie, ports,=
+ dif,
+> diff --git a/net/ipv4/syncookies.c b/net/ipv4/syncookies.c
+> index 644030561537..4b2d2713653b 100644
+> --- a/net/ipv4/syncookies.c
+> +++ b/net/ipv4/syncookies.c
+> @@ -205,7 +205,7 @@ struct sock *tcp_get_cookie_sock(struct sock *sk, str=
+uct sk_buff *skb,
+>         child =3D icsk->icsk_af_ops->syn_recv_sock(sk, skb, req, dst,
+>                                                  NULL, &own_req, NULL);
+>         if (child) {
+> -               refcount_set(&req->rsk_refcnt, 1);
+> +               refcount_set_release(&req->rsk_refcnt, 1);
+>                 sock_rps_save_rxhash(child, skb);
+>
+>                 if (rsk_drop_req(req)) {
+> diff --git a/net/ipv4/tcp_fastopen.c b/net/ipv4/tcp_fastopen.c
+> index 471c78be5513..2506f415f410 100644
+> --- a/net/ipv4/tcp_fastopen.c
+> +++ b/net/ipv4/tcp_fastopen.c
+> @@ -364,8 +364,6 @@ static struct sock *tcp_fastopen_create_child(struct =
+sock *sk,
+>         tcp_reset_xmit_timer(child, ICSK_TIME_RETRANS,
+>                              req->timeout, false);
+>
+> -       refcount_set(&req->rsk_refcnt, 2);
+> -
+>         sk_mark_napi_id_set(child, skb);
+>
+>         /* Now finish processing the fastopen child socket. */
+> @@ -378,6 +376,7 @@ static struct sock *tcp_fastopen_create_child(struct =
+sock *sk,
+>         tcp_rsk(req)->rcv_nxt =3D tp->rcv_nxt;
+>         tp->rcv_wup =3D tp->rcv_nxt;
+>         tp->rcv_mwnd_seq =3D tp->rcv_wup + tp->rcv_wnd;
+> +       refcount_set_release(&req->rsk_refcnt, 2);
+>         /* tcp_conn_request() is sending the SYNACK,
+
+Moving this is harmless, but not needed. The lookup never looks at
+rcv_nxt, and this req is never hashed, so after patch 1/2 a stale lookup
+will reject it anyway. A plain conversion in place would be enough.
+
+Let's keep code churn minimal, to lower risk of merge conflicts.
+
+>          * and queues the child into listener accept queue.
+>          */
+> diff --git a/net/ipv6/inet6_hashtables.c b/net/ipv6/inet6_hashtables.c
+> index aa5fa1dd062f..1eea584d80df 100644
+> --- a/net/ipv6/inet6_hashtables.c
+> +++ b/net/ipv6/inet6_hashtables.c
+> @@ -105,7 +105,7 @@ struct sock *__inet6_lookup_established(const struct =
+net *net,
+>                         continue;
+>                 if (!inet6_match(net, sk, saddr, daddr, ports, dif, sdif)=
+)
+>                         continue;
+> -               if (unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
+> +               if (unlikely(!refcount_inc_not_zero_acquire(&sk->sk_refcn=
+t)))
+>                         goto out;
+>
+>                 if (unlikely(hlist_nulls_unhashed_lockless(&sk->sk_nulls_=
+node) ||
 > --
-> 
-> net/sched: sch_teql: fix use-after-free on lower qdisc drop
-> 
-> This patch changes the check on the slave's netdev_start_xmit() return
-> value in teql_master_xmit(). It now uses dev_xmit_complete() instead of
-> comparing against NETDEV_TX_OK, so a slave that consumes the skb and
-> returns NET_XMIT_DROP is no longer treated as still owning it. This fixes
-> a use-after-free when a VLAN slave's lower qdisc drops the packet.
-> 
-> > diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
-> > index c7dcec25ef420..b3efd5c281988 100644
-> > --- a/net/sched/sch_teql.c
-> > +++ b/net/sched/sch_teql.c
-> > @@ -350,8 +350,8 @@ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
-> >  
-> >  				skb->dev = slave;
-> >  				if (!netif_xmit_frozen_or_stopped(slave_txq) &&
-> > -				    netdev_start_xmit(skb, slave, slave_txq, false) ==
-> > -				    NETDEV_TX_OK) {
-> > +				    dev_xmit_complete(netdev_start_xmit(skb, slave,
-> > +									slave_txq, false))) {
-> 
-> [Severity: Medium]
-> This closes the use-after-free. Does the same condition now also count
-> dropped packets as successful transmits on teql0?
-> 
-> dev_xmit_complete() returns true for any rc < NET_XMIT_MASK. That covers
-> NET_XMIT_DROP and negative errno values as well as NETDEV_TX_OK. All of
-> these now take the success block in teql_master_xmit():
-> 
->     netif_wake_queue(dev);
->     master->tx_packets++;
->     master->tx_bytes += length;
->     rcu_read_unlock();
->     return NETDEV_TX_OK;
-> 
-> They also advance master->slaves to the next slave.
-> 
-> teql_master_stats64() copies these counters directly into struct
-> rtnl_link_stats64. There, tx_packets is defined as "Number of packets
-> successfully transmitted".
-> 
-> With the reproducer from the commit message (a VLAN slave on a dummy
-> device with a pfifo limit 0 root), every packet the lower qdisc drops
-> would appear as a good transmit in ip -s link show teql0. tx_dropped and
-> tx_errors would stay at zero.
-> 
-> The VLAN slave counts the same rc as a drop in vlan_dev_hard_start_xmit():
-> 
->     if (likely(ret == NET_XMIT_SUCCESS || ret == NET_XMIT_CN)) {
->         ...
->         u64_stats_inc(&stats->tx_packets);
->         ...
->     } else {
->         this_cpu_inc(vlan->vlan_pcpu_stats->tx_dropped);
->     }
-> 
-> Could the rc be saved once? dev_xmit_complete(rc) would then decide only
-> whether the skb is still owned, which keeps the use-after-free fix. In
-> that case, tx_packets and tx_bytes would only grow for NETDEV_TX_OK and
-> NET_XMIT_CN. The other consumed codes would go to tx_dropped (or
-> tx_errors), without touching the skb.
-> 
-> The commit message describes this only as a use-after-free fix. Could it
-> also mention that teql0's counters behave differently now?
-> 
-> >  					__netif_tx_unlock(slave_txq);
-> >  					raw_spin_lock_irqsave(&master->slaves_lock, flags);
-> >  					if (rcu_dereference_protected(master->slaves,
-> 
-> -- 
-> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-Y0BY.v1.r0.20261015184107%40mojatatu.com
+> 2.43.0
+>
