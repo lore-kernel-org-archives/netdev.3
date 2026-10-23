@@ -1,88 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.148.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792749432;
-	b=2T92oCeV5IuT1CcTF/TW4Zz2puw/7rQYtfDxfLJTaD2KX5XkNickhz1Ud1MElYM2tLYi
-	 aiPAzxmmRvLEvfEAQQOTNcfaFbbJTVxnCfeH2Q9r+t0PEWtcapNR4OA1T0pMNsqZ6HYY9
-	 cv9zf4obqZya4zesAPIcBpiiyfkWEYncpG+4EFLmnVRd31TZTE80DYS0e6fKAUQmU/7GB
-	 uZarZ940oVwJxfu2wIDKZex47oYYPzg+I5jGMGgyT9YEUXldz053s0sWAAdtt9Mpt2u9W
-	 ug4HtAtoSbnWiJDHyWss+ICJD3K7gaxsxAqKqWoCbxa4Dr+4eLoSvYooFidvRSFg73w==
+	t=1792749688;
+	b=oaBrIhDSQZU8ZE6OmUl0hbNiTTVGQsl6mUnTRo3x74RDw9zA10siBuyqNBRmIYlXtpT1
+	 YDlNeL1bV0Ifc4jTt6UIlXmeciD+VEbIw+Rec3zkjKIeA95c3VkBwk+E3ByVdaUoP2agJ
+	 jewhP6OQ0iVaH84rUPRoEOsc1AZ56YgLdfGzgnWmA6/3VNX1BUSSbfc07JkuZtAq6Hvmd
+	 WCK8W8lKwUBDagrVYkrs52kiQ49BlqcBgN4GeMjE6LDIULt32Ta1U9rNwn5CRwQ7pV4iI
+	 LTvGEjzXa36FIKsUbwICwQvuyy6r6yWTow5B4SjkU9x6VLhHydJro6a2hpcyV3TmzAg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792749432;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=5zYKXoFoRrW/rjS0dALsJeII0OIOKVqHguJNCNYo2aI=;
-	b=uApAzdmrUMf8wsFumlkOsky07tbg9Cn4ggCUGZUmvLiFb/k/ASIpDDiDqAF97Bl+Ofmc
-	 rpMPtZa6NV4s8UjBObYyttGd1WdTldmMuvW+hi/8rXg8kBV9LVzOiFWko3zS+ZHz/W5rZ
-	 Hp9L5s15pRj0P40oO6nOkMPUuRKw01pPNh5jrbugSPO7ttiMzlCrrO8n1Phdjm0uChbmz
-	 mzitQatn4wa+hzAYJjnf+F3uBkW0oT+C0DWSN4K2zn02yPjJ0WvDRSYHQfPxKXwKdHPVI
-	 oOE95/Cs3U78KIkOb5N6tWt1x2uA/dHRTuFQmB66gavQMPDxfjr052uTl75HNqFB2tA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792749688;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
+	 X-Proofpoint-ORIG-GUID:X-Authority-Analysis:
+	 X-Proofpoint-Virus-Version;
+	bh=6iq612J16q5nGpq9ukoIawRWHB2fhQA00l1lXotI5tM=;
+	b=aD+O7MzyHx8beC6QFMKB5c6hV0SRHFeSqMOhamHHu8qW/sMgyugzQxkXHlUE16V44vPy
+	 +1hQzCngwYQyGgfoKwQq4cyZqZ5Yy35kFs5IlByNsYtwZ3KAncR6/kYWufjvdLMJqsnNB
+	 MKX0L5iGXSej/+JnV0X+EW66nA+9yxkPC1JKNaoXVko6TBk9NpcKv4PfAOdQAOxjbaAmU
+	 OKu6MCnnh8RA95M66TK5pRZeVOVoIMohE45oOxE2EUrgwTjRsyV4SNA+8RjTo2uNv3mI2
+	 JRt0DoPSns5LuLIQGYUBSKQP+bcCMGxbEEJVCRDv37nMExZd5vRxvjNLiGx4BGqMY+g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=blackwall.org;
-	spf=none smtp.mailfrom=blackwall.org;
-	dkim=pass header.d=blackwall.org header.i=@blackwall.org header.a=rsa-sha256 header.s=google header.b=lPUKPWt6;
-	arc=none smtp.remote-ip=209.85.221.49
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=marvell.com;
+	spf=pass smtp.mailfrom=marvell.com;
+	dkim=pass header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=pfpt0220 header.b=Rea2Zsl+;
+	arc=none smtp.remote-ip=67.231.148.174
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE9C606A31F
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 09:57:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ECE9C606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A42606A31B;
+	Fri, 23 Oct 2026 10:01:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 42A42606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=blackwall.org header.i=@blackwall.org header.a=rsa-sha256 header.s=google header.b=lPUKPWt6
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-48c4be28b82so545794f8f.2
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 02:57:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1792749430; x=1793354230; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=5zYKXoFoRrW/rjS0dALsJeII0OIOKVqHguJNCNYo2aI=;
-        b=lPUKPWt6Hycmbn6IYRhAtJBMMMtFtAg/QHyTDYFareIA8qANZBrOnuKO2bsyCcqKz7
-         oL8bBFvkG2pzR6UHOK+06X1Jmc+eQZHAN7xBZ7oxRiY1YDz8I6iBZElzHNpqMo7SzBOn
-         y/pjgu4kvTWCLlty4gU7xrkC8OberYR6zMo/xyFl2vIntUlRQ1cZe2rn7BnJd9QGe7eu
-         Xorjiy6tTIA32RMvxo5zit8lBYdKS+2WXjfHkpmOOcxnAItWJlnF3dOBp+EcMlTlgbIb
-         D1PRW5TFNhg/6OWYNCrEFxkelp/LmO8i9RlhzWtP5YDBu3PgzaMwZIge/afmkAxr1S5x
-         Pt/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792749430; x=1793354230;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=5zYKXoFoRrW/rjS0dALsJeII0OIOKVqHguJNCNYo2aI=;
-        b=nbbJqv73dz04qQku8yfk/zwxFe9iiom4dAQ8ZP0Phf2WHmgYtP0uxzJamaFTPtYs3n
-         QtdjeGWq+vF1m9/pEEH0s8Zrf96en+2GZuDLSx2XcWuXZ6QDixn81qLmPy/jAYzfi7Or
-         b8QSanqarrZ1I54VKqhfJOK0eWWlcqV5jae2GYLbfCx8i+7/yojbmAqNxTeeSv3q8N4E
-         LjJFNHo2S2upsuFApbjFoRPY5dMH6pYzsUTB0ZF9PIDNa5Sk4/tKbZGoanPmG32k4ucT
-         XvI64x141p76ghJLR3cTVSIeajFt+uHHUL5nfFzSOgqwSAiNbuxkwKfYX3p05IXM91kf
-         Q2Fw==
-X-Forwarded-Encrypted: i=1; AKwUvByHxWiApqWdiHzXLSER3BHfrjvBvF4k4k+OAMEyMddurZB4UEmC7OpNr2oNVm4JXv9kqUEgAS8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKg/Ha/dtx/Sf02Gkpc4aXDAcb1ODs+K0Q7EyUOjjifgwyA+nx1
-	9aVa7yKmNmNZl4wC4unagc8BnNLrdP5GWgTdk9zQTDgSJeXzIhNxOslTQzzS96gkURQyUmPJsZM
-	zyREe
-X-Gm-Gg: AYBFou1gyy0lt+4CTR1b1WNP1E7cyn5mBsTQZpOWWBSvbTMdEaQfMQVd63euM9j/SyN
-	Ge4rvPnLn3jxQBLxQdrN2waNAVIsb4YUgLF+d0t0A0juOOVdxxulHSCG3lyZVae/WzLZb4+kJFd
-	0zylx0tsKeGCSp8Ey/VNWm+k2eWsfvSaWyN2yC6OH7ql9sDRbDbHX1rTVkwjDrFbAST8fJZ0lPj
-	q3rDLR1o2DK9DIaoK8h8TenfNA0VO7YZCyiMjNn2hsVb2mQRlnq2gNLgOk7rcbuvwmmK7BAzrBv
-	K0wO7KQoGQzP0GExERlMbRQsk4sqwZ8FJzhkTc+qtvHaXYF465erlr2KwzpnCNZdBoQi4eeAMQc
-	cpHv/5F4eiihxfrMzOPJ5hhTabWwdGIP/RtA9M13dXTR3JdXTObaPV4HvUo0G+zJwFVvy4Gur2j
-	si04WGwnxt9cPrzcTqt69E5S5lZGeuxnrz6PoUNEbv2VHyMdqVBIqFrU95DJU4+a6Df2hlW54PP
-	mL6MDWbPaUtB735RCF1URlOyskfwazLt/0oSejIfKwJXy6Nllyc2c9TUMEF0Cm1HjJd9G99Qrqq
-	XPX9uYCViQ==
-X-Received: by 2002:a5d:4c4a:0:b0:487:27f9:842 with SMTP id ffacd0b85a97d-48e385b0220mr2207570f8f.55.1792749430068;
-        Fri, 23 Oct 2026 02:57:10 -0700 (PDT)
-Received: from [192.168.0.161] (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3804872csm3994786f8f.34.2026.10.23.02.57.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 23 Oct 2026 02:57:09 -0700 (PDT)
-Message-ID: <cbcff85c-49f5-4920-94ee-53dc10c9ad96@blackwall.org>
-Date: Fri, 23 Oct 2026 12:57:08 +0300
+	dkim=pass (2048-bit key, unprotected) header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=pfpt0220 header.b=Rea2Zsl+
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69N7FgD43411314;
+	Fri, 23 Oct 2026 03:01:17 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=6iq612J16q5nGpq9ukoIawR
+	WHB2fhQA00l1lXotI5tM=; b=Rea2Zsl+IXp7sjJJsI3/84goQVornVEeGbPim/X
+	mCKGyZJI+qYL2KEPTo1OtUY0ZYwpw1lATspCaXHirGBuiFfoV37sbutXW8Do2d+B
+	6mDdIUbK+yqkqT8P7VSEok9R527x3yDmFhmgQsprr7ejvzjoU6JeE/EkMc5055fe
+	gU3g/MH3vWqfSGUyWEbBxwTxO3gfMaEZ0PnyGGQaGFKt3prmHS6mzn2dYn2C9Onp
+	S0Z2YrgjZr+xjjJY8Rt1N7XZkluxNR75AJ7OTiCVgpRS/oGkeTzSnNTkrstYoxZy
+	6wwvVKHrurdAmknAMbXalVORCWCBHlC71OdoxuYFceUT/4A==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4hfmdtn7wv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 23 Oct 2026 03:01:17 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Fri, 23 Oct 2026 03:01:16 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Fri, 23 Oct 2026 03:01:16 -0700
+Received: from localhost.localdomain (unknown [10.110.24.192])
+	by maili.marvell.com (Postfix) with ESMTP id A07F73F707D;
+	Fri, 23 Oct 2026 03:01:16 -0700 (PDT)
+From: vmukunda <vmukunda@marvell.com>
+To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: Sunil Goutham <sgoutham@marvell.com>,
+        Ratheesh Kannoth
+	<rkannoth@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        "Subbaraya
+ Sundeep" <sbhatta@marvell.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S
+ . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>,
+        "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        vmukunda
+	<vmukunda@marvell.com>
+Subject: [PATCH net] octeontx2-af: Fix npc_delete_flow counter read for cn20k
+Date: Fri, 23 Oct 2026 10:01:12 +0000
+Message-ID: <20261023100112.3402726-1-vmukunda@marvell.com>
+X-Mailer: git-send-email 2.25.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -92,91 +91,57 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: bridge: do not bypass port state for MST without
- VLAN filtering
-To: Tobias Waldekranz <tobias@waldekranz.com>,
- Cheng Yongkang <teel4res@gmail.com>, Ido Schimmel <idosch@nvidia.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, bridge@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <179268538303.70821.3493915601694605045@gmail.com>
- <877bj8iz0p.fsf@waldekranz.com>
-Content-Language: en-US, bg
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <877bj8iz0p.fsf@waldekranz.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIzMDAzOSBTYWx0ZWRfXxyUHtSiexsmL
+ adNQOoA1ThznkVSu07qnbPMVNFB8JaUzDC8EfDb1t/iCSdKrhmKVGSQ/GqvBbTpjrXb62j56c+t
+ KoVBl8omdrcflVCFCmyAg2RJyaDT7eg=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIzMDAzOSBTYWx0ZWRfX2UXQzpKsM4ws
+ Lu4t3lMsnQIW8AxwBrdT3FxSaeeDJeaMm4lTG3XK4EU4n7zkF1tAIH3JD7ckcWLFA0CXBj6PqdV
+ ptZovzg1dq064z/jHBtdBbGPXpSU9OM328A/kEY/9GHhz6/Zy6F5D2KgA67D7mPCbf7p+XE6Hfu
+ cwFvD/oE5MRcVzEwLvYygxv19DsF61lsw40Lad+doOAkJoejkGt5budbT9ULibLuj3kaudoxyI2
+ 2xlLGHjuUpcax48KQrR7eQYe/dobVgm5OuAVhkIoX1GvqZx3RlSdaAEYe0ftWp0xPcOywlL3JpH
+ WmJ3rINUPV+6FCiBdbEOve0fSZqp4rXD88CdjakOCOi+utOjTO4/8yt8o42AksVNosIHIeNTyrU
+ AHkoRVGiIEPy8esEumrpI6wI6c3nTQpmoQcr9vIzFOKvrl07IjSJDz3HxyzLe1DCL0lBJ1ntyix
+ 5YhXag8PD+EiGXjK5Lg==
+X-Proofpoint-GUID: CXvk2G0y0xCJAedXx4zy1Y-wMHe-_Cux
+X-Proofpoint-ORIG-GUID: CXvk2G0y0xCJAedXx4zy1Y-wMHe-_Cux
+X-Authority-Analysis: v=2.4 cv=PalqFShd c=1 sm=1 tr=0 ts=6adb306d cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=EAYMVhzMl8SCOHhVQcBL:22 a=M5GUcnROAAAA:8 a=j3AFsqOYKst2VyhahHcA:9
+ a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-10-23_02,2026-10-21_02,2025-10-01_01
 
-On 23/10/2026 11:47, Tobias Waldekranz wrote:
-> 
-> Hi Cheng,
-> 
-> On tor, okt 22, 2026 at 08:26, Cheng Yongkang <teel4res@gmail.com> wrote:
->> br_mst_is_enabled() is true when the bridge MST option is set and the
->> port has a VLAN group, and nbp_vlan_init() installs a VLAN group on
->> every port even when VLAN filtering is disabled.  While it is true,
->> ingress treats the port as forwarding and egress skips the
->> BR_STATE_FORWARDING check, so that the per-VLAN MST state is enforced
->> instead.  That state is only checked when VLAN filtering is enabled,
->> though: br_allowed_ingress() returns early otherwise, and
->> br_allowed_egress() only checks frames that were VLAN-filtered on
->> ingress.
->>
->> With MST enabled and VLAN filtering disabled, no port state is enforced
->> at all, and a port in BR_STATE_BLOCKING or BR_STATE_DISABLED still
->> forwards traffic, defeating STP and MRP loop protection.  MST can be
->> enabled in this configuration, since br_mst_set_enabled() only requires
->> that no port has a VLAN, for example with default_pvid 0.  In that setup
->> a BLOCKING port kept forwarding broadcast frames while MST was enabled,
->> and stopped when MST was disabled.
->>
->> Commit 8dca36978aa8 ("net: bridge: fix use-after-free due to MST port
->> state bypass") stopped this bypass during port deletion by also
->> requiring the port VLAN group; the bypass itself remained.
->>
->> Also require VLAN filtering in br_mst_is_enabled(), so the normal port
->> state checks apply until VLAN filtering is enabled.
->>
->> Fixes: ec7328b59176 ("net: bridge: mst: Multiple Spanning Tree (MST) mode")
->> Assisted-by: LLM
->> Signed-off-by: Cheng Yongkang <teel4res@gmail.com>
->> ---
->>   net/bridge/br_private.h | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
->> index ff746f036f54..85065304597e 100644
->> --- a/net/bridge/br_private.h
->> +++ b/net/bridge/br_private.h
->> @@ -1953,6 +1953,7 @@ static inline bool br_mst_is_enabled(const struct net_bridge_port *p)
->>   	/* check the port's vlan group to avoid racing with port deletion */
->>   	return static_branch_unlikely(&br_mst_used) &&
->>   	       br_opt_get(p->br, BROPT_MST_ENABLED) &&
->> +	       br_opt_get(p->br, BROPT_VLAN_ENABLED) &&
->>   	       rcu_access_pointer(p->vlgrp);
->>   }
->>   
->>
->> base-commit: f4377bf85887f57b59abb5479f7660a81ffe4449
->> -- 
->> 2.34.1
-> 
-> I suppose the other way to fix this issue would be to require VLAN
-> filtering being enabled in order to enable MST filtering.
-> 
->  From a user perspective, that seems natural since you need to associate
-> packets with VLANs (i.e., have VLAN filtering enabled) in order to make
-> any use of MST filtering.
-> 
->  From the bridge's perspective it might be less desirable since it would
-> mean that the two options would become entangled - the bridge would have
-> to refuse VLAN filtering disablement while MST is enabled.
+From: Subbaraya Sundeep <sbhatta@marvell.com>
 
-Indeed, that can break users because of new option ordering.
-I'm sorry but this is a no-go.
+On cn20k, the MCAM match counter cannot be read from
+NPC_AF_MATCH_STATX. Skip reading the counter value in
+npc_delete_flow on cn20k. Counter support for cn20k is TBD.
 
-Cheers,
-  Nik
+Fixes: 5f83b4729440 ("octeontx2-af: Do not access match stats for cn20k")
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Signed-off-by: vmukunda <vmukunda@marvell.com>
+---
+---
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
+index ea5d462a66ee..06916b38ae2c 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
+@@ -1960,7 +1960,7 @@ int rvu_mbox_handler_npc_delete_flow(struct rvu *rvu,
+ 			/* single rule */
+ 			} else if (req->entry == iter->entry) {
+ 				blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
+-				if (blkaddr)
++				if (blkaddr && !is_cn20k(rvu_pdev))
+ 					rsp->cntr_val = rvu_read64(rvu, blkaddr,
+ 								   NPC_AF_MATCH_STATX(iter->cntr));
+ 				list_move_tail(&iter->list, &del_list);
+-- 
+2.25.1
 
