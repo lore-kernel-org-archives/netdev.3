@@ -1,72 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.199
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792788430;
-	b=nozIL3IbyyPl7gKk/myBItYmY1NUIsW9KcZpYvIZfTxuuGgINR7MCBnukl7xqhq1h5Cf
-	 5FjcNet96r5IpMbIJSx/IlkFmYKbU5bQzvLdIOSPsNXzoQU4QZJ26IWWPL9rBf8kh4MLS
-	 aaLHpICK81l03USUb9RMDEsokH3AyJCe3Uy2q7yeKnrVVfczZIYiTcfwOb23BWzYFWNRJ
-	 Za5CiyUQdPKaESZUhkRSYBiqfyc3vLoc5whb7qBLzWCcc6UVF2NCl5ypYZPSJo5kZhJVL
-	 yoc3N6mxATrq+gMLt5Km/Y2XsZEZ4QM6JbTa5lcH2ZjsLmF0QgiqqrXxw283qeoXFyQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792788430;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.181
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792788556;
+	b=TBdTcwuTwH6hyPbApPCoA+a6+pQABiah9+qNZomeNHovdX8PNg2KgEtecOYDGjnV3j1t
+	 iztAYwqlL9VBkmBABchETUWNDqK30mmF7pC/0AwtAcGUNvnkuHoLt6DZTUHtyQwaIMuOq
+	 Btbb+6051UYozwlzrK2fV5LwZuIJVGApDQNpcHk03vRSLx/d436ovEp3rF1Yzdo6lAP5u
+	 SPXmrM+T0UFaeYNSnPNhynwBHWpZQAZxdjjMeodH7HiMV7zhOAHpLqIKnLNLG6Qz95ncl
+	 a1WXXrv9WaGiCnUxRevD3fEsdBgPpxYEBMfZNBrRWSzdBv29eToUvuGGsQIqGCwBDSw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792788556;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Date:Mime-Version:X-Mailer:Message-ID:
-	 Subject:From:To:Cc:Content-Type;
-	bh=IZesByycO+LPzFMOrxyzTveWeZ5n5x8B7eGfO0YnZQo=;
-	b=45DmGxwkqntx328q68RC4huOEQl4s0Fgr087Zk0eKLuY3e6ifp2RiiAODEniqYudHY5N
-	 yS/dlJ/ikmeDBKaCscQ2eQtpi+RcE6O92MUoTFj6n0BeTz5axA/Ig+YFX7jat5byzlZdf
-	 /mVP6U6Y2qQPfRjLXaY4Zrr3HtG8JYe4jWBqNEbyILG+eXRQBG/4jOO2zJx9vxb4JETRd
-	 xt+71wJYPvQpToOWRh/yvp+mvoQZF/24eiv/Mx8hraaHEAZ2+KnTbvTgmiFA2guB6vL8i
-	 ufgVLH2ZxzGdQNsQj85IR6G30UHT5UXYQPnfw/+5/8nz4hinLV2dPvDfsCEZ7mSHkfw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b="V8c5K/e+";
-	arc=none smtp.remote-ip=209.85.210.199
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=1e8ZPE4kmMbmXtCl0yrab04f315W635erPEBqteGcDk=;
+	b=mr0QGVuGU9RAX5HB1drKnKhMuZsprby2+ac+uNnZlLP7et+jZJgMp5BqZFrY3hs+jrli
+	 hXibMEGU7gaFlI/aT/QqmzsZ/Ae7WNJ1JLiavnfYS8YiFgr9LF9jOA8BqtlIgD38mo1Op
+	 jvW6aDU2MLvjcH63mUjNWff+Pd6z+otL+SIOcu8L19PhlNbIMTdiZmxN7v/9kHwwh7fLu
+	 bHrwwS3O4R1WSkVxJy78VSH9HkDc5q7stbs3TNFd+/zovZU2cQwqGW5uRjW1KyD4GvjP4
+	 JoqzjGCWQpfz/AMUV5Ida4tyt1wMfR9AgHBFK+IIUMyFXLq12ecC2g89bxNFlvtwJtA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=mojatatu.com;
+	spf=none smtp.mailfrom=mojatatu.com;
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=AEOv6u6v;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.181
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA0B606A320
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 20:47:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4BA0B606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC6D606A31A
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 20:49:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CCC6D606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=V8c5K/e+
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-89fb6a45c48so1233645b3a.1
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 13:47:09 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=AEOv6u6v
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8a058f74a54so550611b3a.1
+        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 13:49:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792788555; cv=none;
+        d=google.com; s=arc-20260327;
+        b=aVx6KnSHignQJiXK0iT9iNrVE5rHeX4m/XRyWzF9zzbfnd42teaEV+2vQeGFpniG2u
+         6OHfQWpzq8gV+sZHMGXjpkVvspLtwozBoPFlpZILHaY6uxrPEEWOwJE6+sdxv6tvXQg8
+         sHGg4A9Wv28RpJIkwHQ7Gb6R7EZk/wLCTHHjbCK5vkIILgg1UMLRQHxuAHpqYzFCl7b0
+         hdNBoTN39DmQLIo6oCbHYlINOkt3UFLmfOHwR0sSIeQy1SHT93BrFDyT8o9FPLUlaaLZ
+         gRxiueS7CvJfEDqhOzASvk3NrkbO3C/3TcEKitocMqEslFjuv3v662dhAMrlpKpj98pS
+         DEVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=1e8ZPE4kmMbmXtCl0yrab04f315W635erPEBqteGcDk=;
+        fh=uA5+sVf7lLjWuGIYBt/ggdGLbhwFsRcXVU+U3XyFFqQ=;
+        b=Uinhq4TBdqw8CCP+rBCCzs4Jc2VDlN8PRW/wsm3hSc4KO6vd89q/bw7QdCHCwbJuHG
+         OiXODgqfZjPYLK66eZk9AYkwq671E0+GUA30VX9W4+VAyKkRal/6j/lcEuLSZwHxI1sY
+         CmV/Av6NCbbBzCl7pgo3KhV4pk4RdHpvOM2oLqO+DSG9Sp8zqRTLso7uWR8EWkVLOs6S
+         ZC8bvLcdBFuhTLzTxOheoxth+Z9IaqXZS68LfEBFyA3P0rntLRBo1UFjhtl2X648dst5
+         YHLN7D2FrrJirsPGIK35Q2Wqfn/+U0N7mLwFX3B1he7ENRBu+1Vq/nY7bC9+5dnnSMqd
+         XUGg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792788429; x=1793393229; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=IZesByycO+LPzFMOrxyzTveWeZ5n5x8B7eGfO0YnZQo=;
-        b=V8c5K/e+wW0CaDapSsM1QWQpymmKnF2LTar/d5t91pBrzlY5j4HFDrApsLX0aNwNik
-         yKgazbyKwgnMV7P6EBb7yPPqzgq4TVV1P1iyDkGuPYoGFxHD7rumtJOwcbAY8AaVTTjo
-         EUCri0Iw2Ka8YitLlEopvJWuDf4MU71+79rmqIk7p59sMQLtttTViPXmEdX+oAuQXse8
-         R7yFjcdQnRIgv7iA1qE/zUOl08ys5xyPfAsYihPCdeNJpqt4VNoyICVAYKki798pa0rh
-         +zOCIE4kYf110o6APAkqA7NAD7UaX6jf+PkshSCA5ea9ziUGJh1HzX1FFe2IAzZm91TB
-         vbUg==
+        d=mojatatu.com; s=google; t=1792788555; x=1793393355; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=1e8ZPE4kmMbmXtCl0yrab04f315W635erPEBqteGcDk=;
+        b=AEOv6u6vIlh8bMLqubdAOCo2ZaWZPNBwX8q7K4RISlY1OQ+6TfhPudRb7ZZc+IEyDI
+         Jl2uepJHcQXGgiZ/AEcTgVkS04Z5KXSWGM74zhXnh5lM5SpvjZCAsHZ3wjM8rVT6Nmmm
+         OBYpe4OZu+KBfwxchSCixguS+yxodzVQfsm04=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792788429; x=1793393229;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
+        d=1e100.net; s=20260707; t=1792788555; x=1793393355;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=IZesByycO+LPzFMOrxyzTveWeZ5n5x8B7eGfO0YnZQo=;
-        b=Gku4ThF1nu5hqCTsaqgtsU+CQa/NSUAYjrbuNAz3o8EdQJw7m7aZ5C6cS3Xq1lY61+
-         vEKJbMC1n4FakayUjp1dBtGuw0dQ88kN1ztXCs5+WFXtjRaaflMyoxsbJEc9xq5LuHBg
-         o3GIRMMyQX5bfoVgGm/8K9XXnGoWgiAu4yfikKrJDHo//I+KZSfpUeG87r6AU+lM12wq
-         krG1BhXz9RR0uwVA/78szWoW5RvCTZunvV6OqqUmcetkt6KPCNVXOjUvjmLrKcAC5EwX
-         hZeg2fuOT8eMBzgtRHW8/HoEGSG3kUax1+lzsEfUJSchhPRHfMmy3hKOJudpSYXKjKri
-         PvOw==
-X-Gm-Message-State: AFq9FYLOZjURMkQaLrGOZKsh+9cFarTdDkK7qv0jdqbC6TmNVHWJymnB
-	FUhqFJn59CcAzeZeNsAuej6fvIYJkVe8jwoAjKyo0C3e7Plxe1Ob0MSXCTuNOwqM6zpmJwVENWt
-	sZUH+Y8PrD/5xP0Z9eX0P/6pfNtNHM9W5y+5qyo3bLosWA3QfkVaUCgMAH6KC4hfxJAoXYOG2pO
-	yTiOYsvJ1FAtE4pHw5xAXrZcQHnNKKdSmyqYgEyEfGxM6Ps5mD/I60S5m5Sm4O4kY=
-X-Received: from pfww6-n2.prod.google.com ([2002:a05:6a00:8886:20b0:890:ac21:250c])
- (user=hramamurthy job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:3f95:b0:3e2:aa08:8040 with SMTP id adf61e73a8af0-3e7cd4f4b9dmr123609637.46.1792788428424;
- Fri, 23 Oct 2026 13:47:08 -0700 (PDT)
-Date: Fri, 23 Oct 2026 20:47:02 +0000
+        bh=1e8ZPE4kmMbmXtCl0yrab04f315W635erPEBqteGcDk=;
+        b=Jm1fb2ZMZz8fO/j2Od5rPdgFmBpWOJ8C8fxd2k4/FxA40mgX656+EeQx1rwu7rKzOh
+         smQynvXkpfv0oQptLjn4F0AVLaHL1rjIg3h4V3fLns4sRtWPQ7mVEmpWxO/RT1KewR3X
+         ul8xJuZZFB7YB2E3bxuBbH/+sspp/Izvrl83Qp4gVXx01Sq45xUUmtoTzw9jUSXprxOX
+         lDRpTqvShp/rME6hjXDu4Ms/VT24ENmqQKM2PpAGciL7y56TT427FVr7BobugyZrQOTL
+         Z5riISlPpUPkMJDP16DVHSxIjdw82OR9RbSaEIRTN+ffKTHeKHpIcEzJ0yi0vM8ubC3Q
+         PKDw==
+X-Gm-Message-State: AFq9FYILPOGMjc6V0cq8aV3Zsbcb7XZ2jE6duxuV47DDo2A2BwVZQPBe
+	rqJI5HuSHoCyLkFlkdu5HYXoHrXlP29VWia9pZb3GpiEBrOrVwz42SSLnO3NQ+kD90d2Zv+okTs
+	80ILX9dffJvh/s/3uuaFp/bCPJtPMDMu2U3xqgDyOtZL3quY7XhTjAQ==
+X-Gm-Gg: AYBFou0boTf7+MqkAAW0aDRlr2UPNavRyrCvbDrkt3V+9KiuTVmAO7OV1OBMfJRkijE
+	Rb8kjA2kC+n9COyMTHKvWAg7hieeKiqpzAecVwA6oM3+/fNWWNIP3Ed+TE1P+9gVUTWYQssaphu
+	nGixEXccyqMRijMfeYuB8HiwqbjY4MUhk+5dOcb4VyXGEClz7gotk+cQJXsj9WRwHXWhFEyZX+l
+	NklKQ4QJ6ir+qARAhFCLjan2xhyL6CEGxPg74g1dW398dK51APlPxxcQXwHgARdxXrjpE5QNENf
+	cDojQOqFixIuBXPjSXtyfZaZggBHPChBU2Gu75G3qLwtjeVWuZgachQ2I9Eb73BXVDmGnlhlmtj
+	jvRjF5n/AzYNBwk0IiSlHDuaBCctMllJ+5Waraxjw6F4OgIqWKJJ5HS41X6/7eCSS62E8xYV5xx
+	9aS4UGp6ZGrz4O/NMym0TpdMkC15DwjR+cbFP5
+X-Received: by 2002:a05:6a00:f92:b0:899:55e9:880b with SMTP id
+ d2e1a72fcca58-8a3661c509fmr328289b3a.14.1792788555119; Fri, 23 Oct 2026
+ 13:49:15 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -75,79 +100,98 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.257.gf7497c7d27-goog
-Message-ID: <20261023204706.3112215-1-hramamurthy@google.com>
-Subject: [PATCH net v3 0/4] gve: Fixes for issues discovered via net selftests
- and Sashiko
-From: Harshitha Ramamurthy <hramamurthy@google.com>
-To: netdev@vger.kernel.org
-Cc: joshwash@google.com, hramamurthy@google.com, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
-	jordanrhee@google.com, willemb@google.com, przemyslaw.kitszel@intel.com, 
-	nktgrg@google.com, maolson@google.com, jacob.e.keller@intel.com, 
-	pkaligineedi@google.com, yangchun@google.com, patricion@google.com, 
-	awogbemila@google.com, stable@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Pin-yen Lin <treapking@google.com>
+MIME-Version: 1.0
+References: <ACT-N6N4.v2.r0.20261022191829@mojatatu.com> <20261023122819.5e48ea9e@kernel.org>
+In-Reply-To: <20261023122819.5e48ea9e@kernel.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Fri, 23 Oct 2026 16:49:04 -0400
+X-Gm-Features: AclHuK_KBBLqzVNTj_l61CA0L2zWjhSKF-P73rB5NHPry570bVn5gVtl8tS4o34
+Message-ID: <CAM0EoMkaPX_He3yCExA0DG4KuQQd6JLP=6qgsXn0kzry4+P2nA@mail.gmail.com>
+Subject: Re: [PATCH net v2 0/6] net: pull short linear Ethernet headers before eth_type_trans()
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Guillaume Nault <gnault@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Victor Nogueira <victor@mojatatu.com>, Vega <vega@nebusec.ai>, 
+	Ren Wei <n05ec@lzu.edu.cn>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	Jason Wang <jasowangio@gmail.com>, Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+	stable@vger.kernel.org, Martin Varghese <martin.varghese@nokia.com>, 
+	Pravin B Shelar <pshelar@ovn.org>, Shmulik Ladkani <sladkani@proofpoint.com>, 
+	Yotam Gigi <yotam.gi@gmail.com>, Aaron Conole <aconole@redhat.com>, 
+	Eelco Chaudron <echaudro@redhat.com>, Ilya Maximets <i.maximets@ovn.org>, dev@openvswitch.org, 
+	Jiri Benc <jbenc@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Pin-yen Lin <treapking@google.com>
+On Fri, Oct 23, 2026 at 3:28=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> On Fri, 23 Oct 2026 07:59:15 -0400 Jamal Hadi Salim wrote:
+> > This series fixes a class of producer/consumer bugs in which an outer
+> > header is popped and the packet is then handed to a consumer with fewer
+> > than ETH_HLEN bytes in the linear area.  eth_type_trans() pulls ETH_HLE=
+N
+> > from that area and can BUG in __skb_pull() when the inner Ethernet head=
+er
+> > is not linear.  The affected producers are act_vlan POP_ETH, act_mpls P=
+OP,
+> > act_ife egress decode, and the Open vSwitch MPLS/TEB and NSH pops.  A
+> > consumer-side guard in act_mirred rejects redirecting a headerless pack=
+et
+> > to a device that expects a link-layer header.
+> >
+> > Patch 1 makes act_vlan POP_ETH pull the inner Ethernet header after the
+> > pop and drop only when the packet is genuinely shorter than ETH_HLEN.
+> > Patch 2 does the same for act_mpls, gated on the pre-pop MAC length.
+> > Patch 3 adds the act_mirred guard at the redirect boundary.  Patch 4
+> > keeps act_ife egress decode from consuming the inner Ethernet header an=
+d
+> > restores the header metadata.
+> >
+> > Patches 5 and 6 establish the same linear-header invariant for the OVS
+> > MPLS/TEB and NSH pops before restoring MAC_PROTO_ETHERNET.
+>
+> NIPA CI flagged a regression that appears to be introduced by this patch
+> (or one of the closely related act_vlan/act_mirred patches in the same
+> series).
+>
+> The selftest tools/testing/selftests/net/forwarding/tc_mpls_l2vpn.sh now
+> fails reliably (both the "ping" and "ping6" sub-tests, on both the
+> regular and debug forwarding test configs, consistently on retry as
+> well):
+>
+>   # TEST: ping    [FAIL]
+>   # TEST: ping6   [FAIL]
+>
+> The test builds an Ethernet-over-MPLS L2VPN using exactly the tc action
+> sequence this series touches:
+>
+>   - ingress: mpls mac_push + vlan push_eth + mirred egress redirect
+>   - ingress: vlan pop_eth + mpls pop protocol teb + mirred egress redirec=
+t
+>
+> dmesg on the test run shows mirred failing to redirect the traffic:
+>
+>   tc mirred to Houston: device veth2 is down
+>   tc mirred to Houston: device veth3 is down
+>
+> This is the same "vlan pop_eth followed by mpls pop" chain described in
+> this patch's own commit message as the bug reproduction scenario, so it
+> looks like the mac_len/pskb_may_pull bookkeeping added here may not be
+> correctly handling the ingress case used by this test, causing otherwise
+> valid packets built by this chain to be mishandled and the redirect to
+> fail.
+>
+> Could you take a look at whether the new POP header-pull logic correctly
+> handles the "vlan pop_eth -> mpls pop protocol teb -> mirred redirect"
+> chain on ingress? It would also be worth double-checking this alongside
+> the companion act_vlan POP_ETH and act_mirred link-layer-header patches
+> from the same series, since they touch the same pipeline.
 
-This patch series addresses several issues in the gve driver. All four of
-these fixes were either uncovered by running the net selftests or
-suggested by Sashiko in the previous version.
+Victor monitors NIPA but is currently away for a few days. I will take
+a look. Eric pointed out this broke:
+tools/testing/selftests/net/forwarding/tc_mpls_l2vpn.sh
+I'm working on updating that and will try to fix this as well..
 
-The series includes the following changes:
-
-- Patch 1 introduces a spinlock (stats_lock) to robustly synchronize stats
-  queries (including ndo_get_stats64 and queue stats) against queue
-  teardown and restart, preventing UAF and out-of-bounds reads. This was
-  discovered by the drivers/net/stats.py selftest.
-- Patch 2 fixes an issue where interface stats would go backwards when the
-  interface was brought down or its configuration was adjusted. This was
-  also discovered by the drivers/net/stats.py selftest.
-- Patch 3 ensures the driver falls back to the default minimum ring size if
-  the corresponding device option values are exposed as 0. This prevents
-  userspace from configuring unexpectedly small ring sizes. This was
-  discovered by the drivers/net/ring_reconfig.py selftest.
-- Patch 4 makes sure ethtool configuration modifications are done
-  synchronously before returning to the userspace. This was discovered by
-  the drivers/net/ping.py selftest.
-
-Changes in v3:
-- Link to v2: https://lore.kernel.org/netdev/20260425002450.163421-1-hramamurthy@google.com/
-- Protect all stats queries and queue lifecycle updates with a spinlock
-  (Sashiko)
-- Drop u64_stats_sync for the base stats and use the spinlock instead
-- Save base stats in gve_queues_mem_remove() and gve_rx_queue_stop()
-- Drop unused rx_dropped and tx_dropped accumulation in
-  gve_add_base_stats()
-- Fix the Fixes tag of patch 4
-- Refined the commit messages
-- Rebased to the latest net tree
-
-Changes in v2:
-- Add a NULL pointer check in gve_get_ring_err_stats() (Sashiko)
-- Use local variable to prevent inflates from u64_stats_fetch_retry()
-  (Sashiko)
-- Add u64_stats_fetch/begin to protect base stats (Sashiko)
-
-Debarghya Kundu (1):
-  gve: Fix backward stats when interface goes down or configuration is
-    adjusted
-
-Pin-yen Lin (3):
-  gve: Fix race between stats query and queue reconfig
-  gve: Block invalid ring sizes when device options are 0
-  gve: Fix link flap after ethtool ops
-
- drivers/net/ethernet/google/gve/gve.h        |   8 +
- drivers/net/ethernet/google/gve/gve_adminq.c |   4 +-
- drivers/net/ethernet/google/gve/gve_main.c   | 179 ++++++++++++++-----
- 3 files changed, 148 insertions(+), 43 deletions(-)
-
-
-base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
--- 
-2.56.0.257.gf7497c7d27-goog
-
+cheers,
+jamal
