@@ -1,81 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.9
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.137
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792741978;
-	b=vMhwnPxbizSHsiATsPVtCPO6UCy6TcRzGABbDIrBWDlteo8LNZjvXVOW9C5uqDllVhca
-	 hci5M2583NVpK/fP/qQACHfJf+2DB2K9xzO0zfyJxPUxNiJ4xYK0pSvk6Qg/rtYwscMUa
-	 1z26oZiskriAdDo2y/Ufum1VasPH0ODVIlaXJqLu+UVgzeMaE3a5jD+IHleUuJ7P3VNCj
-	 uDBOIT2H8rAvElCy6F4Z2HVKAQY2iI7aekzLfwhTFmRaHJYzVBBrwLt7c4dO02/NBpL3+
-	 cwoLnVO5VhFCGl2UCB1MmTr6d9+huxITTus6LVnBH8fPWwXcsgww+9wM/mDsAFaOuKQ==
+	t=1792741983;
+	b=3z9mzo2bjfM2Qy+lzm6AZ2VenOdfl5TcbPcjfxHEXmfQ2h6CF7kpx+rEna473xosOFeT
+	 qusCGWv3nccijSksGvZUIWoYRieEYpHJqxAPhYHZV3bjAqu7fJsJf/gmyQa2GOZhlQXjz
+	 ThiWPzBar16zR11v1GhT/L771f8DASBp4IggSS+jetjNhCw8aPpKeU6uLe/Or0+/wkfSZ
+	 4TxyRZbrS9blTSx4HwEeCsR757nElFBv6wq6agItPQxWSMl+3xyWCbUFnYZ9+OGjTCLHE
+	 TiiCOMshvuWYuxW08WwmmFOpRpxfWpXCZsefTMsR5jMFQQCxpSARH+10fVJ4kC9icbg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792741978;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792741983;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=m6NACu8GwCde3sJ9HWwodKjqPsu0GwIqcYBIIRb4XxU=;
-	b=02TUdbhaluVH+HCJ1aJ6VFmXr9RHTDLW+Ppk/MQv/BW6xzExi3A3AaEafZ8XjHZlvDIo
-	 UuDavlWNuherGaeu8a0W1pe9eJFImuqmBlrI+An+gMRK7mGXWiW1ehCACRnw/akepwv6k
-	 yVl4qQRYXmP6gYotUcYo3p1PnMLH2/B7sYRhU0d93LrFWB36u3QxPMnELDr9HmaodBqYb
-	 MR7tMw3qxZ7nJ0XFdfJr+WmuBgHc1jTTXqh8J32GpMzmuhQj46fuXoZRiwrihwBZ/aeqZ
-	 qNBTCXI8uHXVzCtnMIyABYvwIPkMTZWrcWpDK2peBoLY9DOC0JxBK4u43guMuiuiKdw==
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=LOqLZKJMT/w+vtW751BtQ1dEmz/kTbksIe//V4Kzc00=;
+	b=ik4ovxAgDZVI1mFlyV+ncCfz9ne3IsffZWKKeLApDKLO7LA4UkmOG4sai2yUizKVKqh6
+	 4ab6dHZ1WKiRudsmAi1wVR6RJGBBfwXB3GS0KumNtu3m1i3xGKKoU/U5BL1KvoNCRij7O
+	 D/mBcOfqUdPAqUIZozrAslkH482qw0xq+qnMPFWWQpeie6NfdKAF4V6nP3IhWBcVh351X
+	 unAyvZlqHc33evVKd4Y7zVaL5UcPa69HPpCaaGp+7NATxgKfL/cUw4vyCDk46xMAeC5bY
+	 Xw/in1ZOmmjey0z7FBy5SEJi728YmPisn/YdnTcY9EQbSHdLfRQD99pm1pABBzmnP2w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=H3ZAV2DL;
-	arc=none smtp.remote-ip=74.125.229.9
-Received: from mail-dy2-f9.google.com (mail-dy2-f9.google.com [74.125.229.9])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=JxE1+eql;
+	arc=none smtp.remote-ip=74.125.229.137
+Received: from mail-dl2-f9.google.com (mail-dl2-f9.google.com [74.125.229.137])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CECAD606A31B
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 07:52:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CECAD606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F295606A320
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 07:53:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8F295606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=H3ZAV2DL
-Received: by mail-dy2-f9.google.com with SMTP id 5a478bee46e88-34cbc588a31so274623eec.1
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 00:52:57 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=JxE1+eql
+Received: by mail-dl2-f9.google.com with SMTP id a92af1059eb24-164f08a9e84so136560c88.1
+        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 00:53:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792741977; x=1793346777; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=m6NACu8GwCde3sJ9HWwodKjqPsu0GwIqcYBIIRb4XxU=;
-        b=H3ZAV2DLQCmcE9jz0z0t+ovC4iz5nkpjv4HoLg+uNtq/jyiLujnwqKWxu8tXFrmQdU
-         oo5kdpzi3HSNG/f05gbf5QnIfNtN90/PnxNDK+12+qBNSJyRcAmu+4b3qT/pEYBJydev
-         wyCh0dsHj+jAxAzf7Phmuhu9EvlfUtIJ+xcAJjQQZxZ0VjULKN5A5Y69EGtqSNphllPx
-         KVEqxtdHI+v+gppHZiD2tyFBlDQNcKzjRmYuObACjixJTdx2JHCozSFh5zT9lHq7KwYB
-         BSHmyIaGDXS4/cWyWpOQ9Ln4jMM3HZYdGj49n9Dpm3tN01ARjlu+mUUppoRToIf4pUm0
-         YZZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792741977; x=1793346777;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1792741982; x=1793346782; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=m6NACu8GwCde3sJ9HWwodKjqPsu0GwIqcYBIIRb4XxU=;
-        b=xIecd0Z0qTWH+gk0PStxD7xF+nJkmFyg4lNHrO1GFvL5EyzSgM2YAGxqtFnvEft1Vq
-         3T0LipW1KmORSxnXUrv7UOcda2loRNhTNlx7rV0iVrxYm6uwPc/QG2tqr13+YIkeXAW/
-         7sIBseVa157ihvWKAE8KBV8dMYAxxudWhiCs9xQQAum22tNdqeyIr6UozRoj4QQOf2+Q
-         Sif5ai9gYeRGoQY++ZUb1VKrDCZtCgFpwL5SuATLBXP8cAiZFgs+EPo5La5zQWvGlY5V
-         oeXzidiO1MWsDuN+mtGCUpzdBSdi56l3G4ViSWYIoVKrP781Eq2FddZw+m8uIu40vOZ9
-         R1UQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxDlVk3bmi+dv8eIjkCPi31KjvvwdVgXi/Rn6D0jvc+WLHjWS+r0cQcj82ER3/gTiz86WsBCmc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIWYoQRsuKilnOV6p/W1AqC4qfeytUe4d6tnB/QxfkjUm7yOwb1
-	mdm94tzb1hf+k26uSdtUEYU8Y5Rnzp0tzRzAXHbkPclwTFwH1sDJqxBD
-X-Gm-Gg: AYBFou3zZoKJPylbLpPv0P+1HMSq+f/PinNynh+GZoqkm9MpaFxlbNiwgwxzQ7OvcZ3
-	6ArJXbXUNvwHjJ4L6mcqTh1uGjjWlJ+WhHQefG49aH4IGeaj6lfUFxrwb05x8l/gJETsEFoi1Vb
-	+1s1MSFFDguctDy0oIDWrOb3pyibmFB3Fzv/wW3+6ozEapTg0gdQyQSRkgHQTzvsHfU7DNYUJi/
-	pNBBSXZKMt9HYKl/kdNIF91m0hxtte4Az9HIBbfGjCnHq+wQ4QosVucUY0JTYWuT5goPkr36hwL
-	WJiZ//KnudkdAc++dUVqFsNASGmy5H7B30j17h6qadz1doPxSpJlSSVsbxzWHxLAuTtquJEoxm1
-	NqK3vRC/IXsyBzJbKPfQd+ZDHkK+osZgzBA3Ezo60V9ydQJaU9jC6zuYFuziUDOzykzr6nTCzfF
-	FImic9XRXQ72o2UuGQ2o/JG8Ve463WGsAt+UrswlvsnwliUqEQzj1hTeNLLp6EhAaA55u/twhX2
-	b7U2o0JIbixWk19V5zsdORRdNadYL4F1sF41QX16rFvZW2Ezc2T6Q==
-X-Received: by 2002:a05:701b:2302:b0:143:2968:564c with SMTP id a92af1059eb24-195c627d93fmr1822085c88.26.1792741976804;
-        Fri, 23 Oct 2026 00:52:56 -0700 (PDT)
+        bh=LOqLZKJMT/w+vtW751BtQ1dEmz/kTbksIe//V4Kzc00=;
+        b=JxE1+eqlvJtU4CQrWSvo7l2FGQCcRo1EVf+I7y3D+30KAgPqweO7FHNoAJueshagAf
+         H8b5fzC7vPQVcNLJJstTuRNv6jtGaCIoz00QV7iLbDDSh5o2Ft8nwhAKv7UlvqS612+k
+         c50r9vZJk3QkQt2mRpSlpKs2+TO4h6oGQjMP4Qn1hCAVW9BEmO7rOnNVsLpYYTH8Vols
+         BtOrTOV7Th762QmXqnkpaL4g5fMeilhLuYJr6yjM6nBVmzdUTfuL/gAwVwmzH27wIy89
+         OBlgDBbGsvrBgrrZ9N9TzHCzDJGEcnAN+ioxuAXpdznilpqqdcxiYM9Awi7n1qjahN0n
+         Fmlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792741982; x=1793346782;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=LOqLZKJMT/w+vtW751BtQ1dEmz/kTbksIe//V4Kzc00=;
+        b=jImP9oGdRow2pbOG/+IIj/QvDfOtnVjbbuzN6WYztCyhe6s3+Vrr5r1XFXwv1+ZJng
+         eBP0LMqO7hjnXL4dguzDtIgQ7z7mKHDdY9oE4YQskE5yxCBqvLajPBzFiM10ZCS6SV5Y
+         Ox8tEF+HTHCyv11d/lSWGvaYgwVkej/jgO/lbVqN5ut+piJXrRLqKmdiDLn5jFLg+kdb
+         +6R5UjIFleFRFNsc0h/e6sBHnuwwQ4jFKJ8yi+gQqHp6z/BZmjX3Gkocw2FbMaGJIS48
+         Y/XJ9UU8mP17vV9+z5yGNI/fwIL77EHaE9cZdqY8DbRlYjhRGlfkc9H+9aoOtxbjFPeQ
+         9s9Q==
+X-Forwarded-Encrypted: i=1; AKwUvBysnGjZeczzcvm1PMH+nnMCimJP8BPxRaBL6QpzCxz7gc0JpboDWcpb/i6sGUth8RB6YMb7yUs=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKcHbmBOdq+uAz4qYoIp0a+477Szl5Vyp650m5HbyMb0SMPfro2
+	QUYtdZ2p6+ed+F9sb/FtIGtXK1DIrtvxJgex8dX8irJV46U3IIRh7t+6
+X-Gm-Gg: AYBFou2iizLxT6nLP+7I8EwDPbvMKcjb+3RUzLtx7PRLDdlIhCFEKYh+W3CzmcyNiDI
+	FkAy4xRFXJYyQzVgmDBEtYmmIDG5eiVl9aADxQMA9zkjbDU8affvoAlk3q/BHUtABXDISrQ267N
+	CFB4AsOGw5jSdV+gW8RgAmndWb1DfKXgNRAhp/Biu17reR9NnnLbicPcD/ogDxHoKYxyROtRTbX
+	0KcldKHojyDWTPbFCrxG+Wxk/UfQhFd9u11OnvjsKOR22ZOH+ipto1r6TAKGoaD3qWbtumS5saw
+	bKJ7hFhhAlO/cXoz/ZwDOzLp1m1wXfJss3BbzjikhIDoJomxWIk2+AVZPuuoQm/88I8D0JDajmy
+	7FMntWxhWnHrLBhpzXBJtTzJPSW6Q09W/RFmTs5hFhgMytL15F7OX6JoGm4d7uZx3Pb5NnGJBZg
+	GfzIfsYBOohGU/egyZCCe7QnUSatmo1Z4WcUL3QNcdA38ORTmzMEZSeHuhCSI5NPeyKK9Vjcu4E
+	UJ9vZIFOpebTHNGOgI1Zv1lm1fmYBTlU995yINwVK6YKJEXSVL31S7opZNKDKso9UVO54b9DcI=
+X-Received: by 2002:a05:701b:2914:b0:187:a2b1:7b3a with SMTP id a92af1059eb24-195c77a82c2mr1718936c88.41.1792741981479;
+        Fri, 23 Oct 2026 00:53:01 -0700 (PDT)
 Received: from server.lan ([168.138.199.194])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-195eae0e830sm4122132c88.10.2026.10.23.00.52.52
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-195eae0e830sm4122132c88.10.2026.10.23.00.52.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2026 00:52:56 -0700 (PDT)
+        Fri, 23 Oct 2026 00:53:01 -0700 (PDT)
 From: Coia Prant <coiaprant@gmail.com>
 To: Andrew Lunn <andrew@lunn.ch>,
 	Heiner Kallweit <hkallweit1@gmail.com>,
@@ -90,10 +91,12 @@ Cc: Eric Dumazet <edumazet@kernel.org>,
 	linux-rockchip@lists.infradead.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2 0/4] net: pcs: xpcs: fix runtime PM and clock lifecycle
-Date: Fri, 23 Oct 2026 15:52:11 +0800
-Message-ID: <20261023075214.1793922-2-coiaprant@gmail.com>
+Subject: [PATCH net v2 1/4] net: pcs: xpcs-plat: fix runtime PM initialization
+Date: Fri, 23 Oct 2026 15:52:12 +0800
+Message-ID: <20261023075214.1793922-3-coiaprant@gmail.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261023075214.1793922-2-coiaprant@gmail.com>
+References: <20261023075214.1793922-2-coiaprant@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,74 +108,69 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series fixes the runtime PM and CSR clock lifecycle in the DW XPCS
-platform driver, a misleading error message in the Rockchip glue driver,
-and the MAINTAINERS coverage for the platform driver and its binding.
+The driver calls pm_runtime_set_active() before runtime PM is enabled and
+before the CSR clock is prepared and enabled. If the device is later
+suspended (e.g. during unbind), the runtime suspend callback tries to
+disable a clock that was never enabled, producing:
 
-The issue was found while using pcs-xpcs-plat.c as a reference for the
-Rockchip XPCS glue driver (pcs-xpcs-rk.c). On Rockchip the CSR clock
-(PCLK_XPCS) is required for register access, which exposed two problems
-in the generic platform driver:
+    clk_csr already disabled
+    clk_csr already unprepared
 
-  - it calls pm_runtime_set_active() before runtime PM is enabled and
-    before the clock is prepared/enabled, so a later suspend tries to
-    disable a clock that was never enabled;
+Set the initial runtime PM status to suspended instead, and register a
+devm action that force-suspends the device on teardown. Without that
+action the CSR clock would stay enabled if the driver is removed while
+runtime-active, since nothing triggers a runtime suspend on unbind.
+pm_runtime_force_suspend() is not checked because the runtime suspend
+callback cannot fail.
 
-  - with CONFIG_PM disabled, the runtime resume path is compiled out
-    and the CSR clock is never enabled at all.
+The clock is enabled on the first runtime resume (e.g. during MDIO
+access).
 
-Patch 1 fixes the initial runtime PM status and registers a devm action
-that force-suspends the device on teardown, so the clock does not leak
-when the driver is removed while runtime-active.
+No upstream platform currently enables this driver with a real CSR clock
+dependency, so the issue is not reachable in mainline today. It was
+found while using this driver as a reference for the Rockchip XPCS glue
+driver.
 
-Patch 2 handles !CONFIG_PM builds by preparing/enabling the CSR clock
-manually and disabling it in the cleanup action. It also switches to
-RUNTIME_PM_OPS() and pm_ptr(), which are no-ops when CONFIG_PM is
-enabled, so that the runtime callbacks stay referenced and .pm is NULL
-in !CONFIG_PM builds. Because the CSR clock is optional and both cases
-are handled in the driver, Kconfig is left untouched and no PM
-dependency is added.
-
-Patch 3 rewords the cleanup action error message in the Rockchip glue
-driver, which was merged into mainline today and currently mentions only
-the EEE clock even though the action also tears down runtime PM.
-
-Patch 4 lists pcs-xpcs-plat.c and its DT binding under the DW XPCS
-entry. pcs-xpcs-plat.c currently only matches the ETHERNET PHY LIBRARY
-entry, and the binding is only matched by the generic DT and networking
-rules, so the entry does not cover the whole driver.
-
-No upstream platform currently enables pcs-xpcs-plat with a real CSR
-clock dependency, so neither runtime issue is reachable in mainline
-today. Because of that, no Fixes: or Cc: stable tags are included, as
-discussed in the v1 thread.
-
-The patches touch code that is already in mainline: the platform driver
-has been there since f6bb3e9d98c2, and the Rockchip glue driver was
-merged today. They are fixes to existing code, not new drivers or new
-features.
-
-Changes in v2:
-  - drop Fixes: and Cc: stable, and state in the commit messages that
-    no upstream platform can trigger the issue;
-  - add a note on Kconfig: the CSR clock is optional, so there is no
-    need to select or depend on PM for all platforms;
-  - add a fix for the Rockchip glue driver error message;
-  - add MAINTAINERS coverage for pcs-xpcs-plat.c and its binding.
-
-Thread v1: https://lore.kernel.org/all/20260704214808.1566710-1-coiaprant@gmail.com/
+Signed-off-by: Coia Prant <coiaprant@gmail.com>
 ---
-Coia Prant (4):
-  net: pcs: xpcs-plat: fix runtime PM initialization
-  net: pcs: xpcs-plat: fix clock lifecycle for !CONFIG_PM builds
-  net: pcs: xpcs-rk: fix cleanup action error message
-  MAINTAINERS: list DW XPCS platform driver and binding under XPCS entry
+ drivers/net/pcs/pcs-xpcs-plat.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
- MAINTAINERS                     |  2 ++
- drivers/net/pcs/pcs-xpcs-plat.c | 62 ++++++++++++++++++++++++++++-----
- drivers/net/pcs/pcs-xpcs-rk.c   |  2 +-
- 3 files changed, 56 insertions(+), 10 deletions(-)
-
+diff --git a/drivers/net/pcs/pcs-xpcs-plat.c b/drivers/net/pcs/pcs-xpcs-plat.c
+index e669a7b248ac..11c4239bfd74 100644
+--- a/drivers/net/pcs/pcs-xpcs-plat.c
++++ b/drivers/net/pcs/pcs-xpcs-plat.c
+@@ -275,6 +275,14 @@ static int xpcs_plat_init_res(struct dw_xpcs_plat *pxpcs)
+ 	return 0;
+ }
+ 
++static void xpcs_plat_exit_clk(void *data)
++{
++	struct dw_xpcs_plat *pxpcs = data;
++	struct device *dev = &pxpcs->pdev->dev;
++
++	pm_runtime_force_suspend(dev);
++}
++
+ static int xpcs_plat_init_clk(struct dw_xpcs_plat *pxpcs)
+ {
+ 	struct device *dev = &pxpcs->pdev->dev;
+@@ -285,10 +293,12 @@ static int xpcs_plat_init_clk(struct dw_xpcs_plat *pxpcs)
+ 		return dev_err_probe(dev, PTR_ERR(pxpcs->cclk),
+ 				     "Failed to get CSR clock\n");
+ 
+-	pm_runtime_set_active(dev);
+-	ret = devm_pm_runtime_enable(dev);
++	pm_runtime_set_suspended(dev);
++	pm_runtime_enable(dev);
++
++	ret = devm_add_action_or_reset(dev, xpcs_plat_exit_clk, pxpcs);
+ 	if (ret) {
+-		dev_err(dev, "Failed to enable runtime-PM\n");
++		dev_err(dev, "Failed to register devm for xpcs_plat_exit_clk: %d\n", ret);
+ 		return ret;
+ 	}
+ 
 -- 
 2.47.3
 
