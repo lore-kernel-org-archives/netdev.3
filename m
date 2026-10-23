@@ -1,64 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.90
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.25
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792742195;
-	b=c/6G7RiLyz+ZugDLQWW93jeS2wnIr7Cb5Q612/3B7UhcTRX2ZH7REi44tBIaDM9d2pkj
-	 0cP0uCcKW4xdRjLGVbfauERuN1w1lhdo3YXvkQ9tI0NQGNa6yPTc66+dpwB4dsQLFzuLJ
-	 NLlID5Wrc7dHAbZxvKx+GmfkkXIUdkJWVz+Xnf4Vk5iVw/yRRtLcg/HaYdxbQeKc1+T8E
-	 6K0CVkeN1MBB/61fr46p/tqgYlyn2IPzjeADXlw7RUfOk7uwpgRXNZx3ZxIl5AjN9ftKo
-	 mKDhWsJOLNTNOTVN35EYUM1lmgaaPvckXcuLQt8whcweFpHSYqvuzno3YTsmqc0Uspg==
+	t=1792742415;
+	b=cLXtffup9sUSy2ZJniZ8jBk2xJjDPOhiyRWDYnFYZEFEX6nMwy6k9Xcs4tRSOt2MkF5O
+	 jeif26/aonBl8E/CpwKJYZj1abOLIrAPenjpgy3X/5odsuaURTf1WhAY8wLzHbb79hqU1
+	 Ute/mBLbQIE/4d9EQ4SSJ4Q6/aSv+7gZtYv1eztRxhb8IgQH03Zw1Db7U810297obj4A9
+	 L7a2/cTK4QZoW/GHRMESEJLIfNAH9CiPkqLknxZUh0IgGFABZXvqlZtKF3SycdgwmqKgg
+	 hBVcd5ZntCkaCbr6t+dW+OwyeIqp91/AShzZVEd5vt3SDjcmJZjcgyC4U5Dl0ZiSNIQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792742195;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792742415;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=a1fLNTNQuElQrkhiWKcrIu52BrjXQYMDASDkpVEAwms=;
-	b=Qf35Q29Ms0bNTWxJPaFxUBgwnRpfQNuweEqjqnlji2fFebqIEQ/BYm0AM3Fq9pzJiUw/
-	 Iz9zRJUGCKQFuygn4ndVC1lYn61B0SCj3WXouOgzGYXQdZnb+h6N/1IvE++/2mU1Criao
-	 LXbasy4Y3tnPVnkpcd55P2oQ4yOeB9u9ebP9Ec8nEj1RuocyQZs8kGvKp9nl4gOwONlRE
-	 B6/a0ZMc+C7EPndmtSKneEwVqyY6YBvvETCoYb+IHxn6atJti+NSIp473MmOVA9KInh+k
-	 7upnUsaY9H0BYHj7n+EjCt82Y/OOL94lBrBpsjrO+gm2rmUw/j1xwew1Gg1Z+5O8OOg==
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=ItkFITQqVemDflnB6F4EjAtu7VU2GDqfU5CqgHSl5ag=;
+	b=hpA71FkMtQBZLnjzV4NYszzc20YHpivZOBpvZwOm1UDnMbvo+94GjtzxYrDlb6J1VR6y
+	 OW685YjRIYyHHjg0qIqWgxU04b8PvqpL+fq1g9JiOfqAiy2Z/DasP0oI4dmFCCD9PEMNK
+	 QHClbFTj1FS5/dfll2cJGr7jzLGHDAW5H0o/Nc25DZWN1VLRb3XYGWSI1C9cEQJ3D6X3N
+	 v/RWIil9skFc6oZBM4uos/GV1V4QxhKG6UFwB+pDLkFEO3w5IHilrkSWTGF20ehHICq0V
+	 0e3HzNo1VhtFLVrBXJgA1W2wBJ5IEZJpcUe6Xz8H7RbJF4pujsr4WfxZEX75fB59KYA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=wW2D8xx+;
-	arc=none smtp.remote-ip=95.215.58.90
-Received: from mta1.migadu.com (out-90.mta1.migadu.com [95.215.58.90])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=dTXPoxop;
+	arc=none smtp.remote-ip=91.218.175.25
+Received: from mta0.migadu.com (out-25.mta0.migadu.com [91.218.175.25])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D3A606A31A
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 07:56:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 07D3A606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7ECF606A31F
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 08:00:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B7ECF606A31F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=wW2D8xx+
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=dTXPoxop
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=AxDTtbQpe1Pw1Gld4FexP/rem2OpjOhFrzr3t8rvVIc=;
+DKIM-Signature: a=rsa-sha256; bh=nRUZmgSDvGljOjKJtqokZxEuSspYSr0j3ajei4dg+dU=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792742191; v=1; x=1793346991;
- b=wW2D8xx+DdbRIC4AHcSsoWygNrMVamSR+kr6fATyTg+RyS24w+tgSGJSJea4RaHGc1sJGUTR
- uzy2bS5hJ0SH08Tstg8AwLygSAn1nXcr4+uSM40DDuBP9W6GwrgQjgb2jM1Wt50KldLURcH1v9y
- xNof3we7jE5136Rq/sttJ0m0=
+ t=1792742412; v=1; x=1793347212;
+ b=dTXPoxopHflo3Rltzuy0ZvhB2RyZkBABrOZEfOmM5+b6FWkYHe0LdBEcIDyxDhasc9kPGD0H
+ N3Manxde9PL7Rt6Ym78cO3aDOQ0vCLbycN82vG186e7aW+BbkQcg9TiDeTmOrb1PgPP91TR5BAW
+ 752tv1Z+cbU/Ed/6gAdxImxw=
 X-Envelope-To: netdev@vger.kernel.org
-Received: by mta11.migadu.com with ESMTPS id 4835e8e05efbd0ae;
-	Fri, 23 Oct 2026 07:56:30 +0000
-X-Mizu-Trace-ID: 4835e8e05efbd0ae
+Received: by smtp.migadu.com with ESMTPS id 95aa2cc1081f3afa;
+	Fri, 23 Oct 2026 08:00:10 +0000
+X-Mizu-Trace-ID: 95aa2cc1081f3afa
 X-Migadu-Flow: FLOW_OUT
-Date: Fri, 23 Oct 2026 15:56:18 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Xia Yan <yanxia@cmss.chinamobile.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
-	horms@kernel.org, john.fastabend@gmail.com, kuba@kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	pabeni@redhat.com, stable@vger.kernel.org, yana06070@163.com
-Subject: Re: [PATCH net] macvlan: fix passthru promiscuity accounting while
- down
-Message-ID: <atsTIt31dw6DPENI@fedora>
-References: <20261022090809.12019-1-yanxia@cmss.chinamobile.com>
- <atrKdb1atGzCYka4@fedora>
- <20261023061630.350083-1-yanxia@cmss.chinamobile.com>
+From: Qingfang Deng <qingfang.deng@linux.dev>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Qingfang Deng <qingfang.deng@linux.dev>,
+	Simon Horman <horms@kernel.org>,
+	Eric Woudstra <ericwouds@gmail.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	Asim Viladi Oglu Manizada <manizada@pm.me>,
+	Guillaume Nault <gnault@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] pppoe: drop discovery frames with no MAC header
+Date: Fri, 23 Oct 2026 16:00:00 +0800
+Message-ID: <20261023080002.221332-1-qingfang.deng@linux.dev>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,27 +73,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261023061630.350083-1-yanxia@cmss.chinamobile.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 23, 2026 at 02:16:30PM +0800, Xia Yan wrote:
-> Hi Hangbin,
-> 
-> > If we discard the MACVLAN_FLAG_NOPROMISC change, should we remove the bit
-> > before calling WRITE_ONCE(vlan->flags, flags)?
-> 
-> WRITE_ONCE() still saves the new flags. The patch only skips the
-> lower device's promiscuity count update while the macvlan is down.
-> 
-> If NOPROMISC is cleared while down, macvlan_open() takes the
-> reference on the next open and macvlan_stop() releases it. If it is
-> set while down, the next open leaves the lower device's count alone.
-> 
-> I'd keep saving the requested flags. Clearing the bit would lose
-> the user's setting. Rejecting the update would require bringing the
-> interface up before changing this option.
+Commit 8540827ebac6 ("pppoe: fix reception of frames with no mac
+header") drops PPPoE session frames with no MAC header to avoid reading
+uninitialized memory.
 
-Ah, I see. Thanks.
+Apply the same to PPPoE discovery frames, as both functions read
+eth_hdr(skb)->h_source.
 
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+Found by LLM static analysis, and reproduced using the same TUN
+injection as described in the mentioned commit.
+
+Fixes: 8540827ebac6 ("pppoe: fix reception of frames with no mac header")
+Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
+---
+ drivers/net/ppp/pppoe.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
+index ee0e318d6a2a..bdaa8cf8404b 100644
+--- a/drivers/net/ppp/pppoe.c
++++ b/drivers/net/ppp/pppoe.c
+@@ -460,6 +460,9 @@ static int pppoe_disc_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	if (skb->pkt_type != PACKET_HOST)
+ 		goto abort;
+ 
++	if (skb_mac_header_len(skb) < ETH_HLEN)
++		goto abort;
++
+ 	if (!pskb_may_pull(skb, sizeof(struct pppoe_hdr)))
+ 		goto abort;
+ 
+-- 
+2.43.0
+
