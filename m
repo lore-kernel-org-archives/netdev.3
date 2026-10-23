@@ -1,60 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=79.135.106.121
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.135
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792725295;
-	b=WcAD9LYspKtglqF8L7lDPRYS8Ur8SbeJ2Yz1uE3UnnhxCsiBA44kJtVCll3jBQ9AayWM
-	 tJq1SJ7eOPp1dZJUL0qgS+DrieJK4XbsXmOu2uHAgm0TbYUWcfCfQawehN9hxTUEiHJeJ
-	 8lMa/m8nBlDlR3lkHBVwfh/IGTv2HAAkZxv2bdulMzDuSyg/zCz5Npk21KZ37t4yYq3sB
-	 8iY3ClobGx/Ktrp3MiiRWRGUF3ruMxEh9YxpIGo7IoYYgU9gx7cGj6MnvfCesbgK7viev
-	 DMUhOFC5k3Rkr29bwRZi8LYfrOIlovqz7Vz6Mp3uoq7HbC2KGdmK1OdCqc8o/5+E6eA==
+	t=1792725333;
+	b=rd2ZFr9fKrUaItDxd98iqv7nkQa213612sdpkYh0EZd1q2QCHoj5RAi1TSQrCzlUulu9
+	 JXshtj9AZCLanfIEF5mdk/VtWdrxmJfbdMhAmwo/bTbqAP4D3SBzGoPNl+uGJZSIlZOZx
+	 awYxejnL+xypQP+xDoFX4z6XwavZX/RIbIbJ8qjr35zQzAV8p3bO+Ob64AJd8rXmhU9kt
+	 gXbe1s6RUz+i7sq/8Kt8Z6SnPzXR3NXyehUKcw3gb0B5TGUGCGen+Du9TFXPSeg0bV27u
+	 AJWxD94YQfzgOraSSThPF/FU84sknkjI2Qv4vH4Lnh6P3jjqnWTJr3pMAT1Fwk+D9Wg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792725295;
-	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
-	 In-Reply-To:References:Feedback-ID:X-Pm-Message-ID:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=XNd/EB0+bcXxQkOLarXx2C6rgzOFzl0BFOVq3KSj2Tc=;
-	b=rghBTadUGC66k0Lhrd0Yz5QWTlvl2s1yNr3FaitDHt0U6tM5VWT34ZkN4mRx2ZlH0Xmo
-	 zPl+iol5fyqAvoj1uW/zmySz8X77kUCl4rI+y7kAtAt4srOZYoz5K7rEB6bddnVINky9W
-	 D58yfW7bDBDnCdT9IkOksEvmMEAfqq5SWEWdJq8UELp8SFMrL87D0X8PPDHKCWv/Wd1yd
-	 2eCiYtvPdFCMTZHPC8eY18MaX1ktGKT3kBK05AFC9BATfRCHI33DLbqBfxVh1PRWPpqo1
-	 wvKa19aAnH6IcleDdO+l/Yz0osMozHNbrDuVWG95XI0XQt6BLTj0OkVExgSwGE0SL9g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792725333;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=zVAKIg7XqiPBVNuocH1Hoh+zfouG9OOWB6QRApYQMW8=;
+	b=A/J8qiGaL0CR+SihXpD7cLSluIGi5ZuxqKYeNMUU/l8DdQ48sk1fsRAXies5+S83agdL
+	 fK3SkrBpocAcekQJF+Koa1ftfeZ44LiVtDYFJQI232vSHzvTXlYr9BZ+rLMcKECUOucbT
+	 Hs1ruLUxGAb2qKvtRcYVg5TwF1fTt886aq7wee/YMZnjH372BVP4+fN/bFIEVnYnTG8WV
+	 mA2UpLM8Azrb+lATVzp4deDv9TmRJlOBzrXRiMnKhDJ+S9/BxWpQs1ArSySyI9oF/ix5I
+	 HAs585MTjq/RMx3xao85z47lTGm3BYL1OQOqSTQIm+TYCpD5rnlyfmmmEmNOfu1KdRA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=proton.me;
-	spf=pass smtp.mailfrom=proton.me;
-	dkim=pass header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=protonmail2 header.b=ZyVSfEYL;
-	arc=none smtp.remote-ip=79.135.106.121
-Received: from mail-106121.protonmail.ch (mail-106121.protonmail.ch [79.135.106.121])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b="uSSb/ZMG";
+	arc=none smtp.remote-ip=91.218.175.135
+Received: from mta0.migadu.com (out-135.mta0.migadu.com [91.218.175.135])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F215606A31B
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 03:14:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8F215606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DED6606A31B
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 03:15:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7DED6606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=protonmail2 header.b=ZyVSfEYL
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail2; t=1792725289; x=1792984489;
-	bh=XNd/EB0+bcXxQkOLarXx2C6rgzOFzl0BFOVq3KSj2Tc=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=ZyVSfEYLr8japIouBJacce8oVcRIlERWX7OpLw9YHCcwsMCB7KLIhDhQDVTcp+USK
-	 FX+WYxJQgUZ1wNqcp717bgCtWiJ5aSqKCOMy3TvE6oxrj/N8AzkahjxERTkoaA5/zK
-	 8pGpycD1eHPVdVvbNXx1S5yG5i4Hkxq5Pi00Gd9Yvhica+x7ln7Ds398fztNyX18ag
-	 2PcHXc75ZDpYH5oMb3Ke6jRJ9nLpg8R5bxBeZVlyim2d+C6HUvwXOoWcQKd1r0JpYT
-	 Oa0CndRYPQHfmCfMnMR8nbrdkSoXjZ14ri7K4uwqKN0zVi4XpTTIA4RaEDVjD3J979
-	 yyaoEj7UBiyfQ==
-Date: Fri, 23 Oct 2026 03:14:44 +0000
-To: Hidayath Khan <hidayath@linux.ibm.com>
-From: Bryam Vargas <hexlabsecurity@proton.me>
-Cc: Alexandra Winter <wintera@linux.ibm.com>, Thorsten Winkler <twinkler@linux.ibm.com>, "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Nagamani PV <nagamani@linux.ibm.com>, linux-s390@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net/iucv: serialize HiperSockets receive with the socket lock
-Message-ID: <20261023031436.1264781-1-hexlabsecurity@proton.me>
-In-Reply-To: <51a4a40a-f34b-4d41-b049-69aa53f4dcf5@linux.ibm.com>
-References: <20261011-b4-disp-410518f4-v1-1-753bf3258292@proton.me> <82691101-92d7-4838-b16e-2e41a83f65d0@linux.ibm.com> <b3fea2ca-25ff-42c0-812c-f8cc6bb6667e@linux.ibm.com> <51a4a40a-f34b-4d41-b049-69aa53f4dcf5@linux.ibm.com>
-Feedback-ID: 199661219:user:proton
-X-Pm-Message-ID: fc963aa64f7db3302ca9fbdd110acce70a7f0174
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=uSSb/ZMG
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=/Zq1baKOLuThcBsVDU3+UzpzigXWioU0C5AmZNp+Tio=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792725330; v=1; x=1793330130;
+ b=uSSb/ZMGsbNrgeAUaaRKb5W9WcaCySULnJRVa87p12wsAqBHGvEeSbxkwabxqxTvkf4Z1918
+ O4YwYGeoQUsMBlsGeWlpgfjCYOBmedfzQkOgaa2o2OVLNBLFd7nQoDf8f0jEgpbYkN3Cckfhev6
+ gPUzbx2ivbFijSEWdRsYyuRQ=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta11.migadu.com with ESMTPS id 2050942c7c50d671;
+	Fri, 23 Oct 2026 03:15:26 +0000
+X-Mizu-Trace-ID: 2050942c7c50d671
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 23 Oct 2026 11:15:15 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Xia Yan <yana06070@163.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@kernel.org, horms@kernel.org, kuba@kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	pabeni@redhat.com, shuah@kernel.org
+Subject: Re: [PATCH net v3 2/2] selftests: net: check veth carrier after
+ changing channel counts
+Message-ID: <atrRQzn2prYbF1vF@fedora>
+References: <20261022085842.2527-1-yana06070@163.com>
+ <20261022085842.2527-2-yana06070@163.com>
+ <atq8yKbnqtLBVucH@fedora>
+ <20261023023350.7225-1-yana06070@163.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,133 +69,28 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261023023350.7225-1-yana06070@163.com>
 
-Hi Hidayath,
+On Fri, Oct 23, 2026 at 10:33:50AM +0800, Xia Yan wrote:
+> Hi Hangbin,
+> 
+> Thanks for reproducing the issue and reviewing the driver fix.
+> 
+> > Why do you do gro setting in rx/tx set ups?
+> 
+> I included GRO off/on to cover both queue reconfiguration paths.
+> No XDP program is attached in these cases. With GRO on,
+> veth_enable_range_safe() and veth_disable_range_safe() set up or tear
+> down per-RX-queue NAPI instances as the RX queue count changes. With
+> GRO off, those helpers do not need to reconfigure NAPI.
+> 
+> The carrier bug reproduces in both configurations, so the test checks
+> the same carrier state with and without the NAPI resource changes.
 
-Thanks for the three rounds, the KCSAN baseline in particular: 29
-af_iucv pairs on net-next, in four kinds; with the patch none of those
-four is left, and the two races it did report are answered below as
-race 1 and race 2. That is the measurement I could not make here.
-Answers to the 14, 18 and 19 Oct mails in one go; the code is in two
-fixes for net [1][2] and in the v2 of the series [3].
+I mean this doesn't seem related to the carrier on/off (LOWER_UP) issue.
+Or did I miss something?
 
-Blocked reader / rxclose: agreed it is not a corner case. The emulated
-setup here reproduces the asymmetry, and I tried both forms: setting
-RCV_SHUTDOWN at the FIN gives the blocked reader EOF and poll()
-EPOLLRDHUP, like TCP, but leaves the z/VM path (a sever while a reader
-sleeps) at -ENOTCONN; EOF in the wait loop on IUCV_DISCONN with nothing
-queued covers the sever but not RDHUP. v2 does both: the wait loop
-returns EOF (1/2 of the series), the FIN sets RCV_SHUTDOWN (2/2).
-Measured here: the blocked reader gets EOF and poll() reports EPOLLRDHUP
-with the series; net-next and v1 give -ENOTCONN and no RDHUP; 1/2 alone
-gives EOF without RDHUP. The z/VM sever wakes the sleeping reader with
-EOF through 1/2's loop, -ENOTCONN without it.
-
-SO_MSGLIMIT in IUCV_BOUND: yes, that is a loss the patch introduces, and
-it was the first item of the AI review I still owed an answer to. I
-reproduce it as you describe (window advertised as 8, lowered to 2 while
-a task owns the socket, the peer sends 8: 3 arrive, 5 are dropped with
-SOCKET_BACKLOG). The budget must follow the window we advertised. One
-nit on the field: msglimit_peer is the window the peer granted us
-(iucv_below_msglim() uses it for our sends); what we granted the peer is
-our msglimit when the SYN went out, and nothing recorded it. v2 records
-it (msglimit_adv) when the SYN goes out, and on the listener's child
-when the SYN|ACK goes out, and sizes the data budget from it; the
-msg_recv check in recvmsg() and the window-update threshold read the
-same field. In my runs all 8 messages arrive with v2 in the three forms
-of the test (the window lowered before the SYN|ACK, with the reader
-holding the socket, and with the minimum SO_RCVBUF); v1 delivers 3 of 8
-in two of them, and net-next delivers 8 but closes the socket with
--EFAULT in the third, from the recvmsg() check on the lowered window
-while backlog_skb_q holds frames. Refusing SO_MSGLIMIT once the SYN is
-out would be the simpler rule, but it changes an API that works today
-for z/VM IUCV and before the SYN; I left it alone.
-
-KCSAN race 1 (sk_shutdown): that is the window I described as still
-there with the patch, and you are right that it is ordering, not the
-access width. The frame comes through the bypass under sk_lock.slock
-while the task owns the socket; the task sets RCV_SHUTDOWN and purges
-without that spinlock, so the callback can queue after the purge. v2
-takes sk_lock.slock in iucv_sock_shutdown() around the set and the
-purge on HiperSockets (spin_lock_bh(): shutdown() runs with BH on, and
-the softirq takes the same lock; a plain bh_lock_sock() there gives a
-lockdep "inconsistent lock state" splat, which the run here caught).
-With a probe that widens the gap (udelay(50) after lock_sock() and
-after the callback's test) 17 to 21 of 200 reads see data after
-shutdown(SHUT_RD) without the spinlock, over three seeds, and 0 with
-it. Without the probe neither kernel shows it; KCSAN on the hardware is
-the test that counts, and a run of yours on v2 would settle it.
-
-KCSAN race 2 (hs_dev): agreed on all three points. It is in net as [1]
-with your Suggested-by; say if you would rather carry it yourself and I
-will drop it. afiucv_netdev_event()'s read is Nagamani's, in the patch
-he is holding for this series.
-
-Budgets (your 14 Oct note) and release_cb(): v2 has one now. A control
-frame that arrives while a task owns the socket (SYN|ACK, SYN|FIN, FIN)
-is recorded in the socket and applied by the owner from release_cb(),
-not queued: the review of v1 found that the backlog drops a pfmemalloc
-skb, which qeth hands us under memory pressure, and nothing resends a
-FIN. The backlog keeps data frames while the reply to our SYN is
-pending, and behind frames already waiting, and a listener's SYNs. So
-the control budget is gone with the frames it counted, and a stray can
-no longer cost a FIN its place, with a repeated SYN from a conforming
-peer or with junk. In both reproductions v2 applies the FIN on release
-where v1 lost it; the junk is freed in afiucv_hs_rcv(), nothing waits in
-the backlog while the FIN is recorded, and poll() on the held socket
-reports nothing until the task releases it. backlog_skb_q is still
-unbounded for a peer that ignores its window, there as on net-next; a
-bit set in softirq that release_cb() turns into sk_err =3D ECONNRESET and
-IUCV_DISCONN is the right approach for that, and yes, send it on top of
-v2.
-
-Pure WIN: moot in v2, I think. The FIN is not queued any more, so no
-WIN waits behind one; a WIN waits while the reply to our SYN is pending,
-when we have sent nothing it could credit, or behind frames already
-waiting, for as long as release_sock() takes to run them. (A WIN with
-credit travels on data frames -- afiucv_hs_send() sets the flag on them
--- so "pure" would have needed the length test as well.) If you have a
-case where a WIN still waits, send it and I will measure it.
-
-The child socket leaked on afiucv_hs_callback_syn()'s refusal paths
-(which the list's AI review flagged as pre-existing on v1): that is the
-error-path leak you flagged in August [4], and I have left it to your
-patch; v2 does not touch those paths beyond the code motion. My run of
-it gives the same result on every kernel: 1056 refused SYNs leave 1056
-sockets behind (sockstat, and the probe counts 1091 allocated against
-35 freed), while the control that accepts its 8 connections frees all
-17 sockets it allocated.
-
-SHT accounting: the empty frame is no longer counted, in net as [2];
-the same patch drops the WARN_ON on the overrun path, which a peer can
-reach from the network.
-
-spin: agreed, prepare_to_wait() once outside the loop is a different
-bug; please send the one-liner.
-
-Part of the gap between your numbers and mine was on my side: your
-table against the code showed me gaps in TCG's s390x CPU emulation, and
-the QEMU here now carries my patches for those besides the HiperSockets
-adapter, too specific to this setup to go upstream as they are. Where
-the two setups disagree, your hardware is the reference. That is where
-v2's delay went.
-
-Four things that would help me match your numbers: the reproducer or
-its scenario list, the .config and preemption model, /proc/interrupts
-during a run, and the guest's steal (your spin figure looks like ~30%
-steal from here).
-
-[1] https://lore.kernel.org/netdev/20261022-b4-disp-b35a9153-v1-1-d74645876=
-195@proton.me/
-[2] https://lore.kernel.org/netdev/20261022-b4-disp-b35a9153-v1-2-d74645876=
-195@proton.me/
-[3] https://lore.kernel.org/netdev/20261022-b4-disp-1d26b87a-v2-0-7ee1264d8=
-12a@proton.me/
-[4] https://lore.kernel.org/netdev/5f88daf4-cd8e-4464-b132-ac45be205121@lin=
-ux.ibm.com/
-
-Thanks,
-Bryam
-
+Thanks
+Hangbin
