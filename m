@@ -1,53 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792748996;
-	b=yIxpSvCYdXKCUdOix+y4fKthNgrk8Pqdaq4b46aXiBsMr7N3KzE+a2776ucha/BQn6L3
-	 nitF6EYeKHbi9iROu4nQR5f6DGAh0kch0PFOUbvCsDq4BP9xdbpJUOlgotZquz2G7W1Ig
-	 9dpFjJUZeHdux/hAL1LBjpVDT1h/pEyk0hMZVWS2HiInLfurRIHyqoGOu6i797NhTcFHr
-	 a2U4CuAZ/3zWo7mG/1xjiks7MtM3Af1zff7gLfIrTiax3067lq1j8sscXO+/9qUjDY08H
-	 fShuuAhgP/yvZrlrf5czop/Lgw6fIFveSb9bkT6ZJvNLL6aTkGX+C7Cw0i/8z32GNvw==
+	t=1792749158;
+	b=r//rHmoZSl3BvujbNiu1dVI8I8a8Wug5Zq+wf8ChA2+SlkF0HXdwgXaq9bAtylgdS0U6
+	 RZb+Cb/avO6AWRoou136tv6CILT4l9nOVIh+DrZhslqcdKa+e2FBZT6YSMn8enAkifmdr
+	 jO1w7RnYSSUL1vyymHKtwD+gdPOoZgB77y6bvhod2z8eKec+c2pJeqz2IqKOL5fv/4HMR
+	 OZvHSkWUUd1CAIJGhBWwo76HOhcRM0KoTv61Y+Gl84aGJkiRwnD9Tk443Wg4BrriVVK1F
+	 /jeq6j5SBGz7JgfKK7YXMWtAiqQPMPFbZzcCG5KIJ/e1oZA7fkSuLCnePIsfzjRwu7w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792748996;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=MZSppzeOjSzp/2G1hrnHubj44+dbtoGWV37pcWW8TSU=;
-	b=hmRIwNFFsH+Xo7PMSCdwHZuPbsu0Oq0FgcyiymPypqVSG0akQTWxu/zdNMQy233CKWOH
-	 xp1jnkHMlypwLGSXJRj3I8F7fHA/l+gi+6u6v8IT/ThEAdm6kFTDakybZ812D6fF30XxN
-	 DbDC9yTQJDpOzX3f0LcI3UOftf2BJQNHpemJT2f6otEqlJFqL7sTsLd7NHcF8RTyLjlJc
-	 g6sN4EI8G+Rfif1UYj8rIKI5vqGnbjkTCdDWgDNI9zt4/6HthubvVm1lmRHJmdswggglh
-	 i3LcEuPzgAMDR0AWIiOmY2gikgx8tekgsNEshJ/enq79KSD6v/R0aDHLo3862cA6k8g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792749158;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=D3V+tXOROo9RA3BPDgn1rGU3p2FTl3fivWSdHqJYvOM=;
+	b=5XcRg5p2k7Wx/wv5M7AAF118KNYJbTV5Bg1W56h8zqZ3Ju/jUIgSzcRDTIvj2GszFJFR
+	 cQ1BhTxZgeuxRMdrvCp6HZHufsjPNYkAS8s8RLV+jSID5qhK/ZALUki0w9xqpOC5/Qd4O
+	 tdyKJ0mkhd7IhJCaZmsIk30EZjMOnF0xm7eKx2LIF6Hsn2YM9cha/WKq3iUZ63layWMm7
+	 BMikTUsBXkmvfRSkFMf94SVF1We8n8/Qnd00jvhCC7F0RimRp64TsJl/WX1Xp0efmEeUr
+	 sZ2toNLZBlk+tbLxkTxHC/KALZ7LrwC3Le8139R06Dc/pHH0Z0yDhB5g2l+ghr/zTvw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TSGBUPOP;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=hszpysWe;
+	arc=none smtp.remote-ip=95.215.58.41
+Received: from mta1.migadu.com (out-41.mta1.migadu.com [95.215.58.41])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF20606A31A
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 09:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13753606A31A
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 09:52:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 13753606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TSGBUPOP
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D90491F01825;
-	Fri, 23 Oct 2026 09:49:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792748996;
-	bh=MZSppzeOjSzp/2G1hrnHubj44+dbtoGWV37pcWW8TSU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=TSGBUPOP5z9ltW8KQDBXPe+YNugNY15rAfSozG/P7MIFDkBrz/c7Ddxj7OF2Ggl69
-	 higO7q7eYnrKs3GXhRuTnNDwFLsBw9zb3Iyym4DvybCM/hx+sHVYqhwOkllrqDrbB8
-	 yXAxTi4E9cH3saBDE61a7rinGxUHx+NMjVOn5byWNLm4CQCz/3PdZhezBEA2KRCFiz
-	 D/tHPEgA4n3VuLiq3TpCEQDAJ3lNdEa52t9Q65mWtkiTEVPFRWdpkP6dZlWKK17z8M
-	 9nc75ij5n89Q2ObJN4oWNwPp+0DkFZY9EIzBYbFl1XsUcQxq+DDFkKYPb24bm2D8lY
-	 GCZgW2JEDf2AQ==
-Date: Fri, 23 Oct 2026 11:49:53 +0200
-From: Antoine Tenart <atenart@kernel.org>
-To: Dudu Lu <phx0fer@gmail.com>
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, 
-	pabeni@redhat.com, netdev@vger.kernel.org
-Subject: Re: [PATCH net] net: xps: re-validate the queue index after
- switching to the subordinate device
-Message-ID: <atsptRW6mM-JBxhE@kwain>
-References: <20261021155555.68167-1-phx0fer@gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=hszpysWe
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=WLfyEPO9u7yNFzh9quOo1RAysJhG8X4qXmtIqyQ9aBk=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792749155; v=1; x=1793353955;
+ b=hszpysWex70ZvYgueA6bd3xCOOE6scXFCs2v79YWYE8cT9ecQHxnhNQgg+vPeZ0eLjxRUfjk
+ 1rBJ4n/DqGKo1pyOz8yam+gI8zfPjXsPXkleU4wc8kTEQ3Bys3PYLbSZzeVpqgr/SEW8FGfoWNi
+ 6xYUu0NWvPCEjCCG6gP08qFk=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 57aa98510cb311f2;
+	Fri, 23 Oct 2026 09:52:34 +0000
+X-Mizu-Trace-ID: 57aa98510cb311f2
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <cbf14506-d689-469e-8aed-509ad5fce16a@linux.dev>
+Date: Fri, 23 Oct 2026 17:52:30 +0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -57,32 +58,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261021155555.68167-1-phx0fer@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: reject flow_limit_table_len values below 2
+To: Dudu Lu <phx0fer@gmail.com>, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com
+Cc: netdev@vger.kernel.org
+References: <20261021155505.67208-1-phx0fer@gmail.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <20261021155505.67208-1-phx0fer@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 21, 2026 at 11:55:55PM +0800, Dudu Lu wrote:
-> __netif_set_xps_queue() reassigns dev to the subordinate device
-> (netdev_get_tx_queue(dev, index)->sb_dev) but keeps using index, which
-> was only validated against the ORIGINAL device's queue count.  A
-> subordinate with fewer TX queues than the parent's index then overflows
-> sb_dev->_tx[] / the XPS map:
-> 
->   BUG: KASAN: slab-out-of-bounds in __netif_set_xps_queue+0x178c/0x1ee8
->   Write of size 4 at addr ffff000005d3fae0 by task A-26-F1-S2/162
->    __netif_set_xps_queue+0x178c/0x1ee8
->    netif_set_xps_queue+0x38/0x58
->    xps_cpus_store+0x1dc/0x2b8
-> 
-> The store is netdev_queue_numa_node_write() on sub->_tx[index].  The
-> top-of-function WARN_ON_ONCE(index >= dev->num_tx_queues) only checks the
-> parent and is a debug assertion.  Re-check index against the device that
-> is actually indexed once dev has been rebound.
-> 
-> Note this is a different defect from the "reject an out of range traffic
-> class" guard (4da3b7b8b50f), which bounds tc, not index.
-> 
-> Fixes: ffcfe25bb50f ("net: Add support for subordinate device traffic classes")
+
+On 10/21/26 11:55 PM, Dudu Lu wrote:
+> flow_limit_table_len_sysctl() rejects non-powers-of-two but accepts 1,
+> which is 2^0.  A length of 1 then gives log_buckets = ilog2(1) = 0, and
+> skb_flow_limit() computes hash_32(hash, 0):
+>
+>    include/linux/hash.h:68
+> 	return __hash_32(val) >> (32 - bits);   /* bits == 0 -> shift by 32 */
+>
+> A shift by 32 is undefined and, on arm64/x86, the "hash" becomes the full
+> 32-bit product val * GOLDEN_RATIO_32 -- an unbounded index into a
+> buckets[] flex array that is one byte long inside a 289-byte allocation:
+>
+>    UBSAN: shift-out-of-bounds in ./include/linux/hash.h:68:24
+>    shift exponent 32 is too large for 32-bit type 'unsigned int'
+>     __ubsan_handle_shift_out_of_bounds+0x11c/0x208
+>     enqueue_to_backlog+0xbe4/0xc44
+>     netif_rx_internal+0x130/0x4d4
+>
+> The subsequent read-modify-write at dev.c:5443-5446 is an out-of-bounds
+> write into the allocation (also observed as use-after-free).  Require at
+> least two buckets so log_buckets is never 0.
+>
+> Fixes: 99bbc7074190 ("rps: selective flow shedding during softnet overflow")
 > Assisted-by: LLM
 > Signed-off-by: Dudu Lu <phx0fer@gmail.com>
 > ---
@@ -94,63 +104,69 @@ On Wed, Oct 21, 2026 at 11:55:55PM +0800, Dudu Lu wrote:
 > Checked against linux-next next-20261021 (commit 9a482184d910): the
 > affected code is unchanged there as well, so the bug is still present in
 > linux-next too.
-> 
+>
 > Reproducer status
 > -----------------
-> A reproducer was written and executed on an arm64 QEMU guest (KASAN); it
-> fires at the claimed sink, and still fires on a kernel built with 4da3b7b8b50f
-> applied (identity established by disassembling both kernels: same store, same
-> target offset #0x160).  The guest has no SR-IOV NIC, so the reproducer stands
-> in for that hardware with a small module that binds an sb_dev the same way
-> netdev_bind_sb_channel_queue() does for i40e/ixgbe.  The reproducer source is
-> not posted here per Documentation/process/security-bugs.rst; it is available on
-> request.
-> 
+> A reproducer was written and executed on an arm64 QEMU guest (KASAN + UBSAN);
+> UBSAN fired at the claimed sink.  The reproducer source is not posted here per
+> Documentation/process/security-bugs.rst; it is available on request.
+>
 > Triggering conditions
 > ---------------------
-> CAP_NET_ADMIN to set the XPS mask.  An sb_dev is bound in-tree by
-> netdev_bind_sb_channel_queue(), which the i40e and ixgbe SR-IOV paths call
-> when a VF's channel is bound to the PF.  The QEMU guest used for the
-> reproducer has no SR-IOV NIC, so the sb_dev binding was set up through a
-> small module; the defect itself is reached in-tree on that hardware.
-> 
+> root (flow_limit_table_len and netdev_max_backlog live only in the init-net
+> net_core_table, absent from the netns table).
+>
 > Notes
 > -----
 > Built and checkpatch-clean: this patch was applied on top of 7.3-rc4
 > (commit 93f51579e7df) and a full arm64 kernel (defconfig) was built with
 > it -- no new warnings or errors.  scripts/checkpatch.pl reports 0 errors,
 > 0 warnings.
-> 
->  net/core/dev.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index e76762e29360..d5ce25144806 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -2900,6 +2900,14 @@ int __netif_set_xps_queue(struct net_device *dev, const unsigned long *mask,
->  		/* If queue belongs to subordinate dev use its map */
->  		dev = netdev_get_tx_queue(dev, index)->sb_dev ? : dev;
->  
-> +		/* dev may now be the subordinate device, whose queue
-> +		 * count can be smaller than the parent's.  index was only
-> +		 * validated against the parent above, so re-check it before
+>
+>   net/core/sysctl_net_core.c | 7 ++++++-
+>   1 file changed, 6 insertions(+), 1 deletion(-)
+>
+> diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
+> index eb35da3556f4..bb0fa69f94f5 100644
+> --- a/net/core/sysctl_net_core.c
+> +++ b/net/core/sysctl_net_core.c
+> @@ -283,7 +283,12 @@ static int flow_limit_table_len_sysctl(const struct ctl_table *table, int write,
+>   	ptr = table->data;
+>   	old = *ptr;
+>   	ret = proc_dointvec(table, write, buffer, lenp, ppos);
+> -	if (!ret && write && !is_power_of_2(*ptr)) {
+> +	/* A length of 1 is a power of two but gives log_buckets == 0,
+> +	 * which makes skb_flow_limit() compute hash_32(hash, 0) -- a
+> +	 * shift by 32 -- and index the one-byte buckets[] array with the
+> +	 * full 32-bit hash.  Require at least two buckets.
+> +	 */
+> +	if (!ret && write && (*ptr < 2 || !is_power_of_2(*ptr))) {
+>   		*ptr = old;
+>   		ret = -EINVAL;
+>   	}
 
-The check is a WARN, not really validating against oob.
 
-> +		 * it is used to index the (possibly different) dev->_tx[].
-> +		 */
-> +		if (index >= dev->real_num_tx_queues)
-> +			return -EINVAL;
 
-I don't know that area well but my understanding is while the mapping is
-stored on the sb_dev, it points to queues on the dev; this would reject
-valid configurations.
 
-> +
->  		tc = netdev_txq_to_tc(dev, index);
->  		if (tc < 0 || tc >= num_tc)
->  			return -EINVAL;
+1. Need more thought about flow_limit_table_len=1.
+A single bucket still has well-defined semantics: once the backlog
+is half full, every packet hitting skb_flow_limit() is dropped. The
+same effect can be achieved by reducing netdev_max_backlog, so
+rejecting 1 may be acceptable.
 
-Shouldn't netdev_queue_numa_node_write operate on the dev txqs instead
-of the sb_dev ones?
+2. ptr is unsigned, so -2147483648 (0x80000000) still passes your check, 
+as it is >= 2 and a power of two.
+
+3. sd_flow_limit::history is u16, and the bucket index is saved into it:
+
+skb_flow_limit():
+      /* bucket index, 0 .. flow_limit_table_len - 1 */
+      new_flow = hash_32(skb_get_hash(skb), fl->log_buckets);
+      /* saved into a u16 */
+      fl->history[fl->history_head] = new_flow;
+
+So with flow_limit_table_len > 65536 the bucket index gets truncated
+when stored, and 128 packets later buckets[old_flow]-- decrements the
+wrong bucket. It is not an out-of-bounds access, but the accounting
+becomes wrong. An upper bound of 65536 seems needed as well.
+
