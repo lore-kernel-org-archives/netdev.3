@@ -1,47 +1,73 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792778551;
-	b=A3aVCNfhAGtQHRY8B7KnHJ0086ONGx9E2IVORw24eGtV92f7nR4rryidD9z+0ESsw87q
-	 tLz0zEDw+JItddCN/1KHbwOQO1ZluWqjSxmtjhZ2aN7NhHKvwjuyN/CgwSwrAp/xSoHzD
-	 CI9wK1MvS7fia4MBsko2BLIpiiJ99vfn4jKVBOC6LWRKDoAKnHoJIYmjPecfNilXx5TLc
-	 1Agg0ZD/JrCWPAV8jcNzVSa91XzpwEyoFLBD24DQR3yVKe/5xwAQr96ayBk18ovXBj/vV
-	 WwRBHzvYRWFaC0Bw87v7vu7mjFO8PkTnY/dQ+kIIGrV1wyyUbsF6/KOYJx3gHvGfDMg==
+	t=1792778573;
+	b=GPSRQZbjTQwjsYsYOmESmikVMcCcjK3coGCGySGZOZxgO+0vsKjNJCA8VOe2FVcSeHOs
+	 mypltDsqjTFEnArSbbCeLtXLWgPPGo+dl6rPgEBqAMYamUeH+RhDjDUd36J2P1UvJ1Fci
+	 YykDoNr9QgI+cJpuebZkAwLzaPiGEI6Eyyj18JDCYcWB5bZdrOdYGPbBRZsVamfQwm0vk
+	 qUIr9efj/ZnyoocN7nbrcbOl3hDWfX2MlRiEtcU6NK16lyTCOz/KflBORybOBEqFiILQL
+	 3kS3VqcCUP24qSzbUTNB+y+sv0+1tJ/5l52p8/XWXUuAjuwByu3s1IBkVXZh4YRoWng==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792778551;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:From:
-	 Content-Language:To:Cc:Subject:Autocrypt:Organization:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=CMEcjyqbYi7Q+N1JbhJsvHIHtYi9Y7RyWzFbFSJN1OE=;
-	b=yi/Aoene9/jO2d3OBOaskrqmFNCFcaygC49U3EzsLIqxmS0b65HazMzWW/6lNjGa+e31
-	 1k7pysuMRPL9nFoytrfOLae7pUpRcsdlgqsluj/ug8PiFCYrxsmENOk+5gQzEpVI5xObg
-	 24ApWJVxySpmj+KfpRNBtT+Xq0yl5Hk7ipoF9O+3MSvCKNaE9dZOzFPt+W3gBFxhBBWJM
-	 tHKnkcDBX2Z432vpS/qVB3RaEWzA+UJy369zPH2LduF3Bk2UYR3AOuLuK7iEbQ0uG/0RN
-	 OVcWTvWqAeWFOzXP/ynRbI3p3+u6hX99ovRyS/A+g540gqB1qP3N9X1g7LY9aQDhq5Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792778573;
+	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:
+	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
+	 MIME-Version:X-ThreadId:Date:From:To:Cc:Message-Id:In-Reply-To:
+	 References:Subject:Content-Type:Content-Transfer-Encoding;
+	bh=bZrsg2pWespOvQA5Cm/os7o0gRFOlPEwnPF14eOssXg=;
+	b=2hFasL52EwtqIiEjawvRzk1f8mILXqHWEcFAbaeJNP5oWfBDkxUeIc0+7JHCLATrSflp
+	 w7YtGfXBNyDGNzMb+DOyKZIngB3wJ0YNpCR09CAV7AhN/uGTY2sql1jTiS5aApdJ3OAwE
+	 hA8Z9ADJ8Ez5vsi1Koh13TgnZqDmFHpDXod9XTvcGLWOxqSF56pUk1JwvVdxSbobgHCbG
+	 Lcbv1xsUWVs4QCXrK/+r+qPGduAQJsG6mk0enljjng17B0Gz8m+3luz6ya3QLLzKh8MpE
+	 37GaxFjiLPKgdxtodK8hgpNppXTEjES0iiejGF9c0BSoa4lRTAhwM53D89vVIAEZYaA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JcodOzdl;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Aj+dSzOM;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A1FD606A31A
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 18:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086EC606A31A;
+	Fri, 23 Oct 2026 18:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JcodOzdl
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D2451F01825;
-	Fri, 23 Oct 2026 18:02:30 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Aj+dSzOM
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39CB81F01825;
+	Fri, 23 Oct 2026 18:02:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792778551;
-	bh=CMEcjyqbYi7Q+N1JbhJsvHIHtYi9Y7RyWzFbFSJN1OE=;
-	h=Date:From:To:Cc:Subject;
-	b=JcodOzdlAPTeRCrnMRzc0z1UmeSSY4N8JK1cxe4sxmDRIOfE+ZYoT5DgQtAQ4LC3W
-	 y127dcw3YC2d8/gLTnmpSK9ARzo2WPjMi8PcO02I2AqyMMCFX09+DGszv3qMgvyj+/
-	 tcgQCNLVGcIWIy76sWhzIqkcPh/GkMhGiDzVe84wqTDp5YLxVn2yxTJ+DW1HkCDmts
-	 1HLPUdAnMDGanyryTGNPNR8F7dUn8Bct6Lr8w0BbhOmBxgXCJQH/JOE3WbI6UhFSF4
-	 1vP/vnm4ZDKDyKY9GMTmirrG95nNAGTR694bufFE2FbmmsQIJVYGjRt2Ggzuyxl2b4
-	 WT0eUOm/qHi/w==
-Message-ID: <861390d1-1fdc-4dcc-a431-236ddca42dfd@kernel.org>
-Date: Fri, 23 Oct 2026 20:02:27 +0200
+	s=k20260515; t=1792778572;
+	bh=bZrsg2pWespOvQA5Cm/os7o0gRFOlPEwnPF14eOssXg=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=Aj+dSzOMnsNbCR85xA/8UlAwulQhgqVg6s0SrBEqHv9mtw8ZgcDexSbb4CkRT//wi
+	 v3kUyDg+++Ja0Q75FYiSDv71UehLwrfB+O7Gnv4AXBNWJMzILACZrSllAliLZkCa15
+	 o6aqE2Q/cmr/gIzJqK2q2lQLU0kJAZDMyeKL6yHlOFnWn1CTDHldHlYOIgWBYu4vZP
+	 Tc+pMFBrp3jqked8wbIVFEIj2TjVLnjHOzE3Uwp8nuQbfD+MM088uof+nmBDktRrJe
+	 Rte9BZoHmWClW4bAguJv/+eSu3vaONzWwBgVGsoFSpLCYyQGwpBVtk7i8ELyfBfOQq
+	 yfff6/eg9SPkg==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 80E54F40067;
+	Fri, 23 Oct 2026 14:02:51 -0400 (EDT)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Fri, 23 Oct 2026 14:02:51 -0400
+X-ME-Sender: <xms:S6HbagXwiaqr3QQa8mcKJMCCl0A5tExUO_ARWNRgWdnxCmCwXt3mbw>
+    <xme:S6HbavaDigAlOx9NBgiqLnf9j_nbj46ULziwWS7rv6GhMyjeixANJLCLDoRNg_pYO
+    gM-WYPMEefKPWVAYpObjVfbEFLaSg_XHynorfWcIEqt1Ll898H2Phs>
+X-ME-Proxy-Cause: dmFkZTEsjtUgDJBYap9qhUMKtLl9jqAKBBCnlwmhLjGIDNZw3TLRNdHTHOB8CQWCO1JeDp
+    N3Pu+F5dM5iHuZcPbzp9i09R+ylsLhkbbtgt/zFNnqdc8eceJNMzrbAVEPDIH5Lo83I8O0
+    fTnjURMbv4p45dKB7JImhqCVy+ht/Nzc3MVaFRSHcGDE7qDBLc2gE8rjAXGydetLjSn+Re
+    r957l+gjjUzVbZ7iJ+oRwxWPDUyed3S795zKEv0bK0lWx17hc1QXWn78cGXMy3fZe+4UcP
+    i2hXydb20Ke7aQ4kI+xbLKOBui3Gki6zQaeK/i1HxT6zkn97Ax8VvXKgE2MsP+mUfXh7c2
+    yPlu8bKhhcspbdWoLwtnPqs0s+3j706W+cAsMKIhXDzHm6U4PaJCpWnY7L4bRikigB43T8
+    WkEG1JyeAcOBksaEIOy2x3njkWVZYaSen1VNLp9eovWmKbs6D/hkmChVaITVz5l5syJDsm
+    fRiJNrZ307xbgdS7lM6cj45h7YaRXyN+IjvfKlMwLf0YVJhj3rVsImoBsGRUXscOZhtMJa
+    oRBKGreY2k2//AdPdV1m4JGXwNNVQno6iW5bTbP8L1YeyOoSU1ABe2h4F9aM2N4LL6j9Tk
+    Qm8PiJU+ircvFjjLUtztJ/bzzRX61lY604tCKmiyuxsjUTjQPuTRu3pHKCMw
+X-ME-Proxy: <xmx:S6HbakR-jYIoYwXIRdBhFKTcjqGhAL6u0dfa31zw7pk954ikuv1N-w>
+    <xmx:S6HbahP_xi-y2UaJmrV_FSuf-jz7hgZTqxB1RnNVkKUFkp0Hk69eJw>
+    <xmx:S6Hbai6ylFS0lDbDCtRkMPvMb29bzbEuCQ2VXyR_3mRouaNnGlmjAg>
+    <xmx:S6HbasWkd_WwvzEwPKt1PG9Seb72hy94Og311jgMPKo6Gm9aBDagKQ>
+    <xmx:S6HbahOWeR7JGc9YMaKxwne2Er0gWAC_-flNWaIl_1fAxLJ9WOwKmhd9>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 5945D782738; Fri, 23 Oct 2026 14:02:51 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -51,80 +77,71 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-From: Matthieu Baerts <matttbe@kernel.org>
-Content-Language: fr
-To: Gustavo Padovan <gus@collabora.com>
-Cc: Netdev <netdev@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>
-Subject: [TEST] Collabora's Netdev-CI: missing results
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-Content-Type: text/plain; charset=UTF-8
+X-ThreadId: A-i9QTM-Cdfw
+Date: Fri, 23 Oct 2026 14:02:31 -0400
+From: "Chuck Lever" <cel@kernel.org>
+To: "Zhiling Zou" <zhilinz@nebusec.ai>, linux-nfs@vger.kernel.org,
+ netdev@vger.kernel.org
+Cc: "Trond Myklebust" <trondmy@kernel.org>,
+ "Anna Schumaker" <anna@kernel.org>, "Jeff Layton" <jlayton@kernel.org>,
+ NeilBrown <neil@brown.name>, "Olga Kornievskaia" <okorniev@redhat.com>,
+ "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>,
+ davem@davemloft.net, "Eric Dumazet" <edumazet@kernel.org>,
+ "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
+ vega@nebusec.ai
+Message-Id: <5f83b574-224f-4db1-a2f9-60f11a236197@app.fastmail.com>
+In-Reply-To: 
+ <1106d411594bbf7d4ee8deb7f3a0281475c258c4.1792734713.git.zhilinz@nebusec.ai>
+References: <cover.1792734713.git.zhilinz@nebusec.ai>
+ <1106d411594bbf7d4ee8deb7f3a0281475c258c4.1792734713.git.zhilinz@nebusec.ai>
+Subject: Re: [PATCH net 1/1] SUNRPC: reject AUTH_TLS on backchannel requests
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 
-Hi Gustavo,
 
-I'm working on the Netdev CI, and it looks like the Nvidia NVME runner
-on Collabora's side is frequently missing results:
 
-https://netdev.bots.linux.dev/flakes.html?tn-needle=collabora-nvidia-nvme&min-flip=0&br-pfx=net-next-hw
+On Fri, Oct 23, 2026, at 1:55 AM, Zhiling Zou wrote:
+> svc_process_bc() processes reverse-direction calls with rqstp->rq_xprt
+> set to NULL. A backchannel caller can supply RPC_AUTH_TLS, which selects
+> svcauth_tls_accept(). That handler dereferences rq_xprt while checking
+> for transport handshake support, causing a NULL pointer dereference
+> before the RPC program can reject the request.
+>
+> Reject AUTH_TLS credentials when no service transport is present. The
+> backchannel request is then denied without accessing rq_xprt.
+>
+> Fixes: 74aaf96feaca ("SUNRPC: Teach server to recognize RPC_AUTH_TLS")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vega <vega@nebusec.ai>
+> Assisted-by: LLM
+> Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
+> ---
+>  net/sunrpc/svcauth_unix.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/net/sunrpc/svcauth_unix.c b/net/sunrpc/svcauth_unix.c
+> index 31a1bc60a5f6d..bac38f3ce9a6c 100644
+> --- a/net/sunrpc/svcauth_unix.c
+> +++ b/net/sunrpc/svcauth_unix.c
+> @@ -1128,6 +1128,11 @@ svcauth_tls_accept(struct svc_rqst *rqstp)
+>  		rqstp->rq_auth_stat = rpc_autherr_badcred;
+>  		return SVC_DENIED;
+>  	}
+> +	if (unlikely(!xprt)) {
+> +		/* Backchannel requests do not have a service transport. */
+> +		rqstp->rq_auth_stat = rpc_autherr_badcred;
+> +		return SVC_DENIED;
+> +	}
+> 
+>  	/* Signal that mapping to nobody uid/gid is required */
+>  	cred->cr_uid = INVALID_UID;
+> -- 
+> 2.55.0
 
-(Look at the non-coloured blocks.)
+Commit a54a573bceaf, "sunrpc: reject AUTH_TLS on backchannel to prevent
+NULL-deref in svcauth_tls_accept", now in the nfsd-testing branch,
+already addresses this issue. Thanks for confirming the finding!
 
-Is it normal? Do you mind looking at that please? :)
 
-I hope you are the right person to contact for this kind of issues. If
-not, could you please Cc the right people please?
-
-Apart from that, the single test seems to be stable!
-
-Note that when an active runner doesn't process a branch, we cannot mark
-the whole batch being validated as "not causing regression" because it
-is lacking some validations. So when this happens, the end result is
-marked as "pending". That's not an issue when it is once in a while, but
-here, it looks "too frequent" not to be reported.
-
-Cheers,
-Matt
+-- 
+Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
