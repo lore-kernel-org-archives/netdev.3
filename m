@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792783807;
-	b=HLnZ3DcKNeVXWiIrUhkf7SykjmrXmdVG6HktJFacpmgNb85f9ZNrI1FUrXX5gVo22c0P
-	 RYjb5ZOV3An8MKqwMKSl/xAbBauSPN95pwTR5wiQ635/3XJOW+4TJt0bfX1DnqKRYFwnC
-	 bEU5zurnfSmI6A3agCh2kknZPIn+Bjdf45giFTSFO9JnA3ajr03KscHh+fW7IuWPWPIgT
-	 E/jb8/2gn0KLRfEox4oxh9IYRlxmbRAKGukw6jcaLL0ap87mItwrAe7mJ8y4m7PhWqbBw
-	 ADHmK12yx7EURzyMB6rRinspABE+wDynqS2AadxPk7Rbtn3uAAedCgz1v6aX+GqLxNQ==
+	t=1792783808;
+	b=TWLtJaGeZXW3xvy0JqB9HDxeTptFcRiIJUdwgRhDztzjdWL8/LEDVtnkW+LTMO0D4pQ+
+	 37bGNknSMKNhcfSKqYupiqZmNtFw5KqCZir4v5kcm+By7psdu4y0qax+L1ip3SGaTh3sP
+	 IHsC/8E0VWWZkLtDlt+KezhdVJ89NVlCWRSLEe7XBzBgbm6pX+B+fiQ2GZUIbF5+cq6+l
+	 ZM06bMNx00uRWcrhZaT33+gGA0SBFMqGQkrAOIXUTBVtWaaXVUFnRSLcOPB+nZOcNZXkR
+	 biYam/5L6rMmcyuIYFHclQw9KbqvKt6U1DYzXs6kRWpZB4kaIM/VJGVRqQP4+PAVefQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792783807;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792783808;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=Awlx3j9nTCCze7NhMfrT6cxk8XyydYWqaAK3fkXJVy0=;
-	b=YIWOAv+agy/jgOupAvdB42WcshwOMAI1ogqj2OQKRzNRB5ctXw6Q2U2TgGTQ4xcK7I+a
-	 xiG4k0hic428lBhroEv6Rsr/7eZi93Vv353HVxLtyyElaW6Vd31NMOTl1AZ62WqXumGZ/
-	 0KjAj3iEAXW6P61MKDe14ChFag5Ab82Ap54sabMr1FlyDzslTmocUPDz5eKSXjmxfkRow
-	 Jv0DR4RwBNjHCOxEKRoHL4MNzGHGIGIyUhh5M8C4KHJV1p7RDwngihc3uOHsSrktDHglA
-	 BiKAqDFi0lHgWFALGvFUytMbl6VPRt2pnkilq1RtSFrMxalg5yaKzQxc0pYPk7hBz5w==
+	bh=PHESqNef51e+n6qW0vybigLbU4I/rVOfjCWH+7+jY9A=;
+	b=BzTTpQiptAK7C7oWbpLXObejMFAzhPjRlWti1dPpCJ1ivto00/q6Eiqm/Elr2T/mdE1F
+	 vp8csTe4HG1be89Oi53iR3+Jt61zy5I139ZprhJjnQez8A2GBaI4SKgvW09/uBBmmaM36
+	 ZHYAJRxmC21+6Rwi6EA45K+KrEAnzHoQVK9adywB7BrP+fysP8i3FEd0v3MgoTLmEDJVC
+	 YAx7/OvKsUgQ44girRQFBKePJ8aGNH56Ibtz8KcTVZS0Er3DIoLqfKwHZBNIpaDXdZrXt
+	 U9Xmdj4VygYpbPflHrqV0pu3rd3LYIICsQxg1AmmhVLkuyW2XTzsD6p8B3kQNiYkO+Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Y84eeUa/";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mW4BIy8t;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16E5606A31E;
-	Fri, 23 Oct 2026 19:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6A1606A323
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 19:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y84eeUa/
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE671F01825;
-	Fri, 23 Oct 2026 19:30:06 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mW4BIy8t
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FFDD1F01825;
+	Fri, 23 Oct 2026 19:30:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792783806;
-	bh=Awlx3j9nTCCze7NhMfrT6cxk8XyydYWqaAK3fkXJVy0=;
+	s=k20260515; t=1792783808;
+	bh=PHESqNef51e+n6qW0vybigLbU4I/rVOfjCWH+7+jY9A=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Y84eeUa/wCzRDtNKakgHk2A3pAdJ2vinXjYLtmACtztqwrXQjh9q6FIqkHwnXhVQ0
-	 F+3PvLqwD99+TyPaTbOssKgNUDsKiLK1hiPlZn6jsehg3vY183V2vmqqBtXNYwrZi6
-	 uQTI6Mi/AclOsz0L823Vh4bjg8DjUMv7V+/OY5ARGI1JyKGpYiwB4mIAPzc4KhGiO5
-	 G2jaCrbTgjqGYkDVEuTuyfLhcCmUERO/R46sg9a3DzZHYBrkQVBPu/SzfAUtk9WD/5
-	 PC0FnPU3AKyO07B7h5yEoeTdmzWh9moFvYeelo36sdohyEuV5U1gprzOiL9DNUu/Bg
-	 dOL4nWDl7GS+A==
+	b=mW4BIy8tZykK1u5prKaxHXPfOc4OmEKi5D6ZqIlB65j4KybeYBu9YiHLbeE3iQWaB
+	 +zhW1i+O7ucjUVBCxxhxaTNctomyiLKCoBms4j6SJoQxTDvVIdoqhCLT4Vmz3eUMkj
+	 bL0y3zcazEFqitZQHZjiNEoo8ddk+/2YWcN94Vas1P7+/HCYxgu/9ObqAXy7kG16UE
+	 VVFf3/wE5aypYGmfvoD112AWylyXgmTOit7M2OmwuB2miF1NNMiV51AEgAQapLhRR1
+	 W6zUpPzbj6+xTEqpDFxGhWZIuJV7ftuxck3wfJRRAZGMJ5Jf9I6aCDZ7azrUW0EbzT
+	 U/W3cW9ALl7Ag==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 81706391B14F;
-	Fri, 23 Oct 2026 19:30:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 07419391B14F;
+	Fri, 23 Oct 2026 19:30:08 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,45 +54,38 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v5] sctp: reject forged cookie peer_addr with unknown
- address
- family
+Subject: Re: [PATCH net v6 0/1] ipmr: only copy pktinfo to cache reports
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179278380532.1224496.16148284450790135756.git-patchwork-notify@kernel.org>
-Date: Fri, 23 Oct 2026 19:30:05 +0000
-References: <20261019073747.178626-1-hdthky0@gmail.com>
-In-Reply-To: <20261019073747.178626-1-hdthky0@gmail.com>
-To: Xingyuan Mo <hdthky0@gmail.com>
-Cc: marcelo.leitner@gmail.com, lucien.xin@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- linux-sctp@vger.kernel.org, netdev@vger.kernel.org
+ <179278380656.1224496.7623195527446661817.git-patchwork-notify@kernel.org>
+Date: Fri, 23 Oct 2026 19:30:06 +0000
+References: <cover.1792476357.git.zhilinz@nebusec.ai>
+In-Reply-To: <cover.1792476357.git.zhilinz@nebusec.ai>
+To: Zhiling Zou <zhilinz@nebusec.ai>
+Cc: idosch@nvidia.com, edumazet@google.com, netdev@vger.kernel.org,
+ dsahern@kernel.org, davem@davemloft.net, pabeni@redhat.com, horms@kernel.org,
+ leone4fernando@gmail.com, vega@nebusec.ai
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 19 Oct 2026 15:37:57 +0800 you wrote:
-> When cookie authentication is disabled, COOKIE-ECHO peer_addr is
-> attacker-controlled. An invalid sa_family made sctp_get_af_specific()
-> return NULL and crash in sctp_transport_init() on
-> af_specific->sockaddr_len. Validate it with af->addr_valid() in
-> sctp_unpack_cookie(), which also rejects a mismatched family, e.g.
-> an AF_INET6 peer_addr on an IPv4 socket that would later crash in
-> sctp_v6_get_dst() on inet6_sk(sk)->opt. Validate a copy of peer_addr,
-> since addr_valid() rewrites a v4-mapped v6 address in place and the
-> cookie still lives in the received skb, which is not guaranteed to
-> be unshared. Store the validated copy in the new association and
-> pass it to sctp_process_init() instead of the raw cookie, so a
-> v4-mapped v6 address is normalised to AF_INET before the association
-> and its primary transport are built from it.
+On Tue, 20 Oct 2026 14:39:35 +0800 you wrote:
+> Hi Linux kernel maintainers,
+> 
+> We found and validated an issue in net/ipv4/ipmr.c. The bug is reachable
+> by a non-root user via user and net namespaces with namespace-local
+> CAP_NET_ADMIN and CAP_NET_RAW.
+> 
+> We will provide detailed information about the bug
+> in this email, along with a PoC to trigger it.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v5] sctp: reject forged cookie peer_addr with unknown address family
-    https://git.kernel.org/netdev/net/c/9802123ceca8
+  - [net,v6,1/1] ipmr: only copy pktinfo to cache reports
+    https://git.kernel.org/netdev/net/c/94a6736bb5ab
 
 You are awesome, thank you!
 -- 
