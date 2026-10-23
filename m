@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792731123;
-	b=UDCw9+xVWZpZs2ZEc+WvVDZmdaw5mQ80eV8gLZHcFRwGP7FVLQs2rY2kHLU2sXWiyn8b
-	 LOIz/ALd7Jij/rPT56epDgIZ84rxO66WsOFL00RwLXxGTOMcX/ZiW/l2rkqr+odx9u97u
-	 uwwLQp2fr0Oz7xraTMuCoLjmfn+AhABTmHaELZtD1yQ4PF5CVYlBAIJetSReQhpB93ruE
-	 pMmvj9fiPjjcRorXDlHoHJLHqBdrZPWyy2spfn6MG8Ec4yIwF9Pz1f9KDvxUANvGLNrtV
-	 beEhL7WSadF+aIUzTk+tNCE9TtHF8ppBpusPHkyk+Loi37akFbXhD8ot4E0WqKoZg0g==
+	t=1792731128;
+	b=ZAXDlr8CT57rUI8T1KhIL/fSvLkMaRCfExsKF1QonwNB6zYChhJhNchN/8RYRzVGyfkX
+	 r6wI6YyT6JdAKG8YWtsRVlBmWTq+izji3kI6SUu4ywyIMRnhUdOxN2uvxlno2GNnwNIdu
+	 XG0Tp9Q2by2JgixHl63ABV3Fqv2qqbtSVbwggxqJpZePf1v3W1VYBZEgQkGZLv0/gblLv
+	 WvyoR+0Y6dY/oHFRRuTsBxZIo5md9yCoj0XCqYPm7xO2FmQKDEUF7bCcOEVU1qnd5S0XC
+	 SXR/7Ji5ndbwg5kDf2LCc4rkNstegmM9wvd6HUbvRVp6YfvN7co9NqfSn6cjE8XnxIw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792731123;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792731128;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=BoB/A1sIi/INkgoVC9AAFNKr7YKhQUbQ+JtYOmccKaE=;
-	b=AnA8aD5zMAHDJTxdTuDwAkrr26lUOM6vZ4sG3hbSI7Ll31HIagBIZmolJzCKE8Zp4VRl
-	 tW4qxRGfvI7y82Iv44RR6bQl+Xs9Ya6+nx6pwbBOmQERfLvuV4tH5UPWE4XdTtE7nD7Wc
-	 sLkpN/xd9VW/kRWeRYB7WKZ9oVUtor83KMgoxtXirKkwDRzHanBqZLoySsHSh+7QNnutO
-	 gFDJ/UPZ470bVV6oGueh1I3DaW/6imcfTDU7tV8RekVjJnz2jnblEWi6YwVsmS/MQ9pOu
-	 MDC1cbMDwNF1ZGP6PdKBSAp50jPEpq2oS9y57Om20qV2GAUryFb+Zds3m4HkRGv0Jbw==
+	bh=m4eUhHLp14jEKzi8uHnH2gScUY1iDl3d/EjgImmk3go=;
+	b=xDE0HfiWQqQLPQBlyga8bjrCcXKh7BJdXlNKvCItydyK7rs4dkA5dHCfPv8rTtqCUF4c
+	 ygDcb0lbz0u0ekmEaoAG8y7/ZmC07bN8/Z7vF1mhhHwhIlRh4Hk/eHK4uGHNQW5/mE2V3
+	 iLsBoESxEK06tvPD3ETcHgEk+/g0JnD0Ly72nTbAyWjKZC8ysHi0lFbHCrmNN11N8iSxt
+	 TGZRxIHF+vV1OeHDYG7JNZf/qdza3ocTzFJJgn4lGnAdrax4I8kcKMJYf+rqQuByKKFOR
+	 KwpSdsU45BgUwomp3s4I3Vj1AicMEB2GDA4tlKzVO+aK6T52VQ4vqKWpUj25WCJ9YzQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ha4V+Px4;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FTvdEGT0;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1CA1606A324
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 04:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33847606A319
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 04:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ha4V+Px4
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92E71F01825;
-	Fri, 23 Oct 2026 04:52:01 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FTvdEGT0
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533F41F031E1;
+	Fri, 23 Oct 2026 04:52:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792731122;
-	bh=BoB/A1sIi/INkgoVC9AAFNKr7YKhQUbQ+JtYOmccKaE=;
+	s=k20260515; t=1792731128;
+	bh=m4eUhHLp14jEKzi8uHnH2gScUY1iDl3d/EjgImmk3go=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ha4V+Px40uunuItMDirEmvN1G4w/6nhYdHlSNLpf8paKd/rUtTd+wHcsWbIWeh3GD
-	 LKrDwytd64GaIIfsmbD/j/9gf7BHplAqBgp3l/kTDVED007liwV2WGOermBWF5qfcO
-	 tLGgQLX1Y6A8QeXHVR2/tSCuONL96UW/Bjn/xiiVoz4Y4Kd/gnKCPhA0T96Io5fZu5
-	 KqK5I2Zbhb6R/KGZKRp/We9eIpPMEBdMj1glD5VbZUY7eRcxsXRAOmp8cPanCmDJsJ
-	 SErKFtysFh+XDSmW/y5rDCe2OyDG+E5MBzBUz2TRTWAg+64uso+iw/+/rBv+IQDT7j
-	 N/2qfuwKE/wyg==
-Subject: Re: [PATCH net-next 04/15] net: skbuff: fail segmentation when a
- segment can't be checksummed
+	b=FTvdEGT0Wxsyij7WdwX3FaVHnPOWCyIiEujPXH8IHq8o2B9pQfwgTdK/NqLRVSwGy
+	 6xl9sgCPeh3sDT42Jd5Cye+yN3RquBnykOVo4418+K2jHCYfLz48/p+OI7ElNdMYem
+	 9F2nmCE9xUALydd23c5SeQXqyDkc5RL6ndhQFp6c2KPTJtFO2sDorBRB9Z+CwHAWC2
+	 60XKTi0L8s4jcjD+jfnj8CeUVsy8S58WWc1hWxNNH+w1hsTzV77vM5qKxDQ31wA830
+	 TmUg45gOWhwyMRxHJVJwKpvZf6kzS1J7GUdszwqdRcAFMSTtvn//dxwAV8UClBBQFR
+	 Vl0dNkv3k/v8w==
+Subject: Re: [PATCH net-next 08/15] net: skbuff: make skb_try_coalesce()'s len
+ unsigned
 From: netdev-bot+sashiko@kernel.org
 To: josef@toxicpanda.com
 Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
@@ -49,12 +49,12 @@ Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
  sstabellini@kernel.org, willemdebruijn.kernel@gmail.com, fmancera@suse.de,
  almasrymina@google.com, david.laight.linux@gmail.com, netdev@vger.kernel.org,
  xen-devel@lists.xenproject.org
-Date: Fri, 23 Oct 2026 04:52:01 +0000
-Message-ID: <179273112116.3134.13075947496257634766@kernel.org>
+Date: Fri, 23 Oct 2026 04:52:06 +0000
+Message-ID: <179273112692.3134.1759491419702666549@kernel.org>
 In-Reply-To:
- <20261019-b4-skbuff-bug-on-followups-v1-4-41dbef50b9f7@toxicpanda.com>
+ <20261019-b4-skbuff-bug-on-followups-v1-8-41dbef50b9f7@toxicpanda.com>
 References:
- <20261019-b4-skbuff-bug-on-followups-v1-4-41dbef50b9f7@toxicpanda.com>
+ <20261019-b4-skbuff-bug-on-followups-v1-8-41dbef50b9f7@toxicpanda.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -74,56 +74,64 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] The commit fixes a real, user-visible TX bug but has no Fixes:
-  tag (and no Cc: stable).
+- [Low] The commit message gets the bug's history wrong, so the single
+  Fixes: tag (279877d86c82) is incomplete.
 
 --
 
-net: skbuff: fail segmentation when a segment can't be checksummed
+net: skbuff: make skb_try_coalesce()'s len unsigned
 
-This patch changes the sg && !csum software checksum path in
-skb_segment() to use skb_checksum_full(). The segmentation now fails with
--EFAULT when a segment can't be checksummed. This covers devmem TCP skbs
-whose payload is in unreadable frags: skb_checksum() used to warn and
-return 0, so the TCP checksum didn't cover the payload.
+This changes the local len in skb_try_coalesce() from int to unsigned int,
+so a from->len above INT_MAX can no longer pass the skb_tailroom() check.
+It also adds an explicit delta < 0 test to the truesize WARN_ON_ONCE(),
+since that comparison is now unsigned.
 
-Link: https://lore.kernel.org/all/20261009-b4-skb-segment-nosg-unreadable-v1-1-7e2334a55fe8@toxicpanda.com/
+Link: https://lore.kernel.org/all/20261007-b4-skbuff-bug-on-v2-0-b9a5f732895b@toxicpanda.com/
 
-> Found by the Sashiko AI review of an earlier fix for the same path with
-> SG off.
->
-> Link: https://lore.kernel.org/all/20261009-b4-skb-segment-nosg-unreadable-v1-1-7e2334a55fe8@toxicpanda.com/
-> Assisted-by: LLM
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> Before that commit skb_put() ran first,
+> and its overflow check caught such a length before anything was
+> copied.
 
 [Severity: Low]
-Should this have a Fixes: tag, and possibly Cc: stable?
 
-Before this patch, the perform_csum_check branch of skb_segment() called
-skb_checksum() on segments that share the devmem skb's net_iov frags.
-zerocopy_fill_skb_from_devmem() in net/core/datagram.c never sets
-SKBFL_SHARED_FRAG, so the __skb_linearize() fallback is skipped and
-__skb_checksum() ends up here:
+Is this accurate on all configurations? Before 279877d86c82,
+skb_try_coalesce() looked like this:
 
-    if (WARN_ON_ONCE(!skb_frags_readable(skb)))
-        return 0;
+	if (len <= skb_tailroom(to) && skb_frags_readable(from)) {
+		if (len)
+			BUG_ON(skb_copy_bits(from, 0, skb_put(to, len), len));
 
-That WARN is fatal with panic_on_warn. tcp_gso_segment() then writes a
-TCP checksum that doesn't cover the payload that goes out.
+len was already a signed int at that point. A from->len above INT_MAX
+passed the tailroom check then, the same way it does now.
 
-This path became reachable when unreadable-frag TX skbs were added by:
+skb_put() then does:
 
-bd61848900bf ("net: devmem: Implement TX path")
+	skb->tail += len;
+	skb->len  += len;
+	if (unlikely(skb->tail > skb->end))
+		skb_over_panic(skb, len, __builtin_return_address(0));
 
-That looks like the right Fixes: target. Another patch in this series,
-"net: skbuff: fail checksum validation when the skb can't be checksummed",
-does carry a Fixes: tag. Without one here, the stable tooling won't pick
-up this fix.
+On 32-bit, sk_buff_data_t is unsigned char *. A lowmem tail at or above
+0x80000000 plus a len at or above 0x80000000 wraps below end, so
+skb_over_panic() is never called. skb_put() returns the old tail, and
+skb_copy_bits() runs with the negative len. That is the same large write
+past @to that the commit message attributes to 279877d86c82.
 
-This patch also calls skb_checksum_full(), which is added by the earlier
-patch in this series, "net: skbuff: add skb_checksum_full() that reports
-failure". Could the commit message mention that dependency, so a backport
-takes both patches?
+On 64-bit, tail and end are u32 offsets. A from->len in the range
+[2^32 - tail, 2^32) also wraps tail below end and gets past the check.
+279877d86c82 seems to have widened this window on 64-bit, but it did not
+open it.
+
+git blame shows that the signed len goes back to the introduction of the
+function:
+
+  bad43ca8325f4 ("net: introduce skb_try_coalesce()")
+
+Could the commit message be corrected? Should a Fixes: tag for
+bad43ca8325f4 also be added? Without it, stable trees that don't contain
+279877d86c82, including their 32-bit builds, may not get this fix.
+
+> Fixes: 279877d86c82 ("net: skbuff: don't BUG() when skb_copy_bits() fails in copy helpers")
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261019-b4-skbuff-bug-on-followups-v1-0-41dbef50b9f7%40toxicpanda.com
