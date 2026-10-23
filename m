@@ -1,100 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.47
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792741006;
-	b=fhSnMj1vBJUq4jEu6C2oq/46/gUyPV+UfeuXSY4gln2HuOXwQHpcI1BFPsYBSiRMCXJL
-	 P9xy9DgzOfT8fNJRvEkTx48yQ+T2n+IcgbCDIrE44tgn/Zk/QYEFKgC+YMBLwv8Rt61Es
-	 pMLZXpTa9IDDcX+vxf0JQaWcb2u+jE0UieoImgbs3cVYFLJblQu+QbndftDJFBXcqr4L3
-	 pysuJ4hWg1ouLDigGBkKjiOMvj+XLrPxhfE33tsyeyuvqWh3nm7WjhQRBgRwJcdJ6mGYV
-	 OxiAqKIXZi/dAyiwW0gGo1DfcqTz5u8ebf7lneT8GNxmlB3tjboxGtzwQnEOMw1624w==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792741006;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.173
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792741059;
+	b=S82qxGclp5l5D7YHJCKPfJztuyB8X3WW6A+1skHvbjU02lG6xSe89VV3QdMkFPshndtG
+	 uIPfKYMJ85ok2sKW+cLp6i0EDY1pquW6Bt+EeqUVgL6mjjvYT802UL6gwGKz4yLC0G+mD
+	 SfWs68NiIy8f+PYLE0+GWPppEj57UUaqQrM7fZ6V1o17bjJ89Qf0CFwOkogzEs7jGE7W0
+	 IpXs4/Yx2HRUFt007Az+TQm+8FzHXKqgDl0D70+G8D3rY0Cj5Y8KrSQG3APdrF4DeqcwY
+	 x88ozQXlBZaW4zqF1/3KTM6zxUa09sOIAoPIUoraa3RA7WS5hglaCS/qT7cG8YGV5Hw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792741059;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=LEwT0YhXrskx2vnf/jESb/aGipGf5XisCm0pn5WijMA=;
-	b=Xii4ADVdffI9RN+44kprAGGMDZD9agPOeoniasV4tC8DyHDNgRV2x+41a1QxgyTRGoQA
-	 K1vBXDo1eRuzNUUMz2buUEBeXBSpqRzj1Cn7mfo94+gwPkVCQhu5InXJBR8Dtw+UqTS94
-	 tlt0Q3U95rziNGtvrndo9wD8zZPS1V9RGzYNw2vtDuxaYsUvoA7fW5DF9Xoxagp+ekByk
-	 uEyfoSkpydzlHiI5dmavs1iUMUQwDkDVlnpR69i2sMpVZM45PcFMfmK4HqDHox2k4PD/w
-	 NHizpxe2CT4NC513/WGy7Qu6AKM8/4tWFaMmtk1QLY6LKcow9l1Vk/3K1+6TWNhvfQg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=/W7+697pKZHE+D8ZJXXPuDp9wLNG99eVTuseb9Fgv3c=;
+	b=qYFUPQsbS+rb2M54/x3hwWovWRLnGC82zhES6rA0HeFjkhn0lWVoF19uq14/Y+/dJvgi
+	 TcgXnScGaZqfSgJlxzIvcnE/FqFxcn8FcCp8JntuBsAM5JXKsPKouLD+aLBPDbuwYvEuz
+	 wTYVIISRMG4H3DVVfl2/t89lDTsFYDDsZHRKA5gBh5F6Bhk5LWzM8OvyRPNTnyt814Cbq
+	 nnYcikzRNqfpp8Sob038QbFCUBqtOF24hJeA4C6Dukgt008Lk/VItDKXuhe0GOPkQkefr
+	 ZhrS+bd8ezsAxOW5XEXr+8b1PuR52mWjWAe76NGIdKF0yUx9wFXNXeVGLVzmWd2yjcQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=gSRiq3LB;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.47
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=p9Y1RZW2;
+	arc=none smtp.remote-ip=74.125.82.173
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF52606A31B
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 07:36:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8FF52606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18FDC606A320
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 07:37:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 18FDC606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=gSRiq3LB
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5ba3fba0080so404980e87.1
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 00:36:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792741004; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ZBGU4GhCg+CGD/Qu12ge9xwU+QGh9tvcfv/CNVpGkWGE4tUAiCMC9SNCTEgM44cSIi
-         7NsZxb7b4ZiLiWiO2JWfLv89EBbmX8F7RiSRg/rQWN2SYIPMnyTDlDL/9qa6v4dW/GL0
-         ylzsz3jbpErLAchGlmfuT49rovmdUZWp7Ke2mSnlPqKH2bwFWpU3ONMuqZ89H3XGMQSI
-         fwM1wJuZ1UNWKCc/IxV0l1JgUwsKYZcjWm1hrBzwAtj5qMWoVsAiMgD0ekAn0t74ThHr
-         HmbBiL7woaTL3I/GQaMJDS6cj62jZHvP1NdCShc+gyA5nfnHLNOxOXvZh3BEs/2KgV39
-         Hh/Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=LEwT0YhXrskx2vnf/jESb/aGipGf5XisCm0pn5WijMA=;
-        fh=zCH6BV5qTZdebWtQ54Bt/oHrSpF7jnJEMPh5LYl//do=;
-        b=HDijJNiOE2+4fLWqveHUGBqVZnWA6Ar05NJ5oU+0wjSOb0XbFOm2TRIpeBpNrb6dW6
-         QhHANvhkwZmIqlNBKe6NXqYsPUsYZdFOPcg1BxCc9R49Ib/+QbnPNDLCoWnJdGjt+eRF
-         4tcNgeOwW3MORUYxuAjXPfdqTU2Vb1/CEQLyTJ5oXsyucamiRzUew7EyJC6z7cWElSEB
-         y3u25pln1cVe5OAx1KnpXV4USz3WIIBagk+AUqFAN1nDRtRF6g0rER7clAKAoaVVc0bS
-         8W2/eotTo/njirHGwvR/1e429ODoHWoDfDCeAsi+eWMtMqqQaXEv4jFrOr1j0Zb2IY4Y
-         DrEw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=p9Y1RZW2
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-33bf40b0c8bso203318eec.0
+        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 00:37:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792741004; x=1793345804; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=LEwT0YhXrskx2vnf/jESb/aGipGf5XisCm0pn5WijMA=;
-        b=gSRiq3LB1p025Dt8CY+r6baTbk/WIx+K8TCoKBHZY8hVC9FCWTwoFwJS5/Az9iXymF
-         c0PBJZSB/h4meUizqJzhevVx7Q/XzFq7VEvoWByLHEszgyVn31JaoOPlEXkTqT9zOGQ5
-         rDCUC2NzF7dCVm2USErYluhZWRZffLzh0uiMmCErA9D6JGqzwQt2eHQoC7eoG6vJ4v1E
-         BLXtTDN21SXzSBYmeTu2VPmu/YfrFB86Nc2/+eWE9S9UXaGiao3cNl1LImzQHXQO60mc
-         zhar0mJPE4qo/+makKthGu5QPx49qN61sgixoNlD8jlnlPRdhdit2a44VW4KtscmDpBt
-         O7GA==
+        d=gmail.com; s=20251104; t=1792741058; x=1793345858; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/W7+697pKZHE+D8ZJXXPuDp9wLNG99eVTuseb9Fgv3c=;
+        b=p9Y1RZW2cGPzye197/Eq2buSblrNpsRFp4EnUdf6e01GpeWxyVR9D8PspwVdAwv9dF
+         qSjqlo2sz1sjdBLgIvbLLNSl8FhoQjVu8ZEBFoRZady0ecVG50rJBAvR/1kKNFI6elX3
+         YjreTs6Wf9dyV4AiUcGsO/b+b07U2jEbW0aRtB8B9SndhwntAswp2+STchBPQNtiUPdo
+         AJgTNHtbjUPx+xcv/b+vNTHBjBKLOxw0VmNh4T/8oa5d4YVYfQZbqXISdoP9D0DeHmWX
+         x2ZZU4CUCc037tUvo7ePS7WrdiuVaal0NE3YPXTH8ODnYG+4D/F8Bs02EwxcMcOVtEON
+         k2jA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792741004; x=1793345804;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LEwT0YhXrskx2vnf/jESb/aGipGf5XisCm0pn5WijMA=;
-        b=XL7+bGUTwCZxKDG29OUlRkKGW6X1C08JghPhGwN54Y1QwqVtrAjfhePHW/L3Sm2Dn+
-         ptGkLOkSqeL2gNGw412rhXDPHqYxSRqsuoSTfOWGogyLgyOSmHFLu4NUqTP0PpwSRuU0
-         DMZf6wM3HnSFQa+34VCygvH0xb7ZamuLW3ZrAbf/SWjFx2HZkKm8oimE4qflLzkesmhQ
-         8IgksK+eFDSnF7VEViGoCVJ/FAjLnCAT4vSsrHph7L84vYfhM+p1WRN02r7jfnFiTYqv
-         X97VDMJJpgqWQGpjCWBOyzKD1Ky6URd5cYGf/n2JeI/dLIbAlcqPQ1NuvKU13k2dwDhM
-         XQ5A==
-X-Forwarded-Encrypted: i=1; AKwUvBzfUQsApLWmMZ83itGCZCeBZr+jy0Eu6Z9pTxhLCqmZ5z/O7Uk73AWkyI/iu0MyYDsDFhzRrGo=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIPfLag1prMaO2M6GhSc/A7A7FcxwMxN+cQo2fIDkSBY0R82ql6
-	D+szusD4Pf1UR7Rv3iw9zgeacS1rtsp+fpgsLrqQ31uJGlo05R4QNLAkE4JeXHLPd5ytz+ptpOf
-	bw3uFgANkOI0qMcUFzsuBolUn8v2z5d8=
-X-Gm-Gg: AYBFou0n/M53pgZYdMlyYKoy9GbA2MLE0aEzeGLvsnxdq8ymB0WnIX79gwXM7GQV4tX
-	8yF30WO3JhIXKOUFauO/FZTyDjeakfuLU3Ql2hJ4ahZwELCbb9bbV/ru32dnFsVxPR5qRy+kI67
-	fR4N5oODlYieGjqX885GQcGpF7FosUCjQXd55AQFfWnracAnBNsaPwwY0VlRGczXt2sjJWNHmwe
-	UehHoTLkpYZGRkyLd9nF3MtyOIFNUpA2ZEDJhAKevwJdF4IKPeDFUeEfZP+/o+JYHTMg3R0AbG4
-	sm5lofKqqORlige5c7iAVP+sr6fPjlYs3jiD0ArT6FQoIpl5em0l9fVFrWvEtJHm+dkYE2Pelzz
-	J9vH6hYhgXuKsU7m8fyQoOHQMqGPztxIMPZ3+
-X-Received: by 2002:a05:6512:1195:b0:5bf:a8fa:2dcd with SMTP id
- 2adb3069b0e04-5bfb0b41ec2mr393486e87.43.1792741003205; Fri, 23 Oct 2026
- 00:36:43 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792741058; x=1793345858;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/W7+697pKZHE+D8ZJXXPuDp9wLNG99eVTuseb9Fgv3c=;
+        b=XRaK4jBxzJXqY5S/99ByitMkN1A5obsgbj9Ci9ImNNMeUDsi1VWftEps712rpz3f+q
+         zRf+2ImW+PMWSgy/5YqKfQp9QnQvnd75ioF4csubso6dMg3M/t+6tHhh1bC+piHGhViu
+         g6aKwwaGnqpcDA1ZLZpmLSD1qwu4wxvU7A6aHcZN+mvkeYwJRqyxKkeqeSCg1ISCYr7B
+         a/UNJfOpq567esHN5uhtm7OiDQb9fG6wdO8CJEOGxcFiiwCxYHnbz3QiXJyFrYxveYgI
+         AdxZGJObHhr5ktPNqhhbWHp1b9GwRv/vR5DRXQMBNfIzS+5FuvBErCIma1pP6jV7SB5S
+         BC0A==
+X-Forwarded-Encrypted: i=1; AKwUvBx2ZMVPGirZyPRplg6uSc3zxS1FGEbfQlmW1EPfSYU2+j5XRglNfSO8+fxmQe4GmuwCVjssNaU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLglIVXLS64UhrLN5x45p+/jd+VLDPrIu+HrmF7zY69YyM1sdOg
+	W/yelUPphP6FIkH5JEofdDUkwgxl066sRroAbBUi99S9DjVukriaBiSP
+X-Gm-Gg: AYBFou2cfattcGQ7FgU/hzQxw+g8yGgn+5uT0N4tzZmiUBpGi8rkugPVPvP60qdj16a
+	mkmbTZ8mZBDZhi5ePZcijQyqxQkS5LSPCx7cICYpktZhZlx2vm7IDLqMx6cd/usffMst7222hkh
+	j1ez+LgSYknu32xptqqKNUXxpSEcOg77gf2bOl3Fi/TUtsNtZPUYp7LlF/yv+WL0i1je0veMXLN
+	NOvGFB89NvFZZ0rNs1nZL1qraDds2SCbTtNyUSVZdWs/QMJbTs6axuQxdlcz+6BmYYVbFASVoTf
+	LHJUwsZMH5g4NtA1XW3MPBVun884AbJy3rPRpJov+srQ/m7VdkvsT2pzukLDXsC+97H70znCJq5
+	EubpeFuOiZ2SWe1LiIAGc6We/fKB5cR5w7zA31OkLkVNCtiLpzSr8bE+kt0nx3scPVLojAUWBNw
+	aliuKLtuc+C0J28JaB2JQMDPVqOWARHBiANIov+jLKvlJRLQEegPjUeZXLsxyobSlA+vt40a2Pj
+	Qu+LXH4Uvg48HrPkGgFJihP/hZITdXb2c3mwqg62+bE2x0sfrwdz+kzEJAaBfw/PyUJS+Iug9jD
+	ksJUw1iDKYu5wraXsv1xt3+Ub5MRQCXq5m7WFdoDQdpXQBB4m3dL4fSiDvZWyhy/QuU59hDyiz1
+	LqbTfsC75EpgiZqAxcq6GCvTx
+X-Received: by 2002:a05:693c:60d7:b0:350:2a5c:56c with SMTP id 5a478bee46e88-369d97a05d6mr1926432eec.20.1792741057920;
+        Fri, 23 Oct 2026 00:37:37 -0700 (PDT)
+Received: from ramen-dev-security-2.asia-south1-c.c.ramen-dev-345017.internal (90.156.200.35.bc.googleusercontent.com. [35.200.156.90])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-369d9d5e9edsm4200927eec.9.2026.10.23.00.37.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Oct 2026 00:37:37 -0700 (PDT)
+From: Anil Kaushik <anilkaushikwireless@gmail.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Harald Welte <laforge@gnumonks.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Simon Horman <horms@kernel.org>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	osmocom-net-gprs@lists.osmocom.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] gtp: Require 'CAP_NET_ADMIN' when joining the gtp multicast group
+Date: Fri, 23 Oct 2026 07:37:31 +0000
+Message-Id: <20261023073731.2436301-1-anilkaushikwireless@gmail.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <179273868210.3134.12145105670992560597@kernel.org>
+References: <179273868210.3134.12145105670992560597@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,136 +108,17 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261021065750.2069795-1-anilkaushikwireless@gmail.com> <179273868210.3134.12145105670992560597@kernel.org>
-In-Reply-To: <179273868210.3134.12145105670992560597@kernel.org>
-From: Anil Kaushik <anilkaushikwireless@gmail.com>
-Date: Fri, 23 Oct 2026 13:06:30 +0530
-X-Gm-Features: AclHuK_55cXWNO0jBsFGdH-QWTewaPnfJE6BaXbTxgMV5nW5-2xen-3RddkOEo4
-Message-ID: <CAG0Mgm-T=n2Zq_bqMNNY3Bc9w7yUg-NMcEjzkHOKM3+9yJjfTQ@mail.gmail.com>
-Subject: Re: [PATCH net] gtp: Require 'CAP_NET_ADMIN' when joining the gtp
- multicast group
-To: netdev-bot+sashiko@kernel.org
-Cc: pablo@netfilter.org, laforge@gnumonks.org, davem@davemloft.net, 
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
-	andrew+netdev@lunn.ch, horms@kernel.org, nicolas.dichtel@6wind.com, 
-	osmocom-net-gprs@lists.osmocom.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 23, 2026 at 12:28=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wr=
-ote:
->
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 0
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
+On Fri, Oct 23, 2026 at 06:58:02AM +0000, netdev-bot+sashiko@kernel.org wrote:
 > - [Medium] After this patch, the multicast group and GETPDP carry the
 >   same PDP-context data but are guarded by different checks.
->
-> --
->
-> gtp: Require 'CAP_NET_ADMIN' when joining the gtp multicast group
->
-> This commit marks the gtp generic netlink "gtp" multicast group with
-> GENL_MCAST_CAP_NET_ADMIN, so joining it requires CAP_NET_ADMIN in the use=
-r
-> namespace owning the network namespace. The goal is to stop unprivileged
-> users from reading PDP context notifications that GETPDP restricts to
-> CAP_NET_ADMIN holders.
->
-> > diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
-> > index 69fe5717846b5..e5ff1621ed620 100644
-> > --- a/drivers/net/gtp.c
-> > +++ b/drivers/net/gtp.c
-> > @@ -118,7 +118,8 @@ enum gtp_multicast_groups {
-> >  };
-> >
-> >  static const struct genl_multicast_group gtp_genl_mcgrps[] =3D {
-> > -     [GTP_GENL_MCGRP] =3D { .name =3D GTP_GENL_MCGRP_NAME },
-> > +     [GTP_GENL_MCGRP] =3D { .name =3D GTP_GENL_MCGRP_NAME,
-> > +                          .flags =3D GENL_MCAST_CAP_NET_ADMIN, },
->
-> [Severity: Medium]
-> Does this make the multicast group check the same as the one on GETPDP?
-> The commit message says:
->
->   GETPDP requires CAP_NET_ADMIN, but generic netlink lets any user join a
->   multicast group by default
->
-
-
-> All of gtp_genl_ops (NEWPDP, DELPDP, GETPDP doit/dumpit, ECHOREQ) use
-> GENL_ADMIN_PERM. genl_family_rcv_msg() checks it like this:
->
-> net/netlink/genetlink.c:
->         if ((op.flags & GENL_ADMIN_PERM) &&
->             !netlink_capable(skb, CAP_NET_ADMIN))
->                 return -EPERM;
->
-> netlink_capable() ends up in netlink_ns_capable(skb, &init_user_ns, cap),
-> so it needs CAP_NET_ADMIN in the initial user namespace.
->
-> genl_bind() checks the new flag against the netns owner instead:
->
-> net/netlink/genetlink.c:genl_bind() {
->     ...
->                 if ((grp->flags & GENL_MCAST_CAP_NET_ADMIN) &&
->                     !ns_capable(net->user_ns, CAP_NET_ADMIN))
->                         ret =3D -EPERM;
->     ...
-> }
->
-> Take a gtp device in a netns owned by a non-init user namespace, where an
-> init-ns daemon installs PDP contexts through GTPA_NET_NS_FD (gtp_find_dev=
-()
-> calls get_net_ns_by_fd()). gtp_tunnel_notify() multicasts to
-> dev_net(pctx->dev):
->
->         ret =3D genlmsg_multicast_netns(&gtp_genl_family, dev_net(pctx->d=
-ev), msg,
->                                       0, GTP_GENL_MCGRP, GFP_ATOMIC);
->
-> Root inside that container would get -EPERM from GETPDP and the dump. It
-> could still join the "gtp" group and receive every NEWPDP, DELPDP and ech=
-o
-> response notification. These carry the MS and peer addresses, the TEIDs,
-> and the TID and flow label.
->
-> When the UDP socket lives in the host netns, container root has no other
-> way to see the TEIDs and peer addresses.
->
-> Genetlink has no init_user_ns scoped GENL_MCAST_* flag. Making the two
-> checks match would need a core change, or moving the ops to
-> GENL_UNS_ADMIN_PERM if userns scope is the intended policy.
-> net/ipv6/ioam6.c already pairs GENL_ADMIN_PERM ops with a
-> GENL_MCAST_CAP_NET_ADMIN group in the same way.
->
-> This patch does block fully unprivileged users. The commit message also
-> says "in the user namespace owning the network namespace".
->
-> Could the commit message say that the multicast check is still weaker tha=
-n
+[...]
+> Could the commit message say that the multicast check is still weaker than
 > the GETPDP check?
->
+
 Right, it should. v2 says it: the group check is still weaker than the
 one on GETPDP, as genetlink has no multicast group flag for the initial
 user namespace, and this fix blocks the unprivileged users.
 
 pw-bot: cr
-> >  };
-> >
-> >  static void pdp_context_delete(struct pdp_ctx *pctx);
->
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/20261021065750.2069795-1-anilkaushikwireless%40gmail.com
