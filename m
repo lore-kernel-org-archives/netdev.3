@@ -1,98 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.161.49
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792778869;
-	b=Z0MTS+YvbydkHZSRzrLPbjY61TU77WQ7JuNvNabDe9kunr0JATEMBBFWChVOMsuh8DcQ
-	 jPtlc5UTwe2O76wI/YVEtvNY6VkEKfONS2aVg/dZ0I4crbM9mFPht38lVsq0sgvwFNgzQ
-	 m2I5GX3nv8qkW1BhyBjWGIRtM35xCpmSF3p7TTj93KLj8HToh1d5wQPUceX6mkm+8HEse
-	 cE8w491QaSHqOq04ShQqPMofZLXkwKKhiJOu4BcVX+nGCO8mSWLhwRWnf8yLExQnlr2C3
-	 v5SjXmfBPPxQBrHZ9pDT1UkX7t153RzCf4mi1NEwxglpGymilTTiibq8ZjRzgB5l+Dw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792778869;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.175
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792778987;
+	b=CnjMKB0im9lRAB6nERFfWM1iJSyRtFMLPNJN0aavTi1Rb+VVHyPG11vkgrzC/gfB0ZaH
+	 veBVTjup+yyL92Yb0x6d/igWCTcUy+GI1DT6JvzfqxDBbvfxcMczVbWENe8rZEmfI5JOP
+	 jakojzD78XQRlVJcbqWSOzuvth6ef8E99cZ52/D1KyKUq9WVyjwVg7NAuX+o4DwaW6AQp
+	 5qOK6p/IOvnvs1CEnA55J7M5s1N1Aau8RUq52FQCk0rSASwsOtjh1mQMvd99q0lWGZWDw
+	 RodiUZB4gQDQjT88BsmbmLFve4rOXh3ENwb+ZVqkF/DIcpwz1C64U7DKJCZ/9qBARxg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792778987;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
-	 In-Reply-To;
-	bh=7sC6xYpF4qIvHkwjX8HFmuHgTEf6DcO7YRZah/Pkcg8=;
-	b=EBRdizxwx0k2RtrhsQhH+oEyNV/PRDP03WydRaEdG+w9jxr41boN5Sy2A18/HRUCUfZ/
-	 x+dwMTwzPiQZRjgR+FI4lAE2OLUwTMmvdx4KOaW+KYM7AcmAo3vKxUBfeP/rWl57JYEfK
-	 9JO/cjaJT07ySqvXxzMXgstjocnpO2xSAkVIJV33w1DZCiUHJ0QOwhE/P0eAUoVz6CjWy
-	 4v4vRyLVD+GAALeqBAkJpuWtACuRQIMmuGwNmqCVEE69BjC+K7RQt34M5ot7dDJat9zBQ
-	 JZ+d6f7VqF5/RKa6GG3pGO742AEW6D3yGTn22MJXS4ImcQPqcrOc+0bkIHfQV+IiT6A==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cloudflare.com;
-	spf=pass smtp.mailfrom=cloudflare.com;
-	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=YbOQgjc4;
-	arc=none smtp.remote-ip=209.85.161.49
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=ufQQeasNhgcUlqoxNttXKmDaZXvBewhwENZeB+swFLg=;
+	b=x35+jOyuzpKKDqc9kK/JMIiTHXcSlRDd0N7KdY4yNgQ13YBTgyt8etGLNWfxSQDp0XyZ
+	 g3wrLMIHFvi+dsMNQpzsRTKTpESZDzdhELzznvBudM2K3qhy5cXkRPu4nCtIZnSJXDyTr
+	 iAnqwhuuDITITDXsRdQ0ko0YEbFqxFoaN6cSxYas0n9I5/6K99e1wGG3OgOt2Uq8VNyOy
+	 ps3VrN2aYb+4xsvIeesSYDU2rIpgBipfcwlY8zqSyJsWRYcB0x6zfWgHvwIhuSyOkzJir
+	 1ECfiRskJAdFxA8l4DveiJ4D2zl9KoR2CnrIXxGeIZO9HlOa8MMsTB+JMKz1HALWmjA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=mojatatu.com;
+	spf=none smtp.mailfrom=mojatatu.com;
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=tZOD+mWP;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.175
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D320C606A324
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 18:07:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D320C606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C7D606A31A
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 18:09:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F0C7D606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=YbOQgjc4
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-705cb6cedd5so1496118eaf.1
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 11:07:48 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=tZOD+mWP
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-8a31c892a1fso224706b3a.3
+        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 11:09:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792778986; cv=none;
+        d=google.com; s=arc-20260327;
+        b=fjZSNKuhZ8oiYnfzUKof2c8Y+unRsE983Pnkg8R7SD/9Tdjf7AtZ9S57+UjtPsS1Ht
+         jbGY8UV8dwd7kBNpET3/08z/4+RQqgRpM2Cz1PgmtH6snsZN9lnW7aYoAwcMHEqI+6KX
+         w+ofxWjHSndQrdake5sc7vY5WegveHImNMIPbT8nqbMqWUNEgXwF6ZRVAZ/x6XnDB9ty
+         n6wAQmhk1NVSN9q7VGRsff3HCas2qo8UxXh2lX5htBpW+4a6TgA4DP0ZQhb/IYXV0FmD
+         0nfB3ZqHH46Thsf8VoRIxOD6JVevhs/Jtz9SALGw00jRR0PQxjHXDDuk0ciqMFKzDNe7
+         EzPw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ufQQeasNhgcUlqoxNttXKmDaZXvBewhwENZeB+swFLg=;
+        fh=R3FVdBoXUJUYjlyCx59kyGFIfQfoDMCeoOPFXK1PBIQ=;
+        b=VRulJClixChNeaq2ut7e++TW7L9EPVHWH8YtbqsbGCjkl22MbjONR83NRV/JQKsS34
+         5tvvslOF78UZWYL8K4+3yhSgWWA+08X4pfu+c+lJnD/FqNx1y2cQac16HewblPrcMW4p
+         sHipqZ9RMRRKHg3Iaoowuqc1njbsgOKXLgOAUfCspunDu5ooKKxUWGdDKZI9rYz97G7m
+         wmNzZMSii+OheFis5DxQ89BYvNltjTlsgtrgX2UKpaVMaQSPBkQR2RG6T6PS+V6Itfwd
+         rJUNmRJZRAE+0Nl/ialh1hSaJSkO12TPcOPwJdxjVxseAtemPh2Bq/RFxhegfvBIuPtV
+         jLGQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1792778868; x=1793383668; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7sC6xYpF4qIvHkwjX8HFmuHgTEf6DcO7YRZah/Pkcg8=;
-        b=YbOQgjc4x1mayqmHu/1DIhdmnHsTtqKNzcWPHjcm4G9enyTTzfGwLAKthnLMUfZWdd
-         NHOtOKtb5CTDTYjkuQrLy/rAbXq6DBRb6Q8iErR0BU1K4ONaPQCz+FTkDS8tk57FgrAt
-         Jdan14iLXv17z2qHtgZL7ANme4ZIMBCX7GLcEwdBZUqXrs7UvJujl63GrxEr1BLlWlnT
-         TPQKRAiV7UqBd+9aNPecCXrbYyGCz6aTU361yFb9X5UegCfn5xVLAPbKAFNkHYYIrtw/
-         pop0U7wkRKyUr6Yp46khVXq3PxowZwVxxzOaT95z/7NbswY/BM+4te3StMv6v6joncjE
-         OBzA==
+        d=mojatatu.com; s=google; t=1792778986; x=1793383786; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ufQQeasNhgcUlqoxNttXKmDaZXvBewhwENZeB+swFLg=;
+        b=tZOD+mWP6IHNBHgc87LVL3lXwgEPXc3rr7H5srdZ+OG/y3OMMebAxdNe8j4hO/gkmg
+         NRZkhY8yT3UBtypXBKaXsj82zL0qIebAHXBBUTR1VwZwvovz6u8V0M7CkaKi8nm/8khN
+         4X3gpHu0AoPBSQCsf43ig5pueV2EeFJD7AME0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792778868; x=1793383668;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=7sC6xYpF4qIvHkwjX8HFmuHgTEf6DcO7YRZah/Pkcg8=;
-        b=wpBOd8tvTxY0uWikdzC7B4gH4cuYny3gSPiHHbZuu3NUnawFiJrftUD03FOa6nzBq7
-         Peb0iMRHQFrNvHCNVILgeWA5K01eh0tDPgytBcQYckZb+mPCHFt1vdxX3taidi4W+2O1
-         jx9SeK+N5123rcocFpq7D21wZRDqwaVvas/E5JHGBPTfHq0/xIP8eK7UH7MZMCHXDeVZ
-         0FN3NqXlULUvM2h/s7mPdi4DNrtO+tFJgPn5EcB8M9DkLeAQUwzNqoDF0FakPbPT/OzO
-         F2CLmiJEha2Ui+8em+2k/1FQoALeaBExZU6isyM8fvZDNQVzoII2awpefVZ/3VuG9jK3
-         SGgA==
-X-Forwarded-Encrypted: i=1; AKwUvByot3BBYF9bp4cG7UzfNqPsieSfc8YEHUmErE/ncFWpF6H7Pff/qVn06OrZv3swSEfSpWcuBZU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJdi7PQW/22zSp0hUASQeR2SxsPeHUHyKDGhKkHSstUG/R9h7nE
-	aTHACtyqSqWfJlXWe4Jo8U/CwtIFqNxlWb36UofTYn1gqAZR/B71xDmYFKvR2EEyoLs=
-X-Gm-Gg: AYBFou0zR16dVOoKbvPBXzUv299L0aymbNmIiLvN8C3ZqpcHTSud7ktxz9u1BbizNs/
-	OsnRglunqiw8kn1RAb4ME361LOvEnUCLnD9MzO3CZ6Cz4aI3kwZUDHQ1RER5RMygtjj14pAzk9+
-	NK+yOsyIykkC6n4flcpXQst5B1LpQK5Pifp5gBxu5zM3igNxqOJEEOasZ4/jtJ7PBu+4naFAk2z
-	t7rEQnT3ScCsUgpQCXX+YOYuEK1nOwLWJic/3ZVWeFmz5+cSXeCAqYA0qWaD+pr+5iRlTHWKh4V
-	aykn5BPAr6kyiDZjAEpdtW2D7FtE1VThE3gTgwvZvsZKz1UidQDbXyAPhnRtSIDpyz3RmUxx5P8
-	LPZpYBnoQxteAC0LEbEunlwS4+CXq4Zp28IbqQtC0gP4/5YykIe5hOpjJd1r/8DSgokDYCWry3G
-	ObL7+aYLafqGhpoF8nzlrEQfpOXu3uSlKTkRNlFemOc1DYeKXJWrlRZtMzwq0pYsidAbfKIHpEH
-	c3KvAXYkYcsYpKCGczH2AB6v2rWk/EFclIGYRw=
-X-Received: by 2002:a05:6820:4619:b0:709:a86c:7c68 with SMTP id 006d021491bc7-70b88a82b37mr1271587eaf.31.1792778867656;
-        Fri, 23 Oct 2026 11:07:47 -0700 (PDT)
-Received: from 20HS2G4 ([2a09:bac6:bf21:1923::281:7a])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-70b9ae9604asm542486eaf.9.2026.10.23.11.07.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2026 11:07:47 -0700 (PDT)
-Date: Fri, 23 Oct 2026 13:07:44 -0500
-From: Chris Arges <carges@cloudflare.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, 
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
-	Phil Sutter <phil@nwl.cc>, Jason Wang <jasowangio@gmail.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, virtualization@lists.linux.dev, 
-	Max Krasnyansky <maxk@qualcomm.com>, Rusty Russell <rusty@rustcorp.com.au>
-Subject: Re: [PATCH net v6 0/5] more virtio-net csum hardening
-Message-ID: <atuiK4g28D7q22QO@20HS2G4>
-References: <cover.1792768096.git.mst@redhat.com>
+        d=1e100.net; s=20260707; t=1792778986; x=1793383786;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ufQQeasNhgcUlqoxNttXKmDaZXvBewhwENZeB+swFLg=;
+        b=U1rCcL8JjA6PN+29q/rZXuATYIenCtUdmcgFm9hdZZPl5iBjnbndgZqzgFT3uJzase
+         xsoZKIWoHyJjPe1Xv6oblVFRFLigLc+G1fuTKP+/3NSuDbxdaUE5AHcZyTJBUD802jr4
+         dWwbAXcKH1w+a8M/d30v4/Kwum8HuwcDpkbODW2s3jXlFSae7f6D1Gm9EqNju4UdtJBt
+         8Mdu9jiX9GV+/Jc+FBxriLbW+eyTwhSFzpcnQqWOT6c930IBs+RefGEzsoLS8kpiXPmK
+         wxjbvNT5yiknPiXWrLm/3D2WKSoVq3gRsShkaL4T+KljwkoOiL1ZdCG/sRwb+waP2CY5
+         VDeQ==
+X-Gm-Message-State: AFq9FYKQFeR7vgbqKdXEzAvnGYYOg2+Bu2JxW+NoiRIPjMY7WNY/tmQ5
+	rVWxj6ADO3LpokygVPXmCEmFJN5N7C0uNI3cw0PMaigji2TcGvMJXBiGI/94y8arivDc4dNTIsJ
+	ALh++7FKNwe7acy0WrbLQe7RdnXVeawf499vukYR7
+X-Gm-Gg: AYBFou1l2lmT/+S1eCElkfhBKLYr2H5UTt3/QWRP+4pfBlRXBuBanrR0tQMbNAc9VM2
+	JL1faF+YCTis6X6M5Lvg2ZRx21zPjTgFp/XDDd0IiXEi4kSSTS9wsZ479sZDuUvZSod2wkIdkbx
+	aOvdn5gQ6Mu8xAuaV/sWH/ZBhnyZPffV9UcBnBhOsE1Jn7qcaVWH9U36miMKIeOIBotY8Y4Jomf
+	ALInLEqoZfzIEf2l66ZawYHBCs3WhKZZ5DjiVcVzHpx2OfeZqXgK22kISzqWoTEdmx1ccio7f+Q
+	U7Uhar596uvyRA72BrFsPN2XxmDGFn/d7KuWyxE3ZPnIArN0II1QTlaCE4YPAsBO2ppQViDCS+g
+	LOt/67Ac7BdllgKkmCEtqmlo/moinez+/AaVdvA2nqojZxKTNMSZTlmI22z0FIusO0JbnbAwIM5
+	MK5a2uVz+aSAV5ucI=
+X-Received: by 2002:a05:6a00:2d91:b0:89e:f8e9:205e with SMTP id
+ d2e1a72fcca58-8a369072e1bmr56680b3a.40.1792778986330; Fri, 23 Oct 2026
+ 11:09:46 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,220 +101,107 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <cover.1792768096.git.mst@redhat.com>
+References: <ACT-N6N4.v2.r0.20261022191829@mojatatu.com> <ACT-N6N4.v2.r0.20261022191829-1@mojatatu.com>
+ <ACT-N6N4.v2.r0.20261022191829-2@mojatatu.com> <willemdebruijn.kernel.26d1ddb3bd2ae@gmail.com>
+In-Reply-To: <willemdebruijn.kernel.26d1ddb3bd2ae@gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Fri, 23 Oct 2026 14:09:35 -0400
+X-Gm-Features: AclHuK8HN_xi05mcVg0MDRYHrOglk-5vDJvBmXSDY9jfeHaTyXNLXPV37NRYe9A
+Message-ID: <CAM0EoMmwNCHVNW0=Z_JWX_ZcT5Y1po1GRVScddOsevEvL8D-6w@mail.gmail.com>
+Subject: Re: [PATCH net v2 2/6] net/sched: act_mpls: pull the inner Ethernet
+ header after POP
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
+	Victor Nogueira <victor@mojatatu.com>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Martin Varghese <martin.varghese@nokia.com>, 
+	Pravin B Shelar <pshelar@ovn.org>, Vega <vega@nebusec.ai>, 
+	John Hurley <john.hurley@netronome.com>, Willem de Bruijn <willemb@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2026-10-23 11:09:13, Michael S. Tsirkin wrote:
-> 
-> Okay this seems to be converging.... But sashiko did find some issues I
-> thought are best fixed. Specifically I thought of a better way to handle
-> short gso in a tunnel - just clear tunnel gso! As a side effect we now
-> fix up the checksum for these dodgy packets like we did before, instead
-> of a drop. Good. And more false positives that prompted me to write a
-> bit more comments. So here goes.
-> 
-> Apologies for reposting so frequently, I know netdev bot will be unhappy
-> with that.  But Paulos's report made a lot of publicity, there is a lot
-> of people looking into this, so I feel there's value in defending
-> against all this class of issues sooner rather than later.
-> 
-> The issues were mostly found by code inspection, but all reproduced by
-> me in a VM.
-> 
-> ------
-> 
-> As reported first by Paulos Yibelo <habte.yibelo@gmail.com> (after which
-> others, credited below, found more ways the bug can affect users):
-> 
-> allowing untrusted hardware to specify csum start/offset for
-> CHECKSUM_PARTIAL was not a good idea, because, if it edits the packet
-> outside the actual checksum, and depending on the setup, the networking
-> stack could be looking at the packet both before and after the edit, and
-> seeing different results.
-> 
-> Previously, commit 6785011f8b16 ("ipv4: validate checksum_start before
-> completing checksum") validated all known instances where this
-> causes the most grief, but the real fix is to make sure
-> that either only actual checksum fields are ever edited,
-> or the checksum is completed before the net stack looks at it,
-> so it is always consistent.
-> 
-> 
-> This basically goes back to
-> what we did before f43798c27684 ("tun: Allow GSO using virtio_net_hdr"),
-> except in a narrow list of specified known good cases.
-> 
-> 
-> Summary of the patchset:
-> 
-> These are probabably net material (and seem to be too big for stable,
-> or I would recommend backporting there, too):
-> 
->   net: account for ingress-resolved virtio net hdr state
-> 	- accounting, not the fix itself, dependency of the fix
->   um: vector: trim skbs before verifying the header
-> 	- fixes the um receive path: without it the checksum would be
-> 	  completed over the unreceived tail of the buffer
->   virtio_net: parse tunnel csum_start little-endian
-> 	- bugfix, a dependency of validating the header
->   net: resolve uncommon partial checksums at ingress
-> 	- fix itself
->   net: add a sysctl to opt out of virtio net hdr checksum validation
-> 	- reducing risk of the fix by adding a sysctl to disable it
-> 
-> These are cleanups, can be deferred to net-next, too:
-> 
->   net: add ip4_parse()
-> 
-> Fixes: f43798c27684 ("tun: Allow GSO using virtio_net_hdr")
-> 
-> Changes since v1:
-> 	- reorder patches to fix bisectability, addressing
-> 	  a comment by Björn Töpel.
-> 	- code refactoring, different patch splitup,
-> 	  a sysctl knob to disable as suggested by Willem de Bruijn.
-> 	- fix a bunch of minor issues spotted by LLMs
-> 
-> 
-> Changes since v2:
-> 
-> virtio_net: parse tunnel csum_start little-endian
->   - new patch. correctly parsing the header is a dependency
->     of validating it, otherwise i do not know what to validate
-> 
-> net: account for ingress-resolved virtio net hdr state
->   - make rx_csum_sw counter 64 bit so it won't wrap
->     (spotted by LLM review)
-> 
-> net: resolve uncommon partial checksums at ingress
->   - tunnel fixes to bugs noticed by Willem de Bruijn and
->     Chris Arges
->   - restore the csum_offset checks as suggested by Willem
-> 
-> net: add a sysctl to opt out of virtio net hdr checksum validation
->   - the knob is no longer writable by root inside a user
->     namespace: changing it now requires capable(CAP_NET_ADMIN)
->     suggested by Willem de Bruijn
-> 
-> net: add ip4_parse()
->   - comment converted to kernel-doc format (Willem de Bruijn)
-> 
-> um: vector: trim skbs before verifying the header
->   - new patch, found by code review
-> 
-> 
-> Changes since v3:
-> 
-> net: account for ingress-resolved virtio net hdr state
->   - um: vector: honor virtio net hdr conversion failures
->     folded in (Björn Töpel)
->   - count on tap and virtio_net, too (Willem de Bruijn)
-> 
-> net: resolve uncommon partial checksums at ingress
->   - walk the frame on loopback, too: loopback_xmit() runs
->     eth_type_trans() on it (Willem de Bruijn)
->   - return the mismatch handling directly, GSO is implied in
->     the tunnel path so drop there outright, and fold the helper
->     into its one remaining caller (Willem de Bruijn)
->   - read the IP version through struct iphdr (Willem de Bruijn)
->   - document the ipv6_find_hdr() flags choice
-> 
-> net: add a sysctl to opt out of virtio net hdr checksum validation
->   - renamed to virtio_net_hdr_validate, in case more validation
->     is gated by the same knob later (Willem de Bruijn)
->   - point .data at the value like the neighboring entries,
->     the per-netns registration rebases it, and the handler reads
->     the value directly - no ctl_table copy (Björn Töpel,
->     Willem de Bruijn)
->   - check the opt-out before parsing: with the knob off, packets
->     the parser cannot handle were still dropped (Willem de Bruijn)
->   - include virtio_net.h in net/core/dev.c so the static key
->     definition sees its declaration (build warning reported by
->     Jakub Kicinski)
-> 
-> net: add ip4_parse()
->   - add the missing kernel-doc Return: section
->     (Jakub Kicinski)
-> 
-> 
-> Changes since v4:
-> 
-> net: account for ingress-resolved virtio net hdr state
->   - count on tun only: dropped the tap, macvtap, ipvtap and
->     virtio_net counters (Willem de Bruijn)
->   - the driver side branches are in their final form here now,
->     moved from "net: resolve uncommon partial checksums at
->     ingress" (Willem de Bruijn)
-> 
-> net: resolve uncommon partial checksums at ingress
->   - no longer touches the drivers (Willem de Bruijn)
->   - a packet too small to be GSO: ignore the tunnel GSO request,
->     same as plain GSO ones, and complete wild metadata in place
->     (sashiko)
->   - document the zero copy interaction (sashiko)
->   - honor a preset skb->protocol on ethernet: the stack uses it,
->     except on loopback which re-parses the frame (sashiko)
-> 
-> net: add a sysctl to opt out of virtio net hdr checksum validation
->   - document the netns lifetime requirement (sashiko)
-> 
-> net: add ip4_parse()
->   - pull the whole header, options included, so that the
->     transport header offset is within the linear data
->     (Willem de Bruijn)
-> 
-> 
-> Changes since v5:
-> 
-> net: resolve uncommon partial checksums at ingress
->   - read both skb->protocol and the frame ethertype: do not
->     validate when they disagree, instead of preferring the
->     preset protocol; same check after the IP version inference
->     where there is no L2 header (Willem de Bruijn)
->   - pull the IPv4 options in the helper as introduced, with the
->     transport header offset computed before the pull
->     (Willem de Bruijn)
->   - fold the trivial protocol calculation cleanup, formerly a
->     separate patch, in (Willem de Bruijn)
-> 
-> net: add ip4_parse()
->   - the options pull moved to the helper introduction in
->     "net: resolve uncommon partial checksums at ingress"
-> 
-> Tested: full suite on the final tree, tunnel included.
-> um part compiled only.
+On Fri, Oct 23, 2026 at 12:09=E2=80=AFPM Willem de Bruijn
+<willemdebruijn.kernel@gmail.com> wrote:
+>
+> Jamal Hadi Salim wrote:
+> > The issue:
+> > act_mpls POP can leave the inner Ethernet header in a page fragment aft=
+er
+> > skb_mpls_pop(), either on an L3 device (mac_len =3D=3D 0) or chained af=
+ter
+> > act_vlan POP_ETH.  A following eth_type_trans() can then BUG in
+> > __skb_pull().
+> >
+> > The Fix:
+> > After the pop, if the original MAC header is shorter than ETH_HLEN, pul=
+l
+> > the inner Ethernet header into the linear area and drop only when
+> > pskb_may_pull(skb, ETH_HLEN) fails.  skb_mpls_pop() does nothing when t=
+he
+> > skb was not MPLS, so no separate state is needed.
+> >
+> > Conditions to recreate the bug:
+> > - egress tc filter on lo: action vlan pop_eth action mpls pop
+> >   (chained), or on an L3 device where mac_len =3D=3D 0.
+> > - AF_PACKET SOCK_RAW with PACKET_VNET_HDR, hdr_len=3D28, and a non-line=
+ar
+> >   eth / mpls / inner-eth frame.
+> > - The inner header is in page frags; a following eth_type_trans() can B=
+UG
+> >   in __skb_pull().
+> >
+> > Fixes: 2a2ea50870ba ("net: sched: add mpls manipulation actions to TC")
+> > Reported-by: Vega <vega@nebusec.ai>
+> > Link: https://lore.kernel.org/r/40fe2d7dfce13411bfbe9271c0f7c54fb7e88e3=
+b.1782548651.git.bronzed_45_vested@icloud.com/
+> > Link: https://lore.kernel.org/netdev/CAL4WiiqSMdYQYeeW0Fk_GK6ekR4xiS4zP=
+rGKrbB9wZknpqf1-w@mail.gmail.com/
+> > Cc: stable@vger.kernel.org
+> > Suggested-by: Jakub Kicinski <kuba@kernel.org>
+> > Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+> > Suggested-by: Eric Dumazet <edumazet@kernel.org>
+> > Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+> > Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> > ---
+> >  net/sched/act_mpls.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> >
+> > diff --git a/net/sched/act_mpls.c b/net/sched/act_mpls.c
+> > index 4ea8b2e08c3a..5363bca892fb 100644
+> > --- a/net/sched/act_mpls.c
+> > +++ b/net/sched/act_mpls.c
+> > @@ -79,6 +79,8 @@ TC_INDIRECT_SCOPE int tcf_mpls_act(struct sk_buff *sk=
+b,
+> >               if (skb_mpls_pop(skb, p->tcfm_proto, mac_len,
+> >                                skb->dev && skb->dev->type =3D=3D ARPHRD=
+_ETHER))
+> >                       goto drop;
+> > +             if (mac_len < ETH_HLEN && !pskb_may_pull(skb, ETH_HLEN))
+> > +                     goto drop;
+>
+> Is this first condition needed?
 >
 
-I tested v6 patches, they address my original set of test cases.
-I did not test UM.
+That was me conjecturing from Eric saying in v1 "...the check can only
+matter when the original MAC header is short.."
+Since i have to send a v3 (Thanks Eric;->) I will remove it
 
-Tested-by: Chris Arges <carges@cloudflare.com>
+> More importantly, can it hide a bug?
+>
 
- 
-> 
-> Michael S. Tsirkin (5):
->   net: account for ingress-resolved virtio net hdr state
->   um: vector: trim skbs before verifying the header
->   virtio_net: parse tunnel csum_start little-endian
->   net: resolve uncommon partial checksums at ingress
->   net: add a sysctl to opt out of virtio net hdr checksum validation
-> 
->  Documentation/admin-guide/sysctl/net.rst |  19 ++
->  arch/um/drivers/vector_kern.c            |   6 +-
->  arch/um/drivers/vector_transports.c      |   4 +-
->  drivers/net/tap.c                        |   4 +-
->  drivers/net/tun.c                        |  41 ++-
->  drivers/net/virtio_net.c                 |   2 +-
->  include/linux/virtio_net.h               | 319 ++++++++++++++++++++++-
->  include/net/netns/core.h                 |   1 +
->  net/core/dev.c                           |   7 +
->  net/core/net_namespace.c                 |   1 +
->  net/core/sysctl_net_core.c               |  50 ++++
->  net/packet/af_packet.c                   |   4 +-
->  12 files changed, 441 insertions(+), 17 deletions(-)
-> 
-> -- 
-> MST
-> 
+What kind of bug?
+
+cheers,
+jamal
+
+> Simply running pskb_may_pull is cheap if no pull is needed.
+> >               break;
+> >       case TCA_MPLS_ACT_PUSH:
+> >               new_lse =3D tcf_mpls_get_lse(NULL, p, !eth_p_mpls(skb_pro=
+tocol(skb, true)));
+> > --
+> > 2.43.0
+> >
+> >
+>
+>
