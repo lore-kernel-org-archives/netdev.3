@@ -1,54 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792782054;
-	b=0wXr4I4SjEOlv4UYr57EAuZqBMtggTP3eFbLq9tDSJXMr7dpAZmTY9FJ7stBYmOLEWS/
-	 r0IgcLAsHImghcO3loTpauRFvecE3u08nghs4ApPKi0RJp5eDFoKCrYn5Dm2dmazLCDcV
-	 02AQIYSImyISYJ1/26f/1PNmQTQhpRCeHV0MyAYVM2UbbGESUcg5km+1NUfJECLhk5g4/
-	 5VVybU/1PfjP+TKh6zsJpQ8ldsHQrxCke0pON+6xvTM4eGxRbBcZQDjEvbVT7jK3FaeRL
-	 WVxtVufDFeaxhy8lPzOeHy3NGKseMnj7asNqUQNIRwPS+xaUJWRbIcYR5ThZXdj8/SQ==
+	t=1792782921;
+	b=jrSKSY6l8MX5/fggLOrcdNfRV2VsLBSRnkf8VAj2sKft9FZAkObspfjG1nvT5aSaZAr0
+	 U+BiUTIVddcpiRj4UN9MGqkQqM+GCPw4BBkyLGa4Nl16ueXMD0tTXJkuhB+4b/eA3dCnu
+	 rZj4/+I/nX2Bq51g7XEN5L7yaKrK0u4eC3dcOzaoXZiHPzttg/Rp3n3O8pz6NbA+LcAz3
+	 WgdPgEiBITh0caVuc91qRunxvMGgTqMLQ2VF96VmRMl0qmAKcl9fgQJ2zUS9szrNIs5iL
+	 YkwCh1uMhO2K4JFNnHpCIZ+vJRVkb7zoAyQYvAOAD//C4SoU8/nhADy4sXOk4FSsc3Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792782054;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:MIME-Version:X-Received:Date:
-	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
-	 Subject:From:To:Content-Type;
-	bh=ypskTyf/rTFIdElsne8kBI5ZkSZ1ilBW16848j0mABI=;
-	b=V1pluSl02ZY9vBvG3fYJKbHwSisn5Q3ir87AhbHfvnFRbyX4OxW3PQQOk7/uxgz6H7RE
-	 WOI/1nNi6cXKazD0mBjlmucE1k2bAQiD/VNwht0adLFclrK8KHBz3czGkiTznmcgKVQVe
-	 neCjZMCyEkuQy4/yiBfpqAVzctWDESwV4+e97qiCxNPTBE1Myd7TPrTjv3AselxmEaEX4
-	 x4ZuyAjkemL+Ew3OnSBF0wJIZj4O9o2D2Pbih6FAyBC3SzfGo7A+rTTJiNq5NPfO9I7mg
-	 rtTwp1b+QQYln1cxR/fdWhW0rDh593ChxQKNk7R1hm7BGUS3oawX10bScRwFUuQz47A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792782921;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
+	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=VrWeh5Ivr8SIscu8A3ccoxULSjeZPMCk6NPGAMBpCDc=;
+	b=QXAysWUconvHVWASCySLTd5Jbj+YHB5uDLscurR7Z0BgZnQg4MyB6CUNGh//u0CN0AsS
+	 Pm2TzhP1YluS/OJg0pZ2c0g1mPtGnyva9xnUZfDGlT55EQCV1EJekUF1cOi/Nos3r5qGH
+	 mOV+SEoQ6smge0yerifztcVmSvlVlpHKdHt6t/dalihMO7xp6yueJAMCZxJZh6B6pjBcN
+	 ACDsJ+Vd+Yux1pQLquCoXHPJ0RHHgQ+rwmMQySJDHpgn9m16uyn7EOrtZbmLMnqlZQjNv
+	 apM6Di2BxMjeYiM5/FjJQaCbXIv95YpoEcuugtNzQ/mrLk6HAJ9tFGqZTzOf/b3aYRQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=fail header.from=syzkaller.appspotmail.com;
-	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	arc=none smtp.remote-ip=209.85.167.198
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=mOSRy9Kf;
+	arc=none smtp.remote-ip=209.85.214.199
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516DC606A31F
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 19:00:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 516DC606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4a45b3f0bdfso1966575b6e.1
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 12:00:39 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D75E606A325
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 19:15:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3D75E606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=mOSRy9Kf
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2ea0fe07201so8194595ad.1
+        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 12:15:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792782920; x=1793387720; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=VrWeh5Ivr8SIscu8A3ccoxULSjeZPMCk6NPGAMBpCDc=;
+        b=mOSRy9Kf1kt3cRXtKvthqwrKJwOSJ0ngJech3E7a57k/BvLcKPUB3NH8GzcTAG+LCt
+         ZI8oN4YULSCmgeEmZlP7jpbEORcd+QOOK0AeefTdIDBCS7K7ESnhAEefKpwKxs4GmB01
+         fVddGkegEEUGjIKyInandK0w78qQcuX2hMvvRXqnhhUwsbrRhjvGP5vIeQlBXouoquXQ
+         Cri8Y5cNl8jIiBX1T51NKAhoQqyfW7LOcUD0cuq/XQ2yhEns75e4vmfkbrtmxuMNJ6mX
+         5gsttr1VDaDR012hDjC7NIpFdeXMDh7Uaksh2h3DYWIRldBN/4dO5C0Tpe3IEC06atJq
+         p7zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792782038; x=1793386838;
-        h=content-type:to:from:subject:message-id:date:mime-version
+        d=1e100.net; s=20260707; t=1792782920; x=1793387720;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ypskTyf/rTFIdElsne8kBI5ZkSZ1ilBW16848j0mABI=;
-        b=tRmmP5cV1xW6k3UmOaZqDzqTJLLiwNyZl2LkrZAn7MGqTV3ja7ZVR9yCl+2tSa/xLu
-         553K9b5vE5PtOV3OUKqW3vk7/7cgEeOtWUrIZPamgf03kqfqpxg7czGZytSjCl4Ndhkm
-         JqYYSBdW17LR9QNf5ovpbyJpi/2nxYUFAEhCTL8nR9V+jPjl/KTLt9/AS6CHx4zNEqun
-         VemrwSmVdlidsfcqvfYquwEolK8C1tJcINLjd/VQBECDl+FMs3dnw4ECv+UaKCylv8SP
-         UKhms4FO9uotCp6zMtxHYDYvu5RCrtFEShXVb87P7eZTBAMUlPphSVJN0EWZjXaxp5ab
-         RM5w==
-X-Forwarded-Encrypted: i=1; AKwUvBxpLYqW29DRZjMf8XCHR/OchXi+eIrmQn88p+OVAT6IVDIQWqXpVrPLYT3tKxpUxGFeSkgYf+s=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL7DNQ78TCSwLVh9gIRcTPTYQJUDTBpRNfmKc1ylk2JD4E0C2rF
-	ck+tFFjQAHcsHCgLcs492BI7hkU4J6XW91XRoETQN1CMDxr0n3eRUNnWhAQ9I6upXF7m2UPR6IY
-	5745IpwRlRroilmR7GjxbwwROnog7HwRZKQfMQHR9DpHdWYSQ5aFe1muZFnU=
+        bh=VrWeh5Ivr8SIscu8A3ccoxULSjeZPMCk6NPGAMBpCDc=;
+        b=e4sukuOxpql2xEMj92HN+lMv65NS7u6jlIxdC7QV9Bbu5OkMa+3lcMmIMELOWGQVd0
+         ZLtnhkbwefVTqw7P7uXiyu8nzm5q5GiGs+cYOn6AD1ePSwUlvKfwdj7PB3+Bpk4FRNPP
+         q+LV20X+4bGsgDJDuZD5hvf9ylJoxFr5daz31GrE5M8of+MVY1GZ43Bv3Nq4lOUNHDJw
+         ImiaSi/8XvMM6zgIXloh15v+WmLO4RX4FkT+P3sygECro2OFqk4mRM7bP5ah7ZB1pVoB
+         VKERBUoSjH+lYnjXjidaDhKdK4vu19tjQkPI4Myj+Q/5ZYaatacDtWsVtppJrBZsq8yS
+         hXYA==
+X-Forwarded-Encrypted: i=1; AKwUvByhRVP9sLqL+l3FwCfZgK75mblHT30PdUJIg9c+gr4TQVxY/KL18pbT/1kPLKjAIIxdfPpKmgo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKSCLNZbGx2p6ieY2lIaOsr7lRF3wJNzbJnxHmp9JNe8gxtDQec
+	aBvK6qT2cXKsaIzsVHzZogYmJ+wJXm1ow9BT0DzFO62EzjJZBTaF5qXSUC+xC8pijLrt5BiptUM
+	pY6uL7A==
+X-Received: from plot4.prod.google.com ([2002:a17:902:8c84:b0:2df:8ce6:d461])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ccc8:b0:2df:9a7e:d41b
+ with SMTP id d9443c01a7336-2ea7ceebb6emr27478895ad.37.1792782920211; Fri, 23
+ Oct 2026 12:15:20 -0700 (PDT)
+Date: Fri, 23 Oct 2026 19:15:12 +0000
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -57,50 +75,35 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-X-Received: by 2002:a05:6808:1521:b0:4c3:9892:96c3 with SMTP id
- 5614622812f47-55c00261ca8mr87453b6e.22.1792782038333; Fri, 23 Oct 2026
- 12:00:38 -0700 (PDT)
-Date: Fri, 23 Oct 2026 12:00:38 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6adbaed6.67317f00.38c4bc.001b.GAE@google.com>
-Subject: [syzbot] [net?] WARNING in nsim_fib_event_nb (2)
-From: syzbot <syzbot+751b587577d0ebca10f2@syzkaller.appspotmail.com>
-To: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
+Message-ID: <20261023191517.607834-1-kuniyu@google.com>
+Subject: [PATCH v1 net] ipv6: Protect multiple routes insertion by table lock.
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
+	syzbot+751b587577d0ebca10f2@syzkaller.appspotmail.com
 Content-Type: text/plain; charset="UTF-8"
 
-Hello,
+syzbot reported the warning below. [0]
 
-syzbot found the following issue on:
+While call_fib6_multipath_entry_notifiers() is called locklessly,
+fib6_siblings could be changed concurrently, leading to the
+warning (and later null-ptr-deref).
 
-HEAD commit:    d8674294aefe Merge git://git.kernel.org/pub/scm/linux/kern..
-git tree:       net-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=14b756d1580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=97c5d7b57925a2ec
-dashboard link: https://syzkaller.appspot.com/bug?extid=751b587577d0ebca10f2
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12b756d1580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11828f15580000
+Let's protect multiple routes insertion with tb6_lock.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/4b49acf0cec9/disk-d8674294.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/2d7502d8747e/vmlinux-d8674294.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/706ef88ff29f/bzImage-d8674294.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+751b587577d0ebca10f2@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
+[0]:
 i != fen6_info->nsiblings
 WARNING: drivers/net/netdevsim/fib.c:831 at nsim_fib6_event_init drivers/net/netdevsim/fib.c:831 [inline], CPU#0: syz.0.157/6279
 WARNING: drivers/net/netdevsim/fib.c:831 at nsim_fib6_prepare_event drivers/net/netdevsim/fib.c:947 [inline], CPU#0: syz.0.157/6279
 WARNING: drivers/net/netdevsim/fib.c:831 at nsim_fib_event_schedule_work drivers/net/netdevsim/fib.c:1003 [inline], CPU#0: syz.0.157/6279
 WARNING: drivers/net/netdevsim/fib.c:831 at nsim_fib_event_nb+0x1029/0x11d0 drivers/net/netdevsim/fib.c:1043, CPU#0: syz.0.157/6279
 Modules linked in:
-CPU: 0 UID: 0 PID: 6279 Comm: syz.0.157 Not tainted syzkaller #0 PREEMPT(full) 
+CPU: 0 UID: 0 PID: 6279 Comm: syz.0.157 Not tainted syzkaller #0 PREEMPT(full)
 Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
 RIP: 0010:nsim_fib6_event_init drivers/net/netdevsim/fib.c:831 [inline]
 RIP: 0010:nsim_fib6_prepare_event drivers/net/netdevsim/fib.c:947 [inline]
@@ -150,28 +153,78 @@ R10: 00000000000000fc R11: 0000000000000246 R12: 0000000000000000
 R13: 00007f334ae26128 R14: 00007f334ae26090 R15: 00007ffd96688aa8
  </TASK>
 
-
+Fixes: 169fd62799e8 ("ipv6: Get rid of RTNL for SIOCADDRT and RTM_NEWROUTE.")
+Reported-by: syzbot+751b587577d0ebca10f2@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/6adbaed6.67317f00.38c4bc.001b.GAE@google.com/T/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+syzbot found a way to abuse 1ms sleep in netdevsim and pile up
+10000+ routes w/ the delay, so it might report this with this
+fix applied:
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+  unregister_netdevice: waiting for syz_tun to become free. Usage count = 10
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+I have two patches to fix it, but I think this is net-next
+material.
 
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+  https://syzkaller.appspot.com/text?tag=Patch&x=15923c21580000
+---
+ net/ipv6/route.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 94e5ef1c4f83..5926ddbd4349 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -5416,6 +5416,7 @@ static int ip6_route_multipath_add(struct fib6_config *cfg,
+ 	struct fib6_info *rt_notif = NULL, *rt_last = NULL;
+ 	struct nl_info *info = &cfg->fc_nlinfo;
+ 	struct rt6_nh *nh, *nh_safe;
++	struct fib6_table *table;
+ 	struct fib6_config r_cfg;
+ 	struct rtnexthop *rtnh;
+ 	LIST_HEAD(rt6_nh_list);
+@@ -5502,10 +5503,12 @@ static int ip6_route_multipath_add(struct fib6_config *cfg,
+ 	 */
+ 	info->skip_notify_kernel = 1;
+ 
++	table = rt->fib6_table;
++	spin_lock_bh(&table->tb6_lock);
++
+ 	err_nh = NULL;
+ 	list_for_each_entry(nh, &rt6_nh_list, list) {
+-		err = __ip6_ins_rt(nh->fib6_info, info, extack);
+-
++		err = fib6_add(&table->tb6_root, nh->fib6_info, info, extack);
+ 		if (err) {
+ 			if (replace && nhn)
+ 				NL_SET_ERR_MSG_MOD(extack,
+@@ -5560,11 +5563,12 @@ static int ip6_route_multipath_add(struct fib6_config *cfg,
+ 
+ 	/* success ... tell user about new route */
+ 	ip6_route_mpath_notify(rt_notif, rt_last, info, nlflags);
++	spin_unlock_bh(&table->tb6_lock);
+ 	goto cleanup;
+ 
+ add_errout:
+ 	/* send notification for routes that were added so that
+-	 * the delete notifications sent by ip6_route_del are
++	 * the delete notifications sent by fib6_del() are
+ 	 * coherent
+ 	 */
+ 	if (rt_notif)
+@@ -5574,8 +5578,10 @@ static int ip6_route_multipath_add(struct fib6_config *cfg,
+ 	list_for_each_entry(nh, &rt6_nh_list, list) {
+ 		if (err_nh == nh)
+ 			break;
+-		ip6_route_del(&nh->r_cfg, extack);
++		fib6_del(nh->fib6_info, &nh->r_cfg.fc_nlinfo,
++			 RT_DEL_REASON_UNSPEC);
+ 	}
++	spin_unlock_bh(&table->tb6_lock);
+ 
+ cleanup:
+ 	list_for_each_entry_safe(nh, nh_safe, &rt6_nh_list, list) {
+-- 
+2.56.0.307.g5fe7bd680c-goog
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
