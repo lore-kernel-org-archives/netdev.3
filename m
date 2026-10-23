@@ -1,131 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792744459;
-	b=RxEynZOkcRsPSjPo0xiaFXxx13aaubm8nYVG2sve/V9OnFTTWzSTQIVQUYrlDqrSvU9c
-	 2fhIQfTrPFp/IjmMNfr17Vhic7LYTNJfnTWUKj7f7ojD/7QVoAkSur8XihKye/oAS4nf7
-	 mPbQcN3wCNklWTdKDLy30MAxIn0ml2CNzGQwvVjHRYNLDMznldhFWumbC419aC6AXxkoD
-	 lpmWnCSJfJN/PdOSOUO6da/EaPVhdfkCE7Cdh0Y1JRNfgpa6Cyr9f2AuWJ9oGov7qcZio
-	 rdheFe0X27Kpx36o0Bv/3rcPiY0pF4K3mFybEg1hBj4qKp/AMMZLmHvrtGXHP4ZrChg==
+	t=1792744972;
+	b=bMdCL8wiPg0AfWWFWYak+efkE0UT7q+mWRS8Gwq5n57QbXtoVqQnAJevpxkep2jVpQSX
+	 ZDPsIecp6Duz2lI77242PmcAm/dHqH8rYVhjMSYDVwU7ppPpAIvw7IL2mEsCun2S2jTFl
+	 Zn4hR7zyzO84al58iG1KJKFcZf4rCEaE+nXHrElqBpsCFeV3YWH/ShMQIXJnB3h/FSeEv
+	 zdYXRPe97vbujYWowTTwZPDj5veGyPUWXkna/+feRiyo0b8wrDptSFp774bhPnpJ2m4IN
+	 /8kEadbh18s2disvwac9P5G79tr/mvMCtFuKZ416ULsBZtvC4IT6SrOem94PIx5EaHQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792744459;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Date:From:
-	 To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Proofpoint-GUID:
-	 X-Authority-Analysis:X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=JLouBngFmyzeStR7jpDFnM6B5NYmg7+fEs/IrATZkD4=;
-	b=ftVctHMp0qSv5vv6D0XHKpyIy3mOkRA6tQ3X2Rd08LKdrNMRFhtxK1tXzcGiHFa4WyY0
-	 /x0Q6d2X4ynvmNfw5QeI4ICXTk0k37SPAv4QI70HmXB0JWw590/4KikDDJ6GyGQ86iSD7
-	 EKYd9C2zUr5+B0SEQiXbXDfn5ubd0K+dqugyEVGeiSjA4U0Gf+n3jM7C1VPX+yqADU2u6
-	 j2VTZhWJay9UZd1x2HqcJuENOrHPE/Uo52I3pcURgAUbb32rv7owYd0FYaPOK9F7VErDn
-	 bmAoXwDMSjpiFP+T8EQCy0uEOgkeuXz+S/rrvzC6q6ML1nFs8Xs8BDfcIgj8M7EsZng==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792744972;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=DOXFLcMdzp97ScI6g7OdqTG+VcIwt6mpvGRghEu/arU=;
+	b=D+TPhktCIA3K8LCI5BDOU7nzIJ7UqyEZ+F6JA04bx7I8AIzyWp7vZN4RofP5YgBG4QSz
+	 NyH52ohwD+7Jad0tdyhqDeXhH0SI7XKJCC9coXTl0DSLhmjsIrwocrCaXbpw/Yhka45tZ
+	 1W5XdltVTQwT3oW6PiE1j+pnx/q8hI29rhzg+K/uW37I3NECY3SeysxlJESI8aF8RRHQq
+	 svWu2V186yCf1E+qgAHT8BXiTiA++U/q6DhtSsROmOrU5QwYBMTXVLObjIekT5Q5DbuUq
+	 rVliGeDNzex+z4gHHY/8xbEW4A5ntdTC60jCkziHtTENwcB5WNyuaNC2iJUIeaJDcdQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=VlNNsFPt;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=UimSwaIC;
-	arc=none smtp.remote-ip=205.220.180.131
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=VJqLCa3f;
+	arc=none smtp.remote-ip=209.85.221.53
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28189606A31B
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 08:34:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 28189606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603CA606A31B
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 08:42:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 603CA606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=VlNNsFPt;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=UimSwaIC
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69N7FTTd2650383
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 08:34:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=JLouBngFmyzeStR7jpDFnM6B
-	5NYmg7+fEs/IrATZkD4=; b=VlNNsFPtHpOEOLBQPIEyP7I/jaEfftcF7F+mvdHm
-	sGsdlHAs/Xooz0LLYCCk0jG7pQSMecK7TOhIkM/90it1WQcsFKptZxtQkdK/bVhE
-	9U3kHoD0zyE6n9EmF7MqoIdDhA3CBcaruxo+7hgNQTLQpAvHmfGecb/DCZ5OWj9d
-	p+9k5t8Ov35d9WRSTgUfhM/ptvkDejcm8wx52XVo3Ty6tOIwQ3TrjjYwWaOzuXVv
-	mCcgFtmO7y0KI6n9vXmBYZcann6XoaBaYgKWmT0LwPXze5N89qDVgyEtytOdD0hN
-	v6wbu34r1auqFe773kYRjNGYeTmtntTDC6kxG+TVOdb+WQ==
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hfqmjasuv-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 08:34:17 +0000 (GMT)
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-5364605e74bso17475301cf.3
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 01:34:17 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=VJqLCa3f
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-48df54150dfso301897f8f.0
+        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 01:42:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1792744457; x=1793349257; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792744971; x=1793349771; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=JLouBngFmyzeStR7jpDFnM6B5NYmg7+fEs/IrATZkD4=;
-        b=UimSwaICix95Qu4VURNh7MAuQXMsVcZYaxXdPffeIEeJbiCQbsG7A4yYiXOKKoubf1
-         1if0kqWVBHMKP7Diz/w22taPESwmkzrAiwwdggIXxJdJGGQNWF07OAkIwdH8VWe1X2m/
-         AmTNeSX8/lFAiHmxL5xwvhaH36YaAGA5KVLuzFcf4gXr7O98uwAQjvbDcCuHk0R8MBxa
-         dxDt51Exb7zERT6CSwcuimlPOWPE2EbwluNlh2wNFCwgfneX9x5TT0TH8EtOQePjUzra
-         +6RXNgDc6WYU/7YTpJG9ta0RkGpX01Kti8Mx4Dua+Qx3PuFOGRvJjnnHkEEwouFNZyfC
-         /L1w==
+        bh=DOXFLcMdzp97ScI6g7OdqTG+VcIwt6mpvGRghEu/arU=;
+        b=VJqLCa3f1s7x1UWu6dzQX+eVQtVRBs3tDsT2/kibrG0GQ3VJRSsXqoKuikw2Zt7zj2
+         Ewrd/aZtxuLupdenCUYqfraGlr4mwE2NPwRE84wx9Qr8cmhaHtcsKECWrgdg/rq04t9Y
+         193tYNi+GbAx7RmTDJlsKD2JuzIbYai+quvBKg1H0g51ALGejWRKNHXptihpJgr/6ZJ1
+         o9tQDsMpIwsRDstE4pyccL/bm4Dqqcs3/B9DLrLBX/r4TAuJ5g3tpv7XZe5pVfIWxBjV
+         7Zg8j8mFX2Zs+TzJt3EZWwXdiIgRk5S+cy3NWm2SiTdgJLXF5qh2tN0KwWvXaIzng6ei
+         hU/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792744457; x=1793349257;
+        d=1e100.net; s=20260707; t=1792744971; x=1793349771;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=JLouBngFmyzeStR7jpDFnM6B5NYmg7+fEs/IrATZkD4=;
-        b=INs39ebm9RETQHHFTn0TxmYGkUpulfFvSOBywuKe8Y4LNDuCJOnd/4mw4i/Cn6lNml
-         qtGLVnb/w5ZvI1VlIQA7H95/Cj/3iTST0QrhZ+ofhV4nAfPErtaYUV2OGTBcliGXWNXL
-         2AlN4DAD9AloDhAVUdV9T+YtZWy8sOfJM9SMcSqUwKG4e+NkTJi+58eaQkglwN/w3uBU
-         91jHMd5Mi9opgAcjPIyQISBhlpZaTjUVwo7owUfiigNc4yIqNkwgVxOijDiD5BMuChGn
-         BbJ3Zz4E4PJsizbNxi0SZbGL1tOipiJfbzvwSZIgos/jFhq79O2kCzPGJSzQ0KhLQK6n
-         V1yA==
-X-Forwarded-Encrypted: i=1; AKwUvBysZqBL5LV8SKkWAkyRFT/aOKpbSrIrJ1tKJqjCda4FwlDcSo64Bkkdnk5mzNlOcZID6WL0RFs=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI3ax1myIBLB8CQffI9v22QNp0mmCO/9TfWhCBP14pGWBVCBYTc
-	XczxFVpVt1VOeU3fItGGt8VvAiR1gq6uZl76UJssFfy11XhySaaolEA5b/pMgHzlRa071VCUzwH
-	OE0v9NPTa0CICikvHM3yg3CRiZE6t3+2NFFTzl5xPIBrA23WRmk7kBtDzfjM=
-X-Gm-Gg: AYBFou0aK9f2/Qvr9BwQr8XJLCp9NYtW+YTXoTC3C9YQFJg8fmdeTaT5ZeUtioEToQQ
-	mY60QGMCuZ0FhFmadf+alN+yBP2wWZFejTrYDYQyUalYYs+u1XTWm22A+4kGTcwWPEWfxwMRaju
-	qtzT/1UdfBu/9WHln0ak9UuB11QvQdf7e7sYAgLfreSTjG17zUvajEnEPA9fR5SfeDUjzZ2kfeF
-	hjiAR2EXIbNlt/2BtI/mX5XPdPVUCdo+ZTyRDZJnrS/zjfiTEeAf8K+fp7qsz6iPIZpQujxMky/
-	h2kUB6GhMddlZ1oXvUOB+JVnR5Hwwosk+nK4jXKeyTsF005jXcyiK4DOFiW21drtDH2ApuvNksR
-	pg9VUlGNq9AU=
-X-Received: by 2002:a05:620a:1d09:b0:93c:c96c:a5a8 with SMTP id af79cd13be357-93f6f8249cdmr284071485a.53.1792744457056;
-        Fri, 23 Oct 2026 01:34:17 -0700 (PDT)
-X-Received: by 2002:a05:620a:1d09:b0:93c:c96c:a5a8 with SMTP id af79cd13be357-93f6f8249cdmr284069085a.53.1792744456592;
-        Fri, 23 Oct 2026 01:34:16 -0700 (PDT)
-Received: from localhost ([93.144.6.81])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a2104627e0sm58222525e9.9.2026.10.23.01.34.14
+        bh=DOXFLcMdzp97ScI6g7OdqTG+VcIwt6mpvGRghEu/arU=;
+        b=dKVfIcuyIjA+yjOxA+cB3Od5HVw0Hj2iIRXwq63QBRTHKpOVhB3noGIBOVJ+qh4W05
+         nQpJeKDPTV1JlHvnQy0e9kcLeklylnnqXo6N3UwPd07Cy968Uh7I+CCsjEgROXjLHmtJ
+         x44O2nwrgOirL5Z/WEo2Mj2pBSOiKidDGpLMw6bV0iKRvvhs9Rl1TnY3hmESYs3r06kf
+         JwcKKPtYYicGtzUUWh6FTrj3//3QwRRYauIoLqyUpvJz+E4DvRWBu/vfIjnN8t7yW5E6
+         wX6KNoQ7YK84Nt5KkfPuyKG4ggywP0GOwuepUdYLSJLLnrVdzjJxCywDofYdEoCYQI4I
+         wZ0A==
+X-Forwarded-Encrypted: i=1; AKwUvByjn+qDJH3fj9/G7gaZfwtp4yOozaPs2PlyfgAGk4VDX/dzARA/z4HhH0f0ZeG5xMl9u1MngfE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIpFuhDQgTLd6yoyVYlisrQYHC5MwT2AFuo2GURenyok9kt1SvT
+	adRt6aX5cmkFqF1vaFwuJvKsR3Db8FU1lq2fzKvgl6CHBKmlN7m1948x
+X-Gm-Gg: AYBFou1GQURoKBXrJu8w3aDTq32Hqh7mkB4DZSDDD41fIgwNGA/A3E1sJlW8VkrebB7
+	XcNah5pIYzR4sryYpapwSvpJHz1D92lJRhSDi5nY10hPd8blFfLTu1PlYapQ/AJ+EOcl2FV1AiW
+	ZPMwmN3AVqcTTanoFnnclGzHztg1kESoze7GeqUCMdiTV15qKhbJ1HycoQf/Si//LPneTKdho/p
+	TQKBR3cCNlnyte6RRug4ENoFMdyJnxu/g9cx32289kMDzTLTteG46jUPMY3pk+2FTE4KwAlaBip
+	S1CIr1oYt+Cb8fvxiF5l9keCNcU2r1BDTerItU+X4B6b7Z/YwgK2k8mvosx4wcl3k2VsxUADxto
+	TMwhf0FN0vIB/ekZLUVz4x/GR8LAtFyKOZM7tFrswSAENSLO/rGEwlBijeFXxbGNw80FG4zR4oe
+	kCbX7tzuKdQA6EoS5NWQy8Kk/T5MogaV75gpAkIUxc81h90gzVucxg+dylcWMjYnZPurY+krds2
+	tzyrRIvN9rZLRSpocNtlvZeC+whO7dCWZwGNdtGdudToq5YqouumMNkV7IOJtuS9sSj5MjM7gMl
+	nxQBRrXX1ZyMsAxLQYQ=
+X-Received: by 2002:adf:f6c1:0:b0:48e:f07:160e with SMTP id ffacd0b85a97d-48e385b1528mr1642537f8f.38.1792744970559;
+        Fri, 23 Oct 2026 01:42:50 -0700 (PDT)
+Received: from gmail.com (deskosmtp.auranext.com. [195.134.167.217])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e37edef81sm4070033f8f.5.2026.10.23.01.42.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2026 01:34:15 -0700 (PDT)
-Date: Fri, 23 Oct 2026 10:34:14 +0200
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-To: netdev-bot+sinfo@kernel.org
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Stanislav Fomichev <sdf@fomichev.me>,
-        Jose Abreu <Jose.Abreu@synopsys.com>,
-        Ong Boon Leong <boon.leong.ong@intel.com>,
-        Oleksij Rempel <o.rempel@pengutronix.de>, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org,
-        James Hilliard <james.hilliard1@gmail.com>,
-        Nicolai Buchwitz <nb@tipi-net.de>
-Subject: Re: [PATCH net 0/6] net: stmmac: XDP path fixes
-Message-ID: <atscBtA8faGJ4o01@lore-desk>
-References: <20261023-stmmac-xdp-fixes-v1-0-efb37e19f5bd@oss.qualcomm.com>
- <179274313871.3327.10475535220969393247@kernel.org>
+        Fri, 23 Oct 2026 01:42:50 -0700 (PDT)
+Date: Fri, 23 Oct 2026 10:42:48 +0200
+From: Mahe Tardy <mahe.tardy@gmail.com>
+To: bot+bpf-ci@kernel.org
+Cc: bpf@vger.kernel.org, andrii@kernel.org, ast@kernel.org,
+	daniel@iogearbox.net, davem@davemloft.net, willemb@google.com,
+	eddyz87@gmail.com, edumazet@google.com, john.fastabend@gmail.com,
+	kuba@kernel.org, horms@kernel.org, liamwisehart@meta.com,
+	martin.lau@linux.dev, pabeni@redhat.com, song@kernel.org,
+	netdev@vger.kernel.org, sdf.kernel@gmail.com,
+	yonghong.song@linux.dev, jolsa@kernel.org, kuniyu@google.com,
+	memxor@gmail.com, emil@etsalapatis.com, almagui@kernel.org,
+	martin.lau@kernel.org, mason@kernel.org, ihor.solodrai@linux.dev
+Subject: Re: [PATCH bpf-next 1/2] bpf: Add bpf_ksock_bind() kfunc
+Message-ID: <atseCFvfx9FbTXP3@gmail.com>
+References: <20261022181620.247201-1-mahe.tardy@gmail.com>
+ <e31194dd72efd3c182707e870b7e7a6d67b78be23cea06aded0275678373c64c@mail.kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -135,89 +104,116 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="lRlEkSG0nrXxOB84"
-Content-Disposition: inline
-In-Reply-To: <179274313871.3327.10475535220969393247@kernel.org>
-X-Proofpoint-GUID: NNY_0ZhIOj0fCvV1RrtGFLH8ta3VTvOr
-X-Authority-Analysis: v=2.4 cv=cPR1IVeN c=1 sm=1 tr=0 ts=6adb1c09 cx=c_pps
- a=WeENfcodrlLV9YRTxbY/uA==:117 a=7fYLNvKHbgS61GKHX+yayQ==:17
- a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22 a=jeKYxtEjmYGD5WCmXysA:9
- a=CjuIK1q_8ugA:10 a=TGL2fYcsFtN_zcw-cNEA:9 a=kacYvNCVWA4VmyqE58fU:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIzMDAzMyBTYWx0ZWRfXw2bMG+t0cE7H
- 7Bt8NlMhQGdC/2ENY1DlnwVlFSpk64KOJEYdZMV9coTpX64N8HxPAUO/mzAuQ1qezCk76un1IqV
- aIVTINZ3hfik+Y8HlT2+Ke6LLL0Dfng=
-X-Proofpoint-ORIG-GUID: NNY_0ZhIOj0fCvV1RrtGFLH8ta3VTvOr
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIzMDAzMyBTYWx0ZWRfX+R+Rh79TgE9S
- ly9AyjsgRiRr/Nu3SqAe4kuNShxW/vqBUFXPM/fJuK46yBiyBPGEkScm/CT8iyKrQ5FXdo2YusO
- k0khwbI4HXqE14OUX+ldU+/E6IQ41Tj9BotXa8coojFce7Y8rtFPLcvLNI2UvwL3YfbzfUP6N31
- tgr3N6tUH6/wedenR3m9jif9eFGgW2xBazbUsZYK4EXK4P+rI5SFMrlipVMjBYxwIrAjl19KzC0
- XC+COZoueUzrUxHW6NmBDXyk1rTev/+zNAnkZD5Hx4EaQfRIO5b1FgLu7COhuo7DWxq8yLG6LqW
- 56HzZRP3GlcaDt07tYkCUQN+Yk6yw1sZ1P9XocxRKpu6gV5U1+AYcumSkq+sCDOwX9768sP53FZ
- Z/cs68i7fGxPA7YIUpgPg0a73wj+YgG6Q68SVzWlNNJoCEReenvHEFxY9BDv+GntiVSAUZvf04t
- wEwweIjbvGLWNvbZ2lw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-23_02,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 suspectscore=0
- impostorscore=0 priorityscore=1501 malwarescore=0 clxscore=1015 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610230033
-
---lRlEkSG0nrXxOB84
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <e31194dd72efd3c182707e870b7e7a6d67b78be23cea06aded0275678373c64c@mail.kernel.org>
 
-> Hi!
->=20
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
->=20
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
+On Thu, Oct 22, 2026 at 06:45:34PM +0000, bot+bpf-ci@kernel.org wrote:
+> > bpf: Add bpf_ksock_bind() kfunc
+> 
+> TL;DR: bpf_ksock_bind() called from a bpf_wq callback runs with kworker's full
+> capabilities, so a CAP_BPF-only SYSCALL program may bypass the privileged-port
+> (CAP_NET_BIND_SERVICE) check; the review asks whether to block it.
 
-The issues are reported by sashiko or spotted during code development
+Honestly don't know if it makes sense to prevent it given you are
+creating this kernel socket from a BPF context, if anyone with more
+experience on this can help?
 
->=20
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
+If the answer is yes, I imagine preventing bind() to run from a
+workqueue is the easy answer so that all creds are respected as usual
+and it's not a huge limitation (we mostly care about being able to
+send()/sendto() from a wq).
 
-They are real issues reported by sashiko or found by code inspection
+> 
+> > diff --git a/net/core/bpf_ksock.c b/net/core/bpf_ksock.c
+> > index 37168f43c16c..c7b487d90cd0 100644
+> > --- a/net/core/bpf_ksock.c
+> > +++ b/net/core/bpf_ksock.c
+> 
+> [ ... ]
+> 
+> > @@ -178,6 +178,33 @@ bpf_ksock_create(const struct bpf_ksock_create_opts *opts, u32 opts__sz,
+> >  	return NULL;
+> >  }
+> >
+> > +/**
+> > + * bpf_ksock_bind() - Bind a BPF kernel socket to a local address.
+> 
+> [ ... ]
+> 
+> > +__bpf_kfunc int bpf_ksock_bind(struct bpf_ksock *ks,
+> > +			       const union bpf_ksock_addr *addr, u32 addr__sz)
+> > +{
+> > +	struct sockaddr_storage sa;
+> > +	int addrlen;
+> > +
+> > +	addrlen = bpf_ksock_addr_to_sockaddr(addr, addr__sz, &sa);
+> > +	if (addrlen < 0)
+> > +		return addrlen;
+> > +
+> > +	return __sys_bind_socket(ks->sock, &sa, addrlen);
+> > +}
+> > +
+> 
+> Can the CAP_NET_BIND_SERVICE check for privileged ports be bypassed when
+> this runs from a bpf_wq callback?
+> 
+> bpf_ksock_bind() is added to ksock_init_kfunc_btf_ids, the same set as
+> bpf_ksock_connect().  Commit 60bbe76a3f9e ("bpf: Allow ksock connect/send
+> calls from wq") made the kfuncs in this set callable from bpf_wq callbacks
+> of SYSCALL programs, and tools/testing/selftests/bpf/progs/ksock_wq.c
+> already calls bpf_ksock_connect() from such a callback.
+> 
+> bpf_wq_work() runs that callback in a kworker, where current->cred is
+> init_cred with cap_effective set to CAP_FULL_SET (see init/init_task.c).
+> 
+> The bind path is:
+> 
+>   bpf_ksock_bind()
+>     __sys_bind_socket()
+>       security_socket_bind()
+>       inet_bind() -> inet_bind_sk() -> __inet_bind()
+> 
+> and __inet_bind() then does:
+> 
+>     snum = ntohs(addr->sin_port);
+>     err = -EACCES;
+>     if (!(flags & BIND_NO_CAP_NET_BIND_SERVICE) &&
+>         snum && inet_port_requires_bind_service(net, snum) &&
+>         !ns_capable(net->user_ns, CAP_NET_BIND_SERVICE))
+>             goto out;
+> 
+> __inet6_bind() has the same check.  With init_cred, cap_capable_helper()
+> walks up to init_user_ns and finds the capability raised, so the check
+> passes for any netns.
+> 
+> For example, a task holding only CAP_BPF can load a SYSCALL program, since
+> is_net_admin_prog_type() does not ask for CAP_NET_ADMIN for that type.
+> Such a program could bind its ksock to UDP port 53, 123 or 514 from a wq
+> callback, while the same call made synchronously from the SYSCALL program
+> returns -EACCES.  A bpf_task_work callback looks like it has the same
+> problem in a different form, since the check would be evaluated against
+> whichever task the work was scheduled on.
+> 
+> Commit 60bbe76a3f9e only argued about LSM checks ("bypassing LSM checks for
+> BPF-created sockets could be acceptable"), and connect and send on a UDP
+> ksock have no capability gate.  bind appears to be the first ksock
+> operation that does, and the commit message does not address the wq
+> context.
+> 
+> Should bpf_ksock_bind() refuse to run from kthread context, the way
+> bpf_ksock_create() does with its PF_KTHREAD check?  Alternatively, should
+> it be kept out of the set that is reachable from wq callbacks, or should
+> the commit message state that bypassing the privileged-port check is
+> intended?
+> 
+> No fix for this was found in the provided range; 76406b1f799f
+> ("selftests/bpf: Test bpf_ksock_bind() kfunc") only adds tests.
+> 
+> 
+> ---
+> AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+> 
+> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/39831790314
 
->=20
->  - What hardware the change was tested on. For driver fixes please
->    mention the device (and if relevant firmware version) used for
->    testing, or say that the change was not tested on real hardware.
-
-The series has been tested on Qualcomm Rb3-gen2 board.
-
-Regards,
-Lorenzo
-
->=20
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
->=20
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
-
---lRlEkSG0nrXxOB84
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCatscBgAKCRA6cBh0uS2t
-rIpOAPwODAt8L3TAMPYqpuMKG9zg5Q3KhWAnQEHWpI/u7fuNCgEA/kCIx4D8M9eR
-jTH9fhWjO4Baz9wjR/8WD+NaIz3Hegw=
-=X5cW
------END PGP SIGNATURE-----
-
---lRlEkSG0nrXxOB84--
