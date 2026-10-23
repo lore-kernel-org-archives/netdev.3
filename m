@@ -1,49 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792789808;
-	b=fAOpenLyuGqaXAI3ifFvirgBG/w7z36ZO4o0uZd+BxPypMTRhFgZEtH4EXP0SWsskSyt
-	 gaDtZ68lDUP1br4dU0MB0KZmaVnurUK9+Z7MTxPhf8phFRW6GR86xw1QtjHLeIor6FQNa
-	 Lanx73Ifd9qYyHZliUHE7vEhMI/Ng/JXUrUHFZizwrQk4peG3RwZuRM3M1DeSeOLFnWVZ
-	 gPO96yLPwX+Iq4I4gJjFBdxkIjPzpm9OY4zQWJqieahCBciq9EWia3tWPL2Avaf5v+FMU
-	 y+RXZ3skLRRxjNn+WRjVhjk5oszBfRAG6dnGwXRylNuMzQBknksGu7H3zQkWRFST/QA==
+	t=1792790166;
+	b=ocQqgBRh2LQsx2GjjHH1DevW/qq53D7qH4d87frjXoORq2bFlbX3579KKDnLnflkxml1
+	 8vsyg/zPTz9l75L5Do9N5BKlrWqvkhsrqLBzB6z+HG4R0C2KTExH5c9BIAP5KOjO/6Th6
+	 GwwDBq2AasWbaFh7EAMwtPzYH+avTEWg7BEhx+Jg7l6SRx+bJmr7HxVm5K45rW2mk+tYi
+	 zGtwudrAa8yM9MyDrsbPpGeGjB+rzgc36njI9b6nhm0T5WO2u9dPg0J7O24s8cH6GNtE/
+	 p+ps0/Yp2//FtgI/aPZh6zLkyE35rg9HUTmy0uWswLVg2CrYGSDwwdRy+3k28+/K6ww==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792789808;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=aNINpD0OqmqNIeIsXPCMxFESLxmzCmTKDHZXUaQzoLQ=;
-	b=TJuJ7W6TvkBrRmWBeR7Cce5j540d3x8/l4zLP+wSziu8nmRFOkeSkuPCppzCcXx25ZJL
-	 ra2Ewhngy9F22uIe1FM0GAAFx2kiII9kkXJgNQJ527uzfINxoD/VMH9BR6N3rKoU9RbbT
-	 TuN8tuFweja6dwjOwnaXkLEIOK1bnZxufu8z5vCTjEzQTQV7EXJocMqiqdsj2AKnlCDXM
-	 tFr9p8HNK0lJQONvzi6ma1Ha6vIH6Kofo/tTyNV8mQpOaRwpJAncFEPWZNyQFH8I1cGOn
-	 vgBJB8yJLfi87MwkR+k0Ng/DnyM3/PTzbuZp6AGFtO95JonnOFx2vP0KdK+ERXmtY4w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792790166;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=xTsiCZc657L7oQhql4ts4mXSow+otBZUp5bcJ6kNE4o=;
+	b=44vQp+dTB9gjQ+zJz/LN9k7y7U6pg0T+IOuUEd8Ec3YXC54MGCTgJjRMWldW9rFnxOb0
+	 M2Fw+Qu/jnURbzqOnWtFMWOqW1mtDUI5W+x1O5qdnSMJCIxZe2cBJBW44D/yTJFn928to
+	 Rzzg+S8E7jO7Y7KVUItj34E/70am7LO6bwDJ1BGGZCE/BzFLGEdvisi4agU7mYKpZYD1l
+	 f6uzdzxxJfQ6KrpUuk0EN6UM3/xOxRUUQSdO3UJcfEBbcCS/Unaraw1lEZifJg7RtgAMM
+	 yQnGNIKas5xbvA6tvii/DiIyyTrH9dfpDX088gb+kNIw/xdP417XaT5GXbV7LU7H1/w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gXhLbcs+;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Cy8LBVSs;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F316606A328;
-	Fri, 23 Oct 2026 21:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78588606A31A;
+	Fri, 23 Oct 2026 21:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gXhLbcs+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C80101F01825;
-	Fri, 23 Oct 2026 21:10:07 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Cy8LBVSs
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15ED91F01825;
+	Fri, 23 Oct 2026 21:16:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792789807;
-	bh=aNINpD0OqmqNIeIsXPCMxFESLxmzCmTKDHZXUaQzoLQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=gXhLbcs+2GvBbodeWXnIW1pHMKWi4m5LdZZuN/0istfhdEOzdKs8rWUr2AvJOsLJj
-	 98m6a3Bw/omDsOuC//vDA4p2sO6Oa8Vphj72M5z3cty0DxMpXXNoSFQMb/V6if6B0O
-	 c1GPh+UjvulHJmeOsKJUBpcGFAzfenKjvjvrXzy+AYtTV70FzAR9OTJn1xypnjusii
-	 mKwVE+yuP157bK9MEf6YINU9FQxnpeQdi8mp5wFtNbjIIgIzH5BMl7kmBT8GJnayHr
-	 tVAwsbtIpE9N4DKfKkb6TEBY8HtNobRxp1CzVPUvYcVnvVpMaVp+xqbFuA2NVGzQH8
-	 B2qP5LKQ97r+w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BE56F391B157;
-	Fri, 23 Oct 2026 21:10:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1792790166;
+	bh=xTsiCZc657L7oQhql4ts4mXSow+otBZUp5bcJ6kNE4o=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Cy8LBVSsmQqXxdWSmyfYBSMocERiuZkmZrhZ3GgNZy/TlkPKDWRhfX0zn20CPDbzI
+	 WIdiQKMZ2IJbKgkYBao+D+178EIqJMAcXH6k4PHgvbidXqs5sPk86HP9E3zLzk7MeI
+	 nhK7gY6Cy7f1LHeMgsLdRhKzrMNJ4dgbnBPAyUFIdwP+m0ykPCh4QRf2iep9dO/2Lb
+	 daapglSqminHk5rg0REH/gcrR82lwucsaJuaw2Ftrc01T6Rpf0ngQovjew6B5K0qXj
+	 8DagkkUoACj6VDRfMd8rjF1NEdMFLIGrt9a5F3W7SWpeTCUpXMq6KnUweXB46R3zST
+	 ZhIuJ7FqP+yGg==
+Date: Fri, 23 Oct 2026 14:16:05 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: =?UTF-8?B?w5ZtZXI=?= Mete Kaya <omermetekaya0@gmail.com>
+Cc: netdev@vger.kernel.org, oneukum@suse.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v4] usbnet: fix EVENT_RX_PAUSED race in
+ usbnet_skb_return()
+Message-ID: <20261023141605.74390430@kernel.org>
+In-Reply-To: <20261020153044.18828-1-omermetekaya0@gmail.com>
+References: <20261020153044.18828-1-omermetekaya0@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,43 +60,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: sparx5: fix tx DCB index drift in fdma xmit
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179278980631.1272863.10742886644709270848.git-patchwork-notify@kernel.org>
-Date: Fri, 23 Oct 2026 21:10:06 +0000
-References: <20261021-sparx5-fdma-last-dcb-v2-1-7b8fabdb9239@microchip.com>
-In-Reply-To: <20261021-sparx5-fdma-last-dcb-v2-1-7b8fabdb9239@microchip.com>
-To: Daniel Machon <daniel.machon@microchip.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, Steen.Hegelund@microchip.com,
- UNGLinuxDriver@microchip.com, jensemil.schulzostergaard@microchip.com,
- horatiu.vultur@microchip.com, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+On Tue, 20 Oct 2026 18:29:09 +0300 =C3=96mer Mete Kaya wrote:
+>  	struct sk_buff *skb;
+>  	int num =3D 0;
+> +	unsigned long flags;
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+reverse xmas tree ordering please
 
-On Wed, 21 Oct 2026 16:04:59 +0200 you wrote:
-> sparx5_fdma_xmit() advances dcb_index before checking that the FDMA is
-> done with the DCB, and does not undo the advance when the check fails.
-> Before commit f4aa7e361ae2 ("net: sparx5: use FDMA library for adding
-> DCB's in the tx path") the next DCB was always the one after last_dcb.
-> Since then dcb_index drifts one DCB further away from last_dcb on every
-> failed transmit.
-> 
-> [...]
+>  	local_bh_disable();
+> +	spin_lock_irqsave(&dev->rxq_pause.lock, flags);
+>  	clear_bit(EVENT_RX_PAUSED, &dev->flags);
+> -
+> -	while ((skb =3D skb_dequeue(&dev->rxq_pause)) !=3D NULL) {
+> +	while ((skb =3D __skb_dequeue(&dev->rxq_pause)) !=3D NULL) {
+> +		spin_unlock_irqrestore(&dev->rxq_pause.lock, flags);
+>  		usbnet_skb_return(dev, skb);
+> +		spin_lock_irqsave(&dev->rxq_pause.lock, flags);
+>  		num++;
+>  	}
+> -
+> +	spin_unlock_irqrestore(&dev->rxq_pause.lock, flags);
 
-Here is the summary with links:
-  - [net,v2] net: sparx5: fix tx DCB index drift in fdma xmit
-    https://git.kernel.org/netdev/net/c/1df26063ab9b
+The retaking of the lock in the loop looks ugly / unnecessary to me
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+          struct sk_buff_head q;
+          struct sk_buff *skb;
+          unsigned long flags;
+          int num =3D 0;
 
+          __skb_queue_head_init(&q);
 
+          local_bh_disable();
+          spin_lock_irqsave(&dev->rxq_pause.lock, flags);
+          clear_bit(EVENT_RX_PAUSED, &dev->flags);
+          skb_queue_splice_init(&dev->rxq_pause, &q);
+          spin_unlock_irqrestore(&dev->rxq_pause.lock, flags);
+
+          while ((skb =3D __skb_dequeue(&q))) {
+                  usbnet_skb_return(dev, skb);
+                  num++;
+          }
+--=20
+pw-bot: cr
