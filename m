@@ -1,189 +1,51 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=198.175.65.9
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792767400;
-	b=P0vCc5oAVGIN7/765vyLjekaikfzq1Olz5khRLF+t6ILv9iIX4KPA9gynfTtYOVUayyR
-	 4DQY3vzs8J83vaOC2ulzCCBSHvDwWm48qQN1dgvVqIJ/+s3X7BGTd3lXJw0J6UL4oGgGm
-	 6Aq6NfUkdoDWr11M5ajo40yT+tYxnNW4DoruxI0TBwM6wiuiJ6tWXnm5o/sr+o9wyzEZ2
-	 RvwOrnKwpOtQh0pPv/II5/B8SCxYC2OyOkGT0s+ZeHbc+zn2dLklP6pbUZ02zn/FpVBbG
-	 DqMJ2/wF5Zb3tEY2j8xB5Q2gAQxVI67Qujk3m4pSaiuImXpMtkVmZnAQNRWltTiNCNQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792767400;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
-	 Received:Received:Received:From:To:CC:Subject:Thread-Topic:
-	 Thread-Index:Date:Message-ID:References:In-Reply-To:Accept-Language:
-	 Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
-	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
-	 x-ms-office365-filtering-correlation-id:x-ld-processed:
-	 x-ms-exchange-senderadcheck:x-ms-exchange-antispam-relay:
-	 x-microsoft-antispam:x-microsoft-antispam-message-info:
-	 x-forefront-antispam-report:
-	 x-ms-exchange-antispam-messagedata-chunkcount:
-	 x-ms-exchange-antispam-messagedata-0:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:
-	 X-Exchange-RoutingPolicyChecked:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-AuthSource:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-originalarrivaltime:
-	 X-MS-Exchange-CrossTenant-fromentityheader:
-	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
-	 X-MS-Exchange-CrossTenant-userprincipalname:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=RnrfelN52PjZk0gZd9Y5uXLnWEDVXG4+u2JR5D5ajrc=;
-	b=UlOcJ/6bDhP9CQBaTnrXNXF/PrcNneJAAJHLHh68fN4MSzb7qKIKm92GqYCCESK8coNu
-	 QB5y6nA9VB+ORtxlp3TcgDiudtcix5MwqAjxP+zSkYS3fLpk4lsBEBLATvJ4V/w3AUu8i
-	 2Tf6SRHXNjfhU+V66Ca5eWEhWdHo+Njpk5YDX3pp1GXxP3Fqa2BO2ZNgyKFP26JTq271x
-	 J8mWURlM+i+mDx85Tkrl/ZIuddv3qGQnu0ipLJx/Nsw2ggpjruzWuh7CmnkigypXimYwq
-	 xIOYpnOHIHb7UoIg8KYatwr1L8c7eNmxr77BZErGlt/NLuShYVcN8y7hVHEpM4k0www==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=R38CrdCH;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=198.175.65.9
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=94.136.29.106
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792767442;
+	b=0jbbKa6g1t8BD/LnRg8P9MKnIX6PiYO/oJsNYxum69WzRaomjyiH90gruOn2jQ/gbkDN
+	 lFqFmJslgu9j4VDjk8NozjdfLZPM+98r9uODfJr96M8NYQ3du4n69BFio6GDwBo0SwQvK
+	 GjxqwxOgjcG4XmXGzg1VvjLPYzwvsjcsVn31xk1OMzXu5gCGhsEK+2M+KqZCAH21pB6N6
+	 qeUfgWbMJ+3+se3+xplOLwH1Dh8buuk791OMb3lJ8ZYAGii49qRbXvHf8oPm70zY6YFGW
+	 9s3akYb20ldqGyi5uw9eqjKF4dnz26m0PCD2zHlY690gGcRI0LI2tymKdAUxNTdYdTA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792767442;
+	h=DMARC-Filter:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To:User-Agent:
+	 X-Bm-Milter-Handled:X-Bm-Transport-Timestamp;
+	bh=0lwMOiNkthhctaKLDDOIKiUMr88TjVYuo1oUG7xr05Q=;
+	b=vTcaWNj5Xazf0U6vakZPuJ1cZi6XDeGPTA3msMWlEla9HXTRY3YYwaSoPAfpHGYX2K7x
+	 C3u9IJGNF21+sKQOT6xSLrxAhfBryXP6/Orv5SzzDGjPsDKLq0vfVDH601zQlPlSd8yra
+	 S3oduMUOMtv7rHKZaeQWIVKOBt8J+m/ARvsufu3WPdk/E2oCUteEmCBVq4KNQzfvrnIlg
+	 vRvhKUiOLY+GJjrLxzdoCjpz1zYf87WlvPMLwB0geuDyw/UkjnksT7+XZ8aU1pYuCSoBH
+	 PMHoC7b+aoro5Ksgm/4V0WaIkiOmUBanLoUXWfZaZNRuQt6ar2E7lGSPbc26q+iKXkQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=proxmox.com;
+	spf=pass smtp.mailfrom=proxmox.com;
+	arc=none smtp.remote-ip=94.136.29.106
+Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B14606A31B;
-	Fri, 23 Oct 2026 14:56:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C8B14606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=R38CrdCH
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792767400; x=1824303400;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=Lr/7iD6zdWq55EL6dy/S4RuswmyqYSu08XkqypPWS+w=;
-  b=R38CrdCHPmVlGdOS4rMModfjHS39HRbr7naMHf1MQv7WNDLPttrzjw/W
-   EbQ4WZHGacjPBObz8lBhxLoXBBE+/3UWsRRKgaJyV15FPO6mWq1qKr23J
-   sMFVC5YVPIksW9oIs+4kN27NNLWLJYpkcHc4SXafMKV/OWVwzJuFsg1KL
-   UyokERHq2udvVNWpfs+yoGWdOqBhGqpNJE1LcQ1/758+g6wWesLEHiHWh
-   7/oTYk98Z3uBXd/zWMmvQVrC/8X/p2gL7T4hcGJgPznbAnd68crLdKTh3
-   SnSppbSYKHRwM4G0tGkdPDPjvXSHt1zIgzJoqGx5qxaDVlUf8LhCMuzGE
-   Q==;
-X-CSE-ConnectionGUID: vnLYwiRIRIyc1/dIPdVxtw==
-X-CSE-MsgGUID: 7H0tCcSxQeKcG4fNJKmEgA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11944"; a="1408400"
-X-IronPort-AV: E=Sophos;i="6.27,174,1787036400"; 
-   d="scan'208";a="1408400"
-Received: from fmviesa012.fm.intel.com ([10.60.135.152])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2026 07:56:39 -0700
-X-CSE-ConnectionGUID: YwogONWMQXadWQEX98OVjA==
-X-CSE-MsgGUID: 6LteufvBTzC4MT/wRurI3w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,174,1787036400"; 
-   d="scan'208";a="5421140"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa012.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2026 07:56:40 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Fri, 23 Oct 2026 07:56:38 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Fri, 23 Oct 2026 07:56:38 -0700
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.17) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Fri, 23 Oct 2026 07:56:38 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=K+zcs/8d8IREYpLAtXmGClyRKmHx6enuoX5cQeB0u9q6Nptt7hUyJNSLoNL48CQNrKO127Jx6v37Ergm3Q1dqmwlpzcrRqfgXJtU8GK0pY+Kyy0fxMWJC3TSrKFkfTqtFml3ho21A6JCNqQWyFbkgLKB0102uQu4jc7LJnXRiS8lufp8eRO93br38kioVIfNB6hR3tehIWysV0uVpvVPdmh4kzDiu9MeQ82L02tzMk91c6Fl8EAuvchDeeKFd7BWWo5aPk9raPlr9yXNQrNgA5HvM1qlHAXgJ6q1bgciIcx/Bkn6049ZHvjxBliRZlqJIXYfQuXO4JiG37QnlrgHbg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RnrfelN52PjZk0gZd9Y5uXLnWEDVXG4+u2JR5D5ajrc=;
- b=Emh5ZH8AGMmHFQSm3s1Whr6dc6q9N5LjxC6j9+BrxJhr/edF9iIGgp0oXnfNmCPx0yBy9REcIwUNwfTGby+N1UEiKrQvtAnVRidgPvDVR8iXKHbdUJznpdAFr9UL4b8dKIlBE1p9hQPxLUVhzRxoM5d5Ir/TfIxNOnVl2SW0+Q/VxfzVQuuGhGF+V/Q71OvrZ8yN9+6cbmzh2nbNmby5wMNmC42T/k2yR9V6UXpO+Judj45S1UemTxCI8PaHlTlqp2OsqumpLJKOz7zMXRbRgzZb4XCL97LBWHgUZd5NNOwB8f97FImd6/5cjvL06iUlv0oz6FVKM+KYVtbwO1GqTg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from CH3PR11MB566895.namprd11.prod.outlook.com
- (2603:10b6:610:34d::22) by LV3PR11MB8694.namprd11.prod.outlook.com
- (2603:10b6:408:21b::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.18; Fri, 23 Oct
- 2026 14:56:32 +0000
-Received: from CH3PR11MB566895.namprd11.prod.outlook.com
- ([fe80::87f5:c8cf:d52:e584]) by CH3PR11MB566895.namprd11.prod.outlook.com
- ([fe80::87f5:c8cf:d52:e584%7]) with mapi id 15.21.0546.017; Fri, 23 Oct 2026
- 14:56:32 +0000
-From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-To: "Oros, Petr" <poros@redhat.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>
-CC: "Oros, Petr" <poros@redhat.com>, "Nguyen, Anthony L"
-	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Sebastian
- Andrzej Siewior" <bigeasy@linutronix.de>, Clark Williams
-	<clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, "Ertman, David
- M" <david.m.ertman@intel.com>, Mateusz Palczewski
-	<mateusz.palczewski@intel.com>, Leon Romanovsky <leon@kernel.org>, "Rafal
- Rogalski" <rafalx.rogalski@intel.com>, Shiraz Saleem
-	<shiraz.saleem@intel.com>, "intel-wired-lan@lists.osuosl.org"
-	<intel-wired-lan@lists.osuosl.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-rt-devel@lists.linux.dev"
-	<linux-rt-devel@lists.linux.dev>
-Subject: RE: [PATCH iwl-net v2 4/5] ice: do not block on the aux device lock
- in ethtool set_channels
-Thread-Topic: [PATCH iwl-net v2 4/5] ice: do not block on the aux device lock
- in ethtool set_channels
-Thread-Index: AQHdYryq1czVLVwGqUSnQdo+qsIBHbcLN9Mg
-Date: Fri, 23 Oct 2026 14:56:32 +0000
-Message-ID: <CH3PR11MB566895CE5BD6E1BBB6B13C3101E5642@CH3PR11MB566895.namprd11.prod.outlook.com>
-References: <20261023070258.730168-1-poros@redhat.com>
- <20261023070258.730168-5-poros@redhat.com>
-In-Reply-To: <20261023070258.730168-5-poros@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH3PR11MB566895:EE_|LV3PR11MB8694:EE_
-x-ms-office365-filtering-correlation-id: 5a86e983-0337-4be0-49be-08df3115d3a8
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|376014|366016|1800799024|7416014|18002099003|261021121427099003|22082099003|10067099003|261021123027099003|38070700021|11063799006|261009223027099003|4143699003|261022105027099003|56012099006|261022075727099003;
-x-microsoft-antispam-message-info: qa6I+9EWf3gjpJhUKnlShPhppGPgh/ANm2AB2+4fLy+vWV2SqBU9o7O6NNzlFT9VbbfYKDZiu/N850YWBcAUCyRiPU6Rz/G16PmtEiPiRG/Os4esBcbNPmyCAPwWEFICFBZRr9N57d69V+qk89HXEohDiRJNnkh22skBCq6OsVVowkSa8H+NUBNgvw5RsLV3T1CnMMBDtVF+bRHCugvE024qIgFWbMqmTCdaQEOMD8YawUGv549fYRjvdbWEPce5vVzVQ265SI7sJvWm1crE+3WBJsUpvaU5/RXFBGV3ROsK7W9KC4mw5Vk0xOt1qlmH2gCpwNxz1uQmpzqZaN7JgGHCydFkem1yUfUsoK4PJnqUh6v26Ns72+G/AuyIEtHwWky/B0nYNARE7jKy8A965q1MU/z5KbuDnqKk11Guf8SpjDpZ5o4Wx28qNpfD36jitV+jrk+bMwx5Px16mvy9gdgvMUKuP1db7AxNle8WU6wiqZhf0T8w73u1CQO6G9y5gDzon+Y8XoiQG9nYH+i/7BAMAaI3o/woUeRXj5ltGktIvn5fFmlgRbq7WaVscSFq0TwZSu354sEbQJ+rSGtXwzy+Z4O0zRlwG+n0NjS3PyJQ/ct7uGoO/d6wXCjCmVlw2TsKKMN57h/VUclk10CEniiCyu+ukOMDu1fTjQyBGHulriO81Dx7IQ8eC/InGgXl
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB566895.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(7416014)(18002099003)(261021121427099003)(22082099003)(10067099003)(261021123027099003)(38070700021)(11063799006)(261009223027099003)(4143699003)(261022105027099003)(56012099006)(261022075727099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?H4iENuD12LimNiAAtMN8AW3p7C6jpvlia2ewuD6Z19x9fv9bsx7y5eE289Gf?=
- =?us-ascii?Q?y6JaLhGhfQHElig4o7Zs1UEEnHXZeuNBzpybWwXkcI7aEkLGhV4wAGPvyaQf?=
- =?us-ascii?Q?QY81yZt9oDm3aE3mxwNFhGg5Y/Wr+JRpiwdLTjBN545vWyzKxr5VXLopHb9q?=
- =?us-ascii?Q?+JUhCtM4rlWUp7GNJPGtrRcbtfl0Tf8GlOasHkBzo1VAo7MQzhSu/xsQLvOC?=
- =?us-ascii?Q?3rFt9DNguQs1OLvIcrdBDRfy+ZPKHMEsgyAgjUb4i0dDc4RHIsJz1JUi/Buz?=
- =?us-ascii?Q?vULrkrEDH57lr/Ax2Sv/vTIcC3PQ2F7wTqPeSerNXPJ3qa5JwiYfynMdNxaN?=
- =?us-ascii?Q?6pwcm7knIlhKcHMUwTAEup8fpKazmw+Ec/lolBv8arM3wEnbxmnzyqG8qviB?=
- =?us-ascii?Q?Y6zcyNc8KIL7iiRjGpRGMZVRWVoqN8GOZUJisZeOUfROlY9xsW2u81FLspu4?=
- =?us-ascii?Q?4iA29zYJhzizeP3W3+EUnEdELTkYI/IyMrlerat72xU5SRG2VUw1dYYHNaqn?=
- =?us-ascii?Q?BrnIaiu9mIonldDY3CM+bDIYBov0DlewSuFfZ304ibN3s2X4lROs5BfPTCEQ?=
- =?us-ascii?Q?qwQmCeVeF5aHFG3FTIWAyWR9nElbAPjesluGA9Cbrmb4K8UbyBe3/8X+Iw9L?=
- =?us-ascii?Q?tNzT68xCfzTsDdaeRFaFmoZK6GjFKXycnepXcWNTFBjIIPRzBtpjE3VfVNXm?=
- =?us-ascii?Q?kNV+jvQ1wAQNRX1UsQ/UjzysTt1hZ5SDXE55y2mbf6huo7c5Eq2UCI983hZA?=
- =?us-ascii?Q?U17kuXIXDYiTTpFc0cUKFDQaNKWGFJEU6ERQ4Flw0I906zAfSXFHbDai9fqt?=
- =?us-ascii?Q?4nr5uH6rBWbDJ1FXrPD2rhtWtD4LY4rddorOnFE0IiPoGQewbU9jEzgI1aRH?=
- =?us-ascii?Q?A8v153p9uqKgUnIo22rtVab1dbI70B7wcXaL5Xxwrdmx9RxkFtmQMOBzq5pv?=
- =?us-ascii?Q?SGLMnXSqD0UPvErd3o5Da+cw4+TvynSNrmzNf3mSHcNWpoSTA6S6CCSwibG/?=
- =?us-ascii?Q?ZQGb6k+qNZD2mjIn5XU3UCyER6HPvF5/OZ6PqNwmKwQNnr/7KXGrv2SfuJpV?=
- =?us-ascii?Q?WbAhWAwoRZzdRdDq/PkcMiD51PiDqD1srNGkiTvquzuHdSad2tQ5EEGb3XGf?=
- =?us-ascii?Q?J/pXcoC9mTHOjmXP1lEIaL3ZensfjQyZgi4yC3JD6IIPG7RK3nqLepUYeSQy?=
- =?us-ascii?Q?M+WcqTygAfgjzP+YYim7+8WXTRDyxLnNwJCIm0/O2CsTl0Qfdj9o1t1hNeX6?=
- =?us-ascii?Q?4H5aY0nF3z8oB+OD76snEVFpWgXpNrAXk8/VtDVE9D+gQbtcIMrn0Vu55GAD?=
- =?us-ascii?Q?PuG6jx1iDqQ6qWcL0r2GCZL5O485w59FMpzxp+g6pkYuU3jtnsZzBzdFmEAD?=
- =?us-ascii?Q?IvjfXrVNdiOSIL7OpbChvCIRlfbBlP1wkkmFrPkMCylVWcGXomEvhUqdn7gw?=
- =?us-ascii?Q?N4NZyXB8xkg6yfBlsvbIKeWBtCCyUw6wpWwCisyoisaOnBw18StZ943p8Qg3?=
- =?us-ascii?Q?V/nFDrgpEOX61tO124Od0tHSPgj1upVeugesDPRg1oNvOgPSEP0T42bgD+v9?=
- =?us-ascii?Q?AIjWk4F37VYBNCVsqt7CAeHYpKQ6tADVa768L4Xab1C2vcAx19xomQ4lFnIr?=
- =?us-ascii?Q?i8rz2qma68fEZmMg8LOUVgzdsrb+UgZpPQ1ejo7sAANNhmYPusd0yLT3Dde2?=
- =?us-ascii?Q?1yO4qzvg40oFtCvj6YGX/SHGW1xL/63+U6thEjXkpqKy7JLsTaosCbqunZIp?=
- =?us-ascii?Q?Hzd+5T8exDz+mqFxZ3ufC0RWaL9RGBM=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8265606A31D;
+	Fri, 23 Oct 2026 14:57:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A8265606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 81EF440EB5;
+	Fri, 23 Oct 2026 16:57:18 +0200 (CEST)
+Date: Fri, 23 Oct 2026 16:57:16 +0200
+From: Gabriel Goller <g.goller@proxmox.com>
+To: Hannes Laimer <h.laimer@proxmox.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Nikolay Aleksandrov <razor@blackwall.org>, Ido Schimmel <idosch@nvidia.com>, 
+	Petr Machata <petrm@nvidia.com>, David Ahern <dsahern@kernel.org>, 
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net 0/2] vxlan: keep reserved_bits on changelink
+Message-ID: <att1fackTBBZxPgy@luna.proxmox.com>
+References: <20261023-b4-vxlan-changelink-gbp-v1-0-f0d13951c09b@proxmox.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -193,87 +55,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: hguwTG6fyq46HRNT/lmNOynZf2w/4fJrYSbAeE+GazwL0QD4MPusvqKK09wBKSjKWcLLO6Mg70pcwwjKCN0nkQWIWf59p3hu1y+nYXpv/aFe7iLJISyhDD/CQDLzHecie+m5A5GS/HVSKlfVPy2Z5NLthGi7LI/3gMbOyr40816RgTrpp/8lGr/isHPw0Zy2C4I9vD9TMAxYcraAr2oAf8o4Od2JFOzUzq5XiHL7kpty5QtcmsXteK7YI+Ns2RDGjLZv6acwxRZEJOCWL/x/M3KsKkXaPHf3UyTX8ognkqI32xDpa54bqbtRGmOnK0hYY2z3yDTDHYA394NG2qSYrQ==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB566895.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5a86e983-0337-4be0-49be-08df3115d3a8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Oct 2026 14:56:32.4645
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ADSLphac2sZHzBgz23l2Y0kTM1qECvvZRgO+8eTNfNVFHa8nSYJQfMKky7R3gKG1JtzHgcPe77eAjIvF6tkKN/CAvdWhu/7aCkjwUAbo/F4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR11MB8694
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261023-b4-vxlan-changelink-gbp-v1-0-f0d13951c09b@proxmox.com>
+User-Agent: NeoMutt/20260504
+X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
+X-Bm-Transport-Timestamp: 1792767437956
 
+On 23.10.2026 13:14, Hannes Laimer wrote:
+> Currently reserved_bits are reset on every changelink. This leads to
+> packets using extensions that were enabled on creation being dropped
+> after a changelink. The first commit describes the problem and
+> solution in more detail and the second just adds a selftest for this.
+> 
+> Signed-off-by: Hannes Laimer <h.laimer@proxmox.com>
 
+Gave it a quick spin in a vng instance, consider:
 
-> -----Original Message-----
-> From: Petr Oros <poros@redhat.com>
-> Sent: Friday, October 23, 2026 9:03 AM
-> To: netdev@vger.kernel.org
-> Cc: Oros, Petr <poros@redhat.com>; Nguyen, Anthony L
-> <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw
-> <przemyslaw.kitszel@intel.com>; Andrew Lunn <andrew+netdev@lunn.ch>;
-> David S. Miller <davem@davemloft.net>; Eric Dumazet
-> <edumazet@kernel.org>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni
-> <pabeni@redhat.com>; Sebastian Andrzej Siewior <bigeasy@linutronix.de>;
-> Clark Williams <clrkwllms@kernel.org>; Steven Rostedt
-> <rostedt@goodmis.org>; Ertman, David M <david.m.ertman@intel.com>;
-> Mateusz Palczewski <mateusz.palczewski@intel.com>; Leon Romanovsky
-> <leon@kernel.org>; Rafal Rogalski <rafalx.rogalski@intel.com>; Shiraz
-> Saleem <shiraz.saleem@intel.com>; Loktionov, Aleksandr
-> <aleksandr.loktionov@intel.com>; intel-wired-lan@lists.osuosl.org;
-> linux-kernel@vger.kernel.org; linux-rt-devel@lists.linux.dev
-> Subject: [PATCH iwl-net v2 4/5] ice: do not block on the aux device lock
-> in ethtool set_channels
->=20
-> ice_set_channels() takes the auxiliary device lock to test whether the
-> RDMA driver is bound, and ethtool ops run with the RTNL lock held. This
-> is the same inversion against the RDMA auxiliary probe as the one fixed
-> in ice_send_event_to_aux(), reached through a different caller.
->=20
-> Use device_trylock() and report the device as busy when it fails. The
-> existing diagnostic is not reused, a contended lock does not mean the
-> RDMA driver is bound. It is a netdev_dbg(), the condition is transient
-> and userspace already learns about it from -EBUSY.
->=20
-> Fixes: a6a0974aae42 ("ice: Prevent set_channel from changing queues
-> while RDMA active")
-> Signed-off-by: Petr Oros <poros@redhat.com>
+Tested-by: Gabriel Goller <g.goller@proxmox.com>
+Reviewed-by: Gabriel Goller <g.goller@proxmox.com>
+
 > ---
-> v2:
-> - rebased on the new patches 1 and 2, the trylock now sits inside the
->   pointer test done under adev_mutex
->=20
-> v1: https://lore.kernel.org/all/20261019065301.3983537-3-
-> poros@redhat.com/
+> Hannes Laimer (2):
+>       vxlan: keep reserved_bits across changelink
+>       selftests: forwarding: vxlan_reserved: add gbp changelink test
+> 
+>  drivers/net/vxlan/vxlan_core.c                           |  2 +-
+>  tools/testing/selftests/net/forwarding/vxlan_reserved.sh | 15 +++++++++++++++
+>  2 files changed, 16 insertions(+), 1 deletion(-)
 > ---
->  drivers/net/ethernet/intel/ice/ice_ethtool.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-> b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-> index 5482a64c81c95a..dbc662d6233957 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-> @@ -3947,7 +3947,11 @@ static int ice_set_channels(struct net_device
-> *dev, struct ethtool_channels *ch)
->  		mutex_lock(&pf->adev_mutex);
->  		adev =3D pf->cdev_info->adev;
->  		if (adev) {
-> -			device_lock(&adev->dev);
-> +			if (!device_trylock(&adev->dev)) {
-> +				mutex_unlock(&pf->adev_mutex);
-> +				netdev_dbg(dev, "RDMA auxiliary device is
-> busy, try again\n");
-> +				return -EBUSY;
-> +			}
->  			locked =3D true;
->  			if (adev->dev.driver) {
->  				netdev_err(dev, "Cannot change channels when
-> RDMA is active\n");
-> --
-> 2.56.0
+> base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
+> change-id: 20261023-b4-vxlan-changelink-gbp-de5e81eed8d1
+> 
+> Best regards,
+> --  
+> Hannes Laimer <h.laimer@proxmox.com>
 
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
