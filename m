@@ -1,49 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=46.14.198.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792747810;
-	b=FdbKYL/vr4HQ3uhf82OpGaa8AZ7tuLLzJSKNTtGZ4QGMEvUGrSZMXPvWu7XdzGCTHZkm
-	 RO8j6A2rAudtzump5RZeJHrnl0yo4GVcLRY78y/WVvuaxiosOS2+sU4VpzGTr88iQPGyy
-	 N/c0nd620Egi6boylEW0MsoASTe1AZh7TBaqeES7IGymUs3KZxfb0ijLRpC8Krk+KT8vZ
-	 BgoBid4Ylhs6PnJ1KItDOEaUTOHMwfP6NyrsCr+MmTVoeM+e8Vn7XsEC8pXWcndKtJ/sA
-	 Ec5TRIEiJH2h7c5JhzK5DKILLVyDIFUrsQeUwUFwYZ0embZynSqp8Ml0xeUMKenvdJA==
+	t=1792748101;
+	b=nEQZtQfQrbgYAcHBSXmAYTlnsSKrVe8Jr4VB/2uIOTlvs/3mZeOVad0E3p0FG9OekKtA
+	 cksxDgdD1k6ay5LZBbGtQTl6y6j+K7jfoXDgLtHkXoX5bUkeK6ViZNDaw7tqAvR9DYAw3
+	 1aMtbl9vcnkck9y2HOjnduvDZh3VapV0YSK2V6XVWqDCcTuCzux1UvDRP7wJ55APf3LjC
+	 HFoZosjCVI6CCkOzXydBoNByV+ZzQ9ID961KB0a5URZdUS9Oj4Hn8LYNLQjeADdNO5kgH
+	 uzWZ6ZYHCUgL9xkXY0P6Ze7VQ8Kv9BRKixViFMdZcfXK4YmNaI9UKtpw5Zb2nkps3+w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792747810;
-	h=DMARC-Filter:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding:Received:DKIM-Signature;
-	bh=SAN9x3ekDFh3dDV1s/JTsWUi3o0RzXXkeiuG0T7yyWQ=;
-	b=MLfNjOzHjRLmhudsuhSxXbcE0bs4s8GWHm2H9UAePskboL0jy2z/LCtC2JHTrYjA9Nf1
-	 cSAQVxVzYnBnELuHPQVGao3vmcUzY3yzR/DodLzfyvGxKpAH2NzkCcq5e07g4GnW0NlNx
-	 8IjHlmbAUQNyM/+9IOBDvXWbfHdp43XKoj3B+3AV9zqmRgItSUCDOaeYchGlNQEz1YN9+
-	 Bgl9/bfk4CYXdDbvnJ0cE5aERbRERftrwMFiyfDbn/KscSjIrEIhInb5aNPSEiyuxjVCD
-	 mg8aLT51n61ubLIubDBBH2cebXKJVWdJoj9ZkVQsGLOLalsluX0HIlSuCzA5GefNSkg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792748101;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:MIME-Version:Content-Transfer-Encoding:X-Scanned-By;
+	bh=VLPx9daPRJHjWlFmv44h49kyUIjBxH+IthNyy+HLrTc=;
+	b=PrkMJA7QQW8jW04AkDUEGgZ5AISIppUBk5UObNGwNo7TI9Mdr7/ZeQo4Aa5fcF/Ue/CT
+	 RkejVYC9EUUbo8AvNmnqxppHHlxOr5qeksBmv59aFy7yVdM0SMbTK/5odrbvxJ6b45FwO
+	 fnlVHBLvQo5Fn+5DSrj+xIRHSg4+H+9pq6cqt6jPa4wWogNlSXa5PYXXOIwrRUs0PCHqI
+	 9xWwWb7560bDmMVFroBvQyI21tGX2zXZC7ggIUA4P51Bhc2X530TWOUcpgiuKntf7Mp5s
+	 hca19yu+YQyg1ftlpBarPejhfY54XwvVS9S36RfakUSUAtsgfBHAqBve4sD355YOe+g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=rimpianto.com;
-	spf=pass smtp.mailfrom=rimpianto.com;
-	dkim=pass header.d=rimpianto.com header.i=@rimpianto.com header.a=rsa-sha256 header.s=s20260314391 header.b=WzA1Mrbn;
-	arc=none smtp.remote-ip=46.14.198.178
-Received: from mail.rimpianto.com (mail.rimpianto.com [46.14.198.178])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OZx2LRBL;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 329C2606A325;
-	Fri, 23 Oct 2026 09:30:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 329C2606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rimpianto.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rimpianto.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF505606A31A
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 09:35:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CF505606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=rimpianto.com header.i=@rimpianto.com header.a=rsa-sha256 header.s=s20260314391 header.b=WzA1Mrbn
-Authentication-Results: mail.rimpianto.com;
-	auth=pass (plain)
-From: Federico Musto <federico@rimpianto.com>
-To: Chris Snook <chris.snook@gmail.com>,
-	netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Federico Musto <federico@rimpianto.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] net: atl1c: drop oversized RX frames instead of panicking
-Date: Fri, 23 Oct 2026 11:30:00 +0200
-Message-ID: <20261023093000.73535-1-federico@rimpianto.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OZx2LRBL
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792748099;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=VLPx9daPRJHjWlFmv44h49kyUIjBxH+IthNyy+HLrTc=;
+	b=OZx2LRBL7IFaW2zAGLLVHNi2iFioJlV7p2MNT0X0RXzWLRT2xCKAOzulCci1yp/QyK6GnZ
+	rfS6I2obDDSUhIZLoDXYKS4kSr+pSGdXyMtz+d5CWaOvA2n0h76WYz+n5I94TQso+Tj34U
+	QNaQO3S6xGICROMDeIG2FQg3no/EasY=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-333-SF_5dlO9P2anwyf-QaezNQ-1; Fri,
+ 23 Oct 2026 05:34:56 -0400
+X-MC-Unique: SF_5dlO9P2anwyf-QaezNQ-1
+X-Mimecast-MFC-AGG-ID: SF_5dlO9P2anwyf-QaezNQ_1792748095
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 20C631954124;
+	Fri, 23 Oct 2026 09:34:55 +0000 (UTC)
+Received: from ivecera-thinkpadp16vgen1.tpbc.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3C713195608C;
+	Fri, 23 Oct 2026 09:34:54 +0000 (UTC)
+From: Ivan Vecera <ivecera@redhat.com>
+To: netdev@vger.kernel.org
+Cc: mkubecek@suse.cz
+Subject: [PATCH ethtool] COPYING: sync GPL-2.0 text with the current FSF version
+Date: Fri, 23 Oct 2026 11:34:52 +0200
+Message-ID: <20261023093452.628061-1-ivecera@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -54,96 +74,54 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received: from localhost (Unknown [127.0.0.1])
-	by mail.rimpianto.com (Haraka) with ESMTPSA id 82A81DC2-D8CA-4B74-884B-87864EDA0078.1
-	envelope-from <federico@rimpianto.com>
-	tls TLS_AES_256_GCM_SHA384 (authenticated bits=0);
-	Fri, 23 Oct 2026 11:30:00 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rimpianto.com;
- h=Content-Transfer-Encoding: MIME-Version: Message-ID: Date: Subject: Cc:
- To: From; q=dns/txt; s=s20260314391; t=1792747800;
- bh=SAN9x3ekDFh3dDV1s/JTsWUi3o0RzXXkeiuG0T7yyWQ=;
- b=WzA1Mrbnk6w57cxp4x57C2b7HExNTzm6NxZkOeVjl+v5mcitOClFYas7OD1mWqIDu8FbH1gj4
- 8iBEVIloRvAdQprS/1AmUK4N1P2iJWlEmz/4ExWEv4j/ldiOo5Lt31Y1qs9C7e1GBuJo06HQdum
- MG7wG9LkbaVrVgC96D85CFGYdwccCQN2cof1VX/rM0A/fI1lfbEu4aK/j69Zkznftayps+MRZ43
- eGxUl3N+vOzataGHVlI+iSSCd6W2Pzb93jNHheIFuWnYaKSGpdq7rWSX76a2TxaZWQLcWv161r8
- 3+3MnCFbNmxJN9kTZ0xTU9QDzlZjdOghhVDRt3Eu91YQ==
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-atl1c sizes its receive buffers from the netdev MTU plus a fixed set of
-L2 overheads, which comes to 1522 bytes at the default MTU.  A link
-partner that sends a longer frame - in practice a MikroTik
-CCR2004-1G-2XS-PCIe, whose RouterOS side defaults to l2mtu 1600 while
-the host stays at MTU 1500 - makes the length reported by the RX return
-descriptor exceed skb_tailroom(), and skb_put() then trips
-skb_over_panic and takes the host down.
+Update COPYING to match the GPL-2.0 text currently published by the FSF
+at https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt. The FSF has
+replaced its obsolete postal address with web URLs and renamed the
+sample signatory in the appendix from "Ty Coon" to "Moe Ghoul".
 
-Validate the descriptor length against skb_tailroom() before calling
-skb_put() and drop, counting it in rx_length_errors/rx_dropped, any
-frame that does not fit.  Such a frame cannot be delivered with the
-current MTU anyway - the buffers were sized for it - but losing the
-frame is preferable to losing the host.
+The license terms themselves are unchanged.
 
-Tested on a MikroTik CCR2004-1G-2XS-PCIe (4x AR8151) in a Proxmox VE
-host, with atl1c built from a DKMS tree carrying this change: the
-l2mtu-1600 traffic that panics the stock driver is dropped and counted
-with the patch applied, and received normally once the host MTU is
-raised to match.
-
-This complements 36c2009d90f2 ("net: atl1c: fix soft lockup on
-out-of-range tpd_cons read"), which fixed the TX side of the same
-"host dies while the card resets" problem.
-
-Fixes: 43250ddd75a3 ("atl1c: Atheros L1C Gigabit Ethernet driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Federico Musto <federico@rimpianto.com>
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
 ---
-Notes for reviewers (not part of the commit message):
+ COPYING | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-This is my first kernel patch, so process nitpicks are as welcome as
-technical ones.
-
-Scope: this is the minimal version of the change - only the descriptor
-bounds check.  My local patch also touched atl1c_set_rxbufsize() and
-atl1c_change_mtu(); both are independent of the panic and I can send
-them separately if there is interest (raising the host MTU to 1600 is
-what actually lets such frames through, and the driver handles that
-today without changes).
-
-Reproduction data, kernel logs and the DKMS package used for testing:
-https://github.com/rimpianto/mikrotik.CCR2004-1G-2XS-PCIe
----
- .../net/ethernet/atheros/atl1c/atl1c_main.c    | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
-
-diff --git a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-index e58f1d2..11de643 100644
---- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-+++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-@@ -1934,6 +1934,24 @@ rrs_checked:
- 			break;
- 		}
- 		atl1c_clean_rfd(rfd_ring, rrs, rfd_num);
-+
-+		/* A peer with a larger L2 MTU than ours can hand us a frame
-+		 * that does not fit the buffer allocated for this MTU.  The
-+		 * driver used to skb_put() it anyway, which trips
-+		 * skb_over_panic and takes the host down; drop it instead.
-+		 */
-+		if (unlikely(length < ETH_HLEN + ETH_FCS_LEN) ||
-+		    unlikely(length - ETH_FCS_LEN > skb_tailroom(skb))) {
-+			netdev->stats.rx_length_errors++;
-+			netdev->stats.rx_dropped++;
-+			if (netif_msg_rx_err(adapter))
-+				dev_warn_ratelimited(&pdev->dev,
-+						     "bad rx frame: len %u tailroom %d\n",
-+						     length, skb_tailroom(skb));
-+			dev_kfree_skb(skb);
-+			continue;
-+		}
-+
- 		skb_put(skb, length - ETH_FCS_LEN);
- 		skb->protocol = eth_type_trans(skb, netdev);
- 		atl1c_rx_checksum(adapter, skb, rrs);
+diff --git a/COPYING b/COPYING
+index d159169d1050..9efa6fbc9628 100644
+--- a/COPYING
++++ b/COPYING
+@@ -2,7 +2,7 @@
+                        Version 2, June 1991
+ 
+  Copyright (C) 1989, 1991 Free Software Foundation, Inc.,
+- 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
++ <https://fsf.org/>
+  Everyone is permitted to copy and distribute verbatim copies
+  of this license document, but changing it is not allowed.
+ 
+@@ -304,8 +304,7 @@ the "copyright" line and a pointer to where the full notice is found.
+     GNU General Public License for more details.
+ 
+     You should have received a copy of the GNU General Public License along
+-    with this program; if not, write to the Free Software Foundation, Inc.,
+-    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++    with this program; if not, see <https://www.gnu.org/licenses/>.
+ 
+ Also add information on how to contact you by electronic and paper mail.
+ 
+@@ -329,8 +328,8 @@ necessary.  Here is a sample; alter the names:
+   Yoyodyne, Inc., hereby disclaims all copyright interest in the program
+   `Gnomovision' (which makes passes at compilers) written by James Hacker.
+ 
+-  <signature of Ty Coon>, 1 April 1989
+-  Ty Coon, President of Vice
++  <signature of Moe Ghoul>, 1 April 1989
++  Moe Ghoul, President of Vice
+ 
+ This General Public License does not permit incorporating your program into
+ proprietary programs.  If your program is a subroutine library, you may
 -- 
-2.54.0 (Apple Git-157)
+2.56.0
 
