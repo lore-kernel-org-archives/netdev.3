@@ -1,100 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.51
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792765864;
-	b=p63xC1zlIx5VrvCf0yYFZaMAcUFZ4Ax5jjlXE/eoLW2SjoSKWGpHE5HhYkuNstLWiNlR
-	 AXPMu/pRNxx8SeGsNuqJDPK36gzJ7Vkq4sYJkAzqTt/ArwPSGpemo1Fw1Qw+bcAr20LIs
-	 +Zlf8ldGT6FYrpS4zyC+UY6zuPiJiTLE2ECE2bFXfM0jfezD3M0CWoldrcgWVbSaye+x4
-	 bTn7wFFgqf51J2z9Uf41vdsC2xLzp9WhZhuFBxKxFml1NHdyLQKRD538zQYmaCI5DpYqz
-	 xLdM5JTSqJzalO2GTN+io+egz3mpyRbg8Dho1pNr2ovK8mXOFLnX/rVms7niMfGQQVw==
+	t=1792766257;
+	b=p6h4g/D0+QPi+h5UiEgbQjRBBWr2qB6jXsRQMF3sSVpG4HYPcxpLFTLqRYqLCbGS8DJB
+	 xs6DQE0CPlm6QU0XMioROyG8dm+3PMkC9BTaqxwQxW3mV5dHd7r5AgpVvDc3nHvc9W6YK
+	 Oo2FrevekU3Cb74u691HEb38LRdkWjClMBHEYjza6YYk6wgnQpEW66SgwvudQCtzH+ptm
+	 v68y1dujKtkKKmIXfBb3giq+u9Y0LLKm2xSlmrSbraSJ5MtmRVktZreDVGjVjMiVETqMg
+	 YaMYP7HwXvZPKLniNHvHdND639QpwLWhgPH0z2NfHipFe1poIc/muCqN7cg3L9f4aOg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792765864;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792766257;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
 	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=s3FkMl8OhjMqOhi3zpzbiZNiNsx48LLQzOlCjP1CveY=;
-	b=PnFpPXoNn3qCibqKv5zdlFNwbIplvlWN2ADcIFIuPE6sqckJfFF3W1NEIhDwpzoCE/32
-	 GErTUKlCKTaoNvlHXx4JH9dL3MAEZT9HVR34XpR+NNyzjg4XG7//zQ6C8bnop5DESf217
-	 R64vIWeZkS2uRQXf8xBUd5fstPM0bGd+3V/oXubCqpYymOGPdciKdyDB5Jp1q84Ntr8Qq
-	 azKR4dptQsYz9KWaIH8WGz+XD9wimlbIzV5QqO4DyI5XpvfuUZ1h8pyYmXwyZIpgTFBDc
-	 H3MpMD9qnHFbmzmSPQ2UGHrXKbnI4kU2dqMoDnGfLfNpTQcHqPn+YJHjh5ioGhAey6w==
+	bh=TbyyQ/cVBjURwEkpwzvfBfCIIo+L2tVbdO6SgJnUJTQ=;
+	b=ytcqHLiuGuCCoLkQKa84W0WKlqTX87XUoXexfI/k85RKWkIJaM7z5hcw0XpZnJP+gu5a
+	 HQqwDJ0f/FHoSnA7CPNkLzKf48d+UaK5PlkcwEYcOQiSZMt6DPS+JwIDdxVAawGdeoPFo
+	 ZOqL4efmSDyfHHvEWhfwCo3aYVF6tZhFvMxrQoldBEkLpmShUN1CgW9FLwKs8xI7b68Uv
+	 XMzmUncqeYJCzd6KvLN2dQNTGj3uD1eiCq8EKP+wdycVoRxvgniNU3Jy/kBwLFt2ijuWa
+	 6gatBl7MrLAMomHj1PP5RwOs/AJSd3JNoNqLjjqZvopgw9hIY9qw4n+gEx20UOzh9xQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=VVIFg6tb;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.169
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=p3ursIpx;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.51
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95294606A329
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 14:31:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 95294606A329
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67AAB606A31A
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 14:37:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 67AAB606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=VVIFg6tb
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2db33db4de9so71085ad.0
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 07:31:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792765863; cv=none;
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=p3ursIpx
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso9341a12.1
+        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 07:37:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792766256; cv=none;
         d=google.com; s=arc-20260327;
-        b=Amcx8exiBIoWhzdQxKbNLmZccMfq81dvHjxGJFjAyZ2wiRvDmaW/DxGPjwsS53R4dw
-         DQmoigzZkPfuylkFFtgUpIbjNHFBAmWAoMhC8STyxP6gNV6YSBqIwAc4loVS0uKr3BBv
-         G87yVQREyUd4ChEEhMEHVJqJg/pQ0RHzh5Jxy3W4HhgavIsSPZTniQ7ZDTBmIkD99jMr
-         fyT7cIIgeBO0JhJIlZSwjnx9Em410pQ8GeWZMLcP3VwLWtkZBJVk1U6jafpc0wMGBfrU
-         YE+OTsHdkrdDXJOsUQgAClgo7Otasl/bJMjXtbxIMlhUGxJUN744+EQVc/tygVtC7RKs
-         s96Q==
+        b=H5dryrsoaeKc/I8Poxh6Zt6g1pt+6TaYDNAfw9PU3MpymsxD489l0UAJm9MdeLOmgv
+         xFsRSQrYojZneL4Dind8aCCjHPsbs2K0W3/SPpYQWpX2AXaeVRmcpHEMZ5r5x/EzrCX7
+         yw0N0lPwS2EiaGg1jzw3RsCrEFkYNWLLU8wQYywRj3v9b0B82X2HEWyTRJzTOug7qbVQ
+         OQGWvdmsHbBexokxyOUooXJ/SkUiaCZ9fojhflmLvXyMITh8RRYJOM5+h0JzsyU5kgGj
+         Km9GTa5BFEY2oFQVWpUyRKXh0xgXqQ3iyGAyX+PaV85cfzdja8DmF8sUwZQIPCXx/ZJ3
+         0HWw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=s3FkMl8OhjMqOhi3zpzbiZNiNsx48LLQzOlCjP1CveY=;
-        fh=qk0HeKmTIKTUf+0Qbw/atc4bH3CQ5A/OsADLdhTZNtM=;
-        b=KAcK2Em5m38/av2j5Y3vspVIfiUbE5uh6noMYLFPWm5Y4Wm2iAAlCEfcERxtgCfiZw
-         BxUIuYWcM22IXrGOZ7dgRllJj2pFg3cxSL+BgcwNmmlUjrqxYBHbI8z+Au33z4buuM4t
-         2IpZJclyQr6dAuDZIsladA8MmTFjEwMTKKMPnrIY05sVKCN/I9K0N8jsFLbv6VIPJf56
-         PQEmiVrneg/6VQ0uD5f5z6gWkTAVglneDKvadwMehiHx2WT8088278Ly+edSW8DlQE8T
-         rJYnh4x9DKqDoVtOgaLn/TGLVW0Cf/EpEQo+G147oSie3digv/Oe55cSVQUlqa5IVLzi
-         PPMQ==;
+        bh=TbyyQ/cVBjURwEkpwzvfBfCIIo+L2tVbdO6SgJnUJTQ=;
+        fh=hHYs2bWYE1ARUjDBcMtpRDZEgd1bgLzTnx6FGPuKLPc=;
+        b=T6u4uVpt217pBA6g1Ugsrp4rz1jcha1EF1VRbONOBLFcUkFggUW2BpDMOjA8dVgzgm
+         rJTrsXUXsl5mw+4nfPQSsdWhd1tsgatZJv/qPgKbljcWZMaYeIUgFjb3270WenRMZUDY
+         kB360LpkK3mfBcFIXB3Lu8olQjIbm6HmY/Y+MlEtE17962n2vVWvA+54L0WU3KqJwqeC
+         seS6X7Jqfy1/IkXFD74gmgYG5OQfexlfRj+fL2w02Z6nkFQQA8PMFKqs8GAcUQfOXi/l
+         y52m1GQAga5jG8PGnQOEUtSKhGuEz1vaicQqdCL6PEF4+s+OTBdPa63hWGYhvDnQrP7t
+         htNA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792765863; x=1793370663; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1792766256; x=1793371056; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=s3FkMl8OhjMqOhi3zpzbiZNiNsx48LLQzOlCjP1CveY=;
-        b=VVIFg6tb7WK4WNH/I3L6DFNDUrzYJ8o1O9kJJIOL0mZjbDHHGac5RMiQ5AsP/FqpYv
-         1Dt4Jc4CBdbhHms0jG3oJH6xf8Tj+LzES5uC5C5CYoNAXzPld4yvlCtqXp3+F9mf0spz
-         +3BusVjz7rkrm0ohoVloTAShTDbfxn+Rcr2g/VyGdDdplOcHciqKZgZmgBE4eYfT0qJl
-         qhFR3JTcIYt343vm3g8Uh8JKEgZBCoIcY/Fn5sFRoo7c8899zyI0Y2kjALu+M9xDlJeA
-         7upuI8KJB6SYRwqoRToLV67mbyXPbUJP4w9MoEyNB9cq5p8Kfjr85sCMlI79SsK78Rsf
-         UeKQ==
+        bh=TbyyQ/cVBjURwEkpwzvfBfCIIo+L2tVbdO6SgJnUJTQ=;
+        b=p3ursIpxyJZDB2tNwn3h9XYnKrcDfE4F0YhY8A7fDALnovncAHM8aWG6K309klyU/m
+         qyw3HIRWB3ZyhvozTRXS+rHioJW2Oi1ynfmRgT/ckbl7EULGnH9YTq7hazeqLvMMbumz
+         wb6HkNhgET1IRfZDgGxplaD/ghTj3PVXJuEH/U+LB2jQimeRKIo8ItITMowY/GoaCtLV
+         reVFc+gAmWXSmEnJkH2oZAVE8cxZFSEokJ67ms9hJizfiCtne0hg0Dw9wWqGVy+ydXnN
+         PuRpMilDTK9s/0BrfJzKC+ihqbNs0u0MpzqaOfJZkxF+/kqp2909UjhMR45LiMt/n4xo
+         6WDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792765863; x=1793370663;
+        d=1e100.net; s=20260707; t=1792766256; x=1793371056;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=s3FkMl8OhjMqOhi3zpzbiZNiNsx48LLQzOlCjP1CveY=;
-        b=LMoRxm9WXLwzgCrtVAJVKVtV3aALtTbhV7656KTGCQVbUdTBQ2WFmgL3hZWsvuj/VX
-         zNt8Ag/BTjcPFv4pKGUHnZRORMyO4cle4JXIT4p5BfQh/Sq/NyF7iqN/ujKlXssUWDlw
-         BV89O5iJBpIeI9v1ZebpFw7kP9ojkmm0+zSZaGSML0IgPLKhSFtjg7hy7wcp1pk9oQgG
-         AIeB8hUyusMLn2B2qQ3hMkO9p+UqOr1t3lZkhJt4FgMEFHEsIQXf/zGE7UM8+iFVZ7k3
-         973MRYSNzwlBs3oOmVw0JW5+IPOHQAHw6keM6IWEwq5u4BMXArErLnsXnjiFKkJd8MuD
-         FuNA==
-X-Forwarded-Encrypted: i=1; AKwUvBx2jIjL3L6dbjWLkqL9zWtO2q3gqot0uyKOq9gnRXYHLorL3k4rcJ90Y097riWtaq1Kr3pZ7+8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLCsY+cQJmRulpJl27oIVgMH3zRf8dNr2gOM2qOejgLUpWg+5Dj
-	y6zTFBhl5ROaEPrIX8sv4dBV5IKkx6X2pmYwpK30uXeqjonRQHZmR5keGROe6ii++INekdtoBvI
-	meohHzeOLvFg5MSNJul3+za8y236awAr7vlZ/1aR+
-X-Gm-Gg: AYBFou25vFeE+SrvotRjj0tXVC2bp5O5aKvVr7eZxSPtY4lbXUUHU4Iro4Zg11FyRP4
-	mYWkw90ObJgSF3T6cT/TFEXJxZm2yuxt/AorIRncJZ8dv82hH0/csxxzzmC8wvPO6+GrrAta958
-	JwK8FyZzWgUTWeX9h87CXb8WOO96ATyH7vjda0JsLYS9w9Q/r3JLrKT40xHX2Keg+qCQIifvlcr
-	7dYr4G4KmpJ6dLOGo+4ypIq3l3B9i4XbjmW+mcrwaEJ4IWPasXZD8ISzu+/4het4ge70+5u/pbJ
-	PAmC+g3pcyLvgOmuSOZnzsDmG5QPMlxESnJn3Xpht7mqzL//8KRTYfzAqwAAZKMGi7RuhDQ2OT8
-	ZX2CvN2uxG1Qx7a1ztwPi1wt7shw21aO5vAiia4PfYVxzDZ4Fhv4LO8TY5FM=
-X-Received: by 2002:a17:902:f683:b0:2ea:7180:3abf with SMTP id
- d9443c01a7336-2ea7f512f16mr4025665ad.15.1792765862249; Fri, 23 Oct 2026
- 07:31:02 -0700 (PDT)
+        bh=TbyyQ/cVBjURwEkpwzvfBfCIIo+L2tVbdO6SgJnUJTQ=;
+        b=FZR0yO0flDbodHVaRIAL4dNyzEtjd84QVbKpr4zBBnJ3hZ6pDVR7K77sdN4ltqH+ew
+         JQ2jSb/Bk/wBS1gKWGDqLtXZsbCqLiEmeCGl+JRjLxtGlIJzILBBR9fqjMDLWO99iNsM
+         L1Shb3BtfHeiRZN2k0w22P9AdJUX5oGdDLrOSO6+tWxe3mPPzVGccGCk6lmEwZeDBsk0
+         hnquhzmLvS6+QRYnaNrh8sM+LCDEbaVVhV9u0R7r6XI6Cu0k2Gr2EtuSzc0W8VuH14KT
+         J5xoHsFLSXNWsbhMpKPKDwbQwnhDA3rHoob+uKSeG9GM6RWRfimH2FSTxBZw5kTcX0eh
+         3ZHA==
+X-Forwarded-Encrypted: i=1; AKwUvBzs17q7KN7mb3cmCQYUQ4pFCuUo+xqfsEZsG1aB7XALyCCyCYdZoNtvy9QZBeEu6TF2TBPFOz8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJf4SRn7P0EDZSktKUVk/l+VkDhMH672yy9ZVzyVuzetXPUb7h+
+	i7/G1YwfokOg28SdbRlL4NIB7vfv+nLcPQWC6Dv21LLA3cLXPCTH3YJMJRGaSFyeaJzUriTRgYn
+	6ShdiMj4BDuyP6HbHIXorklzDlnv+ny9eCBxq09mG
+X-Gm-Gg: AYBFou0L81WyrrYCntabrwnXukJFZE9pIubZCkk36QDimOj06c3kcAjAoJa2OjfSRMh
+	chJcntbxVy0BjMCi9Gh/b8ErEBmwlMAPmKzVSi9NDIMS1dejpthS8LRZykAdBOvDzGT95MbGJ9A
+	zKbpP5qS+DSurzPj31NuHyEqGDJJ6X7cb00ct2N4UxvLQeZJGONkEp/v31D/zSao4Zads/P3A3q
+	hsAYJJVdI/BpZbto6Vc43vy/jWrvyivssDUmD2lPOTJ2FqSq0ut7liN1Z8VZcW0d56+VcYaoeoJ
+	79z0gzllysnMLyGeX20AoS4jGgzU5R92b8xWAqZvFsq47VUEobeSe5WVoa7J9v/yUCmKCrFBXSf
+	YIZX8c+L9daxcl1s/vNoWjbjAKHSK3CyK311hvIse2/P4AckXVJ0N2vNWVSL7HH1dBCI=
+X-Received: by 2002:aa7:d74a:0:b0:6a6:7385:3eac with SMTP id
+ 4fb4d7f45d1cf-6b43503ae79mr48860a12.11.1792766255144; Fri, 23 Oct 2026
+ 07:37:35 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,127 +104,115 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261003212241.3432303-1-lrizzo@google.com> <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
- <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com>
- <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org> <CAMOZA0+6kAbwgNwGTsCT5AqpwcZKz4pziEGC9UpHkNCVoqrF-Q@mail.gmail.com>
- <20261022201229.GH3381610@ziepe.ca> <CAMOZA0KaanmevmvWS=M3gKfBeborzfCQTiF_xbSeYMWbozG7Mg@mail.gmail.com>
- <20261023140107.GC3977851@ziepe.ca>
-In-Reply-To: <20261023140107.GC3977851@ziepe.ca>
-From: Luigi Rizzo <lrizzo@google.com>
-Date: Fri, 23 Oct 2026 16:30:25 +0200
-X-Gm-Features: AclHuK9d7tFq_s1fhJmYPVN1-JncgZCOvwLUHaeunw-YOxbh9iZtFoxmVAkcY88
-Message-ID: <CAMOZA0J+MOLv+s4PAvsAK1jbasnbQRyHffZw1VEKutH9Vr6ODw@mail.gmail.com>
-Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Luigi Rizzo <rizzo.unipi@gmail.com>, 
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
-	Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
-	Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, 
-	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Michael Chan <michael.chan@broadcom.com>, 
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-mm@kvack.org, driver-core@lists.linux.dev, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+References: <20261019-b4-skbuff-bug-on-followups-v1-0-41dbef50b9f7@toxicpanda.com>
+ <20261019-b4-skbuff-bug-on-followups-v1-3-41dbef50b9f7@toxicpanda.com>
+In-Reply-To: <20261019-b4-skbuff-bug-on-followups-v1-3-41dbef50b9f7@toxicpanda.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Fri, 23 Oct 2026 07:37:23 -0700
+X-Gm-Features: AclHuK955ZVILJAXSd5ooCPOgIzdBikAhRIkvruYzZknz6V5xNQiHJHo5To2igs
+Message-ID: <CAHS8izOEYnqfNz_57u-JNiEC4OCB8MT5Gvuhi52rXkN6aQ18OQ@mail.gmail.com>
+Subject: Re: [PATCH net-next 03/15] net: skbuff: fail checksum validation when
+ the skb can't be checksummed
+To: Josef Bacik <josef@toxicpanda.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, Juergen Gross <jgross@suse.com>, 
+	Stefano Stabellini <sstabellini@kernel.org>, Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+	Fernando Fernandez Mancera <fmancera@suse.de>, David Laight <david.laight.linux@gmail.com>, netdev@vger.kernel.org, 
+	xen-devel@lists.xenproject.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 23, 2026 at 4:01=E2=80=AFPM Jason Gunthorpe <jgg@ziepe.ca> wrot=
-e:
+On Mon, Oct 19, 2026 at 6:51=E2=80=AFAM Josef Bacik <josef@toxicpanda.com> =
+wrote:
 >
-> On Thu, Oct 22, 2026 at 11:51:40PM +0200, Luigi Rizzo wrote:
-> > On Thu, Oct 22, 2026 at 10:12=E2=80=AFPM Jason Gunthorpe <jgg@ziepe.ca>=
- wrote:
-...
-> > > Can someone explain what outside netdev would use this? And why you
-> > > couldn't do this in the netdev page pool?
-> >
-> > I can try.
-> >
-> > Regarding users, the next target is disks (not included in this series)
+> __skb_checksum_complete() verifies a received packet with
+> skb_checksum(), which returns 0 when the range runs into unreadable
+> frags or past the end of the skb.  0 is a valid sum, so it's treated as
+> one: it adds skb->csum, the pseudo-header sum, and folds the result.
+> With a sum of 0 that's csum_fold(skb->csum), which is 0 whenever the
+> pseudo-header sum folds to 0xffff, so a packet whose payload was never
+> checksummed is accepted, marked csum_valid, and left with a wrong
+> CHECKSUM_COMPLETE value in skb->csum.
 >
-> Disks don't use a memory pool, they do IO to folios allocated by the
-> page cache.
-
-I know. As I said I have a separate patch to cover those IO buffers
-
- block/bio.c                  |  21 +++++
- block/blk-mq-dma.c           |   4 +-
- drivers/iommu/dma-pmd-node.c |   3 +-
- drivers/iommu/dma-pmd-pool.c |  14 ++-
- drivers/iommu/dma-pmd-priv.h |   7 +-
- drivers/iommu/dma-pmd-user.c | 390
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----=
----
- include/linux/dma-pmd.h      |  53 +++++++++++
- mm/filemap.c                 |  27 +++++-
- mm/page-writeback.c          |  13 +++
- mm/readahead.c               |   9 +-
-
-
-Disk I/O is still potentially affected by the same problems
-(cost if io mapping/unmapping, iotlb thrashing, bounce buffers
-in confidential computing...)
-
+> __skb_checksum_complete_head() passes skb->csum in as the seed, so a
+> failure there folds 0 and the packet fails validation, but only because
+> skb_checksum() happened to drop the seed.
 >
-> The only other candiates I know of besides page pool would be the
-> existing dma pool users. I don't think they are so performance
-> sensitive as netdev.
+> Use skb_checksum_full() in both, and report a packet that can't be
+> checksummed as having a bad checksum, so callers drop it the way they
+> drop any other bad checksum.  Clear csum_valid, and leave skb->csum and
+> ip_summed alone, since there's no full packet checksum to store.
 >
-> IOW I think this entire series is only useful to netdev.
-
-Well, the series provide mechanisms to address disk I/O as well.
-
-
+> Found by the Sashiko AI review of the series that made skb_checksum()
+> return 0 for a range past the end of the skb.
 >
-> > > It is not a common workload to have the DMA allocator be the one that
-> > > allocates the memory. Usually we are DMA'ing from memory that was
-> > > allocated someplace else.
-> >
-> > Aside from the fact that dma_alloc_attr()/dma_alloc_coherent()
-> > does memory allocation + iova allocation/mapping,
-> > this is not what happens here.
-> > Maybe the confusion comes from one function name
-> > (dma_map_alloc_pages()), but it doesn't map any thing.
+> Fixes: 20ddd0fd2fcd ("net: skbuff: don't BUG() on leftover length in skb_=
+checksum() and friends")
+> Link: https://lore.kernel.org/all/20261007-b4-skbuff-bug-on-v2-0-b9a5f732=
+895b@toxicpanda.com/
+> Assisted-by: LLM
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> ---
+>  net/core/skbuff.c | 21 ++++++++++++++++++---
+>  1 file changed, 18 insertions(+), 3 deletions(-)
 >
-> > My code (in this version, and more in the upcoming release)
-> > mainly implements a specialized memory allocator with an
-> > API equivalent to alloc_pages() and variants, but ensures that
-> > the order-N blocks come from contiguous 2MB blocks reserved on the fly.
-> >
-> > The physical addresses of these blocks are recognized by the
-> > "dma allocator" (I suppose you meant the entity that allocates the IOVA=
- range)
-> > so that it can apply specialized IOMMU mappings backed by 2MB IOMMU lea=
-ves.
+> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> index 061c61422a38..40d2dd20d47d 100644
+> --- a/net/core/skbuff.c
+> +++ b/net/core/skbuff.c
+> @@ -3860,9 +3860,17 @@ EXPORT_SYMBOL(skb_crc32c);
 >
-> Why? This seems completely divergent from how anything else works in
-> DMA mapping, and I don't see a reason for it to be anything like
-> this. Other than it makes page pool work a bit easier
+>  __sum16 __skb_checksum_complete_head(struct sk_buff *skb, int len)
+>  {
+> +       __wsum csum =3D skb->csum;
+>         __sum16 sum;
 >
-> Frankly this looks like you had AI to transpose a bunch netdev page
-> pool into iommu.
+> -       sum =3D csum_fold(skb_checksum(skb, 0, len, skb->csum));
+> +       /* If the data can't be checksummed it can't be valid either. */
+> +       if (skb_checksum_full(skb, 0, len, &csum)) {
+> +               if (!skb_shared(skb))
+> +                       skb->csum_valid =3D 0;
+> +               return (__force __sum16)1;
+> +       }
+> +
+> +       sum =3D csum_fold(csum);
+>         /* See comments in __skb_checksum_complete(). */
+>         if (likely(!sum)) {
+>                 if (unlikely(skb->ip_summed =3D=3D CHECKSUM_COMPLETE) &&
+> @@ -3886,10 +3894,17 @@ EXPORT_SYMBOL(__skb_checksum_complete_head);
+>   */
+>  __sum16 __skb_checksum_complete(struct sk_buff *skb)
+>  {
+> -       __wsum csum;
+> +       __wsum csum =3D 0;
+>         __sum16 sum;
+>
+> -       csum =3D skb_checksum(skb, 0, skb->len, 0);
+> +       /* If the data can't be checksummed it can't be valid either.  Le=
+ave
+> +        * skb->csum alone, it's not a full packet checksum.
+> +        */
+> +       if (skb_checksum_full(skb, 0, skb->len, &csum)) {
+> +               if (!skb_shared(skb))
+> +                       skb->csum_valid =3D 0;
+> +               return (__force __sum16)1;
+> +       }
 
-(yes, AI assisted, heavily human-guided).
-Frankly, it's very orthogonal to pagepool, given that it uses pagepool
-for what it does well, and it provides functionality that pagepool
-does not have.
+I think maybe we need to be careful here which are all the skb flags
+that we need to touch to indicate that the checksum failed.
 
-Anyways, reading your next comments, are you suggesting that all
-these functionalities should be implemented as pagepool extensions?
-(2MB mappings and iommu backing, proper allocator of fragments out of large=
-r
-pages, device-less pagepools, multi-domain mappings, pagepool
-as memory provider for skb heads, pagepool as memory provider for descripto=
-r
-rings ?)
+My LLM is recommending:
 
-cheers
-luigi
+        if (!skb_shared(skb)) {
+            skb->ip_summed =3D CHECKSUM_NONE;
+            skb->csum_complete_sw =3D 0;
+            skb->csum_valid =3D 0;
+        }
+
+Seems ip_summed =3D *_NONE was caught elsewhere, but also maybe
+csum_complete_sw=3D0 makes sense.
+
+--=20
+Thanks,
+Mina
