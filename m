@@ -1,96 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.180
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792716797;
-	b=iaq0LQbO/GDxCO6QIHaiHZBqNGTOcVT7aXvf1FmpZ7fiNgfCvq6+0IDsVPHInVIF3ZER
-	 cGQjOlVgOkbmpPOk5LUxm6SabO4VgoUL1MMim4tjrSgCaRZj3vMVxOfGIKla29du9a01z
-	 qxqdhnj/J31QUJwgTB11+WKdH5GCKijnonmBfGojyf4zUvLOC6ELPQY1VgpXdZi3BqZyL
-	 TpUI53IwOmLiZ1aS2vdOAxa6hH45YSKrshTbWy5c9owoEkIAJEgeUnNyrPm6+tIfAckUN
-	 d+4ZDGJp3ch3JLVQ3uWFBHNy09EsonB0YZf1wVociWghQXgFtQK5DdMfxRGdFpJBlog==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792716797;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.45
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792716914;
+	b=vxamAe9MWSa3b495owRWJMCERCg2+QI0/cKLkdy4vNfURprOe2ZMrhFDKzJDrZt84qMY
+	 l9+l+Oi47D91NwdkDWvAO5OyHNS75LSw2+T6HJ248wH1/PIV7NQ6fxBYXNCn5csVV/FQa
+	 uWQGqvnKdR1eyzO3BR38b/EvhSc8UNK85Vaz3phR8qB6Ks8924YEKC5QIoXG00HqdSmSQ
+	 NMIsWy4mdM2SILf18F59a2ZGiHOkFMU3G/K+qPrZcwXIgTD8Ih2kf73GRUWt+NzYcAw8W
+	 4LfZOtg/Z7v+Rtiytu5UiQuj9WJPteW3pmk3eJLByF62fGB00+Nd2Y4TvX69qbUTd5g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792716914;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=qwzDXE7uMgYzr2LALcYpN7OIf8wwLpLfy0jma6A3Wno=;
-	b=hBnhqE3cn1vkgL4p4ThcI8iknBM+vpDd2Sj/M8LC+IDRLmJjI2NCBavRSqdwL0J/kEBP
-	 BFCdvZD9uBZMybxIsaCCq1py6/R3mqo6uKmhcGl4trllz7OX4S64Gvsv3jIfPb2+exHzr
-	 oaT76CWfPA2aEF2mSkOjrbtdryJk2PHN13z3ygs0hOpdWM5zzvBZqUwCPUkk/GizpFGFF
-	 MvcxdorAv6tuOwtrX7Kj7zzDF3lnADhiruhpWu2gnileXBIwRTCQXjvYTiF/Hkru1D/pT
-	 bUAHflGlNJNHLrP2IuDQE4tKaG509+w2hOpI2TGTHl0Lo48UNfknjLuxTfK65B1BkFw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=r0FMPduqJ0vMq61jwHyW/GEzTaVV+6BnR55xnPNeJP4=;
+	b=LgZSJziaEWtRqtyLluRmLoouvka/P/qWx/wfMCYr8xI3GeyOdQhBCxfTItc54+E7Ulq0
+	 d9b+el5P9aWf9x4qXwG37gstX9qtIdYvmE7Hd/iC6t90QN4beYjCC5Ge1AXoHP5ew3xJw
+	 n/H5Haib1V9DxhkYZIaQVo6khL9VXYKyXIkJKFzonusXGkpFEVqBl8nCQFrCfOfymuUNQ
+	 OFVIxzieupEDLXaQOBjj6I1dREMAryW8/7tAGrY2n/rfMiYAoc95Apspw6tq47oc3qwG6
+	 YvYE343L9aghjD/RnRSukItPxrGTdaEPyWi54U7TbQk7vSlm/LeMiXRwXcnIbYdoIIg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=e0InhKW7;
-	arc=none smtp.remote-ip=74.125.82.180
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=jGlZ3zwo;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.45
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F70606A31E
-	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 00:53:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 34F70606A31E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6F4606A31A
+	for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 00:55:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2D6F4606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=e0InhKW7
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-368581df789so334654eec.1
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:53:17 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=jGlZ3zwo
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6b1b13e09ffso399764a12.3
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:55:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792716912; cv=none;
+        d=google.com; s=arc-20260327;
+        b=SSqrZeFg9lzCWp4WsbQVQCEDE04++sjxAg0NOr7a3nybu/+2prsvXsNHVHY+hgLky7
+         Bpt26vi1I3fwHbib6Xz+6S59WzSsvRHDl4ImwpmL5o1wocaWF0CBN8tpT2pCaE6cRaPz
+         gbWxYi9SgG2sLy6kS+WZn7n7KALIANgvzASccBqy/bnGAw4wSKVTPXhcbyiaHAlmUmXz
+         KBbt3dzocBSxy+AMyht8c0kdP7v6T5tU0XUGCrJ4p2bWkTbydpe+rOOo6Sj0+6v4OY1t
+         tURwGoIbFA2d7kciNFS2t07jGOITDPIJmwqCCsD9pCVCfLA1heso0reWhAyJoODzP+jw
+         Nuww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=r0FMPduqJ0vMq61jwHyW/GEzTaVV+6BnR55xnPNeJP4=;
+        fh=9Jni3+9H8vb0ZwkwGEa6+BG3BNO+8yFOqTLYhvxklmU=;
+        b=mDdkZKRm5lKNpfb9m/HGNj23Y3krkbmevAV6jILy5uLQS3Dr48ODFI5dNYw5UznjTO
+         Kb6R3pNYRbd38F7sLGJV2ezLKFDKqZzJaYddt1dmoW0926Bd5w/4XqSf9ROJUpue1hho
+         w5lIwyMqTWc1g2HrvzSmthLkO6iHGEWwOl0X17Syz0L6FCeXwjis6S/Cxyjx8XX5P8iX
+         VbwuGGdZMGGGo5Xy7e4FpWclQ3rscVNN2HPKOiB0/WM7Qd1a/ae4bnLEKCoY12lZLMj5
+         yJNT7dS+DVZA+2jC3mVq4qGE2lORoobYg+xVxkO8tk+zs5Jwpz/bN1Wcgc3t/ob7+3Lp
+         A1lA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792716796; x=1793321596; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=qwzDXE7uMgYzr2LALcYpN7OIf8wwLpLfy0jma6A3Wno=;
-        b=e0InhKW7gLeCEc0Iv1Lj9EUBFyMNPdb9KWqt5zOitlonEcFpbklZBhIG6kcwfSCWEU
-         QIFXohUeHtAf6b4yWKZTGNqK2sbUon3Zh38wRmwLaM2FIEz4BWkY3tmvOq8fGpXDpcsF
-         o2MjKFrVB8FA4EdKZ0OMco1IvhepfmE4uNSV9GX0Ag9+FnG8dMfbRM/ZLgJneoQYbfSH
-         /o4Pw5dSZEKmTx1t8vuF2one6ce+FfhA96v7BaLmTcsEYoAnzu5tK09r3UNye/133h/9
-         E5stzBCmhYSIexMpRFR0GnqKbQaL2A6HW/MQH83kKKx+RfaQ3C6hTmAqoZBgFrY7t5Oo
-         9fWg==
+        d=gmail.com; s=20251104; t=1792716912; x=1793321712; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=r0FMPduqJ0vMq61jwHyW/GEzTaVV+6BnR55xnPNeJP4=;
+        b=jGlZ3zwoXzBUq07fcxzcXJvLGgVwYyqDidjGc2iDLleaPDD35UqIbed/CrFJDKNBX4
+         1YUYE1LiwpyqIwZ979/clSVNKnbMrckzC47rNxHicsqkrFd5Pr4lccMq0QDFaq76zx8s
+         cbDdYXpP5n0+cFcBQtDg1r1qn+FGsU/ZiQPYhRODeg9hjKnNwA4Nf9AioQ1b774Cd1r7
+         UyPSG8YgbbSss9YmgJS/hOGsyoC8Sr2zaZRwleAxkBM9z1kvW84TTu5pjnu8iWG7Sjzb
+         mTwbGjSL2GRPnK1DC0U1LMaiyJ0XvPlw1UVAH/gn1QCCvvgV+XwGrnAE7/Es5tojUHqQ
+         qN7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792716796; x=1793321596;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=qwzDXE7uMgYzr2LALcYpN7OIf8wwLpLfy0jma6A3Wno=;
-        b=fHguA0gsX0FG/FNf1PUhoqJYirwO8IsPiDmEYnsXsrathwA44jCmiaMJ/+XvGWnEHA
-         BZ70Bc7OJVHetgXJAHZWvaQ5FKnVE9krOzmbl/1rd9G8fB/ZFl/Xp+19NKZU/r/SZFDf
-         HZ95JTX67FZ8Ex0IRRnpmjG8DhDYY2iezhK7PaFrulf4zEoOuQIzSG7XRl3uJHdnIV3V
-         9DQ/RNyR+ZepZJOC244T3VWhxu4WzTQs83N+xru6F00Vhh84pEegJDC3lZiZcBAEYptI
-         2MDwdAoJ5O3DhOSMaeDVIrMTPGQ2hrJmwMI/JtLLwop8rXYJYMSzDC4Sk3ubJZIH4xfO
-         mhNw==
-X-Gm-Message-State: AFq9FYLVPHEsQ8e8do0CnImjWArx8EDmG3Xdob8ItaFQrFANnanCc/ls
-	pun7qbhgxUVsNFzs6d57B7fjLal1EiDnOeFPh3o7kLEM4L3Nubf4f8IFD6JsX7Xk
-X-Gm-Gg: AYBFou1sQkjHnKYRE3hZ8ob0hVnr3ae+x0T1yaQVWPlLXWltssYnqVTN4GSc4zf3KOY
-	fUpRT1oO21aFO3/xNmc+rQRBhFunNkD5D69SnBvXaDSViRgnKh0B7aZCiNUceRd5k16pL2fOgq2
-	f1ZKXft64wNkkvuX+07IZpYKMT4ZZyZR9L2yCS1AdaCB1PccdHqrEgSUf37/KwepschUb+dr/XX
-	9Loc5mtojvLvcV0OD8hykcYDmm56M1e4m4fcFp2kgGxzaggldgoSAvQXeZFIFbRvuRdAqDdLOVJ
-	WfZZS2WTbWh3vnrJxLHSd9+ou0+e9DagMgbr5btySJ90BKFoX8FQbHQjvzORFstMY3JtIzqbgSB
-	iiSdJjSsPg3DUZxC3az5gStsapMxGAC/GZQiKk//KQbf2z7CKm+q0MlMOvoJkKJos2K4LQBDztA
-	XeJATyvtr94BCJklC8aot9g21+xPNsFHAbz4l1ErwQobXuqSpxmQCNiE2tqAntqTDheup/qOHi7
-	oNjggveqMSAcUQ22fEUTJKma/m78XYJCUkaje6CUMLHgRRTylNK5KejVgfl2Zvv4DO2DVRfbcnC
-	y6drC0PRy/FAzxDfo9bc08JvPfWQwu0jgL0+NuhRdjBxjWjav/i5SLY7ejxhHVEsZceggw5a3eK
-	yPCW9ni84Avm/NCFNtdnGj+KZFAXs
-X-Received: by 2002:a05:7300:ec8b:b0:368:d722:48ac with SMTP id 5a478bee46e88-368d7224a10mr3977854eec.14.1792716796168;
-        Thu, 22 Oct 2026 17:53:16 -0700 (PDT)
-Received: from ryzen.lan ([2601:644:8000:37f::e34])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-369d9a72ff2sm1686107eec.0.2026.10.22.17.53.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 17:53:15 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: netdev@vger.kernel.org
-Cc: =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Felix Fietkau <nbd@openwrt.org>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net] net: bgmac: fix oversized RX frame check
-Date: Thu, 22 Oct 2026 17:53:13 -0700
-Message-ID: <20261023005313.3946390-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.56.0
+        d=1e100.net; s=20260707; t=1792716912; x=1793321712;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=r0FMPduqJ0vMq61jwHyW/GEzTaVV+6BnR55xnPNeJP4=;
+        b=KF5iKFfm1HTgWcWcm0g7gWZf09KfYkcmWyT/3E/wS9aSUPIbvkLyo2Npy2oGhn0hfU
+         XX9+huGnl6ZRrgytB6esj+me/4+HpGpFn/dGLfAGE3Pi1bLImGFBqjZnYZHKkxrY8CjP
+         eZkdAKOL5DjicQEvoao0qcVG4bIu3PY9A7CXraRkHX0MqTVbUz+8AMDgJREb44yFVc1w
+         Zs+Pg9DoeAfHdRjr7aK9wOHm5H54uMj/xsNc22fZfejzI0J/ScuAE2qMiBEkwmtVgav2
+         8VyVMGFKq97rt4vSge3vVjmq1Dhwwl4P1op5zWWqiE15/WgaxR0cgSV33icEICCNK8/L
+         rrVQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxMgt09l8x4sfndD24Qc11xKZBC0O3LV4WC/GtrKWLVDWI5hOy9IReb9Rc48xW+dVH7D6BPbb0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJWaTqpSPezp72f7Ggg86xvwqfWUzweRsQkJe5fztCF2fAZ8ock
+	rf/aBuQkROfAee0XJ9T4e6CGStPR+CLEIz4yA/7nwRnH5a990eU6ZifQt0YNhGUZe6b4BBCPcgc
+	SspSM6V6rp9Z81YnMxRynVhR1CPBWRaY=
+X-Gm-Gg: AYBFou1JuxeJOaIPg44dnDkHa/vrMC4eqm/AjzcuVLCzlp/NeENwcdfkizKNrFvYvBq
+	jLE7tGKoMl058QI04OgfXXZq5fPmE0zN1LEfzkbi/aIqBzwmf9Bg8JUXfMaU+Evj61f/NzKCqhy
+	NXHpf1v3Ewr+kNDcx+GIY8uRgrZEDm8ui9hwnkjZA7QnTNfSilIlbiO+Ko+DGmMh1QCF/BrBMi0
+	Ckd89TnJFtVChazdkRjxhKaeLkS65fT06baCq5muGa8TIzaCqV56XJp0GOFrFbgt200xWypozzP
+	hkMZTR1KSbCxka7RkH+NMmeZBUxnFUj5IYdRZoD5Dm2BsHfSBP2vXda9nuOWLhGI43JtH4yGNP9
+	CDByGjs3a/Qatqz+7L8cjRZ01sLykVzLpOyotxVvTj+VkYbl7whuNuuiibCzsCB1HUXp1BvNdtV
+	oPcUbm7qzFmiNV+SuApvf2FXRsFIScvCJnygz6xSbjYA7+jVI27hgIWSeeBI94CmOKyviybwD56
+	T7LNGCwOLRnaqyMKpZwyL/UHH7jq1TbPwL5fLxxQHuMSvqqyio=
+X-Received: by 2002:a05:6402:205b:b0:6b3:e89b:126a with SMTP id
+ 4fb4d7f45d1cf-6b432bd8989mr1000942a12.12.1792716912331; Thu, 22 Oct 2026
+ 17:55:12 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,43 +106,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261021001744.2042320-1-rosenp@gmail.com> <179254219525.3290.1761340258214254709@kernel.org>
+ <20261020181423.68783c1b@kernel.org>
+In-Reply-To: <20261020181423.68783c1b@kernel.org>
+From: Rosen Penev <rosenp@gmail.com>
+Date: Thu, 22 Oct 2026 17:55:01 -0700
+X-Gm-Features: AclHuK9ICwt_OB5Rj30ELqyDL-gDO0EkUcuhCZlIOFTTDWA3-lrmMCR6ms3mofc
+Message-ID: <CAKxU2N8ys_QztyhKLSp-PQ=BD20rvNSSRE16eXbd1KiV6wdCXw@mail.gmail.com>
+Subject: Re: [PATCH net v2] net: bgmac: fix TX DMA unmapping and slot cleanup
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev-bot+sinfo@kernel.org, netdev@vger.kernel.org, 
+	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Felix Fietkau <nbd@openwrt.org>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The RX length sanity check compares the length reported in the RX
-header against BGMAC_RX_ALLOC_SIZE. That is the size of the whole
-fragment, including the space reserved for struct skb_shared_info.
-The data area handed to the hardware is only BGMAC_RX_BUF_SIZE bytes,
-and the frame starts BGMAC_RX_FRAME_OFFSET bytes into it, so a valid
-frame is at most BGMAC_RX_MAX_FRAME_SIZE bytes long.
-
-A corrupted length between those two limits passes the check, and the
-following skb_put() runs past the skb tailroom and calls
-skb_over_panic() instead of dropping the frame.
-
-Compare against BGMAC_RX_MAX_FRAME_SIZE instead.
-
-Only compile tested. Not tested on hardware.
-
-Fixes: 6a6c708469c9 ("bgmac: add check for oversized packets")
-Suggested-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- drivers/net/ethernet/broadcom/bgmac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/broadcom/bgmac.c b/drivers/net/ethernet/broadcom/bgmac.c
-index b3a92ae95de3..6873c7bb7a14 100644
---- a/drivers/net/ethernet/broadcom/bgmac.c
-+++ b/drivers/net/ethernet/broadcom/bgmac.c
-@@ -455,7 +455,7 @@ static int bgmac_dma_rx_read(struct bgmac *bgmac, struct bgmac_dma_ring *ring,
- 				break;
- 			}
- 
--			if (len > BGMAC_RX_ALLOC_SIZE) {
-+			if (len > BGMAC_RX_MAX_FRAME_SIZE) {
- 				if (net_ratelimit())
- 					netdev_err(bgmac->net_dev, "Found oversized packet at slot %d, DMA issue!\n",
- 						   ring->start);
--- 
-2.56.0
-
+On Tue, Oct 20, 2026 at 6:14=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> On Wed, 21 Oct 2026 00:23:15 +0000 netdev-bot+sinfo@kernel.org wrote:
+> > This is an automated message. This series looks like a fix, but its
+> > commit messages seem to be missing some information:
+> >
+> >  - How the issue was discovered, e.g. hit in production, hit during
+> >    development, syzbot report, manual code inspection, LLM or static
+> >    analysis tool scan.
+> >
+> >  - Whether the issue was actually triggered, or is only theoretical
+> >    (e.g. found by code inspection). If it was triggered please include
+> >    the symptoms, like the stack trace or error messages.
+> >
+> >  - What hardware the change was tested on. For driver fixes please
+> >    mention the device (and if relevant firmware version) used for
+> >    testing, or say that the change was not tested on real hardware.
+>
+> This is getting tedious, the bot has emailed you 10 times asking for
+> this info. One more fix without this info and you're getting a ban.
+Noted.
