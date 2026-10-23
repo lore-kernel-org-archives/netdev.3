@@ -1,79 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.130
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792754568;
-	b=OaIbpgd9q2xE+Y8QOIPDuaFCP2s43G7STm2rDaZTJRSVmE5X8vxi7ZxUgMyMIQPpRuAW
-	 szNV6jcmMk/2UCQwONF23YAwjsLEI5Tdd4rEtK/54b9OWbqJ2dddhDnunm6oAkHb/cwGS
-	 rCwVip4Xok270YaHzbIDCtJzKteI4KX6/1GGc3XHIT4K8BleMOtxBNMBqshVOOJee2O/O
-	 GOrijyTZpsEwYWAes2KSaxMhOCm3TTdw7P/pkr+9ZCmW9VU74mVX61WuAiLzFM8rVQOx4
-	 7Z5akPFF0vpx5kSPdWt7j40yAJgw110eLTaizIRto2BjseT2/A/RRAZWc+LcgZvUXnw==
+	t=1792754591;
+	b=SVRo92PqFL6QeXgPsY8jYk0K17v5jX2MGq0hxHgUqry3w9N8nf8fv6vPFMwHucJDf/P6
+	 gi6G8auV5PNKmjhE9teTooSiXTU1z3MxEXw6k+wyjKacFB88fg7RenJNlGq7U3PtZ//Fs
+	 3J2HGhw2eUKd/SBLXtmqROPae9hCsPauRdqCJ0sv2cOGMK+XooJBVgrLdgaglInAWokiu
+	 zUnhDzXIgIvwqgbQJBc+GEDHjhYlyYAYe3qciqjZNKPKg4x6eduIu+y/Gotjkm1LPiitO
+	 b5PjhB6nmqZy0w1dgQnVho1pgGE6KiHMFSa0LpT/E8obiO2dAEt5UFgqkTQV2dIzf7Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792754568;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:Date:From:To:CC:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=G5CSIxobeZsdLounHb4GkpO0AIF+/+Z89dEuK4yoslo=;
-	b=lJvb2G5eJFo9ryiwq/mAtpiiT5djExx63ASdOA6yy5VWHjT1N2HWMTmzlxUXIBAOW36m
-	 xakR3S0HLy9QGG/7gOZbBoTfR+uiss9/DrDrzG4vj2PoqRM3yj6fxRIxM7KETOJx6Fi3A
-	 4UCKevyV7ZmB32lBXVovPlI+njKabPoNmV4KWHFdYGn9GD0gPrMOO/vo7lAiOtNbGfPk3
-	 tdv+xSp2yqW8Lu16Ad6qixU8JCwGZwym8OHRhCtULkeoYGpUPT1f6KIKpaA/Tgex8p2gt
-	 fR1MdDquoIbbYfMJknwLBWmje+8fsTsye9c6kt9rOXDh2IrTqkhDPP20gJposSccTxQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792754591;
+	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
+	 DKIM-Signature:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Rspamd-Queue-Id:X-Spam-Level:
+	 X-Rspamd-Server:X-Rspamd-Action:X-Spam-Flag:X-Spamd-Result:
+	 X-Spam-Score;
+	bh=MWj9q4uajifA/Jb3vbzOHD2Z9r7aAIaHgsTHTJb/MnM=;
+	b=3ImqFtYs/E/j+THhMIHbtEWip5fGxFcw7ticOd92zxBlUC0TeFCgegYxbRsrHalC48ZT
+	 kTKvqptznwAgANzrvNNVSjOXw+i74sx0dopvKPOIn3v5G7K1m5Prfe0US35NZlQpML53C
+	 y0lOcDgdAskOO6Aihg355wWoJh5XLoXLXNVDxFmLsu8xFVnX/H0fifcH7GyS9ZBJl1mQj
+	 ggo+2IOHFYY7VpbT0TqoivJjP8iYHpnKPPeq2HqY9bgDY6tpywVFOBpstZaxzZpKbUnJz
+	 lY6TZCCuDk33vTOJUNZuFQRep0ABcuiB/iifpBpWqE/v4E3Gw1G4D5c0v617LECU+pA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=microchip.com;
-	spf=pass smtp.mailfrom=microchip.com;
-	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=rqZvcWTE;
-	arc=none smtp.remote-ip=68.232.154.123
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	dmarc=pass header.from=suse.de;
+	spf=pass smtp.mailfrom=suse.de;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ikltLxiY;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=nMXFzyBD;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=j9FargvX;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=1ioqEvaB;
+	arc=none smtp.remote-ip=195.135.223.130
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2430606A31E;
-	Fri, 23 Oct 2026 11:22:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B2430606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F0D606A31A;
+	Fri, 23 Oct 2026 11:23:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E4F0D606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=rqZvcWTE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1792754574; x=1824290574;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+qda/jg1Jhs1LNJh2oS73NxCLupuDNJ0kTc0oDSTNUM=;
-  b=rqZvcWTE9iD6ePSB+KCrAa4xNdvaoEuVKbxyijq3eSWj2rd/iWlfTY3o
-   H8le9KkGUHoRcMUR3KjjmOEyn83qO81GfUqiGyKTPrzHTbQVuaFceRTC1
-   ICt9paGzdO2SAM8qFZ9o5iW7bRXpzD2dJcQeMwb6MRZxTCD0hhKfun/F4
-   wIJyaaQzAXOtyrVTrdtDcN7pJwLrR+36xpEIGur5w0u+djx5JCpHXa5PU
-   q0vh5meBBYzlmGLRV2fdSWqt/sHGP33NkUCJ2tqpO5mkjv50kOaBGTQh+
-   cWzTAKfkTPa3OkdUEoaSJwRO5JNU9bp4o9FmjQ9NfFa3q19ynNtILXi13
-   w==;
-X-CSE-ConnectionGUID: a4/kPmM6QOinwLLFglvc3Q==
-X-CSE-MsgGUID: R9hzWZuySOOj5jixmaLaOQ==
-X-IronPort-AV: E=Sophos;i="6.27,174,1787036400"; 
-   d="scan'208";a="65727433"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 23 Oct 2026 04:22:53 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
- chn-vm-ex02.mchp-main.com (10.10.87.72) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Fri, 23 Oct 2026 04:22:46 -0700
-Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex02.mchp-main.com
- (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Fri, 23 Oct 2026 04:22:44 -0700
-Date: Fri, 23 Oct 2026 13:22:43 +0200
-From: Daniel Machon <daniel.machon@microchip.com>
-To: Peter Morrow <pdmorrow@gmail.com>
-CC: Tariq Toukan <tariqt@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Petr
- Pavlu <petr.pavlu@suse.com>, Yishai Hadas <yishaih@nvidia.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet
-	<edumazet@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S .
- Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
-	<linux-rdma@vger.kernel.org>, <regressions@lists.linux.dev>
-Subject: Re: [PATCH net] net/mlx4: always create the eth and ib auxiliary
- devices
-Message-ID: <20261023112243.bpowvi6tdcguoie3@DEN-DL-M70577>
-References: <20261020164239.3808903-1-pdmorrow@gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ikltLxiY;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=nMXFzyBD;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=j9FargvX;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=1ioqEvaB
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id EBC9522142;
+	Fri, 23 Oct 2026 11:23:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1792754589; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MWj9q4uajifA/Jb3vbzOHD2Z9r7aAIaHgsTHTJb/MnM=;
+	b=ikltLxiYqGewZaPR55z1hoUjQSG0CgtowBuDtRJdDCDaClMXN8iiYDJfnkhAHdmSZKc2Mi
+	AqQK/M0cW6e1Mu5X1Z3Hg2CkcfMm24q8Ipoz/qeZNmjLWQ+ucuOW0v/TCE2tvo+HdWNsmG
+	ozkzc7p9MZE8UwDKwNs4e52VU1+/BNc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1792754589;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MWj9q4uajifA/Jb3vbzOHD2Z9r7aAIaHgsTHTJb/MnM=;
+	b=nMXFzyBDrzcEDDi4kKUbVpzee4xfT1GaAeczV9Ugw35IpYFEvjec7FCHBg/1w9ooltKEGn
+	JnEstad4igfPHYAw==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=j9FargvX;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=1ioqEvaB
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1792754588; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MWj9q4uajifA/Jb3vbzOHD2Z9r7aAIaHgsTHTJb/MnM=;
+	b=j9FargvX71H/V4NpMX+jZAr7YfFCmnu/EzeyoKBiD3oY4NjExjyZP50IB9t9DVta1K4Wf8
+	1dilqlo05sGILOIwYmGjVuUmsBAVgUOFER07wuAp1A8fIEXAxi9Q4MwmIcm3EGGKtHcz93
+	X5G04AScj/a70by2J1UtKQZREXj/Ixo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1792754588;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MWj9q4uajifA/Jb3vbzOHD2Z9r7aAIaHgsTHTJb/MnM=;
+	b=1ioqEvaBJQujl2TSOEtmbQTYXJztPL2vNolxbQXCxeqaXlDxAV1uNh3b0oIgOt79FMnhQm
+	xvf0D9H1gCJ+UrAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 37C20133F6;
+	Fri, 23 Oct 2026 11:23:08 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id tAViApxD22qMQgAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Fri, 23 Oct 2026 11:23:08 +0000
+Message-ID: <91ffac70-3fd6-4644-bfbc-4710af1faa37@suse.de>
+Date: Fri, 23 Oct 2026 13:22:01 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,37 +108,89 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20261020164239.3808903-1-pdmorrow@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] bonding: fix out-of-bounds read of arp_ip_target
+To: Jiayuan Chen <jiayuan.chen@linux.dev>, netdev@vger.kernel.org
+Cc: stable@vger.kernel.org, Jay Vosburgh <jv@jvosburgh.net>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Nikolay Aleksandrov <razor@blackwall.org>, linux-kernel@vger.kernel.org
+References: <20261023104528.232427-1-jiayuan.chen@linux.dev>
+Content-Language: en-US
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <20261023104528.232427-1-jiayuan.chen@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: EBC9522142
+X-Spam-Level: 
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-12.00 / 50.00];
+	SUSE_INTERNAL_BYPASS(-9.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
+	MX_GOOD(-0.01)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	ARC_NA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TAGGED_RCPT(0.00)[netdev];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,suse.de:dkim,suse.de:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -12.00
 
-> Since commit 7d22b1cb9d84 ("mlx4: Connect the infiniband part to the
-> auxiliary bus"), mlx4_core creates the "ib" auxiliary device only for
-> an IB port or a device that advertises IBoE. Before it, each mlx4
-> interface was offered every device and decided in its own add callback.
-> mlx4_ib_add() accepted Ethernet ports without IBoE and registered them
-> for raw packet QPs only.
+On 10/23/26 12:45 PM, Jiayuan Chen wrote:
+> arp_ip_target is a module parameter array with BOND_MAX_ARP_TARGETS
+> entries. In the loop parsing it in bond_check_params(), arp_ip_count is
+> the number of accepted targets, while i is the index into
+> arp_ip_target. Invalid and duplicate entries are skipped without
+> bumping arp_ip_count, so bounding the loop with arp_ip_count lets i run
+> past the end of arp_ip_target, e.g. 16 targets with one duplicate:
 > 
-> ConnectX-3 VFs on Azure have an Ethernet port and no IBoE, so since
-> v6.6 they get no RDMA device. DPDK's mlx4 PMD, which needs only raw
-> packet QPs, then cannot open them:
+>    BUG: KASAN: global-out-of-bounds in bond_check_params.constprop.0+0x1148/0x1440
+>    Read of size 8 at addr ffffffff96e9ee00 by task swapper/0/1
+>    Call Trace:
+>     <TASK>
+>     dump_stack_lvl+0x91/0xf0
+>     print_report+0xd1/0x630
+>     kasan_report+0xf3/0x130
+>     __asan_report_load8_noabort+0x14/0x30
+>     bond_check_params.constprop.0+0x1148/0x1440
+>     bonding_init+0x13/0xe0
+>     do_one_initcall+0xe7/0x5b0
+>     kernel_init_freeable+0xa91/0x1120
+>     kernel_init+0x24/0x220
+>     ret_from_fork+0x5b3/0x820
+>     ret_from_fork_asm+0x1a/0x30
+>     </TASK>
 > 
->   net_mlx4: cannot access device, is mlx4_ib loaded?
+>    The buggy address belongs to the variable:
+>     arp_ip_target+0x80/0xa0
 > 
-> Restore the old behaviour by creating both auxiliary devices for every
-> device and letting mlx4_en and mlx4_ib decide in probe, as their add
-> callbacks did. mlx4_ib_probe() returns -ENODEV when there are no usable
-> ports, and mlx4_en_probe() binds a device without Ethernet ports but
-> creates no netdevs, as mlx4_en_add() did.
+> Bound the loop with i instead. arp_ip_count never exceeds i, so it
+> stays within BOND_MAX_ARP_TARGETS too.
 > 
-> Tested on 6.12.111 on an Azure VM with two ConnectX-3 VFs: each gets an
-> eth and an ib auxiliary device, and DPDK attaches both VFs and passes
-> traffic through them.
-> 
-> Fixes: 7d22b1cb9d84 ("mlx4: Connect the infiniband part to the auxiliary bus")
-> Closes: https://lore.kernel.org/r/20261014133951.3219055-1-pdmorrow@gmail.com
-> Suggested-by: Leon Romanovsky <leon@kernel.org>
-> Assisted-by: LLM
-> Signed-off-by: Peter Morrow <pdmorrow@gmail.com>
+> Fixes: 5a5c5fd48e3b ("bonding: arp_ip_count and arp_targets can be wrong")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+
+Thanks!
