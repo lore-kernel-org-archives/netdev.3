@@ -1,87 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.57.64
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792836734;
-	b=R1pOIA8T0cK1NJGPZnc+7c6s/ukxEsj3p4yMRTvpFGCgQwB2a6Vp9lkgkRRNIdtNTfOS
-	 6Hn2sqsS5412l/qPMHrk+M5C9VRmt29DZU3c0gu1XGDIP9pxL1O2QB9BsEr3jiJsuljXz
-	 is+yrz7zHwVl9H6n7OZFaJoBETB9rr6qn6EdEB4hfHObVmGjKiWbEggEp8i4H+GH6I5Ub
-	 a+OBzMjKj2ckia8KCsWbl0IyUs1g7rCKDhmZtWs3mJqLDFQODYcsoRjwYY9iSm7cW2HEm
-	 uFH/yKDcM2hCEMjofdAu3LRdP7jOdd8gTAahCzzAD8y7VPwMwkyGMg5TnmBTyPLNoIQ==
+	t=1792837950;
+	b=RSqH/Ms37BHXZex/GdOlltYxw+qcEy7LSeudbf6nH7OC+fSz0WQQuSYy/CowJ5X+5Pyy
+	 IlFRvKotQT9D/SzIs13TkXi50Bqu7TBhng6oIApi+JY4/mOqX6ZNYGgr4ur4ssy4uoX6v
+	 cvnzg2UUS27/Awn94eusAq6LSe5s/iRD9PbbdoQglGPsBjiFDHDpxQIQFW0qnshPdc2Lu
+	 0/yP0NCtGQjaSdMD9hXyfaKgONg+4jKAyQbSqUF3qt4E9VVe5py7VNPRQNqHaM8YKVw8O
+	 xmbZR7tQ6YaI3ihDYlOu5XzKYXVkCpYKLhKfZPg+5JUeFYjxYKCy5AeQotyk+2Z88ag==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792836734;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=5dDo2jQtU5YCwFaK037Js+A9XxUT5Bhl12dwg82ypVU=;
-	b=Tc9wTfj/cqBX5zi1zMguJStc9J468j52+J6J/q5JJV4QnwNZ90tBtG+Hj/r1nc2pF9e+
-	 sh691L6/KA5w/eelPYQDe1ptvglaRgfOUPENIKAlQklhrPlnF2KOKPvZibRZqgD1AwuK8
-	 6CPuwqjUVwvQgVkeN0cbeUaTPYAgVdl8RW/yp8UUDVNvyg92Ij6sQxc66GW20yGIB/jPW
-	 Jp8I1kr0kML7JO9tyj7MWws6yG70wYCfEjjT9mzzfXd8phMUPJlnraqXX14mkqsUzYILq
-	 oQh5YWeoWKuFeY2NR1t4QEeO5btUcUYbpt5pj/iO/g71p8ht3DvLJWk5dGnTj6bLkIg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792837950;
+	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
+	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=by5k9Rwpd3Lb929kxnzIlO4/xIraDNSa5LNfIcf1c7w=;
+	b=yBHdIkuU3G+Coc6Qf7NnPzLuOvYZ8wgsHcgYVhXdOTKo+5csRYHqQesl0E7k+Muu2kK+
+	 U0lBBMQ5NgHiqCwlN8DyNO/uQ+1WaXVIGfylhcyXK9/qT+Ll0WnmFOlsfvB/BYO1Q9ljd
+	 v11N7O3N+4AnWqRkzSFKypuwyNCt2HFG3Mtq653hToQdXsiZKSzd3YHB8BN5XW7KeKQmH
+	 YyfVn0sB/SV5/K621TWM3uemyB3UGgKxmED24RSmmbwZ9UxCvEkahT5AkyMUYxGoATqMf
+	 IRa2GdISISBrQMMft2I6p3Hj/IB8+K4A5pNfjwd+8zWaRRu5oZyHKj7qOeSf46fXtmw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dxpIyPyJ;
-	arc=none smtp.remote-ip=192.198.163.9
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	dmarc=pass header.from=qq.com;
+	spf=pass smtp.mailfrom=qq.com;
+	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=mmiELwFI;
+	arc=none smtp.remote-ip=162.62.57.64
+Received: from out162-62-57-64.mail.qq.com (out162-62-57-64.mail.qq.com [162.62.57.64])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBEF3606A31A;
-	Sat, 24 Oct 2026 10:12:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EBEF3606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89EDE606A31B;
+	Sat, 24 Oct 2026 10:32:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 89EDE606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dxpIyPyJ
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792836734; x=1824372734;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Bal+9D+8XcLLe75AoeOEIfT/sagOC17Rzw4JWqJmsYU=;
-  b=dxpIyPyJlg0Lkyhqp2FAKDJMwQ5ZMERjLPOYAnvC2MbvSbvnxRAPBFEe
-   8OocNnk06C7yl4WSn6IKHpEh7PDsH9XURbOd1oAkgiClD5c8GxuqpluIj
-   3y8APK7hJWKepkuQ1BAN6U1tPDsfDEw0DRCOxbj91wm4c+imS+CEBNj1Z
-   c0Mi3qeCKZCEyZt317RPPJGbRUSOyGYsXmXfusNQSLeKQ+Wc5mxP6dcWy
-   d9OV5zBqsn1ZllWzUKVaSe046KtFJGL6FGeU7C9GM+IkKYP72zwqEll8c
-   vmXUfdDrHR8Zi/QdxvmLg57WfTQbPr5+q31ZjEb15W8lgf32UdAA+6PKp
-   g==;
-X-CSE-ConnectionGUID: TXiTJD4uQ5q9sEb3T3Ee3w==
-X-CSE-MsgGUID: PDcNd16gS5SC7Mj16f4aQA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11944"; a="1468215"
-X-IronPort-AV: E=Sophos;i="6.27,176,1787036400"; 
-   d="scan'208";a="1468215"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2026 03:12:13 -0700
-X-CSE-ConnectionGUID: c19YS49JSKywUYxU7+lgvQ==
-X-CSE-MsgGUID: Ywu+0ywoRM+SDJ6UcAMoXw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,176,1787036400"; 
-   d="scan'208";a="4344600"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 24 Oct 2026 03:12:10 -0700
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xKYjO-00000000TmI-2pwy;
-	Sat, 24 Oct 2026 10:12:06 +0000
-Date: Sat, 24 Oct 2026 18:11:39 +0800
-From: kernel test robot <lkp@intel.com>
-To: vmukunda <vmukunda@marvell.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, Sunil Goutham <sgoutham@marvell.com>,
-	Ratheesh Kannoth <rkannoth@marvell.com>,
-	Geetha sowjanya <gakula@marvell.com>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	vmukunda <vmukunda@marvell.com>
-Subject: Re: [PATCH net] octeontx2-af: Fix npc_delete_flow counter read for
- cn20k
-Message-ID: <202610241814.S7V8CsQq-lkp@intel.com>
-References: <20261023100112.3402726-1-vmukunda@marvell.com>
+	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=mmiELwFI
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1792837943; bh=by5k9Rwpd3Lb929kxnzIlO4/xIraDNSa5LNfIcf1c7w=;
+	h=From:To:Cc:Subject:Date;
+	b=mmiELwFIw3xoTp4Hjx8+WOk24cx7HjEDZuMMWZOgKfIHidvGPgTWtTsJ1T/5ecGBR
+	 raDceycgdomxjVPsh2WJvSBqMjwqBv1+eDUkg1SzP+EA1OoE4gRh7i7mkmDuhJXUx4
+	 HDuZc3WrYftC7sx0AqRBImC2bXQUaib4tEIthNuA=
+Received: from [172.18.4.77] ([61.136.26.103])
+	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
+	id 81485A0D; Sat, 24 Oct 2026 18:32:20 +0800
+X-QQ-mid: xmsmtpt1792837940ted38oxsm
+Message-ID: <tencent_43A65D51143E18518EA968DF9323694EFD08@qq.com>
+X-QQ-XMAILINFO: OOO9dHjlsLs7JqcpGfDwOyvxM76Y4MtmMEynPxk+fpDtCR8etUzE/RdOL7ZFdT
+	 /b2p+++hyIaWTXP2wczGr37txuTP+GGs8P6zeUU9OG6d5B/U+EiyjQ0hgqwRfyN+Wbc87VTpMjFZ
+	 uuFKwPtYdehH8lOPG5v7rL3O5V3ipvW2Ma1Z5TFzpyrF5LCoWZWzAKA8FoM9QtSG+DufATpQs9iw
+	 OudJeldYG9EAWfjg2/IAjLa6Pyoe2rFNybQsQlS1Xs6RqHOCBHvZzJwFMHBRmVCturSF5sNT8sXl
+	 txvfgA6fRJB12OSsnD6GXm32Lv3FuIyObI8plHv2lfwRLGI2yG0eneg+yGt98fCUqSnEFRqFeuDZ
+	 einR9OQUFkWNDT1JVihCSdfiTQmpHH18LdsYIKxyBprDCFO7pPVVaUIYVwtsSpar4gl6OyazwA4I
+	 16VSlUnrZKi4kQQEz39QFw/YJa/fKjQAIt2bxA7hXTqt2LLPChEMiDa+iKc128dyJOwExXtJAY55
+	 RONJZVep3moxXmgaOxVZtt4cNLXDATwZ/xA5omNyKQrnGBd7EfEGiYmvk9R9k98Mhts6A2DDVKQi
+	 SHTSFTeXVPWebV9S39UALBq9QWwnSfaDIQq6VoYB8Pfm2Lfh80KUZbq7qymCyKS9tzQrAhI1fOf/
+	 lDUguPEPkK8J5izTX9OHuSdFD7QLxDUCzrPFXJVydCP34JowSMzA1G86usZyiUj2I+FlVIv7eeWi
+	 JhOpIPlmCHOiKkJrzJorZvItpTzMrk1e36mMXFxFEi66pOPhM3IkUrvpjotZXZCcmuxUDNnAWOux
+	 Ny0c8lyICbfSZSn99gaWhgAEpBdafsdpmB9OQwMtTPFPRW4pvWHR51gSPCM/oD2fZY7D/86X6ykN
+	 wiv1jBu0t4CzfNZ/iIVBiN1zVOtWrmCtczHvQMkQPjoJNqOZMQ5q/5w9TIlUCepKp+rH92NjIDIT
+	 UBoLMUoap4tmpDHNoOKaSdEuleVh3tHfhBBbGLsW7X7mMQ3hFaiJeD01SCwUApe9H0XJ7dSKoDOg
+	 tfJjScWMDa/ZA+nwSFrqpxz/c2EoM2LAq9ZFyN+IWcHPKjxFBdcnMiWrXe+qWP8xcesQSUnh9lZF
+	 qySFz2qMHTK5/Bc4g=
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+From: Guikun Yang <yangguikun19@qq.com>
+To: Jeremy Kerr <jk@codeconstruct.com.au>,
+ Matt Johnston <matt@codeconstruct.com.au>
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [BUG net] mctp: sk_buff leak in mctp_dst_input() when mctp_key_add() fails
+Date: Sat, 24 Oct 2026 18:32:20 +0800
+X-OQ-MSGID: <20261024183220.64968-mctp-yangguikun19@qq.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -91,108 +76,87 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261023100112.3402726-1-vmukunda@marvell.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-Hi vmukunda,
+Hi Jeremy, Matt,
 
-kernel test robot noticed the following build errors:
+In mctp_dst_input() (net/mctp/route.c), the SOM (start-of-message)
+branch allocates a reassembly key, queues the packet into it, and only
+afterwards publishes the key:
 
-[auto build test ERROR on net/main]
+		if (!key) {
+			key = mctp_key_alloc(msk, netid, mh->dest, mh->src,
+					     tag, GFP_ATOMIC);
+			if (!key) {
+				rc = -ENOMEM;
+				goto out_unlock;
+			}
 
-url:    https://github.com/intel-lab-lkp/linux/commits/vmukunda/octeontx2-af-Fix-npc_delete_flow-counter-read-for-cn20k/20261023-100112
-base:   net/main
-patch link:    https://lore.kernel.org/r/20261023100112.3402726-1-vmukunda%40marvell.com
-patch subject: [PATCH net] octeontx2-af: Fix npc_delete_flow counter read for cn20k
-config: s390-allyesconfig (https://download.01.org/0day-ci/archive/20261024/202610241814.S7V8CsQq-lkp@intel.com/config)
-compiler: s390-linux-gcc (GCC) 16.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261024/202610241814.S7V8CsQq-lkp@intel.com/reproduce)
+			/* we can queue without the key lock here, as the
+			 * key isn't observable yet
+			 */
+			mctp_frag_queue(key, skb);
+			skb = NULL;
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202610241814.S7V8CsQq-lkp@intel.com/
+			rc = mctp_key_add(key, msk);
+			if (!rc)
+				trace_mctp_key_acquire(key);
 
-All errors (new ones prefixed by >>):
+			mctp_key_unref(key);
+			key = NULL;
 
-   In file included from drivers/net/ethernet/marvell/octeontx2/af/rvu.h:13,
-                    from drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c:11:
-   drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c: In function 'rvu_mbox_handler_npc_delete_flow':
->> drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c:1962:58: error: 'rvu_pdev' undeclared (first use in this function)
-    1962 |                                 if (blkaddr && !is_cn20k(rvu_pdev))
-         |                                                          ^~~~~~~~
-   include/linux/soc/marvell/silicons.h:22:41: note: in definition of macro 'is_cn20k'
-      22 | #define is_cn20k(pdev)          ((void)(pdev), 0)
-         |                                         ^~~~
-   drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c:1962:58: note: each undeclared identifier is reported only once for each function it appears in
-   include/linux/soc/marvell/silicons.h:22:41: note: in definition of macro 'is_cn20k'
-      22 | #define is_cn20k(pdev)          ((void)(pdev), 0)
-         |                                         ^~~~
-   include/linux/soc/marvell/silicons.h:22:46: warning: left-hand operand of comma expression has no effect [-Wunused-value]
-      22 | #define is_cn20k(pdev)          ((void)(pdev), 0)
-         |                                              ^
-   drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c:1962:49: note: in expansion of macro 'is_cn20k'
-    1962 |                                 if (blkaddr && !is_cn20k(rvu_pdev))
-         |                                                 ^~~~~~~~
+If mctp_key_add() fails, the packet has already been consumed by
+mctp_frag_queue(): for the first packet of a message it takes ownership
+of the skb via skb_unshare() and stores it in key->reasm_head, and the
+local variable is set to NULL.  The failure path then drops the only
+key reference (mctp_key_unref() -> refcount 0 -> kfree(key)) without
+freeing key->reasm_head, so the sk_buff is leaked: neither the caller's
+out: kfree_skb(skb) (skb is NULL) nor anything else ever releases it.
 
+mctp_key_add() can fail in two ways:
 
-vim +/rvu_pdev +1962 drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
+  1. -EEXIST: a concurrent packet with the same (net, src, dst, tag)
+     won the race in mctp_key_add()'s duplicate check.  The frag_queue()
+     call happens outside net->mctp.keys_lock, so two CPUs processing
+     two identical SOM packets can each allocate a key; the loser fails
+     here and leaks its skb.
 
-  1932	
-  1933	int rvu_mbox_handler_npc_delete_flow(struct rvu *rvu,
-  1934					     struct npc_delete_flow_req *req,
-  1935					     struct npc_delete_flow_rsp *rsp)
-  1936	{
-  1937		struct npc_mcam *mcam = &rvu->hw->mcam;
-  1938		struct rvu_npc_mcam_rule *iter, *tmp;
-  1939		u16 pcifunc = req->hdr.pcifunc;
-  1940		struct list_head del_list;
-  1941		int blkaddr;
-  1942	
-  1943		req->entry = npc_cn20k_vidx2idx(req->entry);
-  1944		req->start = npc_cn20k_vidx2idx(req->start);
-  1945		req->end = npc_cn20k_vidx2idx(req->end);
-  1946	
-  1947		INIT_LIST_HEAD(&del_list);
-  1948	
-  1949		mutex_lock(&mcam->lock);
-  1950		list_for_each_entry_safe(iter, tmp, &mcam->mcam_rules, list) {
-  1951			if (iter->owner == pcifunc) {
-  1952				/* All rules */
-  1953				if (req->all) {
-  1954					list_move_tail(&iter->list, &del_list);
-  1955				/* Range of rules */
-  1956				} else if (req->end && iter->entry >= req->start &&
-  1957					   iter->entry <= req->end) {
-  1958					list_move_tail(&iter->list, &del_list);
-  1959				/* single rule */
-  1960				} else if (req->entry == iter->entry) {
-  1961					blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
-> 1962					if (blkaddr && !is_cn20k(rvu_pdev))
-  1963						rsp->cntr_val = rvu_read64(rvu, blkaddr,
-  1964									   NPC_AF_MATCH_STATX(iter->cntr));
-  1965					list_move_tail(&iter->list, &del_list);
-  1966					break;
-  1967				}
-  1968			}
-  1969		}
-  1970		mutex_unlock(&mcam->lock);
-  1971	
-  1972		list_for_each_entry_safe(iter, tmp, &del_list, list) {
-  1973			u16 entry = iter->entry;
-  1974	
-  1975			/* clear the mcam entry target pcifunc */
-  1976			mcam->entry2target_pffunc[entry] = 0x0;
-  1977			if (npc_delete_flow(rvu, iter, pcifunc))
-  1978				dev_err(rvu->dev, "rule deletion failed for entry:%u",
-  1979					entry);
-  1980		}
-  1981	
-  1982		return 0;
-  1983	}
-  1984	
+  2. -EINVAL: the socket went away (SOCK_DEAD) between the bind lookup
+     and key_add -- e.g. the fd is closed while the packet is in flight.
+     This window is much wider than the double-SOM race and does not
+     need any attacker-side timing.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Either way, each failure leaks one sk_buff (the reassembly head,
+including whatever frags it has).  Repeated SOM packets racing a close,
+or hammering the double-SOM window on an SMP system, leak memory until
+exhaustion.  The packets only need to reach a bound AF_MCTP socket on
+the local machine, so anyone on the MCTP bus can trigger this against
+an mctp-i2c/serial/netdev interface.
+
+The same shape is handled correctly elsewhere: the !SOM duplicate path
+uses __mctp_key_done_in(), which takes key->reasm_head and kfree_skb()s
+it.  The fix is to do the same on the key_add failure path -- free
+key->reasm_head (and tail fragments, of which the first packet has
+none) before dropping the reference, e.g.:
+
+			rc = mctp_key_add(key, msk);
+			if (!rc)
+				trace_mctp_key_acquire(key);
+			else {
+				kfree_skb(key->reasm_head);
+				key->reasm_head = NULL;
+			}
+
+			mctp_key_unref(key);
+			key = NULL;
+
+Checked against linux-next (2026-10-24, net/mctp/route.c): the failure
+path is unchanged.  syzbot has no MCTP report matching this; marc shows
+no prior report (the usblib series is unrelated).
+
+Found by code inspection.
+
+Best,
+Guikun Yang
+
