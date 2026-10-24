@@ -1,49 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.2
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792814411;
-	b=zZkbDw6rk/BvIrfmCznaKCFenLWQ3ge4TY+rpHsttC16JrYZjcDIvt1d2oIKYIQ2ZroD
-	 O2BxUNx9JRojhcGKFBUNXnsfWs15kXSA6ieeCdJdckcNlCerz0xpu17RMldbZUNIhrSHn
-	 D2K7JWSTRAXHfbhGul0cf8k5Ldp+SH8vF0JYDgGr46tqRjtkZ2A/uLTOW3nysWV431x9j
-	 ymjgShdt5KKkEzDM8r44lbB3mhx9Ju5eugvHkd5sLYRBuedELOVMwbFOkoAAlc3imZmRU
-	 pAQabygXOZ87Q5oNeYexrxGfCIqFpmz3kT/BCrTU6CqKGm0cwdLnFERRz9ThN+19zwQ==
+	t=1792817388;
+	b=IIWE8LFLoC1HeIF/S/uPMnHInmwfB3MBD2UnlFMFnBgwt2NHquG81SdpVuJCIDswZoDw
+	 4TOEpbHozeCLgxyCYJmyPgBdjNmQFyrRSCyOe9Tw3+xGyItxsvvCq//6VVavjYGu+Fo/6
+	 38riB7QoP8DqkBmxFT0BE+qyny7T6UVVREIbhe4hpGsZfS4KP+xbz4gRgO/30/eGAJOzL
+	 +tbI/cjXcE+HSbLtlbyYoEYUgICcZa3cz416+QwLMFtZA2wrvLbLhYKg+/sxreOMH+Q/9
+	 h6twM0HhISbEDay+bvLBBhPBH9kYHegFoTxWcX3x+j/C6GZ7N9XOS26jrWK9DeBS3Ww==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792814411;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=pj7x8YuGt0pgB1PYOp/bih6oBnaUdEGTISR4jtMdBN4=;
-	b=A1zKuAb9NRoeM7p4YIPFEeEf2hAXbLAUrtZ4asRCx3X1iJa/DiTqVYxvXpDgqw6DDlWb
-	 6XT9tW42B6jIzFEYgOnrx6mHSA3cacxuql7x9nxsd8LYIRaWOzc0vKXFwOOCj9PvvYGJi
-	 XqNms2XJ/lOouf+w/3n3lWH1on7nn0T/L2l1vk0yXEv6xZvtnyYmMH3amVY30fpMM/aft
-	 50Bvwk1CrRxQFmng32w1MuZZ4J15eZJJlZwqzXWWDUHudf7jpuYlG4WeWBS6At+W4wxyN
-	 5ayCx38gH1NWXES3RWUB/K1iEXS2ji2MvMnGiT2W7OZIAHd9brP5Qhc8jOL04mtS42A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792817388;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=nbpqjlesvT1Wv4sjUPG1VGTnR0m0XWWmAt2W5g0+KvA=;
+	b=RqFMGUvz24U9uPkr/B2Myf5u33mnETg+uzLWNDIt8Col+V0MQDbmWFZJgUT1Ksyu8KAO
+	 3eUMIjvlPT8qYV//JGn0+bxnkQlH4UIqJ5wMwrhtskfRPTn323IH3v2nK9/CMFfr64KTG
+	 8YS5SNoh10xIUAOgW1dvWWEYUpeQxnfAD5svcvISBqSPa0ocLger0nEpX+lBdPbopHBvF
+	 vSPqaULt7KGgygQcMSJaul6k5/zsywuBFqfIWNa2d6hPp9yHfLB4/WI7WwcLJRWxrDFR1
+	 BJl0byIHumE+CTlqFMjA1tOE9xLhgKNHY0xLbvbHr6cjiftsbUCb0THHPRhBtO3elog==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Ot2D/KNE";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=etVbqwej;
+	arc=none smtp.remote-ip=220.197.31.2
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B679D606A31E;
-	Sat, 24 Oct 2026 04:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E469606A31A;
+	Sat, 24 Oct 2026 04:49:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0E469606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ot2D/KNE
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C2EB1F01825;
-	Sat, 24 Oct 2026 04:00:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792814410;
-	bh=pj7x8YuGt0pgB1PYOp/bih6oBnaUdEGTISR4jtMdBN4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Ot2D/KNEoZj54uqTVWQUdMayibFXqRBGxHlxp7YVwLTgVWqEv9ligngi8nqTwtlL0
-	 mu6Db4VEQRZ/BxZEixBTzKt53vGgjPnaDZPg3nPnTielem7FsE585j9fffkTBndeOa
-	 QJOfVYQy5DVae+iAv0CQk20IU8QUKcUXXQ5WHZdgQyUQAQPAqhDtmZf92EghOiAuop
-	 LzJMyAzj5kv128qo8MREDSkf/rZTIZwwTfxQveHyHRMKyF8SSUEa+CEZpxmU1Sj9Rb
-	 5UI8RfLsO0LYaplpwaXo7vIqOPODUG15BehQIaMVDh06ZEAuybdJQeGJ153J48ftf4
-	 jEQjPVN+AJ9GA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 815F0391B17A;
-	Sat, 24 Oct 2026 04:00:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=etVbqwej
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=nb
+	pqjlesvT1Wv4sjUPG1VGTnR0m0XWWmAt2W5g0+KvA=; b=etVbqwej0Zw+GiYEYn
+	3YjgOzY7GRYhH0/4HU3HgvV2bGY77WWIGZ+RdVowROEY5Q41VqzUcPMBvaf8JfnG
+	UfgdFfPKEVC2xKUxpxuCD4zA3/jGBvsZWcasqHoXsWMxntVTEYTwij82LOYOiJ7k
+	MXswVDxJ1kxqANg1Sv2gpEyZQ=
+Received: from flipped.. (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgCH153AONxqc+zrBg--.26204S2;
+	Sat, 24 Oct 2026 12:49:05 +0800 (CST)
+From: Sicong Huang <congei42@163.com>
+To: netdev@vger.kernel.org
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Louis Peens <louis.peens@corigine.com>,
+	Hui Zhou <hui.zhou@corigine.com>,
+	oss-drivers@corigine.com,
+	linux-kernel@vger.kernel.org,
+	Sicong Huang <congei42@163.com>
+Subject: [PATCH net] nfp: flower: fix use-after-free in neighbour update work
+Date: Sat, 24 Oct 2026 12:49:03 +0800
+Message-Id: <20261024044903.1130380-1-congei42@163.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -54,48 +69,149 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH bpf-next v2] bpf: Use memmove() to load bytes from an skb
- and
- an xdp_buff
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179281440907.1452471.10626063487064025333.git-patchwork-notify@kernel.org>
-Date: Sat, 24 Oct 2026 04:00:09 +0000
-References: <20261022112312.31563-1-ayushmanrout27@gmail.com>
-In-Reply-To: <20261022112312.31563-1-ayushmanrout27@gmail.com>
-To: Ayushman Rout <ayushmanrout27@gmail.com>
-Cc: bpf@vger.kernel.org, daniel@iogearbox.net, john.fastabend@gmail.com,
- sdf@fomichev.me, martin.lau@linux.dev, ast@kernel.org, andrii@kernel.org,
- eddyz87@gmail.com, memxor@gmail.com, song@kernel.org,
- yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com,
- ihor.solodrai@linux.dev, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, hawk@kernel.org,
- drosen@google.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+X-CM-TRANSID:QCgvCgCH153AONxqc+zrBg--.26204S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxKr1UAry8Gw1kGrWUKw45ZFb_yoW7WrW7pa
+	y5K3y8CFWktw15W398Z3WUZF13K3W8K3W5CF1xCw1Y9an0q3y2kFWDKFyjk3WrArZ5G34F
+	yrWFkF1fA3s8trUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pMKZXUUUUUU=
+X-CM-SenderInfo: 5frqwvrlusqiywtou0bp/xtbC0wEQA2rcOMHg9QAA3b
 
-Hello:
+The netevent notifier handles neighbour updates and redirects by
+queuing nfp_tun_neigh_update() on system_highpri_wq. Each work item
+holds a reference to the neighbour, but only stores a pointer to the
+flower app.
 
-This patch was applied to bpf/bpf.git (master)
-by Alexei Starovoitov <ast@kernel.org>:
+During device removal, nfp_tunnel_config_stop() unregisters the
+notifier. This waits for notifier callbacks to return, but does not
+wait for the work they queued. The teardown then frees app->priv and
+app without waiting for these work items. Flushing cmsg_work in
+nfp_flower_clean() does not cover the neighbour update work.
 
-On Thu, 22 Oct 2026 16:53:11 +0530 you wrote:
-> bpf_dynptr_read() on an skb or xdp dynptr ends in bpf_skb_load_bytes()
-> or bpf_xdp_load_bytes(). The destination can be a slice of the same
-> packet, so it can overlap the source, which memcpy() does not allow.
-> On x86 with FSRM memcpy() copies forward, so a destination above the
-> source gets the first bytes repeated:
-> 
->   p = bpf_dynptr_slice_rdwr(&ptr, 8, NULL, 64);
->   bpf_dynptr_read(p, 64, &ptr, 0, 0);
-> 
-> [...]
+A pending work item can therefore run after the app has been freed.
+Its call to nfp_flower_get_port_id_from_netdev() can then access freed
+memory while checking whether the neighbour's device can be offloaded.
+Even notifications for unrelated devices can reach this check. The
+same problem affects shutdown and probe error paths that tear down the
+app after the netevent notifier has been registered.
 
-Here is the summary with links:
-  - [bpf-next,v2] bpf: Use memmove() to load bytes from an skb and an xdp_buff
-    https://git.kernel.org/bpf/bpf/c/b93cf2c8a055
+One possible interleaving is shown below. The neighbour belongs to
+another network device that remains registered.
 
-You are awesome, thank you!
+  CPU0 (remove)                   CPU1 (notifier / kworker)
+                                  nfp_tun_neigh_event_handler()
+                                    queue_work(system_highpri_wq, ...)
+                                    return
+                                  /* Work has not run yet. */
+  nfp_tunnel_config_stop()
+    unregister_netevent_notifier()
+    /* Notifier callbacks have finished, but work may be pending. */
+  nfp_flower_clean()
+    vfree(app->priv)
+    app->priv = NULL
+  nfp_app_free()
+    kfree(app)
+                                  nfp_tun_neigh_update()
+                                    app = update_work->app
+                                    nfp_flower_get_port_id_from_netdev()
+                                      app->priv  /* use-after-free */
+
+The work items are allocated per event and free themselves, so they
+cannot be cancelled individually, and flushing system_highpri_wq is
+not allowed. Use a dedicated workqueue for neighbour updates instead.
+In nfp_tunnel_config_stop(), unregister the notifier and destroy the
+workqueue before cleaning up the tunnel state. This prevents new work
+from being queued and waits for pending and running work to finish
+while the app and its resources are still valid.
+
+Found by code inspection.
+
+Fixes: 0ad722bd9ee3 ("nfp: flower: fix for take a mutex lock in soft irq context and rcu lock")
+Signed-off-by: Sicong Huang <congei42@163.com>
+---
+ .../net/ethernet/netronome/nfp/flower/main.h  |  2 ++
+ .../netronome/nfp/flower/tunnel_conf.c        | 24 ++++++++++++++-----
+ 2 files changed, 20 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/ethernet/netronome/nfp/flower/main.h b/drivers/net/ethernet/netronome/nfp/flower/main.h
+index 2b7c947ff4f2..bd4399758ed4 100644
+--- a/drivers/net/ethernet/netronome/nfp/flower/main.h
++++ b/drivers/net/ethernet/netronome/nfp/flower/main.h
+@@ -94,6 +94,7 @@ struct nfp_fl_stats_id {
+  * @ipv6_off_lock:	Lock for the IPv6 address list
+  * @mac_off_ids:	IDA to manage id assignment for offloaded MACs
+  * @neigh_nb:		Notifier to monitor neighbour state
++ * @neigh_wq:		Workqueue for neighbour updates
+  */
+ struct nfp_fl_tunnel_offloads {
+ 	struct rhashtable offloaded_macs;
+@@ -103,6 +104,7 @@ struct nfp_fl_tunnel_offloads {
+ 	struct mutex ipv6_off_lock;
+ 	struct ida mac_off_ids;
+ 	struct notifier_block neigh_nb;
++	struct workqueue_struct *neigh_wq;
+ };
+ 
+ /**
+diff --git a/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c b/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c
+index 3b47e9fe64e1..46b6cda7f3d3 100644
+--- a/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c
++++ b/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c
+@@ -736,7 +736,7 @@ nfp_tun_neigh_event_handler(struct notifier_block *nb, unsigned long event,
+ 	if (!update_work)
+ 		return NOTIFY_DONE;
+ 
+-	queue_work(system_highpri_wq, &update_work->work);
++	queue_work(app_priv->tun.neigh_wq, &update_work->work);
+ 
+ 	return NOTIFY_DONE;
+ }
+@@ -1509,6 +1509,13 @@ int nfp_tunnel_config_start(struct nfp_app *app)
+ 	if (err)
+ 		return err;
+ 
++	priv->tun.neigh_wq = alloc_workqueue("nfp-flower-neigh",
++					     WQ_HIGHPRI | WQ_PERCPU, 0);
++	if (!priv->tun.neigh_wq) {
++		err = -ENOMEM;
++		goto err_free_macs;
++	}
++
+ 	ida_init(&priv->tun.mac_off_ids);
+ 
+ 	/* Initialise priv data for IPv4/v6 offloading. */
+@@ -1521,13 +1528,17 @@ int nfp_tunnel_config_start(struct nfp_app *app)
+ 	priv->tun.neigh_nb.notifier_call = nfp_tun_neigh_event_handler;
+ 
+ 	err = register_netevent_notifier(&priv->tun.neigh_nb);
+-	if (err) {
+-		rhashtable_free_and_destroy(&priv->tun.offloaded_macs,
+-					    nfp_check_rhashtable_empty, NULL);
+-		return err;
+-	}
++	if (err)
++		goto err_destroy_neigh_wq;
+ 
+ 	return 0;
++
++err_destroy_neigh_wq:
++	destroy_workqueue(priv->tun.neigh_wq);
++err_free_macs:
++	rhashtable_free_and_destroy(&priv->tun.offloaded_macs,
++				    nfp_check_rhashtable_empty, NULL);
++	return err;
+ }
+ 
+ void nfp_tunnel_config_stop(struct nfp_app *app)
+@@ -1537,6 +1548,7 @@ void nfp_tunnel_config_stop(struct nfp_app *app)
+ 	struct list_head *ptr, *storage;
+ 
+ 	unregister_netevent_notifier(&priv->tun.neigh_nb);
++	destroy_workqueue(priv->tun.neigh_wq);
+ 
+ 	ida_destroy(&priv->tun.mac_off_ids);
+ 
+
+base-commit: 7076f684d5132e6a6145e1da2fa74771ecd052e5
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.34.1
 
