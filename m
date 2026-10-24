@@ -1,129 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.148
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=212.227.15.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792871054;
-	b=lpVAqCVYoHpnGkrGRb8M4Sr5mjx5xnxd8+arrOgIv9/jIoJqMPHYwSmDEX5fTJYFbSTG
-	 yNTndVacDq49pNfwfhEAlSwHgXK5ZwhpqD2XYJ2PYPwPuU3+f/Eke5yf8TeWOBiqzrEa/
-	 rxpfoGN4MSj7f/RlvU/WNEqxfsLyryJxSjESkvweOgFkuAyMItc3YHlunAEJ5Gpzc4b+e
-	 Cq5Uvn5f/6qbqrFM+420kQ1qhrY9kmv1hawW5pLnu5XG2gQw/+rapJdj/8wpxi/gDLhFo
-	 rpf03fVlMoXD7E+aBRoRCLpk4plzuuRUBv62AbMJSrZeYtWv29MeeiK+m0iT2MksJBg==
+	t=1792871449;
+	b=3B40UREFSAAfpOUFIwLamIi+N/rUcUsa2tfYrz1dLGBlc1z43kIrEGa8JPSosiNWUwm+
+	 VhChuTnR+f9LUFjJe15Xci9Cx+4RUg8oN1aZ+1IMqsmRO/yMSnKu6gYmvkwkaZtoD+xkd
+	 hg+OKBEpuMchHjpZIkjQtVqzAMqb3N0ESEC4mi8uY3GImT85cTE5Q6STKX7PrenAlpTbz
+	 +EZhBpmaBGRUUPpgrv8R99TvxDC6t7ZN7grbrolE3xWO+Blonxitmvr7wGVxi5jDbpRrw
+	 EvOSCEshya/oDip9rJz1om2dNE36kFqrsVFmsIRseBO9pn914LO3XXptkVI6qln/tug==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792871054;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Received:Received:From:To:cc:Subject:In-reply-to:References:
-	 Comments:X-Mailer:MIME-Version:Content-Type:Content-ID:Date:
-	 Message-ID;
-	bh=VNve5KGIAuthZT02sXjYzh8MoaJe6lgnAD7iB574BII=;
-	b=Cda4hzpYuGfoOHpAwxhBTSyOMyrhMZYENa489tAvNd5FzP2EuKQG8tYazqtpm8nkqRLf
-	 Z8vTjqrNoQywCd38Aiikvz2BgyNQDnspy/O6hE+s2QBoVFvQYYnEsnAn7njeKTYoYX34p
-	 MpSjiy+G3tRD2OyAo5DwCvGg64UmRM4Ixq6bFR5CZTnRMLTsZf7jK/BYMf+kGaNnrNyRa
-	 id334v/8AeKbtlVNO56PTCFOvSA2DSGpYC249Aco4fpmF3dstSNwIooAZFjZJiA6wfr4z
-	 uMXSn+DHOyQYFZsvKYLvZMKbgx0hhkKWut2RkhKDMXsWHYpBeIhdIzdftvjISIvZgJw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792871449;
+	h=DMARC-Filter:DKIM-Signature:X-UI-Sender-Class:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:Autocrypt:Disposition-Notification-To:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Provags-ID:
+	 X-Spam-Flag:UI-OutboundReport;
+	bh=SCNrj+kcqPB30TfxopRSWTtc1BFF554gxizM38t+6+w=;
+	b=n9kBNbUaIZzaFEr7nDzobUkpcJ2vDwUahQvhg5o29ytYJigPRI1ILBb8pjW5VKWUnSoD
+	 rXdpSTWzwuTMY8K4U1MD+Xv+RdBWAtr1M4Xj0OHeIsGj0FWeeBCvKz/6P0nwh4BaHlRYl
+	 z4bdlzjLbtz8vHXSzoSdTEbeWGIGOMXXrK7fhOHT1qQA5vGxNE8ojXR0SZjsDWGfCxt2o
+	 HW31HgYebCMl9ToJxJSajKeoDRqSn8Qt5uNnMHtrC3xt5esAFJVxbKelRhexDRIiUFe7O
+	 J3REdaCkp5ysuyntJHgathHtWwtk5CY1RGZGWsWk6xVkFbwcmUM3UcKfN0VvrFjtw2w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=jvosburgh.net;
-	spf=pass smtp.mailfrom=jvosburgh.net;
-	dkim=pass header.d=jvosburgh.net header.i=@jvosburgh.net header.a=rsa-sha256 header.s=fm1 header.b=la0aPThj;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=crcVhFPz;
-	arc=none smtp.remote-ip=202.12.124.148
-Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
+	dmarc=pass header.from=gmx.net;
+	spf=pass smtp.mailfrom=gmx.net;
+	dkim=pass header.d=gmx.net header.i=matthias.tafelmeier@gmx.net header.a=rsa-sha256 header.s=s31663417 header.b=I5CpWvte;
+	arc=none smtp.remote-ip=212.227.15.18
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15C0606A31B
-	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 19:44:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E15C0606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jvosburgh.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A09606A31D
+	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 19:50:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E3A09606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=jvosburgh.net header.i=@jvosburgh.net header.a=rsa-sha256 header.s=fm1 header.b=la0aPThj;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=crcVhFPz
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.stl.internal (Postfix) with ESMTP id 0A9031D00167
-	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 15:44:13 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Sat, 24 Oct 2026 15:44:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jvosburgh.net;
-	 h=cc:cc:content-id:content-type:content-type:date:date:from
-	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1792871051; x=
-	1792957451; bh=VNve5KGIAuthZT02sXjYzh8MoaJe6lgnAD7iB574BII=; b=l
-	a0aPThjI6RWjjSTpUs2BOkMWHpzBAP5O4RTNVVN3HfZBa3tOaCAB2bkZemykpyMV
-	17/fm5p3/V425S2p4KglGstOau2kWDP0p9B5nQqlDE/1tAb+DBz0HFZnxF9hbVmr
-	EGj4XgE5gC35QcQn9lj2tCsTO+SFySQvOZ8HNedepHBTKY+w6Rcw2MYM1VuB/QZ+
-	oZ6YABv+TBFVvpOzSzy1Nz9sX/zboC2peRAL4D/8OSkdcl14s2Zku0XgyXGaqG4U
-	x5TnsvA8iZA1R/JCncTpvTv6svEvpO1PZpiOqcMp7YwGFTq3hTExaj54b9fpf6T3
-	S+F5oOhVV0ToeSvUcouAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-id:content-type
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1792871051; x=1792957451; bh=V
-	Nve5KGIAuthZT02sXjYzh8MoaJe6lgnAD7iB574BII=; b=crcVhFPzwUL+7HCbv
-	Wel6ZJS7T+fS8caD+mvMIqwxHi5okhpGY2lcoUPKNwbpStgnLAhmAgGMcjLOTGbi
-	FF0pLeJ8muPVlzCdspJtrD71k7oljMuf+n8xJ3PPOZ2GurgCXd3uXpI/DV0nDOpj
-	huuxHAIC2QXZ86yJeqLZiI96PY+jiiibfTTIkHjhvTq8re3DXqMVFX0uRBfEwu10
-	UrUYWzfqkhoYqfnnmR8XvJxZMx5l+NxA9Y7ncRvvE7shxUa2IxuHFI0SKbd5xoWr
-	y90dGOT4t1BNA1H5EYcMUVGHLB0yN0sOI+K8kY4Q+4AB2QBynZjYk9FamCYwM35s
-	0DWZg==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=sign d=jvosburgh.net a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1792871051; d=jvosburgh.net;
-	mf=PGp2QGp2b3NidXJnaC5uZXQ+;
-	rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm1:rsa-sha256:LJ2+tf6ym5qrbAIrSVFJcDsGbfdx5jhmTkzg9Mp5OPAuft7
-	P5FW/qnQ68NxSODXO7wUo4DrU6LZzIDN/ChxAtQ46xYOSxkKb0nbkUaY/uXNDl1M
-	zo1o5yRdEBaEXede2zJbSZ8MgST9x6vOcQ9rLyiRtB2MkGwyHlDi97raX6hyJTHi
-	6jPo7YcKO7IY20XsNJ3Q/AYI7RgTf9LSYrQ6O05Bs5cOrBZLHNb2s6oyaVejEoDO
-	MXp45+fn18xC3Pxgp+0TmZ5aY/7ZK0qYXSxnoZhWtQL/8MBOdnfXCAiihO83gMV2
-	vkuFiEuTtzhokLIIGu4fZD1GcO81cjugmJxbu8A==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=mi-m=1; hc=13;
-	hn=cc,comments,content-id,content-type,date,feedback-id,from,
-	in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:ZP27g8CW4T9EEksYMUlHF2RVNovZ7TvokDdnh9tEcVg=:Vy9/HrrWfWpBx9RZsr0Y/55UiivdM8omC6rb5Ctgu/8=;
-X-ME-Sender: <xms:iwrdavQKFY4if1XJY6EZW4RaPaqcyHMvf16_x2txVCG_gZqRfSpdeg>
-    <xme:iwrdatXIiI84dnx2gL3axwDWH_zKzd_WjISeYZ8BdGj1Wsaw9MWhIeYInIxAvJYyj
-    QJyyKLtyCV2NjbG0RDXJ0Cnt571qmLCmVfw7Z9cdlkvSLCfG_Arz1TH>
-X-ME-Received: <xmr:iwrdapQZr0_2D5xBtDO8C5TugiSCBjYXi9lpjyRDUrKyXRaEI-iWUXlvqv-FRyg0U93TsRtlud3kw-mJ10Mso_MheByJT_b96tFuPomJK3AuUyJZSw>
-X-ME-Proxy-Cause: dmFkZTFsb0VTSBmiSgPCPgaC2z8w4eftQRB09/wLNtfNEq34NWhAlLx298hximPLMVSdct
-    5Ze7xAdVKcd9qlF9S6hu3SAofzcP5OMxRlqFh750dk0zcEPCicczI8e27INAKDmYWdhLgL
-    +hmwccrFBb1EMF4gPqUysjD/afgc4XwSoexvC33kbg7wvyTpkwBkRzkbKaFXdxc2r5qwOU
-    2Reji6Y4ISVDjbqE12Sm2tQmN9Axrmls6mi7JeQMC+cAAzmgP7rY6gVBGZUFJjjtt34UK2
-    C+iR9Aw4F95DmAbdjh6KFK+1S/n155HkCUzQSxkIOBQd0c4urR2jHNTtwMCAowN3LEXNZ0
-    85ZThjhlHcVBTgTmV0RPXkr9IOOjPi/uT+sn19XTvQJWRQCx9gN7xFF0IYFy4+KGCKtmPh
-    3GWbTSK9HOZ9W66rNw46hkTwRRWMfK48bQ0Xiu3YnGCGxy6CpTz7SmDFHF+Pa0ytw/jSo+
-    a9DfDy1GIVzWkgPg0udOrUSB6n/njBkkSaDg0Wk1TRh4FpW8JMW6x8JXqVrEqOY4aoNYge
-    a+dZ+jByw/S1MHP0cHyZOFHpbuVfdKVcTvpQ1/gz4jGt2Mxd4c+7B8p8y8NTynzmfJRCeP
-    OecRLjeZyEIlEIY/BXMTz+KPEhTwNi3CXIv3hHepUT6eFREngV41TPfIzECQ
-X-ME-Proxy: <xmx:iwrdal3dbVuZovVBZkFHBBxBm8G8oiBCt6LqKNDalv-vWWR3R4GO-g>
-    <xmx:iwrdapemgrbCZjDYC3EhZ93Gw4rwWAM8ZuO0Ruuys9CMcfImHkBSjA>
-    <xmx:iwrdatMPg3WD2T6ZUcJPDf16RzMg876J2OgoYVBNBfnPyLttI8RX_w>
-    <xmx:iwrdatW3Se3J0QvhRcnk9U0RsDkpgeh3QhwnTin9es9iIvI8_Dh5Ug>
-    <xmx:iwrdar2Fvi0PS0M-wRxVAtICgL7sK-A3PS1ZhqBGnXKzyDhxamiL5dM->
-Feedback-ID: i53714940:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 24 Oct 2026 15:44:10 -0400 (EDT)
-Received: by vermin.localdomain (Postfix, from userid 1000)
-	id C58181C0437; Sat, 24 Oct 2026 12:44:09 -0700 (PDT)
-Received: from vermin (localhost [127.0.0.1])
-	by vermin.localdomain (Postfix) with ESMTP id C2F281C0379;
-	Sat, 24 Oct 2026 14:44:09 -0500 (EST)
-From: Jay Vosburgh <jv@jvosburgh.net>
-To: Paolo Abeni <pabeni@redhat.com>
-cc: Hangbin Liu <hangbin.liu@linux.dev>, luyun <luyun_611@163.com>,
-    andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-    kuba@kernel.org, maheshb@google.com, razor@blackwall.org,
-    netdev@vger.kernel.org
-Subject: Re: [PATCH net v3] bonding: 3ad: select a port when the TX array is empty
-In-reply-to: <0d32d785-d16a-456d-98e5-8e952d09ab76@redhat.com>
-References: <20261008024031.16224-1-luyun_611@163.com> <asoItm3JVXSC5GQ4@fedora> <463c6b0e-8b46-4c70-b9d8-56b42beaa7d0@163.com> <asyt2Gt4LzKWWnZS@fedora> <0d32d785-d16a-456d-98e5-8e952d09ab76@redhat.com>
-Comments: In-reply-to Paolo Abeni <pabeni@redhat.com>
-   message dated "Tue, 20 Oct 2026 09:06:15 +0200."
-X-Mailer: MH-E 8.6+git; nmh 1.7+dev; Emacs 29.0.50
+	dkim=pass (2048-bit key, unprotected) header.d=gmx.net header.i=matthias.tafelmeier@gmx.net header.a=rsa-sha256 header.s=s31663417 header.b=I5CpWvte
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1792871446; x=1793476246;
+	i=matthias.tafelmeier@gmx.net;
+	bh=SCNrj+kcqPB30TfxopRSWTtc1BFF554gxizM38t+6+w=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=I5CpWvteuD6dv8D8G22TYg0d6wkPHPoZagJ85hH9PnrfxnDnIk9QjblqPESctjr0
+	 FgFZKI3VL8hNhHXhj2ofLYxY9coRDL7dWY0h5CH6rUC/lZsi1kN3Hsf14JY8h4s0h
+	 AIHZm+xQJz638gxIzn5ujxnuDyp3KUDRSuZd01BnNQCEX+BvwrTmbjb3SkBwptYJ6
+	 jU8Dv2a7GHegd/UBYDfYMUVfnM03IBSdsm2NDqMqWM8vpcqcC4forQA9GpRggS0k5
+	 JnIIk801hcVOefuHA69uPTbewD6jI/gMiy2T8O3LDs8RI4SGLdIcH9Nbxu2psFZoG
+	 vIW9BUraDgh4J3RhlA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MLiCo-1x3Auc2QzY-00RQRn; Sat, 24
+ Oct 2026 21:50:46 +0200
+Message-ID: <44d79af1-be9e-476b-8982-e7009bf5a088@gmx.net>
+Date: Sat, 24 Oct 2026 21:50:46 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -133,61 +65,212 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <65060.1792871049.1@vermin>
-Date: Sat, 24 Oct 2026 14:44:09 -0500
-Message-ID: <65061.1792871049@vermin>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: reject dev_weight products that overflow int
+To: Jason Xing <kerneljasonxing@gmail.com>, Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org
+References: <20261023114228.289161-1-jiayuan.chen@linux.dev>
+ <20261023123102.3c30d01e@kernel.org>
+ <607851eb-e42b-46bc-928f-91db542fa9c0@gmx.net>
+ <20261023130812.1ba2462a@kernel.org>
+ <CAL+tcoBiuu3f+XDkg1a+oZPgPfBYHbJEKYd4MKFv20Ma668ANA@mail.gmail.com>
+Content-Language: en-US
+From: Matthias Tafelmeier <matthias.tafelmeier@gmx.net>
+Autocrypt: addr=matthias.tafelmeier@gmx.net; keydata=
+ xsBNBFJ0FzIBCADZ/hkwcprVGydMOqeqM+2k6v5e5kb4YDMKU7nMbCVmH4sn01T7Yh9kDwG5
+ LOMLD06BB2txjLBvTY+c0mpK+hE4pWr+i3qhU5CbVvx7jppJqCD6ZT/TA3I7NxsdixRvLIF4
+ UXgKQOMKPIx+aw/sp86NqzCLAMse7F0vXUjAP5YANtJid2rfr/B37BGKhqDGhi4Appz4UZOz
+ pRov/v8JD4XScuvJnl09/oi5cDj3Mn2uqOc/G6hAt7HXsbHh4dKxd3AftqPPzEkJAmm+9Z4A
+ SG9hy8IXms8Czimr+BGL0CnfsJlX6DCUm6mVDqT1GJyzmP4zkWcPi+2fOI4KtpV+C7+bABEB
+ AAHNOk1hdHRoaWFzIFRhZmVsbWVpZXIgKHByaXZhdCkgPG1hdHRoaWFzLnRhZmVsbWVpZXJA
+ Z214Lm5ldD7CwJgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAhkBFiEE3KAB
+ pALWdMCm+KI24BZPW4rfNDsFAmfFwnAFCRkUEj4ACgkQ4BZPW4rfNDuYyQf+MXXaG4Xx/9up
+ NKSFy7Sq7dMVkM90KVVtfh9KOJUBm+8SUL782mxE8FgkpvGjDIbiUaSjyvj3oF1SNDKuGg1f
+ 58oOEQrA/Zv7CEvB4kzPUg/AL0Ao7PobKiZ7hJ/aFYQaB50IIBr+af+WfCjblW+5y6irihTc
+ xPuKkHvV+S+saAQ3mcdQQVWgFsLnMTz/AQFL7DMsmJB9XFTIx+G4Q+xXCfNM2uyDUcSf2t4l
+ MT6V301O/lhKk9MMyB/CxBD/HvdoiOfWHEGF6c7LilxbHcevge+Il4R52rWcVEZwmeH70vGu
+ yRMbBzSg16E3oXMK4Srz5SJUU3Nx7ougjwuv0irWNc7ATQRSdBcyAQgA8gKv7nI3K5Vyay/n
+ GmZEqfMqhOMnvG3QQ+Ku7z3ksRQ83bm0nKLw9mYtyI0mcShDbfWOMCWhC/HWlvdyvfnPMZc9
+ M8nl8QQJkPExYyNW8IxvhcrRiOoIX2L+4qJznOqPBE0A8QZM79mBL57bWVQlKa4pHqblZBwq
+ AEf62pLeuh2CO6ecg3hSI0zFur9VUYgJY+N2ChOSpYTevxC2EouDguPMgsQfcdsbf2X69PAQ
+ po/irnFKEVmNFStkLZqcE/6BDH8VsF9/e5+kIv0sXl2TLBk/c0dXJpr8PxProJOPtHKd3g1n
+ L+p2oYyMyMS5/RGSBcXtRqvgZea45+shx/9foQARAQABwsB8BBgBCAAmAhsMFiEE3KABpALW
+ dMCm+KI24BZPW4rfNDsFAmfFwxYFCRkUEuQACgkQ4BZPW4rfNDu2nwf/Z0JumzgpUE2EHA7F
+ j9KzO8TZeMRzXDvigduOi39bT1+kBcRNigMrLOk8dGCgYeT44vTkJCVji23I4YuFH442fvAa
+ m3f/9L0ob9As/lGc/VIrEWlplFgDQVKgStLjoKBCD6/VVmy0o1nlZUhH9fXo4V2EoYtuDORV
+ uxTTKyFdl9U335HrYboFdYwbOhkE9rM/IPWQP7f3jwdhRfvSL9KCzxiH3VmTCKojmYECQo2X
+ O5XeWTvzc2E5ML9qsvXO22cXdmga3krfNrtZTbV6ZYYqYr9fgWo5BWiCp31bGjyIn3q/YzhQ
+ gBadsya6LEPJZGkruPVwL5N9H6x28dzgUXNk6w==
+In-Reply-To: <CAL+tcoBiuu3f+XDkg1a+oZPgPfBYHbJEKYd4MKFv20Ma668ANA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:E3BPgimiWDxLZ4a3mb/lWIRBqSRaq4pb0REF/9sw+59pdkhIMfV
+ cJ3csIUoAkcFvWoSyGxNIdx6wEfFqa5StGJF+MwqSQMQ01dmhwHTrEnzkJjQZTSzC6eXnZ9
+ 6SnyXHk7hCLlt2Fa+0qs/otJbP3yAcUhGr5wLaP9lDy14yz0n24GhXx921FfiUDMhva6xgV
+ B8BetJdOTzaPasl2eNgLA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:/nJKR+wGnBY=;o3q83nduaLcnea6QWbho+LPl0Ze
+ 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
+ =
 
-Paolo Abeni <pabeni@redhat.com> wrote:
+On 10/24/26 10:59, Jason Xing wrote:
+> On Sat, Oct 24, 2026 at 4:08=E2=80=AFAM Jakub Kicinski<kuba@kernel.org> =
+wrote:
+>> On Fri, 23 Oct 2026 21:32:40 +0200 Matthias Tafelmeier wrote:
+>>> On 10/23/26 21:31, Jakub Kicinski wrote:
+>>>> On Fri, 23 Oct 2026 19:42:25 +0800 Jiayuan Chen wrote:
+>>>>> proc_do_dev_weight() sets the backlog NAPI weight and the qdisc quot=
+a
+>>>>> to dev_weight * dev_weight_rx_bias and dev_weight * dev_weight_tx_bi=
+as.
+>>>>> The three sysctls only have a lower bound of 1, so the products can
+>>>>> overflow int and end up <=3D 0, e.g. dev_weight=3D65536 and
+>>>>> dev_weight_rx_bias=3D65536 give a backlog weight of 0.
+>>>> Not sure anyone uses these, maybe we could cap them?
+>>>> 1k for dev weight 8 for bias?
+>>> Capping does not make sense to me.
+>> Please don't email people off list.
+>>
+>> What are the values you know of being used in production?
+> I'm not Matthias. Revisiting my past experience doing AI tuning stuff
+> in the testbed/real workload, I once saw performance improvements when
+> I played with this weight and the driver weight. But I didn't manage
+> to see the deeper underlying reason for that scenario, which means I
+> was unable to replicate the methodology to another scenario. Maybe
+> it's a good candidate for blind AI tuning...
+>
+> With that, I think capping at 1000 is fine by me.
+>
+> Thanks,
+> Jason
 
->On 10/12/26 11:52, Hangbin Liu wrote:
->> On Mon, Oct 12, 2026 at 03:20:09PM +0800, luyun wrote:
->>> On cost: the fallback only runs when the array is empty, so the normal
->>> transmit path is untouched. Inside the window it is a lockless RCU list
->>> walk with no new state; the second pass and the broadcast branch are
->>> there to keep the array path's hash mapping and broadcast_neighbor
->>> semantics.
->>>
->>> I would also like Jay's feedback on the preferred direction. If a
->>> control-path solution is preferred, I am open to working on separating
->>> array preparation from port enablement, as long as it does not change
->>> LACP convergence behavior.
->> +1
->I guess we are not getting Jay's feedback anytime soon.
+Sorry about the off-list mail =E2=80=94 was not on purpose.
 
-	Apologies for not responding sooner, I've been traveling and
-missed this discussion when catching up.
 
->I think a control-plane solution is highly preferable, even if it's
->going to be a more significant work. I have just skimmed over the code
->and it feels like removing the rtnl lock requirement for
->bond_update_slave_arr() is doable - i.e. moving ->all_slaves and
->->usable_slaves under a new bond specific mutex).
+To answer honestly: I don't have the numbers anymore. The setup that
+motivated my patches is years gone; I can't name current users of large
+values, myself included.
 
-	Reading the patch and subsequent discussion, I tend to agree
-with this.  In addition to what's been stated previously, the fallback
-method has the disadvantage that it adds a test and branch to the
-transmit path that will be taken very rarely.
+But my argument doesn't rest on them: a change to the sysctl surface
+should name its harm in both directions, the same as a new knob should
+name its need. The wrap rejection does =E2=80=94 an overflowed product is =
+not a
+configuration.
 
-	As I recall, bond_update_slave_arr requires RTNL only to prevent
-anything else from altering the set of interfaces in the bond while it
-runs.  It doesn't need to actually made interface-level changes or send
-notifications, so, I think that as long as the bond_enslave /
-__bond_release_one paths synchronize with the bond_update_slave_arr, it
-should be safe without RTNL.  Using RTNL for this was originally easy,
-as the enslave / release paths always have RTNL held.
+An envelope cap doesn't: above the useful band,
+netdev_budget, netdev_budget_usecs and the queue already bound
+everything, while the cap would reject configs that worked yesterday.
+No evidence, no change =E2=80=94 the burden sits with the change.
 
-	Having a mechanism to provide a lighter weight "don't change the
-bond's list of interfaces" knob might also permit removing or at least
-narrowing the scope of some of the other RTNL-related weirdness in other
-places.  
+Disclosure: I'm building an autonomous system/instrument that tends live
+infrastructure =E2=80=94 it observes state and steers through exactly thes=
+e
+config surfaces =E2=80=94 so I have an interest in the space staying as wi=
+de
+as the arithmetic allows.
 
-	All of the "rtnl_trylock run in a work queue" patterns are hacks
-to avoid deadlocks, and if we can change any of those to be synchronous
-and deterministic while removing a trylock that's a good thing in my
-mind.
+My stance for AI era is we should have even more and more surface in=20
+general.
 
-	-J
+We should take in Jiayuan's patch for now.
 
----
-	-Jay Vosburgh, jv@jvosburgh.net
+If caps are ever still wanted: I'd suggest a separate
+thread not to mingle the matters too much -=C2=A0maybe ten arithmetic boun=
+ds=20
+(dev_weight <=3D 65535, biases <=3D 32767), not
+envelope values.
+
+Cheers
+Matthias
+
