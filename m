@@ -1,92 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.173
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792804386;
-	b=Oopaj6murzii890mf4ci/bQjoz4k3YmMaCl1jWIMUzA2HmkO0fbv0bgYzPX9BPjvo4fg
-	 GjxvisW+7gqbu1qzpfjZuxiVp6hGWkK4oatd9RaNYb+WqK8tvh6fx/buOayc2JSZB7yob
-	 8AcD0AQ/0Stt53QLX2AVvXtN5EkjsCYPs1VXVmq624H99M1QvyfKXx5U8vNrrcsoRLjn/
-	 zpbmTJ+HjhsRR4IZaPOQV5ER9OW7zcxFmj5IpJqv33ApioPhq0yZMR3UrKXfZousp3FXg
-	 OfGPovJ/3hRWKDoxh2txp8UhbFsFyW9SmqVlWZo2sjSQbupNShK1rPbI+tzntBbcyPQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792804386;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.53
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792804663;
+	b=B5Ue1xex9hmhIlX5dHLnFgIBcZTtCrrYlpn7RGNSwkAcQjDLuq3B7Iiw2lcXYl8NBhYd
+	 T+K+yYk+dnA5gLJsvbvMvZz8gQj1ei/ldpYMPDn54l6eNsaMGYjJZCOqiUW0Q6mVI4lLA
+	 jyXpvMnrVWc25yHyTUXWHrLJtegIhy+xeXlLH8lSDjbMK/C48f4vNqmi8nE5ZZQr/00Iu
+	 /uaZg9so8ZhjyhEu2iTmiYxv2lfWNM/k3HinJ+j7e9udMYazrDybv5w+9g3MFMBfIo9xh
+	 0dNNz7XQQhXxnNk/2zwdBwYLejsYsbirvimCjczVWqeAuONr8XcAEv91miK0nDac5xw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792804663;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=yXJ2g5fwWDIHFZ6U57l0s5oMJ3QkuC3ZCFYx3E6TDwQ=;
-	b=v5sRJhzJ32o3q7bxXVWrxgedP4z2mKkvxmSGOLc+6UaS2RfUUa0DJ6wDb0RG97HuYZq9
-	 v8WHVmXsDiIYOryT+8fFizIBLO5v+9DKkzEMukSvqKgtk9Y3iCEwga/bISejZhNKoMK0G
-	 HGEwTEwR4732qYhISGyllDc4sf/DzhzLaI6ImxqkMABsmMoxWA5ytZ8yH8NY6VEbpIC4/
-	 ecPL9V21JHtFq52M/CXUr1KdyWLaL20S63tIJz158sEZs9z7WpKCqUwi+ykDIYHTM0FZO
-	 p2vsGqrQh8QM8IRvq1QnRUHbUw+/+YRlpDU7Zf9DuwUBC6U/BoXILL9cATg0385zewA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=networkplumber.org;
-	spf=pass smtp.mailfrom=networkplumber.org;
-	dkim=pass header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=g1ajCbPq;
-	arc=none smtp.remote-ip=209.85.215.173
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Content-Type:Content-Transfer-Encoding;
+	bh=ukpmY9ch5lIIoawnCt4Ss+0SzKid7XBH5xM/xi/5vPs=;
+	b=z1T80hQvhY8CRvJAlOSwge2KPKO1b0cr9yfF3NwWrwmDJRljAMTjbhTAZhhBVWKDXNlX
+	 ixS3ix+HCQ6W7emsI0eP6uig8qgJMW+5JTcjKOSsmsdIg44fFgs0/adrwNOj3Gwxx+l1A
+	 RbJKQbXHofViDPhz155ezXXjupYtiO1Qv0roOZ06zQeLKC4qvuoHP9xO1wDkYiKBQq8Bu
+	 Xtkpw4CoSDqaK4Ok0sUqhX/AfK48j1Y3rrbY/yOb1vMNrA+xpyjkeedK//J+N0/kAWnAq
+	 9vKXtkFqwA5hlPn5Y64lFFSWg2ryonMRkQfNsR557AmgZ82V1dJaoCyyS06x6pdovWQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=mK+nL95C;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.53
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A944606A31A
-	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 01:13:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7A944606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696E9606A31A
+	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 01:17:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 696E9606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=g1ajCbPq
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-cc751eddf25so733122a12.3
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 18:13:05 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=mK+nL95C
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c423b145922so191897266b.3
+        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 18:17:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792804662; cv=none;
+        d=google.com; s=arc-20260327;
+        b=gVm5CPUCmG46Viw7g1gMk64Aa8X3wTcOL2N6s9RT7lUiDmi/UgYbLU//BBn+0t/EnK
+         0vPCxPFGhQ4xemWbwiaDZjvIDZuioPsj4thTBQVRZOxpbrteaZzSNVQFIwHOGiSBlBn/
+         tiBCz2hgFD8EUjiB7SDdPF5ISdl5lpvJXYGEu0JHUJhUHCHijzQ/dIuZGi3tG9ZRCopa
+         IjTq7qiohFItDKvqLQHcBmjW+dm2MUo1Gx1daUxjPj3mrlzodRQl05iBPI65jGvqaZ80
+         17sQJ4RLoMPqD8LDWyGhnFKsi4BQq9xnEFXzJZnou0LC2sRmLi5hA2PGSXf+gkURlI33
+         VHUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ukpmY9ch5lIIoawnCt4Ss+0SzKid7XBH5xM/xi/5vPs=;
+        fh=P6zhd62WDGH3fWiLXAyDDbLyJVMF4z2wxwUlSzbTKk8=;
+        b=nIoctxz1Hfj2JR3LrCbzl36pwM/OebVll1xi9iSqy1BTrYZTSqA3e88Y0s3o284pJ1
+         2rRrpXowinOSVeXkOkQnSNndE3/tWEASs2R+MiF9UBBGxGRWoU7E62xku9F3PSPShEBy
+         l4c3aO2WDxVozDURNKeNkHkm/U0CK7iXaPxOTRev+u4tJyUI7weOc8ORopBB/11Pwaob
+         ABGpWxpgVRoK/GdznwN6SRG89kyRV2Jen9BQJZiiZRwAPY0M0QmdSSPczdbtJYJbDQDB
+         SL97EyUGubwdKHTMFKVEjKKGtjxGYnOh2Mll1SZgWzU29hQTF3UtatFQgcHxCcfs1PNO
+         EFsA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1792804385; x=1793409185; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=yXJ2g5fwWDIHFZ6U57l0s5oMJ3QkuC3ZCFYx3E6TDwQ=;
-        b=g1ajCbPqgcXems55WLyTsax6JKyotCD6HxmozjGTLf5/s4aHiUIy9cDPTus8AOCkhO
-         7RsUOfzY9ji7yNIjqOgg5TPoBhs9CrSz3IxXPbxQjYMV2M072m9EFJQiu5nDeZGQZJfT
-         lxeIDDgi12ecp+wLnZ3i1lLoZGw+RSUh+VFEH1Y3syERgOMw7ICz3XJwkxWfDvyQgK58
-         e3uyB00HSRq/Oaz6nMHGCB5FKg35ry5/FY5TWI/YCTjLoiSmRY9ZMaNB7lLDs9yrcUYl
-         Rex4M7LTGE+ctgTT1QJ2XOyXsBisHekDbchLSmrtR01sAN2OAik+zfpinQOL9p8aVN2+
-         Stuw==
+        d=gmail.com; s=20251104; t=1792804662; x=1793409462; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:to:subject:message-id:date
+         :from:in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ukpmY9ch5lIIoawnCt4Ss+0SzKid7XBH5xM/xi/5vPs=;
+        b=mK+nL95C9DLeLdYr8bt2DxsWWIowmT1xsM8HmV9c+1lRZGBnOO/oRjmQXLunq3DoM7
+         4hX3Umid8KXXALP82CMlEpZoxfqLRXqqPfmJ2TUgquF069WtSeU+Ls6G6vMTIaR4PTGT
+         XQVth8ixBfj/lHW4Q8blCe+aDNDUEOfQ7JOkfW+r2ZwO1lr8DXTPcq1qMWIdwwJs/GZQ
+         yoHr4MDFlCbLhjUf8k47klnSRwx2RD/APVoEbUWmb6N/woSbvyOoD4DWO2Wl9KdbyTQ8
+         FJm7ME6CO5lvDav47x2jC77m/j88uFhUp0OXbyCqV+PbWIufBrJP+lnYZ403db6yetRm
+         JU8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792804385; x=1793409185;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yXJ2g5fwWDIHFZ6U57l0s5oMJ3QkuC3ZCFYx3E6TDwQ=;
-        b=FyoDrODGx4T5rtpBzPeBMQGFg0fJTy/FVfI4za5lQCi5QJl5lRoHWYRPqTsLzYN4Wm
-         EzxpZ2KWGxMt468Fa9VYeG5c/CIxBkudWsHSdtevLork65EXvknqifwGPuWEbajoF88h
-         Fgj2JiOMaB2PvWOzXe66N40A+4GQX1dDRFS4lpCJ0FdFUdysxEVy9iRFcj0gmo73WkHw
-         EYCLIWLT2fTAr6KanpeldV0zSrFW/5M3jJbdUi0VSRbXF7aUm4YIC6z5u6d/XG6hxFeD
-         x7KSdTC3J64QeWc7IuOztT1F788Wd548Qcz9I1CS5F7P1lgT5hr7Umr+l6xQmqFtjfQT
-         NcIg==
-X-Gm-Message-State: AFq9FYJDwgu+9wvftmHMyCGg94Gl5K5MPrC9ElLSBajsgGbIuy3h6GPC
-	j+yNuI6b9QShk/MJHDmjImoUFFXcimnUqidnyRdPThn6Gn6lF+xtOy6QkmFiY4EUTnQ=
-X-Gm-Gg: AYBFou2p3RJ36So5SKnd3hPTe7ggMJJj0YnREkFY787wFiim9A/sAzvma850SY/DUZQ
-	R0ofDqKRY1Jj1SnQrqGtsJb7UeAtRaKXUgq3UuZQebZd9tSy8tkFV25kLoWWXa90vIz7BSN4nIv
-	/aKGSUkIvr4Ij3UZ7BXhnTby2eE5Hg52j5c/jeuFv0hTxWyAtCk+jhwyRKYAzfeKmcq+fPvm9YW
-	SQ7fgM2X8rELPH545yKEK82pOQ5jO++Q1wEiGqRymrxNP1crgSdzsju1kfXdwyhf92sZLJyMXau
-	RzAxhnq69fbijF27cJp+zq++SeZp9NfcHHYjQz3RVUKD+1Wvz6RnZwM1fjnKCSlIK20FB/n+ZCx
-	oON3/MCnCngJHTcZGlKMw967V36FsgIl8dlG4j6/jaHUp/ethwhPCZUkb4N7Gb63E3d52GSA1Nh
-	WisCS1h90kAMWrqDtrAhPMbnca5W9lmmj1uG9NieH3OqujU3XcqUdYGP2lFEA+VPqQOnFsZY1T7
-	p6s6aO1C9/VtrmIpeL/GlMK+1x+LaewAL0LGfsskmESYRkA2YHUIc5WQx/0w+h6BLAzbkGLLiRS
-	8k1uqQuIcPBkPc5ScTy3gzpNQBo=
-X-Received: by 2002:a17:90b:51cf:b0:3ac:b7b9:6471 with SMTP id 98e67ed59e1d1-3adeb105a0amr758434a91.65.1792804384647;
-        Fri, 23 Oct 2026 18:13:04 -0700 (PDT)
-Received: from stephen-xps.local (204-195-112-43.wavecable.com. [204.195.112.43])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3adebadfa82sm937149a91.8.2026.10.23.18.13.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2026 18:13:04 -0700 (PDT)
-Date: Fri, 23 Oct 2026 18:13:02 -0700
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: Hadrien Patte <hadrien.patte@protonmail.com>
-Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>
-Subject: Re: [PATCH iproute2-next] json_writer: fix pretty printing of
- arrays
-Message-ID: <20261023181302.2a06fe99@stephen-xps.local>
-In-Reply-To: <20261022211002.31098-1-hadrien.patte@protonmail.com>
-References: <20261022211002.31098-1-hadrien.patte@protonmail.com>
+        d=1e100.net; s=20260707; t=1792804662; x=1793409462;
+        h=content-transfer-encoding:content-type:to:subject:message-id:date
+         :from:in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ukpmY9ch5lIIoawnCt4Ss+0SzKid7XBH5xM/xi/5vPs=;
+        b=zFrZveCCimTcfCSyH0bpRQhErElS5dAI0mfagIiSky9RFxlNVeVb6NapNLQ+CKmpW/
+         3K5gdNpjkVgnR5GT3FgjQ9974zb/w0lAkj9ik+DDFPOI+UQwubv4vgqXLFoZa7l04HBK
+         5aJRSNyBxZfetYQShMpBR2eddHwGAqpP+k4Y9stcJYuhdxHv1clEqr8KnoccZWgzrVoe
+         sDG1Xxw13O5QGNMxNvSJ1O6e5UnRdTJv2TjIdrGu+yyGlYRoV4qTKwx4E0O8m4i51vHR
+         y/YGQJ9PXfK8bMJU4VEKovwWCzprDaZiFBAnR8b6HGHT2dSdISUCFd/TwD+u7bFUtuc4
+         dXdQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxv0gkTJ61oMIlqSRMlNzI+5lYHWynETsknbB0+M8rTan3ZekmpGUyjfJMce9+L+4hDUW4geNY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJSbGcEy/Fc5soCHwtPJhBWl4oYpGCB/5EDOBUxOUTWCuD1NLEd
+	gnLybzeRnfs0Yngm+INH8NrqTCAf/f4dOEg7EaqoYVikMa6ney/rw1T0/3TAYH2WZdqRFiNePGF
+	D75yIPbAvWll2ExHHexylk3Z0Bgr9/kk=
+X-Gm-Gg: AYBFou3+Ftv0Z+e3Js5CqAlPt681L+Mg9WgaVrkWeqj53Bihj6R/zgTGqyI1s2qN0yv
+	mrWV3GW2kQOyLhjiQNe4E4XaqOTZG1i4xouQgLF+YkJrQVmbbECWpyhS4P0QRfGNU9xZ7R3OGjP
+	En4cU7jRn1evh9s0KO4eSzGnySVITYqzX4jpCZzbjkWg4yjPrd7AWPrpSH0xSrFIQlE5x2Zgieh
+	vPKofsVAe4UB8WFcsAipX447S2b99Ni0B6hAB7n2KTEzJgEM0ISN4+0/fRg8cCx9aq5/ntLjbMV
+	jzeO8jDO9g6I22CuNdlsf8EXScvDtUPtLF50T/mbEfQOvY9VLikqjTCEIJitp91VeGz+XEQ7kIj
+	c67tiBdgeMY52hrjQPHNNQ+DtFhhsyZPFl3+cLFdudNtCL7IH9qq0BDpASX7p4aINAMWZw3jNAW
+	u2SfY6Dd4dYLIT7jwF
+X-Received: by 2002:a17:907:608e:b0:c46:8b87:c1f4 with SMTP id
+ a640c23a62f3a-c46bddc4a4emr58034266b.20.1792804661557; Fri, 23 Oct 2026
+ 18:17:41 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -96,22 +104,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20261020201537.2465655-1-prashantsengar25031@gmail.com>
+ <20261020201716.94FAA1F000C9@smtp.kernel.org> <20261020152211.73eb8f98@kernel.org>
+In-Reply-To: <20261020152211.73eb8f98@kernel.org>
+From: Prashant Sengar <prashantsengar25031@gmail.com>
+Date: Sat, 24 Oct 2026 06:47:29 +0530
+X-Gm-Features: AclHuK-UhtLX4nQgYEXFsN0fsRm62C6TtcqwD-ZvA32RmYYMlNCoQto4p3wgZjQ
+Message-ID: <CABW1sBnirfRyAReL4RZSUr_T=g2RHtaUv1oyAhFCDO4zr7xc7w@mail.gmail.com>
+Subject: Re: [PATCH net v4] net: usb: lan78xx: avoid NULL PHY dereference in
+ WoL setup
+To: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 22 Oct 2026 21:10:07 +0000
-Hadrien Patte <hadrien.patte@protonmail.com> wrote:
+Hi Jakub,
 
-> Output now looks like:
-> 
-> [
->     {
->         "ifindex": 1,
->         "flags": [
->             "UP",
->             "LOWER_UP"
->         ]
->     },
+Sorry about that. I missed the 24-hour reposting rule, and the
+automated warning ended up in my spam folder.
 
-Putting all the array elements on oneline is easier to read and more compact.
-What does python do?
+I should have checked the submission guidelines more carefully. I'll
+make sure to follow the 24-hour rule for future revisions.
+
+Thanks,
+Prashant
+
+On Wed, Oct 21, 2026 at 3:52=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> On Tue, 20 Oct 2026 20:17:16 +0000 (UTC) netdev-bot+pv@kernel.org wrote:
+> > It looks like you reposted this series less than 24 hours after
+> > the previous version. Please allow at least 24 hours between
+> > versions so that reviewers across all time zones have a chance
+> > to look at the previous version.
+> >
+> > See https://www.kernel.org/doc/html/next/process/maintainer-netdev.html
+>
+> Is this email not reaching you?
+> Do you need a personal reminder to follow the ML rules? :/
