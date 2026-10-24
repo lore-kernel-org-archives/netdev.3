@@ -1,94 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.47
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792861404;
-	b=1+hnNK7zaR+xaUQosf5Wp41CKgclYdUYaJ+CSkM3qHOZHtt+MFSRWT3OoZYKnuM4ZaQf
-	 mXopR6lNS7qtvIE+4zChdJ2S4C6zqhwD0aPOewcXwOQyWL80pIsVDOsnRBm91DNMebHLt
-	 o1F9T5KlWtM/2brQe9y1qQ7CEWbK5ZJdpuGzSSpSlIFYPLBLKGF1ryyUj7HSUvXqfW+RC
-	 P9KqyWsAdwvPisxmg8AVyWxpjSD8MiqT5c0BFDC92Bw/7ArPbUfVFAvDBuxkuf7YKmpkY
-	 +z3Gki4O79iXOHmGo1yT9lDh8UdkcnrnDQ4g6zmzz5Bo5rMQtvmHh/cgAdSauCywh1w==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792861404;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=jo8gmaFEhKj3JngpBjGb7fjIKG8buSADfQD1SD8Q+M4=;
-	b=ncKMqhJcsr5KEcCWzCJP7tRV1KWMxlljFmFQ+Qe3BVLlHDrCYImhB3OSj7ZNr9BvTEVS
-	 /DPhEYDE7L6yLJBfQgKz42CTrXlDXp4XaOGPO8ijzmF3yxlvs6/lPl1JhlQJ9TFO5B4c3
-	 esXWyXVYN+8yY9UH9pFpVA0BPY2rmwFl2SCbhKr7g+u38WSTi0tjhwkd+1aMS/pAyCCsq
-	 kYWyNDP9bDbB63AxENjzgweUGHeHfFWuhcV0nQaj74dRqYgbKSTIFKZtC4TRFJ1bxCpC2
-	 ISsf4G0ImyAQ2QJojW+Zdw9zG4hdUIzAgdEKRFj/fLx13QV0CRUqWgivHL7I+vRk7iw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=bLV5+rK3;
-	arc=none smtp.remote-ip=209.85.222.47
-Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792862116;
+	b=i3OtpLNnto2DZiu/nkQG/JvytpNNO3NDWpiTjSu/HwuMAX9BQecQi8v2ASc+AugMaNdI
+	 1ayLgc2Iyc/F4f+c4kLHAMS7X4eSvgYVlvs6O18JqjUUW4XmIalt4lYWjoo5t2z4GCig7
+	 pl4yJAPHASmT3MjdROF/9YS+cI/Dyfd8v06VPlsuBtwGQLyWi/PJT71oiIYm0ovdQbQMm
+	 ZRBqPEiOhGldSSW0INFDcsNr1SHBD+pJjLxcNbxWI20GofTLk2dkEsZ45B6yQvvWjUpxc
+	 u6PUrTbR0pe4/2pSiAdyzKeUG3Cz85XPMI7hPsJ240ozDwaJmzPGpwrnDosXQXPj9Mg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792862116;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=vWSeRVd1Hj3KnpOxfomH6zAovsc8iFP4PdLt+lQB+yo=;
+	b=4y374AiYXRp9Ithh1/dpsucOVMXwBTWL+D1yx0CwEQmIQaEfx1MgAm86/ChRrD6kL1B3
+	 RWbEUtDWL6OtoeLaIuhPf7W1EnE1ZvrHz86XI8Npszn3T5c9GooDt/zpIl8c34VQlW0/7
+	 T6+a3XJMUH0itBRN7MPli1W7zjeT2DzIw9Cz0Sd1LQu+YVtJK4SgtRoX621I84UOY5SH7
+	 HpnqU4Km1PiM5jZaAm/exN8kCNNeg7a1hK7h5Ahu3G6HQtUCQkzrlcqH0qBuKhG9qgLri
+	 un3d3C0OUOyqfVbqPUUHgFuHb5veeXyEdd6GARPrEHJCJrVGDmZwWdkX+EtWJyWG5qA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="DhYc1vI/";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D08606A321
+	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 17:15:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DhYc1vI/
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1792862115;
+	b=VeentShz/wfli/7B853ekNli9eyIydibeBe1GSHyERH3F3z/m4NOA8/YyXQ8e41gE12v
+	 UtE28KD+VLAmimnlDTykZCjHGL7+d9ujwR5LrKrzOnIUzPrLSxsqNPjEaq4SJgkKYPTEY
+	 lgalC85ZFlIEYa4Pq+QLEIaLbsIcqMxJEs6k8ZXnogHXVYY3akZWkY8+9CyBaV3uHeSqG
+	 Okq+jIf7LOQx5iztbT4ciQjl59NQDPZzf3vuTSTOwDWqWUDtITJ8B5GRmdOwc0yuE2mGw
+	 NsdbyBjBfFoJKPB55R+PBmXPpwtqJQtkDocwWxOtTPvJ9jg0wViVLZ2A3LwgMsyW2sg==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1792862115;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=vWSeRVd1Hj3KnpOxfomH6zAovsc8iFP4PdLt+lQB+yo=;
+	b=BVd0PTeW0sVnh0Bw2cJ35c3UhOoIPGCyeAZlY4zkY3GFSxucO2vBzhT8LLQ7hAtW3NWR
+	 tpafsMHF+p6AVJJ6SZHxRXexse2MfoSjR3CuAXnUKvb1SULqNfu7Eu8HtpwCijorq+YFj
+	 men1bCB4Q14eTwIDZ3PeB80qlyaMOp111/G/diUc85H8DV5VDq0pRU9zqYcl5wBii6/sb
+	 Njo8oV+BxmByfCBesV+GUfdl4fzBbdDRS42gPMUAUStJPWIChQEgaq4rzWrxiC3rJfsbd
+	 z7/fanq06ccrlqEdhEJgmnsNTSgYJAsrSducM4ii9lTYfF6mkZCEQVDZ0gQy/H2DbyA==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E094606A31B
-	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 17:03:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1E094606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=bLV5+rK3
-Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-99059bdcdeaso511783241.2
-        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 10:03:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792861403; x=1793466203; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:content-type:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jo8gmaFEhKj3JngpBjGb7fjIKG8buSADfQD1SD8Q+M4=;
-        b=bLV5+rK3XK4YT3V2W+IonkQsuEwFvajZnI4HZcQTFPYUff3uvQA3FjTu9QJd59qLLu
-         Qt6p8wJbbIQfurLx0x7pNWMLGcwEGCnmcpl97UkPjDLgiIYPQWXVGeifujDTKCxGnAFN
-         2Bbh6ANBdrNtIovjYSp2qgEJs09rnSsCLX9Sm1iIrTHRmbX3apzk4SDxqBCgnA235r9L
-         +1xyXQ9J24YbQryNaMTeU97ew2Z5eVwIY4vOCNnjqEoTgqhR+r2n0z019QyRGv/+I/cK
-         SYj5cOsMPjf5QMBab3y27Aygy4xhW5Y/i4+wLPPLaJhrSZplIsGPp2hAyVd4Hdt3n4La
-         RKxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792861403; x=1793466203;
-        h=mime-version:content-transfer-encoding:content-type:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=jo8gmaFEhKj3JngpBjGb7fjIKG8buSADfQD1SD8Q+M4=;
-        b=SmZX5L7+vYMV5g1J8KEImV1egZsGTgFjB3EpQ0YqxTk0KbQ64nJuGG54nn83UIz44h
-         MhTNia3G7U8PvHbheFKNCNNmgHqAdqdaivgGDcS0vdKH7m9b1ZbHspbfuDsSLhFagiM8
-         ugQJKPGyiSQ3XGQB62kg+yqElv0+CN8OiH2Ejojy9GZfBZqCb3dtPjLZfBHiTYEEhB/R
-         YletzifiatFmZm7mvsdx2KqYza8LETIMp95utcarAeJNgcIjKya95KQt4HacXmhmu8Wk
-         HwcSc79WNjNMMhxtBX+9Lchrfvvrn61Gf8Dv6IG1gZqIJU+7wOIz1AtsR69L+0whi+QB
-         7Yrw==
-X-Forwarded-Encrypted: i=1; AKwUvBzfdX4rIzCELh46RUCNvqLS1MwizPrKduWwG4HcTnq2uQ2tkhL9xIE/zmlFa5aC1SvMtYsuqsY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLE5d1IwI+L+qPHEL0MRbxvEjRe8UwFUMh40FguLh3NHewl3Fop
-	TBInqAs4fCCiDMzKO+ybDC7o0WesmMJy3FQ38LeG5taiPtY2TVtUEZDJ
-X-Gm-Gg: AYBFou2t59bX3TLLybB43Scrc/RNVIyDg6+lzTEPof4oYIbT9oBvLLWT1gpMRVQyPm8
-	LuavITcgmPyX4Ln6Tq0tTvm8rmqQ6VhzpBGF+tjzHw+qeoJeZ4IABD8rlNaVQeLSneB9manhdsO
-	oH/uFxi7wYq5gPOW2nV4DKvhN9vr/BV9RBLMVXAxfmUC5FZn3WQ8ncd6UuASZ4hHWz837/KAsal
-	mbM3ieyIH9+LV2WeQLvd5km3sYg+rCScd5UJKlZ9ohvEoQC53lEfLP/fgVYG12u0Osa8ASL7anu
-	pFvZUdI4pRo3k0gU6DUGhOiy+Y/RrEMVt0CxsR47aJphj/CJyjmJLLsCc9gfHAfdXignDY/Ae7c
-	3zCShyQdp+Zt2WUD9SihQVer57Ngh/RrXB9KfpDXSGGERWVYkT6HBWgNyfi93G+84fnGoQcvtiA
-	qjn2VZFziKu3qgxWEQvYa5ihQEbxNzs+nY1EQF4KNtty5TWiXmNW4nRw5l78m0nIGhlWsIX5XCk
-	0qqLzmgGs9EtfgCOYKPUqpTH2rSxV3QmOAPkCFAVBxU/GKr8Em0vRfImnOZ9tQ/u4s8UwYMn0eJ
-	XBGLONwBumYYNWuUgiMPiapYPEx9nrn3gYbgrDH4GChUhN00iJ+NmbBZ9gBEBOiE6vqZGY1X
-X-Received: by 2002:a05:6102:c46:b0:7cc:c7aa:106 with SMTP id ada2fe7eead31-7ce5cd91867mr658536137.18.1792861402974;
-        Sat, 24 Oct 2026 10:03:22 -0700 (PDT)
-Received: from 1.0.0.127.in-addr.arpa ([2804:7f0:b101:277b:c08d:c9f9:7c08:79c4])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7ce5df73970sm2525746137.1.2026.10.24.10.03.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Oct 2026 10:03:22 -0700 (PDT)
-From: Joas Antonio dos Santos <joasantonio108@gmail.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>
-Cc: Phil Sutter <phil@nwl.cc>, Duc Anh Luu <luuducanh05051995@gmail.com>,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH nf v2] netfilter: nf_conntrack_sip: fix OOB read in
- ct_sip_parse_transport()
-Date: Sat, 24 Oct 2026 14:03:17 -0300
-Message-ID: <179286139765.93379.986858959213810476@gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	by smtp.kernel.org (Postfix) with ESMTPS id C545F1F01828;
+	Sat, 24 Oct 2026 17:15:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792862115;
+	bh=vWSeRVd1Hj3KnpOxfomH6zAovsc8iFP4PdLt+lQB+yo=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=DhYc1vI/4YYtSg3Kjx+6ViOljfFFS0evIPMmq2B8HuD3Vs/fYUo0xbULRE8c3PYvD
+	 lvHPYs5hsI+JhxAiSCau0k4kbpNJpD1A3EArLpfExdjMjf8Ub5wuUUX7wqjjJ3F1j8
+	 KYgFyG6U0tJqS42m/acfzzPSPNZ2t0CQCQbqpmrbY4JxGwiyOtQVMJ1KuzkiEIZLfr
+	 5jA16DtC8yntRIUa0MUuhC5x7qWYiiF+jIvY4Xw3QNOO2mhscyQS6K6XV+bWDaWEAv
+	 9l0rosQLPP5BNj3XmsVftXPZ/RuNv9onXqQ96IceF2k0tC/vbCupKVBPg53FNvKP3i
+	 S4QDKr3u6C2iA==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 33672447E4;
+	Sat, 24 Oct 2026 17:15:14 +0000 (UTC)
+From: Demos Ra via B4 Relay <devnull+demosthenes.ra.gmail.com@kernel.org>
+Date: Sun, 25 Oct 2026 00:13:55 +0700
+Subject: [PATCH net 1/2] tools: ynl-gen-c: handle classic notifications
+ without a matching request
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -98,57 +83,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261025-ynl-ntf-bucket-v1-1-65aef308d62c@gmail.com>
+References: <20261025-ynl-ntf-bucket-v1-0-65aef308d62c@gmail.com>
+In-Reply-To: <20261025-ynl-ntf-bucket-v1-0-65aef308d62c@gmail.com>
+To: Donald Hunter <donald.hunter@gmail.com>, 
+ Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
+ Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org, 
+ Demos Ra <demosthenes.ra@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792862112; l=1950;
+ i=demosthenes.ra@gmail.com; s=20261019; h=from:subject:message-id;
+ bh=QMYy/9g8848X9S1LCXRZkDwcKaSb1n2GG17LJZDrReg=;
+ b=B7MGblZ4U2cEctXru7+Jc/y/mlJ+At6eZMUYUFfmht+6h6XQes+WI8ac3Wv3uE8boO7co+RfR
+ Gy9d4TONzdmBNDKtNX377gQNXpbVNaodnxVkfP8/36ERFAU4h8qXaZ+
+X-Developer-Key: i=demosthenes.ra@gmail.com; a=ed25519;
+ pk=sDKS9AI9zxhWgOqkhc9EOIo6cky+anqccB3VGtDvzCc=
+X-Endpoint-Received: by B4 Relay for demosthenes.ra@gmail.com/20261019 with
+ auth_id=1235
+X-Original-From: Demos Ra <demosthenes.ra@gmail.com>
+Reply-To: demosthenes.ra@gmail.com
+Content-Transfer-Encoding: 7bit
 
-ct_sip_parse_transport() compares the value of the "transport=" header
-parameter against "TCP"/"UDP" with strncasecmp(..., 3), but it never
-checks that the parsed value is at least 3 bytes long.
+From: Demos Ra <demosthenes.ra@gmail.com>
 
-ct_sip_parse_param() returns matchlen = end - start, where end is the
-next ';' or, when there is no ';', the end of the payload buffer
-(limit = dptr + datalen).  If the "transport=" value is only 1 or 2
-bytes long and runs exactly to the end of the payload (e.g. a REGISTER
-request whose Contact header ends in ";transport=T" with no trailing
-CRLF), matchlen is less than 3 while strncasecmp() still reads up to 3
-bytes, reading 1-2 bytes past the end of the linearized skb data.
+For classic Netlink families the notification table in the generated
+user code is indexed by the message type the kernel sends. Since
+commit 49398830a4aa ("tools: ynl-gen: support CRUD-like notifications
+for classic Netlink") ynl-gen writes each index as the name of the
+request that has the same message type, and fails if no request has
+it:
 
-Add a matchlen check before the comparison, mirroring the
-sdp_media_type() pattern a few lines below, so short values cannot reach
-strncasecmp().
+  $ ./tools/net/ynl/pyynl/ynl_gen_c.py --mode user --source \
+        --spec Documentation/netlink/specs/rt-nexthop.yaml
+  ...
+      crud_op = ri.family.req_by_value[op.rsp_value]
+  KeyError: 116
 
-The bug was found by LLM-assisted manual review of the SIP helper's
-parsers and confirmed with a userspace ASan harness built from the
-verbatim parser functions, which reports a heap-buffer-overflow read of
-size 2 in strncasecmp() called from ct_sip_parse_transport().
+rt-nexthop's newnexthopbucket-ntf is the only such notification: the
+kernel sends it as RTM_NEWNEXTHOPBUCKET (116), and no request uses
+that message type.
 
-Fixes: ea45f12a2766d ("[NETFILTER]: nf_conntrack_sip: parse SIP headers properly")
-Link: https://lore.kernel.org/netfilter-devel/20260815133104.50369-1-joasantonio108@gmail.com/
-Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
-Assisted-by: Claude:claude-opus-5-5
+When no request matches, write the message type as a number, as
+put_op_name() already does for messages whose request and reply types
+differ. The generated code for every spec in the tree is unchanged.
+
+Signed-off-by: Demos Ra <demosthenes.ra@gmail.com>
 ---
-v2:
-- Retarget to nf, rebase on current mainline (no code change).
-- Say how the bug was found, add Link: to v1 and Assisted-by:.
+ tools/net/ynl/pyynl/ynl_gen_c.py | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-v1 (2026-08-15) got no review comments on the list. An equivalent fix
-was posted on 2026-10-22 by Duc Anh Luu (Cc'd):
-https://lore.kernel.org/netfilter-devel/20261022172248.554687-1-luuducanh05051995@gmail.com/
+diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
+index 4aca51396a9e..a009a842fb36 100755
+--- a/tools/net/ynl/pyynl/ynl_gen_c.py
++++ b/tools/net/ynl/pyynl/ynl_gen_c.py
+@@ -3409,9 +3409,11 @@ def render_scoped_consts(family, cw, scope):
+ def _render_user_ntf_entry(ri, op):
+     if not ri.family.is_classic():
+         ri.cw.block_start(line=f"[{op.enum_name}] = ")
+-    else:
++    elif op.rsp_value in ri.family.req_by_value:
+         crud_op = ri.family.req_by_value[op.rsp_value]
+         ri.cw.block_start(line=f"[{crud_op.enum_name}] = ")
++    else:
++        ri.cw.block_start(line=f"[{op.rsp_value}] = ")
+     ri.cw.p(f".alloc_sz\t= sizeof({type_name(ri, 'event')}),")
+     ri.cw.p(f".cb\t\t= {op_prefix(ri, 'reply', deref=True)}_parse,")
+     ri.cw.p(f".policy\t\t= &{ri.struct['reply'].render_name}_nest,")
 
- net/netfilter/nf_conntrack_sip.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+-- 
+2.53.0
 
-diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
-index 64bc440b1..b05dc8858 100644
---- a/net/netfilter/nf_conntrack_sip.c
-+++ b/net/netfilter/nf_conntrack_sip.c
-@@ -701,9 +701,9 @@ static int ct_sip_parse_transport(struct nf_conn *ct, const char *dptr,
- 
- 	if (ct_sip_parse_param(ct, dptr, dataoff, datalen, "transport=",
- 			       &matchoff, &matchlen)) {
--		if (!strncasecmp(dptr + matchoff, "TCP", strlen("TCP")))
-+		if (matchlen >= 3 && !strncasecmp(dptr + matchoff, "TCP", 3))
- 			*proto = IPPROTO_TCP;
--		else if (!strncasecmp(dptr + matchoff, "UDP", strlen("UDP")))
-+		else if (matchlen >= 3 && !strncasecmp(dptr + matchoff, "UDP", 3))
- 			*proto = IPPROTO_UDP;
- 		else
- 			return 0;
+
