@@ -1,45 +1,114 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.179
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792858433;
-	b=FAC9chK0eotIqAUmU4LVdDCnm5vnSGTuLq5dSlBOUYAGMRnQXhK1d/vB1SG4t04ynW/A
-	 39EEBAoa/38sxBZypr1KUikAYCy9cGbAcGSuNKttgSKDcGW2JAKXFgzQyGyKxMGgjtWjb
-	 W1OxaYmzGlYXqQNm+ydSp/FJw0cDvqTDqYARTHhz5nIj/9RPOL8wfA+dnaqTysEigDEWs
-	 ticdeBBst8OAEnko1uxEQUUzFQQex6KYg3y89puXqHXMjve/T5/LYmZBvC7moCc7af3Sf
-	 /wRz1S+X0TfKfVqBg6lJ73mBgz9cbTGk/nzm32gHEEpoMji2DAANBTPoG3BZG8nTiWQ==
+	t=1792858473;
+	b=bC9iQbkHwNsjJjCtJSVemEMC2Qg+fah+y3MIemvoxufp0Upx9SNQX2LNG4uwj527qlks
+	 or1jEtY9U8dZe0lWIgE3Bo8rGbXgi85V0KLde+xGwdjbV+pA1c3mbuYe39ocEHvYrmeR9
+	 omIiTIo7F4/T2MxZPI2tkDNNpoXqDhypOpf6KngzBteYA5RfMsfQR+cQtz3isQDzAQQk3
+	 q9tPLf0Zs8GkzAeiLjlwP6bQWJG6Um4RDNQehneEAZg9iTXmHIipo3508icrCY00svUbl
+	 XZ/t4YfB4V6eXgQpF6AmiaPLoV+NS+VPMaNNmnrYS99eniaYea5apfJzNmu70SaR/bA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792858433;
-	h=Received:DKIM-Signature:Content-Type:MIME-Version:Message-Id:
-	 In-Reply-To:References:Subject:From:To:Cc:Date;
-	bh=Py+Z5I/MajAjJGZNOZOZq0i/a4XelqMNOHlME6I2PwE=;
-	b=1yck0dQ04RA9RSoTT17mDfm5UMu8EpUw6ThAEuokSTjCxAEVdyw7fUDUjfRCwh/t9rDl
-	 tzrCo00j6IZvP+JzupGho+WGUPoxHNrI2PgFzi9r3Ek+xw9ZyztxRwdVxHc1Eu+Sr2NFI
-	 0pVbPo/f7wqVfewx/+NTS/o6vUopfUn7c3ERdIBQW0jOeI6aSUnYD6yEjm0Xx4clap521
-	 kSOKT6TdxjBx6MvvQq/sX665pfg98C9LsuM8uAulyJm9A6oOKFo/lmlboO6Do8KVX7EMk
-	 2KeYV5i2TPXGXhkZLdOVIjF8UsWyd/pNUTE2q/cz6v0jCqtx89y8VP1wJf6U63wHxEg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792858473;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
+	 Message-ID:In-Reply-To:References:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=/ctuNn51ZAVrAbsD9CN4nLXkl+KbP560Jdgt2YL9zZs=;
+	b=0IBa0891Vox/vhq7/V6cnFKhqY0PYwi5aVrgI7UFDp0KMhdsLe9pjYVihJCrtz8O/LyV
+	 NOVhuEDzTjIwZdNoWEIdfPktzhEwJ7KNCjotBN86yh+VaezSLhDMVolQ918Y/pjkSlZE1
+	 X9NfEbpimqF4sUsb5OlPLBWjPXm/zlViA4hVD8hJtIgaezYzjxGSN2KdcVjMxaC8zWM4l
+	 pIdpwyYZz8DXX4xTXh6Kx9Sc9eLBW6dJuR62aQOc7K0hw/sg9ow7tNFKDSfwAf35UX2OI
+	 QMYeRF1x+S4sd4zRKipLLeNEguS6Bsk6i7tY/CzlmbA67ZigXVTP+muadmhWm6zDF3g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KCgrczlB;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=eIfNij2d;
+	arc=none smtp.remote-ip=209.85.221.179
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7240D606A31B;
-	Sat, 24 Oct 2026 16:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA79606A31D
+	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 16:14:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EEA79606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KCgrczlB
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 571F71F01825;
-	Sat, 24 Oct 2026 16:13:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792858433;
-	bh=Py+Z5I/MajAjJGZNOZOZq0i/a4XelqMNOHlME6I2PwE=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=KCgrczlBlVN3/eYHL022erEAjqNxIylKBS+rv1PIHUkoS9gtD6TGfU8UCr1khuvQK
-	 XfnHVDnrKZV4H4uoC8X5lGUvJFbrOta+CwKc62U//3rWHT5vGR1+I49KVEpm6lNzdA
-	 s1DrJuAj4fTfFFAQ1NPEp2WpLa1zA7OX8jmIOYybhoi3CurGDEiWwjWwAxRkyldTi0
-	 9uWVSkBBFSg9RxAOpllTsvkflpndKWbeXIQfEotQkhxcYod6LCx0agY+MaiBJa7eIn
-	 4XLaVFgUfTgeh4S+Wjy6knO/vrCyjAGc3ljYEUtt+lSobTeJf/YviD9T5ZxEJksy+z
-	 tRrfirMa0E+KA==
-Content-Type: multipart/mixed; boundary="===============8738876045916716804=="
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=eIfNij2d
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-5eaabf28c06so1507209e0c.2
+        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 09:14:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792858472; x=1793463272; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=/ctuNn51ZAVrAbsD9CN4nLXkl+KbP560Jdgt2YL9zZs=;
+        b=eIfNij2dEdEokmkKS8BnsW6i8LLmxUoyRB6Qt/rY/mcVT2j7xlgwtQrqnjuXZZRgdI
+         wNHTebWE1gQ0UTqDDEhKpnc4D/tft9/Y2h14c2dqmZdX6K3XNJnU1bTQ0Yx1y5/Aw7Ia
+         hn7hU3jKEqq1IqOTSKeqh6zmmKlBsA3tduKFBSiNt+OdbM+3MIR/L+Cw0TSaT+Ctl2tA
+         BcK/9PoLnXt2XsTY4TzlyyGMTjZ8GL7tVsh512bY0sXuuAKJXP0IXGDfRnQgBuJ86SEz
+         Jf1TftKy9WrCbYDBLX6Ufhlbwcqjo32Yen6d1UMQwuDoR+389tOb92EFIzYgagd9Vsyf
+         yzzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792858472; x=1793463272;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/ctuNn51ZAVrAbsD9CN4nLXkl+KbP560Jdgt2YL9zZs=;
+        b=V4QUnETZoGCSO+zEXXOitydDbpVVWeRTm3I4W7zvJi+FZovchYMMfmoHuFxHAsC6FA
+         Lszetpr5YaZtbaH8PT2dd5oRhiREUBGKcyPjz/vTkHZDtalDbOpefJbVcuPQkQHgtwPQ
+         dejdlv8z7WH+J4YxxKeQ0kktzV3BMxausVl2s0zVgSd3yzs4OjXOnqgfeC0ShSmW1umx
+         GEjixxaYHJjTucQwYlQYZN7/aft70GaC/SRI1ZNubrLDRT77Dm/EgQDoRVFLhhlyeiMM
+         U80NnjKakISWHvngck2w1suTmDWMbT6y6FFceo4+ORTeqBgYBKxr/WGOqSWmNF2OI8M7
+         J+UA==
+X-Gm-Message-State: AFq9FYKsTRsFZurLI9fJbdqmpS7thGsZcs0WrTPFGdH6uCYPlrrPrNpB
+	DlJzg9uLBAqMIPGMEf7jZRNXDICSnLlyHXcmtJYXfxz0GXxYOZvlNttW
+X-Gm-Gg: AYBFou0aM82Q3rzW2Mr2pLNAPHfWlYZiWYZHD6/sItaYQniptZ3PYd6R7RYli/amxw5
+	CAIQ9vCY/I9UmzTxk/C1F1c4cq6fhhyHNCPKixTNY2uGFnbj3g3R8KE23i6+B2cc7OEUyi/YT/N
+	6T6QlqNN+4Ca+X6kfReK21iVs2kODpQGG+MhHUrhmRTp2kNuJ5G3FsJoixG6yWbi85GxkcZrw/I
+	MwYNzoU8KJymCbV0nDh2K+BKmq6/CLNuM4EumFQNq2/azUvbhP3Xb9vPHEcRV1eQhNBDqZdBFQP
+	HNAHAQxzz71S1MbjZYeieNaEjrkc8NA5fdFao3Wrlx+JiB/y91Vs53VXiKZo+BskeO6BYtqjJfN
+	OkSB+tenzasvtvMKiQc/MxAtmqK1of2BR+qEG5q/oUehqY5Yl6R6ZPSuXmdhtpvtvJw5AU/LiSy
+	ZB3H9YwSlFlaSm4gMaLk/E4BW09rZn8BAFOZJUcQ9ukuKQebotSSQArtM45Zh9RdbJzVJqP9Ogx
+	QK76bk63XOacyms2VNsU8zyNsM1V01Y/J6Y+ssWkW7YxWdUzweE+i6BAwPSdTzjkiJeP47hglf7
+	N9uyezO4L2FnAZ/UFtK5gL7s7q3RnKZ9jrANXKxnwDpJfQb1uKSvfjs2mkILWHykR2g5Bu9ahQq
+	02SHoRwefm6Ynxb8/uBs=
+X-Received: by 2002:a05:6122:4d04:b0:5c9:c60e:5cf5 with SMTP id 71dfb90a1353d-5ec233264edmr617453e0c.19.1792858471785;
+        Sat, 24 Oct 2026 09:14:31 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec23427e92sm2582638e0c.9.2026.10.24.09.14.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 24 Oct 2026 09:14:30 -0700 (PDT)
+Date: Sat, 24 Oct 2026 12:14:30 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Jamal Hadi Salim <jhs@mojatatu.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, 
+ Jiri Pirko <jiri@resnulli.us>, 
+ Victor Nogueira <victor@mojatatu.com>, 
+ "David S . Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Martin Varghese <martin.varghese@nokia.com>, 
+ Pravin B Shelar <pshelar@ovn.org>, 
+ Vega <vega@nebusec.ai>, 
+ John Hurley <john.hurley@netronome.com>, 
+ Willem de Bruijn <willemb@google.com>, 
+ stable@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.eb29d53899f1@gmail.com>
+In-Reply-To: <CAM0EoM=9GxDCHzpJF_bqcoh+7KZY6E=ZmOiMp7kfVK3bHZDppw@mail.gmail.com>
+References: <ACT-N6N4.v2.r0.20261022191829@mojatatu.com>
+ <ACT-N6N4.v2.r0.20261022191829-1@mojatatu.com>
+ <ACT-N6N4.v2.r0.20261022191829-2@mojatatu.com>
+ <willemdebruijn.kernel.26d1ddb3bd2ae@gmail.com>
+ <CAM0EoMmwNCHVNW0=Z_JWX_ZcT5Y1po1GRVScddOsevEvL8D-6w@mail.gmail.com>
+ <willemdebruijn.kernel.30ca6285209f7@gmail.com>
+ <CAM0EoMm=t2FMLaGNkC_z_a_D5o4=dwVnHS=Bb23NWdmeJVCVuw@mail.gmail.com>
+ <CAM0EoM=9GxDCHzpJF_bqcoh+7KZY6E=ZmOiMp7kfVK3bHZDppw@mail.gmail.com>
+Subject: Re: [PATCH net v2 2/6] net/sched: act_mpls: pull the inner Ethernet
+ header after POP
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -49,102 +118,154 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Message-Id: <5d94730579f232c7be1c83bc7287e91af9a858bcea83765e58bdd2fc3956a229@mail.kernel.org>
-In-Reply-To: <20261024153608.58569-5-leon.hwang@linux.dev>
-References: <20261024153608.58569-5-leon.hwang@linux.dev>
-Subject: Re: [PATCH bpf-next v4 4/6] libbpf: Factor out __sys_bpf_fd helper
-From: bot+bpf-ci@kernel.org
-To: leon.hwang@linux.dev,bpf@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,davem@davemloft.net,edumazet@kernel.org,kuba@kernel.org,pabeni@redhat.com,horms@kernel.org,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,ihor.solodrai@linux.dev,hawk@kernel.org,john.fastabend@gmail.com,sdf@fomichev.me,rostedt@goodmis.org,mhiramat@kernel.org,mathieu.desnoyers@efficios.com,shuah@kernel.org,kuniyu@google.com,liuhangbin@gmail.com,mkarsten@uwaterloo.ca,masashi.honma@gmail.com,linux-kernel@vger.kernel.org,netdev@vger.kernel.org,linux-trace-kernel@vger.kernel.org,linux-kselftest@vger.kernel.org,leon.hwang@linux.dev,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Sat, 24 Oct 2026 16:13:52 +0000 (UTC)
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
---===============8738876045916716804==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Jamal Hadi Salim wrote:
+> On Fri, Oct 23, 2026 at 7:46=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.=
+com> wrote:
+> >
+> > . On Fri, Oct 23, 2026 at 6:50=E2=80=AFPM Willem de Bruijn
+> > <willemdebruijn.kernel@gmail.com> wrote:
+> > >
+> > > Jamal Hadi Salim wrote:
+> > > > On Fri, Oct 23, 2026 at 12:09=E2=80=AFPM Willem de Bruijn
+> > > > <willemdebruijn.kernel@gmail.com> wrote:
+> > > > >
+> > > > > Jamal Hadi Salim wrote:
+> > > > > > The issue:
+> > > > > > act_mpls POP can leave the inner Ethernet header in a page fr=
+agment after
+> > > > > > skb_mpls_pop(), either on an L3 device (mac_len =3D=3D 0) or =
+chained after
+> > > > > > act_vlan POP_ETH.  A following eth_type_trans() can then BUG =
+in
+> > > > > > __skb_pull().
+> > > > > >
+> > > > > > The Fix:
+> > > > > > After the pop, if the original MAC header is shorter than ETH=
+_HLEN, pull
+> > > > > > the inner Ethernet header into the linear area and drop only =
+when
+> > > > > > pskb_may_pull(skb, ETH_HLEN) fails.  skb_mpls_pop() does noth=
+ing when the
+> > > > > > skb was not MPLS, so no separate state is needed.
+> > > > > >
+> > > > > > Conditions to recreate the bug:
+> > > > > > - egress tc filter on lo: action vlan pop_eth action mpls pop=
 
-> libbpf: Factor out __sys_bpf_fd helper
+> > > > > >   (chained), or on an L3 device where mac_len =3D=3D 0.
+> > > > > > - AF_PACKET SOCK_RAW with PACKET_VNET_HDR, hdr_len=3D28, and =
+a non-linear
+> > > > > >   eth / mpls / inner-eth frame.
+> > > > > > - The inner header is in page frags; a following eth_type_tra=
+ns() can BUG
+> > > > > >   in __skb_pull().
+> > > > > >
+> > > > > > Fixes: 2a2ea50870ba ("net: sched: add mpls manipulation actio=
+ns to TC")
+> > > > > > Reported-by: Vega <vega@nebusec.ai>
+> > > > > > Link: https://lore.kernel.org/r/40fe2d7dfce13411bfbe9271c0f7c=
+54fb7e88e3b.1782548651.git.bronzed_45_vested@icloud.com/
+> > > > > > Link: https://lore.kernel.org/netdev/CAL4WiiqSMdYQYeeW0Fk_GK6=
+ekR4xiS4zPrGKrbB9wZknpqf1-w@mail.gmail.com/
+> > > > > > Cc: stable@vger.kernel.org
+> > > > > > Suggested-by: Jakub Kicinski <kuba@kernel.org>
+> > > > > > Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.c=
+om>
+> > > > > > Suggested-by: Eric Dumazet <edumazet@kernel.org>
+> > > > > > Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+> > > > > > Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> > > > > > ---
+> > > > > >  net/sched/act_mpls.c | 2 ++
+> > > > > >  1 file changed, 2 insertions(+)
+> > > > > >
+> > > > > > diff --git a/net/sched/act_mpls.c b/net/sched/act_mpls.c
+> > > > > > index 4ea8b2e08c3a..5363bca892fb 100644
+> > > > > > --- a/net/sched/act_mpls.c
+> > > > > > +++ b/net/sched/act_mpls.c
+> > > > > > @@ -79,6 +79,8 @@ TC_INDIRECT_SCOPE int tcf_mpls_act(struct s=
+k_buff *skb,
+> > > > > >               if (skb_mpls_pop(skb, p->tcfm_proto, mac_len,
+> > > > > >                                skb->dev && skb->dev->type =3D=
+=3D ARPHRD_ETHER))
+> > > > > >                       goto drop;
+> > > > > > +             if (mac_len < ETH_HLEN && !pskb_may_pull(skb, E=
+TH_HLEN))
+> > > > > > +                     goto drop;
+> > > > >
+> > > > > Is this first condition needed?
+> > > > >
+> > > >
+> > > > That was me conjecturing from Eric saying in v1 "...the check can=
+ only
+> > > > matter when the original MAC header is short.."
+> > > > Since i have to send a v3 (Thanks Eric;->) I will remove it
+> > > >
+> > > > > More importantly, can it hide a bug?
+> > > > >
+> > > >
+> > > > What kind of bug?
+> > >
+> > > Two kinds. One, if original mac_len is larger, gets popped and the
+> > > resultant packet is still too short for ETH_HLEN afterwards.
+> > >
+> > > But this can probably not happen, as skb_mpls_pop only pops one MPL=
+S
+> > > tag.
+> > >
+> > > What this patch tries to ensure is that the subsequent Ethernet
+> > > header is linear.
+> > >
+> > > The second potential bug is this assumption that after the MPLS tag=
 
-TL;DR: Nit only, not a bug: the new libbpf helper __sys_bpf_fd() has a
-misleading name and a different argument order (cmd not first) than
-sys_bpf_fd(); a name like sys_bpf_fd_log() is suggested.
+> > > lies an Ethernet header. Is that a valid assumption? Or could we dr=
+op
+> > > a valid packet with smaller header.
+> > >
+> >
+> > tbh, I was thinking more about skb frags earlier.
+> > You are right only ETH_P_TEB promises an inner Ethernet header; for
+> > other inner protocols the pull is wrong, so I=E2=80=99ll check for
+> > p->tcfm_proto =3D=3D htons(ETH_P_TEB). I didnt have this check in the=
 
-> diff --git a/tools/lib/bpf/bpf.c b/tools/lib/bpf/bpf.c
-> index b49822d212ae..9a2107d4f6d8 100644
-> --- a/tools/lib/bpf/bpf.c
-> +++ b/tools/lib/bpf/bpf.c
-> @@ -203,6 +203,30 @@ int bump_rlimit_memlock(void)
->  	return 0;
->  }
->
-> +static int __sys_bpf_fd(union bpf_attr *attr, const size_t attr_sz, enum bpf_cmd cmd,
-> +			struct bpf_log_opts *log_opts)
-> +{
-> +	const size_t attr_common_sz = sizeof(struct bpf_common_attr);
-> +	struct bpf_common_attr attr_common;
-> +	int fd;
-> +
-> +	if (!OPTS_VALID(log_opts, bpf_log_opts))
-> +		return libbpf_err(-EINVAL);
-> +
-> +	if (log_opts && feat_supported(NULL, FEAT_BPF_SYSCALL_COMMON_ATTRS)) {
-> +		memset(&attr_common, 0, attr_common_sz);
-> +		attr_common.log_buf = ptr_to_u64(OPTS_GET(log_opts, buf, NULL));
-> +		attr_common.log_size = OPTS_GET(log_opts, size, 0);
-> +		attr_common.log_level = OPTS_GET(log_opts, level, 0);
-> +		fd = sys_bpf_ext_fd(cmd, attr, attr_sz, &attr_common, attr_common_sz);
-> +		OPTS_SET(log_opts, true_size, attr_common.log_true_size);
-> +	} else {
-> +		fd = sys_bpf_fd(cmd, attr, attr_sz);
-> +		OPTS_SET(log_opts, true_size, 0);
-> +	}
-> +	return fd;
-> +}
-> +
+> > current fix - good you responded before i sent out.
+> >
+> > 1/6 (act_vlan POP_ETH) has a similar unconditional
+> > pskb_may_pull(ETH_HLEN). A brute approach is also to check for TEB:
+> >
+> >       if (skb->protocol =3D=3D htons(ETH_P_TEB) &&  !pskb_may_pull(sk=
+b, ETH_HLEN))
+> >                 goto drop;
+> >
+> > Note: skb_eth_pop() only removes the outer ethernet header but does
+> > not change skb->protocol
+> >
+> =
 
-[ ... ]
+> I am going to send it without this 1/6 change - it just doesn't feel
+> like good taste. I will add a comment in the changes to say i
+> considered it but decided not to. I also spent time eyeballing the
+> code, i dont think there's a potential way to craft a packet that will
+> hit the perceived issue. In any case the 24 hour embargo lifts in a
+> few hours so i am not posting yet.
+> =
 
-> @@ -248,20 +270,7 @@ int bpf_map_create(enum bpf_map_type map_type,
->  	attr.excl_prog_hash_size = OPTS_GET(opts, excl_prog_hash_size, 0);
->
->  	log_opts = OPTS_GET(opts, log_opts, NULL);
-> -	if (!OPTS_VALID(log_opts, bpf_log_opts))
-> -		return libbpf_err(-EINVAL);
-> -
-> -	if (log_opts && feat_supported(NULL, FEAT_BPF_SYSCALL_COMMON_ATTRS)) {
-> -		memset(&attr_common, 0, attr_common_sz);
-> -		attr_common.log_buf = ptr_to_u64(OPTS_GET(log_opts, buf, NULL));
-> -		attr_common.log_size = OPTS_GET(log_opts, size, 0);
-> -		attr_common.log_level = OPTS_GET(log_opts, level, 0);
-> -		fd = sys_bpf_ext_fd(BPF_MAP_CREATE, &attr, attr_sz, &attr_common, attr_common_sz);
-> -		OPTS_SET(log_opts, true_size, attr_common.log_true_size);
-> -	} else {
-> -		fd = sys_bpf_fd(BPF_MAP_CREATE, &attr, attr_sz);
-> -		OPTS_SET(log_opts, true_size, 0);
-> -	}
-> +	fd = __sys_bpf_fd(&attr, attr_sz, BPF_MAP_CREATE, log_opts);
->  	return libbpf_err_errno(fd);
->  }
+> cheers,
+> jamal
+> =
 
-This isn't a bug, but __sys_bpf_fd() is a higher-level wrapper that
-dispatches to sys_bpf_fd() or sys_bpf_ext_fd() after validating log_opts and
-probing FEAT_BPF_SYSCALL_COMMON_ATTRS, while a leading double underscore
-usually marks the lower-level variant of a function.
+> > thoughts?
 
-The helper also takes (attr, attr_sz, cmd, log_opts), whereas sys_bpf(),
-sys_bpf_fd(), sys_bpf_ext() and sys_bpf_ext_fd() all take cmd first, so the
-new call reads differently from the nearby calls:
+I'm actually a little confused why the tc layer has to anticipate the
+needs of downstream code and pull headers here.
 
-    fd = __sys_bpf_fd(&attr, attr_sz, BPF_MAP_CREATE, log_opts);
+That directly lead to this guessing of what may be the next header,
+such as Ethernet. Which may often be correct, but not always.
 
-Would a name that describes what the helper adds (for example something like
-sys_bpf_fd_log()), with cmd as the first argument like the other sys_bpf*()
-wrappers, read more naturally next to sys_bpf_fd() and sys_bpf_ext_fd()?
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/40108748084
---===============8738876045916716804==--
+All protocol parsing code itself should already be robust and call
+pskb_may_pull where it is needed. Sounds like there are some targets
+post TC where that is not true *and* we think there are too many to
+update those targets directly, rather than this transformation logic
+that exposes them to unpulled packets?=
