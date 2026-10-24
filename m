@@ -1,92 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.12
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792802939;
-	b=gSM4fZuky3+fud8uurINUsCOevmxcePPlR2IGGdEjkoTK+b+UGz/hBOHNPXs4JcMJhaO
-	 stoxg2T3G48aeLBkINNPptYFbHZFftYL22w6Z17aV7y40LjOioaR5xuJBw9YekYsYBrYr
-	 BgsT74oIYQYKc142Ro3qtqhdDYh9tFyCeGhq4BzY+2y/u16dmLNdCg4VW5q0RWKAOaZcA
-	 ex3j2R3z+7bZLt545i8sMpNhGJi8Ju367XepN7ICGw+AZy5JdcplnZkB7cfrpkQ9VAOrf
-	 KthPdUeYjH2Hu9MdIJNaEmxsXh5BoYNhRqneWs9rTAgN8GPOveusNoVB+iVwMXGvLtA==
+	t=1792803576;
+	b=2+jUFdE69M2SPTFQw6/o6Ihfzmd55143UfGL2y4EVm8ZyLwiFLUO9PH2Wt6PZO8DedSt
+	 bXaD45D/Hn4pTnVflvj6d3mfGwTlw5GWhRZLvXl9S9JSP6fq9NRLLuqn1FgCGMOlpVhmO
+	 4Yaa2QnKGYn1FmPF2gXS30Fdj52O2ldeG7UtzsALlEEL42+utB5guQN++c40qC2EdMZe9
+	 gyCQJgoKz3P1nBjJRNJNQAqGJfK0cBShlGAUD4e5jz3DE6okSpqzh7fO2g8hRJVneM/Jo
+	 xoA9hT8/0jiDzLwY2pb0daAKDxZPl76FWRwRgx9hSUaV00/wo5tb/+h+OPNAw1fsf/A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792802939;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=puZi83kWsik1IIJ+MiOJRJ8bxyaV22QL6/fzP6n6rBk=;
-	b=ujYJ7tQxZrw11YPivfHAzSlgKEEjLYakeP3GCq7ze/uQkQ1bPNCnpqxa0O1n3LYfPyVu
-	 K0SfQivsqeK4yGqtLE4gHDbI4JJgbEcx5AfvPFgWJ+jobAT46Qh7xzhWl+Xz/ZZNPcs4q
-	 vQ7k45u4J8+DUD25GXcnAg7NZNyY09qRtV27DfsqqWR/LdlTjUHj1ZBMqJ13PTtoee291
-	 OZqgi8Mu/1PFUSGOXGayrMNww7MblG/y3xVhGwteYW5sMKLpQ3ZMVsTz9FrqCHY4hcMLT
-	 aMV8WhFt3K91xBCD9gUT6OHYsfsB50K0t56b4bwkNPkfQptlBYG9VVj1nvO1DlpoAjw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792803576;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=QYliG5JrqqllTHxErrxFqWbYyN3g1Gh8xTc8edp61B8=;
+	b=ae19vzUuZyidFcDDq3mSHT0BJxAh6pcMBc5GhYgFmglXLuyWKrv5wOm8rH17QrUhAIZ1
+	 Obg4shQ1k5uNTznCyQ2l5co7idgw0Ktzc54fjUu+Kqu7jjJRvzBDU/Q18qmpCLtDqpFx5
+	 aXkI//Tk0m0nruLBemPxRQwmHTU2HGeExXUaGuISgdFSOogCq62yWD26QpL9h1Sk039oj
+	 mBGhlDc2E4s0KyU2dxdi9X/ER7bWmD3yBd73Hf3ajyAOvfrZIx4oeAkPeJ64EFci4LMBG
+	 rsIW/1CmsYZN0GO9Q0uNtn2My82FRfp6rIWRi2n9dkG4DeJjL1s/4klfNRhiW58Brtg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=dTZPm+Ax;
-	arc=none smtp.remote-ip=209.85.208.45
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Nbx9a8yG;
+	arc=none smtp.remote-ip=192.198.163.12
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE41606A31A
-	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 00:48:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2EE41606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4773C606A31D;
+	Sat, 24 Oct 2026 00:59:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4773C606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=dTZPm+Ax
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6b3dc272dcfso1828297a12.3
-        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 17:48:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792802937; x=1793407737; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=puZi83kWsik1IIJ+MiOJRJ8bxyaV22QL6/fzP6n6rBk=;
-        b=dTZPm+AxFDziJFLK6HgiCVn3IQzgVaJg6G5yY6i0LLZqjPouUYeG4cMLgnnv4EKk0w
-         5iwgRIVXF2bOA97iyj53iCJXPTtnZmk3kdoufDBsy6Jx9sItcjD8jEB1b6JoKL3l3vMc
-         0IEmuExnsED0kUkW+AQHyr9NimeO8ADplAr6D2TdVor45whONQCTARWf+uo8wZT6p45b
-         O/vW7XryegStZ0ydauBKlRAXr1LScAMjrRJsGNOLOrfH+pbkUhGkMt3afD5oVedIWxak
-         aaOF/XmCj5zNZwggUJFggcqQnhYX2B+hpKNzrmwGADw67ly5Omg1ipuV3CwxcAVH96Rn
-         1+9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792802937; x=1793407737;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=puZi83kWsik1IIJ+MiOJRJ8bxyaV22QL6/fzP6n6rBk=;
-        b=p5QrFbUQkqtbbI1j2gbbCjsyg9wZ5a7Bq7CrRRHN3osM8RaJ3qlXDThj6/0LZ/iFKG
-         WYCcCWourub+8eIen4jTlUsSwaOTto8vNvARWOHuY6rbdOcQhieDH1FBSXNTEbpASyG2
-         Q/6von3EKxmQBWitbJsuRHJCjIjUhVI2TnIEymX95eaP2ttg/HdzXCHa+JWUuZpC/DqD
-         K1lhGVHUz4Y00dWjQrfo5OPjpQtbDHCKNCf55aBI2G61DrMqhfr6T8O3t+eyOtiIbXvy
-         NqfLScIdvKbEYAZLl8rhaGWMuyJGl11UfNIzJv1b1tH7cLb6nkNtBFzoiHf0Osp87viD
-         zf4g==
-X-Gm-Message-State: AFq9FYJjqklectIyDeSZxBO92YVca0vztJb7fAjiN3DbDu/IOc82QGps
-	l4MYn6lvVXLqKNTCKahCjqmVDR7n/L8Es0IV2bG+Ufd8g6rWpI3B0K+/ZQyP4yUD
-X-Gm-Gg: AYBFou3yP4uTDdFRXMK2YtECCB3FIz8kwlkh4iuLZt+OhijZ9AnZE+BSg64RelGOV5d
-	NVutAvT0xqMFfWBzaEJcU90kmf/j7bHOFo36v4O+e7MaNLL+hOYaYqkClTw0waCzsQHWPDR7ikt
-	wbfd5fk6dSTtrs6/nIUI6UWDJmGTBcmKIP79dhQaAbTqRMTpKbTYP1i3WxR9HWJsPtWSjZ6DUH6
-	70mGqUgYNs8yBsRKq9Q2zT8wH/L7du52zvlR9IgCzA3MWl9astgACXEF2/ydteerwByhBWIh8Tv
-	cV92YpzdAzQ4v0aESvfFmEgqCKyih56R17C6buKp6GgOkc0/3XdW8h7aaOFRL7K+d5kPakNIiz9
-	j5zzktGgNZjdzRvavj5wtTBK3C580nrumTu5n6lq8bhqYdk6Tq4y2kgbFkmOtX0f6ge7ns8SMo9
-	GAg8xTO8ik4p197QCWJHKBx+zKOtOs7Aa7Bf3MxL2ZNbMEIGH8nGY1Qjn3v14JNH2uD+TscaLmP
-	s0PnF2/FkGhCIw/z/9fW9Tb4KtD8SS90V2+OkUGzlJQQcyAlYXtDHcEV8WibRhE1tJV+28dElXj
-	MI0Ux3xiyAefpiI=
-X-Received: by 2002:a17:907:2da5:b0:c33:ca5e:8ddb with SMTP id a640c23a62f3a-c46bde088d3mr58783366b.28.1792802937356;
-        Fri, 23 Oct 2026 17:48:57 -0700 (PDT)
-Received: from kali (83.8.59.162.ipv4.supernova.orange.pl. [83.8.59.162])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c46bd7b5d54sm25240666b.86.2026.10.23.17.48.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2026 17:48:57 -0700 (PDT)
-From: Kamil Sawicki <user148783812897@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	willemdebruijn.kernel@gmail.com
-Subject: [PATCH net v2] net: limit priority VLAN untag depth
-Date: Fri, 23 Oct 2026 20:48:35 -0400
-Message-ID: <20261024004835.17862-1-user148783812897@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Nbx9a8yG
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792803575; x=1824339575;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=U3gmOgWDxR60gD64nCE0iSuuzCf3ICRp5+uOCWLX4u8=;
+  b=Nbx9a8yGzTUwUxblVAtL7FAWohBl9ACh/T7l0ZQ7PvJrAjc0iZdHThf4
+   jmtAB5+4I5Z3+i6GP4g5p4EYONFj/sjDRsUN2Yx91R4Jl84M1s0QHh33m
+   alTETVeSjyAO5bSEqtfEafwg0w9zZIFMopDMkMNIPXqhoV/qrNdsb2b8R
+   wQtrl/5pAfQ4PdZnA+brNwDYhtpvYfgY9LVTHhgEFpB674gXkv/iFnzQR
+   lyc52oU04m83vtOXRLStjrRsGslvf/4bgH0d36sOGMuhNpixbmdJmg9/s
+   yVrvz+Al6MkBy7tqXVQiWzNuksf8rBaM5wMPC2PVeYmmz9KFn9qqS+0s6
+   w==;
+X-CSE-ConnectionGUID: VZyhaBLJQL2SiSDug/8TfQ==
+X-CSE-MsgGUID: kxrQIbgbRw+9eLZP8pDqig==
+X-IronPort-AV: E=McAfee;i="6800,10657,11944"; a="1468448"
+X-IronPort-AV: E=Sophos;i="6.27,175,1787036400"; 
+   d="scan'208";a="1468448"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2026 17:59:34 -0700
+X-CSE-ConnectionGUID: qXl+4vPMRdWX13HfD+/dPg==
+X-CSE-MsgGUID: F1fBYjApSMC90pk5pmk4IQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,175,1787036400"; 
+   d="scan'208";a="3841319"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 23 Oct 2026 17:59:31 -0700
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xKQ6a-00000000TRO-1Jg2;
+	Sat, 24 Oct 2026 00:59:28 +0000
+Date: Sat, 24 Oct 2026 08:58:48 +0800
+From: kernel test robot <lkp@intel.com>
+To: vmukunda <vmukunda@marvell.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Sunil Goutham <sgoutham@marvell.com>,
+	Ratheesh Kannoth <rkannoth@marvell.com>,
+	Geetha sowjanya <gakula@marvell.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	vmukunda <vmukunda@marvell.com>
+Subject: Re: [PATCH net] octeontx2-af: Fix npc_delete_flow counter read for
+ cn20k
+Message-ID: <202610240855.NijJJoJD-lkp@intel.com>
+References: <20261023100112.3402726-1-vmukunda@marvell.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -96,91 +91,68 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261023100112.3402726-1-vmukunda@marvell.com>
 
-The priority VLAN receive path can repeatedly remove VID 0 tags and retry
-packet processing. Unlike the read-only VLAN protocol parser, this path has
-no limit on the number of nested tags it consumes.
+Hi vmukunda,
 
-Each skb_vlan_untag() advances skb->data and resets header offsets. The
-offsets are stored in 16-bit fields. With enough nested tags, the network
-or transport offset can wrap. A later protocol handler can then derive a
-large pull length from the wrapped offsets and access memory outside the
-skb allocation.
+kernel test robot noticed the following build warnings:
 
-Apply the existing VLAN_MAX_DEPTH limit to the exceptional VID 0 retry.
-Count the tag already stored in skb VLAN metadata as the first level, then
-stop before untagging a ninth level. Keep the accounting inside this
-uncommon branch so the regular VLAN receive path is unaffected.
+[auto build test WARNING on net/main]
 
-A single VID 0 priority tag before a real VLAN tag is valid. No normal
-deployment was found that intentionally emits multiple consecutive VID 0
-tags; permitting eight levels is therefore conservative.
+url:    https://github.com/intel-lab-lkp/linux/commits/vmukunda/octeontx2-af-Fix-npc_delete_flow-counter-read-for-cn20k/20261023-100112
+base:   net/main
+patch link:    https://lore.kernel.org/r/20261023100112.3402726-1-vmukunda%40marvell.com
+patch subject: [PATCH net] octeontx2-af: Fix npc_delete_flow counter read for cn20k
+config: s390-allyesconfig (https://download.01.org/0day-ci/archive/20261024/202610240855.NijJJoJD-lkp@intel.com/config)
+compiler: s390-linux-gcc (GCC) 16.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261024/202610240855.NijJJoJD-lkp@intel.com/reproduce)
 
-The issue was found while researching the Linux network receive path for
-Google kvmCTF, with OpenAI Codex (gpt-5.6-sol) assisting the analysis. The
-affected path, reproducer and fix were manually reviewed and tested.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202610240855.NijJJoJD-lkp@intel.com/
 
-Fixes: 36b2f61a42c2 ("net: handle 802.1P vlan 0 packets properly")
-Cc: stable@vger.kernel.org
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Kamil Sawicki <user148783812897@gmail.com>
----
-v2:
-- rename vlan_depth to priority_tag_depth
-- report SKB_DROP_REASON_RECURSION_LIMIT when the limit is reached
-- address the expected real-world tag depth in the commit message
+All warnings (new ones prefixed by >>):
 
-v1: https://lore.kernel.org/netdev/20261023003750.1133904-1-user148783812897@gmail.com/
+   In file included from drivers/net/ethernet/marvell/octeontx2/af/rvu.h:13,
+                    from drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c:11:
+   drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c: In function 'rvu_mbox_handler_npc_delete_flow':
+   drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c:1962:58: error: 'rvu_pdev' undeclared (first use in this function)
+    1962 |                                 if (blkaddr && !is_cn20k(rvu_pdev))
+         |                                                          ^~~~~~~~
+   include/linux/soc/marvell/silicons.h:22:41: note: in definition of macro 'is_cn20k'
+      22 | #define is_cn20k(pdev)          ((void)(pdev), 0)
+         |                                         ^~~~
+   drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c:1962:58: note: each undeclared identifier is reported only once for each function it appears in
+   include/linux/soc/marvell/silicons.h:22:41: note: in definition of macro 'is_cn20k'
+      22 | #define is_cn20k(pdev)          ((void)(pdev), 0)
+         |                                         ^~~~
+>> include/linux/soc/marvell/silicons.h:22:46: warning: left-hand operand of comma expression has no effect [-Wunused-value]
+      22 | #define is_cn20k(pdev)          ((void)(pdev), 0)
+         |                                              ^
+   drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c:1962:49: note: in expansion of macro 'is_cn20k'
+    1962 |                                 if (blkaddr && !is_cn20k(rvu_pdev))
+         |                                                 ^~~~~~~~
 
-Runtime-tested on net/main f4377bf85887 (7.3-rc7) with KASAN. The
-patched kernel blocked the nested vhost/TAP trigger on five fresh boots;
-each run recorded eight skb_vlan_untag() calls, no tcp_v4_rcv() call and
-no KASAN report. The eight-tag packet was delivered, the nine-tag packet
-was dropped, and kfree_skb recorded SKB_DROP_REASON_RECURSION_LIMIT for
-all three nine-tag test transmissions.
 
-The fragmented-head test stopped after eight untag calls without reaching
-IPv4 or TCP. A 100,044-byte nonlinear GSO skb crossed two VID 0 tags, and
-a 32 MiB BIG TCP transfer completed with matching hashes and skb lengths
-up to 130,376 bytes. The 31-sample protocol-253 control recorded no matching
-skb_copy_and_csum_bits() call and no shadow-probe hit.
+vim +22 include/linux/soc/marvell/silicons.h
 
-Rebased onto current net/main 734bef548a96 without changing the patch-id.
-Strict checkpatch and W=1 net/core/dev.o builds using allyesconfig and
-allmodconfig completed without warnings.
+25d51ebf0f54f9 Subbaraya Sundeep 2025-06-11  12  
+25d51ebf0f54f9 Subbaraya Sundeep 2025-06-11  13  #define CN20K_CHIPID	0x20
+25d51ebf0f54f9 Subbaraya Sundeep 2025-06-11  14  /*
+25d51ebf0f54f9 Subbaraya Sundeep 2025-06-11  15   * Silicon check for CN20K family
+25d51ebf0f54f9 Subbaraya Sundeep 2025-06-11  16   */
+25d51ebf0f54f9 Subbaraya Sundeep 2025-06-11  17  static inline bool is_cn20k(struct pci_dev *pdev)
+25d51ebf0f54f9 Subbaraya Sundeep 2025-06-11  18  {
+25d51ebf0f54f9 Subbaraya Sundeep 2025-06-11  19  	return (pdev->subsystem_device & 0xFF) == CN20K_CHIPID;
+25d51ebf0f54f9 Subbaraya Sundeep 2025-06-11  20  }
+25d51ebf0f54f9 Subbaraya Sundeep 2025-06-11  21  #else
+25d51ebf0f54f9 Subbaraya Sundeep 2025-06-11 @22  #define is_cn20k(pdev)		((void)(pdev), 0)
+25d51ebf0f54f9 Subbaraya Sundeep 2025-06-11  23  #endif
+25d51ebf0f54f9 Subbaraya Sundeep 2025-06-11  24  
 
- net/core/dev.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 1a09e786911805..c9f07beee25782 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -6306,6 +6306,8 @@ static int __netif_receive_skb_core(struct sk_buff **pskb, bool pfmemalloc,
- 	}
- 
- 	if (unlikely(skb_vlan_tag_present(skb)) && !netdev_uses_dsa(skb->dev)) {
-+		unsigned int priority_tag_depth = 1;
-+
- check_vlan_id:
- 		if (skb_vlan_tag_get_id(skb)) {
- 			/* Vlan id is non 0 and vlan_do_receive() above couldn't
-@@ -6317,6 +6319,12 @@ static int __netif_receive_skb_core(struct sk_buff **pskb, bool pfmemalloc,
- 			 * 802.1Q or 802.1AD and vlan_do_receive() above could
- 			 * not find vlan dev for vlan id 0.
- 			 */
-+			if (unlikely(priority_tag_depth >= VLAN_MAX_DEPTH)) {
-+				drop_reason = SKB_DROP_REASON_RECURSION_LIMIT;
-+				goto drop;
-+			}
-+
-+			priority_tag_depth++;
- 			__vlan_hwaccel_clear_tag(skb);
- 			skb = skb_vlan_untag(skb);
- 			if (unlikely(!skb))
-
-base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
--- 
-2.53.0
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
