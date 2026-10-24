@@ -1,88 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792800258;
-	b=MSZMLxHe0svOvbOxjkAAqeAKiYlHW9ux7u5AYG0gRtCo2Cmuw8uH92RBTJED8yY1XLGJ
-	 5Np6NqK9AB2Y3nW6i91TpVnbbM8aA/4ZMF8AMAE185MEIbdqp5LKpB1TIzD41BP2kgDkt
-	 QzCzHOFvtHpEWpamf4aeBVw/XgBlTYBrXpDSnltcrkeddlXSYYgFaIpMqMd3Ogb34jJ+J
-	 FePTEGoNCtlms0y6V3PZyAa9BCgHbV2sEI3Ytw95YtkdFXoc+mkGKHNTcuABLCaSf4ypX
-	 d5Ms+rV/7NFOk+Ce7rvmJAX1Yskz/Pk4VnmInVs7QcaNAVXAuRRobc0ds42IoE4CbWA==
+	t=1792801207;
+	b=VgC2sssDjogYN0o9s+CiGUwjBuo10I6tg8z2bmvIwAf0VWZnTDjXSrFODyZRXwBMz29/
+	 VDn6LdWc6lwEhEIKTYahKJlVpIqW1gC9E5J1pztt6Sdu4avKJzggW+4PneCQGRA9LoCaJ
+	 tdzA/KEn07msDq0X+F6FuJeGzqhIvsVQrqO9e1j/4gFXg/iS84mdotV9SQ1sLyEABYYio
+	 l5i96KgYhTbITWV3C+nT9p5/dfF6XYiTCm+Bk0PkrcszK2SInEosur1VcTm98Nj1DAgDw
+	 TNH9krdT/JwaoS/7T4IeFU+6gczjmV0Y3yIxftJS3LXaTldi1fbmhgwTGavP4UaQ/gQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792800258;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=IP4SXJLolNGj8GM5COqEi+6FqjwpuNDCYi1PHZX7pR4=;
-	b=AjwkbgGuN0yKyH8ARliceH0M1M3xQoJEm0Siic0FO/MHmkxehJFRWyZyKCg1Tj9J5szU
-	 k6C/1w//ixvNCnzD+tlyLq4FzknA5STltG+SzPL6LuXu715JcIUevCpB81mZr5CBsM+yA
-	 g79zq4HE2m8g98zpunsu2+DBNZGxa+leP2ONfRsp2OXkTOIswC28X0XN/57HS1et0u7zE
-	 TeQJA3vhVN2ZSNuqWyKiHK/aCc25BOebISLzETDSE8TY0pL+LuJ/TLEcrZDTA5FMfzq21
-	 IVjnAczQOvnno4Urm1LGrxDxpxRQQq2j1yTCpOIbKcZZ9Tn/p58UpzIM5ghvy43Ukxw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792801207;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=PfwXsatDr61B034hWM9U+Q7p7HeLrw5Wrlxl7/A4T58=;
+	b=rJldtvFf74bxk+2cKu92+7LueXhZUWvDxd++tvGag0O2LaUhPU4SbjsZSrmXnD8qnr/I
+	 Y80zMaHGkIPhWE6gbSR4iyErcapcWvSxTjXc3LYM6vBI0oryornOzcaIkoTUI1i8x6zoU
+	 sitG0E6fTOwTpWtjN9eED5Hn5m/bVMPsKbwStmPxF3d17Q5zjkv0Adgr7CPy2NBT7DvMF
+	 V9eTD5kQzHtH6patBLpU4TsBmnek7Yu6qKqeTUksmwietlbrLGJLSSMqP3zKdF4Ny3B97
+	 apt62izHYgJKjQiDoDSb30TIHYHtxYfxc9hCOcrj4OYEvMWZfKnglbb9pqZjfhmgFXg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=b9UE2ZKL;
-	arc=none smtp.remote-ip=192.198.163.16
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LRAKwjSM;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 252F2606A31A;
-	Sat, 24 Oct 2026 00:04:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 252F2606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5227606A31A
+	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 00:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=b9UE2ZKL
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792800258; x=1824336258;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=P+WfGzR35UbRfWugdtCWwaOpsuK0iCs7ZWA1C8vDcZw=;
-  b=b9UE2ZKLsYrtwp2obzTh15E2r5wsgQWmZbXOmppAL/HiB55/dD+mBUfm
-   x/3M/Rj5QcikYCCspt5LlHCEtvmXIG8ivgCmwRTTkQYiLVpNxPcITmNuR
-   w12vStUWVQTDOlMypskoD8f5+m4msr1Opq7Y8BktyI2KJ2wjg2YMw9xSi
-   kicfdU92Eo1dXDawSiQbDGvUTTYhrDxuMgtGdZRCgRA4qKub1aGowti6x
-   rZgUGp5VzYTywAVXYL7vYxru/YBCTIttOZSvYtY1KOmIsBGWMDZ32Y1gU
-   MxZWyzySHNRsQwAxCdv3duyAalXvfaxVuV0rTVBM2t0axfEhiW5n84+/5
-   w==;
-X-CSE-ConnectionGUID: Yd90rh63TIaP1NisxHL0DA==
-X-CSE-MsgGUID: JQWvlJSWRqiniBqG5ET6pg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11944"; a="1571221"
-X-IronPort-AV: E=Sophos;i="6.27,175,1787036400"; 
-   d="scan'208";a="1571221"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2026 17:04:17 -0700
-X-CSE-ConnectionGUID: 8ZKO3aQSQUqN2JunwYUlEg==
-X-CSE-MsgGUID: mcR2cGJBRrelzRwbxZT/Rw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,175,1787036400"; 
-   d="scan'208";a="5612886"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by fmviesa011.fm.intel.com with ESMTP; 23 Oct 2026 17:04:14 -0700
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xKPF4-00000000TNy-3Gst;
-	Sat, 24 Oct 2026 00:04:10 +0000
-Date: Sat, 24 Oct 2026 08:03:31 +0800
-From: kernel test robot <lkp@intel.com>
-To: vmukunda <vmukunda@marvell.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Sunil Goutham <sgoutham@marvell.com>,
-	Ratheesh Kannoth <rkannoth@marvell.com>,
-	Geetha sowjanya <gakula@marvell.com>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	vmukunda <vmukunda@marvell.com>
-Subject: Re: [PATCH net] octeontx2-af: Fix npc_delete_flow counter read for
- cn20k
-Message-ID: <202610240701.QMuYCXhI-lkp@intel.com>
-References: <20261023100112.3402726-1-vmukunda@marvell.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LRAKwjSM
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF401F01825;
+	Sat, 24 Oct 2026 00:20:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792801206;
+	bh=PfwXsatDr61B034hWM9U+Q7p7HeLrw5Wrlxl7/A4T58=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=LRAKwjSMWd7NgCpMuSTbACXIPYnDFnXgm+egDuipKJsRaW/Rh7jIN95HT5D/nNXKC
+	 Uls8pTBQ26gIlm+KZNrlB4Pb3r4Q0IUkR5R3p6FuZshCZL1U+PpfpPPbsx8bXakq0f
+	 /3gyED48WkRFikfmL4GEHFMqi4awR4UQTdM94VgdyUKUDM/TNyPaMTicjGNvLm72+9
+	 ssi9vlXO1lrehgrHywzzsNFnXRBMCXJlUaU4+DO+kUjmjz41fXZMV9pve5BYH4Icmn
+	 SesXP9QPsJxPIg99jq5cnbmq5T83J7ILoh/GvbnzBIeZZK3IPx+P12KgpYg9OwlqwF
+	 Rg1W2u11pG/cQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 44556391B16D;
+	Sat, 24 Oct 2026 00:20:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -92,93 +53,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261023100112.3402726-1-vmukunda@marvell.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net/sched: etf: initialise the sock_exterr_skb before
+ filling it
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179280120508.1365357.10840947352327421605.git-patchwork-notify@kernel.org>
+Date: Sat, 24 Oct 2026 00:20:05 +0000
+References: <20261021155401.65997-1-phx0fer@gmail.com>
+In-Reply-To: <20261021155401.65997-1-phx0fer@gmail.com>
+To: Dudu Lu <phx0fer@gmail.com>
+Cc: vinicius.gomes@intel.com, jhs@mojatatu.com, jiri@resnulli.us,
+ netdev@vger.kernel.org
 
-Hi vmukunda,
+Hello:
 
-kernel test robot noticed the following build errors:
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-[auto build test ERROR on net/main]
+On Wed, 21 Oct 2026 23:54:01 +0800 you wrote:
+> report_sock_error() clones the transmitted skb, overlays a
+> struct sock_exterr_skb on its control block and fills in the seven
+> struct sock_extended_err fields, but never clears addr_offset and port.
+> skb_clone() copies cb[] verbatim, so the errqueue entry carries the TX
+> skb's stale control block to the receive side, and the ipv4 error-queue
+> reader trusts those bytes:
+> 
+> [...]
 
-url:    https://github.com/intel-lab-lkp/linux/commits/vmukunda/octeontx2-af-Fix-npc_delete_flow-counter-read-for-cn20k/20261023-100112
-base:   net/main
-patch link:    https://lore.kernel.org/r/20261023100112.3402726-1-vmukunda%40marvell.com
-patch subject: [PATCH net] octeontx2-af: Fix npc_delete_flow counter read for cn20k
-config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20261024/202610240701.QMuYCXhI-lkp@intel.com/config)
-compiler: clang version 24.0.0git (https://github.com/llvm/llvm-project 186e70f4e6a1521991d2340d3d49b23b1beff11f)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261024/202610240701.QMuYCXhI-lkp@intel.com/reproduce)
+Here is the summary with links:
+  - [net] net/sched: etf: initialise the sock_exterr_skb before filling it
+    https://git.kernel.org/netdev/net/c/7076f684d513
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202610240701.QMuYCXhI-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c:1962:30: error: use of undeclared identifier 'rvu_pdev'
-    1962 |                                 if (blkaddr && !is_cn20k(rvu_pdev))
-         |                                                          ^~~~~~~~
-   1 error generated.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-vim +/rvu_pdev +1962 drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-
-  1932	
-  1933	int rvu_mbox_handler_npc_delete_flow(struct rvu *rvu,
-  1934					     struct npc_delete_flow_req *req,
-  1935					     struct npc_delete_flow_rsp *rsp)
-  1936	{
-  1937		struct npc_mcam *mcam = &rvu->hw->mcam;
-  1938		struct rvu_npc_mcam_rule *iter, *tmp;
-  1939		u16 pcifunc = req->hdr.pcifunc;
-  1940		struct list_head del_list;
-  1941		int blkaddr;
-  1942	
-  1943		req->entry = npc_cn20k_vidx2idx(req->entry);
-  1944		req->start = npc_cn20k_vidx2idx(req->start);
-  1945		req->end = npc_cn20k_vidx2idx(req->end);
-  1946	
-  1947		INIT_LIST_HEAD(&del_list);
-  1948	
-  1949		mutex_lock(&mcam->lock);
-  1950		list_for_each_entry_safe(iter, tmp, &mcam->mcam_rules, list) {
-  1951			if (iter->owner == pcifunc) {
-  1952				/* All rules */
-  1953				if (req->all) {
-  1954					list_move_tail(&iter->list, &del_list);
-  1955				/* Range of rules */
-  1956				} else if (req->end && iter->entry >= req->start &&
-  1957					   iter->entry <= req->end) {
-  1958					list_move_tail(&iter->list, &del_list);
-  1959				/* single rule */
-  1960				} else if (req->entry == iter->entry) {
-  1961					blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
-> 1962					if (blkaddr && !is_cn20k(rvu_pdev))
-  1963						rsp->cntr_val = rvu_read64(rvu, blkaddr,
-  1964									   NPC_AF_MATCH_STATX(iter->cntr));
-  1965					list_move_tail(&iter->list, &del_list);
-  1966					break;
-  1967				}
-  1968			}
-  1969		}
-  1970		mutex_unlock(&mcam->lock);
-  1971	
-  1972		list_for_each_entry_safe(iter, tmp, &del_list, list) {
-  1973			u16 entry = iter->entry;
-  1974	
-  1975			/* clear the mcam entry target pcifunc */
-  1976			mcam->entry2target_pffunc[entry] = 0x0;
-  1977			if (npc_delete_flow(rvu, iter, pcifunc))
-  1978				dev_err(rvu->dev, "rule deletion failed for entry:%u",
-  1979					entry);
-  1980		}
-  1981	
-  1982		return 0;
-  1983	}
-  1984	
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
