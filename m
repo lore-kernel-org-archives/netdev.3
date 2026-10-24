@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
 	t=1792862116;
-	b=i3OtpLNnto2DZiu/nkQG/JvytpNNO3NDWpiTjSu/HwuMAX9BQecQi8v2ASc+AugMaNdI
-	 1ayLgc2Iyc/F4f+c4kLHAMS7X4eSvgYVlvs6O18JqjUUW4XmIalt4lYWjoo5t2z4GCig7
-	 pl4yJAPHASmT3MjdROF/9YS+cI/Dyfd8v06VPlsuBtwGQLyWi/PJT71oiIYm0ovdQbQMm
-	 ZRBqPEiOhGldSSW0INFDcsNr1SHBD+pJjLxcNbxWI20GofTLk2dkEsZ45B6yQvvWjUpxc
-	 u6PUrTbR0pe4/2pSiAdyzKeUG3Cz85XPMI7hPsJ240ozDwaJmzPGpwrnDosXQXPj9Mg==
+	b=RVDFvZBb2GOXCSKTZqenzhpKHdHeMWv6ED4GqXoWqE5pt3W0SLfOBl3ihYRPdW4JWZIr
+	 rR6FMLCsNYQmlki0fRpBL4eimqTYRxNY8JAq8Y6k8GucQYQkZXcc2UZ/mJ+b9o0APjH/Z
+	 PzkI2WD4x7zw/4aKyzIseQO6jwVoUxiPaNk5m5CMUFGCJFIXmQ6W7TYyqMGnEVcxFfD8V
+	 tb0CIwhHIFaNk3MgOuAFsmb5OkwtKLOJKHKYc4ndZK7tzmLYRuGRhDd4YmR5KIzR+0b/C
+	 crcFFCWfd5Y96opySbG2z98ERy7Uk7cIb8xrY4hzmnyc+I9yz48OUDEiKw/NOYb9yBQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1792862116;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=vWSeRVd1Hj3KnpOxfomH6zAovsc8iFP4PdLt+lQB+yo=;
-	b=4y374AiYXRp9Ithh1/dpsucOVMXwBTWL+D1yx0CwEQmIQaEfx1MgAm86/ChRrD6kL1B3
-	 RWbEUtDWL6OtoeLaIuhPf7W1EnE1ZvrHz86XI8Npszn3T5c9GooDt/zpIl8c34VQlW0/7
-	 T6+a3XJMUH0itBRN7MPli1W7zjeT2DzIw9Cz0Sd1LQu+YVtJK4SgtRoX621I84UOY5SH7
-	 HpnqU4Km1PiM5jZaAm/exN8kCNNeg7a1hK7h5Ahu3G6HQtUCQkzrlcqH0qBuKhG9qgLri
-	 un3d3C0OUOyqfVbqPUUHgFuHb5veeXyEdd6GARPrEHJCJrVGDmZwWdkX+EtWJyWG5qA==
+	bh=1KqSa6aGjzQht+7aFFinvBHJH0XqPDZCmVDcbROTz3A=;
+	b=aYtqlIYTSS1Lu33UGYBAs4elVxqFGI3jooLOHIUirCahuVO0/HclfvsWr55mtJtlGIns
+	 976aiL1xkGPJb2/mftAfKWwRb3/F3Z8LrqVKTQ7jer6sHnnvvhl1Q803Y0d/OELXXMV4l
+	 Tkwz4UUqcGLbErFVTJfZk3wzv8GL9StRnn7v2uxW77KTJHjMNvNwcsYx03ciYhegslEzk
+	 wBZ751zkl9D2hEQeyQt4MMZ58+NHqM0GxxPcdmSlZ3KZxt0rvLqjEdFqBIEd1dm7Dj5i9
+	 2qgSQOoqHZVurJhPKre5GxLueCpUMjbvOvKqRe/DqUpCDU+Hq1Z0fsP0mp5Z3+I97UQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="DhYc1vI/";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bArDxfwz;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D08606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28BD606A31F
 	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 17:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DhYc1vI/
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bArDxfwz
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1792862115;
-	b=VeentShz/wfli/7B853ekNli9eyIydibeBe1GSHyERH3F3z/m4NOA8/YyXQ8e41gE12v
-	 UtE28KD+VLAmimnlDTykZCjHGL7+d9ujwR5LrKrzOnIUzPrLSxsqNPjEaq4SJgkKYPTEY
-	 lgalC85ZFlIEYa4Pq+QLEIaLbsIcqMxJEs6k8ZXnogHXVYY3akZWkY8+9CyBaV3uHeSqG
-	 Okq+jIf7LOQx5iztbT4ciQjl59NQDPZzf3vuTSTOwDWqWUDtITJ8B5GRmdOwc0yuE2mGw
-	 NsdbyBjBfFoJKPB55R+PBmXPpwtqJQtkDocwWxOtTPvJ9jg0wViVLZ2A3LwgMsyW2sg==
+	b=Q63forncUQyW6AWBruKd4lLGUZWhJ+pPzLSWWH9ShSSA/T5SnH21xTiGfBvfSF9B8Kye
+	 2HSe6IOsEmSxPrArNxCb7rvvyoO5MNRbwHpuRTk474gU+IMPp4msNTv/GMVRr4Mzj+qLC
+	 u7JmavMWYfyC6UcwEufemCZtfifawAXE+T+agjbvP0GXYyIlQQ4KOeMsoVbZEmMMaF88G
+	 SZ1lX9GhDe+PIKNaqKs8nRdSdxj57ukzrPBao70W7rTtw6Woz4VgyU/uCQILZf8KPi7+k
+	 a7yd4ArftWSlynctzeeeUMqvXAiHFnUTKZkRyDAh5vU5fTgHHBwbFX7T4zLIEZIhEYQ==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1792862115;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=vWSeRVd1Hj3KnpOxfomH6zAovsc8iFP4PdLt+lQB+yo=;
-	b=BVd0PTeW0sVnh0Bw2cJ35c3UhOoIPGCyeAZlY4zkY3GFSxucO2vBzhT8LLQ7hAtW3NWR
-	 tpafsMHF+p6AVJJ6SZHxRXexse2MfoSjR3CuAXnUKvb1SULqNfu7Eu8HtpwCijorq+YFj
-	 men1bCB4Q14eTwIDZ3PeB80qlyaMOp111/G/diUc85H8DV5VDq0pRU9zqYcl5wBii6/sb
-	 Njo8oV+BxmByfCBesV+GUfdl4fzBbdDRS42gPMUAUStJPWIChQEgaq4rzWrxiC3rJfsbd
-	 z7/fanq06ccrlqEdhEJgmnsNTSgYJAsrSducM4ii9lTYfF6mkZCEQVDZ0gQy/H2DbyA==
+	bh=1KqSa6aGjzQht+7aFFinvBHJH0XqPDZCmVDcbROTz3A=;
+	b=0mF7DJyxynuG/GMWxFI8MajqdSMyNgefOcCD+rXJZ0lcKTeCEuJ3bF9ikcHPaIJihE1e
+	 YEYcGc7bvA5HIUSh7fnYh9IYJFfQBya2aDwzmuU7QTUVCiKsQxBCWtQmyz9POA1vbUrfu
+	 Fj135sAEJb4MjYpQT4rniM+vvyayRod0LQv4LIGXyfpcco4pnyyYjFOpJH7s8cvqjKkZd
+	 aqTerQN4jvorKWqJpUwx2Bhn76jfnxqdOCEVNR19un3ioNFx45jh0yo6AEU7G2and/tKM
+	 IGnpwROy80wlyceXUuD6M32DHICmu6mHSAn7HvOni9P4x1SBTFxe9UF0d54VVyGC2Mw==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id C545F1F01828;
+	by smtp.kernel.org (Postfix) with ESMTPS id CE0681F01829;
 	Sat, 24 Oct 2026 17:15:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1792862115;
-	bh=vWSeRVd1Hj3KnpOxfomH6zAovsc8iFP4PdLt+lQB+yo=;
+	bh=1KqSa6aGjzQht+7aFFinvBHJH0XqPDZCmVDcbROTz3A=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=DhYc1vI/4YYtSg3Kjx+6ViOljfFFS0evIPMmq2B8HuD3Vs/fYUo0xbULRE8c3PYvD
-	 lvHPYs5hsI+JhxAiSCau0k4kbpNJpD1A3EArLpfExdjMjf8Ub5wuUUX7wqjjJ3F1j8
-	 KYgFyG6U0tJqS42m/acfzzPSPNZ2t0CQCQbqpmrbY4JxGwiyOtQVMJ1KuzkiEIZLfr
-	 5jA16DtC8yntRIUa0MUuhC5x7qWYiiF+jIvY4Xw3QNOO2mhscyQS6K6XV+bWDaWEAv
-	 9l0rosQLPP5BNj3XmsVftXPZ/RuNv9onXqQ96IceF2k0tC/vbCupKVBPg53FNvKP3i
-	 S4QDKr3u6C2iA==
+	b=bArDxfwzcFHY9zFZ5ZhVDsok508TXNQU6u0zmj0O7SLsdd011TzQJnRa2ZCaikqI3
+	 1Yk+1yJQg9rHKLHuP7kc/H3LTx0BYVpStEPwV4EAPeYM4ZF3ZckiwoFE8Gfdiore08
+	 aq2nVk246RQ/eIq69gG2qn40VsqF6awmhK8qR4sZpz07PxarWi2DDRTDa4mzBCHyYs
+	 Qgs7daR+JVHFC0E+oqjXXMoSWHFOnNu1PE8ICt7ndD5qHzz+YSCCg8Sd/Vj5YNYMul
+	 9KBqn+R2Znb8+u6p4P0WcVd/L9xXvZeEDn8h01GrlqRB1muaRI4+Ocs7IeXFJHEKPZ
+	 y2oSrldQcWkEQ==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 33672447E4;
+	by lkml.kernel.org (Postfix) with ESMTP id 3C7074484E;
 	Sat, 24 Oct 2026 17:15:14 +0000 (UTC)
 From: Demos Ra via B4 Relay <devnull+demosthenes.ra.gmail.com@kernel.org>
-Date: Sun, 25 Oct 2026 00:13:55 +0700
-Subject: [PATCH net 1/2] tools: ynl-gen-c: handle classic notifications
- without a matching request
+Date: Sun, 25 Oct 2026 00:13:56 +0700
+Subject: [PATCH net 2/2] tools: ynl: generate code for rt-nexthop bucket
+ notifications
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,7 +84,7 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261025-ynl-ntf-bucket-v1-1-65aef308d62c@gmail.com>
+Message-Id: <20261025-ynl-ntf-bucket-v1-2-65aef308d62c@gmail.com>
 References: <20261025-ynl-ntf-bucket-v1-0-65aef308d62c@gmail.com>
 In-Reply-To: <20261025-ynl-ntf-bucket-v1-0-65aef308d62c@gmail.com>
 To: Donald Hunter <donald.hunter@gmail.com>, 
@@ -92,13 +92,13 @@ To: Donald Hunter <donald.hunter@gmail.com>,
  Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>
 Cc: Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
  Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org, 
- Demos Ra <demosthenes.ra@gmail.com>
+ Sashiko <sashiko-bot@kernel.org>, Demos Ra <demosthenes.ra@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792862112; l=1950;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792862112; l=2406;
  i=demosthenes.ra@gmail.com; s=20261019; h=from:subject:message-id;
- bh=QMYy/9g8848X9S1LCXRZkDwcKaSb1n2GG17LJZDrReg=;
- b=B7MGblZ4U2cEctXru7+Jc/y/mlJ+At6eZMUYUFfmht+6h6XQes+WI8ac3Wv3uE8boO7co+RfR
- Gy9d4TONzdmBNDKtNX377gQNXpbVNaodnxVkfP8/36ERFAU4h8qXaZ+
+ bh=f9ZeZy+zDvDO+mRHxxqISmOxmWt4JRL0xxqUpwYYolE=;
+ b=l1WcbvkG7HReRqUj4ESOIOZ0uD7zLVaEkRfCWkaD+a+ClbLZwSMqP3eNuiKF+BP4N1IiOPKxa
+ U62kgpzh9vjBBeSNQx1vzvjHNxyUQc7t4vF6SXh8Njtgtn3aAV5otOV
 X-Developer-Key: i=demosthenes.ra@gmail.com; a=ed25519;
  pk=sDKS9AI9zxhWgOqkhc9EOIo6cky+anqccB3VGtDvzCc=
 X-Endpoint-Received: by B4 Relay for demosthenes.ra@gmail.com/20261019 with
@@ -109,49 +109,58 @@ Content-Transfer-Encoding: 7bit
 
 From: Demos Ra <demosthenes.ra@gmail.com>
 
-For classic Netlink families the notification table in the generated
-user code is indexed by the message type the kernel sends. Since
-commit 49398830a4aa ("tools: ynl-gen: support CRUD-like notifications
-for classic Netlink") ynl-gen writes each index as the name of the
-request that has the same message type, and fails if no request has
-it:
+The kernel sends RTM_NEWNEXTHOPBUCKET to RTNLGRP_NEXTHOP when the
+upkeep of a resilient nexthop group migrates a bucket. With
+newnexthopbucket-ntf excluded from the code generation, the
+notification table of the generated rt-nexthop code ends at
+RTM_DELNEXTHOP. On a socket subscribed to the group, ynl_ntf_parse()
+rejects the bucket notification without setting an error message, so
+ynl_ntf_check() fails, and so does a request in flight when the
+notification arrives, as ynl_check_alien() passes it to
+ynl_ntf_parse() too.
 
-  $ ./tools/net/ynl/pyynl/ynl_gen_c.py --mode user --source \
-        --spec Documentation/netlink/specs/rt-nexthop.yaml
-  ...
-      crud_op = ri.family.req_by_value[op.rsp_value]
-  KeyError: 116
+ynl-gen can now generate the notification, so drop the exclusion.
 
-rt-nexthop's newnexthopbucket-ntf is the only such notification: the
-kernel sends it as RTM_NEWNEXTHOPBUCKET (116), and no request uses
-that message type.
+Reproduced in a network namespace, with traffic through a resilient
+group so that a weight change defers the bucket migrations to the
+upkeep work:
 
-When no request matches, write the message type as a number, as
-put_op_name() already does for messages whose request and reply types
-differ. The generated code for every spec in the tree is unchanged.
+  ip link add dummy0 type dummy && ip link set dummy0 up
+  ip addr add 192.0.2.1/24 dev dummy0
+  ip nexthop add id 1 via 192.0.2.2 dev dummy0
+  ip nexthop add id 2 via 192.0.2.3 dev dummy0
+  ip nexthop add id 10 group 1/2 type resilient buckets 8 idle_timer 1
+  ip route add 198.51.100.0/24 nhid 10
+  for i in $(seq 64); do echo > /dev/udp/198.51.100.$i/9; done
+  ip nexthop replace id 10 group 1,3/2 type resilient
 
+A C program that joins RTNLGRP_NEXTHOP by hand and then calls
+ynl_ntf_check() or rt_nexthop_getnexthop() fails with an empty error
+message before this patch, and parses the two bucket notifications
+after it. The program is available on request. Reproducing it needed
+no kernel changes. Tested on 7.0 with the reproducer and the YNL
+selftests, which all pass.
+
+Fixes: 457dc9fefe9a ("netlink: specs: Add a spec for nexthops in rtnetlink")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261019-rt-nexthop-spec-v1-1-9c586edf86ab%40gmail.com
 Signed-off-by: Demos Ra <demosthenes.ra@gmail.com>
 ---
- tools/net/ynl/pyynl/ynl_gen_c.py | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/net/ynl/generated/Makefile | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-index 4aca51396a9e..a009a842fb36 100755
---- a/tools/net/ynl/pyynl/ynl_gen_c.py
-+++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-@@ -3409,9 +3409,11 @@ def render_scoped_consts(family, cw, scope):
- def _render_user_ntf_entry(ri, op):
-     if not ri.family.is_classic():
-         ri.cw.block_start(line=f"[{op.enum_name}] = ")
--    else:
-+    elif op.rsp_value in ri.family.req_by_value:
-         crud_op = ri.family.req_by_value[op.rsp_value]
-         ri.cw.block_start(line=f"[{crud_op.enum_name}] = ")
-+    else:
-+        ri.cw.block_start(line=f"[{op.rsp_value}] = ")
-     ri.cw.p(f".alloc_sz\t= sizeof({type_name(ri, 'event')}),")
-     ri.cw.p(f".cb\t\t= {op_prefix(ri, 'reply', deref=True)}_parse,")
-     ri.cw.p(f".policy\t\t= &{ri.struct['reply'].render_name}_nest,")
+diff --git a/tools/net/ynl/generated/Makefile b/tools/net/ynl/generated/Makefile
+index d76d4ca94629..5a186349b5a8 100644
+--- a/tools/net/ynl/generated/Makefile
++++ b/tools/net/ynl/generated/Makefile
+@@ -18,7 +18,6 @@ include ../Makefile.deps
+ 
+ YNL_GEN_ARG_ethtool:=--user-header linux/ethtool_netlink.h \
+ 	--exclude-op stats-get
+-YNL_GEN_ARG_rt-nexthop:=--exclude-op newnexthopbucket-ntf
+ 
+ TOOL:=../pyynl/ynl_gen_c.py
+ TOOL_RST:=../pyynl/ynl_gen_rst.py
 
 -- 
 2.53.0
