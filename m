@@ -1,74 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.57.64
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792827209;
-	b=pLURvyKipVTQFy3xwd/DRcpffcayfYSj4RsLD9/j8p1gDXuKtKBjKGFPKMvP2FIjiEFN
-	 mjSx1a6x+Gb8qvp2bdv9XHBShGmJ5YsUALKhipo1xEWLQ0zX5slGnlhmZxeG3+Z1VIEcP
-	 tYJrg3yaR+mZ2ksgSCXDOjzN1qom4MGp24UCT+nvdRAu6F253c8VLh7eZdEov0sHi5S/q
-	 w8vSMlQsxj6hQAc/FQN2wB1dU8N7mYOD+UPe97I/KQkZGBX87ZdDixEJrBXehTA+4+AVL
-	 Ntm7ClSfP10UEMgyZocmGeq12xHksJkFEF0OAIycTMANDM4+xmb+AUvPstKfCV1bDtA==
+	t=1792830176;
+	b=WGjd/GCpAr6nhm0WuRrCzWLCEPYaWp8Gcw1eP9Y1An8qUrqajV7ZyUJjW7hsRflvav/j
+	 3lL9hrD5dYd4nZ8UW9JtYB4KNnlXlIvEeLhQD6vkC8QayHuC2R1eUyT+ack2SpYjG6xCL
+	 sRiHZA0A2Y5TaBtlrkahXLiRLSDR24THerCw8ZmbjFLNe8X0PGqbxM8RLD1AgngwK4hZn
+	 t1+qTjPFEr1CXskv640KX5lIfCkWfPT5kJkzcET1gw67YA6R9yQpg8R2tDJLriwJn6asf
+	 q+yaoAglVmDpAKW31Bux/6rhzN4SqG+abkOb6kWkKvhGtR0m7NS1Yvu1Spor6K7Yqiw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792827209;
-	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
-	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=Ok3pjg22edXzQhuK8h6FzdRDjegD24d8xy6xP3Un7Og=;
-	b=redg4FJ+fVf/l1FIfpgXag9dd4JrN/MouXfgEGuMsm+/LoDw2PK/0ws+U042zQlLXhTd
-	 R4Q1VFkuyF79GBsAGM1mZv2zojwI/Fjqetl1OY+Q988k5XbNWoWCxIH+f80QnS90qhTTf
-	 qPAZ+WPsTCiuYaef26DqX0hfeUTpeX9lcevC3jamUqn569O8W5U6aNCtLTlPVBji1e3q8
-	 shNoUbQ//5/o7CrRZuSfhGvc/BeeBavQwQYyx4HQ/jv6ct77JV6O0K7P2rxU6l92M4J4d
-	 T/QUdigo+lqLcFDz9eUSqX8eIe+RjnVg6iFhNT51uNGlYiWKxUiZAwmip+6jo7PD9Qg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792830176;
+	h=Received:DKIM-Signature:Received:X-Gm-Message-State:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=Pf9LCz6OljNAat3cS0OtJ2Vbp0Q0oJbVMd/1ym7N+sI=;
+	b=km9Z8NtOGAZYfMg4mZQdW10U6TU24njolq6CuCViaEXe3bVb5q7RRQrH006qybHjP1yr
+	 /JlsXN5KMjKdny13DS68iDvL1g9ovXIRTkgA0B+nUUTnjR5OrHstkBni26IYvTofFqnb0
+	 DgjUz6dezRBJ7xwF8xnqnbObvjeE0qr6IykTvTeqYSA4Ukai6aE70oJ3W2F8F9RIOBrex
+	 j0qaeMIngmcnd9NNlivC2Dp/9G2hqSQVwB+sKp3wo0Fo4Ob0U/mwub7RF/Lx0nB9jAay4
+	 DyUYQRawsdofHGjRAEbnFqmyLtq3W6bjQ+teNHBoGPcrgNQVZ99HYjz+xxfCWKSMF9A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=qq.com;
-	spf=pass smtp.mailfrom=qq.com;
-	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=fzdllpE6;
-	arc=none smtp.remote-ip=162.62.57.64
-Received: from out162-62-57-64.mail.qq.com (out162-62-57-64.mail.qq.com [162.62.57.64])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NUj0GwNH;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C91606A31A;
-	Sat, 24 Oct 2026 07:33:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 81C91606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98832606A32D
+	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 08:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=fzdllpE6
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1792827203; bh=Ok3pjg22edXzQhuK8h6FzdRDjegD24d8xy6xP3Un7Og=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fzdllpE6O5GmIISEiixKEHXvpzrpblzndNtULG9lk+boRG5QVvg6kYzt38scv8siQ
-	 x/72E1EbEy3WJe790wUVUz4/YSgUDCQH372K9wOMP8S4pxOlEMdQAIb3M69auBrmKn
-	 4ycwP1iB0mEtYDnGkbI9wCgT+bq4Z+kIX24tM/F0=
-Received: from [172.18.4.77] ([111.31.227.58])
-	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
-	id 855128F4; Sat, 24 Oct 2026 15:33:21 +0800
-X-QQ-mid: xmsmtpt1792827201t5bz1fjn2
-Message-ID: <tencent_4528029FEDA8E7D49AEFE291032742538F07@qq.com>
-X-QQ-XMAILINFO: M1rD3f8svNznoVYgx84LsIAP5h2YIyC95fLBj1+igaesL7k2a3y8AV0oqlqnGK
-	 btgd/OgvLzUpyxM0HB9VguSu56OjljM2QW4Wu/w7OqtIbX34vVMB3He83DkZecQKvX49yOOBrB44
-	 2FTsbOzykZZ8vzXIH1Ye2nEE95688cK4Uc8OyEzAWIczuLGbm3VOL/zX2pddpXtZ7lAwUDLbSXDS
-	 d/7nQrXZH91K6eXxhd0gjSOrBXB/MXC0AatQkDjUl1ImEWkT8T82jkG0791+DqD8LY+la6w60I9k
-	 LLPpbmdAM2laYP43dBS5MalHr8PtL/DW7FOps5oh9PTDK6DMn2sEDO4ssJJsZBztSTVnVL2Jetc8
-	 NFErxvRoTc/0moD9/fH2GSFjHWp/rvQ1YYMPGLdNW2I7NBnpc45pJvEfkF66Kfzz4METLDmP621K
-	 qVOSaPlPYWq0mjgWTZosT+TbZ8qUC3JwKpeOqfMWUtAfjCWj+wwY+x48MUfKJmCRMi+wkm48mInG
-	 PhWdvrkVfAOuE2dUTL+KRVa3o9cRnoFBwalRX29Ps8xtk5VL4fRBEvcFV41sP0jjw25R+OTORkHB
-	 1AS9wa3P4X1HGdHDOvsME337oNwzzfCNi6BY2l0b5nDb2w1RHMt9ZArSlnUW1fJN8oh2eoVWdyxP
-	 Zk8AqZmtaSKI+heHUl4X/QvfjkTSdhcdqGAHcbzNwSums+0twgyOe52JTQqgRvU45QMqIRKe/iHj
-	 gkfXHkrQ4ExzBwdswyn0KkPxCnchttF2isjJNM93q1xP3e6NTGB3+eWv+IEjcj3ZPLS92UPzSU9s
-	 L1D2CxtQ2YvA0KONXcnDUfjlByj5exhl9VCwVHlKp5YKQkafVDm5pkkbACHoAbKOBfIXjs0FnTJ+
-	 jNqSvFvgZY3k5kXROAq3PP3bQd7g/SRtqzt0VJ8FPmjX3+Dsy+HJBg7IPUsC3iDCGaWmP1gIaSD8
-	 J9MDT2Qv1tZYmOtpqxLLufx7UpnqGeQbsbZ7WK85F1FhZTDSNWoqJU6OZkffvvVP3O8NrJeGeXU1
-	 buyOLnoKzom+B9pZ3vh9EfNSf5gFE7gGqaLFao0dxclUxhefDvXLuu8rLcO9L/H8+BeD/nCLMux+
-	 gylTKh7JM24jBQjGo=
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-From: Guikun Yang <yangguikun19@qq.com>
-To: Michael S. Tsirkin <mst@redhat.com>
-Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] vhost/net: initialize the whole negotiated RX vnet header
-Date: Sat, 24 Oct 2026 15:33:19 +0800
-X-OQ-MSGID: <20261024153319.61076-vhost-yangguikun19@qq.com>
-In-Reply-To: <20261024150815.36216-vhost-yangguikun19@qq.com>
-References: <tencent_803981983647D9F9444561A4227F138C600A@qq.com> <20261023080824-mutt-send-email-mst@kernel.org> <20261024101101.71420-vhost-yangguikun19@qq.com> <20261024150815.36216-vhost-yangguikun19@qq.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NUj0GwNH
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F4A1F01825
+	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 08:22:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792830176;
+	bh=Pf9LCz6OljNAat3cS0OtJ2Vbp0Q0oJbVMd/1ym7N+sI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=NUj0GwNHiilp3mi4pm0JKQ6caF/pYBln0+rOAi4unFZn1RnqYjrneOoz/Sy46m3y4
+	 kugGNCwtM5j8Uip/zHgr1rYJ2HVueZEMbWrZO0MDQwH2r01IPOW+kifUlco5dwcpuh
+	 Iio2QH6nFG0g7O2Ei6dhCwkQOYvbknSQAT/gE+QBzqv/y/3gko7TMzIgfKOF9oACTB
+	 EpPvAA6cbd+MIEom5IrMCdf7mF+CDxodaxOUF5zMdCC8YY92d/MmClaqxBKZYE7FLz
+	 Jpdhk1n8fhLQtRN9NGQnTglhS/cUaJ4h3bthistMfdwTW4Z4Ek+fP+cVjbOmiEYpR+
+	 +b0daNoIIAOfw==
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-6de1fd5f572so786127eaf.3
+        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 01:22:56 -0700 (PDT)
+X-Gm-Message-State: AFq9FYJG1+FzzWThrbx39dVwBlVeLvQu189eLXfEqo8MnagQlvPpCSGf
+	Gb7nv9eJTKVb5nC1v30xnFRbk/Qlmr8Z9Bj1zfw+Mj8SG1eeLctCQGgd6+7h+AWvoARVVfOVZzn
+	qs7GF4nU9K2K9IMWKlKj9PyenlUlZH6U=
+X-Received: by 2002:a05:6820:351a:20b0:70a:4053:52d2 with SMTP id
+ 006d021491bc7-70ba0f0e13fmr382361eaf.72.1792830175840; Sat, 24 Oct 2026
+ 01:22:55 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -78,91 +58,53 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20261024004835.17862-1-user148783812897@gmail.com>
+In-Reply-To: <20261024004835.17862-1-user148783812897@gmail.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Sat, 24 Oct 2026 10:22:45 +0200
+X-Gmail-Original-Message-ID: <CAL4WiiosFWCD1Eh2KqepZupiZm0de7bUs72fBgh1AOQkL=BCzw@mail.gmail.com>
+X-Gm-Features: AclHuK-oQLgWnV9Q5oHz0rKQ-UF_EVKTiTNU1RJpEcLfw7kcKwftdg32nKc4AEs
+Message-ID: <CAL4WiiosFWCD1Eh2KqepZupiZm0de7bUs72fBgh1AOQkL=BCzw@mail.gmail.com>
+Subject: Re: [PATCH net v2] net: limit priority VLAN untag depth
+To: Kamil Sawicki <user148783812897@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, willemdebruijn.kernel@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-First, a correction to my previous message: the AF_PACKET injection in
-that run never actually worked.  I took the "ifindex" from the ifreq
-returned by TUNSETIFF, but TUNSETIFF fills in ifr_flags there (the
-values 4098/20482 I printed were BROADCAST|MULTICAST|VNET_HDR flag
-bits), so every sendto failed with ENODEV and no packet was ever
-injected.  The all-0xAA buffer in that run only shows that no packet
-was processed at all, and the "payload starts at offset 24" claim was
-wrong.  Sorry for the noise.
+Le sam. 24 oct. 2026 =C3=A0 02:49, Kamil Sawicki
+<user148783812897@gmail.com> a =C3=A9crit :
+>
+> The priority VLAN receive path can repeatedly remove VID 0 tags and retry
+> packet processing. Unlike the read-only VLAN protocol parser, this path h=
+as
+> no limit on the number of nested tags it consumes.
+>
+> Each skb_vlan_untag() advances skb->data and resets header offsets. The
+> offsets are stored in 16-bit fields. With enough nested tags, the network
+> or transport offset can wrap. A later protocol handler can then derive a
+> large pull length from the wrapped offsets and access memory outside the
+> skb allocation.
+>
+> Apply the existing VLAN_MAX_DEPTH limit to the exceptional VID 0 retry.
+> Count the tag already stored in skb VLAN metadata as the first level, the=
+n
+> stop before untagging a ninth level. Keep the accounting inside this
+> uncommon branch so the regular VLAN receive path is unaffected.
+>
+> A single VID 0 priority tag before a real VLAN tag is valid. No normal
+> deployment was found that intentionally emits multiple consecutive VID 0
+> tags; permitting eight levels is therefore conservative.
+>
+> The issue was found while researching the Linux network receive path for
+> Google kvmCTF, with OpenAI Codex (gpt-5.6-sol) assisting the analysis. Th=
+e
+> affected path, reproducer and fix were manually reviewed and tested.
+>
+> Fixes: 36b2f61a42c2 ("net: handle 802.1P vlan 0 packets properly")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Willem de Bruijn <willemb@google.com>
+> Signed-off-by: Kamil Sawicki <user148783812897@gmail.com>
+> ---
 
-I fixed the injection (SIOCGIFINDEX by name) and re-ran both
-configurations on 7.3.0-rc7 with a 64-byte broadcast frame injected on
-the tap.  With IFF_VNET_HDR enabled (plus TUNSETVNETHDRSZ(24)) the
-result is worse than stale bytes: the packet is consumed from the tun
-queue and then silently discarded, so the guest sees nothing at all:
-
-  tunnel mode (no IFF_VNET_HDR), sendto 64 bytes ok:
-	hdr: 00 00 00 00 00 00 00 00 00 00 01 00
-	     aa aa aa aa aa aa aa aa aa aa aa aa   <- stale 12..23
-	     ff ff ff ff ff ff 02 02 ...           <- our frame at 24
-
-  tunnel-vnet-hdr mode (IFF_VNET_HDR | TUNSETVNETHDRSZ(24)),
-  same 64-byte sendto ok:
-	hdr: aa aa aa aa ... (all 32 bytes untouched)
-
-The guest buffer is never touched in the second run.  The packet was
-read out of the tun queue and then dropped.
-
-The reason is a peek/read size disagreement:
-
-  - peek_head_len() returns head->len, i.e. the raw skb->len.  The tun
-    vnet header is not in the skb; tun_put_user() adds vnet_hdr_sz
-    bytes at read time.
-  - With VHOST_NET_F_VIRTIO_NET_HDR negotiated, sock_hlen = 0, so
-    handle_rx() computes sock_len = peek = skb->len (64) and calls
-    recvmsg(sock, &msg, 64, ...) with a msg_iter sized for
-    vhost_len = 64 + vhost_hlen(24) = 88.
-  - tun_do_read() delivers skb->len + vnet_hdr_sz = 64 + 24 = 88 bytes
-    and returns 88.
-  - handle_rx() then sees err (88) != sock_len (64) and takes the
-    "Discarded rx packet" path: vhost_discard_vq_desc() rolls back the
-    descriptor, but the skb has already been dequeued from the tun
-    receive queue.  The frame is gone.
-
-So for a tun backend, the three combinations are:
-
-  VHOST_NET_F_VIRTIO_NET_HDR | IFF_VNET_HDR | result
-  ---------------------------+--------------+--------------------------
-  off                        | on           | ok (classic: tun header
-                             |              | passed through)
-  on                         | off          | header written by vhost,
-                             |              | bytes 12..23 stale (the
-                             |              | patch under discussion)
-  on                         | on           | every packet consumed and
-                             |              | dropped, guest RX blackout
-
-VHOST_NET_F_VIRTIO_NET_HDR means "vhost supplies the header, the socket
-data has none", so it is only consistent with a backend whose
-vnet_hdr_sz is 0.  When the backend has vnet_hdr_sz > 0 the peek and
-the read disagree and handle_rx() eats every frame.
-
-Given that, I don't think disabling "vhost + !IFF_VNET_HDR" is the
-right fix: that is exactly the combination VHOST_NET_F_VIRTIO_NET_HDR
-is for, and it works apart from the 12 stale bytes my patch addresses.
-The combination that is plainly broken is "vhost supplies the header"
-together with a backend that supplies one (IFF_VNET_HDR set), which
-today results in a silent total RX blackout.
-
-So I'd suggest one of:
-
-  1. Reject VHOST_NET_F_VIRTIO_NET_HDR (or refuse the backend attach)
-     when the backend's vnet_hdr_sz is nonzero, so both broken
-     combinations become impossible; keep my patch for the stale bytes
-     in the remaining valid combination.  The backend header size could
-     be queried at attach time the same way TUNSETIFF-derived sockets
-     are handled today.
-
-  2. Keep all combinations and fix both symptoms: my patch for the
-     stale bytes, plus making the peek path account for the backend
-     header so peek and read agree.
-
-Happy to test whichever you prefer.
-
-Best,
-Guikun Yang
-
+Reviewed-by: Eric Dumazet <edumazet@kernel.org>
