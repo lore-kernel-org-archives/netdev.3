@@ -1,110 +1,45 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.169
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792858138;
-	b=br6322yG4FEBJqr3+n5Fke1u9txiD8GKE/y6w8a1EffacnGDnrmeM0aP8/mFiV19Ez7T
-	 y8VtsOfohjR13invJ0+LRErpMfJEFeGef8YUxcRqJ2OXFqpLAwIJ0RcA/wQQ9XPfRA6lY
-	 w9Y12zK7Vr+/HNGWGOdGzoS/ptA17tLpVIwtb5vBWugeY3hgCmQdmVzGIaXRUwhFZJ3OD
-	 0KhpweZMo/uui5xM/KEEnmRoc//CyCi0fMvB8YTHcqiqhVPnhTurEzlwb9lp5fStfmF+k
-	 esDAb+gGKjsnc+/Y+JzeerARAdXJeYrzxg2Mcrb3YVaxka8PomOHZpRZBtzJjFsLrdw==
+	t=1792858435;
+	b=gnDdHvaNHpNcPG+0zGkcrEgPjQ96uDl9374LlQCJ0Ht9xBdUQ9LZqX53hHysxxfz68tG
+	 +SuNvMXRidwSISp1aiEwQ1yY/L74HpuSSBCL2cAklgSCTqBQScCEGCS88MXpyUwW9m1uJ
+	 0dQboX2nOl6PuwarILffDpNuhaXJ7QyZwyUx9DfOUf5NKTGNJBetTaDOT7SwhQfi8c1I5
+	 8GQiKbYhi0viuE87QcyHn4qrMU+nFyeCgugfMoeovcDP38fZIIi1Dlpwhct4YV2z8hMZd
+	 BKg2BUI1aClyeMoWW4cWfAm80xujcRtH5ITDgjLF3KMoG+dnp1KnmyJilYhtI2dMwDA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792858138;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=jqgo1XywgsdgGPVlo0B4zN6yPIeNTL0VXgREkra6lSU=;
-	b=qjBd9DvKlGyN6JSG0mTzaIhJrdqMJkPih21sUVTiQtuEB1GmCrPStUXXtmIfKoxFzrgT
-	 rjQpUVn/J8FxkMmBiJCdCem6DSlupkq25kW8HF2+gxcgyVXaa00W3BkaNBABXbR5jCefb
-	 UAbp+VdKOIM5HHIc7n9FidMW2RqIPtZmJ2F0hrMPD1LYhB4Z7KeiJUzw64dqd7n3l/0Pj
-	 FrnghLapzx6AfcwbxK4hTu06GCQnhJZem05VB77RVHIAyuYRE7p/UaKJFaVFm+rIGki8E
-	 hzDRDeiVitXOL80XQcX2g2v+YLv3r8hiLHURiajEStdf+20IhC2CkPQp5PLXfTPux+w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792858435;
+	h=Received:DKIM-Signature:Content-Type:MIME-Version:Message-Id:
+	 In-Reply-To:References:Subject:From:To:Cc:Date;
+	bh=eeGNDc7Gp5QkYFlacZc3KSHWEUMO5Xnrm8+LooKEisU=;
+	b=H+7KIQpyPbz+5xby3OpOEpEXRoKXIc3A9krO+Xa+3KcEe0aX4NNCY/eLYBdCDNNGgSb8
+	 8Bd48X8Dp0Qn/l2sCR5y7UTdNyxH94NxwRcxbrU+c8p6hdBAbJwQgy68jVT8g/LKd1KZs
+	 ZeMNf5AORM8taKVy8ZVr/Bglb+9nYy77MZitFC2hvH1ykJthAVsrWdm+InnPPKS9sNjBe
+	 8X1Im1SlNvPENHAxKyg7YRkk6dXxpjLMq1L/BuqDRjTPNrWfLK5xmmKYfl4XL5reVYBE8
+	 28ES77GxnTsRKwXu7R4/DGbv9rKxDpLvWdDSxB1ByIzkS442tTzSOmIJEIHnrDl93+g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=VN4LNyDR;
-	arc=none smtp.remote-ip=209.85.221.169
-Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xma7QGBQ;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED90E606A31D
-	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 16:08:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ED90E606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 422A0606A324;
+	Sat, 24 Oct 2026 16:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=VN4LNyDR
-Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-5c9e7731b34so1360655e0c.2
-        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 09:08:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792858137; x=1793462937; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=jqgo1XywgsdgGPVlo0B4zN6yPIeNTL0VXgREkra6lSU=;
-        b=VN4LNyDRn0nF8VT5iTrawyuNKTNtSTLtnLK1Tp9Gir/5VxAldXkG4dm/WbYUgwbCTM
-         7Z6/f1LYMDuxLtL7FEl0DkLpaKMqz7heaNTd6yfTAvuTyv97pzNT7Z/dAdD9eJiXB6iN
-         2BbyOb3OM5AVgjoZkSPaqr+AEl/Us1oAtshkVkZLhX6U3UnkyivyDDzcheXp2qGNM6UO
-         PNK9iUzL9DRTniSiLaSvpOvK5MD5TZ2QyhefdJCb/qiW5aE5QmlA2fWCv2iD5K0C6pQe
-         cTiU45HAFCxhM2aKjWBOHJzS6UCrVys7+25yHI9MJvMjokmPavoheC+5Glq81WrPGGmA
-         PG6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792858137; x=1793462937;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jqgo1XywgsdgGPVlo0B4zN6yPIeNTL0VXgREkra6lSU=;
-        b=YfIJBRhkdeOqebJwYbshMRKnGyadUIm00oJLJisVAQToyFhnn76ZnSrzILaP3uTZWY
-         A5HGVoAFtOJ+EIuJZEyQuMthjWIoME3uNFoVde7egWAb51XFlpdJdYUWz79o+3y+WV4x
-         mqcbb1XbC0kRcXqtG5rarPyYD34R8NWD/aR3v6bYJzxxcdenD8rcEItLFgbaryJWM6OJ
-         IKG0bIcGx2NI4YVy2dKYs7ZALdVddEwVIh7b1ua3kjozcWQAMhXnH8hzTP+btEnRXxb2
-         p4g5OjNoHSWjZhU+/kUvl84Ja+grtqwJwClZKbQYxrvtjsh98i8uy1FHMBMw5RzsXKLI
-         Qorg==
-X-Forwarded-Encrypted: i=1; AKwUvByWCXQRJ+U8FiRztF1IxFMFE9sla5dBHrvfQWRovS3hM1c+Ut/ipnojX7uiW2YikntDLgHV4+4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK6vKUbXdTPtfgkm3pU9DaofsZSowJD0V1HPazgGFYbCn+EMYUb
-	nn03Gu62Yk8l4HgL2MCh+OybHf+kLxtfdCnCxf8Nbhd2VRXKMlL7rvbb
-X-Gm-Gg: AYBFou2Lh10nTe4Zp091yAqAn5kXvmdCtWsAdvVhNRi+S17hxr3/drywo5CvnXx4UMR
-	IouanSPY2R+hIZNXuYBb8t8LreV73ac7zymLJb709qWH0FKKrzKkxP+kr/LWdz9hY9/j2jvOLDh
-	cPeVCDd/cgXigUwjgbdkdr8xfi7faYKAjdRjFj8Ohef3piORDBhs+eExJpJ64Mcqr+7A1g4/0Gg
-	m2vChcx/eFj1ADoITxKdNs6YLJ8ywEt+noQjkNflzzMbua14S6u7pN31IQ2zyv+8UDeKfr6wifV
-	oNOUJ9ESBCzEnf/hwMKDhANaYzjapIPvOvo9ANYCBzQ86D+plKgo7mj+xG3FXQDSCs52MC8xyq9
-	28KXsWV5TJYlnGGAB+jdhvgdm0cTRwhMNXTjvfb3Ot5PIS7duq/EaVbsGE0EtUGeoRqxPNgN4IH
-	m+ZzjnKiAtUCBAp5mk7E2DLHwC5cDahyrMv/x4Audg1Oj6nm7PC3bhQ9ziAiWjl7B38TG1fTE30
-	rm4dTWMs/ywmD8Fs4dMbk8EowxSiIogBTBj1QaSODRvU0cmuUmeiAM3sguOmfEYsQXYdPAcjtDF
-	XbTYR9GRGDY680yI3UcPayvP42gXWT0C6EbxulkmTn95OUsyKtx6YwLQLp2cv+1LWDygQ7gemt2
-	mNpTgK7bvaWIP8o81lCNOb6PI6jzyhNu06VroZKRc
-X-Received: by 2002:a05:6122:1c07:b0:5ea:a1ad:6376 with SMTP id 71dfb90a1353d-5ec230a26b8mr706060e0c.1.1792858136874;
-        Sat, 24 Oct 2026 09:08:56 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec234277b8sm2521988e0c.8.2026.10.24.09.08.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Oct 2026 09:08:56 -0700 (PDT)
-Date: Sat, 24 Oct 2026 12:08:55 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>, 
- linux-kernel@vger.kernel.org
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Chris Arges <carges@cloudflare.com>, 
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
- Phil Sutter <phil@nwl.cc>, 
- Jason Wang <jasowangio@gmail.com>, 
- =?UTF-8?B?RXVnZW5pbyBQw6lyZXo=?= <eperezma@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- netdev@vger.kernel.org, 
- virtualization@lists.linux.dev, 
- Max Krasnyansky <maxk@qualcomm.com>, 
- Rusty Russell <rusty@rustcorp.com.au>
-Message-ID: <willemdebruijn.kernel.288f04be304a@gmail.com>
-In-Reply-To: <20261024113809-mutt-send-email-mst@kernel.org>
-References: <cover.1792768096.git.mst@redhat.com>
- <20261024113809-mutt-send-email-mst@kernel.org>
-Subject: Re: [PATCH net v6 0/5] more virtio-net csum hardening
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xma7QGBQ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 334FC1F031E4;
+	Sat, 24 Oct 2026 16:13:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792858434;
+	bh=eeGNDc7Gp5QkYFlacZc3KSHWEUMO5Xnrm8+LooKEisU=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=Xma7QGBQyAgwHWDYWV3+P8zOSxsxqKHKR9c4Vt6q5XxZ6ASA4361JvuRcLdgL2CWV
+	 jS4ScjMm4DIeWbuagC66YxIPPt9O6/7DVcDmpGZTxBQ11X139mhVLDA0aAHPczXh2q
+	 Y48eBIxOte8U+ePaMIrgsKHbx7HZHDCGHQqxkePJ1bo58KC/AMctbrEFg3Cor+pKDK
+	 YZzUVikWmxKq7FU1U3g4eeTj1Lf4P04flAFhEB4yOYsYmmD87bNCYbzOm7tpNXmB+3
+	 u7uX6w7GDQogDZ8QhXQ6njzRobARW1ZRvFDQZDr/I0VFh687g22FeWsLhwIc67UgIU
+	 50V0VzIs332oQ==
+Content-Type: multipart/mixed; boundary="===============8854511339365467035=="
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -114,40 +49,103 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+Message-Id: <c6da6df95673d3a5ab5c4e757500658821e9e9e8d0652f737eca82690765a9a8@mail.kernel.org>
+In-Reply-To: <20261024153608.58569-6-leon.hwang@linux.dev>
+References: <20261024153608.58569-6-leon.hwang@linux.dev>
+Subject: Re: [PATCH bpf-next v4 5/6] libbpf: Add log_opts support for bpf_link_create
+From: bot+bpf-ci@kernel.org
+To: leon.hwang@linux.dev,bpf@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,davem@davemloft.net,edumazet@kernel.org,kuba@kernel.org,pabeni@redhat.com,horms@kernel.org,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,ihor.solodrai@linux.dev,hawk@kernel.org,john.fastabend@gmail.com,sdf@fomichev.me,rostedt@goodmis.org,mhiramat@kernel.org,mathieu.desnoyers@efficios.com,shuah@kernel.org,kuniyu@google.com,liuhangbin@gmail.com,mkarsten@uwaterloo.ca,masashi.honma@gmail.com,linux-kernel@vger.kernel.org,netdev@vger.kernel.org,linux-trace-kernel@vger.kernel.org,linux-kselftest@vger.kernel.org,leon.hwang@linux.dev,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Sat, 24 Oct 2026 16:13:54 +0000 (UTC)
+
+--===============8854511339365467035==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-Michael S. Tsirkin wrote:
-> On Fri, Oct 23, 2026 at 11:09:17AM -0400, Michael S. Tsirkin wrote:
-> > 
-> > Okay this seems to be converging.... But sashiko did find some issues I
-> > thought are best fixed. Specifically I thought of a better way to handle
-> > short gso in a tunnel - just clear tunnel gso! As a side effect we now
-> > fix up the checksum for these dodgy packets like we did before, instead
-> > of a drop. Good. And more false positives that prompted me to write a
-> > bit more comments. So here goes.
-> > 
-> > Apologies for reposting so frequently, I know netdev bot will be unhappy
-> > with that.  But Paulos's report made a lot of publicity, there is a lot
-> > of people looking into this, so I feel there's value in defending
-> > against all this class of issues sooner rather than later.
-> > 
-> > The issues were mostly found by code inspection, but all reproduced by
-> > me in a VM.
-> 
-> Ugh. I found another wrinkle( Firewalls that shape the payload.
-> They are currently seem to simply be hoping most traffic is CHECKSUM_PARTIAL and
-> only looking at that, and that will break.
-> 
-> I am not sure what to do yet. Extending the sysctl knob to control what
-> happens if validation fails: pass/drop/complete - is the best I could
-> come up with. Or ignore the issue. Or just forget the complete at input hack
-> and drop if we can't figure it out.
+> libbpf: Add log_opts support for bpf_link_create
 
-Sounds like such users will just have to disable the sysctl for now: pass.
+TL;DR: In bpf_link_create(), the shared iter_info/log_opts slot is keyed only
+on iter_info_len, so an iter_info pointer with len 0 may be misread as
+log_opts, possibly causing out-of-bounds reads/writes in libbpf.
 
-And update their firewall, then reenable the sysctl?
+> diff --git a/tools/lib/bpf/bpf.c b/tools/lib/bpf/bpf.c
+> index 9a2107d4f6d8..00efa90a6ed9 100644
+> --- a/tools/lib/bpf/bpf.c
+> +++ b/tools/lib/bpf/bpf.c
 
-Does adding a third drop option help in any way? The sysctl is the safety
-valve to go back to old behavior.
+[ ... ]
+
+> @@ -803,6 +805,14 @@ int bpf_link_create(int prog_fd, int target_fd,
+>  	iter_info_len = OPTS_GET(opts, iter_info_len, 0);
+>  	target_btf_id = OPTS_GET(opts, target_btf_id, 0);
+>  
+> +	if (iter_info_len && attach_type != BPF_TRACE_ITER)
+> +		return libbpf_err(-EINVAL);
+> +
+> +	if (iter_info_len)
+> +		iter_info = OPTS_GET(opts, iter_info, (void *)0);
+> +	else
+> +		log_opts = OPTS_GET(opts, log_opts, (void *)0);
+> +
+>  	/* validate we don't have unexpected combinations of non-zero fields */
+>  	if (iter_info_len || target_btf_id) {
+>  		if (iter_info_len && target_btf_id)
+
+For BPF_TRACE_ITER, iter_info_len is now the only thing that decides whether
+the shared iter_info/log_opts slot holds a union bpf_iter_link_info pointer
+or a struct bpf_log_opts pointer.
+
+Can a caller that sets opts->iter_info but leaves opts->iter_info_len at 0
+end up with its union bpf_iter_link_info being read as a struct
+bpf_log_opts here?
+
+bpf_program__attach_iter() copies opts->link_info into
+link_create_opts.iter_info and opts->link_info_len into iter_info_len
+without checking that they agree, and nothing in bpf.h or libbpf.h says
+log_opts is only used when iter_info_len == 0, or that iter_info needs
+iter_info_len.
+
+Before this patch the pointer went to the kernel, and bpf_iter_link_attach()
+rejected the mismatch cleanly:
+
+    if (bpfptr_is_null(ulinfo) ^ !linfo_len)
+        return -EINVAL;
+
+With this patch, __sys_bpf_fd() runs OPTS_VALID(log_opts, bpf_log_opts) on
+the 16-byte union bpf_iter_link_info.  The first 8 bytes of that union
+(map.map_fd, or task.tid/pid, or cgroup.order/cgroup_fd) become
+log_opts->sz:
+
+- If map_fd or tid is in the range 8..27, sz passes validation, and size and
+  level are read from bytes 16..24, which lie past the end of the 16-byte
+  object.
+
+- If sz is 28 to 31, OPTS_HAS(log_opts, true_size) is true, so
+  OPTS_SET(log_opts, true_size, ...) writes 4 bytes at offset 24, which is 8
+  bytes past the end of the caller's object.  Can this corrupt the caller's
+  stack or heap?
+
+- If sz is larger (a typical tid, or a cgroup fd shifted into the high 32
+  bits), libbpf_is_mem_zeroed() scans caller memory from offset 28 up to sz.
+  It usually stops with a "bpf_log_opts has non-zero extra bytes" warning,
+  but it reads out of bounds first.
+
+In addition, attr.link_create.iter_info is now NULL with iter_info_len of 0,
+which the kernel accepts.  If validation does pass, could a task iterator
+attach to all tasks instead of the requested tid, and a map iterator fail
+with -EBADF instead of -EINVAL?
+
+The commit message says log_opts support for iter links is future work.
+Would it be better to treat the slot as iter_info whenever
+attach_type == BPF_TRACE_ITER, and read log_opts only for other attach
+types, instead of keying only on iter_info_len?  That would keep the old
+behaviour for iter links exactly.
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/40108748084
+--===============8854511339365467035==--
