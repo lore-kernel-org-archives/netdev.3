@@ -1,82 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.51
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792882450;
-	b=SEYoxFPd4fAjmHQWlQnubP/LDxTlVWY9xqilViPWGyLSiGSGpKvpByVnogj623VUkJWN
-	 sEBtX99KFDAFssNGBEHpbTfmn3ziRyx4ZP2vEdngkBD4NqpmxBLJBAE3B2U6d4Jj9mTEe
-	 D0lEzaCyPSxJYGwXpPSoDdyqu93DfkF17k0bap39JUb2ECPhxSBXqTFnPLFNFQr4rDroq
-	 vlOjWwWtaQz4iOv1UQSiVNfEty8PY4Qm9XHTvlmjYOHccb5vxMbkRCqhpjPhbiZ9SplRn
-	 JpFUvW2Uvl97ZPAevcMtfaz+vkRFZED2+Px5aR6heuKkrkZBE8YOYCD0quthCgJJH6w==
+	t=1792883195;
+	b=LXl+cS+CCoVYnrTpCaiid+tk7575rlIMXXP0ZK2nQMDAEC3PSJWRkKrw0kKa2UyGwdY1
+	 OrfqydeBicghNSQOIA7IpQUsNH5JY8Rjnpgm7Y/jH2P8mcMwxMg78leQKfzvWIURZ6Rrr
+	 ccgJ3+4sceeF+wWDzBzi6rsN95WQVFH7xz+C9aDX3OOdnBDSTdGUZUkKnaDCRAytK4CPt
+	 NMDyIh8/ZlSzkMcsh7LUcAJa5VXiVESRVwivRqBUec6Oktzqc2LqEthJhUi4LbSXQAmIK
+	 BJhrjw/Tw+kkMOeCJbTQ/IRZvt7+xfAD6OXF+aBofMlIjBLpIf9bSBGhojSGXh4bzDw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792882450;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=W5BmndRmXZf5paZEukCObDUSI6tPr4czSuuuAPLFJm4=;
-	b=C2xpSzdu+wnIosYGwiRBVONtBjKDOirxA/VS+6zd61cn2BI6t6UuJ372S2wHxjz8QAV2
-	 /k0g24tc1uy6AhPOs9Pp4F3vXcX+wfim5Tpij6znjh0nb3ndeD9o/vSh1g/cm4ZhV+78G
-	 huihBrk+rZi7XcEBxs+ORBfnN+Lg8aZwDRfuTo2JRyDf5vbkpH5F7UMmLyccUDyg4QAmq
-	 8M350n8d8kNNHD4y6fVlhNss5Xsx1F05ZK3wbv38yt5lf7ciKfrZjW8cafPHV1AlqauMO
-	 Ln6RP8rtMqVOuaQS01DEXX4Ec7+VGXT5QxGwrmk3rRANrMUDWzGHxXJ1eiFx6Pn6vMg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792883195;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer;
+	bh=l5X1zhTt/mo79FT/cl05olacIHJU1uD7Qt4zdE13cqI=;
+	b=1WUlOsR0oY4HY56UMz+ipq1u3Bb9Ckg/wUlF24HDnXW7PdbHly22AydNi0QF4oNGYxzu
+	 4xSP02gAkvU4GgRLHaUSQvkvnLvmY03fVNaAfHEM9D0zh7vfxN3YeREaL5PdgsCknE7Ga
+	 S5lM0bLIwaRJsN8QcjcxJzYzpcpSMe1DxeMi3uWszaBzPEbKuQtD10xTQviFOhmP/CnFU
+	 NCSBrr036bPeLccAjIl8+entvAC1tvnHUddt59rMqrkBmKiYyESbxIM6I7ppZFHjq9lZA
+	 0zDOZTHbj0gLGjnq6x2qBxF+TrM2KcEIASUyB0d15+V1fMVxxbJlNM1sLsc3gtgOv9g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=k4ZUHgKF;
-	arc=none smtp.remote-ip=192.198.163.8
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="a/qIsEoI";
+	arc=none smtp.remote-ip=209.85.218.51
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC8E606A31B;
-	Sat, 24 Oct 2026 22:54:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1DC8E606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C37606A31A
+	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 23:06:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 61C37606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=k4ZUHgKF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792882448; x=1824418448;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=I5OTWW9H2zxpLPefryyEieTL8dxF73wzUNnQxSoxb0Y=;
-  b=k4ZUHgKFCr/oQNqNCV5fz/fRsBo5jW3RNo5JUOLsbKUYLcadWK6rIz4h
-   EfnicqWY07zFziT7ZmCwdjk13zb/qP1D9b7oU7Z90ER7Zx9416gomvjTL
-   iNeS4wybWXE2/HJhfPtON2dJ8B00PFg6Q9We3RwOOWzDfRLepmVR6DEDF
-   H6ENfOD3PAwcXoiw1t9v2xjbLW+L/bE4cBlJf55pYH0a91yEi8io+bi3R
-   Nxk/hbvZOQ4ym/DXbx4p6iEb6j6zh/1HsuOOl3+RADXfhgsB7l2IG4bO7
-   c7XzDUmm8dOg2ULbukYbo5xEBXY+/gMTMs+c4yiuOwXLOTP/XLZjNMMZL
-   w==;
-X-CSE-ConnectionGUID: N4tbitHjT8GbPq8IlWLHyA==
-X-CSE-MsgGUID: Lfy4VMznRQm+8o8GznY/bA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11945"; a="1491600"
-X-IronPort-AV: E=Sophos;i="6.27,177,1787036400"; 
-   d="scan'208";a="1491600"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2026 15:54:07 -0700
-X-CSE-ConnectionGUID: IdSSXPtMQuyILjx2JLe3dA==
-X-CSE-MsgGUID: sAXXqd71RauxGo+BPWOntw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,177,1787036400"; 
-   d="scan'208";a="3871068"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 24 Oct 2026 15:54:05 -0700
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xKkck-00000000UJi-08t3;
-	Sat, 24 Oct 2026 22:54:02 +0000
-Date: Sun, 25 Oct 2026 06:53:45 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Yang <mmyangfl@gmail.com>, netdev@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, David Yang <mmyangfl@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: dsa: motorcomm: Isolate all ports during chip
- setup
-Message-ID: <202610250645.V7tGJ85r-lkp@intel.com>
-References: <20261024144023.1010237-1-mmyangfl@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=a/qIsEoI
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c423b145922so255480766b.3
+        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 16:06:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792883194; x=1793487994; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=l5X1zhTt/mo79FT/cl05olacIHJU1uD7Qt4zdE13cqI=;
+        b=a/qIsEoIJ7JXd7dDRfKIL8boCPjx4/MXqK1bE26QZaFCzqI+Rdxqpp5jXFOSzVoolc
+         v1zInRtKr9gTdubOUayPsUa8EJEENGSfm/QJ658WblAxdzVHz6IR5+Y/xMIUovw8LP32
+         2N33OQaEcr9CODQSkmjNa0MU4vKwhesNS056Iw/GDxNcsoD06HhJ0ndiqAbchNfbgEzz
+         keKwlOTRZaEyIU2PbyOxEsaZu52y+vk1YK1OdzGEc+Vj/NR5KxnLiO95355/5QjEjKWv
+         c/9nz4/uF5GK1Ie5KxMEiNnVeo6hqhl+vaFTq94nAKXAjgkol8yoHxfUJpRw9P8y5Isb
+         OH8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792883194; x=1793487994;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=l5X1zhTt/mo79FT/cl05olacIHJU1uD7Qt4zdE13cqI=;
+        b=DQLE8Mts1uNYnGQ/Sb6XH1GFJ32n7vlZ0slk3g3iErxiTo5fYtzTdjluri+0M3oJVx
+         9Ja4fcc7kRbhs/sASVRYhcRcxbMYX9urGjvpmSFRTGCerx3lw9Pfl1NdueMbRSQS4VLO
+         mRtnWbPT9IG27fKb+Z+ehPKz7S9gk9rPWkcShTigv5H1W2n8xuO5mnEeIvr0v77i2Bry
+         7n5AZsccajRZtf9LqtmK1bv2JFldh0MnP5PjslE7g33W9JYSGDHVnvhM6hdo3kr0gDX1
+         O2I8Diy10f3BF69r4xpCH1Up7q/jHbmJtBsOPk4WVS8j3baoFZ6YO9UqsKJhZxG71oU7
+         Vw/g==
+X-Forwarded-Encrypted: i=1; AKwUvBxkvODzlEa4pVkPUc1MlLEBA9UHpuThsyXA7jl6jf0GUkZRLsTlxwjrUfGSBvfGzesYyTGJEQ0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKG+IJRCR2AsUiWQrpRvcK9nx2GtcUZb88DzqepVF6fkz23dO7k
+	HJ9BfIUyoqK5+Dy1ucnwPQ7cQdZZYr1yJI4q1YtKIwwvcbUK2KpzltYb
+X-Gm-Gg: AYBFou3E+Wt6sQsizNKjfZvK+wOv6R49kKlslGTBvbIXORTqv0/PSAkd7lURSsdkJ3n
+	+Q0DFU2TpwQJ7Da73mBaM4VWm0XXji0Lz2MpiBIhzsiBcLapZ9i0XQf+Q05JIN/Y2q9Y5OipUJe
+	QTA/wweubL1BwAlK4wtyT5gVIz720HKkJpiZLyiHefye1/Tytv7/O5G/G2Qb8WlCz/MyjxC82eE
+	5y+hE/8aGBMYBe+K43jMzRiCSpgjirXssvb6QxmxL9tSM5Bk6VfWrfv1ismpM3wkTM+S9yvYZLT
+	Rx6GS02dZtm2aDRBaf7kCHPNVr3BA39jxvM/ebhRT8PkUC+onyWklYIXNScuRbUgKJx1xtSwVDX
+	woKk+2VilxPiVst3ZzLGgtN4teIQd3P3C+riBa0cVnio7zqTTNwzQw9YkMchWTvWknyWTsmGr7g
+	f+s1MvPLOip0dlto+Rd2+mhkOBZ2ws7RD2K7YzEJ5bGZPc2roLA+LHvOC2ua5Z6n+mLxCZPj9tV
+	tEk7nhcrtqZlNBC1xKmRhY/SsLLFdH+HHRbSf1hAlezyYDujKXvu2Y=
+X-Received: by 2002:a17:907:160b:b0:c25:afb6:2d91 with SMTP id a640c23a62f3a-c46bdaa7283mr360392266b.2.1792883193723;
+        Sat, 24 Oct 2026 16:06:33 -0700 (PDT)
+Received: from localhost ([2a03:2880:32ff:6::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c46bd650890sm141551566b.51.2026.10.24.16.06.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 24 Oct 2026 16:06:33 -0700 (PDT)
+From: Sam Crossley <samuelcrossley@gmail.com>
+Subject: [PATCH RFC 0/2] netconsole: allow replaying the printk buffer on
+ demand
+Date: Sat, 24 Oct 2026 16:06:02 -0700
+Message-Id: <20261024-netcons-replay-upstream-v1-0-9613f38496e5@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -86,110 +91,60 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261024144023.1010237-1-mmyangfl@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANo53WoC/3WNsQqDMBQAfyW82ZRErdZMhUI/oGtxiPGpKZpIE
+ qUi/nvRdu16HHcreHQaPQiygsNZe20NCMIjAqqTpkWqaxAEYhZnrIgzajAoazx1OPZyodPog0M
+ 5UH4pEBWrUpUXEBEYHTb6fZSf8LjfoPxCP1UvVGFv7lqnfbBuOf4zP+TfKv+7mjllFLNzzRKsk
+ 7Rh13aQuj8pO0C5bdsHENRCZ9UAAAA=
+X-Change-ID: 20260926-netcons-replay-upstream-189eec0b4c79
+To: Thomas Gleixner <tglx@kernel.org>, Breno Leitao <leitao@debian.org>, 
+ Petr Mladek <pmladek@suse.com>, John Ogness <john.ogness@linutronix.de>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+ Paolo Abeni <pabeni@redhat.com>, Randy Dunlap <rdunlap@infradead.org>, 
+ Sergey Senozhatsky <senozhatsky@chromium.org>, 
+ Shuah Khan <skhan@linuxfoundation.org>, Simon Horman <horms@kernel.org>, 
+ Steven Rostedt <rostedt@goodmis.org>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-doc@vger.kernel.org, Sam Crossley <samuelcrossley@gmail.com>
+X-Mailer: b4 0.16-dev
 
-Hi David,
+leitao and tglx had discussed this at LPC, sending RFC as suggested
+by Breno Leitao.
 
-kernel test robot noticed the following build warnings:
+Netconsole only forwards records while an enabled target and its
+transport are available. A target enabled after boot, or one that was
+unreachable during a network outage, leaves a gap in the remote log that
+cannot currently be recovered.
 
-[auto build test WARNING on net/main]
+This adds a write-only "replay" attribute to the netconsole configfs
+subsystem that rewinds the netconsole consoles so the retained ring is
+re-sent. Patch 1 adds the printk helper; patch 2 is its only caller.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/David-Yang/net-dsa-motorcomm-Isolate-all-ports-during-chip-setup/20261024-224021
-base:   net/main
-patch link:    https://lore.kernel.org/r/20261024144023.1010237-1-mmyangfl%40gmail.com
-patch subject: [PATCH net] net: dsa: motorcomm: Isolate all ports during chip setup
-config: arm64-randconfig-1000-20261025 (https://download.01.org/0day-ci/archive/20261025/202610250645.V7tGJ85r-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261025/202610250645.V7tGJ85r-lkp@intel.com/reproduce)
+The replay is best effort. console_try_replay() uses console_trylock(),
+so unrelated console activity can silently skip the replay.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202610250645.V7tGJ85r-lkp@intel.com/
+Testing: verified in a VM and on a physical host (the latter rebased on
+a 7.1 kernel) that records emitted before any target was enabled are
+re-sent on trigger.
 
-All warnings (new ones prefixed by >>):
+---
+Sam Crossley (2):
+      printk: add per-console replay helper
+      netconsole: add configfs trigger to replay printk buffer
 
-   drivers/net/dsa/motorcomm/chip.c: In function 'yt921x_chip_setup_dsa':
->> drivers/net/dsa/motorcomm/chip.c:2262:6: warning: unused variable 'port' [-Wunused-variable]
-     int port;
-         ^~~~
->> drivers/net/dsa/motorcomm/chip.c:2259:16: warning: unused variable 'cpu_ports_mask' [-Wunused-variable]
-     unsigned long cpu_ports_mask;
-                   ^~~~~~~~~~~~~~
+ Documentation/networking/netconsole.rst | 14 ++++++-
+ drivers/net/netconsole.c                | 25 ++++++++++++
+ include/linux/printk.h                  |  6 +++
+ kernel/printk/printk.c                  | 67 ++++++++++++++++++++++++---------
+ 4 files changed, 94 insertions(+), 18 deletions(-)
+---
+base-commit: 00513fc3d6c467b1ef3c101a2943cb92de25c49a
+change-id: 20260926-netcons-replay-upstream-189eec0b4c79
 
+Best regards,
+--  
+Sam Crossley <samuelcrossley@gmail.com>
 
-vim +/port +2262 drivers/net/dsa/motorcomm/chip.c
-
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2255  
-95e6bcab3c08e8 drivers/net/dsa/yt921x.c         David Yang 2026-01-31  2256  static int yt921x_chip_setup_dsa(struct yt921x_priv *priv)
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2257  {
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2258  	struct dsa_switch *ds = &priv->ds;
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17 @2259  	unsigned long cpu_ports_mask;
-9f8888984eb095 drivers/net/dsa/yt921x.c         David Yang 2026-04-30  2260  	u32 ctrls[2];
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2261  	u32 ctrl;
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17 @2262  	int port;
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2263  	int res;
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2264  
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2265  	/* Enable DSA */
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2266  	priv->cpu_ports_mask = dsa_cpu_ports(ds);
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2267  
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2268  	ctrl = YT921X_EXT_CPU_PORT_TAG_EN | YT921X_EXT_CPU_PORT_PORT_EN |
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2269  	       YT921X_EXT_CPU_PORT_PORT(__ffs(priv->cpu_ports_mask));
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2270  	res = yt921x_reg_write(priv, YT921X_EXT_CPU_PORT, ctrl);
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2271  	if (res)
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2272  		return res;
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2273  
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2274  	/* Setup software switch */
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2275  	ctrl = YT921X_CPU_COPY_TO_EXT_CPU;
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2276  	res = yt921x_reg_write(priv, YT921X_CPU_COPY, ctrl);
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2277  	if (res)
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2278  		return res;
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2279  
-47373f4f561962 drivers/net/dsa/motorcomm/chip.c David Yang 2026-10-24  2280  	ctrl = GENMASK(10, 0) & ~priv->cpu_ports_mask;
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2281  	res = yt921x_reg_write(priv, YT921X_FILTER_UNK_UCAST, ctrl);
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2282  	if (res)
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2283  		return res;
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2284  	res = yt921x_reg_write(priv, YT921X_FILTER_UNK_MCAST, ctrl);
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2285  	if (res)
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2286  		return res;
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2287  
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2288  	/* YT921x does not support native DSA port bridging, so we use port
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2289  	 * isolation to emulate it. However, be especially careful that port
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2290  	 * isolation takes _after_ FDB lookups, i.e. if an FDB entry (from
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2291  	 * another bridge) is matched and the destination port (in another
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2292  	 * bridge) is blocked, the packet will be dropped instead of flooding to
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2293  	 * the "bridged" ports, thus we need to trap and handle those packets by
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2294  	 * software.
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2295  	 *
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2296  	 * If there is no more than one bridge, we might be able to drop them
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2297  	 * directly given some conditions are met, but we trap them in all cases
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2298  	 * for now.
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2299  	 */
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2300  	ctrl = 0;
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2301  	for (int i = 0; i < YT921X_PORT_NUM; i++)
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2302  		ctrl |= YT921X_ACT_UNK_ACTn_TRAP(i);
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2303  	res = yt921x_reg_write(priv, YT921X_ACT_UNK_UCAST, ctrl);
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2304  	if (res)
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2305  		return res;
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2306  	res = yt921x_reg_write(priv, YT921X_ACT_UNK_MCAST, ctrl);
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2307  	if (res)
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2308  		return res;
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2309  
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2310  	/* Tagged VID 0 should be treated as untagged, which confuses the
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2311  	 * hardware a lot
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2312  	 */
-9f8888984eb095 drivers/net/dsa/yt921x.c         David Yang 2026-04-30  2313  	ctrls[0] = YT921X_VLAN_CTRLa_LEARN_DIS | YT921X_VLAN_CTRLa_PORTS_M;
-9f8888984eb095 drivers/net/dsa/yt921x.c         David Yang 2026-04-30  2314  	ctrls[1] = 0;
-9f8888984eb095 drivers/net/dsa/yt921x.c         David Yang 2026-04-30  2315  	res = yt921x_reg64_write(priv, YT921X_VLANn_CTRL(0), ctrls);
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2316  	if (res)
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2317  		return res;
-186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2318  
-95e6bcab3c08e8 drivers/net/dsa/yt921x.c         David Yang 2026-01-31  2319  	return 0;
-95e6bcab3c08e8 drivers/net/dsa/yt921x.c         David Yang 2026-01-31  2320  }
-95e6bcab3c08e8 drivers/net/dsa/yt921x.c         David Yang 2026-01-31  2321  
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
