@@ -1,47 +1,48 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792826114;
-	b=hLdxTwpgCoP7M3nwrEXgyuVIPb5KTEbmF9seRF6Q6NCyoiDSxLJfQTsUcgLxVZ/1y2Y1
-	 kQYnkkNz2Wj7/4RfBSNbaQ+69K3aIc2fRjAgTLcv6ZcNN/JAaycqm5QF5/Qx5j+7LJNhv
-	 J4fvwVEJ2LQv+g79ULjbSlMQdBp0eL0eeOuntA56lXuysNXviv3kted1zwsPAfYceXCrM
-	 /iTZ59DD4wnmRNBXn/pXx47CvXy+WNvp7FM71/v/DuYQQt6+njTLFGof2INlhAgkfKqgb
-	 jUcoM2TI8hvvT5YZDTyc9wM62yYGYU3HlDUmtrhNSH4miCh9AnzEoaNuiYyDkSJmk4g==
+	t=1792826122;
+	b=WonwjywhaUDE5Za1PdneYdxCS2NH04j7WYEetXWWULiOx01dgQ+6j15L3gnU+Gc2GM3U
+	 NSzplCJnR2fdQKJFv+vw5nhSywLm8yb2/rwOpoDpHi3cOYqmldsGCEN3O4sgrF0eV+PCW
+	 mSkgDf+ChNLiGa2Jlpnj232FjlS+7wcUF7jB7/NZOayGwC1peM5lunAX+BCN5ymcvbCP2
+	 NsswCy7pk0/dZCUeR5nyObVwTm4gwZBhhzVJv+32dQrf1/WDi9gOT3t1sKt9T+FBTYmAP
+	 rOINB00B79s/ibWQik16nX/pSxOMqWKEt4bSYEzXrHjvigDgUK3QHT+FxGj0+WVedlA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792826114;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792826122;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=ZAim7a7Mw2f4u2GqAJJCl39Hm/2+x8OUH9OyNgrjapQ=;
-	b=FeStPleOGW4bThnW4XmNh72+ZLLhZOQmaeLPx7YzT+jqmM7R1lLszhgZLe0pqvxuHNIE
-	 PIiUVo5xu9IGKnPyA7WOgDIJfw3fzkfHuMEQNVQhiWiHjwvyjSf4P/uDKD6FqDTBal81f
-	 2nKuBOTaZF8iEpesmvJWW0iUjaPNUScG0Z7PTgj7ybyG/gRUYmYxFv/+fL4vznPJCnHsR
-	 PuOsAZ8lkkW2IOtomUV0DV47MfBPsh4244b+ayxdSMmaX2tZ41VlJbZf2OKtnJoJ7vS7Q
-	 j8zGsU1VT/EgcOt2F3vLIV8RrauJZP4In5DJz9FSwR1D8y4acvNcfkW4HR+1QkfMGGg==
+	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
+	 X-CM-SenderInfo;
+	bh=x0suRdZ6/DF0tbptt+Dz30G9c7M6uSYDspT/LuLlnuM=;
+	b=t2Tuy35rMRpiLWteJAChz2vxD1cZWiklNoIWCcAL5589fj9nS1uhP104HqfqSr1EUii+
+	 XBTNMehRvP8FQNxlLzX6GQogCKhxkRdJiXrQpoixkFUbp5cIAqTGjmjDJiyvM2ocriGNd
+	 u82UeSlGc5tyiLQEy0uF+FsblJ/hzjGcz47zNoME97XvflL9Ft6bVfAayCcvv+/mo/RBA
+	 VXz8LSfuHMGUH9xrv+csIZxbp4AYS07cudPa8OEZz58XCZg7FkJMNqwQ48Kxut6HkrUK+
+	 mKtyjbeKrLPNmyiJEj4pgXWVfr165yZV87QDqmUaPrdM8KmDn7vtlm+sZmHdLr7SFwA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=163.com;
 	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=h318Nj9K;
-	arc=none smtp.remote-ip=117.135.210.2
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=cTxKP0oj;
+	arc=none smtp.remote-ip=117.135.210.5
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE721606A324;
-	Sat, 24 Oct 2026 07:15:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AE721606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AFBC606A32F;
+	Sat, 24 Oct 2026 07:15:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9AFBC606A32F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=h318Nj9K
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=cTxKP0oj
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=ZA
-	im7a7Mw2f4u2GqAJJCl39Hm/2+x8OUH9OyNgrjapQ=; b=h318Nj9Khr/oE1jAIF
-	SEnZ4JiNHqtZNfK5S8Omc10942WL/3JHKFO/e7SqTpN0NNEbQW4bjoCWXm6Oa8Q+
-	29UJYqhYOzYzI8qEwMMuU8P78oLR0svw6Htuhn3f6lhL6g+WA51+X0oxUdBl6c/C
-	HbL3qgYNqhZbhWnIOlrNzmZd8=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=x0
+	suRdZ6/DF0tbptt+Dz30G9c7M6uSYDspT/LuLlnuM=; b=cTxKP0ojWv2mPX9M3I
+	AeCX9Uu8pYsB7sUtCd1lc/YXCcBn7tpC1O9QOXpVK+xFlDpm4Mu3Iy2p8mlrlL8t
+	+7i97IiR27OmUAjw2BuJbRXmbFxBa+fbztF2BDFMRbSxTftkPXBKes2Y9StBvKCm
+	60O6pVV4iDJyV7oU5TLY/FQj4=
 Received: from 4CV529F122.company.local (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wD310ySWtxq_y0rCg--.41124S2;
-	Sat, 24 Oct 2026 15:13:32 +0800 (CST)
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wD310ySWtxq_y0rCg--.41124S6;
+	Sat, 24 Oct 2026 15:13:45 +0800 (CST)
 From: Ding Hui <dinghui1111@163.com>
 To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -59,10 +60,12 @@ Cc: dinghui@lixiang.com,
 	xiasanbo@lixiang.com,
 	yangchen11@lixiang.com,
 	liuxuanjun@lixiang.com
-Subject: [PATCH net-next v6 0/4] net: stmmac: fix DMA descriptor ring cleanup issues
-Date: Sat, 24 Oct 2026 15:13:14 +0800
-Message-Id: <20261024071319.875921-1-dinghui1111@163.com>
+Subject: [PATCH net-next v6 4/4] net: stmmac: hold RTNL when reading descriptor rings in descriptors_status
+Date: Sat, 24 Oct 2026 15:13:18 +0800
+Message-Id: <20261024071319.875921-5-dinghui1111@163.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20261024071319.875921-1-dinghui1111@163.com>
+References: <20261024071319.875921-1-dinghui1111@163.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -73,95 +76,100 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD310ySWtxq_y0rCg--.41124S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxArWkCw4xJFy8Ww4rCw4fAFb_yoW5tFy3pa
-	ySvws8tr98Xr1xJrsxCw4xW3W8Ca1fCF4Ygr17tw1fua15uryF9rWSkrWYgF1DCryjkw1j
-	qryYvasrAFyUA37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jgXo7UUUUU=
-X-CM-SenderInfo: pglqwx1xlriiqr6rljoofrz/xtbC8xyPu2rcWpxixgAA3P
+X-CM-TRANSID:_____wD310ySWtxq_y0rCg--.41124S6
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXrW7Kr4rAr4kXr13Ww17ZFb_yoW5CrWrpa
+	y3CayqkrykJF15Ja1DCw48Xa45Ga95tFW3Wrn7Gr1fA3WjvFZ0gwnIgry3WFyDGFWkX3Z3
+	K3Wq93sxGFW8C37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jmjgxUUUUU=
+X-CM-SenderInfo: pglqwx1xlriiqr6rljoofrz/xtbC0QmSvmrcWqk0KAAA3t
 
 From: Ding Hui <dinghui@lixiang.com>
 
-Hello,
+The descriptors_status debugfs entry inspects the descriptor rings
+without any synchronization against the control-plane paths that
+tear them down (ndo_stop, MTU change, XDP program release, XSK pool
+reconfiguration). All of those paths hold RTNL, so take the same
+lock around the reader.
 
-This series fixes the NULL pointer dereferences in the stmmac TX/RX
-DMA resource cleanup paths and the associated error path issues,
-found on a DWMAC platform whose descriptor ring allocation may fail
-under memory pressure.
+Holding RTNL also makes it safe to report queues whose descriptor
+rings are not allocated: the interface may be IFF_UP with unallocated
+rings when an internal reopen fails (e.g. an MTU change whose
+__stmmac_open() call fails), as those paths do not clear IFF_UP.
+Skip such queues with a hint instead of dereferencing a NULL pointer
+in stmmac_rings_status_show().
 
-Patch 1 adds NULL guards in the free helpers and makes them clear
-the pointers they free, so that a NULL pointer reliably means "not
-allocated" for the long-lived priv->dma_conf.
+Signed-off-by: Ding Hui <dinghui@lixiang.com>
+---
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 27 ++++++++++++++++++-
+ 1 file changed, 26 insertions(+), 1 deletion(-)
 
-Patch 2 makes the per-queue allocation functions undo their own
-allocations on error, instead of leaving the cleanup to the outer
-error paths that would then walk partially-initialized queues.
-
-Patch 3 releases the descriptor resources through priv->dma_conf
-when __stmmac_open() fails after copying the temporary dma_conf, so
-the long-lived configuration stays consistent with the resource
-cleanup.
-
-Patch 4 holds RTNL around the descriptors_status debugfs reader and
-skips queues whose rings are not allocated.
-
-This series is rebased on top of the current net-next.
-
-Changes in v6:
-  - Split the single patch into a four-patch series as requested
-    during review: NULL guards and pointer clearing, allocation
-    error paths, descriptor resource release through priv->dma_conf
-    on open failure, and the descriptors_status debugfs locking.
-  - Merge the descriptor resource release with the ptp_error unwind
-    from 8181678a92f0 and rebase on top of the current net-next.
-  - Use the "net-next" subject prefix, which was requested back in
-    v1 but mistakenly kept as "net" in all previous revisions.
-  - Link to v5:
-    https://lore.kernel.org/netdev/20261012142458.2845385-1-dinghui1111@163.com/
-
-Changes in v5:
-  - Release the descriptor resources through priv->dma_conf when
-    __stmmac_open() fails, avoiding stale pointers in the
-    long-lived configuration.
-  - Hold RTNL while descriptors_status reads the descriptor rings.
-  - Link to v4:
-    https://lore.kernel.org/netdev/20261001035045.3305816-1-dinghui1111@163.com/
-
-Changes in v4:
-  - Free the RX resources in alloc_dma_desc_resources() when the TX
-    allocation fails.
-  - Skip queues whose descriptor rings are not allocated in
-    stmmac_rings_status_show() and print a hint instead.
-  - Link to v3:
-    https://lore.kernel.org/netdev/20260919121436.1642724-1-dinghui1111@163.com/
-
-Changes in v3:
-  - Use addr directly in __alloc_dma_rx_desc_resources() error path
-    instead of the if/else block on rx_q->dma_erx/dma_rx.
-  - Clear the freed pointers in __free_dma_rx_desc_resources() and
-    __free_dma_tx_desc_resources().
-  - Link to v2:
-    https://lore.kernel.org/netdev/20260905154654.1725313-1-dinghui1111@163.com/
-
-Changes in v2:
-  - Instead of only adding NULL checks in the free helpers, also fix
-    __alloc_dma_rx_desc_resources() and
-    __alloc_dma_tx_desc_resources() to clean up their own
-    allocations on error, as suggested by Andrew.
-  - Link to v1:
-    https://lore.kernel.org/netdev/20260830040610.1156008-1-dinghui1111@163.com/
-
-Ding Hui (4):
-  net: stmmac: guard against NULL pointers when freeing TX/RX buffers
-  net: stmmac: clean up partially allocated DMA rings on error
-  net: stmmac: release descriptor resources through priv->dma_conf on
-    open failure
-  net: stmmac: hold RTNL when reading descriptor rings in
-    descriptors_status
-
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 115 +++++++++++++++---
- 1 file changed, 98 insertions(+), 17 deletions(-)
-
---
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index b093119e752f..0f4af7ec3fc8 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -6707,8 +6707,10 @@ static int stmmac_rings_status_show(struct seq_file *seq, void *v)
+ 	u8 tx_count = priv->plat->tx_queues_to_use;
+ 	u8 queue;
+ 
++	rtnl_lock();
++
+ 	if ((dev->flags & IFF_UP) == 0)
+-		return 0;
++		goto out;
+ 
+ 	for (queue = 0; queue < rx_count; queue++) {
+ 		struct stmmac_rx_queue *rx_q = &priv->dma_conf.rx_queue[queue];
+@@ -6716,10 +6718,20 @@ static int stmmac_rings_status_show(struct seq_file *seq, void *v)
+ 		seq_printf(seq, "RX Queue %d:\n", queue);
+ 
+ 		if (priv->extend_desc) {
++			if (!rx_q->dma_erx) {
++				seq_puts(seq, "Extended descriptor ring not allocated\n");
++				continue;
++			}
++
+ 			seq_printf(seq, "Extended descriptor ring:\n");
+ 			sysfs_display_ring((void *)rx_q->dma_erx,
+ 					   priv->dma_conf.dma_rx_size, 1, seq, rx_q->dma_rx_phy);
+ 		} else {
++			if (!rx_q->dma_rx) {
++				seq_puts(seq, "Descriptor ring not allocated\n");
++				continue;
++			}
++
+ 			seq_printf(seq, "Descriptor ring:\n");
+ 			sysfs_display_ring((void *)rx_q->dma_rx,
+ 					   priv->dma_conf.dma_rx_size, 0, seq, rx_q->dma_rx_phy);
+@@ -6732,16 +6744,29 @@ static int stmmac_rings_status_show(struct seq_file *seq, void *v)
+ 		seq_printf(seq, "TX Queue %d:\n", queue);
+ 
+ 		if (priv->extend_desc) {
++			if (!tx_q->dma_etx) {
++				seq_puts(seq, "Extended descriptor ring not allocated\n");
++				continue;
++			}
++
+ 			seq_printf(seq, "Extended descriptor ring:\n");
+ 			sysfs_display_ring((void *)tx_q->dma_etx,
+ 					   priv->dma_conf.dma_tx_size, 1, seq, tx_q->dma_tx_phy);
+ 		} else if (!(tx_q->tbs & STMMAC_TBS_AVAIL)) {
++			if (!tx_q->dma_tx) {
++				seq_puts(seq, "Descriptor ring not allocated\n");
++				continue;
++			}
++
+ 			seq_printf(seq, "Descriptor ring:\n");
+ 			sysfs_display_ring((void *)tx_q->dma_tx,
+ 					   priv->dma_conf.dma_tx_size, 0, seq, tx_q->dma_tx_phy);
+ 		}
+ 	}
+ 
++out:
++	rtnl_unlock();
++
+ 	return 0;
+ }
+ DEFINE_SHOW_ATTRIBUTE(stmmac_rings_status);
+-- 
 2.34.1
 
