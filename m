@@ -1,96 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.46
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792831581;
-	b=e6Gq2CVBlWhDyc1cYbnfZUSaZrtIjQOJVYOkQZQ2sRYF8nsqW1mnAvvji4ysQD30NSRr
-	 hV5n/f3+mjNgCTwYGRPz0cDt/Hoyml/+KPmd5E+c4KK2N++YTX+FtjSPOXC7sjcQzXo2y
-	 FIhfneR1ZTvZlQVPfRlzsoCvDKFR+/7jm7iOW9uvEMuUoqzUPQGNhsF7INuwnxN4gTEo0
-	 8c2M1vh6kBgdJcpZ8+rp5pPuDdZg3HXbqapID4SavDzv0gtIxJID9Z1QHGYWM2adykRPt
-	 NQC33IO9GTGI09FGpgtJTiiTXipVivuUBInUD2+70Nd5OmVybzR/bAv0dtHhChS6X/Q==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792831581;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.41
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792832387;
+	b=L4jGU53roTlbEaFFlfeJA1j1y/cUyoBTq9xcMPOsjmEPZCdOWwWWFvmjxj2xpBlRfh37
+	 cNbQCvn1ZhPRjRgW9I7k5sdmSujc3UywStk/u47pjwSRT1UTu7sjJ2AdHa9ozl1evIW9K
+	 LNgEBykinIn+2rHDMeMvQeXTjsSR1oLPcO40RvlLspNz/r+4HPpj9Rq3w1je1RAZE5Vmp
+	 /+LfyTLGUy8bxJwjwsD1PofiLjMp4MUo14BV7llvjScSyR4vccoANUF0ET4FsX8BBvKWp
+	 pDR/5U2mNh8L3FRSx3xtMmfM462S55HS/XEsMw/Qyk092KNor9qCxbuLcO53Q4U6+5Q==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792832387;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=VcwFgC5lVsHSbW/ej+cAGy1X0tEOwMBM8cSBGLupnzo=;
-	b=VWnbIsXPl3i63MOAsUgmtZqf8R3B1iRiH4t6iLNcXwpLkAI9hcB9AXcQMMYo2QC78Hwj
-	 CigL5jKu7wfSQ5uqHPoi4xFNqyvWd8fJcmo/NvJqUuFlyzwEe7VqHNrFKZIHjcAuRduQ8
-	 fRZf9ogOa15AMUegcZ5AiWKJ0rjpVt8eh3H0PYfoaKnPWC8rLVnXmiYgHX1MO3cemdvdN
-	 99ufZIS1K2swOibMybAYnu7n3Mwg59GtSoIqE4KfdcPQUHvseYvV1yDSPeBMiDJKN3qnZ
-	 Oav6jilnoVi6880V2R4f5xqsPjr7utSeoGk7bsVi+qICyuJ6+qegx0GJNAl7ni3p/3Q==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=Aj0ctnHyFlf1mrEf1OjyH+Yd3MT+vDq9LG+nCIJwa/k=;
+	b=ZBiS11o9JCjvqvOEI1qioL2599mW0QMSnMJa1lePtD/xgtVI4Q8l6sUDK+OhyzuuOiK3
+	 r9c6spUnfZRpVMju83v5PkubZeCxojO02koXhRKw1cZRaPIkPm3Tbbi+/VV9ed57Rhx/E
+	 V0ZVnaurfPCZKgIYXqLhnX4p5dxFuhh8sm+SCyQv35iePOlzWXps21hX98jw+lP9ZVZsc
+	 G4qEJr/QzvLAPpyyruZOq20Dtd0PxaRiiKl5GB6jvsKG6u0+AVBIQo6Q5ubkz5EF7Ye5A
+	 eVFoACBm8geu26M106XQF9FT4CGpMs15O46tpvaxPeQcMfCiEe6/lUEw7j9mDSQq7DQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=iv+cuac4;
-	arc=none smtp.remote-ip=209.85.221.46
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=HryVdwJ9;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.41
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA5E606A31B
-	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 08:46:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DBA5E606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2418D606A320
+	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 08:59:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2418D606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=iv+cuac4
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-48e10a70540so912960f8f.1
-        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 01:46:19 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=HryVdwJ9
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5be53e5fce1so1413065e87.1
+        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 01:59:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792832385; cv=none;
+        d=google.com; s=arc-20260327;
+        b=qYO1MhbYraUfKwrKKVTcGpsC3F6DNBiy+ykyl7yloy7ANBSR3bGrFeJc6/jDhm6n0s
+         Jkf9W6dDjnh/LAE5CgCEgG+yCtifN7juY3XUFlo7mSsw2AFa7cIVnW/NOyDTUCZ6gTii
+         aDC5gmtx+CHQkcjqdM9isgDTC6FZCR7yob5uPhN6gg7whNnq6V0UETWSPTJAdE0BGrqP
+         OBmZXv6Yv5wcYTgVgVppjxCGUtnMG2wLFrJzxB4aT3xM8FkU2vGIOlIX37VQmENk9TuH
+         ihchMENHicQPc9OI5docmU/tSC5P1HJ7ijo2KWTabVMiMzMN2QWqDKdMAzVMu1AY3DwQ
+         C9Tg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Aj0ctnHyFlf1mrEf1OjyH+Yd3MT+vDq9LG+nCIJwa/k=;
+        fh=hHQVLkNDBO4bXovTWlmlzzoRVkvZZRdzeSPIESSgiw0=;
+        b=dPnYIArVPZ+dxaMwC21VUFgX/Akhe0q+1hg686OWwWoRIr3fBgORqlr9xqoirPLnMP
+         j+bEqowNWNb/ms7sxF6enANj8G1vIdsKbF5rEMpiunCHQUblsH5za6TCDM4DcbBY4kRg
+         FR8+JFx2h4qCjEP8EE7mQnCC1UwpE7/r+yLuC2fxmxerX6PttrktUE2UHc+8+YdKYuNR
+         kjKjzxI0NPTgiMaToZ4t+rD9pjrddO+8Bl63iV5yoFdsxbjbsm3LHNkZFkFFIn9RF9nK
+         OhQy2ELKtnac14DZlZuANIPIzSUMv4pZTPoB+27wRLjXWvkTaJtL3yHs6tvZpCpOg+W7
+         Rgkg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792831578; x=1793436378; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VcwFgC5lVsHSbW/ej+cAGy1X0tEOwMBM8cSBGLupnzo=;
-        b=iv+cuac4Mpwnskit760iQ7AyyUCigTOtw7zZS+Fudv+NRmIVyuZrpMyyKV0EwEaZxG
-         p8/ibiwHkQxMuf/cRLJ5wME3cMEQBJoXNXyzQ+frGnuEdHad9y0Byv+nSqDCcYHXXwUv
-         /qRI09AEirEvKH1aHUg4TbzbopxvNv9AB5rs2qwjR3ao3Urc7BUUGFRmyH0cH5PzJcQr
-         LXM4GeDA3mgPrsMcvURsqjeGseJI42LDEa4p7IMrtyoz/2v78hh0j2Rw8TG5MoZdXp0o
-         aJGEheWhTK5VQQz8UBQQAPAj2at+bgOXUZxlXiQysyWWIj+yYIudNB6HsHfhgiOqXrTG
-         vowQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792831578; x=1793436378;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1792832385; x=1793437185; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=VcwFgC5lVsHSbW/ej+cAGy1X0tEOwMBM8cSBGLupnzo=;
-        b=NP9PWtjkL659jWQWOFHC0CqvzwdUcsnz/4zngXdPqGWZtaJSJnUzWMm9eDXNB8Uw9+
-         aiTdNQT5+bbRcBwPUdD4yaNht2YFRh2AX9vvwAIN2gPG13LkgEWmaCh4B4/DmQId1iDS
-         MwePCxWqYmR8OsyZPs4Tddpev/bPtD9IPE2TyR0tIZuWASdm0GOr7/CQ6Utp5V6J+ntz
-         KKO4rXFHBaKxiFof3iDIUvsyO6e2NLAAJ5KMWOe33T2BAZQDxfN4Y2N0QmL1SkVQ+Uee
-         if82L6BF8pOeKmlnoeG31t9AHUzi2MAr1Z7jZuwaE/ixIIlQ9e+dmQmW2jPWWDOiQJsd
-         34VQ==
-X-Gm-Message-State: AFq9FYJFxrpeZ7M++nj0E3R4dvYXYKkA6RaxOtatker8o0+eZDjLdij9
-	jzm+fPzx1DFUvmkKK5Q7iX4VCoU7SzL5TAWLS514J2A/hi8zoIAhGFvuX2lWZvo+
-X-Gm-Gg: AYBFou1QDWMrxkYS6fTj4uLpXOTQUE8/zS+u+QlOMObALkAMiuF7SBbL8WiHeHRehNh
-	hKBID30DpjnPIcYImudvza4FWTPn+cW1XHbeoV4jOJblk9pTDoJlAiQFuImAItWi2aEcj2Qqe4C
-	tjz929YQw+AFUTj9Y4WGtlFV5T6z9mo8nL45qe+wBr6yP6EHHtcYRvGpFULjBf04rLMHkfKRJj1
-	jyGxwsEWv1uvpZ4K56LJabJhK9l5LCSmThZviXZMTGC2eJYSoVmyvfbh4d3c4rO7Bw6R9Z71MF0
-	049zyCjNDGimHNJSf6TVq0Bea3zlCeWHD4Q6/0cXiOvHPny+aRAVufWpbMNyffGQbGehSDYvOOl
-	ksI01d/ASgGQ1pYPtKI9NxUikq5il95ETuGI/Q6IRVDkee/P1pAJe0C3hbta3QswlHpOoTJXadM
-	BPkBUGRZc4Z5lPyyr+29k6OnmhXgA5dw/DX84p/FAYMGOc2IFdbZFU2auOJru0QSyhX/ru3f31k
-	nuoT6GUumNaMwoeR0AaRXqAzrzzSwEWPJ6Zy0fh6o5BO3LBgrxxdQ==
-X-Received: by 2002:a05:6000:2a85:b0:48e:476:99fb with SMTP id ffacd0b85a97d-48e3eb7f435mr1278544f8f.22.1792831578058;
-        Sat, 24 Oct 2026 01:46:18 -0700 (PDT)
-Received: from metepc ([46.197.185.71])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ecd3662sm3481217f8f.40.2026.10.24.01.46.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Oct 2026 01:46:17 -0700 (PDT)
-From: =?UTF-8?q?=C3=96mer=20Mete=20Kaya?= <omermetekaya0@gmail.com>
-To: netdev@vger.kernel.org
-Cc: oneukum@suse.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?=C3=96mer=20Mete=20Kaya?= <omermetekaya0@gmail.com>
-Subject: [PATCH net v5] usbnet: fix EVENT_RX_PAUSED race in usbnet_skb_return()
-Date: Sat, 24 Oct 2026 11:42:08 +0300
-Message-ID: <20261024084538.256596-1-omermetekaya0@gmail.com>
-X-Mailer: git-send-email 2.56.0
+        bh=Aj0ctnHyFlf1mrEf1OjyH+Yd3MT+vDq9LG+nCIJwa/k=;
+        b=HryVdwJ9UjqgrA63j3oc0URaeYN1fc+ksrJnQ2sOjPDyag5GoDogMEjGAjMepyEnIR
+         KwoUBoJFPVW3fA2H2Y2DClOcO+k/OEC11bW3sv/YIXyjP0dWLvhxSD0GZqpYKM2ywnqw
+         QF401ClIonbPT4sQRRl1oRBQs6qWfQFhn2lkkRo8YikCjHD/3UyIYMqpYBzSVCE7xujg
+         N1HoHC8YmUWjPdWwuIExqlJT6EwhCRUFYX+7p6V5Y7GadcR3cTJsBpBWd5iVxvINzXis
+         8as3barP5BJfa4mayr5y67ED2pVAcNeu9FRzaf9dj522DcC7JN6PQT5eYfk0mJGrB73R
+         oQRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792832385; x=1793437185;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Aj0ctnHyFlf1mrEf1OjyH+Yd3MT+vDq9LG+nCIJwa/k=;
+        b=1JphM0fcTQks8PfPyX8gsJltaaBNaNX6emBwO5JlR09e3bxLNBOOG8eBuP7H6heDKf
+         IM4spPB/xXHYQ27d/HQq9z1+Kcab+HEGRTwcGIF5IGBx/MccDS88hqMshaVNB3NMiLyY
+         6OVeWEfRf8o5diu0xWTfa/IQbDXAqWevBwcL8ojV196qWTtFOXtdOhE3usJRkPFvExwb
+         OlFNT+zIqJXtkhIKUFW8z8GDc0LV0H+OzzxS0BZKrcaZ5tQ/pkSFLtDbrMIUQyBa36lV
+         IP1w1aAzkK1pAEwB84FHNUyEDeRX5fYF17wd/5LlP1FJb/YKIbKwL4L5cDN80Qv0D51e
+         bzWA==
+X-Forwarded-Encrypted: i=1; AKwUvBz89GkzD/jmsdRtDfNCgy7h8wV3InNIOKL/hwi5oCHB7TcumEaz8XiDT1kbSy8yltthMxSGJq8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKGDfyvh+1XkFSOv2N5SiLje1m0Z4i7HCy3sPFMGNeQ27hXxZb2
+	j5LrJNVkiRF9j2XHLZeOUmd7A587vv43lJ6p+Eyl0aIkrqm7WQxvR8IUuIsgdKcGTO3O3BivtDl
+	tZOPE9Cd7kKSB7oWzo6gOsudiD5sFXG5TiQl3
+X-Gm-Gg: AYBFou2gRxSELIFq03PfGD/iaeux9hdu7XG8DHxfGrXMe5KftwdXyBUlV4X4pwy0Snv
+	wauldAxd9pKGgAXaopAxiYE9S/dlbiQ7bK2bJsc6HLeHSDhgVrNVZ2a5n0hRvi6IcwF44JXwXTQ
+	9/iX8ny2PR0DOXkkEllF+7SvkMsP2dlf03SfRojYYuvZqxG3BEAscfp7bZcGKjJXd3ziY95jG7N
+	pBPmj4OSQpocLpJi8x7EzEPGJb6B9AfIZqid735XUrjgiqeShEufHEPCpr20e8aTprBs3QmqGs+
+	1Wr8kwI6ijnmkqxUf88e2qECUESw7TlrEm9HEAMUCRoDwjAW8AFwsQkLO4XwEwfEzIbe7Jtkp3O
+	SXOaKPhs1Ioel2mRoVI+8wwJUeMmEk6M2GnMWpV6h5/9memDVJx2Vme/PuAdmRh4GOmPrZO9Q4+
+	Mq5XLT9UMDRdGEBoo5eTBbdHvtoE2nV6gphiIrP4n5AsLrie1Rm08=
+X-Received: by 2002:a05:6512:3d93:b0:5be:590e:ea76 with SMTP id
+ 2adb3069b0e04-5bfb716f1e0mr512993e87.6.1792832384863; Sat, 24 Oct 2026
+ 01:59:44 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,80 +105,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20261023114228.289161-1-jiayuan.chen@linux.dev>
+ <20261023123102.3c30d01e@kernel.org> <607851eb-e42b-46bc-928f-91db542fa9c0@gmx.net>
+ <20261023130812.1ba2462a@kernel.org>
+In-Reply-To: <20261023130812.1ba2462a@kernel.org>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Sat, 24 Oct 2026 16:59:06 +0800
+X-Gm-Features: AclHuK9POySI0ZvG5OMlRTW3dRxVhJhD2MB57P6NTNTOjlC8Nr_YYcS9vVabIjg
+Message-ID: <CAL+tcoBiuu3f+XDkg1a+oZPgPfBYHbJEKYd4MKFv20Ma668ANA@mail.gmail.com>
+Subject: Re: [PATCH net] net: reject dev_weight products that overflow int
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Matthias Tafelmeier <matthias.tafelmeier@gmx.net>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On SMP, usbnet_skb_return() can observe EVENT_RX_PAUSED as set on CPU0
-while usbnet_resume_rx() clears the flag and drains rxq_pause on CPU1.
-The skb can then be queued after the drain has completed and remain
-stranded until the next MTU change or device stop.
+On Sat, Oct 24, 2026 at 4:08=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> On Fri, 23 Oct 2026 21:32:40 +0200 Matthias Tafelmeier wrote:
+> > On 10/23/26 21:31, Jakub Kicinski wrote:
+> > > On Fri, 23 Oct 2026 19:42:25 +0800 Jiayuan Chen wrote:
+> > >> proc_do_dev_weight() sets the backlog NAPI weight and the qdisc quot=
+a
+> > >> to dev_weight * dev_weight_rx_bias and dev_weight * dev_weight_tx_bi=
+as.
+> > >> The three sysctls only have a lower bound of 1, so the products can
+> > >> overflow int and end up <=3D 0, e.g. dev_weight=3D65536 and
+> > >> dev_weight_rx_bias=3D65536 give a backlog weight of 0.
+> > > Not sure anyone uses these, maybe we could cap them?
+> > > 1k for dev weight 8 for bias?
+> >
+> > Capping does not make sense to me.
+>
+> Please don't email people off list.
+>
+> What are the values you know of being used in production?
 
-Synchronize the EVENT_RX_PAUSED state transition and paused-queue
-dequeue operations with rxq_pause.lock. In usbnet_resume_rx() splice
-the paused queue into a local queue under the lock, then drain the
-local queue lock-free. In usbnet_skb_return() use a double-check
-pattern under rxq_pause.lock on the slow path, keeping the normal
-RX fast path lock-free. Use spin_lock_irqsave() to match the lockdep
-class shared with other sk_buff_head locks taken from hardirq context
-in defer_bh().
+I'm not Matthias. Revisiting my past experience doing AI tuning stuff
+in the testbed/real workload, I once saw performance improvements when
+I played with this weight and the driver weight. But I didn't manage
+to see the deeper underlying reason for that scenario, which means I
+was unable to replicate the methodology to another scenario. Maybe
+it's a good candidate for blind AI tuning...
 
-Discovered by Sashiko, not triggered, not tested on real hardware.
+With that, I think capping at 1000 is fine by me.
 
-Fixes: 43daa96b166c ("usbnet: Stop RX Q on MTU change")
-Signed-off-by: Ömer Mete Kaya <omermetekaya0@gmail.com>
-
----
-v5: Splice rxq_pause into a local queue under the lock and drain
-    lock-free, avoiding lock drop/reacquire per iteration, as
-    suggested by Jakub Kicinski; fix reverse xmas tree ordering.
-
- drivers/net/usb/usbnet.c | 20 ++++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 84f97f448b2d..97a30dd22c54 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -329,9 +329,14 @@ void usbnet_skb_return(struct usbnet *dev, struct sk_buff *skb)
- 	unsigned long flags;
- 	int	status;
-
--	if (test_bit(EVENT_RX_PAUSED, &dev->flags)) {
--		skb_queue_tail(&dev->rxq_pause, skb);
--		return;
-+	if (unlikely(test_bit(EVENT_RX_PAUSED, &dev->flags))) {
-+		spin_lock_irqsave(&dev->rxq_pause.lock, flags);
-+		if (test_bit(EVENT_RX_PAUSED, &dev->flags)) {
-+			__skb_queue_tail(&dev->rxq_pause, skb);
-+			spin_unlock_irqrestore(&dev->rxq_pause.lock, flags);
-+			return;
-+		}
-+		spin_unlock_irqrestore(&dev->rxq_pause.lock, flags);
- 	}
-
- 	/* only update if unset to allow minidriver rx_fixup override */
-@@ -698,13 +703,20 @@ EXPORT_SYMBOL_GPL(usbnet_pause_rx);
-
- void usbnet_resume_rx(struct usbnet *dev)
- {
-+	struct sk_buff_head q;
- 	struct sk_buff *skb;
-+	unsigned long flags;
- 	int num = 0;
-
-+	__skb_queue_head_init(&q);
-+
- 	local_bh_disable();
-+	spin_lock_irqsave(&dev->rxq_pause.lock, flags);
- 	clear_bit(EVENT_RX_PAUSED, &dev->flags);
-+	skb_queue_splice_init(&dev->rxq_pause, &q);
-+	spin_unlock_irqrestore(&dev->rxq_pause.lock, flags);
-
--	while ((skb = skb_dequeue(&dev->rxq_pause)) != NULL) {
-+	while ((skb = __skb_dequeue(&q))) {
- 		usbnet_skb_return(dev, skb);
- 		num++;
- 	}
---
-2.56.0
-
+Thanks,
+Jason
