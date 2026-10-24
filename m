@@ -1,113 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.169
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.180
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792834108;
-	b=TI9towpcIir/r71EPIaSIy9PGN7Ifi6ASyp91NEt26UpWDJ926XVJ1UNUhfRkzJ2Oojx
-	 PwHVU9bhOj+iTSYaswPGx3d5re27xYwzUn+/Wu2j1pa06QDfkRjhYd+e7ynD4LVyaRJRn
-	 Iu90yzm6OB6EmthdCbSTU1Ykmh4zifU187WrUnu1U433ODTVkW0eAq1mvzOLJTMc5S7nF
-	 7M/lmIByQ5PO1Q1TVAsb+UPj7IgfVcLo8nVHrMk2O7jGarbJqN1Hp7ZzYism5eSCuW4CF
-	 nsGKCmy6eA0bRZBvUJKGhhVBovOzSGuvbZkGr1EJ27Zp8zcMjnVSJTCBDZ5d/dGDuyQ==
+	t=1792834221;
+	b=2qGN1kyeh9QMR6z23aKhkWHOrQEMIJ8dZFYu3VaKbOh/BTIuBQhWiCcKjgW+JeXAjivz
+	 NQmjRFKJ0x3oxssybT/zw38i7I8pgjQ79hRW995+NpYpKzQF16mWBhQmzvhlwLB9RJUoW
+	 zpQKPjDd0kof2vQFWnQmy3IhW3nUJwkLUs5fX7H/XfzADLHbpqeT+KnbRQjUfZt+Pul7C
+	 5EyEaY2JZB9d4wJ1t6O5q0ClMfmGEKqtVXw3qwN8EI8dPN3BvY9Hd8kdgElCeMolFps0a
+	 CS/d9frdvcCop7EPT0Z5x+QkPMTY6/hm03yXgILy/MgEJSqVPU9rhtcOMGJIcPvMjMg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792834108;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792834221;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=BlUUlyu0tLkS0StKgW3SUYx8agTboJGWzFSZtZkcXsU=;
-	b=G655PaQOYK6nrBgCbT0TEC6BEFkTcIlt9fpoAED7qyVfP2Hpp4sG4jom17/jEhhV/DfJ
-	 tjNJf29LMk+NTqxE+IZYWDXi0qUBBbUbbbu9BbvYVN9WtXfaPck1zq/zOkwHcsK893Sz6
-	 Bf9EjFkPijeH6PfTLYYKkNecjEi60FsGYzepmicYJpcVHbhyql4LS4ax1F5IkMn67Ra5P
-	 jZC+zZTtsDfQrW2QZX74r0DmbjRBUP8puwbn+aOfLAMloWCW95ENViCXUlPnZZdGYWbdc
-	 cPv+xbYLDc8Pu1ym7hGhGIVwyLZeJAaO9MT7N0D9dS69HEE9Wyv/OBYu7pYajrjZdjQ==
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=T/uGr9O5F7z9D4gBA52zJiYNaYbWI1NRoXexG5R5ETM=;
+	b=jgZxAehp5NBu5+lseefYiIyxMiZ+RHVli/0EhHT74dOTQQjFcog7wlLkfHnuJK82E0NO
+	 iNbuHhIi9kt7/eL4uwjYdDiTAed/xQC/nDn6itF9PmPW9o8N2aOsivQR3xXHJ03dkLNwe
+	 PDRH4P9l82+ofG8dHzdhA2sdF7mSge2SRKnztOB8AOSQziCQDAzQnJpPwBbHPTdoW3mhX
+	 8tLie7ok7BJWVDn5ba69ZsqOKF+XBGu4f/sGiDGaAfrOEg19JvAT4JQ1vIsxle4+6twD6
+	 kHNTcgV8RGs3ViiiutNd+mHm6QUk+C1uUEwWPNFtt9Hb3sLzFMA+ApSYNk78QOiwOXw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=b9nh1GtH;
-	arc=none smtp.remote-ip=74.125.82.169
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=YtgVCBXS;
+	arc=none smtp.remote-ip=209.85.215.180
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469CC606AC06
-	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 09:28:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 469CC606AC06
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E20606A31A
+	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 09:30:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 27E20606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=b9nh1GtH
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-36681e85e87so159550eec.1
-        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 02:28:28 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=YtgVCBXS
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-cd5cd8d89a7so543178a12.1
+        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 02:30:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792834107; x=1793438907; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=BlUUlyu0tLkS0StKgW3SUYx8agTboJGWzFSZtZkcXsU=;
-        b=b9nh1GtH2+skTNF5DZP9gibDmo1B8XDJqOyw8/vQ6Hd74v9sFQ35s9Tesqt2FOb1pP
-         Qo+VkuBPh1UAfxNNdXvzZGy5dqQMvfL8wWV0KkiOjlsFAuZ0jB6LU7PN3kr0OA5okfZ1
-         dCa8a0oNrk/TJERvUoac8eX8GqwJLdaZZWx8w6Oy6xH8AeLiCbXskMox7qS6zJHcGA/U
-         Lba7qXFG+eJRjcwzpwWBJ3wKgSpWdlLk6fRDtV/K8AOowXnUzZknZB8RmFwwORREa4Eu
-         pmaYVLGyAojs5xhQUTZoEUiULZRwwY9pWKlF4nr5LKVBGz3/bIONFndeO7oDFWw+ILxa
-         2Ycg==
+        d=gmail.com; s=20251104; t=1792834220; x=1793439020; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=T/uGr9O5F7z9D4gBA52zJiYNaYbWI1NRoXexG5R5ETM=;
+        b=YtgVCBXSUeVcu8Mqv7J5aUu2nXj3G0PBC8eaw6IEYZbYR7toBD03RGII2GHcevewBc
+         uXSyjYy5oPmaYloGbnWwwG+1sAPv8l0xVLdGUPO7PCxTdlvM4MRy4sACFVDhRR1g+Lrh
+         6jcBf3IYdDe7ounKGQ+ZyL0iDvqPbUMkpyZfzNEWh1NgmatpeKW4YXvhE4m3BLnCL81f
+         euAlYL37fvC3VSc1e7PHCnwVSaTcJv0H8AjKwAzSEtBbOysjDdFULIs70a3bGTWmF0ne
+         m13LCDXUO0x0qrWH3/PVgXfCjZShU3lclP9biOLLPHmNEmjMG/IzwISZ51CDES475xJN
+         pqLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792834107; x=1793438907;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=BlUUlyu0tLkS0StKgW3SUYx8agTboJGWzFSZtZkcXsU=;
-        b=DcrBq2c+mMIbeerkbJa6qmn+1H5jRD4aXW+Om8ct/agkVfWot6QxbZwEDaOMl5vyeH
-         HtCzznV9gNbnjeaDNho2qUWq93Dzuu/PAL0ZHcx5HDOR6h39P7QO0oC0AV+XduO/Dz7U
-         RakaFBZc8ISZZjUgcZgu6Okr6r46p0F7C7PamKYLy0Yi6stqfBciQ+LN/t5gTkNgULIF
-         fmDS6Qn9LnBczY11/MhW17cFQH0zERzm9TGKHCHWJlAuD6zGGwMOzvJxDADGYxTbF5jW
-         02gdiQ2EOFTd1yaH4xIYK+CONMkovhJQs/I9TXgkaJCw1r7QW0g5XLLgxZOOilhKsbCX
-         i5NQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwW4r6IM6B34fzRycy4ewVBK7h+F2cz9I6QAEwAQMvO/xg6jkdNBZieVHOJJ6C2kXAalH19kCw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJkykWWvopFE+UzF8rb3iAsUEQKn2Sc0pA7o+37g+KHxF0bcuUc
-	W00OTi5v1hPs4Aj5ezZ1izaqdQDm2yyCESBjHgdNc9QldXYatt0Xh/Qf
-X-Gm-Gg: AYBFou318zXggNEqy/yILBnxmwpM1DMbgvF8vmA8vr+xzeOCOZIMqTdfQgkGuG/Z4z/
-	WUlj4ZF8JGjBqkqrqp5rCp9BTg4/uILmk00T+TTeY5oWyBzDS9kmKT+Y1u3C7ZMcMlNwe7jiPsd
-	Ow4aDS6pVxefFwDhTtjbAclvbtkzsMQ+17sJEGL6hMPQPHnq+eeUkRiTNcuWSucbJ9XY1h7gI9c
-	2yuLB9wy/nnrbHXTMQBAdCDcWQ6LnSAf296Qw8Tjvs0zmQylpWPFCMWMR6/SLQmzct4jINtyQXi
-	l5yiI5Xj1BMiRd6H1B7E2pd5rdw6Ra7mzrm0xC1AM+crCYTe+2xpZBTRcvFlNQxslhPOg8HgZsp
-	nEmulq/dyflwKc0vwGcYE9cgRTeHyQEzi7V0TpaAoaltuMIghH7J6/KA/kUu7Md7p8E8NkvaG6A
-	DmDwo752tG4gEYYHmdILAilC2K09cg274CNWH35GEh6tvA/iSloqUfbsyTEBEnhsBshNsxkOJdJ
-	QWMz0QFk9FS11FZgBCnNxqOToMBNP0pm4yoW3lztiLwkn96EP8DrjsSgiEGxrw2YGjNqDEe9ubc
-	dTLaCPlj/YFzDom/HSFhHt03m7roxl2ovDA+Ek3NYBdMabZe9x8UDtoxDa3BqhXXV8eFA5ob2g=
-	=
-X-Received: by 2002:a05:7300:d086:b0:366:dbf9:32bd with SMTP id 5a478bee46e88-369e842df55mr2190770eec.9.1792834107430;
-        Sat, 24 Oct 2026 02:28:27 -0700 (PDT)
-Received: from nixos ([2405:201:c40d:9039:e1f8:b9bb:b037:3cab])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-369e8daf444sm5236604eec.18.2026.10.24.02.28.19
+        d=1e100.net; s=20260707; t=1792834220; x=1793439020;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=T/uGr9O5F7z9D4gBA52zJiYNaYbWI1NRoXexG5R5ETM=;
+        b=2j63av/MIhsht/ZGX0yA7z/NSDT8Tj6ZKRzKV1jNF9XJKDDVDgDK2ZeVUpEZhdi6+L
+         iqTXF0Ayjp0PwKRM7hKqwfFseDYWWfiQNEcpfgadNRvjXs8N2a10Bon3N+XICTcnkIk6
+         dDiFMhbaZrLXPQxdgsmRW5OWjjBf66uKEHCRtqWg5KdfY4PlKzXgg+xOm9lexHmpeiY1
+         FCTMOtO7JSRTwYSfGv54q9ADZ5J2+iM4o65ORPemfcn7HrLUFBP42eTkptiHunZzJmaa
+         xkpJWbZBtJMkWtQWwM2ZCbpHMuMhxktbqa7xKJpUlF8jKnpzGqOs/IOT3G1EJ7Rvxr1k
+         7kuw==
+X-Forwarded-Encrypted: i=1; AKwUvBw2z7HWzclj7oiRopHA5Ya4Dq5UwX/gzV5wX/NztQse5YfP8GVZo8ecOeV52furg6RIoudtVh4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIBF5+mhMweRZax+XyMXDA5jj0q8wz2fGORZEAgKB2Rs1TNcbj7
+	L1U9UGukK1G6NDBBnYVfgaXPdh0S5KAZ0r71WvfEj7MVyNtt9kj+SKig
+X-Gm-Gg: AYBFou0CpOvABoD3MuOmKRH05G6Tk4KfMmyJJuHvJbdjF/QtKNBUDHjtiYXqHz/NKSC
+	t+HiA+HV4RmujZGFlTaEzDbqjNpdakwveF/ojd/JVgXrlaBQ/IoLVnfZ1EZmjLUTcAsN7Svz4VA
+	OX6J8WdCRup/tJSw44gFqNy2dRG3xDSyU4J49E4ZNdd0PZgzT9YbucBKCXQfjpDtIE+XFuPhkZ3
+	G0wb3I80WE63Bewsd/Lc543Ew5hx51heBT9TAHrMBGeaYBwqYRkXTX+WU0ehWKsuyjEb8tFxv3F
+	7QeKY3JtEFcY4URMUMnF7xeUWyPVPnye3yWeFMf1Kj3Ilw2WYrWlTpo281Q8l8osLUL1AdewDls
+	Ole4oJa8iSOyRK2q+4LOU5sqUG4iB6vdyqX7MbEckNUz4ljFKVLkODNURSJTCbnaZ9KdZpaU7ZY
+	XcufcuFYdz/1OuRWH0NERGPbAkdqGcv6zGb9GbURdgirAZC47v/+ir42LEZMCLVE9cbeIH3JvKZ
+	sKX4RzC3Qv7iQqvPeMHhcCA7WcX8G2zwbf9OdE3u3j5Qeh65CfHbG0XQflgBy+ZGm3XSj7JBl1+
+	2+zY7yDfbAEXTTfKGDfegfPNcf3AWIfWyTj42iFyHcheiuq7//A8Ivnq/CcyCOqaMexY73moWtP
+	fXjQNlSvMz4NahSpOYpgNn8P13L0d4RCWmRzeVyeCDPPfI8vZOQ4xZ00VRguDSv926X7t6NGOeA
+	rj7eUO4blskmj4Y+ZBQ558cG4bOOQkAV2XsL5eydqfjYm1tsvRT7u+sub7
+X-Received: by 2002:a17:90b:4d09:b0:3ac:8ee5:e007 with SMTP id 98e67ed59e1d1-3adeaae619cmr1148374a91.20.1792834220445;
+        Sat, 24 Oct 2026 02:30:20 -0700 (PDT)
+Received: from desktophank.localdomain (111-242-220-176.dynamic-ip.hinet.net. [111.242.220.176])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea9af32085sm4345075ad.2.2026.10.24.02.30.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Oct 2026 02:28:26 -0700 (PDT)
-From: Ayushman Rout <ayushmanrout27@gmail.com>
-To: bpf@vger.kernel.org
-Cc: ast@kernel.org,
-	Ayushman Rout <ayushmanrout27@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Shuah Khan <shuah@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+        Sat, 24 Oct 2026 02:30:19 -0700 (PDT)
+From: Ting-Han Hou <ue081723@gmail.com>
+To: stable@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Chris J Arges <carges@cloudflare.com>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Weiming Shi <bestswngs@gmail.com>,
 	netdev@vger.kernel.org
-Subject: [PATCH bpf 3/3] selftests/bpf: Test overlapping dynptr copies on xdp frags
-Date: Sat, 24 Oct 2026 14:56:58 +0530
-Message-ID: <20261024092659.76422-4-ayushmanrout27@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261024092659.76422-1-ayushmanrout27@gmail.com>
-References: <20261024092659.76422-1-ayushmanrout27@gmail.com>
+Subject: Request: follow-up fixes for "net: add xmit recursion limit to tunnel xmit functions" in 6.6.y and 6.1.y
+Date: Sat, 24 Oct 2026 17:30:10 +0800
+Message-ID: <20261024093010.485-1-ue081723@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -117,189 +101,52 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Add four dynptr tests. Three use an xdp packet with frags, and in each
-the range goes from the linear part into frag0:
+Hi Greg, Sasha,
 
-- test_dynptr_copy_xdp_overlap: bpf_dynptr_copy() of 1200 bytes with
-  the destination 100 bytes above the source.
-- test_dynptr_read_xdp_overlap: bpf_dynptr_read() into a slice of the
-  same packet.
-- test_dynptr_write_xdp_overlap: bpf_dynptr_write() from a slice of the
-  same packet.
+6f1a9140ecda ("net: add xmit recursion limit to tunnel xmit
+functions") was backported to 6.6.y in 6.6.160 and is currently in
+queue-6.1, but two upstream follow-up fixes for it were not. Please
+consider queueing:
 
-The fourth, test_dynptr_skb_load_overlap, reads a range that spans the
-head and the frags of an skb. It passes with and without the fixes and
-checks that skbs are not affected.
+For 6.6.y:
 
-The new tests set err when the data is wrong. The existing
-test_dynptr_copy_xdp does not, so it can pass on corrupted data.
+  c38b8f5f791e ("net: prevent NULL deref in ip[6]tunnel_xmit()")
+  77facb35227c ("net: increase IP_TUNNEL_RECURSION_LIMIT to 5")
 
-Without the fixes to bpf_xdp_copy_buf() and bpf_dynptr_copy(), the three
-xdp tests fail. With them, all four tests pass.
+For 6.1.y (on top of the queued 6f1a9140ecda backport):
 
-Signed-off-by: Ayushman Rout <ayushmanrout27@gmail.com>
-Assisted-by: LLM
----
- .../testing/selftests/bpf/prog_tests/dynptr.c |   4 +
- .../selftests/bpf/progs/dynptr_success.c      | 128 ++++++++++++++++++
- 2 files changed, 132 insertions(+)
+  77facb35227c ("net: increase IP_TUNNEL_RECURSION_LIMIT to 5")
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/dynptr.c b/tools/testing/selftests/bpf/prog_tests/dynptr.c
-index 4396560365e8..08382ed076a2 100644
---- a/tools/testing/selftests/bpf/prog_tests/dynptr.c
-+++ b/tools/testing/selftests/bpf/prog_tests/dynptr.c
-@@ -22,6 +22,10 @@ static struct {
- 	{"test_dynptr_data", SETUP_SYSCALL_SLEEP},
- 	{"test_dynptr_copy", SETUP_SYSCALL_SLEEP},
- 	{"test_dynptr_copy_xdp", SETUP_XDP_PROG},
-+	{"test_dynptr_copy_xdp_overlap", SETUP_XDP_PROG},
-+	{"test_dynptr_read_xdp_overlap", SETUP_XDP_PROG},
-+	{"test_dynptr_write_xdp_overlap", SETUP_XDP_PROG},
-+	{"test_dynptr_skb_load_overlap", SETUP_SKB_PROG_NONLINEAR},
- 	{"test_dynptr_memset_zero", SETUP_SYSCALL_SLEEP},
- 	{"test_dynptr_memset_notzero", SETUP_SYSCALL_SLEEP},
- 	{"test_dynptr_memset_zero_offset", SETUP_SYSCALL_SLEEP},
-diff --git a/tools/testing/selftests/bpf/progs/dynptr_success.c b/tools/testing/selftests/bpf/progs/dynptr_success.c
-index b668ebd61fc7..b6c3abb66e4b 100644
---- a/tools/testing/selftests/bpf/progs/dynptr_success.c
-+++ b/tools/testing/selftests/bpf/progs/dynptr_success.c
-@@ -759,6 +759,134 @@ int test_dynptr_copy_xdp(struct xdp_md *xdp)
- 	return XDP_DROP;
- }
- 
-+static __always_inline int fill_xdp(struct bpf_dynptr *ptr, __u32 start, __u32 n)
-+{
-+	__u8 b;
-+	int i;
-+
-+	bpf_for(i, 0, n) {
-+		b = (start + i) % 251;
-+		if (bpf_dynptr_write(ptr, start + i, &b, 1, 0))
-+			return 1;
-+	}
-+	return 0;
-+}
-+
-+static __always_inline int check_xdp(struct bpf_dynptr *ptr, __u32 at, __u32 n, __u32 from)
-+{
-+	__u8 b;
-+	int i;
-+
-+	bpf_for(i, 0, n) {
-+		if (bpf_dynptr_read(&b, 1, ptr, at + i, 0))
-+			return 1;
-+		if (b != (__u8)((from + i) % 251))
-+			return 1;
-+	}
-+	return 0;
-+}
-+
-+SEC("?xdp")
-+int test_dynptr_copy_xdp_overlap(struct xdp_md *xdp)
-+{
-+	void *data_end = (void *)(long)xdp->data_end;
-+	void *data = (void *)(long)xdp->data;
-+	__u32 off = data_end - data - 1000;
-+	struct bpf_dynptr ptr;
-+
-+	bpf_dynptr_from_xdp(xdp, 0, &ptr);
-+	if (fill_xdp(&ptr, off, 1300)) {
-+		err = 1;
-+		return XDP_DROP;
-+	}
-+	err = bpf_dynptr_copy(&ptr, off + 100, &ptr, off, 1200);
-+	if (err)
-+		return XDP_DROP;
-+	if (check_xdp(&ptr, off + 100, 1200, off))
-+		err = 2;
-+	return XDP_DROP;
-+}
-+
-+SEC("?xdp")
-+int test_dynptr_read_xdp_overlap(struct xdp_md *xdp)
-+{
-+	void *data_end = (void *)(long)xdp->data_end;
-+	void *data = (void *)(long)xdp->data;
-+	__u32 lin = data_end - data;
-+	struct bpf_dynptr ptr;
-+	char *dst;
-+
-+	bpf_dynptr_from_xdp(xdp, 0, &ptr);
-+	if (fill_xdp(&ptr, lin - 10, 84)) {
-+		err = 1;
-+		return XDP_DROP;
-+	}
-+	dst = bpf_dynptr_slice_rdwr(&ptr, lin + 10, NULL, 64);
-+	if (!dst) {
-+		err = 2;
-+		return XDP_DROP;
-+	}
-+	err = bpf_dynptr_read(dst, 64, &ptr, lin - 10, 0);
-+	if (err)
-+		return XDP_DROP;
-+	if (check_xdp(&ptr, lin + 10, 64, lin - 10))
-+		err = 3;
-+	return XDP_DROP;
-+}
-+
-+SEC("?xdp")
-+int test_dynptr_write_xdp_overlap(struct xdp_md *xdp)
-+{
-+	void *data_end = (void *)(long)xdp->data_end;
-+	void *data = (void *)(long)xdp->data;
-+	__u32 lin = data_end - data;
-+	struct bpf_dynptr ptr;
-+	char *src;
-+
-+	bpf_dynptr_from_xdp(xdp, 0, &ptr);
-+	if (fill_xdp(&ptr, lin - 64, 118)) {
-+		err = 1;
-+		return XDP_DROP;
-+	}
-+	src = bpf_dynptr_slice_rdwr(&ptr, lin - 64, NULL, 64);
-+	if (!src) {
-+		err = 2;
-+		return XDP_DROP;
-+	}
-+	err = bpf_dynptr_write(&ptr, lin - 10, src, 64, 0);
-+	if (err)
-+		return XDP_DROP;
-+	if (check_xdp(&ptr, lin - 10, 64, lin - 64))
-+		err = 3;
-+	return XDP_DROP;
-+}
-+
-+SEC("?tc")
-+int test_dynptr_skb_load_overlap(struct __sk_buff *skb)
-+{
-+	struct bpf_dynptr ptr;
-+	char ref[24];
-+	char *dst;
-+
-+	bpf_dynptr_from_skb(skb, 0, &ptr);
-+	if (bpf_dynptr_read(ref, 24, &ptr, 20, 0)) {
-+		err = 1;
-+		return 0;
-+	}
-+	dst = bpf_dynptr_slice_rdwr(&ptr, 10, NULL, 24);
-+	if (!dst) {
-+		err = 2;
-+		return 0;
-+	}
-+	if (bpf_dynptr_read(dst, 24, &ptr, 20, 0)) {
-+		err = 3;
-+		return 0;
-+	}
-+	if (bpf_memcmp(dst, ref, 24))
-+		err = 4;
-+	return 0;
-+}
-+
- char memset_zero_data[] = "data to be zeroed";
- 
- SEC("?tp/syscalls/sys_enter_nanosleep")
--- 
-2.54.0
+The queued 6.1 backport of 6f1a9140ecda already includes the
+"if (dev)" check from c38b8f5f791e, so only the limit change is
+missing there.
 
+Why:
+
+- 77facb35227c: with a limit of 4, setups with multiple tunnel
+  layers and MPLS lwtunnel routing drop legitimate packets with
+  "Dead loop on virtual device ..." even though there is no loop.
+  6.6.160 now has this regression, and 6.1 will get it with the
+  queued backport. Upstream raised the limit to 5; it is in 6.12.83,
+  6.18.24 and 6.19.14.
+
+- c38b8f5f791e: iptunnel_xmit() and ip6tunnel_xmit() can be called
+  with dev == NULL (e.g. SCTP and TIPC over UDP), and the new
+  recursion check dereferences dev when the limit is hit. It is in
+  6.12.78, 6.18.19 and 6.19.9.
+
+Both commits cherry-pick cleanly onto v6.6.160, and 77facb35227c
+cherry-picks cleanly onto v6.1.190 plus queue-6.1 (stable-queue
+fa04d3db75). I build-tested the affected objects (ip_tunnel_core,
+ip_tunnel, ip6_tunnel, ip6_udp_tunnel, the GRE/IPIP/SIT, VXLAN,
+Geneve, bareudp and GTP drivers, SCTP and TIPC UDP media) with W=1
+on both trees, with no new warnings. I did not do runtime testing.
+
+I noticed the gap while checking which stable trees carry
+77facb35227c.
+
+Thanks,
+Ting-Han Hou
