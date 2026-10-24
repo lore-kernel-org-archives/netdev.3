@@ -1,100 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.48
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792852749;
-	b=EK+UQutjLmQI5uZJEP/PAn/5jRubC1ZkyA1/QqqAOxYXWuu69y/N35z6fd8x8GYvidUb
-	 v4m3e80iesybtT/INlSMNhjUMx01NujkstvvjZbtxKMfO3tVStPSzroNzIFI9Z8zx6XGd
-	 DvQFgBu2ofaGew25/UFhp+saxkEHwaqwhPB60APCCVSrP5kqeAGTz0AfYJIhJMEZ19t71
-	 w6sz+5j7ZyCo89UG+mdhoP24yEGrY97p8mRhKao77L1Rc+jktR11e3Wn4NAe6IHgbTvt/
-	 nazcnZXlvHY+tybDPUyWvT+Ks7SJGV6+hoUAUeNWAaWjNDjc6QY/A03hV7j5mAZFTxw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792852749;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.169
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792852814;
+	b=38BEhIqvuQwtfwhRVWNOb1wKnIxB4zFxqUqbZsYbydRktUPMWeQ9XSEC/YpdX3CJdrds
+	 YRCEgWgwmv7g7fGufGo8VVxXF/Lf3KwcxpVYUTMxH+ykBuxzEHdOpBhPrMC+nky/PNSsD
+	 t83deZKz98TYecLsI0GCoJ+dPMVozIQuBE42U1WSAPieSb0XYXQvwyNSp4RaNUfppChcV
+	 nm0v+QgexUSLNdbH63eT5OxRWxHvfO3HGsf3tfYSitxPFhmnfDLOjbhxXZrWGf/vGq069
+	 EQEqusrWiHNNnCk2hFOqg4skEYhXYzICfzBVDjJNkKfSod7Ihv5w/ygXU4GTSRq9bzQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792852814;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=zjXifzsuYpS0FQruVBIsTQMHaxQeJksSexJHZzpqVro=;
-	b=CBOLHUnczOvccRXi0E7zkiSEUirkXatJ3KiOj4lWBTzAWfA+skwXphZsV5iJjchRIE2a
-	 252xuAWv0ApdJAYIaRY0t7ymVVgd6fjCT96TEu+KUzcF3ZQjppgLS+viMzp/5kp4vXl6E
-	 Ig4fQmHwYtG6O6/cWhKmCTAoVvKlvShOOa40uP4VOwddxaOsIfVAZt+Txv1ibaPE1j8T7
-	 wtsIwzjGp8c85a1j1Z0uR3liklkDoFN6qxNFEjICUg+414/FZjeIqGnMJchzd94mX2QfH
-	 Io8Aqu2gdP6Y4Y6FE9RoZVL69hx7qleKyA+82E4si/dxIUxF2jOqoeUu7pD+8iOOEkw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=sZQCj41k;
-	arc=none smtp.remote-ip=209.85.221.48
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=521MBfk16OaOkHeWnu+57WsvL6IjDdbIpPxbjAQEqUA=;
+	b=RbX8MKPVVgZVjoIElk7y+HWJYOXohXy+edzKENMFFGsA7tPT9QCXeNOqddxspwHAhrv5
+	 6h67iKpGeRHXvf8IF37dCg1Yy7eScHYf3xgnYGnyA8hEtlNtey3UoqO/vnqyAwy6g8k4u
+	 Il/urR6fPWEQFWWQEuk65k2j+i+SBEfSqeB1Yyn4lur1DsSnEKaq7KyyZAtY/NKjXKPoV
+	 akp/QaqxuiA1dvgd2VnZ1439wzm38tm0pjE1yo+1xRqzLTsCeYgrcszyr3dkYRwPKOiOn
+	 RnAlOJRi7PF7Gi/LN2OPdwLFYYOLVoGPlGhLhK6v8UOxUnecOD9Y/1gS61o2l/as36g==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=mojatatu.com;
+	spf=none smtp.mailfrom=mojatatu.com;
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=xgzv37X3;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.169
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A56606A31B
-	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 14:39:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 69A56606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B94606A31B
+	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 14:40:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B8B94606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=sZQCj41k
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-48e00eee27dso1110921f8f.0
-        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 07:39:08 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=xgzv37X3
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-89f85edd210so555190b3a.2
+        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 07:40:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792852813; cv=none;
+        d=google.com; s=arc-20260327;
+        b=W2PSaeK6Sv2WUMG6XNEh7StE7vdX1wi5CWzgJsx56A/EMrA+OYy43SVhfQNr8/5NAw
+         UYfMuUsUrDz/nLwOjgo9ucCBjK++hToU8cxTsDWFr831t60vvapPCHhAo2Woy9gHRBWE
+         tpSXiMLjWRcOCINL8u7fEJRXLfA3EfJV4+YQ4o1Pby0tJcDW2hodlNilV4BApMlQpf73
+         1B+aMOH6dykIwVDd+lyxD5Be5ye8GmriZJZwTjmCRp80AtSfyCbNAe0gZuXj6azglK5J
+         Tu1MuxnYs5poIIAzjCwrp4Qmab+YIVGGnQyp0O9prgOslxGbMFvBz0HvImbr4/dN/LL9
+         ku/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=521MBfk16OaOkHeWnu+57WsvL6IjDdbIpPxbjAQEqUA=;
+        fh=/v+4B7yZfHyrs8s0lWS8QvgN56EpqqZUizyydsWRFJQ=;
+        b=mw8m9efjMlZ/Fw7RuWIh1r+GIOjqe+AU99yYMWuJMVMURdYznffJGrQltcdClYEpD2
+         7Ce5qRWApziz0LMN4j6wwOoeGKfK/KRlt1eKHBzOgM8WcAEAjuCBT1i0RgZ3yQjQkp+C
+         F+FoNRJKlmOr0eTHXL80TkZhVcn1x8GdQGNl29kO4Iagw3wJ8k+qO1xMxxHwINS6ed4m
+         K0hhqT7cc6TApqDKlvf2U6qXRGKNAPq+KTzEiA/o/1qhvr/aJvXkTyUBT+BQyO549CIq
+         1SrEvyQFIfDAbIA2aTURIlM83NqGze0n2/NYh8c1bV2zVBIkIs4437IipVum+EZnPQJ+
+         j/Lw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792852747; x=1793457547; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zjXifzsuYpS0FQruVBIsTQMHaxQeJksSexJHZzpqVro=;
-        b=sZQCj41k767rX6Ga5oQaHrf80CdrLuhs50LN8sctOyTArONZ1XmyK+8SPG9oEmiHFA
-         Ir3Wi9sruGtPWEL8IRs5qx/i+8wsOnGZFtjUKwy4HhUiUjHgIADtOLI0adl14CxoOPdY
-         vlxJRbD+s5K3OxhhDo/YqHYwJixTw6kKy4KOtp8F9QPH10XDgsjNqVnTFXi+ZV095UYa
-         J8sSPfd9Gt1oSd5pWklimpOW4xKK7jmqAsKAe8Nt3r8gtx3BdlhogeahWzcBFUSvnCXi
-         0AWS/UVfwpSwhg9ASnrVK75uOKh/qMaGP4yh3A3Zr70N9dtjG661I++loJhVi+w1Tixg
-         k6tg==
+        d=mojatatu.com; s=google; t=1792852813; x=1793457613; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=521MBfk16OaOkHeWnu+57WsvL6IjDdbIpPxbjAQEqUA=;
+        b=xgzv37X3FqHjQKvsUmsU5QH8GxUc7mlpOw67gMqK3Zgtz11opM71SA8FV6cjvpaFBj
+         ZzOgH01PY0IJmCwp0gD2Fn1KTExPslSXQAoqgnbwaLuzIAakYfyEYqUyTnvOZ5zNR1Qr
+         K+XDi/np9LeBWOScutPJ9YrRXZMWzqGO23XH4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792852747; x=1793457547;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zjXifzsuYpS0FQruVBIsTQMHaxQeJksSexJHZzpqVro=;
-        b=e/iIsf8I9IDtY7EcauALIGlexqh0DerapumRTqmsU0kxcf7zp4dCDjrLkwDifRG4F6
-         DwwFbMVKA4JqG/jIH3d2LVH/M0Ks8fQdNHTLuzhsRvP4KtOTgEVyqXR4jg1lc19vT3mu
-         UNu30Yh2zOFUWEPeBC5T/lXr2M7hwfZlqDmDhuuDpfM+UPLwJf7hjjHZPGjedmVQtZVJ
-         JrmMqskAJFv+71OAGZKDvtKsNgXzbuEi37mNJ+iOUm7yVcPXYE7GAEK2Pfn+CxIyOeU1
-         jScq0Ws+kBjJuShA/TnBk+JAG0kXN8tcFM1J889lq7MEI65bAiF24/9YpsyKOFdjjiSg
-         /thg==
-X-Forwarded-Encrypted: i=1; AKwUvByikpfEr5bnbeB7We7NrxfnTO7+UCbX7NBvwReAxn3Vj1NbbhSljrcBDDV7oz/BUz6eW9xsy/Y=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKK076M8Uv0Sb977mCsXCj5t55WtEv7JZ5swz/csczmlnM8InCh
-	SZ2iLLGezteGQl7ciklP2+QuVoUKBdD54NpH8Hc/YkqEC98ZmyPcCYck
-X-Gm-Gg: AYBFou04HwDfd8hfUEy53159k1f5zxxMc67KpALSuZGbfwns1OfZj8kw4N2q3IO6MWs
-	Tkyiiv/PaQQFlPK8oqCFBB5HTJ4IdXZPUdrGZskBbtWP1klLW7byMvpYuolcrqr0DV9+gIsWvFE
-	ZWpTOJzVmq8XFpfrUJSDwWLbPL15nhdzwCr5Cz52b16SUKXn7U53MnOllGLR2Y/aJF/BGKFQKR4
-	4L36VU3abrBkqS611OpbQsF1m/iTawBfY90rDTGXBTB4W1eZrzxV2BHDjbRG0iV0i3+oy5lmTur
-	UszN3JS8pNZZhmeYzKqM3iMgg/9EANCn2shIqQeISzMOMBpVtDnztDe+/8ZvU7YOqZk+roWtzYj
-	fkpcs7eTKzxZ/BGZTB+niVJmuNEgfBk1QmcmJs5BWk4kmt8A7ejP6zRBGNk3wkIagBM4VquLpuo
-	7y3DiBy8SOjG6fH8VwgUF9bLTWEYreaDGO1JdotGjL5HtSj900c3Fip0/lC8L5BDla2axUm0ZA7
-	tstV61G5Mi51P+Eb2XS7LZY7+S8+Vz2XsbusWXubp1d5w01kOtAklYuJfhD+sYMmPcTDGzHzxjy
-	N3iZHOSZS6REIY3qucnIMbYy8iCcOxw324lRAqZvgist1a3WrIKAdw==
-X-Received: by 2002:a5d:6246:0:b0:487:40d:af33 with SMTP id ffacd0b85a97d-48e3eb834d0mr2415372f8f.13.1792852746535;
-        Sat, 24 Oct 2026 07:39:06 -0700 (PDT)
-Received: from DESKTOP-IR7J1S9.localdomain ([105.102.66.195])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ecd3555sm4466723f8f.42.2026.10.24.07.39.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Oct 2026 07:39:06 -0700 (PDT)
-From: Drif Abdelmalek Mohamed Said <drifabdelmalekmohamedsaid@gmail.com>
-To: trondmy@kernel.org,
-	anna@kernel.org,
-	cel@kernel.org,
-	jlayton@kernel.org
-Cc: neil@brown.name,
-	okorniev@redhat.com,
-	Dai.Ngo@oracle.com,
-	tom@talpey.com,
-	linux-nfs@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Drif Abdelmalek Mohamed Said <drifabdelmalekmohamedsaid@gmail.com>,
-	syzbot+ae55a0fac80c73c938ac@syzkaller.appspotmail.com
-Subject: [PATCH] sunrpc: fix null-ptr-deref Read in xprt_reserve
-Date: Sat, 24 Oct 2026 15:39:02 +0100
-Message-ID: <20261024143902.341-1-drifabdelmalekmohamedsaid@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20260707; t=1792852813; x=1793457613;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=521MBfk16OaOkHeWnu+57WsvL6IjDdbIpPxbjAQEqUA=;
+        b=NjWM6R9XjhYXcX7TwKRD9jSK7G758l0kvhoH4ROcuWjy1DdJ9qsX4o2U2DxjNSaX8B
+         AvPx7L0Qng+pU7RbjXXD98QiOpuJekUHkilxQUzQq3xAdg5Md01nMGY7XLggmeLuEsVL
+         Bnrh9ENCKUWX88RnutKBJNCMM8q8HOo9buikL5qKwPyoSOtYO11pXGUzVnLuTHNuzC6X
+         ETxicC/lkjt+5RrWJ+IFRsglfoyzzzgAmdQnspVkaLaQSz+w2QHIQTCwouvLacu6Gj6h
+         3eyp3dPghyjZjjj0kdtUAwu0kFCV+ynljFC1tUDGansZ1s49H+hbKnmIufhfJD5ngI+w
+         hmjg==
+X-Gm-Message-State: AFq9FYK6B/cTz7pbr+XFQIVfbk6LZFlwJVKA3H/PY661iuq62PSuBL4p
+	WENBgjGc/TfZXA16Fie5R85JkkO+s/uetk+JQEdFs782WFMfV0xc+UmBuva8VihXjTl0Xl1yEhv
+	2V5tbVWbFvbNtHFAcF7XUXFryUz7PG9p5porKA9HO
+X-Gm-Gg: AYBFou053j99RaTTzlFLyPUJoMnJ5Y2r1AAOyHAaX0Q9hmkitYZnDdjpbrpv8mIz268
+	sxX5cexAjT2z91E2PtVkqqpeFKdEMPC04U7RmXlAvFO1xT3I8UA6I0sCm53iaU0Pe4GydnaHxO4
+	sIaOVZAE5p7JjqD9hwTo4ai+DSqv0o1EgQP8a/4lcq8cGxisxIbPiY1PMbt/SjvcGn4OcPp5Slw
+	//C6VWkXvLB5hrGi1PyjmE1R9RIcf95u22iB78INcjz/4w4+L2+/adFeXFX3g6vPNoxL0GbASTv
+	zV8BNtdpZbIMVjGiRg+adVUuyqGlzadhEt1RrGZWJ70SfMliUXjY+i6yVkDvWGpf8Bg7qd3IGb6
+	tV7VIIkgWnqQubWnAmwNaY+asOfUpZjECER5EAbcZKLvZWzW4hQvfh7N8WcOux+LLIHeCWTjcwR
+	9kM8zaIq2J0G2ifcU=
+X-Received: by 2002:a05:6a00:3d0c:b0:89e:5133:d98b with SMTP id
+ d2e1a72fcca58-8a36689cbb8mr1693557b3a.24.1792852813080; Sat, 24 Oct 2026
+ 07:40:13 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,96 +101,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <QDISC-Y0BY.v2.r0.20261024060625@mojatatu.com> <179285257342.3327.7748817772985184863@kernel.org>
+In-Reply-To: <179285257342.3327.7748817772985184863@kernel.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Sat, 24 Oct 2026 10:40:02 -0400
+X-Gm-Features: AclHuK_IPQcN5_Ds5eUFIjDiEWNIuOK2ju1JXDTN4ajqveh7Xxel1G0VGM3dksM
+Message-ID: <CAM0EoM=yCSeB9+Q8gFsB8sjQhddM9qWh8DOfSqqNtp6byubv2w@mail.gmail.com>
+Subject: Re: [PATCH net v2 0/2] net/sched: sch_teql: fix transmit-path regressions
+To: netdev-bot+sinfo@kernel.org
+Cc: netdev@vger.kernel.org, Victor Nogueira <victor@mojatatu.com>, 
+	Jiri Pirko <jiri@resnulli.us>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	owen kwan <owen@verialabs.com>, linux-rt-devel@lists.linux.dev, stable@vger.kernel.org, 
+	sashiko-bot@kernel.org, zdi-disclosures@trendmicro.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-syzbot reported:
+Patch 1 is a followup of a report by sashiko and  two was an
+independent bug reported by Owen that our reproduction system verified
+- i believe they found it by using an LLM to look for similar patterns
+of some previously fixed bug.
 
-BUG: KASAN: null-ptr-deref in instrument_atomic_read
-     include/linux/instrumented.h:82 [inline]
-BUG: KASAN: null-ptr-deref in _test_bit
-     include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
-BUG: KASAN: null-ptr-deref in xprt_throttle_congested
-     net/sunrpc/xprt.c:1708 [inline]
-BUG: KASAN: null-ptr-deref in xprt_reserve+0xe2/0x2c0 net/sunrpc/xprt.c:1948
-Read of size 8 at addr 0000000000000628 by task syz.8.3118/20390
+cheers,
+jamal
 
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- kasan_report+0x117/0x150 mm/kasan/report.c:595
- check_region_inline mm/kasan/generic.c:-1 [inline]
- kasan_check_range+0x264/0x2c0 mm/kasan/generic.c:200
- instrument_atomic_read include/linux/instrumented.h:82 [inline]
- _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
- xprt_throttle_congested net/sunrpc/xprt.c:1708 [inline]
- xprt_reserve+0xe2/0x2c0 net/sunrpc/xprt.c:1948
- __rpc_execute+0x526/0x1280 net/sunrpc/sched.c:947
- rpc_execute+0x1c1/0x390 net/sunrpc/sched.c:1023
- rpc_run_task+0x4a6/0x660 net/sunrpc/clnt.c:1269
- rpc_ping_noreply net/sunrpc/clnt.c:2944 [inline]
- rpc_create_xprt+0x452/0xa90 net/sunrpc/clnt.c:494
- rpc_create+0x649/0x900 net/sunrpc/clnt.c:619
- gssp_rpc_create net/sunrpc/auth_gss/gss_rpc_upcall.c:107 [inline]
- set_gssp_clnt+0x188/0x2d0 net/sunrpc/auth_gss/gss_rpc_upcall.c:131
- write_gssp+0x21e/0x310 net/sunrpc/auth_gss/svcauth_gss.c:1423
- pde_write fs/proc/inode.c:330 [inline]
- proc_reg_write+0x1e9/0x2e0 fs/proc/inode.c:342
- vfs_write+0x296/0xba0 fs/read_write.c:685
- ksys_write+0x150/0x270 fs/read_write.c:739
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-The GSS proxy client setup races with sysfs. xprt_switch_alloc() publishes
-the transport in sysfs before rpc_new_client() sets xprt->main = true. The
-sysfs offline handler rejects writes when main is already true, so
-userspace can set XPRT_OFFLINE in that window.
-
-The initial RPC then runs with the only transport offline.
-xprt_is_active() only rejects a transport whose refcount is zero
-or whose XPRT_OFFLINE bit is set, and a transport that is still on the switch's
-list always holds a reference.
-
-xprt_switch_find_first_entry() returns NULL, rpc_task_get_next_xprt()
-returns NULL with it, and since rpc_task_set_transport() returns void,
-the task continues with tk_xprt == NULL until xprt_reserve() dereferences it.
-
-Mark the first transport as main in xprt_switch_alloc() before creating the
-sysfs entries, and drop the assignment from rpc_new_client().
-
-Fixes: e091853ebdb4 ("SUNRPC mark the first transport")
-Reported-by: syzbot+ae55a0fac80c73c938ac@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ae55a0fac80c73c938ac
-Signed-off-by: Drif Abdelmalek Mohamed Said <drifabdelmalekmohamedsaid@gmail.com>
----
- net/sunrpc/clnt.c          | 1 -
- net/sunrpc/xprtmultipath.c | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
-index 6cedc824cf82..aa9f9c185c02 100644
---- a/net/sunrpc/clnt.c
-+++ b/net/sunrpc/clnt.c
-@@ -419,7 +419,6 @@ static struct rpc_clnt * rpc_new_client(const struct rpc_create_args *args,
- 	}
- 
- 	rpc_clnt_set_transport(clnt, xprt, timeout);
--	xprt->main = true;
- 	xprt_iter_init(&clnt->cl_xpi, xps);
- 	xprt_switch_put(xps);
- 
-diff --git a/net/sunrpc/xprtmultipath.c b/net/sunrpc/xprtmultipath.c
-index 3ba818d637be..5e2d43d6c643 100644
---- a/net/sunrpc/xprtmultipath.c
-+++ b/net/sunrpc/xprtmultipath.c
-@@ -159,6 +159,7 @@ struct rpc_xprt_switch *xprt_switch_alloc(struct rpc_xprt *xprt,
- 		atomic_long_set(&xps->xps_queuelen, 0);
- 		xps->xps_net = NULL;
- 		INIT_LIST_HEAD(&xps->xps_xprt_list);
-+		xprt->main = true;
- 		xps->xps_iter_ops = &rpc_xprt_iter_singular;
- 		rpc_sysfs_xprt_switch_setup(xps, xprt, gfp_flags);
- 		xprt_switch_add_xprt_locked(xps, xprt);
--- 
-2.43.0
-
+On Sat, Oct 24, 2026 at 10:36=E2=80=AFAM <netdev-bot+sinfo@kernel.org> wrot=
+e:
+>
+> Hi!
+>
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+>
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
+>
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+>
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
