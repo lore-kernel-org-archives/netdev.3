@@ -1,78 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792845648;
-	b=MgTTL+ihFx8EiPvE8X0KlXtBXdDzJFft7qKKrjBPj1p0AcQpgcme0JRxKBjpOi9zYCcq
-	 MhodJarMAneRugeOLXblIGIhr1M8bSgs1LBXe5DTgzV2Y62EVOCAP9cshOFefj8JUMQkn
-	 GqdV9xZ0tdBCEZTCmULTke7dFTDEhRh51wCb/vEU6ZMSJZzdypG1/xFL/0tYAEA6Oqcr5
-	 FR53bRISvulNrlS0+b1kR9mJ4X7ijhmCcUTTnf4lEqMOh9pIjVQrcBpgNp2DW0+3SLnKW
-	 31Y3/of8PGd1MxPVo5v0P+nguyJenSs0pc+k8XiBNUXUzJmMkaNgxeEfYrwDRjM+RHA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792845648;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=Upi3zmD/rWYkaCGgRdYvqTn63AvximpHuQpwCpboks8=;
-	b=o2aIftJKRGpJPWi6mBljIJt+3v85eYJ1cg3/e7PqkiRrsLwUyvrJdngEAhk4oGDq3l0d
-	 G3rMh2znvn/8SAdkBwnUsdvgHfHIfYe/i0kNY1XQ3IlY/i4YvHH3+8t9pkH3PTwmoTZk0
-	 oiQfSNLZZFPB7PrEu4QBEfnZ/Y1B617SOyWPoKy6RtS2K2O6AZnBq8ROi9oDjyg9Neqbc
-	 C/ToFRyK7uUsroVsqAzfSIq3XRFLoM5a1VrsHR41c+NgesqiKTaiSkUMUJFaITG75nN0s
-	 JPOrE8tAWCgx7uBSnIskLydls5jVeDvJyj2oLV/yAmT7F8CkiI7yGRPLW7aR5XixaVg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i1IFp77E;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E338F606A31D;
-	Sat, 24 Oct 2026 12:40:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i1IFp77E
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1792845647;
-	b=wC3oAdy0laok08FTaAMJwjR++zoelTRj9hnSvPuj7VT69cJJJg1Pi1pGoo618VhvbOzH
-	 PzK4+sWM4MeCXIWbdH+8/PhZ9seXb3oO9O8AmoOVHwIc5UhtGJpuxNYHi/B8VHcbjSFwG
-	 2n+56gtACiLKOavexxSCdEzjuxH8n7gXtuP65Li31bMzMDkw/tiJhVhB5rZfqaC1Qbu7p
-	 z3KGJ0QtHn5TzGEM1DIYi8MFgYsUwyIelR2wHCIbLh/1PJWdr3ASVwxfAWbDC0mfAhIKu
-	 u1dHGb+M6BcFLBRliqIR3EIPK7GzZTwRI+zEDKI5D0+dE4Xs43p6+Y176g88rEWeRuA==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1792845647;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=Upi3zmD/rWYkaCGgRdYvqTn63AvximpHuQpwCpboks8=;
-	b=nNAYadCHNhv4BPn7VndOf0z24aSGtsar4XQhRLaDngTsXF+NkMslSUwPekEn1BQlgNYJ
-	 c31lg1zf8Ea31XTp+00VwwWQUp+qpYuiU2DnbCmkfIe5O6H1E+96tClUvi5PiOJP6EvII
-	 exK8gAOqJUownfbfH9l3PEoInfROGx/+Z/z1Q+L4lXi9jTMcknyRRxtrUQ3k3krYrumgo
-	 /GrcFCAnUwfnjIE4SEgkwEMNnSDe8jarQ5bV5Abca1ExbOYCG061+f/Yl0H7FvYa0iXyJ
-	 Vcbpoenn/s0O1HRXfqchVtitEyTh+llWt5LDhxFcdFxVIPiQqJvs3Qz+bMynKtdPDYA==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792846585;
+	b=UMLvHdR3QRQXfQQp5gZaQfR25CbFoNS62obA1nSI4a866veg0PUrLFgxuYX5KEvBlug/
+	 mxcZE+2/79vODPZ/209ImPzN/5ukVvf3FG2tAXRGRQSYIBhG84ekDY/uHplwd9NP5yM82
+	 lx3qjBxbNuyorrRXlyS18J2HXjTfrqhai/WCpwXKNupqGX8uU990L6hn5sPPczI+SlrZ9
+	 LbuMy6AYGCKIdoocdtbtC6WT//r9P+dtcmMtYn90j1iwRY7kEvSyDGOgGasCvo4HPLrcI
+	 SCQqZHgO3bwwjKVdOK0vZ8yQlncWISpn4tvHQpnl2miYwosugFRzOyx4zAyu9b+nh7w==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792846585;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:MIME-Version:
+	 Content-Type:Content-Disposition:X-Mailer:X-Mutt-Fcc;
+	bh=FAwVFsHA3boYKoM4iIUg3Eb+bwbA1VvDycreO8U2nGo=;
+	b=WQbEO5ABp1ndcjmJBm6VlyFiH3CcX4OdLPaagdzsmLrXZNyo2XZQBMK8OdPD0UmB+8+J
+	 TOcKVMmruog0AVlbakUrgaTyF0UJS+piZg9UZ2hA+tZrG3wBOoQlLgEcdC3bP2yjjzoQY
+	 klTgFkoN8+eIbOUFcF1Avt+RQigsleE2F5NXXboPTq+w3dpSSASdv37XEaJUMFLGrc5yT
+	 +mycA5NIVFWETIKTJXhCBjowd6IavHv9e1mMHeydgMlRz8ki8URVlH0JD/73alzHPkrEp
+	 GI35jrsArkkGqrVHZECiI3kF/ItaPb6BQYxqH4cL81L6IzIDiQjGZfW7/tXnNUgbsRg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dzLAvR+r;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=HFEIYrjm;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id E39EA1F01825;
-	Sat, 24 Oct 2026 12:40:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792845647;
-	bh=Upi3zmD/rWYkaCGgRdYvqTn63AvximpHuQpwCpboks8=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=i1IFp77Ea/uX+05A78KwTlGF6HAJt/jebeJdWosrIY2mZ8lOFiXjuYpCja2XHJ+yn
-	 RHAv0clhu1wTtyoiaC9ieRqIgyubYAZeUHUlqIUoZ13pxBQlHa8JtzFaCNEWrFKt1+
-	 gyYKP0W0f6HawUwcF+QRcmG7rdzVqei28uvdoY97IACSRaYNyr+6/5QW3knWuIRqOs
-	 YhoQzFaYjOQj+ntoBES/1N5kdPWMnaiYzVYls7CGUlh/WlfeS4RvZcPTFIPIao5+Ph
-	 p9ISH1D7zQtQNlYPk8WyrUDGc/BiF0EhrOCjdBB4HxY4I8JEYWzR1zEyKYeVnSh7m0
-	 qRemOuNm+sLdw==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 40B43447E0;
-	Sat, 24 Oct 2026 12:40:46 +0000 (UTC)
-From: Franck Baur via B4 Relay <devnull+franck.baur.67.gmail.com@kernel.org>
-Date: Sat, 24 Oct 2026 14:40:44 +0200
-Subject: [PATCH net v2] net: jme: keep RX MAC clock enabled for WoL
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0D8606A31D
+	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 12:56:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BD0D8606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dzLAvR+r;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=HFEIYrjm
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792846583;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=FAwVFsHA3boYKoM4iIUg3Eb+bwbA1VvDycreO8U2nGo=;
+	b=dzLAvR+rlhfovf16i7jIbcdZNgiQ/M9/dVKl8qxWSRPSvvzH7lc1Br9xBgJDySbvb0mrVW
+	A3vjN9em/gB7DhhaMpCc0LyjxEy7/gcUxcAbZYwHwSgTkHpd60oWfZB0VgfbqDl46aCQQp
+	FPqftVXva4fyFGoh9FPEYSwg/nC4SUs=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-126-z7y5mb4xNXiMvxaJiqBwpQ-1; Sat, 24 Oct 2026 08:56:22 -0400
+X-MC-Unique: z7y5mb4xNXiMvxaJiqBwpQ-1
+X-Mimecast-MFC-AGG-ID: z7y5mb4xNXiMvxaJiqBwpQ_1792846581
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-495689bfcc8so10658475e9.1
+        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 05:56:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1792846581; x=1793451381; darn=vger.kernel.org;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FAwVFsHA3boYKoM4iIUg3Eb+bwbA1VvDycreO8U2nGo=;
+        b=HFEIYrjmAoypit5pRSqL7CjRmZkloNqhYQ0EHM90TilFC73jLOybSsbwLgrsv9CZtS
+         9YXqn9LdbRfrjHuefJkp/772TV6EPe260zQX+4MQdda9t8UZKqLoFwwM8OAsSillxqyn
+         1DL6+R7k9ZPQ3jr2Da7qYekXuyUi8nZpvLZXLirNfZiN39okLmU10Q0mPEJPOKi7+dsb
+         cUME99I7flNcRUhrnanZb8Kl57uyr2/upLkzwjp2ST3OEE0NLrPazN4rQkgKa7AQjeqB
+         L3EUg0plhCksxNp+hQidyfdoKi+xW9njoTEi8GjiZ8kiZQbAIktGeSQV3L8Bz4flOHTw
+         OCbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792846581; x=1793451381;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=FAwVFsHA3boYKoM4iIUg3Eb+bwbA1VvDycreO8U2nGo=;
+        b=HyLh6BMzpAd9gOzwL1jdyXS+2DhfNzKetRzhf2zBSQgvafVq3xawZLV8RhoJ//1RDi
+         r5aCBVvxIXCDa53JzlL83/mfvp0aaVjbm9AyWV7xGF5NLK4n86erUuKSC+IQDuXvYnX/
+         TnYDuaTAtJeB18OZZXV3c83It2pB1sjJtIH++1v7fU3q7LIsE5kJqPFbAI0z19YWlJMJ
+         GpFr3N/++4T+we9qky8qYQJeviH0Gt6SkMmrFjDQ8kJiosL1RzQhAnHUOB7DaHaTvVks
+         44/No3ywdzpaIbtPRu9yZKmtLsy76QCCvMYpWjmXrm6tIQuBtGpk6BHd6s3rrk0UydH7
+         sB/A==
+X-Forwarded-Encrypted: i=1; AKwUvBz0Nbi6TxtbhP9SnROQ6UCBuF3rp3HDNslD4vq9xcMS8z+f22Em0geYFiOxVkNqnVe6hnJQgWs=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIPHlwQHL/LHnvfJ1WZvOQ735y/jF18Sl7+hk3knXSCw7KnXCCB
+	7AB9ysjyDXcvmuI0nfdBOhI+00236E0ofWQjjnhclecKXo9IS24xbB2dgiZfSGEMnXwRK7WPMpI
+	PftfwGdt6cGggV2GVuOd0KWF7AEXTKLARt6TlbxwwIljVUQz14QK1fO1VEg==
+X-Gm-Gg: AYBFou1DrwakF9jJnXJp0ScLIyAPC4u6fdny2eaP28sT+iAefTeTUfOCJgq8lzLmf0z
+	5WrCVljm6pMRrx4DWoQ5wkDuDVZObhHbyvR6oo6jROziL6ubZtbspBeSgSlTujst5mua83KRbqA
+	zrkGBH4GHLxWXigeBFMlkiBVaXgdwgCdZVjIQ+GrCAM3YGoxAJ/aYsuUkKd0lzqPhl0wChaVC3I
+	8fjr2+UbUuucrpS5/fO84pVjUqtVR1FfHZV/GZFAUORSrbhe3xYpvu0rl/Mx8ILW9MaU6yrA0DY
+	hDUjdw0BPd/PR2xaDa9Opsr1M4Kt4pA+0EqWuT5+y7oqQbMY2K20ilC1kTLZT0g2tfpfQ3k=
+X-Received: by 2002:a05:600c:3f14:b0:4a2:1612:6367 with SMTP id 5b1f17b1804b1-4a35ac8ec61mr28498925e9.15.1792846580908;
+        Sat, 24 Oct 2026 05:56:20 -0700 (PDT)
+X-Received: by 2002:a05:600c:3f14:b0:4a2:1612:6367 with SMTP id 5b1f17b1804b1-4a35ac8ec61mr28498605e9.15.1792846580338;
+        Sat, 24 Oct 2026 05:56:20 -0700 (PDT)
+Received: from redhat.com ([2a06:c701:73f6:2400:30a8:9e33:7d82:c035])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a35a5697a7sm49765185e9.7.2026.10.24.05.56.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 24 Oct 2026 05:56:19 -0700 (PDT)
+Date: Sat, 24 Oct 2026 08:56:17 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: Eric Dumazet <edumazet@google.com>, Claude Code <noreply@anthropic.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org
+Subject: [PATCH net] skbuff: keep accesses through unset transport header in
+ bounds
+Message-ID: <0bdcbe2ab5ffc86ba7190fe25476bcebcb967310.1792844270.git.mst@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -82,197 +114,74 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261024-jme-wol-v2-submit-v2-1-7a89ef6fb4c9@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAEun3GoC/x3MSQqAMAxA0atI1gZqHPEq4sIhakSrtHUA8e4Wl
- 2/x/wOWjbCFMnjA8ClWNu1BYQDd1OiRUXpvIEVZpCjBeWW8tgVPQnu0qzhUAyd9W+RUpDH4bjc
- 8yP0/K9DsoH7fD1/+LzhoAAAA
-X-Change-ID: 20261024-jme-wol-v2-submit-0fe4db872853
-To: Guo-Fu Tseng <cooldavid@cooldavid.org>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Franck Baur <franck.baur.67@gmail.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792845645; l=5786;
- i=franck.baur.67@gmail.com; s=20261024; h=from:subject:message-id;
- bh=22BEaH8HKwqaRYpioIznd0XJzULoDFALusQ6AsH9C08=;
- b=ZJnzMfzAMFTzgHH4A3FnhMapPYhdQxqyABK8rFksQxXAcuFVv9VoCG9l0x0s1YybjRphadpWQ
- EVce2go1QqjBMS/eXK2VLwXChANNDPLiOIuw8dOYpn45If7urHk0wnz
-X-Developer-Key: i=franck.baur.67@gmail.com; a=ed25519;
- pk=jhUaI4DVBj7JgOebLvsUGOrgJCBubeK6gqDJjxIqtZ4=
-X-Endpoint-Received: by B4 Relay for franck.baur.67@gmail.com/20261024 with
- auth_id=1302
-X-Original-From: Franck Baur <franck.baur.67@gmail.com>
-Reply-To: franck.baur.67@gmail.com
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email 2.51.2.2891.g4157995a80.dirty
+X-Mutt-Fcc: =sent
 
-From: Franck Baur <franck.baur.67@gmail.com>
+Commit 2170a1f09148 ("net: no longer reset transport_header in
+__netif_receive_skb_core()") stopped the receive path from pretending
+that an unset transport header starts at the network header - but only
+on CONFIG_DEBUG_NET=y builds, the idea being that fuzzers and CI could
+catch stacks reading a transport header where none was ever established.
+And the plan is to drop this for release as well.
 
-On the JMicron JMC250 revision 03, the MAC reset performed during
-suspend leaves GPREG1_RXCLKOFF set. Although the driver enables Magic
-Packet detection, the gated RX MAC clock prevents wake-up from ACPI S3.
+Indeed, under KASAN, an access through the unset offset produces a
+slab-out-of-bounds splat, which is how these bugs are usually found.
+But a regular debug build has no such safety net: the accesses land at
+skb->head + 0xffff, some 64K past the packet data.
 
-Keep the RX MAC clock enabled while WoL is armed. Restore the gated
-clock state immediately after disabling WoL during resume, preserving
-the RX engine initialization ordering.
+I don't think release builds are exposed to oob in this way, but I want
+to make the stack a bit more robust if yes.  While I appreciate a nice
+KASAN splat as much as the next developer, making even a debug kernel do
+oob accesses was never the point of the exercise.
 
-Prevent concurrent link-change work from gating the clock again after
-WoL has been armed. Quiesce interrupt-driven link-change scheduling,
-synchronize pending interrupts, and cancel outstanding link-change
-work before programming WoL in suspend and shutdown paths.
+Make skb_transport_header(), and its inner variant, verify and WARN,
+then fall back to the network header position when the transport header
+was not set. This way, accesses stay within the packet.
 
-Restore the deferred processing state before requesting link
-reinitialization on resume.
+An extra benefit is that release and debug kernels now behave
+identically if an unset transport header is ever reached,
+avoids heisenbugs.
 
-Tested on an ASUS K42JE with JMC250 [197b:0250] rev 03 using a
-Debian 6.12.111 kernel and an externally built module. ACPI S3 wake
-with a Magic Packet completed in 19 seconds, while a control without
-a Magic Packet resumed through the RTC alarm after 123 seconds.
-Ethernet and SSH recovered after resume.
-
-S4 and S5 wake behaviour has not been validated with this revision.
-
-Fixes: 854a2e7c331a ("jme: Safer MAC processor reset sequence")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Franck Baur <franck.baur.67@gmail.com>
+Fixes: 2170a1f09148 ("net: no longer reset transport_header in __netif_receive_skb_core()")
+Cc: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Co-Authored-By: Claude Code <noreply@anthropic.com>
 ---
-Changes in v2:
-- Restore RX MAC clock gating when WoL is disabled on resume, before
-  reinitializing the RX engine.
-- Prevent new interrupt-driven link-change work during suspend and
-  shutdown, and drain pending work before arming WoL.
-- Restore deferred processing before requesting link reinitialization.
-- Validate Magic Packet wake from ACPI S3 on a JMC250 rev 03,
-  including an RTC-only control test.
-- Link to v1:
-  https://lore.kernel.org/r/20261011-jme-wol-submit-v1-1-9cc033e259e4@gmail.com/
+ include/linux/skbuff.h | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-The full kernel allyesconfig and allmodconfig builds have not been
-completed. The JME driver object builds with W=1 under both
-configurations. The full allyesconfig build was limited by host
-memory during vmlinux.o processing. S4 has not been tested, and S5
-wake remains unconfirmed with this revision.
----
- drivers/net/ethernet/jme.c | 37 ++++++++++++++++++++++++++++++++-----
- drivers/net/ethernet/jme.h |  1 +
- 2 files changed, 33 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/ethernet/jme.c b/drivers/net/ethernet/jme.c
-index 25ec5f757c6828a5f5241340bf3fb01d8e0aa3e9..acb4d41f56e1002c0a34a253be20c780ad9b062f 100644
---- a/drivers/net/ethernet/jme.c
-+++ b/drivers/net/ethernet/jme.c
-@@ -1502,7 +1502,8 @@ jme_intr_msi(struct jme_adapter *jme, u32 intrstat)
- 		 * all other events are ignored
- 		 */
- 		jwrite32(jme, JME_IEVE, intrstat);
--		schedule_work(&jme->linkch_task);
-+		if (!test_bit(JME_FLAG_WOL_QUIESCE, &jme->flags))
-+			schedule_work(&jme->linkch_task);
- 		goto out_reenable;
- 	}
- 
-@@ -1546,7 +1547,8 @@ jme_intr_msi(struct jme_adapter *jme, u32 intrstat)
- 	/*
- 	 * Re-enable interrupt
- 	 */
--	jwrite32f(jme, JME_IENS, INTR_ENABLE);
-+	if (!test_bit(JME_FLAG_WOL_QUIESCE, &jme->flags))
-+		jwrite32f(jme, JME_IENS, INTR_ENABLE);
- }
- 
- static irqreturn_t
-@@ -1892,6 +1894,7 @@ jme_powersave_phy(struct jme_adapter *jme)
- 		jme_set_100m_half(jme);
- 		if (jme->reg_pmcs & (PMCS_LFEN | PMCS_LREN))
- 			jme_wait_link(jme);
-+		jme_mac_rxclk_on(jme);
- 		jme_clear_pm_enable_wol(jme);
- 	} else {
- 		jme_phy_off(jme);
-@@ -3158,6 +3161,21 @@ jme_shutdown(struct pci_dev *pdev)
- 	struct net_device *netdev = pci_get_drvdata(pdev);
- 	struct jme_adapter *jme = netdev_priv(netdev);
- 
-+	if (netif_running(netdev)) {
-+		set_bit(JME_FLAG_WOL_QUIESCE, &jme->flags);
-+		netif_device_detach(netdev);
-+		netif_stop_queue(netdev);
-+		jme_stop_irq(jme);
-+		synchronize_irq(pdev->irq);
-+		jme_stop_irq(jme);
-+		cancel_work_sync(&jme->linkch_task);
-+		tasklet_disable(&jme->pcc_task);
-+		napi_disable(&jme->napi);
-+		tasklet_disable(&jme->txclean_task);
-+		tasklet_disable(&jme->rxclean_task);
-+		tasklet_disable(&jme->rxempty_task);
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index a3ff380d43f0..cbfeb17d86f7 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -2993,6 +2993,12 @@ static inline void skb_reset_mac_len(struct sk_buff *skb)
+ static inline unsigned char *skb_inner_transport_header(const struct sk_buff
+ 							*skb)
+ {
++	if (unlikely(skb->inner_transport_header ==
++		     (typeof(skb->inner_transport_header))~0U)) {
++		DEBUG_NET_WARN_ON_ONCE(1);
++		return skb->head + skb->inner_network_header;
 +	}
 +
- 	jme_powersave_phy(jme);
- 	pci_pme_active(pdev, true);
+ 	return skb->head + skb->inner_transport_header;
  }
-@@ -3172,11 +3190,16 @@ jme_suspend(struct device *dev)
- 	if (!netif_running(netdev))
- 		return 0;
  
--	atomic_dec(&jme->link_changing);
--
-+	set_bit(JME_FLAG_WOL_QUIESCE, &jme->flags);
- 	netif_device_detach(netdev);
- 	netif_stop_queue(netdev);
- 	jme_stop_irq(jme);
-+	synchronize_irq(jme->pdev->irq);
-+	jme_stop_irq(jme);
-+	cancel_work_sync(&jme->linkch_task);
-+	tasklet_disable(&jme->pcc_task);
-+	napi_disable(&jme->napi);
-+	atomic_dec(&jme->link_changing);
+@@ -3072,7 +3078,11 @@ static inline void skb_unset_transport_header(struct sk_buff *skb)
  
- 	tasklet_disable(&jme->txclean_task);
- 	tasklet_disable(&jme->rxclean_task);
-@@ -3215,6 +3238,7 @@ jme_resume(struct device *dev)
- 		return 0;
+ static inline unsigned char *skb_transport_header(const struct sk_buff *skb)
+ {
+-	DEBUG_NET_WARN_ON_ONCE(!skb_transport_header_was_set(skb));
++	if (unlikely(!skb_transport_header_was_set(skb))) {
++		DEBUG_NET_WARN_ON_ONCE(1);
++		return skb->head + skb->network_header;
++	}
++
+ 	return skb->head + skb->transport_header;
+ }
  
- 	jme_clear_pm_disable_wol(jme);
-+	jme_mac_rxclk_off(jme);
- 	jme_phy_on(jme);
- 	if (test_bit(JME_FLAG_SSET, &jme->flags))
- 		jme_set_link_ksettings(netdev, &jme->old_cmd);
-@@ -3226,8 +3250,11 @@ jme_resume(struct device *dev)
- 
- 	atomic_inc(&jme->link_changing);
- 
--	jme_reset_link(jme);
-+	napi_enable(&jme->napi);
-+	tasklet_enable(&jme->pcc_task);
-+	clear_bit(JME_FLAG_WOL_QUIESCE, &jme->flags);
- 
-+	jme_reset_link(jme);
- 	jme_start_irq(jme);
- 
- 	return 0;
-diff --git a/drivers/net/ethernet/jme.h b/drivers/net/ethernet/jme.h
-index 860494ff37144da9dc25d3105ecabb77072077b0..ec5dfddf7322730a316a4900026a88e479f8a8a1 100644
---- a/drivers/net/ethernet/jme.h
-+++ b/drivers/net/ethernet/jme.h
-@@ -450,6 +450,7 @@ enum jme_flags_bits {
- 	JME_FLAG_SSET		= 2,
- 	JME_FLAG_POLL		= 5,
- 	JME_FLAG_SHUTDOWN	= 6,
-+	JME_FLAG_WOL_QUIESCE	= 7,
- };
- 
- #define TX_TIMEOUT		(5 * HZ)
-
----
-base-commit: af32da41b0327b9c6a37856ba82b6760d6c8d10e
-change-id: 20261024-jme-wol-v2-submit-0fe4db872853
-
-Best regards,
 -- 
-Franck Baur <franck.baur.67@gmail.com>
-
+MST
 
