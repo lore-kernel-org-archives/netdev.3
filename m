@@ -1,100 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.181
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792862804;
-	b=P3kl41vK9QlJxMk/ky6L9eM4hP+XmypwVZHRNLHsP1ILUsAe0iIMFIXDxwjwX+W6+jta
-	 yAUwRPyZAInMIt4rQLQEAqgiW7V/EGtvaPeL5YcxkWkdChF28U0PcBC06HKylmGCMg9vz
-	 uaaFxvwF/+LygVbiR81WYHmYZenFWm72xS3HwCIEY1R89PyFLgbdqVePAnqf5EiCkQb4j
-	 rEozuB7b0Aa1/uIQ1njrhkrfSez134lJquTYeqKGDY0tHOdcLOP/bkZQBckbUTkJEN1iU
-	 h29jSFuw0fBCO0CjWBVfxQ77aUNWSqyObAvzWSEKON8fb6UeZmPvHy/KHu7omM9lIeA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792862804;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=5IEfUPj0lQJIMSOkZQgfZhL+oHN0LcRkrBnrV7cp6Uo=;
-	b=CIXRaVNsOED4uNQSF27ZjHYAjhfIMlHt8USZ/SNr5HA55uGNl81AUaKY94elmQEcT+uf
-	 UJkBUPLGvI4gDkled3AxfgVexqbnSSqCrgLUrXJpjY2hNpVBy5uIGztFcoZ8X3eUAqmk2
-	 fwCneUhNxKwYRsP/ZilKvlrect2Yv+pztA+KSJezBF/HR1vrxi1au8c5vgD/VP+OyG0KQ
-	 yQ1Av2HqnnqPbv+T9TCLEGf+UR0qwwS39RML3VH6N6sVtsJXWCN+V6eWtO6RxVgRiZ0t9
-	 JLkk0FLkJrUEV77xOJcPxFFPsz6vAnsywsA3E1idAsJL91EcxRjOY5Ox4S70oinc9xg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=ACtaH1dt;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.181
-Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792863040;
+	b=f/nErdhikphotoLoLf/n1kukUohUn76gdvcKJRTwnQt8sKS7KkaPvaxaQHwuYVFTfI/E
+	 b3K8++zBloMM7fUhXz/s/1tNvf5BSsEFuvEs9LGudgwg0dtcBbqXRaKCh8+rNyiXY1ym3
+	 uaUCTN7hopnOKj0wO3cu269reHZ4gNh89iP0fDREu46XNhfqxENXaQUbN2hGnGC7+kSvf
+	 kueT30tDP8/g7Im0CTVgpvShp2r0o8XsxWiAOj192QaU2go1CnRM33wz0utuKY+pMGWFQ
+	 HBQHZ5a5h2YwlgNMRD1ZY+BC3vooc87MgeISoDrOtgqhmqmHgbX/lefyQPuxv3WQW/A==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792863040;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=vbiGdGifJI25J1ktQA8m+IDo+99FoGcOOd/GahePnVk=;
+	b=1SPDPVU+LiUJZ6CvmGY3c522pWZclCtKw3wxwfuYA/ekmrF9B079hS4BczvnXGJQR61X
+	 atyoc9Si8nJ3plcLBN01Aj3L0in52M9UFXGIYFxwFdCnMPSz50p/s0Fis/xe60TekW7Er
+	 55E0voTCEbY+EImSF2uFThq47diFfoSSx3Xe7qZo3tY3OMtxGvRpMO8Bh6lqrewGYBKtJ
+	 jjIVMFWeH2GOv4NkcCxgTT5VhHOU0GjLoeoi0vl7Ahtke/UifRgB3uyXkTmtfEmuu8Q+r
+	 SoTocEO1wLjrDY6T1IWIuD1Lx5KCrIHXERkuz3iQ5CEcG++mr7KrteGWkYwH9z/Qqfg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ao5w8EAR;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B741F606A31A
-	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 17:26:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B741F606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4036606A31A
+	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 17:30:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=ACtaH1dt
-Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-5ead5ff47caso869204e0c.0
-        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 10:26:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792862803; cv=none;
-        d=google.com; s=arc-20260327;
-        b=oaYOzmfIemDn3DsJr1RQFeXUc+xsqRfdCY5DGwyZQabvNMEB4Qt/+Fmw4NcBhozbf/
-         GA07rECIsVA/WwzhlMoPlHu347f8mm0t/3mCA1MKdeJdujcgAogZGw8YrDNlfxhe8jji
-         raFzIW+yslPm5v3iOgXXALHOWCVPD0bFGkAI4aifB2TZqqqwMeq4EkI6hy5f5eCRyW0y
-         4xJ/hdFeZHtl+2i8VBB4TPa/JYKRQ0xc7eSqnpRDbX+G0m8D/6c4U0oJgD072I9Qsn82
-         crHBX5A6aWRgJim662mjz3dRVn/6j4FUZQlj2R9EX1CtMn4vK+chpZ4my2OvTMKqB5t1
-         CgiA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=5IEfUPj0lQJIMSOkZQgfZhL+oHN0LcRkrBnrV7cp6Uo=;
-        fh=eTNRdxAIKcUsa5WGJjzZ2v9u23rTp7D5chzwFNDk3aU=;
-        b=TTRbOrN0muz7eH4zYtGYi20ugu35OJA/bLXFD2JLCpRKH9Z0+MGpglN7vOt+M0g3Bo
-         JazyqXpwHeoJ91nrTgty2LfVexgwnVTp2iHA8HiRGTsfnYOHjSskA/UrC+2X/UfmioTf
-         RralACdANCMXTxRcmYtgSHb/hb1j6dRLNSRy9sRmAYcZ1P0W/Lt6JhdSOfWs8yQ9c9mm
-         CmVh4acffejNGU40l5N5Llv6jeCgt/8dHJDwsqnULV6n42NVw93UrKRaUkzC4X4rlu0I
-         Fchl1mvtI6/YbFlIUG6PzRVN+1VKCKd2GuumC4ih4tCkrqYmhx3wNPPs/MihXnl5nbXZ
-         gtEw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792862803; x=1793467603; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5IEfUPj0lQJIMSOkZQgfZhL+oHN0LcRkrBnrV7cp6Uo=;
-        b=ACtaH1dtembb8zVHVqXrLZAppQUZoQBqtJfgFUoC7UK5sK0LXbEfgYn0LWPOQINzGS
-         e/xTP7aXNlpsdNXYzti2DP/MdF7tSKvI36wSLs0l7LKLIMxjIvzFu0FacdWwqYrFTyg6
-         duwS2DjAfupVIzlidmpRpmewsTUqmvKOTako5aN/lBuUvG6P9xqnNgH7tovxWhsqCoth
-         WP8GB77SGN+vH5H8ENIuXi7iSPkIQSGBHtWoChW32xbZJOSO5xxlqijOYRdeTF3uu0m9
-         tzlzKvlrRUk7OKXDniNDfdedNp2gNJoMlRJNr/CjGrIxXRlfC5I5C2WPA8yAu6KoNVgf
-         BySw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792862803; x=1793467603;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5IEfUPj0lQJIMSOkZQgfZhL+oHN0LcRkrBnrV7cp6Uo=;
-        b=tJT3TKwW9g4LVs/WaTCwKn5CoNzN7zVBYKGgMGouz7noqk5bBhCyahko+EN7dUZQB1
-         1pB1XCdmuMYLqkvw0CgRxSPi72Ws0oBb6ctz7S1QICMOT3rBPMBLGAILweWhlua6Mivn
-         7OXKtY82ZzlVH0JEKeojTRJYEKcau8AdBQ4LKYSBKiUJH7CyUMUto4a9T4kbCoTcUPyv
-         hJAP62u8b37VYTPlgXkuji1RXlzASVXoaOOzyUVUsd8tyMSfEtabfkIH8Kh7wM7vxlu5
-         S95DVJfSIqBQMrao1rikpeE5MZuijgl1me575zKf738Un92Ncs4qCozIG2XyimDtvRvb
-         CrOQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz3WaLd5f1NUIgrFf2fq1+n39rkLkCzH45ga1d2FWh3gqio2sM/uENXd48jAEuXtmKZ9c1/I7w=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKMCF7KqqqRj9erArN5IZRD23NI63RbaxDuTa2UTYoKumsEMlER
-	QIhGa50UNZyf/etuUpoC1UzhgwFfLkcMlx+1gwVNonfee62Eny4elh7J0zX/v6RDPVyZ/sw/zrk
-	acoY6hta/qVIYx8InhRea442LMkdLe/Y=
-X-Gm-Gg: AYBFou2oWoB5jjsuFAxPXDmYZ9EMvSsvVyGmMoOvZ9PBgqyT9tYiMhoYnwVQ2rxyrhP
-	RlVFQIPrQWhkK27rU/KChlcp6SpD0+Knw2O0/9J/AsyJ0xv8RiVZyksOYjDCcX4Lzg7dCqRcevw
-	YUvSOjNk3MZTVe3N8K5+N9qaY4NXtC39fj1MhjFZrHGNJvpad1+CJMweO27Z0v5y7gyOxUTB3Wv
-	mgCeFQJsdaRSHt+G0JM37WtyTzykfphOmrD1yuv4HAuVaY/mg4UcjBAhQZeEFidh7ZfNpYqyrp9
-	xAE5ZXcl9SY6J6lB4wHXFjcuN8eQVyrhNCgvw1MAgjwsSv1GLAEKmAYyVdvVMl9vzgA2V6vNRF9
-	5sXIW8wixImbXXse5gkNMzmZFrldg8VfSyb7IZQ==
-X-Received: by 2002:a05:6122:d13:b0:5ea:c120:4514 with SMTP id
- 71dfb90a1353d-5ec232b574fmr732517e0c.15.1792862802726; Sat, 24 Oct 2026
- 10:26:42 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ao5w8EAR
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D47A61F01825;
+	Sat, 24 Oct 2026 17:30:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792863039;
+	bh=vbiGdGifJI25J1ktQA8m+IDo+99FoGcOOd/GahePnVk=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Ao5w8EARMiK8PjS357+cXcFCPdpXfUABVDKXS4o+9gdFvaKlLJ+rB/EXaN59/PTJj
+	 jnz5z5gN1ZuGH3Hp0ry/19n2J1O8obJXoKe+A+s65nqJw1AMgjNJ0fxWCkbAprgnk2
+	 pHEU3EZESkhZAF1Pj/Xm6R9zGrboRmf0vjowmac6MVLCawF23RRG4LEFxLIehemCBI
+	 tMwtGXz0nf3xt9pjxumZluu21HDzdovDIJgcHMEvPH5890tdGHcWWQFMYpY2/x15YJ
+	 PMq+TrByGwEUOW92WNNEfPXEhCwGVDQYH9EEx0U2hv3tERPlpJaFUOSn6vEMY6NdW6
+	 ecAcCPz8c0viQ==
+Subject: Re: [PATCH net-next v8 1/4] net/sched: cake: return the classifier
+ result to the caller
+From: netdev-bot+sashiko@kernel.org
+To: jhs@mojatatu.com
+Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ victor@mojatatu.com, toke@toke.dk, bjorn@kernel.org, sashiko-bot@kernel.org
+Date: Sat, 24 Oct 2026 17:30:38 +0000
+Message-ID: <179286303840.3134.16646155289449371572@kernel.org>
+In-Reply-To: <QDISC-BA27.v8.r0.20261020063241-1@mojatatu.com>
+References: <QDISC-BA27.v8.r0.20261020063241-1@mojatatu.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,39 +63,87 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261019-rt-nexthop-spec-v1-1-9c586edf86ab@gmail.com> <179261871862.3135.17495304986227666332@kernel.org>
-In-Reply-To: <179261871862.3135.17495304986227666332@kernel.org>
-From: Demos Ra <demosthenes.ra@gmail.com>
-Date: Sun, 25 Oct 2026 00:26:30 +0700
-X-Gm-Features: AclHuK9inJxb0sYxgOsoIpCH2EcJ8IofbgXvFsE5f1-XpxddtLrszS6fSKcVvkk
-Message-ID: <CAPtXtrkggxtHDGrC9jDRVVsL+=pd-pGUV+6EQy=mNh3moErdxw@mail.gmail.com>
-Subject: Re: [PATCH net-next] netlink: specs: Add a spec for nexthops in rtnetlink
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, 
-	pabeni@redhat.com, donald.hunter@gmail.com, dsahern@kernel.org, 
-	idosch@nvidia.com, horms@kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 22, 2026 at 4:38=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wro=
-te:
-> Will C users of the generated rt-nexthop family get parse errors when an
-> RTM_NEWNEXTHOPBUCKET notification arrives?
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Yes, the finding is valid. I reproduced it: on a socket joined to
-RTNLGRP_NEXTHOP, ynl_ntf_check() and a getnexthop request both fail
-with an empty error message once a resilient group migrates a bucket.
+Low priority / nit picks for your consideration:
 
-> No error message is set. __ynl_sock_read_msgs() then skips the rest of th=
-e
-> receive buffer, and ynl_ntf_check() returns an error.
+- [Low] Two new comments in net/sched/sch_cake.c say the TC action has
+  consumed the packet when the helper returns true.
 
-One correction: __ynl_sock_read_msgs() keeps parsing the rest of the
-buffer. The call fails because the notification arrives in a datagram
-of its own, so its error is the one returned.
+--
 
-> Would the alternative offered below the --- line avoid the problem?
+net/sched: cake: return the classifier result to the caller
 
-Yes, the fix along those lines is here:
-https://lore.kernel.org/r/20261025-ynl-ntf-bucket-v1-0-65aef308d62c@gmail.c=
-om
+This commit splits the external classifier out of cake_classify() into a
+new helper, cake_tcf_classify(). The helper now returns the filter's
+flow and host overrides, and cake_enqueue() does the tin selection and
+flow hashing itself. It is described as preparation for later
+accounting changes, with no change to classification behaviour.
+
+> diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+> index dc93267029e70..6432d10c992e5 100644
+> --- a/net/sched/sch_cake.c
+> +++ b/net/sched/sch_cake.c
+> @@ -1712,18 +1712,24 @@ static struct cake_tin_data *cake_select_tin(struct Qdisc *sch,
+>  	return &qd->tins[tin];
+>  }
+>  
+> -static u32 cake_classify(struct Qdisc *sch, struct cake_tin_data **t,
+> -			 struct sk_buff *skb, int flow_mode, int *qerr)
+> +/* Run the qdisc's optional external classifier. Returns true when a
+> + * terminal TC action consumed the packet, with the reason in *qerr;
+> + * otherwise *flow and *host hold the filter's overrides (0 if none).
+> + */
+
+[Severity: Low]
+This isn't a bug, but is "consumed the packet" accurate here?
+
+For TC_ACT_SHOT the action does not take ownership of the skb.
+tcf_gact_act() in net/sched/act_gact.c only updates its stats and
+returns the verdict:
+
+	if (action == TC_ACT_SHOT)
+		tcf_action_inc_drop_qstats(&gact->common);
+
+	tcf_lastuse_update(&gact->tcf_tm);
+
+	return action;
+
+Even so, cake_tcf_classify() returns true for it. The
+STOLEN/QUEUED/TRAP cases work the same way, because the qdisc still
+drops its own reference.
+
+[ ... ]
+
+> @@ -1758,20 +1762,25 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+
+[ ... ]
+
+> -	/* choose flow to insert into */
+> -	idx = cake_classify(sch, &b, skb, q->config->flow_mode, &ret);
+> -	if (idx == 0) {
+> +	/* Classify first: a terminal TC action consumes the packet. */
+> +	if (cake_tcf_classify(sch, skb, &flow_override, &host_override, &ret)) {
+>  		if (ret & __NET_XMIT_BYPASS)
+>  			qdisc_qstats_drop(sch);
+>  		__qdisc_drop(skb, to_free);
+>  		return ret;
+>  	}
+
+[Severity: Low]
+This comment has the same wording. The very next lines still have to
+free the skb with __qdisc_drop(skb, to_free), so the action has not
+consumed it.
+
+A true return really means "do not enqueue, the caller must drop the
+skb". Could both comments say that instead?
+
+If a later caller trusted the current wording, it could skip the free
+and leak the skb. Both comments are unchanged at the end of the
+series.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-BA27.v8.r0.20261020063241%40mojatatu.com
