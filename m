@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792844094;
-	b=EYWm/i9eu5ZYeiMgyonmV42c69vcWAeIlsHPL2xTw0FFnDnECHMEyuy9E7kALkQONYhF
-	 GMDF+veoRTfdQUKXyKm3M9dLmSlzT7ENjV49U6y4ydIiJe5R7LImCDnKlGTPpBB0VKXtA
-	 cxQDgC63ALUg6rA0IbB3C2RmAsIzKiQVT+KIgO3714wJxIpqhkr5+q8CzzgydIpw8JQSO
-	 iyDxEDORGG+a63bX2ilSUlsUnigBc9vVLtjLANHFAAVGWS1OAU8dlEsfyeTcQm/Oqp/RI
-	 Kt3A18l2kvmXMoPdQjZr13+Q2u7ZoCwpdrWZB6ucghc78NAty9is7/qRL+Y6ZgGzmsw==
+	t=1792844088;
+	b=JX2tIS6mGyAkgHHF+QPNR0NAAdldsMQzU9AS7+sE53u6oyNFjX3TDtRFaXU3KGd7TXRl
+	 FqX2Q9dQ545ARaYU76UU8F/cXyN08k0WuNbiQlMgcSl39mhXK8iMLEuC2iK+PKmCHx49I
+	 4SlFgLGFCWhPw0NG1ksM+7GygkQ28sjnfkBBawMNMw58NXpwv2XAt2zkClYDGXYwlgtKd
+	 bPCj+CdPnQcpbQHYwJIveP44rPEtbPPNbZWCTEc5sXCAkpe/D31C1Irokfl462vXH5DSr
+	 2PPhexNQ/eGcYYBKueZg46M2fxDnd3qdAcb5PMq5ZG+gSlNe+OtgpCwmzpavKUk2aPw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792844094;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792844088;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=ottpThceg5hJCKwYwOig+t32jGLSDNK6UuVyETsOj0w=;
-	b=O5TNHoGdzpg/RamwGkJErRzDQ0WpWRiTYgKrDPdnoXDDQ4wW44sfq+xi87jDr51LrZYN
-	 GSjsakYIjQM+C9jTCpHA5wqpT8HWdqrwkTRJIh6FeaB3GVT1ejcAkTMG08vGgzb1O/i0q
-	 ihUrompX7ut+2X9bV36MtFTIp5H0ffLBn7EUffut0mjp8rqpiwveuwHWoDqEg1TecbQvl
-	 JNnBPeSJsLIKmsR1DwyWLo6+Nd5Y5ugv3HKelKyVsFeLnCj2T76021YpAsQHTOijWpLWW
-	 pjYZ4IQA9UJFAAAvxAKUrEWXbbMFr692E4vXor/EiLJptxyk/FSii8hor+Gj3aMM03w==
+	bh=K7LxKW+FRj6QhUxGWybJkziD8iYolGetDeRLOo4voUU=;
+	b=IRnLYA7gVRuIrwNiZmkOeGvSo5zshFNawENCxsm8qjYB9cUoSJBNBO27gCQuD0bOf1TB
+	 u7Wh4WeBuQRGx5D88m+o3RczdbQWGST19agQC28hybc6s+pVnaAiAB4z4TUBKTXGdu/AG
+	 PZjaEVFQwizTrLJtpSoxTmU2UFj4DUx2oAHbyPAgdW2Gin0MU+bDFsTDvp4mvBajmeftk
+	 uwMHivhSNR8J2WUn61btZ85FJFlIFjmuoxxZ3blXIMsP/7nC64svvYGPpMmI6sH/jsb1G
+	 aoBWrtE5FPqxM3lB+fvDPTmnTIKlv/8N55w9b6DypMEwbrWcFhppgDI+l6h5yWD6f5Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IeV2HGVz;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jadg3h8S;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5342C60A261F;
-	Sat, 24 Oct 2026 12:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CFBF606A31A;
+	Sat, 24 Oct 2026 12:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IeV2HGVz
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E441F031E6;
-	Sat, 24 Oct 2026 12:14:53 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jadg3h8S
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 577411F01825;
+	Sat, 24 Oct 2026 12:14:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792844094;
-	bh=ottpThceg5hJCKwYwOig+t32jGLSDNK6UuVyETsOj0w=;
+	s=k20260515; t=1792844087;
+	bh=K7LxKW+FRj6QhUxGWybJkziD8iYolGetDeRLOo4voUU=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=IeV2HGVzxStTpQB5FmYdScY3LiRqllUYDs3p5FkPZb+ARWeq1eb1eTDkHTnuvvIdN
-	 ZTU4HNh0d7Zo4ZVJJNKLLQvNkBRCkPVlHrRG/f2VpeCz9isC5EKz1q11xQGDLtaHiV
-	 ymGlHfOAB/bPzMCZQIoMoZw3wVZhL7QSOF96v2S9fYDNq8zkctNcPTK9Gs2tn9eZKL
-	 pfvN/7ZOD9ygaPyzbbrXxhZyo9Uo3U/UJ/d/SWTH/fmJAmoEKP0oPJGfs43JzP0Hhe
-	 Dzmjp2oj+cJDRkGPHcptagS5czVa6ao7VLLNyCnjSU/0c0k75VY7TXo5WDdLxSQstv
-	 wNefLo4Dqz8ig==
-Subject: Re: [PATCH net-next v4 6/7] net: ftgmac100: Add AST2700 upper DMA
- address support
+	b=Jadg3h8SLRb3uUDnsNzEkg1KuYpxgcXTiIhDw3HrtvHPdm/Ff70F6TssleNtZkArV
+	 8JHRx/LjVeNGGUrfaOZNMCsMAMvGaLxdGb59xyhYp9K9qGPIeirup446eQJuCVEkp8
+	 RvsTRP+pPB2JmXO2vF99A5VVEL1e6xnKmY5TeW5Jd3EY7WNlOomoakwl/c8WCztKUm
+	 +PAOrPTes4AL9YwyrunlLh1Lz8otExVHTQmj/HLrPWgPnyd91bb+fMKdS+G4AddGQZ
+	 iN0CWJWgIes/rLWjwcahyrKIDYHuUJHdZKWDo1s1dFezUkomUNrqbLzlVV9MaUjWQa
+	 IH+9IFBthob5Q==
+Subject: Re: [PATCH net-next v4 1/7] dt-bindings: net: ftgmac100: Make Aspeed
+ compatibles standalone
 From: netdev-bot+sashiko@kernel.org
 To: jacky_chou@aspeedtech.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
@@ -49,11 +49,11 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
  ratbert@faraday-tech.com, edumazet@kernel.org, hkallweit1@gmail.com,
  linux@armlinux.org.uk, netdev@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, andrew@lunn.ch
-Date: Sat, 24 Oct 2026 12:14:52 +0000
-Message-ID: <179284409298.3134.2544700895306550156@kernel.org>
-In-Reply-To: <20261020-support_ast2700-v4-6-4d36b40939b3@aspeedtech.com>
-References: <20261020-support_ast2700-v4-6-4d36b40939b3@aspeedtech.com>
-X-sashiko-severity: Low
+Date: Sat, 24 Oct 2026 12:14:45 +0000
+Message-ID: <179284408591.3134.16629228418200101664@kernel.org>
+In-Reply-To: <20261020-support_ast2700-v4-1-4d36b40939b3@aspeedtech.com>
+References: <20261020-support_ast2700-v4-1-4d36b40939b3@aspeedtech.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -66,72 +66,166 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 3 · Low: 0
 
-- [Low] The descriptor struct comments are now wrong.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The commit message's reason for the change does not hold up
+  for the code at this commit.
+- [Medium] The binding now asks for a standalone "aspeed,ast2400-mac" /
+  "aspeed,ast2500-mac" / "aspeed,ast2600-mac" compatible with no…
+- [Medium] The patch deletes the `items: [enum: [aspeed,ast2400-mac,
+  aspeed,ast2500-mac, aspeed,ast2600-mac], const: faraday,ftgmac100]`…
 
 --
 
-net: ftgmac100: Add AST2700 upper DMA address support
+dt-bindings: net: ftgmac100: Make Aspeed compatibles standalone
 
-This patch programs the high RX and TX descriptor ring base registers on
-AST2700. It also stores DMA address bits 34:32 in bits 18:16 of txdes2 and
-rxdes2, and requests a 35-bit DMA mask. All of the extended address
-handling is gated by a new FTGMAC100_QUIRK_DMA_35BIT match-data quirk.
+This patch changes the faraday,ftgmac100 binding so that aspeed,ast2400-mac,
+aspeed,ast2500-mac and aspeed,ast2600-mac are standalone compatibles. It
+drops the two-string form that carried the "faraday,ftgmac100" fallback.
+The examples now use "aspeed,ast2500-mac" on its own.
 
-> diff --git a/drivers/net/ethernet/faraday/ftgmac100.h b/drivers/net/ethernet/faraday/ftgmac100.h
-> index 8c35c895b1465..0c244b1c0a351 100644
-> --- a/drivers/net/ethernet/faraday/ftgmac100.h
-> +++ b/drivers/net/ethernet/faraday/ftgmac100.h
+> The aspeed,ast2400-mac, aspeed,ast2500-mac, and aspeed,ast2600-mac
+> compatibles are currently only valid when paired with the generic
+> "faraday,ftgmac100" fallback: if a node ever bound through the
+> generic entry alone, ftgmac100_probe() would set
+> rxdes0_edorr_mask/txdes0_edotr_mask to BIT(15) instead of the Aspeed
+> BIT(30), skip Aspeed clock setup, and leave the DMA mask too narrow.
+
+[Severity: Medium]
+Is this rationale accurate for the driver at this commit?
+
+In drivers/net/ethernet/faraday/ftgmac100.c, ftgmac100_of_match[] has
+dedicated Aspeed entries ahead of the generic one:
+
+    { .compatible = "aspeed,ast2400-mac",
+      .data = &ftgmac100_match_data_ast2400},
+    ...
+    { .compatible = "faraday,ftgmac100",
+      .data = &ftgmac100_match_data_faraday },
+
+The most specific compatible wins. So a node with "aspeed,astXXXX-mac",
+"faraday,ftgmac100" always gets the Aspeed mac_id, and ftgmac100_probe()
+then does:
+
+    if (priv->mac_id == FTGMAC100_AST2400 ||
+        priv->mac_id == FTGMAC100_AST2500 ||
+        priv->mac_id == FTGMAC100_AST2600) {
+        priv->rxdes0_edorr_mask = BIT(30);
+        priv->txdes0_edotr_mask = BIT(30);
+        priv->is_aspeed = true;
+
+The two-string form this patch removes therefore can't reach the BIT(15)
+and no-clock path. The only node that could reach it is one with just
+"faraday,ftgmac100", and the binding still accepts that through
+"- const: faraday,ftgmac100".
+
+The DMA mask claim also doesn't seem to match the driver. Nothing under
+drivers/net/ethernet/faraday/ calls dma_set_mask*() at this commit. Even at
+the end of the series, the only DMA mask set is the 35-bit one under
+FTGMAC100_QUIRK_DMA_35BIT, and only the AST2700 match data selects it.
+
+The note below the --- line says there is no known combination "where a
+node has actually bound through the generic entry and gotten the wrong
+EDORR bit". Before commit 03a2aba50b2c ("net: ftgmac100: List all
+compatibles"), though, "faraday,ftgmac100" was the driver's only of_match
+entry. Every Aspeed MAC bound through it, and the driver detected Aspeed
+afterwards with of_device_is_compatible(). In those kernels the fallback
+was how the device bound, not a hazard.
+
+Could the commit message give the real reason for the change and drop the
+DMA mask claim?
+
+> diff --git a/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml b/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
+> index d14410018bcf6..c870dd0bda7b2 100644
+> --- a/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
+> +++ b/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
+> @@ -13,12 +13,10 @@ properties:
+>    compatible:
+>      oneOf:
+>        - const: faraday,ftgmac100
+> -      - items:
+> -          - enum:
+> -              - aspeed,ast2400-mac
+> -              - aspeed,ast2500-mac
+> -              - aspeed,ast2600-mac
+> -          - const: faraday,ftgmac100
+
+[Severity: Medium]
+Should this items branch stay in the oneOf with deprecated: true instead of
+being removed?
+
+All eight Aspeed MAC nodes in the tree still use the two-string form:
+
+arch/arm/boot/dts/aspeed/aspeed-g4.dtsi (mac0, mac1):
+    compatible = "aspeed,ast2400-mac", "faraday,ftgmac100";
+
+arch/arm/boot/dts/aspeed/aspeed-g5.dtsi (mac0, mac1):
+    compatible = "aspeed,ast2500-mac", "faraday,ftgmac100";
+
+arch/arm/boot/dts/aspeed/aspeed-g6.dtsi (mac0 to mac3):
+    compatible = "aspeed,ast2600-mac", "faraday,ftgmac100";
+
+Every remaining oneOf branch matches a single string. Won't every
+AST2400/AST2500/AST2600 board DTB now fail dtbs_check? The schema would
+also stop describing the DT form that is deployed in the field.
+
+No later patch in this series touches arch/ or brings the old form back.
+The "dt-bindings: net: ftgmac100: Add AST2700 compatible" patch only adds
+aspeed,ast2700-mac to the enum plus new if blocks. The tree stays
+inconsistent until a separate series lands through another tree.
+
+Runtime binding on this kernel is not affected, because of_match prefers
+the first compatible.
+
+> +      - enum:
+> +          - aspeed,ast2400-mac
+> +          - aspeed,ast2500-mac
+> +          - aspeed,ast2600-mac
 
 [ ... ]
 
-> @@ -226,6 +229,7 @@ struct ftgmac100_txdes {
->  #define FTGMAC100_TXDES1_TX2FIC		(1 << 30)
->  #define FTGMAC100_TXDES1_TXIC		(1 << 31)
->  
-> +#define FTGMAC100_TXDES2_TXBUF_BADR_HI	GENMASK(18, 16)
+> @@ -94,14 +92,14 @@ unevaluatedProperties: false
+>  examples:
+>    - |
+>      ethernet@1e660000 {
+> -        compatible = "aspeed,ast2500-mac", "faraday,ftgmac100";
+> +        compatible = "aspeed,ast2500-mac";
+>          reg = <0x1e660000 0x180>;
+>          interrupts = <2>;
+>          use-ncsi;
+>      };
 
-[Severity: Low]
-This isn't a bug, but the descriptor struct comments just above this hunk
-no longer match the new layout:
+[Severity: Medium]
+What happens when a DTB written to this binding boots on a kernel that
+doesn't have commit 03a2aba50b2c ("net: ftgmac100: List all compatibles")?
 
-struct ftgmac100_txdes {
-	__le32	txdes0; /* Control & status bits */
-	__le32	txdes1; /* Irq, checksum and vlan control */
-	__le32	txdes2; /* Reserved */
-	__le32	txdes3; /* DMA buffer address */
-} __attribute__ ((aligned(16)));
+Before that commit, ftgmac100_of_match[] had only:
 
-With FTGMAC100_QUIRK_DMA_35BIT set, ftgmac100_hard_start_xmit() now writes
-buffer address bits 34:32 into txdes2 for both head and fragment
-descriptors. ftgmac100_free_tx_packet() reads them back to rebuild the
-unmap address, and txdes3 only holds the low 32 bits.
+    { .compatible = "faraday,ftgmac100" },
 
-struct ftgmac100_rxdes has the same problem. rxdes3 is still described as
-the full "DMA buffer address", and rxdes2 is only described as
-"length/type on AST2500".
+Aspeed variants were identified after binding, with
+of_device_is_compatible().
 
-Could the comments for txdes2/txdes3 and rxdes2/rxdes3 be updated? It
-might also help to note on the new GENMASK defines that they only apply
-to the 35-bit (AST2700) layout. Otherwise a future descriptor writer or
-reset path could treat txdes2 as reserved and drop the upper address
-bits.
+On those kernels, a node with only "aspeed,ast2500-mac" matches nothing.
+That includes stable and LTS branches without 03a2aba50b2c. The Ethernet
+MAC would never probe, which on BMCs usually means losing NC-SI and network
+management. Other DT consumers that match only the generic string would be
+affected the same way.
 
->  /*
->   * Receive descriptor, aligned to 16 bytes
->   */
-> @@ -272,4 +276,6 @@ struct ftgmac100_rxdes {
->  #define FTGMAC100_RXDES1_UDP_CHKSUM_ERR	(1 << 26)
->  #define FTGMAC100_RXDES1_IP_CHKSUM_ERR	(1 << 27)
->  
-> +#define FTGMAC100_RXDES2_RXBUF_BADR_HI	GENMASK(18, 16)
-> +
->  #endif /* __FTGMAC100_H */
+The fallback is what lets new DTBs work with older software. Could the
+commit message mention this forward compatibility cost, instead of calling
+the change only "a binding correctness fix"?
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261020-support_ast2700-v4-0-4d36b40939b3%40aspeedtech.com
