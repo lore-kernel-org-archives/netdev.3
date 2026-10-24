@@ -1,101 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.41
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792832387;
-	b=L4jGU53roTlbEaFFlfeJA1j1y/cUyoBTq9xcMPOsjmEPZCdOWwWWFvmjxj2xpBlRfh37
-	 cNbQCvn1ZhPRjRgW9I7k5sdmSujc3UywStk/u47pjwSRT1UTu7sjJ2AdHa9ozl1evIW9K
-	 LNgEBykinIn+2rHDMeMvQeXTjsSR1oLPcO40RvlLspNz/r+4HPpj9Rq3w1je1RAZE5Vmp
-	 /+LfyTLGUy8bxJwjwsD1PofiLjMp4MUo14BV7llvjScSyR4vccoANUF0ET4FsX8BBvKWp
-	 pDR/5U2mNh8L3FRSx3xtMmfM462S55HS/XEsMw/Qyk092KNor9qCxbuLcO53Q4U6+5Q==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792832387;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.227.130
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792833188;
+	b=i4ik+X1i2eaGu6YTCG0AfwwhzbZuHEFfIa9ocKkEfWu3iD0FOp4Dy8Rrm53ldVuJ3W+e
+	 MpDp8NKJ4lXVGR5z7y0NOb7t9YTEMCCB4tJ3szBklDKywUgnPpjpGE4Z/zcUYdS7/Hgxu
+	 So2WH2Scy7zr3skCiltaBCTAny+iWBxi5CAdSxNjbDS8+mhLbRu5vMZ3+VuGKOqLgCrsV
+	 DKzuHUQp8Wnk1r9Fk9O45rYwoCed8NXdHG5Hm5cj/lLxc1/oMnb6Ai/40Xx8mcZ1xc0aK
+	 Zu7WDap3OV5KWjTk3rwkP03y6qh0ZLjjNZhIhICx3BQXTn9SktM8tJcBwLQXqT4FrNg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792833188;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=Aj0ctnHyFlf1mrEf1OjyH+Yd3MT+vDq9LG+nCIJwa/k=;
-	b=ZBiS11o9JCjvqvOEI1qioL2599mW0QMSnMJa1lePtD/xgtVI4Q8l6sUDK+OhyzuuOiK3
-	 r9c6spUnfZRpVMju83v5PkubZeCxojO02koXhRKw1cZRaPIkPm3Tbbi+/VV9ed57Rhx/E
-	 V0ZVnaurfPCZKgIYXqLhnX4p5dxFuhh8sm+SCyQv35iePOlzWXps21hX98jw+lP9ZVZsc
-	 G4qEJr/QzvLAPpyyruZOq20Dtd0PxaRiiKl5GB6jvsKG6u0+AVBIQo6Q5ubkz5EF7Ye5A
-	 eVFoACBm8geu26M106XQF9FT4CGpMs15O46tpvaxPeQcMfCiEe6/lUEw7j9mDSQq7DQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=YDNhZ9YjK/zlIe5trqHYSdI1fhNBLfzLRTmRchXqEEw=;
+	b=uw/L/0d5TH21urO54lOTQWAjLdiu3m+ZnZFOXss2j8GvR59/ZK0ynRWl4Ui4hWBUPltx
+	 uwjrBy5k+Y/ROhZ5vVqlsVrnTnDuY3UOuSlA6/uNgb/EQLSwwxQVmFXlxyrcHRe/2764t
+	 d6agziU+2U3fVesOZs9OqDb1ZVJnQcqVTstkorw3aOr1woh5QaG6QZA29bdDYJq8s1Bh5
+	 RNTOhdQIVhtUgSWA3yHe+k5/vh/rYem0Jhr4/fNwTUkVQXLijhJK/haDzkVcWv94UXvx2
+	 xOXhZ2xzBoMJv2MSiAojZUXnqooAUePC8YqRXPmLOhqYYYSm9hVJP3p1poOUgas17ug==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=HryVdwJ9;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.41
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=gF6+xCNs;
+	arc=none smtp.remote-ip=74.125.227.130
+Received: from mail-pj2-f2.google.com (mail-pj2-f2.google.com [74.125.227.130])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2418D606A320
-	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 08:59:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2418D606A320
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE62A606A31A
+	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 09:13:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EE62A606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=HryVdwJ9
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5be53e5fce1so1413065e87.1
-        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 01:59:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792832385; cv=none;
-        d=google.com; s=arc-20260327;
-        b=qYO1MhbYraUfKwrKKVTcGpsC3F6DNBiy+ykyl7yloy7ANBSR3bGrFeJc6/jDhm6n0s
-         Jkf9W6dDjnh/LAE5CgCEgG+yCtifN7juY3XUFlo7mSsw2AFa7cIVnW/NOyDTUCZ6gTii
-         aDC5gmtx+CHQkcjqdM9isgDTC6FZCR7yob5uPhN6gg7whNnq6V0UETWSPTJAdE0BGrqP
-         OBmZXv6Yv5wcYTgVgVppjxCGUtnMG2wLFrJzxB4aT3xM8FkU2vGIOlIX37VQmENk9TuH
-         ihchMENHicQPc9OI5docmU/tSC5P1HJ7ijo2KWTabVMiMzMN2QWqDKdMAzVMu1AY3DwQ
-         C9Tg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Aj0ctnHyFlf1mrEf1OjyH+Yd3MT+vDq9LG+nCIJwa/k=;
-        fh=hHQVLkNDBO4bXovTWlmlzzoRVkvZZRdzeSPIESSgiw0=;
-        b=dPnYIArVPZ+dxaMwC21VUFgX/Akhe0q+1hg686OWwWoRIr3fBgORqlr9xqoirPLnMP
-         j+bEqowNWNb/ms7sxF6enANj8G1vIdsKbF5rEMpiunCHQUblsH5za6TCDM4DcbBY4kRg
-         FR8+JFx2h4qCjEP8EE7mQnCC1UwpE7/r+yLuC2fxmxerX6PttrktUE2UHc+8+YdKYuNR
-         kjKjzxI0NPTgiMaToZ4t+rD9pjrddO+8Bl63iV5yoFdsxbjbsm3LHNkZFkFFIn9RF9nK
-         OhQy2ELKtnac14DZlZuANIPIzSUMv4pZTPoB+27wRLjXWvkTaJtL3yHs6tvZpCpOg+W7
-         Rgkg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=gF6+xCNs
+Received: by mail-pj2-f2.google.com with SMTP id 98e67ed59e1d1-3ad6011ecebso357744a91.1
+        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 02:13:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792832385; x=1793437185; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Aj0ctnHyFlf1mrEf1OjyH+Yd3MT+vDq9LG+nCIJwa/k=;
-        b=HryVdwJ9UjqgrA63j3oc0URaeYN1fc+ksrJnQ2sOjPDyag5GoDogMEjGAjMepyEnIR
-         KwoUBoJFPVW3fA2H2Y2DClOcO+k/OEC11bW3sv/YIXyjP0dWLvhxSD0GZqpYKM2ywnqw
-         QF401ClIonbPT4sQRRl1oRBQs6qWfQFhn2lkkRo8YikCjHD/3UyIYMqpYBzSVCE7xujg
-         N1HoHC8YmUWjPdWwuIExqlJT6EwhCRUFYX+7p6V5Y7GadcR3cTJsBpBWd5iVxvINzXis
-         8as3barP5BJfa4mayr5y67ED2pVAcNeu9FRzaf9dj522DcC7JN6PQT5eYfk0mJGrB73R
-         oQRA==
+        d=gmail.com; s=20251104; t=1792833187; x=1793437987; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=YDNhZ9YjK/zlIe5trqHYSdI1fhNBLfzLRTmRchXqEEw=;
+        b=gF6+xCNsFTFYDaeJwwaq/P0+Cter9G1tJ7K2lri5LvrpFg2QxpZ/855aj5nDmzMM/l
+         ncGai+D5muYDxpER3I+DJZSavGtTB7ugxRCv26Jw6osKn7nIozGUxE7ZKgYwXIaZIIIP
+         iTc++CeBx3MPgD3F+BcsNRzeou49sF3M2jVfz8fjtAhHLVJDiF8r8ubrVxQRl/I928zg
+         5fnxLcu1bzDSlpy42jrX4iQOkWIzXMiP4/yOoKIYabdouie/84SUTboFMjGMMYtBDS9H
+         1zuSC5Bsu4OkmVbl2+LBl5ilM7kzRyAsfmsCirmoKEr3dSWH1JfckoCWIWPHoxXcQDqZ
+         /DrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792832385; x=1793437185;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Aj0ctnHyFlf1mrEf1OjyH+Yd3MT+vDq9LG+nCIJwa/k=;
-        b=1JphM0fcTQks8PfPyX8gsJltaaBNaNX6emBwO5JlR09e3bxLNBOOG8eBuP7H6heDKf
-         IM4spPB/xXHYQ27d/HQq9z1+Kcab+HEGRTwcGIF5IGBx/MccDS88hqMshaVNB3NMiLyY
-         6OVeWEfRf8o5diu0xWTfa/IQbDXAqWevBwcL8ojV196qWTtFOXtdOhE3usJRkPFvExwb
-         OlFNT+zIqJXtkhIKUFW8z8GDc0LV0H+OzzxS0BZKrcaZ5tQ/pkSFLtDbrMIUQyBa36lV
-         IP1w1aAzkK1pAEwB84FHNUyEDeRX5fYF17wd/5LlP1FJb/YKIbKwL4L5cDN80Qv0D51e
-         bzWA==
-X-Forwarded-Encrypted: i=1; AKwUvBz89GkzD/jmsdRtDfNCgy7h8wV3InNIOKL/hwi5oCHB7TcumEaz8XiDT1kbSy8yltthMxSGJq8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKGDfyvh+1XkFSOv2N5SiLje1m0Z4i7HCy3sPFMGNeQ27hXxZb2
-	j5LrJNVkiRF9j2XHLZeOUmd7A587vv43lJ6p+Eyl0aIkrqm7WQxvR8IUuIsgdKcGTO3O3BivtDl
-	tZOPE9Cd7kKSB7oWzo6gOsudiD5sFXG5TiQl3
-X-Gm-Gg: AYBFou2gRxSELIFq03PfGD/iaeux9hdu7XG8DHxfGrXMe5KftwdXyBUlV4X4pwy0Snv
-	wauldAxd9pKGgAXaopAxiYE9S/dlbiQ7bK2bJsc6HLeHSDhgVrNVZ2a5n0hRvi6IcwF44JXwXTQ
-	9/iX8ny2PR0DOXkkEllF+7SvkMsP2dlf03SfRojYYuvZqxG3BEAscfp7bZcGKjJXd3ziY95jG7N
-	pBPmj4OSQpocLpJi8x7EzEPGJb6B9AfIZqid735XUrjgiqeShEufHEPCpr20e8aTprBs3QmqGs+
-	1Wr8kwI6ijnmkqxUf88e2qECUESw7TlrEm9HEAMUCRoDwjAW8AFwsQkLO4XwEwfEzIbe7Jtkp3O
-	SXOaKPhs1Ioel2mRoVI+8wwJUeMmEk6M2GnMWpV6h5/9memDVJx2Vme/PuAdmRh4GOmPrZO9Q4+
-	Mq5XLT9UMDRdGEBoo5eTBbdHvtoE2nV6gphiIrP4n5AsLrie1Rm08=
-X-Received: by 2002:a05:6512:3d93:b0:5be:590e:ea76 with SMTP id
- 2adb3069b0e04-5bfb716f1e0mr512993e87.6.1792832384863; Sat, 24 Oct 2026
- 01:59:44 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792833187; x=1793437987;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=YDNhZ9YjK/zlIe5trqHYSdI1fhNBLfzLRTmRchXqEEw=;
+        b=HsiZ+BB7XtRlTlhwrar+gqTXWaFdE82M6KEs7iEbUYf9xOjpQW3qfxYEffp23haO1V
+         Gx8+3ctUs4uR0Xtlqg71ldpDPtnRVe8J6MufKCo9BS01+83ylyXLYnCW+l7pF/jAtCcY
+         H4dLqajDLMXllrS5kLVU+VDtXEPaKLTQvwYdMCjrk7gxr3Z2obWN8dpJgB2AehUSrn4q
+         R18OzsxeVTCXkMZlexTFa4R2iddaq/hXUEe6wWrETMdAeWrYyx0PJulCUw8PDXll0Cq1
+         qBKvnPVxtB6+wWBsvAGdBKbu0MKjxr5VbcDqRYzOvAbEd6ECTwpe2Xoqqop5rmIsxOGV
+         ZraA==
+X-Forwarded-Encrypted: i=1; AKwUvBzaDzAb71z5E3O8AMHMhuIoZ3f1ArrXbRRsqoD2n3fZbstecYCq2ZV+E8g2rtQmSFWWQvtWUes=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJm5QEl7Zw7RemfYF43eGULHdHEn0ABrHq3E2ljUdwG4fLfJzc+
+	0wDIelyy6qmyzFEnCAq+SrKDWEVeVq5uIDqCH4twpb2V8mPs/X0p4T2np/XLVxBhk47UaA==
+X-Gm-Gg: AYBFou2J2x9CAKC62IHUfzDBS1QZktNfrpHPLexofrADFDWt8nQT685z2E7XOWNTtlY
+	jafR5P3AgreMGV4Ey9V1qrFNwMMdXKaiZ0u6y5Wy+HU+oh49lmEiJbUI1AfkqEaVwjc03JDQb92
+	Cwst8lFpGfzbDt/Cp1Cq/Ufh5Qu5YSMVG5rWkS4VRseDRBGQMONYypAhMF6iX2uKVUV70EDo5si
+	jvWAc0fsmbJtb7mhqQWqU6hU+xD84j9MO9XP3wr2/A3vQY65XKX3udoapyPSkU35Duuyd8LJ5AY
+	Ic+esmekZfkORJWwRi5G40uBBOXtbAW6cWDdaOyvQIiM5w1YHn3pS3ayBgP4vFlNQJLr3K+maC0
+	LI2T/vXXc8PZ2UETsgnpOeGNsnD0KNAsxGHiyP5q9u4dENXyquEb7c4zdMhkR6W/hBlAfGW9qci
+	Y8lWseltSPOr5DbDDDOrpHE3DPeTJntqP6TH4Sdys01ycfB4fpLI6gvlLbm8XgaK+zLctlzaGRT
+	pG2EhcncfYCAE4lYBM2h/zUsU3XVjdn2NYBZutgmbHHJcwNbRX3N6bMc6f4/l1onPYtkE9IByzh
+	s4o=
+X-Received: by 2002:a17:90a:da85:b0:3ac:9a5e:9ce9 with SMTP id 98e67ed59e1d1-3adeabde800mr1418906a91.29.1792833187236;
+        Sat, 24 Oct 2026 02:13:07 -0700 (PDT)
+Received: from 192.168.1.7 ([2409:8a1e:2330:4ef0:20e4:738f:8d42:88af])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3adebbb1a13sm2231965a91.2.2026.10.24.02.13.04
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 24 Oct 2026 02:13:06 -0700 (PDT)
+From: Rongzheng Wang <testwrzwrz@gmail.com>
+To: Magnus Karlsson <magnus.karlsson@intel.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: Stanislav Fomichev <sdf@fomichev.me>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	stable@vger.kernel.org,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] xsk: defer software checksum until the skb is complete
+Date: Sat, 24 Oct 2026 17:12:56 +0800
+Message-Id: <20261024091256.17918-1-testwrzwrz@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,50 +99,407 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261023114228.289161-1-jiayuan.chen@linux.dev>
- <20261023123102.3c30d01e@kernel.org> <607851eb-e42b-46bc-928f-91db542fa9c0@gmx.net>
- <20261023130812.1ba2462a@kernel.org>
-In-Reply-To: <20261023130812.1ba2462a@kernel.org>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Sat, 24 Oct 2026 16:59:06 +0800
-X-Gm-Features: AclHuK9POySI0ZvG5OMlRTW3dRxVhJhD2MB57P6NTNTOjlC8Nr_YYcS9vVabIjg
-Message-ID: <CAL+tcoBiuu3f+XDkg1a+oZPgPfBYHbJEKYd4MKFv20Ma668ANA@mail.gmail.com>
-Subject: Re: [PATCH net] net: reject dev_weight products that overflow int
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Matthias Tafelmeier <matthias.tafelmeier@gmx.net>, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sat, Oct 24, 2026 at 4:08=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Fri, 23 Oct 2026 21:32:40 +0200 Matthias Tafelmeier wrote:
-> > On 10/23/26 21:31, Jakub Kicinski wrote:
-> > > On Fri, 23 Oct 2026 19:42:25 +0800 Jiayuan Chen wrote:
-> > >> proc_do_dev_weight() sets the backlog NAPI weight and the qdisc quot=
-a
-> > >> to dev_weight * dev_weight_rx_bias and dev_weight * dev_weight_tx_bi=
-as.
-> > >> The three sysctls only have a lower bound of 1, so the products can
-> > >> overflow int and end up <=3D 0, e.g. dev_weight=3D65536 and
-> > >> dev_weight_rx_bias=3D65536 give a backlog weight of 0.
-> > > Not sure anyone uses these, maybe we could cap them?
-> > > 1k for dev weight 8 for bias?
-> >
-> > Capping does not make sense to me.
->
-> Please don't email people off list.
->
-> What are the values you know of being used in production?
+When XDP_UMEM_TX_SW_CSUM is used with multi-buffer TX, xsk_skb_metadata()
+calls skb_checksum_help() while only the first descriptor has been added to
+the skb. The checksum therefore covers just the first fragment, and
+skb_checksum_help() sets ip_summed to CHECKSUM_NONE, so the remaining
+fragments are never included in the checksum.
 
-I'm not Matthias. Revisiting my past experience doing AI tuning stuff
-in the testbed/real workload, I once saw performance improvements when
-I played with this weight and the driver weight. But I didn't manage
-to see the deeper underlying reason for that scenario, which means I
-was unable to replicate the methodology to another scenario. Maybe
-it's a good candidate for blind AI tuning...
+Move the software checksum calculation to the point where the last
+descriptor has been added to the skb.
 
-With that, I think capping at 1000 is fine by me.
+On a checksum failure the packet is now dropped instead of being returned
+to the application for a retry. This path is not reachable with the
+existing metadata validation, but the behavior change is intentional.
 
-Thanks,
-Jason
+Add a selftest that sends the same packet as a single descriptor and as two
+descriptors, verifies the expected UDP checksum, and compares the frames
+captured on the peer.
+
+Fixes: 11614723af26 ("xsk: Add option to calculate TX checksum in SW")
+Cc: stable@vger.kernel.org
+Signed-off-by: Rongzheng Wang <testwrzwrz@gmail.com>
+---
+ net/xdp/xsk.c                                 |  25 +-
+ .../selftests/bpf/prog_tests/xdp_metadata.c   | 299 ++++++++++++++++++
+ 2 files changed, 316 insertions(+), 8 deletions(-)
+
+diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+index 33475b180ea6..845ae6bde987 100644
+--- a/net/xdp/xsk.c
++++ b/net/xdp/xsk.c
+@@ -1011,14 +1011,6 @@ static int xsk_skb_metadata(struct sk_buff *skb, void *buffer,
+ 		skb->csum_start = hr + csum_start;
+ 		skb->csum_offset = csum_offset;
+ 		skb->ip_summed = CHECKSUM_PARTIAL;
+-
+-		if (unlikely(pool->tx_sw_csum)) {
+-			int err;
+-
+-			err = skb_checksum_help(skb);
+-			if (err)
+-				return err;
+-		}
+ 	}
+ 
+ 	if (flags & XDP_TXMD_FLAGS_LAUNCH_TIME)
+@@ -1030,6 +1022,14 @@ static int xsk_skb_metadata(struct sk_buff *skb, void *buffer,
+ 	return 0;
+ }
+ 
++static int xsk_skb_sw_csum(struct sk_buff *skb, struct xsk_buff_pool *pool)
++{
++	if (!pool->tx_sw_csum || skb->ip_summed != CHECKSUM_PARTIAL)
++		return 0;
++
++	return skb_checksum_help(skb);
++}
++
+ static struct sk_buff *xsk_build_skb_zerocopy(struct xdp_sock *xs,
+ 					      struct xdp_desc *desc)
+ {
+@@ -1270,6 +1270,15 @@ static int __xsk_generic_xmit(struct sock *sk)
+ 			continue;
+ 		}
+ 
++		if (!xp_mb_desc(&desc)) {
++			err = xsk_skb_sw_csum(skb, xs->pool);
++			if (unlikely(err)) {
++				xskq_cons_release(xs->tx);
++				xsk_drop_skb(skb);
++				goto out;
++			}
++		}
++
+ 		xskq_cons_release(xs->tx);
+ 
+ 		if (xp_mb_desc(&desc)) {
+diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_metadata.c b/tools/testing/selftests/bpf/prog_tests/xdp_metadata.c
+index 5c31054ad4a4..21a11300076a 100644
+--- a/tools/testing/selftests/bpf/prog_tests/xdp_metadata.c
++++ b/tools/testing/selftests/bpf/prog_tests/xdp_metadata.c
+@@ -6,9 +6,12 @@
+ #include "xdp_metadata.h"
+ #include "xsk.h"
+ 
++#include <arpa/inet.h>
+ #include <bpf/btf.h>
+ #include <linux/errqueue.h>
++#include <linux/if_ether.h>
+ #include <linux/if_link.h>
++#include <linux/if_packet.h>
+ #include <linux/net_tstamp.h>
+ #include <netinet/udp.h>
+ #include <sys/mman.h>
+@@ -38,6 +41,22 @@
+ #define TX_MAC "00:00:00:00:00:01"
+ #define RX_MAC "00:00:00:00:00:02"
+ 
++#define MB_TX_NAME "mb_tx0"
++#define MB_RX_NAME "mb_rx0"
++#define MB_NETNS_NAME "xdp_mb_csum"
++#define MB_UMEM_NUM 4
++#define MB_UMEM_FRAME_SIZE XSK_UMEM__DEFAULT_FRAME_SIZE
++#define MB_UMEM_SIZE (MB_UMEM_FRAME_SIZE * MB_UMEM_NUM)
++#define MB_METADATA_LEN sizeof(struct xsk_tx_metadata)
++#define MB_PAYLOAD_LEN 128
++#define MB_SPLIT_LEN 64
++#define MB_PKT_LEN (sizeof(struct ethhdr) + sizeof(struct iphdr) + \
++		    sizeof(struct udphdr) + MB_PAYLOAD_LEN)
++#define MB_TX_ADDR "10.1.0.1"
++#define MB_RX_ADDR "10.1.0.2"
++#define MB_SOURCE_PORT 1234
++#define MB_DEST_PORT 8080
++
+ #define VLAN_ID 59
+ #define VLAN_PROTO "802.1Q"
+ #define VLAN_PID htons(ETH_P_8021Q)
+@@ -543,3 +562,283 @@ void test_xdp_metadata(void)
+ 	SYS_NOFAIL("ip netns del " RX_NETNS_NAME);
+ 	SYS_NOFAIL("ip netns del " TX_NETNS_NAME);
+ }
++
++static int open_xsk_mb(int ifindex, struct xsk *xsk)
++{
++	const struct xsk_socket_config socket_config = {
++		.rx_size = XSK_RING_PROD__DEFAULT_NUM_DESCS,
++		.tx_size = XSK_RING_PROD__DEFAULT_NUM_DESCS,
++		.bind_flags = XDP_COPY | XDP_USE_SG,
++	};
++	const struct xsk_umem_config umem_config = {
++		.fill_size = XSK_RING_PROD__DEFAULT_NUM_DESCS,
++		.comp_size = XSK_RING_CONS__DEFAULT_NUM_DESCS,
++		.frame_size = MB_UMEM_FRAME_SIZE,
++		.flags = XDP_UMEM_UNALIGNED_CHUNK_FLAG | XDP_UMEM_TX_SW_CSUM |
++			 XDP_UMEM_TX_METADATA_LEN,
++		.tx_metadata_len = sizeof(struct xsk_tx_metadata),
++	};
++	int ret;
++
++	xsk->umem_area = mmap(NULL, MB_UMEM_SIZE, PROT_READ | PROT_WRITE,
++			      MAP_PRIVATE | MAP_ANONYMOUS | MAP_NORESERVE, -1, 0);
++	if (!ASSERT_NEQ(xsk->umem_area, MAP_FAILED, "mmap"))
++		return -1;
++
++	ret = xsk_umem__create(&xsk->umem, xsk->umem_area, MB_UMEM_SIZE,
++			       &xsk->fill, &xsk->comp, &umem_config);
++	if (!ASSERT_OK(ret, "xsk_umem__create"))
++		return ret;
++
++	ret = xsk_socket__create(&xsk->socket, ifindex, QUEUE_ID, xsk->umem,
++				 &xsk->rx, &xsk->tx, &socket_config);
++	if (!ASSERT_OK(ret, "xsk_socket__create"))
++		return ret;
++
++	return 0;
++}
++
++static void close_xsk_mb(struct xsk *xsk)
++{
++	if (xsk->socket)
++		xsk_socket__delete(xsk->socket);
++	if (xsk->umem)
++		xsk_umem__delete(xsk->umem);
++	if (xsk->umem_area && xsk->umem_area != MAP_FAILED)
++		munmap(xsk->umem_area, MB_UMEM_SIZE);
++}
++
++static __sum16 mb_build_packet(u8 *pkt)
++{
++	struct ethhdr *eth = (void *)pkt;
++	struct iphdr *iph = (void *)(eth + 1);
++	struct udphdr *udph = (void *)(iph + 1);
++	__sum16 expected;
++
++	memset(pkt, 0, MB_PKT_LEN);
++	memcpy(eth->h_dest, RX_MAC, ETH_ALEN);
++	memcpy(eth->h_source, TX_MAC, ETH_ALEN);
++	eth->h_proto = htons(ETH_P_IP);
++
++	iph->version = 4;
++	iph->ihl = 5;
++	iph->tot_len = htons((u16)(MB_PKT_LEN - sizeof(*eth)));
++	iph->id = htons(1);
++	iph->ttl = 64;
++	iph->protocol = IPPROTO_UDP;
++	iph->saddr = inet_addr(MB_TX_ADDR);
++	iph->daddr = inet_addr(MB_RX_ADDR);
++	iph->check = build_ip_csum(iph);
++
++	udph->source = htons(MB_SOURCE_PORT);
++	udph->dest = htons(MB_DEST_PORT);
++	udph->len = htons((u16)(sizeof(*udph) + MB_PAYLOAD_LEN));
++	memset(udph + 1, 0xaa, MB_PAYLOAD_LEN);
++
++	expected = build_udp_v4_csum(iph, udph);
++	udph->check = ~csum_tcpudp_magic(iph->saddr, iph->daddr,
++					 ntohs(udph->len), IPPROTO_UDP, 0);
++	return expected;
++}
++
++static int mb_send_packet(struct xsk *xsk, const u8 *pkt, bool split)
++{
++	struct xsk_tx_metadata *meta;
++	struct xdp_desc *tx_desc;
++	u32 idx, num = split ? 2 : 1;
++	u8 *frame;
++	int ret;
++
++	ret = xsk_ring_prod__reserve(&xsk->tx, num, &idx);
++	if (!ASSERT_EQ(ret, num, "xsk_ring_prod__reserve"))
++		return -1;
++
++	if (split) {
++		frame = xsk_umem__get_data(xsk->umem_area, MB_UMEM_FRAME_SIZE);
++		meta = (struct xsk_tx_metadata *)frame;
++		memcpy(frame + MB_METADATA_LEN, pkt, MB_SPLIT_LEN);
++
++		tx_desc = xsk_ring_prod__tx_desc(&xsk->tx, idx);
++		tx_desc->addr = MB_UMEM_FRAME_SIZE + MB_METADATA_LEN;
++		tx_desc->len = MB_SPLIT_LEN;
++		tx_desc->options = XDP_TX_METADATA | XDP_PKT_CONTD;
++
++		frame = xsk_umem__get_data(xsk->umem_area,
++					   2 * MB_UMEM_FRAME_SIZE);
++		memcpy(frame + MB_METADATA_LEN, pkt + MB_SPLIT_LEN,
++		       MB_PKT_LEN - MB_SPLIT_LEN);
++
++		tx_desc = xsk_ring_prod__tx_desc(&xsk->tx, idx + 1);
++		tx_desc->addr = 2 * MB_UMEM_FRAME_SIZE + MB_METADATA_LEN;
++		tx_desc->len = (u32)(MB_PKT_LEN - MB_SPLIT_LEN);
++		tx_desc->options = 0;
++	} else {
++		frame = xsk_umem__get_data(xsk->umem_area, 0);
++		meta = (struct xsk_tx_metadata *)frame;
++		memcpy(frame + MB_METADATA_LEN, pkt, MB_PKT_LEN);
++
++		tx_desc = xsk_ring_prod__tx_desc(&xsk->tx, idx);
++		tx_desc->addr = MB_METADATA_LEN;
++		tx_desc->len = (u32)MB_PKT_LEN;
++		tx_desc->options = XDP_TX_METADATA;
++	}
++
++	memset(meta, 0, sizeof(*meta));
++	meta->flags = XDP_TXMD_FLAGS_CHECKSUM;
++	meta->request.csum_start = (u16)(sizeof(struct ethhdr) + sizeof(struct iphdr));
++	meta->request.csum_offset = (u16)offsetof(struct udphdr, check);
++
++	xsk_ring_prod__submit(&xsk->tx, num);
++
++	ret = sendto(xsk_socket__fd(xsk->socket), NULL, 0, MSG_DONTWAIT,
++		     NULL, 0);
++	if (!ASSERT_GE(ret, 0, "sendto"))
++		return -1;
++
++	return 0;
++}
++
++static int mb_wait_completion(struct xsk *xsk, u32 num)
++{
++	struct pollfd pfd = {
++		.fd = xsk_socket__fd(xsk->socket),
++		.events = POLLOUT,
++	};
++	u32 idx;
++	int ret, i;
++
++	for (i = 0; i < 100; i++) {
++		ret = xsk_ring_cons__peek(&xsk->comp, num, &idx);
++		if (ret == num) {
++			xsk_ring_cons__release(&xsk->comp, num);
++			return 0;
++		}
++		poll(&pfd, 1, 1);
++	}
++
++	return -1;
++}
++
++static int mb_recv_packet(int fd, u8 *buf, size_t len)
++{
++	struct sockaddr_ll sll;
++	socklen_t sll_len;
++	struct pollfd pfd = {
++		.fd = fd,
++		.events = POLLIN,
++	};
++	struct ethhdr *eth;
++	struct iphdr *iph;
++	struct udphdr *udph;
++	int ret;
++
++	for (;;) {
++		ret = poll(&pfd, 1, 1000);
++		if (ret <= 0)
++			return -1;
++
++		sll_len = sizeof(sll);
++		ret = recvfrom(fd, buf, len, 0, (struct sockaddr *)&sll,
++			       &sll_len);
++		if (ret < 0)
++			return -1;
++		if (ret < (int)(sizeof(*eth) + sizeof(*iph) + sizeof(*udph)))
++			continue;
++
++		eth = (void *)buf;
++		if (eth->h_proto != htons(ETH_P_IP))
++			continue;
++		iph = (void *)(eth + 1);
++		if (iph->protocol != IPPROTO_UDP)
++			continue;
++		udph = (void *)(iph + 1);
++		if (udph->dest != htons(MB_DEST_PORT))
++			continue;
++
++		return ret;
++	}
++}
++
++void test_xdp_metadata_mb_csum(void)
++{
++	struct nstoken *tok = NULL;
++	struct sockaddr_ll sll = {};
++	struct udphdr *single_udp;
++	struct udphdr *multi_udp;
++	__sum16 expected_csum;
++	u8 pkt[MB_PKT_LEN];
++	u8 single[MB_PKT_LEN];
++	u8 multi[MB_PKT_LEN];
++	struct xsk xsk = {};
++	int tx_ifindex, rx_ifindex;
++	int pkt_fd = -1;
++	int single_len;
++	int multi_len;
++	int ret;
++
++	SYS_NOFAIL("ip netns del " MB_NETNS_NAME);
++	SYS(out, "ip netns add " MB_NETNS_NAME);
++	tok = open_netns(MB_NETNS_NAME);
++	if (!ASSERT_OK_PTR(tok, "setns"))
++		goto out;
++
++	SYS(out, "ip link add " MB_TX_NAME " type veth peer name " MB_RX_NAME);
++	SYS(out, "ip link set dev " MB_TX_NAME " up");
++	SYS(out, "ip link set dev " MB_RX_NAME " up");
++
++	tx_ifindex = if_nametoindex(MB_TX_NAME);
++	rx_ifindex = if_nametoindex(MB_RX_NAME);
++	if (!ASSERT_NEQ(tx_ifindex, 0, "if_nametoindex(tx)") ||
++	    !ASSERT_NEQ(rx_ifindex, 0, "if_nametoindex(rx)"))
++		goto out;
++
++	ret = open_xsk_mb(tx_ifindex, &xsk);
++	if (!ASSERT_OK(ret, "open_xsk_mb"))
++		goto out;
++
++	pkt_fd = socket(AF_PACKET, SOCK_RAW | SOCK_CLOEXEC, htons(ETH_P_ALL));
++	if (!ASSERT_GE(pkt_fd, 0, "socket(AF_PACKET)"))
++		goto out;
++
++	sll.sll_family = AF_PACKET;
++	sll.sll_protocol = htons(ETH_P_ALL);
++	sll.sll_ifindex = rx_ifindex;
++	if (!ASSERT_OK(bind(pkt_fd, (struct sockaddr *)&sll, sizeof(sll)),
++		       "bind(AF_PACKET)"))
++		goto out;
++
++	expected_csum = mb_build_packet(pkt);
++
++	if (!ASSERT_OK(mb_send_packet(&xsk, pkt, false), "send single"))
++		goto out;
++	single_len = mb_recv_packet(pkt_fd, single, sizeof(single));
++	if (!ASSERT_EQ(single_len, (int)MB_PKT_LEN, "recv single"))
++		goto out;
++	single_udp = (void *)(single + sizeof(struct ethhdr) + sizeof(struct iphdr));
++	if (!ASSERT_EQ(single_udp->check, expected_csum, "single checksum"))
++		goto out;
++	if (!ASSERT_OK(mb_wait_completion(&xsk, 1), "complete single"))
++		goto out;
++
++	if (!ASSERT_OK(mb_send_packet(&xsk, pkt, true), "send multi"))
++		goto out;
++	multi_len = mb_recv_packet(pkt_fd, multi, sizeof(multi));
++	if (!ASSERT_EQ(multi_len, (int)MB_PKT_LEN, "recv multi"))
++		goto out;
++	multi_udp = (void *)(multi + sizeof(struct ethhdr) + sizeof(struct iphdr));
++	if (!ASSERT_EQ(multi_udp->check, expected_csum, "multi checksum"))
++		goto out;
++	if (!ASSERT_OK(mb_wait_completion(&xsk, 2), "complete multi"))
++		goto out;
++
++	ASSERT_EQ(memcmp(single, multi, MB_PKT_LEN), 0,
++		  "single and multi-buffer packets differ");
++
++out:
++	if (pkt_fd >= 0)
++		close(pkt_fd);
++	close_xsk_mb(&xsk);
++	if (tok)
++		close_netns(tok);
++	SYS_NOFAIL("ip netns del " MB_NETNS_NAME);
++}
+-- 
+2.39.5 (Apple Git-154)
+
