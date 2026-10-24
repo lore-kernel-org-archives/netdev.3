@@ -1,73 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.57.137
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792807872;
-	b=ZA6gUry8AKrSKKljPP9Jub5ROlOsfMkGnu8dUsWQ1+KGPwx56VfXmNBl8IwmNv/+2Qx4
-	 zO9HL/HxHMZ2/T8qy9Bv6o74YsfaN8kl6cZiTn+YcaHXKpashSA0VNtXDdTt6oKCGs+9e
-	 KRRwc201emVXRw5XdZydnoogbIdgkXmkM4l5ydjddsll/Th8C4lVKRPhlEo977DllenXv
-	 9raYVBScQP3wkOTohsMGQYNgjmzxOJt5gXY5vLxplfuh5EoCHoASPSwAS8Pr+WvIlZsvn
-	 vjx9RTxyoZrWnJ4Bn3fCP1geoai8OYxcX8sABFVjsczLlGbouBoRCd4apVXb8YnuJMg==
+	t=1792811044;
+	b=ury3xtBaB9KzYo4icaFKjTZV8/5fa8t2IsmMsQ3C+tn8n2dJ5VZdMtgL1J7yAGFEnHXF
+	 y1eqUaqxbi+vSPW0mfzMebkSI67v4FxeUugQ5ZGSJfqMmOYvG5MDHdwV+6vYrlYLGzXad
+	 9AUt6AeK591Im7BudkB/cPcYw6zIQ53B8FL7buANVpsZOs36hyKkTs6Ponk5tagPZROSE
+	 SgIPI+VtyTCs8uR0eza7OR3lPjHyoy54zWgP/VTTNiezgVFVHEQXMOHPOF7uP7/fRl3V4
+	 dq3/MZLTxXtdP74Ysxmr22qtItpTgge0hFvRZtZOUPFcVEpP+Qu1fXuvNZhxsacH9dQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792807872;
-	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
-	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=863FoNpy4fj3rnzzl3jnxGRI7PKAwuQa9MouObwaNBU=;
-	b=5JtkMS8VliTXX7shdhiA8JHGihAgvSMfCUM98vKyv8iXY9xeIiPI8Mqoaml7ur6MM0GP
-	 O3mECDgDJXmVRiJ0Sk3gZgzU0CuAMfi+nBQGL8k3qhgakS+n2qSoO+pZhlQ1BgxwmWRsy
-	 pUMELn8WgOQO/P16viCt36v9r7BAHPgQWQyp6fnttnGMOWwX1V9xeszKaMatMpJoXZdLQ
-	 TjzEsZVLsg+4T4IHyFycLczc+0yMQSwhHE/LcuiB+E5xX/cc5kZWLoWqugCDpTaJkbA3D
-	 bIxxDGgJNqsdwmZFc4xkhS3ArIhvdE+vyUr74LSprTabTdYDl7xmfpkbh9ZFYRTMtgg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792811044;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
+	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=Hs4kepycTRBAy17QyXDZeRCyHZAEsRiAGe7625jFRXk=;
+	b=n0FQ/oetX17Yg2TusH7dCOO8smakCk33IxF0E7jBZz9lrxC3bl6Wtz9/azohrnpMw3cX
+	 gIas89q+8Pl397roRcL5GUkPtCznzE732ilFxCX0etRe4ybHwGWyhcNeJZXBGl7wLyWMN
+	 zSEwai5tJpHngk51KLO6O8UAmQshAZZARPk2xuC3sjrZzJehd7NKoO1yQSeLAtR8ZLun3
+	 sMFS4BccuQeolXqTtyKyONo5uEGeNlTFbCeyYi04B7TMNhAiiKmvDMxhBeNWg/4oCmOph
+	 zKlnmZsNhnnQbU3v1rwKklJcpgd+wDmOWvjUoOqQiZtj41gps9g0nyS95pSfLA4M+8A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=qq.com;
-	spf=pass smtp.mailfrom=qq.com;
-	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=fLNbGzcO;
-	arc=none smtp.remote-ip=162.62.57.137
-Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=f5TcGnJD;
+	arc=none smtp.remote-ip=74.125.82.197
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3924D606A31A;
-	Sat, 24 Oct 2026 02:11:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3924D606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A277E606A31F
+	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 03:04:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A277E606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=fLNbGzcO
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1792807865; bh=863FoNpy4fj3rnzzl3jnxGRI7PKAwuQa9MouObwaNBU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fLNbGzcOgmMflwz2BVnAkdwzwvFmwyQkbEBnzvnf2+uYWmhbA7R6/XQ1vQnZ95AXm
-	 GvvF5BGodXNvZs3gObE8P9Acw8OwpYoZfjjhZDfFaGgnIg8qYDzaHmT+TQuuBnij0M
-	 560SWiYo/WJfqP4GS+44h/SQPS285ekaO8aJNW20=
-Received: from [172.18.4.77] ([111.31.227.58])
-	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
-	id 2C2AE094; Sat, 24 Oct 2026 10:11:02 +0800
-X-QQ-mid: xmsmtpt1792807862tc0qulw03
-Message-ID: <tencent_E3543FCAC26722EA3D15F87B69C4C769D905@qq.com>
-X-QQ-XMAILINFO: N1JCMsqefaecSzIBam8zWC5oCLpflIj/PvoxrkbFRGfCDTMnJrNWJalOpMgpWy
-	 lZ5jop7pwKzc/YofDZI/nApfWcEv+wKGMpLXrdhGmNkY7gETnac3N8AJb6m+SgI+7qClPSF7fcOK
-	 swsntUlux4TOwC6WJN6pfea8uAm2S49GUcz32v7VS0geJ/KWyXHbrGrpKLWF6ltbzd/soQjzT5qL
-	 PgZErt95Z6sonVLirwIznH2y18bJnqpiLQBCvQUEEYeGc+g24b0ki18y75GdktlZNV06iGOPiA6h
-	 Z0UOJlXIVk+Cm8bFQGM/sQE+L4Op1aOsv8lxRi1e3NjZetZO1CXs8LzXoRzkXI3wRGE2SwLDsGQQ
-	 z8GyF6N34f5/YFvkt1SVyWlGplGJzNjIReE8WdiKSJOkUDq649ggUr/uhogI8z7mqVpoqRWbENWU
-	 bUTMKakS9j1Lij6Keyl/idrNzAnBlEODrTcMO8C4ElEnzA5RDB80pHHUWTH4zpB43D4e7cqO2d38
-	 uk/7uvv6NMiQ14KOC33yQOc9qpLma00wyVluGQhO16h1CafdUpnTttIY+n3ppWDz5WYB51nXfSbl
-	 /3lqGPyjrzRDIW1jYrrEsizm6QwE/MiPtEUlNz1y2sGMA8lSbSZoU+cN1t9+rSgz9KQb4YLZIGPP
-	 zLly11CKIEKMUZQQT9sPJlv5ad7rhMmVDueO4wI+NsTDrnohDw+5+h+AOiJ1XDRdsLVO9Bze9oRA
-	 F8pF/QHGjBfz2VOuOU0cflr5vz8TEqju7v/4o9fN6Od2MY9FrLK9Rh3kGy/986ucdTeTzOrRIhJJ
-	 3yKQ/YKzY9bRQtOrTfLO3GGXuJLhCbbCxU9ygB4mDUUBxbr7CVClKacABWd1rI0kYt9cYokgwvvV
-	 uNP/gIyGwAwj2UJ3jLYLmbg3Rriql+qK07mPgfpA+fIGPX1Kz9kwKrvUxtbaOmZ+X7uqq4NsQ5zH
-	 0MkIQVVN3eBUOXyGkL+wI1BIAk3nNlWKAkCeYIv4vIXX1Gfxxa8FMBIU/+EjI2i/7Lh3LXEMVyhj
-	 xRhjZpvHfyZL4ijdZtdLV8WR1So0yTK/yp11eFlPJN82CwEs0m
-X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
-From: Guikun Yang <yangguikun19@qq.com>
-To: Michael S. Tsirkin <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>, Eugenio Perez <eperezma@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] vhost/net: initialize the whole negotiated RX vnet header
-Date: Sat, 24 Oct 2026 10:11:01 +0800
-X-OQ-MSGID: <20261024101101.71420-vhost-yangguikun19@qq.com>
-In-Reply-To: <20261023080824-mutt-send-email-mst@kernel.org>
-References: <tencent_803981983647D9F9444561A4227F138C600A@qq.com> <20261023080824-mutt-send-email-mst@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=f5TcGnJD
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-3662e7a9299so6409424eec.1
+        for <netdev@vger.kernel.org>; Fri, 23 Oct 2026 20:04:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792811043; x=1793415843; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Hs4kepycTRBAy17QyXDZeRCyHZAEsRiAGe7625jFRXk=;
+        b=f5TcGnJD5/0A13Dz23oyZjpdqIzw9RLj99NWY/iNJZ19+LhciMcWqq37S1Pww8zF28
+         65In6iR3dSE7FMunQ6H5/pBzL2g51Xp0z/zI4+/xqOBOWH41UcqszUhsOWSy1dyD1fs3
+         GV9xGGQqJAQW90pM3UAlhf1SeyhpeVCgfr7vJoCkk3YrZj4xMm8clOMXkWBjrrJRyjfV
+         MyO3RGe8puxLgvr3hJugzg79d4eo4MYiqSoQUIM0b6ar9IFWXXMEnqzeNpfrtyrB3kur
+         YF9jEeB9jk5Y2+QEhYp0ee1lxmdBREUJjOIwAyp0xKn9bk6DcRWT6KMAnvRZWyrknZn6
+         QzxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792811043; x=1793415843;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Hs4kepycTRBAy17QyXDZeRCyHZAEsRiAGe7625jFRXk=;
+        b=wvzh6B5Wb79X8iDn4uaRPS2VA2pl5XbHSndr1q7oYmnNIA/pNzQ/jIkPvAM6D4roa2
+         WYOvJiVm0OqnQeQCr6IIGdvJu5il2BQAJOKXMzXsApyY/RI7h+RaGaJFBv8Oho7VoPvW
+         eO/RcMNZEHpVitXbt4ZTaXDPQIolYU9T8akO9ikJPOnffzDAbRNxT/wuthTMSzHetbfK
+         zirDUzlB2oheVyRfEeikmFCma0pI+eazGMmvuQHiOw73Aggkc2t+AZb8qDbdM4re4J37
+         mPk5MY3Ljn++H6ENfNvNcDhaM4WeSKlp6wTYXalcNBwA0RrUI0jNYyzxpR8sKCJimTAo
+         vp6A==
+X-Forwarded-Encrypted: i=1; AKwUvBy/JFgGR+owcJaEXqlBAsoa0Guki39oE4lQg0KO/58bpZz6dBZrF5qAEOeToOCqMjEYX6Hj4KY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ+uWu4zgyq858+iECJDA0kSDh7hh7LVL7jq9fSXfVuQKATRSvb
+	PBCYhjoGH82LWXMOtuKQ8b0plHZv9resy7Rtmr+lLRkq8YeEYBKVcOMKVsFVFrAAF1O5ALAjp9M
+	IB/ERNk0+va/Ta0COCK5yhxmlOQ==
+X-Received: from dlbek20.prod.google.com ([2002:a05:7022:c94:b0:167:6177:d54])
+ (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:7301:4615:b0:369:2505:380 with SMTP id 5a478bee46e88-369e84e80d5mr1578756eec.24.1792811042353;
+ Fri, 23 Oct 2026 20:04:02 -0700 (PDT)
+Date: Sat, 24 Oct 2026 03:04:01 +0000
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -76,65 +75,75 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.257.gf7497c7d27-goog
+Message-ID: <20261024030401.852598-1-almasrymina@google.com>
+Subject: [PATCH net] idpf: free the skb on TX DMA mapping errors
+From: Mina Almasry <almasrymina@google.com>
+To: Alexander Lobakin <aleksander.lobakin@intel.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Cc: Naman Gulati <namangulati@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Mina Almasry <almasrymina@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Oct 23, 2026 at 08:13:22AM -0400, Michael S. Tsirkin wrote:
-> Which backend did you use? Sounds like you did not set
-> TUN_VNET_TNL_SIZE or did not set TUNSETOFFLOAD?
-> That's the issue then.
+From: Naman Gulati <namangulati@google.com>
 
-The backend is a tap device attached via the normal tun path:
-TUNSETIFF (IFF_TAP|IFF_NO_PI, no IFF_VNET_HDR), then
-VHOST_NET_SET_BACKEND on the RX vq.
+When a DMA mapping fails in idpf_tx_splitq_map() or
+idpf_tx_singleq_map(), the unwind walks the buffers with
+libeth_tx_complete(). The first buffer is still typed LIBETH_SQE_FRAG
+(or LIBETH_SQE_EMPTY if the linear data mapping itself failed) at that
+point, so it is only unmapped and the skb is never freed. The callers
+return NETDEV_TX_OK and do not touch the skb either, so it leaks.
 
-I re-ran the repro with TUNSETOFFLOAD declared before attaching the
-backend, listing every offload bit the interface understands:
+Free the skb at the end of the unwind.
 
-	TUN_F_CSUM | TUN_F_TSO4 | TUN_F_TSO6 |
-	TUN_F_USO4 | TUN_F_USO6 |
-	TUN_F_UDP_TUNNEL_GSO | TUN_F_UDP_TUNNEL_GSO_CSUM
+Fixes: d9028db618a6 ("idpf: convert to libeth Tx buffer completion")
+Signed-off-by: Naman Gulati <namangulati@google.com>
+Signed-off-by: Mina Almasry <almasrymina@google.com>
+---
+ drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c | 2 ++
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c         | 3 +++
+ 2 files changed, 5 insertions(+)
 
-TUNSETOFFLOAD succeeds (0 is returned, so tun accepted all of them,
-including the UDP tunnel GSO bits).  The result is unchanged:
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
+index e3ddf18dcbf51..010903260ff6f 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
+@@ -228,6 +228,8 @@ static void idpf_tx_singleq_dma_map_error(struct idpf_tx_queue *txq,
+ 
+ 	/* Update tail in case netdev_xmit_more was previously true */
+ 	idpf_tx_buf_hw_update(txq, idx, false);
++
++	dev_kfree_skb_any(skb);
+ }
+ 
+ /**
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index 885df6294ad94..a92e2457781e6 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -2606,6 +2606,7 @@ static void idpf_tx_splitq_pkt_err_unmap(struct idpf_tx_queue *txq,
+ 	struct idpf_sw_queue *refillq = txq->refillq;
+ 	struct libeth_sq_napi_stats ss = { };
+ 	struct idpf_tx_buf *tx_buf = first;
++	struct sk_buff *skb = first->skb;
+ 	struct libeth_cq_pp cp = {
+ 		.dev    = txq->dev,
+ 		.ss     = &ss,
+@@ -2621,6 +2622,8 @@ static void idpf_tx_splitq_pkt_err_unmap(struct idpf_tx_queue *txq,
+ 		libeth_tx_complete(tx_buf, &cp);
+ 	}
+ 
++	dev_kfree_skb_any(skb);
++
+ 	/* Update tail in case netdev_xmit_more was previously true. */
+ 	idpf_tx_buf_hw_update(txq, params->prev_ntu, false);
+ 
 
-	features[0] = 0x108000000, features[1] = 0xa   (tunnel bits on)
-	VHOST_SET_FEATURES_ARRAY ok
-	TUNSETOFFLOAD ok
-	--- RX buffer first 32 bytes (initially all 0xAA) ---
-	hdr: 00 00 00 00 00 00 00 00 00 00 01 00
-	     aa aa aa aa aa aa aa aa aa aa aa aa     <-- offsets 12..23
-	     33 33 00 00 ...
-
-Offsets 12..23 still contain the stale 0xAA fill.
-
-The reason is that vhost_net_set_features() computes vhost_hlen purely
-from the feature bits passed via VHOST_SET_FEATURES(_ARRAY):
-
-	hdr_len = ... sizeof(struct virtio_net_hdr_v1_hash_tunnel) when
-	           HOST/GUEST_UDP_TUNNEL_GSO is set ...
-	if (test_bit(VHOST_NET_F_VIRTIO_NET_HDR))
-		vhost_hlen = hdr_len;
-
-TUNSETOFFLOAD only updates tun->set_features and the tap device's
-wanted_features; it does not feed back into the vhost feature bits or
-into vhost_hlen.  handle_rx() then writes vhost_hlen bytes of the
-virtio-net header into the guest buffer while handle_tx() / the GSO
-path never touches those 12 bytes for a header vhost itself built.
-
-I could not find TUN_VNET_TNL_SIZE anywhere in 7.3.0-rc7 or in
-linux-next (drivers/net/tun.c, drivers/vhost/net.c, include/uapi/linux/
-if_tun.h, include/uapi/linux/vhost.h) — is that an interface from a
-tree/series I'm missing?  If it is meant to gate vhost_hlen I'd be
-happy to re-test with it.
-
-Meanwhile the stale 12 bytes are observable with a plain tun backend
-that has declared full tunnel offload support, so I believe the patch
-(Zero-initialize the largest header layout and copy vhost_hlen bytes)
-is still needed.  Happy to re-test under whatever backend setup you
-had in mind.
-
-Best,
-Guikun Yang
+base-commit: 7076f684d5132e6a6145e1da2fa74771ecd052e5
+-- 
+2.56.0.257.gf7497c7d27-goog
 
