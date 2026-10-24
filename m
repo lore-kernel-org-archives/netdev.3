@@ -1,98 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.8
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792881815;
-	b=z5E56hK0Etxera7kOOcHmBO/dRHya1HDTdzCRw5WpZpkwVWG+T6LxsbfvS/n7gf//dRG
-	 YWpU5TBRAhOJzz3fjF/r/C7eR04hEzVuU/dluwhsy2IMxHHI1hJGiqZUEaQMrI0THDA7D
-	 GR0bXh9tKJu+uw9zwwmMTDX0ONgtaXHzA8IaxlYVN+kPzd6iBXJv0/MoubwqF6OZVK9I7
-	 lqyPJ4IahX5WkLuV01fJcMAexYiVaPCTLRjngl0HhPLHzv9uTxLwxWeDLyQmJhYAKokwb
-	 cB4JtAcELdp8Mted7/ri2UVx15QoUOfYfjW9/22HlK6iO6CIxHgXRTXMXSKvawNalqQ==
+	t=1792882450;
+	b=SEYoxFPd4fAjmHQWlQnubP/LDxTlVWY9xqilViPWGyLSiGSGpKvpByVnogj623VUkJWN
+	 sEBtX99KFDAFssNGBEHpbTfmn3ziRyx4ZP2vEdngkBD4NqpmxBLJBAE3B2U6d4Jj9mTEe
+	 D0lEzaCyPSxJYGwXpPSoDdyqu93DfkF17k0bap39JUb2ECPhxSBXqTFnPLFNFQr4rDroq
+	 vlOjWwWtaQz4iOv1UQSiVNfEty8PY4Qm9XHTvlmjYOHccb5vxMbkRCqhpjPhbiZ9SplRn
+	 JpFUvW2Uvl97ZPAevcMtfaz+vkRFZED2+Px5aR6heuKkrkZBE8YOYCD0quthCgJJH6w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792881815;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	bh=5KfFYI85BavTvUDPaheV69ALCcpMe7MtH87hWt6t3yw=;
-	b=tmKa8HC2txySvWyskGbx0sHzoQ8b7YJCDQhW5JRBbosustnGXi4Wp3gUIg4H2gG4mDg2
-	 kpYDvhFPba59PXVp2X3Em/uRNGfR/Wp81FAkRdzHbzRYNl54eNho9bnBK1GX81za3TqTH
-	 4Pp7dpwPR+oQ/ToR/MO1vy50uaJ6C7JmQz4NV0+gX/fJVFbA6VHzrQNXiKh0RsOkjEbAH
-	 6HTcQuP/Y0My3l1yL25rtdjv581BjDUyLyGouGkkC3uQYAueGjAuNxwk0F9ODZps46JEl
-	 W7KM8cz/tfh0sBO+0Iu4DUTGSAxd7Q+uJ8RBdfDB3QCzdKA0+jIeRTWa90czMDxDs0g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792882450;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=W5BmndRmXZf5paZEukCObDUSI6tPr4czSuuuAPLFJm4=;
+	b=C2xpSzdu+wnIosYGwiRBVONtBjKDOirxA/VS+6zd61cn2BI6t6UuJ372S2wHxjz8QAV2
+	 /k0g24tc1uy6AhPOs9Pp4F3vXcX+wfim5Tpij6znjh0nb3ndeD9o/vSh1g/cm4ZhV+78G
+	 huihBrk+rZi7XcEBxs+ORBfnN+Lg8aZwDRfuTo2JRyDf5vbkpH5F7UMmLyccUDyg4QAmq
+	 8M350n8d8kNNHD4y6fVlhNss5Xsx1F05ZK3wbv38yt5lf7ciKfrZjW8cafPHV1AlqauMO
+	 Ln6RP8rtMqVOuaQS01DEXX4Ec7+VGXT5QxGwrmk3rRANrMUDWzGHxXJ1eiFx6Pn6vMg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=T9JvkXLL;
-	arc=none smtp.remote-ip=209.85.221.177
-Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=k4ZUHgKF;
+	arc=none smtp.remote-ip=192.198.163.8
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BAD7606A31D
-	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 22:43:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5BAD7606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC8E606A31B;
+	Sat, 24 Oct 2026 22:54:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1DC8E606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=T9JvkXLL
-Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-5eae12762c9so862041e0c.1
-        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 15:43:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792881814; x=1793486614; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:content-type:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5KfFYI85BavTvUDPaheV69ALCcpMe7MtH87hWt6t3yw=;
-        b=T9JvkXLLfwUgIoUNaci7cw2KYglkZcT5YBvnT0Zbyuz2OMtCuD0xivLopvrHrvU8Xa
-         mioNu99NvBHuN67pUdte/vqe+UKZVkJ8uQQltpBoJ9s37C8rjy0LYGnr2GHRJTkaUQqf
-         4MOGbcS7E0odqFnO0W8jsQxQygVA3ib6qVZY+BBPh7kE/KqmmPKcGY0fLW6buXcCjpeA
-         zDgPK9+AZ9sVUeg58XBilDKpKOBK08hSpM4VjDiR0SFaIRiF/SJ1NIMaNQf7L4FbsJ4y
-         XTQjsURzpaHTOcly7nbeTg/Qw4SesAmkhAMd1Hs/NnWTJrtEuPjEgixl+vJlF5n9q6aP
-         t9Qw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792881814; x=1793486614;
-        h=mime-version:content-transfer-encoding:content-type:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5KfFYI85BavTvUDPaheV69ALCcpMe7MtH87hWt6t3yw=;
-        b=BbUjrShztkr9y18E7zeMKhuWS8F/+hrZGFKUgBgVme9bMO86mRCfgvbPMDNHg8yX4j
-         tVps2224/2STMjc4SA107qg8kwlfmr003nSmzLq/msfVobdkie2V0ShBpyew4yPuDmLS
-         zCgA7mYaMb+4mYAnDpPIq2EHtxP7M+CxxwRzDfaEcSca++bsJT7MhTCvfXEHg6FGVzrx
-         Xuj+9AX4cNnj3q47LT0mCeoexVDV1SRtrQwZKYPnkG9zQ47uIiV7hbUhuwrbU9tt9nqq
-         iJeUGYTDA0Q50FqZwuhV254P7qDS8gaDOEhEZIOoRSsU9ML00JM/9Y/RS7iS/cZ5PPdu
-         xVuQ==
-X-Forwarded-Encrypted: i=1; AKwUvByLU/AJALCkGtvzO/kMQ5Jr21xsklcSME8SjdoIf11AdKzU9SU1Jzs1PhFiuzz2wo9aQ3GuUBE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKeJjotomjalLRpxJ4+ByDeZZ7Wjj7D4zF86M4YV0ZUxpTOcw1E
-	lrvfylaCdJydLzZdK2AnXZiJRxVVgEnmF/bIXdw8z3FE64Wj6hyyQ5xb
-X-Gm-Gg: AYBFou0qd3RD+4u8bsghxTJIXSmaqznenLBdkwN1c/Aqy3p9k9YN74MjLsH4vOud76T
-	v4WwxUUa64EL41HWWAxTj7zyTn8mqLup8zG3sBcJEyFvCfO08R3X07RAjexdp0VoU0bkLineJFR
-	S9cB2fzvRkET84SghMYZkqdVJSDwtEAfXnuxerXEjkjTPSCykMrPpWZDfZAADgiEBRGRBTja4n4
-	AcU5WgCnKBOCwh/Xqgfb2Zl15iAphib5+W9kbMhiuCdZKtKccCKWDkKiFS8Yi/IROXzZG+qvtQn
-	eQz9/gizLMqHNBwiMaTHV1+cEemg+OlpQGxHDukm6tWIL5Hn5jaO+Ur/fHm2sDcJ3CFgxDuapLh
-	TRtHlarMZVzbtNokYz0++RzIGVKJeRUYu4mgI9Fja9JVYMsi1yfdxcxg89fojVngpuqtybm0+mF
-	OcPfFMwxWaJz1Wb80qMM054vrbcwyBHJNIjjK2QwDRCuIqOXUhloRs+EFu76ftG/Ob3es70Ip6A
-	edhebgBM4WbwUWCcUdDxn1RNdM2VpEdG9E4nCtZJHVTc8NPTzVZfGI8iC7nvxD6e6eAIXpJhYHV
-	QRKvFVIlwFSzwiijucuqsxmmWjFKRgob4kNqdI94yvStErwPyCQ=
-X-Received: by 2002:a05:6122:3b83:b0:5d6:7f46:b8dc with SMTP id 71dfb90a1353d-5ec23338ccemr918466e0c.21.1792881814119;
-        Sat, 24 Oct 2026 15:43:34 -0700 (PDT)
-Received: from 1.0.0.127.in-addr.arpa ([2804:7f0:b101:277b:c08d:c9f9:7c08:79c4])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec233f4d28sm3503879e0c.3.2026.10.24.15.43.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Oct 2026 15:43:33 -0700 (PDT)
-From: Joas Antonio dos Santos <joasantonio108@gmail.com>
-To: Florian Westphal <fw@strlen.de>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Phil Sutter <phil@nwl.cc>,
- Weiming Shi <bestswngs@gmail.com>, netfilter-devel@vger.kernel.org,
- coreteam@netfilter.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject:
- Re: [PATCH nf] netfilter: nft_set_pipapo: skip transaction elements during GC
-Date: Sat, 24 Oct 2026 19:43:28 -0300
-Message-ID: <179288180870.24716.7833838593165388250@gmail.com>
-In-Reply-To: <at0vzdlVTF8XAzHj@strlen.de>
-References: <179287943591.17355.17353179557993329094@gmail.com>
- <at0vzdlVTF8XAzHj@strlen.de>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=k4ZUHgKF
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792882448; x=1824418448;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=I5OTWW9H2zxpLPefryyEieTL8dxF73wzUNnQxSoxb0Y=;
+  b=k4ZUHgKFCr/oQNqNCV5fz/fRsBo5jW3RNo5JUOLsbKUYLcadWK6rIz4h
+   EfnicqWY07zFziT7ZmCwdjk13zb/qP1D9b7oU7Z90ER7Zx9416gomvjTL
+   iNeS4wybWXE2/HJhfPtON2dJ8B00PFg6Q9We3RwOOWzDfRLepmVR6DEDF
+   H6ENfOD3PAwcXoiw1t9v2xjbLW+L/bE4cBlJf55pYH0a91yEi8io+bi3R
+   Nxk/hbvZOQ4ym/DXbx4p6iEb6j6zh/1HsuOOl3+RADXfhgsB7l2IG4bO7
+   c7XzDUmm8dOg2ULbukYbo5xEBXY+/gMTMs+c4yiuOwXLOTP/XLZjNMMZL
+   w==;
+X-CSE-ConnectionGUID: N4tbitHjT8GbPq8IlWLHyA==
+X-CSE-MsgGUID: Lfy4VMznRQm+8o8GznY/bA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11945"; a="1491600"
+X-IronPort-AV: E=Sophos;i="6.27,177,1787036400"; 
+   d="scan'208";a="1491600"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2026 15:54:07 -0700
+X-CSE-ConnectionGUID: IdSSXPtMQuyILjx2JLe3dA==
+X-CSE-MsgGUID: sAXXqd71RauxGo+BPWOntw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,177,1787036400"; 
+   d="scan'208";a="3871068"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 24 Oct 2026 15:54:05 -0700
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xKkck-00000000UJi-08t3;
+	Sat, 24 Oct 2026 22:54:02 +0000
+Date: Sun, 25 Oct 2026 06:53:45 +0800
+From: kernel test robot <lkp@intel.com>
+To: David Yang <mmyangfl@gmail.com>, netdev@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, David Yang <mmyangfl@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: dsa: motorcomm: Isolate all ports during chip
+ setup
+Message-ID: <202610250645.V7tGJ85r-lkp@intel.com>
+References: <20261024144023.1010237-1-mmyangfl@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,54 +86,110 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261024144023.1010237-1-mmyangfl@gmail.com>
 
-Florian Westphal <fw@strlen.de> wrote:
-> Please ask your LLM to explain how a newly added element can be both
-> new and expired at the same time, then fix that.
+Hi David,
 
-Hi Florian,
+kernel test robot noticed the following build warnings:
 
-Fair question, it confused me too at first, so I went and traced it.
+[auto build test WARNING on net/main]
 
-The catch is that the expiration isn't stamped at activation, it's
-stamped when the element is allocated. nft_set_elem_init() does:
+url:    https://github.com/intel-lab-lkp/linux/commits/David-Yang/net-dsa-motorcomm-Isolate-all-ports-during-chip-setup/20261024-224021
+base:   net/main
+patch link:    https://lore.kernel.org/r/20261024144023.1010237-1-mmyangfl%40gmail.com
+patch subject: [PATCH net] net: dsa: motorcomm: Isolate all ports during chip setup
+config: arm64-randconfig-1000-20261025 (https://download.01.org/0day-ci/archive/20261025/202610250645.V7tGJ85r-lkp@intel.com/config)
+compiler: aarch64-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261025/202610250645.V7tGJ85r-lkp@intel.com/reproduce)
 
-	nft_set_ext_timeout(ext)->expiration = get_jiffies_64() + expiration;
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202610250645.V7tGJ85r-lkp@intel.com/
 
-and that happens back in the parse phase (nft_add_set_elem), while we're
-still going through the batch. The element only goes active later, in
-nf_tables_commit(), which is also where the gc tstamp is taken
-(nft_net->tstamp = get_jiffies_64()).
+All warnings (new ones prefixed by >>):
 
-So the expiration is really parse_time + timeout, and the commit-time gc
-scan checks it against commit_time. If you add a big batch of elements
-with a short timeout, they get parsed one by one and the commit only
-happens at the very end, so the ones parsed early in the batch have
-already gone past their timeout by the time we reach the commit tstamp.
-They're expired and still new (not activated yet). That's the "both at
-once" part.
+   drivers/net/dsa/motorcomm/chip.c: In function 'yt921x_chip_setup_dsa':
+>> drivers/net/dsa/motorcomm/chip.c:2262:6: warning: unused variable 'port' [-Wunused-variable]
+     int port;
+         ^~~~
+>> drivers/net/dsa/motorcomm/chip.c:2259:16: warning: unused variable 'cpu_ports_mask' [-Wunused-variable]
+     unsigned long cpu_ports_mask;
+                   ^~~~~~~~~~~~~~
 
-I confirmed it on an unpatched 7.3-rc6 + KASAN: add 20000 elements with
-"timeout 10ms" to an interval+timeout pipapo set (the parse alone takes
-~6s) and the set ends up basically empty. pipapo_gc_scan() collected the
-new, not-yet-activated elements during the same commit that added them.
-With no nft_set_elem_active() check they get deactivated, dropped and
-queued for the sync gc free, and then nft_setelem_activate() ->
-nft_pipapo_activate() -> nft_clear() still runs on them.
 
-It's the same thing you already fixed for rbtree in 86b6471e690c, the
-pipapo scan just never got the active() guard. One difference: on rbtree
-a non-expired new interval-end can also get pulled in through the
-interval pairing; pipapo has no pairing, so here it's specifically the
-expired-at-commit new element.
+vim +/port +2262 drivers/net/dsa/motorcomm/chip.c
 
-Full disclosure: I didn't manage to trip the actual UAF splat. The free
-goes through call_rcu (nft_trans_gc_queue_sync_done), so the activate
-races the grace period just like the rbtree case, but the precondition
-(gc picking up the not-yet-active elements) reproduces every time.
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2255  
+95e6bcab3c08e8 drivers/net/dsa/yt921x.c         David Yang 2026-01-31  2256  static int yt921x_chip_setup_dsa(struct yt921x_priv *priv)
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2257  {
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2258  	struct dsa_switch *ds = &priv->ds;
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17 @2259  	unsigned long cpu_ports_mask;
+9f8888984eb095 drivers/net/dsa/yt921x.c         David Yang 2026-04-30  2260  	u32 ctrls[2];
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2261  	u32 ctrl;
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17 @2262  	int port;
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2263  	int res;
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2264  
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2265  	/* Enable DSA */
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2266  	priv->cpu_ports_mask = dsa_cpu_ports(ds);
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2267  
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2268  	ctrl = YT921X_EXT_CPU_PORT_TAG_EN | YT921X_EXT_CPU_PORT_PORT_EN |
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2269  	       YT921X_EXT_CPU_PORT_PORT(__ffs(priv->cpu_ports_mask));
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2270  	res = yt921x_reg_write(priv, YT921X_EXT_CPU_PORT, ctrl);
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2271  	if (res)
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2272  		return res;
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2273  
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2274  	/* Setup software switch */
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2275  	ctrl = YT921X_CPU_COPY_TO_EXT_CPU;
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2276  	res = yt921x_reg_write(priv, YT921X_CPU_COPY, ctrl);
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2277  	if (res)
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2278  		return res;
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2279  
+47373f4f561962 drivers/net/dsa/motorcomm/chip.c David Yang 2026-10-24  2280  	ctrl = GENMASK(10, 0) & ~priv->cpu_ports_mask;
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2281  	res = yt921x_reg_write(priv, YT921X_FILTER_UNK_UCAST, ctrl);
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2282  	if (res)
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2283  		return res;
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2284  	res = yt921x_reg_write(priv, YT921X_FILTER_UNK_MCAST, ctrl);
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2285  	if (res)
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2286  		return res;
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2287  
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2288  	/* YT921x does not support native DSA port bridging, so we use port
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2289  	 * isolation to emulate it. However, be especially careful that port
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2290  	 * isolation takes _after_ FDB lookups, i.e. if an FDB entry (from
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2291  	 * another bridge) is matched and the destination port (in another
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2292  	 * bridge) is blocked, the packet will be dropped instead of flooding to
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2293  	 * the "bridged" ports, thus we need to trap and handle those packets by
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2294  	 * software.
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2295  	 *
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2296  	 * If there is no more than one bridge, we might be able to drop them
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2297  	 * directly given some conditions are met, but we trap them in all cases
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2298  	 * for now.
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2299  	 */
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2300  	ctrl = 0;
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2301  	for (int i = 0; i < YT921X_PORT_NUM; i++)
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2302  		ctrl |= YT921X_ACT_UNK_ACTn_TRAP(i);
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2303  	res = yt921x_reg_write(priv, YT921X_ACT_UNK_UCAST, ctrl);
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2304  	if (res)
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2305  		return res;
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2306  	res = yt921x_reg_write(priv, YT921X_ACT_UNK_MCAST, ctrl);
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2307  	if (res)
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2308  		return res;
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2309  
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2310  	/* Tagged VID 0 should be treated as untagged, which confuses the
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2311  	 * hardware a lot
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2312  	 */
+9f8888984eb095 drivers/net/dsa/yt921x.c         David Yang 2026-04-30  2313  	ctrls[0] = YT921X_VLAN_CTRLa_LEARN_DIS | YT921X_VLAN_CTRLa_PORTS_M;
+9f8888984eb095 drivers/net/dsa/yt921x.c         David Yang 2026-04-30  2314  	ctrls[1] = 0;
+9f8888984eb095 drivers/net/dsa/yt921x.c         David Yang 2026-04-30  2315  	res = yt921x_reg64_write(priv, YT921X_VLANn_CTRL(0), ctrls);
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2316  	if (res)
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2317  		return res;
+186623f4aa724c drivers/net/dsa/yt921x.c         David Yang 2025-10-17  2318  
+95e6bcab3c08e8 drivers/net/dsa/yt921x.c         David Yang 2026-01-31  2319  	return 0;
+95e6bcab3c08e8 drivers/net/dsa/yt921x.c         David Yang 2026-01-31  2320  }
+95e6bcab3c08e8 drivers/net/dsa/yt921x.c         David Yang 2026-01-31  2321  
 
-If it'd help, I can respin v2 with the parse-time vs commit-time
-expiration written out in the commit message, just let me know.
-
-Thanks for taking a look,
-Joas
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
