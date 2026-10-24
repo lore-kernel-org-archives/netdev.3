@@ -1,85 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.80.4.37
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.16
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792799954;
-	b=PoZ/5bwq04gWs/7F/u0XGGiV2O8tjTdicVQCSuMHa8d6c7ZyXZ6rHNaoFq6qn8nUKs5B
-	 Qc05WZC75Um3yH9Qw4jimbAoQRrvdUVNWf4Y3w1ahvvoq2u7PWEXCgQzD3xUL3lUPO/co
-	 AkNT4Kp0ueEby6ULBJggzdzaKN2jxXo3iOt0Isft852oQ3SI8gr8TChQAVBs+PNXO7ium
-	 RfQ/bObNO9ZJsZDJ55KJ6t1Zy27IPSTxq5SwkXoZ840nkhspCVrWdHr8UZE5o8XlQjNX/
-	 TOW28CVTw9xr0+zJ0i54rXBNgcR4MsSOUN8ybXwGrQW5/uLeUWZBTeL+4MME8e5mIAQ==
+	t=1792800258;
+	b=MSZMLxHe0svOvbOxjkAAqeAKiYlHW9ux7u5AYG0gRtCo2Cmuw8uH92RBTJED8yY1XLGJ
+	 5Np6NqK9AB2Y3nW6i91TpVnbbM8aA/4ZMF8AMAE185MEIbdqp5LKpB1TIzD41BP2kgDkt
+	 QzCzHOFvtHpEWpamf4aeBVw/XgBlTYBrXpDSnltcrkeddlXSYYgFaIpMqMd3Ogb34jJ+J
+	 FePTEGoNCtlms0y6V3PZyAa9BCgHbV2sEI3Ytw95YtkdFXoc+mkGKHNTcuABLCaSf4ypX
+	 d5Ms+rV/7NFOk+Ce7rvmJAX1Yskz/Pk4VnmInVs7QcaNAVXAuRRobc0ds42IoE4CbWA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792799954;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:Date:
-	 From:To:Cc:Subject:Message-Id:In-Reply-To:References:X-Mailer:
-	 Mime-Version:Content-Type:Content-Transfer-Encoding:X-Virus-Scanned:
-	 X-Virus-Status;
-	bh=5CsImtCByLi3iDUbTqFyDL/DCVY5SvkC3RRk1o8Kcfs=;
-	b=ZqtT2W61KFfSGvCYxnoWuaP/hc0RpcIBrSmUaF69QFABJwY3wTemgURHxQAZqGpHckOW
-	 UeHxdBSPxfvyiqC9RIfX4IPiGVZb58PopLht52+AviEG0vkEeSpGy0uxVR9hN6KoxFlPE
-	 XN67LeykyGjwU4mGJTSxi58HHpB4v7oLH8I7bGy/A/P76MbDySSW2uolc66bxE4IsEB9d
-	 6C5XRcm46V/Y5ER5sQumfnW4WooZ3ISLHz2E8QUvQk1IkptrpLRo8RBAZyesA81uvzDoW
-	 7To2PXCx2n657gkWXB7I3O1M66VgiUyez9DAh5ZWdHwIKLW3b/cDUL08C0H5VCTkXog==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792800258;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=IP4SXJLolNGj8GM5COqEi+6FqjwpuNDCYi1PHZX7pR4=;
+	b=AjwkbgGuN0yKyH8ARliceH0M1M3xQoJEm0Siic0FO/MHmkxehJFRWyZyKCg1Tj9J5szU
+	 k6C/1w//ixvNCnzD+tlyLq4FzknA5STltG+SzPL6LuXu715JcIUevCpB81mZr5CBsM+yA
+	 g79zq4HE2m8g98zpunsu2+DBNZGxa+leP2ONfRsp2OXkTOIswC28X0XN/57HS1et0u7zE
+	 TeQJA3vhVN2ZSNuqWyKiHK/aCc25BOebISLzETDSE8TY0pL+LuJ/TLEcrZDTA5FMfzq21
+	 IVjnAczQOvnno4Urm1LGrxDxpxRQQq2j1yTCpOIbKcZZ9Tn/p58UpzIM5ghvy43Ukxw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=uniroma2.it;
-	spf=pass smtp.mailfrom=uniroma2.it;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=orh9x4BO;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b="uH/n7kbS";
-	arc=none smtp.remote-ip=160.80.4.37
-Received: from smtp.uniroma2.it (smtp-2015.uniroma2.it [160.80.4.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939FB606A336;
-	Fri, 23 Oct 2026 23:59:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 939FB606A336
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=b9UE2ZKL;
+	arc=none smtp.remote-ip=192.198.163.16
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 252F2606A31A;
+	Sat, 24 Oct 2026 00:04:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 252F2606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=orh9x4BO;
-	dkim=pass (2048-bit key, unprotected) header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b=uH/n7kbS
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 69NNwGv1014702;
-	Sat, 24 Oct 2026 01:58:21 +0200
-Received: from lubuntu-18.04 (host-79-32-222-240.retail.telecomitalia.it [79.32.222.240])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id DE9EF1227F6;
-	Sat, 24 Oct 2026 01:58:11 +0200 (CEST)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1792799892; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5CsImtCByLi3iDUbTqFyDL/DCVY5SvkC3RRk1o8Kcfs=;
-	b=orh9x4BOWnIziDMunFyXsI/W27dEvXrXZxhAopMPMLV8qFU8rUyYFF5Jt/w++r9Rssl+tN
-	Ofrcnh+jHNKDw/Bw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1792799892; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5CsImtCByLi3iDUbTqFyDL/DCVY5SvkC3RRk1o8Kcfs=;
-	b=uH/n7kbSra4BPDOwBD5lqMHXjT8cWw3aW7qwJ5DoZwkrLWWm3Qk8mdBcObqsC5NrFhxvsq
-	au1Y+x+XvnrykzNAvoYL3wKL0WEQKX+yKpH7pScWGQLATJiaEmI4C2dRSVjg58z5PTcKhC
-	W48dhdkGiqTj02w1BiH39Al3E6N4jvWAJCqdv6ag4+9pEvo6SDWYOouzO0SWE2Ag9WZ3hE
-	41szSVAffms79eCYvwL57KmyXvWtCnZPToehXs3yO8R8gAC3jg//rRQMNIE+ehLbXnZ3ao
-	3afbwqeMP5C/r2VJH9QCpsNy5qiA7upSFk6LjRz3hTuSfO7RHQUDNNzUJFp4jw==
-Date: Sat, 24 Oct 2026 01:58:11 +0200
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: Boyan Liu <yymhvert@gmail.com>
-Cc: David Ahern <dsahern@kernel.org>,
-        "David S . Miller"
- <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>,
-        Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        co+98d7de09cd94fec5@bugs.sh, hangbin.liu@linux.dev,
-        stefano.salsano@uniroma2.it, Andrea Mayer <andrea.mayer@uniroma2.it>
-Subject: Re: [PATCH net v3] seg6: Fix unset mac header in SRv6 End.DT VRF
- decapsulation
-Message-Id: <20261024015811.a995b7cab417cac2f41689de@uniroma2.it>
-In-Reply-To: <20261021024738.17266-1-yymhvert@gmail.com>
-References: <20261021024738.17266-1-yymhvert@gmail.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=b9UE2ZKL
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792800258; x=1824336258;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=P+WfGzR35UbRfWugdtCWwaOpsuK0iCs7ZWA1C8vDcZw=;
+  b=b9UE2ZKLsYrtwp2obzTh15E2r5wsgQWmZbXOmppAL/HiB55/dD+mBUfm
+   x/3M/Rj5QcikYCCspt5LlHCEtvmXIG8ivgCmwRTTkQYiLVpNxPcITmNuR
+   w12vStUWVQTDOlMypskoD8f5+m4msr1Opq7Y8BktyI2KJ2wjg2YMw9xSi
+   kicfdU92Eo1dXDawSiQbDGvUTTYhrDxuMgtGdZRCgRA4qKub1aGowti6x
+   rZgUGp5VzYTywAVXYL7vYxru/YBCTIttOZSvYtY1KOmIsBGWMDZ32Y1gU
+   MxZWyzySHNRsQwAxCdv3duyAalXvfaxVuV0rTVBM2t0axfEhiW5n84+/5
+   w==;
+X-CSE-ConnectionGUID: Yd90rh63TIaP1NisxHL0DA==
+X-CSE-MsgGUID: JQWvlJSWRqiniBqG5ET6pg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11944"; a="1571221"
+X-IronPort-AV: E=Sophos;i="6.27,175,1787036400"; 
+   d="scan'208";a="1571221"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2026 17:04:17 -0700
+X-CSE-ConnectionGUID: 8ZKO3aQSQUqN2JunwYUlEg==
+X-CSE-MsgGUID: mcR2cGJBRrelzRwbxZT/Rw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,175,1787036400"; 
+   d="scan'208";a="5612886"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by fmviesa011.fm.intel.com with ESMTP; 23 Oct 2026 17:04:14 -0700
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xKPF4-00000000TNy-3Gst;
+	Sat, 24 Oct 2026 00:04:10 +0000
+Date: Sat, 24 Oct 2026 08:03:31 +0800
+From: kernel test robot <lkp@intel.com>
+To: vmukunda <vmukunda@marvell.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Sunil Goutham <sgoutham@marvell.com>,
+	Ratheesh Kannoth <rkannoth@marvell.com>,
+	Geetha sowjanya <gakula@marvell.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	vmukunda <vmukunda@marvell.com>
+Subject: Re: [PATCH net] octeontx2-af: Fix npc_delete_flow counter read for
+ cn20k
+Message-ID: <202610240701.QMuYCXhI-lkp@intel.com>
+References: <20261023100112.3402726-1-vmukunda@marvell.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -88,63 +91,94 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261023100112.3402726-1-vmukunda@marvell.com>
 
-On Wed, 21 Oct 2026 10:47:38 +0800
-Boyan Liu <yymhvert@gmail.com> wrote:
+Hi vmukunda,
 
-> SRv6 End.DT4/End.DT6 VRF decapsulation unsets the mac header in
-> end_dt_vrf_rcv() so that the VRF device can rebuild it for packet
-> sniffers. The VRF rx handler only performs the rebuild when a
-> sniffer is actually attached to the VRF device (ptype_all
-> non-empty); otherwise the packet continues up the stack with
-> mac_header == 0xffff.
-> 
-> Every other receive path delivers packets with a valid mac header:
-> NIC drivers set it in eth_type_trans(), and tunnels without an L2
-> header (ipip, sit, gre, tun) reset it to the network header after
-> decapsulation. skb_mac_header() even warns on the unset state with
-> DEBUG_NET_WARN_ON_ONCE().
-> 
-> If the decapsulated packet is an unexpected UDP GSO packet,
-> udp_queue_rcv_skb() re-segments it after restoring skb->data to the
-> mac header with __skb_push(skb, -skb_mac_offset(skb)). With the mac
-> header unset, skb_mac_offset() returns a large positive value,
-> which the unsigned __skb_push() argument turns into a huge length:
-> skb->data moves far outside the buffer and skb->len is corrupted,
-> so segmentation reads out of bounds:
-> 
->     BUG: KASAN: slab-out-of-bounds in inet_gso_segment (net/ipv4/af_inet.c:1383)
->     Read of size 1 at addr ffff88800da7ffff by task exploit/149
->     Call Trace:
->      inet_gso_segment (net/ipv4/af_inet.c:1383)
->      skb_mac_gso_segment (net/core/gso.c:53)
->      __skb_gso_segment (net/core/gso.c:124)
->      udp_queue_rcv_skb (net/ipv4/udp.c:2476 net/ipv4/udp.c:2466)
->      udp_unicast_rcv_skb (net/ipv4/udp.c:2620)
->      ip_local_deliver (net/ipv4/ip_input.c:262)
->      seg6_local_input_core (net/ipv6/seg6_local.c:1640)
->      lwtunnel_input (net/core/lwtunnel.c:465)
->      ipv6_rcv (net/ipv6/ip6_input.c:351)
-> 
-> Restore a valid mac header once the VRF rx handler returns: point
-> it at the network header, and reset mac_len, which still holds the
-> ingress frame's L2 header length. The sniffer rebuild happens
-> inside the handler while the header is still unset, so tap behavior
-> is unchanged; when no rebuild happened, the packet now carries the
-> same mac header state as any packet received on an L3 device.
-> 
-> Fixes: 664d6f86868b ("seg6: add support for the SRv6 End.DT4 behavior")
-> Cc: stable@vger.kernel.org
-> Reported-by: co+98d7de09cd94fec5@bugs.sh
-> Signed-off-by: Boyan Liu <yymhvert@gmail.com>
+kernel test robot noticed the following build errors:
 
-Thanks Boyan. I'm looking at this patch, also because of the NFQUEUE
-case the Sashiko review raised on v3. I will follow up.
+[auto build test ERROR on net/main]
 
-Ciao,
-Andrea
+url:    https://github.com/intel-lab-lkp/linux/commits/vmukunda/octeontx2-af-Fix-npc_delete_flow-counter-read-for-cn20k/20261023-100112
+base:   net/main
+patch link:    https://lore.kernel.org/r/20261023100112.3402726-1-vmukunda%40marvell.com
+patch subject: [PATCH net] octeontx2-af: Fix npc_delete_flow counter read for cn20k
+config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20261024/202610240701.QMuYCXhI-lkp@intel.com/config)
+compiler: clang version 24.0.0git (https://github.com/llvm/llvm-project 186e70f4e6a1521991d2340d3d49b23b1beff11f)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261024/202610240701.QMuYCXhI-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202610240701.QMuYCXhI-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c:1962:30: error: use of undeclared identifier 'rvu_pdev'
+    1962 |                                 if (blkaddr && !is_cn20k(rvu_pdev))
+         |                                                          ^~~~~~~~
+   1 error generated.
+
+
+vim +/rvu_pdev +1962 drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
+
+  1932	
+  1933	int rvu_mbox_handler_npc_delete_flow(struct rvu *rvu,
+  1934					     struct npc_delete_flow_req *req,
+  1935					     struct npc_delete_flow_rsp *rsp)
+  1936	{
+  1937		struct npc_mcam *mcam = &rvu->hw->mcam;
+  1938		struct rvu_npc_mcam_rule *iter, *tmp;
+  1939		u16 pcifunc = req->hdr.pcifunc;
+  1940		struct list_head del_list;
+  1941		int blkaddr;
+  1942	
+  1943		req->entry = npc_cn20k_vidx2idx(req->entry);
+  1944		req->start = npc_cn20k_vidx2idx(req->start);
+  1945		req->end = npc_cn20k_vidx2idx(req->end);
+  1946	
+  1947		INIT_LIST_HEAD(&del_list);
+  1948	
+  1949		mutex_lock(&mcam->lock);
+  1950		list_for_each_entry_safe(iter, tmp, &mcam->mcam_rules, list) {
+  1951			if (iter->owner == pcifunc) {
+  1952				/* All rules */
+  1953				if (req->all) {
+  1954					list_move_tail(&iter->list, &del_list);
+  1955				/* Range of rules */
+  1956				} else if (req->end && iter->entry >= req->start &&
+  1957					   iter->entry <= req->end) {
+  1958					list_move_tail(&iter->list, &del_list);
+  1959				/* single rule */
+  1960				} else if (req->entry == iter->entry) {
+  1961					blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
+> 1962					if (blkaddr && !is_cn20k(rvu_pdev))
+  1963						rsp->cntr_val = rvu_read64(rvu, blkaddr,
+  1964									   NPC_AF_MATCH_STATX(iter->cntr));
+  1965					list_move_tail(&iter->list, &del_list);
+  1966					break;
+  1967				}
+  1968			}
+  1969		}
+  1970		mutex_unlock(&mcam->lock);
+  1971	
+  1972		list_for_each_entry_safe(iter, tmp, &del_list, list) {
+  1973			u16 entry = iter->entry;
+  1974	
+  1975			/* clear the mcam entry target pcifunc */
+  1976			mcam->entry2target_pffunc[entry] = 0x0;
+  1977			if (npc_delete_flow(rvu, iter, pcifunc))
+  1978				dev_err(rvu->dev, "rule deletion failed for entry:%u",
+  1979					entry);
+  1980		}
+  1981	
+  1982		return 0;
+  1983	}
+  1984	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
