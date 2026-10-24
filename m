@@ -1,56 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.10.208.61
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.10.208.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792833990;
-	b=D9aRJ9bHRDz4U0vhB6NZftpZpvELEWofukyq721zqP89DJdbL2ty4aCk6nVLqSlh2vwR
-	 zNPkPFSykAN99yAepvMekXzDp6jBNhhqIG8PmeUxwyW3A1tWEMe7Ybgze0PeC9n9vdVMc
-	 EXlasAa5/8Yn0UDKgAR8jYGC4y8i2G2mKel4RyIwCLwArsI8i1TyYOlRDZOMmi4D3dWM0
-	 q00DKkCqkjQx92ISCo3HjAoOrtoQzjeAbrGghuWr5yaafi6rT8vLFIHcloQH7l2efJOiU
-	 /K+GW+24Lxh0tjLzP9RhaJ5sJbEJme+BbFSbu8992PgL9gGYsPZlgQMkPHZh4hQ28xA==
+	t=1792833994;
+	b=sm+Rbw8E9zJ/xKkK7uGTa0Kkd8SfsmsljqYwCHufJw2VK9kGgaHvxYZry9BD85Qkz01N
+	 3o4UsM45QEWJTzi/9/f0cbVxfGaurWnZARisncQtgKE9gSJi45mFRKnM9b04u9q9GXypP
+	 xUqwvMPC524vNve15ruz5ZBClSp5ZUQVd/3xDUK1feR1e9EajDTqSdPrx6Yvu401k3iDj
+	 Xcnuj8cqBh75NJxAEpDhrfZ2rg9nzlp1pxrmr1P5PK70HVA1V0t5CrNriP/zyqG1DDp4O
+	 f0UG1RogKJVH0+LNq4aCgCksvA6QfgB0lTZOiyw6kw4RsYUOVQMHH218rPh0UlY5AMA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792833990;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792833994;
 	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:X-Rspamd-Queue-Id;
-	bh=xgsK41h1iZknhEOzSvk0NGM0MdTExY3KTLxZgpFWMZQ=;
-	b=jPg70SQ8By1dyT71x3P8y899IjmZK8aHB16dmiVZgyK43Fdz2FLy3EG+c8lP11p2Zz9j
-	 SONAI1PxNN6vguScTmcxRpi2lLBLQG1+a2wTdp8UyF+LvK271M1dwy9TCY+trxrp1MutM
-	 5hqLEclBo9/99v6HPtT4kXTk5kVQZrnDX4DMmBzgE4U8FsnxP5Wyryj8z2ZbeVwks1WwN
-	 pEE4r+wpeT7zm4l+FJVeVkKAiyKAYIIqdILL8eRHQWkF+UvkXCkS6s831gVsKvZDGeye6
-	 dpOofAldU3VnFW7r9Q/2anH2nUaGUe3E9ioq8p2CZ1wBOmjGyBNlMMgNnzHY63azviw==
+	bh=KvfCUSTip5sdqsoUbheejuL+i8/AfDU2PnnfVUeg6TY=;
+	b=v8bZtb5wpOsB3dYmDShKifJstnTsKRt/MaZeROT9i+jT4nPHxeYshAJX4iYSGhLTv+6k
+	 KKe7WXAXKDVLtEhI7C9m0JMFHzVZ0mQ1j/d45Y9JuIuy+zgjLwhGSWO55nB1XOf/WErSY
+	 K/k53rglUFLrAQRuiKTPdLI8N5KvXjrRgUb/SAUg1Pe5kTY5/CY2DZh6Qi+6MuPmTYS0N
+	 i2KXG7eoSaT+zp9AhfiHBY6NXv2fWnxc7Ks5e2igqyoE3Ys5nYwSBFlXp1P7ZZ+7AfNgC
+	 NDWqEU7xNRI4IL7tGLgQrhSmpECTu5FA17iA4pAOrZ3nzfA7rX/2ckVhCa/9YQBQN3Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=mandelbit.com;
 	spf=pass smtp.mailfrom=mandelbit.com;
-	dkim=pass header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=tQx31s4o;
-	arc=none smtp.remote-ip=195.10.208.61
-Received: from mout-b-201.mailbox.org (mout-b-201.mailbox.org [195.10.208.61])
+	dkim=pass header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=Nu32ezme;
+	arc=none smtp.remote-ip=195.10.208.52
+Received: from mout-b-203.mailbox.org (mout-b-203.mailbox.org [195.10.208.52])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436D360A260A;
-	Sat, 24 Oct 2026 09:26:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 436D360A260A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A074D60A262D;
+	Sat, 24 Oct 2026 09:26:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A074D60A262D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=tQx31s4o
+	dkim=pass (2048-bit key, unprotected) header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=Nu32ezme
 Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA512)
 	(No client certificate requested)
-	by mout-b-201.mailbox.org (Postfix) with ESMTPS id 4jBZJQ56qzzLmJh;
-	Sat, 24 Oct 2026 11:26:14 +0200 (CEST)
+	by mout-b-203.mailbox.org (Postfix) with ESMTPS id 4jBZJK4mBMzLmGQ;
+	Sat, 24 Oct 2026 11:26:09 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
-	s=MBO0001; t=1792833974;
+	s=MBO0001; t=1792833969;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xgsK41h1iZknhEOzSvk0NGM0MdTExY3KTLxZgpFWMZQ=;
-	b=tQx31s4oMAL0Qu6NQ0qNG4rkLPjFP9kRDEooHbQGlopKSYDc3MytCJXp7WfvtuWOU5Ksw2
-	c6J6OSwlgpwLyD8FKHugjsa+3lxgQ++V9LBKgQasSVV2ZmVsQOx85AMJFwNd76ZuXgBO1M
-	pNzGRb76cak8NpqmNByZIw0px8iwRypHbR7VQAGIWY92i6Cc6lOh5QhZDkENeHf0dPC0IT
-	93QKERIzKbcYvwvotqPQynD1+cySb3/WYoMSO2qBN1JOv6uLyWg+BuYEUUqDpXscdwcDjZ
-	kiL40/MyvxsFhQ4oOsm6aI4lpu2ks98EnsS3dZ6ZBtymQNqPLqEppHOfLFPphQ==
+	bh=KvfCUSTip5sdqsoUbheejuL+i8/AfDU2PnnfVUeg6TY=;
+	b=Nu32ezmefBqQ6TOsfb4qOypcP0mW4OAGnlfSQB1OyhudLXf3e2c1nmBKKdWNfS8NmUup7c
+	flAKCW2ys6Ju+UpDsd8eiuke+xbNFht+j/ydT2XRwYSh6qqF8JftnfzOHPinlVi8KHdtGY
+	GAzhdmFQOloXuRJiprCqahE5OGQA2xTf3q05hyunJQ/rdgcdqB8CPJIjumgDx65vYqfQge
+	O4TM59SZ/1sBQuj/Ea4msz3Zfa6noUhcqexipblESpjWMEVcGuLQVLI5u+CGKkADNKXg4a
+	IcLiNhB2LBSz74RotX/wzpvCkzJ1fJpfX2TNGOwpcphlNQLVgFW5Qf0Tu+thdQ==
 Authentication-Results: outgoing_mbo_mout;
 	dkim=none;
 	spf=pass (outgoing_mbo_mout: domain of ralf@mandelbit.com designates 2001:67c:2050:b231:465::1 as permitted sender) smtp.mailfrom=ralf@mandelbit.com
@@ -64,9 +64,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	=?UTF-8?q?Daniel=20Gr=C3=B6ber?= <dxld@darkboxed.org>,
 	Antonio Quartulli <antonio@mandelbit.com>,
 	linux-kernel@vger.kernel.org
-Subject: [RFC net-next v2 14/18] net: ipxlat: add ICMP informational translation
-Date: Sat, 24 Oct 2026 11:25:24 +0200
-Message-ID: <20261024092532.172005-15-ralf@mandelbit.com>
+Subject: [RFC net-next v2 08/18] net: ipxlat: add IPv4 packet validation
+Date: Sat, 24 Oct 2026 11:25:18 +0200
+Message-ID: <20261024092532.172005-9-ralf@mandelbit.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261024092532.172005-1-ralf@mandelbit.com>
 References: <20261024092532.172005-1-ralf@mandelbit.com>
@@ -81,87 +81,46 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4jBZJQ56qzzLmJh
+X-Rspamd-Queue-Id: 4jBZJK4mBMzLmGQ
 
-Translate ICMP echo requests and replies in both directions, including
-incremental conversion of complete checksums and reseeding of partial
-checksums. Decline ICMP errors until quoted-packet translation is
-available.
+Validate IPv4 headers, options, transport headers, checksums and
+bounded ICMP quotes while caching the offsets needed by later
+translation stages.
 
 Signed-off-by: Ralf Lici <ralf@mandelbit.com>
 ---
-Changes since RFC v1 https://lore.kernel.org/netdev/20260319151230.655687-12-ralf@mandelbit.com/
-- Remove the ICMPv6 pseudo-header seed before producing a
-  CHECKSUM_PARTIAL informational ICMPv4 packet. (Sashiko)
+Changes since RFC v1 https://lore.kernel.org/netdev/20260319151230.655687-5-ralf@mandelbit.com/
+- Split IPv4 parsing out of the v1 combined packet.c implementation.
+- Separate unsupported packet shapes from malformed packets so an
+  attachment can fall back before translation starts.
+- Bound quoted-packet parsing to the quoted datagram.
+- Pull the complete declared outer TCP header before later stages use it.
+- Treat a CHECKSUM_PARTIAL UDP packet as checksum-present even when the
+  checksum field still contains zero. (Sashiko)
+- Validate ICMP checksums represented by CHECKSUM_COMPLETE rather than
+  trusting all hardware checksum metadata. (Sashiko)
 
- net/ipxlat/Makefile       |   2 +
- net/ipxlat/core.c         |  15 +++--
- net/ipxlat/icmp.h         |  70 +++++++++++++++++++++++
- net/ipxlat/icmp_46.c      | 106 +++++++++++++++++++++++++++++++++++
- net/ipxlat/icmp_64.c      | 114 ++++++++++++++++++++++++++++++++++++++
- net/ipxlat/translate_46.c |   4 ++
- net/ipxlat/translate_64.c |   4 ++
- 7 files changed, 311 insertions(+), 4 deletions(-)
- create mode 100644 net/ipxlat/icmp.h
- create mode 100644 net/ipxlat/icmp_46.c
- create mode 100644 net/ipxlat/icmp_64.c
+ net/ipxlat/Makefile  |   1 +
+ net/ipxlat/packet4.c | 410 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 411 insertions(+)
+ create mode 100644 net/ipxlat/packet4.c
 
 diff --git a/net/ipxlat/Makefile b/net/ipxlat/Makefile
-index b0fab158c7b3..2190cad37c7f 100644
+index 013c338a2576..f517eaa75423 100644
 --- a/net/ipxlat/Makefile
 +++ b/net/ipxlat/Makefile
-@@ -12,3 +12,5 @@ ipxlat-objs += packet6.o
- ipxlat-objs += transport.o
- ipxlat-objs += translate_46.o
- ipxlat-objs += translate_64.o
-+ipxlat-objs += icmp_46.o
-+ipxlat-objs += icmp_64.o
-diff --git a/net/ipxlat/core.c b/net/ipxlat/core.c
-index dc03ca3c9f89..5a2d7099c9d9 100644
---- a/net/ipxlat/core.c
-+++ b/net/ipxlat/core.c
-@@ -22,6 +22,7 @@
- #include <net/ipxlat.h>
- #include "address.h"
- #include "packet.h"
-+#include "icmp.h"
- #include "translate_46.h"
- #include "translate_64.h"
- 
-@@ -49,16 +50,22 @@ int ipxlat_prepare(const struct ipxlat_config *cfg, struct sk_buff *skb)
- 		if (unlikely(ret))
- 			return -EOPNOTSUPP;
- 
--		if (unlikely(cb->l4_proto == NEXTHDR_ICMP))
--			return -EOPNOTSUPP;
-+		if (unlikely(cb->l4_proto == NEXTHDR_ICMP)) {
-+			ret = ipxlat_64_icmp_preflight(cfg, skb);
-+			if (ret)
-+				return ret;
-+		}
- 		break;
- 	case ETH_P_IP:
- 		ret = ipxlat_v4_validate_skb(skb);
- 		if (unlikely(ret))
- 			return ret;
- 
--		if (unlikely(cb->l4_proto == IPPROTO_ICMP))
--			return -EOPNOTSUPP;
-+		if (unlikely(cb->l4_proto == IPPROTO_ICMP)) {
-+			ret = ipxlat_46_icmp_preflight(skb);
-+			if (ret)
-+				return ret;
-+		}
- 		break;
- 	default:
- 		return -EOPNOTSUPP;
-diff --git a/net/ipxlat/icmp.h b/net/ipxlat/icmp.h
+@@ -7,3 +7,4 @@ obj-$(CONFIG_NET_IPXLAT) += ipxlat.o
+ ipxlat-objs += config.o
+ ipxlat-objs += core.o
+ ipxlat-objs += address.o
++ipxlat-objs += packet4.o
+diff --git a/net/ipxlat/packet4.c b/net/ipxlat/packet4.c
 new file mode 100644
-index 000000000000..0e887746efe0
+index 000000000000..590f95fb6b2c
 --- /dev/null
-+++ b/net/ipxlat/icmp.h
-@@ -0,0 +1,70 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
++++ b/net/ipxlat/packet4.c
+@@ -0,0 +1,410 @@
++// SPDX-License-Identifier: GPL-2.0
 +/*  IPXLAT - Stateless IP/ICMP Translation (SIIT) engine
 + *
 + *  Copyright (C) 2024- Alberto Leiva Popper <ydahhrk@gmail.com>
@@ -174,339 +133,403 @@ index 000000000000..0e887746efe0
 + *		Ralf Lici <ralf@mandelbit.com>
 + */
 +
-+#ifndef _NET_IPXLAT_ICMP_H_
-+#define _NET_IPXLAT_ICMP_H_
-+
-+#include <linux/ipv6.h>
++#include <linux/icmp.h>
 +
 +#include <net/ipxlat.h>
 +
-+/**
-+ * ipxlat_46_icmp_preflight - check whether an ICMPv4 packet is translatable
-+ * @skb: validated packet carrying ICMPv4
-+ *
-+ * This check runs before any packet bytes are rewritten.
-+ *
-+ * Return: 0 when translatable or %-EOPNOTSUPP when the packet should be left
-+ * in its original representation.
-+ */
-+int ipxlat_46_icmp_preflight(struct sk_buff *skb);
-+
-+/**
-+ * ipxlat_46_icmp - translate ICMP payload after outer 4->6 L3 rewrite
-+ * @cfg: immutable route translation configuration
-+ * @skb: packet carrying ICMPv4 transport payload
-+ *
-+ * Handles both ICMP info translation and ICMP error quoted-inner rewriting.
-+ *
-+ * Return: 0 on success, negative errno on translation failure.
-+ */
-+int ipxlat_46_icmp(const struct ipxlat_config *cfg, struct sk_buff *skb);
-+
-+/**
-+ * ipxlat_64_icmp_preflight - check whether an ICMPv6 packet is translatable
-+ * @cfg: immutable route translation configuration
-+ * @skb: validated packet carrying ICMPv6
-+ *
-+ * This check includes quoted endpoints and runs before any packet bytes are
-+ * rewritten.
-+ *
-+ * Return: 0 when translatable, %-EOPNOTSUPP when the packet should be left in
-+ * its original representation, or another negative errno for invalid input.
-+ */
-+int ipxlat_64_icmp_preflight(const struct ipxlat_config *cfg,
-+			     struct sk_buff *skb);
-+
-+/**
-+ * ipxlat_64_icmp - translate ICMP payload after outer 6->4 L3 rewrite
-+ * @net: namespace owning quoted translated IPv4 fragment-ID state
-+ * @skb: packet carrying ICMPv6 transport payload
-+ * @in6: snapshot of original outer IPv6 header
-+ *
-+ * Handles both ICMP info translation and ICMP error quoted-inner rewriting.
-+ *
-+ * Return: 0 on success, negative errno on translation failure.
-+ */
-+int ipxlat_64_icmp(struct net *net, struct sk_buff *skb,
-+		   const struct ipv6hdr *in6);
-+
-+#endif /* _NET_IPXLAT_ICMP_H_ */
-diff --git a/net/ipxlat/icmp_46.c b/net/ipxlat/icmp_46.c
-new file mode 100644
-index 000000000000..bb3952256162
---- /dev/null
-+++ b/net/ipxlat/icmp_46.c
-@@ -0,0 +1,106 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*  IPXLAT - Stateless IP/ICMP Translation (SIIT) engine
-+ *
-+ *  Copyright (C) 2024- Alberto Leiva Popper <ydahhrk@gmail.com>
-+ *  Copyright (C) 2026- Mandelbit SRL
-+ *  Copyright (C) 2026- Daniel Gröber <dxld@darkboxed.org>
-+ *
-+ *  Author:	Alberto Leiva Popper <ydahhrk@gmail.com>
-+ *		Antonio Quartulli <antonio@mandelbit.com>
-+ *		Daniel Gröber <dxld@darkboxed.org>
-+ *		Ralf Lici <ralf@mandelbit.com>
-+ */
-+
-+#include <net/ip6_checksum.h>
-+
-+#include "icmp.h"
 +#include "packet.h"
-+#include "transport.h"
 +
-+static int ipxlat_46_icmp_map_info_type_code(const struct icmphdr *in,
-+					     struct icmp6hdr *out)
++static bool ipxlat_v4_validate_addr(__be32 addr4)
 +{
-+	switch (in->type) {
-+	case ICMP_ECHO:
-+		out->icmp6_type = ICMPV6_ECHO_REQUEST;
-+		out->icmp6_code = 0;
-+		out->icmp6_identifier = in->un.echo.id;
-+		out->icmp6_sequence = in->un.echo.sequence;
++	return !(ipv4_is_zeronet(addr4) || ipv4_is_loopback(addr4) ||
++		 ipv4_is_multicast(addr4) || ipv4_is_lbcast(addr4));
++}
++
++/* RFC 7915 Section 4.1 requires ignoring IPv4 options unless an unexpired
++ * LSRR/SSRR is present, in which case we must send ICMPv4 SR_FAILED.
++ * We intentionally treat malformed option encoding as invalid input and
++ * drop early instead of continuing translation.
++ */
++static int ipxlat_v4_srr_check(struct sk_buff *skb, const struct iphdr *hdr)
++{
++	const u8 *opt, *end;
++	u8 type, len, ptr;
++
++	if (likely(hdr->ihl <= 5))
 +		return 0;
-+	case ICMP_ECHOREPLY:
-+		out->icmp6_type = ICMPV6_ECHO_REPLY;
-+		out->icmp6_code = 0;
-+		out->icmp6_identifier = in->un.echo.id;
-+		out->icmp6_sequence = in->un.echo.sequence;
-+		return 0;
++
++	opt = (const u8 *)(hdr + 1);
++	end = (const u8 *)hdr + (hdr->ihl << 2);
++
++	while (opt < end) {
++		type = opt[0];
++		if (type == IPOPT_END)
++			return 0;
++		if (type == IPOPT_NOOP) {
++			opt++;
++			continue;
++		}
++
++		if (unlikely(end - opt < 2))
++			return -EINVAL;
++
++		len = opt[1];
++		if (unlikely(len < 2 || opt + len > end))
++			return -EINVAL;
++
++		if (type == IPOPT_LSRR || type == IPOPT_SSRR) {
++			if (unlikely(len < 3))
++				return -EINVAL;
++
++			/* points to the beginning of the next IP addr */
++			ptr = opt[2];
++			if (unlikely(ptr < 4))
++				return -EINVAL;
++			if (unlikely(ptr > len))
++				return 0;
++			if (unlikely(ptr > len - 3))
++				return -EINVAL;
++
++			ipxlat_mark_icmp_drop(skb, ICMP_DEST_UNREACH,
++					      ICMP_SR_FAILED, 0);
++			return -EINVAL;
++		}
++
++		opt += len;
 +	}
 +
-+	return -EPROTONOSUPPORT;
-+}
-+
-+int ipxlat_46_icmp_preflight(struct sk_buff *skb)
-+{
-+	const struct ipxlat_cb *cb = ipxlat_skb_cb(skb);
-+	const struct icmphdr *icmp4;
-+	struct icmp6hdr mapped = {};
-+	int err;
-+
-+	if (cb->is_icmp_err)
-+		return -EOPNOTSUPP;
-+
-+	icmp4 = (const struct icmphdr *)(skb->data + cb->l4_off);
-+	err = ipxlat_46_icmp_map_info_type_code(icmp4, &mapped);
-+	return err ? -EOPNOTSUPP : 0;
-+}
-+
-+static void ipxlat_46_icmp_info_update_csum(const struct icmphdr *icmp4,
-+					    struct icmp6hdr *icmp6,
-+					    const struct ipv6hdr *ip6,
-+					    unsigned int l4_len)
-+{
-+	struct icmp6hdr icmp6_zero = *icmp6;
-+	struct icmphdr icmp4_zero = *icmp4;
-+	__wsum csum;
-+
-+	icmp4_zero.checksum = 0;
-+	icmp6_zero.icmp6_cksum = 0;
-+	csum = ~csum_unfold(icmp4->checksum);
-+	csum = csum_sub(csum, csum_partial(&icmp4_zero, sizeof(icmp4_zero), 0));
-+	csum = csum_add(csum, csum_partial(&icmp6_zero, sizeof(icmp6_zero), 0));
-+	icmp6->icmp6_cksum = csum_ipv6_magic(&ip6->saddr, &ip6->daddr, l4_len,
-+					     IPPROTO_ICMPV6, csum);
-+}
-+
-+static int ipxlat_46_icmp_info_outer(struct sk_buff *skb)
-+{
-+	const struct icmphdr icmp4 = *icmp_hdr(skb);
-+	const struct ipv6hdr *ip6 = ipv6_hdr(skb);
-+	struct icmp6hdr *icmp6 = icmp6_hdr(skb);
-+	unsigned int l4_len;
-+	int err;
-+
-+	err = ipxlat_46_icmp_map_info_type_code(&icmp4, icmp6);
-+	if (unlikely(err))
-+		return -EINVAL;
-+
-+	l4_len = ipxlat_skb_l4_len(skb);
-+	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-+		icmp6->icmp6_cksum = ~csum_ipv6_magic(&ip6->saddr, &ip6->daddr,
-+						      l4_len, IPPROTO_ICMPV6,
-+						      0);
-+		return ipxlat_set_partial_csum(skb, offsetof(struct icmp6hdr,
-+							     icmp6_cksum));
-+	}
-+
-+	ipxlat_46_icmp_info_update_csum(&icmp4, icmp6, ip6, l4_len);
-+	skb->ip_summed = CHECKSUM_NONE;
 +	return 0;
 +}
 +
-+int ipxlat_46_icmp(const struct ipxlat_config *cfg, struct sk_buff *skb)
++static int ipxlat_v4_pull_l3(struct sk_buff *skb, unsigned int l3_offset,
++			     unsigned int packet_end)
 +{
-+	if (unlikely(ipxlat_skb_cb(skb)->is_icmp_err))
++	const struct iphdr *iph;
++	unsigned int tot_len;
++	int l3_len;
++
++	if (unlikely(l3_offset > packet_end ||
++		     sizeof(*iph) > packet_end - l3_offset ||
++		     !pskb_may_pull(skb, l3_offset + sizeof(*iph))))
 +		return -EINVAL;
 +
-+	return ipxlat_46_icmp_info_outer(skb);
++	iph = (const struct iphdr *)(skb->data + l3_offset);
++	if (unlikely(iph->version != 4 || iph->ihl < 5))
++		return -EINVAL;
++
++	l3_len = iph->ihl << 2;
++	if (unlikely(l3_len > packet_end - l3_offset))
++		return -EINVAL;
++
++	/* an ICMP skb has no GSO representation, so iph_totlen also works
++	 * for quoted inner headers without using unrelated GSO metadata
++	 */
++	tot_len = iph_totlen(skb, iph);
++	if (unlikely(tot_len < l3_len))
++		return -EINVAL;
++
++	if (unlikely(!pskb_may_pull(skb, l3_offset + l3_len)))
++		return -EINVAL;
++
++	return l3_len;
 +}
-diff --git a/net/ipxlat/icmp_64.c b/net/ipxlat/icmp_64.c
-new file mode 100644
-index 000000000000..ce3131ffc6be
---- /dev/null
-+++ b/net/ipxlat/icmp_64.c
-@@ -0,0 +1,114 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*  IPXLAT - Stateless IP/ICMP Translation (SIIT) engine
-+ *
-+ *  Copyright (C) 2024- Alberto Leiva Popper <ydahhrk@gmail.com>
-+ *  Copyright (C) 2026- Mandelbit SRL
-+ *  Copyright (C) 2026- Daniel Gröber <dxld@darkboxed.org>
-+ *
-+ *  Author:	Alberto Leiva Popper <ydahhrk@gmail.com>
-+ *		Antonio Quartulli <antonio@mandelbit.com>
-+ *		Daniel Gröber <dxld@darkboxed.org>
-+ *		Ralf Lici <ralf@mandelbit.com>
-+ */
 +
-+#include <net/ip6_checksum.h>
-+
-+#include "icmp.h"
-+#include "packet.h"
-+#include "transport.h"
-+
-+static int ipxlat_64_icmp_map_info_type_code(const struct icmp6hdr *in,
-+					     struct icmphdr *out)
++static int ipxlat_v4_pull_l4(struct sk_buff *skb, unsigned int l4_offset,
++			     u8 l4_proto, bool *is_icmp_err)
 +{
-+	switch (in->icmp6_type) {
-+	case ICMPV6_ECHO_REQUEST:
-+		out->type = ICMP_ECHO;
-+		out->code = 0;
-+		out->un.echo.id = in->icmp6_identifier;
-+		out->un.echo.sequence = in->icmp6_sequence;
++	unsigned int tcp_hdr_len;
++	struct icmphdr *icmp;
++	struct udphdr *udp;
++	struct tcphdr *tcp;
++
++	*is_icmp_err = false;
++
++	switch (l4_proto) {
++	case IPPROTO_TCP:
++		if (unlikely(!pskb_may_pull(skb, l4_offset + sizeof(*tcp))))
++			return -EINVAL;
++
++		tcp = (struct tcphdr *)(skb->data + l4_offset);
++		if (unlikely(tcp->doff < 5))
++			return -EINVAL;
++
++		tcp_hdr_len = __tcp_hdrlen(tcp);
++		if (unlikely(!pskb_may_pull(skb, l4_offset + tcp_hdr_len)))
++			return -EINVAL;
++
++		return tcp_hdr_len;
++	case IPPROTO_UDP:
++		if (unlikely(!pskb_may_pull(skb, l4_offset + sizeof(*udp))))
++			return -EINVAL;
++
++		udp = (struct udphdr *)(skb->data + l4_offset);
++		if (unlikely(ntohs(udp->len) < sizeof(*udp)))
++			return -EINVAL;
++
++		return sizeof(struct udphdr);
++	case IPPROTO_ICMP:
++		if (unlikely(!pskb_may_pull(skb, l4_offset + sizeof(*icmp))))
++			return -EINVAL;
++
++		icmp = (struct icmphdr *)(skb->data + l4_offset);
++		*is_icmp_err = icmp_is_err(icmp->type);
++		return sizeof(struct icmphdr);
++	default:
 +		return 0;
-+	case ICMPV6_ECHO_REPLY:
-+		out->type = ICMP_ECHOREPLY;
-+		out->code = 0;
-+		out->un.echo.id = in->icmp6_identifier;
-+		out->un.echo.sequence = in->icmp6_sequence;
++	}
++}
++
++/* ICMP errors are only required to quote the first eight transport bytes.
++ * That is enough for UDP and ICMP, but not for a TCP data offset/checksum.
++ * We leave a quoted TCP header unchanged when the quote does not contain the
++ * complete header.
++ */
++static int ipxlat_v4_pull_icmp_l4(struct sk_buff *skb, unsigned int l4_offset,
++				  unsigned int quote_end, u8 l4_proto)
++{
++	struct icmphdr *icmp;
++	unsigned int need;
++
++	switch (l4_proto) {
++	case IPPROTO_ICMP:
++		need = sizeof(*icmp);
++		break;
++	case IPPROTO_UDP:
++		need = sizeof(struct udphdr);
++		break;
++	default:
 +		return 0;
++	}
++
++	if (unlikely(l4_offset > quote_end || need > quote_end - l4_offset ||
++		     !pskb_may_pull(skb, l4_offset + need)))
++		return -EINVAL;
++
++	if (l4_proto == IPPROTO_ICMP) {
++		icmp = (struct icmphdr *)(skb->data + l4_offset);
++		if (unlikely(icmp_is_err(icmp->type)))
++			return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int ipxlat_v4_icmp_quote_end(const struct sk_buff *skb,
++				    unsigned int payload_off,
++				    unsigned int *quote_end)
++{
++	const struct icmphdr *icmp =
++		(const struct icmphdr *)(skb->data + payload_off -
++					 sizeof(*icmp));
++	unsigned int quote_len = icmp->un.reserved[1] << 2;
++
++	if (!quote_len) {
++		*quote_end = skb->len;
++		return 0;
++	}
++
++	/* a nonzero RFC 4884 delimiter describes at least 128 quoted bytes */
++	if (unlikely(quote_len < ICMP_EXT_ORIG_DGRAM_MIN_LEN ||
++		     payload_off > skb->len ||
++		     quote_len > skb->len - payload_off))
++		return -EINVAL;
++
++	*quote_end = payload_off + quote_len;
++	return 0;
++}
++
++static int ipxlat_v4_pull_icmp_inner(struct sk_buff *skb,
++				     unsigned int inner_l3_off,
++				     unsigned int quote_end)
++{
++	struct ipxlat_cb *cb = ipxlat_skb_cb(skb);
++	unsigned int datagram_end, inner_l4_off;
++	const struct iphdr *inner_l3_hdr;
++	int inner_l3_len, err;
++
++	inner_l3_len = ipxlat_v4_pull_l3(skb, inner_l3_off, quote_end);
++	if (unlikely(inner_l3_len < 0))
++		return inner_l3_len;
++
++	inner_l3_hdr = (const struct iphdr *)(skb->data + inner_l3_off);
++	datagram_end = inner_l3_off + ntohs(inner_l3_hdr->tot_len);
++
++	/* accept non-first quoted fragments: only inner L3 is translatable */
++	inner_l4_off = inner_l3_off + inner_l3_len;
++	if (unlikely(inner_l3_off > U16_MAX || inner_l4_off > U16_MAX))
++		return -E2BIG;
++	cb->inner_l3_offset = inner_l3_off;
++	cb->inner_l4_offset = inner_l4_off;
++
++	if (unlikely(!ipxlat_is_first_frag4(inner_l3_hdr)))
++		return 0;
++
++	err = ipxlat_v4_pull_icmp_l4(skb, inner_l4_off,
++				     min(quote_end, datagram_end),
++				     inner_l3_hdr->protocol);
++	if (unlikely(err < 0))
++		return err;
++
++	return 0;
++}
++
++static int ipxlat_v4_pull_hdrs(struct sk_buff *skb)
++{
++	const unsigned int l3_off = skb_network_offset(skb);
++	struct ipxlat_cb *cb = ipxlat_skb_cb(skb);
++	unsigned int payload_off, quote_end;
++	const struct iphdr *l3_hdr;
++	int err, l3_len, l4_len;
++
++	/* parse IPv4 header and get its full length including options */
++	l3_len = ipxlat_v4_pull_l3(skb, l3_off, skb->len);
++	if (unlikely(l3_len < 0))
++		return l3_len;
++	l3_hdr = ip_hdr(skb);
++
++	if (unlikely(!ipxlat_v4_validate_addr(l3_hdr->daddr)))
++		return -EINVAL;
++
++	/* RFC 7915 Section 4.1 */
++	if (unlikely(ipxlat_v4_srr_check(skb, l3_hdr)))
++		return -EINVAL;
++	/* fragmented ICMPs cannot be translated by a stateless translator */
++	if (unlikely(l3_hdr->protocol == IPPROTO_ICMP &&
++		     ip_is_fragment(l3_hdr)))
++		return -EINVAL;
++
++	if (unlikely(l3_off + l3_len > U16_MAX))
++		return -E2BIG;
++
++	cb->l3_hdr_len = l3_len;
++	cb->l4_proto = l3_hdr->protocol;
++	cb->l4_off = l3_off + l3_len;
++	cb->payload_off = cb->l4_off;
++	cb->is_icmp_err = false;
++
++	/* only non fragmented packets or first fragments have transport hdrs */
++	if (unlikely(!ipxlat_is_first_frag4(l3_hdr))) {
++		if (unlikely(!ipxlat_v4_validate_addr(l3_hdr->saddr)))
++			return -EINVAL;
++		return 0;
++	}
++
++	/* parse transport header and get its full length */
++	l4_len = ipxlat_v4_pull_l4(skb, cb->l4_off, l3_hdr->protocol,
++				   &cb->is_icmp_err);
++	if (unlikely(l4_len < 0))
++		return l4_len;
++	l3_hdr = ip_hdr(skb);
++
++	/* illegal IPv4 sources are accepted only for ICMPv4 errors */
++	if (unlikely(!ipxlat_v4_validate_addr(l3_hdr->saddr) &&
++		     !cb->is_icmp_err))
++		return -EINVAL;
++
++	payload_off = cb->l4_off + l4_len;
++	if (unlikely(payload_off > U16_MAX))
++		return -E2BIG;
++	cb->payload_off = payload_off;
++
++	/* validate the quoted packet if it's an ICMP error */
++	if (unlikely(cb->is_icmp_err)) {
++		DEBUG_NET_WARN_ON_ONCE(cb->l4_proto != IPPROTO_ICMP);
++
++		err = ipxlat_v4_icmp_quote_end(skb, cb->payload_off,
++					       &quote_end);
++		if (unlikely(err))
++			return err;
++
++		err = ipxlat_v4_pull_icmp_inner(skb, cb->payload_off,
++						quote_end);
++		if (unlikely(err))
++			return err;
++	}
++
++	return 0;
++}
++
++static int ipxlat_v4_validate_icmp_csum(const struct sk_buff *skb,
++					unsigned int l4_off)
++{
++	__sum16 csum;
++
++	switch (skb->ip_summed) {
++	case CHECKSUM_UNNECESSARY:
++	case CHECKSUM_PARTIAL:
++		return 0;
++	case CHECKSUM_COMPLETE:
++		return csum_fold(skb->csum) ? -EINVAL : 0;
++	case CHECKSUM_NONE:
++		break;
 +	default:
 +		return -EINVAL;
 +	}
++
++	/* compute checksum over ICMP header and payload, then fold to 16-bit
++	 * Internet checksum to validate it
++	 */
++	csum = csum_fold(skb_checksum(skb, l4_off, skb->len - l4_off, 0));
++	return unlikely(csum) ? -EINVAL : 0;
 +}
 +
-+static __sum16 ipxlat_64_compute_icmp_info_csum(const struct ipv6hdr *in6,
-+						const struct icmp6hdr *in_icmp6,
-+						const struct icmphdr *out_icmp4,
-+						unsigned int l4_len)
++int ipxlat_v4_validate_skb(struct sk_buff *skb)
 +{
-+	struct icmp6hdr icmp6_zero = *in_icmp6;
-+	struct icmphdr icmp4_zero = *out_icmp4;
-+	__wsum csum, pseudo_csum;
-+
-+	icmp6_zero.icmp6_cksum = 0;
-+	icmp4_zero.checksum = 0;
-+
-+	csum = ~csum_unfold(in_icmp6->icmp6_cksum);
-+	pseudo_csum = ~csum_unfold(csum_ipv6_magic(&in6->saddr, &in6->daddr,
-+						   l4_len, NEXTHDR_ICMP, 0));
-+	csum = csum_sub(csum, pseudo_csum);
-+	csum = csum_sub(csum, csum_partial(&icmp6_zero, sizeof(icmp6_zero), 0));
-+	csum = csum_add(csum, csum_partial(&icmp4_zero, sizeof(icmp4_zero), 0));
-+	return csum_fold(csum);
-+}
-+
-+static int ipxlat_64_icmp_info_outer(struct sk_buff *skb,
-+				     const struct ipv6hdr *in6)
-+{
-+	struct icmp6hdr *ic6 = icmp6_hdr(skb);
-+	struct icmphdr *ic4 = icmp_hdr(skb);
-+	struct icmp6hdr ic6_copy = *ic6;
-+	unsigned int l4_len;
++	struct ipxlat_cb *cb = ipxlat_skb_cb(skb);
++	unsigned int udp_len;
++	struct iphdr *l3_hdr;
++	struct udphdr *udph;
 +	int err;
 +
-+	err = ipxlat_64_icmp_map_info_type_code(&ic6_copy, ic4);
++	err = ipxlat_v4_pull_hdrs(skb);
 +	if (unlikely(err))
 +		return err;
 +
-+	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-+		/* ICMPv4 has no pseudo-header so discard the IPv6 seed and let
-+		 * checksum completion cover the translated ICMPv4 message
++	if (unlikely(cb->is_icmp_err)) {
++		/* Translation path recomputes ICMPv6 checksum from scratch.
++		 * Validate here so a corrupted ICMPv4 error is not converted
++		 * into a translated packet with a valid checksum.
 +		 */
-+		ic4->checksum = 0;
-+		return ipxlat_set_partial_csum(skb, offsetof(struct icmphdr,
-+							     checksum));
++		return ipxlat_v4_validate_icmp_csum(skb, cb->l4_off);
 +	}
 +
-+	l4_len = ipxlat_skb_l4_len(skb);
-+	ic4->checksum = ipxlat_64_compute_icmp_info_csum(in6, &ic6_copy, ic4,
-+							 l4_len);
-+	skb->ip_summed = CHECKSUM_NONE;
-+	return 0;
-+}
++	l3_hdr = ip_hdr(skb);
++	if (unlikely(!ipxlat_is_first_frag4(l3_hdr)))
++		return 0;
 +
-+int ipxlat_64_icmp_preflight(const struct ipxlat_config *cfg,
-+			     struct sk_buff *skb)
-+{
-+	const struct ipxlat_cb *cb = ipxlat_skb_cb(skb);
-+	const struct icmp6hdr *icmp6;
-+	struct icmphdr mapped = {};
-+	int err;
++	if (cb->l4_proto != IPPROTO_UDP)
++		return 0;
 +
-+	if (cb->is_icmp_err)
-+		return -EOPNOTSUPP;
++	udph = (struct udphdr *)(skb->data + cb->l4_off);
++	/* CHECKSUM_PARTIAL is authoritative even when the checksum field is
++	 * zero, translation will simply reseed it for the IPv6 pseudo-header
++	 */
++	if (skb->ip_summed == CHECKSUM_PARTIAL)
++		return 0;
 +
-+	icmp6 = (const struct icmp6hdr *)(skb->data + cb->l4_off);
-+	err = ipxlat_64_icmp_map_info_type_code(icmp6, &mapped);
-+	return err ? -EOPNOTSUPP : 0;
-+}
++	if (likely(udph->check != 0))
++		return 0;
 +
-+int ipxlat_64_icmp(struct net *net, struct sk_buff *skb,
-+		   const struct ipv6hdr *in6)
-+{
-+	if (unlikely(ipxlat_skb_cb(skb)->is_icmp_err))
++	/* We are in the path where the UDP header is present (unfragmented
++	 * packets or first fragments) and its checksum is zero. Fragmented
++	 * checksum-less IPv4 UDP is rejected because 4->6 cannot reliably
++	 * translate it.
++	 * We record an administrative-prohibited error so an ingress harness
++	 * can tell the sender why it was dropped.
++	 */
++	if (unlikely(ip_is_fragment(l3_hdr))) {
++		ipxlat_mark_icmp_drop(skb, ICMP_DEST_UNREACH, ICMP_PKT_FILTERED,
++				      0);
++		return -EINVAL;
++	}
++
++	/* udph->len bounds the span used to compute replacement checksum */
++	udp_len = ntohs(udph->len);
++	if (unlikely(udp_len > skb->len - cb->l4_off))
 +		return -EINVAL;
 +
-+	return ipxlat_64_icmp_info_outer(skb, in6);
++	return 0;
 +}
-diff --git a/net/ipxlat/translate_46.c b/net/ipxlat/translate_46.c
-index add29d9ef0a7..824b429dadb5 100644
---- a/net/ipxlat/translate_46.c
-+++ b/net/ipxlat/translate_46.c
-@@ -18,6 +18,7 @@
- #include <net/ipxlat.h>
- 
- #include "address.h"
-+#include "icmp.h"
- #include "packet.h"
- #include "transport.h"
- #include "translate_46.h"
-@@ -199,6 +200,9 @@ int ipxlat_46_translate(const struct ipxlat_config *cfg, struct sk_buff *skb)
- 	case IPPROTO_UDP:
- 		err = ipxlat_46_translate_udp_csum(skb, &outer4);
- 		break;
-+	case IPPROTO_ICMP:
-+		err = ipxlat_46_icmp(cfg, skb);
-+		break;
- 	default:
- 		err = 0;
- 		break;
-diff --git a/net/ipxlat/translate_64.c b/net/ipxlat/translate_64.c
-index 2448d3da32e4..3888ec0d8061 100644
---- a/net/ipxlat/translate_64.c
-+++ b/net/ipxlat/translate_64.c
-@@ -17,6 +17,7 @@
- #include <net/udp.h>
- 
- #include "translate_64.h"
-+#include "icmp.h"
- #include "packet.h"
- #include "transport.h"
- 
-@@ -207,6 +208,9 @@ int ipxlat_64_translate(const struct ipxlat_config *cfg, struct net *net,
- 	case IPPROTO_UDP:
- 		err = ipxlat_64_translate_udp_csum(skb, &outer6);
- 		break;
-+	case IPPROTO_ICMP:
-+		err = ipxlat_64_icmp(net, skb, &outer6);
-+		break;
- 	default:
- 		err = 0;
- 		break;
 -- 
 2.55.0
 
