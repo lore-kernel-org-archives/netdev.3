@@ -1,76 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.10.208.51
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.10.208.61
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792833993;
-	b=jYtn5L50Qfbz8rrmUc0gNQh/0Sdt5RA+AfviPrm9CtpbMBQkIbF2qocZiF80eJZwMB+w
-	 T3cduWlrmZIyz9v7BC6c0a8e9ZP47ewU9ZSXhE8yazsZNe4UWo5avw2+3rpHhGeKcQJjy
-	 jxYTrYa3nZRbGqiOvmZerNbdjB8b4NBQ/oIrl540cTshh6nJadkdX77qPv9gUUmsf/hY9
-	 W1YaFwSWHR/BiFTOG53ILnJFOzVII6XSSv/VFcFFrv01GOhQw3k63RodSOZ55b3t6c6NR
-	 UwaTpEk+e1sToxj9FOQM86zG+SEPnH+SRiEtQc/u3kwaJF4ueZd3XMBE/V+/n5vdRoA==
+	t=1792833990;
+	b=D9aRJ9bHRDz4U0vhB6NZftpZpvELEWofukyq721zqP89DJdbL2ty4aCk6nVLqSlh2vwR
+	 zNPkPFSykAN99yAepvMekXzDp6jBNhhqIG8PmeUxwyW3A1tWEMe7Ybgze0PeC9n9vdVMc
+	 EXlasAa5/8Yn0UDKgAR8jYGC4y8i2G2mKel4RyIwCLwArsI8i1TyYOlRDZOMmi4D3dWM0
+	 q00DKkCqkjQx92ISCo3HjAoOrtoQzjeAbrGghuWr5yaafi6rT8vLFIHcloQH7l2efJOiU
+	 /K+GW+24Lxh0tjLzP9RhaJ5sJbEJme+BbFSbu8992PgL9gGYsPZlgQMkPHZh4hQ28xA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792833993;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792833990;
 	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:X-Rspamd-Queue-Id;
-	bh=gbCskcSxSurQxPeaiIcv/otZSUNuYrU9shVjsM/Up2Q=;
-	b=5Hg3XVzkwShm0zb3t+z3m//CzRiKJhzu8f+y/oEl/n/JLs8HWhwLFqX/uiO/GqQ5GaDS
-	 RgctNwdT7tDq4EYUd/JMMV/HD8bWDGTO6csgzfDB5iSXpoo7PWBDRp8yibkccsPm9RPHR
-	 xFWMnZIvNcErx/fFqFMu1vHP1U2NSkdO9piUB1EZXsuk12XowgrGB/sDc2AzQG50tzPzu
-	 Um6w8oHsh1KrfzPhDagWTR/nqZlBcIJbpSN4/MURMUd/5mrTlsDgVID4sZG22fD+4BX6u
-	 jU/F0aF3f8lAYMFIpH32NDnustAu9P13zbiwJ8g8udBvSSc7WK0vpp5TY9LaV0w0XgQ==
+	bh=xgsK41h1iZknhEOzSvk0NGM0MdTExY3KTLxZgpFWMZQ=;
+	b=jPg70SQ8By1dyT71x3P8y899IjmZK8aHB16dmiVZgyK43Fdz2FLy3EG+c8lP11p2Zz9j
+	 SONAI1PxNN6vguScTmcxRpi2lLBLQG1+a2wTdp8UyF+LvK271M1dwy9TCY+trxrp1MutM
+	 5hqLEclBo9/99v6HPtT4kXTk5kVQZrnDX4DMmBzgE4U8FsnxP5Wyryj8z2ZbeVwks1WwN
+	 pEE4r+wpeT7zm4l+FJVeVkKAiyKAYIIqdILL8eRHQWkF+UvkXCkS6s831gVsKvZDGeye6
+	 dpOofAldU3VnFW7r9Q/2anH2nUaGUe3E9ioq8p2CZ1wBOmjGyBNlMMgNnzHY63azviw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=mandelbit.com;
 	spf=pass smtp.mailfrom=mandelbit.com;
-	dkim=pass header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=NYKYuQqg;
-	arc=none smtp.remote-ip=195.10.208.51
-Received: from mout-b-206.mailbox.org (mout-b-206.mailbox.org [195.10.208.51])
+	dkim=pass header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=tQx31s4o;
+	arc=none smtp.remote-ip=195.10.208.61
+Received: from mout-b-201.mailbox.org (mout-b-201.mailbox.org [195.10.208.61])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3680F60A2634;
-	Sat, 24 Oct 2026 09:26:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3680F60A2634
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436D360A260A;
+	Sat, 24 Oct 2026 09:26:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 436D360A260A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=NYKYuQqg
+	dkim=pass (2048-bit key, unprotected) header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=tQx31s4o
 Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-b-206.mailbox.org (Postfix) with ESMTPS id 4jBZJS4D9ZzY8;
-	Sat, 24 Oct 2026 11:26:16 +0200 (CEST)
+	by mout-b-201.mailbox.org (Postfix) with ESMTPS id 4jBZJQ56qzzLmJh;
+	Sat, 24 Oct 2026 11:26:14 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
-	s=MBO0001; t=1792833976;
+	s=MBO0001; t=1792833974;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=gbCskcSxSurQxPeaiIcv/otZSUNuYrU9shVjsM/Up2Q=;
-	b=NYKYuQqg8L2gagKP7mdK7dLspx4VrRQVk42N1gyrycU5OLxVbsUWP9gbAus23xuPmqC8g2
-	YTkFlFYtFhFM45LmEBkf3y+FgrihtwkyqK8Si6IfEG6DuBqvDNURtg7Ib8ZPBwz2yLB/e7
-	RtYY63CIvNQ0SiUFqqjdcBSdXJKjtJfU4SGCvm6QJkOTdy7ZJ3SCgpkUmr5T4sOXhSXvdt
-	YPgZlTC+G9AId1iKcJNeVh75DL8mp9+3zwh2E38cq4Dv+fOUH2ukO991aW8jxvvwH4dNf3
-	R6ULmFHmwzaK/RRQcAl00MU5KPqxop9GoKvV+fHqVELhqwBvTQq8To9GB1fbRg==
+	bh=xgsK41h1iZknhEOzSvk0NGM0MdTExY3KTLxZgpFWMZQ=;
+	b=tQx31s4oMAL0Qu6NQ0qNG4rkLPjFP9kRDEooHbQGlopKSYDc3MytCJXp7WfvtuWOU5Ksw2
+	c6J6OSwlgpwLyD8FKHugjsa+3lxgQ++V9LBKgQasSVV2ZmVsQOx85AMJFwNd76ZuXgBO1M
+	pNzGRb76cak8NpqmNByZIw0px8iwRypHbR7VQAGIWY92i6Cc6lOh5QhZDkENeHf0dPC0IT
+	93QKERIzKbcYvwvotqPQynD1+cySb3/WYoMSO2qBN1JOv6uLyWg+BuYEUUqDpXscdwcDjZ
+	kiL40/MyvxsFhQ4oOsm6aI4lpu2ks98EnsS3dZ6ZBtymQNqPLqEppHOfLFPphQ==
 Authentication-Results: outgoing_mbo_mout;
 	dkim=none;
 	spf=pass (outgoing_mbo_mout: domain of ralf@mandelbit.com designates 2001:67c:2050:b231:465::1 as permitted sender) smtp.mailfrom=ralf@mandelbit.com
 From: Ralf Lici <ralf@mandelbit.com>
 To: netdev@vger.kernel.org
-Cc: David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
+Cc: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	=?UTF-8?q?Daniel=20Gr=C3=B6ber?= <dxld@darkboxed.org>,
 	Antonio Quartulli <antonio@mandelbit.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>,
-	Beniamino Galvani <bgalvani@redhat.com>,
 	linux-kernel@vger.kernel.org
-Subject: [RFC net-next v2 16/18] net: ipxlat: add lightweight tunnel attachment
-Date: Sat, 24 Oct 2026 11:25:26 +0200
-Message-ID: <20261024092532.172005-17-ralf@mandelbit.com>
+Subject: [RFC net-next v2 14/18] net: ipxlat: add ICMP informational translation
+Date: Sat, 24 Oct 2026 11:25:24 +0200
+Message-ID: <20261024092532.172005-15-ralf@mandelbit.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261024092532.172005-1-ralf@mandelbit.com>
 References: <20261024092532.172005-1-ralf@mandelbit.com>
@@ -85,825 +81,432 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4jBZJS4D9ZzY8
+X-Rspamd-Queue-Id: 4jBZJQ56qzzLmJh
 
-Attach the reusable translator to IPv4 and IPv6 routes. Parse immutable
-route configuration, support input and output LWT callbacks, return
-ineligible packets to the original route, and re-enter the translated
-family through routing and netfilter.
+Translate ICMP echo requests and replies in both directions, including
+incremental conversion of complete checksums and reseeding of partial
+checksums. Decline ICMP errors until quoted-packet translation is
+available.
 
 Signed-off-by: Ralf Lici <ralf@mandelbit.com>
 ---
-Changes since RFC v1 https://lore.kernel.org/netdev/20260319151230.655687-14-ralf@mandelbit.com/
-- New attachment replacing the v1 virtual netdevice. (Toke)
-- Parse an immutable RFC 6052 prefix and optional one-element EAMT from
-  route LWT attributes (normal route, multipath, and nexthop-object
-  lifetimes own the state).
-- Support both input and output LWT callbacks. Return packets rejected
-  as unsupported during preparation to the route's native callback.
-- Scrub original-family metadata, perform a fresh translated-family
-  route and XFRM lookup, and continue received traffic through
-  PRE_ROUTING or local traffic through LOCAL_OUT. Populate only
-  fragment-stable flow selectors.
-- Let translated-family forwarding own TTL/Hop Limit and PMTU behavior,
-  and expose translated packets to ordinary conntrack and NAT.
-- Register the LWT module alias used by route-encapsulation autoloading
-  rather than retaining the v1 rtnl-link alias. (Sashiko)
+Changes since RFC v1 https://lore.kernel.org/netdev/20260319151230.655687-12-ralf@mandelbit.com/
+- Remove the ICMPv6 pseudo-header seed before producing a
+  CHECKSUM_PARTIAL informational ICMPv4 packet. (Sashiko)
 
- include/uapi/linux/ipxlat.h   |  56 +++
- include/uapi/linux/lwtunnel.h |   1 +
- net/core/lwtunnel.c           |   3 +-
- net/ipxlat/Kconfig            |  11 +
- net/ipxlat/Makefile           |   5 +-
- net/ipxlat/lwt.c              | 643 ++++++++++++++++++++++++++++++++++
- 6 files changed, 717 insertions(+), 2 deletions(-)
- create mode 100644 include/uapi/linux/ipxlat.h
- create mode 100644 net/ipxlat/lwt.c
+ net/ipxlat/Makefile       |   2 +
+ net/ipxlat/core.c         |  15 +++--
+ net/ipxlat/icmp.h         |  70 +++++++++++++++++++++++
+ net/ipxlat/icmp_46.c      | 106 +++++++++++++++++++++++++++++++++++
+ net/ipxlat/icmp_64.c      | 114 ++++++++++++++++++++++++++++++++++++++
+ net/ipxlat/translate_46.c |   4 ++
+ net/ipxlat/translate_64.c |   4 ++
+ 7 files changed, 311 insertions(+), 4 deletions(-)
+ create mode 100644 net/ipxlat/icmp.h
+ create mode 100644 net/ipxlat/icmp_46.c
+ create mode 100644 net/ipxlat/icmp_64.c
 
-diff --git a/include/uapi/linux/ipxlat.h b/include/uapi/linux/ipxlat.h
-new file mode 100644
-index 000000000000..018de958f699
---- /dev/null
-+++ b/include/uapi/linux/ipxlat.h
-@@ -0,0 +1,56 @@
-+/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-+/*  IPXLAT - Stateless IP/ICMP Translation (SIIT) LWT configuration
-+ *
-+ *  Copyright (C) 2026- Mandelbit SRL
-+ *  Copyright (C) 2026- Daniel Gröber <dxld@darkboxed.org>
-+ *
-+ *  Author:	Antonio Quartulli <antonio@mandelbit.com>
-+ *		Daniel Gröber <dxld@darkboxed.org>
-+ *		Ralf Lici <ralf@mandelbit.com>
-+ */
-+
-+/*
-+ * IPXLAT lightweight-tunnel configuration.
-+ *
-+ * The attributes below are carried in RTA_ENCAP for
-+ * LWTUNNEL_ENCAP_IPXLAT. Prefix addresses are raw network-byte-order
-+ * address values; prefix lengths are expressed in bits.
-+ */
-+#ifndef _UAPI_LINUX_IPXLAT_H
-+#define _UAPI_LINUX_IPXLAT_H
-+
-+#include <linux/types.h>
-+
-+enum {
-+	IPXLAT_A_UNSPEC,
-+	IPXLAT_A_RFC6052_PREFIX6,
-+	/* nested array: each indexed element contains IPXLAT_A_EAM_*
-+	 * attributes
-+	 */
-+	IPXLAT_A_EAMT,
-+	__IPXLAT_A_MAX,
-+};
-+
-+#define IPXLAT_A_MAX (__IPXLAT_A_MAX - 1)
-+
-+enum {
-+	IPXLAT_A_PREFIX6_UNSPEC,
-+	IPXLAT_A_PREFIX6_ADDR,
-+	IPXLAT_A_PREFIX6_LEN,
-+	__IPXLAT_A_PREFIX6_MAX,
-+};
-+
-+#define IPXLAT_A_PREFIX6_MAX (__IPXLAT_A_PREFIX6_MAX - 1)
-+
-+enum {
-+	IPXLAT_A_EAM_UNSPEC,
-+	IPXLAT_A_EAM_PREFIX4,
-+	IPXLAT_A_EAM_PREFIX4_LEN,
-+	IPXLAT_A_EAM_PREFIX6,
-+	IPXLAT_A_EAM_PREFIX6_LEN,
-+	__IPXLAT_A_EAM_MAX,
-+};
-+
-+#define IPXLAT_A_EAM_MAX (__IPXLAT_A_EAM_MAX - 1)
-+
-+#endif /* _UAPI_LINUX_IPXLAT_H */
-diff --git a/include/uapi/linux/lwtunnel.h b/include/uapi/linux/lwtunnel.h
-index 229655ef792f..34538de6baf7 100644
---- a/include/uapi/linux/lwtunnel.h
-+++ b/include/uapi/linux/lwtunnel.h
-@@ -16,6 +16,7 @@ enum lwtunnel_encap_types {
- 	LWTUNNEL_ENCAP_RPL,
- 	LWTUNNEL_ENCAP_IOAM6,
- 	LWTUNNEL_ENCAP_XFRM,
-+	LWTUNNEL_ENCAP_IPXLAT,
- 	__LWTUNNEL_ENCAP_MAX,
- };
- 
-diff --git a/net/core/lwtunnel.c b/net/core/lwtunnel.c
-index db21b9ff6f86..c3028124126f 100644
---- a/net/core/lwtunnel.c
-+++ b/net/core/lwtunnel.c
-@@ -53,6 +53,8 @@ static const char *lwtunnel_encap_str(enum lwtunnel_encap_types encap_type)
- 	case LWTUNNEL_ENCAP_XFRM:
- 		/* module autoload not supported for encap type */
- 		return NULL;
-+	case LWTUNNEL_ENCAP_IPXLAT:
-+		return "IPXLAT";
- 	case LWTUNNEL_ENCAP_IP6:
- 	case LWTUNNEL_ENCAP_IP:
- 	case LWTUNNEL_ENCAP_NONE:
-@@ -200,7 +202,6 @@ int lwtunnel_valid_encap_type_attr(struct nlattr *attr, int remaining,
- 					return -EINVAL;
- 				}
- 				encap_type = nla_get_u16(nla_entype);
--
- 				if (lwtunnel_valid_encap_type(encap_type, extack))
- 					return -EOPNOTSUPP;
- 			}
-diff --git a/net/ipxlat/Kconfig b/net/ipxlat/Kconfig
-index 6b0e47f8ce90..b73a443eef0f 100644
---- a/net/ipxlat/Kconfig
-+++ b/net/ipxlat/Kconfig
-@@ -12,3 +12,14 @@ config NET_IPXLAT
- 	  SIIT-DC, 464XLAT network architectures.
- 
- 	  To compile this engine as a module, choose M here.
-+
-+config NET_IPXLAT_LWT
-+	tristate "IPv6<>IPv4 packet translation LWT attachment"
-+	depends on NET_IPXLAT
-+	depends on LWTUNNEL
-+	help
-+	  Attach the ipxlat translation engine to IPv4 or IPv6 routes using the
-+	  lightweight-tunnel route encapsulation. Routes select the packets to
-+	  translate and contain their address mapping. Translated packets then
-+	  enter normal routing and netfilter processing for their new address
-+	  family.
 diff --git a/net/ipxlat/Makefile b/net/ipxlat/Makefile
-index 2190cad37c7f..6dc58be53e4d 100644
+index b0fab158c7b3..2190cad37c7f 100644
 --- a/net/ipxlat/Makefile
 +++ b/net/ipxlat/Makefile
-@@ -1,8 +1,9 @@
- # SPDX-License-Identifier: GPL-2.0
- #
--# IPXLAT - Stateless IP/ICMP Translation (SIIT) engine
-+# IPXLAT - Stateless IP/ICMP Translation (SIIT) engine and LWT attachment
- 
- obj-$(CONFIG_NET_IPXLAT) += ipxlat.o
-+obj-$(CONFIG_NET_IPXLAT_LWT) += ipxlat_lwt.o
- 
- ipxlat-objs += config.o
- ipxlat-objs += core.o
-@@ -14,3 +15,5 @@ ipxlat-objs += translate_46.o
+@@ -12,3 +12,5 @@ ipxlat-objs += packet6.o
+ ipxlat-objs += transport.o
+ ipxlat-objs += translate_46.o
  ipxlat-objs += translate_64.o
- ipxlat-objs += icmp_46.o
- ipxlat-objs += icmp_64.o
-+
-+ipxlat_lwt-objs += lwt.o
-diff --git a/net/ipxlat/lwt.c b/net/ipxlat/lwt.c
++ipxlat-objs += icmp_46.o
++ipxlat-objs += icmp_64.o
+diff --git a/net/ipxlat/core.c b/net/ipxlat/core.c
+index dc03ca3c9f89..5a2d7099c9d9 100644
+--- a/net/ipxlat/core.c
++++ b/net/ipxlat/core.c
+@@ -22,6 +22,7 @@
+ #include <net/ipxlat.h>
+ #include "address.h"
+ #include "packet.h"
++#include "icmp.h"
+ #include "translate_46.h"
+ #include "translate_64.h"
+ 
+@@ -49,16 +50,22 @@ int ipxlat_prepare(const struct ipxlat_config *cfg, struct sk_buff *skb)
+ 		if (unlikely(ret))
+ 			return -EOPNOTSUPP;
+ 
+-		if (unlikely(cb->l4_proto == NEXTHDR_ICMP))
+-			return -EOPNOTSUPP;
++		if (unlikely(cb->l4_proto == NEXTHDR_ICMP)) {
++			ret = ipxlat_64_icmp_preflight(cfg, skb);
++			if (ret)
++				return ret;
++		}
+ 		break;
+ 	case ETH_P_IP:
+ 		ret = ipxlat_v4_validate_skb(skb);
+ 		if (unlikely(ret))
+ 			return ret;
+ 
+-		if (unlikely(cb->l4_proto == IPPROTO_ICMP))
+-			return -EOPNOTSUPP;
++		if (unlikely(cb->l4_proto == IPPROTO_ICMP)) {
++			ret = ipxlat_46_icmp_preflight(skb);
++			if (ret)
++				return ret;
++		}
+ 		break;
+ 	default:
+ 		return -EOPNOTSUPP;
+diff --git a/net/ipxlat/icmp.h b/net/ipxlat/icmp.h
 new file mode 100644
-index 000000000000..6b26edb5f6b0
+index 000000000000..0e887746efe0
 --- /dev/null
-+++ b/net/ipxlat/lwt.c
-@@ -0,0 +1,643 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*  IPXLAT - Stateless IP/ICMP Translation (SIIT) LWT harness
++++ b/net/ipxlat/icmp.h
+@@ -0,0 +1,70 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*  IPXLAT - Stateless IP/ICMP Translation (SIIT) engine
 + *
++ *  Copyright (C) 2024- Alberto Leiva Popper <ydahhrk@gmail.com>
 + *  Copyright (C) 2026- Mandelbit SRL
 + *  Copyright (C) 2026- Daniel Gröber <dxld@darkboxed.org>
 + *
-+ *  Author:	Antonio Quartulli <antonio@mandelbit.com>
++ *  Author:	Alberto Leiva Popper <ydahhrk@gmail.com>
++ *		Antonio Quartulli <antonio@mandelbit.com>
 + *		Daniel Gröber <dxld@darkboxed.org>
 + *		Ralf Lici <ralf@mandelbit.com>
 + */
 +
-+#include <linux/errno.h>
-+#include <linux/icmp.h>
-+#include <linux/icmpv6.h>
-+#include <linux/inetdevice.h>
-+#include <linux/ip.h>
++#ifndef _NET_IPXLAT_ICMP_H_
++#define _NET_IPXLAT_ICMP_H_
++
 +#include <linux/ipv6.h>
-+#include <linux/lwtunnel.h>
-+#include <linux/module.h>
-+#include <linux/netdevice.h>
-+#include <linux/skbuff.h>
-+#include <net/icmp.h>
-+#include <net/flow_dissector.h>
-+#include <net/ip.h>
-+#include <net/ip6_route.h>
-+#include <net/ipv6.h>
-+#include <net/lwtunnel.h>
-+#include <net/route.h>
-+#include <net/sock.h>
-+#include <uapi/linux/ipxlat.h>
 +
 +#include <net/ipxlat.h>
 +
-+struct ipxlat_lwt {
-+	struct ipxlat_config config;
-+};
-+
-+static struct ipxlat_lwt *ipxlat_lwt_state(const struct lwtunnel_state *lws)
-+{
-+	return (struct ipxlat_lwt *)lws->data;
-+}
-+
-+static const struct nla_policy ipxlat_prefix6_policy[IPXLAT_A_PREFIX6_MAX + 1] = {
-+	[IPXLAT_A_PREFIX6_ADDR] = NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
-+	[IPXLAT_A_PREFIX6_LEN] = { .type = NLA_U8 },
-+};
-+
-+static const struct nla_policy ipxlat_eam_policy[IPXLAT_A_EAM_MAX + 1] = {
-+	[IPXLAT_A_EAM_PREFIX4] = NLA_POLICY_EXACT_LEN(sizeof(__be32)),
-+	[IPXLAT_A_EAM_PREFIX4_LEN] = { .type = NLA_U8 },
-+	[IPXLAT_A_EAM_PREFIX6] =
-+		NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
-+	[IPXLAT_A_EAM_PREFIX6_LEN] = { .type = NLA_U8 },
-+};
-+
-+static const struct nla_policy ipxlat_lwt_policy[IPXLAT_A_MAX + 1] = {
-+	[IPXLAT_A_RFC6052_PREFIX6] =
-+		NLA_POLICY_NESTED(ipxlat_prefix6_policy),
-+	[IPXLAT_A_EAMT] =
-+		NLA_POLICY_NESTED_ARRAY(ipxlat_eam_policy),
-+};
-+
-+static void ipxlat_normalize_prefix6(struct ipxlat_prefix6 *prefix)
-+{
-+	struct in6_addr original = prefix->addr;
-+
-+	ipv6_addr_prefix(&prefix->addr, &original, prefix->len);
-+}
-+
-+static void ipxlat_normalize_prefix4(__be32 *prefix, u8 len)
-+{
-+	*prefix &= inet_make_mask(len);
-+}
-+
-+static int ipxlat_parse_prefix6(struct nlattr *nla,
-+				struct ipxlat_prefix6 *prefix,
-+				struct netlink_ext_ack *extack)
-+{
-+	struct nlattr *tb[IPXLAT_A_PREFIX6_MAX + 1];
-+	int err;
-+
-+	err = nla_parse_nested_deprecated(tb, IPXLAT_A_PREFIX6_MAX, nla,
-+					  ipxlat_prefix6_policy, extack);
-+	if (err)
-+		return err;
-+
-+	if (!tb[IPXLAT_A_PREFIX6_ADDR] || !tb[IPXLAT_A_PREFIX6_LEN]) {
-+		NL_SET_ERR_MSG_ATTR(extack, nla,
-+				    "ipxlat rfc6052-prefix6 needs address and prefix length");
-+		return -EINVAL;
-+	}
-+
-+	prefix->addr = nla_get_in6_addr(tb[IPXLAT_A_PREFIX6_ADDR]);
-+	prefix->len = nla_get_u8(tb[IPXLAT_A_PREFIX6_LEN]);
-+	if (!ipxlat_prefix6_len_valid(prefix->len)) {
-+		NL_SET_ERR_MSG_ATTR(extack, tb[IPXLAT_A_PREFIX6_LEN],
-+				    "unsupported RFC 6052 prefix length");
-+		return -EINVAL;
-+	}
-+
-+	ipxlat_normalize_prefix6(prefix);
-+	return 0;
-+}
-+
-+static int ipxlat_parse_eam(struct nlattr *nla, struct ipxlat_eam *eam,
-+			    struct netlink_ext_ack *extack)
-+{
-+	struct nlattr *tb[IPXLAT_A_EAM_MAX + 1];
-+	struct in6_addr original, prefix6;
-+	__be32 prefix4;
-+	int err;
-+
-+	err = nla_parse_nested_deprecated(tb, IPXLAT_A_EAM_MAX, nla,
-+					  ipxlat_eam_policy, extack);
-+	if (err)
-+		return err;
-+
-+	if (!tb[IPXLAT_A_EAM_PREFIX4] ||
-+	    !tb[IPXLAT_A_EAM_PREFIX4_LEN] ||
-+	    !tb[IPXLAT_A_EAM_PREFIX6] ||
-+	    !tb[IPXLAT_A_EAM_PREFIX6_LEN]) {
-+		NL_SET_ERR_MSG_ATTR(extack, nla,
-+				    "ipxlat EAM needs both IPv4 and IPv6 prefixes");
-+		return -EINVAL;
-+	}
-+
-+	eam->prefix4.addr = nla_get_be32(tb[IPXLAT_A_EAM_PREFIX4]);
-+	eam->prefix4.len = nla_get_u8(tb[IPXLAT_A_EAM_PREFIX4_LEN]);
-+	eam->prefix6.addr = nla_get_in6_addr(tb[IPXLAT_A_EAM_PREFIX6]);
-+	eam->prefix6.len = nla_get_u8(tb[IPXLAT_A_EAM_PREFIX6_LEN]);
-+	if (eam->prefix4.len > 32 || eam->prefix6.len > 128) {
-+		NL_SET_ERR_MSG_ATTR(extack, nla,
-+				    "EAM prefix length is out of range");
-+		return -EINVAL;
-+	}
-+	if (32 - eam->prefix4.len > 128 - eam->prefix6.len) {
-+		NL_SET_ERR_MSG_ATTR(extack, nla,
-+				    "EAM IPv6 prefix has insufficient host space");
-+		return -EINVAL;
-+	}
-+
-+	prefix4 = eam->prefix4.addr;
-+	prefix6 = eam->prefix6.addr;
-+	original = prefix6;
-+	ipxlat_normalize_prefix4(&prefix4, eam->prefix4.len);
-+	ipv6_addr_prefix(&prefix6, &original, eam->prefix6.len);
-+	if (prefix4 != eam->prefix4.addr ||
-+	    !ipv6_addr_equal(&prefix6, &eam->prefix6.addr)) {
-+		NL_SET_ERR_MSG_ATTR(extack, nla,
-+				    "EAM prefixes must be canonical");
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int ipxlat_parse_eamt(struct nlattr *attrs, struct nlattr *eamt,
-+			     struct ipxlat_config *config,
-+			     struct netlink_ext_ack *extack)
-+{
-+	int rem, count, err;
-+	struct nlattr *pos;
-+
-+	count = 0;
-+	nla_for_each_nested(pos, attrs, rem) {
-+		if (nla_type(pos) != IPXLAT_A_EAMT)
-+			continue;
-+		if (++count > 1) {
-+			NL_SET_ERR_MSG(extack, "duplicate EAMT attribute");
-+			return -EINVAL;
-+		}
-+	}
-+
-+	if (!eamt)
-+		return 0;
-+
-+	count = 0;
-+	nla_for_each_nested(pos, eamt, rem) {
-+		if (++count > 1) {
-+			NL_SET_ERR_MSG(extack,
-+				       "ipxlat supports at most one EAM");
-+			return -EINVAL;
-+		}
-+		err = ipxlat_parse_eam(pos, &config->eam, extack);
-+		if (err)
-+			return err;
-+	}
-+	config->has_eam = count != 0;
-+	return 0;
-+}
-+
-+static int ipxlat_build_state(struct net *net, struct nlattr *nla,
-+			      unsigned int family, const void *cfg,
-+			      struct lwtunnel_state **ts,
-+			      struct netlink_ext_ack *extack)
-+{
-+	struct nlattr *tb[IPXLAT_A_MAX + 1];
-+	struct ipxlat_config config = {};
-+	struct lwtunnel_state *newts;
-+	struct ipxlat_lwt *ilwt;
-+	int err;
-+
-+	if (family != AF_INET && family != AF_INET6) {
-+		NL_SET_ERR_MSG(extack,
-+			       "ipxlat LWT requires an IPv4 or IPv6 route");
-+		return -EAFNOSUPPORT;
-+	}
-+
-+	err = nla_parse_nested_deprecated(tb, IPXLAT_A_MAX, nla,
-+					  ipxlat_lwt_policy, extack);
-+	if (err)
-+		return err;
-+
-+	if (!tb[IPXLAT_A_RFC6052_PREFIX6]) {
-+		NL_SET_ERR_MSG(extack, "ipxlat rfc6052-prefix6 is required");
-+		return -EINVAL;
-+	}
-+	err = ipxlat_parse_prefix6(tb[IPXLAT_A_RFC6052_PREFIX6],
-+				   &config.rfc6052_prefix6, extack);
-+	if (err)
-+		return err;
-+
-+	err = ipxlat_parse_eamt(nla, tb[IPXLAT_A_EAMT], &config, extack);
-+	if (err)
-+		return err;
-+
-+	err = ipxlat_config_validate(&config);
-+	if (err) {
-+		NL_SET_ERR_MSG(extack,
-+			       "invalid normalized ipxlat prefix config");
-+		return err;
-+	}
-+
-+	newts = lwtunnel_state_alloc(sizeof(*ilwt));
-+	if (!newts)
-+		return -ENOMEM;
-+
-+	ilwt = ipxlat_lwt_state(newts);
-+	ilwt->config = config;
-+	newts->type = LWTUNNEL_ENCAP_IPXLAT;
-+	newts->flags = LWTUNNEL_STATE_INPUT_REDIRECT |
-+		       LWTUNNEL_STATE_OUTPUT_REDIRECT;
-+	*ts = newts;
-+
-+	return 0;
-+}
-+
-+static int ipxlat_fill_encap(struct sk_buff *skb, struct lwtunnel_state *lws)
-+{
-+	const struct ipxlat_config *cfg = &ipxlat_lwt_state(lws)->config;
-+	struct nlattr *prefix, *eamt, *eam;
-+
-+	prefix = nla_nest_start_noflag(skb, IPXLAT_A_RFC6052_PREFIX6);
-+	if (!prefix)
-+		return -EMSGSIZE;
-+
-+	if (nla_put_in6_addr(skb, IPXLAT_A_PREFIX6_ADDR,
-+			     &cfg->rfc6052_prefix6.addr) ||
-+	    nla_put_u8(skb, IPXLAT_A_PREFIX6_LEN, cfg->rfc6052_prefix6.len))
-+		goto cancel_prefix;
-+	nla_nest_end(skb, prefix);
-+
-+	if (!cfg->has_eam)
-+		return 0;
-+
-+	eamt = nla_nest_start_noflag(skb, IPXLAT_A_EAMT);
-+	if (!eamt)
-+		return -EMSGSIZE;
-+
-+	eam = nla_nest_start_noflag(skb, 1);
-+	if (!eam)
-+		goto cancel_eamt;
-+
-+	if (nla_put(skb, IPXLAT_A_EAM_PREFIX4, sizeof(__be32),
-+		    &cfg->eam.prefix4.addr) ||
-+	    nla_put_u8(skb, IPXLAT_A_EAM_PREFIX4_LEN,
-+		       cfg->eam.prefix4.len) ||
-+	    nla_put_in6_addr(skb, IPXLAT_A_EAM_PREFIX6,
-+			     &cfg->eam.prefix6.addr) ||
-+	    nla_put_u8(skb, IPXLAT_A_EAM_PREFIX6_LEN,
-+		       cfg->eam.prefix6.len))
-+		goto cancel_eam;
-+	nla_nest_end(skb, eam);
-+	nla_nest_end(skb, eamt);
-+	return 0;
-+
-+cancel_eam:
-+	nla_nest_cancel(skb, eam);
-+
-+cancel_eamt:
-+	nla_nest_cancel(skb, eamt);
-+	return -EMSGSIZE;
-+cancel_prefix:
-+	nla_nest_cancel(skb, prefix);
-+	return -EMSGSIZE;
-+}
-+
-+static int ipxlat_get_encap_size(struct lwtunnel_state *lws)
-+{
-+	const struct ipxlat_config *cfg = &ipxlat_lwt_state(lws)->config;
-+	int eam_payload_size, eam_size, prefix_payload_size, size;
-+
-+	prefix_payload_size = nla_total_size(sizeof(struct in6_addr)) +
-+			      nla_total_size(sizeof(u8));
-+	size = nla_total_size(prefix_payload_size);
-+	if (cfg->has_eam) {
-+		eam_payload_size = nla_total_size(sizeof(__be32)) +
-+				   nla_total_size(sizeof(u8)) +
-+				   nla_total_size(sizeof(struct in6_addr)) +
-+				   nla_total_size(sizeof(u8));
-+		eam_size = nla_total_size(eam_payload_size);
-+		size += nla_total_size(eam_size);
-+	}
-+
-+	return size;
-+}
-+
-+static int ipxlat_cmp_encap(struct lwtunnel_state *a, struct lwtunnel_state *b)
-+{
-+	const struct ipxlat_config *ac = &ipxlat_lwt_state(a)->config;
-+	const struct ipxlat_config *bc = &ipxlat_lwt_state(b)->config;
-+
-+	if (ac->has_eam != bc->has_eam ||
-+	    ac->rfc6052_prefix6.len != bc->rfc6052_prefix6.len ||
-+	    !ipv6_addr_equal(&ac->rfc6052_prefix6.addr,
-+			      &bc->rfc6052_prefix6.addr))
-+		return 1;
-+	if (!ac->has_eam)
-+		return 0;
-+	return ac->eam.prefix4.addr != bc->eam.prefix4.addr ||
-+	       ac->eam.prefix4.len != bc->eam.prefix4.len ||
-+	       ac->eam.prefix6.len != bc->eam.prefix6.len ||
-+	       !ipv6_addr_equal(&ac->eam.prefix6.addr,
-+			      &bc->eam.prefix6.addr);
-+}
-+
-+/* Populate routing and XFRM selectors from the target-family packet.
-+ * Fragmented packets deliberately use only addresses and protocol so every
-+ * fragment follows the same policy.
++/**
++ * ipxlat_46_icmp_preflight - check whether an ICMPv4 packet is translatable
++ * @skb: validated packet carrying ICMPv4
++ *
++ * This check runs before any packet bytes are rewritten.
++ *
++ * Return: 0 when translatable or %-EOPNOTSUPP when the packet should be left
++ * in its original representation.
 + */
-+static void ipxlat_flowi4_selectors(const struct sk_buff *skb,
-+				    struct flowi4 *fl4)
++int ipxlat_46_icmp_preflight(struct sk_buff *skb);
++
++/**
++ * ipxlat_46_icmp - translate ICMP payload after outer 4->6 L3 rewrite
++ * @cfg: immutable route translation configuration
++ * @skb: packet carrying ICMPv4 transport payload
++ *
++ * Handles both ICMP info translation and ICMP error quoted-inner rewriting.
++ *
++ * Return: 0 on success, negative errno on translation failure.
++ */
++int ipxlat_46_icmp(const struct ipxlat_config *cfg, struct sk_buff *skb);
++
++/**
++ * ipxlat_64_icmp_preflight - check whether an ICMPv6 packet is translatable
++ * @cfg: immutable route translation configuration
++ * @skb: validated packet carrying ICMPv6
++ *
++ * This check includes quoted endpoints and runs before any packet bytes are
++ * rewritten.
++ *
++ * Return: 0 when translatable, %-EOPNOTSUPP when the packet should be left in
++ * its original representation, or another negative errno for invalid input.
++ */
++int ipxlat_64_icmp_preflight(const struct ipxlat_config *cfg,
++			     struct sk_buff *skb);
++
++/**
++ * ipxlat_64_icmp - translate ICMP payload after outer 6->4 L3 rewrite
++ * @net: namespace owning quoted translated IPv4 fragment-ID state
++ * @skb: packet carrying ICMPv6 transport payload
++ * @in6: snapshot of original outer IPv6 header
++ *
++ * Handles both ICMP info translation and ICMP error quoted-inner rewriting.
++ *
++ * Return: 0 on success, negative errno on translation failure.
++ */
++int ipxlat_64_icmp(struct net *net, struct sk_buff *skb,
++		   const struct ipv6hdr *in6);
++
++#endif /* _NET_IPXLAT_ICMP_H_ */
+diff --git a/net/ipxlat/icmp_46.c b/net/ipxlat/icmp_46.c
+new file mode 100644
+index 000000000000..bb3952256162
+--- /dev/null
++++ b/net/ipxlat/icmp_46.c
+@@ -0,0 +1,106 @@
++// SPDX-License-Identifier: GPL-2.0
++/*  IPXLAT - Stateless IP/ICMP Translation (SIIT) engine
++ *
++ *  Copyright (C) 2024- Alberto Leiva Popper <ydahhrk@gmail.com>
++ *  Copyright (C) 2026- Mandelbit SRL
++ *  Copyright (C) 2026- Daniel Gröber <dxld@darkboxed.org>
++ *
++ *  Author:	Alberto Leiva Popper <ydahhrk@gmail.com>
++ *		Antonio Quartulli <antonio@mandelbit.com>
++ *		Daniel Gröber <dxld@darkboxed.org>
++ *		Ralf Lici <ralf@mandelbit.com>
++ */
++
++#include <net/ip6_checksum.h>
++
++#include "icmp.h"
++#include "packet.h"
++#include "transport.h"
++
++static int ipxlat_46_icmp_map_info_type_code(const struct icmphdr *in,
++					     struct icmp6hdr *out)
 +{
-+	struct flow_dissector_key_icmp icmp = {};
-+	struct flow_keys keys;
-+
-+	/* classify the translated packet, not an encapsulated inner flow */
-+	if (!skb_flow_dissect_flow_keys(skb, &keys,
-+					FLOW_DISSECTOR_F_STOP_AT_ENCAP))
-+		return;
-+
-+	fl4->flowi4_proto = keys.basic.ip_proto;
-+	if (keys.control.flags & FLOW_DIS_IS_FRAGMENT)
-+		return;
-+
-+	fl4->fl4_sport = keys.ports.src;
-+	fl4->fl4_dport = keys.ports.dst;
-+	if (keys.basic.ip_proto == IPPROTO_GRE) {
-+		fl4->fl4_gre_key = keys.keyid.keyid;
-+	} else if (keys.basic.ip_proto == IPPROTO_ICMP) {
-+		/* the default flow-keys dissector does not collect ICMP data */
-+		skb_flow_get_icmp_tci(skb, &icmp, skb->data,
-+				      skb_transport_offset(skb),
-+				      skb_headlen(skb));
-+		fl4->fl4_icmp_type = icmp.type;
-+		fl4->fl4_icmp_code = icmp.code;
-+	}
-+}
-+
-+static void ipxlat_flowi6_selectors(const struct sk_buff *skb,
-+				    struct flowi6 *fl6)
-+{
-+	struct flow_dissector_key_icmp icmp = {};
-+	struct flow_keys keys;
-+
-+	/* classify the translated packet, not an encapsulated inner flow */
-+	if (!skb_flow_dissect_flow_keys(skb, &keys,
-+					FLOW_DISSECTOR_F_STOP_AT_ENCAP))
-+		return;
-+
-+	fl6->flowi6_proto = keys.basic.ip_proto;
-+	if (keys.control.flags & FLOW_DIS_IS_FRAGMENT)
-+		return;
-+
-+	fl6->fl6_sport = keys.ports.src;
-+	fl6->fl6_dport = keys.ports.dst;
-+	if (keys.basic.ip_proto == IPPROTO_GRE) {
-+		fl6->fl6_gre_key = keys.keyid.keyid;
-+	} else if (keys.basic.ip_proto == IPPROTO_ICMPV6) {
-+		/* the default flow-keys dissector does not collect ICMP data */
-+		skb_flow_get_icmp_tci(skb, &icmp, skb->data,
-+				      skb_transport_offset(skb),
-+				      skb_headlen(skb));
-+		fl6->fl6_icmp_type = icmp.type;
-+		fl6->fl6_icmp_code = icmp.code;
-+	}
-+}
-+
-+static struct dst_entry *ipxlat_route_output4(struct net *net,
-+					      struct sk_buff *skb, kuid_t uid)
-+{
-+	struct iphdr *iph = ip_hdr(skb);
-+	bool select_icmp_source;
-+	struct flowi4 fallback;
-+	struct flowi4 fl4 = {
-+		.daddr = iph->daddr,
-+		.flowi4_dscp = inet_dsfield_to_dscp(iph->tos),
-+		.flowi4_proto = iph->protocol,
-+		.flowi4_mark = skb->mark,
-+		.flowi4_uid = uid,
-+	};
-+	struct rtable *rt;
-+
-+	/* The engine uses a dummy IPv4 address when translating ICMPv6 errors
-+	 * with non-convertible source addresses. The route lookup replaces it
-+	 * with a local IPv4 source when possible and falls back to
-+	 * FLOWI_FLAG_ANYSRC otherwise.
-+	 */
-+	select_icmp_source = iph->saddr == htonl(INADDR_DUMMY) &&
-+			     iph->protocol == IPPROTO_ICMP &&
-+			     icmp_is_err(icmp_hdr(skb)->type);
-+	fl4.saddr = select_icmp_source ? 0 : iph->saddr;
-+	ipxlat_flowi4_selectors(skb, &fl4);
-+	fallback = fl4;
-+
-+	/* the translated packet has no socket, so only global XFRM applies */
-+	rt = ip_route_output_flow(net, &fl4, NULL);
-+	if (unlikely(select_icmp_source && (IS_ERR(rt) || !fl4.saddr))) {
-+		if (!IS_ERR(rt))
-+			ip_rt_put(rt);
-+
-+		/* If routing cannot select a local IPv4 source address, send
-+		 * the error from the reserved dummy address. FLOWI_FLAG_ANYSRC
-+		 * permits that address even though it is not assigned locally.
-+		 */
-+		fl4 = fallback;
-+		fl4.saddr = htonl(INADDR_DUMMY);
-+		fl4.flowi4_flags |= FLOWI_FLAG_ANYSRC;
-+		rt = ip_route_output_flow(net, &fl4, NULL);
++	switch (in->type) {
++	case ICMP_ECHO:
++		out->icmp6_type = ICMPV6_ECHO_REQUEST;
++		out->icmp6_code = 0;
++		out->icmp6_identifier = in->un.echo.id;
++		out->icmp6_sequence = in->un.echo.sequence;
++		return 0;
++	case ICMP_ECHOREPLY:
++		out->icmp6_type = ICMPV6_ECHO_REPLY;
++		out->icmp6_code = 0;
++		out->icmp6_identifier = in->un.echo.id;
++		out->icmp6_sequence = in->un.echo.sequence;
++		return 0;
 +	}
 +
-+	if (IS_ERR(rt))
-+		return ERR_CAST(rt);
-+	if (unlikely(select_icmp_source)) {
-+		iph->saddr = fl4.saddr;
-+		ip_send_check(iph);
-+	}
-+	return &rt->dst;
++	return -EPROTONOSUPPORT;
 +}
 +
-+static struct dst_entry *ipxlat_route_output6(struct net *net,
-+					      struct sk_buff *skb, kuid_t uid)
++int ipxlat_46_icmp_preflight(struct sk_buff *skb)
 +{
-+	struct ipv6hdr *ip6h = ipv6_hdr(skb);
-+	struct dst_entry *dst;
-+	struct flowi6 fl6 = {
-+		.daddr = ip6h->daddr,
-+		.saddr = ip6h->saddr,
-+		.flowi6_proto = ip6h->nexthdr,
-+		.flowi6_mark = skb->mark,
-+		.flowi6_uid = uid,
-+		/* translation currently leaves the Flow Label at zero, but
-+		 * carrying the complete flowinfo also preserves Traffic Class
-+		 */
-+		.flowlabel = ip6_flowinfo(ip6h),
-+	};
-+
-+	ipxlat_flowi6_selectors(skb, &fl6);
-+	/* the translated packet has no socket, so only global XFRM applies */
-+	dst = ip6_dst_lookup_flow(net, NULL, &fl6, NULL);
-+	return dst;
-+}
-+
-+static int ipxlat_handoff_output(struct net *net, struct sk_buff *skb)
-+{
-+	struct dst_entry *dst;
-+	kuid_t uid;
++	const struct ipxlat_cb *cb = ipxlat_skb_cb(skb);
++	const struct icmphdr *icmp4;
++	struct icmp6hdr mapped = {};
 +	int err;
 +
-+	/* route socketless translated output as normal kernel-originated
-+	 * traffic
-+	 */
-+	uid = sock_net_uid(net, NULL);
-+	if (skb->protocol == htons(ETH_P_IP))
-+		dst = ipxlat_route_output4(net, skb, uid);
-+	else
-+		dst = ipxlat_route_output6(net, skb, uid);
-+	if (IS_ERR(dst)) {
-+		err = PTR_ERR(dst);
-+		goto drop;
-+	}
++	if (cb->is_icmp_err)
++		return -EOPNOTSUPP;
 +
-+	skb_dst_set(skb, dst);
-+	if (skb->protocol == htons(ETH_P_IP))
-+		return ip_local_out(net, NULL, skb);
-+	return ip6_local_out(net, NULL, skb);
-+
-+drop:
-+	kfree_skb(skb);
-+	return err;
++	icmp4 = (const struct icmphdr *)(skb->data + cb->l4_off);
++	err = ipxlat_46_icmp_map_info_type_code(icmp4, &mapped);
++	return err ? -EOPNOTSUPP : 0;
 +}
 +
-+static void ipxlat_scrub_translated(struct sk_buff *skb)
++static void ipxlat_46_icmp_info_update_csum(const struct icmphdr *icmp4,
++					    struct icmp6hdr *icmp6,
++					    const struct ipv6hdr *ip6,
++					    unsigned int l4_len)
 +{
-+	bool frag_source = false;
-+	bool ignore_df = false;
-+	int iif = skb->skb_iif;
++	struct icmp6hdr icmp6_zero = *icmp6;
++	struct icmphdr icmp4_zero = *icmp4;
++	__wsum csum;
 +
-+	if (skb->protocol == htons(ETH_P_IPV6)) {
-+		ignore_df = skb->ignore_df;
-+		frag_source = IP6CB(skb)->flags & IP6SKB_FRAG_SOURCE;
-+	}
-+
-+	/* translation invalidates route, ct and other family-specific state */
-+	skb_scrub_packet(skb, false);
-+	skb_orphan(skb);
-+	skb_set_queue_mapping(skb, 0);
-+
-+	/* skb->cb contains ipxlat parser state. The target-family stack reuses
-+	 * it as IPCB/IP6CB, so clear it and restore only the ingress identity
-+	 * and IPv6 fragment provenance that remain meaningful.
-+	 */
-+	skb->skb_iif = iif;
-+	if (skb->protocol == htons(ETH_P_IP)) {
-+		memset(IPCB(skb), 0, sizeof(*IPCB(skb)));
-+		IPCB(skb)->iif = iif;
-+	} else {
-+		memset(IP6CB(skb), 0, sizeof(*IP6CB(skb)));
-+		IP6CB(skb)->iif = iif;
-+		if (frag_source)
-+			IP6CB(skb)->flags |= IP6SKB_FRAG_SOURCE;
-+	}
-+	skb->ignore_df = ignore_df;
++	icmp4_zero.checksum = 0;
++	icmp6_zero.icmp6_cksum = 0;
++	csum = ~csum_unfold(icmp4->checksum);
++	csum = csum_sub(csum, csum_partial(&icmp4_zero, sizeof(icmp4_zero), 0));
++	csum = csum_add(csum, csum_partial(&icmp6_zero, sizeof(icmp6_zero), 0));
++	icmp6->icmp6_cksum = csum_ipv6_magic(&ip6->saddr, &ip6->daddr, l4_len,
++					     IPPROTO_ICMPV6, csum);
 +}
 +
-+static int ipxlat_finish_error(struct sk_buff *skb,
-+			       struct net_device *ingress_dev, int err)
++static int ipxlat_46_icmp_info_outer(struct sk_buff *skb)
 +{
-+	if (ingress_dev)
-+		ipxlat_emit_icmp_error(ingress_dev, skb);
-+	kfree_skb(skb);
-+	return err;
++	const struct icmphdr icmp4 = *icmp_hdr(skb);
++	const struct ipv6hdr *ip6 = ipv6_hdr(skb);
++	struct icmp6hdr *icmp6 = icmp6_hdr(skb);
++	unsigned int l4_len;
++	int err;
++
++	err = ipxlat_46_icmp_map_info_type_code(&icmp4, icmp6);
++	if (unlikely(err))
++		return -EINVAL;
++
++	l4_len = ipxlat_skb_l4_len(skb);
++	if (skb->ip_summed == CHECKSUM_PARTIAL) {
++		icmp6->icmp6_cksum = ~csum_ipv6_magic(&ip6->saddr, &ip6->daddr,
++						      l4_len, IPPROTO_ICMPV6,
++						      0);
++		return ipxlat_set_partial_csum(skb, offsetof(struct icmp6hdr,
++							     icmp6_cksum));
++	}
++
++	ipxlat_46_icmp_info_update_csum(&icmp4, icmp6, ip6, l4_len);
++	skb->ip_summed = CHECKSUM_NONE;
++	return 0;
 +}
 +
-+static int ipxlat_lwt_input(struct sk_buff *skb)
++int ipxlat_46_icmp(const struct ipxlat_config *cfg, struct sk_buff *skb)
 +{
-+	const struct lwtunnel_state *lws = skb_dst(skb)->lwtstate;
-+	u8 cb_snapshot[sizeof_field(struct sk_buff, cb)];
-+	struct net_device *ingress_dev = skb->dev;
-+	const struct ipxlat_config *cfg;
-+	struct net *net;
-+	int ret;
++	if (unlikely(ipxlat_skb_cb(skb)->is_icmp_err))
++		return -EINVAL;
 +
-+	/* in the input path, the packet must have been received by an iface */
-+	if (unlikely(!ingress_dev)) {
-+		kfree_skb(skb);
-+		return -ENODEV;
++	return ipxlat_46_icmp_info_outer(skb);
++}
+diff --git a/net/ipxlat/icmp_64.c b/net/ipxlat/icmp_64.c
+new file mode 100644
+index 000000000000..ce3131ffc6be
+--- /dev/null
++++ b/net/ipxlat/icmp_64.c
+@@ -0,0 +1,114 @@
++// SPDX-License-Identifier: GPL-2.0
++/*  IPXLAT - Stateless IP/ICMP Translation (SIIT) engine
++ *
++ *  Copyright (C) 2024- Alberto Leiva Popper <ydahhrk@gmail.com>
++ *  Copyright (C) 2026- Mandelbit SRL
++ *  Copyright (C) 2026- Daniel Gröber <dxld@darkboxed.org>
++ *
++ *  Author:	Alberto Leiva Popper <ydahhrk@gmail.com>
++ *		Antonio Quartulli <antonio@mandelbit.com>
++ *		Daniel Gröber <dxld@darkboxed.org>
++ *		Ralf Lici <ralf@mandelbit.com>
++ */
++
++#include <net/ip6_checksum.h>
++
++#include "icmp.h"
++#include "packet.h"
++#include "transport.h"
++
++static int ipxlat_64_icmp_map_info_type_code(const struct icmp6hdr *in,
++					     struct icmphdr *out)
++{
++	switch (in->icmp6_type) {
++	case ICMPV6_ECHO_REQUEST:
++		out->type = ICMP_ECHO;
++		out->code = 0;
++		out->un.echo.id = in->icmp6_identifier;
++		out->un.echo.sequence = in->icmp6_sequence;
++		return 0;
++	case ICMPV6_ECHO_REPLY:
++		out->type = ICMP_ECHOREPLY;
++		out->code = 0;
++		out->un.echo.id = in->icmp6_identifier;
++		out->un.echo.sequence = in->icmp6_sequence;
++		return 0;
++	default:
++		return -EINVAL;
 +	}
-+
-+	net = dev_net(ingress_dev);
-+	cfg = &ipxlat_lwt_state(lws)->config;
-+
-+	/* preparation owns skb->cb: preserve the receive metadata in case the
-+	 * translator declines the packet and the original route handles it
-+	 */
-+	memcpy(cb_snapshot, skb->cb, sizeof(cb_snapshot));
-+	ret = ipxlat_prepare(cfg, skb);
-+	if (ret == -EOPNOTSUPP) {
-+		/* let the stack handle unsupported packets */
-+		memcpy(skb->cb, cb_snapshot, sizeof(cb_snapshot));
-+		return lws->orig_input(skb);
-+	}
-+	if (ret)
-+		return ipxlat_finish_error(skb, ingress_dev, ret);
-+
-+	ret = ipxlat_translate(cfg, net, skb);
-+	if (ret)
-+		return ipxlat_finish_error(skb, ingress_dev, ret);
-+
-+	ipxlat_scrub_translated(skb);
-+	if (skb->protocol == htons(ETH_P_IP))
-+		return ip_rcv_lwt(skb);
-+	return ip6_rcv_lwt(skb);
 +}
 +
-+static int ipxlat_lwt_output(struct net *net, struct sock *sk,
++static __sum16 ipxlat_64_compute_icmp_info_csum(const struct ipv6hdr *in6,
++						const struct icmp6hdr *in_icmp6,
++						const struct icmphdr *out_icmp4,
++						unsigned int l4_len)
++{
++	struct icmp6hdr icmp6_zero = *in_icmp6;
++	struct icmphdr icmp4_zero = *out_icmp4;
++	__wsum csum, pseudo_csum;
++
++	icmp6_zero.icmp6_cksum = 0;
++	icmp4_zero.checksum = 0;
++
++	csum = ~csum_unfold(in_icmp6->icmp6_cksum);
++	pseudo_csum = ~csum_unfold(csum_ipv6_magic(&in6->saddr, &in6->daddr,
++						   l4_len, NEXTHDR_ICMP, 0));
++	csum = csum_sub(csum, pseudo_csum);
++	csum = csum_sub(csum, csum_partial(&icmp6_zero, sizeof(icmp6_zero), 0));
++	csum = csum_add(csum, csum_partial(&icmp4_zero, sizeof(icmp4_zero), 0));
++	return csum_fold(csum);
++}
++
++static int ipxlat_64_icmp_info_outer(struct sk_buff *skb,
++				     const struct ipv6hdr *in6)
++{
++	struct icmp6hdr *ic6 = icmp6_hdr(skb);
++	struct icmphdr *ic4 = icmp_hdr(skb);
++	struct icmp6hdr ic6_copy = *ic6;
++	unsigned int l4_len;
++	int err;
++
++	err = ipxlat_64_icmp_map_info_type_code(&ic6_copy, ic4);
++	if (unlikely(err))
++		return err;
++
++	if (skb->ip_summed == CHECKSUM_PARTIAL) {
++		/* ICMPv4 has no pseudo-header so discard the IPv6 seed and let
++		 * checksum completion cover the translated ICMPv4 message
++		 */
++		ic4->checksum = 0;
++		return ipxlat_set_partial_csum(skb, offsetof(struct icmphdr,
++							     checksum));
++	}
++
++	l4_len = ipxlat_skb_l4_len(skb);
++	ic4->checksum = ipxlat_64_compute_icmp_info_csum(in6, &ic6_copy, ic4,
++							 l4_len);
++	skb->ip_summed = CHECKSUM_NONE;
++	return 0;
++}
++
++int ipxlat_64_icmp_preflight(const struct ipxlat_config *cfg,
 +			     struct sk_buff *skb)
 +{
-+	struct net_device *ingress_dev = skb->skb_iif ? skb->dev : NULL;
-+	u8 cb_snapshot[sizeof_field(struct sk_buff, cb)];
-+	const struct dst_entry *dst = skb_dst(skb);
-+	struct lwtunnel_state *lws = dst->lwtstate;
-+	const struct ipxlat_config *cfg;
-+	int ret;
++	const struct ipxlat_cb *cb = ipxlat_skb_cb(skb);
++	const struct icmp6hdr *icmp6;
++	struct icmphdr mapped = {};
++	int err;
 +
-+	cfg = &ipxlat_lwt_state(lws)->config;
++	if (cb->is_icmp_err)
++		return -EOPNOTSUPP;
 +
-+	/* preparation owns skb->cb: preserve the receive metadata in case the
-+	 * translator declines the packet and the original route handles it
-+	 */
-+	memcpy(cb_snapshot, skb->cb, sizeof(cb_snapshot));
-+	ret = ipxlat_prepare(cfg, skb);
-+	if (ret == -EOPNOTSUPP) {
-+		/* let the stack handle unsupported packets */
-+		memcpy(skb->cb, cb_snapshot, sizeof(cb_snapshot));
-+		return lws->orig_output(net, sk, skb);
-+	}
-+	if (ret)
-+		return ipxlat_finish_error(skb, ingress_dev, ret);
-+
-+	ret = ipxlat_translate(cfg, net, skb);
-+	if (ret)
-+		return ipxlat_finish_error(skb, ingress_dev, ret);
-+
-+	ipxlat_scrub_translated(skb);
-+	return ipxlat_handoff_output(net, skb);
++	icmp6 = (const struct icmp6hdr *)(skb->data + cb->l4_off);
++	err = ipxlat_64_icmp_map_info_type_code(icmp6, &mapped);
++	return err ? -EOPNOTSUPP : 0;
 +}
 +
-+static const struct lwtunnel_encap_ops ipxlat_lwt_ops = {
-+	.build_state = ipxlat_build_state,
-+	.output = ipxlat_lwt_output,
-+	.input = ipxlat_lwt_input,
-+	.fill_encap = ipxlat_fill_encap,
-+	.get_encap_size = ipxlat_get_encap_size,
-+	.cmp_encap = ipxlat_cmp_encap,
-+	.owner = THIS_MODULE,
-+};
-+
-+static int __init ipxlat_lwt_init(void)
++int ipxlat_64_icmp(struct net *net, struct sk_buff *skb,
++		   const struct ipv6hdr *in6)
 +{
-+	return lwtunnel_encap_add_ops(&ipxlat_lwt_ops, LWTUNNEL_ENCAP_IPXLAT);
-+}
-+module_init(ipxlat_lwt_init);
++	if (unlikely(ipxlat_skb_cb(skb)->is_icmp_err))
++		return -EINVAL;
 +
-+static void __exit ipxlat_lwt_exit(void)
-+{
-+	lwtunnel_encap_del_ops(&ipxlat_lwt_ops, LWTUNNEL_ENCAP_IPXLAT);
++	return ipxlat_64_icmp_info_outer(skb, in6);
 +}
-+module_exit(ipxlat_lwt_exit);
-+
-+MODULE_ALIAS_RTNL_LWT(IPXLAT);
-+MODULE_DESCRIPTION("IPv6<>IPv4 translation lightweight tunnel (SIIT)");
-+MODULE_LICENSE("GPL");
+diff --git a/net/ipxlat/translate_46.c b/net/ipxlat/translate_46.c
+index add29d9ef0a7..824b429dadb5 100644
+--- a/net/ipxlat/translate_46.c
++++ b/net/ipxlat/translate_46.c
+@@ -18,6 +18,7 @@
+ #include <net/ipxlat.h>
+ 
+ #include "address.h"
++#include "icmp.h"
+ #include "packet.h"
+ #include "transport.h"
+ #include "translate_46.h"
+@@ -199,6 +200,9 @@ int ipxlat_46_translate(const struct ipxlat_config *cfg, struct sk_buff *skb)
+ 	case IPPROTO_UDP:
+ 		err = ipxlat_46_translate_udp_csum(skb, &outer4);
+ 		break;
++	case IPPROTO_ICMP:
++		err = ipxlat_46_icmp(cfg, skb);
++		break;
+ 	default:
+ 		err = 0;
+ 		break;
+diff --git a/net/ipxlat/translate_64.c b/net/ipxlat/translate_64.c
+index 2448d3da32e4..3888ec0d8061 100644
+--- a/net/ipxlat/translate_64.c
++++ b/net/ipxlat/translate_64.c
+@@ -17,6 +17,7 @@
+ #include <net/udp.h>
+ 
+ #include "translate_64.h"
++#include "icmp.h"
+ #include "packet.h"
+ #include "transport.h"
+ 
+@@ -207,6 +208,9 @@ int ipxlat_64_translate(const struct ipxlat_config *cfg, struct net *net,
+ 	case IPPROTO_UDP:
+ 		err = ipxlat_64_translate_udp_csum(skb, &outer6);
+ 		break;
++	case IPPROTO_ICMP:
++		err = ipxlat_64_icmp(net, skb, &outer6);
++		break;
+ 	default:
+ 		err = 0;
+ 		break;
 -- 
 2.55.0
 
