@@ -1,59 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.51
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792879339;
-	b=NEdo0ccrUEHPB3Zxqov3TIoxlOMEobUOKanfY+vkGPvyoCx+izbWSinkztpHH0mu+jNj
-	 +mNSn5NN7cI2kR+j6v18sB44DCURwaXapew4J95ppgKp2+Edjg9ZAzikwbvzZOYUxEU/y
-	 /H1uXbRHH9qzxWzBHvqbG72OWKB6//rHcKrJhA8P8dvaINIlkjANwJa4WscytQQ96nYnk
-	 HB17yTznfdnxxakNSocMkVS7ZQL7v8eknndLnnLHfOpuUXWf8QTJZCun8ISOWygblWFK4
-	 iBqm7XttMsOpZs5jBHirFjY9s+6FYtUmAYSWOIduci/QlZwGMArUr/HQDLadz2d64fw==
+	t=1792879443;
+	b=5UlVxRQn7zTXn5ZnHxNTjC25vWHUxq0hcvA9OKYnCn5AdwYA5TGRPKi1mk/jRbq7FIqy
+	 J/rMPj9od9kfMWcKy7dfe6IFhvRjDYTIlEhDLDh51Lwk8VdXvn8ENVJJSZ0a/mRN8Laqo
+	 8wRX8W1tqqctsj5LFEvxvV/rFcRokBA4zDCz+pSGoboBaJjc/muA3hW1CekZLco3A13+o
+	 q13d7hxDtGxwyeVGu5p5o91aNOETlUzXTU1nad0I9DwerbxIuuwGmfNzNCM4Gi7CShJEX
+	 SWihcExbjJFcZSfahVup3skyPl+1kPOsCmCFUT0lQCoIMiQaQ0oW0rwenPWFjym0Ldg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792879339;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	a=rsa-sha256; c=relaxed/relaxed; t=1792879443;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=sia3q9+4NG/D0pyHeAoqQkOv62xgWS+3D097ZDTA1Nw=;
-	b=oC4x9I0TMPaR19EjT5eJiCX/8PfbnX1d+X4DgFyqOCCys1143T4M95g36RS/ij7qlGc/
-	 JhIu0MTDtjYa2p4enFMywOBlllLre0aeULuK0d2On38M0o05wJcHmZqTWrbuNFo3MOcRD
-	 KaqZwVive5Lq7bwC/htxm+ziVfUppiMRgTVcPLPmc8UqUOjBgCf/2Tlu01Quobqt8u4XH
-	 WuMbSOZW5uCdJzb3pbYzNZP2sWW6v84FwoxhC/Uvxn3EKabRJhZikuaqzObr953oYlHcM
-	 JkVH8nzE8epVe+5jgqvEUdPr6u+r6sm80RHNBOusBAeF2/OCnk2pYOKGk03UHIs//UQ==
+	bh=feA+qfM2JT212n+bZvJFkoTE7dwa45VjU7+TBhyDFMc=;
+	b=Hf06aSAL6C3in9/NRfTwNpcsjTqnBje6//Q2URebdwne78v8sxAffkH8ysrbVlnRp8yn
+	 9xFv3ZddZZI+AS6WRS7HT8A92NM9bxFHS9cvXHXbo2pKlm/DBBhN4IMBgwZCSbQzMrQm7
+	 04+W1blxgorp1GLCPhDa98Z84Nou5TL207c2pMsjE0J5atCPTWh69vJrR9mr5GxSNxCz6
+	 xtAvO4EuElFWtVo7M5gqc3NLhdPaofkzadX2Z7duQuK63Oo85YuHmQjUuBD/sidZsvK3o
+	 35RpYDycgRc7ewmX8X3J8ceswEM3FsP5vCMYxaN3zEevt1X/vTNW6UqN3Yt8M/hE6kw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JiZrToBU;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Qpurg3WZ;
+	arc=none smtp.remote-ip=209.85.217.51
+Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FFB606A31A;
-	Sat, 24 Oct 2026 22:02:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A22D606A31D
+	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 22:04:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2A22D606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JiZrToBU
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE1F1F01825;
-	Sat, 24 Oct 2026 22:02:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792879338;
-	bh=sia3q9+4NG/D0pyHeAoqQkOv62xgWS+3D097ZDTA1Nw=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=JiZrToBUh3fiC7FHds/yQFmv7oc93QouaS0PSPV3QCZscBgmOdGzTVv7Qc0Qw3mpL
-	 dPiBcKOlW5hu6jWpuGiopXnmwmytjiPXkxc5Jpwrq7Fjd+PLsx9rMcQ3WE1jzz0OIm
-	 9cLusgU8aP0tOeCTM+Q5VEIJsuclVJLmqvqlb+UDGTnMpfmJNQj6KC9QSYiudqaLj1
-	 eir5uOugtanszTwYQ6lJY4hmpGer6cbsuzgvvHn9Fw66mXufFFEVVRSm78Ss8yjFwE
-	 WTQYpnoJjGYYWwujGXrCQ8MmIy1unXlvsMQdrG3sI4u2sOldhOuq7imF/o2LqxtkfC
-	 KfyGGAP5GC0JQ==
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Qpurg3WZ
+Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-7c2f48f3a96so641419137.1
+        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 15:04:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792879442; x=1793484242; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:content-type:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=feA+qfM2JT212n+bZvJFkoTE7dwa45VjU7+TBhyDFMc=;
+        b=Qpurg3WZlVKu/5kUAgA3mUMtBMev8bft64H4KwHPRWTz7VAGhMgBHfEU/UmjoBky6m
+         2dn6ym1ynQ6Fr4C5gKOHTfJXH3etTBaq/8bvvGEite2/DQ1cSStxBHJzguex8DVYNEju
+         rfatDNsVtGRzFbxWBzRrJ+rJRn5ptLdr2ISd9WjIximFOjOkOEDMImxDlQOuTZCtvtUQ
+         Un+s+U3s1b4dkc8RqpZ6+jk+RZnNbE0p1eQIajJNCQE2v2SUD6SFnVltPL5MN4Blb9Z+
+         w0capXhjjTmqrLIVjooEoHKPlgtC+qlQ2yZCXxTrxm+kYILlfbNR8EhzufLP7a5c6Exq
+         p6nQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792879442; x=1793484242;
+        h=mime-version:content-transfer-encoding:content-type:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=feA+qfM2JT212n+bZvJFkoTE7dwa45VjU7+TBhyDFMc=;
+        b=2YbaGKmbj16ePhjb6PRQ3Z857nrIUq/dho4SiEcWy5uQ0VwzMvWrMBOUaah2Opw+yi
+         svnhCPZEF8oBy08/ZG6LJFN8+SMo7U6IrdRRqSzttZC/K8M6iMYnZrCE1om34D9jLvwk
+         xTl/pfGC+K9OTPbAs09IQnTrzOhC+/IpxWsfcDT4/dvTCTbB/pCu/F4g7pLO8dqZmZgN
+         wj6HSK4DUoIv80ix4unAcEq4YTuZLHsk9iIVcNSo5/n8PAOkDberIetWozpc+WYMBUJ4
+         Od7D4Md+axc/E8zsJo6esentpoN2vUYZSR9ll9T6dj8x8hSNYFr8kc8J56eBWjXBE6me
+         hWqQ==
+X-Forwarded-Encrypted: i=1; AKwUvByF31rguR7N0kWWF+QiJm5syFQhbnySE9ccg2Sm2DzUNZO5fINurcJea/hbW1vbLQo4V5BYJo8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIWPjUvAPbbG7Gs7+KABRWhRpc8k8z/Lt/rVZL7xEOut/qoN09E
+	o7CC6svFRGU0XgUdQuIgrwZAmlB21s49CmuuoarQlgPG91jjStKS5JqG
+X-Gm-Gg: AYBFou0+/It3veQTGUuY2e1QoyZy6ow4L13u1yH/6sKaV2ImTaol1Pqi3PA1x7Zx3Rc
+	mWTHp+oyo/hTlm/y9y/ysnuJGmzUk1W/bVZKCumhxOndLq6ztkFgPUVlE7Ia8g1PUZJU99LBIcG
+	WjsBxKZOFPkqqU4Fv/RlUJpGO3H5FPkm2fDbj0oWLJSB7xLJvTsPRvd7OH2rIYLE8IWy8Ut5IDj
+	B7t9POlHkrtBtwivWf7JcGNww0+qibCdMfnr5CBdAmDdHqiue/ns9T+dqBluuohoQIokD/Z49OX
+	47qoKyUZanswsxCITvr4/hfCcBEqTbiY9qRLzYJ9sx/7xJXPqILpu6rrI/i13uxpDZeHM6szIbZ
+	4inLTjchPnHy9zXBvcuxksxRoE6Nl9HiuPnGd7Dmk9kpqWMQFBCmhXgMhmb/7aMrHDfemLl2LoC
+	xQ+NiNSaW26k3UOLIzvjNje52DXFQl1vpozzuZ5AavIhFxMyhAnz+7mDLkOgCUXIKskVx8DOms+
+	0WD2r3Q4wcIZ4yZpiTLPVfogfAaHBfs40REZNRpsCcBgn72Eq58VGfgCf5qp37gE1epu4NbwWi6
+	BYuoaLVjJepEGsa2q/Hl7RRl5tIqQeH2MKPve6EOa90+gG9UnCg=
+X-Received: by 2002:a05:6102:604e:b0:7a6:a24e:8140 with SMTP id ada2fe7eead31-7ce5cd16fefmr631925137.14.1792879442011;
+        Sat, 24 Oct 2026 15:04:02 -0700 (PDT)
+Received: from 1.0.0.127.in-addr.arpa ([2804:7f0:b101:277b:c08d:c9f9:7c08:79c4])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-9910e80e2d6sm3701696241.12.2026.10.24.15.03.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 24 Oct 2026 15:04:01 -0700 (PDT)
+From: Joas Antonio dos Santos <joasantonio108@gmail.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>
+Cc: Phil Sutter <phil@nwl.cc>, Weiming Shi <bestswngs@gmail.com>,
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject:
- Re: [PATCH net v2] tls: keep TX and RX hardware offload on the same device
-From: netdev-bot+sashiko@kernel.org
-To: rjethwani@purestorage.com
-Cc: netdev@vger.kernel.org, john.fastabend@gmail.com, kuba@kernel.org,
- sd@queasysnail.net, davem@davemloft.net, edumazet@kernel.org,
- pabeni@redhat.com, horms@kernel.org, corbet@lwn.net,
- skhan@linuxfoundation.org, rdunlap@infradead.org, borisp@mellanox.com,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sat, 24 Oct 2026 22:02:17 +0000
-Message-ID: <179287933702.3134.9880453017789029456@kernel.org>
-In-Reply-To: <20261020214500.972308-1-rjethwani@purestorage.com>
-References: <20261020214500.972308-1-rjethwani@purestorage.com>
-X-sashiko-severity: Critical
+ [PATCH nf] netfilter: nft_set_pipapo: skip transaction elements during GC
+Date: Sat, 24 Oct 2026 19:03:55 -0300
+Message-ID: <179287943591.17355.17353179557993329094@gmail.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -66,152 +99,86 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Since nft_set_commit_update() runs set commit callbacks before processing
+NEWSETELEM transactions, pipapo_gc_scan() can observe elements added by
+the transaction being committed: nft_pipapo_commit() calls
+pipapo_gc_scan() on the clone, which already holds the freshly inserted
+(not yet activated) elements.
 
-Critical: 1 · High: 0 (1) · Medium: 0 · Low: 0
+pipapo_gc_scan() selects elements to collect using only
+__nft_set_elem_expired(), without checking the element's transaction
+state.  A new element that is already expired at commit time (for
+example a short expiration whose delta elapses during a large batch
+parse) is deactivated, dropped and queued on the synchronous gc list,
+which frees it after an RCU grace period.  The later NEWSETELEM step of
+the same transaction then calls nft_setelem_activate() ->
+nft_pipapo_activate() -> nft_clear() on the already freed element,
+causing a use-after-free.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+This is the pipapo counterpart of the rbtree fix in commit 86b6471e690c
+("netfilter: nft_set_rbtree: skip transaction elements during GC"); the
+rbtree scan gained an nft_set_elem_active() guard but the pipapo scan
+was left unchanged.
 
-- [Critical] tls: type confusion and UAF in tls_device_down() when TX is
-  not TLS_HW
+Only consider elements that are fully active in both generations, which
+keeps transaction-state elements out of the GC scan.
 
-Pre-existing issues:
-- [High] tls_set_sw_offload() (net/tls/tls_sw.c:2594) sets the shared
-  ctx->push_pending_record = tls_sw_push_pending_record unconditionally,…
+The use-after-free has the same shape as the rbtree one:
 
---
+  BUG: KASAN: slab-use-after-free in nft_setelem_activate
+  nft_setelem_activate net/netfilter/nf_tables_api.c
+  nf_tables_commit net/netfilter/nf_tables_api.c
 
-tls: keep TX and RX hardware offload on the same device
+  Allocated by nft_set_elem_init / nft_add_set_elem
+  Freed by nft_trans_gc_trans_free / rcu_core
 
-This patch adds tls_device_can_attach(), which is checked under
-device_offload_lock before each tls_dev_add() in tls_set_device_offload()
-and tls_set_device_offload_rx(). A second direction is only offloaded if
-it resolves to the netdev already bound to the context; otherwise setup
-falls back to software for that direction.
+Fixes: 1e3b9e1c77fe ("netfilter: nf_tables: call set ops .commit when building new ruleset blob")
+Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
+Assisted-by: Yaga Agent HackerSec Claude:claude-opus-5-5
+---
+Compile-tested (arm64, W=1, CONFIG_NF_TABLES=y): nft_set_pipapo.o builds
+with no new warnings.
 
-> diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
-> index f11d0528fc431..9df183d0dd972 100644
-> --- a/net/tls/tls_device.c
-> +++ b/net/tls/tls_device.c
+I demonstrated the precondition on a KASAN VM (unpatched 7.3-rc6): adding
+20000 fresh elements with a short timeout (so they are already expired at
+the commit tstamp) to a timeout+interval pipapo set leaves ~0 elements in
+the set afterwards, i.e. pipapo_gc_scan() collects the not-yet-activated
+NEWSETELEM elements during the very commit that adds them - exactly what
+the nft_set_elem_active() guard prevents. I did not capture the KASAN
+splat itself: the free is call_rcu()-deferred (nft_trans_gc_queue_sync_done),
+so the subsequent nft_setelem_activate() -> nft_clear() races the grace
+period, same as the rbtree sibling.
 
-[ ... ]
+This is the pipapo counterpart of 86b6471e690c ("netfilter:
+nft_set_rbtree: skip transaction elements during GC"): same root cause
+(1e3b9e1c77fe runs set .commit before NEWSETELEM activation), same
+scan-without-active-check pattern, same nft_setelem_activate()
+use-after-free shape. pipapo_gc_scan() was not given the
+nft_set_elem_active() guard that the rbtree scan received.
 
-> @@ -1227,6 +1246,11 @@ int tls_set_device_offload_rx(struct sock *sk, struct tls_context *ctx)
->  		goto release_lock;
->  	}
->  
-> +	if (!tls_device_can_attach(ctx, sk, netdev)) {
-> +		rc = -EOPNOTSUPP;
-> +		goto release_lock;
-> +	}
-> +
+ net/netfilter/nft_set_pipapo.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-[Severity: Critical]
-This isn't introduced by this patch, but the patch now deliberately
-steers sockets into the state that hits it, so it seems worth raising
-here.
-
-When RX is on hardware and TX is declined by tls_device_can_attach(),
-do_tls_setsockopt_conf() falls back to TLS_SW for TX (or TX is simply
-never configured and stays TLS_BASE), while ctx stays on
-tls_device_list bound to the RX device. If that device later goes down,
-tls_device_down() does this for every matching ctx:
-
-	WRITE_ONCE(ctx->sk->sk_validate_xmit_skb,
-		   tls_validate_xmit_skb_sw);
-
-without looking at ctx->tx_conf. The tls_dev_del() calls further down
-are guarded by tx_conf == TLS_HW and rx_conf == TLS_HW, but this store
-is not.
-
->From then on every skb with TCP payload on the socket goes through
-validate_xmit_skb() -> tls_validate_xmit_skb_sw() -> tls_sw_fallback(),
-which casts tls_ctx->priv_ctx_tx with tls_offload_ctx_tx() and passes
-the result to fill_sg_in(), which takes ctx->lock and walks
-ctx->records_list through tls_get_record().
-
-With tx_conf == TLS_BASE, priv_ctx_tx is NULL. Isn't this a NULL
-pointer dereference on the first data segment sent after the device
-goes down? With tx_conf == TLS_SW, priv_ctx_tx is the struct
-tls_sw_context_tx from init_ctx_tx(), so fill_sg_in() would take a
-spinlock and walk a list that are really unrelated fields of that
-structure.
-
-Close looks worse still. tls_sk_proto_close() frees priv_ctx_tx via
-tls_sw_free_ctx_tx() before calling ctx->sk_proto->close(), but with
-rx_conf == TLS_HW the tls_context and the sk_validate_xmit_skb hook stay
-around until tls_device_sk_destruct(). Data pushed out by tcp_close()
-or retransmitted afterwards would run tls_sw_fallback() on freed
-memory.
-
-The updated tls-offload.rst says a declined direction "uses software
-instead", and NETDEV_DOWN clearing the binding is now an explicit
-reason to decline TX, so the patch relies on this combination working.
-
-Should tls_device_down() only switch sk_validate_xmit_skb when TX is
-really device offloaded? ctx->tx_conf is only set by
-do_tls_setsockopt_conf() after tls_set_device_offload() has dropped
-device_offload_lock, so I'm not sure tx_conf alone is a reliable test
-there. Would comparing against tls_validate_xmit_skb, or having
-tls_validate_xmit_skb_sw() bail out when TX is not TLS_HW, work better?
-
-[Severity: High]
-This isn't a bug introduced by this patch, but it is related to the new
-tls-offload.rst wording that a declined direction "is handled in software
-as if offload had never been tried".
-
-Suppose TX is already on hardware and RX is rejected here. Then
-do_tls_setsockopt_conf() falls back to tls_set_sw_offload(sk, 0, ...),
-and that function sets the shared TX callback whatever the direction:
-
-net/tls/tls_sw.c:tls_set_sw_offload() {
-    ...
-	ctx->push_pending_record = tls_sw_push_pending_record;
-    ...
-}
-
-This replaces the callback that tls_set_device_offload() installed:
-
-	ctx->push_pending_record = tls_device_push_pending_record;
-
-The hardware RX success path also calls tls_set_sw_offload(sk, 0, NULL),
-so this could already happen before this patch.
-
-Now suppose device TX leaves an open record, for example because
-sendmsg() with MSG_MORE set pending_open_record_frags. A later sendmsg()
-with a TLS_SET_RECORD_TYPE cmsg then takes this path:
-
-tls_device_sendmsg()
-  tls_process_cmsg()
-    tls_handle_open_record()
-      ctx->push_pending_record() -> tls_sw_push_pending_record()
-
-tls_sk_proto_cleanup() reaches the same callback on close when
-sk_write_pending is set. tls_sw_push_pending_record() does:
-
-	struct tls_sw_context_tx *ctx = tls_sw_ctx_tx(tls_ctx);
-	struct tls_rec *rec = ctx->open_rec;
-
-but priv_ctx_tx is really a struct tls_offload_context_tx here.
-
-Doesn't this read an unrelated field of tls_offload_context_tx as a
-struct tls_rec pointer?
-
-If that field is NULL, the open device record is not flushed before the
-record type changes. Data that is already buffered then goes out under
-the new record type. If the field is non-NULL, rec->msg_plaintext is
-read through a garbage pointer.
-
-This seems to go back to 3c4d7559159b (2017). Could tls_set_sw_offload()
-set push_pending_record only when tx is set? Then RX setup, hardware or
-software fallback, would leave the device TX callback in place.
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261020214500.972308-1-rjethwani%40purestorage.com
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index 978bb0c01..4680969eb 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -1745,6 +1745,18 @@ static void pipapo_gc_scan(struct nft_set *set, struct nft_pipapo_match *m)
+ 		i--;
+ 		e = f->mt[rulemap[i].to].e;
+ 
++		/* Skip entries not fully active in both generations: these are
++		 * elements inserted by the transaction currently being
++		 * committed, since nft_set_commit_update() runs the set .commit
++		 * callback before NEWSETELEM activation.  Collecting such an
++		 * element here lets synchronous gc free it before
++		 * nft_setelem_activate() runs on it, causing a use-after-free.
++		 */
++		if (!nft_set_elem_active(&e->ext, NFT_GENMASK_ANY)) {
++			first_rule += rules_f0;
++			continue;
++		}
++
+ 		/* synchronous gc never fails, there is no need to set on
+ 		 * NFT_SET_ELEM_DEAD_BIT.
+ 		 */
