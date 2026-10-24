@@ -1,97 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.180
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792834221;
-	b=2qGN1kyeh9QMR6z23aKhkWHOrQEMIJ8dZFYu3VaKbOh/BTIuBQhWiCcKjgW+JeXAjivz
-	 NQmjRFKJ0x3oxssybT/zw38i7I8pgjQ79hRW995+NpYpKzQF16mWBhQmzvhlwLB9RJUoW
-	 zpQKPjDd0kof2vQFWnQmy3IhW3nUJwkLUs5fX7H/XfzADLHbpqeT+KnbRQjUfZt+Pul7C
-	 5EyEaY2JZB9d4wJ1t6O5q0ClMfmGEKqtVXw3qwN8EI8dPN3BvY9Hd8kdgElCeMolFps0a
-	 CS/d9frdvcCop7EPT0Z5x+QkPMTY6/hm03yXgILy/MgEJSqVPU9rhtcOMGJIcPvMjMg==
+	t=1792834259;
+	b=GpMidGBon9rcUMONNmN43D7LEt5VhBhvkbZp4ZCE1Vxb7kQtQLMThynA27qwokeRyBKt
+	 2Kej0e2W7JYQHJAz714G2NOGg7ASVFqy+5nKfSv+tRtHLGr1Oc/fuvL+l9itZp7RjW8ly
+	 gaDxBdBKlPgcf8Gp529sgVcTPI0XLjMVMM7qHyzW4Yo1hIahaGhjN1so/ELgsJZy2r56c
+	 +0DjXDLX5XgeO2XHnh20WBZwxGzRhaqimAV7d9vAEEb64lONTx9rit6+blKniL6e8b2wq
+	 2eKVIdnB3M6Qc072JkiiwfizFToLIKZ36VPMsrpu68hzntkzjTtoFs9VG0vPpMzQd0w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792834221;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=T/uGr9O5F7z9D4gBA52zJiYNaYbWI1NRoXexG5R5ETM=;
-	b=jgZxAehp5NBu5+lseefYiIyxMiZ+RHVli/0EhHT74dOTQQjFcog7wlLkfHnuJK82E0NO
-	 iNbuHhIi9kt7/eL4uwjYdDiTAed/xQC/nDn6itF9PmPW9o8N2aOsivQR3xXHJ03dkLNwe
-	 PDRH4P9l82+ofG8dHzdhA2sdF7mSge2SRKnztOB8AOSQziCQDAzQnJpPwBbHPTdoW3mhX
-	 8tLie7ok7BJWVDn5ba69ZsqOKF+XBGu4f/sGiDGaAfrOEg19JvAT4JQ1vIsxle4+6twD6
-	 kHNTcgV8RGs3ViiiutNd+mHm6QUk+C1uUEwWPNFtt9Hb3sLzFMA+ApSYNk78QOiwOXw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792834259;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
+	 X-CM-SenderInfo;
+	bh=9QuznG4j1jiezSApa3ebKCoXkxisoyFoxDweWi31QAY=;
+	b=f5jwLUVVWfTCUJJWlySxKIateQmJshqPVhPWmMIdPM3GlmxT0P1P9KkWdNVBlLhZiW49
+	 0GdKiUMCDx3vCdexO3IffA5BOfGy+jELsgaqx784y3r4zrCrfsocbIDnzFKSmL190saVn
+	 PjorROB91EqMulR8cQu90vjgI7B7kRAE4Blte1JgSj0A0HQEBtaXz00vmYEix2tpRTr4z
+	 Keuwi6Rii6ax48PjLqalSTelQqp2zQ0UGSXV5CbqXXNY3roz9j4zDUVLsQ43XBDUamMPg
+	 aam33VeaKepGq0JquSrTfE6BaagPrhVco+H/lO6j+bV337bLh84ZDQ9pjniR0e1WefQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=YtgVCBXS;
-	arc=none smtp.remote-ip=209.85.215.180
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=MVzOmlbn;
+	arc=none smtp.remote-ip=117.135.210.5
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E20606A31A
-	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 09:30:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 27E20606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 252CE606A31A;
+	Sat, 24 Oct 2026 09:30:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 252CE606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=YtgVCBXS
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-cd5cd8d89a7so543178a12.1
-        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 02:30:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792834220; x=1793439020; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=T/uGr9O5F7z9D4gBA52zJiYNaYbWI1NRoXexG5R5ETM=;
-        b=YtgVCBXSUeVcu8Mqv7J5aUu2nXj3G0PBC8eaw6IEYZbYR7toBD03RGII2GHcevewBc
-         uXSyjYy5oPmaYloGbnWwwG+1sAPv8l0xVLdGUPO7PCxTdlvM4MRy4sACFVDhRR1g+Lrh
-         6jcBf3IYdDe7ounKGQ+ZyL0iDvqPbUMkpyZfzNEWh1NgmatpeKW4YXvhE4m3BLnCL81f
-         euAlYL37fvC3VSc1e7PHCnwVSaTcJv0H8AjKwAzSEtBbOysjDdFULIs70a3bGTWmF0ne
-         m13LCDXUO0x0qrWH3/PVgXfCjZShU3lclP9biOLLPHmNEmjMG/IzwISZ51CDES475xJN
-         pqLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792834220; x=1793439020;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=T/uGr9O5F7z9D4gBA52zJiYNaYbWI1NRoXexG5R5ETM=;
-        b=2j63av/MIhsht/ZGX0yA7z/NSDT8Tj6ZKRzKV1jNF9XJKDDVDgDK2ZeVUpEZhdi6+L
-         iqTXF0Ayjp0PwKRM7hKqwfFseDYWWfiQNEcpfgadNRvjXs8N2a10Bon3N+XICTcnkIk6
-         dDiFMhbaZrLXPQxdgsmRW5OWjjBf66uKEHCRtqWg5KdfY4PlKzXgg+xOm9lexHmpeiY1
-         FCTMOtO7JSRTwYSfGv54q9ADZ5J2+iM4o65ORPemfcn7HrLUFBP42eTkptiHunZzJmaa
-         xkpJWbZBtJMkWtQWwM2ZCbpHMuMhxktbqa7xKJpUlF8jKnpzGqOs/IOT3G1EJ7Rvxr1k
-         7kuw==
-X-Forwarded-Encrypted: i=1; AKwUvBw2z7HWzclj7oiRopHA5Ya4Dq5UwX/gzV5wX/NztQse5YfP8GVZo8ecOeV52furg6RIoudtVh4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIBF5+mhMweRZax+XyMXDA5jj0q8wz2fGORZEAgKB2Rs1TNcbj7
-	L1U9UGukK1G6NDBBnYVfgaXPdh0S5KAZ0r71WvfEj7MVyNtt9kj+SKig
-X-Gm-Gg: AYBFou0CpOvABoD3MuOmKRH05G6Tk4KfMmyJJuHvJbdjF/QtKNBUDHjtiYXqHz/NKSC
-	t+HiA+HV4RmujZGFlTaEzDbqjNpdakwveF/ojd/JVgXrlaBQ/IoLVnfZ1EZmjLUTcAsN7Svz4VA
-	OX6J8WdCRup/tJSw44gFqNy2dRG3xDSyU4J49E4ZNdd0PZgzT9YbucBKCXQfjpDtIE+XFuPhkZ3
-	G0wb3I80WE63Bewsd/Lc543Ew5hx51heBT9TAHrMBGeaYBwqYRkXTX+WU0ehWKsuyjEb8tFxv3F
-	7QeKY3JtEFcY4URMUMnF7xeUWyPVPnye3yWeFMf1Kj3Ilw2WYrWlTpo281Q8l8osLUL1AdewDls
-	Ole4oJa8iSOyRK2q+4LOU5sqUG4iB6vdyqX7MbEckNUz4ljFKVLkODNURSJTCbnaZ9KdZpaU7ZY
-	XcufcuFYdz/1OuRWH0NERGPbAkdqGcv6zGb9GbURdgirAZC47v/+ir42LEZMCLVE9cbeIH3JvKZ
-	sKX4RzC3Qv7iQqvPeMHhcCA7WcX8G2zwbf9OdE3u3j5Qeh65CfHbG0XQflgBy+ZGm3XSj7JBl1+
-	2+zY7yDfbAEXTTfKGDfegfPNcf3AWIfWyTj42iFyHcheiuq7//A8Ivnq/CcyCOqaMexY73moWtP
-	fXjQNlSvMz4NahSpOYpgNn8P13L0d4RCWmRzeVyeCDPPfI8vZOQ4xZ00VRguDSv926X7t6NGOeA
-	rj7eUO4blskmj4Y+ZBQ558cG4bOOQkAV2XsL5eydqfjYm1tsvRT7u+sub7
-X-Received: by 2002:a17:90b:4d09:b0:3ac:8ee5:e007 with SMTP id 98e67ed59e1d1-3adeaae619cmr1148374a91.20.1792834220445;
-        Sat, 24 Oct 2026 02:30:20 -0700 (PDT)
-Received: from desktophank.localdomain (111-242-220-176.dynamic-ip.hinet.net. [111.242.220.176])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea9af32085sm4345075ad.2.2026.10.24.02.30.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Oct 2026 02:30:19 -0700 (PDT)
-From: Ting-Han Hou <ue081723@gmail.com>
-To: stable@vger.kernel.org
-Cc: Sasha Levin <sashal@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Chris J Arges <carges@cloudflare.com>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Weiming Shi <bestswngs@gmail.com>,
-	netdev@vger.kernel.org
-Subject: Request: follow-up fixes for "net: add xmit recursion limit to tunnel xmit functions" in 6.6.y and 6.1.y
-Date: Sat, 24 Oct 2026 17:30:10 +0800
-Message-ID: <20261024093010.485-1-ue081723@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=MVzOmlbn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=9Q
+	uznG4j1jiezSApa3ebKCoXkxisoyFoxDweWi31QAY=; b=MVzOmlbnxp6q8ynN5m
+	ZCGh0IOesHEHhu233NiMByrZtXrqv9MtgwnAsjJvPqJDO8Th/rArImJN3sxJ8H5l
+	2i50RcfOGl0lXzGX0FvIiZhStk6TBHFU7rZOP0Y06d/1ysuCxaMh8Ge5pSS7w++C
+	VAJAksHNqkdr28GuYHF8LZmhU=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wDX35eretxqoPpsCg--.62139S3;
+	Sat, 24 Oct 2026 17:30:22 +0800 (CST)
+From: Xia Yan <yana06070@163.com>
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	horms@kernel.org,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	pabeni@redhat.com,
+	shuah@kernel.org,
+	hangbin.liu@linux.dev,
+	yana06070@163.com
+Subject: [PATCH net v4 2/2] selftests: net: check veth carrier after changing channel counts
+Date: Sat, 24 Oct 2026 17:30:07 +0800
+Message-Id: <20261024093007.12981-2-yana06070@163.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20261024093007.12981-1-yana06070@163.com>
+References: <20261024093007.12981-1-yana06070@163.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,52 +71,163 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:_____wDX35eretxqoPpsCg--.62139S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxuF4xXrW7Kr4UuF45Jw4fXwb_yoWrtrW8pF
+	Z3Cry3Gr48WFyfGw1Ikr1jyr45uw1kXw17Jr97tr4jvFy5G3sIvr1ft3yjyF4DKrZagw1r
+	Zayvvr1kCan0va7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zEw0eJUUUUU=
+X-CM-SenderInfo: p1dqtiawqxiqqrwthudrp/xtbC-A6bImrceq700AAA3N
 
-Hi Greg, Sasha,
+Extend veth.sh to check that changing channel counts preserves carrier
+state. When only one end is up, the running end must not report LOWER_UP.
 
-6f1a9140ecda ("net: add xmit recursion limit to tunnel xmit
-functions") was backported to 6.6.y in 6.6.160 and is currently in
-queue-6.1, but two upstream follow-up fixes for it were not. Please
-consider queueing:
+Cover up/up and both mixed up/down combinations. Resize RX and TX queues
+in both directions on each endpoint, and check carrier after a rejected
+out-of-range request as well. Create the pair with two queues explicitly
+so the carrier cases also run on single-CPU systems.
 
-For 6.6.y:
+Reuse the existing namespace setup and cleanup. Run each carrier case
+in a subshell to keep its variables separate from the other tests, and
+accumulate failures in the caller. Only check LOWER_UP on running
+interfaces, where the flag exposes carrier state.
 
-  c38b8f5f791e ("net: prevent NULL deref in ip[6]tunnel_xmit()")
-  77facb35227c ("net: increase IP_TUNNEL_RECURSION_LIMIT to 5")
+Assisted-by: LLM
+Signed-off-by: Xia Yan <yana06070@163.com>
+---
+Changes in v4:
+- Drop the extra GRO on/off runs, as discussed with Hangbin.
+  Keep up/up and both mixed up/down states.
+- Use subshells for the new helpers and accumulate failures in the
+  caller. Quote single-value arguments and wrap long lines.
+- Driver code is unchanged.
 
-For 6.1.y (on top of the queued 6f1a9140ecda backport):
+v3: https://lore.kernel.org/netdev/20261022085842.2527-1-yana06070@163.com/
 
-  77facb35227c ("net: increase IP_TUNNEL_RECURSION_LIMIT to 5")
+Testing on 513444cc62e2, x86_64 QEMU/KVM with three vCPUs:
+- Complete default veth.sh:
+  before: 56 checks pass, two mixed up/down carrier checks fail;
+  after: all 58 checks pass. The 55 existing checks pass on both.
+- Script exit status: 1 before, 0 after. No checks were skipped.
+- Both guests powered down normally.
+- bash -n and git diff --check pass.
 
-The queued 6.1 backport of 6f1a9140ecda already includes the
-"if (dev)" check from c38b8f5f791e, so only the limit change is
-missing there.
+ tools/testing/selftests/net/veth.sh | 81 ++++++++++++++++++++++++++++-
+ 1 file changed, 80 insertions(+), 1 deletion(-)
 
-Why:
+diff --git a/tools/testing/selftests/net/veth.sh b/tools/testing/selftests/net/veth.sh
+index 8b867e0675a7c1eea300468c26f2a9528ddc1194..e438e9ee7b33b151099d8ce779a9c9b47b0cc0af 100755
+--- a/tools/testing/selftests/net/veth.sh
++++ b/tools/testing/selftests/net/veth.sh
+@@ -41,13 +41,16 @@ create_ns() {
+ 		ip -n $ns link set dev lo up
+ 	done
+ 
+-	ip link add name veth$SRC type veth peer name veth$DST
++	ip link add name "veth$SRC" "$@" type veth \
++		peer name "veth$DST" "$@" || return 1
+ 
+ 	for ns in $SRC $DST; do
+ 		ip link set dev veth$ns netns $BASE$ns up
+ 		ip -n $BASE$ns addr add dev veth$ns $BM_NET_V4$ns/24
+ 		ip -n $BASE$ns addr add dev veth$ns $BM_NET_V6$ns/64 nodad
+ 	done
++
++	return 0
+ }
+ 
+ __chk_flag() {
+@@ -130,6 +133,78 @@ chk_channels() {
+ 	fi
+ }
+ 
++chk_carrier() (
++	target=$1
++	state=$2
++	expected=$3
++	carrier=0
++
++	# IFF_LOWER_UP is reported only for running interfaces.
++	[ "$state" = up ] || return 0
++
++	if ! link=$(ip -n "$BASE$target" -o link show dev "veth$target"); then
++		echo " fail - cannot read veth$target link state"
++		return 1
++	fi
++	case "$link" in
++		*LOWER_UP*) carrier=1 ;;
++	esac
++	if [ "$carrier" -ne "$expected" ]; then
++		printf ' fail - veth%s carrier is %s, expected %s\n' \
++			"$target" "$carrier" "$expected"
++		return 1
++	fi
++)
++
++# Keep per-case variables separate from the other tests.
++chk_channels_carrier() (
++	src_state=$1
++	dst_state=$2
++	expected=0
++	err=0
++	msg="carrier after channel change ($src_state/$dst_state)"
++
++	if ! create_ns numtxqueues 2 numrxqueues 2; then
++		printf "%-60s" "$msg"
++		echo " skip - cannot create veth pair"
++		cleanup
++		return 0
++	fi
++
++	ip -n "$NS_SRC" link set dev "veth$SRC" "$src_state" || err=1
++	ip -n "$NS_DST" link set dev "veth$DST" "$dst_state" || err=1
++	[ "$src_state" = up ] && [ "$dst_state" = up ] && expected=1
++	chk_carrier "$SRC" "$src_state" "$expected" || err=1
++	chk_carrier "$DST" "$dst_state" "$expected" || err=1
++
++	for target in "$SRC" "$DST"; do
++		for count in 1 2; do
++			ip netns exec "$BASE$target" ethtool -L "veth$target" \
++				rx "$count" tx "$count" || err=1
++			chk_carrier "$SRC" "$src_state" "$expected" || err=1
++			chk_carrier "$DST" "$dst_state" "$expected" || err=1
++		done
++
++		if ip netns exec "$BASE$target" ethtool -L "veth$target" \
++			rx 3 tx 3 \
++			>/dev/null 2>&1; then
++			echo " fail - out-of-range channel counts were accepted"
++			err=1
++		fi
++		chk_carrier "$SRC" "$src_state" "$expected" || err=1
++		chk_carrier "$DST" "$dst_state" "$expected" || err=1
++	done
++
++	cleanup
++	printf "%-60s" "$msg"
++	if [ "$err" -eq 0 ]; then
++		echo " ok "
++	else
++		echo " fail "
++	fi
++	return "$err"
++)
++
+ chk_gro() {
+ 	local msg="$1"
+ 	local expected=$2
+@@ -257,6 +332,10 @@ fi
+ [ $STRESS -gt 0 -a $CPUS -lt 3 ] && echo " stress test will be skipped, too"
+ [ ! -f "$YNL" ] && echo "ynl cli not found, ndo-xmit tests will be skipped"
+ 
++chk_channels_carrier up "up" || ret=1
++chk_channels_carrier up down || ret=1
++chk_channels_carrier down up || ret=1
++
+ create_ns
+ chk_gro_flag "default - gro flag" $SRC off
+ chk_gro_flag "        - peer gro flag" $DST off
 
-- 77facb35227c: with a limit of 4, setups with multiple tunnel
-  layers and MPLS lwtunnel routing drop legitimate packets with
-  "Dead loop on virtual device ..." even though there is no loop.
-  6.6.160 now has this regression, and 6.1 will get it with the
-  queued backport. Upstream raised the limit to 5; it is in 6.12.83,
-  6.18.24 and 6.19.14.
+-- 
+2.39.0.windows.2
 
-- c38b8f5f791e: iptunnel_xmit() and ip6tunnel_xmit() can be called
-  with dev == NULL (e.g. SCTP and TIPC over UDP), and the new
-  recursion check dereferences dev when the limit is hit. It is in
-  6.12.78, 6.18.19 and 6.19.9.
-
-Both commits cherry-pick cleanly onto v6.6.160, and 77facb35227c
-cherry-picks cleanly onto v6.1.190 plus queue-6.1 (stable-queue
-fa04d3db75). I build-tested the affected objects (ip_tunnel_core,
-ip_tunnel, ip6_tunnel, ip6_udp_tunnel, the GRE/IPIP/SIT, VXLAN,
-Geneve, bareudp and GTP drivers, SCTP and TIPC UDP media) with W=1
-on both trees, with no new warnings. I did not do runtime testing.
-
-I noticed the gap while checking which stable trees carry
-77facb35227c.
-
-Thanks,
-Ting-Han Hou
