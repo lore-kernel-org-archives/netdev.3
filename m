@@ -1,80 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792862116;
-	b=v6a6g6cgOD6Iy9S9WEEcuBbMFuxpFuuyQPWgaCTcicXhb4fXilSI66rpFxPMxIlfMD1h
-	 ZPP1ALW9Y2MTJc3NSzXyncIz5nLNn3Id7jwQd44ETWTcKy5S9nHiONDZHuzkXtA3bWPTR
-	 IJV7wDMdt47RxfE7dLsZ4OMHLDZ8lmNXkyBYIQ372Mdy/Ql6qr3YB/4nc42WfbUTU52B6
-	 Pt2QhZBzeypXeYfnmUNVwUUfv1KENkBVLcmRrcHqnu5NdgyTj6FOS+OzkqVB51dZRTFDs
-	 VE4viVgIasxsO3xjhVVX2BlVjgP2f0RpLUU8eItZmq15SUNo6pXkMICEq7WtH42Z8xQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792862116;
-	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
-	 X-Endpoint-Received:X-Original-From:Reply-To;
-	bh=K4HBXAYflJaaht7uckfpuIcFpPVS+5A4K2weg4k2Wz4=;
-	b=aL6DTIBxYZjpwllbDBX9g8RsoAQsl/m0bo1ZX7ajNdCVNg5ayK/qFZK6nIpBCXJx7I5H
-	 BhfO30V2VlI3e5CvCno3pv65rOzs8VCXFtKCmUo5N0w3ITCNN6bl0TOHGNY2FjHqoNNh5
-	 0SC55uLME3riTzWyIwzp7Q6oG7bGFtRhZOwa4BCqaiAb6MVupcixmcwn/2/mwMYULJ9Ks
-	 ZAyVtKaf1d8TxvYv1quATQpMiknO21O0gTqnx7bpXgNzQNRYu/omhyK4ibGTHK05rI1Jl
-	 DNSGCSShtQRoQr2dcGDeUyccU5oOC1rFyUHQJmpJ49oU5p2NOWJKIMxXEItNaoXWoWw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UOm97Jgo;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849A4606A327
-	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 17:15:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UOm97Jgo
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1792862116;
-	b=r2+nfbF+cOOnvgALarpNBF/Eucc3qxJuFUEtvVzEJCSSLZVe/blhu3mYND7RxxhUn8t1
-	 Ewp3lKCysRqzfAtdoYU1bS6ipuspMcBQ0j9hpXdujjz7MKnJNTVcs9PKE9hBecDsxPTS1
-	 hWFCRLdypIehuLylOTj8/HlCdGfQ1AaBWnCXPuDrxXf56BOzNS76NK4oHBKqFQKmF4b6f
-	 4izesPirHOnbBkooRx/kuBd568hErC1TIuQo4xIeRUSJUjzFtDBVoFr5f2A/N3wSQeNNY
-	 fE2kTx94uT7L13epOEel6Nng4Iiccn+j0QNObhCfu/lxEnUzKUvqrK4BNOFwiv+QBIQ==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1792862116;
-	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
-	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To;
-	bh=K4HBXAYflJaaht7uckfpuIcFpPVS+5A4K2weg4k2Wz4=;
-	b=Ef2w7k6vShsQLD3owErEpDrnfJLXOCLDwkTV11X8zCi8/eYh5G2yXjGGj52lNajC7Vc1
-	 fc+279EtB2Gc7PiHx8PNjDVA+zCB8wfpmmvwWfUplG0evcTCKS+CspjLfjr2yArF5tYoQ
-	 u3QnyhRHgceALhWAHzLcx3og0ZEpiIutcMrcp/YQ3hV116KJSKJftpTEtjL8aHA0WFpqx
-	 DPCdUZWdvk0TH84ysStmWscVMsI6NDyASb8uxJbR2jqVK4nZPTXuWjvHmRIxea4aAxkh+
-	 32AXPBcVp4bFnOylkNUJiqF41wXC2TmnPTLLHMkX6TE0IxCuXRpEfjcT9SOb/ck1s9A==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.70
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792862289;
+	b=0rokvy5+T2ZrBDhhJUFExEupAJEfQXEhthYHZStmW7WNpkPY1SUmGXWwv1dNGl+rsd9L
+	 oZiGMCvhFCca37F4Y/efrVhTyjnLz3rvk6XI9lasBRvQZApdsohj+Uc/hP70QgqTBHgO6
+	 eSgjr9r93HTomjrGzgy9+K1p489u/GZipDkRLl/s2pEbDQeMLAf0ogP1tnvJGlBANS8oz
+	 NPqdgUleWqt89Z1uDrwyLI67EvpqwDohQHTR/0anud+d+DljF8JVw93d7g87ivjUp+7KX
+	 HE+CC60a9qFWcz0PTVGUmVnCIfNYqxYlQc/gOsF2NoZZCNkAAQCW74kKEGpItZwFIzw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792862289;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:MIME-Version:X-Received:Date:In-Reply-To:
+	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
+	 Subject:From:To:Cc:Content-Type;
+	bh=x2VefjjoeNiNoDbqnOX3ai1zbfJDTfzptX9m6LwRkuE=;
+	b=kDihp8OMqo38noUPklFntgiF50JUIlU2F8Xn3xA2VeYKNTSIo42/Meh+rQbkCa+erF0U
+	 GYz++V0RT1Gn+cU8PyGLsnvhxzUeLh8tXk4tMahRCxjcLOR3J1GSwfx3BGxcaRUQNcU68
+	 lo8Zqv+SRxyONbmCg5i2r90n59aR4c1LTEqcH5joHIXuK50t6pggIO3xcndvGqrw3DWBL
+	 027tDcKKek8albG+jjs+8aUsUPvX+9kUH4siu41vQ3q5iPEL2bGeTss4Uj96XlCL058vF
+	 QhwzXKbj1I+NuddoFCzm4Z2+Ti11b+vlT72Cb/3XCpienuuIC+2l5rSjMgVDA7gHQTw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=fail header.from=syzkaller.appspotmail.com;
+	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	arc=none smtp.remote-ip=209.85.210.70
+Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com [209.85.210.70])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id C543E1F01825;
-	Sat, 24 Oct 2026 17:15:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792862116;
-	bh=K4HBXAYflJaaht7uckfpuIcFpPVS+5A4K2weg4k2Wz4=;
-	h=From:Subject:Date:To:Cc:Reply-To;
-	b=UOm97Jgo3svpK5yMvx0pzge3WW1ROab0rhXReBoAeajcbHDloWqgUUYMRG9RAFa8t
-	 NYaulh6qi/YQCXa7+d+zUb1S02utUJxYZXnsJF7tYn3YNobnl1CzCevBGAM2bYDBlm
-	 PIV4nVmbEzX5Hy//nlPlls+0JAr8tOSykgzsABjDDA3uT7mUxfQFbntjuC+ecrkq+l
-	 ik7ybUei3OFW2GpXHxqL37q04ebE8RMNrURrcaZ2sz4pOYbh5u/biim007sGiVbXXR
-	 vOe1sr5qrhFqfwoofern8LOLhxXIr/vA1LaQ8kYuLQyr7D4V8wmsVV20/wFHZiK8tb
-	 rO9cVaiJipCOw==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 252A444849;
-	Sat, 24 Oct 2026 17:15:14 +0000 (UTC)
-From: Demos Ra via B4 Relay <devnull+demosthenes.ra.gmail.com@kernel.org>
-Subject: [PATCH net 0/2] tools: ynl: generate code for rt-nexthop bucket
- notifications
-Date: Sun, 25 Oct 2026 00:13:54 +0700
-Message-Id: <20261025-ynl-ntf-bucket-v1-0-65aef308d62c@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 973AA606A325
+	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 17:18:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 973AA606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-851f7cdfaefso193086a34.3
+        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 10:18:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792862288; x=1793467088;
+        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=x2VefjjoeNiNoDbqnOX3ai1zbfJDTfzptX9m6LwRkuE=;
+        b=DBPSodXAK2zhEb+Uz5PTFLuQJYQbn8J+YGqeqMJr1Yyfjro3zcHZRR1SlNsLJMBb7c
+         g2upcXNw4HHJGCbJpj+o96HJIfnLIj+TAeDhaa3Jh8phKPiR9PL1gqFCAozUX1JGdplZ
+         JTjTkAffKZv3VJ5jzB5KfnC57gXTpBjADmR+53F4c+izMQU4AlM22qx1KwCOzLJ4VCYl
+         wiWU8FPbWTj7Ez7tCP8lAHaB7MS8Mn8TL4R6UyJiBmGE7WfkyuPRK9ISWc+vlwxSe/46
+         GyenBBUQucaIUu9/JCL0s1C96RX0rV9F7KQHwi4ntSawJUkTqmcWfdlEwMroMjTzTXYM
+         MF4w==
+X-Forwarded-Encrypted: i=1; AKwUvBzLgHuGMDinnnt8frfskPU7zixoYyb4KEjpbCqww89TBCTzpCUH5sxRKs4s0IFUc4nFz8S7xqE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLL/Kq6kQjsqRVINKdvHHjeHovwbugbiolESWfonjRzkkT0q9+p
+	SKnbT19nNkJn/B1243V9cuiR31HYuM8BtpuQvL2lh0VWa4DSq5kNQvPEOIYGvz7Gy8OTvUNH6BB
+	ZR8J2YaFmb5oBigM6L5d6J+o6oU9iOUWjSw0BIV+3wlZTRqknNYwdtkvhcg4=
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,56 +58,109 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqEMBAF0atIr6chBhHxKoOLqD/aKD2SZEQR7
- 25w+RZVF0UEQaS2uChglyg/zSg/BQ2z0wksYzZZY+vS2IpPXVmT5/4/LEhsPBrn+6Z2qChHW4C
- X4x1+SZGou+8HeskEN2UAAAA=
-X-Change-ID: 20261024-ynl-ntf-bucket-0fe8afb86ae4
-To: Donald Hunter <donald.hunter@gmail.com>, 
- Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
- Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org, 
- Demos Ra <demosthenes.ra@gmail.com>, Sashiko <sashiko-bot@kernel.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792862112; l=985;
- i=demosthenes.ra@gmail.com; s=20261019; h=from:subject:message-id;
- bh=/j7E8HCFiSHo7P2rv+DOQ25KZfpsl+WGqu8Wu2cLYgM=;
- b=4HwYBLNilcCI9mMBMV7dd85SXw3g5jEa9ByJAXCL4OjKFTFC/RNpne3cVBPoYzi6zKltz3UWK
- ztXYdU1PogwDYwuy52lrNht0XeUVgBrdaBeFZSdioELcOUuqxBo9Gh3
-X-Developer-Key: i=demosthenes.ra@gmail.com; a=ed25519;
- pk=sDKS9AI9zxhWgOqkhc9EOIo6cky+anqccB3VGtDvzCc=
-X-Endpoint-Received: by B4 Relay for demosthenes.ra@gmail.com/20261019 with
- auth_id=1235
-X-Original-From: Demos Ra <demosthenes.ra@gmail.com>
-Reply-To: demosthenes.ra@gmail.com
+X-Received: by 2002:a05:6808:8319:b0:55c:8df:61f3 with SMTP id
+ 5614622812f47-55c08df722emr759248b6e.67.1792862288483; Sat, 24 Oct 2026
+ 10:18:08 -0700 (PDT)
+Date: Sat, 24 Oct 2026 10:18:08 -0700
+In-Reply-To: <20261023191517.607834-1-kuniyu@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6adce850.a26421ad.3bb4f4.0011.GAE@google.com>
+Subject: [syzbot ci] Re: ipv6: Protect multiple routes insertion by table lock.
+From: syzbot ci <syzbot+ci1c0f05215dd3ab6b@syzkaller.appspotmail.com>
+To: davem@davemloft.net, dsahern@kernel.org, edumazet@kernel.org, 
+	horms@kernel.org, idosch@nvidia.com, kuba@kernel.org, kuni1840@gmail.com, 
+	kuniyu@google.com, netdev@vger.kernel.org, pabeni@redhat.com, 
+	syzbot@syzkaller.appspotmail.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Commit 457dc9fefe9a ("netlink: specs: Add a spec for nexthops in
-rtnetlink") left newnexthopbucket-ntf out of the C code generation,
-because ynl-gen could not write a notification table entry for it.
-Sashiko pointed out that the generated library then fails at runtime
-when the kernel sends that notification to a subscribed socket.
+syzbot ci has tested the following series
 
-Patch 1 lets ynl-gen handle a classic notification that no request
-matches. Patch 2 drops the exclusion.
+[v1] ipv6: Protect multiple routes insertion by table lock.
+https://lore.kernel.org/all/20261023191517.607834-1-kuniyu@google.com
+* [PATCH v1 net] ipv6: Protect multiple routes insertion by table lock.
 
-457dc9fefe9a was pulled in this merge window, hence net.
+and found the following issue:
+WARNING: suspicious RCU usage in rt6_multipath_rebalance
+
+Full report is available here:
+https://ci.syzbot.org/series/7d878fa2-f84a-4468-85e2-c2a5e263aeff
+
+***
+
+WARNING: suspicious RCU usage in rt6_multipath_rebalance
+
+tree:      net
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net.git
+base:      7076f684d5132e6a6145e1da2fa74771ecd052e5
+arch:      amd64
+compiler:  Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
+config:    https://ci.syzbot.org/builds/bbb3053f-f23f-4fe3-a9e9-85396428119d/config
+
+IPv6: RTM_NEWROUTE with no NLM_F_CREATE or NLM_F_REPLACE
+IPv6: NLM_F_CREATE should be set when creating new route
+=============================
+WARNING: suspicious RCU usage
+syzkaller #0 Not tainted
+-----------------------------
+./include/net/addrconf.h:351 suspicious rcu_dereference_check() usage!
+
+other info that might help us debug this:
+
+
+rcu_scheduler_active = 2, debug_locks = 1
+locks held by syz.2.3386/18922: 1, last CPU#0:
+ #0: ffff888177df3430 (&tb->tb6_lock){+...}-{3:3}, at: inet6_rtm_newroute+0x3dc/0x1ab0
+
+stack backtrace:
+CPU: 0 UID: 0 PID: 18922 Comm: syz.2.3386 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150
+ lockdep_rcu_suspicious+0x140/0x1d0
+ rt6_multipath_rebalance+0xf11/0x1080
+ fib6_del+0xada/0x15a0
+ inet6_rtm_newroute+0x15b5/0x1ab0
+ rtnetlink_rcv_msg+0x802/0xc00
+ netlink_rcv_skb+0x226/0x4a0
+ netlink_unicast+0x8ef/0xa80
+ netlink_sendmsg+0x7f0/0xb20
+ sock_sendmsg_nosec+0x14e/0x190
+ ____sys_sendmsg+0x54e/0x850
+ ___sys_sendmsg+0x2a5/0x360
+ __sys_sendmmsg+0x273/0x4e0
+ __x64_sys_sendmmsg+0xa0/0xc0
+ do_syscall_64+0x166/0x520
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fa77459f559
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fa775488028 EFLAGS: 00000246 ORIG_RAX: 0000000000000133
+RAX: ffffffffffffffda RBX: 00007fa774826090 RCX: 00007fa77459f559
+RDX: 040000000000009f RSI: 00002000000002c0 RDI: 000000000000000b
+RBP: 00007fa774636b20 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fa774826128 R14: 00007fa774826090 R15: 00007fffd26b46d8
+ </TASK>
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
 
 ---
-Demos Ra (2):
-      tools: ynl-gen-c: handle classic notifications without a matching request
-      tools: ynl: generate code for rt-nexthop bucket notifications
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
- tools/net/ynl/generated/Makefile | 1 -
- tools/net/ynl/pyynl/ynl_gen_c.py | 4 +++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
----
-base-commit: 7076f684d5132e6a6145e1da2fa74771ecd052e5
-change-id: 20261024-ynl-ntf-bucket-0fe8afb86ae4
+To test a fix for this bug, please reply with `#syz test`
+(on a separate line) and attach the patch to the email.
 
-Best regards,
--- 
-Demos Ra <demosthenes.ra@gmail.com>
-
-
+Notes:
+- The patch will be applied on top of the tested series (as an
+  incremental fix).
+- To test a new version of the whole series, please send it directly
+  to syzbot@lists.linux.dev.
+- Arguments like custom git repos and branches are not supported.
