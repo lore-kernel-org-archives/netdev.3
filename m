@@ -1,63 +1,53 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792846798;
-	b=4r2QqSnorMIwJesnsV91A2ZXRxpnKevzJ6ko9uUXXbjcKpABzAiQoY63bvNyk1r7RpGH
-	 4BByhiGRZ2JJEYnwxarnQJu6OPgcavZRH0Y6TnP/55mTNoYfPxF7KNCRDPgM3xLqpVENJ
-	 g29Z/a/GLoO8QwY6H/BQCx7xTlGGSa6+epQwFtkEBzbSWjpcnkv2FqEUb9vJbbLW5XL2c
-	 WqAeH0TJSyedyAcmsuoG4BUVmjHtLEmLgjhpucQNpL9/bae1SZVhzO5tMz0IlKdSUcazq
-	 0pqjEWE2i1460a0SHRbdKDxltmjgUL95+PSFvCFQ+cNtUewAtr4c86dJzOVHEk2O04A==
+	t=1792848220;
+	b=rO8XF/nHhHrFuvOIn3Jk54ytMO2JBV5Kj79rMieQisb3gGhBnDkHu7VXy2AA+ceMuSrn
+	 V4JYBzm1Dk99348n95Bt+eb9kbMbe+mqkcVaBqA+1nh3NjaWPKUjMi32GjZoTkt4tFyv+
+	 ekCCOOiPHeE3AcnHWCTtLzZnjQU/5PM4hDM6Jg1G0QuHx/iBbIAWzEEntRbBlRD2N6yg7
+	 rU0ERVAg95leMss35Ikp3pMgdYVnAn9iIb/wg1Sz0KNkHNVx/H1x0+cfVeyPRJ5m8CtID
+	 0GhlUKc0jMFd7VvetlBTikn3VPHbzwveTZQWY014NzY/e1DXzVF0Fu4aw73JC3yM1nA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792846798;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
-	b=5em+QLHP4vjojAbWoAlHURTvOBibFzayJT4PMOrW8t+CJ8tbsuf2g8c5scdOVl7LqdP7
-	 PrPD8U/BgK15jmx6Et1BiSg5K66wYEN1L432+3zz9M7EH09XUeyEbmXfNYROe+km2wXor
-	 Z3ZBmlMb6CzpnuOtJh2jKsS8dchAIAC5LRwIBVMXIK/J035LcHlS/d9mMFK69bpaLKvo5
-	 g3imKmb0JdqPwHt9L3gI3lazGP1G6zgMI4cq6ZsI303AquppvlDxPrdMaSqSXUjFvtWKL
-	 yEBAaHV1iG7LS+tgA0gclhyRRcI5M94V8XJxHtVS4vRBN3xEk0DDcuV0UZIQh0o51fg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792848220;
+	h=DMARC-Filter:Received:DKIM-Signature:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
+	 In-Reply-To:To:Cc:X-Mailer:X-Last-TLS-Session-Version;
+	bh=hKhp0+hBPl/Si84K7ssm9WFLyQf8tf4APvt6PCqVxbk=;
+	b=FEOCV7SYNsrTPuKuPv2i+Otkd0+ysejpbL/1J1i7lfYO1SLEOoOepyfRmhBbCaAGVutx
+	 ogKDjH9Xp+KPh7Nrp3SfDYl5dvO6tLPaHmH27cldl4/1He59W3IcaNvonJieFu0yUxnZt
+	 NKG4Xy4gEg5UlVUBB57FkX0/Gu7y30ErRAbY68o2cxquo/oMWNSN2aD5TBBhvgLWlV54G
+	 i5Vw7D+cgQMc7rT2fnekQnqtA2QDRneEiBWIoGUbqzCs+CNj60dJe1T3MMh54KcsCiFhR
+	 x8Bn2AB4AC3g1TbjyPsJs5QEla83MDbW7Nh/CtJRULRCdxm9+HFSLLrQZYvYES9R3zg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KmYTJwb7;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=tipi-net.de;
+	spf=pass smtp.mailfrom=tipi-net.de;
+	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=jJsXt40s;
+	arc=none smtp.remote-ip=194.13.80.246
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A276D606A31A;
-	Sat, 24 Oct 2026 12:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8DC606A31E;
+	Sat, 24 Oct 2026 13:23:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8D8DC606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KmYTJwb7
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A65131F01825;
-	Sat, 24 Oct 2026 12:59:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792846798;
-	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KmYTJwb7w7rRS4pYGBBRh7aNjEqprBbNUYzQhc1e3yUs4apfdrkVh53uUrbcciAwJ
-	 UQSJamyCV+2oXse3n4MZIbo44wmApspYtoGQIyezup/7U+Oms5hcCrlhIQM2C3Mqpn
-	 SRfBMVZKSeXA1hsxg/fy2fqPO3rdi7abIiT/3CnCYvaIEuvJy3WaM1RGfov4ADWpul
-	 61cyNULoOxPLE/ZPP7IfMRWgy2SnCAfPeJzkbpRwI7KL68OPH61nSBfQAMAcASuJep
-	 X4Lzw3Zq2iy+Y71Y0GVb9C5WhcMTlc8wtaJric3aMVAF32kvFnI5d4IZVsVRyXPbhZ
-	 c3IONRjCijVXw==
-From: netdev-bot+sinfo@kernel.org
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
- Claude Code <noreply@anthropic.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- netdev@vger.kernel.org
-Subject: Re: [PATCH net] skbuff: keep accesses through unset transport header
- in bounds
-Date: Sat, 24 Oct 2026 12:59:57 +0000
-Message-ID: <179284679712.3327.6571506927008039055@kernel.org>
-In-Reply-To: 
- <0bdcbe2ab5ffc86ba7190fe25476bcebcb967310.1792844270.git.mst@redhat.com>
-References: 
- <0bdcbe2ab5ffc86ba7190fe25476bcebcb967310.1792844270.git.mst@redhat.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=jJsXt40s
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 45D8BA21B9;
+	Sat, 24 Oct 2026 15:23:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1792848217; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=hKhp0+hBPl/Si84K7ssm9WFLyQf8tf4APvt6PCqVxbk=;
+	b=jJsXt40sWubnYxxk5m/PtfJqaJ37niR6M4WsVBlWopOKT3yCpnkMG1hsL5Q5UtDFjIEUL8
+	3ud0dsHX5MdIoEdkFVCbIPSbc+pdAsEmmk7kSv71I4zCrArZNaHMxMP9F4hQyPIA5ICO3I
+	11FtNTj+69IUIfYOdyNKvOBRoKYUEOytMkcBC5e/pN3wwEHkOxoZYMijkAKwF5A/MB/mN6
+	t8ft2yXR2wCe+cgIuLCRwkFd5Z/1rxvde393M4cvFDFO1gYLQp+0Aj/RnNZtOGs/RMdGeb
+	nX/2rBKmk3mti6dUUslnau1RnCtsvDzmdNN7IicNB1MQ1kiNMl3cLcTpvScI0g==
+From: Nicolai Buchwitz <nb@tipi-net.de>
+Date: Sat, 24 Oct 2026 15:23:07 +0200
+Subject: [PATCH net v3 2/2] net: usb: cdc_mbim: don't enable BHs in
+ tx_fixup under netpoll
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,21 +57,54 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261024-cdc-ncm-netpoll-v3-2-6284ca03f967@tipi-net.de>
+References: <20261024-cdc-ncm-netpoll-v3-0-6284ca03f967@tipi-net.de>
+In-Reply-To: <20261024-cdc-ncm-netpoll-v3-0-6284ca03f967@tipi-net.de>
+To: Oliver Neukum <oliver@neukum.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ =?utf-8?q?Sjur_Br=C3=A6ndeland?= <sjur.brandeland@stericsson.com>, 
+ Alexey Orishko <alexey.orishko@gmail.com>, 
+ =?utf-8?q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>, 
+ Greg Suarez <gsuarez@smithmicro.com>
+Cc: Breno Leitao <leitao@debian.org>, linux-usb@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Nicolai Buchwitz <nb@tipi-net.de>
+X-Mailer: b4 0.16.0
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi!
+cdc_mbim_tx_fixup() has the same spin_unlock_bh() as cdc_ncm_tx_fixup().
+Under netpoll it runs pending softirqs while the txq lock is held, and
+a transmit from one of them spins on that lock.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Use plain spin_lock() as in cdc_ncm.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+Fixes: 9bf211a30b3f ("net: cdc_mbim: adding MBIM driver")
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+---
+ drivers/net/usb/cdc_mbim.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+diff --git a/drivers/net/usb/cdc_mbim.c b/drivers/net/usb/cdc_mbim.c
+index a7010a0664c7d..8f5734ac35b8c 100644
+--- a/drivers/net/usb/cdc_mbim.c
++++ b/drivers/net/usb/cdc_mbim.c
+@@ -289,9 +289,10 @@ static struct sk_buff *cdc_mbim_tx_fixup(struct usbnet *dev, struct sk_buff *skb
+ 		}
+ 	}
+ 
+-	spin_lock_bh(&ctx->mtx);
++	/* BHs or IRQs are always off here, see cdc_ncm_tx_fixup() */
++	spin_lock(&ctx->mtx);
+ 	skb_out = cdc_ncm_fill_tx_frame(dev, skb, sign);
+-	spin_unlock_bh(&ctx->mtx);
++	spin_unlock(&ctx->mtx);
+ 	return skb_out;
+ 
+ error:
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+-- 
+2.53.0
+
