@@ -1,101 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.215.180
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792878381;
-	b=rpwVQ086WSmp5Z3/CXwCwHWckFNZXWJMWQf9eIQMnPIYIDUctL8314T7KxV8eXZnSo7/
-	 jsqyRO/k3LYHIk/cNewZ7gw9XDjrB1/18ptthPbI15FrnfIVuk6GYfoQ1UL1IFvc6JTXU
-	 P+E6LC3BLwGXrgpSzQyx8M+cr/UlddZIkaAbMcRu0c9roTavUMgTUIW8xtWFVozgNL3ND
-	 R5/kbEu2gTBGcPGromIhTzacaiCVsshvnNoXx1rJYV/hI757d6I0OPgE+IWdOSGAKJXuL
-	 jX9PqeYKDmKm1Y6M6JXVxkXRVk9BLiYPIqayabJmT2yuTDtsDe6ejVsDJahwWFYt77g==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792878381;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=VHg2nkvxksFglrNF8idO8+z4eCsyR2ar+tSdL7v7pP4=;
-	b=DuJXg73FHSbbPg/p6trZLpfz+cTLIiZ+M+OO7inxHteQ8Ohy8z0DFAbjEjPalII5uzoU
-	 uJtEYYsPG6Aqwcl3JynE7fUi8BAqoZU1PFgglA4PjpsIxsM15AF7wPG750sv+DfuoZKn/
-	 T7rSTjARhBU4SoqsGRxBMq6fxYBfLV4jQtfeUzyRVgdlZcV05lS4zimfsyvgNtJNzyTBw
-	 VoBWF6hzl893XkQ88WGlD96a9wuNi8aXyJD9owOjeJhriRTsIPOoUXcqMX4BAHz211vui
-	 di8J4l7Xlycfb91tZ1rZ6H7YDVNhqOgiRISFwWLPcZ3bXh2R6n1ELwJxnwLx4EpuzWw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=nI7qyl9K;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.215.180
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792879339;
+	b=NEdo0ccrUEHPB3Zxqov3TIoxlOMEobUOKanfY+vkGPvyoCx+izbWSinkztpHH0mu+jNj
+	 +mNSn5NN7cI2kR+j6v18sB44DCURwaXapew4J95ppgKp2+Edjg9ZAzikwbvzZOYUxEU/y
+	 /H1uXbRHH9qzxWzBHvqbG72OWKB6//rHcKrJhA8P8dvaINIlkjANwJa4WscytQQ96nYnk
+	 HB17yTznfdnxxakNSocMkVS7ZQL7v8eknndLnnLHfOpuUXWf8QTJZCun8ISOWygblWFK4
+	 iBqm7XttMsOpZs5jBHirFjY9s+6FYtUmAYSWOIduci/QlZwGMArUr/HQDLadz2d64fw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792879339;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=sia3q9+4NG/D0pyHeAoqQkOv62xgWS+3D097ZDTA1Nw=;
+	b=oC4x9I0TMPaR19EjT5eJiCX/8PfbnX1d+X4DgFyqOCCys1143T4M95g36RS/ij7qlGc/
+	 JhIu0MTDtjYa2p4enFMywOBlllLre0aeULuK0d2On38M0o05wJcHmZqTWrbuNFo3MOcRD
+	 KaqZwVive5Lq7bwC/htxm+ziVfUppiMRgTVcPLPmc8UqUOjBgCf/2Tlu01Quobqt8u4XH
+	 WuMbSOZW5uCdJzb3pbYzNZP2sWW6v84FwoxhC/Uvxn3EKabRJhZikuaqzObr953oYlHcM
+	 JkVH8nzE8epVe+5jgqvEUdPr6u+r6sm80RHNBOusBAeF2/OCnk2pYOKGk03UHIs//UQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JiZrToBU;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA51606A31A
-	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 21:46:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9FA51606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FFB606A31A;
+	Sat, 24 Oct 2026 22:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=nI7qyl9K
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-cc147d86bebso889024a12.0
-        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 14:46:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792878380; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ox1x8PDAbbjQ7QzJr0AFrDbGZAhoxmK9QtA9nJjwdmlV1tA4x9ECdIrbsDvHn/l42T
-         71vVF5gZL94+Qw+O7OLuqFWQ5fARSnmIYObaHfWw0CXEodVxGdWdgy/S69+uaB3einjG
-         p4nh22fvLPNcpgvH/5o12GPbFdLy8GvIShcMMC5weNoyPCC4PTqCvJ3mA94wPARrW8Ts
-         nJ/LEdoZBYIFAvV6PSvdcKNc28AQ73aJMIztlrjdTOrplKO3PnuS9nE+rNsU1YH/6rW4
-         dCpieZ0jpnsOx609o7W+AmYg1HZLLacuNo/ZPaw2hRA6BnjPem9yCJxqyVaICPxpBZTQ
-         kOLQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=VHg2nkvxksFglrNF8idO8+z4eCsyR2ar+tSdL7v7pP4=;
-        fh=8U4P2ENB2rYSWK5i7BMtc6WXjuHXF4EYJwXaVV8ifjo=;
-        b=W+Qvt7nmjpbUbgQgBadgTTi3bC0dwx3bxnTR6slg8U2omzfP9B57/GmtiCefcnxxPh
-         Z8mWmgU+7zXEA4/pJMIMoYFTYB5QTiHkTvgnFOGqiqesQpCC/IbsRdum6Hh6NKjPrx9s
-         1JyXimSc4rYEkaADfyApXSrg3t5cB5ZrPnwAgIVhbtrxhOewhABaEaoQi+cVN4TscXh0
-         HLI/CLvOc5cqCCdFWQh5uxke+482Ovior47UsN44EM7lql0gtzMtGq03ClSilZWWlJ1o
-         QOCS3uG1vVv5uYmH9kDceFYppRy10uzLrQbqaIFXVLHrn1bw8hx7thwijZ+5iTWHuSXB
-         hqwg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792878380; x=1793483180; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=VHg2nkvxksFglrNF8idO8+z4eCsyR2ar+tSdL7v7pP4=;
-        b=nI7qyl9KeHkJ4LO/u9V5+GgwMaxJUJlxqVN+bTHdNtsIW3MQ/4OmjA1ChCoPrswq6R
-         w9XaYii/QAiqlsV4jC0nCz4QEPesHlLm+uP0EyCvc0t+bT4EgJveRtxKsymNU1Aaxrrr
-         2ZcMRETmAoS0ttaOsdn2qlvTRxKFAjktmDrB1b67hczxv/bUAWWWyrCs4XhXydpFJbnb
-         TLEs1WopMrJyWjpUPpNEpn9BHyMioKXOBpkAi08sBQJtMKoiC94vQu7KUNWCH3gsKeJi
-         xA5HKoPEJn20fsnFKlzWZhkILy5HVVnVWtRzekg5Z53l4F8EwDJJRGJwkI0eHjuFmykF
-         xLhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792878380; x=1793483180;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VHg2nkvxksFglrNF8idO8+z4eCsyR2ar+tSdL7v7pP4=;
-        b=Cc51nbXkCk1kvtHgwtotlxzdeSQ4cD4tFVMToN50XGMllwXpMxquyfB8O2jnP1cCG6
-         BvkCZPcoQdo5ovUs3VzJ16+RGnI0XkmyH8BkkIzbkLB//sYU8095ZesfQ/ExVBOEXTBO
-         EVu/Gp7kTX3BqhsDvtWelRIWahrxex/rWnJSGYxUq47QmYatEZX7Ja0yYYN3FxQRioxf
-         qPfz6a3RB/feqmstltBy7rk/qjK+zwa7B6rwGuNIsNZeOMo7soxzT07RwcVhsfNebJh3
-         6TuudOqqUoDcNVLz2ji0m7wshc8zqbR/CBjaNO5fJnxD/h69AGvticbJizZVFaEU+lO9
-         claw==
-X-Forwarded-Encrypted: i=1; AKwUvByJUII1RXG2QCij/nzwNdy8Mxi6PK2KSup0EULNB0iGcgreLDa004jQqalAAZ+JEpQ5HP3TOV8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJQFKYhmNZre0HWARy5BDfRJiKHH8yMWo49+gO6iHAmjwGuGqxo
-	x/02Nk3hGxpB8N1KuzJ8uLGqYU1+gijMq4Sclx6FHEUzJWBCGkwnbK0jjgRrTozQZmbiJ7HnaL8
-	GXwNpP9uZQVzubiO7jVn7r3UVlJVW5N0=
-X-Gm-Gg: AYBFou1Csh9xdV58f542bmwRFuz3jlaZSN0pFLjPKrU3xJBhvR+jj361Y26cidENA30
-	ytLy/kUl3y61KzftcxCmkPW7WYhV73fb41i5tqv0jj+zQEyiVhW3861zFlbXVf2Z8C6eC4YDeHZ
-	h+TMVT9kaBSbdI4toBlSMUR4sQ0jE7FmeARW+9TH5KJOdD+4eD3u8cyJo9FCsKdUbtGI/u1Jzhp
-	5WaiBZisfS5c4/HPd7BZoOaebhW0JmsAU7h5oa6rhsNzoYyep0UVz2UEBUnQ04dREGlt0EIZ8NH
-	XibxN6MnaDl07e7oj3pBq3JYzilcUE4k1CxCt2oIL0YaJH/X9eqxWlbg1pI/cgroET1qbccEv0e
-	TPEBZgx07XgFNWBYfKGXhht1yQWfwhSZMgunUGJVmVfGQ8nOM6+Burlt+KOJwtVHzuVd83ZGH74
-	hCWSxy2e3GNv3/gl0X9m1b5DrjcHq/wD8o4rg/
-X-Received: by 2002:a05:6a20:7345:b0:3e1:e6b1:fc25 with SMTP id
- adf61e73a8af0-3e7bfa305f4mr1698347637.9.1792878379736; Sat, 24 Oct 2026
- 14:46:19 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JiZrToBU
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE1F1F01825;
+	Sat, 24 Oct 2026 22:02:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792879338;
+	bh=sia3q9+4NG/D0pyHeAoqQkOv62xgWS+3D097ZDTA1Nw=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=JiZrToBUh3fiC7FHds/yQFmv7oc93QouaS0PSPV3QCZscBgmOdGzTVv7Qc0Qw3mpL
+	 dPiBcKOlW5hu6jWpuGiopXnmwmytjiPXkxc5Jpwrq7Fjd+PLsx9rMcQ3WE1jzz0OIm
+	 9cLusgU8aP0tOeCTM+Q5VEIJsuclVJLmqvqlb+UDGTnMpfmJNQj6KC9QSYiudqaLj1
+	 eir5uOugtanszTwYQ6lJY4hmpGer6cbsuzgvvHn9Fw66mXufFFEVVRSm78Ss8yjFwE
+	 WTQYpnoJjGYYWwujGXrCQ8MmIy1unXlvsMQdrG3sI4u2sOldhOuq7imF/o2LqxtkfC
+	 KfyGGAP5GC0JQ==
+Subject:
+ Re: [PATCH net v2] tls: keep TX and RX hardware offload on the same device
+From: netdev-bot+sashiko@kernel.org
+To: rjethwani@purestorage.com
+Cc: netdev@vger.kernel.org, john.fastabend@gmail.com, kuba@kernel.org,
+ sd@queasysnail.net, davem@davemloft.net, edumazet@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, corbet@lwn.net,
+ skhan@linuxfoundation.org, rdunlap@infradead.org, borisp@mellanox.com,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Sat, 24 Oct 2026 22:02:17 +0000
+Message-ID: <179287933702.3134.9880453017789029456@kernel.org>
+In-Reply-To: <20261020214500.972308-1-rjethwani@purestorage.com>
+References: <20261020214500.972308-1-rjethwani@purestorage.com>
+X-sashiko-severity: Critical
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,538 +65,153 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <CAO-4RZ1ZCPNR2Z4xoHDh0Vp3SO51oX7ojuH0CG4MsD14-RegcA@mail.gmail.com>
-In-Reply-To: <CAO-4RZ1ZCPNR2Z4xoHDh0Vp3SO51oX7ojuH0CG4MsD14-RegcA@mail.gmail.com>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Sat, 24 Oct 2026 17:46:08 -0400
-X-Gm-Features: AclHuK-2jdZjvoe57o83B38c8g7ZCaZEWlDlW1aJW_vCBMW9WeEI51dF3oT4BnM
-Message-ID: <CADvbK_e+ogH4zafpqz8N=jY-oBruke8OLd4PEz9xa-y13Ys_3g@mail.gmail.com>
-Subject: Re: [BUG] SCTP: KASAN use-after-free in sctp_unpack_cookie with
- fail_skb_realloc (7.3.0)
-To: =?UTF-8?B?6ZOu?= <fengaojigui88@gmail.com>
-Cc: marcelo.leitner@gmail.com, linux-sctp@vger.kernel.org, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, Oct 24, 2026 at 10:07=E2=80=AFAM =E9=93=AE <fengaojigui88@gmail.com=
-> wrote:
->
-> Hi Marcelo and Xin,
->
-> I observed a KASAN slab-use-after-free in sctp_unpack_cookie() while fuzz=
-ing
-> SCTP with syzkaller. I reproduced it on Linux 7.1.3 and on Linux 7.3.0. O=
-n
-> 7.3.0, the crash was observed during replay of a 42-program execution seq=
-uence;
-> the standalone three-call reproducer did not trigger in two attempts.
->
-> The issue occurs while processing a COOKIE-ECHO through
-> sctp_sf_do_5_2_4_dupcook(). With the upstream skb fault-injection option
-> CONFIG_FAIL_SKB_REALLOC enabled and fail_nth: 43 on sendto(), the pskb_pu=
-ll()
-> inside sctp_sf_do_5_2_4_dupcook() triggers pskb_expand_head() (through
-> skb_might_realloc()), which frees the old skb head buffer;
-> sctp_unpack_cookie() then reads (size 2) from the freed buffer.
->
-> Environment
-> -----------
-> - Kernel A (found and reproduced): 7.1.3-kernsight-kasan #13 SMP PREEMPT_=
-DYNAMIC,
->   built 2026-10-13, x86_64. Built with KASAN/KCOV and
->   CONFIG_FAIL_SKB_REALLOC=3Dy. No SCTP changes were made for this testing=
-.
-> - Kernel B (reproduced 2026-10-24): 7.3.0-kernsight-kasan #1 SMP
->   PREEMPT_DYNAMIC, built 2026-10-20, x86_64. Vanilla 7.3.0 source tarball
->   (sha256 87363c24f10e06321eb362765521094e94471f6bff8bce2d6b3e40f39f00495=
-3),
->   built with KASAN/KCOV and CONFIG_FAIL_SKB_REALLOC=3Dy. No SCTP source c=
-hanges
->   (net/sctp/ matches vanilla apart from build artifacts).
-> - Both kernels: CONFIG_KASAN=3Dy, CONFIG_KCOV=3Dy, CONFIG_FAULT_INJECTION=
-=3Dy,
->   CONFIG_FAIL_SKB_REALLOC=3Dy. CONFIG_FAIL_SKB_REALLOC and
->   net/core/skb_fault_injection.c are upstream (present in the vanilla 7.3=
-.0
->   tarball).
-> - Guest: QEMU 6.2.0, 4 vCPU, 6 GiB, KVM, x86_64. A fresh VM was booted fo=
-r
->   every run.
-> - Syzkaller: revision 853b104bb454141a5b0fc0e4218ec78e9f34ffb1+ (2026-09-=
-18).
->   The "+" denotes local KernSight integration changes (seed ordering/stat=
-e
->   feedback: pkg/kernsight, prog/kernsight_*, syz-manager/kernsight_*,
->   pkg/execbackend, snapshot support in vm/qemu). They do not change the S=
-CTP
->   syscall descriptions or the executor's fault-injection semantics.
-> - Kernel modifications / additional modules: none relevant to this report
->   beyond the KASAN/KCOV/fault-injection build options above.
-> - Reproduction rate: 7.1.3: verified syz and C reproducer. 7.3.0: 1/1 wit=
-h the
->   stored 42-program sequence; the standalone three-call program did not
->   reproduce in 2 attempts. (1/1 does not establish stability.)
-> - Kernel command line (7.1.3; 7.3.0 is identical, see repository):
->   root=3D/dev/sda console=3DttyS0 fstab=3Dno rw earlyprintk=3Dserial net.=
-ifnames=3D0 oops=3Dpanic panic_on_warn=3D1 panic=3D86400 hung_task_panic=3D=
-1 softlockup_panic=3D1 nmi_watchdog=3Dpanic sysctl.kernel.hung_task_all_cpu=
-_backtrace=3D1 sysctl.kernel.panic_on_rcu_stall=3D1 sysctl.kernel.max_rcu_s=
-tall_to_panic=3D1 rcupdate.rcu_expedited=3D1 rcupdate.rcu_cpu_stall_cputime=
-=3D1 no_hash_pointers page_owner=3Don sysctl.vm.nr_hugepages=3D4 sysctl.vm.=
-nr_overcommit_hugepages=3D4 secretmem.enable=3D1 msr.allow_writes=3Doff cor=
-edump_filter=3D0xffff vsyscall=3Dnative kvm-intel.nested=3D1 spec_store_byp=
-ass_disable=3Dprctl nopcid vivid.n_devs=3D64 vivid.multiplanar=3D1,2,1,2,1,=
-2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1=
-,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2 netrom.nr_ndevs=3D32 rose.rose_ndevs=3D3=
-2 smp.csd_lock_timeout=3D100000 watchdog_thresh=3D55 workqueue.watchdog_thr=
-esh=3D140 sysctl.net.core.netdev_unregister_timeout_secs=3D140 dummy_hcd.nu=
-m=3D16 max_loop=3D32 nbd.nbds_max=3D32 comedi.comedi_num_legacy_minors=3D4 =
-kunit.autorun=3D0 vcan.echo=3D1
->
-> Reproduction on 7.1.3
-> ---------------------
-> Fresh KVM guest, kernel as above. Run from the guest's /tmp:
->
->   scp syz-execprog syz-executor repro.prog root@guest:/tmp/
->   ssh root@guest
->   cd /tmp && chmod +x syz-execprog syz-executor
->   ./syz-execprog -procs=3D1 -repeat=3D1 -disable=3Dswap -executor ./syz-e=
-xecutor ./repro.prog
->
-> Execution settings: sandbox=3Dnone, threaded executor, procs=3D1, repeat=
-=3D1, no
-> additional syzkaller features; a single program.
->
-> The minimised program (repro.prog) is:
->
->   r0 =3D socket$inet6_sctp(0xa, 0x5, 0x84)
->   setsockopt$inet6_sctp_SCTP_SOCKOPT_BINDX_ADD(r0, 0x84, 0x64, &(0x7f0000=
-000080)=3D[@in6=3D{0xa, 0x4e21, 0x5, @loopback, 0x9}], 0x1c)
->   sendto$inet6(r0, &(0x7f0000000000)=3D'M', 0x1, 0x20004845, &(0x7f000000=
-0040)=3D{0xa, 0x4e21, 0xffffff00, @loopback, 0x2}, 0x1c) (fail_nth: 43)
->
-> The C reproducer also works on 7.1.3:
->
->   gcc -x c -O2 -pthread -o repro repro.cprog && ./repro
->
-> Its console shows the same report:
->   BUG: KASAN: slab-use-after-free in sctp_unpack_cookie+0xa56/0xdc0
->
-> Reproduction on 7.3.0
-> ---------------------
-> Same procedure with the 7.3.0 kernel and the state-construction sequence
-> instead of the single program:
->
->   scp syz-execprog syz-executor repro.kernsight.prog root@guest:/tmp/
->   ssh root@guest
->   cd /tmp && chmod +x syz-execprog syz-executor
->   ./syz-execprog -procs=3D1 -repeat=3D1 -disable=3Dswap -executor ./syz-e=
-xecutor ./repro.kernsight.prog
->
-> The sequence contains 42 programs replayed by a single executor process
-> (procs=3D1) one at a time in file order (repeat=3D1, sandbox=3Dnone, thre=
-aded
-> executor). The executor does not run programs in parallel, but a program =
-can
-> leave kernel-side asynchronous work behind (timers, workqueues, networkin=
-g),
-> so earlier programs' effects may still be active while later ones run. Th=
-e
-> SCTP trigger is program #40 and appears again inside the final program #4=
-1.
->
-> Materials (programs, full logs, reports, kernel configs, command lines,
-> sha256 manifest, and a verify.sh that re-checks the numbers quoted here):
->   https://github.com/Zheng-zheng-codes/sctp-unpack-cookie-repro
->
-> For reference, in our runs the sequence log contains exactly one KASAN re=
-port,
-> first printed at t=3D212.7 s; the two standalone 7.3.0 runs contain zero.
->
-> The standalone three-call program did not trigger in two runs on a fresh =
-7.3.0
-> guest. The preceding execution sequence may affect reproducibility, but I=
- have
-> not isolated which preceding operations or environmental conditions matte=
-r.
->
-> Fault injection was enabled for this reproduction
-> -------------------------------------------------
-> The sendto() call is annotated with fail_nth: 43. During this execution, =
-the
-> kernel logged a fail_skb_realloc injection, followed by the KASAN report:
->
->   FAULT_INJECTION: forcing a failure.
->   name fail_skb_realloc, interval 1, probability 0, space 0, times 1
->
-> No additional fail_skb_realloc debugfs configuration was required.
->
-> KASAN report (7.3.0, latest verification)
-> -----------------------------------------
-> BUG: KASAN: slab-use-after-free in sctp_unpack_cookie+0xb57/0xf30
-> Read of size 2 at addr ff1100017d7658e6 by task syz.0.57/11114
->
-> CPU: 3 UID: 0 PID: 11114 Comm: syz.0.57 Not tainted 7.3.0-kernsight-kasan=
- #1 PREEMPT(full)
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/0=
-1/2014
-> Call Trace:
->  <TASK>
->  dump_stack_lvl+0x116/0x1b0
->  print_report+0xf1/0x5c0
->  ? __virt_addr_valid+0x23d/0x430
->  ? sctp_unpack_cookie+0xb57/0xf30
->  kasan_report+0x96/0xd0
->  ? sctp_unpack_cookie+0xb57/0xf30
->  sctp_unpack_cookie+0xb57/0xf30
->  ? pskb_expand_head+0x591/0x10b0
->  ? __pfx_sctp_unpack_cookie+0x10/0x10
->  ? __pfx_pskb_expand_head+0x10/0x10
->  ? dump_stack_lvl+0x15f/0x1b0
->  ? should_fail_ex+0x35d/0x650
->  sctp_sf_do_5_2_4_dupcook+0x2e2/0x3320
->  ? __pfx_sctp_sf_do_5_2_4_dupcook+0x10/0x10
->  ? sctp_sm_lookup_event+0x183/0x580
->  ? kasan_save_track+0x14/0x30
->  ? __kasan_slab_free+0x43/0x70
->  ? kmem_cache_free+0x292/0x6a0
->  ? sctp_chunk_put+0x20b/0x2c0
->  ? sctp_inq_pop+0x691/0x10f0
->  ? sctp_assoc_bh_rcv+0x113/0x700
->  ? sctp_inq_push+0x262/0x310
->  ? __pfx_sctp_cname+0x10/0x10
->  sctp_do_sm+0x177/0x55a0
->  ? rcu_is_watching+0x13/0xc0
->  ? preempt_count_sub+0xfc/0x1a0
->  ? __pfx_sctp_do_sm+0x10/0x10
->  ? debug_check_no_obj_freed+0x293/0x520
->  ? __lock_acquire+0x509/0x2110
->  ? lockdep_hardirqs_on+0x7d/0x110
->  ? kvm_clock_get_cycles+0x41/0x70
->  sctp_assoc_bh_rcv+0x38f/0x700
->  sctp_inq_push+0x262/0x310
->  sctp_backlog_rcv+0x16c/0x5a0
->  ? __pfx_sctp_backlog_rcv+0x10/0x10
->  ? __pfx_sctp_backlog_rcv+0x10/0x10
->  __release_sock+0x3a0/0x440
->  release_sock+0x1ea/0x280
->  sctp_sendmsg+0x8e4/0x1dd0
->  ? __pfx_sctp_sendmsg+0x10/0x10
->  ? aa_sock_msg_perm+0x127/0x200
->  ? __pfx_sctp_sendmsg+0x10/0x10
->  ? __pfx_inet_sendmsg+0x10/0x10
->  inet_sendmsg+0x126/0x150
->  __sys_sendto+0x474/0x520
->  ? __pfx___sys_sendto+0x10/0x10
->  ? fput+0x7d/0xe0
->  ? fput+0x7d/0xe0
->  ? fput+0x7d/0xe0
->  ? trace_preempt_on+0x122/0x170
->  ? fput+0x7d/0xe0
->  ? preempt_count_sub+0xfc/0x1a0
->  ? fput+0xa2/0xe0
->  ? ksys_write+0x1a8/0x240
->  ? __pfx_ksys_write+0x10/0x10
->  __x64_sys_sendto+0xe5/0x1c0
->  ? lockdep_hardirqs_on+0x7d/0x110
->  do_syscall_64+0x12e/0x7a0
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7f166adb2b7d
-> Code: 02 b8 ff ff ff ff c3 66 0f 1f 44 00 00 f3 0f 1e fa 48 89 f8 48 89 f=
-7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff=
- ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-> RSP: 002b:00007f166bd5cf98 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-> RAX: ffffffffffffffda RBX: 00007f166b045fa0 RCX: 00007f166adb2b7d
-> RDX: 0000000000000001 RSI: 0000200000000000 RDI: 0000000000000003
-> RBP: 00007f166bd5d010 R08: 0000200000000040 R09: 000000000000001c
-> R10: 0000000020004845 R11: 0000000000000246 R12: 0000000000000002
-> R13: 00007f166b046038 R14: 00007f166b045fa0 R15: 00007f166bd3d000
->  </TASK>
->
-> Allocated by task 11114:
->  kasan_save_stack+0x24/0x50
->  kasan_save_track+0x14/0x30
->  __kasan_kmalloc+0x7f/0x90
->  __kmalloc_node_track_caller_noprof+0x339/0x800
->  kmalloc_reserve+0xeb/0x350
->  __alloc_skb+0x197/0x740
->  sctp_packet_transmit+0x1eb/0x3210
->  sctp_outq_flush_transports+0x39d/0x7e0
->  sctp_outq_uncork+0x18d/0x200
->  sctp_do_sm+0x23d4/0x55a0
->  sctp_assoc_bh_rcv+0x38f/0x700
->  sctp_inq_push+0x262/0x310
->  sctp_backlog_rcv+0x16c/0x5a0
->  __release_sock+0x3a0/0x440
->  release_sock+0x1ea/0x280
->  sctp_sendmsg+0x8e4/0x1dd0
->  inet_sendmsg+0x126/0x150
->  __sys_sendto+0x474/0x520
->  __x64_sys_sendto+0xe5/0x1c0
->  do_syscall_64+0x12e/0x7a0
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
->
-> Freed by task 11114:
->  kasan_save_stack+0x24/0x50
->  kasan_save_track+0x14/0x30
->  kasan_save_free_info+0x3b/0x60
->  __kasan_slab_free+0x43/0x70
->  kfree+0x27b/0x660
->  skb_free_head+0xb9/0x150
->  pskb_expand_head+0x3b3/0x10b0
->  skb_might_realloc+0xb6/0xd0
->  sctp_sf_do_5_2_4_dupcook+0x206/0x3320
->  sctp_do_sm+0x177/0x55a0
->  sctp_assoc_bh_rcv+0x38f/0x700
->  sctp_inq_push+0x262/0x310
->  sctp_backlog_rcv+0x16c/0x5a0
->  __release_sock+0x3a0/0x440
->  release_sock+0x1ea/0x280
->  sctp_sendmsg+0x8e4/0x1dd0
->  inet_sendmsg+0x126/0x150
->  __sys_sendto+0x474/0x520
->  __x64_sys_sendto+0xe5/0x1c0
->  do_syscall_64+0x12e/0x7a0
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
->
-> The buggy address belongs to the object at ff1100017d765800
->  which belongs to the cache kmalloc-1k of size 1024
-> The buggy address is located 230 bytes inside of
->  freed 1024-byte region [ff1100017d765800, ff1100017d765c00)
->
-> The buggy address belongs to the physical page:
-> page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x17d7=
-60
-> head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-> flags: 0x17ff00000000040(head|node=3D0|zone=3D2|lastcpupid=3D0x7ff)
-> page_type: f5(slab)
-> raw: 017ff00000000040 ff11000100038dc0 dead000000000100 dead000000000122
-> raw: 0000000000000000 0000000000100010 00000000f5000000 0000000000000000
-> head: 017ff00000000040 ff11000100038dc0 dead000000000100 dead000000000122
-> head: 0000000000000000 0000000000100010 00000000f5000000 0000000000000000
-> head: 017ff00000000003 fffffffffffffe01 00000000ffffffff 00000000ffffffff
-> head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
-> page dumped because: kasan: bad access detected
-> page_owner tracks the page as allocated
-> page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd20c0(=
-__GFP_IO|__GFP_FS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), =
-pid 9374, tgid 9374 ((spawn)), ts 163178481859
->  post_alloc_hook+0xff/0x130
->  get_page_from_freelist+0xdd0/0x2b70
->  __alloc_frozen_pages_noprof+0x2bd/0x2e10
->  new_slab+0xb5/0x6a0
->  refill_objects+0x113/0x3d0
->  __pcs_replace_empty_main+0x35f/0x680
->  __kmalloc_noprof+0x5c5/0x7f0
->  load_elf_phdrs+0x107/0x210
->  load_elf_binary+0x233/0x4fc0
->  bprm_execve+0x8d7/0x1930
->  do_execveat_common.isra.0+0x48d/0x5e0
->  __x64_sys_execve+0x98/0xd0
->  do_syscall_64+0x12e/0x7a0
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> page last free pid 9372 tgid 9372 ts 163145729632 stack trace:
->  __free_frozen_pages+0x870/0x1170
->  qlist_free_all+0x4c/0xf0
->  kasan_quarantine_reduce+0x195/0x1e0
->  __kasan_slab_alloc+0x49/0x70
->  kmem_cache_alloc_noprof+0x23a/0x680
->  do_getname+0x39/0x3e0
->  do_sys_openat2+0xa7/0x250
->  __x64_sys_openat+0x144/0x200
->  do_syscall_64+0x12e/0x7a0
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
->
-> Memory state around the buggy address:
->  ff1100017d765780: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->  ff1100017d765800: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> >ff1100017d765880: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->                                                        ^
->  ff1100017d765900: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->  ff1100017d765980: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> Kernel panic - not syncing: KASAN: panic_on_warn set ...
-> CPU: 3 UID: 0 PID: 11114 Comm: syz.0.57 Not tainted 7.3.0-kernsight-kasan=
- #1 PREEMPT(full)
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/0=
-1/2014
-> Call Trace:
->  <TASK>
->  dump_stack_lvl+0x3d/0x1b0
->  vpanic+0x7f8/0xa80
->  ? __pfx_vpanic+0x10/0x10
->  ? __pfx_vprintk_emit+0x10/0x10
->  ? sctp_unpack_cookie+0xb57/0xf30
->  panic+0xc7/0xd0
->  ? __pfx_panic+0x10/0x10
->  ? _raw_spin_unlock_irqrestore+0x46/0x80
->  ? sctp_unpack_cookie+0xb57/0xf30
->  ? rcu_is_watching+0x13/0xc0
->  ? _raw_spin_unlock_irqrestore+0x46/0x80
->  check_panic_on_warn+0xb6/0xc0
->  end_report+0x12c/0x180
->  ? sctp_unpack_cookie+0xb57/0xf30
->  kasan_report+0xa4/0xd0
->  ? sctp_unpack_cookie+0xb57/0xf30
->  sctp_unpack_cookie+0xb57/0xf30
->  ? pskb_expand_head+0x591/0x10b0
->  ? __pfx_sctp_unpack_cookie+0x10/0x10
->  ? __pfx_pskb_expand_head+0x10/0x10
->  ? dump_stack_lvl+0x15f/0x1b0
->  ? should_fail_ex+0x35d/0x650
->  sctp_sf_do_5_2_4_dupcook+0x2e2/0x3320
->  ? __pfx_sctp_sf_do_5_2_4_dupcook+0x10/0x10
->  ? sctp_sm_lookup_event+0x183/0x580
->  ? kasan_save_track+0x14/0x30
->  ? __kasan_slab_free+0x43/0x70
->  ? kmem_cache_free+0x292/0x6a0
->  ? sctp_chunk_put+0x20b/0x2c0
->  ? sctp_inq_pop+0x691/0x10f0
->  ? sctp_assoc_bh_rcv+0x113/0x700
->  ? sctp_inq_push+0x262/0x310
->  ? __pfx_sctp_cname+0x10/0x10
->  sctp_do_sm+0x177/0x55a0
->  ? rcu_is_watching+0x13/0xc0
->  ? preempt_count_sub+0xfc/0x1a0
->  ? __pfx_sctp_do_sm+0x10/0x10
->  ? debug_check_no_obj_freed+0x293/0x520
->  ? __lock_acquire+0x509/0x2110
->  ? lockdep_hardirqs_on+0x7d/0x110
->  ? kvm_clock_get_cycles+0x41/0x70
->  sctp_assoc_bh_rcv+0x38f/0x700
->  sctp_inq_push+0x262/0x310
->  sctp_backlog_rcv+0x16c/0x5a0
->  ? __pfx_sctp_backlog_rcv+0x10/0x10
->  ? __pfx_sctp_backlog_rcv+0x10/0x10
->  __release_sock+0x3a0/0x440
->  release_sock+0x1ea/0x280
->  sctp_sendmsg+0x8e4/0x1dd0
->  ? __pfx_sctp_sendmsg+0x10/0x10
->  ? aa_sock_msg_perm+0x127/0x200
->  ? __pfx_sctp_sendmsg+0x10/0x10
->  ? __pfx_inet_sendmsg+0x10/0x10
->  inet_sendmsg+0x126/0x150
->  __sys_sendto+0x474/0x520
->  ? __pfx___sys_sendto+0x10/0x10
->  ? fput+0x7d/0xe0
->  ? fput+0x7d/0xe0
->  ? fput+0x7d/0xe0
->  ? trace_preempt_on+0x122/0x170
->  ? fput+0x7d/0xe0
->  ? preempt_count_sub+0xfc/0x1a0
->  ? fput+0xa2/0xe0
->  ? ksys_write+0x1a8/0x240
->  ? __pfx_ksys_write+0x10/0x10
->  __x64_sys_sendto+0xe5/0x1c0
->  ? lockdep_hardirqs_on+0x7d/0x110
->  do_syscall_64+0x12e/0x7a0
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7f166adb2b7d
-> Code: 02 b8 ff ff ff ff c3 66 0f 1f 44 00 00 f3 0f 1e fa 48 89 f8 48 89 f=
-7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff=
- ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-> RSP: 002b:00007f166bd5cf98 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-> RAX: ffffffffffffffda RBX: 00007f166b045fa0 RCX: 00007f166adb2b7d
-> RDX: 0000000000000001 RSI: 0000200000000000 RDI: 0000000000000003
-> RBP: 00007f166bd5d010 R08: 0000200000000040 R09: 000000000000001c
-> R10: 0000000020004845 R11: 0000000000000246 R12: 0000000000000002
-> R13: 00007f166b046038 R14: 00007f166b045fa0 R15: 00007f166bd3d000
->  </TASK>
-> Kernel Offset: disabled
-> Rebooting in 86400 seconds..
->
-> The 7.1.3 report is included in the repository
-> (logs/cebee8cfa01b-kasan-7.1.3.txt). It has the same paths: access in
-> sctp_unpack_cookie+0xa56/0xdc0 (net/sctp/sm_make_chunk.c:1744); allocatio=
-n in
-> __alloc_skb() from sctp_packet_transmit() (net/sctp/output.c:598); free i=
-n
-> pskb_expand_head() -> skb_free_head(), reached through skb_might_realloc(=
-)
-> (net/core/skb_fault_injection.c) from pskb_pull() in
-> sctp_sf_do_5_2_4_dupcook() (net/sctp/sm_statefuns.c:2235); the subsequent=
- call
-> that enters sctp_unpack_cookie() is at net/sctp/sm_statefuns.c:2244.
->
-> Analysis and related report
-> ---------------------------
-> The report suggests that pointers into the skb data buffer become stale a=
-fter
-> pskb_pull() triggers skb reallocation in sctp_sf_do_5_2_4_dupcook(). A
-> subsequent access in sctp_unpack_cookie() then reads from the old buffer.
->
-> I found the following related report concerning the HEARTBEAT path:
-> https://lists.openwall.net/netdev/2026/04/15/25
->
-> I also read Xin's response regarding skb linearization in the receive pat=
-h:
-> https://lists.openwall.net/netdev/2026/04/15/178
->
-> My report concerns the COOKIE-ECHO path rather than the HEARTBEAT path. I=
- have
-> not established whether this reallocation is reachable without fault inje=
-ction,
-> or whether this should be treated as an issue with the fault-injection co=
-verage
-> of an already-linearized skb. On 7.3.0 the minimised program alone did no=
-t
-> trigger while the 42-program sequence did; the preceding operations may m=
-atter,
-> but I have not isolated them.
->
-> Could you help determine whether this is an SCTP pointer-lifetime issue t=
-hat
-> needs a fix, a related instance of the earlier report, or an artifact of =
-forced
-> skb reallocation?
->
-> Attachments / repository contents
-> ---------------------------------
->   repro/repro.prog              syz program, includes fail_nth: 43 (7.1.3=
-)
->   repro/repro.cprog             C reproducer with fail-nth setup (7.1.3)
->   repro/repro.kernsight.prog    42-program execution sequence (7.3.0)
->   logs/cebee8cfa01b-kasan-7.1.3.txt   full 7.1.3 KASAN report
->   logs/cebee8cfa01b-kasan-7.3.txt     full 7.3.0 KASAN report (also inlin=
-e)
->   logs/serial-7.3.log                  full 7.3.0 console (sequence repla=
-y)
->   logs/serial-7.3-minimal-no-trigger.log   7.3.0 standalone run 1 (no tri=
-gger)
->   logs/serial-7.3-minimal2-no-trigger.log  7.3.0 standalone run 2 (no tri=
-gger)
->   logs/serial-7.1.3-c-repro.log       7.1.3 C-reproducer console
->   kernel/kernel-7.1.3.config, kernel/kernel-7.3.config
->   cmdline/cmdline-7.1.3.txt, cmdline/cmdline-7.3.0.txt
->   verify.sh                     re-checks the numbers quoted in this mail
->   MANIFEST.sha256               sha256 of every file
->
-> I am happy to provide additional information and test proposed patches.
->
-> Best regards,
-> Zheng Zheng
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Thanks, Zheng, for the report.
+Critical: 1 · High: 0 (1) · Medium: 0 · Low: 0
 
-This issue should not occur in a real-world environment without
-CONFIG_FAIL_SKB_REALLOC enabled. Since commit 28cd77527345 ("[SCTP]: Always
-linearise packet on input"), packets have always been linearized before
-entering the SCTP stack.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-We should revert the commit that introduced pskb_pull():
+- [Critical] tls: type confusion and UAF in tls_device_down() when TX is
+  not TLS_HW
 
-commit 62b08083ec3dbfd7e533c8d230dd1d8191a6e813
-Author: Sridhar Samudrala <sri@us.ibm.com>
-Date:   Fri May 5 17:04:43 2006 -0700
+Pre-existing issues:
+- [High] tls_set_sw_offload() (net/tls/tls_sw.c:2594) sets the shared
+  ctx->push_pending_record = tls_sw_push_pending_record unconditionally,…
 
-    [SCTP]: Fix panic's when receiving fragmented SCTP control chunks.
+--
 
-Could you test the kernel with this commit reverted?
+tls: keep TX and RX hardware offload on the same device
 
-Note that you may need to revert it manually due to differences in the
-surrounding code.
+This patch adds tls_device_can_attach(), which is checked under
+device_offload_lock before each tls_dev_add() in tls_set_device_offload()
+and tls_set_device_offload_rx(). A second direction is only offloaded if
+it resolves to the netdev already bound to the context; otherwise setup
+falls back to software for that direction.
 
-Thanks.
+> diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
+> index f11d0528fc431..9df183d0dd972 100644
+> --- a/net/tls/tls_device.c
+> +++ b/net/tls/tls_device.c
+
+[ ... ]
+
+> @@ -1227,6 +1246,11 @@ int tls_set_device_offload_rx(struct sock *sk, struct tls_context *ctx)
+>  		goto release_lock;
+>  	}
+>  
+> +	if (!tls_device_can_attach(ctx, sk, netdev)) {
+> +		rc = -EOPNOTSUPP;
+> +		goto release_lock;
+> +	}
+> +
+
+[Severity: Critical]
+This isn't introduced by this patch, but the patch now deliberately
+steers sockets into the state that hits it, so it seems worth raising
+here.
+
+When RX is on hardware and TX is declined by tls_device_can_attach(),
+do_tls_setsockopt_conf() falls back to TLS_SW for TX (or TX is simply
+never configured and stays TLS_BASE), while ctx stays on
+tls_device_list bound to the RX device. If that device later goes down,
+tls_device_down() does this for every matching ctx:
+
+	WRITE_ONCE(ctx->sk->sk_validate_xmit_skb,
+		   tls_validate_xmit_skb_sw);
+
+without looking at ctx->tx_conf. The tls_dev_del() calls further down
+are guarded by tx_conf == TLS_HW and rx_conf == TLS_HW, but this store
+is not.
+
+>From then on every skb with TCP payload on the socket goes through
+validate_xmit_skb() -> tls_validate_xmit_skb_sw() -> tls_sw_fallback(),
+which casts tls_ctx->priv_ctx_tx with tls_offload_ctx_tx() and passes
+the result to fill_sg_in(), which takes ctx->lock and walks
+ctx->records_list through tls_get_record().
+
+With tx_conf == TLS_BASE, priv_ctx_tx is NULL. Isn't this a NULL
+pointer dereference on the first data segment sent after the device
+goes down? With tx_conf == TLS_SW, priv_ctx_tx is the struct
+tls_sw_context_tx from init_ctx_tx(), so fill_sg_in() would take a
+spinlock and walk a list that are really unrelated fields of that
+structure.
+
+Close looks worse still. tls_sk_proto_close() frees priv_ctx_tx via
+tls_sw_free_ctx_tx() before calling ctx->sk_proto->close(), but with
+rx_conf == TLS_HW the tls_context and the sk_validate_xmit_skb hook stay
+around until tls_device_sk_destruct(). Data pushed out by tcp_close()
+or retransmitted afterwards would run tls_sw_fallback() on freed
+memory.
+
+The updated tls-offload.rst says a declined direction "uses software
+instead", and NETDEV_DOWN clearing the binding is now an explicit
+reason to decline TX, so the patch relies on this combination working.
+
+Should tls_device_down() only switch sk_validate_xmit_skb when TX is
+really device offloaded? ctx->tx_conf is only set by
+do_tls_setsockopt_conf() after tls_set_device_offload() has dropped
+device_offload_lock, so I'm not sure tx_conf alone is a reliable test
+there. Would comparing against tls_validate_xmit_skb, or having
+tls_validate_xmit_skb_sw() bail out when TX is not TLS_HW, work better?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but it is related to the new
+tls-offload.rst wording that a declined direction "is handled in software
+as if offload had never been tried".
+
+Suppose TX is already on hardware and RX is rejected here. Then
+do_tls_setsockopt_conf() falls back to tls_set_sw_offload(sk, 0, ...),
+and that function sets the shared TX callback whatever the direction:
+
+net/tls/tls_sw.c:tls_set_sw_offload() {
+    ...
+	ctx->push_pending_record = tls_sw_push_pending_record;
+    ...
+}
+
+This replaces the callback that tls_set_device_offload() installed:
+
+	ctx->push_pending_record = tls_device_push_pending_record;
+
+The hardware RX success path also calls tls_set_sw_offload(sk, 0, NULL),
+so this could already happen before this patch.
+
+Now suppose device TX leaves an open record, for example because
+sendmsg() with MSG_MORE set pending_open_record_frags. A later sendmsg()
+with a TLS_SET_RECORD_TYPE cmsg then takes this path:
+
+tls_device_sendmsg()
+  tls_process_cmsg()
+    tls_handle_open_record()
+      ctx->push_pending_record() -> tls_sw_push_pending_record()
+
+tls_sk_proto_cleanup() reaches the same callback on close when
+sk_write_pending is set. tls_sw_push_pending_record() does:
+
+	struct tls_sw_context_tx *ctx = tls_sw_ctx_tx(tls_ctx);
+	struct tls_rec *rec = ctx->open_rec;
+
+but priv_ctx_tx is really a struct tls_offload_context_tx here.
+
+Doesn't this read an unrelated field of tls_offload_context_tx as a
+struct tls_rec pointer?
+
+If that field is NULL, the open device record is not flushed before the
+record type changes. Data that is already buffered then goes out under
+the new record type. If the field is non-NULL, rec->msg_plaintext is
+read through a garbage pointer.
+
+This seems to go back to 3c4d7559159b (2017). Could tls_set_sw_offload()
+set push_pending_record only when tx is set? Then RX setup, hardware or
+software fallback, would leave the device TX callback in place.
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261020214500.972308-1-rjethwani%40purestorage.com
