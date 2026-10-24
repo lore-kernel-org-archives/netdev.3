@@ -1,60 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792871718;
-	b=x3C9KFDepty/a2Qq8YVQdej8ZrKlPe2hCwlUehZFSdAgAOrndgLyLf9g3OTmAh9/Lhdy
-	 NH32yWwL9P6VoB7a6Mly+YvQWRh6fhX4QdXVhyPRPiENV5Zi9V+EiJCvk7kekItJ5azeK
-	 mmrxFbm8rOfbuiTQi6YNwJo6yICXWHxEx8cvUtZrmu7d07nSEqjzZEqnawC1ScZ5smWlp
-	 awWrCxJ4tw1f5313NR36NGy/3+vTM9CuGpsTU6N0kgasI7qjvA3rALSj4QkE4AEfuK0lY
-	 YPOxAhDC9iB/sHbn+B18ohkfFbV9NaFCoGW8nrCK6IeRIegFBZBN6Ltu63GlW9ydcPw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792871718;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=VKUjYx4uq7il/yCv58TsN7S0KJRJdGG0UuBrxYVVVKE=;
-	b=uFcoahbgQAucK+Z3Qb8A/er9+qMpS/EebxY9SEvWfkpGILToA3S6WnC9mvCOp3DU7keR
-	 vK4L2OoAAJvO7CyDYTi2bVgHu13qzmAuvmo8rvtHiXXqZTe1rO5vFHQtg/je+3BqeA1im
-	 tFR1nqTn5cgq4C0c0lOAn60Cjk3bIyTi2rimfrQhTjKPel0tOiLV/blx3lSONB7nbdZJX
-	 iNeFeF4PyU8o3m4He/N2uXytUZ3tJyxkWH35IIs0OMnShv92CKMtEIUl/c847hQiDjBaf
-	 8KSvr8gxBDB6DXPqqGeIDQnlMf0h8VS7JYeWtt1Cz9ROzPeZ5oWIVuLpW4kSzS4ZOXw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZfPKXD62;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.50
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792871993;
+	b=4uK4pfSae7tbVR4hB7HF0nwGcuu1LLBXkftXCjxJCsFOknrPcEQdsycJ12PnVUBfJLkY
+	 DEXMaQ+WI6dCoo1LBS5bpUrumnMe2m4V4cyrlSvlMgSVhaHbTf1gNxLZlPtrYUNtJyLug
+	 FBKtTcO3XDPdF44ZvQfUEQGL2C5Fgfsq2cO6FCDHsuLSJG9jtj67sIm4Hkd0fVvbxDA0W
+	 yro+4Nk6BtzhR2xUAPJ2Es8IwoeJ10wmkM50t5q1moDzSf0YVb1k1IqR6cRYCbnmAmjRj
+	 RH1V0+8BAi10eCWwy9FXYcWm9ojnZ+wu5ULQcbShqH9EnBcJVUFUF29eSA/sbo1HepA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792871993;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type;
+	bh=Y1aeuq5wlLtNW10aX5s7oc69ZfKy5Qflu3xHauiEe9A=;
+	b=XeqMCySKxqmNqBqsbDvGvnJ5qbKm92yptpOdHCDNNUJjSrtKpn5vdD95MIF32amFp11r
+	 iwR6fWdoYAM0vqpFXptcKJVaKWNCeiUu0sVeHnvfxKY5r+86ozpi1pXAQRgSD9UsCP7pZ
+	 K0rHbxGX7wsF45i8CUK1mEY6ZydymqCXBHQnuqJE4aMioNnWCGmgtrzzabKYTELLBDNT1
+	 N3Gk1XAh6Pn/oYiSQc8H9It/ACezs5srlllwcwROri+C8PYcnw7BG12RkK2kffrRm4q8+
+	 IKgc/YyKcb6DAQCPDR0Oj4X/B9bJnf9zvtgD7GtgcEoJ8lZUTIe/PYXH4F/qLn3l34w==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=oeGZHUqt;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.50
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6B3606A31A;
-	Sat, 24 Oct 2026 19:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FABB606A31D
+	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 19:59:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1FABB606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZfPKXD62
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CCEE1F01825;
-	Sat, 24 Oct 2026 19:55:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792871717;
-	bh=VKUjYx4uq7il/yCv58TsN7S0KJRJdGG0UuBrxYVVVKE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ZfPKXD62235Ts2XIMUZw6bWNCKVXbZ2Ro0JH8BYhrufO4SvA0axEAjSQNag2ObNkv
-	 63HmkPwbQ6JNORbksEXl4yPGnMiK7MgSwWY/aAv2hqbrJIUn6b4YEGvIHPwNO/ZCoq
-	 mzJw9OrPCRfzMdtymKiekT3S1pr/dVJ7b0t1gCHvY0sGYyLwq9td0ZMZbuAx0tXpUc
-	 BLH+S1sQnSH4+FkKzN0ycTDvQR112IVYH9CT0vXyoVfvzKeQpvxK6NKIBpNDkj7Vhr
-	 dDTfhlJyYPF1v4VcrdzHmICMWwTTA3DZf8EH3mGMRZ201myw1PQm24/TyXHjPRKxAV
-	 +4WW8wAN+Ph/Q==
-Subject:
- Re: [PATCH net v2 2/2] selftests: net: add TLS 1.2 hardware offload tests
-From: netdev-bot+sashiko@kernel.org
-To: rjethwani@purestorage.com
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org, john.fastabend@gmail.com,
- kuba@kernel.org, sd@queasysnail.net, davem@davemloft.net, edumazet@kernel.org,
- pabeni@redhat.com, horms@kernel.org, aviadye@mellanox.com, ilyal@mellanox.com,
- borisp@mellanox.com, linux-kernel@vger.kernel.org
-Date: Sat, 24 Oct 2026 19:55:16 +0000
-Message-ID: <179287171668.3134.17927231522917764342@kernel.org>
-In-Reply-To: <20261020181147.939575-2-rjethwani@purestorage.com>
-References: <20261020181147.939575-2-rjethwani@purestorage.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=oeGZHUqt
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c38ac26cc5dso274083366b.2
+        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 12:59:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792871991; cv=none;
+        d=google.com; s=arc-20260327;
+        b=XSDB61jj1ydffTm/BJxM26GTq+XwDOaYgqqgUTtuXJmRDW3T7vY44ThhjcBIang36E
+         Nx7uNrtseQF/7bHyS2Pn5Zwb3rlkwNDrqU3gfmUw/VXe12YzFNmc1Ol3XYJf8A0pzsrN
+         ujHW9KfoMHOAFH0mCTUI9SAIqBYyYnyReHFljrD+9n+xdGDKp3qFGqF+bDtCXTPENM51
+         6F+iQrQmvX1TvR5Ludp7Zken572LjnL9jnEdKZsi0kuKTicwXA6sMCnAUO4pa8wTD28K
+         0O6hUctgVIH2zSumf/Q6SAe6JRirZpHbD9TFVz8PKETkzWp3R9yuVB9znSEqtTjDOyvo
+         Cxrg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=Y1aeuq5wlLtNW10aX5s7oc69ZfKy5Qflu3xHauiEe9A=;
+        fh=nkjCH6HL+Z6t6ey0tBVRnp2UXGHtfF2rzfZ2xyU6zJo=;
+        b=sfHfNG/RgBht369LJ42Lhg2ECTqQ3RBSMFkLL9LVJLWHXX+5zzR8fSMD3VRVDkkO1n
+         Qj3SoinkWQ0MnS7EuPCtdOvT9ODINm9WPw1LY62emyNNR8qH4dfxunxJfAiHtnSmzwMJ
+         SWEnA8lCKeGmw1Y3uQpxmrdQMgToo6qQzmjLmdy2ZdSyzRPOOqi5/C9/8FcSw8NO+nTu
+         XF8nWLKhk/yIN9NsVhGl4AapNsI2jGTmqh5JuWXqPp4LoP2dHgex30rYxzFDj3cV1Vu9
+         EIAEkEJBckKnqwSUBrp8riuWRUBuQB48B7r+JLWnUR35UVxN1Fvp4QJao60RxfuB7cUA
+         aWCA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792871991; x=1793476791; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Y1aeuq5wlLtNW10aX5s7oc69ZfKy5Qflu3xHauiEe9A=;
+        b=oeGZHUqtNRxLiXBkTBCO2H3SZjbsAOzlkT0/FutVM4CrafajSE7+0NsLHmW560LJIY
+         U73RqnfpeHeMO/8B0NOk+A0uj+XdJRpuKu26BRvTEgURR7JQOUaJPtZA1BWdfut77q9a
+         QM3cQ6o5XbzTwC6vk+O13gqUBO97j9Gd7+rlp4uU3MncJl8PY4MITIRR/YdR454dPkHm
+         BqMdFn2YpluWrB6/3ZB0VyKrwQBaBj/fJeCerGqhqYZnQGbMAXOfJ+9pvMO4pN/DoSPe
+         irqjjJw9yeaZmcyjl/YEzr1uFKYXIPP73AuKGTyiVIAFjg2l5+6MX6dUrEQbLpUITVcI
+         vPeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792871991; x=1793476791;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Y1aeuq5wlLtNW10aX5s7oc69ZfKy5Qflu3xHauiEe9A=;
+        b=z3RHLP5uWrKLDMrgqF6Sh+NaT7KQI1J982iZggKD1fdPOI2dSp2uLofO7bY6JPyLQA
+         wVm/iIjOlM2Qli+Nf0j0FHgA9zxPvr+f2P6lZG4R+aiPJS3ab29C5GnhfoYCiAB2vcUs
+         xmwF95cexaLkZNFO2Qp7JaRGYiXS0IDY5fKeKyolPK8JRA79iEhdVwO60Gj9quuxehkc
+         TdOKGv00naYlTolPkg4LI2CaooYeUfWNdk99OVqP6wCY0QIEb65iGcHRR1f4NLlLRbJJ
+         zm0LhukTa6n5IUQTuybp42nd47Z+SY1xd+7s4Qcxz4IzNbJZDP1uLO6eRkcZebkJRgH2
+         EAxg==
+X-Forwarded-Encrypted: i=1; AKwUvBzD/PR5PU8//vg/KCdwgCPQn1D3vR/kZyB7gljBuTwZ6YFgsYgU2CttH/ctK68CwxW+6rLKiUs=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLuSnXQJH0OOhZix9GRgxMhlAscKyk32qfwP1SjdEoRiuEtOfdR
+	xfGY15XElqj/yhxrHFWozfovikPKWpHrQAdWBSsFqsrekGIN7E6y/uBtvYFX8fLewmylQ4DHAVt
+	t9ILgcFN/IS5SuR1IPnV55CfZF9dbwqhEnd2uY/4=
+X-Gm-Gg: AYBFou3sy9aq/0yv7spxruZwzxGBJ/MTTv9imqnCxIpJXSBctCxeohl8AfeMLZEJ4Ol
+	jGr54Et7fpRFDO92AIKMaq2o6fHy+3Wbb64ex5LBCdi7ap0YSYXoFtrUedpsxDE04vAQqApgISE
+	jOwvJ/kQR/9lds3R44X0dtaOHPM305MJdEheSSKWnSgWJLpvQaik2Wp6acS3dMg7VD4wZJvufqn
+	8SvD3TDBvrRryIrb0NzLOOryctj+TomZ2VtBlhgOCHcY8+sPYxmEQEIOmenjADaZhhNFP62rDGB
+	iwgLhBxoSKejUUixIRWn5rZ9rHUXpCmz7fVtRSys5GF0UXoZEzLqLNGGXDYyKZj9SjBa9vYc2Qy
+	G/CiIaaAjWJjU/7DMOqQBLDBEvya4FvLQuSL819pw6A1ktiL26q+TrPExzfXCUBioTK0t
+X-Received: by 2002:a17:907:7fa2:b0:c34:e9fe:82ed with SMTP id
+ a640c23a62f3a-c46bde53641mr320816366b.28.1792871991404; Sat, 24 Oct 2026
+ 12:59:51 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,185 +101,143 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+From: Jalen <jalen.lin@gmail.com>
+Date: Sun, 25 Oct 2026 03:59:38 +0800
+X-Gm-Features: AclHuK9KkBjBGWoRa_ld4FWISRsVfgthwdP-vuacjeJMzEpkEd5BKVmYyQ84xBs
+Message-ID: <CAHqkChbVoGHrWtaFyGFaLQDiAunWw1qOpW-vKSgkKxWEfQ_tCg@mail.gmail.com>
+Subject: [REGRESSION] netfilter: flowtable: HW offloaded flows are not removed
+ from hardware on flowtable deletion since 13210fc63f35
+To: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>
+Cc: Phil Sutter <phil@nwl.cc>, netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
+	netdev@vger.kernel.org, Felix Fietkau <nbd@nbd.name>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>, 
+	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, 
+	=?UTF-8?Q?Paul=2DLouis_Charri=C3=A8re?= <plcharriere@gmail.com>, 
+	regressions@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+Hi,
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 1
+Since 13210fc63f35 ("netfilter: nf_tables: imbalance in flowtable
+binding"), deleting a flowtable with "flags offload" leaves its flows
+in hardware. FLOW_BLOCK_UNBIND now runs at commit time, before
+nf_flow_table_free(), so the FLOW_CLS_DESTROY calls made by the free
+find no driver callback. The hardware keeps forwarding (and NATing)
+those flows with no flowtable or ruleset left. Current master is
+affected. Seen on mtk_eth_soc and mlx5.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+This is the ordering that 5acab91458ce ("netfilter: nf_tables: unbind
+callbacks from flowtable destroy path") fixed in 2020:
 
-- [Medium] test_tls_offload() in
-  tools/testing/selftests/drivers/net/hw/tls_hw_offload.py skips the…
-- [Medium] main() in tls_hw_offload.py raises KsftSkipEx outside
-  ksft_run().
-- [Low] The comment on HW_NIC_COUNTERS says '*_packets increment once per
-  packet the NIC actually encrypted or decrypted ... so they prove the…
+  Callback unbinding needs to be done after nf_flow_table_free(),
+  otherwise entries are not removed from the hardware.
 
---
+In current master the UNBIND is in nft_unregister_flowtable_ops(),
+still called from the commit path. Stable trees with 13210fc63f35
+(from the source, not runtime tested): v5.15.180, v6.1.125+,
+v6.6.72+, v6.12.10+.
 
-selftests: net: add TLS 1.2 hardware offload tests
+Results
+-------
 
-This adds a two-node kTLS hardware offload selftest. A C helper installs
-fixed AES-GCM keys on both endpoints, and a Python harness runs echo
-traffic over IPv4/IPv6 with different payload sizes, checking the TLS MIB
-and NIC ethtool counters to confirm HW offload in each enabled DUT
-direction. It also adds handshake and alert record-type regression cases
-for the push_pending_record fix.
+BPI-R3 (MT7986A, mtk_eth_soc PPE), vanilla kernels, each run from a
+fresh boot. BND = grep -c BND /sys/kernel/debug/ppe*/entries
 
-> diff --git a/tools/testing/selftests/drivers/net/hw/tls_hw_offload.py b/tools/testing/selftests/drivers/net/hw/tls_hw_offload.py
-> new file mode 100755
-> index 0000000000000..37f26e21a7b78
-> --- /dev/null
-> +++ b/tools/testing/selftests/drivers/net/hw/tls_hw_offload.py
-> @@ -0,0 +1,402 @@
+  A  4f619d518db9  parent of 13210fc63f35
+  B  13210fc63f35
+  C  5b0764a53235  master, 2026-10-23
+  D  C + the patch mentioned below
 
-[ ... ]
+  step                                  A     B     C     D
+  1. no table                           0     0     0     0
+  2. load the table below            1000  1000  1000  1000
+  3. nft delete table inet t,
+     40 s idle                          0     0     0     0
+  4. same 1000 5-tuples again           0  1000  1000     0
+  5. 1000 new 5-tuples                  0     0     0     0
 
-> +# TlsTxDevice/TlsRxDevice in /proc/net/tls_stat only prove tls_dev_add()
-> +# accepted the offload:
-> +#  - *_packets increment once per packet the NIC actually encrypted or
-> +#    decrypted (mlx5 counts gso_segs, not records), so they prove the HW
-> +#    crypto path was exercised.
+A/B differ only in nf_tables_api.c and C/D only in
+nf_flow_table_offload.c; each pair uses the same .config. In step 2
+all four show 1000 [HW_OFFLOAD] conntrack entries. In step 4 B and C
+have no flowtable and no [HW_OFFLOAD] entry, yet the PPE forwards the
+old flows in hardware.
 
-[Severity: Low]
-Is this description accurate for the TX side? Documentation/networking/
-tls-offload.rst defines the counter as:
+On-board ConnectX-7 of an NVIDIA DGX Spark (GB10, arm64; PSID
+NVD0000000087, fw 28.45.4028; Ubuntu 6.17.0-1022-nvidia), not a
+standalone card. mlx5 in switchdev, flowtable on two VF
+representors, traffic VF to VF, 1000 UDP flows,
+mlx5e_delete_flower() calls counted with kprobes:
 
-  tx_tls_encrypted_packets - number of TX packets passed to the device
-  for encryption of their TLS payload.
+                                   stock   patched
+  deletes on "nft delete table"        0      4000
+  old flows still forwarded          yes        no
+  next 1000 flows offloaded          864      1000
+  eswitch mode change to legacy     busy        ok
 
-mlx5 increments it in the driver xmit path while it builds the
-descriptor. It does not wait for a hardware completion:
+4000 = 1000 flows x 2 directions x 2 representors. With the flowtable
+gone and ip_forward=0, the old 5-tuples still reach the other VF with
+the masquerade source address. The 136 missing flows get -EEXIST from
+leftover driver entries. "patched" is an out-of-tree nf_flow_table.ko
+built from the same distro source; an unmodified rebuild gives the
+same numbers as stock.
 
-drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_tx.c:mlx5e_ktls_handle_tx_skb() {
-    ...
-    stats->tls_encrypted_packets += skb_is_gso(skb) ? skb_shinfo(skb)->gso_segs : 1;
-    ...
-}
+(On this setup mlx5 only hits FT rules once some tc rule exists on
+chain 0, so the forwarding check used a dummy flower rule there. It
+looks like esw_chains_create() creates the chain 0 root table, and
+its miss rule, before mlx5_chains_set_end_ft() sets the FT chain. I
+have not looked into it further.)
 
-So the ksft_ge() on tx_tls_encrypted_packets in check_hw_crypto() shows
-that the driver handed TLS packets to the offload path. It does not show
-that the NIC encrypted them. A broken HW encrypt would most likely still
-be caught by the peer's TlsDecryptError check or the echo memcmp(). The
-gap is only in what this comment and the "NIC reported no HW crypto"
-message claim.
+Reproduction
+------------
 
-Could the comment be reworded to match the documented semantics?
+  table inet t {
+    flowtable ft {
+      hook ingress priority filter
+      devices = { lan0, lan1 }
+      flags offload
+    }
+    chain ft_forward {
+      type filter hook forward priority filter; policy accept;
+      ip protocol { tcp, udp } flow add @ft
+    }
+    chain post {
+      type nat hook postrouting priority srcnat; policy accept;
+      oifname "lan1" masquerade
+    }
+  }
 
-> +#  - *_ctx increment once per tls_dev_add().
-> +# Missing NIC crypto counters remain optional.
+1000 UDP flows, 10.0.0.100+i:1024 -> 192.168.200.2:7, 64B, 200 kpps,
+lan0 -> lan1 (MT7531 DSA ports). Scripts and raw logs on request.
 
-[ ... ]
+Fix
+---
 
-> +# Drivers whose tls_dev_add() accepts only AES-GCM-128: nfp
-> +# (nfp_net_cipher_supported()), cxgb4 (chcr_ktls), funeth.
-> +GCM128_ONLY_DRIVERS = {"nfp", "nfp_netvf", "cxgb4", "funeth"}
+The tested patch is from an OpenWrt fork, carried there as a MediaTek
+target patch although the change is generic. It deletes the device's
+hardware flows in nf_flow_table_offload_setup() before
+FLOW_BLOCK_UNBIND, as nf_flow_table_indr_cleanup() does, and runs the
+GC once more for flows whose offload work was still pending:
 
-[ ... ]
+  https://github.com/plcharriere/openwrt/pull/1 (commit f36e21492a)
 
-> +def test_tls_offload(cfg, cipher, tls_version, ipver):
-> +    """Cipher/version matrix over the HW offload data path."""
-> +    # The tls-hw-{tx,rx}-offload feature bits do not advertise cipher
-> +    # support, and there is no uAPI to query it. Skip AES-GCM-256 on drivers
-> +    # whose tls_dev_add() accepts only AES-GCM-128; keep the HW assertions
-> +    # for every other driver/cipher pair.
-> +    if tls_version == "1.2" and cipher == "256":
-> +        info = cmd(f"ethtool -i {cfg.ifname}", fail=False).stdout
-> +        for line in info.splitlines():
-> +            name, _, value = line.partition(':')
-> +            driver = value.strip()
-> +            if name.strip() == 'driver' and driver in GCM128_ONLY_DRIVERS:
-> +                raise KsftSkipEx(f"{driver} TLS offload supports only AES-GCM-128")
-> +
-> +    run_tls_test(cfg, cipher=cipher, tls_version=tls_version, ipver=ipver)
+It applies to current master. I have not checked that it keeps the
+BIND/UNBIND balance for all the cases 13210fc63f35 fixed.
 
-[Severity: Medium]
-Can the tls12_aes256 variant report a false failure on mlx5 devices that
-lack the AES-GCM-256 capability?
+Paul-Louis (Cc'd), would you be willing to send it to netfilter-devel
+on its own? If the maintainers prefer a different fix, I can test it
+on both setups.
 
-On mlx5, AES-GCM-256 support is a per-device capability bit, not a
-property of the driver. mlx5e_is_ktls_device() turns on the tls-hw
-offload features when the device reports either tls_1_2_aes_gcm_128 or
-tls_1_2_aes_gcm_256. mlx5e_ktls_add() then rejects any cipher the device
-lacks:
+The same symptom on Qualcomm PPE (IPQ9570, hardware table full after
+about 10 firewall reloads):
+https://github.com/perceival/openwrt-flint3/issues/115
 
-drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.h:mlx5e_ktls_type_check() {
-    ...
-    case TLS_CIPHER_AES_GCM_256:
-        if (crypto_info->version == TLS_1_2_VERSION)
-            return MLX5_CAP_TLS(mdev,  tls_1_2_aes_gcm_256);
-    ...
-}
+This was investigated with help from an AI coding assistant (Claude
+Opus 5.5 in Claude Code). It read the kernel and driver code, ran the
+reproducers and kprobe counts on my hardware, and drafted this
+report. I reviewed the analysis and the results and can answer
+questions about them.
 
-drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c:mlx5e_ktls_add() {
-    ...
-    if (!mlx5e_ktls_type_check(mdev, crypto_info))
-        return -EOPNOTSUPP;
-    ...
-}
+#regzbot introduced: 13210fc63f35
 
-When that happens, do_tls_setsockopt_conf() in net/tls/tls_main.c falls
-back to tls_set_sw_offload() and bumps TlsTxSw/TlsRxSw. setsockopt()
-still succeeds, so the C helper sees no error.
-
-mlx5_core is not in GCM128_ONLY_DRIVERS, so check_path() with
-require_hw=True then fails with "HW offload not engaged", even though the
-device is behaving as designed.
-
-Would it be more robust to detect this cipher-specific SW fallback
-(Device delta of 0, Sw delta of at least 1, no TlsDecryptError) and raise
-KsftSkipEx, rather than relying on a list of driver names?
-
-[ ... ]
-
-> +def main() -> None:
-> +    """Set up the DUT/peer environment and run the offload test suites."""
-> +    with NetDrvEpEnv(__file__, nsim_test=False) as cfg:
-> +        cfg.bin_local = cfg.test_dir / "tls_hw_offload"
-> +        if not cfg.bin_local.exists():
-> +            raise KsftSkipEx(f"tls_hw_offload binary not found at {cfg.bin_local}")
-> +        cfg.bin_remote = cfg.remote.deploy(cfg.bin_local)
-> +        check_tls_support(cfg)
-> +        cfg.cleanup_failed = False
-> +
-> +        ksft_run([test_tls_offload, test_tls_offload_sizes,
-> +                  test_tls_offload_record_type], args=(cfg, ))
-> +    ksft_exit()
-
-[Severity: Medium]
-Does raising KsftSkipEx here, outside ksft_run(), turn the expected skip
-cases into failures?
-
-The missing-binary check raises directly. check_tls_support() also
-raises KsftSkipEx when /proc/net/tls_stat is missing on either host, when
-ethtool -k fails, or when the DUT has neither tls-hw-tx-offload nor
-tls-hw-rx-offload enabled.
-
-KsftSkipEx only becomes a SKIP result inside the per-case loop of
-ksft_run():
-
-tools/testing/selftests/net/lib/py/ksft.py:ksft_run() {
-    ...
-        except KsftSkipEx as e:
-            comment = "SKIP " + str(e)
-            cnt_key = 'skip'
-    ...
-}
-
-NetDrvEnvBase.__exit__() only calls self.__del__() and returns None, so
-the exception reaches the interpreter. The result is a traceback, exit
-status 1 and no KTAP output, and ksft_exit() is never reached.
-
-Most NICs have no kTLS HW offload, and on all of them the kselftest
-runner would record this test as FAIL instead of SKIP.
-
-Could these checks move into the test cases? Alternatively, main() could
-catch KsftSkipEx and exit with KSFT_SKIP (4).
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261020181147.939575-1-rjethwani%40purestorage.com
+Thanks,
+Jalen
