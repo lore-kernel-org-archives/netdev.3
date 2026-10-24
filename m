@@ -1,93 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.229
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792856255;
-	b=KvHHZnLxHtAbXZ13GyH/SawmV0XEeE4JaONx3H9Espytxh/rrpN0EgPPT/z1sp03jNs9
-	 sCo1ekGtEAxRXMsCKRS5MVtUacx02s89ZVwK5ksI/7MVvNVs2R3g/yzHjcBg7lcH8Y01s
-	 ELV/8dh1QaIeeg8pg4TWgJaQFNmKZtykT39ZwF+WO91dhje5dsRM/Ftk+9GCk4fzBQ7k9
-	 FLn2vU+147cM78X6/YbEETP/F371CqCXOvjaI/mieUZ/HF8PIAGTAr7hYnyZaPWP+Iiuf
-	 Hnki7gwvvKLwMxP1ntppS3cMi/WmCw1/DCLeBcpC1jJr9O3skKNOOGhJOV3+pU7aVAQ==
+	t=1792856408;
+	b=0KyJY7fId+G5vERqKqZBCRvFu+A2XIgKC14oLE71sA+IMLCSBd0kox++Vh9jx4DiiaiF
+	 kjVZUaRLbj9SvJnieKxfa1OY2XnZF5LgWQejaxXMydTtLDwToDQbImRbWPsvHqCg4CAER
+	 Su2kYUbZ5PpToCasWCFs9/pkhMMgkHxX2t6/5xohn1UQKb8jUoOB0vImOS3t1lVw3lRzw
+	 ee/rZf8Fa0Lv6j6fxBVBzZFcllQ8uBo6YrUVsgi9Qkq9oJPmdd3ZZL5/4O588p16l4eGJ
+	 fhNL+r8nkHrSWHB4vOwk4UPI5d4xBZlFislC922Grw0rsgNhc9oCPYYfP55s94d7gdA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792856255;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=0snQJAJEeIQvzghZPviPgsDMbmQk5aO0CmuvXYpWi4A=;
-	b=28ER0lQXBZkN2+TRvUdHlaieVP1bWdhSpQeylwnvbQgtR4znZ6wOK/0IeuieX5EF512g
-	 5zcFuXONuzj87ykpDPXaqy2xgZ9vZC44mNh2kHw3CWQEJgUnf5yrmSJ553HuBpsPg/MaD
-	 GXvYvx1Sc1gqD8Z3VEneJ058iUmNVTfeRaL6vwTNymXkKd5v2bkQEzVrl3X4Ie5AgJXUt
-	 8sf1IYHukXEBi4XK75pribLtC4HFWblDbjIp+3bI6d/ujSE0XF+1uIR/5qk6DSnlHTrKb
-	 FJi8jO/MI1yD0kRqUs00lTMq5K51vJbSnQD2f16lHcpZEmTx9NlRphMSnPzp9G+oH3g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792856408;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:MIME-Version:Content-Type:Content-Disposition:
+	 X-Scanned-By;
+	bh=wl2V31FB132pnOHEDteyCX2x15/r+yvjr9u9jlR6QE8=;
+	b=FiWp05Hy2oRSILsG0D+6/5hws8LshHDOsDvgwBG1ViL+DJ000fEznfA4SBhrcGTrqBx8
+	 oVJOAicxea7TYctCiH7pz5F7ZpZgOfIBklu9Qphl+6OmoPa1fSgFSw4L3IGYU7JLd9AUm
+	 fW0g0OnYchL3MnyC6ktxwj1yPrtBRHLytaUpuox4WGVdRNYnzp/f4GEoKxBlixBfsPEZ9
+	 BYoDBBwhoFtyNaRYMI35QRo8+wAkycWmPz/R/Mtg50bVJJlq9MWG3/DG9UamLmSVaGOzC
+	 uxQpzGAyrYq8iQwyzlOy77+PbpC3HuFLDQ3ncdM5eugmIQfOtm9FaiS5zwNV4RCkaeA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=xw3gLBwg;
-	arc=none smtp.remote-ip=91.218.175.229
-Received: from mta0.migadu.com (out-229.mta0.migadu.com [91.218.175.229])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MWJowujP;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F90B606A31F
-	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 15:37:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2F90B606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC841606A31B
+	for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 15:40:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AC841606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=xw3gLBwg
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=nEQMMNENapKXlnk+aM8jOHITclygvSpZEqoOyChWqzA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792856253; v=1; x=1793461053;
- b=xw3gLBwgyx3GGigjTt1ucX5hmJ6m43s3xV4VHU9Io3J2Y0ng58Sj26bGE5Baf/i7izqUNqvx
- yrCOukLjX2ZeT7+mQb3Y39uYLC10BrNf7LG2vVBijilkSCKWmeMsiraDLZ/wSOBVysiLWJqMpa9
- QlZHaL0XMnhhbjrPIh0fnlgw=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 54e1ff86750f1880;
-	Sat, 24 Oct 2026 15:37:33 +0000
-X-Mizu-Trace-ID: 54e1ff86750f1880
-X-Migadu-Flow: FLOW_OUT
-From: Leon Hwang <leon.hwang@linux.dev>
-To: bpf@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Martin Karsten <mkarsten@uwaterloo.ca>,
-	Masashi Honma <masashi.honma@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Leon Hwang <leon.hwang@linux.dev>
-Subject: [PATCH bpf-next v4 6/6] selftests/bpf: Add tests to verify link_create logs
-Date: Sat, 24 Oct 2026 23:36:07 +0800
-Message-ID: <20261024153608.58569-7-leon.hwang@linux.dev>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261024153608.58569-1-leon.hwang@linux.dev>
-References: <20261024153608.58569-1-leon.hwang@linux.dev>
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MWJowujP
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792856406;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=wl2V31FB132pnOHEDteyCX2x15/r+yvjr9u9jlR6QE8=;
+	b=MWJowujPvB6EcAviNCKy9U5M6gefwLhsTYRS9T5DLRHgxxvyvOX1RUXg4jR5T66epWLuOm
+	XRENDdfCkvwPnyBte60wnH0dErk9alqICp/+xZ+ZcAAM0a+8EWYT0xbpomeYA5aEVdINLa
+	77jd9vTA2fHJmsMF1tZqqw2ZZptmIM4=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-385-ZIwB8MQkOT6BvLMlBz147A-1; Sat,
+ 24 Oct 2026 11:40:03 -0400
+X-MC-Unique: ZIwB8MQkOT6BvLMlBz147A-1
+X-Mimecast-MFC-AGG-ID: ZIwB8MQkOT6BvLMlBz147A_1792856402
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E20111954B1E;
+	Sat, 24 Oct 2026 15:40:01 +0000 (UTC)
+Received: from onestero-thinkpadp1gen7.tpbc.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id C3FC33000738;
+	Sat, 24 Oct 2026 15:39:59 +0000 (UTC)
+Received: by onestero-thinkpadp1gen7.tpbc.csb (nbSMTP-1.00) for uid 13628
+	oleg@redhat.com; Sat, 24 Oct 2026 17:40:01 +0200 (CEST)
+Date: Sat, 24 Oct 2026 17:39:58 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: Allison Henderson <achender@kernel.org>,
+	Joel Granados <joel.granados@kernel.org>
+Cc: pabeni@redhat.com, edumazet@google.com, kuba@kernel.org,
+	horms@kernel.org, netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH 0/5] net/rds: move sysctl-only code under CONFIG_SYSCTL
+Message-ID: <atzRTslzb6CAKPKX@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -97,126 +78,35 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Add tests to verify the new logs in link_create and xdp link_create,
-including a log reported via extack when fail to create an xdp link.
+On top of
 
-Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
----
- .../selftests/bpf/prog_tests/xdp_link.c       | 102 ++++++++++++++++++
- 1 file changed, 102 insertions(+)
+	[PATCH net 0/2] net/rds: fix init failures leaving built-in transports on a dead core
+	https://lore.kernel.org/all/20261021195837.142802-1-achender@kernel.org/
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_link.c b/tools/testing/selftests/bpf/prog_tests/xdp_link.c
-index e7e9f3c22edf..d1bca773ca2f 100644
---- a/tools/testing/selftests/bpf/prog_tests/xdp_link.c
-+++ b/tools/testing/selftests/bpf/prog_tests/xdp_link.c
-@@ -150,3 +150,105 @@ void serial_test_xdp_link(void)
- 	test_xdp_link__destroy(skel1);
- 	test_xdp_link__destroy(skel2);
- }
-+
-+static void test_link_create(int prog_fd, int ifindex, enum bpf_attach_type attach_type,
-+			     __u32 flags, int exp_err, const char *msg)
-+{
-+	char log_buf[128] = {};
-+	LIBBPF_OPTS(bpf_log_opts, log_opts,
-+		    .buf = log_buf,
-+		    .size = sizeof(log_buf),
-+		    .level = 1,
-+	);
-+	LIBBPF_OPTS(bpf_link_create_opts, opts,
-+		    .flags = flags,
-+		    .log_opts = &log_opts,
-+	);
-+	int fd;
-+
-+	fd = bpf_link_create(prog_fd, ifindex, attach_type, &opts);
-+	if (!ASSERT_LT(fd, 0, "bpf_link_create")) {
-+		close(fd);
-+		return;
-+	}
-+
-+	ASSERT_EQ(fd, exp_err, "fd");
-+	ASSERT_STREQ(log_buf, msg, "log_buf");
-+	ASSERT_EQ(log_opts.true_size, strlen(msg) + 1, "log_size");
-+}
-+
-+static void test_link_create_invalid_prog_fd(void)
-+{
-+	const char *msg = "Invalid prog_fd.\n";
-+
-+	test_link_create(-1, IFINDEX_LO, BPF_XDP, 0, -EBADF, msg);
-+}
-+
-+static void test_link_create_invalid_prog_type(void)
-+{
-+	const char *msg = "Invalid prog type.\n";
-+	const struct bpf_insn insns[] = {
-+		BPF_MOV64_IMM(BPF_REG_0, 0),
-+		BPF_EXIT_INSN(),
-+	};
-+	int prog_fd;
-+
-+	prog_fd = bpf_prog_load(BPF_PROG_TYPE_LIRC_MODE2, NULL, "GPL", insns,
-+				ARRAY_SIZE(insns), NULL);
-+	if (!ASSERT_GE(prog_fd, 0, "bpf_prog_load"))
-+		return;
-+
-+	test_link_create(prog_fd, 0, BPF_LIRC_MODE2, 0, -EINVAL, msg);
-+
-+	close(prog_fd);
-+}
-+
-+static void test_link_create_attach(int ifindex, enum bpf_attach_type attach_type, __u32 flags,
-+				    const char *msg)
-+{
-+	struct test_xdp_link *skel;
-+
-+	skel = test_xdp_link__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "test_xdp_link__open_and_load"))
-+		return;
-+
-+	test_link_create(bpf_program__fd(skel->progs.xdp_handler), ifindex, attach_type, flags,
-+			 -EINVAL, msg);
-+
-+	test_xdp_link__destroy(skel);
-+}
-+
-+static void test_link_create_invalid_attach_type(void)
-+{
-+	const char *msg = "Invalid attach_type.\n";
-+
-+	test_link_create_attach(IFINDEX_LO, BPF_CGROUP_INET_INGRESS, 0, msg);
-+}
-+
-+static void test_link_create_xdp_invalid_target_ifindex(void)
-+{
-+	const char *msg = "Invalid target_ifindex.\n";
-+
-+	test_link_create_attach(0, BPF_XDP, 0, msg);
-+}
-+
-+static void test_link_create_xdp_extack(void)
-+{
-+	const char *msg = "Invalid XDP flags for BPF link attachment\n";
-+
-+	test_link_create_attach(IFINDEX_LO, BPF_XDP, XDP_FLAGS_REPLACE, msg);
-+}
-+
-+void test_link_create_log(void)
-+{
-+	if (test__start_subtest("invalid_prog_fd"))
-+		test_link_create_invalid_prog_fd();
-+	if (test__start_subtest("invalid_prog_type"))
-+		test_link_create_invalid_prog_type();
-+	if (test__start_subtest("invalid_attach_type"))
-+		test_link_create_invalid_attach_type();
-+	if (test__start_subtest("xdp/invalid_target_ifindex"))
-+		test_link_create_xdp_invalid_target_ifindex();
-+	if (test__start_subtest("xdp/extack"))
-+		test_link_create_xdp_extack();
-+}
--- 
-2.55.0
+Allison, Joel, I am sending this mostly to "complete" the previous discussions.
+I won't argue if you think these cleanups do not make a lot of sense.
+
+And of course, I can't test them. I just verified that the kernel with
+CONFIG_RDS CONFIG_RDS_RDMA CONFIG_RDS_TCP CONFIG_RDS_DEBUG builds with
+or without CONFIG_SYSCTL.
+
+However, I decided to abuse sashiko.dev and sent the cumulative "not
+for inclusion" patch, sashiko didn't find any problem:
+
+	[PATCH] net/rds: move the sysctl code under ifdef(SYSCTL)
+	https://sashiko.dev/#/patchset/atyHdPlxALv0Nnyj%40redhat.com
+
+Oleg.
+
+ net/rds/ib.h        |   1 -
+ net/rds/ib_sysctl.c |  33 +++++---
+ net/rds/rds.h       |   5 --
+ net/rds/sysctl.c    |  26 ++++--
+ net/rds/tcp.c       | 230 ++++++++++++++++++++++++++++------------------------
+ net/rds/tcp.h       |   2 +
+ 6 files changed, 168 insertions(+), 129 deletions(-)
 
