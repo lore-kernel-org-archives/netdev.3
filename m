@@ -1,101 +1,115 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.179
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792946918;
-	b=zPJ26SNgBmEYgM/CjOPHT/qocGpiz8CGcYc4nWA6D3nKUif1cf1cmBbRvJ3Y/paD4b7r
-	 FPdzZrxGMilGLsY8JKfA4y/U+DpFYll+rGaEZBoq5757Pl2k6/U8CZ3V/0o/+vqTDEIDa
-	 GT5Or+euc0IKwYz9GUHoipSMS5MueJzTxTt6YUzD+o8Irh9U0cvb2vgwyb19qW+XLQAnm
-	 rqt5DLzeM+jg5l3EdtdpJ6zZbKU8oGL96aV6+yywpe/14T8aXFwmh+Q67xx3miw+dS23c
-	 35gTuihQziBqhgc/Hq9tpVZ/FCC8WSZ9vXGyP+UhJwfKyC6AhG/+ImlvOszwJq36OPg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792946918;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792947099;
+	b=mBWyWv1plNTr7WRQqHGcHF+T7Qewyc8uZJn0yY3WvwSLbfZpsz3STqvIrFM7LKwSQqfp
+	 txHiYB+ouEednpNMpEnjYqPM0CuWOSQY2nksiYxjxLYTHCej8Bem4wb1SDkQbIqx58Lvk
+	 WodvEnESG8lkB3pGoc+GqGW/jj5Jt9nL9RqJ/SXAYktnAOvNGxF2/ViCinlbzZW5cjB9A
+	 Kzv8QMCuOSIlhZuPGXkFjHy+qbUaihowNDcqehGCJX7BkM4Mgr7bbGImdDzje0NLcBUoB
+	 3w64bzLzfP70aWrlnbmKa/RELdc3Gd1qvsTf6uGWdQVbuVDMtRBUdyTPYPE76648TgA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792947099;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=OQ5OjXs0aIahC9OVKlKWWMFSX1nU2p7OCig10Q5/wzk=;
-	b=1RWxHFkKimgPsBdnFtdDM7lrskTpCmhIVR+IOfLMZtBQWZAnMZh/ZCGsY5+Z/H5AMUW4
-	 hnIk7CK4Et5hgcScKYI7JClvU33l2Du38E4iRGnPBDL+4Y48k0J9ea1oME7z6WNxGpn5c
-	 vc4VA3Ak7qQTkSO3XHIOuZw9caAyhwlg72zS9Sc9HKXaYooFuVWTeH+JnEjIRjMvYKQx6
-	 nwaYYzo5ZnX09Yl3zgG23Gbfck0ZdamuU6C+/27GkAjjkE27NM2HYZhpVbkdKJnRYfTHo
-	 nulDlWzYYThIqn6awiPZ5eaV7AB9nekz8wpMGwAZFpgqDTovCdA9ONaJBFdCx0yjJYA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=KYmnvVXK;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.179
-Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=xzHKgSVVoFQfSfmD7ehsFWGCtvBBsi/8d+yY9tqmJak=;
+	b=4Y6/xPlfd+mqJlH0UG4KEI272zeCApV0lzBFyLPLIHDM7ktrKILxYiEPDUzSrQ4M5dEh
+	 eeUietEEbdpG6aXm7CReRcs8Mu+GxVS01ANphKHidXcaNYL9mHDc3FMyQxrUGG9YMcz77
+	 bLzm3YsxdAgC/6VuOrt1wXUvuiioneMQJCygPkEEeXKHlrSo95URTdWSWpTrORCKUA2Lo
+	 yK2s55N16MIm48Mh4zNEtceTso2TagU3WtkTWwypf+Secu8Mcuy/YTQ5NT/iCmj4LsWRn
+	 QyLfHS2KSDFUnInT4+lU+WwxWyk5e0xLJa0CJEEesCLAzV+Xs6rTMtkwwzHcWEZfUHQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AXSMHcmt;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=gHK+tJLQ;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F35D606A31D
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 16:48:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F35D606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2869606A31B
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 16:51:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C2869606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=KYmnvVXK
-Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-33bf40b0c8bso6590810eec.0
-        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 09:48:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792946917; cv=none;
-        d=google.com; s=arc-20260327;
-        b=EqoHrwMmtoaYTtA1tW4XwoTqvdn9Hbicybv0McMOCWfDIWBPPnaC1SmI2iw9OQx8E+
-         bgiyqh46fV1NF+mgxASNb3eJQzkxq8IvFTkXMgbLBFiKryALD+Ix1AUWBrOQHYIXoxP/
-         /udO8F2oCebQ/V2S6568/qbShbfqquxbqqNPg85B2xIw5jYI6SM7DaPaDbU/H3taOS8D
-         VReowAtSbGEnIok3qIWSybmD+YPvLGLSklW0JkMtRx/VYaaloZKyk1eTBWiHFRsWD2Vr
-         bSaMFzD015l8TiR7LwBc1lTOsTgnXPYuD+SkSQKeuUOy6AEzWDRW6ZIDRos8wSRyNcOw
-         b8iA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=OQ5OjXs0aIahC9OVKlKWWMFSX1nU2p7OCig10Q5/wzk=;
-        fh=XeKaIULN0wbwbsgpxM6cNWkOQZmFWAPZmxtpZJf2CmY=;
-        b=BZ6a2FUKjcCe9zPaSpN+AMnqRwIPHSfbf6SCwO881SDW40hXqgnVaaHNhEUj3gCJVk
-         fM46IKp/Ll0owhU1HFAvXyd0qfnkXGDTb17WuuFvGGjfmzpSrmgGU+hK9DlgM3aK8qtq
-         7FJoFtmiQSiA9ZbvVdGxXZuHF7JMPKkZTMKw+ED07BLFUwmZx6BCCD5Aaz2J+Rgl8wGv
-         gQxc9JgcjjuK2RlS13M27MK2wFXU9nuhtjZuEJyp25omNbPm41zT3E+87E0SCn/+/098
-         MngJbE/FXsfrHBRzDY3F1OjrSJFt/kZ0SdAhVgfdJwL5E3Qaa9m/F2TfJnkSpYh7ef/n
-         uBpQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AXSMHcmt;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=gHK+tJLQ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792947096;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xzHKgSVVoFQfSfmD7ehsFWGCtvBBsi/8d+yY9tqmJak=;
+	b=AXSMHcmtnswIVtza7//H6rjMutf3+x+gD0Ad01CQsFQk6ibPAKnfzJV7nsrN6u/1MLGuLp
+	cZ5wRtUiE3VV3oa7jygUaTc+Z+/rSKFQTWK7vdymCHLtkOogiG6EXd2wh1rGj9b++/F5fx
+	63jTODNhVzmE1AcVFwZ6apRpXS8BWGw=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-373-Drbm2n3jNoiJMM8hM5hNiw-1; Sun, 25 Oct 2026 12:51:35 -0400
+X-MC-Unique: Drbm2n3jNoiJMM8hM5hNiw-1
+X-Mimecast-MFC-AGG-ID: Drbm2n3jNoiJMM8hM5hNiw_1792947094
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48c415561aaso1443555f8f.1
+        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 09:51:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792946917; x=1793551717; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=OQ5OjXs0aIahC9OVKlKWWMFSX1nU2p7OCig10Q5/wzk=;
-        b=KYmnvVXKqmgzmzcYvgaBaE2o02vTlgFEhxL1z9bImYcjsrPqSwTb/uT4x98PWQ3Avz
-         xmWPMeKQzEN55YHwCXqXnABiZx039OJtIL8+lt6hdomTYYNtNqizDQXSjWavfeHB4LJu
-         dNI274UzUkEtefjRtU2EUFZLWxLV8VPxJgT7c+ARjxaBt6KjMYVAPfn8ub2Kd+fi/pKJ
-         y1IJO9RgQlIwu/psiG2D1NnGKhd1julDHjPg0GejY/VoWMcUo2X9nER+AnjGuTq5jE34
-         pnBaXMrW2nYwKZ09gRlN8+I87/aOlBTdynHQhDr3c3h6CLdyyyerNOEEOldanrfp7vos
-         5fUA==
+        d=redhat.com; s=google; t=1792947094; x=1793551894; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xzHKgSVVoFQfSfmD7ehsFWGCtvBBsi/8d+yY9tqmJak=;
+        b=gHK+tJLQASjCX6mh6NkeGsl0txW4VqTM8bH49P6YkapJfaxn5Rs/+xawYoWWzt9dNk
+         P1H/VXyiAag0xR3rw2nGeF06tlMYXMuxWKoB6Rrh4lThnopHUVTDXIyFpipegA/E+YDC
+         UYh7IJPtZoaZE1IOzgI4jyFVVD5W0KuZt6j8GIKP+AhlCVq1BXaDvS28G25Bt/3jOp6O
+         o94CbejzTxxCj2vyKJspYQxNBuZIR7+soZz3mevbys3GgwcExKbeYd4wVYdaywx7VE7z
+         PtFGF6Dr9fjajJQEzbu5Pe9skXldQMc0XBaSnAdoIryov98Owe2LsC7/1mSl89B6pynG
+         OnuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792946917; x=1793551717;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OQ5OjXs0aIahC9OVKlKWWMFSX1nU2p7OCig10Q5/wzk=;
-        b=2MeWgFl/cLQFpmwaT20OnVNsnckFb2mvm2+nZrO7hVmuGiMo0NG7dchJS0PTwhveyq
-         uV7DnF0xMWZ2Bxn2A5cGpRBqY4GETkvhFRvSrGIpEh4HVDlPjUXn9oqVIUBLmhkmRdIi
-         FkvsL+KwEIvWKIfRnOpinBUcduoZV5ZuXR+faRM+1VXHr91NlUZSEKiX+4d9kJtPRkqc
-         BEoZfyum5ez3Yiic94XEGR6ptEzka5Jr7C1prZ5HqZeh7FWBFg2Gn/GPfT98Gt5+eg2a
-         1KDGT/6njoVJ4rNwQtuuonHijwSL7WQEnBelSb9mJYOfviWwF0IErqGhNFyI4XIN6xwM
-         afLA==
-X-Forwarded-Encrypted: i=1; AKwUvBxX0zMKOYFPL7VoWeiwXVu8c6NoyMKYNqMYzPw4OvM5t8VGOBvnzmYt/u35hbjsKce3PIzrAjw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKqEdGCoqnyDmZOtTpBCjBO3rFDptTEOTK8w6vA99Rmwbc9XZ+a
-	1eRptPFTgOO4OoRD6VDkavFray8+vvfOduFLhSkbH16M/2oB4fIt4KGAFdVXjqUMA84rL7ng03V
-	sHT4vgnK7AcIwhAR3RLrjaJykG2SqQCg=
-X-Gm-Gg: AYBFou32uabBxRUYxFYlFMpHgOwhUUl/noQaoC1HSci2HQdnPCfEJUeKMhj4I2xQkiX
-	9d611sKQveXwaxSNJxf9UtTpwvqxaJTOZZIDa6T6z3R5M6kQl0DInNC4S2rp/A+R1g/0NICcv8D
-	+X6UqFbw9ze1mamOVuPqn9u7xqAuZU1lkO8MwNOjykmKLYHXY4QXbjjis7PtSUdfhBgNM9WaP9f
-	TjRIVPcqCHN1pzgGK+4tkZdJ4Y6HtTyOzHg+HaaUQBFYGY9XgFoL8rzd4mL8daFnaieu3ADM50t
-	anXnwlwj4idpTeohuLgAXstUFhNx1wf7zyaVq30dL1tjwnb9QfQW6MHvGBMbX1RnWEe5mM0R44u
-	fXDQcTv8exyou1jAd+19GULGBHuh2dDdnWzQgKVGWZ6jLQiBmTrdFtrhdPRKeIs1pDjtMfMDHsZ
-	MZCKMcBy32aay1F9xp1VJixu8kiA==
-X-Received: by 2002:a05:693c:87dc:20b0:350:2a5c:56c with SMTP id
- 5a478bee46e88-369e84b1873mr7142255eec.20.1792946917425; Sun, 25 Oct 2026
- 09:48:37 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792947094; x=1793551894;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=xzHKgSVVoFQfSfmD7ehsFWGCtvBBsi/8d+yY9tqmJak=;
+        b=debIWW/doOENDeSfM53WlMIhelBGgb1k6YCIU632ypWBDa7XogLoHqto+RoaMwzDqQ
+         gCaiROApVqXa7gQ2E2oaFA4pFMMWZwclx773RNbZELAA4pnp8o5IL9eEFlR72ihrNFmR
+         owRNqd65dXM/9IHGUzgH44vLIaQ6PFKKF2ngs2hzGlXzLu1l1c71wuejUlLufgolpukm
+         5kChTr535Fw+fPQLtjcqC8nuyYOws9/XgPHIRavT2awEUax4ywARYKvF1Yjh6S/ZYOil
+         9PI6sJV1lM+R6J7mbipGgoUcZYQn8ybE3kzYCt6PsjiavViSEXmPN2Gey0oyVQ7RlfqH
+         3SqQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw/TocpLspqDjVO684OH40AWIaP7bdCkw4HjwEO48EocSaCY+HDaHN8ubQuU5/VuKjH24hr+Fs=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKqQBOfB3CDe544M8g3vQJZT04JP/omjotSDAmOTlacSzGhn08n
+	xyA6UQeCzWptTQbErAAPdOFqHFq7g+VQVVTlw5LhsNZA4RyanoUZS3V9WodbnlfiPF94naClhrS
+	ilD3Ybx76aCeVQWy6VBJGOeHbxFaHABdQ+V+EJy7dyZZs2cXXo15wz9M2rg==
+X-Gm-Gg: AYBFou0FS7G1PtiffknWaBR7qaO5q9MG/u8/9agW7/GQHu3tv8CHpeX2R0lx18shQnf
+	97plMiUfH2zYSkgsicqvEvCKqgTAlVeNTMAcysCK0F4pihpMp6m9masn/VgczrNGglumJGeo06Y
+	OXnwAOukIXjBkimODs2oAHsEXVdN/rcDULfX0CIKYhvxiCmLwnUruTNixlk2Fj8ddq9yHUyfCdX
+	o+wDfxtEWDhGEVrqj39I4aRDtH0Iv6Ou6m9ArNlg6dLGPfmu+sf+peTEk3xCKhY+333pVl3cUZy
+	bw1P7/VPiztNMCSiIwGrowGAB+E8XimTmE76bMs+yPzT6sfmxlX2jbMzrHbqjIU6Yxs=
+X-Received: by 2002:a05:6000:481b:b0:48e:82f:48fc with SMTP id ffacd0b85a97d-48e3eb971ccmr8796928f8f.31.1792947093902;
+        Sun, 25 Oct 2026 09:51:33 -0700 (PDT)
+X-Received: by 2002:a05:6000:481b:b0:48e:82f:48fc with SMTP id ffacd0b85a97d-48e3eb971ccmr8796894f8f.31.1792947093370;
+        Sun, 25 Oct 2026 09:51:33 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1536:fc00:b838:383:1c7:6e81])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ecd8c05sm14148518f8f.49.2026.10.25.09.51.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 25 Oct 2026 09:51:31 -0700 (PDT)
+Date: Sun, 25 Oct 2026 12:51:28 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: linux-kernel@vger.kernel.org, willemb@google.com, davem@davemloft.net,
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, maxk@qualcomm.com, rusty@rustcorp.com.au,
+	netdev@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [PATCH net v3] net: gso: validate transport header before
+ computing segment length
+Message-ID: <20261025124546-mutt-send-email-mst@kernel.org>
+References: <52b8bfe4ee848aff8ace47752352de486171d45f.1792595507.git.mst@redhat.com>
+ <179290180493.3134.5235549211177646736@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,126 +119,192 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <179287943591.17355.17353179557993329094@gmail.com>
- <at0vzdlVTF8XAzHj@strlen.de> <179288180870.24716.7833838593165388250@gmail.com>
- <at2V3g-B1Ko2x1iK@strlen.de>
-In-Reply-To: <at2V3g-B1Ko2x1iK@strlen.de>
-From: Joas Antonio <joasantonio108@gmail.com>
-Date: Sun, 25 Oct 2026 13:48:26 -0300
-X-Gm-Features: AclHuK8nWBBaduAuSBl0zsyZnm0f5QTkQEz1Yhbnl-LnIzySkyTP_8D8glFnwKY
-Message-ID: <CAOCBhwFsbHzRuxngYoG3DDOB_KgBL5c0aHvZEVh58Xkeu=h1oA@mail.gmail.com>
-Subject: Re: [PATCH nf] netfilter: nft_set_pipapo: skip transaction elements
- during GC
-To: Florian Westphal <fw@strlen.de>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Phil Sutter <phil@nwl.cc>, Weiming Shi <bestswngs@gmail.com>, 
-	netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <179290180493.3134.5235549211177646736@kernel.org>
 
-Hi Florian,
+On Sun, Oct 25, 2026 at 04:16:44AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 1 · Medium: 0 · Low: 0
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [High] The patch is incomplete for the producer its own commit message
+>   names.
+> 
+> --
+> 
+> net: gso: validate transport header before computing segment length
+> 
+> This patch makes the GSO segment length helpers in net/core/gso.c check
+> the TCP header before they read it. If the transport header is unset, or
+> the TCP header is not in the linear data, skb_gso_validate_network_len()
+> and skb_gso_validate_mac_len() now report that the skb does not fit. It
+> also adds two helpers, skb_inner_transport_header_was_set() and
+> skb_transport_header_linear(), to include/linux/skbuff.h.
+> 
+> > diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+> > index d6894f463bf43..11c8b295bd260 100644
+> > --- a/include/linux/skbuff.h
+> > +++ b/include/linux/skbuff.h
+> 
+> [ ... ]
+> 
+> > @@ -3250,6 +3257,29 @@ static inline int skb_transport_offset(const struct sk_buff *skb)
+> >  	return skb_transport_header(skb) - skb->data;
+> >  }
+> >  
+> > +/* Is the (inner) transport header, as specified by
+> > + * skb->transport_header/inner_transport_header, in the linear data?
+> > + */
+> > +static inline bool skb_transport_header_linear(const struct sk_buff *skb,
+> > +					       unsigned int hlen)
+> > +{
+> > +	int thoff;
+> > +
+> > +	if (!skb_transport_header_was_set(skb))
+> > +		return false;
+> > +
+> > +	if (skb->encapsulation) {
+> > +		if (!skb_inner_transport_header_was_set(skb))
+> > +			return false;
+> > +
+> > +		thoff = skb_inner_transport_offset(skb);
+> > +	} else {
+> > +		thoff = skb_transport_offset(skb);
+> > +	}
+> > +
+> > +	return thoff >= 0 && thoff + hlen <= skb_headlen(skb);
+> 
+> [Severity: High]
+> 
+> The commit message names bpf_skb_adjust_room() as a way to leave a bad
+> transport header behind. It also says:
+> 
+>     Qdisc length estimation has carried a guard against exactly this since
+> 
+> Is that guard enough for the bpf_skb_adjust_room() case? In
+> qdisc_pkt_len_segs_init(), the only check is for an unset transport
+> header. Nothing there matches the thoff >= 0 check added here:
+> 
+> net/core/dev.c:qdisc_pkt_len_segs_init() {
+>     ...
+> 	if (!skb->encapsulation) {
+> 		if (unlikely(!skb_transport_header_was_set(skb)))
+> 			return SKB_NOT_DROPPED_YET;
+> 		hdr_len = skb_transport_offset(skb);
+> 	} else {
+> 		hdr_len = skb_inner_transport_offset(skb);
+> 	}
+> 	/* + transport layer */
+> 	if (likely(shinfo->gso_type & (SKB_GSO_TCPV4 | SKB_GSO_TCPV6))) {
+> 		const struct tcphdr *th;
+> 
+> 		if (!pskb_may_pull(skb, hdr_len + sizeof(struct tcphdr)))
+> 			return SKB_DROP_REASON_SKB_BAD_GSO;
+> 
+> 		th = (const struct tcphdr *)(skb->data + hdr_len);
+> 		tlen = __tcp_hdrlen(th);
+>     ...
+> }
+> 
+> bpf_skb_net_hdr_pop() moves mac_header and network_header forward. It
+> leaves transport_header where it was, unless it was equal to
+> network_header:
+> 
+> net/core/filter.c:bpf_skb_net_hdr_pop() {
+>     ...
+> 		skb->mac_header += len;
+> 		skb->network_header += len;
+> 		if (trans_same)
+> 			skb->transport_header = skb->network_header;
+>     ...
+> }
+> 
+> When the DECAP_L4 or DECAP_IPXIP flags remove the last tunnel GSO bit,
+> bpf_skb_net_shrink() also clears skb->encapsulation.
+> 
+> Take a locally VXLAN-encapsulated TCP TSO skb whose transport_header
+> points at the outer UDP header. If a tc program calls
+> bpf_skb_adjust_room(skb, -50, BPF_ADJ_ROOM_MAC,
+> BPF_F_ADJ_ROOM_DECAP_L4_UDP | ...), the transport offset ends up at -16
+> and encapsulation is 0.
+> 
+> A simpler BPF_ADJ_ROOM_NET shrink of 40 bytes on a plain Ethernet/IPv4
+> TSO skb gives an offset of -6.
+> 
+> If the program then redirects to egress with bpf_redirect(), this path
+> runs before any of the validators hardened in this patch:
+> 
+> __bpf_tx_skb()
+>   dev_queue_xmit()
+>     __dev_queue_xmit()
+>       qdisc_pkt_len_segs_init()
+> 
+> In that function hdr_len is an unsigned int, so -16 becomes 0xfffffff0.
+> hdr_len + sizeof(struct tcphdr) is then truncated to 4 when passed as the
+> unsigned int len argument of pskb_may_pull(), so the pull succeeds.
+> 
+> Wouldn't __tcp_hdrlen(th) then read about 4GB past skb->data on 64-bit?
+> 
+> Should qdisc_pkt_len_segs_init() get the same check, for example by
+> using skb_transport_header_linear()? If not, could the commit message
+> be changed so it does not say the qdisc path already guards against
+> this?
+> 
+> > +}
+> > +
+> >  static inline u32 skb_network_header_len(const struct sk_buff *skb)
+> >  {
+> >  	DEBUG_NET_WARN_ON_ONCE(!skb_transport_header_was_set(skb));
+> 
+> [ ... ]
+> 
 
-You are right, and I was wrong. Sorry for the noise.
 
-nft_set_elem_init() does stamp the expiration at parse time:
+Indeed. Not nice.
 
-    nf_tables_api.c:6860
-    nft_set_ext_timeout(ext)->expiration =3D get_jiffies_64() + expiration;
+Eric, you seem to have strong opinions about how to fix these
+bugs, so, before I spend time testing: a fix like the below, acceptable?
 
-but I misread where the reference timestamp comes from. It is taken
-in nf_tables_valid_genid(), before the first message of the batch is
-processed, not in nf_tables_commit(). So expiration is always at least
-tstamp + timeout, and the sync gc in pipapo_gc_scan() cannot see a
-new element as expired, no matter how long the transaction takes.
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 
-The "empty set" I observed is explained by the elements simply timing
-out after the commit (10ms timeout), and the dump skipping expired
-elements. It was not the gc collecting inactive elements. The
-comparison with 86b6471e690c was also wrong.
+---
 
-Please drop the patch. I'm withdrawing it.
-
-Thanks for taking the time to check it.
-Joas
-
-
-Em dom., 25 de out. de 2026 =C3=A0s 02:38, Florian Westphal <fw@strlen.de> =
-escreveu:
->
-> Joas Antonio dos Santos <joasantonio108@gmail.com> wrote:
-> > The catch is that the expiration isn't stamped at activation, it's
-> > stamped when the element is allocated. nft_set_elem_init() does:
-> >
-> >       nft_set_ext_timeout(ext)->expiration =3D get_jiffies_64() + expir=
-ation;
-> >
-> > and that happens back in the parse phase (nft_add_set_elem), while we'r=
-e
-> > still going through the batch. The element only goes active later, in
-> > nf_tables_commit(), which is also where the gc tstamp is taken
-> > (nft_net->tstamp =3D get_jiffies_64()).
->
->
-> Can you name the line in the source code?
-> I am not seeing it :-(
->
-> > So the expiration is really parse_time + timeout, and the commit-time g=
-c
-> > scan checks it against commit_time. If you add a big batch of elements
-> > with a short timeout, they get parsed one by one and the commit only
-> > happens at the very end, so the ones parsed early in the batch have
-> > already gone past their timeout by the time we reach the commit tstamp.
->
-> Thats not supposed to cause a gc?
->
-> All the sync gc functions are supposed to check against the reference
-> timestamp taken at the beginning of the transaction start, in
-> nf_tables_valid_genid().
->
-> They are NOT supposed to check against wall clock time.
-> Even if transaction takes 5 minutes: the sync gc step should
-> NOT observe even a single timed out elemenent.
->
-> They become stale only AFTER the sync gc step.
->
-> tstamp is coming from nft_nat->tstamp, i.e. start of transaction.
-> e->ext timestamp therefore should never be in the past compared
-> to that reference time.
->
-> 1751                 if (__nft_set_elem_expired(&e->ext, tstamp)) {
-> 1752                         if (!nft_trans_gc_space(gc)) {
-> 1753                                 gc =3D nft_trans_gc_alloc(set, 0, GF=
-P_KERNEL);
-> 1754                                 if (!gc)
->
-> > I confirmed it on an unpatched 7.3-rc6 + KASAN: add 20000 elements with
-> > "timeout 10ms" to an interval+timeout pipapo set (the parse alone takes
-> > ~6s) and the set ends up basically empty. pipapo_gc_scan() collected th=
-e
-> > new, not-yet-activated elements during the same commit that added them.
->
-> How? I'm not seeing it :-(
->
-> > It's the same thing you already fixed for rbtree in 86b6471e690c, the
->
-> I thought that was about false zap of rbtree end nodes which doesn't
-> apply here :-(
->
-> > races the grace period just like the rbtree case, but the precondition
-> > (gc picking up the not-yet-active elements) reproduces every time.
->
-> How?
->
-> > If it'd help, I can respin v2 with the parse-time vs commit-time
-> > expiration written out in the commit message, just let me know.
->
-> Yes, please explain in detail how time can advance during transaction,
-> because its supposedly impossible.
+diff --git a/net/core/dev.c b/net/core/dev.c
+index e76762e29360..bef7f0a00140 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -4174,7 +4174,8 @@ EXPORT_SYMBOL_GPL(validate_xmit_skb_list);
+ static enum skb_drop_reason qdisc_pkt_len_segs_init(struct sk_buff *skb)
+ {
+ 	struct skb_shared_info *shinfo = skb_shinfo(skb);
+-	unsigned int hdr_len, tlen;
++	unsigned int tlen;
++	int hdr_len;
+ 	u16 gso_segs;
+ 
+ 	qdisc_skb_cb(skb)->pkt_len = skb->len;
+@@ -4197,6 +4198,8 @@ static enum skb_drop_reason qdisc_pkt_len_segs_init(struct sk_buff *skb)
+ 	} else {
+ 		hdr_len = skb_inner_transport_offset(skb);
+ 	}
++	if (unlikely(hdr_len < 0))
++		return SKB_NOT_DROPPED_YET;
+ 	/* + transport layer */
+ 	if (likely(shinfo->gso_type & (SKB_GSO_TCPV4 | SKB_GSO_TCPV6))) {
+ 		const struct tcphdr *th;
 
 
 
---=20
-Joas Antonio dos Santos
-Cyber Security Specialist and Ethical Hacker
-joasantonio108@gmail.com
-LinkedIn
+
+-- 
+MST
+
