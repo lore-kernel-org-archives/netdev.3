@@ -1,61 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792930131;
-	b=00h3i8rmkw4PmuRsoT9NigllfU//k2nUCXlNUEIKpydUhPrHI43SPU4OGxCX9DlneQJs
-	 00aq72OkC5VnZyXSNSEXXiI2jf1GoMeY1A+OKYnsbWHIrkXPB/FkU644rZNcylUq8IcCG
-	 AXxwFI+r076bajfhYpKRTS3mjSWgm8K8nW5QJhWQ4oLsALT1ireimppaCwcsxYR15kWQB
-	 ZOu6KNnzpKtmCcZtpH3fBdk2dxQObBdspxeylwIs9iceWzlmXu7LtNl5h1dbMXh6jo648
-	 bQuKCjJxKCLimiPweKY7PKOLkwBNNJakM+8kwA1H7zb1+LU/nS2hui0vyCrBKOXcnNw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792930131;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=1Srkchyn4UP9Lvo3MOvIyy2y34GPOiLZ1IITzWOyA74=;
-	b=wHDXzoA4AgdREnhXU7JKvyAc/v3nlRaPkBtJjnwnEbAODYpaOG34OLFqPWQwEK6IANMe
-	 pmX1f0pbBOwZ4eLUoJVmMIzqVtM18AbuZ8rzPNgHS2/xK6WPT4R3aohC2myCRY3pvxvg1
-	 PCSsXivrnj2aH/MoWsnSAU/Vxf0cmSTxF3Jb+sROdjhHvqEnyy+E4UzYOdeWDXQEr0o24
-	 du0kCKar3bQdvumiLfnyPlZxSv48cYKk2bSEijLxjwn4gMpcrmsyK6+v9KHbw9q0ENtJ2
-	 0mGPg2Fwuc3y/ledufawrUNvkdUqzbnF1uc1+Fxyvg4eXQLhPyBtmzztz57cT42OHlw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c5hObA53;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.52.40
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792930165;
+	b=pg6K/EKiHO90/Aj6q4G42NHbVzTSxoKAoXNeXB5HYzmu3Jq26KYkupMoMqVYLEGH7/gW
+	 lhPjZYomJd56IDXrUyC6+9/aT+YuyuA5SQDsTvFGY14ow/UHjSE9PQN2Zl0zdFIvFhiTx
+	 31h8fmfnyxf/dt9PUFXN/HMCo8NAUC56z/r3+ecHJXmFewz/P0lW8jEVEmYyMKfcxJEvd
+	 5Zg24AZM4y8uc1TA3UihPPCp2vVmtVaOCJ6/A5CrEpyY8RuFNa9O82qMghc2cgh1W8+En
+	 GoH7ehPz4qqdftCxnRDMmtpIc5HyLxk8kThK2JHMNzlCCIDmRVKdLqOjeOJ+UF6abFQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792930165;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=5jH3MRV+z6edJ+GIC/0hXKHCieyo5wQwkoHRLfB5Nis=;
+	b=Vg96KshjDHOdKL5K9IDWdj7bb92KpnJ7CuI5lCFCKmRwBsZAQ1ZqdUnkLMBFoUihPlLo
+	 O5UgGGS9+9+ifYBZgu1qFI7iWcEj+0cw/JEDNPMaQr3R24nUViZifyJG3g8rqfffbgQsS
+	 PPvSwSuAvm0YpMokIDwJozRoA0UvnyZ1jDekzTqXgF5OfQS3IcCeScNNZdhVjOeKKFFSH
+	 2BCrc8LfI8cLEtGgVE33wZBj+ZE2CVoPCe98k7DKp8s60djduimxDdMzJ9Z9etHUi8yMA
+	 TnejDrfZdlA68x5dZ7KKONXLWb1Kj1BwMxSs9H35j2s9/XcuJnMTmIHhXCBjCrjnCvg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=BPAHdqxs;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.52.40
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011040.outbound.protection.outlook.com [52.101.52.40])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D72606A32D;
-	Sun, 25 Oct 2026 12:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80ABC606A31A;
+	Sun, 25 Oct 2026 12:09:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 80ABC606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c5hObA53
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65B271F01825;
-	Sun, 25 Oct 2026 12:08:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792930131;
-	bh=1Srkchyn4UP9Lvo3MOvIyy2y34GPOiLZ1IITzWOyA74=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=c5hObA53LgwcX3sPE5T1Gu6yEY72mbPOWf0Ys3JwLM021JYmObfWEvu+j2IL9pxXA
-	 Ckm6bpEoU6nYkMIpjjkH+6nt962ggb2X5hF8LtXP6pR1O09hT170lx2N9VN8jxhLxG
-	 bp3tMXeNymMsAFRa//A1YHHrk+VakL11mAwjucSZ+R+yzP+66DLDIe3wP4liYV4egf
-	 CbzpoLDFjKdDECw33hO/F4BQi9p4siCqAHdDfU4y+JMWI7eFXbuVEPHGnO5wxnqmuz
-	 xmIgoapdzUMraw8pHV2n8oLpX0qUk5Aju+Cp8UvkjAcwkgO76MBi/omtouLv2TiTkt
-	 O7kwkIfaSbO7Q==
-Subject: Re: [PATCH net 4/4] selftests: net: add SCTP I-FORWARD-TSN tests with
- message interleaving
-From: netdev-bot+sashiko@kernel.org
-To: tim.budding@gmail.com
-Cc: netdev@vger.kernel.org, linux-sctp@vger.kernel.org, lucien.xin@gmail.com,
- marcelo.leitner@gmail.com, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Date: Sun, 25 Oct 2026 12:08:49 +0000
-Message-ID: <179293012994.3134.15218902499880345860@kernel.org>
-In-Reply-To: <20261024120627.837568-5-tim.budding@gmail.com>
-References: <20261024120627.837568-5-tim.budding@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=BPAHdqxs
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=V977JYyiXoC+uSSRUmWVIwHyFVn/5x+I8H6SfGh51P1ldsKm7rFowot/ukkFg90oLnxCeFz4bRdEq8dqkblqKvzvihm1cRZdqYsTqHmVhS/MF5CeEuYN3TF5OwTALexE99PBKgxFBFJwJ73Cx93J2ZgL+SLvNPo+8OVHhpTfiEPxKJp9cTg0RGpbth5f/pV4GEJnCsmgV5cu6NZvLH2WsSXrcpG75gkUtEKrq44LMHoUty5Nvc3iHMyumGmMbk1qNSaR9McJadN8NglJbij/8n8JYTO6rt14jp7SYZkTPnVZDxjPTCidd4PoTFq09BZ3gHGnnV5tC0Mjxd2g6Pi33w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5jH3MRV+z6edJ+GIC/0hXKHCieyo5wQwkoHRLfB5Nis=;
+ b=DxVxnmcTVI95Lmp0nTdOCxpYtBG1hHeWoXAEbJmng+k6DvD4fls3G0pGCZFq556kgREh4ZSOJCxGk6iAG23cROrx6vW4CusZZ9q+o2r4lT/hpkIAY2Q6+fZLnxo3qSkLIIBePwJB6mAq8TbsrroBqMSMZZowMqGgJGNEJItNIynuhyVTW5ZoyObSZc7JE8Y3tQY/Yp1A0MjdIXVPLFK9KLbHhmp7Jn0MDqK+Ou+RrUYOsy0GJEWfb5kMMf/LOdPpWMbU9hTLKPiffl1WRDWaGyAcwMPzmENWeSzw40PzA+ucxwJLkDozZqNX+qL2kBohWGIQ5ukvUk9LZSwEJE9YvA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5jH3MRV+z6edJ+GIC/0hXKHCieyo5wQwkoHRLfB5Nis=;
+ b=BPAHdqxsWBJoocj9EuRCIX1qwzic9OZ3ARDgF5bTdaE9CVA58zhIHFRgiqRZM3amKZSV2dTEXgS10xTkoXJDhatjXRXqRJDYmkvpCAI/YasgPbv5xqWf2F4kAx7TeTB092ahix2h/2qvLSAv4rrUI1iMWOB0OODYzfCjHhB20oGYGoQpzU8BKVFb+QEeR2V3r8EGw8wA/9b4RpyGRu6TmUVNp9yN+8bym2Vz5HLHyPdoIXVLhB7PoADIrTj7Xx3ANLwQduqHH624BJapjqPdmqTuxiCm9AuMaxg3JcEEvTI224fJmQaFS0XB03Jmq4LJaTst+Nkj0j16M1TbuvdF2Q==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by SN7PR12MB7324.namprd12.prod.outlook.com (2603:10b6:806:29b::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.21; Sun, 25 Oct
+ 2026 12:09:20 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0546.021; Sun, 25 Oct 2026
+ 12:09:20 +0000
+Date: Sun, 25 Oct 2026 14:09:11 +0200
+From: Ido Schimmel <idosch@nvidia.com>
+To: David Corvaglia <david@corvaglia.dev>
+Cc: netdev@vger.kernel.org, bridge@lists.linux.dev,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] bridge: mrp: fix silent truncation of IN_ID
+Message-ID: <20261025120911.GA156077@shredder>
+References: <20261023014536.72444-1-david@corvaglia.dev>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261023014536.72444-1-david@corvaglia.dev>
+X-ClientProxiedBy: MR1P264CA0166.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:501:55::7) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,174 +100,72 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|SN7PR12MB7324:EE_
+X-MS-Office365-Filtering-Correlation-Id: c4f20e70-6f21-4039-aa43-08df3290ccfd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|7416014|366016|1800799024|11063799006|56012099006|261009223027099003|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	ihx4aQkVPtOtC1yy6Ly/fjGXCGlOHsd9p+DHW08QNBKslN4kJ2mPPbExq5t6TIoU9QP6kHUIvBcRFnL2S71O1IRUC8mSS2VfeaZHYY/Vb1jwlQ4d0RMCLDvXc3vUsG0iUcoNoXjBHxu+tFxit9a1hSZf8LMLtaGnVbQqcbS6318jELCJtvOPfXLcoadk0wtUDkrAeGQfjXry6oFQIcJUGK+fZc8HtJB3uxew9t9Nhh69VxIWNIlAFRjD4YPyWO/qYSG59S11M9olwaBy6ooC9B5CurIb1saFDpZE7I4iaBDJUKuQVNAD7p2OBJtKhBRTKfsZER1F14na4tYHfzmQd0YBMBRTydtEU/EtZwPXNeQqrw+dUHnd44p7xNBcBjecJZKSio1alq3q6uWOEl16EAqEhuMMYG4Zb4qq8A3lJ+JUTFMXtJgjAQl/Mo7a5WHVMpH0eMgAamrt9GLT5qdzYaEgkJjECEKF5Pd4fkuR6AF85O8PvYnaxizESfe2RXq80hTQU8vDijiVfE2VE+HJGpLEpggIJCxQBvHRtV/vBxyVWp1Awhy2MW9lIJGXgzcPX60OsTjbnwMfYCD8h8yH7VNfumXTzh2EaA4/JwyDTksRc/PxeGMMxpaA3AzprCYkeBexlrJfiSIAp7P+PC7a+Wv101NDIfbi/oV49Du2tNs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(366016)(1800799024)(11063799006)(56012099006)(261009223027099003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?KANbCz00dhge8tBk4hLg3YOmcECz5qO4YqCxv547daAtmjewh3ajRICKBmsE?=
+ =?us-ascii?Q?Ce0jDxPKzhFO2qzInItqXFkxHBHXS9b/ecX+oAql6Xn7ECGkhjbP1UK/st9x?=
+ =?us-ascii?Q?SNytQrmKNVbeC1d5jLDQxj7GETkgSEbyVNnVWQ+F3am6F+9jLUrUfRiZQsGL?=
+ =?us-ascii?Q?o8sqZOeQDarYwa7YOr86nmul8LeGSGnmj6qUfww0JmPoLN5o1wzW88VLUSnz?=
+ =?us-ascii?Q?q0InJ3Lf17YBwlEjHRLSats97zj4tMXsIR2DmYmnbvxjT55peYUcaomQqyG9?=
+ =?us-ascii?Q?idSnD+D/L7BiwQS2EpNDZ+Gah4H0WUVUdjfys9EXcBJbaWET3ApHG/Cc3kx3?=
+ =?us-ascii?Q?E6jSqlWxhfFnJl63JrafmhArQJi0G9i0mmq/n/XtpNfoxExpDAzCNiecw3ZF?=
+ =?us-ascii?Q?c9I2dzLcKTe0+g2B9av1rWcuYXdMwS4hKFIzl7FdD3LoYt7Zi3IvRlLOiKio?=
+ =?us-ascii?Q?4LKn6GhR9pY5NxRgFZmUj1bOv6Lnh48CmZ6Ijgq5oa34A/1mkGfxL7JOt4IT?=
+ =?us-ascii?Q?GJE8qe+gykA8/x1m7TwGsbtKgEojIbG9dLc1f5Q3UtgEZ5Ldh36npzw8Db6I?=
+ =?us-ascii?Q?nWvmT+r+ILmYFoIblcWiRucbccTJoff+Su9NDlDNa3rymC2ZsarlZxMy6Owr?=
+ =?us-ascii?Q?fQtmKa44TdkKdPSNxQipdX92fFxmT5sMtllXpvVDxdJuhk9RXahqvpah8d6C?=
+ =?us-ascii?Q?4gwEUGgJX2KaZEUtEWyNWcVc8N3Slbr1OJfHAwo2fHFDJ/fwR4hsOTfOeCRG?=
+ =?us-ascii?Q?kvXy5RvP9cR0yNKrI/1BN0QxLw2KjCWFGkUxzuY+zoehMMrFCAx+fw01d107?=
+ =?us-ascii?Q?xm1wIS6aAMDnVYOkt0g6XVO+BA/Bkkcuzcb7cc98yKVuCcIPHOMMJk0iUvKI?=
+ =?us-ascii?Q?GC/wD3YZJPuUBcZ71DYgwKhdQpPlL8mY3dWzJRpZG8pcw82kSZb0H2Q4yNcq?=
+ =?us-ascii?Q?9zIai6tc+gObjKvRQP6pYA0Ck92aAmt4YWmzHz4nnIeUquEFXYU4Knn2C4d+?=
+ =?us-ascii?Q?NXkMMJWoO4GPy72CwZebRCu/bKQspAuH9YtOSlCMvRSFPebzW6kAd/z3AkpH?=
+ =?us-ascii?Q?t5a7Ep2W6rAOOekjqQN5Jviivuql7nhmEpsEYT61VeNSg4klESuB0UaRPqFg?=
+ =?us-ascii?Q?AJtTmXRcsCkAKMoSOTg0Ttk+nQyZ0PXqAPXM63D82qgZv+yA0UACW0WpMh3G?=
+ =?us-ascii?Q?0q7sdlWeZX/X47BR2i3szSGrOLva6nc9kO+07ib3Z3FyK4EWlH+QZayEo2Hh?=
+ =?us-ascii?Q?jRJMzbD7bwGIhvkpjrnLuPuq85XFi6C1o6ZZrDKeOyfPwqldhA/jaeNmaF10?=
+ =?us-ascii?Q?MqZmfU8ASVRxdXjbfXNdwwUY5bxwllv5xvn5H/GhrLeowQZMQ5JLKlsl0hbm?=
+ =?us-ascii?Q?IHw1kwd+W0QhfncdXVXjpLhaZpr+Lex8VVXTGArlU5vEs4SK5flUtrQhmTlA?=
+ =?us-ascii?Q?eMkezHqVCwde3hDd9LhEYbstSRwz1kWg5cum8gV/dXlNm1FlYughcFqIfSib?=
+ =?us-ascii?Q?1M7CznUnCaVgGUmsnQNi1K7HeH3VHHGy/lE/mZesQ9jyt3xyVBH9tmIHVoQj?=
+ =?us-ascii?Q?R1EIfNY411bnOBE+W/k7HrW2im8hwvfE0EDyFRbTK+CTzVlyRfUVf7e2deOD?=
+ =?us-ascii?Q?X313X7dzrnWbPUeY8gONWKCQS6POJtGaYnENRLnZYme64BbrOtvqx1s++eab?=
+ =?us-ascii?Q?VWYn/aELxYmAqmxnrThtguc7EldJZyGfsEzOHUmF1/cNj08/?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c4f20e70-6f21-4039-aa43-08df3290ccfd
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2026 12:09:20.7062
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: SXIFe17xm4jN0nObZ7OxyyDF4QRgcUB7+GbaPr1JRxK41+7aLsP39w3rkYGc8dS1kV204i8E1CBcGENiBP2aDQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7324
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+On Thu, Oct 22, 2026 at 06:45:36PM -0700, David Corvaglia wrote:
+> IFLA_BRIDGE_MRP_IN_STATE_IN_ID and IFLA_BRIDGE_MRP_START_IN_TEST_IN_ID
+> are NLA_U32, but these values are stored as u16 in their respective
+> structs. Values above U16_MAX are silently truncated instead of being
+> rejected.
+> 
+> Fixes: 7ab1748e4ce6 ("bridge: mrp: Extend MRP netlink interface for configuring MRP interconnect")
+> Signed-off-by: David Corvaglia <david@corvaglia.dev>
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 2
+If anything, this belongs in net-next. Better to drop it completely
+given that this issue doesn't bother anyone and that we're going to
+deprecate MRP and CFM.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] In the ordered and unordered tests, main() in
-  tools/testing/selftests/net/sctp_ifwdtsn.c samples the server…
-- [Low] The reset case in tools/testing/selftests/net/sctp_ifwdtsn.c (`{
-  .name = "reset", .reset = true }` at line 66, the reset branch of…
-- [Low] wait_event() in tools/testing/selftests/net/sctp_ifwdtsn.c checks
-  the deadline with `while (now_ms() < end)` (line 245), then reads the…
-
---
-
-selftests: net: add SCTP I-FORWARD-TSN tests with message interleaving
-
-This adds a helper and a script that test the receiver side of
-I-FORWARD-TSN with RFC 8260 interleaving and PR-SCTP. Four cases send a
-64KB reliable message interleaved with a PR-SCTP message that nft drops
-and the sender abandons. A fifth case runs an SSN/TSN association reset.
-
-> diff --git a/tools/testing/selftests/net/sctp_ifwdtsn.c b/tools/testing/selftests/net/sctp_ifwdtsn.c
-> new file mode 100644
-> index 0000000000000..15346aca10ef0
-> --- /dev/null
-> +++ b/tools/testing/selftests/net/sctp_ifwdtsn.c
-> @@ -0,0 +1,538 @@
-
-[ ... ]
-
-> +/* Wait for a notification of @type on @fd, discarding anything else. */
-> +static bool wait_event(int fd, int type)
-> +{
-> +	long long end = now_ms() + TIMEOUT_MS;
-> +	char buf[256];
-> +
-> +	while (now_ms() < end) {
-> +		struct pollfd pfd = { .fd = fd, .events = POLLIN };
-> +		struct iovec iov = { buf, sizeof(buf) };
-> +		struct msghdr msg = { .msg_iov = &iov, .msg_iovlen = 1 };
-> +		union sctp_notification *sn = (void *)buf;
-> +
-> +		if (poll(&pfd, 1, end - now_ms()) <= 0)
-
-[Severity: Low]
-This isn't a bug, but the deadline check and the poll() timeout use two
-separate now_ms() samples. If end - now_ms() comes out negative, poll()
-blocks with no timeout. The helper would then hang until the kselftest
-runner timeout instead of printing "client: no association reset event".
-
-As the code stands this doesn't look reachable. wait_event() is only
-called on the client socket in the reset test. That socket only
-subscribes to SCTP_ASSOC_RESET_EVENT and gets no user data, so the loop
-never runs a second time.
-
-Could this compute the remaining time once and check left <= 0, as
-server_recv() does, in case wait_event() is reused later?
-
-> +			break;
-
-[ ... ]
-
-> +	send_msg(cfd, 0, t->big_uo, big, BIG_LEN, false);
-> +	if (t->small_len)
-> +		send_msg(cfd, 1, t->small_uo, small, t->small_len, true);
-> +
-> +	if (t->reset) {
-> +		ok = server_recv(sfd, &s, got_big);
-> +		if (ok && setsockopt(sfd, SOL_SCTP, SCTP_RESET_ASSOC, &id,
-> +				     sizeof(id)))
-> +			die("SCTP_RESET_ASSOC");
-
-[Severity: Low]
-Does the reset case check that queued I-DATA is discarded on reset?
-
-The tests[] entry is:
-
-	{ .name = "reset", .reset = true },
-
-So no PR-SCTP message is sent and no partial delivery point is set.
-SCTP_RESET_ASSOC is only issued after server_recv(got_big) has received
-the whole 64KB message.
-
-At that point sctp_process_strreset_tsnreq() runs on the client and
-sctp_process_strreset_resp() handles PERFORMED on the server. On both
-sides the reasm, reasm_uo and lobby queues are empty, and no stream is
-in partial delivery. The previous patch in this series adds this call
-on both paths:
-
-	asoc->stream.si->abort_pd(&asoc->ulpq, GFP_ATOMIC);
-
-Here it does nothing. The test would still pass if either call were
-removed, or if sctp_intl_abort_pd() stopped flushing.
-
-After "sctp: don't treat an I-FORWARD-TSN as an association reset",
-sctp_report_iftsn() only calls sctp_tsnmap_skip(). These abort_pd()
-calls are now the only place queued I-DATA is discarded on reset. That
-patch says "For I-DATA the reset paths still discard everything as
-before" and cites this test as its check.
-
-The test does show that MIDs restart at 0, because the marker is
-delivered. Could the test leave stale fragments, or a message in partial
-delivery, pending on the server when the reset is issued?
-
-[ ... ]
-
-> +	send_msg(cfd, 0, false, MARKER, sizeof(MARKER), false);
-> +
-> +	if (t->small_len && !wait_abandoned(cfd)) {
-> +		printf("client: small message was not abandoned\n");
-> +		return KSFT_FAIL;
-> +	}
-> +	if (t->uo_marker)
-> +		send_msg(cfd, 1, true, UO_MARKER, sizeof(UO_MARKER), false);
-> +
-> +	ok = server_recv(sfd, &s, got_all);
-> +	rxq = assoc_rx_queue();
-
-[Severity: Medium]
-Can the RX_QUEUE check fail on a correct kernel in the ordered and
-unordered tests?
-
-For those tests got_all() only needs s->big && s->marker.
-wait_abandoned() only polls the client's local abandoned_sent counter.
-sctp_chunk_abandoned() increments that counter when the sender decides
-to abandon. At that point the I-FORWARD-TSN still has at least the 50ms
-netem delay ahead of it.
-
-Until sctp_intl_skip() runs on the server, the received middle and end
-fragments of the small message stay in the reasm queue and count toward
-rmem_alloc. If the tail of big and the marker arrive before the
-I-FORWARD-TSN, server_recv() returns at once. The test then reports
-"... bytes left queued on the association".
-
-With default sysctls nothing explicitly prevents this ordering. The B
-fragment of small goes out early, and the client abandons it on the
-first SACK after the fast retransmit, long before the tail of big is
-sent.
-
-What happens if net.core.wmem_default is lowered? sk_sndbuf can be
-large enough for the 64KB sendmsg but smaller than the memory charged
-for the ~66 big chunks. Then sendmsg(small) looks like it would block
-here:
-
-net/sctp/socket.c:sctp_sendmsg_to_asoc() {
-    ...
-	if (sctp_wspace(asoc) <= 0 || !sk_wmem_schedule(sk, msg_len)) {
-		timeo = sock_sndtimeo(sk, msg->msg_flags & MSG_DONTWAIT);
-		err = sctp_wait_for_sndbuf(asoc, transport, &timeo, msg_len);
-    ...
-}
-
-Small and then the marker would be sent after all of big. The SACK for
-the marker supplies the third miss report that triggers the fast
-retransmit. So the marker would always reach the server before the
-I-FORWARD-TSN.
-
-Should this poll assoc_rx_queue() until it reaches 0, with a timeout?
-Or wait for some sign on the server that the I-FORWARD-TSN was
-processed? leading_edge and uo_pd already have such a barrier: the nft
-rule, and the uo-marker that is sent after abandonment.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261024120627.837568-1-tim.budding%40gmail.com
+Also, you're expected to reply to the automated message from
+netdev-bot+sinfo@kernel.org.
