@@ -1,54 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792925429;
-	b=0QMd0A5wzhQKVzQRyECNH0pmnCtB4Xg6OzNwPoZ2XQXRnKY2aNkgO44345FQuCs6kddF
-	 W2pIUn5Wae4c7iOnF4PtufMZFW4XwWNNAjafF4n9Hm3T0hq6eEtNVvRLfY8ckHaDwjB7J
-	 CLwwDaK7QDyFZqHaf2PwU41ksUguYpIaIwEOsJ7q+JZerEp7NHa2d/QY3+juHo9FPfuKu
-	 xgS89Qok936G7sQi5Cskd96mZLQwbZL+i/uVg4fNadZvYCXElgy0pH5pZZgBW3aymdONw
-	 GVK3LW+htpTkC8wzalv3MSW5hqEr6+vs5GUtJ+iGQ89rsi2nKGPsmH9V7/8IbK0b+1g==
+	t=1792925536;
+	b=C48cQt6ODh/wdj8+gIyKPl25lQAqK6DQoOK1UUaizQ/fSvsi3W92n077N2C1EZB7//w0
+	 XoO2hl2LmljGoMef2YmlECsY4n5BpXpL8vJnOBnjRqYFPEzdOdVS6/Zb/UDzXyGvjtl8X
+	 w8WdnkPWXuYYg9+sDHyWiQTUtH/f4lpoqoUlIqYBa7+i2VzGEJupr1XGRANSqpHe/tqiF
+	 gYHjrDGqtrqPDVUzToAJEGpImj8NLsdaE+VK4DhfbBMX31YRjCix6Oi5jhPlyvF4jdHsL
+	 EKW07/Gsv6RGgST0fE0XDoasidZtTf+YdjHD73208gYlVQyi5Op6UOtAJ0JlvNS9d9A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792925429;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792925536;
 	h=Received:DKIM-Signature:Received:X-Gm-Message-State:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:
 	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=Z34xT/KTKRp/P6iMZZaSFLF0nWR84Andajbw0zEcAS8=;
-	b=DENaqdKksalfVM7yzIMePfeGor67Xdahm3arpyHejZqdeiPDzmtMTzr1naUQOOFYzSpC
-	 ReYAtzpnH9biNIb7nAe9Wjgi3QxfyzG7wX1gwZUku0p19tMM6NmBby/66uO7hR5kQ8jgU
-	 TsfXf6x82ioU1MCenspS1pWG8Gz4X/VUY67ZLt33Pd+jKE0ttc8ANxVrXPxs7+unxzUUi
-	 8mBwqb7QsZMamvlmY0qhqpfVE4fhePVbg7H9B3QfIZRt6UkqxVuh2Wc8nbE1jy1AaDrlv
-	 xRMJkMJGc3chY8xPbhw4ni2tqZQUlIZ7pX2lvWtyj0jDbWvCK4HVWcTalPDKV8AQFHQ==
+	bh=hPKSPo730DdMIk8vI3kNTPBHSLfjkeDsFQWYgCdWptQ=;
+	b=VIsqYqCg8Y/18VEiSLUo8AzERKouxitG0R74zLFioKm2s0GLeansT27po7xvIX8HeAVU
+	 1p6su2ofjDFXLp9FIWfXP+2ZjjtnJpOcyfLOX8RJjeDjahkO5gQTBjwNt3R151eP8qyKm
+	 13pO5i51YGJKuQwvGQ5wmuATWPQDJzrLwmLCpBPbrHQkuBLD9D10/qPfUL7Y7ImSsqpS1
+	 mdcDTLR1VSzFYsqTNRyJKpUn5aB+gTmpN29+gjhmUNKFlmtj9u+kRHWzlUHDw0dHtDBHn
+	 XmHKP3S6feEIDyAkmX73zkxvVGcKEkKsMKd/SCwK2DJVKvIgd3ijlFVuvFGA+c+jlWg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TFwr+M2m;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AoCjN7mY;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15523606A31A
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 10:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F422606A31B
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 10:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TFwr+M2m
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE9D81F031E0
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 10:50:28 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AoCjN7mY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1AAC1F01828
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 10:52:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792925428;
-	bh=Z34xT/KTKRp/P6iMZZaSFLF0nWR84Andajbw0zEcAS8=;
+	s=k20260515; t=1792925534;
+	bh=hPKSPo730DdMIk8vI3kNTPBHSLfjkeDsFQWYgCdWptQ=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=TFwr+M2mBb4O4usMtJFqfWff6YuKRG6P0Ln1Ol9/aUoQpuC1DNZSwTFBFiwDH/Uy0
-	 v2tx5SEKg7++6Rghsiw9TjL6HrkacDHwUhJJu69SrjamP4yA9jebgjLA61YhQwd8Qa
-	 L28hbw9GSdbxLAZkHfurPEEWU3O10e97QccWhSmncFqR20vMtiSy8+ay5EHFJ5oVdV
-	 G79TRVCd1brZe+H8qNhScJcdwG+ABB541TtYgqwxxrPSFZL25gIUFhuB0jDd2/JJJp
-	 rz0JC6DznHKjSPmeFdfS9uSGPkWhNYuPyfmjmdtLtQMb08QExr1t4n0DBrpgQFLaZl
-	 XeuRF4WL1A7/Q==
-Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-451a49abd8aso2256682fac.3
-        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 03:50:28 -0700 (PDT)
-X-Gm-Message-State: AFq9FYKcX4H7d8tjcXYb+exrY+GDSDn8UVVkIGNx5MerE29O7CZYmDpz
-	05oLghuorchSkv1eZkZtOL/MBs12PzNvXuYb+uJDWqManF8nffTcDK/54//bfglM5f6cRmrNdip
-	ThcfXLCOHvKnxiwXAlxDLal5aa8dqFaI=
-X-Received: by 2002:a05:6870:2c49:b0:491:520f:e6d0 with SMTP id
- 586e51a60fabf-4a83f00d327mr2211468fac.4.1792925428140; Sun, 25 Oct 2026
- 03:50:28 -0700 (PDT)
+	b=AoCjN7mYl33hi24P5LWbL86/NhclCu4RS0pStpBPOewB+IwblOR4Tfr07z7dW76Gi
+	 xZx+Qa9WBRdhNpcw3M9CiYn+AxieakIRIBl9fV960JABdzohScGn7OqPEuB7ldda1U
+	 cQ+Ysb09EpV6g/PjdeLRBgU4myV7Zg5x+azXX3mcFJDY7Gwsx3JfHvKMs0/A/x3OES
+	 NrO1kYBe7EQVtDhBzH0gfiaJORGR8QYHpdkChG2aBcyJc/gcLYBxXS8LXe8/Vu2pQj
+	 Rb7ShKif6fvkcJYhqRAvzg7z20vBVPVwI+S577+z62M7lWmoXAzrValZStpLqEdkiX
+	 GCDgWggYOM4Lg==
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-4a76f63b243so2310556fac.0
+        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 03:52:14 -0700 (PDT)
+X-Gm-Message-State: AFq9FYLUMuBqf9Ux6I1s6DOi2VLe47wuSz6nP8F9sQkRTZKspAt55R9p
+	jT9qLFdJ3UsK3E+MPThRDIpyyZIjWkFbV/zNwpLnnUkq2418r92LJTXNkkTL6rJ+7PRhbR2xdAq
+	x19dfTJt6r+wVsGzMxFu44fFyZ7rYeKo=
+X-Received: by 2002:a05:6871:c91d:b0:45e:d645:e03d with SMTP id
+ 586e51a60fabf-4a83f4cf2bbmr1508221fac.11.1792925534172; Sun, 25 Oct 2026
+ 03:52:14 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,14 +58,15 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261025071729.34967-1-idosch@nvidia.com> <20261025071729.34967-2-idosch@nvidia.com>
-In-Reply-To: <20261025071729.34967-2-idosch@nvidia.com>
+References: <20261025071729.34967-1-idosch@nvidia.com> <20261025071729.34967-3-idosch@nvidia.com>
+In-Reply-To: <20261025071729.34967-3-idosch@nvidia.com>
 From: Eric Dumazet <edumazet@kernel.org>
-Date: Sun, 25 Oct 2026 11:50:17 +0100
-X-Gmail-Original-Message-ID: <CAL4WiiovWOOQ9PBPbnPk2=rK+V5WgMpOFh814-D6_A-k5ope_A@mail.gmail.com>
-X-Gm-Features: AclHuK-JgswlkfMhiZ2fs2aB1d2-JI9OOSyqjldUoMV99nSOE8B2ON7VxY1KuxE
-Message-ID: <CAL4WiiovWOOQ9PBPbnPk2=rK+V5WgMpOFh814-D6_A-k5ope_A@mail.gmail.com>
-Subject: Re: [PATCH net 1/2] ipmr: fully initialize the synthetic IP header in ipmr_get_route()
+Date: Sun, 25 Oct 2026 11:52:03 +0100
+X-Gmail-Original-Message-ID: <CAL4WiioCj01X+x=kmq4DAsusQGHSbUTi3ZZSrVNxX4dVHks_aw@mail.gmail.com>
+X-Gm-Features: AclHuK-w_CWxZjTECE6jJnpscRA3B6CFD46erB9ilUpSlsm3V1pz5ChEGv915LU
+Message-ID: <CAL4WiioCj01X+x=kmq4DAsusQGHSbUTi3ZZSrVNxX4dVHks_aw@mail.gmail.com>
+Subject: Re: [PATCH net 2/2] ipmr, ip6mr: validate packets injected into the
+ register vif on xmit
 To: Ido Schimmel <idosch@nvidia.com>
 Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
 	pabeni@redhat.com, dsahern@kernel.org, horms@kernel.org, 
@@ -76,97 +77,19 @@ Content-Transfer-Encoding: quoted-printable
 Le dim. 25 oct. 2026 =C3=A0 08:18, Ido Schimmel <idosch@nvidia.com> a =C3=
 =A9crit :
 >
-> For an unresolved multicast route query, ipmr_get_route() builds a
-> synthetic IP header in the headroom obtained from
-> skb_realloc_headroom(), which does not zero the memory it allocates.
-> Only a few fields are initialized, leaving others as stale heap
-> contents.
+> reg_vif_xmit() passes the packet to ipmr_cache_report() which copies its
+> IP header into the IGMPMSG_WHOLEPKT report that is queued to the mroute
+> socket. Nothing guarantees that the packet contains a full IP header, so
+> when a short packet is injected on the register device (e.g., using
+> AF_PACKET), the copy reads past the end of the packet and a recvmsg() on
+> the mroute socket leaks the uninitialized bytes to user space [1].
 >
-> ipmr_cache_report() copies this header into the IGMPMSG_NOCACHE report
-> that is queued to the mroute socket, so a recvmsg() on that socket leaks
-> the uninitialized bytes to user space: the 'tos' field [1] and the 'id'
-> and 'frag_off' fields [2].
+> IPv6 has the same problem [2]. Its reg_vif_xmit() does call
+> pskb_inet_may_pull(), but the helper keys off skb->protocol and does not
+> pull anything when the protocol is neither IPv4 nor IPv6.
 >
-> Fix by zeroing the IP header before filling in the few fields that are
-> used, so that the entire header is initialized, as in ip6mr_get_route().
+> Fix by dropping packets whose protocol does not match the address family
+> of the register device or that do not contain a full network header.
 >
-> [1]
-> BUG: KMSAN: kernel-infoleak in _copy_to_iter
->  raw_recvmsg
->
-> Uninit was stored to memory at:
->  ipmr_cache_report
->  ipmr_cache_unresolved
->  ipmr_get_route
->
-> Uninit was created at:
->  pskb_expand_head
->  skb_realloc_headroom
->  ipmr_get_route
->
-> Byte 1 of 28 is uninitialized
->
-> [2]
-> BUG: KMSAN: kernel-infoleak in _copy_to_iter
->  raw_recvmsg
->
-> Uninit was stored to memory at:
->  ipmr_cache_report
->  ipmr_cache_unresolved
->  ipmr_get_route
->
-> Uninit was created at:
->  pskb_expand_head
->  skb_realloc_headroom
->  ipmr_get_route
->
-> Bytes 4-7 of 28 are uninitialized
->
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Reported-by: Sashiko <netdev-bot+sashiko@kernel.org>
-> Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/0545f0c83f5ee=
-2f6696210f87268e811ef655715.1792476357.git.zhilinz%40nebusec.ai
-> Assisted-by: LLM
-> Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-> ---
->  net/ipv4/ipmr.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
-> index acacaae05cc4..eac23f251bfd 100644
-> --- a/net/ipv4/ipmr.c
-> +++ b/net/ipv4/ipmr.c
-> @@ -2506,6 +2506,7 @@ int ipmr_get_route(struct net *net, struct sk_buff =
-*skb,
->                 skb_push(skb2, sizeof(struct iphdr));
->                 skb_reset_network_header(skb2);
->                 iph =3D ip_hdr(skb2);
-> +               memset(iph, 0, sizeof(*iph));
->                 iph->ihl =3D sizeof(struct iphdr) >> 2;
->                 iph->saddr =3D saddr;
->                 iph->daddr =3D daddr;
 
 Reviewed-by: Eric Dumazet <edumazet@kernel.org>
-
-SGTM, I will send this follow up as a separate patch.
-
-diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
-index acacaae05cc49dc15910f23f7539865432518587..8b84142fd7754d95aa1f2facf68=
-ac554916efd27
-100644
---- a/net/ipv4/ipmr.c
-+++ b/net/ipv4/ipmr.c
-@@ -550,6 +550,11 @@ static netdev_tx_t reg_vif_xmit(struct sk_buff
-*skb, struct net_device *dev)
-        DEV_STATS_ADD(dev, tx_bytes, skb->len);
-        DEV_STATS_INC(dev, tx_packets);
-
-+       /* skb->cb[] holds qdisc/tc state at this point, not IPCB.
-+        * ipmr_cache_report() reads it as IPCB to build IP_PKTINFO.
-+        */
-+       memset(IPCB(skb), 0, sizeof(*IPCB(skb)));
-+
-        /* Pairs with WRITE_ONCE() in vif_add() and vif_delete() */
-        ipmr_cache_report(mrt, skb, READ_ONCE(mrt->mroute_reg_vif_num),
-                          IGMPMSG_WHOLEPKT);
