@@ -1,95 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.171
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792924468;
-	b=E36RiaXrIv2fpddFR5Knn4402E+bLsXf2ahu6/mJWUIOaO/keQAiMu6IE3N8BlEikSbo
-	 rHD7jG/wgVwL96LuAu3WErXTEQFQUNgMJhBTYsJ+96iGHygBNwLAb3YKwW+vbUiVGWqZW
-	 C/+Aje+GGhwLn0TSD42ylqdnVPbsnpdoc/2yCYa2CzBl/S6PCkgezsRncn/dSGVfAvYtQ
-	 RwzjR4jrCK/PPRhDi9vPHI6QX0qHZsv5oNyuXvzksdWRMqLLdPFbOMo26xOoN6/wpACJR
-	 QM9IyVQgpCda4ZMj88IbPFQh8pHmxI3Tc0Q9xhMbFfUXHwZh85FsENy1oNo/RWMj+fQ==
+	t=1792925429;
+	b=0QMd0A5wzhQKVzQRyECNH0pmnCtB4Xg6OzNwPoZ2XQXRnKY2aNkgO44345FQuCs6kddF
+	 W2pIUn5Wae4c7iOnF4PtufMZFW4XwWNNAjafF4n9Hm3T0hq6eEtNVvRLfY8ckHaDwjB7J
+	 CLwwDaK7QDyFZqHaf2PwU41ksUguYpIaIwEOsJ7q+JZerEp7NHa2d/QY3+juHo9FPfuKu
+	 xgS89Qok936G7sQi5Cskd96mZLQwbZL+i/uVg4fNadZvYCXElgy0pH5pZZgBW3aymdONw
+	 GVK3LW+htpTkC8wzalv3MSW5hqEr6+vs5GUtJ+iGQ89rsi2nKGPsmH9V7/8IbK0b+1g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792924468;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=YRfYLJJYd1L0c12a9Vplu1prrhSRzB61T2SM2N76MS0=;
-	b=jrA7ftjz5NYjsRC98+lMItZ2n5SJ+UwflBUFDVFOD6I6i7Kw0PnwuDHoIoyV780r9Q4M
-	 HRG3yZC9k8guE1rhPXOlY59SukVyaWLrUKVNK+KePv0tkiHpi8FgNz3aulWhc50uyoaoe
-	 pFxu8GcMFnpA51ZLK0ktLkn2XsamQtsEAjX1PoAOoMLbGdg7zKaiYl+ZcHLXKci1odUt1
-	 h302C73pKxGkzs/YJAA3GK4wmU9wf/aoQib0S2xjdSgNoPiCE3gFMydU/psb9Zj7SOaZJ
-	 XUDjevPUqvgvAQ7RBjFc50AKi59grXOPUAzmBk0NIqauhucFXvJCqdnlKlPb26Vu0Mg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792925429;
+	h=Received:DKIM-Signature:Received:X-Gm-Message-State:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=Z34xT/KTKRp/P6iMZZaSFLF0nWR84Andajbw0zEcAS8=;
+	b=DENaqdKksalfVM7yzIMePfeGor67Xdahm3arpyHejZqdeiPDzmtMTzr1naUQOOFYzSpC
+	 ReYAtzpnH9biNIb7nAe9Wjgi3QxfyzG7wX1gwZUku0p19tMM6NmBby/66uO7hR5kQ8jgU
+	 TsfXf6x82ioU1MCenspS1pWG8Gz4X/VUY67ZLt33Pd+jKE0ttc8ANxVrXPxs7+unxzUUi
+	 8mBwqb7QsZMamvlmY0qhqpfVE4fhePVbg7H9B3QfIZRt6UkqxVuh2Wc8nbE1jy1AaDrlv
+	 xRMJkMJGc3chY8xPbhw4ni2tqZQUlIZ7pX2lvWtyj0jDbWvCK4HVWcTalPDKV8AQFHQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=VB3atq6D;
-	arc=none smtp.remote-ip=74.125.82.171
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TFwr+M2m;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8DD606A31E
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 10:34:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AC8DD606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15523606A31A
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 10:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=VB3atq6D
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-3514b90bb89so5100218eec.1
-        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 03:34:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792924467; x=1793529267; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=YRfYLJJYd1L0c12a9Vplu1prrhSRzB61T2SM2N76MS0=;
-        b=VB3atq6DfavtIUlgWgp/ACfxg/bdmFKvcckbOdSXA8SzRhnLrmotmZ11liKAQJt2Vn
-         b+zKv9uD02G6epR9roDvQ2FpoEtJC1kx12LFsbDvykQdHfh6niSWwrafDVUjUmc8Ky9S
-         VrdU9ZYTbmeNLHkxopjSCExOaSEnhpkL9Xx4pwJwHGSZA4DxF7E3UqGZyRCiJeiD85RH
-         OixsDaGcHk42N1aWvda2Qh6V2Xgws7g/hIkIKC1AHObVI5NNHKmUbJ6INIuR5cpgiq8k
-         TFIWZucxT+qhsE/09UNvzLtYSVArP+vGcreaYlP0IpJbicxdtWGuuF/wcXvO3aw+3Tvw
-         H5tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792924467; x=1793529267;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YRfYLJJYd1L0c12a9Vplu1prrhSRzB61T2SM2N76MS0=;
-        b=h722K5Uu6363ukR4L2HiSzyoTxuM+VlLCKxGmc41dsmuFlVmf1hLA6+7ZAFsRSqVkS
-         pWA+H5Fffhq10FVN34QJS+IzWqN4VzmPstPFLzdHPOGfR85Hnv7GHoRdK0lc0On2yAJm
-         BAEqMTKfc8EiZKn5bmXoJkvPTyWQBaFFDUaBG3ATN+DPwMOprynpJGxckNeB52JIiftu
-         Z9vmTCcIS54NspE2KUtK09DyFPbwkiyQg28pphRK071YkHuqBoTJCYVwQyzoabbXLTs5
-         bENlvfREKXMxTWdcwRJg59AZnbJIJ57Lq+fHTXJIh41zfmpF5oJ9bNp6qcH1QAauhKmk
-         mKbQ==
-X-Gm-Message-State: AFq9FYIBw/Z7Ji4wpRWGOpPVp1kYlh0v/j8HnVHhlSmPZPMJJZlNuLS/
-	JV0Vo7p8esrV3gMxPNZjwv4jMO0buhxIXsg66SJjbLugu2wwvyR2mCCqfzQHmemkEpdmdA==
-X-Gm-Gg: AYBFou2RIneXVcs+Fyi9b0pddY9JVq7fwiwd/nI1BB0Uzz8yXmp67oYRUlYZnKvWiNp
-	wYHoU3GJ8mxtyZu/ex7ErwYO5yXr84rtXm6XQSMfVY0iIEj9+hUTXPBACqcK8b6CfzqyYpnOazh
-	KarsZI03NJbzmyvk1lQREnAFrm2E68BOGtcLqzo0cKzPtzfTVTLiUreE4bB9QXCOZHixTHc5OD3
-	pU+OU5TBvBRVDDtcFik+dNGJ1v8uOJ/7NPT4j69BtOxP8foAv0R6At5XXbeFtTD0ZNjyhfzydco
-	0lrv+Akl8qQ/iuxTpE9DEfBDNSg3lEIGU11DuHg84kkR76RIo4goq7PSELJm4IFbNhM7V0Vm8fj
-	/2cprd0AH+iYiPFIB0T9CIbqmPkqtgw6+sXZWYrMy9QRrZdl5UH1EaEpVCh1eoYPaehDBa1Qqhz
-	YQiYGovJRX90asYY26VFJi7I+WkZbBcrmYdRT9lmaRyw/Jhw/xu2UVU3glMU54NKCEjaOYVeFmD
-	+IZrNPY0+uvkNPi5tik1mAVgKoFhUZHKVvDxYXvs50+sulDjA==
-X-Received: by 2002:a05:693c:8352:b0:35a:5153:ab24 with SMTP id 5a478bee46e88-369e845b07emr4505740eec.9.1792924466662;
-        Sun, 25 Oct 2026 03:34:26 -0700 (PDT)
-Received: from houminxi ([61.170.150.30])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-369ef6a71easm12597256eec.5.2026.10.25.03.34.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Oct 2026 03:34:25 -0700 (PDT)
-From: Minxi Hou <houminxi@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH net-next v4 2/2] netlink: specs: add ovs datapath and vport set operations
-Date: Sun, 25 Oct 2026 06:34:09 -0400
-Message-ID: <20261025103409.3519874-3-houminxi@gmail.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261025103409.3519874-1-houminxi@gmail.com>
-References: <20261025103409.3519874-1-houminxi@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TFwr+M2m
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE9D81F031E0
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 10:50:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792925428;
+	bh=Z34xT/KTKRp/P6iMZZaSFLF0nWR84Andajbw0zEcAS8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=TFwr+M2mBb4O4usMtJFqfWff6YuKRG6P0Ln1Ol9/aUoQpuC1DNZSwTFBFiwDH/Uy0
+	 v2tx5SEKg7++6Rghsiw9TjL6HrkacDHwUhJJu69SrjamP4yA9jebgjLA61YhQwd8Qa
+	 L28hbw9GSdbxLAZkHfurPEEWU3O10e97QccWhSmncFqR20vMtiSy8+ay5EHFJ5oVdV
+	 G79TRVCd1brZe+H8qNhScJcdwG+ABB541TtYgqwxxrPSFZL25gIUFhuB0jDd2/JJJp
+	 rz0JC6DznHKjSPmeFdfS9uSGPkWhNYuPyfmjmdtLtQMb08QExr1t4n0DBrpgQFLaZl
+	 XeuRF4WL1A7/Q==
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-451a49abd8aso2256682fac.3
+        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 03:50:28 -0700 (PDT)
+X-Gm-Message-State: AFq9FYKcX4H7d8tjcXYb+exrY+GDSDn8UVVkIGNx5MerE29O7CZYmDpz
+	05oLghuorchSkv1eZkZtOL/MBs12PzNvXuYb+uJDWqManF8nffTcDK/54//bfglM5f6cRmrNdip
+	ThcfXLCOHvKnxiwXAlxDLal5aa8dqFaI=
+X-Received: by 2002:a05:6870:2c49:b0:491:520f:e6d0 with SMTP id
+ 586e51a60fabf-4a83f00d327mr2211468fac.4.1792925428140; Sun, 25 Oct 2026
+ 03:50:28 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -99,116 +58,115 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261025071729.34967-1-idosch@nvidia.com> <20261025071729.34967-2-idosch@nvidia.com>
+In-Reply-To: <20261025071729.34967-2-idosch@nvidia.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Sun, 25 Oct 2026 11:50:17 +0100
+X-Gmail-Original-Message-ID: <CAL4WiiovWOOQ9PBPbnPk2=rK+V5WgMpOFh814-D6_A-k5ope_A@mail.gmail.com>
+X-Gm-Features: AclHuK-JgswlkfMhiZ2fs2aB1d2-JI9OOSyqjldUoMV99nSOE8B2ON7VxY1KuxE
+Message-ID: <CAL4WiiovWOOQ9PBPbnPk2=rK+V5WgMpOFh814-D6_A-k5ope_A@mail.gmail.com>
+Subject: Re: [PATCH net 1/2] ipmr: fully initialize the synthetic IP header in ipmr_get_route()
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, dsahern@kernel.org, horms@kernel.org, 
+	yoshfuji@linux-ipv6.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Both families register a SET command that the spec never described, so
-a YNL client could not modify an existing datapath or vport. The kernel
-handlers take CAP_NET_ADMIN through GENL_UNS_ADMIN_PERM.
+Le dim. 25 oct. 2026 =C3=A0 08:18, Ido Schimmel <idosch@nvidia.com> a =C3=
+=A9crit :
+>
+> For an unresolved multicast route query, ipmr_get_route() builds a
+> synthetic IP header in the headroom obtained from
+> skb_realloc_headroom(), which does not zero the memory it allocates.
+> Only a few fields are initialized, leaving others as stale heap
+> contents.
+>
+> ipmr_cache_report() copies this header into the IGMPMSG_NOCACHE report
+> that is queued to the mroute socket, so a recvmsg() on that socket leaks
+> the uninitialized bytes to user space: the 'tos' field [1] and the 'id'
+> and 'frag_off' fields [2].
+>
+> Fix by zeroing the IP header before filling in the few fields that are
+> used, so that the entire header is initialized, as in ip6mr_get_route().
+>
+> [1]
+> BUG: KMSAN: kernel-infoleak in _copy_to_iter
+>  raw_recvmsg
+>
+> Uninit was stored to memory at:
+>  ipmr_cache_report
+>  ipmr_cache_unresolved
+>  ipmr_get_route
+>
+> Uninit was created at:
+>  pskb_expand_head
+>  skb_realloc_headroom
+>  ipmr_get_route
+>
+> Byte 1 of 28 is uninitialized
+>
+> [2]
+> BUG: KMSAN: kernel-infoleak in _copy_to_iter
+>  raw_recvmsg
+>
+> Uninit was stored to memory at:
+>  ipmr_cache_report
+>  ipmr_cache_unresolved
+>  ipmr_get_route
+>
+> Uninit was created at:
+>  pskb_expand_head
+>  skb_realloc_headroom
+>  ipmr_get_route
+>
+> Bytes 4-7 of 28 are uninitialized
+>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Reported-by: Sashiko <netdev-bot+sashiko@kernel.org>
+> Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/0545f0c83f5ee=
+2f6696210f87268e811ef655715.1792476357.git.zhilinz%40nebusec.ai
+> Assisted-by: LLM
+> Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+> ---
+>  net/ipv4/ipmr.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
+> index acacaae05cc4..eac23f251bfd 100644
+> --- a/net/ipv4/ipmr.c
+> +++ b/net/ipv4/ipmr.c
+> @@ -2506,6 +2506,7 @@ int ipmr_get_route(struct net *net, struct sk_buff =
+*skb,
+>                 skb_push(skb2, sizeof(struct iphdr));
+>                 skb_reset_network_header(skb2);
+>                 iph =3D ip_hdr(skb2);
+> +               memset(iph, 0, sizeof(*iph));
+>                 iph->ihl =3D sizeof(struct iphdr) >> 2;
+>                 iph->saddr =3D saddr;
+>                 iph->daddr =3D daddr;
 
-In the kernel, the datapath SET command changes the user features, the
-masks cache size and the per-cpu upcall pids. The vport SET command
-changes the upcall pid. The kernel rejects an ifindex before it looks
-at the type or the options, rejects a type change, and rejects options.
+Reviewed-by: Eric Dumazet <edumazet@kernel.org>
 
-Signed-off-by: Minxi Hou <houminxi@gmail.com>
----
- Documentation/netlink/specs/ovs_datapath.yaml | 21 +++++++++++++++++++
- Documentation/netlink/specs/ovs_vport.yaml    | 21 +++++++++++++++++++
- 2 files changed, 42 insertions(+)
+SGTM, I will send this follow up as a separate patch.
 
-diff --git a/Documentation/netlink/specs/ovs_datapath.yaml b/Documentation/netlink/specs/ovs_datapath.yaml
-index f7b3671991e6..83f6b060ed75 100644
---- a/Documentation/netlink/specs/ovs_datapath.yaml
-+++ b/Documentation/netlink/specs/ovs_datapath.yaml
-@@ -138,21 +138,42 @@ operations:
-       doc: Create new OVS data path
-       value: 1
-       attribute-set: datapath
-+      flags: [uns-admin-perm]
-       do:
-         request:
-           attributes:
-             - name
-             - upcall-pid
-             - user-features
-+            - masks-cache-size
-+            - per-cpu-pids
-+            - ifindex
-     -
-       name: del
-       doc: Delete existing OVS data path
-       value: 2
-       attribute-set: datapath
-+      flags: [uns-admin-perm]
-       do:
-         request:
-           attributes:
-             - name
-+    -
-+      name: set
-+      doc: |
-+        Modify an existing OVS data path. The kernel treats a missing
-+        user-features attribute as zero and clears the previously set
-+        features.
-+      value: 4
-+      attribute-set: datapath
-+      flags: [uns-admin-perm]
-+      do:
-+        request:
-+          attributes:
-+            - name
-+            - user-features
-+            - masks-cache-size
-+            - per-cpu-pids
- 
- mcast-groups:
-   list:
-diff --git a/Documentation/netlink/specs/ovs_vport.yaml b/Documentation/netlink/specs/ovs_vport.yaml
-index fa975f8821b6..189cb5b99aee 100644
---- a/Documentation/netlink/specs/ovs_vport.yaml
-+++ b/Documentation/netlink/specs/ovs_vport.yaml
-@@ -128,6 +128,7 @@ operations:
-       name: new
-       doc: Create a new OVS vport
-       attribute-set: vport
-+      flags: [uns-admin-perm]
-       do:
-         request:
-           attributes:
-@@ -140,6 +141,7 @@ operations:
-       name: del
-       doc: Delete existing OVS vport from a data path
-       attribute-set: vport
-+      flags: [uns-admin-perm]
-       do:
-         request:
-           attributes:
-@@ -165,6 +167,25 @@ operations:
-             - netnsid
-             - upcall-stats
-       dump: *vport-get-op
-+    -
-+      name: set
-+      doc: |
-+        Modify an existing OVS vport. The kernel rejects an ifindex with
-+        -EOPNOTSUPP, before it looks at the type or the options. It rejects
-+        options with -EOPNOTSUPP, and rejects a type that differs from the
-+        vport's type with -EINVAL.
-+      value: 4
-+      attribute-set: vport
-+      flags: [uns-admin-perm]
-+      do:
-+        request:
-+          attributes:
-+            - name
-+            - type
-+            - options
-+            - upcall-pid
-+            - port-no
-+            - ifindex
- 
- mcast-groups:
-   list:
--- 
-2.56.0
+diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
+index acacaae05cc49dc15910f23f7539865432518587..8b84142fd7754d95aa1f2facf68=
+ac554916efd27
+100644
+--- a/net/ipv4/ipmr.c
++++ b/net/ipv4/ipmr.c
+@@ -550,6 +550,11 @@ static netdev_tx_t reg_vif_xmit(struct sk_buff
+*skb, struct net_device *dev)
+        DEV_STATS_ADD(dev, tx_bytes, skb->len);
+        DEV_STATS_INC(dev, tx_packets);
 
++       /* skb->cb[] holds qdisc/tc state at this point, not IPCB.
++        * ipmr_cache_report() reads it as IPCB to build IP_PKTINFO.
++        */
++       memset(IPCB(skb), 0, sizeof(*IPCB(skb)));
++
+        /* Pairs with WRITE_ONCE() in vif_add() and vif_delete() */
+        ipmr_cache_report(mrt, skb, READ_ONCE(mrt->mroute_reg_vif_num),
+                          IGMPMSG_WHOLEPKT);
