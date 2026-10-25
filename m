@@ -1,56 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792947268;
-	b=j90UUHqdHcfqWjAxhoxxpxZbS73woXKzJshMPbvWCuUaNE/ZvnI6o4mi4h1udeutY6wU
-	 Nr22torgms1UMDTYrvObDU8gfFmIrcL0iY0Kf/9sClsMOXra8IK7maqtuH5rtcFehIfu5
-	 Bbr2CNbJCwll8Z7p872N5aUUi9YdlkpJ8PsFtXwGzD7CwfUj84qe1LnDT6GobWQPFNaao
-	 P441dKN8moYFM7cvTDYRBkR+z76tLX51dhRAButPV7bBXhKA45EEvV1dffR0aRGPCO08c
-	 ZYlO3IWyHCJQ5kJ1HJChjghv36zeryQV36IPENBUWIgfNEEk7mPxnQqnl0rBGpgAiHw==
+	t=1792948014;
+	b=A3+FikgRL1IpkhQ2LOLSvCb6NTDOtWubQXP0oDJGjyxJkLdadj2MqUQRgAZfjLCjuTwv
+	 lJYf+umS1JbI4gYpGesPXiz0Yy1tdpTlcv+fWlweXKwLaPat575ST0x5jd5Bn7V9jIRRZ
+	 SkV3YboKYwe0Qs7wQ1TKugLSR6EVbmWQGZf3BbKxpGCPJ76et33qqObCTO08qqkXVOSLx
+	 iz2mQ9SCOxaRYLakq8kQLq85RiHuD7xQH6Fq2q9lXeKefPEgP6K34WRdprrp0oP+sZvsy
+	 Lg7/291Xq/o3z48LR74qKmtiXvydG0SxCo+bBPvk0Y6kI4bfEf9tnuuU5MyMFgko2Yw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792947268;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792948014;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=GpToWoO8iZOVJNv7FQSjwzN3FKY8QIP81bPI85QyRNs=;
-	b=Nnd6RDBXkr9WRTtRk5A8B2OUuK+Wy2HyEGltarO3z4cglvlDfhIjAVWg2y71z9Sdjq+j
-	 C5cgmnT/yZ7ldGE99lg5NWz/MFAMnLImOvIevJ57n6IUBakLxeOG+lMPVsLrfPLBZ3JX2
-	 unL/eUqnViOVBw7uENnm3E8pMVqNbmYqmCYTwspoimf0xFpqi9mbhQwMqxN8eTPUBQ/Nc
-	 8TErmWm8olDptgDP5vXmU9ySEJnrmzc28T7jijJ2tvLs2fBbVMYTYfvgJ9bRfNMHEhtL3
-	 qNwwSAQ7gbBRfwpvmhQkwGrzZVBb9OxlKfLgykjpv+6pnjpGx5Ph1yt+2HEQsp7SG9g==
+	bh=FQ0+peCWUVO2jA4UlMabDTRqCs/B/n8KeGKmGRJQNV4=;
+	b=3UWikW/YXjkeXkPFdlnJ38fSU9BLzsPB/Oa+BzkTsIIeMDxsF4IR7nozi8RoPhbKJwQX
+	 7R5aBJpY4oH7bqXRFs8jtlpb5Lv3E/zMFWgZXAuaBWBtVgeRKTHbJwMuZPtKfao49WHxI
+	 CQ200XAAgFza1Qkby0lYUbDSZBbJKJi4i5TUXyRwu+tiEafJyO/NsfBngH7DevY+mBJ8H
+	 BMw7hieD+XaDV3fKRQdMqp0DupLU0mxQipFuFCuwKYlanlQV89xWRaCBpivM91IZwVWuE
+	 oLSlrT/Xz/xBsElejFe75bHRpD+N/6u9Q4RZKHGlbnJXJk+vbfoAJfzdeyMgGMS/NVQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Wy5RrRo9;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="AgaTNfG/";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42FC3606A31A
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 16:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A2B606A31A
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 17:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Wy5RrRo9
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C08F1F01825;
-	Sun, 25 Oct 2026 16:54:27 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AgaTNfG/
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F071F01825;
+	Sun, 25 Oct 2026 17:06:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792947267;
-	bh=GpToWoO8iZOVJNv7FQSjwzN3FKY8QIP81bPI85QyRNs=;
+	s=k20260515; t=1792948013;
+	bh=FQ0+peCWUVO2jA4UlMabDTRqCs/B/n8KeGKmGRJQNV4=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Wy5RrRo9rhtTjM6V9DRzdYCShHNVEL6sg4UkpVE2qL0IG61NcvRZAOSjbaA1rRC55
-	 NSnFmPZJjK0uj5Du6O9X8XOzyYH67ij7Obbfy4P5/awgAMZa0Kro5OIflXHbWObhnS
-	 kukJx3R8glICx1tBwlGPBtY9BQ5598rdwzyWnCzCTASYZKI5f9MQzhToREHqYOglJ5
-	 4uNnhjY+T6HP5CpjaxQpAn9FY+6DdWb3K4ej6h3SdfXLsta93AyEScax73nHgG7XHK
-	 OCxDyCj1uJO25FboPl1Asfe0iZjc2MAKRXGsCdSAJSMP/W3OSyPlzhhpm0bD8Yo5Mp
-	 KKYKDbWoD5JvQ==
-Subject: Re: [PATCH net] net/sched: re-cap skb->queue_mapping before indexing
- dev->_tx[]
+	b=AgaTNfG/9SsDpyKcdjCOVQrvHIKwhEbWuQPqiVIaDmgxDkZU7WWM4o0uNh2Ezoojs
+	 DosGpHdd+Fza90gx/udIX3Z+0Tir/9dyWvjgy0taoZqHaTkJ0tc5OVgHu2S4Q3cB5p
+	 1pSQGbegkJFBhPpyxjDKdsBUjY6KLmp4SYvXxUr5mHOjpzuFI9Yvo6V+NrsvnQcaao
+	 sDWCcyzrjgYxwxXT0LVEzlu1ArzBhp3cE+Y0HyBCT6h1uFuIe2IjlJTC0acx7KJjUb
+	 H2AXjdM2cttRQ0LQUk0rZzhdSH9hnDJQbYkAC0gy6BQXSFEmVQA3Zb4O91BwzV0P3d
+	 Eai0LL7JR32aQ==
+Subject: Re: [PATCH net] net: reject flow_limit_table_len values below 2
 From: netdev-bot+sashiko@kernel.org
 To: phx0fer@gmail.com
-Cc:
- jhs@mojatatu.com, jiri@resnulli.us, netdev@vger.kernel.org, kuba@kernel.org
-Date: Sun, 25 Oct 2026 16:54:27 +0000
-Message-ID: <179294726704.3134.231299812957492091@kernel.org>
-In-Reply-To: <20261021155450.66934-1-phx0fer@gmail.com>
-References: <20261021155450.66934-1-phx0fer@gmail.com>
-X-sashiko-severity: High
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, netdev@vger.kernel.org
+Date: Sun, 25 Oct 2026 17:06:52 +0000
+Message-ID: <179294801288.3134.11285713978182388228@kernel.org>
+In-Reply-To: <20261021155505.67208-1-phx0fer@gmail.com>
+References: <20261021155505.67208-1-phx0fer@gmail.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -63,10 +62,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 2 · Medium: 0 · Low: 0
+Critical: 0 · High: 0 · Medium: 3 · Low: 0 (1)
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -74,139 +73,189 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The fix is incomplete.
-- [High] qdisc_restart() caps queue_mapping only on the head skb that
-  dequeue_skb() returns, but dequeue_skb() can return a list linked…
+- [Medium] The Fixes: tag blames the wrong commit.
+- [Medium] The new lower-bound check does not reject every value below 2,
+  even though the patch title says it does.
+- [Medium] net: signedness mismatch in flow_limit_table_len_sysctl()
+  accepts INT_MIN
+
+Pre-existing issues:
+- [Low] This problem wasn't introduced by this patch, but
+  Documentation/networking/scaling.rst does not match the code.
 
 --
 
-net/sched: re-cap skb->queue_mapping before indexing dev->_tx[]
+net: reject flow_limit_table_len values below 2
 
-This commit adds a netdev_cap_txqueue() call in qdisc_restart(). It
-clamps skb->queue_mapping before skb_get_tx_queue() indexes dev->_tx[],
-because a tc BPF program on a transmit qdisc can store an out-of-range
-queue_mapping.
+This patch makes flow_limit_table_len_sysctl() reject a length of 1 as
+well as values that are not powers of two. A length of 1 gave
+log_buckets == 0, so skb_flow_limit() computed hash_32(hash, 0). That is a
+shift by 32, and it produced an out-of-bounds index into the buckets[]
+array.
 
-> diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
-> index 6f6a6f0d5eb0d..c326d12942e52 100644
-> --- a/net/sched/sch_generic.c
-> +++ b/net/sched/sch_generic.c
-> @@ -432,6 +432,13 @@ static inline bool qdisc_restart(struct Qdisc *q, int *packets, int budget)
->  		root_lock = qdisc_lock(q);
->  
->  	dev = qdisc_dev(q);
-> +	/* A tc BPF program attached to a transmit qdisc can store an
-> +	 * arbitrary skb->queue_mapping after the tx queue was picked, so
-> +	 * the value reaching here is not necessarily one the device can
-> +	 * serve.  Re-cap it before it indexes dev->_tx[].
+> Fixes: 99bbc7074190 ("rps: selective flow shedding during softnet overflow")
+
+[Severity: Medium]
+Is this the right commit for the Fixes: tag?
+
+Before c3025e94daa9 ("net: rps: change skb_flow_limit() hash function"),
+skb_flow_limit() computed the bucket index with a mask:
+
+    new_flow = skb_get_hash(skb) & (fl->num_buckets - 1);
+
+and flow_limit_cpu_sysctl() stored:
+
+    cur->num_buckets = netdev_flow_limit_table_len;
+
+With a length of 1 the mask is 0. The index was always 0, which is inside
+the one-byte buckets[] array.
+
+The shift by 32 only became possible when c3025e94daa9 changed this to:
+
+    new_flow = hash_32(skb_get_hash(skb), fl->log_buckets);
+    cur->log_buckets = ilog2(netdev_flow_limit_table_len);
+
+With the current tag, stable branches older than c3025e94daa9 would pick
+this patch up. In those branches it fixes nothing, but writing 1 to
+net.core.flow_limit_table_len would start returning -EINVAL.
+
+Should this be the following instead?
+
+Fixes: c3025e94daa9 ("net: rps: change skb_flow_limit() hash function")
+
+> diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
+> index eb35da3556f4a..bb0fa69f94f5a 100644
+> --- a/net/core/sysctl_net_core.c
+> +++ b/net/core/sysctl_net_core.c
+> @@ -283,7 +283,12 @@ static int flow_limit_table_len_sysctl(const struct ctl_table *table, int write,
+>  	ptr = table->data;
+>  	old = *ptr;
+>  	ret = proc_dointvec(table, write, buffer, lenp, ppos);
+> -	if (!ret && write && !is_power_of_2(*ptr)) {
+> +	/* A length of 1 is a power of two but gives log_buckets == 0,
+> +	 * which makes skb_flow_limit() compute hash_32(hash, 0) -- a
+> +	 * shift by 32 -- and index the one-byte buckets[] array with the
+> +	 * full 32-bit hash.  Require at least two buckets.
 > +	 */
-> +	skb_set_queue_mapping(skb,
-> +			      netdev_cap_txqueue(dev, skb_get_queue_mapping(skb)));
+> +	if (!ret && write && (*ptr < 2 || !is_power_of_2(*ptr))) {
 
-[Severity: High]
-Is this cap early enough? dequeue_skb() runs before it, and it can index
-dev->_tx[] with a BPF-written mapping in two places in this file.
+[Severity: Medium]
+Does the new lower bound hold for every value proc_dointvec() can
+store here?
 
-First, take a qdisc without TCQ_F_ONETXQUEUE, such as prio as root of a
-multiqueue device. There, try_bulk_dequeue_skb_slow() parks an skb whose
-mapping differs from the head's on skb_bad_txq, and leaves the mapping
-unchanged:
+netdev_flow_limit_table_len is a signed int, and proc_dointvec()
+parses writes through proc_int_u2k_conv_uop(), which accepts
+"-2147483648" and stores INT_MIN. flow_limit_table_len_sysctl() then
+reads the result through unsigned int *ptr and sees 0x80000000. That
+is not below 2, and is_power_of_2() is true for it, so the write is
+accepted even though the subject says values below 2 are rejected.
 
-net/sched/sch_generic.c:try_bulk_dequeue_skb_slow() {
+If a CPU is then enabled through net.core.flow_limit_cpu_bitmap,
+flow_limit_cpu_sysctl() computes
+
+    len = sizeof(*cur) + netdev_flow_limit_table_len;
+
+which comes out negative, and kzalloc_node(len, GFP_KERNEL, ...) sees
+it as a huge size_t. Without __GFP_NOWARN, that reaches
+WARN_ON_ONCE_GFP(order > MAX_PAGE_ORDER, gfp) in alloc_order_allowed().
+
+The check also has no upper bound, and that matters beyond the
+allocation size. struct sd_flow_limit records recent bucket indices in
+u16 history[FLOW_LIMIT_HISTORY], but skb_flow_limit() computes
+
+    new_flow = hash_32(skb_get_hash(skb), fl->log_buckets);
+
+For a table length above 65536, log_buckets is above 16 and new_flow
+is truncated when it is stored into fl->history[]. When that entry
+ages out, fl->buckets[old_flow] is decremented for a different bucket
+than the one that was incremented. Buckets at index 65536 and above
+are incremented but never decremented, so flows that hash there end
+up being limited no matter what their real rate is. Lengths from 2^17
+through 2^21 still allocate successfully, so this happens without any
+warning. Larger values hit the same allocator WARN as the INT_MIN
+case.
+
+None of this reads or writes out of bounds, and both the INT_MIN case
+and the missing upper bound predate this patch. But since the patch is
+tightening exactly this range check, could it be closed completely?
+For example, proc_dointvec_minmax() with extra1 = 2 and
+extra2 = 1 << 16, together with the existing is_power_of_2() check,
+would compare as a signed int and match the u16 history[] limit. Or
+is there a reason to keep accepting lengths above 65536?
+
+[Severity: Medium]
+Does this check reject every value below 2?
+
+netdev_flow_limit_table_len is a signed int that proc_dointvec() parses.
+flow_limit_table_len_sysctl() reads it through an unsigned pointer:
+
+    unsigned int old, *ptr;
+
+so *ptr < 2 is an unsigned comparison.
+
+proc_int_u2k_conv_uop() accepts a write of "-2147483648":
+
+    if (u > (ulong) INT_MAX + 1)
+        return -EINVAL;
+    WRITE_ONCE(*k_ptr, -u);
+
+and this stores INT_MIN. As an unsigned value, 0x80000000 is not below 2,
+and is_power_of_2(0x80000000) is true, so the write succeeds.
+
+The check also has no upper bound, so powers of two up to 2^30 are
+accepted.
+
+Later, when a CPU is enabled through net.core.flow_limit_cpu_bitmap,
+flow_limit_cpu_sysctl() does:
+
+    len = sizeof(*cur) + netdev_flow_limit_table_len;
     ...
-		if (unlikely(skb_get_queue_mapping(nskb) != mapping)) {
-			qdisc_enqueue_skb_bad_txq(q, nskb);
-			break;
-		}
-    ...
-}
+    cur = kzalloc_node(len, GFP_KERNEL, cpu_to_node(i));
 
-On the next qdisc_restart(), the path
-dequeue_skb()->qdisc_dequeue_skb_bad_txq()->__skb_dequeue_bad_txq()
-does:
+For INT_MIN, len is negative and turns into a huge size_t. For values of
+2^22 or more, the request needs an order above MAX_PAGE_ORDER. In both
+cases the call goes through
+kzalloc_node()->___kmalloc_large_node()->__alloc_frozen_pages_noprof()
+and reaches alloc_order_allowed():
 
-	skb = skb_peek(&q->skb_bad_txq);
-	if (skb) {
-		/* check the reason of requeuing without tx lock first */
-		txq = skb_get_tx_queue(txq->dev, skb);
-		if (!netif_xmit_frozen_or_stopped(txq)) {
+    return !(WARN_ON_ONCE_GFP(order > MAX_PAGE_ORDER, gfp));
 
-Say the classifier writes 0 on one packet and 1000 on the next. Wouldn't
-this read &dev->_tx[1000].state before the new cap runs?
+This WARNs, because __GFP_NOWARN is not set. flow_limit_cpu_sysctl() then
+returns -ENOMEM partway through its per-CPU loop. The CPUs it already
+changed are not rolled back.
 
-Second, dev_requeue_skb() puts every unsent skb of a returned list on
-q->gso_skb without changing it. Only the head of a bulk list is capped
-here. So on NETDEV_TX_BUSY, on a stopped queue partway through the list,
-or on the XFRM "again" path, the tail skbs are requeued with their
-original mapping. The gso_skb branch of dequeue_skb() then does:
+The allocation fails, so nothing is read or written out of bounds. The
+INT_MIN case and the missing upper bound were also already there before
+this patch. But the subject line says values below 2 are rejected, and
+INT_MIN still gets through.
 
-		/* check the reason of requeuing without tx lock first */
-		txq = skb_get_tx_queue(txq->dev, skb);
-		if (!netif_xmit_frozen_or_stopped(txq)) {
+Would proc_dointvec_minmax() with extra1 = 2 and a reasonable extra2 cover
+both cases? One example is 1 << 16, given the u16 history[] limit.
+Comparing as a signed int would also fix the lower bound.
 
-using that uncapped value.
+>  		*ptr = old;
+>  		ret = -EINVAL;
+>  	}
 
-The queue_mapping store rewrite in bpf_convert_ctx_access() only drops
-stores >= NO_QUEUE_MAPPING. Any value below 0xffff can therefore reach
-both paths, so the new comment's "Re-cap it before it indexes dev->_tx[]"
-doesn't hold for them.
+[Severity: Low]
+This is a pre-existing issue and was not introduced by this patch, but
+Documentation/networking/scaling.rst doesn't match the code. Its Flow Limit
+section says the count is kept:
 
-The existing cap in netdev_tx_queue_mapping() in net/core/dev.c is
-applied where the value is produced, not at one consumer. Would capping
-after the egress qdisc's classifier runs during enqueue, or in the ctx
-store rewrite, cover all of these consumers instead of adding a cap in
-qdisc_restart()?
+    count over the last 256 packets. If a flow exceeds a set ratio (by
 
->  	txq = skb_get_tx_queue(dev, skb);
->  
->  	return sch_direct_xmit(skb, q, dev, txq, root_lock, validate);
+but net/core/dev.h defines:
 
-[Severity: High]
-This caps only the head skb, but dequeue_skb() can return a list linked
-through skb->next. try_bulk_dequeue_skb_slow() chains up to 8 skbs that
-share the head's original mapping:
+    #define FLOW_LIMIT_HISTORY	(1 << 7)  /* must be ^2 and !overflow buckets */
 
-	int mapping = skb_get_queue_mapping(skb);
-	...
-		skb->next = nskb;
-		skb = nskb;
-	} while (++cnt < 8);
+That is 128, and it is the window skb_flow_limit() actually uses.
 
-try_bulk_dequeue_skb() is used for TCQ_F_ONETXQUEUE qdiscs such as
-mq/mqprio children. It chains skbs without checking their mapping at all.
+The description of net.core.flow_limit_table_len in the same file also
+says nothing about valid values. It mentions neither the power-of-two
+requirement nor the new minimum of 2, and writes of any other value fail
+with -EINVAL.
 
-Suppose a cls_bpf program writes 100 on every packet. After this change
-the head skb maps to 0, but every other skb in the list still carries
-100. sch_direct_xmit()->dev_hard_start_xmit() then walks the whole list:
-
-	while (skb) {
-		struct sk_buff *next = skb->next;
-
-		skb_mark_not_on_list(skb);
-		rc = xmit_one(skb, dev, txq, next != NULL);
-
-xmit_one() passes each skb to ndo_start_xmit. Drivers such as virtio_net
-index their per-queue arrays with the raw mapping:
-
-drivers/net/virtio_net.c:start_xmit() {
-	int qnum = skb_get_queue_mapping(skb);
-	struct send_queue *sq = &vi->sq[qnum];
-	int err;
-	struct netdev_queue *txq = netdev_get_tx_queue(dev, qnum);
-    ...
-}
-
-Can this still overrun vi->sq[] and dev->_tx[] for every packet after the
-first in a bulk batch?
-
-The commit message says:
-
-    The same stale value is then handed to dev_hard_start_xmit(), which
-    reports the same fault.
-
-That path still looks reachable for the tail skbs. These tail skbs can
-also be requeued to gso_skb, where they hit the uncapped lookup in
-dequeue_skb() described above.
+Could the documentation be updated along with this change?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021155450.66934-1-phx0fer%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021155505.67208-1-phx0fer%40gmail.com
