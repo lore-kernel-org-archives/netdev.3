@@ -1,81 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.171
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792924465;
-	b=DkRHUGTmEe9Ex8YMPYaLg2M9+u9Oc8lt30aMlMnig4cvfii1bJtinEPXbZA7NLffopxM
-	 xs8+Nv9VC/JHhpBZRLZeOcOKZuEtDbAypQMVkGzsv2S6+J6/36qqMtHU/SmeQvTTmkp6z
-	 R1cK/sO3MY1YbwE6w1lwb5i86PD8Kbp3wDE8vEYyFWKs3mXaMNA0HYpgarEaZ8yqA4iBX
-	 9Molj5NRXoCkw9ZjDXYFztWowkOk7aFrVGT86+/4TVNceN/+ojO/D6yqky+YTHu1WHATO
-	 gUReHQ440u8f7pBtYnHkogjC3wVFFpd8J56c2pvstZRznmakoZ2g2qjFOlZ5c/0vjig==
+	t=1792924468;
+	b=E36RiaXrIv2fpddFR5Knn4402E+bLsXf2ahu6/mJWUIOaO/keQAiMu6IE3N8BlEikSbo
+	 rHD7jG/wgVwL96LuAu3WErXTEQFQUNgMJhBTYsJ+96iGHygBNwLAb3YKwW+vbUiVGWqZW
+	 C/+Aje+GGhwLn0TSD42ylqdnVPbsnpdoc/2yCYa2CzBl/S6PCkgezsRncn/dSGVfAvYtQ
+	 RwzjR4jrCK/PPRhDi9vPHI6QX0qHZsv5oNyuXvzksdWRMqLLdPFbOMo26xOoN6/wpACJR
+	 QM9IyVQgpCda4ZMj88IbPFQh8pHmxI3Tc0Q9xhMbFfUXHwZh85FsENy1oNo/RWMj+fQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792924465;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792924468;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=3U631olD5XGjdTK9Qq5LKDRpKK91k9qur+dWmWscRtU=;
-	b=kvp/v3hkRXhCGLVonluKIdEODIMCqdph7LlkuuQgyyJ1vW1KAaNZjpCYhDIcHAa7a0qh
-	 DSLzbEd7aZtMQQHwbRIgF5gAMqu08ZKxPyTpQTKtDzxH4QQFsrtCKqeEie+MkLlj2UGE3
-	 0osipWv+g0eNaL4z5hKet+WJ5B9TWrj/P/9UTzDiyl/b46gK3h62WJBCM1CghNIbPoqtH
-	 lOoBl4t4qsW4Y5koi6xG282pIOgwpXsYIZDzAeW0pt3Xq0GIJKkIGdDDrV3I2griHQbBD
-	 gBvqMKRAYk0fQ4Idi2riT5hTP4XiuxwFcHKc48AzrAiLkWN5Mp27mUk03TEShAw+GWw==
+	bh=YRfYLJJYd1L0c12a9Vplu1prrhSRzB61T2SM2N76MS0=;
+	b=jrA7ftjz5NYjsRC98+lMItZ2n5SJ+UwflBUFDVFOD6I6i7Kw0PnwuDHoIoyV780r9Q4M
+	 HRG3yZC9k8guE1rhPXOlY59SukVyaWLrUKVNK+KePv0tkiHpi8FgNz3aulWhc50uyoaoe
+	 pFxu8GcMFnpA51ZLK0ktLkn2XsamQtsEAjX1PoAOoMLbGdg7zKaiYl+ZcHLXKci1odUt1
+	 h302C73pKxGkzs/YJAA3GK4wmU9wf/aoQib0S2xjdSgNoPiCE3gFMydU/psb9Zj7SOaZJ
+	 XUDjevPUqvgvAQ7RBjFc50AKi59grXOPUAzmBk0NIqauhucFXvJCqdnlKlPb26Vu0Mg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=BOBHeAZs;
-	arc=none smtp.remote-ip=74.125.82.170
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=VB3atq6D;
+	arc=none smtp.remote-ip=74.125.82.171
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182D1606A31B
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 10:34:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 182D1606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8DD606A31E
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 10:34:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AC8DD606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=BOBHeAZs
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-35f036b17easo5412534eec.1
-        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 03:34:24 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=VB3atq6D
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-3514b90bb89so5100218eec.1
+        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 03:34:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792924464; x=1793529264; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792924467; x=1793529267; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=3U631olD5XGjdTK9Qq5LKDRpKK91k9qur+dWmWscRtU=;
-        b=BOBHeAZsGadPDojaVWGwpuL3V2EJaYV4LDRPf7jwnsAk93wjkeWNflvjPXL02wijTR
-         /2CmGmAMUWvAiuv0H5N4jEi75XfUvWZNiUJFqRi17MBeZIaw53lq8IU/6dAGVVoHhJJp
-         862z6h8T20MUxDNrc5MyXURYrLXsd64gQiFKeO2L6zWBfCdTNgnJ5cDrDAEC16HjDeyB
-         7Din3m5QxqVKM1poLk/OZ/zqU/GGxU1B7fv1+fRBei+Bogs9HjRxLd7uyIsDdY6fLIk7
-         FpI9oteQ/XuAiiEz4K6Cs4eb1bz91K/0a9DAhxNi1Yg+5l7DrnEWb3wsD9hfJkry+fH6
-         jNwQ==
+        bh=YRfYLJJYd1L0c12a9Vplu1prrhSRzB61T2SM2N76MS0=;
+        b=VB3atq6DfavtIUlgWgp/ACfxg/bdmFKvcckbOdSXA8SzRhnLrmotmZ11liKAQJt2Vn
+         b+zKv9uD02G6epR9roDvQ2FpoEtJC1kx12LFsbDvykQdHfh6niSWwrafDVUjUmc8Ky9S
+         VrdU9ZYTbmeNLHkxopjSCExOaSEnhpkL9Xx4pwJwHGSZA4DxF7E3UqGZyRCiJeiD85RH
+         OixsDaGcHk42N1aWvda2Qh6V2Xgws7g/hIkIKC1AHObVI5NNHKmUbJ6INIuR5cpgiq8k
+         TFIWZucxT+qhsE/09UNvzLtYSVArP+vGcreaYlP0IpJbicxdtWGuuF/wcXvO3aw+3Tvw
+         H5tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792924464; x=1793529264;
+        d=1e100.net; s=20260707; t=1792924467; x=1793529267;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3U631olD5XGjdTK9Qq5LKDRpKK91k9qur+dWmWscRtU=;
-        b=rMEWoXYgZPQHWmmZg5C0J/4vSMY+22y2aaXzPMumfZRQsbOfXrtc23j9pMqjlGtAgF
-         lV0qy1VOA0dJK3PZ5WJTuStstKbjZ022z9LMCOFLfYgHv0rsRA7xn36Zv5y1cYpFZbO+
-         V3rIPnOGFYhbv/HwbO/mavUrlx3ht7G/HJPJmgBhU1SUh6ah+5A04mkRaSg2G9H4Cc/C
-         7QwfD7OGjp34/PMdhVc7OlszZY2Sp0TvVmb+eKjRj5Q+1KB03wfmgKUFiR4cZVeUNpQt
-         uU65Kr2WiZQcKRsquEpEHhh/XevHYEXUGP/UC4Rs1XkAAKzBNkiSvSQkkIBr8zQtgBcH
-         TJcQ==
-X-Gm-Message-State: AFq9FYI44HrwV0gDIDvSgypL5aB4PFDvNP62XwYjgj25iiMR+kFbeApZ
-	ALl0c6ylZse+rMUwtS87iEns1vY3W/ZdeaaXDxP2d/POXdKsimilX+1aFsKDJzhsUDh1qg==
-X-Gm-Gg: AYBFou1Sf0oN3nA9+ZmZLetrGbFk304SEEVvfVcx8MK9EK3VEm+k6iEZxWOlrIfyAiy
-	sxFRD56T39s1Hy3Q0fOAcYVaGjeFsoXkmvJEV1BlH2yR+PT6DD0UEESEr7cP/je+vwAy9M3VNpw
-	4Icmn7nRt01tWJEGfuGESGX6OeTh9/D8Lhw8aM2JRhbhZ2BleOSAcfOeMW5o3vlY2Bh5TDgczJN
-	LqrBTtj/Fp7XbsXYF68ax27khK1W2xnkMkhoA+rshI/npH5JE4RcoihuKkCkkT1FwCYFn1IyWQL
-	XQ0n501A48sTVy3+FN6pqUDfiYK+cgbhWGpFKI9gUzUuKWOnXV9awXXAqD/rZtZQbkniJauO5Xi
-	iaAPpHg3bxoqGPeRgU/0Os/To7YZ6GuWEsnbE/XA3fZBcwtunbUG3X2GKwPFzWqY7/OZX90GLSZ
-	XFRQiHuqvtgFU7hPohI36mCyTtuEOyvKYppy06hWX0IdOTcBrswdFHZzMggQKRaBTstRnIN4V7e
-	ZuhjLAPKqHYPZXLREtb7l/6FHlYkYYMnwRqmPS4qN1e4G6IAw==
-X-Received: by 2002:a05:693c:894b:20b0:369:fe4c:b48f with SMTP id 5a478bee46e88-369fe4cbd94mr388039eec.0.1792924463993;
-        Sun, 25 Oct 2026 03:34:23 -0700 (PDT)
+        bh=YRfYLJJYd1L0c12a9Vplu1prrhSRzB61T2SM2N76MS0=;
+        b=h722K5Uu6363ukR4L2HiSzyoTxuM+VlLCKxGmc41dsmuFlVmf1hLA6+7ZAFsRSqVkS
+         pWA+H5Fffhq10FVN34QJS+IzWqN4VzmPstPFLzdHPOGfR85Hnv7GHoRdK0lc0On2yAJm
+         BAEqMTKfc8EiZKn5bmXoJkvPTyWQBaFFDUaBG3ATN+DPwMOprynpJGxckNeB52JIiftu
+         Z9vmTCcIS54NspE2KUtK09DyFPbwkiyQg28pphRK071YkHuqBoTJCYVwQyzoabbXLTs5
+         bENlvfREKXMxTWdcwRJg59AZnbJIJ57Lq+fHTXJIh41zfmpF5oJ9bNp6qcH1QAauhKmk
+         mKbQ==
+X-Gm-Message-State: AFq9FYIBw/Z7Ji4wpRWGOpPVp1kYlh0v/j8HnVHhlSmPZPMJJZlNuLS/
+	JV0Vo7p8esrV3gMxPNZjwv4jMO0buhxIXsg66SJjbLugu2wwvyR2mCCqfzQHmemkEpdmdA==
+X-Gm-Gg: AYBFou2RIneXVcs+Fyi9b0pddY9JVq7fwiwd/nI1BB0Uzz8yXmp67oYRUlYZnKvWiNp
+	wYHoU3GJ8mxtyZu/ex7ErwYO5yXr84rtXm6XQSMfVY0iIEj9+hUTXPBACqcK8b6CfzqyYpnOazh
+	KarsZI03NJbzmyvk1lQREnAFrm2E68BOGtcLqzo0cKzPtzfTVTLiUreE4bB9QXCOZHixTHc5OD3
+	pU+OU5TBvBRVDDtcFik+dNGJ1v8uOJ/7NPT4j69BtOxP8foAv0R6At5XXbeFtTD0ZNjyhfzydco
+	0lrv+Akl8qQ/iuxTpE9DEfBDNSg3lEIGU11DuHg84kkR76RIo4goq7PSELJm4IFbNhM7V0Vm8fj
+	/2cprd0AH+iYiPFIB0T9CIbqmPkqtgw6+sXZWYrMy9QRrZdl5UH1EaEpVCh1eoYPaehDBa1Qqhz
+	YQiYGovJRX90asYY26VFJi7I+WkZbBcrmYdRT9lmaRyw/Jhw/xu2UVU3glMU54NKCEjaOYVeFmD
+	+IZrNPY0+uvkNPi5tik1mAVgKoFhUZHKVvDxYXvs50+sulDjA==
+X-Received: by 2002:a05:693c:8352:b0:35a:5153:ab24 with SMTP id 5a478bee46e88-369e845b07emr4505740eec.9.1792924466662;
+        Sun, 25 Oct 2026 03:34:26 -0700 (PDT)
 Received: from houminxi ([61.170.150.30])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-369ef6a71easm12597256eec.5.2026.10.25.03.34.21
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-369ef6a71easm12597256eec.5.2026.10.25.03.34.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Oct 2026 03:34:23 -0700 (PDT)
+        Sun, 25 Oct 2026 03:34:25 -0700 (PDT)
 From: Minxi Hou <houminxi@gmail.com>
 To: netdev@vger.kernel.org
 Cc: Donald Hunter <donald.hunter@gmail.com>,
@@ -84,9 +84,9 @@ Cc: Donald Hunter <donald.hunter@gmail.com>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>
-Subject: [PATCH net-next v4 1/2] netlink: specs: add ovs_flow del and set operations
-Date: Sun, 25 Oct 2026 06:34:08 -0400
-Message-ID: <20261025103409.3519874-2-houminxi@gmail.com>
+Subject: [PATCH net-next v4 2/2] netlink: specs: add ovs datapath and vport set operations
+Date: Sun, 25 Oct 2026 06:34:09 -0400
+Message-ID: <20261025103409.3519874-3-houminxi@gmail.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261025103409.3519874-1-houminxi@gmail.com>
 References: <20261025103409.3519874-1-houminxi@gmail.com>
@@ -101,113 +101,111 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The ovs_flow spec only described get and new, so a YNL client could
-not delete or modify a flow. The kernel has had both commands since
-the family was added: del flushes the data path when neither a key nor
-a ufid is given, and set looks a flow up by key or ufid.
+Both families register a SET command that the spec never described, so
+a YNL client could not modify an existing datapath or vport. The kernel
+handlers take CAP_NET_ADMIN through GENL_UNS_ADMIN_PERM.
 
-Name the attributes each command reads. new reads ufid-flags and probe
-as well as the key, so both are in its request list. new, del and set
-all need CAP_NET_ADMIN.
-
-probe was binary in the spec while the kernel policy is NLA_FLAG. It
-is a flag now, which changes how a YNL client encodes it: a false flag
-is left out, where a binary attribute was sent empty.
-
-The key attribute doc in this spec said a key is required for every
-request except a dump. The kernel accepts a ufid with no key for get,
-set and del. A new request needs a key, including one that finds an
-existing flow and replaces its actions, and a set that replaces the
-actions needs a key too. The doc in this spec says so now. The same
-sentence in the uapi header is unchanged.
+In the kernel, the datapath SET command changes the user features, the
+masks cache size and the per-cpu upcall pids. The vport SET command
+changes the upcall pid. The kernel rejects an ifindex before it looks
+at the type or the options, rejects a type change, and rejects options.
 
 Signed-off-by: Minxi Hou <houminxi@gmail.com>
 ---
- Documentation/netlink/specs/ovs_flow.yaml | 46 ++++++++++++++++++++++-
- 1 file changed, 44 insertions(+), 2 deletions(-)
+ Documentation/netlink/specs/ovs_datapath.yaml | 21 +++++++++++++++++++
+ Documentation/netlink/specs/ovs_vport.yaml    | 21 +++++++++++++++++++
+ 2 files changed, 42 insertions(+)
 
-diff --git a/Documentation/netlink/specs/ovs_flow.yaml b/Documentation/netlink/specs/ovs_flow.yaml
-index 951837b72e1d..dd403cca4006 100644
---- a/Documentation/netlink/specs/ovs_flow.yaml
-+++ b/Documentation/netlink/specs/ovs_flow.yaml
-@@ -384,7 +384,11 @@ attribute-sets:
-         nested-attributes: key-attrs
-         doc: |
-           Nested attributes specifying the flow key. Always present in
--          notifications. Required for all requests (except dumps).
-+          notifications. A get, set or del may carry a ufid instead of a
-+          key. A new request needs a key, including one that finds an
-+          existing flow and replaces its actions. A set that replaces the
-+          actions needs a key too. A dump reads neither the key nor the
-+          ufid. A del that carries neither flushes the data path.
-       -
-         name: actions
-         type: nest
-@@ -438,7 +442,7 @@ attribute-sets:
-           are exact match bits.
-       -
-         name: probe
--        type: binary
-+        type: flag
-         doc: |
-           Flow operation is a feature probe, error logging should be suppressed.
-       -
-@@ -975,6 +979,7 @@ operations:
-             - key
-             - ufid
-             - ufid-flags
-+            - probe
-         reply:
-           attributes:
-             - key
-@@ -988,6 +993,7 @@ operations:
-       doc: Create OVS flow configuration in a data path
+diff --git a/Documentation/netlink/specs/ovs_datapath.yaml b/Documentation/netlink/specs/ovs_datapath.yaml
+index f7b3671991e6..83f6b060ed75 100644
+--- a/Documentation/netlink/specs/ovs_datapath.yaml
++++ b/Documentation/netlink/specs/ovs_datapath.yaml
+@@ -138,21 +138,42 @@ operations:
+       doc: Create new OVS data path
        value: 1
-       attribute-set: flow-attrs
+       attribute-set: datapath
 +      flags: [uns-admin-perm]
        do:
          request:
            attributes:
-@@ -995,6 +1001,42 @@ operations:
-             - ufid
-             - mask
-             - actions
-+            - ufid-flags
-+            - probe
-+    -
-+      name: del
-+      doc: |
-+        Delete one flow, or every flow in the data path. A request with
-+        neither a key nor a ufid flushes the data path.
-+      value: 2
-+      attribute-set: flow-attrs
+             - name
+             - upcall-pid
+             - user-features
++            - masks-cache-size
++            - per-cpu-pids
++            - ifindex
+     -
+       name: del
+       doc: Delete existing OVS data path
+       value: 2
+       attribute-set: datapath
 +      flags: [uns-admin-perm]
-+      do:
-+        request:
-+          attributes:
-+            - key
-+            - ufid
-+            - ufid-flags
-+            - probe
+       do:
+         request:
+           attributes:
+             - name
 +    -
 +      name: set
 +      doc: |
-+        Modify an existing flow. The kernel rejects the request with
-+        -EINVAL when it carries neither a key nor a ufid. Replacing the
-+        actions also needs a key: a ufid on its own is not enough.
++        Modify an existing OVS data path. The kernel treats a missing
++        user-features attribute as zero and clears the previously set
++        features.
 +      value: 4
-+      attribute-set: flow-attrs
++      attribute-set: datapath
 +      flags: [uns-admin-perm]
 +      do:
 +        request:
 +          attributes:
-+            - key
-+            - ufid
-+            - mask
-+            - actions
-+            - ufid-flags
-+            - clear
-+            - probe
++            - name
++            - user-features
++            - masks-cache-size
++            - per-cpu-pids
+ 
+ mcast-groups:
+   list:
+diff --git a/Documentation/netlink/specs/ovs_vport.yaml b/Documentation/netlink/specs/ovs_vport.yaml
+index fa975f8821b6..189cb5b99aee 100644
+--- a/Documentation/netlink/specs/ovs_vport.yaml
++++ b/Documentation/netlink/specs/ovs_vport.yaml
+@@ -128,6 +128,7 @@ operations:
+       name: new
+       doc: Create a new OVS vport
+       attribute-set: vport
++      flags: [uns-admin-perm]
+       do:
+         request:
+           attributes:
+@@ -140,6 +141,7 @@ operations:
+       name: del
+       doc: Delete existing OVS vport from a data path
+       attribute-set: vport
++      flags: [uns-admin-perm]
+       do:
+         request:
+           attributes:
+@@ -165,6 +167,25 @@ operations:
+             - netnsid
+             - upcall-stats
+       dump: *vport-get-op
++    -
++      name: set
++      doc: |
++        Modify an existing OVS vport. The kernel rejects an ifindex with
++        -EOPNOTSUPP, before it looks at the type or the options. It rejects
++        options with -EOPNOTSUPP, and rejects a type that differs from the
++        vport's type with -EINVAL.
++      value: 4
++      attribute-set: vport
++      flags: [uns-admin-perm]
++      do:
++        request:
++          attributes:
++            - name
++            - type
++            - options
++            - upcall-pid
++            - port-no
++            - ifindex
  
  mcast-groups:
    list:
