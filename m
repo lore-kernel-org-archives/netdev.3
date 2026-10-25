@@ -1,94 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.175
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792937245;
-	b=oY2fg05Lrr/x7RjHdIyFHkodIeuQmRogKaypXUH9OrquGd2jqN1jNJZPzym8W1tMtScy
-	 b0Xiskt0kORuWRluRUvpvbwVJXpFE82qUth4flm97NnynvohbcwG2SROe/4Us8BrHOI1R
-	 R/9uF7SvYhlm0Z0c0WaOsnFZkRW2F1WH+s/Fc7YPOOJrjlBPs8i2tEiM9HCS6kFEzWZ7b
-	 /3QcbD43JkvHL4gsut6GPdC6xjbTqTDvGDgPZUF63LisFbHXbpwt25xjQhPB8Q8zFEahk
-	 cjCP7YfUVcvH/kOc95imkNF04F/MUae7yTuC7CkbLezCM28iW7p1BQ29ajOii1Yi2mQ==
+	t=1792937259;
+	b=0cj+O3KslWfoDahbCZjUhCIos1NxMIV3Ey2xMaC2MFXl9dVk3IaeZzzbfsU6b6CpeVLB
+	 qRmM5RSV/ZdZHp6/S6LKyHsBaDiXW/wmopjr7x/2i3At9URbE7UUFMfljRjDKUrh6c2a5
+	 18WRbIM7089M0eE9pt4SNiH2w33a3elW32THPnaweb7BJ5MWe2ApokJdLlbCMLvHLJ2d1
+	 zS4GhmDtzFnKmEaq3u7KDsbvc+GhS6DFWCxqSNLaXwI7R/L/FKJ9gMWrOUeg4Zsf77Sqh
+	 sSd2ejQEcyFJJPjmdzZn0ntWLicEdb8YpzDQO1i+SELdFYiRRwv+wvFIt78wWpdcdmg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792937245;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792937259;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=/WofT0yh3KpmHARnSgrS9AsbIBrE6V8uNY4po8M3XK0=;
-	b=KcRdHY+oJwH6zsr8wRwx7hKZckwFJQwo6zoYXLsoUNlKb6dfNwrDa8QIWQPO38IFiFZ2
-	 4V6PW2Io4u/uPtD183WZMKl4i94wKffStCMlBYSvdOtTt272O0kGKodhPwsazfNXHRZ+1
-	 Y0nlUO/Rtybz3tQ6XYTn5iN20EfdhkUgR+lkASZo3u9yLtBY/8b7chlPdnYiS24ddlpgC
-	 5l3NsCOVZREUWAGVVHkCbmJ2BeIf7RstdovSDaVz0xtZFpKEsIhcVle9qMsbxfk330p90
-	 9Lwd90KZCGTAr0dl/HTYs4fjZDKNVPu8X4OFiw5T2tNGR1yUf+C21pEtq7Nm/5H4fwg==
+	bh=nwo3NYlls8cyar7A+KG0JtYLr0c2wn1Lw0JyofWgGxI=;
+	b=L519xeVaeySBn1/iib7LuivSNl8nDL1m39d8r/tNMlfOvWEwGTnqWe+YUV0j05W+az4m
+	 llz0gGrGd+EhmnTLabirMLJBS27U90s1jsJn/GgKGQN1fUCSdLewNQz3uJju117zTmLZ2
+	 bRzRcrQZbX4TaMvTlz54722AJWT/gAAWQ6ym+W2G5bV6uygMwf1h4WqkKDPY35xUtDInA
+	 P38pCOfVVbsdUnL77thIY64Oe0N6mMI77lcpdKhEBjHsosCvajpOgPfF24YWPhhaLrgke
+	 Vg2AaYcZlxhRraeupKxtO6JVb3NPWbut0wLIGZkcpvsj9ks1nd9rVfNnkW4OE9evF3g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	arc=none smtp.remote-ip=209.85.214.172
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=SlUUBPTN;
+	arc=none smtp.remote-ip=209.85.214.175
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1635606A31D
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 14:07:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A1635606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62A62606A31A
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 14:07:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 62A62606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2e9f6a16aedso14133845ad.2
-        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 07:07:19 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=SlUUBPTN
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2e8f2c3ad6bso13936045ad.1
+        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 07:07:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792937239; x=1793542039; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792937259; x=1793542059; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=/WofT0yh3KpmHARnSgrS9AsbIBrE6V8uNY4po8M3XK0=;
-        b=oqeADfQV64ONsHXyegylGm2pBiC9f1WfKiwdma+Qh6bk/8LF8EUBep9hjXbRXwUhXI
-         md9BJk/WWbsdXUibnsyyggsFwTBOSuGquKwk1Aed5mBJ3FKGhmW2XOcCz0a4KNTtopOs
-         atERMRjzhZxrLPhNWjaEl8UaI6IOIA14/333ftk1ZGml90HC5Y1oo66n2iPuacrpj/mE
-         Px1wuvQa6HIHkEO1uWnNSbQb/JDwQIhKu/x7dwdnsf1M8LtJF9rioMlUWyPu58Xmcodn
-         YRrD1ef8FxrDFpPePRxsTICuMZ56buZBQWmJNmSHjSVwQSlx4ofuSnDVTbxGk8+NHjnk
-         4/yA==
+        bh=nwo3NYlls8cyar7A+KG0JtYLr0c2wn1Lw0JyofWgGxI=;
+        b=SlUUBPTNj/UpNQiL1vlrRsgD7o7sPLtC66LWqGxP3q5zpSmtns3oLq/5tLtKxqlrsP
+         zx9nwz6OqL4RBTnzp9Z1ZQYFXoukssrfoUVgJwA4wY3s2Usu7wkfLv9pIYKTt7Vh4eDh
+         3J3rixsKv+qllsJXnhbYZWrIMaySOBMf15t+9e/bP5jA427RQkckQGt4kPMOZYidt0Is
+         vGftN0CRjIty26pnwzwQwfKbbe+977UHFHXMCRbRQ8lN9Ae3NlY/wrfGkPJFviov/D9A
+         LckF40meGnel6o7bI19tuwCxaFxPPbU8/Rtk5Yifbi5HaQFuI/eJguGJi5lIU5gqU1VA
+         eKdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792937239; x=1793542039;
+        d=1e100.net; s=20260707; t=1792937259; x=1793542059;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/WofT0yh3KpmHARnSgrS9AsbIBrE6V8uNY4po8M3XK0=;
-        b=rLXwKq4msZt8E3zHdKpvGph4iIkqlrQ3HhznXxBgBX9A+dRnvmmBVjqK4MsKrIlYnJ
-         di3pzA7UDO8bN5fIlPoXnEuo7BFqu+Jzw362lziGx2cFo92XMLKKLQihtVl6qW8c2uGv
-         LkNZRhFqSwk9IKA2tPSB01oSJ8d/5N3J8tB9gJz2ujTQgeodV+O4VV9+WXwF5iUOyTfs
-         asIHHhHza61RPdFPwp/NWsM4bxgtd+H076DwhUNYVNMx8setT9B2nX211zSLQSz/w3I/
-         pOb9fNys8f23YCOMDAvHiiNwFC158ibyUi9l2vn7RHAG8FIfzlxIyBThxsrgfeOo4Jzj
-         TGQA==
-X-Forwarded-Encrypted: i=1; AKwUvBzr13eXWFapPm1hFC5ZDC4SF4RZZS6B1ZquCqiFBJlwlHUFmVr2T/q8KnVxK71ZOgM25fYoZl4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI36wMG8Js/Dnxkx5sOX67wO4s8/KF+r6TLy9LvZOmEf3E9WNeJ
-	H6DxC02YQrl+TGQ07IpdtsMqJfQhk/o8aJealGzi5azIo8TT9bwQidE44XJetqwmR7I=
-X-Gm-Gg: AYBFou33UnTHiAPjCVgBugMLSYjREa9oghWZ3rrCqLXBhR5H1+O2c3st9zMQFgosPNX
-	tdWS3a6iAERJUoE6ZaGSy0HItrh862BuTGBKsd2HhaI2pNF8nwDsjDeU15LmqAjeY+DiKaYdZbt
-	qsGkBgVFC++A8+ST84bkpkOCsbKARuXwl/mBHgQVVUlsZHukLgxsHKs4J1Qat/83AhOYdrM5rZB
-	iu9Td1pvJ6h5QlqJVguIEtAZYnjdZXqTaTjY8+MEBJe8yEI6jpt/aGIVqEUvUc3rtTEmzJCUyBK
-	tfrl3V7Mel2cpQ1Ax1222YAsWBDwaAO750pDAsduCgadG4U+0rb6L2+4kQyR0JmQxZqSaeKdLCL
-	l3S+J5wEeEuAruA4LOyUl1H/MbcpLvLbGisfGDvNGGtzpoY+XGU08/MlM/o9h53bzNWMrjK1C1D
-	TzLx2IA1UnN3xWsZIxM8sigjLg6GX2PWlMWPUEL5RqiIJibzdFDfddfj7zfZNYDLsaAnh/oFqJo
-	AUI8jh2fDLOOsu0hO6SCCtuyaXRICW9EMItrNnLbWoZ1uCaYKhO04IrW0NFpx73o7BGfXJI/rZ1
-	Ew==
-X-Received: by 2002:a17:90b:3c41:b0:3ac:a203:e0a1 with SMTP id 98e67ed59e1d1-3adead03898mr3797971a91.37.1792937238796;
-        Sun, 25 Oct 2026 07:07:18 -0700 (PDT)
+        bh=nwo3NYlls8cyar7A+KG0JtYLr0c2wn1Lw0JyofWgGxI=;
+        b=q8wysvq73VSoWk9+wWMFg5yBzEejKSDHrUXgJ5NQKoYPy0fRmg2I9fLvyNXYFZ1vTJ
+         ORHvQme0MCBEl9BX0v+WiJwzIPL0QpQqpF8h7ODnMhLj0dfrK9ueFUHQVM/boDTamucd
+         w3qXejJS+3ZofEHnkwLJDZuPWF2DKQ60wyczGTTkxEWvwln7ubFEG6323NNHJ0c7wogW
+         6ia3M/SCCbiYDHTngMR0s0yV3WDBxznxtl7mM8egHuMRHc7hbseUG6dX6+fotIbHJSnG
+         zf/NajTyS3RxoW5jVwIEisIk8IObHX9AQJO8gtfC39e/t/Nn8WOlSMGsBi2JoPFIGAtb
+         hSVw==
+X-Forwarded-Encrypted: i=1; AKwUvBxi3YTXPCFhsCAaf2XIyunGt/QOEoOpJUtO8I3fDTz9pLdJwkc7SHkLkzQ2NPgfFiGo8sFubGg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIcHXjxGLosZqcaP7zcm/04SgBfs/btNarCinsdarS4gh87iDbc
+	Ou8wB3yL5f3otvjZeTQsUd09AzqoJF/SI5Nu1I8PRjwDL3mUoStwfIxB
+X-Gm-Gg: AYBFou2vlixjZLtdG/1we/kex5iAwbpSCnCvDGNSocPDh/DiAJ6e6nfwJ753IpZHEcj
+	R7rsB1FeKpAwpRVCj52bEyTGuksMUAYNVBlEu/UdZhANld5sgULBn3d++vk9/V3KzvxM5dogzAF
+	GBCv7kLAG/hwhd8JFMaMXEWcOh4DM8oL6LYeh7FzWjxBzFwT1f/tYJSMxR/fGIn7vnGZkT23A8G
+	OsAo0VyFvABCbdL5LbXJjTg5EZM/rlizPmO8Y7eCNHI246+/psqVmmXR81p+1IDTJpNrdsZeMO8
+	tlPF0WcwkRv43TZtgNf30eCdczReN6YlbUS6Tncwm6NPdchMiDSZMZGggM2plzUZfuXzBb+0Efr
+	8UK9svaAsQHeegcAnsCh1oSizs8K6/6+qLjjWuyQ0Iwk0av1HgY6cGT2JR2UK7NlBaqg8elWDZb
+	WgHs3JsxOHLUGs9SQ/nsn8kukwSZStxHk6axDFjHtET3BUxFfJNzGZSjVPMqs/+LU+OFBWW7+9Z
+	XzpKy3f/jn/9De6ndX4p4iP+jpQ2svwFhetuxzy9MucWpnG2zXIwlPF
+X-Received: by 2002:a17:90b:4cd1:b0:3a8:1943:cb7a with SMTP id 98e67ed59e1d1-3adead44808mr3477817a91.18.1792937258609;
+        Sun, 25 Oct 2026 07:07:38 -0700 (PDT)
 Received: from gmail.com ([240e:469:849:35a9:20c:29ff:feb3:e631])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3adebaddd45sm3776443a91.2.2026.10.25.07.07.14
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3adebe9078asm5038210a91.10.2026.10.25.07.07.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Oct 2026 07:07:17 -0700 (PDT)
+        Sun, 25 Oct 2026 07:07:37 -0700 (PDT)
 From: Xue Boyang <fuchen.dust@gmail.com>
-To: Jozsef Kadlecsik <kadlec@netfilter.org>
-Cc: Xue Boyang <fuchen.dust@gmail.com>,
-	netfilter-devel@vger.kernel.org,
+To: kadlec@netfilter.org
+Cc: netfilter-devel@vger.kernel.org,
 	coreteam@netfilter.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	"Phil Sutter" <phil@nwl.cc>
-Subject: Re: [PATCH nf] netfilter: ipset: fix double free on kernel-side delete during resize
-Date: Sun, 25 Oct 2026 09:07:06 -0500
-Message-ID: <20261025090609.v2reply.4093.fuchen.dust@gmail.com>
+	phil@nwl.cc,
+	Xue Boyang <fuchen.dust@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH nf v2] netfilter: ipset: fix double free on kernel-side delete during resize
+Date: Sun, 25 Oct 2026 09:07:29 -0500
+Message-ID: <20261025140729.5152-1-fuchen.dust@gmail.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <8b1c4c41-d371-1901-0f85-f3d0a1dfd033@blackhole.kfki.hu>
-References: <20261012163353.4093-1-fuchen.dust@gmail.com> <8b1c4c41-d371-1901-0f85-f3d0a1dfd033@blackhole.kfki.hu>
+In-Reply-To: <20261025090609.v2reply.4093.fuchen.dust@gmail.com>
+References: <20261025090609.v2reply.4093.fuchen.dust@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,71 +103,270 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi Jozsef,
+A kernel-side delete, i.e. a delete triggered by the SET target while
+the set is being resized, is applied to the current table and saved in
+the resize backlog, to be replayed against the new table when the
+resize finished. Both tables share the element extensions: the resize
+copies the element to the new table, keeping the pointer to the
+extension data, e.g. to the comment. Deleting the element in the
+current table calls ip_set_ext_destroy() and releases the shared
+extension. The replay then deletes the copy from the new table and
+releases the same extension again, i.e. the same rcu_head is queued
+twice. With CONFIG_DEBUG_OBJECTS_RCU_HEAD (and slub_debug=F, which
+keeps kfree_rcu() off the sheaf fast path):
 
-thanks for looking at the patch!
+  ODEBUG: activate active (active state 1) object type: rcu_head
+  WARNING: lib/debugobjects.c:629 at debug_print_object+0x7b/0x100
+  kvfree_call_rcu(): Double-freed call. rcu_head ffff88810474ce40
+  WARNING: mm/slab_common.c:2041 at kvfree_call_rcu+0x10b/0x140
+  Call Trace:
+   <TASK>
+   debug_object_activate (lib/debugobjects.c:905)
+   kvfree_call_rcu (mm/slab_common.c:2039)
+   hash_ip4_del (net/netfilter/ipset/ip_set_hash_gen.h:1226)
+   hash_ip4_kadt (net/netfilter/ipset/ip_set_hash_ip.c:96)
+   ip_set_del (net/netfilter/ipset/ip_set_core.c:820)
+   set_target_v3 (net/netfilter/xt_set.c:411)
+   ipt_do_table (net/ipv4/netfilter/ip_tables.c:345)
+   nf_hook_slow (net/netfilter/core.c:619)
+   raw_sendmsg (net/ipv4/raw.c:652)
+   __sys_sendto (net/socket.c:2281)
 
-> Thank you for your patch! Could you address the issues sashiko raised at
-> https://sashiko.dev/#/patchset/20261012163353.4093-1-fuchen.dust%40gmail.com
-> about it?
+The double free is reachable from an unprivileged user namespace and
+permits local privilege escalation.
 
-Sure - v2 follows right after this mail, quoting the findings and what I
-did about each of them:
+Fix this by deferring the delete when a resize is in progress: the
+element is not deleted in the current table, only saved in the backlog,
+like it is done for kernel-side adds. The resize copies the element
+including its extension pointers, and the replayed delete releases the
+extension exactly once. This also avoids updating the cidr counters
+twice for the same element.
 
-> Can a memory allocation failure bypass the backlog cleanup block and leak
-> the deferred operations? [Medium]
+Clearing the used bit of the deferred delete instead is not an option:
+the extension of an element the resize copy loop has not reached yet
+would never be freed, the old table is destroyed with ext_destroy=false
+to protect the extensions shared with the copied elements. The element
+thus stays in the current table until the resize completes, so
 
-The exact path claimed cannot: every early exit is taken before the table
-is marked resizing, so the backlog is still empty there. The leak is real
-one retry later though: on -EAGAIN the cleanup path jumps to the retry
-before draining the backlog, and an early failure of the next attempt
-(its own allocation failures are again before the mark) strands it - and
-with the deferred delete being the only record of the delete, the
-elements would stay in the set while the packet path believes them
-deleted. v2 drains the backlog on all failure exits, replaying it
-against the original table.
+- a kernel-side add of such an element must be deferred too, otherwise
+  it is rejected with -EEXIST and lost, and the replayed delete removes
+  the element for good, leaving the set without an element the last
+  packet-path operation added;
 
-> Does the backlog replay ordering during resize incorrectly resurrect
-> deleted elements? [High]
+- the backlog must keep the arrival order of the operations: deferred
+  deletes are queued with list_add_tail() like the deferred adds, so an
+  add followed by a delete of the same element is not replayed the
+  other way around, resurrecting the element.
 
-Yes, it does - the list_add() prepend of deferred deletes predates this
-patch. Since the fix now relies on the backlog order, v2 queues the
-deferred deletes with list_add_tail() as well, so the whole backlog
-replays in arrival order, on the failure paths too.
+A resize which is aborted before the new table is in place replays the
+backlog against the original table, which stays the live table, instead
+of dropping it. This covers the allocation failure in the copy loop and
+the early exits of a retry after -EAGAIN, which inherits the backlog of
+the previous attempt: the deferred deletes are the only record of the
+delete there, dropping them would leave elements in the set which the
+packet path believes deleted, and the backlog entries would leak.
 
-> Does this skip clear_bit(i, n->used) and leave the element fully active
-> in the original table? If a subsequent ADD for the same element occurs
-> before the resize completes, will mtype_add() incorrectly see the
-> element as still existing, return -IPSET_ERR_EXIST, and fail to queue
-> its own operation to the backlog? [High]
+The deferred delete reports -ENOMEM when the backlog entry cannot be
+allocated, instead of returning success without deleting anything.
 
-Exactly, and fixed the other way around: clearing the used bit is not an
-option, the extension of an element the resize copy loop has not reached
-yet would never be freed (the old table is destroyed with
-ext_destroy=false to protect the extensions shared with the copied
-elements). v2 defers the kernel-side add of an element still present in
-the current table instead, so the replay applies the del and the add in
-arrival order and the add is no longer lost.
+Fixes: f66ee0410b1c ("netfilter: ipset: Fix "INFO: rcu detected stall in hash_xxx" reports")
+Cc: stable@vger.kernel.org
+Signed-off-by: Xue Boyang <fuchen.dust@gmail.com>
+Assisted-by: LLM DeepSeek-V4.1-Flash
+---
 
-The remaining Medium concern (leak of the extensions of elements which
-expired during the resize) is preexisting and not touched by v2 - I can
-look at it separately. The five dismissed concerns look like false
-positives to me, e.g. the lockless orig->ad walk after the table swap is
-serialized by the synchronize_rcu().
+Changes in v2, addressing the review of v1 linked in
+https://sashiko.dev/#/patchset/20261012163353.4093-1-fuchen.dust%40gmail.com :
 
-Also included in v2: the deferred delete now reports -ENOMEM when its
-backlog entry cannot be allocated, instead of returning success.
+- Defer the kernel-side add of an element still present in the current
+  table during the resize ("missing clear_bit() breaks operation
+  ordering during resize"). The add was rejected with -EEXIST without
+  being queued, so an add following a deferred delete was lost and the
+  replayed delete removed the element.
 
-v2 was tested with the same reproducer as v1 (no double free in repeated
-runs) plus a new ordering regression test: packet-path del-then-add
-pairs race continuous resizes and the set membership is checked right
-after a resize completes, with the traffic source frozen so nothing can
-paper over the outcome. On v1 the element deleted and re-added during
-the window comes out missing (the lost add); an instrumented v1 kernel
-confirmed a single ~80ms resize window deferring 253 packet-path
-deletes and dropping the corresponding adds with -EEXIST, replaying the
-deletes in LIFO order. On v2 the element is present in every sampled
-resize across repeated runs.
+- Replay the backlog on all resize failure exits, not only on the
+  allocation failure in the copy loop ("memory leak of deferred
+  operations on resize failure"). The exact path claimed there, an
+  allocation failure of the first attempt, exits before the table is
+  marked resizing and the backlog is empty; the leak is real however
+  for the early exits of a retry after -EAGAIN, which inherits a
+  non-empty backlog from the previous attempt.
 
-Best regards,
-Xue Boyang
+- Queue the deferred deletes with list_add_tail() ("backlog replay
+  ordering during resize resurrects deleted elements"). The prepend
+  predates this patch, but the fix relies on the backlog preserving
+  the arrival order, so all deferred operations are now queued FIFO
+  and the failure path replays the full backlog in order instead of
+  dropping the deferred adds.
+
+- Report -ENOMEM when the deferred delete cannot allocate its backlog
+  entry.
+
+The "memory leak of extensions for expired elements" concern is
+preexisting (the resize copy loop skips expired elements and the table
+destroy keeps ext_destroy=false) and is not addressed here.
+
+The reproducer (SET --del-set rule plus a userspace add triggering the
+resize) was run against v7.3-rc5 (mainline tree at 6d25ffca055a):
+before the patch the double free shows up as the warning quoted in the
+commit message and as duplicate objects in the SLUB RCU sheaves; with
+the patch applied it no longer reproduces in repeated runs. The
+reproducer is not attached; it is available and can be shared privately
+upon request. The ordering of the deferred operations and the replay of
+the backlog were verified with a packet-path del+add / add+del
+regression test racing continuous resizes: v1 shows the lost add and
+the resurrected element, v2 shows neither in repeated runs.
+
+Found with AI assistance (DeepSeek V4.1 Flash, see Assisted-by); the
+patch was reviewed, reproduced and tested by hand.
+---
+ net/netfilter/ipset/ip_set_hash_gen.h | 77 +++++++++++++++++++--------
+ 1 file changed, 56 insertions(+), 21 deletions(-)
+
+diff --git a/net/netfilter/ipset/ip_set_hash_gen.h b/net/netfilter/ipset/ip_set_hash_gen.h
+index 80ca523f304b..f24c51d489e2 100644
+--- a/net/netfilter/ipset/ip_set_hash_gen.h
++++ b/net/netfilter/ipset/ip_set_hash_gen.h
+@@ -764,6 +764,7 @@ mtype_resize(struct ip_set *set, bool retried)
+ 	struct hbucket *n, *m;
+ 	struct list_head *l, *lt;
+ 	struct mtype_resize_ad *x;
++	LIST_HEAD(backlog);
+ 	u32 i, j, r, nr, key;
+ 	int ret;
+ 
+@@ -786,13 +787,13 @@ mtype_resize(struct ip_set *set, bool retried)
+ 	t = ip_set_alloc(hsize);
+ 	if (!t) {
+ 		ret = -ENOMEM;
+-		goto out;
++		goto drain;
+ 	}
+ 	t->hregion = ip_set_alloc(ahash_sizeof_regions(htable_bits));
+ 	if (!t->hregion) {
+ 		ip_set_free(t);
+ 		ret = -ENOMEM;
+-		goto out;
++		goto drain;
+ 	}
+ 	t->htable_bits = htable_bits;
+ 	t->maxelem = h->maxelem / ahash_numof_locks(htable_bits);
+@@ -934,20 +935,34 @@ mtype_resize(struct ip_set *set, bool retried)
+ 	if (ret == -EAGAIN)
+ 		goto retry;
+ 
+-	/* Cleanup the backlog of ADD/DEL elements */
++drain:
++	/* Cleanup the backlog of ADD/DEL elements: replay them in arrival
++	 * order against the original table, which is still the live table.
++	 * Kernel-side adds of elements still present are no-ops, the
++	 * deferred deletes remove the elements. This is also reached when
++	 * the resize fails early, e.g. on allocation failure in a retry
++	 * after -EAGAIN: the backlog may still hold deferred operations
++	 * from the previous attempt.
++	 */
+ 	spin_lock_bh(&set->lock);
+-	list_for_each_safe(l, lt, &orig->ad) {
++	list_splice_init(&orig->ad, &backlog);
++	spin_unlock_bh(&set->lock);
++	list_for_each_safe(l, lt, &backlog) {
++		x = list_entry(l, struct mtype_resize_ad, list);
+ 		list_del(l);
+-		kfree(l);
++		if (x->ad == IPSET_ADD)
++			mtype_add(set, &x->d, &x->ext, &x->mext, x->flags);
++		else
++			mtype_del(set, &x->d, NULL, NULL, 0);
++		kfree(x);
+ 	}
+-	spin_unlock_bh(&set->lock);
+ 	goto out;
+ 
+ hbwarn:
+ 	/* In case we have plenty of memory :-) */
+ 	pr_warn("Cannot increase the hashsize of set %s further\n", set->name);
+ 	ret = -IPSET_ERR_HASH_FULL;
+-	goto out;
++	goto drain;
+ }
+ 
+ /* Get the current number of elements and ext_size in the set  */
+@@ -1053,6 +1068,19 @@ mtype_add(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ 				j = i;
+ 				goto overwrite_extensions;
+ 			}
++			if (t->resizing && ext && ext->target) {
++				/* Resize is in progress and kernel side add
++				 * of an existing element: the element may
++				 * have a deferred delete pending in the
++				 * backlog and it is going to be copied to
++				 * the new table, sharing the extensions.
++				 * Defer the add too, so that the replay of
++				 * the backlog after resize keeps the order
++				 * of the operations.
++				 */
++				ret = 0;
++				goto resize;
++			}
+ 			ret = -IPSET_ERR_EXIST;
+ 			goto unlock;
+ 		}
+@@ -1217,6 +1245,26 @@ mtype_del(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ 			goto out;
+ 
+ 		ret = 0;
++		if (t->resizing && ext && ext->target) {
++			/* Resize is in process and kernel side del: do not
++			 * delete the element and free its extensions here,
++			 * the extensions may be shared with the copy in
++			 * the new table. Save the values, the resize replays
++			 * the delete against the new table.
++			 */
++			x = kzalloc_obj(struct mtype_resize_ad, GFP_ATOMIC);
++			if (!x) {
++				/* Don't bother, deleting the element here
++				 * could free the shared extensions twice.
++				 */
++				ret = -ENOMEM;
++				goto out;
++			}
++			x->ad = IPSET_DEL;
++			memcpy(&x->d, value, sizeof(struct mtype_elem));
++			x->flags = flags;
++			goto out;
++		}
+ 		clear_bit(i, n->used);
+ 		smp_mb__after_atomic();
+ 		if (i + 1 == pos)
+@@ -1224,19 +1272,6 @@ mtype_del(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ 		t->hregion[r].elements--;
+ 		mtype_del_cidr_all(set, h, d);
+ 		ip_set_ext_destroy(set, data);
+-
+-		if (t->resizing && ext && ext->target) {
+-			/* Resize is in process and kernel side del,
+-			 * save values
+-			 */
+-			x = kzalloc_obj(struct mtype_resize_ad, GFP_ATOMIC);
+-			if (x) {
+-				x->ad = IPSET_DEL;
+-				memcpy(&x->d, value,
+-				       sizeof(struct mtype_elem));
+-				x->flags = flags;
+-			}
+-		}
+ 		for (; i < pos; i++) {
+ 			if (!test_bit(i, n->used))
+ 				k++;
+@@ -1273,7 +1308,7 @@ mtype_del(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ 	spin_unlock_bh(&t->hregion[r].lock);
+ 	if (x) {
+ 		spin_lock_bh(&set->lock);
+-		list_add(&x->list, &t->ad);
++		list_add_tail(&x->list, &t->ad);
+ 		spin_unlock_bh(&set->lock);
+ 	}
+ 	if (atomic_dec_and_test(&t->uref) && t->resizing) {
+-- 
+2.53.0
+
