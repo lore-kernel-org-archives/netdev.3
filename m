@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792971847;
-	b=ulTpR6BZl5IUMeUUYtMmOObBlL4PnwpSeU/GeLTY8uwd6Oapuq1VNkq3syloly9dk5yc
-	 +MT4NtoTvvGDh6bjCcsjgHwpo/I5xibl08VHxJFrkhbCw/R7d08gN+ZQvl7bKKNsY16XZ
-	 XVKFbGi1ED1eIWVxlTk34yN4zjv0WDxdOngmgo7769ISzVTVkAsb/+Wuj9MMK72KIafm0
-	 yy94hIeyLUUPm5jdkTkdsUyUaRlYxTQqhNBXyEqUBD3qCgDxYXu2SRJG6IE96AiejSZLr
-	 ve8z3tSLJNt9SxjGCMx0cuu7T6QKKV4OmlM7SAOIhWCeiP9q9baDWb/mwxwZSuC6QhQ==
+	t=1792971848;
+	b=n+LUkndsQ1Nb9UEJryv0aEATd+3MS+ZCVuj3sQXK6Pn5oTEyrSAzocJle/AZROrtgmoK
+	 wZloBHdkdNeHqZg9q+6tNBaa0j98Dmi+4Q55sC+EwVy82kqQdqx9a58DFFYOMTnARDVnZ
+	 hvhX3aMZVz2Evu7PszGDAf56NN5oX3nQSuuvgDiOpsFc9YozifCrzSDYD4lr72q9C+Vk7
+	 Ldp7Z6qtZEUIKK8LsVDIZcz/kjRIADZvscaahsORigG/CSytSbEG4ZhhP/Gm+3Un4tyIZ
+	 7NR5Ub7iFVJI2Zl7jAgQs7fbzORcmRTOwSu8GViyOeLfcXJ3tAIkYekVexDCxck+u9A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792971847;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792971848;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=feAMzXw0I0VzttmiPYuwLfS9Ux7rt/ffGxnvEU3h+nc=;
-	b=X58jKwnrf71oyI41DhgT7Myc1O1LFtclgusMwFjOiUwdjlXgPydzzRRdWLXGI+1ruY6j
-	 GBpqA5kVRDRUkXKk2ov+2M37NirCU5WO12G5xMgfoDexaL++fdbVu/weBKxm5+xQwsSQf
-	 AuRfgfVJRfc1GWgrMMCZz9ZamgPdkHTFDo7t4/FEbyof1Gj6+P19euY8ouojMvA3iCOrN
-	 8m2kTNfO0u8UXlZL/5WM3GHDBfTjpVfNHJ+HrS9lp9v7cCsm+t2KyhffR/L8elkdQscUh
-	 YhgjS3jcI79GS7RfuZ9gh5qhs6pX1lnBw34CwZxNlMrRt1pc56PxT0sVOT0/tNZReEA==
+	bh=dkdyOJYUkFmroPEHrw/gyaMaLpI/HNgMU0ErK4AO+jY=;
+	b=kTunZNP3l0riEc/dkBVWTUvtDHbvs/P7bpsQuEFAU5VrL2/2OLz2jdnwKVMGcO8TPFDH
+	 WIebVzJZ/PjwcypQ/pUXeNubWxeuG3+l6aPQ7puJVz9kxHHtBEQjAf2KoQtoauuwOoAm1
+	 NKHf1rxLIbGLhZlM6pl+Z2vc9+XTALO5IlRrf8u9iej4zOt+Q5BsZDmpgTwuHvwGhyQcg
+	 dgxtBMc0EqdZuML3/e2pEK0VE9rExGTQk21wcSUUZVruZZ/DOT0J4f4ffgVptF/+1GqFV
+	 I0LsTMTX7lNMN47JzxNpf0kCquqa1vuu8CXV6hai2VkhtiSolQBg3ruGWhbFGo1K0XQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a96IRBmE;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A58ZRBWY;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21EB606A31B
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 23:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86384606A324
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 23:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a96IRBmE
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C21711F01825;
-	Sun, 25 Oct 2026 23:44:05 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A58ZRBWY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 630641F01828;
+	Sun, 25 Oct 2026 23:44:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792971846;
-	bh=feAMzXw0I0VzttmiPYuwLfS9Ux7rt/ffGxnvEU3h+nc=;
+	s=k20260515; t=1792971848;
+	bh=dkdyOJYUkFmroPEHrw/gyaMaLpI/HNgMU0ErK4AO+jY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=a96IRBmEay2whO7MI/6Yulgsh5T1xgmj4j5hSHxegiFHnEvy+u1cY5AygE2P3kgi9
-	 bA44ofzSETkY4AzsI/rWN5HZrx5JUhVL2ZWql7zz/cN69sOY+H9Z6eip/zyaycri8h
-	 wEpR/P9qcYu/bqVycRcvb+eXGomSU35XIneH47/nFnA2DVUTwV4UdFKKX5JGG2cYDI
-	 Gajpa1vtZT32qT+4t6VGlApDV7Uo/1TPoZ4PPPAjBfLrvCvQDrhfOVohh2JAs29d2j
-	 U3ySFxPJlBz9uPs72265W7CCf+H5CGhEGbo8f1c+M7JmKqIDn6iYLG+CPsNqaDjifb
-	 RXW1M03i+HM0Q==
-Subject: Re: [PATCH net v5 11/13] ice: keep Tx timestamp slots tracked until
- completion or timeout
+	b=A58ZRBWYP1vRleH1RyYweUDDuuS8hfD8F3MXzXtjQpGfPm7CS3VyM9DP9c6R/xuUv
+	 uXjCzI8aPYZbioPfBZLhwO4gxU3zbbu4ysf1QDvKbws8q2D2loMQpp9TvUoJ5yPYm4
+	 92AfUgdx0Wis0RX7ZCo4YLy2I6771QnUgEYmF3ki7136/i8zxTEuGgdxGPjEfVtDlt
+	 7c+Ppt9vSIxTEJyNWFX4WRttM8WACrAor+QylQ+MdD/xd/6wdm65XwP+hg/RqsS8NK
+	 j1+wmjYA3IE/iBCjMZvpaTC19ts6zkPaEqp+RPl6TatS21STweXp3Gu0PMQ5Xzj56f
+	 N1xaCb46PqEEw==
+Subject:
+ Re: [PATCH net v5 13/13] ice: don't clear in_use until HW clears ready bitmap
 From: netdev-bot+sashiko@kernel.org
 To: jacob.e.keller@intel.com
 Cc: przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch, davem@davemloft.net,
@@ -51,12 +51,12 @@ Cc: przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch, davem@davemloft.net,
  anthony.l.nguyen@intel.com, maciej.machnikowski@intel.com,
  przemyslaw.korba@intel.com, sergey.temerkhanov@intel.com,
  arkadiusz.kubalewski@intel.com, richardcochran@gmail.com, horms@kernel.org
-Date: Sun, 25 Oct 2026 23:44:05 +0000
-Message-ID: <179297184533.3134.5564062752798799751@kernel.org>
+Date: Sun, 25 Oct 2026 23:44:06 +0000
+Message-ID: <179297184695.3134.4758101348262867336@kernel.org>
 In-Reply-To: =?utf-8?q?=3C20261021-jk-e825c-timestamp-processing-logic-fixes?=
- =?utf-8?q?-srcu-v5-11-72289a4ac8eb=40intel=2Ecom=3E?=
+ =?utf-8?q?-srcu-v5-13-72289a4ac8eb=40intel=2Ecom=3E?=
 References: =?utf-8?q?=3C20261021-jk-e825c-timestamp-processing-logic-fixes-?=
- =?utf-8?q?srcu-v5-11-72289a4ac8eb=40intel=2Ecom=3E?=
+ =?utf-8?q?srcu-v5-13-72289a4ac8eb=40intel=2Ecom=3E?=
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -70,10 +70,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -81,116 +81,178 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The commit message says link-down requests are marked stale,
-  but the patch never marks them stale on E810, E830 or E82x.
+- [Medium] The patch removes the hardware ready-bitmap check
+  (ice_check_phy_tx_tstamp_ready()) from ice_ptp_tx_tstamps_pending().
+- [Low] The kernel-doc of ice_ptp_process_tx_tstamp() (ice_ptp.c:514-562)
+  no longer matches the code.
 
 --
 
-ice: keep Tx timestamp slots tracked until completion or timeout
+ice: don't clear in_use until HW clears ready bitmap
 
-This patch stops dropping outstanding Tx timestamp requests on link down
-and rejects new requests while the link is down. Slots that are not ready
-yet are now released by the existing 2 second timeout. It also makes the
-interrupt re-arm checks ignore stale slots, and lets
-ice_ptp_maybe_trigger_tx_interrupt() run for PFs that handle their own Tx
-timestamp interrupt.
+After each PHY timestamp read, this patch re-reads the Tx timestamp ready
+bitmap. If the index's ready bit has not cleared, the index is marked
+stale and kept locked, and its SKB is freed. The patch also drops the
+hardware ready bitmap check from the in-IRQ re-arm decision. That check
+now runs only from the periodic watchdog.
 
 > diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-> index b7c539f98276..309fa2877cc3 100644
+> index b0ea01cfcc4f..c0d056896825 100644
 > --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
 > +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+> @@ -557,7 +557,9 @@ void ice_ptp_complete_tx_single_tstamp(struct ice_ptp_tx *tx)
+>   * extremely unlikely that a packet will ever take this long to timestamp. If
+>   * we detect a Tx timestamp request that has waited for this long we assume
+>   * the packet will never be sent by hardware and discard it without reading
+> - * the timestamp register.
+> + * the timestamp register. Note that in the unusual case where the PHY
+> + * continuously fails to clear the ready bitmap index, the slot may remain
+> + * locked for more than two seconds.
+>   */
+>  static void ice_ptp_process_tx_tstamp(struct ice_ptp_tx *tx)
+>  {
+
+[Severity: Low]
+Is the rest of this kernel-doc still accurate after this change? The
+numbered list earlier in the same comment still says:
+
+ * 3) read and copy the timestamp out of the PHY register
+ * 4) unlock the index by clearing the associated in_use bit
+ * 5) check if the timestamp is stale, and discard if so
+
+Look at the new "verify ready bit cleared" block in
+ice_ptp_process_tx_tstamp(). If the ready bit is still set after the read,
+or the re-read of the ready bitmap fails, the index is marked stale and
+the SKB is freed. in_use stays set, so step 4 never happens.
+
+The opening line, "loop over each index with a waiting skb", is also no
+longer true. in_use slots with a NULL skb are now visited on every pass
+until the hardware clears the bit.
+
+This paragraph also still says timed-out requests are discarded "without
+reading the timestamp register". A timed-out index whose ready bit is set
+is still read through ice_read_phy_tstamp(), and with this patch it can
+stay locked.
+
+Could the kernel-doc be updated to describe the new flow?
 
 [ ... ]
 
-> @@ -582,14 +584,11 @@ static void ice_ptp_process_tx_tstamp(struct ice_ptp_tx *tx)
->  			return;
->  	}
+> @@ -2766,10 +2787,14 @@ static bool ice_port_has_timestamps(struct ice_ptp_tx *tx, bool in_irq)
+>  		if (!tx->init)
+>  			return false;
 >  
-> -	/* Drop packets if the link went down */
-> -	link_up = READ_ONCE(ptp_port->link_up);
+> -		if (in_irq)
+> +		if (in_irq) {
+> +			if (!ice_ptp_is_tx_tracker_up(tx))
+> +				return false;
+> +
+>  			return bitmap_andnot(tstamps, tx->in_use, tx->stale, tx->len);
+> -		else
+> +		} else {
+>  			return !bitmap_empty(tx->in_use, tx->len);
+> +		}
+>  	}
+>  }
+>  
+> @@ -2801,41 +2826,18 @@ static bool ice_any_port_has_timestamps(struct ice_pf *pf, bool in_irq)
+>  
+>  bool ice_ptp_tx_tstamps_pending(struct ice_pf *pf, bool in_irq)
+>  {
+> -	struct ice_hw *hw = &pf->hw;
+> -	int ret;
 > -
->  	for_each_set_bit(idx, tx->in_use, tx->len) {
->  		struct skb_shared_hwtstamps shhwtstamps = {};
->  		u8 phy_idx = idx + tx->offset;
->  		u64 raw_tstamp = 0, tstamp;
-> -		bool drop_ts = !link_up;
-> +		bool drop_ts = false;
->  		struct sk_buff *skb;
+> -	/* Check software indicator */
+>  	switch (pf->ptp.tx_interrupt_mode) {
+>  	case ICE_PTP_TX_INTERRUPT_NONE:
+>  		return false;
+>  	case ICE_PTP_TX_INTERRUPT_SELF:
+> -		if (ice_port_has_timestamps(&pf->ptp.port.tx, in_irq))
+> -			return true;
+> -		break;
+> +		return ice_port_has_timestamps(&pf->ptp.port.tx, in_irq);
+>  	case ICE_PTP_TX_INTERRUPT_ALL:
+> -		if (ice_any_port_has_timestamps(pf, in_irq))
+> -			return true;
+> -		break;
+> +		return ice_any_port_has_timestamps(pf, in_irq);
+>  	default:
+>  		WARN_ONCE(1, "Unexpected Tx timestamp interrupt mode %u\n",
+>  			  pf->ptp.tx_interrupt_mode);
+> -		break;
+> -	}
+> -
+> -	/* Check hardware indicator */
+> -	ret = ice_check_phy_tx_tstamp_ready(hw);
+> -	if (ret < 0) {
+> -		dev_dbg(ice_pf_to_dev(pf), "Unable to read PHY Tx timestamp ready bitmap, err %d\n",
+> -			ret);
+> -		/* Stop triggering IRQs if we're unable to read PHY */
+>  		return false;
+>  	}
+> -
+> -	/* ice_check_phy_tx_tstamp_ready() returns 1 if there are timestamps
+> -	 * available, 0 if there are no waiting timestamps, and a negative
+> -	 * value if there was an error (which we checked for above).
+> -	 */
+> -	return ret > 0;
+>  }
 
 [Severity: Medium]
-The commit message says:
+Can removing this hardware fallback leave the PHY Tx timestamp interrupt
+blocked until the watchdog runs?
 
-    Mark the outstanding requests stale so their completions are read
-    and discarded
+ice_misc_intr_thread_fn() and the E830 path in ice_ptp_ts_irq() call
+ice_ptp_tx_tstamps_pending(pf, true) to decide whether to re-arm:
 
-Where does this stale marking happen for E810, E830 and E82x? The patch
-removes the link-down drop here, but it doesn't add any new calls to
-ice_ptp_mark_tx_tracker_stale().
-
-On link down, the only caller that can be reached is the
-ICE_MAC_GENERIC_3K_E825 branch of ice_ptp_port_phy_stop() (and the same
-branch of ice_ptp_port_phy_restart()):
-
-ice_ptp_port_phy_stop() {
+drivers/net/ethernet/intel/ice/ice_main.c:ice_misc_intr_thread_fn() {
     ...
-	case ICE_MAC_E810:
-	case ICE_MAC_E830:
-		err = 0;
-		break;
-	case ICE_MAC_GENERIC:
-		kthread_cancel_delayed_work_sync(&ptp_port->ov_work);
-
-		err = ice_stop_phy_timer_e82x(hw, port, true);
-		break;
-	case ICE_MAC_GENERIC_3K_E825:
-		...
-		ice_ptp_mark_tx_tracker_stale(&ptp_port->tx);
+	if (ice_ptp_tx_tstamps_pending(pf, true)) {
+		/* If any new Tx timestamps happened while in interrupt,
+		 * re-arm the interrupt to trigger it again.
+		 */
+		wr32(hw, PFINT_OICR, PFINT_OICR_TSYN_TX_M);
+		ice_flush(hw);
+	}
     ...
 }
 
-Also, ice_ptp_link_change() skips E810 and E830 entirely:
+This change, combined with the new ice_ptp_is_tx_tracker_up() check in
+ice_port_has_timestamps(), means the re-arm only looks at non-stale
+in_use slots on trackers that are up.
 
-	case ICE_MAC_E810:
-	case ICE_MAC_E830:
-		/* Do not reconfigure E810 or E830 PHY */
-		break;
+The kernel-doc of ice_ptp_maybe_trigger_tx_interrupt() says the PHY "will
+not interrupt again until all current timestamp data is read". So if a
+ready entry is still unread at the end of an IRQ pass, nothing
+retriggers the interrupt. It stays blocked until the 500 ms watchdog,
+ice_ptp_periodic_work()->ice_ptp_maybe_trigger_tx_interrupt(), runs.
 
-The new in_irq check in ice_port_has_timestamps() only excludes stale
-slots:
+A few ways such an entry can be left behind:
 
-	if (in_irq)
-		return bitmap_andnot(tstamps, tx->in_use, tx->stale, tx->len);
+ - a stale request whose timestamp lands mid-pass, after the ready
+   bitmap was read
+ - a late completion on a port that is link down, or (on E82x) in
+   Vernier calibration with tx.disabled set until
+   ice_ptp_wait_for_offsets() succeeds
+ - an index this patch keeps locked on purpose because its ready bit
+   did not clear
 
-Given that, can a link down with a request still outstanding on E810
-(non-LL), E830 or E82x cause a back-to-back interrupt loop? The sequence
-would be:
+Before this patch, the in-IRQ ice_check_phy_tx_tstamp_ready() call
+retriggered the interrupt right away and drained these entries.
 
-  link goes down while a not-ready slot is set in in_use
-  ice_ptp_maybe_trigger_tx_interrupt()
-    ice_ptp_tx_tstamps_pending(pf, false) -> true
-    wr32(hw, PFINT_OICR, PFINT_OICR_TSYN_TX_M)
-  ice_ptp_process_tx_tstamp()
-    slot not ready and not timed out -> continue
-  ice_misc_intr_thread_fn() (E810/E82x) or ice_ptp_ts_irq() (E830)
-    ice_ptp_tx_tstamps_pending(pf, true) -> true, slot is not stale
-    wr32(hw, PFINT_OICR, PFINT_OICR_TSYN_TX_M)
-  ... repeats until the 2 second timeout frees the slot
+On E82x, timestamp memory and the interrupt are per quad (see
+ice_phy_cfg_intr_e82x() and the quad split in ice_ptp_init_tx_e82x()).
+In ICE_PTP_TX_INTERRUPT_ALL mode the clock owner services every port.
 
-On E830 the re-arm happens in hardirq context in ice_ptp_ts_irq(). On E82x
-every pass does sideband PHY reads. Before this patch, the first pass after
-link down dropped every slot, so this loop could not happen.
+Could one leftover entry on a port that is going down or calibrating
+then delay Tx timestamps for healthy link-up ports in the same quad by
+up to about 500 ms? That is far beyond the 10 ms ptp4l default the
+commit message cites. The race window looks narrow, but link flaps and
+E82x recalibration happen in normal operation.
 
-A later patch in this series, "ice: don't clear in_use until HW clears
-ready bitmap", adds an ice_ptp_is_tx_tracker_up() check to the in_irq
-branch. Combined with the link_up check added here, that seems to close
-the loop.
-
-Even after that patch, though, E810, E830 and E82x still don't get any
-stale marking on link down. So this commit isn't bisect-safe on its own,
-and the commit message describes a mechanism the code doesn't implement.
-
-Should the commit message be corrected, or should the stale marking be
-added for the other MAC types?
+The commit "ice: keep Tx timestamp slots tracked until completion or
+timeout" in this series also says an orphaned ready bit "blocks the
+port interrupt".
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021-jk-e825c-timestamp-processing-logic-fixes-srcu-v5-0-72289a4ac8eb%40intel.com
