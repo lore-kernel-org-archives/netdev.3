@@ -1,90 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792900993;
-	b=EpAkr+x34Lg4XD83Dz84ehUjF8TkHo9jt4C9MVruiHMlFeBc3jCuURQMswk1lGC1uyE7
-	 shKxV3mxcvFB5HUWOspptp5F3hY2MJclqyBlmgNBxG7N6nhA5zCrOy8DTS0Dog/zied9N
-	 Gt0l5HlD895MMNFYh11H/nBMIz9hwqlNjIiVcN8xJR8/O/pcjeU5mStmx9LEUYMASQXoM
-	 WtPa4xZg5i/OLipKwohpjnwmuCJf2nchKkGYfBAiHjVfevaQ05MJUk4Hsy7WQTFoasY8k
-	 su3vII6oy3XWJxLbBlJOk00ANzuA28OrmMoBoMxEBEo4mHdXKCNO+snRneIziLv4Now==
+	t=1792901040;
+	b=OOo7teKWoLmIj5acnTUCqB1ZICDHThta3cWN7am4uhK4g+fBfvnQDgOE5Qe1CXXgBxrw
+	 8QzZ78A/tmSIASZymiMOZAYWSJu9obe0/PT78GtLAyg+wrMvd6Sq1Fm/2qSit6MS1aSZS
+	 VWt+1uv53a80ux/lcSDoutvGTPlcnEVMdccTrseQAb+U8A0Z0GpQeD3r8QPNNv/VrBPQL
+	 +NEiIWBAOGignBNalGy035K3nL5foe0AJ6k/5T7YTpS/YRt3aW3ZcK5lCDHjp5sIDh7Ud
+	 pPbfU7LfAmYnPy5lTbGJlOH0Wfrw5Khv+CDZ+iZb5K36xaeT4fbro1wZV9Y/DZHBBlg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792900993;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=bXXWN0U2LwSgs5yFSiYomIOkF6F+3ijFGiBpJE+lZgY=;
-	b=JNd2XNQh/M337zo/LJ1hanb4QrB3kdViCUDOvCoIh4H9NE5YI8DWyaa6x4i7uL+N8/3n
-	 Aohl8WuhGMH5MamPLzHyhnfLGKs3BHpXzFT5vW9Uv3R2N5lJfgPQAYq1+cBcMJjkOFaXz
-	 yfP3DXo8jvfpk3HmtdGIauHGaqsO2WVTZCXsEV1Xv7HxhyiwaUNCidaTZtewFojWqGRle
-	 wJUjX9XLLd8WsEiCS7ydlTNqa4FOx/+PZ/m90iFYz94bBTa3M08PQUHg3O02rth5wE79V
-	 AjMqzgVauKCe+3BbvR8DR5cto+OyVFl2geLJa3Vt2tsVa6TsV3JXBAawDxRjVpAv+VQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792901040;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=yV3DnlCa7cPKCYr05NihlpKIAyZk2yGPkehULISRMaE=;
+	b=MHrtmKvl3+mjukexyitE2r+LE7ihVDj34SkmlGk4nLzqTDoIJ1US1zvz3NHgKqiKFXXR
+	 PzLDo28hWmmgMMbFO9H0mRgQ7NgGXTE2oPBWQipFnRD1r/E9VTbklgLdYH+qq6vqwvPSx
+	 UuS8aoM89Z2Jz/0LDD0HD83xJZFZ6a5NLVNSVvhoALHqVrVAZiLvj2WWz9MhC0GngfZUx
+	 6XunBn9/uA4t0QNafUg+HbHQBfLf3uqlN7Zl8KOJH/Puul/Ys2rgz/B3nRdsoWGFVOn7Y
+	 9V9SzBGHhXC+79mSjK7yeLxRwIh6zMQpMEqmukcTo94LnaWuv1IZ5vVODuAOn3k3+HA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=DNKNW9T7;
-	arc=none smtp.remote-ip=209.85.216.54
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aoKmTUfG;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 017C7606A31B
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 04:03:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 017C7606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20EAE606A31D;
+	Sun, 25 Oct 2026 04:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=DNKNW9T7
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3acb1224533so266561a91.2
-        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 21:03:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792900992; x=1793505792; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bXXWN0U2LwSgs5yFSiYomIOkF6F+3ijFGiBpJE+lZgY=;
-        b=DNKNW9T7kGfS78TEh9BVgxXbbjDsK7FmBqAhYSl/KQ+eTH7raGVvtdvg1NUc98VoRU
-         K+t6Nc6VFF63JU0nm30Oaoo7PWDuZqaJa/VGdjf1oEl1vKQws6xUEHvpigr1aU8XJKW9
-         ARzBEbRowo/1PB62yadC/gAYjKkjUksvUtAWL5KNMcmW0it4u1TdjgS9IKYCVSUT/B4B
-         5LmSmhiSWh9nYee/Q8xH/mbjnKv05BsnHAXumcfsZ1MU10WIv7HErjsSADO0LjhEhqVG
-         kuOy2JsugMVzT+/xQMFxDhtCn1QSY8Ludbs8xew8apip8FeKjXp7edLasQnaxkyYNus2
-         mgQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792900992; x=1793505792;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=bXXWN0U2LwSgs5yFSiYomIOkF6F+3ijFGiBpJE+lZgY=;
-        b=ytffW0ujTelELjYS2vOKrzQg9RexB4xi6iazQ5VG5+H/PYFmWv7KaKH1r7D5hiW+Sz
-         VKlPcyx9vkrhaw0fe6SuMZegHZtJCcr/o8KKRF08zxJ0zzBGmun+SG2CGqQjU2+qYo92
-         4dL7UZWwXdt2xvgj6xEtjxpFN8VGnhnPVg0/MCGKUA68WIU8CnNlEvgRvt/2GsU7JiGL
-         nvbLYwtzTZG1pntwObxduXWWkqhoZ616tY0FwdISjjvI/9x/8YUQBpa9m3tYMAnTQ95D
-         QW8xpUx/XqLlGeUKKL8eOzXtUP5Iyii1o/JKJuQ/Kf4vEdt3VIEfvJq2xfuH4pZPNXBR
-         SgFg==
-X-Forwarded-Encrypted: i=1; AKwUvBzaDjEXJ3uRSXtr055FCz5uVip5Q5uqM38O3s1P2j6GThd2kB4pABZmvSfKV8eoWTZiddGbiL8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLG5JcjnmkYjYnB9UiOBY29W2s/7GE/LYWjUxzpIQn53ksEIFyG
-	NbJaf0FI5os1Eeap3WZMjKJG5NR612bHUQbpHmqOc2HMNfxlMv/kZNLO
-X-Gm-Gg: AYBFou0vNZzSyDq9oNkwNerYLt5wsS0x+1R0ELCUIC5a+2eizOPYt0VVTEjxPDySu22
-	5S0P/KmT/tCLNyI9TPE+R43WoxxMk+fYqXmQXOPkclBWCiLc18sahCb1TlKS8rY48ORehZbFnK7
-	qZgR4qqNH4kqCODOdtqj26Xg+7Xgv9JvxmCUTbFcxv/8LGv2ofwBptaNf1j7MIB6KRIML6NOIah
-	PyIwF5Bsjefl2x4yy2oKY36UvZoLqDt3SC2W/Q4TwmiPhuwaZSUIkUPjcNGm3TAjtwOmxXn79iF
-	auC29nemckbX2G0lkC46vAu5dvugI2/aZw0SwXnGPlqs36HiENh5bjdKGiyy75nb46Esct9FJY+
-	grMjKpJXlk8EvnKUFC68MXMaMvFersspvNMoGVgXhsCRLGNkThCDvLEEfKVNPlQGaIiEwFw0LfF
-	8jGhMA6ndCqy8QgVgcfwW1lq7JDoHsUQHl+uTwtUzzuqVF/qGz0uOG/gl5bdIw8ofLlNTxvdne4
-	wZ2TfrXUKbGRxStnr4LsAs/EKeTy5QD3AGXMtREuSh1dy9qhYadYDwnrYn1OQVOXKIyDE36g+6g
-	79oM
-X-Received: by 2002:a17:90b:3c0d:b0:3ac:a7ee:6785 with SMTP id 98e67ed59e1d1-3ade9b35f05mr4994498a91.1.1792900992309;
-        Sat, 24 Oct 2026 21:03:12 -0700 (PDT)
-Received: from melokc-laptop ([101.90.152.206])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3adeb82761esm2921587a91.0.2026.10.24.21.03.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Oct 2026 21:03:10 -0700 (PDT)
-From: Anfernee Cao <anferneemelokc5@gmail.com>
-To: D. Wythe <alibuda@linux.alibaba.com>, Dust Li <dust.li@linux.alibaba.com>, Sidraya Jayagond <sidraya@linux.ibm.com>, Mahanta Jambigi <mjambigi@linux.ibm.com>
-Cc: Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>, linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: [PATCH] net/smc: fix possible recursive locking in
- __smc_lgr_terminate()
-Date: Sun, 25 Oct 2026 11:53:35 +0800
-Message-ID: <179290097759.51540.15412712294727302463@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aoKmTUfG
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D4CA1F01828;
+	Sun, 25 Oct 2026 04:03:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792901040;
+	bh=yV3DnlCa7cPKCYr05NihlpKIAyZk2yGPkehULISRMaE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=aoKmTUfGZoHx4Gm4woJ4O0GZPAUVdRHSHnNCmOVQQkwGFHzTsPnTITWuXty5x4P6E
+	 PpsGQ40Js2irxkqSC2aMAe+auQ2QCrC5Sux3monelvI3HtZVqdTiPbOqD8pdTQHQqW
+	 Hl6mz/L3xqdpuH/kZTstM9LR4BLBpLmHYXBdxaag+SYID1F5V+mw/xMBD2dJO8AqKr
+	 Wt8ztIK2W/fTlnpGbyickkvqOmFZ/0DtTqP2KmBDC7WsnXnLCbmOodbGsvykZADXMi
+	 7SrNbHCvo4LZCsiOcsHCfwrzxJ8h7d3T0NprVOnZcHu0yn0euCdARFPm4CA3uWSO7P
+	 yrt7m7LegDlTg==
+Subject:
+ Re: [PATCH net v6 6/6] nfc: nfcmrvl: stop firmware work before unregistering
+From: netdev-bot+sashiko@kernel.org
+To: shubham@octane.security
+Cc: netdev@vger.kernel.org, david@ixit.cz, oe-linux-nfc@lists.linux.dev,
+ gio@octane.security, stable@vger.kernel.org, kuba@kernel.org
+Date: Sun, 25 Oct 2026 04:03:59 +0000
+Message-ID: <179290103922.3134.7272004019340679673@kernel.org>
+In-Reply-To: <20261021032443.44412-7-shubham@octane.security>
+References: <20261021032443.44412-7-shubham@octane.security>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -94,51 +62,278 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8bit
 
-syzbot reports a possible recursive locking in the SMC listen path:
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-  WARNING: possible recursive locking detected
-    kworker/0:2 is trying to acquire lock: sk_lock-AF_SMC
-      at __smc_lgr_terminate() (net/smc/smc_core.c:1580)
-    but task is already holding lock: sk_lock-AF_SMC
-      at smc_listen_work() (net/smc/af_smc.c:2463)
+Critical: 0 · High: 1 (1) · Medium: 1 (2) · Low: 0
 
-smc_listen_work() holds new_smc->sk while calling
-smc_listen_decline() -> smc_conn_abort() -> smc_lgr_cleanup_early().
-smc_conn_free() unregisters new_smc from lgr->conns_all before the
-early cleanup, so __smc_lgr_terminate() walks the remaining
-connections and locks another socket, not the one already held.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-All sockets use the same sk_lock class, so lockdep cannot tell the
-two instances apart and reports a possible recursive acquisition.
-Annotate the per-connection lock as a nested acquisition, as
-smc_listen_out() already does for the listener socket.
+- [High] Teardown can leave ndev->cmd_timer armed after the NCI device is
+  freed.
+- [Medium] The new order (nfcmrvl_fw_dnld_abort() before
+  nci_unregister_device()) can leak an NCI command skb.
 
-Reported-by: syzbot+7ea1f5efd5de7e24f1de@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7ea1f5efd5de7e24f1de
-Fixes: 2c7f14ed9c19 ("net/smc: fix LGR and link use-after-free issue")
-Cc: stable@vger.kernel.org # v6.13+
-Signed-off-by: Anfernee Cao <anferneemelokc5@gmail.com>
----
- net/smc/smc_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but
+  process_state_fw_dnld(), which the reworked fw_dnld_rx_work() still…
+- [Medium] This problem wasn't introduced by this patch, but nfcmrvl
+  reports firmware download failures to the NFC core as negative errno…
+- [Medium] This problem wasn't introduced by this patch, but
+  nfcmrvl_fw_dnld_start() sets fw_dnld->active = true and then calls…
 
-diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
-index 9974149659c2..5911368ae520 100644
---- a/net/smc/smc_core.c
-+++ b/net/smc/smc_core.c
-@@ -1577,7 +1577,7 @@ static void __smc_lgr_terminate(struct smc_link_group *lgr, bool soft)
- 		smc = container_of(conn, struct smc_sock, conn);
- 		sock_hold(&smc->sk); /* sock_put below */
- 		read_unlock_bh(&lgr->conns_lock);
--		lock_sock(&smc->sk);
-+		lock_sock_nested(&smc->sk, SINGLE_DEPTH_NESTING);
- 		smc_conn_kill(conn, soft);
- 		release_sock(&smc->sk);
- 		sock_put(&smc->sk); /* sock_hold above */
+--
+
+nfc: nfcmrvl: stop firmware work before unregistering
+
+This commit adds active and stopping states, protected by a new rx_lock,
+to fence the firmware receive entry points. It moves timeout completion
+into a work item on the firmware workqueue and processes one rx frame per
+work invocation. It also calls nfcmrvl_fw_dnld_abort() before
+nci_unregister_device(), so firmware work is drained while the NCI
+workqueues still exist.
+
+> diff --git a/drivers/nfc/nfcmrvl/fw_dnld.c b/drivers/nfc/nfcmrvl/fw_dnld.c
+> index 8b9d5257320dc..d3dec74a333d3 100644
+> --- a/drivers/nfc/nfcmrvl/fw_dnld.c
+> +++ b/drivers/nfc/nfcmrvl/fw_dnld.c
+> @@ -92,11 +92,29 @@ static struct sk_buff *alloc_lc_skb(struct nfcmrvl_private *priv, uint8_t plen)
+>  
+>  static void fw_dnld_over(struct nfcmrvl_private *priv, u32 error)
+>  {
+
+[ ... ]
+
+> +	if (fw_dnld->fw) {
+> +		release_firmware(fw_dnld->fw);
+> +		fw_dnld->fw = NULL;
+> +		fw_dnld->header = NULL;
+> +		fw_dnld->binary_config = NULL;
+>  	}
+>  
+>  	atomic_set(&priv->ndev->cmd_cnt, 0);
+> @@ -104,8 +122,7 @@ static void fw_dnld_over(struct nfcmrvl_private *priv, u32 error)
+>  	if (timer_pending(&priv->ndev->cmd_timer))
+>  		timer_delete_sync(&priv->ndev->cmd_timer);
+>  
+
+[Severity: High]
+Can ndev->cmd_timer still be armed when nci_free_device() frees ndev?
+
+Suppose fw_dnld_rx_work() has queued two commands back to back. Then
+nci_cmd_work() has sent the first one (cmd_cnt is 0 and cmd_timer is
+armed), and the second skb is still on ndev->cmd_q.
+
+If nci_cmd_timer() has already been detached for expiry when
+fw_dnld_over() runs, timer_pending() returns false and the sync delete is
+skipped:
+
+fw_dnld_over()
+    atomic_set(&priv->ndev->cmd_cnt, 0);
+    if (timer_pending(&priv->ndev->cmd_timer))   /* false */
+
+nci_cmd_timer()   /* delayed callback */
+    atomic_set(&ndev->cmd_cnt, 1);
+    queue_work(ndev->cmd_wq, &ndev->cmd_work);
+
+Suppose that queue_work() happens after the flush in the !NCI_UP branch
+of nci_close_device():
+
+nci_close_device()
+    flush_workqueue(ndev->cmd_wq);
+    timer_delete_sync(&ndev->cmd_timer);   /* waits only for the callback */
+
+nci_cmd_work()
+    skb = skb_dequeue(&ndev->cmd_q);
+    ...
+    nci_send_frame(ndev, skb);
+    mod_timer(&ndev->cmd_timer,
+              jiffies + msecs_to_jiffies(NCI_CMD_TIMEOUT));
+
+destroy_workqueue(ndev->cmd_wq) waits for cmd_work, but it does not
+cancel the timer.
+
+Before this patch, nfcmrvl_fw_dnld_abort() ran after
+nci_unregister_device(). The timer_pending()/timer_delete_sync() pair in
+fw_dnld_over() then removed a re-armed cmd_timer. With this patch, the
+second abort from nfcmrvl_fw_dnld_deinit() returns early because active
+is already false, so nothing deletes the timer.
+
+Would the timer then fire on the kfree()d ndev, calling atomic_set() on
+ndev->cmd_cnt and queue_work() on the destroyed cmd_wq? The window is
+narrow, but nothing seems to prevent it, for example with PREEMPT_RT timer
+threads or vCPU preemption.
+
+Should the shutdown also purge leftover firmware commands on ndev->cmd_q,
+or delete cmd_timer unconditionally?
+
+[ ... ]
+
+> @@ -114,7 +131,7 @@ static void fw_dnld_over(struct nfcmrvl_private *priv, u32 error)
+>  		nfcmrvl_chip_halt(priv);
+>  	}
+>  
+> -	nfc_fw_download_done(priv->ndev->nfc_dev, priv->fw_dnld.name, error);
+> +	nfc_fw_download_done(priv->ndev->nfc_dev, name, error);
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but is the sign of error
+right here?
+
+The kernel-doc for nfc_fw_download_done() describes @result as "The
+positive value of a standard errno value". nfc_genl_fw_download_done()
+then passes it unchanged to userspace via nla_put_u32() in
+NFC_ATTR_FIRMWARE_DOWNLOAD_STATUS.
+
+fw_dnld_over() gets -ETIMEDOUT from fw_dnld_timeout_work(), -EHOSTDOWN
+from nfcmrvl_fw_dnld_abort(), and negative process_state_*() return
+values from fw_dnld_rx_work(). Userspace therefore sees 0xFFFFFF92 or
+0xFFFFFF90 instead of 110 or 112. The "%d" in the nfc_info() message
+hides this in the log.
+
+Other drivers negate the value first, for example
+nxp_nci_fw_work_complete():
+
+    nfc_fw_download_done(info->ndev->nfc_dev, fw_info->name, (u32) -result);
+
+pn544_hci_i2c_fw_work_complete() does the same.
+
+This patch rewrites this call and adds new paths into fw_dnld_over().
+Could it pass -error here?
+
+[ ... ]
+
+> @@ -404,53 +434,64 @@ static void fw_dnld_rx_work(struct work_struct *work)
+
+[ ... ]
+
+> +	case STATE_FW_DNLD:
+> +		ret = process_state_fw_dnld(priv, skb);
+> +		break;
+
+[Severity: High]
+This is a pre-existing issue, but process_state_fw_dnld(), which still
+gets its frames from here, trusts the 16-bit chunk length from the
+controller. In SUBSTATE_WAIT_COMMAND, the only check is the complement:
+
+    len = get_unaligned_le16(skb->data);
+    ...
+    if (((~len) & 0xFFFF) != comp_len) {
+    ...
+    priv->fw_dnld.chunk_len = len;
+
+Then in SUBSTATE_WAIT_ACK_CREDIT:
+
+    out_skb = alloc_lc_skb(priv, priv->fw_dnld.chunk_len);
+    ...
+    skb_put_data(out_skb,
+                 ((uint8_t *)priv->fw_dnld.fw->data) + priv->fw_dnld.offset,
+                 priv->fw_dnld.chunk_len);
+
+alloc_lc_skb() takes uint8_t plen. With len = 0xFF00 and complement
+0x00FF, the skb is sized for NCI_DATA_HDR_SIZE + 0. Would skb_put_data()
+with the full 0xFF00 then hit skb_over_panic()?
+
+SUBSTATE_WAIT_DATA_CREDIT also does this with no check against fw->size:
+
+    priv->fw_dnld.offset += priv->fw_dnld.chunk_len;
+
+Could a controller that keeps repeating command/credit cycles with
+chunk_len <= 255 make skb_put_data() read past the end of the firmware
+image, and send that memory back to the device?
+
+The I2C, SPI and UART PHYs set support_fw_dnld, so they can reach this.
+
+[ ... ]
+
+> @@ -546,8 +628,19 @@ int nfcmrvl_fw_dnld_start(struct nci_dev *ndev, const char *firmware_name)
+>  
+>  	/* First, reset the chip */
+>  	priv->fw_dnld.state = STATE_RESET;
+> +
+> +	spin_lock_irqsave(&fw_dnld->rx_lock, flags);
+> +	fw_dnld->active = true;
+> +	spin_unlock_irqrestore(&fw_dnld->rx_lock, flags);
+> +
+>  	nfcmrvl_chip_reset(priv);
+>  
+> +	spin_lock_irqsave(&fw_dnld->rx_lock, flags);
+> +	if (fw_dnld->active)
+> +		mod_timer(&fw_dnld->timer,
+> +			  jiffies + msecs_to_jiffies(FW_DNLD_TIMEOUT));
+> +	spin_unlock_irqrestore(&fw_dnld->rx_lock, flags);
+
+[Severity: Medium]
+This is a pre-existing issue, but what happens to the reset line if the
+download fails while nfcmrvl_chip_reset() is sleeping?
+
+active is set before the reset pulse, so nfcmrvl_fw_dnld_recv_frame()
+accepts frames during the usleep_range(5000, 10000) in
+nfcmrvl_chip_reset(). A frame that isn't CORE_RESET_NTF makes
+process_state_reset() return -EINVAL. That could be stale transport data,
+or a misbehaving or pty-backed controller:
+
+fw_dnld_rx_work()
+    process_state_reset()        /* -EINVAL */
+    fw_dnld_over()
+        nfcmrvl_chip_halt()      /* reset_gpio = 1 */
+        nfc_fw_download_done()
+
+nfcmrvl_fw_dnld_start() resumes
+    nfcmrvl_chip_reset()
+        gpiod_set_value(priv->config.reset_gpio, 0);
+
+Doesn't this take the chip back out of reset after userspace has already
+been told the download failed? The chip's CORE_RESET_NTF would then be
+dropped, because fw_download_in_progress is clear.
+
+The new "if (fw_dnld->active)" check before mod_timer() covers completion
+during the reset for the timer, but not for the reset GPIO.
+
+[ ... ]
+
+> diff --git a/drivers/nfc/nfcmrvl/main.c b/drivers/nfc/nfcmrvl/main.c
+> index 27fadd64155e1..86cf653962535 100644
+> --- a/drivers/nfc/nfcmrvl/main.c
+> +++ b/drivers/nfc/nfcmrvl/main.c
+> @@ -185,13 +185,12 @@ void nfcmrvl_nci_unregister_dev(struct nfcmrvl_private *priv)
+>  {
+>  	struct nci_dev *ndev = priv->ndev;
+>  
+> +	nfcmrvl_fw_dnld_abort(priv);
+>  	nci_unregister_device(ndev);
+
+[Severity: Medium]
+Can this new ordering leak an NCI command skb left on ndev->cmd_q?
+
+fw_dnld_rx_work()->process_state_*()->nci_send_cmd() puts an skb on
+ndev->cmd_q and queues ndev->cmd_work on ndev->cmd_wq.
+cancel_work_sync(&fw_dnld->rx_work) in nfcmrvl_fw_dnld_abort() does not
+wait for that cmd_work. fw_dnld_over() then does:
+
+    atomic_set(&priv->ndev->cmd_cnt, 0);
+
+If cmd_work runs after that, nci_cmd_work() sees cmd_cnt == 0 and leaves
+the skb on the queue:
+
+    if (atomic_read(&ndev->cmd_cnt)) {
+        skb = skb_dequeue(&ndev->cmd_q);
+
+NCI_UP is clear during a firmware download, so nci_close_device() takes
+the !NCI_UP branch. That branch only flushes cmd_wq and deletes the
+timers, without purging cmd_q. nci_free_device() doesn't purge cmd_q
+either, so the skb is lost when ndev is freed.
+
+Before this patch, the abort ran after nci_unregister_device(). The
+cmd_wq flush then ran with cmd_cnt still 1 from
+nfcmrvl_fw_dnld_recv_frame(), so the queued command was consumed.
+
+[ ... ]
+
 -- 
-2.54.0.windows.1
-
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021032443.44412-1-shubham%40octane.security
