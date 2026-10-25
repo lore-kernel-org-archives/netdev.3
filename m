@@ -1,60 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792939617;
-	b=HA1HoFk0YM4ZKe3YZTmA9zyxe4+tFP5hhOhp0gGHCcar/BF7QLd6ABtecQQL0hTedum/
-	 fCYV4+XEzfa9kAHXi3Di/mogtCs2kuRE6IgewrDsr1RM38MRDCGqHLB+xhUJLQMRvSAIB
-	 7VgnT1rzdNuAr3mBJxDiDhLTj/ChcG35hc7vm1MzGxK7i47Rnh7OLUIvH40BR7ONxc1i/
-	 UgFXRdpiZ/x42rff5406Lqtg+/PJOrT6UB2unqWPIacmMB7/z0va/HPQpPZWotdteOD/h
-	 TQdGtSu9KlbHDr2b+VJW2OOqyMEvJi7OFfVK+Qus07GIA7WI5SeZ2ra+Hxyorqiqgaw==
+	t=1792939736;
+	b=fC332/5b30ewutx2FK3OKgjRMT0XZ74FigpJwaSdDnrVlikVpu55+CziBcWgk+55FPq0
+	 +mUEG5f8IDRvQAT8yDkS8c5PDqhKfcJZ1UDd4jJD/QBLIk3rQdBVA7M3PBRDu+L07LMnH
+	 fsCppSAh/PJAHyQyn/Ehfxu4C0YQvQ7F2MkzwKOj/nyqgzZyae+qRw7J3c1hlnssYHNC3
+	 fhfE8xU4eMtAjGsT/JJFE2Kw6wbsF+9XMzQfkmXnzsNif3J+rV8ywR5qVdaCCWjQDQb/v
+	 hYnOENgxkYN1a4GsIszFCpzeTz8m2SW1wQ3Ui+QcTKizIm+6oS0VNTlysO4p/pGAq3A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792939617;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=I23DkGVOflePUgIeC7zqOu6ppEEHHOzNPKpwzOeKZew=;
-	b=2W5pCcaPIZuUN+ys2XpvOO90/CEfGHFMDxgITetsyNRBVULNtBo4pLcmHpaJs6NDeTC+
-	 ZMn4cYYpo50QRGFmf2T+T5h5Zzv6dacY7VbY478fUjSBi13h2gJC9jczONyY9DKucURqZ
-	 aHGVXKGAReeahWyHUJLIvhh2O1Kz0rhRkPIdkNzNxSkzTLYX0sfjMgUAvivGnqyyqjCkK
-	 j+3AJzFg91lLKvNoTwxZAPR4ZS7jM07Pmo7dEx9xgEWscfs/UWgoXVEuK5iS7FZDFg6Uf
-	 5DUWb+XW3fWSgRr2NVTQfww6K50XbiqsA0Iao45SbXyObqrvUAf0Hnog7Lk3IpCHOHw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792939736;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=0BHKQxHth0jV1Qy3AAfupSHQukbGmTDd7nK1ds2NmEM=;
+	b=2JV0JxttjkapqcPElhS0U7wlFDJFX7C3IJPCfg2/tz+8pCgWwC6jisYTzbE/vbVPlZwv
+	 O64X7TLdCA46D4HB6WXCsaLZDIPrzTAzbnkxsxmqvYSOEwOp3anKK0/MYVKCto8BGUw4C
+	 HEulWpm9UldcDFXUtVP62N/P3sxPO6PnuI9p1A+NajO0JChJ5EphCGcSeJz4KCKLk+H6z
+	 8tjojBAJvWY8YISPfa5fX+OEgcfcYbQa7u6NE0Vyhlv1Fc3G0uIB3wq3LZrfnRzkOZkII
+	 FtNXbhIugnx3gNn3sooDiC/p19i8dGUgKrLhsmxl08NhG/XEZEM6g2gtGPktOvZc2XQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EKsaozXl;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=ZgAPG+Wz;
+	arc=none smtp.remote-ip=209.85.216.49
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B779606A31A;
-	Sun, 25 Oct 2026 14:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A158606A31B
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 14:48:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A158606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EKsaozXl
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 608941F01825;
-	Sun, 25 Oct 2026 14:46:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792939617;
-	bh=I23DkGVOflePUgIeC7zqOu6ppEEHHOzNPKpwzOeKZew=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=EKsaozXleQIh2PE5Z9wXQdvFzj+z1B0jpk7JX35Jzs5v83cjCu6C1tXfuRu/Z/xH+
-	 Z0B9+ORW2RSyJPaN8KOLhDc3rYwGQoZcD48OwG2IV4fu4ruNsvGKYE1iWTqo4S5Wt5
-	 8yiwq06HsC+3YWHXOTa/GG/moznmzg/DIQeSNEVQopu3HZpMBrWd/dqoJWGYwJwk7U
-	 36C1BCgbGnAxFv5CUmm9ssLQu820QOWiODgaMoQv1za+LgdeYEgjQTnAhKeokKIGRk
-	 9xkJBptBTEYeprbpFxYS7+cWgMXF8k+zd1ECQPJTEtkJZo2FtDYv5YAxQYvXamUPJW
-	 KP/ovgmMZV1Uw==
-Subject: Re: [PATCH net v2 2/2] selftests/bpf: cover AF_XDP multi-buffer TX
- software checksum
-From: netdev-bot+sashiko@kernel.org
-To: testwrzwrz@gmail.com
-Cc: magnus.karlsson@intel.com, maciej.fijalkowski@intel.com,
- kerneljasonxing@gmail.com, sdf@fomichev.me, hawk@kernel.org,
- stable@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org,
- linux-kernel@vger.kernel.org, kuba@kernel.org
-Date: Sun, 25 Oct 2026 14:46:55 +0000
-Message-ID: <179293961591.3134.5478895656850588086@kernel.org>
-In-Reply-To: <20261024141157.59301-3-testwrzwrz@gmail.com>
-References: <20261024141157.59301-3-testwrzwrz@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=ZgAPG+Wz
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3ae1d0caaedso28435a91.2
+        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 07:48:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792939735; x=1793544535; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0BHKQxHth0jV1Qy3AAfupSHQukbGmTDd7nK1ds2NmEM=;
+        b=ZgAPG+WzyVCZaoNPpfze2BjqHkSO4yHwl8QI1W6Bnl1swkOB6WPUaIeTuFtgPN27Tp
+         cgjWbVx2UZ/gUcb/cfbMlvqadmy4QRY9lg/cnLh0NjOioIzzGhSqC0ZJg09U7zCXCGIZ
+         Mg9zOQzJRSOiFoWWPP3SRdusvhNnI/pi1DRS8keyR6+7w+gLkwVo/rAXduD29ROYsg4B
+         wUsDbVEoNjGyt6uiL7P0YAZ/7MivD4P0zxJNIvAD9TH/5ZOfyIqqnq7jg2ctPn8T3J+r
+         b8v72fsYuQz4L+tjsumPMpF/kio/MKuhHeAigKRnV0HPBHS7AsdslZpPmoSL5naT4w0H
+         ObsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792939735; x=1793544535;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0BHKQxHth0jV1Qy3AAfupSHQukbGmTDd7nK1ds2NmEM=;
+        b=qZk9DWgqLQTIiMLNx+V4DJ8TFWiE0jz0SpA/JyetA33uvzgk73i7e1JK59OX5iJF6I
+         gegGlBsjUN51x4TnuMc9j3/vM4NEBZaS4SFB3M9TtSYNzIx2E0/oFWX4NogIwjBb4Pqi
+         dtmhG55rkBVNaIZn4lC5m0lLA2YqyBAJnrR6jelt+ypl1UKeM7Kjy9Fw2ItCu4/u43DX
+         Rjp1JJngkPDUONqaL9qFomM6OHUY8QeK9qWX5NzfmWeNwa9zHavdXQu/pSQx/zQUKOjP
+         XBPyeOCCBWSPTWq6RUzUUzfQ6Wx6NZj3Qw5uMT5pjUGtdFfSN9sJ8q3JxLjGCIMs3UyZ
+         mQfQ==
+X-Gm-Message-State: AFq9FYKe/G3zfQHomTRQqE4Zc2IQHG23vLaoWgOapzM8gpzcRYTt9xvo
+	559OtMuDQUXTXxBChgGcRXUNWy8imQxIs02aaY9EAeRPl6CTHe5b7hLzegvU9A==
+X-Gm-Gg: AYBFou3VwcFW+QlBHepHRawLo5HtsAD3NDlTLsJEPhCknZLw5MmuXPIZew+vecD2NUF
+	lod9OOgXNo6c+4O34Q31rF/EV3zWGkrQ0NYcsTo4pdFPH3R/fBi9iRNp8BoDIFLe7BpSk+0s1Yq
+	Mhu/YwKPv2ZPtUC26EP3bOvi2f0m479yJTxF1wIIhU1m5WjlVrrp2gef8nT8BsnCSovSANX6zGb
+	7wneyqGEjRE58pq4b4H9mPufMiVbSzI/JRHGKbG9xwefcdWwhn2yZa904U0vENn0CMiYB8XgkW5
+	Rfawmx9p+kQGo4ih11x9vhb+e9Bo59qlfK5dz5EYsKoOP0RdocjDWcJ6SYaCZZBGgii8Sq6PQuv
+	1TapSK5o1w9Cu9w8WVUkjrKpkitan8gbYLzSd+lYbbW00+AIzAq7U9cL5FQL1fzX8r8HtFKV/I+
+	sWU3Iobs6dqMkAO9CBkib1ArJ2bypvIApiQzwmiy4TrxvGC/vdy/taOfOKaZVNCXJp9XusrLxKP
+	ybulI6eglaI2A9ijqA1fns6l2OHUkh7SK7eOdduMy5qkIjhOjE3MQTlldhUBq42MDKZdsB8Y/zk
+	auVTCCnCwDCqlV0pPSKsFSsYWGf5
+X-Received: by 2002:a17:90b:314e:b0:3a2:bb45:d37b with SMTP id 98e67ed59e1d1-3adeaae8947mr4089569a91.25.1792939735592;
+        Sun, 25 Oct 2026 07:48:55 -0700 (PDT)
+Received: from d.home.yangfl.dn42 ([2a09:bac5:6212:1232::1d0:de])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3adebac408asm5265009a91.0.2026.10.25.07.48.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 25 Oct 2026 07:48:55 -0700 (PDT)
+From: David Yang <mmyangfl@gmail.com>
+To: netdev@vger.kernel.org
+Cc: David Yang <mmyangfl@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v2] net: dsa: motorcomm: Isolate all ports during chip setup
+Date: Sun, 25 Oct 2026 22:48:31 +0800
+Message-ID: <20261025144834.2810828-1-mmyangfl@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,118 +98,55 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+The chip setup only blocked unknown unicast and unknown multicast
+frames, known multicast and broadcast were left open (though the former
+cannot appear while the FDB is still empty). Before port_setup() runs,
+broadcast frames received on a port flood out of the other ports.
 
-Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
+Close the window by fully isolating every port right after the hardware
+reset.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Fixes: 186623f4aa72 ("net: dsa: yt921x: Add support for Motorcomm YT921x")
+Signed-off-by: David Yang <mmyangfl@gmail.com>
+---
+v2:
+ - reword and reduce code changes
+v1: https://lore.kernel.org/r/20261024144023.1010237-1-mmyangfl@gmail.com
+ drivers/net/dsa/motorcomm/chip.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-- [Medium] generate_packet() in
-  tools/testing/selftests/bpf/prog_tests/xdp_metadata.c fills the…
-
-Pre-existing issues:
-- [Medium] The freplace check in test_xdp_metadata() never retries.
-
---
-
-selftests/bpf: cover AF_XDP multi-buffer TX software checksum
-
-This commit extends test_xdp_metadata to send a UDP packet once as a
-single TX descriptor and once split across two descriptors with
-XDP_PKT_CONTD. The existing metadata and checksum checks run for both.
-It adds a bind_flags argument to open_xsk(), a split_len argument to
-generate_packet() and a num argument to complete_tx().
-
-> diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_metadata.c b/tools/testing/selftests/bpf/prog_tests/xdp_metadata.c
-> index 5c31054ad4a4c..1cf70fb800fba 100644
-> --- a/tools/testing/selftests/bpf/prog_tests/xdp_metadata.c
-> +++ b/tools/testing/selftests/bpf/prog_tests/xdp_metadata.c
-
-[ ... ]
-
-> @@ -133,36 +135,36 @@ static void close_xsk(struct xsk *xsk)
-
-[ ... ]
-
-> -	eth = data;
-> +	memset(pkt, 0, sizeof(pkt));
-> +	eth = (void *)pkt;
->  	iph = (void *)(eth + 1);
->  	udph = (void *)(iph + 1);
->  
-> -	memcpy(eth->h_dest, "\x00\x00\x00\x00\x00\x02", ETH_ALEN);
-> -	memcpy(eth->h_source, "\x00\x00\x00\x00\x00\x01", ETH_ALEN);
-> +	memcpy(eth->h_dest, RX_MAC, ETH_ALEN);
-> +	memcpy(eth->h_source, TX_MAC, ETH_ALEN);
-
-[Severity: Medium]
-Should RX_MAC and TX_MAC be copied here? In this file they are text
-strings meant for the ip link commands:
-
-#define TX_MAC "00:00:00:00:00:01"
-#define RX_MAC "00:00:00:00:00:02"
-
-With ETH_ALEN as the length, memcpy() copies the first six ASCII
-characters, "00:00:". Both h_dest and h_source then become
-30:30:3a:30:30:3a.
-
-The old binary literals matched the addresses set on veTX and veRX. Now
-every AF_XDP frame that generate_packet() builds has a destination MAC
-that doesn't match veRX. That covers the single-descriptor packet, the
-new multi-buffer packet and the freplace packet. Won't eth_type_trans()
-on the receive side mark these frames PACKET_OTHERHOST?
-
-The test still passes because rx() in progs/xdp_metadata.c only filters
-on the UDP destination port:
-
-	if (udp->dest != bpf_htons(8080))
-		return XDP_PASS;
-
-Was this change meant to be part of a patch that only adds the
-multi-buffer case? Keeping the "\x00\x00\x00\x00\x00\x02" and
-"\x00\x00\x00\x00\x00\x01" literals would avoid the problem.
-
->  	eth->h_proto = htons(ETH_P_IP);
-
-[ ... ]
-
-> @@ -518,7 +564,7 @@ void test_xdp_metadata(void)
->  		goto out;
->  
->  	/* Send packet to trigger . */
-> -	if (!ASSERT_GE(generate_packet(&tx_xsk, AF_XDP_CONSUMER_PORT), 0,
-> +	if (!ASSERT_GE(generate_packet(&tx_xsk, AF_XDP_CONSUMER_PORT, 0), 0,
->  		       "generate freplace packet"))
->  		goto out;
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but the polling loop after
-this send in test_xdp_metadata() never seems to run:
-
-	int retries = 10;
-	...
-	while (!retries--) {
-		if (bpf_obj2->bss->called)
-			break;
-		usleep(10);
-	}
-	ASSERT_GT(bpf_obj2->bss->called, 0, "not called");
-
-On the first check retries is 10, so !retries-- is false and the loop
-body is skipped. The assertion then runs right after sendto() and the
-netns switch.
-
-freplace_rx() increments called from the veth NAPI receive path, which
-runs in NET_RX softirq. If that softirq is deferred to ksoftirqd, can
-this assertion fail without a single retry?
-
-Should the condition be retries-- > 0 instead?
-
+diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
+index d4fc20c52a58..08a880867ee1 100644
+--- a/drivers/net/dsa/motorcomm/chip.c
++++ b/drivers/net/dsa/motorcomm/chip.c
+@@ -2221,6 +2221,7 @@ static int yt921x_chip_reset(struct yt921x_priv *priv)
+ {
+ 	struct device *dev = yt921x_priv_to_device(priv);
+ 	u16 eth_p_tag;
++	u32 ctrl;
+ 	u32 val;
+ 	int res;
+ 
+@@ -2258,6 +2259,17 @@ static int yt921x_chip_reset(struct yt921x_priv *priv)
+ 		return -EINVAL;
+ 	}
+ 
++	/* Block all traffic as soon as we reset the hardware since it now acts
++	 * as a dump switch.
++	 */
++	for (int port = 0; port < YT921X_PORT_NUM; port++) {
++		ctrl = ~(u32)0;
++		res = yt921x_reg_write(priv, YT921X_PORTn_ISOLATION(port),
++				       ctrl);
++		if (res)
++			return res;
++	}
++
+ 	return 0;
+ }
+ 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261024141157.59301-1-testwrzwrz%40gmail.com
+2.53.0
+
