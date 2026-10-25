@@ -1,116 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792918210;
-	b=MWEKe94qHDUHh1A/YRKOnflCC6dTtFxMjG9sG7o6PbP3kAXF5Aw3KqZ26b9Mgm8iiYwl
-	 jnK/2IhPEALlvZkSEh+Mey0yD/iMMwZc9GqgDeDLnncyU+NNcCtDozf/WWiBRfK4apGIy
-	 mMbG+OgWez4s5Z5OK57QadEaAkzmELBv81XPJhx8Y7M5biTR/YSN9fAjO6lsDj0kpiuz/
-	 Yqa9dIYKBgzUNbfTe/3m8kWL/t86Z+VvexJuH/fEprhV+EdTm/dhmWfyAf+Ab1GYwqpiw
-	 NNzaofA0aPN4NmTiI94oilA/983IpWTo369c/+Yo2hibKs+1Q/VAzSkkYeNWKGTkQUg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792918210;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=Xdee7ulKGFI68bzq8UkOeGOJEGYrdZ0muM6UpNWMrAk=;
-	b=DAD3JxKIRexMxV9X7Hj26a6k7IR3s2V8wAVAu7vIwq3nvO4ZSZ+VcOpVl5qJTirXWHq5
-	 dc5aPu5XuCqXHIX2BgKedBCjRq912MchTurEbPTFPujqYxVVvZwub2EWtpVz30czO+IYD
-	 Ab09ms6tf/tO3d4WtcPjR1QgN5hMISQXMtm2z7IknDoZnE1dyFfWH1bHyFhksPjNjM9cC
-	 mVl3x58wlGWyIqck12U9Mt0dkNjgx64yY+80mYYgvvJNixwpqXH/xPUghLvDy7OQ3aeLP
-	 G+EMcJhcIBwwAfDni2ZsDzMT3JsFjfNrMkdoccwaJch9E6J7DCc9KVB50S9IAXohhSQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SM5oQuSN;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=RUjQxiMk;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.181
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792918568;
+	b=KrRGXwbNvRYtz3t7PNn7Vi0tTaicQkwhF5W8NvNO8sNBlH3KARRKC9B/pz/O5WYg/+Ub
+	 vRySyj9x3R+7SQR1Z+iX/+RefSP3+dlaxGkQDLrWAXUICfPFapXffSCal0upTmhecJnV1
+	 vym13CK7Q3FxZuDMAI7C/mtAiBGJsk4ZGrZr4rL1IL5gySo58fkLphG0gKV6d0Og55B1f
+	 3cHXTnid0BWpLSNyvdyH5MdVKhJNsmJWLLWJBv6Xt7haE5zxQtUiU2D3OvjK9Y++uUq5f
+	 txBlzRMNXtXu38CLw3YjXw0ykGlAdKJSdP2j94l9CX7qaTaLlFMKSXtbIMX9f+hvpiQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792918568;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=KAWo+wtNpZOYjs7XLX4+xbKqtyKgnfAjF4Rv0X11cZw=;
+	b=x9E3Nt9dHZElleiDtbWktdedmUrF2lJxjlskXUa/QcsM5rhYlNIkAVYhRRF0ntSRqqcA
+	 kTiojTLv9HWKQMv3LwN/qAhH4y3fVsw7ZKValiH/ZDLKLJR22OYggDryxD1TTK737esFW
+	 pZcxB/ymk+75vOeD/4g+eyApUNz7+qHD2jplff6/jowMPu5iqjylWV2NYOGIWwCedGb5w
+	 u200NLwJdzYeXqEwBk5yF8tW44IaYt6cqqrfVmB/GeZrYT+ang3UmYzwpZ6gwOckb9xMx
+	 /UKFz7ol78hLOYC+oiRbYbfyLLCEd9uSKtFdzoxwVM3CrtRM5dq17fWcrbVueREMjWA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=mojatatu.com;
+	spf=none smtp.mailfrom=mojatatu.com;
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=mi05lP3G;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.181
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86224606A31A
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 08:50:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 86224606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C76606A31A
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 08:56:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 77C76606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SM5oQuSN;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=RUjQxiMk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792918208;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Xdee7ulKGFI68bzq8UkOeGOJEGYrdZ0muM6UpNWMrAk=;
-	b=SM5oQuSNn56Mcj8yFxD9GRfwzWsdaAEt19Q2tzRymvxNno6sLEW+cuOyOHo6gRaapQdHyr
-	WYjj76hJXb4CnJXfVy6IsBObQ3INW7bsgsKr4NBjvVVZ7HXti0obtGa2nNjMjB+D/RGBfy
-	wLhNgFOpL9j2l4oNNUEc9i3Q/eaWdqE=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-453-hvONW5jcPoqDZUyRENi8zA-1; Sun, 25 Oct 2026 04:50:07 -0400
-X-MC-Unique: hvONW5jcPoqDZUyRENi8zA-1
-X-Mimecast-MFC-AGG-ID: hvONW5jcPoqDZUyRENi8zA_1792918206
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48e0fc747a7so1771853f8f.1
-        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 01:50:06 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=mi05lP3G
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8a06ca6e8f4so1501815b3a.1
+        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 01:56:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792918567; cv=none;
+        d=google.com; s=arc-20260327;
+        b=dSRu2AQaYTKniopVlfkEELN9Yy6h0ipifLqGNFT8+fVWXsy7A5bNmdyHe0ZzwS4eNV
+         ecyx7YltlJTzpgw3w2fgJ2qF2UC4VtJycd9Inbp1/DgZfanNOVJxV3CJHZCXo7vksjr2
+         vNd5MPgyp/uxtOszcXWsu5qOmItTkad+g1jer68TfHwqkOnbJNTsmK0YMcD8x9go9GbK
+         Mna4d7MqkkOk67ArY2DttzWHNBhtIEt8USZGaI/R0/wt+RtLy9JAV6Z/hcUsU3PKyuZR
+         dinPr0hY6EDLHABH5WaRlALwerVFDShybUEiVHip3tc+VgbIun98xYqfxEeuOBHs81k+
+         xlVQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=KAWo+wtNpZOYjs7XLX4+xbKqtyKgnfAjF4Rv0X11cZw=;
+        fh=R3FVdBoXUJUYjlyCx59kyGFIfQfoDMCeoOPFXK1PBIQ=;
+        b=dW/KpCtKbKgwvl22tH8I19zlfbwyOvczDKz7ties8uq3h8YIrLFPNGbQcxV45RSmzX
+         hk1Uzx42Jr6noyJl8bmG+RavMg2q0QsbZSLn3Adpv/hrqn2kYtXTQyC9I0CNjsHMKSJ/
+         3ZgfV3XjNwDO6E3RsyosfCOdjyP5lJYgGQg1Js7UWO6xu/VvuuBbS+Q4WfaQ3SnCfhLl
+         IFMzct79D8exv2MEV7IFUsiDRvZ+wHJYZl7fE+lrI+ghzwd2mDv6HYlkJGotBej3sJmI
+         blZT9pjHGnGBII5KdPSbJGTIyYk18523sfjrqV2pF3oMqbR3hxLMVZ28lBkvMeET4I7k
+         8UqQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792918206; x=1793523006; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Xdee7ulKGFI68bzq8UkOeGOJEGYrdZ0muM6UpNWMrAk=;
-        b=RUjQxiMk/GjBSSUCmrZGJTN1LKrN9Vl7gvbyXa3m1l1lgDySn3ZvbFBN133FxRluJO
-         gPo1Pl/OrfhUwYCaNKonpSHZq6/GwAPRQtQrFlXyB2t9+rmA+Y4dFIs/Q3LRI2jkv9i4
-         Es7U1NsTBLUnBomIDpfD45L+M9vUcVX7s+0qPHC0P9kqTSwFIQIZAnUZnNnGYqV0EsH7
-         8fF/BF+eq0TQgB2zb9ObmSQYjARFq4SHaZLvh99xxm+6CMB/Eez6yiV96z+h8vRpeUMx
-         0Gwl8NTI8I4QQeUKiZf3sZfV3bl3IAft36jEH0+5B4tSSYDHGA+Ii22+21PCWnnPyO9y
-         NrUg==
+        d=mojatatu.com; s=google; t=1792918567; x=1793523367; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=KAWo+wtNpZOYjs7XLX4+xbKqtyKgnfAjF4Rv0X11cZw=;
+        b=mi05lP3GpYLdTOXHFSZx440AR9EZif9K/sR71vpfrZw10gO003EZpj7eZM8pCSuEMI
+         CdEvSp55VnFp0RdnW1Eg60KgDqkRdse3OjAlE4f6yTRy8XS2grhxxmqqj+/FOxHJyy1k
+         RiqFqc2/k9qOfnk18SGgMoyDle5frgqKr2O9s=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792918206; x=1793523006;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Xdee7ulKGFI68bzq8UkOeGOJEGYrdZ0muM6UpNWMrAk=;
-        b=Yz/g32DyOAIaC50gPB1Hg4oPaOL0mAn4YhTfuzW7zNdNosTYI+BA4hgYTcHbYB/1ku
-         pyun2CcSOUru99c2hrbQvQdAxJdufcTWIWiXhXX4k/gfE+IYgCAFFtjSh9CO6f2f9+5r
-         rWBFrnmkBqts6Lcgg4Ww+cCTOs6n4P9D1z3mhoqzXBOoMD6C3RtpYIBfdJr5Opm/JUQo
-         7eSmubWotfI7OSkpUYCnam9x5FaZtIEv6oCITncbALVQshKhCnPRoCyyRHdxGt05XZGO
-         fPizVjlDLhldkExTmpruoBj0TPzQSGLYK4iYc+mp68PesDw3h8X7IZnti5R+AjMzDa4U
-         RB/w==
-X-Forwarded-Encrypted: i=1; AKwUvBzYNoEqPRJQgF1oBzbT2y2SX9w5w6oj25o1Z9u6Lnv6AC5ZwgwfE0gKTWy+yHB3g4ZN3lI5R9s=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKN93pDxKNmE/db7fpthpQWPlyZdteY4iA5GROOwRlBRmURyAl3
-	qgBPz9W9TeBWrCxOqdjAhZg6CXCMvbN1hPoOX2wuDYkM25rb0H5G/cXvVWeWWrsnbhUfDi5KCdi
-	iTGjDAgM06mLUgapvmd6nfXPp7aMcpauwC/q6rW/8kHJBUmuu0KyNtGQhXw==
-X-Gm-Gg: AYBFou2bqx/p8/NHE7975n/O99z+dJa5ahyreBDRujtkxZKruPs1okXTxcya61GC8fx
-	6I/vu1MA5cjS4NPSG7YcPZUel7gNfByhU7EQ5MwjL36zfvEaHKUctCzS6gPZsJ/gjVJGTm2jYiZ
-	Hv/TgP09RSLH62eZIDVO3jO7CpW8HIkWQAQeSk9WCFH4NuiTsSdkpnfr7Q3+w4OTFSP5jO40CcS
-	BpFQLK2s00nuTOKvko1UxRlZZU0JV0eCFUZTkUFMXiGIAvu31ZvuKbpol6RXBwpA+8CXzzYD0kY
-	SzvPm6KcrkqF7U/Bg2qeNfCbMVm/x2JLXm3okdQRBADjIrZAmYXgZlGs8wvPvruCtj0=
-X-Received: by 2002:a05:600c:6095:b0:4a1:f7f4:7cf1 with SMTP id 5b1f17b1804b1-4a35ac8bf3amr54538875e9.11.1792918205667;
-        Sun, 25 Oct 2026 01:50:05 -0700 (PDT)
-X-Received: by 2002:a05:600c:6095:b0:4a1:f7f4:7cf1 with SMTP id 5b1f17b1804b1-4a35ac8bf3amr54538445e9.11.1792918205058;
-        Sun, 25 Oct 2026 01:50:05 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1536:fc00:b838:383:1c7:6e81])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ebd48eesm8909392f8f.30.2026.10.25.01.50.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Oct 2026 01:50:03 -0700 (PDT)
-Date: Sun, 25 Oct 2026 04:50:00 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
-	Claude Code <noreply@anthropic.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org
-Subject: Re: [PATCH net] skbuff: keep accesses through unset transport header
- in bounds
-Message-ID: <20261025044225-mutt-send-email-mst@kernel.org>
-References: <0bdcbe2ab5ffc86ba7190fe25476bcebcb967310.1792844270.git.mst@redhat.com>
- <CAL4WiipHjseFcNaqaufAf5C7d3J5e6aLZBTsehJuJyR2m7G1Hg@mail.gmail.com>
+        d=1e100.net; s=20260707; t=1792918567; x=1793523367;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KAWo+wtNpZOYjs7XLX4+xbKqtyKgnfAjF4Rv0X11cZw=;
+        b=HySG0wahpPBdDdFUkWbarfOAxlwqr397Ug6twD7PQoVSYu8j7Dm/9N2F1SgUwgcDKH
+         1tjOWLz1QW0NhqSREKxVibNXwkWAgjTNbgIRRvlb/WoUpLlN2Jhl5NOWeV3NMELibRSu
+         o1enySEQeg1XnAWKs32VYe6Z0Y7BQv+kWaLAHJ4Dxp1bRW0vOYTB6oD4jTEVfiQ5O+Iq
+         CIM8Tc9nZCzSiJ1am6RDO18OyVpoGq+S1vZ5sAKspo8op3zyCs/1FjciyIRHlay7Uvp6
+         0AtLvbBBtHlsGP0Yebn20l4a8EtIQEnJGKh0RFaVFeX0qv7AEY0dP8V1zMhFbKRCZkxZ
+         VLwg==
+X-Gm-Message-State: AFq9FYJ3oY2of8ITPJeRdHW4yj22KuPsV2JMaGt5Nh/8updOrjD02pzu
+	KVVMtm/0VUgfqy/RWRr67r6uPZ+HiE6kQa7dUYWWuslj1E+vlnXS8YRXiA3V/rTiKytlrD26bi8
+	kwfNifSyP8aP8fbyTDqUPvp0nvLrc4LvDQ1i17d8l
+X-Gm-Gg: AYBFou0eYJqvTnoT64gnr2v2Ha3WfdqDbpE1CakNIxbaSJ4+EJhxPIuhdvtPgl8fdtg
+	xHStkc5g/jUdzMUzJtAQGSrY0OrAP2/fDphZvTMpQkqDoY2dorHk3fxiK5ueol8pSbDooB1mHTV
+	fgZhDbK8Pie0yi1poC9/A3mNygia68/W4u4z79pWDDw20jVlfpUWi6jX0X5qhv/UCAyRjjeyFqH
+	vt2UOjPW1cTSKkrAE5X7GJKfS3RoBteoaAseK1eYR9mEKJyHXXr6Tc4baVZU3+prHJgmtwWdCXD
+	/7cpfXif31ILwX+AWms23X2CyHAQPzGBcsCXuz7eLEpUH6MnblOVfcMIWolKA7ZbnXvHiGulXVB
+	OckGEkIvDYWek54g51feF+yCDvXftokwp4tI6xT7MuE4kIRyjZybrz2rAuILjyNqOEh1gNdbfMk
+	fRsHhedADi1pDkpAxqOStH6ytGFfw26QegC5fR
+X-Received: by 2002:a05:6a20:3c8e:b0:3e2:3ce:4ebd with SMTP id
+ adf61e73a8af0-3e7cd58c8ffmr3635755637.49.1792918566745; Sun, 25 Oct 2026
+ 01:56:06 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -120,125 +101,187 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAL4WiipHjseFcNaqaufAf5C7d3J5e6aLZBTsehJuJyR2m7G1Hg@mail.gmail.com>
+References: <ACT-N6N4.v2.r0.20261022191829@mojatatu.com> <ACT-N6N4.v2.r0.20261022191829-1@mojatatu.com>
+ <ACT-N6N4.v2.r0.20261022191829-2@mojatatu.com> <willemdebruijn.kernel.26d1ddb3bd2ae@gmail.com>
+ <CAM0EoMmwNCHVNW0=Z_JWX_ZcT5Y1po1GRVScddOsevEvL8D-6w@mail.gmail.com>
+ <willemdebruijn.kernel.30ca6285209f7@gmail.com> <CAM0EoMm=t2FMLaGNkC_z_a_D5o4=dwVnHS=Bb23NWdmeJVCVuw@mail.gmail.com>
+ <CAM0EoM=9GxDCHzpJF_bqcoh+7KZY6E=ZmOiMp7kfVK3bHZDppw@mail.gmail.com> <willemdebruijn.kernel.eb29d53899f1@gmail.com>
+In-Reply-To: <willemdebruijn.kernel.eb29d53899f1@gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Sun, 25 Oct 2026 04:55:54 -0400
+X-Gm-Features: AclHuK99nqdl0ku1cQx0dq1jsmNpklmHQLpCQExJVZpP5q9dm1lvzAJpxrv8jM0
+Message-ID: <CAM0EoMnQWjN24gBye1kZdcJUJgXDPDy-=dM+NQ6dqCny7O851g@mail.gmail.com>
+Subject: Re: [PATCH net v2 2/6] net/sched: act_mpls: pull the inner Ethernet
+ header after POP
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
+	Victor Nogueira <victor@mojatatu.com>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Martin Varghese <martin.varghese@nokia.com>, 
+	Pravin B Shelar <pshelar@ovn.org>, Vega <vega@nebusec.ai>, 
+	John Hurley <john.hurley@netronome.com>, Willem de Bruijn <willemb@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Oct 25, 2026 at 09:18:14AM +0100, Eric Dumazet wrote:
-> Le sam. 24 oct. 2026 à 14:56, Michael S. Tsirkin <mst@redhat.com> a écrit :
+On Sat, Oct 24, 2026 at 12:14=E2=80=AFPM Willem de Bruijn
+<willemdebruijn.kernel@gmail.com> wrote:
+>
+> Jamal Hadi Salim wrote:
+> > On Fri, Oct 23, 2026 at 7:46=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.=
+com> wrote:
+> > >
+> > > . On Fri, Oct 23, 2026 at 6:50=E2=80=AFPM Willem de Bruijn
+> > > <willemdebruijn.kernel@gmail.com> wrote:
+> > > >
+> > > > Jamal Hadi Salim wrote:
+> > > > > On Fri, Oct 23, 2026 at 12:09=E2=80=AFPM Willem de Bruijn
+> > > > > <willemdebruijn.kernel@gmail.com> wrote:
+> > > > > >
+> > > > > > Jamal Hadi Salim wrote:
+> > > > > > > The issue:
+> > > > > > > act_mpls POP can leave the inner Ethernet header in a page fr=
+agment after
+> > > > > > > skb_mpls_pop(), either on an L3 device (mac_len =3D=3D 0) or =
+chained after
+> > > > > > > act_vlan POP_ETH.  A following eth_type_trans() can then BUG =
+in
+> > > > > > > __skb_pull().
+> > > > > > >
+> > > > > > > The Fix:
+> > > > > > > After the pop, if the original MAC header is shorter than ETH=
+_HLEN, pull
+> > > > > > > the inner Ethernet header into the linear area and drop only =
+when
+> > > > > > > pskb_may_pull(skb, ETH_HLEN) fails.  skb_mpls_pop() does noth=
+ing when the
+> > > > > > > skb was not MPLS, so no separate state is needed.
+> > > > > > >
+> > > > > > > Conditions to recreate the bug:
+> > > > > > > - egress tc filter on lo: action vlan pop_eth action mpls pop
+> > > > > > >   (chained), or on an L3 device where mac_len =3D=3D 0.
+> > > > > > > - AF_PACKET SOCK_RAW with PACKET_VNET_HDR, hdr_len=3D28, and =
+a non-linear
+> > > > > > >   eth / mpls / inner-eth frame.
+> > > > > > > - The inner header is in page frags; a following eth_type_tra=
+ns() can BUG
+> > > > > > >   in __skb_pull().
+> > > > > > >
+> > > > > > > Fixes: 2a2ea50870ba ("net: sched: add mpls manipulation actio=
+ns to TC")
+> > > > > > > Reported-by: Vega <vega@nebusec.ai>
+> > > > > > > Link: https://lore.kernel.org/r/40fe2d7dfce13411bfbe9271c0f7c=
+54fb7e88e3b.1782548651.git.bronzed_45_vested@icloud.com/
+> > > > > > > Link: https://lore.kernel.org/netdev/CAL4WiiqSMdYQYeeW0Fk_GK6=
+ekR4xiS4zPrGKrbB9wZknpqf1-w@mail.gmail.com/
+> > > > > > > Cc: stable@vger.kernel.org
+> > > > > > > Suggested-by: Jakub Kicinski <kuba@kernel.org>
+> > > > > > > Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.c=
+om>
+> > > > > > > Suggested-by: Eric Dumazet <edumazet@kernel.org>
+> > > > > > > Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+> > > > > > > Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> > > > > > > ---
+> > > > > > >  net/sched/act_mpls.c | 2 ++
+> > > > > > >  1 file changed, 2 insertions(+)
+> > > > > > >
+> > > > > > > diff --git a/net/sched/act_mpls.c b/net/sched/act_mpls.c
+> > > > > > > index 4ea8b2e08c3a..5363bca892fb 100644
+> > > > > > > --- a/net/sched/act_mpls.c
+> > > > > > > +++ b/net/sched/act_mpls.c
+> > > > > > > @@ -79,6 +79,8 @@ TC_INDIRECT_SCOPE int tcf_mpls_act(struct s=
+k_buff *skb,
+> > > > > > >               if (skb_mpls_pop(skb, p->tcfm_proto, mac_len,
+> > > > > > >                                skb->dev && skb->dev->type =3D=
+=3D ARPHRD_ETHER))
+> > > > > > >                       goto drop;
+> > > > > > > +             if (mac_len < ETH_HLEN && !pskb_may_pull(skb, E=
+TH_HLEN))
+> > > > > > > +                     goto drop;
+> > > > > >
+> > > > > > Is this first condition needed?
+> > > > > >
+> > > > >
+> > > > > That was me conjecturing from Eric saying in v1 "...the check can=
+ only
+> > > > > matter when the original MAC header is short.."
+> > > > > Since i have to send a v3 (Thanks Eric;->) I will remove it
+> > > > >
+> > > > > > More importantly, can it hide a bug?
+> > > > > >
+> > > > >
+> > > > > What kind of bug?
+> > > >
+> > > > Two kinds. One, if original mac_len is larger, gets popped and the
+> > > > resultant packet is still too short for ETH_HLEN afterwards.
+> > > >
+> > > > But this can probably not happen, as skb_mpls_pop only pops one MPL=
+S
+> > > > tag.
+> > > >
+> > > > What this patch tries to ensure is that the subsequent Ethernet
+> > > > header is linear.
+> > > >
+> > > > The second potential bug is this assumption that after the MPLS tag
+> > > > lies an Ethernet header. Is that a valid assumption? Or could we dr=
+op
+> > > > a valid packet with smaller header.
+> > > >
+> > >
+> > > tbh, I was thinking more about skb frags earlier.
+> > > You are right only ETH_P_TEB promises an inner Ethernet header; for
+> > > other inner protocols the pull is wrong, so I=E2=80=99ll check for
+> > > p->tcfm_proto =3D=3D htons(ETH_P_TEB). I didnt have this check in the
+> > > current fix - good you responded before i sent out.
+> > >
+> > > 1/6 (act_vlan POP_ETH) has a similar unconditional
+> > > pskb_may_pull(ETH_HLEN). A brute approach is also to check for TEB:
+> > >
+> > >       if (skb->protocol =3D=3D htons(ETH_P_TEB) &&  !pskb_may_pull(sk=
+b, ETH_HLEN))
+> > >                 goto drop;
+> > >
+> > > Note: skb_eth_pop() only removes the outer ethernet header but does
+> > > not change skb->protocol
+> > >
 > >
-> > Commit 2170a1f09148 ("net: no longer reset transport_header in
-> > __netif_receive_skb_core()") stopped the receive path from pretending
-> > that an unset transport header starts at the network header - but only
-> > on CONFIG_DEBUG_NET=y builds, the idea being that fuzzers and CI could
-> > catch stacks reading a transport header where none was ever established.
-> > And the plan is to drop this for release as well.
+> > I am going to send it without this 1/6 change - it just doesn't feel
+> > like good taste. I will add a comment in the changes to say i
+> > considered it but decided not to. I also spent time eyeballing the
+> > code, i dont think there's a potential way to craft a packet that will
+> > hit the perceived issue. In any case the 24 hour embargo lifts in a
+> > few hours so i am not posting yet.
 > >
-> > Indeed, under KASAN, an access through the unset offset produces a
-> > slab-out-of-bounds splat, which is how these bugs are usually found.
-> > But a regular debug build has no such safety net: the accesses land at
-> > skb->head + 0xffff, some 64K past the packet data.
+> > cheers,
+> > jamal
 > >
-> > I don't think release builds are exposed to oob in this way, but I want
-> > to make the stack a bit more robust if yes.
-> 
-> 
-> This is not a net candidate: there is no bug in release builds, since
-> __netif_receive_skb_core() still resets the transport header when
-> CONFIG_DEBUG_NET is not set. The Fixes: tag points to a commit doing
-> exactly what it was meant to do.
+> > > thoughts?
+>
+> I'm actually a little confused why the tc layer has to anticipate the
+> needs of downstream code and pull headers here.
+>
+> That directly lead to this guessing of what may be the next header,
+> such as Ethernet. Which may often be correct, but not always.
+>
+> All protocol parsing code itself should already be robust and call
+> pskb_may_pull where it is needed. Sounds like there are some targets
+> post TC where that is not true *and* we think there are too many to
+> update those targets directly, rather than this transformation logic
+> that exposes them to unpulled packets?
 
-Good point.
+Not "too many updates" rather the main motivation here (which i kinda
+empathize with) is pushback from Eric that you have to "fix at the
+producer" to avoid performance degradation at the "consumer". i.e
+rather fix the vlan action than have loopback vet as in the original
+patch  (and you just witnessed him stand up and push back on tun for
+that same reason ;->).
+IOW, we are anticipating so that eth type transfer doesnt bug out
+(_for ethernet headers_) when invoked at the downstream consumer
+(loopback etc). Essentially it is a game of whack-a-mole until the
+next bug or malicious use shows up.
+Generally, policing intoxicated drivers from getting on the autobahn
+isn't the best philosophy; it's better to complement that with a
+"driver beware, you may encounter drunks" warning but that would slow
+down the fast car on the autobahn ;->
 
-> 
-> >  While I appreciate a nice
-> > KASAN splat as much as the next developer, making even a debug kernel do
-> > oob accesses was never the point of the exercise.
-> >
-> > Make skb_transport_header(), and its inner variant, verify and WARN,
-> > then fall back to the network header position when the transport header
-> > was not set. This way, accesses stay within the packet.
-> 
-> This adds a test and a conditional branch in a very hot helper
-> (tcp_hdr(), udp_hdr(), skb_transport_offset()...), inlined in hundreds
-> of places, for all builds, to protect CONFIG_DEBUG_NET=y builds only.
-
-Good point. I'll put this in ifdef CONFIG_DEBUG_NET then?
-
-> Falling back to the network header is also what 2170a1f09148 wanted
-> to stop doing: pretending transport and network headers are the same
-> is wrong, and silently hides the bug after the first WARN_ON_ONCE().
-> KASAN would no longer report anything.
-
-But the bug already manifested with a warning, why do we want
-also the kasan splat much later? And why do we want memory
-silently corrupted on non KASAN builds with CONFIG_DEBUG_NET?
-
-
-> >
-> > An extra benefit is that release and debug kernels now behave
-> > identically if an unset transport header is ever reached,
-> > avoids heisenbugs.
-> >
-> 
-> Not really, the fallback path is only reachable on CONFIG_DEBUG_NET=y
-> builds.
-
-Yes, this is what I referred to as the heisenbug: release behaves one
-way, debug another, so e.g. if there's a bug only with header set,
-it will not reproduce. I guess it's not a concern then.
-
-> 
-> If you have an actual report (syzbot, KASAN, or a stack trace from a
-> debug build), please share it, and we will fix the caller that uses
-> an unset transport header. That is the whole point of the debug check.
-> 
-> pw-bot: rejected
-> 
-> > Fixes: 2170a1f09148 ("net: no longer reset transport_header in __netif_receive_skb_core()")
-> > Cc: Eric Dumazet <edumazet@google.com>
-> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > Co-Authored-By: Claude Code <noreply@anthropic.com>
-> > ---
-> >  include/linux/skbuff.h | 12 +++++++++++-
-> >  1 file changed, 11 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-> > index a3ff380d43f0..cbfeb17d86f7 100644
-> > --- a/include/linux/skbuff.h
-> > +++ b/include/linux/skbuff.h
-> > @@ -2993,6 +2993,12 @@ static inline void skb_reset_mac_len(struct sk_buff *skb)
-> >  static inline unsigned char *skb_inner_transport_header(const struct sk_buff
-> >                                                         *skb)
-> >  {
-> > +       if (unlikely(skb->inner_transport_header ==
-> > +                    (typeof(skb->inner_transport_header))~0U)) {
-> 
-> 
-> Inner offsets do not use ~0 as an 'unset' marker, they are zeroed.
-> 
-> > +               DEBUG_NET_WARN_ON_ONCE(1);
-> > +               return skb->head + skb->inner_network_header;
-> > +       }
-> > +
-> >         return skb->head + skb->inner_transport_header;
-> >  }
-> >
-> > @@ -3072,7 +3078,11 @@ static inline void skb_unset_transport_header(struct sk_buff *skb)
-> >
-> >  static inline unsigned char *skb_transport_header(const struct sk_buff *skb)
-> >  {
-> > -       DEBUG_NET_WARN_ON_ONCE(!skb_transport_header_was_set(skb));
-> > +       if (unlikely(!skb_transport_header_was_set(skb))) {
-> > +               DEBUG_NET_WARN_ON_ONCE(1);
-> > +               return skb->head + skb->network_header;
-> > +       }
-> > +
-> >         return skb->head + skb->transport_header;
-> >  }
-> >
-> > --
-> > MST
-> >
-
+cheers,
+jamal
