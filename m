@@ -1,65 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792971848;
-	b=n+LUkndsQ1Nb9UEJryv0aEATd+3MS+ZCVuj3sQXK6Pn5oTEyrSAzocJle/AZROrtgmoK
-	 wZloBHdkdNeHqZg9q+6tNBaa0j98Dmi+4Q55sC+EwVy82kqQdqx9a58DFFYOMTnARDVnZ
-	 hvhX3aMZVz2Evu7PszGDAf56NN5oX3nQSuuvgDiOpsFc9YozifCrzSDYD4lr72q9C+Vk7
-	 Ldp7Z6qtZEUIKK8LsVDIZcz/kjRIADZvscaahsORigG/CSytSbEG4ZhhP/Gm+3Un4tyIZ
-	 7NR5Ub7iFVJI2Zl7jAgQs7fbzORcmRTOwSu8GViyOeLfcXJ3tAIkYekVexDCxck+u9A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792971848;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=dkdyOJYUkFmroPEHrw/gyaMaLpI/HNgMU0ErK4AO+jY=;
-	b=kTunZNP3l0riEc/dkBVWTUvtDHbvs/P7bpsQuEFAU5VrL2/2OLz2jdnwKVMGcO8TPFDH
-	 WIebVzJZ/PjwcypQ/pUXeNubWxeuG3+l6aPQ7puJVz9kxHHtBEQjAf2KoQtoauuwOoAm1
-	 NKHf1rxLIbGLhZlM6pl+Z2vc9+XTALO5IlRrf8u9iej4zOt+Q5BsZDmpgTwuHvwGhyQcg
-	 dgxtBMc0EqdZuML3/e2pEK0VE9rExGTQk21wcSUUZVruZZ/DOT0J4f4ffgVptF/+1GqFV
-	 I0LsTMTX7lNMN47JzxNpf0kCquqa1vuu8CXV6hai2VkhtiSolQBg3ruGWhbFGo1K0XQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A58ZRBWY;
-	arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792971945;
+	b=MCvgJphM1b79H+F1TmWGQhCjFIf8ZORBXQqQEwRz/SmL3V4491OSOLASgGS0ZXAmjpUv
+	 JDZpMFxQP/xO7Y8+r+9b9ujffo572MUsUFw1iAFFAx6iS6LLcua7eRz0YSoYy4vB85Fif
+	 kLq1wkObSH24XrcQMYcqNsVfOB3X63pQXJoc8aQSHukpIpw2GK4lIIu4k8zd5VwSspxlQ
+	 Y3uXNXtS8j6KQFpuzKGLzwsmIdWT9NRioDCG1apdkGJbHjhBQ8muoYmcibAzaHtHUkmXk
+	 iKhBfNdOQnWaTGl7LCP08NK0deH9Q9gLNbSrvoHb4j5bkT/LluwZ+zk9hRKAkotkjnw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792971945;
+	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Endpoint-Received:X-Original-From:Reply-To;
+	bh=nDw9i3Z2SirvRvn+BaVz+MSjkgG+3Zolh5xd3HzvrVo=;
+	b=mr2Z4JKva9yfBMVuL0kVPutN1QUfWwsfEGeJ1Q797eLZudziEJhxqEDiZWjn28u6FMLo
+	 qQZGgvLe3hvQYb3UW1P3O5z+UgDIsKknodR14QM1+GGLelmC8rikSNa9MU0Qhk1rNKZcM
+	 l11kwRawlw0dobjGQNJdkAxmO0sCW2GzlNLAW43f+LnEUUrETyVBmjMWL3lSmdtKjKORr
+	 weFMo9kKH7+d0xnBpr3tBT7+p7QBlAu1NQqn94Brs5y6ljVjU5MHq0JPuTGwY77bJp74V
+	 QpPPkWeuEqqyBRvBHd5ROE+cgv2SWvnLQCzMxEliqKL5ALWhuR05TMYlqX3TgCsU/HQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ergdZ05P;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86384606A324
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 23:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1D2606A31A;
+	Sun, 25 Oct 2026 23:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A58ZRBWY
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 630641F01828;
-	Sun, 25 Oct 2026 23:44:07 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ergdZ05P
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1792971944;
+	b=K9k9lyhSXnfRapDSnG9lvMWg5wxZqez+wIiZPoos7L8/lYvq7U74PbxMVAJWB9Ci/Js5
+	 WQDanfb9DhwwgatB+0Tgg4QM+IuvNXAoBuLB+twUhNoybuuZNtgKL8O9x3gWTXX8C078U
+	 IvIYUZSmlh4b2Eq7l+AB58XE2b+EWgq2oIEfZ33kUznkK+KaGghsFunBWMHY7Vk9B8re7
+	 vZP1yIRqSaTAjwIaFw6gWF5vPVSitXPq08ZU84XRtEV4+Ai3uhSnjDSFUHCWrk6k1apNf
+	 JYlLUIfw+CTSpcbHVCYzNUBf8f6J9I8TxSMkhQq2lSZ1J62LMQdWpuk5R0aKxF+zaRQ==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1792971944;
+	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=nDw9i3Z2SirvRvn+BaVz+MSjkgG+3Zolh5xd3HzvrVo=;
+	b=aATNW+gR4PlQ9JWNDL4lxHUIstI6uBYDIqKGrYO5PGY8iqS6LXo7j6MHjcccwMPei4b7
+	 k4sGbgHIvEupCWHeDyXRl4iokUOYKIn5ZR8pavXj0awD1M7ks5TAOWoeqn+gBKqjYwB6Z
+	 H+JIoQqYgOlqc71EQbD3RlE6wEKqf4TTwFLTjfenxk03SNRSSk1nqz2wYigjgWNS4wbWI
+	 beSghhn2/0SM4ul2GJxS4SpZyhsqi74ioj2SjOCbcT9kUzAj2iBfgqnJm1PixynZWumCO
+	 w/xMwjIVVKJaKvmHXuSnV15S/hRiv5SrhIcv2PKV/d85v5oiBQzR58RtNa6hvilQG5Q==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id DA6E31F01825;
+	Sun, 25 Oct 2026 23:45:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792971848;
-	bh=dkdyOJYUkFmroPEHrw/gyaMaLpI/HNgMU0ErK4AO+jY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=A58ZRBWYP1vRleH1RyYweUDDuuS8hfD8F3MXzXtjQpGfPm7CS3VyM9DP9c6R/xuUv
-	 uXjCzI8aPYZbioPfBZLhwO4gxU3zbbu4ysf1QDvKbws8q2D2loMQpp9TvUoJ5yPYm4
-	 92AfUgdx0Wis0RX7ZCo4YLy2I6771QnUgEYmF3ki7136/i8zxTEuGgdxGPjEfVtDlt
-	 7c+Ppt9vSIxTEJyNWFX4WRttM8WACrAor+QylQ+MdD/xd/6wdm65XwP+hg/RqsS8NK
-	 j1+wmjYA3IE/iBCjMZvpaTC19ts6zkPaEqp+RPl6TatS21STweXp3Gu0PMQ5Xzj56f
-	 N1xaCb46PqEEw==
-Subject:
- Re: [PATCH net v5 13/13] ice: don't clear in_use until HW clears ready bitmap
-From: netdev-bot+sashiko@kernel.org
-To: jacob.e.keller@intel.com
-Cc: przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, poros@redhat.com,
- netdev@vger.kernel.org, grzegorz.nitka@intel.com,
- aleksandr.loktionov@intel.com, alexander.nowlin@intel.com,
- anthony.l.nguyen@intel.com, maciej.machnikowski@intel.com,
- przemyslaw.korba@intel.com, sergey.temerkhanov@intel.com,
- arkadiusz.kubalewski@intel.com, richardcochran@gmail.com, horms@kernel.org
-Date: Sun, 25 Oct 2026 23:44:06 +0000
-Message-ID: <179297184695.3134.4758101348262867336@kernel.org>
-In-Reply-To: =?utf-8?q?=3C20261021-jk-e825c-timestamp-processing-logic-fixes?=
- =?utf-8?q?-srcu-v5-13-72289a4ac8eb=40intel=2Ecom=3E?=
-References: =?utf-8?q?=3C20261021-jk-e825c-timestamp-processing-logic-fixes-?=
- =?utf-8?q?srcu-v5-13-72289a4ac8eb=40intel=2Ecom=3E?=
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1792971944;
+	bh=nDw9i3Z2SirvRvn+BaVz+MSjkgG+3Zolh5xd3HzvrVo=;
+	h=From:Subject:Date:To:Cc:Reply-To;
+	b=ergdZ05PSlkrgvyJUE0RMjWhQ/BFYhPHbsfaJnvbF9a81FFeO2m0lkty8VHXSndL2
+	 rosTagI37VyeYY/3AHK9+JrT+9iw0dFRPf3RS34iJl6EmNXdajMKgMprLHL0T3L27B
+	 n3OEiMeUPpBH9U4QeKmPba9gAsUoM9/5lV28RTOEYZ50j4ehYAfaokT02WjBF/498T
+	 scao/9HVjvbN67OUr9U5/9mHv+efE0pgupeoVwC/W6qig4iSddFjG3jsdMOUAtjBYP
+	 uqavIS3XKZZBDNvmf0NapMFWBq9njUfJ07fua8ow5OQnWo4MxoHLYxcV8CGsbo70QC
+	 Tqtis3PW9dyjw==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 6804F44B2D;
+	Sun, 25 Oct 2026 23:45:43 +0000 (UTC)
+From: Eli Skeggs via B4 Relay <devnull+kernel.eliskeggs.com@kernel.org>
+Subject: [PATCH bpf 0/2] bpf, sockmap: Fix dropped data and EPIPE on empty
+ skb redirect
+Date: Sun, 25 Oct 2026 16:41:56 -0700
+Message-Id: <20261025-sockmap-bare-fin-v1-0-bb8feae7c4a7@eliskeggs.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,190 +84,82 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMwQrCMBAFf6W8swtJhCr+inhI1o2uYhqyVYTSf
+ zfqcQZmFpg0FcNhWNDkpaZT6eA3A/gay0VIz50RXBi9C45s4vsjVkqxCWUtJD7v/eh4y7uEntU
+ mWd+/5RGpZpz+0p7pJjx/Z1jXDweIJxJ5AAAA
+X-Change-ID: 20261020-sockmap-bare-fin-e1f8160c3c7b
+To: John Fastabend <john.fastabend@gmail.com>, 
+ Jakub Sitnicki <jakub@cloudflare.com>, 
+ Jiayuan Chen <jiayuan.chen@linux.dev>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Cong Wang <cong.wang@bytedance.com>, 
+ Daniel Borkmann <daniel@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>, 
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+ Emil Tsalapatis <emil@etsalapatis.com>, 
+ Ihor Solodrai <ihor.solodrai@linux.dev>, Shuah Khan <shuah@kernel.org>
+Cc: Geliang Tang <geliang@kernel.org>, netdev@vger.kernel.org, 
+ bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, Eli Skeggs <kernel@eliskeggs.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792971941; l=1845;
+ i=kernel@eliskeggs.com; s=20261021; h=from:subject:message-id;
+ bh=Wlyiie0CKDzxYgDQSpvxa4sS+tMNMfU2M/Qk54ENhjw=;
+ b=tbyYi/j3qg52YiRw/uGwHTvdc1MwNPTaY4YyjbYq3J6a31YmybW5d/zOUFmKzo8P67EOjxD7h
+ kZuWm2tJq1YBrVWeIvDgbj0Jp5hebWFSYVm5EGihK9IZk/NKBTSYo5y
+X-Developer-Key: i=kernel@eliskeggs.com; a=ed25519;
+ pk=38k+FqQ3STTnr2H4HZ7IEseBOHWRDYVhvyMmQlB51gc=
+X-Endpoint-Received: by B4 Relay for kernel@eliskeggs.com/20261021 with
+ auth_id=1252
+X-Original-From: Eli Skeggs <kernel@eliskeggs.com>
+Reply-To: kernel@eliskeggs.com
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+When a socket receives a bare FIN, tcp_read_skb() hands an empty skb to
+the attached BPF stream_verdict program. The program may redirect that
+skb to another socket. Doing so causes the target socket to report EPIPE
+and stop transmitting redirected data. A proxy may see the erroneous
+EPIPE and truncate a half-closed connection. Instead of treating a
+redirected empty skb as an error, treat a 0 return as an error only when
+there is more data to send.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Patch 2 adds a selftest that fails without patch 1.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Tested on x86_64 with virtme-ng, under QEMU without KVM. The new subtest
+fails on bpf/master without patch 1, and passes with it. The full
+test_progs -t sockmap passes all seven tests and 802 subtests with patch
+1.
 
-- [Medium] The patch removes the hardware ready-bitmap check
-  (ice_check_phy_tx_tstamp_ready()) from ice_ptp_tx_tstamps_pending().
-- [Low] The kernel-doc of ice_ptp_process_tx_tstamp() (ice_ptp.c:514-562)
-  no longer matches the code.
+The bug dates from v6.0 (965b57b469a5), so please consider queueing
+patch 1 for stable.
 
---
+Found while building a sockmap proxy between TCP and MPTCP sockets,
+running out-of-tree MPTCP sockmap patches, where the EPIPE caused
+half-closed connections to prematurely abort. An LLM helped locate and
+reproduce the issue, and proposed an initial fix. I traced the code
+path, reviewed and verified the LLM-written test, and simplified its
+proposal to a one-line fix.
 
-ice: don't clear in_use until HW clears ready bitmap
+Signed-off-by: Eli Skeggs <kernel@eliskeggs.com>
+---
+Eli Skeggs (2):
+      bpf, sockmap: Stop reporting EPIPE on zero-length skb redirect
+      selftests/bpf: Redirect a bare FIN to another socket's egress
 
-After each PHY timestamp read, this patch re-reads the Tx timestamp ready
-bitmap. If the index's ready bit has not cleared, the index is marked
-stale and kept locked, and its SKB is freed. The patch also drops the
-hardware ready bitmap check from the in-IRQ re-arm decision. That check
-now runs only from the periodic watchdog.
+ net/core/skmsg.c                                   |  2 +-
+ .../selftests/bpf/prog_tests/sockmap_basic.c       | 74 ++++++++++++++++++++++
+ .../selftests/bpf/progs/test_sockmap_pass_prog.c   |  8 +++
+ 3 files changed, 83 insertions(+), 1 deletion(-)
+---
+base-commit: f909e534f5e34feb2ea2701d54df63e21aa506fc
+change-id: 20261020-sockmap-bare-fin-e1f8160c3c7b
 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-> index b0ea01cfcc4f..c0d056896825 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-> @@ -557,7 +557,9 @@ void ice_ptp_complete_tx_single_tstamp(struct ice_ptp_tx *tx)
->   * extremely unlikely that a packet will ever take this long to timestamp. If
->   * we detect a Tx timestamp request that has waited for this long we assume
->   * the packet will never be sent by hardware and discard it without reading
-> - * the timestamp register.
-> + * the timestamp register. Note that in the unusual case where the PHY
-> + * continuously fails to clear the ready bitmap index, the slot may remain
-> + * locked for more than two seconds.
->   */
->  static void ice_ptp_process_tx_tstamp(struct ice_ptp_tx *tx)
->  {
+Best regards,
+--  
+Eli Skeggs <kernel@eliskeggs.com>
 
-[Severity: Low]
-Is the rest of this kernel-doc still accurate after this change? The
-numbered list earlier in the same comment still says:
 
- * 3) read and copy the timestamp out of the PHY register
- * 4) unlock the index by clearing the associated in_use bit
- * 5) check if the timestamp is stale, and discard if so
-
-Look at the new "verify ready bit cleared" block in
-ice_ptp_process_tx_tstamp(). If the ready bit is still set after the read,
-or the re-read of the ready bitmap fails, the index is marked stale and
-the SKB is freed. in_use stays set, so step 4 never happens.
-
-The opening line, "loop over each index with a waiting skb", is also no
-longer true. in_use slots with a NULL skb are now visited on every pass
-until the hardware clears the bit.
-
-This paragraph also still says timed-out requests are discarded "without
-reading the timestamp register". A timed-out index whose ready bit is set
-is still read through ice_read_phy_tstamp(), and with this patch it can
-stay locked.
-
-Could the kernel-doc be updated to describe the new flow?
-
-[ ... ]
-
-> @@ -2766,10 +2787,14 @@ static bool ice_port_has_timestamps(struct ice_ptp_tx *tx, bool in_irq)
->  		if (!tx->init)
->  			return false;
->  
-> -		if (in_irq)
-> +		if (in_irq) {
-> +			if (!ice_ptp_is_tx_tracker_up(tx))
-> +				return false;
-> +
->  			return bitmap_andnot(tstamps, tx->in_use, tx->stale, tx->len);
-> -		else
-> +		} else {
->  			return !bitmap_empty(tx->in_use, tx->len);
-> +		}
->  	}
->  }
->  
-> @@ -2801,41 +2826,18 @@ static bool ice_any_port_has_timestamps(struct ice_pf *pf, bool in_irq)
->  
->  bool ice_ptp_tx_tstamps_pending(struct ice_pf *pf, bool in_irq)
->  {
-> -	struct ice_hw *hw = &pf->hw;
-> -	int ret;
-> -
-> -	/* Check software indicator */
->  	switch (pf->ptp.tx_interrupt_mode) {
->  	case ICE_PTP_TX_INTERRUPT_NONE:
->  		return false;
->  	case ICE_PTP_TX_INTERRUPT_SELF:
-> -		if (ice_port_has_timestamps(&pf->ptp.port.tx, in_irq))
-> -			return true;
-> -		break;
-> +		return ice_port_has_timestamps(&pf->ptp.port.tx, in_irq);
->  	case ICE_PTP_TX_INTERRUPT_ALL:
-> -		if (ice_any_port_has_timestamps(pf, in_irq))
-> -			return true;
-> -		break;
-> +		return ice_any_port_has_timestamps(pf, in_irq);
->  	default:
->  		WARN_ONCE(1, "Unexpected Tx timestamp interrupt mode %u\n",
->  			  pf->ptp.tx_interrupt_mode);
-> -		break;
-> -	}
-> -
-> -	/* Check hardware indicator */
-> -	ret = ice_check_phy_tx_tstamp_ready(hw);
-> -	if (ret < 0) {
-> -		dev_dbg(ice_pf_to_dev(pf), "Unable to read PHY Tx timestamp ready bitmap, err %d\n",
-> -			ret);
-> -		/* Stop triggering IRQs if we're unable to read PHY */
->  		return false;
->  	}
-> -
-> -	/* ice_check_phy_tx_tstamp_ready() returns 1 if there are timestamps
-> -	 * available, 0 if there are no waiting timestamps, and a negative
-> -	 * value if there was an error (which we checked for above).
-> -	 */
-> -	return ret > 0;
->  }
-
-[Severity: Medium]
-Can removing this hardware fallback leave the PHY Tx timestamp interrupt
-blocked until the watchdog runs?
-
-ice_misc_intr_thread_fn() and the E830 path in ice_ptp_ts_irq() call
-ice_ptp_tx_tstamps_pending(pf, true) to decide whether to re-arm:
-
-drivers/net/ethernet/intel/ice/ice_main.c:ice_misc_intr_thread_fn() {
-    ...
-	if (ice_ptp_tx_tstamps_pending(pf, true)) {
-		/* If any new Tx timestamps happened while in interrupt,
-		 * re-arm the interrupt to trigger it again.
-		 */
-		wr32(hw, PFINT_OICR, PFINT_OICR_TSYN_TX_M);
-		ice_flush(hw);
-	}
-    ...
-}
-
-This change, combined with the new ice_ptp_is_tx_tracker_up() check in
-ice_port_has_timestamps(), means the re-arm only looks at non-stale
-in_use slots on trackers that are up.
-
-The kernel-doc of ice_ptp_maybe_trigger_tx_interrupt() says the PHY "will
-not interrupt again until all current timestamp data is read". So if a
-ready entry is still unread at the end of an IRQ pass, nothing
-retriggers the interrupt. It stays blocked until the 500 ms watchdog,
-ice_ptp_periodic_work()->ice_ptp_maybe_trigger_tx_interrupt(), runs.
-
-A few ways such an entry can be left behind:
-
- - a stale request whose timestamp lands mid-pass, after the ready
-   bitmap was read
- - a late completion on a port that is link down, or (on E82x) in
-   Vernier calibration with tx.disabled set until
-   ice_ptp_wait_for_offsets() succeeds
- - an index this patch keeps locked on purpose because its ready bit
-   did not clear
-
-Before this patch, the in-IRQ ice_check_phy_tx_tstamp_ready() call
-retriggered the interrupt right away and drained these entries.
-
-On E82x, timestamp memory and the interrupt are per quad (see
-ice_phy_cfg_intr_e82x() and the quad split in ice_ptp_init_tx_e82x()).
-In ICE_PTP_TX_INTERRUPT_ALL mode the clock owner services every port.
-
-Could one leftover entry on a port that is going down or calibrating
-then delay Tx timestamps for healthy link-up ports in the same quad by
-up to about 500 ms? That is far beyond the 10 ms ptp4l default the
-commit message cites. The race window looks narrow, but link flaps and
-E82x recalibration happen in normal operation.
-
-The commit "ice: keep Tx timestamp slots tracked until completion or
-timeout" in this series also says an orphaned ready bit "blocks the
-port interrupt".
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021-jk-e825c-timestamp-processing-logic-fixes-srcu-v5-0-72289a4ac8eb%40intel.com
