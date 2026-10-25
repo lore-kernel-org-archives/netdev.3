@@ -1,58 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792927893;
-	b=wTXFY63qeZfAGG+hWNYJUpAZrOlIosTewH4rPRP8i8TiA+LOCn6kjYdVWajLyBU8cPd4
-	 FLOgOir6XmvdBUpmqg+h8Dr9l3AOE0D2Qo74UxzND80+U8nWCzWD0QNf3hU3UfkBGh7HN
-	 J3wmHMb3lNPDuizbriM0Q+XJ2qHsmjpIJHpfY4olx+3vXuKAFtgrJBKAcu0ZaahXZtoEx
-	 7eiUQSZTOvgH9AafSJDikSMQurnq6hOmRtgNmxUm5amcZmkoj57N3YXgihOMyxCQZbZm6
-	 QpuKXy+s6CsC7zaD8fHgM8Xc1bpaHkuMCQjAN5GgNtXxwObIfZc1Buu7hTq2oXjw0Eg==
+	t=1792928454;
+	b=kEeJmYr8i+yn6YFanbAX7/Kn/Kw4tJ+uuGhyucvTUGxJBw1kk7MfgSK5eUAkZHXwm6dx
+	 3KO6JRDKgWLgps0Os/zGceJFWw0cpBbpAKuPSids2BJzFvsl8FQon3b2z9sjtSVdUUUFF
+	 K0V9QhO1UWRkPFxCsUQDYPUF0g87onLO+ftmAgqmyIlirYQ7EdQGhV86mqRYHNg3Vd0n7
+	 xgt1pm3CJOeDw2Z1bCVahRqS7qf0gdNurIj0Uz6pNzqH1X8EKL797Bjst1Q39U2shBPbF
+	 E0ytkXmOctj/xEP48nhs/mLdI+HBHIVZR+VFYuSljeuXscDAGa2WdX7psAUan2CkR7A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792927893;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792928454;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=Tck4XO6ARx8pN2RCyfyeo9WAfH5Aw9VUxlr2riYTrUU=;
-	b=OUxYfQ5CfTXyGyKvwzpaL059q7EmaTw8cBWvLITwogMnQCrnZjbUXZygntOmlBCl0Jjc
-	 NWjSkLrdCbUAWiW8iwPrLMN1x+pUxRa29nCLp6BIfJeXrX2vXX+4sr6TG6AK5hAXcSBBx
-	 NjJgmTs7BS3UMjUg6FEk7i9FXm/TJZ0BTqGV3PifzuWpXTtTCavS3CXavEFERgLBtts9o
-	 1LNKdSmVHEcqYuNK4OsGf0OG/uw6oT4K42PzgDg7I3sWjTnRkJ+jLICxGrqZdIZV7Ij0Z
-	 t9azu9iZxARdpj67VVyvSVRQY90WCwGAqyNpfKi7Aj9DsbujfLaGicHclQxF84+V2EQ==
+	bh=1r2HAJnurvTfhiE6pv1KD8iHRlUXOHrLlO2pQEz5JBA=;
+	b=2RvCCxvGtWoa0jDyHSTW4qdd2pTQ4+4LPH6+SYR4NLq9cXBd4V15plp++quFTFM8C7lE
+	 +vmt6fUk2wX3+64qCm/OHlO9IPt3JJlGXrqT5WZOZvnZHD+tU8sk8k/BuGVB5Somy8Wkn
+	 wMoZfoSxV6MwXuPsmJoxW5+DFLkSggtWdL1ppNZj/rvLnUwTPegBXR1DJFiymkkHgq7MV
+	 XFA4RSZPWecBQ70kcz2xWdH3/Ass59ZXmjh+1LgwiHIITJT5Q2Fq0bfE0LCY3+olnKIMj
+	 oLzRvSFMGc/bTStRgdvmk9nWE+rsEhUwUDBD/IdgbXnAd1EBwCvbuPiRwsB1roSAFRg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Pcjx9jpi;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cO6fVNeT;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE81606A32A
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 11:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2874A606A31A
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 11:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Pcjx9jpi
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61ECB1F01829;
-	Sun, 25 Oct 2026 11:31:32 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cO6fVNeT
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D1D1F01825;
+	Sun, 25 Oct 2026 11:40:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792927892;
-	bh=Tck4XO6ARx8pN2RCyfyeo9WAfH5Aw9VUxlr2riYTrUU=;
+	s=k20260515; t=1792928453;
+	bh=1r2HAJnurvTfhiE6pv1KD8iHRlUXOHrLlO2pQEz5JBA=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Pcjx9jpiNWVjIVs/3/OXkO9+npospaeVR2pOpRRRGjCWO+e+5UKq7Nxb9IcMaBpPs
-	 V0eb/UiwDyOQY2K+GYxO9u+VCrb5YxBZsX0+L0xZIMA0b8juKIL6rZ+Sx+iBUvXvXJ
-	 G/ijuubI/RK66gYTkoAD2vWtLxeZvKB/n3IyTP1ZbKtAtlxiwMLjHdiMTLKdCGNAgG
-	 VR7ehlOecT7pWwxpDbEbilMnEoomlsP7jEjSIsbHgAIHLpOCR4YfwPshHUaOAh4B1u
-	 K6LWfr759oaYhZ/1HdqPsFjSvo5BOFgiRhfndFR98S2+NJ0oh5mbxHdfNQsFQb2G1d
-	 m4VoaybTT7SLQ==
-Subject: Re: [PATCH net] cipso_v4: fail the walk on malformed options
+	b=cO6fVNeTHcuiluDt/9p1WBskyf54hlW49jS5DrOjE8V0cYEeIvkc+OOdHLUuva7ps
+	 vmXGhnVTa2n5ohsVbYBuaSYEaaKHTVsLibmizAG2lnSQK8mmSlcT0J1uREuBU0Bj1F
+	 kktJJU43JBePOUyOTnVzFsqYwNcD3a+oLuXaPppThQo9Xq58xzfwNg+G+ZQlli8hoU
+	 p/jl+PRd3wC72CkvtEZRuf90pI8Zk/KA7wsdL4ySuFJBi3I0g55O/verh26TbgMArj
+	 tXqnE2uws4/pFiUlLrGSrdY6AT8NwQA5NitzEI34ND+lvRaa8n4V1uca79mAZ+xaK9
+	 LI8eP7fmBgZcg==
+Subject:
+ Re: [PATCH net v4] net: airoha: keep PPE offload when NPU refuses flow stats
 From: netdev-bot+sashiko@kernel.org
-To: omniameasunt@proton.me
-Cc: netdev@vger.kernel.org, paul@paul-moore.com, kuba@kernel.org
-Date: Sun, 25 Oct 2026 11:31:31 +0000
-Message-ID: <179292789194.3134.6820157609745541886@kernel.org>
-In-Reply-To: =?utf-8?q?=3CCBLsHx48w8Bn1k=5FXg6kJFliLNkxLCqi8SnkifapxYYpVtll4?=
- =?utf-8?q?w-W=5F2JJePtbk9ssIS701IFJvi0Q2n5l-2GFFe8hNHU9Y=5FCgD=5FsdzcAbILVA?=
- =?utf-8?q?=3D=40proton=2Eme=3E?=
-References: =?utf-8?q?=3CCBLsHx48w8Bn1k=5FXg6kJFliLNkxLCqi8SnkifapxYYpVtll4w?=
- =?utf-8?q?-W=5F2JJePtbk9ssIS701IFJvi0Q2n5l-2GFFe8hNHU9Y=5FCgD=5FsdzcAbILVA?=
- =?utf-8?q?=3D=40proton=2Eme=3E?=
-X-sashiko-severity: High
+To: sayantann11@gmail.com
+Cc: netdev@vger.kernel.org, lorenzo@kernel.org, andrew@lunn.ch, chad@monroe.io,
+ kuba@kernel.org
+Date: Sun, 25 Oct 2026 11:40:52 +0000
+Message-ID: <179292845293.3134.9835474484741547461@kernel.org>
+In-Reply-To: <20261021100423.9159-1-sayantann11@gmail.com>
+References: <20261021100423.9159-1-sayantann11@gmail.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -68,7 +66,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 2 (1) · Medium: 0 · Low: 0 (1)
+Critical: 0 · High: 0 · Medium: 1 (1) · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -76,211 +74,155 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] cipso_v4_delopt() (net/ipv4/cipso_ipv4.c) still walks the option
-  buffer with the old, uncompacted length.
-- [High] cipso_v4: RCU race from in-place option mutation in
-  cipso_v4_delopt()
+- [Medium] In airoha_npu_ppe_stats_setup()
+  (drivers/net/ethernet/airoha/airoha_npu.c), the new `npu->stats =…
+- [Low] airoha_ppe_offload_setup() ignores every error from
+  ppe_init_stats() and prints the same `dev_warn(eth->dev, "NPU refused…
 
 Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but on its normal
-  path cipso_v4_delopt() (net/ipv4/cipso_ipv4.c) changes an…
-- [Low] The kernel-doc of cipso_v4_delopt() says 'Returns zero on
-  success, negative values on failure', but the function only ever…
+- [Medium] This problem wasn't introduced by this patch, but each
+  successful airoha_npu_ppe_stats_setup() creates a new…
 
 --
 
-cipso_v4: fail the walk on malformed options
+net: airoha: keep PPE offload when NPU refuses flow stats
 
-This commit adds checks to cipso_v4_get_actual_opt_len(). The option walk
-now returns -EINVAL when an option is truncated, has a length byte of zero
-or one, or runs past len. On that error, cipso_v4_delopt() drops the whole
-option set and cipso_v4_skbuff_delattr() leaves the packet unchanged.
+With this patch, NPU flow statistics are optional. PPE offload setup now
+continues when ppe_init_stats() fails, and a zero npu_stats_addr from the
+firmware counts as a refusal. It also adds NULL checks on npu->stats,
+clears npu->stats at the start of airoha_npu_ppe_stats_setup(), and clears
+PSE_PORT6_SHARE_DIS when flow stats entries are configured.
 
-> diff --git a/net/ipv4/cipso_ipv4.c b/net/ipv4/cipso_ipv4.c
-> index 1aacbbeffbc64..d2d95b3a745f0 100644
-> --- a/net/ipv4/cipso_ipv4.c
-> +++ b/net/ipv4/cipso_ipv4.c
+> diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ethernet/airoha/airoha_npu.c
+> index 4d3195eb00f7a..42d48a4fab4ce 100644
+> --- a/drivers/net/ethernet/airoha/airoha_npu.c
+> +++ b/drivers/net/ethernet/airoha/airoha_npu.c
+> @@ -441,6 +441,8 @@ static int airoha_npu_ppe_stats_setup(struct airoha_npu *npu,
+>  	if (!ppe_data)
+>  		return -ENOMEM;
+>  
+> +	npu->stats = NULL;
+> +
+
+[Severity: Medium]
+Should this clear come before the kzalloc_obj() check?
+
+If the GFP_ATOMIC allocation of ppe_data fails, the function returns
+-ENOMEM before npu->stats is reset. Any mapping from an earlier bind is
+left in place.
+
+struct airoha_npu belongs to the NPU device, which stays bound when the
+eth driver unbinds. airoha_ppe_deinit() does not reset npu->stats:
+
+airoha_ppe_deinit() {
+    ...
+	if (npu) {
+		synchronize_rcu();
+		npu->ops.ppe_deinit(npu);
+		airoha_npu_put(npu);
+	}
+    ...
+}
+
+Before this patch, any ppe_init_stats() error aborted
+airoha_ppe_offload_setup(). Now it only warns and then calls
+airoha_ppe_hw_init(), airoha_ppe_foe_flow_stats_reset() and
+rcu_assign_pointer().
+
+Suppose the eth driver is unbound and rebound, and this allocation then
+fails. Would the stale pointer get past all the new !npu->stats checks?
+
+If so, airoha_ppe_foe_flow_stats_reset() would memset_io() the old region.
+airoha_ppe_foe_flow_stats_update() would rewrite ib2 to send bound flows
+to PSE port 6. airoha_ppe_foe_entry_get_stats() would read the old
+counters.
+
+In this bind, PPE_FUNC_SET_WAIT_FLOW_STATS_SETUP would never have been sent
+with ppe->foe_stats_dma. It's not clear what the firmware then does with
+the port 6 traffic, or with the old foe_stats_addr from the previous bind.
+
+The commit message says:
+
+    Clear npu->stats at the start of airoha_npu_ppe_stats_setup() so that a
+    stale mapping from a previous setup does not persist after a refusal on
+    rebind.
+
+This error path, which the patch makes non-fatal, still seems to leave the
+stale mapping in place. Could the clear move above the allocation? Or
+could airoha_ppe_offload_setup() clear npu->stats on any error?
+
+> @@ -450,6 +452,14 @@ static int airoha_npu_ppe_stats_setup(struct airoha_npu *npu,
+>  	if (err)
+>  		goto out;
+>  
+> +	/* The firmware reports success with a zero address when its SRAM
+> +	 * pool has no room left for the counters.
+> +	 */
+> +	if (!ppe_data->stats_info.npu_stats_addr) {
+> +		err = -ENOSPC;
+> +		goto out;
+> +	}
+> +
+>  	npu->stats = devm_ioremap(npu->dev,
+>  				  ppe_data->stats_info.npu_stats_addr,
+>  				  size);
+
+[Severity: Medium]
+This is a pre-existing issue and was not introduced by this patch. Does
+each successful setup leak the previous devm_ioremap() mapping?
+
+The mapping is attached to npu->dev, which outlives eth driver binds.
+airoha_ppe_deinit() doesn't unmap npu->stats. The new npu->stats = NULL
+only drops the pointer.
+
+So each eth unbind/rebind that sets up stats again leaves the old mapping
+on the NPU device's devres list. It stays there until the NPU device
+itself unbinds.
+
+The old code leaked in the same way when it overwrote the pointer, so
+this patch doesn't add a new leak.
+
+Should the old region be released with devm_iounmap(), either here or
+during PPE teardown?
+
+> diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
+> index 92611802801ea..3147655e8ecc4 100644
+> --- a/drivers/net/ethernet/airoha/airoha_ppe.c
+> +++ b/drivers/net/ethernet/airoha/airoha_ppe.c
 
 [ ... ]
 
-> @@ -2028,6 +2032,13 @@ static int cipso_v4_delopt(struct ip_options_rcu __rcu **opt_ptr)
+> @@ -1454,10 +1463,9 @@ static int airoha_ppe_offload_setup(struct airoha_eth *eth)
 >  
->  		optlen_new = cipso_v4_get_actual_opt_len(opt->opt.__data,
->  							 opt->opt.optlen);
-> +		if (optlen_new < 0) {
-> +			/* malformed option stream, drop all the options */
-> +			*opt_ptr = NULL;
-
-[Severity: High]
-This overlaps with the in-place modification question raised for the
-sendmsg paths. getsockopt(IP_OPTIONS) looks like a more direct way to
-corrupt memory through the same race, so it is probably worth covering
-in the same fix.
-
-cipso_v4_delopt() lowers opt->opt.srr, rr, ts and router_alert, clears
-cipso and memmoves __data while *opt_ptr still publishes the object.
-The new error branch only clears *opt_ptr after all of that has run,
-and the normal path then shrinks opt->opt.optlen in place. kfree_rcu()
-keeps the memory alive for readers already inside rcu_read_lock(), but
-it does nothing to keep the contents consistent for them.
-
-In this tree do_ip_getsockopt(IP_OPTIONS) is one such reader. It
-copies sizeof(struct ip_options) + inet_opt->opt.optlen bytes into the
-56-byte optbuf on the stack under rcu_read_lock() alone. It then calls
-ip_options_undo() on the copy, which trusts the offsets to point at
-real option headers:
-
-	memmove(optptr + 7, optptr + 3, optptr[1] - 7);
-	...
-	optptr[2] -= 4;
-	memset(&optptr[optptr[2] - 1], 0, 4);
-
-Take CIPSO(13) followed by RR(7). Suppose the copy pairs the reduced rr
-offset with __data that has not been moved yet. Then optptr points at
-the old CIPSO type byte, and optptr[2] is the first DOI byte. A DOI
-below 0x04000000 makes optptr[2] wrap to 252..255. The memset() then
-writes four zero bytes around 200 bytes past the end of optbuf.
-
-The srr case is similar. A stale length byte below 7 underflows the
-memmove() size to a huge size_t, and a large one moves up to 248 bytes
-inside a 56-byte buffer. The ts_needaddr/ts_needtime path has the same
-wrap.
-
-Either way this is a kernel stack overwrite. It is reachable from
-getsockopt(IP_OPTIONS) racing connect(AF_UNSPEC), under the same
-CAP_NET_RAW and CIPSO preconditions the commit message describes.
-
-Most of this predates the patch. But the new branch already unpublishes
-and frees the object. Would it make sense to do the compaction on a
-freshly allocated copy, publish it with rcu_assign_pointer(), and
-kfree_rcu() the old one? Readers would then only ever see the old or
-the new option set. The socket and request_sock callers run in
-different contexts, so the allocation flags would need some thought.
-
-[Severity: High]
-Does this walk still read the stale tail that the commit message names as
-the attacker-controlled input?
-
-The memmove() just above compacts the stream:
-
-	memmove(cipso_ptr, cipso_ptr + cipso_len,
-		opt->opt.optlen - cipso_off - cipso_len);
-
-After it, the last cipso_len bytes of __data are stale copies of the
-original bytes. Nothing refills them with IPOPT_END.
-
-cipso_v4_get_actual_opt_len() is then called with the old, uncompacted
-opt->opt.optlen. If the original stream length was already a multiple of
-4, ip_options_get() added no END padding, so the walk runs into the stale
-bytes. The new checks only bound the result to len. They can't tell a live
-option from a stale one.
-
-This seems to cause two problems.
-
-First, valid options can be dropped. Take CIPSO(13) followed by RR(7), 20
-bytes, no padding:
-
-  86 0d <DOI x4> 01 07 00 <lvl> <bm x3> | 07 <len 7> ...
-
-After compaction RR sits in __data[0..6]. __data[7] is the stale tag
-length (0x07) and __data[8] is the stale RBM alignment octet (0x00). The
-new "data[iter + 1] < 2" check returns -EINVAL, and this branch frees the
-whole ip_options_rcu, valid RR included. CIPSO + NOP NOP + RA(4) behaves
-the same way. Before this patch these inputs looped forever; now every
-option is silently lost.
-
-A user with CAP_NET_RAW in a user namespace can reach this on a socket in
-the NLBL_REQSKB state. They set those options with IP_OPTIONS and then call
-connect(AF_UNSPEC):
-
-  selinux_netlbl_socket_connect_locked()
-    -> netlbl_sock_delattr()
-      -> cipso_v4_sock_delattr()
-        -> cipso_v4_delopt()
-
-Second, stale bytes can stay live. Take RR(7) followed by CIPSO(13), 20
-bytes. The memmove() length is 0. The walk accepts the old CIPSO bytes as
-an ordinary option (iter == len), so optlen_new == optlen and hdr_delta is
-0.
-
-opt.cipso is cleared, but the CIPSO bytes stay in __data, and
-ip_options_build() keeps writing them into outgoing headers.
-
-__ip_options_echo() always puts CIPSO last and only pads to a multiple of
-4. So cipso_v4_req_delattr() on a request_sock built from a peer's SYN
-could hit this whenever RR/TS/SRR plus CIPSO is already 4-byte aligned.
-
-Both cases contradict this part of the commit message:
-
-  Well-formed option streams are unaffected: a socket whose options
-  survive the compaction intact keeps them; only malformed streams now
-  lose all options instead of carrying a partially parsed set.
-
-Would walking only the compacted region (opt->opt.optlen - cipso_len), or
-filling the vacated tail with IPOPT_END, fix both cases? This -EINVAL
-branch would then only fire on corrupt data.
-
-> +			hdr_delta = opt->opt.optlen;
-> +			kfree_rcu(opt, rcu);
-> +			return hdr_delta;
+>  	ppe_num_stats_entries = airoha_ppe_get_total_num_stats_entries(ppe);
+>  	if (ppe_num_stats_entries > 0) {
+> -		err = npu->ops.ppe_init_stats(npu, ppe->foe_stats_dma,
+> -					      ppe_num_stats_entries);
+> -		if (err)
+> -			goto error_npu_put;
+> +		if (npu->ops.ppe_init_stats(npu, ppe->foe_stats_dma,
+> +					    ppe_num_stats_entries))
+> +			dev_warn(eth->dev, "NPU refused flow stats\n");
 
 [Severity: Low]
-This isn't a bug introduced by this patch, but the kernel-doc above
-cipso_v4_delopt() says:
+Could this warning include the error code?
 
-  * adjustments to the IP option structure.  Returns zero on success, negative
-  * values on failure.
+airoha_npu_ppe_stats_setup() can fail with any of these:
 
-The function only ever returns 0 or a non-negative header delta.
-cipso_v4_sock_delattr() subtracts that delta from icsk_ext_hdr_len when
-hdr_delta > 0. The positive value returned here is correct for that
-caller.
+    -ENOMEM from kzalloc or devm_ioremap()
+    an error from dma_mapping_error()
+    -ETIMEDOUT from regmap_read_poll_timeout_atomic() in
+    airoha_npu_send_msg()
+    -EINVAL when the firmware status isn't NPU_MBOX_SUCCESS
+    the new -ENOSPC
 
-Could the comment be fixed while another return path is added under it?
+Only -EINVAL and -ENOSPC are actual firmware refusals. Allocation failures
+and mailbox timeouts are also logged as "NPU refused flow stats", and the
+errno is dropped. That makes it hard to tell missing firmware support
+apart from an unresponsive NPU or memory pressure.
 
-> +		}
->  		hdr_delta = opt->opt.optlen;
->  		opt->opt.optlen = (optlen_new + 3) & ~3;
->  		hdr_delta -= opt->opt.optlen;
-
-[Severity: High]
-This is a pre-existing issue, but is it safe for cipso_v4_delopt() to
-modify the ip_options_rcu in place while inet->inet_opt still points to it?
-
-On this path, holding only lock_sock, it does these steps in order:
-
-  1. lowers srr/rr/ts/router_alert by cipso_len
-  2. clears cipso
-  3. memmoves __data
-  4. shrinks optlen
-
-Lockless readers copy the object under rcu_read_lock() alone. For example,
-udp_sendmsg():
-
-	rcu_read_lock();
-	inet_opt = rcu_dereference(inet->inet_opt);
-	if (inet_opt) {
-		memcpy(opt_copy, inet_opt,
-		       sizeof(*inet_opt) + inet_opt->opt.optlen);
-
-raw_sendmsg() and ping_v4_sendmsg() follow the same pattern.
-
-So if connect(AF_UNSPEC) and sendmsg() run at the same time, sendmsg()
-could copy offsets that were already reduced together with bytes that were
-not yet moved. ip_options_build() uses both to compute a write address:
-
-	if (opt->srr)
-		memcpy(iph + opt->srr + iph[opt->srr + 1] - 4, &daddr, 4);
-
-With [CIPSO][Y][LSRR], the reduced srr points at Y's old offset.
-iph[srr + 1] would then read a stale CIPSO payload byte, which can be as
-large as 0xff. The 4-byte write could land well past the 60-byte maximum
-IP header. The rr_needaddr and ts_needaddr/ts_needtime paths look similar.
-
-The new error branch above unpublishes the object before kfree_rcu(), but
-this compaction path still changes the live object that readers can see.
-
-[ ... ]
+The commit message says continuing on any error is intended, so this is
+only about the log message.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/CBLsHx48w8Bn1k_Xg6kJFliLNkxLCqi8SnkifapxYYpVtll4w-W_2JJePtbk9ssIS701IFJvi0Q2n5l-2GFFe8hNHU9Y_CgD_sdzcAbILVA%3D%40proton.me
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021100423.9159-1-sayantann11%40gmail.com
