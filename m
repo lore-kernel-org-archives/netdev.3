@@ -1,61 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792906830;
-	b=E94ar6fiKgHxgSBCRjhYsAxPluQbWA+QIHb0MsyTYxlYIgBt8V3Y0Iui+prrJCkDl+op
-	 b4IIPLRSlDBw6Dfe5ROUfAfjTygDXGW0+Kivx98plyCtizE9WmOLuC3cPKqkMLt2FaSU2
-	 0PtgWRBtveDe9kCLMqy5Gg35ZfrFYQA8aoTUCJ2PpJd1nQ73/XLnxCaohKBY8Q+NFPYlj
-	 zsfjyI7bXjXdikJZsqAjijjEWvNPljZKFW0Rb6+oLYZ+0XXUSqqjjk20OV3RXAXH+KN1A
-	 lyb/ByZM1Q/CyzQBnyR/pryLLZ2HqaLLd56et/3VwegybgjC/Ty1yYOCyRKuzpSvSjA==
+	t=1792910747;
+	b=KV2+fcq2F4/Ip5ODq6geRXUnhCaB1ah4dbRHRIyAud6wtkB3nVgNJ8RNsnhF4nY8rSMp
+	 LOyqzQss7a4tFD7MDFu6ZzcLxF8PrxmwK6DW38A6R+eCkqwHRsUMR8FFiSKgQZRgpILNQ
+	 ubHqfwtHlHn2Zu9EUc36RpXuZH7JPM2aG2sdhz2D7tmSYyp991rwhqowD2NsUQhhWO7xw
+	 VZDZIwunsSip230Z7NTF5PX+sf+dS+6zK6VCUpw6J/jjMXciBFOiVj3YoS5jrpcwON59G
+	 TI8Rzhr0vt8WIfwdjNA0YUPG+Y/pmmMLFZ9cLUMNfvlw7qBAPN1iCYfgGNH771C8meg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792906830;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=0j0OsJHnbZh3IkhEvkTsV4CA9qlpU5jT/CH5K4pTsCU=;
-	b=nImjtjTYURtMiHM5qSz0LrdizGXA+DKFsgzEYqa/0puNVXBXld9TAXJzCdT4Iu+gCr8n
-	 ITmRAX/Cj2tMz3TRQWExJEovhd4xA8QE51GpNQrNHcw3ctUPT98SEd46+LBC6A4E/oNoP
-	 gaARMpBz1s/PUuRD9RTNcZYO1glHe1JJqlO/4PVQspVfkOnC14/GvV5su490odoOipBhw
-	 31fOinWwUOq4nnPAKy8YK8mypnKOAk6NiHcszT03QK2NotcMoypZkHjRskgsGQZP41qM8
-	 +wbQ1Oqc2jRSWUe90VfvHqSbQ9mt5a4kdb9CZBmyzdEEVYba6ZLnUSOw0PNK60GyqVw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792910747;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=aQ8r37ziw71fqDLMgR/NMnH4TFvaTayfpcX1AdbOmIc=;
+	b=OfDD8A+XJ+ggP/nu0jnyayZDKCgJ02wZ+OGxqNH7pqwntZgMcty0oMTFcQOoCROsDMbM
+	 AQi7DYGSCZMNPmcqr1ZXZiPtbmk8dTaLnMrhTD/NxAvJyya64JDxwvi9I4Glkdbu+1LBB
+	 WizSCncP/J+76vZI2RQXK8fsHx1A91JeY5nX37T6HvRCwYqDjgKYSN8QLzEKRzM36DRQg
+	 zP3utBK3oX93Jo7TBSfknePB/DQml+jpgqKOweALoEMmYzfqRSayNdDRaAzKxPdwaGz7E
+	 Kep/HzYBPqbhy8FZWrKS9T96E0xhSDDHagWbNTXoTATOawObrT8SORisZw7EU+45y4g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cf7qMw2F;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="Ru2/jDRd";
+	arc=none smtp.remote-ip=74.125.82.174
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856A4606A320;
-	Sun, 25 Oct 2026 05:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E68606A31A
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 06:45:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 82E68606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cf7qMw2F
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 364C11F01828;
-	Sun, 25 Oct 2026 05:40:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792906830;
-	bh=0j0OsJHnbZh3IkhEvkTsV4CA9qlpU5jT/CH5K4pTsCU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=cf7qMw2FUGWyfN9fUEJPyoN4W/UqsRttr+UY3pjsC2zgDPC6xURLevV6fdQ+3jZwQ
-	 gNmR+E8svy06rEymoWj/YcuhxzkpyVqtGcKEB8nRj3hidDtJYka0H2PBYNs+iWqE3K
-	 3hW+61j5rLAR7KnSv/1LSKqA9h1GQ8Q28yObnw1wiYfo8+lCNj1LClSbMvZiycHQNx
-	 M5TrbUA51xioVzHOzLOlwaF7Pj3dvIdHPAhiBnqrTV9zQp8DaXuykni4bI6K48P4+n
-	 D4Lo5IcE9BdFLLvKdRsoFv22GqxbjFGs2OpspDLM/MhA4bgIvOaSaOk3i6uBNrjNpD
-	 q0dBZ/bVY3BoA==
-Subject: Re: [PATCH net v3 2/2] inet: restore refcount ordering for
- established lookups
-From: netdev-bot+sashiko@kernel.org
-To: imv4bel@gmail.com
-Cc: edumazet@kernel.org, ncardwell@google.com, kuniyu@google.com,
- davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- martin.lau@linux.dev, john.fastabend@gmail.com, weiwan@google.com,
- sd@queasysnail.net, jiayuan.chen@linux.dev, netdev@vger.kernel.org,
- stable@vger.kernel.org
-Date: Sun, 25 Oct 2026 05:40:28 +0000
-Message-ID: <179290682873.3134.10437749263853370498@kernel.org>
-In-Reply-To: <20261024053720.1147022-3-imv4bel@gmail.com>
-References: <20261024053720.1147022-3-imv4bel@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Ru2/jDRd
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-3535a54bed9so3323690eec.1
+        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 23:45:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792910746; x=1793515546; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=aQ8r37ziw71fqDLMgR/NMnH4TFvaTayfpcX1AdbOmIc=;
+        b=Ru2/jDRd9N5vPqGUpovwLVR4ixtu1YauJNh+9lYcLXrvmtADygWjtWEDvtkCmLFto2
+         ZMY2tb8UbDS4ORojtuQR/1BtHuSipq+qL9Cv7vykk2Rr9iHtQuo03zeQb19+9ymiG2J9
+         XXs25OG+O4mPM2fZNG7GP3MSEZYDAb/NnbKh+QTBGIDGtTCHTEXXtb1R8q8wXiUyOzeI
+         8qK8PaCoL7qDdZibsCEh8aPqDNX/fNefHFKS1B1SuyeqYe3/89EaxOYSgRT4M5e2j6ny
+         bMc0wZA7+MSJGKLfM24L+dAvYUVOgPeg0myXhy1qxq8hjGAHZhGX5HAsvgMLmkgfOca4
+         sO8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792910746; x=1793515546;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=aQ8r37ziw71fqDLMgR/NMnH4TFvaTayfpcX1AdbOmIc=;
+        b=H4G70yvvlhwoj4jNM/0zhJ0h+i78sXcDcy71wvewuS2V+Cm+EKM8o3WJBrG/25MS/u
+         Rsw3nmHalfMJexS9nG5EObEtxQjb7qYn/q+bQCpmUnZxamglYIpgfASwDEdI/5ocEdbo
+         a8u2zsydKcGDOE7bFkqN0hW9K8ZUihUCFNrp0n5MRjWgg+2OHAzTqsbE1CCaN1runTc+
+         7PstGJVX+PDJEZWDxN0WRwbNI1ZTaMnBSJ2en6FdxRgGJJcKXJ1o1W3SqRdEWmrfg507
+         +dCwZRq1FD4+eegBmdXfj1rzkG53dUdSqvzHn5yxeF3PT6x84PAptUU7kIvcrNYy8NLj
+         wseQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxPaVrPJx2dCtX64RxN6ZVtFxdTRTYXCBm9UqsvkWsfJ/zb34akukOoztdTvtUMx8GBAuF/wY8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIZjHCvIh97Q4ODeANLII9Rxb9Abr/bG9+dC7kKSc5KOdWOxIMo
+	YoW6At/GH40Wvj09OAxpcHp643h8cmBEsLuD/Peq6pkMUzoee0ASuVyX
+X-Gm-Gg: AYBFou1J1mB5xjGAh6psU+OHk2NFxmjqexyDR/s2a6uuHVQATcPFgfXYutvnpgVX0mJ
+	bxXhmrGkjWtVgpoOso8IiSbqdquQ0LhzkafhUO6X9aFAFxwj2cb8wfDz2jLkDJ8/X0xdzOcAQ8K
+	6MoI6g2V2UyLc0scCdLDsw4OuLDKaqYqHeYMgpaeXFl8a19K4iVO+ddljx0WUZBRk0TV6HAA37j
+	FiESFbTZgzUdDIk/TKMdlAPiPw2IWMo14tyJlSc7SxSDAu9ql7jU+7m6vwzZfarz7SMWaesMJFB
+	IGQsSh1sSdL7Ry62dz6urJJOyEFsHq5Ei73JcmVM3WvRWU9lg7SqVCaTBOJJMEH2pAt6kWbHOQj
+	n15s3G3slrZOwyaI09aPd3gJz8wQ88Rc3aocSDzx07AFfG9OJuq5Ztp2/vKqqRNAU0CHYxyN1lv
+	s2pn/nkIAzGoJnbbfZ16A9kEsw+Kg64BfjMGOQWbDQq0MWFS57n0WobiVXPgsyQ1SIyyKRfaT47
+	Qknm2y2thjKUKv5W/h805TJBmTRd2rYHZ5zBmnrrGg7TLwbHeV2mhSp8kt/+Don56A9u9bPHhp/
+	3omZXjEkaFWtty15KkEPiBhIZ45g4ds2Zan5VcgYxrqqmRO6peUY4JQn+se82K2KG3HouaPbK6M
+	+uaJu
+X-Received: by 2002:a05:7301:1a01:b0:369:d735:e9ad with SMTP id 5a478bee46e88-369e847d8c3mr6076025eec.21.1792910746367;
+        Sat, 24 Oct 2026 23:45:46 -0700 (PDT)
+Received: from localhost.localdomain ([2600:1010:b094:72dd:acb2:1ed:a440:33ae])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-369e8ec865esm12371219eec.26.2026.10.24.23.45.44
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 24 Oct 2026 23:45:45 -0700 (PDT)
+From: Zhixiang Zhao <matthewzhaocc@gmail.com>
+To: steffen.klassert@secunet.com,
+	herbert@gondor.apana.org.au
+Cc: davem@davemloft.net,
+	netdev@vger.kernel.org,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	Zhixiang Zhao <matthewzhaocc@gmail.com>
+Subject: [PATCH ipsec] xfrm: state: use the fallback SA while a per-CPU acquire is pending
+Date: Sat, 24 Oct 2026 23:45:24 -0700
+Message-ID: <20261025064524.74618-1-matthewzhaocc@gmail.com>
+X-Mailer: git-send-email 2.54.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,282 +101,81 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-
-Thank you for your contribution! Sashiko AI review found 5 potential
-issue(s) to consider.
-
-Critical: 0 · High: 1 · Medium: 0 (1) · Low: 4
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] inet_twsk_purge() (net/ipv4/inet_timewait_sock.c) was left
-  unconverted, so the fix is incomplete.
-- [Low] The patch carries 'Cc: stable@vger.kernel.org' and 'Fixes:
-  fb041bb7c0a9' (v5.5), but the fix depends on…
-- [Low] Commit message accuracy.
-- [Low] Several converted sites do not follow refcount_set_release()'s
-  kernel-doc contract: 'This function should be called only after new…
-- [Low] In reqsk_timer_handler() the patch moves
-  timer_setup(&nreq->rsk_timer, ...) ahead of the refcount store, and…
-
-Pre-existing issues:
-- [Medium] Same ordering bug in MPTCP token lookups.
-
---
-
-inet: restore refcount ordering for established lookups
-
-This patch makes the IPv4 and IPv6 established hash lookups use
-refcount_inc_not_zero_acquire(). It also converts refcount_set() to
-refcount_set_release() in the SYN cookie, TCP Fast Open, request
-migration and TIME_WAIT paths. The goal is to bring back ordering that
-was lost when fb041bb7c0a9 made refcount_inc_not_zero() relaxed on
-success.
-
-> inet: restore refcount ordering for established lookups
->
-> Before commit fb041bb7c0a9 ("locking/refcount: Consolidate implementations
-> of refcount_t"), default builds implemented refcount_inc_not_zero() using
-> atomic_add_unless(), which provided full memory ordering on success. The
-> commit removed that ordering on weakly ordered architectures, allowing
-> validation in established lookups to be reordered before a successful
-> reference acquisition.
->
-> Use refcount_inc_not_zero_acquire() in the IPv4 and IPv6 established
-> lookups. Use refcount_set_release() when setting refcounts in the SYN
-> cookie, TCP Fast Open, request migration, and TIME_WAIT paths. Keep the
-> existing TIME_WAIT smp_wmb(), which separately orders the refcount store
-> before ehash publication.
-
-[Severity: Low]
-Is "restore" accurate for the refcount_set_release() hunks?
-
-fb041bb7c0a9 only changed the reader side. The !REFCOUNT_FULL
-refcount_inc_not_zero() went from atomic_add_unless() to a relaxed
-cmpxchg loop. refcount_set() was a plain atomic_set() both before and
-after that commit.
-
-So the six conversions add writer-side ordering that never existed. They
-don't restore it. The six are in tcp_get_cookie_sock(),
-tcp_fastopen_create_child(), reqsk_timer_handler(),
-inet_csk_complete_hashdance(), inet_csk_listen_stop() and
-inet_twsk_hashdance_schedule().
-
-The changes themselves look justified. A stale reader using acquire
-ordering has to see the pprev = NULL from sk_node_init() and the new tuple
-fields before the new refcount. Otherwise it could match an unhashed
-syncookie, TFO or migrated req.
-
-Could the changelog explain this? It could also say how recycled request
-sock slab memory makes these unhashed reqs reachable at all.
-
-sk_clone_lock() and sock_init_data() already have an smp_wmb() before
-their refcount_set(), so leaving those two alone looks right.
-
-> Fixes: fb041bb7c0a9 ("locking/refcount: Consolidate implementations of refcount_t")
-> Cc: stable@vger.kernel.org
-
-[Severity: Low]
-refcount_inc_not_zero_acquire() and refcount_set_release() were added by
-7f8ceea0c58039 ("refcount: provide ops for cases when object's memory can
-be reused"). That commit is in v6.15 and not in v6.14.
-
-The Fixes: tag points to v5.5. Without that prerequisite, none of the
-touched files will build in the 5.10, 5.15, 6.1, 6.6 and 6.12 stable
-trees.
-
-Should the stable tag carry a prerequisite annotation, for example:
-
-Cc: stable@vger.kernel.org # needs 7f8ceea0c580 ("refcount: provide ops ...")
-
-Or is a fallback planned for older trees?
-
-> diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-> index 01ecd98a2b501..8faef6c38b364 100644
-> --- a/net/ipv4/inet_connection_sock.c
-> +++ b/net/ipv4/inet_connection_sock.c
-> @@ -1060,8 +1060,8 @@ static void reqsk_timer_handler(struct timer_list *t)
->  		 * hold another count to prevent use-after-free and
->  		 * call reqsk_put() just before return.
->  		 */
-> -		refcount_set(&nreq->rsk_refcnt, 2 + 1);
->  		timer_setup(&nreq->rsk_timer, reqsk_timer_handler, TIMER_PINNED);
-> +		refcount_set_release(&nreq->rsk_refcnt, 2 + 1);
-
-[Severity: Low]
-This isn't a bug, but timer_setup() now runs before the refcount store,
-and the changelog doesn't mention the move.
-
-It follows from the refcount_set_release() kernel-doc, which wants
-initialisation done before the release. nreq is still private at this
-point. A short note in the commit message would be enough.
-
->  		reqsk_queue_migrated(&inet_csk(nsk)->icsk_accept_queue, req);
->  
->  		req = nreq;
-
-[ ... ]
-
-> diff --git a/net/ipv4/inet_timewait_sock.c b/net/ipv4/inet_timewait_sock.c
-> index a1d86026aefb0..5c1bff5a6d4d8 100644
-> --- a/net/ipv4/inet_timewait_sock.c
-> +++ b/net/ipv4/inet_timewait_sock.c
-> @@ -143,7 +143,7 @@ void inet_twsk_hashdance_schedule(struct inet_timewait_sock *tw,
->  	 * Also note that after this point, we lost our implicit reference
->  	 * so we are not allowed to use tw anymore.
->  	 */
-> -	refcount_set(&tw->tw_refcnt, 3);
-> +	refcount_set_release(&tw->tw_refcnt, 3);
-
-[Severity: High]
-Is the fix complete without also converting inet_twsk_purge() in this
-same file?
-
-It walks the same ehash chains locklessly under rcu_read_lock(). It
-handles the same SLAB_TYPESAFE_BY_RCU TIME_WAIT and request socks, and it
-still uses the relaxed variant:
-
-net/ipv4/inet_timewait_sock.c:inet_twsk_purge() {
-    ...
-			if (check_net(sock_net(sk)))
-				continue;
-
-			if (unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
-				continue;
-
-			if (check_net(sock_net(sk))) {
-				sock_gen_put(sk);
-				goto restart;
-			}
-    ...
-				inet_csk_reqsk_queue_drop_and_put(req->rsk_listener,
-								  req);
-    ...
-}
-
-The release store added here only helps readers that pair it with an
-acquire. __refcount_add_not_zero() uses atomic_try_cmpxchg_relaxed(). On
-arm64 or POWER, the second check_net() and the later req->rsk_listener
-load can therefore be satisfied before the CAS.
-
-Can this sequence happen?
-
-CPU0, in tcp_sk_exit_batch()->tcp_twsk_purge()->inet_twsk_purge() for
-dying netns D:
-  sees socket X in D, and the first check_net() is false
-
-CPU1:
-  X is freed
-  the slot is reused for a new TIME_WAIT or request sock in live netns L
-  the new sock is initialised, gets refcount_set_release(), and is hashed
-
-CPU0:
-  refcount_inc_not_zero() succeeds on the new object
-  the reordered second check_net() still reads D
-  inet_twsk_deschedule_put() or inet_csk_reqsk_queue_drop_and_put() runs
-
-That tears down a TIME_WAIT or pending request sock that belongs to the
-live netns L.
-
-req->rsk_listener could also be read stale. It would then be the old
-occupant's listener, which may already be released, and
-inet_csk_reqsk_queue_drop() would update that listener's accept queue
-counters.
-
-An unprivileged user can trigger netns exit through user namespaces. A
-remote peer can create TIME_WAIT and request socks in L.
-
-Should inet_twsk_purge() use refcount_inc_not_zero_acquire() too?
-
-[ ... ]
-
-> diff --git a/net/ipv4/tcp_fastopen.c b/net/ipv4/tcp_fastopen.c
-> index 471c78be55137..e40477b6b5549 100644
-> --- a/net/ipv4/tcp_fastopen.c
-> +++ b/net/ipv4/tcp_fastopen.c
-> @@ -364,7 +364,7 @@ static struct sock *tcp_fastopen_create_child(struct sock *sk,
->  	tcp_reset_xmit_timer(child, ICSK_TIME_RETRANS,
->  			     req->timeout, false);
->  
-> -	refcount_set(&req->rsk_refcnt, 2);
-> +	refcount_set_release(&req->rsk_refcnt, 2);
-
-[Severity: Low]
-The kernel-doc for refcount_set_release() says:
-
- * This function should be called only after new object is fully initialized.
- * After this call the object should be considered visible to other tasks
-
-Later in tcp_fastopen_create_child(), req is still written after the
-release store:
-
-	tcp_rsk(req)->rcv_nxt = tp->rcv_nxt;
-
-The other converted sites have the same ordering:
-
-  tcp_get_cookie_sock(), inet_csk_complete_hashdance() and
-  inet_csk_listen_stop() do the release before
-  inet_csk_reqsk_queue_add(), which writes req->sk and req->dl_next.
-
-  reqsk_timer_handler() does the release before req->num_timeout++, the
-  accecn_fail_mode update and mod_timer() on nreq. nreq is then hashed
-  by inet_ehash_insert().
-
-For the reqs that are never hashed, hlist_nulls_unhashed_lockless()
-rejects stale established lookups, because sk_node_init() runs before the
-release. So the practical exposure seems limited to minor fields such as
-num_timeout on the migrated nreq.
-
-These stores had no ordering at all before this patch, so nothing
-regresses.
-
-Could the release stores move after the last initialising write? If not,
-a comment could explain why the later writes are fine.
-
-> diff --git a/net/ipv6/inet6_hashtables.c b/net/ipv6/inet6_hashtables.c
-> index aa5fa1dd062f7..1eea584d80df8 100644
-> --- a/net/ipv6/inet6_hashtables.c
-> +++ b/net/ipv6/inet6_hashtables.c
-> @@ -105,7 +105,7 @@ struct sock *__inet6_lookup_established(const struct net *net,
->  			continue;
->  		if (!inet6_match(net, sk, saddr, daddr, ports, dif, sdif))
->  			continue;
-> -		if (unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
-> +		if (unlikely(!refcount_inc_not_zero_acquire(&sk->sk_refcnt)))
->  			goto out;
-
-[Severity: Medium]
-This is a pre-existing issue and was not introduced by this patch, but
-the MPTCP token lookups seem to have the same pattern.
-
-mptcp_token_get_sock() in net/mptcp/token.c re-validates after a relaxed
-increment:
-
-	if (!refcount_inc_not_zero(&sk->sk_refcnt))
-		goto not_found;
-
-	if (READ_ONCE(msk->token) != token ||
-	    !net_eq(sock_net(sk), net)) {
-
-mptcp_token_iter_next() does the same thing with its net_eq() check.
-
-mptcp_prot sets SLAB_TYPESAFE_BY_RCU for msk objects. For that reason,
-mptcp_subflow_reqsk_clone() in net/mptcp/subflow.c already uses
-refcount_inc_not_zero_acquire().
-
-On weakly ordered CPUs, can these lookups return a recycled msk from
-another connection or netns?
-
-For MP_JOIN, the later HMAC check would fail and cause a spurious reset.
-Through the diag iterator, an msk from another netns could be dumped.
-
-MPTCP was merged in v5.6, after fb041bb7c0a9. These sites never had the
-fully ordered behaviour, and they are outside what this patch covers.
-Would a separate fix for them make sense?
-
+Content-Transfer-Encoding: 8bit
+
+With XFRM_POLICY_CPU_ACQUIRE, xfrm_state_find() uses the best valid
+state directly only when it belongs to the current CPU. The non-CPU
+fallback state is selected only inside the block that creates a new
+per-CPU acquire, so the packet that starts the acquire is sent over
+the fallback SA.
+
+Once that larval state exists, xfrm_state_look_at() sets
+acquire_in_progress for it and the new-acquire block is skipped. The
+fallback is never selected, x stays NULL and the lookup returns
+-EAGAIN. With the default xfrm_larval_drop=1, every further packet on
+that CPU is dropped until the key manager installs the per-CPU SA, or
+until the larval state expires if it never does. This contradicts the
+comment on the fallback selection and RFC 9611 section 4, which has
+the CPU without its own SA keep using the SA available to all CPUs
+while the per-CPU SA is negotiated.
+
+Use the best valid state when an acquire is already in progress, as
+policies without XFRM_POLICY_CPU_ACQUIRE already do. No additional
+acquire is created, and a lookup that finds no valid state still
+returns -EAGAIN. The fallback is not added to the policy's state
+cache, because that path still requires x->pcpu_num == pcpu_id.
+
+The loss is easy to miss in normal operation, where it lasts about one
+IKE round trip per CPU. It can be reproduced deterministically with
+strongSwan 6.0.2 (per_cpu_sas, start_action = trap|start): establish
+the fallback SA, stop charon on both peers, then send one packet on a
+CPU, which succeeds and creates the larval acquire, and a second
+packet on the same CPU. The second packet is dropped while
+"ip xfrm state" still lists the valid fallback SA next to the larval
+state for that CPU. This happens for both IPv4 and IPv6 traffic.
+
+The problem was found and the fix drafted with AI coding assistants
+(OpenAI Codex and Anthropic Claude) while testing per-CPU SAs for a
+VXLAN-over-IPsec deployment. The analysis, reproducer and fix were
+reviewed by the submitter.
+
+Fixes: 1ddf9916ac09 ("xfrm: Add support for per cpu xfrm state handling.")
+Signed-off-by: Zhixiang Zhao <matthewzhaocc@gmail.com>
+---
+Testing (not part of the changelog):
+ - Built Ubuntu 7.0.0-38.38 (7.0.14) twice from the same config, with
+   and without this change, and booted each in a 4-vCPU KVM guest.
+ - Setup: two IPsec peers in separate network namespaces joined by a
+   veth underlay, each with a guest namespace behind it. Traffic is
+   ping between the guests, routed over VXLAN inside UDP-encapsulated
+   transport-mode ESP (strongSwan 6.0.2, per_cpu_sas = encap,
+   start_action = trap|start, AES-GCM-16).
+ - Without the change, the reproducer above failed for both IPv4 and
+   IPv6. A variant that does not stop charon, and sends one packet per
+   CPU right after the fallback SA is up, lost traffic in 5 of 6 runs.
+ - With the change, both tests passed in 6 of 6 runs for both families,
+   and no plaintext reached the underlay.
+ - The same code is present in ipsec/master and mainline. The patch
+   was build-tested only on the Ubuntu 7.0 tree.
+
+ net/xfrm/xfrm_state.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index 0555e5d796ed..dec528f98d51 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -1518,7 +1518,7 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
+ 
+ found:
+ 	if (!(pol->flags & XFRM_POLICY_CPU_ACQUIRE) ||
+-	    (best && (best->pcpu_num == pcpu_id)))
++	    (best && (best->pcpu_num == pcpu_id || acquire_in_progress)))
+ 		x = best;
+ 
+ 	if (!x && !error && !acquire_in_progress) {
+
+base-commit: 835912998ca54a76b5c57f8c8459a86b1b45de40
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261024053720.1147022-1-imv4bel%40gmail.com
+2.54.0 (Apple Git-157)
+
