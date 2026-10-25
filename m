@@ -1,97 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.175
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792937259;
-	b=0cj+O3KslWfoDahbCZjUhCIos1NxMIV3Ey2xMaC2MFXl9dVk3IaeZzzbfsU6b6CpeVLB
-	 qRmM5RSV/ZdZHp6/S6LKyHsBaDiXW/wmopjr7x/2i3At9URbE7UUFMfljRjDKUrh6c2a5
-	 18WRbIM7089M0eE9pt4SNiH2w33a3elW32THPnaweb7BJ5MWe2ApokJdLlbCMLvHLJ2d1
-	 zS4GhmDtzFnKmEaq3u7KDsbvc+GhS6DFWCxqSNLaXwI7R/L/FKJ9gMWrOUeg4Zsf77Sqh
-	 sSd2ejQEcyFJJPjmdzZn0ntWLicEdb8YpzDQO1i+SELdFYiRRwv+wvFIt78wWpdcdmg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792937259;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=nwo3NYlls8cyar7A+KG0JtYLr0c2wn1Lw0JyofWgGxI=;
-	b=L519xeVaeySBn1/iib7LuivSNl8nDL1m39d8r/tNMlfOvWEwGTnqWe+YUV0j05W+az4m
-	 llz0gGrGd+EhmnTLabirMLJBS27U90s1jsJn/GgKGQN1fUCSdLewNQz3uJju117zTmLZ2
-	 bRzRcrQZbX4TaMvTlz54722AJWT/gAAWQ6ym+W2G5bV6uygMwf1h4WqkKDPY35xUtDInA
-	 P38pCOfVVbsdUnL77thIY64Oe0N6mMI77lcpdKhEBjHsosCvajpOgPfF24YWPhhaLrgke
-	 Vg2AaYcZlxhRraeupKxtO6JVb3NPWbut0wLIGZkcpvsj9ks1nd9rVfNnkW4OE9evF3g==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=SlUUBPTN;
-	arc=none smtp.remote-ip=209.85.214.175
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.196.37
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792938190;
+	b=o+4Y9LCQBwRgEt11u+3CWXOl9XISkmhw1TD86ixaeq1Svd8djC7Ff3ZP7MqmbEIahPQp
+	 1C3VQK8pQugMlgYCuZbODJjgQoIRVbm6jR7zYklaakT5U40jHrCxnxJ2fatdUYnMgZcSU
+	 +Lt2zTJEb9NM/bQRbVbd1AyLgg0tNDtvNast7Jd7kZcp+QCPt1LX0uwTTVghGWuQk+ICT
+	 LclpcD3tGOHVp+V1At7HnThFzbhOspbffwsj//qk7a46kZhqV719pxb0SQMc1MaBf1YIB
+	 CMz7/NMvhqQ6H2NwmAgRNcScLtlW6PuDVo1vRhCl0j4JqkdDYHtZzWouSuFn3GpuHRw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792938190;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=Tyy4SXG7SBl5I/mQ6HtziNSRJVdXkRmsb7D4XoUM6Rg=;
+	b=ZFBGfMZ/LXM6xhGjyzD4SpwpAPEEqO6A5UGOIB1SYrFP03ZOx4sp9o0qjwl3WFzEO2wO
+	 +TMrptMAmSR7DvHX2Qfce46J0JeZ/Mv5BbHiZfrrz3PeUykydKDEgQXsU3v7kX8Ygmumn
+	 Lb8414Ol1lOhSqD52mXl14mU3yWrUD18Dnz8sV0CrOOA4qYRrCIFGqx01jv8o8Em1nuJ/
+	 qTp1yQtBU5ECDcwVHsoi8Oo+yrtgGHwNWLItavE5tSL/0d1YwcMwakwOFl4XmO/6WYtoP
+	 Sf+ZxqaHmS7gaQEXcqrxpDnWz3XnuP/xoZovO1ocZVUaFZiSu8qejDIXDeJWrf4+RXA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=UjX+ysJN;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.196.37
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013037.outbound.protection.outlook.com [40.93.196.37])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62A62606A31A
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 14:07:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 62A62606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B468606A31A;
+	Sun, 25 Oct 2026 14:23:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8B468606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=SlUUBPTN
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2e8f2c3ad6bso13936045ad.1
-        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 07:07:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792937259; x=1793542059; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=nwo3NYlls8cyar7A+KG0JtYLr0c2wn1Lw0JyofWgGxI=;
-        b=SlUUBPTNj/UpNQiL1vlrRsgD7o7sPLtC66LWqGxP3q5zpSmtns3oLq/5tLtKxqlrsP
-         zx9nwz6OqL4RBTnzp9Z1ZQYFXoukssrfoUVgJwA4wY3s2Usu7wkfLv9pIYKTt7Vh4eDh
-         3J3rixsKv+qllsJXnhbYZWrIMaySOBMf15t+9e/bP5jA427RQkckQGt4kPMOZYidt0Is
-         vGftN0CRjIty26pnwzwQwfKbbe+977UHFHXMCRbRQ8lN9Ae3NlY/wrfGkPJFviov/D9A
-         LckF40meGnel6o7bI19tuwCxaFxPPbU8/Rtk5Yifbi5HaQFuI/eJguGJi5lIU5gqU1VA
-         eKdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792937259; x=1793542059;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nwo3NYlls8cyar7A+KG0JtYLr0c2wn1Lw0JyofWgGxI=;
-        b=q8wysvq73VSoWk9+wWMFg5yBzEejKSDHrUXgJ5NQKoYPy0fRmg2I9fLvyNXYFZ1vTJ
-         ORHvQme0MCBEl9BX0v+WiJwzIPL0QpQqpF8h7ODnMhLj0dfrK9ueFUHQVM/boDTamucd
-         w3qXejJS+3ZofEHnkwLJDZuPWF2DKQ60wyczGTTkxEWvwln7ubFEG6323NNHJ0c7wogW
-         6ia3M/SCCbiYDHTngMR0s0yV3WDBxznxtl7mM8egHuMRHc7hbseUG6dX6+fotIbHJSnG
-         zf/NajTyS3RxoW5jVwIEisIk8IObHX9AQJO8gtfC39e/t/Nn8WOlSMGsBi2JoPFIGAtb
-         hSVw==
-X-Forwarded-Encrypted: i=1; AKwUvBxi3YTXPCFhsCAaf2XIyunGt/QOEoOpJUtO8I3fDTz9pLdJwkc7SHkLkzQ2NPgfFiGo8sFubGg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIcHXjxGLosZqcaP7zcm/04SgBfs/btNarCinsdarS4gh87iDbc
-	Ou8wB3yL5f3otvjZeTQsUd09AzqoJF/SI5Nu1I8PRjwDL3mUoStwfIxB
-X-Gm-Gg: AYBFou2vlixjZLtdG/1we/kex5iAwbpSCnCvDGNSocPDh/DiAJ6e6nfwJ753IpZHEcj
-	R7rsB1FeKpAwpRVCj52bEyTGuksMUAYNVBlEu/UdZhANld5sgULBn3d++vk9/V3KzvxM5dogzAF
-	GBCv7kLAG/hwhd8JFMaMXEWcOh4DM8oL6LYeh7FzWjxBzFwT1f/tYJSMxR/fGIn7vnGZkT23A8G
-	OsAo0VyFvABCbdL5LbXJjTg5EZM/rlizPmO8Y7eCNHI246+/psqVmmXR81p+1IDTJpNrdsZeMO8
-	tlPF0WcwkRv43TZtgNf30eCdczReN6YlbUS6Tncwm6NPdchMiDSZMZGggM2plzUZfuXzBb+0Efr
-	8UK9svaAsQHeegcAnsCh1oSizs8K6/6+qLjjWuyQ0Iwk0av1HgY6cGT2JR2UK7NlBaqg8elWDZb
-	WgHs3JsxOHLUGs9SQ/nsn8kukwSZStxHk6axDFjHtET3BUxFfJNzGZSjVPMqs/+LU+OFBWW7+9Z
-	XzpKy3f/jn/9De6ndX4p4iP+jpQ2svwFhetuxzy9MucWpnG2zXIwlPF
-X-Received: by 2002:a17:90b:4cd1:b0:3a8:1943:cb7a with SMTP id 98e67ed59e1d1-3adead44808mr3477817a91.18.1792937258609;
-        Sun, 25 Oct 2026 07:07:38 -0700 (PDT)
-Received: from gmail.com ([240e:469:849:35a9:20c:29ff:feb3:e631])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3adebe9078asm5038210a91.10.2026.10.25.07.07.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Oct 2026 07:07:37 -0700 (PDT)
-From: Xue Boyang <fuchen.dust@gmail.com>
-To: kadlec@netfilter.org
-Cc: netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	phil@nwl.cc,
-	Xue Boyang <fuchen.dust@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH nf v2] netfilter: ipset: fix double free on kernel-side delete during resize
-Date: Sun, 25 Oct 2026 09:07:29 -0500
-Message-ID: <20261025140729.5152-1-fuchen.dust@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261025090609.v2reply.4093.fuchen.dust@gmail.com>
-References: <20261025090609.v2reply.4093.fuchen.dust@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=UjX+ysJN
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xOBp/tpCvAyqie2CS3/BDs2YYvFGJZyfZIpNigIjsbcXPiv2E6hW+4A/UhGOx+/VeorIupgkqw/naAP+NoEwL23G1IIfUdl8Rx46EI7dMmxflCjiUyJW80M5KC9NAM2Asq2R5wph8ep2sktl06p2qiIuf6CnSx1QpXL/sD64cYRfaclhmO4QzhnBNuB/W7mP6PklxIutBCC2t0Zj+vMpjRabzi6EFt3uM7fEAEemOEiOgEwwcEVQum+LiGJw0+eq8SGT7mQxhhMS1P+zrtMdOOSB9OTmlV98FVnoUenYQcUEn684t0CMfGm+u0UIDITnK1vcEd4GTNISzTzmTxELrg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Tyy4SXG7SBl5I/mQ6HtziNSRJVdXkRmsb7D4XoUM6Rg=;
+ b=PItG5ljAjmsEj7uv0w48Ym3GYpIomzQ3hOAi5qjILjuwMFwg5a4y+rWu2NbEeuO+aQbUSmoaHvua/Jjccl0C2a82E32V8A7ns1IJ1NVTrvYukxHfsbyxnfpW8LHql/5Bk2dr6QsT6CSzXhQjZMOu/PuQ8AxkTQa3r3KjRCcDMu9icv9Bccv9NXrfotOrhez3oRk5avbDVZpBXj94hgX2aCuMDSKCVf/c8W+4ArDfbT/KCuo2Lrll8sqtWjd4g1IFGam7FWaYSv/i8dJlBv/YhatPzHDGuwqc1c9qEGTNo8mv99cD8P7P6+CM738xt70Fh8lD5PMsMt8/vqfPue9TKA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Tyy4SXG7SBl5I/mQ6HtziNSRJVdXkRmsb7D4XoUM6Rg=;
+ b=UjX+ysJNdFOLQo1EESM56ehV2wtzrU/9oO6YMCgH50XXUKDSABkZgorkdYuhDPj7rNaC3TBNm0O5BuBtapo7vSK+WSnv5vyl+w6Ggj2H2VHljmaDQN+iuek3Ay0DiWSKvJenBMJgez+Hmd6eEGUQFpG2DE2JfFZ1p4TgD4lQPHIi+yg8iBIhHE01HsxjdGxVqDJQMKlp4yqC4qqEgoGABD/UlK96CropAn843KG13aRgZiFAPgvpT2YYgGt5f70plyTTULh5OMIa8kPWbupiGlhhAqR4SV4lkkufd8SQqkRn1jUu1uA6PPsQO+6iqPBWrQCNj9C8hoVyVBod22CaNA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA3PR12MB239779.namprd12.prod.outlook.com
+ (2603:10b6:806:5a5::7) by DM4PR12MB8558.namprd12.prod.outlook.com
+ (2603:10b6:8:187::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Sun, 25 Oct
+ 2026 14:23:05 +0000
+Received: from SA3PR12MB239779.namprd12.prod.outlook.com
+ ([fe80::2ac4:299a:52e3:5d9c]) by SA3PR12MB239779.namprd12.prod.outlook.com
+ ([fe80::2ac4:299a:52e3:5d9c%6]) with mapi id 15.21.0546.021; Sun, 25 Oct 2026
+ 14:23:05 +0000
+Message-ID: <16368a7c-af34-4dfd-9e8c-891d455d2935@nvidia.com>
+Date: Sun, 25 Oct 2026 16:22:58 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net V2] net/mlx5: Lag, reset vport speed on MPESW teardown
+To: Paolo Abeni <pabeni@redhat.com>, Tariq Toukan <tariqt@nvidia.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
+Cc: Edward Srouji <edwards@nvidia.com>, Gal Pressman <gal@nvidia.com>,
+ Kees Cook <kees@kernel.org>, Leon Romanovsky <leon@kernel.org>,
+ open list <linux-kernel@vger.kernel.org>, linux-rdma@vger.kernel.org,
+ Maher Sanalla <msanalla@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
+ Moshe Shemesh <moshe@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>,
+ Shay Drori <shayd@nvidia.com>
+References: <20261006112415.259157-1-tariqt@nvidia.com>
+ <4758dc6b-001c-4106-9258-f7d902fb01c7@redhat.com>
+Content-Language: en-US
+From: Or Har-Toov <ohartoov@nvidia.com>
+In-Reply-To: <4758dc6b-001c-4106-9258-f7d902fb01c7@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TL2P290CA0015.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:2::18) To SA3PR12MB239779.namprd12.prod.outlook.com
+ (2603:10b6:806:5a5::7)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,272 +105,99 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR12MB239779:EE_|DM4PR12MB8558:EE_
+X-MS-Office365-Filtering-Correlation-Id: ad4c013b-a696-4279-19d7-08df32a37c03
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|23010399003|11063799006|4143699003|56012099006|261009223027099003|261022105027099003|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	R8bADDxN4RU1zFJAeW+nDarMvBr1aSplaFUs4VUc9V/WWFloVWGjeLuaCg3osc/tMttGsCEmcEb2X27R1JiPwv8Et4xUXpqU+aVRqQV9yR4KQR9JpIxRLYzo2pOjk42wPh1TqA55XZNM+/6dBx6zR4nc2BV13BX4KIxTg6zN9Z7ISM5+lU/k9rr6JXojPKABQreGuy5rEIMPAktCq/a3+yeRQzyxWkV1uWfVosHxv7M0I43uFvZJdkH2gte60TWF+YOg8J//gGxIw541b3A49X8BlEpLzn3nhkkGkITN7zDXwEq8u2wqV/1YEzc6Lu5VfJsLk299ZVHz0ellC5qz0uDbWSAhGLGjKOibmunZGfkiL3k5eM5Y2MLiHP3WG5bLwl66qFM14am0652/zr0L/hlullUmh97aJ7GlqiSuqMFiDBKajJcESSEnOHqk9IA9xSkBogsaXBAugCgafSrK+ARpvMuyXlDdsoTlm/roqs35mqQKa9Is1eQ346R1Es1LqXkeSWFjlEEGOqOjg5ycTzFBro4lu0tIjEMO+8rG5W+Uqdag6G2WMLfJoZudw8PJNfSxkEr0Ct4UazRs4yrv/NPL8D4iALHnLRKVTI8FHnV+Kt74/mYyN15YeJOVNrdYhlVtpuMGeyDhKzkIOPDgEinvmjzyFB67hBQryQSOsJU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB239779.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(23010399003)(11063799006)(4143699003)(56012099006)(261009223027099003)(261022105027099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZEo4MEprOVEya2hoS3JLZitwdGpMWWZ0S3BnOUQzSmx0L1ZuWWdidUFUWk9u?=
+ =?utf-8?B?eFhCMTMzUGtQY29DeEV2RDNmZy9DVk9QZXlvZ1pZNVVjM296M2g4MEp2elpI?=
+ =?utf-8?B?V1BrWWNnUUtxUE0xSzFiczhJZzhVcy9MUXFsd1lDRXVCVEN1V0NhZzRBbXVC?=
+ =?utf-8?B?K0dOVGRNOFpYTzR2eDhMdHZzdkFxazRUS2pYQlhsVnR6dWlnTTJKUjB4bnZL?=
+ =?utf-8?B?YXFOVVVTVk14VG9HcWV6TENXcWlnbUdSbUdrL2dtVnkyQjF6dmJaS3krVVZ4?=
+ =?utf-8?B?Z0t6aDNSc3UzbFBoY25NMGVBRXVTTGdQY3Q4SzNPWXNNTWRCaUo2bFdpZy9P?=
+ =?utf-8?B?OTRUM0t2eHZUOUNiNkM3UjFSL3FzeE9QSi9JVHpWSTJNZ3JGSEVJRUNJS2tT?=
+ =?utf-8?B?UXh2N3NlbWpTT2FjRUw4a3hQTjJjUkgwUHJCOGJpRm55RnNhb3ZHdkN5dk1I?=
+ =?utf-8?B?SDNZSTNzMUlIRFZNZmpydnFsbmhhWGxGc1hVdStVendBRmFsdWZFOG41b2FW?=
+ =?utf-8?B?R2hZaTh1dndWK2pQV2xUUnNzOHR5WkxtZjVhV3lHVW1XQ3IzMngzcmRSQncv?=
+ =?utf-8?B?S3V1WTc3LzZMZkZYMSs2cW93aUk2cExqN3UzUEdoZjF6VEt0c1VXdnIvSFBj?=
+ =?utf-8?B?U25TTzdiSjdVUUVncWpVZG4xM21PTDRUa25TdFdMRVNaeG4yVGcwckRMUWdo?=
+ =?utf-8?B?RnVWNGlmcTZKdGJoVnNPWkswSEliVnRUdEh0cjBad3BXNkRjS2twK0tQaDNS?=
+ =?utf-8?B?SFNLM1AxT25kL2VBUkNrRFlIOW5aZ3AzNzl3bGNmN3pPcUhSSTRnWTJpK2Ez?=
+ =?utf-8?B?U3BHV3JIZXhZRjBBNDJZUnFrQzYzeUVaaW13bVpFWjh2UDJLTG5mUTJMV2F4?=
+ =?utf-8?B?bEc3Mlk1UW5RQ000bFFjQ1hsTlpkV0xQRk5RUmYybklDRk1JY0VDTFQ4WVJo?=
+ =?utf-8?B?UklpMmpyRnZwY1BDYmZiZ3lBZ3ZsbHllWlg0R2JYcmFpZG80WTJmU0p3RFkz?=
+ =?utf-8?B?RWVsL3RlK2hURFlwNFFiZTNRSUxMKzdyRzlTbk1pNXdNWHRreGN6NmYxZTFI?=
+ =?utf-8?B?YzlGVE9TMEFxMGNvajdqTzVrQjBvWE5MNmZBcXFhVmRLNVVpQ1RPT21MVE01?=
+ =?utf-8?B?R3d3dVpRMEZFdlBiUDN5NEJZak5XYTNNMGtBQkxDRnVZZW5QRi9WdCtJamtu?=
+ =?utf-8?B?eGl5aUZXbmlXdU5nRjJlUHBJNW5JWTcxNHRZL1hIRnRCbDNaM0ZJU3hKUUJN?=
+ =?utf-8?B?cXlZbTVEV0pQa0xXZlVHTXRzdFcxbFJJODUxb2tUdnEwOXpwclVUcjZUc1lR?=
+ =?utf-8?B?SGNaYVNOWndrRE1PU1hJMzZnQWo2NjNWTkdpdnRkbDJoWDBjS1U5ZldyeU1i?=
+ =?utf-8?B?TjM1UTIxMnBIL3JNaUN1S2RKUDJ5VkJDelZkQjc5dklUUXgwU3duY3lYaGcy?=
+ =?utf-8?B?TmJFMzRrMzNDdU0wYlI4K2w3Mzl1b1pxTjlNQ2dqL3NCNVkrY0tSMjBodGE1?=
+ =?utf-8?B?cUtGcnZIc1lLVFc2ZElMQlBkU0NVbFBtWWVCL0dNVlM1alVQVWxud0pQd3dZ?=
+ =?utf-8?B?VjlOUFhGZ0UxV09vaWNEejArdlh0cVZXeGs3OXpqWGpTV2RmSjM1V0V3NDZa?=
+ =?utf-8?B?bkVOWXZoci9BdkcrVDRScFRvelpaVld3bjhJaHgzS292MnV5VjkvZjlyTGw4?=
+ =?utf-8?B?a0c5SDk1U3o4OUlTMDhncjFicVhCS2xLTEd3SDN4VEhaMUcwNUxPUEJtdjJ2?=
+ =?utf-8?B?Umgxc0tNN1pWSThWUjc4ZjlvNHlxOUtydWN1c2ZIZGlNQk1iZnFOSG1YNnRZ?=
+ =?utf-8?B?eUZxLzUwdThWdzNZTXBhcld6bVkrQVlVWUdaNmx1anp2Z0laT2RLWER5Y0ow?=
+ =?utf-8?B?QUh2Vk83aHQvMjB1S2svcnpncXR0enhHcnZVc2VtakEwMTlXb3VuUkZFNjF1?=
+ =?utf-8?B?ZjJaTHdLWVRxQVlST3lKb1VJWXVGaURRSk1Zb0Q0ODRkdENyQnltdjB3Szhx?=
+ =?utf-8?B?WUJNN0hMYXdvZVlWcFRZMjVjQzREemFXb2VYN3g4NXNtczZ3eHdzVmVxWXFK?=
+ =?utf-8?B?QmhkNTV5ZEZuT2lRWFhVdHhZRXpTM1NKNnBzcUlLdFlDZ01Hb05XTUM1VUt0?=
+ =?utf-8?B?cFJ0WGczTE1OQnQzdkpha3JBMHlaRWpqZ1VHOXJ6WnJpV2RQalFYcUVKOVNX?=
+ =?utf-8?B?Wml0dVJVanA4YkZjNFVTM2ZJamdzOWl2djZybktzZDFxWld2L0dNNGNQdkF4?=
+ =?utf-8?B?OE90QS9BS2t3RjFnT1UrTWRJUUFmMmxiZ2hJQkFFT1k5Vk9hZ3FUUDUvb3BV?=
+ =?utf-8?B?WnJmOS9zSDl1Rzl4UktWV2lNUzRmMHhvMHlsbVM3Z1pIRjZvTFN5QT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ad4c013b-a696-4279-19d7-08df32a37c03
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB239779.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2026 14:23:05.2331
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bJ06DGK7zg28BRqMHJ/sm015ptFA3lwaVfWRXtQGzZN+3oRFdjFVSMHqcTh8VTrYzt3L4em69tOyOc9RyTtLHg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB8558
 
-A kernel-side delete, i.e. a delete triggered by the SET target while
-the set is being resized, is applied to the current table and saved in
-the resize backlog, to be replayed against the new table when the
-resize finished. Both tables share the element extensions: the resize
-copies the element to the new table, keeping the pointer to the
-extension data, e.g. to the comment. Deleting the element in the
-current table calls ip_set_ext_destroy() and releases the shared
-extension. The replay then deletes the copy from the new table and
-releases the same extension again, i.e. the same rcu_head is queued
-twice. With CONFIG_DEBUG_OBJECTS_RCU_HEAD (and slub_debug=F, which
-keeps kfree_rcu() off the sheaf fast path):
 
-  ODEBUG: activate active (active state 1) object type: rcu_head
-  WARNING: lib/debugobjects.c:629 at debug_print_object+0x7b/0x100
-  kvfree_call_rcu(): Double-freed call. rcu_head ffff88810474ce40
-  WARNING: mm/slab_common.c:2041 at kvfree_call_rcu+0x10b/0x140
-  Call Trace:
-   <TASK>
-   debug_object_activate (lib/debugobjects.c:905)
-   kvfree_call_rcu (mm/slab_common.c:2039)
-   hash_ip4_del (net/netfilter/ipset/ip_set_hash_gen.h:1226)
-   hash_ip4_kadt (net/netfilter/ipset/ip_set_hash_ip.c:96)
-   ip_set_del (net/netfilter/ipset/ip_set_core.c:820)
-   set_target_v3 (net/netfilter/xt_set.c:411)
-   ipt_do_table (net/ipv4/netfilter/ip_tables.c:345)
-   nf_hook_slow (net/netfilter/core.c:619)
-   raw_sendmsg (net/ipv4/raw.c:652)
-   __sys_sendto (net/socket.c:2281)
 
-The double free is reachable from an unprivileged user namespace and
-permits local privilege escalation.
+On 13/10/2026 14:33, Paolo Abeni wrote:
+> 
+> 
+> On 10/6/26 13:24, Tariq Toukan wrote:
+>> From: Or Har-Toov <ohartoov@nvidia.com>
+>>
+>> mlx5_lag_disable_mpesw() never called mlx5_lag_reset_vports_speed(),
+>> unlike regular LAG teardown in mlx5_do_bond(), leaving stale cached and
+>> FW-configured speeds after MPESW is torn down.
+>>
+>> Call it from mlx5_lag_disable_mpesw() as well, so the reset is paired
+>> with mlx5_lag_set_vports_agg_speed() on the MPESW path too.
+>>
+>> Fixes: 50f1d188c580 ("net/mlx5: Propagate LAG effective max_tx_speed 
+>> to vports")
+>> Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
+>> Reviewed-by: Shay Drori <shayd@nvidia.com>
+>> Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+>> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+> The AI reported feedback looks like a pre-existing problem with
+> mlx5_lag_reset_vports_speed(), but AFAICS it makes also the fix
+> (partially) ineffective. I think this late in the cycle it's
+> preferable to avoid partial fixes.
+> 
+> /P
 
-Fix this by deferring the delete when a resize is in progress: the
-element is not deleted in the current table, only saved in the backlog,
-like it is done for kernel-side adds. The resize copies the element
-including its extension pointers, and the replayed delete releases the
-extension exactly once. This also avoids updating the cidr counters
-twice for the same element.
-
-Clearing the used bit of the deferred delete instead is not an option:
-the extension of an element the resize copy loop has not reached yet
-would never be freed, the old table is destroyed with ext_destroy=false
-to protect the extensions shared with the copied elements. The element
-thus stays in the current table until the resize completes, so
-
-- a kernel-side add of such an element must be deferred too, otherwise
-  it is rejected with -EEXIST and lost, and the replayed delete removes
-  the element for good, leaving the set without an element the last
-  packet-path operation added;
-
-- the backlog must keep the arrival order of the operations: deferred
-  deletes are queued with list_add_tail() like the deferred adds, so an
-  add followed by a delete of the same element is not replayed the
-  other way around, resurrecting the element.
-
-A resize which is aborted before the new table is in place replays the
-backlog against the original table, which stays the live table, instead
-of dropping it. This covers the allocation failure in the copy loop and
-the early exits of a retry after -EAGAIN, which inherits the backlog of
-the previous attempt: the deferred deletes are the only record of the
-delete there, dropping them would leave elements in the set which the
-packet path believes deleted, and the backlog entries would leak.
-
-The deferred delete reports -ENOMEM when the backlog entry cannot be
-allocated, instead of returning success without deleting anything.
-
-Fixes: f66ee0410b1c ("netfilter: ipset: Fix "INFO: rcu detected stall in hash_xxx" reports")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xue Boyang <fuchen.dust@gmail.com>
-Assisted-by: LLM DeepSeek-V4.1-Flash
----
-
-Changes in v2, addressing the review of v1 linked in
-https://sashiko.dev/#/patchset/20261012163353.4093-1-fuchen.dust%40gmail.com :
-
-- Defer the kernel-side add of an element still present in the current
-  table during the resize ("missing clear_bit() breaks operation
-  ordering during resize"). The add was rejected with -EEXIST without
-  being queued, so an add following a deferred delete was lost and the
-  replayed delete removed the element.
-
-- Replay the backlog on all resize failure exits, not only on the
-  allocation failure in the copy loop ("memory leak of deferred
-  operations on resize failure"). The exact path claimed there, an
-  allocation failure of the first attempt, exits before the table is
-  marked resizing and the backlog is empty; the leak is real however
-  for the early exits of a retry after -EAGAIN, which inherits a
-  non-empty backlog from the previous attempt.
-
-- Queue the deferred deletes with list_add_tail() ("backlog replay
-  ordering during resize resurrects deleted elements"). The prepend
-  predates this patch, but the fix relies on the backlog preserving
-  the arrival order, so all deferred operations are now queued FIFO
-  and the failure path replays the full backlog in order instead of
-  dropping the deferred adds.
-
-- Report -ENOMEM when the deferred delete cannot allocate its backlog
-  entry.
-
-The "memory leak of extensions for expired elements" concern is
-preexisting (the resize copy loop skips expired elements and the table
-destroy keeps ext_destroy=false) and is not addressed here.
-
-The reproducer (SET --del-set rule plus a userspace add triggering the
-resize) was run against v7.3-rc5 (mainline tree at 6d25ffca055a):
-before the patch the double free shows up as the warning quoted in the
-commit message and as duplicate objects in the SLUB RCU sheaves; with
-the patch applied it no longer reproduces in repeated runs. The
-reproducer is not attached; it is available and can be shared privately
-upon request. The ordering of the deferred operations and the replay of
-the backlog were verified with a packet-path del+add / add+del
-regression test racing continuous resizes: v1 shows the lost add and
-the resurrected element, v2 shows neither in repeated runs.
-
-Found with AI assistance (DeepSeek V4.1 Flash, see Assisted-by); the
-patch was reviewed, reproduced and tested by hand.
----
- net/netfilter/ipset/ip_set_hash_gen.h | 77 +++++++++++++++++++--------
- 1 file changed, 56 insertions(+), 21 deletions(-)
-
-diff --git a/net/netfilter/ipset/ip_set_hash_gen.h b/net/netfilter/ipset/ip_set_hash_gen.h
-index 80ca523f304b..f24c51d489e2 100644
---- a/net/netfilter/ipset/ip_set_hash_gen.h
-+++ b/net/netfilter/ipset/ip_set_hash_gen.h
-@@ -764,6 +764,7 @@ mtype_resize(struct ip_set *set, bool retried)
- 	struct hbucket *n, *m;
- 	struct list_head *l, *lt;
- 	struct mtype_resize_ad *x;
-+	LIST_HEAD(backlog);
- 	u32 i, j, r, nr, key;
- 	int ret;
- 
-@@ -786,13 +787,13 @@ mtype_resize(struct ip_set *set, bool retried)
- 	t = ip_set_alloc(hsize);
- 	if (!t) {
- 		ret = -ENOMEM;
--		goto out;
-+		goto drain;
- 	}
- 	t->hregion = ip_set_alloc(ahash_sizeof_regions(htable_bits));
- 	if (!t->hregion) {
- 		ip_set_free(t);
- 		ret = -ENOMEM;
--		goto out;
-+		goto drain;
- 	}
- 	t->htable_bits = htable_bits;
- 	t->maxelem = h->maxelem / ahash_numof_locks(htable_bits);
-@@ -934,20 +935,34 @@ mtype_resize(struct ip_set *set, bool retried)
- 	if (ret == -EAGAIN)
- 		goto retry;
- 
--	/* Cleanup the backlog of ADD/DEL elements */
-+drain:
-+	/* Cleanup the backlog of ADD/DEL elements: replay them in arrival
-+	 * order against the original table, which is still the live table.
-+	 * Kernel-side adds of elements still present are no-ops, the
-+	 * deferred deletes remove the elements. This is also reached when
-+	 * the resize fails early, e.g. on allocation failure in a retry
-+	 * after -EAGAIN: the backlog may still hold deferred operations
-+	 * from the previous attempt.
-+	 */
- 	spin_lock_bh(&set->lock);
--	list_for_each_safe(l, lt, &orig->ad) {
-+	list_splice_init(&orig->ad, &backlog);
-+	spin_unlock_bh(&set->lock);
-+	list_for_each_safe(l, lt, &backlog) {
-+		x = list_entry(l, struct mtype_resize_ad, list);
- 		list_del(l);
--		kfree(l);
-+		if (x->ad == IPSET_ADD)
-+			mtype_add(set, &x->d, &x->ext, &x->mext, x->flags);
-+		else
-+			mtype_del(set, &x->d, NULL, NULL, 0);
-+		kfree(x);
- 	}
--	spin_unlock_bh(&set->lock);
- 	goto out;
- 
- hbwarn:
- 	/* In case we have plenty of memory :-) */
- 	pr_warn("Cannot increase the hashsize of set %s further\n", set->name);
- 	ret = -IPSET_ERR_HASH_FULL;
--	goto out;
-+	goto drain;
- }
- 
- /* Get the current number of elements and ext_size in the set  */
-@@ -1053,6 +1068,19 @@ mtype_add(struct ip_set *set, void *value, const struct ip_set_ext *ext,
- 				j = i;
- 				goto overwrite_extensions;
- 			}
-+			if (t->resizing && ext && ext->target) {
-+				/* Resize is in progress and kernel side add
-+				 * of an existing element: the element may
-+				 * have a deferred delete pending in the
-+				 * backlog and it is going to be copied to
-+				 * the new table, sharing the extensions.
-+				 * Defer the add too, so that the replay of
-+				 * the backlog after resize keeps the order
-+				 * of the operations.
-+				 */
-+				ret = 0;
-+				goto resize;
-+			}
- 			ret = -IPSET_ERR_EXIST;
- 			goto unlock;
- 		}
-@@ -1217,6 +1245,26 @@ mtype_del(struct ip_set *set, void *value, const struct ip_set_ext *ext,
- 			goto out;
- 
- 		ret = 0;
-+		if (t->resizing && ext && ext->target) {
-+			/* Resize is in process and kernel side del: do not
-+			 * delete the element and free its extensions here,
-+			 * the extensions may be shared with the copy in
-+			 * the new table. Save the values, the resize replays
-+			 * the delete against the new table.
-+			 */
-+			x = kzalloc_obj(struct mtype_resize_ad, GFP_ATOMIC);
-+			if (!x) {
-+				/* Don't bother, deleting the element here
-+				 * could free the shared extensions twice.
-+				 */
-+				ret = -ENOMEM;
-+				goto out;
-+			}
-+			x->ad = IPSET_DEL;
-+			memcpy(&x->d, value, sizeof(struct mtype_elem));
-+			x->flags = flags;
-+			goto out;
-+		}
- 		clear_bit(i, n->used);
- 		smp_mb__after_atomic();
- 		if (i + 1 == pos)
-@@ -1224,19 +1272,6 @@ mtype_del(struct ip_set *set, void *value, const struct ip_set_ext *ext,
- 		t->hregion[r].elements--;
- 		mtype_del_cidr_all(set, h, d);
- 		ip_set_ext_destroy(set, data);
--
--		if (t->resizing && ext && ext->target) {
--			/* Resize is in process and kernel side del,
--			 * save values
--			 */
--			x = kzalloc_obj(struct mtype_resize_ad, GFP_ATOMIC);
--			if (x) {
--				x->ad = IPSET_DEL;
--				memcpy(&x->d, value,
--				       sizeof(struct mtype_elem));
--				x->flags = flags;
--			}
--		}
- 		for (; i < pos; i++) {
- 			if (!test_bit(i, n->used))
- 				k++;
-@@ -1273,7 +1308,7 @@ mtype_del(struct ip_set *set, void *value, const struct ip_set_ext *ext,
- 	spin_unlock_bh(&t->hregion[r].lock);
- 	if (x) {
- 		spin_lock_bh(&set->lock);
--		list_add(&x->list, &t->ad);
-+		list_add_tail(&x->list, &t->ad);
- 		spin_unlock_bh(&set->lock);
- 	}
- 	if (atomic_dec_and_test(&t->uref) && t->resizing) {
--- 
-2.53.0
+Hi, patch "Lag, save and restore vport max_tx_speed across LAG" 
+(https://lore.kernel.org/all/sashiko-outbox-183123@kernel.org/) that we 
+also send now it completing this fix.
 
