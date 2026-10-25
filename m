@@ -1,55 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1792901038;
-	b=AowICi+SZs2K/0EBpJ62Zgq4OtW2GxLdRHqssn1E2ub457tqurOIK2lCPOgLo/QSCG2q
-	 TzHO6qwHKRf59Ju9F8AXa8vILLkeN7eISXL8zBiYcvwyMFbHG+p2bHBQfB0zsF764PFRq
-	 vg5rE8FvG4olrGDZOvmR1+XMJES6H6xu7VcNBvT/iFKDJKk7zZY7yh9I+ITvv8GGAaqd5
-	 EXyb1nteGFqAb3rWlzwfEJ8z2kaV4w28D40p9nuIoUJasOXg/T7cJbW9YRjBxA6oW7hov
-	 VUmCodY/ZdtItwcTBLIZ+UFsYNjFQ1u4uTiogQf+Ynoe/PMC42QD9k9/SZEMJpfQkzA==
+	b=TBcJidEnjeNSxO8iXseXo8iCcYs1OD8XRTwR0LEIc0qwFs/p5fR9gtZyKWYr65oy/QPE
+	 in5OrAiHG6lPT45Fm8juS4qHJFI2/RImy6oep0qs5/Mkb3B3rcawNFN8C6YrYBgReKaJL
+	 TYMWHHf2eUoUy9nLeiOqDNTU/j5Ye2zdlljFCufeSz5+L46n8dXKX0UksvGii8xrd8EeR
+	 9Zz1ot3EWw1r/PQtQQBt+ZwId7m/FJvWuV4HR48saOxKqRycRwB6UL6SF68aa2x3lTW4P
+	 tCBlU0FOYjxp+FalwJiZDHK5ZMmwbw9bvjdROq6rUM8Vem9AUGWOQ2yzM4ZytLwCpIA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1792901038;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=EzVD2bT7oaizuDVBh+h57LTaRZEKb5zEcCK5n3l4SOY=;
-	b=LnocAO9kyApItoMBi4FpRs/LkQ2caTXvI0mqT3T8vkuAsEYn5xlPOrfmIqOSht4weiGv
-	 XobyqYBQNhgQKKFtBKR8OH4RT04oM9lzzhMuJ9NlQsoc58YvJIOHNOvvblIPXUlKnYzn1
-	 ziP5peWDNH98VfKCGzVP5fXHqcYa/P+tqK5RlFYYq6MIluKbh449ZUBADmWnZJjAlV0Wm
-	 FZ4z4/+3rgvrsW6pxG8hphYOW1GseZEIRfElsozLAe+7EGjyU2NOTrV7YqfM0IW6lL6KI
-	 7cpACaDnZEQ95HW2xy7eYlteRx29CMT+AJeLEBsj8qLtst4Pu/k98mXoS131wSagRpw==
+	bh=xEK3ziTLDp3P8qge4qM9WyluMbHgJ78J74M7q1KfX+g=;
+	b=ql+UXpOYtcYE/NMb4/ApPQSE4ESh5AkfiNJfSwPTrcx3AbofEGe07Q80GIOIEvo8kwze
+	 fw/Q0mKabo9s2+AgCePAtGww1G3h1LT/4FxdU4G39pCiT85xKp9EtObD7FOhwQhkXmM9V
+	 CMm/1hmRHiT+s1uU7gv33wdT6vjKEvmSr2GsClG+WkYFMYrxELv8Kvez605sgICudKUch
+	 muqkBIps9dFCO7eAaVQzxvYDV+QDETTurh5SGaTd5Uo5GRLlRFZkX9A86+3pCsC8hqLj5
+	 JM237wq4flB/KIGcz/Vqwr7xcU6PsMYEfQ6WWytXpuz8o4TVnBcQy+cLfqNIhj4bFeA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k8SZj3UK;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ok6l2rWJ;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86998606A31E;
-	Sun, 25 Oct 2026 04:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8576F606A32A;
+	Sun, 25 Oct 2026 04:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k8SZj3UK
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEC811F01825;
-	Sun, 25 Oct 2026 04:03:56 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ok6l2rWJ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B53221F01828;
+	Sun, 25 Oct 2026 04:03:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792901037;
-	bh=EzVD2bT7oaizuDVBh+h57LTaRZEKb5zEcCK5n3l4SOY=;
+	s=k20260515; t=1792901038;
+	bh=xEK3ziTLDp3P8qge4qM9WyluMbHgJ78J74M7q1KfX+g=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=k8SZj3UKZ8kW9I9DVd5h89/tc+6gO1l9k31Ud8hnMcWjL+ch1YJurCxR/ifEDl857
-	 4EX9KoXmuJLfNhOQf7+uNyfyiI1ywaZadGOvA91ES4YjN/IUTx1aNgbb9rZiypXNq4
-	 vGUZH8phfEw6hxF4qgUN1dgeDbHUp/Y6TwheCzn0mVXAhTTXpb+2hyyo7bqyd6KxSy
-	 j+K9gssLcXyhaKDN6JD1/Vge8xY3B65AUCLFYdEVmtcSXRN5IjrBCkDUfzdQ8vZoib
-	 KGTLfVuTSMG2ye20gD743qcpiRY8g9ubPCmJVTT0aGVUKMUiGsNJAY6tHbSUToH0nu
-	 PUO86dD0empLw==
+	b=Ok6l2rWJVN763KuLiWOpbogWXmbC0yHCZNPDjsjpbqx6JvhB8HwXyEIY93vUyG0oH
+	 42Y3yCqXRffw7cDb1bMOSowrBCEQBFXRNE+EYxynThrXmVxpjhHm7od9YLEJb5uKum
+	 rHZHNVdihscgpp6kHkSd03q2d5GJ9h5/i7IWvOCgxRlR16Wdbs7jQj4qHOmQG6Fu5K
+	 /16kvpvSDXkUH+vx/ep7+5MEwfcXL+d490vX4cZdlEhIIRXHX7lUDfLb8NasG+9yiW
+	 //tdbrbBVAu/CzxiM3NxCtgiBiQNJCsxv3G6Ve7ScXR/Ri4/VrqLWwW2dIsjCwplgq
+	 9qbylHg5lh7Ow==
 Subject:
- Re: [PATCH net v6 1/6] nfc: nci: skip controller reset while unregistering
+ Re: [PATCH net v6 3/6] nfc: nci: uart: quiesce callbacks during teardown
 From: netdev-bot+sashiko@kernel.org
 To: shubham@octane.security
 Cc: netdev@vger.kernel.org, david@ixit.cz, oe-linux-nfc@lists.linux.dev,
  gio@octane.security, stable@vger.kernel.org, kuba@kernel.org
-Date: Sun, 25 Oct 2026 04:03:56 +0000
-Message-ID: <179290103628.3134.7771623645403317712@kernel.org>
-In-Reply-To: <20261021032443.44412-2-shubham@octane.security>
-References: <20261021032443.44412-2-shubham@octane.security>
+Date: Sun, 25 Oct 2026 04:03:57 +0000
+Message-ID: <179290103732.3134.18298634182061634234@kernel.org>
+In-Reply-To: <20261021032443.44412-4-shubham@octane.security>
+References: <20261021032443.44412-4-shubham@octane.security>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -63,10 +63,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 3 · Low: 1
+Critical: 0 · High: 0 (3) · Medium: 2 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -74,177 +74,276 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The patch skips CORE_RESET_CMD for every caller of
-  nci_unregister_device(), not only for transports that are detaching.
-- [Medium] The NCI_UNREG check only removes the CORE_RESET that close
-  sends itself.
-- [Medium] The new NCI_UNREG gate cannot affect a reset (or init) request
-  that is already in flight when line discipline close starts.
-- [Low] On the unregister path, nci_close_device() no longer sets
-  NCI_INIT, but it still calls ndev->ops->close().
+- [Medium] When nci_uart_tty_close() tears down an NCI UART whose NCI
+  device is up, the NFC controller (NFCC) is left running in whatever RF…
+- [Medium] Baseline decision: fixed later in the series.
+- [Low] Baseline decision: not a bug in practice.
+
+Pre-existing issues:
+- [High] Pre-existing problem, not introduced by this patch: during a
+  Marvell firmware download, the UART peer (NFCC) controls a 16-bit…
+- [High] Pre-existing problem, not introduced by this patch: the Marvell
+  firmware download copies from the firmware image at a peer-advanced…
+- [High] Baseline decision: pre-existing and fixed later in the series.
 
 --
 
-nfc: nci: skip controller reset while unregistering
+nfc: nci: uart: quiesce callbacks during teardown
 
-This patch makes nci_close_device() skip sending CORE_RESET (and skip
-setting NCI_INIT) when NCI_UNREG is set. The motivation is that on line
-discipline close the transport can no longer deliver the response, so close
-waits for the full reset timeout.
+This patch adds a tx_lock and a CLOSING transmit state. Together they
+serialize nci_uart_tx_wakeup() and nci_uart_write_work() against teardown.
+It also adds nci_uart_rx_stop() and nci_uart_tx_stop(), which stop the
+generic receive and transmit callbacks before the transport close operation
+runs. The Marvell UART transport gets a new nci_quiesce hook that stops
+these callbacks and clears its back-pointers before private state is
+released.
 
-> diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-> index 73e3a96470ace..8ee33505e93ad 100644
-> --- a/net/nfc/nci/core.c
-> +++ b/net/nfc/nci/core.c
-> @@ -582,13 +582,15 @@ static int nci_close_device(struct nci_dev *ndev)
->  	/* Flush TX wq, RX wq flush can't be under the lock */
->  	flush_workqueue(ndev->tx_wq);
+> diff --git a/drivers/nfc/nfcmrvl/main.c b/drivers/nfc/nfcmrvl/main.c
+> index 6efa832191172..baf4c781ee6b6 100644
+> --- a/drivers/nfc/nfcmrvl/main.c
+> +++ b/drivers/nfc/nfcmrvl/main.c
+
+[ ... ]
+
+> @@ -181,6 +183,9 @@ void nfcmrvl_nci_unregister_dev(struct nfcmrvl_private *priv)
+>  	struct nci_dev *ndev = priv->ndev;
 >  
-> -	/* Reset device */
-> +	/* Reset device unless it is being unregistered */
->  	skb_queue_purge(&ndev->cmd_q);
-> -	atomic_set(&ndev->cmd_cnt, 1);
+>  	nci_unregister_device(ndev);
+> +	if (priv->if_ops->nci_quiesce)
+> +		priv->if_ops->nci_quiesce(priv);
+> +
+>  	if (priv->ndev->nfc_dev->fw_download_in_progress)
+>  		nfcmrvl_fw_dnld_abort(priv);
 >  
-> -	set_bit(NCI_INIT, &ndev->flags);
-> -	__nci_request(ndev, nci_reset_req, (void *)0,
-> -		      msecs_to_jiffies(NCI_RESET_TIMEOUT));
-> +	if (!test_bit(NCI_UNREG, &ndev->flags)) {
-> +		atomic_set(&ndev->cmd_cnt, 1);
-> +		set_bit(NCI_INIT, &ndev->flags);
-> +		__nci_request(ndev, nci_reset_req, (void *)0,
-> +			      msecs_to_jiffies(NCI_RESET_TIMEOUT));
-> +	}
+
+[Severity: High]
+This isn't a bug introduced by this patch, but can this teardown race with
+a firmware download timeout callback that is already running?
+
+fw_dnld_over() only waits for the timer if it is still pending:
+
+drivers/nfc/nfcmrvl/fw_dnld.c:fw_dnld_over() {
+    ...
+	if (timer_pending(&priv->fw_dnld.timer))
+		timer_delete_sync(&priv->fw_dnld.timer);
+    ...
+}
+
+If fw_dnld_timeout() is already executing, timer_pending() returns false
+and nothing waits for it. nfcmrvl_nci_unregister_dev() then continues to:
+
+	nci_free_device(ndev);
+	kfree(priv);
+
+The callback may still be using priv and priv->ndev at that point.
+
+A later patch in this series, "nfc: nfcmrvl: stop firmware work before
+unregistering", appears to fix this. With it, fw_dnld_timeout() only queues
+timeout_work, and nfcmrvl_fw_dnld_abort() calls timer_shutdown_sync() and
+cancel_work_sync(&timeout_work) before nci_unregister_device().
+
+[Severity: High]
+This is a pre-existing issue, not one introduced by this patch. While
+looking at the firmware download teardown here: can a UART peer make
+process_state_fw_dnld() overflow out_skb?
+
+In SUBSTATE_WAIT_COMMAND, any length is accepted as long as its complement
+matches (for example len = 0xFFFF with comp = 0x0000). It is then stored
+with no upper bound:
+
+drivers/nfc/nfcmrvl/fw_dnld.c:process_state_fw_dnld() {
+    ...
+		priv->fw_dnld.chunk_len = len;
+    ...
+}
+
+In SUBSTATE_WAIT_ACK_CREDIT, the skb comes from alloc_lc_skb(), which takes
+a uint8_t plen, so it holds at most 255 payload bytes. skb_put_data() then
+uses the full chunk_len:
+
+			out_skb = alloc_lc_skb(priv, priv->fw_dnld.chunk_len);
+			if (!out_skb)
+				return -ENOMEM;
+			skb_put_data(out_skb,
+				     ((uint8_t *)priv->fw_dnld.fw->data) + priv->fw_dnld.offset,
+				     priv->fw_dnld.chunk_len);
+
+With chunk_len = 65535, would skb_put() reach skb_over_panic() and BUG()?
+
+This is reachable once a CAP_NET_ADMIN user starts NFC_CMD_FW_DOWNLOAD. The
+lengths come from the device or from a pty-backed peer.
+
+[Severity: High]
+This is also a pre-existing issue, not one introduced by this patch. Does
+anything in process_state_fw_dnld() bound priv->fw_dnld.offset against
+priv->fw_dnld.fw->size?
+
+SUBSTATE_WAIT_DATA_CREDIT advances the offset by the length the peer
+chose:
+
+		priv->fw_dnld.offset += priv->fw_dnld.chunk_len;
+
+SUBSTATE_WAIT_ACK_CREDIT then copies from that offset using the
+skb_put_data() call quoted above. Neither step checks offset + chunk_len
+against fw->size.
+
+Suppose a peer keeps asking for chunks of 255 bytes or less and sends the
+expected credit notifications. Can offset then move past the end of the
+firmware image? If so, the kernel would read memory beyond fw->data and
+send it to the peer in NCI data frames, or fault on an unmapped page.
+
+[ ... ]
+
+> diff --git a/net/nfc/nci/uart.c b/net/nfc/nci/uart.c
+> index fb9ed281f62c3..aa24e1f572d9d 100644
+> --- a/net/nfc/nci/uart.c
+> +++ b/net/nfc/nci/uart.c
+
+[ ... ]
+
+> @@ -64,24 +65,61 @@ static inline int nci_uart_queue_empty(struct nci_uart *nu)
+>  
+>  static int nci_uart_tx_wakeup(struct nci_uart *nu)
+>  {
+> +	unsigned long flags;
+> +
+> +	spin_lock_irqsave(&nu->tx_lock, flags);
+> +	if (test_bit(NCI_UART_CLOSING, &nu->tx_state) ||
+> +	    !test_bit_acquire(NCI_UART_READY, &nu->flags))
+> +		goto unlock;
 
 [Severity: Medium]
-This skips the reset for every caller of nci_unregister_device(), not only
-for transports that are detaching. Is that intended for drivers whose bus
-still works during remove() and whose ops->close() does nothing?
+Can this READY check leave a frame stuck in nu->tx_q?
 
-For nfcmrvl over I2C/SPI, nfcmrvl_nci_close() only calls the per-bus close
-function, and that function is empty:
+When READY is not set yet, the kick is dropped without setting
+NCI_UART_TX_WAKEUP or recording that work is pending. nci_uart_set_ready()
+also does not check tx_q when it publishes READY.
 
-drivers/nfc/nfcmrvl/i2c.c:nfcmrvl_i2c_nci_close() {
-	return 0;
-}
+For Marvell, nci_register_device() runs from inside ops.open(), before
+READY is set:
 
-FDP is the same:
+nci_uart_set_driver()
+    nu->ops.open(nu)
+        nfcmrvl_nci_uart_open()
+            nfcmrvl_nci_register_dev()
+                nci_register_device()
+    nci_uart_set_ready(nu)
 
-drivers/nfc/fdp/fdp.c:fdp_nci_close() {
-	return 0;
-}
+If NFC_CMD_DEV_UP arrives in that window, nci_uart_send() queues
+CORE_RESET into nu->tx_q, but write_work is never scheduled. Would
+nci_open_device() then time out, and would the stale CORE_RESET go out
+ahead of the next command that kicks the worker?
 
-nfcmrvl_nci_unregister_dev() also never calls nfcmrvl_chip_halt(). The
-I2C/SPI IRQs are devm-managed, so they are still live during remove().
+Before this patch, the same window scheduled write_work and could
+dereference a NULL nu->drv_data in nfcmrvl_nci_uart_tx_start(), so this is
+still better than that crash.
 
-Before this patch, the CORE_RESET went out over the live bus with NCI_INIT
-set. nci_recv_frame() accepted the response, and the NFCC went back to
-reset.
+A later patch in this series, "nfc: nfcmrvl: publish UART state before
+registration", calls nci_uart_set_ready() before nci_register_device(),
+which closes this window.
 
-With this change, suppose the device is up when nfcmrvl_i2c_remove(),
-nfcmrvl_spi_remove() or fdp_nci_remove() runs. Can the controller then stay
-in its last RF state (polling with the field on, listen mode, or an active
-interface) after the kernel has cleared all of its state?
+[ ... ]
+
+> @@ -99,14 +137,50 @@ static void nci_uart_write_work(struct work_struct *work)
+>  		kfree_skb(skb);
+>  	}
+>  
+> -	if (test_bit(NCI_UART_TX_WAKEUP, &nu->tx_state))
+> +	spin_lock_irqsave(&nu->tx_lock, flags);
+> +	if (test_bit(NCI_UART_CLOSING, &nu->tx_state)) {
+> +		clear_bit(NCI_UART_SENDING, &nu->tx_state);
+> +		clear_bit(NCI_UART_TX_WAKEUP, &nu->tx_state);
+> +		spin_unlock_irqrestore(&nu->tx_lock, flags);
+> +		return;
+> +	}
+
+[Severity: Low]
+This might not matter in practice. This early return skips ops.tx_done()
+even though ops.tx_start() already ran in this pass.
+
+With Marvell break_control, nfcmrvl_nci_uart_tx_start() calls
+break_ctl(tty, 0) and nfcmrvl_nci_uart_tx_done() calls break_ctl(tty, -1).
+If teardown hits the worker mid-burst, the line is left with BREAK
+de-asserted. If it hits between bursts, BREAK stays asserted. Is that
+difference intended?
+
+The ldisc is being detached here, and a full tty close clears break during
+serial shutdown, so the practical effect may be limited.
+
+[ ... ]
+
+> @@ -208,26 +279,24 @@ static void nci_uart_tty_close(struct tty_struct *tty)
+>  {
+>  	struct nci_uart *nu = tty->disc_data;
+>  
+> -	/* Detach from the tty */
+> -	tty->disc_data = NULL;
+> -
+>  	if (!nu)
+>  		return;
+>  
+> +	tty->disc_data = NULL;
+> +
+>  	if (test_bit(NCI_UART_DRIVER_SET, &nu->flags)) {
+> -		kfree_skb(nu->tx_skb);
+> -		kfree_skb(nu->rx_skb);
+> +		nci_uart_rx_stop(nu);
+> +		nci_uart_tx_stop(nu);
+> +		nu->ops.close(nu);
+
+[Severity: Medium]
+Does this leave the NFC controller running in its last RF state after
+teardown?
+
+nci_uart_tx_stop() sets NCI_UART_CLOSING and cancels write_work before
+nu->ops.close() runs. As a result, nci_uart_tx_wakeup() refuses every frame
+sent during:
+
+nu->ops.close()
+    nfcmrvl_nci_unregister_dev()
+        nci_unregister_device()
+            nci_close_device()
+
+This patch depends on the earlier series patch "nfc: nci: skip controller
+reset while unregistering", which already skips the reset in
+nci_close_device():
+
+	if (!test_bit(NCI_UNREG, &ndev->flags)) {
+		atomic_set(&ndev->cmd_cnt, 1);
+		set_bit(NCI_INIT, &ndev->flags);
+		__nci_request(ndev, nci_reset_req, (void *)0,
+			      msecs_to_jiffies(NCI_RESET_TIMEOUT));
+
+Before the series, write_work was only cancelled at the end of
+nci_uart_tty_close(), so the CORE_RESET was still written to the UART and
+only the response was lost. Now no command reaches the controller during
+unregister.
+
+The Marvell path does not halt the controller some other way either:
+
+  - nfcmrvl_nci_close() only calls if_ops->nci_close, which does nothing
+    for UART.
+  - nfcmrvl_uart_nci_quiesce() only clears software state.
+  - nfcmrvl_chip_halt() is only called from fw_dnld_over() on error, which
+    only happens while a firmware download is in progress, and it also
+    needs a reset GPIO.
+
+So an NFCC that was polling with the RF field on, or in listen/card
+emulation mode, would stay that way with no host driver until it is
+re-attached (nci_open_device() sends CORE_RESET then) or power-cycled.
 
 The commit message says:
 
-  Keep the reset for a normal device-down operation, where the transport
-  remains attached and can deliver the response.
+    The preceding change skips the unregister-time controller
+    reset because the TTY core cannot deliver its response after line
+    discipline close starts.
 
-For these drivers, the transport is also still attached during unregister.
+That explains why the response is lost. Could the commit message also
+explain why it is acceptable that the reset command itself is no longer
+sent, or could the controller be quiesced some other way before TX is
+shut off?
 
-Later patches in the series don't seem to change this:
-
-- nci_close_device() stays the same.
-- nfcmrvl_fw_dnld_abort() returns early when no download is active.
-- The new nci_quiesce hook exists only for UART.
-
-[Severity: Low]
-On the unregister path, test_and_clear_bit() at the top of
-nci_close_device() has already cleared NCI_UP. Now NCI_INIT is not set
-either. But ndev->ops->close(ndev) still runs right after this block, and
-for ST NCI that callback sends a request:
-
-st_nci_close()
-  ndlc_close()
-    nci_prop_cmd(ndlc->ndev, ST_NCI_CORE_PROP, ...)
-      __nci_request(..., msecs_to_jiffies(NCI_CMD_TIMEOUT))
-
-The reply comes in through llt_ndlc_rcv_queue() -> nci_recv_frame(), which
-drops it:
-
-	if (!ndev || (!test_bit(NCI_UP, &ndev->flags) &&
-	    !test_bit(NCI_INIT, &ndev->flags))) {
-
-Will the mode-set command in ndlc_close() now always time out after 5
-seconds and log a pr_err during unregister?
-
-The impact is limited. st_nci_remove() already calls ndlc_close() directly
-before nci_unregister_device(), and that call disables the IRQ, so the old
-CORE_RESET also timed out. The stall moves from the reset to the mode-set
-command, and total unbind time stays about the same.
-
-[Severity: Medium]
-Does this cover a reset or init request that is already running when line
-discipline close starts?
-
-nfc_dev_down() takes device_lock and calls nci_dev_down() ->
-nci_close_device(). NCI_UNREG isn't set yet, so __nci_request(nci_reset_req)
-runs and waits for up to NCI_RESET_TIMEOUT. nfc_dev_up() ->
-nci_open_device() does the same with its reset and init requests.
-
-Meanwhile, with the ldisc write lock held:
-
-nci_uart_tty_close()
-  tty->disc_data = NULL;
-  nu->ops.close(nu)
-    nfcmrvl_nci_unregister_dev()
-      nci_unregister_device()
-        nfc_unregister_rfkill()
-          device_lock(&dev->dev);   <- blocks behind nfc_dev_down()
-
-This block happens before set_bit(NCI_UNREG) and before nci_req_cancel() in
-nci_close_device().
-
-The pending response can't arrive, because disc_data is NULL and the ldisc
-lock is held for writing. So the waiter runs out the full 5000 ms timeout,
-and ldisc close waits along with it.
-
-This is the "close waits for the full timeout" symptom from the commit
-message, reached through a race. The rest of the series doesn't seem to
-change it either. The later UART quiesce patch stops rx/tx before ops.close,
-which only makes sure the response never arrives.
-
-Would it work better to mark the device as unregistering and cancel pending
-requests before serializing on device_lock? Another option is to make
-in-flight requests abort when the transport detaches.
-
-[Severity: Medium]
-A related question about requests already in flight. nci_req_cancel() runs
-only once, at the top of nci_close_device(). It only completes a request if
-one is pending at that exact moment:
-
-net/nfc/nci/core.c:nci_req_cancel() {
-	if (ndev->req_status == NCI_REQ_PEND) {
-	...
-}
-
-nci_open_device() checks NCI_UNREG only on entry:
-
-	if (test_bit(NCI_UNREG, &ndev->flags)) {
-
-After that check, its __nci_request() calls (reset/init, 5000 ms timeouts)
-wait out their full timeouts while device_lock is held.
-
-Say NFC_CMD_DEV_UP is waiting there when nci_uart_tty_close() starts.
-Unregister then blocks in device_lock() in nfc_unregister_rfkill() until
-the timeout expires.
-
-Doesn't that still leave ldisc close stalled for NCI_RESET_TIMEOUT or
-NCI_INIT_TIMEOUT, even with the new NCI_UNREG check?
-
-This overlaps with the device_lock ordering question above. Other nfc core
-ops take device_lock and check shutting_down, so no new request should be
-able to start after nfc_unregister_rfkill().
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021032443.44412-1-shubham%40octane.security
