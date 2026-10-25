@@ -1,55 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792951188;
-	b=i4hftWQQesv69IiAUd4KZjGqro3JAg9zBFtKWqvrYPT3NIiccFv0FYY27FIIj3e+OMQx
-	 ikgsX966fre/shvJGRJUkElWL9QDDPid+JPLLRrnEQqaJ1YLvejEhowc/VIdVpSvoFGjy
-	 QQpwliwJxzVi/h5x65hORmTRt1OL4PRqDUy0xkxS1OOLNahtuqsMn5QwWA9lN8tTzJ3/Z
-	 zYfaf4ntWRUktSPACAesb0+5MPvRsRhAqwW7Bvsu4U/Geym+36ya9S9z8ISGhFOXqvhUl
-	 lMBNULFIm1NXZwCknfKYbl8vVSyMRgj8ZiYWJK6Jurx5eRiLVPzgox+lcDRcoFuTjlw==
+	t=1792951375;
+	b=fbUOdIqfn8VlJLwAJ8cuUIcf8A08SGDaj+QLPbdaJ8kMgAnNHcRmhbelc+JbVwetkiwC
+	 UK82OmsHUJJLt9cq6+CTbMZjtXqAwg+tomrajLqNIgAB7VjZbKmBgwJ4yuglg4QTQF5ik
+	 zS4OA9MGkWTxFn038ihimZCX/2kx1V7vN3mfQ3/R8uoI231+iqFYtIqER/pOTUkBFbKlE
+	 w6Yb+hb5t5UGZBHhAbpb5al8Zm2wyMax5fKHi3RLEjFKziuqk4VQIn3PwJgYjcBF1QfC4
+	 5fn2m97MCy2W60cfXUksdWngqp1xz0am2kUdqOxZJNO0gXXCaJ4RKOtI6UC4CfzHVjQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792951188;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792951375;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=iQFWAC+LE0ukQFDAdwhgMAzRUq3lyn5OIEXjDc/Z2Dg=;
-	b=3xr5Urran6etMfRw6dqbRRMopxkBfzXzMM/oqfsp5bWKt8cPmo3dYJSQnSIhusD6J028
-	 0IqF5mEqKg5FSWKGVhhHAzWY8akPpmBxCmoAf+JMkSFqGsNYQm+6afOvaqoHg8HDZKd4p
-	 EoCsyNwAWsxOGh1vFlUplKeUWcI9BhncdIMnSMr3aYh3iueWGkQdEnh5JXmQnbj8efk2x
-	 30Sg2xnORLY46lJFU7NpSd30yjiqV3OcsEZ+2Nyts4Tby9ssP0x64816zGVIxhjskiupk
-	 2cjjcROJY7WFosnqNCZ54JfkIjTnoaWx26uzsq3dPCKN1dR4kDDMgqz2H03HTzCfmqA==
+	bh=HR6iXTiMIefigNuLIKJC7E9XrAqovAbS86neO6AkdOQ=;
+	b=VtQWlEHwQGPyklFhkvCqZ3h2PHCZHabCt5lSvIbYIi/hOultKp4zPa2HCCpE79VZmiH+
+	 h+9IPHp8l/wyTzg0IymvTKZUHKiqzfOkbuXeOzoCeVGJ/DjAUs5gGOE2sLJDFdRXwvF3G
+	 DLSWBa2AtIHk8iLPPQXeKcEYjP2U3NrFPQunOGCmeKCoEay1aWpwQu7Ux67SsstRCKQpe
+	 vftWJ+YoRhMkUgyvyquh3reHh218NEFt+m0YGo3+kfmPEGyZhDKZpWz74Eg+35eskcKOr
+	 p1Hetxbx0OUpbL1WEizqsdd5owZf43jyBdDJc5XIG8osRxMUQCCNwZixJt3H/8rfuOw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AJ+KIJj3;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M9P0NucO;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04650606A31A
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 17:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDDEE606A31E;
+	Sun, 25 Oct 2026 18:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AJ+KIJj3
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AE4D1F01825;
-	Sun, 25 Oct 2026 17:59:47 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M9P0NucO
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD2F71F01825;
+	Sun, 25 Oct 2026 18:02:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792951187;
-	bh=iQFWAC+LE0ukQFDAdwhgMAzRUq3lyn5OIEXjDc/Z2Dg=;
+	s=k20260515; t=1792951374;
+	bh=HR6iXTiMIefigNuLIKJC7E9XrAqovAbS86neO6AkdOQ=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=AJ+KIJj3mua/2BMOGt/lRfzkFPFgRQaXFj4qtj0WwWNkYonSnCWIlzEHyon2bPUhL
-	 i0H5hISMktL79d7qBDc47LqT391v63tjj6XXGVXaClblZ6p5nIVxG4+UvYF3EXLvv1
-	 PCNlX3+DbOK0u0cJmBqClAGa8vUBpGcm/AbP1mO1rWfJjdgDTOIlvpAMojdtK/5a1Q
-	 C1Ojcn5mYepfOlTVh3jCWtmRiXcnVbAbzdS5ZLF3H9i8hGfEBg57az+c+6bP4fZpT2
-	 auhyZPGsIbXzmjn+hPtj7PC2s4fWZ1HklsJryJX4VCJXZsD2NOlZFD4dLhjrgl1DEP
-	 FYhPEtgnxHf7Q==
+	b=M9P0NucO8V+pGJal9Alt/dRnIIxzxFKqfMYUqO+FFaqP3cZV8ebkgpLkNcEA65jCR
+	 KIcIFWgeZtXKTy+H+wdqBrvusFlINy+wzpDkQZjsiDSEZk0MhKIpcG0a3DqWHJEOU1
+	 eIWC5xikR2YdqQ8ThJt69SICzvmkzQnaGnXH0ijEsy83Lzd8aQRCX/vQdJelAKddye
+	 +UMYnkMxY8aM2EAM2Dp7L2L1znw9zhg9B4hF7BYRBy1c/0upDWj8qAhJpzMlDfbz45
+	 f95MRZ8xKkrS1ST9q5PXkLigIdmdJrkEArjFWVdbiahkKdFQtooZGOq4CMalUm6vNK
+	 6Oz/7KSwy94/Q==
 Subject:
- Re: [PATCH net] net: page_pool: bound queue_idx before indexing dev->_rx[]
+ Re: [PATCH] net: atlantic: AQC113: Initialize struct hw_atl2_priv fully
 From: netdev-bot+sashiko@kernel.org
-To: phx0fer@gmail.com
-Cc: hawk@kernel.org, ilias.apalodimas@linaro.org, netdev@vger.kernel.org,
- kuba@kernel.org
-Date: Sun, 25 Oct 2026 17:59:46 +0000
-Message-ID: <179295118685.3134.9411044728619197719@kernel.org>
-In-Reply-To: <20261021155611.68473-1-phx0fer@gmail.com>
-References: <20261021155611.68473-1-phx0fer@gmail.com>
+To: j@jannau.net
+Cc: sukhdeeps@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Sun, 25 Oct 2026 18:02:53 +0000
+Message-ID: <179295137342.3134.496049235576818261@kernel.org>
+In-Reply-To:
+ <20261024-net-atlantic-aq113-apple-regression-v1-1-b8305415a8b1@jannau.net>
+References:
+ <20261024-net-atlantic-aq113-apple-regression-v1-1-b8305415a8b1@jannau.net>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -63,10 +66,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -74,123 +77,106 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The new check in page_pool_init() (net/core/page_pool.c) bounds
-  queue_idx by netdev->real_num_rx_queues.
-- [Medium] The commit message says "A queue_idx at or beyond
-  real_num_rx_queues reads past the dev->_rx[] allocation".
+- [High] The patch puts back `memset(priv, 0, sizeof(*priv))` in
+  hw_atl2_hw_reset() (hw_atl2.c:148).
 
 --
 
-net: page_pool: bound queue_idx before indexing dev->_rx[]
+net: atlantic: AQC113: Initialize struct hw_atl2_priv fully
 
-This patch adds a check to page_pool_init() for pools created with
-PP_FLAG_ALLOW_UNREADABLE_NETMEM. The check rejects a queue_idx at or
-above netdev->real_num_rx_queues, and it runs before
-__netif_get_rx_queue() is used to look up the queue's memory provider.
+This patch puts back the full memset of struct hw_atl2_priv in
+hw_atl2_hw_reset() and still sets l3l4_filters[].l3_index and l4_index
+to -1. Its aim is to fix data transmission on AQC113 NICs in Apple
+silicon desktop Macs, which broke after commit 6c1ca112a6e4.
 
-> [ ... ]  A
-> queue_idx at or beyond real_num_rx_queues reads past the dev->_rx[]
-> allocation:
-
-[Severity: Medium]
-
-Is this description accurate? dev->_rx[] is sized by num_rx_queues, not
-by real_num_rx_queues:
-
-net/core/dev.c:netif_alloc_rx_queues() {
-	unsigned int i, count = dev->num_rx_queues;
-	struct netdev_rx_queue *rx;
-	size_t sz = count * sizeof(*rx);
-    ...
-}
-
-alloc_netdev_mqs() sets both num_rx_queues and real_num_rx_queues to
-rxqs. Drivers can then lower real_num_rx_queues.
-
-An index in [real_num_rx_queues, num_rx_queues) is still inside the
-allocation. The quoted KASAN report needs an index >= num_rx_queues.
-
-Could the commit message be corrected? It could also say that the new
-check rejects indices that are inside the allocation.
-
-> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-> index d7c88c0b67e53..87f14ae855e32 100644
-> --- a/net/core/page_pool.c
-> +++ b/net/core/page_pool.c
-> @@ -274,6 +274,15 @@ static int page_pool_init(struct page_pool *pool,
+> diff --git a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c
+> index 25dd7150aaaf2..5d6e81fa3baee 100644
+> --- a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c
+> +++ b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c
+> @@ -145,11 +145,7 @@ static int hw_atl2_hw_reset(struct aq_hw_s *self)
+>  	if (err)
+>  		return err;
 >  
->  	if (pool->slow.flags & PP_FLAG_ALLOW_UNREADABLE_NETMEM) {
->  		netdev_assert_locked(pool->slow.netdev);
-> +
-> +		/* queue_idx indexes dev->_rx[]; reject a value the device
-> +		 * cannot serve before dereferencing the queue.
-> +		 */
-> +		if (pool->slow.queue_idx >= pool->slow.netdev->real_num_rx_queues) {
-> +			err = -EINVAL;
-> +			goto free_ptr_ring;
-> +		}
+> -	memset(&priv->last_stats, 0, sizeof(priv->last_stats));
+> -	memset(priv->l3_v4_filters, 0, sizeof(priv->l3_v4_filters));
+> -	memset(priv->l3_v6_filters, 0, sizeof(priv->l3_v6_filters));
+> -	memset(priv->l4_filters, 0, sizeof(priv->l4_filters));
+> -	memset(priv->etype_policy, 0, sizeof(priv->etype_policy));
+> +	memset(priv, 0, sizeof(*priv));
 
 [Severity: High]
+Doesn't this memset clear the firmware filter caps that
+hw_atl2_utils_soft_reset() has just read?
 
-Can this check reject valid queue indices when a driver increases its
-number of rx queues?
+This is the call chain just before the memset:
 
-Before this patch, an index between real_num_rx_queues and num_rx_queues
-was in bounds and just found NULL mp_params. Several drivers that set
-PP_FLAG_ALLOW_UNREADABLE_NETMEM create page pools for new rx queues
-before they raise real_num_rx_queues.
+hw_atl2_hw_reset()
+  hw_atl2_utils_soft_reset()
+    self->aq_fw_ops->init()   /* aq_a2_fw_init() */
+      hw_atl2_utils_get_filter_caps()
 
-For bnxt, here is the path when ethtool -L increases the combined count:
+hw_atl2_utils_get_filter_caps() is the only place that sets these fields:
 
-bnxt_set_channels()
-  bnxt_close_nic()
-  bp->rx_nr_rings = channel->combined_count;
-  bnxt_open_nic()
-    __bnxt_open_nic()
-      bnxt_alloc_mem()
-        bnxt_alloc_rx_rings()
-          bnxt_alloc_rx_page_pool()
-            page_pool_create()
-              page_pool_init()  <-- queue_idx >= stale real_num_rx_queues
-      ...
-      bnxt_request_irq()
-        bnxt_setup_int_mode()
-          bnxt_set_real_num_queues()
-            netif_set_real_num_rx_queues(dev, bp->rx_nr_rings)
+	priv->art_base_index = filter_caps.rslv_tbl_base_index * 8;
+	priv->art_count = filter_caps.rslv_tbl_count * 8;
+	...
+	priv->l2_filters_base_index = filter_caps.l2_filters_base_index;
+	...
 
-bnxt_alloc_rx_page_pool() always sets the flag, with queue_idx =
-rxr->bnapi->index. So this would affect every bnxt device, even without
-devmem. bnxt_alloc_mem() would fail and the interface would stay down.
+It also sets the etype, vlan, l3_v4, l3_v6 and l4 base indices and
+counts.
 
-The same ordering seems to apply to:
+Nothing reads the caps again after hw_atl2_hw_reset(), so hw_init()
+would run with all of them set to zero. This happens on every reset, so
+wouldn't it affect every AQC113 and not only the Apple systems?
 
-  bnge: bnge_open_core() -> bnge_alloc_core() -> ... ->
-  bnge_alloc_rx_page_pool() runs before bnge_request_irq() ->
-  bnge_setup_interrupts() -> netif_set_real_num_queues()
+With the caps zeroed, several paths behave differently.
 
-  mlx5 with SHAMPO: mlx5e_safe_switch_params() -> mlx5e_open_channels()
-  creates the pools before the preactivate hook
-  mlx5e_num_channels_changed() calls netif_set_real_num_rx_queues()
+In hw_atl2_hw_init_new_rx_filters(), art_first_sec and art_last_sec
+are both 0. art_mask is then 0 and falls back to 0xFFFF. The driver's
+ART records get written starting at index 0, even though the comment
+there says:
 
-  gve with header split: gve_adjust_config() -> gve_queues_mem_alloc()
-  runs before gve_queues_start() calls netif_set_real_num_rx_queues()
+	/* FW reserves the beginning of ART, thus all driver entries must
+	 * start from the offset specified in FW caps.
+	 */
 
-The existing helpers netif_rxq_has_unreadable_mp() and netif_rxq_has_mp()
-in net/core/netdev_rx_queue.c treat such indices as having no memory
-provider, not as an error:
+hw_atl2_hw_init_rx_path(), hw_atl2_hw_mac_addr_set() and
+hw_atl2_hw_multicast_list_set() would start from L2 slot 0 instead of
+the slot the firmware assigned.
 
-	if (rxq_idx < dev->real_num_rx_queues)
-		return __netif_get_rx_queue(dev, rxq_idx)->mp_params.mp_ops;
-	return false;
+hw_atl2_hw_fl2_set() calls hw_atl2_filter_tag_get() with
+priv->etype_filter_tag_top == 0. Both loops are then empty, so every
+ethertype filter install returns -ENOSPC.
 
-Would it work to bound queue_idx by num_rx_queues instead? Another option
-is to skip the mp lookup above real_num_rx_queues rather than return
--EINVAL. Because of the Fixes: tag, this change would also go to stable
-trees.
+hw_atl2_new_fl3l4_find_l3() and hw_atl2_new_fl3l4_find_l4() would see
+first == last == 0. Every ethtool ntuple L3/L4 filter install through
+hw_atl2_hw_fl3l4_set() would then also fail with -ENOSPC.
 
->  		rxq = __netif_get_rx_queue(pool->slow.netdev,
->  					   pool->slow.queue_idx);
->  		pool->mp_priv = rxq->mp_params.mp_priv;
+There is also a question about the commit message:
+
+> This leaves other fields uninitialized.
+
+Is this accurate? aq_pci_probe() allocates priv with kzalloc(). The
+removed memsets already cleared last_stats, the l3/l4 filter arrays and
+etype_policy. The only fields they did not touch seem to be the
+firmware caps fields, which had just been refreshed, plus
+l3l4_filters[].ipv6.
+
+Could the full memset be fixing the Apple systems by turning off the
+firmware caps handling that 6c1ca112a6e4 added (the ART section mask
+and the firmware L2 slot)? Nothing that was actually uninitialized
+seems to be getting initialized.
+
+The patch is tagged for stable. Would it be better to keep the caps?
+Possible ways are clearing priv before hw_atl2_utils_soft_reset(),
+clearing only up to art_base_index, or saving and restoring the caps.
+It might also help to find which firmware value or init step breaks the
+Apple hardware.
+
+>  	for (i = 0; i < HW_ATL2_RPF_L3L4_FILTERS; i++) {
+>  		priv->l3l4_filters[i].l3_index = -1;
+>  		priv->l3l4_filters[i].l4_index = -1;
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021155611.68473-1-phx0fer%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261024-net-atlantic-aq113-apple-regression-v1-1-b8305415a8b1%40jannau.net
