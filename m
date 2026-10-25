@@ -1,97 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.181
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792918568;
-	b=KrRGXwbNvRYtz3t7PNn7Vi0tTaicQkwhF5W8NvNO8sNBlH3KARRKC9B/pz/O5WYg/+Ub
-	 vRySyj9x3R+7SQR1Z+iX/+RefSP3+dlaxGkQDLrWAXUICfPFapXffSCal0upTmhecJnV1
-	 vym13CK7Q3FxZuDMAI7C/mtAiBGJsk4ZGrZr4rL1IL5gySo58fkLphG0gKV6d0Og55B1f
-	 3cHXTnid0BWpLSNyvdyH5MdVKhJNsmJWLLWJBv6Xt7haE5zxQtUiU2D3OvjK9Y++uUq5f
-	 txBlzRMNXtXu38CLw3YjXw0ykGlAdKJSdP2j94l9CX7qaTaLlFMKSXtbIMX9f+hvpiQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792918568;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.53
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792918860;
+	b=FfJbzXTNEJe7tVYtSquNBZc6EQFHtztes9cVwECaVdpknXveCfD0SZHtv+WjB4K/lzNp
+	 z5bXBgVTs2uNWLpaf6mN/y4LMmTwY+7VE6Y7MsPgrPjfa3tTK7zEhpjU8E//nYrfvS1lV
+	 5X3Whs3JN8qv89ug5opr1i2ACnE5ENB9ThfOfhJbxXxG3oOoa4X+BRWWzau7GwUbKOc9G
+	 mcyOLhhi+U5ke6csY6BnEZXAd89i1YPKZwNVBeTZe2rOGY8VjDFBZZ7yJ/3xJNuzOEPb/
+	 TpPuurccjYDJSiO1DWKGWX6OE/pT1ulP3eaZBUOGYJlmoeuVq/UtKQbj+faMX7jmCQw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792918860;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=KAWo+wtNpZOYjs7XLX4+xbKqtyKgnfAjF4Rv0X11cZw=;
-	b=x9E3Nt9dHZElleiDtbWktdedmUrF2lJxjlskXUa/QcsM5rhYlNIkAVYhRRF0ntSRqqcA
-	 kTiojTLv9HWKQMv3LwN/qAhH4y3fVsw7ZKValiH/ZDLKLJR22OYggDryxD1TTK737esFW
-	 pZcxB/ymk+75vOeD/4g+eyApUNz7+qHD2jplff6/jowMPu5iqjylWV2NYOGIWwCedGb5w
-	 u200NLwJdzYeXqEwBk5yF8tW44IaYt6cqqrfVmB/GeZrYT+ang3UmYzwpZ6gwOckb9xMx
-	 /UKFz7ol78hLOYC+oiRbYbfyLLCEd9uSKtFdzoxwVM3CrtRM5dq17fWcrbVueREMjWA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mojatatu.com;
-	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=mi05lP3G;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.181
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=InzIDyXEr+I6FKQ6MXVz9W56i3VO0fJ2tHFBcvb6StM=;
+	b=1/a8lQ2KfRnriOGbIM9k7b3ocbz/J/6b4hWqER7kU2fA83W/WAvc+zWfmPHcK+p169iv
+	 N6pJDdDf1QTxmaIuj7N7M5z4jUCgYBM4ixVtT03vWwe04x14pJzA1P+M+M6tuwEB/utej
+	 KWI0m6T5+GV92tf3ieD8dlxrFvBCUXH95yQsb68tOYGFCeZ8wgEPM5f35gD9L5WQ4iPiJ
+	 Oq9eoiyT+BGxD4XFMlod0H4l9j+x++drEhZ7OlnClcjTEZj/HfR41riIl7r5WxVVNxcpj
+	 FTn8caJNcagWeRaP+7cP3Cb1O163eh+H/lVC3Y+Ck3IczmQrflUPpjHS/F4hxsVqLQQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=W6+2wPJT;
+	arc=none smtp.remote-ip=209.85.221.53
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C76606A31A
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 08:56:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 77C76606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E848D606A31B
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 09:00:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E848D606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=mi05lP3G
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8a06ca6e8f4so1501815b3a.1
-        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 01:56:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792918567; cv=none;
-        d=google.com; s=arc-20260327;
-        b=dSRu2AQaYTKniopVlfkEELN9Yy6h0ipifLqGNFT8+fVWXsy7A5bNmdyHe0ZzwS4eNV
-         ecyx7YltlJTzpgw3w2fgJ2qF2UC4VtJycd9Inbp1/DgZfanNOVJxV3CJHZCXo7vksjr2
-         vNd5MPgyp/uxtOszcXWsu5qOmItTkad+g1jer68TfHwqkOnbJNTsmK0YMcD8x9go9GbK
-         Mna4d7MqkkOk67ArY2DttzWHNBhtIEt8USZGaI/R0/wt+RtLy9JAV6Z/hcUsU3PKyuZR
-         dinPr0hY6EDLHABH5WaRlALwerVFDShybUEiVHip3tc+VgbIun98xYqfxEeuOBHs81k+
-         xlVQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=KAWo+wtNpZOYjs7XLX4+xbKqtyKgnfAjF4Rv0X11cZw=;
-        fh=R3FVdBoXUJUYjlyCx59kyGFIfQfoDMCeoOPFXK1PBIQ=;
-        b=dW/KpCtKbKgwvl22tH8I19zlfbwyOvczDKz7ties8uq3h8YIrLFPNGbQcxV45RSmzX
-         hk1Uzx42Jr6noyJl8bmG+RavMg2q0QsbZSLn3Adpv/hrqn2kYtXTQyC9I0CNjsHMKSJ/
-         3ZgfV3XjNwDO6E3RsyosfCOdjyP5lJYgGQg1Js7UWO6xu/VvuuBbS+Q4WfaQ3SnCfhLl
-         IFMzct79D8exv2MEV7IFUsiDRvZ+wHJYZl7fE+lrI+ghzwd2mDv6HYlkJGotBej3sJmI
-         blZT9pjHGnGBII5KdPSbJGTIyYk18523sfjrqV2pF3oMqbR3hxLMVZ28lBkvMeET4I7k
-         8UqQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=W6+2wPJT
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-48e0d885929so1297258f8f.3
+        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 02:00:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1792918567; x=1793523367; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=KAWo+wtNpZOYjs7XLX4+xbKqtyKgnfAjF4Rv0X11cZw=;
-        b=mi05lP3GpYLdTOXHFSZx440AR9EZif9K/sR71vpfrZw10gO003EZpj7eZM8pCSuEMI
-         CdEvSp55VnFp0RdnW1Eg60KgDqkRdse3OjAlE4f6yTRy8XS2grhxxmqqj+/FOxHJyy1k
-         RiqFqc2/k9qOfnk18SGgMoyDle5frgqKr2O9s=
+        d=gmail.com; s=20251104; t=1792918858; x=1793523658; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=InzIDyXEr+I6FKQ6MXVz9W56i3VO0fJ2tHFBcvb6StM=;
+        b=W6+2wPJTpE+MLIPiT3uOv9PiHfVtmlWi/kv0EoiD7NhIs6vGogcZQ0AFkvaZFhnaqA
+         V1kpSPuJToHO5p5vgBD5iZIbbxoHA54mXjby0MBgFLircJMYDsG8h617Bbv2c+9BkYjl
+         fwSyc93i3pxgErV10ObO3M2eh1jrtvNHCEimL6utJe72B+YcWN6VsrVH5oMMdSf+CVef
+         pevaU728H8azko/1P42vRgN1nn3vaErhw48o/aGvBfPt2Aq3cmmXZDIGuEyp2pP2jpCE
+         Kahc0y3LPtb3ZH/iIuQfC8GS66icKeOayYxFgQnXvmnMTJgAv7h1Ydd4cIdryDW+EL/0
+         6Fnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792918567; x=1793523367;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KAWo+wtNpZOYjs7XLX4+xbKqtyKgnfAjF4Rv0X11cZw=;
-        b=HySG0wahpPBdDdFUkWbarfOAxlwqr397Ug6twD7PQoVSYu8j7Dm/9N2F1SgUwgcDKH
-         1tjOWLz1QW0NhqSREKxVibNXwkWAgjTNbgIRRvlb/WoUpLlN2Jhl5NOWeV3NMELibRSu
-         o1enySEQeg1XnAWKs32VYe6Z0Y7BQv+kWaLAHJ4Dxp1bRW0vOYTB6oD4jTEVfiQ5O+Iq
-         CIM8Tc9nZCzSiJ1am6RDO18OyVpoGq+S1vZ5sAKspo8op3zyCs/1FjciyIRHlay7Uvp6
-         0AtLvbBBtHlsGP0Yebn20l4a8EtIQEnJGKh0RFaVFeX0qv7AEY0dP8V1zMhFbKRCZkxZ
-         VLwg==
-X-Gm-Message-State: AFq9FYJ3oY2of8ITPJeRdHW4yj22KuPsV2JMaGt5Nh/8updOrjD02pzu
-	KVVMtm/0VUgfqy/RWRr67r6uPZ+HiE6kQa7dUYWWuslj1E+vlnXS8YRXiA3V/rTiKytlrD26bi8
-	kwfNifSyP8aP8fbyTDqUPvp0nvLrc4LvDQ1i17d8l
-X-Gm-Gg: AYBFou0eYJqvTnoT64gnr2v2Ha3WfdqDbpE1CakNIxbaSJ4+EJhxPIuhdvtPgl8fdtg
-	xHStkc5g/jUdzMUzJtAQGSrY0OrAP2/fDphZvTMpQkqDoY2dorHk3fxiK5ueol8pSbDooB1mHTV
-	fgZhDbK8Pie0yi1poC9/A3mNygia68/W4u4z79pWDDw20jVlfpUWi6jX0X5qhv/UCAyRjjeyFqH
-	vt2UOjPW1cTSKkrAE5X7GJKfS3RoBteoaAseK1eYR9mEKJyHXXr6Tc4baVZU3+prHJgmtwWdCXD
-	/7cpfXif31ILwX+AWms23X2CyHAQPzGBcsCXuz7eLEpUH6MnblOVfcMIWolKA7ZbnXvHiGulXVB
-	OckGEkIvDYWek54g51feF+yCDvXftokwp4tI6xT7MuE4kIRyjZybrz2rAuILjyNqOEh1gNdbfMk
-	fRsHhedADi1pDkpAxqOStH6ytGFfw26QegC5fR
-X-Received: by 2002:a05:6a20:3c8e:b0:3e2:3ce:4ebd with SMTP id
- adf61e73a8af0-3e7cd58c8ffmr3635755637.49.1792918566745; Sun, 25 Oct 2026
- 01:56:06 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792918858; x=1793523658;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=InzIDyXEr+I6FKQ6MXVz9W56i3VO0fJ2tHFBcvb6StM=;
+        b=u5PbFTgBUUutGKsLm1xxDnTriR1A2/li0bVybgAkw7csjZf1pcacT3ciGG2DOQvnHg
+         cfHwxvoepE154DhihoTvI8xAmTA5M/wb+5AtAGGQzHM0fqYSM2BA4AgLt0keH6XlCiM4
+         XuTa4CZmHiB90n4NGYkoH92lCWYmyc+HAIoXpmoACYKPOAEJLNW/iWO9mld5Ie25Hs+y
+         8wwfo6QQ8+E7Jl37Vqb/+1O09RDA9vfYmiwDmyMJp0M5J0YkOwJy/M/5+5XITQvpRDtJ
+         b+xmqHdnplLE+Qr6BwV5dnOTUqazfyXgWkP7dPc0YRZYvv34FT8W9aXOWTqerxRUhPM6
+         l8KA==
+X-Gm-Message-State: AFq9FYJ2biySWH9AMrIMKX5Qy7RnhRFxQ+x1Sa9+SUV0HU71DwJ7FgAU
+	PFrL5k2f8tWy0NQkUU015Srynf/8JNkaFXgh7yhLoSNvj4v3wjAPCQVQ8//TBHZp
+X-Gm-Gg: AYBFou2A9Rgg16Gdl9GG9WwVe5kZVBcBOTZU6cmCVmHC+7jzTd4+7PpKimvGVRcZ8fy
+	KDKBvbqF/LTqFRfrHy6mKqxv1fhJZY70PrB+7G6z/F5cuW3h5SmA9Bnd0k/d+weFt5FeibRabFD
+	G5F7I37qKk7Uy8ud6igfZX4/3JrEq8pj+g+1U1exp9pfWqiDl12HKQB528/I6gi4m3y4nthYJdD
+	+a0JFdFuhrSwkPiQOk3T2z9UVCs002C79F2W76Fz2ibuB0Y9Kj1IrEQCRgiItPw9Umn0DbQRoK8
+	s6ZE9Kf7mJ4BF8Scr7oftTyBDAYrXqqoWG0GpXAXaHf4Uje3YLcYeDaG1yzXZqMZyB7RbxNPqoC
+	dfPK8EmmmXJ6/DkikrOVVmfA0ltmKX0otTXC7f4fYgkWbFU7hMRdMFYeKj7bGvbxzax2Kf8CBPU
+	MJDV9dKCNiRMWM8xVZDpS0uRuTzjJWsiENtxpnCpO12aS9eBYHCElv9jPQPgU6Lzub+sWT4+RiY
+	hgvV7dKyPf5iqnZ1hs2gJ1e4P4AVJhTZ89GwBwscp5o6g3o9kxXAFKebLM555QSalsDmg3ffeo=
+X-Received: by 2002:a05:600c:c110:b0:4a1:e00b:a10b with SMTP id 5b1f17b1804b1-4a35ac91142mr55780775e9.7.1792918858092;
+        Sun, 25 Oct 2026 02:00:58 -0700 (PDT)
+Received: from zheweiy-mac ([2a01:4b00:b60b:cb00:c67:3956:189c:b7c3])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a35a5822a7sm111588615e9.11.2026.10.25.02.00.57
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 25 Oct 2026 02:00:57 -0700 (PDT)
+From: Zhewei Yuan <yzwlhm@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Zhewei Yuan <yzwlhm@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>
+Subject: [PATCH net 0/2] tcp: Fix fastreuse cache initialization on first bind
+Date: Sun, 25 Oct 2026 09:00:46 +0000
+Message-ID: <20261025090048.27870-1-yzwlhm@gmail.com>
+X-Mailer: git-send-email 2.55.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,187 +98,116 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <ACT-N6N4.v2.r0.20261022191829@mojatatu.com> <ACT-N6N4.v2.r0.20261022191829-1@mojatatu.com>
- <ACT-N6N4.v2.r0.20261022191829-2@mojatatu.com> <willemdebruijn.kernel.26d1ddb3bd2ae@gmail.com>
- <CAM0EoMmwNCHVNW0=Z_JWX_ZcT5Y1po1GRVScddOsevEvL8D-6w@mail.gmail.com>
- <willemdebruijn.kernel.30ca6285209f7@gmail.com> <CAM0EoMm=t2FMLaGNkC_z_a_D5o4=dwVnHS=Bb23NWdmeJVCVuw@mail.gmail.com>
- <CAM0EoM=9GxDCHzpJF_bqcoh+7KZY6E=ZmOiMp7kfVK3bHZDppw@mail.gmail.com> <willemdebruijn.kernel.eb29d53899f1@gmail.com>
-In-Reply-To: <willemdebruijn.kernel.eb29d53899f1@gmail.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Sun, 25 Oct 2026 04:55:54 -0400
-X-Gm-Features: AclHuK99nqdl0ku1cQx0dq1jsmNpklmHQLpCQExJVZpP5q9dm1lvzAJpxrv8jM0
-Message-ID: <CAM0EoMnQWjN24gBye1kZdcJUJgXDPDy-=dM+NQ6dqCny7O851g@mail.gmail.com>
-Subject: Re: [PATCH net v2 2/6] net/sched: act_mpls: pull the inner Ethernet
- header after POP
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
-	Victor Nogueira <victor@mojatatu.com>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Martin Varghese <martin.varghese@nokia.com>, 
-	Pravin B Shelar <pshelar@ovn.org>, Vega <vega@nebusec.ai>, 
-	John Hurley <john.hurley@netronome.com>, Willem de Bruijn <willemb@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sat, Oct 24, 2026 at 12:14=E2=80=AFPM Willem de Bruijn
-<willemdebruijn.kernel@gmail.com> wrote:
->
-> Jamal Hadi Salim wrote:
-> > On Fri, Oct 23, 2026 at 7:46=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.=
-com> wrote:
-> > >
-> > > . On Fri, Oct 23, 2026 at 6:50=E2=80=AFPM Willem de Bruijn
-> > > <willemdebruijn.kernel@gmail.com> wrote:
-> > > >
-> > > > Jamal Hadi Salim wrote:
-> > > > > On Fri, Oct 23, 2026 at 12:09=E2=80=AFPM Willem de Bruijn
-> > > > > <willemdebruijn.kernel@gmail.com> wrote:
-> > > > > >
-> > > > > > Jamal Hadi Salim wrote:
-> > > > > > > The issue:
-> > > > > > > act_mpls POP can leave the inner Ethernet header in a page fr=
-agment after
-> > > > > > > skb_mpls_pop(), either on an L3 device (mac_len =3D=3D 0) or =
-chained after
-> > > > > > > act_vlan POP_ETH.  A following eth_type_trans() can then BUG =
-in
-> > > > > > > __skb_pull().
-> > > > > > >
-> > > > > > > The Fix:
-> > > > > > > After the pop, if the original MAC header is shorter than ETH=
-_HLEN, pull
-> > > > > > > the inner Ethernet header into the linear area and drop only =
-when
-> > > > > > > pskb_may_pull(skb, ETH_HLEN) fails.  skb_mpls_pop() does noth=
-ing when the
-> > > > > > > skb was not MPLS, so no separate state is needed.
-> > > > > > >
-> > > > > > > Conditions to recreate the bug:
-> > > > > > > - egress tc filter on lo: action vlan pop_eth action mpls pop
-> > > > > > >   (chained), or on an L3 device where mac_len =3D=3D 0.
-> > > > > > > - AF_PACKET SOCK_RAW with PACKET_VNET_HDR, hdr_len=3D28, and =
-a non-linear
-> > > > > > >   eth / mpls / inner-eth frame.
-> > > > > > > - The inner header is in page frags; a following eth_type_tra=
-ns() can BUG
-> > > > > > >   in __skb_pull().
-> > > > > > >
-> > > > > > > Fixes: 2a2ea50870ba ("net: sched: add mpls manipulation actio=
-ns to TC")
-> > > > > > > Reported-by: Vega <vega@nebusec.ai>
-> > > > > > > Link: https://lore.kernel.org/r/40fe2d7dfce13411bfbe9271c0f7c=
-54fb7e88e3b.1782548651.git.bronzed_45_vested@icloud.com/
-> > > > > > > Link: https://lore.kernel.org/netdev/CAL4WiiqSMdYQYeeW0Fk_GK6=
-ekR4xiS4zPrGKrbB9wZknpqf1-w@mail.gmail.com/
-> > > > > > > Cc: stable@vger.kernel.org
-> > > > > > > Suggested-by: Jakub Kicinski <kuba@kernel.org>
-> > > > > > > Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.c=
-om>
-> > > > > > > Suggested-by: Eric Dumazet <edumazet@kernel.org>
-> > > > > > > Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-> > > > > > > Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-> > > > > > > ---
-> > > > > > >  net/sched/act_mpls.c | 2 ++
-> > > > > > >  1 file changed, 2 insertions(+)
-> > > > > > >
-> > > > > > > diff --git a/net/sched/act_mpls.c b/net/sched/act_mpls.c
-> > > > > > > index 4ea8b2e08c3a..5363bca892fb 100644
-> > > > > > > --- a/net/sched/act_mpls.c
-> > > > > > > +++ b/net/sched/act_mpls.c
-> > > > > > > @@ -79,6 +79,8 @@ TC_INDIRECT_SCOPE int tcf_mpls_act(struct s=
-k_buff *skb,
-> > > > > > >               if (skb_mpls_pop(skb, p->tcfm_proto, mac_len,
-> > > > > > >                                skb->dev && skb->dev->type =3D=
-=3D ARPHRD_ETHER))
-> > > > > > >                       goto drop;
-> > > > > > > +             if (mac_len < ETH_HLEN && !pskb_may_pull(skb, E=
-TH_HLEN))
-> > > > > > > +                     goto drop;
-> > > > > >
-> > > > > > Is this first condition needed?
-> > > > > >
-> > > > >
-> > > > > That was me conjecturing from Eric saying in v1 "...the check can=
- only
-> > > > > matter when the original MAC header is short.."
-> > > > > Since i have to send a v3 (Thanks Eric;->) I will remove it
-> > > > >
-> > > > > > More importantly, can it hide a bug?
-> > > > > >
-> > > > >
-> > > > > What kind of bug?
-> > > >
-> > > > Two kinds. One, if original mac_len is larger, gets popped and the
-> > > > resultant packet is still too short for ETH_HLEN afterwards.
-> > > >
-> > > > But this can probably not happen, as skb_mpls_pop only pops one MPL=
-S
-> > > > tag.
-> > > >
-> > > > What this patch tries to ensure is that the subsequent Ethernet
-> > > > header is linear.
-> > > >
-> > > > The second potential bug is this assumption that after the MPLS tag
-> > > > lies an Ethernet header. Is that a valid assumption? Or could we dr=
-op
-> > > > a valid packet with smaller header.
-> > > >
-> > >
-> > > tbh, I was thinking more about skb frags earlier.
-> > > You are right only ETH_P_TEB promises an inner Ethernet header; for
-> > > other inner protocols the pull is wrong, so I=E2=80=99ll check for
-> > > p->tcfm_proto =3D=3D htons(ETH_P_TEB). I didnt have this check in the
-> > > current fix - good you responded before i sent out.
-> > >
-> > > 1/6 (act_vlan POP_ETH) has a similar unconditional
-> > > pskb_may_pull(ETH_HLEN). A brute approach is also to check for TEB:
-> > >
-> > >       if (skb->protocol =3D=3D htons(ETH_P_TEB) &&  !pskb_may_pull(sk=
-b, ETH_HLEN))
-> > >                 goto drop;
-> > >
-> > > Note: skb_eth_pop() only removes the outer ethernet header but does
-> > > not change skb->protocol
-> > >
-> >
-> > I am going to send it without this 1/6 change - it just doesn't feel
-> > like good taste. I will add a comment in the changes to say i
-> > considered it but decided not to. I also spent time eyeballing the
-> > code, i dont think there's a potential way to craft a packet that will
-> > hit the perceived issue. In any case the 24 hour embargo lifts in a
-> > few hours so i am not posting yet.
-> >
-> > cheers,
-> > jamal
-> >
-> > > thoughts?
->
-> I'm actually a little confused why the tc layer has to anticipate the
-> needs of downstream code and pull headers here.
->
-> That directly lead to this guessing of what may be the next header,
-> such as Ethernet. Which may often be correct, but not always.
->
-> All protocol parsing code itself should already be robust and call
-> pskb_may_pull where it is needed. Sounds like there are some targets
-> post TC where that is not true *and* we think there are too many to
-> update those targets directly, rather than this transformation logic
-> that exposes them to unpulled packets?
+This series fixes TCP bind reuse cache initialization and adds eight
+KUnit regression cases.
 
-Not "too many updates" rather the main motivation here (which i kinda
-empathize with) is pushback from Eric that you have to "fix at the
-producer" to avoid performance degradation at the "consumer". i.e
-rather fix the vlan action than have loopback vet as in the original
-patch  (and you just witnessed him stand up and push back on tun for
-that same reason ;->).
-IOW, we are anticipating so that eth type transfer doesnt bug out
-(_for ethernet headers_) when invoked at the downstream consumer
-(loopback etc). Essentially it is a game of whack-a-mole until the
-next bug or malicious use shows up.
-Generally, policing intoxicated drivers from getting on the autobahn
-isn't the best philosophy; it's better to complement that with a
-"driver beware, you may encounter drunks" warning but that would slow
-down the fast car on the autobahn ;->
+Since commit 8002d44fe84d, tb2 is already linked to tb->bhash2 when
+inet_csk_update_fastreuse() checks for an empty list. First binds miss
+fastreuse=1 for SO_REUSEADDR and FASTREUSEPORT_ANY for SO_REUSEPORT,
+causing unnecessary conflict scans. Patch 1 recognizes the sole,
+ownerless address bucket; patch 2 tests initialization and conflicts.
 
-cheers,
-jamal
+Bind-only results on historical net f4377bf85887 (not the submission
+base): TCP/IPv4, one-vCPU KVM, GCC 11.5.0, identical configs/programs.
+Means of 3 guest boots x 3 rounds; only bind() is timed, with all sockets
+kept open. Each case uses one reuse option, the same UID and port.
+"same" uses 127.0.0.1; "alternate" interleaves 127.0.0.1/127.0.0.2.
+
+  16000 sockets                 before (ms)    after (ms)
+  SO_REUSEADDR, same                 4256.956        20.004
+  SO_REUSEADDR, alternate            2476.914        19.983
+  SO_REUSEPORT, same                   20.600        19.557
+  SO_REUSEPORT, alternate            2491.294        19.830
+
+Same-IP SO_REUSEPORT measurements overlap, so no stable gain is claimed
+there. These are bind microbenchmarks, not application throughput.
+A minimal reproducer is included at the end of this letter.
+
+Validation on submission base 7076f684d513:
+- KUnit: six expected first-bind failures and two passing conflict
+  guards before the fix; all eight pass after it (same tests/config).
+- bind_wildcard, reuseaddr_conflict, reuseport_addr_any,
+  reuseaddr_ports_exhausted and tcp_port_share: pass without skips.
+- Full x86_64 allmodconfig W=1: baseline and patched builds pass with
+  identical configs, GCC 11.5.0 and CONFIG_WERROR=n. Existing warnings
+  remain, but normalized diagnostics and counts match: no new warnings.
+- Full allyesconfig is blocked by the MCTP KUnit static_assert at
+  drivers/net/mctp/mctp-usblib-test.c:819. A targeted unpatched build
+  reproduces the same error; this is not a full allyesconfig pass.
+
+KUnit A/B and patched allyesconfig/allmodconfig W=1 builds also passed
+on historical f4377bf85887 (GCC 11.5.0, CONFIG_WERROR=n); those builds
+are auxiliary evidence, not substitutes for the submission-base checks.
+
+Found during manual code inspection and GDB tracing. Codex assisted
+with analysis, test/benchmark development, validation and patch text.
+Requests covered real first binds, cache flags, automatic ports,
+conflict preservation and separate reuseaddr/reuseport measurements.
+No failure injection was used; KUnit inspects state after real binds.
+
+Reproducer (not for the merge commit). It gives matching results on
+the submission base 7076f684d513 (16000 sockets, same order as the
+table, before/after in ms: 4178/19.4, 2416/19.4, 19.8/19.4,
+2428/19.5). It needs loopback up and an fd limit above N, e.g.
+"ulimit -n 70000; ./bind_bench reuseaddr same 16000".
+
+  // Time bind() of N TCP sockets with one reuse option to one port.
+  // Usage: bind_bench reuseaddr|reuseport same|alternate N
+  // same: 127.0.0.1; alternate: 127.0.0.1/127.0.0.2. Sockets stay open.
+  #include <netinet/in.h>
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <string.h>
+  #include <sys/socket.h>
+  #include <time.h>
+
+  int main(int argc, char **argv)
+  {
+  	struct sockaddr_in sa = { .sin_family = AF_INET,
+  				  .sin_port = htons(40000) };
+  	int opt, alt, n, one = 1, i, fd;
+  	struct timespec a, b;
+  	long long ns = 0;
+
+  	if (argc != 4)
+  		return fprintf(stderr, "usage: %s reuseaddr|reuseport same|alternate N\n",
+  			       argv[0]), 1;
+  	opt = strcmp(argv[1], "reuseport") ? SO_REUSEADDR : SO_REUSEPORT;
+  	alt = !strcmp(argv[2], "alternate");
+  	n = atoi(argv[3]);
+
+  	for (i = 0; i < n; i++) {
+  		fd = socket(AF_INET, SOCK_STREAM, 0);
+  		if (fd < 0 || setsockopt(fd, SOL_SOCKET, opt, &one, sizeof(one)))
+  			return perror("socket/setsockopt"), 1;
+  		sa.sin_addr.s_addr = htonl(INADDR_LOOPBACK + (alt ? i % 2 : 0));
+  		clock_gettime(CLOCK_MONOTONIC, &a);
+  		if (bind(fd, (struct sockaddr *)&sa, sizeof(sa)))
+  			return perror("bind"), 1;
+  		clock_gettime(CLOCK_MONOTONIC, &b);
+  		ns += (b.tv_sec - a.tv_sec) * 1000000000LL + b.tv_nsec - a.tv_nsec;
+  	}
+  	printf("%s %s %d: %.3f ms\n", argv[1], argv[2], n, ns / 1e6);
+  	return 0;
+  }
+
+Zhewei Yuan (2):
+  tcp: Fix fastreuse cache initialization on first bind
+  tcp: Add KUnit tests for bind fastreuse caches
+
+ net/ipv4/.kunitconfig                |   8 +
+ net/ipv4/Kconfig                     |  14 ++
+ net/ipv4/Makefile                    |   1 +
+ net/ipv4/inet_connection_sock.c      |   3 +-
+ net/ipv4/inet_connection_sock_test.c | 303 +++++++++++++++++++++++++++
+ 5 files changed, 328 insertions(+), 1 deletion(-)
+ create mode 100644 net/ipv4/.kunitconfig
+ create mode 100644 net/ipv4/inet_connection_sock_test.c
+
+
+base-commit: 7076f684d5132e6a6145e1da2fa74771ecd052e5
+-- 
+2.52.0
+
