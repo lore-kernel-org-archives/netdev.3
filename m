@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1792901132;
-	b=A8jXcgoVFUeJOTWG5KuS6XF7J4+QyjqGUSY1yoF/1hTomlgqOt72VavMYiPSw7xNPtcj
-	 U5JJ96VDR04b7DkUyxe0pV7VBpZ50qTQxCqWuklHyRrUvokUnTlAml/dxtP4mrHnn+RVe
-	 3qgc4RcUfupty2vNR5Q5s7oF/+udihL9pF3tt6zsolRMJdMPnOVogIvpm1/yQOapWLLm9
-	 5zpf9pqIZh9hnXTjGqpXx2Eq4qqjNktvpAUTjZZuy9pKsKi1WDT/TriIz7hi63fVWgzqJ
-	 CzvpkUdNoGc0rzN4+Cwx5dAZ9behuKp3w7UoZBmHowHk4nuqOh22zWQbaO3byluaqbA==
+	b=SxSjwAJxrw07RieFYFVjh6GyYInQnDSUIjDThdskHZK5f77WeHVo4BGDvqRCkRsOgJ0P
+	 6gutxIeviI8SLVl++Ni2KqeLxP6O0K44buqg0sLLt2W6TrAH+ACAF5aLCu3pN58S1tInF
+	 o5uCSg2hsxqAarKxd0zGzuAi7BwHA9MduqJthFjc12aUY8FjUdZ5gKlxIQ2zyDWl+GYTn
+	 nQT9dxxjf8dB+5rlnqxRp+edKha4Ap/BwgFBWRaUlWNo4dww8oYTfIfY6j0i7UUuwiyBx
+	 qV33rWMONM/NnfA1WJbpCEcFxSOJm9ptsL3he8qAZE64orcrIP3voL7m7Mfzveno1Qw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1792901132;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=zvCxPvVOFJIOuLk7jZ+/YMB/FJuGHwhz7cBx+wq9rrc=;
-	b=YnQatBwvMi33gT1x9rKC9XiFgh3jXYNsFKh61tUfVwIT3r4lN8MdsE9aO4y+Xx8gwCGa
-	 QnxZgJZIqGkN0VvecfQWsvImRsT4H9wXwfaeYqLvqylcslHINMWlXgTT6IEVv4W5WzrMW
-	 RaHjedhArfjwH19ls8EwqTprAYlllu0m1yEFNABHOr9X9/GKRxWJL3jKIRJ6w5OLwBBum
-	 Pev0hDf3ePbkX8XFp524XUPl72nhUrGKZfh/7gt6OdfoxtgKIm2cONaU3ps5gWwQWLleZ
-	 UDQVGxjsWOKvUOY2SQhFDqS2xJm9lmIrEAeO7NX2PXMtlcS6gU7aDl/gjcf/5Ssx5hg==
+	bh=gTPwTs6KQ9y0OogJsarYNN8wQnpNX/uHSQbAgmpcfg8=;
+	b=H3JrZ1fKGRdfGl8hPJg76ck7/s7e5tlurNC5dP4CGS8qRhLPQGz4THjLS44ojb6nfeQ7
+	 GFw/BBm5quHqyQ8Nr5nKGtoQa9/v67fD6Yf7qKIDgRKXrG6oUPurN/OcxqSUYYXiTvFLK
+	 NOnp8dafIpQwoonTgsKcVmLUAhdvoZaot5Fyxg8vK+KjOsrFU1Wy68wKpo0XiQ6RwIfY0
+	 1EJ2d9WpAh/EDEi3KxcXWtPVAJ6J9duxESLIf+T1BBHcMkpoVqTRYq2fO2Gcwnogts6di
+	 fQuKlrCOQxkXFgeEQbrWIabKcI/0tcZvgkvagheJmmHKH/zifDLchB2jMbrttHCuBQw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--weiwan.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b="lk8Eqk/A";
-	arc=none smtp.remote-ip=209.85.215.197
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=WruFuch8;
+	arc=none smtp.remote-ip=209.85.210.197
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD305606A32D
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 04:05:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BD305606A32D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A27606A33F
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 04:05:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 75A27606A33F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--weiwan.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=lk8Eqk/A
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cca35cf9f77so1176346a12.2
-        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 21:05:31 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=WruFuch8
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-89fb6a45c48so2001077b3a.1
+        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 21:05:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792901131; x=1793505931; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1792901132; x=1793505932; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=zvCxPvVOFJIOuLk7jZ+/YMB/FJuGHwhz7cBx+wq9rrc=;
-        b=lk8Eqk/ANxqBoYF9wNEhF9PgvqNm6Y9fcRhO7t5ImQwmGN8F0Wo3LZnC+7EZyndme8
-         6nWDV3Xzw2AYYK5ekdjIIERVB3Wp9MZMmT9HowWh8OsTXj+Z/UwCBdAWBkyQlCI1K4X/
-         EncHtdyuZVmtfW4nIyMJQOnBWuL0L+vwDvTlXZ7OiG43EFy2w/YuEJ3NpmxU6DTjyyes
-         rpnJDVwhnJ1lDK5Zz5bi6zioJ2W7ZM3TI5JwEuxo56Qyo7FqlHOdKE74S5TseXxXEc39
-         WQx7ccXD7oaVLiBhbPuN5B+AlbBE/BgYwrrPjQN7JDwh4tzp6qqumTL/d/jVVaC9sasL
-         1vXQ==
+        bh=gTPwTs6KQ9y0OogJsarYNN8wQnpNX/uHSQbAgmpcfg8=;
+        b=WruFuch8yfURzb8ZGFIy5pQuDQ0rbwdUz8UzGedqewcmOlonpl+TOvKkBhHCS8k7zx
+         QbbfksQH3++GId6saBoRpRwOtzWEtX6yya4XyH7zRfW4znWbi+Q6wbCwCu+HvfT+/oKa
+         f0hgXQ+kVNIdVUPgt6H528AxLSEoLJsjnCiGSjrqwSNnUW3DvSvSQUhb/pK44zMMW8ys
+         IU1zTOsnm/isPBN2KEbK7VvbwTpV1hE9bKnRPuVQCWg2TcEvKIk/jy2iJKswN6mOKNv9
+         08xshmL2GCo1FzaG8S91+IEuypW7MhOx//Z2sjjDb8PiuxjMeKILtghCGZ0KoUs1yqsZ
+         hrsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792901131; x=1793505931;
+        d=1e100.net; s=20260707; t=1792901132; x=1793505932;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=zvCxPvVOFJIOuLk7jZ+/YMB/FJuGHwhz7cBx+wq9rrc=;
-        b=f4+gGNwSWhTXQND328fs1bAD4qaMjoRZM0UlAPhnn0RlYaNYhokLTZl711lCJ2SL9k
-         ymPufpLkcI4kBpv5scteELTfjLjSdEJsCqh9uNFpkWDc7KZ+HKWQ1UZWg17tLTrdGs6H
-         L9TeKDdjYm+EpweVhzL0Bsj5wFjee8rXVrfGvtO4Ls1lEpaAGNbI39IUI3WAcXHdYXzh
-         1R/vEgArTFVnBrkCnUdpkpjHLwGM/k/ZAOmivtSYbDBDWhP3tMwHpe29/wK3uNZJyxuj
-         QXhrpDgNC2USROk/flX9RMVIKKxVT9GvsIR+a3B1CTJ/Vo1NWJYzVnkUJj55LHAx8Zgn
-         +2Uw==
-X-Forwarded-Encrypted: i=1; AKwUvByDrxcPLprc+aPjSc9WW+g2mK0YQN/4CFYR4tx3Gh8SeCk77DLF+L5Wqdwy7uLEJ5QMSwT04ao=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLNdZxQeECR0lbOgWfEK+sDPS4GGSScxOWzvzP+47Jr0WLeaYCi
-	2pGq28GRGx9yyDBseX5wH369u4bLdSTnqU8PT+bbOYBfwB8QSlihzm+gyJiG2zkLtTjgtOioRqt
-	ewdqWIQ==
-X-Received: from pjbme8.prod.google.com ([2002:a17:90b:17c8:b0:3ab:8c4:a67d])
- (user=weiwan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2cc8:b0:3aa:f2c4:12e9
- with SMTP id 98e67ed59e1d1-3adea093fdcmr3009518a91.3.1792901130531; Sat, 24
- Oct 2026 21:05:30 -0700 (PDT)
-Date: Sun, 25 Oct 2026 04:05:22 +0000
+        bh=gTPwTs6KQ9y0OogJsarYNN8wQnpNX/uHSQbAgmpcfg8=;
+        b=pghuJpXzTQLrTw3NMPh6rFmWv7LL6hR6VN87FEAKf4UCF1E7iH7p7TbzVAhINjBcX1
+         3jZgZsPu32ht1IvEBYM3SGk5dP9eAxNXF6hsXV/RYxqR/JCsZtgApyL0Ra7KXWOfuRXD
+         u79U7D35zOxx69qIOR99XUsykpM1Si8Mkez1RBNB4Mgb6Hh7pdvymSAH/8XQVSaTEElM
+         THU9frb8R/IdBzpxFbxkZ2nXdS+vCKH/xZESwfgYX9+WxQAjxL62IgAGgH6jFIvVzWLi
+         c0oFVvP4P7RfqpFtHlVwHpe0eCj/HW/r3CpBpnekZpZFIQlRExKPqnsbBHXDEJm3ugkS
+         losA==
+X-Forwarded-Encrypted: i=1; AKwUvBzVItswSYGTe82g6eDguYGaJSXulcVPNJf9ubA4WCUJBe/SmS6buJH/b6ZnkjLzA0qCzbbPHjo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLA0Sc4wvqNZ2bZloxiStqcCh38iWqsGVNr9tnQ9np2DVvkfpXw
+	4X6vbQt3hDIYRkFoxyn9O0P36nGQmszstUHySibVzl+qD/XF+VB6Zum73YurGLq2xj9vDFoEWMU
+	mzW0Wcw==
+X-Received: from pfbeb23.prod.google.com ([2002:a05:6a00:4c97:b0:894:b24f:9540])
+ (user=weiwan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:b56:b0:89c:6036:c63
+ with SMTP id d2e1a72fcca58-8a366d7a4e4mr2631352b3a.32.1792901131466; Sat, 24
+ Oct 2026 21:05:31 -0700 (PDT)
+Date: Sun, 25 Oct 2026 04:05:23 +0000
 In-Reply-To: <20261025040523.678027-1-weiwan@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,8 +81,8 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261025040523.678027-1-weiwan@google.com>
 X-Mailer: git-send-email 2.56.0.257.gf7497c7d27-goog
-Message-ID: <20261025040523.678027-2-weiwan@google.com>
-Subject: [PATCH net 1/2] net: Make PSP skb extension survive packet scrubbing
+Message-ID: <20261025040523.678027-3-weiwan@google.com>
+Subject: [PATCH net 2/2] selftests/net: psp: test bidirectional data transfer
 From: Wei Wang <weiwan@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Shuah Khan <shuah@kernel.org>
@@ -92,104 +92,54 @@ Cc: Simon Horman <horms@kernel.org>, Jakub Sitnicki <jakub@cloudflare.com>,
 	bpf@vger.kernel.org, Wei Wang <weiwan@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-skb_scrub_packet() drops all skb extensions unconditionally via
-skb_ext_reset(). It runs on tunnel encap/decap (ip_tunnel_rcv, vxlan_rcv,
-etc.) and cross-netns forwarding (dev_forward_skb, netkit_prep_forward,
-skb_do_redirect).
+_data_basic_send() and _data_basic_send_netkit_psp_assoc() currently
+only verify unidirectional data transmission from the test socket to
+psp_responder. As a result, they do not exercise the receive path for
+PSP-encrypted TCP data segments arriving at the test socket (such as
+packets redirected across a netkit interface associated via dev-assoc).
 
-When a virtual device such as netkit is associated with a PSP device in
-another network namespace via PSP_CMD_DEV_ASSOC, incoming PSP packets
-decapsulated by psp_dev_rcv() lose their SKB_EXT_PSP extension when
-scrubbed during redirection into the peer netns. Without SKB_EXT_PSP,
-__psp_sk_rx_policy_check() rejects incoming TCP data segments at the
-socket layer with SKB_DROP_REASON_PSP_INPUT.
+Use the existing "data echo" command in psp_responder to verify that the
+test socket can also receive PSP-encrypted data from the peer in both
+_data_basic_send() and _data_basic_send_netkit_psp_assoc().
 
-Introduce skb_ext_scrub(), a selective variant of skb_ext_reset() that
-deletes every extension except SKB_EXT_PSP, and use it in
-skb_scrub_packet(). Scrubbing is safe when the extension slab is shared
-with clones: deleting an extension only clears the per-skb
-active_extensions bit, and the shared slab payload is released lazily by
-__skb_ext_put() once the last reference goes away.
-
-Fixes: 06c2dce2d0f6 ("psp: add new netlink cmd for dev-assoc and dev-disassoc")
-Link: https://lore.kernel.org/r/20260910-bpf-meta-inside-skb-ext-v2-3-0b21e42180b0@cloudflare.com
-Reported-by: Daniel Zahka <daniel.zahka@gmail.com>
-Closes: https://lore.kernel.org/netdev/DLODSKPY6ON6.1G6SP3CFFLCPJ@gmail.com/
-Co-developed-by: Jakub Sitnicki <jakub@cloudflare.com>
-Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
 Signed-off-by: Wei Wang <weiwan@google.com>
 ---
- include/linux/skbuff.h |  2 ++
- net/core/skbuff.c      | 22 ++++++++++++++++++++--
- 2 files changed, 22 insertions(+), 2 deletions(-)
+ tools/testing/selftests/drivers/net/psp.py | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index af1cbc2799b7..027404d70c72 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -5083,6 +5083,7 @@ void *__skb_ext_set(struct sk_buff *skb, enum skb_ext_id id,
- void *skb_ext_add(struct sk_buff *skb, enum skb_ext_id id);
- void __skb_ext_del(struct sk_buff *skb, enum skb_ext_id id);
- void __skb_ext_put(struct skb_ext *ext);
-+void skb_ext_scrub(struct sk_buff *skb);
+diff --git a/tools/testing/selftests/drivers/net/psp.py b/tools/testing/selftests/drivers/net/psp.py
+index 473500901879..e507951b440b 100755
+--- a/tools/testing/selftests/drivers/net/psp.py
++++ b/tools/testing/selftests/drivers/net/psp.py
+@@ -120,6 +120,12 @@ def _check_data_rx(cfg, exp_len):
+     ksft_eq(read_len, exp_len)
  
- static inline void skb_ext_put(struct sk_buff *skb)
- {
-@@ -5152,6 +5153,7 @@ static inline bool skb_has_extensions(struct sk_buff *skb)
- static inline void __skb_ext_put(struct skb_ext *ext) {}
- static inline void skb_ext_put(struct sk_buff *skb) {}
- static inline void skb_ext_reset(struct sk_buff *skb) {}
-+static inline void skb_ext_scrub(struct sk_buff *skb) {}
- static inline void skb_ext_del(struct sk_buff *skb, int unused) {}
- static inline void __skb_ext_copy(struct sk_buff *d, const struct sk_buff *s) {}
- static inline void skb_ext_copy(struct sk_buff *dst, const struct sk_buff *s) {}
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 93c2f440b9ec..3eb0159129e2 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -6380,7 +6380,8 @@ EXPORT_SYMBOL(skb_try_coalesce);
-  * operations.
-  * skb_scrub_packet can also be used to clean a skb before injecting it in
-  * another namespace (@xnet == true). We have to clear all information in the
-- * skb that could impact namespace isolation.
-+ * skb that could impact namespace isolation. Note that PSP skb extension is
-+ * meant to carry information across namespaces by design.
-  */
- void skb_scrub_packet(struct sk_buff *skb, bool xnet)
- {
-@@ -6388,7 +6389,7 @@ void skb_scrub_packet(struct sk_buff *skb, bool xnet)
- 	skb->skb_iif = 0;
- 	skb->ignore_df = 0;
- 	skb_dst_drop(skb);
--	skb_ext_reset(skb);
-+	skb_ext_scrub(skb);
- 	nf_reset_ct(skb);
- 	nf_reset_trace(skb);
  
-@@ -7431,6 +7432,23 @@ void __skb_ext_put(struct skb_ext *ext)
- 	kmem_cache_free(skbuff_ext_cache, ext);
- }
- EXPORT_SYMBOL(__skb_ext_put);
++def _check_data_echo(cfg, s):
++    _send_with_ack(cfg, b'data echo\0')
++    s.settimeout(1.0)
++    ksft_eq(s.recv(5), b'echo\0')
 +
-+void skb_ext_scrub(struct sk_buff *skb)
-+{
-+	unsigned int id;
 +
-+	if (likely(!skb->active_extensions))
-+		return;
-+
-+	for (id = 0; id < SKB_EXT_NUM; id++) {
-+#if IS_ENABLED(CONFIG_INET_PSP)
-+		if (id == SKB_EXT_PSP)
-+			continue;
-+#endif
-+		skb_ext_del(skb, id);
-+	}
-+}
-+EXPORT_SYMBOL(skb_ext_scrub);
- #endif /* CONFIG_SKB_EXTENSIONS */
+ def _check_data_outq(s, exp_len, force_wait=False):
+     outq = 0
+     for _ in range(10):
+@@ -478,6 +484,7 @@ def _data_basic_send(cfg, version, ipver):
  
- static void kfree_skb_napi_cache(struct sk_buff *skb)
+     data_len = _send_careful(cfg, s, 100)
+     _check_data_rx(cfg, data_len)
++    _check_data_echo(cfg, s)
+     _close_psp_conn(cfg, s)
+ 
+ 
+@@ -726,6 +733,7 @@ def _data_basic_send_netkit_psp_assoc(cfg, version, ipver):
+ 
+         data_len = _send_careful(cfg, sock, 100)
+         _check_data_rx(cfg, data_len)
++        _check_data_echo(cfg, sock)
+         _close_psp_conn(cfg, sock)
+ 
+ 
 -- 
 2.56.0.257.gf7497c7d27-goog
 
