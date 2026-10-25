@@ -1,58 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792920269;
-	b=EumV5Ff9Q8GydZjtveKFroDKLXyboP5xxLsXeSHH9je6tTzozBOZvfSkvu1zcOs1EgeM
-	 dWRU4ihSy3CPnXzxuvpOiKQgwz0Go5lDXR8rViNnyV4J1uJQpZ1v82EgtHzhjx2WJidPn
-	 1Elu4a4+NKMiIym56p8f57Wi1PbHw3dDXE+K9XEQwLrnn3VDaSl0bLWMYwEz0UD9b/INa
-	 WCE+PmpxMipbxjCS85k4+mIQct5fzmg/ahR/r0lR/zS+KcqBPm2grHoq9c1KDqMxOdCpS
-	 5QrTYUmCDRDiEBxbhmg3RGpT1hgkjpxe4w/bbnuVdRWtWR0aM6xS4SSTQh0WaAliliQ==
+	t=1792920265;
+	b=jp/dpSopw3u6IdIWFVFsUVFXgrpuOeeELrnFxNKk2jt4OYM/VUwuRystkDAPALEx4btD
+	 8JOgSh9u3ZzNcmCt7YvkSE4Cg75qEmCNbZXC4skjeEqY+sBKXppn77Cd2fCQ1wlAnfNu4
+	 Vbt6UEgCOkDFoAsNAyfPy9YNyU+HUSfpIzmKcxXS60KmFdeJcksGBhzdhNFAkNqdVziLA
+	 Twn2IwlkRQJtnSt1x0gh1v46qwpeOx5waku2DCRgSctsa3Cu2cyA/chlQKWYwzObPaeJ8
+	 pD1mrg9DUJ0sfa/p/vPINkkwSH3ReGEx/DiHKo94oYIXymMfsZakeo0TqyI9msUQLXw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792920269;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792920265;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=MWi098cMJlP1WHrul13CB7sxRj2mt5l+cQpJpKNbkFE=;
-	b=Tet1MUh3SfJSYLvTIADDH5ieR4B5gYp3lFU0oR+NKWJDr11xPIrwOMGdOCSZAENX3WYN
-	 kuyUMXBG2yosVwoJd0jYfkc8XgAWoEKYZiFJF4vdIzmcUKBX+Zhm6jmnSzhYWcHde3XC7
-	 zNUUW2ew4MiZ6lZzMU8411EtFmPY2tSxvSF12ddu/133WyHhv8s9jE0sHltc0idp7xMwu
-	 fs41GlEDZEWLbut9X2pMi9bmzqO0MdiYvz6p5guvkgxJKcibtSoosn3Ke/3vifzSECApn
-	 CTmxSzlZfG5Nz8g8UWMMBlGyhCPHsLiZyeK6yPAlS+lN4ca+khKZzX85agg1Hh0IyxQ==
+	bh=uEd53XtB1jlrRI9vXtLynTr645wbvU/7++6imUxBUR0=;
+	b=yWdb7EDKbjCv1GJRk8AY3rDEF7W2RCIVNuoS8GHHEgACyJMDjOwqx6vR0gUEn24K045m
+	 SGl6IQFIqUesP4by3xULb4tE8TlIkVxaimgdhilsVKl642nX63UE7RYa5nYRp8LVeu44s
+	 opNE0xwvXiXDJxw35XULOoT18UH/zxYGBjkF23IvGQNXf3tD0hViUqOhggNkN6TS94itq
+	 bhNfknIn4Yv9G3BtOqb16AobrbBrOztPI/FitSNkriOeqGfptlKZhOd8UslJRaQCVO/eH
+	 rdJj88X4e1wUlXfH7K2OLDy9Dr4KMeGfqKg9NnVv+4S/8tiwcl3bn0pJWuNr+DKMscQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Z3Fgbnsx;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FOnSnYPa;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D7D606A33A;
-	Sun, 25 Oct 2026 09:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9B7606A31A;
+	Sun, 25 Oct 2026 09:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Z3Fgbnsx
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A7A31F031E0;
-	Sun, 25 Oct 2026 09:24:28 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FOnSnYPa
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A543F1F01825;
+	Sun, 25 Oct 2026 09:24:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792920269;
-	bh=MWi098cMJlP1WHrul13CB7sxRj2mt5l+cQpJpKNbkFE=;
+	s=k20260515; t=1792920264;
+	bh=uEd53XtB1jlrRI9vXtLynTr645wbvU/7++6imUxBUR0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Z3FgbnsxHuUoMF9Yn+bT/7DfPaX9z9PxDxzZEcti3v+turLoQluyVSKWjGuNNQFTy
-	 /XNXRG0MS8k+c5nCVn8tYCOVhXW/jf8QA4o7DNjshsA/G7YivdBHuJU4R6Idf8zsTD
-	 dl4P5QUkMSw6OkA39KTwIpp3xcrRgeTvqgUZmWV7uHhQx9/iOGdVtHdirQk1QhSFVQ
-	 1IvKM/xGpvgr0+O1islperjpzXRtaOHiq0b0xDyO2JOIEz1ArIlBOVX6JzLE5sCjLY
-	 I/9Bx+tcKcbuN6CHlUwem3kPM2DMD6VO2b5hXePaKVH015kQiXpvbjXAWbXYr7l8eB
-	 Sx2vX2oJejYgg==
-Subject: Re: [PATCH v32 net-next 7/8] net/nebula-matrix: add common/ctrl dev
- init/remove operation
+	b=FOnSnYPaLICL9e9cxdA1WgfBBckYoBG2JKE65VZg4nDrXBrT5lxcMc5Tnb3qSS5rD
+	 tzG/3YNqLoNNYKqeHGlHr0x5DvzCVK0tcU93LLJW+yXS1Q1BoG3lE3umt61NSaw824
+	 /MuaaFyIH+yeQwPRwYYDYoLzdBBV6N1DJ/Rdjiy3w+MYA5ELb2u3clZgxt4+yMYWMS
+	 taTT3pbsXk7KtRrTBxlcp3FQS0xfNmYAWEFb0pol58TUghNXO0zz9al3lcmxIR6OMg
+	 ZRdzkz2mR/DXFIEP5+LowiTAUFzW213YytkfgBaxshzl66r18HWqc7xRWeJY3SsjA+
+	 l0YQGrsX7Owdw==
+Subject: Re: [PATCH v32 net-next 1/8] net/nebula-matrix: add channel layer
 From: netdev-bot+sashiko@kernel.org
 To: illusion.wang@nebula-matrix.com
 Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
  sam.chen@nebula-matrix.com, netdev@vger.kernel.org, kuba@kernel.org,
  andrew+netdev@lunn.ch, pabeni@redhat.com, edumazet@google.com,
  horms@kernel.org, linux-kernel@vger.kernel.org
-Date: Sun, 25 Oct 2026 09:24:27 +0000
-Message-ID: <179292026791.3134.7406957765573459661@kernel.org>
-In-Reply-To: <20261021062113.2158-8-illusion.wang@nebula-matrix.com>
-References: <20261021062113.2158-8-illusion.wang@nebula-matrix.com>
-X-sashiko-severity: Low
+Date: Sun, 25 Oct 2026 09:24:23 +0000
+Message-ID: <179292026318.3134.1233768885583452270@kernel.org>
+In-Reply-To: <20261021062113.2158-2-illusion.wang@nebula-matrix.com>
+References: <20261021062113.2158-2-illusion.wang@nebula-matrix.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -65,174 +64,212 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 2
 
-- [Low] At this commit, several new comments in nbl_dev.c (and one
-  existing comment in nbl_hw_leonis.c) mention functions that are not…
-- [Low] The teardown-ordering comment above nbl_dev_remove_ctrl_dev()
-  (nbl_dev.c lines 180-183) says that nbl_probe_chip_deps() 're-checks…
-- [Low] In nbl_dev_remove_common_dev() (nbl_dev.c lines 151-156), the
-  comment says 'A register_chan_task(..., NULL) from here would be a no-…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] In nbl_probe_chip_deps(), a failed device_trylock(&mgt->dev)
+  is turned into -EPROBE_DEFER, on the assumption that a later bind of…
+- [Low] The comments in nbl_chan_cfg_qinfo_map_table() and the
+  get_host_pf_mask kernel-doc say pf_mask is validated by…
+- [Low] The commit message says 'a channel costs one devres node and one
+  IOMMU mapping per ring', and the code comment in…
 
 --
 
-net/nebula-matrix: add common/ctrl dev init/remove operation
+net/nebula-matrix: add channel layer
 
-This adds nbl_dev.c with nbl_dev_init() and nbl_dev_remove(). They set up
-the mailbox channel queue and its clean work. On the control PF they also
-program the mailbox QINFO routing and run init_module/deinit_module, and
-the new entry points are wired into nbl_core_init() and nbl_core_remove().
+This adds a mailbox-based channel layer that carries control messages
+between PF0 and the other PFs. It uses TX/RX rings backed by coherent
+DMA, an xarray of message handlers and ACK wait slots. It also adds
+nbl_probe_chip_deps(), which defers non-management PFs until function 0
+is bound to this driver, and links each of them to function 0 with a
+device link.
 
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c
 > new file mode 100644
-> index 0000000000000..cbb0b06b80117
+> index 0000000000000..a4b1110134f83
 > --- /dev/null
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
-> @@ -0,0 +1,295 @@
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c
+> @@ -0,0 +1,1522 @@
 
 [ ... ]
 
-> +static void nbl_dev_init_msix_cnt(struct nbl_dev_mgt *dev_mgt)
+> +static int nbl_chan_init_tx_queue(struct nbl_common_info *common,
+> +				  struct nbl_chan_info *chan_info)
 > +{
-> +	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
-> +	struct nbl_msix_info *msix_info = &dev_common->msix_info;
+> +	struct nbl_chan_ring *txq = &chan_info->txq;
+> +	struct device *dev = common->dev;
+> +	dma_addr_t base_dma;
+> +	size_t size =
+> +		chan_info->num_txq_entries * sizeof(struct nbl_chan_tx_desc);
+> +	void *base;
+> +	u16 i;
 > +
-> +	/* mailbox vector allocated in nbl_dev_start() via
-> +	 * nbl_dev_init_interrupt_scheme(); nbl_dev_request_mailbox_irq()
-> +	 * only attaches the irq handler to pre-allocated vectors.
+> +	txq->desc.tx_desc = dmam_alloc_coherent(dev, size, &txq->dma,
+> +						GFP_KERNEL);
+> +	if (!txq->desc.tx_desc)
+> +		return -ENOMEM;
+> +
+> +	/*
+> +	 * All per-entry buffers come from one contiguous coherent block, so a
+> +	 * ring costs exactly one allocation, one devres node and one IOMMU
+> +	 * mapping whatever the page size is.  Per-entry dmam_alloc_coherent()
+> +	 * instead rounds every NBL_CHAN_BUF_LEN buffer up to a whole page
+> +	 * (8 MiB per PF on 16 KiB pages, 32 MiB on 64 KiB pages), and a
+> +	 * dma_pool only fixes the large-page case: with NBL_CHAN_BUF_LEN equal
+> +	 * to PAGE_SIZE it still degenerates to one allocation per buffer on
+> +	 * 4 KiB pages.  NBL_CHAN_BUF_LEN is a power of two, so the block
+> +	 * always divides evenly into per-entry slots.
+> +	 */
+> +	base = dmam_alloc_coherent(dev,
+> +				   chan_info->num_txq_entries *
+> +				   chan_info->txq_buf_size,
+> +				   &base_dma, GFP_KERNEL);
+> +	if (!base)
+> +		return -ENOMEM;
+> +
+> +	chan_info->wait = devm_kcalloc(dev, chan_info->num_txq_entries,
+> +				       sizeof(*chan_info->wait), GFP_KERNEL);
+
+[Severity: Low]
+This isn't a bug, but is the "exactly one allocation, one devres node
+and one IOMMU mapping" wording accurate for a ring?
+
+This function calls dmam_alloc_coherent() twice, once for the descriptor
+ring and once for the buffer block. It also makes devm_kcalloc() calls
+for chan_info->wait and txq->buf. nbl_chan_init_rx_queue() likewise
+makes two dmam_alloc_coherent() calls plus a devm_kcalloc() for
+rxq->buf.
+
+The commit message makes the same claim:
+
+  Each ring uses one contiguous coherent DMA block sliced into
+  fixed-size slots, so a channel costs one devres node and one IOMMU
+  mapping per ring instead of one per slot.
+
+Could both say that this only applies to the per-slot data buffers?
+
+[ ... ]
+
+> +static void nbl_chan_cfg_qinfo_map_table(struct nbl_channel_mgt *chan_mgt,
+> +					 u8 bus, u8 devid)
+> +{
+> +	struct nbl_hw_ops *hw_ops = chan_mgt->hw_ops_tbl->ops;
+> +	struct nbl_hw_mgt *p = chan_mgt->hw_ops_tbl->priv;
+> +	u32 pf_mask = 0;
+> +	u8 func_id;
+> +
+> +	/*
+> +	 * k_pf_mask rule: bit N == 0 means PF#N enabled, bit N == 1 masked out.
+> +	 * Program mailbox QINFO entry for each hardware-active PF func_id.
+> +	 *
+> +	 * Note: This loop iterates over the raw hardware PF func_id.
+> +	 * Product constraints limit supported PF counts to the contiguous
+> +	 * sets PF0, PF0~1 and PF0~3.  The mask is validated by
+> +	 * nbl_res_init_pf_num() in the resource layer, which runs before
+> +	 * this call and rejects any other mask with -EINVAL, so pf_mask
+> +	 * here is always one of 0xfe/0xfc/0xf0.
 > +	 */
 
 [Severity: Low]
-Are nbl_dev_start(), nbl_dev_init_interrupt_scheme() and
-nbl_dev_request_mailbox_irq() defined anywhere at this commit? They only
-seem to appear in comments: here, in the nbl_dev_setup_common_dev() note
-further down, and in the comment above nbl_hw_clear_stale_status() in
-nbl_hw_leonis.c.
+This isn't a bug, but nbl_res_init_pf_num() and the resource layer do
+not exist yet at this commit. They arrive later in the series. The
+get_host_pf_mask kernel-doc added to nbl_def_hw.h makes the same
+ordering claim.
 
-The comment above INIT_WORK in nbl_dev_setup_common_dev() has a similar
-problem:
-
-	 * INIT_WORK must precede nbl_dev_register_chan_task() below: the
-	 * registration hands the work item to the channel and the IRQ
-	 * path may queue it as soon as setup_queue() completes.
-
-This commit doesn't request any mailbox IRQ, and nbl_probe() ends after
-nbl_core_init()->nbl_dev_init().
-
-The next patch in the series, "net/nebula-matrix: add common dev
-start/stop operation", adds these functions and wires up
-nbl_probe()->nbl_core_start()->nbl_dev_start(). That makes the
-references valid.
-
-Two wording problems remain after that patch. The INIT_WORK note still
-refers to an IRQ path, but the IRQ is only requested later, in
-nbl_dev_start(). This note also reads like development history in a
-newly added file:
-
-	 * VSI/ETH identity fetch moved to nbl_dev_start().
-
-Could these comments be reworded to describe the code as it stands?
-
-> +	msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num = 1;
-> +}
+cfg_chan_qinfo_map_table() has no caller here yet, and once the whole
+series is applied the described ordering does hold. Could these
+comments move into the patch that adds nbl_res_init_pf_num(), or be
+reworded so they are accurate at this point in the series?
 
 [ ... ]
 
-> +static void nbl_dev_remove_common_dev(struct nbl_adapter *adapter)
-> +{
-> +	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
-> +	struct nbl_dev_common *common_dev = dev_mgt->common_dev;
-> +
-> +	if (!common_dev)
-> +		return;
-> +	cancel_work_sync(&common_dev->clean_mbx_task);
+> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
+> index f2552bc732937..bd29c5da8bc81 100644
+> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
 
 [ ... ]
 
-> +	 * Unregistering the clean task is the channel layer's job too:
-> +	 * teardown_queue() clears clean_task under state_lock and then
-> +	 * cancel_work_sync()es it, after shutdn has blocked new queues.  A
-> +	 * register_chan_task(..., NULL) from here would be a no-op anyway,
-> +	 * because nbl_chan_register_chan_task() ignores writes once shutdn
-> +	 * is set.
-> +	 */
-> +	nbl_dev_remove_chan_queue(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
-> +}
+> +	/*
+> +	 * func 0's device lock is taken with a trylock.  This probe already
+> +	 * runs under device_lock(funcN), so a blocking device_lock(func0)
+> +	 * would establish the N -> 0 order, while __pci_bus_lock() (AER
+> +	 * recovery, slot reset) walks the bus in devfn order, i.e. 0 -> N,
+> +	 * and dev->mutex is lockdep_set_novalidate_class(), so lockdep
+> +	 * cannot report that inversion.  A trylock never blocks, so it
+> +	 * cannot take part in a deadlock cycle; failing it defers this
+> +	 * probe.
 
-[Severity: Low]
-Is shutdn actually set at this point? It only becomes true in
-nbl_chan_teardown_queue(), which runs from nbl_dev_remove_chan_queue()
-after this comment:
+[ ... ]
 
-nbl_chan_teardown_queue() {
+> +	if (!device_trylock(&mgt->dev)) {
+> +		pci_dev_put(mgt);
+> +		return -EPROBE_DEFER;
+> +	}
+
+[Severity: Medium]
+Can a failed trylock here leave the sibling PF deferred with nothing to
+retry it later?
+
+When func 0 binds, really_probe()->driver_bound() runs with
+device_lock(func0) held. device_links_driver_bound() puts the
+AUTOPROBE consumer on the pending list. After that:
+
+drivers/base/dd.c:driver_bound() {
     ...
-	mutex_lock(&chan_info->state_lock);
-	WRITE_ONCE(chan_info->shutdn, true);
-	task = READ_ONCE(chan_info->clean_task);
-	WRITE_ONCE(chan_info->clean_task, NULL);
-    ...
+	driver_deferred_probe_trigger();
+
+	bus_notify(dev, BUS_NOTIFY_BOUND_DRIVER);
+	kobject_uevent(&dev->kobj, KOBJ_BIND);
 }
 
-Until then, nbl_chan_register_chan_task() still accepts writes:
+So deferred_probe_work_func() can re-probe funcN on another CPU while
+func 0's lock is still held. The trylock then fails and funcN returns
+-EPROBE_DEFER again.
 
-	mutex_lock(&chan_info->state_lock);
-	if (!READ_ONCE(chan_info->shutdn))
-		WRITE_ONCE(chan_info->clean_task, task);
-	mutex_unlock(&chan_info->state_lock);
+driver_probe_device() only retriggers when deferred_trigger_count
+changed during the probe:
 
-So a register_chan_task(..., NULL) at this point would clear clean_task,
-not do nothing. It is still true that no explicit unregister is needed,
-but the reason is that teardown_queue() clears clean_task itself.
+	if (trigger_count != atomic_read(&deferred_trigger_count) &&
+	    !defer_all_probes)
+		driver_deferred_probe_trigger();
 
-Could the last sentence of the comment be corrected? The comment is
-unchanged at the end of the series.
+Here the increment happened before funcN's probe read trigger_count.
+So nothing retriggers, and funcN stays on deferred_probe_pending_list.
 
-[ ... ]
+Other holders of func 0's device lock that never bind a driver seem to
+have the same effect. Examples are __pci_bus_lock() during AER recovery
+or a bus/slot reset, a reset through sysfs, or a write to
+sriov_numvfs. No bind event follows any of these.
 
-> + * Teardown ordering guarantee: every non-management PF creates a
-> + * consumer->control PF device link in its probe path, so the driver
-> + * core always unbinds all siblings before allowing the control PF to
-> + * be detached (sysfs unbind, driver unregister and hot-unplug alike).
-> + * nbl_probe_chip_deps() defers a sibling's probe until the control PF
-> + * is fully bound (DL_DEV_DRIVER_BOUND), and re-checks that state after
-> + * device_link_add() so a supplier that slipped to DL_DEV_NO_DRIVER or
-> + * DL_DEV_PROBING in between also defers.  A sibling therefore cannot
+In both cases the sibling PF and its ports stay unbound until some
+unrelated driver binds elsewhere in the system. Doesn't that break the
+"re-probes them when function 0 binds again" behaviour described in the
+commit message?
 
-[Severity: Low]
-Does nbl_probe_chip_deps() actually do this re-check? In nbl_main.c it
-checks the state once under device_trylock(). It then creates the link
-with the lock still held and unlocks without checking the state again:
-
-	if (mgt->dev.driver != pdev->dev.driver ||
-	    mgt->dev.links.status != DL_DEV_DRIVER_BOUND) {
-		device_unlock(&mgt->dev);
-		pci_dev_put(mgt);
-		return -EPROBE_DEFER;
-	}
-	...
-	if (!device_link_add(&pdev->dev, &mgt->dev,
-			     DL_FLAG_AUTOPROBE_CONSUMER)) {
-		...
-	}
-
-	device_unlock(&mgt->dev);
-	pci_dev_put(mgt);
-
-	return 0;
-
-The comment in that function says the guarantee comes from holding the
-lock:
-
-	 * Holding the lock is what makes the check and the link creation
-	 * below atomic with respect to func 0: ...
-
-Is this sentence left over from an earlier version of
-nbl_probe_chip_deps()? The mismatch is still there at the end of the
-series.
+> +
+> +	/*
+> +	 * The management PF must be bound to *this* driver, with its probe
+> +	 * completed.  links.status == DL_DEV_DRIVER_BOUND alone only says
+> +	 * "bound to some driver", so func 0 on vfio-pci or pci-stub
+> +	 * (driver_override) would pass it and this PF would run with func
+> +	 * 0's chip-global init never performed.  pdev->dev.driver is our
+> +	 * own driver, set by the core before ->probe() is called.
+> +	 *
+> +	 * Deferring is enough to recover: a successful bind re-triggers
+> +	 * deferred probing for every pending device (driver_bound() ->
+> +	 * driver_deferred_probe_trigger()), so this PF is retried once func
+> +	 * 0 is bound to this driver.
+> +	 */
 
 [ ... ]
 
