@@ -1,98 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.182
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792919631;
-	b=irj5kd3SEwmxSzN1NkTPmBauKFd0f2YeDRahBJbKW6Wdl8UHGhvPbXJt4n7I9nWwkPDD
-	 TWIM8sMkmXX+e9V+vXYW6QejDvhiDzqxT4fnZQghNmw+BXBJqv/9WVTMbc1V1S8CPPsFf
-	 hc3oxzvL8el+8pzdaJvsYUsBTjFGf57BOfH7vmRwOyddoR0TrB7AfoOEa7GBSLO+6u5s9
-	 n3J7lkzLxzTzM4RvfpPYEL9LhjEb2DKzYsLAt4rG6q7QAvmlaPKv4uYAQxL1QGMEPO7Ka
-	 UJ1Qb7WK0p2oTV5zXUzVec9QNGhFXXO+z2DDVtQN6DEFFFGc4p5QngXWme7vRlc2XyQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792919631;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=oBabjhiD1rQ4tbEXY7drQjt+LTH2wSsXeFN2ti8cL7g=;
-	b=rUqv0kP8sCMh0Dgutj3BY7ErvIuKNL71cdPQifzx+XW0DLYx2Nyfsqoz1PQntbPBvCdK
-	 gZLtTwdSIzSO7R2ARU9o2DKjff8pqNjRBjz0cw5qg27xv89djXbzK/mmc83iF8odU3Ur3
-	 15uTjARmJfCyrMLND9yqoQ3bSsDAdLLgEF4KesdBQbW+g4/QuEr4shlrjqpzYv9MQ+OAX
-	 24d8vbCEPW+8nAnSCCfzZMzJarIZIUcyp2ldFsrOuIxksfRykjLQIBxDT46UrxefqZRqo
-	 5jGfUn+g2/yPJ9QlyZQEA6/0Wx8dwFDdKeYQPDaq/lWLW102Y+yx8LQmksfIDYnBHQQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mojatatu.com;
-	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=Pa9whJpt;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.182
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792920269;
+	b=EumV5Ff9Q8GydZjtveKFroDKLXyboP5xxLsXeSHH9je6tTzozBOZvfSkvu1zcOs1EgeM
+	 dWRU4ihSy3CPnXzxuvpOiKQgwz0Go5lDXR8rViNnyV4J1uJQpZ1v82EgtHzhjx2WJidPn
+	 1Elu4a4+NKMiIym56p8f57Wi1PbHw3dDXE+K9XEQwLrnn3VDaSl0bLWMYwEz0UD9b/INa
+	 WCE+PmpxMipbxjCS85k4+mIQct5fzmg/ahR/r0lR/zS+KcqBPm2grHoq9c1KDqMxOdCpS
+	 5QrTYUmCDRDiEBxbhmg3RGpT1hgkjpxe4w/bbnuVdRWtWR0aM6xS4SSTQh0WaAliliQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792920269;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=MWi098cMJlP1WHrul13CB7sxRj2mt5l+cQpJpKNbkFE=;
+	b=Tet1MUh3SfJSYLvTIADDH5ieR4B5gYp3lFU0oR+NKWJDr11xPIrwOMGdOCSZAENX3WYN
+	 kuyUMXBG2yosVwoJd0jYfkc8XgAWoEKYZiFJF4vdIzmcUKBX+Zhm6jmnSzhYWcHde3XC7
+	 zNUUW2ew4MiZ6lZzMU8411EtFmPY2tSxvSF12ddu/133WyHhv8s9jE0sHltc0idp7xMwu
+	 fs41GlEDZEWLbut9X2pMi9bmzqO0MdiYvz6p5guvkgxJKcibtSoosn3Ke/3vifzSECApn
+	 CTmxSzlZfG5Nz8g8UWMMBlGyhCPHsLiZyeK6yPAlS+lN4ca+khKZzX85agg1Hh0IyxQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Z3Fgbnsx;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03DED606A31B
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 09:13:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 03DED606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D7D606A33A;
+	Sun, 25 Oct 2026 09:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=Pa9whJpt
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8a052aff9e9so1465992b3a.0
-        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 02:13:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792919630; cv=none;
-        d=google.com; s=arc-20260327;
-        b=L0xp72ewM6vVsNXHW9ywWKyJpmhFOiUqRkb6cbuBRfO7Nohd/ud6HkI93A5ZIjlsTF
-         IbaXKEaanw1XS+ML+M9BzQQAzsxVRVXgowoPrl0z8ctw32U1qSRFEU0f5nC3PAtoNBP5
-         yFx6CI9LZ9E4tM9v6wiyq1l3qvPNFTB41oRh2oDfjYX4WKuihsoO1Cz0Zzf0AhBD1WeY
-         RXfX7wEiIkitSeTtVHyjxVaQVrkUHBRBPLM5Lj+4Cm/pv5aGZSry77XeDEmegoAEQK4l
-         CyVr4H9rGkc3FGprRRXywNVmUzNOwjHGjD6ipwSQCRxA2GyAU7DH443l2A8BsRZuPif8
-         RXpw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=oBabjhiD1rQ4tbEXY7drQjt+LTH2wSsXeFN2ti8cL7g=;
-        fh=9x4+p6l2Zi3DyDRYU89PRrngvv0NwclEWaN5GG+1xyQ=;
-        b=TG7ci+E8jU9KdqkB2oGpFUHJ3VLchKL/oRJljoVmXPXNRRIY8MDCz6dpTgGG7Ht8w8
-         V8Opko2ZA1UrSjQV7B0CGFLI36U02tcSSgjYK+L0vwCcI2S1siMCfEfhmkrKq9D4+fft
-         d8F5LGfKjFsc65Iz+my4U4ufzoedk3JiuyDTsewwkN1TqPSb6VxO29H4REkdZaVcp9Kb
-         9vOkL3UfxT6P28bOlshdlKWe5T3xmIHnJ/lhWgIp4U8nxxvbgom5DDXK5M8WUreyGz7A
-         YyQ5J2deoNM1q30W/9s/bVBmGHYUlyV5ja03EhskzObXyQIi6GB3lA+NvP/RfCGW/yrg
-         OORQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1792919630; x=1793524430; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=oBabjhiD1rQ4tbEXY7drQjt+LTH2wSsXeFN2ti8cL7g=;
-        b=Pa9whJpt2+pX2IKfUr0v3K+DhB34016JeiiJ14fdqzNSpDp/m4md5iSan+Cv+NaX6d
-         XYmbV6K+4LBRy2L4k+yS/9vpSnXBbt2ehXQPqGu6uL/Pbjnqf/OIslPWttavKidZJLha
-         ekZX7eQWbR9g8oX7anwaPJfoCMxm74s28d9Qs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792919630; x=1793524430;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oBabjhiD1rQ4tbEXY7drQjt+LTH2wSsXeFN2ti8cL7g=;
-        b=mLv36hoCl2IjeEAsxJNmMnssTi+tLjWvcK5YotxRo6NNustyncVpNbv8KMwvxhKO6/
-         9PNa2cOnXQH1pzmmf5ghWIjQL45qNRUI8pcEcxdjYCVfg8CvuHJNy3AJ2J24mQyyHOIi
-         8jlQJPmqcsCqqwNbWV4IK25LzXCDT3evPEMLDwVxlDmpn/DZXMtchkRmmHgjHE1f+ahl
-         c6qYNMwK0jtZEoP6980xrMHQAYf3ckYJ9sSGF+l+xgunX3jpFECWTORJOqakafe8CFZM
-         dKjQLmgQjSlmmq+8kxT3xD+S/HNpNrc/9W/EkT0s4EhIn0/8oQ0WOKEu3hOn0+TibBsA
-         7UJg==
-X-Forwarded-Encrypted: i=1; AKwUvBwqc5t/vZq3jo9ArXQ2YkTW12agAqtYBXzjouteMCdkV0vQ02rgwnfXXG3lB+GLR4UQ6QIZlnc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIhZ5K+WF17N4VTjO15HdTFgU7824m3W5yZ92hAwMY6Nl75swbE
-	FA/a7hyj9ZWSme7URbSPimb3fl3Cy6BTKfq0FzYU6gaDyJbRbTLoNAUAEL7raWIl/1IDmwm/rU/
-	o3Pwy0whPuno0zSe/sUph4kV48Ree3pCTOIs44B2O
-X-Gm-Gg: AYBFou162w7T8Ed5lRWy/fFUBUB6j/fa8Emq+vDut4GwwnoCoyqU7TzQ/igkYbxnOXc
-	8av4rIH4mnWr7HoG0eebUssX3rsaVonujMF2hjxXsLSENtLNaexDr1yYZ0JU4LeU6cdWsj5ZMio
-	p/YYWrsHbK1BlZU9EwM7mYU1EzWpFBEcXEOoAQvzM5BiSjA12C1GogDp6dFMEfr94qm9TWKHZym
-	yJm+vS0kZzRp4w4/50WKN2ixdS+flujDBI8d7OT10yidRAIP5lLpMrAaK+FI3tv1C6ZcEHSXSDq
-	hopBtw+XxAwVsm5cct082RA3NHwE5F1zl6koDogPUPV1YMKb142SChzlzk7n4ZPcuDPTawlNvW2
-	iNNqDF1yIw+ms3BI0UhZY6uUA2Ij+ZMKsh0teuZmgTJTPxigGLbW/z6KO/0g7ihWyhyz9hQ0ki+
-	NhapZQN6BQY3QBeq4=
-X-Received: by 2002:a05:6a00:a115:b0:876:194e:b8fe with SMTP id
- d2e1a72fcca58-8a366f660c1mr3180660b3a.26.1792919630278; Sun, 25 Oct 2026
- 02:13:50 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Z3Fgbnsx
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A7A31F031E0;
+	Sun, 25 Oct 2026 09:24:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792920269;
+	bh=MWi098cMJlP1WHrul13CB7sxRj2mt5l+cQpJpKNbkFE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Z3FgbnsxHuUoMF9Yn+bT/7DfPaX9z9PxDxzZEcti3v+turLoQluyVSKWjGuNNQFTy
+	 /XNXRG0MS8k+c5nCVn8tYCOVhXW/jf8QA4o7DNjshsA/G7YivdBHuJU4R6Idf8zsTD
+	 dl4P5QUkMSw6OkA39KTwIpp3xcrRgeTvqgUZmWV7uHhQx9/iOGdVtHdirQk1QhSFVQ
+	 1IvKM/xGpvgr0+O1islperjpzXRtaOHiq0b0xDyO2JOIEz1ArIlBOVX6JzLE5sCjLY
+	 I/9Bx+tcKcbuN6CHlUwem3kPM2DMD6VO2b5hXePaKVH015kQiXpvbjXAWbXYr7l8eB
+	 Sx2vX2oJejYgg==
+Subject: Re: [PATCH v32 net-next 7/8] net/nebula-matrix: add common/ctrl dev
+ init/remove operation
+From: netdev-bot+sashiko@kernel.org
+To: illusion.wang@nebula-matrix.com
+Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
+ sam.chen@nebula-matrix.com, netdev@vger.kernel.org, kuba@kernel.org,
+ andrew+netdev@lunn.ch, pabeni@redhat.com, edumazet@google.com,
+ horms@kernel.org, linux-kernel@vger.kernel.org
+Date: Sun, 25 Oct 2026 09:24:27 +0000
+Message-ID: <179292026791.3134.7406957765573459661@kernel.org>
+In-Reply-To: <20261021062113.2158-8-illusion.wang@nebula-matrix.com>
+References: <20261021062113.2158-8-illusion.wang@nebula-matrix.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,78 +64,177 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260731140533.566493-1-david.lee@trailofbits.com>
- <CAM0EoM=UDkGKLivsdDS5JaVMuefR4jLC2rAWJcOR8XD-4N_EgA@mail.gmail.com>
- <CAC_etQESLytW5rhp0GfZU-mJqJhwk202a5u_nTXZ7W6wJN=AJw@mail.gmail.com>
- <CAC_etQHv2EBYfAhfkYHKrasnJAyDS+u5+a4os4aD1eSmKrck_A@mail.gmail.com>
- <CAM0EoMm=KbZgcGqLHDFee3mM1GxuNCvAWObP_K4AxsGAoEAedg@mail.gmail.com> <CAM0EoMmxpVv4YRoQQ3jN+79OKjaT=ep3+6jff8CHoOBLJUej3w@mail.gmail.com>
-In-Reply-To: <CAM0EoMmxpVv4YRoQQ3jN+79OKjaT=ep3+6jff8CHoOBLJUej3w@mail.gmail.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Sun, 25 Oct 2026 05:13:39 -0400
-X-Gm-Features: AclHuK80D8qgJg44CQznpEWEuYQO3yP2tYU2BMNxj7xLNY98_DjMCZ-FphGgVQk
-Message-ID: <CAM0EoMkOj8zfwB8WuTEOxEzAoGONg=2ZODehVMBzbA5c+EebZA@mail.gmail.com>
-Subject: Re: [PATCH] net/sched: sch_qfq: prevent aggregate self-replacement
-To: David Lee <david.lee@trailofbits.com>
-Cc: jiri@resnulli.us, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, Kyle Zeng <kylebot@openai.com>, 
-	"Dominik 'Disconnect3d' Czarnota" <dominik.czarnota@trailofbits.com>, horms@kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, sven@narfation.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sun, Oct 25, 2026 at 5:03=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.com>=
- wrote:
->
-> On Thu, Oct 22, 2026 at 5:14=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.co=
-m> wrote:
-> >
-> > On Wed, Oct 21, 2026 at 10:56=E2=80=AFAM David Lee <david.lee@trailofbi=
-ts.com> wrote:
-> > >
-> > > Hi Jamal,
-> > >
-> > > Following up on this thread. Please let me know if you had a chance t=
-o review the attached reproducer or if you need any additional information.
-> > >
-> >
-> > Please resend to the list - I lost track.
-> > And if you follow up after like 2 months(!) you will really have to
-> > retest with the new kernel and likely look at the list to see if there
-> > are other fixes that cover this issue.
-> >
->
-> Before i try to reproduce (then proper review) please resend
-> addressing the issues raised by the sashikos. They are legit.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
+Low priority / nit picks for your consideration:
 
-IOW, send a v2 with the following addressed; I may have missed some
-things Sven pointed out:
+- [Low] At this commit, several new comments in nbl_dev.c (and one
+  existing comment in nbl_hw_leonis.c) mention functions that are not…
+- [Low] The teardown-ordering comment above nbl_dev_remove_ctrl_dev()
+  (nbl_dev.c lines 180-183) says that nbl_probe_chip_deps() 're-checks…
+- [Low] In nbl_dev_remove_common_dev() (nbl_dev.c lines 151-156), the
+  comment says 'A register_chan_task(..., NULL) from here would be a no-…
 
-1. Sign-off chain: the patch is From: you but only Kyle signs off.
-Read Documentation/process/submitting-patches.rst, add your own
-Signed-off-by: as well (and a From: Kyle Zeng / Co-developed-by: chain
-if he authored the fix). As sent, the DCO chain is broken and the DCO
-check will flag it.
+--
 
-2. No blank lines in the trailer block, and replace the prose "Bug
-found and triaged by OpenAI Security Research and validated by Trail
-of Bits." with machine-parsable trailers (e.g. Reported-by: for the
-finder and a Link: to the report). The "Assisted-by:" trailer is not
-one of the standard tags - please drop it or convert it to a standard
-one.
+net/nebula-matrix: add common/ctrl dev init/remove operation
 
-3. Add "Cc: stable@vger.kernel.org" - the Fixes commit is from the
-original QFQ Plus merge, and this UAF is reachable with CAP_NET_ADMIN
-in a user+net namespace, so the stable trees will want it.
+This adds nbl_dev.c with nbl_dev_init() and nbl_dev_remove(). They set up
+the mailbox channel queue and its clean work. On the control PF they also
+program the mailbox QINFO routing and run init_module/deinit_module, and
+the new entry points are wired into nbl_core_init() and nbl_core_remove().
 
-4. Use the [PATCH net] subject prefix in v2 (this is a fix for the
-current tree).
+> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+> new file mode 100644
+> index 0000000000000..cbb0b06b80117
+> --- /dev/null
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+> @@ -0,0 +1,295 @@
 
-The patch looks sane, as I said earlier, but there are just too many
-incoming and too many fixes over the last 2 months - so i just trigger
-our automated system to ensure it is reproducible first before I look
-at anything (and i would like to maintain that discipline/workflow).
+[ ... ]
 
+> +static void nbl_dev_init_msix_cnt(struct nbl_dev_mgt *dev_mgt)
+> +{
+> +	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
+> +	struct nbl_msix_info *msix_info = &dev_common->msix_info;
+> +
+> +	/* mailbox vector allocated in nbl_dev_start() via
+> +	 * nbl_dev_init_interrupt_scheme(); nbl_dev_request_mailbox_irq()
+> +	 * only attaches the irq handler to pre-allocated vectors.
+> +	 */
 
-cheers,
-jamal
+[Severity: Low]
+Are nbl_dev_start(), nbl_dev_init_interrupt_scheme() and
+nbl_dev_request_mailbox_irq() defined anywhere at this commit? They only
+seem to appear in comments: here, in the nbl_dev_setup_common_dev() note
+further down, and in the comment above nbl_hw_clear_stale_status() in
+nbl_hw_leonis.c.
+
+The comment above INIT_WORK in nbl_dev_setup_common_dev() has a similar
+problem:
+
+	 * INIT_WORK must precede nbl_dev_register_chan_task() below: the
+	 * registration hands the work item to the channel and the IRQ
+	 * path may queue it as soon as setup_queue() completes.
+
+This commit doesn't request any mailbox IRQ, and nbl_probe() ends after
+nbl_core_init()->nbl_dev_init().
+
+The next patch in the series, "net/nebula-matrix: add common dev
+start/stop operation", adds these functions and wires up
+nbl_probe()->nbl_core_start()->nbl_dev_start(). That makes the
+references valid.
+
+Two wording problems remain after that patch. The INIT_WORK note still
+refers to an IRQ path, but the IRQ is only requested later, in
+nbl_dev_start(). This note also reads like development history in a
+newly added file:
+
+	 * VSI/ETH identity fetch moved to nbl_dev_start().
+
+Could these comments be reworded to describe the code as it stands?
+
+> +	msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num = 1;
+> +}
+
+[ ... ]
+
+> +static void nbl_dev_remove_common_dev(struct nbl_adapter *adapter)
+> +{
+> +	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
+> +	struct nbl_dev_common *common_dev = dev_mgt->common_dev;
+> +
+> +	if (!common_dev)
+> +		return;
+> +	cancel_work_sync(&common_dev->clean_mbx_task);
+
+[ ... ]
+
+> +	 * Unregistering the clean task is the channel layer's job too:
+> +	 * teardown_queue() clears clean_task under state_lock and then
+> +	 * cancel_work_sync()es it, after shutdn has blocked new queues.  A
+> +	 * register_chan_task(..., NULL) from here would be a no-op anyway,
+> +	 * because nbl_chan_register_chan_task() ignores writes once shutdn
+> +	 * is set.
+> +	 */
+> +	nbl_dev_remove_chan_queue(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
+> +}
+
+[Severity: Low]
+Is shutdn actually set at this point? It only becomes true in
+nbl_chan_teardown_queue(), which runs from nbl_dev_remove_chan_queue()
+after this comment:
+
+nbl_chan_teardown_queue() {
+    ...
+	mutex_lock(&chan_info->state_lock);
+	WRITE_ONCE(chan_info->shutdn, true);
+	task = READ_ONCE(chan_info->clean_task);
+	WRITE_ONCE(chan_info->clean_task, NULL);
+    ...
+}
+
+Until then, nbl_chan_register_chan_task() still accepts writes:
+
+	mutex_lock(&chan_info->state_lock);
+	if (!READ_ONCE(chan_info->shutdn))
+		WRITE_ONCE(chan_info->clean_task, task);
+	mutex_unlock(&chan_info->state_lock);
+
+So a register_chan_task(..., NULL) at this point would clear clean_task,
+not do nothing. It is still true that no explicit unregister is needed,
+but the reason is that teardown_queue() clears clean_task itself.
+
+Could the last sentence of the comment be corrected? The comment is
+unchanged at the end of the series.
+
+[ ... ]
+
+> + * Teardown ordering guarantee: every non-management PF creates a
+> + * consumer->control PF device link in its probe path, so the driver
+> + * core always unbinds all siblings before allowing the control PF to
+> + * be detached (sysfs unbind, driver unregister and hot-unplug alike).
+> + * nbl_probe_chip_deps() defers a sibling's probe until the control PF
+> + * is fully bound (DL_DEV_DRIVER_BOUND), and re-checks that state after
+> + * device_link_add() so a supplier that slipped to DL_DEV_NO_DRIVER or
+> + * DL_DEV_PROBING in between also defers.  A sibling therefore cannot
+
+[Severity: Low]
+Does nbl_probe_chip_deps() actually do this re-check? In nbl_main.c it
+checks the state once under device_trylock(). It then creates the link
+with the lock still held and unlocks without checking the state again:
+
+	if (mgt->dev.driver != pdev->dev.driver ||
+	    mgt->dev.links.status != DL_DEV_DRIVER_BOUND) {
+		device_unlock(&mgt->dev);
+		pci_dev_put(mgt);
+		return -EPROBE_DEFER;
+	}
+	...
+	if (!device_link_add(&pdev->dev, &mgt->dev,
+			     DL_FLAG_AUTOPROBE_CONSUMER)) {
+		...
+	}
+
+	device_unlock(&mgt->dev);
+	pci_dev_put(mgt);
+
+	return 0;
+
+The comment in that function says the guarantee comes from holding the
+lock:
+
+	 * Holding the lock is what makes the check and the link creation
+	 * below atomic with respect to func 0: ...
+
+Is this sentence left over from an earlier version of
+nbl_probe_chip_deps()? The mismatch is still there at the end of the
+series.
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021062113.2158-1-illusion.wang%40nebula-matrix.com
