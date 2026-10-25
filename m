@@ -1,58 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.47
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792950445;
-	b=f+8aFpvC1V0MZ74mxXts+4utLuxMZHROD8vwlvcz3QH9XGQV3qIWCU8YhuX9s0akvqXw
-	 0BET1Pt40+IdnVeI6XYoB2DedJ8MY2ql1RWTH5x5tOfKr7pAZ89YZj3ssT/8KokRjl4Qg
-	 sVJ/YA9UeyjpiIBM1eNM+PuJZmi73br9i4Z7Oy3WkMGk8gxbWg6zEQSHxidB/ozefNCNq
-	 rjFZtevLM3pqrCntiatmaF+v/6gIKB5M/dIrsL8LIMoWJdEzfzKccLNDsrvRJZQx+2TaW
-	 vAZdEnrMzISIz7ttnl2xQJ/DAuG+88sE/7Fg7ffetmmARDxFy7p3F0DTI9t5+S3sOyA==
+	t=1792950474;
+	b=mVvN1x25e9axFVKvakht1BmXLHatsxZ2/hvn/1e7oWa6cOhYJV4Fh4U7Srk6meqLSIbF
+	 fmfjRaWN/Kr9ILN0VSc4lQsrvH40XAECCm2bB+47frtd5CajvQG6B0r5lAZpfmSOfj1fw
+	 3tvjc1emGzmyPn0rMMfo/r9lsDHy2StAZS+ZvKKL8d9/eJaoiMoRiMApC1dddVbSsRf+6
+	 94QaVQtUxqS8nWq9Tpa6c2Z7/70/ryRXs6zUbWhxiBqunpnK/OLzKOvlwbLcQyEOLvttJ
+	 wTl7H/WzJ9TrCuw0eZKSPVkbjCOx16VD15ZLEnoDxCvoWCypzumb2f02j1Fv3fvRh/g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792950445;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=JmRLzeYCdX82mXLcM2/P5to8iYH2FEbFcSMJ+Fc1J2c=;
-	b=QWQjc82fj6YwM0sK6o7pCfArW1PMbqDVyKt+5BknBpLHERpIbY30vE8HXVSPxy2fRlgn
-	 EoFNcOnEwafQpxBouwbEeiBXE2rYxps0cdvchRktWSS2kHTVVZoDtVij2Y2C3urVMRldn
-	 F9w8nk4HySeoWGT07Mp1a0kk2N+YpW3L3lHmzOnllrrT3VqNoCVkviZ2TNJGEL2D71q4g
-	 qBs+urPId5DlwhyRV3oRgworQs/M1+I3Yh/HVWJsley2WupYvzLAXN8gg9iS8GBk8nT5R
-	 BES4MHNhYv3kggdwMsZoZgGEgkON+NX8N9VXOH6TKi8C5Sibu5CFymDFZjO6UTKg6nA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792950474;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=PHNL2zci2V+tXy+ZuToX2Iy4V2hn/n3XFhH6YxOGTOo=;
+	b=hd7eAQpAvr8xfC5ufvvEFlO9CnDUHupyfBrAgMikBld4RSXe7eD0/paQry94RzlOhQnc
+	 ip28dlgO2G9Ehj27duT5LQRe++9NLcvrz2c0ZGnjzXYVBHocUAvNAqBkvwRZJdxu7X3eq
+	 xj73MdL0d7nuVTYfessEjmp9iJIzgFmxopeBCzC2hkn2xNqBERONXL07DNyTUBDvpgtWD
+	 WQoYJiwzROPNyyoEVlJnxGwRnfFVyuyArHFDSYnVobIVNK6LoVcWywcs4LdlLjcYC9PWc
+	 AOz+RVqgSPGSvc9GbPYZGybscC6yYC6kOJ8vyQI5O8XJ9/zbSpUC4GVzSuI6PB/ZdLw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jn1k33FD;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=networkplumber.org;
+	spf=pass smtp.mailfrom=networkplumber.org;
+	dkim=pass header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=YDcLTFMo;
+	arc=none smtp.remote-ip=209.85.216.47
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16207606A31A
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 17:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A31606A31A
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 17:47:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 29A31606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jn1k33FD
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BCC91F01825;
-	Sun, 25 Oct 2026 17:47:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792950444;
-	bh=JmRLzeYCdX82mXLcM2/P5to8iYH2FEbFcSMJ+Fc1J2c=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Jn1k33FDe5oXLax1eWdO/Hg1f31PgCiRW22qsXbqYjBhi4tTIQfqEV60WVJYJme1E
-	 HSVgrRsHPdxQKV14e3BdAKtVMl7pAQQ0nNBa17sk+RqkD/QHf2s5cb2FSLQgxHlXd6
-	 iYrs0RCgg2P8rFbkMAL9hMy+U8vj64ev3NIR0d7RGmxlOZGKkdVYJpEbDEHxt7whta
-	 UW3Rq/Zb6RwtcTnAXlsed25mNocbWklBV8uVvEsdTGyqgHJFsDXFzi5+5iQh7rIdG7
-	 8Lfs+RIjJiRiRxP5IuQQ7hj70eY3SnVNl9mCObN9ZlGSwW6l5PvvM3FcwJwQcpT8G2
-	 KgVU/yQCLxLIQ==
-Subject: Re: [PATCH net] net: xps: re-validate the queue index after switching
- to the subordinate device
-From: netdev-bot+sashiko@kernel.org
-To: phx0fer@gmail.com
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, netdev@vger.kernel.org
-Date: Sun, 25 Oct 2026 17:47:23 +0000
-Message-ID: <179295044377.3134.4218140441633589596@kernel.org>
-In-Reply-To: <20261021155555.68167-1-phx0fer@gmail.com>
-References: <20261021155555.68167-1-phx0fer@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=YDcLTFMo
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3856d6fbcb3so1412050a91.2
+        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 10:47:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1792950473; x=1793555273; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=PHNL2zci2V+tXy+ZuToX2Iy4V2hn/n3XFhH6YxOGTOo=;
+        b=YDcLTFMoTSzSAm4OWtfNk+bkKL7NDNbur5AttMw6S/UuExcEY0azW8hea51cPdLKaa
+         yBOAguSs0jsHUY2Xo3GHDeuphY3g3f67viFtYO5Vkqk4G0mBIqATxQdTwdTIb4tguf1A
+         4+e5jr0vX2p3xYwtcMKS9EScKdBNSuNpwtsA6REmdXVnwdkKMHB6uV+Q8q8mIZs1SXKJ
+         KFPJOvNEkl4nOuqYMR9W1YQu5iXlmlfUcYxyRiPLVSjRUEKNvvFGV5oWfxoZValoGEBB
+         bVoTJakSmKbCR8BzLp3l52oM/zJNVKAG02tAsdymiFA6mkJ84WA/kaIKocQggaINQtEo
+         DsEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792950473; x=1793555273;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PHNL2zci2V+tXy+ZuToX2Iy4V2hn/n3XFhH6YxOGTOo=;
+        b=sR4/fy+f6f9S25kPq+RK90zTRTcYeVdl5SThHpvMcx5BPcIZG0CMty3o5/+TdCIIrT
+         xsABWr66o2yFY417L7d+XwjC+Y+62u05ZWCNvR/tzEI6LNVqZkUxI0UuTvslki24Ii5e
+         sKyqCfJziiuL3ZXrGr7YkRXIDdM1my4cifuQdm0JC/8N2dGNwa0qF+QkDjB7chOIYF1U
+         kkzE42yF2OQtyRQj9OalSv0tFXuu4wNUh92GrAznfHmZnE/j4tNriYx5RkqADeMsRj0d
+         CCT9UPxfp17pWqRKqIvSmg9gqG5e1z7zHcv+0v8qv1iTHi9m9qZ8/3SQQFx7XgeUrYaQ
+         VVXQ==
+X-Gm-Message-State: AFq9FYKc/2L0VZwliK4nSCeY7NnsVxiiWE5+UJ/l5IqDUaYXcpziL28x
+	+UPWm1tkN0zqVe0vdhYAy94BUit1JtEtqWZPtnfvPwnDPvvAUSC/41ihA5j007mGAUXMyXjLju9
+	8RCzL8ME=
+X-Gm-Gg: AYBFou2qjnS97cVdLhsQcNyxFOBWgfL5qo1r1maYML0dnLhLLtmeW1Qnnuk98yh9e0q
+	NbYnmlHkiPfCGXiLqZTGxBX8f3pd4aRrT59cbpMgQR6/+4bg/PDtpPMQWhigF4Q6umOQ2ESXqll
+	QF7TlaRaUY8j/1qYXjx7P2tuhqqOWI+lB2lQsZyziBTCllm5VI4cn70WV+ffenCTGcJHcSuNaQ8
+	B5Vu7/sKT+ozTzcZ/VXyxhWZb+yv71fSN91DOqK+QGx3XA4Li22+W9Ut8/t2YG1A2yQpSdYUaRp
+	TyPqyhDxvHhl/5LnU3onq8Canlxpx5d7H4hDtZlSbskcSSqKrKi1Qfe8UvEoqqtcDeLgD0CA0pH
+	Ap4Or0a0IycpGpn/khD3275sa+QHqGsoWza1k69FzggI/80W9iao5/AgIyuDdcUpZTXvg57ZflK
+	xPL4TPyyghLg0tDn7Heg6URxV5B781DlsA8FszhAZFXAH/MgHcsOp127qylauOmISskB3l4ebNc
+	gYtiLrO7KE3RyLKTJ4SQK8h/qPZmOfuHrMcDMM1a/junHtMLSa9XjWFDDVL8RbFz2W7tyEUZd5e
+	/XRY9jHH4UTc7uAw22MxcA==
+X-Received: by 2002:a17:90b:4a51:b0:3ab:2737:3396 with SMTP id 98e67ed59e1d1-3adeafc9d9cmr4075613a91.65.1792950473363;
+        Sun, 25 Oct 2026 10:47:53 -0700 (PDT)
+Received: from phoenix.local (204-195-112-43.wavecable.com. [204.195.112.43])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3adebb24a83sm5367423a91.17.2026.10.25.10.47.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 25 Oct 2026 10:47:52 -0700 (PDT)
+Date: Sun, 25 Oct 2026 10:47:50 -0700
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: Yuen Su <zypulsecore@gmail.com>
+Cc: netdev@vger.kernel.org
+Subject: Re: [PATCH iproute2] ip: flush nexthop-object routes without
+ compatibility attributes
+Message-ID: <20261025104750.37da5b0f@phoenix.local>
+In-Reply-To: <CAC9WPdwmM4=64DH5nY85srnLhRBS7PkjR9vrsALpob-GutbmZw@mail.gmail.com>
+References: <CAC9WPdwmM4=64DH5nY85srnLhRBS7PkjR9vrsALpob-GutbmZw@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,204 +97,208 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
+On Sat, 17 Oct 2026 20:00:26 -0700
+Yuen Su <zypulsecore@gmail.com> wrote:
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 2
+> Route dumps carry RTA_NH_ID together with compatibility-expanded nexthop
+> attributes. Copying both into RTM_DELROUTE is rejected. Compact the
+> flush copy while preserving the exact ID and route selectors, use its
+> new length for batching, and leave the original dump intact for verbose
+> display.
+> 
+> IPv4 blackhole objects synthesize a route type which may differ from the
+> FIB alias. Without a type selector, omit that synthetic constraint.
+> Retain explicit type filters so a typed flush cannot delete another
+> alias sharing the prefix, metric and nexthop ID. An ambiguous typed
+> request remains a conservative failure.
+> 
+> Add real-kernel regressions for IPv4/IPv6 single nexthops, groups,
+> ordinary multipath, mixed flush batches, blackhole aliases, cross-family
+> gateways, exact metric/table retention and type-filter preservation.
+> 
+> Signed-off-by: Yuen Su <zypulsecore@gmail.com>
+> ---
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Lots of issues identified by AI review
 
-- [High] The fix applies the wrong bound and leaves the faulty access in
-  place.
-- [Medium] The new check also runs when the queue has no sb_dev and `dev`
-  is still the parent.
-- [Low] The commit message describes the defect inaccurately.
-- [Low] The submission notes ('Triggering conditions', below the ---
-  line) say the in-tree subordinate binding happens on 'the i40e and…
+On Sat, 17 Oct 2026 20:00:26 -0700, Yuen Su wrote:
+> Subject: [PATCH iproute2] ip: flush nexthop-object routes without
+>  compatibility attributes
 
---
+The underlying bug is real and worth fixing, but this submission has a
+blocking delivery problem, one correctness regression, and some invented
+test scaffolding. Details below.
 
-net: xps: re-validate the queue index after switching to the subordinate device
+1) The patch is whitespace-damaged and cannot be applied
+---------------------------------------------------------
 
-This patch adds a check to __netif_set_xps_queue(). After dev has been
-switched to the subordinate device, index is compared against that
-device's real_num_tx_queues and -EINVAL is returned if it is too large.
-The goal is to stop the KASAN slab-out-of-bounds write reported from
-xps_cpus_store().
+  $ git apply --check iproute2-ip-flush-nexthop-object-routes...patch
+  error: corrupt patch at line 192
 
-> A subordinate with fewer TX queues than the parent's index then
-> overflows sb_dev->_tx[] / the XPS map:
+The mail was injected through the Gmail web API:
 
-[Severity: Low]
-Is the "/ the XPS map" part accurate? In __netif_set_xps_queue() the XPS
-maps are indexed by tci, not by index:
+> Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
 
-    tci = j * num_tc + tc;
-    map = copy ? xmap_dereference(dev_maps->attr_map[tci]) : NULL;
+which rewrapped long lines mid-statement. For example the new function's
+signature arrives split across a continuation line, and nearly every
+added test line is broken at column ~70:
 
-and index is only stored as a value:
+> +static void flush_nexthop_compat(struct nlmsghdr *n,
+> +				const struct nlmsghdr *source)
 
-    map->queues[map->len++] = index;
+> +	ts_ip "$0" "Add selected single-nexthop route" -"$family" route add
+> table 111 "$prefix" nhid "$nh" metric 10 mtu 1400 advmss 1360
 
-The only out-of-bounds subscript seems to be netdev_get_tx_queue(dev,
-index) in the NUMA node write at out_no_new_maps.
+Please resend with git send-email (or git format-patch + an attachment)
+so it applies cleanly. I reviewed the logic from the quoted text, but
+nothing can be tested in this state.
 
-Also, netdev_set_sb_channel() rejects multiqueue devices, so every in-tree
-subordinate has exactly one TX queue. That means "fewer TX queues than the
-parent's index" is not a corner case. It covers every XPS write to any
-offloaded queue.
+2) The RTN_UNSPEC hunk papers over a kernel dump bug -- please call
+   that out explicitly
+--------------------------------------------------------------------
 
-Could the commit message describe this more precisely?
+> +	if (!filter.typemask &&
+> +	    r->rtm_family == AF_INET && r->rtm_type == RTN_BLACKHOLE)
+> +		flushed->rtm_type = RTN_UNSPEC;
 
-> CAP_NET_ADMIN to set the XPS mask.  An sb_dev is bound in-tree by
-> netdev_bind_sb_channel_queue(), which the i40e and ixgbe SR-IOV paths call
-> when a VF's channel is bound to the PF.
+The commit message describes this as IPv4 "synthesizing a route type",
+which undersells it. In fib_dump_info() (net/ipv4/fib_semantics.c):
 
-[Severity: Low]
-Is this description of the trigger correct? The only callers of
-netdev_bind_sb_channel_queue() are ixgbe_fwd_ring_up() and
-i40e_fwd_ring_up(). Both bind queues to a macvlan netdevice for L2
-forwarding offload, via ndo_dfwd_add_station (ixgbe_fwd_add() and
-i40e_fwd_add()):
+	if (fi->nh) {
+		if (nla_put_u32(skb, RTA_NH_ID, fi->nh->id))
+			goto nla_put_failure;
+		if (nexthop_is_blackhole(fi->nh))
+			rtm->rtm_type = RTN_BLACKHOLE;
+		if (!READ_ONCE(fi->fib_net->ipv4.sysctl_nexthop_compat_mode))
+			goto offload;
+	}
 
-drivers/net/ethernet/intel/ixgbe/ixgbe_main.c:ixgbe_fwd_ring_up() {
-    ...
-	/* record configuration for macvlan interface in vdev */
-	for (i = 0; i < num_tc; i++)
-		netdev_bind_sb_channel_queue(adapter->netdev, vdev,
-					     i, rss_i, baseq + (rss_i * i));
-    ...
-}
+Note the type is overwritten *before* the compat-mode bail-out. So for
 
-Enabling VFs alone does not seem to set up this binding. The trigger
-appears to be a macvlan with l2-fwd-offload on an ixgbe or i40e parent.
+	ip nexthop add id 301 blackhole
+	ip route add 192.0.2.0/24 nhid 301	# fa_type = RTN_UNICAST
 
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index e76762e29360e..d5ce251448062 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -2900,6 +2900,14 @@ int __netif_set_xps_queue(struct net_device *dev, const unsigned long *mask,
->  		/* If queue belongs to subordinate dev use its map */
->  		dev = netdev_get_tx_queue(dev, index)->sb_dev ? : dev;
->  
-> +		/* dev may now be the subordinate device, whose queue
-> +		 * count can be smaller than the parent's.  index was only
-> +		 * validated against the parent above, so re-check it before
-> +		 * it is used to index the (possibly different) dev->_tx[].
-> +		 */
-> +		if (index >= dev->real_num_tx_queues)
-> +			return -EINVAL;
+the dump reports RTN_BLACKHOLE regardless of nexthop_compat_mode. A
+delete built from that dump carries fc_type = RTN_BLACKHOLE, fails to
+match fa_type = RTN_UNICAST in fib_table_delete(), returns ESRCH and
+aborts the flush. That is a kernel bug: rtm_type ends up describing the
+nexthop object rather than the FIB alias, and it is independent of the
+compatibility-attribute problem this patch is otherwise fixing.
 
-[Severity: High]
-Does this compare a parent-space index against the subordinate's queue
-count?
+I am not asking you to drop the hunk -- without it, ID-only flush of
+IPv4 blackhole-object routes stays broken, including your own test case.
+But two things should change.
 
-netdev_bind_sb_channel_queue() checks offset + count against the parent's
-real_num_tx_queues and stores the parent-space offset in
-sb_dev->tc_to_txq[]. So index here is a parent queue number:
+First, the commit message must say plainly that this works around a
+kernel dump bug, with the trace above, rather than calling it a
+"synthetic constraint". Otherwise the workaround outlives the memory of
+why it exists. Please also report it on netdev so the dump can be fixed
+at the source and this can eventually be reverted.
 
-net/core/dev.c:netdev_bind_sb_channel_queue() {
-    ...
-	/* We cannot hand out queues we don't have */
-	if ((offset + count) > dev->real_num_tx_queues)
-		return -EINVAL;
-    ...
-	WRITE_ONCE(sb_dev->tc_to_txq[tc].combined, res.combined);
-    ...
-}
+Second, be accurate about the cost in the comment. fc_type == 0 is a
+wildcard in fib_table_delete() (net/ipv4/fib_trie.c), and the loop takes
+the first otherwise-matching alias and stops:
 
-netdev_set_sb_channel() refuses multiqueue devices, and ixgbe_fwd_add()
-rejects multiqueue macvlans. So sb_dev->real_num_tx_queues is always 1:
+	if ((!cfg->fc_type || fa->fa_type == cfg->fc_type) &&
+	    ...
+		fa_to_delete = fa;
+		break;
 
-net/core/dev.c:netdev_set_sb_channel() {
-	/* Do not use a multiqueue device to represent a subordinate channel */
-	if (netif_is_multiqueue(dev))
-		return -ENODEV;
-    ...
-}
+The delete still carries RTA_NH_ID, protocol, scope, prefsrc and
+metrics, all matched here and in fib_nh_match(), so the exposure is
+narrow: only aliases identical in prefix, table, dscp, metric, nexthop
+ID, protocol, scope and prefsrc, differing *only* in type. And since
+this path requires !filter.typemask, the flush dumps and deletes all of
+them in the same pass anyway -- so in the steady state this is an
+order swap, not an over-deletion. Residual risk is a concurrent-change
+window, not the general case.
 
-ixgbe_fwd_ring_up() binds at baseq + (rss_i * i), where baseq is
-pool * queues_per_pool. Pool 0 is reserved for the PF, so pool is at least
-1. i40e_fwd_ring_up() binds at iter->base_queue, which comes after the
-PF's own queues. In both cases every bound index is >= 1.
+That is a defensible tradeoff; it just needs to be the documented one.
+The current comment ("Never weaken an explicit type filter") describes
+the guard but not what is given up when the guard does not apply.
 
-With that, won't every xps_cpus and xps_rxqs write to a parent TX queue
-bound to an offloaded macvlan now fail with -EINVAL? Before this patch the
-map update itself worked. Only the trailing NUMA hint write was out of
-bounds.
+3) Invented test environment variable
+--------------------------------------
 
-Driver-internal callers are hit too. ixgbe_configure_tx_ring() ignores the
-return value of netif_set_xps_queue() after test_and_set_bit() has already
-set __IXGBE_TX_XPS_INIT_DONE. XPS setup for those rings is then never
-retried.
+> +if [ -n "$IPROUTE_TEST_PARENT_NETNS" ] &&
+> +   [ "$(readlink /proc/self/ns/net)" = "$IPROUTE_TEST_PARENT_NETNS" ]; then
+> +	ts_err "Refusing route writes in the parent network namespace"
+> +	exit 1
+> +fi
 
-XPS_RXQS writes through xps_rxqs_store() are now rejected as well, even
-though that path never indexes _tx[index]. Meanwhile xps_cpus_show() still
-accepts the same parent index on the same queue, so show and store now
-disagree.
+IPROUTE_TEST_PARENT_NETNS does not exist anywhere in the tree:
 
-The faulty access also seems to be left unchanged:
+  $ grep -rn IPROUTE_TEST_PARENT_NETNS .
+  (no hits)
 
-net/core/dev.c:__netif_set_xps_queue() {
-    ...
-out_no_new_maps:
-	if (type == XPS_CPUS)
-		/* update Tx queue numa node */
-		netdev_queue_numa_node_write(netdev_get_tx_queue(dev, index),
-					     (numa_node_id >= 0) ?
-					     numa_node_id : NUMA_NO_NODE);
-    ...
-}
+Nothing sets it, so the guard is permanently false -- dead code. The
+testsuite already isolates every test; testsuite/Makefile has:
 
-If an index ever gets past the new check, won't the NUMA hint go to
-sb_dev->_tx[index] instead of the parent's queue? The parent queue would
-then keep a stale value.
+  PREFIX := sudo -E unshare -n
 
-Would it be better to save the original parent device (or its txq) before
-the rebind and use it for the NUMA write, rather than bounding index by the
-subordinate's queue count?
+Please drop the block.
 
-[Severity: Medium]
-This check is inside if (dev_num_tc) and runs whether or not a rebind
-happened. When the queue has no sb_dev, dev is still the parent.
+4) ts_ip treats any stderr output as a failure
+-----------------------------------------------
 
-On any device with num_tc != 0, the accepted range therefore shrinks from
-num_tx_queues to real_num_tx_queues. num_tx_queues is the existing
-contract, per the WARN_ON_ONCE() at the top of the function. Devices with
-num_tc == 0 get no such check.
+Worth double-checking the new test against __ts_cmd() in
+testsuite/lib/generic.sh:
 
-Can this break drivers that configure XPS before raising
-real_num_tx_queues? ixgbe_open() does things in this order:
+	$CMD $@ 2> $STD_ERR > $STD_OUT
+	if [ -s $STD_ERR ]; then
+		ts_err "${SCRIPT}: ${DESC} failed:"
 
-drivers/net/ethernet/intel/ixgbe/ixgbe_main.c:ixgbe_open() {
-    ...
-	ixgbe_configure(adapter);
-    ...
-	/* Notify the stack of the actual queue counts. */
-	queues = adapter->num_tx_queues;
-	err = netif_set_real_num_tx_queues(netdev, queues);
-    ...
-}
+Any warning on stderr fails the step regardless of exit status. The
+deliberate-failure case correctly bypasses ts_ip and invokes $IP
+directly, so that one is fine -- but several of the nexthop and route
+add steps will emit warnings on kernels without full nexthop-object
+support and fail for the wrong reason. Consider gating the whole file
+on a nexthop-object probe with ts_skip.
 
-ixgbe_configure() reaches netif_set_xps_queue() through
-ixgbe_configure_tx_ring(). When DCB is enabled through ixgbe_setup_tc(),
-the flow is netdev_set_num_tc() -> new rings -> ixgbe_open(). If the new
-ring count is larger than the previous real_num_tx_queues, XPS for the
-extra queues would now fail with -EINVAL.
+5) What is right, for the record
+---------------------------------
 
-ixgbe_configure_tx_ring() ignores that error, and __IXGBE_TX_XPS_INIT_DONE
-is already set. XPS would then be silently and permanently missing for
-those queues. i40e_vsi_open() has the same ordering:
-i40e_vsi_configure() runs before i40e_netif_set_realnum_tx_rx_queues().
+The core of the fix is correct and I'd like to see it respun:
 
->  		tc = netdev_txq_to_tc(dev, index);
->  		if (tc < 0 || tc >= num_tc)
->  			return -EINVAL;
+- The strip set matches what the kernel actually rejects, for both
+  families. net/ipv4/fib_frontend.c:
 
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021155555.68167-1-phx0fer%40gmail.com
+	if (cfg->fc_nh_id) {
+		if (cfg->fc_oif || cfg->fc_gw_family ||
+		    cfg->fc_encap || cfg->fc_mp) {
+			NL_SET_ERR_MSG(extack,
+				       "Nexthop specification and nexthop id are mutually exclusive");
+
+  and net/ipv6/route.c rejects RTA_GATEWAY/RTA_OIF/RTA_MULTIPATH/RTA_ENCAP
+  alongside RTA_NH_ID. Since nexthop_compat_mode defaults to 1, the dump
+  does carry both, so flush really is broken today.
+
+- The buffer accounting is sound. The overflow check still uses the
+  original (larger) n->nlmsg_len, so it stays conservative, and
+
+> -		filter.flushp = (((char *)fn) + n->nlmsg_len) - filter.flushb;
+> +		filter.flushp = (((char *)fn) + fn->nlmsg_len) - filter.flushb;
+
+  is load-bearing: without it the next message in the batch would be
+  written after a gap and the kernel would parse garbage. Reading from
+  the source message while writing into the flush buffer is safe --
+  they are distinct buffers.
+
+6) Minor
+---------
+
+- The commit message should state the problem, the root cause and the
+  fix. The validation appendix (CI links, assertion counts, sanitizer
+  claims, "No production router or NSS firmware was tested") does not
+  belong in the posting; trim it to the one-line note that real-kernel
+  regression tests were added.
+
+- Naming: the local `flushed` reads like the filter.flushed counter.
+  Something like `dr` (delete request) would be clearer.
+
+So: fix the delivery, document the RTN_UNSPEC workaround for what it is
+(and report the dump bug upstream), drop the dead netns guard, and the
+rest looks like the right fix.
