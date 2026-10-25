@@ -1,58 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792951375;
-	b=fbUOdIqfn8VlJLwAJ8cuUIcf8A08SGDaj+QLPbdaJ8kMgAnNHcRmhbelc+JbVwetkiwC
-	 UK82OmsHUJJLt9cq6+CTbMZjtXqAwg+tomrajLqNIgAB7VjZbKmBgwJ4yuglg4QTQF5ik
-	 zS4OA9MGkWTxFn038ihimZCX/2kx1V7vN3mfQ3/R8uoI231+iqFYtIqER/pOTUkBFbKlE
-	 w6Yb+hb5t5UGZBHhAbpb5al8Zm2wyMax5fKHi3RLEjFKziuqk4VQIn3PwJgYjcBF1QfC4
-	 5fn2m97MCy2W60cfXUksdWngqp1xz0am2kUdqOxZJNO0gXXCaJ4RKOtI6UC4CfzHVjQ==
+	t=1792951565;
+	b=L6Zm/KiS96lX+SYg/97d+ngPWU6+1cPwCct+6SbrpZz0zVUwdZkTI8OkuL5WkAc52rh0
+	 5zBiOY95EUNJ4C/PlChtzL+YuhLYhIGbsgSi/zwaEBW2oPl+jBxHLD4M+h0ZjVYqIpV1Q
+	 Yt8HSqqiMLco9zc4coI2cLDfVvRbCFUJy8ATs8EO/YgSoA0BeTawGtjCyqy9oLhu3BrXf
+	 Lc0aoau51morHf+ab06o8T+LRNR5BQxYodpWumtR3f/LEbyatvYn0LMcLFNbWz9FaFMdW
+	 eXVqk6KCBkuJ+O20qPP4d/oWdPYZzNK75+C69624a1H96i0hn0uNNbxUFFy7rRu5MbA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792951375;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792951565;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=HR6iXTiMIefigNuLIKJC7E9XrAqovAbS86neO6AkdOQ=;
-	b=VtQWlEHwQGPyklFhkvCqZ3h2PHCZHabCt5lSvIbYIi/hOultKp4zPa2HCCpE79VZmiH+
-	 h+9IPHp8l/wyTzg0IymvTKZUHKiqzfOkbuXeOzoCeVGJ/DjAUs5gGOE2sLJDFdRXwvF3G
-	 DLSWBa2AtIHk8iLPPQXeKcEYjP2U3NrFPQunOGCmeKCoEay1aWpwQu7Ux67SsstRCKQpe
-	 vftWJ+YoRhMkUgyvyquh3reHh218NEFt+m0YGo3+kfmPEGyZhDKZpWz74Eg+35eskcKOr
-	 p1Hetxbx0OUpbL1WEizqsdd5owZf43jyBdDJc5XIG8osRxMUQCCNwZixJt3H/8rfuOw==
+	bh=R2yYVJDURVHL4Zlc8jvwqtXNq1Igf+EOAe737wS2Idw=;
+	b=zd0eXjcwTw5k9aaaD7SXdEHDsQwUPVj0j6R3AKE9qysAVyyJi/GrGp5QFgCNSHyl0W8s
+	 epSuvQFk0rrKSryJbmKoVlSkGDNyL5Yprstthu8LIHAHU3iHovZAV2upvZIbOewzgq7dU
+	 92EupGBkM4Qc0svgKAg3ipbvxV5oWCaCR79sgLJggqeKJrgFlk+0LeqWoUTH5NRLtMAfM
+	 W1ay+Za/6t6ywWJ6qRv2XWU5sToeoDr3BevpDGCD/zx+5hOXRemJ81umKxl9at0ymZ0xh
+	 P07WkljzNhDqVSeXvb9s9bAc1pqvL5vmGWSDNCTi5c7oRswgTrKtQbEFvE/26sjI16Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M9P0NucO;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gfMtlRl9;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDDEE606A31E;
-	Sun, 25 Oct 2026 18:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C345606A31A
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 18:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M9P0NucO
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD2F71F01825;
-	Sun, 25 Oct 2026 18:02:53 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gfMtlRl9
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFFAA1F01825;
+	Sun, 25 Oct 2026 18:06:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792951374;
-	bh=HR6iXTiMIefigNuLIKJC7E9XrAqovAbS86neO6AkdOQ=;
+	s=k20260515; t=1792951565;
+	bh=R2yYVJDURVHL4Zlc8jvwqtXNq1Igf+EOAe737wS2Idw=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=M9P0NucO8V+pGJal9Alt/dRnIIxzxFKqfMYUqO+FFaqP3cZV8ebkgpLkNcEA65jCR
-	 KIcIFWgeZtXKTy+H+wdqBrvusFlINy+wzpDkQZjsiDSEZk0MhKIpcG0a3DqWHJEOU1
-	 eIWC5xikR2YdqQ8ThJt69SICzvmkzQnaGnXH0ijEsy83Lzd8aQRCX/vQdJelAKddye
-	 +UMYnkMxY8aM2EAM2Dp7L2L1znw9zhg9B4hF7BYRBy1c/0upDWj8qAhJpzMlDfbz45
-	 f95MRZ8xKkrS1ST9q5PXkLigIdmdJrkEArjFWVdbiahkKdFQtooZGOq4CMalUm6vNK
-	 6Oz/7KSwy94/Q==
-Subject:
- Re: [PATCH] net: atlantic: AQC113: Initialize struct hw_atl2_priv fully
+	b=gfMtlRl9w/0gFR8XgTeKTGAkeRoMvWyYM4Zqlef2x2OCgXA8d35w5G3A5mDn8np5K
+	 ubD003C3nQ2jCwZK2q4L/AkN6NhbSzS2SO2u+E6pOBcw3ZUh01nSZwTFax+RMYshn/
+	 R+N8xZsrFPZCnqskng0Ua2snyhyCYINnoV46I1+7ASDJR5sizJGTelN+DyoXPaBFwo
+	 DhpViHW5J4el4VoAHPBbxfK2kk5b6crHVwzr0bty91TqRm0KcCXSNjekUUkQO/3c7v
+	 iDvXLcVyUPsIOu6GJyetea/G75wkK2/0mdY42GmjIGUtE9yLYs+3kyOleC64GWbgMH
+	 IgS2knFRgOdcQ==
+Subject: Re: [PATCH net] net/sched: fq_codel: read flowchain under the qdisc
+ lock in fq_codel_walk
 From: netdev-bot+sashiko@kernel.org
-To: j@jannau.net
-Cc: sukhdeeps@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Sun, 25 Oct 2026 18:02:53 +0000
-Message-ID: <179295137342.3134.496049235576818261@kernel.org>
-In-Reply-To:
- <20261024-net-atlantic-aq113-apple-regression-v1-1-b8305415a8b1@jannau.net>
-References:
- <20261024-net-atlantic-aq113-apple-regression-v1-1-b8305415a8b1@jannau.net>
+To: phx0fer@gmail.com
+Cc:
+ jhs@mojatatu.com, jiri@resnulli.us, netdev@vger.kernel.org, kuba@kernel.org
+Date: Sun, 25 Oct 2026 18:06:04 +0000
+Message-ID: <179295156423.3134.7093016539842568455@kernel.org>
+In-Reply-To: <20261021155705.69457-1-phx0fer@gmail.com>
+References: <20261021155705.69457-1-phx0fer@gmail.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -77,106 +74,111 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The patch puts back `memset(priv, 0, sizeof(*priv))` in
-  hw_atl2_hw_reset() (hw_atl2.c:148).
+- [High] fq_codel_walk() (net/sched/sch_fq_codel.c:741-759) now takes
+  sch_tree_lock()/sch_tree_unlock(), i.e. spin_lock_bh on the root qdisc…
 
 --
 
-net: atlantic: AQC113: Initialize struct hw_atl2_priv fully
+net/sched: fq_codel: read flowchain under the qdisc lock in fq_codel_walk
 
-This patch puts back the full memset of struct hw_atl2_priv in
-hw_atl2_hw_reset() and still sets l3l4_filters[].l3_index and l4_index
-to -1. Its aim is to fix data transmission on AQC113 NICs in Apple
-silicon desktop Macs, which broke after commit 6c1ca112a6e4.
+This patch takes the qdisc root lock around the list_empty() check on each
+flow's flowchain in fq_codel_walk(). The commit message gives the reason:
+the RTM_GETTCLASS dump runs under rtnl_lock, while enqueue and dequeue
+change the same list under the root qdisc lock.
 
-> diff --git a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c
-> index 25dd7150aaaf2..5d6e81fa3baee 100644
-> --- a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c
-> +++ b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c
-> @@ -145,11 +145,7 @@ static int hw_atl2_hw_reset(struct aq_hw_s *self)
->  	if (err)
->  		return err;
+> diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
+> index e6c87a32950f9..789fdc6551a6a 100644
+> --- a/net/sched/sch_fq_codel.c
+> +++ b/net/sched/sch_fq_codel.c
+> @@ -739,7 +739,18 @@ static void fq_codel_walk(struct Qdisc *sch, struct qdisc_walker *arg)
+>  		return;
 >  
-> -	memset(&priv->last_stats, 0, sizeof(priv->last_stats));
-> -	memset(priv->l3_v4_filters, 0, sizeof(priv->l3_v4_filters));
-> -	memset(priv->l3_v6_filters, 0, sizeof(priv->l3_v6_filters));
-> -	memset(priv->l4_filters, 0, sizeof(priv->l4_filters));
-> -	memset(priv->etype_policy, 0, sizeof(priv->etype_policy));
-> +	memset(priv, 0, sizeof(*priv));
+>  	for (i = 0; i < q->flows_cnt; i++) {
+> -		if (list_empty(&q->flows[i].flowchain)) {
+> +		bool empty;
+> +
+> +		/* flowchain is spliced by the datapath (fq_codel_enqueue/
+> +		 * fq_codel_dequeue) under the qdisc root lock.  This walker
+> +		 * runs under rtnl_lock, which does not exclude those writers,
+> +		 * so read the membership under the same lock they use.
+> +		 */
+> +		sch_tree_lock(sch);
+> +		empty = list_empty(&q->flows[i].flowchain);
+> +		sch_tree_unlock(sch);
 
 [Severity: High]
-Doesn't this memset clear the firmware filter caps that
-hw_atl2_utils_soft_reset() has just read?
+Could this slow down the transmit fast path for every packet on the
+interface?
 
-This is the call chain just before the memset:
+With this change, fq_codel_walk() does a spin_lock_bh() and unlock on the
+root qdisc lock once for every flow index. That includes empty flows and
+flows the dump is going to skip. flows_cnt defaults to 1024, and
+fq_codel_change() allows up to 65536.
 
-hw_atl2_hw_reset()
-  hw_atl2_utils_soft_reset()
-    self->aq_fw_ops->init()   /* aq_a2_fw_init() */
-      hw_atl2_utils_get_filter_caps()
+A multi-part dump also walks again from index 0 on each continuation.
+tc_dump_tclass_qdisc() does this:
 
-hw_atl2_utils_get_filter_caps() is the only place that sets these fields:
+net/sched/sch_api.c:tc_dump_tclass_qdisc() {
+    ...
+	arg.w.skip = cb->args[1];
+	arg.w.count = 0;
+	q->ops->cl_ops->walk(q, &arg.w);
+    ...
+}
 
-	priv->art_base_index = filter_caps.rslv_tbl_base_index * 8;
-	priv->art_count = filter_caps.rslv_tbl_count * 8;
-	...
-	priv->l2_filters_base_index = filter_caps.l2_filters_base_index;
-	...
+and the skip only happens inside tc_qdisc_stats_dump(), after the walker
+has already taken and dropped the lock for that index:
 
-It also sets the etype, vlan, l3_v4, l3_v6 and l4 base indices and
-counts.
+include/net/pkt_sched.h:tc_qdisc_stats_dump() {
+	if (arg->count >= arg->skip && arg->fn(sch, cl, arg) < 0) {
+    ...
+}
 
-Nothing reads the caps again after hw_atl2_hw_reset(), so hw_init()
-would run with all of them set to zero. This happens on every reset, so
-wouldn't it affect every AQC113 and not only the Apple systems?
+So each dump chunk locks every earlier flow again, which comes to roughly
+flows_cnt times the number of chunks. fq_codel_enqueue() and
+fq_codel_dequeue() take the same lock for every packet, so every one of
+these acquisitions competes with them.
 
-With the caps zeroed, several paths behave differently.
+RTM_GETTCLASS is registered as a GET handler, so it does not need
+CAP_NET_ADMIN. Any local user can send it in a loop, from many CPUs at
+the same time:
 
-In hw_atl2_hw_init_new_rx_filters(), art_first_sec and art_last_sec
-are both 0. art_mask is then 0 and falls back to 0xFFFF. The driver's
-ART records get written starting at index 0, even though the comment
-there says:
+rtnetlink_rcv_msg()->tc_dump_tclass()->tc_dump_tclass_root()->
+    tc_dump_tclass_qdisc()->fq_codel_walk()
 
-	/* FW reserves the beginning of ART, thus all driver entries must
-	 * start from the offset specified in FW caps.
-	 */
+This seems to go against the earlier design. Commit edb09eb17ed8 ("net:
+sched: do not acquire qdisc spinlock in qdisc/class stats dump") removed
+root-lock use from the dump path. It noted that dumps "also slow down the
+fast path (queue/dequeue packets) by 10 % to 20 % in some cases". Commit
+f83e07b29246 ("net/sched: sch_fq_codel: annotate data-races from
+fq_codel_dump_class_stats()") then annotated the lockless reads with
+READ_ONCE()/WRITE_ONCE(). Since then, fq_codel_dump_class_stats() takes
+the lock only when a flow has queued skbs:
 
-hw_atl2_hw_init_rx_path(), hw_atl2_hw_mac_addr_set() and
-hw_atl2_hw_multicast_list_set() would start from L2 slot 0 instead of
-the slot the firmware assigned.
+net/sched/sch_fq_codel.c:fq_codel_dump_class_stats() {
+    ...
+		if (READ_ONCE(flow->head)) {
+			sch_tree_lock(sch);
+    ...
+}
 
-hw_atl2_hw_fl2_set() calls hw_atl2_filter_tag_get() with
-priv->etype_filter_tag_top == 0. Both loops are then empty, so every
-ethertype filter install returns -ENOSPC.
+The lock also does not seem to make the result any more accurate. It is
+dropped before empty is used, so the answer can be stale by the time the
+loop acts on it, just as it could before.
 
-hw_atl2_new_fl3l4_find_l3() and hw_atl2_new_fl3l4_find_l4() would see
-first == last == 0. Every ethtool ntuple L3/L4 filter install through
-hw_atl2_hw_fl3l4_set() would then also fail with -ENOSPC.
+The commit message says the race is benign ("a stale "empty" answer only
+makes the dump skip a class"). Would annotating it be enough, along the
+lines of f83e07b29246? For example, data_race(list_empty(...)) in
+fq_codel_walk(), or WRITE_ONCE() on the writer side. That would avoid
+adding locking to the dump path.
 
-There is also a question about the commit message:
+> +
+> +		if (empty) {
+>  			arg->count++;
+>  			continue;
+>  		}
 
-> This leaves other fields uninitialized.
-
-Is this accurate? aq_pci_probe() allocates priv with kzalloc(). The
-removed memsets already cleared last_stats, the l3/l4 filter arrays and
-etype_policy. The only fields they did not touch seem to be the
-firmware caps fields, which had just been refreshed, plus
-l3l4_filters[].ipv6.
-
-Could the full memset be fixing the Apple systems by turning off the
-firmware caps handling that 6c1ca112a6e4 added (the ART section mask
-and the firmware L2 slot)? Nothing that was actually uninitialized
-seems to be getting initialized.
-
-The patch is tagged for stable. Would it be better to keep the caps?
-Possible ways are clearing priv before hw_atl2_utils_soft_reset(),
-clearing only up to art_base_index, or saving and restoring the caps.
-It might also help to find which firmware value or init step breaks the
-Apple hardware.
-
->  	for (i = 0; i < HW_ATL2_RPF_L3L4_FILTERS; i++) {
->  		priv->l3l4_filters[i].l3_index = -1;
->  		priv->l3l4_filters[i].l4_index = -1;
+[ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261024-net-atlantic-aq113-apple-regression-v1-1-b8305415a8b1%40jannau.net
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021155705.69457-1-phx0fer%40gmail.com
