@@ -1,85 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.80.4.37
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792971312;
-	b=p7vdnIr2/+MhLFiGt3moCjFwZfK+hIQp4/xnZYsCd9BG9T/EhWmj9xbAGFbfFp3eSUjS
-	 568hPyQhcfXfJ1+6jqHmZi1RDivkr1ht43/BcL6QUlKytIG2bNbK4Xl4cvkuMaNCEMxul
-	 CXREa2yIqF1LhgEM//9LIuBlF8Cymni9D8vfxnWfw5nlByfLYPKjeIRRTk1X08AApPdg5
-	 ROOw5mTB2q7uPa/lrPKvrbybbIAqdkCDbJIwBQddArCRj+CRWFBkyTkP20q1zGD8T4m+/
-	 zNgAPOy60DvEytKNVuIfoaxbBEOXDbehm1xCV1rCz+jkPFGuopYGWNicggJEtobaoEA==
+	t=1792971836;
+	b=0CMUGZufDth4AG+u34RUs0uuKSSHo4cGJSMc1cALy3u8NjJSZv7ZR5M6fkUI1qvuxMWg
+	 Bxm/4ReEHz5rQr82eocXx7dp+Z5yGJDK/PdiW8aXLp0iZ4kMlpd9RtBE3C7Hr1nxRAxoi
+	 a+amCt1vJpnsRHqTgXM3nKyVs4XYN+UqQN2433yZS5+pAzPRX23diDW1dTAaganxyZdIN
+	 abwzqytnWVNG5O13SDrNflXJzA2NcpKgMgJFGy6LCVUpvnj+5wFkKoYd1tyaaPaxEhcoW
+	 viGoOUklfGUfKM3JXciDv5Ec51TYLEivtWNHbB4tKe7sgQqm4C5mbgUEHqQyJUiq6kw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792971312;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:Date:
-	 From:To:Cc:Subject:Message-Id:In-Reply-To:References:X-Mailer:
-	 Mime-Version:Content-Type:Content-Transfer-Encoding:X-Virus-Scanned:
-	 X-Virus-Status;
-	bh=HS2Eyl9PVeBpwNJkRpIh4i48ioiL/wO+WYjW6saovWQ=;
-	b=ngKw3tE7HztwKqGTP4OaZGH0MfX7DWt14TaThF+SmZDrqRYAbAuQkEazGTSR+iqQchUx
-	 oU7h0QadCYeqd3U3068D9fGMZwkftEFRrW3FTjVVTS+Ozp+YXUGP98ZQMRjZl3hP3xsbm
-	 LmSqLyaX1htmscvL3T/afrIdarhnw7HMGPHS4qOC2XNTeoE1dpllKqtYDZjdtdRR2DrEO
-	 WJ6MbeSVGN0ePxmspQyTPPZEgJDRJIpNbhfi9Szrw1MAa1tDdQf2de4+ak7WIZwA6Ueg1
-	 EUch1dgWsvos2DiUw1bWfPKvX2NmdDsvlPrKw118O3s3DRB/+XBgqOLeFCLfVxtIK4g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792971836;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=zLTTZuRlp6EimEh8SBZmZz7gt+9H0C46ju7PufG8QTY=;
+	b=uOJ/rsK1CWHAKCHlnYD29TEuv+ae12Dz23gJj40ZZPj2cwC+dv7e1eZo2smzBRQjr2uT
+	 0jwLamsllcdysg6ZnLi+Aq3s4U5U7c/ibLrapvOkO7ZOIxhaSUiQ7VG485IwJkbKFOsIO
+	 iHt1CjTXS5OH4oKxf79f8KP68QhMAyrZtCE3zP0yoDXUV8M7QAZiZbqStbrGQ6biP1bJa
+	 H98PVl7lBVxHS/0ruqgrU+hGitYgtfZuD8KqcuZk1S86jY8BaQmQRcY/HK5Ko9s/faNV1
+	 JMfMfZPGPf7WK1ETcdOVcz4hAshC/sGaEc0zYLvZQkmb5LN/m2DQ+ThEw7/QgYcUU6A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=uniroma2.it;
-	spf=pass smtp.mailfrom=uniroma2.it;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=W80BFNID;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b=enJwGoEf;
-	arc=none smtp.remote-ip=160.80.4.37
-Received: from smtp.uniroma2.it (smtp-2015.uniroma2.it [160.80.4.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940E1606A31B;
-	Sun, 25 Oct 2026 23:35:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 940E1606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Fur9zyp6;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3BD2606A31A
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 23:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=W80BFNID;
-	dkim=pass (2048-bit key, unprotected) header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b=enJwGoEf
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth-2019-1.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 69PNYLhG025990;
-	Mon, 26 Oct 2026 00:34:26 +0100
-Received: from lubuntu-18.04 (unknown [160.80.103.126])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id E160F120428;
-	Mon, 26 Oct 2026 00:34:16 +0100 (CET)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1792971257; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HS2Eyl9PVeBpwNJkRpIh4i48ioiL/wO+WYjW6saovWQ=;
-	b=W80BFNIDNu5PKDJoDWftpKbfMuzOiykKHygPtmdVmJb0E1+wXPQygFftQ/S3oki6LtuVeT
-	AJ9+1pO6SY7MmbDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1792971257; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HS2Eyl9PVeBpwNJkRpIh4i48ioiL/wO+WYjW6saovWQ=;
-	b=enJwGoEfDnLa78zsaGjyw4xgwORUA9sUOhyqjbWjWYDamYpPWRa4TbNd/b24BY7yD3XrmJ
-	Jif/AU31R7VIq1mu76eAbd93gfQoeNptCz779AecO+X0FPBIyqL4kuZ2+gBTF96b632WlU
-	MiIqLTegaiysjJOQ9oOhXRht1JpTtUJxeEUggCLU8qR9YNx8MpTgKtatBZMhh+aowjGGf9
-	5COblEY2XN+z3G9fSksM2mBAox6Q4Hr3uGNuts8syGEwjbg6VHVm9wXca8vMdaKM9OBCCn
-	1aodFdqJuvcEJ08eyzb7KhGkuyiCjlpxGPTp1OdrDlZsgHNIH69rnoPedIHU0w==
-Date: Mon, 26 Oct 2026 00:34:15 +0100
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: Boyan Liu <yymhvert@gmail.com>, David Ahern <dsahern@kernel.org>
-Cc: "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Willem de Bruijn
- <willemdebruijn.kernel@gmail.com>,
-        hangbin.liu@linux.dev, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, co+98d7de09cd94fec5@bugs.sh,
-        stefano.salsano@uniroma2.it, andrea@common-net.org,
-        Andrea Mayer <andrea.mayer@uniroma2.it>
-Subject: Re: [PATCH net v3] seg6: Fix unset mac header in SRv6 End.DT VRF
- decapsulation
-Message-Id: <20261026003415.f7c46fa5a495144c29c03a07@uniroma2.it>
-In-Reply-To: <20261021024738.17266-1-yymhvert@gmail.com>
-References: <20261021024738.17266-1-yymhvert@gmail.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Fur9zyp6
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A7B81F01825;
+	Sun, 25 Oct 2026 23:43:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792971835;
+	bh=zLTTZuRlp6EimEh8SBZmZz7gt+9H0C46ju7PufG8QTY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Fur9zyp69fqhoXhrpvaDhAMlIO6aABjZ1rjX+zo7y4vnDYpHqFwKGWE9WpJTZVrMF
+	 d4v3lyX0xy5lV2/kNSXwStQR+Sx15aSdcsDaFsMIOhhQJBDBu5ZQQ9fPgv4PPl3/p5
+	 4nL56gYip3TJsf6R1mHiC6JQ10PfzQJXoAggdgiXIdz4XeQ1kLZVuwYxr+Ne0T0o0x
+	 QmKDljQjnc1ne/D6J11kguQ6U/HMdbqIhJbt/BUNnzcmZ43iRwyEdHIhyZ8xUNNAO1
+	 Sy8XpLuDqrjJOsuue7B/kjYBlf6mUYZVMDZdChQnlfy/GOBGFM762JrrSh7tmETYmd
+	 1e5zwFVsuJ8ww==
+Subject: Re: [PATCH net v5 01/13] ice: fix removal of PTP timestamp tracker
+ during reset
+From: netdev-bot+sashiko@kernel.org
+To: jacob.e.keller@intel.com
+Cc: przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, poros@redhat.com,
+ netdev@vger.kernel.org, grzegorz.nitka@intel.com,
+ aleksandr.loktionov@intel.com, alexander.nowlin@intel.com,
+ anthony.l.nguyen@intel.com, maciej.machnikowski@intel.com,
+ przemyslaw.korba@intel.com, sergey.temerkhanov@intel.com,
+ arkadiusz.kubalewski@intel.com, richardcochran@gmail.com, horms@kernel.org
+Date: Sun, 25 Oct 2026 23:43:54 +0000
+Message-ID: <179297183411.3134.15060779235779250719@kernel.org>
+In-Reply-To: =?utf-8?q?=3C20261021-jk-e825c-timestamp-processing-logic-fixes?=
+ =?utf-8?q?-srcu-v5-1-72289a4ac8eb=40intel=2Ecom=3E?=
+References: =?utf-8?q?=3C20261021-jk-e825c-timestamp-processing-logic-fixes-?=
+ =?utf-8?q?srcu-v5-1-72289a4ac8eb=40intel=2Ecom=3E?=
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -88,147 +68,185 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
+MIME-Version: 1.0
 
-On Wed, 21 Oct 2026 10:47:38 +0800
-Boyan Liu <yymhvert@gmail.com> wrote:
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-> SRv6 End.DT4/End.DT6 VRF decapsulation unsets the mac header in
-> end_dt_vrf_rcv() so that the VRF device can rebuild it for packet
-> sniffers. The VRF rx handler only performs the rebuild when a
-> sniffer is actually attached to the VRF device (ptype_all
-> non-empty); otherwise the packet continues up the stack with
-> mac_header == 0xffff.
-> 
-> Every other receive path delivers packets with a valid mac header:
-> NIC drivers set it in eth_type_trans(), and tunnels without an L2
-> header (ipip, sit, gre, tun) reset it to the network header after
-> decapsulation. skb_mac_header() even warns on the unset state with
-> DEBUG_NET_WARN_ON_ONCE().
-> 
-> If the decapsulated packet is an unexpected UDP GSO packet,
-> udp_queue_rcv_skb() re-segments it after restoring skb->data to the
-> mac header with __skb_push(skb, -skb_mac_offset(skb)). With the mac
-> header unset, skb_mac_offset() returns a large positive value,
-> which the unsigned __skb_push() argument turns into a huge length:
-> skb->data moves far outside the buffer and skb->len is corrupted,
-> so segmentation reads out of bounds:
-> 
->     BUG: KASAN: slab-out-of-bounds in inet_gso_segment (net/ipv4/af_inet.c:1383)
->     Read of size 1 at addr ffff88800da7ffff by task exploit/149
->     Call Trace:
->      inet_gso_segment (net/ipv4/af_inet.c:1383)
->      skb_mac_gso_segment (net/core/gso.c:53)
->      __skb_gso_segment (net/core/gso.c:124)
->      udp_queue_rcv_skb (net/ipv4/udp.c:2476 net/ipv4/udp.c:2466)
->      udp_unicast_rcv_skb (net/ipv4/udp.c:2620)
->      ip_local_deliver (net/ipv4/ip_input.c:262)
->      seg6_local_input_core (net/ipv6/seg6_local.c:1640)
->      lwtunnel_input (net/core/lwtunnel.c:465)
->      ipv6_rcv (net/ipv6/ip6_input.c:351)
-> 
-> Restore a valid mac header once the VRF rx handler returns: point
-> it at the network header, and reset mac_len, which still holds the
-> ingress frame's L2 header length. The sniffer rebuild happens
-> inside the handler while the header is still unset, so tap behavior
-> is unchanged; when no rebuild happened, the packet now carries the
-> same mac header state as any packet received on an L3 device.
-> 
-> Fixes: 664d6f86868b ("seg6: add support for the SRv6 End.DT4 behavior")
-> Cc: stable@vger.kernel.org
-> Reported-by: co+98d7de09cd94fec5@bugs.sh
-> Signed-off-by: Boyan Liu <yymhvert@gmail.com>
-> ---
-> v3:
-> - Also reset skb->mac_len with skb_reset_mac_len(), as suggested by
->   Andrea Mayer: it still held the ingress frame's L2 header length.
-> v2: https://lore.kernel.org/netdev/20261017120144.3059-1-yymhvert@gmail.com/
-> - Move the fix from the UDP GSO path to seg6local.
-> - Restore the mac header after the VRF rx handler returns, preserving
->   the VRF sniffer behavior.
-> - Verify the original reproducer, datagram delivery, and VRF sniffer
->   output under QEMU.
-> v1: https://lore.kernel.org/netdev/20261010073015.7665-1-yymhvert@gmail.com/
->
->  net/ipv6/seg6_local.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> [snip]
+Critical: 0 · High: 0 · Medium: 2 (1) · Low: 0
 
-Thanks Boyan. I ran my tests on v3 with End.DT4, End.DT6 and End.DT46 in
-VRF mode, and I could not reproduce the UDP GSO KASAN report anymore.
-Setting the mac header at the network header with mac_len 0 looks fine.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-The NFQUEUE case in the Sashiko review also exists without this patch,
-because the PRE_ROUTING hook run by the VRF rx handler sees the mac header
-unset when no sniffer is attached to the VRF. In my tests the case needs a
-combination of the conditions listed in the review, among them the bridge
-netfilter extension of the outer frame, which the decapsulated packet still
-carries.
+- [Medium] The new error unwind in ice_ptp_init() destroys the PTP
+  kworker while the owner's PTP clock is still registered.
+- [Medium] On E810 (has_ready_bitmap == 0), the Tx tracker now survives
+  CORE/GLOBAL/EMP resets.
 
-end_dt_vrf_rcv() unsets the mac header to let the VRF rebuild it for a
-sniffer. Unlike ipip, End.DT has no tunnel device of its own. It is a
-seg6local lwtunnel behavior, and orig_dev is skb->dev of the outer packet,
-for example an Ethernet device. With a sniffer attached to the VRF,
-vrf_add_mac_header_if_unset() rebuilds the header only when the mac header
-is unset or orig_dev has no header_ops->create:
+Pre-existing issues:
+- [Medium] Concern: ice_ptp_flush_all_tx_tracker(),
+  ice_ptp_restart_all_phy() and ice_ptp_prepare_rebuild_sec() walk…
 
-  packet          create    mac header    rebuilt  tcpdump on the VRF
-  Ethernet        yes       set, len 14   no       Ethernet header
-  ipip            no        set, len 0    yes      header with VRF MAC
-  End.DT today    yes       unset         yes      header with VRF MAC
-  ---------------------------------------------------------------------
-  End.DT no unset yes       set, len 0    no       IP header as Ethernet
+--
 
-If end_dt_vrf_rcv() set the mac header before calling l3mdev_l3_rcv(), the
-capture would change, as in the last row. It would stay as today if
-vrf_add_mac_header_if_unset() also rebuilt the header when mac_len is 0,
-that is when there is no L2 header to show, something like (just an
-example):
+ice: fix removal of PTP timestamp tracker during reset
 
- static int vrf_add_mac_header_if_unset(struct sk_buff *skb,
- 				       struct net_device *vrf_dev,
- 				       u16 proto, struct net_device *orig_dev)
- {
--	if (skb_mac_header_was_set(skb) && dev_has_header(orig_dev))
-+	if (skb_mac_header_was_set(skb) && skb->mac_len &&
-+	    dev_has_header(orig_dev))
- 		return 0;
+This patch stops ice_ptp_prepare_for_reset() from releasing the Tx
+timestamp tracker, so timestamping works again after CORE, GLOBAL or EMP
+resets. It also reorders ice_ptp_init() so the kworker and tracker are set
+up before the port is added to the port list, with a matching error
+unwind. The non-READY branch of ice_ptp_release() now frees the tracker
+and kworker.
 
-Other devices with header_ops->create and mac_len 0, such as ip6gre without
-a remote address, would get the rebuilt header too, and tcpdump on the VRF
-would decode them instead of starting at the IP header. With a sniffer
-attached, this header would stay on the skb that continues up the stack, as
-it does today for End.DT and ipip.
+Closes: https://sashiko.dev/#/patchset/20260821-jk-e825c-minimized-fixes-v1-0-9d0731eb4858%40intel.com?part=8
+Closes: https://lore.kernel.org/netdev/20260916011213.1632286-1-kuba@kernel.org/
 
-If the VRF could rebuild the header also when mac_len is 0, the reset added
-by this patch could move before l3mdev_l3_rcv(), in place of the
-skb_unset_mac_header(). This would remove the unset, the point Willem
-raised on v1, without the capture change Boyan pointed out. The PRE_ROUTING
-hook run by the VRF rx handler would then see the same mac header state as
-a packet received on an ipip device, and this would avoid the crash I see
-in the NFQUEUE case.
+> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
+> index eaec36ab6ae3..e1c66cd0f94f 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+> @@ -2939,8 +2939,6 @@ void ice_ptp_prepare_for_reset(struct ice_pf *pf, enum ice_reset_req reset_type)
+>  	if (ice_pf_src_tmr_owned(pf) && hw->mac_type == ICE_MAC_GENERIC_3K_E825)
+>  		ice_ptp_prepare_rebuild_sec(pf, false, reset_type);
+>  
+> -	ice_ptp_release_tx_tracker(pf, &pf->ptp.port.tx);
+> -
+>  	/* Disable periodic outputs */
+>  	ice_ptp_disable_all_perout(pf);
 
+[Severity: Medium]
+The tracker now survives CORE/GLOBAL/EMP resets. On E810, can the
+cached_tstamp values then drift from the PHY state after the post-reset
+flush?
 
-David, since this touches the VRF, do you think it could rebuild the header
-also when mac_len is 0? I may be missing a case where it should not be
-done.
+The rebuild path runs after hw->reset_ongoing has already been set back
+to false:
 
-If it can, I see two ways to go, and I am not sure which one is better.
-This patch could go in now, since the reported crash is gone with it in my
-tests, and the VRF change and the move of the reset could follow on top of
-it. Or this patch could go in together with the VRF change, with the reset
-already moved, so that the unset goes away in one step. In both cases I can
-work on the VRF change. If the VRF should not change, I will look for
-another way to cover the NFQUEUE case.
+ice_rebuild()->ice_ptp_rebuild()->ice_ptp_rebuild_owner()
+  ->ice_ptp_flush_all_tx_tracker()->ice_ptp_flush_tx_tracker()
 
-Opinions from everyone are welcome, on which way is better and on the
-NFQUEUE case.
+On E810, ice_get_phy_tx_tstamp_ready_e810() reports every slot as ready:
 
-Thanks!
+	*tstamp_ready = 0xFFFFFFFFFFFFFFFF;
 
-Ciao,
-Andrea
+So ice_ptp_flush_tx_tracker() clears every in_use slot in hardware:
+
+	if (!hw->reset_ongoing && (tstamp_ready & BIT_ULL(phy_idx)))
+		ice_clear_phy_tstamp(hw, tx->block, phy_idx);
+
+That writes 0 to the PHY slot. However, tx->tstamps[idx].cached_tstamp
+keeps its old non-zero value.
+
+E810 has has_ready_bitmap == 0, so ice_ptp_process_tx_tstamp() treats any
+raw value that differs from the cache as captured:
+
+	if (!drop_ts && !tx->has_ready_bitmap &&
+	    raw_tstamp == tx->tstamps[idx].cached_tstamp)
+		continue;
+
+	/* Discard any timestamp value without the valid bit set */
+	if (!(raw_tstamp & ICE_PTP_TS_VALID))
+		drop_ts = true;
+
+The next request on that slot might be processed before hardware captures
+it, for example because another slot raised the TSYN_TX interrupt. In that
+case raw is 0, which does not match the stale cache. The skb then
+completes without a timestamp and in_use is cleared. The cache is not
+updated, because raw is 0.
+
+The real capture for that packet then lands in the slot that was just
+freed. Could the next request that reuses the slot read this leftover
+value and report it as its own timestamp?
+
+Would resetting cached_tstamp when the flush clears the PHY slot keep the
+software and hardware state in sync?
+
+[ ... ]
+
+> @@ -3363,16 +3366,19 @@ void ice_ptp_init(struct ice_pf *pf)
+
+[ ... ]
+
+>  	dev_info(ice_pf_to_dev(pf), "PTP init successful\n");
+>  	return;
+>  
+> -err_clean_pf:
+> +err_release_tx_tracker:
+> +	ice_ptp_release_tx_tracker(pf, &pf->ptp.port.tx);
+> +err_release_kworker:
+> +	kthread_cancel_delayed_work_sync(&ptp->work);
+> +	kthread_destroy_worker(ptp->kworker);
+> +	ptp->kworker = NULL;
+>  	mutex_destroy(&ptp->port.ps_lock);
+> -	ice_ptp_cleanup_pf(pf);
+>  err_exit:
+>  	/* If we registered a PTP clock, release it */
+>  	if (pf->ptp.clock) {
+
+[Severity: Medium]
+Is the PTP clock still registered while the kworker is torn down here?
+
+On the clock owner, ice_ptp_init_owner() has already registered the
+clock. /dev/ptpN stays live until err_exit calls ptp_clock_unregister().
+
+The settime64 and adjtime ops do not check ptp->state, and they call
+ice_ptp_reset_cached_phctime(). Suppose ice_ptp_update_cached_phctime()
+returns -EAGAIN because ICE_CFG_BUSY is held, for example by a concurrent
+adjtime on the same PHC. That function then does:
+
+	kthread_queue_delayed_work(pf->ptp.kworker, &pf->ptp.work,
+				   msecs_to_jiffies(10));
+
+If this runs after kthread_cancel_delayed_work_sync() but before or during
+kthread_destroy_worker(), a timer is left pending. Could
+kthread_delayed_work_timer_fn() later touch the freed worker?
+
+If it runs after ptp->kworker = NULL, would it dereference NULL?
+
+One way to reach this window: ice_ptp_init_port() fails with -ENOMEM from
+ice_ptp_alloc_tx_tracker() while a process with /dev/ptpN open calls
+clock_settime() or clock_adjtime().
+
+In this same patch, the non-READY branch of ice_ptp_release() unregisters
+the clock before tearing down the worker. Should the init error path use
+the same order? This ordering is still present at the end of the series.
+
+> @@ -3399,12 +3405,22 @@ void ice_ptp_release(struct ice_pf *pf)
+>  		return;
+>  
+>  	if (pf->ptp.state != ICE_PTP_READY) {
+> -		mutex_destroy(&pf->ptp.port.ps_lock);
+> -		ice_ptp_cleanup_pf(pf);
+>  		if (pf->ptp.clock) {
+>  			ptp_clock_unregister(pf->ptp.clock);
+>  			pf->ptp.clock = NULL;
+>  		}
+> +		ice_ptp_cleanup_pf(pf);
+> +		ice_ptp_release_tx_tracker(pf, &pf->ptp.port.tx);
+
+[Severity: Medium]
+This is a pre-existing issue and was not introduced by this patch.
+ice_ptp_flush_all_tx_tracker(), ice_ptp_restart_all_phy() and
+ice_ptp_prepare_rebuild_sec() walk the adapter port list without holding
+ports.lock:
+
+	list_for_each_entry(port, &pf->adapter->ports.ports, list_node)
+		ice_ptp_flush_tx_tracker(ptp_port_to_pf(port), &port->tx);
+
+At the same time, a peer PF's ice_ptp_release() can remove its port from
+the list and free the tracker, kworker and ps_lock. Since trackers are now
+kept across resets, the owner's flush walks memory that belongs to live
+peers.
+
+The next patch in the series, "ice: use reference counting and SRCU for
+PTP port access", fixes this. It converts these walkers to
+srcu_read_lock() with list_for_each_entry_srcu() and
+kref_get_unless_zero(). It also makes ice_ptp_cleanup_pf() wait for the
+references and SRCU readers to finish before the tracker and worker are
+freed. The race is gone by the end of the series.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021-jk-e825c-timestamp-processing-logic-fixes-srcu-v5-0-72289a4ac8eb%40intel.com
