@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792971845;
-	b=K3fqyTTrNd877kqUhEEyPwmwZjbe9ebU+DSQM+gVSDXO3JjAAbsu5pcnWgpTE33UHDWu
-	 RfY82RYOHAjDMhqy5o98/zwKNWt8SJlOd4CVfRpcXC4SfE9A2rBJC3IMPEjoZoT+zvKHg
-	 X1+RUJV2z4kavpEkNkkgJ0gjG55pVTZnrU08r+1nsSMKMa4nvCDNZF/Smz/9nQj//sWAn
-	 l9wkTlAD1RLeorHaN5/uXPsIA2hHUSTR75MZsAZFwJlK0wCxct+u3/fQgm6Hfb2n2tm4G
-	 gEigE4mbI8MJPgrw2Hauzq5UGvxtKRrX7W1o49eOunShrKcVXzqut5Y0HYGpAUhj4bQ==
+	t=1792971847;
+	b=ulTpR6BZl5IUMeUUYtMmOObBlL4PnwpSeU/GeLTY8uwd6Oapuq1VNkq3syloly9dk5yc
+	 +MT4NtoTvvGDh6bjCcsjgHwpo/I5xibl08VHxJFrkhbCw/R7d08gN+ZQvl7bKKNsY16XZ
+	 XVKFbGi1ED1eIWVxlTk34yN4zjv0WDxdOngmgo7769ISzVTVkAsb/+Wuj9MMK72KIafm0
+	 yy94hIeyLUUPm5jdkTkdsUyUaRlYxTQqhNBXyEqUBD3qCgDxYXu2SRJG6IE96AiejSZLr
+	 ve8z3tSLJNt9SxjGCMx0cuu7T6QKKV4OmlM7SAOIhWCeiP9q9baDWb/mwxwZSuC6QhQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792971845;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792971847;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=k3N+rDq+/wK9k5QwJlILu6CXlHNYiLo2QB9IXeLNF0Q=;
-	b=EKS6SPV6MLBWo02IC3N/GJeHFrkeTcf0qKfxLMaP1el39iR4o139if677gEnbqz78JEh
-	 Qw71voreOPz7DURFb7KFVbEkPDz+SwrBzmh2xNLxkTocqGGz90FYqQP+tLb6j7briZFfS
-	 pCIoNYTq3vPtsA03xiE7CfEfjwoTXaLgKqyQ0CwxTY0y5elsiPAO/txaeKKF518SrGJMG
-	 3eXQowX96SYCzVe74LvBKDXPKc0Qo+MLFD1u5NAsQozToyTuDbGE5ALvlg8XA/SaGnyi3
-	 t5JAxx9S0z6gjjCUk+DCLHx1thb9Qc0g4UdcfuSLqmWWQGRUSffZXywgvnEyk7RQevA==
+	bh=feAMzXw0I0VzttmiPYuwLfS9Ux7rt/ffGxnvEU3h+nc=;
+	b=X58jKwnrf71oyI41DhgT7Myc1O1LFtclgusMwFjOiUwdjlXgPydzzRRdWLXGI+1ruY6j
+	 GBpqA5kVRDRUkXKk2ov+2M37NirCU5WO12G5xMgfoDexaL++fdbVu/weBKxm5+xQwsSQf
+	 AuRfgfVJRfc1GWgrMMCZz9ZamgPdkHTFDo7t4/FEbyof1Gj6+P19euY8ouojMvA3iCOrN
+	 8m2kTNfO0u8UXlZL/5WM3GHDBfTjpVfNHJ+HrS9lp9v7cCsm+t2KyhffR/L8elkdQscUh
+	 YhgjS3jcI79GS7RfuZ9gh5qhs6pX1lnBw34CwZxNlMrRt1pc56PxT0sVOT0/tNZReEA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kkHZ5wrg;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a96IRBmE;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B12606A323
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 23:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21EB606A31B
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 23:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kkHZ5wrg
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DCF61F01828;
-	Sun, 25 Oct 2026 23:44:04 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a96IRBmE
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C21711F01825;
+	Sun, 25 Oct 2026 23:44:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792971845;
-	bh=k3N+rDq+/wK9k5QwJlILu6CXlHNYiLo2QB9IXeLNF0Q=;
+	s=k20260515; t=1792971846;
+	bh=feAMzXw0I0VzttmiPYuwLfS9Ux7rt/ffGxnvEU3h+nc=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=kkHZ5wrgPZqXaHzLig/R6Ffs7Wo/+6rr2Q5TjTxDOCu+gFrGinhXc3ISXbS0gLSvQ
-	 4g2knxP57OZbdu5n7Y4+YB3qVnh22zvULkI6Z3sbOE6mFxmKBBY4DlPXa5fqkN9DjL
-	 sXbhMg1lKOu/yjEjBn2ipIe8LBo2KK+C/vUcHjP9IONWHXyiHSa/k6HM+De88VBzQj
-	 15i89W1TPcgFD+7+BMSCNHFzEGzxCtWueEaKBQu88pF1Km6VT31cnZqAVCMzKAbFfR
-	 lOyoOikodeJw9mpTDTapruc1rkvBm+QARienk0+rtddQiEyH/4ZF2dsdBGmRa3r4G2
-	 tpVgFe8z2rmTQ==
-Subject: Re: [PATCH net v5 10/13] ice: E825: perform a soft reset when
- starting the PHY timer
+	b=a96IRBmEay2whO7MI/6Yulgsh5T1xgmj4j5hSHxegiFHnEvy+u1cY5AygE2P3kgi9
+	 bA44ofzSETkY4AzsI/rWN5HZrx5JUhVL2ZWql7zz/cN69sOY+H9Z6eip/zyaycri8h
+	 wEpR/P9qcYu/bqVycRcvb+eXGomSU35XIneH47/nFnA2DVUTwV4UdFKKX5JGG2cYDI
+	 Gajpa1vtZT32qT+4t6VGlApDV7Uo/1TPoZ4PPPAjBfLrvCvQDrhfOVohh2JAs29d2j
+	 U3ySFxPJlBz9uPs72265W7CCf+H5CGhEGbo8f1c+M7JmKqIDn6iYLG+CPsNqaDjifb
+	 RXW1M03i+HM0Q==
+Subject: Re: [PATCH net v5 11/13] ice: keep Tx timestamp slots tracked until
+ completion or timeout
 From: netdev-bot+sashiko@kernel.org
 To: jacob.e.keller@intel.com
 Cc: przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch, davem@davemloft.net,
@@ -51,12 +51,12 @@ Cc: przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch, davem@davemloft.net,
  anthony.l.nguyen@intel.com, maciej.machnikowski@intel.com,
  przemyslaw.korba@intel.com, sergey.temerkhanov@intel.com,
  arkadiusz.kubalewski@intel.com, richardcochran@gmail.com, horms@kernel.org
-Date: Sun, 25 Oct 2026 23:44:03 +0000
-Message-ID: <179297184384.3134.3372650759308982003@kernel.org>
+Date: Sun, 25 Oct 2026 23:44:05 +0000
+Message-ID: <179297184533.3134.5564062752798799751@kernel.org>
 In-Reply-To: =?utf-8?q?=3C20261021-jk-e825c-timestamp-processing-logic-fixes?=
- =?utf-8?q?-srcu-v5-10-72289a4ac8eb=40intel=2Ecom=3E?=
+ =?utf-8?q?-srcu-v5-11-72289a4ac8eb=40intel=2Ecom=3E?=
 References: =?utf-8?q?=3C20261021-jk-e825c-timestamp-processing-logic-fixes-?=
- =?utf-8?q?srcu-v5-10-72289a4ac8eb=40intel=2Ecom=3E?=
+ =?utf-8?q?srcu-v5-11-72289a4ac8eb=40intel=2Ecom=3E?=
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -70,10 +70,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -81,150 +81,116 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] ice_start_phy_timer_eth56g()
-  (drivers/net/ethernet/intel/ice/ice_ptp_hw.c) now calls…
-- [Medium] With this patch, the destructive E825 PHY soft-reset sequence
-  runs at runtime from ice_start_phy_timer_eth56g(), mainly on E825…
+- [Medium] The commit message says link-down requests are marked stale,
+  but the patch never marks them stale on E810, E830 or E82x.
 
 --
 
-ice: E825: perform a soft reset when starting the PHY timer
+ice: keep Tx timestamp slots tracked until completion or timeout
 
-This patch makes ice_start_phy_timer_eth56g() call
-ice_ptp_phy_soft_reset_eth56g() before it programs the E825 PHY. The goal
-is to clear any outstanding Tx timestamp memory and the PHY timestamp
-counter. Only the timer block of the PHY is reset.
+This patch stops dropping outstanding Tx timestamp requests on link down
+and rejects new requests while the link is down. Slots that are not ready
+yet are now released by the existing 2 second timeout. It also makes the
+interrupt re-arm checks ignore stale slots, and lets
+ice_ptp_maybe_trigger_tx_interrupt() run for PFs that handle their own Tx
+timestamp interrupt.
 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-> index 5637925c0e68..2d000251b185 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
+> index b7c539f98276..309fa2877cc3 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
 
 [ ... ]
 
-> @@ -2150,6 +2152,10 @@ int ice_start_phy_timer_eth56g(struct ice_hw *hw, u8 port)
->  	if (err)
->  		return err;
+> @@ -582,14 +584,11 @@ static void ice_ptp_process_tx_tstamp(struct ice_ptp_tx *tx)
+>  			return;
+>  	}
 >  
-> +	err = ice_ptp_phy_soft_reset_eth56g(hw, port);
-> +	if (err)
-> +		return err;
-> +
+> -	/* Drop packets if the link went down */
+> -	link_up = READ_ONCE(ptp_port->link_up);
+> -
+>  	for_each_set_bit(idx, tx->in_use, tx->len) {
+>  		struct skb_shared_hwtstamps shhwtstamps = {};
+>  		u8 phy_idx = idx + tx->offset;
+>  		u64 raw_tstamp = 0, tstamp;
+> -		bool drop_ts = !link_up;
+> +		bool drop_ts = false;
+>  		struct sk_buff *skb;
 
 [Severity: Medium]
-Should the software Tx timestamp tracker be flushed before this reset
-wipes the hardware timestamp memory?
+The commit message says:
 
-On E825 link-up the path is ice_ptp_link_change() ->
-ice_ptp_port_phy_restart() -> ice_start_phy_timer_eth56g(). The E825 case
-in ice_ptp_port_phy_restart() only marks the outstanding entries stale:
+    Mark the outstanding requests stale so their completions are read
+    and discarded
 
-drivers/net/ethernet/intel/ice/ice_ptp.c:ice_ptp_port_phy_restart() {
+Where does this stale marking happen for E810, E830 and E82x? The patch
+removes the link-down drop here, but it doesn't add any new calls to
+ice_ptp_mark_tx_tracker_stale().
+
+On link down, the only caller that can be reached is the
+ICE_MAC_GENERIC_3K_E825 branch of ice_ptp_port_phy_stop() (and the same
+branch of ice_ptp_port_phy_restart()):
+
+ice_ptp_port_phy_stop() {
     ...
-		ptp_port->tx.disabled = true;
-		spin_unlock_irqrestore(&ptp_port->tx.lock, flags);
+	case ICE_MAC_E810:
+	case ICE_MAC_E830:
+		err = 0;
+		break;
+	case ICE_MAC_GENERIC:
+		kthread_cancel_delayed_work_sync(&ptp_port->ov_work);
 
+		err = ice_stop_phy_timer_e82x(hw, port, true);
+		break;
+	case ICE_MAC_GENERIC_3K_E825:
+		...
 		ice_ptp_mark_tx_tracker_stale(&ptp_port->tx);
-
-		err = ice_start_phy_timer_eth56g(hw, port);
     ...
 }
 
-The in_use bits and tstamps[idx].skb stay in place. After that,
-ice_ptp_phy_soft_reset_eth56g() calls
-ice_ptp_clear_tx_memory_status_eth56g() and pulses the soft reset, which
-clears every ready bit on the port.
+Also, ice_ptp_link_change() skips E810 and E830 entirely:
 
-Take an entry whose timestamp was captured but not read yet. Before this
-patch it would have been read through the ready bit path and quietly
-dropped as stale. Now its ready bit never comes back, so
-ice_ptp_process_tx_tstamp() can only release it through the timeout:
+	case ICE_MAC_E810:
+	case ICE_MAC_E830:
+		/* Do not reconfigure E810 or E830 PHY */
+		break;
 
-		if (time_is_before_jiffies(tx->tstamps[idx].start + 2 * HZ)) {
-			drop_ts = true;
+The new in_irq check in ice_port_has_timestamps() only excludes stale
+slots:
 
-			/* Count the number of Tx timestamps that timed out */
-			pf->ptp.tx_hwtstamp_timeouts++;
-		}
+	if (in_irq)
+		return bitmap_andnot(tstamps, tx->in_use, tx->stale, tx->len);
 
-Does this hold the slot and the skb from ice_ptp_request_ts() for about
-2 seconds? Does it also count a timestamp the driver threw away itself in
-tx_hwtstamp_timeouts, which ethtool -S reports?
+Given that, can a link down with a request still outstanding on E810
+(non-LL), E830 or E82x cause a back-to-back interrupt loop? The sequence
+would be:
 
-At this commit there is also no time bound on the hold. The periodic
-fallback in ice_ptp_maybe_trigger_tx_interrupt() fires only when the
-hardware ready bits are set, and the reset has just cleared them.
+  link goes down while a not-ready slot is set in in_use
+  ice_ptp_maybe_trigger_tx_interrupt()
+    ice_ptp_tx_tstamps_pending(pf, false) -> true
+    wr32(hw, PFINT_OICR, PFINT_OICR_TSYN_TX_M)
+  ice_ptp_process_tx_tstamp()
+    slot not ready and not timed out -> continue
+  ice_misc_intr_thread_fn() (E810/E82x) or ice_ptp_ts_irq() (E830)
+    ice_ptp_tx_tstamps_pending(pf, true) -> true, slot is not stale
+    wr32(hw, PFINT_OICR, PFINT_OICR_TSYN_TX_M)
+  ... repeats until the 2 second timeout frees the slot
 
-The later commit "ice: keep Tx timestamp slots tracked until completion
-or timeout" changes that trigger to check the software in_use bitmap.
-That bounds the reclaim to about 2.5 seconds. The miscounted timeouts and
-the temporary slot and skb hold are still there at the end of the series.
+On E830 the re-arm happens in hardirq context in ice_ptp_ts_irq(). On E82x
+every pass does sideband PHY reads. Before this patch, the first pass after
+link down dropped every slot, so this loop could not happen.
 
-ice_ptp_rebuild_owner() already flushes the software state before it
-restarts the PHYs:
+A later patch in this series, "ice: don't clear in_use until HW clears
+ready bitmap", adds an ice_ptp_is_tx_tracker_up() check to the in_irq
+branch. Combined with the link_up check added here, that seems to close
+the loop.
 
-	/* Flush software tracking of any outstanding timestamps since we're
-	 * about to flush the PHY timestamp block.
-	 */
-	ice_ptp_flush_all_tx_tracker(pf);
+Even after that patch, though, E810, E830 and E82x still don't get any
+stale marking on link down. So this commit isn't bisect-safe on its own,
+and the commit message describes a mechanism the code doesn't implement.
 
-Would the link change restart path need a matching flush? The commit
-message says only that the reset will "clear any outstanding Tx timestamp
-memory". It doesn't mention what happens to the software tracker.
-
-[Severity: Medium]
-What keeps the Tx timestamp interrupt thread and in-flight hardware
-captures away from this port while the soft reset sequence runs?
-
-Before this patch, the only caller of ice_ptp_phy_soft_reset_eth56g() was
-ice_ptp_init_phc_e825c(), at PHC init. Now it also runs on every E825
-link-up restart. The sequence sweeps all slots and sleeps before the
-reset is asserted:
-
-drivers/net/ethernet/intel/ice/ice_ptp_hw.c:ice_ptp_phy_soft_reset_eth56g() {
-	ice_ptp_clear_tx_memory_status_eth56g(hw, port);
-    ...
-	usleep_range(5000, 6000);
-
-	global_val |= PHY_REG_GLOBAL_SOFT_RESET_M;
-    ...
-	usleep_range(5000, 6000);
-    ...
-}
-
-ice_stop_phy_timer_eth56g() leaves PHY_REG_TX_OFFSET_READY set, so the
-PHY keeps capturing timestamps for descriptors that were posted before
-tx.disabled was set. A capture can land on an index the sweep has already
-passed, during the 5 ms gap before the reset is asserted.
-
-The consumer path is ice_misc_intr_thread_fn() -> ice_ptp_process_ts() ->
-ice_ptp_tx_tstamp_owner() -> ice_ptp_process_tx_tstamp(). It never takes
-ps_lock. Its ice_is_reset_in_progress() check doesn't cover a link
-triggered PHY restart. It snapshots the ready bitmap and then calls
-ice_read_phy_tstamp() based on that snapshot.
-
-Suppose the thread snapshots that new ready bit and then reads the slot
-after the soft reset. It would read a slot whose valid bit is still set,
-against a counter that was just reset to zero. The kdoc for
-ice_ptp_clear_tx_memory_status_eth56g() says the soft reset does not clear
-the timestamp memory.
-
-The earlier commit "ice: E825: clear PHY_TSTAMP memory prior to soft
-reset" says an unbalanced read "underflows the counter, and prevents new
-timestamp interrupts from being triggered".
-
-Could this stall Tx timestamp interrupts on the port until the next soft
-reset? That is the failure this patch is meant to prevent. Whether it
-happens depends on PHY behavior described only in this series and on a
-narrow timing window. Even so, nothing in the code seems to prevent the
-interleaving.
-
-Does this path need to synchronize with the misc IRQ thread, or wait for
-in-flight captures, before it runs the sweep and the reset?
-
->  	ice_ptp_src_cmd(hw, ICE_PTP_NOP);
->  
->  	err = ice_phy_cfg_parpcs_eth56g(hw, port);
+Should the commit message be corrected, or should the stale marking be
+added for the other MAC types?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021-jk-e825c-timestamp-processing-logic-fixes-srcu-v5-0-72289a4ac8eb%40intel.com
