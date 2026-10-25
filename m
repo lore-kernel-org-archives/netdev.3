@@ -1,96 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792953262;
-	b=Yi96F2/sefF3kCpzQZZ6oHrfyUFoF2HLXWO1BS1UJkP6uH8NZi/Dr6RIGQw2bdGgVOtw
-	 xV455W1vw2MHZtTeO9qQcUpTzBE1JXJ3z9WZZ+XyJMqHT8X+P2vM2XQNsrOl6Zas/bxLb
-	 QqqRTANtEDBNORJxZLrGHEmMWf5xrhvfI9XRTSReCJLk0INBSRZkbI1JTcP2ZZRrnm+rc
-	 OD+rKPQyRY2x54kGxzgjjEsbUXimfpY7OuC3rY5/01jvNQfwkQ3hOX5buMunZwFEG/TC3
-	 AoKQyXCYwAbH5e/tYmk6+6WcnHxifW3Hj4l0/Xq/3w/IlAvmsh7p8G/qtLfZ8iMiyfQ==
+	t=1792954167;
+	b=jHZUgBtj55nN4BL6RTD0BGfFDyzPDciFLdIm0gFDo4XJ1q/kUtMVIxYvwQXFsooXIUZf
+	 rYXPzsIg6//+oj996KBBegscQyb1UWSCH96450GP0ZM232l+ZNyUvtv8N0k5RP6ayv32A
+	 xNL5cmzEYAt6Q4An0we5B8rNDMWJStYPpEZo4ybDYI+E+ex7rGSSAmkwnYk9fIOmKjYdP
+	 l8TJyeQ7bezI7IAA7WSEX4rV+dd3lQ2YPZGSPVRB1OThLU9maEefyHQ3Qy1FsjOJDwnrT
+	 huSi4AHexq/9F2tu3H3kSbjbKlp1tz0pIb2mpxVtUhHmi7CBzGbh3HhYLtZMyZD4jWA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792953262;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=qXiolJoVo/QomQ5F/RYb2Yfyvd/6E3aOqV+uqEMp4Xg=;
-	b=mg/iYkUcM4DLF3Cydm0eQ+lwOC425hoBoXekWijSzQRYqxkxtvrZQJNkTYQZiynxd6YI
-	 +eK+zemRTP2VEa7WqLaQjrZw7b6Q61OC6XMdTuxOANGeEfJ0TRQxGad2uxectiDsL1H81
-	 MEdFgsDYzRrB9w9X7kx8EPSyI4FLd6nECiTeJqIgUl5NbgcLq1G5CDhYovcmF7/2lKgp3
-	 zUXuM6fOkkbBRr9sfO+Qfq5ootIDHaTF/WEa2cVO5k9fyyV+km43dFOf8RAcQbI6IAShR
-	 BOrMnoNQdonjqxiM9IdTRSVklwtKD13Z4+y747wwVBVZ4J9tZyJyQr2hmvIoVnKDm3g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792954167;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=M1EYkJThVb8wjj8i/+8/sHy3gmrgSu5C1nsMxL532Tg=;
+	b=xdc4M/4h7OEqaQSSOrkWWRf96YJvDSUNXN06V0tBjyC3pLn088OIitSnhQF+YYerWMm0
+	 mjYKbd/sBjMy3aZIXwjrl6wTwe2+KbST51BdBEjImoCD6Ie61+L2IYhtsbqf4crYjGUmz
+	 ApyssTIXYTojK6J9UmOF7G3tSvqLcX8ZEZzRokBOaERij7RvFoudGAE3hd800KGhxaZ18
+	 UMqTB9VYAsSOkdzwMHRM1UNflt2SpgppS4ZWP20MpGbJI4HXS0bWxeNv55dr+GhTrzV3S
+	 YbwA7RfiwIZZzQlqMjh7lVA7w+XJZ6LeRKRebxn7xTy8G7hSAJRTgjFQ8NQJuJBNOdQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=networkplumber.org;
-	spf=pass smtp.mailfrom=networkplumber.org;
-	dkim=pass header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=vX9uroRa;
-	arc=none smtp.remote-ip=209.85.216.43
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="fVj0DRC/";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E142B606A31A
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 18:34:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E142B606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFDC3606A31B;
+	Sun, 25 Oct 2026 18:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=vX9uroRa
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3ade49a7ebdso923691a91.3
-        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 11:34:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1792953261; x=1793558061; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=qXiolJoVo/QomQ5F/RYb2Yfyvd/6E3aOqV+uqEMp4Xg=;
-        b=vX9uroRaJmEMTkg51OrxC1DEg5GevGDDMDo8sV2+mNUZmZJz0amQBk7ZD8GNdcwo3c
-         quwuSHmyPRQPkrOYTmMEDEyKQzIIOEi3YSv9+eOwdQ9e2kjBir+/UYKiXD3ZicLvcPlX
-         xkCWa0yBc9+Cg36mvDpGdIylthlXIalZXPOuk73qcXaEJAL4s45HjLC17yHq16i7oKa1
-         l4DpIdtxa1Xc6Xp4ycEw1HVJceLNIhXWrKlIGbfjdOrtk9ZLeSGPj1xUMpRQip2uNPNU
-         2X80lT64DCeFT2li3pTqBwVObnIZ34BUxMz6TXpMfSlx/CjXepfXUYGHPNt7RggAVVfy
-         OUVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792953261; x=1793558061;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qXiolJoVo/QomQ5F/RYb2Yfyvd/6E3aOqV+uqEMp4Xg=;
-        b=dUbeirV18+YZGeNcUnlt5zcsML8Qd+SjQQXbjZsT0MtW+erjHejS+gQaBnulzqdAj2
-         m8OX6wyZ0bfGi9jqazvtQGyUiW8IG1QIrVUsWz4hyCI+TB8IjW+/uyaJef9kiFkI8tvq
-         qEulmBl/3YG1jVQx9pCEvbsBsGpVKK4jDOA5oq/X7mupOd7PsRmLjYn2Eo+Hwt19wICw
-         y1FGxkm2S8ZpOXfU7/pK7fwszX4mRB9a2ywKc4VfBP3alQ9PNuNsHKw3h/TxDaPuhE5z
-         i6o+2fi1LU1Q/RNGa+wsnaQMmATnabxkrI2SzZKvTrnmLhtAbX9DJ/QXc91zGxOCkQOc
-         mhvA==
-X-Forwarded-Encrypted: i=1; AKwUvBwSjmU2ERe8lIwfkZoWtrM/Fu4tlYm/ihCmV2xqwSevICScm4xwzxC0sjfRoFfp+m5yyGOZHIg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL86Mx8oKO96Mvq01W4rLd1Bb2/V79Zc8tq9HRF2hca6rGuDup1
-	xQEAuKJ2R0T30vlY5rKl1K36lsGtLhCBP95FHUKH71YcKa7Bw5apHbxlxj0ebld7mgJdhCfbHte
-	QS0sq5Co=
-X-Gm-Gg: AYBFou1/4tgMZf3d3f53fabroOgAcBEhG6l2BazVxO+7agYrtizUff0xAPtDKxc7MYf
-	3LIZ7jZ5LsesLLHtYQ2ypy7kGSc0zQRyuvWyHP+u/gDLJhlTW/dUGmXA/VEKL76BT3ce3wwLXj9
-	2N5iySxE3DDplH/+pHINGX54gqx7tbOv/B8fNeZemrNAi94FlPnzc+aYByiwqnyekMl9BI68AKb
-	onUGxKDDxVIRnrv0ntjOjWvNhnddMTqtI2P21zmViiVKIxFTfNhUofq/4BvEfWCZ54Up8Rmh/j2
-	q0HqoUtgC/MVdLvrpvCdTx1q/fE5ziwy3USST8YT+FGn1LtTjnKc65OTE1lauvtC6otiB03jRsG
-	uLPCwz3mD8f9RUOORF9dbc08Fgoa6YdTu1IUI9hsU9bbdvtwwPOwxyAzOJEjKXckG3wmHpmKaSo
-	xmrJXm9fzM95MkZn4XEHvsMujE8DZYeOD6eqyZkuagpvHjSFq+qQ93tecDlMnY/wTeC+zQA0dZ/
-	RpfSrSqpwHPnqX/iIu9SCBSCxZN84A6ZPy8ZDFlDCI5wBpL+HsG/6ZVqTkbSqpJVqqtRbCs/K+Y
-	AOMPPXOxKAape+EiHS/MFglPz2KmqLRcVZo5x5xW42Y=
-X-Received: by 2002:a17:90b:28c4:b0:3ac:9d14:fe9f with SMTP id 98e67ed59e1d1-3adead57ca8mr4039856a91.31.1792953261212;
-        Sun, 25 Oct 2026 11:34:21 -0700 (PDT)
-Received: from phoenix.local (204-195-112-43.wavecable.com. [204.195.112.43])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3adebb0718esm5326562a91.11.2026.10.25.11.34.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Oct 2026 11:34:20 -0700 (PDT)
-Date: Sun, 25 Oct 2026 11:34:18 -0700
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: Hadrien Patte <hadrien.patte@protonmail.com>
-Cc: dsahern@kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH iproute2-next] json_writer: fix pretty printing of
- arrays
-Message-ID: <20261025113418.2f5acab4@phoenix.local>
-In-Reply-To: <20261024183341.34161-1-hadrien.patte@protonmail.com>
-References: <20261022211002.31098-1-hadrien.patte@protonmail.com>
-	<20261023181302.2a06fe99@stephen-xps.local>
-	<20261024183341.34161-1-hadrien.patte@protonmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fVj0DRC/
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DEAF1F01825;
+	Sun, 25 Oct 2026 18:49:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792954166;
+	bh=M1EYkJThVb8wjj8i/+8/sHy3gmrgSu5C1nsMxL532Tg=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=fVj0DRC/tzuIgNxzI2lqtpDjW7ewxWgaY2iSl3bJPdmbJBI+sKgVzBJGEp3j/ZPLt
+	 WXFo8sREHPRdex9xcZk5K7bM3Er+V8uVOXDmBohouMyq+a/5j5c+rV2NvOvuB/UzLo
+	 SKeGMdKlpVWjfcJu2/dhbph0rfDVASrTKp7iYCez+VFdWMw8BSqp54dSfjV+lsFdeN
+	 X6y/ffdkEi2LPEtA6RAeJ9cRpJh/HMwi/qX9KqLhUmKuetolDgHtyvooiECVId7AZr
+	 BAxtVC670uh6LxkPO8F5LpdyY4nC0slpqJjYh1DL0NLApFsZJNtJxig9obYnkf1AV6
+	 XTaZhz8q044Zg==
+Subject: Re: [PATCH net] net/mlx5e: Fix stalled channels with threaded NAPI
+From: netdev-bot+sashiko@kernel.org
+To: josef@toxicpanda.com
+Cc: saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com, leon@kernel.org,
+ andrew+netdev@lunn.ch, netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+ kuba@kernel.org
+Date: Sun, 25 Oct 2026 18:49:25 +0000
+Message-ID: <179295416566.3134.16050727697220664295@kernel.org>
+In-Reply-To:
+ <20261021-b4-mlx5e-threaded-napi-stall-v1-1-d719c17b3ec4@toxicpanda.com>
+References:
+ <20261021-b4-mlx5e-threaded-napi-stall-v1-1-d719c17b3ec4@toxicpanda.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,52 +64,138 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Sat, 24 Oct 2026 18:50:46 +0000
-Hadrien Patte <hadrien.patte@protonmail.com> wrote:
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-> On Fri, 23 Oct 2026 18:13:02 -0700
-> Stephen Hemminger <stephen@networkplumber.org> wrote:
-> 
-> > Putting all the array elements on oneline is easier to read and more compact.
-> > What does python do?  
-> 
-> My current patch actually contains two separate changes:
-> 
-> 1. A fix for arrays of objects. Scalar arrays render fine on a single
->    line, but when the elements are objects, which contain newlines, the
->    brackets and separators end up glued to them and the indentation
->    levels of opening and closing brackets are off:
-> 
->    # ip -j -p addr show dev lo
->    [ {
->            "ifindex": 1,
->            "ifname": "lo",
->            "flags": [ "LOOPBACK","UP","LOWER_UP" ],
->            ...
->            "addr_info": [ {
->                    "family": "inet",
->                    "local": "127.0.0.1",
->                    ...
->                },{
->                    "family": "inet6",
->                    "local": "::1",
->                    ...
->                } ]
->        } ]
-> 
-> 2. Putting each element of scalar arrays on its own line. This is a
->    style change rather than a fix, though it is consistent with common
->    JSON pretty-printers such as jq or python's json.dumps.
-> 
-> I'm happy to send a v2 that only keeps the first part, leaving scalar
-> arrays in their current single-line form if you prefer.
-> 
-> Thanks,
-> Hadrien
-> 
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-Looks ok, as is. more of an observation by me.
-I don't in general look at json pretty print 
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The new predicate in mlx5e_napi_poll() (en_txrx.c:216-217)
+  uses NAPI_STATE_THREADED, which records the configured mode.
+- [Low] The opposite transition has a smaller problem.
+
+--
+
+net/mlx5e: Fix stalled channels with threaded NAPI
+
+With this patch, mlx5e_napi_poll() keeps polling when the NAPI is in
+threaded mode, instead of taking the affinity-change path. The changelog
+says that path completes the NAPI and arms the CQs while CQEs are still
+pending, and this can leave a channel stalled after a burst of traffic
+ends.
+
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
+> index 1851056064698..3142e90e68cee 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
+> @@ -207,7 +207,14 @@ int mlx5e_napi_poll(struct napi_struct *napi, int budget)
+>  				rq);
+>  
+>  	if (busy) {
+> -		if (likely(mlx5e_channel_no_affinity_change(c))) {
+> +		/* A NAPI thread runs where the scheduler puts it, which says
+> +		 * nothing about the affinity of the interrupt. Completing here
+> +		 * would leave the CQEs that are pending to the next interrupt,
+> +		 * and arming the CQs raises none for those, only for a new
+> +		 * completion.
+> +		 */
+> +		if (likely(mlx5e_channel_no_affinity_change(c)) ||
+> +		    test_bit(NAPI_STATE_THREADED, &napi->state)) {
+
+[Severity: Medium]
+
+NAPI_STATE_THREADED records the configured mode. It does not say whether
+the current poll is running in the NAPI kthread. Can a kthread poll still
+see this bit clear?
+
+When threaded mode is disabled, napi_set_threaded() calls
+napi_stop_kthread(). That function clears THREADED while the kthread
+still owns the NAPI, and only waits for SCHED_THREADED afterwards:
+
+net/core/dev.c:napi_stop_kthread() {
+    ...
+		if ((val & NAPIF_STATE_SCHED_THREADED) ||
+		    !(val & NAPIF_STATE_SCHED)) {
+			new = val & (~(NAPIF_STATE_THREADED |
+				       NAPIF_STATE_THREADED_BUSY_POLL));
+    ...
+	/* Once STATE_THREADED is unset, wait for SCHED_THREADED to be unset by
+	 * the kthread.
+	 */
+	while (true) {
+		if (!test_bit(NAPI_STATE_SCHED_THREADED, &napi->state))
+			break;
+
+		msleep(20);
+	}
+    ...
+}
+
+During that window, napi_threaded_poll_loop() keeps calling __napi_poll()
+as long as repoll is set, and it never looks at THREADED.
+
+Suppose a busy mlx5e poll runs in the kthread on a CPU outside
+c->aff_mask, which the changelog describes as the usual case. It would
+then fall through to the affinity-change branch:
+
+	ch_stats->aff_change++;
+	aff_change = true;
+	if (work_done == budget)
+		work_done--;
+
+napi_complete_done() then clears SCHED and SCHED_THREADED. The CQs are
+armed with CQEs still pending, and no interrupt is forced.
+
+Isn't that the same state the changelog blames for the stall? If traffic
+stops right then and the RQ is dry, the channel could stall the same way.
+
+Would NAPI_STATE_SCHED_THREADED be a better test here? It marks that the
+kthread owns the current poll.
+
+[Severity: Low]
+
+The opposite transition seems to have a smaller problem. When threaded
+mode is enabled, napi_set_threaded() sets THREADED right away, even if
+the NAPI is being polled in softirq at that moment:
+
+net/core/dev.c:napi_set_threaded() {
+    ...
+	/* Setting/unsetting threaded mode on a napi might not immediately
+	 * take effect, if the current napi instance is actively being
+	 * polled. In this case, the switch between threaded mode and
+	 * softirq mode will happen in the next round of napi_schedule().
+    ...
+		napi_set_threaded_state(napi, threaded);
+    ...
+}
+
+____napi_schedule() checks THREADED only at schedule time. A NAPI that is
+already on a softirq poll_list therefore keeps being repolled by
+net_rx_action() with THREADED set.
+
+Suppose the IRQ affinity changes around the same time, so the softirq
+poll runs on a CPU outside c->aff_mask. The new test is then true, so
+mlx5e_napi_poll() returns budget and the NAPI is repolled on the same
+CPU.
+
+That skips the complete-and-arm step. That step would move the poll to
+the IRQ's new CPU, and the next schedule would hand the NAPI to the
+kthread.
+
+Does NAPI processing then stay on the old CPU, with the switch to
+threaded mode put off until the queue goes idle? Testing
+NAPI_STATE_SCHED_THREADED instead of NAPI_STATE_THREADED looks like it
+would cover this case as well.
+
+>  			work_done = budget;
+>  			goto out;
+>  		}
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021-b4-mlx5e-threaded-napi-stall-v1-1-d719c17b3ec4%40toxicpanda.com
