@@ -1,97 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792960324;
-	b=0wlgCDdf57OBtNx1Gsbg83CvckpHi7gEnwBXRr8iOd205NnT5+s2IEPYvxXfC7mrcByA
-	 oKKfPLze9Em7n2kZcV8Tr2clqKOskTR0HgU1J3gl0YEZIzFPiZQc7E2oRqqzOUIZlqiVf
-	 qqpyGL0cWXdXBEOWzER6nMRbc92Y3Hisb7UbBm3XMKyCOqAbixtEJlVgtfIv4hACeZBWr
-	 cutlAbzTbpFK7lhyVjjFFe8owyrVlRf8twMygSYho4pOZfv4pUpDLsNUQNCb0HbXg7bl/
-	 H8tpv9hll1qX1HY5y1oZBfFL5LEY5zq4E28aggmo5yaAThlO4mKutynYwJaRw4r82iA==
+	t=1792960320;
+	b=qvz3N+QbtwDYCSG+XIBUdMma+/JL9npS7LCMFuSryFpHROXWsDkU7OcIKXTxhTkc5ajP
+	 6TbtLC9iUD1j1M7a3JmHLvAHWMmTaI9QoINuvlVnCr+6ibe+4pcAXiFt1wr0U7Y6gGqxa
+	 5uFirNIiRgHOw/z9wbt/cx5v6MBOpbNn2MKam2NUzpkXFVjzKxjW+bCplj17JH1cUwjFu
+	 vh08rlQxZapdAw0Mcf6Gl/iKUAEe4i6R0mN3rMVHg4T1j1tB9Xqbc6jZ+asecQ6Xo6oMA
+	 HiSpbBzISrCbjcNHU0O2cNRQcBmvRYXi7LM+w99HswqQ1bs632v7y0op7erqK9vcyPQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792960324;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792960320;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=V/foU+cSI6OMyqIz8ju5t4yslf2nKCeuPGIY1Tz0xSI=;
-	b=UcnOKV+Kb2LQz5kUx3T1reIzruM29xcYRt9DniXFU4bu+bLq5397WlB7Xr4Sz0fEAm3v
-	 a/i1YrvHyMcX2PucnYBf++o2Snhn+DjKE+5V1kOBU0CselL33Ga/kStm2w640s06lRVIz
-	 WYNRgeHwUi1wSuLDYBkWitywpeNlMXXPHivpe9bclLJ4oNiItwajjVaK07XMojrbtvLJb
-	 y48ssu8ArT9BZubE/2YkLxnF+AbecNsZ3QsCuCjDd+juhJwOesdZEa1CxxXhfyhvdtZI/
-	 jZedlKKT+LjlDwxKqeUa4h0J3F+EZap+/5mix86XvQKOUdHVNcv5Yec6vQazEMkt9Pw==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=vJIpz2IR2uKayeqq1B9k4Uy/SxrEV0GO4KqXaU7mgEo=;
+	b=k80OuLlMOVMxNGCWCWp6gvy/Ard5STE1H1PS2PEamACqz4t6j3thFEY3XLXnLstvzlqh
+	 D7PjLC73LxiXr+Gv5g5a8cF9Y5Ca3ExBaB7voHEGyyRUlMcYlG0aQVsp8VAKP3+qp5rUl
+	 p6xqN8utX2oopQgn8hLEVJZUzk+fa0tRMVwGIwNeiGtwZEiRNxK4IbNzobV8zZdHz3IEI
+	 aq0LwQaQJ3+RAzn00L6s6FhDQU2JyZEYEla1wWNp6L5M5s+frF8hNYfBU9SrvTXKl9cxU
+	 IoopuzYosUqYgPfFuaC+dkAE3j7nALgwLDzO+4EfQkVhn2rtjAXB49sYbdtACo0QSLQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=tFoNH8jO;
-	arc=none smtp.remote-ip=209.85.218.49
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=ce14jaf8;
+	arc=none smtp.remote-ip=209.85.208.48
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F97606A31A
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 20:32:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 29F97606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D96A606A325
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 20:32:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1D96A606A325
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=tFoNH8jO
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c43fbcb4393so325956266b.0
-        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 13:32:03 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=ce14jaf8
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6b1aa27963eso4877127a12.1
+        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 13:31:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792960322; x=1793565122; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792960318; x=1793565118; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=V/foU+cSI6OMyqIz8ju5t4yslf2nKCeuPGIY1Tz0xSI=;
-        b=tFoNH8jO5oD4yvKeAuv5oUcHNujVbWhIuy8BfDaEJtcvjg3O60NTSmI+qVEElDW/X/
-         A1+SQiwBj70VWpFA9/B5I2r7rA08a+GmrbgEgjSyhs6lhexzr/IODo7bBqAPHxQ4/XgQ
-         qQI4eDNeaPK/vNJLPYM1y7DLAGYHFVloIIM+mQ1xD/vOdT/KuP6SjQr4bWncdSwXAycE
-         ZQXLMQTzFwz1rRteUtvMVPhSEQpLGPZpxZELKIWpF6PKmJ0LAXVKfCqEWMpedNJJvckv
-         7RGSf5g0Bo/tcubF6nussxJbybWCsHE7XhpNrwTySscx3iavu8qV01vEbjjA5lNbRNqp
-         xeow==
+        bh=vJIpz2IR2uKayeqq1B9k4Uy/SxrEV0GO4KqXaU7mgEo=;
+        b=ce14jaf895Ti3kambPTJBFMPUD6UgUFBX3aXbnMuWOgqgRyC09OhUwMm/gSWWfHUKS
+         8nxMGygECc7k0F/E+h5Fh/HtNtJKN8OrCVVRrgwr8El7YU6RMW7gxxHLa/Uov9zALaro
+         b5kFu6bi16LMTFOy/WkJ4b1+EpNdUsux70gXjwelOXhKrxWHdi7r+xwX1WSAVTdwX4pi
+         OV+gP4KWYU63oX93ZkshQcTlsjJ1T5Wwl7mZuNKRVpfnLA05x2reR19gzkZFcEQA5kL8
+         whlhkxeGYLfeYrSuMY604MqptkPLP13imaLaCzImos0piZzoM0UMNxNLIAQARNirjXTX
+         WoBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792960322; x=1793565122;
+        d=1e100.net; s=20260707; t=1792960318; x=1793565118;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=V/foU+cSI6OMyqIz8ju5t4yslf2nKCeuPGIY1Tz0xSI=;
-        b=wn4ULp+if36oejqHh/w+oaf4C3yibVgHijTIiIEYdwP0jxplrSVOsKkMuSfL5Fr9Ff
-         O4f3KPtrTHSHvWCPHpcKg/9en+cJ0naWSoqrH0TUwoZ5WB389tFhP3NYEPe/rZ+md9ZM
-         ho/fYNZ0EcXMfcCqUMVpsrlHqLtjILowNRli27repNxS8OjNvjdje46IGxmvaz1ckWs1
-         hBho3ys3xYk7Sw+U7QtwhV47JTjV6rQXUmq+Xuyu4Exs4pxq7TBl2iQUXH4WR+vx6U1l
-         0yDEbMb5DD1odsUfNY4sNMaARO0O8CStv/pfyzLRpWI10cuhelkyBSUirwhf2HrnDHbw
-         Mnlg==
-X-Forwarded-Encrypted: i=1; AKwUvBwPdqz+3asT4u7nprkMbHTUPvo8d6EZ27bR6QsFC8NmURFabDTiDRgqZuK5Ufj3OsCY7ROIFT8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLv1dRP0jxzRfjBvNoAon6HmGJNvF8L/iml6cX4El36PTMgZ2uy
-	/FQqAgtNzQvHSm3wkNNy3AlMGRHPhVAKZOybeYEabDhW6J+oS/OsuXVV
-X-Gm-Gg: AYBFou1JE0MJiE6t3nXXa+CKEBv+s+JbQ09eznONah+zGNvreNdy6upYjCOwHEMLPLM
-	L6dNptMhQ+8CwUGgFNc7hCd0Ydk0cI79fa7Szr9kAIBt5gnP5x2/ZJdwtrUVbCAi89cb1UqyLPJ
-	4J36qjG2eiVRej1uM1aYOQnszYUBeAUbZmaUIq6gjNzLWwPlLlmnO/5jUuBuxmPzchBhPRMJb8N
-	rUu+PpaOIkn+TwzJub3ps5jCqCdpHkLfqesC25qkASWKvtjMcUjGqcBsLxNoBo0nf0M2ZXY0QBu
-	fyL0FnMalmX3P1Rup9JsNXe4YOXINw1dAlcpo/kIDdjLvg/7K9O+kaQ/5y0ansFAmvx7FSYIDUD
-	9vB9ERhhIXv7jJ296dhiYrIxk2ImlFgY1gnRHz2DsZVx/PrGLiE46CkHSocsO16/L6lpCqAekeS
-	GJ92poqT1jWO/cPvglinVyq9vgCtZgVAszdNn0xX7444CjY0VRkayf6Tqk0Nqr4hdJeELZoTOg9
-	0mj85YnQpeMDwq70asGsJfz/TKJg4OIBVCpXRRbfhVHwyviXR6R+HlsyIjgcLsRbywv44qxC8R9
-	84cSg6xUlaUp81m3dw2zwdjj6AsGuC1hG+4b+GYaifKFdLHzNeNDBDx7g24gzIHW+iKE3/3n7+y
-	5apY/Xa1ZTtWfMKVB1PgVKhPX2tV22Psi0ZOWqnBlgEY+
-X-Received: by 2002:a17:907:968e:b0:c32:110d:682f with SMTP id a640c23a62f3a-c46bddf7a75mr615460166b.18.1792960322486;
-        Sun, 25 Oct 2026 13:32:02 -0700 (PDT)
+        bh=vJIpz2IR2uKayeqq1B9k4Uy/SxrEV0GO4KqXaU7mgEo=;
+        b=11GYaDKlAGUAviLhaJgWzKFQRdGWhUdGwBYIdovkR/o1t71YenjzI40GLBfGeuVgVG
+         bpAHsyYHd4PPn1Hucacr5F1oHZ6B2BVBJRt9X2X5oUU7sSQ5RuIph9C3iqMO+dMUsBaz
+         tzALTbI4aJO+B2UApGk04Iinx7+eSUsYLNjZ8zfhIislGWflwGhxRHpni3yrmEC9QAAg
+         rxmq/5SV+odJK3qGIkyAOf+pkfK+wvSwvEVM2CAE/EMRM5i39obGmqrbgtL4/0DJFBV3
+         2yLeqni6eAoCy4ODGF/F+dkqhD6F3jYuPuQvmyAltwtWxB7iGBlTlqTcSImgepboryCS
+         tF8A==
+X-Gm-Message-State: AFq9FYKhQbFMyhJzcskAPQkpeTVnMWSPPzlxFI3q32IcLC6DoydW/kdn
+	VBYDELhREAKQ++6i9aDhJF5bnXTNwsHv3q3FLnPvTt3vNH7imi3qzs5F
+X-Gm-Gg: AYBFou3UTo46PjR6FBhJ8q+Y3jPvvk4ZyvN3BdqCB8+vpTu6SLwq0g48fUf28AxsR/l
+	C8cYvicHKsKWF1XQsWfGuLQbu+3pRXyPvFl5yNEQWzAIT7ISpNj5BEON1jnneoaYTMk3hDw0Ir6
+	t43hsJsGkGiPKfK87J8RmUHrHLP58aoh2eLMCjHkeVE/VfHlrT6zwc+COq7t9bHRn1UUqB20Zpc
+	SmhNGHwTx7kvEUAhP7tflbw5gS4uEHMvyVHoIhC2u5wU3XOH4e21GbW6XLGmNcxV8J2dffnp7RO
+	t22/GlQ4GRSrcZLTkQlinxcll+cPP8hc1WS8lCxANg5WXSlbU/dV6af+ykwOrlNpD9lL88Kccsp
+	h5/ULrGZuCZ1NIXH/oB0TGy5Ur5xQOAHpQrVR0o/TaDLdXNK6RS6okUQzC/iI79U05ZwXlC94iS
+	8eh2tiNwWVLT0C48L0pG9TGZOjXXEH9coATfSc5Pp+BWvm9g3BlECm/VBNwmhKMrbOLnNexogdD
+	6g56PS1d6HJbIIxw3gcAM5lvagEILZ4M+xDcWpLky5938kn0v/bzalOtgYRUwfpBzSchIQPMPp1
+	UQMgq+uJM6H+/8SqUa/o1xcAamn2WnrE8tQ4MpzCECooeciKzas8gODXogZUcW3Nbl8T4hvm5HM
+	GmnHmwcko4bXc3CKipwO+iw9tM1aKxbricoB7y6tsbae7
+X-Received: by 2002:a17:907:7206:b0:c46:78af:6150 with SMTP id a640c23a62f3a-c46bdac6ca2mr638087666b.2.1792960318542;
+        Sun, 25 Oct 2026 13:31:58 -0700 (PDT)
 Received: from localhost ([2605:59c1:3500:c210:a19e:c679:44e8:e9a])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c46bd79b884sm240272566b.75.2026.10.25.13.32.01
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c46bd350706sm247414666b.3.2026.10.25.13.31.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Oct 2026 13:32:02 -0700 (PDT)
+        Sun, 25 Oct 2026 13:31:58 -0700 (PDT)
 From: Selby Mashiki <mashikiselby@gmail.com>
-To: Sunil Goutham <sgoutham@marvell.com>,
+To: Horatiu Vultur <horatiu.vultur@microchip.com>,
+	UNGLinuxDriver@microchip.com,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>
-Cc: linux-arm-kernel@lists.infradead.org,
-	netdev@vger.kernel.org,
+Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Selby Mashiki <mashikiselby@gmail.com>
-Subject: [PATCH] net: thunderx: fix fwnode_handle leak in bgx_init_of_phy()
-Date: Sun, 25 Oct 2026 22:31:59 +0200
-Message-ID: <20261025203159.455100-1-mashikiselby@gmail.com>
+Subject: [PATCH] net: lan966x: fix double fwnode_handle_put() and missing mdb deinit in probe error path
+Date: Sun, 25 Oct 2026 22:31:55 +0200
+Message-ID: <20261025203155.455075-1-mashikiselby@gmail.com>
 X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -104,56 +102,50 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In bgx_init_of_phy(), device_for_each_child_node(&bgx->pdev->dev, fwn)
-breaks out of the loop without calling fwnode_handle_put(fwn) if
-to_of_node(fwn) returns NULL.
+In lan966x_probe(), fwnode_handle_put(ports) is called after the
+fwnode_for_each_available_child_node(ports, portnp) loop finishes.
+However, if lan966x_fdb_init(), lan966x_ptp_init(), lan966x_fdma_init(),
+or lan966x_vcap_init() subsequently fails, execution jumps to or falls
+through to cleanup_ports, calling fwnode_handle_put(ports) a second time
+and skipping lan966x_mdb_deinit().
 
-Switch the loop to device_for_each_child_node_scoped() and remove the
-manual of_node_put(node) calls so the child fwnode_handle reference is
-automatically released on all loop exit paths.
+Add cleanup_mdb and cleanup_switch labels so post-loop initialization
+failures deinitialize MDB and clean up ports without calling
+fwnode_handle_put() on ports again.
 
-Fixes: 9d28f9491258 ("net: thunder_bgx: add a missing of_node_put")
 Signed-off-by: Selby Mashiki <mashikiselby@gmail.com>
 ---
- drivers/net/ethernet/cavium/thunder/thunder_bgx.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/microchip/lan966x/lan966x_main.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-index b63039999..3fe3f80db 100644
---- a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-+++ b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-@@ -1467,11 +1467,10 @@ static int bgx_init_acpi_phy(struct bgx *bgx)
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+index 1179a6e12..7abfd97ad 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+@@ -1228,7 +1228,7 @@ static int lan966x_probe(struct platform_device *pdev)
+ 	lan966x_mdb_init(lan966x);
+ 	err = lan966x_fdb_init(lan966x);
+ 	if (err)
+-		goto cleanup_ports;
++		goto cleanup_mdb;
  
- static int bgx_init_of_phy(struct bgx *bgx)
- {
--	struct fwnode_handle *fwn;
- 	struct device_node *node = NULL;
- 	u8 lmac = 0;
+ 	err = lan966x_ptp_init(lan966x);
+ 	if (err)
+@@ -1255,10 +1255,15 @@ static int lan966x_probe(struct platform_device *pdev)
+ cleanup_fdb:
+ 	lan966x_fdb_deinit(lan966x);
  
--	device_for_each_child_node(&bgx->pdev->dev, fwn) {
-+	device_for_each_child_node_scoped(&bgx->pdev->dev, fwn) {
- 		struct phy_device *pd;
- 		struct device_node *phy_np;
++cleanup_mdb:
++	lan966x_mdb_deinit(lan966x);
++	goto cleanup_switch;
++
+ cleanup_ports:
+ 	fwnode_handle_put(ports);
+ 	fwnode_handle_put(portnp);
  
-@@ -1506,10 +1505,8 @@ static int bgx_init_of_phy(struct bgx *bgx)
- 		}
++cleanup_switch:
+ 	lan966x_cleanup_ports(lan966x);
  
- 		lmac++;
--		if (lmac == bgx->max_lmac) {
--			of_node_put(node);
-+		if (lmac == bgx->max_lmac)
- 			break;
--		}
- 	}
- 	return 0;
- 
-@@ -1524,7 +1521,6 @@ static int bgx_init_of_phy(struct bgx *bgx)
- 			bgx->lmac[lmac].phydev = NULL;
- 		}
- 	}
--	of_node_put(node);
- 	return -EPROBE_DEFER;
- }
- 
+ 	cancel_delayed_work_sync(&lan966x->stats_work);
 -- 
 2.56.0
