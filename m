@@ -1,96 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.52.40
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792930165;
-	b=pg6K/EKiHO90/Aj6q4G42NHbVzTSxoKAoXNeXB5HYzmu3Jq26KYkupMoMqVYLEGH7/gW
-	 lhPjZYomJd56IDXrUyC6+9/aT+YuyuA5SQDsTvFGY14ow/UHjSE9PQN2Zl0zdFIvFhiTx
-	 31h8fmfnyxf/dt9PUFXN/HMCo8NAUC56z/r3+ecHJXmFewz/P0lW8jEVEmYyMKfcxJEvd
-	 5Zg24AZM4y8uc1TA3UihPPCp2vVmtVaOCJ6/A5CrEpyY8RuFNa9O82qMghc2cgh1W8+En
-	 GoH7ehPz4qqdftCxnRDMmtpIc5HyLxk8kThK2JHMNzlCCIDmRVKdLqOjeOJ+UF6abFQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792930165;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=5jH3MRV+z6edJ+GIC/0hXKHCieyo5wQwkoHRLfB5Nis=;
-	b=Vg96KshjDHOdKL5K9IDWdj7bb92KpnJ7CuI5lCFCKmRwBsZAQ1ZqdUnkLMBFoUihPlLo
-	 O5UgGGS9+9+ifYBZgu1qFI7iWcEj+0cw/JEDNPMaQr3R24nUViZifyJG3g8rqfffbgQsS
-	 PPvSwSuAvm0YpMokIDwJozRoA0UvnyZ1jDekzTqXgF5OfQS3IcCeScNNZdhVjOeKKFFSH
-	 2BCrc8LfI8cLEtGgVE33wZBj+ZE2CVoPCe98k7DKp8s60djduimxDdMzJ9Z9etHUi8yMA
-	 TnejDrfZdlA68x5dZ7KKONXLWb1Kj1BwMxSs9H35j2s9/XcuJnMTmIHhXCBjCrjnCvg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=BPAHdqxs;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.52.40
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011040.outbound.protection.outlook.com [52.101.52.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80ABC606A31A;
-	Sun, 25 Oct 2026 12:09:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 80ABC606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.137
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792931030;
+	b=oOwPCIcfR9uJZ8S5VAZqsTvvEHz3falBNM21rlcaoLK8Bytf3oAaZfd/IcVButEfIAK4
+	 Ii/r2BFkDgUDsgZr6WtEbRrhTKeY3a6BFt6r+rCG3Fi7mc4LrK1WvWHgDD3/5dtCfYQw6
+	 EMI6/PybaIlfpfCjWReeKN5p4tEsI2MKFjgB5b7NdlRZmqTy88paBRRt4tAO/H6Y1pozd
+	 31iXThPitxeGXlm3h68eN6h29UWomVmLcxk/30FynV5GlygVFSflDnRIKTrJCZystuYay
+	 AS9iK+KvOf5wUHMRYD2syHmrZS3vhnRShM6luMVy3v3oBDdCgligRCIZu/AfyhwNuNA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792931030;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 Content-Type:MIME-Version:Content-Transfer-Encoding;
+	bh=WCJq7Spt50NY99h3wenFRcpEIoJZtvetq+C/35JzX4c=;
+	b=00F68KP6wV35S6ykpuGOugCrXuUM62N48pnaW9c++t7cp4YzQPenzpOggsnlhq6qmLI3
+	 tSvCixqLfbVfxF0wcSW9zm1X/GXSTC5Ctmzg62tK/CHXD8jXJSlnc6x1CVBqzj9TRY6uS
+	 jlpe7GwVw6iaHfy+JEMY8QO/1hU9HS0fY6MKt/Ixld/DTdkTDK3I8/S8pxs4X4+gFo8wt
+	 32gyZViPMEsf3BAKGD+9pKo4iPcCb+p5Gm1/GqI/GCBA1cfZruQNijwyxP5e6AvMYo6fm
+	 cfZC2GYycaFxjYYBYfA7wYipPq9rRvHKxR8C8cEch+gA6qpH4nrbME+pWps1GWitWhg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=CmEmXH0k;
+	arc=none smtp.remote-ip=111.22.67.137
+Received: from cmccmta4.chinamobile.com (cmccmta4.chinamobile.com [111.22.67.137])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A06C0606A31A;
+	Sun, 25 Oct 2026 12:23:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A06C0606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=BPAHdqxs
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=V977JYyiXoC+uSSRUmWVIwHyFVn/5x+I8H6SfGh51P1ldsKm7rFowot/ukkFg90oLnxCeFz4bRdEq8dqkblqKvzvihm1cRZdqYsTqHmVhS/MF5CeEuYN3TF5OwTALexE99PBKgxFBFJwJ73Cx93J2ZgL+SLvNPo+8OVHhpTfiEPxKJp9cTg0RGpbth5f/pV4GEJnCsmgV5cu6NZvLH2WsSXrcpG75gkUtEKrq44LMHoUty5Nvc3iHMyumGmMbk1qNSaR9McJadN8NglJbij/8n8JYTO6rt14jp7SYZkTPnVZDxjPTCidd4PoTFq09BZ3gHGnnV5tC0Mjxd2g6Pi33w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5jH3MRV+z6edJ+GIC/0hXKHCieyo5wQwkoHRLfB5Nis=;
- b=DxVxnmcTVI95Lmp0nTdOCxpYtBG1hHeWoXAEbJmng+k6DvD4fls3G0pGCZFq556kgREh4ZSOJCxGk6iAG23cROrx6vW4CusZZ9q+o2r4lT/hpkIAY2Q6+fZLnxo3qSkLIIBePwJB6mAq8TbsrroBqMSMZZowMqGgJGNEJItNIynuhyVTW5ZoyObSZc7JE8Y3tQY/Yp1A0MjdIXVPLFK9KLbHhmp7Jn0MDqK+Ou+RrUYOsy0GJEWfb5kMMf/LOdPpWMbU9hTLKPiffl1WRDWaGyAcwMPzmENWeSzw40PzA+ucxwJLkDozZqNX+qL2kBohWGIQ5ukvUk9LZSwEJE9YvA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5jH3MRV+z6edJ+GIC/0hXKHCieyo5wQwkoHRLfB5Nis=;
- b=BPAHdqxsWBJoocj9EuRCIX1qwzic9OZ3ARDgF5bTdaE9CVA58zhIHFRgiqRZM3amKZSV2dTEXgS10xTkoXJDhatjXRXqRJDYmkvpCAI/YasgPbv5xqWf2F4kAx7TeTB092ahix2h/2qvLSAv4rrUI1iMWOB0OODYzfCjHhB20oGYGoQpzU8BKVFb+QEeR2V3r8EGw8wA/9b4RpyGRu6TmUVNp9yN+8bym2Vz5HLHyPdoIXVLhB7PoADIrTj7Xx3ANLwQduqHH624BJapjqPdmqTuxiCm9AuMaxg3JcEEvTI224fJmQaFS0XB03Jmq4LJaTst+Nkj0j16M1TbuvdF2Q==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by SN7PR12MB7324.namprd12.prod.outlook.com (2603:10b6:806:29b::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.21; Sun, 25 Oct
- 2026 12:09:20 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0546.021; Sun, 25 Oct 2026
- 12:09:20 +0000
-Date: Sun, 25 Oct 2026 14:09:11 +0200
-From: Ido Schimmel <idosch@nvidia.com>
-To: David Corvaglia <david@corvaglia.dev>
-Cc: netdev@vger.kernel.org, bridge@lists.linux.dev,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] bridge: mrp: fix silent truncation of IN_ID
-Message-ID: <20261025120911.GA156077@shredder>
-References: <20261023014536.72444-1-david@corvaglia.dev>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261023014536.72444-1-david@corvaglia.dev>
-X-ClientProxiedBy: MR1P264CA0166.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:501:55::7) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=CmEmXH0k
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=CmEmXH0keYZExIibYd2Z4j4puaoQaGMxTI5eSDTzKvQSPwAumIar6hhBx4TWkXCXNcOx1r2PNK9j3
+	 8mfzocU2rtZhnqINpfOqb/JsThkezZXMLscnmtMMeThhZm4XHNeKSkjx0Jolxp282/3xyA9SijEP0a
+	 tS4e9oGJ8lgmldL0=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app08-12008 (RichMail) with SMTP id 2ee86addf4d023e-e4627;
+	Sun, 25 Oct 2026 20:23:44 +0800 (CST)
+X-RM-TRANSID:2ee86addf4d023e-e4627
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from localhost.localdomain (unknown[112.23.104.16])
+	by rmsmtp-syy-appsvr02-12002 (RichMail) with SMTP id 2ee26addf4ceb0a-878d1;
+	Sun, 25 Oct 2026 20:23:44 +0800 (CST)
+X-RM-TRANSID:2ee26addf4ceb0a-878d1
+From: Xia Yan <yanxia@cmss.chinamobile.com>
+To: edumazet@kernel.org
+Cc: netdev-bot+sinfo@kernel.org,
+	netdev@vger.kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	dskr99@gmail.com,
+	maheshb@google.com,
+	linux-kernel@vger.kernel.org,
+	yana06070@163.com
+Subject: Re: [PATCH net] ipvlan: fix RX byte accounting for local traffic
+Date: Sun, 25 Oct 2026 20:23:32 +0800
+Message-ID: <20261025122332.725535-1-yanxia@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <CAL4WiioxAR1ZBjVJNgYfLM0hUwyHapRu+TAUzedpOpe0yheH3w@mail.gmail.com>
+References: <20261025014251.542973-1-yanxia@cmss.chinamobile.com> <179289279836.3327.9494173903555653580@kernel.org> <20261025052117.603790-1-yanxia@cmss.chinamobile.com> <CAL4WiioxAR1ZBjVJNgYfLM0hUwyHapRu+TAUzedpOpe0yheH3w@mail.gmail.com>
+Content-Type: text/plain; charset="us-ascii"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,72 +78,23 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|SN7PR12MB7324:EE_
-X-MS-Office365-Filtering-Correlation-Id: c4f20e70-6f21-4039-aa43-08df3290ccfd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|7416014|366016|1800799024|11063799006|56012099006|261009223027099003|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	ihx4aQkVPtOtC1yy6Ly/fjGXCGlOHsd9p+DHW08QNBKslN4kJ2mPPbExq5t6TIoU9QP6kHUIvBcRFnL2S71O1IRUC8mSS2VfeaZHYY/Vb1jwlQ4d0RMCLDvXc3vUsG0iUcoNoXjBHxu+tFxit9a1hSZf8LMLtaGnVbQqcbS6318jELCJtvOPfXLcoadk0wtUDkrAeGQfjXry6oFQIcJUGK+fZc8HtJB3uxew9t9Nhh69VxIWNIlAFRjD4YPyWO/qYSG59S11M9olwaBy6ooC9B5CurIb1saFDpZE7I4iaBDJUKuQVNAD7p2OBJtKhBRTKfsZER1F14na4tYHfzmQd0YBMBRTydtEU/EtZwPXNeQqrw+dUHnd44p7xNBcBjecJZKSio1alq3q6uWOEl16EAqEhuMMYG4Zb4qq8A3lJ+JUTFMXtJgjAQl/Mo7a5WHVMpH0eMgAamrt9GLT5qdzYaEgkJjECEKF5Pd4fkuR6AF85O8PvYnaxizESfe2RXq80hTQU8vDijiVfE2VE+HJGpLEpggIJCxQBvHRtV/vBxyVWp1Awhy2MW9lIJGXgzcPX60OsTjbnwMfYCD8h8yH7VNfumXTzh2EaA4/JwyDTksRc/PxeGMMxpaA3AzprCYkeBexlrJfiSIAp7P+PC7a+Wv101NDIfbi/oV49Du2tNs=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(366016)(1800799024)(11063799006)(56012099006)(261009223027099003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?KANbCz00dhge8tBk4hLg3YOmcECz5qO4YqCxv547daAtmjewh3ajRICKBmsE?=
- =?us-ascii?Q?Ce0jDxPKzhFO2qzInItqXFkxHBHXS9b/ecX+oAql6Xn7ECGkhjbP1UK/st9x?=
- =?us-ascii?Q?SNytQrmKNVbeC1d5jLDQxj7GETkgSEbyVNnVWQ+F3am6F+9jLUrUfRiZQsGL?=
- =?us-ascii?Q?o8sqZOeQDarYwa7YOr86nmul8LeGSGnmj6qUfww0JmPoLN5o1wzW88VLUSnz?=
- =?us-ascii?Q?q0InJ3Lf17YBwlEjHRLSats97zj4tMXsIR2DmYmnbvxjT55peYUcaomQqyG9?=
- =?us-ascii?Q?idSnD+D/L7BiwQS2EpNDZ+Gah4H0WUVUdjfys9EXcBJbaWET3ApHG/Cc3kx3?=
- =?us-ascii?Q?E6jSqlWxhfFnJl63JrafmhArQJi0G9i0mmq/n/XtpNfoxExpDAzCNiecw3ZF?=
- =?us-ascii?Q?c9I2dzLcKTe0+g2B9av1rWcuYXdMwS4hKFIzl7FdD3LoYt7Zi3IvRlLOiKio?=
- =?us-ascii?Q?4LKn6GhR9pY5NxRgFZmUj1bOv6Lnh48CmZ6Ijgq5oa34A/1mkGfxL7JOt4IT?=
- =?us-ascii?Q?GJE8qe+gykA8/x1m7TwGsbtKgEojIbG9dLc1f5Q3UtgEZ5Ldh36npzw8Db6I?=
- =?us-ascii?Q?nWvmT+r+ILmYFoIblcWiRucbccTJoff+Su9NDlDNa3rymC2ZsarlZxMy6Owr?=
- =?us-ascii?Q?fQtmKa44TdkKdPSNxQipdX92fFxmT5sMtllXpvVDxdJuhk9RXahqvpah8d6C?=
- =?us-ascii?Q?4gwEUGgJX2KaZEUtEWyNWcVc8N3Slbr1OJfHAwo2fHFDJ/fwR4hsOTfOeCRG?=
- =?us-ascii?Q?kvXy5RvP9cR0yNKrI/1BN0QxLw2KjCWFGkUxzuY+zoehMMrFCAx+fw01d107?=
- =?us-ascii?Q?xm1wIS6aAMDnVYOkt0g6XVO+BA/Bkkcuzcb7cc98yKVuCcIPHOMMJk0iUvKI?=
- =?us-ascii?Q?GC/wD3YZJPuUBcZ71DYgwKhdQpPlL8mY3dWzJRpZG8pcw82kSZb0H2Q4yNcq?=
- =?us-ascii?Q?9zIai6tc+gObjKvRQP6pYA0Ck92aAmt4YWmzHz4nnIeUquEFXYU4Knn2C4d+?=
- =?us-ascii?Q?NXkMMJWoO4GPy72CwZebRCu/bKQspAuH9YtOSlCMvRSFPebzW6kAd/z3AkpH?=
- =?us-ascii?Q?t5a7Ep2W6rAOOekjqQN5Jviivuql7nhmEpsEYT61VeNSg4klESuB0UaRPqFg?=
- =?us-ascii?Q?AJtTmXRcsCkAKMoSOTg0Ttk+nQyZ0PXqAPXM63D82qgZv+yA0UACW0WpMh3G?=
- =?us-ascii?Q?0q7sdlWeZX/X47BR2i3szSGrOLva6nc9kO+07ib3Z3FyK4EWlH+QZayEo2Hh?=
- =?us-ascii?Q?jRJMzbD7bwGIhvkpjrnLuPuq85XFi6C1o6ZZrDKeOyfPwqldhA/jaeNmaF10?=
- =?us-ascii?Q?MqZmfU8ASVRxdXjbfXNdwwUY5bxwllv5xvn5H/GhrLeowQZMQ5JLKlsl0hbm?=
- =?us-ascii?Q?IHw1kwd+W0QhfncdXVXjpLhaZpr+Lex8VVXTGArlU5vEs4SK5flUtrQhmTlA?=
- =?us-ascii?Q?eMkezHqVCwde3hDd9LhEYbstSRwz1kWg5cum8gV/dXlNm1FlYughcFqIfSib?=
- =?us-ascii?Q?1M7CznUnCaVgGUmsnQNi1K7HeH3VHHGy/lE/mZesQ9jyt3xyVBH9tmIHVoQj?=
- =?us-ascii?Q?R1EIfNY411bnOBE+W/k7HrW2im8hwvfE0EDyFRbTK+CTzVlyRfUVf7e2deOD?=
- =?us-ascii?Q?X313X7dzrnWbPUeY8gONWKCQS6POJtGaYnENRLnZYme64BbrOtvqx1s++eab?=
- =?us-ascii?Q?VWYn/aELxYmAqmxnrThtguc7EldJZyGfsEzOHUmF1/cNj08/?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c4f20e70-6f21-4039-aa43-08df3290ccfd
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2026 12:09:20.7062
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SXIFe17xm4jN0nObZ7OxyyDF4QRgcUB7+GbaPr1JRxK41+7aLsP39w3rkYGc8dS1kV204i8E1CBcGENiBP2aDQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7324
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 22, 2026 at 06:45:36PM -0700, David Corvaglia wrote:
-> IFLA_BRIDGE_MRP_IN_STATE_IN_ID and IFLA_BRIDGE_MRP_START_IN_TEST_IN_ID
-> are NLA_U32, but these values are stored as u16 in their respective
-> structs. Values above U16_MAX are silently truncated instead of being
-> rejected.
-> 
-> Fixes: 7ab1748e4ce6 ("bridge: mrp: Extend MRP netlink interface for configuring MRP interconnect")
-> Signed-off-by: David Corvaglia <david@corvaglia.dev>
+Hi Eric,
 
-If anything, this belongs in net-next. Better to drop it completely
-given that this issue doesn't bother anyone and that we're going to
-deprecate MRP and CFM.
+> Also macvlan has the same issue, maybe wait for net-next reopening to
+> send a series fixing both ?
 
-Also, you're expected to reply to the automated message from
-netdev-bot+sinfo@kernel.org.
+I reproduced it in macvlan bridge mode on a 6.6-based kernel. For local
+broadcast and multicast, five IPv4 UDP frames with 32-byte payloads
+increased rx_bytes by 440 bytes instead of 370. The captured frames
+matched what was sent. Local unicast and traffic received from the lower
+device were counted correctly.
+
+I'll prepare a net-next series fixing both drivers, without Cc: stable,
+and send it when net-next reopens.
+
+Thanks,
+Xia
+
+
