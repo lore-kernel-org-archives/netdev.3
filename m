@@ -1,97 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.215.177
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792957161;
-	b=2GSpdf9xvGDLmCkrxZ+af4i1wiwvBKhQOtzHUjqRI+/9T1NZORBDDkfJxUNq3FzSmPH8
-	 LsHVPOxNapyLZynHMT+c3Sq4WFrsQ2RRcPTO1Ip3JnihCgdXxG0D6O7vv1K/goJD0rC72
-	 qVl1wtfBqE7C0JKiP/DWhuadYKjFWbc31/6sjF9OQIi1jEOvTtJsKM40KOP5jnC2GTz9M
-	 WaI4J4cIxBzjBmmJrQtwGKxfrvCuB5b2D10KyXl0rF7H0EFGiIenv3T7hwq1DjcdeQuKN
-	 Un+aaFtFUpL2DSRlE5Zeh/qjUq3tp4Z4ntzsG8cOBznMI5mDT5lvqYtHxA84gpXSu8Q==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792957161;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=UXpk0Hu9HmORrm1Y8saqu2PtCJ6Ya8V0tHeebK6r1do=;
-	b=ivdfOXDT6NmDXcZv/UwM0B+Ewqz8HD8tdO+zJ+Osh2uxtqHKKm5KKkLzxRydebDz9X37
-	 AS9kqBzbDTpRDRbY+k5ch0KBwupyL3PTv2wKIkaRSenFbKIAejup+MqxaCnFR2jUAO8D+
-	 VsAmXdqLEiWGXp5kwmAZQxyXj1mSQQ4KliWD/YX29yGN/P0pMw/wYXnUyw7wwRM9fh54c
-	 bnElrX/qyn+m4U+Kora/R8pG9CxRHEMAyF9uvm0nDMZoX7oI166C7A0w0dE2mu0iEhmLs
-	 toc08/ouhQ7ckoyEartwNVAHIO4e7WcGUT+YAPN2QCK6k2zouHinPXzqTkjwY5Xc+tw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mojatatu.com;
-	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=Py9J3eXv;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.215.177
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792957270;
+	b=AZfKRYEfPf2LH83PKKqLzPgGe+ZYkUCOStF3Zj2reQkKeoWa80fR2U+zQHrIO/eaCuaI
+	 A5ae/ixNNpSv4hH4lSIhBke/KUCP2KqljNOMhFJO2KmjJhC6f9OqZTxrpCUZE8Gc+5vuq
+	 oE2Ge8FLnMw1qoBhUqls+3Pm+Sqy3jVzBZP4PY8AWXZ6vg3+S+VrUEDV2o2P+WkHxinJp
+	 XxK3FjpF3y5KkkafUW9JE7G+ovxGfr8JMemTP2KOzcDjaaI+dWPsNj8BYBI4gYGGk0FoT
+	 dOcYbbqS0yVwStPZOtfhWw3jYKPipnJVhBNvycXMtzNLUX7SJ2wxMA4HfZz6O1D5jhQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792957270;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=/ZjG9Xr/HMX/i7oEyIrYTz+RcRkHVl/XZuBXEaWa+5I=;
+	b=eMCWMQtPFfc37UCtaTIxhECXsl2lv/lSohrkP5KzbAacKTUebvs3HRtZMncjW1m0k7+J
+	 0fOMYB1dKkSuhR25crbclQQHcf4ZNjRKb3YWkCalQMTM97LqWaK/OFzMReFqEW3Y/E5RE
+	 skz9zxDkq1QgJlIx3QopsyaYdbrren2DTicKzlVg/BGDf5UwzV6F00peD5TUYHytXK3lB
+	 6mmHLIc89uIyzj0eY1kyg/bh5W81Gls2VZ/GkCv+yvqcXY6U/mtpYzhHaJRLmH26LVGm/
+	 n0fcJklwp4wErQwRCola98Ijg8t0hreeXlob4A3MBwB+tSt9g+0YuLkSmfZ/stSEu3A==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="gpios/A9";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A00606A31A
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 19:39:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 01A00606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5C2606A31A
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 19:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=Py9J3eXv
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-cdab6ae1ee9so133773a12.1
-        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 12:39:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792957160; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Y4E6+bXWSniEAEDmcgaLAhDQjlU43VRZT37WZxdHipsjE1czm0s7ifAnG48RLmw/Km
-         +vd8oFj1zF90UhSYWDQKo7b+Y89EabGSt/ZU/QUW2IGu3qt8SpjoIdx4KzOaSYHvV5B0
-         tq/wyP36j6MIMcLpiwhKoZ9rc2kE1lg5G1zIi1kQZaskt6CpPIt/QyD0A8X24ByvUHLE
-         hwAtRN5O1h4E8j79chL2sh6s9BHBvP50O9r1Et33oURq7f5JXs5O4CY6JUPgME7TZw3v
-         knG1NAF+RiL8cVi7yP4xpifRDx8mHPWDJ6BoGvBVb9mvVWTGdYyU/oZ10HTdvB5gLGm9
-         GGdg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=UXpk0Hu9HmORrm1Y8saqu2PtCJ6Ya8V0tHeebK6r1do=;
-        fh=R3FVdBoXUJUYjlyCx59kyGFIfQfoDMCeoOPFXK1PBIQ=;
-        b=Oe+OdsCQAWjGJBo8p+24zRpEULVycCr6FfCHbgmf9cIeR5XE0lV6rYFrmzMJilMmNf
-         RrHp7EOEYpzbHIEWiC18a2PbYZ1itY/H2tj1nxLu+pBNw3HA9niV6bvgb/8Cfpi4DBsD
-         2iMUPrm7t1IiipP5/Pfkm2e+p47TZHVrV6Rz7vEqLrEylYalsBlZ5huRXGkwiKfrky9j
-         17z2kk+jG1KUBegGSHmuz+V8xT0O6nI6UM2qyqo9gMyF81qd+JwDptS73qQkYMrki7CK
-         OR3r3to0DJlL3USV5utUyGYTPU6Kb/MU8ScNO6X1fsqtNlB76FlMCddv/Laz/B44i+Se
-         xBKA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1792957160; x=1793561960; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=UXpk0Hu9HmORrm1Y8saqu2PtCJ6Ya8V0tHeebK6r1do=;
-        b=Py9J3eXvDNUDDKDui8Kmk0GsKcBMGrk5TRZpE0mkLsKolhBnQTCSmdJWOw3X3AoPtA
-         MKdz5MD7+bVh3VahrQW4CF8u1qPlYEf3f3xM3YxtzJdZCrNJ00Dqt3dSp3MDu8pBOlj3
-         gZAMYBf+brMBsirSR5wAJ7BF2SeKgV3VGw/uo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792957160; x=1793561960;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UXpk0Hu9HmORrm1Y8saqu2PtCJ6Ya8V0tHeebK6r1do=;
-        b=aT/8nGDjXx88JICLkCphO4CZsQ9Ct5cTVIfgrdf78oUucRYtqcCPSS6YNLSqzIyiwr
-         A4xzQoMt032heuaVW0gLWrD1BAH9IdvbfLaBub3TGyb9One67inDUGOBRJc9km4C9Rqq
-         P4dhdh7jwiCnx3Sj8QJtvCULaPL9SMYOb5jTms//Yf8+gTepcPnj4i3U4PDO2JKYLUYQ
-         tjOsFUrRXe6P4iAuMzTAXAXit1gX4Ctg7yOuvMdOc8h6aIOP14QS1mYQq/bqTh3HW5/u
-         RLQub6oE/8ahF0uJzaVq1pOPU9sEK7uOulOXvAObEmHbyoHG31Ct0gwNzeQ7m27IShh3
-         tEmQ==
-X-Gm-Message-State: AFq9FYJ8fLgnk8Ao/rvxk7y8SI0aRvexAztrhfdNcS6LEWMnInr3A8qy
-	7pMNlE5yzTjmUqjXYEpbDCuuWEvicr+sJ1ip6rnUk98Mysl1kQjXsTMkTKHE/G1I2BfGbAZyqHU
-	vpdWUVSOGLWYDzc1PXXH1Fluyat/XmyI+mMpQxQzF
-X-Gm-Gg: AYBFou0SZY6oG0yYhW9ADSwxDAdEuNlmaAYl5Cs3PIHyGgtNmhLZEAVf8G4vx4cjt91
-	n3q/C+JzLIIDOnWI6qmR1bOHFzFCfZkSfsE6vKiGmmPcUh6cQl4Hw441NZw2SU6wvSL2gf9teBO
-	364nkaJuOy6AIFiv3WaCmD9OsEws7Msw0VhlD/ExNII53Clw0QiSXfUf4C97aTnZO5BXoJGY5P8
-	nE/pB/kEpBT7S/i+ZDzzH8AY032IoVQy0oZn9AXiJk+KldRaurkSArPaWFjIAhC2QATSRNGztmZ
-	g0TeH13hRsgFau2IDoabKyr611S9TOhL1ixT6hIN2zasNuN+Kt6rDjRHjJsjF6Gih3tj5RN/HmP
-	TBt1tnFnn2q/b7HNT//0Eo4FcDrAvX12GJbmf+RjTuGtZ9BcOHRjpnEr4KU+Fj7cG+OXZ9LNcMU
-	AgPsCBSiTD1bsh9qY=
-X-Received: by 2002:a05:6a20:d38f:b0:3e2:86b6:9bfa with SMTP id
- adf61e73a8af0-3e7bfaa967emr3292501637.48.1792957160310; Sun, 25 Oct 2026
- 12:39:20 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gpios/A9
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41A6A1F01828
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 19:41:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792957269;
+	bh=/ZjG9Xr/HMX/i7oEyIrYTz+RcRkHVl/XZuBXEaWa+5I=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=gpios/A9gSMoFlsDvZvnQHGLFQUe/zFMno7I9/mf9JZ0tE+O3UYT2vYbPp/SClDHa
+	 YWf976KgiTRSk0fCB1c/WMQ7I/mPg2nJPPMx2c4/vHE5FNsoZPFDFGhyEpBCIVPTIv
+	 7F2/Z+GdzFgcb7lAT+BKovQOJBu6b5hAAQDuLUY9ynyUPYi/CrStc8fOzxnScRIxIV
+	 EaYRQIfwC/niuZuF2oLYLszDu1bVChXQuGPL5Qgvl2hRDboSbYLuNon2fsvWaIQARY
+	 ZiNAWxYqUBvtqbjTEKlRmXSInMw7rw7Wr8KrcZ2lbD9IjgxWO7rTojxuy7wvgucK7x
+	 tUMGMz10gOrNw==
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-4a755bbe158so1347521fac.0
+        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 12:41:09 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBy56XzmD/aI1yUvWnRLAWdVHuxdUot2AF8CcQeWUujLLBP0k2rFN0KGmPP0kxQqj4dO+sxFa14=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIIqxCzWdPL9LSFM9v8NQD1/aAdRdRqCr2jTEGaLwB/gwNaqtSU
+	p7I57meFdhjxMfCvysN5Pxoi3dM8Y2/BYkVhomOUcQkx7JgqhWtVcoOH6c4XyfY9I4W4zJNq/9m
+	je+b0a1p2ZYW6+cZfNtKan+Jh7vb77ow=
+X-Received: by 2002:a05:6870:7014:b0:48f:e0f6:bfef with SMTP id
+ 586e51a60fabf-4a83fa78ea7mr2212450fac.27.1792957268483; Sun, 25 Oct 2026
+ 12:41:08 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,216 +59,234 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <ACT-N6N4.v2.r0.20261022191829@mojatatu.com> <ACT-N6N4.v2.r0.20261022191829-1@mojatatu.com>
- <ACT-N6N4.v2.r0.20261022191829-2@mojatatu.com> <willemdebruijn.kernel.26d1ddb3bd2ae@gmail.com>
- <CAM0EoMmwNCHVNW0=Z_JWX_ZcT5Y1po1GRVScddOsevEvL8D-6w@mail.gmail.com>
- <willemdebruijn.kernel.30ca6285209f7@gmail.com> <CAM0EoMm=t2FMLaGNkC_z_a_D5o4=dwVnHS=Bb23NWdmeJVCVuw@mail.gmail.com>
- <CAM0EoM=9GxDCHzpJF_bqcoh+7KZY6E=ZmOiMp7kfVK3bHZDppw@mail.gmail.com>
- <willemdebruijn.kernel.eb29d53899f1@gmail.com> <CAM0EoMnQWjN24gBye1kZdcJUJgXDPDy-=dM+NQ6dqCny7O851g@mail.gmail.com>
- <CAM0EoMnj7pkfGUg=VFjpbU7AGw7ysD_tQOeuUu==YEc9rfQJ0w@mail.gmail.com>
-In-Reply-To: <CAM0EoMnj7pkfGUg=VFjpbU7AGw7ysD_tQOeuUu==YEc9rfQJ0w@mail.gmail.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Sun, 25 Oct 2026 15:39:08 -0400
-X-Gm-Features: AclHuK9N_v4IfjcpFwk335C7RZzY-uYVp18M4crieQ9T6JS4AUyCGK4eNftcuT8
-Message-ID: <CAM0EoMmEuj+k4HXOD08rdtS8+aD-8oTWFedED2kt5XfBR8=V3Q@mail.gmail.com>
-Subject: Re: [PATCH net v2 2/6] net/sched: act_mpls: pull the inner Ethernet
- header after POP
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
-	Victor Nogueira <victor@mojatatu.com>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Martin Varghese <martin.varghese@nokia.com>, 
-	Pravin B Shelar <pshelar@ovn.org>, Vega <vega@nebusec.ai>, 
-	John Hurley <john.hurley@netronome.com>, Willem de Bruijn <willemb@google.com>, stable@vger.kernel.org
+References: <52b8bfe4ee848aff8ace47752352de486171d45f.1792595507.git.mst@redhat.com>
+ <179290180493.3134.5235549211177646736@kernel.org> <20261025124546-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20261025124546-mutt-send-email-mst@kernel.org>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Sun, 25 Oct 2026 20:40:57 +0100
+X-Gmail-Original-Message-ID: <CAL4Wiiqk9Gq5=JKk7j=uK9oNbCd7GCcHUm8BmgZ4hGCqjjo45g@mail.gmail.com>
+X-Gm-Features: AclHuK8DDEtJU8OQu3ulpdptWl65cK4vWpgyXH294HkBKAHMWmRkO2A5xVy3Bd4
+Message-ID: <CAL4Wiiqk9Gq5=JKk7j=uK9oNbCd7GCcHUm8BmgZ4hGCqjjo45g@mail.gmail.com>
+Subject: Re: [PATCH net v3] net: gso: validate transport header before
+ computing segment length
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: netdev-bot+sashiko@kernel.org, linux-kernel@vger.kernel.org, 
+	willemb@google.com, davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
+	horms@kernel.org, maxk@qualcomm.com, rusty@rustcorp.com.au, 
+	netdev@vger.kernel.org, bpf@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Oct 25, 2026 at 3:36=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.com>=
- wrote:
+Le dim. 25 oct. 2026 =C3=A0 17:51, Michael S. Tsirkin <mst@redhat.com> a =
+=C3=A9crit :
 >
-> On Sun, Oct 25, 2026 at 4:55=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.co=
-m> wrote:
+> On Sun, Oct 25, 2026 at 04:16:44AM +0000, netdev-bot+sashiko@kernel.org w=
+rote:
+> > Thank you for your contribution! Sashiko AI review found 1 potential
+> > issue(s) to consider.
 > >
-> > On Sat, Oct 24, 2026 at 12:14=E2=80=AFPM Willem de Bruijn
-> > <willemdebruijn.kernel@gmail.com> wrote:
-> > >
-> > > Jamal Hadi Salim wrote:
-> > > > On Fri, Oct 23, 2026 at 7:46=E2=80=AFPM Jamal Hadi Salim <jhs@mojat=
-atu.com> wrote:
-> > > > >
-> > > > > . On Fri, Oct 23, 2026 at 6:50=E2=80=AFPM Willem de Bruijn
-> > > > > <willemdebruijn.kernel@gmail.com> wrote:
-> > > > > >
-> > > > > > Jamal Hadi Salim wrote:
-> > > > > > > On Fri, Oct 23, 2026 at 12:09=E2=80=AFPM Willem de Bruijn
-> > > > > > > <willemdebruijn.kernel@gmail.com> wrote:
-> > > > > > > >
-> > > > > > > > Jamal Hadi Salim wrote:
-> > > > > > > > > The issue:
-> > > > > > > > > act_mpls POP can leave the inner Ethernet header in a pag=
-e fragment after
-> > > > > > > > > skb_mpls_pop(), either on an L3 device (mac_len =3D=3D 0)=
- or chained after
-> > > > > > > > > act_vlan POP_ETH.  A following eth_type_trans() can then =
-BUG in
-> > > > > > > > > __skb_pull().
-> > > > > > > > >
-> > > > > > > > > The Fix:
-> > > > > > > > > After the pop, if the original MAC header is shorter than=
- ETH_HLEN, pull
-> > > > > > > > > the inner Ethernet header into the linear area and drop o=
-nly when
-> > > > > > > > > pskb_may_pull(skb, ETH_HLEN) fails.  skb_mpls_pop() does =
-nothing when the
-> > > > > > > > > skb was not MPLS, so no separate state is needed.
-> > > > > > > > >
-> > > > > > > > > Conditions to recreate the bug:
-> > > > > > > > > - egress tc filter on lo: action vlan pop_eth action mpls=
- pop
-> > > > > > > > >   (chained), or on an L3 device where mac_len =3D=3D 0.
-> > > > > > > > > - AF_PACKET SOCK_RAW with PACKET_VNET_HDR, hdr_len=3D28, =
-and a non-linear
-> > > > > > > > >   eth / mpls / inner-eth frame.
-> > > > > > > > > - The inner header is in page frags; a following eth_type=
-_trans() can BUG
-> > > > > > > > >   in __skb_pull().
-> > > > > > > > >
-> > > > > > > > > Fixes: 2a2ea50870ba ("net: sched: add mpls manipulation a=
-ctions to TC")
-> > > > > > > > > Reported-by: Vega <vega@nebusec.ai>
-> > > > > > > > > Link: https://lore.kernel.org/r/40fe2d7dfce13411bfbe9271c=
-0f7c54fb7e88e3b.1782548651.git.bronzed_45_vested@icloud.com/
-> > > > > > > > > Link: https://lore.kernel.org/netdev/CAL4WiiqSMdYQYeeW0Fk=
-_GK6ekR4xiS4zPrGKrbB9wZknpqf1-w@mail.gmail.com/
-> > > > > > > > > Cc: stable@vger.kernel.org
-> > > > > > > > > Suggested-by: Jakub Kicinski <kuba@kernel.org>
-> > > > > > > > > Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gma=
-il.com>
-> > > > > > > > > Suggested-by: Eric Dumazet <edumazet@kernel.org>
-> > > > > > > > > Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-> > > > > > > > > Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-> > > > > > > > > ---
-> > > > > > > > >  net/sched/act_mpls.c | 2 ++
-> > > > > > > > >  1 file changed, 2 insertions(+)
-> > > > > > > > >
-> > > > > > > > > diff --git a/net/sched/act_mpls.c b/net/sched/act_mpls.c
-> > > > > > > > > index 4ea8b2e08c3a..5363bca892fb 100644
-> > > > > > > > > --- a/net/sched/act_mpls.c
-> > > > > > > > > +++ b/net/sched/act_mpls.c
-> > > > > > > > > @@ -79,6 +79,8 @@ TC_INDIRECT_SCOPE int tcf_mpls_act(stru=
-ct sk_buff *skb,
-> > > > > > > > >               if (skb_mpls_pop(skb, p->tcfm_proto, mac_le=
-n,
-> > > > > > > > >                                skb->dev && skb->dev->type=
- =3D=3D ARPHRD_ETHER))
-> > > > > > > > >                       goto drop;
-> > > > > > > > > +             if (mac_len < ETH_HLEN && !pskb_may_pull(sk=
-b, ETH_HLEN))
-> > > > > > > > > +                     goto drop;
-> > > > > > > >
-> > > > > > > > Is this first condition needed?
-> > > > > > > >
-> > > > > > >
-> > > > > > > That was me conjecturing from Eric saying in v1 "...the check=
- can only
-> > > > > > > matter when the original MAC header is short.."
-> > > > > > > Since i have to send a v3 (Thanks Eric;->) I will remove it
-> > > > > > >
-> > > > > > > > More importantly, can it hide a bug?
-> > > > > > > >
-> > > > > > >
-> > > > > > > What kind of bug?
-> > > > > >
-> > > > > > Two kinds. One, if original mac_len is larger, gets popped and =
-the
-> > > > > > resultant packet is still too short for ETH_HLEN afterwards.
-> > > > > >
-> > > > > > But this can probably not happen, as skb_mpls_pop only pops one=
- MPLS
-> > > > > > tag.
-> > > > > >
-> > > > > > What this patch tries to ensure is that the subsequent Ethernet
-> > > > > > header is linear.
-> > > > > >
-> > > > > > The second potential bug is this assumption that after the MPLS=
- tag
-> > > > > > lies an Ethernet header. Is that a valid assumption? Or could w=
-e drop
-> > > > > > a valid packet with smaller header.
-> > > > > >
-> > > > >
-> > > > > tbh, I was thinking more about skb frags earlier.
-> > > > > You are right only ETH_P_TEB promises an inner Ethernet header; f=
-or
-> > > > > other inner protocols the pull is wrong, so I=E2=80=99ll check fo=
+> > Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 0
+> >
+> > If you believe none of the issues are legitimate, please reply to each
+> > issue of Medium severity or higher and explain why the AI is wrong.
+> > If any of them are legitimate and you plan to respin, please let patchw=
+ork
+> > know by including "pw-bot: cr" as a separate line at the end of your re=
+ply
+> > (one such reply per series is enough).
+> >
+> > - [High] The patch is incomplete for the producer its own commit messag=
+e
+> >   names.
+> >
+> > --
+> >
+> > net: gso: validate transport header before computing segment length
+> >
+> > This patch makes the GSO segment length helpers in net/core/gso.c check
+> > the TCP header before they read it. If the transport header is unset, o=
 r
-> > > > > p->tcfm_proto =3D=3D htons(ETH_P_TEB). I didnt have this check in=
- the
-> > > > > current fix - good you responded before i sent out.
-> > > > >
-> > > > > 1/6 (act_vlan POP_ETH) has a similar unconditional
-> > > > > pskb_may_pull(ETH_HLEN). A brute approach is also to check for TE=
-B:
-> > > > >
-> > > > >       if (skb->protocol =3D=3D htons(ETH_P_TEB) &&  !pskb_may_pul=
-l(skb, ETH_HLEN))
-> > > > >                 goto drop;
-> > > > >
-> > > > > Note: skb_eth_pop() only removes the outer ethernet header but do=
-es
-> > > > > not change skb->protocol
-> > > > >
-> > > >
-> > > > I am going to send it without this 1/6 change - it just doesn't fee=
-l
-> > > > like good taste. I will add a comment in the changes to say i
-> > > > considered it but decided not to. I also spent time eyeballing the
-> > > > code, i dont think there's a potential way to craft a packet that w=
-ill
-> > > > hit the perceived issue. In any case the 24 hour embargo lifts in a
-> > > > few hours so i am not posting yet.
-> > > >
-> > > > cheers,
-> > > > jamal
-> > > >
-> > > > > thoughts?
-> > >
-> > > I'm actually a little confused why the tc layer has to anticipate the
-> > > needs of downstream code and pull headers here.
-> > >
-> > > That directly lead to this guessing of what may be the next header,
-> > > such as Ethernet. Which may often be correct, but not always.
-> > >
-> > > All protocol parsing code itself should already be robust and call
-> > > pskb_may_pull where it is needed. Sounds like there are some targets
-> > > post TC where that is not true *and* we think there are too many to
-> > > update those targets directly, rather than this transformation logic
-> > > that exposes them to unpulled packets?
+> > the TCP header is not in the linear data, skb_gso_validate_network_len(=
+)
+> > and skb_gso_validate_mac_len() now report that the skb does not fit. It
+> > also adds two helpers, skb_inner_transport_header_was_set() and
+> > skb_transport_header_linear(), to include/linux/skbuff.h.
 > >
-> > Not "too many updates" rather the main motivation here (which i kinda
-> > empathize with) is pushback from Eric that you have to "fix at the
-> > producer" to avoid performance degradation at the "consumer". i.e
-> > rather fix the vlan action than have loopback vet as in the original
-> > patch  (and you just witnessed him stand up and push back on tun for
-> > that same reason ;->).
-> > IOW, we are anticipating so that eth type transfer doesnt bug out
-> > (_for ethernet headers_) when invoked at the downstream consumer
-> > (loopback etc). Essentially it is a game of whack-a-mole until the
-> > next bug or malicious use shows up.
-> > Generally, policing intoxicated drivers from getting on the autobahn
-> > isn't the best philosophy; it's better to complement that with a
-> > "driver beware, you may encounter drunks" warning but that would slow
-> > down the fast car on the autobahn ;->
+> > > diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+> > > index d6894f463bf43..11c8b295bd260 100644
+> > > --- a/include/linux/skbuff.h
+> > > +++ b/include/linux/skbuff.h
+> >
+> > [ ... ]
+> >
+> > > @@ -3250,6 +3257,29 @@ static inline int skb_transport_offset(const s=
+truct sk_buff *skb)
+> > >     return skb_transport_header(skb) - skb->data;
+> > >  }
+> > >
+> > > +/* Is the (inner) transport header, as specified by
+> > > + * skb->transport_header/inner_transport_header, in the linear data?
+> > > + */
+> > > +static inline bool skb_transport_header_linear(const struct sk_buff =
+*skb,
+> > > +                                          unsigned int hlen)
+> > > +{
+> > > +   int thoff;
+> > > +
+> > > +   if (!skb_transport_header_was_set(skb))
+> > > +           return false;
+> > > +
+> > > +   if (skb->encapsulation) {
+> > > +           if (!skb_inner_transport_header_was_set(skb))
+> > > +                   return false;
+> > > +
+> > > +           thoff =3D skb_inner_transport_offset(skb);
+> > > +   } else {
+> > > +           thoff =3D skb_transport_offset(skb);
+> > > +   }
+> > > +
+> > > +   return thoff >=3D 0 && thoff + hlen <=3D skb_headlen(skb);
+> >
+> > [Severity: High]
+> >
+> > The commit message names bpf_skb_adjust_room() as a way to leave a bad
+> > transport header behind. It also says:
+> >
+> >     Qdisc length estimation has carried a guard against exactly this si=
+nce
+> >
+> > Is that guard enough for the bpf_skb_adjust_room() case? In
+> > qdisc_pkt_len_segs_init(), the only check is for an unset transport
+> > header. Nothing there matches the thoff >=3D 0 check added here:
+> >
+> > net/core/dev.c:qdisc_pkt_len_segs_init() {
+> >     ...
+> >       if (!skb->encapsulation) {
+> >               if (unlikely(!skb_transport_header_was_set(skb)))
+> >                       return SKB_NOT_DROPPED_YET;
+> >               hdr_len =3D skb_transport_offset(skb);
+> >       } else {
+> >               hdr_len =3D skb_inner_transport_offset(skb);
+> >       }
+> >       /* + transport layer */
+> >       if (likely(shinfo->gso_type & (SKB_GSO_TCPV4 | SKB_GSO_TCPV6))) {
+> >               const struct tcphdr *th;
+> >
+> >               if (!pskb_may_pull(skb, hdr_len + sizeof(struct tcphdr)))
+> >                       return SKB_DROP_REASON_SKB_BAD_GSO;
+> >
+> >               th =3D (const struct tcphdr *)(skb->data + hdr_len);
+> >               tlen =3D __tcp_hdrlen(th);
+> >     ...
+> > }
+> >
+> > bpf_skb_net_hdr_pop() moves mac_header and network_header forward. It
+> > leaves transport_header where it was, unless it was equal to
+> > network_header:
+> >
+> > net/core/filter.c:bpf_skb_net_hdr_pop() {
+> >     ...
+> >               skb->mac_header +=3D len;
+> >               skb->network_header +=3D len;
+> >               if (trans_same)
+> >                       skb->transport_header =3D skb->network_header;
+> >     ...
+> > }
+> >
+> > When the DECAP_L4 or DECAP_IPXIP flags remove the last tunnel GSO bit,
+> > bpf_skb_net_shrink() also clears skb->encapsulation.
+> >
+> > Take a locally VXLAN-encapsulated TCP TSO skb whose transport_header
+> > points at the outer UDP header. If a tc program calls
+> > bpf_skb_adjust_room(skb, -50, BPF_ADJ_ROOM_MAC,
+> > BPF_F_ADJ_ROOM_DECAP_L4_UDP | ...), the transport offset ends up at -16
+> > and encapsulation is 0.
+> >
+> > A simpler BPF_ADJ_ROOM_NET shrink of 40 bytes on a plain Ethernet/IPv4
+> > TSO skb gives an offset of -6.
+> >
+> > If the program then redirects to egress with bpf_redirect(), this path
+> > runs before any of the validators hardened in this patch:
+> >
+> > __bpf_tx_skb()
+> >   dev_queue_xmit()
+> >     __dev_queue_xmit()
+> >       qdisc_pkt_len_segs_init()
+> >
+> > In that function hdr_len is an unsigned int, so -16 becomes 0xfffffff0.
+> > hdr_len + sizeof(struct tcphdr) is then truncated to 4 when passed as t=
+he
+> > unsigned int len argument of pskb_may_pull(), so the pull succeeds.
+> >
+> > Wouldn't __tcp_hdrlen(th) then read about 4GB past skb->data on 64-bit?
+> >
+> > Should qdisc_pkt_len_segs_init() get the same check, for example by
+> > using skb_transport_header_linear()? If not, could the commit message
+> > be changed so it does not say the qdisc path already guards against
+> > this?
+> >
+> > > +}
+> > > +
+> > >  static inline u32 skb_network_header_len(const struct sk_buff *skb)
+> > >  {
+> > >     DEBUG_NET_WARN_ON_ONCE(!skb_transport_header_was_set(skb));
+> >
+> > [ ... ]
+> >
 >
-> Actually the more i think about this the more i am concluding just
-> fixing the producers wont be sufficient (Eric!).
-> If i have an incompetent or malicious ebpf program it could do
-> whatever it wants.. I am going to try something with ebpf.
+>
+> Indeed. Not nice.
+>
+> Eric, you seem to have strong opinions about how to fix these
+> bugs, so, before I spend time testing: a fix like the below, acceptable?
 
-And the reason i am bringing up ebpf is because i noticed sashikos
-after like several iterations of a patch find a way to sneak in some
-ebpf corner case. So i am sure that is coming (if indeed an issue can
-be reproduced)
+The report looks valid, but this patches _one_ consumer of a broken
+transport_header, not its _producer_.
 
-cheers,
-jamal
+bpf_skb_net_hdr_pop() adjusts mac_header and network_header, but leaves
+transport_header alone unless it was equal to network_header. If the
+popped region covers the transport header (BPF_ADJ_ROOM_NET shrink,
+or a DECAP_* shrink in BPF_ADJ_ROOM_MAC mode), we keep a stale offset.
+It can be negative, or positive and pointing to the wrong bytes.
+
+qdisc_pkt_len_segs_init() is only one reader. TSO drivers
+(skb_tcp_all_headers(), tcp_hdr() in ndo_features_check()/ndo_start_xmit())
+and the GSO validators would read the same stale offset.
+A 'hdr_len < 0' test does not catch the positive case either.
+
+bpf_skb_net_grow() already sets the transport header properly,
+the shrink side should do the same. Something like (untested):
+
+diff --git a/net/core/filter.c b/net/core/filter.c
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ static int bpf_skb_net_hdr_pop(struct sk_buff *skb, u32 off, u32 len)
+ {
+        bool trans_same =3D skb->transport_header =3D=3D skb->network_heade=
+r;
++       bool trans_popped =3D false;
+        int ret;
+
++       if (!trans_same && skb_transport_header_was_set(skb)) {
++               int thoff =3D skb_transport_offset(skb);
++
++               trans_popped =3D thoff >=3D (int)off && thoff < (int)(off +=
+ len);
++       }
++
+        /* Same here, __skb_push()/__skb_pull() pair not needed. */
+        ret =3D bpf_skb_generic_pop(skb, off, len);
+        if (likely(!ret)) {
+                skb->mac_header +=3D len;
+                skb->network_header +=3D len;
+                if (trans_same)
+                        skb->transport_header =3D skb->network_header;
++               else if (trans_popped)
++                       skb_set_transport_header(skb, off);
+        }
+
+        return ret;
+ }
+
+For the decap case, BPF folks might prefer to restore the transport header
+from skb->inner_transport_header when skb->encapsulation is cleared.
