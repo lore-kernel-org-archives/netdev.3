@@ -1,94 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.175
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792896090;
-	b=fpyudh+wTtyyucfG39biD3QPH38Gt481ODPRsrcSmfl9Oq229nqcev6SsBy51RnCfYlZ
-	 puYB+PvmCmMLjnkX23ccY9rMftavPZnyRFQulSnHjhQ6e+zHqVC8amVKkH8H6bM2k1UUB
-	 l3KNPoXIMhKoJ4W0u5DPXXcaxUA49VjXJwMS4b4XJr3VsGA2iIwPP1AvTr+Xxgiwv/yy8
-	 TVJVU1UxQqdQtjyDDPuWJA7p0EweTEPYqkQN2TjIfeJ59Svbrxx7PeEgKlQyxOzZCjH6Z
-	 QX2gknBkgKceN1O5S9SLFhaq7g0iTr0esv3GZ2NZ9BNUlUepX/RNrqATcyWxWkvo8rg==
+	t=1792896323;
+	b=5QiAQ1XRpJZ6WJfx1w9HaWfK4jqcdYOzq0SjUvXVvsV23L5CeHBmBdAtCuR3cDng+typ
+	 O+EMc+Qgb+eQ6Uc7EB0vFiDy4vLAPsdu2JwQ6DHNsi4D31rJ3z51jD41/lSt+TU/yOIrI
+	 mjBuaMc4AC8N0HbG1Om5YZJPtr9gGJ3V0yOf6m0Bnb0z4tv+TD1IS8bD3k6+KrQxbNHqj
+	 k5fJmjUPCt+9lfu++1b5FdcD+k+W5zg9756fWsh0dJZxyppqfgRNDoBUh7PLfI+EaWmfr
+	 HDNn5PJMf/WDzvYmIbPpsBu7Uo0ebexnCX+WxIMxjb5mXaQj+wRmNAiMcyAcqOz3cfw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792896090;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792896323;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=Wtl6lbTH0Q+TZCmlk3+PvHR0Fpha4owEPE/GZNCfL4Q=;
-	b=eUrYbW85L6qT26qiwFG2+92O0R/p6e3GGOTKzuUqkEJREVXbmhFBmMucD1D/lthZYOoe
-	 yB+yY8lqUS01ghcSQS//tgo8pR9QVV0AsEprl0ZrsBQz47iLopZe9nABpZlJXqVSDeDi/
-	 wwu35ZHozYoLoTiEUOXV3WxZ5XM2fXvVxkY0dVVV3S6xeWirDjY2aec/9aKJCYZCsqluF
-	 e+WUFegJaIQJt8XgS36PeU0LhdZevarUBxoAo3Xoh5bw0PRwZc/NVVW1osWZWNdRcfg84
-	 9f2WLQu/BhDu/T/GPKZBq2KrhFvFFMQ0cQ8zc5Tvbh/DJigPPzseuieD/jpzvf/1UyA==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=WpjUZLKhw/tvYFR10QM0neivX8YIU0hqUruPnucpBLM=;
+	b=aWoCljNLHAfGTliV3crOLHQplTTsSzvcOF7gtcnfDynfF+Y9uRZjvbKPXqWZbYnE415S
+	 bYOdvYckqFY4dqu+oZAVgl8TDyM42J11uM92hgL2dL8ryoTvNLnFnRyXLisNcIreOAFQt
+	 tPSx9FAV4VQ0QzV2VmqnPnXP8+7BQrMaeIqzG4mq9QVDn+kpseFpOf7KFBiYTf5KWLjSK
+	 kWUBqyKn2nd5uVlf5aJ/fumXGoteb3aZe8L1W8AV2hM9xQcqn2IvVgAP821Kbb5zJg1OU
+	 5td+egP/iWld0zcKW53j+fn0tCzy7d17GqEk3j2LYOU2dajH3qcCyGmmNuHMbKVqiZw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=gktkBJJw;
-	arc=none smtp.remote-ip=209.85.214.177
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	dmarc=none header.from=0x0f.com;
+	spf=pass smtp.mailfrom=0x0f.com;
+	dkim=pass header.d=0x0f.com header.i=@0x0f.com header.a=rsa-sha256 header.s=google header.b=UH3J3HMQ;
+	arc=none smtp.remote-ip=74.125.82.175
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F43F606A31B
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 02:41:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1F43F606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C06606A31E
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 02:45:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 12C06606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0x0f.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0x0f.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=gktkBJJw
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2e60f9af6e6so17436355ad.3
-        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 19:41:29 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=0x0f.com header.i=@0x0f.com header.a=rsa-sha256 header.s=google header.b=UH3J3HMQ
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-33bf40b0c8bso5331833eec.0
+        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 19:45:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792896089; x=1793500889; darn=vger.kernel.org;
+        d=0x0f.com; s=google; t=1792896321; x=1793501121; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Wtl6lbTH0Q+TZCmlk3+PvHR0Fpha4owEPE/GZNCfL4Q=;
-        b=gktkBJJwrpqITZajFEOqQv9b9gNtarwyG5rFvBTBypZ2QT89cNLlqtejdGSrEv7nVw
-         RE74hcBozgIC3ctrvR40LOlz7Z4T6QqdgU6d6ENXBF7KOaIkA3dfcWxar4AuxUsWsXQm
-         4vwY3eFbc0q8iocoK7IAzQpWmV2qBqW2iHy4KHNaHqQl8oZdQpvFqSUQ4a2zV84SU0V4
-         +RTMlZo9sFFwfyhPoGMkwNsNC6Fn+1gM4BeaQ0RPO5GCGDbeQOLP1z9pHGAeBYlVmmsQ
-         cN6kKjnGbPIhTVTtLAU3LHy3YxnBuAFA8In4rOstQNQvp9x7n3uR5ab+G4ieo9O1fGHa
-         yjfA==
+        bh=WpjUZLKhw/tvYFR10QM0neivX8YIU0hqUruPnucpBLM=;
+        b=UH3J3HMQv99pAPAW9zP0r0Dle71wXTqYA9LOtYNu0eUbeqCEGlT8pKDCXzawBl7P5G
+         IvcwqAEAosh51YDiFpDB0St7pHDQVo97VhQBGwz6HxRmphyNwdD1fIeFs25qAYqt1hgb
+         QoY/41OqHxEt82dTDER6IvhEGxwcXxbHJGrwU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792896089; x=1793500889;
+        d=1e100.net; s=20260707; t=1792896321; x=1793501121;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Wtl6lbTH0Q+TZCmlk3+PvHR0Fpha4owEPE/GZNCfL4Q=;
-        b=znlQHa/i0kBZyHGqHSKPC7EycQT16rMMOAIlsIHk1a0HzVgyFeQde2uJodlzbCPSlq
-         P3TQ0gPy2EhKkbmw+wC/545Z5VuArTc/w7/i//Jlflb1r7pnLI0z06zLRm2Ccut04zJA
-         l8IyTZJPQ72GkRfBfYao95svu1lSu3Ni8ZEetEDcHhpQLi1nApCjzR48nMvp8pdfuwiC
-         V+Ns9kjAiik8brgov3c2EeUCohIxfvkxSSi9zx/GdlHaa4ar3qjszwaGAhmw2xVu4mOY
-         0YiLJKbuWckoLuWXSVP2BhRipf5d2Xq4rBON+IzhEmDk/rY4BhM3IQ6l6zs6IUm4YkFi
-         x6Bg==
-X-Gm-Message-State: AFq9FYIEIrALeUSq0EyiIncU1MbNPJGL7Sy+9A+6A06o9CqDtLRGYBR1
-	jeS8tSBYCQhjP5YO+WBzUXggHE/TlaPDkwbffF+2bfMtwhKgO4XjCjK4wHNSiiFoJUo=
-X-Gm-Gg: AYBFou1CMm6S7+ENHiYFtbnVQdhYwY0F803gqoR0E7b0b7vvDRMDoWeFb0VuMv2wHMO
-	CduS1kv3me9GgiFfoGgCWpTBbVZN/GSEBbus7Hcz6omLHGjx3JjQHvViDOzPjiIa+NhqQIQAU1f
-	kX9zx2AoRXRJl69lrogJCXkWKezzspLFU8fgAR8fmnbpBQDXZ0JjeLytvq97TsPndLmIkJI3vI4
-	dkaOuORkhP3zCYZswkmkj3q3LnXHL6LYfUcqMU1HZzmhMYOVMZkbXnHV7Xvvu4yxZ8lR4AhZM2P
-	tj+Yyq/dOKqvMX4aAhiT1/vOPhrX+OWnmYM1xVKq9kFKq0//BOAS+XqFG/XVAKcqUa0iWx7GbrQ
-	EbZAS+9STqu07AT/pNyCjr2c+hRoV7Zispv4aVcfND8xF3/8181fI3vuCRacEQAHI0fkzOPv+LI
-	d5vQWsZ+DIriGdZkoPGlvb89VdcuK41eaeeWAFY35o7whIkzfFytMtaMUG5vHGT3msjM7ARfr7j
-	Qe6Rt/QyjDAGyHFmpRZXKVHPNfyyvnfhwTD0mlVvZqdwVys8/R8Ifir97XGuZHZh5NAAauub51/
-	7ho9f6cjGLzbXSM7XrPrMgHAxwn7
-X-Received: by 2002:a17:902:ecc2:b0:2e9:9f14:c40 with SMTP id d9443c01a7336-2ea9c130a8emr28640505ad.6.1792896089289;
-        Sat, 24 Oct 2026 19:41:29 -0700 (PDT)
-Received: from d.home.yangfl.dn42 ([2a09:bac5:6216:1250::1d3:c4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea9b1a35c4sm7653995ad.49.2026.10.24.19.41.24
+        bh=WpjUZLKhw/tvYFR10QM0neivX8YIU0hqUruPnucpBLM=;
+        b=slHwqBb8KhN+yFO1O+SdWG2rcZdGru/34WxBcqKeiV9tuSiScZOOOkLY78L0pYeH9P
+         2ctehmUCigbjhkDajH3KLASZFN6RLwthJeyZSlpiYYSWeLsm27kSvBh00yubm04dQUVh
+         zNiyox+feifgpDJURAK8RD9WXH4jA+9EIOwjsH6AeCZyjvuLj1ceIKh2beBSIAxXzaU+
+         59GT6MMjhGpiMIxJYJsXqHaLV4M8pH0EyVLC6xjVeJNj3jZ/QU0gGmGP/hy09IV3bNu6
+         Z0hDgBVDozZ/8mmH9i2vTIV84s0S3NH4tBddmCSQuiTx6wTRarno9/rT2SXZXgoKGQ5I
+         9McA==
+X-Forwarded-Encrypted: i=1; AKwUvBxaCyO3LC6iOWRsAH4Z3YL2b214+V43VlKBgLSHh0TRq6FhMpX+d7+fQClQJiLkJRCyp6zAbZc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJQGux4r9dJzpxDtVN2ns0NXX2HrypscnBlZRe0WT8v9/0bob9d
+	FpwSl/pxb10cr2e755YBF8WurohyG7TU9FbhK0L+9NZMeNx1Kq6oVyttQCD/uktI8oI=
+X-Gm-Gg: AYBFou2lQLlo8cBynM0QvhImO6VuuJu0B4udiU/tkVJ4I5vRGuHatcKgxEYkmBHyx+v
+	zMOq7RmawErU9fuW7tWtv5TdkNilwMjGHGIVA6Ha19Uuz8qJnUWOcti9eU4tzMcjB1wAdjU1uWl
+	DnBvWJHBWctyJFiYAV/jG6mTxQ2CBoux1y39pakqy2QP8uarqbLPy8z4nSxmGh09n1+pQI4/dmA
+	STUQUbcBaaotqmNj8kQbllyDGZQzQ41sOhpyo0Qncq/hFcaD/2a8z20/GI/UNbvFBHHh991mDAU
+	OcRNw9RhHQX4n7DIJom3HkFRgLYTMKViFVBVbN0DLK7RVd/nMYyKavMQ7Q7OZd/o7KHg1swO5rK
+	nfOY44J/FOrSZ0KLap1HCbl4ArRhphgDWb9vWVKjiPTKpPMdQXIxo/mu2MslBFruuUG/Ic2HK9p
+	vcS8/hR3yWCsLtjeL1MWtbvewBd2d3QBgL2L1mGOX9qHlBYz0w1revpaSSmMrcgLaxIE8TshqMH
+	3m5i8L597gv4ofl4jNsnNPU2dreeLeOCyfHVRKZJcK00Xr5H37BcVOBs70J0EqXXPZbJdL1kURa
+	HOjFqWQvTFFnluUFAG4=
+X-Received: by 2002:a05:7300:2442:b0:358:2e30:8e5 with SMTP id 5a478bee46e88-369e836b382mr5953999eec.1.1792896320943;
+        Sat, 24 Oct 2026 19:45:20 -0700 (PDT)
+Received: from shiro (p1469046-ipxg00b01sizuokaden.shizuoka.ocn.ne.jp. [153.223.97.46])
+        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-369e8ec50bcsm23813952eec.23.2026.10.24.19.45.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Oct 2026 19:41:28 -0700 (PDT)
-From: David Yang <mmyangfl@gmail.com>
-To: netdev@vger.kernel.org
-Cc: David Yang <mmyangfl@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] net: dsa: motorcomm: Report error when FDB fails to add
-Date: Sun, 25 Oct 2026 10:41:11 +0800
-Message-ID: <20261025024114.1955782-1-mmyangfl@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        Sat, 24 Oct 2026 19:45:20 -0700 (PDT)
+From: Daniel Palmer <daniel@0x0f.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	Daniel Palmer <daniel@0x0f.com>,
+	Denis Ahrens <denis@h3q.com>
+Subject: [PATCH] net: i825xx: 82596: use MMIO accessors for the MVME16x PORT/CA registers
+Date: Sun, 25 Oct 2026 11:45:14 +0900
+Message-ID: <20261025024514.802862-1-daniel@0x0f.com>
+X-Mailer: git-send-email 2.55.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,34 +100,81 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-fdb_add() ignored any errors returned by the hardware (for example,
-table is full). Return error for that case.
+On the MVME16x the two port registers need to be written in order to latch
+the correct 32bit value.
 
-Fixes: 186623f4aa72 ("net: dsa: yt921x: Add support for Motorcomm YT921x")
-Signed-off-by: David Yang <mmyangfl@gmail.com>
+The way the code is currently written means that modern GCC can decide to
+optimize the writes and break that latching.
+
+Convert the MVME16x specific register accesses to use the proper io
+accessors to restore the latching and make the driver functional again.
+
+Reported-by: Denis Ahrens <denis@h3q.com>
+Signed-off-by: Daniel Palmer <daniel@0x0f.com>
 ---
- drivers/net/dsa/motorcomm/chip.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-index d4fc20c52a58..422b45085e7b 100644
---- a/drivers/net/dsa/motorcomm/chip.c
-+++ b/drivers/net/dsa/motorcomm/chip.c
-@@ -725,7 +725,13 @@ yt921x_fdb_add(struct yt921x_priv *priv, const unsigned char *addr, u16 vid,
- 	if (res)
- 		return res;
+Denis emailed me with his fix for this issue which added volatile to
+the struct members to stop the compiler getting too clever. This is
+my version of the fix. Dennis, please test it actually works :).
+
+Also, this driver is old and does need to be converted over to being
+a platform driver etc. I have a set of patches to do this. I'd like
+to just fix the driver first so it works again so the conversion to
+a platform driver is working against a working driver.
+
+ drivers/net/ethernet/i825xx/82596.c | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/net/ethernet/i825xx/82596.c b/drivers/net/ethernet/i825xx/82596.c
+index 773d7aa29ef5..bb8798b0d3ae 100644
+--- a/drivers/net/ethernet/i825xx/82596.c
++++ b/drivers/net/ethernet/i825xx/82596.c
+@@ -196,11 +196,10 @@ enum commands {
+ #define TX_TIMEOUT	(HZ/20)
  
--	return yt921x_fdb_wait(priv, &val);
-+	res = yt921x_fdb_wait(priv, &val);
-+	if (res)
-+		return res;
-+	if (val & YT921X_FDB_RESULT_NOTFOUND)
-+		return -ENOSPC;
+ 
+-struct i596_reg {
+-	unsigned short porthi;
+-	unsigned short portlo;
+-	unsigned long ca;
+-};
++/* MVME16x: the 82596 PORT and CA registers */
++#define MVME_I596_PORT_HI	0x00
++#define MVME_I596_PORT_LO	0x02
++#define MVME_I596_CA		0x04
+ 
+ #define EOF		0x8000
+ #define SIZE_MASK	0x3fff
+@@ -375,7 +374,9 @@ static inline void CA(struct net_device *dev)
+ {
+ #ifdef ENABLE_MVME16x_NET
+ 	if (MACH_IS_MVME16x) {
+-		((struct i596_reg *) dev->base_addr)->ca = 1;
++		void __iomem *regs = (void __iomem *)dev->base_addr;
 +
-+	return 0;
- }
- 
- static int
++		__raw_writel(1, regs + MVME_I596_CA);
+ 	}
+ #endif
+ #ifdef ENABLE_BVME6000_NET
+@@ -392,9 +393,15 @@ static inline void MPU_PORT(struct net_device *dev, int c, volatile void *x)
+ {
+ #ifdef ENABLE_MVME16x_NET
+ 	if (MACH_IS_MVME16x) {
+-		struct i596_reg *p = (struct i596_reg *) (dev->base_addr);
+-		p->porthi = ((c) | (u32) (x)) & 0xffff;
+-		p->portlo = ((c) | (u32) (x)) >> 16;
++		void __iomem *regs = (void __iomem *)dev->base_addr;
++		u32 v = (u32)c | (u32)x;
++
++		/*
++		 * The 32bit value is latched on the write of the lo register,
++		 * so the 16bit writes must happen in this order.
++		 */
++		__raw_writew(v & 0xffff, regs + MVME_I596_PORT_HI);
++		__raw_writew(v >> 16, regs + MVME_I596_PORT_LO);
+ 	}
+ #endif
+ #ifdef ENABLE_BVME6000_NET
 -- 
-2.53.0
+2.55.0
 
