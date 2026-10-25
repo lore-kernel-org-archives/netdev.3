@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792906266;
-	b=ukbPaBgr4/gqmFZM7Dtijn0pF6QTwWcawmv9i6USfZXbWFgaZEqv0IXOfs0zAdwI2UVn
-	 1EeUEBnpfxrdTkjL8gKKcb0zjNGTs+dchkDQ1+DF12dj3MzUGJpl4Jnn/Xjo9iKWYN53/
-	 zGYONd00JUTvZqp73mOyKznKwWbas91kBgkqSOqVmMfcZ59s31k2winS9KkloQv0+SR+B
-	 0qI9iwnqvJ/LgKZLPl2eSr/Gs3LuWd1tYClu8h9yyNsfuujBaggqqp9lNt0AXX5IdKYO8
-	 yp2l6lKdN3oolw04sWi9vVi9fBjd4OXO5YnkPiaBFObBug4HLtR8Tvm90MStEql7zQg==
+	t=1792906263;
+	b=1DCR3eWJHPPiBgKogMj4A+kYJNQnttFIUAk3Nh0QEMcafiUtphQZAfsTjkJcyh/lNVzK
+	 w09N6OJZ2FPXNHzpKAqyOQhGupBxsYRDyQb3CN1vyE6+fX/xODHMeQg8rFub06a0Lujsi
+	 NPk4sX8D2Inn7pQjnSXbMebQuGchJvQNb8mQHOG2/NRzTPyFYBp75Etid+w91MSBabxEA
+	 CEBwXvVWV5wUrQsQCSEMj9glF0ynkken1BskL0f/zT6HPbMOMT4ZhZgUsHjOCP3NyDmJr
+	 0IhlpGdcJyXZEP/WQhgYxdjc4jfjMa8saTQaqG1wf9nmoMb9sNwix++MkGbYeu5Baxg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792906266;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792906263;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=gMQhvSd2iPBWErQGGLe8rTomz1iYiodhFjO262Nxpo8=;
-	b=QVpKJcYs6YnE9YDHHZ8yJ8H7S86bLVfNS7FYPW/TIit+em9+jz8gO+KwxDjHZFNO7Bg8
-	 5v+q1bfeOe2n2oQTumfGB9kIQjaj7UdJ96wW9vKki3CZs+ImSCf6rsZUob1T0sap7f7TV
-	 USJAvOMCR8QFnpxFZaxdAxnlpNRAXY37rYrY9Byz1VAxC5LYs5ezgU2pxTPS3cOQWqTlc
-	 1gBtxvP/MRmUVIRuDNWjVYZMzUgPd60aluEzlPI3rWlQuNWnLsA7fzXYSw7+kYQRMHjRe
-	 lauxfbiTrbjn4vchn0Bh8BjPiAAUGfwuoTevrSeRPXmWK/Ofu64IQ2NOQmdNj1UH1MQ==
+	bh=evp3RhZwPL7WcN3Ln8Vx2PJENKtYSS4z9lIGj4Rbwio=;
+	b=Rk3lqNp8pQ5XpwWgTH9Ic2m+3Jn+yld+UHDhIuZVPdP8LsgRuGQRpqPifbSU13RcsLTc
+	 AoXr5f5Q0sGtzIz/vHJclpwNNOyrLOHaeo+0Kjs/ugodeRTAoJcwsuRjcPSc5ppaFiwFx
+	 sfQZqZfINaXuommF6dR9mBkcc/WdSFrxBEX3Gbz/ioCmwhGCjJo/WoykbRdx5bLHk8yH9
+	 7QqlVGVhTOTrcwq9ud4QSYC35U896b/V6mnSeNvm6t1GCNtOGCAwiQUfvDOLldZKp62ph
+	 eO6jfM0aC2YshdSJGSdmzhLLKcgB2/JD7rwYtm3cixZcp5XSuMmP+UKJ1EhsIcSTjRw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="nCY/YaKj";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fYzRG6Wb;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6101D606A32A;
-	Sun, 25 Oct 2026 05:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C042606A31F;
+	Sun, 25 Oct 2026 05:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nCY/YaKj
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C5671F01829;
-	Sun, 25 Oct 2026 05:31:05 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fYzRG6Wb
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D43971F01828;
+	Sun, 25 Oct 2026 05:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792906265;
-	bh=gMQhvSd2iPBWErQGGLe8rTomz1iYiodhFjO262Nxpo8=;
+	s=k20260515; t=1792906262;
+	bh=evp3RhZwPL7WcN3Ln8Vx2PJENKtYSS4z9lIGj4Rbwio=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=nCY/YaKjdjX0OFYSJrJ14LPouFw76wJy3tzwjRrde+XbOOT03Egi2EGQQv/wsyS1T
-	 B84fZRix4Fq4njlx7C8H/8U0pOPXfUFaxXAW7p/4NRgD03zXBENtLA8BjlxYLHTgJq
-	 ybUmWq9hszt1feKSZiCCpSstI5xdABoH2fyIoAChJXDDjNPWO3FCT7OPkbfxf381Zn
-	 zWTLwLVoGXMC0iB4HmfriULKG77vhc+jpIYVawKLkd7wPMYuxMiIahCBhrU2Pj0DJI
-	 V4FHzfoY56hXIOaU/klRp/rLAkBOk9aLzJCOHkheQBKuGwR2AgnDyeCZDzBiOVNcKE
-	 MmoFR9C2c0NDA==
-Subject: Re: [PATCH net v5 5/7] net: add a sysctl to opt out of virtio net hdr
- checksum validation
+	b=fYzRG6WbDirCMf7U0+YQav+n36FYB3szMBj8LOXoHXviBpuW1nbhbZ8xp5WSjiurM
+	 ch2gvspFttyirAgatJf6PWviRt93jZKPpOLAgBuZkAxKNh3NLfTOgj0VqrLLjn7nW1
+	 eL230NbJM9CwWJwCncCyb+OzIb5AAuu4v+ZIvHX5ar44ZcGEyMT3jXYGesX0KHsipI
+	 hH1mdU8oMvoS+VhjiGM3kXUQtGrpt96oB2WB5zkmRKV1+ZmhfuMk1+mU8MvVVZR0hU
+	 LuO+MtgB0qx5op8D18w4BIPkzwGO1ZbRu1tp2UirCLiKKeGfo4Rwxf8eA5BXp4dCKO
+	 ul/FMbnG+lXdw==
+Subject:
+ Re: [PATCH net v5 2/7] um: vector: trim skbs before verifying the header
 From: netdev-bot+sashiko@kernel.org
 To: mst@redhat.com
 Cc: linux-kernel@vger.kernel.org, willemdebruijn.kernel@gmail.com,
@@ -50,13 +50,13 @@ Cc: linux-kernel@vger.kernel.org, willemdebruijn.kernel@gmail.com,
  davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
  netdev@vger.kernel.org, virtualization@lists.linux.dev, maxk@qualcomm.com,
  rusty@rustcorp.com.au
-Date: Sun, 25 Oct 2026 05:31:04 +0000
-Message-ID: <179290626462.3134.18093593044848809481@kernel.org>
+Date: Sun, 25 Oct 2026 05:31:01 +0000
+Message-ID: <179290626141.3134.1246964108369704124@kernel.org>
 In-Reply-To:
- <2beba4c8b84c811120b6100bcccd8b90e7458787.1792668082.git.mst@redhat.com>
+ <1b2a0697662501fd4fe896a7dc2bba2d97885101.1792668082.git.mst@redhat.com>
 References:
- <2beba4c8b84c811120b6100bcccd8b90e7458787.1792668082.git.mst@redhat.com>
-X-sashiko-severity: Medium
+ <1b2a0697662501fd4fe896a7dc2bba2d97885101.1792668082.git.mst@redhat.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -69,10 +69,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Critical: 0 · High: 1 (1) · Medium: 0 (1) · Low: 1 (1)
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -80,93 +80,204 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] virtio_net_hdr_validate_disabled() reads
-  dev_net(skb->dev)->core.sysctl_virtio_net_hdr_validate with no RCU…
+- [High] In vector_mmsg_rx() (arch/um/drivers/vector_kern.c),
+  pskb_trim(skb, ...) now runs before verify_header(), and the skb is…
+- [Low] The commit message presents the reorder only as groundwork for
+  the later commit "net: resolve uncommon partial checksums at ingress".
+
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but the patch
+  touches these exact lines.
+- [Medium] This problem wasn't introduced by this patch, but
+  vector_legacy_rx() sets the receive header iovec to vp->header_size…
+- [Low] This problem wasn't introduced by this patch, but
+  vector_legacy_rx() leaks the skb that prep_skb() allocated when…
 
 --
 
-net: add a sysctl to opt out of virtio net hdr checksum validation
+um: vector: trim skbs before verifying the header
 
-This adds a per-netns sysctl, net.core.virtio_net_hdr_validate. Host root
-can use it to turn off the virtio net header checksum validation added by
-the previous patch. A static key gates a lockless read of the per-netns
-value in virtio_net_hdr_validate_disabled(), and that helper is checked
-at the start of the csum and tunnel offset validators.
+This patch moves the pskb_trim() call in vector_legacy_rx() and
+vector_mmsg_rx() so that it runs before verify_header(). It prepares for a
+follow-up change, in which virtio_net_hdr_to_skb() will complete the
+checksum in software and will need the skb trimmed to the received length.
 
-> diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-> index 52852a33a2db7..cea70ccf0ed4b 100644
-> --- a/include/linux/virtio_net.h
-> +++ b/include/linux/virtio_net.h
+> Trim first, so the import sees the packet as it was received.
+
+[Severity: Low]
+Should the commit message say that this reorder also changes current
+validation behaviour, and not only prepare for the follow-up?
+
+raw_verify_header() calls virtio_net_hdr_to_skb(). Today,
+__virtio_net_hdr_to_skb() already checks lengths against skb->len and
+skb_headlen() in several places:
+
+  skb_partial_csum_set()
+  pskb_may_pull(skb, p_off)
+  the UDP_L4 bound against gso_size * UDP_MAX_SEGMENTS
+  the skb->len - nh_off > gso_size test that decides whether gso_size
+  and SKB_GSO_DODGY get set
+
+Before this patch, those checks ran against the untrimmed prep_skb()
+buffer (max_packet plus frags). A vnet header whose csum_start/csum_offset
+pointed past the received data, but still inside the buffer, used to pass.
+The later trim then left a CHECKSUM_PARTIAL skb whose checksum location
+was beyond skb->len.
+
+With the reorder, such headers are rejected and counted in
+rx_encaps_errors. Could the changelog describe this? There is also no
+Fixes: tag.
+
+> diff --git a/arch/um/drivers/vector_kern.c b/arch/um/drivers/vector_kern.c
+> index 8a70b3a625537..1afbef78df725 100644
+> --- a/arch/um/drivers/vector_kern.c
+> +++ b/arch/um/drivers/vector_kern.c
+> @@ -865,6 +865,7 @@ static int vector_legacy_rx(struct vector_private *vp)
+>  
+>  	if (skb != NULL) {
+
+[Severity: Low]
+This is a pre-existing issue and was not introduced by this patch. Does
+vector_legacy_rx() leak the skb from prep_skb() when uml_vector_recvmsg()
+fails?
+
+Just above this hunk:
+
+	pkt_len = uml_vector_recvmsg(vp->fds->rx_fd, &hdr, 0);
+	if (pkt_len < 0) {
+		vp->in_error = true;
+		return pkt_len;
+	}
+
+uml_vector_recvmsg() returns -errno for any readv() failure other than
+EAGAIN. This path then returns without calling dev_kfree_skb_irq(skb).
+Nothing else holds a reference, so the skb and its frags are lost.
+
+>  		if (pkt_len > vp->header_size) {
+> +			pskb_trim(skb, pkt_len - vp->rx_header_size);
+>  			if (vp->header_size > 0) {
+>  				header_check = vp->verify_header(
+>  					vp->header_rxbuffer, skb, vp);
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but is the header iovec in
+vector_legacy_rx() the right size for IPv4 GRE and raw IPv4 L2TPv3?
+
+Earlier in vector_legacy_rx():
+
+	if (vp->header_size > 0) {
+		iov[0].iov_base = vp->header_rxbuffer;
+		iov[0].iov_len = vp->header_size;
+	}
+
+build_gre_transport_data() sets:
+
+	vp->rx_header_size = vp->header_size;
+	if (!td->ipv6)
+		vp->rx_header_size += sizeof(struct iphdr);
+
+build_l2tpv3_transport_data() does the same when
+(!td->ipv6) && (!td->udp).
+
+gre_verify_header() skips sizeof(struct iphdr) into header_rxbuffer
+before it compares. With vec=0, readv() only puts header_size bytes (the
+start of the IPv4 header) into header_rxbuffer. The verifier then reads
+uninitialized kmalloc memory, so nearly all packets get dropped.
+
+For any packet that does pass, the rest of the IP and encapsulation
+header stays at the front of the skb. The trim by rx_header_size then
+removes 20 bytes of real payload from the tail.
 
 [ ... ]
 
-> @@ -78,6 +79,20 @@ static inline struct iphdr *virtio_net_ip4_parse(struct sk_buff *skb,
->  	*thoff = nhoff + iph->ihl * sizeof(u32);
->  	return iph;
->  }
-> +/* Defined in net/core/dev.c, enabled while any network namespace
-> + * has net.core.virtio_net_hdr_validate set to 0.
-> + */
-> +DECLARE_STATIC_KEY_FALSE(virtio_net_hdr_validate_disabled_key);
-> +
-> +/* Failsafe: a namespace can disable the check with
-> + * net.core.virtio_net_hdr_validate.
-> + * The caller must keep the netns of skb->dev alive.
-> + */
-> +static inline bool virtio_net_hdr_validate_disabled(struct sk_buff *skb)
-> +{
-> +	return static_branch_unlikely(&virtio_net_hdr_validate_disabled_key) &&
-> +	       !READ_ONCE(dev_net(skb->dev)->core.sysctl_virtio_net_hdr_validate);
+> @@ -981,6 +981,8 @@ static int vector_mmsg_rx(struct vector_private *vp, int budget)
+>  	for (i = 0; i < packet_count; i++) {
+>  		skb = (*skbuff_vector);
+>  		if (mmsg_vector->msg_len > vp->header_size) {
+> +			pskb_trim(skb,
+> +				mmsg_vector->msg_len - vp->rx_header_size);
 
-[Severity: Medium]
+[Severity: High]
+Can skb be NULL here?
 
-Can this read hit a freed struct net? There is no rcu_read_lock() here
-and no reference on the netns.
+If the GFP_ATOMIC alloc_skb_with_frags() in prep_skb() fails, the
+skbuff_vector slot stays NULL, but the header iovec is still active:
 
-dev_net() is read_pnet(), which is just a plain load of dev->nd_net. The
-comment asks the caller to keep the netns of skb->dev alive, but the
-callers don't appear to do that.
+	if (vp->header_size > 0)
+		iov_index++;
+	if (result == NULL) {
+		iov[iov_index].iov_base = NULL;
+		iov[iov_index].iov_len = 0;
+		goto done;
+	}
+	...
+done:
+	msg->msg_iovlen = iov_index;
 
-For example, tun_get_user() gets here from preemptible process context,
-before either of its rcu_read_lock() sections. The only thing it holds is
-the device reference taken by tun_get():
+vector_net_open() sizes the rx queue header buffers with
+vp->rx_header_size through create_queue(). For IPv4 GRE and non-UDP IPv4
+L2TPv3, rx_header_size is header_size + sizeof(struct iphdr). A packet
+that fills only the header iovec therefore gives
+msg_len == rx_header_size > header_size.
 
-tun_get_user()
-  tun_vnet_hdr_tnl_to_skb()
-    ...
-      virtio_net_hdr_validate_disabled()
+That packet enters this branch and calls pskb_trim(NULL, 0), which
+dereferences skb->len.
 
-packet_snd() and tpacket_snd() reach virtio_net_hdr_to_skb() the same
-way, also holding only a device reference.
+Before this patch, gre_verify_header() or l2tpv3_verify_header() ran
+first. Neither touches the skb. A packet that failed them went to
+dev_kfree_skb_irq(NULL), which returns early. Only packets with a valid
+header reached the old pskb_trim() on a NULL skb.
 
-Here is one possible sequence:
+Now a packet with the wrong GRE key or the wrong L2TPv3 session/cookie
+can also hit the NULL dereference whenever an rx skb allocation has
+failed. The GRE and L2TPv3 raw sockets are bound but not connected, so
+any remote host can send such packets.
 
-  - The writer loads dev->nd_net (net_B) and is preempted.
-  - The device is moved from net_B to net_C. tun does not set
-    netns_local, and dev_change_net_namespace() does not wait for
-    device references.
-  - The last reference to net_B is dropped and cleanup_net() runs.
-    This reader is not in an RCU read-side section, so the
-    synchronize_rcu() there does not wait for it, and net_B is freed.
-  - The writer resumes and reads sysctl_virtio_net_hdr_validate from
-    the freed net_B.
+The else branch already checks skb != NULL. Is a similar check needed
+before this pskb_trim()?
 
-The window is small. It needs the static key enabled (some netns has
-the sysctl set to 0) and a privileged netns move with teardown.
+[Severity: High]
+This is a pre-existing issue and was not introduced by this patch, but
+the patch touches these lines. Is this guard strict enough for the trim
+length?
 
-Would it be better to do the read under rcu_read_lock() and use
-dev_net_rcu(), something like this?
+The guard checks msg_len > vp->header_size, but the trim subtracts
+vp->rx_header_size. Two configurations have rx_header_size larger than
+header_size:
 
-	bool disabled;
+  IPv4 GRE: header_size 4 and rx_header_size 24 without a key, or 8 and
+  28 with a key
+  raw IPv4 L2TPv3
 
-	rcu_read_lock();
-	disabled = !READ_ONCE(dev_net_rcu(skb->dev)->core.sysctl_virtio_net_hdr_validate);
-	rcu_read_unlock();
+In these cases, a msg_len between header_size and rx_header_size makes
+the difference negative. pskb_trim() takes it as a very large unsigned
+int:
 
-> +}
->  
->  /* Where does the L3 header start, and what protocol is it?
->   * Handles Ethernet and VLAN headers; other devices use the
+	return (len < skb->len) ? __pskb_trim(skb, len) : 0;
+
+and returns 0 without trimming. recvmmsg() only wrote into the header
+iovec, so the skb keeps its full prep_skb() length of unwritten
+alloc_skb_with_frags() memory. That memory goes through eth_type_trans()
+and napi_gro_receive() into the guest stack.
+
+gre_verify_header() and l2tpv3_verify_header() also read bytes past
+msg_len in the per-slot header buffer. Those bytes can still hold an
+earlier packet's header.
+
+For example, a keyed GRE packet with msg_len 24 supplies only the 4 GRE
+flag bytes. The key at offsets 24..27 is left over from the last valid
+packet, so the key check passes without the sender knowing the key.
+
+When msg_len == rx_header_size, the skb is trimmed to 0 bytes and
+eth_type_trans() parses uninitialized head data.
+
+vector_legacy_rx() has the same mismatch:
+
+	if (pkt_len > vp->header_size) {
+		pskb_trim(skb, pkt_len - vp->rx_header_size);
+
+Should both paths require the received length to be larger than
+rx_header_size (plus ETH_HLEN) before trimming?
 
 [ ... ]
 
