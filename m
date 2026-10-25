@@ -1,55 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792957270;
-	b=AZfKRYEfPf2LH83PKKqLzPgGe+ZYkUCOStF3Zj2reQkKeoWa80fR2U+zQHrIO/eaCuaI
-	 A5ae/ixNNpSv4hH4lSIhBke/KUCP2KqljNOMhFJO2KmjJhC6f9OqZTxrpCUZE8Gc+5vuq
-	 oE2Ge8FLnMw1qoBhUqls+3Pm+Sqy3jVzBZP4PY8AWXZ6vg3+S+VrUEDV2o2P+WkHxinJp
-	 XxK3FjpF3y5KkkafUW9JE7G+ovxGfr8JMemTP2KOzcDjaaI+dWPsNj8BYBI4gYGGk0FoT
-	 dOcYbbqS0yVwStPZOtfhWw3jYKPipnJVhBNvycXMtzNLUX7SJ2wxMA4HfZz6O1D5jhQ==
+	t=1792957362;
+	b=h070qGxDIgy+YHuu8QITxaYkhBayxvyBDDIz6wmv0w9LRG5Igdjak2uSBCyZoTDlLbN1
+	 A/URn0GqGMpX2qdtBfRMiDzO3fvO/0D33JzKtIQpnlM1+c3NJVjhBw7aVv0gxgFobVrfw
+	 TKfhFebYqlx8GkkLWIRmvHapqKaZYbbTclG0iNnbYsJUI3BEN6BG8XCNHgWuZbHRfaEmI
+	 RhNOjC3B8RRUe0OwLhd3RdDPMfAY7HJPP1lhFeQub8iDDjXR2QL2QvaLuceXha2lLxqre
+	 zxx91e2isvl3Rq8Pguehs4xA0nT8MwqrBrTtFrOyWx/BF5N/FkLOIT0shNNr3bHtdqg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792957270;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=/ZjG9Xr/HMX/i7oEyIrYTz+RcRkHVl/XZuBXEaWa+5I=;
-	b=eMCWMQtPFfc37UCtaTIxhECXsl2lv/lSohrkP5KzbAacKTUebvs3HRtZMncjW1m0k7+J
-	 0fOMYB1dKkSuhR25crbclQQHcf4ZNjRKb3YWkCalQMTM97LqWaK/OFzMReFqEW3Y/E5RE
-	 skz9zxDkq1QgJlIx3QopsyaYdbrren2DTicKzlVg/BGDf5UwzV6F00peD5TUYHytXK3lB
-	 6mmHLIc89uIyzj0eY1kyg/bh5W81Gls2VZ/GkCv+yvqcXY6U/mtpYzhHaJRLmH26LVGm/
-	 n0fcJklwp4wErQwRCola98Ijg8t0hreeXlob4A3MBwB+tSt9g+0YuLkSmfZ/stSEu3A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792957362;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:Content-Language:To:Cc:References:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=gJdqFv7x5YJU260/H/Wz300qdhKDuJnZTzjsirnU2yY=;
+	b=V6XKs8aJLgq5VARVwUhi9Xv0wiwjPIcLLCmCy+pLkqGuIsntqSJZLdF0rgnFWuqmbRLK
+	 kJg7cYCLEz7rdM/v1W85WJ8h4P7Mr2e65xfLArIkg0rZfwx/VyX0fQfLXMu53EsLQEZYd
+	 hQ0WOV2DwXnkeaBqEI/qqvHYvRq6fp3hRiyA8xuf5YPUrsLC2T00HEn1mZgmw/ZB/djhK
+	 MFiOskM7CNKVsQp5tlsSIby0tjEX9fUMwHRfQC79wQ7ozjIZvRkalGwNJEbB8q60BV3pi
+	 /6t186/7hgsS6MJ202i5G6HVO+LMLlGG12RLRjn7bJeszbs56JydHsCuHJndZ6CUEWw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="gpios/A9";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mkzUrowP;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5C2606A31A
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 19:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811D0606A31D
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 19:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gpios/A9
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41A6A1F01828
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 19:41:09 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mkzUrowP
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB3631F01825;
+	Sun, 25 Oct 2026 19:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792957269;
-	bh=/ZjG9Xr/HMX/i7oEyIrYTz+RcRkHVl/XZuBXEaWa+5I=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=gpios/A9gSMoFlsDvZvnQHGLFQUe/zFMno7I9/mf9JZ0tE+O3UYT2vYbPp/SClDHa
-	 YWf976KgiTRSk0fCB1c/WMQ7I/mPg2nJPPMx2c4/vHE5FNsoZPFDFGhyEpBCIVPTIv
-	 7F2/Z+GdzFgcb7lAT+BKovQOJBu6b5hAAQDuLUY9ynyUPYi/CrStc8fOzxnScRIxIV
-	 EaYRQIfwC/niuZuF2oLYLszDu1bVChXQuGPL5Qgvl2hRDboSbYLuNon2fsvWaIQARY
-	 ZiNAWxYqUBvtqbjTEKlRmXSInMw7rw7Wr8KrcZ2lbD9IjgxWO7rTojxuy7wvgucK7x
-	 tUMGMz10gOrNw==
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-4a755bbe158so1347521fac.0
-        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 12:41:09 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBy56XzmD/aI1yUvWnRLAWdVHuxdUot2AF8CcQeWUujLLBP0k2rFN0KGmPP0kxQqj4dO+sxFa14=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIIqxCzWdPL9LSFM9v8NQD1/aAdRdRqCr2jTEGaLwB/gwNaqtSU
-	p7I57meFdhjxMfCvysN5Pxoi3dM8Y2/BYkVhomOUcQkx7JgqhWtVcoOH6c4XyfY9I4W4zJNq/9m
-	je+b0a1p2ZYW6+cZfNtKan+Jh7vb77ow=
-X-Received: by 2002:a05:6870:7014:b0:48f:e0f6:bfef with SMTP id
- 586e51a60fabf-4a83fa78ea7mr2212450fac.27.1792957268483; Sun, 25 Oct 2026
- 12:41:08 -0700 (PDT)
+	s=k20260515; t=1792957362;
+	bh=gJdqFv7x5YJU260/H/Wz300qdhKDuJnZTzjsirnU2yY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=mkzUrowPC1HsKietLuoqNl3uxq8pxMCrlZiVNUJGZtmHLPZqZBvzpIssHDO/UNhlC
+	 J/AqYyRZNjpsd3xr2HD2kxyiCdyS5oG46WJVWG0SHzce6/R99SDDeHhhm+9vDn+pwM
+	 CFBelN6NE3jSAfC5l1OheXstccNiIwZOM6JH8oe/YWyITVgBVKiKILln6PAUyuNbMA
+	 24klitjB+8IKIIiMRwQzNkdC6g7onl7IhUctYAB7Frt3DyJGqp9sZa7OiHdtJYPeqO
+	 9jqDkWwYG/wP8dH9svPre60c5/uOcgHmdACcyg4j4xrz8MCWwquGtPeVkMf289rVv0
+	 RV5ADSbkKm99g==
+Message-ID: <65dc14b8-8e9f-4a70-8698-2bf12cbce5f0@kernel.org>
+Date: Sun, 25 Oct 2026 13:42:41 -0600
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,234 +51,68 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <52b8bfe4ee848aff8ace47752352de486171d45f.1792595507.git.mst@redhat.com>
- <179290180493.3134.5235549211177646736@kernel.org> <20261025124546-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20261025124546-mutt-send-email-mst@kernel.org>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Sun, 25 Oct 2026 20:40:57 +0100
-X-Gmail-Original-Message-ID: <CAL4Wiiqk9Gq5=JKk7j=uK9oNbCd7GCcHUm8BmgZ4hGCqjjo45g@mail.gmail.com>
-X-Gm-Features: AclHuK8DDEtJU8OQu3ulpdptWl65cK4vWpgyXH294HkBKAHMWmRkO2A5xVy3Bd4
-Message-ID: <CAL4Wiiqk9Gq5=JKk7j=uK9oNbCd7GCcHUm8BmgZ4hGCqjjo45g@mail.gmail.com>
-Subject: Re: [PATCH net v3] net: gso: validate transport header before
- computing segment length
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: netdev-bot+sashiko@kernel.org, linux-kernel@vger.kernel.org, 
-	willemb@google.com, davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
-	horms@kernel.org, maxk@qualcomm.com, rusty@rustcorp.com.au, 
-	netdev@vger.kernel.org, bpf@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iproute2-next] json_writer: fix pretty printing of arrays
+Content-Language: en-US
+To: Stephen Hemminger <stephen@networkplumber.org>,
+ Hadrien Patte <hadrien.patte@protonmail.com>
+Cc: netdev@vger.kernel.org
+References: <20261022211002.31098-1-hadrien.patte@protonmail.com>
+ <20261023181302.2a06fe99@stephen-xps.local>
+ <20261024183341.34161-1-hadrien.patte@protonmail.com>
+ <20261025113418.2f5acab4@phoenix.local>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <20261025113418.2f5acab4@phoenix.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Le dim. 25 oct. 2026 =C3=A0 17:51, Michael S. Tsirkin <mst@redhat.com> a =
-=C3=A9crit :
->
-> On Sun, Oct 25, 2026 at 04:16:44AM +0000, netdev-bot+sashiko@kernel.org w=
-rote:
-> > Thank you for your contribution! Sashiko AI review found 1 potential
-> > issue(s) to consider.
-> >
-> > Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 0
-> >
-> > If you believe none of the issues are legitimate, please reply to each
-> > issue of Medium severity or higher and explain why the AI is wrong.
-> > If any of them are legitimate and you plan to respin, please let patchw=
-ork
-> > know by including "pw-bot: cr" as a separate line at the end of your re=
-ply
-> > (one such reply per series is enough).
-> >
-> > - [High] The patch is incomplete for the producer its own commit messag=
-e
-> >   names.
-> >
-> > --
-> >
-> > net: gso: validate transport header before computing segment length
-> >
-> > This patch makes the GSO segment length helpers in net/core/gso.c check
-> > the TCP header before they read it. If the transport header is unset, o=
-r
-> > the TCP header is not in the linear data, skb_gso_validate_network_len(=
-)
-> > and skb_gso_validate_mac_len() now report that the skb does not fit. It
-> > also adds two helpers, skb_inner_transport_header_was_set() and
-> > skb_transport_header_linear(), to include/linux/skbuff.h.
-> >
-> > > diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-> > > index d6894f463bf43..11c8b295bd260 100644
-> > > --- a/include/linux/skbuff.h
-> > > +++ b/include/linux/skbuff.h
-> >
-> > [ ... ]
-> >
-> > > @@ -3250,6 +3257,29 @@ static inline int skb_transport_offset(const s=
-truct sk_buff *skb)
-> > >     return skb_transport_header(skb) - skb->data;
-> > >  }
-> > >
-> > > +/* Is the (inner) transport header, as specified by
-> > > + * skb->transport_header/inner_transport_header, in the linear data?
-> > > + */
-> > > +static inline bool skb_transport_header_linear(const struct sk_buff =
-*skb,
-> > > +                                          unsigned int hlen)
-> > > +{
-> > > +   int thoff;
-> > > +
-> > > +   if (!skb_transport_header_was_set(skb))
-> > > +           return false;
-> > > +
-> > > +   if (skb->encapsulation) {
-> > > +           if (!skb_inner_transport_header_was_set(skb))
-> > > +                   return false;
-> > > +
-> > > +           thoff =3D skb_inner_transport_offset(skb);
-> > > +   } else {
-> > > +           thoff =3D skb_transport_offset(skb);
-> > > +   }
-> > > +
-> > > +   return thoff >=3D 0 && thoff + hlen <=3D skb_headlen(skb);
-> >
-> > [Severity: High]
-> >
-> > The commit message names bpf_skb_adjust_room() as a way to leave a bad
-> > transport header behind. It also says:
-> >
-> >     Qdisc length estimation has carried a guard against exactly this si=
-nce
-> >
-> > Is that guard enough for the bpf_skb_adjust_room() case? In
-> > qdisc_pkt_len_segs_init(), the only check is for an unset transport
-> > header. Nothing there matches the thoff >=3D 0 check added here:
-> >
-> > net/core/dev.c:qdisc_pkt_len_segs_init() {
-> >     ...
-> >       if (!skb->encapsulation) {
-> >               if (unlikely(!skb_transport_header_was_set(skb)))
-> >                       return SKB_NOT_DROPPED_YET;
-> >               hdr_len =3D skb_transport_offset(skb);
-> >       } else {
-> >               hdr_len =3D skb_inner_transport_offset(skb);
-> >       }
-> >       /* + transport layer */
-> >       if (likely(shinfo->gso_type & (SKB_GSO_TCPV4 | SKB_GSO_TCPV6))) {
-> >               const struct tcphdr *th;
-> >
-> >               if (!pskb_may_pull(skb, hdr_len + sizeof(struct tcphdr)))
-> >                       return SKB_DROP_REASON_SKB_BAD_GSO;
-> >
-> >               th =3D (const struct tcphdr *)(skb->data + hdr_len);
-> >               tlen =3D __tcp_hdrlen(th);
-> >     ...
-> > }
-> >
-> > bpf_skb_net_hdr_pop() moves mac_header and network_header forward. It
-> > leaves transport_header where it was, unless it was equal to
-> > network_header:
-> >
-> > net/core/filter.c:bpf_skb_net_hdr_pop() {
-> >     ...
-> >               skb->mac_header +=3D len;
-> >               skb->network_header +=3D len;
-> >               if (trans_same)
-> >                       skb->transport_header =3D skb->network_header;
-> >     ...
-> > }
-> >
-> > When the DECAP_L4 or DECAP_IPXIP flags remove the last tunnel GSO bit,
-> > bpf_skb_net_shrink() also clears skb->encapsulation.
-> >
-> > Take a locally VXLAN-encapsulated TCP TSO skb whose transport_header
-> > points at the outer UDP header. If a tc program calls
-> > bpf_skb_adjust_room(skb, -50, BPF_ADJ_ROOM_MAC,
-> > BPF_F_ADJ_ROOM_DECAP_L4_UDP | ...), the transport offset ends up at -16
-> > and encapsulation is 0.
-> >
-> > A simpler BPF_ADJ_ROOM_NET shrink of 40 bytes on a plain Ethernet/IPv4
-> > TSO skb gives an offset of -6.
-> >
-> > If the program then redirects to egress with bpf_redirect(), this path
-> > runs before any of the validators hardened in this patch:
-> >
-> > __bpf_tx_skb()
-> >   dev_queue_xmit()
-> >     __dev_queue_xmit()
-> >       qdisc_pkt_len_segs_init()
-> >
-> > In that function hdr_len is an unsigned int, so -16 becomes 0xfffffff0.
-> > hdr_len + sizeof(struct tcphdr) is then truncated to 4 when passed as t=
-he
-> > unsigned int len argument of pskb_may_pull(), so the pull succeeds.
-> >
-> > Wouldn't __tcp_hdrlen(th) then read about 4GB past skb->data on 64-bit?
-> >
-> > Should qdisc_pkt_len_segs_init() get the same check, for example by
-> > using skb_transport_header_linear()? If not, could the commit message
-> > be changed so it does not say the qdisc path already guards against
-> > this?
-> >
-> > > +}
-> > > +
-> > >  static inline u32 skb_network_header_len(const struct sk_buff *skb)
-> > >  {
-> > >     DEBUG_NET_WARN_ON_ONCE(!skb_transport_header_was_set(skb));
-> >
-> > [ ... ]
-> >
->
->
-> Indeed. Not nice.
->
-> Eric, you seem to have strong opinions about how to fix these
-> bugs, so, before I spend time testing: a fix like the below, acceptable?
+On 10/25/26 12:34 PM, Stephen Hemminger wrote:
+> On Sat, 24 Oct 2026 18:50:46 +0000
+> Hadrien Patte <hadrien.patte@protonmail.com> wrote:
+> 
+>> On Fri, 23 Oct 2026 18:13:02 -0700
+>> Stephen Hemminger <stephen@networkplumber.org> wrote:
+>>
+>>> Putting all the array elements on oneline is easier to read and more compact.
+>>> What does python do?  
+>>
+>> My current patch actually contains two separate changes:
+>>
+>> 1. A fix for arrays of objects. Scalar arrays render fine on a single
+>>    line, but when the elements are objects, which contain newlines, the
+>>    brackets and separators end up glued to them and the indentation
+>>    levels of opening and closing brackets are off:
+>>
+>>    # ip -j -p addr show dev lo
+>>    [ {
+>>            "ifindex": 1,
+>>            "ifname": "lo",
+>>            "flags": [ "LOOPBACK","UP","LOWER_UP" ],
+>>            ...
+>>            "addr_info": [ {
+>>                    "family": "inet",
+>>                    "local": "127.0.0.1",
+>>                    ...
+>>                },{
+>>                    "family": "inet6",
+>>                    "local": "::1",
+>>                    ...
+>>                } ]
+>>        } ]
+>>
+>> 2. Putting each element of scalar arrays on its own line. This is a
+>>    style change rather than a fix, though it is consistent with common
+>>    JSON pretty-printers such as jq or python's json.dumps.
+>>
+>> I'm happy to send a v2 that only keeps the first part, leaving scalar
+>> arrays in their current single-line form if you prefer.
+>>
+>> Thanks,
+>> Hadrien
+>>
+> 
+> Looks ok, as is. more of an observation by me.
+> I don't in general look at json pretty print 
 
-The report looks valid, but this patches _one_ consumer of a broken
-transport_header, not its _producer_.
-
-bpf_skb_net_hdr_pop() adjusts mac_header and network_header, but leaves
-transport_header alone unless it was equal to network_header. If the
-popped region covers the transport header (BPF_ADJ_ROOM_NET shrink,
-or a DECAP_* shrink in BPF_ADJ_ROOM_MAC mode), we keep a stale offset.
-It can be negative, or positive and pointing to the wrong bytes.
-
-qdisc_pkt_len_segs_init() is only one reader. TSO drivers
-(skb_tcp_all_headers(), tcp_hdr() in ndo_features_check()/ndo_start_xmit())
-and the GSO validators would read the same stale offset.
-A 'hdr_len < 0' test does not catch the positive case either.
-
-bpf_skb_net_grow() already sets the transport header properly,
-the shrink side should do the same. Something like (untested):
-
-diff --git a/net/core/filter.c b/net/core/filter.c
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ static int bpf_skb_net_hdr_pop(struct sk_buff *skb, u32 off, u32 len)
- {
-        bool trans_same =3D skb->transport_header =3D=3D skb->network_heade=
-r;
-+       bool trans_popped =3D false;
-        int ret;
-
-+       if (!trans_same && skb_transport_header_was_set(skb)) {
-+               int thoff =3D skb_transport_offset(skb);
-+
-+               trans_popped =3D thoff >=3D (int)off && thoff < (int)(off +=
- len);
-+       }
-+
-        /* Same here, __skb_push()/__skb_pull() pair not needed. */
-        ret =3D bpf_skb_generic_pop(skb, off, len);
-        if (likely(!ret)) {
-                skb->mac_header +=3D len;
-                skb->network_header +=3D len;
-                if (trans_same)
-                        skb->transport_header =3D skb->network_header;
-+               else if (trans_popped)
-+                       skb_set_transport_header(skb, off);
-        }
-
-        return ret;
- }
-
-For the decap case, BPF folks might prefer to restore the transport header
-from skb->inner_transport_header when skb->encapsulation is cleared.
+Meaning you are good with both changes? If so, Hadrien the 2 separate
+changes should be 2 separate patches if possible.
