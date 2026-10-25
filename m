@@ -1,60 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.200
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792920267;
-	b=2P9NtPfVNXilrJVgvFpkNg1SYeLoINc55ijOWb9dULe7GE33VcwXxytucQ9ddN+F/AwD
-	 xbLhCYYwvUq0gUkbRjBJYU0Lbdt4Rgra8LqIQpUK2+vLdn7gnohIuljdFxAmgDGMrFARu
-	 vI6pPpQov2jwxu7Y5aX8BHOY1IqDEHEZhSQJAAHcZmK+GW6oBvdW8WtZA6AtN5UzvhKCk
-	 d0uZ1YfmUEquvaQ2VCbylhvfTPNbJ2c0uV4lTVRFiCD+8tzM+mmQ1/U6v9u/Ux0rElN+8
-	 e+o6x5rTvmBiJVgNVLUShAtDKy63G1Io8pjPBhso8lSXoKRwHFVgiclUtF65UzFTlQg==
+	t=1792921362;
+	b=My5/MgNHrC3j6+lGMFdlqh1L6HEYSJTEHGO9Jhikm+KiizyhClF9ouf2NGFsJBBhrR8o
+	 T3+jDoqYWuvXiK+XKEd3ijN5/4ia4VYK8FLWhOKPIAg+MWZa1ZXE67+SN8vijtrFir/0T
+	 Z/WUKLLwkASNAfavTlT89XziNNPwTDiGqG6CiFfrXYccbRIrrtADuWYV9OwfBbvc/Azn+
+	 iJSZC3LRNehGYUcjmpXSiT7kImYPnmMYqXu9zFVT/FPM4Wc2UVRrRa2iDJSWn/0HpRzFE
+	 jat+cBsxN4F2Vv6+X2hgBaNfbf2wg99LaOIS6Sd4somMZrt3/MfDIG4b1/voSM8YVaA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792920267;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=8ru8WucTgf5XxTTBZ+kWcpF4CX3cvFOX6RXg7kHDSH8=;
-	b=DvQaeexF/qCPtNufUIzSTuEF8DOvob0hLA/r3iD4LBdfxdpLRjfbRZVT5yXCSlIy8v3F
-	 Ari1EsbbbrtLgOhSbskLjVqbIaV1EKV3yiqvoUCbAajL28HeMEHhLgSGUbjbGXbkRs8FH
-	 bhv2C1OGEeIMacmIURHdShz0gBm6CKMLBFVZi25WOXWrMJ/dE95jqzaB0Z9OPOVwVWTfU
-	 cjRYws8HDbgaDoI4Gixdaj153W2YnPIsLxlU9cnCFLZgL4HMrhSNbuOBmSWZZu3bA8Kjm
-	 OQue9UHudmC6TSCvkJ36et+cNSdRD+lfURtUjkFyW9bVNGWleW9nm/AgzD1iaFm893A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792921362;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:MIME-Version:X-Received:Date:
+	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
+	 Subject:From:To:Content-Type;
+	bh=f5z7gJoDVOOZ5z/Ou45lA/nPBYXpeSYEhWs1uILW6Dg=;
+	b=ufpsgkTrH1scKNTGMQ2U+ShmRETLI9L5YZIqFdl9f8pjkslM6VzXjKoCE+gn+0FF1dHJ
+	 MOpC2VCj+qY/JyK2zvshhs4tZ4BHmV+WIvWsSceEjfKSwopekDOW/ZwRjs8zM//cEFm/8
+	 s6pIkWHYrBJf+c73vnc7GbMXHyookIxE63gm5WLaUOLkL9wTTtgayZsqK21eWCg1kYJw6
+	 Wlst2N/4/EUhHy5QSw+3BBGh3w29tyW315vSVD6PLO6PgV65APeNyPGFF9d+pel0lcy3O
+	 kkn7kHPfDZmwvTZuWvncQ91iub//ycPhSsGT8MZnS+Fjr053djCmMuKYhuMBzj6Tf8g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QZMyfoPq;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=fail header.from=syzkaller.appspotmail.com;
+	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	arc=none smtp.remote-ip=209.85.167.200
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1324606A32F;
-	Sun, 25 Oct 2026 09:24:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QZMyfoPq
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0332D1F01825;
-	Sun, 25 Oct 2026 09:24:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792920266;
-	bh=8ru8WucTgf5XxTTBZ+kWcpF4CX3cvFOX6RXg7kHDSH8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=QZMyfoPqMVgCEguqdcJuKeGJecn6vc/Iu6h8q1gX2W+6mNkajoO2AP0w32SgR9Z30
-	 xmLhYdNOpqTMWYt5ao6AISrAGvl879z0I1cKyPv14UWj3DEQkUpi0F9pVxO+GyHnKp
-	 GCkEX+u0QKe0Z7uhXOXCf7pVuaFByl9HBl1FydyOWAOVldjS2z9qAAJ27+zKx/rFyy
-	 r5oIKfRPltdaS66Z3FoZyU9rw6hjSAgyYWojAc8+h4fcEluMl7sEK6GLkh/aFjPwyj
-	 JaGr2sPahSKH9PM6M9pDU3YoNonH2BchVMmSrh7sELsv6/wlf6U24okCvl4ODBXeei
-	 Wet4+KsgSnlHQ==
-Subject: Re: [PATCH v32 net-next 4/8] net/nebula-matrix: add chip-wide
- hardware init/deinit implementation
-From: netdev-bot+sashiko@kernel.org
-To: illusion.wang@nebula-matrix.com
-Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
- sam.chen@nebula-matrix.com, netdev@vger.kernel.org, kuba@kernel.org,
- andrew+netdev@lunn.ch, pabeni@redhat.com, edumazet@google.com,
- horms@kernel.org, linux-kernel@vger.kernel.org
-Date: Sun, 25 Oct 2026 09:24:25 +0000
-Message-ID: <179292026555.3134.12245469100906472128@kernel.org>
-In-Reply-To: <20261021062113.2158-5-illusion.wang@nebula-matrix.com>
-References: <20261021062113.2158-5-illusion.wang@nebula-matrix.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35D2606A31D
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 09:42:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F35D2606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-5384e381fbbso2082548b6e.2
+        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 02:42:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792921361; x=1793526161;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=f5z7gJoDVOOZ5z/Ou45lA/nPBYXpeSYEhWs1uILW6Dg=;
+        b=w40PlTHlPCXZFL9FpwN34r0w88EFwcamDjbylRZbpNz5Ir1ojNngEXcU/QZqFf/vU5
+         6UwKZkT+3jwOtCCn6AepCgOkcx61xtGk6r0/aS3jgiLdoOCB7BN5gbMNoR5DUUOr96M2
+         jBS/4OeS9h7+WXWzxzQFJ20npo4iHJDB1bkwnPjAmEaOJ6XHKa/c9qtkNows41y+0E4O
+         ISiubfWMuLrzJ14OxIqVcAYEsfqo9r303fn6xr59YRC5rG67OSZHGjxKkdhdobfJ7Rr+
+         WbZVtSrzVBvW3KLt8gtU9HS/3xr1rjIvhTDz7D671QFeZAMgGbNrXKPx3DDC9911O++3
+         4wgA==
+X-Forwarded-Encrypted: i=1; AKwUvByjeRkTagmZ2XMjukJO6hDCQjzkIDwEZQXUV38T1ypLccL3rN/ncImljJCVTIO4DgNAv8deGk8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI/jti0HenVvyeWo3/nmT+ptY5dfg11LUL+D4bGfCkC8FVfO7RG
+	DumrA/IEfh92+toeQUEtCBCuMrbGgzcZLnqQO9SH4oFJbx8cTPcd2/X7g5bW/401HaEFrGDCGav
+	AjzIFuB3dhbqoV7Ykzgy0IxtQLWNf9MFK+haRm23kevV91QL/8dfztcCODkU=
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,227 +58,128 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+X-Received: by 2002:a05:6808:191a:b0:4f4:4de8:9376 with SMTP id
+ 5614622812f47-55c00321b32mr2301247b6e.54.1792921360826; Sun, 25 Oct 2026
+ 02:42:40 -0700 (PDT)
+Date: Sun, 25 Oct 2026 02:42:40 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6addcf10.4ce6c07b.2dfc0c.0009.GAE@google.com>
+Subject: [syzbot] [wireless?] WARNING in ieee80211_queue_skb
+From: syzbot <syzbot+c38f93f387ac25eabf68@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 5 potential
-issue(s) to consider.
+Hello,
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 3
+syzbot found the following issue on:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+HEAD commit:    20a33c6b6cbe Add linux-next specific files for 20261023
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+console output: https://syzkaller.appspot.com/x/log.txt?x=15cf1aa5580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=82b79abce6d1b17c
+dashboard link: https://syzkaller.appspot.com/bug?extid=c38f93f387ac25eabf68
+compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=117f4d8e580000
 
-- [Medium] nbl_hw_clear_stale_status() and nbl_hw_deinit_module() only
-  wait a fixed 2-3 ms before going on, and nothing confirms the firmware…
-- [Medium] nbl_hw_set_driver_status() does a host-side read-modify-write
-  of NBL_DRIVER_STATUS_REG (0x1300444): rd32, clear and set BIT(16),…
-- [Low] The commit message and one code comment do not match the code.
-- [Low] The header comment on nbl_hw_init_module() says 'Full chip
-  hardware initialization is handled by firmware.
-- [Low] Concern (baseline decision: false positive): nbl_shaping_init()
-  does a read-modify-write of NBL_DSCH_PSHA_EN_ADDR with…
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+c38f93f387ac25eabf68@syzkaller.appspotmail.com
 
---
+------------[ cut here ]------------
+syzkaller0: Failed check-sdata-in-driver check, flags: 0x0
+WARNING: net/mac80211/driver-ops.h:1380 at drv_wake_tx_queue net/mac80211/driver-ops.h:1380 [inline], CPU#1: syz-executor116/6060
+WARNING: net/mac80211/driver-ops.h:1380 at schedule_and_wake_txq net/mac80211/driver-ops.h:1391 [inline], CPU#1: syz-executor116/6060
+WARNING: net/mac80211/driver-ops.h:1380 at ieee80211_queue_skb+0x1cb4/0x22e0 net/mac80211/tx.c:1729, CPU#1: syz-executor116/6060
+Modules linked in:
+CPU: 1 UID: 0 PID: 6060 Comm: syz-executor116 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/07/2026
+RIP: 0010:drv_wake_tx_queue net/mac80211/driver-ops.h:1380 [inline]
+RIP: 0010:schedule_and_wake_txq net/mac80211/driver-ops.h:1391 [inline]
+RIP: 0010:ieee80211_queue_skb+0x1cfc/0x22e0 net/mac80211/tx.c:1729
+Code: 00 00 48 85 c0 4c 0f 44 e5 48 b8 00 00 00 00 00 fc ff df 41 0f b6 44 05 00 84 c0 0f 85 6d 04 00 00 41 8b 16 4c 89 ff 4c 89 e6 <67> 48 0f b9 3a 49 bf 00 00 00 00 00 fc ff df e9 b5 fa ff ff e8 bb
+RSP: 0018:ffffc90003316f70 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: ffff88805ac32d90 RCX: dffffc0000000000
+RDX: 0000000000000000 RSI: ffff88805ac30120 RDI: ffffffff91d2d970
+RBP: ffff88805ac319f0 R08: ffffffff91c0abbf R09: 1ffffffff2381577
+R10: dffffc0000000000 R11: fffffbfff2381578 R12: ffff88805ac30120
+R13: 1ffff1100b58633c R14: ffff88805ac319e0 R15: ffffffff91d2d970
+FS:  00007f837dd626c0(0000) GS:ffff88812347c000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f837e562ff8 CR3: 0000000013544000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ __ieee80211_xmit_fast+0x8ea/0x2160 net/mac80211/tx.c:3862
+ ieee80211_xmit_fast net/mac80211/tx.c:3930 [inline]
+ __ieee80211_subif_start_xmit+0x1367/0x1840 net/mac80211/tx.c:4489
+ ieee80211_subif_start_xmit+0xee/0x560 net/mac80211/tx.c:4726
+ __netdev_start_xmit include/linux/netdevice.h:5455 [inline]
+ netdev_start_xmit include/linux/netdevice.h:5464 [inline]
+ xmit_one net/core/dev.c:4057 [inline]
+ dev_hard_start_xmit+0x2cd/0x830 net/core/dev.c:4073
+ __dev_queue_xmit+0x14d1/0x3920 net/core/dev.c:5066
+ packet_snd net/packet/af_packet.c:3157 [inline]
+ packet_sendmsg+0x3f1b/0x51b0 net/packet/af_packet.c:3189
+ sock_sendmsg_nosec+0x14e/0x190 net/socket.c:800
+ __sock_sendmsg net/socket.c:818 [inline]
+ __sys_sendto+0x408/0x5a0 net/socket.c:2283
+ __do_sys_sendto net/socket.c:2290 [inline]
+ __se_sys_sendto net/socket.c:2286 [inline]
+ __x64_sys_sendto+0xde/0x100 net/socket.c:2286
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f837e5c51de
+Code: 08 0f 85 f5 e2 ff ff 49 89 fb 48 89 f0 48 89 d7 48 89 ce 4c 89 c2 4d 89 ca 4c 8b 44 24 08 4c 8b 4c 24 10 4c 89 5c 24 08 0f 05 <c3> 90 41 57 41 56 4d 89 c6 41 55 4d 89 cd 41 54 55 53 48 83 ec 08
+RSP: 002b:00007f837dd620b8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 00007f837dd626c0 RCX: 00007f837e5c51de
+RDX: 000000000000003c RSI: 00007f837dd62140 RDI: 0000000000000004
+RBP: 00007f837dd62120 R08: 00007f837dd62120 R09: 0000000000000014
+R10: 0000000000000040 R11: 0000000000000246 R12: 00007f837dd62180
+R13: 0000000000000013 R14: 00007ffe6cb13b50 R15: 00007ffe6cb13c38
+ </TASK>
+----------------
+Code disassembly (best guess):
+   0:	00 00                	add    %al,(%rax)
+   2:	48 85 c0             	test   %rax,%rax
+   5:	4c 0f 44 e5          	cmove  %rbp,%r12
+   9:	48 b8 00 00 00 00 00 	movabs $0xdffffc0000000000,%rax
+  10:	fc ff df
+  13:	41 0f b6 44 05 00    	movzbl 0x0(%r13,%rax,1),%eax
+  19:	84 c0                	test   %al,%al
+  1b:	0f 85 6d 04 00 00    	jne    0x48e
+  21:	41 8b 16             	mov    (%r14),%edx
+  24:	4c 89 ff             	mov    %r15,%rdi
+  27:	4c 89 e6             	mov    %r12,%rsi
+* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
+  2f:	49 bf 00 00 00 00 00 	movabs $0xdffffc0000000000,%r15
+  36:	fc ff df
+  39:	e9 b5 fa ff ff       	jmp    0xfffffaf3
+  3e:	e8                   	.byte 0xe8
+  3f:	bb                   	.byte 0xbb
 
-net/nebula-matrix: add chip-wide hardware init/deinit implementation
 
-This patch adds the Leonis chip-wide init_module() and deinit_module()
-hooks in the hw and resource layers, gated on has_ctrl. init_module()
-programs the DPED/UPED/SHAPING/DSCH/USTORE/DSTORE/DVN/UVN/UQM/PADPT
-datapath registers and sets the driver_status bit. deinit_module() clears
-that bit and sleeps 2-3 ms for the asynchronous firmware cleanup, and a
-stale driver_status bit is cleared early in nbl_hw_init_leonis().
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-> index 75d6982ae1e83..05f21d0416104 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-[ ... ]
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-> @@ -150,6 +167,695 @@ static void nbl_hw_get_fw_eth_map(struct nbl_hw_mgt *hw_mgt, u32 *eth_map)
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
-[ ... ]
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
-> +static int nbl_shaping_init(struct nbl_hw_mgt *hw_mgt, u8 speed)
-> +{
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
 
-[ ... ]
-
-> +	nbl_hw_rd_regs_lock(hw_mgt, NBL_DSCH_PSHA_EN_ADDR, &reg_val,
-> +			    sizeof(reg_val));
-> +	reg_val &= ~NBL_DSCH_PSHA_EN_MASK;
-> +	reg_val |= FIELD_PREP(NBL_DSCH_PSHA_EN_MASK,
-> +			      eth_bitmap & GENMASK(3, 0));
-> +	nbl_hw_wr_regs_lock(hw_mgt, NBL_DSCH_PSHA_EN_ADDR, &reg_val,
-> +			    sizeof(reg_val));
-
-[Severity: Low]
-This isn't a bug, but this read-modify-write of NBL_DSCH_PSHA_EN_ADDR drops
-reg_lock between nbl_hw_rd_regs_lock() and nbl_hw_wr_regs_lock(). Right
-now nbl_shaping_init() is the only code that touches this register, and it
-only runs from the serialized control-PF probe, so no update can be lost.
-
-nbl_dvn_init() also writes NBL_DVN_ECPU_QUEUE_NUM without the lock:
-
-    nbl_hw_wr32(hw_mgt, NBL_DVN_ECPU_QUEUE_NUM, 0);
-
-nbl_uvn_init(), by contrast, writes NBL_UVN_ECPU_QUEUE_NUM under reg_lock.
-
-To match the rest of the file, would it make sense to hold reg_lock
-across the whole read-modify-write here, and to take it in nbl_dvn_init()
-too?
-
-[ ... ]
-
-> +/*
-> + * Read-modify-write under reg_lock: NBL_DRIVER_STATUS_BIT is the only
-> + * bit the driver owns, and the RMW leaves every other bit of the
-> + * register untouched.
-> + */
-> +static void nbl_hw_set_driver_status(struct nbl_hw_mgt *hw_mgt, bool active)
-> +{
-> +	u32 status;
-> +
-> +	spin_lock(&hw_mgt->reg_lock);
-> +	status = nbl_hw_rd32(hw_mgt, NBL_DRIVER_STATUS_REG);
-> +
-> +	status &= ~BIT(NBL_DRIVER_STATUS_BIT);
-> +	status |= FIELD_PREP(BIT(NBL_DRIVER_STATUS_BIT), active);
-> +
-> +	nbl_hw_wr32(hw_mgt, NBL_DRIVER_STATUS_REG, status);
-> +	spin_unlock(&hw_mgt->reg_lock);
-> +}
-
-[Severity: Medium]
-The comment says bit 16 is the only bit the driver owns. That suggests the
-other bits of NBL_DRIVER_STATUS_REG (0x1300444) belong to some other agent,
-most likely firmware, which already consumes this register.
-
-reg_lock only serializes accesses from the CPU. If firmware updates
-another bit of this register between the nbl_hw_rd32() and the
-nbl_hw_wr32(), can the driver write back a stale value and undo that
-firmware update?
-
-All three callers can hit this: the stale-status clear in probe,
-nbl_hw_init_module() and nbl_hw_deinit_module().
-
-Is this register driver-exclusive? Or does it have W1S/W1C semantics that
-would let the driver set and clear bit 16 without a read-modify-write?
-Could the semantics be documented next to NBL_DRIVER_STATUS_REG?
-
-[ ... ]
-
-> +/*
-> + * Clear a stale driver_status active bit before this probe programs any
-> + * per-PF state.
-> + *
-> + * A previous kernel instance can leave the bit set (kexec, or an unload
-> + * that never reached deinit_module()) and firmware then never ran the
-> + * per-PF cleanup it drives off the 1 -> 0 transition.  That cleanup
-> + * reclaims the mailbox QINFO routing and the qinfo registers, which is
-> + * exactly what nbl_dev_setup_chan_qinfo() and nbl_chan_setup_queue()
-> + * write later in this probe.  Clearing it there - as the chip init path
-> + * used to - wipes those registers and leaves the inter-PF mailbox dead,
-
-[Severity: Low]
-This isn't a bug, but "as the chip init path used to" seems to describe an
-earlier revision of this patch, not code in the tree. Could the comment
-just state the current ordering requirement?
-
-Also, the commit message says:
-
-  The relaxed-ordering bits in
-  both DVN and UVN are derived from the PCIe DEVCTL state through
-  pci_relaxed_ordering_enabled().
-
-There is no pci_relaxed_ordering_enabled(). nbl_dvn_init() and
-nbl_uvn_init() both call pcie_relaxed_ordering_enabled(). Should the commit
-message use that name?
-
-> + * so sibling PFs' RPCs time out in nbl_dev_start() and their probes
-> + * fail.  It also has to happen before the mailbox queue is live, so the
-> + * cleanup cannot reclaim routing under an in-flight transfer.
-> + *
-> + * Only the control PF owns this chip-wide handshake.  The bounded wait
-> + * after the clear is best-effort, see NBL_FW_CLEANUP_SYNC_MIN_US.
-> + */
-> +static void nbl_hw_clear_stale_status(struct nbl_hw_mgt *hw_mgt)
-> +{
-
-[ ... ]
-
-> +	dev_warn(hw_mgt->common->dev,
-> +		 "driver_status already set, stale cleanup forced\n");
-> +	nbl_hw_set_driver_status(hw_mgt, false);
-> +	nbl_flush_writes(hw_mgt);
-> +	usleep_range(NBL_FW_CLEANUP_SYNC_MIN_US, NBL_FW_CLEANUP_SYNC_MAX_US);
-> +}
-
-[Severity: Medium]
-Is a fixed 2-3 ms sleep enough to keep the firmware cleanup pass from
-racing with the rest of this probe?
-
-nbl_flush_writes() only shows that the status write reached the device.
-The comments also say the hardware has no cleanup-complete bit.
-
-With the later patches in the series applied, the probe order is roughly:
-
-nbl_core_init()
-  nbl_hw_init_leonis()
-    nbl_hw_clear_stale_status()    /* clear bit 16, sleep 2-3 ms */
-  ...
-  nbl_dev_init()
-    nbl_dev_setup_chan_qinfo()     /* programs mailbox QINFO routing */
-    nbl_dev_setup_common_dev()
-      nbl_chan_setup_queue()       /* programs qinfo, sets QUEUE_EN */
-
-Suppose firmware takes longer than about 2-3 ms, for example because the
-ECPU is busy right after kexec. Can it then reclaim the routing and qinfo
-registers that were just programmed?
-
-That would leave the inter-PF mailbox dead, and sibling PF RPCs would time
-out in nbl_dev_start(). That is the failure the comment above describes.
-It could also reclaim routing under a live queue.
-
-nbl_hw_deinit_module() relies on the same unverified delay. On a later
-rebind driver_status is already 0, so nbl_hw_clear_stale_status() returns
-at once without knowing whether the earlier pass has finished.
-
-The NBL_FW_CLEANUP_SYNC_MIN_US value does not appear to come from any
-documented firmware latency.
-
-Could the driver poll for an observable side effect of the cleanup with a
-timeout, such as the QINFO/qinfo entries reading back as reclaimed? Or
-could it check the registers after programming them?
-
-> +/*
-> + * Full chip hardware initialization is handled by firmware.
-> + * This function only configures driver-level table entries and registers.
-> + *
-
-[Severity: Low]
-This isn't a bug, but does this comment match what the function does?
-
-Through nbl_dp_init() and nbl_intf_init() it programs chip-wide datapath
-registers that every PF shares (SHAPING, DSCH, USTORE/DSTORE, DVN/UVN, UQM,
-PADPT). The commit message also says "none of which firmware sets up on
-the driver's behalf".
-
-The comment on nbl_hw_deinit_module() describes the same registers
-differently:
-
- * Note: firmware does NOT automatically revert chip-wide registers
- * configured in this init flow.
-
-The nbl_dev_init() comment added later in the series repeats the "Chip
-hardware initialization is completed by firmware at power-up" wording.
-
-Could these comments agree on who owns this state?
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021062113.2158-1-illusion.wang%40nebula-matrix.com
+If you want to undo deduplication, reply with:
+#syz undup
