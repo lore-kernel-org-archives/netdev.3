@@ -1,95 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792962180;
-	b=NuRR+zGgBiJwUTY7lK/afiotBOi/WdjhrHDF9lV645IM1YTr8VAog7HQXb3Rkr8uoWtr
-	 r/Oq9goIL/y5k4CjFS6qclUWcM3dHesrcWkw1dPbVNrOM2USjEN60vrgBOT1PQpqddgZp
-	 kyn1bI5JFNRPMIR7jBWYGWNIYdinljPp3FqQey6QrDOTgfJR8sva8PdOrXsOK29kXc5qv
-	 hLtOGrrjIL9X9Va7PVi7HEa1Vhi9LQtXOfrPdPKjPHGP9vhj4pON2U2JO+DEVWlrNcfzK
-	 isjQcdbldVfzxIhhpTqGMqI+w0kOEf+pg2r+MIq0WtXXpujpzFkRhSnRxRqpdMBFwxw==
+	t=1792962182;
+	b=H7sFENLKsARUbEE/XTf8f2pwtaeGMRQ6vu8P6pftUKP/ro1Pb50FSmEBzND9zTVZuTKt
+	 NXFRCvwaI4g81AdAtCF1jcK1MuJw9MIWz6W8GDoTNGEH3mHRJNkyYhGzCvylOaoZmomVI
+	 JXtfOki98pVIkw32wuValHZGsjeJxvuLRrjNGBmY3m0YVUOJXsXntbce7/x5D1zI4jZ9y
+	 8H9kzkMb+W18HyFzdVGfGEzM0YG2mcrTwwMaYNNx+S3qHURoWHcdau4GtMgm31KGJqVdr
+	 PXxvgBA7sMoDVZAifQ3cB0OjtVRQO5U40wVFjJLYDSYX8C3hr0JaSxVL5PMQj0Dau6g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792962180;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:
-	 X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=ZvdM/zwudCibbhvG92/DAjuffztDVUyeE/Q5y2G9nAA=;
-	b=W1kcf0K8Fx3tMmPf2l4EVR0OaYORxS17f01nTOCLq3PZSjKdkv0uop5Ku4WmI07RVZNn
-	 KODt/VSrG1DwKN9DBo0eM6LlMHb2j7XGHKuTxblY/FaXulZELwErnlPxzFj1F6C6SJtBV
-	 UW5lH+oZNL/F7KwKeTRLNRPX44zTML4+t25WdRJtUe0q9rzdhwV11BAj8Ay5MklaqsNdv
-	 tdyeWi7vSwx+Sqqr1m9cmN6V/8uWFPnKEXY3V98Urbu50MAZkee1x3z11gDJdxGUvxUAP
-	 IF89BRmF7GA0BbVHjX6qpXYLYdKFEVKz28Z/qW/hdAjHLW1IFCuvZBmEIwV9SI13C7A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792962182;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Sjbp1arTrwlF4+Xkno80p7a7yfoZzwzDofI+XHoK+hQ=;
+	b=JhoUB/qiY70DFHW9PhBUeAs8HJ1aVa5RsTY1FqkDTRSEZKhRvDqO+HnnZOeokNuVRshV
+	 d3/0tU0vb8JbQF9pfhy6UfnRFrSWPSZlTjo8U8FjOYgwyra5vTMX98Uf9hGs11x2R0Vco
+	 X14+xfDCEDahCbxPboQqAkmZKDV5pkhO47mMFRGH2D3p6yxo0SSf6111TEgIcZdVb3Gfw
+	 wejLgeYzCi9jmv5txEdwCoytom8L1cz8yON6n0opvapsKVLccZoa5YcdA/k9zQ0HHzj4K
+	 2sRunAbieMWIjywe11y13Fk4NV8H9Qf9ZiN81OmibAY8ld32k2AV+LFA8CicVbkbYVA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=C6kwohrd;
-	arc=none smtp.remote-ip=209.85.221.50
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I5fFSGkO;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91084606A31D
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 21:02:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 91084606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B55606A31F;
+	Sun, 25 Oct 2026 21:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=C6kwohrd
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-48dee593f18so1764674f8f.3
-        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 14:02:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792962178; x=1793566978; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ZvdM/zwudCibbhvG92/DAjuffztDVUyeE/Q5y2G9nAA=;
-        b=C6kwohrdRBvofaSx1qmnvQje7E8iuZTJCsv53d4XxPyaSu4EcbbdgBCp9JFbmvFlhy
-         YXNyoy9oAMVj5h5rDBeBAATHEMAbXMhftcsNERr5mCx5xsu0rrnPYIauxlazNmaaxEem
-         xaLd+2K/zAOl5wGuoqf2lAuBdBOEt48a8AUcCNYFlI13TnS+Vfvay1nbvRIRgq6QAWm5
-         KokiwBqbVbTd8q7lhrEwTLewDBLXNaUXIQm8UpDf6LYpUTv4LvZ0xMJ1MDvITkmUGegb
-         4qeC+skOZmZm0phpdCvmjbjLf24Zdcn+aunV48yuwYoPDqZAsvgo07aNobvzsdTUnVdN
-         DqmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792962178; x=1793566978;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZvdM/zwudCibbhvG92/DAjuffztDVUyeE/Q5y2G9nAA=;
-        b=FD0q2UikjJ9Uar7JmoHC9/QAngQKXuUszwdD2rGUPkPZP5+YCYcch0YQZBo8xZdtUy
-         4Ym8tW42QUpLG1miP7sY5Fljqkk7sMpCoIPqb0yjluDungjafyzGRzVoCPy8vJ1NDKP9
-         bA44KrnSUJGEMyqZfnWvpQV40ZYVO2W8i6z+AZhnS0brD8xAl9/Uo51JQ7+jsCMbF2HJ
-         vtCiOrEZHErQHF7d+BEmW7Yom8v1E9+t44uFXuEJzxCZxHuVD0QtFGkhI5WGd65M17il
-         U0/j07dTO0u8wHhez9aZ/pLSACmskyatQmxC4PitvwTRfgpAKE+oRJhy3aL+dFQIh+zO
-         z51Q==
-X-Gm-Message-State: AFq9FYJQ7Znu0ZDho6PbgOz6ZrVs3Gay3Xul8uAiOW6BqNxKjOAHR682
-	Oe5gv4dT4nkHRwOBY9R9ZIflJCzmhALsSvsU3kXwAdXjnI1JHDUqk3s=
-X-Gm-Gg: AYBFou0mGfZyU8MI2eYbw4rn3rIdrWNlR+VWl/fiH4SM4Gdqd/JprQ5DgjTX7YYlFj6
-	N3Kk8oHcWlxlTUGny8HRm2t2fNA5wu6WWPTyTMU9iKk9Zb4od8d4/AiuKxYMyt+2a37E5f5bGJK
-	Ro6ZFgwSl9bsPc4awc3bz8+PTnIVL1TsJZc6QHIf2HK5yST++/yZfToz7oxrwR4HY/+C6l7QDLi
-	W0PWcUHcb1GmravCg20NTlulZtUj1BtO5EnU2rcbDgdCbigjKaHI5whjO8iQ3Ah8whdaYjwkOEg
-	1Clp/yucMnwObKqttcdElF+5GbOZSEk99AYj6SB3q90V01zRcgNzIJ7jfprbYLdnKvKAQf+M88H
-	aI39jpbsyO50MmQf54wZTVJFVnEfR/53USs6GroH1/n83VPDBlkcuhL7rWVCVlZt7N2cEZhtKc5
-	B+bim6wT5I1zwzisVuKSUELw3E/YMcWL6quONKX7MuRqcERbBxpyXtAeNGuZggK1DdZ++tL3HpW
-	fWR+qtloNY3AzIB6GGSOMjENxdkFfkwAvUH4Q==
-X-Received: by 2002:a5d:4743:0:b0:48d:f249:82c3 with SMTP id ffacd0b85a97d-48e3eb8b816mr5791876f8f.30.1792962177683;
-        Sun, 25 Oct 2026 14:02:57 -0700 (PDT)
-Received: from debian.. ([2001:41d0:303:db6b::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3eb8f36asm12289177f8f.1.2026.10.25.14.02.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Oct 2026 14:02:56 -0700 (PDT)
-From: Tristan Madani <tristmd@gmail.com>
-X-Google-Original-From: Tristan Madani <tristan@talencesecurity.com>
-To: linux-can@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	mkl@pengutronix.de,
-	socketcan@hartkopp.net,
-	s.grosjean@peak-system.com,
-	stable@vger.kernel.org
-Subject: [PATCH v2 net] can: peak_usb: fix use-after-free on PCAN-USB disconnect and init failure
-Date: Sun, 25 Oct 2026 21:02:56 +0000
-Message-ID: <20261025210256.629830-1-tristan@talencesecurity.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261023195400.3531721-1-tristan@talencesecurity.com>
-References: <20261023195400.3531721-1-tristan@talencesecurity.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I5fFSGkO
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7BCB1F01829;
+	Sun, 25 Oct 2026 21:03:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792962181;
+	bh=Sjbp1arTrwlF4+Xkno80p7a7yfoZzwzDofI+XHoK+hQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=I5fFSGkO+VDez7Q53zfyQPt8hdXjSc4nSJT6KVCgPe8+fM1xJciBZNfaKaXxLo0o6
+	 Zs0KH5r58AezOTkOt6jvJT+ueBT8RmxFxuR8jvCmTK1RfVxSUlBdSAcsX+hFQGmrqL
+	 FMC3y2emcH4L2VgpvmBniBjdFDaxV0mkfejjAhSNlNP15e4TBnM1Hvy5VEulSjMGup
+	 kZnRId2bumCt/gb2Nma4rHjLS/ygvY+FXIAQoM0B9Hy+XPf5WIAQod8XV6OsL5fgue
+	 GyD653FkjOU8vrT9vVbCNPK7T96BCmjDzG8/8r8rfbsdg/o5OWmfyVjlnCYz5A8SVb
+	 CHunxE8e14s1A==
+Subject: Re: [PATCH net v2] octeontx2-pf: fix skb use-after-free with ipsec
+ crypto offload
+From: netdev-bot+sashiko@kernel.org
+To: nb@tipi-net.de
+Cc: sgoutham@marvell.com, gakula@marvell.com, rkannoth@marvell.com,
+ sbhatta@marvell.com, bbhushan2@marvell.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Sun, 25 Oct 2026 21:03:00 +0000
+Message-ID: <179296218017.3134.5170259489302207876@kernel.org>
+In-Reply-To: <20261022-nb-otx2-xfrm-unshare-net-v2-1-5590c9325bcd@tipi-net.de>
+References: <20261022-nb-otx2-xfrm-unshare-net-v2-1-5590c9325bcd@tipi-net.de>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -99,67 +64,224 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The PCAN-USB adapter uses a restart_timer for bus error recovery
-but does not define a dev_free callback.  When the device is
-unplugged, peak_usb_disconnect() frees the candev without cancelling
-the timer.  If a bus error armed the timer and USB disconnect races
-with the timer callback, the timer fires on freed memory.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-The same timer is initialized in pcan_usb_init() via timer_setup(),
-but on error (e.g. failed USB command to read the serial number) the
-function returns without cancelling it.  Because dev_init failure in
-peak_usb_create_dev() jumps to lbl_unregister_candev and skips the
-adap_dev_free label, the dev_free callback is never invoked either.
+Critical: 0 (1) · High: 1 (1) · Medium: 0 · Low: 1
 
-Add a pcan_usb_free() callback that calls timer_shutdown_sync() on
-the restart_timer, register it as the adapter dev_free handler, and
-also cancel the timer directly in pcan_usb_init() on error before
-returning.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Fixes: 46be265d3388 ("can: usb: PEAK-System Technik PCAN-USB specific part")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
----
- drivers/net/can/usb/peak_usb/pcan_usb.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+- [High] The fix only partly covers its target.
+- [Low] When skb_ensure_writable() fails, the new drop path in
+  otx2_sq_append_skb() (otx2_txrx.c:1211-1213) frees the skb with…
 
-diff --git a/drivers/net/can/usb/peak_usb/pcan_usb.c b/drivers/net/can/usb/peak_usb/pcan_usb.c
-index 8fd058c328564e..440d8e2cfb6fe6 100644
---- a/drivers/net/can/usb/peak_usb/pcan_usb.c
-+++ b/drivers/net/can/usb/peak_usb/pcan_usb.c
-@@ -882,6 +882,14 @@ static int pcan_usb_start(struct peak_usb_device *dev)
- 	return pcan_usb_set_ext_vcc(dev, 0);
- }
- 
-+static void pcan_usb_free(struct peak_usb_device *dev)
-+{
-+	struct pcan_usb *pdev =
-+		container_of(dev, struct pcan_usb, dev);
-+
-+	timer_shutdown_sync(&pdev->restart_timer);
-+}
-+
- static int pcan_usb_init(struct peak_usb_device *dev)
- {
- 	struct pcan_usb *pdev = container_of(dev, struct pcan_usb, dev);
-@@ -901,6 +909,7 @@ static int pcan_usb_init(struct peak_usb_device *dev)
- 		dev_err(dev->netdev->dev.parent,
- 			"unable to read %s serial number (err %d)\n",
- 			pcan_usb.name, err);
-+		timer_shutdown_sync(&pdev->restart_timer);
- 		return err;
- 	}
- 
-@@ -1051,6 +1060,7 @@ const struct peak_usb_adapter pcan_usb = {
- 	.dev_decode_buf = pcan_usb_decode_buf,
- 	.dev_encode_msg = pcan_usb_encode_msg,
- 	.dev_start = pcan_usb_start,
-+	.dev_free = pcan_usb_free,
- 	.dev_restart_async = pcan_usb_restart_async,
- 	.do_get_berr_counter = pcan_usb_get_berr_counter,
- };
+Pre-existing issues:
+- [Critical] This problem wasn't introduced by this patch, but it is the
+  same class of bug (the transmit path using a freed skb) in the code…
+- [High] This problem wasn't introduced by this patch, but it comes from
+  the commit being fixed (195c3d463181), and the patch neither fixes nor…
+
+--
+
+octeontx2-pf: fix skb use-after-free with ipsec crypto offload
+
+This commit removes the skb_unshare() call from otx2_dma_map_skb_frag().
+That call freed the caller's skb when it was cloned. The commit instead
+calls skb_ensure_writable() in otx2_sq_append_skb() for xfrm offload skbs
+that are cloned or have shared frags.
+
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+> index b11389a841d1..91ebf247f5f9 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+> @@ -2121,10 +2121,8 @@ dma_addr_t otx2_dma_map_skb_frag(struct otx2_nic *pfvf,
+>  	int offset;
+>  
+>  	/* Crypto hardware need write permission for ipsec crypto offload */
+> -	if (unlikely(xfrm_offload(skb))) {
+> +	if (unlikely(xfrm_offload(skb)))
+>  		dir = DMA_BIDIRECTIONAL;
+> -		skb = skb_unshare(skb, GFP_ATOMIC);
+> -	}
+
+[Severity: High]
+This is a pre-existing issue from the commit being fixed (195c3d463181).
+It was not introduced by this patch.
+
+The unmap side of this direction logic reads sg->skb without checking it.
+In otx2_dma_unmap_skb_frags():
+
+	skb = (struct sk_buff *)sg->skb;
+	if (unlikely(xfrm_offload(skb)))
+		dir = DMA_BIDIRECTIONAL;
+
+On the DMA mapping error paths, sg->skb has not been set yet.
+otx2_sqe_add_sg() returns before assigning it:
+
+	dma_addr = otx2_dma_map_skb_frag(pfvf, skb, seg, &len);
+	if (dma_mapping_error(pfvf->dev, dma_addr))
+		return false;
+	...
+	sq->sg[sq->head].skb = (u64)skb;
+
+After that, otx2_sq_append_skb() calls
+otx2_dma_unmap_skb_frags(pfvf, &sq->sg[sq->head]).
+
+otx2_sqe_add_sg_ipsec() returns the same way. The unmap label in
+otx2_dma_map_tso_skb() works on sq->sg[first_sqe], whose skb is only
+assigned after the last segment.
+
+The completion paths reset sg->skb to NULL after each packet. On a
+CONFIG_XFRM kernel, can a DMA mapping failure make
+xfrm_offload(NULL)->skb_sec_path()->skb_ext_find() dereference NULL? This
+applies to non-IPsec traffic too. After the cn10k_ipsec_transmit() drop
+path, sg->skb could also be a stale pointer to a freed skb.
+
+Would it work to pass the direction or the skb in explicitly, or to set
+sg->skb before mapping?
+
+>  
+>  	/* First segment is always skb->data */
+>  	if (!seg) {
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
+> index 8d2d607bc92f..b98842c7e40e 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
+> @@ -1205,6 +1205,14 @@ bool otx2_sq_append_skb(void *dev, struct netdev_queue *txq,
+>  	if (free_desc < otx2_get_sqe_count(pfvf, skb))
+>  		return false;
+>  
+> +	/* Crypto hardware need write permission for ipsec crypto offload */
+> +	if (unlikely(xfrm_offload(skb)) &&
+> +	    (skb_cloned(skb) || skb_has_shared_frag(skb)) &&
+> +	    skb_ensure_writable(skb, skb->len)) {
+
+[Severity: High]
+Does this condition catch every frag that the hardware will overwrite?
+The commit message says:
+
+  Also do this for skbs with shared frags, as the hardware writes the
+  encrypted data back into them.
+
+skb_has_shared_frag() only tests SKBFL_SHARED_FRAG. That flag is set for
+splice, MSG_SPLICE_PAGES and zerocopy. It is not set when frag pages are
+shared through ordinary page references.
+
+cn10k_ipsec_init() advertises NETIF_F_HW_ESP but not NETIF_F_GSO_ESP:
+
+	netdev->hw_features |= NETIF_F_HW_ESP;
+	netdev->hw_enc_features |= NETIF_F_HW_ESP;
+
+So TCP GSO over an offloaded SA is segmented in software:
+
+validate_xmit_skb()
+  esp4_gso_segment()
+    tcp_gso_segment()
+      skb_segment()
+
+skb_segment() gives each segment a fresh, non-cloned head. It takes page
+references on the same frag pages that the TCP retransmit queue skb still
+holds. It only inherits the flag:
+
+	skb_shinfo(nskb)->flags |= (skb_shinfo(head_skb)->flags |
+				    skb_shinfo(frag_skb)->flags) &
+				   SKBFL_SHARED_FRAG;
+
+Plain tcp_sendmsg() data doesn't carry that flag. esp_output_head() then
+takes its !skb_cloned() path and appends a trailer frag. The original
+frags stay in place.
+
+Such a segment fails both skb_cloned() and skb_has_shared_frag(), so
+skb_ensure_writable() is skipped. otx2_sqe_add_sg_ipsec() then maps the
+frag pages DMA_BIDIRECTIONAL, and cn10k_ipsec_transmit() does:
+
+	inst.rptr = inst.dptr;
+
+That means CPT writes ciphertext into pages TCP still considers
+plaintext.
+
+On a later retransmission, would TCP send that ciphertext as payload? The
+TCP checksum is recomputed in software during skb_segment(), so the peer
+would accept the corrupted data.
+
+The core stack treats these frags as read-only. skb_cow_data() says
+"pages are considered not writable at the moment even if they are
+anonymous". Software ESP sets esp->inplace = false for nonlinear non-cloned
+skbs.
+
+The old skb_unshare() code had the same gap. Should the check be
+skb_cloned(skb) || skb_is_nonlinear(skb) instead, or should the driver use
+a separate output buffer, rather than relying on SKBFL_SHARED_FRAG?
+
+> +		dev_kfree_skb_any(skb);
+> +		return true;
+> +	}
+
+[Severity: Low]
+When skb_ensure_writable() fails, the skb is freed and true is returned,
+but no drop counter is incremented. otx2_xmit() counts its own drops:
+
+	atomic_long_inc(&dev_stats->tx_discards);
+	dev_kfree_skb(skb);
+	return NETDEV_TX_OK;
+
+Should this new path bump tx_discards too, so the drop shows up in
+tx_dropped? The existing __skb_linearize() failure path in this function
+has the same gap.
+
+> +
+>  	num_segs = skb_shinfo(skb)->nr_frags + 1;
+>  
+>  	/* If SKB doesn't fit in a single SQE, linearize it.
+
+[Severity: Critical]
+This is a pre-existing issue and was not introduced by this patch. Every
+xfrm offload skb that passes the new check ends up in
+cn10k_ipsec_transmit(), which can use a freed skb in a similar way:
+
+cn10k_ipsec_transmit() {
+	...
+	sa_info = (struct qmem *)x->xso.offload_handle;
+	if (!sa_info)
+		goto drop;
+	...
+drop:
+	dev_kfree_skb_any(skb);
+	return false;
+}
+
+otx2_sq_append_skb() passes that false straight back, and otx2_xmit()
+treats it as a full ring:
+
+	if (!otx2_sq_append_skb(pf, txq, sq, skb, qidx)) {
+		netif_tx_stop_queue(txq);
+		...
+		return NETDEV_TX_BUSY;
+	}
+
+Can the core then requeue and retransmit the skb that was already freed?
+The VF and representor xmit handlers do the same.
+
+This drop path looks reachable during SA deletion or rekey under traffic.
+cn10k_ipsec_del_state() does:
+
+	x->xso.offload_handle = 0;
+
+Packets already queued with a sec_path reference to that state still
+reach the driver. Clearing OTX2_FLAG_IPSEC_OFFLOAD_ENABLED in
+cn10k_outb_cpt_clean() leads to the same label.
+
+The DMA mappings that otx2_sqe_add_sg_ipsec() set up in sq->sg[sq->head]
+are not unmapped on this path either. The next xmit resets num_segs for
+that slot. Are those IOMMU mappings leaked?
+
+Should the drop path unmap sq->sg[sq->head] and return true once the skb
+is freed?
+
 -- 
-2.47.3
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261022-nb-otx2-xfrm-unshare-net-v2-1-5590c9325bcd%40tipi-net.de
