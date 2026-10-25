@@ -1,96 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.194.58
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792912828;
-	b=A+hKWfC1jkECy0rYTgAeMh7PbVYcY+ymxAS+9U1yYDCVg/HqGiUI71wBflvk5Zcc5kTv
-	 P5ATbSEsl3fY/aT4F4d3zGSZWO01D05HDloj/Xl5Q3haFZjxnf628jdZKv/fols3uum2a
-	 V1Wd0nNVPIeZIHdym3UcZz3ktSor9lE1JBEhlagDt31FXzGs/sCaYdfDwaAZv698QlXzA
-	 zN69g+HDHrfTwS5dGEpatjsmfAwEQfkNRMFChgFe+mX+Q+LOaAqGMBssWOQXhi7uCbE//
-	 sU1YGIoSQllSkbZNJd1U2GbiW1lkVOv5Sjj8aA9O+vYGD6CazCz+S/5praqalnQ6YMA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792912828;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
-	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=Vc/Zl4fsfLU0/QmL7gZOEKyMEql8+BKqFQTpDZh/z5o=;
-	b=4AnU6W33lQs6L89Kd2m7PjoLcbi13vKRBT6U+qr8QyP5feVbOl5qNH29Z2NRdBgbgsXf
-	 u9344ozyODZ4ck+/7D8z5GZkebj8rM1ThLWK4C+OblryUg8DPu29jxTnz2zL2X5DH4agB
-	 Ms04PILHWDsOOWJK82QBKVlTXQlAgToQhGXRsxe79RljgESMNuhtEXxhnDDp8Mgff795m
-	 ZgtpvOWhpzXJBWumG7F6HuLywsZOmdY+lAIthXbLSy56BUlbWHswmOtu9/dq0aSs2RseF
-	 5GXNNAbGvFaxuolkQNBJOHBeDzlRVe44sXZ/W+kCWynfz8uWcAkYpxkII37iN21Nw0A==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=cw8H2SXQ;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.194.58
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011058.outbound.protection.outlook.com [40.93.194.58])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.173
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792912952;
+	b=v8dC95bvDn8CRxUAYctr4GOIEGnKVFx8ORwwbCqXMww0Q5R1OhPGaeUxFx4owsornjAb
+	 QkeT9YrcF+OdN2w8oIN+y+/9E9eLq3431HJlOpr1BppyRbgPdYlXjNUTM7kdVOWSxCILy
+	 hSnsiqQvznLJH8Oq3d6IPXIfo+dvOAIGyObZvJfYXW6kmI0l9NxB/QnK3fvpRrK5e+1SL
+	 G1HcbXelMKKeXbxysLHOHI4+DHu2unj5jHDaZCanpnxCATjmRfKMEBDshsDVzkSWcD3JA
+	 1oyu4l6gfPVyXfQgvtiRSO36Oxhk2UNrkrDs9I6VN5bUnG0GbEyxYMnEYpHs4YdjOzg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792912952;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=/GcpDOIHzeZZHHnDHnE8tFmy0iBveN0FRIH1VtyXChM=;
+	b=coG7AQk4bN4C2WKeDl2yxFj+VL7S8tj1744Y68L/k2+Ci4rvbddhZIoSB3oilICtF6S0
+	 0LM5IBJhpyux/n8wT1MtT0MiWJrxNVt+ZWHW4rbobDFbMmR1S3oJHo9IZwBNPkkgMiV4G
+	 y3vKXwjv7Qu1VP73o3BVNY0K3xbqGelu0eF6bd2QHO0YpCwAt3rFGlwKHTSZqCSJ1fDc+
+	 tYvxe/8mpRZ7IZV5UCoTSdhLpyCg9Stn+u+LEnOZLue6DPphiWi375ZQeQ8uTnePko8FY
+	 Fy0t6nDwVDSEPIRhuUYgPNfccRBE2LomLVKs+NPedvQludqVs8TUlr7jnK1si34oBow==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="I/Ef2Atf";
+	arc=none smtp.remote-ip=74.125.82.173
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94D0606A31A
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 07:20:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A94D0606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6638F606A31A
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 07:22:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6638F606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=cw8H2SXQ
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vxXfPxTYrGC/LLr7pWXrkT5DwzTOX+yIOt/6d0LOuaGqTxFq1He2muvouwemagFvMA1DNtY020zruLK79MRjF6RtVuP33eAnBZoCO465nrXnhj6EkyFrPDgFpA4nVm81ix7oxStqIDao1BuifRZDeGjsY/TGC75buFK2phDRxYz0Xmo0G4wkuIdR23SDw/fMd/GkmJpZQrBMJKBpCH64c+SYZLldMia/1Z1G9cr8uvILXbI1ettvnCeELTdmyxCG4AqoDEHZcxEUdwerKOt1C7Y6mora6jPOPZzalbkZzuCT4hEvoizpqBg6Du+JrdW41MST5MFWJAJ9uTBcbTbdLg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Vc/Zl4fsfLU0/QmL7gZOEKyMEql8+BKqFQTpDZh/z5o=;
- b=ZSKH7xsqoFsqkdwwcbnDV0mdegLYtiiKk+hsne0tT/8ALcZU/zvai0tw8TUudhQtxILhICRTqparslG5oajS97r6/TCa+yDFYbEd6/++yoEZHJiDEnXbcdnCkbh5xxvUAiSbD6O3mV3Y6UeDCMQNCoskvyPzfnYLW1bePNzpIqbLyvkouP5BTlD5orpoUCxFz14oa6CtekOwjsRU3GzbkJbyMgc3pobDXLFPqGGkmZAuvQIPBafSaVO4L4jy1IC+Zyp2Sv4wBluIlSq9734+aaNPBur5r6UoZhS0Sd9+ek2c2oK7nAB+K8EcMWQwFUQTvKejHIg3QxzqMrGj2pKNVw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Vc/Zl4fsfLU0/QmL7gZOEKyMEql8+BKqFQTpDZh/z5o=;
- b=cw8H2SXQfR8kjwJqoBOF2186+wjAOQpSb2u8pMHn7cuYDOA0zk3LYUSvoYVPTjUZ2iZ5BOi6FPM+xT9Zb4cvUjBVyfHXaxw7aZOPl/MBIBkc43FUyJlNstOQg+rnO9tih0lC7nwAphIptMG6DSPRMSiFM3QoV7hc0+PLCLov1BnJMoY4TRv+dm6gdLKnZwscub83I69AP3nSHIDOLaQYV0Z5r/colzGl7Fk7gN8HCSLrRakkrOKs9Avmzo1bQ21vNw7LREI8qLm53O94lRjAMKE5+n3HRDlpAsiuS8/jaqqbtBHgAQKFCaKOAtXW4kvzTAkypJozu5dQm6PhxiSPaQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by MW5PR12MB5684.namprd12.prod.outlook.com (2603:10b6:303:1a1::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.21; Sun, 25 Oct
- 2026 07:18:24 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0546.021; Sun, 25 Oct 2026
- 07:18:24 +0000
-From: Ido Schimmel <idosch@nvidia.com>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=I/Ef2Atf
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-35f036b17easo5154827eec.1
+        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 00:22:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792912951; x=1793517751; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/GcpDOIHzeZZHHnDHnE8tFmy0iBveN0FRIH1VtyXChM=;
+        b=I/Ef2AtfGeMluXC7NTZ+RuqYBNmgd3N4TLprBbVmpnXS4YEivT/OnxgyDoABtA0idd
+         PB5EjL6+hzFMHPOTK3xlzOer4n8Umrc9czxgGHTASL5oV/UFbduAjKx+hahx6lXO/whj
+         V20JnkwWZG6POBM2VT+IByM4TFYyzI7LQaaUNsvJACSTcDlDAbxG36EuO16NbbV9EfdD
+         BgtTJTtl9R4fOJyrIv9Mj4SzATnJR5JdwhZWWak5DJuRO6dYq2kihliflhYmrUfv5T96
+         VoGVuBN03e0oErK4aRuBYH+f+Rjh4RoR88Yr7gzebKakIh1TbKbD+OHxkGHALC98ROST
+         /drA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792912951; x=1793517751;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/GcpDOIHzeZZHHnDHnE8tFmy0iBveN0FRIH1VtyXChM=;
+        b=EJwmImGc9UpQdO0YwaKU1y5QVlV0IRu8+g4u0VKYWatIVupnfFt2/DxDTy/l1s1YOd
+         lwmjRGxnn4F6PGocbtM2Mup2OjOtHvaXgzQULbxxhGl0mFg4snmmFJawGHvr1NLYR7vS
+         pCpoH5smH4ll3uvcfxanaSf898K30DTFqymfVKHYJuVt+lO0tjYctPTMIFtmUoAw1AKk
+         vuNxt2t6ZyqUqF5nu/cYkzLp+pvGaeLguT/ANrwNQTsSh9ZDyOmoIc3pFVMC7QayGt2M
+         lmFGvuc73YoHalRo/ffK2+WVrW8gNCUnxACs0vYHpkRo4N/fcLSN/65sszwZuNpZYE5S
+         GY/g==
+X-Gm-Message-State: AFq9FYJrxJbhsMlNWow1XiqxUWzMagDEEylAqMl8EjSa0SqfhR2YyucX
+	FFsQn1TS70JiqraEjlFlbyEDwKZUGgh6TuJViLPuvHZUCEMnWRU5xabdMBN0q0NR6zk=
+X-Gm-Gg: AYBFou28jezO6L78mfDy71OWdSxej4PDlbGvYbO/+Iawxvg6rDwug5pPZDDa8gkhmJP
+	isd9t9mxjqzEgmTmfpxAEY2/QO4mUSgiJgxuK/jX0JaphTOPO8N5t0BVVmu72e2zqXGPJn3tCUq
+	aIuOWjizh5NO3hsQG/TgBWwd9lHohXPwTTXxMbE5iOgwKmhWHijpI1ZPivAh21GLWIDd4Ox9qjy
+	17JvT+Gs1q9hS9SszE1p+SipOLbbFE3qwCThbw3GD5uxcpyxl+lXCp7s2tpwpW+2omMRpIBYokT
+	tWNRYgblcCdWnFmNY7PQu+luc8y5j+lMuthqgv3NibGz5u4QvkQWTH41aHwfcBlCSScNtv0pwNX
+	pEGFirOB93n98aivivIYzVWzfSl1Uol8fgZtmAEpK/rvOLTNz3W3+cTtmzmRc+wV0wFJMEUGI1/
+	YekfCa4QiTwv1IQIflcPXrPGfqt/lU883yfYR/KCtEWYtG1C8erFSCpg7AdKvmrtEJLbKGHJZAK
+	hga4TQEYmtH6rDt2wdZqIt8WVCw0WIbM2jfSrm1WGKbakl3Ca/3JFB+VWnmXyvL3wMODXkqsWzd
+X-Received: by 2002:a05:7301:6182:20b0:366:c0a2:642f with SMTP id 5a478bee46e88-369e84ddf59mr5292495eec.22.1792912951407;
+        Sun, 25 Oct 2026 00:22:31 -0700 (PDT)
+Received: from ZephyrLabServer.internal ([165.162.64.148])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-369e8ec4d73sm18682269eec.22.2026.10.25.00.22.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 25 Oct 2026 00:22:30 -0700 (PDT)
+From: John Macias <dencity7@gmail.com>
 To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
+Cc: andrew@lunn.ch,
+	olteanv@gmail.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	edumazet@kernel.org,
-	dsahern@kernel.org,
 	horms@kernel.org,
-	yoshfuji@linux-ipv6.org,
-	Ido Schimmel <idosch@nvidia.com>
-Subject: [PATCH net 0/2] ipmr, ip6mr: Fix several info leaks
-Date: Sun, 25 Oct 2026 09:17:27 +0200
-Message-ID: <20261025071729.34967-1-idosch@nvidia.com>
-X-Mailer: git-send-email 2.56.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: FR4P281CA0122.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:b9::6) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] net: dsa: clear the conduit RX queue on user port receive
+Date: Sun, 25 Oct 2026 00:22:03 -0700
+Message-ID: <20261025072203.1519561-1-dencity7@gmail.com>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,90 +97,70 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|MW5PR12MB5684:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3451c4ae-8d3e-4e86-f30c-08df32682807
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|18002099003|6133799003|10067099003|3023799007|56012099006|11063799006|261021121427099003|261022075727099003|261021123027099003;
-X-Microsoft-Antispam-Message-Info:
-	h56oj/0QzLCOvNHG8uS/VcX4h71P47jSPxYkI6decEJ7mHuHjVvPVMKpmI7FLd2hxN+hR3fNoum0ovyLWKRObIdHch1WOHfrzpVThzpSaAxiCd436qAuhRpVUZkWLMrWaWQp1Izw0HtqHpPDKC0FVsqQqUPjmf/X0lbuJH1XfCWznHJFGyJuyFYGEkmPgLloQk1cFWyIf5Jp8YY9XrMK77+I+BEUvt+VFM960D4mGWpU2A9USI2doQprzlBsABTjgc6EYDNTBc3/G0BkcdPOaQ//bm2l4OjPi+mlueSop0yKlkJaiHYWPo571m7wSUe1QowNVVn4Ws/mZyxu3L8z4W2BQOeTn3d2xaXt/BzWrxSeTLY+dVH9V/YlGHL2Lv9Zd9iV41Nhoyqwzu7xURLQBrH4QTKbTRMsHrt1MiB9FxeCDWaBwroVQBWTHru3DGqnOux5obTM1tzKliZb4CdFuq4q5yDfiK2qtK1Uev3uoI/L4+zqgJAq6li3YKPz/EtDgWOtxA59gMM7oNYKR0Jj70yal1gva1HRXK7cyT4Q7zkr5UPYeyD2xEKFDJmOMh5OY5MzJ7259NdBcFzwKW2PTRqOi04abhuoB6Mx0TuL4Z9wr94eZri9jrFYMVAS3t4Zm2/+WDmn1zdDd2If/KIZEIryXtJ9YcG0iU/xh7jGsqo=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(18002099003)(6133799003)(10067099003)(3023799007)(56012099006)(11063799006)(261021121427099003)(261022075727099003)(261021123027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?hAc8Mx41EB7vBZO1a2pMQ52pIMvpy2nVAEOOSyVn743Bi360lW8gO2pPidkC?=
- =?us-ascii?Q?B/x/4L9f0kPUrKSf6LZ+WNaFQ0axVsEuSadnNj+hE7ZpmoAGHgeM5d8nfyhy?=
- =?us-ascii?Q?xU4TE6QJD6SWpn/KehMAmnKl+4gsS8ySS8MrxhDGET7r7I9mLS7mTqvu/bhH?=
- =?us-ascii?Q?BlawcvmHU3XvM/KPYjdvRrqfA1bjrLTn6r2rSys/Wv0gK8QsnMBu+5hE3bjc?=
- =?us-ascii?Q?9ktGEVaIXKE0Q7Du/Czn6WoZTL2av+MtjKYl4/DRXYRFNRrigM9V+HvXh8au?=
- =?us-ascii?Q?Clj3MTbPpeAleDBdQt2MgQEnpeQDuzeYcqAvH2As0DHX4GOwyEop4LGh+DX0?=
- =?us-ascii?Q?SlvcJ9BVVh4sK/xyHoS+b4j3oFeISXT0hhGP5oxakD4W3YAurSmH3w5NPQAP?=
- =?us-ascii?Q?8KrTHDWFsLTXWQPk0BxIpgaubZ/aOn32ZMC6NWgvC73j2yBEdX6+PBbaht88?=
- =?us-ascii?Q?Xrd3YsDOIMw9JeBXcYIXDTWNxwACalTO8hjFs8LPUqFbcF1ElepqhmMUjxRZ?=
- =?us-ascii?Q?ZOaqj9kMybXRPxchOF8D6z4DvE0XBjPoctmGKKGxYbiTpKsSX9a0MSYXUjqh?=
- =?us-ascii?Q?8t/0VP1+Sw+T+5oROTK2wkpi0sWMXAAYQ448kwtZwiR0HmRYkn7Ccanbi95j?=
- =?us-ascii?Q?zwTCjFfJrl3Dg0HIgj3lzADc8KaV9CiPvWNTHDLr9idg8nP4nVAlUHq1meK3?=
- =?us-ascii?Q?LwbyIMFcdQ8MlQyC3Jpa/IU3XIqlj3jF44jVJCVykYzncnxSwds9+7jSKbZj?=
- =?us-ascii?Q?xsjQk5uqKzjvorpakGy1M76YOxRrNGV45Gl95BiWhqOxjtFQ5b02O5GNScHG?=
- =?us-ascii?Q?6Ud944IJFXtXk9TbvrRSC1RH9Rwec4ty7Sh/8waNGARHaMAwwWO0+JCKr74D?=
- =?us-ascii?Q?/qDjaUuE7O9q3Ft21iOiopmWtlNA+dSAhZoV8dTDi63WBZV3CpYUtnaPRLfA?=
- =?us-ascii?Q?nBG105VBDUQM9xEgH1vuV2ATSH9KcVSKS3yEXwFXu3ZB0+a4AR54OS6SCNIi?=
- =?us-ascii?Q?dee2bmOCnzWjVXux7Hh3d7ndVwPboLA8d6qppWMt+VWmlqwlzRbtdgSr4Np5?=
- =?us-ascii?Q?IY1rhlzAa4LLW5WDO5dFRGQyobNaMHO4MEh/LhCGWvj2ElPwYiBhG9bPDEVR?=
- =?us-ascii?Q?/c3sNfg5hSmq+RVX79ib5coxb89SdMIz3vKR1mEonhCzOf09tjWghLN+dDa/?=
- =?us-ascii?Q?q0KW6/KoaXn2Sd08BoWSiNWnxzEnm5GleIys7b0gPfwcj3CbAOykM7Eimcpy?=
- =?us-ascii?Q?pagoqcHpo4ulUITBjQM6WEpvxhKRfo6u+UPsRmCZXO+PL26kWJM3c8N5RFtt?=
- =?us-ascii?Q?W69NvMNSr2isrlKGl1Hwy853bGc64chUyFMGqMDdzzswsPszwJvBFJXPmFak?=
- =?us-ascii?Q?VTF91fWQFRBpZpO4m1LxyfG7QtAeZ9Qr7FhtguuVySOW8vKdW7nIHX87j31K?=
- =?us-ascii?Q?MwqN1n+0Y6xcmSnexfSfao/Xl+IF6zwpOyPSLcTjisBKerz4oM36QywBi6aa?=
- =?us-ascii?Q?kv5vWAoKQe956S9IXsRIIWimdSZ4FOAZADykkqKe5FajqLJ3QDrMyGpLiWl0?=
- =?us-ascii?Q?rjdHHVC2c1XsMmQHUO3rWf87THdnjL7AAajAKW+IkRXyDD8g+xMrNdN4bYRT?=
- =?us-ascii?Q?OFNpvsxMhBbDdTmbma7DdglThRbXlUh7MK5pyFukgYiRF+rIcPh91mLGcNQF?=
- =?us-ascii?Q?YYW8PNyLuS3ufu8ekolOAyssAzQhggtqwRmZ3HMfAW8IlMSu?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3451c4ae-8d3e-4e86-f30c-08df32682807
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2026 07:18:24.0731
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4Btn2MTdrHCiwu1PYYQkjfkZwXe+dvR7kYsKVVFU6jouWBgToyHX/dk3N4c5Nd0JStojNWahpBWaIS02V0cz6A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR12MB5684
+Content-Transfer-Encoding: 8bit
 
-ip{,6}mr_cache_report() copy the IP header of a packet that triggered an
-upcall to a report packet that is delivered to user space. The header
-is not always fully initialized or present, resulting in info leaks
-flagged by KMSAN.
+A multi-queue conduit records its RX queue in skb->queue_mapping with
+skb_record_rx_queue(), as stmmac, mtk_eth_soc, fec and dpaa2 do.
+dsa_switch_rcv() passes the skb to the user port with that value
+unchanged, but user ports have a single RX queue. For a packet that
+arrived on conduit queue 1 or above, get_rps_cpu() finds the index past
+the user port's real_num_rx_queues and returns without steering. The
+WARN_ONCE() there stays silent because the port has only one queue. As
+a result, rps_cpus on a user port takes effect only for packets that
+arrived on conduit queue 0.
 
-Patch 1 fixes an info leak in the RTM_GETROUTE path, caused by the fact
-that ipmr_get_route() does not fully initialize the IP header of the
-packet that it creates. IPv6 does not suffer from this problem.
+Clear the queue mapping when the skb is handed to the user port. TX
+queue selection is unaffected: the user port's own netdev_pick_tx() sets
+queue_mapping again before the conduit transmits.
 
-Patch 2 fixes info leaks triggered by packets injected into pim{,6}reg
-devices via AF_PACKET sockets. The kernel does not validate that these
-are IP packets that carry an IP header before calling
-ip{,6}mr_cache_report().
+Found on an IPQ8074 board (OpenWrt, Linux 6.18, conduit with four RX
+rings): with rps_cpus set on the LAN and WAN user ports,
+/proc/net/softnet_stat showed no RPS for traffic hashed to conduit
+rings 1-3. With this change, that traffic is steered to the configured
+CPUs.
 
-Both issues were reported by Sashiko and reproduced by me. See KMSAN
-traces in the commit messages.
+Fixes: 91da11f870f0 ("net: Distributed Switch Architecture protocol support")
+Assisted-by: LLM
+Signed-off-by: John Macias <dencity7@gmail.com>
+---
+The Fixes tag points at the commit that added the DSA receive path. The
+problem shows up once RPS is used on a user port, since get_rps_cpu()
+checks the recorded queue against the port's own queue count.
 
-As far as I can tell, all other callers call these functions from the IP
-input / output paths and therefore provide a valid IP packet, with the
-exception of ip6mr_get_route() which fully initializes the header of the
-packet it creates.
+This was found and fixed with an AI coding assistant (Claude, from
+Anthropic). It traced the missing RPS to the stale queue_mapping, wrote
+the change and this changelog, and ran the tests on my hardware. I have
+reviewed the change.
 
-Ido Schimmel (2):
-  ipmr: fully initialize the synthetic IP header in ipmr_get_route()
-  ipmr, ip6mr: validate packets injected into the register vif on xmit
+Testing: the same change on OpenWrt's Linux 6.18 on a Netgear RAX120 v1
+(IPQ8074, out-of-tree qca_edma conduit with four RX rings, RSS over all
+four). Before, received_rps stayed at 0 on every CPU over 8 runs of
+bidirectional UDP with rps_cpus set on lan1 and wan. After, it rises on
+the configured CPUs for traffic from rings 1-3. On this tree (net,
+7076f684d) the change is build-tested only (x86_64 defconfig with
+NET_DSA, W=1, WERROR). I have not tested it with a mainline conduit
+driver.
 
- net/ipv4/ipmr.c  | 7 +++++++
- net/ipv6/ip6mr.c | 2 +-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ net/dsa/tag.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
+diff --git a/net/dsa/tag.c b/net/dsa/tag.c
+index 6a5aa7fc3..ecd4d8669 100644
+--- a/net/dsa/tag.c
++++ b/net/dsa/tag.c
+@@ -115,6 +115,12 @@ static int dsa_switch_rcv(struct sk_buff *skb, struct net_device *dev,
+ 		skb = nskb;
+ 	}
+ 
++	/* The conduit's RX queue index means nothing on the user port, which
++	 * has a single RX queue, and get_rps_cpu() skips RPS when the index
++	 * is out of range.
++	 */
++	skb_set_queue_mapping(skb, 0);
++
+ 	dev_sw_netstats_rx_add(skb->dev, skb->len + ETH_HLEN);
+ 
+ 	if (dsa_skb_defer_rx_timestamp(p, skb))
 -- 
-2.56.0
+2.47.3
 
