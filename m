@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792939242;
-	b=5r88vPF/o5DziHqUBCmU9Z9nCNdXv31U/MIiEZuVYVB28aWzt/lK2QaaQLZAGlUhSs6k
-	 AGVwoHZ5BENPGxTAFZUapa73bX2dYY488qjpXdfLdkxEmq7asMyKgMgDjNGWPxWXzG5Pm
-	 NMsC4cZjfdVVHRpblB0ALZ93Q/SJzFn8IZgL7Uifs9VJxTXbMdCrx/VKK37xKXceF1Vew
-	 taXbbDyQQUPCq3yeZd0fdhG7W7roHb9GOI5Ontvq2TC+2Si4fbupBFJS4zuty9kFkqaNJ
-	 0FRKDuns+Ki567brcRWLOshoPr0J4BSTvyGtezKEI7Z3/+KgZu25nZvDqzXG6m97oPQ==
+	t=1792939617;
+	b=HA1HoFk0YM4ZKe3YZTmA9zyxe4+tFP5hhOhp0gGHCcar/BF7QLd6ABtecQQL0hTedum/
+	 fCYV4+XEzfa9kAHXi3Di/mogtCs2kuRE6IgewrDsr1RM38MRDCGqHLB+xhUJLQMRvSAIB
+	 7VgnT1rzdNuAr3mBJxDiDhLTj/ChcG35hc7vm1MzGxK7i47Rnh7OLUIvH40BR7ONxc1i/
+	 UgFXRdpiZ/x42rff5406Lqtg+/PJOrT6UB2unqWPIacmMB7/z0va/HPQpPZWotdteOD/h
+	 TQdGtSu9KlbHDr2b+VJW2OOqyMEvJi7OFfVK+Qus07GIA7WI5SeZ2ra+Hxyorqiqgaw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792939242;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792939617;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=9FAAKmlEypGsI9J86zAjMvVPqXYkvra1xp/aDP/bK/g=;
-	b=q/mN6GMy5L5nEW9XsMxZZksZEfH/N/a05YHdB3ikwbdfUyfxDMgBdfxHszp61IvSb53z
-	 TRRw2Y0RrjgwAniurWAxuJG6Q+9S3LAF59T3cVfxrmPRnr41OcbDigIc40Dj7hQe/vF5o
-	 PI1/6+sPPpUatAkqE5gVv0sJ+ByHskVd0d4eV1VP7047z3W/jm2NObFAm7Bj1b+WKCta1
-	 2TP/NnXTLouQCiUOjMdRjibt/L2AK0G8bupttEOqBoGNJPC7bKfxGvqazixhJ+VPGCWDX
-	 a2+SzvJ19QeYpBJLE1xURJ9hUQpljhENoXzLgtnJapZH7B6o/U0LLC1mwKqko5CWL2w==
+	bh=I23DkGVOflePUgIeC7zqOu6ppEEHHOzNPKpwzOeKZew=;
+	b=2W5pCcaPIZuUN+ys2XpvOO90/CEfGHFMDxgITetsyNRBVULNtBo4pLcmHpaJs6NDeTC+
+	 ZMn4cYYpo50QRGFmf2T+T5h5Zzv6dacY7VbY478fUjSBi13h2gJC9jczONyY9DKucURqZ
+	 aHGVXKGAReeahWyHUJLIvhh2O1Kz0rhRkPIdkNzNxSkzTLYX0sfjMgUAvivGnqyyqjCkK
+	 j+3AJzFg91lLKvNoTwxZAPR4ZS7jM07Pmo7dEx9xgEWscfs/UWgoXVEuK5iS7FZDFg6Uf
+	 5DUWb+XW3fWSgRr2NVTQfww6K50XbiqsA0Iao45SbXyObqrvUAf0Hnog7Lk3IpCHOHw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a4p9RgXF;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EKsaozXl;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2392606A31A;
-	Sun, 25 Oct 2026 14:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B779606A31A;
+	Sun, 25 Oct 2026 14:46:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a4p9RgXF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD2A51F01825;
-	Sun, 25 Oct 2026 14:40:40 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EKsaozXl
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 608941F01825;
+	Sun, 25 Oct 2026 14:46:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792939241;
-	bh=9FAAKmlEypGsI9J86zAjMvVPqXYkvra1xp/aDP/bK/g=;
+	s=k20260515; t=1792939617;
+	bh=I23DkGVOflePUgIeC7zqOu6ppEEHHOzNPKpwzOeKZew=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=a4p9RgXFDdTIMncUeym0clbeqw5a446nsraSwDw1pBh9d9gQXcnbq/IFl4kL71eEv
-	 tdZKgP7EKMfg45l2194j9Z0UYiZ0Le3lSzfsZlhRodVz9XbfI9q9SBo+notV6Jag5g
-	 JkkOzQHf3nE2kcYfybNGV2ojbeD+FSQKg1i0SldRKWm7+piHIHICw0LLZd1/1Q5H5p
-	 2yHoKM3p9bhAGEVxBsO8qGTx5lrq/Qj3PJ+6ca/2lh6ClIlC9+dF/rQyGYHrNjRqQS
-	 +Fewk5VwvadGyCXE8Q5s5y1sZ37KjQtQpf2MkbHiy+8aevtfB9/Kp3sZhhMkpKB9x/
-	 ZfMAJ5FsLYrTA==
-Subject: Re: [PATCH net v4 3/3] netconsole: recheck device registration after
- waiting for carrier
+	b=EKsaozXleQIh2PE5Z9wXQdvFzj+z1B0jpk7JX35Jzs5v83cjCu6C1tXfuRu/Z/xH+
+	 Z0B9+ORW2RSyJPaN8KOLhDc3rYwGQoZcD48OwG2IV4fu4ruNsvGKYE1iWTqo4S5Wt5
+	 8yiwq06HsC+3YWHXOTa/GG/moznmzg/DIQeSNEVQopu3HZpMBrWd/dqoJWGYwJwk7U
+	 36C1BCgbGnAxFv5CUmm9ssLQu820QOWiODgaMoQv1za+LgdeYEgjQTnAhKeokKIGRk
+	 9xkJBptBTEYeprbpFxYS7+cWgMXF8k+zd1ECQPJTEtkJZo2FtDYv5YAxQYvXamUPJW
+	 KP/ovgmMZV1Uw==
+Subject: Re: [PATCH net v2 2/2] selftests/bpf: cover AF_XDP multi-buffer TX
+ software checksum
 From: netdev-bot+sashiko@kernel.org
-To: gustavold@gmail.com
-Cc: leitao@debian.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- stephen@networkplumber.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Sun, 25 Oct 2026 14:40:40 +0000
-Message-ID: <179293924034.3134.1271340447995228966@kernel.org>
-In-Reply-To: <20261021-netcons-fixes-v4-3-3857120c6340@gmail.com>
-References: <20261021-netcons-fixes-v4-3-3857120c6340@gmail.com>
+To: testwrzwrz@gmail.com
+Cc: magnus.karlsson@intel.com, maciej.fijalkowski@intel.com,
+ kerneljasonxing@gmail.com, sdf@fomichev.me, hawk@kernel.org,
+ stable@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kuba@kernel.org
+Date: Sun, 25 Oct 2026 14:46:55 +0000
+Message-ID: <179293961591.3134.5478895656850588086@kernel.org>
+In-Reply-To: <20261024141157.59301-3-testwrzwrz@gmail.com>
+References: <20261024141157.59301-3-testwrzwrz@gmail.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -65,10 +65,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 (1) · Low: 2
+Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -76,167 +76,106 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The stall the commit message names is still reachable during
-  the carrier wait.
-- [Low] The patch fixes a user-visible bug but has no Fixes: tag.
-- [Low] The new check in netcons_netpoll_setup()
-  (drivers/net/netconsole.c:541) reads ndev->reg_state with a plain load.
+- [Medium] generate_packet() in
+  tools/testing/selftests/bpf/prog_tests/xdp_metadata.c fills the…
 
 Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but the same
-  RTNL-drop window in netcons_netpoll_setup() loses other notifier…
+- [Medium] The freplace check in test_xdp_metadata() never retries.
 
 --
 
-netconsole: recheck device registration after waiting for carrier
+selftests/bpf: cover AF_XDP multi-buffer TX software checksum
 
-This patch adds a check in netcons_netpoll_setup(). After RTNL is retaken
-following the carrier wait, it confirms that ndev is still registered. If
-the device was unregistered in that window, the device reference is
-released and -ENODEV is returned.
+This commit extends test_xdp_metadata to send a UDP packet once as a
+single TX descriptor and once split across two descriptors with
+XDP_PKT_CONTD. The existing metadata and checksum checks run for both.
+It adds a bind_flags argument to open_xsk(), a split_len argument to
+generate_packet() and a num argument to complete_tx().
 
-Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012-netcons-fixes-v3-1-1aac85ed7665@gmail.com
+> diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_metadata.c b/tools/testing/selftests/bpf/prog_tests/xdp_metadata.c
+> index 5c31054ad4a4c..1cf70fb800fba 100644
+> --- a/tools/testing/selftests/bpf/prog_tests/xdp_metadata.c
+> +++ b/tools/testing/selftests/bpf/prog_tests/xdp_metadata.c
 
-> Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012-netcons-fixes-v3-1-1aac85ed7665@gmail.com
-> Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
+[ ... ]
 
-[Severity: Low]
-Should this have a Fixes: tag? The commit message only has Closes: and
-Signed-off-by:.
+> @@ -133,36 +135,36 @@ static void close_xsk(struct xsk *xsk)
 
-In netcons_netpoll_setup(), the rtnl_unlock() / netcons_wait_carrier() /
-rtnl_lock() sequence blames to 672ecd3bb145 ("netconsole: take over
-netpoll_setup() from netpoll"). That commit describes itself as pure code
-motion.
+[ ... ]
 
-Before that commit, the same window existed in
-net/core/netpoll.c:netpoll_setup():
-
-	rtnl_unlock();
-	netpoll_wait_carrier(np, ndev);
-	rtnl_lock();
-
-It was followed by __netpoll_setup() with no recheck.
-
-So the bug appears to be older than the netconsole.c history shows. Older
-stable trees would need a backport against net/core/netpoll.c rather than
-drivers/net/netconsole.c.
-
-> diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-> index be7eb632ee424..bd36ebd334aa4 100644
-> --- a/drivers/net/netconsole.c
-> +++ b/drivers/net/netconsole.c
-> @@ -534,6 +534,16 @@ static int netcons_netpoll_setup(struct netconsole_target *nt)
->  		rtnl_unlock();
->  		netcons_wait_carrier(np, ndev);
+> -	eth = data;
+> +	memset(pkt, 0, sizeof(pkt));
+> +	eth = (void *)pkt;
+>  	iph = (void *)(eth + 1);
+>  	udph = (void *)(iph + 1);
+>  
+> -	memcpy(eth->h_dest, "\x00\x00\x00\x00\x00\x02", ETH_ALEN);
+> -	memcpy(eth->h_source, "\x00\x00\x00\x00\x00\x01", ETH_ALEN);
+> +	memcpy(eth->h_dest, RX_MAC, ETH_ALEN);
+> +	memcpy(eth->h_source, TX_MAC, ETH_ALEN);
 
 [Severity: Medium]
-Can the unregister_netdevice() stall from the commit message still happen
-during this wait?
+Should RX_MAC and TX_MAC be copied here? In this file they are text
+strings meant for the ip link commands:
 
-netcons_netpoll_setup() takes netdev_hold(ndev, &np->dev_tracker) before it
-drops RTNL. netcons_wait_carrier() only watches carrier:
+#define TX_MAC "00:00:00:00:00:01"
+#define RX_MAC "00:00:00:00:00:02"
 
-drivers/net/netconsole.c:netcons_wait_carrier() {
+With ETH_ALEN as the length, memcpy() copies the first six ASCII
+characters, "00:00:". Both h_dest and h_source then become
+30:30:3a:30:30:3a.
+
+The old binary literals matched the addresses set on veTX and veRX. Now
+every AF_XDP frame that generate_packet() builds has a destination MAC
+that doesn't match veRX. That covers the single-descriptor packet, the
+new multi-buffer packet and the freplace packet. Won't eth_type_trans()
+on the receive side mark these frames PACKET_OTHERHOST?
+
+The test still passes because rx() in progs/xdp_metadata.c only filters
+on the UDP destination port:
+
+	if (udp->dest != bpf_htons(8080))
+		return XDP_PASS;
+
+Was this change meant to be part of a patch that only adds the
+multi-buffer case? Keeping the "\x00\x00\x00\x00\x00\x02" and
+"\x00\x00\x00\x00\x00\x01" literals would avoid the problem.
+
+>  	eth->h_proto = htons(ETH_P_IP);
+
+[ ... ]
+
+> @@ -518,7 +564,7 @@ void test_xdp_metadata(void)
+>  		goto out;
+>  
+>  	/* Send packet to trigger . */
+> -	if (!ASSERT_GE(generate_packet(&tx_xsk, AF_XDP_CONSUMER_PORT), 0,
+> +	if (!ASSERT_GE(generate_packet(&tx_xsk, AF_XDP_CONSUMER_PORT, 0), 0,
+>  		       "generate freplace packet"))
+>  		goto out;
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but the polling loop after
+this send in test_xdp_metadata() never seems to run:
+
+	int retries = 10;
 	...
-	while (!netif_carrier_ok(ndev)) {
-		if (time_after(jiffies, atmost)) {
-			np_notice(np, "timeout waiting for carrier\n");
+	while (!retries--) {
+		if (bpf_obj2->bss->called)
 			break;
-		}
-		msleep(1);
+		usleep(10);
 	}
-}
+	ASSERT_GT(bpf_obj2->bss->called, 0, "not called");
 
-Suppose the device is unregistered while this loop runs. netdev_run_todo()
-then waits in netdev_wait_allrefs_any() and resends NETDEV_UNREGISTER.
-netconsole can't drop its reference in response, because np->dev is still
-NULL and netconsole_netdev_event() only matches on nt->np.dev == dev.
+On the first check retries is 10, so !retries-- is false and the loop
+body is skipped. The assertion then runs right after sendto() and the
+netns switch.
 
-A device that was just opened and then torn down usually won't get
-carrier. The loop then tends to run until carrier_timeout expires (default
-4 seconds, a writable module parameter). Only after that does the new
-reg_state check reach netdev_put().
+freplace_rx() increments called from the veth NAPI receive path, which
+runs in NET_RX softirq. If that softirq is deferred to ksoftirqd, can
+this assertion fail without a single retry?
 
-Doesn't that leave unregister_netdevice() blocked for up to
-carrier_timeout seconds? If that is longer than
-netdev_unregister_timeout_secs, the "waiting for ... to become free"
-warning is also printed.
-
-The resend already limited the stall before this patch, so the change
-seems to shorten it by about one resend interval at most.
-
-Would it make sense to also break out of netcons_wait_carrier() when
-READ_ONCE(ndev->reg_state) != NETREG_REGISTERED? The new check after
-rtnl_lock() would then do the cleanup.
-
->  		rtnl_lock();
-> +
-> +		/* Check that ndev hasn't been unregistered when we released
-> +		 * the RTNL above.
-> +		 */
-> +		if (ndev->reg_state != NETREG_REGISTERED) {
-
-[Severity: Low]
-Should this be READ_ONCE(ndev->reg_state)?
-
-RTNL doesn't serialize this read against every writer. netdev_run_todo()
-drops RTNL before it writes the final state:
-
-net/core/dev.c:netdev_run_todo() {
-	...
-	__rtnl_unlock();
-	...
-		netdev_lock(dev);
-		WRITE_ONCE(dev->reg_state, NETREG_UNREGISTERED);
-		netdev_unlock(dev);
-	...
-}
-
-This means netconsole can hold RTNL and read reg_state while that
-WRITE_ONCE() runs. A plain read racing a marked write is a data race that
-KCSAN can report.
-
-The behavior is the same either way, since both NETREG_UNREGISTERING and
-NETREG_UNREGISTERED fail the check. Other lockless readers in dev.c use
-READ_ONCE() here. process_resume_target() has the same plain read.
-
-> +			np_err(np, "%s was unregistered while waiting for carrier, aborting\n",
-> +			       netcons_egress_dev(np, buf, sizeof(buf)));
-> +			err = -ENODEV;
-> +			goto put;
-> +		}
->  	}
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but the same RTNL-drop window
-also loses other notifier events, and the reg_state check doesn't catch
-them.
-
-np->dev stays NULL until __netpoll_setup(). Any NETDEV_UNREGISTER,
-NETDEV_JOIN or NETDEV_CHANGENAME sent during netcons_wait_carrier() is
-therefore ignored by netconsole_netdev_event():
-
-	if (nt->np.dev == dev) {
-
-Two cases seem to get past the new check.
-
-The first is a netns move. __dev_change_net_namespace() calls netif_close(),
-unlist_netdevice() and call_netdevice_notifiers(NETDEV_UNREGISTER, dev).
-Its comment says "dev->reg_state stays at NETREG_REGISTERED". If local_ip
-was set explicitly, __netpoll_setup() then binds an enabled target to a
-device that now lives in another netns.
-
-The second is enslavement. bond_enslave() and br_add_if() send NETDEV_JOIN,
-and that event is lost too. The netdev_master_upper_dev_get() check is not
-run again after rtnl_lock(), and __netpoll_setup() only checks
-IFF_DISABLE_NETPOLL. netconsole can then end up on a slave device, which the
--EBUSY check is meant to prevent.
-
-process_resume_target() has the same reg_state-only recheck.
-
-Would it be worth also checking net_eq(dev_net(ndev), net) and
-!netdev_master_upper_dev_get(ndev) after RTNL is retaken?
+Should the condition be retries-- > 0 instead?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021-netcons-fixes-v4-0-3857120c6340%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261024141157.59301-1-testwrzwrz%40gmail.com
