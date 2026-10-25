@@ -1,73 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.58.211
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792949736;
-	b=2e0zF8AJf0e/qHai0d0MTeqis/1Yfe67LOHqddKtH8RBp7u0p7PK7+Yo4VBu6kTLUWed
-	 cSS8ecnmrNQB8u0D4QaC8cR/g+5qlc1DKbR926sKMl7OsylxKcrBSt9ohHpaKFb/POLC6
-	 Zqxj4ttgwO/9+j9Txy7LaUu83VQaOpLP8o2e/qxMVuXZGxC6Ivm9jZAlA6zLbEwHvGaSu
-	 WH1g1vZpCeMQzqBpEwAd8laLSD02XuFhBOb41WTRrJ9ugV4H5HPdoBI7Wj88hNoM+fglH
-	 QskmMkDOh4odjFDMZdaP1rGjELZDTgZEL6tSQbyBJ9xL/Jp+l9Dnu0IgpZKKx10Eu2g==
+	t=1792950445;
+	b=f+8aFpvC1V0MZ74mxXts+4utLuxMZHROD8vwlvcz3QH9XGQV3qIWCU8YhuX9s0akvqXw
+	 0BET1Pt40+IdnVeI6XYoB2DedJ8MY2ql1RWTH5x5tOfKr7pAZ89YZj3ssT/8KokRjl4Qg
+	 sVJ/YA9UeyjpiIBM1eNM+PuJZmi73br9i4Z7Oy3WkMGk8gxbWg6zEQSHxidB/ozefNCNq
+	 rjFZtevLM3pqrCntiatmaF+v/6gIKB5M/dIrsL8LIMoWJdEzfzKccLNDsrvRJZQx+2TaW
+	 vAZdEnrMzISIz7ttnl2xQJ/DAuG+88sE/7Fg7ffetmmARDxFy7p3F0DTI9t5+S3sOyA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792949736;
-	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
-	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	bh=IljHuoY3NfLTPuir7QkeAIfGZmv2QDd46M9BpJxkdxg=;
-	b=3+1MwHriB3n+xoWp4OQ0N5DsU5EsvA60nzgStT2xnhHXQY9wICM8nToUl1C1gmajRMoM
-	 CiV395/ue0PrVo7+WYq1P4yZBCgY1uNbkip07UuwvTcp6M0DumTmEChVlaHqujgtHl+me
-	 Ih3I37PbBHwCQvhDkdsnW9XxmxmApy81KYZdRVUbuFMlVuKk7w9fpO7pZ9obGfHvk8s26
-	 su0MIUvrjmymlnrC3ndtDJtV9v+xIptE62IbwuWfT507UmkI1V8YNsoasHiP7slK3pxsz
-	 cKGm+ZHJPDgbTOX7vYZeYLCcAITiaNCgogbfX9LuC7FEYzo4dUQ58/cKml3T+bLRmVQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792950445;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=JmRLzeYCdX82mXLcM2/P5to8iYH2FEbFcSMJ+Fc1J2c=;
+	b=QWQjc82fj6YwM0sK6o7pCfArW1PMbqDVyKt+5BknBpLHERpIbY30vE8HXVSPxy2fRlgn
+	 EoFNcOnEwafQpxBouwbEeiBXE2rYxps0cdvchRktWSS2kHTVVZoDtVij2Y2C3urVMRldn
+	 F9w8nk4HySeoWGT07Mp1a0kk2N+YpW3L3lHmzOnllrrT3VqNoCVkviZ2TNJGEL2D71q4g
+	 qBs+urPId5DlwhyRV3oRgworQs/M1+I3Yh/HVWJsley2WupYvzLAXN8gg9iS8GBk8nT5R
+	 BES4MHNhYv3kggdwMsZoZgGEgkON+NX8N9VXOH6TKi8C5Sibu5CFymDFZjO6UTKg6nA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=qq.com;
-	spf=pass smtp.mailfrom=qq.com;
-	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=iWQugNDp;
-	arc=none smtp.remote-ip=162.62.58.211
-Received: from out162-62-58-211.mail.qq.com (out162-62-58-211.mail.qq.com [162.62.58.211])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jn1k33FD;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F408606A31A;
-	Sun, 25 Oct 2026 17:35:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1F408606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16207606A31A
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 17:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=iWQugNDp
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1792949729; bh=IljHuoY3NfLTPuir7QkeAIfGZmv2QDd46M9BpJxkdxg=;
-	h=From:To:Cc:Subject:Date;
-	b=iWQugNDpeLI36Do3TOj31QjnUbo5sMo3+NycEJ8B7USkx7vRzYTGZa3wWTs09taAL
-	 uRS5w57bt346oF9nzBulmoPz92Vo6h47ELwXUa754FZP9wP8RQMmBKb1DyKoKCclHQ
-	 xDKUHl2XxNTuJjRbXr2cAnX2ddz2Vd0uqLz13Dlc=
-Received: from [172.18.4.77] ([111.31.227.58])
-	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
-	id 8DB24473; Mon, 26 Oct 2026 01:35:27 +0800
-X-QQ-mid: xmsmtpt1792949727tndycvwlf
-Message-ID: <tencent_389453EACB37DA0886D3896959D4A4CF5006@qq.com>
-X-QQ-XMAILINFO: ObW7A5NPm3QRvVX1A2FRWMO4JEZvffrbPSKXzP70tM7dhuCbGApa95EFrEn+b3
-	 MEEMvFY6tGDka/+R1043kUwH7HmdwmQDzboGqquldWB7tsVU8XQX0ONL9I42hRCuTQCcenQUyTlH
-	 ZM9qa802njyOaP+UeU+3JWUNpLnv/Ox1sEkQ+OQPo5G8HLGV0t+hnI/GhqQHAV+0xfX3UeXmju7J
-	 +znWOZQhZVSUiUseL6w0hFdQcmRUboTop0BrEj6cUymcdliv3kMcvTr2Fyc1KXu6deOFtnNf2GNl
-	 xxgrcfR7YeEKOMjtXzUlLn81A9Knzt+E0+YQ2reTVj4Y5E2w8JukVRuSk5mYLzfuHavHCHkcQcid
-	 n9CdPlUjSeI2lyUjeoXdDejRmNG6TdSTv7t1zvwwHYIy65C6q814kNt6vo2du77f5J1JUzCu4uqn
-	 Txwd7ojiG+6KYKYzGxUiP3YSlUSmPw45sDfibEI/2Y0VjX+vGBOnKy3i76oTndY/aKFEE91KGXob
-	 dqUoMHjQ7eQrknn3e9neftWrRz5hsFIhwrhiolAfPm6RaCmSJEdSxw/3Dj0iVpgJ+++5KvutuGdw
-	 vrnPuevLobuxy3VNEtLZje/FwMse9gGRwsgEFCOtQ0wJIwXG3Z787bb8YVxyIN/LN3/TpWaKDCIV
-	 seNGPX3sy0t/kkmeFh69D0n3Y+JjWaErN81tN5dMdAUhU5qtRpB5sWnyBBSQKcZ+SfUvnFK6Wt4u
-	 ueZEIsxBW7h+GfTTcm7N8KRVfjVEMPbICePjxYtPJNurNvlNd2udF317i5fnMmU31k5ssTIpFJOX
-	 5Fx3xfJh5E/0p/rTjWkubR3bb4f3rvEDeMPPnbWqOydCkbx2I9wkn1LviyuIlcKx6TagxzU01xEU
-	 ukskrOpCdntzpHWzbxVvC2fSquwwV2IWlGorwqaRuOU8sHTW7emoqdGvmaiYnYFmjAZSg7ZVmtLQ
-	 4zrFTDeQraL5WVPYrdfS8hTiZlBCt7b3YRW683Mag0Y4buFOS+5aI7Efm3jUvuvCClS0cClg+L32
-	 sagODIrNXPH1/Cu+TNbZjArHvCMH/KlBVU8Ri6dfIEYBIxShC9
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-From: Guikun Yang <yangguikun19@qq.com>
-To: Guillaume Nault <gnault@redhat.com>
-Cc: James Chapman <jchapman@katalix.com>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [BUG] l2tp: OOB read in l2tp_recv_common() for L2TPv2 sessions with
- 8-byte peer cookie
-Date: Mon, 26 Oct 2026 01:35:25 +0800
-X-OQ-MSGID: <20261026013500.41820-l2tp-yangguikun19@qq.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jn1k33FD
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BCC91F01825;
+	Sun, 25 Oct 2026 17:47:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792950444;
+	bh=JmRLzeYCdX82mXLcM2/P5to8iYH2FEbFcSMJ+Fc1J2c=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Jn1k33FDe5oXLax1eWdO/Hg1f31PgCiRW22qsXbqYjBhi4tTIQfqEV60WVJYJme1E
+	 HSVgrRsHPdxQKV14e3BdAKtVMl7pAQQ0nNBa17sk+RqkD/QHf2s5cb2FSLQgxHlXd6
+	 iYrs0RCgg2P8rFbkMAL9hMy+U8vj64ev3NIR0d7RGmxlOZGKkdVYJpEbDEHxt7whta
+	 UW3Rq/Zb6RwtcTnAXlsed25mNocbWklBV8uVvEsdTGyqgHJFsDXFzi5+5iQh7rIdG7
+	 8Lfs+RIjJiRiRxP5IuQQ7hj70eY3SnVNl9mCObN9ZlGSwW6l5PvvM3FcwJwQcpT8G2
+	 KgVU/yQCLxLIQ==
+Subject: Re: [PATCH net] net: xps: re-validate the queue index after switching
+ to the subordinate device
+From: netdev-bot+sashiko@kernel.org
+To: phx0fer@gmail.com
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, netdev@vger.kernel.org
+Date: Sun, 25 Oct 2026 17:47:23 +0000
+Message-ID: <179295044377.3134.4218140441633589596@kernel.org>
+In-Reply-To: <20261021155555.68167-1-phx0fer@gmail.com>
+References: <20261021155555.68167-1-phx0fer@gmail.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -80,85 +63,203 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Hi Guillaume,
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-l2tp_recv_common() (net/l2tp/l2tp_core.c) reads L2TPv2 optional header
-fields beyond the linear area guaranteed by the caller, for sessions
-configured with an 8-byte peer cookie.
+Critical: 0 · High: 1 · Medium: 1 · Low: 2
 
-The UDP entry path only guarantees the first L2TP_HDR_SIZE_MAX (14)
-bytes:
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-	if (!pskb_may_pull(skb, L2TP_HDR_SIZE_MAX))
-		goto pass;
+- [High] The fix applies the wrong bound and leaves the faulty access in
+  place.
+- [Medium] The new check also runs when the queue has no sb_dev and `dev`
+  is still the parent.
+- [Low] The commit message describes the defect inaccurately.
+- [Low] The submission notes ('Triggering conditions', below the ---
+  line) say the in-tree subordinate binding happens on 'the i40e and…
 
-	l2tp_recv_common(session, skb, ptr, optr, hdrflags, length);
+--
 
-Inside l2tp_recv_common(), for a L2TPv2 session with peer_cookie_len =
-8, the cookie check consumes bytes [6, 14):
+net: xps: re-validate the queue index after switching to the subordinate device
 
-	if (session->peer_cookie_len > 0) {
-		if (memcmp(ptr, &session->peer_cookie[0],
-			   session->peer_cookie_len)) { ... discard }
-		ptr += session->peer_cookie_len;    /* ptr = optr + 14 */
-	}
+This patch adds a check to __netif_set_xps_queue(). After dev has been
+switched to the subordinate device, index is compared against that
+device's real_num_tx_queues and -EINVAL is returned if it is too large.
+The goal is to stop the KASAN slab-out-of-bounds write reported from
+xps_cpus_store().
 
-Then the sequence-number branch for L2TPv2 reads at ptr:
+> A subordinate with fewer TX queues than the parent's index then
+> overflows sb_dev->_tx[] / the XPS map:
 
-	if (hdrflags & L2TP_HDRFLAG_S) {
-		L2TP_SKB_CB(skb)->ns = ntohs(*(__be16 *)ptr);   /* [14, 16) OOB */
-		ptr += 2;
-		ptr += 2;
-	}
+[Severity: Low]
+Is the "/ the XPS map" part accurate? In __netif_set_xps_queue() the XPS
+maps are indexed by tci, not by index:
 
-With a minimal 14-byte L2TPv2 packet (6-byte fixed header + 8-byte
-cookie, no payload, L2TP_HDRFLAG_S set), skb->len is exactly 14 after
-__skb_pull(udphdr), so the read at [14, 16) is past the end of the
-linear area — a 2-byte slab-out-of-bounds read (KASAN catchable).  The
-subsequent `ptr += 2 + offset` handling for L2TP_HDRFLAG_O can read
-even further out ([18, 20) with the same setup).
+    tci = j * num_tc + tc;
+    map = copy ? xmap_dereference(dev_maps->attr_map[tci]) : NULL;
 
-Trigger conditions:
-  - an L2TPv2 session with peer_cookie_len == 8 (admin-configured),
-  - a UDP packet whose L2TP payload is exactly 14 bytes, with
-    L2TP_HDRFLAG_S set and the correct cookie.
+and index is only stored as a value:
 
-The peer address is not verified on the UDP path (l2tp_v2_session_get()
-matches only on tunnel_id/session_id), so any host that knows the
-cookie — i.e. a peer of the tunnel, or anyone when no cookie is
-configured (in which case the OOB read does not trigger, since the
-pointer stays at 6 and the seq read lands at [6, 10)) — can send such a
-packet.
+    map->queues[map->len++] = index;
 
-This is the L2TPv2 counterpart of the L2TPv3 optional-fields OOB fixed
-in 2019 by commit 4522a70db7aa ("l2tp: fix reading optional fields of
-L2TPv3"), which added l2tp_v3_ensure_opt_in_linear().  The commit
-message of that fix explicitly noted that fixing L2TPv2 as well would
-require refactoring l2tp_recv_common() and was deferred:
+The only out-of-bounds subscript seems to be netdev_get_tx_queue(dev,
+index) in the NUMA node write at out_no_new_maps.
 
-	To fix both L2TPv3 and L2TPv2, we'd better refactor
-	l2tp_recv_common. It's complicated to do so.
+Also, netdev_set_sb_channel() rejects multiqueue devices, so every in-tree
+subordinate has exactly one TX queue. That means "fewer TX queues than the
+parent's index" is not a corner case. It covers every XPS write to any
+offloaded queue.
 
-L2TPv2 has remained unprotected since.  The in-function
-pskb_may_pull(skb, offset) at the end of l2tp_recv_common() runs only
-after all the header reads have already happened, so it cannot help.
+Could the commit message describe this more precisely?
 
-A minimal fix for the v2 path could ensure the header is fully linear
-before parsing — e.g. in l2tp_udp_encap_recv(), after determining
-version == L2TP_HDR_VER_2 and before calling l2tp_recv_common():
+> CAP_NET_ADMIN to set the XPS mask.  An sb_dev is bound in-tree by
+> netdev_bind_sb_channel_queue(), which the i40e and ixgbe SR-IOV paths call
+> when a VF's channel is bound to the PF.
 
-	if (session->tunnel->version == L2TP_HDR_VER_2 &&
-	    !pskb_may_pull(skb, 6 + session->peer_cookie_len +
-			      (hdrflags & L2TP_HDRFLAG_S ? 4 : 0)))
-		goto invalid;
+[Severity: Low]
+Is this description of the trigger correct? The only callers of
+netdev_bind_sb_channel_queue() are ixgbe_fwd_ring_up() and
+i40e_fwd_ring_up(). Both bind queues to a macvlan netdevice for L2
+forwarding offload, via ndo_dfwd_add_station (ixgbe_fwd_add() and
+i40e_fwd_add()):
 
-(or a full refactor pulling the cookie/seq handling into a
-l2tp_v2_ensure_opt_in_linear() helper mirroring the v3 one).
+drivers/net/ethernet/intel/ixgbe/ixgbe_main.c:ixgbe_fwd_ring_up() {
+    ...
+	/* record configuration for macvlan interface in vdev */
+	for (i = 0; i < num_tc; i++)
+		netdev_bind_sb_channel_queue(adapter->netdev, vdev,
+					     i, rss_i, baseq + (rss_i * i));
+    ...
+}
 
-Checked against 7.3.0-rc7 and linux-next (2026-10-24): neither carries a
-fix; l2tp_v3_ensure_opt_in_linear() is still v3-only.  I found no
-report of this specific OOB on lore/marc.
+Enabling VFs alone does not seem to set up this binding. The trigger
+appears to be a macvlan with l2-fwd-offload on an ixgbe or i40e parent.
 
-Best,
-Guikun Yang
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index e76762e29360e..d5ce251448062 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -2900,6 +2900,14 @@ int __netif_set_xps_queue(struct net_device *dev, const unsigned long *mask,
+>  		/* If queue belongs to subordinate dev use its map */
+>  		dev = netdev_get_tx_queue(dev, index)->sb_dev ? : dev;
+>  
+> +		/* dev may now be the subordinate device, whose queue
+> +		 * count can be smaller than the parent's.  index was only
+> +		 * validated against the parent above, so re-check it before
+> +		 * it is used to index the (possibly different) dev->_tx[].
+> +		 */
+> +		if (index >= dev->real_num_tx_queues)
+> +			return -EINVAL;
 
+[Severity: High]
+Does this compare a parent-space index against the subordinate's queue
+count?
+
+netdev_bind_sb_channel_queue() checks offset + count against the parent's
+real_num_tx_queues and stores the parent-space offset in
+sb_dev->tc_to_txq[]. So index here is a parent queue number:
+
+net/core/dev.c:netdev_bind_sb_channel_queue() {
+    ...
+	/* We cannot hand out queues we don't have */
+	if ((offset + count) > dev->real_num_tx_queues)
+		return -EINVAL;
+    ...
+	WRITE_ONCE(sb_dev->tc_to_txq[tc].combined, res.combined);
+    ...
+}
+
+netdev_set_sb_channel() refuses multiqueue devices, and ixgbe_fwd_add()
+rejects multiqueue macvlans. So sb_dev->real_num_tx_queues is always 1:
+
+net/core/dev.c:netdev_set_sb_channel() {
+	/* Do not use a multiqueue device to represent a subordinate channel */
+	if (netif_is_multiqueue(dev))
+		return -ENODEV;
+    ...
+}
+
+ixgbe_fwd_ring_up() binds at baseq + (rss_i * i), where baseq is
+pool * queues_per_pool. Pool 0 is reserved for the PF, so pool is at least
+1. i40e_fwd_ring_up() binds at iter->base_queue, which comes after the
+PF's own queues. In both cases every bound index is >= 1.
+
+With that, won't every xps_cpus and xps_rxqs write to a parent TX queue
+bound to an offloaded macvlan now fail with -EINVAL? Before this patch the
+map update itself worked. Only the trailing NUMA hint write was out of
+bounds.
+
+Driver-internal callers are hit too. ixgbe_configure_tx_ring() ignores the
+return value of netif_set_xps_queue() after test_and_set_bit() has already
+set __IXGBE_TX_XPS_INIT_DONE. XPS setup for those rings is then never
+retried.
+
+XPS_RXQS writes through xps_rxqs_store() are now rejected as well, even
+though that path never indexes _tx[index]. Meanwhile xps_cpus_show() still
+accepts the same parent index on the same queue, so show and store now
+disagree.
+
+The faulty access also seems to be left unchanged:
+
+net/core/dev.c:__netif_set_xps_queue() {
+    ...
+out_no_new_maps:
+	if (type == XPS_CPUS)
+		/* update Tx queue numa node */
+		netdev_queue_numa_node_write(netdev_get_tx_queue(dev, index),
+					     (numa_node_id >= 0) ?
+					     numa_node_id : NUMA_NO_NODE);
+    ...
+}
+
+If an index ever gets past the new check, won't the NUMA hint go to
+sb_dev->_tx[index] instead of the parent's queue? The parent queue would
+then keep a stale value.
+
+Would it be better to save the original parent device (or its txq) before
+the rebind and use it for the NUMA write, rather than bounding index by the
+subordinate's queue count?
+
+[Severity: Medium]
+This check is inside if (dev_num_tc) and runs whether or not a rebind
+happened. When the queue has no sb_dev, dev is still the parent.
+
+On any device with num_tc != 0, the accepted range therefore shrinks from
+num_tx_queues to real_num_tx_queues. num_tx_queues is the existing
+contract, per the WARN_ON_ONCE() at the top of the function. Devices with
+num_tc == 0 get no such check.
+
+Can this break drivers that configure XPS before raising
+real_num_tx_queues? ixgbe_open() does things in this order:
+
+drivers/net/ethernet/intel/ixgbe/ixgbe_main.c:ixgbe_open() {
+    ...
+	ixgbe_configure(adapter);
+    ...
+	/* Notify the stack of the actual queue counts. */
+	queues = adapter->num_tx_queues;
+	err = netif_set_real_num_tx_queues(netdev, queues);
+    ...
+}
+
+ixgbe_configure() reaches netif_set_xps_queue() through
+ixgbe_configure_tx_ring(). When DCB is enabled through ixgbe_setup_tc(),
+the flow is netdev_set_num_tc() -> new rings -> ixgbe_open(). If the new
+ring count is larger than the previous real_num_tx_queues, XPS for the
+extra queues would now fail with -EINVAL.
+
+ixgbe_configure_tx_ring() ignores that error, and __IXGBE_TX_XPS_INIT_DONE
+is already set. XPS would then be silently and permanently missing for
+those queues. i40e_vsi_open() has the same ordering:
+i40e_vsi_configure() runs before i40e_netif_set_realnum_tx_rx_queues().
+
+>  		tc = netdev_txq_to_tc(dev, index);
+>  		if (tc < 0 || tc >= num_tc)
+>  			return -EINVAL;
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021155555.68167-1-phx0fer%40gmail.com
