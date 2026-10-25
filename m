@@ -1,59 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.227.138
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792897496;
-	b=BkimFqkF2caY0zss7fFkL8UOAjEWTWjQKdTadlNZ57FsLlIP/pDAJyAXzT3tTqekE3xC
-	 FuWBipUtvMJ2izdq7yb61C2b97vrcGKBs9jTY3e1B4xIRxXN6XXOHrqfyR9y7mwflza9z
-	 Fiq4iqTUpuT9w5+7AfR/ZLKlWnP3i5wxa/TW8H+LJFsiIdU8S/VQx5N2gD9l/Bl0YT/Uj
-	 9YgKt1iPVZ7ee0cVvs463Pyy/vvzLsCbtOXNxjryWGtPsO+s8gyRIjSma8auaMKHQFJwh
-	 xBWAhjpdoJRTnqe3+zqLPGVFdX07md4p3jeR6astS7NN4BkLxuKA1OqeZ2tiVuVyejQ==
+	t=1792899824;
+	b=uHhK1ZSZJQgS9/2V4BUa2D1kvKxZeLisYPNjwFToADDmyKavJp8nyrdJyxioAMyBfCg0
+	 Z8ggjEQeA2qbPyjzEZ02LgBzAVnasdRfRTc6U58HoKbqh//t4R2VbLq1nZheqehOi2BjG
+	 iTCUk0j/4HI2JjME97t4rFuz8t64O92QOhiQ/Otk/fE/EX7doEYoMdRTs8W7fK55tUCxi
+	 4XuvwZEFSyw0r449nSctUwRG/Vzkvh5XlwgQLKUI9dR0J/bWm8Rx4hO3OnYOrMQ41887f
+	 gJRLCEpYWUFl2WRf9jXJkdP5pzETWOpEO7X9s73atE8Far+gs+Txa5XHZQ6s+L7ZadQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792897496;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=m/jRo2nTUZb8IscfInKypH1e/pfflNw6ctGifv66KX8=;
-	b=EgBTRSx5vU2WGYlj0C2VVAI0RrZThTxjgHzVtsXmoNVev8HhwR3j1LuYAlSXp8hoE+KJ
-	 ujmE1kmMJxpMcd0R58bUegpTNV+BVhdUAwqg7cDPDJnvyt3+3VxH/1IU7XaOU/OCgFq/2
-	 5zq+HT5WHt8s22PveO56TQW72OUQZwss53GF+OMhcmtnHAxVBhYRx5pR0iL4Hj/ZNwOiH
-	 AafoT3MI++f4dsycf+EDRxtuRqAjNxQdTO9WCLS7OjseIHqadyKVPYvuPhfWzh5UDDOiI
-	 Vspt9ybX4NkAT9mWo41JtFoulopK0ACSbJ+zB6UT+SU3FQ3r5mxAvLrZlmwHlAd/v3g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792899824;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=X5OzgRH/1V88QEQk/qEsTmnI1GvbJFJUj713/504BL8=;
+	b=Rv8wl+QpkqI6/ClsDeuOkvN9P7YHRdVVfVah1NIswkocUZhAKt+FaR3vEM04xIvBl9E6
+	 Hv2DsCZVQB2FqjyU1JvvJwIa0Erg1Y4xYu82w1FOFiwoCcfPBIauOEmagYZg+V12Nso7g
+	 F3aT6PypqgWhvfpZ7CtCSVFClTSurq7zEbzxcyXlTlIYEcW4zB3MLtmrVT3auoyfmC6NX
+	 98oBzFiSz7ekPZyfW9X0H6UTMb1pa9VR9orRPNH5RR0aaRnl1jOEhJ1oJnDYxJspKzng2
+	 8C/NB4xuHCBsXOPe0zioofutCs/aYqcS3McvJsy6tNoP7mD+Q74ePfhzBQyz7kr1TVg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Z38HZRjd;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=N16Ofwvg;
+	arc=none smtp.remote-ip=74.125.227.138
+Received: from mail-pj2-f10.google.com (mail-pj2-f10.google.com [74.125.227.138])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A63E606A31A;
-	Sun, 25 Oct 2026 03:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2A5606A31D
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 03:43:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DC2A5606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Z38HZRjd
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 110A71F01825;
-	Sun, 25 Oct 2026 03:04:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792897495;
-	bh=m/jRo2nTUZb8IscfInKypH1e/pfflNw6ctGifv66KX8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Z38HZRjdFbu5rseDBrWWAhA3PNvXL15Xi2fMlej9IXoil4QTJi0zC5NRPM2+yYaOt
-	 xtPDIt4fEFIFP5he7rvj21NEJ2wLDeoolHI4V31BQbMzUT4zvplWbJrT0UnBOW5tx5
-	 UrVFBEntghaV8LjI08nWUN7B04Iirvd4WIM7N08zBQjPjU32TqGX4jR1jQpmIMLPCB
-	 FiQoiDajbdnn8GeDvr+yfHBR3Z3XtHkdw4GU+Fjb0TkB/U+yDZN98mSo8PWVp74LeQ
-	 CsdoCPeqfMgWjjg0nI0t7MFILBfiMeq2LmjyMyQQpEBjpKPVpyRStBDkdo5nr4Lssu
-	 gwo1CNDKTAycQ==
-Subject: Re: [PATCH net] idpf: free the skb on TX DMA mapping errors
-From: netdev-bot+sashiko@kernel.org
-To: almasrymina@google.com
-Cc: aleksander.lobakin@intel.com, anthony.l.nguyen@intel.com,
- przemyslaw.kitszel@intel.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, namangulati@google.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com
-Date: Sun, 25 Oct 2026 03:04:54 +0000
-Message-ID: <179289749460.3134.17105687099040790537@kernel.org>
-In-Reply-To: <20261024030401.852598-1-almasrymina@google.com>
-References: <20261024030401.852598-1-almasrymina@google.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=N16Ofwvg
+Received: by mail-pj2-f10.google.com with SMTP id d9443c01a7336-2e934c6c1c8so7396375ad.0
+        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 20:43:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792899823; x=1793504623; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=X5OzgRH/1V88QEQk/qEsTmnI1GvbJFJUj713/504BL8=;
+        b=N16OfwvgmmwPMQDqB+lHEvh+zA08Sn8PNtt5nWqyL4kj7TtV6iahTavuqONDGHEBo/
+         RbSbWLe6FJVOTZLHiZQ0tDMURGZNbWXtKXDEae4HcuG2plbenNgJtSS2v6cdqU2WtUL9
+         YYglL+PJCqLn5YnHaGVSlXt2KnAVwsCFXsftv+ms8kseuiFbCPnK789lW2sPaYYBKPBb
+         gwXEL60ec6G5RrZxvpg5OvyrB/P/MYw1uybQcbtxl4Vl51pcgBMPsHtuYhwi2DAWgEJ+
+         wt4qF2p3+n35tCoC7KB+/hjlGuuEURHSl+X7QhLGUYRbHduh095EC8e+aAq9BVn7lXFr
+         3l/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792899823; x=1793504623;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=X5OzgRH/1V88QEQk/qEsTmnI1GvbJFJUj713/504BL8=;
+        b=R1wl+UbUxr08GzekAUXWUwsqY8CJJsCvt2938EBhOw9OMhdYrMcLyJ+bEbcszXyIe/
+         oxuP/jpd5CVwwR7QNkBJJOci2LS7IbN7Fz9KO3w2ZlyH0PU6M7h2G1uQN4h6YCmmHlCb
+         2XPpSPX5LXv3/yljwuLPb3inG099SygmihJ2SFvamPQGGIauuHXKKAgUkQq6GBh9fq3D
+         zL3KbJpJkcrSluHFVbyJVlsQ25I03vXcCC5lzDBheRxWI/qyr0+Yo0zkdehRn0RIfHix
+         vTe6a7m7dn6FOCJ9wWY/6fkDdXAu3KztOyCTKGaoDBLrLy7TOG8vMnGU5IVYDdbkTZ7t
+         3X1g==
+X-Forwarded-Encrypted: i=1; AKwUvBxF5AOX7P+/lLSFdZXRNamfvEQhCblyoMAMSAY4AirRgR30vLjQG0FUPltjQMzTNBfV5XkzqSA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLRL/4vd/OMukq31xpVzzYU7nUGiAcTFWwiMQ1Rjw2PhXCd43KA
+	AzjT8UhNS5UpZ+e6LkSdieqsK4pCqTZiCRBwHokOBwvb151Cvl/EgHVb
+X-Gm-Gg: AYBFou2SXIpO0o+rBjkwZRlmFg8zNfGyqOVJwMUJXKMpQB72gogbCdbsxZtVERdYio2
+	n+5Dlk0Rz7XOn5f91jGmysxfAHn//eDDZxPxFN49rqqLYCoJfSNqoqY4FQz7anhygmQr7kVvzAF
+	wt9Z5cRDEknQn9ODVd/ZBAEb0pOftgrB44EKfWbyZlbYA6nuRZ9XKXFPJd1pCDNX2Gs5avgEDpI
+	pcj7Dgl1/RZKNRIuZ17UJtuRBIOjzg2t2bvRhgCzGHN/l8ZISb+2tAyYDpPomT6YpTkMIasMC2y
+	5CPRvSkpLmLiF/HHwkoOl0sJ3JniQT8vgN4bqsPtVh0klKUHTLEArTDFKi9tSI00vOjYP32Jbtz
+	Y+sQ9AKdJXfsScgifSrYTODhUClaBgx+lk24wTr4clIgupxAGtCDOWdm3LBGad6rIUZisYtz2zn
+	jSx87FbmEEBxKtbKT9GgBLHk64pqQLgN4ut5BAfqbO7avcNIOeE/lTiVP5gFVx9TEWTutyp0Ro1
+	chiUGn+hpPAAIHUCl3gUbtt5JblRUW33B/o8d441xcrSv6gCqY6gRmFduxf7aQPz7/Oc+7/3AAS
+	GV67l52OW2z9NMPNdZKcscO8mw2eDeGWFO6I2vtaMA==
+X-Received: by 2002:a17:90b:2e8c:b0:3ac:c005:cf07 with SMTP id 98e67ed59e1d1-3adead4c1aemr3019182a91.42.1792899823172;
+        Sat, 24 Oct 2026 20:43:43 -0700 (PDT)
+Received: from localhost.localdomain ([240e:46d:2000:332b:d93b:afb8:5ea6:9575])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3adebaca727sm4265968a91.3.2026.10.24.20.43.35
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 24 Oct 2026 20:43:41 -0700 (PDT)
+From: Rongzheng Wang <testwrzwrz@gmail.com>
+To: Jason Xing <kerneljasonxing@gmail.com>
+Cc: Rongzheng Wang <testwrzwrz@gmail.com>,
+	Magnus Karlsson <magnus.karlsson@intel.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2 1/2] xsk: defer software checksum until the skb is complete
+Date: Sun, 25 Oct 2026 11:43:27 +0800
+Message-Id: <20261025034327.95300-1-testwrzwrz@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <CAL+tcoBQHudeQC+B0J0mwqbh1CH82XQWfQrtyXqVMF3ybopr3w@mail.gmail.com>
+References: <20261024091256.17918-1-testwrzwrz@gmail.com> <20261024141157.59301-1-testwrzwrz@gmail.com> <20261024141157.59301-2-testwrzwrz@gmail.com> <CAL+tcoBQHudeQC+B0J0mwqbh1CH82XQWfQrtyXqVMF3ybopr3w@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,159 +104,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Hi Jason,
 
-Critical: 0 · High: 1 · Medium: 0 (1) · Low: 0
+Sorry for the noise. I posted v2 too quickly and incorrectly threaded it
+under the v1 patch. I should have waited and replied to your review here
+first. I will hold off on any further revision until this discussion settles.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+You are right that I did not answer your questions directly. The cover letter
+only summarizes the drop behavior:
 
-- [High] The fix leaves the skb leak in place for HW-timestamped packets,
-  and the Tx timestamp latch they hold is also never released.
+> On a checksum failure the packet is now dropped after the descriptors have
+> been consumed. Metadata validation makes this path unreachable in the
+> current copy-mode implementation; keeping the defensive drop avoids a
+> retry path for an skb that is no longer complete.
 
-Pre-existing issues:
-- [Medium] This bug was not introduced by this patch, but in FLOW_SCH_EN
-  mode idpf_tx_splitq_frame() increments…
+Let me expand on the two points you asked about.
 
---
+Drop vs retry: in v2 the checksum is calculated after xskq_cons_release().
+At that point the descriptors for the completed packet have already been
+consumed, so returning an error and retrying the same skb is not safe. Drop
+is intentional for this failure path.
 
-idpf: free the skb on TX DMA mapping errors
+skb_checksum_help() error cases: based on the current XDP_COPY path, I do not
+see a reachable error. The skb is not GSO, the fragments are readable kernel
+pages, the skb is not cloned or shared, and the metadata validation has
+already checked the checksum range. If you think I missed an error case,
+please point it out; otherwise I would keep the defensive drop.
 
-This commit frees the skb at the end of the TX DMA mapping error unwind
-in idpf_tx_splitq_pkt_err_unmap() and idpf_tx_singleq_dma_map_error().
-At that point the first buffer is not yet typed LIBETH_SQE_SKB, so
-libeth_tx_complete() only unmaps it, and before this change the skb
-leaked.
+I also applied your literal-else and unlikely suggestions, and split/reused
+the selftest as 2/2.
 
-> diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> index 885df6294ad94..a92e2457781e6 100644
-> --- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> +++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> @@ -2606,6 +2606,7 @@ static void idpf_tx_splitq_pkt_err_unmap(struct idpf_tx_queue *txq,
->  	struct idpf_sw_queue *refillq = txq->refillq;
->  	struct libeth_sq_napi_stats ss = { };
->  	struct idpf_tx_buf *tx_buf = first;
-> +	struct sk_buff *skb = first->skb;
->  	struct libeth_cq_pp cp = {
->  		.dev    = txq->dev,
->  		.ss     = &ss,
-> @@ -2621,6 +2622,8 @@ static void idpf_tx_splitq_pkt_err_unmap(struct idpf_tx_queue *txq,
->  		libeth_tx_complete(tx_buf, &cp);
->  	}
->  
-> +	dev_kfree_skb_any(skb);
-
-[Severity: High]
-Does this still leak the skb for packets that asked for a HW Tx
-timestamp?
-
-idpf_tx_splitq_frame() reserves a timestamp latch before it maps the
-packet:
-
-idpf_tx_splitq_frame() {
-    ...
-	idx = idpf_tx_tstamp(tx_q, skb, &tx_params.offload);
-	if (idx != -1) {
-		ctx_desc = idpf_tx_splitq_get_ctx_desc(tx_q);
-		idpf_tx_set_tstamp_desc(ctx_desc, idx);
-	}
-    ...
-	idpf_tx_splitq_map(tx_q, &tx_params, first);
-}
-
-idpf_tx_tstamp()->idpf_ptp_request_ts() then takes a second reference
-on the skb and moves the latch to latches_in_use:
-
-idpf_ptp_request_ts() {
-    ...
-	ptp_tx_tstamp->skb = skb_get(skb);
-	skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
-
-	/* Move the element to the used latches list */
-	list_add(&ptp_tx_tstamp->list_member,
-		 &tx_q->cached_tstamp_caps->latches_in_use);
-    ...
-}
-
-idpf_tx_splitq_map() can then fail in two ways: dma_mapping_error(),
-or idpf_tx_get_free_buf_id() failing between fragments in FLOW_SCH_EN
-mode. In either case this dev_kfree_skb_any() drops only the xmit
-reference. The tail is rewound to params->prev_ntu, so the hardware
-never fetches the TSYN context descriptor.
-
-Normally a latch is retired only through the completion path.
-idpf_tx_clean_bufs() sees a LIBETH_SQE_SKB buffer with
-SKBTX_IN_PROGRESS set and calls idpf_tx_read_tstamp(). After that,
-idpf_ptp_get_tx_tstamp() asks firmware about latches in the
-IDPF_PTP_REQUEST state.
-
-A packet that went through this unwind never reaches that path. The
-only other cleanup is idpf_ptp_release_vport_tstamp() at vport
-teardown.
-
-Wouldn't the skb then stay pinned until teardown, along with the socket
-wmem charged to it, and one hardware latch per failure? Once every latch
-is used up this way, it looks like all later HW Tx timestamp requests
-would fail with -ENOBUFS until the vport is torn down.
-
-The refillq exhaustion drop path in idpf_tx_splitq_frame() also runs
-after the latch has been reserved. It seems to be missing the same
-rollback:
-
-	if (unlikely(!idpf_tx_get_free_buf_id(tx_q->refillq,
-					      &buf_id))) {
-		...
-		tx_q->next_to_use = tx_params.prev_ntu;
-		return idpf_tx_drop_skb(tx_q, skb);
-	}
-
-Should the unwind also move the latch back to latches_free, clear
-SKBTX_IN_PROGRESS, and drop the latch's skb reference?
-
-> +
->  	/* Update tail in case netdev_xmit_more was previously true. */
->  	idpf_tx_buf_hw_update(txq, params->prev_ntu, false);
-
-[Severity: Medium]
-This is a pre-existing issue that was not introduced by this patch, but
-does this unwind leave num_completions_pending too high?
-
-In FLOW_SCH_EN mode, idpf_tx_splitq_frame() increments the counter and
-sets last_re before calling idpf_tx_splitq_map():
-
-	if (idpf_tx_splitq_need_re(tx_q)) {
-		tx_params.eop_cmd |= IDPF_TXD_FLEX_FLOW_CMD_RE;
-		tx_q->txq_grp->num_completions_pending++;
-		tx_q->last_re = tx_q->next_to_use;
-	}
-
-When mapping fails, the tail is rewound to prev_ntu. The RE descriptor
-is never posted, so its completion never arrives. This unwind restores
-neither num_completions_pending nor last_re.
-
-When a context descriptor was used, the stale last_re can also make
-idpf_tx_splitq_need_re() return true again for the retried packet.
-
-Once IDPF_TX_COMPLQ_PENDING() exceeds IDPF_TX_COMPLQ_OVERFLOW_THRESH(),
-idpf_txq_has_room() returns 0:
-
-	if (IDPF_DESC_UNUSED(tx_q) < descs_needed ||
-	    IDPF_TX_COMPLQ_PENDING(tx_q->txq_grp) >
-		IDPF_TX_COMPLQ_OVERFLOW_THRESH(tx_q->txq_grp->complq) ||
-	...
-
-idpf_tx_clean_complq() also sets complq_ok = false, so the queue is
-never woken.
-
-Could enough of these failures stall the Tx queue until the tx timeout
-reset reinitializes the counter?
-
->
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261024030401.852598-1-almasrymina%40google.com
+Thanks,
+Rongzheng
