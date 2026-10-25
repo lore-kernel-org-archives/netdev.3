@@ -1,64 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792927152;
-	b=lLQoXng76EgC2h1UHHQ2/XrwjLIRF0jdvSFUG4NPD+92rvc7oT0uqxGHWWiygbBxin1G
-	 oqI5XmZa9y73xIXAsA47fbnp31xMpsCwjqih2ywqrWcyMjWctZ2+gdaLYPkf3KRBGHEi5
-	 gcz2oRpjtS5/Kz+MQv4gdJDyvehjBeJ3B2452A/YpTcgDuJdtm5EzRzgRCiJVqnBBm4jp
-	 4pV2jOBEqRqzY6haV7LWar2JcEWJyTwYseBkkVH+BIHEdSp1K9UPBnlZiYJoJSqock2HD
-	 7lXJZqq6YtmhXKtUWOhbHHl74FWFNA+5+k2jweeP1hVwcw5xZSX7r7CjZbt0KaNO4ig==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792927152;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Icyxw/Y7tmxLQl0HivM3sVKqpdbnVUlAaBVaald5v4U=;
-	b=ICBvtvPhYhlQxe16H65+v5edtF390Z1ALIAO+allaJ7ZbG0Rfxh99XYH0Li6JAX07xYb
-	 6nAd9kFq1rPLFiCCPGAnUTBsAvcFMlMa/b8Wjd+G8o27qmBonp//OaLwAUyNNz+YutUPa
-	 WIpOF9snhz5BQQHCnxU4bVKkXBHTCuFqIKFXxk2QVv69gn97sGZ3LgOlNdzs3OVAcGgsS
-	 NbSRdUbtOK15YEeOJnPrqRYlNy0rQ11Fpr/UHMGzoDP/F9rd+FlsCe5iDzS08AqJLqh7l
-	 +5VDFYslxIzPsw65rVjfe5jnTS1mBjhV2mlrpvMLjnIOFcEVWjqdWMbWmToAguMPRJg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BqcURr1w;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.193.19
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792927244;
+	b=vr/mYKCt2mQqfOR+QjOTre/+mONai2fEj4VZLp6I4o6U+kC0hMgtORY5wlZMREAg1BUI
+	 IBQZMb1wZKbbJQ4kkrsjwJ1CucNcWV51vN7c7udqImwExXAwpu8oXA5tQPBEakKs3gD6Q
+	 GMwmypqDKR/eQxlAmWWX0Ddsa85btIJi6oHI116nJ8AhA1B8frTsxkDYLFEosWhrUd+Ik
+	 x4LB/ycoteuRLtD/vUSlBlQlDl8m4cfz28XpParOYX7z5KZvA3I6ZTEi5U6lmVGo632vI
+	 gIVdf6fe05xWmpr1c67h/PwFcWg79qcAS8U66qhMHX5r6IuA6ItPtmwNQmkL5j6/T4g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792927244;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=rRTmRJR4ayysXzjoNAAdOZ6AWxQWsjJL1/RwmeItpQQ=;
+	b=Zu8JETVkKL6ppwEcCIwvrMrC17YjiHLPxu7jN+ADekgFLOxBCtvbw1Q7qRT70oSUk61U
+	 eGg9vsbInAIDTwUUgomT93qE6GT3T0w7bfbVKdIgqmV4S4RG/2FRzbdGa0GLGDC0vk0I2
+	 VL9a+AWUY3yZwmF9wZpYmMPVHXLdUUCPferQjTeQYQV1ErScuHlsuENJ6KVZG3EhktfoC
+	 y5JFCzPZe7ZyTEDPy5f0KouyleOFMZfHAgenvZo79Hts6mghjefuWDXDqj/z/T7/Ubuet
+	 w6nVWmpQkhg4rspBjkH5XLW6iDYiPlJDYpwxUtDERprYPF6DJ82ULnRyQg4nY1Bh4Sw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=AjA835ss;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.193.19
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010019.outbound.protection.outlook.com [52.101.193.19])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1FC606A31A;
-	Sun, 25 Oct 2026 11:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100AA606A31A;
+	Sun, 25 Oct 2026 11:20:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 100AA606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BqcURr1w
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3564C1F01828;
-	Sun, 25 Oct 2026 11:19:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792927150;
-	bh=Icyxw/Y7tmxLQl0HivM3sVKqpdbnVUlAaBVaald5v4U=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=BqcURr1w1YtYxKaxN6avmz1gzoZxfbDuxcX0RuEiMPNclsx0UOcP3jcyeUPzHJ1Mq
-	 BGH7blWvc+75el//KpmPhNPu7rcsFB4TSVr4lmO8JDO1TF5aIC5Dy3nyFLoNb+NxO0
-	 xbbqF6EmE98n61z/O2cRRE0Ki1clCSwf8cr+0IGxkS2tsYRpuiNwD7+GZ6uXs5AA7S
-	 0JTzgoEpO4oaStWDs4k78fR0yVlcwbUksBRU6MkbUm5zFZPEybwe6SjqfTVtHvXEDp
-	 PVfHc+GNNQFnZ5KysjluhAYUBeRyiALlj1AcUblR15e25+UNGeUOsERgVbTgF7yt9q
-	 8rukcNkFNdfOA==
-Subject: Re: [PATCH net] octeontx2-af: Fix representor flow rule PF_FUNC mask
- and channel In representor mode, an AF-installed TX rule must still match on
- PF_FUNC, so do not clear the mask when rep_mode is set. Also, do not
- overwrite a channel already provided in the request when the rule comes from
- a representor device; only default to the PF/VF rx_chan_base when none is
- given.
-From: netdev-bot+sashiko@kernel.org
-To: kmahammadraf@marvell.com
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, sgoutham@marvell.com,
- rkannoth@marvell.com, gakula@marvell.com, sbhatta@marvell.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, athapliyal@marvell.com
-Date: Sun, 25 Oct 2026 11:19:09 +0000
-Message-ID: <179292714974.3134.12015701378835588497@kernel.org>
-In-Reply-To: <20261021091736.2406505-1-kmahammadraf@marvell.com>
-References: <20261021091736.2406505-1-kmahammadraf@marvell.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=AjA835ss
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=seFK9ozXsEicq95aGiZOtCR/Degd5Z0ml1FuCS3YOG5fHV2V1teGkDC0XOSKtLYaPqdPXaPmMdeacNph6Xs5R4qyK6nvKZZnxIgpdTtb/ef/P/Op54qam0sdJg0PEqcGaRJVo3hof+hL0OciQNaWzJpxiTTpUtI0ipE1A8Ze41hJYweuJxVPHpExc1P9xIhicyzUhVJFIq+gwI6KXWZvqdwiPATFBims8ba6wPASwcKfNo1SsvTVyvJDRByK6ovCsLKqN6j8KkRbmstjzrWYEgE5RstZ22a1NIZbsM1GD37akU/9vk3DqgMYAtX6RespL4mwEevFid5Hza9e34w+4Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rRTmRJR4ayysXzjoNAAdOZ6AWxQWsjJL1/RwmeItpQQ=;
+ b=kFGvP3cjtYzAKF2tZ6qRJTTXb1b/V6UXKLmTTLvC/n415EnynKD9vUFSq7ihtqeinv56phfcIzF4n8tUpLHHM4DU0MDLHsa1J3B9EjZue3Gt6+T0Xsg3YAVmVBmD54Ijhns/Z2yg47JCZw/QMHqmwUeRQeDxZoq4slQNHGoD4fbvIOfxufs+t6MVNsxmlCL55z2Hv4LfeUFZa5KWkeFKsCRnYZgQoZTGPVOXDfFpoeQOXoLaZrCPn/rXUTTs06BvdX42yjn8lcR35NylQl3cC/B8G8tr0OKvuJhO/WuU6BBphQN/J/SIhNktN8SoLTtCWM+a9ZZ0caimbnpWyAAd9g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rRTmRJR4ayysXzjoNAAdOZ6AWxQWsjJL1/RwmeItpQQ=;
+ b=AjA835ssyr05YPY2PRJOdwJ762Iv6nTpoGkul5yfCDmrnOwvO+3eO1Mos2Li+xyqNummNkfTXO6jTyCywGqWDZrGKnO9TXzgPSgtXFj+7lcR2DKE7vyVYCaP5z2XcBA3De2rgtxJuuWL4KVm3gjMWbhWiBn2H63jZUv36r7WhGEOMnLLw4FDn/IUu6U7nJ+/Tc6UpZuDn+KW+iVsng1CCtxfMCMmU+4kYrLrcugrUwyG0la4xBDVTDxIummGVwfBYy1lWNJWnIKqltAM7UAXuYPbSwhvjHhXBE3aI0IN0cAHgHqMQWf9hnLP7R99hoAhZTTrt/5xcUXncyYebXfGNw==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by CY5PR12MB6249.namprd12.prod.outlook.com (2603:10b6:930:23::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Sun, 25 Oct
+ 2026 11:20:39 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0546.021; Sun, 25 Oct 2026
+ 11:20:39 +0000
+Date: Sun, 25 Oct 2026 13:20:30 +0200
+From: Ido Schimmel <idosch@nvidia.com>
+To: Jin Li <jinli@lanxincomputing.com>
+Cc: shuah@kernel.org, dsahern@kernel.org, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2] selftests: net: forwarding:
+ bridge_vlan_mcast: Allow default startup query interval to vary by HZ
+Message-ID: <20261025112030.GA136792@shredder>
+References: <20261012115414.GA704996@shredder>
+ <20261022103023.834927-1-jinli@lanxincomputing.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261022103023.834927-1-jinli@lanxincomputing.com>
+X-ClientProxiedBy: FR4P281CA0361.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:f8::17) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,191 +99,76 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|CY5PR12MB6249:EE_
+X-MS-Office365-Filtering-Correlation-Id: ee41107d-99f6-4752-f08b-08df3289ffad
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|23010399003|261009223027099003|11063799006|56012099006|4143699003|10067099003|18002099003|22082099003|261022105027099003|261022075727099003;
+X-Microsoft-Antispam-Message-Info:
+	KBMd2PB4U44k05NeEHADMk92EIcl93qrMhSnZEbLDd9c4gke8pbvZEpD79c3fGplsAVKMJFWtrYPgFf1IRb9KX4vXoVdkx1L/N8c9sKF+ngkZ/HF6FDNw3SOrEg9Ba3mTr9dSgTwxGMG0l9li+7tnaZLAPVfSeQEi0ayuhGpmqVIal4zb8tRjE66A/i23ZCfNoh5Z00nfIdY1ZoRp8iKTtPX3O3hUs1YmkhiDgU2nGnipwxJa66M5uQNvRCmHeX6YIvp4jWuLNBv6mdtYsb8EZNXyQTR4ojQlHN3GPMt6FUwytSyx0E9bVbyq8lwIL4l4uhd9djFXiwIJ2groTsj8RHPoT2e7aFXS+hf1noj5weZvZ7lFhuwlKQL2gRWqkR4hLgw6ZhjFqn18IzWKdcZ4MOkGz1tmzwcjiS17SMcqrxS0uaidPBn9m+FsHvIk/cth4AjWw8cC2HEmgNq+X3YtUrNbc5ePFwnBiSa0KzZjxkKROgG1SEHPrkJkBk/sTZyLpLniJUXYHiAUFCVwV7lG5GiYaSJOnFGRztJRYSj/GkXlJVL802Xw69wPl0k+WGLkeXDrRrIfLnH6fhb/g7lvW8zqR732M+DhUmNJe9JqKsvRwIWuiRwMOCGhcN8wunCjTNTyL12LQpKK++7Hf4rlEamdKUiVHCHaDycqDCCCB0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(23010399003)(261009223027099003)(11063799006)(56012099006)(4143699003)(10067099003)(18002099003)(22082099003)(261022105027099003)(261022075727099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?IrhLG6sq9Q5UMAj7S/XXc2FzQewyAiJlhs/RI1qCIxagGNo54fkEabwVV6sK?=
+ =?us-ascii?Q?FIcIEyN0jvaKFAZpKKXGBBA+TASQcV8TZ//arzjpwYHq91Lcdfl41DaqJShs?=
+ =?us-ascii?Q?dctbohU8OzgKhhK0nO8+264vyQ/ZWjpcWwnMyKA0feFFa/G7WL+lWCZMaNlp?=
+ =?us-ascii?Q?L4KPg2eNRmQbar7rpdtsY9dI+TIGLGFKnBt0I875pSGIimQAci3k0NSgPM9n?=
+ =?us-ascii?Q?KaIMsbGWNrxyjyTl+F74gNSQokxviIA958jGVlv0mOD33cUKBceEf8sFO4JB?=
+ =?us-ascii?Q?3JaRUrkA0lRivbRfj6Ps0r3yl3hTIXZPWP8krC+pD9LCB9WOKH3sxZSXB31w?=
+ =?us-ascii?Q?P9mOCvlca+nzaonBfMlN4KyZMZxX/s0szrJQpay/+9djgvHJHpMMwQr59EY0?=
+ =?us-ascii?Q?0a1ImuX+qpjbH9ba2tiRU/CM3DjBj/tRHH9k7lc4BhIaQ7zGW97lRK/Mjm/h?=
+ =?us-ascii?Q?WlGFjD6+PG0n3Qs9GACpCK7bQ+WfWfAdbSqKcYrxjXIxbd5xeyBLw0drGA64?=
+ =?us-ascii?Q?1WDWzQSZvJCJitY0wR6X3suyb1BMN/sJ+qwo0KXexktMS9PpK2Zn0dZMt7mQ?=
+ =?us-ascii?Q?lm/ts5fPCvlnMlM4xHCdsjOW9nhvhI//AmKZbL+c30ZId+6Lrdzz9d81J8Nw?=
+ =?us-ascii?Q?voE0KRH2bKLMwrpB87l55PsiMjuAVIu/gi51nLqYsBVDRVgoIWkQxbCctI/l?=
+ =?us-ascii?Q?XPkFfH2HvD3vHaOmv6KqLG1aXjniFppUG9UtaOeN4a7lhFOHQQrjro0DQS6d?=
+ =?us-ascii?Q?6Es2OJTvFWTli9kUoi67dnvRk8ICB7khVneb1wx/Brqcro+kQ/uVpgUNu1/j?=
+ =?us-ascii?Q?Gs2LhVLbOhuK3kfAteqf3qCYVoXMCLYdaD1DEN4oMi6UVcBbyYBi6ze+1L+k?=
+ =?us-ascii?Q?LSNuDZAW6/TFQnNhZZEgGjTd7PwKXNPHlYg/jonZBnYZu8QICSDvVabECvA0?=
+ =?us-ascii?Q?KwhwDPpH+m4HyvLypbFyXKAJzN/ONqXQZN34crioctEMXwfrTsuSx6xTHtc5?=
+ =?us-ascii?Q?UhjtXaCf5pRW1lDs0N5GjiPoqRhBEAtZsZkv1Pp1ISQiSI2fNs4PZD4uhDE1?=
+ =?us-ascii?Q?tXbX+fUW3y75OztUopIH5ueWUxpVImnMm9qxwi1GDrPe3vdAqAwx4QymxacA?=
+ =?us-ascii?Q?Nv8mAHPaiHzPxtfZRId7JPKQuD0aibgC8O7H8eTMJEyBrYG6J9V27J9rE85m?=
+ =?us-ascii?Q?LgPB2lrcBu2Z3h37BlFAxjixRkCFB6W9zHbghEXInKpG21xNMJ99+dy0w9ao?=
+ =?us-ascii?Q?+yX1ygzQytA1j5gNozihllR4VqP25Y15wHrNzhNk+S1zXo8K8Lz9VqG9xLAw?=
+ =?us-ascii?Q?w9ebzWduhL12RK6Zo7P2p9YCj8ywX11o6xCy0BytHeAXTy+Vwrj0W6ukP2pe?=
+ =?us-ascii?Q?RH8TjlUSRDLNv2BXBjwNGXsQWZ4h0g7Ya0erMGk23FRJyFdAnWrm7bIotx8d?=
+ =?us-ascii?Q?PiEVUL49KCal1FGrZ/OW8gfhaf5xyDtWvE1Za6ro3WjY5oBMABqrd4Da+7px?=
+ =?us-ascii?Q?/9Q1k8h+oab4ik+UUwmKGK/xA5o4uXT/yKMEsgop9k/DISkIVb0DEhPHMZrf?=
+ =?us-ascii?Q?q7i1hI4BqAUGSkCiYjDwNhvL2L12QyOO3O7XnbJCk/MOWtKeQTgcJPBEO82J?=
+ =?us-ascii?Q?cYXRGXktrj0svvHjZmoI5EagSzHZDrTqxQfWnNMhqaWlxmaKv4Lgh+NFsnDx?=
+ =?us-ascii?Q?RNNxfNeMSGr40A8Ry6cm2L9VJYDJD+eXiupZjgsAcb4cgmei?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ee41107d-99f6-4752-f08b-08df3289ffad
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2026 11:20:39.2172
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bYcN/fpI0lxbUhm9TIk7XPQC48qW8eyBcWSkFq6joBmkRepncIEfoHF58YuSz4I4FtEav8NDYtmPfM7GtaFICQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6249
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
+On Thu, Oct 22, 2026 at 06:30:22PM +0800, Jin Li wrote:
+> The mcast_startup_query_interval default value is calculated as
+> 125 * HZ / 4. With CONFIG_HZ=250, this results in 3124 instead of
+> 3125 due to integer truncation. The test currently hardcodes 3125,
+> which fails on kernels built with CONFIG_HZ=250.
+> 
+> Allow a +/- 1 tolerance for the default value check to account for
+> this rounding, while still catching genuine regressions in the
+> default value.
+> 
+> Signed-off-by: Jin Li <jinli@lanxincomputing.com>
 
-Critical: 0 · High: 0 (1) · Medium: 1 · Low: 3
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+net-next is closed:
 
-- [Medium] The channel hunk in rvu_mbox_handler_npc_install_flow() (`if
-  (from_rep_dev && !req->channel) req->channel = pfvf->rx_chan_base;`)…
-- [Low] The commit bundles two unrelated fixes and gives them a single
-  Fixes: tag that only matches one of them.
-- [Low] The commit message has no blank line between subject and body.
-- [Low] The comment above the changed condition in npc_update_tx_entry()
-  still says 'If AF is installing then do not care about PF_FUNC in Send…
+https://netdev.bots.linux.dev/net-next.html
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but it stays in
-  the representor TX path this patch is fixing.
-
---
-
-octeontx2-af: Fix representor flow rule PF_FUNC mask and channel
-
-When rvu->rep_mode is set, this patch keeps the PF_FUNC match on
-AF-installed NPC TX rules instead of wildcarding it. It also changes
-rvu_mbox_handler_npc_install_flow() for representor requests.
-req->channel is now replaced with the target's rx_chan_base only when the
-request leaves it at zero.
-
-> octeontx2-af: Fix representor flow rule PF_FUNC mask and channel In representor mode, an AF-installed TX rule must still match on PF_FUNC, so do not clear the mask when rep_mode is set. Also, do not overwrite a channel already provided in the request when the rule comes from a representor device; only default to the PF/VF rx_chan_base when none is given.
-
-[Severity: Low]
-This isn't a bug, but there's no blank line between the subject and the
-body. As a result, the whole paragraph becomes the subject line.
-
-The first Signed-off-by is also:
-
-  Signed-off-by: kmahammadraf <kmahammadraf@marvell.com>
-
-That doesn't look like a real name, and it isn't the author. If
-kmahammadraf co-developed the patch, should there be a Co-developed-by:
-tag next to it? If kmahammadraf is the original author, should the From:
-line say so?
-
-> Fixes: 6c40ca957fe5 ("octeontx2-pf: Adds TC offload support")
-
-[Severity: Low]
-The channel override does come from 6c40ca957fe5. Is that also the right
-target for the PF_FUNC mask change?
-
-The AF TX rules that need the PF_FUNC match were added in
-rvu_rep_install_tx_rule() by commit 683645a2317e ("octeontx2-af: Add
-packet path between representor and VF"). Those rules are installed with
-req.hdr.pcifunc = 0, and only PF_FUNC tells them apart. The wildcard
-itself goes back to commit fa2bf6baf2b1 ("octeontx2-af: Enable transmit
-side LBK link").
-
-Would it be cleaner to split this into two patches, each with its own
-Fixes: tag? 683645a2317e and 6c40ca957fe5 went in on the same day, so
-stable selection is probably not affected.
-
-The commit message also doesn't describe the symptom. Before this patch,
-the rte=true TX rule from rvu_rep_install_tx_rule() had no features and a
-wildcarded PF_FUNC. It therefore matched every TX packet on that NIX TX
-interface, and the first such entry (PF1) sent all PF/VF egress to the
-LBK channel with PF1's VLAN tag.
-
-Could the commit message mention that?
-
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-> index d422bdd5e8f80..a569a63a21d9d 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-> @@ -1397,7 +1397,7 @@ static int npc_update_tx_entry(struct rvu *rvu, struct rvu_pfvf *pfvf,
->  	/* If AF is installing then do not care about
->  	 * PF_FUNC in Send Descriptor
->  	 */
-> -	if (is_pffunc_af(req->hdr.pcifunc))
-> +	if (is_pffunc_af(req->hdr.pcifunc) && !rvu->rep_mode)
->  		mask = 0;
-
-[Severity: Low]
-This isn't a bug, but the comment above still says AF-installed rules
-don't care about PF_FUNC. When rep_mode is set, AF-installed TX rules now
-match on PF_FUNC (mask = ~0ULL, value htons(target)), and
-rvu_rep_install_tx_rule() relies on that.
-
-Could the comment mention the rep_mode exception?
-
->  
->  	npc_update_entry(rvu, NPC_PF_FUNC, mdata, (__force u16)htons(target),
-
-[Severity: High]
-This is a pre-existing issue, but it remains in the representor TX path
-this patch is fixing. PF_FUNC is now the only matched TX key field. Do all
-the rte=false rules from rvu_rep_install_tx_rule() then end up with the
-same MCAM key?
-
-drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c:rvu_rep_install_tx_rule() {
-    ...
-	req.hdr.pcifunc = 0; /* AF is requester */
-	if (rte) {
-		req.vf = pcifunc;
-	} else {
-		req.vf = rvu->rep_pcifunc;
-		req.packet.sq_id = vlan_tci;
-		req.mask.sq_id = 0xffff;
-	}
-    ...
-}
-
-No req.features are set, so npc_update_flow() returns before it programs
-anything from req->packet:
-
-	if (!features)
-		return;
-
-Nothing in af/ appears to put sq_id into the key either; there is no
-NPC_SQ_ID key field. The only match left is PF_FUNC =
-htons(rvu->rep_pcifunc), and that is the same for every representee.
-
-rvu_rep_install_mcam_rules() installs one rte=false TX entry per
-representee, in index order. rvu_mbox_handler_npc_install_flow() always
-enables TX rules.
-
-Assuming the lowest-index entry wins when several match, wouldn't egress
-from every representor netdev hit the first enabled rte=false entry? It
-would then get that representee's vtag0_def VLAN, go out on
-RVU_SWITCH_LBK_CHAN, and be delivered to that single representee.
-
-For example, frames that a bridge forwards to the Rpf1vf2 representor
-would seem to reach a different function.
-
-[ ... ]
-
-> @@ -1846,7 +1846,7 @@ int rvu_mbox_handler_npc_install_flow(struct rvu *rvu,
->  
->  	pfvf = rvu_get_pfvf(rvu, target);
->  
-> -	if (from_rep_dev)
-> +	if (from_rep_dev && !req->channel)
->  		req->channel = pfvf->rx_chan_base;
-
-[Severity: Medium]
-Which representor requester sends a non-zero channel here? The only
-in-tree sender seems to be otx2_tc_add_flow(). It is reached through
-rvu_rep_setup_tc_cb(), which reuses the representor PF's otx2_nic:
-
-drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c:otx2_tc_add_flow() {
-    ...
-	req->channel = nic->hw.rx_chan_base;
-    ...
-}
-
-rx_chan_base never seems to be set for the representor PF.
-rvu_mbox_handler_nix_lf_alloc() jumps past nix_interface_init(), which is
-the only place pfvf->rx_chan_base is assigned:
-
-	if (is_rep_dev(rvu, pcifunc)) {
-		pfvf->tx_chan_base = RVU_SWITCH_LBK_CHAN;
-		pfvf->tx_chan_cnt = 1;
-		goto exit;
-	}
-
-So the rx_chan_base returned to the PF, which is copied into
-hw.rx_chan_base, is 0. Every representor TC request still arrives with
-channel == 0. It is still replaced with the representee's rx_chan_base,
-as before this patch.
-
-Does this hunk change anything for in-tree callers?
-
-Can 0 safely mean "not provided"? NIX_CHAN_LBK_CHX(0, 0) evaluates to 0,
-and CN10K uses it as hw->lbk_chan_base, so 0 is a valid LBK channel.
-struct npc_install_flow_req also has no flag a caller could use to ask
-for channel 0 explicitly.
-
-If the representor PF ever reports a non-zero rx_chan_base, wouldn't
-representee RX rules then match the representor PF's own channel rather
-than the representee's? That would weaken the override that 6c40ca957fe5
-added.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021091736.2406505-1-kmahammadraf%40marvell.com
+So you will need to re-post after it re-opens.
