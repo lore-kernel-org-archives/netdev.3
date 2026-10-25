@@ -1,59 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792946143;
-	b=JYFRofWD8rGHJK2mCb4SkUife9U1if8pU6sHp+ufidWoIlwVjZiB+4kJcsUvZRqG4Oza
-	 xzkuwp7141y0rzu9aYzpRffd4wAvjHgS5A+UT4VUgYhbex7gDPzt6oXwlQ7Z1KBxBQrBO
-	 xXPlWKs3jQMlIF9v6c1Wx2iFNhuS1JbUUzEdd7gaI1Cp4jZdZzTPxbNfkAgJi6d2fuBjC
-	 Bri6aQi6unUt2ONcoLnlrRGUxmLwRrr2Q4eKMolJe4zPGrZL5cnOHZy5geBl5aBUBbXVe
-	 x9qigL+UZs3+aiyxWHhPbtIjuxdCt7z+aJg3m7RXBE8dje9g6lr7ZDPxHAB9uxrtadg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792946143;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=bPmM7jPV12+A5yMCa9enXrOMHKwR1XmYaS6FdKIgNrk=;
-	b=krjCnMgxCI+GWN0hXCrS3gIl6qcHI9c7+Jpinm2VCx5aq0WVIPBj2/Rue2qG4+62BjwZ
-	 fSUcmxc4QIguM8GFxN90Y0/9dOhz1ylZFmIK2mlPkxnaoUj5uqPmcbPRuBF3eDr9+5FRy
-	 tV35bTr245tyyIqlDgYcfXxYQIC3Jm5oDe9LGhU/q+aLhEDZMZ/Y9ZdJZO98EkQc0ojVJ
-	 dIhHjP3aICm2JRsGG3a6ZyLkG1LcbZBUfgvDKjDnOk+2k+Zu5PpcEy4mM+TbGeKmpNr5Z
-	 96PeH+K4qt8wj9rlqYDsgBgY9b6Yh4OfB9MbDtz7DLQ8jmoN8Uaezyj+FsQnriL/kHw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="HXU/Tc7l";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.179
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792946918;
+	b=zPJ26SNgBmEYgM/CjOPHT/qocGpiz8CGcYc4nWA6D3nKUif1cf1cmBbRvJ3Y/paD4b7r
+	 FPdzZrxGMilGLsY8JKfA4y/U+DpFYll+rGaEZBoq5757Pl2k6/U8CZ3V/0o/+vqTDEIDa
+	 GT5Or+euc0IKwYz9GUHoipSMS5MueJzTxTt6YUzD+o8Irh9U0cvb2vgwyb19qW+XLQAnm
+	 rqt5DLzeM+jg5l3EdtdpJ6zZbKU8oGL96aV6+yywpe/14T8aXFwmh+Q67xx3miw+dS23c
+	 35gTuihQziBqhgc/Hq9tpVZ/FCC8WSZ9vXGyP+UhJwfKyC6AhG/+ImlvOszwJq36OPg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792946918;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=OQ5OjXs0aIahC9OVKlKWWMFSX1nU2p7OCig10Q5/wzk=;
+	b=1RWxHFkKimgPsBdnFtdDM7lrskTpCmhIVR+IOfLMZtBQWZAnMZh/ZCGsY5+Z/H5AMUW4
+	 hnIk7CK4Et5hgcScKYI7JClvU33l2Du38E4iRGnPBDL+4Y48k0J9ea1oME7z6WNxGpn5c
+	 vc4VA3Ak7qQTkSO3XHIOuZw9caAyhwlg72zS9Sc9HKXaYooFuVWTeH+JnEjIRjMvYKQx6
+	 nwaYYzo5ZnX09Yl3zgG23Gbfck0ZdamuU6C+/27GkAjjkE27NM2HYZhpVbkdKJnRYfTHo
+	 nulDlWzYYThIqn6awiPZ5eaV7AB9nekz8wpMGwAZFpgqDTovCdA9ONaJBFdCx0yjJYA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=KYmnvVXK;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.179
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43632606A31A;
-	Sun, 25 Oct 2026 16:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F35D606A31D
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 16:48:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F35D606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HXU/Tc7l
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8971F01825;
-	Sun, 25 Oct 2026 16:35:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792946142;
-	bh=bPmM7jPV12+A5yMCa9enXrOMHKwR1XmYaS6FdKIgNrk=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=HXU/Tc7lRKLIMMtT0QgsC+2boygE949sSbn5B+2Ef9OW0gwIrIjdKbqe0Vjg/mQSd
-	 MqIMA2NoOz8WW+9h4lyd7WaH0jQj1/IuLY6V3+FQfpZP5iH47EcjgCZGKOF21CT8kj
-	 nJPikF/7GQnylYapA6YxXbDCrPhA0q2PXK5HLMQlTc1HZaVQw1b7GA+cnxZgVRhlqw
-	 OZ0hEOj9PKTZHlJYfX+KAIzdwoNcW9IPOFgWON3STOfksTx9O+CGOiOIg0EWlJ7O4u
-	 NXbYopt9UyTG1Dloo3+kWii89oQ/qnh+r2eT94iVNb37oHygQHDAA3mmf7y4QSGVMy
-	 uZ4C+p+BVlPqA==
-Subject: Re: [PATCH net-next v4 1/2] tcp: keep the route window metric when
- SO_RCVBUF is set before connect
-From: netdev-bot+sashiko@kernel.org
-To: jain.sm@gmail.com
-Cc: edumazet@kernel.org, ncardwell@google.com, kuba@kernel.org,
- pabeni@redhat.com, davem@davemloft.net, kuniyu@google.com, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sun, 25 Oct 2026 16:35:41 +0000
-Message-ID: <179294614147.3134.15330394649606203025@kernel.org>
-In-Reply-To: <20261021155715.30094-2-jain.sm@gmail.com>
-References: <20261021155715.30094-2-jain.sm@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=KYmnvVXK
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-33bf40b0c8bso6590810eec.0
+        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 09:48:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792946917; cv=none;
+        d=google.com; s=arc-20260327;
+        b=EqoHrwMmtoaYTtA1tW4XwoTqvdn9Hbicybv0McMOCWfDIWBPPnaC1SmI2iw9OQx8E+
+         bgiyqh46fV1NF+mgxASNb3eJQzkxq8IvFTkXMgbLBFiKryALD+Ix1AUWBrOQHYIXoxP/
+         /udO8F2oCebQ/V2S6568/qbShbfqquxbqqNPg85B2xIw5jYI6SM7DaPaDbU/H3taOS8D
+         VReowAtSbGEnIok3qIWSybmD+YPvLGLSklW0JkMtRx/VYaaloZKyk1eTBWiHFRsWD2Vr
+         bSaMFzD015l8TiR7LwBc1lTOsTgnXPYuD+SkSQKeuUOy6AEzWDRW6ZIDRos8wSRyNcOw
+         b8iA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=OQ5OjXs0aIahC9OVKlKWWMFSX1nU2p7OCig10Q5/wzk=;
+        fh=XeKaIULN0wbwbsgpxM6cNWkOQZmFWAPZmxtpZJf2CmY=;
+        b=BZ6a2FUKjcCe9zPaSpN+AMnqRwIPHSfbf6SCwO881SDW40hXqgnVaaHNhEUj3gCJVk
+         fM46IKp/Ll0owhU1HFAvXyd0qfnkXGDTb17WuuFvGGjfmzpSrmgGU+hK9DlgM3aK8qtq
+         7FJoFtmiQSiA9ZbvVdGxXZuHF7JMPKkZTMKw+ED07BLFUwmZx6BCCD5Aaz2J+Rgl8wGv
+         gQxc9JgcjjuK2RlS13M27MK2wFXU9nuhtjZuEJyp25omNbPm41zT3E+87E0SCn/+/098
+         MngJbE/FXsfrHBRzDY3F1OjrSJFt/kZ0SdAhVgfdJwL5E3Qaa9m/F2TfJnkSpYh7ef/n
+         uBpQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792946917; x=1793551717; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=OQ5OjXs0aIahC9OVKlKWWMFSX1nU2p7OCig10Q5/wzk=;
+        b=KYmnvVXKqmgzmzcYvgaBaE2o02vTlgFEhxL1z9bImYcjsrPqSwTb/uT4x98PWQ3Avz
+         xmWPMeKQzEN55YHwCXqXnABiZx039OJtIL8+lt6hdomTYYNtNqizDQXSjWavfeHB4LJu
+         dNI274UzUkEtefjRtU2EUFZLWxLV8VPxJgT7c+ARjxaBt6KjMYVAPfn8ub2Kd+fi/pKJ
+         y1IJO9RgQlIwu/psiG2D1NnGKhd1julDHjPg0GejY/VoWMcUo2X9nER+AnjGuTq5jE34
+         pnBaXMrW2nYwKZ09gRlN8+I87/aOlBTdynHQhDr3c3h6CLdyyyerNOEEOldanrfp7vos
+         5fUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792946917; x=1793551717;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=OQ5OjXs0aIahC9OVKlKWWMFSX1nU2p7OCig10Q5/wzk=;
+        b=2MeWgFl/cLQFpmwaT20OnVNsnckFb2mvm2+nZrO7hVmuGiMo0NG7dchJS0PTwhveyq
+         uV7DnF0xMWZ2Bxn2A5cGpRBqY4GETkvhFRvSrGIpEh4HVDlPjUXn9oqVIUBLmhkmRdIi
+         FkvsL+KwEIvWKIfRnOpinBUcduoZV5ZuXR+faRM+1VXHr91NlUZSEKiX+4d9kJtPRkqc
+         BEoZfyum5ez3Yiic94XEGR6ptEzka5Jr7C1prZ5HqZeh7FWBFg2Gn/GPfT98Gt5+eg2a
+         1KDGT/6njoVJ4rNwQtuuonHijwSL7WQEnBelSb9mJYOfviWwF0IErqGhNFyI4XIN6xwM
+         afLA==
+X-Forwarded-Encrypted: i=1; AKwUvBxX0zMKOYFPL7VoWeiwXVu8c6NoyMKYNqMYzPw4OvM5t8VGOBvnzmYt/u35hbjsKce3PIzrAjw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKqEdGCoqnyDmZOtTpBCjBO3rFDptTEOTK8w6vA99Rmwbc9XZ+a
+	1eRptPFTgOO4OoRD6VDkavFray8+vvfOduFLhSkbH16M/2oB4fIt4KGAFdVXjqUMA84rL7ng03V
+	sHT4vgnK7AcIwhAR3RLrjaJykG2SqQCg=
+X-Gm-Gg: AYBFou32uabBxRUYxFYlFMpHgOwhUUl/noQaoC1HSci2HQdnPCfEJUeKMhj4I2xQkiX
+	9d611sKQveXwaxSNJxf9UtTpwvqxaJTOZZIDa6T6z3R5M6kQl0DInNC4S2rp/A+R1g/0NICcv8D
+	+X6UqFbw9ze1mamOVuPqn9u7xqAuZU1lkO8MwNOjykmKLYHXY4QXbjjis7PtSUdfhBgNM9WaP9f
+	TjRIVPcqCHN1pzgGK+4tkZdJ4Y6HtTyOzHg+HaaUQBFYGY9XgFoL8rzd4mL8daFnaieu3ADM50t
+	anXnwlwj4idpTeohuLgAXstUFhNx1wf7zyaVq30dL1tjwnb9QfQW6MHvGBMbX1RnWEe5mM0R44u
+	fXDQcTv8exyou1jAd+19GULGBHuh2dDdnWzQgKVGWZ6jLQiBmTrdFtrhdPRKeIs1pDjtMfMDHsZ
+	MZCKMcBy32aay1F9xp1VJixu8kiA==
+X-Received: by 2002:a05:693c:87dc:20b0:350:2a5c:56c with SMTP id
+ 5a478bee46e88-369e84b1873mr7142255eec.20.1792946917425; Sun, 25 Oct 2026
+ 09:48:37 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,249 +105,126 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+References: <179287943591.17355.17353179557993329094@gmail.com>
+ <at0vzdlVTF8XAzHj@strlen.de> <179288180870.24716.7833838593165388250@gmail.com>
+ <at2V3g-B1Ko2x1iK@strlen.de>
+In-Reply-To: <at2V3g-B1Ko2x1iK@strlen.de>
+From: Joas Antonio <joasantonio108@gmail.com>
+Date: Sun, 25 Oct 2026 13:48:26 -0300
+X-Gm-Features: AclHuK8nWBBaduAuSBl0zsyZnm0f5QTkQEz1Yhbnl-LnIzySkyTP_8D8glFnwKY
+Message-ID: <CAOCBhwFsbHzRuxngYoG3DDOB_KgBL5c0aHvZEVh58Xkeu=h1oA@mail.gmail.com>
+Subject: Re: [PATCH nf] netfilter: nft_set_pipapo: skip transaction elements
+ during GC
+To: Florian Westphal <fw@strlen.de>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Phil Sutter <phil@nwl.cc>, Weiming Shi <bestswngs@gmail.com>, 
+	netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Hi Florian,
 
-Critical: 0 · High: 0 · Medium: 1 (1) · Low: 1
+You are right, and I was wrong. Sorry for the noise.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+nft_set_elem_init() does stamp the expiration at parse time:
 
-- [Medium] tcp: unordered lockless reads of window_clamp in
-  tcp_req_window_clamp()
-- [Low] The changelog says: "Without an RTAX_WINDOW metric and without
-  TCP_WINDOW_CLAMP nothing changes".
+    nf_tables_api.c:6860
+    nft_set_ext_timeout(ext)->expiration =3D get_jiffies_64() + expiration;
 
-Pre-existing issues:
-- [Medium] The patch adds tp->window_clamp_user and comments that
-  window_clamp "never goes above a clamp the user set with…
+but I misread where the reference timestamp comes from. It is taken
+in nf_tables_valid_genid(), before the first message of the batch is
+processed, not in nf_tables_commit(). So expiration is always at least
+tstamp + timeout, and the sync gc in pipapo_gc_scan() cannot see a
+new element as expired, no matter how long the transaction takes.
 
---
+The "empty set" I observed is explained by the elements simply timing
+out after the commit (10ms timeout), and the dump skipping expired
+elements. It was not the gc collecting inactive elements. The
+comparison with 86b6471e690c was also wrong.
 
-tcp: keep the route window metric when SO_RCVBUF is set before connect
+Please drop the patch. I'm withdrawing it.
 
-This patch adds tp->window_clamp_user to record the clamp set with
-TCP_WINDOW_CLAMP. tcp_connect_init(), tcp_openreq_init_rwin() and the SYN
-cookie paths now use it, instead of any non-zero window_clamp, to decide
-whether to apply the RTAX_WINDOW route metric. tcp_set_rcvbuf() now caps
-window_clamp at the user's clamp.
+Thanks for taking the time to check it.
+Joas
 
-> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-> index 99d7237a623d8..64465bc257d18 100644
-> --- a/net/ipv4/tcp.c
-> +++ b/net/ipv4/tcp.c
-> @@ -1859,7 +1859,15 @@ int tcp_set_rcvlowat(struct sock *sk, int val)
->  
->  void tcp_set_rcvbuf(struct sock *sk, int val)
->  {
-> -	tcp_set_window_clamp(sk, tcp_win_from_space(sk, val));
-> +	u32 user_clamp = tcp_sk(sk)->window_clamp_user;
-> +	int win = tcp_win_from_space(sk, val);
-> +
-> +	/* window_clamp follows the receive buffer, but never goes above a
-> +	 * clamp the user set with TCP_WINDOW_CLAMP.
-> +	 */
-> +	if (user_clamp)
-> +		win = min_t(u32, win, user_clamp);
-> +	tcp_set_window_clamp(sk, win);
->  }
 
-[Severity: Medium]
-This isn't a bug introduced by this patch, but the new comment says
-window_clamp never goes above a clamp set with TCP_WINDOW_CLAMP. Only
-tcp_set_rcvbuf() enforces that. The other writers of tp->window_clamp
-still ignore window_clamp_user.
+Em dom., 25 de out. de 2026 =C3=A0s 02:38, Florian Westphal <fw@strlen.de> =
+escreveu:
+>
+> Joas Antonio dos Santos <joasantonio108@gmail.com> wrote:
+> > The catch is that the expiration isn't stamped at activation, it's
+> > stamped when the element is allocated. nft_set_elem_init() does:
+> >
+> >       nft_set_ext_timeout(ext)->expiration =3D get_jiffies_64() + expir=
+ation;
+> >
+> > and that happens back in the parse phase (nft_add_set_elem), while we'r=
+e
+> > still going through the batch. The element only goes active later, in
+> > nf_tables_commit(), which is also where the gc tstamp is taken
+> > (nft_net->tstamp =3D get_jiffies_64()).
+>
+>
+> Can you name the line in the source code?
+> I am not seeing it :-(
+>
+> > So the expiration is really parse_time + timeout, and the commit-time g=
+c
+> > scan checks it against commit_time. If you add a big batch of elements
+> > with a short timeout, they get parsed one by one and the commit only
+> > happens at the very end, so the ones parsed early in the batch have
+> > already gone past their timeout by the time we reach the commit tstamp.
+>
+> Thats not supposed to cause a gc?
+>
+> All the sync gc functions are supposed to check against the reference
+> timestamp taken at the beginning of the transaction start, in
+> nf_tables_valid_genid().
+>
+> They are NOT supposed to check against wall clock time.
+> Even if transaction takes 5 minutes: the sync gc step should
+> NOT observe even a single timed out elemenent.
+>
+> They become stale only AFTER the sync gc step.
+>
+> tstamp is coming from nft_nat->tstamp, i.e. start of transaction.
+> e->ext timestamp therefore should never be in the past compared
+> to that reference time.
+>
+> 1751                 if (__nft_set_elem_expired(&e->ext, tstamp)) {
+> 1752                         if (!nft_trans_gc_space(gc)) {
+> 1753                                 gc =3D nft_trans_gc_alloc(set, 0, GF=
+P_KERNEL);
+> 1754                                 if (!gc)
+>
+> > I confirmed it on an unpatched 7.3-rc6 + KASAN: add 20000 elements with
+> > "timeout 10ms" to an interval+timeout pipapo set (the parse alone takes
+> > ~6s) and the set ends up basically empty. pipapo_gc_scan() collected th=
+e
+> > new, not-yet-activated elements during the same commit that added them.
+>
+> How? I'm not seeing it :-(
+>
+> > It's the same thing you already fixed for rbtree in 86b6471e690c, the
+>
+> I thought that was about false zap of rbtree end nodes which doesn't
+> apply here :-(
+>
+> > races the grace period just like the rbtree case, but the precondition
+> > (gc picking up the not-yet-active elements) reproduces every time.
+>
+> How?
+>
+> > If it'd help, I can respin v2 with the parse-time vs commit-time
+> > expiration written out in the commit message, just let me know.
+>
+> Yes, please explain in detail how time can advance during transaction,
+> because its supposedly impossible.
 
-tcp_measure_rcv_mss() resets window_clamp from sk_rcvbuf every time
-scaling_ratio changes, even with SOCK_RCVBUF_LOCK set:
 
-net/ipv4/tcp_input.c:tcp_measure_rcv_mss() {
-    ...
-			if (old_ratio != tcp_sk(sk)->scaling_ratio) {
-				struct tcp_sock *tp = tcp_sk(sk);
 
-				val = tcp_win_from_space(sk, sk->sk_rcvbuf);
-				WRITE_ONCE(tp->window_clamp, val);
-    ...
-}
-
-tcp_rcvbuf_grow() raises it during DRS autotuning:
-
-net/ipv4/tcp_input.c:tcp_rcvbuf_grow() {
-    ...
-		WRITE_ONCE(tp->window_clamp,
-			   tcp_win_from_space(sk, rcvbuf));
-    ...
-}
-
-tcp_set_rcvlowat() raises a non-zero clamp in any state, including
-TCP_LISTEN:
-
-net/ipv4/tcp.c:tcp_set_rcvlowat() {
-    ...
-		if (tp->window_clamp && tp->window_clamp < val)
-			WRITE_ONCE(tp->window_clamp, val);
-    ...
-}
-
-mptcp_set_rcvlowat() also writes the subflow window_clamp directly.
-
-Take an established socket that sets TCP_WINDOW_CLAMP=X and then a large
-SO_RCVBUF. window_clamp stays capped at X only until the next
-scaling_ratio change, when tcp_measure_rcv_mss() sets it from the larger
-sk_rcvbuf.
-
-Is the changelog statement that SO_RCVBUF no longer grows window_clamp
-"above a clamp set with TCP_WINDOW_CLAMP" accurate beyond that short
-window?
-
-Now take a listener that sets TCP_WINDOW_CLAMP=X and then SO_RCVLOWAT=Y,
-with Y > X and the rcvbuf not locked. This leaves window_clamp=Y and
-window_clamp_user=X. tcp_req_window_clamp() then gives Y to request
-sockets and SYN cookies as if it were the user's clamp:
-
-	if (READ_ONCE(tp->window_clamp_user))
-		return READ_ONCE(tp->window_clamp);
-
-The same things happened before this patch, so this is not a
-regression. Should these writers also be capped at window_clamp_user? If
-not, could the new comment and the changelog be reworded to cover only
-the tcp_set_rcvbuf() path?
-
-[ ... ]
-
-> diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-> index c8865205cdc8b..21b4ae303dd63 100644
-> --- a/net/ipv4/tcp_output.c
-> +++ b/net/ipv4/tcp_output.c
-> @@ -4137,7 +4137,7 @@ static void tcp_connect_init(struct sock *sk)
->  
->  	tcp_ca_dst_init(sk, dst);
->  
-> -	if (!tp->window_clamp)
-> +	if (!tp->window_clamp_user)
->  		WRITE_ONCE(tp->window_clamp, dst_metric(dst, RTAX_WINDOW));
->  	tp->advmss = tcp_mss_clamp(tp, tcp_dst_advmss(dst));
-
-[Severity: Low]
-The changelog says:
-
-  Without an RTAX_WINDOW metric and without TCP_WINDOW_CLAMP nothing
-  changes: before and after this patch the advertised window and scale
-  are derived from sk_rcvbuf (tcp_full_space()).
-
-Does that hold for MPTCP subflows? mptcp_set_rcvlowat() writes the
-subflow window_clamp directly and never sets window_clamp_user:
-
-net/mptcp/sockopt.c:mptcp_set_rcvlowat() {
-    ...
-	mptcp_for_each_subflow(mptcp_sk(sk), subflow) {
-		...
-		WRITE_ONCE(ssk->sk_rcvbuf, space);
-		WRITE_ONCE(tcp_sk(ssk)->window_clamp, val);
-    ...
-}
-
-__mptcp_socket_create() adds msk->first to conn_list as soon as it is
-created. That happens on bind(), on listen(), or on any setsockopt that
-goes through __mptcp_nmpc_sk(). So SO_RCVLOWAT can reach a subflow that
-is still in TCP_CLOSE, or the listener subflow. The write happens when
-the rcvbuf is not locked and mptcp_space_from_win(val) > sk_rcvbuf.
-
-Before this patch, and before b025461303d8, that non-zero value was kept
-as the clamp. tcp_connect_init() checked "if (!tp->window_clamp)" and
-tcp_openreq_init_rwin() used "window_clamp ? : dst_metric(...)".
-tcp_select_initial_window() then derived rcv_wscale from it, and the
-final window_clamp was capped at val.
-
-After this patch, window_clamp_user is 0 on these subflows.
-tcp_connect_init() overwrites window_clamp with
-dst_metric(dst, RTAX_WINDOW), which is usually 0, and
-tcp_req_window_clamp() ignores the listener subflow's clamp.
-
-With default sysctls and val=1MB, the wscale in the SYN/SYN-ACK seems to
-go from about 5 to about 7. The initial window_clamp is also no longer
-limited to val.
-
-The new behaviour matches plain TCP, because tcp_set_rcvlowat() only
-raises a window_clamp that is already non-zero. This patch has a Fixes:
-tag, and this MPTCP change goes back further than b025461303d8. Could
-the changelog mention it?
-
-[ ... ]
-
-> diff --git a/include/net/tcp.h b/include/net/tcp.h
-> --- a/include/net/tcp.h
-> +++ b/include/net/tcp.h
-> @@ -1879,6 +1879,20 @@ extern void tcp_openreq_init_rwin(struct request_sock *req,
->  				  const struct sock *sk_listener,
->  				  const struct dst_entry *dst);
->  
-> +/* Window clamp for a request socket of listener @tp: the listener's clamp
-> + * if the user set one with TCP_WINDOW_CLAMP, else the route window metric.
-> + * The SYN-ACK and the SYN cookie paths must make the same choice, or the
-> + * child's window scale would not match the one sent in the SYN-ACK.
-> + * The listener is not locked here.
-> + */
-> +static inline u32 tcp_req_window_clamp(const struct tcp_sock *tp,
-> +				       const struct dst_entry *dst)
-> +{
-> +	if (READ_ONCE(tp->window_clamp_user))
-> +		return READ_ONCE(tp->window_clamp);
-> +	return dst_metric(dst, RTAX_WINDOW);
-> +}
-> +
->  void tcp_enter_memory_pressure(struct sock *sk);
->  void tcp_leave_memory_pressure(struct sock *sk);
->  
-
-[Severity: Medium]
-tcp_req_window_clamp() runs on the listener without the socket lock,
-from tcp_openreq_init_rwin() and from cookie_v4_check() and
-cookie_v6_check(). It loads window_clamp_user and then window_clamp.
-Nothing orders those two loads against the two stores that
-setsockopt(TCP_WINDOW_CLAMP) does on the listener.
-
-In do_tcp_setsockopt(), tcp_set_window_clamp() stores the new
-window_clamp first, and window_clamp_user is written afterwards with
-WRITE_ONCE(). READ_ONCE() and WRITE_ONCE() prevent tearing. They do not
-order the two fields against each other. On a weakly ordered
-architecture, a SYN handled at the same time on another CPU can see the
-new, non-zero window_clamp_user together with the old window_clamp.
-
-If SO_RCVBUF was never set on the listener, the old window_clamp is 0.
-tcp_req_window_clamp() then returns 0. Unless SOCK_RCVBUF_LOCK is set,
-tcp_select_initial_window() treats a 0 clamp as no clamp at all, so the
-request gets neither the user's clamp nor the RTAX_WINDOW metric. If
-SO_RCVBUF was set earlier, the reader can instead pick up the old,
-larger window_clamp derived from SO_RCVBUF in place of the user's clamp.
-The SYN-ACK and the cookie ACK make this choice at different times, so
-they can end up with different rcv_wscale values. Avoiding that mismatch
-is the point of the new helper.
-
-tcp_disconnect() has the same problem in reverse. It zeroes
-window_clamp with a plain store and only then clears window_clamp_user.
-A reader that already passed the TCP_LISTEN check can see the old
-window_clamp_user and window_clamp == 0. The plain store was there
-before this patch. Should it become WRITE_ONCE() now that
-tcp_req_window_clamp() reads the field locklessly?
-
-The window is narrow, because it needs a setsockopt() or a disconnect
-on a live listener while SYNs arrive. Still, the changelog presents
-READ_ONCE()/WRITE_ONCE() as what makes the unlocked listener path safe.
-
-Pairing smp_store_release() on window_clamp_user with smp_load_acquire()
-in tcp_req_window_clamp() would cover the setsockopt case. It would not
-cover tcp_disconnect(), where the reader can still see the newer
-window_clamp of 0. Would it be simpler to make the result robust to a
-stale or zero window_clamp? For example, return window_clamp_user
-itself, or the minimum of the two with a fallback to window_clamp_user
-when window_clamp reads 0. Or is there a reason the listener's
-window_clamp has to be used here rather than the stored user value?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021155715.30094-1-jain.sm%40gmail.com
+--=20
+Joas Antonio dos Santos
+Cyber Security Specialist and Ethical Hacker
+joasantonio108@gmail.com
+LinkedIn
