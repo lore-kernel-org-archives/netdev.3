@@ -1,47 +1,46 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792906262;
-	b=cI31XP9sxKnuGiQfBJLQ/tMLHRbB6X5H0izF2LLp2KbMvg1PNOgv5D/BYM4eFOApFvPZ
-	 uS8ZlLdm7zF+n/WgroRhnr/dnCNEoKXmr5gMrYJqJ6USVZlXXUlsuGb1Rn6iwl9tTETFX
-	 GWTNl6Xry+I3PK9ca/5V4lCLL1ho2JWrjLJ3TMzgFUJ0hvckqqeMNXkVc5+rG0S23Vl2p
-	 3dcCb3VDPF0T7PdPxyyfpN/nfT3S+EQdil89hu2qBaYAgdbQUb3NJ65iIKC5fuKGT0xur
-	 OEbvZNNL5fR3zHp4Tbz/Y7Y1zQjKmngSokazZLWn4q+jF+CUQOsOvrdWu+ILlCQE5rg==
+	t=1792906268;
+	b=3JvH/+wO3wAa4TRHwkfufpekA0ykzwXZBzOd98Au/SOl6lmIN7KzT5PuhFNnN8vWEsJo
+	 JcdMdbDms6T35XOcMA0hXAGXihuOG9c0nDjFCOMqWo04nfPYggCxm1C4RiVcng/wwbcoJ
+	 JNb94YqPjNqgurKzcW8jVeUlbakLiWFkt/05W7jYvlJbpiGnuM8P4XFmRpGI7m1LQD8U9
+	 dEyPzQ8KTuWz5w1d9PLTtpytMWGNOaxYTHApP+wfXSzueucYAiYGbUMCMc+fORgKPVVP0
+	 J2M/D4ZrIuP08IfI5XLHUbvhmrGGRbehnkUJGzV+N6Htg4xFEAETzoESsGV8628ZGNQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792906262;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792906268;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=ZzKajPNZhJBaeiX7KrF0L4LRhebWXvs6tMtkK6E+pA4=;
-	b=zCV8CX4B+mV3BeHNwdhYfMdMueUTh5EV92hBL4xSWjaH6WOfE3yisoSLI5ykNku42tkk
-	 83sRmWD/7Mf0umpUM3ek4zl5vUm8w1nmaAIJhic9deimTlZKqk25boZYOGWKFA5LTrObr
-	 wp6hyASZICxkUJgTcSUx6RK+raWJ5frM7gUfVy2Hy2KvRbf7rHb9/c7eVUBARMICG9Y0t
-	 HbFIlw7xfssUktI5MOznDQbXIu2flNxoLjsE+ACZfaaKz3h+eXHR2mdND3Wj1+cJJKpS8
-	 hLXGOLZYYOUg+t2sAzINBnlRtFbzEQR6a8U+3yvYcze2dRpR7LJ+kR5lyiVbupALwbg==
+	bh=EmGIJEeTF2IoA6PLnnXO2EtBG7lvQbnG1ggSXKw1uJY=;
+	b=0SZIK3ODMQHvgXhQWQWZKlw2BfkyPVeGXEROhDqr1ErUzaCQ7wSMFa2QApsVq1pdo6hk
+	 xN/9pquH+ubtmUYX7n5CQEwqzVaRpw3XLOKfXp1vSHnbqR1JVFs2foKPyZbpZNbeKZ9GV
+	 DNaFXz6dJzHJbvXjclYTMmEYqY5d+yPvQdV+yz7M2MJvaBxJ3d6bqHRjuajNuseKahG2J
+	 eFniF0SWs0loA6tB3p1KZq9feQIuSi1WfM/tH6TecZAq7rBfoMMifQy2QccDEI1LExPq7
+	 IORz8o9drQnoy8qpCWhsHlFAbZOB52NCSSEVhRuMQc0tiBPSaK9EEGUcc09VEk7cU2g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XIQDBQGY;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mDwltRpe;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63EA606A31A;
-	Sun, 25 Oct 2026 05:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12DB060A2602;
+	Sun, 25 Oct 2026 05:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XIQDBQGY
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 584C41F01825;
-	Sun, 25 Oct 2026 05:31:00 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mDwltRpe
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B7441F01825;
+	Sun, 25 Oct 2026 05:31:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792906261;
-	bh=ZzKajPNZhJBaeiX7KrF0L4LRhebWXvs6tMtkK6E+pA4=;
+	s=k20260515; t=1792906267;
+	bh=EmGIJEeTF2IoA6PLnnXO2EtBG7lvQbnG1ggSXKw1uJY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=XIQDBQGYo0HizMSKxpCpMD164TC/u5LTwuqveTngIR6NYP8e2MI8LnG/XMqXFTSeI
-	 waYdtcOz2Qy2KpLbYJZG2dQl/3HRqD4+xe03eeV1Jdv8VU5nw38rmkmzdCQlGuo1+g
-	 tI4ZUNYIEtF2QUyqgP+VP9x08/Kt6HgFEeG3klxNDSvYt0GMqMHMmpdKzQw4LL96+B
-	 Bl1FRSsrqLVA585hNWKi1q6TCg+gHKvMnjxJfpdCCerx3K2pZJwAKqrLvn686uWXEF
-	 vmZSOz2Bky5GVtozBZiitNz9ZbmLX8rn5gWfFfEe6K9UC9bUFpsX1E0WCbhUcJpxOT
-	 Mi1XAXXXCUa/g==
-Subject:
- Re: [PATCH net v5 1/7] net: account for ingress-resolved virtio net hdr state
+	b=mDwltRpe22VDhRHOnpLAnj+aUl6UByT0IOMD+T4h5FGPcaxiG7JbnvtoBjENpkGja
+	 v1BSOtCsIhAy0TZUlBmzkh+kDBvzonPKKF6Jhq88PQwSl7M7Mc2/nFwrf1kRzmGZ9b
+	 ZutkHSgEpt/2fUoD/foStTfFrt9HoCa99q0QqV6VvGuWlItUOGqY0Gt3YzvEtZTuev
+	 xk1IZp9rdM/3dc3S48SgcfBvovdKqWecGNKrzPv6qODRuUNyTElNtmH8TCSJtGigWJ
+	 Ttjq6vGImVXQbsqvkCjw87aOREFaa4FIJF2aVxO8XVKLSR8xbYzXfS0GGxwO8fs6MM
+	 qHQ8QLQocz3Dg==
+Subject: Re: [PATCH net v5 6/7] net: add ip4_parse()
 From: netdev-bot+sashiko@kernel.org
 To: mst@redhat.com
 Cc: linux-kernel@vger.kernel.org, willemdebruijn.kernel@gmail.com,
@@ -50,13 +49,13 @@ Cc: linux-kernel@vger.kernel.org, willemdebruijn.kernel@gmail.com,
  davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
  netdev@vger.kernel.org, virtualization@lists.linux.dev, maxk@qualcomm.com,
  rusty@rustcorp.com.au
-Date: Sun, 25 Oct 2026 05:30:59 +0000
-Message-ID: <179290625983.3134.1093878831391467849@kernel.org>
+Date: Sun, 25 Oct 2026 05:31:06 +0000
+Message-ID: <179290626608.3134.7140571049863955668@kernel.org>
 In-Reply-To:
- <94796ee3c32e50665ecf70e2b390db1bc2773be9.1792668082.git.mst@redhat.com>
+ <65a4d0ba37073c48d75251039882161efe5a4025.1792668082.git.mst@redhat.com>
 References:
- <94796ee3c32e50665ecf70e2b390db1bc2773be9.1792668082.git.mst@redhat.com>
-X-sashiko-severity: Medium
+ <65a4d0ba37073c48d75251039882161efe5a4025.1792668082.git.mst@redhat.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -72,7 +71,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 2
+Critical: 0 · High: 1 · Medium: 0 · Low: 2
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -80,144 +79,220 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The concern: the newly checked virtio_net_hdr_to_skb() call in
-  raw_verify_header() (arch/um/drivers/vector_transports.c:213) runs on…
-- [Low] This patch quietly includes a real behaviour fix for the UML
-  vector raw transport.
-- [Low] The concern: at this commit, virtio_net_hdr_to_skb(),
-  __virtio_net_hdr_to_skb() and virtio_net_hdr_tnl_to_skb() in…
+- [High] Use-after-free read in the new ip4_parse() helper
+  (include/linux/ip.h).
+- [Low] The commit message presents the patch as adding a new helper for
+  open-coded checks.
+- [Low] The kernel-doc for ip4_parse() says "The whole header, options
+  included, is guaranteed linear on return", and the helper does…
 
 --
 
-net: account for ingress-resolved virtio net hdr state
+net: add ip4_parse()
 
-This commit changes callers of virtio_net_hdr_to_skb() and
-virtio_net_hdr_tnl_to_skb() to treat only negative return values as errors.
-It prepares for a later patch that returns a positive value when the
-checksum is completed in software. It also makes the UML vector raw
-transport check the return value, and adds a tun ethtool -S counter,
-rx_csum_sw, for the positive case.
+This commit adds an ip4_parse() helper to include/linux/ip.h. The helper
+pulls the IPv4 header including options, checks the version and IHL, and
+returns the transport header offset. It replaces virtio_net_ip4_parse() and
+converts ip_rcv_core(), br_validate_ipv4() and nf_reject_iphdr_validate()
+to use it.
 
-> diff --git a/arch/um/drivers/vector_transports.c b/arch/um/drivers/vector_transports.c
-> index e1fb2a76fdff5..8b75484586635 100644
-> --- a/arch/um/drivers/vector_transports.c
-> +++ b/arch/um/drivers/vector_transports.c
-> @@ -210,7 +210,9 @@ static int raw_verify_header(
->  		return 1;
->  
->  	skb_set_network_header(skb, ETH_HLEN);
-> -	virtio_net_hdr_to_skb(skb, vheader, virtio_legacy_is_little_endian());
-> +	if (virtio_net_hdr_to_skb(skb, vheader,
-> +			virtio_legacy_is_little_endian()) < 0)
-> +		return -1;
->  	return 0;
+> diff --git a/include/linux/ip.h b/include/linux/ip.h
+> index d11c25f5030a0..7e047d18a61c9 100644
+> --- a/include/linux/ip.h
+> +++ b/include/linux/ip.h
+> @@ -56,4 +56,41 @@ static inline void iph_set_totlen(struct iphdr *iph, unsigned int len)
+>  {
+>  	iph->tot_len = len <= IP_MAX_MTU ? htons(len) : 0;
 >  }
+> +
+> +/**
+> + * ip4_parse - pull and minimally validate an IPv4 header
+> + * @skb: buffer to parse
+> + * @nhoff: offset of the IPv4 header within the linear data
+> + * @thoff: returns the transport header offset
+> + *
+> + * The whole header, options included, is guaranteed linear on
+> + * return, so the transport header offset is within the linear
+> + * data.  Callers that need to read the transport header must
+> + * pull further.
+> + *
+> + * Return: the validated IPv4 header, or NULL if truncated or
+> + * malformed.
+> + */
+> +static inline struct iphdr *ip4_parse(struct sk_buff *skb,
+> +				      unsigned int nhoff,
+> +				      unsigned int *thoff)
+> +{
+> +	struct iphdr *iph;
+> +
+> +	if (!pskb_may_pull(skb, nhoff + sizeof(struct iphdr)))
+> +		return NULL;
+> +
+> +	iph = (struct iphdr *)(skb->data + nhoff);
+> +	if (iph->version != 4 || iph->ihl < sizeof(struct iphdr) / sizeof(u32))
+> +		return NULL;
+> +
+> +	/* Pull the options as well: the transport header offset
+> +	 * returned below must be within the linear data.
+> +	 */
+> +	if (!pskb_may_pull(skb, nhoff + iph->ihl * sizeof(u32)))
+> +		return NULL;
+> +
+> +	*thoff = nhoff + iph->ihl * sizeof(u32);
 
-[Severity: Medium]
-Can this drop valid frames at this point in the series? The skb passed in
-here has not been trimmed to the received length yet. prep_skb() sizes it
-to the whole receive buffer:
+[Severity: High]
+Can this read iph->ihl from a freed skb head?
 
-arch/um/drivers/vector_kern.c:prep_skb() {
+iph is computed from skb->data after the first pskb_may_pull(). If the
+options are not linear yet, the second pskb_may_pull() can go through
+__pskb_pull_tail() -> pskb_expand_head(), which reallocates the head:
+
+net/core/skbuff.c:__pskb_pull_tail() {
     ...
-	skb_put(result, vp->max_packet);
-	result->data_len = len - vp->max_packet;
-	result->len += len - vp->max_packet;
+	if (eat > 0 || skb_cloned(skb)) {
+		if (pskb_expand_head(skb, 0, eat > 0 ? eat + 128 : 0,
+				     GFP_ATOMIC))
     ...
 }
 
-Both vector_legacy_rx() and vector_mmsg_rx() call verify_header() before
-pskb_trim():
+When the head is not shared, pskb_expand_head() calls skb_free_head() on
+the old buffer. When the skb is cloned, it drops the dataref instead.
 
-arch/um/drivers/vector_kern.c:vector_legacy_rx() {
-    ...
-				header_check = vp->verify_header(
-					vp->header_rxbuffer, skb, vp);
-				if (header_check < 0) {
-    ...
-			pskb_trim(skb, pkt_len - vp->rx_header_size);
-    ...
-}
+pskb_may_pull_reason() also calls skb_might_realloc(). With
+CONFIG_FAIL_SKB_REALLOC the head is therefore reallocated on every call,
+and KASAN should catch the stale read.
 
-That means the length checks in __virtio_net_hdr_to_skb() compare against
-the buffer size (65536 with GSO), not the packet length. Take the USO check:
+The __pskb_pull_tail() kernel-doc says: "All the pointers pointing into skb
+header may change and must be reloaded after call to this function."
 
-	if (skb->len - p_off > gso_size * UDP_MAX_SEGMENTS)
-		return -EINVAL;
+Only the return value is rebuilt from skb->data. The *thoff calculation
+above still reads through the old iph.
 
-With a 64K buffer, this rejects a valid USO frame whose gso_size is below
-about 511. Before this patch the error was ignored. Now raw_verify_header()
-returns -1, and the caller frees the skb and increments rx_encaps_errors.
+The stale thoff is then used in several places:
 
-The same ordering also lets csum_start/csum_offset values that point past
-the real packet, but still inside the buffer, pass validation.
+- the len < thoff checks in ip_rcv_core(), br_validate_ipv4() and
+  nf_reject_iphdr_validate()
+- the csum_start comparison in
+  virtio_net_l4_start()->virtio_net_csum_partial_ok_at_offset()
 
-The next patch in the series, "um: vector: trim skbs before verifying the
-header", moves pskb_trim() ahead of verify_header() in both RX paths. That
-fixes this, so only intermediate bisect points are affected. Could the trim
-come before this change, or be folded into it?
+Suppose the freed byte has changed, for example because of init_on_free,
+and thoff comes out as nhoff. Could a packet with ihl=15 and tot_len=20
+then pass the len < thoff check? It would be trimmed below its header
+length, and skb->transport_header would end up past the tail.
 
-[Severity: Low]
-This hunk looks like a real behaviour fix for the UML raw transport, not
-accounting preparation. The commit message says:
+In the virtio path, could csum_start == nhoff with a TCP csum_offset then
+pass validation? That would defeat the check added by "net: resolve
+uncommon partial checksums at ingress".
 
-    The um vector raw transport even ignored the return value
-    altogether: rejected packets went on into the stack with their
-    metadata unvalidated, so check it there as well.
+The old virtio_net_ip4_parse() did only one pull. This seems to come from
+the v5 change that also pulls the options.
 
-The return value has been ignored since commit 49da7e64f33e ("High
-Performance UML Vector Network Driver").
+The last patch in the series ("virtio_net: cleanup protocol calculation")
+doesn't change ip4_parse(), so the problem appears to still be there at
+the end of the series.
 
-For example, __virtio_net_hdr_to_skb() can call skb_partial_csum_set(),
-which sets CHECKSUM_PARTIAL along with csum_start/csum_offset, and then
-return -EINVAL from a later check. The old code still delivered that skb.
+Would it work to compute the header length before the second pull, and to
+use only the pointer rebuilt from skb->data after it? For example:
 
-Should this be a separate UML patch, ordered together with the trim fix
-from "um: vector: trim skbs before verifying the header", and carrying:
+	hlen = iph->ihl * sizeof(u32);
+	if (!pskb_may_pull(skb, nhoff + hlen))
+		return NULL;
 
-Fixes: 49da7e64f33e ("High Performance UML Vector Network Driver")
+	*thoff = nhoff + hlen;
+	return (struct iphdr *)(skb->data + nhoff);
 
-Right now the fix sits in a patch whose subject reads as accounting-only
-and which also adds a new tun ethtool string. That makes it hard to pick
-up cleanly for stable.
-
-> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-> index 7cca1a6f72ff4..133923317eae8 100644
-> --- a/drivers/net/tun.c
-> +++ b/drivers/net/tun.c
+> +	return (struct iphdr *)(skb->data + nhoff);
+> +}
+>  #endif	/* _LINUX_IP_H */
 
 [ ... ]
 
-> @@ -1939,10 +1940,14 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
->  		break;
+> diff --git a/net/ipv4/ip_input.c b/net/ipv4/ip_input.c
+> index 9860178752b8c..5adf01763e857 100644
+> --- a/net/ipv4/ip_input.c
+> +++ b/net/ipv4/ip_input.c
+
+[ ... ]
+
+> @@ -520,10 +520,6 @@ static struct sk_buff *ip_rcv_core(struct sk_buff *skb, struct net *net)
 >  	}
 >  
-> -	if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, &hdr)) {
-> +	err = tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, &hdr);
-> +	if (err < 0) {
->  		atomic_long_inc(&tun->rx_frame_errors);
->  		err = -EINVAL;
->  		goto free_skb;
-> +	} else if (err > 0) {
-> +		atomic64_inc(&tun->rx_csum_sw);
-> +		err = 0;
->  	}
+>  	drop_reason = SKB_DROP_REASON_NOT_SPECIFIED;
+> -	if (!pskb_may_pull(skb, sizeof(struct iphdr)))
+> -		goto inhdr_error;
+> -
+> -	iph = ip_hdr(skb);
+>  
+>  	/*
+>  	 *	RFC1122: 3.2.1.2 MUST silently discard any IP frame that fails the checksum.
+> @@ -536,7 +532,8 @@ static struct sk_buff *ip_rcv_core(struct sk_buff *skb, struct net *net)
+>  	 *	4.	Doesn't have a bogus length
+>  	 */
+>  
+> -	if (iph->ihl < 5 || iph->version != 4)
+> +	iph = ip4_parse(skb, 0, &thoff);
+> +	if (!iph)
+>  		goto inhdr_error;
+>  
+>  	BUILD_BUG_ON(IPSTATS_MIB_ECT1PKTS != IPSTATS_MIB_NOECTPKTS + INET_ECN_ECT_1);
 
 [Severity: Low]
-Can err be positive here at this commit? At this revision,
-virtio_net_hdr_to_skb(), __virtio_net_hdr_to_skb() and
-virtio_net_hdr_tnl_to_skb() in include/linux/virtio_net.h appear to return
-only 0 or -EINVAL.
+The ihl * 4 pull now happens inside ip4_parse(), which runs before the ECN
+accounting a few lines below:
 
-If so, this branch and the matching ret > 0 branch in tun_xdp_one() can't
-be reached. The new rx_csum_sw value reported by tun_get_ethtool_stats()
-would always read 0.
+	__IP_ADD_STATS(net,
+		       IPSTATS_MIB_NOECTPKTS + (iph->tos & INET_ECN_MASK),
+		       max_t(unsigned short, 1, skb_shinfo(skb)->gso_segs));
 
-The later patch "net: resolve uncommon partial checksums at ingress"
-documents the tri-state return and adds
-__virtio_net_resolve_csum_partial_mismatch(), which returns
-skb_checksum_help(skb) ?: 1. That makes these branches live at the end of
-the series, so this only affects intermediate bisect points.
+Before this patch, only the fixed 20 byte header was pulled before the
+stats update, and the ihl * 4 pull came after it.
+
+Is it intended that an IPv4 packet with ihl > 5 and truncated options, or
+one whose pull fails to allocate, is no longer counted in the Ip ECN
+counters? It is still counted in InHdrErrors.
+
+The commit message also says:
+
+  "Add a helper for doing that: it returns the validated header and
+  the transport header offset, or NULL if truncated or malformed."
+
+It doesn't mention that virtio_net_ip4_parse() is removed from
+include/linux/virtio_net.h and renamed. It also doesn't mention that the
+contract changes from "Only the fixed header is guaranteed linear" to
+pulling the options as well.
+
+Only the v4->v5 note below the cut mentions this, and that note won't be
+kept in git history. Could the commit message describe these changes?
+
+[ ... ]
+
+> @@ -546,7 +543,7 @@ static struct sk_buff *ip_rcv_core(struct sk_buff *skb, struct net *net)
+>  		       IPSTATS_MIB_NOECTPKTS + (iph->tos & INET_ECN_MASK),
+>  		       max_t(unsigned short, 1, skb_shinfo(skb)->gso_segs));
+>  
+> -	if (!pskb_may_pull(skb, iph->ihl*4))
+> +	if (!pskb_may_pull(skb, thoff))
+>  		goto inhdr_error;
+>  
+>  	iph = ip_hdr(skb);
+
+[Severity: Low]
+This isn't a bug, but ip4_parse() has already done
+pskb_may_pull(skb, nhoff + iph->ihl * sizeof(u32)) with nhoff = 0, which is
+exactly thoff. Its kernel-doc also says the options are guaranteed linear
+on return.
+
+Doesn't that mean this pull can never fail, so the goto inhdr_error branch
+is dead code?
+
+br_validate_ipv4() and nf_reject_iphdr_validate() have the same redundant
+pskb_may_pull(skb, thoff).
+
+The iph = ip_hdr(skb) reloads after the pull in ip_rcv_core() and
+br_validate_ipv4() also look unnecessary, because ip4_parse() already
+returns a pointer rebuilt from skb->data.
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.v5.git.mst%40redhat.com
