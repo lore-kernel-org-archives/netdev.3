@@ -1,97 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.174
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=109.224.244.117
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792910747;
-	b=KV2+fcq2F4/Ip5ODq6geRXUnhCaB1ah4dbRHRIyAud6wtkB3nVgNJ8RNsnhF4nY8rSMp
-	 LOyqzQss7a4tFD7MDFu6ZzcLxF8PrxmwK6DW38A6R+eCkqwHRsUMR8FFiSKgQZRgpILNQ
-	 ubHqfwtHlHn2Zu9EUc36RpXuZH7JPM2aG2sdhz2D7tmSYyp991rwhqowD2NsUQhhWO7xw
-	 VZDZIwunsSip230Z7NTF5PX+sf+dS+6zK6VCUpw6J/jjMXciBFOiVj3YoS5jrpcwON59G
-	 TI8Rzhr0vt8WIfwdjNA0YUPG+Y/pmmMLFZ9cLUMNfvlw7qBAPN1iCYfgGNH771C8meg==
+	t=1792911138;
+	b=for2B7mOCrkkLt7I9QIDDg6RHuQ/9Ft3+9X+NBPUsxMe952Nz929RCmdZiJ0NQWi8m4E
+	 zs89teXC8sbx8VfdSuE86fxNgo5RtfLQPdYIFFZIV7nVWQzpxCjhmqGbWEDgWxy7+DqC0
+	 KQY79GhGKLlrnE6bfkGsUs1Qp95+Yn9NfiKzO3+mmGl8vQnE2yAOTADsVN6qhpqldwLyf
+	 VsV8uleddBdYY0SrVwBcQccQoOUkfiy2b16xpur3FvOW0Zk9FTguMKDRJ1rVV1YfRePsw
+	 5x68kog667/F9b5s2eRW65c88SVxOwLMiMLcYlWJhcewIBb0/BOC68vIhS842imt21Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792910747;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	a=rsa-sha256; c=relaxed/relaxed; t=1792911138;
+	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
+	 Feedback-ID:X-Pm-Message-ID:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=aQ8r37ziw71fqDLMgR/NMnH4TFvaTayfpcX1AdbOmIc=;
-	b=OfDD8A+XJ+ggP/nu0jnyayZDKCgJ02wZ+OGxqNH7pqwntZgMcty0oMTFcQOoCROsDMbM
-	 AQi7DYGSCZMNPmcqr1ZXZiPtbmk8dTaLnMrhTD/NxAvJyya64JDxwvi9I4Glkdbu+1LBB
-	 WizSCncP/J+76vZI2RQXK8fsHx1A91JeY5nX37T6HvRCwYqDjgKYSN8QLzEKRzM36DRQg
-	 zP3utBK3oX93Jo7TBSfknePB/DQml+jpgqKOweALoEMmYzfqRSayNdDRaAzKxPdwaGz7E
-	 Kep/HzYBPqbhy8FZWrKS9T96E0xhSDDHagWbNTXoTATOawObrT8SORisZw7EU+45y4g==
+	bh=lwQ4f2ZvBH062ZEHXjSVyzILEqPMVfwCfFpffv1k8n0=;
+	b=JKZhlaZMzUjxCYfpZCIy+981kylYH3xJt5Njo1J8R095Avycb11MgfR4nHhQlyElTJCg
+	 SMAsJWT6dj8v2MY0BhIsbS7Z5Eg20VtaidyVwUNU2z8fzaqOX7Oi/rq6bwleMTPwLpgMf
+	 BXOZQLKr7f0Uxvz5q7TfIj3ueOgmJ2EDS4+V2HjmeZPVxyyTpGlL6VRLA9pYZ+sxoXAIo
+	 4T4HA+Vk5sLIlouEtyavBypPE+c5qGQ3Es7pe8XXlCgiJe1E2PR9Oj9rNXPLqFi019+mA
+	 2qklc0i3pmRgHGCfSDLU7M6dIksqK3flX2jgG/fY9HbNpYQeGoL9Llqae/gZlUwXl+g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="Ru2/jDRd";
-	arc=none smtp.remote-ip=74.125.82.174
-Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=1g4.org;
+	spf=pass smtp.mailfrom=1g4.org;
+	dkim=pass header.d=1g4.org header.i=@1g4.org header.a=rsa-sha256 header.s=protonmail header.b=dsFm069s;
+	arc=none smtp.remote-ip=109.224.244.117
+Received: from mail-244117.protonmail.ch (mail-244117.protonmail.ch [109.224.244.117])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E68606A31A
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 06:45:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 82E68606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F10606A31A;
+	Sun, 25 Oct 2026 06:52:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D9F10606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Ru2/jDRd
-Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-3535a54bed9so3323690eec.1
-        for <netdev@vger.kernel.org>; Sat, 24 Oct 2026 23:45:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792910746; x=1793515546; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=aQ8r37ziw71fqDLMgR/NMnH4TFvaTayfpcX1AdbOmIc=;
-        b=Ru2/jDRd9N5vPqGUpovwLVR4ixtu1YauJNh+9lYcLXrvmtADygWjtWEDvtkCmLFto2
-         ZMY2tb8UbDS4ORojtuQR/1BtHuSipq+qL9Cv7vykk2Rr9iHtQuo03zeQb19+9ymiG2J9
-         XXs25OG+O4mPM2fZNG7GP3MSEZYDAb/NnbKh+QTBGIDGtTCHTEXXtb1R8q8wXiUyOzeI
-         8qK8PaCoL7qDdZibsCEh8aPqDNX/fNefHFKS1B1SuyeqYe3/89EaxOYSgRT4M5e2j6ny
-         bMc0wZA7+MSJGKLfM24L+dAvYUVOgPeg0myXhy1qxq8hjGAHZhGX5HAsvgMLmkgfOca4
-         sO8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792910746; x=1793515546;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=aQ8r37ziw71fqDLMgR/NMnH4TFvaTayfpcX1AdbOmIc=;
-        b=H4G70yvvlhwoj4jNM/0zhJ0h+i78sXcDcy71wvewuS2V+Cm+EKM8o3WJBrG/25MS/u
-         Rsw3nmHalfMJexS9nG5EObEtxQjb7qYn/q+bQCpmUnZxamglYIpgfASwDEdI/5ocEdbo
-         a8u2zsydKcGDOE7bFkqN0hW9K8ZUihUCFNrp0n5MRjWgg+2OHAzTqsbE1CCaN1runTc+
-         7PstGJVX+PDJEZWDxN0WRwbNI1ZTaMnBSJ2en6FdxRgGJJcKXJ1o1W3SqRdEWmrfg507
-         +dCwZRq1FD4+eegBmdXfj1rzkG53dUdSqvzHn5yxeF3PT6x84PAptUU7kIvcrNYy8NLj
-         wseQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxPaVrPJx2dCtX64RxN6ZVtFxdTRTYXCBm9UqsvkWsfJ/zb34akukOoztdTvtUMx8GBAuF/wY8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIZjHCvIh97Q4ODeANLII9Rxb9Abr/bG9+dC7kKSc5KOdWOxIMo
-	YoW6At/GH40Wvj09OAxpcHp643h8cmBEsLuD/Peq6pkMUzoee0ASuVyX
-X-Gm-Gg: AYBFou1J1mB5xjGAh6psU+OHk2NFxmjqexyDR/s2a6uuHVQATcPFgfXYutvnpgVX0mJ
-	bxXhmrGkjWtVgpoOso8IiSbqdquQ0LhzkafhUO6X9aFAFxwj2cb8wfDz2jLkDJ8/X0xdzOcAQ8K
-	6MoI6g2V2UyLc0scCdLDsw4OuLDKaqYqHeYMgpaeXFl8a19K4iVO+ddljx0WUZBRk0TV6HAA37j
-	FiESFbTZgzUdDIk/TKMdlAPiPw2IWMo14tyJlSc7SxSDAu9ql7jU+7m6vwzZfarz7SMWaesMJFB
-	IGQsSh1sSdL7Ry62dz6urJJOyEFsHq5Ei73JcmVM3WvRWU9lg7SqVCaTBOJJMEH2pAt6kWbHOQj
-	n15s3G3slrZOwyaI09aPd3gJz8wQ88Rc3aocSDzx07AFfG9OJuq5Ztp2/vKqqRNAU0CHYxyN1lv
-	s2pn/nkIAzGoJnbbfZ16A9kEsw+Kg64BfjMGOQWbDQq0MWFS57n0WobiVXPgsyQ1SIyyKRfaT47
-	Qknm2y2thjKUKv5W/h805TJBmTRd2rYHZ5zBmnrrGg7TLwbHeV2mhSp8kt/+Don56A9u9bPHhp/
-	3omZXjEkaFWtty15KkEPiBhIZ45g4ds2Zan5VcgYxrqqmRO6peUY4JQn+se82K2KG3HouaPbK6M
-	+uaJu
-X-Received: by 2002:a05:7301:1a01:b0:369:d735:e9ad with SMTP id 5a478bee46e88-369e847d8c3mr6076025eec.21.1792910746367;
-        Sat, 24 Oct 2026 23:45:46 -0700 (PDT)
-Received: from localhost.localdomain ([2600:1010:b094:72dd:acb2:1ed:a440:33ae])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-369e8ec865esm12371219eec.26.2026.10.24.23.45.44
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 24 Oct 2026 23:45:45 -0700 (PDT)
-From: Zhixiang Zhao <matthewzhaocc@gmail.com>
-To: steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au
-Cc: davem@davemloft.net,
-	netdev@vger.kernel.org,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	Zhixiang Zhao <matthewzhaocc@gmail.com>
-Subject: [PATCH ipsec] xfrm: state: use the fallback SA while a per-CPU acquire is pending
-Date: Sat, 24 Oct 2026 23:45:24 -0700
-Message-ID: <20261025064524.74618-1-matthewzhaocc@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key, unprotected) header.d=1g4.org header.i=@1g4.org header.a=rsa-sha256 header.s=protonmail header.b=dsFm069s
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
+	s=protonmail; t=1792911134; x=1793170334;
+	bh=lwQ4f2ZvBH062ZEHXjSVyzILEqPMVfwCfFpffv1k8n0=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=dsFm069sFcpfabfZXMqxJf8Y2iQPD2Hw1DSKMo0/ipyfxypJyLFax3fUFZI0Wc5jz
+	 OB8ns7Z6PEE75f8UgTi1xcX6y2dq4F2NyizwKQq+AKONn/xYGdShA3xvtbg0vXbQ8a
+	 G2KBrtZD0y3qDdruiOIcy6wljnYdaRslpdPiohC+vpfYrdgrCZwGjJsndG2567u9Zi
+	 VzfpXFPqmurzPL6npUfEbw97cLxbebn5dtNpT7cL5kysXDVdz9jqdpLn0uDdNz0o3n
+	 b32KkfyDI4GjXNeUdGfvyUN2iU3AYGfuhnQ/W/QFEyMw1ovjmXPIe8P8pPqf7lwcB6
+	 e2mFGYfNrh+pA==
+Date: Sun, 25 Oct 2026 06:52:06 +0000
+To: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com
+From: Paul Moses <p@1g4.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me, maciej.fijalkowski@intel.com, vedang.patel@intel.com, jithu.joseph@intel.com, andre.guedes@intel.com, intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+Subject: [PATCH net] igc: track rx frame boundaries independent of skbs
+Message-ID: <20261025065154.2037149-1-p@1g4.org>
+Feedback-ID: 8253658:user:proton
+X-Pm-Message-ID: d7913055a968b10d30843429c75eb5326aaf17d2
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,81 +61,321 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-With XFRM_POLICY_CPU_ACQUIRE, xfrm_state_find() uses the best valid
-state directly only when it belongs to the current CPU. The non-CPU
-fallback state is selected only inside the block that creates a new
-per-CPU acquire, so the packet that starts the acquire is sent over
-the fallback SA.
+TSIP remains set on continuation descriptors, but the inline timestamp
+header exists only in the first buffer. Stripping it from every
+descriptor truncates split frames and can underflow short buffers.
 
-Once that larval state exists, xfrm_state_look_at() sets
-acquire_in_progress for it and the new-acquire block is skipped. The
-fallback is never selected, x stays NULL and the lookup returns
--EAGAIN. With the default xfrm_larval_drop=1, every further packet on
-that CPU is dropped until the key manager installs the per-CPU SA, or
-until the larval state expires if it never does. This contradicts the
-comment on the fallback selection and RFC 9611 section 4, which has
-the CPU without its own SA keep using the SA available to all CPUs
-while the per-CPU SA is negotiated.
+skb ownership cannot identify frame boundaries when XDP consumes the
+first buffer or AF_XDP uses zero-copy.
 
-Use the best valid state when an acquire is already in progress, as
-policies without XFRM_POLICY_CPU_ACQUIRE already do. No additional
-acquire is created, and a lookup that finds no valid state still
-returns -EAGAIN. The fallback is not added to the policy's state
-cache, because that path still requires x->pcpu_num == pcpu_id.
+Track rx_in_frame per ring and update it as descriptors are consumed.
+Strip timestamps only from first buffers, reject unsupported split
+frames before XDP and drain continuations. Account discarded
+descriptors against NAPI work without counting successful RX.
 
-The loss is easy to miss in normal operation, where it lasts about one
-IKE round trip per CPU. It can be reproduced deterministically with
-strongSwan 6.0.2 (per_cpu_sas, start_action = trap|start): establish
-the fallback SA, stop charon on both peers, then send one packet on a
-CPU, which succeeds and creates the larval acquire, and a second
-packet on the same CPU. The second packet is dropped while
-"ip xfrm state" still lists the valid fallback SA next to the larval
-state for that CPU. This happens for both IPv4 and IPv6 traffic.
-
-The problem was found and the fix drafted with AI coding assistants
-(OpenAI Codex and Anthropic Claude) while testing per-CPU SAs for a
-VXLAN-over-IPsec deployment. The analysis, reproducer and fix were
-reviewed by the submitter.
-
-Fixes: 1ddf9916ac09 ("xfrm: Add support for per cpu xfrm state handling.")
-Signed-off-by: Zhixiang Zhao <matthewzhaocc@gmail.com>
+Fixes: e1ed4f92a625 ("igc: Refactor Rx timestamp handling")
+Fixes: 26575105d6ed ("igc: Add initial XDP support")
+Fixes: fc9df2a0b520 ("igc: Enable RX via AF_XDP zero-copy")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paul Moses <p@1g4.org>
 ---
-Testing (not part of the changelog):
- - Built Ubuntu 7.0.0-38.38 (7.0.14) twice from the same config, with
-   and without this change, and booted each in a 4-vCPU KVM guest.
- - Setup: two IPsec peers in separate network namespaces joined by a
-   veth underlay, each with a guest namespace behind it. Traffic is
-   ping between the guests, routed over VXLAN inside UDP-encapsulated
-   transport-mode ESP (strongSwan 6.0.2, per_cpu_sas = encap,
-   start_action = trap|start, AES-GCM-16).
- - Without the change, the reproducer above failed for both IPv4 and
-   IPv6. A variant that does not stop charon, and sends one packet per
-   CPU right after the fallback SA is up, lost traffic in 5 of 6 runs.
- - With the change, both tests passed in 6 of 6 runs for both families,
-   and no plaintext reached the underlay.
- - The same code is present in ipsec/master and mainline. The patch
-   was build-tested only on the Ubuntu 7.0 tree.
+- This supersedes "igc: only strip RX timestamp header from first buffer"
+  following feedback from Simon Horman, Maciej Fijalkowski and Sashiko.
 
- net/xfrm/xfrm_state.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes:
+- track frame boundaries independently of skb ownership
+- guard timestamp stripping and drain unsupported split frames
+- cover the AF_XDP zero-copy RX path
+---
+ drivers/net/ethernet/intel/igc/igc.h      |  1 +
+ drivers/net/ethernet/intel/igc/igc_main.c | 87 ++++++++++++++++-------
+ 2 files changed, 64 insertions(+), 24 deletions(-)
 
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 0555e5d796ed..dec528f98d51 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -1518,7 +1518,7 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
- 
- found:
- 	if (!(pol->flags & XFRM_POLICY_CPU_ACQUIRE) ||
--	    (best && (best->pcpu_num == pcpu_id)))
-+	    (best && (best->pcpu_num == pcpu_id || acquire_in_progress)))
- 		x = best;
- 
- 	if (!x && !error && !acquire_in_progress) {
-
-base-commit: 835912998ca54a76b5c57f8c8459a86b1b45de40
--- 
-2.54.0 (Apple Git-157)
+diff --git a/drivers/net/ethernet/intel/igc/igc.h b/drivers/net/ethernet/in=
+tel/igc/igc.h
+index 17f213cc93e4..635d49701e62 100644
+--- a/drivers/net/ethernet/intel/igc/igc.h
++++ b/drivers/net/ethernet/intel/igc/igc.h
+@@ -198,6 +198,7 @@ struct igc_ring {
+ =09=09=09struct igc_rx_packet_stats pkt_stats;
+ =09=09=09struct u64_stats_sync rx_syncp;
+ =09=09=09struct sk_buff *skb;
++=09=09=09bool rx_in_frame;
+ =09=09};
+ =09};
+=20
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethern=
+et/intel/igc/igc_main.c
+index 1fb5f3cbe93c..9ca5558c762c 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -474,6 +474,7 @@ static void igc_clean_rx_ring(struct igc_ring *ring)
+ =09=09igc_clean_rx_ring_page_shared(ring);
+=20
+ =09clear_ring_uses_large_buffer(ring);
++=09ring->rx_in_frame =3D false;
+=20
+ =09ring->next_to_alloc =3D 0;
+ =09ring->next_to_clean =3D 0;
+@@ -673,6 +674,7 @@ static void igc_configure_rx_ring(struct igc_adapter *a=
+dapter,
+ =09/* reset next-to- use/clean to place SW in sync with hardware */
+ =09ring->next_to_clean =3D 0;
+ =09ring->next_to_use =3D 0;
++=09ring->rx_in_frame =3D false;
+=20
+ =09if (ring->xsk_pool)
+ =09=09buf_size =3D xsk_pool_get_rx_frame_size(ring->xsk_pool);
+@@ -2111,10 +2113,8 @@ static bool igc_can_reuse_rx_page(struct igc_rx_buff=
+er *rx_buffer,
+  * @rx_ring: Rx ring being processed
+  * @rx_desc: Rx descriptor for current buffer
+  *
+- * This function updates next to clean.  If the buffer is an EOP buffer
+- * this function exits returning false, otherwise it will place the
+- * sk_buff in the next buffer to be chained and return true indicating
+- * that this is in fact a non-EOP buffer.
++ * Advance next to clean and retain frame position for the next descriptor=
+.
++ * Return true if the consumed descriptor does not end the frame.
+  */
+ static bool igc_is_non_eop(struct igc_ring *rx_ring,
+ =09=09=09   union igc_adv_rx_desc *rx_desc)
+@@ -2127,10 +2127,8 @@ static bool igc_is_non_eop(struct igc_ring *rx_ring,
+=20
+ =09prefetch(IGC_RX_DESC(rx_ring, ntc));
+=20
+-=09if (likely(igc_test_staterr(rx_desc, IGC_RXD_STAT_EOP)))
+-=09=09return false;
+-
+-=09return true;
++=09rx_ring->rx_in_frame =3D !igc_test_staterr(rx_desc, IGC_RXD_STAT_EOP);
++=09return unlikely(rx_ring->rx_in_frame);
+ }
+=20
+ /**
+@@ -2601,7 +2599,7 @@ static void igc_update_rx_stats(struct igc_q_vector *=
+q_vector,
+=20
+ static int igc_clean_rx_irq(struct igc_q_vector *q_vector, const int budge=
+t)
+ {
+-=09unsigned int total_bytes =3D 0, total_packets =3D 0;
++=09unsigned int total_bytes =3D 0, total_packets =3D 0, work_done =3D 0;
+ =09struct igc_adapter *adapter =3D q_vector->adapter;
+ =09struct igc_ring *rx_ring =3D q_vector->rx.ring;
+ =09struct sk_buff *skb =3D rx_ring->skb;
+@@ -2609,13 +2607,15 @@ static int igc_clean_rx_irq(struct igc_q_vector *q_=
+vector, const int budget)
+ =09int xdp_status =3D 0, rx_buffer_pgcnt;
+ =09int xdp_res =3D 0;
+=20
+-=09while (likely(total_packets < budget)) {
++=09while (likely(work_done < budget)) {
+ =09=09struct igc_xdp_buff ctx =3D { .rx_ts =3D NULL };
++=09=09bool first =3D !rx_ring->rx_in_frame;
+ =09=09struct igc_rx_buffer *rx_buffer;
+ =09=09union igc_adv_rx_desc *rx_desc;
+ =09=09unsigned int size, truesize;
+ =09=09int pkt_offset =3D 0;
+ =09=09void *pktbuf;
++=09=09bool tsip;
+=20
+ =09=09/* return some buffers to hardware, one at a time is too slow */
+ =09=09if (cleaned_count >=3D IGC_RX_BUFFER_WRITE) {
+@@ -2635,21 +2635,34 @@ static int igc_clean_rx_irq(struct igc_q_vector *q_=
+vector, const int budget)
+ =09=09dma_rmb();
+=20
+ =09=09rx_buffer =3D igc_get_rx_buffer(rx_ring, size, &rx_buffer_pgcnt);
++=09=09tsip =3D first && igc_test_staterr(rx_desc, IGC_RXDADV_STAT_TSIP);
++
++=09=09if ((!first && !skb) ||
++=09=09    (first && igc_xdp_is_enabled(adapter) &&
++=09=09     !igc_test_staterr(rx_desc, IGC_RXD_STAT_EOP)) ||
++=09=09    unlikely(tsip && size < IGC_TS_HDR_LEN)) {
++=09=09=09if (first)
++=09=09=09=09dev_core_stats_rx_dropped_inc(rx_ring->netdev);
++=09=09=09xdp_res =3D IGC_XDP_CONSUMED;
++=09=09=09goto xdp_done;
++=09=09}
++
+ =09=09truesize =3D igc_get_rx_frame_truesize(rx_ring, size);
+=20
+ =09=09pktbuf =3D page_address(rx_buffer->page) + rx_buffer->page_offset;
+=20
+-=09=09if (igc_test_staterr(rx_desc, IGC_RXDADV_STAT_TSIP)) {
++=09=09if (tsip) {
+ =09=09=09ctx.rx_ts =3D pktbuf;
+ =09=09=09pkt_offset =3D IGC_TS_HDR_LEN;
+ =09=09=09size -=3D IGC_TS_HDR_LEN;
+ =09=09}
+=20
+-=09=09if (igc_fpe_is_pmac_enabled(adapter) &&
++=09=09if (first && igc_fpe_is_pmac_enabled(adapter) &&
+ =09=09    igc_fpe_handle_mpacket(adapter, rx_desc, size, pktbuf + pkt_offs=
+et)) {
+ =09=09=09/* Advance the ring next-to-clean */
+ =09=09=09igc_is_non_eop(rx_ring, rx_desc);
+ =09=09=09cleaned_count++;
++=09=09=09work_done++;
+ =09=09=09continue;
+ =09=09}
+=20
+@@ -2664,6 +2677,12 @@ static int igc_clean_rx_irq(struct igc_q_vector *q_v=
+ector, const int budget)
+ =09=09=09xdp_res =3D igc_xdp_run_prog(adapter, &ctx.xdp);
+ =09=09}
+=20
++=09=09if (xdp_res) {
++=09=09=09total_bytes +=3D size;
++=09=09=09total_packets++;
++=09=09}
++
++xdp_done:
+ =09=09if (xdp_res) {
+ =09=09=09switch (xdp_res) {
+ =09=09=09case IGC_XDP_CONSUMED:
+@@ -2676,8 +2695,7 @@ static int igc_clean_rx_irq(struct igc_q_vector *q_ve=
+ctor, const int budget)
+ =09=09=09=09break;
+ =09=09=09}
+=20
+-=09=09=09total_packets++;
+-=09=09=09total_bytes +=3D size;
++=09=09=09work_done++;
+ =09=09} else if (skb)
+ =09=09=09igc_add_rx_frag(rx_ring, rx_buffer, skb, size);
+ =09=09else if (ring_uses_build_skb(rx_ring))
+@@ -2700,8 +2718,15 @@ static int igc_clean_rx_irq(struct igc_q_vector *q_v=
+ector, const int budget)
+ =09=09if (igc_is_non_eop(rx_ring, rx_desc))
+ =09=09=09continue;
+=20
++=09=09if (xdp_res) {
++=09=09=09skb =3D NULL;
++=09=09=09continue;
++=09=09}
++
++=09=09work_done++;
++
+ =09=09/* verify the packet layout is correct */
+-=09=09if (xdp_res || igc_cleanup_headers(rx_ring, rx_desc, skb)) {
++=09=09if (igc_cleanup_headers(rx_ring, rx_desc, skb)) {
+ =09=09=09skb =3D NULL;
+ =09=09=09continue;
+ =09=09}
+@@ -2717,7 +2742,6 @@ static int igc_clean_rx_irq(struct igc_q_vector *q_ve=
+ctor, const int budget)
+ =09=09/* reset skb pointer */
+ =09=09skb =3D NULL;
+=20
+-=09=09/* update budget accounting */
+ =09=09total_packets++;
+ =09}
+=20
+@@ -2732,7 +2756,7 @@ static int igc_clean_rx_irq(struct igc_q_vector *q_ve=
+ctor, const int budget)
+ =09if (cleaned_count)
+ =09=09igc_alloc_rx_buffers(rx_ring, cleaned_count);
+=20
+-=09return total_packets;
++=09return work_done;
+ }
+=20
+ static struct sk_buff *igc_construct_skb_zc(struct igc_ring *ring,
+@@ -2797,10 +2821,10 @@ static struct igc_xdp_buff *xsk_buff_to_igc_ctx(str=
+uct xdp_buff *xdp)
+=20
+ static int igc_clean_rx_irq_zc(struct igc_q_vector *q_vector, const int bu=
+dget)
+ {
++=09int total_bytes =3D 0, total_packets =3D 0, work_done =3D 0;
+ =09struct igc_adapter *adapter =3D q_vector->adapter;
+ =09struct igc_ring *ring =3D q_vector->rx.ring;
+ =09u16 cleaned_count =3D igc_desc_unused(ring);
+-=09int total_bytes =3D 0, total_packets =3D 0;
+ =09u16 ntc =3D ring->next_to_clean;
+ =09struct bpf_prog *prog;
+ =09bool failure =3D false;
+@@ -2810,11 +2834,13 @@ static int igc_clean_rx_irq_zc(struct igc_q_vector =
+*q_vector, const int budget)
+=20
+ =09prog =3D READ_ONCE(adapter->xdp_prog);
+=20
+-=09while (likely(total_packets < budget)) {
++=09while (likely(work_done < budget)) {
++=09=09bool first =3D !ring->rx_in_frame;
+ =09=09union igc_adv_rx_desc *desc;
+ =09=09struct igc_rx_buffer *bi;
+ =09=09struct igc_xdp_buff *ctx;
+ =09=09unsigned int size;
++=09=09bool eop, tsip;
+ =09=09int res;
+=20
+ =09=09desc =3D IGC_RX_DESC(ring, ntc);
+@@ -2829,11 +2855,20 @@ static int igc_clean_rx_irq_zc(struct igc_q_vector =
+*q_vector, const int budget)
+ =09=09dma_rmb();
+=20
+ =09=09bi =3D &ring->rx_buffer_info[ntc];
++=09=09tsip =3D first && igc_test_staterr(desc, IGC_RXDADV_STAT_TSIP);
++=09=09eop =3D igc_test_staterr(desc, IGC_RXD_STAT_EOP);
++
++=09=09if (!first || !eop || unlikely(tsip && size < IGC_TS_HDR_LEN)) {
++=09=09=09if (first)
++=09=09=09=09dev_core_stats_rx_dropped_inc(ring->netdev);
++=09=09=09res =3D IGC_XDP_CONSUMED;
++=09=09=09goto xdp_done;
++=09=09}
+=20
+ =09=09ctx =3D xsk_buff_to_igc_ctx(bi->xdp);
+ =09=09ctx->rx_desc =3D desc;
+=20
+-=09=09if (igc_test_staterr(desc, IGC_RXDADV_STAT_TSIP)) {
++=09=09if (tsip) {
+ =09=09=09ctx->rx_ts =3D bi->xdp->data;
+=20
+ =09=09=09bi->xdp->data +=3D IGC_TS_HDR_LEN;
+@@ -2851,6 +2886,10 @@ static int igc_clean_rx_irq_zc(struct igc_q_vector *=
+q_vector, const int budget)
+ =09=09xsk_buff_dma_sync_for_cpu(bi->xdp);
+=20
+ =09=09res =3D __igc_xdp_run_prog(adapter, prog, bi->xdp);
++=09=09total_bytes +=3D size;
++=09=09total_packets++;
++
++xdp_done:
+ =09=09switch (res) {
+ =09=09case IGC_XDP_PASS:
+ =09=09=09igc_dispatch_skb_zc(q_vector, desc, ctx);
+@@ -2865,8 +2904,8 @@ static int igc_clean_rx_irq_zc(struct igc_q_vector *q=
+_vector, const int budget)
+ =09=09}
+=20
+ =09=09bi->xdp =3D NULL;
+-=09=09total_bytes +=3D size;
+-=09=09total_packets++;
++=09=09ring->rx_in_frame =3D !eop;
++=09=09work_done++;
+ =09=09cleaned_count++;
+ =09=09ntc++;
+ =09=09if (ntc =3D=3D ring->count)
+@@ -2889,10 +2928,10 @@ static int igc_clean_rx_irq_zc(struct igc_q_vector =
+*q_vector, const int budget)
+ =09=09=09xsk_set_rx_need_wakeup(ring->xsk_pool);
+ =09=09else
+ =09=09=09xsk_clear_rx_need_wakeup(ring->xsk_pool);
+-=09=09return total_packets;
++=09=09return work_done;
+ =09}
+=20
+-=09return failure ? budget : total_packets;
++=09return failure ? budget : work_done;
+ }
+=20
+ static void igc_update_tx_stats(struct igc_q_vector *q_vector,
 
