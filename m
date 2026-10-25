@@ -1,54 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792948780;
-	b=2Tc+VI1DenzLDAcn4oZM7cIsxuO8YqzW96OODpVhwJhmidDHnaEwx1cT7nIGamkJkYJf
-	 JeVGki5vc2AO6XVHTvOtkpEEDG0pOO+HeskMQqVuAdWBpNg7cwNEJ/wcy6Q1UrwbXZFLw
-	 NfQYCmL0yOFGVYoLUoZTEq71VBjTPeGlFCj7JoeLhsX3qn6YBp05PJM28beTU/9BgJvZF
-	 2Q5AoEHMNBnpX4K2Ov5lM+ITS813QvhVnlnn6gUqQlLAtAmDkOdUkafk2konZ+eX7uuJh
-	 pwApiTDgYkpMNnmPt1brRxVkUMeYxwZ9lIKTemQxGVG/qoRUZ7LO6uPNv8R7zZIGNCA==
+	t=1792949522;
+	b=YcVPlImyWToOhcAuj8D2igthlySBVm7TVHmJhmaR56gRqGlRbZ7+GZWPH38sViZtB8G8
+	 2kWPNYWVTa5HTCOT7WDcJ9U7woTUGaoZmyMFG0YQzVDV5qYfPAkcMLhz0f5vOumPLQIq7
+	 bd/clU4Fnhcc1CLyDElFo0iOp3HTgkF75rZ+phX0LQwbOKRQrnzYpRbxkQYhMZXsC0cX2
+	 442IXVzDORkU2+aOGHPqG14uBTDFXTCzFUCwUoKrCRaAoJhTkJ3H9rYuVd0tkhPi4PG0X
+	 c0A5Pqma190XpvEnz4Z53nq2lnvjJxpIowyYyPb72C23x6FagzxTd00PFam5GRNFD9A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792948780;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792949522;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=1QCoEeqMlDVVRDqJEXOAfa8mWgIDoI3oNzTQThcstEQ=;
-	b=dypXCsah8oQAn76WVrV1pkuW+EgjX7wufjlUh4KYU8/ssC7bcOslKX7+EhQRcpLSiAZK
-	 3NOqLkNJJShqdZv6IqlKxNk4mCivV/93GKdUAmqQMnsRdy0FZqb94KiHYBZIHb/qfQCyh
-	 FgzqsSC6GrpPfuV9M3CgVsDn1+T3fmHu2QSvJonSvk5U4QdlLkDU1AK2oGtLws2F0Ljtp
-	 ZGyV9eWf17DL5lETrlzVN01YimVFgy71rqVXHW01d2HBA23YW1BhaPk1l9wxmXx1Nlu9a
-	 vf6r2KbO05g3UMEQkHgXBnaxx10xGFvUl3ZxLzaJrjHsfa3OqXUB89eL8sug/8oESIA==
+	bh=5L6kzLQOGVMgTtlJiH4iYz/6kCVz0ZcYrdnOvzrMyAU=;
+	b=RjgNsfVn+dvguk4V8ZdDYoX2iOiQellTgVVXXLZAaWF0WD3AZjtyD5x2fl3iF87nDfbJ
+	 Njmf0Lb7Wf0kvnqXx+7XfTcmPlMek3WUBFD1CPaLR1FAenYIhmEIVldruN0QMnyxINu/X
+	 IRH1HouHT40s4wIYlawqWYQ87G1Rjsd6Z4eZgaNH4qEanG4Rnt+vD7RDHgu/yFlgQpQCw
+	 GVYgJJgglLhjmR1FvKBbk7s4u3lVdVbC4kgf2DELcPM+RRcu0FXgFQwg9vKW6t/U+jk6B
+	 lObwoy7R7XZ6GpiDmBcc86gVMrlEAAZSZszYIPA0iJPfm681xtDqKJ7OP5f0DYLz3lw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C2LYHFLk;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZWigPjKz;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F66606A323
-	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 17:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35E2606A326
+	for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 17:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C2LYHFLk
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D043F1F01829;
-	Sun, 25 Oct 2026 17:19:39 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZWigPjKz
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC4E1F031E1;
+	Sun, 25 Oct 2026 17:32:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792948780;
-	bh=1QCoEeqMlDVVRDqJEXOAfa8mWgIDoI3oNzTQThcstEQ=;
+	s=k20260515; t=1792949521;
+	bh=5L6kzLQOGVMgTtlJiH4iYz/6kCVz0ZcYrdnOvzrMyAU=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=C2LYHFLkjO9s7rbgT4/cgSPKlJS8e34LVGrx+/9ydP3/uLd0krUt7Zp4GUolENr87
-	 9iQPdEcacDq1EczQzy2QoK66ORXUrEyzmI6/U2fd2+9LB9EGF2ric94xDCj2eHD9bK
-	 jduziSZqu0qFXIynFEAf4fDjzkP6Y5Q9ccn5mkRGxKxHAFCz/qb/wWwWzUtkXXT5wZ
-	 j2U6TWcsaW7S5rhh778EC8gNnevcIh9ncjfRsdkpgAbnbXhkCmTqLqAX6jz5pyNEyK
-	 Dkf+pyzHKZ7QXElEsLIfdJpCEmaIbLdSu1JqmCjcCwjslN5T62dsO/6LDCWyxbr0NU
-	 OCa/7p6xmb7lg==
-Subject: Re: [PATCH net] net-sysfs: reject a one-entry RPS flow table
+	b=ZWigPjKzScUQdcGfKkKtQMX09JM3q7gFn/tQwWhNGLjQfzGMX2benw7kAeYVIKJ5l
+	 g8NskabuuR+LYq8R4NhUVMjBBGLlyuy38mzGxWkeosyjG0aZBDye1jDleclVEyMKqP
+	 7S1tNkYBfAhfbyMeYkbWrIdUJPHJKCIWteuYJyjbqOXidpzqzqnD0uzAh9SdU0PYmo
+	 coiBT/v3cnEuj5SRQvOp1OQuVad7+X9x9PzJniXBKSSKVUpLDMBvR94gdnQ5G4hbHP
+	 ePMwbkwzbIZrCw9nIimW7Rg18drFcUQj0HIr2VJhP5M9LdFb2+qONf34sMTc2RxVIe
+	 cQ5stldiVmSkA==
+Subject:
+ Re: [PATCH net] net: xps: bound the cleanup loop by the old map's num_tc
 From: netdev-bot+sashiko@kernel.org
 To: phx0fer@gmail.com
 Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
  pabeni@redhat.com, netdev@vger.kernel.org
-Date: Sun, 25 Oct 2026 17:19:39 +0000
-Message-ID: <179294877939.3134.15070468351111761899@kernel.org>
-In-Reply-To: <20261021155522.67521-1-phx0fer@gmail.com>
-References: <20261021155522.67521-1-phx0fer@gmail.com>
+Date: Sun, 25 Oct 2026 17:32:00 +0000
+Message-ID: <179294952071.3134.18316640480877653854@kernel.org>
+In-Reply-To: <20261021155538.67867-1-phx0fer@gmail.com>
+References: <20261021155538.67867-1-phx0fer@gmail.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -65,7 +66,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -73,116 +74,136 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The Fixes: tag and the root-cause explanation in the commit
-  message point to the wrong commit.
-- [Medium] The patch fixes the UB by rejecting rps_flow_cnt == 1 with
-  -EINVAL instead of handling it, which changes user-visible sysfs…
+- [Medium] The commit message names the wrong trigger.
+- [Low] The commit message understates the impact and does not mention a
+  second behaviour change in the same line.
 
 --
 
-net-sysfs: reject a one-entry RPS flow table
+net: xps: bound the cleanup loop by the old map's num_tc
 
-This patch makes store_rps_dev_flow_table_cnt() return -EINVAL when
-rps_flow_cnt is 1. With a count of 1 the mask rounds to 0 and the encoded
-log is 0. rfs_slot() then calls hash_32(hash, 0), which shifts by 32 and
-produces an index outside rps_dev_flow[] in get_rps_cpu().
+This commit changes the old-map cleanup loop in __netif_set_xps_queue().
+The per-row trip count now comes from dev_maps->num_tc instead of the new
+num_tc. Before the change, the trip count and the row stride could disagree
+when dev->num_tc changed while an old XPS map was still installed.
 
-> store_rps_dev_flow_table_cnt() accepts rps_flow_cnt == 1.  For count == 1
-> the round-up loop leaves mask == 0, which is stored as log == 0 in the
-> tag (tag_ptr |= ilog2(mask) + 1).
-
-[ ... ]
-
-> Fixes: a435163d3100 ("net-sysfs: use rps_tag_ptr and remove metadata from rps_dev_flow_table")
-
-[Severity: Medium]
-Is a435163d3100 the right commit for this Fixes: tag?
-
-f3483c8e1da6 ("net: rfs: hash function change") replaced the per-queue
-index hash & flow_table->mask with rfs_slot(), which calls
-hash_32(hash, flow_table->log). It also added this to
-store_rps_dev_flow_table_cnt():
-
-    table->log = ilog2(mask) + 1;
-
-Before that commit, rps_flow_cnt == 1 gave mask == 0, and every packet used
-slot 0. After it, mask == 0 gives log == 0, and hash_32(hash, 0) shifts by
-32.
-
-a435163d3100 appears to only move log from table->log into the low bits of
-rps_tag_ptr. It keeps the same ilog2(mask) + 1 calculation and the same
-hash_32() call.
-
-If that's right, kernels from v6.15 through v7.0 have the same
-out-of-bounds read of rflow->cpu and write of last_qtail in get_rps_cpu()
-when rps_flow_cnt is 1. set_rps_cpu() is affected too with RFS_ACCEL. The
-current tag would point stable backports at the wrong range. Those trees
-also still use struct rps_dev_flow_table and table->log, so the diff would
-not apply there as is.
-
-Should the tag be Fixes: f3483c8e1da6 ("net: rfs: hash function change"),
-with the explanation pointing at the ilog2(mask) + 1 calculation rather
-than the tag encoding?
-
-> diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
-> index 352173df75785..038f7930544fb 100644
-> --- a/net/core/net-sysfs.c
-> +++ b/net/core/net-sysfs.c
-> @@ -1088,6 +1088,15 @@ static ssize_t store_rps_dev_flow_table_cnt(struct netdev_rx_queue *queue,
->  		while ((mask | (mask >> 1)) != mask)
->  			mask |= (mask >> 1);
->  
-> +		/* A one-entry table rounds up to mask == 0, which encodes
-> +		 * log == 0 in the tag.  get_rps_cpu() then computes
-> +		 * hash_32(hash, 0) -- a shift by 32 -- and indexes the
-> +		 * one-entry rps_dev_flow[] with the full 32-bit hash.
-> +		 * Require at least two entries.
-> +		 */
-> +		if (!mask)
-> +			return -EINVAL;
+> Triggering conditions
+> ---------------------
+> CAP_NET_ADMIN to set the XPS mask.  dev->num_tc is raised in-tree by the
+> drivers that implement ndo_setup_tc (the Intel i40e/ice/ixgbe/iavf, mlx5
+> and mvneta families, among others) and by the mqprio/taprio qdiscs.  The
+> QEMU guest used for the reproducer has no such NIC, so the num_tc change
+> was driven through a small module; the defect itself is reached in-tree
+> on that hardware.
 
 [Severity: Medium]
-Rejecting count == 1 here changes how the sysfs interface behaves, and
-nothing documents that. Was that intended? Every other non-zero value
-written to rps_flow_cnt is still rounded up to the next power of two (3
-becomes 4, 5 becomes 8). Only 1 now fails with -EINVAL.
+Can the drivers and qdiscs named here reach this loop with a stale map?
 
-Documentation/networking/scaling.rst says this about rps_sock_flow_entries
-and rps_flow_cnt:
+As far as I can tell, they all change num_tc through netdev_set_num_tc()
+or netdev_reset_tc(). Both of those reset XPS on the whole device first:
 
-    Values for both are rounded up to the nearest power of two.
+net/core/dev.c:netdev_set_num_tc() {
+    ...
+#ifdef CONFIG_XPS
+	netif_reset_xps_queues_gt(dev, 0);
+#endif
+	netdev_unbind_all_sb_channels(dev);
 
-It gives no minimum, so by that text 1 should give a one-entry table.
+	WRITE_ONCE(dev->num_tc, num_tc);
+    ...
+}
 
-The per-queue formula in scaling.rst (rps_sock_flow_entries / N) can
-produce 1. So can the script in
-Documentation/networking/device_drivers/ethernet/intel/ice.rst:
+Removing every tx queue leaves the map inactive. clean_xps_maps() then
+calls reset_xps_maps(), which sets dev->xps_maps[type] to NULL. The next
+__netif_set_xps_queue() sees dev_maps == NULL and takes:
 
-    # echo $(($NUM_RPS_ENTRIES/$NUM_RX_QUEUES)) > $file;
+	if (!dev_maps)
+		goto out_no_old_maps;
 
-Both give 1 whenever N <= rps_sock_flow_entries < 2*N, and those writes
-would now fail.
+So it never enters the loop this patch changes.
 
-rps_sock_flow_sysctl() in net/core/sysctl_net_core.c still accepts a size
-of 1. roundup_pow_of_two(1) is 1 and ilog2(size) is 0. After this patch
-the two RFS table-size knobs would treat 1 differently.
+The in-tree paths that do seem to raise num_tc with an old map still
+installed are the sfc Falcon and Siena drivers. ef4_setup_tc() and
+efx_siena_setup_tc() write num_tc directly:
 
-Since v6.15, writing 1 here has hit the out-of-bounds bug rather than
-working. So no setup that works today loses anything. The difference is
-against the documented rounding, the pre-6.15 behaviour, and the sysctl.
+drivers/net/ethernet/sfc/siena/tx.c:efx_siena_setup_tc() {
+    ...
+	WRITE_ONCE(net_dev->num_tc, num_tc);
 
-The table is already allocated with at least a page:
+	return netif_set_real_num_tx_queues(net_dev,
+					    max_t(int, num_tc, 1) *
+					    efx->n_tx_channels);
+}
 
-    sz = max_t(size_t, sizeof(*table) * (mask + 1), PAGE_SIZE);
+netif_set_real_num_tx_queues() only resets XPS when the queue count
+shrinks:
 
-Could mask be set to 1 when it is 0 instead? That avoids hash_32(hash, 0),
-uses no extra memory, and keeps the write working. Another option would be
-for rfs_slot() to return 0 when log == 0.
+		if (disabling) {
+			synchronize_net();
+			qdisc_reset_all_tx_gt(dev, txq);
+#ifdef CONFIG_XPS
+			netif_reset_xps_queues_gt(dev, txq);
+#endif
+		}
 
-If the -EINVAL stays, should the commit message and scaling.rst mention
-the new minimum?
+For example, going from num_tc 0 to 2 leaves a live map with
+dev_maps->num_tc == 1. The next XPS write then uses a trip count of 2 with
+a stride of 1, and the last row overruns attr_map[].
 
-[ ... ]
+netif_setup_tc() also writes num_tc = 0 without a full reset, but that is
+the shrink direction.
+
+Subordinate-device maps are reset using sb_dev->num_tx_queues as the
+count. A macvlan offload (sb_dev) path, for example on ixgbe, might also
+leave a stale map behind. That would work differently from what is
+described here for the main device.
+
+Could the trigger description be updated to name the sfc Falcon/Siena
+paths? This also applies to the claim in the reproducer notes that the
+module raises num_tc "the same way an in-tree driver does". Otherwise
+stable and security triage will be pointed at hardware where the
+described trigger does not seem to fire.
+
+> The loop frees entries in dev_maps, so both the trip count and the stride
+> must come from dev_maps->num_tc.  The map is sized
+> XPS_CPU_DEV_MAPS_SIZE(old num_tc)/XPS_RXQ_DEV_MAPS_SIZE(old num_tc, ...),
+> so iterating the new (larger) num_tc reads past the end.
+
+[Severity: Low]
+Is "reads past the end" the full impact here? In the old loop body, each
+slot visited is dereferenced, cleared and freed:
+
+			RCU_INIT_POINTER(dev_maps->attr_map[tci], NULL);
+			kfree_rcu(map, rcu);
+
+copy is always false when num_tc != dev_maps->num_tc, so the
+map == new_map skip never applies. Suppose an out-of-bounds slot holds a
+non-NULL value. The old code then writes NULL past the end of
+attr_map[]. kfree_rcu() also writes an rcu_head into whatever that
+pointer points to, and frees it later.
+
+When the neighbouring slab data is non-zero, that is an out-of-bounds
+write plus a free of an arbitrary pointer, not only a read.
+
+The patch also changes behaviour in the other direction, where the new
+num_tc is smaller than dev_maps->num_tc. The old loop only visited the
+first num_tc slots of each old row, so the xps_map objects in the
+remaining slots were never freed.
+
+The later "removes tx-queue from unused" loop walks the new map with
+old_dev_maps passed as NULL. kfree_rcu(old_dev_maps, rcu) only frees the
+container, so those xps_map objects leaked.
+
+One way to reach this is mqprio in software mode with TC offsets that are
+not in ascending order. mqprio_validate_queue_counts() only rejects
+overlap, so TC0 can sit at a higher offset than TC1.
+
+Shrinking the channel count then makes netif_setup_tc() set num_tc = 0.
+Meanwhile netif_reset_xps_queues_gt(dev, txq) leaves the lower-indexed
+TC1 queues mapped.
+
+Would it make sense for the commit message to say that this also fixes a
+leak of xps_map objects, and that the overrun includes a write and a free?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021155522.67521-1-phx0fer%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021155538.67867-1-phx0fer%40gmail.com
