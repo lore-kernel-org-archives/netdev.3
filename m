@@ -1,61 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.178
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792975075;
-	b=b/3IVKLoMUcy2G3QLOue+d0gIsDUCtI3rPzaXDte7Zoi/YPtIc3Dd+iO1IvrfAgwnVQN
-	 8uFreIHMe78yRBhm3b++TSTnbF4pjh5451BmPFEj2hhKt0foeijpj8gEm9wQ8hLBD4ETj
-	 liC2jyJLWjO5TMrCWcjtfTmxOj1Uiju27izniiSxPab3VmK2SdGyOBdpqeu39Tscn94of
-	 zapNKlJwHVkb5J9ebRNY41Am7/UHYf1aaLyb0bd5TyVzEgjn0uBwMY+xKovOHth4Wpz2K
-	 eZhsC9SFkVPzQXIvXHnOvsadOi+v09PulAZLzkch9ZeE7cVr1vGcNGycyrxLDuXrDtQ==
+	t=1792975118;
+	b=xFck4tPTt2zEVXqHF0YhWTYmj4+vbfV4nzEhC/pjV3T+4j/vZKH4bxR8Pkq7xOQsJ/wr
+	 QM31ME0YrlkiHcs23dmNuxCx1GEwc41fxV+imEOF4d6+OKAP4sUFk1WNhtcDlR/NRjLYr
+	 HEPNPwQWDNitLV42dmZjjLw0/V98vXCNnrsfdUGm+CEc/EDjKABfG7NUGLjakmIi48mek
+	 RypkGdsH1nQqllPWPGzgEJizqzaWbGS/5XGLv2x0ctBzVQeqihKUd26SbIEf+bhUpPIEp
+	 UrZEWbQwvozcQKu98igC9dHdJCVnvkdf4oDI8neG85gM+Pga9dZ7mfteK2VOOsLzUDQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792975075;
-	h=Received:DKIM-Signature:Message-ID:Subject:From:To:Cc:Date:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
-	 User-Agent:MIME-Version;
-	bh=3OpWhHDiC0q0IeZapx7WAsAnnypbwyXltg3+JfcCVTY=;
-	b=qyEak75youwFw1vCx4YKhU1AICtfR8wIKV/S/uMGNv+wRkm144xwAIARv19BsVQmROOI
-	 tmutKqQqdUsqxTEhtJpZp2PU4JIgzsLIlgVMOzzcIs9cgEwskgLfII1cEUEj1rVYs0Cpa
-	 nXZn1xpjczTm0k1rSjlQ2K0OzHyIn+mcZ4MjpGoAqZoxeH0QpgwDKDWv9JFF88rfw5Wj/
-	 srnNi8gAs7LXCLpS17iG1Z7fHdIFEF3U24UramC1wpruXzm1Eq6oGReB1w5xlH/t8D/6h
-	 x0LLUJQuiR7HbQm3zhn7RyBlQflUEcVg3llMzeIq8KPc1uWG+aZZrBxLfc6Hgeu6B8g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792975118;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=V8AhUCDcFgJA8JYRnqCY+rHjKoVSWLP96qgzkdaHUTg=;
+	b=W9qZT8cytbFbBCzaO39FCR4FZCjNBJ0utDp5DQ2hATHrOD/m0guYKTikyWTSaqg80RJa
+	 fSpWwsoRDqly0eXj6zfRB8vdODVmv1MfXCzzabaJ4eiWea4kmpPdHEUFwB5kLD2NfzFbo
+	 2UVUYI3C7LtMwy0Y+/e6Ny3oUi3oc1xIc8Dz0YnRmqz0w1DamdZYQShkSqC0fJtZ5wvq5
+	 k2P5a4rbD57gyzOHR5inC7CiZYiwKA2av+HU3OHtorUJ17DOxB/X7rV/iK9GQU2JbaQM1
+	 CJ2oukIeHkHyGUvmqvwVadxBpDHliv5KmznWhuyw+TmN0tjnqKE0dcbpXXpG79Dy3PA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mniVaYXS;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=V1WhKAbf;
+	arc=none smtp.remote-ip=74.125.82.178
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365BF606A31A;
-	Mon, 26 Oct 2026 00:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C328606A31A
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 00:38:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3C328606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mniVaYXS
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41A1E1F01825;
-	Mon, 26 Oct 2026 00:37:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792975074;
-	bh=3OpWhHDiC0q0IeZapx7WAsAnnypbwyXltg3+JfcCVTY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=mniVaYXSw+J4T6DIlCx0v+dCBHkQHE+jD8iQly4/+6u8gr05I/QdIA65+slb44n6O
-	 9WZ6CpkQOI+m5tX82JuJiWn+M4LhreXySfmykgGN3xgIsZow5JZWw7IhpiAcxioTpP
-	 3Ux/uuztLXPUrcz96IghTPYv86/O8MXXtuEUL1zHyaouaqGMWbicGydS9NzhsGyLb5
-	 I5TAkyc2pN4kVXYWXkPIXm0LuxtiUL1TNzHNuq5gEuxL2sdAAK9CDSmLfPUsoUZVrI
-	 4fwdVjMQ6earOBEL2T0vD6DYyPoB5E+INh71qMUz9DCu4TOtzt7iWHAQe0z/8HsNxP
-	 XtGh0M3kfE4Zg==
-Message-ID: <dc5e58c172ad4b4bab4b8e0a385c608245618a65.camel@kernel.org>
-Subject: Re: [PATCH] net/rds: hold IB device reference through deferred
- cleanup
-From: Allison Henderson <achender@kernel.org>
-To: Eduard Zateev <hackerowskiy@gmail.com>
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com,  horms@kernel.org, netdev@vger.kernel.org,
- linux-rdma@vger.kernel.org,  rds-devel@oss.oracle.com,
- linux-kernel@vger.kernel.org, 
- syzbot+221e213bf17f17e0d6cd@syzkaller.appspotmail.com
-Date: Sun, 25 Oct 2026 17:37:53 -0700
-In-Reply-To: <20261023100206.126692-1-hackerowskiy@gmail.com>
-References: <20261023100206.126692-1-hackerowskiy@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=V1WhKAbf
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-33bf40b0c8bso7303028eec.0
+        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 17:38:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792975117; x=1793579917; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=V8AhUCDcFgJA8JYRnqCY+rHjKoVSWLP96qgzkdaHUTg=;
+        b=V1WhKAbfIU93jpuND4nkzBZKwtyq4z7dbVS6FHvB7uR0snxpA1CIj9XrTPsH6CPC1g
+         KMcHEpegLpiFm5O233+7T3sUptjTgc2ZGzadJVmEpVtpODtYqQb7A0DEwslRDwqv7iR6
+         HepREpLq39Mms2BIb/7vkeTwVGa19QdMvtbsTw8jiaSvEkqEH5NYd8unOMT10lutKg2W
+         yyrwTb1fQS0mtVXQBIYu6OsIPZQX2zARar3IKzIhBYyRiDixeocdyRZMWKKDiVjP/diy
+         jObYMruEMxscPRG19dh6fLsnyhnDUOZlYg+ihUCSmnuTqyjxaR6rjaPw5yw37K2QXgQ2
+         IIfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792975117; x=1793579917;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=V8AhUCDcFgJA8JYRnqCY+rHjKoVSWLP96qgzkdaHUTg=;
+        b=RYhwO6EdN5YAW5neuqAbAqPobhnzFxwfX35idnHUNSRsEiAXbEwtGq1/S8sXWIzet/
+         8lT0Akt2vk2uWguSi/08oCM1MBzUmLBEzjum4ky9aPF0wuHKO4iuFH31QYk3ZPF/K13t
+         PnhKcZK8EPZE6ymw5orIlo7hENtM37hIe+qX+it6RhcE1XNWoBR5o9KuI4CFMQxNV3de
+         ctsFRHgpu+tsLLmrBLrinwf3YOVeg3DKyHqtjn0XzIHDUGWK8D3ooc+ox2Mk+YfrgDt8
+         lJ0dCVH7i0HuJOOxCSp72y1HQzu+hySog0PpbP4A0+qf8WtsleF9i9bpvNNhq1+X+llo
+         /UcA==
+X-Forwarded-Encrypted: i=1; AKwUvBw7wXo36LA9+ZSbHD4NbzhgNa/WfA5KxzOifTq5O5YZ9ls3y3VMI5Jwv8CTXhMm6v9uZcrDIno=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJda6uJWa7xogCc2gBPUYyhBh1Y93l7j+a1j49Fx5PD8SRk1Lrp
+	27wJnLTjFALlTt9JpoCUYM/ibmxNNHkAFMpMUCdR05PHwssdKW7awPVb
+X-Gm-Gg: AYBFou1uddzmrhQo9oYN3LcY81TwsbUojjv6tr82fPxy4r4JVMv7n2OnPm+64CC0X99
+	L96HECcPFD20x59yffPVQKbM+RVz8e2btD2qgYpOkat1ZKgu7tAug9r8Pa3gosY6rgeH3lpJYds
+	Rm2JfIV/bC5bIIf8Ctycvk1uefP1Z887bGwsyfaDJYTH1HtlNJHqqP0ESn4Qe8HvyZOsKTyvu7A
+	c8PJdAh8zHYXoHrQ/1NfzX6hCuetntAOLuZs7NzG3buRMdAkHrqeknmYNVsb6Ok0sqo0qmcxEUb
+	HdJFrQXHSukGjurl6QuywBvAOWZqbNHTl6jWMgg4XzmFRy44d+wBlvhp8yRHlv9F/YLE/ER68W0
+	UWT3XicPXwe4fxhIa0cdiVlWaBnZU5rL3iUhqK24LZ2UUaKtTJn8v/+WUcnN8334p0kmcBlDKIC
+	GSUvKcZTAVl9PtgelEt5kJDT+48bH79YpL/sVDwBqaQLHdsOnqf1NUjY3brctZVX21SXNIF/C8Q
+	6OSzx414BWU05AfYd6EDuUAc1ofRgzrkgbvodaQpcny+zEn0Sotk3UA26glA1zCNmcfKWN7sHsX
+	Fw==
+X-Received: by 2002:a05:7300:7fa7:b0:351:52ec:60ee with SMTP id 5a478bee46e88-369e84fcea7mr13199208eec.28.1792975117087;
+        Sun, 25 Oct 2026 17:38:37 -0700 (PDT)
+Received: from v4bel.. ([58.123.110.97])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-369e8ec50bcsm37925013eec.23.2026.10.25.17.38.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 25 Oct 2026 17:38:36 -0700 (PDT)
+From: Hyunwoo Kim <imv4bel@gmail.com>
+To: edumazet@kernel.org,
+	ncardwell@google.com,
+	kuniyu@google.com,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: Hyunwoo Kim <imv4bel@gmail.com>,
+	martin.lau@linux.dev,
+	john.fastabend@gmail.com,
+	weiwan@google.com,
+	sd@queasysnail.net,
+	jiayuan.chen@linux.dev,
+	netdev@vger.kernel.org
+Subject: [PATCH net v4 0/2] inet: fix lockless ehash walk races
+Date: Mon, 26 Oct 2026 09:37:43 +0900
+Message-ID: <20261026003804.61923-1-imv4bel@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,122 +105,52 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Fri, 2026-10-23 at 12:02 +0200, Eduard Zateev wrote:
-> RDS device teardown queues rds_ib_dev_free() on rds_wq. Hold a
-> reference to the underlying IB device until deferred cleanup releases
-> its resources. This prevents device removal from freeing it while the
-> work is running.
+Fix two issues in lockless ehash walks. Reject unhashed sockets after
+taking a reference in established lookups, and restore the acquire/release
+ordering around refcount publication and acquisition.
 
-Hi Eduard,
+Changes in v4:
+- 2/2: add acquire ordering to inet_twsk_purge() and update the changelog
+  (Sashiko)
+- v3: https://lore.kernel.org/r/20261024053720.1147022-1-imv4bel@gmail.com
 
-Thanks for the patch.  Some comments below:
+Changes in v3:
+- 1/2: clarify the request reference comment (Eric)
+- 2/2: drop the sk_clone() change, keep the TCP Fast Open update in
+  place, add release ordering to TIME_WAIT, and rework the changelog
+  (Eric)
+- 2/2: note that backports to trees without the refcount helpers need
+  adjustment (Eric)
+- v2: https://lore.kernel.org/r/20261023052542.3505250-1-imv4bel@gmail.com
 
->=20
-> Reported-by: syzbot+221e213bf17f17e0d6cd@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=3D221e213bf17f17e0d6cd
-The report referenced here doesnt actually point to RDS, it's a warning in =
-rxe_pool_cleanup.
-Do you have a trace or a syz test result showing that the leftover rxe obje=
-ct is the RDS PD
-or MR and that this patch resolves the warning? Otherwise, I think the clos=
-es tag should be
-removed.
+Changes in v2:
+- 1/2: split the unhashed checks and __reqsk_free() to reqsk_put()
+  conversions from the ordering changes, set the Fixes tag to commit
+  079096f103fa ("tcp/dccp: install syn_recv requests into ehash table"),
+  mention the TIME_WAIT hashdance and request replacement cases, clarify
+  request reference ownership, and drop the full socket race discussion
+  (Eric)
+- 2/2: new, split out the acquire/release changes, set the Fixes tag to
+  commit fb041bb7c0a9 ("locking/refcount: Consolidate implementations of
+  refcount_t"), cover sk_clone(), and leave the already ordered TIME_WAIT
+  path unchanged (Eric)
+- v1: https://lore.kernel.org/r/ath58Egc-oI6p3Jl@v4bel
 
-> Signed-off-by: Eduard Zateev <hackerowskiy@gmail.com>
-> ---
->  net/rds/ib.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
->=20
-> diff --git a/net/rds/ib.c b/net/rds/ib.c
-> index 786f39169bc..597872e4fe9 100644
-> --- a/net/rds/ib.c
-> +++ b/net/rds/ib.c
-> @@ -115,6 +115,7 @@ static void rds_ib_dev_free(struct work_struct *work)
-> =20
->  	kfree(rds_ibdev->vector_load);
-> =20
-> +	ib_device_put(rds_ibdev->dev);
->  	kfree(rds_ibdev);
->  }
-> =20
-> @@ -142,6 +143,12 @@ static int rds_ib_add_one(struct ib_device *device)
->  				 ibdev_to_node(device));
->  	if (!rds_ibdev)
->  		return -ENOMEM;
-> +	/* Keep the device registered until the deferred cleanup completes. */
-> +	if (!ib_device_try_get(device)) {
+Hyunwoo Kim (2):
+  inet: reject unhashed sockets during established lookups
+  inet: restore refcount ordering for lockless ehash walks
 
+ net/ipv4/inet_connection_sock.c | 16 ++++++++++------
+ net/ipv4/inet_hashtables.c      |  7 ++++---
+ net/ipv4/inet_timewait_sock.c   |  4 ++--
+ net/ipv4/syncookies.c           |  4 +++-
+ net/ipv4/tcp_fastopen.c         |  2 +-
+ net/ipv4/tcp_input.c            |  4 +++-
+ net/ipv6/inet6_hashtables.c     |  6 ++++--
+ 7 files changed, 27 insertions(+), 16 deletions(-)
 
-The commit message doesn't quite describe what this does. Holding the refer=
-ence doesn't stop
-the device from being freed while the work runs. It makes ib_unregister_dev=
-ice() block in
-disable_device() until the refcount reaches zero, which now only happens wh=
-en rds_ib_dev_free()
-calls ib_device_put(). For connections that wait is short, since rdma_cm te=
-ars them down during
-the same removal, but connections are not the only things that hold the rds=
-_ib_device.
-
-A registered MR keeps the reference it takes in rds_ib_get_mr() until rds_i=
-b_free_mr() drops
-it. That only happens once everything using the MR has let go. Including th=
-e socket (when it
-frees the MR or closes), and every queued message that uses it (when the pe=
-er acks it or the
-socket closes).=C2=A0 Those messages also survive connection drops (rds_sen=
-d_path_reset() requeues
-them), and with the=C2=A0 device gone the connection can't come back up ove=
-r it to get them acked.=C2=A0
-
-So with this patch,=C2=A0whoever is unregistering the device (rdma link del=
-ete, driver unload, PCI
-hot-unplug) blocks=C2=A0in disable_device() until the process that owns the=
- socket lets go, which
-it may never do. It=C2=A0 also turns any leaked rds_ib_device reference int=
-o a permanent unregister
-hang. I have a fix=C2=A0for one such leak, a connection left attached at mo=
-dule unload, in the
-connection-lifetime=C2=A0series I've been iterating on, but it hasn't lande=
-d yet.
-
-Unfortunately this is not a simple fix, even after kref lands.=C2=A0To wait=
- for the free safely,
-remove_one first needs a way to make the device's MRs be released, so that =
-the wait is
-guaranteed to finish.  The uek tree approach is a socket accounting feature=
-:
-
-https://github.com/oracle/linux-uek/commit/ba92066dbf13e573a292252ea07e686b=
-5104f091
-https://github.com/oracle/linux-uek/commit/dc4c8c665368bca276db02ba7071d2d3=
-fd653a10
-https://github.com/oracle/linux-uek/commit/fcd394a1095625a39c44aa709bd976c6=
-b9b98373
-
-You're certainly welcome to look at it, but it is a bigger rework of the re=
-moval path than
-this patch, and I'd rather not take a partial fix that turns the warning in=
-to a hang.
-
-Thank you for looking at this though!
-
-Allison
-
-> +		kfree(rds_ibdev);
-> +		return -ENODEV;
-> +	}
-> +	rds_ibdev->dev =3D device;
-> =20
->  	spin_lock_init(&rds_ibdev->spinlock);
->  	refcount_set(&rds_ibdev->refcount, 1);
-> @@ -180,7 +187,6 @@ static int rds_ib_add_one(struct ib_device *device)
->  		goto put_dev;
->  	}
-> =20
-> -	rds_ibdev->dev =3D device;
->  	rds_ibdev->pd =3D ib_alloc_pd(device, 0);
->  	if (IS_ERR(rds_ibdev->pd)) {
->  		ret =3D PTR_ERR(rds_ibdev->pd);
+-- 
+2.43.0
 
