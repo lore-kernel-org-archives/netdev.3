@@ -1,104 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.2
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792999670;
-	b=eFYwgBkr6GUlPF0/ULpMJnBD/CmFRtBS0dhfw9KtVSrTPea7XPHO7lOq4noNdBtiuY3k
-	 A6s7n2DBd3Dl3RA5lhdLOlJIsWdhfUhIdkTLl+RJ46QiVVJ96o8Bdl0TNwxFWJ2868zIk
-	 R1bgz/aJxc14IfcKs7wc3n0K3cFTRWaj+S1bnAjxCDLLCne4Q+tk/0DsgetV/fnwumiW+
-	 1iNM9rGrJ2esr90u8JCbFXOmzYiyD3vj5pqN5yz8dX3rQx0V0ZWjPLpBD6txlFe8lBblM
-	 MmZ4NsCIdr/rmBG/vfHkq0CkEUiK9eJ58N/MSsHhkH8mlYvFwxg81945Jayiq3PVfWQ==
+	t=1792999665;
+	b=ePg96QzbllGdZVssNDbKePpY1SrChGVOGelSPt4t28OUQEp4maZ3NiyIzwjD7vmgPRv2
+	 x0D90+Yhh1qT8040oBISk+E2ORWXt31BdkPlJu/wImfhrRyJjpjl0KR/TtRCmN8en38Xe
+	 fHBRXjSHMrb8sp03wd7vfglrXOSWjBDcn3o6CFrm8NZuvgye4b/LOYv3euSKgQxD8Hu2U
+	 vCPf7Ts2XYYWPeH6Pa05s0YlX0UBRQJ2hq7dg7I6mHwWEeidDYLpYykzsM0R0iCZojpEq
+	 EQf4SASm9BA3L5i1O0BcJwX7kIWc+3dCZC2d2ULxQIHutWTejER2HCv/uwpkFATsz+g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792999670;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-Rspamd-Queue-Id:X-Spam-Level:
-	 X-Rspamd-Server:X-Rspamd-Action:X-Spam-Flag:X-Spamd-Result:
-	 X-Spam-Score;
-	bh=xd+Q2GNr8nIy5+L7Fq89NHZ6U8XPfuMrTobDomthdxI=;
-	b=rXKGDVtRvtInJ1SkbgZvsLrF4BX1jUECKbz8+ZCxGJfQLZ7peDJ0W1oF+s8wHjuggfVs
-	 KKIj7urH2mpFTS5nWruczJv1IymXVU5KBcPCHo6p7AVEuXTdWEgB+d0gfOPY2QL4ZRihJ
-	 YvI3hS9LvD1AH/wdsM9j2klkDrw3FkoaF1JoEoNRKxELBuCAexxhihlrzZf5tkqMTDx7t
-	 ndtmC7lnKHUWRM9G4LskKiXiOtTkb1nc6693FmUPVOf6d7Q6FUCj0wmWchibH7xbWKvA1
-	 jQ+LEeK8GvX74JT3ZhB9rQ5C6a11s8ng8cU3f+ZLzux+UentU+viYuIRJJV/Sn5v46Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792999665;
+	h=DMARC-Filter:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-CM-TRANSID:
+	 X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=CpLX50bNJo30/B0OUh8eff4hLAcAxJR9An+r3MEC1iM=;
+	b=cCU+4I1og6REr4G3EQT7EbsqS5tXPCblc+CZ4MSc7x41Q4qUbxlt0U+Lzmc9F09wRAfD
+	 EAUXGrHH5UU62FvLYKR6N9AJgBxLbczlLon970Qj4zgyY3iagukjadTr4Aq5mhnJY9wNs
+	 RO5u7eWdsShbuGcORjwKx/+s1zbgJYNr/L9LkiYLDv6YVscwo3CIT3oISBaJxbjTAq/eD
+	 LsOkR/iylxVdFNUMM4/xKYHVOrFKpMlIHyKh813QIH9J4ww/yaLQeTWnfdfMyieSUpRfG
+	 EVuIvhz+ebV8XuE4QXXpVKGpqs0aGmdTaj6D0gXarRHdoyJfm8YoxnWi0SnougW8+Ug==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=suse.de;
-	spf=pass smtp.mailfrom=suse.de;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=XFmpJEfN;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b="DhH8VB/E";
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b="v4Lrp/Vh";
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=surgh2wM;
-	arc=none smtp.remote-ip=195.135.223.131
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=nKAnohgw;
+	arc=none smtp.remote-ip=117.135.210.2
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7FFD606A31D;
-	Mon, 26 Oct 2026 07:27:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A7FFD606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E428606A31E
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 07:27:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4E428606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=XFmpJEfN;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=DhH8VB/E;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=v4Lrp/Vh;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=surgh2wM
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 28DB01F74D;
-	Mon, 26 Oct 2026 07:27:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1792999660; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xd+Q2GNr8nIy5+L7Fq89NHZ6U8XPfuMrTobDomthdxI=;
-	b=XFmpJEfN+4BximqlWLj734i2buybpqq7hSBUakhvVdFCDA0ETnerOQobVI9bR092EnW023
-	4O2jHcdJ9hnWOyJbucj25hZcoJWNAJTH9D9C0nYhiJEzlY92tYp5+bE1sajGN02Do1u88/
-	PoA+Jnyp6/hQ2YTJtpyyTO4udiQGAsE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1792999660;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xd+Q2GNr8nIy5+L7Fq89NHZ6U8XPfuMrTobDomthdxI=;
-	b=DhH8VB/EEl18g9rmCBEKrLTEazdhGCHMdmfz2cXpV6C0PhFF/MEOWvljPRG3LSE44332zu
-	D1uJF1/0rT8ypEDQ==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="v4Lrp/Vh";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=surgh2wM
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1792999659; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xd+Q2GNr8nIy5+L7Fq89NHZ6U8XPfuMrTobDomthdxI=;
-	b=v4Lrp/Vh4IDINCIDmCuvVBOR7XBMupafNbV/FgT0/bCZPm7Mz1gUzPPN9M/pjXoyQnWFUR
-	0X21T8Ciijm6RHojTKQahKBP2xESGFmpoqqSidBRGTZ/RUPObhkjXzgc92HtI02F5QghhC
-	zQhiMOEqs0yVVNeL0kG0ISnw0XJVEdk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1792999659;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xd+Q2GNr8nIy5+L7Fq89NHZ6U8XPfuMrTobDomthdxI=;
-	b=surgh2wMSmw14witl+4e5hq+ISCfaVtVy/CTFbeBFCjXw8XQL41QW9GgiNqpB8amLWwebe
-	2XlSadtOKNm0lJAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 357E213319;
-	Mon, 26 Oct 2026 07:27:38 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id DOCtAOoA32o6dwAAD6G6ig
-	(envelope-from <hare@suse.de>); Mon, 26 Oct 2026 07:27:38 +0000
-Message-ID: <c75aa5d6-5037-4489-99e0-3e38528e10d0@suse.de>
-Date: Mon, 26 Oct 2026 08:27:37 +0100
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=nKAnohgw
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=CpLX50bNJo30/B0OUh8eff4hLAcAxJR9An+r3MEC1iM=;
+	b=nKAnohgwm2ODVzSWW/fLfpf2u/toxo8ZLv+ProMGgXBL8UzOw/aqyF2115unDw
+	PUrlHdz08bsssciZ2LTQA1EyGf+y7+xBWzmOtmMwm/ap2bpn6ut6Eq3dwFgxZGot
+	vYpf3ry7pu44MpTykESf1Se9cDm9HLIK/yjZ8QLlj3QMU=
+Message-ID: <5df19294-c5e9-4917-b989-9b7a14a7102f@163.com>
+Date: Mon, 26 Oct 2026 15:26:37 +0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -109,98 +52,95 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC net-next 1/5] tls: add HKDF-Expand-Label for the TLS
- 1.3 key schedule
-To: martin.nvme.dev@gmail.com, John Fastabend <john.fastabend@gmail.com>,
- Jakub Kicinski <kuba@kernel.org>, Sabrina Dubroca <sd@queasysnail.net>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, Shuah Khan <shuah@kernel.org>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- Hannes Reinecke <hare@kernel.org>, Chuck Lever <cel@kernel.org>,
- kernel-tls-handshake@lists.linux.dev, linux-nvme@lists.infradead.org,
- Alistair Francis <alistair.francis@wdc.com>,
- Martin Belanger <martin.belanger@dell.com>
-References: <20261025-keyupdate-rfc-v1-0-60b7756eccbd@gmail.com>
- <20261025-keyupdate-rfc-v1-1-60b7756eccbd@gmail.com>
+Subject: Re: [PATCH net v3] bonding: 3ad: select a port when the TX array is
+ empty
+To: Jay Vosburgh <jv@jvosburgh.net>, Paolo Abeni <pabeni@redhat.com>
+Cc: Hangbin Liu <hangbin.liu@linux.dev>, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ maheshb@google.com, razor@blackwall.org, netdev@vger.kernel.org
+References: <20261008024031.16224-1-luyun_611@163.com>
+ <asoItm3JVXSC5GQ4@fedora> <463c6b0e-8b46-4c70-b9d8-56b42beaa7d0@163.com>
+ <asyt2Gt4LzKWWnZS@fedora> <0d32d785-d16a-456d-98e5-8e952d09ab76@redhat.com>
+ <65061.1792871049@vermin>
 Content-Language: en-US
-From: Hannes Reinecke <hare@suse.de>
-In-Reply-To: <20261025-keyupdate-rfc-v1-1-60b7756eccbd@gmail.com>
+From: luyun <luyun_611@163.com>
+In-Reply-To: <65061.1792871049@vermin>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 28DB01F74D
-X-Spam-Level: 
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-12.00 / 50.00];
-	SUSE_INTERNAL_BYPASS(-9.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	XM_UA_NO_VERSION(0.01)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:email];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org,queasysnail.net,davemloft.net,redhat.com,lwn.net,linuxfoundation.org,infradead.org];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	MIME_TRACE(0.00)[0:+];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ARC_NA(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from]
-X-Spam-Score: -12.00
+X-CM-TRANSID:_____wD33wWuAN9qRcgqDA--.30359S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxGFy5Zry7XrWDKF48Kr4DJwb_yoW5ZFy3pF
+	yrG3WkKF4DJr1rGwn7tw4xCayFvrWxWw47Jr1vqw1xAws8AryIgrs7tF4xua4UCrs7K34Y
+	vF4jqa4DZa1UAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U5-BiUUUUU=
+X-CM-SenderInfo: pox130jbwriqqrwthudrp/xtbC7A+9jGrfAK8MtQAA3x
 
-On 10/26/26 1:36 AM, Martin Belanger via B4 Relay wrote:
-> From: Martin Belanger <martin.belanger@dell.com>
-> 
-> A TLS 1.3 KeyUpdate derives the next traffic secret, key and IV with
-> HKDF-Expand-Label (RFC 9846, section 7.2). Add the helper for the
-> kernel to do this itself.
-> 
-> Only the part of the key schedule after the handshake is needed. The
-> input is a traffic secret, which is already a pseudorandom key, so
-> HKDF-Extract is not needed. Each output is at most Hash.length bytes,
-> so each derivation is a single HMAC with the library SHA-256 or SHA-384
-> functions.
-> 
-> Assisted-by: LLM
-> Signed-off-by: Martin Belanger <martin.belanger@dell.com>
+Hi Paolo and Jay,
+
+Thanks for the suggestions. I agree that addressing this issue in the 
+control path is preferable to adding a fallback to the transmit path. 
+The gap is between port enablement and the asynchronous array update, 
+which can be delayed by RTNL contention. My current plan is to 
+synchronize membership changes and array updates with a per-bond mutex, 
+removing the builder's RTNL dependency. The AD state machine would then 
+update the arrays directly after releasing mode_lock and RCU, with the 
+existing worker retained for allocation-failure retries. This keeps the 
+transmit path unchanged. Implementation and validation are in progress. 
+Once these are complete, I will follow up with a revised patch.
+
+--- Thanks,
+
+Yun Lu
+
+在 2026/10/25 03:44, Jay Vosburgh 写道:
+> Paolo Abeni <pabeni@redhat.com> wrote:
+>
+>> On 10/12/26 11:52, Hangbin Liu wrote:
+>>> On Mon, Oct 12, 2026 at 03:20:09PM +0800, luyun wrote:
+>>>> On cost: the fallback only runs when the array is empty, so the normal
+>>>> transmit path is untouched. Inside the window it is a lockless RCU list
+>>>> walk with no new state; the second pass and the broadcast branch are
+>>>> there to keep the array path's hash mapping and broadcast_neighbor
+>>>> semantics.
+>>>>
+>>>> I would also like Jay's feedback on the preferred direction. If a
+>>>> control-path solution is preferred, I am open to working on separating
+>>>> array preparation from port enablement, as long as it does not change
+>>>> LACP convergence behavior.
+>>> +1
+>> I guess we are not getting Jay's feedback anytime soon.
+> 	Apologies for not responding sooner, I've been traveling and
+> missed this discussion when catching up.
+>
+>> I think a control-plane solution is highly preferable, even if it's
+>> going to be a more significant work. I have just skimmed over the code
+>> and it feels like removing the rtnl lock requirement for
+>> bond_update_slave_arr() is doable - i.e. moving ->all_slaves and
+>> ->usable_slaves under a new bond specific mutex).
+> 	Reading the patch and subsequent discussion, I tend to agree
+> with this.  In addition to what's been stated previously, the fallback
+> method has the disadvantage that it adds a test and branch to the
+> transmit path that will be taken very rarely.
+>
+> 	As I recall, bond_update_slave_arr requires RTNL only to prevent
+> anything else from altering the set of interfaces in the bond while it
+> runs.  It doesn't need to actually made interface-level changes or send
+> notifications, so, I think that as long as the bond_enslave /
+> __bond_release_one paths synchronize with the bond_update_slave_arr, it
+> should be safe without RTNL.  Using RTNL for this was originally easy,
+> as the enslave / release paths always have RTNL held.
+>
+> 	Having a mechanism to provide a lighter weight "don't change the
+> bond's list of interfaces" knob might also permit removing or at least
+> narrowing the scope of some of the other RTNL-related weirdness in other
+> places.
+>
+> 	All of the "rtnl_trylock run in a work queue" patterns are hacks
+> to avoid deadlocks, and if we can change any of those to be synchronous
+> and deterministic while removing a trylock that's a good thing in my
+> mind.
+>
+> 	-J
+>
 > ---
->   net/tls/Kconfig    |  2 ++
->   net/tls/Makefile   |  2 +-
->   net/tls/tls.h      |  2 ++
->   net/tls/tls_hkdf.c | 82 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
->   4 files changed, 87 insertions(+), 1 deletion(-)
-> 
-And another HKDF implementation. Maybe it's time to split if off (again).
-But anyway.
+> 	-Jay Vosburgh, jv@jvosburgh.net
 
-Reviewed-by: Hannes Reinecke <hare@kernel.org>
-
-Cheers,
-
-Hannes
--- 
-Dr. Hannes Reinecke                  Kernel Storage Architect
-hare@suse.de                                +49 911 74053 688
-SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
-HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
