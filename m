@@ -1,97 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.169
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793007762;
-	b=VgjwqtWGoTZKsLGR4pFVpdmHSUFpBRKMdN1Uq6KRZTVMqRzuS3hc5Nks9ITjxX9qq5C1
-	 NfWa44BBUz93xjk2JDyUK04+/g/TkqmXywzwR2mcKXms6qVsBbn9psFNgoAqsDT8Ym9Tv
-	 YCZAlTgJxRz/GMNF2pBWF14MBPdzf7N0aTno2cziuEWmfUJ2v3AmJJS3U0U8PTZvvEA91
-	 L+Iss/SnOb7Us/unMxczEiv+l36ZFA2ABqIcS/cDRY/S7oYBZ0HHBnRt7FMRtMlnPRxki
-	 VjHYBC0jHMIfWmTSqYCTty4kWkB/+CEGt6GO4PPgdB0aZ5Qt9mRzmmi+iry1BWDCw8w==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793007762;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=1VRakO/y2V/imlB//nrtX81eqpBhTcCSTPsMSK301oM=;
-	b=1mahHldE43rKdP2UQ21erJGdX1I3FbcGHWtWpi/ggk1c1GVBHeOmL/ns/ewRymk3CuNP
-	 A6jJ1uRKSLdNbVZ+5lENekDB8yi8SX74LQfmA59vevUps08pBnmxki8XZo3+Ic3y2a5v3
-	 1WtqqZK2ziWy6UHHc66j8/dB3ZxDkL8IDxP8sxhubm/YwkC6ec0C6dSNTLQAebnXxoa7s
-	 2OQpGldOwaZ7kQwW1TlEXHAyvaTCstewLeVWVW/IDbG/Nm57RR2b8BHHbeHeGyJLwLUcf
-	 fZHN6wE/11vmoZ2FFilyzoUY+xy9CBFaKAmXKBE8XhUrY7I7kLNoyJmfXNXMjjtikNQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mojatatu.com;
-	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=gar2JInB;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.169
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793008139;
+	b=tMDj17+Ua3PmPgHWeWi40OUZQXF+lmaFmB40Q+EzUXUJBQ/x8uh/H7gpJM4RFXeEmMxb
+	 7d7P9BbSFdNNUer/DLQYsefa5+ElueSjcNtMCsnIU+AbGdr2Y9jQ6N++6ezfDg6GVn9nQ
+	 fEHF57wZ+owA/k46uOGd1yuMnf9NBeyxV0gU29sBLOB7BcgSaJG803KOfqQiUXA60Dof1
+	 jDXcjfvfXWIZa518hR+XnHbB6ZuiHzXVgVFbozJcSP9pLl58oCO3pK8kYJ06zE+3eCNh7
+	 vQQdeWqZePr9AoDg5pq++FgdAggBV/rNz4J7KRkQ7oZ0GtS5tywG+9JT0dI5LpcTTPg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793008139;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=WyKK1CAEFSEVJm3M6nU8KNp47IQ4TKjIr1NibyfyJl0=;
+	b=rDjeWpnW/4ila27nY5FZURKGL9eOQ5MljIyjaDoQ9rfWBfPw3FRkG+W0wBsjUrcVrsDA
+	 ZR0qDjr2W3CbH0a/ExngRr5igiS0Lw/cIREdV5zvFFTplrpz05WItr+bJ7ZJ1fswINy6X
+	 My8iIygoGORYgMQZ53tKzLYCuUKO4nC3wY91XItEWMIV22P8jfy1j8fxeFbbdyq57sCTF
+	 qmPbnrslDE3hlDsWDFqVJKV/Ndnn1hQs8zt5nhoK+VCtkuqKscpF5V1Urjf3y2QjNTbuL
+	 hoYHSadcm0BJXWr/zVdAODV62flSfUcZ1RigiYjXeiKogAu7TT2uNEa7v7fNjju/poQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IcsbAkY1;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA7F606A33D
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 09:42:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0BA7F606A33D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D54606A330;
+	Mon, 26 Oct 2026 09:48:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=gar2JInB
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-8a05e3f0d23so1078859b3a.0
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 02:42:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793007760; cv=none;
-        d=google.com; s=arc-20260327;
-        b=mk3Wu8KqrhnxOuKB7uPfCE8KtvXpJUomaOxkWpRce5wuRz9EhkS8uXeH1W1Zar2ZTz
-         S8MK4QnDmgqMMlQmdC41tdU+sED5R7WOJDoVfC0fIk9CDlqN+uEo5J1DvaphwZR5ba1B
-         F72FpeFNb9+NiSe7EmoxwPIq4Kk9zUBJOAq4WD1buBKqRy+KX+KjcbinGbWgYRntVAWJ
-         rnrWpAK0gmCbZ4x1LWIY0wuz7e+UCfgLWZp41AKs5cy7sxClWZbBhZiYC+nDKTvZWSQ2
-         Ii42YhsijKxtbGQbjVyI32bQ6dufqMec0J/KZMoWEFhhZiaKQAoOrbVoq/NopQxRPgL5
-         svZw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1VRakO/y2V/imlB//nrtX81eqpBhTcCSTPsMSK301oM=;
-        fh=KH6pubcg8crNZsy+056e8LwHKXhZIQf6v1SS6bAeJ4o=;
-        b=eEmVJjUyhFCuX/P7jofCPevANFltl5s+IeBKP8Z6bumN/ajM1+paALXZn5d5osQdjG
-         HfEeiKrHckMB2TUo2rAlMoJG0n8uIv2mb1gFWZqWPdwDYop1Jeap+Ei8GtDji1Ny38NY
-         m3HaJ26Pri8FwXSkJ/64rVdVEwUk0pr83Qs0swk/MZv3ib9a1CxgPT3adnr4Cln7AdWo
-         3qfhli6GEAPuxQbUHnuCpPvRiu3WbMeyzDz7u/nPr2jCFIxQSsyEox4KOVBIbUFbeL7T
-         3A7hXh5340yYtvlVVaQAKdnEKhLT5vmuXUvERncDadgwYCC3QUcZ/C+ke/FWkWO8ymh5
-         i8pA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1793007760; x=1793612560; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=1VRakO/y2V/imlB//nrtX81eqpBhTcCSTPsMSK301oM=;
-        b=gar2JInB+M76BqbODcIOXxlJnq3tSDd19K2qpCcyaviUtM2G5S07P3d52nqVQaf1xG
-         pOh0H7fE0/HPV312lVpfF7fAhzhasaRvifGghH9BDzayU1caz1kixISBjjDoxurZu8nc
-         39j3MAAK+kmb4M3e5mdaPteD54+iZ3S9yPrXc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793007760; x=1793612560;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1VRakO/y2V/imlB//nrtX81eqpBhTcCSTPsMSK301oM=;
-        b=HPPgwcqsUcyqw2soiijRJV9SFSfty7URChD7Ckyr5LW6ogtJUWbVQgcHUyBWVgFOV5
-         4CbGnnCsw5BY7kCbofOvLXiGp+gjOuVAlHCGoub5yK7ChqwvBc1JTjxz3mGhzOO0uvCV
-         mdTqx4XyqugFHFP4eXa1Vye/RpyaZ+TUzJBOoiahOPJeIielLoieEeAElpKzdT54sGhd
-         ojZ0kwi93SMvTOUDWsONUwICMjXGql9gVa6u3OG45nDwZ8doKJqaCY3S0tVQcsqpUOnJ
-         V0q/VQf1gIr3KZ4flcmoiv5tRcnoVTIsxI6eA3FqZcvgTP/KeaVwh7VHYSji3HZVZaF7
-         gaIw==
-X-Gm-Message-State: AFq9FYIX/1PVoc4wp5qri1Ls1BVZgMDl2luS7fRu9FQSxEAcuaUAeN9O
-	/DpmwmD1pSRGE3nxfm2UsF5OZ1+s/0GpQomr3WrEbCBpW1loAKtXR9YcmbkxgEwMHidK4B653eY
-	s+bq3yUzcIL5dx9jmgl4RubQZTONjCtZR/qDJ9sNNPtgaVMwcdTg=
-X-Gm-Gg: AYBFou1iOTB5zB5VTcnrX3IIWRHULYYLLIU0wRxZh7pIBoh4oxOUib+EIs3bGOY8vtj
-	CQBWh9ynAfIf9ZEUqwvYkoLXbZEMM0EbSDyETT4YUKrQrtGhloVH8IyUYxzd0SU4Ji+UGt8gFY4
-	RZm/n+UCp9cAbEOW4Sc6ZaW1eq1FP1vRJMJvqPjovq2BsmMjufx5PtMFxbp01WcoxCuH9x//fRv
-	xTatylelByx53ggr4G5z8iSbLS5Wzy04T3tTcutfcu48sQE4T1447nkG64Hy9zlWitTXehQu7qF
-	qbBG6wzzabAXohxMVCgzEikta2N+QO6QAGn9ERllKHE5l/HVf9iRBBUS12knjCIkR8j4ifWp0cM
-	G4xPNNgFZBUPI5R6RLYmUp5KX2McSZQOg0jvu6k/OtpEYsRnbdvr29X36OjBDvEDhbLWYZtOKaC
-	hPHSu6ljOYkb2+eLY=
-X-Received: by 2002:a05:6a00:2448:b0:8a0:7677:c8c9 with SMTP id
- d2e1a72fcca58-8a367a2f8efmr5287454b3a.51.1793007760427; Mon, 26 Oct 2026
- 02:42:40 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IcsbAkY1
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC701F01825;
+	Mon, 26 Oct 2026 09:48:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793008138;
+	bh=WyKK1CAEFSEVJm3M6nU8KNp47IQ4TKjIr1NibyfyJl0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=IcsbAkY1WFzUmG+pYlqwEtui1FGPB/IPjkQ5TpRXvQ9WJhovvGFcGJZ7TnmETCIEw
+	 uOorztLEZb80y6/+u8B5ODNbdl6+Fq65uMfpOCbkC07cAbL8DJFUxbji0VnCwDUrBX
+	 8oVPLSlWmzH3UTgqS9yi/PoZ9wQLm2jVM+B3HNMpCmzVDD5ViM1w+tZlq5lwGezilY
+	 xrbxuu4MEW6xYaMl8q70ghUBQ9+diDv52a/dnHjjMQ+yai2qmaEjEOlpEFqGIF97t5
+	 XSG9vGw8XP89NjzXlaMmQQtmW+5WywBYfEQFC5FsBdrSuHsl1nM9NYAJ0aXwTzn9pu
+	 vRhnuWmQSN3Vg==
+Subject: Re: [PATCH net-next v4 2/2] net: phy: aquantia: add get_features()
+ for AQR113C
+From: netdev-bot+sashiko@kernel.org
+To: hongmei.xu@oss.qualcomm.com
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 26 Oct 2026 09:48:57 +0000
+Message-ID: <179300813766.3134.9194099464144589935@kernel.org>
+In-Reply-To: =?utf-8?q?=3C20261022-net-phy-aqr113c-fix-pma-capability-v4-2-9?=
+ =?utf-8?q?5a17f75dd7a=40oss=2Equalcomm=2Ecom=3E?=
+References: =?utf-8?q?=3C20261022-net-phy-aqr113c-fix-pma-capability-v4-2-95?=
+ =?utf-8?q?a17f75dd7a=40oss=2Equalcomm=2Ecom=3E?=
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,103 +65,151 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <ACT-N6N4.v3.r0.20261023200137@mojatatu.com> <ACT-N6N4.v3.r0.20261023200137-1@mojatatu.com>
- <ACT-N6N4.v3.r0.20261023200137-2@mojatatu.com>
-In-Reply-To: <ACT-N6N4.v3.r0.20261023200137-2@mojatatu.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Mon, 26 Oct 2026 05:42:29 -0400
-X-Gm-Features: AclHuK9Kbj8dxBWyUQ9ZZzVwC1rYp76rQKzNYxfRgPM9tqs42Y9bAdm-hXSXTdw
-Message-ID: <CAM0EoMnjxmnoZ3a4XCB9YERcCwYhYW8-jKw1UZ79YzhFct9+KQ@mail.gmail.com>
-Subject: Re: [PATCH net v3 2/6] net/sched: act_mpls: pull the inner Ethernet
- header after POP
-To: netdev@vger.kernel.org
-Cc: Jiri Pirko <jiri@resnulli.us>, Victor Nogueira <victor@mojatatu.com>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Martin Varghese <martin.varghese@nokia.com>, Pravin B Shelar <pshelar@ovn.org>, Vega <vega@nebusec.ai>, 
-	Willem de Bruijn <willemb@google.com>, Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, Oct 24, 2026 at 10:28=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.com=
-> wrote:
->
-> The issue:
-> When the configured inner protocol is ETH_P_TEB, act_mpls POP can leave
-> the inner Ethernet header in a page fragment after skb_mpls_pop(), either
-> on an L3 device (mac_len =3D=3D 0) or chained after act_vlan POP_ETH.  A
-> following eth_type_trans() can then BUG in __skb_pull().
->
-> The Fix:
-> After the pop, pull the inner Ethernet header into the linear area only
-> when p->tcfm_proto is ETH_P_TEB; drop the packet only when that pull
-> fails.  Other inner protocols (IP, MPLS, ...) have no inner Ethernet
-> header and must not be required to carry one.  The pull is a no-op when
-> the header is already linear.
->
-> Conditions to recreate the bug:
-> - egress tc filter on lo: action vlan pop_eth action mpls pop protocol te=
-b
->   (chained), or on an L3 device where mac_len =3D=3D 0.
-> - AF_PACKET SOCK_RAW with PACKET_VNET_HDR, hdr_len=3D28, and a non-linear
->   eth / mpls / inner-eth frame.
-> - The inner header is in page frags; a following eth_type_trans() can BUG
->   in __skb_pull().
->
-> Fixes: 2a2ea50870ba ("net: sched: add mpls manipulation actions to TC")
-> Reported-by: Vega <vega@nebusec.ai>
-> Link: https://lore.kernel.org/r/40fe2d7dfce13411bfbe9271c0f7c54fb7e88e3b.=
-1782548651.git.bronzed_45_vested@icloud.com/
-> Link: https://lore.kernel.org/netdev/CAL4WiiqSMdYQYeeW0Fk_GK6ekR4xiS4zPrG=
-KrbB9wZknpqf1-w@mail.gmail.com/
-> Link: https://lore.kernel.org/netdev/willemdebruijn.kernel.26d1ddb3bd2ae@=
-gmail.com/
-> Cc: stable@vger.kernel.org
-> Suggested-by: Jakub Kicinski <kuba@kernel.org>
-> Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-> Suggested-by: Eric Dumazet <edumazet@kernel.org>
-> Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
->
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-For the series
+Critical: 0 · High: 0 · Medium: 2 · Low: 0
 
-pw-bot: cr
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Eric, you are reading this? See the discussion with Willem.
+- [Medium] aqr113c_get_features() adds 10000baseT_Full to
+  phydev->supported only after EEE discovery has already run, so…
+- [Medium] The commit message describes the fix's mechanism incorrectly.
 
-cheers,
-jamal
+--
 
+net: phy: aquantia: add get_features() for AQR113C
 
-> ---
-> v2 -> v3:
->   - drop the pre-pop mac_len gate.  The pull is a no-op when the header
->     is already linear, so the gate only avoided a cheap call (Willem de
->     Bruijn).
->   - restrict the pull to ETH_P_TEB.  act_mpls POP can target IP, MPLS,
->     etc.; those inner protocols have no Ethernet header and must not be
->     required to carry one (Willem de Bruijn).
-> ---
->  net/sched/act_mpls.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/net/sched/act_mpls.c b/net/sched/act_mpls.c
-> index 4ea8b2e08c3a..35a6d27f76a4 100644
-> --- a/net/sched/act_mpls.c
-> +++ b/net/sched/act_mpls.c
-> @@ -79,6 +79,9 @@
->                 if (skb_mpls_pop(skb, p->tcfm_proto, mac_len,
->                                  skb->dev && skb->dev->type =3D=3D ARPHRD=
-_ETHER))
->                         goto drop;
-> +               if (p->tcfm_proto =3D=3D htons(ETH_P_TEB) &&
-> +                   !pskb_may_pull(skb, ETH_HLEN))
-> +                       goto drop;
->                 break;
->         case TCA_MPLS_ACT_PUSH:
->                 new_lse =3D tcf_mpls_get_lse(NULL, p, !eth_p_mpls(skb_pro=
-tocol(skb, true)));
-> --
-> 2.43.0
+This adds an aqr113c_get_features() callback for the AQR113C. It builds on
+aqr111_get_features() and then sets 10000baseT_Full in the supported mask.
+Previously phy_probe() fell back to genphy_c45_pma_read_abilities(), which
+the commit says produces an incorrect supported mask for this PHY.
+
+> Add aqr113c_get_features() that calls aqr111_get_features() as a base
+> (which reads PMA abilities and forces 1G/5G/2.5G that the PHY misreports)
+> and sets 10000baseT_Full explicitly since the PHY also misreports 10G.
+
+[Severity: Medium]
+Is this description of aqr111_get_features() accurate? It calls
+aqr115c_get_features(), which does not read any PMA ability registers:
+
+drivers/net/phy/aquantia/aquantia_main.c:aqr115c_get_features() {
+	/* PHY supports speeds up to 2.5G with autoneg. PMA capabilities
+	 * are not useful.
+	 */
+	linkmode_or(supported, supported, phy_gbit_features);
+	linkmode_set_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT, supported);
+
+	return genphy_c45_read_eee_abilities(phydev);
+}
+
+The only hardware read in this path is for the EEE abilities. MDIO_STAT2,
+MDIO_PMA_EXTABLE and MDIO_PMA_NG_EXTABLE are never read, so this patch
+moves AQR113C from a mask built from the registers to a fully static one.
+
+The message also leaves out a side effect. phy_gbit_features includes
+1000baseT_Half and the 10/100 half and full duplex modes, so these are now
+always in supported. aqr_config_aneg() will then advertise 1000BASE-T half
+duplex:
+
+	if (linkmode_test_bit(ETHTOOL_LINK_MODE_1000baseT_Half_BIT,
+			      phydev->advertising))
+		reg |= MDIO_AN_VEND_PROV_1000BASET_HALF;
+
+The previous genphy_c45_pma_read_ext_abilities() path never set this bit.
+AQR111, AQR114C and AQR115C already behave this way, but could the change
+be mentioned in the message?
+
+The new comment in aqr113c_get_features() says only 10G is misreported in
+the PMA extended abilities. The commit message says 1G, 2.5G, 5G and 10G
+are all misreported. Could the message and the comment be brought in line
+with what the code does?
+
+The inherited "up to 2.5G" comment in aqr115c_get_features() is also stale
+now that a 10G PHY uses it.
+
+> diff --git a/drivers/net/phy/aquantia/aquantia_main.c b/drivers/net/phy/aquantia/aquantia_main.c
+> index 099ee919de94..153adfbda53f 100644
+> --- a/drivers/net/phy/aquantia/aquantia_main.c
+> +++ b/drivers/net/phy/aquantia/aquantia_main.c
+> @@ -1096,6 +1096,23 @@ static int aqr111_get_features(struct phy_device *phydev)
+>  	return 0;
+>  }
+>  
+> +static int aqr113c_get_features(struct phy_device *phydev)
+> +{
+> +	/* AQR113C does not correctly report 10G in PMA extended abilities.
+> +	 * Build on aqr111_get_features() for 5G/2.5G and add 10G explicitly.
+> +	 */
+> +	int ret;
+> +
+> +	ret = aqr111_get_features(phydev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	linkmode_set_bit(ETHTOOL_LINK_MODE_10000baseT_Full_BIT,
+> +			 phydev->supported);
+
+[Severity: Medium]
+10000baseT_Full is set here only after EEE discovery has already run. Does
+that mean AQR113C always loses 10GBASE-T EEE?
+
+The call chain is:
+
+aqr113c_get_features()
+  aqr111_get_features()
+    aqr115c_get_features()
+      genphy_c45_read_eee_abilities()
+        genphy_c45_read_eee_cap1()
+
+At that point supported holds only the gbit modes and 2500baseT_Full.
+genphy_c45_read_eee_cap1() maps MDIO_EEE_10GT from register 3.20 into
+supported_eee and then masks it against supported:
+
+	mii_eee_cap1_mod_linkmode_t(phydev->supported_eee, val);
+	...
+	linkmode_and(phydev->supported_eee, phydev->supported_eee,
+		     phydev->supported);
+
+10000baseT_Full is not in supported yet, so the 10G EEE bit is cleared.
+Nothing reads the EEE abilities again afterwards: phy_probe() only calls
+genphy_c45_read_eee_abilities() in its drv->features branch.
+
+After that, phy_probe() ANDs advertising_eee with supported_eee. Then
+genphy_c45_an_config_eee_aneg() writes the reduced mask to MDIO_AN_EEE_ADV,
+which looks like it would clear any default 10GT EEE advertisement in the
+hardware.
+
+genphy_c45_ethtool_set_eee() would also return -EINVAL for a 10G EEE
+request:
+
+	if (linkmode_andnot(tmp, adv, phydev->supported_eee)) {
+
+5G is not affected, because cap2 is not masked against supported.
+
+Before this patch 10G was missing from supported entirely, so this is not
+a loss compared to the old state. However, supported and supported_eee now
+disagree on 10G.
+
+The earlier commit "net: phy: aquantia: restore EEE discovery in
+get_features callbacks" put EEE discovery at the end of
+aqr115c_get_features() so that supported would be final by then. With this
+nesting, that no longer holds for a cap1 mode.
+
+Would it work to set all the forced modes before calling
+genphy_c45_read_eee_abilities()? For example, the EEE read could move to
+the end of each top-level get_features callback.
+
+> +
+> +	return 0;
+> +}
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261022-net-phy-aqr113c-fix-pma-capability-v4-0-95a17f75dd7a%40oss.qualcomm.com
