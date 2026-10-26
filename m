@@ -1,79 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=199.89.1.16
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793044774;
-	b=tx7s6erJAj/31pZdC4O3MdepspzxLC2urXRZ+p5HaGFIRB/CWSZ/i9Wy4McVwiMHQyM4
-	 A9yKhLWGTaC8V5YVxQt6LouxrYbmME8Ti8itP4D2vokVnNLcLes4+A8/AfC7+qJcZgxVQ
-	 JYOEAf1QIpET2fU1OCdk28j4OfArvSUwY4JPVwxlKEM9AIDzy1LnY92qaDnEZVbHwR/wT
-	 CYJdMqQsxG58b/pVprwthyUHE5IsNQxfTbHXNtS3jWw1QhszHlgsY8kz9Wntge9Rd/aof
-	 gHsxX5sUF/Q7NotE6nJIcIXFJ97HpsJ1cls+MhSXLmdHtYgl+9APrHG4qQDN99nLTvQ==
+	t=1793044807;
+	b=ZL4mW3bwLHdQ+rYMFf1hMETicKNvTMKoGD15UQdaymE8nrc2oEelvVvNkNbD5XAmpK0M
+	 ujIu/RYhIz9lyG1dmD28brwOD2VxGApJSdvgmElPd9i0403oTWTJARhOhAH2A4SR+vPLA
+	 Stv7klSKA48WoMdoV9JVrAYiYGvfyFJu1hOr573fzP+wgvkUgyfO5oM3zFSQZvgTAbUu5
+	 vaNTSliK3/MMhkrrgEx3shRkqfjDngfWv2K2YSG+XN6foNwXA358NxVoaOLfjKAyVIFI/
+	 4A6BXrg6NowpPBQaND32AWtXg6Wiiyxd47VK79Ak7quBJ5X8dEGEk2QhOc3XqpTaFiA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793044774;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Virus-Scanned:Received:
-	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=He4ybGCTXFtdd1Ylp4eCMHA5vOeDumlalP75v8zeP2E=;
-	b=p4VmBbpHXC06VBKWQ7pfa+cTsIiiolfwMTQwz3uSInmBLySdJE5x/elSEEUfbHXF94rd
-	 WBXZ1i3NTzM1frWLRjOECifUq8Z4N+qPnp/GU/I7jngrFdhmV/YPTtQf2bm/hNJsMySwJ
-	 xmYukqTC3NCvqNJvTarGzcOcsYBMOvqiLwNbIitMRHNmbIJAISg3kdfTJ+jRd3Svc3lM0
-	 OYCHBdENt8RF0epMh3votWdQ1Y6eWteih+atQal4aVpFVJI4zVXJJAwqKZaoghqUTa35i
-	 IhiDdy//maHo9zu8bZDQUXkOnXGJn8E3wWXnppkAYwLLialA5rBOkuqXmeCTKLPE1jQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793044807;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=OqJOMVomNicsYATFLXth48258BoA3r2b05um3WvwiE8=;
+	b=DTvKc34WXDsGDqiT6NDevwBdGZBaLECiPxEmKz5SqULgzURul+6Ek91ZbpuG0Mi83IIx
+	 SR31OYP395yPDxnDb22wPZPTfdHLcImjFwfrPKKZn6B1YnydxjzSSkUjbZLa6dEwHg5N1
+	 6VArYQwzSzHkAA239K2BXfh5fiINody5N1BM3XLEaxWQcJA8qAiaCw4fN8tQuT7REtRnw
+	 FlzXaWBIFNJxP3Zb+gXrffWrXGfiV/6OAuPeAos2AWhFTrTlUeca9W6o7RkjYQrvebvji
+	 4vsq1XANFv6Rt/p7oAvI3WpMr/mbtqLEgL8U9RoLNeLq2DX02I7/UQ5D9xBXrrAYWqg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=acm.org;
-	spf=pass smtp.mailfrom=acm.org;
-	dkim=pass header.d=acm.org header.i=@acm.org header.a=rsa-sha256 header.s=mr01 header.b=Tm2c1gye;
-	arc=none smtp.remote-ip=199.89.1.16
-Received: from 013.lax.mailroute.net (013.lax.mailroute.net [199.89.1.16])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=XXcyv2nZ;
+	arc=none smtp.remote-ip=209.85.128.49
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2553606A31D;
-	Mon, 26 Oct 2026 19:59:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B2553606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B57606A320
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 20:00:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 13B57606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=acm.org header.i=@acm.org header.a=rsa-sha256 header.s=mr01 header.b=Tm2c1gye
-Received: from localhost (localhost [127.0.0.1])
-	by 013.lax.mailroute.net (Postfix) with ESMTP id 4jD4GF0XsTzlfvpc;
-	Mon, 26 Oct 2026 19:59:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:mime-version:x-mailer:message-id:date
-	:date:subject:subject:from:from:received:received; s=mr01; t=
-	1793044768; x=1795636769; bh=He4ybGCTXFtdd1Ylp4eCMHA5vOeDumlalP7
-	5v8zeP2E=; b=Tm2c1gyeGJBvojFlei1jLdPt33E7yCVVnShNqdypc1KnM7qn65j
-	SzNJhOPxAcidDzUGJObUSPEpY71lp4BWLZAxAknpL8tfsaBWlGtDhc1TShGRJ49L
-	kwOVEHdEWqwDSMRk3bKQnTkRa4ypz9SpnnDaQZ30RmL64MJi0ksqDsVpDwLWPjX0
-	mo3Rs109WqYdokLArfdHg3mNwH1nf83nD84SKb+ilwBzZCtFK/BT4WS84UiICfDv
-	p0v5BT43xwZEObgChwzFFBzYuhT3D41eB5ZAvzXo4g0YrSv9qZZUqglRrwKs4nTt
-	fcJ8cJxG5hKxQPCPpevQOGyMXc1eyotUUPw==
-X-Virus-Scanned: by MailRoute
-Received: from 013.lax.mailroute.net ([127.0.0.1])
- by localhost (013.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id Ec3UpxLHqCzg; Mon, 26 Oct 2026 19:59:28 +0000 (UTC)
-Received: from bvanassche.c.googlers.com.com (57.237.82.34.bc.googleusercontent.com [34.82.237.57])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4jD4G73HMrzlfvpT;
-	Mon, 26 Oct 2026 19:59:27 +0000 (UTC)
-From: Bart Van Assche <bvanassche@acm.org>
-To: netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=XXcyv2nZ
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4a35a60499eso21111265e9.0
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 13:00:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1793044805; x=1793649605; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=OqJOMVomNicsYATFLXth48258BoA3r2b05um3WvwiE8=;
+        b=XXcyv2nZUxMLT3b8CpbfRTDpwPPEA+QSGEUubHtCgE6ChP1KO4fNwJuH8bIwwsRkdi
+         010r3Kb86fX+bn+lCD3GFBMpGMapAdhRll68dNa/PmsU7eoywaOr8ET1gOtaN9YbIIJ4
+         49fvoiZOBJgCmpn42tOZFm82oGe71dWn4zEhTwQM7pd328o9XDgjxj1ELNgHKaTwx6/s
+         OrxolxpKKhT1jGW/+kzVeeaeOdr4389fDx/57eV1vGjhsK0Eb3rdv4QtZSjgv+yifgX5
+         iMKes8XULRl24WFVsfynUpO6DUXjAUtjgmDXQ5uBTBwPpCyV4xeBUSHwm+NC1JuFFLdV
+         nwdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793044805; x=1793649605;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=OqJOMVomNicsYATFLXth48258BoA3r2b05um3WvwiE8=;
+        b=ff9OmS9gT/DTrdMkzpBrP04ZR4XiTwdmD7rsbWR7/LDR+wWHYkDEdycPhLPZam1xs+
+         f6HL1MAdw7X6TkXjhwD6xRvgyN5CDUuJPFuewwHg4supJ9QwEi6Yw8f9GngE7AOeivoa
+         5A63UUiKKCezRE4KG/Ar/JvMNl2f5lJ0FCzqoMtOsqYtcmiIpmT/7GyVzHbSDkleq4GN
+         03VgdN2Zc4op+9vl0YLOiX5KXdmGohZIjb4sJ/yzKXFvC5QOBSQsjfdCP2zV4tVkX0Dd
+         2QLXCyAZ9+OmK/JOe6AyeXKGVkYOwjxgdiI0dRjpzMg1T5vabVPzhGQ5zy51FttO1Gw1
+         Qgcw==
+X-Forwarded-Encrypted: i=1; AKwUvByNn2FQOvCu+Zq7exez+uArBuWNxVYaduhsx1sS2T6fZLUtMFakiL4gdd5zUP3LDN0dFXz0vSU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLjIraiQxQ+4+1AZRuHL65UIrO+C8KJLN254JD2F5MXHrEe9dpJ
+	BGNoh2oMMNwoTXKox2QagZZb1QTTxTFws7r4nZxuKtnKlpBemRuhNbaI
+X-Gm-Gg: AYBFou3RHnmrZF4PqH4BSs+XS3Me+cXPcz7sDtBFoMpYbdAVzhBtLURQ0wiouGnjOyS
+	KzCYbMRCtXx4SaEuOpc7FjK6t8TGfgVQ7rwkmIyLKSa+Mgve406JgxWkWgoDsAr6dqOhBlI7i5H
+	vrMokl875v3Bxp9+nVWM33kr0NllIWgZy4mld3fzxJKC67J2wpDrfDIJGd2OLKmN8CkG9GnfUId
+	1oe4GUW8u0zDIACiAfdnlIMKF/8ckUO6R3u8mUN7Txsr8E4r08f9Crsr8UkRqCajJWwDgBAyRDI
+	Up+dZiHJwXSivp6s1lfXfk9Hgogfa4/u4gWvn9KQYUibd4qDcerQK1SZi7EpRJb/TIoxeKYR0Wl
+	TgF3qdf7Dipgn7EJkGEB6Ft4cHQRJY4OWYxQUSpX5v88LnZ53KVPWHxbudHcV8sLMqyAPl4jk3w
+	oRryjZW8z++Y+fQTUCu4bLZGngI+cg6pYOIIMQyXQ4UByZQyXezHKfuHT9fmE30ZUoYZV1GBWGt
+	j61hGEoTtPkOAIm0gI9VGDadVKZAuGpyZ0JwKOIAlUcRkQQS1UlCMN/IK+uuvfIUTqzS8Il7CUB
+	0g==
+X-Received: by 2002:a05:600c:198e:b0:4a2:84c:52f3 with SMTP id 5b1f17b1804b1-4a35ac9d1c2mr162802625e9.6.1793044804393;
+        Mon, 26 Oct 2026 13:00:04 -0700 (PDT)
+Received: from VivoBook-ASUS-X712UA-M712UA.lan ([2a00:f44:c12:cf67:2c6b:7fab:6853:c855])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ecd35c2sm18068821f8f.39.2026.10.26.13.00.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2026 13:00:03 -0700 (PDT)
+From: Stanislaw Pal <kuncy7@gmail.com>
+To: Christian Marangi <ansuelsmth@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Leo Yang <leo.yang.sy0@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	Bart Van Assche <bvanassche@acm.org>,
-	Leo Yang <Leo-Yang@quantatw.com>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Matt Johnston <matt@codeconstruct.com.au>
-Subject: [PATCH net] mctp i3c: Fix locking in an error path
-Date: Mon, 26 Oct 2026 12:59:19 -0700
-Message-ID: <58aab766b8ce35d1a7ff38880853cedaec244bf1.1793044759.git.bvanassche@acm.org>
-X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 2/3] net: dsa: qca8k: drop MIB autocast frames once the request is over
+Date: Mon, 26 Oct 2026 21:00:01 +0100
+Message-ID: <20261026200001.13573-1-kuncy7@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <179304303832.3134.328719975361344250@kernel.org>
+References: <20261022192933.384898-3-kuncy7@gmail.com> <179304303832.3134.328719975361344250@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,46 +103,23 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-If netdev_alloc_skb() fails, mctp_i3c_read() jumps to a label that
-unlocks mi->lock although that mutex has not been locked yet. Fix this
-by jumping to a label that only frees the skb. This bug has been
-detected by the Clang thread-safety analyzer.
+Thanks for the review. The sequence is right: a frame carries nothing
+that ties it to a cast, so after a timeout the frames of the previous
+cast are taken for the next request's. v2 will poll QCA8K_MIB_BUSY
+before sending a cast, as qca8k_mib_init() does for the flush, so the
+switch never has two casts in flight, and the handler will record the
+ports it has seen in a bitmap instead of counting frames down, so an
+extra frame can neither underflow the count nor complete the request
+early. What remains is that a frame of the previous cast which was
+still queued on the host side can serve the next request; its counters
+are then one cast old, which the commit message will say instead of
+claiming that every late frame is dropped.
 
-Cc: Leo Yang <Leo-Yang@quantatw.com>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Jeremy Kerr <jk@codeconstruct.com.au>
-Cc: Matt Johnston <matt@codeconstruct.com.au>
-Cc: netdev@vger.kernel.org
-Fixes: 2d2d4f60ed26 ("mctp i3c: fix MCTP I3C driver multi-thread issue")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
----
- drivers/net/mctp/mctp-i3c.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+v2 will also carry two fixes for the issues you found in the same
+handlers: the MDIO fallback of qca8k_bulk_read() storing each register
+one byte after the previous one, and qca8k_rw_reg_ack_handler() reading
+past a short frame and past its 16-byte buffer.
 
-diff --git a/drivers/net/mctp/mctp-i3c.c b/drivers/net/mctp/mctp-i3c.c
-index 4e857dd5df64..59e7bf56fce3 100644
---- a/drivers/net/mctp/mctp-i3c.c
-+++ b/drivers/net/mctp/mctp-i3c.c
-@@ -112,7 +112,7 @@ static int mctp_i3c_read(struct mctp_i3c_device *mi)
- 	if (!skb) {
- 		stats->rx_dropped++;
- 		rc =3D -ENOMEM;
--		goto err;
-+		goto free_skb;
- 	}
-=20
- 	skb->protocol =3D htons(ETH_P_MCTP);
-@@ -170,8 +170,11 @@ static int mctp_i3c_read(struct mctp_i3c_device *mi)
-=20
- 	mutex_unlock(&mi->lock);
- 	return 0;
-+
- err:
- 	mutex_unlock(&mi->lock);
-+
-+free_skb:
- 	kfree_skb(skb);
- 	return rc;
- }
+pw-bot: cr
