@@ -1,60 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793030030;
-	b=lJzRq2kM2HpdLW77CbYk/5mvobviyDdA+lBCHUfN5j/YUxnOwbfPcvegi2PngKEqerdq
-	 Rk1+uHXmis5fbwJVGk0tMFXjfpbEHroQTDDxDVzIMLvr7q0mPQ2tcReZ00kcWynMlG8OL
-	 xAHKRSY1HZdJ22gP45nt718HhXXX4kUQ6XcfI33c5oXSh3BhJRknCBwYtH2JcFweTdlav
-	 Soxwy1EVqHKPcMDvqvhJhT5XUb76TmX7pYG671/llsaEawTgzeV/ZD/00+WeqaBt/C3o4
-	 JQrlR2bExXAFqXyvhQnw3xbaoo7SSYOa3ag0daLgzyy8+VI8749Qsbu1nrd5K/bwWNA==
+	t=1793030058;
+	b=WmTql3dcyV/uMg78mP/sQ9/PzqWx5ij+SFmh/eDmhYpGWhbP8X4gsW43ybUWG3C2ioe0
+	 UflpLjuzGta4sf8zhU/kUxjkgOc6yMuYrcwc7lzcpL6Bh4g8JdLTvPzeXDktJ9aEgijGS
+	 +L40uyt6Jqa/rk9Ky6t+WCcF9xbJ2jz5scQlX+fPXI/U3Nmb77j4NUwOn8ddXSd3WGTq5
+	 dyN9umecsASC4onFkyan/RRwqm6IVXKxfHsKDykApwZggUiY8BeP6Y7qjJyTHIqsuCIsW
+	 K+vSSKPqkgh3AzKjKQES7BcCuMDqAVgcjEypgG8TMvg251whtQedRy5QG0uQ2h7BTYw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793030030;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=2svq3CU+h/wjTBe/BPU6GyHCrFin2y9txfqrV1ibhEY=;
-	b=gl/sMuTGINun0WDSVm79KONwrAuvo/4Q6LoBq0GswffbblM743IuPAPrOnWvWQ5mMGYM
-	 gnxQZ8DBmdwBPL9eH/CWVaalY48acpBR1KRl1ENfavtvmrG8GRg5SOLUDhg1H0KyIMBLf
-	 SnYT5WRgAcfBkXvzutsi1PfpERqV35/MMRFxmDAFf0gXpiwS4m2TmzdBmbMey/rbbuTNo
-	 TiYRyBBs7pg7deorkSK4+fpLhjbpisb8fWC4jH1DC6SEmyE5Bo+KJJstTku3/HLC+Xmt4
-	 Hgnquu+5gDOl87CKJ2tYT261tt3d0CXlOdLzLrV47gYA7CpZ57ZyfOmHw4Z2mQ0+uLA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793030058;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=IycnxiQMyYhEU/DNF4Q4FZyvZF7nP2Xpy62Lwx6Dm54=;
+	b=YFBCBqFFWQ0xmUROSbtYr+Fu5NZ4r4CGhfgB3O/PIXuuz4MjngE7h2CKpWr1nsLwHV1p
+	 h83sDllYo6mOQyd/xSgXkKZO+P3U/6hjISHfTjurcRL6lSl9oGcyc8H0Umv9Q2H1HN9ly
+	 bJ4jxqQwLjbZXZhdTmIYUnHBfQ1g6ZCA/chr9/vC32feGUC3rnyJlr9e5WAwX2K7ExOnF
+	 UOEx92m/N8JBvWTUMNZCH7j8uELd5vDAPq3y6+nMb5YZ2ICahdl+mbT/NHDxa9uymSdYq
+	 2Bn9cJjpeMiprS4/rVO0TmqWJNvmAhlLP6wyp/LcV1IBfSlZqUq8njZfLinHpGxtzMw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lkbbGEzY;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=XD6CRy0K;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA0E606A31A;
-	Mon, 26 Oct 2026 15:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5893A606A31B;
+	Mon, 26 Oct 2026 15:54:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5893A606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lkbbGEzY
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E834C1F031E2;
-	Mon, 26 Oct 2026 15:53:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793030029;
-	bh=2svq3CU+h/wjTBe/BPU6GyHCrFin2y9txfqrV1ibhEY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=lkbbGEzY0sWtN+8n+j35aa/SbQxM2MqaScZT0XIFmKcUpanNPgCNaCoyJf3JFzarg
-	 SOf8KKn31Bmt5vL35tcI8t7u5UN3TRTSauZrpPUSJhHliBcVmQPOPLeDDIqtuZ3gIx
-	 YEvf/7oab6POZGn/53cw7tRGXCkc9GY8Muh5ZK37CUkgSRHCphWVGJdhG4TR+6xX9j
-	 mQnrprEWUq++Qg4RW2Gj+ASPDzCefOtGgNqz2wNf3y7dRJITIcJJoq3ZN0gaM1o0YH
-	 wI4KxxYvY4pMXsaeL/x9De2dj0kziLBpMxQ1DpFxKexV7Eyi9dIKGicU/WgnKHZ5WM
-	 /ALj7KXDIH9cw==
-Subject:
- Re: [PATCH net v5 3/5] ptp: vclock: propagate physical clock sampling errors
-From: netdev-bot+sashiko@kernel.org
-To: james.hilliard1@gmail.com
-Cc: netdev@vger.kernel.org, pabeni@redhat.com, kuba@kernel.org,
- richardcochran@gmail.com, andrew+netdev@lunn.ch, yangbo.lu@nxp.com,
- mlichvar@redhat.com, edumazet@kernel.org, davem@davemloft.net,
- linux-kernel@vger.kernel.org, vadim.fedorenko@linux.dev
-Date: Mon, 26 Oct 2026 15:53:48 +0000
-Message-ID: <179303002839.3134.5595255852218546734@kernel.org>
-In-Reply-To: <20261022-ptp-vclock-sampling-v5-3-06ceace17bac@gmail.com>
-References: <20261022-ptp-vclock-sampling-v5-3-06ceace17bac@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=XD6CRy0K
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=IycnxiQMyYhEU/DNF4Q4FZyvZF7nP2Xpy62Lwx6Dm54=; b=XD6CRy0KgZ3oboyZNamATYZ2sp
+	1cXgChb/oXTKNp+QPWblXjEzQMfrCpKd8EQwbPA0G7byVXZnEaEerFBnWCa9dd4mVe9SBki2j2peH
+	9LHqCFnfBCYziRYGXusbcqN6xdcI8p16fs3kB4fnvMsmV27bKNULA/V9rBrKBzx8tBNQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xLN1T-00CofL-KR; Mon, 26 Oct 2026 16:54:07 +0100
+Date: Mon, 26 Oct 2026 16:54:07 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Martin Ostertag <martin.ostertag@gmx.de>
+Cc: Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: sfp: add quirk for ZYXEL PMG3000-D20B
+Message-ID: <929faa64-3e28-4754-8491-25e3753fa13b@lunn.ch>
+References: <20261026135757.100139-1-martin.ostertag@gmx.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,117 +65,53 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261026135757.100139-1-martin.ostertag@gmx.de>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
-
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The exponential retry backoff added to ptp_vclock_refresh() in
-  drivers/ptp/ptp_vclock.c only looks at the previous retry delay.
-
---
-
-ptp: vclock: propagate physical clock sampling errors
-
-This patch caches a successful parent PHC sample before timecounter
-operations. Read failures are now returned to callers instead of being
-consumed as a zero sample. It also adds a refresh retry that starts at
-10 ms and doubles on consecutive failures, up to the normal two second
-interval, and makes ptp_vclock_register() return error pointers.
-
-> diff --git a/drivers/ptp/ptp_vclock.c b/drivers/ptp/ptp_vclock.c
-> index 84cb527f59ccc..c10eba6443f9a 100644
-> --- a/drivers/ptp/ptp_vclock.c
-> +++ b/drivers/ptp/ptp_vclock.c
-
-[ ... ]
-
-> @@ -13,6 +14,7 @@
->  #define PTP_VCLOCK_FADJ_SHIFT		9
->  #define PTP_VCLOCK_FADJ_DENOMINATOR	15625ULL
->  #define PTP_VCLOCK_REFRESH_INTERVAL	(HZ * 2)
-> +#define PTP_VCLOCK_RETRY_INTERVAL		msecs_to_jiffies(10)
-
-[ ... ]
-
-> @@ -151,8 +175,18 @@ static long ptp_vclock_refresh(struct ptp_clock_info *ptp)
->  	struct ptp_vclock *vclock = info_to_vclock(ptp);
->  	struct timespec64 ts;
->  
-> -	ptp_vclock_gettime(&vclock->info, &ts);
-> +	/* Retry transient failures promptly, but back off during long outages. */
-> +	if (ptp_vclock_gettime(&vclock->info, &ts)) {
-> +		if (!vclock->retry_delay)
-> +			vclock->retry_delay = PTP_VCLOCK_RETRY_INTERVAL;
-> +		else
-> +			vclock->retry_delay = min_t(unsigned long,
-> +						    vclock->retry_delay * 2,
-> +						    PTP_VCLOCK_REFRESH_INTERVAL);
-> +		return vclock->retry_delay;
-> +	}
-
-[Severity: Medium]
-Can this backoff skip past the 32-bit counter wrap and lose a full wrap
-of virtual time?
-
-The doubling only looks at the previous retry_delay. It does not look at
-how long ago the last successful parent sample was taken. The
-cyclecounter uses CYCLECOUNTER_MASK(32), so it wraps every 2^32 ns,
-about 4.295 s.
-
-Suppose the last good refresh was at t0 and getcycles64() starts failing
-at the regular t0+2 s refresh. The retries then run at about:
-
-  t0+2.010, 2.030, 2.070, 2.150, 2.310, 2.630, 3.270 s
-
-After that the delay becomes 1280 ms, so the next attempt is at about
-t0+4.550 s. At HZ=250, msecs_to_jiffies(10) rounds up to 12 ms, and the
-last two attempts are at 3.524 s and 5.060 s.
-
-If the outage ends anywhere between about 3.27 s and 4.295 s, the first
-successful sample still comes more than 2^32 ns after cycle_last.
-timecounter_read_delta() then masks the delta:
-
-kernel/time/timecounter.c:timecounter_read_delta() {
-    ...
-	cycle_delta = (cycle_now - tc->cycle_last) & tc->cc->mask;
-    ...
-}
-
-As a result, tc->nsec moves forward about 0.255 s instead of about
-4.55 s. The virtual clock silently steps back by about 4.295 s, and no
-error is returned.
-
-A fixed 2 s refresh would have retried at t0+4.0 s and kept the wrap.
-The commit message says:
-
-    An isolated read failure
-    should not deliberately defer the next attempt until that sample is four
-    seconds old.
-
-Here the backoff delays the next attempt until the sample is about
-4.55 s old, after an outage of only about 1.3 to 2.3 s.
-
-The later patches in this series do not change ptp_vclock_refresh(), so
-this looks like it is still present at the end of the series.
-
-Could the code record jiffies at the last successful sample and clamp
-the returned delay? The next attempt would then land before
-last_success + 2^32 ns, and preferably before the half-wrap point.
-
->  
-> +	vclock->retry_delay = 0;
->  	return PTP_VCLOCK_REFRESH_INTERVAL;
+On Mon, Oct 26, 2026 at 02:57:57PM +0100, Martin Ostertag wrote:
+> The ZYXEL PMG3000-D20B GPON SFP module reports LOS and TX_FAULT in a
+> way that prevents the SFP state machine from initialising it. Its
+> EEPROM also advertises autonegotiation support although the module does
+> not implement it, and the module needs about 60 seconds before it is
+> ready.
+> 
+> Ignore LOS and TX_FAULT, disable the advertised autonegotiation and use
+> T_START_UP_BAD_GPON as the wait time before the module is assumed to be
+> initialised.
+> 
+> Tested with a ZYXEL PMG3000-D20B in an SFP cage.
+> 
+> Signed-off-by: Martin Ostertag <martin.ostertag@gmx.de>
+> ---
+>  drivers/net/phy/sfp.c | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+> 
+> diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+> index 85e57a1..578d4d8 100644
+> --- a/drivers/net/phy/sfp.c
+> +++ b/drivers/net/phy/sfp.c
+> @@ -472,6 +472,18 @@ static void sfp_fixup_potron(struct sfp *sfp)
+>  	sfp_fixup_ignore_hw(sfp, SFP_F_TX_FAULT | SFP_F_LOS);
 >  }
+>  
+> +static void sfp_fixup_zyxel(struct sfp *sfp)
+> +{
+> +	/*
+> +	 * The LOS and TX_FAULT signals are not usable on this module, so
+> +	 * ignore them. It also needs about 60s to become ready. Use
+> +	 * module_t_wait, as module_t_start_up is not evaluated when
+> +	 * TX_FAULT is ignored.
+> +	 */
+> +	sfp_fixup_ignore_tx_fault_and_los(sfp);
+> +	sfp->module_t_wait = T_START_UP_BAD_GPON;
 
-[ ... ]
+The other quirks call sfp_fixup_long_startup(), rather than directly
+setting sfp->module_t_start_up. Please add a similar one line
+function, and add the comment about why module_t_start_up is not used
+there.
 
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261022-ptp-vclock-sampling-v5-0-06ceace17bac%40gmail.com
+    Andrew
+
+---
+pw-bot: cr
