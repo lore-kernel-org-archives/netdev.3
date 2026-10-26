@@ -1,101 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.173
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793026068;
-	b=4T+qr9/DKLRAx99+GogiOmvYFdAKcJg56y+P5SeF+meANTn/MUo08ATuTgssNKyNVtOp
-	 EzxIsZ+z5e2YKi6jU3q5DcOAKk5htNYeWLtlxlTrmm+QE/nFg/5Oi+U2Nl3utV5zGY3F7
-	 3PqDS6jwGay14dTIZpbjDO4BzNsQp3AxzTYL07CPZKJkTo8rphHo9+zU/9PbjMVlgdz3u
-	 zu2PgKIADTn5/FABsAN8PAjVxJriOdiCvI/JIyURMIqa+IwJAUhdp7BuCBr1jRkQlMXbX
-	 jyg3Eo4DMm3htVNDd3RKzryZ10euuKn4nhNLNm/HgKZxopOe9IJE0aEeYgr4IEzKvmw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793026068;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.173
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793026107;
+	b=3DjhWjsxFJC3VSUXX4KrMyltqEwrAQYR3R4W0Mw42xBEJM/2mfe1npIo/o3D3RgXSBOv
+	 0svZl9/TKwJSjGhzlsUAhm/pSi2w9TtUjgPC9mOUrJ5YVCH/jEqfHjc4I6iwg0xR/LDZY
+	 pbhQ92JU8p0AfNyC1kIjhSzx9TcP7vwDv4hI4oGgiXXKKTWIMFQ3MiZ3FpizjHA/tKg5r
+	 tc1UEGdHPh4BknsXJkZJ7GKsH997OMGnf5AvH/sq/1eXM1Lo0r/qpGeYjwXCVBwAT/Yys
+	 kg/E/lsW4K94BuvZf0S4bUJt53hspRhDgZ658RyB0vSCJQQh+tmjxSqvqUcTse3yiDw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793026107;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=QKdQFJ+FO6S53u4bEibR73jMpDgxkOnbF5dGbreuSCU=;
-	b=P0WI0oe/Q3s6PcMqFjWP4QJ6yth0NUF6pN9ymnXbkOB9Ee8jnQ3RO/6wvXjzlEhH2BPy
-	 iHuI95/Q4nfOoda3BVTHxeqtYUt3dDKMOQAX3Md23E+24aZU4x4bnELpu4NULBCkCQmvW
-	 vVfSdfwyY17aQHNrcJfnxdKOjHyDka0x91nfZ4E5S8Lra0mPsfQA+YGJ1Emy84ryKnB3D
-	 BFBaQvwB5Ptjq3vlT4DRu3PnWUFdDiibLvJAsgLk907yKiRM//VeM81oXuy5JU4+eRkld
-	 pF24RBRJa5xF9pPanlXvv5MaxHp66tTVGR8ga590QFb0mLr2BU3+a2VbibHPQ3nYLBA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=442TJjXt4vKnHWbQnMiG4TV2+d8tX1KqEwlL9mdaH/k=;
+	b=DnfNe3GNXy6HIUu0fmzkQQXlkahDkvIrfWL40RGf+IBkHgKgkAcLu/n+tCCyUfZBhbeH
+	 ohqOcDX2vtsIRtVwvA2HCgplN3BeZa4uKUJH27NUaz+8sd8+SI8MGW2A/qy+PguahBIwV
+	 tevRjZiKMf3LwcJMwaBBXIQdekt6kSM90v/9zXQE1UXAQcw1/VmYSzFVYVy7E4ya5JobC
+	 /xW5dWxKsGMfXsDvVp9w12xO8qVDg/jDYoR0LiXsMISQX/GiGnIZn4TMPIkKrGD+i9k9o
+	 uv2AJt90ShLoOLrLaJ0ciCS69REr0xKaXWO9iI/x4v1iT3QxQysvPJUZ8UHQ+psA/EQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=lb56rzpI;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.173
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=eibNHlAv;
+	arc=none smtp.remote-ip=209.85.214.173
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E3C8606A31B
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 14:47:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6E3C8606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41BE606A31D
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 14:48:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B41BE606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=lb56rzpI
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-8a058315c79so1157706b3a.3
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 07:47:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793026068; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Dq5YALx407W6RKr7EdCp48oMzjewVBfV7LFquW4jl4oALIfWmSdo9rpbXTOrgzODnP
-         ggbawtzX1+KzggPIrRFPvFbVWQ1YCRKHbdgGSRW4sN54KSmWkIvrYywx8wa4/Vi356DK
-         OHcnLkJ6y85rVLADFDj+B9MMqY2MTVqW91MI1ZYyj6mGwQlFt2eEdpuEjQPZO+e3y6U6
-         mE0ACYCdnuePDXCFmJh3MU6l+R3IPWLWz0RUOlERq7t//36C9YQrV0twNXkGnzii4Sxl
-         yfu1Wfj4Fr2eVuqbxJpZLRmfktC0MxZN4qLOasI6U32Y/1Eb1YU6BVZcMymOzEhY0+kU
-         VxQw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=QKdQFJ+FO6S53u4bEibR73jMpDgxkOnbF5dGbreuSCU=;
-        fh=VlZy2f4d+PF4Wmki2DeWXhGGpNvuyttoZj75Bt3FWTo=;
-        b=Ke1VVpSzvVZu0ajrA2nNHYOfDNjWdbn3bb38Fk3NRh1recDlfS8fYrSpam3//bUucK
-         8MMmFiP7UGAac0QJN+AaPWk4ams/tg+9HEjv/yunnENZhxgGYva/ddRUr20tuMuvSHq0
-         CU3KMOZX3Iem8E0QSv+uf5tD4HXIZEQdZI1cbwyQd0CkmFs6HdxS0+aFsoF02NaEDbYI
-         3EUbBs6BFPtjCqyeMqL7e174FgP58BgPTHGD/7FqW4giIyczKer9kSqcjf19ef0wlwsV
-         LF7wyAlBAs7ceID1q4LQLr41ywDmzDVBPdrEjvS3+n5S/cxX1yV0/ATAFkncWruy3Mvy
-         cP0A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=eibNHlAv
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ea138a3497so20169595ad.2
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 07:48:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793026068; x=1793630868; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=QKdQFJ+FO6S53u4bEibR73jMpDgxkOnbF5dGbreuSCU=;
-        b=lb56rzpIO1LxCDOU6SRaulK6a8nZmTn+nU5EVvwm3gZfwrveORS5n/PPE4qQbiRClu
-         zgNtnm+OBarJydQrUmHhg1V6GMFxe8n3hYR2/dTYNyMO8ZgZmtUtSe780y4h5mtLYO55
-         JGkYj3UtRTyzblawo222Fiq/wK3QioUUsMUHC748TeAOUOuhpox1YpddQDIZs6AGZ8HJ
-         uKG+Ek0jo9GVErMeorxbWp7FKdjLIQ4iz9G3Uzqc+EqnKH2DJS6x0vFSWx+Gs47lMARA
-         pllTlPWJmAViqJZO0abKhJW3nWGX+dkYsOQJKMfERjwehF8tMBgd/esRVP5N3eJWr4DJ
-         zhmA==
+        d=gmail.com; s=20251104; t=1793026106; x=1793630906; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=442TJjXt4vKnHWbQnMiG4TV2+d8tX1KqEwlL9mdaH/k=;
+        b=eibNHlAvtye8ze+fjqlWmQ/QzN6w7RSu/QYc7xyQurO8SYf4+rIjdzaMPmDxg+rotq
+         Gg8jRxzz9HbeLXimQqyVZpWXUswfkssAf6n/aCeHxgXCgZ6vOVftHpTO/HuadlCEwleH
+         iwnygPo7DX4Dz2BhDzyZZLWujcydwyXBe6O4ZJxlYfWONgzOMGZnawF0Wo8jkh6Dr3MO
+         2E7Nf3gA346nF/k+VvLyq7Kljpot18ysqNdJKKrNGt2OVW4FgwNdWC7OCYPFVbeYsNtm
+         ed/7jyiRckC5I2PV3s6P0ElXXvJk3hsv83tp9kb6xM9AjPl0nu2Zb5wEIm/U4qdf06Gf
+         +Z7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793026068; x=1793630868;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QKdQFJ+FO6S53u4bEibR73jMpDgxkOnbF5dGbreuSCU=;
-        b=DxphPsyREJwKRV7NMhP01sM+AOP5vHnAujF2QYCd2twzjxRQDu/nz/+Yddj6pPo6F0
-         0wxaGlFHrc7HYoxzaFkGosHePBIMxDps6JcZ9cdnFK2ZBri+idWYKquqRfUsGIcmTV0e
-         cYzqOdgcMpoSCVGtWlad2kbm8KZB7rmsqmcQi9adGje13iyTzUvsjRRA5b6YFfIl8TJu
-         H82PZQwhi+Z/PlbJfIheJD1kWZgGiq0ogBLF0Hz5xUYhxHWeF1e0dwQNibhu0AkO52OQ
-         0iQTWEjoDNC8Fqn9h4i4KSxmzR349IWldWjXZ/GyICpOzUnXgGdRrPvMBx6rd0dpQzXc
-         NqTg==
-X-Forwarded-Encrypted: i=1; AKwUvBxFxbfhjWIUgYvAlmsoQRKldpCOAZJ/Q/BZRwwHs96bHdU1XeDbEHihqYjPishS4LkhCxtzjic=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLqdulszsQqWeyFCGXw7F4BGBxbR2BNAQsYd9x1aZhqTU7Ynni5
-	57Xlo4tAAoHW4KsiPzqsOYZ8s3uLS/YhLYGEFg7E6KcKK0zhMdFX34G6ISB2cyuIegF05wJsN7t
-	tUqoTwG89qiBCIu+pYTCjlNzW0Z+0uNE=
-X-Gm-Gg: AYBFou05zjxKRfK8PFLYBKdRhziEGdmeDs7wpr3qk8GGQIjpAIJsaaRDBacjMdgucd8
-	XZFkvmXIoQH4dfUtfypJgyYtQS19DvP36A/89EeEmIJtw0kTx+IvDMZTAjA1nYwmb32iP6V3Jfk
-	Y9ugr+lsrQrSMfu3C3/luN0RC9djSCQ2336+4snsuf8wiAaEbNppwtY/OLW/ZoLylVSl1fWb5EQ
-	AaNjmRkSITi/r8dLf+DCNyFXzGuu6KIZW7mQeuXK1gxWwUqNTVkckyl2A1oPgBRfGll5oaKqVtQ
-	Ywt26VfGPAWmyVqCSt1QkowX7+M6MzXB8wGhDUdsiPM5rM3Vmr6N/jVSUGIyaUm7InviIK71/Nu
-	EMrvI4ZdggJMPcy/tpqFcG7t1dZkxtPCxXNynCTwUSiJu8AMsagvwWJqtVtn2gGXqCoGdoeTw05
-	CTx2tQPY8GCdKuvzjjPNyNl6QC7Kv6KkEws68H216+dYVwyfiqdEAtS0Cv2w==
-X-Received: by 2002:a05:6a21:1bc4:b0:3e0:f6be:1988 with SMTP id
- adf61e73a8af0-3e7cd4d6324mr5359941637.73.1793026067638; Mon, 26 Oct 2026
- 07:47:47 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1793026106; x=1793630906;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=442TJjXt4vKnHWbQnMiG4TV2+d8tX1KqEwlL9mdaH/k=;
+        b=ueRnTmfNPKchx5asH4RW/52IWD3BPxe65znD9HEVxZMeM22p21rGM9QU+Q7vZ4Kipv
+         eI0N6T5OLMEeGNtrm/G1Hu9/fGC6Ir//xZKF3+oD3inDYBaPtqoNRzLRzPaoy5NYN0JT
+         HkzQxj27dE5oFxJ87DQO4I/GSu/Y62fo5TMeMJ3Sxet9sxZAnNVju9wJU6N0L2ox/RSx
+         BB/N3AmHihEKFH2SdlJVgGFywLKBhlvVVyPzdQ7UiWmgXGcPD82hM+Gonym23TzwUydW
+         EUgBU6OUIkKJ4ADeZY7Wil4zEdPeaTzkPfz5mqJXnm9/Bt6H9jIC+q0pR4XFzmtY9lYK
+         rhxQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw+ZfnO/nh5fTCAKFO2InExLl1Ic3Z14m9hoKOVknWjA3MxFYEwVuUdIObAUELt5vyYodhidPM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLJWDqy36kcpA+3KHcm8ThMMes+bSSERaTSMxzKILXvBVIt2yip
+	XqSAzCO7cK3YLhT9+27n0qRleLqhMtrixEvxwaQz298+9djKzQ6zpmYx
+X-Gm-Gg: AYBFou2QifELvzTDtlG6YsAQJcSF71D0R/yPbhgQL+MGFf4zFueXvoL/NThNYUhh1qa
+	DCpbyNuDOwekAfJ2wz4j+pGLhXdmmCEsppMYBYWfpafjNkZPntKF+QawslPjj03LrZQVI+Pn6bZ
+	g9yQJDTaDPrFtUb28AzQeEnCVKSQcN4GbqcNweTVeOjeqZakMc7nNP0FS8NIh0ekBKgGGrnmamR
+	Bo71ldSA/dbocrUQfHRREptBNeu3Ci71pOWeO9Zhhz8VH8nhjcORrbC5w/2qfkTAUITX7ez4cGc
+	ZoJX7DXIMh1+Yf7WF3RqfSzKblqNUJmfBh3N3t1RaasnmhOfMVLES9Hq1M+LCmFS3JxrFQd1ZNb
+	/sRvwnbhWdK0xDKH1x7cp0Rin5WBkP8TSGfPfcFWifJweBZqMg9PpSyRG/jCXxMzR4Png3fwsAk
+	8W53RbHy1sHzjqHnmtNW9BmwNXa3z08DZWs250us3HfwC0zSYNzMgs5sXfZLqcV59ecMwR9Byn0
+	pXI/aHLfjSGnuXL1F68KKVmquzK4I/qV6uAd8NX6ADJhWXCDE8=
+X-Received: by 2002:a17:902:eccf:b0:2e2:be61:a882 with SMTP id d9443c01a7336-2ea9c6c8bc8mr60967235ad.11.1793026105945;
+        Mon, 26 Oct 2026 07:48:25 -0700 (PDT)
+Received: from localhost ([111.228.63.84])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea9b1499c4sm18570185ad.31.2026.10.26.07.48.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2026 07:48:25 -0700 (PDT)
+From: Cen Zhang <zzzccc427@gmail.com>
+To: matttbe@kernel.org,
+	martineau@kernel.org,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: geliang@kernel.org,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	mptcp@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	baijiaju1990@gmail.com,
+	jjzuming@gmail.com,
+	zzzccc427@gmail.com
+Subject: [PATCH net v2] mptcp: protect listener backlog reads in diagnostics
+Date: Mon, 26 Oct 2026 22:48:16 +0800
+Message-Id: <pm-mptcp-objects-candidate-0066-v5-4d1b83d62fcde2d57e8d@gmail.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,109 +104,122 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <CAO-4RZ1ZCPNR2Z4xoHDh0Vp3SO51oX7ojuH0CG4MsD14-RegcA@mail.gmail.com>
- <CADvbK_e+ogH4zafpqz8N=jY-oBruke8OLd4PEz9xa-y13Ys_3g@mail.gmail.com> <CAO-4RZ3_m4BN-+dkGdteAGdUwRHd4SA2pfAD+_+6z+iH+btrHg@mail.gmail.com>
-In-Reply-To: <CAO-4RZ3_m4BN-+dkGdteAGdUwRHd4SA2pfAD+_+6z+iH+btrHg@mail.gmail.com>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Mon, 26 Oct 2026 10:47:35 -0400
-X-Gm-Features: AclHuK-IERqiBgrQvteRGbBqttOJKFiUd95YICzl26fPZNFkD0zcsHfchiXbLiE
-Message-ID: <CADvbK_c5HG5hY-RE_YHRyCvUnTLy4taWRGC1PW6OT2rQ7pBocw@mail.gmail.com>
-Subject: Re: [BUG] SCTP: KASAN use-after-free in sctp_unpack_cookie with
- fail_skb_realloc (7.3.0)
-To: =?UTF-8?B?6ZOu?= <fengaojigui88@gmail.com>
-Cc: marcelo.leitner@gmail.com, linux-sctp@vger.kernel.org, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Thanks for the test.
+mptcp_diag_get_info() reports the accept queue of a listening MPTCP
+socket by reading msk->first. The token based dump and the exact token
+query only hold a reference on the MPTCP socket, which pins neither the
+first subflow nor the listener hash bucket, and __mptcp_close_ssk()
+drops the last reference on the first subflow before clearing
+msk->first.
 
-net-next is closed now, i will prepare a patch for this once it's open.
+An application can disconnect a connected MPTCP socket with AF_UNSPEC,
+which removes the token but retains the first subflow, listen on it
+again and close it. A dump that obtained the MPTCP socket before the
+disconnect then reads the backlog of a freed TCP listener:
 
-Thanks.
+  Token diagnostic                 Application
+  mptcp_token_iter_next()
+    retain MPTCP socket
+                                   connect(AF_UNSPEC)
+                                     remove token, retain first
+                                   listen()
+                                     reuse first
+  mptcp_diag_get_info()
+    observe TCP_LISTEN
+    lsk = msk->first
+                                   close()
+                                     mptcp_destroy()
+                                       __mptcp_close_ssk()
+                                         release first
+    read lsk->sk_ack_backlog
 
-On Sun, Oct 25, 2026 at 6:56=E2=80=AFAM =E9=93=AE <fengaojigui88@gmail.com>=
- wrote:
->
-> Hi Marcelo and Xin,
->
-> Thanks for the analysis; that matches what we observe.
->
-> We reverted 62b08083ec3d by hand on top of 7.3.0 (the surrounding code ha=
-s
-> changed since 2006, so we dropped the goto nomem error checks). The three
-> sites are sctp_sf_do_5_1D_ce(), sctp_sf_beat_8_3() and
-> sctp_sf_do_5_2_4_dupcook(), replacing the pskb_pull()+goto nomem with
-> skb_pull():
->
-> --- a/net/sctp/sm_statefuns.c
-> +++ b/net/sctp/sm_statefuns.c
-> @@ -751,9 +751,8 @@
->   */
->   chunk->subh.cookie_hdr =3D
->   (struct sctp_signed_cookie *)chunk->skb->data;
-> - if (!pskb_pull(chunk->skb, ntohs(chunk->chunk_hdr->length) -
-> - sizeof(struct sctp_chunkhdr)))
-> - goto nomem;
-> + skb_pull(chunk->skb, ntohs(chunk->chunk_hdr->length) -
-> + sizeof(struct sctp_chunkhdr));
->
->   /* 5.1 D) Upon reception of the COOKIE ECHO chunk, Endpoint
->   * "Z" will reply with a COOKIE ACK chunk after building a TCB
-> @@ -1211,8 +1210,7 @@
->   return sctp_sf_violation_paramlen(net, ep, asoc, type, arg,
->    param_hdr, commands);
->
-> - if (!pskb_pull(chunk->skb, paylen))
-> - goto nomem;
-> + skb_pull(chunk->skb, paylen);
->
->   reply =3D sctp_make_heartbeat_ack(asoc, chunk, param_hdr, paylen);
->   if (!reply)
-> @@ -2253,9 +2251,8 @@
->   * are in good shape.
->   */
->   chunk->subh.cookie_hdr =3D (struct sctp_signed_cookie *)chunk->skb->dat=
-a;
-> - if (!pskb_pull(chunk->skb, ntohs(chunk->chunk_hdr->length) -
-> - sizeof(struct sctp_chunkhdr)))
-> - goto nomem;
-> + skb_pull(chunk->skb, ntohs(chunk->chunk_hdr->length) -
-> + sizeof(struct sctp_chunkhdr));
->
->   /* In RFC 2960 5.2.4 3, if both Verification Tags in the State Cookie
->   * of a duplicate COOKIE ECHO match the Verification Tags of the
->
-> We rebuilt 7.3.0 with the same configuration (7.3.0-kernsight-kasan #2,
-> gcc 11.4.0 Ubuntu 22.04, KASAN/KCOV, CONFIG_FAIL_SKB_REALLOC=3Dy) and re-=
-ran the
-> same 42-program sequence that triggered the UAF on the unmodified 7.3.0.
->
-> Results:
-> - Unmodified 7.3.0: the previously recorded run triggered the UAF
->   (1/1), with the first report at t=3D212.7 s.
-> - 7.3.0 with the manual revert: both runs completed without panic
->   (2/2), and neither serial log contains the KASAN UAF report.
->
-> The same input sequence and fail_nth annotations were used. However,
-> removing these pskb_pull() calls changes the fault-injection sequence:
-> the reverted runs logged failslab injections instead of the original
-> fail_skb_realloc injection. Therefore, these results show that the
-> original reproducer no longer triggers the reported UAF after the
-> revert; they do not establish equivalent injection coverage.
->
-> As you noted, this issue requires CONFIG_FAIL_SKB_REALLOC; our tests enab=
-le it.
->
-> The revert patch, the two serial/console logs and the syz-execprog output=
-s are
-> in the repository:
->   https://github.com/Zheng-zheng-codes/sctp-unpack-cookie-repro
->   (see revert-test/)
->
-> I can also test the other two paths (5.1D COOKIE_ECHO / HEARTBEAT) or 7.1=
-.3 if
-> useful.
->
-> Best regards,
-> Zheng Zheng
+The report below was decoded with scripts/decode_stacktrace.sh against
+the 7.2.0-rc5 based test kernel that produced it, with the line numbers
+mapped to this tree; only the relevant frames are kept:
+
+  BUG: KASAN: slab-use-after-free in mptcp_diag_get_info (net/mptcp/mptcp_diag.c:209)
+  Read of size 4 at addr ffff888111763818 by task python3/499
+
+  Call Trace:
+   mptcp_diag_get_info (net/mptcp/mptcp_diag.c:209)
+   inet_sk_diag_fill (net/ipv4/inet_diag.c:330)
+   mptcp_diag_dump (net/mptcp/mptcp_diag.c:23 net/mptcp/mptcp_diag.c:177)
+   __inet_diag_dump (net/ipv4/inet_diag.c:823)
+   netlink_dump (net/netlink/af_netlink.c:2351)
+
+  Allocated by task 497:
+   sk_alloc (net/core/sock.c:2337)
+   inet_create (net/ipv4/af_inet.c:333)
+   __sock_create (net/socket.c:1679)
+   mptcp_subflow_create_socket (net/mptcp/subflow.c:1836)
+   __mptcp_nmpc_sk (net/mptcp/protocol.c:111 net/mptcp/protocol.c:143)
+   mptcp_setsockopt (net/mptcp/sockopt.c:313 net/mptcp/sockopt.c:916)
+
+  Freed by task 0:
+   slab_free_after_rcu_debug (mm/slub.c:6571)
+   rcu_core (kernel/rcu/tree.c:2919)
+
+  Second to last potentially related work creation:
+   __call_rcu_common.constprop.0 (kernel/rcu/tree.c:3287)
+   sk_destruct (net/core/sock.c:2446)
+   __sk_free (net/core/sock.c:2459)
+   sk_free (net/core/sock.c:2470)
+   __mptcp_close_ssk (include/net/sock.h:2024 net/mptcp/protocol.c:2721)
+   mptcp_destroy_common (net/mptcp/protocol.c:3579)
+   mptcp_destroy (net/mptcp/protocol.c:3815)
+   __mptcp_destroy_sock (net/mptcp/protocol.c:3421)
+   __mptcp_close (net/mptcp/protocol.c:3523)
+   mptcp_close (net/mptcp/protocol.c:3538)
+   inet_release (net/ipv4/af_inet.c:442)
+
+The first subflow is a TCP socket: TCP listeners carry SOCK_RCU_FREE
+and tcp_prot/tcpv6_prot sockets live in SLAB_TYPESAFE_BY_RCU caches, so
+reading the two backlog counters under rcu_read_lock() is safe, and a
+stale value is acceptable for diagnostics. mptcp_diag_dump_listeners()
+already runs the formatter inside an RCU read-side section; only the
+token dump and mptcp_diag_dump_one() reach it without one. Take
+rcu_read_lock() around the msk->first snapshot and the backlog reads.
+
+Fixes: 4fa39b701ce9 ("mptcp: listen diag dump support")
+Suggested-by: Eric Dumazet <edumazet@kernel.org>
+Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
+Assisted-by: LLM
+---
+Changes in v2:
+- Take rcu_read_lock() around the first subflow reads instead of the MPTCP
+  data lock plus an owner check, as suggested by Eric Dumazet; this avoids
+  the new msk slock -> listener hash lock nesting and keeps ss reporting the
+  accept queue while the socket is owned.
+- Decode the stack trace with scripts/decode_stacktrace.sh, map the line
+  numbers to this tree and keep only the relevant frames.
+
+Link to v1: https://lore.kernel.org/r/pm-mptcp-objects-candidate-0066-v3-73df72b7a543d4cada0e@gmail.com
+
+ net/mptcp/mptcp_diag.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/net/mptcp/mptcp_diag.c b/net/mptcp/mptcp_diag.c
+index 136c2d05c0ee..28a42eee6651 100644
+--- a/net/mptcp/mptcp_diag.c
++++ b/net/mptcp/mptcp_diag.c
+@@ -200,8 +200,10 @@ static void mptcp_diag_get_info(struct sock *sk, struct inet_diag_msg *r,
+ 	r->idiag_wqueue = sk_wmem_alloc_get(sk);
+ 
+ 	if (inet_sk_state_load(sk) == TCP_LISTEN) {
+-		struct sock *lsk = READ_ONCE(msk->first);
++		struct sock *lsk;
+ 
++		rcu_read_lock();
++		lsk = READ_ONCE(msk->first);
+ 		if (lsk) {
+ 			/* override with settings from tcp listener,
+ 			 * so Send-Q will show accept queue.
+@@ -209,6 +211,7 @@ static void mptcp_diag_get_info(struct sock *sk, struct inet_diag_msg *r,
+ 			r->idiag_rqueue = READ_ONCE(lsk->sk_ack_backlog);
+ 			r->idiag_wqueue = READ_ONCE(lsk->sk_max_ack_backlog);
+ 		}
++		rcu_read_unlock();
+ 	}
+ 
+ 	if (!info)
