@@ -1,77 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793032438;
-	b=SLuaOvj29Zg0b0hdOyp8dh/HwYuLWEqse8Prrgi05d9X3FdBi03it6q1hO99wUSykIfi
-	 479EVSPdHbxQ0BD3c69qRynhHUxHlBcxQNYVZjH1ASDyXwxp0bqBh7TSqyGbKm5kg227s
-	 bwBpF/Ue3N7HxSaeXXndnaH3wWT9gDcqucezhl9gyKtber7WBOHMD29ORn8dqx5mvwBg0
-	 a8ZVpb2nbZk35N1DqA2duGE0j7KUVrWJUTW8Yjs9IQ9iBQKRd8E9qZNgtUtileoe7BDFf
-	 +dF3/HQOW5qsuX+gXUBmfAYg4Z35lQM2LCsdBqgE2vUuaEem0RjIa0dywmsMU4vTiBA==
+	t=1793032458;
+	b=FOvlN49+TibJbq52SavdwD8ywAR3Pb0QH2ba8frlJcTxSS2e4NDdnslMu4O5lNqBUuXc
+	 ZfN/iLgmL1pDLjEOEkFw1XNVUO3EAIfC9ccwKc7Kgxe/UUal4TFEtXFzc9WtsG0x7/Sbv
+	 L4AqIn18/9Uj8nHBZXh5oxSA0MJjoilCcbNzYbRaUS08IN2roIWgvZVbIv1ro9oRz+YDq
+	 /x1eDU2xrdWLJjtev7ZHIu7hBxI7pcAXwisk9aB8RJHgbPFJx7v7jfMG8FEFroGHycPME
+	 pfT3YG/YzAAxVpGo+e5nciXTNecRjuDc8kXfHXwZ91ELDoigjDtHopCpWLUiflrBgCQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793032438;
-	h=DMARC-Filter:From:DKIM-Signature:DKIM-Signature:To:Cc:Subject:
-	 In-Reply-To:References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=4bbi5ZDYjyZH4Tu/Y/XLUEpo8GjU1EDuQ47hyKKJWNI=;
-	b=wlJ97zznzHCqDd04Q+V/58P2C3So0oAf0ZGESi4uezzn1xTf9mmvMY8ddV3uDfSUFmov
-	 WDrSCtgQO/DL0XQCwj3ArJ2HSihVmwX4AfCDDVE8mLIJ/+IeE4qPx0lzhYjFto5un0b/G
-	 0X+RbncEm16Uz46vakzEf9UexRSv/RQPMeKfcPWEXB9as1BmdEuPuL9GMu77bKIKag1Pn
-	 0azOahBrD4fm+/qTC7fTzFS3QimURU6dIzsV5WwBzlFO7Q2/S9XG2+GY03ClULVY5vOv7
-	 42WgzPBvcaynoL3TOGKrVoHniTOTtfw9GSYHrYgn5h1YFGQ3V02ykwWilXtH4e6jvVQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793032458;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=1pw5Y2kdhl00k3SU/S/VeRlGVRN9vDxsTMvxZUbr8bQ=;
+	b=yyfQvMYDb/eUCUmEyy7rV9BEe1XS95lkDu5z0Dnulv9rP7JTK0XddCryk1xdtGAMYbFC
+	 X3kWgjnQsbvc0jvY6ibwsa7KkUb59nJQl3d350Y4Fu2h4pp0TECMviTYPE0dt6VMJrjly
+	 rpf9cwUCpoR9do9ZAnufO2QoM5267BGZFFxPkTTG9uEMV0wywXpuNKs+CIivE/QAniTcC
+	 CRLb5IkeTdUglo0o27XzOgYqBNemylRunsYJ+72F7FIBFiFvgZBLRBOFl1pehiNxOgepG
+	 4eHGnOA8rDR0nKmw/TigVfwu+JnJFhjp6TiyemfmXHr3YOl0Q1SDbNbk+4a1hu5ipvg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linutronix.de;
-	spf=pass smtp.mailfrom=linutronix.de;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=wt7EV5RW;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=3bleRp7v;
-	arc=none smtp.remote-ip=193.142.43.55
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OHkmh3Zk;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7789606A31E;
-	Mon, 26 Oct 2026 16:33:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D7789606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C269606A31F;
+	Mon, 26 Oct 2026 16:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=wt7EV5RW;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=3bleRp7v
-From: John Ogness <john.ogness@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1793032435;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4bbi5ZDYjyZH4Tu/Y/XLUEpo8GjU1EDuQ47hyKKJWNI=;
-	b=wt7EV5RW9Rzfw1nXP7UkC5TIRfJHPG6iy4JE8vXSSGS5dv43Rjno+9KJOYE7B4Xvx1ScR4
-	klocIYf5GzTJaLg4QuV+q1YSqDdAvEoE7L4wTrL86vPsYvZQvUuv3oxVc+VThcOoVSVnLO
-	dcH60PCYJXw4BuDAvrbIwntoEeo4BJte8mOZjPxtscZDzJyJ8bN2UbUT9agGJ1zIU6WZtu
-	kpyOWDgwBJEuHSRu8eNQq9LmxVUYOIeM7X2x6XNowiguguWUYt99X3myJ0ItS548TnV5sM
-	S6a4ipnU7Vte7b7z4d1al2BPrqvwfAVCy0dQC8JlSy6RNUAQCip+n1h7uHEaUQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1793032435;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4bbi5ZDYjyZH4Tu/Y/XLUEpo8GjU1EDuQ47hyKKJWNI=;
-	b=3bleRp7vVaPaXa21CiUma3MxPks+Kk4koD4akBrrEiJJqtZwXjMJWfoHoPbCmkCkzfHhW4
-	28TLbVEwhCDoySBw==
-To: Petr Mladek <pmladek@suse.com>
-Cc: Breno Leitao <leitao@debian.org>, chris@chrisdown.name, Sam Crossley
- <samuelcrossley@gmail.com>, Thomas Gleixner <tglx@kernel.org>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Jonathan
- Corbet <corbet@lwn.net>, Paolo Abeni <pabeni@redhat.com>, Randy Dunlap
- <rdunlap@infradead.org>, Sergey Senozhatsky <senozhatsky@chromium.org>,
- Shuah Khan <skhan@linuxfoundation.org>, Simon Horman <horms@kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH RFC 0/2] netconsole: allow replaying the printk buffer
- on demand
-In-Reply-To: <at9qgBucVm-QHnye@pathway.suse.cz>
-References: <20261024-netcons-replay-upstream-v1-0-9613f38496e5@gmail.com>
- <87fqxskdpl.fsf@jogness.linutronix.de> <at84qygscue8crQi@gmail.com>
- <87a4o0k3qa.fsf@jogness.linutronix.de> <at9qgBucVm-QHnye@pathway.suse.cz>
-Date: Mon, 26 Oct 2026 17:39:54 +0106
-Message-ID: <87zew0ifpp.fsf@jogness.linutronix.de>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OHkmh3Zk
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B35C1F01825;
+	Mon, 26 Oct 2026 16:34:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793032457;
+	bh=1pw5Y2kdhl00k3SU/S/VeRlGVRN9vDxsTMvxZUbr8bQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=OHkmh3ZkWaqiY0jDyhdkQR+428Cgt7Zr9rUn+iczuAAWr66kZKYc9EcNYqBJl8ayL
+	 c52SBDaSrFV9/WeM4qPS3SySJO5YZlYhJAQxPF0FK9CK0bAvmulqKZi2qua5nhizqa
+	 2FfY3An+/dOouKpS5yv2gPfIi3yjsE2s1t6XWUg2GbaximXQSoUeaMQladnQDsHgKJ
+	 COP+C37Pv5IuHuPAsKh7+mCVLKlLjjf2m9g93fGfbkzo8FvuOTDV0AUjYyKz3re/lt
+	 qCpCSMlwdhMQyPOYUbK9ESNF9QNeojvwqbEbVpdLxl3vXBpX0GO8jjefasiWL4lLln
+	 wa4nmwfqH7MsA==
+Subject:
+ Re: [PATCH net] bridge: cfm: keep RX work disabled while CC is disabled
+From: netdev-bot+sashiko@kernel.org
+To: pocj8ur4in@gmail.com
+Cc: razor@blackwall.org, idosch@nvidia.com, bridge@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kuba@kernel.org
+Date: Mon, 26 Oct 2026 16:34:16 +0000
+Message-ID: <179303245691.3134.18367923447939876610@kernel.org>
+In-Reply-To: <20261025163215.62509-1-pocj8ur4in@gmail.com>
+References: <20261025163215.62509-1-pocj8ur4in@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -81,45 +62,134 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
 
-On 2026-10-26, Petr Mladek <pmladek@suse.com> wrote:
-> The "replay" approach looks like a big hammer. Many messages might get
-> duplicated, especially when the outage was small.
->
-> A better solution might be to do not increment con->nbcon_seq
-> when the transmission failed. And try it later again.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Note that there was a time during the rework that we used to allow the
-console to return failure but decided it was too complicated [0].
+Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
 
-The kthreads are setup to stay in their printing loop until the backlog
-is clear. Having a nice=-20 task busy-loop would be bad.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-> con->write_thread() currently does not return anything. I believe that
-> it is partly a historical limit. Two problems come to my mind:
->
->    1. There used to be a global "console_seq" counter which was common
->       for all console drivers. But we have a per-console counter since
->       the commit a699449bb13b70b8bd1 ("printk: refactor and rework
->       printing logic").
->
->    2. There has never been a try-later logic. But is should be easier
->       to add it now. We have the kthreads. And even the legacy loop
->       is able to break when there is not progress.
+- [Medium] The patch only partly closes the post-disable behaviour its
+  own commit message describes.
 
-I suppose for only the write_thread() callback we could implement some
-sort of throttled retry if the console driver reports failure. But this
-is assuming console drivers can even detect if it successfully sent or
-not. The netconsole certainly has no method to _know_ if the UDP packet
-was received. And UARTs (asside from flow-control) also have no way to
-confirm that the other side received the data.
+Pre-existing issues:
+- [Medium] This problem wasn't introduced by this patch, but it sits on
+  the cc_peer_enable() path the patch modifies.
 
-Breno and Sam simply want the user to trigger a replay of the full
-log. Essentially a sysrq-R but per-console. I think that is a reasonable
-request and certainly much easier than attempting some sort of
-transmission guarantee.
+--
 
-John
+bridge: cfm: keep RX work disabled while CC is disabled
 
-[0] https://lore.kernel.org/lkml/ZdTCZqhZww8_WgSU@alley
+This patch initializes each peer MEP's ccm_rx_dwork in the disabled
+state. It enables the work in cc_peer_enable() and switches
+cc_peer_disable() to disable_delayed_work_sync(). The goal is to stop
+br_cfm_frame_rx() from requeueing the RX work, and reporting a new loss
+defect, after CC has been turned off.
+
+> diff --git a/net/bridge/br_cfm.c b/net/bridge/br_cfm.c
+> index 9dcc97d63a6fc..8576f387d037e 100644
+> --- a/net/bridge/br_cfm.c
+> +++ b/net/bridge/br_cfm.c
+> @@ -150,12 +150,13 @@ static void cc_peer_enable(struct br_cfm_peer_mep *peer_mep)
+>  	memset(&peer_mep->cc_status, 0, sizeof(peer_mep->cc_status));
+>  	peer_mep->ccm_rx_count_miss = 0;
+>  
+> +	enable_delayed_work(&peer_mep->ccm_rx_dwork);
+>  	ccm_rx_timer_start(peer_mep);
+>  }
+
+[Severity: Medium]
+This is a pre-existing issue and was not introduced by this patch, but it
+is on the cc_peer_enable() path changed here. When br_cfm_cc_config_set()
+calls ccm_rx_timer_start(), which exp_interval does it see?
+
+br_cfm_cc_config_set() enables the peers before it stores the new config:
+
+    if (config->enable && !mep->cc_config.enable)
+        /* CC is enabled */
+        hlist_for_each_entry(peer_mep, &mep->peer_mep_list, head)
+            cc_peer_enable(peer_mep);
+    ...
+    mep->cc_config = *config;
+
+ccm_rx_timer_start() then reads the old value:
+
+    interval_us = interval_to_us(peer_mep->mep->cc_config.exp_interval);
+
+On the first enable of a newly created MEP, cc_config is all zeroes. That
+makes exp_interval BR_CFM_CCM_INTERVAL_NONE, so interval_to_us() returns 0
+and the RX work is queued with a 0 jiffy delay.
+
+If the kworker runs before mep->cc_config is updated, can
+ccm_rx_work_expired() keep requeueing itself with a 0 delay? If so, it
+could reach the miss limit and latch a spurious ccm_defect, with a
+notification.
+
+The same ordering matters when enable and an interval change arrive in
+one request. For example, CC was disabled with a 10 min interval and is
+now enabled with 3.3 ms. The first tick would then fire after a quarter
+of the old interval, which delays loss detection by up to about 2.5
+minutes.
+
+Could the new config be stored before the peers are enabled?
+
+>  
+>  static void cc_peer_disable(struct br_cfm_peer_mep *peer_mep)
+>  {
+> -	cancel_delayed_work_sync(&peer_mep->ccm_rx_dwork);
+> +	disable_delayed_work_sync(&peer_mep->ccm_rx_dwork);
+>  }
+
+[Severity: Medium]
+Does this cover everything the commit message describes? The commit
+message says:
+
+    After CC is turned off, a valid CCM can still reach br_cfm_frame_rx(),
+    clear the peer defect and restart its RX timer.
+
+This change only prevents the timer restart. The CCM branch of
+br_cfm_frame_rx() still does not check mep->cc_config.enable:
+
+    /* A valid CCM frame is received */
+    if (peer_mep->cc_status.ccm_defect) {
+        peer_mep->cc_status.ccm_defect = false;
+
+        /* Change in CCM defect status - notify */
+        br_cfm_notify(RTM_NEWLINK, port);
+
+        /* Start CCM RX timer */
+        ccm_rx_timer_start(peer_mep);
+    }
+
+    peer_mep->cc_status.seen = true;
+    peer_mep->ccm_rx_count_miss = 0;
+
+cc_peer_disable() does not touch cc_status, so a ccm_defect latched
+before CC was disabled stays set.
+
+When a valid CCM arrives after that, won't br_cfm_frame_rx() still clear
+the defect and send an RTM_NEWLINK notification for a MEP whose CC is
+disabled? The only difference is that ccm_rx_timer_start() now does
+nothing, because queue_delayed_work() refuses the disabled work.
+
+A receive that is already in flight when br_cfm_cc_config_set() disables
+CC seems to behave the same way. disable_delayed_work_sync() returns and
+the request is acked, but the in-flight br_cfm_frame_rx() can still clear
+the defect and notify.
+
+The same path also keeps updating seen, ccm_rx_count_miss, rdi,
+seq_unexp_seen, the TLV status and mep->ccm_rx_snumber.
+
+Would it close the remaining gap to also gate the CCM processing branch
+of br_cfm_frame_rx() on mep->cc_config.enable? Disabling the work would
+still be needed for the in-flight requeue race.
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261025163215.62509-1-pocj8ur4in%40gmail.com
