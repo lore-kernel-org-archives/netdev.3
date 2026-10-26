@@ -1,18 +1,18 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.209.6
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.209.49
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793017841;
-	b=jVTMPQgwqvBva1tQlrnQqBvAm/bCzILp2CgvdZT5SPGLay0Qi2ny0HUOMclPDx9Yk37f
-	 jjvMu5n0G3gBESZqhVkJJXgaUClBpher2RWKYW6MQ6jkzNTLhZi1mYP2HOvIHnaDezjC8
-	 Qi3X/6jZsT5CucJ7fwYkB9UMGk/0+k/YUaecHh2TnnmFm6uroTeo8tbhao+6RJjcLsd7v
-	 Uykm4DNk+sqTVXkfG4QARTH+W2gTHU/m/GorKAjUiSjACUkoAV6pVtEAOYnd+YwBOmNdU
-	 HJOYkrmTDrY1Vzp06awzbOQ7uOg4hRCL8q8Qf8c4/AS0+12kRoE5fiZrIjI23bd92jw==
+	t=1793017857;
+	b=P81CADoHQ6YIoS1wHDXhldghW+N9GMunUSRXBhb7wUUAXOoOSEHML0ra9vkxi9E3Ll8R
+	 +0pbMXcHDuh4svDtYbSEYu9SqsWHi0gSHG8+IpsBrtRFbKfMx9l2OI+D8gw/qDE3uLPc2
+	 ybSVq8UvCTMJBKN/xJR3aaN950mvBG81MKePNHkTqlJX7diK5ZiONhJoJrLEi6zMJxlOu
+	 NjRmMSBs9136p5vI4+aIE5mb1JtqoQ4uFfHcjSf8grnv+GG/g+Q/lF6AN6Z9TFEHHcTY0
+	 Y5qbpu5D8kP3xK48Q8nGqNjg3SMPqDS4BXRSV6LlZTI/9Zc+rZ52nCRoL8ra0x8X/bA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793017841;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793017857;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:
 	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
 	 Received:Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type:
-	 X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:
+	 Content-Type:X-EOPAttributedMessage:X-MS-PublicTrafficType:
 	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
 	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
 	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
@@ -26,75 +26,75 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
 	 X-MS-Exchange-CrossTenant-FromEntityHeader:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=PuK8Ok/x5IXkQO7V8xOA5DltinVHqZ//0/l8obEWmR8=;
-	b=LMKJMGoiM/zU7Wgvfcb+Xu/4nbw4rsj5llY+8pwOSkt4kfFVR3prf6vyL53ELnfHQCWK
-	 ojNaAJqceiBBX4iH5qdxBm4o1GCIVvQVpI5lh+jnxJ8F4SjuWuZSmArKGOqV0H2Y8jNh0
-	 MZ71oAzU+SNluTVJOZFQb4TcmZpX4qyfLm+B1pO0y5qyAtTjt40VmjoIOmbuy7sBhCehd
-	 Kd77U+eYLFUrDZawFFjUkhdAL+KIrOb0sYhP/j4KebtngiVJtewRspuyNVIGjkC6EaNc/
-	 9bR+/p8k9OtiUekYMDuixiACxLAsq0I/S7UgopJnpQNbgdsywtiG8WnYTzLX5j/4XcQ==
+	bh=ugS5CN4Xt+YQeMzTs5ZJXAMTrXk/dyw3Y4INmBZA8Ws=;
+	b=EVS55/E06gNeeas7o2fgDzLFmbwkLwlnCWDSy2GWiKNWinGQx1MZWZFZjOYTb7MR3aCt
+	 YGx+1tPcwV1aW4y/N8S667JG8GBB7zcMw0JMqtYpQy05Cq9ypZ1sL2aum3QSK2Uxql7GD
+	 Kpp1MrkGrfzq1aXHRIEOV2xkJ3u06B4wH1XVkCFE+qT7YynBx6T5lrhEF9NhVEPf5vxnU
+	 gDeEBhxD7GkYjSZqcLSUzHnj4lPCKLY/8e0K3Q1wuEYZuJiandpsvVaKx2ssVqLU6SYF/
+	 yh0cbgwTuUKV9L1A20V40GAD6RKy6N1Y/PQ0/QL2Hapgx/AsOxcAK5Go3+ltxhg/i3Q==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=amd.com;
 	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=XsABzCMY;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.209.6
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012006.outbound.protection.outlook.com [40.107.209.6])
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=1lsbg5DF;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.209.49
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012049.outbound.protection.outlook.com [40.107.209.49])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20926606A31D;
-	Mon, 26 Oct 2026 12:30:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 20926606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A991606A31A;
+	Mon, 26 Oct 2026 12:30:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0A991606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=XsABzCMY
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=1lsbg5DF
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uzX/QUYTTg/GKb1Q7Z9h5LawblTjlymlYb0l8U2wGYYsvqKhI6T9GBhlqm4M5vtOLsQAxyqcx3aCTS3rvtLIUt0K1JwRv9BtlOvDGdV+H9gyEqC6CuxIAeitOMwNZXplSsz6bX4cp5ME7Y4a2G54WOfO8EZBwX+nux2E/6Mghsg26CzWFWRoUo9WQWMUs06y4c+pBaZoHH8cNmnuAMG16MkK/fx5vRhVSr66lVUsb3nqromcDpNVAxxVnPg8WqSrG/oN+S8YA7d3wyDdH/gfkGyTdZhKb8My9Mc0m7mkDgNIdzsY5C2zu259c8xTF5F5tpIOUhMfUdbzKfj7wECMXw==
+ b=EKMYUa9zb+dG/vUskVUQklfaekm7fQCJfjmL+ya4IfhbO7l4hYgSTDx+iCEhaSm+ozX16I834FG+C17YlOSTiT+NxmutamBcKLTu1JafS1magiDweA8ReA5Hh1IvJyWju5ki8kuWpwCJHKCjuFYJXGLI3mepYGvM5YGegmttkb0TBDF4vEjoj3WJTTSO/Zk4DXlnRwa8jzpOkKi7I8xnyJwHFvsS26Uw2mAy7asmPDGLOMOCcUdD2bq4kCHPJrN2hXyYVGba5ilmci1Ufss/zUgITyRleGYEWLADUJ9ERWjYcKl5hNCUzV0F4HVd3nb4y3xwdE8MOmrmR1K0IOfFow==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PuK8Ok/x5IXkQO7V8xOA5DltinVHqZ//0/l8obEWmR8=;
- b=x+V5mBFP+d5Vqcl/ijBEtWhgD1DpfYtRPlNG1t0TYmXI8Sm5xi8JYF9smjtQkYsVaIavg7B6y72Fqr27jYKxVVJOXo0bk4zXMXQdwXLll/UVQgRMH+7MwCkKrMmUR6NnbQBUslrkH/aGkaZWXXN4jIJomjQAzTZIG/ivLD+E1rntwphvaAas2GfLgXLNGK3VnF7OB/px5FFap9PKYuRRgGMUy0rgGJ9CPV3s1M/ebm70QP/NFOxgeBk8HOAYVQzGkQ/SOIYdcNG6s/+8UleW0bIX4wq59YsYvH75fh7wv5hYtVqp1yTnf6vVhHl5b5d3XRm7HBT7lfV1j0LEYfjJuw==
+ bh=ugS5CN4Xt+YQeMzTs5ZJXAMTrXk/dyw3Y4INmBZA8Ws=;
+ b=HqKehFWkqAtLKTAjiLIg76ogtdcSjAEDRzthXtlS556cgbG3Yp8xZ4XW06sHSaOJbUdYeh4DvBF5niPtuY8tqLaguyJcADlMSOjA/kBGwmV7EpiXVjh0OmaUnUFowRVLJQ8LK2kyAi8hQW2HK+05KUplxWGpNqt+Y3Ytg/rw/LxcPGWq0xNWZ12c3O1eLHLbVRlZjC95uS0WgJ2nAK7DWO6x5nmMefOl1WEvEACGD+r/IQIh/0weaRh+zEC65t1EvbnFZrAtYAl3m5a11smfgPinvGk8CclGwG9Ky40V9z493/t2OfEsaTinJ9hUgUmwZgqknYr4fU94dhguJxIwCw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=gmail.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PuK8Ok/x5IXkQO7V8xOA5DltinVHqZ//0/l8obEWmR8=;
- b=XsABzCMY/DNdeywdk7tfrwoOt7nIdK+9mVTYBuK3F0S1i29sN197me8Etc5Z11+hpjB73NJHBXjze+sUsdAS5w0VwSCKFIXqFcBDfr7UTihhyfl4xwU99mY2EkFoD6vIaC1MKVWsfQ1rngj04hbeW2l+ne2sgLmnH5P35Tmx6FI=
-Received: from MW3PR05CA0022.namprd05.prod.outlook.com (2603:10b6:303:2b::27)
- by SA5PPF8BD1FB094.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8d3) with
+ bh=ugS5CN4Xt+YQeMzTs5ZJXAMTrXk/dyw3Y4INmBZA8Ws=;
+ b=1lsbg5DFbfHEeLkUsYAttSZT9y1y+vzpGMfYIRUP+RsWn+lRz8kto81jHHu+N8mxl+lT+B3qnf9vrKZWvAmPIaOMTQ9Mg8QkOJP6gxpBghEF9zTOl/nvfvnuVGP3O6/0TbMcli/VP7YrfgskhPyQKTcQGFnm4fvvaRpQ8evKVbM=
+Received: from CH0P221CA0007.NAMP221.PROD.OUTLOOK.COM (2603:10b6:610:11c::23)
+ by CH3PR12MB9147.namprd12.prod.outlook.com (2603:10b6:610:19a::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
- 2026 12:30:35 +0000
-Received: from SJ5PEPF0000020A.namprd05.prod.outlook.com
- (2603:10b6:303:2b:cafe::28) by MW3PR05CA0022.outlook.office365.com
- (2603:10b6:303:2b::27) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.569.7 via Frontend Transport; Mon, 26
- Oct 2026 12:30:35 +0000
+ 2026 12:30:49 +0000
+Received: from CH2PEPF00000143.namprd02.prod.outlook.com
+ (2603:10b6:610:11c:cafe::8a) by CH0P221CA0007.outlook.office365.com
+ (2603:10b6:610:11c::23) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.546.22 via Frontend Transport; Mon,
+ 26 Oct 2026 12:30:49 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ5PEPF0000020A.mail.protection.outlook.com (10.167.244.43) with Microsoft
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ CH2PEPF00000143.mail.protection.outlook.com (10.167.244.100) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.569.4 via Frontend Transport; Mon, 26 Oct 2026 12:30:35 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ 15.21.569.4 via Frontend Transport; Mon, 26 Oct 2026 12:30:49 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Mon, 26 Oct
- 2026 07:30:33 -0500
+ 2026 07:30:39 -0500
 Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
  (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Mon, 26 Oct
- 2026 07:30:33 -0500
+ 2026 07:30:38 -0500
 Received: from xcbalexaust42x.xilinx.com (10.180.168.240) by
  satlexmb08.amd.com (10.181.42.217) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.53 via Frontend Transport; Mon, 26 Oct 2026 07:30:32 -0500
+ 15.2.2562.53 via Frontend Transport; Mon, 26 Oct 2026 07:30:37 -0500
 From: Alex Austin <alex.austin@amd.com>
 To: Edward Cree <ecree.xilinx@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
@@ -104,10 +104,12 @@ CC: Richard Cochran <richardcochran@gmail.com>, Alejandro Lucero
 	<pieter.jansen-van-vuuren@amd.com>, <netdev@vger.kernel.org>,
 	<linux-net-drivers@amd.com>, <linux-kernel@vger.kernel.org>, Alex Austin
 	<alex.austin@amd.com>
-Subject: [PATCH net v4 0/3] sfc: fix PTP synchronization races
-Date: Mon, 26 Oct 2026 12:30:20 +0000
-Message-ID: <20261026123023.3566549-1-alex.austin@amd.com>
+Subject: [PATCH net v4 2/3] sfc: ptp: serialize host and MC synchronization transactions
+Date: Mon, 26 Oct 2026 12:30:22 +0000
+Message-ID: <20261026123023.3566549-3-alex.austin@amd.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20261026123023.3566549-1-alex.austin@amd.com>
+References: <20261026123023.3566549-1-alex.austin@amd.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -121,121 +123,240 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF0000020A:EE_|SA5PPF8BD1FB094:EE_
-X-MS-Office365-Filtering-Correlation-Id: eac0f995-3f2c-456c-caf5-08df335cef2e
+X-MS-TrafficTypeDiagnostic: CH2PEPF00000143:EE_|CH3PR12MB9147:EE_
+X-MS-Office365-Filtering-Correlation-Id: a922c1be-05f3-4fd1-c957-08df335cf7b2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|36860700016|82310400026|376014|1800799024|18002099003|6133799003|56012099006|11063799006|261021121427099003|261021123027099003|10067099003|261009223027099003|261022105027099003|261022075727099003|261021135927099003;
+	BCL:0;ARA:13230040|376014|82310400026|36860700016|23010399003|1800799024|11063799006|56012099006|261021135927099003|261021121427099003|261022105027099003|261022075727099003|261021123027099003|261009223027099003|10067099003|18002099003|22082099003|6133799003|3023799007;
 X-Microsoft-Antispam-Message-Info:
-	LbhoBhIWBYqF/3bQ832V1o8tc5S9NqFRshjAzYSUz2lwoQXOiFwVoWmsMK5lVqPa2b9KPRSoX8WKRyXNNCrpAaL3bbvnuTSzkuXEdFrdlKlJvvJw12q+UeGE4xtkCd/RWyZV5gY1zrW5J/+8KygoY50nizeaZMEriC+3R70NVH5l/3QBsdR75ZwHrUCa6OQIxOowWCqwgVs4osc3ca5V7TPFsDieoavPHo+WBK2Xh+a6aanEM4Jx/wSlSCPumcI1vcrgMfpqW4w2ual1b+6lYBnpj85K8ZD5y2pmCtIaiiCX7vQQyZFPn22co6c7Jmmik2/sEMd05FEqjy1xCdAuIpBauSGrqOOCT5Ka2g9+Z9BrA8ure/npsMtErrWCLVn6yGwc2urlcA+dc1YnQbitiM+tYGhok1PS2Eu3ERYrRSJUElU8UYEqVhtxNihKx1uJnofm8Ga+2QPsNeGzaT0WcWf/slKq6L7NUzZM3SkYabqUVARgRBGJEVglpKn3y+HxsneRslswpC91umuzcjTGig1XNI1RTl5ywj0ETU5O4mQMkk4urKidzUI3dfZADbqw4b6fA8byXPmgaVKYNDQdqDJWER9I9GKKyri30qgZGlQfODLe45vhdMkkEyISJqGm8aNat1XlLfrNbXX00SumRtjsVGcYs12TTaMoJbqB47ohOmWl0BKglDmhq3P9APRfa49IVZVazZgCfMtpDdBzeg==
+	5VABjYvXRm/DYrDFFYV/7k1Ull4b7N7PIL6qiyrS/oosOOso2TdPAL21gunPblucrCEpb2fdvfnOKRLDCYjGMfU02dO8g0to0f/iHgNdVXlNG0sTN8GEFahYukQIbmJ82a3ovXq5kE69Tv2iLHDhBbXM6KgfFzXpJOb6uUiLu8CekAbh0fy+f8rE9PH2itB2M9Bnj6CYzGY/bioF4sySnv0PkVUq68QmcTzodFIKsNQCOsDH0WRbc8Ic+eupzOtt0XYd6WDm3qYMY1/CEOCKbhiawhTIf7hpX9SDFDDr7TkFoJ8TnAJj74Y7CfQsCA2IUQq3YC0DwLy4p+cnOSCQZv7+Hzak4oWaBQI7l20C+MOd41nnUDJODgkcCI3Fjl4CqCd7j3+l3sqZqrQ1shghRTWVBUqjYocrA5WNFl6KY7Wxs5ykm3TU5aRlzqjAdeEXEjTcA3lZzjrUpF1JqIE9wrBf9Rb/tF6MuevyD0cgSZz5GdtKYECBp1DQQz/eZPu2iLpjZMyL1JzVAj8ys+/zFbtAuiINedZaa3DCWAlfgfXZ4q4iHJdwips8we/MR8lfpotkoxdqiR2A7/PPnOYhQMGZSIvdOjYXBhMhg7oGhCa3Dk4FAeEdvpz/pqY8qPViyHZu/DF9ZUBvknRBYpQK5vVoxI0eKnlICLfRX1dW+9e/4oNSS9Sx5yEIa/dLcVTXoIy95z9TuZpkpBIlLe2JRw==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(36860700016)(82310400026)(376014)(1800799024)(18002099003)(6133799003)(56012099006)(11063799006)(261021121427099003)(261021123027099003)(10067099003)(261009223027099003)(261022105027099003)(261022075727099003)(261021135927099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(36860700016)(23010399003)(1800799024)(11063799006)(56012099006)(261021135927099003)(261021121427099003)(261022105027099003)(261022075727099003)(261021123027099003)(261009223027099003)(10067099003)(18002099003)(22082099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	7unhfR4v8C1hnGXmGHIyq6LM51sm/jd+mf9wEDQ6HrQaKhPdfqQeBAyPh0F13KBfCAsM0FlxqyGCmBwlvDmvUVLbuY4fbsjmahOEbVkWLS0MU40ngXzXcrBbeqBMAHCBvt+m+pKnmQdVzg0e24tAm/6CF7ydAqfA8ltNGoGk1IKRKcX2ZGRh3vuYb8a/nx/55w0dmie2IvI4l9NDv/6E2UK+e0PVW4DUe5OQueIPZmCve7Jo6WuQf7pgXNXxo9tDUvYR/c1yGaJpAp1SHo53Pr9jtJWZJ3/lmyHAOhEMO2pQX0PEUwEQLS9S+pp4U+oVyK+MPEKL4gDu+Gx9u7RAKzJkFR9kzhSH1xhvexoMm0qtv4dC5+LTrgUFKgKs0yJEa87laQBL0Z/pANMwFbRriEMpeUQJIGscHcs6O6DxleD0HONOt5mr4nOt02+RBBYo
+	vB/56hScwnB1sSQwrnwJJAujxrNLfuc92yqhR+KKsVmgXKCvsUGSpIpnViYqAobvo9tPHEtqwsZzYj3SThSf0131DRpiR/AA8adBXaQG02oIQuw48oHPyqLz29VSjsb3EYTYMjQ0UX2RQjTRhVKj4DFFmjpY7uASLJSbBEgaQUx5iX29QALmFeU/ykF9jQjC81uNWisTOq4u4n9lGdOLcO1Z+D/fb1AuWZgWzacOQ9jdOo9Iw20UWM1uuxNHguQZZtSX49cxIOibBa73HLGxJ6MoPDWW/dZsjqo3Zur1rLIi+udrpgigGM/b4/PfmMNj4MR0DR0kDFZ5DnQz3FbDvC8eemtkFEVgmnHycN7HVt6fM/DQ0FKPL1uhCEaLygiNdULmEn9XtuMqVOYtvyJj3zQjPNk9IOokZ/fVqc84FICDezuCQFutOxcem7fWNpiC
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 12:30:35.1443
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 12:30:49.5059
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: eac0f995-3f2c-456c-caf5-08df335cef2e
+X-MS-Exchange-CrossTenant-Network-Message-Id: a922c1be-05f3-4fd1-c957-08df335cf7b2
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF0000020A.namprd05.prod.outlook.com
+	CH2PEPF00000143.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPF8BD1FB094
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9147
 
-This series fixes PTP synchronization races found by code inspection, and
-a related frequency-adjustment bug found while reviewing the locking.
+efx_ptp_synchronize() clears the MC-ready DMA flag before
+efx_mcdi_rpc_start() acquires the MCDI interface, and processes results
+into ptp->timeset[] after efx_mcdi_rpc_finish() has released it. The PPS
+worker and the hwtstamp enable path can therefore clobber each other's
+handshake flag and timesets.
 
-efx_ptp_start() resets the driver's cached current_adjfreq as though
-MC_CMD_PTP_OP_ENABLE also resets the NIC's frequency adjustment on the
-MC. It does not, so the next time-only adjustment reprograms the clock
-from a stale cache. Patch 1 removes this reset.
+Hold a PHC mutex across the whole transaction and over the clock
+operations, so efx_phc_settime() reads and adjusts atomically and
+current_adjfreq is consistently read and written under one lock. Also
+bail out when efx_mcdi_rpc_start() fails rather than finishing an RPC
+that was never acquired.
 
-efx_ptp_pps_worker() and the SIOCSHWTSTAMP path through
-efx_ptp_change_mode() both call efx_ptp_synchronize(). Concurrent calls
-can interfere with the shared DMA handshake and the shared timeset
-results, because the MCDI interface is released inside
-efx_mcdi_rpc_finish() and acquired after the handshake flag is cleared.
-Patch 2 serializes a function's synchronization transactions and clock
-operations under a new mutex. Patch 3 returns the PPS timestamp in
-caller-owned storage to prevent concurrent synchronization from
-overwriting it while the PPS worker reads it.
+Fixes: 7c236c43b838 ("sfc: Add support for IEEE-1588 PTP")
+Signed-off-by: Alex Austin <alex.austin@amd.com>
+Reviewed-by: Alejandro Lucero <alucerop@amd.com>
+Reviewed-by: Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>
+Acked-by: Edward Cree <ecree.xilinx@gmail.com>
+---
+ drivers/net/ethernet/sfc/ptp.c | 81 +++++++++++++++++++++++-----------
+ 1 file changed, 55 insertions(+), 26 deletions(-)
 
-Tested on two hosts with X2522-25G NICs cabled back to back at 25G.
-Both PCI functions share one clock.
-
-Clock operations on the function that registers the clock were run
-against repeated efx_ptp_change_mode() -> efx_ptp_synchronize() on the
-other function:
-
-  hwstamp_ctl -i ens41f0np0 -r 1 -t 1
-  hwstamp_ctl -i ens41f1np1 -r 1 -t 1
-
-  for i in $(seq 150); do
-          phc_ctl /dev/ptp1 freq 1000
-          phc_ctl /dev/ptp1 adj 0.0001
-          phc_ctl /dev/ptp1 get
-  done &
-  for i in $(seq 40); do
-          hwstamp_ctl -i ens41f1np1 -r 0 -t 0
-          hwstamp_ctl -i ens41f1np1 -r 1 -t 1
-  done &
-  wait
-
-  ethtool -S ens41f1np1 | grep ptp_
-
-                                without    with
-  ptp_good_syncs                     400     400
-  ptp_bad_syncs                        0       0
-  ptp_sync_timeouts                    0       0
-  ptp_no_time_syncs                    0       0
-  ptp_invalid_sync_windows             0       0
-  ptp_undersize_sync_windows           0       8
-  ptp_oversize_sync_windows            0       0
-
-The undersize counter rejects readings as implausibly fast rather than
-inaccurate. FW reports a 40ns minimum sync window; without the series
-the fastest readings sit exactly on that limit, and with it they sit a
-few nanoseconds below. The shift tracks the barrier in the mutex
-acquisition rather than the serialization it provides: an smp_mb() alone
-where the mutex is taken reproduces the counter on an otherwise
-unmodified driver, while a plain memory access there does not. No
-synchronization failed: each takes eight readings and needs one to
-succeed.
-
-End-to-end PTP sync quality is unchanged (tested with ptp4l and
-phc2sys).
-
-Changes since v3:
- - fix the Fixes: tag in patch 1 to 7c236c43b838, matching patches 2
-   and 3 (it previously pointed at a non-existent hash, ffe9554c17bf)
- - expand patch 1's commit message to describe the user-visible effect
-Changes since v2:
- - add patch 1, dropping the stale current_adjfreq reset in
-   efx_ptp_start() found while re-reviewing the locking this series
-   adds.
-Changes since v1:
- - document in efx_ptp_synchronize() why a secondary function needs no
-   cross-function locking.
- - take phc_lock in efx_ptp_start() around the current_adjfreq reset
- - do not take phc_lock in efx_phc_gettime(): it reads no shared state
-   and MCDI already serializes the command, so _efx_phc_gettime() is
-   gone and efx_phc_settime() calls efx_phc_gettime() under the lock
- - keep the comment above efx_phc_settime() (Edward Cree)
- - add the test results above
- - return the PPS timestamp through the caller's own pps_event_time
-   rather than adding a struct.
-
-Alex Austin (3):
-  sfc: ptp: drop the stale frequency reset in efx_ptp_start()
-  sfc: ptp: serialize host and MC synchronization transactions
-  sfc: ptp: avoid racing PPS timestamp updates
-
- drivers/net/ethernet/sfc/ptp.c | 108 ++++++++++++++++++++++-----------
- 1 file changed, 71 insertions(+), 37 deletions(-)
-
+diff --git a/drivers/net/ethernet/sfc/ptp.c b/drivers/net/ethernet/sfc/ptp.c
+index 2247e5e..eedab53 100644
+--- a/drivers/net/ethernet/sfc/ptp.c
++++ b/drivers/net/ethernet/sfc/ptp.c
+@@ -36,6 +36,7 @@
+ #include <linux/errno.h>
+ #include <linux/ktime.h>
+ #include <linux/module.h>
++#include <linux/mutex.h>
+ #include <linux/pps_kernel.h>
+ #include <linux/ptp_clock_kernel.h>
+ #include "net_driver.h"
+@@ -272,6 +273,8 @@ struct efx_ptp_rxfilter {
+  * frequency adjustment into a fixed point fractional nanosecond format.
+  * @current_adjfreq: Current ppb adjustment.
+  * @phc_clock: Pointer to registered phc device (if primary function)
++ * @phc_lock: Serializes PHC commands and synchronization, and protects
++ *	      @current_adjfreq
+  * @phc_clock_info: Registration structure for phc device
+  * @pps_work: pps work task for handling pps events
+  * @pps_workwq: pps work queue
+@@ -331,6 +334,7 @@ struct efx_ptp_data {
+ 	unsigned int adjfreq_ppb_shift;
+ 	s64 current_adjfreq;
+ 	struct ptp_clock *phc_clock;
++	struct mutex phc_lock;
+ 	struct ptp_clock_info phc_clock_info;
+ 	struct work_struct pps_work;
+ 	struct workqueue_struct *pps_workwq;
+@@ -1008,7 +1012,14 @@ efx_ptp_process_times(struct efx_nic *efx, MCDI_DECLARE_STRUCT_PTR(synch_buf),
+ 	return 0;
+ }
+ 
+-/* Synchronize times between the host and the MC */
++/* Synchronize times between the host and the MC.
++ *
++ * The MC serializes PTP requests, so MC_CMD_PTP_OP_ADJUST cannot be applied
++ * while MC_CMD_PTP_OP_SYNCHRONIZE is collecting timesets. This holds across
++ * functions of a controller, which share the clock but adjust it only through
++ * the function that registered it, so a secondary function can capture here
++ * without serializing against the primary.
++ */
+ static int efx_ptp_synchronize(struct efx_nic *efx, unsigned int num_readings)
+ {
+ 	struct efx_ptp_data *ptp = efx->ptp_data;
+@@ -1027,11 +1038,14 @@ static int efx_ptp_synchronize(struct efx_nic *efx, unsigned int num_readings)
+ 	MCDI_SET_QWORD(synch_buf, PTP_IN_SYNCHRONIZE_START_ADDR,
+ 		       ptp->start.dma_addr);
+ 
++	mutex_lock(&ptp->phc_lock);
++
+ 	/* Clear flag that signals MC ready */
+ 	WRITE_ONCE(*start, 0);
+ 	rc = efx_mcdi_rpc_start(efx, MC_CMD_PTP, synch_buf,
+ 				MC_CMD_PTP_IN_SYNCHRONIZE_LEN);
+-	EFX_WARN_ON_ONCE_PARANOID(rc);
++	if (rc)
++		goto out;
+ 
+ 	/* Wait for start from MCDI (or timeout) */
+ 	timeout = jiffies + msecs_to_jiffies(MAX_SYNCHRONISE_WAIT_MS);
+@@ -1062,11 +1076,13 @@ static int efx_ptp_synchronize(struct efx_nic *efx, unsigned int num_readings)
+ 			++ptp->no_time_syncs;
+ 	}
+ 
++out:
+ 	/* Increment the bad syncs counter if the synchronize fails, whatever
+ 	 * the reason.
+ 	 */
+ 	if (rc != 0)
+ 		++ptp->bad_syncs;
++	mutex_unlock(&ptp->phc_lock);
+ 
+ 	return rc;
+ }
+@@ -1569,6 +1585,7 @@ int efx_ptp_probe(struct efx_nic *efx, struct efx_channel *channel)
+ 	if (!efx->ptp_data)
+ 		return -ENOMEM;
+ 
++	mutex_init(&ptp->phc_lock);
+ 	ptp->efx = efx;
+ 	ptp->channel = channel;
+ 
+@@ -1640,6 +1657,7 @@ fail2:
+ 	efx_nic_free_buffer(efx, &ptp->start);
+ 
+ fail1:
++	mutex_destroy(&ptp->phc_lock);
+ 	kfree(efx->ptp_data);
+ 	efx->ptp_data = NULL;
+ 
+@@ -1694,6 +1712,7 @@ void efx_ptp_remove(struct efx_nic *efx)
+ 	destroy_workqueue(efx->ptp_data->workwq);
+ 
+ 	efx_nic_free_buffer(efx, &efx->ptp_data->start);
++	mutex_destroy(&efx->ptp_data->phc_lock);
+ 	kfree(efx->ptp_data);
+ 	efx->ptp_data = NULL;
+ }
+@@ -2105,23 +2124,23 @@ static int efx_phc_adjfine(struct ptp_clock_info *ptp, long scaled_ppm)
+ 	MCDI_SET_QWORD(inadj, PTP_IN_ADJUST_FREQ, adjustment_ns);
+ 	MCDI_SET_DWORD(inadj, PTP_IN_ADJUST_SECONDS, 0);
+ 	MCDI_SET_DWORD(inadj, PTP_IN_ADJUST_NANOSECONDS, 0);
++	mutex_lock(&ptp_data->phc_lock);
+ 	rc = efx_mcdi_rpc(efx, MC_CMD_PTP, inadj, sizeof(inadj),
+ 			  NULL, 0, NULL);
+-	if (rc != 0)
+-		return rc;
+-
+-	ptp_data->current_adjfreq = adjustment_ns;
+-	return 0;
++	if (!rc)
++		ptp_data->current_adjfreq = adjustment_ns;
++	mutex_unlock(&ptp_data->phc_lock);
++	return rc;
+ }
+ 
+-static int efx_phc_adjtime(struct ptp_clock_info *ptp, s64 delta)
++static int _efx_phc_adjtime(struct efx_ptp_data *ptp_data, s64 delta)
++	__must_hold(&ptp_data->phc_lock)
+ {
+-	u32 nic_major, nic_minor;
+-	struct efx_ptp_data *ptp_data = container_of(ptp,
+-						     struct efx_ptp_data,
+-						     phc_clock_info);
+-	struct efx_nic *efx = ptp_data->efx;
+ 	MCDI_DECLARE_BUF(inbuf, MC_CMD_PTP_IN_ADJUST_LEN);
++	struct efx_nic *efx = ptp_data->efx;
++	u32 nic_major, nic_minor;
++
++	lockdep_assert_held(&ptp_data->phc_lock);
+ 
+ 	efx->ptp_data->ns_to_nic_time(delta, &nic_major, &nic_minor);
+ 
+@@ -2134,6 +2153,18 @@ static int efx_phc_adjtime(struct ptp_clock_info *ptp, s64 delta)
+ 			    NULL, 0, NULL);
+ }
+ 
++static int efx_phc_adjtime(struct ptp_clock_info *ptp, s64 delta)
++{
++	struct efx_ptp_data *ptp_data = container_of(ptp, struct efx_ptp_data,
++						  phc_clock_info);
++	int rc;
++
++	mutex_lock(&ptp_data->phc_lock);
++	rc = _efx_phc_adjtime(ptp_data, delta);
++	mutex_unlock(&ptp_data->phc_lock);
++	return rc;
++}
++
+ static int efx_phc_gettime(struct ptp_clock_info *ptp, struct timespec64 *ts)
+ {
+ 	struct efx_ptp_data *ptp_data = container_of(ptp,
+@@ -2165,23 +2196,21 @@ static int efx_phc_settime(struct ptp_clock_info *ptp,
+ {
+ 	/* Get the current NIC time, efx_phc_gettime.
+ 	 * Subtract from the desired time to get the offset
+-	 * call efx_phc_adjtime with the offset
++	 * call _efx_phc_adjtime with the offset
+ 	 */
++	struct efx_ptp_data *ptp_data = container_of(ptp, struct efx_ptp_data,
++						  phc_clock_info);
++	struct timespec64 time_now, delta;
+ 	int rc;
+-	struct timespec64 time_now;
+-	struct timespec64 delta;
+ 
++	mutex_lock(&ptp_data->phc_lock);
+ 	rc = efx_phc_gettime(ptp, &time_now);
+-	if (rc != 0)
+-		return rc;
+-
+-	delta = timespec64_sub(*e_ts, time_now);
+-
+-	rc = efx_phc_adjtime(ptp, timespec64_to_ns(&delta));
+-	if (rc != 0)
+-		return rc;
+-
+-	return 0;
++	if (!rc) {
++		delta = timespec64_sub(*e_ts, time_now);
++		rc = _efx_phc_adjtime(ptp_data, timespec64_to_ns(&delta));
++	}
++	mutex_unlock(&ptp_data->phc_lock);
++	return rc;
+ }
+ 
+ static int efx_phc_enable(struct ptp_clock_info *ptp,
 -- 
 2.34.1
+
