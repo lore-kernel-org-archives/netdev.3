@@ -1,57 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793057978;
-	b=1gbmOJWVSTTEx94TpLReaV0C4VeKK33f0VApSsFhvskMH5kh9tBoOlzcOY89jkkgvI9D
-	 rQ8WblIdJITgwJK8d/WIDDZv62TVumIEVi76tuDqHg/iL5tqc5eRAsvwl/YasFK3bZPjU
-	 OWDysPTyYS6+JPZjCLjzuTiCKTCiMM+OGSgRitoHl0JAZUPmI7SzWlViz167oShBcLZ4t
-	 ZtgWEwTH8O/tCeKkGmdtOarKIL7rSqbBf+HklhUiNUFAzjeC6Kbg7adm4g49znAk8HcvR
-	 pjzsKwejfUXS/0F5OQWx+RIArUJ+ZkQ5kU5tZ+5Gue3+mFZaw42/lGMSCzES/Ty8hqQ==
+	t=1793058428;
+	b=JnEyqJsLm9CRe0SANgKVHbVcpep+f1AqTdbnnaOq8nqxy3BChYP11H0I4WGwdjrG/wXC
+	 7Ja7/UKTN/X+n1/xN2B4RNGoOgPGoopT6NY+b8GDPHsy9RC7AbO/6WOAiV3EI6//F9Ye7
+	 F6A4rgdmO0X2ksGmoTVP36okIM6rRwhG9cs3xHv2vhc1XCSxYJ7ULHWeE8lw0GKpIpiiO
+	 Slcf1s8k2ooZH//TW9Itxx6tetPW0twAwlZhUdGPeay3zaMccg0Yuqw/PV+Ias1qe8nrR
+	 ATYgUYqtXdBGXsQg/khTFrIH8Vind9piVY6PhFVHKEZzmRrdygymir1vErrdOC9yOHA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793057978;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793058428;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=1hn4CaP171Pv+vV3T1+gKL8EoDmoJ6KQNIPs0XWUgyw=;
-	b=bCbFhuPwjrOsTQZwYmLWH5dBXjujT+nmYpSJR4To9RC2KE95M8KnuwhWwmWDE1SoqkGs
-	 ZJeO7GzTKCbcu7flanrxbo7Jvt4zdftUnJo+ltpXQfgWkFRBkhdYKJzHpJvrYLus3hNX6
-	 4MQ/K9rfLy/dTth0tkG9bJO8nUxuwpSIoQlJzAwU4qc17hfdKQXCR/QGV/carvWV0q51C
-	 XrbhIE75GxG+fb6YHMjJyIr2cnbvH1roIYI8NTMM0KFewF8MsQmfe1gdtWLFh0BVa5ink
-	 ZVuWtimcVcXendW86uW8ngssRzWK6ob0oVP9LpkX+uCfORUBcFyIF6GlGtcnyLRJdAQ==
+	bh=HXZKbYcynQLTbFDm3Gu8qk0pYJCsBAblYFk5BGMFFls=;
+	b=lYEQqaPrAtIkpWjrDwEzeDoP29ciYkSkAXmRrZumzIe5I/XV8btPXjPXf7K3CwYmdNIT
+	 zqTbWEgv8qc2NPMQFjPqgOlJceuihfLtMCeRh4pGE5KzP/7msmKndcS9+qN6wF/S4CtHb
+	 hli0WERGZitLCsKWUue71OyQjk92zFsiqiV43zpInTqp6w0NgD9mTHy2q6eIOocEkXqOw
+	 yBn8DwRxb64J1T5KZJZU8TuCfVY+9xYVvuVPRLQ6mOAFKRfkzXEe2zaX7xxtc1zGqeEpK
+	 mR4z1KZ/oy9RdFxfh2rPiTfsebgNSerml5UJ2qbbVtPI65nmNtumJALFIMzXFBVpM2w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b3P1ZFXH;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cjhWGHV3;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE7A606A31A;
-	Mon, 26 Oct 2026 23:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A276B606A31A;
+	Mon, 26 Oct 2026 23:47:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b3P1ZFXH
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A0B1F01825;
-	Mon, 26 Oct 2026 23:39:37 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cjhWGHV3
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6D561F01825;
+	Mon, 26 Oct 2026 23:47:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793057978;
-	bh=1hn4CaP171Pv+vV3T1+gKL8EoDmoJ6KQNIPs0XWUgyw=;
+	s=k20260515; t=1793058427;
+	bh=HXZKbYcynQLTbFDm3Gu8qk0pYJCsBAblYFk5BGMFFls=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=b3P1ZFXHJ5JUyJtivhpJfTqSBe75CyZbsDn2/hs39GG9lrzwVS6F/Hkh6UZTPVw6Z
-	 sCeesk9+/HXzh9t1EV1oncVN34lMN4ormkCf+vcEcjFbqIcogRe45vd/ZlZotSxPyb
-	 9fKmJRAHRAfJhkfu+pGzvOfX8b7KXg9baf+L6oOjtyWw8SLP4dNw2udB9zRJyo1mNi
-	 jppn5LoETkGOMAAt9444qlbht8CfS6rMERfjAuomPPTdSz5jYQyvsRdssM1T4nBsu0
-	 zxoaz3hLND1YsbtWbumDEg4L0+53KmNzRuQpeJ/iiIs7gV4B6ylVJBV/0VupDJqoRU
-	 41S83wl1Tcgzw==
-Date: Mon, 26 Oct 2026 16:39:36 -0700
+	b=cjhWGHV3PB635bLfXP/tf12iJDzu34gM3azvhTbLHkmE6G2UeHP3tpU4a+8r7ecLV
+	 N7Z4OkZi3680l50Ov4IX46GPWdl1vs7diNbNrbCaL4LFE7r2xnOhAoByPJNg2lcJNZ
+	 yMGj/dSyjTleiJPUgOYdiCzTNOc8y302iefOwONGog/GV//ABSkcgeVOWGpSFxoF3C
+	 T4eE6uq5lozf2iF0VgAcA2Y7S6Mhx/2S0f62BPoBd8Uez/A6v9DINt2aR2kYc65aA3
+	 TBbb1NGJWjiaQmKkW0lJVzu7ER1mgUf3HKdVzcsLCB8NZ5LySOz3D108I5z1jbwTl1
+	 8ZYk9OO/4/3Gw==
+Date: Mon, 26 Oct 2026 16:47:06 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, pabeni@redhat.com,
- edumazet@kernel.org, dsahern@kernel.org, horms@kernel.org,
- yoshfuji@linux-ipv6.org, stable@vger.kernel.org
-Subject: Re: [PATCH net 2/2] ipmr, ip6mr: validate packets injected into the
- register vif on xmit
-Message-ID: <20261026163936.04fddbc4@kernel.org>
-In-Reply-To: <20261025071729.34967-3-idosch@nvidia.com>
-References: <20261025071729.34967-1-idosch@nvidia.com>
-	<20261025071729.34967-3-idosch@nvidia.com>
+To: Arnav Kapoor <kapoorarnav43@gmail.com>
+Cc: Ronak Doshi <ronak.doshi@broadcom.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Broadcom
+ internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ syzbot+8eed6f83440ecdaf4be6@syzkaller.appspotmail.com
+Subject: Re: [PATCH net] vmxnet3: stop DMA mapping the adapter structure
+Message-ID: <20261026164706.6847e39a@kernel.org>
+In-Reply-To: <20261021221221.502428-1-kapoorarnav43@gmail.com>
+References: <20261021221221.502428-1-kapoorarnav43@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,7 +65,37 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 25 Oct 2026 09:17:29 +0200 Ido Schimmel wrote:
-> Assisted-by: LLM
+On Thu, 22 Oct 2026 03:42:12 +0530 Arnav Kapoor wrote:
+> vmxnet3_probe_device() maps the whole struct vmxnet3_adapter with
+> dma_map_single() and passes its address to the device as the "driver
+> data" (misc.ddPA/ddLen) in the shared area.
+> 
+> The adapter is the netdev private area, and alloc_netdev_mqs() allocates
+> it with kvzalloc(). struct vmxnet3_adapter embeds 32 tx and 32 rx queues
+> and is well above PAGE_SIZE, so when a high-order allocation fails the
+> adapter ends up in vmalloc memory. dma_map_single() then warns
+> ("rejecting DMA map of vmalloc memory") and returns DMA_MAPPING_ERROR,
+> and probe fails with -EFAULT. syzbot hit this with page allocation
+> fault injection.
+> 
+> The driver data is only informational: the mapping is DMA_TO_DEVICE,
+> done once at probe and never synced, so the device could only ever see
+> a stale copy. The per-queue descriptors in this driver already report
+> no driver data with ddPA = ~0ULL and ddLen = 0, and other vmxnet3
+> drivers, such as the one in DPDK, never set misc.ddPA at all.
+> 
+> Drop the mapping and report no driver data in the shared area as well.
+> This also removes a probe failure path and the adapter_pa field.
 
-Hi Ido! FWIW these are no longer necessary.
+Sounds fair but this does not seem like a real fix.
+If nobody complained about this failure mode for 13 years
+chances are we break more than we fix here.
+
+Please repost this for net-next in a couple of weeks without
+a Fixes tag.
+
+Also please remove the "never synced" stuff. That's purely
+relevant for intentionally hamstrung kernels. This is virt,
+there's no DMA to sync other than swiotlb.
+-- 
+pw-bot: defer
