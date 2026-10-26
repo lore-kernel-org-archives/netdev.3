@@ -1,80 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792999392;
-	b=3xhdP0u6UC/cXM1lcbm15XmsGlFKjzHcIz0Mu5IQWhvTV9u0MvOBjvlMsL0Nu6I4P/F4
-	 iihU0ONHFiWzLT2t2zox0y/TJLD6e26nTsLcsfADCl4NrPSQpFQ3oSEov01aNWOPKrT+n
-	 O+gwIsB/xTxInbX29nHR2F9wc0wRkcB720okYZLnGBEWzfbThf9uGSE8XUIxE2MlqjVYJ
-	 z/ww/6nBbu9+vk9ujpmvWK9tZHgYHqmPf4kUDxXZkKvEblIWwPUE8EZjpuB1EHikOJaJD
-	 scqkbhqT9Qg681G6iDlMcqVFyT7ekNnCU2LU5y419o0rRkE6RQdp6gQ847OTYnfmaGg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792999392;
-	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
-	 X-Endpoint-Received:X-Original-From:Reply-To;
-	bh=gL4Y4LLW2G3VJwIBXj9jDelLMgccnmv4YV0UaBDP1+Q=;
-	b=uKfpUdYbyJYj811qOa6eIPNktfabcaJyytg/dQE3NoxEVQt4ljFhP6Qu4ZOZBhHtEasr
-	 A3V7yrfuEGwDEBeFPPSEWrVR9C52vKaY7wlrX5Mil4ID4coM5XXNEYV3zpoFZzUCX/vlH
-	 70LWt0KyFPRosH1QGBivqD4MJ4+1wq/fJKCNzAJgjHyaNld4+M/ZDUWfiq69yUM711qN7
-	 K3yVasK17UBLmmPAe8VbnMdtZbDFchuL7H1+g7LUhIlWjxddrNaqVLUmwEwfJ8VUTSs2s
-	 LdKtoF34FiCnX+wEbo/knaI9r9wpM28zMh2V63XMbO963rpxWcFUtBOYjQWMdyL82hw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZwcsoOIh;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295CB606A31B;
-	Mon, 26 Oct 2026 07:23:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZwcsoOIh
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1792999390;
-	b=1uHATkRNaiCFPvI+w4S2Ha/fItRC0ElH92cR2IS0+w6TqH0xrDVe1yLVUQ+s7oIaFRqU
-	 Vrxc8XEZN0kvyJHAg60e6mA2OWKqkKersmECJWf/+d2ZENDMk4mrO7TPJ5oMDdmrq5Njx
-	 qXOUzDZlNa3eW2bma2rfi2UA7UJNsauEtrUG32mzUh0U92p6+b+iWsQEvLYplfl1ZhVEq
-	 lC41Go1jnQym/mqCIGvWe5U3iK8MuDjdFR5wnbG8wgq6sYm0WMpuchkslDNDgV/ddzMSu
-	 TH+fMI9i8CeDlI8wgQ5ffxr3ZuoxTfjwJTLOsGfqgyT4irbPT0WVypvg8612WhrGzng==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1792999390;
-	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
-	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To;
-	bh=gL4Y4LLW2G3VJwIBXj9jDelLMgccnmv4YV0UaBDP1+Q=;
-	b=FQjAGlZul4hz/L2JzYVHxDfm9P+Q6PZ/7AS8w7Hxr40UgUOGv7O7DzwG5aX983Onq0s6
-	 JEmLBIwow7QkjQFQ0QW6DZJrOfxRQh6eGLxcdGggupEdtbQ1LfV76yF/A2EJJe+vXHdhy
-	 Yw9UMuxq4Z+KCk3EC7n7RK3S1eKrzkIt9Eo1SUFeBVo6eWDVoDQBobXUPgF/2E5v+JrI6
-	 TJ5QLar16+IQepNa7YXuLNuxUz2MUXBdQqV+sb9Hvg8PiuFNkMGtfHOUjW6tEWHSITk6K
-	 Db6kOtsIJcHfHnCAxLFslqcJKLcCCo/qdXBd8SCHITT4xESw39vuQ3cSxWBD/Dg3AhQ==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.43
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792999403;
+	b=LtnWekSb4mBDR8yGuqyewaEj8IjiIzvTNUmMUby701PvsWNutYu2JLGqEhu3geV1uG2f
+	 9s1FQJoIpbGCcDtIq32/kkWs8rlGKLsdXF8TWHXERvaJ6ZMGMjaUB69CgYQ0ql1XZHKOg
+	 wDC9c6rB/Y8+mIHtukp4EpF56nNyPF9mQQ/f09lKsOyTKWV0EEGCLKguKUR9MbWI3qkqG
+	 Fcvpt74LW5YeJVDtcZCyUsNcwmukvKfNqEUGFjGKGo2SqKKB1ZeoziARQ09RPYmuTF4FH
+	 7BVcssy+/M6U902405/d6Tr5u/cG1Rz0sTuF1fAAlBxza6Y/ys3g/UvsNNAOw7RqZ7g==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792999403;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=gm0Qfj369v7uXPDM6N2vje8RwwrOggEoYcp57t3sBRQ=;
+	b=LQMOH84yZUvgS5hkB5YBXe7PVsHAqadV6nOTBBrIudC5ibdpg034sJO9bTF6GOiztk+Q
+	 G50ovSa9GwuVbdvt6P/zIUxnvDB34GAS4S0IdAAdmfLfmu9CmiYPig9v/yVmZ5BN/wnvS
+	 tUZrBPAQdgWud2bfk1wTTZ2pHDLWymEeLEU7kMC2uF5BQc+tPQOU6tmS9CSF5PC8VfxZy
+	 McAP/YuVLM9/c6KAlFQNqEAcC2lmEfrrC7wfaUJsa2M9yzvZU0/nYUjwHl9HaKQJt0pwQ
+	 3RSKlD5baGUsIHPBP4Gy0wG0L7qaKWxM/bC5YaROeDP3YOhldMisuypm0MQuBAVxBrg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=AbC9tHqi;
+	arc=none smtp.remote-ip=209.85.216.43
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 3E2661F01825;
-	Mon, 26 Oct 2026 07:23:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792999390;
-	bh=gL4Y4LLW2G3VJwIBXj9jDelLMgccnmv4YV0UaBDP1+Q=;
-	h=From:Subject:Date:To:Cc:Reply-To;
-	b=ZwcsoOIh97NogTnRDp/9R0PVea18/TOaCQ1mmcvhCLQEz+Set1y5naNcfnetzY0jF
-	 y2O88qwWb6ZtWhx39wpCFqI1ctDOMbNqCAQiiq2lWFrnKpWu/uecwIQNMrjgowtft8
-	 wSOtpPw3A/azXVma2cMgC/NvNKdEZStzyi0RqNZPxU9b5z9C79YGSHRtGT0I147Z5C
-	 Ceg7l3CvxGWAcEQhlyOL/pJKM5bFkElnp0aD9JEMEgOou2H7+3r7z6vRkgZHecE62S
-	 Uian5GSLXSNESgDEjl97s4joBQQNkMbx9neHJ8MUG/1oRvyUU0xiOw2IaNUU3qcrjm
-	 MyBvGB2sVijTQ==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id C477244C43;
-	Mon, 26 Oct 2026 07:23:09 +0000 (UTC)
-From: Esko Mobius via B4 Relay <devnull+echoowall.gmail.com@kernel.org>
-Subject: [PATCH net 0/2] Revert advertising the TCP MSS from the configured
- MTU
-Date: Mon, 26 Oct 2026 15:23:07 +0800
-Message-Id: <20261026-advmss-revert-v1-0-272fa4b7ecb6@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45521606A339
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 07:23:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 45521606A339
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=AbC9tHqi
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-398b3c37877so1483016a91.0
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 00:23:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792999402; x=1793604202; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gm0Qfj369v7uXPDM6N2vje8RwwrOggEoYcp57t3sBRQ=;
+        b=AbC9tHqiWLexdwdWZtIOTgzF2d8pLKJ1EObJ8p8mRtcbmiiDZNR9CpY+n3qXNWbNdv
+         dZKwYY8AG3zY9khxWaWSk6TaC4W6O/BHPwf2MLL9GBcQ+/etbEDNjoJBO8pby5nxSOXC
+         eDt9szoI+AEK0GlcKWiu3ctysnL/kahWgXV3n3Xr2O25PsJoZeRByF/Fth1c+Ylfopxf
+         gfQzDfSX2yxqs5tNX6nmZeNwEBqAlp2dIJwCsVsB4gi7U2OBWc6BzxPsMa9KYD8zU4ng
+         yA1AYAxJOC7weI6O/wWjpDVuCiFxzNOUPnH79kRdvLtmy3uuNAJHpDo9rTFakZCnTqPZ
+         SlhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792999402; x=1793604202;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gm0Qfj369v7uXPDM6N2vje8RwwrOggEoYcp57t3sBRQ=;
+        b=Iav7LENmXXSFDO/2BNOvT1rw60IvB15xw+PWkJwt5UHTRjF6SLFyUNjoI3QKHTGp4V
+         DyynSwoszFoADTuX+lfXprDSE3CH85hxhQqXHifS4VEpEDE2BK1FIB94MGiX78kyyK4G
+         fv3Q0li++qPjBEk3S0r3BGs20BPe6U9JYQmk96wNcgb2Of/nEfxFZjPr5JroZtrqqAH8
+         JUVto2aG8PIdk/+sNo3/EpiFqzAuOTbTfvnJQfzMJjaPgYl8SNj9Oz8e3p1fSPJiJzCA
+         l+jRAuo8imbbRPaHuAcUfrZ4ixK2I/K0RNucWnGo6a0mCRGj5yMlrTA8WRCGRi/F98yE
+         nP7Q==
+X-Forwarded-Encrypted: i=1; AKwUvBwd8o9RPDrfwoNgybkEhmR6YIB/rSwvd4IEJtYQjUUXUAQ5crUyIbBpcLIjGdw8uasQES0qgRI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLtykdu01RdLXVhnZ56+NRFJoQjYtTx7idmcCBWA8VIgx6fX321
+	iTAuBWWynMqkpqOQ8bsZbrTCC3WdMbiJPiGYk9C3/j9SBaowBD0wS8El
+X-Gm-Gg: AYBFou1f+xJ1Zi8GYvXEb6YMlNs0dbLWdOad8tqO+91jvJMLFDr44J+XUuIDIWVnHBN
+	0uCbbsMScN9AD/nSKIlC1ERPij7AlMRjuyKJpvwZKiTSvrcLoVNV/6r2ixjtcBNznlH7FU+adCx
+	3cS0c2S+EOS6vq92Dqeh7mmHDcgVg5KZSU5isDhIgWuubj2InIEjKX+nNw+0tR4SpBopMZjAoGI
+	xDUTAoj9umRz4+Afh2JnsvEKvA9+FCIfnwTfhaG2k5CiyM20QzCUn2hOkmqBqrfQh2D8xW93HEy
+	vTk9KZNaRzcJZj6ImfAjYwZFSNsVMJBtG2lIIFRTlCsqTjT9r831MGL4Jk87JX77xPMySRIgS/L
+	AFT+z5KJVuiOKMiyEWA7bqndRAC4YQhTSRCXT9FNWZz8sEBtogyYnscYzavcgR1g2EKc/Lro0LH
+	SCpoVz0Y9vIWolRkFkFWr6+LmHKOPz3z2abyV9ZdjaGjW08f2xJD0igr8jLLfBOvsIkbvhnn1Tb
+	xf5+OFs/NU/9qmQNQzuKTf5GDEZhb8mNL5nAcNURDY1/Vs2cRg1bcJpyF33M36oXkoSTsFMyz2C
+	+TRCx8pejyekd6D2leQnZBza4TicdVuGbiTk5C4aczPypRleQWPdhS/JGaI/2lNxTvM+yF5XqVy
+	2vqCDX0iBrAfvF8hGMoWe/XcmTjTTBhbvW60=
+X-Received: by 2002:a17:90b:2252:b0:3ac:7c52:faeb with SMTP id 98e67ed59e1d1-3adeafb596amr5624976a91.41.1792999402381;
+        Mon, 26 Oct 2026 00:23:22 -0700 (PDT)
+Received: from alanhc-14700.tailb22ec2.ts.net (180-177-138-120.dynamic.kbronet.com.tw. [180.177.138.120])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3adebe6946dsm7112987a91.4.2026.10.26.00.23.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2026 00:23:22 -0700 (PDT)
+From: Hung-Chun Tseng <alan.tseng.cs@gmail.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Grygorii Strashko <grygorii.strashko@ti.com>,
+	linux-omap@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Hung-Chun Tseng <alan.tseng.cs@gmail.com>
+Subject: [PATCH net] net: ethernet: ti: cpts: drop stale events before the misc IRQ can fire
+Date: Mon, 26 Oct 2026 15:23:14 +0800
+Message-ID: <20261026072314.663980-1-alan.tseng.cs@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,72 +105,99 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIANv/3moC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzNDINZNTCnLLS7WBapNLSrRNbUwME1JNTQ3NrNMUwLqKShKTcusAJsXrZS
- XWqIUCxEsLk3KSk0uAZmkVFsLAFqhlOV2AAAA
-X-Change-ID: 20261026-advmss-revert-5805de17369f
-To: netdev@vger.kernel.org
-Cc: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- "David S. Miller" <davem@davemloft.net>, Simon Horman <horms@kernel.org>, 
- David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
- Jiayuan Chen <jiayuan.chen@linux.dev>, Shuah Khan <shuah@kernel.org>, 
- Thorsten Leemhuis <regressions@leemhuis.info>, regressions@lists.linux.dev, 
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Esko Mobius <echoowall@gmail.com>, 
- Eric Dumazet <edumazet@kernel.org>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792999388; l=1884;
- i=echoowall@gmail.com; s=20261026; h=from:subject:message-id;
- bh=XaR0Gk8SmZ1BSXypb/zmzgZFcyeFs/xIK7D652IwkuE=;
- b=1UtGo0a2fgm7Z14XWVa6/EaFpZ4ZKjTgedpVnVQW7PmVrgnzJb5IAT2ykAQfhMa27+gN/Y4Su
- 9CVc7UOGdAYCpkkdt3jSZAgu/96ThC6LY37mBdYYOdPI1tHLgZrpP84
-X-Developer-Key: i=echoowall@gmail.com; a=ed25519;
- pk=9XP6JhqjjPsHCF6UZZZTeqTRnXIa4+ufggnxXtTJ+no=
-X-Endpoint-Received: by B4 Relay for echoowall@gmail.com/20261026 with
- auth_id=1323
-X-Original-From: Esko Mobius <echoowall@gmail.com>
-Reply-To: echoowall@gmail.com
+Content-Transfer-Encoding: 8bit
 
-Commit 2640e6419594 ("net: advertise TCP MSS from the configured MTU,
-not the learned PMTU") breaks TCP for clients behind networks that
-filter inbound ICMP, when the server reaches them through a hop with a
-smaller MTU: the handshake completes, then the connection stalls as
-soon as the client sends full-size segments. This was reported in [1]
-and confirmed on 7.3-rc7; reverting the commit on top of 7.3-rc7 fixes
-it. Details and numbers are in patch 2.
+cpsw requests its misc IRQ at probe, but the CPTS event pool is only set
+up later, in cpts_register() from ndo_open. That is fine from a cold boot,
+where the CPTS comes out of reset stopped with its interrupt masked. After
+a kexec it is not: the previous kernel leaves the CPTS running with
+TS_PEND_EN set and events in its FIFO, so the interrupt fires as soon as
+it is requested and cpts_fifo_read() takes an entry from the still empty
+pool list:
 
-The asymmetric (DSR-style) case that commit targets can still be served
-by the existing per-route advmss metric, which overrides the default
-after the revert; patch 2 includes a test of that as well. If you would
-rather keep the new behaviour as an explicit opt-in some other way, I
-am happy to test or rework this.
+  Unable to handle kernel NULL pointer dereference at virtual address 00000010 when write
+  PC is at cpts_fifo_read+0xa4/0x3c8
+  Call trace:
+   cpts_fifo_read from cpsw_misc_interrupt+0x30/0x4c
+   cpsw_misc_interrupt from __handle_irq_event_percpu+0x74/0x378
+   ...
+   __setup_irq from request_threaded_irq+0xbc/0x170
+   request_threaded_irq from devm_request_threaded_irq+0x70/0x104
 
-Patch 1 removes the packetdrill tests that assert the reverted
-behaviour, patch 2 is the revert itself.
+On a BeagleBone Black the CPTS registers read control=0x1, int_enable=0x1
+and intstat_raw=0x1 in cpts_create() after the kexec, with one event
+queued.
 
-[1] https://lore.kernel.org/regressions/4F0FAEB6-A13B-47F3-BFF1-C706686C6F64@gmail.com/
+Mask the CPTS interrupt and drain the FIFO in cpts_create(), before
+either cpsw driver requests the IRQ. cpts_register() unmasks it again
+once the pool exists. The CPTS is left enabled: clearing CPTS_EN at this
+point made TS_PEND_RAW read back as set, which would hand the handler a
+bogus event.
 
-Signed-off-by: Esko Mobius <echoowall@gmail.com>
+Masking alone is not enough, as the interrupt may already be latched by
+then, and clearing the wrapper's misc_en before requesting the IRQ does
+not help either, since cpsw_misc_interrupt() sets it again on the way
+out.
+
+Fixes: 84ea9c0a95d7 ("net: ethernet: ti: cpsw: enable cpts irq")
+Signed-off-by: Hung-Chun Tseng <alan.tseng.cs@gmail.com>
 ---
-Esko Mobius (2):
-      Revert "selftests: net: packetdrill: add tests for advertised MSS with PMTU exceptions"
-      Revert "net: advertise TCP MSS from the configured MTU, not the learned PMTU"
+Tested on a BeagleBone Black (AM335x, cpsw_new) on top of net 7076f684d5:
 
- include/net/ip.h                                   | 25 --------
- include/net/ip6_route.h                            | 37 ------------
- net/ipv4/route.c                                   |  4 +-
- net/ipv6/route.c                                   |  2 +-
- .../net/packetdrill/tcp_advmss_pmtu_ipv4.pkt       | 67 ----------------------
- .../net/packetdrill/tcp_advmss_pmtu_ipv6.pkt       | 67 ----------------------
- 6 files changed, 3 insertions(+), 199 deletions(-)
----
-base-commit: 7076f684d5132e6a6145e1da2fa74771ecd052e5
-change-id: 20261026-advmss-revert-5805de17369f
+ - Cold boot from U-Boot: probe and link come up and /dev/ptp0 is
+   registered, as before.
+ - kexec_load from a kernel without this patch into one with it, and from
+   a patched kernel into itself: no oops, link comes up, /dev/ptp0 is
+   registered and its time advances.
 
-Best regards,
---  
-Esko Mobius <echoowall@gmail.com>
+Without the patch the kexec'd kernel oopses as quoted above on every boot.
 
+Not tested: the legacy cpsw driver, and Keystone netcp_ethss, which also
+calls cpts_create(). The CPTS_EN behaviour described above was only
+observed on AM335x.
+
+How this was made: the investigation, the fix and this description were
+done with an AI coding assistant (Claude Code) driving my board. Three
+earlier attempts (clearing misc_en at probe, clearing CPTS_EN, draining and
+then clearing CPTS_EN) were tried on the hardware and dropped; the register
+values quoted above come from a debug print added for that. I have
+reviewed the patch and can answer for it.
+
+ drivers/net/ethernet/ti/cpts.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/ti/cpts.c b/drivers/net/ethernet/ti/cpts.c
+index 2ba4c8795d..3cc908ac90 100644
+--- a/drivers/net/ethernet/ti/cpts.c
++++ b/drivers/net/ethernet/ti/cpts.c
+@@ -747,7 +747,8 @@ struct cpts *cpts_create(struct device *dev, void __iomem *regs,
+ 			 struct device_node *node, u32 n_ext_ts)
+ {
+ 	struct cpts *cpts;
+-	int ret;
++	u32 high, low;
++	int ret, i;
+ 
+ 	cpts = devm_kzalloc(dev, sizeof(*cpts), GFP_KERNEL);
+ 	if (!cpts)
+@@ -779,6 +780,17 @@ struct cpts *cpts_create(struct device *dev, void __iomem *regs,
+ 	if (ret)
+ 		return ERR_PTR(ret);
+ 
++	/* After a kexec the CPTS may still be running from the previous
++	 * kernel, with its interrupt enabled and events in the FIFO. The misc
++	 * IRQ is requested before cpts_register() sets up the event pool, so
++	 * mask the interrupt and drop the stale events now.
++	 */
++	cpts_write32(cpts, 0, int_enable);
++	for (i = 0; i < CPTS_FIFO_DEPTH; i++) {
++		if (cpts_fifo_pop(cpts, &high, &low))
++			break;
++	}
++
+ 	cpts->cc.read = cpts_systim_read;
+ 	cpts->cc.mask = CLOCKSOURCE_MASK(32);
+ 	cpts->info = cpts_info;
+-- 
+2.43.0
 
