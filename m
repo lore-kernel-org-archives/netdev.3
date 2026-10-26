@@ -1,58 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792989234;
-	b=QZK4xXu0zcNyVFgyjpTAL28WXDECy3FSG5Qwq+1Vun189R/pNLIshzLb/NQHwPWUgvSB
-	 f+cBl3phio0WTcSJIYaMWK5m/V7nqrsaueuVZgnY5jkMCn0N0f/gjDfrvLb5iF1PvLkPJ
-	 nsTXySkoSo4bKZVn7jHMziAqtkpieoR7yaZRvFvkLOK3qoMgl4c2zwHPwndSDwmzTtY7+
-	 9mz1fkP9Z9B4Gy69FQ8XiWDdsGtuTQgsZfxnmmoOVTyX0JzceBuXCh8pMUe8q/Ov0bVZ8
-	 R3KYbw+9KGr4xEwmculnz8slYic6ThaLLVqYR6ll9hG0f8C0vTavLOLSb6a53d+d8rw==
+	t=1792989794;
+	b=pCZUP5/obnEVQZni38C/AqV5sjqXNrCJE3LoHQtaTI0vIFGES7E9vIfQZV+eYebdZXMX
+	 1doJOd1Q0sRdWpYDXzXvwCYEZ3TR89c/v0vhZg1Fa3/xR1t3lUPMrX3znpl5h/Em78YSM
+	 IObWqPDVLcgBBvD2NYW7ulKYg4QvveQICeVdtCJaCRsR1sBgW8aDEY7Uw6+m8ZOqrf40e
+	 jYnO2QFmTVd9evqPTyxKzR//Qs6ICqw8DPIuKq0DZTmtB620oKWMjjc6cUlShU1z6KtkJ
+	 H/HzeCLoO6L4tUvx25yh/YlOwc2pMTz6zaDyiyDzn1/alez/qe5VZQJ/IjGyYgSNveA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792989234;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792989794;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=zp+JxXwgQx3uq+loHTFsBZclGNcJgzZQrarebs928zE=;
-	b=w3H2lUcQJjfULgo6jqgOfhzooX9JDr01k88VXAv4gkSiZNsyxSDJUX79QpPkupkFIZcW
-	 YfUchaqC6W/LDxbiBtEaCllbuGo+dPWiLZLTOlyJjK24unVQiWJfWSAKyET1t1XUYLgHx
-	 gHVfOHpOEJGMGw3E5phY4hkOzoYvuSxolNmCc8vjp7Ew/FfMzh6RuEv4f+RbwDagSN6JJ
-	 XV5nWqsb/4cx45X4181xTMzuJdPypwGS+PAQcIstPJ4VZWGv/xC82bjcNP9Mj+ZwQjhY+
-	 +azQJrVKsZY8JfxIzxS7gw1baz/2IGeprF43XvMUrR+zCaS8EjN8SFEDeMWwxMlubZg==
+	bh=C3wmcsq5M8ZYfUOpWBYK3fngZJLQioceUB0ZD5J5oxY=;
+	b=BPFdYk+WCxKeSusI+bKVYoeGrRk74e3PHDEjbP2w9DtcQSQNFazbpyRTi/msmPrFrqNh
+	 etNSzKetbniRzRtmy/AS2uVwcqpDi6uJLL+SykYg1/vJCMdQH00mMW8o/YD8mzcq/jeOK
+	 Mc1oCgLZVXCjq/ZshW6G9TRIWVtqCqVAXO29WCoaeewAItr+4fJdFkizcT0oBrdzdpJ5D
+	 kxWmQCK9Fd88h7HJUcbogZLZSflZ3ZmKOM+8MUcujXt0dyfnd96/4Gcuca7XIPbVT8yWw
+	 V3CdU3rD5FRmFPtXRzJIjTfnXr6Pjrd3jr7JSAqnAvVpZJl8JXIB7iZcCREAzLIS27A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VoahMzMk;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UL62WYR9;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F39606A31A;
-	Mon, 26 Oct 2026 04:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4CE606A31D;
+	Mon, 26 Oct 2026 04:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VoahMzMk
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 906C01F01825;
-	Mon, 26 Oct 2026 04:33:52 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UL62WYR9
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 223621F01828;
+	Mon, 26 Oct 2026 04:43:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792989233;
-	bh=zp+JxXwgQx3uq+loHTFsBZclGNcJgzZQrarebs928zE=;
+	s=k20260515; t=1792989793;
+	bh=C3wmcsq5M8ZYfUOpWBYK3fngZJLQioceUB0ZD5J5oxY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=VoahMzMkvtdPbsD3uSmbKUJQqC5mf52O/YL/1w1xNSNqbIunhBSWoIVGr2d2DIAG/
-	 1RvJrSiH3lJ7v6EESg0qLGws2oATxslZQG3E5qJb9pQwmuhf+AWcPN8umgfBmpMNlo
-	 xmAv/yeAZ4czaj2Ge+2/gVK055CRKO7jXTggNvz55lKUVECagb6aUAVqAt05nt7u6k
-	 grgZRXCW6SasKmRSo2Y51Bw4poS9LMXJQewIi61XNQcpMEbg2OVUdF0g348amJkdfs
-	 y5hK0pLMVf1mMd4N0UcKwTDI5GIwcCFtoXnvv/8Swn+lOs304Fjw5JSUF9m9aJ8S5q
-	 zup1RDlEGSmwQ==
-Subject:
- Re: [PATCH] net/smc: fix possible recursive locking in __smc_lgr_terminate()
+	b=UL62WYR9wHfUyvGclkHE1jqewvO1f/PQouXboKg+eXXL851glUWbZLagl/vmJ06Xn
+	 m2BX4428qvRssyYYY56MLZPtasqi4TXS+eTuJegDjDD1cielm8KjwXUblSvayj4nKY
+	 UWE5AgWBLN8mIgt1YWuxbQbZdzJQ0QQpRcGbxHfRT+1hXLaP6cJGXE9hkZ4uFcF4Db
+	 E7ty4j15M6qNI3yUBEZZy6qh31vyNFf6uIa/VnCB0TPkC+EPXG8bCsatgRe20ld2oo
+	 H7CbkwVZSUAkTm9xumMMmvbynUDpe24HlIhn49bhfh7l2mp1MbSnnj+I53jNhxHGLG
+	 KTMcpLO3Gq9Nw==
+Subject: Re: [PATCH net] Subject: [PATCH] octeontx2-af: fix TX scheduler queue
+ index mask for 2K schedulers
 From: netdev-bot+sashiko@kernel.org
-To: anferneemelokc5@gmail.com
-Cc: alibuda@linux.alibaba.com, dust.li@linux.alibaba.com,
- sidraya@linux.ibm.com, mjambigi@linux.ibm.com, tonylu@linux.alibaba.com,
- guwen@linux.alibaba.com, linux-rdma@vger.kernel.org,
- linux-s390@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, kuba@kernel.org
-Date: Mon, 26 Oct 2026 04:33:52 +0000
-Message-ID: <179298923209.3134.328428879251012130@kernel.org>
-In-Reply-To: <179290097759.51540.15412712294727302463@gmail.com>
-References: <179290097759.51540.15412712294727302463@gmail.com>
+To: kmahammadraf@marvell.com
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, sgoutham@marvell.com,
+ rkannoth@marvell.com, gakula@marvell.com, sbhatta@marvell.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, skoteshwar@marvell.com
+Date: Mon, 26 Oct 2026 04:43:12 +0000
+Message-ID: <179298979262.3134.248662363515081325@kernel.org>
+In-Reply-To: <20261022042653.2640537-1-kmahammadraf@marvell.com>
+References: <20261022042653.2640537-1-kmahammadraf@marvell.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -69,7 +68,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 3 · Medium: 0 · Low: 0
+Critical: 0 · High: 1 (1) · Medium: 0 · Low: 2
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -77,173 +76,169 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The commit message says smc_conn_free() always unregisters
-  new_smc from lgr->conns_all before early cleanup, so…
-- [High] The new annotation in __smc_lgr_terminate()
-  (net/smc/smc_core.c:1582) creates the lockdep dependency sk_lock-…
-- [High] The new nesting annotation covers only the first acquisition of
-  the per-connection socket in __smc_lgr_terminate()…
+- [High] Incomplete fix: the patch widens only the child scheduler index,
+  which comes from the register address (TXSCHQ_IDX_MASK becomes 11 bits…
+- [Low] The patch is a 'fix' for a user-visible bug on hardware the tree
+  already supports, but it has no Fixes: tag.
+- [Low] Submission/tag problems in the commit message: (1) The subject
+  literally reads 'Subject: [PATCH] octeontx2-af: fix TX scheduler queue…
+
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but
+  rvu_mbox_handler_nix_txschq_cfg() validates the hierarchy on the raw…
 
 --
 
-net/smc: fix possible recursive locking in __smc_lgr_terminate()
+Subject: [PATCH] octeontx2-af: fix TX scheduler queue index mask for 2K schedulers
 
-The patch switches the per-connection lock_sock() in __smc_lgr_terminate()
-to lock_sock_nested(..., SINGLE_DEPTH_NESTING). The goal is to silence a
-syzbot lockdep "possible recursive locking" report in the SMC listen path.
-The commit message argues that the socket locked there is always a
-different instance from the one the caller already holds.
+CN20K raised the number of TX schedulers per layer from 1K to 2K. To
+match, this patch widens TXSCHQ_IDX_MASK from 10 to 11 bits and extends
+NIX_TX_SCHQ_MASK to cover bit 26.
 
-> diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
-> index 6021322253e93..64c5ee592e641 100644
-> --- a/net/smc/smc_core.c
-> +++ b/net/smc/smc_core.c
-> @@ -1579,7 +1579,7 @@ static void __smc_lgr_terminate(struct smc_link_group *lgr, bool soft)
->  		smc = container_of(conn, struct smc_sock, conn);
->  		sock_hold(&smc->sk); /* sock_put below */
->  		read_unlock_bh(&lgr->conns_lock);
-> -		lock_sock(&smc->sk);
-> +		lock_sock_nested(&smc->sk, SINGLE_DEPTH_NESTING);
+> Subject: [PATCH] octeontx2-af: fix TX scheduler queue index mask for 2K schedulers
+
+[ ... ]
+
+> Signed-off-by: kmahammadraf <kmahammadraf@marvell.com>
+> Signed-off-by: Satha Rao <skoteshwar@marvell.com>
+
+[Severity: Low]
+This isn't a bug, but the mail header ended up in the commit subject:
+
+  Subject: [PATCH] octeontx2-af: fix TX scheduler queue index mask ...
+
+Since this is a fix, should it also be sent as [PATCH net]?
+
+The first Signed-off-by uses kmahammadraf, which isn't a real name as
+submitting-patches.rst asks for. It also doesn't match the author.
+
+If kmahammadraf wrote the patch, should the From: say so? If both people
+contributed, is a Co-developed-by: tag missing?
+
+[Severity: Low]
+Should this have a Fixes: tag?
+
+CN20K NIX support is already in the tree. nix_setup_txschq() sizes
+schq.max from the NIX_AF_*_CONST registers, so CN20K can already hand out
+scheduler queues >= 1024. With the old 10-bit TXSCHQ_IDX_MASK and a
+NIX_TX_SCHQ_MASK that leaves out bit 26, the AF would either reject a
+queue the function really owns or program schq - 1024.
+
+Could this get a Fixes: tag pointing at the commit that enabled CN20K TX
+scheduler handling, and target the net tree, so the stable tooling picks
+it up?
+
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+> index cece197d1074..1b62f9d7f00a 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+> @@ -1164,7 +1164,7 @@ struct nix_txschq_config {
+>  	u8 lvl;	/* SMQ/MDQ/TL4/TL3/TL2/TL1 */
+>  	u8 read;
+>  #define TXSCHQ_IDX_SHIFT	16
+> -#define TXSCHQ_IDX_MASK		(BIT_ULL(10) - 1)
+> +#define TXSCHQ_IDX_MASK		(BIT_ULL(11) - 1)
+>  #define TXSCHQ_IDX(reg, shift)	(((reg) >> (shift)) & TXSCHQ_IDX_MASK)
 
 [Severity: High]
-The commit message says:
+The child index is now 11 bits, but does the parent index need the same
+change? is_txschq_hierarchy_valid() still cuts the parent read from the
+PARENT register value down to 9 bits:
 
-  smc_conn_free() unregisters new_smc from lgr->conns_all before the
-  early cleanup, so __smc_lgr_terminate() walks the remaining
-  connections and locks another socket, not the one already held.
-
-Is that always true? smc_conn_free() only unregisters the conn while
-lgr->list is still non-empty:
-
-net/smc/smc_core.c:smc_conn_free() {
+drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c:is_txschq_hierarchy_valid() {
     ...
-	if (!list_empty(&lgr->list)) {
-		smc_buf_unuse(conn, lgr); /* allow buffer reuse */
-		smc_lgr_unregister_conn(conn);
-	}
+	schq = TXSCHQ_IDX(reg, TXSCHQ_IDX_SHIFT);
+    ...
+	parent = (regval >> 16) & 0x1FF;
+	/* Validate MDQ's TL4 parent */
+	if (regbase == NIX_AF_MDQX_PARENT(0) &&
+	    !is_valid_txschq(rvu, blkaddr, NIX_TXSCH_LVL_TL4, pcifunc, parent))
+		return false;
     ...
 }
 
-Suppose the peer answers ACCEPT with a CLC DECLINE that has
-SMC_FIRST_CONTACT_MASK set. That arrives while smc_listen_work() is
-waiting for CONFIRM and still holding new_smc->sk:
+After that, rvu_mbox_handler_nix_txschq_cfg() writes the full, unmasked
+regval with rvu_write64().
 
-smc_listen_work()
-  lock_sock(&new_smc->sk)
-  smc_clc_wait_msg()
-    smc_lgr_terminate_sched(smc->conn.lgr)
-      list_del_init(&lgr->list);
-      lgr->freeing = 1;
-      schedule_work(&lgr->terminate_work);
-  smc_listen_decline()
-    smc_conn_abort()
-      smc_conn_free()        <- lgr->list empty, conn stays in conns_all
-      smc_lgr_cleanup_early()
-        __smc_lgr_terminate()
-          lock_sock_nested(&new_smc->sk, SINGLE_DEPTH_NESTING)
+nix_setup_txschq() takes schq.max from the NIX_AF_*_CONST registers, so on
+CN20K, TL4/TL3/TL2 indices of 512 and above can be allocated. On the PF/VF
+side, otx2_txschq_config() encodes the full parent as parent << 16.
 
-smc_lgr_terminate_sched() does not set lgr->terminating. If
-terminate_work has not run yet, __smc_lgr_terminate() gets past its
-terminating check, and rb_first(&lgr->conns_all) can return new_smc's own
-conn.
+Say a PF or VF uses TL4 600 as an MDQ parent. The AF checks who owns TL4
+88 instead. Would that reject a valid config with NIX_AF_INVAL_TXSCHQ_CFG?
+Or would it pass only because TL4 88 happens to belong to the same
+function?
 
-smc_conn_abort() computes lgr_valid before it calls smc_conn_free(), so
-the early cleanup still runs on this path.
+The reverse case also looks possible. A VF that owns parent X < 512 could
+send X + 512 * k. The AF checks X, but hardware gets a parent that may
+belong to another function. Does that break the cross-function isolation
+that is_valid_txschq() is meant to enforce?
 
-Wouldn't the kworker then sleep forever in __lock_sock(), waiting for a
-socket lock it already owns?
+The SMQ flush walk uses the same 9-bit decode:
 
-lock_sock() is just lock_sock_nested(sk, 0), so this change doesn't
-alter runtime behavior. It only changes the lockdep subclass, which hides
-the self-recursion report in this case.
-
-Would the fix need to make sure the caller's own conn is unregistered, or
-skipped in __smc_lgr_terminate(), rather than annotating the lock?
-
-[Severity: High]
-Can this annotation create a lockdep ordering inversion against
-smc_release()?
-
-With this patch, the listen and connect paths record
-sk_lock-AF_SMC -> sk_lock-AF_SMC/1:
-
-smc_listen_work()
-  lock_sock(&new_smc->sk)                              subclass 0
-  smc_listen_decline()->smc_conn_abort()->smc_lgr_cleanup_early()
-    __smc_lgr_terminate()
-      lock_sock_nested(&smc->sk, SINGLE_DEPTH_NESTING) subclass 1
-
-smc_release() already records the opposite order when it closes a
-listener that still has non-accepted children:
-
-net/smc/af_smc.c:smc_release() {
+drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c:nix_smq_flush_fill_ctx() {
     ...
-	if (sk->sk_state == SMC_LISTEN)
-		/* smc_close_non_accepted() is called and acquires
-		 * sock lock for child sockets again
-		 */
-		lock_sock_nested(sk, SINGLE_DEPTH_NESTING);
+		if (parent_off) {
+			regval = rvu_read64(rvu, blkaddr, parent_off);
+			schq = (regval >> 16) & 0x1FF;
+		}
     ...
 }
 
-smc_release()
-  lock_sock_nested(sk, SINGLE_DEPTH_NESTING)           listener, subclass 1
-  __smc_release()->smc_close_active()->smc_close_cleanup_listen()
-    smc_close_non_accepted()
-      lock_sock(sk)                                    child, subclass 0
+With parents >= 512, the saved and restored CIR/PIR offsets would point at
+other schedulers. nix_smq_flush_enadis_xoff() would also skip the wrong
+TL2, so the real TL2 of the SMQ being flushed could get XOFF'd. Could the
+flush time out, and could other functions' rate limits be zeroed and then
+restored?
 
-Lockdep keeps these dependencies for the whole boot. Once both orders
-have been seen, wouldn't it report a possible circular locking dependency
-between sk_lock-AF_SMC and sk_lock-AF_SMC/1, triggered by the same syzbot
-scenario?
+The NIX_AF_MDQ/TL4/TL3/TL2_PARENT_MASK definitions in rvu_reg.h (9, 8, 8
+and 5 bits wide) look too narrow for 2K schedulers per layer as well.
 
-The sockets involved are different instances, so this may not be a real
-deadlock. The splat would still fire, though, and lockdep would turn
-itself off afterwards.
+The tree doesn't document the CN20K PARENT field width. Still, with 2K
+TL4s per layer, the MDQ PARENT field has to hold TL4 indices up to 2047,
+so a 9-bit decode doesn't fit the premise of this patch.
+
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+> index 95f782d47927..a1d68afd7c9e 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+> @@ -2850,9 +2850,9 @@ static void nix_tl1_default_cfg(struct rvu *rvu, struct nix_hw *nix_hw,
+>  }
+>  
+>  /* Register offset - [15:0]
+> - * Scheduler Queue number - [25:16]
+> + * Scheduler Queue number - [26:16]
+>   */
+> -#define NIX_TX_SCHQ_MASK	GENMASK_ULL(25, 0)
+> +#define NIX_TX_SCHQ_MASK	GENMASK_ULL(26, 0)
 
 [Severity: High]
-Does the nested annotation cover the whole time this socket lock is held?
+This is a pre-existing issue, not one this patch introduced.
+rvu_mbox_handler_nix_txschq_cfg() runs the hierarchy check on the raw
+request regval, and only then merges in the caller-controlled
+regval_mask:
 
-smc_conn_kill() calls smc_close_active_abort(). For SMC_ACTIVE,
-SMC_APPCLOSEWAIT1/2, SMC_PEERCLOSEWAIT1/2, SMC_PEERFINCLOSEWAIT,
-SMC_PROCESSABORT and SMC_APPFINCLOSEWAIT, that goes through
-smc_close_cancel_work():
+		if (!is_txschq_hierarchy_valid(rvu, pcifunc, blkaddr,
+					       txsch->lvl, reg, regval))
+			return NIX_AF_INVAL_TXSCHQ_CFG;
+		...
+		val = rvu_read64(rvu, blkaddr, reg);
+		regval = (val & val_mask) | (regval & ~val_mask);
+		...
+		rvu_write64(rvu, blkaddr, reg, regval);
 
-net/smc/smc_close.c:smc_close_cancel_work() {
-	release_sock(sk);
-	if (cancel_work_sync(&smc->conn.close_work))
-		sock_put(sk);
-	if (cancel_delayed_work_sync(&smc->conn.tx_work))
-		sock_put(sk);
-	lock_sock(sk);
-}
+For a PARENT register, can the parent that gets written differ from the
+one that was checked?
 
-The release_clcsock branch at the end of smc_close_active_abort() also
-takes the lock again with a plain lock_sock(sk).
+For example, say the child's current parent is 1 (bit 16 set) and the
+caller owns parents 1 and 2. The caller sends regval = 2 << 16 with
+regval_mask = 1 << 16. is_txschq_hierarchy_valid() approves parent 2.
+The merge then keeps bit 16 from hardware and bit 17 from the request, so
+parent 3 is written and its owner is never checked.
 
-Both of these take the conn socket again at subclass 0, while
-smc_listen_work() still holds new_smc at subclass 0. Wouldn't lockdep
-then report the same "possible recursive locking detected", this time
-from smc_close_cancel_work()?
-
-This looks reachable for SMC-D, because smc_listen_work() drops
-smc_server_lgr_pending right after sending ACCEPT:
-
-	/* SMC-D does not need this lock any more */
-	if (ini->is_smcd)
-		mutex_unlock(&smc_server_lgr_pending);
-
-Another connection can then join the first-contact lgr and become
-SMC_ACTIVE. If this handshake later fails, for example on a CONFIRM
-timeout, a failed smc_clc_v2x_features_confirm_check() or a failed
-smcd_buf_attach(), this path kills the SMC_ACTIVE conn:
-
-smc_listen_decline()->smc_conn_abort()->smc_lgr_cleanup_early()
-  ->__smc_lgr_terminate()
-
->  		smc_conn_kill(conn, soft);
->  		release_sock(&smc->sk);
->  		sock_put(&smc->sk); /* sock_hold above */
+MDQ, TL4 and TL3 sit below nix_tx_aggr_lvl, so a VF can reach this path.
+Could a VF use it to attach its scheduler under another PF's or VF's
+scheduler?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/179290097759.51540.15412712294727302463%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261022042653.2640537-1-kmahammadraf%40marvell.com
