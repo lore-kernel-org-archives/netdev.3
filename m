@@ -1,100 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.175
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793010605;
-	b=cu7eu7BiwKmwNTeXd+yoau9jy6h2PVgvAZcapOPNNAqj4ngnPr6k27CHUCpMEmYBqrdX
-	 igw6pCPcEU6zHXvFtjV64NJd5s1+JCO0rLY4/h1n1/vtGlGWvOI9BeYTiA+iy6QYVA+mC
-	 GPcr+/B8XDxXyVYnDJrgAvZjZ0gFlUtSvAe61jCmKFXI6uRIE+WwcGRzI1wkhch7Y/qnz
-	 bw7s6qby+vwIECC+qfutYahnzfP8yc9NFSoz82NwjeFiBLLYOMZLO99WvOWYx6q3sRhwF
-	 /EITL8no8NyIa3F9GrmjUzjWSHirPMuJo1RBlQqJVW0pG00JC6z0V49dnqi4zpb9c2A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793010605;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.215.170
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793010725;
+	b=jbtwIx4fGkVmczjpD/1huVdboazVZ5EGSxa4BpDDommLc5yRQU/yUZviw0z8lWNP4AVJ
+	 6TdrivlcIAMJndPLvI9n8gHR7YRB1lMBPeyiL03VXsyNC6ueCWkNlvCHRDTR447KaZYLM
+	 X5HsMilCRO1Mswb0p6KlnIR2BZuTWHYVP14baYVUkO5sarOJgjp7vUDtUwMs4YA3pobAs
+	 67h8uUahI8eMB4W7bptOphsKp8yUirHRuBMuf61eaSsQgohcNvWGCZm5cV37v33TPSbdN
+	 ziYIjzOF1B1k3TVoHCq/18VjA+W7f06W4oH/vsVOz9mtmU8a4S77ZT36LnwQJt42PVA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793010725;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=NDSA+pzge1C0zTEnSXsB3WKAsTlM2nQWx+uXvGZECG4=;
-	b=a66SKkC6CHUUkjGU2Etj+av2a2+Xxlt8Wfx6XQwUycmBA3x3mtN+wYwpnoA+2oSodyM1
-	 yFYmu9+SHqxbBs/Q+/0jf13s3GMz3a/PygpmD2U7Ci+KF6W0uUSsc9Wkb+HgwMhjFgRm8
-	 0RTiX5WywQE2E/ZRVODu0jrddZd57iDS4uwYuZ6KFHXhfhHBezxvqfbS/EOwgmexnnenV
-	 2suTWOBot+rw9wy+MpsP56bHFzfz+WNoiT8tSg04V6qENqjXqK27ma5dvbfCJaSQQKHrf
-	 f2i9Pjs+qzbOPNU38Oj0QtBqOifdnPIFWBGnW6uLxaH0BeVLb97I1ckwA9Xdt28AuhA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=BcFpsY2B;
-	arc=none smtp.remote-ip=209.85.210.175
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=kwVoiFtZibPxzjC3HTNLln9OSCPJ9BfH6erlXGNSsR4=;
+	b=e9jAF2uR4V2XB1DBiimkE3fP2NIkyXpq8XJKNU4uiAkbevhlEdfGMUIenHGptiEE8I5p
+	 5GB8VJT8lIrvxvFmbx7F5BbCiAm4cFV8g039OpCGinzDm9zWigIa8kEvOKKuL9jzo+8LI
+	 1yugw3Tv6R347VjIxYBk+oBceqr/H3y8+ySOoNs/v+bqEHjkO1YI13xU2GuklkUhBvxwg
+	 f5+1FENf/GW1no/BHhBES3h93vESxzPa06i3awDYtdYgJcNYBlByDq6WqEj9Tz3POUvOz
+	 t8LX4wvICj8C8tUaIqEtrnkNABmwtacfWQSujmWGH0lFeTEtnp9EqpN9VEOB3jUod6w==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=mojatatu.com;
+	spf=none smtp.mailfrom=mojatatu.com;
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=H7Gfj7eT;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.215.170
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4001606A324
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 10:30:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E4001606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B17606A324
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 10:32:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 69B17606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=BcFpsY2B
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-8a06210b29fso1015685b3a.1
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 03:30:04 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=H7Gfj7eT
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-cc4aa18f9afso1050434a12.3
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 03:32:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793010724; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Hbyoqqxrv5IhXxY0UVDmp3MCC5tLXWYGfi7xNW4XpDY1r57rvZy9K9iJ607PDWbsCd
+         kLYfOkDk0Byj7bGbxmk/VOH/JQs2mENsaHax5i0aFt7TbUPzHKoxhzNyz5MYIanlMET6
+         N5thqkwfNW5Nk1oyE5enrw9LVRyRo32ltgb7etHeoTjDcYKkEzoKkSKKAf4uQnAh+WSv
+         UB2UqdvhIhmVf+Q9hI1lzJI5kOkm/KOrOPuuGs6x6S76Es1sPgj+tzEsNFdMJJDRsS6l
+         V3p+SZr5rHtA1qc41QDWoLCVpr+gLNTxMh5ke51E9K9TMfvD/NHwZ3vB9lPM8OwzNmVu
+         Lg1g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=kwVoiFtZibPxzjC3HTNLln9OSCPJ9BfH6erlXGNSsR4=;
+        fh=KH6pubcg8crNZsy+056e8LwHKXhZIQf6v1SS6bAeJ4o=;
+        b=s6R4AUh9cGTdTiovtKUFgio/Iia+eq3+mKByeBJ3Yp2ZtYX1+WQcZOBDfXLIqMoH2l
+         rszZDDNlO145vznKvjZVdMo64At5pfFKHyhMIiI7ZihynqCdlxSTJucLtD7DFcUk+lNj
+         rVqsAIgrmGX3EbqIv4/YbaLxrsB0kInkYhrVRa1YOodXjx0w3ywfVKq6rk62NOGEwyU1
+         piNYLiYmvufVpVivd5aK1tAJuS4XNi5I/d00RcxE54gXhIV65AUm82QcUcP7VOvTZApV
+         ubrKJ3WYsZco26M/pXirO4dLIdmQjdKiDwwDz1FR1Yv9l6sgA2/CmsH/Xj2KP+P3tRLD
+         8ZNA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793010604; x=1793615404; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=NDSA+pzge1C0zTEnSXsB3WKAsTlM2nQWx+uXvGZECG4=;
-        b=BcFpsY2BMaqSEmqQx5qNCvNjQnYLWc9QDvOUWbRzUBasLilpoTUeSQ+Ri4YnLxOFDs
-         De7d1+Wl2XycUVlgRVsUQjM5jqXrbQCqgS6b4Hohm4wAEVRh83m3BxqR1RcSOR4PIotq
-         2bEiYYZkax1er7W4aRdE5JjBi4B0ICknjoH9S6FZkBhfYjMu5TvlTJni7/PwRnvZyfTj
-         lISOXwruO24sdXkcl+c7uvjdt20HfyXGDF3nhKiTOLUIDc2rNNjLytAXtqVBErkmBH10
-         oI6+M3tfySQwNG7ZgJTaQja7CWJSdl5CAoxnsa1D84Cjm+gnJL/kIMpWRyCQEQep4Mwl
-         wazg==
+        d=mojatatu.com; s=google; t=1793010724; x=1793615524; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=kwVoiFtZibPxzjC3HTNLln9OSCPJ9BfH6erlXGNSsR4=;
+        b=H7Gfj7eTuhByc7aUg+GCjYfRMu8fFjWC/14n/SesDTH4yD28GvwqzBxHrCVlBSgT5z
+         /T5mZnJ4gfDjFipblEdlAVU8pZamVerjmEIET2rM6Ux/aB0/M6gEwDSLw/Puyeonx08j
+         I5qyDPVUMWKdTttVLVbdePuxM4zaRryuOzea0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793010604; x=1793615404;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=NDSA+pzge1C0zTEnSXsB3WKAsTlM2nQWx+uXvGZECG4=;
-        b=ich0YhLrm7leQ4o9TM446A+cTMW3rVTRubgbNf121dBwQKwFjk3PWtT0yJMurNJ9jS
-         uL9RShxLVBfZtd0dizgyYr6zzJhybdz1K3cLVbPQ+L8tWONryc6PdXTaArArIhDMXGi7
-         BSZfHHUzn5CbYlVLHF99UwpXGrA2fF3kgd9mnOu3KyXq1ODmV7KERhoINLMspgH6XHPk
-         +kVHx7wUHziYlENHlrY9GEIz38ptKqd5gRjj7/HMqCM3CpCLzmtqaoOxu+/3S05/5lo1
-         CwMaVarBO7GKySxmntGr5ICf6ZVp70qYup0BhXUvVMWkdkQN38tvAFQoo086svv1ZYyp
-         1m6A==
-X-Forwarded-Encrypted: i=1; AKwUvBxEKAEyzBwBbVn5lA74wNVhCSYP+H/yO3C++mzkLmniWy5JeNHcTXpQRG7M0jmx0AtkYgGGJ7s=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIy1gTsxmBxwp1VqyvpEtYjqlAvStuNTP6dNUrrVvgi5tvitwkn
-	aslYiiZrZLOBfGFPOyxOM7wcqafTKqpAW9p4T9DrFlsP6ijfS45Uk+1Gna+fKELrLgU=
-X-Gm-Gg: AYBFou1AbU105TtHYHNEox2eJWOftxhL6t9dMb8w1BVf+rg+7E6lxUAkIQBwb2zRiBa
-	7Xu063QOfK5XqY4AOOhKkF7kXDgpEK+sp6ej8q6H5IkcD4kBbGOQwI3kVYtNkwEQE5L1H6gpOKz
-	lOXjt83tuvJbHPOgsmeoU0EQ+1IJJOBux70zt+MoJbhFE9tCfHRxU6CJxOvpwYXCszArP1pWe4J
-	S1ByoyhHOnu4kBJCBCp9k3N7OnEMdo5uk0C7LilsZMdsyKFKj3TH48kT4GSbaZsGnF2lLv66hWF
-	zIIi4vmte3jgtEcN3IxDjbFuR1r55U2x+kZlHioBk476xf+Ay/hev1fsK156g0M5AGcH4nmaiQS
-	fMnC3YY0U4yDWI7hBPtAsjqHQW0N21o51ZBAh6yyatuuu0RaGNxUq3dN+qONU6DWyFJA+QjHmho
-	8NUDplOY31oEsGuFqRMtZ5AV4mJgupqST+wP06pbngLJHQHEOGfGWsrut28vapMkwbYcrg5/l/x
-	o/ME1qLWx9OD3lWT8jzP9IFWRUj7P94QjN517I4RQ1wTbPwHmhZpDtMZomvYND+pCs5RI/umWV0
-	fWU=
-X-Received: by 2002:a05:6a00:ad0e:b0:899:9267:3a9d with SMTP id d2e1a72fcca58-8a3695472a8mr4851008b3a.59.1793010604152;
-        Mon, 26 Oct 2026 03:30:04 -0700 (PDT)
-Received: from gmail.com ([223.153.219.249])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a36c0fdfefsm1097110b3a.50.2026.10.26.03.29.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 03:30:03 -0700 (PDT)
-From: Xue Boyang <fuchen.dust@gmail.com>
-To: kadlec@netfilter.org,
-	pablo@netfilter.org,
-	fw@strlen.de
-Cc: netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	phil@nwl.cc,
-	Xue Boyang <fuchen.dust@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH nf v3] netfilter: ipset: fix double free on kernel-side delete during resize
-Date: Mon, 26 Oct 2026 05:29:57 -0500
-Message-ID: <20261026102957.5530-1-fuchen.dust@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261025090609.v2reply.4093.fuchen.dust@gmail.com>
-References: <20261025090609.v2reply.4093.fuchen.dust@gmail.com>
+        d=1e100.net; s=20260707; t=1793010724; x=1793615524;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kwVoiFtZibPxzjC3HTNLln9OSCPJ9BfH6erlXGNSsR4=;
+        b=ZVMofefnByEXu2EZilKfVkJLfnkbX/Xbo4MANOcDeV5aXvotLLWGLiL6NRGK1rRUuj
+         k1yun7oBz5s7mtev09qVqQJWWcPnmN7MQ7hPYVLN+KIogNNLuF1PB4cSfom9vejLFZAL
+         Rlgik0jRoLNm1I41fywY6UlD4N1fM6Pjn1RFb7j9cKQ9v5iD4WQLqTx9MA5VrcRrvEz3
+         SF6I/BjljU6tbSJa4hKc2Otu8WcU9Z6/AnNA3Z9DrquNKRx9ysch0hWaP0wnTn/BC5dy
+         IamvmXmt1UsJcquaA1ubMWk8vWk1rCinY3AD0MqHNsNHRAFN7poPXS8fXZ5RXyKoXx3u
+         GxQA==
+X-Gm-Message-State: AFq9FYJh1guXaD096y+orABh34bT5HSCdFwDbu+3GBUzfy8dlmSzm7vz
+	K+62Ay89a3vDlQahpIoTeBoifwQXqp++P8OQJHY7W0BlXCGILcxvK7TmciOK9cQX4sELm2z+Q26
+	gvHSGz22sbJnr+AP4XIwzLA361+cVO4QAhKCk00J252R+q4GSD/Jsyg==
+X-Gm-Gg: AYBFou1/3gssaX38LZA4FVFJsA1CXMX6iLd2HRLTRqQ5SOaQ6sjsh8gtl3IykSSLp+6
+	TNo2Mv+NjqErUZMlI9KxUWBKUTayZbHjiZa/E+X/OP+WamvKHAGnNbBZF8912w5Pham1hWEuH7C
+	fWeqtJchTG+Gd2lUtg9FnhInJoEmOv5oEoIqJjIwfF6KcO1n61fvnw0UoKsBnXn67Qg0fOBJW89
+	s7Bmp6KzVXdq9AIjgB+jF6WKmByx2Px5E59gQz1q+Z0VYqz2ZzASilB7BU3HrIV8yrd9LYnNxQS
+	TQWo23dxxK9CAQjHJWKY+25twnajvKyQHvExqgMPWOxF9bABYieJZaYolfje2iQM2gzqVcDohQI
+	0LEJ2Zo/A9S88PHr/zp5XMKx6PJgNZJJAyFVLMnMslZy4wHM2ePE9FbVi1WotlIVatBzYKlLaxW
+	PLQUFn1ffQZVdlW9gK
+X-Received: by 2002:a05:6a21:6111:b0:3e2:86b6:9bf4 with SMTP id
+ adf61e73a8af0-3e7bfa64eabmr4670051637.14.1793010723749; Mon, 26 Oct 2026
+ 03:32:03 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,277 +101,121 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <ACT-N6N4.v3.r0.20261023200137@mojatatu.com> <ACT-N6N4.v3.r0.20261023200137-1@mojatatu.com>
+ <ACT-N6N4.v3.r0.20261023200137-2@mojatatu.com> <CAM0EoMnjxmnoZ3a4XCB9YERcCwYhYW8-jKw1UZ79YzhFct9+KQ@mail.gmail.com>
+In-Reply-To: <CAM0EoMnjxmnoZ3a4XCB9YERcCwYhYW8-jKw1UZ79YzhFct9+KQ@mail.gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Mon, 26 Oct 2026 06:31:52 -0400
+X-Gm-Features: AclHuK_YrqRHix7Mh3Yx3ZLSjmRZLvRAdRI9H3tduLWZxKVLN31oQ0yauHEq9G8
+Message-ID: <CAM0EoMkct9bMMZHPRKh3xZ-L5GTX0SeLdnp_NQd+C_QWspHW8w@mail.gmail.com>
+Subject: Re: [PATCH net v3 2/6] net/sched: act_mpls: pull the inner Ethernet
+ header after POP
+To: netdev@vger.kernel.org
+Cc: Jiri Pirko <jiri@resnulli.us>, Victor Nogueira <victor@mojatatu.com>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Martin Varghese <martin.varghese@nokia.com>, Pravin B Shelar <pshelar@ovn.org>, Vega <vega@nebusec.ai>, 
+	Willem de Bruijn <willemb@google.com>, Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-A kernel-side delete, i.e. a delete triggered by the SET target while
-the set is being resized, is applied to the current table and saved in
-the resize backlog, to be replayed against the new table when the
-resize finished. Both tables share the element extensions: the resize
-copies the element to the new table, keeping the pointer to the
-extension data, e.g. to the comment. Deleting the element in the
-current table calls ip_set_ext_destroy() and releases the shared
-extension. The replay then deletes the copy from the new table and
-releases the same extension again, i.e. the same rcu_head is queued
-twice. With CONFIG_DEBUG_OBJECTS_RCU_HEAD (and slub_debug=F, which
-keeps kfree_rcu() off the sheaf fast path):
+On Mon, Oct 26, 2026 at 5:42=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.com>=
+ wrote:
+>
+> On Sat, Oct 24, 2026 at 10:28=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.c=
+om> wrote:
+> >
+> > The issue:
+> > When the configured inner protocol is ETH_P_TEB, act_mpls POP can leave
+> > the inner Ethernet header in a page fragment after skb_mpls_pop(), eith=
+er
+> > on an L3 device (mac_len =3D=3D 0) or chained after act_vlan POP_ETH.  =
+A
+> > following eth_type_trans() can then BUG in __skb_pull().
+> >
+> > The Fix:
+> > After the pop, pull the inner Ethernet header into the linear area only
+> > when p->tcfm_proto is ETH_P_TEB; drop the packet only when that pull
+> > fails.  Other inner protocols (IP, MPLS, ...) have no inner Ethernet
+> > header and must not be required to carry one.  The pull is a no-op when
+> > the header is already linear.
+> >
+> > Conditions to recreate the bug:
+> > - egress tc filter on lo: action vlan pop_eth action mpls pop protocol =
+teb
+> >   (chained), or on an L3 device where mac_len =3D=3D 0.
+> > - AF_PACKET SOCK_RAW with PACKET_VNET_HDR, hdr_len=3D28, and a non-line=
+ar
+> >   eth / mpls / inner-eth frame.
+> > - The inner header is in page frags; a following eth_type_trans() can B=
+UG
+> >   in __skb_pull().
+> >
+> > Fixes: 2a2ea50870ba ("net: sched: add mpls manipulation actions to TC")
+> > Reported-by: Vega <vega@nebusec.ai>
+> > Link: https://lore.kernel.org/r/40fe2d7dfce13411bfbe9271c0f7c54fb7e88e3=
+b.1782548651.git.bronzed_45_vested@icloud.com/
+> > Link: https://lore.kernel.org/netdev/CAL4WiiqSMdYQYeeW0Fk_GK6ekR4xiS4zP=
+rGKrbB9wZknpqf1-w@mail.gmail.com/
+> > Link: https://lore.kernel.org/netdev/willemdebruijn.kernel.26d1ddb3bd2a=
+e@gmail.com/
+> > Cc: stable@vger.kernel.org
+> > Suggested-by: Jakub Kicinski <kuba@kernel.org>
+> > Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+> > Suggested-by: Eric Dumazet <edumazet@kernel.org>
+> > Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+> > Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> >
+>
+> For the series
+>
+> pw-bot: cr
+>
+> Eric, you are reading this? See the discussion with Willem.
+>
 
-  ODEBUG: activate active (active state 1) object type: rcu_head
-  WARNING: lib/debugobjects.c:629 at debug_print_object+0x7b/0x100
-  kvfree_call_rcu(): Double-freed call. rcu_head ffff88810474ce40
-  WARNING: mm/slab_common.c:2041 at kvfree_call_rcu+0x10b/0x140
-  Call Trace:
-   <TASK>
-   debug_object_activate (lib/debugobjects.c:905)
-   kvfree_call_rcu (mm/slab_common.c:2039)
-   hash_ip4_del (net/netfilter/ipset/ip_set_hash_gen.h:1226)
-   hash_ip4_kadt (net/netfilter/ipset/ip_set_hash_ip.c:96)
-   ip_set_del (net/netfilter/ipset/ip_set_core.c:820)
-   set_target_v3 (net/netfilter/xt_set.c:411)
-   ipt_do_table (net/ipv4/netfilter/ip_tables.c:345)
-   nf_hook_slow (net/netfilter/core.c:619)
-   raw_sendmsg (net/ipv4/raw.c:652)
-   __sys_sendto (net/socket.c:2281)
+And to be clear, I am suggesting we fix both the producers and consumers.
+Basically, as established, producers alone cannot protect against the
+eBPF  privileged bpf_skb_adjust_room(..., BPF_ADJ_ROOM_MAC, ...) or
+bpf_xdp_adjust_head() which can re-shrink the head after any producer
+fix.
+And then we dont have to do this ETH_P_TEB check here.
 
-The double free is reachable from an unprivileged user namespace and
-permits local privilege escalation.
+so i am officially withdrawing this until we reach some consensus.
 
-Fix this by deferring the delete when a resize is in progress: the
-element is not deleted in the current table, only saved in the backlog,
-like it is done for kernel-side adds. The resize copies the element
-including its extension pointers, and the replayed delete releases the
-extension exactly once. This also avoids updating the cidr counters
-twice for the same element.
 
-Clearing the used bit of the deferred delete instead is not an option:
-the extension of an element the resize copy loop has not reached yet
-would never be freed, the old table is destroyed with ext_destroy=false
-to protect the extensions shared with the copied elements. The element
-thus stays in the current table until the resize completes, so
+cheers,
+jamal
 
-- a kernel-side add of such an element must be deferred too, otherwise
-  it is rejected with -EEXIST and lost, and the replayed delete removes
-  the element for good, leaving the set without an element the last
-  packet-path operation added;
-
-- the backlog must keep the arrival order of the operations: deferred
-  deletes are queued with list_add_tail() like the deferred adds, so an
-  add followed by a delete of the same element is not replayed the
-  other way around, resurrecting the element.
-
-A resize which is aborted before the new table is in place replays the
-backlog against the original table, which stays the live table, instead
-of dropping it. This covers the allocation failure in the copy loop and
-the early exits of a retry after -EAGAIN, which inherits the backlog of
-the previous attempt: the deferred deletes are the only record of the
-delete there, dropping them would leave elements in the set which the
-packet path believes deleted, and the backlog entries would leak.
-
-The deferred delete reports -ENOMEM when the backlog entry cannot be
-allocated, instead of returning success without deleting anything.
-
-Fixes: f66ee0410b1c ("netfilter: ipset: Fix "INFO: rcu detected stall in hash_xxx" reports")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xue Boyang <fuchen.dust@gmail.com>
----
-
-Changes in v3:
-
-- Drop the non-standard "Assisted-by:" trailer with no email address,
-  which fails checkpatch; the AI assistance is documented in the
-  changelog below instead.
-
-Changes in v2, addressing the review of v1 linked in
-https://sashiko.dev/#/patchset/20261012163353.4093-1-fuchen.dust%40gmail.com :
-
-- Defer the kernel-side add of an element still present in the current
-  table during the resize ("missing clear_bit() breaks operation
-  ordering during resize"). The add was rejected with -EEXIST without
-  being queued, so an add following a deferred delete was lost and the
-  replayed delete removed the element.
-
-- Replay the backlog on all resize failure exits, not only on the
-  allocation failure in the copy loop ("memory leak of deferred
-  operations on resize failure"). The exact path claimed there, an
-  allocation failure of the first attempt, exits before the table is
-  marked resizing and the backlog is empty; the leak is real however
-  for the early exits of a retry after -EAGAIN, which inherits a
-  non-empty backlog from the previous attempt.
-
-- Queue the deferred deletes with list_add_tail() ("backlog replay
-  ordering during resize resurrects deleted elements"). The prepend
-  predates this patch, but the fix relies on the backlog preserving
-  the arrival order, so all deferred operations are now queued FIFO
-  and the failure path replays the full backlog in order instead of
-  dropping the deferred adds.
-
-- Report -ENOMEM when the deferred delete cannot allocate its backlog
-  entry.
-
-The "memory leak of extensions for expired elements" concern is
-preexisting (the resize copy loop skips expired elements and the table
-destroy keeps ext_destroy=false) and is not addressed here.
-
-The reproducer (SET --del-set rule plus a userspace add triggering the
-resize) was run against v7.3-rc5 (mainline tree at 6d25ffca055a):
-before the patch the double free shows up as the warning quoted in the
-commit message and as duplicate objects in the SLUB RCU sheaves; with
-the patch applied it no longer reproduces in repeated runs. The
-reproducer is not attached; it is available and can be shared privately
-upon request. The ordering of the deferred operations and the replay of
-the backlog were verified with a packet-path del+add / add+del
-regression test racing continuous resizes: v1 shows the lost add and
-the resurrected element, v2 shows neither in repeated runs.
-
-Found with AI assistance (DeepSeek V4.1 Flash); the
-patch was reviewed, reproduced and tested by hand.
----
- net/netfilter/ipset/ip_set_hash_gen.h | 77 +++++++++++++++++++--------
- 1 file changed, 56 insertions(+), 21 deletions(-)
-
-diff --git a/net/netfilter/ipset/ip_set_hash_gen.h b/net/netfilter/ipset/ip_set_hash_gen.h
-index 80ca523f304b..f24c51d489e2 100644
---- a/net/netfilter/ipset/ip_set_hash_gen.h
-+++ b/net/netfilter/ipset/ip_set_hash_gen.h
-@@ -764,6 +764,7 @@ mtype_resize(struct ip_set *set, bool retried)
- 	struct hbucket *n, *m;
- 	struct list_head *l, *lt;
- 	struct mtype_resize_ad *x;
-+	LIST_HEAD(backlog);
- 	u32 i, j, r, nr, key;
- 	int ret;
- 
-@@ -786,13 +787,13 @@ mtype_resize(struct ip_set *set, bool retried)
- 	t = ip_set_alloc(hsize);
- 	if (!t) {
- 		ret = -ENOMEM;
--		goto out;
-+		goto drain;
- 	}
- 	t->hregion = ip_set_alloc(ahash_sizeof_regions(htable_bits));
- 	if (!t->hregion) {
- 		ip_set_free(t);
- 		ret = -ENOMEM;
--		goto out;
-+		goto drain;
- 	}
- 	t->htable_bits = htable_bits;
- 	t->maxelem = h->maxelem / ahash_numof_locks(htable_bits);
-@@ -934,20 +935,34 @@ mtype_resize(struct ip_set *set, bool retried)
- 	if (ret == -EAGAIN)
- 		goto retry;
- 
--	/* Cleanup the backlog of ADD/DEL elements */
-+drain:
-+	/* Cleanup the backlog of ADD/DEL elements: replay them in arrival
-+	 * order against the original table, which is still the live table.
-+	 * Kernel-side adds of elements still present are no-ops, the
-+	 * deferred deletes remove the elements. This is also reached when
-+	 * the resize fails early, e.g. on allocation failure in a retry
-+	 * after -EAGAIN: the backlog may still hold deferred operations
-+	 * from the previous attempt.
-+	 */
- 	spin_lock_bh(&set->lock);
--	list_for_each_safe(l, lt, &orig->ad) {
-+	list_splice_init(&orig->ad, &backlog);
-+	spin_unlock_bh(&set->lock);
-+	list_for_each_safe(l, lt, &backlog) {
-+		x = list_entry(l, struct mtype_resize_ad, list);
- 		list_del(l);
--		kfree(l);
-+		if (x->ad == IPSET_ADD)
-+			mtype_add(set, &x->d, &x->ext, &x->mext, x->flags);
-+		else
-+			mtype_del(set, &x->d, NULL, NULL, 0);
-+		kfree(x);
- 	}
--	spin_unlock_bh(&set->lock);
- 	goto out;
- 
- hbwarn:
- 	/* In case we have plenty of memory :-) */
- 	pr_warn("Cannot increase the hashsize of set %s further\n", set->name);
- 	ret = -IPSET_ERR_HASH_FULL;
--	goto out;
-+	goto drain;
- }
- 
- /* Get the current number of elements and ext_size in the set  */
-@@ -1053,6 +1068,19 @@ mtype_add(struct ip_set *set, void *value, const struct ip_set_ext *ext,
- 				j = i;
- 				goto overwrite_extensions;
- 			}
-+			if (t->resizing && ext && ext->target) {
-+				/* Resize is in progress and kernel side add
-+				 * of an existing element: the element may
-+				 * have a deferred delete pending in the
-+				 * backlog and it is going to be copied to
-+				 * the new table, sharing the extensions.
-+				 * Defer the add too, so that the replay of
-+				 * the backlog after resize keeps the order
-+				 * of the operations.
-+				 */
-+				ret = 0;
-+				goto resize;
-+			}
- 			ret = -IPSET_ERR_EXIST;
- 			goto unlock;
- 		}
-@@ -1217,6 +1245,26 @@ mtype_del(struct ip_set *set, void *value, const struct ip_set_ext *ext,
- 			goto out;
- 
- 		ret = 0;
-+		if (t->resizing && ext && ext->target) {
-+			/* Resize is in process and kernel side del: do not
-+			 * delete the element and free its extensions here,
-+			 * the extensions may be shared with the copy in
-+			 * the new table. Save the values, the resize replays
-+			 * the delete against the new table.
-+			 */
-+			x = kzalloc_obj(struct mtype_resize_ad, GFP_ATOMIC);
-+			if (!x) {
-+				/* Don't bother, deleting the element here
-+				 * could free the shared extensions twice.
-+				 */
-+				ret = -ENOMEM;
-+				goto out;
-+			}
-+			x->ad = IPSET_DEL;
-+			memcpy(&x->d, value, sizeof(struct mtype_elem));
-+			x->flags = flags;
-+			goto out;
-+		}
- 		clear_bit(i, n->used);
- 		smp_mb__after_atomic();
- 		if (i + 1 == pos)
-@@ -1224,19 +1272,6 @@ mtype_del(struct ip_set *set, void *value, const struct ip_set_ext *ext,
- 		t->hregion[r].elements--;
- 		mtype_del_cidr_all(set, h, d);
- 		ip_set_ext_destroy(set, data);
--
--		if (t->resizing && ext && ext->target) {
--			/* Resize is in process and kernel side del,
--			 * save values
--			 */
--			x = kzalloc_obj(struct mtype_resize_ad, GFP_ATOMIC);
--			if (x) {
--				x->ad = IPSET_DEL;
--				memcpy(&x->d, value,
--				       sizeof(struct mtype_elem));
--				x->flags = flags;
--			}
--		}
- 		for (; i < pos; i++) {
- 			if (!test_bit(i, n->used))
- 				k++;
-@@ -1273,7 +1308,7 @@ mtype_del(struct ip_set *set, void *value, const struct ip_set_ext *ext,
- 	spin_unlock_bh(&t->hregion[r].lock);
- 	if (x) {
- 		spin_lock_bh(&set->lock);
--		list_add(&x->list, &t->ad);
-+		list_add_tail(&x->list, &t->ad);
- 		spin_unlock_bh(&set->lock);
- 	}
- 	if (atomic_dec_and_test(&t->uref) && t->resizing) {
--- 
-2.53.0
-
+>
+> > ---
+> > v2 -> v3:
+> >   - drop the pre-pop mac_len gate.  The pull is a no-op when the header
+> >     is already linear, so the gate only avoided a cheap call (Willem de
+> >     Bruijn).
+> >   - restrict the pull to ETH_P_TEB.  act_mpls POP can target IP, MPLS,
+> >     etc.; those inner protocols have no Ethernet header and must not be
+> >     required to carry one (Willem de Bruijn).
+> > ---
+> >  net/sched/act_mpls.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> >
+> > diff --git a/net/sched/act_mpls.c b/net/sched/act_mpls.c
+> > index 4ea8b2e08c3a..35a6d27f76a4 100644
+> > --- a/net/sched/act_mpls.c
+> > +++ b/net/sched/act_mpls.c
+> > @@ -79,6 +79,9 @@
+> >                 if (skb_mpls_pop(skb, p->tcfm_proto, mac_len,
+> >                                  skb->dev && skb->dev->type =3D=3D ARPH=
+RD_ETHER))
+> >                         goto drop;
+> > +               if (p->tcfm_proto =3D=3D htons(ETH_P_TEB) &&
+> > +                   !pskb_may_pull(skb, ETH_HLEN))
+> > +                       goto drop;
+> >                 break;
+> >         case TCA_MPLS_ACT_PUSH:
+> >                 new_lse =3D tcf_mpls_get_lse(NULL, p, !eth_p_mpls(skb_p=
+rotocol(skb, true)));
+> > --
+> > 2.43.0
