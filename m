@@ -1,55 +1,64 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793004570;
-	b=QYFFMIofdCSdoITT2eTXfzmTTYK5VAQX0HSZtejtSL+bcrdmYYQF0xjwhMJY81KzRtrv
-	 qSOx+bLoqdr+yRyzFzC8yZMaS38GiGa/jO/Oherp6iu4xdlfjxzfxVRgnGWl/v/NQKlqj
-	 g0ywKLTfvQWAW0VOudrQQXA/gQk/MzMacbudO9Cege7TMu+TZ9YKcUEzvBYf6Hwkw3+tw
-	 VvHhUCrqTRifNIKdR31b+WB/80O6CXK/5rReF+BwkFDP336hYS0iudTJpJZot9vkUi5CJ
-	 AWRoEMzh86Mx9d/LNcAZQhG9XKEGQuixhi1hQq/HGSsSoIEmfSugYmnOmT3PvRymVmA==
+	t=1793004628;
+	b=kO9eR/MFOFoWRXUVExmfbQLrlefD6yxtNGd4nmtQnSkNISy0VO5wS3hm52i9pzwmYiPJ
+	 QzxE8C4ausn8TnzjxXulD2G8pHgLO4U4u4Wyxx3e1BjYG6aRai27P1Ikkh9YtHyKOX0Lv
+	 B98IqzEklpiVju+CbHnCTllooh3z9KMBqiPqeWE/WOmaO4D6giiOJgobjrwgf8zEAIh6D
+	 IN0NfK0k2SU/0r3uJsMNWu4jXE2n2N0NAg5jd7PFbOZrczI6z76+kLT37z/eUBs5MNfI1
+	 HtIxdi9LUyjqnIi0jvp4CIvxINF19h2ft9qVAmLvgvAJpt9c0f7flwwGafSAlZADIkQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793004570;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=hEUhlXYmOnvIx32pUMr9YOGu/KYKt6iMeMoyJb1Rp3I=;
-	b=JHSkEhYnaYAe4Y7IoVbTm+CllkV7lTM4PoLtlBg2VYzH9RtQlcWMeT7EygIo2WcDM98b
-	 xoRRvuhxhst9tj+dUzIjtyy3FczsDv/pexyVN/MDcBRzdElp2NJmK0FG07z5ksDdBRNAg
-	 CC/iWMonyn1O7h/2JhDJptZezy9G5MeEU1gcHyDrzqmFBYlnYh2Htek3R5oCemcdFMDcE
-	 eS+vM8PpnRG8IqWWTwLEnQtORDrHfCD8+7hJt02rzje6cjUzdAIPow0SY2/y0SP1bOHqT
-	 n/pXsYLBJzq4liATKW4GeGsHR1vAhIUsmxg2le8L8K0ba1lBj1VA/vlG9SEF2umU+0w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793004628;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
+	b=db1gn0PX5W60ryENuYSZgm3FO/zmb427K4oeiteMsEQK+IQKlTHnWUaAh2XWUkR2pewT
+	 uoiMEIiuYy9H9ARAnCO/VQnCPj+5+QheUbP48kgIPAWsNqq4cAqqgfs6048w2D5nLCyh1
+	 Y4Cp4gEPfrCtuVEZoIcjMElCpxVKdKJk4yiexyNYErXDOh+i6x1VnUjswN8OsP6Tc6WL7
+	 dIeEFMNT+YdjJz60mCPDUSc0aKn9qjGaIyGXJj9ont8juWg6JpMkIsXEO5jL42GIhmbNl
+	 3lrC6XHudaOHinGMyt6fkaL4//RnWap/bOlum9LdrK0ddgLBpbU7/7dVyS/A5fZgc6g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Vnl0om8K;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E1jm0Cc2;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3375D606A31A
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 08:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B74606A31A;
+	Mon, 26 Oct 2026 08:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Vnl0om8K
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1123A1F031E1
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 08:49:30 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E1jm0Cc2
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6CCB1F01825;
+	Mon, 26 Oct 2026 08:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793004570;
-	bh=hEUhlXYmOnvIx32pUMr9YOGu/KYKt6iMeMoyJb1Rp3I=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Vnl0om8KVDS7hqHj+udnO7hkLlBn+sitgsxLsJXTL8ZebdSwEijKyVFP8cHTzFLI5
-	 mapK67swQ1z4PlG9lrl2WvfzNI8wON+74huoK/rS09Sh0QI8+ePuAGlqxDtvQb27sc
-	 fiO0QlrNTu+xJk+szl6euNFxFL2PE1kUS9P3a/WEXAbDSGvhJtc5dxhRSCpDA0Zo+r
-	 FNYYfJ6nvAVxmOFJ60IKbZnTJxhN+EFRcQfkWsd3g6cLbmy58Z8WK/MD39ZyRAhl6d
-	 ThbUEugoBHqYIXXqJ6b7GCVFd/Ed1apAYcbb1jlJPxg+1q+2shlfnsttLjuj35fMdZ
-	 OOP897kamzxrg==
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-49429181ce9so1533196fac.0
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 01:49:30 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxtMVQPIc1mn1akKfTlN3kIV6n/mU4oa1/HcZ7hofOzlgsSn7ftekRUvnjwIQ1n/XvwlMVPg1M=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIWDbG/SpIeH2iMW4qITTpukEf02w81Ax4/6OaiSKjx6S8gOiva
-	01tOEE/a/l/pKsuowyzqNUL0ED5UmMAZOwnWswtc43uawzy/8sSkw9Nf80sLz8r0mKiSDckHnFq
-	ggq0dGkOHcSPuxK3YpfWIYNhnn/u0yZs=
-X-Received: by 2002:a05:6870:638b:b0:4a7:5256:4643 with SMTP id
- 586e51a60fabf-4a83f1cb6b4mr4108141fac.3.1793004569380; Mon, 26 Oct 2026
- 01:49:29 -0700 (PDT)
+	s=k20260515; t=1793004627;
+	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=E1jm0Cc25sYmSkB9DibXJ/s350fBwygID0LtwH1PlTxiuiX0+NS+J8ysVRodHS3oj
+	 /YdXu/XAb361q+/OivW/0Ii31cBDExdH+fFDV7deVK9OCpRKx3KBvpAJmNPYPe+DI6
+	 j9BTAaaZhOPOs45MMXKncGimzgAMCkmkGoAXcGbCEl7olxUjUaniHJdyuCk0IHF1zo
+	 xPd5I+6giTyxBcxFO7OjkhDqwgs8sGr3mamcTlizofj0ecUwv9TdgcLsL//y0WJeFG
+	 0H6n6O+uFjII0DwrKa0gUm+Ezi72TOFO073aYeXUyZl1AwG6u2aBjO6DWA7WhPoOaF
+	 FePbV+AWswPnA==
+From: netdev-bot+sinfo@kernel.org
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+ Paolo Abeni <pabeni@redhat.com>, Cosmin Ratiu <cratiu@nvidia.com>,
+ Dragos Tatulea <dtatulea@nvidia.com>, Gal Pressman <gal@nvidia.com>,
+ Leon Romanovsky <leon@kernel.org>, open list <linux-kernel@vger.kernel.org>,
+ linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
+ Saeed Mahameed <saeedm@nvidia.com>, Simon Horman <horms@kernel.org>
+Subject: 
+ Re: [PATCH net] net/mlx5: Only set num_doorbells on a fully initialized SF
+Date: Mon, 26 Oct 2026 08:50:26 +0000
+Message-ID: <179300462647.3327.12553481287889944518@kernel.org>
+In-Reply-To: <20261026084503.4122732-1-tariqt@nvidia.com>
+References: <20261026084503.4122732-1-tariqt@nvidia.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,55 +68,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261026082035.335770-1-edumazet@kernel.org> <179300318428.3327.13029076428746317520@kernel.org>
-In-Reply-To: <179300318428.3327.13029076428746317520@kernel.org>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Mon, 26 Oct 2026 09:49:18 +0100
-X-Gmail-Original-Message-ID: <CAL4WiiobBKAoqcyEu1P7GkUFJe0=w0hH2NFz2Tf2V=oWCC=hAA@mail.gmail.com>
-X-Gm-Features: AclHuK-kCs5qDDd7Sd5Jz3gus2y-tEzXAz5O5Yd5Te4LMxEQpTSZWeyvvIGCESM
-Message-ID: <CAL4WiiobBKAoqcyEu1P7GkUFJe0=w0hH2NFz2Tf2V=oWCC=hAA@mail.gmail.com>
-Subject: Re: [PATCH net] ixgbe: reserve TX timestamp after skb preparation
-To: netdev-bot+sinfo@kernel.org
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, stable@vger.kernel.org, 
-	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Le lun. 26 oct. 2026 =C3=A0 09:26, <netdev-bot+sinfo@kernel.org> a =C3=A9cr=
-it :
->
-> Hi!
->
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
->
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
->
+Hi!
 
-Manual code inspection, coming from Paul Moses discovery for igc (with
-a reproducer)
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Several Intel drivers share the same defect.
-A similar patch for igb is also needed.
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
->
->  - What hardware the change was tested on. For driver fixes please
->    mention the device (and if relevant firmware version) used for
->    testing, or say that the change was not tested on real hardware.
->
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
->
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
+
+ - What hardware the change was tested on. For driver fixes please
+   mention the device (and if relevant firmware version) used for
+   testing, or say that the change was not tested on real hardware.
+
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
