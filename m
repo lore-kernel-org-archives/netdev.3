@@ -1,75 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.154.123
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793011780;
-	b=a9v4w2A+YGJyd6WoWGD9+8ISgyaxnVPFOgcEvqGuOtQaGhxpOrec6dZYkK8htImTA4dN
-	 cDzGMYThJfjEn4DHahXkPnkxRzzGVOw6AVTRYj4UaU9lRGDIYlO/cKNTeuSWIr9I3iwXN
-	 oaezhdlG5EfCt9vw0T3vDoSiiBZ9l/UQLVFwamq7EY8fe+eENaewxehYwB1sz/uTSgbpX
-	 Nqh3S2zXcPCXFdZkH1D8vMhX7EYZhi9FCtKGOzWII60ORJdQmL89C3rHeFaatkb4VmDiV
-	 wfSu7Z5Q1heRWob+fH5dMb1AIjFnFj2HCL28YBbiTeecyEzQh8I8FUC6NU9EqQl5T9A==
+	t=1793011835;
+	b=vBkVo8jGjKxR/mmfCoxwNcTFd31MYi6DYBpK8k0yaUwLFTkxRalTaQ5kJCkQlvzwFW8a
+	 vq0CUMJCMEKuyRJeAeXZ3fPgNo50sd5oBXmEfGIyUGn8ACVrMqpEFSW3ejx/DwVKt171r
+	 hRbJ1xzLyBB5SJGC6tlXdstZdXF438rKayWg0/v0cyKK3BSqLXWzMsIu3ezGr4LQi5QvG
+	 f71Gema+GxRFdLrLJj46ELhixSOvDfZ0AYc78t1t2EAaVyrLjwS+CHz/uMwYUUFj1qrnB
+	 vo0tpxtZIwg3TudHt9Ft3w83QpVlYk/I41SWZHhsq98D9EANwlZCCQiIIytR4Nql99g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793011780;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Debian-User;
-	bh=n2gAcLKPEPtariY942tQYn79FVktTDVNyRXUcZb8X68=;
-	b=1gUfFz4NAsHenoaCyWqD06ShU6EyIofwNer9QVeuX1efRC17TYfADoEGMZ1Ibv7l402Z
-	 RsapU7sUq2/AoUplRwFxS2HFzWg5YBGL/wjdFLNWpgPMM0XAq1pKuFjVNUPed2gYczqxY
-	 axoKLibHOAY4ogN3XoOvZDrmBMlrAFabyN9oNfWUQhuoylZy9kpUvtsXg2pWT+UsrIMcF
-	 txn07RJhzeVndouOgMX4bX60q8yoSGnLHJrsO7SrjEMrzwMbmo0Xxv0JZuqt2ZJ0rbYfC
-	 vFtfm5O2so6w2OLjdKt7k1U9EnUULJV1Ouz4+jxHQm9B/aE2dtQEDiM+qhfk8+uYbpA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793011835;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:Date:From:To:CC:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=kZegd21eJPs0d40BjKUHqcr89Pv+qXwSyRe0ZqGvMzE=;
+	b=Be7jk7CtDqkSXeoQHBNfwFjMzOe0I4DVpsmXh4Ilj47WARD3p275AtA3HVKGU3WVwC+D
+	 /nZrDD53i/bcOQ8GJlF6krvIOS08F4KP3ZJEwdXwkv6WZo/vXdD+ABUpjkUXSeGRhcIPz
+	 PAr2Ja656OWmRFF24VGEGV08qKw6ELUJE4omppTPKCciGRnGfkDKPK0l0BzzxQEYteNrf
+	 nT5yS3U0ynTGO8LhoAv/Adam0k0qhOQzIFPCxI9bmsIwTN/Kbr76vLLYj4c//ezYdnIyB
+	 Mfrg54lq21z1rJPRGlJQf4LmUX4GAQOiQMihn7fzzaiVXPHg7FcJOhCPi2wtcRpQM0A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=debian.org;
-	spf=pass smtp.mailfrom=debian.org;
-	dkim=pass header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=Fh7rdCPt;
-	arc=none smtp.remote-ip=82.195.75.108
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	dmarc=pass header.from=microchip.com;
+	spf=pass smtp.mailfrom=microchip.com;
+	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b="IYlnXd/M";
+	arc=none smtp.remote-ip=68.232.154.123
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C0E606A31D;
-	Mon, 26 Oct 2026 10:49:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E4C0E606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA53606A31A;
+	Mon, 26 Oct 2026 10:50:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7DA53606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=Fh7rdCPt
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=n2gAcLKPEPtariY942tQYn79FVktTDVNyRXUcZb8X68=; b=Fh7rdCPtU3hd+QC3aQHZkW8FTb
-	af1unfhyMy9WCodbyNYt3MHOSpUwz+0vpRbw7g+zSCiAgxY8D73mb3hy61rUUNkbMsWve74lIWK0z
-	4Jp8iSOCB6JVLWU0XXs2y41RWlfgtJTwoXadEjvcKRF5ZXvuU/58LBtOzABUMkSPkgAGoYQZrQ4ae
-	yfSbVdYAqt2/xnkSTFu5n9NYfgYi5h6aLWVlxv30okYkYoglT8d3f8OOnbufuKzcuDbSxyoTBu9yX
-	fTJeecigyVIZHuavr3AwF0T8+iEjQEK3BMaiIzOUxK0T1xCutHC3wHk0eMK/q22trKI9AOWD9SYSl
-	l2n7Awxg==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1xLIGa-000coU-0G;
-	Mon, 26 Oct 2026 10:49:24 +0000
-Date: Mon, 26 Oct 2026 03:49:17 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Ido Schimmel <idosch@nvidia.com>, David Ahern <dsahern@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Simon Horman <horms@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
-	Emil Tsalapatis <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>, 
-	John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Shuah Khan <shuah@kernel.org>, Eric Dumazet <edumazet@kernel.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	david.laight.linux@gmail.com, kernel-team@meta.com
-Subject: Re: [PATCH net-next v3 0/7] ipv4,ipv6: convert the getsockopt
- switches to sockopt_t
-Message-ID: <at8v8Orx3je4KD2i@gmail.com>
-References: <20261015-sockopt_expand_out_v2-v3-0-7d05ef2df448@debian.org>
- <20261019081907.GA2725184@shredder>
- <7ceef2dc-717c-44f5-9974-1ed8f0440fa3@redhat.com>
+	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=IYlnXd/M
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1793011834; x=1824547834;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=tFcPXXCNlvoJwnjmf4sXIj7Lp3FDYBM8464Z4wq1uaw=;
+  b=IYlnXd/MKe00Yfy4Ben/BdL3J/PObJm6U8aHucfFmi3oLRk6ZSojIExe
+   J4iifWZYVpVtM+AxkA05wMpabQPwCmoeMMA2USwbx01NU+ptc4unq+cmZ
+   +FllXI4y0dG/8w6FucfV99O/Z0oUgzNZxjmuNOTCD/nxCEhVBpBBnlQts
+   BsO13pNlBwKt2zBIPoWnVdE7GW7pND9QS+v26IbEDwhp/YeHQ0qj0vs1n
+   uyGpopXRWWAYfXPZAw2JEaGLjGjy6V50YswjjOD4fAluqL8/QJYxmvZk+
+   FzdOqTTQbLeUTdOQqJBixxH8rt/Z44DvREY3jGMgIQfjEQFvTzOoYGnwh
+   w==;
+X-CSE-ConnectionGUID: BtB5I6RLRlmmxGgsFCekRg==
+X-CSE-MsgGUID: wTdfZMXbRCC2GFL6SmY5vg==
+X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
+   d="scan'208";a="64589480"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 03:50:33 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.87.152) by
+ chn-vm-ex2.mchp-main.com (10.10.87.31) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.49; Mon, 26 Oct 2026 03:50:33 -0700
+Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Mon, 26 Oct 2026 03:50:30 -0700
+Date: Mon, 26 Oct 2026 11:50:30 +0100
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+CC: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Russell King
+	<linux@armlinux.org.uk>, Kuniyuki Iwashima <kuniyu@google.com>, Stanislav
+ Fomichev <sdf.kernel@gmail.com>, <thomas.petazzoni@bootlin.com>, Alexis
+ =?utf-8?Q?Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net v3] net: Use a dedicated flag to track disabled napi
+ instances
+Message-ID: <20261026105030.j3a4aims7tgqm23t@DEN-DL-M70577.microsemi.net>
+References: <20261022075757.1164283-1-maxime.chevallier@bootlin.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -79,31 +84,47 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <7ceef2dc-717c-44f5-9974-1ed8f0440fa3@redhat.com>
-X-Debian-User: leitao
+In-Reply-To: <20261022075757.1164283-1-maxime.chevallier@bootlin.com>
 
-On Tue, Oct 20, 2026 at 04:05:39PM +0200, Paolo Abeni wrote:
-> On 10/19/26 10:19, Ido Schimmel wrote:
-> > On Thu, Oct 15, 2026 at 03:05:29AM -0700, Breno Leitao wrote:
-> > > This series continues the migration to sockopt_t, as described in [1].
-> > > do_ip_getsockopt() and do_ipv6_getsockopt() still take a sockptr_t pair,
-> > > and everything they forward to now takes a sockopt_t, so convert them
-> > > both.
-> > 
-> > Acked-by: Ido Schimmel <idosch@nvidia.com>
-> > 
-> > Given the user visible changes, the fact that the merge window is now
-> > open and that this isn't the last part of the conversion, my preference
-> > would be for this to be re-posted after the merge window.
+Hi Maxime,
+
+> Trying to disable the napi threaded state while the napi instance is
+> disabled will hang forever in napi_stop_kthread(), as it waits for
+> NAPIF_STATE_SCHED_THREADED to clear.
 > 
-> I agree on the above, also clashiko noted that patch 7 lacks an additional
+> This won't happen until the next ____napi_schedule() call, which won't
+> happen as it's disabled.
 > 
-> CONFIG_IP_MULTICAST=y
+> This happens in 2 instances :
+> 
+>  - Drivers that create but don't use napi instances (stmmac's rxtx napi
+>    for AF_XDP for example), here it's a driver bug
+> 
+>  - Drivers that create their napi instances in .probe(). Here, setting
+>    threaded off while the interface is down will hang :
+> 
+>    ip link set eth0 down
+>    echo 1 > /sys/class/net/eth0/threaded
+>    echo 0 > /sys/class/net/eth0/threaded
+>    -> hang
+> 
+> Checking on netif_running() isn't enough, as napi instances may be
+> transiently disabled when changing the MTU for example, let's use a
+> dedicated flag to track if the instance is disabled.
+> 
+> This allows immediately disabling the kthread when the instance is
+> disabled.
+> 
+> This was tested on mvpp2 (probe-time napi_add) and stmmac.
 
-Ack! I will add CONFIG_IP_MULTICAST to patch 7 and submit once the merge
-window is closed and net-next is re-opened.
+I could reproduce the hang on lan966x by toggling /sys/class/net/<if>/threaded
+while changing the MTU, which disables and re-enables the NAPI around an FDMA
+reload. Without this patch it deadlocks within a few iterations. With it
+applied, the same test ran clean.
 
-Thanks,
---breno
+> Fixes: 689883de94dd ("net: stop napi kthreads when THREADED napi is disabled")
+> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+
+Tested-by: Daniel Machon <daniel.machon@microchip.com>
