@@ -1,59 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792973176;
-	b=26jBHPHcbJWbnwBlG3vFqGvAOIAH6Ye1MS38vREGAfIedHucNVf5vyy6FRqpC8XYmkgm
-	 gLCmwaivv+leoIMpXOckkL2Dfp/ar+dRTiS21v67fUHMiBX8MjNqPlIHWiQFhogv3JltJ
-	 e9fgdH7q9PRf3MCbdgFZs8I/uWz1n3nuz32sFxqZOnZUYyi5gXM7MA3CbhbFDbfKr6Vtq
-	 jzzXCTdiFKQJmb9iiGdo7WkSM+CsehyJcaLbKMJRicIS6fLFFcyWncTVm80QI60BWR0Ey
-	 w3yjp+XpGfSIh3lgKsVmOyiEsldOjw6WIfsBRgFYD4Y5hA+3AHtmhDLf9hwxJLv43hw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792973176;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=iLJUa7RNyvktGWZspqCmJJxytObzLNUkqP+M9DQ5xt4=;
-	b=CZQyy9KMxzLB1Mz9C8fn9ZN/pBAvJvuHGY/gxQZ6X9fclBEcoMh6SjyESVX5LFp2l3LX
-	 uWw3bepek5nb7NCWV7r1iivCnX5f7hyPz40SfpYKgVQbx6AVBla8R4gbVk3cSvIVPu4Ve
-	 7c42VBmIko/GG2AWsgaN+oPxIZ9t6a7eOd/cXip2fproOV5tBcT1uBLQ6/5jm91Y2l8RT
-	 CscAmfWPK58Fh+h5Ndi4/TnO3ao+fPR6wEEWexizLE1MoIRNbw1muFq0+t/7QSfVnmJ7e
-	 O5pfom5Y+pCB5pLJogBIW68qoRmA822hDEEUEDblU5CmFFPMu9CXJj6+5mWOXQtXZbg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nB+xwxhw;
-	arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792975013;
+	b=bkgcHVL03ZFMvG0LkXgWWAwJ+qaVH69Yo1U8iGPtRRAj0dGNVsdlw7hL3CJQxaPgIgOd
+	 5mybtYaihD0FnHyUMwmZ3BxN3LZkd/SatoKmooE/g4OODt+OEd9vO4IpvOpa+pg//7b1I
+	 NVGhD1HrUnxbaL++khQ7ZRvI/s83h7sFUquvejZCLGg2R1IpK19X10Oj0NWdM/bAb6nld
+	 28eDFkMPgr7AcWZY4K87HMMHN8hyfTvjaUcfNvczNd9JaExXMmddKioRfJat9gGP49Zrt
+	 xd+3+xw+49CJqiker+8eNnmQpQiNofqwBvzKd7Penvk6LnausjolzumxhrTPvaQlUAw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792975013;
+	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Endpoint-Received:X-Original-From:Reply-To;
+	bh=RlD54kshLBKNNvMnTbh1mTyFvIDmq+VY2q9wTJdmNkQ=;
+	b=2JeTMPj4h6RBd6e6PQQ1E3QDdLVxGvuEjlo6c6y/hcDiubLv6JPcBbcW5Rni3YfOdvoA
+	 aDtbI3itJ4c+kVo3hBEx5klDqq1ssQqgxijeZtQX7OFiuLR2h/xiP+sk9mNKu5rPs+U6U
+	 rGCYR8mGvUBfvZGjs0nNs7wchNmW2Lst9CKkbAnZiRh0bHValiWJDCVeT5aIM2Kf24VGo
+	 7sCXCRVcz8rZtsNQBXEx/YH/AJ7Pdi69Kznifc7JOTm87V0wUQoyEx8ZUNx7Zs/9uCGDy
+	 /4xIpU/HGOgQx20hN7iLUvuwpmHF69BNVfVQKj4dnkxqDmxnk3E9IrLGzsPlUDmX4cw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CAeni4Ia;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB5B606A31A;
-	Mon, 26 Oct 2026 00:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8485606A31A;
+	Mon, 26 Oct 2026 00:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nB+xwxhw
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DF181F01825;
-	Mon, 26 Oct 2026 00:06:15 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CAeni4Ia
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1792975012;
+	b=nKhLlqKsVugn29Td8qe+D6LhttKzNl8prFHQ/sZ+sij1+hEYakHV2X6exrkmrcMz/ZhF
+	 9CE1OpVFX/6qDoRA3SvSpe969b87qf2kzKsbz+5Q2w/ABd5swEugzrMcPqFKoOgtxOguE
+	 m8TkOlcQE1SRVRwNpnMakJSxsHTlPkA3CxQJKxlL+vsl/X2Bnvc1f7rNcQJi0t/7gYA6a
+	 uYOOZsaTD1Q/u+6xILx/h1mWdxPfoTi/Do/Hkfc65wIgLyoodZMMiEVoVTVQQMG1NuyBd
+	 Bkt0KCSRoUyfKvSO054aKTFSIq/jQTonG7NLu3dSfQauhs5ZytDNKLlQlgH2D+KGqrw==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1792975012;
+	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=RlD54kshLBKNNvMnTbh1mTyFvIDmq+VY2q9wTJdmNkQ=;
+	b=tx+XYU58ERpARVr8KGkenLndayyXuvIQaKkHjCa5QSMWW4DfRUXNuZcRZu/xFkToXWxC
+	 FJXt6BuoFI/6zo5QXxTSW9NdVVHogQBAZLlNf+cohfaZZH11SW0x9fxcpsXeSL7fzs10u
+	 yNN9mD/gmPHyCWUQNlEF+jMfg7MYqzqbmq/bUwbPqFcH80hH2Mw1AyTxQiQUP7w+owIn+
+	 fibajDjoO9we4sDcUtfq3qEVpQC70QREKVcv1rVCBWSeRF7qxD+zSBdkLOhyMDY9e6Yuo
+	 S7HO6bRkJz12SKPADdEmYZQi5XBwBrTv4njii9GtjoN3Jly+yAu3J6kIjYtfAV63Hng==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id C96011F031E0;
+	Mon, 26 Oct 2026 00:36:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792973176;
-	bh=iLJUa7RNyvktGWZspqCmJJxytObzLNUkqP+M9DQ5xt4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=nB+xwxhwtztbe4cVzrr7c8zzmFgOCRUra0/q3I+Q7KR8Kj3GRn4an/M/pqVY8oasN
-	 rZZQ/hku1ZTpm2hbgaP87qmkcWxIAwwhabXICZfhN33ayMv/Hsftv5rCXaaR0JRrSd
-	 DsgxVN+lujYi71Gk1bFHy5FifogawOspSI+ylqJu/RYg02FdPbKPXnM2FK9OdNEmqq
-	 BVekgnnD7D3LqNqAe4xdD+Ed6vekhgBru6z4WctrfW6FYbZHnOZIXEBRBQRbz8JbqQ
-	 gaEdCGAelbVhq7/JWHArO/JXV7DEAGYk6CdZihp7RCCAn0ZaENHVHLEYd8gFaTW+e4
-	 8hbTYoJobuK7w==
-Subject:
- Re: [PATCH net] net: 8139cp: close race between NAPI completion and Rx unmask
-From: netdev-bot+sashiko@kernel.org
-To: colton.pawielski@gmail.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, daniel@0x0f.com, geert@linux-m68k.org
-Date: Mon, 26 Oct 2026 00:06:15 +0000
-Message-ID: <179297317507.3134.14510456592684233796@kernel.org>
-In-Reply-To: <20261021-b4-8139cp-napi-v1-1-c9b683d9564b@gmail.com>
-References: <20261021-b4-8139cp-napi-v1-1-c9b683d9564b@gmail.com>
-X-sashiko-severity: Critical
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1792975012;
+	bh=RlD54kshLBKNNvMnTbh1mTyFvIDmq+VY2q9wTJdmNkQ=;
+	h=From:Subject:Date:To:Cc:Reply-To;
+	b=CAeni4IaBC1IPyHKbfjI+FTNz3v2HYCCNiKBKRLrDP3a+tdXqp62PDqnD4zAJibwb
+	 DwpZo3h20qoWQxBlRiWfHmOcvpF44KVpvC/HfFh6UTPNbXD/4l6Zd11B9MDfg2wzh+
+	 1zRluCRGVpsRHpv9CjtWB2T6iM3uE/9GD4qHA9RQOUD0DUwu04Akazn3BH//a045/i
+	 045KuGmRhSieOmP3TA4DPQOnbrcGImhoo7vLy0VS1IC9IIxkdW8+YffjyJxfu8QXFt
+	 LAj2ZOn8wxgUqWrpGVYAF8dKPi5MJ46RH/jmmnF+wHj/vNO+DCeR6/fxp4nYeTSt65
+	 wfuPlCr6KoJdQ==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 26A8544B5E;
+	Mon, 26 Oct 2026 00:36:51 +0000 (UTC)
+From: Martin Belanger via B4 Relay <devnull+martin.nvme.dev.gmail.com@kernel.org>
+Subject: [PATCH RFC net-next 0/5] tls: perform TLS 1.3 KeyUpdate in the
+ kernel
+Date: Sun, 25 Oct 2026 20:36:47 -0400
+Message-Id: <20261025-keyupdate-rfc-v1-0-60b7756eccbd@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,123 +84,174 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMQQ6CMBREr0L+2p+UilbdmngAt8QFtoN+TQppC
+ 8EQ7m7R5ZvMezNFBEGkUzFTwChROp+h3BRkn41/gMVlJq30vlR6x298ht41CRxay8fKba3BoVL
+ GUHb6gFamX6+m6+W8bh6JPaZEt/8hDvcXbFqrtCxfZv3gx4IAAAA=
+X-Change-ID: 20261025-keyupdate-rfc-94d3c7e84077
+To: John Fastabend <john.fastabend@gmail.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Sabrina Dubroca <sd@queasysnail.net>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>, Shuah Khan <shuah@kernel.org>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ Hannes Reinecke <hare@kernel.org>, Chuck Lever <cel@kernel.org>, 
+ kernel-tls-handshake@lists.linux.dev, linux-nvme@lists.infradead.org, 
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Martin Belanger <martin.belanger@dell.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792975010; l=6847;
+ i=martin.nvme.dev@gmail.com; s=20261014; h=from:subject:message-id;
+ bh=8UZFN1cRdKbWt6RJPkStUNTa4RaQUBhZuK1TTZ3bbtE=;
+ b=9MNgUSopJBMSt7m4hdjDuxnr3gNYQbXURaMI+up1uJel/qpXEeJG/fcJ+2TUyyg1MyvXlAjTp
+ wROEebcVrJnDJAutgSEJ343k2Lof6UaoTgb4HzudvAfJ/9ZITMRgii+
+X-Developer-Key: i=martin.nvme.dev@gmail.com; a=ed25519;
+ pk=4K+XXetGK35w2LzRRddd/bbHawZU222BN+YZRuSpN+k=
+X-Endpoint-Received: by B4 Relay for martin.nvme.dev@gmail.com/20261014
+ with auth_id=1176
+X-Original-From: Martin Belanger <martin.nvme.dev@gmail.com>
+Reply-To: martin.nvme.dev@gmail.com
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+kTLS does not currently handle TLS 1.3 KeyUpdate. It never sends a
+KeyUpdate. And when it receives one, it blocks the socket until the
+application installs the next key. kTLS also does not enforce the key
+usage limit on transmit.
 
-Critical: 1 · High: 0 · Medium: 0 · Low: 0
+This applies to TLS libraries in user space as well as kernel users such
+as NVMe/TCP or sunrpc:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+- GnuTLS sends a KeyUpdate after 2^24 records when it runs its own
+  record layer. With kTLS, the record layer is handled in the kernel and
+  GnuTLS therefore never runs the check. OpenSSL never sends a KeyUpdate
+  on its own.
+- NVMe/TCP and sunrpc don't have a mechanism to install a new key. A
+  conforming peer that sends a KeyUpdate stalls their connection.
 
-- [Critical] The patch moves napi_complete_done() inside
-  spin_lock_irqsave(&cp->lock) in cp_rx_poll()…
+RFC 9846 (July 2026), which obsoletes RFC 8446, makes the limit
+mandatory (section 5.5): "Implementations MUST either close the
+connection or do a key update as described in Section 4.7.3 prior to
+reaching these limits." Long-lived connections with small records reach
+the limit quickly. One NVMe/TCP queue sends at least one record per
+command, and more with large I/O. Depending on the load and link speed,
+the 2^24 limit can be reached in less than 10 minutes in many cases.
 
---
+With this series, kTLS handles KeyUpdate in both directions for a socket
+that registers its traffic secrets. A socket that does not register them
+behaves as before. A user can opt in by passing the secrets after the
+handshake. GnuTLS and OpenSSL install the kTLS keys themselves, so they
+could register the secrets at the same time. tlshd gets the secrets from
+GnuTLS through a callback it uses for QUIC.
 
-net: 8139cp: close race between NAPI completion and Rx unmask
+Why the record layer
+====================
 
-This commit moves napi_complete_done() in cp_rx_poll() so that it runs
-under cp->lock with interrupts disabled. NAPI completion and the Rx
-IntrMask unmask then happen atomically with respect to cp_interrupt().
-The goal is to fix an Rx interrupt storm that hard-hung SH7751 LANDISK
-boards.
+KeyUpdate must be handled where the records are built.
 
-> diff --git a/drivers/net/ethernet/realtek/8139cp.c b/drivers/net/ethernet/realtek/8139cp.c
-> index 9016527e229a..a9334d3a0f7d 100644
-> --- a/drivers/net/ethernet/realtek/8139cp.c
-> +++ b/drivers/net/ethernet/realtek/8139cp.c
-> @@ -554,11 +554,12 @@ static int cp_rx_poll(struct napi_struct *napi, int budget)
->  	/* if we did not reach work limit, then we're done with
->  	 * this round of polling
->  	 */
-> -	if (rx < budget && napi_complete_done(napi, rx)) {
-> +	if (rx < budget) {
->  		unsigned long flags;
->  
->  		spin_lock_irqsave(&cp->lock, flags);
-> -		cpw16_f(IntrMask, cp_intr_mask);
-> +		if (napi_complete_done(napi, rx))
-> +			cpw16_f(IntrMask, cp_intr_mask);
+The 2^24 limit is a record count, and only the record layer can see the
+count precisely as it changes. A user sitting above kTLS can only read
+the count with getsockopt(TLS_TX) after each write. A kTLS user writes
+bytes, and the kernel splits and merges those bytes into records. I
+counted send calls in an NVMe/TCP prototype trying to guesstimate the
+2^24 limit. The count was correct with 4 KB I/O, but was 21 times too
+low with 1 MB I/O. Each send call translates into a different number of
+records. It's simply not possible to precisely guess the number of
+records based on the number of send calls.
 
-[Severity: Critical]
-Can this deadlock on cp->lock?
+The KeyUpdate must also go at a precise place in the record stream
+(section 4.7.3). It is encrypted with the old key, and every record
+after it with the new key. When the peer sets update_requested, our
+KeyUpdate must go out before the next Application Data record. The key
+can only change between two records. Only net/tls has control over that.
+Fixing this in one driver or library would leave other drivers or
+libraries to re-implement their own (imperfect) solution.
 
-8139cp passes every received frame to GRO in cp_rx_skb():
+The in-kernel QUIC series under review on netdev splits the work the
+same way as this proposed fix. The handshake stays in user space, the
+secrets are passed in with a socket option, and the kernel derives each
+key update with HKDF-Expand-Label (quic_crypto_key_update()).
 
-    napi_gro_receive(&cp->napi, skb);
+What the series does
+====================
 
-Frames that GRO cannot merge wait on gro->rx_list until gro_normal_batch
-is reached, and TCP flows can sit in the GRO hash. All of them are
-delivered by napi_complete_done() when the poll ends with rx < budget:
+- Two new socket options, TLS_TX_TRAFFIC_SECRET and
+  TLS_RX_TRAFFIC_SECRET, are used to register the application traffic
+  secrets. The secret is passed as raw bytes. The kernel derives the
+  hash (SHA-256 or SHA-384) from the cipher installed with TLS_TX or
+  TLS_RX. The TX secret must be set first because the RX secret needs
+  the TX secret in case a received KeyUpdate asks for a reply.
+- A third socket option, TLS_TX_KEY_UPDATE, can be used to send a
+  KeyUpdate now. It can also optionally ask the peer to update too.
+- Receive: kTLS consumes the KeyUpdate, installs the next key and
+  continues. This works for recvmsg, splice and read_sock.
+- Transmit: kTLS sends a KeyUpdate after 2^24 records, a margin below
+  the 2^24.5 limit of RFC 9846 section 5.5, and in reply to
+  update_requested. ChaCha20-Poly1305 has no record limit.
+- kTLS aborts the connection when a peer sends more than 8 KeyUpdates in
+  one second, or an invalid KeyUpdate. GnuTLS uses the same rate limit.
+- Software path only. Device offload is unchanged.
+- SM4-GCM and SM4-CCM are not supported: the kernel has no HMAC-SM3.
 
-napi_complete_done()
-  gro_flush_normal()
-    gro_flush()
-    gro_normal_list()
-      netif_receive_skb_list_internal()
+Testing
+=======
 
-With this change, that receive processing runs with cp->lock held and
-hard IRQs off.
+- NVMe/TCP host and target over loopback, with the record limit and the
+  rate limit lowered for the test: more than 1000 KeyUpdates in each
+  direction under I/O, with AES-128-GCM and AES-256-GCM.
+- Interoperability with OpenSSL in user space, which derives the keys on
+  its own, including the reply to update_requested.
+- New selftests in tools/testing/selftests/net/tls.c for every TLS 1.3
+  cipher kTLS supports. The full tls selftest passes.
 
-Suppose the stack replies synchronously on the same interface, for
-example with an ARP reply, an ICMP echo reply, a TCP ACK, or a forwarded
-or bridged frame. The transmit path then seems to come back into the
-driver:
+The matching tlshd change for ktls-utils is a small patch to be
+submitted at a later time if this series is accepted.
 
-netif_receive_skb_list_internal()
-  arp_process() / icmp_reply() / tcp_send_ack()
-    dev_queue_xmit()
-      sch_direct_xmit()
-        dev_hard_start_xmit()
-          cp_start_xmit()
-            spin_lock_irqsave(&cp->lock, intr_flags);
+Questions
+=========
 
-Wouldn't this CPU then spin forever on a cp->lock it already holds? On
-SMP, one ARP request or ping from a peer on the link looks like enough to
-trigger it. That includes QEMU's emulated rtl8139, which reports revision
-0x20 and binds to 8139cp.
+This is an RFC for feedback on the design and the new socket options, in
+particular:
 
-There may also be a second path. __dev_queue_xmit() uses
-rcu_read_lock_bh()/rcu_read_unlock_bh(), and netfilter uses
-local_bh_disable()/local_bh_enable(). Both reach __local_bh_enable_ip().
-That function does lockdep_assert_irqs_enabled(), and with
-CONFIG_TRACE_IRQFLAGS it also calls local_irq_enable().
+1. I used one socket option per direction, like TLS_TX and TLS_RX. Is
+   that the right form? Would one option that sets secrets for both
+   directions be better?
+2. When the application installs a key itself with TLS_TX or TLS_RX
+   after the secrets have already been registered, the series removes
+   the registered secrets (TLS_TX removes both, TLS_RX only the RX
+   secret) and gives KeyUpdate back to the application. Is that right,
+   or should the key change be refused while a secret is registered?
+3. TLS_TX_KEY_UPDATE (patch 4) is not needed for the record limit. I can
+   move it to a separate series if you prefer a smaller first step.
 
-Could hard IRQs come back on while cp->lock is still held? Then
-cp_interrupt() could run on the same CPU and spin on:
+Signed-off-by: Martin Belanger <martin.belanger@dell.com>
+---
+Martin Belanger (5):
+      tls: add HKDF-Expand-Label for the TLS 1.3 key schedule
+      tls: add socket options to register the traffic secrets
+      tls: update the RX key when a KeyUpdate is received
+      tls: send a KeyUpdate at the record limit and on request
+      selftests/tls: add KeyUpdate tests
 
-    spin_lock(&cp->lock);
+ Documentation/networking/tls.rst  |  43 +++++++
+ include/net/tls.h                 |  23 ++++
+ include/uapi/linux/tls.h          |   3 +
+ net/tls/Kconfig                   |   2 +
+ net/tls/Makefile                  |   3 +-
+ net/tls/tls.h                     |   5 +
+ net/tls/tls_hkdf.c                |  82 +++++++++++++
+ net/tls/tls_keyupdate.c           | 155 ++++++++++++++++++++++++
+ net/tls/tls_main.c                | 118 +++++++++++++++++-
+ net/tls/tls_sw.c                  | 184 ++++++++++++++++++++++++++--
+ tools/testing/selftests/net/tls.c | 249 ++++++++++++++++++++++++++++++++++++++
+ 11 files changed, 858 insertions(+), 9 deletions(-)
+---
+base-commit: 1a2c35c49cc7c6be860038b8442b52424a8f123c
+change-id: 20261025-keyupdate-rfc-94d3c7e84077
 
-The commit message says:
+Best regards,
+--  
+Martin Belanger <martin.nvme.dev@gmail.com>
 
-    Do the completion and the unmask under the lock, as 8139too does.
 
-Does that comparison carry over? rtl8139_rx() in 8139too calls
-netif_receive_skb() directly, so its GRO lists stay empty. As a result,
-napi_complete_done() under tp->lock in rtl8139_poll() never delivers
-packets.
-
-Before commit ab1e7e1d2666 ("8139cp: use napi_complete_done()"),
-cp_rx_poll() called napi_gro_flush(napi, false) before taking cp->lock.
-Only __napi_complete() and the IntrMask write were done under the lock.
-
-The SH7751 test boards are UP. There, spin_lock() without
-DEBUG_SPINLOCK reduces to preempt_disable(), which may explain why this
-didn't show up in testing.
-
-Would it work to keep GRO flushing and stack delivery outside cp->lock?
-Only the NAPI state change and the IntrMask unmask would then run under
-the lock. One way is to flush GRO before taking the lock. Another is to
-keep napi_complete_done() outside the lock and close the race some
-other way, for example by re-checking IntrStatus or handling the case in
-cp_interrupt().
-
->  		spin_unlock_irqrestore(&cp->lock, flags);
->  	}
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021-b4-8139cp-napi-v1-1-c9b683d9564b%40gmail.com
