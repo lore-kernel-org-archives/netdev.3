@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793058609;
-	b=jDxODGEEfrKEMS26HhOPYR/c/+pOz2JFy/0HuZwf3oHjvbkR0KpabygrPYXOT63G4Qjc
-	 kcW3GoL/MBzX720YY2ncyKBIsm85IEAgaLHNfpnNl5mEDvI0OIMudJlSfnoLnP3ZE7UzE
-	 3FL5QrlZFBT5b39ToU1Gcd7pvxSdXfJqzopzWgzd/h4zdgIDgIQhcfQqEsx2Fb8ZOCpBh
-	 vz8xapqLgcHA73ck4zX6BE8Hu/vbvEpuRYDuu48QDUWueb/Io8yC2SwgFCJtkxhFaJT8S
-	 sMGyhpR243MOMHUnME2xsQE/OK5fkMJLRwq/1hubcFJhUSm8IsxsSf/+XH9R688mXxQ==
+	t=1793058610;
+	b=uwvOTAAzEg8RojQ59Gpx5oTtZGrZzRawUk1dGpfMDVQ9uodY61HhfFyWm/XHptq/5UnX
+	 ypc5rmh3GfhsLQugqbQbZ16syhryhgHqYu5X2RYfQQaX/8Vj5YLSe4a0TtIg+6bKxqSts
+	 7HT/Q2vPJvlM3GbtAe772ScxL2rkF4XVLwlzrbNCZnW2z4pR08r+SnS2OuM9TaO8vPhMI
+	 5piACuGdDeFV14ceDLXltCBCew0cHuXPWrl6tX3Vj2trqiyD00J+yWDu9q51RqhbzN/1I
+	 nUVok55HvlLQj5PnJmclyfJ/cHu/F0synoLH3hxE5XNOd6Bw2z63L5hf03CR2KTUgmQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793058609;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793058610;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=9n+hwE+SW67KsXNZw+chpPcRTBK/Kr011lVZz/QSQw0=;
-	b=jkTwj0REj6pG0XScFP6WG6GSL+7FoQMElyzXxx7lbzz4FdZKSDQfDJdY+3NACcaPpjwM
-	 CmbGZn6QC21KRTpz2B7XXbwZHTdo6WGsRQUM5aDqpD/MzLuB+sz4Fn3RD48OmImtZz9dR
-	 b+7jEtc0/H5RFgufaVW3kxSClnlbnR6tBP/EqDo4TJpwIg957Fpyvtsf+Q0uT67SuNdRx
-	 pVZF+NdPYTcSNmfUjwZwcgF2eMt6JRi1TFcoo6RlyzD+hz+c2ofTKTm6Z5YGdY0CHosol
-	 uAYMHK75sw0Bpvgh5VcDnld/GBHghf2+qsmxc9OvxbO8PctEZn4YRW7TJHncjZa2huA==
+	bh=GNADXg2V622Yxr65qM2wv5tZQIWoR6xmp2ryOsAa94w=;
+	b=yi+4RKs9ufVtw4KjcIseOpOjof3QooeNGr4pcgmMjvO/ww4Fk9XwjDUFJPN2ob/fE2IK
+	 6X2uaRHJeGvwfQKiXeCJpLqewFG5d10EWGxCFuWib116iiUVokAEo8rQrGCCkiErTusOT
+	 XSDZE9XLilqiqSUcXXS3fTs5sETCwv50cvcyVn61CehR0sq71GFEe7dGdzNy2X8AS4Iq/
+	 CmE5O5GS557bPYkLVH0oFyoD1Rn7IGue/+5aK595IotWr4f0ylEZuJGxSlF/YN061pIgd
+	 gDK9Wx4WmbwvedntrU64B7eO+a59WmfNr4BLQ7gDs4aooKlDyI7uw+k3dAUR55Jmw2w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UlOXT4FG;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SySVkDVK;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02371606A322
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 23:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C138606A31B
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 23:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UlOXT4FG
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6B5F1F01829;
-	Mon, 26 Oct 2026 23:50:08 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SySVkDVK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10BD71F01829;
+	Mon, 26 Oct 2026 23:50:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793058608;
-	bh=9n+hwE+SW67KsXNZw+chpPcRTBK/Kr011lVZz/QSQw0=;
+	s=k20260515; t=1793058610;
+	bh=GNADXg2V622Yxr65qM2wv5tZQIWoR6xmp2ryOsAa94w=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=UlOXT4FGjeCuwLULNdizdfpdGgO94Dk4sscJWjC/T2Ob+JLrYz9kE7jM02WZecY7Z
-	 tthIA/Ej0UZNo2rN+PxYjsPE2u/YhlWguhUut/7KOYxNp06zdaiktDZcF5uJCGWkRt
-	 TLrqIamCAqMQTlpMV0UHxjtkA+qbjeDlVpwI+4zGBlrIAZs59GtFsW956So+Wd94QQ
-	 NHXWQZ5epW4lvdl+b/9NnsaDd3M/SqYPCkJzsjn7vm2LI/ImZjTDUKcSR8pccngzye
-	 LnVCZyz8FBb8adfDfTTf0fQafMQbRth8wTl5ubjbIdjaDgUpf1tJmCbv41vEDZ+27h
-	 hzYD13dSfpK5w==
+	b=SySVkDVK6d1oLzJJpX2sAaWXZRnj+w8HrRYi+g9VJN4HoSRC36CjYpOKZyJXryzrc
+	 kSdLtf6xQ48b1CxXmfmSFwFZOmFfsYhySN0Y8IRAgi6/jtitnC+moHgLLO7T/dTyqN
+	 57tU94FBXmgFAE+1dyk6jugVZO2VCtE9UmKMxjsbR7M0jqY7QlMZKNJMX86fC7wJt+
+	 TvkJHYq4t5ockur9xLiyuJCeZ5P9Wfh/cxY6qg0BrQ73NwPTvtQGUs5dWG+nj4HEHK
+	 1B96+PUw/iHRtnFw4rXFqiR2MPWALSpo/fqzYlRqHvG5Dxwh54OI8BSVzyLg/xzWic
+	 Wlnd8Owx/35wA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9CA313AA80F1;
-	Mon, 26 Oct 2026 23:50:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 072893AA80F1;
+	Mon, 26 Oct 2026 23:50:10 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,38 +54,40 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3 0/1] ipmr: drop packets with unknown ingress VIF
+Subject: Re: [PATCH net 0/2] ipmr, ip6mr: Fix several info leaks
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179305860731.3465814.7868971747105773883.git-patchwork-notify@kernel.org>
-Date: Mon, 26 Oct 2026 23:50:07 +0000
-References: <cover.1792608753.git.zhilinz@nebusec.ai>
-In-Reply-To: <cover.1792608753.git.zhilinz@nebusec.ai>
-To: Zhiling Zou <zhilinz@nebusec.ai>
-Cc: idosch@nvidia.com, namangulati@google.com, netdev@vger.kernel.org,
- dsahern@kernel.org, davem@davemloft.net, edumazet@kernel.org,
- pabeni@redhat.com, horms@kernel.org, vega@nebusec.ai
+ <179305860867.3465814.11702728052795787601.git-patchwork-notify@kernel.org>
+Date: Mon, 26 Oct 2026 23:50:08 +0000
+References: <20261025071729.34967-1-idosch@nvidia.com>
+In-Reply-To: <20261025071729.34967-1-idosch@nvidia.com>
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ pabeni@redhat.com, edumazet@kernel.org, dsahern@kernel.org, horms@kernel.org,
+ yoshfuji@linux-ipv6.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 22 Oct 2026 03:01:15 +0800 you wrote:
-> Hi Linux kernel maintainers,
+On Sun, 25 Oct 2026 09:17:27 +0200 you wrote:
+> ip{,6}mr_cache_report() copy the IP header of a packet that triggered an
+> upcall to a report packet that is delivered to user space. The header
+> is not always fully initialized or present, resulting in info leaks
+> flagged by KMSAN.
 > 
-> We found and validated a race in net/ipv4/ipmr.c and net/ipv6/ip6mr.c.
-> It is reachable by a root user configuring IPv4 multicast routing and
-> racing VIF updates with packet forwarding.
-> 
-> We will provide details of the bug below, along with the PoC and crash
-> log from the original report.
+> Patch 1 fixes an info leak in the RTM_GETROUTE path, caused by the fact
+> that ipmr_get_route() does not fully initialize the IP header of the
+> packet that it creates. IPv6 does not suffer from this problem.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v3,1/1] ipmr: drop packets with unknown ingress VIF
-    https://git.kernel.org/netdev/net/c/09280680f2ea
+  - [net,1/2] ipmr: fully initialize the synthetic IP header in ipmr_get_route()
+    https://git.kernel.org/netdev/net/c/134351edc28e
+  - [net,2/2] ipmr, ip6mr: validate packets injected into the register vif on xmit
+    https://git.kernel.org/netdev/net/c/aa1799e93f5e
 
 You are awesome, thank you!
 -- 
