@@ -1,79 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793003381;
-	b=StNQjMTn0tWr5k7uAFYgKwLX1dsWfhJ885RA8D+K9MRZTnN2sfucABGO4H+QnvcM1lNm
-	 CnZxa3NcIWmxgUlTzMI0aoP8P0qI4wJr2qVKyMJEAitESuK6+31MJbCSNndrRH+hw+zO8
-	 Od/tV5Is/jxT3zL/j/ich/Ho0hmZmJVyDNoih1eeDjBUNQ7BXvY9KbHhx4rti0b8apME6
-	 yEsDkTcXJ+Bd+QlDICkpq1KhzAlp7LgTXDeDlg4baHu+YP3TUfN6NFg6ejDVVNZU2ILPn
-	 aKUpsElCxZDI9Z3C4ZM5rUUA3bH/JjL3IHuYBbI5ecKNkKqUWS/Kq1qiNgcATtg8tQg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793003381;
-	h=DMARC-Filter:Received:DKIM-Signature:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=8CEwU6AVVLUrN8syM2T/p6MeATp6WE5o4yWux7VIDNA=;
-	b=kefd0krzSlvb8s0FjgVhuWvEer8bCpYn/ZlM0r5E9yMubcukZwye1T2qB51XB6jXJTIy
-	 kIN17dyc7vxJcscrO2fxMLx9WFQLVPYzNCyGJyeAIWBUopgAZYdQLRcaOjMJmupWJA2gh
-	 qXBIWVRIiwQufxObDYMDfPyaMklg778PKdElS6UD1P1AQ4E/FvHQqzkH6RjM/NfJ/YF/6
-	 WnsjHU40FBK8WMFW87ZVGMs2KqJ264Nftf+yObsTXJKuCMirbnpTlTyDJSOiO73hWA76z
-	 6qy1Rh5hOWbTVahb5fvBXv/7z9FZoOSTd6TiE6ZIoEkyx+RQcIxWk7/tbC5yNBMoOHA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=ZgdWQvgn;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.153.233
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793003409;
+	b=Qfa6/pWnOsmTMScP5Slb2YGsxqD0drX/H6e/n+9JpY8EJ8WME3XSbRn6Ebh2zcs5ynZ7
+	 CS1s8F25zkqS2Xz45tg9NUt5jK+bEWj0fpl4PI+YTnwuGF/qVzNinUYd90w5alkGwzRT4
+	 XL7nwvFS+b+bZqPB8ReF4nCtN5EdFQT1LK157FSPEViGirKqEq3PlGf23HMWbY9CuxKtH
+	 PKNLyay+sCGY6zuTHHFfLb3HMQbyc5UXqZfoGQI/mipYTfwYiMRRkCSRZPTehOuYaEvio
+	 arzh8/YUxH31o5Wj9IzwrH7+BC08aDXHhjaq2Rha1xltqQ5z6RygAkZzia6YZLg/N1w==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793003409;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:Date:From:To:CC:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=b5etnZhCv6zd/G4FnaCNzVDV5k63+OPwZa8pBcS6d0k=;
+	b=K2gMY7oo9moTFP6cZpsJEwdv+9SE/Maa0aF7Uu+aE2uZdaCQOQRBycsD1U/5KxUe3ZJH
+	 Pa048FyG1Jg6dL99JsLuFRhafDFnHAEVhG9+hii4isNZ0ZDnwrg/rOv/EQrVwQG/bZc3v
+	 +rC5WOsaSa9E2DNgEa3tfppV1Gl8p7gaUpuMbIcGbOtpWdLZxOFJKAP9uQW9J9wmJe9gZ
+	 6AvHIZlVWhwYRPyAE4UH3Z7BB4rM0HE2xej/tyw1GKnOlWXpaf43a+jwpsZ1b39o9cGkb
+	 r57Exv9FFb40iGXDjGnXaUj9UmvLcnT5QjRHba1j0I654nKWYBrmcqLgPI0EB5PNw2Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=microchip.com;
+	spf=pass smtp.mailfrom=microchip.com;
+	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b="ehra3wx/";
+	arc=none smtp.remote-ip=68.232.153.233
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E378D606A333;
-	Mon, 26 Oct 2026 08:29:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E378D606A333
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B391E606A337
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 08:30:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B391E606A337
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=ZgdWQvgn
-Received: from ratatoskr.trumtrar.info (unknown [IPv6:2a00:1f:f805:2b01:a03:2f4:308a:7b52])
-	(Authenticated sender: str@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 214F8201E09;
-	Mon, 26 Oct 2026 09:29:25 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793003365;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8CEwU6AVVLUrN8syM2T/p6MeATp6WE5o4yWux7VIDNA=;
-	b=ZgdWQvgnRbGbDbNyi+7fVkSkj30ZlQbaV4WnR0J/D9kZBfvyk2v08VL+wEv5siR6l93TQ8
-	rbrDvhyamJQGrYAq1Dll1RMazCTRTwdOn7E2tv1ymBJtfphiGF53rO3Z3+Daqpi1JwQFDo
-	lgiWDurSOlJg401zE2zbjJmZaUiRTFfFa7jgLWYegzXcsRilY7AiXGsfL8jpnhn1AITZaQ
-	G3qbE0BLfc31MxyxQXdDlj65/nbTNydPTpcGjPM1yIHGzW0NZSoTkaaoV0WfV9tpUBUu1k
-	G/ActxEJrnRaEbvgPeySYEsa42/eR3XYbjDDSctPqmkC6gfZnuNnNyAhnMg1mw==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793003365; a=rsa-sha256;
-	cv=none;
-	b=V/2Jd+FRb2gDbajd+XqLv1olN4WP17zV1T/4hLwRE5wwdE1lhQo452k3HTxsbz+D+6SYeS
-	S4mG/G6enRqJ0GmqQhTlpknnT1yBpk6253yhpahjJMwVx33Zh1e1sgcL/7gGwdMqVfzlcv
-	YBm+V93iImbhljnPGb+NQxwuA2xT29fL2PV5Pa13ewbgrQzMQ2eoEuw9iWM9gUit//Jclp
-	XmHzoE0hmb16sHzK/FWxYni9ZGSZW8b6UYwS8nh5qG8nCYJulmtc7SF5CWmsV9nL5sWlPy
-	Yb5zzRqdfIjUaHCSjoddK8dFLJdwqGZDCgmPj/fBovJ7TRXkh8Kdt7HQ8ZP8xQ==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=str@pengutronix.de smtp.mailfrom=s.trumtrar@pengutronix.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793003365;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8CEwU6AVVLUrN8syM2T/p6MeATp6WE5o4yWux7VIDNA=;
-	b=Mut1e86Y7UcJ3aTKy+R2SoF4OTyC6vPpbee5Hq5cEQT7MSgXxrpOKGZG/c6DaphckDK0iW
-	Ud7RiHnv61ybMPE7EbQxlPe27+AClM3CKoM0boLUM/m957wblYSQOEritpf0k5tZCbgRBB
-	rte6ndk1E9RbiLKs7aH5ldT7p6TiUZXiwG8ftwAJppPBMpyoS0xFnVl8Daxt6QIldD+iL9
-	vzIGayKhwHmIXWzzsK9IwT9iLuV+eUVMhwbRzbCNiusNnrOOancxEA1Xi14ktPAvv052TZ
-	T62k4qKT+MS0gQc/Uk1sEIUeSIvwWgifF75AEmq9Pop6tZ6bqsjLJMoQzaYQdg==
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 26 Oct 2026 09:29:06 +0100
-Subject: [PATCH RFC v4 6/6] tun: add rx timestamp to the vnet header
+	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=ehra3wx/
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1793003408; x=1824539408;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=E+jtdwjXlLe/VpDKXe9x9KUCq9vhFm4y9pr/sb64kos=;
+  b=ehra3wx/dpEWklfOLhBddCyeZjwstIVhkhl98BH+92o+sbgqsV5GWojY
+   hfgK7gsBWIiAKD4kgaJJ1Kd80wCFcNrhrZVKMd43WS0KmOZwpnmXF1rTL
+   MYz0ARAuRsFCaFUxfyJWYh/4H56WgN9X8xBe0TtLQJ8xAM9x+26mJcikq
+   bg57f6oeH5wx0EeKSF4PEu2c0DXlrTI3vuv0TZIHdK/fxatk6n9A+f3SC
+   6uePrXQ4XDxlMJMgWSLzzTotDAkZyhh6kZC8FdM08boMD6G6g2Eiq3764
+   Cqceo/4WarvHjT6nxjYZlQddZsnuSaoMd0uQrmZQ4hA8qyeyO0h6etRGW
+   Q==;
+X-CSE-ConnectionGUID: N+VtUP7+R3uldKIGc/953A==
+X-CSE-MsgGUID: ujF3hsb/QZ2FyfoBHM8jaQ==
+X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
+   d="scan'208";a="65544468"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 01:30:08 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
+ chn-vm-ex2.mchp-main.com (10.10.87.31) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.49; Mon, 26 Oct 2026 01:30:07 -0700
+Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex04.mchp-main.com
+ (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Mon, 26 Oct 2026 01:30:06 -0700
+Date: Mon, 26 Oct 2026 09:30:05 +0100
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Haon KIM <akrn112@naver.com>
+CC: <dsahern@kernel.org>, <netdev@vger.kernel.org>
+Subject: Re: [PATCH] net: l3mdev: Set OIF flag only when an L3 master exists
+Message-ID: <20261026083005.edngrb7gs52ouhm6@DEN-DL-M70577>
+References: <20261024175746.2341-1-akrn112@naver.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,143 +77,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261026-v6-7-topic-virtio-net-ptp-v4-6-008af03cd43b@pengutronix.de>
-References: <20261026-v6-7-topic-virtio-net-ptp-v4-0-008af03cd43b@pengutronix.de>
-In-Reply-To: <20261026-v6-7-topic-virtio-net-ptp-v4-0-008af03cd43b@pengutronix.de>
-To: "Michael S. Tsirkin" <mst@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- Jason Wang <jasowangio@gmail.com>, Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, Eric Dumazet <edumazet@kernel.org>
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
- virtualization@lists.linux.dev, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, kvm@vger.kernel.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3856;
- i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
- bh=UF0DDam13NecUshEazoA59/3GN4tkViJoDxQqx4ifAg=;
- b=owGbwMvMwCUmtVehiCsuTInxtFoSQ9Z9/qS6RRnBX5gStr/RDi6UrGeUnhZ0q5qFUXyKs2Kjk
- fnhI886SlkYxLgYZMUUWVQWVvCJenzwjJwmwgUzh5UJZAgDF6cATOTYDob/Pmf/v3g478vlf4zF
- x2M3Kmz+IHF+qmOP6If/0UZc96u95Bn+pz3M7RDc9jQz6JTYFpfVp7/EJP/Jl5zSld18Vs41Lqq
- SAQA=
-X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
- fpr=24A1780E1548F0495996140A1ABD20720A5E5622
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261024175746.2341-1-akrn112@naver.com>
 
-Reference implementation of the device side of VIRTIO_NET_F_RX_TSTAMP: if
-the configured vnet_hdr_sz covers the tstamp field, write the current
-TAI time into the header when a packet is handed to userspace or vhost.
-__tun_vnet_hdr_put() now takes the full struct virtio_net_common_hdr
-and copies as much of it as vnet_hdr_sz holds.
+Hi Haon,
 
-This is not intended to be merged. A full test needs a QEMU that knows
-the feature and sets the matching vnet_hdr_sz in
-virtio_net_set_mrg_rx_bufs(); see
-https://github.com/strumtrar/qemu/tree/v11.0.1/virtio-rx-stamps
+> l3mdev_master_ifindex_rcu() may return 0 when the device is not
+> associated with an L3 master. In that case, l3mdev_update_flow()
+> currently sets FLOWI_FLAG_L3MDEV_OIF even though flowi_l3mdev
+> remains 0.
+> 
+> Set FLOWI_FLAG_L3MDEV_OIF only when a non-zero L3 master ifindex
+> is returned, keeping the flag consistent with flowi_l3mdev.
+> 
+> Signed-off-by: Haon KIM <akrn112@naver.com>
+> ---
+>  net/l3mdev/l3mdev.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/l3mdev/l3mdev.c b/net/l3mdev/l3mdev.c
+> index 5432a5f2dfc8..92b48d6a4301 100644
+> --- a/net/l3mdev/l3mdev.c
+> +++ b/net/l3mdev/l3mdev.c
+> @@ -279,7 +279,8 @@ void l3mdev_update_flow(struct net *net, struct flowi *fl)
+>  		if (dev) {
+>  			if (!fl->flowi_l3mdev) {
+>  				fl->flowi_l3mdev = l3mdev_master_ifindex_rcu(dev);
+> -				fl->flowi_flags |= FLOWI_FLAG_L3MDEV_OIF;
+> +				if (fl->flowi_l3mdev)
+> +					fl->flowi_flags |= FLOWI_FLAG_L3MDEV_OIF;
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Assisted-by: Claude:claude-opus-5-5
----
- drivers/net/tun.c      | 14 +++++++++-----
- drivers/net/tun_vnet.h | 18 ++++++++++++------
- 2 files changed, 21 insertions(+), 11 deletions(-)
+Looking at the readers of this flag, it does not look like this does much, so if
+anything this is a no-functional clean-up for net-next, I guess. The commit
+description could be more specific about this. Also, the target tree is missing.
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index 242899f7fd071..67699f9fc3d3d 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -57,6 +57,7 @@
- #include <linux/math.h>
- #include <linux/nsproxy.h>
- #include <linux/virtio_net.h>
-+#include <linux/unaligned.h>
- #include <linux/rcupdate.h>
- #include <net/net_namespace.h>
- #include <net/netns/generic.h>
-@@ -2160,12 +2161,16 @@ static ssize_t tun_put_user(struct tun_struct *tun,
- 	}
- 
- 	if (vnet_hdr_sz) {
--		struct virtio_net_hdr_v1_hash_tunnel hdr;
--		struct virtio_net_hdr *gso;
-+		struct virtio_net_common_hdr hdr;
- 
- 		memset(&hdr, 0, sizeof(hdr));
-+
-+		/* The configured header covers the tstamp field */
-+		if (vnet_hdr_sz >= offsetofend(struct virtio_net_common_hdr, tstamp))
-+			put_unaligned_le64(ktime_get_clocktai_ns(), hdr.tstamp);
-+
- 		ret = tun_vnet_hdr_tnl_from_skb(tun->flags, tun->dev, skb,
--						&hdr);
-+						&hdr.tnl_hdr);
- 		if (ret)
- 			return ret;
- 
-@@ -2173,9 +2178,8 @@ static ssize_t tun_put_user(struct tun_struct *tun,
- 		 * Drop the packet if the configured header size is too small
- 		 * WRT the enabled offloads.
- 		 */
--		gso = (struct virtio_net_hdr *)&hdr;
- 		ret = __tun_vnet_hdr_put(vnet_hdr_sz, tun->dev->features,
--					 iter, gso);
-+					 iter, &hdr);
- 		if (ret)
- 			return ret;
- 	}
-diff --git a/drivers/net/tun_vnet.h b/drivers/net/tun_vnet.h
-index f4c652b1fa44d..d4cc56dac98d6 100644
---- a/drivers/net/tun_vnet.h
-+++ b/drivers/net/tun_vnet.h
-@@ -153,19 +153,21 @@ static inline int tun_vnet_hdr_get(int sz, unsigned int flags,
- 	return __tun_vnet_hdr_get(sz, flags, 0, from, hdr);
- }
- 
-+/* hdr is fully initialized, copy as much of it as the configured size holds */
- static inline int __tun_vnet_hdr_put(int sz, netdev_features_t features,
- 				     struct iov_iter *iter,
--				     const struct virtio_net_hdr *hdr)
-+				     const struct virtio_net_common_hdr *hdr)
- {
--	unsigned int parsed_size = tun_vnet_parse_size(features);
-+	unsigned int put_size = min_t(unsigned int, sizeof(*hdr), sz);
- 
--	if (unlikely(iov_iter_count(iter) < sz))
-+	if (unlikely(iov_iter_count(iter) < sz ||
-+		     sz < tun_vnet_parse_size(features)))
- 		return -EINVAL;
- 
--	if (unlikely(copy_to_iter(hdr, parsed_size, iter) != parsed_size))
-+	if (unlikely(copy_to_iter(hdr, put_size, iter) != put_size))
- 		return -EFAULT;
- 
--	if (iov_iter_zero(sz - parsed_size, iter) != sz - parsed_size)
-+	if (iov_iter_zero(sz - put_size, iter) != sz - put_size)
- 		return -EFAULT;
- 
- 	return 0;
-@@ -174,7 +176,11 @@ static inline int __tun_vnet_hdr_put(int sz, netdev_features_t features,
- static inline int tun_vnet_hdr_put(int sz, struct iov_iter *iter,
- 				   const struct virtio_net_hdr *hdr)
- {
--	return __tun_vnet_hdr_put(sz, 0, iter, hdr);
-+	struct virtio_net_common_hdr common_hdr = {};
-+
-+	common_hdr.hdr = *hdr;
-+
-+	return __tun_vnet_hdr_put(sz, 0, iter, &common_hdr);
- }
- 
- static inline int tun_vnet_hdr_to_skb(unsigned int flags, struct sk_buff *skb,
+>  			}
+>  
+>  			/* oif set to L3mdev directs lookup to its table;
+> -- 
+> 2.37.0
+> 
 
--- 
-2.52.0
-
+/Daniel
