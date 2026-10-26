@@ -1,71 +1,124 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.145
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793015130;
-	b=a8p1cVCkYzcEeYQoN/V896yLGpj0TvotY2YyW0QTVK7ACQDUFREpuA18K+nMNNUSkp4Z
-	 jSC4kkJwzISIlBuMacNfc0ujSzovgyz/R6a9AkqDL6Q00xB9KgXqq28kin7hu+jDsQnQ1
-	 ABJcCirgZ/56S20tYg+dPUCs/td5fq3MR9iv8vVofo674k358QRGUO4e892Lk9q7mVmTN
-	 TmPXv3S8F+OpwXZQekvxLaqs9U99Mem1hVuiKkZW4QdfyG1O2PlKtyIcCNB7NP6av4LDe
-	 d/bbGRJt4VX0N2Phle0BtoeFktQTRPvUaol/yybiIsdF/AsP5sEqo+O1BhIbOt6GSUw==
+	t=1793015165;
+	b=pItLjXde3Zl5+TWulOcVBa3IF+MKPnyuXaMp3h+WMjpqCMt9d6m6gWERdKc0YJnN02Zv
+	 k1xShjQANlITsH/kGAt9hct8wasGvhTTJvhIf6+boj2bdDqjMapMfrnzOip/4x/+BdWLY
+	 2OivMCS0FPoRk8eUN0/qdtocwG0lptOT42OnUoY6c4UMXg4sO2ixDDZALUN+L2HAqRMKj
+	 LukpozWetvjAe8afpm2f5/6SXKN2Ypj9+O5/ZHTFf4w53NsEAdxvGFuTNTFdbNDJ61zt3
+	 ymXChTFPEGojAFXcxlkI/Vs6V/dFyV2p2Kyo+t8ffGv+U7EIYfDtJjYZB4vN6bZ1aGA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793015130;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Debian-User;
-	bh=4GBPkOJ1e/9LZha1WoEz3g+CVMBEHK4V97IQI0ow1S0=;
-	b=DvKyYjGf+oGLa2TnhRxWy+Iq//eHlELs4OBlgSANUkU35uURaH/vjFn13mWDGCF+7UqL
-	 0TGIeGF1BLHTETrvQkI3nDqVGa+vxrsxBRo4StiBs6ehyq+JdxYVjjBbTtzwRLI3/eiT2
-	 00v3BvCXlRZgDCTp7VHG6ucBOQ00WaK1HSYIp+ayAi0a7IYCs/ckhps9ln+lIGE1nmPtW
-	 V0OqjtHakckChKhojBpiNcCpt88cLkudyRWa1Wn20yoJSTlWPQjNcB2oxT02qC8w/koxQ
-	 lG479gzvdLVU9z6o0Zy2tYhKuQCmLV9LY/c4m3rYd4vEDSUyw2EfKUGZNbwmcJbNKBg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793015165;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
+	 In-Reply-To;
+	bh=cdHtGmitS+DpnzgyF7He7frabP8q7Ig2PWPVGAcUb5g=;
+	b=V+NADcGdQKqbdQVOpyfmQUheD6kcfm+oK8mlfNkZdbIjws/9wtBl4el/8XWTBKwsBpbH
+	 sx2mDnvVICF/6/XSnHtGC9z1Ae8SuqfqYfcOD7TXb7btLQPNm0rR+m4i1DjBjVFtfwQn6
+	 QfiQqX5MSJiRREBJSErYNMszG8YQj8US6ziwXS1AUlrrfvNxKaOrroYIBAvu6FBpWuCO+
+	 p5uHpCjeWfCqx186+WMJOIMsqC+MEIFDehBiWiwP7JWxeO1VkELJf/lirAOEz2bX28BNt
+	 X4j92sGURQrY7EuxNh7UeDg2jbnoW32Sw9McdYH9zA45O8cZcvrYMJkT2BU2Go4urUQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=debian.org;
-	spf=pass smtp.mailfrom=debian.org;
-	dkim=pass header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=er8kE+9q;
-	arc=none smtp.remote-ip=82.195.75.108
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	dmarc=pass header.from=kroah.com;
+	spf=pass smtp.mailfrom=kroah.com;
+	dkim=pass header.d=kroah.com header.i=@kroah.com header.a=rsa-sha256 header.s=fm2 header.b=QlMj379z;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=uSS0FpsI;
+	arc=none smtp.remote-ip=103.168.172.145
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79AF606A321;
-	Mon, 26 Oct 2026 11:45:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A79AF606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14018606A31B
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 11:46:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 14018606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=er8kE+9q
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=4GBPkOJ1e/9LZha1WoEz3g+CVMBEHK4V97IQI0ow1S0=; b=er8kE+9qbKNYXANxkVgY3/VCoO
-	k5ST4alqnvRWYqOaThekjLUnR6vppK+VfONA7ajNJ3ncWDLtPvfrZ18m/khsse5HvWT+wzeudjhj1
-	m2TOhWsLWa9eRCCuVtR7OGDPGzbDapCRqOF+PjtJ6QPNwT2/kftOJUqZFtp/Gs0eAGL6v0KeAtXJC
-	Ac66iuPp57PV2V1zz1dzozQUgw4nXTJITZ/ww9/8gl/+vVQjzFMVN+VoQT+D9s9+KpyHwWGGHGvdk
-	VwLHlYy8iSJt06zf69F0uwL5+rAu4fTlE/qP4a4eIAKaoe3n9QLr5ICI6uEtS0/qd0UhUPP6uc1BE
-	MMTe7lGw==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1xLJ8R-000eZC-0Z;
-	Mon, 26 Oct 2026 11:45:03 +0000
-Date: Mon, 26 Oct 2026 04:44:57 -0700
-From: Breno Leitao <leitao@debian.org>
-To: John Ogness <john.ogness@linutronix.de>, chris@chrisdown.name
-Cc: Sam Crossley <samuelcrossley@gmail.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Petr Mladek <pmladek@suse.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Paolo Abeni <pabeni@redhat.com>, 
-	Randy Dunlap <rdunlap@infradead.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Simon Horman <horms@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH RFC 0/2] netconsole: allow replaying the printk buffer on
- demand
-Message-ID: <at84qygscue8crQi@gmail.com>
-References: <20261024-netcons-replay-upstream-v1-0-9613f38496e5@gmail.com>
- <87fqxskdpl.fsf@jogness.linutronix.de>
+	dkim=pass (2048-bit key, unprotected) header.d=kroah.com header.i=@kroah.com header.a=rsa-sha256 header.s=fm2 header.b=QlMj379z;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=uSS0FpsI
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.phl.internal (Postfix) with ESMTP id 21D48EC0A19
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 07:46:04 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Mon, 26 Oct 2026 07:46:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1793015164;
+	 x=1793101564; bh=cdHtGmitS+DpnzgyF7He7frabP8q7Ig2PWPVGAcUb5g=; b=
+	QlMj379zqQ6Gvm5zgcyXxsQZv4BkLX+B2Jey2fytuu6NEeaOOjV1G0/eYKG/EUyN
+	9AmA0faV+YbnPRCpqFWZS075lPgO2Zrs+J2xMBn5CweKGY7FV7q0G+eleK510l6F
+	tAWwYWrlwn+CK09BlBCxivhK2QjH+93LVUioOX3zF8t2SPbojdV0H6F7HJfVPKJP
+	CQnAJlWgHPVVhZ/aK6QDFofS5vEyFZmko274pzLhUKNmrIC9AJD1AY9fYM3AjM5S
+	coHakQKI6lIIwQkwDr3byKje8Toy8z0GrlgNzR7n/7sCZfEN2C+jSuBDGeaf6+kP
+	RMygVVZBkF8pCm1k2g5mHQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1793015164; x=
+	1793101564; bh=cdHtGmitS+DpnzgyF7He7frabP8q7Ig2PWPVGAcUb5g=; b=u
+	SS0FpsIAJSU7ZZb+KziNquNVEPNmuLBkdvmcUEhtQUUtmgvvyNI+kyxriIVvfXym
+	owOrWOzfvbwLXp0oxy3WLgIuw9yUN7hFnsMRNBoTyMgrW0aNmXbxspiRpqG6jRqQ
+	f91VjzjSlNFN73haofAtjG3FI+B4VqF2ZBEMSftwAPCTabqWQ6r85of9E5BCpkgF
+	YUFNfD7CwHhCTqFiXSmlb31RyRWsmw7wUxUuNN6F7ppv3c5HCBMyZSKi3dF1vaJK
+	5gce+jbMC91RKN0C40m8B376sTVzoP5dbYmzH6YyyNysk3WBhR+YEl1eacqYjY8H
+	9Z5GknsJahDaYKWdUTHLg==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=sign d=kroah.com a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793015164; d=kroah.com;
+	mf=PGdyZWdAa3JvYWguY29tPg==;
+	rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm2:rsa-sha256:J6fr6gUHLRMEvzv1CEwdO1HgPd7NxVveeUkGwtSnPw2C09e
+	oocfg+9aRNSNw4DGorhQ99eJxkhijq4Qwa2u5AJ6d/GHDSnfrgGnHNzkdB9Bcc8f
+	MKHkQTLbkc9zm/McThFRoJ8LGW+WiPe4V0wEBXT9rTLBKIRh9vG+7yeAbIrSYM+0
+	i5sYjN2GGc0pRve5abwHBE4sznDuqxDv3cKx/kt0W0UFT5Pw/T4Xov4Cy29erI1T
+	Zy2ris9UoBaL3kxpAbC70ySvVhz4z+PUZOM5vpjy3K0Ab430driB1mz/z8YxH1tz
+	fxXBCbQRAHg/573aeMekx6BMMxDh6LY6/zjTyZg==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=mi-m=1; hc=13;
+	hn=cc,content-disposition,content-transfer-encoding,
+	content-type,date,feedback-id,from,in-reply-to,message-id,
+	mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:lv6/d4gtCptFuLHPSCTAiMsohXFUNt3uk+EzD/tQTPA=:cdHtGmitS+DpnzgyF7He7frabP8q7Ig2PWPVGAcUb5g=;
+X-ME-Sender: <xms:ez3favU5qRnaQa0V8hfiRskkmbNoTMgkK7rZPDAVO5IVbTjA4MqjfA>
+    <xme:ez3faj9L3BvS5zi4Tt71B2fCDJcFxYPOK5EJ0AqFVpXbu5t_jLZXbglCV4LnHCJ_W
+    iJpz6MBspOixIilGJo1yw54vOi8T0-19uPFb0JpAGnOgJT4yVE>
+X-ME-Received: <xmr:ez3fav00NgumAgSilf0ZptjVhZ7tqfaE6dV-CFWPWYjogY1iFxYNX07Vz1YHiC4Yps-HvpIi3fNQezBRmaHcpSARxary46_LDhXJRFdoIPU>
+X-ME-Proxy-Cause: dmFkZTGlr3vRP2HiOL8+7Mped2TXdqbzMLCd1048OLauO2/4u17MywByvK6CW7xsQkYtf8
+    QTgz82V085Rw96avnGOJlpvOm+oa4HIXXpl9zwWqKMzTKMdUOMTJVykPwdotRMPhK2BY/0
+    Pbxuo6EARpL4It2vfnso+8qq1k8TLnp0+6xKa5hUV8AAQemWzMbpJDTJivzHKgUf0+kPty
+    wgKz84JaZwL5gFGaTjZrq2YEiklnczfuDewNWn6ZuKW3T6dyUyVTqj2sCe5mV712aA/3O4
+    x6O2aOgMjf0lnXOTmW3pDP8eazOgi6FBfDTqOPsicPvgigUh1ezjaHowMlxL2ip3xdoeLq
+    H9mEGkyW8YOuhfg1RdCtfF6laMTex94IrLU6IQohEdhY2QRKyEtBWDz1jl3O+TpPUdtxY/
+    ryklWUsWneuG3JNpdKHZsxHWMfmzvLlWEH+y5zdYPnj9BBDTr+y4TPjDgE2KbksTtqZeta
+    gR74/SZnBd13xJj6k5udxbFYVRYSn6M3ZSlxjG+Fnmx5W0IYjtWAB2UVTQNUg4J0mmUqPj
+    S7jCblBo2d0siPdIZz0JE1MBNL12bkzLBNw8lgh+SqmsszGHLUGau7zDnzttZKhWvwfc6m
+    3lmQOKSdNgo7HPAYUefRq/x/oqOGYsqc7Ks38SgtdT/1nj59vmZfgFSWbQ5A
+X-ME-Proxy: <xmx:ez3faofyIEBHaHxj-K5-IdiuuZz0-MjFtY4CMZg_5R7h11Tq9IRb_A>
+    <xmx:ez3famAtJzvuV06uayHVLUMnHekOv-8mpIewEIieddyoFgNeUUDKtg>
+    <xmx:ez3fav-1WZKFQqytwihWI5rwXE59jYcTy_OcFw1B6mIigUo3xwBNyg>
+    <xmx:ez3faqqc9GaBYJl7FjQ6og8-vHvTDte2nRegroJPR77NPftmCZqxWQ>
+    <xmx:fD3fajANlwS_F2dIVZXj1kFERamrKXzvoLfoG1kRgIDe0Eb1g3KT18xf>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 26 Oct 2026 07:46:03 -0400 (EDT)
+Date: Mon, 26 Oct 2026 12:46:03 +0100
+From: Greg KH <greg@kroah.com>
+To: =?utf-8?B?5bmz5LmL?= <treebacker@foxmail.com>
+Cc: netdev <netdev@vger.kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	YOSHIFUJI <yoshfuji@linux-ipv6.org>, Ahern <dsahern@kernel.org>,
+	stable <stable@vger.kernel.org>, security <security@kernel.org>
+Subject: Re: ipv6: skb_over_panic in __ip6_append_data() when mtu -
+ fragheaderlen is in [1,7] (single sendmsg, since 2.6.12)
+Message-ID: <2026102604-circus-juvenile-c521@gregkh>
+References: <tencent_B58BAE2F5FF485D1B4F652E9980EAB132A09@qq.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -75,39 +128,20 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <87fqxskdpl.fsf@jogness.linutronix.de>
-X-Debian-User: leitao
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <tencent_B58BAE2F5FF485D1B4F652E9980EAB132A09@qq.com>
 
-Hello John,
+On Mon, Oct 26, 2026 at 06:54:50PM +0800, 平之 wrote:
+> 5. Suggested fix
+> ----------------
 
-On Mon, Oct 26, 2026 at 10:40:14AM +0106, John Ogness wrote:
->
-> In the per-console loglevel series Chris Down introduces [2]
-> /sys/class/console/ to sysfs. This is where we would put all the
-> upcoming per-console knobs. I would expect a replay trigger would fit
-> well there.
+<snip>
 
-That makes sense from a design perspective. Thanks for the direction.
+can you turn this into a real patch that can be applied so that you can
+get proper credit for resolving this?
 
-So the next step would be to add a basic /sys/class/console/, similar to
-[2], and put a `replay` entry in it. 
+thanks,
 
-
-That would be about three patches:
-
-  1. Create /sys/class/console/, similar to [2] but without any loglevel
-     handling. cdown can build on it when respinning the loglevel series.
-  2. Add the per-console replay helper, similar to [3].
-  3. Add the first entry (/sys/class/console/replay), which triggers the
-     helper from patch 2.
-
-Is that what you have in mind?
-
-Thanks,
---breno
-
-> [2] https://lore.kernel.org/lkml/84b8d91693e56f6026271bc40553bcb6657ab24d.1764272407.git.chris@chrisdown.name/
-
-[3] https://lore.kernel.org/all/20261024-netcons-replay-upstream-v1-1-9613f38496e5@gmail.com/
+greg k-h
