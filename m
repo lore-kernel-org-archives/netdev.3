@@ -1,101 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.178
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793046699;
-	b=MLDl6TYbogYBEqQP6+xueAIr+LF7dW1nK1yOB5S8+QN8VrWgFfLom5vuCwRkZHmOsr01
-	 0fpeLDRJ5ZXsAOZeJZFP7/s4ai1guyhpZnpMzTNewn7zss4s0vCrXk3UPAi88UX/fhQN/
-	 2v9Uk6koMuSuCLROjrSzFiHEvnrdHXvAMGPOCmJGvf7lQxRhMtz8mnBIrU4Zq1yElSGel
-	 WQOF0bIgaxsglFGmbihpdXpmFIT1DTJmX1zcblTPkwJqEg794rresVjVrOx4Il3kBAdmN
-	 TwLTN8q0ECh2Gol3HetgN7+SmRRWMci2mPW9ezhOovtpKhqFEwHBvqqWTN0rib3SbZw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793046699;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=oLlOcSCQ32pMuVJGiKdjmwfrqV55t/QVJ+mNxxfwt1w=;
-	b=u+36vsxXdVGFfCdEAFeUVvTPWoMyRhzofN2pCu/g413C88HhWNprdRN1T6xr7+nvAnyw
-	 Hp2kaIf2dE3UTb05725BWt/8HiPzuWIU1WtNRJGO86MLpQsoCM1jyQAavTy7wZfoIhWPW
-	 QDK9XfHdwnIFUMCRLRHAeWx/tFcnEl9oqOagZucCIsRfdti73neu6V0lewYj74oPyEqcR
-	 +X8/japWQ/DzstbS2JVmEaFeTLUnXVBXp74q5Tit/rRIRqypi/FXGuEiHGkTRjoqeKuc+
-	 RTy4kvO4fNArCoDRvbF8HXSNRNbVyf868YcyYEyzc6Q3RmaqZZa1GDWqUYdyQJlwEyA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=paul-moore.com;
-	spf=pass smtp.mailfrom=paul-moore.com;
-	dkim=pass header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=L+wootqW;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.178
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793046730;
+	b=2Ie01l9QfWlBj4F60kb5UmbllcYSjLTlTYYEoXHDk8fXWFPunfaK8mXZXck6Vrjv0y9P
+	 mFNiqOGRvxN4WqGFrFE6nJaBJLgUdnxXCnhPiTBiaPpt8iJGzQbCCI/PpAQCSdlmYKoxU
+	 ZyOnJzO8qa/znak4Vsn9jx+ktPncANUMHlcS1KDR9rPBwspLXQ9CloM2VYgmstqHZvhrN
+	 WnDCnDcBYV2sZbfJ/xDlq/b3xfBxDnzQhv+/rOh/a5rFIPcAM7lVYfhLSkU72AQZXU7xX
+	 IYcj7BW0322zMibZeD7G4ys7Wkuzmm4o7DHKZCVMSEdM5nKVU4VWiYJSjP5PGUDrmPw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793046730;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=iJc4+QyiUpbP5bLPqs8ix+Tf2mWeWDixRtgU+vBWVdo=;
+	b=K8apKK9BIWaKD3P4uORhfVZbWC3f0bQlTrmilgPi8+CKhlQyfEPnZGlRn15GhG6Hv+wS
+	 cZrbmPMOG+fsoNVjpXjXudMwpqoSxB2XdeOAOpXcNnF13S6y2e70CAsi9d5eEU+hCE72H
+	 qctdinjukD9BbgJFDIZZbLhbHvosQ40N/iSSnMclAKz+HjCtr8Z4t+lHIXF7UCNv37eqY
+	 rYciGA5ah6V6eTvB+Q6j3y8OtitJ8pP4RYlCjlx3sHB3deL7rmkkNnrksoI2W1jLxGjUl
+	 5saldVB+UgX89SRosRdQVH7SThPsYoVLtoHSlmkEL1JgJTgA6juAolJlvbp6IoNTwuA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aZ3x7X7l;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1BA6606A31F
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 20:31:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A1BA6606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8DC8606A31D;
+	Mon, 26 Oct 2026 20:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=L+wootqW
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2e9d1114320so26208495ad.3
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 13:31:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793046698; cv=none;
-        d=google.com; s=arc-20260327;
-        b=QdBy4no6DiXsomag27c809JZBsoeyoboisdSD9ESbsDknNjLZSZ4zDT97bHKaFGv8H
-         RDv6/Fuul/LXGmry5Mnilw4bOPjsjvqs2LERb3OKs0Iq3IzO+YArhecwpv6CL8ob36s8
-         cZxqJnFN2YR3awdCzdkTF041RXmbVmogzfPMVrwvXli9GSqwmjNjK1WdhFwRukyeD3XP
-         rLj/hqZMXTHmXZR7Y1cypiSrQSK9N2kfyhGGcp1KvUDp0mOqFMrD5ztvioNBkVDYSinI
-         pYIYizOboPyMg6IFob1tuNFX4tUqBapvTccQm6AFeRyMaD5XomdqlUl39LolN2RGotRb
-         rN9Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=oLlOcSCQ32pMuVJGiKdjmwfrqV55t/QVJ+mNxxfwt1w=;
-        fh=/j6ENi5IKAzYGWWPsU8EgVyL0BnxBx5TYoY99tDfcag=;
-        b=WZDeax8mGBoAZRv+EKDb08xqhq7KX57p4Z1YfoKu3lGACRAsV5Xw5Ax90kI5qWyIAg
-         NsOtca2unzq29LUiksOBvAB7MLaGeJZ+fxdGi4jSUXpFTRjSAd+HmIp2CsjUE2ATTmKu
-         xtLpJASKwLowzZ6s8O2Fbc28g6/Gga0UldereSA4Tpc2yAPJ8EEM7SEq7pjC0340Wtl/
-         iS0I0KKqFUJw7t4fmW8VgI02w5hhqLgPuUWrxsIrrY8FBudcj961+XEP1LKLtdWq22Xo
-         ZbUuvwsIXgNRTBD9pI4sPTO4APfOPoI9XtYpwKP6qVB0lfTR3YvQchPk5vcGsJ9TKJvn
-         lPHg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1793046698; x=1793651498; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=oLlOcSCQ32pMuVJGiKdjmwfrqV55t/QVJ+mNxxfwt1w=;
-        b=L+wootqW5T77UGOryyw3TrOnPRmPjLL2i4uoI36Fb52hAChavbUjC2oAErcwcWcJq1
-         gwgn++rWkrUiN4eZmtVkxuIBOAsAZefl8wqr6EQCDZZBTjk1hO2UkuEyI8i5m5RjX7DJ
-         EK1ndGeANRMX4aTbpO+nvR7fIU63VxFQ9ffp4FXCojFjYD+fdWAL9RHBV9A1L4pnrwWe
-         CwArxDWTNOmGZ0DS0oKM86YGqSE9zdjWjrY330iiwsDo23ENOID23IQ7tNUIGTMjbHgT
-         BUbvwez+Hzl4lCCb8TSHKJZNqHNNnbu8YjtxV98iTts8xUYoVruc0kCp8wqVv0S6jf5w
-         /EUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793046698; x=1793651498;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oLlOcSCQ32pMuVJGiKdjmwfrqV55t/QVJ+mNxxfwt1w=;
-        b=AwRs6SP550C2f6q9KeNSkzJzfPppRDN9TY6Jh9+yhJt7G1V3IFfDDZ8CuCLmL6uBre
-         5PZP+5OC48sii1nnJbX/KRGLqymnu704vMACAyOf1ROmty+p7tl+OYkqTzS4kANpln24
-         HBmj1BOn7icEWpFhl7fgu++UocZ/bEfsayNEZlItwxpv+f1M12gLJF0aojydhvJJsmyv
-         UJymLxvyz/r6F0dpPj4WYQQMlMF20cxjLAGkS/PlbnbC2kxNnPBiB59ZmQNpIL+Joekm
-         UWtfjwc9BpSRLIKbXFgJibdHPxiSoWR0C7ubIO6kA742OxOpgTHBDnbhBt0KrS7ZHm6m
-         2FaQ==
-X-Forwarded-Encrypted: i=1; AKwUvBygntrKIiUjFqYia/TnMwLJVf8J+qARK6V0tn1EIxHikvGW5yD4iUmYJsZ95J0ypDEVCVejlkg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ23T4La6TICCPJ+bdRuU2kHWlgR0YtTWg6o7Vvfpp9Oxt30oUc
-	Lrz0itlLPDplF1r5sgnHLU8b5MRSQi3LYtzV5GCCFPHcYzbhxbOuesWCwvdDwkUzMO59oOjANE1
-	7C4HDjNxsZGHvYqJV9GMyB+I8w07Edrrvjq4skY9m
-X-Gm-Gg: AYBFou1NyFjhRbmhCZwm1xA7rn8pc8hA7ZEvZbGNeKxAz3s5CvNwaI1Ya5/CBX/3aXZ
-	B2tXlxgcpcivis6B9RBKhIKPkR3b3Ja2X0bD+9OCnKIWeVDYUd836Py7HWLdoDbevyMnoGbxSnx
-	wKFLsG5wXrC71CckDfUw8O3veda3aCDuQ5fbNpEtkidENlgW7TrCece/6Jy5mq/YapUG2epthHS
-	ASTIF1ldN4U2nsJH7038J6gvtljLmmTRdifMRRQvyUgZ7/yjOaY3aVyJGU56Mgd9FvJcNDagE1d
-	n+CDPahvc/5VGgrndztJeH8oo7Pzi92gFha+LavWxbamWRsx605PHoohNeI1F+4oM2iZb6NFOE4
-	QCA2LND1R/jDn/chOnvXQnQ4SR93UC9PROjw7Bps+c/LAQWoB9ogdndkgXv/jsJruHlJmUDhNsr
-	ei8Qz7qzhbIXpmvw==
-X-Received: by 2002:a17:902:ecd2:b0:2e8:30dd:523d with SMTP id
- d9443c01a7336-2ea9c620609mr71569325ad.13.1793046697876; Mon, 26 Oct 2026
- 13:31:37 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aZ3x7X7l
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30C261F01825;
+	Mon, 26 Oct 2026 20:32:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793046729;
+	bh=iJc4+QyiUpbP5bLPqs8ix+Tf2mWeWDixRtgU+vBWVdo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=aZ3x7X7lPmzWi+0+la1FI2ySRw6j6DEWKtAMNpk1axiD+80W7IjyJFKABYyKgRTry
+	 zBO0XZTNS2hLHBc87nndDQ3scy6/d+hnIL1tck7jK47+NPeoCS7TL1EAuz8aWZ/o00
+	 ZLNR0f1fBLjqZ8GI0b0JE3UfbTGBbd5aBNy+FkVyBEtsDtDMmNKPUsTxVGd8iCzRga
+	 i4u5FbXnu5tEzlzP8jNC/xcE/h7a79NhZF3piV98Dz0QDTDMuOzhmgkpH9cCMRVHZ8
+	 ftcLrhH0m482X/wYy4xcWMNIWzK8ei4OXRC+pw51BhuNoMq6nYQqreRhVnOy7ucR+Y
+	 8KQXIaMLvY0ZA==
+Subject: Re: [PATCH net V2 1/4] {RDMA,net}/mlx5: cache and use TX-enabled
+ aggregate speed for vports
+From: netdev-bot+sashiko@kernel.org
+To: tariqt@nvidia.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+ bhelgaas@google.com, cjubran@nvidia.com, cratiu@nvidia.com,
+ edwards@nvidia.com, gal@nvidia.com, jgg@ziepe.ca, kees@kernel.org,
+ leon@kernel.org, linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-rdma@vger.kernel.org, msanalla@nvidia.com, mbloch@nvidia.com,
+ ohartoov@nvidia.com, saeedm@nvidia.com, shayd@nvidia.com
+Date: Mon, 26 Oct 2026 20:32:07 +0000
+Message-ID: <179304672765.3134.1208806064407803696@kernel.org>
+In-Reply-To: <20261022193053.3815866-2-tariqt@nvidia.com>
+References: <20261022193053.3815866-2-tariqt@nvidia.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,109 +67,210 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261026-work-security-namespace_free-v1-0-ffa3ebbf71bd@kernel.org>
-In-Reply-To: <20261026-work-security-namespace_free-v1-0-ffa3ebbf71bd@kernel.org>
-From: Paul Moore <paul@paul-moore.com>
-Date: Mon, 26 Oct 2026 16:31:25 -0400
-X-Gm-Features: AclHuK_MBYtdpmV00LiIGiHwgdDyciJ8YZFfqnRLK0ynU1qoZWOLvejR9vdc3xM
-Message-ID: <CAHC9VhR4rMydWiD-RFv-ABiYSG_txJuyrtdaowEXPY=CHEvFXA@mail.gmail.com>
-Subject: Re: [PATCH 0/8] ns: fixes for the namespace LSM hooks
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, netdev@vger.kernel.org, stable@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 26, 2026 at 5:57=E2=80=AFAM Christian Brauner <brauner@kernel.o=
-rg> wrote:
->
-> I tried to switch systemd-nsresourced over to the namespace_free LSM
-> hook that went in this cycle. I explicitly developed it to work nicely
-> with that. But the version that is merged is broken for that case.
->
-> The namespace_free hook is never called. security_namespace_free() bails
-> if ns->ns_security is NULL and that's only allocated if an LSM requests
-> a namespace blob. Nobody does. Landlock doesn't care as it only uses
-> namespace_init and namespace_install but a bpf program attached to
-> namespace_free never runs. And it can't work around that either. We
-> could make the bpf LSM request a blob but that would just be a way to
-> make the hook fire. So call it unconditionally like we do for
-> superblocks, files and bpf maps.
->
-> The bpf LSM also marks the arguments of namespace_init and
-> namespace_free as trusted. Curiously that patch was also dropped.
->
-> namespace_init is called before the namespace is set up and if anything
-> fails afterwards the namespace is freed without looking at its reference
-> count. namespace_free is called on the way out. There's no kfunc that
-> takes a namespace yet but once there is one a program could take a
-> reference to a namespace that's about to be freed. So add both hooks to
-> untrusted_lsm_hooks.
->
-> The namespace_init hook also always sees a namespace id of zero because
-> the id is only allocated after the hook has run. The id is the only
-> identifier of a namespace that is never recycled. So it's what a bpf LSM
-> wants to use to track a namespace from namespace_init until
-> namespace_free.
->
-> The inode number is recycled way too quickly for that. So allocate the
-> id in __ns_common_init() before the hook is called. Then ns_tree_add()
-> doesn't need to allocate ids anymore and ns_tree_add_raw() can go.
-> Landlock keeps logging zero for denied namespace creation because that's
-> what it documents.
->
-> I'd want to get the first three patches into v7.4 since the hooks are
-> new this cycle. The systemd change I have for this uses the
-> namespace_free hook whenever the kernel has it. On a kernel with the
-> hook but without the first fix it would never learn about dead user
-> namespaces.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-From what I'm reading the LSM framework patches don't meet the typical
-LSM criteria for stable/RC fixes: there is no serious bug/panic, and
-there is no functional regression from a previous release.  It also
-appears that the existing Landlock namespace code still works as
-expected.  This looks like one of those unfortunate circumstances
-where a new use case wasn't tested thoroughly enough before the merge
-window, so it can wait for the next one.  We've already identified
-other LSM/namespace issues that are targeting Linux v7.5, the
-security_namespace_free() change is one of those as far as I'm
-concerned.
+Critical: 0 · High: 0 · Medium: 2 · Low: 1
 
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-> ---
-> Christian Brauner (8):
->       lsm: always call the namespace_free hook
->       bpf: don't mark namespace_init and namespace_free arguments as trus=
-ted
->       selftests/bpf: add verifier tests for the namespace LSM hooks
->       landlock: pass the namespace id to log to check_ns_type()
->       ns: allocate the namespace id before the namespace_init hook
->       nstree: drop ns_tree_add_raw()
->       lsm: fix the security_namespace_init() kernel-doc
->       selftests/bpf: add a lifecycle test for the namespace LSM hooks
->
->  fs/namespace.c                                     |   6 +-
->  include/linux/ns_common.h                          |  16 ++-
->  include/linux/nstree.h                             |  29 +----
->  ipc/namespace.c                                    |   3 +-
->  kernel/bpf/bpf_lsm.c                               |   2 +
->  kernel/nscommon.c                                  |   7 +-
->  kernel/nstree.c                                    |   2 +-
->  net/core/net_namespace.c                           |   4 +-
->  security/landlock/ns.c                             |  11 +-
->  security/security.c                                |   9 +-
->  .../selftests/bpf/prog_tests/ns_lifecycle.c        | 145 +++++++++++++++=
-++++++
->  tools/testing/selftests/bpf/prog_tests/verifier.c  |   2 +
->  .../selftests/bpf/progs/test_ns_lifecycle.c        |  88 +++++++++++++
->  .../selftests/bpf/progs/verifier_lsm_namespace.c   |  38 ++++++
->  .../testing/selftests/bpf/test_kmods/bpf_testmod.c |   5 +
->  .../selftests/bpf/test_kmods/bpf_testmod_kfunc.h   |   1 +
->  16 files changed, 314 insertions(+), 54 deletions(-)
-> ---
-> base-commit: 21a7f44fd0765fcc5194130b28767786eba1d1e7
-> change-id: 20261026-work-security-namespace_free-7aaf89b5b00e
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
---=20
-paul-moore.com
+- [Medium] The new ldev->agg_speed_mbps cache is invalidated on only one
+  teardown path, and it is filled only after the IB device is exposed.
+- [Medium] For regular (non-MPESW) RoCE/SRIOV LAG, the patch replaces the
+  bond's ethtool-derived speed (tracker.bond_speed_mbps) with a sum of…
+- [Low] In non-MPESW mode, mlx5_lag_get_devices_oper_speed() now reads
+  the live ldev->tracker.netdev_state[pf_idx].tx_enabled/link_up for…
+
+--
+
+{RDMA,net}/mlx5: cache and use TX-enabled aggregate speed for vports
+
+This patch caches the aggregate operational speed of the TX-enabled LAG
+ports in ldev->agg_speed_mbps. VF/SF vport max_tx_speed is now programmed
+from that cache instead of from the bond speed. The exported
+mlx5_lag_query_bond_speed() is replaced by
+mlx5_lag_query_aggregated_speed(), which the mlx5 IB driver uses for port
+speed queries and which returns -ENODATA until a measurement succeeds.
+
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+> index 4e173b08cb37a..57755ceab8a75 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+
+[ ... ]
+
+> @@ -1452,15 +1453,21 @@ static int mlx5_lag_get_devices_oper_speed(struct mlx5_lag *ldev,
+>  		pf_mdev = pf->dev;
+>  		if (!pf_mdev)
+>  			continue;
+> -		ret = mlx5_query_vport_max_tx_speed(pf_mdev, opmod, 0, 0,
+> -						    &speed, &state);
+> -		if (ret) {
+> -			mlx5_core_dbg(pf_mdev, "State query failed (err=%d)\n",
+> -				      ret);
+> -			return ret;
+> -		}
+> -		if (state != VPORT_STATE_UP)
+> +		if (mpesw) {
+> +			ret = mlx5_query_vport_max_tx_speed(pf_mdev, opmod, 0,
+> +							    0, &speed, &state);
+> +			if (ret) {
+> +				mlx5_core_dbg(pf_mdev,
+> +					      "State query failed (err=%d)\n",
+> +					      ret);
+> +				return ret;
+> +			}
+> +			if (state != VPORT_STATE_UP)
+> +				continue;
+> +		} else if (!ldev->tracker.netdev_state[pf_idx].tx_enabled ||
+> +			   !ldev->tracker.netdev_state[pf_idx].link_up) {
+>  			continue;
+> +		}
+
+[Severity: Low]
+
+Can these live reads of ldev->tracker race with mlx5_lag_netdev_event()?
+The notifier publishes the whole tracker while holding only RTNL:
+
+	ldev->tracker = tracker;
+
+This code runs from mlx5_do_bond_work() under ldev->lock and the devcom
+lock, but without RTNL. The lockdep_assert_held(&ldev->lock) in
+mlx5_lag_update_agg_speed() therefore does not exclude the writer.
+
+Between the tx_enabled/link_up reads for different ports,
+mlx5_port_oper_linkspeed() issues a PTYS command that sleeps. During an
+active-backup failover:
+
+bond work                              netdev notifier (RTNL)
+port 0: tx_enabled, count it
+mlx5_port_oper_linkspeed() sleeps
+                                       ldev->tracker = tracker
+                                       (port 0 off, port 1 on)
+port 1: tx_enabled, count it
+
+Would the aggregate then cover both ports, even though only one of them
+was TX-enabled at any given moment? That value goes to RDMA and into the
+VF/SF vport max_tx_speed, and it stays there until the requeued bond work
+recomputes it.
+
+mlx5_do_bond() already takes a snapshot with tracker = ldev->tracker for
+activate/modify. Could the speed calculation use that same snapshot?
+
+>  
+>  		ret = mlx5_port_oper_linkspeed(pf_mdev, &speed);
+
+[Severity: Medium]
+
+For non-MPESW RoCE/SRIOV LAG, this replaces tracker.bond_speed_mbps,
+which came from the netdevs' ethtool link speed, with a sum of
+mlx5_port_oper_linkspeed() results. Does that lose the fallbacks the old
+source had?
+
+mlx5_port_oper_linkspeed() picks the PTYS encoding only from
+mlx5_ptys_ext_supported(). When no known bit is set, it returns success
+with a speed of 0:
+
+	ext = mlx5_ptys_ext_supported(mdev);
+	err = mlx5_port_query_eth_proto(mdev, 1, ext, &eproto);
+	...
+	for (i = 0; i < max_size; ++i)
+		if (eproto.oper & MLX5E_PROT_MASK(i))
+			oper_speed = max(oper_speed, table[i].speed);
+
+	*speed = oper_speed;
+	return 0;
+
+The old source had two fallbacks:
+
+- mlx5e_ethtool_get_link_ksettings() falls back to the legacy
+  eth_proto_admin/eth_proto_oper when the extended admin field is zero.
+- get_link_properties() falls back to 100 * data_rate_oper when the
+  bitmap cannot be decoded.
+
+The legacy admin case looks reachable through
+mlx5e_ethtool_set_link_ksettings(). On ext-capable hardware with autoneg
+enabled, advertising only legacy modes writes the legacy admin field.
+
+In that configuration, would an up, TX-enabled member contribute 0 Mbps,
+with the result cached as a successful measurement? RDMA would then
+under-report the port speed. If the whole aggregate is 0, the VF/SF
+vports would get the max-capability fallback instead of the operational
+speed.
+
+This assumes firmware reports oper only in the legacy field in that
+configuration. That assumption comes from the ethtool code's handling,
+not from a firmware specification.
+
+>  		if (ret) {
+
+[ ... ]
+
+> @@ -1594,6 +1625,7 @@ void mlx5_lag_reset_vports_speed(struct mlx5_lag *ldev)
+>  	int pf_idx;
+>  	int ret;
+>  
+> +	mlx5_lag_reset_agg_speed(ldev);
+
+[Severity: Medium]
+
+Is this the only teardown path that invalidates agg_speed_mbps?
+mlx5_lag_reset_vports_speed() is only called from the disable branch of
+mlx5_do_bond():
+
+	} else if (mlx5_lag_should_disable_lag(ldev, do_bond)) {
+		mlx5_lag_reset_vports_speed(ldev);
+		mlx5_disable_lag(ldev);
+	}
+
+Other teardown paths do not appear to reset the cache. One example is
+mlx5_lag_disable_change(), reached on eswitch disable or mode change:
+
+	if (__mlx5_lag_is_active(ldev)) {
+		if (ldev->mode == MLX5_LAG_MODE_MPESW)
+			mlx5_lag_disable_mpesw(ldev);
+		else
+			mlx5_disable_lag(ldev);
+	}
+
+The MPESW disable work also calls mlx5_lag_disable_mpesw(), and the
+shared FDB path goes through
+mlx5_lag_shared_fdb_destroy()->mlx5_deactivate_lag(). Neither path
+touches agg_speed_mbps.
+
+On activation, mlx5_do_bond() calls mlx5_activate_lag() and then
+mlx5_lag_rescan_dev_locked(ldev, dev0, true) before
+mlx5_lag_set_vports_agg_speed() fills the cache.
+mlx5_lag_shared_fdb_create() also rescans and reloads the IB reps before
+it refreshes the speed.
+
+mlx5_lag_query_aggregated_speed() reads agg_speed_mbps without a lock,
+and its IB caller only checks the LAG mode. Could a uverbs
+QUERY_PORT_SPEED in that window return the previous LAG instance's
+aggregate as valid data? On a first activation, it would get -ENODATA
+instead.
+
+This seems to contradict the commit message:
+
+  "Until the aggregate has been measured, or after a failed measurement,
+  mlx5_lag_query_aggregated_speed() returns -ENODATA."
+
+It also contradicts the v2 changelog note about resetting the cache to
+SPEED_UNKNOWN on teardown.
+
+Later patches in the series do not appear to change this.
+mlx5_lag_reset_agg_speed() is still reachable only through the disable
+branch of mlx5_do_bond(). In "notify IB uplink on LAG aggregate speed
+change", the stale value also feeds the speed != old_speed check.
+
+>  	mlx5_ldev_for_each(pf_idx, 0, ldev) {
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261022193053.3815866-1-tariqt%40nvidia.com
