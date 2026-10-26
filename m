@@ -1,60 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.239
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792994366;
-	b=vx7acD8Thwq2QDk43t/OdgiUg7PgRZSFtSi09s1EWlASntxL3eepe+V3EkUK1TaFyLIw
-	 E3A+lz6QCF1iROi/fEIdfs7TTbGxBVt1cpeicqfeVgIasHdwTh22GwIUMmd77j70Bzo1Y
-	 LzPbW4w+WHYSp2+mNj7A0Z9ETfVLlBU8XWvTkHUDIojC5utw5SmIb4JVx+wBuLM8nfNGN
-	 dnO9Jp3o/+YAJqy23OzjqpKa/zl58Yh9piQ6NDO0qamDyTgYuQDioGDGd//R0vGH9Cp5O
-	 AVI1gar02FGCoqz6sFLJbWbtR3edhlG3t8JacmfcuBT8FHHWdtx06XNEm/DcTUc2yIQ==
+	t=1792994642;
+	b=l5FwD0mU7Ph0+iAzaKESK3dzVOnAlh8YeCxXLRU3FFtRg9SNkI/9SmrObr3zbpcl756b
+	 BvcwOU12QGvYcx+Pu/bR8O8V3yYRVq9mJj9hAysyZEMdXlTWpS5/KgSs/y0LvA8nDxDX0
+	 afH/YTnObUKNXDujFOxgvVY1ri4kruLjNE8K6ltZkLK9i4thfANTdKWaWYv0/xUM795Yh
+	 esHqpoSioOugCggH4zpc04wRcZnoXAp3XikMn8Sw/1bRlaRM5Z9qSyvhdi918zcLTpa00
+	 kaNRuAUtDtOXFFBBoTKVEOjPUSaigYMkY/Z8y9jGqf4n9dsE73YsFbUANh+kXL6FIbw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792994366;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792994642;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=COs/TUk4qiU7GxyHISTIlP6sMzCcAoybiHUw6sCgzug=;
-	b=j3pw6akQFMoWT/w3nhhbU/5LcXCVXVO6ZZ4L/nRKhr79CVlGUOpk98ZioL+vM89q0s6h
-	 eCl4uPt2/x+1S0UKTmwia+hGCuGwHEuT8OYRBiz3YYaNIkOcvGKYKS/uWIagVIExHYanZ
-	 NpZ4E1uDShGYIRwtJqmylYlFUKVVXjlsQsDhmQeY03FYP2lmrO5ZMj8oazS5mW4ou3oaK
-	 K8WT2N0QyvOGGax0H+KLkyB59I2PljwwWqx/akLzzceG4Kej0n1hYByyfAe9QZn9htC7C
-	 g4NkQ5I7G/vFle1xV8oULHR9epaBtcIB0gbFxJaBm0fJXmI/xqhaSnrt/npSaXDlQHQ==
+	bh=aq4qj7X3uDNOylbWVnw2ebWrrf7qEzSnn935WLDjk4U=;
+	b=vth1gMNvlpXlCKVszf83sHrsLtVqlIlC7owhtv/nFSnpUJgfdwshP7j4jFXNNxDH8Laa
+	 v0tTqKzWrK24TWHsXLHr+JwEhCqpKFc5vKY5PBEB9LDDRnU7cApzilZiIwJostRH/TkeM
+	 FVuay9iO/MxVVayI7h83t47LNjTHUDVI4GG11xoUKlUsOi8WOjiP2uGeuyyeRXM2pZKEw
+	 fmWyiHvbRmKpMXGkmV7gN3Kp1Eno7bb0pAKqy/gxEAeDEMQkyzBfiRaYEEmOGT5v6u9Vm
+	 y5+1M+nN5ly2y7ukG1wl77O80yssd9Wu/pS4J0Inys1GdbF+DIjExEkXmCeYmKuM77Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=al7HDrjl;
-	arc=none smtp.remote-ip=95.215.58.49
-Received: from mta1.migadu.com (out-49.mta1.migadu.com [95.215.58.49])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=tnifBwe8;
+	arc=none smtp.remote-ip=91.218.175.239
+Received: from mta0.migadu.com (out-239.mta0.migadu.com [91.218.175.239])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB48606A31A
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 05:59:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4EB48606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3D0606A31A
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 06:04:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5D3D0606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=al7HDrjl
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=tnifBwe8
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=VgV9fc/O4QmVrn4wr6/mmQ0PELV8z5X97stIcx5TCWc=;
+DKIM-Signature: a=rsa-sha256; bh=+KjbAb4mqjjuavznN3uK91S0a1pVusJuB7EYj/7xIlE=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792994362; v=1; x=1793599162;
- b=al7HDrjl6EvqnKzBlQ2T46KnmeTKPDXd6QhTLjZcDpJHbFc3+feAwO1IL+2PzOBvGa5PMCuZ
- E+NaAMWx3U5lVRF+8BQ5pcNIxtCMhhG3pPR15CCYdh8xou3VpaStDsgQ/jpw6qvN8tSnQjQpjDY
- yNSKtksaEkKTxf91HAcAgJMQ=
+ t=1792994639; v=1; x=1793599439;
+ b=tnifBwe836y9jaDpsh7zJes8l8NFAVJ3ySJJryueRo4OAvH9eIL15XVleOz0s6lLUujFQbgz
+ 9HktWj7NHAqXcPsjwb/uuSYnExBmXkVCWZeLieoVHLbkj7EyJWdZYNpwFDv3Y9OzZzW17RYlEyZ
+ jgSI93exoP1LBkkcyALbv1GE=
 X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id 612ba363ae14305c;
-	Mon, 26 Oct 2026 05:59:22 +0000
-X-Mizu-Trace-ID: 612ba363ae14305c
+Received: by mta12.migadu.com with ESMTPS id 73b3493711b79e15;
+	Mon, 26 Oct 2026 06:03:59 +0000
+X-Mizu-Trace-ID: 73b3493711b79e15
 X-Migadu-Flow: FLOW_OUT
-Date: Mon, 26 Oct 2026 13:59:09 +0800
+Date: Mon, 26 Oct 2026 14:03:53 +0800
 From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
-	pabeni@redhat.com, edumazet@kernel.org, dsahern@kernel.org,
-	horms@kernel.org, yoshfuji@linux-ipv6.org
-Subject: Re: [PATCH net 0/2] ipmr, ip6mr: Fix several info leaks
-Message-ID: <at7sLZYY-qkAj2Ts@fedora>
-References: <20261025071729.34967-1-idosch@nvidia.com>
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org
+Subject: Re: [PATCH net] ipmr: clear skb->cb[] in reg_vif_xmit()
+Message-ID: <at7tSfe2w0Wfn4ns@fedora>
+References: <20261025111337.142787-1-edumazet@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,41 +68,58 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261025071729.34967-1-idosch@nvidia.com>
+In-Reply-To: <20261025111337.142787-1-edumazet@kernel.org>
 
-On Sun, Oct 25, 2026 at 09:17:27AM +0200, Ido Schimmel wrote:
-> ip{,6}mr_cache_report() copy the IP header of a packet that triggered an
-> upcall to a report packet that is delivered to user space. The header
-> is not always fully initialized or present, resulting in info leaks
-> flagged by KMSAN.
+On Sun, Oct 25, 2026 at 12:13:37PM +0100, Eric Dumazet wrote:
+> reg_vif_xmit() hands the skb to ipmr_cache_report() as an
+> IGMPMSG_WHOLEPKT report. When the mroute socket has IP_PKTINFO
+> enabled, ipmr_cache_report() calls ipv4_pktinfo_prepare() on the
+> original skb, which reads skb->cb[] as IPCB.
 > 
-> Patch 1 fixes an info leak in the RTM_GETROUTE path, caused by the fact
-> that ipmr_get_route() does not fully initialize the IP header of the
-> packet that it creates. IPv6 does not suffer from this problem.
+> By the time the pimreg device transmits the packet, skb->cb[] is not
+> IPCB anymore: qdisc_pkt_len_init() overwrites IPCB(skb)->iif with
+> qdisc_skb_cb(skb)->pkt_len, and any qdisc installed on the device or a
+> tc BPF program writing skb->cb[] fills the area holding the IP options
+> and IPCB(skb)->flags.
 > 
-> Patch 2 fixes info leaks triggered by packets injected into pim{,6}reg
-> devices via AF_PACKET sockets. The kernel does not validate that these
-> are IP packets that carry an IP header before calling
-> ip{,6}mr_cache_report().
+> For locally generated packets routed out pimreg (they carry an rtable
+> dst), the mroute socket can therefore receive a bogus ipi_ifindex
+> (the packet length), and the l3mdev slave test in
+> ipv4_pktinfo_prepare() is driven by stale qdisc data.
 > 
-> Both issues were reported by Sashiko and reproduced by me. See KMSAN
-> traces in the commit messages.
+> Clear IPCB before building the report, as done for IPv6 in
+> commit 238164201431 ("ip6mr: clear skb->cb[] in reg_vif_xmit()").
+> The skb is freed right after, so nothing else depends on its control
+> block.
 > 
-> As far as I can tell, all other callers call these functions from the IP
-> input / output paths and therefore provide a valid IP packet, with the
-> exception of ip6mr_get_route() which fully initializes the header of the
-> packet it creates.
+> Fixes: bb7403655b3c ("ipmr: support IP_PKTINFO on cache report IGMP msg")
+> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+> ---
+> Issue has been discovered while reviewing Ido's series:
+>  https://lore.kernel.org/netdev/CAL4WiiovWOOQ9PBPbnPk2=rK+V5WgMpOFh814-D6_A-k5ope_A@mail.gmail.com/
+> No repro, but this is mirroring the fix we did in 238164201431 ("ip6mr: clear skb->cb[] in reg_vif_xmit()").
 > 
-> Ido Schimmel (2):
->   ipmr: fully initialize the synthetic IP header in ipmr_get_route()
->   ipmr, ip6mr: validate packets injected into the register vif on xmit
+>  net/ipv4/ipmr.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
->  net/ipv4/ipmr.c  | 7 +++++++
->  net/ipv6/ip6mr.c | 2 +-
->  2 files changed, 8 insertions(+), 1 deletion(-)
-> 
+> diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
+> index acacaae05cc49dc15910f23f7539865432518587..8b84142fd7754d95aa1f2facf68ac554916efd27 100644
+> --- a/net/ipv4/ipmr.c
+> +++ b/net/ipv4/ipmr.c
+> @@ -550,6 +550,11 @@ static netdev_tx_t reg_vif_xmit(struct sk_buff *skb, struct net_device *dev)
+>  	DEV_STATS_ADD(dev, tx_bytes, skb->len);
+>  	DEV_STATS_INC(dev, tx_packets);
+>  
+> +	/* skb->cb[] holds qdisc/tc state at this point, not IPCB.
+> +	 * ipmr_cache_report() reads it as IPCB to build IP_PKTINFO.
+> +	 */
+> +	memset(IPCB(skb), 0, sizeof(*IPCB(skb)));
+> +
+>  	/* Pairs with WRITE_ONCE() in vif_add() and vif_delete() */
+>  	ipmr_cache_report(mrt, skb, READ_ONCE(mrt->mroute_reg_vif_num),
+>  			  IGMPMSG_WHOLEPKT);
 > -- 
-> 2.56.0
+> 2.53.0
 > 
 
 Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
