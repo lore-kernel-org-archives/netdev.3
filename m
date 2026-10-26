@@ -1,64 +1,107 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.153
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.47
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793026584;
-	b=bVtHXNlZuXKp35NzzyMNAU+FjmKC6rhxFmlZEhG/OGjfDruxJEd0Pqdw3b1XGL1lpIjf
-	 vSKKSh7c/T+cujrALZE/eF2e/1BtTWlqDGsgCuqN6nznS/BVECzvEAU2gdWWNd5K0/t8b
-	 FSzpkjj9iJi4b6uPNtnK9zcy/pq4WOaFOiQPNZgEzu5Veqqf1bhIZPZ0U/E8GCWZmvsRB
-	 RWTU4N6uqFyS4MNzFov/sZb+MAUm3KXoQ7A79dmGDg6z+1MwJGHrFjio/jQG9mb7iOEHY
-	 0CxDMZ5yAt+ckw8LehkHG7xj0O55OunCdqyQ3M2HjtVLKvNXUUyNQYT0tjPMq3UET6Q==
+	t=1793026695;
+	b=TYZLkqkfrNcW6E9YasA01TV7JotKWKVEUERqGmwfzx4d8DmTOSn7gWBbKd4C+jxWTjDp
+	 Rangg2asmLL5fDmXcsiDAWsnviRO8eJ2irh36XSHfO7gU92TBYkkdYdHzkRmvZxV9skvc
+	 QxCnU3lIbptvajmUpZMbC+EsKbkMl97YDinOfV4Q+Mr2ml+BSD7L5ExYJBa0BCIHx9pm6
+	 BvvKNXachnNPBnIyMgA8ZEP9Z050EWMtBkaGSwGovQD4pWcWQmEKZhQ6inG+iMhO9vJ1v
+	 y5bzkJTb/TiLcP1Rx/FuVNaxeQ3o4d0XZL/pbDefkM0KspUKf1bhv44coSR1400+zyw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793026584;
-	h=DMARC-Filter:DKIM-Signature:X-QQ-XMRINFO:X-QQ-XMAILINFO:From:To:Cc:
-	 Subject:Mime-Version:Content-Type:Content-Transfer-Encoding:Date:
-	 X-Priority:Message-ID:X-QQ-MIME:X-Mailer:X-QQ-Mailer:References:
-	 In-Reply-To:X-QQ-mid;
-	bh=RuotPnZdxuGHvCO6ci2amZgNLLfOtFoXm03Qr+Is18Y=;
-	b=lQMl6zVEBb6JRplM190N558xzKNlwRxm3eMyZRcsZr/yrCH/KQrXPD/3RTKswDtkJ7ku
-	 Re7jH0l464kCJMqSVU0cot2X2DaNsWwE6jzd95w6XXVwiDXSx1+SYdZ5JkSd1Gk7TGmmV
-	 tnTFMxHMuHNxjav/diHFoWQant+Kxnq3yQ3j41cd1XKRglzj5voOuAQxDhJ24Ak9Tw06X
-	 eHB8OeVmHE6mY9/CHc91ml+Kl47Pvu70PzAGBCdCOsHaXyKR04K6Nwggf2Gg2ilcbZMSG
-	 Q0cvboysxCDQenjkK+sjfKzvg9NStkstOC/CLy1wW9P+gCKqFhZm0YtoJQ2CS/Su1IA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793026695;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=FJS89KuNZwh7/7cErKHYPAXh9YyRaZbbAgWp3J/Ttec=;
+	b=A8apIQjITcvLehN83zv7uc2VsIQBOl+W+8A/l2rQrS1nKYXfSJsdRQpjsUcKGKY2vARy
+	 b75HRO1ctwdH18u1DB7IjDoQW0NAu6T21MwcJ7nCUqwipPmEybmhUSlz0z7PYBXHBk2mr
+	 3s9GoLCiYdbW9qqbMF1WW1yw6/5h6c857ZIdB7cSbT2jHQ+8K6gBNOnOPNluVoDDS3mfw
+	 AQAiZFfW7NVbZwgarxjCThsG6RBVqt/qMtwwm3smKpAX3hl4h10Nl+BP1TuN9UvWE+GxK
+	 +m2W0gaxH+6EdJzhaGIBeb0sZbwFVb0xedth2swfhOGCP78vLnraWjTHuYuytDLjQeQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=qq.com;
-	spf=pass smtp.mailfrom=qq.com;
-	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=PppD0vWl;
-	arc=none smtp.remote-ip=203.205.221.153
-Received: from out203-205-221-153.mail.qq.com (out203-205-221-153.mail.qq.com [203.205.221.153])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=suse.com;
+	spf=pass smtp.mailfrom=suse.com;
+	dkim=pass header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=hG6q6yQg;
+	arc=none smtp.remote-ip=209.85.128.47
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68CB4606A32F;
-	Mon, 26 Oct 2026 14:56:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 68CB4606A32F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3508606A326
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 14:58:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F3508606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=PppD0vWl
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1793026569; bh=RuotPnZdxuGHvCO6ci2amZgNLLfOtFoXm03Qr+Is18Y=;
-	h=From:To:Cc:Subject:Date:References:In-Reply-To;
-	b=PppD0vWlUeA4ARw8FHIXRROgGVyDk5jCbe+w12ek6wXZWsdNzRGR3EAxpda+W98hy
-	 9Sa2oXOWHY//uQSKLkmJO1f/kf2zPPskiDuMWQ9rIVqYgn+Tol+BobSe+ysFCJkxHe
-	 ejGgrUhmrZJuWqYdoa80ADnSknXjpsD3aUquEZKw=
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
-X-QQ-XMAILINFO: MQ+RLpP3ca9B9zFQFr8c37Afr8ztaUfPPDNMfVcY5KPNfYldBzuLMvpZy15GU2
-	 9Iq4E+qjujD5hoa+Oye155otpR5xOhdP5dkBUq/ruyNgvOOxSRsFNeYP5cICdldqrCgfd98yDhU9Z
-	 eb4ZmgwE6vDV53KUoKUx5Q+8FnzPNdJhPvV/50oIuMOK+2I5YtdN4gYiuVH8U9CaZXIUI7eC617B+
-	 YtaIgFG2oT8rru28r6dnZLw6/HBXG/5V4VSbA45f4EHIiA8OwjeS/NcapKdaK8LP8PYhjD0KIoTdO
-	 JMcgF2oFHrVjF13XFtSilGIGJOKsRW3F2lFDi5RZQf8nfZ5xmD+2Nnbcwn6YTRueswSYJn8F39Xjp
-	 pv8qCIhfSfTeQbd8G3oLX9hXQoFbsbinJq3gUUap83xyU0nNrHjIfvIAmQ99fLMSfuS+F4gUZHs3e
-	 BFMf0LkxW5YPi6ZDBNFJKBtVBDrfeL+XKqQ2T4aREK+KWS8YYS6CWxTttg+iqo3VNk36yxQSP3S71
-	 ojlUhEuo9Knf7aU7LbpkHuXzXRTDozl8LQDSn1do3r9zB/XBuVIsMNVCuufCahskxns6bj1SPwAUG
-	 KupriVTNprhqaPo646OyPIutu5X8PDePEh6W8n351qbL9KhTNGz9M5zAAkA3hg4I9InmlLcMldM2p
-	 IoZtoHR3wOMhRVqlIKNYsAsAlZK04tyFQCTm+/AQtgWD6iBa/513WbqwejeGOdhQ2WgmWzKbztnCD
-	 TzdYkKSyzMw/6/jrW1U6MkpF2mU5FLxVeeCab+OWV7ibLYYGHjRitZaGOaf3ihppsFwFzlodbO+DW
-	 PuNSz2/mIRsBCN0ILzuSOg/jk8T/IC1KO4HPRv3umIPzdTdckDdK3YRxkalaXSXx2Ct1elM4o0x1n
-	 4dT6R25EcqP+tdxbFYXcufJxNC9ZayTv81l7T8f0i5zLYPGn+YhHFKoHRlDBW/KjEn0vlhbFBU3YW
-	 1UzpfmkhPFqISBmTzNdhj+LABVGB3VbChpsrc4vOkUpdpFdNZVEsoaa+ERi/WBet2OLL5ys2Fpru2
-	 +yk86PC2wSO9+jMfYPrY8t+ysB472iILL3XDrSRN2vPUbCYpGDcAL1ICyCmleWvy2Da7n
-From: "=?utf-8?B?Q3VuaGFvIEx1?=" <1579567540@qq.com>
-To: "=?utf-8?B?5byg5pm0?=" <zhangqing@rock-chips.com>, "=?utf-8?B?U3RlcGhlbiBCb3lk?=" <sboyd@kernel.org>, "=?utf-8?B?QnJpYW4gTWFzbmV5?=" <bmasney+clk@redhat.com>, "=?utf-8?B?SmVyb21lIEJydW5ldA==?=" <jbrunet+clk@baylibre.com>, "=?utf-8?B?Um9iIEhlcnJpbmc=?=" <robh@kernel.org>, "=?utf-8?B?S3J6eXN6dG9mIEtvemxvd3NraQ==?=" <krzk+dt@kernel.org>, "=?utf-8?B?Q29ub3IgRG9vbGV5?=" <conor+dt@kernel.org>, "=?utf-8?B?SGVpa28gU3R1ZWJuZXI=?=" <heiko@sntech.de>, "=?utf-8?B?UGhpbGlwcCBaYWJlbA==?=" <p.zabel@pengutronix.de>, "=?utf-8?B?UmljaGFyZCBDb2NocmFu?=" <richardcochran@gmail.com>
-Cc: "=?utf-8?B?bGludXgtY2xr?=" <linux-clk@vger.kernel.org>, "=?utf-8?B?ZGV2aWNldHJlZQ==?=" <devicetree@vger.kernel.org>, "=?utf-8?B?bGludXgtYXJtLWtlcm5lbA==?=" <linux-arm-kernel@lists.infradead.org>, "=?utf-8?B?bGludXgtcm9ja2NoaXA=?=" <linux-rockchip@lists.infradead.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?bmV0ZGV2?=" <netdev@vger.kernel.org>
-Subject: Re: [PATCH v3 3/3] clk: rockchip: Add RK3572 clock and reset support
+	dkim=pass (2048-bit key, unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=hG6q6yQg
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a2069b9710so29743115e9.2
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 07:58:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1793026693; x=1793631493; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=FJS89KuNZwh7/7cErKHYPAXh9YyRaZbbAgWp3J/Ttec=;
+        b=hG6q6yQgnImNhH9iUb0H3TAMaZ6XUqV0ei3aaw2ghXRT929UaGAYimUg0iIa6VeFUh
+         jWGG9Mq7QpZWkLoRa1nteywXfHeLQTJ12a1aoDgfV2RrIb9qpDNYmdxT0g50ad7o6O2v
+         4lE3401qAWMKmJ/H0m4VF4Fj1zcJb0ymcxYv0OsnJH3/Z1zAaXev5JQYXoyYDbPwJyuG
+         Rm8J/wtxoxGSMpuXBSdvW4nfI6zb2GiemVQqiv23xsuUIK/RrX8c8Kdvc78BWM9Pj0/m
+         hoTQ4jXiTSbUSoF80Ob7exNxamKuuN3lHgnD4QNSoYxvS2+Asb5HlY6wqZf6vG1yWndd
+         T9ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793026693; x=1793631493;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FJS89KuNZwh7/7cErKHYPAXh9YyRaZbbAgWp3J/Ttec=;
+        b=mNSJnoWkxzbJEJ6y6dQXsHXAk8FwCG7hGrlHtjY12pBI2priOJ7Zpwee96+avKFx83
+         pzkSvG32ejwY5rhY3Ha7MtUxOuz7DfcwvyVVz0S9CiUVVfs79IfqD9EZEH6cp/v5QgJ+
+         fpTyZGmGntvDdC3qZ5QzdkzBYcncx+Xz+ehjiSukKgNpH0GGFIwmGOLVM8ElDwAnlJgI
+         GZJ4Neqbw8mL7yVQzWpw0dl1i0ZDLnlRzVST0OhgM2VxVD4KFFyMBMfq+y+go+87lXAu
+         ZDNHyuy1sxztHV626+HH+XBxHMpvYg3OM54QILJVo49l4rwq0EAVEetdare4oZtLlwPq
+         5B6Q==
+X-Forwarded-Encrypted: i=1; AKwUvBzAD0LZab8LeB+7vgg9xua1ffIER99LwTj4h3R9ti53IjUL16FwqfjpALoRBPHFzfBJE0+p7qE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJpE+p15H1c6vvEcyj8fOb9OvGGzm1ZC+8mMFrSPFTfmMS9KZQ1
+	cajR/69RiQMzwxD5MlPXEpyK3hzGFGz6zFsWIM0zyXwEieFvuUfL8E+DyJGnokOjUzc=
+X-Gm-Gg: AYBFou0Pa24HbgT/8q647+IAULfsFWxpDq6+YaHC5WgeBU15+CTL1fkY3qqH9APOHqP
+	Nd4YE98TgeBP5wd2d7L8/tyUmwH/upUxm0Y0BQUUmybCQ03BheeMe0kHp63GKXk5yo022axzaYX
+	pOXetIoUzmE8ihlZL+w9VWLsnmS6j0XTKl1ArECcTwOmKuNAVjI1C4cxO26VlO8vQ5qT2uhNH++
+	ycUZqsE6IBiDdqnpyIneEwIhevBNm5Sk8bxTukcGOogZkUC3cJqjaDXM9aIjI/YBd8Tps+BzNEn
+	qa9XC25RgmrXaCuNEl38aICmeWPEOMCt0N40ylGl2C5A4VeYejZ+Ikv4sl9uGNn3vNPh3jD37t2
+	P4rPMXnbcfJ3r9+XPDPgfRKUMMoVupZ+/1uiJgwtsQrGuggkzVL/hX+k8aK3vlDMwjzgmCjyIS8
+	TQz2YKrFlBN+9/svC4yHDOsrzxZMZUAY4atSNRGOifDTs4nn2vzOYudMXVTg+wIXCC32Sr8/lTt
+	5gGnCjnLK3fxsSa/WbruxnyiSRrUiyxMZlHUH/IJgI5hsYorZqGyTiwYQ==
+X-Received: by 2002:a05:600c:4f50:b0:4a2:1050:aff with SMTP id 5b1f17b1804b1-4a35ac8c32emr168076125e9.6.1793026693314;
+        Mon, 26 Oct 2026 07:58:13 -0700 (PDT)
+Received: from pathway.suse.cz ([176.114.240.130])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a35a08643dsm158480615e9.4.2026.10.26.07.58.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2026 07:58:11 -0700 (PDT)
+Date: Mon, 26 Oct 2026 15:58:08 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: John Ogness <john.ogness@linutronix.de>
+Cc: Breno Leitao <leitao@debian.org>, chris@chrisdown.name,
+	Sam Crossley <samuelcrossley@gmail.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Simon Horman <horms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH RFC 0/2] netconsole: allow replaying the printk buffer on
+ demand
+Message-ID: <at9qgBucVm-QHnye@pathway.suse.cz>
+References: <20261024-netcons-replay-upstream-v1-0-9613f38496e5@gmail.com>
+ <87fqxskdpl.fsf@jogness.linutronix.de>
+ <at84qygscue8crQi@gmail.com>
+ <87a4o0k3qa.fsf@jogness.linutronix.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,75 +110,60 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Mon, 26 Oct 2026 22:56:06 +0800
-X-Priority: 3
-Message-ID: <tencent_6876096D2306016F88487E0E4D78345B3208@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <20261026-add-board-ok3572-c-clk-v3-0-dbabfa39d692@qq.com>
- <20261026-add-board-ok3572-c-clk-v3-3-dbabfa39d692@qq.com>
-	<0d5de6fd-3150-4898-a652-7f5b64dcaf07@rock-chips.com>
-In-Reply-To: <0d5de6fd-3150-4898-a652-7f5b64dcaf07@rock-chips.com>
-X-QQ-mid: xmsezb41-0t1793026566tx8hx42zl
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87a4o0k3qa.fsf@jogness.linutronix.de>
 
-SGkgemhhbmdxaW5nLAoKPiBUaGlzIGlzIGluIGNsay5oLCBwbGVhc2Ugc3VibWl0IGl0IHNl
-cGFyYXRlbHkuCgpUaGFua3MgZm9yIHRoZSByZXZpZXcuIEkgd2lsbCBtb3ZlIENPTVBPU0lU
-RV9NVVhUQkwgdG8gY2xrLmggYW5kIGFkZCBpdAppbiBhIHNlcGFyYXRlIHByZXBhcmF0b3J5
-IHBhdGNoLgoKPiBUaGlzIGlzIGluY29ycmVjdCBoZXJlOyB0aGVyZSBzaG91bGQgYmUgbm8g
-bmVnYXRpdmUgdmFsdWVzLiBUd28ncwo+IGNvbXBsZW1lbnQgaXMgdXNlZCBoZXJlLCBzbyBh
-IGNvbnZlcnNpb24gaXMgbmVlZGVkLiBGb3IgZXhhbXBsZSwKPiAtMTI5NTUgc2hvdWxkIGJl
-IDUyNTgxLgo+Cj4gSW4gY2xrLXBsbC5jLCBjdXIuayAmIEJJVCgxNSkgaXMgdXNlZCB0byBk
-ZXRlcm1pbmUgdGhlIHR3bydzIGNvbXBsZW1lbnQKPiBjb252ZXJzaW9uLgoKSSBhZ3JlZSB0
-aGF0IHRoZSBoYXJkd2FyZSBleHBlY3RzIGEgMTYtYml0IHR3bydzIGNvbXBsZW1lbnQgZW5j
-b2Rpbmc6Ci0xMjk1NSBpcyBlbmNvZGVkIGFzIDB4Y2Q2NSwgd2hpY2ggaXMgNTI1ODEgd2hl
-biByZWFkIGFzIHVuc2lnbmVkLiBUaGUKZGlmZmVyZW5jZSBoZXJlIGlzIGhvdyB0aGF0IGNv
-ZWZmaWNpZW50IGlzIHJlcHJlc2VudGVkIGluIHRoZSByYXRlCnRhYmxlIG9uIHRoZSBrZXJu
-ZWwgdmVyc2lvbiB0aGlzIHNlcmllcyB0YXJnZXRzLgoKSSBmb3VuZCB0aGUgY3VyLmsgJiBC
-SVQoMTUpIGJyYW5jaCBpbiBSb2NrY2hpcCdzIGRvd25zdHJlYW0gZGV2ZWxvcC02LjEyCnRy
-ZWUuIFRoZXJlLCBrIGlzIHVuc2lnbmVkIGludCwgc28gdGhlIGRyaXZlciBleHBsaWNpdGx5
-IGNoZWNrcyBiaXQgMTUKYW5kIHN1YnRyYWN0cyB0aGUgbWFnbml0dWRlIG9mIGEgbmVnYXRp
-dmUgZnJhY3Rpb25hbCBjb2VmZmljaWVudC4KClRoaXMgc2VyaWVzIHVzZXMgdGhlIHVwc3Ry
-ZWFtIGltcGxlbWVudGF0aW9uLiBCb3RoIHYyIGFuZCB2MyBhcmUgYmFzZWQKb24gYTgwNGM1
-NzQyYmZmLCB3aGljaCBhbHJlYWR5IGNvbnRhaW5zIGNvbW1pdAo1ODE0Nzg4ODM0NzcgKCJj
-bGs6IHJvY2tjaGlwOiBGcmFjdGlvbmFsIFBMTCBjb2VmZmljaWVudCBvbiBSSzM1ODgvUksz
-NTc2CmlzIHR3bydzIGNvbXBsZW1lbnQiKS4gVGhhdCBjb21taXQgY2hhbmdlZCB0aGUgayBt
-ZW1iZXIgb2YKc3RydWN0IHJvY2tjaGlwX3BsbF9yYXRlX3RhYmxlIHRvOgoKICAgICAgICBz
-MTYgazsgLyogZnJhY3Rpb25hbCBwYXJ0LCAxNiBiaXQgdHdvJ3MgY29tcGxlbWVudCAqLwoK
-T24gdGhpcyBiYXNlLCByb2NrY2hpcF9yazM1ODhfcGxsX3JlY2FsY19yYXRlKCkgdXNlcyBz
-aWduZWQgYXJpdGhtZXRpYzoKCiAgICAgICAgczY0IGZyYWNfcmF0ZTY0ID0gKHM2NClwcmF0
-ZSAqIGN1ci5rOwogICAgICAgIHBvc3RkaXYgPSBjdXIucCAqIDY1NTM2OwogICAgICAgIHJh
-dGU2NCArPSBkaXZfczY0KGZyYWNfcmF0ZTY0LCBwb3N0ZGl2KTsKClRoZSBzaWduZWQgdHlw
-ZSByZXByZXNlbnRzIHRoZSBuZWdhdGl2ZSBjb2VmZmljaWVudCBkaXJlY3RseSwgc28gdGhp
-cwppbXBsZW1lbnRhdGlvbiBkb2VzIG5vdCBuZWVkIGEgc2VwYXJhdGUgY3VyLmsgJiBCSVQo
-MTUpIGJyYW5jaC4gRm9yCmV4YW1wbGUsIHRoZSBtYWlubGluZSBSSzM1NzYgcmF0ZSB0YWJs
-ZSBhbHJlYWR5IGNvbnRhaW5zOgoKICAgICAgICBSSzM1ODhfUExMX1JBVEUoOTU1NTIwMDAw
-LCAzLCA0NzgsIDIsIC0xNTczMCksCiAgICAgICAgUkszNTg4X1BMTF9SQVRFKDc4NTU2MDAw
-MCwgMywgMzkzLCAyLCAtMTQ0MTkpLAoKVGhlc2UgYXJlIGV4YWN0bHkgdGhlIHNhbWUgZW50
-cmllcyBhcyBpbiB0aGlzIFJLMzU3MiBwYXRjaCwgaW5jbHVkaW5nCnAsIG0gYW5kIHMuIE1h
-aW5saW5lIFJLMzU4OCB1c2VzIHRoZSBzYW1lIGVudHJpZXMgYXMgd2VsbC4gU2luY2UgUksz
-NTcyCnVzZXMgdGhpcyBzaGFyZWQgdXBzdHJlYW0gUExMIGltcGxlbWVudGF0aW9uLCBJIHdp
-bGwgZm9sbG93IHRoZQptYWlubGluZSBSSzM1NzYgY29udmVudGlvbiBmb3IgaXRzIHJhdGUg
-dGFibGUuCgpXcml0aW5nIDUyNTgxIGRpcmVjdGx5IGludG8gYW4gczE2IGluaXRpYWxpemVy
-IHdvdWxkIHJlcXVpcmUgYW4Kb3V0LW9mLXJhbmdlIGltcGxpY2l0IGNvbnZlcnNpb247IGEg
-cmVkdWNlZCBjb21waWxlciB0ZXN0IHJlcHJvZHVjZXMKQ2xhbmcncyBjb25zdGFudC1jb252
-ZXJzaW9uIGRpYWdub3N0aWMuIEFuIGV4cGxpY2l0IGNhc3Qgc3VjaCBhcwooczE2KTUyNTgx
-IHdvdWxkIHByb2R1Y2UgdGhlIHNhbWUgc2lnbmVkIGNvZWZmaWNpZW50LCBidXQgd291bGQg
-YWRkIGEKY29udmVyc2lvbiB0aGF0IHRoZSBleGlzdGluZyBtYWlubGluZSB0YWJsZXMgYXZv
-aWQuIFVzaW5nIC0xMjk1NQpkaXJlY3RseSBtYWtlcyB0aGUgdmFsdWUgdXNlZCBpbiB0aGUg
-cmF0ZSBjYWxjdWxhdGlvbiBjbGVhciBhbmQgc3RheXMKY29uc2lzdGVudCB3aXRoIFJLMzU3
-Ni4KClRoZSByZWdpc3RlciBlbmNvZGluZyBpcyBwcmVzZXJ2ZWQ6IHRoZSB3cml0ZSBwYXRo
-IHBhc3NlcyBrIHRocm91Z2gKSElXT1JEX1VQREFURSgpIHdpdGggYSAweGZmZmYgbWFzaywg
-c28gLTEyOTU1IHN0aWxsIHdyaXRlcyAweGNkNjUgaW50bwp0aGUgY29lZmZpY2llbnQgZmll
-bGQuIFRoZSBmaXZlIGluaXRpYWxpemVyIGNoYW5nZXMgZnJvbSB2MiB0byB2MyBvbmx5Cm1h
-a2UgdGhlIHNpZ25lZCB2YWx1ZXMgZXhwbGljaXQ7IHRoZXkgZG8gbm90IGNoYW5nZSBwLCBt
-LCBzIG9yIHRoZQoxNi1iaXQgY29lZmZpY2llbnQgZW5jb2RpbmdzLiBJbiBwYXJ0aWN1bGFy
-LCBubyBmdXJ0aGVyIGFkanVzdG1lbnQgb2YKbSBpcyBuZWVkZWQgZm9yIHRoZXNlIHJlcHJl
-c2VudGF0aW9uIGNoYW5nZXMuCgpJIHdpbGwgdGhlcmVmb3JlIHJldGFpbiB0aGUgc2lnbmVk
-IGNvZWZmaWNpZW50cywgZm9sbG93aW5nIG1haW5saW5lClJLMzU3Ni4KCkJlc3QgcmVnYXJk
-cywKQ3VuaGFvCg==
+On Mon 2026-10-26 14:15:49, John Ogness wrote:
+> On 2026-10-26, Breno Leitao <leitao@debian.org> wrote:
+> >> In the per-console loglevel series Chris Down introduces [2]
+> >> /sys/class/console/ to sysfs. This is where we would put all the
+> >> upcoming per-console knobs. I would expect a replay trigger would fit
+> >> well there.
+> >
+> > That makes sense from a design perspective. Thanks for the direction.
+> >
+> > So the next step would be to add a basic /sys/class/console/, similar to
+> > [2], and put a `revplay` entry in it. 
+> >
+> >
+> > That would be about three patches:
+> >
+> >   1. Create /sys/class/console/, similar to [2] but without any loglevel
+> >      handling. cdown can build on it when respinning the loglevel series.
+> >   2. Add the per-console replay helper, similar to [3].
+> >   3. Add the first entry (/sys/class/console/replay), which triggers the
+> >      helper from patch 2.
+> >
+> > Is that what you have in mind?
 
+Sounds good to me.
+
+> Yes. But perhaps someone else wants to provide some feedback about this?
+
+The "replay" approach looks like a big hammer. Many messages might get
+duplicated, especially when the outage was small.
+
+A better solution might be to do not increment con->nbcon_seq
+when the transmission failed. And try it later again.
+
+con->write_thread() currently does not return anything. I believe that
+it is partly a historical limit. Two problems come to my mind:
+
+   1. There used to be a global "console_seq" counter which was common
+      for all console drivers. But we have a per-console counter since
+      the commit a699449bb13b70b8bd1 ("printk: refactor and rework
+      printing logic").
+
+   2. There has never been a try-later logic. But is should be easier
+      to add it now. We have the kthreads. And even the legacy loop
+      is able to break when there is not progress.
+
+Best regards,
+Petr
+
+
+> >> [2] https://lore.kernel.org/lkml/84b8d91693e56f6026271bc40553bcb6657ab24d.1764272407.git.chris@chrisdown.name/gy
+> >
+> > [3] https://lore.kernel.org/all/20261024-netcons-replay-upstream-v1-1-9613f38496e5@gmail.com/
