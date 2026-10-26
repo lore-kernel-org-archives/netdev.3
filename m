@@ -1,133 +1,115 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=198.175.65.10
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793013311;
-	b=iUGyB8JnH675i3BAFQ/LqBT+eWRGlLb2WVzy2P/v1wAcNY7y/nV5OM6KebWHZt4Gufbs
-	 aofMGYE7DwQp7EFWXHPCQ2E1jGbAirioLtCBSDZ4febcqe8vn9AYrpZMKnX1NkWaBGJ/w
-	 L//aZI4vVIExOS7b9MWfJJH1BDrg8WZpSCa1cs4m/y2cQBj+BZTW8AjvMaLu2btvnbamz
-	 RW+rjB9HENptgpYQYaEiEBKYqqmeyH46nR3d7HnftHxB3lWO6tm5sisu4t/NYM13CWqT9
-	 GGOcyILRg946ZQmw5f9sClbXTl+XFj5EJqwMZBauz6sIJi3GVnkwcSMfq7mfRLuqQNQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793013311;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
-	 Received:Received:Received:Date:From:To:CC:Subject:Message-ID:
-	 References:Content-Type:Content-Disposition:In-Reply-To:
-	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=yAAef/wag064Dtu98AmYHsgQ6P/Uzr3fA21gpb3turI=;
-	b=ehH/leJ/MX10+3pg4y26S+CJ6SO+hg5FOW5YfPAfhYTmMNiCycIBcruktGi+GWKVgWqH
-	 S7PW/JshutTesk6XKmHpJyB60GEDUbKt6P68cp2ClryxBr2uAYr8udTSgrS+SVse796nL
-	 VlSxEagaHCT3Ge7DybTxVKaTz6LRxtUcvulM90vjTPIFSfjpH+Xq5fDA4jlnvzlceyw+k
-	 HybhU5oVDmecUkGGwqR/0T+p4c4B4xTCqjzJfsQATpyQeZmVt4FYh1EeJLj0mx5R+mT8D
-	 w1Y6NHsH1Z568Hdqo493vXXF5oTF6k6uOFwC1aKucwzmK0rU26Zbhk2wmlTQ+gskHmQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=i0GwVGzW;
-	arc=fail smtp.remote-ip=198.175.65.10
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793013561;
+	b=j6Y8gFKjtC16kFx96TkG8fVgQwp29ta6KxViWiEAf/OXDYXPFrz9xLIfUcCCHxr1AWkq
+	 Rhui9EMMOyleBRSJaY85TCEvH5U0P1EiBjyI0udCY8sX8ueqXsEdMyPg9wZgq7iQaig5h
+	 WUzSn8QK6aZJiglcQukF4JqAgCfSUMjEWoNhdMHVvycNIvcBkhYE86IWpAiM2ORIzPGWx
+	 pE/i9IhF4450XJ18HVlbjnwyo5FeO9yqETRIuhEjq0wNwedM8d+9V4nWzjKrNmRRQFmGb
+	 ycq4o0KMw7SazV6KqzwLnOOI455Lkh+s06ZjMMoLe+fZgewNhu/S5eOrMkZOCJ42oGA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793013561;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=HUBCCmBt2r3pJ9gqCwCptcdEOvWrEL9wpNqjqAAArdI=;
+	b=G30OtVktwfiH81J6aPKaefC5bgXNgYw16upr+5ppPC7dCOp9pv5HRqJgi3Xmtz8nzyXZ
+	 CmxC2YR/r0t7pMvDOYc1k5eyHQjhFWs7DZqSuSNAUCtVHOqCU8YAizgRxnBBkOgVTzs6d
+	 eLXnPmJBSlUU3tQA4MYuMFOZMubOuYhVvreQcyjU+tz0Ok2tvegJhRyJuOKecn90oCxUI
+	 EmL0e0UX8FiYygUHPtwwu8ZDxhNZ2npDGqx0vfu/Y9OQva/1Cb3yo/5FpCXH75FZxu+hR
+	 03WJ/FKsEj7W6eCabxEldBut5Kqf5mvSVJZD48EnOyCKnUVb94BSMRvsmspOGjRmaaA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=exDP8lOG;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=edJhxMFa;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE1A606A90C;
-	Mon, 26 Oct 2026 11:15:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7FE1A606A90C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362C4606A31E
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 11:19:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 362C4606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=i0GwVGzW
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793013310; x=1824549310;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=Ar5PHXV2ACS/Ig0A1UhXuXk4u0/wS/sbmqHnEcBlzpc=;
-  b=i0GwVGzWeRlA4brkUmfws+obOIXWZmATPX1CxumoyLDUVY7ZBqh2+5dW
-   UBOjNMHO6mws9Cx+GOK6IPmUirwW923hEyoAPTMCTtRNGRRwVyT0GIHES
-   8BZMonM0CMN2hy+slGYSGUMth6t73FUwPlaCxlV+LUiGyqdYqowyT5l+1
-   uIWSL86vez9m8UvrtBunYmu2eJqbfTUuzdlXiDkzzKmQJTvuYtkL1CoYf
-   SYoNuhpgxZjBGDWQEmQNoIuIRWo+ssT0poXQhI1fVJ70UaGje1CvkTz92
-   b6zjj28HoxFoMdzuUJbx6uRDY/aRKZ4lW0hmTINF2rceXFTr8xOIaEo5I
-   Q==;
-X-CSE-ConnectionGUID: afL7WNOFR9OkVbB8iUNSYg==
-X-CSE-MsgGUID: Kat91mD5SiO+LkpLc7SCBg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11946"; a="1567611"
-X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
-   d="scan'208";a="1567611"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 04:15:09 -0700
-X-CSE-ConnectionGUID: mcLWa9yWTUa3NmlaibQMGQ==
-X-CSE-MsgGUID: aztrheFyTw61uSGGFnbn5g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
-   d="scan'208";a="4188447"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 04:15:09 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 26 Oct 2026 04:15:08 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Mon, 26 Oct 2026 04:15:08 -0700
-Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.29) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 26 Oct 2026 04:15:08 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Q+wpAzpqwRv0Vu4CnALMwgnPZD7ZajjM6JJ25dsQXtVr6M21OfYXJhbQxCsUrfs1juEgOhIXUpDJKsO9QxUnTBHbMabYWDaXJveIdR3Dq3/yF8W1/pYY1fJNUIDW8sREzhp/4/FBfXI/HXAi3YCV6szt4s4KZi2hurzPeMXSq8QBDArSjFKJW0CpWglccugh7XISROSP3Ty6QBymGaWQksRsEPHlIZ+E/1odwTYhK1LPf+ErSSryq2Om2S2vj5y/jbQgy3wWgDX3ekL8tANdODod6glm7zVtA4+vt7ULHtN3h/ZdOR1e/ynrH7v4gx4Js4OZOU0DYfVRvWUlVqz0DA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yAAef/wag064Dtu98AmYHsgQ6P/Uzr3fA21gpb3turI=;
- b=ES8b6FvLTyShw+5+rNTO4su8y/0KfeZUWOtjADdebXvy6BZBUP3NRs4RRVUQq5wzxu90RxQE6R4csgd78SDUiN85bsnDWOUMCw//GVP8oLTNwg0KkQ5ZvrLFuMC8Rvql/rvODwnCK0Ij9blgPczJfWRKVlOXRwbcqB+ybHOqCMmHpOPXure06NQA49UxgyMXQdb7YiG22GOZwGOInke2kMZnyXhM7rShBUxbG5LP4RoV0qGzXSUw+4ZgXuBgWvhM5zqjuEC0esdK8Qyen0qckh8vXmAdXRa6ldZaGPtRPgjpf2sSvcThVRhCBpKZ3w0c43niki5NBnr9HY2h5NkLVA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from LV2PR11MB868673.namprd11.prod.outlook.com
- (2603:10b6:408:422::13) by DS6PR11MB458838.namprd11.prod.outlook.com
- (2603:10b6:8:52a::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
- 2026 11:15:05 +0000
-Received: from LV2PR11MB868673.namprd11.prod.outlook.com
- ([fe80::5bfd:6afe:a9db:b7de]) by LV2PR11MB868673.namprd11.prod.outlook.com
- ([fe80::5bfd:6afe:a9db:b7de%4]) with mapi id 15.21.0546.021; Mon, 26 Oct 2026
- 11:15:05 +0000
-Date: Mon, 26 Oct 2026 12:15:00 +0100
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-To: Rongzheng Wang <testwrzwrz@gmail.com>
-CC: Magnus Karlsson <magnus.karlsson@intel.com>, Jason Xing
-	<kerneljasonxing@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, "Jesper
- Dangaard Brouer" <hawk@kernel.org>, <stable@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <bpf@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net v2 1/2] xsk: defer software checksum until the skb is
- complete
-Message-ID: <at82NLzM7g8HGgum@boxer>
-References: <20261024091256.17918-1-testwrzwrz@gmail.com>
- <20261024141157.59301-1-testwrzwrz@gmail.com>
- <20261024141157.59301-2-testwrzwrz@gmail.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20261024141157.59301-2-testwrzwrz@gmail.com>
-X-ClientProxiedBy: WA2P291CA0024.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d0:1e::15) To LV2PR11MB868673.namprd11.prod.outlook.com
- (2603:10b6:408:422::13)
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=exDP8lOG;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=edJhxMFa
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793013560;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HUBCCmBt2r3pJ9gqCwCptcdEOvWrEL9wpNqjqAAArdI=;
+	b=exDP8lOGGdvbGxuWcwRBohza8Q5dXzqiTDDeIF4FooZW+etCa8aqRsVG+tamQEgfzSPPAc
+	8pAQR2r6VwkiTPpeWP3yMu/b+cqpI2AGPqICjaX0n8Pukd+xE+2KqmTcRRlIFxI2HWSzj7
+	qdarzLfP6N6PAN59s5kZs+VuLHERfNk=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-39-IGzplHmaM3a_Z16ZvUvqyg-1; Mon, 26 Oct 2026 07:19:19 -0400
+X-MC-Unique: IGzplHmaM3a_Z16ZvUvqyg-1
+X-Mimecast-MFC-AGG-ID: IGzplHmaM3a_Z16ZvUvqyg_1793013558
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-48e0ef019a4so2565510f8f.3
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 04:19:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1793013558; x=1793618358; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=HUBCCmBt2r3pJ9gqCwCptcdEOvWrEL9wpNqjqAAArdI=;
+        b=edJhxMFa2df1qMg4OG5AjcrSprOPCmo3n+yHEG+41QeLu7FHZ2+/SpTfVpttmTHcaO
+         Ql3mMV2REfFTRVTQdudtzslARWrXYNk7LOgEc6Di0qj49GNY8W+7kldqP1CKacCMGx79
+         v2LORWjgX/JMS+2KvfNRClAzsYLKaAgU/t4CWHW9UIQHyyIvW9n2vOJlgO+XRrD+gPCw
+         fr90RBjRnTa0xsnD8m7zX6+6GsiGBFCRZB5BG8NCXBnT9evusgLlWlF5i9ItQfLac+2S
+         ZbNeBaiPq4A4Q5Hsc1HFhVpEjPpNBhM5hrE3YP95ewoykkSWdcEoBBYltM++/5aXzO12
+         s3zA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793013558; x=1793618358;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=HUBCCmBt2r3pJ9gqCwCptcdEOvWrEL9wpNqjqAAArdI=;
+        b=mLCgXzWPjnHg7lqeVlk/a3PZCj/rM0cKh5fLZnPOxudRVztfm52XMtVnJdb857ygU+
+         rVzwn08ypt3oXYMT3CnJrpNQeMQBDZfDxCg3joL3TWy3hZ1bWpP+EGASL1aqt4+CnCvy
+         Sc1M2p7TSjQ9ihCFXHGPBuLSrJqpTPn2NHh72mEByB47Khvu1YIqXrJADtl2/DPBcVAZ
+         pxnwNdFASuOfpoP3nJlQ111Crlt89zKTW0SAXjf66D1ZXGvgqx166kE0uDGge3+t76NS
+         SJScn4eVP2Exz38x1laJTXkr0Jeg2Z445Lnods3WT1BYExFoIuYrh0aZxUQO2yiCfnDv
+         FrTw==
+X-Forwarded-Encrypted: i=1; AKwUvBy9T+OeJ+67q2sSrIgxr3VrBfxKpaX+QB0un7ConeCiYY13wpDMuaDYmv7y84AFO9jPSaQeFo0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKEbzmlITiv5jzTEufkB1HXr2mAhSd2+tCKMilMYdtKUcV9RKuM
+	DAKwRxbNfVh62a0YUgbV0Uejw98pXXjcmecTKdCDzOXbL2PDquyBnrmpKXnGaEmuMBW8MydAqam
+	UVcsMxtEpOTwi7Zr3YNDteM6Hb0Z/TYiOZNlK75xuoW6J5Ai1uaXtuKGPIg==
+X-Gm-Gg: AYBFou3AGK2DqNpTwlK9QsUic1kdrsoNrbqVCH8HRKifRSjp7dsnbqSmdhSsqt6jfmJ
+	oJX3g7w2BMfS8SVcvd7voKjsXU7yo8R0xZssoX4UUckmka+1zvJKySFjP+q/cFc9zG7c294cBWM
+	ptpSnpg+3E/qx/FJxaLCNmZh6jUrCgU5/Z8DeYPRMIacQV3UHN3I4kyfF5I1AuqC5C+75OoCNih
+	50/VVQqCX+K4gVK3sJWb8WTXKKOGT59PLkl6A5qn0D74fDhY8BnAnW9edHQFCl7zXWkjOa1HNNj
+	3U8Bo0Opyf33q2lPW/dS5O5Bk25kyxByJ5CBhkfB56/f4tt8UWpJJamNGiqXq8WsnWkSVELQTmQ
+	66d6RbIrc1d/T5z17BXTyhqcys+dBnZhAFcmvnlTNFxRVbA/369cBmQ==
+X-Received: by 2002:a5d:5d86:0:b0:48d:f996:1814 with SMTP id ffacd0b85a97d-48e3eb9c7fdmr10996894f8f.57.1793013557040;
+        Mon, 26 Oct 2026 04:19:17 -0700 (PDT)
+X-Received: by 2002:a5d:5d86:0:b0:48d:f996:1814 with SMTP id ffacd0b85a97d-48e3eb9c7fdmr10996782f8f.57.1793013556171;
+        Mon, 26 Oct 2026 04:19:16 -0700 (PDT)
+Received: from debian (2a01cb0580324c0086a938fffe1eee25.ipv6.abo.wanadoo.fr. [2a01:cb05:8032:4c00:86a9:38ff:fe1e:ee25])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ebd47basm17193489f8f.32.2026.10.26.04.19.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2026 04:19:15 -0700 (PDT)
+Date: Mon, 26 Oct 2026 12:19:13 +0100
+From: Guillaume Nault <gnault@redhat.com>
+To: Guikun Yang <yangguikun19@qq.com>
+Cc: James Chapman <jchapman@katalix.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [BUG] l2tp: OOB read in l2tp_recv_common() for L2TPv2 sessions
+ with 8-byte peer cookie
+Message-ID: <at83MWsp98Mei-Si@debian>
+References: <tencent_389453EACB37DA0886D3896959D4A4CF5006@qq.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -137,136 +119,111 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV2PR11MB868673:EE_|DS6PR11MB458838:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9f2e2a07-717a-4544-57e5-08df3352634d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|261009223027099003|261021135927099003|261021121427099003|261021123027099003|261022105027099003|10067099003|56012099006|22082099003|18002099003|11063799006|4143699003;
-X-Microsoft-Antispam-Message-Info: Fh8aSUkozke5nGv8Eb1kfIinF1TMbridZvxrq+jtWzOnQid37nhxbXv3POHhHqqTqVD7xpaJ/pV0TK3BF/BYEgsdknbm7nE6IBn3rEYQAoo6ax3VLNxRqHUuUoaEG/rLLxx6fiU5vfZNwgM4R9LyLlk3WdHmNw/cdGukTFyyzIaHlToe8kqwB/xA2UuZpSSmFGhnRWu4MzYYdhO/b8h0r/Att9qh737PJ/IG3QahNTeCcyCw8094DuKtKZ+ixbFksGxNmPcQtXQp6eVjTgYMODHcPem4xjX4kFZmLgPhFDwOHACvTak/lhi/yiUt1KH+niPGH/XusiJNV45PhdT9UZ3oWHZsERnMJ0/u4AhHpmyTWC0sYWDC8BzsbJNcAW4crvu6hZmGnwXnSv7hA4o4uWRk8FNAPy2/+TNKlpcimmI0sctOy8mtVdexGgUk+NSyraTJQhJz9KW/lLPPUYu+vnOJJO863A5iQ7AlrAZ/t0BrdAfFvu+zk5/GyfxW5jZljI942tx2GGVbDD+ks6TNkgLQyJ42jHT0lE4H/wOps1WOBkhbXoexh1tUva2nTnLii3HxOvNXlMp3Qlq5L70uKDBr3I3DJV3wXr1ASbCxHLGHXFqQyABSMCX6eTdu0+PLnHXsd6auaEbwUynQrv50nA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR11MB868673.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(261009223027099003)(261021135927099003)(261021121427099003)(261021123027099003)(261022105027099003)(10067099003)(56012099006)(22082099003)(18002099003)(11063799006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?KYaydlSs68OVVejD5i3iH4B9p73KY2ch1aq1829X00/Bv5obVIN04MIv+HWf?=
- =?us-ascii?Q?VuQ4B4Fp91EFIxUN1U6mQzsE19Ln4okShnZNmWYmMPAcAEF8moa9Gz6XMvrV?=
- =?us-ascii?Q?s3ZxzWpUsRaVgsk0q2hAmWFgLvkEjBPvevduTYL6NhNg+mNavhaWHmQs5Qnb?=
- =?us-ascii?Q?kMJLif3PMxiUxGI6J/1EyZczk3KhLQKw8R15MA0KXEjz9Hkp5qQfRApPAB74?=
- =?us-ascii?Q?FQmM+FOT/ILVSDV2UpBP6o+1pisdGoXyXIKROZgiDNCOR17lILIM00S1DF7+?=
- =?us-ascii?Q?ulUTbybUoDAKP/r6J5BJakUgkJKDXNbzu5MqvTcYvgdRU7LlHulDDRoxmPAY?=
- =?us-ascii?Q?yslgCxBdRJKxDsXE8ptBiKoocJ+/63X4qCjUvsLeoGauChDtZqXhob6CU4FD?=
- =?us-ascii?Q?tTB4u51Zkj+1yz/lxTUMyu68ABr9l6OxyX4KYRrLOizPE9ob04ITAAROo7lb?=
- =?us-ascii?Q?LwNK+Kp+N+p8dZkxpiHo9rb8kTR1szXxGpU+TVyXUDCLlAkyjh7cgZbVKXTp?=
- =?us-ascii?Q?VXbDUJeXSpo7qUXyMvrRYvHO45N6p64/NoBHGU6Ys2WreRi8SRBsTNchAkAs?=
- =?us-ascii?Q?xrlqtZ8ImUfZUlGdOTvJSZ85dEAXazdKFzSv4lbMT8D+zALixyJhCw3HrVzL?=
- =?us-ascii?Q?U8riDAFG5vFg5ZeaztldXoD6/EZDtn8scjcwL3urRcr3DgELFJ8jdGgF1kUz?=
- =?us-ascii?Q?DEmj4payoyJXEEOMW5FIRyyCxTsHp9sQcS3t4+sJH+5PbFo9itJhvTPzTzm/?=
- =?us-ascii?Q?C3iA3UEZIvpY5+xpVmocwwqB9MT8mmMNZvT/9IbWgIGwt20WYpq5jr+Rveoz?=
- =?us-ascii?Q?ahIjFmrwRTQpcT7mZ8nmURyeYDjkyOZbtMcvoPCbtOy98Go2wm414lToCFuo?=
- =?us-ascii?Q?kTI+4cNJVR3dlj4ve9wpuyPVr+sn3kc3O9ay+cJWjjSKGR2sDnc1Iz93m3VM?=
- =?us-ascii?Q?X8MhENHNIWYWZB99fkP6JddCL09lS6KATe0vXVgnGwG56IirnnO03P7pnhv+?=
- =?us-ascii?Q?Wvkb0eV9A28jZw9N9u8vjDliNuYOWQjtqb083L+34y5vhmBR3P3sbTB2bY+J?=
- =?us-ascii?Q?Q8cusjdxgke9VTSXENyzpxQeMaUxnPxrNA/yEAK7Lhh8Kl20llQSSGjmdLnC?=
- =?us-ascii?Q?CPGyNLIu2I8qxO3fWINVq3vDEcOfY8C5fLAteuGkSD2jMzrJCpnHHuQY/VB3?=
- =?us-ascii?Q?QLwyEX2TG4tnELrCvCUT0xNeHxkJCvHtj+dE2/yP5hj7pHBJZIgrMxT9C4iT?=
- =?us-ascii?Q?29Z3gkuPW0hZ7AxdTzS0ed0I5wUjdokl8Sa+kFBJnQ7sq0bQn+yocodpPDOW?=
- =?us-ascii?Q?xjmoaIhpi5L7MN/ozgbmvQIIu+rb5LJTP697WvE5aVXaZPTfxBHMAIwfpDfM?=
- =?us-ascii?Q?jWYGLKzAZy13v8yXSl6jq2CwHUOzTFO6+3+ooIvmEsocRDBx+eMVlii7BEtd?=
- =?us-ascii?Q?cyepJTKNS72Xha6Lxu3C8BD20mEI9tQ584a74lM2a2I0oxELm7d5rPCliI8S?=
- =?us-ascii?Q?py1kf+XWJnsJc6SLdPK8bopAcFhelc4gIQf/dS3CKDAByzX91ytmcaW2zDJU?=
- =?us-ascii?Q?y9ASq8IAZW2cBwinUyDk+qAQ7m9uznV/NR9p4IJvif9ffFMEE0lcRKI6uZEM?=
- =?us-ascii?Q?1NS2AmQFGHo8ul5wI+xMDAn/y9KMGQLFHCAoZoSkyH9EGLG8YQJe2Vov0A7k?=
- =?us-ascii?Q?K5VBrdn8I790GCAcJzP5SQmIopkR/PLg4sd8SJlhRYKu1K0tIIvNKgT+/KBu?=
- =?us-ascii?Q?VXOpG+jnM3HZXy3X7+pL2QLHVY122Ds=3D?=
-X-Exchange-RoutingPolicyChecked: KOTYBCsiebID9sd2Vx7m+Ep/m+jtFweCrLb8voYqrs0/3aqAGO3a7SDxc8mzb30hupSVOAA8BW4LZdssP4XDBncwbK2JetQsCBKxKEs52d5bwExKM+51nfDxT59kA4gaLL6Ac5P27RSiJYCJcbG7xjS/0S6/o8kEwQog+0B8NACeokIwiu/LsiSP6PMkou9dl1NnlB1iGdUv1pbuafUuu0eA02GHMcsUNwMT8w1HmFgSpEaFaF8yLFZJCxukptvfBdlf0UyKvxEjWkuMESOr1hqk5uRNSN3Jobl09DyhtIZGaXhvpUy64GrezLq1+mryLjLb+h4efgd//7JBeZwd6w==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9f2e2a07-717a-4544-57e5-08df3352634d
-X-MS-Exchange-CrossTenant-AuthSource: LV2PR11MB868673.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 11:15:05.7182
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: i8xjpMH1pGxQTanGNPpL4sA0ao+zTYwo3ANKUThIMkAPqzumbAYFfx7gajbz8Z7OJ1E22p3Wq2q+zrPoqkJCY/zKfDSE5uXIWqIXMghYmU0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS6PR11MB458838
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <tencent_389453EACB37DA0886D3896959D4A4CF5006@qq.com>
 
-On Sat, Oct 24, 2026 at 10:11:56PM +0800, Rongzheng Wang wrote:
-> When XDP_UMEM_TX_SW_CSUM is used with multi-buffer TX, xsk_skb_metadata()
-> calls skb_checksum_help() while only the first descriptor has been added to
-> the skb. The checksum therefore covers just the first fragment, and
-> skb_checksum_help() sets ip_summed to CHECKSUM_NONE, so the remaining
-> fragments are never included in the checksum.
-> 
-> Move the software checksum calculation to the point where the last
-> descriptor has been added to the skb.
-> 
-> On a checksum failure the packet is now dropped instead of being returned
-> to the application for a retry. This path is not reachable with the
-> existing metadata validation, but the behavior change is intentional.
-> 
-> Fixes: 11614723af26 ("xsk: Add option to calculate TX checksum in SW")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Rongzheng Wang <testwrzwrz@gmail.com>
-> ---
->  net/xdp/xsk.c | 22 ++++++++++++++--------
->  1 file changed, 14 insertions(+), 8 deletions(-)
-> 
-> diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-> index 33475b180ea6..65be2a368325 100644
-> --- a/net/xdp/xsk.c
-> +++ b/net/xdp/xsk.c
-> @@ -1011,14 +1011,6 @@ static int xsk_skb_metadata(struct sk_buff *skb, void *buffer,
->  		skb->csum_start = hr + csum_start;
->  		skb->csum_offset = csum_offset;
->  		skb->ip_summed = CHECKSUM_PARTIAL;
-> -
-> -		if (unlikely(pool->tx_sw_csum)) {
-> -			int err;
-> -
-> -			err = skb_checksum_help(skb);
-> -			if (err)
-> -				return err;
-> -		}
->  	}
->  
->  	if (flags & XDP_TXMD_FLAGS_LAUNCH_TIME)
-> @@ -1030,6 +1022,14 @@ static int xsk_skb_metadata(struct sk_buff *skb, void *buffer,
->  	return 0;
->  }
->  
-> +static int xsk_skb_sw_csum(struct sk_buff *skb, struct xsk_buff_pool *pool)
-> +{
-> +	if (!pool->tx_sw_csum || skb->ip_summed != CHECKSUM_PARTIAL)
+On Mon, Oct 26, 2026 at 01:35:25AM +0800, Guikun Yang wrote:
+> Hi Guillaume,
 
-If i am reading this right check against ip_summed is a way to tell that
-first frag had XDP_TXMD_FLAGS_CHECKSUM flag set.
+Hi Guikun,
 
-Agreed with Jason to preserve unlikely() when checking pool->tx_sw_csum.
+> l2tp_recv_common() (net/l2tp/l2tp_core.c) reads L2TPv2 optional header
+> fields beyond the linear area guaranteed by the caller, for sessions
+> configured with an 8-byte peer cookie.
 
-Regarding skb drop, I am leaning towards this, I don't see much sense in
-retry when packet is malformed? Not sure how this could be communicated up
-to user space.
+Cookies are an L2TPv3 feature (RFC 3931). They don't exist in L2TPv2
+(RFC 2661) and l2tp_nl_cmd_session_create() ignores L2TP_ATTR_PEER_COOKIE
+when creating L2TPv2 sessions. Have you found a way to get a non-null
+->peer_cookie_len on an L2TPv2 session?
 
-> +		return 0;
-> +
-> +	return skb_checksum_help(skb);
-> +}
-> +
->  static struct sk_buff *xsk_build_skb_zerocopy(struct xdp_sock *xs,
->  					      struct xdp_desc *desc)
->  {
-> @@ -1275,6 +1275,12 @@ static int __xsk_generic_xmit(struct sock *sk)
->  		if (xp_mb_desc(&desc)) {
->  			xs->skb = skb;
->  			continue;
-> +		} else {
-> +			err = xsk_skb_sw_csum(skb, xs->pool);
-> +			if (unlikely(err)) {
-> +				xsk_drop_skb(skb);
-> +				goto out;
-> +			}
->  		}
->  
->  		err = __dev_direct_xmit(skb, xs->queue_id);
-> -- 
-> 2.39.5 (Apple Git-154)
+> The UDP entry path only guarantees the first L2TP_HDR_SIZE_MAX (14)
+> bytes:
 > 
+> 	if (!pskb_may_pull(skb, L2TP_HDR_SIZE_MAX))
+> 		goto pass;
+> 
+> 	l2tp_recv_common(session, skb, ptr, optr, hdrflags, length);
+> 
+> Inside l2tp_recv_common(), for a L2TPv2 session with peer_cookie_len =
+> 8, the cookie check consumes bytes [6, 14):
+> 
+> 	if (session->peer_cookie_len > 0) {
+> 		if (memcmp(ptr, &session->peer_cookie[0],
+> 			   session->peer_cookie_len)) { ... discard }
+> 		ptr += session->peer_cookie_len;    /* ptr = optr + 14 */
+> 	}
+> 
+> Then the sequence-number branch for L2TPv2 reads at ptr:
+> 
+> 	if (hdrflags & L2TP_HDRFLAG_S) {
+> 		L2TP_SKB_CB(skb)->ns = ntohs(*(__be16 *)ptr);   /* [14, 16) OOB */
+> 		ptr += 2;
+> 		ptr += 2;
+> 	}
+> 
+> With a minimal 14-byte L2TPv2 packet (6-byte fixed header + 8-byte
+> cookie, no payload, L2TP_HDRFLAG_S set), skb->len is exactly 14 after
+> __skb_pull(udphdr), so the read at [14, 16) is past the end of the
+> linear area — a 2-byte slab-out-of-bounds read (KASAN catchable).  The
+> subsequent `ptr += 2 + offset` handling for L2TP_HDRFLAG_O can read
+> even further out ([18, 20) with the same setup).
+> 
+> Trigger conditions:
+>   - an L2TPv2 session with peer_cookie_len == 8 (admin-configured),
+>   - a UDP packet whose L2TP payload is exactly 14 bytes, with
+>     L2TP_HDRFLAG_S set and the correct cookie.
+> 
+> The peer address is not verified on the UDP path (l2tp_v2_session_get()
+> matches only on tunnel_id/session_id), so any host that knows the
+> cookie — i.e. a peer of the tunnel, or anyone when no cookie is
+> configured (in which case the OOB read does not trigger, since the
+> pointer stays at 6 and the seq read lands at [6, 10)) — can send such a
+> packet.
+> 
+> This is the L2TPv2 counterpart of the L2TPv3 optional-fields OOB fixed
+> in 2019 by commit 4522a70db7aa ("l2tp: fix reading optional fields of
+> L2TPv3"), which added l2tp_v3_ensure_opt_in_linear().  The commit
+> message of that fix explicitly noted that fixing L2TPv2 as well would
+> require refactoring l2tp_recv_common() and was deferred:
+> 
+> 	To fix both L2TPv3 and L2TPv2, we'd better refactor
+> 	l2tp_recv_common. It's complicated to do so.
+> 
+> L2TPv2 has remained unprotected since.  The in-function
+> pskb_may_pull(skb, offset) at the end of l2tp_recv_common() runs only
+> after all the header reads have already happened, so it cannot help.
+> 
+> A minimal fix for the v2 path could ensure the header is fully linear
+> before parsing — e.g. in l2tp_udp_encap_recv(), after determining
+> version == L2TP_HDR_VER_2 and before calling l2tp_recv_common():
+> 
+> 	if (session->tunnel->version == L2TP_HDR_VER_2 &&
+> 	    !pskb_may_pull(skb, 6 + session->peer_cookie_len +
+> 			      (hdrflags & L2TP_HDRFLAG_S ? 4 : 0)))
+> 		goto invalid;
+> 
+> (or a full refactor pulling the cookie/seq handling into a
+> l2tp_v2_ensure_opt_in_linear() helper mirroring the v3 one).
+
+I personally think that a full refactor should first stop mixing L2TPv2
+and L2TPv3 in the same code paths. Although these protocols share
+similar concepts, they actually don't have much in common from a
+technical point of view (different headers, features, transports, etc.).
+
+Starting packet processing with a pskb_may_pull() over actual header
+length would make sense but, for L2TPv2, that lenght should be computed
+based on L2TPv2 header flags (the Length, Sequence and Offset bits) plus
+the Offset Size field if the O bit is set. The ->peer_cookie_len field
+should never be considered for L2TPv2.
+
+> Checked against 7.3.0-rc7 and linux-next (2026-10-24): neither carries a
+> fix; l2tp_v3_ensure_opt_in_linear() is still v3-only.  I found no
+> report of this specific OOB on lore/marc.
+> 
+> Best,
+> Guikun Yang
+> 
+> 
+
