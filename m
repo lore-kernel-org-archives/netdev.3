@@ -1,86 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.170
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792986734;
-	b=KiOjkCZy9fFT0bJG0ZMef+o7IFdnC8fc54Amp4HiUL2bWU3U/jKNcwn9WVRnb6aMStYr
-	 vu0x2LCIWUMEfBYea0ANI8smgd4qUYvCzR+sMO45CgZvZ9tL8Vdq8iFELz7guBIlkOGsw
-	 ADvmySZ/C2IgEiKiib4BgfEJfHGbiMYUh/wYB1mkgpaWn8SWzxkhxkcwXggntWCvH5AYa
-	 +1Vv7LzF+rXu9kI2Ompte8iSmY2i3NIxrcavT4HfeQ+78ZqSB+rjsuD5+udD9hjNol86Q
-	 jHYJvd/NKbLDBCafP7YwWIUtSAdZMIx/5S+6CM/ZdL+R+Yz4/RcciRhi+anuq98lutA==
+	t=1792987035;
+	b=WpPU0QqRJqcd9llw8b6+r1XS5XfQoe2z0Yjzv3C6q0+Xu+LLM2w9ImfHh2cOm5XlVJoa
+	 CQZtKlkElds8CpZ9t/7aHE6vVPRYpFKhYCfP35nkmDcByHtCswVE3dMiRu0UEoqYO7Ejw
+	 A1kkdSiuyUJ9jFyi/nURRo6b6Oh0sgI09+s/Im/a4q9lNHds1mKTIR2nMCudMrB8vNgLD
+	 MAKl1H7Nju4777HARgtdXrELaeU7FnsThCGWLsGIye18Xe+w+7Keb/sig6hEFT8R/Wd3a
+	 4J7gj20yHWP1XjaC/2H6wwutp8zqXgLqdeep797Q+SkLuI4+sPXKwHaRmtNAjTYDJxg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792986734;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type:X-Proofpoint-GUID:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Info:X-Authority-Analysis:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version;
-	bh=HoeyBWH1te1eTCZ2bZ28xJlfnxSGCqJ9pUcy5XqPRyw=;
-	b=p01oVlUgsNOEOLbEVjLMNXZGQRnW3NAeZGS7NJ0eudzoA2+OaiNv7fAOTWKvHvRI3N28
-	 8vMNz3UrRR20gBJ4miBo80kA/phfSmKccDckvIzKe7hNUuuPNzrb438enxddBZRoHjq0b
-	 DVs8aL/5a5IUs570P7QJLeiXtJRAEmCbESYxVlXZPm0OqhnGIBhHVZERk8Q1TA+HaKcjP
-	 nsLUzev1nj+guMmvaQd8R3ezPnxxofOlIoVA+dQ85o3Nqmgmjbf2sDxguG0f4wI5TGd5D
-	 5stxa14sZjdyV6QfOHXuE+ssrQp05hI1IHO6Lqw7Qcb9vM8JsM1LOI7Gsjm6d3TbuNw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792987035;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=+ScCUUWyJM//qpTpz7tt0Fdxp9XvYrNhMa0jbjZM+Ng=;
+	b=K6yx027O44JRBlNp28TMQHCcenR+hoFflksCtzNdwNskBD7+NLY7ldlLNP6K964nRSIP
+	 J91emMmRTQsflOLSTSQesD+XtZf0gyKgwzPl1++HwQdk75DxrcqVN1oTdwEnFBpu3ekgZ
+	 hSLP7+28rLfbzXafECErnpocgQd+gFsGQ6JNwd3EeWxrSQvi0GiMiybhyVdYU0A+ogV9L
+	 a98krUJAkUHAhC/+IOIFaMgQxE9WNnOhHMfIfSjhFEChDT2PX2PMd/icQcc8+dMDOnIPk
+	 cs6vVuTmbfKG9+pxtkyzUE+TDTfBsArQvQr1mdD8669Z/PMpo30amMg1+Z2gM36PIZQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=marvell.com;
-	spf=pass smtp.mailfrom=marvell.com;
-	dkim=pass header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=pfpt0220 header.b=jN4dJgSC;
-	arc=none smtp.remote-ip=67.231.156.173
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	arc=none smtp.remote-ip=74.125.82.170
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50791606A31A;
-	Mon, 26 Oct 2026 03:52:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 50791606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=pfpt0220 header.b=jN4dJgSC
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69Q2NTA31869800;
-	Sun, 25 Oct 2026 20:51:53 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=HoeyBWH1te1eTCZ2bZ28xJl
-	fnxSGCqJ9pUcy5XqPRyw=; b=jN4dJgSCbJS7JBXn0jTH1UCesOWXlCDPB2tofxX
-	5FMMZHfHcw1PgtJPqQlnXji8varWQoB9qTB7F6vNuWSKYbODmuJJC0mZHXDd6QnJ
-	ZfdGqFjT2MPoH/yh43xYFarBFIOGiG2BFtu7w0/uOcZt/YOvmvKh5FAIuIAhMRYb
-	o0/kRQr/a3mh/1FfP0yoVLkEFFo+VuKTCkYlsK42F7M6rOvygTBpzimf1oAyZeaN
-	cb268hrTHlY8C0TuXL8En8s3kY3GtANtgcY4wVufGCMSSNFiDeit6kg1b9O1/0Mr
-	lHXtkOXVhFQOd6KUHOluMKZYYsTlev0LW5hLcXmxmBF3LoQ==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4hhde826jf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 25 Oct 2026 20:51:53 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Sun, 25 Oct 2026 20:51:52 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Sun, 25 Oct 2026 20:51:52 -0700
-Received: from localhost.localdomain (unknown [10.110.24.192])
-	by maili.marvell.com (Postfix) with ESMTP id D799E3F70C9;
-	Sun, 25 Oct 2026 20:51:51 -0700 (PDT)
-From: vmukunda <vmukunda@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Sunil Goutham <sgoutham@marvell.com>,
-        Ratheesh Kannoth
-	<rkannoth@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        "Subbaraya
- Sundeep" <sbhatta@marvell.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S
- . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@kernel.org>,
-        "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        vmukunda
-	<vmukunda@marvell.com>
-Subject: [PATCH 1/1] octeontx2-af: Fix npc_delete_flow counter read for cn20k
-Date: Mon, 26 Oct 2026 03:51:40 +0000
-Message-ID: <20261026035140.666684-1-vmukunda@marvell.com>
-X-Mailer: git-send-email 2.25.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923C8606A31B
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 03:57:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 923C8606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-35b2c599f43so467828eec.0
+        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 20:57:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792987029; x=1793591829; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+ScCUUWyJM//qpTpz7tt0Fdxp9XvYrNhMa0jbjZM+Ng=;
+        b=CzHL8JAAhVXZp+BFIea6XXS5CXvIdKyvTb9rotyb9xP51zqNOdUyULSyK62QT2G7qO
+         7v7qzFb4ekjP8THGtkchX7EdobigL2eBQbw+WhyrhbXrSIQnzUg+mhL33OKcdQw/kCOl
+         zq1zDO6mrkZUzmX7FZqHcqcNncLTFdoz8LPdi0HLuB1F1rfz8enfQHRYXYoq422/oXFK
+         mPtlgYSvIeU9kcWQBdlA3APCubO0DXLc4kb8YveBwZWFD9FPg86N0L1cKM2rfH9DDam2
+         E2jObCINjT2AdecrPCYLiQbyEsbP7oepRFvC9D5xQPmCjEWHmKY3xEsXTQ/XabPJaAj2
+         pxDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792987029; x=1793591829;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+ScCUUWyJM//qpTpz7tt0Fdxp9XvYrNhMa0jbjZM+Ng=;
+        b=gE18UnBmulArrZOIillSv0zJXDdT9suSGqI5sIIVYk/KLvdl2t74PPnPRauj2Er571
+         /h89z2LEmKV8ksXSgaxm2kU9LWaXf1TubEWo+0nIV7xSAxxw9XJK7yuH7PuRPHNPT8vs
+         zTIq972AGSTmi6Vw903SfaDcN2kDhG1FRYmoZCG7b03kfqlBmXycOFV1IVv752m00wit
+         dB+axd2J/yz14EFKjGNlT5AI0M4hVQMQcT3mz3PvgkBVETm1uhwN1SGXwt83K4dLzF7K
+         sMJ6YJkTriUEs0UshHUu8WfH5Dkn7f0xGnXMXWVO1UoOt6iRO5CJJstX8zlH26Gew+6b
+         Nw8A==
+X-Forwarded-Encrypted: i=1; AKwUvBzRq/EPKcltG9jtR9YfJWd1b2gnww30KK/RiJdVi/neJ6lDNmdNOzjnBlSKOZj+jRmAZ+mVTJo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLG7YG22fCWOFDndXV8Y3u6vlXUsmukbkir68NmPiV0DGQlXNhs
+	WZPGkHw7SGHV8/GsqaF4Vv7r5uyrSjYWJIP92jiVHM/jNIOuxkP4J/ei
+X-Gm-Gg: AYBFou2fuDViWti029Ymmh4BQRuN+OVs+mK5pkuQl9W5Q6L0mDA+2sjj9r/G17RN2vK
+	E5mjrkj/ntr6EsXKNU1bO+l8AqvFMt92O+OovtO23pBUv+ZJPIh+kpP4e9w1kqqxn/bFvh+VTcW
+	D+OuqJ7wdLFYb0TskanrcqmfDBCpY7P0F2jl6CNtXkdQp4fH1ekLyE0d16vm2uB+FjjBAHVx61b
+	ZdL/K23ZvVjCHES/PdNqKncY4cO4f7WeRZxciVd0o+5yKj/hFzaDqZU/P7CtXzqfZidhv4Xku3T
+	Pw1+P+1dT+hUXqkuULDE/j63hz77ioPAo8l2XebImDH1uTUtbwUf/5hTvlsUCDdcpVVapym8yH8
+	Aene/QHXVCFfFWGk+0N6vlBhyjD3T5aUw8e1NydbIFhPlBz9Zjxfgcwr5IIj9DkZiqitBALHyh7
+	2keqWQEXszbPTtxwJyetXmok1h+S1xYgQe6nqDlaXAsOm4XgUc4MzgFryLmjKp0NOtyloPCNlY5
+	ViQhFw633X7ar4+nUCi0z92T5MlRvxCz22Hn6nm3SgasneGfua8Wz2fsCoEyviL7lrvRVORZdG/
+	THMCz9VUeDmnwFllAE9SRrQvIRr0F3l0TN/yf4Uc1FMqkqInH4OybDvFvrxwVbbm/Jgk1Ry0
+X-Received: by 2002:a05:7300:f0ce:b0:366:846a:e21d with SMTP id 5a478bee46e88-369e84d35c0mr9182619eec.33.1792987028486;
+        Sun, 25 Oct 2026 20:57:08 -0700 (PDT)
+Received: from MacBookPro.lan (113x35x113x191.ap113.ftth.ucom.ne.jp. [113.35.113.191])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-369e8d93663sm24441240eec.13.2026.10.25.20.57.05
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 25 Oct 2026 20:57:08 -0700 (PDT)
+From: =?UTF-8?q?Paul-Louis=20Charri=C3=A8re?= <plcharriere@gmail.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>
+Cc: Phil Sutter <phil@nwl.cc>,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	Jalen <jalen.lin@gmail.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	regressions@lists.linux.dev,
+	=?UTF-8?q?Paul-Louis=20Charri=C3=A8re?= <plcharriere@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH nf] netfilter: flowtable: remove hardware flows before unbinding
+Date: Mon, 26 Oct 2026 12:56:51 +0900
+Message-ID: <20261026035651.40052-1-plcharriere@gmail.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <CAHqkChbVoGHrWtaFyGFaLQDiAunWw1qOpW-vKSgkKxWEfQ_tCg@mail.gmail.com>
+References: <CAHqkChbVoGHrWtaFyGFaLQDiAunWw1qOpW-vKSgkKxWEfQ_tCg@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -90,57 +108,74 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: orTrNDOk8T5fd7b1a7rZ-EpaLARH8_fn
-X-Proofpoint-ORIG-GUID: orTrNDOk8T5fd7b1a7rZ-EpaLARH8_fn
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI2MDAxNCBTYWx0ZWRfX/DdcPoqiqGhB
- 3HkjfvakP1EW4XaGf1jY9Emq6jJXvx2rM8L1efYGcNQnJYmCBGDyGvRVNtcK2njBvauAuGmmXNe
- +BXk/4Hhd/HVr6Er0ObP7tVLA2IDXhI=
-X-Authority-Analysis: v=2.4 cv=Vdlir1p9 c=1 sm=1 tr=0 ts=6adece59 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=qit2iCtTFQkLgVSMPQTB:22 a=M5GUcnROAAAA:8 a=j3AFsqOYKst2VyhahHcA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI2MDAxNCBTYWx0ZWRfX568lv6P59+ko
- V2IwejkjjCoTo16tkvmGDIJHJOKq5jKKnur7OjfUOPedHerRd+KdsVAEB9wfYTzpgyc0Tnhl12+
- dRRIlV4qCL1jMhoDoUGjimvyHtWESJAodrXyRYgMrUXOov1408YVWWArQtbaV8D0Hpj8TyWVCAP
- 8b3BJws0hmyAsAt3p4g4y0dMMNp+g7NPo5GdM1haC+FJ+/H1B2PfwhCeql1NHSz+ajLNO/USw/P
- gldoX9ZquexF9oSDvewJT6BznS39zJrBhFzPojFvj1YzBUxtprD6T7DFJab00OnVD6BA1jYWQUF
- By7FFhsFZWuAFv7V6uKeKhhJZ5CT+HHKc6FaLbijOuYph99Z76QD1D/DXCmEmoHqDztUAcYRyPZ
- LSSw9y+ZXKrtKS0v1e1ol+zjVqowNAogEbLFwNxtrOkijWtivd+ZkE70+SlIxL97gLitwNt49Or
- aWJ+EHiU3ehG8V9S/oA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-26_01,2026-10-21_02,2025-10-01_01
 
-From: Subbaraya Sundeep <sbhatta@marvell.com>
+Since commit 13210fc63f35 ("netfilter: nf_tables: imbalance in flowtable
+binding"), FLOW_BLOCK_UNBIND is called when the flowtable hooks are
+unregistered, in the commit phase, and nf_flow_table_free() only tears
+the flows down later.  Their FLOW_CLS_DESTROY requests then find no
+block callback, so the rules stay in hardware: the flows keep being
+forwarded, and drivers such as mtk_eth_soc and mlx5 keep their entries
+and reject a later flow with the same cookie with -EEXIST.
+Commit 5acab91458ce ("netfilter: nf_tables: unbind callbacks from
+flowtable destroy path") had placed the unbind after nf_flow_table_free()
+for this reason.
 
-On cn20k, the MCAM match counter cannot be read from
-NPC_AF_MATCH_STATX. Skip reading the counter value in
-npc_delete_flow on cn20k. Counter support for cn20k is TBD.
+Remove the flows of the device from the hardware in
+nf_flow_table_offload_setup() before unbinding it, as
+nf_flow_table_indr_cleanup() does for indirect blocks.  The GC run that
+nf_flow_table_gc_cleanup() waits for may skip flows with pending offload
+work, or have started before the teardown, so queue the GC work once
+more, wait for it and flush the delete work again.  A direct
+nf_flow_table_gc_run() would race with the GC worker.  No BIND or
+UNBIND call is added.
 
-Fixes: 5f83b4729440 ("octeontx2-af: Do not access match stats for cn20k")
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Signed-off-by: vmukunda <vmukunda@marvell.com>
+Found on a router with mtk_eth_soc flow offloading, where each firewall
+reload left the flows of the old flowtable bound in the PPE.  Jalen
+reproduced it on mainline with mtk_eth_soc and mlx5 and tested this
+change on both, see the report.  Build-tested with W=1 and sparse on
+arm64 and x86_64.  In an arm64 guest with lockdep and KASAN, with TCP
+flows through an offload flowtable on netdevsim ports, the delete work
+of a deleted flowtable now runs before FLOW_BLOCK_UNBIND returns instead
+of after it, and nft_offload.sh passes.
+
+Fixes: 13210fc63f35 ("netfilter: nf_tables: imbalance in flowtable binding")
+Reported-by: Jalen <jalen.lin@gmail.com>
+Closes: https://lore.kernel.org/netfilter-devel/CAHqkChbVoGHrWtaFyGFaLQDiAunWw1qOpW-vKSgkKxWEfQ_tCg@mail.gmail.com/
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-5-5
+Signed-off-by: Paul-Louis Charrière <plcharriere@gmail.com>
 ---
----
- drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_flow_table_offload.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-index ea5d462a66ee..f3b0b082443b 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-@@ -1960,7 +1960,7 @@ int rvu_mbox_handler_npc_delete_flow(struct rvu *rvu,
- 			/* single rule */
- 			} else if (req->entry == iter->entry) {
- 				blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
--				if (blkaddr)
-+				if (blkaddr && !is_cn20k(rvu->pdev))
- 					rsp->cntr_val = rvu_read64(rvu, blkaddr,
- 								   NPC_AF_MATCH_STATX(iter->cntr));
- 				list_move_tail(&iter->list, &del_list);
+diff --git a/net/netfilter/nf_flow_table_offload.c b/net/netfilter/nf_flow_table_offload.c
+index 4365859220e..3844a23af5b 100644
+--- a/net/netfilter/nf_flow_table_offload.c
++++ b/net/netfilter/nf_flow_table_offload.c
+@@ -1279,6 +1279,19 @@ int nf_flow_table_offload_setup(struct nf_flowtable *flowtable,
+ 	if (!nf_flowtable_hw_offload(flowtable))
+ 		return nf_flow_offload_xdp_setup(flowtable, dev, cmd);
+ 
++	/* Hardware rules are deleted through the block callbacks, so delete
++	 * the rules of this device's flows before unbinding it.  Run the GC
++	 * twice: the first run may skip flows with pending offload work, or
++	 * have started before the teardown.
++	 */
++	if (cmd == FLOW_BLOCK_UNBIND) {
++		nf_flow_table_gc_cleanup(flowtable, dev);
++		mod_delayed_work(system_power_efficient_wq,
++				 &flowtable->gc_work, 0);
++		flush_delayed_work(&flowtable->gc_work);
++		flush_workqueue(nf_flow_offload_del_wq);
++	}
++
+ 	if (dev->netdev_ops->ndo_setup_tc)
+ 		err = nf_flow_table_offload_cmd(&bo, flowtable, dev, cmd,
+ 						&extack);
+
+base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
 -- 
-2.25.1
+2.39.5
 
