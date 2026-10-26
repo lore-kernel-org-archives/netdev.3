@@ -1,60 +1,137 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793049890;
-	b=f7M0lUTXt35ETcLYdDWvjoM7R6LB7QEmuTOCRRT41NPhv2jXd4RTpJTJ2uYpGlFVGoD9
-	 ZyyLnzVYMg+4Bq9Y5UsrQAOpB9KJMyOJSjLhS8GE0tPcCK0ZBF89APz07nS5YEmPAbzlH
-	 YJ8NyeprkvCFI9m+OhVY3/ejwLgMRDtjzerAPKcgJRRUJk0ujNIv7xF/LNuyA64HEPMTK
-	 d/OdwcB/f2ZLcocnyYw+xNPbpemPqARUpudiqzUdbndCinwbzMaUX2iUe3Gkt59LWOrVH
-	 CU+G3jbwLjn7DEltvpEaBNBObPd1/bFn136M6+PVIDxPKZQ7XcHnafPe0rwUqyiidGw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793049890;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=QjH6AeElTt4HqVLm1otp9FwHPYVIoaC9nSMLdYjdK4Y=;
-	b=Zp6N5KjYCyh1AuwbTr9GmA4E5Iah9FQA2hvbnlz3E97J3sLrtTvn3ASinbHIxbBDe+yG
-	 PB2xT7N2S2LYWcrMTuDf0ZIxw5LbSAqVaU/H/NMd91ParwRVGa9DWQy19cYgLk6ytzLJQ
-	 ZEiTNMSNS5Q7HcVe64qQiI8g2KonV2kJ4GrRq5ciPXJ/R6aF68O1PUQtWrk9Wb3huZjSE
-	 6nQCZDtweT/2aacu2GRnEDBIKSGdxvkaWW7Ve5s/PMwLS4246jjsWD6XA+bsRV7b0DvPx
-	 JnAAMu0g5dZuXXWuIAXwg0mlusc5dDbWvlyyRkRHAMSbl9pYqljsxFC07KcvToLgeAQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bxpZdsBh;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=192.198.163.19
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1793050215;
+	b=ZDG2Ay7oQNHmubCAedzvZwHmjS1/IiZTfxtjV3UmDB3TnamTonMN5pM+3DmGQPc8WTpz
+	 16ktc8NtE0m0WS/Xpo5qamQnYCZy5lIqnmMsDDU7S34sn5USc11ezPv4obtN4YCPzCJxB
+	 j1QUH+AZ/kmXqNO6lXf8GFu4QJ67qYRwnXqZZT/MSl4/G+AOkkbczsqOr3ngNLPaVTk6v
+	 ijFyXcvCDl4KFiA4RxFqNpV5DKBJV50XhPflexzQSy5yx1S8rC1pAQ7mg4jJR/2Qlv7bW
+	 qjKA/rizQC+YESRP3w+Tg144GnyjYqi2yYU5nVCkj3JfNEleC8ye+pPUNZXPczCs+mg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793050215;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
+	 Received:Received:Received:Message-ID:Date:User-Agent:Subject:To:CC:
+	 References:From:Content-Language:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-LD-Processed:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+	bh=+AednM5NerATvO4iJo7yYMSzlsSGhwD5kTT+yfIr0+g=;
+	b=mXKYQCTI3/61YqgwGNoJ7aZdD4uv8BKWFvzgova4Niv3Y3gwWm3CSQ9oBcimFR1UrOnU
+	 BVzM7bZwoainvyttkKDJMeT5/ml1skKe/Hgb9ZA14IEZHeiWcBPs8ygbqrdzqcelPEYMj
+	 vKUn1iWZbY/8BQ88KU9X8I0czOynmG/3B7j8poYbEGD9p7RbppY3bVCFEHgBdEUNuEqmU
+	 FexRYOwtp8PJCdwTWnRh3s4czYynwcbiMHFBJtJEw4yh1gyZj/M0IjbWbSAxTvP/0+NHh
+	 t8BlOdO0+rDoCu6Dew/JD4B4jKAaMWi80vxRwAJ5WSMF5uW3MKCRjW9W3EdKbD9HljQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NrOpugDS;
+	arc=fail smtp.remote-ip=192.198.163.19
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FAE7606A31A;
-	Mon, 26 Oct 2026 21:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFE3606A321
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 21:30:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AEFE3606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bxpZdsBh
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FD8D1F01825;
-	Mon, 26 Oct 2026 21:24:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793049890;
-	bh=QjH6AeElTt4HqVLm1otp9FwHPYVIoaC9nSMLdYjdK4Y=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=bxpZdsBh42mgt9dog7dTDxOZJBHQsgIJQAb23sYvSekI5l5SrkUBMnL1OqCgI7djH
-	 lqkT7hzR1+vZsziR+98SId7M2ya14+Iw9PbKPbKmJGHkwkSj91nHPlJ3On8P+SufE5
-	 TETFfh3n4azIar1CB6rxgQMUhtPR7UeHuNqYF+Dk2d/E5XUKSwabuZq/m3Vhk6uEDb
-	 qZZI5ivvAT/A7lfw7qsXvFgYOgQliPK4v02V+7zgmKd9UA5Di0xTK3Ijqeopvup8Cg
-	 jceAJPl26VLfqhf0/Gz+orLwSbAvcj8ZyHtZxfDgq6cyKkcUQfdRF95aZ3JkrZQnB5
-	 SSzZKG0ASTxJQ==
-Subject: Re: [PATCH net v2 1/2] net: ethernet: bgmac: preserve forced 2.5 Gbps
- link speed
-From: netdev-bot+sashiko@kernel.org
-To: florian.fainelli@broadcom.com
-Cc: netdev@vger.kernel.org, jonas.gorski@gmail.com, andrew@lunn.ch,
- olteanv@gmail.com, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, rafal@milecki.pl, bcm-kernel-feedback-list@broadcom.com,
- arnd@arndb.de, linux-kernel@vger.kernel.org
-Date: Mon, 26 Oct 2026 21:24:48 +0000
-Message-ID: <179304988884.3134.8268916280620527688@kernel.org>
-In-Reply-To: <20261022211104.2091128-2-florian.fainelli@broadcom.com>
-References: <20261022211104.2091128-2-florian.fainelli@broadcom.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NrOpugDS
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793050214; x=1824586214;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=+xR7ldkjMzEas3sk1JXa0HvNCLTGzzrXs3Dc9/9Vhc4=;
+  b=NrOpugDSgyhDX3ZAuLeIERNKJgyjdnwc34Mulyil49jkJ3fnT7+X2Oii
+   Fuk1XAyRkZIfGjSx0pNOwwpIxIWvRGOZmUZFcNDT7cPvfdIdWtMH4CnQ0
+   GVS9XXVShTcVCFM9xpMiS2RZHKCR1jnriy1R2tNbxKyBgG3nI3+WWpQtQ
+   AjoixGd8Dyg9OqfK+ip7gvoCFPnzaMwkgkul9LjEup9x8mEpOToS//3/H
+   WrARds8ZbFKQgzIp8OEnWWop91q/wB8402h7dWRWTQhPdrxT45HysNUS6
+   Revj4RNGklHy+lpmcY0Pk5Lh8PD1FZfYu+emGBspveZmELFVIypcivcCm
+   Q==;
+X-CSE-ConnectionGUID: z2JFjwwvRsmV8rE0rZ5JNg==
+X-CSE-MsgGUID: apyhQaKyR/WH49sgi0LqHw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11947"; a="1841649"
+X-IronPort-AV: E=Sophos;i="6.27,180,1787036400"; 
+   d="scan'208";a="1841649"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 14:30:14 -0700
+X-CSE-ConnectionGUID: cUzBjaZaQmOK0gHQnOZflg==
+X-CSE-MsgGUID: Qj19DnGsQdmPkJRD8GFC5g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,180,1787036400"; 
+   d="scan'208";a="4757614"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 14:30:14 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Mon, 26 Oct 2026 14:30:13 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Mon, 26 Oct 2026 14:30:13 -0700
+Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.55) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Mon, 26 Oct 2026 14:30:12 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Tiy72OvcYVcdBg5rZB+bD3BQ1W7EdmrYNbbk+XLW4hsIgeIAcaGMcbfEUEJ/tHvuIHfHjjBxdway5cSxhy+thVtQ4iRfb+WgO2ydt8h4cdsqynA3JF5iO8YnggZTpX7PtntONwl+l0rsN7ob/dz8AOuX3sG6mZt7F98sIM+QOAFY+27sjweYaMh4wrWIyrqS4e4bK3+Ct/NIyoR3GNpDSP03Q9+7GLHA9meooQDRAnXE+keluHeKCixNdBAGBd+P0T8IrDJxXgs0rmmNsaRxTP2MbtPVj5+8hi1BfO8dq1G6uy3behnpR8kLwWqPsSZuThvSsUteL8k3UKvFmFeV2w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+AednM5NerATvO4iJo7yYMSzlsSGhwD5kTT+yfIr0+g=;
+ b=g7kOnD9YEqL/9DdoWdUCFUMXLFSAgAwxroUQG4KEg+CJ9CryYub02EQqmMxCUzmWQasQMmWMivNvH1XocoT316fEbflt9mkXcrWqlo8IH0v+dsXdKEvfV/W8QtGVDwgnsga9jthmLiF1ujTZEnDraHM/xQfkPVs/jBqTQloff37Ve0kEHKUaHo3zJw4Whco3LEaaDAi6IirzCgGtqf3i2yr2Zzj8EhHIK5hzh4llsOAa2DtQFdiuhlKATL2H128uLITQbrdStGMwz9nyb6o3VGdz2AGLW5MPur2oybXkSY9NtJQ9dlJUEVxfdi0OK3oJ38nvBjhaziPNV5vTbr4g2w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
+ by IA1PR11MB7941.namprd11.prod.outlook.com (2603:10b6:208:3ff::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
+ 2026 21:30:09 +0000
+Received: from DS0PR11MB7381.namprd11.prod.outlook.com
+ ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
+ ([fe80::4c39:dfe6:d6dc:6f58%6]) with mapi id 15.21.0546.021; Mon, 26 Oct 2026
+ 21:30:09 +0000
+Message-ID: <67e69d49-6018-4981-8443-6a6860284c6a@intel.com>
+Date: Mon, 26 Oct 2026 14:30:07 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v5 03/13] ice: fix PHY port restart serialization
+To: <netdev-bot+sashiko@kernel.org>
+CC: <przemyslaw.kitszel@intel.com>, <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>, <edumazet@kernel.org>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <poros@redhat.com>, <netdev@vger.kernel.org>,
+	<grzegorz.nitka@intel.com>, <aleksandr.loktionov@intel.com>,
+	<alexander.nowlin@intel.com>, <anthony.l.nguyen@intel.com>,
+	<maciej.machnikowski@intel.com>, <przemyslaw.korba@intel.com>,
+	<sergey.temerkhanov@intel.com>, <arkadiusz.kubalewski@intel.com>,
+	<richardcochran@gmail.com>, <horms@kernel.org>
+References: <20261021-jk-e825c-timestamp-processing-logic-fixes-srcu-v5-3-72289a4ac8eb@intel.com>
+ <179297183566.3134.6646066636705775074@kernel.org>
+From: Jacob Keller <jacob.e.keller@intel.com>
+Content-Language: en-US
+In-Reply-To: <179297183566.3134.6646066636705775074@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MW4PR02CA0012.namprd02.prod.outlook.com
+ (2603:10b6:303:16d::35) To DS0PR11MB7381.namprd11.prod.outlook.com
+ (2603:10b6:8:134::14)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,163 +141,351 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|IA1PR11MB7941:EE_
+X-MS-Office365-Filtering-Correlation-Id: 63971584-ea4f-4c41-5236-08df33a84f95
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|23010399003|376014|1800799024|366016|261026140227099003|4143699003|56012099006|5023799004|11063799006|261009223027099003|261021123027099003|261022105027099003|261022075727099003|261021121427099003|18002099003|22082099003|261026121527099003|6133799003|10067099003|3023799007;
+X-Microsoft-Antispam-Message-Info: j4r9aaVMwhTCJwZyNgWfdiEU8Md/MQcGITe5QWX5cOwzbdp4GkKCik8LUE9Rv38tWmSTjhKmCVbCpE/1ADwdcS9j3QwzdXNVCNedSbuN7FcjIO8Lf8dupB890O+w+o2fDejzYRkTd4fs3HqgFaksZCX0vveLvmuxp0M7znEN+h3KxVOVdlJYQjRFPnBF/cyE4OZJNV8Zm9nMejPETK1tDZVk6jONqIkrSeasc4vzOcIHntGJbCKrIKYEYMs80+7iOUvwP9DOKizjtC3psV9ybrsDgvR4NmAIsC8uRRFm9B1PSY3uKcwuamJeMIgKR2dcZdKNrDrhpnuj2kH9WRJmWvsmyMlL7Pl+sTJAJfbLKnk/2RwKfhfrCawIb+Gre0A4XdjKuAIfNolcSOUtbYJx+5zqqcuKUrg24pm6v+ShbGFoLUofNNo/iFkLCZKZFeQwx1LMPOqWeFeFOoYel1FbCR/8hNDaDdCRWdKO4b/XmExUhPIM80L9JZXCWOJFyNvHDWxfpxbi3tyYNu4eXfs64FwoZiXoXCC/jrAAePoP3C6WNzOxVUt/y+OkUztlXvwjsjqmiba8wiYMhzCgaJgkH+c3S/qxj3Ni1pOCWMSi9/WO3Own+WHG/8a3qONgrI1S
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(376014)(1800799024)(366016)(261026140227099003)(4143699003)(56012099006)(5023799004)(11063799006)(261009223027099003)(261021123027099003)(261022105027099003)(261022075727099003)(261021121427099003)(18002099003)(22082099003)(261026121527099003)(6133799003)(10067099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bXpGbDdtMlFlcTNnUVRBeGtXdUx5OVA5ZlVHQ2F1M0FVUW9xUE8rVjBGUHRC?=
+ =?utf-8?B?b2RINFRpMS9vSGsyRDV4ZVpMV281WWFSdEhkM2dKc2pFU25FQ0hmN3BUZWdj?=
+ =?utf-8?B?UGhXcmtSUXQvS29YZVZEMjNGaUpZanAwd3JFb0hIeFVZdUcwTlJzaVdYVTVO?=
+ =?utf-8?B?Z3Z3c2ZOOVZOeHZVQ25LSlBqNnZweHpiSFBkV0xlYXpYVGFuSFR6Y2Y0cGw4?=
+ =?utf-8?B?M3BxWHNWNEdMTVVBYmg0UDFUUkVTQjUvREdpMEh1ZWRGanQwdDE4V251QXRr?=
+ =?utf-8?B?RXVmNktabGxpbDBLamlLbmpCRE1LMzdXVytsdXdYSUkrVXV0Rjkzak0rV2Zw?=
+ =?utf-8?B?RXc1TEtNV1FCN21WMjROdGp4Tk1LaGdZWWJYRk1Nc3BDak91UmRDRHplR3hX?=
+ =?utf-8?B?TXp6NmpEcmVXYUtqZm9xUEp4ZktqekZjZFE5OTd6MllyNnh6SU8xSkpicmFB?=
+ =?utf-8?B?cDV2WUtZUERsRitDYVhwZmFRZXJuTEJrMFJObGpBQ3FSSVJvbVpSYjkrdWFF?=
+ =?utf-8?B?MHhJZGlIcUhpSlo1cDc5WFE0T2YzWS94anQ0YWhlbVhvd3VpODM5TjVLN3lN?=
+ =?utf-8?B?VjZRQ3A0c1VRZk1aMGVLMUVNWGoyS0tHZk5yKzkrYWVveUZtM3c4aG5NUjQz?=
+ =?utf-8?B?clJWQVd6RzR0WGlKbnFaZVNiUXpTM2Q0UXRxRkROY1pzTlVSbHpPR1V2K1k5?=
+ =?utf-8?B?cnEwVXFNaG9qY0NnTkR3cTR2V1UwRzYyWHR4NHU1dDNkM2g3UU96UzhQMzlX?=
+ =?utf-8?B?Z0FjVVJQYWJmZ1pXQk1Ia01vVWpsWXZSY1kzUm12YktHZGFJTUN5dklSeity?=
+ =?utf-8?B?NVROMVlKaXZnMGwycHROTVd1TlQ0Y1h4cGlONXJ6SnF2QUZVQ1NkNUY4OFJH?=
+ =?utf-8?B?UUlWbWErNldXNmNRMWJwNUVNWGsvbUFxeHJFOS9EeCtSbXpELzBHa1lMcWhU?=
+ =?utf-8?B?WUZFNkozbTBzRHJrYjN3YmYvRUNpdTBYdU9RMDdCWDBHaFFGQVlGTk1VVlBi?=
+ =?utf-8?B?dmZzeVhpckhtV0U5bEhEbGdhek9wUzcxeXY1aDBmclB5WlNoUTRLVlRwRnBL?=
+ =?utf-8?B?STZEajZBbzdWTGRzUDNzZE9TMTZoSmxuaFhJUGllREsvcU82NS81U05vQjJQ?=
+ =?utf-8?B?Wk9RSldlSVJ5d1QrdWowWDZPc0tDa2lHeXV3V2FWeS9qbEZYcXBSZjVhSWds?=
+ =?utf-8?B?SWhQNkJRMFBnUVVUTEV2bnpwUUltZlRCVlZIaHVvWTYyRzlSd01YcGVqWENs?=
+ =?utf-8?B?WkQ0QWNLM3R4VU13UENkZzJZL1hCRkJFVkVMZSs3aWJaam9NR0VsWkZzckRG?=
+ =?utf-8?B?UlVMQy8wWjBnakFwQ0xETkhJSDdCaFhOUXRiMWdwdG85eDdVNjhSNFdLNSta?=
+ =?utf-8?B?TlRTOGJQUXNZaTdkbWdNcTJPSEY3NHlpWEpoNmcrajNQYWNBR3FDeEs0TnZY?=
+ =?utf-8?B?ZE1jYUttYTh0V1V4RVYvMWxybnc0amtNY1lGMlIxNFYraTl3cDFXYm5CYi9Q?=
+ =?utf-8?B?WmNOYUFKdUVMWSszSXVWdjYwMm9pQ1lvSXFscHVWUE1SSTRLSnlsNkpzMnRB?=
+ =?utf-8?B?VHZtblRGaDE0YjcrZmMxcXhKeU1tMXdXaHo1UVRoWU1uS3ozU1lWOFVxQmlj?=
+ =?utf-8?B?NGdEM3lxWFdLK2ZkMGZDWmY5Ukw2Qk1tVWkzMEpMVERxeHlHSXVPYzZ4Qm1I?=
+ =?utf-8?B?UmltTkV2bHBCZ0RFZkdYT2NHcDlMaDV4d3A1NFR2ZkVTSFp0cnZVZnFmWUFF?=
+ =?utf-8?B?SDYrU3V3WUgrOTNmMnF3YTdzSTh2b2JqQjZPV0owSUlPRDd1TGdYSXBmdTYx?=
+ =?utf-8?B?TTI5YVFMT3M5a3FoUHZ5cUtoTmtBZ1Ixc3BsT1N6bWhZbnQ4Y3F1R2NvTVVF?=
+ =?utf-8?B?cHBmL0FISGVOQU43SVkzVVUxbjhzejhPaExnU0tiSlNHYnRnL1ZmR0RGb2Ji?=
+ =?utf-8?B?bC9IMHprZm1nc21DYVgycTlZa0VtbWdpNURZa3JLVFczY3lWZm5KaGprYVRN?=
+ =?utf-8?B?akg1Y0xyS2Vxb0UwVW1WUWcxbTk3czJOZWUvWDBIVVlUZmpnUmpCdndZWTRt?=
+ =?utf-8?B?U09uaTVTdUN6MGZDZ1ZVVGplTTRrWEV2QWZrNWZtcGR3S3ZpcGVQRktnc1Vo?=
+ =?utf-8?B?eUl6L1E1RlVPOWZPSExwSCtYdEw0RFVPeEl0WmVBYjBBd2FOam42eUxPcllS?=
+ =?utf-8?B?YlcxSU4zaWFkY3NhamFPK1lKcHNTYnVxRTZraDJnNnNlWk12MnVkd25SR0lX?=
+ =?utf-8?B?SlRPUmtDMmc1QlRNNkF6cG41c3MremhTU2VqeEc1RnROazlMMzdtR01jci9s?=
+ =?utf-8?B?emVSZXpSb29JeHZWa2lxOXpPZ3hLSDhMdVE3blQ3WTNGZTJLU2RHZz09?=
+X-Exchange-RoutingPolicyChecked: IqoXQMroc0JtS/3UxRS5Oi1aFz8iVatkSDgX6FYrIxyOWLks+CeSkz+9ZMeJdKFLlj3EBnJLpuqIOTjlPl+MRvC3YM2aZeKuvTkP/8v19ap5q+a7ZQaq0DPCQDTchHkwNNtVExPf5U2oR4QcPf8BfHGMv/pK+JSQ1/afFnxGgof+EIi2RNwL1+HvtTHmB7RxU0f38MWIkd5RD5QB6uPVV8gnlNWt0D0F/t8y6UHB16gVKvkHG1TtMN9PRsf/YDXJQ790Wqq3aV7ZXyVjnQfvUjovUaXF6GMX+KJk8DRDm8VOoTpwGEUKoZ+eq3hesAJ6+wPu4hh2zc6qnomSGrP+Qw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 63971584-ea4f-4c41-5236-08df33a84f95
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 21:30:09.5430
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zu6PEPpmuHKOZmITT9/gUaCV69+zfcg79tj2eOk2V9/MI+nI2tsKDrHTUlwfW5G6NCFezonkZlLnVG/u23oawxDYPlUZtlZrqdE0kYYgcOU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7941
+X-OriginatorOrg: intel.com
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+On 10/25/2026 4:43 PM, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 5 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 0 · Medium: 1 · Low: 4
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] ice_ptp_link_change() now calls
+>   mutex_lock(&pf->adapter->ps_lock) on every invocation, before any PTP-…
+> - [Low] The commit message describes the .settime64 race the wrong way
+>   round.
+> - [Low] adapter->ps_lock now also guards writes to ice_ptp_port::link_up
+>   and the whole of ice_ptp_link_change(), including the SyncE/DPLL…
+> - [Low] The patch's link-edge handling depends on ice_ptp_link_change()
+>   reading pf->ptp.state inside the adapter ps_lock critical section.
+> - [Low] To justify replacing the per-port ps_lock with a single adapter-
+>   wide lock, the commit message says 'the PHY restart procedure already…
+> 
+> --
+> 
+> ice: fix PHY port restart serialization
+> 
+> This commit replaces the per-port ps_lock with a single adapter-wide
+> ps_lock. The lock is taken in ice_ptp_link_change(),
+> ice_ptp_restart_all_phy(), ice_ptp_init() and ice_ptp_release(), so link_up
+> is updated in the same critical section as the PHY start/stop. It also
+> moves the ICE_PTP_READY transition in ice_ptp_init() ahead of the initial
+> PHY restart, so link edges during init are not lost.
+> 
+> Closes: https://lore.kernel.org/netdev/20260916011228.1632848-1-kuba@kernel.org/
+> 
+>> If a PHY restart occurs concurrently with a link transition, it is possible
+>> that the link state read could be re-ordered such that the link transition
+>> would start the PHY but a concurrent restart (such as from .settime64)
+>> could see the old link state and decide it must stop the PHY.
+> 
+> [Severity: Low]
+> Does the race go in this direction? Before this patch,
+> ice_ptp_restart_all_phy() only called ice_ptp_port_phy_restart() after
+> checking link_up:
+> 
+>     if (port->link_up)
+>         ice_ptp_port_phy_restart(port);
+> 
+> A stale "down" value there only skips the port. It never issues a stop.
+> 
+> The inner !ptp_port->link_up check in ice_ptp_port_phy_restart() reads the
+> same variable later in program order. While the link is going up, it
+> can't see "down" after the outer check saw "up".
+> 
+> On the old code, the race that does look possible is the opposite one,
+> on link down:
+> 
+> CPU0 (.settime64)                 CPU1 (link down)
+> ice_ptp_restart_all_phy()
+>   port->link_up == true
+>   ice_ptp_port_phy_restart()
+>     link_up check passes
+>                                   ice_ptp_link_change()
+>                                     ptp_port->link_up = false
+>                                     ice_ptp_port_phy_restart()
+>                                       ice_ptp_port_phy_stop()
+>                                         lock/unlock ps_lock
+>     mutex_lock(&ptp_port->ps_lock)
+>     ice_start_phy_timer_e82x()
+> 
+> This leaves timestamping running on a down link.
+> 
+> The new adapter-wide ps_lock closes both directions, so the code change
+> itself looks fine. Could the commit message describe the scenario that is
+> actually being fixed?
+> 
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 1
+I can try to fix the commit message if we need a respin.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+>> Additionally note that the PHY restart procedure already cannot run
+>> concurrently across two ports. The procedure requires executing timer
+>> commands which in turn require the PTP hardware semaphore.
+> 
+> [Severity: Low]
+> Is this accurate for E822/E823? ice_start_phy_timer_e82x() issues its
+> timer commands without holding ice_ptp_lock():
+> 
+> ice_start_phy_timer_e82x() {
+>     ...
+>     err = ice_ptp_one_port_cmd(hw, port, ICE_PTP_INIT_INCVAL);
+>     ...
+>     ice_ptp_src_cmd(hw, ICE_PTP_NOP);
+> 
+>     ice_ptp_exec_tmr_cmd(hw);
+>     ...
+>     err = ice_ptp_one_port_cmd(hw, port, ICE_PTP_INIT_INCVAL);
+>     ...
+>     ice_ptp_exec_tmr_cmd(hw);
+>     ...
+>     ice_ptp_exec_tmr_cmd(hw);
+> 
+>     err = ice_sync_phy_timer_e82x(hw, port);
+>     ...
+> }
+> 
 
-- [Medium] The new override in bgmac_adjust_link()
-  (drivers/net/ethernet/broadcom/bgmac.c:1421-1427) sets UMAC_CMD to…
-- [Medium] On FORCE_SPEED_2500 devices, the patch makes link reporting
-  disagree with the hardware, and the commit message does not say so.
-- [Low] In bgmac-bcma.c, bgmac_probe() sets BGMAC_FEAT_FORCE_SPEED_2500
-  from the chip ID alone (BCM4707/BCM47094/BCM53018, line 282).
+This is a pre-existing issue that I think are fixed by some patches we
+have on Intel Wired LAN. The E822/E823 shouldn't be issuing timer
+commands without the global semaphore.
 
---
+> Only the final ice_sync_phy_timer_e82x() step takes the semaphore. On
+> E825, ice_start_phy_timer_eth56g() does hold it around its port command.
+> 
+> The single adapter lock serializes more than the old per-port lock did,
+> so the patch doesn't depend on this claim. Could the justification in the
+> commit message be corrected, though?
+> 
 
-net: ethernet: bgmac: preserve forced 2.5 Gbps link speed
+I can try to clean that up...
 
-This patch changes bgmac_adjust_link() to use SPEED_2500 when
-BGMAC_FEAT_FORCE_SPEED_2500 is set. Without it, the 1 Gbps speed of the
-fixed PHY overwrites the 2.5 Gbps setting from bgmac_miiconfig().
-Together with the switch IMP port 2 Gbps change, it is meant to remove
-output queue discards on Northstar and Northstar Plus.
+> A related point: ice_ptp_one_port_cmd() writes P_REG_TMR_CMD on every
+> port (NOP on the non-target ports). The clock owner's ice_ptp_tmr_cmd()
+> paths (adjfine/adjtime/settime) also program every port's TMR_CMD, and
+> they hold only the semaphore, not ps_lock. This patch did not introduce
+> that possible interleaving, and the old per-port lock didn't cover it
+> either. Whether it matters depends on how the hardware handles the timer
+> command sync across PFs.
 
-> diff --git a/drivers/net/ethernet/broadcom/bgmac.c b/drivers/net/ethernet/broadcom/bgmac.c
-> index 3e9c57196a397..11487ff48e0d7 100644
-> --- a/drivers/net/ethernet/broadcom/bgmac.c
-> +++ b/drivers/net/ethernet/broadcom/bgmac.c
-> @@ -1415,11 +1415,15 @@ void bgmac_adjust_link(struct net_device *net_dev)
->  {
->  	struct bgmac *bgmac = netdev_priv(net_dev);
->  	struct phy_device *phy_dev = net_dev->phydev;
-> +	int speed = phy_dev->speed;
->  	bool update = false;
->  
-> +	if (bgmac->feature_flags & BGMAC_FEAT_FORCE_SPEED_2500)
-> +		speed = SPEED_2500;
+The semaphore is cross-PF and is supposed to block other PFs.
 
-[Severity: Medium]
-This programs CMD_SPEED_2500 on every AMAC that has
-BGMAC_FEAT_FORCE_SPEED_2500. Is the switch side always in its 2 Gbps mode
-for those AMACs?
+> 
+>> diff --git a/drivers/net/ethernet/intel/ice/ice_adapter.h b/drivers/net/ethernet/intel/ice/ice_adapter.h
+>> index c61bd645e460..5cefcd7af8b3 100644
+>> --- a/drivers/net/ethernet/intel/ice/ice_adapter.h
+>> +++ b/drivers/net/ethernet/intel/ice/ice_adapter.h
+>> @@ -41,6 +41,7 @@ struct ice_port_list {
+>>   * @txq_ctx_lock: Spinlock protecting access to the GLCOMM_QTX_CNTX_CTL register
+>>   * @cpi_phy_lock: Per-PHY mutex serializing CPI REQ/ACK transactions.
+>>   *               Index 0 = PHY0, index 1 = PHY1. Used on E825C devices.
+>> + * @ps_lock: Mutex to serialize PHY port start/stop across adapter.
+> 
+> [Severity: Low]
+> This isn't a bug, but should this description cover everything the lock
+> now protects? After this patch, ps_lock also guards writes to
+> ice_ptp_port::link_up and the whole of ice_ptp_link_change(). That
+> includes the SyncE/DPLL reconfiguration and ice_txclk_update_and_notify().
+> 
+> The @link_up kernel-doc in ice_ptp.h still just says "indicates whether
+> the link is up". It doesn't say that writers hold adapter->ps_lock, or
+> that lockless readers such as ice_ptp_process_tx_tstamp() use READ_ONCE().
+> 
+> Also, ice_ptp_port_phy_stop(), ice_ptp_port_phy_restart() and
+> ice_ptp_restart_all_phy() all gained a Context: line. ice_ptp_link_change()
+> now takes ps_lock unconditionally, but its kernel-doc has no "Context:
+> acquires the adapter ps_lock" line.
+> 
 
-The companion b53 change only passes speed = 2000 for MLO_AN_FIXED CPU
-ports on is5301x() or BCM58XX_DEVICE_ID, in b53_phylink_mac_link_up():
+I can try to clean those up...
 
-	if ((is5301x(dev) || dev->chip_id == BCM58XX_DEVICE_ID) &&
-	    dsa_is_cpu_port(ds, port)) {
-		tx_pause = true;
-		rx_pause = true;
-		speed = 2000;
+> [ ... ]
+> 
+>> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
+>> index 55241802d17a..7a1deb3ea212 100644
+>> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
+>> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+> 
+> [ ... ]
+> 
+>> @@ -1309,17 +1309,14 @@ void ice_ptp_link_change(struct ice_pf *pf, bool linkup)
+>>  	struct ice_ptp_port *ptp_port;
+>>  	struct ice_hw *hw = &pf->hw;
+>>  
+>> -	if (pf->ptp.state != ICE_PTP_READY)
+>> -		return;
+>> -
+>>  	ptp_port = &pf->ptp.port;
+>>  
+>> -	/* Update cached link status for this port immediately */
+>> -	ptp_port->link_up = linkup;
+>> +	mutex_lock(&pf->adapter->ps_lock);
+> 
+> [Severity: Medium]
+> Can this dereference a freed ice_adapter during device removal? Before
+> this patch, ice_ptp_link_change() returned early once ice_ptp_release()
+> had moved the state away from ICE_PTP_READY, and it never touched
+> pf->adapter. Now the mutex is taken before any state check.
+> 
+> In ice_remove(), the adapter reference is dropped before the service task
+> is synchronously stopped:
+> 
+> ice_remove()
+>     ice_unload(pf);           <- PTP torn down via ice_ptp_release()
+>     ice_deinit(pf);           <- only sets ICE_SERVICE_DIS
+>     ice_vsi_release_all(pf);
+>     ...
+>     ice_adapter_put(pdev);    <- may kfree() the adapter
+>     ice_deinit_hw(&pf->hw);
+>     ice_deinit_dev(pf);       <- ice_service_task_stop()->cancel_work_sync()
+> 
+> The ice_probe() unroll path uses the same order:
+> 
+> unroll_adapter:
+> 	ice_adapter_put(pdev);
+> unroll_hw_init:
+> 	ice_deinit_hw(hw);
+> 	if (need_dev_deinit)
+> 		ice_deinit_dev(pf);
+> 
+> Suppose a service task is already in ice_link_event() and has passed the
+> ice_get_main_vsi() check when removal runs through ice_adapter_put(), and
+> this PF held the last adapter reference. Wouldn't the task then reach:
+> 
+> ice_service_task()
+>   ice_clean_adminq_subtask()
+>     ...
+>       ice_link_event()
+>         ice_ptp_link_change()
+>           mutex_lock(&pf->adapter->ps_lock);
+> 
+> on an adapter that ice_adapter_free() has already passed to mutex_destroy()
+> and kfree()?
+> 
+> The teardown ordering predates this patch, but the patch adds a new
+> unconditional adapter access on this path.
+> 
 
-On Northstar, gmac0 and gmac1 connect to switch ports 5 and 7
-(bcm-ns.dtsi). On many in-tree boards, port 5 is the CPU link and port 8
-is disabled. Examples are bcm4708-netgear-r6250, Luxul XAP/XWR/XBR/ABR,
-Buffalo WZR, SmartRG SR400AC, Meraki MR26/MR32 and bcm953012er.
+This really should be considered a pre-existing issue that we don't have
+a synchronize with the service task during teardown.
 
-If port 5 has no fixed-link, dsa_shared_port_link_register_of() skips
-phylink registration, and b53_phylink_mac_link_up() is never called.
+> [ ... ]
+> 
+>> @@ -3419,14 +3414,16 @@ void ice_ptp_init(struct ice_pf *pf)
+>>  	if (err)
+>>  		goto err_release_tx_tracker;
+>>  
+>> -	/* Start the PHY timestamping block */
+>> -	ice_ptp_reset_phy_timestamping(pf);
+>> -
+>>  	/* Configure initial Tx interrupt settings */
+>>  	ice_ptp_cfg_tx_interrupt(pf);
+>>  
+>>  	ptp->state = ICE_PTP_READY;
+>>  
+>> +	/* (Re)start the PHY timestamping block */
+>> +	mutex_lock(&pf->adapter->ps_lock);
+>> +	ice_ptp_port_phy_restart(&ptp->port);
+>> +	mutex_unlock(&pf->adapter->ps_lock);
+> 
+> [Severity: Low]
+> Should the ICE_PTP_READY store happen under ps_lock? The link-edge
+> reasoning in the commit message relies on ice_ptp_link_change() reading
+> pf->ptp.state inside the ps_lock critical section. Here, though, the
+> store is a plain write made before mutex_lock().
+> 
+> If a link event already holds ps_lock when this store happens,
+> ice_ptp_link_change() can see READY through a plain load:
+> 
+>     if (pf->ptp.state != ICE_PTP_READY || pf->hw.reset_ongoing)
+>         goto out_unlock;
+> 
+> Nothing pairs that load (no release/acquire) with the earlier
+> initialization writes (pf->ptp.kworker, ov_work, the Tx tracker). It then
+> goes on into ice_ptp_port_phy_restart(), which on E822 calls
+> kthread_queue_delayed_work(pf->ptp.kworker, ...).
+> 
+> In practice the window is very small, and both outcomes described in the
+> commit message are handled correctly. It is still a plain-access data
+> race that KCSAN could report.
+> 
+> Would it make the ordering explicit to set the state to READY inside the
+> ps_lock section just before the initial restart, or to use
+> smp_store_release()/smp_load_acquire()?
+> 
 
-If port 5 has a fixed-link (MR26/MR32), b53_force_port_config() writes
-B53_GMII_PORT_OVERRIDE_CTRL(5) with PORT_OVERRIDE_SPEED_2000M, which is
-BIT(6):
+I think this needs to be something like this:
 
-	if (is5301x(dev) || is58xx(dev))
-		reg &= ~PORT_OVERRIDE_SPEED_2000M;
+1: set the PTP state
+2: synchronize with the service task
 
-	switch (speed) {
-	case 2000:
-		reg |= PORT_OVERRIDE_SPEED_2000M;
+But that likely requires more work to make sure everything is right and
+I would rather not overload this already loaded series :\
 
-In the GMII override register, BIT(6) is the enable bit and the 2G bit is
-BIT(7):
+> [ ... ]
+> 
 
-#define   GMII_PO_EN			BIT(6) /* Use the register contents */
-#define   GMII_PO_SPEED_2000M		BIT(7) /* BCM5301X only, requires setting 1000M */
-
-On these boards, does the MAC now run at 2.5G against a switch port that
-the kernel never puts into 2G mode? The port is only in 2G mode if the
-bootloader left it that way.
-
-Cygnus looks similar. In bcm911360_entphn.dts, eth0 is brcm,amac with no
-phy-handle, so bgmac_probe() in bgmac-platform.c sets
-BGMAC_FEAT_FORCE_SPEED_2500.
-
-The switch there is brcm,cygnus-srab, which maps to BCM583XX_DEVICE_ID.
-The chip_id == BCM58XX_DEVICE_ID check above does not match that ID, so
-b53_force_port_config(dev, 8, 1000, ...) runs. Because is58xx() includes
-BCM583XX, it clears PORT_OVERRIDE_SPEED_2000M.
-
-Before this patch, both ends of the Cygnus link were at 1G. After the
-series, would the MAC be at 2.5G and the IMP port at 1G? The series names
-that kind of mismatch as the cause of the output queue discards.
-
-Also, if this patch is applied alone (a bisect point, or a stable backport
-based only on the Fixes: tag), the IMP port boards look mismatched too,
-because b6a8a5477fe9 already clears the 2000M bit. The companion b53 patch
-covers that case. Should the two patches be kept together for backports?
-
-[Severity: Low]
-The override depends only on the feature flag. In bgmac-bcma.c,
-bgmac_probe() sets BGMAC_FEAT_FORCE_SPEED_2500 from the chip ID for the
-whole 4707 family. bcma_phy_connect() tries a DT phy-handle first:
-
-	phy_dev = of_phy_get_and_connect(bgmac->net_dev, bgmac->dev->of_node,
-					 bgmac_adjust_link);
-
-If a phy-handle attached a real autonegotiating PHY, would this ignore the
-negotiated 10/100/1000 speed and program CMD_SPEED_2500?
-
-Duplex is still copied from phy_dev->duplex. A half-duplex result would
-therefore give CMD_SPEED_2500 | CMD_HD_EN.
-
-No in-tree 4707-family DT does this, and that family registers no MDIO
-bus. bgmac-platform.c sets the flag only on the bgmac_phy_connect_direct()
-path, so the two glue drivers use the flag differently.
-
-Could the override be limited to the direct fixed PHY case, or could
-DUPLEX_FULL be forced together with the speed?
-
-> +
->  	if (phy_dev->link) {
-> -		if (phy_dev->speed != bgmac->mac_speed) {
-> -			bgmac->mac_speed = phy_dev->speed;
-> +		if (speed != bgmac->mac_speed) {
-> +			bgmac->mac_speed = speed;
->  			update = true;
->  		}
-
-[Severity: Medium]
-Is this branch ever taken on FORCE_SPEED_2500 devices now?
-
-bgmac_open() calls bgmac_chip_reset() before phy_start().
-bgmac_chip_reset()->bgmac_miiconfig() has already set:
-
-		bgmac->mac_speed = SPEED_2500;
-		bgmac->mac_duplex = DUPLEX_FULL;
-		bgmac_mac_speed(bgmac);
-
-When the fixed PHY reports link up at 1000/full, speed is forced to 2500
-and both comparisons match, so update stays false. Does that mean
-phy_print_status() is never called, and the "Link is Up" message is lost
-on every open? Before this patch, the 1000 vs 2500 difference made this
-branch run on each link up.
-
-The attached PHY also still reports 1000. That is either the synthetic
-fixed PHY in bgmac_phy_connect_direct() (.speed = SPEED_1000) or the DT
-fixed-link in bcm-ns.dtsi (speed = <1000>). So ethtool and
-/sys/class/net/*/speed show 1 Gbps while UMAC_CMD is set for 2.5 Gbps.
-
-Should the commit message mention this reporting change, or should the
-reported speed be made to match?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261022211104.2091128-1-florian.fainelli%40broadcom.com
