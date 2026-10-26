@@ -1,59 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792975330;
-	b=IOkUIgz5dSv7JcwxvYWnGXOYi4TobxsNCS3O3RZLbep0JQKVuj1+Q22s4M54/puzLKBl
-	 DfE24tEmhDKWAk7M6lJGbKdX14n9Fo8mzFU7qJY0v9b9mV+dowdMsHgyjko3bwK9KFFnm
-	 geGfBA1yxHW8BqjUxZM/RdKEOFEz5U5+A7lEsp6nSVJ41NnYQF0kx9BiWq7G5auspWP9U
-	 6AKf0jdg5+jKaY7QAmH1YB/zxYHVQOQDqroTXVoQDq2UNDl9i/pEtEJIc/dPIQcBvQStj
-	 cnxAqEvtDHNF8nM7El6IF13dBH02ghd+klDS+SL6Y/Suf3R2ph+yzAvn3pJo4B0ycHA==
+	t=1792975472;
+	b=DcwuSsFW3tBcDr6nZa2+6YMzs0qSnk6cPgHaSmHWRXdDW/v0e2K6CfzCxXW0EOX+kXAO
+	 RtWaCQPbbLliDhHDAUiygZSYPXfBN7QzzcNPWs+qYgpdEUVdNp0FywXS9FOOpbtLTuN+x
+	 +13RRGOH1J9wFrJJKF099sP6cj+DnQC1r5+eU4m5xFJb12w3NFUzAjedjqA4e3cX4pCYw
+	 kIzwRUz+Mdn+9DaKZ7o0f63+rzTNY2Jj1i53kQFVwARN43Q+cjWaW9dpMP5JKzCFXMfmS
+	 sXPFHLwoYILJbTxOU2eGwJRNCdZFh4vZRZUDG3aAeOolw+3GYe5vohZLf4H4IHUNGfw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792975330;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
-	b=2ahewFzKFWxBTcMVIGXl10QU/WgI3WJ8YuHN11fa1L45PqfSPBt4g9P459yPKYvKDHdU
-	 HMwNj+ahzIjIaHpgl+TcgwdUE1ahCVJZx4ed+nUeXEC49dqQQyIRdTI+A9J+zJz9F+6+x
-	 FjQXCku5ET21/0DZTLu6ifmREEhy4T+UJX0V7UOGOB+gToQpilBAtBdRfAP65y7L7Nr/e
-	 gJQ8pHtb1YyBmRapP5PzrvYmgj7x8dQEgOkXQe4OPyhDJObpNBWNIgoVZuIwiVPdfSbWY
-	 BnG3xRHdAlxD1HAljiWVHLPmNl+gOe9JvVrwVXJ3L8cOupwr11n08lzJTev6yqinMMg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792975472;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=C4d5uod477JW8uzzMO+XVqs+CNMjzXHMSj+ysCPSvoc=;
+	b=fraLFYC7wT4+FPFj/BraOhMJtqG0AkY4vsTzAmluNt9QLCNHnJMLzXhTm8QSeIIKITW/
+	 7nNJgFgfVUHqf2utXOhbhbGpdOifvaZOyoEI8IB5Wijr7o7qE320kBkvf0CBnUQQ/hF0/
+	 X0mFYZ7I+WGiRBRulYaJW58WuEuSV+IfxvGUjnPdK0z5Hyj8N1a+nRyPF+uItOR5xvfKJ
+	 AEb0snx+lwNAuHpSZ4FRxlVLVW/eID5e3x22S0I0wMIUaN4MP+WYytvjezacZtTO2zVZh
+	 7wW5GPFHcznCrwyUnCvRqAw/yJX+gvtuJXYYBZUYsV7SGkn/uebNIDknz3q0GkW30zA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dFRyW9ci;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=UHeYH+Hx;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2169606A31B
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 00:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8EC9606A31A;
+	Mon, 26 Oct 2026 00:44:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D8EC9606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dFRyW9ci
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89471F01825;
-	Mon, 26 Oct 2026 00:42:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792975329;
-	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dFRyW9ci2rdPc4cif/kIGbi14Xk8LeVPM35rO2C9Pws1RzhGeRa4Qq1xm9BJMaEuN
-	 TVPwi/9R3jgAe/TJjAKSJHwQYOjrVX1b0Pt/hnmunxIrFB2nLOTgBd+jW3qgwOUO3v
-	 h8fOrkVDaDMYXbICA+dBYpp1ZMh26z65CEDkayqJEIKD1POms411k1otZE5VTbo4sS
-	 xkzB8hAles9xVB3JpAvpREmWg13VKfHZg8jpH7ovvfC/fr1bX7KWAZCoJCI79SFPfp
-	 Uc8mwMZj+e0U72sPb3Jfx6O5/0CIt4QomNOMStaNMKlaUmvmFWqW75IaZWnBgSAQEC
-	 QlAm9cSWOZsPA==
-From: netdev-bot+sinfo@kernel.org
-To: Hyunwoo Kim <imv4bel@gmail.com>
-Cc: edumazet@kernel.org, ncardwell@google.com, kuniyu@google.com,
- davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- martin.lau@linux.dev, john.fastabend@gmail.com, weiwan@google.com,
- sd@queasysnail.net, jiayuan.chen@linux.dev, netdev@vger.kernel.org
-Subject: Re: [PATCH net v4 0/2] inet: fix lockless ehash walk races
-Date: Mon, 26 Oct 2026 00:42:08 +0000
-Message-ID: <179297532848.3327.7260871340859769947@kernel.org>
-In-Reply-To: <20261026003804.61923-1-imv4bel@gmail.com>
-References: <20261026003804.61923-1-imv4bel@gmail.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=UHeYH+Hx
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=C4d5uod477JW8uzzMO+XVqs+CNMjzXHMSj+ysCPSvoc=; b=UHeYH+Hxy/9F9h6RDFNENjdE8w
+	zla9/yNV9vzRnL+GSdbRpUirHUwhjm1nTpqU7whEuZ44C8XkUdokuvntNTJWKXtgqnYFQWCYL9gQr
+	ZnVRBl90ELm+khLYHClY2iuMobOBB37jz0q8SeuoeuJupUS+KV3wOgI97jcNoqsGko1E=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xL8p6-00CjRq-29; Mon, 26 Oct 2026 01:44:24 +0100
+Date: Mon, 26 Oct 2026 01:44:24 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: David Yang <mmyangfl@gmail.com>
+Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: dsa: motorcomm: Report error when FDB fails to
+ add
+Message-ID: <d841a56b-1ec4-4095-9040-cc67f4f91956@lunn.ch>
+References: <20261025024114.1955782-1-mmyangfl@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,21 +65,22 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261025024114.1955782-1-mmyangfl@gmail.com>
 
-Hi!
+On Sun, Oct 25, 2026 at 10:41:11AM +0800, David Yang wrote:
+> fdb_add() ignored any errors returned by the hardware (for example,
+> table is full). Return error for that case.
+> 
+> Fixes: 186623f4aa72 ("net: dsa: yt921x: Add support for Motorcomm YT921x")
+> Signed-off-by: David Yang <mmyangfl@gmail.com>
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+I'm not sure this deserves a Fixes tag. How many entries does the
+table take before it is full? Typical home networks have what, 10, 20
+devices maximum. A small business network may have a couple of
+hundred?
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+What happens if it is full, and you don't return ENOSPC?
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+      Andrew
