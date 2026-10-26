@@ -1,54 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.141
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793027305;
-	b=CKWuUQFiLd6Tnb0Jmm6MbujKPR5ntWqSRUdQdHgW5jrcZJDTL5BppJ9xFf93Sy/rxiA9
-	 br7d2PZ0RfFXZ3pOOsWUuVPzrdeTldBt+ygkwx3RnSkNwnMFdH6townxtdO73JDp9JaaY
-	 8oNVJ/17nsUVqZT9lRVl/zK9Kfu22I/Qe2RBUp0wJFdo6f0EuS52aohY9o2iRCApTm/ou
-	 MOZXrAAPR+JEzhF3oWnjFm3s6VafbJEFVzTNw8P0EkAuJhv4cv+btMI1q2uWRVTuOnMNM
-	 xtMQT4KlwEUL75iS7BIpaJFX9AGzU5D4YA8RqfixedgWxFAM9I9FXLTCIYiy7WM9gcg==
+	t=1793027526;
+	b=loAMGxgnPnsZn8yEylnzH2KYBW5Nz84NOEFwRREM241BFSAyTMF62v6Q9fIIKRcq5rCq
+	 T5t5z2iZxe9pxAGM0QOMTGE7J3jjrye1IEAYNpp1NSJOh1VTdhsvs/pDT2NzImn9Uy194
+	 Qii3FmzTtMohiV4g1YzgTUWtqwzHz+4RVPsJ4xniwDsdWjV7cWJooEmq9C7d3T4h5q1RF
+	 smeZNkKjz39kWCmg6nqkzrd2YtopMXXGea1gIJyuj/A9DxeXepsKTgYbH1Yw/PPLCMGrn
+	 PP2SnHdO7o//UgzksI3sSUAmGbjLPJn41gYIw6Whg9YBXlCRy3YyFcowypHVgDp/i/Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793027305;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=HNreiUYcspl7YugOb0Db/eH9LRraTeCQh01ZdY4GdHw=;
-	b=aI+FSMYz+sutldUCxgMl7kzRhBeOhznXSEJQq4pmOysYN2afAOS/mcQE1Dzf4JpiQsEM
-	 EDK/3SGAuDLrz/vMvkikc1mhjRzlXySJ3gwGUbdwQ5XEuIGwqd1kgb24TZJTYUewkrEr4
-	 KK5Fx4KE8v/ggOGjzXaYMuHuDuLd/uTlV5lmuG8Kl4rBpa1++MmAnqg5VUXePQjvpUqik
-	 dIkYgkUawaPcJfSXI8w1BcWOa7dm6voPKEs4P9LQ8tGcPVyxxoI6RrNgCiZ6DBax8e6MM
-	 aKvbN8ZYwAUZi8LdfnDulMTP2oIzI3SQ9G217GUAxXjLa579lnZO2NEPrjqoHrQvEvA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793027526;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=18eqJR6kyQWwvlbFvPJ3uLv5+RhM/XmkF7e0poo81Lk=;
+	b=1Zd7rfA1RXazFBySWdOoRPjRrAUkIN9sYQp3nXwXn9XYskkpX6zzyM9QMNLQ+5Z5CIGF
+	 7iflA4z3dvPAaJTKl1ek2oc1qQnecY5I9CVhjqQBz/W0UHhPgY7YYr6iHM7wddwfexjRp
+	 1A6+AlknDkzpef/fZIxwZ5tnqy1Yxxpxh3zGQj1RbbUcWF8/HcOSvDdg5JtSm6zRa5gg4
+	 UFTwtZKOWJoJCQs4dG3HpWCGhSKAGLH/UIx7QmNhKrU5ojX981A4mCfoz9MhyELLsfTcs
+	 DjUmwCjGl3sOc/ommkz//6+xnY11AdefaFLAStf1O44SHEvG1nneGZgWBohdLRPFn9A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Zf4NzXgp;
-	arc=none smtp.remote-ip=91.218.175.141
-Received: from mta0.migadu.com (out-141.mta0.migadu.com [91.218.175.141])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=I1o7tJok;
+	arc=none smtp.remote-ip=209.85.222.42
+Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9517606A31F
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 15:08:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C9517606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FDC2606A33F
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 15:12:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7FDC2606A33F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Zf4NzXgp
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=9VzmVr+0UwIq+fSbTHVnNUIENIph+6m5EvRUd51Uhks=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793027303; v=1; x=1793632103;
- b=Zf4NzXgpfukRAt7zk8tXeYxqY6znKac0MvfIrXGjb1+jsZ/uIlMljrdT8N2FO2Tk1LIqV2cu
- FOYsd4vDCsYBROhIdUPR6BX6ySHfr4cZmsOrbMtEmxMj5FOi8Uf9dWBKECkgP4w+jIZHhkkpXoT
- yUJFhHF+XfPtu3v9vdey5eiw=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id d747c137ff7b1668;
-	Mon, 26 Oct 2026 15:08:22 +0000
-X-Mizu-Trace-ID: d747c137ff7b1668
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <8b2c8f88-d03b-4146-9bf7-95c4981ecacc@linux.dev>
-Date: Mon, 26 Oct 2026 23:08:11 +0800
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=I1o7tJok
+Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-990a39ba4fbso707662241.0
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 08:12:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1793027525; x=1793632325; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=18eqJR6kyQWwvlbFvPJ3uLv5+RhM/XmkF7e0poo81Lk=;
+        b=I1o7tJokyf/ftDqohyfkLGfTgURnZwL6WadVmjXnhuhOtae10kjs1eJUkmu/BwK9w+
+         LUGDgAhNNTNphLY7v8040t8Ti2aJMaGDG6WDgIHBGQGoyqDDcfgH0TXrZYJmTeiq8ZYI
+         hyTXHsHUEamtR+tm8GNbIL+M0gSb0jiZwUxtHIM9vwWV7s3DNTNW/+4qp5pzEIoG1e60
+         rknS21a0TP06KzKQHydtcAOPPbr55hMwH9r7tPrKM9vqHf4Ierb01XKKCpkLg9eAE3ti
+         np80TPyLaqvBzutk+sSq/0iHvRGtIurdlae+DWZ5fmt/mqK/be+Wi9xaD24kduhk67kG
+         in0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793027525; x=1793632325;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=18eqJR6kyQWwvlbFvPJ3uLv5+RhM/XmkF7e0poo81Lk=;
+        b=d7kLW0NvTdGLbMIACxCUf/cOB01uXR4jBiWHUioeh/9VY7v4sYTnHrPuqyZXL40xHE
+         Y8qrixc0PUeQGNNNOCgy1c3mYVBEfYp4lwcO4RgxBmt4f85h4TN57HBOsfEwB1gOW6J2
+         6NzJubbTEzHWmVCmRJ/8L3PsTmj5+CGGvp3iQikmzH1n1TnXQSv0t1pawRjB1cLqN6bJ
+         rxKOfopKY7f3uz7c+/vpAAYbj7Vq/2vAKYCzGh6X8dySBUDoYNaiOc25xqlLHVp1ZzZr
+         q38nyeLu9b2s9Or+szJdBWBZghL1akw+McP4+L5kql5OqPUBxqk8l3TwtB7iSBp1PYgh
+         Dy4Q==
+X-Forwarded-Encrypted: i=1; AKwUvBzVVSosduuzxoaXM2AEj46oTNbuDVcLzFG1DYaOOycKCRHR18CyX6y3SpZZ2vF4dWw296N6mvk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKpw67rDvUw/lAgkz+fZ9SaPgjQWOZoekAlhLyv5NIz9+MxcMpn
+	vIAmGdhEEEXMhjKi8HrdeMXH61WVztl482PAKY6mKva6bJpW9zKnu2gU
+X-Gm-Gg: AYBFou3w3ChfX56RGRKFXk39pIh+p3BVoAXPfa82q8f0Nl5fKKi++H4Kw+ukIzrb6S+
+	E90t9tIQTQkxoGGOCBiBlpuoozBio5Q5nxEcEwe7w/T7TCNZPI7LcqmH0kbLuGeFcsIExFuUFZA
+	3J52mgOYAaQtQDQEeSh88M/Q1aPZagNteegT/CvfNFrzfgernZXK9oT+v3OydlcfqloTeveec8d
+	h7Dgr5G85yunO7IECr4sLtYHyVLcEfWv+By4wTzdXRQZkLqm5G1eUAoCTJj6tggnuP8FoYls84Y
+	WGoWJtbJ2iIj13nkAKyYfBoMmGCbP7WAEXQzn+EXIILaN2wPbEQ6F7L0g9UnrTpdi44u1XIovpN
+	voiUVHHrf0lju8JyLmpqi6pGDgpfFCSiQqH+np+MadXGmEMF48KyL5PWjyUwtq5M+0GN8qduG9t
+	KqaOUzYWVd+5T1Q9hsSC5C0I/AqS6XULcfhnrXl8DT/E05/eIMvBbzG5PXGv2gc7IXfaXhiWRgi
+	5007stwYSc5+T5kQe72+a7LEJgXr+XRR/ja0eS2cl1hJJohs8DBsVpEgNpl8cXa4+N9wc9AvwPI
+	PaSTArGYb7Kjea9uOXDpRoTu3xPO6QJc+ImjzE9zPcMbF6KMVdR1EFi9r8wC7d46wweagkV4CdD
+	p6UuONJ3HoasQN2N9AK8=
+X-Received: by 2002:a05:6122:512:b0:5ea:c727:11fa with SMTP id 71dfb90a1353d-5ec22ed48bfmr2374687e0c.0.1793027525326;
+        Mon, 26 Oct 2026 08:12:05 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec233f5148sm8676016e0c.6.2026.10.26.08.12.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2026 08:12:03 -0700 (PDT)
+Date: Mon, 26 Oct 2026 11:12:03 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: =?UTF-8?B?5bmz5LmL?= <treebacker@foxmail.com>, 
+ Greg KH <greg@kroah.com>, 
+ netdev <netdev@vger.kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+ YOSHIFUJI <yoshfuji@linux-ipv6.org>, 
+ Ahern <dsahern@kernel.org>, 
+ stable <stable@vger.kernel.org>
+Message-ID: <willemdebruijn.kernel.1f4132285ab65@gmail.com>
+In-Reply-To: <tencent_E14C00D5FE957DD7E12FFDC2E75A4FA9EE08@qq.com>
+References: <tencent_B58BAE2F5FF485D1B4F652E9980EAB132A09@qq.com>
+ <2026102604-circus-juvenile-c521@gregkh>
+ <tencent_7454E65EE7BD1C085B6951A7D2305157370A@qq.com>
+ <2026102658-jockey-volley-94ff@gregkh>
+ <tencent_E14C00D5FE957DD7E12FFDC2E75A4FA9EE08@qq.com>
+Subject: Re: [PATCH net] ipv6: fix dead half of the MTU guard in
+ __ip6_append_data()
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,119 +107,102 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf-next v4 5/6] libbpf: Add log_opts support for
- bpf_link_create
-To: bot+bpf-ci@kernel.org, bpf@vger.kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, ast@kernel.org,
- daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com,
- memxor@gmail.com, martin.lau@linux.dev, song@kernel.org,
- yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com,
- ihor.solodrai@linux.dev, hawk@kernel.org, john.fastabend@gmail.com,
- sdf@fomichev.me, rostedt@goodmis.org, mhiramat@kernel.org,
- mathieu.desnoyers@efficios.com, shuah@kernel.org, kuniyu@google.com,
- liuhangbin@gmail.com, mkarsten@uwaterloo.ca, masashi.honma@gmail.com,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- martin.lau@kernel.org, mason@kernel.org
-References: <20261024153608.58569-6-leon.hwang@linux.dev>
- <c6da6df95673d3a5ab5c4e757500658821e9e9e8d0652f737eca82690765a9a8@mail.kernel.org>
-Content-Language: en-US
-From: Leon Hwang <leon.hwang@linux.dev>
-In-Reply-To: <c6da6df95673d3a5ab5c4e757500658821e9e9e8d0652f737eca82690765a9a8@mail.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 2026/10/25 00:13, bot+bpf-ci@kernel.org wrote:
->> libbpf: Add log_opts support for bpf_link_create
-> 
-> TL;DR: In bpf_link_create(), the shared iter_info/log_opts slot is keyed only
-> on iter_info_len, so an iter_info pointer with len 0 may be misread as
-> log_opts, possibly causing out-of-bounds reads/writes in libbpf.
-> 
->> diff --git a/tools/lib/bpf/bpf.c b/tools/lib/bpf/bpf.c
->> index 9a2107d4f6d8..00efa90a6ed9 100644
->> --- a/tools/lib/bpf/bpf.c
->> +++ b/tools/lib/bpf/bpf.c
-> 
-> [ ... ]
-> 
->> @@ -803,6 +805,14 @@ int bpf_link_create(int prog_fd, int target_fd,
->>  	iter_info_len = OPTS_GET(opts, iter_info_len, 0);
->>  	target_btf_id = OPTS_GET(opts, target_btf_id, 0);
->>  
->> +	if (iter_info_len && attach_type != BPF_TRACE_ITER)
->> +		return libbpf_err(-EINVAL);
->> +
->> +	if (iter_info_len)
->> +		iter_info = OPTS_GET(opts, iter_info, (void *)0);
->> +	else
->> +		log_opts = OPTS_GET(opts, log_opts, (void *)0);
->> +
->>  	/* validate we don't have unexpected combinations of non-zero fields */
->>  	if (iter_info_len || target_btf_id) {
->>  		if (iter_info_len && target_btf_id)
-> 
-> For BPF_TRACE_ITER, iter_info_len is now the only thing that decides whether
-> the shared iter_info/log_opts slot holds a union bpf_iter_link_info pointer
-> or a struct bpf_log_opts pointer.
-> 
-> Can a caller that sets opts->iter_info but leaves opts->iter_info_len at 0
-> end up with its union bpf_iter_link_info being read as a struct
-> bpf_log_opts here?
+=E5=B9=B3=E4=B9=8B wrote:
+> The second half of the MTU guard in __ip6_append_data() has been dead
+> code since the initial git import:
+> =
 
-Users should not do like this. By convention, iter_info_len==0 means no
-iter_info.
+> 	if (mtu <=3D fragheaderlen ||
+> 	    ((mtu - fragheaderlen) & ~7) + fragheaderlen <=3D sizeof(struct fr=
+ag_hdr))
+> 		goto emsgsize;
+> =
 
-> 
-> bpf_program__attach_iter() copies opts->link_info into
-> link_create_opts.iter_info and opts->link_info_len into iter_info_len
-> without checking that they agree, and nothing in bpf.h or libbpf.h says
-> log_opts is only used when iter_info_len == 0, or that iter_info needs
-> iter_info_len.
-> 
-> Before this patch the pointer went to the kernel, and bpf_iter_link_attach()
-> rejected the mismatch cleanly:
-> 
->     if (bpfptr_is_null(ulinfo) ^ !linfo_len)
->         return -EINVAL;
-> 
-> With this patch, __sys_bpf_fd() runs OPTS_VALID(log_opts, bpf_log_opts) on
-> the 16-byte union bpf_iter_link_info.  The first 8 bytes of that union
-> (map.map_fd, or task.tid/pid, or cgroup.order/cgroup_fd) become
-> log_opts->sz:
-> 
-> - If map_fd or tid is in the range 8..27, sz passes validation, and size and
->   level are read from bytes 16..24, which lie past the end of the 16-byte
->   object.
-> 
-> - If sz is 28 to 31, OPTS_HAS(log_opts, true_size) is true, so
->   OPTS_SET(log_opts, true_size, ...) writes 4 bytes at offset 24, which is 8
->   bytes past the end of the caller's object.  Can this corrupt the caller's
->   stack or heap?
-> 
-> - If sz is larger (a typical tid, or a cgroup fd shifted into the high 32
->   bits), libbpf_is_mem_zeroed() scans caller memory from offset 28 up to sz.
->   It usually stops with a "bpf_log_opts has non-zero extra bytes" warning,
->   but it reads out of bounds first.
-> 
-> In addition, attr.link_create.iter_info is now NULL with iter_info_len of 0,
-> which the kernel accepts.  If validation does pass, could a task iterator
-> attach to all tasks instead of the requested tid, and a map iterator fail
-> with -EBADF instead of -EINVAL?
-> 
-> The commit message says log_opts support for iter links is future work.
-> Would it be better to treat the slot as iter_info whenever
-> attach_type == BPF_TRACE_ITER, and read log_opts only for other attach
-> types, instead of keying only on iter_info_len?  That would keep the old
-> behaviour for iter links exactly.
+> (x & ~7) is unsigned and >=3D 0, and fragheaderlen is at least
+> sizeof(struct ipv6hdr) =3D 40 > sizeof(struct frag_hdr) =3D 8, so the
+> second condition can never be true.  Commit 5e34af4142ff ("net: ipv6:
+> fix skb_over_panic in __ip6_append_data") tightened the first half
+> (mtu =3D=3D fragheaderlen) but left the dead second half in place.
+> =
 
-Not exactly. iter_info and iter_info_len must be set at the same time
-for iter links. If iter_info_len is 0, iter_info must be NULL or zeroed
-memory. Users must not misuse them by iter_info_len==0 but iter_info is
-not zeroed memory.
+> For mtu - fragheaderlen in [1,7], (x & ~7) =3D=3D 0, so
+> =
 
-Thanks,
-Leon
+> 	maxfraglen =3D ((mtu - fragheaderlen) & ~7) + fragheaderlen - 8
+> =
+
+> underflows below fragheaderlen.  Every later bound computed as
+> maxfraglen - fragheaderlen then wraps to 0xfffffff8, in particular the
+> datalen clamp inside the fragment loop, which never fires and lets
+> fraglen =3D datalen + fragheaderlen escape the MTU constraint.
+> =
+
+> With MSG_MORE on an egress device without NETIF_F_SG, alloclen =3D mtu
+> while skb_put() is called with the unclamped fraglen, so a single
+> sendmsg() on a raw IPv6 socket with a 1240-byte HOPOPTS cmsg and
+> IPV6_MTU =3D fragheaderlen + 1 triggers:
+> =
+
+>   skbuff: skb_over_panic: len:61280 put:61280 ...
+> [   37.607856] kernel BUG at net/core/skbuff.c:214!
+> [   37.607865] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+> ...
+> [   37.616606] Call trace:
+> [   37.616606]  skb_panic+0x5c/0x60 (P)
+> [   37.616778]  skb_put+0x9c/0xa8
+> [   37.616952]  __ip6_append_data+0xf80/0x1948
+> [   37.617172]  ip6_append_data+0x94/0x2a8
+> [   37.617363]  rawv6_sendmsg+0x588/0x988
+> [   37.617716]  inet_sendmsg+0x4c/0xa8
+> [   37.617891]  ____sys_sendmsg+0x268/0x308
+> [   37.618105]  ___sys_sendmsg+0xb4/0x140
+> [   37.618299]  __sys_sendmsg+0xa8/0x140
+> =
+
+> Replace the dead expression with a direct check of the payload space
+> available in a fragment, which rejects mtu - fragheaderlen in [1,8].
+> =
+
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: bo cao <treebacker@foxmail.com>
+
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+
+> ---
+>  net/ipv6/ip6_output.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> =
+
+> diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+> index 25fe0ba98b1a..7d4d4d45e207 100644
+> --- a/net/ipv6/ip6_output.c
+> +++ b/net/ipv6/ip6_output.c
+> @@ -1500,7 +1500,7 @@ static int __ip6_append_data(struct sock *sk,
+>  		     rt->rt6i_nfheader_len;
+>  =
+
+>  	if (mtu <=3D fragheaderlen ||
+> -	    ((mtu - fragheaderlen) & ~7) + fragheaderlen <=3D sizeof(struct f=
+rag_hdr))
+> +	    mtu - fragheaderlen <=3D sizeof(struct frag_hdr))
+>  		goto emsgsize;
+
+Thanks for the patch. Not critical, but could even consider a single chec=
+k:
+
+    if (mtu <=3D fragheaderlen + sizeof(struct frag_hdr))
+
+Checkers may complain that the right hand side could overflow, but in
+practice fragheaderlen is bounded.
+
+>  =
+
+>  	maxfraglen =3D ((mtu - fragheaderlen) & ~7) + fragheaderlen -
+> -- =
+
 
