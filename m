@@ -1,102 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793023810;
-	b=aN2g8NoiLX/5jYoSzejY/+bAqYJ5+r80u4hr6pg3vk7san6XTSYk5+Wgm86Bfg6Gxw1b
-	 CXHAvPITLbXTZSKeTKflup6jaaFusmgb95q26BiVtw2eS4pj5IjuVddC0HPb2J4fBdDS+
-	 NlLVMrSDIyGhfU45EwHxrETtWZVmiWi4w0NeQR5PP/DnqmslRZdSnnI63/c2HqkC41qar
-	 42Z2A/hGZ5Krl0wFpdqJEBsM8+u5Vjr31LAkql4GcbEs7kp7/auXnqyIM3/GMHrqp4JUc
-	 PhoNT0Y6PLJfYm7LxvV/0ROEIYcj89Cy7470CLV5J+4TACB0dwamofOYqWcN6VG32Vg==
+	t=1793023873;
+	b=f+ktnaoWbc7dYWtpylmniemCi2EDNUcBXPX20CHNzlT9PTHw7Q3jO6IqjHoZdF7Z/7jp
+	 TUpRLaTujpztiALKVttYDpacHkcQcuDPgI1Dsa2E65DUKNiZxZ/8nTKtq4OVew7XpOUFT
+	 3XlKpGpL3JztA3d8p47NcyTOyw7LN8V5Am5x+D5HSzmH7IESwbb5y7ZjAhZNlNcBSiVRy
+	 LaaG8hUGmFG+eGPBHrrMmQ1HgEdGJDmdguY77QHslYfHeYJyMhLkjMqGuAhD2Cac5MF5n
+	 ecyupvn8I9NLDKW19aKdbTMo6MVomeUsA9pCZz7n4v6N5Y/2bC5bhnmkZTqGtEmFyYg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793023810;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-Spam-Flag:X-Spam-Level:
-	 X-Spamd-Result:X-Spam-Score;
-	bh=WM4vAEGlhlHGhMEi1px3qUFAkL1THxHMrZ+7SD9VpUI=;
-	b=4/lgWYn8S8KMLx3Rtc8vVQnTbArlSKEO24UwE0Y9vQK3vmMByWzmmAN7h0W3jsEKzp75
-	 vMEQhu6QawJA87Whdixy/9Z9cgaMjQAgrLH2C/cdUPZE92XkUG04KizwXXzg4LbWf5pTk
-	 92t5kcESDvTfByY+aqg98Y4G5GhQBc+rfhVQH12REyxuMmwv6x75E59Lrjmpa20NwU5OE
-	 Obf9yYmc2diVD0Ix2qepVkVV8/+A6D/g0IH+WbnWdohiyRG18H2zkb/+KC97/vJYDLiTb
-	 zlsJ0h9PvzVEQl9BchuW2zgOJkyfC1OQqOfDbl+WHu2wPout59uwR1uKZy5mUstDPBw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793023873;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=BpPlCyW8MdukDPLDPoCBq82lXRwMXzHMiBUUHDnO06E=;
+	b=1aKJSNooIcccQp9hT1607cuXKq5HlOCfv7ZJkvxhxMFNsn5MN3AAMiI6Yay/yZF7ePAK
+	 5qqEMXDXLH+vfeTEFbZncRA47lZJFQazcrD0NLbuFbcaLZpHS6SDfXUHHs3DKJzmQ1bZ3
+	 vTYFddwe4rI0aSE02f3uMjK/1U3a1Uk2ITIzJutBeHuF00E+gTvkOWknaS6vcD4P2aJmi
+	 8uS0lIVPPOwPzUlOgQsJKIPnu2HLzB4ZP6Oi0Vb82rll6wy09v6JT1SETwHGLff6bdMLl
+	 QDVFRnorXD8qOIjVwQgNJ2S83yS0v82unATVAtPELQqXEyJnGs9niXwFJQvDmZynBig==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=suse.de;
-	spf=pass smtp.mailfrom=suse.de;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=M8PpZdww;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=XK0VRyT1;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=M8PpZdww;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=XK0VRyT1;
-	arc=none smtp.remote-ip=195.135.223.130
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j2qzC504;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 116BC606A322;
-	Mon, 26 Oct 2026 14:10:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 116BC606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048CA606A336;
+	Mon, 26 Oct 2026 14:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=M8PpZdww;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=XK0VRyT1;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=M8PpZdww;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=XK0VRyT1
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 28E90222D1;
-	Mon, 26 Oct 2026 14:10:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793023804; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WM4vAEGlhlHGhMEi1px3qUFAkL1THxHMrZ+7SD9VpUI=;
-	b=M8PpZdwwPBi8GdZSTVAJs/1VKegcckiCwUXuUa8TdZBzmEDOY2Nc4gUKuHgS2a1WX9vRLy
-	xWTEZZOrnWlVtn7BBnLHSuDlpxjjj351zPOVCdXSL/lSGgPX6rY4sXcrG2QCmrHlcGc/N1
-	DOVoyqxiTB4PhLnGUN41V1R1n57ipb0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793023804;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WM4vAEGlhlHGhMEi1px3qUFAkL1THxHMrZ+7SD9VpUI=;
-	b=XK0VRyT1SszO2SFQbm8U5dYoFPu4oufO9Kb3gMYZSAKAvnrDx8mrfFDd5pNQwVdvlL/VzO
-	QplSGZqaxYJUZNBg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793023804; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WM4vAEGlhlHGhMEi1px3qUFAkL1THxHMrZ+7SD9VpUI=;
-	b=M8PpZdwwPBi8GdZSTVAJs/1VKegcckiCwUXuUa8TdZBzmEDOY2Nc4gUKuHgS2a1WX9vRLy
-	xWTEZZOrnWlVtn7BBnLHSuDlpxjjj351zPOVCdXSL/lSGgPX6rY4sXcrG2QCmrHlcGc/N1
-	DOVoyqxiTB4PhLnGUN41V1R1n57ipb0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793023804;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WM4vAEGlhlHGhMEi1px3qUFAkL1THxHMrZ+7SD9VpUI=;
-	b=XK0VRyT1SszO2SFQbm8U5dYoFPu4oufO9Kb3gMYZSAKAvnrDx8mrfFDd5pNQwVdvlL/VzO
-	QplSGZqaxYJUZNBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8DD1013319;
-	Mon, 26 Oct 2026 14:10:03 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id jYdOFztf32oaJAAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Mon, 26 Oct 2026 14:10:03 +0000
-Message-ID: <3141c47e-6fa1-4012-a756-db565f7d1c03@suse.de>
-Date: Mon, 26 Oct 2026 15:08:46 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j2qzC504
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 152511F031E4;
+	Mon, 26 Oct 2026 14:11:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793023872;
+	bh=BpPlCyW8MdukDPLDPoCBq82lXRwMXzHMiBUUHDnO06E=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=j2qzC504KeoyuAp8rjboPSm/y/7l8ynmvGfsmXS5S39FeXCV8NQ2evyzWdMS5H2Mn
+	 Meo63FrQKk7CnNjncoJwNsQrce6wP2zvYS+zEhYyUO2yIsgZaXw7Ukmv2m0P1l/YMp
+	 RSismZDgdpgIBT9XRIsp13c8VOw+s4S4JUwAOJ08Nf+QXcj4VnfgVnjmX2sW6AssCJ
+	 pw9LIHlgTlSwyPGhArunpzCOb47DnEbc6XfndgsFRychSu+9tTpvF4N/pbD/Fruzki
+	 dZeN6FRFEOOAmQ4ObDYD/rZiCt9ar+7aS4Y7Jp8ECXrC4of2MbtlPH1NXExN26aXYd
+	 kpOFmqwbXcGPQ==
+Subject: Re: [PATCH net] sfc: fix use-after-free of filter_work in
+ efx_realloc_channels()
+From: netdev-bot+sashiko@kernel.org
+To: congei42@163.com
+Cc: netdev@vger.kernel.org, ecree.xilinx@gmail.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ kees@kernel.org, linux-net-drivers@amd.com, linux-kernel@vger.kernel.org
+Date: Mon, 26 Oct 2026 14:11:11 +0000
+Message-ID: <179302387159.3134.8640588618973558922@kernel.org>
+In-Reply-To: <20261022133927.3860186-1-congei42@163.com>
+References: <20261022133927.3860186-1-congei42@163.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,85 +63,116 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] netfilter: nf_conntrack_sip: fix out-of-bounds read in
- ct_sip_parse_transport()
-To: Duc Anh Luu <luuducanh05051995@gmail.com>, pablo@netfilter.org,
- fw@strlen.de
-Cc: netfilter-devel@vger.kernel.org, phil@nwl.cc, coreteam@netfilter.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261022172248.554687-1-luuducanh05051995@gmail.com>
-Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <20261022172248.554687-1-luuducanh05051995@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Spamd-Result: default: False [-13.29 / 50.00];
-	SUSE_INTERNAL_BYPASS(-9.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:helo];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,netfilter.org,strlen.de];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -13.29
 
-On 10/22/26 7:22 PM, Duc Anh Luu wrote:
-> ct_sip_parse_transport() compares the "transport=" parameter value against
-> "TCP" and "UDP" with a fixed length of 3, without first checking that the
-> parsed value is that long:
-> 
-> 	if (ct_sip_parse_param(ct, dptr, dataoff, datalen, "transport=",
-> 			       &matchoff, &matchlen)) {
-> 		if (!strncasecmp(dptr + matchoff, "TCP", strlen("TCP")))
-> 		...
-> 
-> ct_sip_parse_param() sets the value end to the surrounding limit when no
-> ';' delimiter follows, and that limit can be the end of the SIP message
-> (dptr + datalen) when no ',' is present either. A Contact/Via parameter
-> such as "transport=tc" placed at the very end of the payload therefore
-> yields matchlen < 3 with matchoff + matchlen == datalen, and the
-> strncasecmp() reads up to two bytes past the end of the message buffer.
-> 
-> The value of the over-read bytes can also flip the detected transport,
-> so this is not purely a read: a crafted short value can make the helper
-> classify the transport using out-of-bounds data.
-> 
-> Both call sites (process_register_request() and
-> process_register_response()) are reached from attacker-supplied SIP
-> traffic when the nf_conntrack_sip helper is active.
-> 
-> Bound each comparison by matchlen. A value shorter than three characters
-> can never equal "TCP"/"UDP", so this only rejects already-malformed input
-> and leaves valid transports (TCP, UDP, TLS, SCTP, ...) unchanged.
-> 
-> Reachability and behavioural equivalence were verified with a userspace
-> ASan harness built from the verbatim parser functions: the over-read is
-> confirmed as a read past dptr + datalen, and the fix removes it while
-> producing identical results for all well-formed transport values.
-> 
-> Fixes: f5b321bd37fb ("netfilter: nf_conntrack_sip: add TCP support")
-> Signed-off-by: Duc Anh Luu <luuducanh05051995@gmail.com>
-Hi, this is a dup of:
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-https://lore.kernel.org/netfilter-devel/179286139765.93379.986858959213810476@gmail.com/
+Critical: 0 · High: 1 · Medium: 0 · Low: 1
 
-Since the v1 was sent earlier, let's stick to that patch.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
+- [High] sfc: missing flush of efx_filter_rfs_work() in
+  efx_realloc_channels()
+- [Low] The commit fixes a use-after-free in efx_realloc_channels() and
+  efx_siena_realloc_channels() that a CAP_NET_ADMIN user can trigger…
+
+--
+
+sfc: fix use-after-free of filter_work in efx_realloc_channels()
+
+The patch cancels each old channel's aRFS filter_work before
+efx_realloc_channels() frees the channel. Without this, an ethtool -G ring
+resize can leave a self re-arming delayed work pending inside a freed
+efx_channel. The same fix is applied to efx_siena_realloc_channels() in the
+Siena driver.
+
+> Signed-off-by: Sicong Huang <congei42@163.com>
+
+[Severity: Low]
+Should this patch carry Fixes: tags? The only trailer is Signed-off-by. A
+CAP_NET_ADMIN user can trigger this use-after-free with ethtool -G. Without a
+Fixes: tag, stable and backport tooling cannot tell which trees need the fix.
+
+The work stays pending because of the unconditional re-arm at the end of
+efx_filter_rfs_expire() in drivers/net/ethernet/sfc/efx_channels.c:
+
+    schedule_delayed_work(dwork, 30 * HZ);
+
+That re-arm came in with commit 6fbc05e59163 ("sfc: do ARFS expiry work
+occasionally even without NAPI poll"). The resize path never cancels that
+work.
+
+The Siena copy in drivers/net/ethernet/sfc/siena/efx_channels.c came in with
+commit 6e173d3b4af9 ("sfc: Copy shared files needed for Siena (part 1)").
+
+Would something like this be appropriate?
+
+Fixes: 6fbc05e59163 ("sfc: do ARFS expiry work occasionally even without NAPI poll")
+Fixes: 6e173d3b4af9 ("sfc: Copy shared files needed for Siena (part 1)")
+
+Another option is to split the patch per driver, so that each half has its
+own Fixes: tag.
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/sfc/efx_channels.c b/drivers/net/ethernet/sfc/efx_channels.c
+> --- a/drivers/net/ethernet/sfc/efx_channels.c
+> +++ b/drivers/net/ethernet/sfc/efx_channels.c
+> @@ -896,6 +896,9 @@ int efx_realloc_channels(struct efx_nic *efx, u32 rxq_entries, u32 txq_entries)
+>  	for (i = 0; i < efx->n_channels; i++) {
+>  		channel = other_channel[i];
+>  		if (channel && channel->type->copy) {
+> +#ifdef CONFIG_RFS_ACCEL
+> +			cancel_delayed_work_sync(&channel->filter_work);
+> +#endif
+>  			efx_fini_napi_channel(channel);
+>  			efx_remove_channel(channel);
+>  			kfree(channel);
+
+[Severity: High]
+Does this close the whole window, though? filter_work is not the only
+deferred work that holds a pointer to an efx_channel.
+
+When aRFS steers a flow, efx_filter_rfs() claims a slot in
+efx->rps_slot[] and schedules req->work. That work runs
+efx_filter_rfs_work() in drivers/net/ethernet/sfc/rx_common.c, which
+looks up the channel once at entry:
+
+    struct efx_channel *channel = efx_get_channel(efx, req->rxq_index);
+
+It then calls efx->type->filter_insert(). That call can sleep on
+efx->filter_sem and the filter table locks, and can wait for MCDI.
+After filter_insert() returns, the work goes on using the cached
+pointer. It reads channel->rps_flow_id and updates
+channel->rfs_filter_count and channel->n_rfs_succeeded or
+channel->n_rfs_failed. It may also call
+__efx_filter_rfs_expire(channel, ...).
+
+Suppose a request is queued just before efx_stop_all() and is still
+inside filter_insert() when efx_realloc_channels() swaps
+efx->channel[] and kfree()s the old channel. Those accesses then hit
+freed slab memory.
+
+There is a second effect. The counter update lands in the old channel
+rather than the copy, so the replacement channel's rfs_filter_count no
+longer matches what was installed in the hardware table.
+
+Nothing on the resize path waits for efx->rps_slot[].work. That covers
+efx_stop_all(), efx_soft_disable_interrupts() and the teardown loop,
+so cancelling filter_work alone does not stop this. Siena has the same
+efx_filter_rfs_work() in drivers/net/ethernet/sfc/siena/rx_common.c
+and the same gap in efx_siena_realloc_channels().
+
+This patch already fixes the old channel being freed under a work
+item. Could it also wait for in-flight aRFS insertion work before the
+old channels are freed? One option is to flush each
+efx->rps_slot[i].work after NAPI is stopped and before the swap. Or is
+there something that already serialises efx_filter_rfs_work() against
+the resize that I am missing?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261022133927.3860186-1-congei42%40163.com
