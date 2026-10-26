@@ -1,104 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.168.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793050286;
-	b=b6VU+rnnfGguFqHDYimHD2l67bqOm3UagckfpdAzTP/u0UURqdXGcqbiUmfomkG5wLZZ
-	 /9HmndfT/Kvwtt3QBg6xKBBhUgmsCQp6kLlkPVuMQ9cUIp/RR4oHHZ1U/G18aIeRHQqcz
-	 kALkLVxlw4qmTgOXRdiP1JHAZZx2CBj5G9MCJcfGVRQ9+qrclNJMKaQVSw1vRAOD4nLCn
-	 dTyd1LqSvOCu3+ANF5Jewyp3dpG2YYn5W2CvaHyPcJOIL3gTxyY5IpPlmYK3ylVQXoc77
-	 q9V+UXSKMJoYLVCj/sRLGSpJR/cU4/v21EiLmUbtBah/unMo3/ZnbpO4LJi9OOxDRWA==
+	t=1793050489;
+	b=YDvfqG43Dy2U3n9XVpJHEPOE8WwzQaN4o9JBrU2UNk/LVCqXCSlOzcJDCWdhzZHdhaKw
+	 L5rJXfL/UUUc8VOJoRO0HO4n7POknXYjVJdO6aWiYTJtc6jmwsRQ2ODcrbPWGh7DJeDvC
+	 KWwkwv9f3Mpf8RpnqItpeLQ33MGPlkp94PM5TKHvtm59tfPMMHbv0vmlZFaYD7rm92FsM
+	 b//6jUFFU5T+6yFqLmsxF1v3/z6fbMMwCsumfzA4sIwWeGsSEbqvBDiYAaJPrP6nee/Vz
+	 hJyEXL8BVnRGGdR5LR6H5h5zotW4Y0N0c1sk/amqHAz3AGLg6Ohg/QMizT1O0b5mJ+Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793050286;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=RVINuJFgpqquqvuoDeQK01Sp1utKheakFHyecHU336U=;
-	b=L2tP10+mheDqEcdusReCUIc5HZF9V0TA7QhEkECq5MzMJhqvVbFBUbQVOIGiFTE9xWof
-	 tiDzB3rzkuO5H3yaMbs6Bl6isgXC+rJTyp1GvccVSKyeJHuIjcGjbGotu+jZFT7bYgA2c
-	 w2Xv2k1Vo9kIU6ZWE7226c+EvhgNirBIAjPvZlkbOu24UJl7dBcz2yQ12vI3yneKZQH+w
-	 jzZS0fN7BIXRS5M3gMuPls9ZwgXITwJ1ZK3DJ78EjrEBq2tQ+nWljPPwoZvvQv7q3VZ+Y
-	 ZmX+RDX0EA17a5OuavIIGfwXq+rQnz5ioV5vviqpKhWSp/Og3QiWBuka3FAPZ1bDjzw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793050489;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Authority-Analysis:X-Proofpoint-GUID:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=tAd8MORnWjoXl94lwOMxgtVTViC1oD0+1RnyhP9e8qA=;
+	b=XfvtwhBQKuD2IHfrL8BE4ybvEkgFs3BLUM8W+/3nk99vKMdHdSWYdmr8UNt8lY6KxpNa
+	 hlyt+sydEDvX9fqT4Csn3QWavfVBYY3uQeO6AMqvAmGvAXTfFv4SiD0Xa3CaCCo7xyiUV
+	 TPayKvNMQONCHUIfzwG26/ju/FpNzfBHVtEW06kSkFiuz2tm+IcIrcpfCA0AMyqFUu1RY
+	 y45APoJ4gJ+HWI/cJ0byg5r054sxxj2xAu1o1yVtGQeesdbzvN4YtQHuAmkjL4UqgXYOp
+	 mxhacaDY9SoPAXISUhZ9WQbXE6WXSlxZKqoo7nwDXgPMYLTIw1NekyMg40cZoYPAc4g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=halFW4xN;
-	arc=none smtp.remote-ip=209.85.221.176
-Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=oss.qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=SWj1g++T;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=Jkn6mb7P;
+	arc=none smtp.remote-ip=205.220.168.131
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE82A606A31A
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 21:31:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DE82A606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C750C606A31F
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 21:34:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C750C606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=halFW4xN
-Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-5ec3561b07dso278183e0c.1
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 14:31:25 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=SWj1g++T;
+	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=Jkn6mb7P
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69QIoFQ3986053
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 21:34:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	tAd8MORnWjoXl94lwOMxgtVTViC1oD0+1RnyhP9e8qA=; b=SWj1g++TF+yDUQr8
+	ywP/9IqD0m7ocatSpMQy8Q8jDT3oOj4l1AKnxfYt7NwDHVSn7oZo922VNeVKwesH
+	SCmUvdRkVSjj5lrCE1gqiQ2SkzGRynJOJpV9CID3rXqh8xs6btFZmteeIYKeopa7
+	9klJ900DpTVcKDxhNly9YlPjwrvCMjExoMwOJjr2q90Bj3DEP47t1k27rzS0aYLR
+	BGUzBjh7atVnRzw6c04Budrs2hCTw7GbfskyWYrhrl3pkIfpn4ddnwlfrPfMq9qG
+	vsa36kdcj5yhOhBRDY6Z5T2l3WXxX3ylySjHtiZvmAH5vSk/T4qCGEKeFnDC/wER
+	7hBolQ==
+Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hj53q2fnr-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 21:34:47 +0000 (GMT)
+Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-35cbea41088so5542345eec.1
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 14:34:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793050285; x=1793655085; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=RVINuJFgpqquqvuoDeQK01Sp1utKheakFHyecHU336U=;
-        b=halFW4xNwkJUAulgRnYvuTGtpa1S10Z1UwCJdK4joIZ4Z4MYtd/zesddb0qDzHHiS5
-         eOOGrKU4oNTX1nUEKTl2hkQRcY8kvcaoq56Ky0m3CbtkeBZ3iiFmkOAHSiBv7twR2E5l
-         Ciqaya7v4VlXiRX4yUJ+TpzvxV/4VaFQYakq+NFBqR1vZLyzA+eYwR5dhcy9rfbUHHBJ
-         xeEVr7DNDBEu4i7wGI35LwoLB3EIU7CCypQIxCjLSXBX4DIMrKVNbQjx4Bm32N54IYxS
-         86VMk6q5wyoVvCPCY1vpdWQHOvB112FB8z9Kq/ZinqiC1ETCQtn/SuW37yhVxYBT1av1
-         Sjkw==
+        d=oss.qualcomm.com; s=google; t=1793050487; x=1793655287; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=tAd8MORnWjoXl94lwOMxgtVTViC1oD0+1RnyhP9e8qA=;
+        b=Jkn6mb7PLfiXNftKzZLoZrh8nZjG/G6KYD8SBkYZB4Lyhnz6J5jLVWnE/OIdqFEgii
+         l57H3SLBVyezx15LQRSJAvsecejHHnbu62wHXwc/0g7WBJcic0HcFn4iOCy97L6DMV7w
+         GphViXWThKsXNU4nglk0BMT22kZLH9doo6dt1s6eGao2MdgmcXrN/TbzWD47TEOhYpOP
+         F9xdXGcltXMtxN7VHu2FDBIorM0S184a0LBMDlIl5ZI+yjIidOk0yrHrb3ct0k2do4GS
+         sbz24SnVChtpzJjcxLZI8v+kmSiaPCGfVXP83RdkgusSWAKvl2E8jTarSs7int50nxMy
+         hwOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793050285; x=1793655085;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RVINuJFgpqquqvuoDeQK01Sp1utKheakFHyecHU336U=;
-        b=j/2J84a5ZaNJs7kNqqvMwTjYmj7X4FLvBExLUbFPFTsoup9WIWDEJJcOg3pfYDPQUM
-         8NZ19EAIbC2N/6HmcYg13tmzGkIDGD+ffwtTKHyjCfOeLIL2DL6H4WferFkSJi7QvvQ4
-         Tj+sheTmzSlwPlLpu5c0L6hFmVYmpleNhsz6sqhBAzlzq/2ai1Xl33vnG1J0M9QRuQ8B
-         TmXgCFjQ25dzrHF9BJ1/xLUwmiyll++r4JyKuEW6RNo9oIteJTUsLrm+CNGxTZo/CBEG
-         AMfWmO15Tr5R6vJoRNNLobsAxUlkbPnx9pfTxr2+YnJZ9tx/aYYpg2rvprBZQ5/eQ96J
-         bb9g==
-X-Forwarded-Encrypted: i=1; AKwUvBxCoqxyepLMYkQw1MuRLWYhFprGQ6EESD1tmWCFvgofMXBDRXsVG1tgRjjTwWancAwDhtGrG6o=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKFIEUS6yMQdBPnq0iYGRmzT+EYxopLqQ42bf4/CYx06TKowpzE
-	q2XJtgh4/CsUuxKx8Ek8vXlnPDfyfcFxB6s5zGsiToBgEfGszevdm1ZC
-X-Gm-Gg: AYBFou1/2tyNl8uP1DcDH5OeEEEeAbZ9tT25fAbfl7+JPluGoTkHu0pE2gPKwz6YCWc
-	n57XLRTFeaiFQsvz+XvyjC4CTukdVgUHI+kem5BJq6we9iji7V8hbZym8Gm9CGlGydIHvF/5MlE
-	DId5GnpS8wQhoICdOmJInYAARG1oZW4VcqAVunFzLntuXM7kqd8PfDd8Ed4/9yq5rfJ4boEHMIV
-	JGM72RXxW9rwg3IImDuezCJALqUiSKKGkeW5ahi/k3TI9s1gAxhfGRKh10al8TzgOcKu1HSWnau
-	jRxADwKp4JOj0iX5mUTjTDz4mPpLEFV9T1HxYFW7p1X7ZQaH7jsn8bxm2yjuShE28jtcGXomUTk
-	mMmj9aHpWawL5wzlWwytqOUcI4P2ERrqjHCeJtPNB5KGvSZRmLOJE3llMtFuBsGkpFpuDzunhXu
-	/HobaysDsbpWHZRks8jMo0putjlgeH72ETATdcjTEmkNZU8obJiIptKKlvhOTTqeVfSZVKgopBM
-	iCouAX+JaRQpPgDL2RQ2UHi4UjtbZcoxiH+C18fkERqcyPu90mkFkel81jZ1w8LQIjGcttgRuKS
-	oUdaWCU21ZNk1ajIGP7w9w/Iwyczdff/FTCSkzz0ufNpRFmvnIPzPqKTd+hohDvE7yAWAcFtTkI
-	q8dB5F6avmxLRfWPQpZo=
-X-Received: by 2002:a05:6122:1da3:b0:5e9:6d96:a7cc with SMTP id 71dfb90a1353d-5ec3e993029mr333982e0c.9.1793050284780;
-        Mon, 26 Oct 2026 14:31:24 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec38b1ada8sm2913572e0c.7.2026.10.26.14.31.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 14:31:24 -0700 (PDT)
-Date: Mon, 26 Oct 2026 17:31:23 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Eva Kurchatova <eva.kurchatova@virtuozzo.com>, 
- "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- Shuah Khan <shuah@kernel.org>
-Cc: linux-kernel@vger.kernel.org, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Eva Kurchatova <eva.kurchatova@virtuozzo.com>, 
- netdev@vger.kernel.org, 
- linux-kselftest@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.304eb6d1b1424@gmail.com>
-In-Reply-To: <20261026122440.603302-1-eva.kurchatova@virtuozzo.com>
-References: <20261026122440.603302-1-eva.kurchatova@virtuozzo.com>
-Subject: Re: [PATCH] selftests: net: veth: check UDP GRO forwarding on
- forwarded traffic
+        d=1e100.net; s=20260707; t=1793050487; x=1793655287;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=tAd8MORnWjoXl94lwOMxgtVTViC1oD0+1RnyhP9e8qA=;
+        b=GHsL99lVfT3wPfZLACY0003r7Vwmh5QrQsP0zuqTeiiXv4KUT9iBsroK2OnKTnLlKK
+         ogTe7CCocg9SlpsKlJXc5f5Xne7udVl00qx4JA8a1dwMevJIwxlQ8kpJ3BhBKscHZBp+
+         wm/gZvJNtXCKcmI5C8PZVbodsmyVcHOeOS3EUovxpXf9yBWapznRUoGuivJYjt2F2gJD
+         hr7mIF9bDdO9ailk+dPkR3bytyfBbno68peO5XGqwoaMSbP8FZ+wcU79OGId12JAPHnc
+         /DFluj4LoCLC29vgYji0vmyuvin5G7UYXdv00KD7LJQiwBHYFZXtYTx7zOfp8hgddZvA
+         ITIg==
+X-Forwarded-Encrypted: i=1; AKwUvBwNzCkcRarcDHTthxjjZDbbDBkyux4jupo609TbUrpZjV7OrTiraOWfhB+w9iWk4lp8tfbSaDI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKAb2fv69CA4pQ6TwqEeEOSTD1lM1DXolcFmwtmGehlzYh4UbF0
+	JaU7E8aB7NuArBcHYgDNY7GRZ+6D7QCoKoUlrTpVTeQV34XO0tr+gqZid/BBSIQixAcZI3JSYF7
+	jwdK4/fm17YlFdA/kcydoWVRHLc4fG9biqWdL8UBHikPz85Pm/2EEBGG8c4c=
+X-Gm-Gg: AYBFou0jqNJ4oqgRFX5kyMyt4s0NcmIoGkfssYiNHXCvnmrTXpWwTrcY9oAlUTzkJgg
+	Cl9eQDRgxSob8af2Vjs9dKu9WE1+6kye+JHNpVPHNbhc2T7hul4y+2ygIiKmde6NGtoP+EHSCwB
+	HENrXdZR+ob0joeIiV438LqaDAgxLurKPAhmCSrCYYfXjezyz3Q0m/RwB4sNOGZnOGm1PdaLwd0
+	CXFscWPUYxYpICv0NJaZX96prwf4/yPrzDvI6dKHt3IMEyxpU5ku/70v3otckK68hLpoByZLirF
+	RPx4/nvcfKgtTNGS9qPp/dtFcfJTFWDqOSWZ5HinIujeQAFmJpHV7OGBUQjL1w3AVfMUn4P68pG
+	aL9kOSKRwX9RWQD+moHFPCvFkG7vV84VBtYNHRWToFOCuS8zO15PhfxuS4w==
+X-Received: by 2002:a05:693c:42d0:b0:361:167c:2364 with SMTP id 5a478bee46e88-369e845a30emr11787575eec.8.1793050487026;
+        Mon, 26 Oct 2026 14:34:47 -0700 (PDT)
+X-Received: by 2002:a05:693c:42d0:b0:361:167c:2364 with SMTP id 5a478bee46e88-369e845a30emr11787520eec.8.1793050486424;
+        Mon, 26 Oct 2026 14:34:46 -0700 (PDT)
+Received: from [192.168.1.20] (33.sub-75-218-193.myvzw.com. [75.218.193.33])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-369e8d93663sm32084643eec.13.2026.10.26.14.34.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 Oct 2026 14:34:45 -0700 (PDT)
+Message-ID: <5f6a27c0-9e84-4314-b221-6bb9f82cb1ef@oss.qualcomm.com>
+Date: Mon, 26 Oct 2026 14:34:43 -0700
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -108,114 +113,89 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/4] wifi: ath11k: Connect to the QMI server belonging
+ to the device owned by this driver
+To: manivannan.sadhasivam@oss.qualcomm.com,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        ath11k@lists.infradead.org, ath12k@lists.infradead.org,
+        Bjorn Andersson <andersson@kernel.org>,
+        Chris Lew <christopher.lew@oss.qualcomm.com>,
+        Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>,
+        Raj Kumar Bhagat <raj.bhagat@oss.qualcomm.com>,
+        Juha-Matti Tilli <juha-matti.tilli@iki.fi>,
+        Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+References: <20261022-qrtr-multi-ep-v4-0-c6fdb75fcd3e@oss.qualcomm.com>
+ <20261022-qrtr-multi-ep-v4-3-c6fdb75fcd3e@oss.qualcomm.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20261022-qrtr-multi-ep-v4-3-c6fdb75fcd3e@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI2MDA4NiBTYWx0ZWRfX0BHBuYncU/G+
+ +egxjpQer6nAM3Zib4EBL2Kn+cbrNQ+V0LshKBF6oIYe4n1X8Leh3gRzytDc084fN568OpplhcT
+ 27F2fTguc8Vv+aqjYaXni90Z/lYKD+Y=
+X-Proofpoint-ORIG-GUID: hkjMvXbomb7Ih3E-LwP0QoqtnH4WeknQ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI2MDA4NiBTYWx0ZWRfX14giOw67TY2i
+ 6vsiTmBmuG8fA/H8rKQtr+noWkQanZ8snv0pOfYvE+t4njpp/Hk8aX0RK7eiA1OTP+8tkY7DhSt
+ w07/mym+/BEMo5Vca/zptiMXSTOLlTd3XXoaZr8m1OrrI9U7ZzvJlbbBsnj/1i8RBBc9INWMG+p
+ ctMQVXxTK+Mmk0zcnwGzqSrUih+vsge9LetW1n4GGwJQpaR+3LR8RgCiPsHl6C72vmd7SNxUZi0
+ WSQWJDVsC3pSX9DJ5RF7dW0W2asK3YFXZvv6ZLMyEiOMDiG5vrWbf6vpBH9JA5Mjk/Mv88iJrBc
+ JEAX1rSHJ8QQDdLTf4kFIqmx9OzEj/vO1b3xOta20q23yLdUdQRq6FiQ8j/ggmEwZrNiwPk8Fxn
+ HuMnWI74n3Ghtb2Rcsm+S0KvygKum6ogYh06/dig1dPbp4ETI9azHMyuqToEPiBXNF6/hGqKiWr
+ BZ42iqfl5OSd+k18srA==
+X-Authority-Analysis: v=2.4 cv=D93SufRj c=1 sm=1 tr=0 ts=6adfc777 cx=c_pps
+ a=PfFC4Oe2JQzmKTvty2cRDw==:117 a=AnolQpdaNwb4XK4FG+QP+g==:17
+ a=bQg6oyjaoxrshYPP:21 a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
+ a=EUspDBNiAAAA:8 a=kpOCkfKLFM9ZImtyOV0A:9 a=QEXdDO2ut3YA:10
+ a=6Ab_bkdmUrQuMsNx7PHu:22
+X-Proofpoint-GUID: hkjMvXbomb7Ih3E-LwP0QoqtnH4WeknQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-10-26_04,2026-10-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0
+ phishscore=0 suspectscore=0 malwarescore=0 priorityscore=1501 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610260086
 
-Eva Kurchatova wrote:
-> The rx-udp-gro-forwarding checks fail with "got 10 packets, expected 1"
-> on a host where something has a UDP tunnel socket, a vxlan say, and
-> pass on a host where nothing does. Since commit 36707061d6ba ("udp:
-> allow forwarding of plain (non-fraglisted) UDP GRO packets") the
-> feature aggregates only datagrams GRO finds no socket for, and GRO
-> looks the socket up only once a tunnel socket exists on the host; the
-> checks send to a socket in the receiving namespace, so they pass only
-> while nothing looks it up.
-> 
-> Let the destination forward the datagrams to a receiver in a namespace
-> behind it: no local socket is found there, tunnel or not, and the
-> checks count what the destination receives as before.
-> 
-> Fixes: 1c3cadbe0242 ("self-tests: add veth tests")
-> Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-> Link: https://lore.kernel.org/netdev/CAF=yD-LZSec9g_0bBgrcQvq2OO1BrxMSRHH=uU7eamCmWcTO_A@mail.gmail.com/
-> Signed-off-by: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
-> ---
->  tools/testing/selftests/net/veth.sh | 26 ++++++++++++++++++++++----
->  1 file changed, 22 insertions(+), 4 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/net/veth.sh b/tools/testing/selftests/net/veth.sh
-> index 8b867e0675a7..be7c6b9213a9 100755
-> --- a/tools/testing/selftests/net/veth.sh
-> +++ b/tools/testing/selftests/net/veth.sh
-> @@ -9,12 +9,17 @@ readonly DST=1
->  readonly DST_NAT=100
->  readonly NS_SRC=$BASE$SRC
->  readonly NS_DST=$BASE$DST
-> +# The receiver of the GRO checks, behind the destination
-> +readonly RCV=3
-> +readonly NS_RCV=$BASE$RCV
->  # shellcheck disable=SC2155 # prefer RO variable over return value from cmd
->  readonly YNL="$(dirname "$(readlink -f "$0")")/../../../net/ynl/pyynl/cli.py"
+On 10/22/2026 10:43 AM, Manivannan Sadhasivam via B4 Relay wrote:
+> diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
+> index 7dc07339b957..6d86e552038c 100644
+> --- a/drivers/net/wireless/ath/ath11k/qmi.c
+> +++ b/drivers/net/wireless/ath/ath11k/qmi.c
+> @@ -3170,8 +3170,18 @@ static int ath11k_qmi_ops_new_server(struct qmi_handle *qmi_hdl,
+>  	struct ath11k_qmi *qmi = container_of(qmi_hdl, struct ath11k_qmi, handle);
+>  	struct ath11k_base *ab = qmi->ab;
+>  	struct sockaddr_qrtr *sq = &qmi->sq;
+> +	unsigned int node_id;
+>  	int ret;
 >  
->  # "baremetal" network used for raw UDP traffic
->  readonly BM_NET_V4=192.168.1.
->  readonly BM_NET_V6=2001:db8::
-> +# Network between the destination and the receiver
-> +readonly RCV_NET_V4=192.168.2.
->  
->  readonly CPUS=`nproc`
->  ret=0
-> @@ -26,7 +31,7 @@ cleanup() {
->  	[ -n "${jobs}" ] && kill -1 ${jobs} 2>/dev/null
->  	rm -f $STATS
->  
-> -	for ns in $NS_SRC $NS_DST; do
-> +	for ns in $NS_SRC $NS_DST $NS_RCV; do
->  		ip netns del $ns 2>/dev/null
->  	done
->  }
-> @@ -48,6 +53,17 @@ create_ns() {
->  		ip -n $BASE$ns addr add dev veth$ns $BM_NET_V4$ns/24
->  		ip -n $BASE$ns addr add dev veth$ns $BM_NET_V6$ns/64 nodad
->  	done
+> +	/* Identical devices advertise the same QMI services, so connect only to
+
+nit: note that networking code no longer uses this block comment style, so it
+is preferred to have /* on a line by itself
+
+> +	 * the QMI server on this device's node. A node id of 0 means the
+> +	 * transport has not assigned a unique node id, so accept the server
+> +	 * unfiltered.
+> +	 */
+> +	node_id = ath11k_hif_get_qrtr_node_id(ab);
+> +	if (node_id && service->node != node_id)
+> +		return -EINVAL;
 > +
-> +	# Forwarded, the datagrams find no local socket, whatever tunnel the host has
-> +	ip netns add $NS_RCV
-> +	ip -n $NS_RCV link set dev lo up
-> +	ip link add name fwd$DST type veth peer name fwd$RCV
-> +	ip link set dev fwd$DST netns $NS_DST up
-> +	ip link set dev fwd$RCV netns $NS_RCV up
-> +	ip -n $NS_DST addr add dev fwd$DST $RCV_NET_V4$DST/24
-> +	ip -n $NS_RCV addr add dev fwd$RCV $RCV_NET_V4$RCV/24
-
-Similar to the cleanup code above, this can probably reuse the loop in
-create_ns?
-
-Also a bit confusing that NS_DST is no longer the dst, but keeps its name
-and now there is an additional NS_RCV.
-
-> +	ip netns exec $NS_DST sysctl -wq net.ipv4.ip_forward=1
-> +	ip -n $NS_RCV route add default via $RCV_NET_V4$DST
->  }
->  
->  __chk_flag() {
-> @@ -134,15 +150,17 @@ chk_gro() {
->  	local msg="$1"
->  	local expected=$2
->  
-> -	ip netns exec $BASE$SRC ping -qc 1 $BM_NET_V4$DST >/dev/null
-> +	# Taking veth$SRC down drops the route, so set it for every check
-
-What takes this down?
-
-> +	ip -n $NS_SRC route replace ${RCV_NET_V4}0/24 via $BM_NET_V4$DST
-> +	ip netns exec $BASE$SRC ping -qc 1 $RCV_NET_V4$RCV >/dev/null
->  	NSTAT_HISTORY=$STATS ip netns exec $NS_DST nstat -n
->  
->  	printf "%-60s" "$msg"
-> -	ip netns exec $BASE$DST ./udpgso_bench_rx -C 1000 -R 10 &
-> +	ip netns exec $NS_RCV ./udpgso_bench_rx -C 1000 -R 10 &
->  	local spid=$!
->  	sleep 0.1
->  
-> -	ip netns exec $NS_SRC ./udpgso_bench_tx -4 -s 13000 -S 1300 -M 1 -D $BM_NET_V4$DST
-> +	ip netns exec $NS_SRC ./udpgso_bench_tx -4 -s 13000 -S 1300 -M 1 -D $RCV_NET_V4$RCV
->  	local retc=$?
->  	wait $spid
->  	local rets=$?
-> -- 
-> 2.56.0
+>  	sq->sq_family = AF_QIPCRTR;
+>  	sq->sq_node = service->node;
+>  	sq->sq_port = service->port;
 > 
 
+Since the requested merge strategy is for netdev to take the entire series:
+Acked-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 
