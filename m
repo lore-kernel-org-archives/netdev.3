@@ -1,79 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792999966;
-	b=sswNGVLRs1nvcXklYmju9u0AsGVkSPVe/qTDUxb+et5CDS6FGDUUdLObbkWGlUH6sGDT
-	 tC61D9Bh2lQQT/Od/4EUiTuhkdk8zrPOd4ybZGu/BPmcQP/cZa+U7brHtrSfDV5liQymb
-	 45Qy136gohh55UaoQAso6ZmyygepRSDHLSZtVJCYPhFbC+c6omKeogyV9Zwdkf2G0RNMx
-	 mwi1+z/ujQ3It94+fEtLg83z0pVQ98ovi7vpEwWvzS63sJBqj80y+qLG/FhL4FOlvwOmG
-	 CPVL5N113Nc0sUQo0eQHeO/4Zt37tAkNRqVlBWJWwUjR+KdthcpU7fELZYPAnbWW+9Q==
+	t=1792999995;
+	b=c/wSZT4/p9a9eM3riF5JnOIEcS2WLtUfMWcMUnPFDzlhHIZjFQjoGakHYcG6S5lpQUDi
+	 6EmM2+/dgTB53EiD66KnKVEyKr9LPO6NcTpdJdqkO3z/2UNMLwqgFJ33ycF1wLaNkmJaI
+	 C0R7299kCXUNfwTggbBnlQ0YK9TSIR+Dt4U68NGkVnHLRxk7lJ97LWKpK3gSGQvu6MqHM
+	 1L4J5y5dz+e/Z3DfslrylUZjtKxjBF1xKLpKBMb37Dx4TCWT0OQ9G3Au826ECZlTiA5lp
+	 EuBhaEgUuhhdmUaPT2dh2v+bAFYNaQ0aZbPoGOeSLMarXXUOJl0kwwVGqPkdd0XXdcQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792999966;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:Date:From:To:CC:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=W+cxyww2TucNEepNfRrQ0ekDRXr+LHAHYoofn3JixiI=;
-	b=1STtIzrxeQrgm1uDUjfHWp/uAdjjbS4ERHUe2mx2ziAHPX6ybu+OS7NrhI05kVKFlRuJ
-	 d+sDe9XVJh8DjFmACVmMID59mvHvihaDL3wiqA1MC/USYeCfihCzbArUkkWZjkijOtrhE
-	 9had0OLTqg7OX8nxEpAjEF8cwnbSy2GqXlHTtm4dCSgfe5tBlTfwAglNWRqN5zEN4juu0
-	 4Keh5j1jN4MlbQspdUlPjFCdIKbk8NNIKPyq5kfggiFdLgx8Mu/thny+6+imJJrIwm0Dl
-	 5+Wqu9CDyHcz1jA8wT85FfrhiwU57gKJDPe7dboAsF4DatefFcF7OsQdfr4m2FIFCBQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792999995;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=7oPMs0d7czZDgpisnaM9AZCe31nOE82TuAm2YPxvoec=;
+	b=erCFC2hXWtm6COgyabSaOahaDuPE5XRlmuKxkWyKvJ5oxyEBvYPm6Nm1fG37D5cGAJRC
+	 ge9SSbyuPrqgC1gA1fX4adh54uJN9w3rFS3g77lNEXmWcyUU83J7nydcqrnUUSUzQoLbv
+	 Ys/pc8Dq9sX/DGzwjhyP/XUHHUJS6P0chV/RHE7AM0nZoImRZ/3A4mk4A1uh8eGUaZO+8
+	 bWX8KqtEKAalu2fOhmjnkLt5BCtdhnAg2x6FTQegUBRk6JEGgNFe5WwCpvTqFAUtDrDxn
+	 gdPfK8fzmUUFFTb2j95h3V1U3TL/x2oExSCy3gPhWyC4oEO9hZqqNbW9zNWSXyWi9ig==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=microchip.com;
-	spf=pass smtp.mailfrom=microchip.com;
-	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=puZ9RAZF;
-	arc=none smtp.remote-ip=68.232.153.233
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OpZjsW6u;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FC4606A31A;
-	Mon, 26 Oct 2026 07:32:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 31FC4606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271EA606A31B
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 07:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=puZ9RAZF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1792999966; x=1824535966;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=7xCx4d3ZGL9TKpbq2riWZWJdYVevoxdH+V0DwFIpJy0=;
-  b=puZ9RAZFKyGBVQtFhlj+WLHMB4Z6vBxAdASC3LmccygbwTw2wh5CtdZY
-   ntnPXeirPd4dah3tAM43XOcYUe4ftwl5Xyau8yUQFsXn6JggxhBdnB7TW
-   ScEaISnzEF91nnJyNdGtrrB/+SYMo+U+KJR0vKDKlSdnjtoWCkhD1dqA0
-   QACjsqmDoxmoJSQ9SBqCtuZNBuF00RW3kQdmPMTf0IcmI6NS9XJ0vmPnK
-   PijS/fF+xTcb8NuoBvUyKtWERI8QgJ2iBbf9wkt6KtsQeA6ngQ0+Ba3YN
-   fY26vALTFjOmvaMD5fO0CBIHTH7/HO702IpQnkTR697ROB4zH1g0990tq
-   Q==;
-X-CSE-ConnectionGUID: lx7BMXXCT0Kk/SReMKYRFA==
-X-CSE-MsgGUID: z6QjRkdEQLmY3DY7Pm5BNg==
-X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
-   d="scan'208";a="296974928"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 26 Oct 2026 00:32:39 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Mon, 26 Oct 2026 00:32:38 -0700
-Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex02.mchp-main.com
- (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Mon, 26 Oct 2026 00:32:36 -0700
-Date: Mon, 26 Oct 2026 08:32:35 +0100
-From: Daniel Machon <daniel.machon@microchip.com>
-To: Joas Antonio dos Santos <joasantonio108@gmail.com>
-CC: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Tony Nguyen
-	<anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	<intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] net: dcb: initialize PFC value before calling
- getpfccfg
-Message-ID: <20261026073235.3huvz6o5h6psyv76@DEN-DL-M70577>
-References: <179289284460.50470.572724041164324949@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OpZjsW6u
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7861F031E0
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 07:33:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792999994;
+	bh=7oPMs0d7czZDgpisnaM9AZCe31nOE82TuAm2YPxvoec=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=OpZjsW6umHSAJmIGuIlw0vg3e6dV/zUq02ZzorYxiCk6cN37MBJNachEl0rKqkH8i
+	 v3Nk9jJAzZvvuZD8JhipJyWbvmoN8ICO7VxpsH9q2R6JxH6u7/Dn99BqrXDx8AiqCZ
+	 B5ikN31G5bl2To/jKxerWsJBAKubEO5lGcVSuR7tTY8OFurF6B32p3CkdvVAIF6M3+
+	 srQYhcb0mK+7RiMhIcz5qy4l0KAZ/oSpo5BbqJCMDeWMDYxddi4V1pTm/bbTxdW4FX
+	 HmAggB67Iyb8OrgB6ScnD2lVZep61hF8ZzPQwvPzMerEwL09lj9mHyCdzYK3z0cFEe
+	 yszlz25KU06+Q==
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-475920b9ca2so843639fac.1
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 00:33:14 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzcg13CEuwikwTAoU30rBSutf6WwCI2iUgQRziGw1vg3s+DXbX1cozBxOZvLwl724550CxfIn4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKgy2cDKKxMIttilw4+MXVM94sKX2glmNwrLQYka96xlcyvizh+
+	NBUdWxOLJmWYVzYJ57URhGpOyovXtm6cO0KdidFKb4/SEWdpK0Z3u9C2GNgTULOO7EH+P2YysNA
+	uADZZ+vKmEyU1hsPZpH5T4j7zvbOf6wc=
+X-Received: by 2002:a05:6870:1702:b0:486:a82a:a345 with SMTP id
+ 586e51a60fabf-4a83f588cc1mr3264518fac.25.1792999994001; Mon, 26 Oct 2026
+ 00:33:14 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,77 +59,69 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <179289284460.50470.572724041164324949@gmail.com>
+References: <20261026061300.256009-1-qingfang.deng@linux.dev>
+In-Reply-To: <20261026061300.256009-1-qingfang.deng@linux.dev>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Mon, 26 Oct 2026 08:33:03 +0100
+X-Gmail-Original-Message-ID: <CAL4WiipU7wttXiBu-+CL=DaP4nfnkEpoMm01uJWorSYdS2fb9w@mail.gmail.com>
+X-Gm-Features: AclHuK_dI9VeKqD4E1U4bCUOsW46HKqWcruEWLK_U7y7CH1Lv7Vlz9PQFvLLTb4
+Message-ID: <CAL4WiipU7wttXiBu-+CL=DaP4nfnkEpoMm01uJWorSYdS2fb9w@mail.gmail.com>
+Subject: Re: [PATCH net v2] pppoe: wait for RCU readers before reusing a socket
+To: Qingfang Deng <qingfang.deng@linux.dev>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Guillaume Nault <gnault@redhat.com>, Felix Fietkau <nbd@nbd.name>, Eric Woudstra <ericwouds@gmail.com>, 
+	Asim Viladi Oglu Manizada <manizada@pm.me>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Sashiko <sashiko-bot@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> dcbnl_getpfccfg() and dcbnl_cee_fill() pass the address of an
-> uninitialized stack u8 to the driver's getpfccfg() op and then put it
-> into the netlink reply unconditionally.  The op returns void, so the
-> core cannot tell whether the driver wrote the value.
-> 
-> i40e_dcbnl_get_pfc_cfg() and ice_dcbnl_get_pfc_cfg() return without
-> writing *setting unless the DCBX agent is host managed and in CEE mode.
-> Both drivers normally run with firmware managed DCBX
-> (DCB_CAP_DCBX_LLD_MANAGED), and i40e with FW LLDP disabled runs host
-> managed in IEEE mode, so on a DCB capable i40e/ice port the PFC values
-> in DCB_CMD_PFC_GCFG and DCB_CMD_CEE_GET replies, and in the CEE part of
-> RTNLGRP_DCB notifications, come from uninitialized stack.  The same u8
-> is reused for all eight priorities, so this is one byte per reply.
-> 
-> dcb_doit() only requires CAP_NET_ADMIN for RTM_SETDCB, so the GET
-> commands are available to unprivileged users.
-> 
-> Set the value to 0 before each call, like the PG config path already
-> presets its outputs to DCB_ATTR_VALUE_UNDEFINED.  0 is also what the
-> reply contains today on kernels built with CONFIG_INIT_STACK_ALL_ZERO,
-> so nothing changes for those.
-> 
-> Fixes: b94b013eb626 ("ice: Implement DCBNL support")
-> Fixes: 5effa78e7c94 ("i40e: Add netlink callbacks support for software based DCB")
+Le lun. 26 oct. 2026 =C3=A0 07:13, Qingfang Deng <qingfang.deng@linux.dev> =
+a =C3=A9crit :
+>
+> When pppoe_connect() disconnects or reuses a socket, it removes the old
+> session from the hash table and resets the socket's fields. An RCU
+> reader that reached the entry before it was unlinked can still be using
+> its address, ifindex or next pointer.
+>
+> If sockets A and B share a hash bucket with A preceding B, a concurrent
+> __get_item() looking for B can be traversing A when it is removed.
+> Clearing A->next then makes the lookup miss B and drop the packet.
+> Reinserting A can similarly redirect the reader into another hash chain.
+>
+> Call synchronize_net() after unlinking the old session and before
+> clearing its fields. This allows existing receive-path and
+> /proc/net/pppoe readers to finish before the socket is cleared or reused.
+>
+> This was found by Sashiko's static analysis, and reproduced on a VM
+> stress test with KCSAN.
+>
+>  BUG: KCSAN: data-race in hash_item+0x1c/0x60
+>
+>  race at unknown origin, with read to 0xffff888000a1c566 of 2 bytes by ta=
+sk 147 on cpu 2:
+>   hash_item+0x1c/0x60
+>   pppoe_seq_next+0x112/0x1b0
+>   seq_read_iter+0x595/0x700
+>   seq_read+0xb0/0xe0
+>   proc_reg_read+0xd0/0xf0
+>   vfs_read+0xbd/0x220
+>   ksys_read+0xa9/0x100
+>   __x64_sys_read+0x47/0x60
+>   x64_sys_call+0x98/0x1fd0
+>   do_syscall_64+0x5b/0x260
+>   entry_SYSCALL_64_after_hwframe+0x4b/0x53
 
-I am not entirely sure, but should this patch add a fixes tag for a driver, when
-the change is only in the API?
+Please next time include symbols. (scripts/decode_stacktrace.sh)
 
-Also, if this dates back to the introduction of DCBNL then I guess its not a
-regression and maybe a fix for net-next?
-
-> Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
-> Assisted-by: Yaga Agent HackerSec Claude:claude-opus-5-5
+>
+>  value changed: 0x0002 -> 0x0000
+>
+> Fixes: 72cdc67e7fa7 ("pppoe: remove rwlock usage")
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/2026102009211=
+8.47416-1-qingfang.deng@linux.dev
+> Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
 > ---
-> Found by code inspection, compile-tested only (W=1).  I don't have
-> i40e/ice hardware to check the reply.  On kernels built with
-> CONFIG_INIT_STACK_ALL_ZERO the byte is already zero, so in practice
-> it only leaks on builds without stack auto-initialization.
-> 
->  net/dcb/dcbnl.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/net/dcb/dcbnl.c b/net/dcb/dcbnl.c
-> index ab71f53128..ad0aebe0ad 100644
-> --- a/net/dcb/dcbnl.c
-> +++ b/net/dcb/dcbnl.c
-> @@ -281,6 +281,7 @@ static int dcbnl_getpfccfg(struct net_device *netdev, struct nlmsghdr *nlh,
->  		if (!getall && !data[i])
->  			continue;
->  
-> +		value = 0;
 
-Why noy initialize this at the declaration, like getall is?
-
->  		netdev->dcbnl_ops->getpfccfg(netdev, i - DCB_PFC_UP_ATTR_0,
->  		                             &value);
->  		ret = nla_put_u8(skb, i, value);
-> @@ -1395,6 +1396,7 @@ static int dcbnl_cee_fill(struct sk_buff *skb, struct net_device *netdev)
->  			goto nla_put_failure;
->  
->  		for (i = DCB_PFC_UP_ATTR_0; i <= DCB_PFC_UP_ATTR_7; i++) {
-> +			value = 0;
-
-Same.
-
->  			ops->getpfccfg(netdev, i - DCB_PFC_UP_ATTR_0, &value);
->  			if (nla_put_u8(skb, i, value))
->  				goto nla_put_failure;
-
-/Daniel
+Reviewed-by: Eric Dumazet <edumazet@kernel.org>
