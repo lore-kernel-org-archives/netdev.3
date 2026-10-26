@@ -1,61 +1,115 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.144
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793031714;
-	b=LVd7Cg7jrGk87wrowE3vphSmsitjuuYskuAJV4aibIjrw/sIaG68o/iFZzaJynInA22M
-	 w6FYmS0itxp9ZRNdsfD0HLiVIMEd0jvuwR41x+rZLtP+77nmjXD4Hcp3X7iiYBNSyRENu
-	 rGoiRr0VUBZypnL7uWKL4SI2P8t6OExHd9okjIG1mGiez5kVPNhJ63ZjfJUydxJSTnrxr
-	 xYJkw/M4DifnSWH+Jwtu6xSr1KWM7lEZBZW2Jmad5xEWmsZlVWbk776rLyMWAgBWSUFJa
-	 WsHKiMeDcc/wxXe3nIFlwraNiWTX9HUTOnAcZMAYf3SL5FAK49MNVUsSDoYsXllJDng==
+	t=1793032010;
+	b=TbU5fo13xiTxTN3syCFF2NynLzC6iQfzPw+/vUQ9T8cXx3aCDsov7QxMVk1e7UBQkHwp
+	 Ik2FEVIi71X/jQg/AAexE8kJguCvb97A9Yth88CltR/UYG33CLsB5T+BjrdHfjvggV7Lj
+	 N/gfkU9TF9A27epM2yKg+bPgOK0SIcNndW8c33FsBVO9GKVRocoliJGkFwgSzAU0Gg1Yl
+	 89WMNhvQsrm+jMRF/yls3iMQNQRLPPjCkmJlbMsVopqwVdze8tL73BeUMYJHyWEZ3Avkz
+	 7u/NiaqZeHBTqxl48LsUdUaiVl6WR6I+32q13SBs9AohTzpsBWasPmCoTvqB7X936Bg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793031714;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=vFJvSTUDUI+jot4qzzEf7rMhildAD64LDwSLK2QFNKk=;
-	b=g7bW8uXud3tAIHfJj7Q52xe6w6ePNFAWXAlOc1sW8093pN8ngHUb+eHMLcy42OUYKWv4
-	 xFpBvtOQkHMkthiaESHQewaK5TouO2+ghCm6JkQqwxzlzMgFtMRZiuXj0qjD7L+Zny4gi
-	 IWZB9FzHeobaunnjFb1RniiFBhPaQkmfNVoeQQdqkcFUHTT1M3Cr5dRGQj9/qfbG9C0l/
-	 Q0AG6L26XYDLHJZBrVLOpfU2/YRokZGZI1CYY4p9HHzTPn6weonOA40JsT5zxdspb7K8J
-	 CxiVhf/3ZUlpGWSyUjU4A9j0LZZnYmovDKXLkqbOnplQGAzXw7LcL84NpN0hx02tcWQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793032010;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:From:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key;
+	bh=9kcCIz8uI9hyAOMjyWYmAiZN2bIAPxSyBMWCQskBI00=;
+	b=OhhzLrizedMzih023l+xU7iNc5dGEDUt505LmXfe7t8thvTUsBfcA4nwkb+Zob5+XEXw
+	 6SZHKuN+hgFOdWmnUMcmmk3C65doMEOcMRJN5SitNUMwxJv8aa1iqaWz6fw3SO1DHSyHp
+	 lVFiqeqSCxLE91PeC/kTmxcfiQStv/yTQVYFTM2xr3/acDFcQw/cUFXxHPnDfy8AvDERI
+	 bDbn23yKHbm//endIrh6aXw9J9m8gF5OmhxmwH9kSWiadXktzj2j/CNfnkT+b5xVMzpA1
+	 KHZsFe8Ap7cjuoEvo3mHKyPAkteynuGD5AWItOC9WL0L8ofS5pl7Bym7YnT9aVeyp2g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="ZnDX5/NU";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=jannau.net;
+	spf=pass smtp.mailfrom=jannau.net;
+	dkim=pass header.d=jannau.net header.i=@jannau.net header.a=rsa-sha256 header.s=fm1 header.b=aaPSMivG;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=bAcjyt75;
+	arc=none smtp.remote-ip=103.168.172.144
+Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D7C606A31A;
-	Mon, 26 Oct 2026 16:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D117606A321
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 16:26:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8D117606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZnDX5/NU
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D56A21F01825;
-	Mon, 26 Oct 2026 16:21:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793031713;
-	bh=vFJvSTUDUI+jot4qzzEf7rMhildAD64LDwSLK2QFNKk=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ZnDX5/NUB/Yw2H2bYzCKezL16HGsJsa94oypBA6W1FgmppfufYwKhhlTdJmAMzAPS
-	 HGxV/A8x1hpp8Y+mHY4dIiHTBpjphUF0UdN8xpBVyThbdHy6g/iGUZ9t/lBSSpFk2Y
-	 nZvS+QyNWfmPTYAyWzq5t2RmjFJPElKQqe4+D7+tJAsoYSTCEwPKFvzA7lU5/Yy5gN
-	 kztzERck2uzND2XtmPvpBeXn4DH1lMY7v1ZEUZPOw67xMahZaOsZjTF6g0fsna/cn4
-	 gOErYJ5290bD0XdxEMh4SKhUA+94VmLGSUJVx9QHKa7NnTkKrqyx5qKs3ebAo9hBlA
-	 t2gg8pfCiRoJA==
-Subject:
- Re: [PATCH net v7] net: dsa: qca8k: preserve port state across MTU changes
-From: netdev-bot+sashiko@kernel.org
-To: yongzhao.derek@gmail.com
-Cc: netdev@vger.kernel.org, ansuelsmth@gmail.com, andrew@lunn.ch,
- olteanv@gmail.com, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, linux@armlinux.org.uk,
- florian.fainelli@broadcom.com, linux-kernel@vger.kernel.org,
- hzyitc@outlook.com
-Date: Mon, 26 Oct 2026 16:21:52 +0000
-Message-ID: <179303171241.3134.15019965307136674652@kernel.org>
-In-Reply-To: <20261022155837.760-1-yongzhao.derek@gmail.com>
-References: <20261022155837.760-1-yongzhao.derek@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=jannau.net header.i=@jannau.net header.a=rsa-sha256 header.s=fm1 header.b=aaPSMivG;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=bAcjyt75
+Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
+	by mailfout.phl.internal (Postfix) with ESMTP id CEE8CEC0AA7
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 12:26:48 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-07.internal (MEProxy); Mon, 26 Oct 2026 12:26:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:message-id:mime-version:reply-to
+	:subject:subject:to:to; s=fm1; t=1793032008; x=1793118408; bh=9k
+	cCIz8uI9hyAOMjyWYmAiZN2bIAPxSyBMWCQskBI00=; b=aaPSMivGYACEEb8Ekw
+	qxtKy/2GN9ui8F7N+pDowQGFYJ/ZavKpc3P5GsE0vFaEmtILuh7++TphBlY1zLrs
+	FbFGkTw3F0Hoy/fpFzl/FjkQG8bILSivzS2bsACxuFswfytvXptIUKo79vJsi8+Q
+	pjQ+IYa3RPO57AX2RqQdxzizTavmDaEuTc567OZWoEjzY60xnEdDgKRSDN2955en
+	a6vNN6ymPDqwfg9Uq76MUEndgvycSuDGnemzJV/r421LxkALLGbewVDaAFRuVE1G
+	zHZtLsS7EUUJsfKLUKH4t4jrDwXmaMet3i+ZV3cWqTGInRvgUzIYA6S1PMpFCMEB
+	FxmQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1793032008; x=1793118408; bh=9kcCIz8uI9hyAOMjyWYmAiZN2bIA
+	PxSyBMWCQskBI00=; b=bAcjyt75C0NuwonrobpMHm/kjym8IJM1G2DgNd2e+i69
+	h1bsazquTL179tHqu70DlaCXPr+zQJGLApL2Z95HrsSc0crlyrrnD5cDtlwq0JCi
+	rWkNGUCxoeXkXksdCbdP8B8rIGTpoXd6rT9nmwkm4yf1HC7XdP+S+aDU1p91g3bW
+	fHrRiDwiazjTjt3/Q0Wuupg4+Q51ttM3mF2KEuqWp4zy5vtVNQvSAqd7Iyw13fXt
+	tv/6CEyNkUzP1W0WD9uabw2vQ3/T1kNb1L2blkaAzGqWYoYKNqJH4gmDLW+orlfN
+	B4uHwr920qv3o7SHU8+sDonDzyxabqgNYTIftZIsEw==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=sign d=jannau.net a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793032008; d=jannau.net;
+	mf=PGpAamFubmF1Lm5ldD4=; rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm1:rsa-sha256:XlSUqyEjhn5WqgXXnzBtQWR965indwm3qPru5Jf1g0v3jrN
+	rOjVWxmYjXeNKOmBCXpNBaJvT/9hBuwt/VLEmtbqVwPFFKXOX2iOrBXX/gN+PDUS
+	p7mxtkUjP0lRAcB/OgjWb3Q+ngXqydh1gP5uJeIUqwWcLl4zQzHqNCjVMxqo6Eko
+	8SRQOjSPUkqwyUx+R1DCVgFz61/zOJcvmScw3+eL8/dnsRmEPuRLJLT5IKebeV/X
+	K7PL4FDaRYhD8yuiEOpTtx2IqGJQlMDMLVT505jBecLb5km2ArnkGA10Sb03jEV6
+	/20UtYRpYCuHlcDIp6TMTIe9apcFBT8LC6l1rcw==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=mi-m=1; hc=10;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,message-id,mime-version,subject,to;
+Message-Instance: m=1; h=sha256:87NNGZy3Vpy8C/WB/14Kpyf/iHKlI13Ee1/MdgmeDBg=:bvGCad+8AQBYIHE2Cxb/6mTFm3UuOddA3aWXWZSBzJA=;
+X-ME-Sender: <xms:SH_faunSw3SvD8664PPD52tVXbe8TwM-5I8JMKMjpPW9YrRLtwsd1A>
+    <xme:SH_far2arPy0L3HKQGwN2jAqik8zZEy8IdiKZxiWt-LvjawZiua5M6uKgFuK-mEf3
+    RMFOl5kF5zKGDDIRZ3IJz-IAhoy2c2uthyVMOYeSMioR3Gw3_YrDkRD>
+X-ME-Received: <xmr:SH_fancZgMgG9vEHUPpvUcbmkBugj_iIqn-6nxWhQ3VhDHr4FiJVM440kNq538B5qG811gYDk2RwWC3xuub7xd1-Yr1A5YIAvw4>
+X-ME-Proxy-Cause: dmFkZTG4APGyhz6R0v3h0o2cddQphOn9sEg7EFY/1upwb8ZMKMSqp0Z6UuPGn8mG825EqY
+    WnsB5mDkkAll9x61kkVm7r10hFurkgmrhkeyfUPqoctgLK8SXbUPuLJrszMl5Xw2C1yRqM
+    CCr7+zGG61uwG9E0/c6iLmCawCUhpY44K4U+7mAT/3R0b9umVrqZgN/ySk+FgD4z4uY+M2
+    +cRY1iemNWIBZ0meZicq9ghPplaVlOH1VKIGPxpFmPUBHkDtDz2LKEOqbNDdaexcNP77HX
+    9Rd2mM7tIJFZutjySyHpqIyadQ2MQ/Yd8Qj6+wCH3ZGGflxUZ9kaxLTKaeKAs66SgdIWt3
+    MbtvhDbUJ+apWxPa3xwhKk6Mi1hhD+rl0wXpEaC8r6ZVvWo7tv8pbmiBo6PSkBekoEDOcv
+    S+7zE9tlMj+eNfzo8tJpUMTh0/0/9QkCQKo5ZkB09QdYnIla/LkyR2hr3wnG/fULTlbqCH
+    iyafmEy0/H4L1ix+u/9z5CHlTiKAOAXKr+0MVJGwL3N/0L6xM6glJg1a7/l4CZ9Xwhyt9k
+    lQg9QEpjW50xxbf1IF3Cgn9WL1ITchyuf8YyeR9fT030GTKumKUquE4/f0246TmMkDoIDT
+    HDi7P+WSHLaVAA0xl0XRv+3jHRCRhN7DCBcl3rdykgZ7obOTpHchUSCnkvEA
+X-ME-Proxy: <xmx:SH_falbSkeOx1V9ox1Za7lJ2HMudu1kmjXtPwzvICKUsrOsj9h6x7g>
+    <xmx:SH_fasGU0uyhmLgY6CSVOmfUW6rCXYKXHXjnjcRtcz_37R43YI2DcA>
+    <xmx:SH_fajlCs-n5QFH0vqcOsqVGEdr-O3ec2jGuV5_z7arKt-U4OlKykA>
+    <xmx:SH_faverrADpCVn5oZhpPYRiYlWYB4C5xFFeBiiyg68zhiOyWcelKA>
+    <xmx:SH_falg_FW9gtguZGfX2L6q9YH9k6H-5JxZaLIAF7JbN8Yhj3X7c_r3x>
+Feedback-ID: i47b949f6:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 26 Oct 2026 12:26:47 -0400 (EDT)
+From: Janne Grunau <j@jannau.net>
+Subject: [PATCH 0/2] net: atlantic: AQC113: Fix regression on Apple silicon
+ systems
+Date: Mon, 26 Oct 2026 17:26:38 +0100
+Message-Id: <20261026-net-atlantic-aq113-apple-l2-filter-slots-v1-0-d72e99b69583@jannau.net>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,144 +119,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2NQQoCMQwAv7LkbMC0dhG/Ih5CzWogdGtTFmHZv
+ 1s8zGEuMzu4NBWH27RDk01d1zKEThPkN5eXoD6HQziHmQZYpCN349I1I3+IInKtJmgBF7UuDd3
+ W7jjHS0iUcop0hZGrTRb9/lf3x3H8AEhoGbV6AAAA
+X-Change-ID: 20261026-net-atlantic-aq113-apple-l2-filter-slots-6342515c5318
+To: Sukhdeep Singh <sukhdeeps@marvell.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Janne Grunau <j@jannau.net>, stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1663; i=j@jannau.net;
+ s=yk2025; h=from:subject:message-id;
+ bh=bvGCad+8AQBYIHE2Cxb/6mTFm3UuOddA3aWXWZSBzJA=;
+ b=owGbwMvMwCW2UNrmdq9+ahrjabUkhqz79a4dWrenbJm2qW3ZhGNuM/Zdi6hr/ci3yrJ5Bo9Z8
+ 1XWqbKWHaUsDGJcDLJiiixJ2i87GFbXKMbUPgiDmcPKBDKEgYtTACayiZ/hn/XM+cVqF8689jaa
+ zd/IrPupbqZOeU+n4eMzX0vWMvi2/GVkeKxlv/PlqrCb96bPVrtvvqjwCesuFkujz4lurwM1/ae
+ J8gEA
+X-Developer-Key: i=j@jannau.net; a=openpgp;
+ fpr=8B336A6BE4E5695E89B8532B81E806F586338419
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Hej,
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+commit 6c1ca112a6e4 ("net: atlantic: fix AQC113 HW init: ART, L2 filter
+slot, MAC address") broke data transmission on Apple silicon systems
+with integrated AQC113.
+A conflict about which L2 filter slots to use between hw_atl2 and
+hw_atl_b0_hw_packet_filter_set() called through
+hw_atl2_hw_packet_filter_set() is to blame for that.
+The firmware on these AQC113 chips report `l2_filters_base_index = 9`
+and `l2_filter_count = 29` while hw_atl_b0_hw_packet_filter_set() uses
+hardcoded L2 filter slots starting at HW_ATL_B0_MAC_MIN (1).
+A related issue is that the multicast address list might exceed the
+number of available L2 filter slots potentially resulting in writing out
+of bounds L2 filter slots.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+The fixes in this series restores ethernet data transmission on an Apple
+M1 Max Mac Studio and supercedes my previous "fix" in [1].
 
-- [Medium] In qca8k_port_change_mtu()
-  (drivers/net/dsa/qca/qca8k-common.c), the decision to pause a CPU MAC…
+Link:
+https://lore.kernel.org/r/20261024-net-atlantic-aq113-apple-regression-v1-1-b8305415a8b1@jannau.net [1]
 
---
+Signed-off-by: Janne Grunau <j@jannau.net>
+---
+Janne Grunau (2):
+      net: atlantic: AQC113: Fix hw_packet_filter_set for l2 filter base index > 0
+      net: atlantic: AQC113: Limit multicast filters to avaiable slots
 
-net: dsa: qca8k: preserve port state across MTU changes
+ drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_b0.c | 14 +++++++++++---
+ drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_b0.h |  6 ++++--
+ drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c  |  7 +++++--
+ 3 files changed, 20 insertions(+), 7 deletions(-)
+---
+base-commit: c03c1a14507dfaf8b856c2608f9ac216021fc222
+change-id: 20261026-net-atlantic-aq113-apple-l2-filter-slots-6342515c5318
 
-This patch adds a dedicated mutex that serializes the MTU update with all
-PORT_STATUS writers. During the update, the MAC bits of the enabled CPU
-ports are saved and restored instead of being forced back on afterwards.
-Failed status writes are recorded and retried from a delayed work, and the
-committed MAX_FRAME_SIZE is tracked so a duplicate call for the same value
-returns early.
-
-> diff --git a/drivers/net/dsa/qca/qca8k-common.c b/drivers/net/dsa/qca/qca8k-common.c
-> index 13005f10edb7d..d9db5e57928ee 100644
-> --- a/drivers/net/dsa/qca/qca8k-common.c
-> +++ b/drivers/net/dsa/qca/qca8k-common.c
-
-[ ... ]
-
-> @@ -782,27 +856,59 @@ int qca8k_port_change_mtu(struct dsa_switch *ds, int port, int new_mtu)
->  	if (!dsa_is_cpu_port(ds, port))
->  		return 0;
->  
-> -	/* To change the MAX_FRAME_SIZE the cpu ports must be off or
-> -	 * the switch panics.
-> -	 * Turn off both cpu ports before applying the new value to prevent
-> -	 * this.
-> +	/* To change MAX_FRAME_SIZE, pause enabled ports 0 and 6.
-> +	 * Serialize with phylink and restore the saved MAC state.
->  	 */
-> -	if (priv->port_enabled_map & BIT(0))
-> -		qca8k_port_set_status(priv, 0, 0);
-> +	mutex_lock(&priv->port_status_lock);
-
-[ ... ]
-
-> +	ports &= priv->port_enabled_map;
-> +	for_each_set_bit(i, &ports, QCA8K_NUM_PORTS) {
-> +		ret = regmap_read(priv->regmap, QCA8K_REG_PORT_STATUS(i),
-> +				  &status[i]);
-> +		if (ret)
-> +			goto unlock;
-> +	}
-> +
-> +	for_each_set_bit(i, &ports, QCA8K_NUM_PORTS) {
-> +		u32 mask = qca8k_port_status_mask(i);
-> +
-> +		if (!(status[i] & mask))
-> +			continue;
-
-[Severity: Medium]
-Can a concurrent register reader corrupt the status[] snapshot here and
-make this skip the pause?
-
-qca8k_regmap_config in qca8k-8xxx.c has:
-
-    .disable_locking = true, /* Locking is handled by qca8k read/write */
-
-So regmap_read() goes through _regmap_bus_read() and takes no regmap lock.
-The register address is formatted into the shared map->work_buf, and
-qca8k_bulk_read() reads it back from there:
-
-    u32 reg = *(u16 *)reg_buf;
-
-The value is parsed from the shared work_val only after the transport has
-released mdio_lock:
-
-drivers/base/regmap/regmap.c:_regmap_bus_read() {
-    ...
-    ret = _regmap_raw_read(map, reg, work_val, map->format.val_bytes, false);
-    if (ret == 0)
-        *val = map->format.parse_val(work_val);
-    ...
-}
-
-port_status_lock does not cover readers such as qca8k_pcs_get_state().
-Phylink calls it from its resolve worker without RTNL, and it is polled
-because qca8k_setup_pcs() sets pcs.poll = true. The LED hw_control_get
-path is another reader that takes no lock.
-
-For example, with port 0 enabled and port 6 in in-band mode after a
-link_down:
-
-CPU1 (RTNL held)
-qca8k_port_change_mtu()
-  regmap_read(QCA8K_REG_PORT_STATUS(0))
-
-CPU2
-phylink_resolve()
-  qca8k_pcs_get_state(port 6)
-    qca8k_read(priv, QCA8K_REG_PORT_STATUS(port), &reg)
-
-Suppose port 6's address or value lands in work_buf before port 0's value
-is parsed. Then status[0] would have no TXMAC/RXMAC bits, the continue
-above would skip port 0, and this write would run with the port 0 MAC
-still enabled:
-
-> +		__set_bit(i, &stopped);
-> +		ret = regmap_clear_bits(priv->regmap, QCA8K_REG_PORT_STATUS(i),
-> +					mask);
-> +		if (ret)
-> +			goto restore;
-> +	}
->  
-> -	if (priv->port_enabled_map & BIT(0))
-> -		qca8k_port_set_status(priv, 0, 1);
-> +	ret = qca8k_write(priv, QCA8K_MAX_FRAME_SIZE, frame_size);
-
-Commit 386228c694bf says this state stops the switch from sending packets
-until reset.
-
-The shared work_buf race itself predates this patch. However, the old pause
-was an unconditional regmap_clear_bits(), which goes through
-qca8k_regmap_update_bits() and does not use work_buf. So it could not be
-skipped this way.
-
-The window is small, but should the pause avoid depending on this unlocked
-read? One option would be to clear the MAC bits of the enabled CPU ports
-unconditionally, as before.
-
-> +	if (!ret)
-> +		priv->max_frame_size = frame_size;
-
-[ ... ]
-
+Best regards,
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261022155837.760-1-yongzhao.derek%40gmail.com
+Janne Grunau <j@jannau.net>
+
