@@ -1,58 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.219
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=54.92.39.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793006834;
-	b=FI65JoX9D10rjJbcJtgBhDOnNth/vcQrVQBqY3q1LtBFt8lsUkZGsSvuFDCtTzDx/tGV
-	 Sn568QKDDu7TAM2a2XqyfgzoiSeyG2nSrutl8vbreeS9L8BRAAF0CJ+cYpAmuhyBQ/cUj
-	 W4ZGfDzvPoTlo/zHLfRBv8DQUJjqIO6vW0IKmY0LeuqfiYsJFCGYBSPjpe5nBZX29AK75
-	 FbgmDpZLTZCDaR/ju+Kie8KOUQHxoNkOuPl4t8m2b0lHEmZ6I6VcAm3cIRNOjI58I5NCV
-	 Zdk32KlLdjGfB3lQi5a60ei3NjInmRw8HnoV50jydRLU8W8w7xr9rMmgSbQTSFkka2A==
+	t=1793006847;
+	b=if96/F9bx3KHIgoUUl/Mxq19N3Qf1QbYxGBifbEV4jJq3XOCRFcc9AkGHyIadNbr3238
+	 UR3m3bvPDQPWmTocmMyiQ8te94JUDjelwh7LVr6Y+flTi1b+YW43RBAivp3Nl9rSoC/bw
+	 Lk0iR93ExsbRtG1qB5nOQJezjxqK4ZRUt/7rEWNkG8uEVX2B231jX6f4UwBpztSLWmqf+
+	 Qg6ceF5HhMZBONdttl8RW/I/n3NULrbLPDg8lB+M2+GalCKlebtbE8muDa0q5uA7ZcqNT
+	 jK0Z9qX12R8tQ56Cqv/ASpdXQN8sT8AMKkyxnVMBebtWXsWZmeD70P5G2oX6Yq5Jb9w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793006834;
-	h=DMARC-Filter:dkim-signature:Received:Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:CC:Subject:To:References:From:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Originating-IP:
-	 X-ClientProxiedBy;
-	bh=KRyQ4JePOCecG0hnrSG3k7s5lWuk4pyy95x95EuOLKE=;
-	b=zgfFfoWbZnGFGqRg7VfuSn6l+eSpveU2xLuK56BGJQgf+GcI+GfH38/HyMBlQfTVofev
-	 fsp7uJIpmiYhP/waUnfibzK9Jl4+1eZzUlYeZsluZVu8QzquMao02T//hbG1sj11SdUTn
-	 NI36AkHknbeGxTb6wqu4MWIdJkOKGkSL98cM9/jrX6OxCKst3pvGWSNqd+w+iQ4QA2jC1
-	 h878gRi8maZPI1Rnd6ZQyzqOoikxVWFAsHjM/X/PRvSEbi6dAV4/cBtqjfkRoaSqqcka6
-	 0hI1d1RQhekJkXHfOL90SoJcbmRUbNeF5WeVTwlt0SE8JqAsaP7gyigz4pKwp4AgHjQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793006847;
+	h=DMARC-Filter:X-QQ-mid:X-QQ-Originating-IP:Received:X-QQ-SSF:
+	 X-QQ-GoodBg:X-BIZMAIL-ID:EX-QQ-RecipientCnt:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-QQ-SENDSIZE:Feedback-ID:X-QQ-XMAILINFO:X-QQ-XMRINFO:
+	 X-QQ-RECHKSPAM;
+	bh=UOjH/KZrJevJUFQC3mjbJKqPCVBhF0Dx/9N1xhVblbk=;
+	b=JGTkT1HXuaSryQgsEA2f8MlaORdieuMUcjMaf00RGbFBvoZNZhBeAdZPCyrrREgZl/Dt
+	 VMOK7g3uZGE+cuYU+hblKo8GsMUF34duAJzx6bD28Sqyysrj9afbjhuiCSnCNA2+0wHLs
+	 Mjl+zqcqP6scQ4rKq+dAlQ7Tk5vIiE528PoJPUlhtQkST7myB0we/ybLJctrxJKxEd+/K
+	 vr7MGSHqL+zb8HeK1w/YAblAmJGd/GmTdJJ2nHnj5koQ2Ukh1rfpBsRR3yLb9wcqRNb4V
+	 miT+95UwDFifOadx/VGt8PfzA+M96p1dOnSpY9q+yglQOCifi+j+7Aik6ySWq31EIMw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=huawei.com;
-	spf=pass smtp.mailfrom=huawei.com;
-	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=4Q0j2C7r;
-	arc=none smtp.remote-ip=113.46.200.219
-Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=none header.from=mucse.com;
+	spf=pass smtp.mailfrom=mucse.com;
+	arc=none smtp.remote-ip=54.92.39.34
+Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B737E606A31B;
-	Mon, 26 Oct 2026 09:27:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B737E606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=4Q0j2C7r
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=KRyQ4JePOCecG0hnrSG3k7s5lWuk4pyy95x95EuOLKE=;
-	b=4Q0j2C7rkFNBn11S1aoR+SlbfPJbB0DFwPzBlnxssEAJx3ZLKeeLvZcGwfU40uROLnpzOhkI1
-	MOMvAG04mEARuw0RlplzYvQpW+xncnlcKTI1mmne8Mw8PXlEYIEznTM5uDyBWrLdBGad659Xr4b
-	d1REDV59AlbK8PtHmcizPoY=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4jCpDQ08P1z1prQ6;
-	Mon, 26 Oct 2026 17:27:02 +0800 (CST)
-Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
-	by mail.maildlp.com (Postfix) with ESMTPS id E5B8F40579;
-	Mon, 26 Oct 2026 17:27:08 +0800 (CST)
-Received: from [10.67.121.233] (10.67.121.233) by
- kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 26 Oct 2026 17:27:08 +0800
-Message-ID: <adf8edb1-d622-4741-aac2-682e4f0ff0b9@huawei.com>
-Date: Mon, 26 Oct 2026 17:27:07 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C03606A31D;
+	Mon, 26 Oct 2026 09:27:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 27C03606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mucse.com
+X-QQ-mid: zesmtpsz9t1793006777t9d6df4ad
+X-QQ-Originating-IP: h+ap49Kv0RfW/vllUVPU9/sQGgdKAP75oz8+M9g7oj0=
+Received: from localhost ( [203.174.112.180])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 26 Oct 2026 17:26:15 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 10730358307232006467
+EX-QQ-RecipientCnt: 10
+Date: Mon, 26 Oct 2026 17:26:15 +0800
+From: Yibo Dong <dong100@mucse.com>
+To: netdev-bot+sinfo@kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+	kuba@kernel.org, pabeni@redhat.com, vadim.fedorenko@linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	yaojun@mucse.com
+Subject: Re: [PATCH net] net: rnpgbe: Accept link-down events without speed
+ magic
+Message-ID: <5A927C9600407C98+20261026092615.GA933559@nic-Precision-5820-Tower>
+References: <C2DFBBF04F1DCFD2+20261026075445.920572-1-dong100@mucse.com>
+ <179300162296.3327.8577140950893281339@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,346 +61,73 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-CC: <shaojijie@huawei.com>, <davem@davemloft.net>, <edumazet@kernel.org>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <andrew+netdev@lunn.ch>,
-	<shenjian15@huawei.com>, <liuyonglong@huawei.com>, <chenhao418@huawei.com>,
-	<yangshuaisong@h-partners.com>, <ningwei15@huawei.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 net 3/3] net: hns3: fix use-after-free in debugfs read
- during reset/unload
-To: <netdev-bot+sashiko@kernel.org>
-References: <20261021121426.3096838-4-shaojijie@huawei.com>
- <179293217840.3134.10721469015486402363@kernel.org>
-From: Jijie Shao <shaojijie@huawei.com>
-In-Reply-To: <179293217840.3134.10721469015486402363@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemo500018.china.huawei.com (7.202.195.199)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <179300162296.3327.8577140950893281339@kernel.org>
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:mucse.com:qybglogicsvrgz:qybglogicsvrgz3a-1
+X-QQ-XMAILINFO: OTaQrRjuGKLtxOvFOOK7L+T3iiOch2ydc8sfENvqMAnF3LoslTUJeSMi
+	8mNKcpgPJ+MAKtIDpkdAbf2apxk3ly5z4O6fAlxXI6tZo51VNFhYpUCqB8VsOL9OOfcCz5d
+	NW6LWFfrFffArtjVzgMDfhAlyyFxmhebYmTELdFIzk7Rq+W0385UfHoIOjro0ZRZq3uXtT+
+	b9W/A939WqplwdVpkXCCJuI1ZiL1zld3nWSVhSLSTttSicpnmWqWDLMTQd2aCql0IjhE34Q
+	yfYaUo/BSTQdoXHcFlDbjBGIH6nPCAmE/UWIlbuyO5NDj8py+hRTVxUEXr1QM9AIdSMTBdb
+	6Le+zrHtMwkD5758kkuwFOxjX6fgfKZOJZoMBi8DKWYiWdg8lOL8rT/kPCnMqEpqeI8K1jM
+	Xh24Re4dthAVllcqWdI8xHXblzuwsMJLy+QO0IX4mJ5EmbKpqTIYyz6iH9EwAWRtQJ5krKc
+	tO1/iOoq/e2ivlxml7nSz1BIz9g8DzcmQlRJ3gLwBQWUD5fyq1/dZRu27PLhAylnFeWHH3h
+	DhhMDcScrbBwWqaKsSnd3AdWzxCeJgwl/D/nfgNSNU5gMY3KnyQjs0VfapsLNTWPGXSVMNp
+	EIWDNY2OCpcS3+ZOUqEtBNy+mHeE4Fr3fCdzOzFSQgPxQa9J2GsUj7v3BzK8A0cZGuW4pyW
+	6J6KHsCPBWwHpijnlexj9VOPZQAHCfFZXU0WjZaHzhn7hCK2e/KTVIGBNxd+uvaN25dXT6t
+	EvTFxgthj3lZueomjOXYK/iqa9Bik3tIgmSKbYBWSDMPzoXL0QkGngiJ2ZJmusZRYC5MFIC
+	BljKFOcMhBtfQhkVnOqnoRQrVKhpyGtEh0kwLC9n+Wtn4zefd+ItD00Vjufi5OlyQKsj69A
+	GgzMMBKAGh2Ih27B+bwe53p3Q6l6eHwcuFKt5DoEP9+rumUsRiEm60U7d3axXdj1g95+qr8
+	WSAD4HOAYPNYMhNtvgTCnZNI2PjnCJ3U8EQutyFyUhXObVrnZ3U5mxMDyKJP7KsZiQmYHAK
+	6Ue805myjeBCteyGozinUkMmzjcok=
+X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
+X-QQ-RECHKSPAM: 0
 
+On Mon, Oct 26, 2026 at 08:00:22AM +0000, netdev-bot+sinfo@kernel.org wrote:
+> Hi!
+> 
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+> 
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
+> 
+>  - What hardware the change was tested on. For driver fixes please
+>    mention the device (and if relevant firmware version) used for
+>    testing, or say that the change was not tested on real hardware.
+> 
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+> 
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
+> 
+Hi,
 
-on 2026/10/25 20:42, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
->
-> Critical: 0 · High: 1 (1) · Medium: 1 (2) · Low: 0
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
->
-> - [High] dbg_mutex is taken only on the teardown paths
->    (hns3_reset_notify_uninit_enet, hns3_client_uninit,…
-> - [Medium] The Fixes tag and changelog put the whole root cause on
->    eced3d1c41db ("net: hns3: use seq_file for files in queue/ in…
->
-> Pre-existing issues:
-> - [High] This problem wasn't introduced by this patch, but the patch
->    rewrites the guard and makes the outcome worse.
-> - [Medium] This problem wasn't introduced by this patch, but
->    hns3_set_ringparam() reports success for a failed ring resize when the…
-> - [Medium] This problem wasn't introduced by this patch, but
->    hns3_alloc_ring_memory() leaks a newly created RX page pool when RX…
->
-> --
->
-> net: hns3: fix use-after-free in debugfs read during reset/unload
->
-> This patch adds a dbg_mutex to struct hnae3_handle. The enet-layer
-> debugfs show callbacks take it, and so do the reset uninit, client
-> uninit and ethtool ring resize paths while they free rings and vectors.
-> The debugfs readers also re-check INITED/RESETTING on every loop
-> iteration.
->
-> Closes: https://lore.kernel.org/all/a0853cd9-cab5-441d-b181-8ba97f2f58b0@huawei.com/
->
->> The seq_file refactoring of hns3 debugfs removed the per-file entry
->> state checks. Without them, debugfs show callbacks can access
->> priv->ring, priv->tqp_vector, and ring->desc while these resources
->> are being freed by reset, driver unload, or ethtool ring resize.
-> [ ... ]
->
->> Fixes: eced3d1c41db ("net: hns3: use seq_file for files in queue/ in debugfs")
-> [Severity: Medium]
-> Is this Fixes tag complete?
->
-> Before eced3d1c41db, hns3_dbg_read() did a single INITED/RESETTING test
-> before running the dump. It shared no lock with
-> hns3_reset_notify_uninit_enet() or hns3_client_uninit. That is the same
-> window the changelog describes as "Plain state-bit checks leave a TOCTOU
-> window between check and use".
->
-> The ring resize race is older still. Since a723fb8efe29d3 ("net: hns3:
-> refine for set ring parameters"), hns3_set_ringparam() has freed the old
-> descriptors with:
->
-> 	for (i = 0; i < h->kinfo.num_tqps * 2; i++)
-> 		hns3_fini_ring(&tmp_rings[i]);
->
-> It never clears HNS3_NIC_STATE_INITED or sets HNS3_NIC_STATE_RESETTING.
-> So no state-bit check, old or new, would stop a concurrent tx_bd_info or
-> rx_bd_info reader from walking ring->desc. Also, eced3d1c41db only
-> converted rx_queue_info and queue_map.
->
-> Stable trees that predate eced3d1c41db have the debugfs vs ring resize
-> use-after-free. If backports go by this tag alone, would those trees be
-> skipped? Should a723fb8efe29d3 get a Fixes tag as well, and should the
-> changelog's wording about ethtool ring resize be adjusted?
+The issue was encountered during rnpgbe development and hardware
+regression testing.
 
-Agreed. v3 will add the root commit (2019):
+The fix was tested on MUCSE N210 and N500 adapters with firmware
+1.1.8.0, using PCI passthrough to a VM. Physical N500 is used as
+link partners.
 
-     Fixes: a723fb8efe29d3 ("net: hns3: refine for set ring parameters")
-     Fixes: eced3d1c41db ("net: hns3: use seq_file for files in queue/ in debugfs")
+With the unpatched driver, administratively bringing down the link
+partner left the VM interface reporting carrier up throughout a
+seven-second observation period. With the patch applied, the VM
+interface correctly reported carrier down.
 
->
->> diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
->> index 1347edac76993..40d715924e588 100644
->> --- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
->> +++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-> [ ... ]
->
->> @@ -796,13 +823,9 @@ static int hns3_dbg_page_pool_info(struct seq_file *s, void *data)
->>   	struct hns3_enet_ring *ring;
->>   	u32 i;
->>   
->> -	if (!priv->ring) {
->> -		dev_err(&h->pdev->dev, "priv->ring is NULL\n");
->> -		return -EFAULT;
->> -	}
->> -
->> -	if (!priv->ring[h->kinfo.num_tqps].page_pool) {
->> -		dev_err(&h->pdev->dev, "page pool is not initialized\n");
->> +	mutex_lock(&priv->ae_handle->dbg_mutex);
->> +	if (!priv->ring || !priv->ring[h->kinfo.num_tqps].page_pool) {
->> +		mutex_unlock(&priv->ae_handle->dbg_mutex);
->>   		return -EFAULT;
->>   	}
->>   
->> @@ -810,14 +833,17 @@ static int hns3_dbg_page_pool_info(struct seq_file *s, void *data)
->>   	seq_puts(s, "POOL_SIZE(PAGE_NUM)  ORDER  NUMA_ID  MAX_LEN\n");
->>   
->>   	for (i = 0; i < h->kinfo.num_tqps; i++) {
->> -		if (!test_bit(HNS3_NIC_STATE_INITED, &priv->state) ||
->> -		    test_bit(HNS3_NIC_STATE_RESETTING, &priv->state))
->> -			return -EPERM;
->> +		/* Per-iteration check bounds reset latency to one iteration. */
->> +		if (hns3_dbg_is_device_busy(priv)) {
->> +			mutex_unlock(&priv->ae_handle->dbg_mutex);
->> +			return -EBUSY;
->> +		}
->>   
->>   		ring = &priv->ring[(u32)(i + h->kinfo.num_tqps)];
->>   		hns3_dump_page_pool_info(ring, s, i);
-> [Severity: High]
-> This is a pre-existing issue, but the check above only looks at the
-> page_pool of the first RX ring. The loop then passes every RX ring to
-> hns3_dump_page_pool_info(), which dereferences ring->page_pool without
-> a NULL check:
->
-> 	READ_ONCE(ring->page_pool->pages_state_hold_cnt),
-> 	atomic_read(&ring->page_pool->pages_state_release_cnt),
-> 	ring->page_pool->p.pool_size,
->
-> hns3_alloc_page_pool() creates the pool separately for each RX ring. On
-> failure it leaves the pool NULL and ring init carries on:
->
-> 	ring->page_pool = page_pool_create(&pp_params);
-> 	if (IS_ERR(ring->page_pool)) {
-> 		dev_warn(...);
-> 		ring->page_pool = NULL;
-> 	}
->
-> If the first RX ring got a pool and a later one did not (for example
-> after a transient allocation failure), can reading page_pool_info oops on
-> the NULL page_pool?
->
-> With this patch the oops would happen while dbg_mutex is held. Would
-> later calls to hns3_reset_notify_uninit_enet(), hns3_client_uninit() or
-> hns3_set_ringparam() then block forever in
-> mutex_lock(&handle->dbg_mutex)?
+The comparison was repeated three times per adapter for both driver
+versions. After bringing the link partner back up, bidirectional
+ping passed in every case.
 
-Confirmed. Entry checks only ring 0; loop derefs ring->page_pool
-without per-ring NULL check. v3 fix:
+If another revision is needed, I will include this information in
+the commit message.
 
-     for (i = 0; i < h->kinfo.num_tqps; i++) {
-         if (hns3_dbg_is_device_busy(priv)) { ... return -EBUSY; }
-         ring = &priv->ring[i + h->kinfo.num_tqps];
-         if (!ring->page_pool) continue;
-         hns3_dump_page_pool_info(ring, s, i);
-     }
-
->
->>   	}
->>   
->> +	mutex_unlock(&priv->ae_handle->dbg_mutex);
->>   	return 0;
->>   }
->>   
->> @@ -826,17 +852,23 @@ static int hns3_dbg_bd_info_show(struct seq_file *s, void *private)
->>   	struct hns3_dbg_data *data = s->private;
->>   	struct hnae3_handle *h = data->handle;
->>   	struct hns3_nic_priv *priv = h->priv;
->> +	int ret;
->>   
->> -	if (!test_bit(HNS3_NIC_STATE_INITED, &priv->state) ||
->> -	    test_bit(HNS3_NIC_STATE_RESETTING, &priv->state))
->> -		return -EBUSY;
->> +	mutex_lock(&priv->ae_handle->dbg_mutex);
->> +	if (!priv->ring) {
->> +		mutex_unlock(&priv->ae_handle->dbg_mutex);
->> +		return -EFAULT;
->> +	}
-> [Severity: High]
-> Can a debugfs reader still dereference a freed priv->ring during reset
-> re-init?
->
-> hns3_reset_notify_uninit_enet(), hns3_client_uninit() and
-> hns3_set_ringparam() all take dbg_mutex, but
-> hns3_reset_notify_init_enet() never does. That function publishes a new
-> priv->ring while INITED is still clear. Its error unwind then frees
-> everything again without the mutex:
->
-> hns3_reset_notify_init_enet() {
-> 	ret = hns3_get_ring_config(priv);
-> 	...
-> err_init_irq_fail:
-> 	hns3_uninit_all_ring(priv);
-> err_uninit_vector:
-> 	hns3_nic_uninit_vector_data(priv);
-> err_dealloc_vector:
-> 	hns3_nic_dealloc_vector_data(priv);
-> err_put_ring:
-> 	hns3_put_ring_config(priv);
-> 	...
-> }
->
-> The INITED/RESETTING entry check has been replaced with a bare priv->ring
-> check. So a reader in this window takes dbg_mutex unopposed and passes
-> the check. It then enters hns3_dbg_tx_bd_info() or hns3_dbg_rx_bd_info(),
-> and both dereference priv->ring before their first busy check:
->
-> 	ring = &priv->ring[data->qid + data->handle->kinfo.num_tqps];
-> 	for (i = 0; i < ring->desc_num; i++) {
-> 		if (hns3_dbg_is_device_busy(priv))
-> 			return -EBUSY;
->
-> If hns3_put_ring_config() runs at the same moment, the ring->desc_num
-> load reads devm-freed memory. If priv->ring has already been set back to
-> NULL, it faults on NULL plus an offset.
->
-> hns3_dbg_page_pool_info() looks to have the same problem, because its
-> check indexes priv->ring[h->kinfo.num_tqps] before any busy check.
->
-> Before this patch, hns3_dbg_bd_info_show() returned -EBUSY in this
-> window because INITED was clear. The changelog says the mutex "rejects a
-> reader that arrives after the writer has finished tearing down resources
-> (priv->ring is NULL by then)". That doesn't seem to hold once re-init has
-> reallocated priv->ring.
-
-Does not hold. Uninit clears INITED before mutex_lock, and init
-sets it only after ring is fully ready. Throughout the re-init
-window INITED=0 so every reader hits -EBUSY from
-hns3_dbg_is_device_busy() before touching priv->ring. The TOCTOU
-case (reader holds mutex, writer clears INITED mid-loop) is also
-safe: writer's put_ring_config runs after mutex_lock, so ring
-stays alive while reader holds it. No change for v3.
-
->
-> Would it work to take dbg_mutex in hns3_reset_notify_init_enet() around
-> the allocation, the error unwind and set_bit(HNS3_NIC_STATE_INITED)?
-> Alternatively, the busy check could stay ahead of the first priv->ring
-> dereference.
->
-> [ ... ]
->
->> diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
->> index 392653635bda2..cb6a23085be48 100644
->> --- a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
->> +++ b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
->> @@ -1258,6 +1258,7 @@ static int hns3_set_ringparam(struct net_device *ndev,
->>   	if (if_running)
->>   		ndev->netdev_ops->ndo_stop(ndev);
->>   
->> +	mutex_lock(&h->dbg_mutex);
->>   	hns3_change_all_ring_bd_num(priv, new_ringparam.tx_desc_num,
->>   				    new_ringparam.rx_desc_num);
->>   	hns3_change_rx_buf_len(ndev, new_ringparam.rx_buf_len);
-> [Severity: Medium]
-> This is a pre-existing issue, but can the hns3_init_all_ring() call that
-> follows here leak an RX page pool when buffer allocation fails?
->
-> hns3_alloc_ring_memory() creates the pool and then allocates the
-> buffers:
->
-> 	if (!HNAE3_IS_TX_RING(ring)) {
-> 		if (page_pool_enabled)
-> 			hns3_alloc_page_pool(ring);
->
-> 		ret = hns3_alloc_ring_buffers(ring);
-> 		if (ret)
-> 			goto out_with_desc;
-> 	...
-> out_with_desc:
-> 	hns3_free_desc(ring);
-> out_with_desc_cb:
-> 	devm_kfree(ring_to_dev(ring), ring->desc_cb);
->
-> The error path never calls page_pool_destroy(ring->page_pool). And
-> hns3_init_all_ring() only unwinds the rings before the failing one:
->
-> 	for (j = i - 1; j >= 0; j--)
-> 		hns3_fini_ring(&priv->ring[j]);
->
-> After that the pointer is lost. hns3_set_ringparam() memcpy()s the saved
-> ring over priv->ring[i], and the probe/reset paths free priv->ring via
-> hns3_put_ring_config().
->
-> Would the page_pool, its ptr_ring and any pages that
-> hns3_alloc_ring_buffers() already returned to it be leaked for good?
-
-Confirmed. out_with_desc: skips page_pool_destroy. This only affects
-the reset init path (hns3_reset_notify_init_enet) — the failed ring
-is not cleaned up by the rollback loop (j = i-1), and
-hns3_put_ring_config doesn't call fini_ring either. Probe path is
-safe (hns3_uninit_all_ring covers all rings).
-
-v3 will add a separate patch to fix this:
-
-     out_with_desc:
-         if (!HNAE3_IS_TX_RING(ring) && ring->page_pool) {
-             page_pool_destroy(ring->page_pool);
-             ring->page_pool = NULL;
-         }
-         hns3_free_desc(ring);
-
->
->> @@ -1276,6 +1277,7 @@ static int hns3_set_ringparam(struct net_device *ndev,
->>   		for (i = 0; i < h->kinfo.num_tqps * 2; i++)
->>   			hns3_fini_ring(&tmp_rings[i]);
->>   	}
->> +	mutex_unlock(&h->dbg_mutex);
->>   
->>   	kfree(tmp_rings);
->>   
-> [Severity: Medium]
-> This is a pre-existing issue, but suppose if_running is true and
-> hns3_init_all_ring() fails. The revert path restores the old ring
-> parameters, and then ret is overwritten just after this point:
->
-> 	if (if_running)
-> 		ret = ndev->netdev_ops->ndo_open(ndev);
->
-> 	return ret;
->
-> If the reopen succeeds, does hns3_set_ringparam() return 0 for a resize
-> that was rolled back, so that ethnl_set_rings() reports success to
-> userspace?
-
-This is unrelated to this bugfix series; no change in v3.
-
--- 
-pw-bot: cr
-
+Thanks,
+Dong Yibo
