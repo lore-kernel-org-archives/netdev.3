@@ -1,72 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.22
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792984941;
-	b=WzdQmuOA9SU0B+IcaZYK937P+C8F+W3DFsuQJ6lMc498yJhH7ElAO1KtinDtCcnmEqqw
-	 Fc0TyTaqc6MsT4lM4OL5N24g6Y/l5ObyUIluEuWQLQtIwUT6L34CIihknSgyPZ16XUqNi
-	 ssznCymv64gsKKkYKG3GqH6SZOnLJBMqEkMfukAtXXxD4FX6vtZNFiQNUTBNexzup/4gJ
-	 uF4MVvaV6bvUL1vkfAMKRQVxy+mZcntyn674eGxde55u22Fx9rDGpCdQ8A4t0htiuqKME
-	 q7hibbIDsD2DPMY/6GwKtEG+EqTzHkA/LwHhri/Of1cejgz2UWxIyiWoykOKBCWYmNQ==
+	t=1792985486;
+	b=1ntFl9X7TCbi7MvrAHTUfGpAIkPfndcqca4OMOBhIw4rl5JBHbbdJGopOuA/wU1DJAqJ
+	 SK1P1P7po7c1IysWgqsI7r5M8AWow6zZvDruUjSq0jpb2Yegq67Erprp8TsGOFRFjlIGQ
+	 vSFzJWi9UPVeWtmVCnS1kDiWtu+5leqxGJruzqgh/cqonBqyEbTTpQrsQNr/aGh2Mr1dp
+	 /ieE906J+oJN49Bc+DbampOmIzEBGZADV5tWct+lrIADEGCq7Ryt3CYwsTnn4a+ae49O5
+	 CUvobEYteAw4rbYAmCiZnn7u2rXnL4rHy4oMcue4XLyiNcBHp6Mihjy9X0L6p+fP0zQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792984941;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
-	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=QTkGoh7JVetp3qKSKYheTjXfXOD9uDVC36zPXxqDxM0=;
-	b=y67wMmVd/shC+o+6RH+GSXfEIDIQRaL/b9IrpaocBmNsivqUrOw4NuUzOvaJW+aPQN0H
-	 yaU5o0/c7NrzHe0yXY6Zsbpt4kDeNDwnhbmTEl3cbhU08Y7aqhxi9QrzKjUyXqi2aFnWv
-	 vq3/2mDLP9nSNWXn2t53+j8rKhIABMIVRMh9POS5CvElm1shqJLA1jd9IHgjYO5oaFmX8
-	 tiqPIFBqhI2nFfI47SgtayWccWKDSHXDvdK7Bsx2LV3SXKl07H8rc1Aj8G1XjfjnYJbMh
-	 aOsN/EMCE2dHgAT1j8avWFQTUhoPLqADCpQutdhAg2QI7HH/8hZsum72oeWnothZefA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792985486;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=q0ND4bsI7olG+bcJ2oFCEqAfSxwkslyibAWglvsbmZQ=;
+	b=iTza0ETPW2qyuifOjkTXCMeADF0Pdne4OjVI2Ut52qyYPTq5FnW/uXqJX+bKduo/0YGr
+	 GyPmPMIaw0bz+OEEfDCwnm2rIPgY+dDrH0bMyhZkJhR4HMnxr5Kkpx5bJqo4RBy7vYEb5
+	 fPz4M2jwY4YvAIsPJOpnJMF/At5yUsQNrRE6l25tptjhIxhS3plfS4LIHFNP2SKl1Zil0
+	 2bJ0NPNWp8cdomIoMKOZq9btFSjA/3hb7NInRfnPqMe+Eb0yjrMZA/91WhoTF2jMj3c1p
+	 SS2wTVSDwP7ARslT9EocMW/MFbEwpAu+6xjvVPvLtXcs9p4reOhEsVUBZeoRWzrtNsw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--tavip.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=CNRxYf9Y;
-	arc=none smtp.remote-ip=209.85.216.72
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Gmuz2rWB;
+	arc=none smtp.remote-ip=91.218.175.22
+Received: from mta0.migadu.com (out-22.mta0.migadu.com [91.218.175.22])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C4D606A326
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 03:22:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 32C4D606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tavip.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79EA8606A31B
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 03:31:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 79EA8606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=CNRxYf9Y
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3aaf955db5fso4256970a91.0
-        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 20:22:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792984939; x=1793589739; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=QTkGoh7JVetp3qKSKYheTjXfXOD9uDVC36zPXxqDxM0=;
-        b=CNRxYf9YdRSnf3Rd6rkB+ZGcpteiBCjIHm8g4tOFI6uQbEu8eXSuMShXxZ8i6n3d2n
-         u5xumqpg/qTnd8rVBOm4lRqtLcCZIR8wIp8xk2Qu46n7hir5zIV7Kx3wZ0ouUxxhnLHW
-         IJNPpRpnxBBLmgXKC83tgL1/iS9tf5Fc1fjXOFc1wg8UFfsZ409s1QBrCX/6rlIzZewU
-         nOxAENUQfVeI5EZT9LFyz/WVhxVKCykavzgO0h3+sMIK6HpuVqvw/QUcG9CSva6leN0z
-         OSJU+r+p4I5gb+bJF4uKqRIOkZawbQ3/IdDtHlugIzEeRqADRepW02lGiDmZ1mcT6wsE
-         zDIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792984939; x=1793589739;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QTkGoh7JVetp3qKSKYheTjXfXOD9uDVC36zPXxqDxM0=;
-        b=w+xPyibNqhf+ZLK0zW0OCVYzxRL1sLWs0WlvtGsr//WVvzKXzh+nfX/rM+iWfW6RSO
-         NaxFrBFhE3q2EL1d4bML71iISSBlDd4RF5fWyt/AzWge3uR38V3suXBs1F7lpkV0mM0u
-         ygQdTz6hDZmLNwwyy3/mP1cCPK6qlwK9S8cVFArsZHfY8GDhllQZ2fEXfLRdUqawsQWC
-         KoIPR1UDphdRZiN+4eraUZ9RVKTpAL0bml3mPELBlH9ZgIVgQYSgtEJlw3uyBfVdmQgH
-         ckCADuHsosE0c4IPCTEBPBYeTbgwS36IEHKf5oJRyRSzkD/wb+Dlj4XXh3d1IkACoWSL
-         qRPQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw1GAdAMQ4KR3hRMpDBv/++OBK1ibJD9OyS0oaQ+EQJCKQJa5NyN/o5WnHDvSqtnyN4+gEWvRw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLvdS2ERtHnEB/QRVK7fyqkDmo68uS2tYoVC4iWg/y69o0DfmaE
-	QFYWtLDGnSZf9UFdt/qVmjEIuRrZVdM71YVSAXmHQ329U0OnxU+e8Zz20NfKiUoxvIfh624uET0
-	zeg==
-X-Received: from pjbml5.prod.google.com ([2002:a17:90b:3605:b0:3a4:b8b3:a08e])
- (user=tavip job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4490:b0:3ac:53e0:4ed5
- with SMTP id 98e67ed59e1d1-3adeafd1e8bmr4604045a91.39.1792984939373; Sun, 25
- Oct 2026 20:22:19 -0700 (PDT)
-Date: Mon, 26 Oct 2026 03:22:14 +0000
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Gmuz2rWB
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=x39ufFhSR9iF7ouum3UUtIW0rlo3aLIetTlRgwm0ywU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792985482; v=1; x=1793590282;
+ b=Gmuz2rWBk3Ztc1ZOnfFHppCvw84/x0H6YLEsjRI8gqEPyf4Xn9h8wsuKqazFHADeKEiK0Ioz
+ UBQrkyd1biq4q9f0hO0Ak+8o7lNI3wUIPITw7iWqOenoVrnMJXaaaNtUiEq1CXhmgwPQ2x27LNz
+ BX4Gje3GmeI3zvGELBfvhjoc=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta11.migadu.com with ESMTPS id 666ad9eda4df890f;
+	Mon, 26 Oct 2026 03:31:22 +0000
+X-Mizu-Trace-ID: 666ad9eda4df890f
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 26 Oct 2026 11:31:13 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: Gabriel Goller <g.goller@proxmox.com>, David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] ipv6: Add NETCONFA_FORCE_FORWARDING to netconf
+ messages
+Message-ID: <at7JgfsvrAUxtPzy@fedora>
+References: <20261023-ipv6_add_netconfa-v1-1-94d14b07d621@proxmox.com>
+ <20261025131102.GA184152@shredder>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -75,79 +69,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.257.gf7497c7d27-goog
-Message-ID: <20261026032216.1145201-1-tavip@google.com>
-Subject: [PATCH net v4 0/2] tcp: clamp return value of tcp_wmem_schedule() to non-negative
-From: Octavian Purdila <tavip@google.com>
-To: Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, "David S . Miller" <davem@davemloft.net>, 
-	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Shuah Khan <shuah@kernel.org>
-Cc: Simon Horman <horms@kernel.org>, Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Octavian Purdila <tavip@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261025131102.GA184152@shredder>
 
-This series fixes a bug discovered in production in tcp_wmem_schedule()
-where a negative sk->sk_forward_alloc under TCP memory pressure causes
-tcp_wmem_schedule() to return a negative copy length when
-sk->sk_wmem_queued already reaches or exceeds sysctl_tcp_wmem[0].
+Hi Ido,
+On Sun, Oct 25, 2026 at 03:11:02PM +0200, Ido Schimmel wrote:
+> On Fri, Oct 23, 2026 at 12:59:18PM +0200, Gabriel Goller wrote:
+> > Since force_forwarding was added, changing the sysctl sends an
+> > RTM_NEWNETCONF notification of type NETCONFA_FORCE_FORWARDING, but
+> > inet6_netconf_fill_devconf() never emits the attribute. Listeners only
+> > receive NETCONFA_IFINDEX without the new value, and RTM_GETNETCONF
+> > replies and dumps omit it as well.
+> > 
+> > Fixes: f24987ef6959 ("ipv6: add `force_forwarding` sysctl to enable per-interface forwarding")
+> > Signed-off-by: Gabriel Goller <g.goller@proxmox.com>
+> 
+> This seems to fall under the "Not a regression, not critical" category
+> [1], so can wait for net-next.
 
-sk->sk_forward_alloc can transiently become negative when tcp_collapse()
-re-packs partially read or high payload-to-truesize SKBs in the receive
-queue and charges newly allocated SKBs via sk_mem_charge() before
-freeing the original SKBs. When a subsequent send hits memory pressure
-in sk_wmem_schedule() with sk->sk_wmem_queued >= sysctl_tcp_wmem[0],
-tcp_wmem_schedule() returns min(copy, sk->sk_forward_alloc) < 0.
-Callers such as tcp_sendmsg_locked() then pass that negative copy length
-to skb_copy_to_page_nocache() -> copy_from_iter_full() ->
-check_copy_size(), triggering WARN_ON_ONCE(bytes > INT_MAX) in
-production and returning -EFAULT instead of waiting for memory or
-returning -EAGAIN.
+One question about this rule. For "not critical" fixes, should I make that
+judgment myself and post to net-next? Or should I send them to net and let
+the maintainers decide whether the fix should go into net or net-next?
 
-Patch 1 clamps the return value of tcp_wmem_schedule() to [0, copy] so
-a negative sk->sk_forward_alloc is treated as 0 available bytes.
-Patch 2 adds a packetdrill selftest that reproduces the negative
-sk->sk_forward_alloc condition via tcp_collapse() under memory pressure
-and verifies that a non-blocking write fails with EAGAIN rather than
-EFAULT.
-
-Changes in v4:
-- Add --define=REQUIRES_MEMCG="1" support in ksft_runner.sh to skip the
-  test when the cgroup2 memory controller is unavailable and clean up
-  pkt_* cgroups and cgroup.subtree_control via an EXIT trap.
-- Pin packetdrill to CPU 0, write 0 to memory.high twice to guarantee
-  local per-CPU memcg stock is drained synchronously, and set
-  memory.swap.max=0 in the test cgroup.
-- Fix checkpatch warnings (duplicate Signed-off-by trailer and comment
-  line length) and preserve the "net" target prefix on all patches.
-
-Changes in v3:
-- Fix packetdrill test failure in netdev CI (CONFIG_MAX_SKB_FRAGS=17):
-  adjust segment sizes (35 KB) and buffer limits so the receive SKB
-  truesize is identical across CONFIG_MAX_SKB_FRAGS=17 and 45, and
-  tcp_collapse() deterministically drives sk_forward_alloc below -16 KB
-  without invoking the memcg OOM killer.
-
-Changes in v2:
-- Include production warning trace in Patch 1 commit message.
-- Skip the packetdrill test when PAGE_SIZE != 4096 via
-  --define=REQUIRES_PAGESIZE="4096" in ksft_runner.sh.
-- Collect Reviewed-by tags from Kuniyuki Iwashima and Eric Dumazet.
-
-Octavian Purdila (2):
-  tcp: clamp return value of tcp_wmem_schedule() to non-negative
-  selftests: net: packetdrill: add test for negative sk_forward_alloc in
-    tcp_wmem_schedule()
-
- net/ipv4/tcp.c                                |   2 +-
- .../testing/selftests/net/packetdrill/config  |   2 +
- .../selftests/net/packetdrill/ksft_runner.sh  |  28 +++++
- .../tcp_wmem_schedule_negative_fwd_alloc.pkt  | 116 ++++++++++++++++++
- 4 files changed, 147 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/net/packetdrill/tcp_wmem_schedule_negative_fwd_alloc.pkt
-
--- 
-2.56.0.257.gf7497c7d27-goog
-
+Thanks
+Hangbin
+> 
+> Also, NETCONFA_FORCE_FORWARDING is not emitted when it's disabled as
+> part of:
+> 
+> sysctl -wq net.ipv6.conf.all.forwarding=0
+> 
+> Is this intentional?
+> 
+> [1] https://lore.kernel.org/netdev/CAHk-=wiSnTE9vBZ=5_v+3EEkdazCCbBM5YABRzRHUAeRdyd4Xw@mail.gmail.com/
