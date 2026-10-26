@@ -1,100 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793017267;
-	b=fF9sOASvVWQKS/FF/5MMtIRCC18/NHoxQ3xqmBn9FM4bBymP7YtQzpd55rpqdLW5YCVu
-	 EP7Ps1xtQcFGLWuGuJfq+72idnwozBk+B1I4uvmPfJRxuyDlYia2u6sK/LJTcsaTfLHFl
-	 DmTvKAof+OEQKetQqjtS48brkM5mRiYnFcRAE5NOCOMjqUwUg17bpY3Pkarjqw+aeplHr
-	 OPMFFwi0CXfCPZ/hIlQ2/AIeCW+vzGNXMeynV5tGbMXnXVenUlHjfoO2oqKSyWKG1O+Xh
-	 ayypzbLNrlcUMu+SDcHqu8bV6SITbt0x3ZfgGRL+YBfX1CAbFXovmaHymhCVq6yqjgg==
+	t=1793017340;
+	b=TK3dGugHfbwo9cjUseEALnE9/gWtGlsBGin5m4xQmU5E6/iV9w8kyQ/tF8cLO/Zq9nnx
+	 Jr6EPGUvqokZdS8g+WkIH5U1ISysmY+5yYNpDbi6OYuQjJkVVNsYJ1TZYvAE7XaKSmn3g
+	 Paoxha/CDOhFLHCOR+rpAcJDpzcd7LPHHZAwaJvRbeNNXjf157vU+OiDcXHa6j81WPfM8
+	 ys5f48UgZu0nnVXVZISYvyLcPOs5t+PPWJaiSHBtB9dOxJNHvoSqkj/YxN4sn37swbpG2
+	 dnLj0ivt+eeTUpyhgN8rSe6d5RgOYjyBz7fsqQ86+c5e2TpNs3g4t181dmAQwtCwgFw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793017267;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793017340;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
 	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	bh=CyuTVqrEGPeDy0Z7+MBAQ6iLsoLVTf0+QXG1mFBmti0=;
-	b=iJl1EOfUipHufcJrm74OtDRukBFQ7g0VnZVVzdYEZCEsdEGq+iHZ7CVF7utS0BFSKKB/
-	 02UImtiVIrtqz/gGb3Jg07E+UizHWvUP8KS8HAhVZeSDRo7lalZrbjiVj+r3z86XawOl9
-	 EZpe/ncS53dLxZvglrP360waREE4nP1kFC+0C7r0pLCong2zLpEDJc477ijvI9UDEX3zW
-	 ktXAVSuIKUzSHBx9gZzoUXGPOOJ5WwYK5VKu8zW8cLZy+16sVXFlTEoS9r1UNn/QUBJ7A
-	 QTt2sbf/bmK3wxYhj8lPBoV5GQWGl4QvrSfm4n+YO3lqCwT2ZeQarYVqrPNeidTdP1A==
+	bh=PJP1r5/GuQZwv1AbNOj2FluY2esrMbEg2unT6FQO/Lk=;
+	b=dF+QJIOQbtb4SUWP2sh9H4UY2+F5N5Vu27C7W+S0pSnkYu4Hhb5YPT8K2zTQlVZndXz6
+	 xpdpdXLWlFe5iOVGazUcZhegGkiiaKWB8IluLpz2sTOpriwZSiJQLFnC6KNyT4hfe78xz
+	 WTRQ5AeBaL+t1zQPaN6gBRDzoZyUI3hcbkOIf5hhZOYVvmR/TqVfHCAe+7TtPUvnga63r
+	 jInVt/k09wPUcg4Pclw+knM6mAho8T6fG2Q6TR4X169ltY+hR9tGMuI+nLoBZM3gGp2pL
+	 n4WGHs6MV/QmVjaYxswaFe8LfZiCP+hbExygkQIKsu4gznHvjX+LVI5LXgE1VXFLiKA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=GKciuavA;
-	arc=none smtp.remote-ip=209.85.221.172
-Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=hCGtBGqE;
+	arc=none smtp.remote-ip=209.85.222.50
+Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com [209.85.222.50])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE88A606A31D
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 12:21:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CE88A606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9CF606A31E
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 12:22:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BE9CF606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=GKciuavA
-Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-5eaabf28c06so2509878e0c.2
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 05:21:06 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=hCGtBGqE
+Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-98c8cbdb9daso535219241.1
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 05:22:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793017265; x=1793622065; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1793017339; x=1793622139; darn=vger.kernel.org;
         h=mime-version:content-transfer-encoding:content-type:references
          :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=CyuTVqrEGPeDy0Z7+MBAQ6iLsoLVTf0+QXG1mFBmti0=;
-        b=GKciuavAF+9leS2pq0kl1jIr9oX52ttnm9N1rV9iURmgf518/zVSA8zUYlPoprBnMK
-         1CrszCrIMVII9ic073c1/eJv2aCE+U/Ml9z6Gz7AEJahOEylEDSAEH3beRgS69ZBCrtq
-         R4g5STi5+xS+Jwxw2v/MoYssQO8mpt6wLkM3wB06CgCG711zWCm0cDD7umPR7rffrhuv
-         kYkrfvQLiKMCjcyv9RuThXlcJ6aRNYJwcpOnjP+q6LpVmO3mInaelgOWVD1lnryXu2De
-         xnljQYB44FkjlVF4h4HsUZjtwuy9mgEatHdqitcrdvHYuC4AYIgDU/inCZZYNy9opN+Z
-         J6MQ==
+        bh=PJP1r5/GuQZwv1AbNOj2FluY2esrMbEg2unT6FQO/Lk=;
+        b=hCGtBGqErUXyKcyFDWAEr7zieuwbCnJOQBfQ+KEuf/wRvp5C3X/kvgufga2Fus3+TI
+         JGvipk6tTyEbL/E5aW73SSvEe46Cc5fwK25STI3XHB76CJ7oVUTx4+k+QlICIwJ7xR4B
+         9wtDDFaj95vZWxTPnw2fPHJ9456MDK/plNxng2ACXpQia0w0tHr7Ygh8eKvqL7VtB6s+
+         itlo2eDi5isgYaTFl9gNq3whanasFKQCtSv3c4BQ+XIyKxh7oyon+Pv2QcDti2TLC4Wf
+         yoFC96+84vfjDF2noO/psLKp5R1CVDzqO0xTrGJ5Hid6J0eL74xYmmKahcui4IMSqr7a
+         oeRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793017265; x=1793622065;
+        d=1e100.net; s=20260707; t=1793017339; x=1793622139;
         h=mime-version:content-transfer-encoding:content-type:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=CyuTVqrEGPeDy0Z7+MBAQ6iLsoLVTf0+QXG1mFBmti0=;
-        b=A+Zhc5S5YV8bYu4plsejtVIyvOg5BCfWvK9TZ8s4HBJvRdF/qpSaA2Rjl8qU1kxneE
-         /IwevxzrE0pvB6zHXkKBDnjsGt8zrrcXU6U3JwmnZEgRKGFUDwiLm/YbRY9J7tChwCLw
-         FrbCxAURx/Jcwm4E50JsVoXHW+cWN/Fgc3PJpVLnNMHMTuoe3wys0xfgQpOB92Dt8Z6s
-         rbUKTOa6lXuAust8tbgDzc8L8pzI/T3A4tyP53im/zEO8s+oBLz/MEs94M1m+Ek2CswY
-         c4MXSHuVA1zrSz0YS8bGFvyPWNEmcv7XRSyZAVIwdHhfIBdiMxbvKpXD12KlGIT1dJvy
-         Q38g==
-X-Forwarded-Encrypted: i=1; AKwUvBw0bVowGaKARGrp4O3QUZHl2HNZOrocvSbvBMUxZu0fpqll11NaC+UKss02RbuRavTVklmGa+s=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJU2pxsu0owidVdbBY+GI1rguVaoWXT65IuRkDuymwot5wA7cnX
-	huCk1NF77VHGOa08KyLymeR96NuAhL2uBigMtYA6aai8J79eDsnzA4ae
-X-Gm-Gg: AYBFou0B+D20HOWaU+wvEYGarwE4/5qA3HhQfv8kQUSIwWba47BMbWv124/xZoOoCkp
-	b8Cf6/gcRO/YioUJjXA8OvbrprTH0eaQWxvytfeL08boW7ey6xjf/Sf1+y1zzIvC1lefkxA4Yv9
-	yVLunXunNCAz5xMeQFkym3qTwJdVW5Fr+E6CL/lsw8oLh9UYrudngyCAmQyd6Uu54MQyVB6+qwC
-	DvzpmILcctxmbDlDXXCaP4cNk9skQgoY23+xS4tvbSlD1B+C9EZXaVtRsDbxIEnVLs83trl9RxN
-	d9cC0ssSIPV1mIeMbiBM7arZu3vu8IK3vYBmVIdRKAg+UCKF7skcOpJqUVH7gdMTnLbq9QdYNwM
-	RN6cyvQeDYbXyxoQoIpB3tg58wpr4ln0BfkHadn+DbgAhy20nrsH5Re4/qmsFlmwlZTbByNgIGM
-	q6E7aG3BGsZe6d0b6Zm4yRwqJqS5wsxt8qfIT0XeYiMt0WUkB1KM8y3xGt9u8OovKrXTthjieAZ
-	LGVGQkmgQFYky2gH9/wWVK4PTAksYcxuXMfBtd63bum67FJwC0UMLLJABB/LGY6pehhK2PXSrsg
-	oyC3CTJtgDv8jvT4xPQYVI6IzCoLvqfqNADRB56ZOnXdc9nvWtuf/jrWz+CS2g5uI5CQHXyBobo
-	tU7BIsq5zdI/Qxh61GJlQUFBQkmC0TOCbbu1Q4aZW7Q==
-X-Received: by 2002:a05:6102:38ce:b0:7b4:879c:bb8d with SMTP id ada2fe7eead31-7ce5cec4393mr1848330137.37.1793017265352;
-        Mon, 26 Oct 2026 05:21:05 -0700 (PDT)
+        bh=PJP1r5/GuQZwv1AbNOj2FluY2esrMbEg2unT6FQO/Lk=;
+        b=yKyEI4rm7dTVpFIzZGsb6GpL0Dtjq9tHQmUq+2RlAJzo3PiV260OaUrvUUYyTb1ocM
+         0xJ95BhYeekOFiBDKsMuVCsIiTPCknSaMA3sYCKBDlxJNK9VYWx3xRQnahX0l71BLOfz
+         EonaTFJqXlY0zSPbc+2xYiqgJtA1aI7BN2Jhpume3zEdEPtuB1fBVIU5MjOCnDQo2bbN
+         LnLr891b46DpHE55VRp2apGobe3HS6dnvYZ9p+QnzqxjozQq8CaAH8Dg2zTaGUInRdSG
+         pqEiUCbLB08/915ytcU7yFp90FLMTBGolrT1S2TiXKvNKm+zejBFy9RLnJY0Z7hpVY4M
+         NX8g==
+X-Forwarded-Encrypted: i=1; AKwUvBzCPTppNDd/gCUGIO5muS/dZO3fiYl57MJYJL6fmhVn8+SV+h27M1WnYoXAS2NliTgZb2LG3/c=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJMer2rEF8oFt03cRamzn3LNEbVcDY9X9WcL13Cj+SxLXVFLRFK
+	d9yLf1f+ru8r/bdvOpWJABcjbV9MmPrmA91gAnDgdfnAlo5DD51YlOSM4nPhAzFIo7Y=
+X-Gm-Gg: AYBFou0VUDxLllXRuW7gtK65iuuz93V8ynR5wMAiM3+qrO5n/NYC9iS8z9Sqy3UhUCo
+	Fd49E0TFXDAQp5tG1vKrlDRO9/AzD2Xf9jAIxitqMD8xIxqQJSIt9JVsd03dc/tDKrhGDNKTWJ1
+	QJG62cPMHSH1MHtIqJkvEeYW6OYhq+12wcNz+qutrv5BE9MW9esfUXyjMW+y8GOZixgHuoE+xZw
+	CHQHMdq0LDirtnGYLolLgpFKrELkCLrtn9M935TferZrOuAij6BTJInK9Nbr4My5yEOmYOXsA/r
+	XNr1JzIk8QGeYsaN9kB7LzQ6gQlSBRyhWqy+xXVIA0PpUgjRje9K0Waa4iWkr2IEOWZD69oDIZ4
+	yqX/20XzTxtNhcttxhFXHe8NyTxYY8b0TytltiqQN+Jfet77fj4hWmipcg/4QwGF9sj4/HGi66u
+	LekVrLKuP6fmkq58uTLjt0dtie7C/lwItddoChCV6bQ1n6/En8llJ6XC/UbJUceegbKqLQGtTtG
+	Md+0d3ByMPgGbyTsrHzjF/3lkpQ7juiXgs2DJcwTHdGpNFDXzaDnBI8JHl7PPLkUz4kApJ/fOXu
+	HX/QhMa4iJVvsjEpKcDTOxosWGKrhjdj5ur3WFfSd3fRoENYamDsMhMdkvvsannHns6LTZVcYYe
+	li5L8SVtF+derLJFC40oVA1cfKtJdSFyPjOjpPgW/ocRJoNtQ/usxFvttQKmKVBI=
+X-Received: by 2002:a05:6102:14a3:b0:7cc:28a6:ee1c with SMTP id ada2fe7eead31-7ce5ca1e4bbmr1974187137.2.1793017338558;
+        Mon, 26 Oct 2026 05:22:18 -0700 (PDT)
 Received: from c.1.0.f.7.a.5.f.d.4.6.5.7.e.5.4.d.7.3.9.0.c.2.a.3.b.1.0.4.0.8.2.ip6.arpa ([2804:1b3:a2c0:937d:e94c:8101:376c:4b55])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7ce5e16eab4sm7408804137.4.2026.10.26.05.21.01
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-9910e6cfb52sm8155548241.2.2026.10.26.05.22.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 05:21:04 -0700 (PDT)
+        Mon, 26 Oct 2026 05:22:18 -0700 (PDT)
 From: Joas Antonio dos Santos <joasantonio108@gmail.com>
-To: Daniel Machon <daniel.machon@microchip.com>
-Cc: David S. Miller <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+To: Jeremy Kerr <jk@codeconstruct.com.au>
+Cc: Matt Johnston <matt@codeconstruct.com.au>,
+ Guikun Yang <yangguikun19@qq.com>, David S. Miller <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org
 Subject:
- Re: [PATCH net] net: dcb: initialize PFC value before calling getpfccfg
-Date: Mon, 26 Oct 2026 09:21:00 -0300
-Message-ID: <179301726001.91878.13970924707743684105@gmail.com>
-In-Reply-To: <20261026073235.3huvz6o5h6psyv76@DEN-DL-M70577>
-References: <179289284460.50470.572724041164324949@gmail.com>
- <20261026073235.3huvz6o5h6psyv76@DEN-DL-M70577>
+ Re: [PATCH net] net: mctp: free reassembly head skb when key_add fails on SOM
+Date: Mon, 26 Oct 2026 09:22:13 -0300
+Message-ID: <179301733329.91976.14585535037608378942@gmail.com>
+In-Reply-To:
+ <426ef7428413b8d05b6cc3ac22e24b1927ab5aca.camel@codeconstruct.com.au>
+References: <179287946888.17431.11219154409333681184@gmail.com>
+ <426ef7428413b8d05b6cc3ac22e24b1927ab5aca.camel@codeconstruct.com.au>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -107,22 +107,33 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-On Mon, Oct 26, 2026 at 07:32, Daniel Machon wrote:
-> I am not entirely sure, but should this patch add a fixes tag for a driver, when
-> the change is only in the API?
+Hi Jeremy,
 
-Fair point. The uninitialized u8 is in dcbnl, the drivers only make it
-visible, so the driver commits are not the right Fixes. I'll drop them.
+> [merging two threads here; Guikin reported the same issue, around 12
+> hours earlier]
 
-> Also, if this dates back to the introduction of DCBNL then I guess its not a
-> regression and maybe a fix for net-next?
+Thanks, I hadn't seen Guikun's report. If a v2 is wanted I'll add:
 
-Agreed. I'll send v2 for net-next once it reopens.
+Reported-by: Guikun Yang <yangguikun19@qq.com>
+Closes: https://lore.kernel.org/all/tencent_43A65D51143E18518EA968DF9323694EFD08@qq.com/
 
-> Why noy initialize this at the declaration, like getall is?
+> We could just defer setting skb to NULL until the mctp_key_add() has
+> succeeded; there's already the common error path that cleans up any
+> remaining skb.
 
-That works. In both functions the PFC loop is the first user of value,
-so initializing it at the declaration is enough. I'll do that in v2.
+I think that one needs care. For the first fragment, mctp_frag_queue()
+stores skb_unclone_full(skb) in key->reasm_head, and if skb is a clone,
+skb_unclone_full() frees it and returns a copy. The kfree_skb(skb) at
+out: would then free the original a second time, and the copy in
+reasm_head would still leak. Taking skb back from key->reasm_head on
+failure would work, but the explicit free looked simpler to me.
 
-Thanks for the review,
+> Alternatively, we could change the semantics mctp_key_unref() to also
+> free any pending reassembly, but I'm okay with the current approach of
+> being explicit about the state handling.
+
+Then I'll keep it as is. Let me know if you want a v2 with the tags
+above.
+
+Thanks,
 Joas
