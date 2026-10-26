@@ -1,55 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.130
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792999995;
-	b=c/wSZT4/p9a9eM3riF5JnOIEcS2WLtUfMWcMUnPFDzlhHIZjFQjoGakHYcG6S5lpQUDi
-	 6EmM2+/dgTB53EiD66KnKVEyKr9LPO6NcTpdJdqkO3z/2UNMLwqgFJ33ycF1wLaNkmJaI
-	 C0R7299kCXUNfwTggbBnlQ0YK9TSIR+Dt4U68NGkVnHLRxk7lJ97LWKpK3gSGQvu6MqHM
-	 1L4J5y5dz+e/Z3DfslrylUZjtKxjBF1xKLpKBMb37Dx4TCWT0OQ9G3Au826ECZlTiA5lp
-	 EuBhaEgUuhhdmUaPT2dh2v+bAFYNaQ0aZbPoGOeSLMarXXUOJl0kwwVGqPkdd0XXdcQ==
+	t=1793000239;
+	b=dRpK46SabcSiHY4o0oAPaiO1h7InIvQzyElM1FobA4EruALRLULCBxr9OwFB1X6Dgi4/
+	 28PDMagIefmYTuRtcGaumdSCgSmculA0/WpEavTLch+QqDwGjOrXIBkN5RDeYdrip4N/2
+	 jvMBGGdl1THEQS3IDzmNTwEIEmtyk2VSiqu5w4SWm7DNCk5v5u+P/oK5eejgEHbxv12Ew
+	 IDVNJcpSrGR2HcI4WZgI8kTL8ZVKXYV3uCpMXtksKE39olvhBlz2OJ0EeW7AXddRoQHkE
+	 AfVgIPpxd7Yz12V3EtUiTG9a+yQLs7bN7FYtLD+aqqMRDsFBlp5zwRXQfCS1USxR68Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792999995;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=7oPMs0d7czZDgpisnaM9AZCe31nOE82TuAm2YPxvoec=;
-	b=erCFC2hXWtm6COgyabSaOahaDuPE5XRlmuKxkWyKvJ5oxyEBvYPm6Nm1fG37D5cGAJRC
-	 ge9SSbyuPrqgC1gA1fX4adh54uJN9w3rFS3g77lNEXmWcyUU83J7nydcqrnUUSUzQoLbv
-	 Ys/pc8Dq9sX/DGzwjhyP/XUHHUJS6P0chV/RHE7AM0nZoImRZ/3A4mk4A1uh8eGUaZO+8
-	 bWX8KqtEKAalu2fOhmjnkLt5BCtdhnAg2x6FTQegUBRk6JEGgNFe5WwCpvTqFAUtDrDxn
-	 gdPfK8fzmUUFFTb2j95h3V1U3TL/x2oExSCy3gPhWyC4oEO9hZqqNbW9zNWSXyWi9ig==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793000239;
+	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
+	 DKIM-Signature:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Spam-Flag:X-Spam-Level:
+	 X-Spamd-Result:X-Spam-Score;
+	bh=2Tlji1wL3C5Miea4Vt5faKcWvh3GAyU4yBXGwQXSxqg=;
+	b=kfN4XT3OEKsAQ0mMeNnNrLGICthTqe3rh+9eTF/7wDPuuAYe6BwSFi067FaoWw+rPTAd
+	 VEkPb+Nz6A2u7+Gej7J3aV/JAHZEAueUG44418adDdsoew+2yl47RfulKUvjntiKlOpPr
+	 IJFeVH1upWCz+XLbE5CozCM3cq6ylWr1M+6sgh1+ST8AAIWQ5S9rEi9sRUfGWxz0A8AsI
+	 I0fz9D4mc/YjVtF12tLk6WCrdDzbCcZ6+WR2ueuE+uugXFfSb4BpjHwx1uULMjORk+mlK
+	 dB8Gw7fOED3o7WJyH7HcdHvzYtnbHF720SedNam2Os4Ea7Quesz0GZN/xJ5fUY9sHVA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OpZjsW6u;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=suse.de;
+	spf=pass smtp.mailfrom=suse.de;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=o04SKfON;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=FdUlnHs3;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=i6CcgjXl;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Ly0HoaH5;
+	arc=none smtp.remote-ip=195.135.223.130
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271EA606A31B
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 07:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D48FD606A31A;
+	Mon, 26 Oct 2026 07:37:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D48FD606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OpZjsW6u
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7861F031E0
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 07:33:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792999994;
-	bh=7oPMs0d7czZDgpisnaM9AZCe31nOE82TuAm2YPxvoec=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=OpZjsW6umHSAJmIGuIlw0vg3e6dV/zUq02ZzorYxiCk6cN37MBJNachEl0rKqkH8i
-	 v3Nk9jJAzZvvuZD8JhipJyWbvmoN8ICO7VxpsH9q2R6JxH6u7/Dn99BqrXDx8AiqCZ
-	 B5ikN31G5bl2To/jKxerWsJBAKubEO5lGcVSuR7tTY8OFurF6B32p3CkdvVAIF6M3+
-	 srQYhcb0mK+7RiMhIcz5qy4l0KAZ/oSpo5BbqJCMDeWMDYxddi4V1pTm/bbTxdW4FX
-	 HmAggB67Iyb8OrgB6ScnD2lVZep61hF8ZzPQwvPzMerEwL09lj9mHyCdzYK3z0cFEe
-	 yszlz25KU06+Q==
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-475920b9ca2so843639fac.1
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 00:33:14 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzcg13CEuwikwTAoU30rBSutf6WwCI2iUgQRziGw1vg3s+DXbX1cozBxOZvLwl724550CxfIn4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKgy2cDKKxMIttilw4+MXVM94sKX2glmNwrLQYka96xlcyvizh+
-	NBUdWxOLJmWYVzYJ57URhGpOyovXtm6cO0KdidFKb4/SEWdpK0Z3u9C2GNgTULOO7EH+P2YysNA
-	uADZZ+vKmEyU1hsPZpH5T4j7zvbOf6wc=
-X-Received: by 2002:a05:6870:1702:b0:486:a82a:a345 with SMTP id
- 586e51a60fabf-4a83f588cc1mr3264518fac.25.1792999994001; Mon, 26 Oct 2026
- 00:33:14 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=o04SKfON;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=FdUlnHs3;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=i6CcgjXl;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Ly0HoaH5
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id AB313222C7;
+	Mon, 26 Oct 2026 07:37:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793000223; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2Tlji1wL3C5Miea4Vt5faKcWvh3GAyU4yBXGwQXSxqg=;
+	b=o04SKfON50HyvoMwpBtX88PbtmuNHgWFILFXT3+FTIFj+ltc0laLMmAcz4gmynkvc3xuMn
+	SZVYnc49JHp0u/zalW81GeaDBbvghJAK0ryY3XgaNQ5rxhBv06uEjHA6NvyCAStmzAaTtk
+	86gen5ljqivHgEIHk+nHJ+ctPwHvxOw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793000223;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2Tlji1wL3C5Miea4Vt5faKcWvh3GAyU4yBXGwQXSxqg=;
+	b=FdUlnHs32cf2ZnSHgxOdJzH9Dgqy8neVhFnafgilixyr/9l0X4P5pakk2OuiSOu4QXq382
+	urlHBAxBWKpcuMDw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793000221; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2Tlji1wL3C5Miea4Vt5faKcWvh3GAyU4yBXGwQXSxqg=;
+	b=i6CcgjXleFfiJkAT7ZQOZxTt5AlboPowtNIQgNx50vPUbf1iFmimwV1PdRv346EQ82eNRr
+	Xz4wFa3kEY1Iqbay0UguGhoStFOhlxeiOyrKsQhsflc6Hk0PfS3fRLqB5F47W4Db5CehWE
+	6kAzlaiGUq9VqiLIQL/r/81GGE9tSVs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793000221;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2Tlji1wL3C5Miea4Vt5faKcWvh3GAyU4yBXGwQXSxqg=;
+	b=Ly0HoaH5Axxz9P3uPKknOkqHRbtER2LU2Ug0oBT4E0AKvkC4wc+n3bc6MaO2w+i57XPvZd
+	QkCxgi+C5AvloZBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DBD9413319;
+	Mon, 26 Oct 2026 07:37:00 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id S9pZJRwD32prAgAAD6G6ig
+	(envelope-from <hare@suse.de>); Mon, 26 Oct 2026 07:37:00 +0000
+Message-ID: <131fc354-ff38-4aca-ac3d-8e3a6f3716f4@suse.de>
+Date: Mon, 26 Oct 2026 08:37:00 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,69 +106,319 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261026061300.256009-1-qingfang.deng@linux.dev>
-In-Reply-To: <20261026061300.256009-1-qingfang.deng@linux.dev>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Mon, 26 Oct 2026 08:33:03 +0100
-X-Gmail-Original-Message-ID: <CAL4WiipU7wttXiBu-+CL=DaP4nfnkEpoMm01uJWorSYdS2fb9w@mail.gmail.com>
-X-Gm-Features: AclHuK_dI9VeKqD4E1U4bCUOsW46HKqWcruEWLK_U7y7CH1Lv7Vlz9PQFvLLTb4
-Message-ID: <CAL4WiipU7wttXiBu-+CL=DaP4nfnkEpoMm01uJWorSYdS2fb9w@mail.gmail.com>
-Subject: Re: [PATCH net v2] pppoe: wait for RCU readers before reusing a socket
-To: Qingfang Deng <qingfang.deng@linux.dev>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Guillaume Nault <gnault@redhat.com>, Felix Fietkau <nbd@nbd.name>, Eric Woudstra <ericwouds@gmail.com>, 
-	Asim Viladi Oglu Manizada <manizada@pm.me>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Sashiko <sashiko-bot@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC net-next 2/5] tls: add socket options to register the
+ traffic secrets
+To: martin.nvme.dev@gmail.com, John Fastabend <john.fastabend@gmail.com>,
+ Jakub Kicinski <kuba@kernel.org>, Sabrina Dubroca <sd@queasysnail.net>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, Shuah Khan <shuah@kernel.org>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ Hannes Reinecke <hare@kernel.org>, Chuck Lever <cel@kernel.org>,
+ kernel-tls-handshake@lists.linux.dev, linux-nvme@lists.infradead.org,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Martin Belanger <martin.belanger@dell.com>
+References: <20261025-keyupdate-rfc-v1-0-60b7756eccbd@gmail.com>
+ <20261025-keyupdate-rfc-v1-2-60b7756eccbd@gmail.com>
+Content-Language: en-US
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <20261025-keyupdate-rfc-v1-2-60b7756eccbd@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Spamd-Result: default: False [-11.79 / 50.00];
+	SUSE_INTERNAL_BYPASS(-9.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_RCPT(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org,queasysnail.net,davemloft.net,redhat.com,lwn.net,linuxfoundation.org,infradead.org];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ietf.org:url,suse.de:email,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -11.79
 
-Le lun. 26 oct. 2026 =C3=A0 07:13, Qingfang Deng <qingfang.deng@linux.dev> =
-a =C3=A9crit :
->
-> When pppoe_connect() disconnects or reuses a socket, it removes the old
-> session from the hash table and resets the socket's fields. An RCU
-> reader that reached the entry before it was unlinked can still be using
-> its address, ifindex or next pointer.
->
-> If sockets A and B share a hash bucket with A preceding B, a concurrent
-> __get_item() looking for B can be traversing A when it is removed.
-> Clearing A->next then makes the lookup miss B and drop the packet.
-> Reinserting A can similarly redirect the reader into another hash chain.
->
-> Call synchronize_net() after unlinking the old session and before
-> clearing its fields. This allows existing receive-path and
-> /proc/net/pppoe readers to finish before the socket is cleared or reused.
->
-> This was found by Sashiko's static analysis, and reproduced on a VM
-> stress test with KCSAN.
->
->  BUG: KCSAN: data-race in hash_item+0x1c/0x60
->
->  race at unknown origin, with read to 0xffff888000a1c566 of 2 bytes by ta=
-sk 147 on cpu 2:
->   hash_item+0x1c/0x60
->   pppoe_seq_next+0x112/0x1b0
->   seq_read_iter+0x595/0x700
->   seq_read+0xb0/0xe0
->   proc_reg_read+0xd0/0xf0
->   vfs_read+0xbd/0x220
->   ksys_read+0xa9/0x100
->   __x64_sys_read+0x47/0x60
->   x64_sys_call+0x98/0x1fd0
->   do_syscall_64+0x5b/0x260
->   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-Please next time include symbols. (scripts/decode_stacktrace.sh)
-
->
->  value changed: 0x0002 -> 0x0000
->
-> Fixes: 72cdc67e7fa7 ("pppoe: remove rwlock usage")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/2026102009211=
-8.47416-1-qingfang.deng@linux.dev
-> Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
+On 10/26/26 1:36 AM, Martin Belanger via B4 Relay wrote:
+> From: Martin Belanger <martin.belanger@dell.com>
+> 
+> kTLS holds the key and IV of each direction, but not the traffic secret
+> they were derived from. The derivation is one-way, so the kernel cannot
+> compute the next generation for a KeyUpdate on its own.
+> 
+> Add TLS_TX_TRAFFIC_SECRET and TLS_RX_TRAFFIC_SECRET. The owner of the
+> socket passes the TLS 1.3 application traffic secret of a direction after
+> installing its key. The cipher of the installed key selects the hash, so
+> the option takes only the secret. A socket without a registered secret
+> behaves as before.
+> 
+> The TX secret can be registered alone. The RX secret needs the TX secret
+> first: a received KeyUpdate can ask for one in reply, and since the
+> kernel consumes the record, only the kernel can send that reply.
+> 
+> Installing a new key with TLS_TX or TLS_RX removes the secrets that no
+> longer apply. The secrets are cleared when the context is freed and
+> cannot be read back.
+> 
+> Assisted-by: LLM
+> Signed-off-by: Martin Belanger <martin.belanger@dell.com>
 > ---
+>   Documentation/networking/tls.rst | 26 ++++++++++++
+>   include/net/tls.h                | 13 ++++++
+>   include/uapi/linux/tls.h         |  2 +
+>   net/tls/tls_main.c               | 86 +++++++++++++++++++++++++++++++++++++++-
+>   4 files changed, 126 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/networking/tls.rst b/Documentation/networking/tls.rst
+> index 980c442d7161..2e011bd1ce4a 100644
+> --- a/Documentation/networking/tls.rst
+> +++ b/Documentation/networking/tls.rst
+> @@ -300,6 +300,32 @@ extra byte used by the ContentType field.
+>   
+>   [1] https://datatracker.ietf.org/doc/html/rfc8449
+>   
+> +TLS_TX_TRAFFIC_SECRET and TLS_RX_TRAFFIC_SECRET
+> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> +
+> +``TLS_TX_TRAFFIC_SECRET`` registers the TLS 1.3 application traffic secret
+> +of the transmit direction, ``TLS_RX_TRAFFIC_SECRET`` that of the receive
+> +direction. With a registered secret, the kernel performs KeyUpdate for that
+> +direction itself (RFC 9846, section 4.7.3). The value is the secret itself.
+> +TLS 1.3 only, software path only.
+> +
+> +Install the key of the direction first, with the ``TLS_TX`` or ``TLS_RX``
+> +socket option described above. The cipher of that key selects the hash, and
+> +the secret must have the length of that hash: 32 bytes for SHA-256
+> +(AES-128-GCM, AES-128-CCM, ChaCha20-Poly1305) or 48 bytes for SHA-384
+> +(AES-256-GCM). Other ciphers return ``EOPNOTSUPP``.
+> +
+> +Each secret can be registered once. ``TLS_RX_TRAFFIC_SECRET`` needs
+> +``TLS_TX_TRAFFIC_SECRET`` first: a received KeyUpdate can ask for one in
+> +reply, and only the kernel sees it. ``TLS_TX_TRAFFIC_SECRET`` alone is
+> +allowed.
+> +
+> +If the application installs a new key itself with ``TLS_TX``, both secrets
+> +are removed. With ``TLS_RX``, the RX secret is removed. KeyUpdate for that
+> +direction is then left to the application again.
+> +
+> +The secrets cannot be read back.
+> +
+>   Statistics
+>   ==========
+>   
+> diff --git a/include/net/tls.h b/include/net/tls.h
+> index e57bef58851e..aacc6d12226e 100644
+> --- a/include/net/tls.h
+> +++ b/include/net/tls.h
+> @@ -65,6 +65,9 @@ struct tls_rec;
+>   
+>   #define TLS_AAD_SPACE_SIZE		13
+>   
+> +/* SHA-384, the longest hash of a TLS 1.3 cipher suite kTLS supports */
+> +#define TLS_MAX_TRAFFIC_SECRET_SIZE	48
+> +
+>   #define TLS_MAX_IV_SIZE			16
+>   #define TLS_MAX_SALT_SIZE		4
+>   #define TLS_TAG_SIZE			16
+> @@ -224,6 +227,12 @@ struct tls_prot_info {
+>   	u16 tail_size;
+>   };
+>   
+> +/* A TLS 1.3 application traffic secret. len is 0 if none is registered. */
+> +struct tls_traffic_secret {
+> +	u8 data[TLS_MAX_TRAFFIC_SECRET_SIZE];
+> +	u8 len;
+> +};
+> +
+>   struct tls_context {
+>   	/* read-only cache line */
+>   	struct tls_prot_info prot_info;
+> @@ -266,6 +275,10 @@ struct tls_context {
+>   	union tls_crypto_context crypto_send;
+>   	union tls_crypto_context crypto_recv;
+>   
+> +	/* Registered for KeyUpdate, protected by the socket lock */
+> +	struct tls_traffic_secret tx_secret;
+> +	struct tls_traffic_secret rx_secret;
+> +
+>   	struct list_head list;
+>   	refcount_t refcount;
+>   	struct rcu_head rcu;
+> diff --git a/include/uapi/linux/tls.h b/include/uapi/linux/tls.h
+> index 1245ab38afc1..d1b136ecea96 100644
+> --- a/include/uapi/linux/tls.h
+> +++ b/include/uapi/linux/tls.h
+> @@ -42,6 +42,8 @@
+>   #define TLS_TX_ZEROCOPY_RO	3	/* TX zerocopy (only sendfile now) */
+>   #define TLS_RX_EXPECT_NO_PAD	4	/* Attempt opportunistic zero-copy */
+>   #define TLS_TX_MAX_PAYLOAD_LEN	5	/* Maximum plaintext size */
+> +#define TLS_TX_TRAFFIC_SECRET	6	/* TLS 1.3 TX traffic secret */
+> +#define TLS_RX_TRAFFIC_SECRET	7	/* TLS 1.3 RX traffic secret */
+>   
+>   /* Supported versions */
+>   #define TLS_VERSION_MINOR(ver)	((ver) & 0xFF)
+> diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
+> index 8bdb78718a8d..1c6e993ec012 100644
+> --- a/net/tls/tls_main.c
+> +++ b/net/tls/tls_main.c
+> @@ -31,6 +31,7 @@
+>    * SOFTWARE.
+>    */
+>   
+> +#include <crypto/sha2.h>
+>   #include <linux/module.h>
+>   
+>   #include <net/tcp.h>
+> @@ -325,6 +326,8 @@ void tls_ctx_free(struct sock *sk, struct tls_context *ctx)
+>   
+>   	memzero_explicit(&ctx->crypto_send, sizeof(ctx->crypto_send));
+>   	memzero_explicit(&ctx->crypto_recv, sizeof(ctx->crypto_recv));
+> +	memzero_explicit(&ctx->tx_secret, sizeof(ctx->tx_secret));
+> +	memzero_explicit(&ctx->rx_secret, sizeof(ctx->rx_secret));
+>   	mutex_destroy(&ctx->tx_lock);
+>   
+>   	if (sk)
+> @@ -757,8 +760,16 @@ static int do_tls_setsockopt_conf(struct sock *sk, sockptr_t optval,
+>   		ctx->rx_conf = conf;
+>   	update_sk_prot(sk, ctx);
+>   
+> -	if (update)
+> +	if (update) {
+> +		/* The registered secret no longer matches the key. The RX
+> +		 * secret also needs the TX one, see do_tls_setsockopt_secret().
+> +		 */
 
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+What is a bit unfortunate that we don't have a direct link between the 
+key and the traffic secret. So a user might set a key which is _not_
+derived from the traffic secret, rendering the KeyUpdate non-workable.
+
+Can we add a check here?
+It should be possible to calculate the key from the traffic secret, no?
+
+> +		if (tx)
+> +			memzero_explicit(&ctx->tx_secret,
+> +					 sizeof(ctx->tx_secret));
+> +		memzero_explicit(&ctx->rx_secret, sizeof(ctx->rx_secret));
+>   		return 0;
+> +	}
+>   
+>   	if (tx) {
+>   		ctx->sk_write_space = sk->sk_write_space;
+> @@ -857,6 +868,72 @@ static int do_tls_setsockopt_tx_payload_len(struct sock *sk, sockptr_t optval,
+>   	return 0;
+>   }
+>   
+> +/* Length of the TLS 1.3 traffic secret for @cipher_type, the size of
+> + * its hash. 0 if KeyUpdate is not supported for the cipher.
+> + */
+> +static int tls_traffic_secret_len(u16 cipher_type)
+> +{
+> +	switch (cipher_type) {
+> +	case TLS_CIPHER_AES_GCM_128:
+> +	case TLS_CIPHER_AES_CCM_128:
+> +	case TLS_CIPHER_CHACHA20_POLY1305:
+> +		return SHA256_DIGEST_SIZE;
+> +	case TLS_CIPHER_AES_GCM_256:
+> +		return SHA384_DIGEST_SIZE;
+> +	default:
+> +		return 0;
+> +	}
+> +}
+> +
+> +static int do_tls_setsockopt_secret(struct sock *sk, sockptr_t optval,
+> +				    unsigned int optlen, int tx)
+> +{
+> +	struct tls_context *ctx = tls_get_ctx(sk);
+> +	struct tls_crypto_info *crypto_info;
+> +	struct tls_traffic_secret *secret;
+> +	int len;
+> +
+> +	if (tx) {
+> +		crypto_info = &ctx->crypto_send.info;
+> +		secret = &ctx->tx_secret;
+> +	} else {
+> +		crypto_info = &ctx->crypto_recv.info;
+> +		secret = &ctx->rx_secret;
+> +	}
+> +
+> +	/* The key must be installed first: its cipher selects the hash */
+> +	if (!TLS_CRYPTO_INFO_READY(crypto_info) ||
+> +	    crypto_info->version != TLS_1_3_VERSION)
+> +		return -EINVAL;
+> +
+> +	if ((tx ? ctx->tx_conf : ctx->rx_conf) != TLS_SW)
+> +		return -EOPNOTSUPP;
+> +
+> +	len = tls_traffic_secret_len(crypto_info->cipher_type);
+> +	if (!len)
+> +		return -EOPNOTSUPP;
+> +
+> +	if (sockptr_is_null(optval) || optlen != len)
+> +		return -EINVAL;
+> +
+> +	/* A received KeyUpdate may ask for one in reply. The kernel
+> +	 * consumes the record, so only the kernel can send the reply.
+> +	 */
+> +	if (!tx && !ctx->tx_secret.len)
+> +		return -EINVAL;
+
+Hmm? What is this? Doesn't that imply that you first have to set the
+TX key before setting the RX key?
+The documentation says we can do either way ...
+
+> +
+> +	if (secret->len)
+> +		return -EBUSY;
+> +
+> +	if (copy_from_sockptr(secret->data, optval, len)) {
+> +		memzero_explicit(secret->data, sizeof(secret->data));
+> +		return -EFAULT;
+> +	}
+> +	secret->len = len;
+> +
+> +	return 0;
+> +}
+> +
+>   static int do_tls_setsockopt(struct sock *sk, int optname, sockptr_t optval,
+>   			     unsigned int optlen)
+>   {
+> @@ -883,6 +960,13 @@ static int do_tls_setsockopt(struct sock *sk, int optname, sockptr_t optval,
+>   		rc = do_tls_setsockopt_tx_payload_len(sk, optval, optlen);
+>   		release_sock(sk);
+>   		break;
+> +	case TLS_TX_TRAFFIC_SECRET:
+> +	case TLS_RX_TRAFFIC_SECRET:
+> +		lock_sock(sk);
+> +		rc = do_tls_setsockopt_secret(sk, optval, optlen,
+> +					      optname == TLS_TX_TRAFFIC_SECRET);
+> +		release_sock(sk);
+> +		break;
+>   	default:
+>   		rc = -ENOPROTOOPT;
+>   		break;
+> 
+Cheers,
+
+Hannes
+-- 
+Dr. Hannes Reinecke                  Kernel Storage Architect
+hare@suse.de                                +49 911 74053 688
+SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
+HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
