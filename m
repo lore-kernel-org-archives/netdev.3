@@ -1,60 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=193.142.43.55
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793032316;
-	b=kXvoA7kRH1T+CNkszvhRDIsXud1OjyuA8F8RMxSPkO1TafdMOcIXVgPulVB1k8s51YJY
-	 PwNtJGlbMlUCxpQed5DF+JecvDX8kbEnAjjyvtoQu0x009/I6UJ423Gkufelia4O8E1pV
-	 boJ4V0Rk1rs4/5RBf68ttJlTp15fbC5Vf4DdsqPyz1Nq853G70mtF1Ty0FDaE3o9WfCm0
-	 USxwwcADvAnEycQbE5S+OXcTQ9VITa5H71qsSp0oE0jgRbkvaIFRge3QaaZWZgYaYjYvK
-	 EguaKIadyBWMVE/IzKUfODsU4NXJnZtAroX2QuDseMb6iGFTvLWMXuae+41e0hcvpSg==
+	t=1793032438;
+	b=SLuaOvj29Zg0b0hdOyp8dh/HwYuLWEqse8Prrgi05d9X3FdBi03it6q1hO99wUSykIfi
+	 479EVSPdHbxQ0BD3c69qRynhHUxHlBcxQNYVZjH1ASDyXwxp0bqBh7TSqyGbKm5kg227s
+	 bwBpF/Ue3N7HxSaeXXndnaH3wWT9gDcqucezhl9gyKtber7WBOHMD29ORn8dqx5mvwBg0
+	 a8ZVpb2nbZk35N1DqA2duGE0j7KUVrWJUTW8Yjs9IQ9iBQKRd8E9qZNgtUtileoe7BDFf
+	 +dF3/HQOW5qsuX+gXUBmfAYg4Z35lQM2LCsdBqgE2vUuaEem0RjIa0dywmsMU4vTiBA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793032316;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=EX6gG5Wvj0qVG3HfMkha93w8i3Ry9QCHdZsr2wWz3pk=;
-	b=DXIVY+6/syEKupcHlNajoV6lmkr7Z1SlEl+liSgLECQsGDTVjPeIbt20uuhidKYQJ5Xy
-	 cJr0prsC5Dloyu4SVuvK3Tea4//eilOt/hywOo7eu+n8hXlalzigPw1rJHsF4Ps2zLjAQ
-	 mGkiHvY/m6exWKn/15ktby4xAhdqTekR6ZcH/+6oa3mTbyp8XdFzwAzPKHYO1z3lhnn1u
-	 5fN7iakCIqjw18fEbrJIleIw7YydyNBEoaHiJNavmTMjhevu53g5EJNlrsqI0jWf7WpN+
-	 0UR2TLCg6wlvoFX5Ke928rjA7u0+rvdq/su6Qtz+cXj3/ENrrGsZqIpO3HBGG1tNu1Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793032438;
+	h=DMARC-Filter:From:DKIM-Signature:DKIM-Signature:To:Cc:Subject:
+	 In-Reply-To:References:Date:Message-ID:MIME-Version:Content-Type;
+	bh=4bbi5ZDYjyZH4Tu/Y/XLUEpo8GjU1EDuQ47hyKKJWNI=;
+	b=wlJ97zznzHCqDd04Q+V/58P2C3So0oAf0ZGESi4uezzn1xTf9mmvMY8ddV3uDfSUFmov
+	 WDrSCtgQO/DL0XQCwj3ArJ2HSihVmwX4AfCDDVE8mLIJ/+IeE4qPx0lzhYjFto5un0b/G
+	 0X+RbncEm16Uz46vakzEf9UexRSv/RQPMeKfcPWEXB9as1BmdEuPuL9GMu77bKIKag1Pn
+	 0azOahBrD4fm+/qTC7fTzFS3QimURU6dIzsV5WwBzlFO7Q2/S9XG2+GY03ClULVY5vOv7
+	 42WgzPBvcaynoL3TOGKrVoHniTOTtfw9GSYHrYgn5h1YFGQ3V02ykwWilXtH4e6jvVQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZNDLLxso;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=linutronix.de;
+	spf=pass smtp.mailfrom=linutronix.de;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=wt7EV5RW;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=3bleRp7v;
+	arc=none smtp.remote-ip=193.142.43.55
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A89606A320;
-	Mon, 26 Oct 2026 16:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7789606A31E;
+	Mon, 26 Oct 2026 16:33:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D7789606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZNDLLxso
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFCBF1F01825;
-	Mon, 26 Oct 2026 16:31:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793032316;
-	bh=EX6gG5Wvj0qVG3HfMkha93w8i3Ry9QCHdZsr2wWz3pk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ZNDLLxsora9vn+jug1S4dBNpkXPYzKMYU9pyucQpvsnque/2Th7Cdycj1vzP7RVAI
-	 QJ+FCQvQmUnjs9Pf8DlYMw+/xWzqS8SSGA8TmC80tKtdikgDrnCuFrntkOpRt3jmx8
-	 LXEe5zS43iuZr+3W4t2FfpdKxtDKgUBlWNTbtyRACIb67o7sYr5thpofjc87FX2Hud
-	 4+2KYHisxmw0Kh/qdw/NckibVvtb8Pq3OCbaPh0OXsGKjN/CikcCeWvKxWxaE27nu+
-	 6kK+Vo6DhVxkcYnDihli2zBxObTY7jTQ//iDrwGjVmixKxdoM2UCpeo6S3tMan9MEJ
-	 FYVFp3KnLzVEQ==
-Date: Mon, 26 Oct 2026 16:31:51 +0000
-From: Simon Horman <horms@kernel.org>
-To: Wei Jie Law <law.wei.jie@gt.tech.gov.sg>
-Cc: Petko Manolov <petkan@nucleusys.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Wei Jie Law <98lawweijie@gmail.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v2 2/2] net: usb: pegasus: check rx pkt_len against
- the received length
-Message-ID: <20261026163151.GC257209@horms.kernel.org>
-References: <20261021020310.34045-1-law.wei.jie@gt.tech.gov.sg>
- <20261021020310.34045-3-law.wei.jie@gt.tech.gov.sg>
+	dkim=pass (2048-bit key, unprotected) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=wt7EV5RW;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=3bleRp7v
+From: John Ogness <john.ogness@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1793032435;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4bbi5ZDYjyZH4Tu/Y/XLUEpo8GjU1EDuQ47hyKKJWNI=;
+	b=wt7EV5RW9Rzfw1nXP7UkC5TIRfJHPG6iy4JE8vXSSGS5dv43Rjno+9KJOYE7B4Xvx1ScR4
+	klocIYf5GzTJaLg4QuV+q1YSqDdAvEoE7L4wTrL86vPsYvZQvUuv3oxVc+VThcOoVSVnLO
+	dcH60PCYJXw4BuDAvrbIwntoEeo4BJte8mOZjPxtscZDzJyJ8bN2UbUT9agGJ1zIU6WZtu
+	kpyOWDgwBJEuHSRu8eNQq9LmxVUYOIeM7X2x6XNowiguguWUYt99X3myJ0ItS548TnV5sM
+	S6a4ipnU7Vte7b7z4d1al2BPrqvwfAVCy0dQC8JlSy6RNUAQCip+n1h7uHEaUQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1793032435;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4bbi5ZDYjyZH4Tu/Y/XLUEpo8GjU1EDuQ47hyKKJWNI=;
+	b=3bleRp7vVaPaXa21CiUma3MxPks+Kk4koD4akBrrEiJJqtZwXjMJWfoHoPbCmkCkzfHhW4
+	28TLbVEwhCDoySBw==
+To: Petr Mladek <pmladek@suse.com>
+Cc: Breno Leitao <leitao@debian.org>, chris@chrisdown.name, Sam Crossley
+ <samuelcrossley@gmail.com>, Thomas Gleixner <tglx@kernel.org>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Jonathan
+ Corbet <corbet@lwn.net>, Paolo Abeni <pabeni@redhat.com>, Randy Dunlap
+ <rdunlap@infradead.org>, Sergey Senozhatsky <senozhatsky@chromium.org>,
+ Shuah Khan <skhan@linuxfoundation.org>, Simon Horman <horms@kernel.org>,
+ Steven Rostedt <rostedt@goodmis.org>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH RFC 0/2] netconsole: allow replaying the printk buffer
+ on demand
+In-Reply-To: <at9qgBucVm-QHnye@pathway.suse.cz>
+References: <20261024-netcons-replay-upstream-v1-0-9613f38496e5@gmail.com>
+ <87fqxskdpl.fsf@jogness.linutronix.de> <at84qygscue8crQi@gmail.com>
+ <87a4o0k3qa.fsf@jogness.linutronix.de> <at9qgBucVm-QHnye@pathway.suse.cz>
+Date: Mon, 26 Oct 2026 17:39:54 +0106
+Message-ID: <87zew0ifpp.fsf@jogness.linutronix.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,46 +81,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261021020310.34045-3-law.wei.jie@gt.tech.gov.sg>
+Content-Type: text/plain
 
-On Wed, Oct 21, 2026 at 10:03:10AM +0800, Wei Jie Law wrote:
-> read_bulk_callback() takes the frame length from the device, from the
-> receive header on the 0x8513 and from the trailing status bytes on the
-> other chips, and only checks it against PEGASUS_MTU before passing that
-> many bytes up the stack. In two cases the stack then uses bytes that the
-> device did not send:
-> 
-> - A device that sends a short transfer but claims a long frame gets the
->   stale or uninitialized remainder of the receive skb delivered as
->   packet data.
-> 
-> - A device that claims a frame shorter than an Ethernet header gets
->   past the check as well. eth_type_trans() takes pkt_type from h_dest
->   and the protocol from h_proto without checking skb->len. If the
->   transfer is also short, those come from bytes left in the skb by an
->   earlier transfer, or from uninitialized memory.
-> 
-> Drop frames shorter than ETH_HLEN, and frames whose claimed length, plus
-> the 0x8513 header, does not fit in the bytes actually received, and
-> count them as length errors. urb->actual_length never exceeds the
-> PEGASUS_MTU sized transfer buffer, so this also covers the existing
-> PEGASUS_MTU check. Valid Ethernet frames are at least 60 bytes long
-> without the FCS, so they are not affected.
-> 
-> Found by code review with LLM assistance. With an emulated USB device,
-> a 101-byte transfer claiming a 1500-byte frame was passed up as a
-> 1500-byte packet before this change and is dropped after it, and
-> frames claiming 0, 4 and 13 bytes were passed up and are now dropped
-> and counted in rx_length_errors. The extra bytes happened to be zero
-> in the first test, so disclosure of actual kernel data was not
-> demonstrated.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Wei Jie Law <law.wei.jie@gt.tech.gov.sg>
+On 2026-10-26, Petr Mladek <pmladek@suse.com> wrote:
+> The "replay" approach looks like a big hammer. Many messages might get
+> duplicated, especially when the outage was small.
+>
+> A better solution might be to do not increment con->nbcon_seq
+> when the transmission failed. And try it later again.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Note that there was a time during the rework that we used to allow the
+console to return failure but decided it was too complicated [0].
 
+The kthreads are setup to stay in their printing loop until the backlog
+is clear. Having a nice=-20 task busy-loop would be bad.
+
+> con->write_thread() currently does not return anything. I believe that
+> it is partly a historical limit. Two problems come to my mind:
+>
+>    1. There used to be a global "console_seq" counter which was common
+>       for all console drivers. But we have a per-console counter since
+>       the commit a699449bb13b70b8bd1 ("printk: refactor and rework
+>       printing logic").
+>
+>    2. There has never been a try-later logic. But is should be easier
+>       to add it now. We have the kthreads. And even the legacy loop
+>       is able to break when there is not progress.
+
+I suppose for only the write_thread() callback we could implement some
+sort of throttled retry if the console driver reports failure. But this
+is assuming console drivers can even detect if it successfully sent or
+not. The netconsole certainly has no method to _know_ if the UDP packet
+was received. And UARTs (asside from flow-control) also have no way to
+confirm that the other side received the data.
+
+Breno and Sam simply want the user to trigger a replay of the full
+log. Essentially a sysrq-R but per-console. I think that is a reasonable
+request and certainly much easier than attempting some sort of
+transmission guarantee.
+
+John
+
+[0] https://lore.kernel.org/lkml/ZdTCZqhZww8_WgSU@alley
