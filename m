@@ -1,65 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.169
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.240
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1793019207;
-	b=OiByDZ6F+Du4abrpcm8VqPzL/55vZTMm472jVSzya+oyDVJl+jLpGGghAVGcMQ8sKBPo
-	 FQiNr356d7SuX8aAAR53pegAMU2yp4rX3z8YM7WqdXLaIyGUh7RuveYhdy1xZVIVJCnni
-	 Yf4jgs0d9u96hGcDdPeR8fgW1bUFrRE80BkGuEi9hVUdwKNvbZp9hSyrnPP8SHnv7iQwe
-	 2PozQz6tpQJq8ZpiwOKspC0jLlKdGmIqp5XdjPFk2Wv/auCxLW0NRSa6H7ifChAMFc3Io
-	 rN5X1BYhJdAmfwjtT9qx1ue3zKLgzaN8ImWmdKLhYtEKPUhYlnxbTt/aEQJ9gqzkAbA==
+	b=NsknPlsdiypql8Of+Ky6u/TOjQdl6sWA3kt/fzH3Q0Wg4OHvqsxsZVftWTgzFY1I2P8X
+	 lDJIHD48R70jlGvKnuDteOMr95qkzPBXyPONySffh7s5MFIiVQyGCCnnwwHxtWsCyZtMV
+	 315QnLTeWV2zma3gFZd9trUoR64bLqIZKskAAx6RgA301KOmqYN8V5IfmAAGB/KW4ZuKu
+	 rQMTJSyYv704RhtCSTesotrxPw2QP5J7+NRJpKfJhCC4AneneX4V4NGBrHmm3jq7xTp48
+	 XRH/fiMho7j8nxshroXYkYSN8oynNOhvhrdJMU41EuhW915XBRTkAQ/rqZZpLqe7WMQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793019207;
-	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=4sPsWijS0o1vuhCMct6ehUV/2rvCyrpEssuEEpT4abY=;
-	b=OvtRb0ywLae+NntUE46ywdEFIn+Zle7r55qgnhPkIndZwgrNvxQOrpo8lq/hsPQ7h+S+
-	 zrG3zTWL4/kRUe7U9Lo0Xe2UFvj/MYvaWVsWCr2cXm04/HbSd4cK+5okAD4rXQQOtInCB
-	 a7Z5q2IM0bLfD6/FlfOs5T4yBgdg5W7fOSPtHhRMJYHJ1N1HFwyojlk2pv5pt47WFmk+l
-	 ca9+0mv7EQ8hYyEtW81OEG7wX/EwdduP1MWI682WR1eItqRWdsZTwaqLXhvOf4RvW8/ZN
-	 tkU99i84aIWxpRcKm3vQ629CkmUemBqCFuDpXtSdmriNdvAoeGwH8wdrmE2BQH8S/cQ==
+	h=DMARC-Filter:DKIM-Signature:X-QQ-XMRINFO:X-QQ-XMAILINFO:From:To:Cc:
+	 Subject:Mime-Version:Content-Type:Content-Transfer-Encoding:Date:
+	 X-Priority:Message-ID:X-QQ-MIME:X-Mailer:X-QQ-Mailer:References:
+	 In-Reply-To:X-QQ-mid;
+	bh=eoeFhuQrsUg2LLls9bBuuI3jERyROiJOphO2K6S7wJw=;
+	b=LezkmoNR9L7WTYeCfAgYtt1fJxuMx/9vqyg0E4rSQu/2HBw0F6GQbdoYJbmgo6B2TGiY
+	 xhKhlXTtaPls/qg+fSZxovctvPKJ6ypaBGOMCMa3QNj/n5SYlHxYQfdK1hEBodB8WGaM8
+	 FY/kTpnWYPJAIm3ZzH/RKTojWrBLqMqhf+jY2gCSosegmMiWmHsrK13QapJHS2p5SYZYc
+	 1iuy4nUMf2FIPOE2zzhF1t61yS9vZSmNqCOjVTzEn4jW0CjlXIpC+TJS+bK0T0/79FnEI
+	 W0HkYKhpez+/cGbekzDF8ozZk1XS5LjbO7GCP8QBtBMq3QamN1j+zUlRbJOe81Sb/zw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=xiaopeng.com;
-	spf=pass smtp.mailfrom=xiaopeng.com;
-	dkim=pass header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=AWBEHmIh;
-	arc=none smtp.remote-ip=115.124.28.169
-Received: from out28-169.mail.aliyun.com (out28-169.mail.aliyun.com [115.124.28.169])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=foxmail.com;
+	spf=pass smtp.mailfrom=foxmail.com;
+	dkim=pass header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=hglI2lk9;
+	arc=none smtp.remote-ip=203.205.221.240
+Received: from out203-205-221-240.mail.qq.com (out203-205-221-240.mail.qq.com [203.205.221.240])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C31606A31A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D7E606A31E;
 	Mon, 26 Oct 2026 12:53:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E3C31606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 76D7E606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=AWBEHmIh
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xiaopeng.com; s=default;
-	t=1793019196; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=4sPsWijS0o1vuhCMct6ehUV/2rvCyrpEssuEEpT4abY=;
-	b=AWBEHmIhQCCnHyNEvCdhbg0f2AuqsF7AlHUVK/HiYovR0/32IKs2kjcIZCP069tXRLWsw/u9r0GZvDRiQBOO+corbwKai9+asfvc8LkSD5n9JSMRfgArWLl/p4/yQ/HuJ7UF0iDP5uKNHdQbTH1bPtR6aLSLpmo5tfDFCJAyKXo=
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.05106358|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0177122-0.0906822-0.891606;FP=18328251804473314834|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037034138;MF=fangxy@xiaopeng.com;NM=1;PH=DS;RN=13;RT=13;SR=0;TI=SMTPD_---.jq1bEE5_1793019194;
-Received: from localhost.localdomain(mailfrom:fangxy@xiaopeng.com fp:SMTPD_---.jq1bEE5_1793019194 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Mon, 26 Oct 2026 20:53:15 +0800
-From: Fang Xieyan <fangxy@xiaopeng.com>
-To: pablo@netfilter.org,
-	fw@strlen.de
-Cc: phil@nwl.cc,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Weibin Liu <liuwb@xiaopeng.com>
-Subject: [PATCH] netfilter: xt_policy: add NULL check for skb_dst() in output policy match
-Date: Mon, 26 Oct 2026 20:53:13 +0800
-Message-ID: <20261026125313.14810-1-fangxy@xiaopeng.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (1024-bit key, unprotected) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=hglI2lk9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1793019196;
+	bh=eoeFhuQrsUg2LLls9bBuuI3jERyROiJOphO2K6S7wJw=;
+	h=From:To:Cc:Subject:Date:References:In-Reply-To;
+	b=hglI2lk9blL2Ewq6XJQOl1LwizAJYWWmqDQ6TQTq7UGeKWh0EtkorC9r2a/sJJzuj
+	 eirt+WTiaQDXv43TobyQK2jqLjmH4T6W2s9QpQuRWNLr1ZmDYFPUnQkQFgx0JGdEGO
+	 JnGOgfI0ITrAHOfNjIqVnOGJUM0T1vL90RnXm7QI=
+X-QQ-XMRINFO: Mp0Kj//9VHAxZTvkSW1v73Gwx3+DKDx3Cg==
+X-QQ-XMAILINFO: N91a4ffQWdrAP/blrZq7sSDhJ77M3hmBPB3rfPZ65QKIWN2GUtLGIpKzWD1KkT
+	 mQRuQ9+FGkeD5ZBMxgsIpRc/HZBIuSlrPXSxP4ro+lZSPSedXP31uco6JYb2ERtcdsQazvz00J47u
+	 38trGq0XSdz0O3Oavn46ylGREXieHBd0rZTAerz/5FIAZD5sgHxjROds104iMXlkwiMDNONEu1SJm
+	 zUjMP721UBNHN6krscRetKmuoBbd2bzJ0jBQX31LhOnOtI4XSSIqtXAHlG+00RT6+irZ2xQN4nnss
+	 E3bw/+WyjW8rvewhjmQ9UgCwwq9adXlKpEhOu3NcGPM9flVXGiZhi5VbmxpD0AxBCrOhC1qspC0Qd
+	 ycWMPZMla/WWmN1pQSy5we6p6Aj8jG5GTpYz64ST55bWzcYFhIEd/bRcCMoPdYIquruNWGu7yydUr
+	 57XJQkKQzwMlMviTVuKNN2TB488djKlUfl6Hb5g5T4O83e35oW0E05mUXkfXZJ52Uc+Kkq2fJxEI2
+	 euVTY4bc8eZwFdVuw6eecS++zWYD3JA5D0kmf1Z98LxoWwjjaexECRMvk7tf8NFy/Q7sHL3GKP4Hl
+	 69sbHgmYP6sb09FAQGYxzAjZ2g/cI9wBUDwZKn9ioZDrDFMVzfZYiKjiByi9Qz7jHSGSuxqvmuw4Z
+	 G0F4mPTMhz0+mqgbp6Nr4ESwVaeNHuaY4cRIFyCPpuZRA8lOkCoMoRkhUuHSXSQ7ZSAPxCa0Bo2tn
+	 2oFkE/cnGSVCjVqnEMoDT8dP/9eKF4gU286LzPnieR2r9wvlWZp1CVe7bg5oqdYZOwuSRLHuh2MK0
+	 sb3AsIOZC4wcDSOTcLUVU5S8pknx4mHoRo6DzY7pjIaMPJ+jKxDZ1J4QSXUHj1DyGq1PP9hGQJNz7
+	 FJcHWyvUCBTCQKw2qh8G3mUnk8fhlPuTn2VoQSvJ+49N+keRXu4gHLyNfnR/yxbEmmIJShc17vZQy
+	 oHp/VKQ1d05nS0gwcO4lJcZ1gla4UHKh/7jkgDSPys7MHItLKv0I9fbbeROQ+gpVZI3OQ0yzljnGF
+	 5IULTJqH2LuzWLyNsDHvlaLyBIPoQHZDgxT69aP3DI8GKS+JSSIAoDFJQAOQYBTk99tO0DJLCRNXU
+	 W6HAinkm2SmW4t/NgyOQzrEP3KOmZw9ZmBU5VcJwU6at43OIK4/lo5XFL0ssJWUfdQfkIk9L9UIKQ
+	 w==
+From: "=?utf-8?B?5bmz5LmL?=" <treebacker@foxmail.com>
+To: "=?utf-8?B?R3JlZyBLSA==?=" <greg@kroah.com>, "=?utf-8?B?bmV0ZGV2?=" <netdev@vger.kernel.org>
+Cc: "=?utf-8?B?RGF2aWQgUy4gTWlsbGVy?=" <davem@davemloft.net>, "=?utf-8?B?WU9TSElGVUpJ?=" <yoshfuji@linux-ipv6.org>, "=?utf-8?B?QWhlcm4=?=" <dsahern@kernel.org>, "=?utf-8?B?c3RhYmxl?=" <stable@vger.kernel.org>
+Subject: [PATCH net] ipv6: fix dead half of the MTU guard in __ip6_append_data()
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,40 +70,82 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
+Date: Mon, 26 Oct 2026 20:53:14 +0800
+X-Priority: 3
+Message-ID: <tencent_E14C00D5FE957DD7E12FFDC2E75A4FA9EE08@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+References: <tencent_B58BAE2F5FF485D1B4F652E9980EAB132A09@qq.com>
+ <2026102604-circus-juvenile-c521@gregkh>
+ <tencent_7454E65EE7BD1C085B6951A7D2305157370A@qq.com>
+	<2026102658-jockey-volley-94ff@gregkh>
+In-Reply-To: <2026102658-jockey-volley-94ff@gregkh>
+X-QQ-mid: xmseua11-1t1793019194tqd4mfdl8
 
-match_policy_out() accesses dst->xfrm without checking whether
-skb_dst() returned NULL. If no dst entry is attached to the skb,
-this dereference is invalid.
-
-Check dst before accessing dst->xfrm and return -1 when no dst entry
-is present. This follows the existing handling of a dst entry
-without XFRM state and preserves the XT_POLICY_MATCH_NONE semantics
-in policy_mt().
-
-Code review identified the unchecked dereference. No reachable path
-that passes an skb with a NULL dst to match_policy_out() has been
-identified in current kernels.
-Reviewed-by: Weibin Liu <liuwb@xiaopeng.com>
-Signed-off-by: Fang Xieyan <fangxy@xiaopeng.com>
----
- net/netfilter/xt_policy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/netfilter/xt_policy.c b/net/netfilter/xt_policy.c
-index ff54e3a8581e..6bbaf92f0cfc 100644
---- a/net/netfilter/xt_policy.c
-+++ b/net/netfilter/xt_policy.c
-@@ -87,7 +87,7 @@ match_policy_out(const struct sk_buff *skb, const struct xt_policy_info *info,
- 	int strict = info->flags & XT_POLICY_MATCH_STRICT;
- 	int i, pos;
- 
--	if (dst->xfrm == NULL)
-+	if (!dst || dst->xfrm == NULL)
- 		return -1;
- 
- 	for (i = 0; dst && dst->xfrm;
--- 
-2.50.1
+VGhlIHNlY29uZCBoYWxmIG9mIHRoZSBNVFUgZ3VhcmQgaW4gX19pcDZfYXBwZW5kX2RhdGEo
+KSBoYXMgYmVlbiBkZWFkCmNvZGUgc2luY2UgdGhlIGluaXRpYWwgZ2l0IGltcG9ydDoKCglp
+ZiAobXR1IDw9IGZyYWdoZWFkZXJsZW4gfHwKCSAgICAoKG10dSAtIGZyYWdoZWFkZXJsZW4p
+ICYgfjcpICsgZnJhZ2hlYWRlcmxlbiA8PSBzaXplb2Yoc3RydWN0IGZyYWdfaGRyKSkKCQln
+b3RvIGVtc2dzaXplOwoKKHggJiB+NykgaXMgdW5zaWduZWQgYW5kID49IDAsIGFuZCBmcmFn
+aGVhZGVybGVuIGlzIGF0IGxlYXN0CnNpemVvZihzdHJ1Y3QgaXB2NmhkcikgPSA0MCA+IHNp
+emVvZihzdHJ1Y3QgZnJhZ19oZHIpID0gOCwgc28gdGhlCnNlY29uZCBjb25kaXRpb24gY2Fu
+IG5ldmVyIGJlIHRydWUuICBDb21taXQgNWUzNGFmNDE0MmZmICgibmV0OiBpcHY2OgpmaXgg
+c2tiX292ZXJfcGFuaWMgaW4gX19pcDZfYXBwZW5kX2RhdGEiKSB0aWdodGVuZWQgdGhlIGZp
+cnN0IGhhbGYKKG10dSA9PSBmcmFnaGVhZGVybGVuKSBidXQgbGVmdCB0aGUgZGVhZCBzZWNv
+bmQgaGFsZiBpbiBwbGFjZS4KCkZvciBtdHUgLSBmcmFnaGVhZGVybGVuIGluIFsxLDddLCAo
+eCAmIH43KSA9PSAwLCBzbwoKCW1heGZyYWdsZW4gPSAoKG10dSAtIGZyYWdoZWFkZXJsZW4p
+ICYgfjcpICsgZnJhZ2hlYWRlcmxlbiAtIDgKCnVuZGVyZmxvd3MgYmVsb3cgZnJhZ2hlYWRl
+cmxlbi4gIEV2ZXJ5IGxhdGVyIGJvdW5kIGNvbXB1dGVkIGFzCm1heGZyYWdsZW4gLSBmcmFn
+aGVhZGVybGVuIHRoZW4gd3JhcHMgdG8gMHhmZmZmZmZmOCwgaW4gcGFydGljdWxhciB0aGUK
+ZGF0YWxlbiBjbGFtcCBpbnNpZGUgdGhlIGZyYWdtZW50IGxvb3AsIHdoaWNoIG5ldmVyIGZp
+cmVzIGFuZCBsZXRzCmZyYWdsZW4gPSBkYXRhbGVuICsgZnJhZ2hlYWRlcmxlbiBlc2NhcGUg
+dGhlIE1UVSBjb25zdHJhaW50LgoKV2l0aCBNU0dfTU9SRSBvbiBhbiBlZ3Jlc3MgZGV2aWNl
+IHdpdGhvdXQgTkVUSUZfRl9TRywgYWxsb2NsZW4gPSBtdHUKd2hpbGUgc2tiX3B1dCgpIGlz
+IGNhbGxlZCB3aXRoIHRoZSB1bmNsYW1wZWQgZnJhZ2xlbiwgc28gYSBzaW5nbGUKc2VuZG1z
+ZygpIG9uIGEgcmF3IElQdjYgc29ja2V0IHdpdGggYSAxMjQwLWJ5dGUgSE9QT1BUUyBjbXNn
+IGFuZApJUFY2X01UVSA9IGZyYWdoZWFkZXJsZW4gKyAxIHRyaWdnZXJzOgoKICBza2J1ZmY6
+IHNrYl9vdmVyX3BhbmljOiBsZW46NjEyODAgcHV0OjYxMjgwIC4uLgpbICAgMzcuNjA3ODU2
+XSBrZXJuZWwgQlVHIGF0IG5ldC9jb3JlL3NrYnVmZi5jOjIxNCEKWyAgIDM3LjYwNzg2NV0g
+SW50ZXJuYWwgZXJyb3I6IE9vcHMgLSBCVUc6IDAwMDAwMDAwZjIwMDA4MDAgWyMxXSAgU01Q
+Ci4uLgpbICAgMzcuNjE2NjA2XSBDYWxsIHRyYWNlOgpbICAgMzcuNjE2NjA2XSAgc2tiX3Bh
+bmljKzB4NWMvMHg2MCAoUCkKWyAgIDM3LjYxNjc3OF0gIHNrYl9wdXQrMHg5Yy8weGE4Clsg
+ICAzNy42MTY5NTJdICBfX2lwNl9hcHBlbmRfZGF0YSsweGY4MC8weDE5NDgKWyAgIDM3LjYx
+NzE3Ml0gIGlwNl9hcHBlbmRfZGF0YSsweDk0LzB4MmE4ClsgICAzNy42MTczNjNdICByYXd2
+Nl9zZW5kbXNnKzB4NTg4LzB4OTg4ClsgICAzNy42MTc3MTZdICBpbmV0X3NlbmRtc2crMHg0
+Yy8weGE4ClsgICAzNy42MTc4OTFdICBfX19fc3lzX3NlbmRtc2crMHgyNjgvMHgzMDgKWyAg
+IDM3LjYxODEwNV0gIF9fX3N5c19zZW5kbXNnKzB4YjQvMHgxNDAKWyAgIDM3LjYxODI5OV0g
+IF9fc3lzX3NlbmRtc2crMHhhOC8weDE0MAoKUmVwbGFjZSB0aGUgZGVhZCBleHByZXNzaW9u
+IHdpdGggYSBkaXJlY3QgY2hlY2sgb2YgdGhlIHBheWxvYWQgc3BhY2UKYXZhaWxhYmxlIGlu
+IGEgZnJhZ21lbnQsIHdoaWNoIHJlamVjdHMgbXR1IC0gZnJhZ2hlYWRlcmxlbiBpbiBbMSw4
+XS4KCkZpeGVzOiAxZGExNzdlNGMzZjQgKCJMaW51eC0yLjYuMTItcmMyIikKQ2M6IHN0YWJs
+ZUB2Z2VyLmtlcm5lbC5vcmcKU2lnbmVkLW9mZi1ieTogYm8gY2FvIDx0cmVlYmFja2VyQGZv
+eG1haWwuY29tPgotLS0KIG5ldC9pcHY2L2lwNl9vdXRwdXQuYyB8IDIgKy0KIDEgZmlsZSBj
+aGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL25l
+dC9pcHY2L2lwNl9vdXRwdXQuYyBiL25ldC9pcHY2L2lwNl9vdXRwdXQuYwppbmRleCAyNWZl
+MGJhOThiMWEuLjdkNGQ0ZDQ1ZTIwNyAxMDA2NDQKLS0tIGEvbmV0L2lwdjYvaXA2X291dHB1
+dC5jCisrKyBiL25ldC9pcHY2L2lwNl9vdXRwdXQuYwpAQCAtMTUwMCw3ICsxNTAwLDcgQEAg
+c3RhdGljIGludCBfX2lwNl9hcHBlbmRfZGF0YShzdHJ1Y3Qgc29jayAqc2ssCiAJCSAgICAg
+cnQtPnJ0NmlfbmZoZWFkZXJfbGVuOwogCiAJaWYgKG10dSA8PSBmcmFnaGVhZGVybGVuIHx8
+Ci0JICAgICgobXR1IC0gZnJhZ2hlYWRlcmxlbikgJiB+NykgKyBmcmFnaGVhZGVybGVuIDw9
+IHNpemVvZihzdHJ1Y3QgZnJhZ19oZHIpKQorCSAgICBtdHUgLSBmcmFnaGVhZGVybGVuIDw9
+IHNpemVvZihzdHJ1Y3QgZnJhZ19oZHIpKQogCQlnb3RvIGVtc2dzaXplOwogCiAJbWF4ZnJh
+Z2xlbiA9ICgobXR1IC0gZnJhZ2hlYWRlcmxlbikgJiB+NykgKyBmcmFnaGVhZGVybGVuIC0K
+LS0gCjIuMzkuNSAoQXBwbGUgR2l0LTE1NCkKCgoKCuWOn+Wni+mCruS7tgrlj5Hku7bkurrv
+vJpHcmVnIEtIIDxncmVnQGtyb2FoLmNvbT4K5Y+R5Lu25pe26Ze077yaMjAyNuW5tDEw5pyI
+Mjbml6UgMjA6MTYK5pS25Lu25Lq677ya5bmz5LmLIDx0cmVlYmFja2VyQGZveG1haWwuY29t
+PgrkuLvpopjvvJpSZTogaXB2Njogc2tiX292ZXJfcGFuaWMgaW4gX19pcDZfYXBwZW5kX2Rh
+dGEoKSB3aGVuIG10dSAtIGZyYWdoZWFkZXJsZW4gaXMgaW4gWzEsN10gKHNpbmdsZSBzZW5k
+bXNnLCBzaW5jZSAyLjYuMTIpCgoKT27CoE1vbizCoE9jdMKgMjYswqAyMDI2wqBhdMKgMDg6
+MDI6MTFQTcKgKzA4MDAswqDlubPkuYvCoHdyb3RlOgo+wqBTdWJqZWN0OsKgW1BBVENIwqBu
+ZXRdwqBpcHY2OsKgZml4wqBkZWFkwqBoYWxmwqBvZsKgdGhlwqBNVFXCoGd1YXJkwqBpbgo+
+wqDCoF9faXA2X2FwcGVuZF9kYXRhKCkKPsKgTUlNRS1WZXJzaW9uOsKgMS4wCj7CoENvbnRl
+bnQtVHlwZTrCoHRleHQvcGxhaW47wqBjaGFyc2V0PVVURi04Cj7CoENvbnRlbnQtVHJhbnNm
+ZXItRW5jb2Rpbmc6wqA4Yml0CgpZb3XCoHNlbnTCoHRoaXPCoG9ubHnCoHRvwqBtZSzCoGlu
+wqBhbsKgaW5jb3JyZWN0wqBmb3JtYXQswqBwbGVhc2XCoGZpeMKgYW5kwqByZXNlbmQKcHJv
+cGVybHkuCgoK
 
