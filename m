@@ -1,63 +1,133 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793013039;
-	b=vbvXh9/Kp/AuhPZepzJIpd+H8nfjblQ94eHueDutu8cM0ZqVv8a4kAB5VrYrilyM32SH
-	 Fe5FDtZeNzoFZUD6ES2SsmNgo9Q79R8XPBfT1bSxnyTnLnPzy2nvld6pMHrHhw6BAoRWA
-	 3cJB4GNSK8ed3MXfhIDI1pT4uRjP8tuaJFc105XF1vrvo+aLl/XY1LJqFKS17m90/yyf9
-	 FMSdXJn5cXZcbhDfvCvfs4JuThasrEP1VbKYFhCK+gjpz9dL504p/3cgLZ6eJn3C5QarW
-	 0WypICB/g0aiol9bK+5Uh9h2bEJaSSblbwbcJvIughAk6IQpFMzudbVHcCo14JAaSvA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793013039;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=k9sMhNFN8pOnQFMDY6q9oFH8xW41MAWGt8ZsO6lOl84=;
-	b=aL8HwSOp4W9qbdltGAcb/o7An8MddPKnuSY/J+5ru5BcYdDYFcovDBb7rgScVu7rCJav
-	 AnKtdrDtBSAjW853KLv6GS0/KqZ0XqayOcL8CD7+5tkEmXekQPN5oCrOStLUNqmotuByD
-	 Fc1heOGOABpCsQObqi23RXiGWyxsGopE7IjRc14M7h0KpZsQ3F8s7amJ3aLtLf3wjYgnO
-	 UNePyoBNRGlgi2ywmOSllViLE7WgDZXLXh09Il2bIKzp0eTxpERr1bBmrpzDEDxTX78J9
-	 J4279Qp9XVuin2g6PWhOJYKWCkYKoe1Nusc3cec4WlqC/WjIn0IGjTtHAyeT26sdISw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iMi+t1Ff;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=198.175.65.10
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1793013311;
+	b=iUGyB8JnH675i3BAFQ/LqBT+eWRGlLb2WVzy2P/v1wAcNY7y/nV5OM6KebWHZt4Gufbs
+	 aofMGYE7DwQp7EFWXHPCQ2E1jGbAirioLtCBSDZ4febcqe8vn9AYrpZMKnX1NkWaBGJ/w
+	 L//aZI4vVIExOS7b9MWfJJH1BDrg8WZpSCa1cs4m/y2cQBj+BZTW8AjvMaLu2btvnbamz
+	 RW+rjB9HENptgpYQYaEiEBKYqqmeyH46nR3d7HnftHxB3lWO6tm5sisu4t/NYM13CWqT9
+	 GGOcyILRg946ZQmw5f9sClbXTl+XFj5EJqwMZBauz6sIJi3GVnkwcSMfq7mfRLuqQNQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793013311;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
+	 Received:Received:Received:Date:From:To:CC:Subject:Message-ID:
+	 References:Content-Type:Content-Disposition:In-Reply-To:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+	bh=yAAef/wag064Dtu98AmYHsgQ6P/Uzr3fA21gpb3turI=;
+	b=ehH/leJ/MX10+3pg4y26S+CJ6SO+hg5FOW5YfPAfhYTmMNiCycIBcruktGi+GWKVgWqH
+	 S7PW/JshutTesk6XKmHpJyB60GEDUbKt6P68cp2ClryxBr2uAYr8udTSgrS+SVse796nL
+	 VlSxEagaHCT3Ge7DybTxVKaTz6LRxtUcvulM90vjTPIFSfjpH+Xq5fDA4jlnvzlceyw+k
+	 HybhU5oVDmecUkGGwqR/0T+p4c4B4xTCqjzJfsQATpyQeZmVt4FYh1EeJLj0mx5R+mT8D
+	 w1Y6NHsH1Z568Hdqo493vXXF5oTF6k6uOFwC1aKucwzmK0rU26Zbhk2wmlTQ+gskHmQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=i0GwVGzW;
+	arc=fail smtp.remote-ip=198.175.65.10
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249D260A5BE1;
-	Mon, 26 Oct 2026 11:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE1A606A90C;
+	Mon, 26 Oct 2026 11:15:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7FE1A606A90C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iMi+t1Ff
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3BCE1F01346;
-	Mon, 26 Oct 2026 11:10:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793013038;
-	bh=k9sMhNFN8pOnQFMDY6q9oFH8xW41MAWGt8ZsO6lOl84=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=iMi+t1FfCEegigLJ9CuoGz3CSAN+cfgqvwzs7L/SqFHfrcFlgcwdNWxScd1sKwkPU
-	 l5kOoCpcHPtSEvJTFXADtdsNcBefGldeTCd9CIxFt1ZHR1WKMbd217EhkZ8wQZrvhj
-	 mqENI6fMi38hrFLC6ZEfRxq5IRqXgXLlFA2DWovxVc0ZUcX4Dz9BpLbMZiL3DVJm3v
-	 rG23D4MT5ar93ux9Z23URNnPvVZHZnjFVulOfy5L3mLg/3bAY/G4+C2I1FerFem5nQ
-	 W48X2hjHFIq0JNHi9cn1pYo3ri6yucJEel9dzMadss/grFM05ToPrbHGSL4QtFAy8m
-	 AJxvRDz1VAycw==
-Subject: Re: [PATCH net v5 2/2] net: stmmac: restore RX descriptor buffer
- addresses on resume
-From: netdev-bot+sashiko@kernel.org
-To: dinghui1111@163.com
-Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- dinghui@lixiang.com, xiasanbo@lixiang.com, yangchen11@lixiang.com,
- liuxuanjun@lixiang.com, zhoujing3@lixiang.com, fujiahui@lixiang.com
-Date: Mon, 26 Oct 2026 11:10:37 +0000
-Message-ID: <179301303716.3134.2346618514026272618@kernel.org>
-In-Reply-To: <20261025100636.613670-3-dinghui1111@163.com>
-References: <20261025100636.613670-3-dinghui1111@163.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=i0GwVGzW
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793013310; x=1824549310;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=Ar5PHXV2ACS/Ig0A1UhXuXk4u0/wS/sbmqHnEcBlzpc=;
+  b=i0GwVGzWeRlA4brkUmfws+obOIXWZmATPX1CxumoyLDUVY7ZBqh2+5dW
+   UBOjNMHO6mws9Cx+GOK6IPmUirwW923hEyoAPTMCTtRNGRRwVyT0GIHES
+   8BZMonM0CMN2hy+slGYSGUMth6t73FUwPlaCxlV+LUiGyqdYqowyT5l+1
+   uIWSL86vez9m8UvrtBunYmu2eJqbfTUuzdlXiDkzzKmQJTvuYtkL1CoYf
+   SYoNuhpgxZjBGDWQEmQNoIuIRWo+ssT0poXQhI1fVJ70UaGje1CvkTz92
+   b6zjj28HoxFoMdzuUJbx6uRDY/aRKZ4lW0hmTINF2rceXFTr8xOIaEo5I
+   Q==;
+X-CSE-ConnectionGUID: afL7WNOFR9OkVbB8iUNSYg==
+X-CSE-MsgGUID: Kat91mD5SiO+LkpLc7SCBg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11946"; a="1567611"
+X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
+   d="scan'208";a="1567611"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 04:15:09 -0700
+X-CSE-ConnectionGUID: mcLWa9yWTUa3NmlaibQMGQ==
+X-CSE-MsgGUID: aztrheFyTw61uSGGFnbn5g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
+   d="scan'208";a="4188447"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 04:15:09 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Mon, 26 Oct 2026 04:15:08 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Mon, 26 Oct 2026 04:15:08 -0700
+Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.29) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Mon, 26 Oct 2026 04:15:08 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Q+wpAzpqwRv0Vu4CnALMwgnPZD7ZajjM6JJ25dsQXtVr6M21OfYXJhbQxCsUrfs1juEgOhIXUpDJKsO9QxUnTBHbMabYWDaXJveIdR3Dq3/yF8W1/pYY1fJNUIDW8sREzhp/4/FBfXI/HXAi3YCV6szt4s4KZi2hurzPeMXSq8QBDArSjFKJW0CpWglccugh7XISROSP3Ty6QBymGaWQksRsEPHlIZ+E/1odwTYhK1LPf+ErSSryq2Om2S2vj5y/jbQgy3wWgDX3ekL8tANdODod6glm7zVtA4+vt7ULHtN3h/ZdOR1e/ynrH7v4gx4Js4OZOU0DYfVRvWUlVqz0DA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yAAef/wag064Dtu98AmYHsgQ6P/Uzr3fA21gpb3turI=;
+ b=ES8b6FvLTyShw+5+rNTO4su8y/0KfeZUWOtjADdebXvy6BZBUP3NRs4RRVUQq5wzxu90RxQE6R4csgd78SDUiN85bsnDWOUMCw//GVP8oLTNwg0KkQ5ZvrLFuMC8Rvql/rvODwnCK0Ij9blgPczJfWRKVlOXRwbcqB+ybHOqCMmHpOPXure06NQA49UxgyMXQdb7YiG22GOZwGOInke2kMZnyXhM7rShBUxbG5LP4RoV0qGzXSUw+4ZgXuBgWvhM5zqjuEC0esdK8Qyen0qckh8vXmAdXRa6ldZaGPtRPgjpf2sSvcThVRhCBpKZ3w0c43niki5NBnr9HY2h5NkLVA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from LV2PR11MB868673.namprd11.prod.outlook.com
+ (2603:10b6:408:422::13) by DS6PR11MB458838.namprd11.prod.outlook.com
+ (2603:10b6:8:52a::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
+ 2026 11:15:05 +0000
+Received: from LV2PR11MB868673.namprd11.prod.outlook.com
+ ([fe80::5bfd:6afe:a9db:b7de]) by LV2PR11MB868673.namprd11.prod.outlook.com
+ ([fe80::5bfd:6afe:a9db:b7de%4]) with mapi id 15.21.0546.021; Mon, 26 Oct 2026
+ 11:15:05 +0000
+Date: Mon, 26 Oct 2026 12:15:00 +0100
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+To: Rongzheng Wang <testwrzwrz@gmail.com>
+CC: Magnus Karlsson <magnus.karlsson@intel.com>, Jason Xing
+	<kerneljasonxing@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, "Jesper
+ Dangaard Brouer" <hawk@kernel.org>, <stable@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <bpf@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net v2 1/2] xsk: defer software checksum until the skb is
+ complete
+Message-ID: <at82NLzM7g8HGgum@boxer>
+References: <20261024091256.17918-1-testwrzwrz@gmail.com>
+ <20261024141157.59301-1-testwrzwrz@gmail.com>
+ <20261024141157.59301-2-testwrzwrz@gmail.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261024141157.59301-2-testwrzwrz@gmail.com>
+X-ClientProxiedBy: WA2P291CA0024.POLP291.PROD.OUTLOOK.COM
+ (2603:10a6:1d0:1e::15) To LV2PR11MB868673.namprd11.prod.outlook.com
+ (2603:10b6:408:422::13)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,272 +137,136 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR11MB868673:EE_|DS6PR11MB458838:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9f2e2a07-717a-4544-57e5-08df3352634d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|261009223027099003|261021135927099003|261021121427099003|261021123027099003|261022105027099003|10067099003|56012099006|22082099003|18002099003|11063799006|4143699003;
+X-Microsoft-Antispam-Message-Info: Fh8aSUkozke5nGv8Eb1kfIinF1TMbridZvxrq+jtWzOnQid37nhxbXv3POHhHqqTqVD7xpaJ/pV0TK3BF/BYEgsdknbm7nE6IBn3rEYQAoo6ax3VLNxRqHUuUoaEG/rLLxx6fiU5vfZNwgM4R9LyLlk3WdHmNw/cdGukTFyyzIaHlToe8kqwB/xA2UuZpSSmFGhnRWu4MzYYdhO/b8h0r/Att9qh737PJ/IG3QahNTeCcyCw8094DuKtKZ+ixbFksGxNmPcQtXQp6eVjTgYMODHcPem4xjX4kFZmLgPhFDwOHACvTak/lhi/yiUt1KH+niPGH/XusiJNV45PhdT9UZ3oWHZsERnMJ0/u4AhHpmyTWC0sYWDC8BzsbJNcAW4crvu6hZmGnwXnSv7hA4o4uWRk8FNAPy2/+TNKlpcimmI0sctOy8mtVdexGgUk+NSyraTJQhJz9KW/lLPPUYu+vnOJJO863A5iQ7AlrAZ/t0BrdAfFvu+zk5/GyfxW5jZljI942tx2GGVbDD+ks6TNkgLQyJ42jHT0lE4H/wOps1WOBkhbXoexh1tUva2nTnLii3HxOvNXlMp3Qlq5L70uKDBr3I3DJV3wXr1ASbCxHLGHXFqQyABSMCX6eTdu0+PLnHXsd6auaEbwUynQrv50nA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR11MB868673.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(261009223027099003)(261021135927099003)(261021121427099003)(261021123027099003)(261022105027099003)(10067099003)(56012099006)(22082099003)(18002099003)(11063799006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?KYaydlSs68OVVejD5i3iH4B9p73KY2ch1aq1829X00/Bv5obVIN04MIv+HWf?=
+ =?us-ascii?Q?VuQ4B4Fp91EFIxUN1U6mQzsE19Ln4okShnZNmWYmMPAcAEF8moa9Gz6XMvrV?=
+ =?us-ascii?Q?s3ZxzWpUsRaVgsk0q2hAmWFgLvkEjBPvevduTYL6NhNg+mNavhaWHmQs5Qnb?=
+ =?us-ascii?Q?kMJLif3PMxiUxGI6J/1EyZczk3KhLQKw8R15MA0KXEjz9Hkp5qQfRApPAB74?=
+ =?us-ascii?Q?FQmM+FOT/ILVSDV2UpBP6o+1pisdGoXyXIKROZgiDNCOR17lILIM00S1DF7+?=
+ =?us-ascii?Q?ulUTbybUoDAKP/r6J5BJakUgkJKDXNbzu5MqvTcYvgdRU7LlHulDDRoxmPAY?=
+ =?us-ascii?Q?yslgCxBdRJKxDsXE8ptBiKoocJ+/63X4qCjUvsLeoGauChDtZqXhob6CU4FD?=
+ =?us-ascii?Q?tTB4u51Zkj+1yz/lxTUMyu68ABr9l6OxyX4KYRrLOizPE9ob04ITAAROo7lb?=
+ =?us-ascii?Q?LwNK+Kp+N+p8dZkxpiHo9rb8kTR1szXxGpU+TVyXUDCLlAkyjh7cgZbVKXTp?=
+ =?us-ascii?Q?VXbDUJeXSpo7qUXyMvrRYvHO45N6p64/NoBHGU6Ys2WreRi8SRBsTNchAkAs?=
+ =?us-ascii?Q?xrlqtZ8ImUfZUlGdOTvJSZ85dEAXazdKFzSv4lbMT8D+zALixyJhCw3HrVzL?=
+ =?us-ascii?Q?U8riDAFG5vFg5ZeaztldXoD6/EZDtn8scjcwL3urRcr3DgELFJ8jdGgF1kUz?=
+ =?us-ascii?Q?DEmj4payoyJXEEOMW5FIRyyCxTsHp9sQcS3t4+sJH+5PbFo9itJhvTPzTzm/?=
+ =?us-ascii?Q?C3iA3UEZIvpY5+xpVmocwwqB9MT8mmMNZvT/9IbWgIGwt20WYpq5jr+Rveoz?=
+ =?us-ascii?Q?ahIjFmrwRTQpcT7mZ8nmURyeYDjkyOZbtMcvoPCbtOy98Go2wm414lToCFuo?=
+ =?us-ascii?Q?kTI+4cNJVR3dlj4ve9wpuyPVr+sn3kc3O9ay+cJWjjSKGR2sDnc1Iz93m3VM?=
+ =?us-ascii?Q?X8MhENHNIWYWZB99fkP6JddCL09lS6KATe0vXVgnGwG56IirnnO03P7pnhv+?=
+ =?us-ascii?Q?Wvkb0eV9A28jZw9N9u8vjDliNuYOWQjtqb083L+34y5vhmBR3P3sbTB2bY+J?=
+ =?us-ascii?Q?Q8cusjdxgke9VTSXENyzpxQeMaUxnPxrNA/yEAK7Lhh8Kl20llQSSGjmdLnC?=
+ =?us-ascii?Q?CPGyNLIu2I8qxO3fWINVq3vDEcOfY8C5fLAteuGkSD2jMzrJCpnHHuQY/VB3?=
+ =?us-ascii?Q?QLwyEX2TG4tnELrCvCUT0xNeHxkJCvHtj+dE2/yP5hj7pHBJZIgrMxT9C4iT?=
+ =?us-ascii?Q?29Z3gkuPW0hZ7AxdTzS0ed0I5wUjdokl8Sa+kFBJnQ7sq0bQn+yocodpPDOW?=
+ =?us-ascii?Q?xjmoaIhpi5L7MN/ozgbmvQIIu+rb5LJTP697WvE5aVXaZPTfxBHMAIwfpDfM?=
+ =?us-ascii?Q?jWYGLKzAZy13v8yXSl6jq2CwHUOzTFO6+3+ooIvmEsocRDBx+eMVlii7BEtd?=
+ =?us-ascii?Q?cyepJTKNS72Xha6Lxu3C8BD20mEI9tQ584a74lM2a2I0oxELm7d5rPCliI8S?=
+ =?us-ascii?Q?py1kf+XWJnsJc6SLdPK8bopAcFhelc4gIQf/dS3CKDAByzX91ytmcaW2zDJU?=
+ =?us-ascii?Q?y9ASq8IAZW2cBwinUyDk+qAQ7m9uznV/NR9p4IJvif9ffFMEE0lcRKI6uZEM?=
+ =?us-ascii?Q?1NS2AmQFGHo8ul5wI+xMDAn/y9KMGQLFHCAoZoSkyH9EGLG8YQJe2Vov0A7k?=
+ =?us-ascii?Q?K5VBrdn8I790GCAcJzP5SQmIopkR/PLg4sd8SJlhRYKu1K0tIIvNKgT+/KBu?=
+ =?us-ascii?Q?VXOpG+jnM3HZXy3X7+pL2QLHVY122Ds=3D?=
+X-Exchange-RoutingPolicyChecked: KOTYBCsiebID9sd2Vx7m+Ep/m+jtFweCrLb8voYqrs0/3aqAGO3a7SDxc8mzb30hupSVOAA8BW4LZdssP4XDBncwbK2JetQsCBKxKEs52d5bwExKM+51nfDxT59kA4gaLL6Ac5P27RSiJYCJcbG7xjS/0S6/o8kEwQog+0B8NACeokIwiu/LsiSP6PMkou9dl1NnlB1iGdUv1pbuafUuu0eA02GHMcsUNwMT8w1HmFgSpEaFaF8yLFZJCxukptvfBdlf0UyKvxEjWkuMESOr1hqk5uRNSN3Jobl09DyhtIZGaXhvpUy64GrezLq1+mryLjLb+h4efgd//7JBeZwd6w==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9f2e2a07-717a-4544-57e5-08df3352634d
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR11MB868673.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 11:15:05.7182
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: i8xjpMH1pGxQTanGNPpL4sA0ao+zTYwo3ANKUThIMkAPqzumbAYFfx7gajbz8Z7OJ1E22p3Wq2q+zrPoqkJCY/zKfDSE5uXIWqIXMghYmU0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS6PR11MB458838
+X-OriginatorOrg: intel.com
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
-
-Critical: 0 · High: 2 · Medium: 1 · Low: 1 (1)
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] On cores with legacy enhanced/normal descriptors (DWMAC100,
-  DWMAC1000, DWMAC 3.x: enh_desc_ops and ndesc_ops), an XSK RX slot with…
-- [High] On GMAC4/XGMAC, the XSK 'leave CPU-owned holes' approach puts
-  unfilled slots in the middle of the ring, inside the region the RX…
-- [Medium] The patch adds an allocation-dependent way for stmmac_resume()
-  to fail, and that failure leaves the netdev unrecoverable.
-- [Low] stmmac_reinit_rx_descriptors() publishes every restored
-  descriptor with stmmac_set_rx_owner(priv, p, false), so…
-
-Pre-existing issues:
-- [Low] stmmac_reinit_rx_descriptors() can attach XSK buffers to slots
-  that had none at open or pool-enable time, but it never updates…
-
---
-
-net: stmmac: restore RX descriptor buffer addresses on resume
-
-This patch restores RX descriptor buffer addresses in stmmac_resume() after
-stmmac_clear_descriptors(). On GMAC4/XGMAC, hardware writeback can overwrite
-those addresses for descriptors that completed but were not refilled before
-suspend. It moves buffer setup into stmmac_prepare_rx_buffer() and
-stmmac_prepare_rx_buffer_zc(), which the refill paths also use, allocates
-missing pages with GFP_KERNEL, and leaves XSK slots that have no buffer
-CPU-owned.
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index f5ae12208e85b..e56f5d044fc8a 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-
-[ ... ]
-
-> @@ -1688,32 +1722,98 @@ static int stmmac_init_rx_buffers(struct stmmac_priv *priv,
-
-[ ... ]
-
-> +static int stmmac_reinit_rx_descriptors(struct stmmac_priv *priv,
-> +					struct stmmac_dma_conf *dma_conf,
-> +					u32 queue)
-> +{
-> +	struct stmmac_rx_queue *rx_q = &dma_conf->rx_queue[queue];
-> +	struct stmmac_rx_buffer *buf;
-> +	struct dma_desc *p;
-> +	int i, ret;
-> +
-> +	for (i = 0; i < dma_conf->dma_rx_size; i++) {
-> +		buf = &rx_q->buf_pool[i];
-> +		p = stmmac_get_rx_desc(priv, rx_q, i);
-> +
-> +		if (rx_q->xsk_pool) {
-> +			ret = stmmac_prepare_rx_buffer_zc(priv, rx_q, buf, p);
-
-[Severity: Low]
-This is a pre-existing issue, not one introduced by this patch, but
-rx_q->buf_alloc_num is not updated when this loop attaches XSK buffers to
-slots that had none at open time.
-
-stmmac_hw_setup()->stmmac_init_dma_engine() programs the RX tail from it:
-
-	stmmac_set_queue_rx_tail_ptr(priv, rx_q, chan,
-				     rx_q->buf_alloc_num);
-
-Also, stmmac_set_queue_rx_buf_size() uses the XSK frame size only when
-buf_alloc_num is non-zero.
-
-If the fill ring was short at open, slots filled here at index
-buf_alloc_num or above may lie beyond the programmed tail. If
-buf_alloc_num is 0, the buffer size falls back to dma_buf_sz.
-
-The open path uses the same stale value, and so did the code before this
-patch, so this is only a bookkeeping mismatch.
-
-> +			if (ret) {
-> +				/* An empty fill ring must not prevent TX-only use. */
-> +				stmmac_clear_desc(priv, p);
-> +				continue;
-> +			}
-
-[Severity: High]
-On cores with the legacy enh_desc_ops or ndesc_ops, does this leave the
-slot DMA-owned with a buffer address of 0?
-
-stmmac_clear_descriptors() has just run init_rx_desc on every RX
-descriptor, and that sets OWN in des0:
-
-enh_desc_init_rx_desc() {
-    ...
-	p->des0 |= cpu_to_le32(RDES0_OWN);
-    ...
-}
-
-On these cores, the ->clear op only clears des2:
-
-static void enh_desc_clear(struct dma_desc *p)
-{
-	p->des2 = 0;
-}
-
-static void ndesc_clear(struct dma_desc *p)
-{
-	p->des2 = 0;
-}
-
-The final loop below skips this slot when !buf->xdp, but nothing clears
-OWN. These DMA engines have no RX tail pointer, so the DMA keeps walking
-the ring while OWN is set. The next frame that lands in this slot would be
-written to bus address 0.
-
-XSK zero-copy is advertised on every core (NETDEV_XDP_ACT_XSK_ZEROCOPY in
-xdp_features), and stmmac_xdp_enable_pool() has no descriptor-format
-check, so these cores can reach this path.
-
-Before this patch, des2 here still held the previous, still-mapped UMEM
-chunk address. The commit message says such a slot "must not receive an
-invalid buffer address".
-
-Could OWN be cleared explicitly here, for example RDES0_OWN in des0 on
-enh/ndesc? Only dwmac4 and xgmac zero the whole descriptor in ->clear.
-
-[Severity: High]
-On GMAC4/XGMAC, can a CPU-owned hole in the middle of the ring stall RX on
-this queue permanently?
-
-stmmac_reset_queues_param() has set cur_rx = dirty_rx = 0, so a hole at
-slot D sits in the region the RX path treats as hardware-owned. The DMA
-fills slots 0 to D-1 and stops at D with an RBU event.
-
-In stmmac_rx_zc(), dwmac4_wrback_get_rx_status() does not report a fully
-zeroed descriptor as dma_own. So cur_rx moves to D+1 before the missing
-buffer is noticed:
-
-stmmac_rx_zc() {
-    ...
-	rx_q->cur_rx = next_entry;
-    ...
-	if (!buf->xdp)
-		break;
-    ...
-}
-
-stmmac_rx_zc() is the only caller of the refill, and only once the dirty
-count reaches STMMAC_RX_FILL_BATCH:
-
-	if (dirty >= STMMAC_RX_FILL_BATCH) {
-		failure = failure ||
-			  !stmmac_rx_refill_zc(priv, queue, dirty);
-
-If D < 15, dirty stays at D+1, the hole is never refilled, and the DMA
-stays stopped at D. stmmac_xsk_wakeup() only schedules NAPI, so refilling
-the fill ring from userspace does not recover the queue.
-
-If D >= 15, a later refill fills D and moves the tail. Software has already
-moved past D, though, so that frame would be consumed a full ring later
-and out of order.
-
-Could the holes be placed in the dirty region instead, for example by
-setting dirty_rx and the tail to the first unfilled slot?
-
-> +		} else {
-> +			ret = stmmac_init_rx_buffers(priv, dma_conf, p, i,
-> +						     GFP_KERNEL, queue);
-> +			if (ret)
-> +				return ret;
-> +		}
+On Sat, Oct 24, 2026 at 10:11:56PM +0800, Rongzheng Wang wrote:
+> When XDP_UMEM_TX_SW_CSUM is used with multi-buffer TX, xsk_skb_metadata()
+> calls skb_checksum_help() while only the first descriptor has been added to
+> the skb. The checksum therefore covers just the first fragment, and
+> skb_checksum_help() sets ip_summed to CHECKSUM_NONE, so the remaining
+> fragments are never included in the checksum.
+> 
+> Move the software checksum calculation to the point where the last
+> descriptor has been added to the skb.
+> 
+> On a checksum failure the packet is now dropped instead of being returned
+> to the application for a retry. This path is not reachable with the
+> existing metadata validation, but the behavior change is intentional.
+> 
+> Fixes: 11614723af26 ("xsk: Add option to calculate TX checksum in SW")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Rongzheng Wang <testwrzwrz@gmail.com>
+> ---
+>  net/xdp/xsk.c | 22 ++++++++++++++--------
+>  1 file changed, 14 insertions(+), 8 deletions(-)
+> 
+> diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+> index 33475b180ea6..65be2a368325 100644
+> --- a/net/xdp/xsk.c
+> +++ b/net/xdp/xsk.c
+> @@ -1011,14 +1011,6 @@ static int xsk_skb_metadata(struct sk_buff *skb, void *buffer,
+>  		skb->csum_start = hr + csum_start;
+>  		skb->csum_offset = csum_offset;
+>  		skb->ip_summed = CHECKSUM_PARTIAL;
+> -
+> -		if (unlikely(pool->tx_sw_csum)) {
+> -			int err;
+> -
+> -			err = skb_checksum_help(skb);
+> -			if (err)
+> -				return err;
+> -		}
 >  	}
-
-[ ... ]
-
-> +	/* GMAC4/XGMAC secondary address writes overwrite the OWN bit. */
-> +	dma_wmb();
-> +	for (i = 0; i < dma_conf->dma_rx_size; i++) {
-> +		buf = &rx_q->buf_pool[i];
-> +		if (rx_q->xsk_pool && !buf->xdp)
-> +			continue;
-> +
-> +		p = stmmac_get_rx_desc(priv, rx_q, i);
-> +		stmmac_set_rx_owner(priv, p, false);
-
-[Severity: Low]
-Should the disable_rx_ic argument here follow priv->use_riwt instead of
-always being false?
-
-stmmac_clear_rx_descriptors() passes priv->use_riwt as disable_rx_ic. On
-GMAC4/XGMAC that choice is lost, because dwmac4_set_sec_addr() assigns
-des3 outright:
-
-	p->des2 = cpu_to_le32(lower_32_bits(addr));
-	p->des3 = cpu_to_le32(upper_32_bits(addr));
-
-This loop then always sets IOC through dwmac4_set_rx_owner():
-
-	if (!disable_rx_ic)
-		flags |= RDES3_INT_ON_COMPLETION_EN;
-
-With RIWT coalescing enabled, every descriptor in the first ring pass
-after resume would raise a completion interrupt. That continues until
-stmmac_rx_refill() or stmmac_rx_refill_zc() re-arm the descriptors using
-stmmac_rx_need_ic().
-
-> +	}
 >  
+>  	if (flags & XDP_TXMD_FLAGS_LAUNCH_TIME)
+> @@ -1030,6 +1022,14 @@ static int xsk_skb_metadata(struct sk_buff *skb, void *buffer,
 >  	return 0;
 >  }
-
-[ ... ]
-
-> @@ -8503,6 +8577,18 @@ int stmmac_resume(struct device *dev)
->  	stmmac_free_tx_skbufs(priv);
->  	stmmac_clear_descriptors(priv, &priv->dma_conf);
 >  
-> +	for (queue = 0; queue < priv->plat->rx_queues_to_use; queue++) {
-> +		ret = stmmac_reinit_rx_descriptors(priv, &priv->dma_conf, queue);
-> +		if (ret) {
-> +			netdev_err(ndev, "Failed to restore RX queue %u: %d\n",
-> +				   queue, ret);
-> +			stmmac_legacy_serdes_power_down(priv);
-> +			mutex_unlock(&priv->lock);
-> +			rtnl_unlock();
-> +			return ret;
-> +		}
-> +	}
+> +static int xsk_skb_sw_csum(struct sk_buff *skb, struct xsk_buff_pool *pool)
+> +{
+> +	if (!pool->tx_sw_csum || skb->ip_summed != CHECKSUM_PARTIAL)
 
-[Severity: Medium]
-If stmmac_reinit_rx_descriptors() returns -ENOMEM here, what state is the
-netdev left in?
+If i am reading this right check against ip_summed is a way to tell that
+first frag had XDP_TXMD_FLAGS_CHECKSUM flag set.
 
-This early return skips stmmac_enable_all_queues(), phylink_resume() and
-netif_device_attach(). NAPI stays disabled from stmmac_suspend(), the
-device stays detached, and phylink_prepare_resume() is never matched by
-phylink_resume(). netif_running() is still true.
+Agreed with Jason to preserve unlikely() when checking pool->tx_sw_csum.
 
-A later close then runs:
+Regarding skb drop, I am leaning towards this, I don't see much sense in
+retry when packet is malformed? Not sure how this could be communicated up
+to user space.
 
-dev_close()
-  stmmac_release()
-    __stmmac_release()
-      stmmac_disable_all_queues()
-        napi_disable()
-
-on NAPI instances that are already disabled. napi_disable_locked() waits
-for NAPIF_STATE_SCHED to clear, but that bit is still set from the first
-disable, so the close would hang with RTNL held.
-
-The existing stmmac_hw_setup() failure path has the same problem. This
-patch adds a new trigger that depends on a GFP_KERNEL allocation
-succeeding during system resume.
-
-The XSK branch already tolerates missing buffers. Could the page_pool
-branch do the same, for example by leaving the slot CPU-owned for the
-refill path to retry, instead of failing the whole resume?
-
->  	ret = stmmac_hw_setup(ndev);
->  	if (ret < 0) {
->  		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261025100636.613670-1-dinghui1111%40163.com
+> +		return 0;
+> +
+> +	return skb_checksum_help(skb);
+> +}
+> +
+>  static struct sk_buff *xsk_build_skb_zerocopy(struct xdp_sock *xs,
+>  					      struct xdp_desc *desc)
+>  {
+> @@ -1275,6 +1275,12 @@ static int __xsk_generic_xmit(struct sock *sk)
+>  		if (xp_mb_desc(&desc)) {
+>  			xs->skb = skb;
+>  			continue;
+> +		} else {
+> +			err = xsk_skb_sw_csum(skb, xs->pool);
+> +			if (unlikely(err)) {
+> +				xsk_drop_skb(skb);
+> +				goto out;
+> +			}
+>  		}
+>  
+>  		err = __dev_direct_xmit(skb, xs->queue_id);
+> -- 
+> 2.39.5 (Apple Git-154)
+> 
