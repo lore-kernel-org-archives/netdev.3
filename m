@@ -1,53 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=43.154.197.177
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1793013840;
-	b=ngCfhXvXukluEa2N7/K5i24LIcxcW1Fn5cFklmIw10c1uKcYWhGzDgRqHdqxrDFZqge9
-	 Wl7jVW8Vg2Rco7zWnrgV5MVu+fqyyAuYcEvAD26geYkzrF8OQGM7V66qYRXP/1n6zgUtn
-	 VxGAgNYOGkGTtdH/PN4oErbOwpFiuseWjgQxsn91l4npwACAPtXcoNRLzjTGW9L1WuY3j
-	 R1IcTIfo4XpU1FshvkG/tryrhSxcLV6h+kP8hqNh5SSQ+y3CNXYCpTfnnc2TclUsGwTc5
-	 8iw1TVnnoVkCH1x3tOLbes+5fNA1Ibl5FPq2Yk7mkxSeuQc/AURXP5BjsodMyccRngg==
+	b=PvXsebes/L/ypKxIyv4GpcYmtJDE3S2mfWNZqCJ9p8ZrsR5O3DvvJPC371cpK290ZWAN
+	 VxPOAxm1KMUHKL1Ah91Ef7ES2/ZohdO0bIBW5FYWBZBCdllC9eqDrMHKJehATjOa8sH43
+	 sAaZTHb4QUdJbGmAkWjqQ82lgjKGcuis9SSG7qIvHT8v5RkgO8H7XwiwPrsDCYAzrERhd
+	 4HQEndz0er73MRxYVlNFqrQdTsZjRYbrBveOhYTpAau70iG0Ip7I4ispIPOIKUuHR5eYb
+	 Yepy6XVrNoot41g9AYAYsecFPvFcqhA+DOyZSVbhFu9Wbm0h43GLHFP42GLeU9FInDg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793013840;
 	h=DMARC-Filter:DKIM-Signature:X-QQ-mid:X-QQ-Originating-IP:Received:
 	 X-QQ-SSF:X-QQ-GoodBg:X-BIZMAIL-ID:From:To:Cc:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-QQ-SENDSIZE:
-	 Feedback-ID:X-QQ-XMAILINFO:X-QQ-XMRINFO:X-QQ-RECHKSPAM;
-	bh=R7Kp6Sx8Q5f+sglvC0Mx5U6/l0EiDM28FjrnVKPnQDE=;
-	b=ZaCm+xpONGu4tuqGtkEcLK0gCj7i3YY6MjMGWCYOQ4m8E7hklDdQ5amXyqvC5sIw7MXc
-	 MdBR78nv87fIpnHitl4W8kxHbjyDvUb2v/VwnR+hvqeA+zEZbm3JPdv1PIxRly23LHiXw
-	 r4yti8jv19FERlN6aB2BOdlrIY3juJcelLxAzyxLgphfSOFLQet9FH0SkCiGDzy4KYc5Q
-	 HUVApyRH78ZfAH2K8F/tkkwz+KKm6d12w/394mr6P9B3BUWkIKUPHEfCmwldVFXxeG68y
-	 x0yu0L6rkkUhrB90Dl/mKoBoIRmlTryvkmC3+7jMEYZct7cYRguPWUhkPkKxTflnWow==
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-QQ-SENDSIZE:Feedback-ID:X-QQ-XMAILINFO:
+	 X-QQ-XMRINFO:X-QQ-RECHKSPAM;
+	bh=FxN75mrFae7iT423OoJsRaHNk9tTPVDmM0RyqgY/HHk=;
+	b=kKwmOVBWxaXZcg9KHua2lDoL5hzkRxANb4unpJ6Pi12f8J8YGM360B6alRpBCTOQjwgY
+	 6euKBufrGU+K5koDamDU5IFJI9JKT8lKztsRgZwyvawHhe4etmnCsNirpzz/D5RpTtTyj
+	 PMnZWR5VtikE9q0PJyZRBEaEtG8YIeaH/yR0rYOlFHPYLu4Vzn2tA4kxqfdO5ioVpkVUS
+	 824RoTjxdnMMKt2+tv4B5Z2lTks0v009Poc7HtL9sjIswFuE70NqgfdiqYK3yuMHNKjO3
+	 bnj18PKtiEbHBSMJAs2pdQbLNrSFnNV5oAOrx6aiWF0fNBf2EQ1tHp0whRFFWr1R8+w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=tencent.com;
 	spf=pass smtp.mailfrom=tencent.com;
-	dkim=pass header.d=tencent.com header.i=@tencent.com header.a=rsa-sha256 header.s=s201512 header.b=e3YWYiXP;
+	dkim=pass header.d=tencent.com header.i=@tencent.com header.a=rsa-sha256 header.s=s201512 header.b=g2U5jq0B;
 	arc=none smtp.remote-ip=43.154.197.177
 Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.154.197.177])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88477606A32E
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 11:23:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 88477606A32E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8625860A260A
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 11:23:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8625860A260A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tencent.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tencent.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=tencent.com header.i=@tencent.com header.a=rsa-sha256 header.s=s201512 header.b=e3YWYiXP
+	dkim=pass (1024-bit key, unprotected) header.d=tencent.com header.i=@tencent.com header.a=rsa-sha256 header.s=s201512 header.b=g2U5jq0B
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tencent.com;
-	s=s201512; t=1793013762;
-	bh=R7Kp6Sx8Q5f+sglvC0Mx5U6/l0EiDM28FjrnVKPnQDE=;
+	s=s201512; t=1793013791;
+	bh=FxN75mrFae7iT423OoJsRaHNk9tTPVDmM0RyqgY/HHk=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=e3YWYiXP2MPhKSphS+ZgUne+xhYnb/vHa1W7SDxgZX+Kc7heNWQYxj/icFnnOLUpu
-	 a4sQxy+cxrumKBQeIXcQkALhDu5CyBFemEbucQ/8CFq0YeYEu+HgZmPDmrRZbzLBYx
-	 UTz59Mk48GOSWp7tKjpBH4Oa/HgL+7zvvddNq75A=
-X-QQ-mid: zesmtpgz1t1793013761t854386c9
-X-QQ-Originating-IP: dv3TqDyNFUZ2ca9A5AectZ0CS8/dZuwnC2U3jdTKfI0=
-Received: from localhost ( [9.218.227.8])
+	b=g2U5jq0BGn+XqC7IlzseXNjb8eGOBoqRXeArnr2T8ZCMRuhlmop3af7zZKfV3Pfz8
+	 nrZOKqqolW+JTn+iK1NR4Bfgq1A8IPMfNlJcDjDFpGG8wEnyitKqujsCES6S/FpwAd
+	 vIJFxiUcPAj2rmeAaNGi7mQKFLWLKq7wbAlE9n4w=
+X-QQ-mid: zesmtpgz9t1793013790t1f63f10f
+X-QQ-Originating-IP: wkZkH0AqOKgbehz8FhcTuMQyP+Gpy2Y9ZugKhcd2eRc=
+Received: from localhost ( [9.218.227.15])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 26 Oct 2026 19:22:39 +0800 (CST)
+	id ; Mon, 26 Oct 2026 19:23:08 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 10830747323379310559
+X-BIZMAIL-ID: 17845924391617974366
 From: "=?gb18030?B?dGVuY2VudG9zX3NlY3VyZShUZW5jZW50T1Owssir?=
  =?gb18030?B?uau5stPKz+Qp?=" <tencentos_secure@tencent.com>
 To: netdev@vger.kernel.org
@@ -59,9 +60,11 @@ Cc: David Ahern <dsahern@kernel.org>,
 	Steffen Klassert <klassert@kernel.org>,
 	Eric Dumazet <edumazet@kernel.org>,
 	security@kernel.org
-Subject: [PATCH net 0/2] ipv4: fix the fraggap out-of-bounds write in __ip_append_data()
+Subject: [PATCH net 2/2] net/ipv4: fail append when the moved fraggap exceeds the fragment data
 Date: Mon, 26 Oct 2026 17:51:28 +0800
-Message-ID: <4EAC037C49E647E1+v2-20261026-cover@tencent.com>
+Message-ID: <98906F734B5D43DA+v2-20261026-p2@tencent.com>
+In-Reply-To: <v2-20261026-cover@tencent.com>
+References: <v2-20261026-cover@tencent.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -75,94 +78,83 @@ Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpgz:tencent.com:qybglogicsvrsz:qybglogicsvrsz3b-0
-X-QQ-XMAILINFO: OL/6RyBS/f6Qwd38RI78eDKuvwy+UkRsHdJK8BJnP67S/jsQQRK87qxq
-	R0pU+kUwvWEDmNGsdwmJ1r346vb8gwPru6Ez1Zn10J2xKDNS45EgSBa3BoVFspXUZ9jVotj
-	+SsOpYg2GH7iOvraxZYSlWwqbpplMSQ7GRMgMQ6jz6VHXpAWHMTH+fcklOM9KwwRDrMfr40
-	Aarw+imYyRHGERVVFLWQaGKiytftNV/+BS5HK4Rp4lrQtfO/BJY89p9ktl/9py1toRmX11+
-	JO/M13DDsehG1PNybdI7kJtSZbzHNTBCm5PXZhphEUO/l+PwC2CLUzrz1+aNcJ1kOWMbakU
-	FHIdLlicVUwVc1zxRn/At+TnVhUtRoaFaSACFkpuFT3DSXNzBI92uupXQVvxOm2oPmmQY/W
-	Hs5EqcnWR+xUREBfOTdJGijX+k9kQVI51D/wqiC2odRRcV+X8IkmcWyKMo54ULQm8boelSi
-	hFQbP6y+zSuPGOMAWXRZ0Y+C0koTsCad95y1ljjXqGbC8pP6JW/RXG2vgtCyQoA/+uLrovE
-	ffg6BtVWKBV+uQJiRtACIQox5/8UZkplY2ym6S35kTq2l/QnfOYdHfId6xjJqJ3lmaojats
-	tD+kXaWa4w92eKLWk1bex/GdU+Wxy3n9p6AbUrwcEEDS3dRInRCguMJ71czxY1YyF/ZMW79
-	mDmi9yCUUsl2P0RASW1Ha3PxIr6YHGXe0C+Fbl0yZJNeLaXDec4j1KCLZpHyBKDrMTa1Nx+
-	lYfkAt6imx7yj5JG3OtdlOOJhnG/BarhvC5cqMA9OwFPtqs/3ly2lySxzQmC5TqevX6VvrP
-	f2YygTv0quKJbz5kRg0Eblzgb/kdcUbZObbRCpTk6rXRj8oow6T8YGsaBgQt+2h8M1jglm2
-	fW+eATxO9Y3igaU5D+sk1zaSztUxagoc67MJVxcXj9A70h5QViZIvUiEwDxHx7pNoCsbbl6
-	ja42HdiRSKipq0qMxtdxr1hVi
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+X-QQ-XMAILINFO: NImvdRhE6fHpgjtFAyCci6ZDRG1GZQnsbaNYK3BzT7V6/DfsQcbLyE+8
+	JiZTWPRLV7KWzaLvR+N8Oc9X3JXmmBdnZlv6ujcjjQ3aDriO0TM9K4w62t2PJXb7M/ZPp5D
+	pkoOoLms8yM40VlkCJcaKwYkipW3NSxMzjQ78SN/O+8su2XD213yeCURDxo9WcLUVV/ByDB
+	qG5di/U7byah9fb1axcCXnL0GmzGGrAQDjxViDEc57ZbhUIV/e4GFDxZytgySiChVKosktB
+	uzvQbDN2EtTTr/Ray8qq6qnxCjodSUbiPNphXHnNRra9jYXFuK9EvLv2YcY7RfrTPSUxySz
+	ai6suo00oyVLWYaknCvbGjMIaO20JWCiG8CqKnCxYPUSgELNnbYLT3CF0GKNqwqh6Zllz6z
+	OknOPYlhWgZhDsoxkpwi5Z1apDP0hqjgewaDlSsQAxx9KItQOSEEJOreiRs6UisKS+4s6xT
+	TdyVGnefQRdxqiyOT6F1S95+ZjWwJXBTBz1XG1/b/34rcvEVQqWkVKz2BgJaAX6/4pTwPsk
+	wCxOJRDR6FAEpy0L+Jr5sEPYD8MdD7gIyX3HFxjygbfaKQ/ioA407eERZliXXbHRyl8A8c4
+	62Vh8Dcna4qGiC9klFD1FwuLKfH46iLKb7rjKcYLn+6KCRBlOEIO2susyVb4yhnTxf6EoTn
+	U9zKyaKu0/63dO20Aay0qvVD3rbxe6rOuDDe8Uhk4dPBb9ZYClPum/SsjDd1qSrCVvo1o7L
+	4noCy9AwvgngjvyUrsTgAMIaOTeRH4oUPoISo2a2k61vK+IYt21bHzuJlt1cjKgpycfUqks
+	YW2Y9VOVxRuC/RZ99IZXX0pmYW6JqQPs1B6/eHPamj4he7O/CVH2XsUfnuqhsBKewKH1ma4
+	vh4PyPLTALxPwitNFFoEAuoULhNbziRYxFkqiFdIEKyZOcsnhHFS63Ow4GzDOUkK
+X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
 X-QQ-RECHKSPAM: 0
 
-v2 of the fix for the heap out-of-bounds write in __ip_append_data()'s
-fraggap relay. Patches are against v7.3-rc7 (f909e534f5e3). This was
-reviewed off-list with security@kernel.org Cc'd; per
-Documentation/process/threat-model.rst it falls under "excess of
-initial privileges", and the reviewers concluded that posting to netdev
-is sufficient, so this is the public post.
+When the first fragment of a cork is already at maxfraglen, the next
+__ip_append_data() iteration relays the previous fragment's tail,
+fraggap = skb_prev->len - maxfraglen, into the new skb. The moved
+fraggap is charged against datalen by computing
 
-Changes since v1, following Willem de Bruijn's review:
+	copy = datalen - transhdrlen - fraggap - pagedlen;
 
-  1/2 - Dropped the alloclen += fraggap approach. It rested on a
-        misreading of eca856950f7c, and enlarging the allocation does
-        not address fraggap > datalen. Replaced with the root-cause fix
-        he suggested: reserve the xfrm bundle header as headroom, the
-        way IPv6 has done since 1f85851e17b6 ("ipv6: fix incorrent ipv6
-        ipsec packet fragment"). Every fragment skb then keeps
-        skb->len <= maxfraglen, so fraggap stays within the alignment
-        slop the relay was designed for and the copy destination is
-        provably in bounds. Allocation sizes, tail positions, tailroom
-        and truesize are unchanged, and it is a literal no-op when
-        dst.header_len == 0.
+but once datalen is capped at maxfraglen - fragheaderlen it can become
+smaller than transhdrlen + fraggap. Then copy goes negative: no payload
+is copied and the iteration makes no progress. Worse, in the paged
+branch (MSG_SPLICE_PAGES / MSG_ZEROCOPY / GSO) pagedlen = datalen -
+transhdrlen - fraggap additionally wraps unsigned, breaking the
+alloclen + pagedlen == fraglen invariant that commit eca856950f7c
+("ipv4: account for fraggap on the paged allocation path") relies
+on; the loop then either queues skbs with garbage tail accounting
+(silent packet corruption) or, when maxfraglen == fragheaderlen,
+never makes progress and grinds on until -ENOBUFS.
 
-  2/2 - Replaced the copy < 0 guard with a check placed before the
-        alloclen branch selection. The v1 check was dead code on the
-        paged branch, where copy is identically 0 and the actual defect
-        is pagedlen = datalen - transhdrlen - fraggap wrapping
-        unsigned and breaking the alloclen + pagedlen == fraglen
-        invariant. The new check covers all three branches and fails
-        before any allocation happens.
+Reject such an append before any allocation: if the moved tail
+(transhdrlen + fraggap) cannot fit in the fragment's datalen, the
+iteration cannot make progress, so fail with -EINVAL. This covers all
+three alloclen branches, including the paged one. With the preceding
+fix fraggap is bounded by the alignment slop, but the condition stays
+reachable with extreme geometries (e.g. an effective mtu too small for
+fragheaderlen + transhdrlen), so pin the geometry explicitly, as
+__ip6_append_data() has done since commit 232cd35d0804 ("ipv6: fix
+out of bound writes in __ip6_append_data()").
 
-  - Removed the reproducer recipe and the concrete sizes from the
-    commit messages, as asked.
+This cannot reject a send that would otherwise succeed: the guard only
+fires when transhdrlen + fraggap > datalen, which is exactly when copy
+would come out negative, or, on the paged branch, when pagedlen would
+wrap.  No send can get past an iteration with a negative copy -- no
+payload is copied, so the loop makes no progress.  All callers flush
+the cork on append error, and returning -EINVAL in mid-cork state
+already happens in this function (MSG_ZEROCOPY ubuf mismatch).
 
-Testing:
+Fixes: 353e5c9abd90 ("ipv4: Fix IPsec slowpath fragmentation problem")
+Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Anakin Zhang <tencentos_secure@tencent.com>
+---
+ net/ipv4/ip_output.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-  - The geometry that previously wrote past the skb head now sends
-    successfully and produces correct fragments, on both x86_64 and
-    arm64. The instrumented build reports no out-of-bounds and no
-    KASAN report. (v1 only made the send fail; v2 restores the path.)
-
-  - With 2/2 alone applied, the same geometry fails with -EINVAL and
-    the instrumented build reports no out-of-bounds, while a pristine
-    kernel hits the detector on it:
-      pristine:  FRAGGAP-OOB-DETECT: fraggap=400 off=76 need=476 cap=384 mtu=68
-      2/2 only:  sendto ret=-1 errno=22 (EINVAL), 0 detector lines
-
-  - tools/testing/selftests/net subset (udpgso, msg_zerocopy,
-    ip_defrag, pmtu, xfrm_policy, xfrm_state, nettest, ipsec.c) on
-    arm64: identical results on v2 and on a pristine control kernel,
-    including the pre-existing pmtu.sh, xfrm_state.sh and ipsec.c
-    failures, which fail the same way on the control. No new failures.
-
-  - UDP loopback smoke across fragment boundaries (40 / 1400 / 4000 /
-    60000 bytes, IP_CORK and MSG_MORE appends): payload verified
-    byte-for-byte on receive.
-
-The reproducer and the full verification logs are available off-list on
-request; they are deliberately not in the commit messages.
-
-This was found by TencentOS Corvus AI, an automated research pipeline.
-I reviewed the analysis, wrote and validated the fix and the
-verification above.
-
-Anakin Zhang (2):
-  net/ipv4: reserve exthdrlen as headroom instead of counting it in
-    skb->len
-  net/ipv4: fail append when the moved fraggap exceeds the fragment
-    data
-
- net/ipv4/ip_output.c | 13 +++++++------
- 1 file changed, 9 insertions(+), 4 deletions(-)
-
---
+diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
+index b84d56c..5db8b06 100644
+--- a/net/ipv4/ip_output.c
++++ b/net/ipv4/ip_output.c
+@@ -1105,6 +1105,11 @@ alloc_new_skb:
+ 			fraglen = datalen + fragheaderlen;
+ 			pagedlen = 0;
+ 
++			if (unlikely(transhdrlen + fraggap > datalen)) {
++				err = -EINVAL;
++				goto error;
++			}
++
+ 			alloc_extra = hh_len + 15;
+ 			alloc_extra += exthdrlen;
+ 
+-- 
 2.55.0
+
