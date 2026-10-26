@@ -1,76 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793020193;
-	b=j5tse2tcR9ykHYPT25GYYP1uunjbjIX76GQenHemBywqqVbJINOrjla6PURb06W2s8b7
-	 0KQERTOUIoB5R4uzUDcl89f29XsO8ksDqPSgMDpBPDrHaj78l2CCbnJZ741aZF8Hz5T+q
-	 LRIECdUGuUQ76Pqu/IFqTV9xWDeXVVRydv5ZmYL1FZJRXk7zvERIgUGs/05qXcZ2rRw1f
-	 bdQ3oUVepxoXh26msFQ4f71+u/UdoUrzDkIwAMqFW0j5+gdYsWFIIEl3MVEZTnIxIsur0
-	 ZX0oGuXrQ5iwsiuiXwt+5JZUfG4ydO284lNxhUBMBJoWiyaJz6O1n5t0IjoEe2ZJ2wA==
+	t=1793020233;
+	b=bpioOeUhyKAl8+12Y2ztLTfTqhhRDVtatwJXm4sOj7Ss7sAjxRf5WMFzKiN84zMOCs38
+	 RI/8vWCIIzBb7WcJz8ToZmrP1lInrnImJHvQGwI7Wz3rFoEuo0LaRH02kXT76ZS0uCeYp
+	 fVyQ421Sq4lAViDiMqt/EAUyt4a6P/d3/0h1oeh7tRH/l7vMohrfr2/CaFIj/QiMn2GZf
+	 8lhyOM85E1Zk/jLyIPuZ9I4y8SSyQeABGCnFuA0Ynq8LhbhG+oKqhl6pMNSDxYM+ySK+Y
+	 t5jRbsO1kS49V0J/t5s7TuewACeaf8B2mA6xIBxsxzk961yF+p5BzYCyaMWNy6gKuWw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793020193;
-	h=DMARC-Filter:From:DKIM-Signature:DKIM-Signature:To:Cc:Subject:
-	 In-Reply-To:References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=gp7VP+Sir6E2FHA7V5/S6LXflY3MgarH/fCbeQrsJrQ=;
-	b=MlUoHBx5Oc2+mV6TOYgDWtxDMcNdwfogBHcAM+/ZCw23kVh2J65ZiWPVlJ4ww+UhNaVh
-	 5FAG8mN1AGC6J8HaVDmYZgXcDRmVBewhKwj/sqDlrBUGR/tik15s1d0r99n7aFesw//AE
-	 bXlBkF8910kxFdn2ETx1M/N/LG9ZkDwOHEd/vXWGlefnnZj6ESvJL3rxBKxrViMXu5KmU
-	 o0twt36MVROnCPuULr4yrleCKrLEi0WtOixasnSTE8AvdKHUIGlswvp+S/oWmXQnThxts
-	 fdbaXFwdIRgwc2cr9BCaYXuVELy4v10/QDLVRe0JuZCbzfRtZraKLeSCSxFAmb765KA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793020233;
+	h=Received:DKIM-Signature:Received:X-Gm-Message-State:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=ceXZqyDZbjSJNKIpKzybX3IbNeKvCvLhqg+uOKbhDaA=;
+	b=x820d8lwE14R1biCR5/lOcA897dH3eLllwZltevzJ2s4YXbZch6zTxd6D1DmRizPvoJj
+	 bwi4+Y0j6RTVlGIDxuHFlv4t+LCpT1n9z2SgupdGea1Q2fwBDyxGJqqMO0JfGOLIrkmI7
+	 kp2AATq1gxOZQg3tlhNilMal61v7zPSgMDss62Jx3Vz7c4Q1vYcSZ5Cvlcll64mZZzZhe
+	 cigtygNV6T6tFR5n7IGHEt5eHV5zctkAFPXbNag/f+KHebjlfKFzzxHAre9bORDz7wGpq
+	 Qmocii6HpnpPRsweQPt5hz9Rr/RxmBfBkZ8+qUT3RnEgzrHVQiiw3rEWHodsgtMvInQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linutronix.de;
-	spf=pass smtp.mailfrom=linutronix.de;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=lEllKBMD;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=+4U4xjdp;
-	arc=none smtp.remote-ip=193.142.43.55
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IbtJouF2;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C894606A31A;
-	Mon, 26 Oct 2026 13:09:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7C894606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74AF1606A31A
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 13:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=lEllKBMD;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=+4U4xjdp
-From: John Ogness <john.ogness@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1793020190;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gp7VP+Sir6E2FHA7V5/S6LXflY3MgarH/fCbeQrsJrQ=;
-	b=lEllKBMD3j5AQU/ymi7dm7LBf39LKBdUW9xtN8TBEtZvAYnfcvwkqiztMVErHzfYYeuRng
-	H8EV5vmChV19qJkho0qbv1IJo7kNjWDDEsAtJ9O5wY+rmB8KD/sdqc7xd3+Q6QZyAnCbmR
-	ZH16OxpixeOqpqzRlxxJbNJP/xEmgkP2sH/0t356l0msaFNMunG8+NLRAX1jD+L+S1nQtf
-	4pYh3iepK6ROHv/C+LEplHEcwkICKNeXFBlU8i+gLI7sLwKYqCx8iy20hn9cwlGw9g2CCL
-	UAD0+p6GkozsR+0WlC8Iy1mbQINaCVc1nyxnrLfw7Ep6IvnB6+q0t/L74bGQYw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1793020190;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gp7VP+Sir6E2FHA7V5/S6LXflY3MgarH/fCbeQrsJrQ=;
-	b=+4U4xjdp9taVuECH0lINOoZa2iar2hBEGD++XtCM9eGKm7CGVdxYLsiGenWM4pnhlh07Sg
-	YrXXmtV8pZ9UBwDg==
-To: Breno Leitao <leitao@debian.org>, chris@chrisdown.name
-Cc: Sam Crossley <samuelcrossley@gmail.com>, Thomas Gleixner
- <tglx@kernel.org>, Petr Mladek <pmladek@suse.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Jonathan
- Corbet <corbet@lwn.net>, Paolo Abeni <pabeni@redhat.com>, Randy Dunlap
- <rdunlap@infradead.org>, Sergey Senozhatsky <senozhatsky@chromium.org>,
- Shuah Khan <skhan@linuxfoundation.org>, Simon Horman <horms@kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH RFC 0/2] netconsole: allow replaying the printk buffer
- on demand
-In-Reply-To: <at84qygscue8crQi@gmail.com>
-References: <20261024-netcons-replay-upstream-v1-0-9613f38496e5@gmail.com>
- <87fqxskdpl.fsf@jogness.linutronix.de> <at84qygscue8crQi@gmail.com>
-Date: Mon, 26 Oct 2026 14:15:49 +0106
-Message-ID: <87a4o0k3qa.fsf@jogness.linutronix.de>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IbtJouF2
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 134471F031E3
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 13:10:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793020233;
+	bh=ceXZqyDZbjSJNKIpKzybX3IbNeKvCvLhqg+uOKbhDaA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=IbtJouF23KmF/ujU9ayRLX0fmwvOp9zhCA7pPTY6lkxh4PF1lw+oWj3R2CCQrv4Lm
+	 6VMH+n4OBeqdONyO5UGF2ax6CYmIJqG+C37PGqXWKY9qvlCjS5gCzSd2MYlww/Ln1P
+	 4DXa039eRpUqH0B5RghAP4S/2dJXbU0VsOJBW46dGXxC2kgdSucBQu3x1DcqMCEV/F
+	 qMTU8sJckTJosE7y0M7hPKUhbzkgCWEi6NnDGJKGtZXQRjdrBwYVtOJDrgatWCWMg5
+	 eJ2hq6Q20Xtk6rjD0/qtIj/dQCJyE13TtKpkrGWoG67cInfSq5E/g6Sk9rq5OEtO1D
+	 DH6TXBWfHOa2g==
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-486f013db83so1101889fac.0
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 06:10:33 -0700 (PDT)
+X-Gm-Message-State: AFq9FYIXFwHWIkRzK5u/u3p+J1wSkmeF+HVufzN+h9eZ2S4U7PE10qSo
+	CFeW4Joyybjqoo8be2maOZaD2VxHv5zui00X/MS2phiPHvHl8NtZKvYnCWLz7SDv0UUUbFo66qu
+	XuXGyc7AErtbJ4yzVqdG/FZ643zBL74Q=
+X-Received: by 2002:a05:6871:c8e7:b0:455:d4ba:1dc6 with SMTP id
+ 586e51a60fabf-4a83f1d4ef2mr4799602fac.5.1793020232147; Mon, 26 Oct 2026
+ 06:10:32 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -80,34 +58,198 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <ACT-N6N4.v3.r0.20261023200137@mojatatu.com> <ACT-N6N4.v3.r0.20261023200137-1@mojatatu.com>
+ <ACT-N6N4.v3.r0.20261023200137-2@mojatatu.com> <CAM0EoMnjxmnoZ3a4XCB9YERcCwYhYW8-jKw1UZ79YzhFct9+KQ@mail.gmail.com>
+ <CAM0EoMkct9bMMZHPRKh3xZ-L5GTX0SeLdnp_NQd+C_QWspHW8w@mail.gmail.com>
+In-Reply-To: <CAM0EoMkct9bMMZHPRKh3xZ-L5GTX0SeLdnp_NQd+C_QWspHW8w@mail.gmail.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Mon, 26 Oct 2026 14:10:20 +0100
+X-Gmail-Original-Message-ID: <CAL4WiirtOb9t7DHTk_bawuhAUeKYTQL_p0DvOZDL-HhuKr+h2w@mail.gmail.com>
+X-Gm-Features: AclHuK8qH1aV31d0h4LssF8wxy74YlebQMH4xMO3XjkohC_WOp_VXKRU4T1umRQ
+Message-ID: <CAL4WiirtOb9t7DHTk_bawuhAUeKYTQL_p0DvOZDL-HhuKr+h2w@mail.gmail.com>
+Subject: Re: [PATCH net v3 2/6] net/sched: act_mpls: pull the inner Ethernet
+ header after POP
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
+	Victor Nogueira <victor@mojatatu.com>, "David S . Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Martin Varghese <martin.varghese@nokia.com>, Pravin B Shelar <pshelar@ovn.org>, Vega <vega@nebusec.ai>, 
+	Willem de Bruijn <willemb@google.com>, Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2026-10-26, Breno Leitao <leitao@debian.org> wrote:
->> In the per-console loglevel series Chris Down introduces [2]
->> /sys/class/console/ to sysfs. This is where we would put all the
->> upcoming per-console knobs. I would expect a replay trigger would fit
->> well there.
+Le lun. 26 oct. 2026 =C3=A0 11:32, Jamal Hadi Salim <jhs@mojatatu.com> a =
+=C3=A9crit :
 >
-> That makes sense from a design perspective. Thanks for the direction.
+> On Mon, Oct 26, 2026 at 5:42=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.co=
+m> wrote:
+> >
+> > On Sat, Oct 24, 2026 at 10:28=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu=
+.com> wrote:
+> > >
+> > > The issue:
+> > > When the configured inner protocol is ETH_P_TEB, act_mpls POP can lea=
+ve
+> > > the inner Ethernet header in a page fragment after skb_mpls_pop(), ei=
+ther
+> > > on an L3 device (mac_len =3D=3D 0) or chained after act_vlan POP_ETH.=
+  A
+> > > following eth_type_trans() can then BUG in __skb_pull().
+> > >
+> > > The Fix:
+> > > After the pop, pull the inner Ethernet header into the linear area on=
+ly
+> > > when p->tcfm_proto is ETH_P_TEB; drop the packet only when that pull
+> > > fails.  Other inner protocols (IP, MPLS, ...) have no inner Ethernet
+> > > header and must not be required to carry one.  The pull is a no-op wh=
+en
+> > > the header is already linear.
+> > >
+> > > Conditions to recreate the bug:
+> > > - egress tc filter on lo: action vlan pop_eth action mpls pop protoco=
+l teb
+> > >   (chained), or on an L3 device where mac_len =3D=3D 0.
+> > > - AF_PACKET SOCK_RAW with PACKET_VNET_HDR, hdr_len=3D28, and a non-li=
+near
+> > >   eth / mpls / inner-eth frame.
+> > > - The inner header is in page frags; a following eth_type_trans() can=
+ BUG
+> > >   in __skb_pull().
+> > >
+> > > Fixes: 2a2ea50870ba ("net: sched: add mpls manipulation actions to TC=
+")
+> > > Reported-by: Vega <vega@nebusec.ai>
+> > > Link: https://lore.kernel.org/r/40fe2d7dfce13411bfbe9271c0f7c54fb7e88=
+e3b.1782548651.git.bronzed_45_vested@icloud.com/
+> > > Link: https://lore.kernel.org/netdev/CAL4WiiqSMdYQYeeW0Fk_GK6ekR4xiS4=
+zPrGKrbB9wZknpqf1-w@mail.gmail.com/
+> > > Link: https://lore.kernel.org/netdev/willemdebruijn.kernel.26d1ddb3bd=
+2ae@gmail.com/
+> > > Cc: stable@vger.kernel.org
+> > > Suggested-by: Jakub Kicinski <kuba@kernel.org>
+> > > Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+> > > Suggested-by: Eric Dumazet <edumazet@kernel.org>
+> > > Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+> > > Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> > >
+> >
+> > For the series
+> >
+> > pw-bot: cr
+> >
+> > Eric, you are reading this? See the discussion with Willem.
+> >
 >
-> So the next step would be to add a basic /sys/class/console/, similar to
-> [2], and put a `replay` entry in it. 
->
->
-> That would be about three patches:
->
->   1. Create /sys/class/console/, similar to [2] but without any loglevel
->      handling. cdown can build on it when respinning the loglevel series.
->   2. Add the per-console replay helper, similar to [3].
->   3. Add the first entry (/sys/class/console/replay), which triggers the
->      helper from patch 2.
->
-> Is that what you have in mind?
+> And to be clear, I am suggesting we fix both the producers and consumers.
 
-Yes. But perhaps someone else wants to provide some feedback about this?
+I don't think we need to touch loopback / eth_type_trans() directly
+(that's the per-driver cost I pushed back on for tun). There is a single
+natural choke point: the egress fall-through in sch_handle_egress(),
+right before the skb goes back to the driver's ndo_start_xmit(). A
+device advertises how much link-layer header it needs via
+dev->min_header_len, and that is exactly the amount eth_type_trans()
+will pull. One check there covers act_vlan, act_mpls with any inner
+protocol, act_ife, pedit, and BPF, now and in the future:
 
-John
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 1a09e7869118059e92b53e00ed873dfc7485ffc3..ffc8c4c0dfa35fc6eee12bec799=
+809b0e2476270
+100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -4757,6 +4757,16 @@ sch_handle_egress(struct sk_buff *skb, int
+*ret, struct net_device *dev)
+        }
+        bpf_net_ctx_clear(bpf_net_ctx);
 
->> [2] https://lore.kernel.org/lkml/84b8d91693e56f6026271bc40553bcb6657ab24d.1764272407.git.chris@chrisdown.name/
++       /* Egress actions and programs can pop or shrink the link-layer
++        * header. Drivers expect dev->min_header_len bytes in the linear
++        * area (e.g. eth_type_trans() in loopback_xmit()).
++        */
++       if (unlikely(!pskb_may_pull(skb, dev->min_header_len))) {
++               kfree_skb_reason(skb, SKB_DROP_REASON_PKT_TOO_SMALL);
++               *ret =3D NET_XMIT_DROP;
++               return NULL;
++       }
++
+        return skb;
+ }
+ #else
+
+It is cheap: only runs when an egress tc/tcx program is attached, it is
+an inline compare, and pskb_may_pull() is a no-op when the header is
+already linear. For non-Ethernet devices min_header_len is 0 so nothing
+changes. It is the same dev->min_header_len gate your act_mirred patch
+already uses, just at the other exit point.
+
+I applied *only* this hunk on top of net (none of patches 1, 2) and ran
+your three reproducers on lo egress under PANIC_ON_OOPS=3Dy:
+
+  1) vlan pop_eth + bpf skb_adjust_room(-1, BPF_ADJ_ROOM_MAC)
+  2) vlan pop_eth + mpls pop protocol ip
+  3) vlan pop_eth alone, non-linear inner eth (AF_PACKET+PACKET_VNET_HDR)
+
+Unpatched: all three BUG in eth_type_trans() via loopback_xmit().
+With the hunk above: all three are dropped cleanly, no BUG.
+
+So for v4 I'd suggest:
+  - drop patches 1 and 2 (the egress check subsumes them, and the
+    ETH_P_TEB taste question goes away);
+  - keep patch 3 (act_mirred) - that's the redirect boundary, a
+    different exit;
+  - keep patch 4 (act_ife) - it fixes the egress frame, not just the
+    crash;
+  - keep patches 5 and 6 (OVS) as-is - OVS actions can't run arbitrary
+    BPF, those producer fixes are correct and already reviewed, and they
+    can go in independently.
+
+One gap this does not cover: the BPF redirect path
+(__bpf_redirect_common() in net/core/filter.c) only checks
+mac_header < network_header, so a 1-byte "mac header" still reaches
+eth_type_trans() via __dev_forward_skb2()/loopback_xmit(). I haven't
+reproduced it yet but it looks like the same bug and the same
+dev->min_header_len guard would close it. Can look into that separately.
+
+Thanks,
+
 >
-> [3] https://lore.kernel.org/all/20261024-netcons-replay-upstream-v1-1-9613f38496e5@gmail.com/
+>
+> cheers,
+> jamal
+>
+> >
+> > > ---
+> > > v2 -> v3:
+> > >   - drop the pre-pop mac_len gate.  The pull is a no-op when the head=
+er
+> > >     is already linear, so the gate only avoided a cheap call (Willem =
+de
+> > >     Bruijn).
+> > >   - restrict the pull to ETH_P_TEB.  act_mpls POP can target IP, MPLS=
+,
+> > >     etc.; those inner protocols have no Ethernet header and must not =
+be
+> > >     required to carry one (Willem de Bruijn).
+> > > ---
+> > >  net/sched/act_mpls.c | 3 +++
+> > >  1 file changed, 3 insertions(+)
+> > >
+> > > diff --git a/net/sched/act_mpls.c b/net/sched/act_mpls.c
+> > > index 4ea8b2e08c3a..35a6d27f76a4 100644
+> > > --- a/net/sched/act_mpls.c
+> > > +++ b/net/sched/act_mpls.c
+> > > @@ -79,6 +79,9 @@
+> > >                 if (skb_mpls_pop(skb, p->tcfm_proto, mac_len,
+> > >                                  skb->dev && skb->dev->type =3D=3D AR=
+PHRD_ETHER))
+> > >                         goto drop;
+> > > +               if (p->tcfm_proto =3D=3D htons(ETH_P_TEB) &&
+> > > +                   !pskb_may_pull(skb, ETH_HLEN))
+> > > +                       goto drop;
+> > >                 break;
+> > >         case TCA_MPLS_ACT_PUSH:
+> > >                 new_lse =3D tcf_mpls_get_lse(NULL, p, !eth_p_mpls(skb=
+_protocol(skb, true)));
+> > > --
+> > > 2.43.0
