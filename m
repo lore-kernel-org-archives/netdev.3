@@ -1,138 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=198.175.65.15
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793050919;
-	b=S2R6rhK86Q4KvVXbc8bRtH96njsTXE4U5V3rwbLaYQU2F1ZOenxVtacdqGCeHFbnvhAR
-	 TCYwLiVSz2A8exNu7pJE7jTIxo9JM1P1DqFCQsnvDPPJgVeOl3J1nS18WFfT6b2pabPTr
-	 vcr1G1GgbA4jKaARBXcmSW4Uw7BSGg5OGfoShN+0eMNiVm+QbbzkX/NhQAiGNEbW1JbUd
-	 kvBJD43UjgIaari5u9805TAWvpbh0B0AJj2lK6F8MpiluBryQaHC/215Ofc5i6oh8ci2U
-	 wBYtjvirgo3yqDMx1r/ssQi/wEv1yGE9CGSj1OszmxHR9puFpzizBKQTHyo50BY3kLw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793050919;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
-	 Received:Received:Received:Message-ID:Date:User-Agent:Subject:To:CC:
-	 References:From:Content-Language:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-LD-Processed:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=osxUZ4iUwA12QmRj/idJ+4yACkzNHNg6l7bAnvtazv8=;
-	b=uCBTJjtZYi/NvTwsBBHeJmPGx+HqDZRT9XYtVryueVHVsM+fMV1GdkL8nXFSq6d7jpSQ
-	 OdZIYPk/j7bHv8bCs27PfghGbeKDOFGL1aloku5Hn4dKVztU3leFfvCx+XjjBJDFOOTI+
-	 2AS9UcMTXZJW1jj/zZpgk6z2XQUivMP2yRNhqkwHa1OhyiZfw1egOTYpErxJco9ZPd0x4
-	 ribCeB+SjI/l+DW6MunSZk1mMjkeQxw+bS7COCuUJjWB29CLGHMee3Bzxci/HhF9YKiQ/
-	 JFe/OR3IRHqLjIvJql3qtZsJu17xT3s878RT4pUxj3Vd4ldiGi9lm1BodTjLhVt1cUA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=BaJX5aMn;
-	arc=fail smtp.remote-ip=198.175.65.15
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.50
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793050947;
+	b=RjVfO2AZ2zdqAqzUDSIlzbemK9lcM01NXbliY2NgxRkXcO4jYOL4Z8NcEh98+hldMB5i
+	 Kc+CA73hFIc5M6zjwYtdAHxw0m1Sb2eL6BSyhU+3d8C08/cxx6unSA3+eGF33Wbzx9UW1
+	 ul+k+i6OhzxbyUMZmgZeWC4jvxEn5rolkJIAA1xGNIAImWmLDCyl1MiHIL5boRHuT9UDv
+	 7HL1Q1KAftInwy1l+VKms2UssZaVH2ia06aSfXUkZcUvPd0fFV4WT5hNjY7VGPIoHTlvz
+	 nLSZwmMOZDE9iRD/Ndj2WyXKoUXjrf/3775sspXYwL7ajgguKDsH9gY/bQX5j+jn9Ow==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793050947;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=4yu040Elw6X2wPumyGofOPyyze9mD0Pqe3Njj6wRzb8=;
+	b=byXFAz7qG3jGB3WpeVR9jFGiMWlsS+YLxuLAXVE544veamSv01HTABmz/2h+/9E4PHs9
+	 JkerfZsgR9TtIW4/QNFg6P89wElksC3SPccw9Z4K5p1hIX+/xg2IZ/0Q+ONdMqsAaVxr6
+	 k3ND0PZKzdN6agr0HxG69VmEaEpMv7yn7uzvFQU4WR1/KacPCQ0tS2UjAekJODk7854oe
+	 Fnl77HUfjJwT1d9i8uTZnA0MD49hxehfFBQOXXE2ZW8Z81z/+OiesL2Bn76cMgCcbMoul
+	 4IztIZHCNVCszXOT+mM+OSF2qFAklNyR6zwcXK474kMIkHHn6Vu2Z+xS1IBHOAoGZ9g==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=lSBEc9ww;
+	arc=none smtp.remote-ip=209.85.219.50
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C9D606A31A
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 21:41:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 84C9D606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C1A606A31B
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 21:42:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 82C1A606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=BaJX5aMn
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793050918; x=1824586918;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=Tdk6CF+rqZPnrHZ3ndeKBFGke8jgNbX5Qm9VagfStF0=;
-  b=BaJX5aMnDSoAOxUvcqfAAinVpLWp+MZXzvI/3sw4YRosEmP4aVFVMyMA
-   dtbsbZGdFoNfWnYWt8/Ae4y6hcG2S1qT7NlsFbeCHY8ixycn61Kg6xvZq
-   GGibm7AsrKKWrRaxjX2LfisR4yTdlLZjW9O6LaXF6kCT+n8bvg9onHCgd
-   wP/fKVF0k7iQqsqChi1320QOz/6mI9Fgo79Ybuzsx4YfE4/lPQYl0SP/j
-   nJGe1Q3BVhs0yHT538MNKveAWU40L58AeCyf1olXs4NPnWiSSbJVnUH1K
-   MLgmPXdlUEens7MhShXuVWVVFDX4uXE8z+3E2BtpDITpLrIZ0I6+H4PEo
-   A==;
-X-CSE-ConnectionGUID: Ug1AZemFQZa+stInZQii8w==
-X-CSE-MsgGUID: Jr2InfiiQKSMQjLaYRJJbQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11947"; a="1738041"
-X-IronPort-AV: E=Sophos;i="6.27,180,1787036400"; 
-   d="scan'208";a="1738041"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 14:41:58 -0700
-X-CSE-ConnectionGUID: s5dsKVAdQcmgba5N53IcUA==
-X-CSE-MsgGUID: 9EsGfExMRni3eEfe9baVBQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,180,1787036400"; 
-   d="scan'208";a="4329319"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 14:41:57 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 26 Oct 2026 14:41:57 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Mon, 26 Oct 2026 14:41:57 -0700
-Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.61) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 26 Oct 2026 14:41:57 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pkSoHiC5xKcXTDDK8HngGQ2kvi6Xzwmu9wXJGxHg0dQcAPbaDtiTohdic1eOMD2WRiVVIPpIBB0yJ5AfZRvVZxtJ1/gVLrUOlFBuHZ5/DfKWnVuVArUx3XUW9L7i9dMmgXKmqxqltsFW1j2pSiR52/l5qjRMgBhFZBRqQr1oRD7RkpiEfq4+8bjkw8duQlqnu34VLD1CPEoDXVjiw74IcgSfJWskZjm2yhZEsA74RcZRCAc4crfMDTJpa+aL+af0+N0oySJmkGOn5cgRb+VmtpU3wVub7f3TkFZE8fYO1LSuIOBFgU7BNt9lXY1UQJlY1a2cPiMBivGQ8/ummfbiqA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=osxUZ4iUwA12QmRj/idJ+4yACkzNHNg6l7bAnvtazv8=;
- b=pwwRpWNRrDuIp5UhOSa95BzRaw3mV36saUv3kA4z9uOeFWFw7bLjpp3CGv5v6i85cNJaucb1tuRdOXNVYUP4DzmIJdY99XNM6SviFDyIXOMIeEX5UekTqY7ireLPhqIJ+nvhRTgNDg5rsaMqanyiyrBOKHs9D/N5S433PImaApedxI/sgWjznJZoaEPGSPL6xOlDVq2hSdWwDmiDG+EyLCGBIWmC7VKWbsqxrmW8TOT8t2g9KWL/w5h9nqAXsm19FHABJb6/BbDUan53gdNOXrdofxKGW7O22CybeLbTAjv6N94DoV+fpthbr1Yl2mSlhfR/02zw8kv/lcwH0uF5FQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
- by MN0PR11MB6088.namprd11.prod.outlook.com (2603:10b6:208:3cc::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
- 2026 21:41:55 +0000
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58%6]) with mapi id 15.21.0546.021; Mon, 26 Oct 2026
- 21:41:54 +0000
-Message-ID: <fc0fc5af-9ee8-46be-b60c-e237dffda456@intel.com>
-Date: Mon, 26 Oct 2026 14:41:52 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v5 08/13] ice: E825: stop clearing
- PHY_REG_TX_OFFSET_READY
-To: <netdev-bot+sashiko@kernel.org>
-CC: <przemyslaw.kitszel@intel.com>, <andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>, <edumazet@kernel.org>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <poros@redhat.com>, <netdev@vger.kernel.org>,
-	<grzegorz.nitka@intel.com>, <aleksandr.loktionov@intel.com>,
-	<alexander.nowlin@intel.com>, <anthony.l.nguyen@intel.com>,
-	<maciej.machnikowski@intel.com>, <przemyslaw.korba@intel.com>,
-	<sergey.temerkhanov@intel.com>, <arkadiusz.kubalewski@intel.com>,
-	<richardcochran@gmail.com>, <horms@kernel.org>
-References: <20261021-jk-e825c-timestamp-processing-logic-fixes-srcu-v5-8-72289a4ac8eb@intel.com>
- <179297184040.3134.16872406836500329599@kernel.org>
-From: Jacob Keller <jacob.e.keller@intel.com>
-Content-Language: en-US
-In-Reply-To: <179297184040.3134.16872406836500329599@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR04CA0107.namprd04.prod.outlook.com
- (2603:10b6:303:83::22) To DS0PR11MB7381.namprd11.prod.outlook.com
- (2603:10b6:8:134::14)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=lSBEc9ww
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-91c2fc03880so4272816d6.1
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 14:42:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1793050946; x=1793655746; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4yu040Elw6X2wPumyGofOPyyze9mD0Pqe3Njj6wRzb8=;
+        b=lSBEc9wwVEWPqL4LnnGUvr57vTrGs9BV+zHnfEQagiu7bwhMwY8kQzBnsAiYwJVZuz
+         JhZKF3477d8IsyvX6pD7iMJGROZAnlyKbl3B7tvhPp3Mumo8yAKO1x0FCty4EEFtDpjW
+         uiP66R/d7YNGGP/kYklWYQzuQVN2+6K5VC9Y8N2gmXiQwJM2oI0v2niRwNqsDi4AixWL
+         JDRxLgX1pf6Rr6U/FXDLfhepybMaXKqB4ItG5TO2YZtNbcg9YDAAGmATx2eTggHoEgEG
+         rKgamjQoTpq9c1qmQeoNvMAX+Zu4B89LHXWS1x0bp+kJKB1w8FGvWxdtNCQD6xp1mQGu
+         mhBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793050946; x=1793655746;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4yu040Elw6X2wPumyGofOPyyze9mD0Pqe3Njj6wRzb8=;
+        b=EoJixX+V4JXq4UeuH/kK7idQuzq67mZlBWv+oQoyiIWe7y4pAksXKILwG6zfk4DPmO
+         IBWkW30wrCTPLQ7yzhm/kf/6OHigBswg/VYY27P3GjuPyZKtN2C7WyE1GKKG1VaksC59
+         sgFpjDEB8F1TsW98OpwOfIFMoUDv7XiP2fpqaCbo6CQ6Z8/0klwUtNLyEhDFOeF+p99a
+         glUyjMvJD9jVEgiIrS0HAp4P5LUyg1YnSBFB3+gL9bQfsQs+Z/mdvzDTm7PanEtP8Fhn
+         fDPSoQUt4wpnyZPKY7ySoJB6I6Ee9cwByD1m4+MjOzqYl3k003BwQFio7nBlsJEXRDYC
+         /0Eg==
+X-Gm-Message-State: AFq9FYJsjIog8r+vo/GfpIttTz33Ri+V5v1+Ip7ONoQaUfco9iCSnAB7
+	2kWigg6T4r9hlucrrqIbHfMqVAUXWUlpTgNU+Xk4LAu7y+RMMCtuI0Vu
+X-Gm-Gg: AYBFou1p5Uw8Cknb0vViopFto13cs54L2U7NalA4u00c77EhOBkzHetVXYHXMuCFtQy
+	CL2iJBQE5pqhD5lZu3OQDaStt3Pr65fASvk9XydfqyPpIrEXYRHYrl0hgvReNv5gupPsk2fn/Rl
+	w/1/QC5nW/6X4x5VvzJvp6Cw328y/3Qo7G3FcQDngow7QEj9YNK27SkVLipKaWJ0Ns1ZKgSWiCn
+	OTSz/qbR1oukJsu+0GlYRRJaRKUTPo5W6GF4ry64A77UEGE95KbPDVV7RsllmNTi9diwHsKIdmp
+	sps2ki4KLCj7lTKsF9zDtAc1joXFE4I7IVkM9gIsbXtUlysIsFlkfI6/ZIFZkhgzkrIk4eusl67
+	rp+tMI3e/KFKRAYjWkpkItDqS9RnsHaYCcwfqXtGEwLwcx/b+ZN+Uh6Pk/AL3ojf2CBXHdYMWx2
+	/P3r8ldk0QnDdGc8AEWQMfd6vj1rKTo9WbO2XLVGspmfdaHOKD6i3+V/QcEIe1BEgFd2k9ke+PO
+	Pqa47f1hGL15gF5S1OaJGbIGNJuG1UrbhJqKk6O9/z5W5bGUX1dKJnhGtNi1hlZeU7415C/Co0w
+	tqQC91s=
+X-Received: by 2002:a05:622a:ea16:20b0:536:97a3:be28 with SMTP id d75a77b69052e-53e3867c798mr13807821cf.0.1793050946114;
+        Mon, 26 Oct 2026 14:42:26 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-53bec3a256dsm39846191cf.22.2026.10.26.14.42.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 Oct 2026 14:42:24 -0700 (PDT)
+Message-ID: <ac06b9e4-4edb-417a-9fba-e3f2d3cb3ee0@gmail.com>
+Date: Mon, 26 Oct 2026 14:42:22 -0700
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -142,127 +90,244 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|MN0PR11MB6088:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3e528dce-4c8d-46bf-e316-08df33a9f3f7
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|7416014|366016|1800799024|261009223027099003|261022105027099003|261022075727099003|10067099003|56012099006|261026121527099003|22082099003|18002099003|4143699003|11063799006|261026140227099003;
-X-Microsoft-Antispam-Message-Info: k706OhCEeYnVNn1Js7ZZW/ZB1XAPSBfxQK5miaUCTnKuzmZ7aIFqq/i3Pe8wVi1M9FQs9ZQFxaY+rl1ZIbrIkYGJl7aY/kuirsEvz11GuwaSTf9yz3dNOVD6Ivvq9IaZUsDGxF9Vh2sHKFZ/uwVR0Qiwl8OheYD//oFEisX5iKDFlQX5c088mOzIgeQzatIUfhASkoSNRuB66Gi144//JllfUgVb1earM4dp0zCwfXZZp2E4c/BRE9jB2QvXD8YYVCf2DwMOnDc6NXIvVmYTB1JPeKDCRPJu3ZPbKJl8LeAvA/W4C0oumuO5UM2NxkGeSnTPANqehCepO9Q8jq1hnZVynD65EQcdP8dZsLBzjlo8BGErqyIZkig1MemcWBnVtYyiM5DF4ieVgomTmEn/EfSnd3xGuX+Eno/TBbgodZUGo8SRSZQTdo7utkI692u3nNI92XkR833R3YQGN4ZH5djbkmm15oW45wANj7mf7Qf994+g0jMh01/zWY10Kb6W06gqf1jKlVYyRp07sjF9Cwgv9cb7ttfOISSdV4wNnIiRMwIqefM8/GGMUKjMqOdTeXLrNkt4F08C32QMbdD9SCn2Qz4BS84D5YhPFPHVFs92fad7ecUALT0d3DUFOgUC2bf1CMkpWjK3hpx2FfJWNOrtBtIA9VPYDRkn1k6u8bs=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(366016)(1800799024)(261009223027099003)(261022105027099003)(261022075727099003)(10067099003)(56012099006)(261026121527099003)(22082099003)(18002099003)(4143699003)(11063799006)(261026140227099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MXFrb2tTTU1WUWVpUDVQOUZjOUs3cVBlejdMa1NrZVBrYmc0cktXTG96OGhj?=
- =?utf-8?B?UjFUNWt3T0s4NzZ3VFZ0M0ltUFM3aWFvdlNDVWhzbjNlS0JGVlBicE02ZG84?=
- =?utf-8?B?ZWcyQmRCU0h4Nm81b1pyamxiclNiY1dlYmhyVG5UaVltV3BqNXk4dGthdWpT?=
- =?utf-8?B?RG4zWjZXZUhKa2ZIT0RXaElCQ3p3MnZCQ0RLalpyY1E1ZXBmT1JUS3pGTzNn?=
- =?utf-8?B?ZjZFb2Z1SS9La1A1UEludmdwQ243NElqaTVHNFVJMC9KWGNuRWlMSWRWMEZB?=
- =?utf-8?B?bU90clEvT1YzSzBDQTZIWXk1STk3MnlVUEhtSWFwdTJDZ0ZVS2hVUTZ3MTdB?=
- =?utf-8?B?RC80VXZRWFpUaDZUcjJhV1lyUmhnd2UzUFNJaHdyR0Z3dDlDR2ZkUU4vWXBD?=
- =?utf-8?B?WmJCMy9Ud2ttTzV4TGowZm9LUVhIR1JtRlhxUnM3WlVYeE9JeFBQL2hzWExZ?=
- =?utf-8?B?TDE5YkJ6N3hndStiS2ZETU13OUpIdVR2aXFjNjI0UTdnOWI2anpTcVJqNnhs?=
- =?utf-8?B?M2VUTHdWVS9BSTh1SEdWU2djWVdvbnNRZThwY1dHUnFGMzNVTzBMU0ZzcHEw?=
- =?utf-8?B?Tks3SEJNN1dtWUZpUjdFdUlmM0lxcVVZMlYxcEwwMVIrT0M2TitJRWdEeHNH?=
- =?utf-8?B?ZlFKWXJBVzhwaE5LMmJNNi80cEtQOXBJNXBCblp3MjdpOFZQMEhDc2dVd0xs?=
- =?utf-8?B?WEFQajVpSENlb1JnWmNEZk5WMHFHRGgydVhrc2h3bGQzcVlKbUU1L05MM05R?=
- =?utf-8?B?eDlDakhUR1IxTlh6cHU4NEtIQ2JJdU9DNVVXQnJlNE1PMXVLTHpmenNGTERy?=
- =?utf-8?B?aXdjVlZ2NEZqcXM0UTMzY0NHcnRRdndFMURGb21lOEdmRDMxY2RjdHdwc3dQ?=
- =?utf-8?B?Y0o4dGtLVzhOT0kzV3gyYWNldll0VTI1MkJuMk91ZVZlMStYTGdpMVU4MzF2?=
- =?utf-8?B?cUNWZkhtaUpabDE1dEFxZGRvVlRHYVVScXp4MFFySnM1T2VqM3JwKytTNWpO?=
- =?utf-8?B?cEVrN3h6aVdZOWZJRTJvb3JCa05hTEVrU2hPcTJydUJFd0gwK2VmTlZpQVUy?=
- =?utf-8?B?YTEwMDFmTlB3RmN0N3RYY0ZheGx1bVB3OUxTZ01kM0phSzdFdDhhUlVKNmNV?=
- =?utf-8?B?clNyRkJsMFFva1RpRnAya0tzWXlBQTJxSW9TZzBzdStaajNHSnIzTW5SVDBZ?=
- =?utf-8?B?WGpmWlBNNE51dGh0RE1KcnlIalJNaUZ1UmtXa2Y5VFI1aUF4UzJoQnEyTVNo?=
- =?utf-8?B?c0FvTi9Qbm42d2FrY1d6dDN3eC9qUW5JVk02aUJlSHcxbVpOSWQ5Ym1pbTJN?=
- =?utf-8?B?QmlFeWNsaXZ2RDBFcnhLam1Sd2Qwakczdzc3ak83Y29xU3BmMCtjdWErN1F0?=
- =?utf-8?B?UUI5VHpUVFFZWHZvQTlYS3gwZzh6RGV6TjFKUUxWYmRFa09NSzVNVTcyelVa?=
- =?utf-8?B?MlBZangzaDE3S1JTSGF5NWl2YzBYRTEwc3lPTjQwNTEzM1NYcmhadW1LZy9M?=
- =?utf-8?B?dFo0T1BEMU5YclVuQlE3aWJXdnY3YzE2MUN3WTZqWVFGM1ByM1c2dmlkelUx?=
- =?utf-8?B?NXJCK3pzT0hOWHdnK0JwekRLdXMyemsrU2VrSGdEUnJKaFVnS29EdXZYdlhZ?=
- =?utf-8?B?d3U2bUh5RndicGM0dWx2WnJUVnQ5cURQQVh3Q0hjYUFWYXB4NkllMVM3QVB6?=
- =?utf-8?B?MCsrYXRHRUlJaVVkODJacXdMRy9rZHJVSElKbVh3Y0hWZkkreThtaFVvS1Q4?=
- =?utf-8?B?MXRVUHlWNkNlOHk3Rlh4cVB0ZjhpaDZPSFIveE1nSmNoZ0Y2UEo1MnVpa3F0?=
- =?utf-8?B?MzVubmU2VzI5SWFib1pIaVhJY2libmliaFNzekNJR243b2tkKzkwaG5KL3dS?=
- =?utf-8?B?NmpBV05BcTV4UjVCRVpxU3dSMlNKM2dMNFZaZFp5SDdtZS9sRWszNTFUTXEx?=
- =?utf-8?B?VmtrRk9kNWhzSTR5UENhdGFmdzJFdUxGQkZXalVlUE84WG9YVFRJTldoV1FR?=
- =?utf-8?B?cFI4QUtoMjBvNHhibVlsYy9lT0g0alZ3QitHV25LR29PNHpyek9iOWR3TTdY?=
- =?utf-8?B?K1RPUmJEMEprclk1dlB1ejg5cFVrdk12TU42Z1podk91dlJpZi9KcTJVOXUv?=
- =?utf-8?B?blFmUlMzTExZZVNlZzIxdExIR1AwT2dLZWVjTXVyUklBeksvdTRPYTh5Q29D?=
- =?utf-8?B?ZWpPV0l2dzArVXo2YzJpd2FNU3JBMWUyR1RGRjdmb2krTXZPRkhmWEpoeUJF?=
- =?utf-8?B?WkJjOWJrV1RPWTd6bnJucVozR2cxMFprWVQ0Y2lSemlQRjdhaHVvMTVrYnox?=
- =?utf-8?B?bFdYWERPS1hsMWhDLy9lMHE0a3RGVUxjdzlZbm9kaGQwV2JvT0lpUT09?=
-X-Exchange-RoutingPolicyChecked: F+nilo4kaHxFlVCO/qwlHzsvdbwkSmmeIHtOHVqWpY07CNGZEzO3PMjGBTWVChshvOc8R+DUGX5464QnxjCKrASID7/j7p64Asv4McfTiSpdfGzOnJgojiDfhQkhajyTGhG6rDXxoVBipweXCQsw7kACpxGB9bclQ2QTM55070ocELl72Co2nOVHx0i/CG9JVuFhr9x8tMTYL2G/edNnboED/OR6nO8HES/CEJHMiqwWjmU29hHYH+ja7rpXnnwKUW9zwEVxpVWp8j5/03ts3wUTjovBM1EaNtT3gVjiEQ00JM3bElqdgS8KXzEwVc+oDfck62JHccw+B3nom0VwUQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3e528dce-4c8d-46bf-e316-08df33a9f3f7
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 21:41:54.6805
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bX/JNe5qbSjurZC+HyAvG1D418Z/7vSKZFPpnqZJ4NNjZVntTo9gWEZksFOoP3kcjYYpji2PhPYg4zZjCDFJxFNjK4A39GHxYRkrDOnaRmo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR11MB6088
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 2/2] net: dsa: b53: restore the NSP IMP port 2 Gbps
+ mode
+To: netdev-bot+sashiko@kernel.org, florian.fainelli@broadcom.com
+Cc: netdev@vger.kernel.org, jonas.gorski@gmail.com, andrew@lunn.ch,
+ olteanv@gmail.com, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, rafal@milecki.pl,
+ bcm-kernel-feedback-list@broadcom.com, arnd@arndb.de,
+ linux-kernel@vger.kernel.org
+References: <20261022211104.2091128-3-florian.fainelli@broadcom.com>
+ <179304989018.3134.16623099883424149741@kernel.org>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <179304989018.3134.16623099883424149741@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 10/25/2026 4:44 PM, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found more severe
-> issue(s) in other patches of this series. This mail is only an FYI, in case
-> you want to address the nit picks below when you respin.
+On 10/26/26 14:24, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 5 potential
+> issue(s) to consider.
 > 
-> Low priority / nit picks for your consideration:
+> Critical: 0 · High: 0 · Medium: 2 (1) · Low: 3
 > 
-> - [Low] The commit message for "ice: E825: stop clearing
->   PHY_REG_TX_OFFSET_READY" names a Tx tracker field that does not exist.
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] The patch never programs the 2 Gbps mode on BCM5301x CPU ports
+>    other than the IMP port.
+> - [Medium] The fix leaves out BCM583XX (Cygnus/Omega), which the Fixes:
+>    commit broke in the same way.
+> - [Low] Concern that b53_phylink_get_caps() advertises only
+>    MAC_10|MAC_100|MAC_1000 (b53_common.c:1563-1573), while…
+> - [Low] The comment in b53_phylink_mac_link_up() (b53_common.c:1666)
+>    reads "Force flow control on BCM5301x and NSP CPU ports", but the…
+> - [Low] b53_regs.h documents PORT_OVERRIDE_SPEED_2000M (line 103) and
+>    GMII_PO_SPEED_2000M (line 149) as "BCM5301X only, requires setting…
+> 
+> Pre-existing issues:
+> - [Medium] This problem wasn't introduced by this patch, but
+>    b53_force_port_config() mishandles non-IMP ports on is5301x()/is58xx()…
 > 
 > --
 > 
-> ice: E825: stop clearing PHY_REG_TX_OFFSET_READY
+> net: dsa: b53: restore the NSP IMP port 2 Gbps mode
 > 
-> On E825, ice_stop_phy_timer_eth56g() no longer clears
-> PHY_REG_TX_OFFSET_READY. Clearing it left the hardware's outstanding Tx
-> timestamp counter out of sync. Instead, new Tx timestamp requests are
-> blocked in software while the PHY is stopped or restarting, and
-> ice_ptp_mark_tx_tracker_stale() now checks tx->init.
+> For fixed-link CPU ports on BCM5301x and BCM58XX (Northstar Plus)
+> switches, this commit makes b53_phylink_mac_link_up() force speed 2000
+> along with tx and rx pause. The goal is to restore the IMP port 2 Gbps
+> mode that b6a8a5477fe9 started clearing, because clearing it left the
+> switch and AMAC ends of the internal link at different speeds.
 > 
->> Now that we do not clear the PHY_REG_TX_OFFSET_READY, new timestamp
->> requests could happen while the PHY is calibrating. To avoid this, set the
->> tx.calibrating field of the Tx timestamp tracker when stopping the timer
->> and clear it when finishing the restart.
-> 
-> [ ... ]
-> 
->> Unlike E822 devices, set the calibrating flag when "stopping" the PHY and
->> clear it immediately after the start procedure.
-> 
-> [ ... ]
-> 
->> In the event that the PHY timer start procedure fails, the device is in an
->> unknown state and timestamps will not behave properly. As such, and similar
->> to E822 devices, the calibrating field is not cleared on failure.
+>> diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+>> index 0880310c9ce3f..1f4964c28fc57 100644
+>> --- a/drivers/net/dsa/b53/b53_common.c
+>> +++ b/drivers/net/dsa/b53/b53_common.c
+>> @@ -1663,9 +1663,13 @@ static void b53_phylink_mac_link_up(struct phylink_config *config,
+>>   	}
+>>   
+>>   	if (mode == MLO_AN_FIXED) {
+>> -		/* Force flow control on BCM5301x's CPU port */
+>> -		if (is5301x(dev) && dsa_is_cpu_port(ds, port))
+>> -			tx_pause = rx_pause = true;
+>> +		/* Force flow control on BCM5301x and NSP CPU ports */
 > 
 > [Severity: Low]
-> Should these references to tx.calibrating say tx.disabled instead?
+> This isn't a bug, but the comment only mentions flow control. The block
+> below it also forces speed = 2000.
 > 
-> struct ice_ptp_tx in ice_ptp.h has no calibrating member. Its bitfields
-> are:
+> The comment also says CPU ports, but the commit message describes the
+> 2 Gbps mode as a property of the IMP port.
 > 
-> 	u8 init : 1;
-> 	u8 disabled : 1;
-> 	u8 has_ready_bitmap : 1;
+> Could the comment mention the speed override and say which port it is
+> meant for?
 > 
-> The new E825 code in ice_ptp_port_phy_stop() and
-> ice_ptp_port_phy_restart() sets and clears ptp_port->tx.disabled:
+>> +		if ((is5301x(dev) || dev->chip_id == BCM58XX_DEVICE_ID) &&
 > 
-> 	spin_lock_irqsave(&ptp_port->tx.lock, flags);
-> 	ptp_port->tx.disabled = true;
-> 	spin_unlock_irqrestore(&ptp_port->tx.lock, flags);
+> [Severity: Medium]
+> Should BCM583XX_DEVICE_ID be covered here too?
 > 
-> ice_ptp_wait_for_offsets() uses the same field for E82x, and the
-> kernel-doc update in this patch is for @disabled.
+> The clear added by b6a8a5477fe9 applies to every is58xx() chip:
 > 
-> The behaviour the commit message describes matches the code. Only the
-> field name is wrong.
+> drivers/net/dsa/b53/b53_common.c:b53_force_port_config() {
+>      ...
+> 	if (is5301x(dev) || is58xx(dev))
+> 		reg &= ~PORT_OVERRIDE_SPEED_2000M;
+>      ...
+> }
+> 
+> is58xx() includes BCM583XX_DEVICE_ID, but the restore here only matches
+> BCM58XX_DEVICE_ID.
+> 
+> Cygnus appears to have the same topology as NSP. In bcm-cygnus.dtsi, the
+> brcm,bcm11360-srab switch (BCM583XX_DEVICE_ID) uses IMP port@8 as the CPU
+> port. That port has a 1000 full-duplex fixed-link to eth0, a brcm,amac
+> with no phy-handle.
+> 
+> For that AMAC, bgmac-platform.c uses bgmac_phy_connect_direct() and sets
+> BGMAC_FEAT_FORCE_SPEED_2500, the same as for NSP amac0.
+> 
+> On boards like bcm911360_entphn, won't b53_force_port_config() still
+> clear the IMP 2 Gbps bit while the AMAC runs in high-speed mode? If
+> BCM583XX is left out on purpose, could the commit message say why?
+> 
+>> +		    dsa_is_cpu_port(ds, port)) {
+>> +			tx_pause = true;
+>> +			rx_pause = true;
+>> +			speed = 2000;
+> 
+> [Severity: Medium]
+> Is the 2 Gbps mode actually programmed when the CPU port is not the IMP
+> port?
+> 
+> The condition checks dsa_is_cpu_port() but not port == dev->imp_port.
+> For non-IMP ports, b53_force_port_config() uses the GMII override
+> register:
+> 
+> drivers/net/dsa/b53/b53_common.c:b53_force_port_config() {
+>      ...
+> 	if (port == dev->imp_port) {
+> 		off = B53_PORT_OVERRIDE_CTRL;
+> 		val = PORT_OVERRIDE_EN;
+> 	} else if (is5325(dev)) {
+> 		return;
+> 	} else {
+> 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
+> 		val = GMII_PO_EN;
+> 	}
+>      ...
+> 	case 2000:
+> 		reg |= PORT_OVERRIDE_SPEED_2000M;
+> 		fallthrough;
+>      ...
+> }
+> 
+> The two registers have the enable and 2000M bits swapped:
+> 
+> drivers/net/dsa/b53/b53_regs.h:
+> #define   PORT_OVERRIDE_SPEED_2000M	BIT(6) /* BCM5301X only, requires setting 1000M */
+> #define   PORT_OVERRIDE_EN		BIT(7) /* Use the register contents */
+> ...
+> #define   GMII_PO_EN			BIT(6) /* Use the register contents */
+> #define   GMII_PO_SPEED_2000M		BIT(7) /* BCM5301X only, requires setting 1000M */
+> 
+> On port 5 or 7, the case 2000 path only sets GMII_PO_EN again.
+> GMII_PO_SPEED_2000M is never written.
+> 
+> In-tree boards take this path. bcm53015-meraki-mr26.dts and
+> bcm53016-meraki-mr32.dts use port@5 (ethernet = <&gmac0>) as the CPU
+> port, with a 1000 full-duplex fixed-link and port@8 disabled. On the
+> GMAC side, bgmac-bcma.c sets BGMAC_FEAT_FORCE_SPEED_2500 for these SoCs.
+> 
+> Unless the bootloader already set BIT(7), won't the internal link on
+> these boards stay mismatched? The commit message says:
+> 
+>      Force the 2 Gbps mode and flow control for BCM5301x and NSP CPU ports.
+> 
+> This isn't a regression, because BIT(7) was not touched before this
+> patch either.
+> 
+> Should b53_force_port_config() set GMII_PO_SPEED_2000M for non-IMP ports?
+> If not, the condition and the commit message could be narrowed to the
+> IMP port.
+> 
+> [Severity: Low]
+> This isn't a bug, but b53_regs.h still documents the bit set here as
+> BCM5301X only:
+> 
+> #define   PORT_OVERRIDE_SPEED_2000M	BIT(6) /* BCM5301X only, requires setting 1000M */
+> 
+> Now that speed = 2000 is also used for BCM58XX_DEVICE_ID, the header and
+> the code disagree on whether NSP has this bit.
+> 
+> Should the comments for PORT_OVERRIDE_SPEED_2000M and
+> GMII_PO_SPEED_2000M in b53_regs.h be updated to include the 58xx family?
+> 
+> [Severity: Low]
+> This isn't a bug, but b53_phylink_get_caps() only advertises MAC_10,
+> MAC_100 and MAC_1000, and this line replaces the DT fixed-link speed
+> with 2000.
+> 
+> Phylink still validates the DT value of 1000, and CPU ports have no user
+> netdev. No in-tree CPU port fixed-link uses a speed other than 1000, so
+> I couldn't find a functional problem.
+> 
+> Would it be worth noting in the comment that the DT speed is ignored
+> here on purpose?
+
+v3 indicates that the speed is forced as well now, that covers the DT 
+speed being ignored by extension.
+
+> 
+>> +		}
+>>   
+>>   		b53_force_port_config(dev, port, speed, duplex,
+>>   				      tx_pause, rx_pause);
+> 
+> [Severity: Medium]
+> This is a pre-existing issue and was not introduced by this patch.
+> Doesn't b53_force_port_config() disable the override on non-IMP ports of
+> is5301x() and is58xx() chips?
+> 
+> drivers/net/dsa/b53/b53_common.c:b53_force_port_config() {
+>      ...
+> 	b53_read8(dev, B53_CTRL_PAGE, off, &reg);
+> 	reg |= val;
+>      ...
+> 	reg &= ~(0x3 << GMII_PO_SPEED_S);
+> 	if (is5301x(dev) || is58xx(dev))
+> 		reg &= ~PORT_OVERRIDE_SPEED_2000M;
+>      ...
+> 	b53_write8(dev, B53_CTRL_PAGE, off, reg);
+> }
+> 
+> For non-IMP ports, val is GMII_PO_EN, which is BIT(6). That is the same
+> bit as PORT_OVERRIDE_SPEED_2000M.
+> 
+> So for any speed other than 2000, the GMII override register is written
+> with the override disabled. It stays that way until b53_force_link() ORs
+> GMII_PO_EN back in.
+> 
+> The real 2 Gbps bit for that register, GMII_PO_SPEED_2000M (BIT(7)), is
+> never cleared either. Suppose the bootloader left a non-IMP port in
+> 2 Gbps mode and DT forces it to 100M or 10M. Wouldn't that produce the
+> invalid speed and 2000M combination that b6a8a5477fe9 was meant to
+> prevent?
+
+It could, but that's a pre-existing issue so it needs to be addressed 
+differently.
+
+> 
+> This patch doesn't make it worse. Non-IMP CPU ports now pass speed 2000,
+> which sets BIT(6) again.
 > 
 
-Yes, these doc changes should have been fixed but I missed them while
-renaming the field.
+Correct, there will be a separate set of patches to for the use of IMP 
+port being 8, as well as well as reject invalid settings.
+-- 
+Florian
