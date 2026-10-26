@@ -1,96 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793048957;
-	b=zyQcjpoD2vvdy7QHgH+/KG17EuzzDjDZrvly+4Y6N3/M01cSXOfTH8zBWoZmBWDp6VEB
-	 1TSpgP+YFtx86iAmZOG8GZ6cBvjQFcebBtv/Rgz8/ukPCYM79vR3e1zXnT9jw9HnrTzEI
-	 Yf+su5pyVsvF7mgrB3XvEsXD4EF/HQe6cnkNkxyTbRlpWQyS7wxpEUw8jK0RPQwcnuuB4
-	 6TGqPxPtxSYQFxKqTJ62xtoLs7CVCI92HsLrUAcdlhY/CzrGc1/r7VDsZSlcaM3WqwkGX
-	 YmDuL4PrQDUkgfB17BYRLw3/F+7IY0+994MbHCGqqqkSOa+jOdtYE0ViLxOiymuKjUw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793048957;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=P5w/QGhcG86xp82d5uftEaCF9L09XL6IP5SJYwvQM/s=;
-	b=pkhTO9MEbYljuPfFYj0HqxaW0aXKWwbiYAWgy/sEnyoHmENWBhE2JP9q128cs3m4HMN1
-	 v0jsIrrcv12ORsZRAN1qYRAzNuwpNWSL5GIvx29pC7zAqOV+xzFvxgF7GfPwGCDq+4dsC
-	 x91t+/kZ8Ta34r96TESlKEo/ETbJLatkAaE46ugapkPOIwgTZSr0LyRhZGI+ezl/1Jzay
-	 qb7gWiaixJveigOMv2XgEQ2p75C1wAW4cG38erS53G7gAFsqGWK+vhR1zgI/PVtHEnrWP
-	 XQP2FXLkPhJh3e2iLRiSgzMg0M7IHFe2VUWTZO8z7NlZEYWkbIUkW3CLY10euku3ijQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=bK8vvrKG;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793048955;
+	b=D8Q05LrkuOpHupsIaeJn2u1FtaHbz3c8qQPS7LQF9hT+YWsuViZAn9jcGQmu+TIoVVOD
+	 NoAmpEbUtt6IZwnDk2f0w1aCyvfldMlI3F30urkbBrAB0eGUTnJOWdjqnps+rKrvSe/nF
+	 EuW3roRFf1jiunFoha4v/wjq13pYwVXAbRgyflXPSEFHTkFyotn8MuLdnBbZriTXyx5C8
+	 y+dL3C5r99ivo8E0xP/iThIwb0tj9WoIc1saIEkL14fSkikokMAkuy4j1qEhnf92J6Rj5
+	 7DKYWfzddmOYRBaG6ND+o6ZKiBbjv0iuPvI9J+oMi14z6sMzeBbY4ptQebfmRJRMyLA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793048955;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=DuQ1Wcl/9/AjDY4J7olX6CC7aGgr2FQKZCCHnkWjylo=;
+	b=IM5BPUPe2DEhVeWt0D/kW6r35qt0MCR0g1gHgovRxLiNfURrRRi3KJuDXNi6eivKE+62
+	 7zysK7jWkPldxERC+j1wSDD14ONV1gx3dB38KhL1z+wplSsGJtsPUy0zeUAt605WSB5xI
+	 n9DRGBIufYNuPOFh0lZ5U9PMdRJ3G2ObhROnUmXqASZllJe7+Wx95qtTU+Maa8YJj6tCS
+	 9/+zo6gz98QEAh3T4h3796G0n/JvUMl2mpBgZ4GuuQgPode0U7Rb/woH7kj73l5c6fG0/
+	 w1ISPm0MkhjbB/pw61oqST2Fi4MSZyKaSiMLLFrkgbphRLMitFEG6Iy3h35ubWeMKNw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UEthL+LK;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E8F606A322;
-	Mon, 26 Oct 2026 21:09:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A9E8F606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA557606A31D;
+	Mon, 26 Oct 2026 21:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=bK8vvrKG
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id C5A88201EF3;
-	Mon, 26 Oct 2026 22:09:09 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793048949;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P5w/QGhcG86xp82d5uftEaCF9L09XL6IP5SJYwvQM/s=;
-	b=bK8vvrKGiX22xeC6DeJnf5YzcAr7f118aoVMWdF17yyvRFT+gxdSc0d+hZiAcq8LJoruzJ
-	xgSCchYWibXx6g22T+KRfwYbr79wsMlbIOokJZELItqNzcFXu3BEgdFAFEpMNdHdacimt7
-	qg1QedNn/jVD5UmRDN5nx86R3gU5wVIY5QlrgclRTZx/73fytbottkrNdIfdevjMsALwnb
-	DHCcgZSy0O3Xog2oTyaF17ooubydleODug5RFf7Rqil0Q8H61gMEIKAaDAB6ojXVHz+MTL
-	+0zJTmigxs9NoNbTqV3Y8dmhQ+bMhuJ2XeQJQJ8Ih/W4NmI5qE4+PKDBZLqBJw==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793048949; a=rsa-sha256;
-	cv=none;
-	b=e/bo4y53DHYdKi56QDm/+OmJxXP+TRXAYgcRRdF5RAkd8Xq+EMm8xehr6TMdUbHPN/txLS
-	VKYQovDuduRB6f/IoXhKFikwXoJqxiwC8mFb6YZhhmeFvVifmLSiGnVjt5c7OoT4Ioyjgr
-	Exrk0img1hTB5yERcwifOkc8AT3YPd0rUfTWu6PIWSYmpWBFVBQ3gFeL/Zh1M4B/Ug4B8q
-	Jt5T+CYTWqArV2y6nZDJAJq+7bbniUciHklLkaeXLsVi+O+KixooXrQTFWCRYdOWzhe8y/
-	QcSPQHzxo86hT9Dmhg0spPRy4xi2YiGXNdgrH5n9tZ05jX1blmHe/PlV6YJaZg==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793048949;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P5w/QGhcG86xp82d5uftEaCF9L09XL6IP5SJYwvQM/s=;
-	b=WMwo3KcHto1IsUWvFSmNkOVOy8V5d5u9LswJ0uyvcrnhSmTFicUuBMsylctLYWs4R95WHS
-	9TkgoQJ4wWnoY71DFzM8n6gt2IJtblfyvmCiQ4TaM8zkgu/wiBVDIz1jFlKM3tN72PiCed
-	4zWImALPW4jqrf7QXjrNDN8N9WNnCnxmJgdegaIt39EvJEIjMdC14Ka+TD78TKznc68DU1
-	T6cUMnkXTAWDMKjJAW/TepNhHk8WjuNMvQsUqvquGCFPbUHiMjKXfLRcHYGl9wVoQCZ38u
-	0TBvTf7Gn/Dnf3hAv/TZ0ZkJmGuvRuBGL1fpaOlAb7n2U4E90kO7XYlx4Pq3GQ==
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1xLRwL-001Kx6-2G;
-	Mon, 26 Oct 2026 22:09:09 +0100
-Received: from pengutronix.de (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 6811B5D7368;
-	Mon, 26 Oct 2026 21:09:09 +0000 (UTC)
-Date: Mon, 26 Oct 2026 22:09:08 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Fan Wu <fanwu01@zju.edu.cn>
-Cc: Vincent Mailhol <mailhol@kernel.org>, linux-can@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Song Li <songl@zju.edu.cn>
-Subject: Re: [PATCH] can: gs_usb: kill RX URBs before destroying the netdevs
-Message-ID: <20261026-armadillo-of-uplifting-excitement-9bcdba-mkl@pengutronix.de>
-References: <20260923070352.487595-1-fanwu01@zju.edu.cn>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UEthL+LK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CF011F031E5;
+	Mon, 26 Oct 2026 21:09:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793048954;
+	bh=DuQ1Wcl/9/AjDY4J7olX6CC7aGgr2FQKZCCHnkWjylo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=UEthL+LK+SeCZfbCHGVzaV/gk0VshJ/5PD+uFYgI+2BE7WR8PgF7y8omMn261NDD4
+	 qupOKV6GJlVnOdb5b9tOEe329pU+ho3qM2K2rykuS69mC3cSMa2nY8mIxbHAvjbW/T
+	 AzPTo9vI2nBHfrhvwGUuPC7dmNnS2tfM3IkDALni6jQvH7PMQ3pqeix1j17AuyOQKF
+	 zIiux1z25USkVLoIXdUx/zyyFiLLGBGwSJqquU6e5iEkAml06KDnYAXQLZckVng09v
+	 MQfOCx2CaiMnhvi4v3/uvIFEjid7XMNww6HGfWiVUsCPbXP9ECVNeK9cgspxobiqh4
+	 VBbZiOCrrc1TQ==
+Subject: Re: [PATCH] net: lan966x: fix double fwnode_handle_put() and missing
+ mdb deinit in probe error path
+From: netdev-bot+sashiko@kernel.org
+To: mashikiselby@gmail.com
+Cc: horatiu.vultur@microchip.com, UNGLinuxDriver@microchip.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Mon, 26 Oct 2026 21:09:13 +0000
+Message-ID: <179304895357.3134.7579048649329959225@kernel.org>
+In-Reply-To: <20261025203155.455075-1-mashikiselby@gmail.com>
+References: <20261025203155.455075-1-mashikiselby@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,109 +64,216 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="m6udzpjeck3ay5pl"
-Content-Disposition: inline
-In-Reply-To: <20260923070352.487595-1-fanwu01@zju.edu.cn>
 
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
---m6udzpjeck3ay5pl
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] can: gs_usb: kill RX URBs before destroying the netdevs
-MIME-Version: 1.0
+Critical: 0 · High: 1 (2) · Medium: 0 (1) · Low: 1
 
-On 23.09.2026 07:03:52, Fan Wu wrote:
-> gs_usb_disconnect() destroys the channels one by one via
-> gs_destroy_candev()/free_candev(). gs_can_close() disposes the RX bulk
-> URBs on the shared parent->rx_submitted anchor only when the last
-> active channel is closed. With two or more channels up, the earlier
-> channels are freed while their RX URBs are still submitted, and a
-> completion in gs_usb_receive_bulk_callback() accesses the freed struct
-> gs_can and struct net_device.
->
-> Fix this by killing the anchored RX URBs in gs_usb_disconnect() before
-> the first netdev is destroyed, and in the error path of gs_usb_probe()
-> before the previously created netdevs are destroyed.
->
-> usb_kill_anchored_urbs() waits for running completions and a killed URB
-> completes with -ENOENT, so the completion handler returns without
-> resubmitting the URB. The kill in gs_can_close() of the last active
-> channel then operates on an already empty anchor.
->
-> This issue was found by an in-house static analysis tool.
->
-> Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devic=
-es")
-> Cc: stable@vger.kernel.org
-> Co-developed-by: Song Li <songl@zju.edu.cn>
-> Signed-off-by: Song Li <songl@zju.edu.cn>
-> Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
-> ---
->  drivers/net/can/usb/gs_usb.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-> index ec9a7cb..663746d 100644
-> --- a/drivers/net/can/usb/gs_usb.c
-> +++ b/drivers/net/can/usb/gs_usb.c
-> @@ -1595,10 +1595,10 @@ static int gs_usb_probe(struct usb_interface *int=
-f,
->
->  			/* on failure destroy previously created candevs */
->  			icount =3D i;
-> +			usb_kill_anchored_urbs(&parent->rx_submitted);
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-I've fixed the root cause of this problem. Do not register an interface,
-before all interfaces are setup:
+- [High] The new cleanup_mdb label calls lan966x_mdb_deinit()
+  (lan966x_main.c:1302) and then jumps to cleanup_switch, so the…
+- [Low] The commit fixes a real refcount bug but has no Fixes: trailer.
 
-https://lore.kernel.org/all/20261026-gs_usb-fixes-v4-2-59e3b6360053@pengutr=
-onix.de/
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but the reworked
+  error ladder keeps it.
+- [High] This problem wasn't introduced by this patch, but it is in the
+  error path the patch reworks.
+- [Medium] The probe error ladder in lan966x_probe() never calls
+  lan966x_mac_purge_entries(), unlike lan966x_remove() (line 1332).
 
->  			for (i =3D 0; i < icount; i++)
->  				gs_destroy_candev(parent->canch[i]);
->
-> -			usb_kill_anchored_urbs(&parent->rx_submitted);
->  			kfree(parent);
->  			return rc;
->  		}
-> @@ -1636,6 +1636,8 @@ static void gs_usb_disconnect(struct usb_interface =
-*intf)
->  		return;
->  	}
->
-> +	usb_kill_anchored_urbs(&parent->rx_submitted);
+--
+
+net: lan966x: fix double fwnode_handle_put() and missing mdb deinit in probe error path
+
+This commit reworks the error ladder in lan966x_probe(). Failures after
+the port loop no longer reach cleanup_ports, so fwnode_handle_put(ports)
+is not called a second time. A new cleanup_mdb label calls
+lan966x_mdb_deinit(), and a new cleanup_switch label skips the fwnode
+puts and goes straight to lan966x_cleanup_ports().
+
+> In lan966x_probe(), fwnode_handle_put(ports) is called after the
+> fwnode_for_each_available_child_node(ports, portnp) loop finishes.
+> However, if lan966x_fdb_init(), lan966x_ptp_init(), lan966x_fdma_init(),
+> or lan966x_vcap_init() subsequently fails, execution jumps to or falls
+> through to cleanup_ports, calling fwnode_handle_put(ports) a second time
+> and skipping lan966x_mdb_deinit().
+
+[ ... ]
+
+> Signed-off-by: Selby Mashiki <mashikiselby@gmail.com>
+
+[Severity: Low]
+Should this have a Fixes: tag?
+
+Both the fwnode_handle_put(ports) after the port loop and the one under
+cleanup_ports came in with commit 925f3deb45df ("net: lan966x: add
+missing fwnode_handle_put() for ports node"). That commit has its own
+Fixes: tag, so the double put is probably in stable trees as well.
+
+Something like:
+
+Fixes: 925f3deb45df ("net: lan966x: add missing fwnode_handle_put() for ports node")
+
+and possibly, for the missing MDB deinit:
+
+Fixes: 7aacb894b1ad ("net: lan966x: Extend switchdev with mdb support")
+
+> diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+> index e4c9c5812ccab..887385833b4d6 100644
+> --- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+> +++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+> @@ -1271,7 +1271,7 @@ static int lan966x_probe(struct platform_device *pdev)
+>  	lan966x_mdb_init(lan966x);
+>  	err = lan966x_fdb_init(lan966x);
+>  	if (err)
+> -		goto cleanup_ports;
+> +		goto cleanup_mdb;
+>  
+>  	err = lan966x_ptp_init(lan966x);
+>  	if (err)
+
+[Severity: High]
+This is a pre-existing issue, but it sits in the error path being
+reworked here. What happens to PTP clocks that are already registered
+when lan966x_ptp_init() fails partway through?
+
+lan966x_ptp_init() registers LAN966X_PHC_COUNT clocks and returns on the
+first failure:
+
+drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c:lan966x_ptp_init() {
+    ...
+	for (i = 0; i < LAN966X_PHC_COUNT; ++i) {
+		err = lan966x_ptp_phc_init(lan966x, i, &lan966x_ptp_clock_info);
+		if (err)
+			return err;
+	}
+    ...
+}
+
+Suppose ptp_clock_register() fails for PHC 1 or 2. The clocks registered
+before it stay registered, and lan966x_probe() jumps to cleanup_fdb,
+which skips lan966x_ptp_deinit().
+
+Those clocks have ptp->info pointing at lan966x->phc[i].info. That is
+inside the devm-allocated struct lan966x, which is freed when probe
+fails.
+
+After that, could reading /sys/class/ptp/ptpN/clock_name (clock_name_show()
+dereferences ptp->info->name), or any operation on /dev/ptpN, touch freed
+memory?
+
+lan966x_ptp_deinit() unregisters every PHC unconditionally, so it can't
+just be called here. lan966x_ptp_init() would need its own unwind for
+the clocks it already registered.
+
+[ ... ]
+
+> @@ -1298,10 +1298,15 @@ static int lan966x_probe(struct platform_device *pdev)
+>  cleanup_fdb:
+>  	lan966x_fdb_deinit(lan966x);
+
+[Severity: High]
+This isn't a bug introduced by this patch, and the reworked ladder keeps
+it. lan966x_fdb_deinit() destroys lan966x->fdb_work before
+lan966x_cleanup_ports() calls unregister_netdev() on the ports.
+
+Suppose a port is already in a bridge when the ptp, fdma or vcap init
+fails. Would unregistering that port go through this chain on a
+workqueue that has already been destroyed?
+
+lan966x_cleanup_ports()
+  unregister_netdev()
+    bridge unlink -> NETDEV_PRECHANGEUPPER
+      lan966x_port_prechangeupper()
+        lan966x_fdb_flush_workqueue()
+          flush_workqueue(lan966x->fdb_work)
+
+FDB events on the still-registered ports in that window would also reach
+lan966x_handle_fdb()->queue_work(lan966x->fdb_work, ...) on the freed
+workqueue.
+
+If lan966x_fdb_init() itself fails (now goto cleanup_mdb), fdb_work is
+NULL. Would the same unregister path then end up in flush_workqueue(NULL)
+or queue_work(NULL, ...)?
+
+lan966x_remove() avoids this by calling lan966x_fdb_deinit() only after
+lan966x_cleanup_ports().
+
+>  
+> +cleanup_mdb:
+> +	lan966x_mdb_deinit(lan966x);
+> +	goto cleanup_switch;
+
+[Severity: High]
+Does this free the MDB and PGID lists while the port netdevs are still
+registered?
+
+lan966x_probe_port() calls register_netdev() inside the port loop. The
+matching unregister_netdev() only runs later, in lan966x_cleanup_ports()
+under cleanup_switch.
+
+lan966x_mdb_purge_mdb_entries() and lan966x_mdb_purge_pgid_entries() call
+list_del() and kfree() without taking any lock. During this window, the
+switchdev notifier can still deliver PORT_MDB/HOST_MDB add and del for
+these ports under rtnl, for example on bridge join replay or a bridge mdb
+add from userspace:
+
+lan966x_mdb_ip_add()
+  lan966x_mdb_entry_get() / lan966x_mdb_entry_add()
+    list_add_tail(&mdb_entry->list, &lan966x->mdb_entries);
+
+Could the unlocked purge race with these handlers, corrupt the list, or
+free an entry a handler is still using? Entries added after the purge
+but before unregister_netdev() would also leak.
+
+lan966x_remove() does it the other way round:
+
+	lan966x_cleanup_ports(lan966x);
+	...
+	lan966x_mdb_deinit(lan966x);
+
+Should lan966x_mdb_deinit() also run after lan966x_cleanup_ports() in
+the probe error path?
+
 > +
+>  cleanup_ports:
+>  	fwnode_handle_put(ports);
+>  	fwnode_handle_put(portnp);
+>  
+> +cleanup_switch:
+>  	lan966x_cleanup_ports(lan966x);
+>  
+>  	cancel_delayed_work_sync(&lan966x->stats_work);
 
-The USB core disables all endpoints before calling gs_usb_disconnect(),
-so this isn't needed.
+[Severity: Medium]
+This is a pre-existing issue, but since the ladder is gaining an MDB
+deinit: does the probe error path leak the lan966x_mac_entry objects on
+lan966x->mac_entries?
 
->  	for (i =3D 0; i < parent->channel_cnt; i++)
->  		if (parent->canch[i])
->  			gs_destroy_candev(parent->canch[i]);
->
->
->
+lan966x_remove() calls lan966x_mac_purge_entries() after
+lan966x_cleanup_ports(). None of the probe error labels do.
 
-regards,
-Marc
+The list is initialized in lan966x_init()->lan966x_mac_init() before the
+port loop. After that, the ANA learn IRQ can allocate entries:
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+lan966x_ana_irq_handler()
+  lan966x_mac_irq_handler()
+    lan966x_mac_irq_process()
+      list_add_tail(&mac_entry->list, &lan966x->mac_entries);
 
---m6udzpjeck3ay5pl
-Content-Type: application/pgp-signature; name="signature.asc"
+lan966x_mac_add_entry() can also add entries from FDB work once the
+ports are registered.
 
------BEGIN PGP SIGNATURE-----
+If lan966x_fdb_init(), lan966x_ptp_init(), fdma_init or
+lan966x_vcap_init() fails after that, these entries are never freed. The
+devm-allocated struct lan966x that holds the list head is then released.
 
-iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCat/BcgAKCRDMOmT6rpmt
-0noWAP9LFdKbeYotc821LjsXYFEgC5EUxEHjvy0JtAvJ14m3oQD/V7UWEUeLecq9
-ReIxfAnAUjTM9paYTgJpLCIztbwfhwA=
-=0wRy
------END PGP SIGNATURE-----
-
---m6udzpjeck3ay5pl--
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261025203155.455075-1-mashikiselby%40gmail.com
