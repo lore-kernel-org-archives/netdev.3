@@ -1,130 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793027085;
-	b=NMeB6EgcDmE1lUlCqylYVkjX2+uc4e+AvbYqoLdHnNgZtS3Z7FO3pL7C+MZ7T7U7920M
-	 nk7K8T/eMWASs70MJcJ8kAczkfpI2X0mvnAss+UnTsJPe1h4Us9tRs/+LoY3tf34BJXsU
-	 KviqCclFarQCiWYzZjs5nLesq81fOhw4Gnwhj7qjoQzPu/9RpJArvfCtdDF2r+cN1lv9G
-	 u5L7ndxW8GaPEoUGQyPonFsha7J3aPUO3j1YCbJb+tTCcjMOkah7/JyWaijNV+CJflhRI
-	 v2acDOIfhOc/GqfQihuuaLS2e3poze+HdVJlWCgxtrvPQOfY7vEzHcUwBTN1LYvcI0w==
+	t=1793027163;
+	b=eHRBoXnbD52ccdzDhM8F6rBUsO+NONc7d6qGTLprXZR3ppufGp8raohxSdRTihRKunz6
+	 eQPp30+Iql5LkDJajNxE+zNrmGn0OUktbwlBrWwPpt97aqS+Ffnh933k/gWT8TqVL9tFz
+	 BOmyedGXXiwM9rOBv9cYAXCxOzfE07PGAxcfIYlrd6rnCcwp3gSwuXmPRmGwbxDOgeT24
+	 292016v7Bru7zHWPxCEMZH0QPDDmrLh0KbHhGb5lWSE9Fo5P0MztgG5cTUOnOr4DGWivc
+	 tF5Bo6xv6u7YAAmHpFG/0rX2NgqVq2NNPUBESiBNzRSV3u1se02MhuatPbHRSNxE4wg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793027085;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Date:From:
-	 To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Proofpoint-ORIG-GUID:
-	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=GcaOJI2AGlsc/iw3sTAv3zZNex+qopC3DMZYd+jAZ68=;
-	b=miY5upTcoroBKvcTA8ZGi1oFMALLRfPB22bXV2Z6dDhcmCFywTt8n+UXaRNPQ867UPNd
-	 Aayu8mc+xwrLGKAqhj+qPLfRkYVekLbbltMcABDf1eemQiRrbHh1my3J3MrG9ngSHqGBy
-	 KzJZ/O85U8ZwW7lff5ie9vXZfIX0Q3GgWh7Dt/OhkBbwFRRl9wqQVHv+NsLjRkqd4ObVg
-	 kI3I+Tzmsx3dXmL1CsGIuSxFx4a61wmZnbZXbwdY8RziHiqTItozpXL7oNIgVTMVbUUD6
-	 R4hgXlOxZo3hMqMnj6ieOXWJwVEqGOX+uYt7XGS0EZUXHEOn3Ij0OVcQNr7wD8TwHBw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793027163;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Received:Date:Mime-Version:X-Mailer:Message-ID:
+	 Subject:From:To:Cc:Content-Type;
+	bh=YAQMHYEx+VaTuqm8g03RQPwUqcCWwVMwQyZo+1H6cdk=;
+	b=draHD6NeXUx0PzYKTUkf3Sz/YVrYcc4jMmO8wxVL99ljFuMVdNlWCEOucIU8xPC37CAS
+	 TFp1ZM78ov3etLudV466AEDpvc9B76LIzrWw7XRDP6Hd949CgdsOjdbaAqqCBO5xOrh/O
+	 qadkVsldRQeuro9Kk10aNYemV1XhJJGCvhQQMTkumT3OsPVL8wT8AuWMQ/d2jjeF4zuc0
+	 j4n4w0248UFALE8gaoeNXNRtrec0OqYGk4ThFyIdQgKmx2OpxerJzdeSgHCNNOA3TwhaH
+	 0G0631r8CO3F2pBwIk+e7gouP20R5ocjMBl8ksyvcYcfrSaNSQ1oLXiPuKsqkbgr4hQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=Wp+k3qrI;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=VjmFmoeX;
-	arc=none smtp.remote-ip=205.220.180.131
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--starchang.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=fDYjT3P9;
+	arc=none smtp.remote-ip=209.85.210.197
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6639606A31D
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 15:04:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E6639606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9351606A323
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 15:06:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D9351606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--starchang.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=Wp+k3qrI;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=VjmFmoeX
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69QEvtNV2544443
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 15:04:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=GcaOJI2AGlsc/iw3sTAv3zZN
-	ex+qopC3DMZYd+jAZ68=; b=Wp+k3qrIh+YaEOH3QJzYJFTiZ7PA6rrOlmzaK3Om
-	g0UQtEA9Q2m329GTlC66MyOtkGxhNan8rDYhGD29qFbh3ruypWMjsWZkeB7N4V25
-	PVDGMXx2FRX7zkhbe8g03lJrugJOSeokhLe+NQBkLkKWvh6ZTmhF7FVg3oz15MSe
-	s4rzCO9TKJi4nRt5HmUeuZ0tN6IDkXvxQuJo4rmVXIu9B2t9f8HzvWqepL8RoPto
-	DKIgDkFd4WL6Tpxvo9UD7qZ+fgYSJgdY2NTb/3SDs4Fl3wdAx9GD+VF+JXynZlfz
-	97b/FgepqeH7Za/Ssajp0IW3600ju/57XVxoaytBKsXkCg==
-Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com [209.85.222.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hj8smr3ux-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 15:04:42 +0000 (GMT)
-Received: by mail-ua1-f70.google.com with SMTP id a1e0cc1a2514c-988b86c66e5so3376402241.0
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 08:04:42 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=fDYjT3P9
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8a086f5d91aso4612027b3a.1
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 08:06:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1793027082; x=1793631882; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=GcaOJI2AGlsc/iw3sTAv3zZNex+qopC3DMZYd+jAZ68=;
-        b=VjmFmoeX1gIg3U1SLoYXjP5pHsJIadjcDDRtukuCP6P7oLFt001C33ZLvqCA8ksUhf
-         X4UITAixns5Ghdpj0oQokP/6kCyKxEIZC3St0NjOjOIN2QELdAddve6BGdE6HyhKF0dY
-         lr/lLKpMIp4CvVmBWWByaoja0GfjFgFFuJBBtCHdX7hr1CIM8j135sK0lks7TnKhEs0U
-         4pPaf6UKbdaSFLezt3uRO0yR9FX+3eETUKaZgV+5qJ7Hh8MPTN1DXQxk+jSIxx0bjvpt
-         zAX+WUssAVM2kKHFHv82pedZPd6dUXhXzZP7eYkFPrBiccc+Q22zIR2CU3RSAcpHYBf6
-         GmtQ==
+        d=google.com; s=20251104; t=1793027162; x=1793631962; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=YAQMHYEx+VaTuqm8g03RQPwUqcCWwVMwQyZo+1H6cdk=;
+        b=fDYjT3P9Vpy5o0EFTBaoD/FXKC1G6EJxcvIe3l9A2gVePBU80OcPT9P7kDtsbXMlTl
+         zB8zq4UEB40xQNGObJZRdGReKQiB8/pECljQ/xXKLQ30dTTOmtD01fM9zDVE5UhFgZjm
+         L9fbZw95TdGyzoqC+yTnOce6vgoX2lu1ISWZRgqmOucYYYld5kRaFqN/zbFPqCRlPv1c
+         LB/7nf2khZHBFYdZzXnM1kHTzQEq4hyT60LA0jC9BMtqznFhhMh/NyXX5TbStP41X50c
+         u5fDJibmuo3PIKfh7Wkewmc4k/eBCh5KTtMjafErAYjexPVAVHUg5k61XUNup230JIrC
+         txkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793027082; x=1793631882;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1793027162; x=1793631962;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=GcaOJI2AGlsc/iw3sTAv3zZNex+qopC3DMZYd+jAZ68=;
-        b=giDg6ZJaO3xWwoaOobrjiW3W5awQqCRge7PL+6u/gLEvG/EcwHpHaB5UKX+RFGWazH
-         +n+tmbxPTaVwgGAlpVk94tzsZ9W3pLS8Vfb1GHLUfshG5gnFD4HaSBcXxuFC25IUYA2O
-         cKnjBpoTHvY5zGvIGeMvKU2RJqngj7o0rubFs2znFaCLyo6VhUVepNe/wbegF5lW52Ip
-         fkBbLHu3Uft18XqQdldlpyshZhaiyApYrYgvU07Bsf0ppRheZLKWGksuBH0pp67TDCB9
-         w9tlDFurJlfFwVdQIe1qPtPMiJZDGp68JRxQCGyywSi7EV9sq33uqbuhVGmaPho875TF
-         ByPQ==
-X-Forwarded-Encrypted: i=1; AKwUvBys6wlYbU6YJb/UYO2FV4Dk7/K8JlW9M/WJQsAgDkZvdqKDjJkcXop2JRraZAiv7JTWaAE5nm8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJYm6O7baSd1p/FxnZDb/hZTkc12SmmpOALkXzCfJQgix7lsNFU
-	pzeEfwcquiaivmecaq1AsPLgkCKN4bTwG3696V+8lvQz/UzALgQui7Iu+3LyQPn7JuHSa7kR1qC
-	EzcFn3uqT/vBy4KVg6N0iXjEt74sbL8Y/pxO8gZdBwm9nASpFVddXCdpH+yI=
-X-Gm-Gg: AYBFou3xN1rL5vs3pgoTE3ge9pGUZKw6TG176d4EDb/2J40mpQ2XsxnzAlAf9UQkOdP
-	482Q1/LyFnefSfrvdttu/aYC7dE90PAy+nyhWFtW0jMsDmhrAuIDykL3bAEdlOoQrqaMlUtBWAd
-	2DB8B4TMuZ2mz18k1ztTJ6rkiPKlsU5S/Jk2r6HRyMjpp2a6FM7G3DUsIKsLV3Eq1Z3bblylZCm
-	V9WP8Ngh8A811T9U8LBOhrwWNQQZiaBG9JEbTxeXcnpjg5lj4xD+1GtsHx0CSOj9AkLupz9rCqx
-	jE/mCBiNr42jz+i8c02rb5V6X/x6V1o28wwQrrav7+f+GOVLAjaeOUuIzJmwNW3wdIyaYK8UGiN
-	RaONIYkt5q4vK5fOC
-X-Received: by 2002:a05:6102:1a1a:b0:7cc:a4b:b0e3 with SMTP id ada2fe7eead31-7ce5ccd81admr1188352137.13.1793027082062;
-        Mon, 26 Oct 2026 08:04:42 -0700 (PDT)
-X-Received: by 2002:a05:6102:1a1a:b0:7cc:a4b:b0e3 with SMTP id ada2fe7eead31-7ce5ccd81admr1188337137.13.1793027081345;
-        Mon, 26 Oct 2026 08:04:41 -0700 (PDT)
-Received: from oss.qualcomm.com ([188.27.161.187])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a35a5698f1sm200370845e9.8.2026.10.26.08.04.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 08:04:39 -0700 (PDT)
-Date: Mon, 26 Oct 2026 17:04:38 +0200
-From: Abel Vesa <abel.vesa@oss.qualcomm.com>
-To: Taniya Das <taniya.das@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>,
-        Jerome Brunet <jbrunet+clk@baylibre.com>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Bartosz Golaszewski <brgl@kernel.org>,
-        Linus Walleij <linusw@kernel.org>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Ajit Pandey <ajit.pandey@oss.qualcomm.com>,
-        Imran Shaik <imran.shaik@oss.qualcomm.com>,
-        Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v2 04/12] clk: qcom: gcc: Add configurable PDM XO4 div
- clocks across targets
-Message-ID: <2zv6vf3kvlb2k5oopypae6fby72ykqyg4pb7mgiomzyptolez3@namz2jhghdgz>
-References: <20261026-b4-pdm_clk_gp_mnd_v2-v2-0-ff8e4bc8d567@oss.qualcomm.com>
- <20261026-b4-pdm_clk_gp_mnd_v2-v2-4-ff8e4bc8d567@oss.qualcomm.com>
+        bh=YAQMHYEx+VaTuqm8g03RQPwUqcCWwVMwQyZo+1H6cdk=;
+        b=nkUHn45EbdUpgesKyP4AySK/KHTVlo3vXDuHpoLtKNsayxHau4MMc6aCDIQjH9sdYF
+         Jfc0YFbdHs/HmREYW3nV5EKwb5DgsqDkhwe1HeGUOe3tZFi35GE6CbCkf8Sv3YSL848i
+         +Gwa6+zYVkXuv5EnT45fQ6V6HgeR3AnImrBEQAs1f0BWIjd2sPWR0eC82+mSAztxpq7V
+         +PkiRXDyOWiP4dYvk5CgwrxyN/mRGjRgHwQEoMbCEAZcnIUXB4+TxHD8ZhCFcgtCMr6E
+         1eC7mpn5padRN+UTPczX81wBSD91e3rNRI83nn9InDSN7+e2H0OlBS4DreyzqpBoscLw
+         yVOQ==
+X-Gm-Message-State: AFq9FYKkHxeaK9yNh8i2SJWDq1u8Vuu4vEDLChtkUopValk6YUQL8sW0
+	yLoUtalrPLHp6nCJfEcd3Ay1/6uGXsQDbRrFnGkAMx38mwYjNG9OR8WSdtFKHKqgOuFaqA4iQcM
+	BihvYWh3EejObrnmsv05jIOf6dNH/5dezCyQqUPwpq9J6zGz8VaVrCWfKPxogWmVwKSIQ/QhKHk
+	13Df8TSsPHDaJd+fWjZAKYRNiD1zsRxQTDrSUrwGkw0YIZkuQpDcVZ
+X-Received: from pfbeb15.prod.google.com ([2002:a05:6a00:4c8f:b0:8a0:3171:5410])
+ (user=starchang job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:896:b0:880:973d:597a with SMTP id d2e1a72fcca58-8a368a9fd92mr6124603b3a.53.1793027160600;
+ Mon, 26 Oct 2026 08:06:00 -0700 (PDT)
+Date: Mon, 26 Oct 2026 15:05:39 +0000
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -133,43 +75,169 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261026-b4-pdm_clk_gp_mnd_v2-v2-4-ff8e4bc8d567@oss.qualcomm.com>
-X-Proofpoint-ORIG-GUID: u-gdg37bgJDt9ZvhyhjVlQ2nkEkjXCPi
-X-Authority-Analysis: v=2.4 cv=Sfti5fRu c=1 sm=1 tr=0 ts=6adf6c0a cx=c_pps
- a=R6oCqFB+Yf/t2GF8e0/dFg==:117 a=Qvngrl3H0rQgGg+94q4QgA==:17
- a=kj9zAlcOel0A:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
- a=EUspDBNiAAAA:8 a=X4WHrBvVKYo2O6Nn5h4A:9 a=CjuIK1q_8ugA:10
- a=TD8TdBvy0hsOASGTdmB-:22
-X-Proofpoint-GUID: u-gdg37bgJDt9ZvhyhjVlQ2nkEkjXCPi
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI2MDA1OSBTYWx0ZWRfX0YSx3wl99MLI
- MFX1DKxYX+DPrIJmsVWsutuJrWsTcBE/YM0WPxiHLcWvFnSTpeLJT6YKJtohLaAyonHfEtE+68p
- DN3Ypw9/gVg8nbV0c3feA30V9yPufUI=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI2MDA1OSBTYWx0ZWRfXz6JgrrMyXm5q
- XWsemWCvu4hJgVdtVZeEV+fw2b4sn6CVrX1GxdcsyKyvVR4MJS/sxWyzQt3CuNknlxR6Uz26p1P
- 9QkFoX1cDi3Pmg7xqjR7caBxq7RHgtfE+UPSBO+WGR7uuWsotegwidM3aSnNHWhRu++Ha3kNm/W
- Iz3WzIC3QByCmtHcyqx9uOmTcKTKREDJf9v/kb5LrSlln2AfOgrvEkbS9d2x0fEmFHtV9wMJEZ9
- NBkQuV/3l7sRbwbnR1Mfb49G81j7JLT7YBQu19gRGkurHnH61Df6IVs3TrkRAQlzey5CO7DuuJM
- GpQBK7XUm1UO/3w1S1l/mPNDafEYrl3jOgqIOBYk1kL/LnnKV0QeivyK38XN7xOD4fPGSV6eDy4
- dZfmebnFCpvyKmSqcIIM9oObKQVuAvMl54syHTBfy9yrwdNDbVi0RQHXJyWO7qatF3xfIsKDXPs
- cGNEMehIws2TMZa2QrQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-26_03,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 bulkscore=0 clxscore=1015 adultscore=0 priorityscore=1501
- malwarescore=0 lowpriorityscore=0 impostorscore=0 spamscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610260059
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.257.gf7497c7d27-goog
+Message-ID: <20261026150539.1357037-1-starchang@google.com>
+Subject: [PATCH net v3] net: Fix Hole-196 vulnerability by dropping unicast
+ ARP/IP in L2 BMC
+From: Star Chang <starchang@google.com>
+To: netdev@vger.kernel.org
+Cc: dsahern@kernel.org, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, davem@davemloft.net, idosch@nvidia.com, horms@kernel.org, 
+	linux-kernel@vger.kernel.org, Star Chang <starchang@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 26-10-26 16:59:30, Taniya Das wrote:
-> Add PDM XO4 divider clocks and make the PDM XO4 branches propagate rate
-> requests to them on QCS615, QCS8300, SA8775P, and SC7280. This lets
-> GP_MND select the supported PDM source clock rates.
-> 
-> Signed-off-by: Taniya Das <taniya.das@oss.qualcomm.com>
+Wi-Fi 802.11 to 802.3 frame translation allows attackers to inject
+unicast L3 packets or ARP payloads inside GTK-encrypted L2 broadcast
+and multicast (BMC) frames (the "Hole-196" vulnerability).
 
-Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+While the `drop_unicast_in_l2_multicast` sysctl was introduced to drop
+unicast IPv4/IPv6 packets received over L2 BMC, it had several gaps:
+
+1. ARP packets were not checked in `net/ipv4/arp.c`, allowing attackers
+   to perform ARP poisoning via L2 BMC frames (`group-arp-unicast`).
+2. Enforcement lacked DHCP client (UDP port 68) exemption, which could
+   discard legitimate DHCP server responses sent via L2 broadcast.
+3. Dropped packets were silently discarded without warnings or MIB stats.
+
+The issue was identified via manual code inspection and protocol security
+analysis of cross-station frame injection in 802.11 shared-key (GTK)
+networks. In laboratory testing, crafted 802.11 broadcast frames containing
+unicast ARP payloads (e.g. ARPOP_REQUEST / ARPOP_REPLY with tha set to a
+victim's unicast MAC) bypassed the existing sysctl, poisoning the victim's
+ARP cache. Furthermore, per RFC 2131 inspection, unconditionally dropping
+L2 broadcast frames carrying unicast IP addresses discards standard DHCP
+server responses (DHCPOFFER/DHCPACK) destined for UDP port 68 during lease
+negotiation.
+
+Enhance `drop_unicast_in_l2_multicast` sysctl enforcement:
+- Extend sysctl checks to `net/ipv4/arp.c` (`arp_process()`) to drop
+  unsolicited ARP Replies and ARP Requests with a non-zero unicast
+  Target Hardware Address (tha) received over L2 BMC.
+- Exempt Gratuitous ARP (GARP) and RFC 5227 Address Announcements
+  (`sip == tip`) from L2 BMC unicast drop logic so they defer to the
+  `DROP_GRATUITOUS_ARP` sysctl, preserving VRRP/HSRP router failover.
+- Exempt non-fragmented DHCP client traffic (UDP dest port 68) in
+  `net/ipv4/ip_input.c` and safely reload `ip_hdr(skb)` after
+  `pskb_may_pull()` to prevent dangling pointer access.
+- Log rate-limited warnings (`pr_warn_ratelimited`) and increment MIB
+  error counters (`IPSTATS_MIB_INHDRERRORS`) for dropped frames.
+
+Fixes: 12b74dfadb5a ("ipv4: add option to drop unicast encapsulated in L2 multicast")
+Fixes: abbc30436d39 ("ipv6: add option to drop unicast encapsulated in L2 multicast")
+Signed-off-by: Star Chang <starchang@google.com>
+---
+v2 -> v3:
+  - Add Fixes: tags for commits 12b74dfadb5a and abbc30436d39.
+  - Reformat lines in net/ipv4/ip_input.c to adhere strictly to the 80-column
+    limit.
+  - CC maintainers Ido Schimmel and Simon Horman per netdev bot check.
+v1 -> v2:
+  - Clarified discovery method (manual code inspection and protocol analysis)
+    and triggering context in commit message per netdev-bot automated feedback.
+ net/ipv4/arp.c       | 29 +++++++++++++++++++++++++++++
+ net/ipv4/ip_input.c  | 32 ++++++++++++++++++++++++++++++--
+ net/ipv6/ip6_input.c |  2 ++
+ 3 files changed, 61 insertions(+), 2 deletions(-)
+
+diff --git a/net/ipv4/arp.c b/net/ipv4/arp.c
+index d409f606aec0..ad23db2e2f59 100644
+--- a/net/ipv4/arp.c
++++ b/net/ipv4/arp.c
+@@ -791,6 +791,35 @@ static int arp_process(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 	    (!IN_DEV_ROUTE_LOCALNET(in_dev) && ipv4_is_loopback(tip)))
+ 		goto out_free_skb;
+ 
++/*
++ * Hole-196 defense for ARP:
++ * If drop_unicast_in_l2_multicast sysctl is enabled on this interface,
++ * drop ARP Replies in L2 BMC frames, and ARP Requests in L2 BMC frames
++ * that specify a non-zero unicast Target Hardware Address (tha).
++ *
++ * Legitimate Gratuitous ARP (GARP) and RFC 5227 Address Announcements
++ * require (sip == tip) and tha matching sha (tha == sha). Only valid
++ * GARP frames are exempted so they defer to DROP_GRATUITOUS_ARP below.
++ */
++	if ((skb->pkt_type == PACKET_BROADCAST ||
++	     skb->pkt_type == PACKET_MULTICAST) &&
++	    IN_DEV_ORCONF(in_dev, DROP_UNICAST_IN_L2_MULTICAST)) {
++		bool is_valid_garp = (sip == tip) && tha &&
++				     !memcmp(tha, sha, dev->addr_len);
++
++		if (arp->ar_op == htons(ARPOP_REPLY) && !is_valid_garp) {
++			net_warn_ratelimited("Drop ARP Reply in L2 BMC on %s\n",
++					     dev->name);
++			goto out_free_skb;
++		}
++		if (dev->addr_len == ETH_ALEN && tha &&
++		    is_valid_ether_addr(tha) && !is_valid_garp) {
++			net_warn_ratelimited("Drop unicast THA ARP Req in L2 BMC on %s\n",
++					     dev->name);
++			goto out_free_skb;
++		}
++	}
++
+  /*
+   *	For some 802.11 wireless deployments (and possibly other networks),
+   *	there will be an ARP proxy and gratuitous ARP frames are attacks
+diff --git a/net/ipv4/ip_input.c b/net/ipv4/ip_input.c
+index 9860178752b8..75a5c2059632 100644
+--- a/net/ipv4/ip_input.c
++++ b/net/ipv4/ip_input.c
+@@ -456,10 +456,38 @@ static int ip_rcv_finish_core(struct net *net,
+ 		 * this is 802.11 protecting against cross-station spoofing (the
+ 		 * so-called "hole-196" attack) so do it for both.
+ 		 */
++		/* Hole-196 defense:
++		 * Drop unicast IP packets received over L2 BMC frames.
++		 * Exempt DHCP client responses (UDP port 68).
++		 */
+ 		if (in_dev &&
+ 		    IN_DEV_ORCONF(in_dev, DROP_UNICAST_IN_L2_MULTICAST)) {
+-			drop_reason = SKB_DROP_REASON_UNICAST_IN_L2_MULTICAST;
+-			goto drop;
++			bool is_dhcp_resp = false;
++
++			iph = ip_hdr(skb);
++			if (iph->protocol == IPPROTO_UDP &&
++			    !ip_is_fragment(iph) &&
++			    pskb_may_pull(skb, iph->ihl * 4 +
++					       sizeof(struct udphdr))) {
++				const struct udphdr *uh;
++
++				iph = ip_hdr(skb);
++				uh = (const struct udphdr *)
++					(skb_network_header(skb) +
++					 iph->ihl * 4);
++				if (uh->dest == htons(68))
++					is_dhcp_resp = true;
++			}
++
++			if (!is_dhcp_resp) {
++				net_warn_ratelimited("Drop unicast IP %pI4 in L2 BMC on %s
++",
++						     &iph->daddr, dev->name);
++				__IP_INC_STATS(net, IPSTATS_MIB_INHDRERRORS);
++				drop_reason =
++					SKB_DROP_REASON_UNICAST_IN_L2_MULTICAST;
++				goto drop;
++			}
+ 		}
+ 	}
+ 
+diff --git a/net/ipv6/ip6_input.c b/net/ipv6/ip6_input.c
+index 8972863c93ee..caf9811f6352 100644
+--- a/net/ipv6/ip6_input.c
++++ b/net/ipv6/ip6_input.c
+@@ -278,6 +278,8 @@ static struct sk_buff *ip6_rcv_core(struct sk_buff *skb, struct net_device *dev,
+ 	    (skb->pkt_type == PACKET_BROADCAST ||
+ 	     skb->pkt_type == PACKET_MULTICAST) &&
+ 	    READ_ONCE(idev->cnf.drop_unicast_in_l2_multicast)) {
++		net_warn_ratelimited("IPv6: Drop unicast IP %pI6c in L2 BMC on %s\n",
++				     &hdr->daddr, dev->name);
+ 		SKB_DR_SET(reason, UNICAST_IN_L2_MULTICAST);
+ 		goto err;
+ 	}
+-- 
+2.56.0.257.gf7497c7d27-goog
+
