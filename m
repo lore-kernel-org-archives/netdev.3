@@ -1,139 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=192.198.163.7
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793012807;
-	b=x0RrLsNBZCt16no87AnW+KdYPD9trj76es5XQTJaOpZWgEB/yiZctQShD2iHzbDUaWAZ
-	 yDMHmQzuDcSzJDivWbD/3AEy5ybfNdLJpRxB6ep2EE8Fdy6R98A7q/FYX6R06ww6VUsPU
-	 l0OeW8J3FU7Lav9vn2eb4u0sK0wIFYQlCcqRDwBlUZTjGg42y/YJvgQE66QGEHv7//NWy
-	 cZsIS9N02rTtKKVmKEQQQlxP9VDHVR61/tKE+T2e31kf5AVhoLIm8PiFiyAROIWGgj92w
-	 WhPK+gx8tWl2UKryRBdzJ7wmma0vmHeSrUy9TntraCwjuyNMHy3oyRKwW7jGxCNYGsA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793012807;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
-	 Received:Received:Received:Message-ID:Date:User-Agent:Subject:To:CC:
-	 References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=ZM7izgT3/ym73OsNBjv/feUrpl1F6OtRe+HLGo4r40E=;
-	b=dRqBsjKQzNwGbnHhhzPt9tP+yIRkDAStXvVLohujmxTtA5HwnuG3iHg9oVoiz9SS84yN
-	 XfcnSCbkVqTTiDXNtSHLitqSS+AvYZ7vIfWIGx6P3eKzzyMcRi9xQWxO3p39UADts+cPa
-	 qvCXKcBDXuQAqf69Evs0noj+ybVmCXEZgL5qrITFok1E2vVBs0JbT6u5BCGOou8yK4zdV
-	 AtJPsYMJAyltO21EAGRlOL7OZsi9NiyWtOiUeGW5kieIXzdDs3Mtz92CctIeShUVY+RUR
-	 M9fP01beOYL9E8jcbJeEFC4crgRhylBEvdZk03JZkVqcAiPRQtAqy+zjetAGdxzrc9Q==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KHeYON1d;
-	arc=fail smtp.remote-ip=192.198.163.7
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793013039;
+	b=vbvXh9/Kp/AuhPZepzJIpd+H8nfjblQ94eHueDutu8cM0ZqVv8a4kAB5VrYrilyM32SH
+	 Fe5FDtZeNzoFZUD6ES2SsmNgo9Q79R8XPBfT1bSxnyTnLnPzy2nvld6pMHrHhw6BAoRWA
+	 3cJB4GNSK8ed3MXfhIDI1pT4uRjP8tuaJFc105XF1vrvo+aLl/XY1LJqFKS17m90/yyf9
+	 FMSdXJn5cXZcbhDfvCvfs4JuThasrEP1VbKYFhCK+gjpz9dL504p/3cgLZ6eJn3C5QarW
+	 0WypICB/g0aiol9bK+5Uh9h2bEJaSSblbwbcJvIughAk6IQpFMzudbVHcCo14JAaSvA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793013039;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=k9sMhNFN8pOnQFMDY6q9oFH8xW41MAWGt8ZsO6lOl84=;
+	b=aL8HwSOp4W9qbdltGAcb/o7An8MddPKnuSY/J+5ru5BcYdDYFcovDBb7rgScVu7rCJav
+	 AnKtdrDtBSAjW853KLv6GS0/KqZ0XqayOcL8CD7+5tkEmXekQPN5oCrOStLUNqmotuByD
+	 Fc1heOGOABpCsQObqi23RXiGWyxsGopE7IjRc14M7h0KpZsQ3F8s7amJ3aLtLf3wjYgnO
+	 UNePyoBNRGlgi2ywmOSllViLE7WgDZXLXh09Il2bIKzp0eTxpERr1bBmrpzDEDxTX78J9
+	 J4279Qp9XVuin2g6PWhOJYKWCkYKoe1Nusc3cec4WlqC/WjIn0IGjTtHAyeT26sdISw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iMi+t1Ff;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB23606A31A;
-	Mon, 26 Oct 2026 11:06:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AEB23606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249D260A5BE1;
+	Mon, 26 Oct 2026 11:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KHeYON1d
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793012806; x=1824548806;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=1qhzOs7P3GuEKv1KhlWnfEsgz3yUjwysi2r28D3+d8c=;
-  b=KHeYON1dAr1lpAF6s4KAabgV7eA7PeVtiRRDuD1ZjJqXlPGA6eS3koXI
-   IdO41RA/wCGI44ufTxX0o+6yR9rWowd8GKr3Bifxa9hXt7eWlliy+ph44
-   YKWr7s19m54Um30s4Xj2GkF+qC8FncXs3dNgHnhsC/vVnhxvPAg2xQ97P
-   6h8n4fN3sKu87EXm6BAEwp/pv/clOCQw/6FoKyG7Ae1f+8qrkje+14yMZ
-   YrW6EV48jXwqdIs2Pi0FLDfDreCn5qR8orpuz5iHjTJfzoJUy6TFxwfZU
-   HaBa0l/CQw4ZtJQrWBKa5IuYPHVbeKRpbL54YRCSPEcGatg5tAXzYIUMq
-   g==;
-X-CSE-ConnectionGUID: Cb93orYIREimL6ZGtljn8A==
-X-CSE-MsgGUID: m8zXl/lRRQOWnadBnT/BiA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11946"; a="1571159"
-X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
-   d="scan'208";a="1571159"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 04:06:44 -0700
-X-CSE-ConnectionGUID: 4MVH0cKuRRyQ3m4fhMaElg==
-X-CSE-MsgGUID: z8wroVZXQH+wXNQ6H43cBQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
-   d="scan'208";a="4295731"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 04:06:44 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 26 Oct 2026 04:06:43 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Mon, 26 Oct 2026 04:06:43 -0700
-Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.32) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 26 Oct 2026 04:06:43 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WE0VoHx1HauQdSDUPDrDWhuyNY4ErX5Upt/4pvkwRZ8UzjoFhDmMHLNo0WSvMU1tFQPDKd58alp9gPB/LzFtcl0YrWzdy9NI1HOjawqNjVweIvrB6qq8CcZUAZdghac7l51C9rSxFTNgrCEe0EUBVdk3mCa38EVs6JKEZNUOBCe4ewK4O/xbOQWVv7+fXL+iK+3FeDNPKPgWC9GQ0jjPm4FqrfPYCWzqOs7QirMdLfZOV6xg+Q9EavUl9fMtJ5iYCyMu2TMbvNIwY6FexZZLrMXEYolkzGrDH627A3L+FUEpKA7B/2sY+pERyiH+x1HaB0ggibBLVU9025SP9ngghA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZM7izgT3/ym73OsNBjv/feUrpl1F6OtRe+HLGo4r40E=;
- b=aVgEi/+wulP5Bfvia6wis5Y24FnpzFLcq2WPcw5lwY8/+4NbgrhG0H6cgn6JS9lRCPHdmEtWj/9OZERjgxdxHX3HN/rBA0haODPtYAz3SzGyPkBq1nZ4uOJfcxsTUa6uY9jW3+yI9mBp1Bbbou/PBZl2oH9DRww2EsORtj3HYFGdyg6juhe5gB7elXrrf25evOFE0dWKmO+qXZulB74CscruyIJKy8GYtSa4ln7voefKnEdEB1KcrVci8/6u1eeZjRdXOakJGW/1HqKYBVDyKpIcmyqx1Bt2jG/0vGXT2PMzXwnnjA3I4M+OcHQ3lTms0xNEoWN4WbVM4yzXlWltuw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ0PR11MB5630.namprd11.prod.outlook.com (2603:10b6:a03:3bb::6)
- by BL3PR11MB6531.namprd11.prod.outlook.com (2603:10b6:208:38e::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
- 2026 11:06:40 +0000
-Received: from SJ0PR11MB5630.namprd11.prod.outlook.com
- ([fe80::79de:af84:3b43:84e3]) by SJ0PR11MB5630.namprd11.prod.outlook.com
- ([fe80::79de:af84:3b43:84e3%4]) with mapi id 15.21.0546.017; Mon, 26 Oct 2026
- 11:06:39 +0000
-Message-ID: <77a3c7b1-fc8b-47b2-994c-de8e07b8b2d3@intel.com>
-Date: Mon, 26 Oct 2026 13:06:32 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-net 1/2] igc: Fix Tx stop threshold to cover empty
- frame descriptors
-To: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>, Benoit DE RANCOURT
-	<b2rancourt@gmail.com>, "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>,
-	"Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, "Gomes, Vinicius" <vinicius.gomes@intel.com>, "Sasha
- Neftin" <sasha.neftin@intel.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-References: <20261004152840.61222-1-b2rancourt@gmail.com>
- <20261004152840.61222-2-b2rancourt@gmail.com>
- <IA3PR11MB8986BCCFE3F96262762B5B9EE5962@IA3PR11MB8986.namprd11.prod.outlook.com>
-Content-Language: en-US
-From: "Ruinskiy, Dima" <dima.ruinskiy@intel.com>
-In-Reply-To: <IA3PR11MB8986BCCFE3F96262762B5B9EE5962@IA3PR11MB8986.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TLZP290CA0006.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:9::16) To SJ0PR11MB5630.namprd11.prod.outlook.com
- (2603:10b6:a03:3bb::6)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iMi+t1Ff
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3BCE1F01346;
+	Mon, 26 Oct 2026 11:10:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793013038;
+	bh=k9sMhNFN8pOnQFMDY6q9oFH8xW41MAWGt8ZsO6lOl84=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=iMi+t1FfCEegigLJ9CuoGz3CSAN+cfgqvwzs7L/SqFHfrcFlgcwdNWxScd1sKwkPU
+	 l5kOoCpcHPtSEvJTFXADtdsNcBefGldeTCd9CIxFt1ZHR1WKMbd217EhkZ8wQZrvhj
+	 mqENI6fMi38hrFLC6ZEfRxq5IRqXgXLlFA2DWovxVc0ZUcX4Dz9BpLbMZiL3DVJm3v
+	 rG23D4MT5ar93ux9Z23URNnPvVZHZnjFVulOfy5L3mLg/3bAY/G4+C2I1FerFem5nQ
+	 W48X2hjHFIq0JNHi9cn1pYo3ri6yucJEel9dzMadss/grFM05ToPrbHGSL4QtFAy8m
+	 AJxvRDz1VAycw==
+Subject: Re: [PATCH net v5 2/2] net: stmmac: restore RX descriptor buffer
+ addresses on resume
+From: netdev-bot+sashiko@kernel.org
+To: dinghui1111@163.com
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ dinghui@lixiang.com, xiasanbo@lixiang.com, yangchen11@lixiang.com,
+ liuxuanjun@lixiang.com, zhoujing3@lixiang.com, fujiahui@lixiang.com
+Date: Mon, 26 Oct 2026 11:10:37 +0000
+Message-ID: <179301303716.3134.2346618514026272618@kernel.org>
+In-Reply-To: <20261025100636.613670-3-dinghui1111@163.com>
+References: <20261025100636.613670-3-dinghui1111@163.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -143,167 +67,272 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR11MB5630:EE_|BL3PR11MB6531:EE_
-X-MS-Office365-Filtering-Correlation-Id: a286dbe0-1b9c-4b1a-c5a2-08df335135b2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|23010399003|366016|18002099003|22082099003|56012099006|11063799006|4143699003|261022075727099003|261021121427099003|261021123027099003|10067099003|261009221727099003|261009220027099003|261009221227099003|261009223327099003|261009223027099003|261021135927099003|261022105027099003;
-X-Microsoft-Antispam-Message-Info: JUH6RN9HkHrC/cLTQR9UIeXgD44wtRdYUQztbQA0kT9iU8tQxO4mmGQas6byBxu3AzZpnYSTVaSAWxLG6Vz4GonVaTULu57nkU+sYxIwPv4+eS7HINMC2h7diJ+uUuhkkVaPmhY1GDYgKXpcDicOHzwvSJlk/mEznPT7G4x1c/ilMEPO4X9cwHu8c0R5SkcgeGOhjbPbIjJlXqpIanmop3QfnmLJaYcPFTKs+a2beM8nErh0Cp/vFLtQIou4rqt9UfCTDcNLH9Prp8fBwzAAEb0gJcFofCkeLKyxxp85MZXSv+XqDKlHEW8KfS1U7YB/EqQ+ziHhDdCrUA/x0GpDZ7fYNTbX/TIhx8okAjQbAzjpl5EFUqAtm3+SUT8DwSKVNzQXhrr4b5D2imLgT7T0pOmxt8oWFhE/ZFSjCxnfM1/90lfARNQMGGX+lsCIH3AQrMh9jyDv0ljhVhtQX64M7BMCbyc3uwBfvavEkg/Ci1gAdzpXUXUXRNym+vHhtlVX4ceWHpN6/Vy7xzJzB37c8zm+jO1cq9SozR0Q6Ka+dFDewYk1xQVbuyQwDAY1chQWgWi302RZYzecTQI9Haynu+oB4fFkEp2kiuYY0KR+64Z42jTALNque5xahrI+vdgx2tzxnKfq9ACDpFXGz8FTG6EJnl+xQMvOrbrSlgXb5Vo=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5630.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(23010399003)(366016)(18002099003)(22082099003)(56012099006)(11063799006)(4143699003)(261022075727099003)(261021121427099003)(261021123027099003)(10067099003)(261009221727099003)(261009220027099003)(261009221227099003)(261009223327099003)(261009223027099003)(261021135927099003)(261022105027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ajh1ZXVWbTlycG0rWHNIM3ZsRnpRQXl0QUMrU1VNY3JpLyt3SW5kSkh2RG1u?=
- =?utf-8?B?K1J5TTl5UEZVOEx4YkpEb3JFRjlCV05Jd3hSQXBTR0ZFUC9EbitLc2xVVW0v?=
- =?utf-8?B?ZC9adGw2YWdTelB3SkVMVnd3TFc2VUUyd2ZIUzVjUkhWVTFrVlVqTzdPZDQw?=
- =?utf-8?B?aXhLdkRFcnFmRWs4WlFEOXVlR0dFbzFINXFPd0dJRENISlA4ZDViZjRNOVlk?=
- =?utf-8?B?L3ZJODZ4WGx6ck5GRVp3MVJsQ0xtcU1DSjNuRTVscmoxbklQT0pnbW8xTWtp?=
- =?utf-8?B?SEc0ZXhqazJXYkJVTFdObVRUcFYvM1NEbW5HMkZIT294ZUgrSStUTGFvZzhB?=
- =?utf-8?B?RzRNUU93N1VOMkJaTDU3SkhZTjdTWW4zdFVJZ0kwTk1jWVhYRkhrNWtBWGhj?=
- =?utf-8?B?NkJ6RUFCamNQUWQwRzN0a3lra2o2YlBsWGpuN1pYWkJ2THdEZXVBQjZkTFMv?=
- =?utf-8?B?UmMrRFpsdUI1Mm5VZ013blFOSDN4RVIyVTRUdkowREFEV2RDZzF4V3VsOENO?=
- =?utf-8?B?SGs4WTRVSlpIcnd1SjZDdWd4Z0E5NXVXVFhydVJyVjRNTmtYalYvbjVCUDAw?=
- =?utf-8?B?MHVLK0I1RTZpdU51a0FRanF2WVc1OExPbXZsOE1TUkZJdUZGeEQydDFHKzlp?=
- =?utf-8?B?SFdsTUsvanl3VlQ3b2FQemJoQ3lMUEVzRUFDczlYMURZam1MRkdvMDNGTEtD?=
- =?utf-8?B?ZDg5dkk4YjRUTk5vSkZ1M28zdW1hSnFPenBzblppTzFCeEFuM2VCQWFLMjd1?=
- =?utf-8?B?V0lwWWx3bFV6VUxONzhUQ0gvVVRid3UvNUdFNlJRdGxjazgvZmV4ZlpmbHd0?=
- =?utf-8?B?V28zODJvbm1DeHNpK0YrVEJwcjE1WkpDUGlJTTYrR25iSkxiNVZ5OU1xcXZB?=
- =?utf-8?B?OEZUQ1liTXNGMFV4TWZEL01RcFF0eU4zdExSUUgyampFVGQxU2poZjl0L09H?=
- =?utf-8?B?cmdHTnRUSEFWU2F1eUNpVlAwTGUrMlRvY2JDeW9WWFhNZ2JTWmRDR2tpYmxW?=
- =?utf-8?B?cEpnSk5NVmxRc2pQazhvZm5nM05nN1dsZWhBRG85eTlDWjZlRHhkaGd3Y0xZ?=
- =?utf-8?B?QUlQT21mQklZMnJVZjhOWlY2NGk4T0dkcnJJQXhENyt2eUdYSldpUlBOd1hN?=
- =?utf-8?B?U2F2WmprQjBLMkhFY3lsVzFBa0k5QU5FOXBsazhtRVJhc0Vyb0Y1WSttTGs4?=
- =?utf-8?B?YmphcVpjUzRBMzBtVzA3YkEwOElOekVUWGVuMVlKQmN3bEUzaG5sVTd4eTU2?=
- =?utf-8?B?WmZNZ1ZLNjQ3K2Eza2VLRlV0Q3h6MThrckdUSDBFMkdhUURwc25EU2kxMzlz?=
- =?utf-8?B?QlVWYURpVm5iekMwSnZ1anBKQjk4dVBXRWJScVpjd0ZjVDV2czFMVit4WDVp?=
- =?utf-8?B?LzVkajlqbHlPSm5KOGJmRXZ0NDk3WUJha0lhd01CMExZZytHU1JCaEMybHgz?=
- =?utf-8?B?UkZuQzV4MmNGM0NwVWd1bk92R1R2cWlKTzAwNG5nRVliRG5iRTNpMmdoRnh4?=
- =?utf-8?B?ZGxISzVYdEFZcGJSS2t2ekhRVStXVlVHVEpHOWZqNVNhb3lhTkNIdGFTdzZ5?=
- =?utf-8?B?cGJPRkxFck9XdjVNb2g1azg2ZFVZeTNYUHFPRjQ0ZmI4SzBwRTlZTUIwT3du?=
- =?utf-8?B?aHVRb04vNXJqNWVneWZyLytDRnNRYWJUOGlKdUVIbU1Za0hTTFliVWFTNUpu?=
- =?utf-8?B?NkxydllyM0VYTXFBOHJsTDF4eThVVU02SEdRMGFua2hEdUR4ak9tMFFseVVo?=
- =?utf-8?B?L2xDY2Z0THlIVnQ1eEh4TDBLN3pBVDRDV2tjdll6NFZzWnRhZndyYXFINkpN?=
- =?utf-8?B?QVdNK1lYaHhPSU83VC9vdU1VQkhFRnE0eC8wODAycEJFUFBQVUx1ZVZnYTgv?=
- =?utf-8?B?NUZsZlRZSGF1RjljQ215cFZjdEZLWURBdVhiejRsUkhGRCtKdVcxM09OUWd3?=
- =?utf-8?B?TFkwVUFpN29iN0Jid3BsNjhHOXI1WVdaR2I1VlVSUE9ESHRmY09ERnVIb3Zv?=
- =?utf-8?B?TXdLVjQ3VGV1SkRrSDZDN2FueWxoS3ZtMEZjTzdEbDZnZ2xQUkRPOEdhN2JN?=
- =?utf-8?B?aWxOemFqMStjY3JKYXp6V3F5bUExYVZ3bTRQQWZ1a2c2YmEzTitRYjZJMi8x?=
- =?utf-8?B?QjdZNzJmMVk5YlREbkIzdDVGa2cyNXRHL2lWckgxdjVHUjBJalBXelpkMzIv?=
- =?utf-8?B?Vk5yZzZidEEzdFNHeEZ3azFYMVhIV3pIN0lxODNPa2JmUEt1VEY2WjBVdmwr?=
- =?utf-8?B?SkRiRHVIU1ZhWXU3cGtyZkZvOXRTZWUrcGxIa2JxMG8yRkhybWR4UjRYSnNV?=
- =?utf-8?B?blArRTRGVWErK0RHU1M4eFB3Sk15NjgyNE16K2p4NGdUWHRMRXFUZz09?=
-X-Exchange-RoutingPolicyChecked: 1HjVeGBzxqWU9nBpANG/2XFsFM/INXA0B7FSoc26xuJubAb8dWYUv0S83g2lfjMs8aJqvv7aV85Bafr6szx+mzeXjXZKl5/YxBScc+fWZyv6a9gKWAyuSr+OsQvnaQPMKWXcEOVZmapj5OUZo1Q7ULY7zZkk+Bbi0dN8QSpj7q5mOcT//85yxR0asBWUGA90DqZ9GOCl87/WMgQIJA9UqCUVCER+4ik0RfYQ11LkDBh/npn7EMFLaI6jzJOb+ayECikcrfOODutQV8v9KQPYkcZXw7aHXumCwITq+uXGJib2Lxlw3Pk7pm6CAx2a9t3NRr+Oijk9SO/vG0wfW9xVxA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: a286dbe0-1b9c-4b1a-c5a2-08df335135b2
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5630.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 11:06:39.9264
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cJgQ9XgDG59sWTaulavn0Ou8x5e/zPRuritsDYlliBlKEUzFeHV7SAylkMvLPBxVPNGQ4hpZLk3nmOXa/H+O6Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR11MB6531
-X-OriginatorOrg: intel.com
 
-On 05/10/2026 13:22, Loktionov, Aleksandr wrote:
-> 
-> 
->> -----Original Message-----
->> From: Benoit DE RANCOURT <b2rancourt@gmail.com>
->> Sent: Sunday, October 4, 2026 5:29 PM
->> To: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; Kitszel,
->> Przemyslaw <przemyslaw.kitszel@intel.com>; intel-wired-
->> lan@lists.osuosl.org
->> Cc: netdev@vger.kernel.org; Andrew Lunn <andrew+netdev@lunn.ch>; David
->> S. Miller <davem@davemloft.net>; Eric Dumazet <edumazet@kernel.org>;
->> Jakub Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>;
->> Gomes, Vinicius <vinicius.gomes@intel.com>; Sasha Neftin
->> <sasha.neftin@intel.com>; linux-kernel@vger.kernel.org; Benoit DE
->> RANCOURT <b2rancourt@gmail.com>
->> Subject: [PATCH iwl-net 1/2] igc: Fix Tx stop threshold to cover empty
->> frame descriptors
->>
->> Commit db0b124f02ba ("igc: Enhance Qbv scheduling by using first flag
->> bit") raised the number of free descriptors that igc_xmit_frame_ring()
->> requires before mapping a packet from count + 3 to count + 5, to leave
->> room for the empty frame (one context and one data descriptor) that
->> may be inserted ahead of a launch time packet. DESC_NEEDED was left at
->> MAX_SKB_FRAGS + 4. igc_tx_map() uses it to stop the queue in advance,
->> and TX_WAKE_THRESHOLD is derived from it.
->>
->> A queue left running after a transmit therefore only guarantees
->> MAX_SKB_FRAGS + 4 free descriptors, while the next skb with a linear
->> part and MAX_SKB_FRAGS fragments, each fitting in one data descriptor,
->> requires MAX_SKB_FRAGS + 6. igc_xmit_frame_ring() then returns
->> NETDEV_TX_BUSY, which the queue stop logic is meant to prevent.
->>
->> With TSO this happens routinely. On an I226-V (8086:125c) running
->> 7.2.8 with MAX_SKB_FRAGS = 17, routed and locally generated TCP
->> traffic on a CPU-saturated router produced 10890 NETDEV_TX_BUSY
->> returns in three runs of 180 seconds, all for TSO skbs with 16 or 17
->> fragments, with
->> 21 or 22 free descriptors in all but 5 cases. Together with deferred
->> tail writes (xmit_more), these returns led to 25 Tx timeouts and
->> adapter resets in the same runs:
->>
->>    igc 0000:08:00.0 terra: NETDEV WATCHDOG: CPU: 1: transmit queue 2
->> timed out 5353 ms
->>    igc 0000:08:00.0 terra: Reset adapter
->>
->> The following patch addresses the lost tail write itself.
->>
->> Raise DESC_NEEDED to MAX_SKB_FRAGS + 6 to match the admission check.
->> The additional reservation is currently unconditional, including when
->> launch time is disabled; match that existing admission policy in the
->> proactive stop threshold. With MAX_SKB_FRAGS = 17, the queue is now
->> stopped below 23 free descriptors instead of 21. This also raises the
->> completion-based wake threshold from 42 to 46 free descriptors,
->> preserving the existing two-times-stop-threshold policy. Throughput
->> and latency effects were not measured.
->>
->> With this change alone, three runs of the same test on 7.2.8 produced
->> no NETDEV_TX_BUSY and no Tx timeout over 8.8M NETDEV_TX_OK returns,
->> including 613k TSO skbs with 17 fragments.
->>
->> As before commit db0b124f02ba, an skb whose linear part or fragments
->> exceed IGC_MAX_DATA_PER_TXD may still need more descriptors than
->> DESC_NEEDED accounts for.
->>
->> Fixes: db0b124f02ba ("igc: Enhance Qbv scheduling by using first flag
->> bit")
->> Cc: stable@vger.kernel.org
->> Assisted-by: LLM bpftrace
->> Signed-off-by: Benoit DE RANCOURT <b2rancourt@gmail.com>
->> ---
->>   drivers/net/ethernet/intel/igc/igc.h | 8 ++++++--
->>   1 file changed, 6 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/net/ethernet/intel/igc/igc.h
->> b/drivers/net/ethernet/intel/igc/igc.h
->> index 17f213cc93e4..f1efadbd9f74 100644
->> --- a/drivers/net/ethernet/intel/igc/igc.h
->> +++ b/drivers/net/ethernet/intel/igc/igc.h
->> @@ -575,9 +575,13 @@ enum igc_boards {
->>   #define IGC_MAX_TXD_PWR		15
->>   #define IGC_MAX_DATA_PER_TXD	BIT(IGC_MAX_TXD_PWR)
->>
->> -/* Tx Descriptors needed, worst case */
->>   #define TXD_USE_COUNT(S)	DIV_ROUND_UP((S), IGC_MAX_DATA_PER_TXD)
->> -#define DESC_NEEDED	(MAX_SKB_FRAGS + 4)
->> +
->> +/* Tx descriptor budget for a head and MAX_SKB_FRAGS fragments,
->> + * each fitting in one data descriptor: one context descriptor,
->> + * two descriptors for an optional empty frame, and two spare
->> entries.
->> + */
->> +#define DESC_NEEDED	(MAX_SKB_FRAGS + 6)
->>
->>   struct igc_rx_buffer {
->>   	union {
->>
->> base-commit: a83267db14681b3be481e02a4d5a38177507006c
->> --
->> 2.55.0
-> 
-> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-Reviewed-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
+Critical: 0 · High: 2 · Medium: 1 · Low: 1 (1)
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] On cores with legacy enhanced/normal descriptors (DWMAC100,
+  DWMAC1000, DWMAC 3.x: enh_desc_ops and ndesc_ops), an XSK RX slot with…
+- [High] On GMAC4/XGMAC, the XSK 'leave CPU-owned holes' approach puts
+  unfilled slots in the middle of the ring, inside the region the RX…
+- [Medium] The patch adds an allocation-dependent way for stmmac_resume()
+  to fail, and that failure leaves the netdev unrecoverable.
+- [Low] stmmac_reinit_rx_descriptors() publishes every restored
+  descriptor with stmmac_set_rx_owner(priv, p, false), so…
+
+Pre-existing issues:
+- [Low] stmmac_reinit_rx_descriptors() can attach XSK buffers to slots
+  that had none at open or pool-enable time, but it never updates…
+
+--
+
+net: stmmac: restore RX descriptor buffer addresses on resume
+
+This patch restores RX descriptor buffer addresses in stmmac_resume() after
+stmmac_clear_descriptors(). On GMAC4/XGMAC, hardware writeback can overwrite
+those addresses for descriptors that completed but were not refilled before
+suspend. It moves buffer setup into stmmac_prepare_rx_buffer() and
+stmmac_prepare_rx_buffer_zc(), which the refill paths also use, allocates
+missing pages with GFP_KERNEL, and leaves XSK slots that have no buffer
+CPU-owned.
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index f5ae12208e85b..e56f5d044fc8a 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+
+[ ... ]
+
+> @@ -1688,32 +1722,98 @@ static int stmmac_init_rx_buffers(struct stmmac_priv *priv,
+
+[ ... ]
+
+> +static int stmmac_reinit_rx_descriptors(struct stmmac_priv *priv,
+> +					struct stmmac_dma_conf *dma_conf,
+> +					u32 queue)
+> +{
+> +	struct stmmac_rx_queue *rx_q = &dma_conf->rx_queue[queue];
+> +	struct stmmac_rx_buffer *buf;
+> +	struct dma_desc *p;
+> +	int i, ret;
+> +
+> +	for (i = 0; i < dma_conf->dma_rx_size; i++) {
+> +		buf = &rx_q->buf_pool[i];
+> +		p = stmmac_get_rx_desc(priv, rx_q, i);
+> +
+> +		if (rx_q->xsk_pool) {
+> +			ret = stmmac_prepare_rx_buffer_zc(priv, rx_q, buf, p);
+
+[Severity: Low]
+This is a pre-existing issue, not one introduced by this patch, but
+rx_q->buf_alloc_num is not updated when this loop attaches XSK buffers to
+slots that had none at open time.
+
+stmmac_hw_setup()->stmmac_init_dma_engine() programs the RX tail from it:
+
+	stmmac_set_queue_rx_tail_ptr(priv, rx_q, chan,
+				     rx_q->buf_alloc_num);
+
+Also, stmmac_set_queue_rx_buf_size() uses the XSK frame size only when
+buf_alloc_num is non-zero.
+
+If the fill ring was short at open, slots filled here at index
+buf_alloc_num or above may lie beyond the programmed tail. If
+buf_alloc_num is 0, the buffer size falls back to dma_buf_sz.
+
+The open path uses the same stale value, and so did the code before this
+patch, so this is only a bookkeeping mismatch.
+
+> +			if (ret) {
+> +				/* An empty fill ring must not prevent TX-only use. */
+> +				stmmac_clear_desc(priv, p);
+> +				continue;
+> +			}
+
+[Severity: High]
+On cores with the legacy enh_desc_ops or ndesc_ops, does this leave the
+slot DMA-owned with a buffer address of 0?
+
+stmmac_clear_descriptors() has just run init_rx_desc on every RX
+descriptor, and that sets OWN in des0:
+
+enh_desc_init_rx_desc() {
+    ...
+	p->des0 |= cpu_to_le32(RDES0_OWN);
+    ...
+}
+
+On these cores, the ->clear op only clears des2:
+
+static void enh_desc_clear(struct dma_desc *p)
+{
+	p->des2 = 0;
+}
+
+static void ndesc_clear(struct dma_desc *p)
+{
+	p->des2 = 0;
+}
+
+The final loop below skips this slot when !buf->xdp, but nothing clears
+OWN. These DMA engines have no RX tail pointer, so the DMA keeps walking
+the ring while OWN is set. The next frame that lands in this slot would be
+written to bus address 0.
+
+XSK zero-copy is advertised on every core (NETDEV_XDP_ACT_XSK_ZEROCOPY in
+xdp_features), and stmmac_xdp_enable_pool() has no descriptor-format
+check, so these cores can reach this path.
+
+Before this patch, des2 here still held the previous, still-mapped UMEM
+chunk address. The commit message says such a slot "must not receive an
+invalid buffer address".
+
+Could OWN be cleared explicitly here, for example RDES0_OWN in des0 on
+enh/ndesc? Only dwmac4 and xgmac zero the whole descriptor in ->clear.
+
+[Severity: High]
+On GMAC4/XGMAC, can a CPU-owned hole in the middle of the ring stall RX on
+this queue permanently?
+
+stmmac_reset_queues_param() has set cur_rx = dirty_rx = 0, so a hole at
+slot D sits in the region the RX path treats as hardware-owned. The DMA
+fills slots 0 to D-1 and stops at D with an RBU event.
+
+In stmmac_rx_zc(), dwmac4_wrback_get_rx_status() does not report a fully
+zeroed descriptor as dma_own. So cur_rx moves to D+1 before the missing
+buffer is noticed:
+
+stmmac_rx_zc() {
+    ...
+	rx_q->cur_rx = next_entry;
+    ...
+	if (!buf->xdp)
+		break;
+    ...
+}
+
+stmmac_rx_zc() is the only caller of the refill, and only once the dirty
+count reaches STMMAC_RX_FILL_BATCH:
+
+	if (dirty >= STMMAC_RX_FILL_BATCH) {
+		failure = failure ||
+			  !stmmac_rx_refill_zc(priv, queue, dirty);
+
+If D < 15, dirty stays at D+1, the hole is never refilled, and the DMA
+stays stopped at D. stmmac_xsk_wakeup() only schedules NAPI, so refilling
+the fill ring from userspace does not recover the queue.
+
+If D >= 15, a later refill fills D and moves the tail. Software has already
+moved past D, though, so that frame would be consumed a full ring later
+and out of order.
+
+Could the holes be placed in the dirty region instead, for example by
+setting dirty_rx and the tail to the first unfilled slot?
+
+> +		} else {
+> +			ret = stmmac_init_rx_buffers(priv, dma_conf, p, i,
+> +						     GFP_KERNEL, queue);
+> +			if (ret)
+> +				return ret;
+> +		}
+>  	}
+
+[ ... ]
+
+> +	/* GMAC4/XGMAC secondary address writes overwrite the OWN bit. */
+> +	dma_wmb();
+> +	for (i = 0; i < dma_conf->dma_rx_size; i++) {
+> +		buf = &rx_q->buf_pool[i];
+> +		if (rx_q->xsk_pool && !buf->xdp)
+> +			continue;
+> +
+> +		p = stmmac_get_rx_desc(priv, rx_q, i);
+> +		stmmac_set_rx_owner(priv, p, false);
+
+[Severity: Low]
+Should the disable_rx_ic argument here follow priv->use_riwt instead of
+always being false?
+
+stmmac_clear_rx_descriptors() passes priv->use_riwt as disable_rx_ic. On
+GMAC4/XGMAC that choice is lost, because dwmac4_set_sec_addr() assigns
+des3 outright:
+
+	p->des2 = cpu_to_le32(lower_32_bits(addr));
+	p->des3 = cpu_to_le32(upper_32_bits(addr));
+
+This loop then always sets IOC through dwmac4_set_rx_owner():
+
+	if (!disable_rx_ic)
+		flags |= RDES3_INT_ON_COMPLETION_EN;
+
+With RIWT coalescing enabled, every descriptor in the first ring pass
+after resume would raise a completion interrupt. That continues until
+stmmac_rx_refill() or stmmac_rx_refill_zc() re-arm the descriptors using
+stmmac_rx_need_ic().
+
+> +	}
+>  
+>  	return 0;
+>  }
+
+[ ... ]
+
+> @@ -8503,6 +8577,18 @@ int stmmac_resume(struct device *dev)
+>  	stmmac_free_tx_skbufs(priv);
+>  	stmmac_clear_descriptors(priv, &priv->dma_conf);
+>  
+> +	for (queue = 0; queue < priv->plat->rx_queues_to_use; queue++) {
+> +		ret = stmmac_reinit_rx_descriptors(priv, &priv->dma_conf, queue);
+> +		if (ret) {
+> +			netdev_err(ndev, "Failed to restore RX queue %u: %d\n",
+> +				   queue, ret);
+> +			stmmac_legacy_serdes_power_down(priv);
+> +			mutex_unlock(&priv->lock);
+> +			rtnl_unlock();
+> +			return ret;
+> +		}
+> +	}
+
+[Severity: Medium]
+If stmmac_reinit_rx_descriptors() returns -ENOMEM here, what state is the
+netdev left in?
+
+This early return skips stmmac_enable_all_queues(), phylink_resume() and
+netif_device_attach(). NAPI stays disabled from stmmac_suspend(), the
+device stays detached, and phylink_prepare_resume() is never matched by
+phylink_resume(). netif_running() is still true.
+
+A later close then runs:
+
+dev_close()
+  stmmac_release()
+    __stmmac_release()
+      stmmac_disable_all_queues()
+        napi_disable()
+
+on NAPI instances that are already disabled. napi_disable_locked() waits
+for NAPIF_STATE_SCHED to clear, but that bit is still set from the first
+disable, so the close would hang with RTNL held.
+
+The existing stmmac_hw_setup() failure path has the same problem. This
+patch adds a new trigger that depends on a GFP_KERNEL allocation
+succeeding during system resume.
+
+The XSK branch already tolerates missing buffers. Could the page_pool
+branch do the same, for example by leaving the slot CPU-owned for the
+refill path to retry, instead of failing the whole resume?
+
+>  	ret = stmmac_hw_setup(ndev);
+>  	if (ret < 0) {
+>  		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261025100636.613670-1-dinghui1111%40163.com
