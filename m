@@ -1,76 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.179
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.8
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793003827;
-	b=ggjL/V4ebZIEJA1OmYXavQw6wqmdxId9pjW1gDtD3BPhP2+YYiiMAbcmp5S82t0zMXHL
-	 3YJYRAS08ffPJGMAVXk0i/HR7w9L5wu8W1WZnEL6vjtASochtSOFo9jJWyTXLc8aqm+u4
-	 OheL/zTX+XyRVPfsvF2wDLrbYHIBYSs3at7EMGGzlrPyDoUHbnFvn9OKDOwsdWcRnEzww
-	 gQ7nQPMf1BQs9LE89QhJcWBaTHgHLjOwUTY/FIpEFo4dEr0+rAI9uINljEEtfQDXfYgQ6
-	 suIxzE5+fER/QssNbDzwnTZ5FOv4MlFSoISJtXVLpvo3hFMcplzak2FvM0bZsqBVhdw==
+	t=1793003921;
+	b=zulY26lsOaPU4/yscFtJF24LRzqIPmMh7sQ/zTIb2yjH/o8DH34x4uDBYOr0rJZGkW/c
+	 nV7+Fk6dvZLY2epAI8S8sQhdbNdb4dd/WE+/kWpTrq/xRBGM5yDjhmZwEIZAdnVL+8LkD
+	 OPFy4KYHo2Smxnu9f8Ab24jirWTlwLqreMYmDuKiETjhkbATFYLPmK8w4Q5xFniKlVNCX
+	 JDU6J6xKTrmiEZSiJ/LQveR4RDYL9DvDVHs5m3AfjsnLxEZDg281MTPknlWovz/9fL7+1
+	 8HdPeFF/bDDFn+n/TbF0a5AC/BmZbWZikh61fwm4PeotZRNFL8OHhjWOhjfuZjV0XvA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793003827;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:
-	 X-Forwarded-Encrypted:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type;
-	bh=RUA86guEgQwbbO7ByDKrdW1/1LPSMKM8UU2NIH1n7P8=;
-	b=stbN+rBb7Pq8Vw4mhKHQjSBE66WC4YCVKvO9zK5OqanAtFtGTWjSRbE5NcnQkirBBEMQ
-	 WF95LlHKlPmts0mjrSxXsL1zd1wYM8kdttSU1OC661JYdPIvw91DZ+n5x2V1SIb1k3omi
-	 pH4XSAjJ5koZUiyAq5yNF9gfTSLcyaPBBz9X5AZkcvn8Ob9HwEw0Ix/QoUhp/ELSyV5j7
-	 SoYKIY12YgK2uYIDGv/7bBUxx1jLOtpupxgF4PH8i0AgPpPFATRO4KeeLYVIjdwSobq8m
-	 6hc94IKrNZ1q8qszszgNbrM8X2LBP2KbLTYVMP8dikZT/OwWzyMhpokoI2K9nu4Nj4g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793003921;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=coeVfKNB1bEP2tEL7RGoajkOYYpgAEhPrKIKA7ffVew=;
+	b=oLZcPTBSKgmn14+fKpF//YLkEdtVfuGVVthCvVQAobXQnJmrhLNpvBwQ+GgLUTG8kT3O
+	 Ox9vBNUsgPXOhZrn7h0HZpSlZomKQgVHhpCvZjKhZAvTmjUwrbqx8eMgloQ3yhGR+M18y
+	 9OIuMLtRm27hKO2CqP2C8Ub9WqKEKvFq/UFHNf29BEoDCPszXFVoqcxSyNgCf1Xvn9OFt
+	 O+wU89ZVhKyKA+bC5a1+XdiBTPlUxWvS1Gajo+hdSyFl2+HmL4NgRiuerrE8WabCLsUPd
+	 PyJCKAQzNgTIHn74MNAKKJjfLemI3YbKHXAhhIW3dSrgnQ5EQgvdkfu+fLEtyKWcKjA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=linux-m68k.org;
-	spf=pass smtp.mailfrom=gmail.com;
-	arc=none smtp.remote-ip=209.85.221.179
-Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=126.com;
+	spf=pass smtp.mailfrom=126.com;
+	dkim=pass header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=HjYoLhxe;
+	arc=none smtp.remote-ip=117.135.210.8
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.8])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA186606A320
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 08:37:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CA186606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-5eac319a6c2so3021641e0c.0
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 01:37:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793003826; x=1793608626;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=RUA86guEgQwbbO7ByDKrdW1/1LPSMKM8UU2NIH1n7P8=;
-        b=Wxj86rVzZXyi7LHuNe8mQtuW+Ex6pY9wZ2NqBx14xARP0z/YmaZoaF3qH1rFFGBclW
-         1hE1t8u/RBNOcRt4XNmyBEQQ1lzZ8+nRVNAxXrZedaJOPR8ZdCzVmDF4j7PndusX9Tjh
-         KtW1fDvQyIrQyi7LmaqcgOTk3pS8H57LvtBto9pR9ta09t9IbWQInVYQOb7yKSHtnNEi
-         lzozxvAdRTLe9kiEc0tgvzUnctpq7KJ0hAKT2z/rVQyTjjN+4E2zNOUagfA9CKXCni4p
-         YyG5gDvXvBZdrW4QfavF/j2/yv+1bRaELKlqLCFwyjQGbld4WnZfdt6PdWDN6sUN52ll
-         WF0A==
-X-Forwarded-Encrypted: i=1; AKwUvBw9Sz0Ehjx1yJP6UaXg/iNo64XaRuwQjbOXVvPE5XqZvoHE5+GOvcGdZnSzDxKqKxMjc8fqtNY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJAMDJb3sxL93taxGbGRpxp8xr9vcxOSc2Aobj+8B0FnDLrQR20
-	0RLJu5lPqLTetA4f5YcARdJtqja3vzO0nd0MptPMRUdb/wx06ZnJWOrB9oD0sZrR
-X-Gm-Gg: AYBFou2wsYZL48uvHWO/16l5kJiEoCsxdlIJ1HeXIVkKkyXQfNk5w9WmT8gBbvsSrdC
-	yITdpcgyDAOvckLT3oqKbbsKDeIzY3BikphQCHB0IEa1ac+Byl9TRtumTWNjp/wAiKGC4iaPJ8t
-	Dz223j5Pcm0LL+/MF+PpADpnWPuzTb+v7pHTKT11ve1Vv7UlyN8rjKsempFtE55ojZgBqWn8rut
-	IeX0u9Zu7og4dJ3UcbD6O/yNJ5mNGkhBnGOz+xQKlePiAJSR2p31uV4CjfIzamk7Qmd7XqUBDZ9
-	oC+sNIVC97mQ5H6wquI+YQ5sTxraUSD0GY6uUSqMmK+Qq6cklhVZIkUHnumgSqRsuJOm2F/NoVp
-	irZkG6bEtynvXQm1LrWZp15v+7oU5sTUBq/Z20xhuUCAdu0KAbWfJfuYIxgYFzGOW1xnH8E+/eP
-	MsWsMMtf7LwqJMRSHTo0Gy487YtSE0wQqtFt33UvLbGIu5eGvJAgkr4KeC6iXiebJlR9xCQsjFW
-	iBFtUzJJM8y4qmL/0HyuPI9MnMw/Qptgm8OJ4BJMcWQclJDgEMNmm0pf6M2cNtHYuo65FCIfCfz
-	wIgBuXC9tShIMvXYIg==
-X-Received: by 2002:a05:6122:e183:b0:5ea:c90d:d1b2 with SMTP id 71dfb90a1353d-5ec232abc41mr2020117e0c.13.1793003825895;
-        Mon, 26 Oct 2026 01:37:05 -0700 (PDT)
-Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com. [209.85.222.42])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec234add5dsm7585056e0c.16.2026.10.26.01.37.04
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Oct 2026 01:37:04 -0700 (PDT)
-Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-98c78660542so2028806241.1
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 01:37:04 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxYy66in3MBZ2urWzLgyvkhszHzddFPceuSehpLOzQn2s7CJ2OWo/M7vuFUxJ8x8e8m5tK27fs=@vger.kernel.org
-X-Received: by 2002:a05:6102:3308:b0:7c3:2168:d603 with SMTP id
- ada2fe7eead31-7ce5c6ba6ffmr2185044137.0.1793003823918; Mon, 26 Oct 2026
- 01:37:03 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3D2606A31A;
+	Mon, 26 Oct 2026 08:38:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CA3D2606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=HjYoLhxe
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=co
+	eVfKNB1bEP2tEL7RGoajkOYYpgAEhPrKIKA7ffVew=; b=HjYoLhxecT72kvAGe2
+	3UKM8NdPrKHWEUYKWFDOs+c9R5ulO1pd+ZyybInYPo4dTCHiB54/7YBDJVPl02Lj
+	o0OCAMwIHf//S7UE2f/2iouj/aIUn2/W8vQmAk0Q7avlEty9yUHKcJOhD+TtYzqw
+	/h2R6RdhFPO+vsHFD25D0t/jU=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id PikvCgD3v_01Ed9qmtQJCQ--.65058S2;
+	Mon, 26 Oct 2026 16:37:11 +0800 (CST)
+From: Linkui Xiao <xiaolinkui@126.com>
+To: horms@verge.net.au,
+	ja@ssi.bg,
+	dsahern@kernel.org,
+	idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	lvs-devel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Linkui Xiao <xiaolinkui@kylinos.cn>
+Subject: [PATCH net-next] ipvs: annotate the lockless read of sysctl_sync_threshold[0]
+Date: Mon, 26 Oct 2026 16:37:08 +0800
+Message-Id: <20261026083708.617278-1-xiaolinkui@126.com>
+X-Mailer: git-send-email 2.25.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -80,41 +68,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261026-dev-mctp-static-assert-fix-v1-1-ceef9913e891@codeconstruct.com.au>
-In-Reply-To: <20261026-dev-mctp-static-assert-fix-v1-1-ceef9913e891@codeconstruct.com.au>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 26 Oct 2026 09:36:52 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdU0-3iyRFCvau7OmjZDmxqbLhTr3Bv8OmymS5yb2p2nMQ@mail.gmail.com>
-X-Gm-Features: AclHuK_Mqm-AEJnYW3-6a7k7aCpVsfjR36Ni_iSj735r1ypyEyzR93mPV5Px40A
-Message-ID: <CAMuHMdU0-3iyRFCvau7OmjZDmxqbLhTr3Bv8OmymS5yb2p2nMQ@mail.gmail.com>
-Subject: Re: [PATCH net] net: mctp: usblib: Fix broken assertion
-To: James Lee <james@codeconstruct.com.au>
-Cc: Jeremy Kerr <jk@codeconstruct.com.au>, Matt Johnston <matt@codeconstruct.com.au>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PikvCgD3v_01Ed9qmtQJCQ--.65058S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7ZF15Cw43Zw47uw4DJF17GFg_yoW8tr4xpr
+	W5Jr9xAr4Du3y7Xr4DJFy29rWSvw4kG3y7KF98Kr4rA3WDJr98trySyFy0kFW29rn7AFWS
+	vFZ8ta4Fka98AFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UlhFsUUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqBfjumrfETfT4wAA3F
 
-On Mon, 26 Oct 2026 at 04:33, James Lee <james@codeconstruct.com.au> wrote:
-> The expression in a static assertion in the kunit tests was not
-> considered constant by gcc, causing an error. Replace the static assert
-> with a runtime kunit equivalent.
->
-> Fixes: 1e12f734afc1 ("net: mctp: usblib: Add initial kunit tx tests")
-> Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> Closes: https://lore.kernel.org/netdev/CAMuHMdXTGGdGWZ9sKz5_sQF1237gV844cEhkXr6v_TUHPOb78Q@mail.gmail.com/
-> Signed-off-by: James Lee <james@codeconstruct.com.au>
+From: Linkui Xiao <xiaolinkui@kylinos.cn>
 
-Thanks, this fixes the build for me.
-Tested-by: Geert Uytterhoeven <geert@linux-m68k.org>
+sysctl_sync_threshold() reads ipvs->sysctl_sync_threshold[0] from the
+packet path without any synchronization: ip_vs_sync_conn_needed(),
+ip_vs_sync_conn_v0() and ip_vs_sync_conn() run in softirq context on
+behalf of ip_vs_in_hook(), ip_vs_conn_expire() is a timer callback and
+ip_vs_proc_conn() runs in the backup sync kthread. The only writer,
+proc_do_sync_threshold(), updates the array with a plain memcpy() while
+holding ipvs->sync_mutex, a mutex none of the readers ever take.
 
-Gr{oetje,eeting}s,
+Commit 749c42b620a9 ("ipvs: reduce sync rate with time thresholds")
+already recognized this race, but only for the second element of the
+array: "As the sysctl_sync_period now can be 0 use ACCESS_ONCE to avoid
+division by zero". sysctl_sync_threshold() was left with a plain access
+even though both elements live in the same array and are written by the
+same memcpy().
 
-                        Geert
+A stale value is not dangerous here: the element is only compared
+against a packet counter and stored into cp->in_pkts, and an aligned int
+cannot tear on any supported architecture. What the missing annotation
+does allow is for the compiler to reload the element, so the two
+comparisons in ip_vs_sync_conn_needed() can observe different values
+for one and the same packet, and KCSAN reports the unsynchronized
+access.
 
+Read the element once with READ_ONCE(), exactly like the adjacent
+sysctl_sync_period() has done since 749c42b620a9.
+
+Fixes: 749c42b620a9 ("ipvs: reduce sync rate with time thresholds")
+Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+---
+ include/net/ip_vs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/net/ip_vs.h b/include/net/ip_vs.h
+index 9a83bff32569..5aa6a94ed104 100644
+--- a/include/net/ip_vs.h
++++ b/include/net/ip_vs.h
+@@ -1353,7 +1353,7 @@ static inline int sysctl_conn_max(struct netns_ipvs *ipvs)
+ 
+ static inline int sysctl_sync_threshold(struct netns_ipvs *ipvs)
+ {
+-	return ipvs->sysctl_sync_threshold[0];
++	return READ_ONCE(ipvs->sysctl_sync_threshold[0]);
+ }
+ 
+ static inline int sysctl_sync_period(struct netns_ipvs *ipvs)
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.25.1
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
