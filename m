@@ -1,73 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.98
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793028744;
-	b=vK4ggNY0TbedSxdaUhLs71maSBdFCwiR8TZzd5sCBeFvjg8iyzNAfP2gGr44Rka7njax
-	 OeeXlIDzTIXDRAjTpBxPbno/w/PtOUhXblF/7O/biRLTrvZJwp/0AFv56PbeMfcTfd5By
-	 hLcSFUhFNAFyRWbE5aZyF/jlFuIlUJo7waUN06V1nE1l/noE7xmbOA6nxpGgXI1qfC/Zf
-	 JuetcKRri7SoNS0QLQ06wlI0Vwnx1W4vIUJbGST1IK8ziiPJgrrC14bMJBKtyng52UIjZ
-	 63t1SMVNvlpm9Rwpoq9gTch7J3QmMNddKOUXMX/U34Y1KSrDZvdpu7SQjOXqUEI4a2A==
+	t=1793028883;
+	b=t7Fg0EJNZs8WT4rWqL9oTFtfmBGRC9rMPFaS99xC3adMHvn0e9ArFuBmAGWmsXs7hbk7
+	 ffQJKHdzfsUxnyDBXVNFWqpLSXU7S0OZ0BlGCE6w95+zL3X9/ZZp8kNGqaaK7wlybNMW4
+	 mqwEeHYYFt3QA8F50oVL64oeBqKtiPrdQjA5PAxeMWdfGIqX/fsHiggO7/g8BCVB42KPP
+	 mg8iBqBxyhKbp38Sl8NlA44YCzpHpk/v1teHRcVEuH4sdBzoARlHFdb0IPxCg9LEwcgTM
+	 Q6GsVlp8jbEBuAQkAKLMZVDiaPp62Xwrc9bu5h4IRiipCfL77S3hd7E1GmFHcRhsCMQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793028744;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Debian-User;
-	bh=xsbZnMuIwZGVt5Zv5ZprAj+CulDRMl9ek0Cr3wabECE=;
-	b=aioJUOENummFgWbxmJkECtTRt4L8LAjzNEt3ter0Ia1VRrAiSobwIcWqt2GkmM+DtXm6
-	 lk8fAwZH2Cer3nn7kYJlz+0a1qvUfU5/nrqgGWs33tBFzLv41Et1DdWFNnzXMzipgxLpE
-	 771fy2wl8ZNSq8jQ87j46PpaHHHHEP81J6e6TS1KNlvdfLQ3wEiZAM0bYVcbpWQwxxMjQ
-	 C+608f6qY6lHFOjkhP+/sp35JbzvB7d0qcnVIo/1fDBbe24Yqh+H81XQfSaGX3aMsOtb5
-	 0mIYlBGDiqLLHdtbAvVcX8t82N8vaLin+dxVZu7f9YyWoo7snQB9a3UZa+YcgJQbWLA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793028883;
+	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=5WbTE6FtCqbifuziiK1Je8VFGg0z85esmt3ElMO056c=;
+	b=inWr6r17vY7Z5h9HJblTkIDHEbq8uLb4yr2CY3hezNx/YgsazLItX3gYZices15IfIKp
+	 2v8bQ/+BYYl6x2XQHIJ++ebGA4ZLET0TV5Rytk6vhFvUy56fuT56o1MB5BzUUaTDSJXHf
+	 fuXds91nzKeCBl4jtMUDToQeBpyF/iRbjXuoRpCzdPz3CBwujmd8Oz3GcgwVVrrh+RXZw
+	 WpBAweFZ/UtnV/HQyUenM4RMHddki+q1JrSShJuwsQP0h5m12T5dGNhDzhPkXfCpY6B2d
+	 X4ych/XmDbIQ4Bgb4MVBdSEhqP5IGwS+FO9av90xpnFfYaAR1BerXBIqFcN9wCYlfAQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=debian.org;
-	spf=pass smtp.mailfrom=debian.org;
-	dkim=pass header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=IoRI1Jhi;
-	arc=none smtp.remote-ip=82.195.75.108
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	dmarc=none header.from=xiaopeng.com;
+	spf=pass smtp.mailfrom=xiaopeng.com;
+	dkim=pass header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=gycQtTV9;
+	arc=none smtp.remote-ip=115.124.28.98
+Received: from out28-98.mail.aliyun.com (out28-98.mail.aliyun.com [115.124.28.98])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B46DC606A31A;
-	Mon, 26 Oct 2026 15:32:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B46DC606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7715606A31A;
+	Mon, 26 Oct 2026 15:34:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C7715606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=IoRI1Jhi
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=xsbZnMuIwZGVt5Zv5ZprAj+CulDRMl9ek0Cr3wabECE=; b=IoRI1JhiV7krpPaiUcxvPCmXe3
-	MHJ2c8wAUT8DD1SCTpRiFg5MO8oddSvRs1ceA6w6L9f9kt50vm0hN1TXTC/PVh4aToQJVjJHL4uUB
-	msUFJYVS823574Ow0sELheq2lw7LdPQt5li8A2fj+19yN7wOlqtv5HvLcM3zeVP6eKctNFVcCBmg4
-	PMY2j6JjeyzOy5P+bsbRBBnIXinzGIEOvf+GPqz1SAM5+p3wqZONII2C0tRlr11xZOcRApuhOcYBK
-	1nCVJymXCF+bTTB4Z/X4KURwy5QkwfxMCU2kyYdKmzDmJArNNaV5cbEVQvqMlZaAtRgwkLpD9kDJi
-	/s+6R8yg==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1xLMgA-000m23-2K;
-	Mon, 26 Oct 2026 15:32:06 +0000
-Date: Mon, 26 Oct 2026 08:32:00 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Chris Down <chris@chrisdown.name>
-Cc: John Ogness <john.ogness@linutronix.de>, 
-	Sam Crossley <samuelcrossley@gmail.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Petr Mladek <pmladek@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Paolo Abeni <pabeni@redhat.com>, Randy Dunlap <rdunlap@infradead.org>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Simon Horman <horms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH RFC 0/2] netconsole: allow replaying the printk buffer on
- demand
-Message-ID: <at9sdzpT1y7ygAbR@gmail.com>
-References: <20261024-netcons-replay-upstream-v1-0-9613f38496e5@gmail.com>
- <87fqxskdpl.fsf@jogness.linutronix.de>
- <at84qygscue8crQi@gmail.com>
- <at9mJoA8ZQfUCFGw@chrisdown.name>
+	dkim=pass (1024-bit key, unprotected) header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=gycQtTV9
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=xiaopeng.com; s=default;
+	t=1793028871; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=5WbTE6FtCqbifuziiK1Je8VFGg0z85esmt3ElMO056c=;
+	b=gycQtTV9gpsNfdC/iZJ3G8/cRmysmvw1+jDwlDzvSw/4Zyd+J08v4LlFzQ2XU2xJ988oYIOFTIhtnm6JrxrkhQHiTikWBl4sEOAN9X0hCUb+aw+LXD+ip2+KpXDSwQVB0iDrtvZqwnY8OnaetBuhvIac2+mXMq2hMtc5d0fEXPU=
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.1212897|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_news_journal|0.0519486-0.00412499-0.943926;FP=18301423795854014354|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037034184;MF=fangxy@xiaopeng.com;NM=1;PH=DS;RN=13;RT=13;SR=0;TI=SMTPD_---.jq4ePfq_1793028869;
+Received: from localhost.localdomain(mailfrom:fangxy@xiaopeng.com fp:SMTPD_---.jq4ePfq_1793028869 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Mon, 26 Oct 2026 23:34:30 +0800
+From: Fang Xieyan <fangxy@xiaopeng.com>
+To: fw@strlen.de
+Cc: pablo@netfilter.org,
+	phil@nwl.cc,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	liuwb@xiaopeng.com
+Subject: Re: [PATCH] netfilter: xt_policy: add NULL check for skb_dst() in output policy match
+Date: Mon, 26 Oct 2026 23:34:28 +0800
+Message-ID: <20261026153428.76698-1-fangxy@xiaopeng.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20261026125313.14810-1-fangxy@xiaopeng.com>
+References: <20261026125313.14810-1-fangxy@xiaopeng.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,25 +71,11 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <at9mJoA8ZQfUCFGw@chrisdown.name>
-X-Debian-User: leitao
+Content-Transfer-Encoding: 8bit
 
-Hello Chris,
+Hi Florian,
 
-On Mon, Oct 26, 2026 at 10:39:34PM +0800, Chris Down wrote:
-> Breno Leitao writes:
-> > So the next step would be to add a basic /sys/class/console/, similar to
-> > [2], and put a `replay` entry in it.
-> 
-> Feel free to incorporate an abridged version of my patch with my From: in
-> your series if you like and we can take whichever one lands first.
+Thanks for the explanation. Agreed, I'll drop this patch.
 
-Thanks Chris.
-
-Your patch does a bit more than the series needs: it also adds the
-loglevel entries to sysfs. Would you be OK if I trimmed those out for
-now, kept only the basic sysfs support, and preserved your authorship?
-
---breno
+Thanks,
+Fang Xieyan
