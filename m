@@ -1,100 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.227.138
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.130
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793024843;
-	b=KiEg7twXdDY2X52K20UB4DQhpZhFR3JJNQTfhiumGiLbv33U03m/IXx8SXVRmimPPpcw
-	 8fvaSJSG5BwyVgdW+w2+RR36JNiKMaiAQk2+0xPGoNc7LW2ISL5VippTYJSXquT0aTN10
-	 S1SJhKfSId+4EFqWqSiRYA11EU6kNPuJCxN3eBWeJecylelXtpkJZNRyjeNMk9wbvb1u1
-	 JsqPI3XlL3Y0tpawJz4siEG89MYFA/uPfEAc/1a+6d9coyIoOtujhTTBKVvrsVq47OYuO
-	 t5ZvGOjiPRvMpP5q/SyYA+VIGOZbvdZ3NEoSaxS/8YpCEcO9uWWJsUJHDc2T/HnNK0Q==
+	t=1793024867;
+	b=FBxUG3kGR2x9ARWVN8oJNUQs9vjA5U0xF8QwjB3DuV6LRzZkYmrfqnoaTlfbViuTAQCq
+	 /DpdFZQRm+/1qw6ydc3VfUbtvjiaxzCn3NnXTYq4MdPxM/D21za2TJJsoW/hicMcIffoY
+	 Mfi2wFBTA2mQ6GM5syaN0x76vCq5J8Mxgkgywlu20NNv/vyMIIjQW0bJwW/AyWYHtjHuo
+	 rzJLSmqFSjPYqM81PWmHV3121i7lDsJK6JABzyT0ZyRCCjuiVESSGGxMwO6n0pk1MIuon
+	 j6IEeHx3SBIryGIsacF/sL1tUrqew6H5GGB47ck/RPId1vCRQj0dlNASZWMYZl91L/w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793024843;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=pWNIDudccydM955IzkAINXE2ZjY/ipVqw0niCy80XBs=;
-	b=UnxmhlzZHJ4Y8QDkaSeYqFDTEYESxhjDZLyCqaAAUL2Q3vul7ZLemdgdkruduaZmmuwC
-	 clEeq9BxEK0t+LnlQ8T5BC9+VYWAIf+m6NSBmbqqO22Tx0CkDsHZGaAbgM/e0Zghqvqy2
-	 OQU3uaVQnTBJLUQCDkGfkMo04O+Sbhl1XDryWUG/eleqeBBiQjGhdTDhJ5rC8RkiDR4zL
-	 CsFRI1ifhRt1lhgEGJgEQDZoUw9qX00IiSNbaURm5QU/7bZZBv4oz3KL4dlldjLeMkaHU
-	 aeKhUh27qdqO8rytzcqcF77FvN8gDEA2JCLLcdhItbRjCqLTd4LagzyFR6LkF1zzzBg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793024867;
+	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
+	 DKIM-Signature:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Spam-Flag:X-Spam-Level:
+	 X-Spamd-Result:X-Spam-Score;
+	bh=pFeiZWUlKA17A5iSBKX4rHu8B6bfw4tdUPbBkbANNOg=;
+	b=rE1ZjY4uHHNVCWCRXfRmqvVj0IukyZeJMGR21WUr7dzUQrNPMEXSYgx3F9yHDH/FQGrw
+	 2Ho8l4HQsCsboZK+wWpkxB1ZQHNgw/o0BA58Fgnv4tIyEhEOQjZdS0YyK2CLPT6wgiYXM
+	 5ULHq3RJqslo3lU50G9KCbKmlE9e7TPMGRbXwtFXLLgtqwsCQZhLVZP98fsIOydFhQtqX
+	 FEZGbgF/p6PcZHx8ADELh+IR221Sp0PHjvYxEfvMaalcx7dLJATOTZTQ35BQtogdkOC+q
+	 4eYpGkehen3gp+Rhz65BCk8XN7PnpgJr7ze+iogDqxa/m2KXglQxAqbr19AgI6Atp/g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=XhlxvgU1;
-	arc=none smtp.remote-ip=74.125.227.138
-Received: from mail-pj2-f10.google.com (mail-pj2-f10.google.com [74.125.227.138])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=suse.de;
+	spf=pass smtp.mailfrom=suse.de;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=kt+hROst;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Pg+rUfTq;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=kt+hROst;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Pg+rUfTq;
+	arc=none smtp.remote-ip=195.135.223.130
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0999606A31F
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 14:27:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D0999606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F341D606A31A;
+	Mon, 26 Oct 2026 14:27:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F341D606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=XhlxvgU1
-Received: by mail-pj2-f10.google.com with SMTP id d9443c01a7336-2e934c6c1c8so12380495ad.0
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 07:27:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793024842; x=1793629642; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=pWNIDudccydM955IzkAINXE2ZjY/ipVqw0niCy80XBs=;
-        b=XhlxvgU1GrMaPNJspEjfRmGarJy5LJYRRhTg1Hq/82/Zw43IZLmp1XR/SVpCsCs05U
-         BoGs9OSrt8nbSJESb3b6dLlIhykpaBy28HH8+8wK9xG+vb2OSN/fiGslwFxR/GKZEZ8z
-         m19YStf2V0YttCwB+h1Ew2WhtANJutgxfoX0HLvXOn6juDf2bZROzyGtjQ4vvRzF+7XO
-         pm4XP+AZgP36L+2ig5rDwJ0P1QJdE8Q0aVP36TEb1uirPl3ZKJ1WrDZOhzgckhWRNmIn
-         GkkvbnCuyiz50A6qCwqJCiz9XxLWrqnGx7fqHQfrfdSw5/PXSL0VMpNbQxZQedFvav1G
-         +gzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793024842; x=1793629642;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=pWNIDudccydM955IzkAINXE2ZjY/ipVqw0niCy80XBs=;
-        b=eThCOgFIDsMbYQ3AQWGIjvf/cg0H71sKt2zLScz8EjjyAOTo5+/6RHjQJ5oJhJfGkf
-         1nO3o3qTbKM4apLvAWGwwNqi7lHEDSWN78K+6OSdZbJFPpdiL/A8/2eqeU2md/vn/zMp
-         nS04eHP5sdI+uzcf4ZJ8tPFF/pRJhjigONH26YtylJrHqURF3J4XXCGy1mEgH1lolYTb
-         3NxgAwHhRb/NfPPHFdytqRPnbB/87QbP1c0TKOukZygxO2KML5hw7eRMQMfa3LgtGEZo
-         eEQnkXDLPaft02pEbOt2ClEX8HB6KpHeRWeo+E9MFWq6E5wu3lyLsbOBylqiNNcMYEDG
-         XNiQ==
-X-Forwarded-Encrypted: i=1; AKwUvBznfCg8vZLvZFGKWI9zs+09nM+99WZIj2tZgQAtDJZ1Goubtvttqz2YNO1gSaVdIWt1EwRyC5Y=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJQwKf8cjEueVE9Lco+4CJLsxawZcRKjjB4dlkXqrJelEZK8eF7
-	fYVsevARcFy+3e9o4mk3+DjPs3q+jJVkTITzbgCkxRLGCBJH7ncQUYjr
-X-Gm-Gg: AYBFou3g8kDdh+grR15pUEhuR0uAk7SITKGfUymwgCIylzLj+PTLQyQh94WCHTWh8sH
-	pmj4vmnkjmh+/3toTH/o9Klcmo+B8qAw1nPXum1lcFZ9wysnJzPK6msexf41sKI4CYGbH1bu/ai
-	VXClH0fZ7yUr4CLoGFyWkbdT22cS/FDsLSefKgSYMmoisw8tz7G1o542dx3VAncU1el455qxZVM
-	tCtUPs9QUu4OgmOTQQiE84VWs6UCJv8Tb9xyzzycJ0ZNlPI0VdAco6pPNvJPhvfutUY2v+lTLZC
-	iMkp9Owck5d2wGA/J++pnXKassy7gKgRFtF52rJ2cPn6o89J0OOD4jaXBGgvDDolO6DmWc9qMqX
-	VaBVnA0Sn3fdIu3yjU/s0JHfWVeYZFghn0geYAzC985o+6MUYNh1PsLuRCUDjU8fqzOZTG9+mHV
-	OJtkHE9rkePgusjGZI2lhwadrrY9+c7PC3sUaFhTi9HC0nkkkdozMaoBdwQZ9NtLgmAR2m0PB4r
-	MvfAqWxgQ4aAvGgexlcnmMTz7+s8ACwNUCgqAEhajlnPoe/QvUvhS3qt4iYC3wgfBxbJmlGdD5z
-	ZdCoR3gbUrH1BfpY
-X-Received: by 2002:a17:902:f68d:b0:2e9:a090:dd80 with SMTP id d9443c01a7336-2ea9c69710dmr55298395ad.22.1793024842080;
-        Mon, 26 Oct 2026 07:27:22 -0700 (PDT)
-Received: from localhost.localdomain ([240e:46d:2300:286:8580:7ae4:15b1:705])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea9b121725sm17638495ad.14.2026.10.26.07.27.14
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 26 Oct 2026 07:27:20 -0700 (PDT)
-From: Rongzheng Wang <testwrzwrz@gmail.com>
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Cc: Magnus Karlsson <magnus.karlsson@intel.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Stanislav Fomichev <sdf@google.com>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	stable@vger.kernel.org,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2 1/2] xsk: defer software checksum until the skb is complete
-Date: Mon, 26 Oct 2026 22:27:05 +0800
-Message-Id: <20261026142705.4564-1-testwrzwrz@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <at82NLzM7g8HGgum@boxer>
-References: <20261024091256.17918-1-testwrzwrz@gmail.com> <20261024141157.59301-1-testwrzwrz@gmail.com> <20261024141157.59301-2-testwrzwrz@gmail.com> <at82NLzM7g8HGgum@boxer>
+	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=kt+hROst;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Pg+rUfTq;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=kt+hROst;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Pg+rUfTq
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 27DFD220F1;
+	Mon, 26 Oct 2026 14:27:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793024865; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pFeiZWUlKA17A5iSBKX4rHu8B6bfw4tdUPbBkbANNOg=;
+	b=kt+hROsteMp4x9NabCiCembg/pzy6uxvQxiktgywWNRvs00G1brlIA1cIjzGglFeHA3ucg
+	tSJljyvuy/Esx2QpRG7BSr8VrUBRJWB6CI3BH68+JHVdzfOUSXYVgA8Cy8bKQKCtvamP9o
+	raek+kJT6/VkyWTx668zrMZx0EmMv44=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793024865;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pFeiZWUlKA17A5iSBKX4rHu8B6bfw4tdUPbBkbANNOg=;
+	b=Pg+rUfTqZewOk36tggGl5vyPTHJctzK/XBFO6/egU1UP+DZwF+MYliZSgHn/XyGS6UJSal
+	rWYmFFFAlBjbwFDA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793024865; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pFeiZWUlKA17A5iSBKX4rHu8B6bfw4tdUPbBkbANNOg=;
+	b=kt+hROsteMp4x9NabCiCembg/pzy6uxvQxiktgywWNRvs00G1brlIA1cIjzGglFeHA3ucg
+	tSJljyvuy/Esx2QpRG7BSr8VrUBRJWB6CI3BH68+JHVdzfOUSXYVgA8Cy8bKQKCtvamP9o
+	raek+kJT6/VkyWTx668zrMZx0EmMv44=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793024865;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pFeiZWUlKA17A5iSBKX4rHu8B6bfw4tdUPbBkbANNOg=;
+	b=Pg+rUfTqZewOk36tggGl5vyPTHJctzK/XBFO6/egU1UP+DZwF+MYliZSgHn/XyGS6UJSal
+	rWYmFFFAlBjbwFDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 83EFA13319;
+	Mon, 26 Oct 2026 14:27:44 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 9FfaFGBj32oCNwAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Mon, 26 Oct 2026 14:27:44 +0000
+Message-ID: <2888b742-9d02-466a-bd16-33296a686d7c@suse.de>
+Date: Mon, 26 Oct 2026 15:26:38 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,65 +106,75 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH nf v2] netfilter: nf_conntrack_sip: fix OOB read in
+ ct_sip_parse_transport()
+To: Joas Antonio dos Santos <joasantonio108@gmail.com>,
+ Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>
+Cc: Phil Sutter <phil@nwl.cc>, Duc Anh Luu <luuducanh05051995@gmail.com>,
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <179286139765.93379.986858959213810476@gmail.com>
+Content-Language: en-US
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <179286139765.93379.986858959213810476@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Spamd-Result: default: False [-13.29 / 50.00];
+	SUSE_INTERNAL_BYPASS(-9.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
+	FREEMAIL_TO(0.00)[gmail.com,netfilter.org,strlen.de];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[nwl.cc,gmail.com,vger.kernel.org,netfilter.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	URIBL_BLOCKED(0.00)[suse.de:email,imap1.dmz-prg2.suse.org:helo];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -13.29
 
-Hi Maciej,
+On 10/24/26 7:03 PM, Joas Antonio dos Santos wrote:
+> ct_sip_parse_transport() compares the value of the "transport=" header
+> parameter against "TCP"/"UDP" with strncasecmp(..., 3), but it never
+> checks that the parsed value is at least 3 bytes long.
+> 
+> ct_sip_parse_param() returns matchlen = end - start, where end is the
+> next ';' or, when there is no ';', the end of the payload buffer
+> (limit = dptr + datalen).  If the "transport=" value is only 1 or 2
+> bytes long and runs exactly to the end of the payload (e.g. a REGISTER
+> request whose Contact header ends in ";transport=T" with no trailing
+> CRLF), matchlen is less than 3 while strncasecmp() still reads up to 3
+> bytes, reading 1-2 bytes past the end of the linearized skb data.
+> 
+> Add a matchlen check before the comparison, mirroring the
+> sdp_media_type() pattern a few lines below, so short values cannot reach
+> strncasecmp().
+> 
+> The bug was found by LLM-assisted manual review of the SIP helper's
+> parsers and confirmed with a userspace ASan harness built from the
+> verbatim parser functions, which reports a heap-buffer-overflow read of
+> size 2 in strncasecmp() called from ct_sip_parse_transport().
+> 
+> Fixes: ea45f12a2766d ("[NETFILTER]: nf_conntrack_sip: parse SIP headers properly")
+> Link: https://lore.kernel.org/netfilter-devel/20260815133104.50369-1-joasantonio108@gmail.com/
+> Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
+> Assisted-by: Claude:claude-opus-5-5
 
-Thanks for the review.
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
 
-Yes. xsk_skb_metadata() is only called for the first descriptor when
-skb is NULL; continuation fragments do not call it. So
-skb->ip_summed == CHECKSUM_PARTIAL means the first fragment requested
-the checksum.
-
-I'll preserve unlikely() around pool->tx_sw_csum like this:
-
-    static int xsk_skb_sw_csum(struct sk_buff *skb,
-                               struct xsk_buff_pool *pool)
-    {
-            if (unlikely(pool->tx_sw_csum &&
-                         skb->ip_summed == CHECKSUM_PARTIAL))
-                    return skb_checksum_help(skb);
-
-            return 0;
-    }
-
-For the drop path: xsk_drop_skb() increments tx_invalid_descs and
-consumes the skb; sendto() returns the error from skb_checksum_help().
-Since the descriptors are already consumed, retrying is not useful. The
-current metadata validation makes the malformed-packet path effectively
-unreachable, so this is a defensive drop.
-
-I verified the propagation in a local QEMU test kernel. For the test
-only, I temporarily changed xsk_skb_sw_csum() to:
-
-    static int xsk_skb_sw_csum(struct sk_buff *skb,
-                               struct xsk_buff_pool *pool)
-    {
-            if (unlikely(pool->tx_sw_csum &&
-                         skb->ip_summed == CHECKSUM_PARTIAL))
-                    return -EINVAL;
-
-            return 0;
-    }
-
-and ran test_xdp_metadata. It failed at the first generate_packet()
-sendto:
-
-    generate_packet:FAIL:sendto unexpected sendto: actual -1 < expected 0
-    Summary: 0/0 PASSED, 0 SKIPPED, 1/0 FAILED
-    TEST_RC=1
-
-The normal kernel still passes. The test harness does not print errno,
-so I can only state that sendto() returned -1; the injected error was
--EINVAL. I restored the source after the test.
-
-Magnus suggested a distinct counter for malformed packets. I agree that
-would be more precise than tx_invalid_descs, but I'd prefer to do that
-in a separate patch instead of extending the UAPI in this stable fix.
-
-I'll address the remaining feedback and send v3 as a new thread.
-
-Thanks,
-Rongzheng
+Thanks!
