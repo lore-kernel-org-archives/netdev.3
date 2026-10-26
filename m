@@ -1,67 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.240
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793019207;
-	b=NsknPlsdiypql8Of+Ky6u/TOjQdl6sWA3kt/fzH3Q0Wg4OHvqsxsZVftWTgzFY1I2P8X
-	 lDJIHD48R70jlGvKnuDteOMr95qkzPBXyPONySffh7s5MFIiVQyGCCnnwwHxtWsCyZtMV
-	 315QnLTeWV2zma3gFZd9trUoR64bLqIZKskAAx6RgA301KOmqYN8V5IfmAAGB/KW4ZuKu
-	 rQMTJSyYv704RhtCSTesotrxPw2QP5J7+NRJpKfJhCC4AneneX4V4NGBrHmm3jq7xTp48
-	 XRH/fiMho7j8nxshroXYkYSN8oynNOhvhrdJMU41EuhW915XBRTkAQ/rqZZpLqe7WMQ==
+	t=1793019205;
+	b=a+PRNi9EaCrLYPwEv2LDljUUEJTY/NIGCWsTFU44amhT/VLb94nHYynKl5Hb3Oqal6ad
+	 hrWiGmMpEnwk72+rM2KH+Dyro+wYK0XZME7dd8DsZ/ewZyJzEnAVxDRmCY6pKNJjDtTX3
+	 TXpUAV3PG77XGLkbXGYbbf5Y7+W21s8MFOJWppQ+HIDv9q7XLpOiiiddB0wIabILNRwV+
+	 9Ril99MldjHaJJGHt9dJi4i6WxtnAAKIQ8RuuWwcI7GokCE+KXE3JACSOfQeMboZnW9dA
+	 yCo8VArYXvlcdL+E4Z/UgiB6Tq7xuh/wDr6XdGeY4bcRqfUbIfwH0EKFt/KICBHEMwQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793019207;
-	h=DMARC-Filter:DKIM-Signature:X-QQ-XMRINFO:X-QQ-XMAILINFO:From:To:Cc:
-	 Subject:Mime-Version:Content-Type:Content-Transfer-Encoding:Date:
-	 X-Priority:Message-ID:X-QQ-MIME:X-Mailer:X-QQ-Mailer:References:
-	 In-Reply-To:X-QQ-mid;
-	bh=eoeFhuQrsUg2LLls9bBuuI3jERyROiJOphO2K6S7wJw=;
-	b=LezkmoNR9L7WTYeCfAgYtt1fJxuMx/9vqyg0E4rSQu/2HBw0F6GQbdoYJbmgo6B2TGiY
-	 xhKhlXTtaPls/qg+fSZxovctvPKJ6ypaBGOMCMa3QNj/n5SYlHxYQfdK1hEBodB8WGaM8
-	 FY/kTpnWYPJAIm3ZzH/RKTojWrBLqMqhf+jY2gCSosegmMiWmHsrK13QapJHS2p5SYZYc
-	 1iuy4nUMf2FIPOE2zzhF1t61yS9vZSmNqCOjVTzEn4jW0CjlXIpC+TJS+bK0T0/79FnEI
-	 W0HkYKhpez+/cGbekzDF8ozZk1XS5LjbO7GCP8QBtBMq3QamN1j+zUlRbJOe81Sb/zw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793019205;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=wNAm+QK6fuK2feImJ+iyd7AbEuB0Qapzr4gOqGefZxg=;
+	b=d4IADDhXW5yqfUBSqNvlxO7/tpg0FNu2SED5xo4y7asJLac5MwFm81ps/xYNuHKKLf1c
+	 gJdbi9eHBA4oDF+5ZAlDTZPSBIM73DvVJv9bDmA1mA8em2ptQgOMB05h2O5qQcUB4G16f
+	 BLgb9veydzfeAT/BNWQapsJxW5mmj2DSKp/2uyB5atOxmaLxN4aKXhGzhBb8H6oRdXZiR
+	 4LRq0wz17mGdfkYGxZ3WiVclqHY5eSswQllBCAgc99RlZYot4Ls6urZ8dbEj/Qoknme+q
+	 VQB5p9lwEqRVDBinkcb0nufa8zsjE36/8YsOUcLsRN419foX2hd6IEHzHqpPPJF+Whg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=foxmail.com;
-	spf=pass smtp.mailfrom=foxmail.com;
-	dkim=pass header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=hglI2lk9;
-	arc=none smtp.remote-ip=203.205.221.240
-Received: from out203-205-221-240.mail.qq.com (out203-205-221-240.mail.qq.com [203.205.221.240])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GGha7X4x;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D7E606A31E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324F6606A31B;
 	Mon, 26 Oct 2026 12:53:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 76D7E606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=hglI2lk9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1793019196;
-	bh=eoeFhuQrsUg2LLls9bBuuI3jERyROiJOphO2K6S7wJw=;
-	h=From:To:Cc:Subject:Date:References:In-Reply-To;
-	b=hglI2lk9blL2Ewq6XJQOl1LwizAJYWWmqDQ6TQTq7UGeKWh0EtkorC9r2a/sJJzuj
-	 eirt+WTiaQDXv43TobyQK2jqLjmH4T6W2s9QpQuRWNLr1ZmDYFPUnQkQFgx0JGdEGO
-	 JnGOgfI0ITrAHOfNjIqVnOGJUM0T1vL90RnXm7QI=
-X-QQ-XMRINFO: Mp0Kj//9VHAxZTvkSW1v73Gwx3+DKDx3Cg==
-X-QQ-XMAILINFO: N91a4ffQWdrAP/blrZq7sSDhJ77M3hmBPB3rfPZ65QKIWN2GUtLGIpKzWD1KkT
-	 mQRuQ9+FGkeD5ZBMxgsIpRc/HZBIuSlrPXSxP4ro+lZSPSedXP31uco6JYb2ERtcdsQazvz00J47u
-	 38trGq0XSdz0O3Oavn46ylGREXieHBd0rZTAerz/5FIAZD5sgHxjROds104iMXlkwiMDNONEu1SJm
-	 zUjMP721UBNHN6krscRetKmuoBbd2bzJ0jBQX31LhOnOtI4XSSIqtXAHlG+00RT6+irZ2xQN4nnss
-	 E3bw/+WyjW8rvewhjmQ9UgCwwq9adXlKpEhOu3NcGPM9flVXGiZhi5VbmxpD0AxBCrOhC1qspC0Qd
-	 ycWMPZMla/WWmN1pQSy5we6p6Aj8jG5GTpYz64ST55bWzcYFhIEd/bRcCMoPdYIquruNWGu7yydUr
-	 57XJQkKQzwMlMviTVuKNN2TB488djKlUfl6Hb5g5T4O83e35oW0E05mUXkfXZJ52Uc+Kkq2fJxEI2
-	 euVTY4bc8eZwFdVuw6eecS++zWYD3JA5D0kmf1Z98LxoWwjjaexECRMvk7tf8NFy/Q7sHL3GKP4Hl
-	 69sbHgmYP6sb09FAQGYxzAjZ2g/cI9wBUDwZKn9ioZDrDFMVzfZYiKjiByi9Qz7jHSGSuxqvmuw4Z
-	 G0F4mPTMhz0+mqgbp6Nr4ESwVaeNHuaY4cRIFyCPpuZRA8lOkCoMoRkhUuHSXSQ7ZSAPxCa0Bo2tn
-	 2oFkE/cnGSVCjVqnEMoDT8dP/9eKF4gU286LzPnieR2r9wvlWZp1CVe7bg5oqdYZOwuSRLHuh2MK0
-	 sb3AsIOZC4wcDSOTcLUVU5S8pknx4mHoRo6DzY7pjIaMPJ+jKxDZ1J4QSXUHj1DyGq1PP9hGQJNz7
-	 FJcHWyvUCBTCQKw2qh8G3mUnk8fhlPuTn2VoQSvJ+49N+keRXu4gHLyNfnR/yxbEmmIJShc17vZQy
-	 oHp/VKQ1d05nS0gwcO4lJcZ1gla4UHKh/7jkgDSPys7MHItLKv0I9fbbeROQ+gpVZI3OQ0yzljnGF
-	 5IULTJqH2LuzWLyNsDHvlaLyBIPoQHZDgxT69aP3DI8GKS+JSSIAoDFJQAOQYBTk99tO0DJLCRNXU
-	 W6HAinkm2SmW4t/NgyOQzrEP3KOmZw9ZmBU5VcJwU6at43OIK4/lo5XFL0ssJWUfdQfkIk9L9UIKQ
-	 w==
-From: "=?utf-8?B?5bmz5LmL?=" <treebacker@foxmail.com>
-To: "=?utf-8?B?R3JlZyBLSA==?=" <greg@kroah.com>, "=?utf-8?B?bmV0ZGV2?=" <netdev@vger.kernel.org>
-Cc: "=?utf-8?B?RGF2aWQgUy4gTWlsbGVy?=" <davem@davemloft.net>, "=?utf-8?B?WU9TSElGVUpJ?=" <yoshfuji@linux-ipv6.org>, "=?utf-8?B?QWhlcm4=?=" <dsahern@kernel.org>, "=?utf-8?B?c3RhYmxl?=" <stable@vger.kernel.org>
-Subject: [PATCH net] ipv6: fix dead half of the MTU guard in __ip6_append_data()
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GGha7X4x
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E49611F01828;
+	Mon, 26 Oct 2026 12:53:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793019204;
+	bh=wNAm+QK6fuK2feImJ+iyd7AbEuB0Qapzr4gOqGefZxg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=GGha7X4xi3MROzPTAp/gn97EFZNPWFVLEnLQDa5yWCac3ywERdPK2pd9YaQG7pViL
+	 DMnrWeth++TYI+qeTsAJr0RCbaX6Qx4eRkNOTVjpsG/X1JCu+c1YeBSSXTIMmMx5Dh
+	 zwmr3UWC004jDEroEZWgnauPfvYD7IBoSIK27dWZvm/OdDau3VxeV+Ixi1YGCkNN8O
+	 lib9228tn3GRqimPsXIpbt2VlAVcy40xKurzOzeX3OKPqbQWp8jsHg4ZXsOdQ09e9u
+	 I9umW3dhG8ElDOJf3BUIzVB1iHlPvvv2UFeU+8BKpgzMYgLRHiKoSrpf7efImvZEeS
+	 y/QSkt8BTIEhQ==
+Date: Mon, 26 Oct 2026 18:23:14 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Chunkai Deng <chunkai.deng@oss.qualcomm.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-arm-msm@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, tao.zhang1@oss.qualcomm.com, 
+	peter.chen@oss.qualcomm.com, jeff.johnson@oss.qualcomm.com, konrad.dybcio@oss.qualcomm.com
+Subject: Re: [PATCH net-next 1/3] net: qrtr: do not take the sock lock on
+ blocking recv
+Message-ID: <at9NMmRJSZhiT3yg@debian>
+References: <20261016-qrtr-add-shutdown-v1-0-e1cc01ca5919@oss.qualcomm.com>
+ <20261016-qrtr-add-shutdown-v1-1-e1cc01ca5919@oss.qualcomm.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,82 +61,31 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Mon, 26 Oct 2026 20:53:14 +0800
-X-Priority: 3
-Message-ID: <tencent_E14C00D5FE957DD7E12FFDC2E75A4FA9EE08@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <tencent_B58BAE2F5FF485D1B4F652E9980EAB132A09@qq.com>
- <2026102604-circus-juvenile-c521@gregkh>
- <tencent_7454E65EE7BD1C085B6951A7D2305157370A@qq.com>
-	<2026102658-jockey-volley-94ff@gregkh>
-In-Reply-To: <2026102658-jockey-volley-94ff@gregkh>
-X-QQ-mid: xmseua11-1t1793019194tqd4mfdl8
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261016-qrtr-add-shutdown-v1-1-e1cc01ca5919@oss.qualcomm.com>
 
-VGhlIHNlY29uZCBoYWxmIG9mIHRoZSBNVFUgZ3VhcmQgaW4gX19pcDZfYXBwZW5kX2RhdGEo
-KSBoYXMgYmVlbiBkZWFkCmNvZGUgc2luY2UgdGhlIGluaXRpYWwgZ2l0IGltcG9ydDoKCglp
-ZiAobXR1IDw9IGZyYWdoZWFkZXJsZW4gfHwKCSAgICAoKG10dSAtIGZyYWdoZWFkZXJsZW4p
-ICYgfjcpICsgZnJhZ2hlYWRlcmxlbiA8PSBzaXplb2Yoc3RydWN0IGZyYWdfaGRyKSkKCQln
-b3RvIGVtc2dzaXplOwoKKHggJiB+NykgaXMgdW5zaWduZWQgYW5kID49IDAsIGFuZCBmcmFn
-aGVhZGVybGVuIGlzIGF0IGxlYXN0CnNpemVvZihzdHJ1Y3QgaXB2NmhkcikgPSA0MCA+IHNp
-emVvZihzdHJ1Y3QgZnJhZ19oZHIpID0gOCwgc28gdGhlCnNlY29uZCBjb25kaXRpb24gY2Fu
-IG5ldmVyIGJlIHRydWUuICBDb21taXQgNWUzNGFmNDE0MmZmICgibmV0OiBpcHY2OgpmaXgg
-c2tiX292ZXJfcGFuaWMgaW4gX19pcDZfYXBwZW5kX2RhdGEiKSB0aWdodGVuZWQgdGhlIGZp
-cnN0IGhhbGYKKG10dSA9PSBmcmFnaGVhZGVybGVuKSBidXQgbGVmdCB0aGUgZGVhZCBzZWNv
-bmQgaGFsZiBpbiBwbGFjZS4KCkZvciBtdHUgLSBmcmFnaGVhZGVybGVuIGluIFsxLDddLCAo
-eCAmIH43KSA9PSAwLCBzbwoKCW1heGZyYWdsZW4gPSAoKG10dSAtIGZyYWdoZWFkZXJsZW4p
-ICYgfjcpICsgZnJhZ2hlYWRlcmxlbiAtIDgKCnVuZGVyZmxvd3MgYmVsb3cgZnJhZ2hlYWRl
-cmxlbi4gIEV2ZXJ5IGxhdGVyIGJvdW5kIGNvbXB1dGVkIGFzCm1heGZyYWdsZW4gLSBmcmFn
-aGVhZGVybGVuIHRoZW4gd3JhcHMgdG8gMHhmZmZmZmZmOCwgaW4gcGFydGljdWxhciB0aGUK
-ZGF0YWxlbiBjbGFtcCBpbnNpZGUgdGhlIGZyYWdtZW50IGxvb3AsIHdoaWNoIG5ldmVyIGZp
-cmVzIGFuZCBsZXRzCmZyYWdsZW4gPSBkYXRhbGVuICsgZnJhZ2hlYWRlcmxlbiBlc2NhcGUg
-dGhlIE1UVSBjb25zdHJhaW50LgoKV2l0aCBNU0dfTU9SRSBvbiBhbiBlZ3Jlc3MgZGV2aWNl
-IHdpdGhvdXQgTkVUSUZfRl9TRywgYWxsb2NsZW4gPSBtdHUKd2hpbGUgc2tiX3B1dCgpIGlz
-IGNhbGxlZCB3aXRoIHRoZSB1bmNsYW1wZWQgZnJhZ2xlbiwgc28gYSBzaW5nbGUKc2VuZG1z
-ZygpIG9uIGEgcmF3IElQdjYgc29ja2V0IHdpdGggYSAxMjQwLWJ5dGUgSE9QT1BUUyBjbXNn
-IGFuZApJUFY2X01UVSA9IGZyYWdoZWFkZXJsZW4gKyAxIHRyaWdnZXJzOgoKICBza2J1ZmY6
-IHNrYl9vdmVyX3BhbmljOiBsZW46NjEyODAgcHV0OjYxMjgwIC4uLgpbICAgMzcuNjA3ODU2
-XSBrZXJuZWwgQlVHIGF0IG5ldC9jb3JlL3NrYnVmZi5jOjIxNCEKWyAgIDM3LjYwNzg2NV0g
-SW50ZXJuYWwgZXJyb3I6IE9vcHMgLSBCVUc6IDAwMDAwMDAwZjIwMDA4MDAgWyMxXSAgU01Q
-Ci4uLgpbICAgMzcuNjE2NjA2XSBDYWxsIHRyYWNlOgpbICAgMzcuNjE2NjA2XSAgc2tiX3Bh
-bmljKzB4NWMvMHg2MCAoUCkKWyAgIDM3LjYxNjc3OF0gIHNrYl9wdXQrMHg5Yy8weGE4Clsg
-ICAzNy42MTY5NTJdICBfX2lwNl9hcHBlbmRfZGF0YSsweGY4MC8weDE5NDgKWyAgIDM3LjYx
-NzE3Ml0gIGlwNl9hcHBlbmRfZGF0YSsweDk0LzB4MmE4ClsgICAzNy42MTczNjNdICByYXd2
-Nl9zZW5kbXNnKzB4NTg4LzB4OTg4ClsgICAzNy42MTc3MTZdICBpbmV0X3NlbmRtc2crMHg0
-Yy8weGE4ClsgICAzNy42MTc4OTFdICBfX19fc3lzX3NlbmRtc2crMHgyNjgvMHgzMDgKWyAg
-IDM3LjYxODEwNV0gIF9fX3N5c19zZW5kbXNnKzB4YjQvMHgxNDAKWyAgIDM3LjYxODI5OV0g
-IF9fc3lzX3NlbmRtc2crMHhhOC8weDE0MAoKUmVwbGFjZSB0aGUgZGVhZCBleHByZXNzaW9u
-IHdpdGggYSBkaXJlY3QgY2hlY2sgb2YgdGhlIHBheWxvYWQgc3BhY2UKYXZhaWxhYmxlIGlu
-IGEgZnJhZ21lbnQsIHdoaWNoIHJlamVjdHMgbXR1IC0gZnJhZ2hlYWRlcmxlbiBpbiBbMSw4
-XS4KCkZpeGVzOiAxZGExNzdlNGMzZjQgKCJMaW51eC0yLjYuMTItcmMyIikKQ2M6IHN0YWJs
-ZUB2Z2VyLmtlcm5lbC5vcmcKU2lnbmVkLW9mZi1ieTogYm8gY2FvIDx0cmVlYmFja2VyQGZv
-eG1haWwuY29tPgotLS0KIG5ldC9pcHY2L2lwNl9vdXRwdXQuYyB8IDIgKy0KIDEgZmlsZSBj
-aGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL25l
-dC9pcHY2L2lwNl9vdXRwdXQuYyBiL25ldC9pcHY2L2lwNl9vdXRwdXQuYwppbmRleCAyNWZl
-MGJhOThiMWEuLjdkNGQ0ZDQ1ZTIwNyAxMDA2NDQKLS0tIGEvbmV0L2lwdjYvaXA2X291dHB1
-dC5jCisrKyBiL25ldC9pcHY2L2lwNl9vdXRwdXQuYwpAQCAtMTUwMCw3ICsxNTAwLDcgQEAg
-c3RhdGljIGludCBfX2lwNl9hcHBlbmRfZGF0YShzdHJ1Y3Qgc29jayAqc2ssCiAJCSAgICAg
-cnQtPnJ0NmlfbmZoZWFkZXJfbGVuOwogCiAJaWYgKG10dSA8PSBmcmFnaGVhZGVybGVuIHx8
-Ci0JICAgICgobXR1IC0gZnJhZ2hlYWRlcmxlbikgJiB+NykgKyBmcmFnaGVhZGVybGVuIDw9
-IHNpemVvZihzdHJ1Y3QgZnJhZ19oZHIpKQorCSAgICBtdHUgLSBmcmFnaGVhZGVybGVuIDw9
-IHNpemVvZihzdHJ1Y3QgZnJhZ19oZHIpKQogCQlnb3RvIGVtc2dzaXplOwogCiAJbWF4ZnJh
-Z2xlbiA9ICgobXR1IC0gZnJhZ2hlYWRlcmxlbikgJiB+NykgKyBmcmFnaGVhZGVybGVuIC0K
-LS0gCjIuMzkuNSAoQXBwbGUgR2l0LTE1NCkKCgoKCuWOn+Wni+mCruS7tgrlj5Hku7bkurrv
-vJpHcmVnIEtIIDxncmVnQGtyb2FoLmNvbT4K5Y+R5Lu25pe26Ze077yaMjAyNuW5tDEw5pyI
-Mjbml6UgMjA6MTYK5pS25Lu25Lq677ya5bmz5LmLIDx0cmVlYmFja2VyQGZveG1haWwuY29t
-PgrkuLvpopjvvJpSZTogaXB2Njogc2tiX292ZXJfcGFuaWMgaW4gX19pcDZfYXBwZW5kX2Rh
-dGEoKSB3aGVuIG10dSAtIGZyYWdoZWFkZXJsZW4gaXMgaW4gWzEsN10gKHNpbmdsZSBzZW5k
-bXNnLCBzaW5jZSAyLjYuMTIpCgoKT27CoE1vbizCoE9jdMKgMjYswqAyMDI2wqBhdMKgMDg6
-MDI6MTFQTcKgKzA4MDAswqDlubPkuYvCoHdyb3RlOgo+wqBTdWJqZWN0OsKgW1BBVENIwqBu
-ZXRdwqBpcHY2OsKgZml4wqBkZWFkwqBoYWxmwqBvZsKgdGhlwqBNVFXCoGd1YXJkwqBpbgo+
-wqDCoF9faXA2X2FwcGVuZF9kYXRhKCkKPsKgTUlNRS1WZXJzaW9uOsKgMS4wCj7CoENvbnRl
-bnQtVHlwZTrCoHRleHQvcGxhaW47wqBjaGFyc2V0PVVURi04Cj7CoENvbnRlbnQtVHJhbnNm
-ZXItRW5jb2Rpbmc6wqA4Yml0CgpZb3XCoHNlbnTCoHRoaXPCoG9ubHnCoHRvwqBtZSzCoGlu
-wqBhbsKgaW5jb3JyZWN0wqBmb3JtYXQswqBwbGVhc2XCoGZpeMKgYW5kwqByZXNlbmQKcHJv
-cGVybHkuCgoK
+On Fri, Oct 16, 2026 at 01:58:18AM -0700, Chunkai Deng wrote:
+> qrtr_recvmsg() takes lock_sock() before skb_recv_datagram() and keeps it
+> while waiting for a datagram. Any other call on the same socket, such as
+> sendmsg(), bind() or ioctl(), blocks until a packet arrives.
+> 
+> Take the lock only once a datagram has been dequeued. The receive queue
+> has its own lock and the enqueue path never takes the socket lock. The
+> lock is still needed around the copy and skb_free_datagram(), since
+> TIOCINQ peeks the queue under lock_sock() only.
+> 
+> Testing SOCK_ZAPPED without the lock means a recv() racing with bind()
+> may return -EADDRNOTAVAIL for a port that was just published. There is
+> no ordering between the two calls anyway.
+> 
+> Signed-off-by: Chunkai Deng <chunkai.deng@oss.qualcomm.com>
 
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
