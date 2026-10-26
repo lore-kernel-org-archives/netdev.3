@@ -1,98 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=193.142.43.55
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793019427;
-	b=lFiyURgmQpuebim8lABQxjLQyKDqOgXiS4zkgqIaHxqpAthfguHPBM7xVPoeU8D6sMu/
-	 +LfE+A09dECvP+SboFvIdNc1iAdVeHpLKpku307uAYu97Pv/zkp6+GGY6ABaHPRQ1mK59
-	 +vuXe6BzavdpEl9yetS29swss66seazmQY55z/jMLqb+glyEb5tn7/+19Cc1iiip78V/P
-	 1WijefqD1/MIcJRBHUfnWxlSgI0LnONuEIAwfEnwd7+xD93WBC/tl4E6UFoe3begXeZIc
-	 mbwCiJx8hlm2/yXDYC/6+KwsbnXVZB5pbnhUcl0qONSJV8XXHnZYrPyNKpaQSxhFFMQ==
+	t=1793020193;
+	b=j5tse2tcR9ykHYPT25GYYP1uunjbjIX76GQenHemBywqqVbJINOrjla6PURb06W2s8b7
+	 0KQERTOUIoB5R4uzUDcl89f29XsO8ksDqPSgMDpBPDrHaj78l2CCbnJZ741aZF8Hz5T+q
+	 LRIECdUGuUQ76Pqu/IFqTV9xWDeXVVRydv5ZmYL1FZJRXk7zvERIgUGs/05qXcZ2rRw1f
+	 bdQ3oUVepxoXh26msFQ4f71+u/UdoUrzDkIwAMqFW0j5+gdYsWFIIEl3MVEZTnIxIsur0
+	 ZX0oGuXrQ5iwsiuiXwt+5JZUfG4ydO284lNxhUBMBJoWiyaJz6O1n5t0IjoEe2ZJ2wA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793019427;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=D2v0JRY5M4Fs7mPbrdRd3LMYAN2QFKSzquXFbvN/NKg=;
-	b=DILkDcLoFMhGRFIKrflzxOD49AzIwiXCnKuTtUAY+5GGmw2gnIclXKH4HiuHQTXxXVPD
-	 ZB2g5vElOY8xxxJmWslD7Prb5cjx17Sg0Xow/EmxGIv84koOmtRVHKD9ZnPyn/nLPC7qz
-	 puWQnatG/V8v8VOGh0nXvTV11btwozZPNL84WjhjInK/qT62U5SadYlOap8yEEw1urLY0
-	 Hh8Aa/76BIFkg35cz8YJ4Byj0+hbc6pLdn3joLRPWtT8gDLDvm3dVF0a87mzAWssUUdjj
-	 f2K91s8QxpzKgFXfL5CKI6Ai6IYAS0PxIoeUwrlFr8+ahvexwsZ8nLj7qQjaxTl+trg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793020193;
+	h=DMARC-Filter:From:DKIM-Signature:DKIM-Signature:To:Cc:Subject:
+	 In-Reply-To:References:Date:Message-ID:MIME-Version:Content-Type;
+	bh=gp7VP+Sir6E2FHA7V5/S6LXflY3MgarH/fCbeQrsJrQ=;
+	b=MlUoHBx5Oc2+mV6TOYgDWtxDMcNdwfogBHcAM+/ZCw23kVh2J65ZiWPVlJ4ww+UhNaVh
+	 5FAG8mN1AGC6J8HaVDmYZgXcDRmVBewhKwj/sqDlrBUGR/tik15s1d0r99n7aFesw//AE
+	 bXlBkF8910kxFdn2ETx1M/N/LG9ZkDwOHEd/vXWGlefnnZj6ESvJL3rxBKxrViMXu5KmU
+	 o0twt36MVROnCPuULr4yrleCKrLEi0WtOixasnSTE8AvdKHUIGlswvp+S/oWmXQnThxts
+	 fdbaXFwdIRgwc2cr9BCaYXuVELy4v10/QDLVRe0JuZCbzfRtZraKLeSCSxFAmb765KA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cs.unc.edu;
-	spf=pass smtp.mailfrom=cs.unc.edu;
-	dkim=pass header.d=cs.unc.edu header.i=@cs.unc.edu header.a=rsa-sha256 header.s=google header.b=kSdmWuAC;
-	arc=none smtp.remote-ip=74.125.224.41
-Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=linutronix.de;
+	spf=pass smtp.mailfrom=linutronix.de;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=lEllKBMD;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=+4U4xjdp;
+	arc=none smtp.remote-ip=193.142.43.55
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51D8606A334
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 12:57:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A51D8606A334
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cs.unc.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.unc.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C894606A31A;
+	Mon, 26 Oct 2026 13:09:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7C894606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cs.unc.edu header.i=@cs.unc.edu header.a=rsa-sha256 header.s=google header.b=kSdmWuAC
-Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-675676afc3cso3352285d50.3
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 05:57:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cs.unc.edu; s=google; t=1793019425; x=1793624225; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=D2v0JRY5M4Fs7mPbrdRd3LMYAN2QFKSzquXFbvN/NKg=;
-        b=kSdmWuACxN4qA9ISX1xWgBnx8QJT6BQGHqMeDqoeLsxf/MOTIPIFmoI6TEu02s7hXT
-         gT1i5//L1Pu5tgmWyFCaAB0W15Fviwr2kc9aO4ZbClsqSzK64GNrQbQoC3OBWpVaG62V
-         PguuvpigF9PDMnjQXzkQqEmbPPgysvxJZkHSADIgP3uVAEzhCUOeoS9UYectm+xrzA5y
-         jysSfYKHwFxhrqaduXeZU3oKzc9Kzn87dL6c4qCcf38b5+677b20TmF4DbPMMNiLMhOl
-         BlnLkkfrS/SnW/BvG2dhWtVTtL4ivxD4uFQZPWrU/ttnn/ayW9CJB2pWpoI6VKs1ifL4
-         5aIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793019425; x=1793624225;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=D2v0JRY5M4Fs7mPbrdRd3LMYAN2QFKSzquXFbvN/NKg=;
-        b=A7hQanozAPXh8p2FqwnNMXxEJHo94kIgbPfJjgaoayJT7qJG+L0RIjJs3dmBurQw9v
-         LYtbV+uZhwndZ1GiSG3QB5BXSivC5yR7hp4jGECz1dLFpn8+z6NaYGlDhegrtwpqHnlC
-         Cmg+r25o+sGSC8w0f9h4HjXeY9iM2kyV5Z0DZ7UFmtL6VinBRLVnF0LNhrScVMjX9gQm
-         Nga8KAgWNyWUw32Ux3QPgRdSh5wuMiJlwbqhvWCbFwFDTfHRvDK9ffIJLzsOwXP6mZva
-         zoqT1GdqK8tziKbshkHr1e6PhtZ559KnNjeuBVvHcBnn9I46KkBWt1Xce7RFYP3TYyul
-         M/uA==
-X-Gm-Message-State: AFq9FYKMeoXTlTaIVz58oumwMB1wB84KaR+Esb8RfmTUClJdCeCzR8tw
-	Z7MCP1dYgJNa3sM8LUjOeFKl2ff9tKNiL7jzPqMS+3wG5cmZLgM09P8+0Ek1OlQOsg==
-X-Gm-Gg: AYBFou1oG42+Gq5m5jNHOGLWjC2gn2PjqdAt1wflu3ARDlfOsb7PlYxSm73a67CTjK2
-	hYvjd78zRrcpCnu9rU41ZVBd5BYkNNKP1Lh3w0twOMx/1r7o7CDQdr4VzSNy10O0NkM+wm92K50
-	yOTcB787Rtz9rQJJoxjS2Y+JPzW+bgYaGHCa+P0bsuPSi9ZWfAUCSPGJJf90vg+IIgFkfgO1kTL
-	4XtQLN7EOFgwQ9G3JP5brJJoG1cBdY4lmm9x0mNW2yk0PnJSsa3uZ8v3jE3+KNyKFmi6GqsRCyX
-	VFFw8GtIbttzaWnN/YTZCIgKh7wW76mYAnxAFtegf5BbEoneRQE5b9A/ettXbfQCTclroiV5d2G
-	y0qJ0DImVAV7lscWnc8Y+3csqDZMyBdK2ZCs2GZ75AjTjyw+pHJB3F6ZNTUOJgyPI7nYqzc+tm8
-	ClMPHplGcTS+y6isQ2se3oCdtX0Tb+mxuzNBtDnEXrqmdw+OwqkEbeRHi45srOXY/Q48z9AECse
-	ubmpoERn5jjdPxNlyMEZnRlh87yXsg6KwyQSBt5oPL7rACB2pzGW5xYqPmJS4rVLvajF3qJNwhb
-	ng0=
-X-Received: by 2002:a53:cec1:0:b0:679:b519:beac with SMTP id 956f58d0204a3-67a4544df2emr2738981d50.55.1793019425415;
-        Mon, 26 Oct 2026 05:57:05 -0700 (PDT)
-Received: from cobra01.cs.unc.edu (cobra01.cs.unc.edu. [152.2.130.143])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67a462a2e74sm3315307d50.18.2026.10.26.05.57.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 05:57:05 -0700 (PDT)
-From: Hengyu Liang <hengyul@cs.unc.edu>
-To: gnault@redhat.com
-Cc: netdev@vger.kernel.org,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	jchapman@katalix.com,
-	tparkin@katalix.com
-Subject: Re: [PATCH net] l2tp: only return sessions of the given tunnel in l2tp_session_get()
-Date: Mon, 26 Oct 2026 08:57:02 -0400
-Message-ID: <20261026125702.3101778-1-hengyul@cs.unc.edu>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <at8-2mFyrmPxfu29@debian>
-References: <at8-2mFyrmPxfu29@debian>
+	dkim=pass (2048-bit key, unprotected) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=lEllKBMD;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=+4U4xjdp
+From: John Ogness <john.ogness@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1793020190;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gp7VP+Sir6E2FHA7V5/S6LXflY3MgarH/fCbeQrsJrQ=;
+	b=lEllKBMD3j5AQU/ymi7dm7LBf39LKBdUW9xtN8TBEtZvAYnfcvwkqiztMVErHzfYYeuRng
+	H8EV5vmChV19qJkho0qbv1IJo7kNjWDDEsAtJ9O5wY+rmB8KD/sdqc7xd3+Q6QZyAnCbmR
+	ZH16OxpixeOqpqzRlxxJbNJP/xEmgkP2sH/0t356l0msaFNMunG8+NLRAX1jD+L+S1nQtf
+	4pYh3iepK6ROHv/C+LEplHEcwkICKNeXFBlU8i+gLI7sLwKYqCx8iy20hn9cwlGw9g2CCL
+	UAD0+p6GkozsR+0WlC8Iy1mbQINaCVc1nyxnrLfw7Ep6IvnB6+q0t/L74bGQYw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1793020190;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gp7VP+Sir6E2FHA7V5/S6LXflY3MgarH/fCbeQrsJrQ=;
+	b=+4U4xjdp9taVuECH0lINOoZa2iar2hBEGD++XtCM9eGKm7CGVdxYLsiGenWM4pnhlh07Sg
+	YrXXmtV8pZ9UBwDg==
+To: Breno Leitao <leitao@debian.org>, chris@chrisdown.name
+Cc: Sam Crossley <samuelcrossley@gmail.com>, Thomas Gleixner
+ <tglx@kernel.org>, Petr Mladek <pmladek@suse.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Jonathan
+ Corbet <corbet@lwn.net>, Paolo Abeni <pabeni@redhat.com>, Randy Dunlap
+ <rdunlap@infradead.org>, Sergey Senozhatsky <senozhatsky@chromium.org>,
+ Shuah Khan <skhan@linuxfoundation.org>, Simon Horman <horms@kernel.org>,
+ Steven Rostedt <rostedt@goodmis.org>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH RFC 0/2] netconsole: allow replaying the printk buffer
+ on demand
+In-Reply-To: <at84qygscue8crQi@gmail.com>
+References: <20261024-netcons-replay-upstream-v1-0-9613f38496e5@gmail.com>
+ <87fqxskdpl.fsf@jogness.linutronix.de> <at84qygscue8crQi@gmail.com>
+Date: Mon, 26 Oct 2026 14:15:49 +0106
+Message-ID: <87a4o0k3qa.fsf@jogness.linutronix.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,28 +80,34 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Hi Guillaume,
+On 2026-10-26, Breno Leitao <leitao@debian.org> wrote:
+>> In the per-console loglevel series Chris Down introduces [2]
+>> /sys/class/console/ to sysfs. This is where we would put all the
+>> upcoming per-console knobs. I would expect a replay trigger would fit
+>> well there.
+>
+> That makes sense from a design perspective. Thanks for the direction.
+>
+> So the next step would be to add a basic /sys/class/console/, similar to
+> [2], and put a `replay` entry in it. 
+>
+>
+> That would be about three patches:
+>
+>   1. Create /sys/class/console/, similar to [2] but without any loglevel
+>      handling. cdown can build on it when respinning the loglevel series.
+>   2. Add the per-console replay helper, similar to [3].
+>   3. Add the first entry (/sys/class/console/replay), which triggers the
+>      helper from patch 2.
+>
+> Is that what you have in mind?
 
-Thanks for looking at this.
+Yes. But perhaps someone else wants to provide some feedback about this?
 
-I wasn't sure about the intended semantics. l2tp.rst says "L2TPv3
-session ids are unique across all tunnels", but it also says Linux
-allows the same ID in different tunnels, told apart by sk, and
-l2tp_session_register() still allows that for UDP encap.
+John
 
-The patch only changes callers of l2tp_session_get() that pass a
-tunnel_id, and the result differs from v6.8:
-
- - pppol2tp_connect() for session 5 in tunnel 2 fails with EEXIST if
-   tunnel 1 (another UDP socket) already has a connected session 5.
- - "ip l2tp del session tunnel_id 4 session_id 7" deletes tunnel 3's
-   session 7 when only tunnel 3 has it. On v6.8 it fails. l2tp.rst
-   describes CONN_ID there as the parent tunnel of the session.
-
-Am I misreading the documentation, is the documentation out of date, or
-is this behaviour not intended?
-
-Thanks,
-Hengyu
+>> [2] https://lore.kernel.org/lkml/84b8d91693e56f6026271bc40553bcb6657ab24d.1764272407.git.chris@chrisdown.name/
+>
+> [3] https://lore.kernel.org/all/20261024-netcons-replay-upstream-v1-1-9613f38496e5@gmail.com/
