@@ -1,66 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.51
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793007028;
-	b=gf39JlO6Pa10khMfbBb8wcgW4WxRttVqAzd2fpuCBLhhlSwT4hg4sVutU2gepF2YhD34
-	 7xLq1XcclUjZU2XckCbPJ/v+Q5GwISfX3xh1I4q15rC/wKW9BcjuTgMJpfMlZD4FcbF6g
-	 F8PdoQS4ui4fHGOdqc12qTID2oecWRr5lt6jARdx67QF8vBhTqYLknOP04UnBNfwI423o
-	 Y9IRDq999kpF0dkES9sXGPktp9vPsSIvcF+EtbrKBdK2tTtPqTlrM3fCfcdFE6fKXLhaT
-	 qHbJ6OsTx7Y8zdt12P07aKIrDbDpzkS9/m8Q6PW6C/DftJkHMBjfhQ1T7kuK9ZIv7YA==
+	t=1793007032;
+	b=uAgx5wYlugmcP24JsIjG4fNP2qljj9JqJDgFpAR+MoMfYis+/r1EFIEsSxS6e68DKXXP
+	 l4UDSxtQW6UkpIQR2nZUTimdDoxbTd9o84O58c6pr4AVZpASRKSoOGmYkXRLZ0xbOd/8N
+	 lrlba8QlJ90eq1gW1N9ZaXG2XVzPuZDnMoa1pp771lkwXtasFBDTbfItbMuK83br+GSXK
+	 QP6ImeKQhJAPI5Ta7I/tKH1ut1G791EjFcqkfBb11jXtRr5K6NGhOvDFliWCbe13pTlSU
+	 c6N51Yvkz4X+sl839t2Vbh4roykTWzgCsx7gC0tZ3z+6LwoiavpP8+6KKk3UeyFh6yQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793007028;
-	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=y6qo0wj0rRIS2eApjViaUPtZwXU1dz3SCYfMj/k5mxQ=;
-	b=R3AHILok+gZldAWwJYAWWdl2wro0IGw/5dgZAexWtvEIYea91Zo1So1JDINsSQBLJUww
-	 cRKeZvdhy701Zqq2o6hjwobLtu69OXdUaLsMLXSUGuNOTWea7BQ5GEuZZmnDMiqwksH13
-	 zswSOzP5nCAcp0/v+rK1+8nDbmsbLOd1vpbtmML6Y0AfY6hp2enzOC4B1Rh3avni/gbOW
-	 ZM66olfzzGwXMvEYxKBtiTTPfSio00MeF7owq05nEScoL/2Zyn/WmR1RisSWustAKFyf9
-	 COvR+yxgZos68Kp9WGrMoAKV3+D9dPEoxP4hFJr5xjKfOX559pUdT4x6b185OMNnalA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793007032;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
+	b=YxQkmde9XGQzPUMvFq5nejOQr86vQvET5g8y93UYOfA3dq29BUYdcKjBVjv9QdDQ4e1j
+	 mrFl5anTx0xNkA6zFhiXp3rmHv1ssDgG+gUqPz28XEKw31+mQaeGQcZudHZqZJu5cjl1e
+	 JIlDjoJfRbTtA/xdyNM7Fk3rRWYX7aiZNpLiuR0Ea+2cny90WirGGPVCPZAQ1ZeZPtW26
+	 vASjt0ipVNZdvpOCIl7WMCky7x+omdlopNDd5mRoIGtz14lqNRwsHr0VGEe/6Onyih3Ec
+	 6Z3hcDyqKMyxOLc6P7ZZAVR6ReF9e+iPxNyXrvkFbYwIoifo+cqUGaqZJUzum9OvbgQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=xiaopeng.com;
-	spf=pass smtp.mailfrom=xiaopeng.com;
-	dkim=pass header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=Sv598OjS;
-	arc=none smtp.remote-ip=115.124.28.51
-Received: from out28-51.mail.aliyun.com (out28-51.mail.aliyun.com [115.124.28.51])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Vv77looW;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17530606A338;
-	Mon, 26 Oct 2026 09:30:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 17530606A338
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C724606A31D;
+	Mon, 26 Oct 2026 09:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=Sv598OjS
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xiaopeng.com; s=default;
-	t=1793007017; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=y6qo0wj0rRIS2eApjViaUPtZwXU1dz3SCYfMj/k5mxQ=;
-	b=Sv598OjSX6xrXopGjy3ecqKwmgWUSFXNyqKKDJgf50KPfpUNXHy0vQstz9lv93qqAoewHXQwBnmLiFPR26bJwN7DJLGaiLz11LlxiM/fdApDne/m/zV5/A4j+IiyaBlMyIliXfah9ZO3LU6n9XAO9Wt/4P/QDtfWvAWb/4DxqOQ=
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.08556221|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_news_journal|0.0370853-0.000298199-0.962617;FP=6180435180378463291|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam011083032240;MF=fangxy@xiaopeng.com;NM=1;PH=DS;RN=12;RT=12;SR=0;TI=SMTPD_---.jpm1zZP_1793007015;
-Received: from localhost.localdomain(mailfrom:fangxy@xiaopeng.com fp:SMTPD_---.jpm1zZP_1793007015 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Mon, 26 Oct 2026 17:30:16 +0800
-From: Fang Xieyan <fangxy@xiaopeng.com>
-To: netdev-bot+sinfo@kernel.org
-Cc: jhs@mojatatu.com,
-	jiri@resnulli.us,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	eyal.birger@gmail.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	liuwb@xiaopeng.com
-Subject: Re: [PATCH] net: sched: em_ipt: validate hook value from netlink
-Date: Mon, 26 Oct 2026 17:30:15 +0800
-Message-ID: <20261026093015.49377-1-fangxy@xiaopeng.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20261026090717.41597-1-fangxy@xiaopeng.com>
-References: <20261026090717.41597-1-fangxy@xiaopeng.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Vv77looW
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 024C91F031E8;
+	Mon, 26 Oct 2026 09:30:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793007031;
+	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Vv77looWRTbHe5XHvAcRG+ugZWwAKh/iEVebYHous0O9JgfNQ14FXYgG2Hm2Ehh5q
+	 +0/uUN8Q3g6OZI1OWJZ/ovYsOrRW+uBaJZoEcxQ0TW6hHTSETP1eqQl6GTwnCl6Q4n
+	 93locO4oryXH9JjVPJz6F89rmNwjs0R5j3VcKh+8GJIFONuwJjFzfJ0s2udneMUj9D
+	 ZeTUPaq0V9+xA3jKa1j8ipGZcqvAetgk4820v9p4ZoqROPcErVbxvPhAux+VZip7jY
+	 1pRFd+RkoPYnHdyQepGIWYOh8hZNUk8k61iZb9zEzuy4r5KIzIPGMctQ5cD7hQnqTN
+	 4CUVEKDI/gkyg==
+From: netdev-bot+sinfo@kernel.org
+To: Vikas Gupta <vikas.gupta@broadcom.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ bhargava.marreddy@broadcom.com, rahul-rg.gupta@broadcom.com,
+ vsrama-krishna.nemani@broadcom.com, rajashekar.hudumula@broadcom.com,
+ dharmender.garg@broadcom.com, ajit.khaparde@broadcom.com
+Subject: Re: [PATCH net v3 0/2] bnge fixes
+Date: Mon, 26 Oct 2026 09:30:30 +0000
+Message-ID: <179300703050.3327.1854487549237861268@kernel.org>
+In-Reply-To: <20261026092757.9168-1-vikas.gupta@broadcom.com>
+References: <20261026092757.9168-1-vikas.gupta@broadcom.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,37 +65,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-Hi,
+Hi!
 
-Thanks for the automated review. Here's the additional information:
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-**How the issue was discovered:**
-Identified through automated security scanning tools during internal 
-security research, followed by manual code review to confirm the 
-vulnerability and assess its impact.
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-**Whether the issue was actually triggered:**
-Yes, successfully reproduced using QEMU/KVM with a kernel built with 
-CONFIG_UBSAN=y, CONFIG_UBSAN_TRAP=y, and CONFIG_UBSAN_SHIFT=y.
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
-**Symptoms:**
-The reproducer creates a TC basic filter with em_ipt match using addrtype 
-revision 1 and hook value 42 (out of valid NF_INET_* range 0-4). This 
-triggers the following kernel Oops in check_match():
+ - What hardware the change was tested on. For driver fixes please
+   mention the device (and if relevant firmware version) used for
+   testing, or say that the change was not tested on real hardware.
 
-  Oops: invalid opcode: 0000 [#1] SMP NOPTI
-  RIP: 0010:check_match.cold+0x0/0x2
-  RCX: 000000000000002a    <- 0x2a = 42 (the hook value from PoC)
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-Disassembly confirms the ud2 trap instruction at check_match.cold+0x0 
-corresponds to the UBSAN check for the shift operation "1 << im->hook".
-
-Without UBSAN, on x86 the shift instruction may mask the count to low 
-5 bits, yielding hook_mask = 0x400, which does not overlap the standard 
-hook bits checked by the addrtype interface-limit validation.
-
-Best regards,
-Fang Xieyan
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
