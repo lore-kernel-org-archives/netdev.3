@@ -1,59 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.70.43.99
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793005827;
-	b=pXA1Er3dLURuGdhdbcl2bVRztkuM0Frv13HD6z9G8HLT3KwBy2ujPNpXMEVm0gYTB21/
-	 RWqoiXNon9xJ2E4u2Jea3xrtE/9QeYnXSKW5gVPY2HcComte42RIcdBGIWXusyxcCv+H7
-	 FZmWySVwNoOas7hJUBo9w7hAa5o/0dLacSBxS9AaNpeLJiSFXEQVo3rskrPI6HcGlfT0H
-	 g4WFR0ukuknfHf6AH9/aUIHk9w1o32AJlzAKq49WFf1np1ihAdea8xvo9xbpc1HGtGhqB
-	 w8gZU5QeOmuRacTdWX71OZK6srhMH/UTZJLjO43Y8MbgaOHVH9BCKe8PHWlLMPpPQOA==
+	t=1793006180;
+	b=lMFlA1P2cDZajnVbsXDX29QSzwp05grple3T01x6glNLjHjPij2BiYGtrNwEEL2TqkFm
+	 /V6NsY4LdCWO7P4+La9Rz92IM5BSs3DsPKgvV89juCriYN7DSAmxqIb6QNmJbN/LbFFGp
+	 wXazy7pEwaw2O1QuD9b4tIemk8zeF8QOvmTYEM7iBNh8h99I0lYguLIAf62RlfnKfEiqU
+	 mA+2n5VObOQ8xEFcdmlN79uGFuhdYD+vDG5rO0SmkjJZzIuP0+sx0/iQ+g2rR18AbB8s2
+	 XG/AK4GmIzl8j/OLqS8IZ8q33mrVw5b97fs5k8QUsWEfm6zJ1nqjpy8fftGFW1vK6eA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793005827;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	b=VwDKz4B6hs/XgGCXZeJOjjKLX6NrBM8Mcc1J6UKkC9XgpnKO5FTcJk1h5bdQJwzAP1AM
-	 yuIt55xt6dK3z3NjWm9QRAcLAfLGLhix8EKxZoFiyIJrrfylPabAHNZUDS5kP+yogNYWc
-	 kc9tD6Kj1dYvV1H0GsRhxSPFKpYSRK5Qs8GUl+sXzrmPrHpt3+bAHcHscDTD7YE2lGFMq
-	 Hs6VvAJD40XMxMHSV/pV76IAoZnB4v8ABslBOYoAa89mA/wiBP3llsf1BZWn0a6C7H5C1
-	 h3gtRTL3GtU7ZUk20Np4k35broPkaH/oycDcUO5zRJBae2UNBO7ZxRDY5EkpifykGKA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793006180;
+	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
+	 In-Reply-To:References:Feedback-ID:X-Pm-Message-ID:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=7235CD4wqvIiye3CJAU8GfXs5OMk5RTaBUQJsuNXywk=;
+	b=yus4A08kCKH2xrJpo2hwyQ3nrvWbLoj7GL0D5R1NHMJFPt6uxzOyw9UU3zeBU8wD8YTj
+	 GFol+XNKXfVvAL/PrQBqWAfmio4Az+N9RLBZxgsXIK0nozjTS7SLyV7VVAGx+yPdtEG4t
+	 lo/KDtKLYGXWz/gx9XHE3V/1QFuu9FZQ1mLePaJUKjcuc+GJ6P/9m9IdTBFDODHMosS2v
+	 kFrv19XPm8dZdqs1gnwLn94tX5ScGHldxpDR4+ly0au6aCMlZK0Vzlt9eapgEC+4yE2Nk
+	 EJ3Wg/7sHC+9eo7j1Al+CAbrduNCB1sH61MeVtyLFDu3rg3Dyakg6Fq47yCsKH2ptyw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c1HMM5BG;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=1g4.org;
+	spf=pass smtp.mailfrom=1g4.org;
+	dkim=pass header.d=1g4.org header.i=@1g4.org header.a=rsa-sha256 header.s=protonmail header.b=GRxeK2Zz;
+	arc=none smtp.remote-ip=185.70.43.99
+Received: from mail-4399.protonmail.ch (mail-4399.protonmail.ch [185.70.43.99])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A29606A31F;
-	Mon, 26 Oct 2026 09:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FED606A320
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 09:16:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 91FED606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c1HMM5BG
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75C421F01825;
-	Mon, 26 Oct 2026 09:10:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793005827;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=c1HMM5BGJJ/MmGFgyWTYHL8xitMNPkUKsYvI7PLJ1x5yo5/E+VPMjafw4QMv9MVbh
-	 RYzAdYtPhEsu5jHEYcnXHCsGZ+5nm3IJ8P+F1aUYS20nnk0g/2Zsz2+AML+CRlSVWs
-	 iT8RbmQYCkC9nB76R2iw0NWlMDldJ0DVJC7qiwDDCDXCCrk8qYDA0DIggqiUR+r6a+
-	 QwYbeZl7LAf/GkMUcouQTpQgoQIPqULFhDy90lDBr1HwQQyqDIYj0bcZSm1Di/Xob6
-	 h4zqjLboj7vQwbJTmOJRsUu+FyVsaU5SGpe921NqyYKC029zlUwH0EPSrkIZt01ozK
-	 lGafvB/dWw2Xw==
-From: netdev-bot+sinfo@kernel.org
-To: Fang Xieyan <fangxy@xiaopeng.com>
-Cc: jhs@mojatatu.com, jiri@resnulli.us, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- eyal.birger@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- liuwb@xiaopeng.com, zhugl3@xiaopeng.com
-Subject: Re: [PATCH] net: sched: em_ipt: validate hook value from netlink
-Date: Mon, 26 Oct 2026 09:10:25 +0000
-Message-ID: <179300582598.3327.5117567372202949701@kernel.org>
-In-Reply-To: <20261026090717.41597-1-fangxy@xiaopeng.com>
-References: <20261026090717.41597-1-fangxy@xiaopeng.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key, unprotected) header.d=1g4.org header.i=@1g4.org header.a=rsa-sha256 header.s=protonmail header.b=GRxeK2Zz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
+	s=protonmail; t=1793006177; x=1793265377;
+	bh=7235CD4wqvIiye3CJAU8GfXs5OMk5RTaBUQJsuNXywk=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=GRxeK2ZzxrecvFfI7aBG8Q7p17VGKybNmD9OjXLNnTn3rIb0uiooltYWkE3pMFShI
+	 y8sATr8/nVPBpARccFC8ROXDIuG6NhzPd2wyXquc9FdUIYPn68ta0z2JCn38u/3hml
+	 ABUfXD0U+Nxu5cCRo1fWaMbBdfvyfb8THvc88oDnCvBj4B7aksvihJq28EtLWAbyyr
+	 wP344Ux9jcx/u6IXni7//2D0oJJUbhfS6+2CGAvhHb5tWWr9nxBfdZCyxN6TX5obGm
+	 m87RZ/ywdBGFKxG+5MZEz/hw+UGIXMsBfbArEsedeA9ZZVdSAo0bdfQ+E/HKGlX8sR
+	 RPrekvep89v3Q==
+Date: Mon, 26 Oct 2026 09:16:12 +0000
+To: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com
+From: Paul Moses <p@1g4.org>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, aleksandr.loktionov@intel.com, chwee.lin.choong@intel.com, faizal.abdul.rahim@linux.intel.com, horms@kernel.org, vinicius.gomes@intel.com, sasha.neftin@intel.com, matthew.vick@intel.com, aduyck@mirantis.com
+Subject: [PATCH net 2/3] igc: prepare TSO and checksum offloads before TX timestamps
+Message-ID: <20261026091549.605810-2-p@1g4.org>
+In-Reply-To: <20261026091549.605810-1-p@1g4.org>
+References: <20261026091549.605810-1-p@1g4.org>
+Feedback-ID: 8253658:user:proton
+X-Pm-Message-ID: d27c8f97c5a8bd6919b770c2879e25d6acf1a237
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,25 +64,63 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi!
+igc_request_tx_tstamp() takes an extra skb reference before transmit
+preparation. For GSO packets, igc_tso() calls skb_cow_head(), which can
+reach pskb_expand_head() with a shared skb when the header is cloned.
+Commit c7d8bc3dd511 ("net: skbuff: don't BUG() on bad arguments to
+pskb_expand_head()") replaced the BUG_ON() with -EINVAL, causing TSO
+preparation to fail and the packet to be dropped.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+For non-GSO packets with CHECKSUM_PARTIAL, igc_tx_csum() falls back to
+skb_checksum_help() for unsupported checksum offsets. This can also
+reach pskb_expand_head() through skb_ensure_writable(). igc_tx_csum()
+ignores the error, allowing transmission to continue without completing
+the checksum.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+Move TSO and checksum preparation before TX timestamp reservation so
+the extra skb reference cannot interfere with either operation.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+Fixes: 2c344ae24501 ("igc: Add support for TX timestamping")
+Fixes: f38b782dccab ("igc: Add support for TSO")
+Signed-off-by: Paul Moses <p@1g4.org>
+---
+ drivers/net/ethernet/intel/igc/igc_main.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethern=
+et/intel/igc/igc_main.c
+index f1bf4e462a51..cd4c9815fca7 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -1678,6 +1678,12 @@ static netdev_tx_t igc_xmit_frame_ring(struct sk_buf=
+f *skb,
+ =09=09=09goto out_drop;
+ =09}
+=20
++=09tso =3D igc_tso(tx_ring, first, launch_time, first_flag, &hdr_len);
++=09if (tso < 0)
++=09=09goto out_drop;
++=09else if (!tso)
++=09=09igc_tx_csum(tx_ring, first, launch_time, first_flag);
++
+ =09if (unlikely(test_bit(IGC_RING_FLAG_TX_HWTSTAMP, &tx_ring->flags) &&
+ =09=09     skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP)) {
+ =09=09unsigned long flags;
+@@ -1697,12 +1703,6 @@ static netdev_tx_t igc_xmit_frame_ring(struct sk_buf=
+f *skb,
+ =09=09spin_unlock_irqrestore(&adapter->ptp_tx_lock, flags);
+ =09}
+=20
+-=09tso =3D igc_tso(tx_ring, first, launch_time, first_flag, &hdr_len);
+-=09if (tso < 0)
+-=09=09goto out_drop;
+-=09else if (!tso)
+-=09=09igc_tx_csum(tx_ring, first, launch_time, first_flag);
+-
+ =09igc_tx_map(tx_ring, first, hdr_len);
+=20
+ =09return NETDEV_TX_OK;
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
