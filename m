@@ -1,107 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=173.37.86.80
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793028035;
-	b=nAVF6FwNt4olvxY5eL4gDyu2XeocvFWA5/iw7adEjP5hWtQ+EvJ88e/5u0IUwoI1fmeM
-	 Xf3nxNb4Ps3RC6SCh8MyJpq2FGwos1wOsq+vqhiiQRHmWkebVwnuw5u3iyL2WK7KgIvVJ
-	 bYGzj19B37k+3vftHGRs3OwU0DpBm8NxeqPxR+dHpNB9T8jBojzoQJ2Gjpme18NYhuSlM
-	 PQLrxyX0hOsJBqGFuUx82VVOMXsnd+0SXOzgnmUrKI5F/PP2eqs8IYdQJTbMUL+PZpWY7
-	 qem4LxN9Vi+zcKLKfFFKwk0MKYW1HJasvNkEquHrPYj2xYpgU1Y26J1KpngmuhVWxBQ==
+	t=1793028355;
+	b=UxAiwZiVakUSkpr36w7ctyzYa4rS+Ct+b8p3PADJ9lSH1mmL5mYB/eJ805l3qdLeZRuj
+	 eruDVms+Ecf64PGr6f1+78G05QLeQCZgjSFtyrgUlzCJHEkfh1Jg/HSPCGjr/ciwJtSaV
+	 ohZYbMFiko7cTEFgu2wM9w6jAXsjMAxPjkEa1uMQA7jP76+gkWekk2ymC5YJ/NQgTHmL1
+	 Rp0xy91kPxMczPKZCxSV5PemCnxyB20SAfPShyoEMJuMe8FMXnDIB3/rIWK4S1FPNfGIh
+	 IcIPnqYBpO01+5tnGSlKcfe80vaE7pjd5mFzkS33+2tVStdPs+qMPNJ4nWh5sV+XI0Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793028035;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IPAS-Result:IronPort-Data:IronPort-HdrOrdr:X-Talos-CUID:
-	 X-Talos-MUID:X-IronPort-Anti-Spam-Filtered:X-IronPort-AV:Received:
-	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
-	 References:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Outbound-Client-TLS:X-Outbound-SMTP-Client:X-Outbound-Node;
-	bh=In7lRTD+K1+ZleMq6bwEmUr20w7Os9hDuYuQOUUuA/k=;
-	b=s2EPUe+MOBStr7P0eAoDc8X3s9JSbOAl5aVwLDaTx+C8bstlcCuydFyW/pSq/6P0ZJw2
-	 5zkluBg2ILK2EjzrNjxCFWv+Bvt5pMcL6dfingGVBL1Mg0WZqDlTdgpsRT0C4XfvpoiSx
-	 qCYZ3rtwozRuD6fHu9dgnKrEMSOa7Otikr6DYF0T8uUMPGgdqe6ftGX/h6QWxkwuwSAxf
-	 Q3sCPpGEkPOB8llX3Oj+Xzt61fckyrOkHgzD9YY66EZYPGmFfC46tQ0+uTXU9MSaqwMUB
-	 aodl6wY59N/DBA6AAXFkFX4VIgHnwopUP8qLhy2oco3Quf35tjPCK0egBWiqW44Howw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793028355;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=CNFBGDJ4lRw4KZfC6OFQXTaZCLHztzABiXB2jYadhik=;
+	b=iEWHkYDjRdJyW+nAwOjHySjz2jQvCGMQzLy7+FhWhVeqanR/0/GqMCJDpoW9P326Tire
+	 pwpMEFhCcROX96idyKnEFhDjgcO5IIx2Ml/mGQxNwvUB2rxBWlJVocohMB1KWctWJjdYg
+	 nP1tI8coZ75W8LX0lF58/B2HLSUq8bEVnFPQCOWGILDxcXlJ54bVsqkARegjIx+Y+8SoY
+	 BSF3kqeb2fdMBT59Qr7eTaj9r/oeWl/D3Mclmr0ifKk/5yNwKhPC3fO4hTieJXBXyO21H
+	 dZIaVGr6CV2kmd5295kDQ9zXAWztzRDd16A9/bmIJEi48YzyEGZV+rDB6fmeSe/xZQA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cisco.com;
-	spf=pass smtp.mailfrom=cisco.com;
-	dkim=pass header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport01 header.b=OEiJFe24;
-	arc=none smtp.remote-ip=173.37.86.80
-Received: from rcdn-iport-9.cisco.com (rcdn-iport-9.cisco.com [173.37.86.80])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ThUDlMku;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EEC0606A324
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 15:20:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9EEC0606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D8C606A33E;
+	Mon, 26 Oct 2026 15:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport01 header.b=OEiJFe24
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=4177; q=dns/txt;
-  s=iport01; t=1793028034; x=1794237634;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=In7lRTD+K1+ZleMq6bwEmUr20w7Os9hDuYuQOUUuA/k=;
-  b=OEiJFe24Irn+Yt+wFJDOtMUrWYylm7K2H/dqi+dsZi9mGBJ+iuqpoQ4T
-   M88k5h+936/4aBXHjdVLzM3YxMAgUGll2FFtszJzR1JKWBYBrQAhY1/+H
-   AyMMG+gAG0NdsNKXphJOcLI3w2NbxaL0HEePX3Dan9pKvEZIVPjeUDJ9a
-   R42TKILYphrjW+EM9d/wIjtOqIv+3AcATabDT5FkqpAr7G/objsz32MBY
-   q0ufN+9oR+mV8lrsy0fN4RgRHpYLrBDXoxWT3HygjpB0RyIIcjzxbyq9z
-   MiE/5/yzuNjipuo39U+A/jABdmhFHRZNf11cfgMz6qSJ1yLLGgkSaauUK
-   w==;
-X-CSE-ConnectionGUID: I41JZ/8eQzS3BYaoAxZniw==
-X-CSE-MsgGUID: spunAW8HRUSBpuZi5hV81A==
-X-IPAS-Result: =?us-ascii?q?A0AnAACfbt9q/5P/Ja1QChwBAgIBBwEUAQQEAYF9BwEMA?=
- =?us-ascii?q?YIXghRDjTuJWQOBE5A3jFIUgWoPAQEBD1EEAQGFAQICAo4XAiY0CQ4BAgQDA?=
- =?us-ascii?q?gMBAQEBAQEBAQEBAQEKAQEFAQEBAgEHBYEOE4ZckBMBAQECATIBBz8FCwtGV?=
- =?us-ascii?q?oMbgk4nA7YBeIE0gQGEftlLgXQVgTgBhXGCbQGFA3aEfScbgUlEgRQBMoJBO?=
- =?us-ascii?q?D6EFgkLhl4EgiKBDI4iiBFICngcA1ksAVUTDQoLBwWBJUMDNRIqFSNLBS0dg?=
- =?us-ascii?q?SMhHRcRHlgbBgUSICpBQ1t1KmuBB12BKylgAQIfRi0VgXYCglGBI10CAUlBD?=
- =?us-ascii?q?gdFUwklQxJHJCIIEgkBExouC4EaNTwJJkEVDGQIAxoFGiYCIAgCCwIMeygRE?=
- =?us-ascii?q?BMiDRgNSBEsNxUZBD5uB5NYBgEtQwINHxAcIgkwJgEzLg8IAQYjJRUGBAELH?=
- =?us-ascii?q?ywXBZI+IpJIgTWfWoQogWaILJdkM4QElBeSVJkIo1YWBg8MTYRpgWg8gVkzG?=
- =?us-ascii?q?ggbFYMjUhkPji4WgRQBAtAJJ28CBwIHDgMLkWoPFweBTwEB?=
-IronPort-Data: A9a23:DC4uHKDL7tmzaRVW/27iw5YqxClBgxIJ4kV8jS/XYbTApG9x0WNWm
- DAdUDvQPv6DMTfwfYhyaITkoUMB75aAx4BmOVdlrnsFo1CmBibm6XV1Cm+qYkt+++WaFBoPA
- /02M4eGcYZsCCCM/n9BC5C5xVFkz6aEW7HgP+DNPyF1VGdMRTwo4f5Zs7ZRbrVA357jXGthh
- fuo+5eBYQf/hWcsWo4pw/vrRC1H7ayaVAww5jTSVdgT1HfCmn8cCo4oJK3ZBxPQXolOE+emc
- P3Ixbe/83mx109F5gSNy+uTnuUiG9Y+DCDW4pZkc/HKbitq+kTe5p0G2M80Mi+7vdkmc+dZk
- 72hvbToIesg0zaldO41C3G0GAkmVUFKFSOuzXWX6aSuI0P6n3TE4qk3LnNxbYAh6N0sK1BH8
- tUIGjYMcUXW7w626OrTpuhEnM8vKozveYgYoHwllGmfBvc9SpeFSKLPjTNa9G5v3YYVQrCEO
- pdfMGYwBPjDS0Un1lM/E5sinfyohXnXeDxDo1XTrq0yi4TW5FEqgeS9YYSJK7RmQ+1Ohluej
- 12W317EOTsCKe6elDq7oiuF07qncSTTHdh6+KeD3vhnnFGe2EQNBxAME1i2u/+0jgi5Qd03F
- qAP0jAloa538AmgScPwGkTg5nWFpRUbHdFXFoXW9T2w90Yd2C7BbkBsc9KLQIZOWBMeLdDy6
- mK0og==
-IronPort-HdrOrdr: A9a23:xugZx63c0Ik54rFHzQ5rhAqjBJQkLtp133Aq2lEZdPWaSKClfq
- eV7ZMmPH7P+VIssR4b9+xoVJPrfZqYz+8X3WBzB8bGYOCFggqVxehZhOOI/9SjIVydygc378
- hdmsZFZeEYdWIbse/KpC+lDt0n3N6LtIqshevY0jNRaDsCUdAH0++8YTzranGfg2J9dOMEKK
- Y=
-X-Talos-CUID: =?us-ascii?q?9a23=3A5eLm42vEgX1UycmCOHTI4myy6IsELiT//jCALna?=
- =?us-ascii?q?qMj1DebSSYE+i/qJ7xp8=3D?=
-X-Talos-MUID: 9a23:TpaFbQQOmHs+yvAQRXT3nCxkHfg4w56TM2oVjKcH5sm6ZXVZbmI=
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-AV: E=Sophos;i="6.27,179,1787011200"; 
-   d="scan'208";a="539489649"
-Received: from rcdn-l-core-10.cisco.com ([173.37.255.147])
-  by rcdn-iport-9.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 26 Oct 2026 15:20:27 +0000
-Received: from satishkh-l-mj0bbv6x.cisco.com (unknown [10.25.129.52])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by rcdn-l-core-10.cisco.com (Postfix) with ESMTPS id 661F618000243;
-	Mon, 26 Oct 2026 15:20:27 +0000 (GMT)
-From: Satish Kharat <satishkh@cisco.com>
-To: netdev@vger.kernel.org
-Cc: sebaddel@cisco.com,
-	aradhana@cisco.com,
-	rfaucett@cisco.com,
-	satishkh@cisco.com
-Subject: Re: [PATCH net v2 0/2] enic: retain admin DMA resources and identify V2 VFs
-Date: Mon, 26 Oct 2026 08:20:25 -0700
-Message-ID: <179302794669.3.2902500839140961922.enic-admin-net-v3-review-response@cisco.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261022-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v2-0-8db19b4a714e@cisco.com>
-References: <20261022-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v2-0-8db19b4a714e@cisco.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ThUDlMku
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF371F01829;
+	Mon, 26 Oct 2026 15:25:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793028354;
+	bh=CNFBGDJ4lRw4KZfC6OFQXTaZCLHztzABiXB2jYadhik=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ThUDlMkuaKUppq1WxiJNGhMd30yYxLZhT3KGH+df/JRcsx49VWdxKslg3Mv4K8vNc
+	 +s4hsypV8OzsvXbP0RERx8itQHIRUMaC8ACkz/eg/rS0SwxFKUxPjb8Ea887fIGhB1
+	 Ac599G08ifBiwfcCRZ42n76v3hO3axwJEXID3TOjL+oKcaicaI5yLtP8C317wStCs5
+	 r5oiYfodxqprj5Xc9RXv9T+l2ovrjyzvxT5D6coIORdvANoJAYWVgBKzNYg9UB+rRP
+	 4ak7hm0/WqHcVQT8gIivTpFnLvcEeodzDEGguEatazXsjAIYwv8Ek4ww6P+Y2EBsJ4
+	 Qr0GPyIYDBQIA==
+Subject: Re: [PATCH net v3] net: mana: Add support to process throttled EQEs
+From: netdev-bot+sashiko@kernel.org
+To: sahilchandna@linux.microsoft.com
+Cc: haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, kotaranov@microsoft.com, horms@kernel.org,
+ ernis@linux.microsoft.com, gargaditya@linux.microsoft.com,
+ mawasthi@linux.microsoft.com, leitao@debian.org, linux-hyperv@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-rdma@vger.kernel.org, stable@vger.kernel.org
+Date: Mon, 26 Oct 2026 15:25:53 +0000
+Message-ID: <179302835318.3134.6374899091861716214@kernel.org>
+In-Reply-To: <20261022145428.323576-1-sahilchandna@linux.microsoft.com>
+References: <20261022145428.323576-1-sahilchandna@linux.microsoft.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -111,100 +66,218 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8bit
-X-Outbound-Client-TLS: ANONYMOUS;unknown [10.25.129.52];TLSv1.3;TLS_AES_256_GCM_SHA384;256
-X-Outbound-SMTP-Client: 10.25.129.52, [10.25.129.52]
-X-Outbound-Node: rcdn-l-core-10.cisco.com
 
-Thanks for the review. I have completed the audit and prepared v3.
-Below are the changes and the disposition of the remaining findings.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-For patch 1:
+Critical: 0 · High: 1 · Medium: 1 · Low: 1
 
-> All-ones RUNNING reads lead to quarantine and retained allocations.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-An all-ones read means the register is inaccessible; it does not prove
-that previously issued DMA has finished. I am keeping retention rather
-than treating this value as a successful queue stop.
+- [High] Incomplete fix: a throttle EQE never services RDMA (mana_ib)
+  CQs, so the CQ-stall bug the patch claims to fix is still reachable.
+- [Medium] mana_gd_destroy_cq() now calls synchronize_net() for every CQ
+  that was attached to a parent EQ, which is every mana_en TX and RX CQ.
+- [Low] Claimed race: mana_create_txq() and mana_create_rxq() write
+  gc->cq_table[] (mana_en.c:2855, 3181) before netif_napi_add_*() (2860,…
 
-> Admin close and VF unregister can hold RTNL for several seconds.
+--
 
-Agreed. The 500 ms timeout applies to each queue polling pass, so retries
-and mailbox waits can keep RTNL held for several seconds on a failing
-device. V3 keeps this locking to prevent removal from racing with open
-or recovery. Shortening the lock hold needs further review and is not
-addressed here.
+net: mana: Add support to process throttled EQEs
 
-> Keeping bus mastering enabled does not mean a quarantined V2 VF
-> remains usable.
+This patch handles GDMA_EQE_THROTTLE (type 4) events. Each EQ records
+up to two child CQs, and their callbacks are invoked when a throttle EQE
+arrives. It also advertises a new driver capability bit, adds an
+eq_throttle_events ethtool counter, and adds RCU grace period waits to
+the CQ and HWC teardown paths.
 
-Correct. V3 clarifies that keeping bus mastering enabled allows command
-transport and ordinary teardown to continue. A V2 VF whose admin channel
-is quarantined is closed and cannot reopen while that state persists.
+> diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> index 8e9bfc1d6a2ae..d74ed00bb7834 100644
+> --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> @@ -904,6 +904,27 @@ ssize_t mana_gd_read_ring(struct gdma_queue *q, char __user *buf,
+>  	return copied;
+>  }
+>  
+> +static void mana_gd_schedule_eq_cqs(struct gdma_queue *eq)
+> +{
+> +	struct gdma_context *gc = eq->gdma_dev->gdma_context;
+> +	struct gdma_queue *cq;
+> +	u8 i;
+> +
+> +	for (i = 0; i < GDMA_EQ_MAX_CHILD_CQ; i++) {
+> +		cq = rcu_dereference(eq->eq.child_cq[i]);
+> +
+> +		if (!cq)
+> +			continue;
+> +
+> +		if (cq->id >= READ_ONCE(gc->max_num_cqs) ||
+> +		    !gc->cq_table || gc->cq_table[cq->id] != cq)
+> +			continue;
+> +
+> +		if (cq->cq.callback)
+> +			cq->cq.callback(cq->cq.context, cq);
 
-> PF quarantine handling differs between the reset and reopen paths.
+[Severity: Low]
+This may not be reachable today, but is cq_table membership enough to
+show that the CQ is ready for its callback?
 
-Agreed. This is a latent policy inconsistency. PF SR-IOV V2 activation
-is not wired up in the current driver, so this PF quarantine path is
-not currently reachable. PF recovery policy must be reconciled before
-enabling that functionality; I have not added untested PF recovery
-changes to this revision.
+mana_create_txq() and mana_create_rxq() publish the CQ in cq_table
+before they add NAPI. For example, in mana_create_rxq():
 
-> A failed reset/reopen can leave the interface marked up, allowing
-> a later stop to repeat napi_disable() and IRQ cleanup.
+    gc->cq_table[cq->gdma_id] = cq->gdma_cq;
 
-Agreed. This is a real, pre-existing lifecycle issue and remains
-unresolved in v3. Adding dev_close() after the failed reopen would
-immediately invoke the problematic second stop. I will address it
-separately with a lifecycle fix and targeted failure testing.
+    netif_napi_add_weight_locked(ndev, &cq->napi, mana_poll, 1);
 
-> Generic datapath queue-disable failure can leave teardown incomplete.
+If a GDMA_EQE_THROTTLE arrived on the parent EQ in that window, this
+loop would call mana_schedule_napi()->napi_schedule_irqoff() on a
+napi_struct that is not initialized yet.
 
-Agreed. This is also pre-existing, and the new close paths do not
-repair it. Generic queue ownership and cleanup remain outside this
-admin-only series. I am not treating the incomplete cleanup as harmless
-or claiming that this series makes that path safe.
+In mana_alloc_queues() the EQs are freshly created. During the RX
+window, the only other CQ on EQ i is TX CQ i. That CQ carries no
+traffic while port_is_up is still false, so with the throttle semantics
+described in the commit message this looks unreachable. It does depend
+on that ordering, and on the hardware never sending a throttle EQE
+without pending completions.
 
-> A retained BAR reservation does not prevent every possible later
-> owner or re-enumeration path.
+Would it be more robust to publish the cq_table entry only after
+netif_napi_add_*() has run?
 
-Agreed. The reservation blocks ordinary ENIC reprobe while the PCI
-device remains enumerated. It does not prove that DMA stopped or
-preserve IOMMU attachment. Reboot remains the documented recovery;
-remove/rescan, kexec and rebinding to another driver are not claimed
-as supported recovery methods.
+> +	}
+> +}
 
-For patch 2:
+[ ... ]
 
-> A completed CMD_CLOSE should also resolve the earlier statistics
-> DMA target.
+> @@ -1220,25 +1246,49 @@ static void mana_gd_create_cq(const struct gdma_queue_spec *spec,
+>  			      struct gdma_queue *queue)
+>  {
+>  	u32 log2_num_entries = ilog2(spec->queue_size / GDMA_CQE_SIZE);
+> +	struct gdma_queue *parent;
+> +	u8 i;
+>  
+>  	queue->head |= INITIALIZED_OWNER_BIT(log2_num_entries);
+> -	queue->cq.parent = spec->cq.parent_eq;
+> +	parent = spec->cq.parent_eq;
+> +	queue->cq.parent = parent;
+>  	queue->cq.context = spec->cq.context;
+>  	queue->cq.callback = spec->cq.callback;
+> +
+> +	if (!parent)
+> +		return;
+> +
+> +	/* For throttled EQE store the child CQ */
+> +	for (i = 0; i < GDMA_EQ_MAX_CHILD_CQ; i++)
+> +		if (!rcu_access_pointer(parent->eq.child_cq[i])) {
+> +			rcu_assign_pointer(parent->eq.child_cq[i], queue);
+> +			return;
+> +		}
+>  }
 
-Fixed in v3. Both close sites now check DEVCMD2 completion under
-devcmd_lock. Completion of this later command proves that the earlier
-statistics write has finished, including when close returns a firmware
-error. The statistics buffer is therefore no longer retained
-unnecessarily. A timeout or failure before posting leaves it retained.
-Admin queues still require their own successful RUNNING checks.
+[Severity: High]
+Can a throttle EQE leave the mana_ib CQs unserviced?
 
-V3 also fixes the early-notification window. It obtains and validates
-the VF source ID after QP enable while receive interrupts remain
-masked, then enables sends before unmasking. Queued notifications can
-then be processed and acknowledged with the correct source ID, without
-relying on PF retransmission.
+child_cq[] is only filled here, and only when spec->cq.parent_eq is
+set. In practice that covers the mana_en TX/RX CQs and the HWC CQ.
 
-Other changes clear local VF registration state after channel receive
-activity has been drained, correct the core-close ordering comment,
-clarify the poison-state comment, and change the terminal diagnostic
-to cover both admin and statistics DMA.
+The RDMA CQs never get here with a parent:
 
-Both patch boundaries passed build and static checks. Focused VF tests
-verified queued notification delivery and ACK completion, discovery
-failure cleanup, and statistics-buffer cleanup after a completed close.
-The uninstrumented candidate also probed and registered a nonzero VF.
-These were targeted tests, not a new full interoperability run, and
-they did not reproduce a physically failed DMA engine.
+- mana_ib_create_kernel_queue() in drivers/infiniband/hw/mana/main.c
+  builds its spec as below, so parent_eq is NULL:
 
-I will send v3 with these changes.
+    struct gdma_queue_spec spec = {};
 
-pw-bot: cr
+- User CQs from mana_ib_create_queue() never go through
+  mana_gd_create_cq().
+
+- mana_ib_install_cq_cb() only does:
+
+    gc->cq_table[cq->queue.id] = gdma_cq;
+
+The hardware still binds these CQs to GDMA EQs. In
+mana_ib_gd_create_cq():
+
+    req.eq_id = mdev->eqs[cq->comp_vector]->id;
+
+and in mana_ib_create_qp_rss() and mana_ib_create_qp_raw():
+
+    cq_spec.attached_eq = eq->eq->id;
+
+where those EQs are created by mana_ib_cfg_vport() when RDMA owns the
+vport.
+
+These EQs are serviced by mana_gd_intr()->mana_gd_process_eqe(). On a
+GDMA_EQE_THROTTLE, mana_gd_schedule_eq_cqs() walks an all-NULL
+child_cq[], and mana_ib_cq_handler() never runs.
+
+Wouldn't that leave RDMA consumers waiting on comp_handler with
+completions pending? That is the same queue stall the commit message
+describes.
+
+GDMA_DRV_CAP_FLAG_1_THROTTLED_EVENT_QUEUE is added to
+GDMA_DRV_CAP_FLAGS1. mana_gd_verify_vf_version() sends that once for
+the whole device, which mana_en and mana_ib share. If firmware only
+emits type 4 EQEs after this bit is set, does this add a new stall for
+RDMA CQs? If firmware always emits them, is the fix incomplete for
+those EQs?
+
+Separately, once both GDMA_EQ_MAX_CHILD_CQ slots are taken, the loop
+above returns without recording the CQ and without any warning. Many
+RDMA CQs can share one comp_vector EQ, and that seems to be the case
+most likely to fill an EQ and trigger throttling.
+
+Would this need a per-EQ list of CQs, or a walk over every CQ whose
+parent is this EQ, rather than a fixed 2-entry array?
+
+>  
+>  static void mana_gd_destroy_cq(struct gdma_context *gc,
+>  			       struct gdma_queue *queue)
+>  {
+
+[ ... ]
+
+> -	gc->cq_table[id] = NULL;
+> +	/* Wait for irq reader holding the cq */
+> +	if (attached)
+> +		synchronize_net();
+>  }
+
+[Severity: Medium]
+Does this add one RCU grace period per CQ to every port teardown?
+
+Every mana_en TX and RX CQ is attached to a parent EQ, and they are
+destroyed one at a time:
+
+mana_dealloc_queues()
+  mana_destroy_txq()        /* loops over apc->num_queues */
+    mana_deinit_cq()
+      mana_gd_destroy_queue()
+        mana_gd_destroy_cq()
+          synchronize_net()
+
+The same happens for each RX CQ through
+mana_destroy_rxqs()->mana_destroy_rxq().
+
+These paths run under RTNL: mana_close(), and mana_detach() from
+ethtool -L/-G, MTU changes, XDP setup, and queue reset. Under RTNL,
+synchronize_net() does:
+
+    if (from_cleanup_net() || rtnl_is_locked())
+        synchronize_rcu_expedited();
+
+With MANA_MAX_NUM_QUEUES at 64, one teardown can run up to 128
+expedited grace periods back to back while RTNL is held.
+
+The HWC path also waits twice: once here for its CQ, and once in the
+new synchronize_rcu() in mana_hwc_destroy_channel().
+
+Could the child_cq[] and cq_table entries be cleared for all CQs first,
+with a single grace period before the queues are freed?
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261022145428.323576-1-sahilchandna%40linux.microsoft.com
