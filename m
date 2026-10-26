@@ -1,100 +1,155 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.189.31
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793021837;
-	b=Evqp4dGNTQR4XlXu7pu/VWJp1M7zxPvYXKy3esvKCZ/ObeYTiK6mHZEsRIX/1IvXOF4I
-	 uujJ9HHvXn/Z/bSlGgPWXxRI82V4gZR6aO9iSrZ9m/1QTA339S0gI+2/dn8ZWuJbfaf7P
-	 LVxG4dUW4HvL7hWzll6NNK88f9XWhEh+hRJTUnwwa7MTzIVzwxqMCDzOYetLJTdlfbopB
-	 4d9DqkyYxu2ed36k9mQw4s4xUa+gweSuQQ5xFmJ+MgjAHxH6z8fIT5ASX/s65+bdM5nK1
-	 aBxYRpcI96egqb1BgmXhOhflpWsNh62nja/KYMTxY8uvKAvVFTJE/b3+8hIR5JpoSbA==
+	t=1793021823;
+	b=Tg2f3VUYK1mLs18puNwXpJgA0ryr56oT94ALztNu0eIkNdMgINuWqtrxWelDlF7HKG9O
+	 YTYt9y9oDjGkSthQywcCH9tGJqwmKZlFm/kODkGs7sfuZS9WcvHzNe+tvDoMbC/juU3V4
+	 7sbmWkhSndCHpiPfSMDEKFEQkEda70h/86+DnJNRZEa8jIwQhruaK1cdYFwBUtzvpau/G
+	 VaqYSQ+zH0tNfpbrt9fKGK20OwcNX9o7GWRFIs6EVVVG+lGyLVCmXVq8n9cXYIuIiGe2K
+	 6h1m1fTJbKksDxfbc7mlmkfpIlTvihKAeIF3ECDHBbqTbNnPZWNYGA/gC2DMASDHkZQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793021837;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=c4ppOZ7c6FXgFTH2gmSpwM/JgOkQlj5fbz4MqhSpDso=;
-	b=lFLFcRwLodRDs+BzfZbsQTAbImdLQqzczdWlrrvJHND4aHyBy0H7Kl90icNjybCoh2p1
-	 ShillTjL6m07W1jP6iRHVPp9WQKclAz2RYNXMVZePHlz8aegELr4hgCJZB6GNKVxKhC5+
-	 LjMMSsI085+x2MAveu0cboXx37u4ECLDyHVOgIy4C3ixptpzFbmVNgQZKocfkX287jTgC
-	 GAPOLWom5Qrgu7r4XB4AEsXgm8ZXERpWFiJ3bNO1MzULnF2Qb2Engiz5/eSsHtmhCzoPs
-	 EB8ouNO/m6hxUGTcpA5Ty3hpSLDY8IGNDjZI0/tpAdiAVQZG64gUdzWl3Oa8yCu1EpQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793021823;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:CC:Subject:
+	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
+	 Accept-Language:Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 msip_labels:x-ms-publictraffictype:x-ms-traffictypediagnostic:
+	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
+	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
+	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
+	 X-MS-Exchange-CrossTenant-userprincipalname:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=wTex4qtLJfSBy+cRVcioMUvD+CtwCsVOH/AECnl4lZQ=;
+	b=TLx0yK44N1OSu/+2ERFrfPcRhH48jiAaSz5ucVdmYHlpnf9+zfytFUfuV4DCcvIGEArj
+	 k/2+/42X4O9WghYVpasQx8Igbt49lND7+j3wTR+ejoFzwDyAWlEXjfyydo0137Z7W0Bdb
+	 hwBqlQOsUWTjgmMd5FhocxFa90vv6NPFeg4V+Gdx1hDaqdnRqbw4eCanpA1x51M5B+EXC
+	 qS/hZnurIQeQJYDnqeUyhESjCkGQgBRxI6BEUY0T14MnahUD4saS7d6VWtZlkJaenTHwi
+	 s9YbahFm3kjxK+OdiVtILxoxNKGRY8VyK+Xc+mB4dDBZuaTm2cX2x4IfsDr8xhbCweg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=kHWEnru0;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.174
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=hydroquebec.com;
+	spf=pass smtp.mailfrom=hydroquebec.com;
+	dkim=pass header.d=hydroquebec.com header.i=@hydroquebec.com header.a=rsa-sha256 header.s=selector2 header.b=XBQoGBi3;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.189.31
+Received: from YT3PR01CU008.outbound.protection.outlook.com (mail-canadacentralazon11010031.outbound.protection.outlook.com [52.101.189.31])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2B0606A322
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 13:37:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1B2B0606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA48606A31A;
+	Mon, 26 Oct 2026 13:37:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9CA48606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hydroquebec.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hydroquebec.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=kHWEnru0
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-5383c97c8cfso354541cf.1
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 06:37:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793021836; cv=none;
-        d=google.com; s=arc-20260327;
-        b=QbHUVAVp3qHEh0JwumtOfvZ3x9UhKpUqEt5CBh7BSTFNB6HNAeB1kqQysiEctO9Yk1
-         Sdvx9IVCJ3Nw4cNyWHNZzCa1BynEcLLLBvMXzrn0289DkjLY22KpwieAYbDxn7KHEplA
-         nhCbUSfj6ldCXGVQqcMDGzLONMWPZ7IHa3QjUhQdkyH8B/O55SM+uCGvhMJHY1DBN99Y
-         Z1aPqztziInLB9QvlsoxRpnYpxnChidM9zCKQsJ8dTmQBeHMoU+g08iW6Kh5GJlIy0lC
-         hBxgmh1wvX/QMQvg+tWzUErHSX8zFezRxLkRO1nyxGIeoCz4xMrFlrNoslLVZZ0r1hlE
-         ecBg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=c4ppOZ7c6FXgFTH2gmSpwM/JgOkQlj5fbz4MqhSpDso=;
-        fh=WT/ihHHfRGOAYAUf9FDf7k6UVguHgQrpaITPqfYK89Q=;
-        b=daY1VemIXoy4Dba1uIvlUjpSAUAqAA/WXj+FfeFFOiOp5/HsOj4r0R/j9D03jQaCp8
-         QG5A930mwB9cGIUgXbZyjc5uVGjOV//4tcYlkCoqoBLSolM7b0sIA39lHoZmBNr3dry3
-         qL4ZF/HjB5lHBkn8M8yyO1nKS6ODQcFR7gKOQaciFwSYkWr/J/z+o0R64O2hQ3ROfgpn
-         46VrxCAuAnuk8/W+i3lwoCw9a1bgbZ7ZeVGMrA7+sgfXgn6+yC+wyocm0YtnSfxmZwSe
-         BgdwkpfqvvLxsamMbnWgqiS6UQN3UlB0W1RUbUZmwhwAxzk+knEV+OqYv4pRtep2XJqb
-         jPRw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1793021836; x=1793626636; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=c4ppOZ7c6FXgFTH2gmSpwM/JgOkQlj5fbz4MqhSpDso=;
-        b=kHWEnru0CHmLudr9EcHq1gQt7nBEJ/ssbwXcC+mpIdeqydP1sisZ15xxZd6hymIJ/E
-         C5ML8ayjzxI7VrsDiWtaPHlViiwjg41YBfqrCzZymXV7YThnRYnc4sbTeu9dzvvSKWn6
-         Yi3Z7qw/0ANHdczAokJXCD1mj9LAwgoQXbhwQ5XJSayhz37+lr5R+JptRkR4SKPRIJIp
-         m6i8W6fxEx3dH+0HH2nXyDvChl29fHcyzgWUBi6Oj3vE/cBjWcGoR80FbrKT2WNOcm+W
-         Tj9WIRsGVizMCc42HM6xouGMZXI8hY0bhCbWksSHdsU6S3p4hxv5FCWrGvFIq4fSOCko
-         PakQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793021836; x=1793626636;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=c4ppOZ7c6FXgFTH2gmSpwM/JgOkQlj5fbz4MqhSpDso=;
-        b=y8rPDdR+wdgCuqu7BkFpGBiZRV9fmM0XVNbTuUUzOWBm534KJ0EoIWOwREaZhbw7X2
-         UoBE2WCzCQJq20rh3luFOgLX83a31HdyRMIUFkFlpMQiCIzTHT+jg6aGWyaa2fvrXEKu
-         ga7FUYMD5pDBzL/vhp+TJX8LoGlN2huO7+W9e3MKjAYcBoe4+uvDvoMFmryh8LyCZlVs
-         a9+jHzRTMGNX2W3Ke1hxbx+sRwrqeq5A+99aQMckTCzxInS8owlVnKMZZiXun0BvtFqn
-         66TmlMsO0EPa+h9RNy1+I/ju69Rr9h5iYpUIiWDpZZ2zuZC1jMJvEoASNtlsgjZkUoJK
-         l7Rg==
-X-Gm-Message-State: AFq9FYLRinMKuHspeeLHiOTt2MTU+KrrU4MvYPXrHbgP8r5tr7MHvoos
-	N3Cn/Se2ZJMaraOHyrNGmsM2jTXPbr4IhmEivJUQMS2rypklIeUUDFTvE/AVa79zz1qKLd5fas9
-	zP7W9raYNQ8lwqasPmtiVtrhvu+pR6XV8Cck1HI31
-X-Gm-Gg: AYBFou2PBzZ8PCPuIReGNPiT/WsO1BSXqdpaS2HtSyT502QsAnJKAGGx3Euk08eplJ0
-	EDF4PqIIYGUzKl8yOKeadm4NIgdwp8CYHOWZk0jJ4yTK72w2P4d7Y1lfjTQ0usz1kycva6+HvRe
-	uUFWd38HY1yZ/8DFWT4bcKYvglzJBmL/vsCD7zYITnfHl9rgQlpCscnYFQRr8UzLUTEG3srcn3C
-	/AkAFucrG3arxXu2FaOCXdMdNPvYxNL46JKXkOPyczW0CS+QKflri45KTfsCZY0Hwul6/iYv9hJ
-	2fO78r5vHe3+tt2pGdpsjIvplwShic9grCYo5yCAawpdhPfbsYkkMZ8GMPtJflz3u4xgp24sU7X
-	2azFK+euf+7sWG5Nz14VJOo/3tUlPbUGFQA8IdBXYH/r4drktwpSUq/nmI4/T9dtHRfKJOHyJa4
-	yeiEdBOQBxiTf0lPBPfQ0Q05ItuR1w
-X-Received: by 2002:a05:622a:90b:b0:532:9220:a9ae with SMTP id
- d75a77b69052e-5383b540914mr33040301cf.6.1793021835298; Mon, 26 Oct 2026
- 06:37:15 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=hydroquebec.com header.i=@hydroquebec.com header.a=rsa-sha256 header.s=selector2 header.b=XBQoGBi3
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aJBUhuDvGiQAJ8uq8BhB33xrrpC9qPTOrHnpwr71B7YuxAYJDB61nn6D7gi+bo8sdNYhybGoA35VQ2QeaoPowLNNR4h2mKXEsdrg04vsP3zic7psKjbTqUkwnHz4Iks8InCyF7tAfW84nbXXjHen20+5uQxnuM+VFhpEeZMOUau12PYVSEJo1Qa8eeOiniFgKwvYXVjiKaYMIBaVDiVDX77Yvbncx8a76u3rEa1P5MJv6kZ0S4Vaauh9ZbCnsvS4BLEmqs8pII2cGOTJHgkpTRw/hKA5V/unBlOlAs1/4VYUEba4ba2zo84lnFJnhyRl5RbIdJGCbpQed/ZUidGTEw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wTex4qtLJfSBy+cRVcioMUvD+CtwCsVOH/AECnl4lZQ=;
+ b=Jg0yuAFNTJ9d9UYbnyflWcB4nTyIARC4R0opwZtvYtsOdDC6OzF5iFSZ7N6QK7Xcy2v7sU6WxNvGTSf4sUpaOwOhcJ+NnE5cpJGMt+be0NSt12jr7qUIuV5E0pj5LL9sh9tOLjKcqT1cB0UZ6+BEQFrD8AZy6DRKpPCNnzoUQdQ8HLNBOhQOwuhSQkbYn5HZwLRdz/Z4XpeJjPsjMbpckzUVDXxO3OkLMWNX/wfUwJLZw2r7j46PcHZ8XsDOzT5d4YGnbcEPkKEOSi+30jWfdgCwO1RPstxoPvuVV4uTrHsLAArJJdaE2+UNJBV2bC/m1ETHvI+mTnlnM5nGdmlezA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=hydroquebec.com; dmarc=pass action=none
+ header.from=hydroquebec.com; dkim=pass header.d=hydroquebec.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hydroquebec.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wTex4qtLJfSBy+cRVcioMUvD+CtwCsVOH/AECnl4lZQ=;
+ b=XBQoGBi3yi4upQiwmu9Lwy1TRrO2Fyjof9eGU5HAKeEzyIxKagTgUZzV0xxTTM5o26PyCeN7yWwu5Ik0JBtpI0NN6kepKF+VyfwY+VqzqjmJbwSsiA+3FfdbFwFePFzlY2njf7IzjQpEcERAD1aLw8ex4YnNHCA+gq5akukyDRHuPDvTHt48MgO2xPS9a96znK0e9wH/wZGimxLAIc6YeNbb5aBdo4YvW628UROm6Om8qBtwPP8udvf7XuggI+YiwIwC9eek/btiX5G6FbJYXu9R8RgYz7FMb10ZzdNjN9oNGNM3FNYDsiAic07VYcps1q3LfbMwETJYHyoBv3IpeQ==
+Received: from YT4PR01MB647290.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:18d::8) by YQ1PR01MB785934.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:cf::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
+ 2026 13:36:58 +0000
+Received: from YT4PR01MB647290.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::aae3:5d66:3923:ae40]) by YT4PR01MB647290.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::aae3:5d66:3923:ae40%5]) with mapi id 15.21.0546.021; Mon, 26 Oct 2026
+ 13:36:57 +0000
+From: =?iso-8859-1?Q?Choini=E8re=2C_Vincent?=
+	<choiniere.vincent@hydroquebec.com>
+To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>,
+	"przemyslaw.kitszel@intel.com" <przemyslaw.kitszel@intel.com>,
+	"pmenzel@molgen.mpg.de" <pmenzel@molgen.mpg.de>
+CC: "anthony.l.nguyen@intel.com" <anthony.l.nguyen@intel.com>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"aleksandr.loktionov@intel.com" <aleksandr.loktionov@intel.com>,
+	"michal.kubiak@intel.com" <michal.kubiak@intel.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@kernel.org" <edumazet@kernel.org>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH net] ice: fix Tx hang dump using stale tx_buf[0].skb
+Thread-Topic: [PATCH net] ice: fix Tx hang dump using stale tx_buf[0].skb
+Thread-Index: AQHdXW+bM3SfOdfqFke6mUP0vWk/Q7cGbgUAgAlv6yo=
+Date: Mon, 26 Oct 2026 13:36:57 +0000
+Message-ID:
+ <YT4PR01MB647290C874F1270D6B581668FEE3612@YT4PR01MB647290.CANPRD01.PROD.OUTLOOK.COM>
+References: <20261016-ice-tx-hang-dump-v1-1-3df0f5979a51@hydroquebec.com>
+ <179250185873.3135.10101707471960530546@kernel.org>
+In-Reply-To: <179250185873.3135.10101707471960530546@kernel.org>
+Accept-Language: fr-CA, en-US
+Content-Language: fr-CA
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_5af313ef-8edb-402d-b576-47820579b2e0_Enabled=True;MSIP_Label_5af313ef-8edb-402d-b576-47820579b2e0_SiteId=f40a10f0-50ee-4880-9a37-6e1dd4ac2ff3;MSIP_Label_5af313ef-8edb-402d-b576-47820579b2e0_SetDate=2026-10-26T13:36:33.132Z;MSIP_Label_5af313ef-8edb-402d-b576-47820579b2e0_Name=Diffusion
+ restreinte;MSIP_Label_5af313ef-8edb-402d-b576-47820579b2e0_ContentBits=1;MSIP_Label_5af313ef-8edb-402d-b576-47820579b2e0_Method=Standard;
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=hydroquebec.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: YT4PR01MB647290:EE_|YQ1PR01MB785934:EE_
+x-ms-office365-filtering-correlation-id: 4e56a3e3-5993-43fe-ebfc-08df3366350c
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|7416014|23010399003|366016|1800799024|38070700021|4143699003|11063799006|56012099006|261021121427099003|261022105027099003|261022075727099003|261009223027099003|10067099003|18002099003|22082099003|6133799003;
+x-microsoft-antispam-message-info:
+ M3H+hdmWccA+7j6CvW5zeg7gbyKcj+/uDgzaKeB/SpGsAhD5E1Zw/qthATLOm9g7Ll5xN9rzzptTlGj+/3ixEWCorVIlCmFBz6LYdNJKVWuuRqYJI8VWWZ4YshS8m2WSQXp/AEL0XwOXPr+oJi4lmoPweDCWvqzRwhaPSHeu4M8hTEtxqae2F9eCY9AUt/BPTp49BJmeXv7zjfOA6BOQ4IhFnBGqWx3D2D/6ba7xWIdRlDnBY4jq6bXLnV5RE8K2Tk/nMvv1ChGysmqC8FXTntECz5cjEzY+1Vwiu2SznJYYp7q9hRfBwumXAmV5aZ+yCy1/6/p3xN1pN8mdGyuxTCLgxqYUSDKvnFfyhNSv6uuw8RfW4pvjYkcDnjwVoymP7QV4ikLTxUWA/OopaBfY2qi1LqcDwlZHbxseOfoC6p0tV4sMwmf7l/vZOnDScGYPrWnEl20Vp5XLvPkKoFk0gTwRN4PxZON2Jhc51M4dFTqfYBpy6xAkEreXFV7C2VhWd9Eqjw7JLhgtg5yXpLoBUfP69y62K7KVT3yUN3BtYNRSQXrq+XIAFLiV4bFprPI2dHYlS5RuC2GJTD8hliuzgHuUCG/9dN1c6gdR43cFN3iG3OBwOgqN3CAmeg9eiq4S4BpwR53sEhcPGhN/13WT+A80e5lmEgnEx6KXpH3Yhn4=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT4PR01MB647290.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(366016)(1800799024)(38070700021)(4143699003)(11063799006)(56012099006)(261021121427099003)(261022105027099003)(261022075727099003)(261009223027099003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?tc1qFNqLmko49kNJXQWYgUft+tfcwPCue/7He3Evu+BxdCkymH+KwGIX1x?=
+ =?iso-8859-1?Q?8jd1PIRrYA3Iibg9wKkHPrf623m8HSEJNA35AJTU9ADzuKt86pNknw7Gp7?=
+ =?iso-8859-1?Q?XvSUNOVav6XkGzCHJAwXMrsnTvQFCESsVyFeI7ZitdCxS5++9uqS/+ULSL?=
+ =?iso-8859-1?Q?1zaqdkVoGiZ//Tfvw3U5BqVieLDKerUIdpO8FV+C7QqasguV6E850aVa/B?=
+ =?iso-8859-1?Q?TFlZOt/lVPS70xTcf1DrJENP7YEaTuSS+m4wJ3DtyoI1/wQNAZiR3ij5ch?=
+ =?iso-8859-1?Q?CIIdWtSWViZAIhPX3oaeoAZ+vUhbLQ6xlbgU7CKvvxNVPXceW1Bnlfr8si?=
+ =?iso-8859-1?Q?AZq8f0W7fHW9g9373CST5n0Xaj0878MUU+9qB/nctMHV6O1eO9kWiICc9r?=
+ =?iso-8859-1?Q?AVTWks3eV5lZHOFKAA1b1Wqrt3ZJMN5XnGh2jCxaA08keZaD0JM8cBvHP0?=
+ =?iso-8859-1?Q?h44e/p8CF16U41L5kwYr5vY0islIHPMhFqAVpzNZfYBXIqCetLReJiYWBO?=
+ =?iso-8859-1?Q?ELSdaOvMZBQelIyKvrivq8SPmkIcf7nVPKsOSdZoLquWzZyn5uBzrPzhJx?=
+ =?iso-8859-1?Q?t0rSOIjhmjLS0kaZcCzet3cj7Ebi+m5jB9s0z1N7ifDptA517s9KGA2biw?=
+ =?iso-8859-1?Q?BQMfeFpFoS0mancG5tsbDPCPGO67gvAkXUxo7d8qTZxN6kGi54y3YIPDFl?=
+ =?iso-8859-1?Q?vcRDUrLQg8bxHv//oNQPuS7P/r0v4CTMmyVZdQRDQx2LQwA4qzhT5BgoUD?=
+ =?iso-8859-1?Q?FkuWiw5Xc1JwSqiwAxg+aTLcFkBuKNyBYIrzRisuSUYH1YHzPhSM1uJl3n?=
+ =?iso-8859-1?Q?d/sOFffy3s+zcgyzPdxn3kZNbZiZ4GK6+isi0tLAg5PFMc1U+fNLavEkoQ?=
+ =?iso-8859-1?Q?BQh/i5zY2fUGaRmRUpnPiCxFVNBebhesHxPcTq3AxWMLS1rOh7cyz6R/RF?=
+ =?iso-8859-1?Q?fw+iIWDqFDQ+zSV2UM+K26+2LKiKj7JnQbpkScNpFZsMGWfqXsGGesE3Y8?=
+ =?iso-8859-1?Q?OD2t/TEHS1PN5F4n8Zz0jHv7RI5pXrPOmM0poJ06AWndwl10nLHmbYh3MI?=
+ =?iso-8859-1?Q?mSmr2Qcxjlqmb4BuvnreIJ7GRJHHc/M1+ieZCTWY3yMsJgazlgqhm3vd54?=
+ =?iso-8859-1?Q?2jo8QIqo5sE9TMVcbYHJzNrHfddZs91KncFQr0bTUM3j70VBfcn2B4+KnV?=
+ =?iso-8859-1?Q?m+B43nqkiHmMNQyan0gJQa00Xi9L8sDSEeWqevXwtFZu5pg6sviKHF3/8W?=
+ =?iso-8859-1?Q?TL8wh+j910jhozgAf6yW+J+OsntHJ1ov3N3mwza0JkWGf2I5IQtwfbuGoh?=
+ =?iso-8859-1?Q?zFyRHLxe9SSEcxuf6Do0mj1fH1L3KLVgLiLz3kzTZCpkYVcAgkcmiVzaZr?=
+ =?iso-8859-1?Q?Epw8IwifFvORFxSoofeH0P4u9EQVsxSqcHeNL7xQKvVjetGOv81xL1VJvm?=
+ =?iso-8859-1?Q?IynihVUvZ9FR/9VDfpxqNcnuIApzj3/4Xky0O0z3qmEU/JJdFhwlJEEf3r?=
+ =?iso-8859-1?Q?C5cpfsMcbs1gHZNTdLz1/T2vwe/SYpCpUiNhNe0tDp/WldN+zMWNprcypJ?=
+ =?iso-8859-1?Q?7xMWJ+7RCQzZ5lQ9IiEQNbhDVjr6qR/EJKQGYEEtel7kZ3UuQXTTeDuOGN?=
+ =?iso-8859-1?Q?5NXzUgaK0xXJK4+K+/Xa1khVhkySf7F5LNe0qNbZa4Y59BtK8cNI+u3IuT?=
+ =?iso-8859-1?Q?CfXbvYSTeXOmzub8npqUGR1RuF9kNwU9Ug1kO6hjxJRhN2ZTzhcitBu3uE?=
+ =?iso-8859-1?Q?TebXFzH28T6JMhs7qYHgtlbe+GRABMgJT79xO6bsQC6kvy17kz6IWL7mE3?=
+ =?iso-8859-1?Q?6Aal+YzG/5SftYEKST/mbWmKUIwXgjg=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,123 +159,37 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261026123244.239766-1-jiayuan.chen@linux.dev> <20261026123244.239766-2-jiayuan.chen@linux.dev>
-In-Reply-To: <20261026123244.239766-2-jiayuan.chen@linux.dev>
-From: Neal Cardwell <ncardwell@google.com>
-Date: Mon, 26 Oct 2026 09:36:58 -0400
-X-Gm-Features: AclHuK-ZwT-Ffa8PUyxQxfIXZbtYplbPQ0Z6MF6o-MPhrCkkbjJDCm6CcXr5iWA
-Message-ID: <CADVnQyk7wTXsgUKbEijSVd689E96Ps=sbiK8osWSuemKYD8BVg@mail.gmail.com>
-Subject: Re: [PATCH net v2 2/2] tcp: fix shift-out-of-bounds in inet_csk_rto_backoff()
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, Kuniyuki Iwashima <kuniyu@google.com>, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: hydroquebec.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: YT4PR01MB647290.CANPRD01.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4e56a3e3-5993-43fe-ebfc-08df3366350c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Oct 2026 13:36:57.9278
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: f40a10f0-50ee-4880-9a37-6e1dd4ac2ff3
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: SYRRckFoemoz526Bzx7Yc7WqfA1M8CkC2MTJ4lxuMrDY4DG5TgCrQDlZgtjhQpqbC1TXj995QVLIrVtTgI/b6RUDqhLxUirOiNig9SZMiHegqM7AfzRmQwy+yrBDNoPN
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: YQ1PR01MB785934
 
-On Mon, Oct 26, 2026 at 8:33=E2=80=AFAM Jiayuan Chen <jiayuan.chen@linux.de=
-v> wrote:
->
-> icsk_backoff is incremented by tcp_retransmit_timer() on every backed-off
-> RTO with no cap of its own, and by tcp_send_probe0() up to tcp_retries2.
-> It is used as a shift amount in inet_csk_rto_backoff():
->
->         u64 when =3D (u64)icsk->icsk_rto << icsk->icsk_backoff;
->
-> Once it climbs past 63 the shift is UB. Seen with tcp_retries2=3D255 and =
-a
-> silent peer, when an ICMP host unreachable goes through
-> tcp_ld_RTO_revert():
->
->   UBSAN: shift-out-of-bounds in ./include/net/inet_connection_sock.h:258:=
-40
->   shift exponent 73 is too large for 64-bit type 'long long unsigned int'
->   Call Trace:
->    <IRQ>
->    dump_stack_lvl+0xc1/0xf0
->    dump_stack+0x10/0x20
->    __ubsan_handle_shift_out_of_bounds+0x1d1/0x390
->    tcp_ld_RTO_revert.cold+0x16/0x92
->    tcp_v4_err+0xdb3/0x13e0
->    icmp_socket_deliver+0x1a7/0x390
->    icmp_unreach+0x2dd/0xe50
->    icmp_rcv+0x93e/0xe30
->    ip_protocol_deliver_rcu+0x36b/0x3e0
->    ip_local_deliver_finish+0x37d/0x620
->    ip_local_deliver+0x165/0x1d0
->    ip_rcv+0x284/0x320
->    __netif_receive_skb_one_core+0x16b/0x1c0
->    __netif_receive_skb+0x21/0x150
->    process_backlog+0x37e/0x1200
->    __napi_poll.constprop.0+0xa5/0x5e0
->    net_rx_action+0x4c0/0xf70
->    handle_softirqs+0x204/0x9b0
->    __irq_exit_rcu+0x13c/0x220
->    irq_exit_rcu+0xe/0x20
->    sysvec_apic_timer_interrupt+0x92/0xd0
->    </IRQ>
->
-> The orphan check in tcp_probe_timer() calls the same helper. On x86-64
-> the oversized shift count is taken modulo 64, so an orphan that should
-> be dead can be seen as alive, and tcp_ld_RTO_revert() can end up with a
-> smaller RTO than intended.
->
-> Cap the shift at 32: any non-zero icsk_rto << 32 exceeds TCP_RTO_MAX, so
-> the min_t() result is what the unbounded math would give. The
-> ilog2(TCP_RTO_MAX / TCP_RTO_MIN) + 1 bound of tcp_probe0_when() does not
-> fit here, as icsk_rto has no TCP_RTO_MIN floor the way tcp_probe0_base()
-> has.
->
-> Fixes: fcdd1cf4dd63 ("tcp: avoid possible arithmetic overflows")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-> ---
->  include/net/inet_connection_sock.h | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
->
-> diff --git a/include/net/inet_connection_sock.h b/include/net/inet_connec=
-tion_sock.h
-> index 903499581db7..562e12033a5d 100644
-> --- a/include/net/inet_connection_sock.h
-> +++ b/include/net/inet_connection_sock.h
-> @@ -255,9 +255,10 @@ static inline unsigned long
->  inet_csk_rto_backoff(const struct inet_connection_sock *icsk,
->                      unsigned long max_when)
->  {
-> -        u64 when =3D (u64)icsk->icsk_rto << icsk->icsk_backoff;
-> +       u8 backoff =3D min_t(u8, 32U, icsk->icsk_backoff);
-> +       u64 when =3D (u64)icsk->icsk_rto << backoff;
->
-> -        return (unsigned long)min_t(u64, when, max_when);
-> +       return (unsigned long)min_t(u64, when, max_when);
->  }
->
->  struct sock *inet_csk_accept(struct sock *sk, struct proto_accept_arg *a=
-rg);
-> --
-> 2.43.0
-
-The following review comments are from an LLM, look legitimate, and
-IMHO are worth addressing.
-
-Please either incorporate each piece of feedback or respond to
-indicate why you think it's not appropriate.
-
----
-
-This is exactly the diff Eric suggested in 2020:
-https://lore.kernel.org/netdev/CANn89i+=3DQRibXsm6tw-eVwhB3wjOtgF-MtVu0G--K=
-5=3DoWP97+A@mail.gmail.com/
-Please add "Suggested-by: Eric Dumazet <edumazet@google.com>" and a Link:
-to that message.
-
-As for 1/2, please add the discovery/validation/testing statement
-required by maintainer-netdev.rst.
-
----
-
-Thanks,
-neal
+=0A=
+Thanks everyone for the review. I posted v2 here:=0A=
+=0A=
+https://lore.kernel.org/netdev/20261026-ice-tx-hang-dump-v2-1-e2136ef2c5dc@=
+hydroquebec.com/=0A=
+=0A=
+Following Sashiko's feedback, v2 no longer dereferences the skb:=0A=
+only its pointer value is reported. It also validates the saved ring=0A=
+under RTNL before copying the descriptors and IRQ name, then releases=0A=
+RTNL before calling devlink_health_report().=0A=
+=0A=
+Przemek: thanks for the conditional Acked-by. Since the implementation=0A=
+changed substantially beyond the additional NULL checks, I have not=0A=
+carried it over. Could you take another look?=0A=
+=0A=
+Paul: the skb contents are no longer included, but the descriptor=0A=
+dump remains available when a ring snapshot can be taken. I dropped=0A=
+your Reviewed-by because the implementation changed substantially.=0A=
+=0A=
+Synchronization of tx_hang_buf between ice_tx_timeout() and the=0A=
+service task remains outside this patch and is documented under=0A=
+Limitations.=0A=
