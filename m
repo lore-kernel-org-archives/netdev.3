@@ -1,60 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=109.224.244.119
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.72
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793052781;
-	b=CiEGNiMpXLiB+jae+X9OeqU3yZF4m7HgDRDciLGHOoqJanueR+XTVwaFTFPW+z2xGYvR
-	 rB7+DYwg8/uXqL4BGBmnR6wQP3YfOckOqexvNTktM9fnqqRH3bUjQXcWK3eJyft3+ztE4
-	 xUEYYxkwhK0hfsFbh34l8bDRtDZvlmVBu4dzP9EKdFTOy6jKhXIlaqxp6RmjAYlVmDPcx
-	 x0HDi6/dvAPf/+15N8HQlLgakBPt5RYCKCtRbyIr8W5ftgMx5hdTCao+wrgRQyXQ0QD7R
-	 JcmN+rDvakVWD7bwCX52GN/bZ3+iLYUkFPFLkabFpYPHb45E4Afgl/udqGq0ZE9u8cg==
+	t=1793052791;
+	b=t71QIV0IB7BuBhxF4OYydze5f/BhKjFj4dIWE+ps48eCRgBcXSjSfIzJMv7zhwbKXlAZ
+	 oiZFM04wJYh6xocZzIe4lllZBv9KQigjXmfsGCYUEw9TO9UX5iYoBft/DCSf/2PA+x0i9
+	 K2ffXBnaVeus8BXseCzlNMYFqUelx5nrgsZQ+OIBmhDqbYl9nVYKeBUBFmTiOiaxiTHMR
+	 5l8cLfrF6UazPGRCSwAfhGG8F2J/K/52OzagEBUg/5L+zxXxLv5omQBeBySDfCPCZ6zNA
+	 bzXhj99nZgye7L3sfF+UCfE+nrhrC/zMCu2nT8pa5pvKjr0wo1Jc+2OkBtYZcVLNfHw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793052781;
-	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
-	 In-Reply-To:References:Feedback-ID:X-Pm-Message-ID:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=66e8573GWZnz7bvZntPapm81qvP1dPCQ3yxm7LEhbdg=;
-	b=s0+OeD9/xCof2FqcSZXgF57ykaiP00EjSHglJtkY2de+XwfXlaQhAx/GRJWMCGFrKP7e
-	 jMiR4H6G5jSRrWgTWXfwKGWQg5f+oBmBPPcgi0V8T992qQ2I5FgQ9PI7AphuMVAnA34WS
-	 GqtGUQjnEc8IiSXkM5e1tQo139aHZX2nuItLm8NvSt1WFtZAVSbinEhhDH5ifutEQGGI/
-	 WhZWgnOe6SlR/S679FyJGAylUlcDRbPRsdYdEDyZKA6kq3n3ZhtUwa5s1bCG+DQyxWYsD
-	 Nwe6y4nCB1wExat//55e8defVbJXUY6ie/fJq/KgKhDGR9Xi07NarlnX329OkoGsStg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793052791;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
+	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=amqcoblHVnLhVb7i5K+CjSR7EzPX+kUGwE3sOAk8Cjk=;
+	b=zZJZFSwEATLaH6LhicA2zKdUioNgI22HIJwnWy4j7PMRYGQEZjy1MCfIzBQ5eRFYAE8V
+	 yi+uPjwmlCTv5fbbAyKSd3/+fpL50vamkrgS9BkVhqAbMO8XxJ7AbCrJMKnX0HGB0rxIh
+	 s5cNc+uSaHJkB/naTKJkV6ADmdXA0O650/KtdAVr1YR1fITosskuO9Qn48GHDdfVBNlqV
+	 BT1KhWV0z78wxeMHfzZfbj+zqQam7Qh9eDTVTOjwPymBTz/ryUwD8G+SpSrl7gAQleMtD
+	 10DA4LlLvNqwYCsPfvkQtIAx0URVmsPKgm+32inaW2eRvohGttQLjSqQWBOQ/4kEzgw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=1g4.org;
-	spf=pass smtp.mailfrom=1g4.org;
-	dkim=pass header.d=1g4.org header.i=@1g4.org header.a=rsa-sha256 header.s=protonmail header.b=E2pTaF4I;
-	arc=none smtp.remote-ip=109.224.244.119
-Received: from mail-244119.protonmail.ch (mail-244119.protonmail.ch [109.224.244.119])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--namangulati.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=TmHFXYXU;
+	arc=none smtp.remote-ip=209.85.219.72
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com [209.85.219.72])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0256606A320
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 22:12:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A0256606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9172B606A322
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 22:13:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9172B606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--namangulati.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=1g4.org header.i=@1g4.org header.a=rsa-sha256 header.s=protonmail header.b=E2pTaF4I
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
-	s=protonmail; t=1793052776; x=1793311976;
-	bh=66e8573GWZnz7bvZntPapm81qvP1dPCQ3yxm7LEhbdg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=E2pTaF4IHfCB5bU4RuhRkXhZvCfTmH3d1oCLK7CeOVhuxG7WnpzFfSWxm0ckTvv3l
-	 FgrrXutYFGD2bckDM1CMUkxgkc+9IE9x3VVX1cOw0qSAtMPW5aIRjop+BAehf6F4Bc
-	 dnRm5i8T+RXlb0joRV5msZOqPODJOP1hLEfOEPvYZfKvMc5f9NQgwdT+h3yFSNHBC0
-	 3rKnslJNGF3G/dhGQYCxy63DFRKz1A598lCF/W4RHRd1fKKMZH/i8+p/GJnjpcHNKw
-	 YE8OCXGRGxiVy2x6UgYnduL7hrrv0iv6rkEP37/0rf7U/SdIbW0dCOp8xMKKepZhPc
-	 HCXaGaNfrIZpQ==
-Date: Mon, 26 Oct 2026 22:12:51 +0000
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-From: Paul Moses <p@1g4.org>
-Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me, vedang.patel@intel.com, jithu.joseph@intel.com, andre.guedes@intel.com, intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH net] igc: track rx frame boundaries independent of skbs
-Message-ID: <XxgY3anjXL5MwVEpWmTA-tZLeDhfNvdTDJ3n_8jTLgnomanMs92AQS6-QHZyNzAi5tSQM4UDHEZyKs1sG39MrfHwma2BkaoxScclyny5KOw=@1g4.org>
-In-Reply-To: <at+t/jHczGvyXKRN@boxer>
-References: <20261025065154.2037149-1-p@1g4.org> <at+t/jHczGvyXKRN@boxer>
-Feedback-ID: 8253658:user:proton
-X-Pm-Message-ID: ac7101c3c05c84577692eb23b23ecea516f2e015
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=TmHFXYXU
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-91256a7b7b3so71221146d6.2
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 15:13:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1793052789; x=1793657589; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=amqcoblHVnLhVb7i5K+CjSR7EzPX+kUGwE3sOAk8Cjk=;
+        b=TmHFXYXUt4uxebvr/3/ar/BD0zhEL0AS8P/iyDm9oE7lZ+/nbav0iHfqtuh/84QN3u
+         AU33icALZl/UphC04FJ9MH6EGqB1zvOObG/6nQ7QXSuFrO2hD4Pdh+9pAjaVppz0zNuP
+         qeuyeRwwwao65Ysany6YgfjE+V/hdJTOLYSVDmPcDx9hmG5S3WeEKJuHQsbXcrmO2CLq
+         J3ceCyMy1g5XqPUWI6PBnd58CnCQG1rcszP0WU3xYYgyK0wF/4I2Dw3XeqGQn45u5gVr
+         7xfoCRYb82iU8E9R+5ECUbieTkPQiJxCiKG28vrl3/nyM8tfp1g+QorTKJfqQrd9dcFP
+         XRAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793052789; x=1793657589;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=amqcoblHVnLhVb7i5K+CjSR7EzPX+kUGwE3sOAk8Cjk=;
+        b=w+JYyf/tbEjtx0fjJlj6ILjXQZrRjurBuLLUTnqzN1LOb0bv0dObq/1aBMG4JX5kQR
+         +9MOiPYpn0+SYmsPVp2XRoHRHCuP8TtRrD6ntEaymwrp7V2CZUNYuFvtAdeZrAQqqvu4
+         ipQwQKZeuAQ8cT+U+u873HTG006HvfNU7Lk9NtJcD+qWrFMLoF6ytc0+ljUGWTxr84Tf
+         G+KSiJlVy7XqOZ8npF0fYv8Y2KG+MgOLNlr8gOXiu7OEeHJ/52qREOdS25prOo1vsyE8
+         6AaPsWG6dF1vNqcaTVF/5MMBB87YB83/h7kjiFpsG4nNXyWmkE2ZX0Vbx54AMIvl5EEZ
+         4T0A==
+X-Forwarded-Encrypted: i=1; AKwUvBwp9HzuW+izCybfdSitXH8d0QUsk/gtAxGFitRjeIIw1fEnEBYU/AkwFzCwPvxhblpnTxx6ntk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ+NnHwY3W99LmbQps7yTZr/nOmZHXoqxv+yPemBR5CFlgIxtcJ
+	vA8kB3WNOplrrot4zILG6q8lvuGZa4IcN837cv/reakK6LE+BvIYabOqPs73tAp97IP2TcZOIIK
+	t+0dT1Qc1gllU87beeDiEE6njAQ==
+X-Received: from qknoq22.prod.google.com ([2002:a05:620a:6116:b0:93f:d748:291d])
+ (user=namangulati job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:2b4b:b0:93f:26e7:844 with SMTP id af79cd13be357-940ef96bb85mr1233859085a.55.1793052789253;
+ Mon, 26 Oct 2026 15:13:09 -0700 (PDT)
+Date: Mon, 26 Oct 2026 22:13:06 +0000
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,539 +75,113 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
+Message-ID: <20261026221306.3151025-1-namangulati@google.com>
+Subject: [PATCH net] netdev-genl: ignore NETDEV_UNREGISTER rebroadcasts
+From: Naman Gulati <namangulati@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	syzbot+1269fe6cc2016008124e@syzkaller.appspotmail.com, 
+	Naman Gulati <namangulati@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
+netdev_wait_allrefs_any() re-sends NETDEV_UNREGISTER every second while
+it waits for the last references on a device to be dropped. By then
+netdev_run_todo() has already marked the device NETREG_UNREGISTERED and
+RTNL has been dropped at least once since the initial notification sent
+by unregister_netdevice_many_notify().
 
+netdev_genl_netdevice_event() does not tell these rebroadcasts apart
+from the initial notification and sends a NETDEV_CMD_DEV_DEL_NTF
+multicast for each of them. At best this spams NETDEV_NLGRP_MGMT
+listeners with duplicate notifications; at worst the pernet state of
+the netns the device belongs to is already gone and the handler
+dereferences a NULL pointer.
 
+default_device_exit_batch() only unregisters the devices still listed
+in the exiting netns; it does not wait for in-flight unregistrations of
+devices that were already unlisted (the barrier doing that was removed
+by commit 8a4fc54b07d7 ("net: get rid of rtnl_lock_unregistering()")).
+So when a device is unregistered by something other than the
+cleanup_net() of its own netns while references on it are still held,
+e.g. a veth whose peer in another netns gets deleted, and that netns
+exits while the device is stuck in netdev_wait_allrefs_any(), the
+remaining pernet exit handlers run and genl_pernet_exit() sets
+net->genl_sock to NULL. The next rebroadcast then crashes in
+genl_has_listeners():
 
+  BUG: KASAN: null-ptr-deref in netlink_has_listeners+0x3d/0x3f0 net/netlink/af_netlink.c:1388
+  Read of size 8 at addr 0000000000000578 by task syz.0.0/5325
+  Call Trace:
+   <TASK>
+   netlink_has_listeners+0x3d/0x3f0 net/netlink/af_netlink.c:1388
+   genl_has_listeners include/net/genetlink.h:644 [inline]
+   netdev_genl_dev_notify+0x161/0x450 net/core/netdev-genl.c:93
+   netdev_genl_netdevice_event+0x98/0x3c0 net/core/netdev-genl.c:1491
+   notifier_call_chain+0x1a5/0x3d0 kernel/notifier.c:85
+   netdev_wait_allrefs_any net/core/dev.c:11690 [inline]
+   netdev_run_todo+0x731/0x1060 net/core/dev.c:11808
+   rtnl_unlock net/core/rtnetlink.c:157 [inline]
+   rtnl_dellink+0x68f/0x810 net/core/rtnetlink.c:3707
 
-On Monday, October 26th, 2026 at 2:46 PM, Maciej Fijalkowski <maciej.fijalk=
-owski@intel.com> wrote:
+syzbot hit this by moving one end of a veth pair into a short-lived
+netns while netdevsim's deferred FIB event processing still held a
+reference on it, and then deleting the other end (repro [1]). While the
+source of this bug is netdevsim deferring FIB processing for and holding
+onto the device reference for O(seconds) which is being fixed
+separately [2], any driver may introduce such a delay and trigger the
+null-ptr-deref.
 
-> On Sun, Oct 25, 2026 at 06:52:06AM +0000, Paul Moses wrote:
-> > TSIP remains set on continuation descriptors, but the inline timestamp
-> > header exists only in the first buffer. Stripping it from every
-> > descriptor truncates split frames and can underflow short buffers.
-> >
-> > skb ownership cannot identify frame boundaries when XDP consumes the
-> > first buffer or AF_XDP uses zero-copy.
-> >
-> > Track rx_in_frame per ring and update it as descriptors are consumed.
-> > Strip timestamps only from first buffers, reject unsupported split
-> > frames before XDP and drain continuations. Account discarded
-> > descriptors against NAPI work without counting successful RX.
-> >
-> > Fixes: e1ed4f92a625 ("igc: Refactor Rx timestamp handling")
-> > Fixes: 26575105d6ed ("igc: Add initial XDP support")
-> > Fixes: fc9df2a0b520 ("igc: Enable RX via AF_XDP zero-copy")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Paul Moses <p@1g4.org>
-> > ---
-> > - This supersedes "igc: only strip RX timestamp header from first buffe=
-r"
-> >   following feedback from Simon Horman, Maciej Fijalkowski and Sashiko.
-> >
-> > Changes:
-> > - track frame boundaries independently of skb ownership
-> > - guard timestamp stripping and drain unsupported split frames
-> > - cover the AF_XDP zero-copy RX path
-> > ---
-> >  drivers/net/ethernet/intel/igc/igc.h      |  1 +
-> >  drivers/net/ethernet/intel/igc/igc_main.c | 87 ++++++++++++++++-------
-> >  2 files changed, 64 insertions(+), 24 deletions(-)
->=20
-> Hi Paul,
->=20
-> I think this implementation went off track. We should make sure we *never=
-*
-> enter data path for XDP/AF_XDP multi-buffer scenario until we add real
-> support to it within this driver. Now you sorta handle fragmented packets
-> in data path.
->=20
-> I tried to argue with bot reports that it hallucinated for
-> igc_clean_rx_irq() content (which was concise and to the point) and agree=
-d
-> the AF_XDP should *not* be exposed to any fragmented traffic, which shoul=
-d
-> be addressed on HW RX ring configuration side, not within data path.
->=20
-> Also this should have been a v3 with a link to previous revisions so we
-> could keep track what has been changing between versions.
->=20
-> Here's something that would address ZC fragmentation issue. Could you giv=
-e
-> it a spin on your side as I don't currently have igc in my setup handy.
->=20
->=20
-> From a3edec7db135f13a567565a652da5cc850505f7f Mon Sep 17 00:00:00 2001
-> From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-> Date: Mon, 26 Oct 2026 15:00:00 +0100
-> Subject: [PATCH net] igc: fix AF_XDP receive buffer size for 2K UMEM chun=
-ks
->=20
-> SRRCTL.BSIZEPKT has a granularity of 1 KiB. With a 2 KiB UMEM
-> chunk and the default XDP headroom, xsk_pool_get_rx_frame_size()
-> returns 1792. Programming this value truncates the hardware receive
-> buffer size to 1 KiB, even though an MTU-sized frame fits in the
-> usable UMEM area.
->=20
-> XDP on igc is limited to MTU 1500, so configure a 2 KiB receive
-> buffer for XSK rings. Limit RLPML to the maximum supported Ethernet
-> frame size while XDP is attached, regardless of PAGE_SIZE, to avoid
-> oversized frames spanning descriptors or exceeding the usable UMEM
-> space.
->=20
-> RLPML is currently programmed from igc_set_rx_mode(), which can run
-> without RTNL, for example on an IPv6 multicast join, and could then
-> use a stale XDP state. RLPML does not depend on the address lists.
-> Program it from igc_setup_rctl() instead, next to RCTL.LPE, and from
-> igc_xdp_set_prog() while the rings are disabled. This avoids
-> netif_addr_lock_bh() usage.
->=20
-> Validate that the XSK frame size accommodates a maximum-size frame
-> with two VLAN tags, FCS and the optional inline RX timestamp. Check
-> against the maximum supported XDP MTU, rather than the current MTU,
-> which can change after the socket is bound.
->=20
-> Fixes: fc9df2a0b520 ("igc: Enable RX via AF_XDP zero-copy")
-> Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-> ---
->  drivers/net/ethernet/intel/igc/igc.h      |  1 +
->  drivers/net/ethernet/intel/igc/igc_main.c | 33 +++++++++++++++++------
->  drivers/net/ethernet/intel/igc/igc_xdp.c  | 11 +++++---
->  3 files changed, 33 insertions(+), 12 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/intel/igc/igc.h b/drivers/net/ethernet/=
-intel/igc/igc.h
-> index 17f213cc93e4..ad1062f8531a 100644
-> --- a/drivers/net/ethernet/intel/igc/igc.h
-> +++ b/drivers/net/ethernet/intel/igc/igc.h
-> @@ -765,6 +765,7 @@ static inline s32 igc_read_phy_reg(struct igc_hw *hw,=
- u32 offset, u16 *data)
->  =09return -EOPNOTSUPP;
->  }
->=20
-> +void igc_set_rlpml(struct igc_adapter *adapter);
->  void igc_reinit_locked(struct igc_adapter *);
->  struct igc_nfc_rule *igc_get_nfc_rule(struct igc_adapter *adapter,
->  =09=09=09=09      u32 location);
-> diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethe=
-rnet/intel/igc/igc_main.c
-> index 1fb5f3cbe93c..38a5702647f4 100644
-> --- a/drivers/net/ethernet/intel/igc/igc_main.c
-> +++ b/drivers/net/ethernet/intel/igc/igc_main.c
-> @@ -674,8 +674,11 @@ static void igc_configure_rx_ring(struct igc_adapter=
- *adapter,
->  =09ring->next_to_clean =3D 0;
->  =09ring->next_to_use =3D 0;
->=20
-> +=09/* igc's XDP limits MTU to 1500; all XSK RX buffers can use 2kb;
-> +=09 * RLPML limits the receive length to fit after UMEM headroom.
-> +=09 */
->  =09if (ring->xsk_pool)
-> -=09=09buf_size =3D xsk_pool_get_rx_frame_size(ring->xsk_pool);
-> +=09=09buf_size =3D IGC_RXBUFFER_2048;
->  =09else if (ring_uses_large_buffer(ring))
->  =09=09buf_size =3D IGC_RXBUFFER_3072;
->  =09else
-> @@ -830,6 +833,25 @@ static void igc_setup_mrqc(struct igc_adapter *adapt=
-er)
->  =09wr32(IGC_MRQC, mrqc);
->  }
->=20
-> +void igc_set_rlpml(struct igc_adapter *adapter)
-> +{
-> +=09struct igc_hw *hw =3D &adapter->hw;
-> +=09u32 rlpml =3D MAX_JUMBO_FRAME_SIZE;
-> +
-> +#if (PAGE_SIZE < 8192)
-> +=09if (adapter->max_frame_size <=3D IGC_MAX_FRAME_BUILD_SKB)
-> +=09=09rlpml =3D IGC_MAX_FRAME_BUILD_SKB;
-> +#endif
-> +=09/* igc's XDP currently does not support jumbo frames. Limit the
-> +=09 * accepted packet size regardless of PAGE_SIZE so it fits in a 2kb
-> +=09 * XSK chunk.
-> +=09 */
-> +=09if (igc_xdp_is_enabled(adapter))
-> +=09=09rlpml =3D ETH_FRAME_LEN + VLAN_HLEN * 2 + ETH_FCS_LEN;
-> +
-> +=09wr32(IGC_RLPML, rlpml);
-> +}
-> +
->  /**
->   * igc_setup_rctl - configure the receive control registers
->   * @adapter: Board private structure
-> @@ -874,6 +896,7 @@ static void igc_setup_rctl(struct igc_adapter *adapte=
-r)
->  =09=09=09  IGC_RCTL_CFIEN); /* Disable VLAN CFIEN Filter */
->  =09}
->=20
-> +=09igc_set_rlpml(adapter);
->  =09wr32(IGC_RCTL, rctl);
->  }
->=20
-> @@ -4116,7 +4139,7 @@ static void igc_set_rx_mode(struct net_device *netd=
-ev)
->  {
->  =09struct igc_adapter *adapter =3D netdev_priv(netdev);
->  =09struct igc_hw *hw =3D &adapter->hw;
-> -=09u32 rctl =3D 0, rlpml =3D MAX_JUMBO_FRAME_SIZE;
-> +=09u32 rctl =3D 0;
->  =09int count;
->=20
->  =09/* Check for Promiscuous and All Multicast modes */
-> @@ -4146,12 +4169,6 @@ static void igc_set_rx_mode(struct net_device *net=
-dev)
->  =09/* update state of unicast and multicast */
->  =09rctl |=3D rd32(IGC_RCTL) & ~(IGC_RCTL_UPE | IGC_RCTL_MPE);
->  =09wr32(IGC_RCTL, rctl);
-> -
-> -#if (PAGE_SIZE < 8192)
-> -=09if (adapter->max_frame_size <=3D IGC_MAX_FRAME_BUILD_SKB)
-> -=09=09rlpml =3D IGC_MAX_FRAME_BUILD_SKB;
-> -#endif
-> -=09wr32(IGC_RLPML, rlpml);
->  }
->=20
->  /**
-> diff --git a/drivers/net/ethernet/intel/igc/igc_xdp.c b/drivers/net/ether=
-net/intel/igc/igc_xdp.c
-> index 9eb47b4beb06..a0f1ecb2ed5f 100644
-> --- a/drivers/net/ethernet/intel/igc/igc_xdp.c
-> +++ b/drivers/net/ethernet/intel/igc/igc_xdp.c
-> @@ -34,6 +34,8 @@ int igc_xdp_set_prog(struct igc_adapter *adapter, struc=
-t bpf_prog *prog,
->  =09}
->=20
->  =09old_prog =3D xchg(&adapter->xdp_prog, prog);
-> +=09if (if_running && need_update)
-> +=09=09igc_set_rlpml(adapter);
->  =09if (old_prog)
->  =09=09bpf_prog_put(old_prog);
->=20
-> @@ -69,11 +71,12 @@ static int igc_xdp_enable_pool(struct igc_adapter *ad=
-apter,
->  =09=09return -EINVAL;
->=20
->  =09frame_size =3D xsk_pool_get_rx_frame_size(pool);
-> -=09if (frame_size < ETH_FRAME_LEN + VLAN_HLEN * 2) {
-> +=09if (frame_size < ETH_FRAME_LEN + VLAN_HLEN * 2 +
-> +=09=09=09 ETH_FCS_LEN + IGC_TS_HDR_LEN) {
->  =09=09/* When XDP is enabled, the driver doesn't support frames that
-> -=09=09 * span over multiple buffers. To avoid that, we check if xsk
-> -=09=09 * frame size is big enough to fit the max ethernet frame size
-> -=09=09 * + vlan double tagging.
-> +=09=09 * span multiple buffers. Check the maximum supported MTU, not
-> +=09=09 * current MTU, as it may change while the pool is bound. Account
-> +=09=09 * for double VLAN tags, FCS and inline RX timestamping.
->  =09=09 */
->  =09=09return -EOPNOTSUPP;
->  =09}
-> --
-> 2.43.0
->=20
->=20
-> >
-> > diff --git a/drivers/net/ethernet/intel/igc/igc.h b/drivers/net/etherne=
-t/intel/igc/igc.h
-> > index 17f213cc93e4..635d49701e62 100644
-> > --- a/drivers/net/ethernet/intel/igc/igc.h
-> > +++ b/drivers/net/ethernet/intel/igc/igc.h
-> > @@ -198,6 +198,7 @@ struct igc_ring {
-> >  =09=09=09struct igc_rx_packet_stats pkt_stats;
-> >  =09=09=09struct u64_stats_sync rx_syncp;
-> >  =09=09=09struct sk_buff *skb;
-> > +=09=09=09bool rx_in_frame;
-> >  =09=09};
-> >  =09};
-> >
-> > diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/et=
-hernet/intel/igc/igc_main.c
-> > index 1fb5f3cbe93c..9ca5558c762c 100644
-> > --- a/drivers/net/ethernet/intel/igc/igc_main.c
-> > +++ b/drivers/net/ethernet/intel/igc/igc_main.c
-> > @@ -474,6 +474,7 @@ static void igc_clean_rx_ring(struct igc_ring *ring=
-)
-> >  =09=09igc_clean_rx_ring_page_shared(ring);
-> >
-> >  =09clear_ring_uses_large_buffer(ring);
-> > +=09ring->rx_in_frame =3D false;
-> >
-> >  =09ring->next_to_alloc =3D 0;
-> >  =09ring->next_to_clean =3D 0;
-> > @@ -673,6 +674,7 @@ static void igc_configure_rx_ring(struct igc_adapte=
-r *adapter,
-> >  =09/* reset next-to- use/clean to place SW in sync with hardware */
-> >  =09ring->next_to_clean =3D 0;
-> >  =09ring->next_to_use =3D 0;
-> > +=09ring->rx_in_frame =3D false;
-> >
-> >  =09if (ring->xsk_pool)
-> >  =09=09buf_size =3D xsk_pool_get_rx_frame_size(ring->xsk_pool);
-> > @@ -2111,10 +2113,8 @@ static bool igc_can_reuse_rx_page(struct igc_rx_=
-buffer *rx_buffer,
-> >   * @rx_ring: Rx ring being processed
-> >   * @rx_desc: Rx descriptor for current buffer
-> >   *
-> > - * This function updates next to clean.  If the buffer is an EOP buffe=
-r
-> > - * this function exits returning false, otherwise it will place the
-> > - * sk_buff in the next buffer to be chained and return true indicating
-> > - * that this is in fact a non-EOP buffer.
-> > + * Advance next to clean and retain frame position for the next descri=
-ptor.
-> > + * Return true if the consumed descriptor does not end the frame.
-> >   */
-> >  static bool igc_is_non_eop(struct igc_ring *rx_ring,
-> >  =09=09=09   union igc_adv_rx_desc *rx_desc)
-> > @@ -2127,10 +2127,8 @@ static bool igc_is_non_eop(struct igc_ring *rx_r=
-ing,
-> >
-> >  =09prefetch(IGC_RX_DESC(rx_ring, ntc));
-> >
-> > -=09if (likely(igc_test_staterr(rx_desc, IGC_RXD_STAT_EOP)))
-> > -=09=09return false;
-> > -
-> > -=09return true;
-> > +=09rx_ring->rx_in_frame =3D !igc_test_staterr(rx_desc, IGC_RXD_STAT_EO=
-P);
-> > +=09return unlikely(rx_ring->rx_in_frame);
-> >  }
-> >
-> >  /**
-> > @@ -2601,7 +2599,7 @@ static void igc_update_rx_stats(struct igc_q_vect=
-or *q_vector,
-> >
-> >  static int igc_clean_rx_irq(struct igc_q_vector *q_vector, const int b=
-udget)
-> >  {
-> > -=09unsigned int total_bytes =3D 0, total_packets =3D 0;
-> > +=09unsigned int total_bytes =3D 0, total_packets =3D 0, work_done =3D =
-0;
-> >  =09struct igc_adapter *adapter =3D q_vector->adapter;
-> >  =09struct igc_ring *rx_ring =3D q_vector->rx.ring;
-> >  =09struct sk_buff *skb =3D rx_ring->skb;
-> > @@ -2609,13 +2607,15 @@ static int igc_clean_rx_irq(struct igc_q_vector=
- *q_vector, const int budget)
-> >  =09int xdp_status =3D 0, rx_buffer_pgcnt;
-> >  =09int xdp_res =3D 0;
-> >
-> > -=09while (likely(total_packets < budget)) {
-> > +=09while (likely(work_done < budget)) {
-> >  =09=09struct igc_xdp_buff ctx =3D { .rx_ts =3D NULL };
-> > +=09=09bool first =3D !rx_ring->rx_in_frame;
-> >  =09=09struct igc_rx_buffer *rx_buffer;
-> >  =09=09union igc_adv_rx_desc *rx_desc;
-> >  =09=09unsigned int size, truesize;
-> >  =09=09int pkt_offset =3D 0;
-> >  =09=09void *pktbuf;
-> > +=09=09bool tsip;
-> >
-> >  =09=09/* return some buffers to hardware, one at a time is too slow */
-> >  =09=09if (cleaned_count >=3D IGC_RX_BUFFER_WRITE) {
-> > @@ -2635,21 +2635,34 @@ static int igc_clean_rx_irq(struct igc_q_vector=
- *q_vector, const int budget)
-> >  =09=09dma_rmb();
-> >
-> >  =09=09rx_buffer =3D igc_get_rx_buffer(rx_ring, size, &rx_buffer_pgcnt)=
-;
-> > +=09=09tsip =3D first && igc_test_staterr(rx_desc, IGC_RXDADV_STAT_TSIP=
-);
-> > +
-> > +=09=09if ((!first && !skb) ||
-> > +=09=09    (first && igc_xdp_is_enabled(adapter) &&
-> > +=09=09     !igc_test_staterr(rx_desc, IGC_RXD_STAT_EOP)) ||
-> > +=09=09    unlikely(tsip && size < IGC_TS_HDR_LEN)) {
-> > +=09=09=09if (first)
-> > +=09=09=09=09dev_core_stats_rx_dropped_inc(rx_ring->netdev);
-> > +=09=09=09xdp_res =3D IGC_XDP_CONSUMED;
-> > +=09=09=09goto xdp_done;
-> > +=09=09}
-> > +
-> >  =09=09truesize =3D igc_get_rx_frame_truesize(rx_ring, size);
-> >
-> >  =09=09pktbuf =3D page_address(rx_buffer->page) + rx_buffer->page_offse=
-t;
-> >
-> > -=09=09if (igc_test_staterr(rx_desc, IGC_RXDADV_STAT_TSIP)) {
-> > +=09=09if (tsip) {
-> >  =09=09=09ctx.rx_ts =3D pktbuf;
-> >  =09=09=09pkt_offset =3D IGC_TS_HDR_LEN;
-> >  =09=09=09size -=3D IGC_TS_HDR_LEN;
-> >  =09=09}
-> >
-> > -=09=09if (igc_fpe_is_pmac_enabled(adapter) &&
-> > +=09=09if (first && igc_fpe_is_pmac_enabled(adapter) &&
-> >  =09=09    igc_fpe_handle_mpacket(adapter, rx_desc, size, pktbuf + pkt_=
-offset)) {
-> >  =09=09=09/* Advance the ring next-to-clean */
-> >  =09=09=09igc_is_non_eop(rx_ring, rx_desc);
-> >  =09=09=09cleaned_count++;
-> > +=09=09=09work_done++;
-> >  =09=09=09continue;
-> >  =09=09}
-> >
-> > @@ -2664,6 +2677,12 @@ static int igc_clean_rx_irq(struct igc_q_vector =
-*q_vector, const int budget)
-> >  =09=09=09xdp_res =3D igc_xdp_run_prog(adapter, &ctx.xdp);
-> >  =09=09}
-> >
-> > +=09=09if (xdp_res) {
-> > +=09=09=09total_bytes +=3D size;
-> > +=09=09=09total_packets++;
-> > +=09=09}
-> > +
-> > +xdp_done:
-> >  =09=09if (xdp_res) {
-> >  =09=09=09switch (xdp_res) {
-> >  =09=09=09case IGC_XDP_CONSUMED:
-> > @@ -2676,8 +2695,7 @@ static int igc_clean_rx_irq(struct igc_q_vector *=
-q_vector, const int budget)
-> >  =09=09=09=09break;
-> >  =09=09=09}
-> >
-> > -=09=09=09total_packets++;
-> > -=09=09=09total_bytes +=3D size;
-> > +=09=09=09work_done++;
-> >  =09=09} else if (skb)
-> >  =09=09=09igc_add_rx_frag(rx_ring, rx_buffer, skb, size);
-> >  =09=09else if (ring_uses_build_skb(rx_ring))
-> > @@ -2700,8 +2718,15 @@ static int igc_clean_rx_irq(struct igc_q_vector =
-*q_vector, const int budget)
-> >  =09=09if (igc_is_non_eop(rx_ring, rx_desc))
-> >  =09=09=09continue;
-> >
-> > +=09=09if (xdp_res) {
-> > +=09=09=09skb =3D NULL;
-> > +=09=09=09continue;
-> > +=09=09}
-> > +
-> > +=09=09work_done++;
-> > +
-> >  =09=09/* verify the packet layout is correct */
-> > -=09=09if (xdp_res || igc_cleanup_headers(rx_ring, rx_desc, skb)) {
-> > +=09=09if (igc_cleanup_headers(rx_ring, rx_desc, skb)) {
-> >  =09=09=09skb =3D NULL;
-> >  =09=09=09continue;
-> >  =09=09}
-> > @@ -2717,7 +2742,6 @@ static int igc_clean_rx_irq(struct igc_q_vector *=
-q_vector, const int budget)
-> >  =09=09/* reset skb pointer */
-> >  =09=09skb =3D NULL;
-> >
-> > -=09=09/* update budget accounting */
-> >  =09=09total_packets++;
-> >  =09}
-> >
-> > @@ -2732,7 +2756,7 @@ static int igc_clean_rx_irq(struct igc_q_vector *=
-q_vector, const int budget)
-> >  =09if (cleaned_count)
-> >  =09=09igc_alloc_rx_buffers(rx_ring, cleaned_count);
-> >
-> > -=09return total_packets;
-> > +=09return work_done;
-> >  }
-> >
-> >  static struct sk_buff *igc_construct_skb_zc(struct igc_ring *ring,
-> > @@ -2797,10 +2821,10 @@ static struct igc_xdp_buff *xsk_buff_to_igc_ctx=
-(struct xdp_buff *xdp)
-> >
-> >  static int igc_clean_rx_irq_zc(struct igc_q_vector *q_vector, const in=
-t budget)
-> >  {
-> > +=09int total_bytes =3D 0, total_packets =3D 0, work_done =3D 0;
-> >  =09struct igc_adapter *adapter =3D q_vector->adapter;
-> >  =09struct igc_ring *ring =3D q_vector->rx.ring;
-> >  =09u16 cleaned_count =3D igc_desc_unused(ring);
-> > -=09int total_bytes =3D 0, total_packets =3D 0;
-> >  =09u16 ntc =3D ring->next_to_clean;
-> >  =09struct bpf_prog *prog;
-> >  =09bool failure =3D false;
-> > @@ -2810,11 +2834,13 @@ static int igc_clean_rx_irq_zc(struct igc_q_vec=
-tor *q_vector, const int budget)
-> >
-> >  =09prog =3D READ_ONCE(adapter->xdp_prog);
-> >
-> > -=09while (likely(total_packets < budget)) {
-> > +=09while (likely(work_done < budget)) {
-> > +=09=09bool first =3D !ring->rx_in_frame;
-> >  =09=09union igc_adv_rx_desc *desc;
-> >  =09=09struct igc_rx_buffer *bi;
-> >  =09=09struct igc_xdp_buff *ctx;
-> >  =09=09unsigned int size;
-> > +=09=09bool eop, tsip;
-> >  =09=09int res;
-> >
-> >  =09=09desc =3D IGC_RX_DESC(ring, ntc);
-> > @@ -2829,11 +2855,20 @@ static int igc_clean_rx_irq_zc(struct igc_q_vec=
-tor *q_vector, const int budget)
-> >  =09=09dma_rmb();
-> >
-> >  =09=09bi =3D &ring->rx_buffer_info[ntc];
-> > +=09=09tsip =3D first && igc_test_staterr(desc, IGC_RXDADV_STAT_TSIP);
-> > +=09=09eop =3D igc_test_staterr(desc, IGC_RXD_STAT_EOP);
-> > +
-> > +=09=09if (!first || !eop || unlikely(tsip && size < IGC_TS_HDR_LEN)) {
-> > +=09=09=09if (first)
-> > +=09=09=09=09dev_core_stats_rx_dropped_inc(ring->netdev);
-> > +=09=09=09res =3D IGC_XDP_CONSUMED;
-> > +=09=09=09goto xdp_done;
-> > +=09=09}
-> >
-> >  =09=09ctx =3D xsk_buff_to_igc_ctx(bi->xdp);
-> >  =09=09ctx->rx_desc =3D desc;
-> >
-> > -=09=09if (igc_test_staterr(desc, IGC_RXDADV_STAT_TSIP)) {
-> > +=09=09if (tsip) {
-> >  =09=09=09ctx->rx_ts =3D bi->xdp->data;
-> >
-> >  =09=09=09bi->xdp->data +=3D IGC_TS_HDR_LEN;
-> > @@ -2851,6 +2886,10 @@ static int igc_clean_rx_irq_zc(struct igc_q_vect=
-or *q_vector, const int budget)
-> >  =09=09xsk_buff_dma_sync_for_cpu(bi->xdp);
-> >
-> >  =09=09res =3D __igc_xdp_run_prog(adapter, prog, bi->xdp);
-> > +=09=09total_bytes +=3D size;
-> > +=09=09total_packets++;
-> > +
-> > +xdp_done:
-> >  =09=09switch (res) {
-> >  =09=09case IGC_XDP_PASS:
-> >  =09=09=09igc_dispatch_skb_zc(q_vector, desc, ctx);
-> > @@ -2865,8 +2904,8 @@ static int igc_clean_rx_irq_zc(struct igc_q_vecto=
-r *q_vector, const int budget)
-> >  =09=09}
-> >
-> >  =09=09bi->xdp =3D NULL;
-> > -=09=09total_bytes +=3D size;
-> > -=09=09total_packets++;
-> > +=09=09ring->rx_in_frame =3D !eop;
-> > +=09=09work_done++;
-> >  =09=09cleaned_count++;
-> >  =09=09ntc++;
-> >  =09=09if (ntc =3D=3D ring->count)
-> > @@ -2889,10 +2928,10 @@ static int igc_clean_rx_irq_zc(struct igc_q_vec=
-tor *q_vector, const int budget)
-> >  =09=09=09xsk_set_rx_need_wakeup(ring->xsk_pool);
-> >  =09=09else
-> >  =09=09=09xsk_clear_rx_need_wakeup(ring->xsk_pool);
-> > -=09=09return total_packets;
-> > +=09=09return work_done;
-> >  =09}
-> >
-> > -=09return failure ? budget : total_packets;
-> > +=09return failure ? budget : work_done;
-> >  }
-> >
-> >  static void igc_update_tx_stats(struct igc_q_vector *q_vector,
-> >
->=20
+Skip the rebroadcasts, which are the only NETDEV_UNREGISTER events
+delivered with reg_state == NETREG_UNREGISTERED. The notifications sent
+by unregister_netdevice_many_notify() and, for a device leaving a netns,
+by __dev_change_net_namespace() are issued under RTNL in the same
+critical section that unlists the device, before its netns can be torn
+down, and keep being handled. This mirrors what ip6_route_dev_notify()
+already does to cope with the rebroadcasts.
 
-Looks good to me, passes basic testing, and I would rather you/intel do thi=
-s patch
+This change should not break the UAPI spec as it defines dev-del-ntf as
+a "Notification about device disappearing." which is a single event. The
+rebroadcast in netdev_wait_allrefs_any() exists to re-kick in-kernel
+subsystems holding references; netdev-genl happens to be on the notifier
+chain and forwards it.
 
-For posterity, I did email Tony with handoff notes stating I'd rather not d=
-o the=20
-xdp/xsk/af_xdp/fpe side of things, but hadn't heard back so I kept going. 
+[1] https://gist.github.com/NamanGulati/2d1b49b8757f9a88b0bd6e55018c02ae
+[2] https://lore.kernel.org/r/20261023191517.607834-1-kuniyu@google.com
+
+Fixes: d3d854fd6a1d ("netdev-genl: create a simple family for netdev stuff")
+Reported-by: syzbot+1269fe6cc2016008124e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6adf9f64.6200f071.51519.0ed1.GAE@google.com/
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Naman Gulati <namangulati@google.com>
+---
+Note that the reproducer attached to the syzbot bug targets a different
+bug (via devlink_port_notify() on netns teardown) that happens to share
+the same crash title, not the one in the original reported crash report.
+---
+ net/core/netdev-genl.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
+index 33b9f4eb9565a..2032ab9a864c2 100644
+--- a/net/core/netdev-genl.c
++++ b/net/core/netdev-genl.c
+@@ -1487,6 +1487,12 @@ static int netdev_genl_netdevice_event(struct notifier_block *nb,
+ 		netdev_unlock_full_to_ops(netdev);
+ 		break;
+ 	case NETDEV_UNREGISTER:
++		/* netdev_wait_allrefs_any() rebroadcasts NETDEV_UNREGISTER
++		 * while waiting for the last references to be dropped; the
++		 * netns may already be torn down by then. Notify only once.
++		 */
++		if (READ_ONCE(netdev->reg_state) == NETREG_UNREGISTERED)
++			break;
+ 		netdev_lock(netdev);
+ 		netdev_genl_dev_notify(netdev, NETDEV_CMD_DEV_DEL_NTF);
+ 		netdev_unlock(netdev);
+-- 
+2.56.0.307.g5fe7bd680c-goog
+
