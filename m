@@ -1,138 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.210.179
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793049845;
-	b=P43VEa435GwCZhh8DJIHOKCyhG4RUbnosHb0yuV/DI7Kf03S/A5Iqyu052Zt8mUREh56
-	 pxIFrlQruHr88Htf01jUsP/JQydcc9UJxPcQ2nfuVKAjs8p/27sao9LhIRr6byXD9BNTh
-	 OZfnaDS0V5p9PU5wXnIgMHLgsrjlOB6qQEpCg01JYNmfQZaL2jlmEV2Zy2vWExXiTRhI1
-	 oAHUDoU3V9mJnx1WFTdxSoqmL6YVcduQCf5MvxTNJCPNL0GfvWILROQLoL6WvE9AMsUp7
-	 fG67dX9ABa4j3CoEo1IkA5EsdlK6fX8EDNY8PipuSmGi/HbB9nhblBWw3H0nF+sVi5g==
+	t=1793049848;
+	b=QSDT1QkTH0/sMNBKAI6bzN+29DrA8z3HeXEHGfYSgDM35pbrUhvHGpcDP2PMldiSHjl5
+	 qZ1mLJwOPk17nkqM9K516o/xB9KW3cxV7F880fLef2H+PwYn6LfCDIiWdJkisBpeZj9oH
+	 LI6O66ojh0MfnrVFFXKLYYtKYsiLweTdO1dq28T5SIQx3R8/gFaK234HviDzjgvddVJa4
+	 BaeelcAOcLeVrz1/slxtWjtSRBg/PTNG/Ec3SFDymIzBmgQrdcKRDKOWKFEyfLsm8XmGl
+	 cWimOdYeL03jsCgG9u6ZCGwVPgtxCT5VMLQeRiAkA5tcMkjAWVxlZpTTHbCsbDD2PBg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793049845;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
-	 Received:Received:Received:Message-ID:Date:User-Agent:Subject:To:CC:
-	 References:From:Content-Language:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-LD-Processed:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=145Cpd+EjKgoRdODLURu4tqUiox4XzORMqn4TciUdDk=;
-	b=D9d8K74MjSM3w8TcYW8/7Gsp9OG7eRiAg4xw2nj9Y+0V6NKIZELy3YC7TBCmjzv6CTo9
-	 ksrJ9XWAly87X+SbFdTiSjOCVRvXd0wiwhG4P3XHECCvfriKz2Z6CwEhVQhPtzU2iQdaA
-	 eE0cwjai+Fq6qvxEvXEGfyn5+3UGc7CkcO6eMJ1VZernu0eNkOAjCR7n3ybVoKYbT2jtD
-	 Rxld0ruFhrRFaBN8rWe+QbURY/T6J+aUo+e/zJYFpEsBxWGp8gDRsBkOgT6e09YHDVrba
-	 NTI7fsrOC2X6iXhZNDZEDyDRQoauD7N4K26eSGr83BVWokvA+xC7ZUEqiY9qGYryVig==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793049848;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=GKPa9M5PoAhtNnZV69xKXcRKiwNy/DZc5TLsis+amX4=;
+	b=KbLorRRwj9TmAzScH6U5OOiDxeiqNqmY6qv3KIz2g3QDi2KX/kxqPrfkdU3zWObLsGEI
+	 /NasZd/cF501JzWQtgNhxRe4y0DdKd4VWlHYWZZgsS+X0XeAz/CY4FRgBdUj6puUZXUMX
+	 R4ON4TUSn0VrYqgXzNgZMe1/fLK+hCv397Z45EDXFFz9TELvlJvLR2dJ2fel7vQcDl5KN
+	 jQakVCjuWPbTVjEr+DmnHzQE04OthvcAZBpNJ5cZi+Y7cqRYCZqqv1UFiPdBrqalp/BEB
+	 NsRHv0nvPPRiYgW+3AM+mp8a+/AUiGIBdv8LeO1XwkHr8kkkthTkCinG0+gnBLVUbOw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=EPIgX0Ay;
-	arc=fail smtp.remote-ip=198.175.65.18
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=JvW9vDSK;
+	arc=fail smtp.remote-ip=209.85.210.179
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45172606A31A
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 21:24:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 45172606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5A2606A32C
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 21:24:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DA5A2606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=EPIgX0Ay
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793049844; x=1824585844;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=glQ3jojHnLBMzdF2VNwaqHD7XRKc75eUrjWN9JZ7O/c=;
-  b=EPIgX0Ayuv6QmIqac4U2ZzSLTvRuJ27wkMjjtESFr2ue5TdZIIyfN89L
-   ZSRl7A8ihcp3XBjY+zHXvDxyWreB0zsKlnYifGNOF/niLvO7JcPepPGF3
-   Q2Z028s4RXtToE264AoZq7LT9/fXjfY5854Gy9rBys+eK66mTeSINWVHj
-   L+iRU5DZCoaxgXH3IBEAIlJV0n7rQTQX+U/Oq023SYNe8V/NnwQadNSuO
-   U0pewZEpAdsWwZsZzYGuceHoJiZQif43lwMMwgMk6cC3KSuds2VcIhLtt
-   rOGWtHqMFVZPYr31afkND+Pf8cPxEk3yzubENcLMcrfJebIE0Hugs0S1u
-   g==;
-X-CSE-ConnectionGUID: wDUPYV1tS36P3Y5amjF4Ag==
-X-CSE-MsgGUID: 09vIWV3IQ1GxSgRt/aAJYw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11947"; a="1742306"
-X-IronPort-AV: E=Sophos;i="6.27,180,1787036400"; 
-   d="scan'208";a="1742306"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 14:24:02 -0700
-X-CSE-ConnectionGUID: grgru7ONTtWEIOJ+V5kTqg==
-X-CSE-MsgGUID: Dx6aZp+JRE6+Uz3sD32BDg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,180,1787036400"; 
-   d="scan'208";a="4481202"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 14:24:02 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 26 Oct 2026 14:24:01 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Mon, 26 Oct 2026 14:24:01 -0700
-Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.60) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 26 Oct 2026 14:24:00 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Mxb2KDC4cH4P2vWlpuLyZhRGW9LmVll5Yqp2yNyAY0ZJf5pOstrhmEhH5eHOdT8+oHfali5mGluSUzOt5qym93rPQDHbCXaLglfT6czW+PpHBSq89UwT9OfvXZk4bMGYeXwubRuEz9Jts307ss37VhXqdiLITRslspI038ux6Tqk/aKpmyh+Ta87VOb5oC/mNwaiPMLxe60Qg0nxDzFENrd1m8j7qcr6UdubOJ6/PH+fjJaLsIP0d8Fa83OH5pdRd7Yqv0VKQD985jukqv4ISsdWLcPA5QGKGKH+YZDy41dVKtPNlklr39sZJA1HFFII7YzLkxy1lxaAeBxZsKpzwg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=145Cpd+EjKgoRdODLURu4tqUiox4XzORMqn4TciUdDk=;
- b=DS+3DYGMBZbBL3c5Lh6XljJEdp56OjF1vTkN25OkfYI6mdVzbBgYg5Ww3QhkjusXbGJdngilG58iEyese+m7w3Kc2OSybPrODnYSaylrlO5aAy+E2U2+43k+R+m/9gDPrm9Kt6SWWIq6y1e7h0+1KPdiPx32ZCMbJzxm9M5FBaYQdEwN7YGVih784CpZvomk9Vw0Jy+oDpa8lFcCmJLefftS0xqthKPZEVrflhhMDBn9vyLvsmXa6GCcDk6VpO9Dpc6WCJXGsftaeqVfPUAwhXHAW1MUl/kjpYxo4EcWWUWwMKBgBpdmzE0VTLJU9DROjMdjjAemSe5zpM07wMNLFQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
- by CO1PR11MB4931.namprd11.prod.outlook.com (2603:10b6:303:9d::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
- 2026 21:23:58 +0000
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58%6]) with mapi id 15.21.0546.021; Mon, 26 Oct 2026
- 21:23:58 +0000
-Message-ID: <f9b3766f-9d31-4a96-8d4a-2c52a161e0f7@intel.com>
-Date: Mon, 26 Oct 2026 14:23:55 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v5 01/13] ice: fix removal of PTP timestamp tracker
- during reset
-To: <netdev-bot+sashiko@kernel.org>
-CC: <przemyslaw.kitszel@intel.com>, <andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>, <edumazet@kernel.org>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <poros@redhat.com>, <netdev@vger.kernel.org>,
-	<grzegorz.nitka@intel.com>, <aleksandr.loktionov@intel.com>,
-	<alexander.nowlin@intel.com>, <anthony.l.nguyen@intel.com>,
-	<maciej.machnikowski@intel.com>, <przemyslaw.korba@intel.com>,
-	<sergey.temerkhanov@intel.com>, <arkadiusz.kubalewski@intel.com>,
-	<richardcochran@gmail.com>, <horms@kernel.org>
-References: <20261021-jk-e825c-timestamp-processing-logic-fixes-srcu-v5-1-72289a4ac8eb@intel.com>
- <179297183411.3134.15060779235779250719@kernel.org>
-From: Jacob Keller <jacob.e.keller@intel.com>
-Content-Language: en-US
-In-Reply-To: <179297183411.3134.15060779235779250719@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MW4PR03CA0271.namprd03.prod.outlook.com
- (2603:10b6:303:b5::6) To DS0PR11MB7381.namprd11.prod.outlook.com
- (2603:10b6:8:134::14)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=JvW9vDSK
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-89f639ba307so1257289b3a.3
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 14:24:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793049847; cv=none;
+        d=google.com; s=arc-20260327;
+        b=nYj6YC3359XeqRFGTlhOp92GDADWJ/zjxY+7tq5oiyncwF6TAC60Igs+O6jdp0Z+IL
+         cJyDSx9lCLL8BRW7LOABcScRmoopfH+l4hzqDF+efl3tMQQg9ib+KYmRdSq6+X707Yua
+         kQzn9upUrpZL6Pvs77k/j3315URtEG8PtfKP9lgfMPxMgKgLPkg5pVsXcjchcPXZJuGf
+         gWKyjxvosVFINDlABoiTPkVoGb7l734H3nMhhzLhwu9dsd4X8yHYVxcOPw9iGSokCwtP
+         J7q28EklYJT2hJwD/sxHCpN4ugHsGW1ugzP70E9701Re6bsOsIzI+1ZPob1BBdYnRzNl
+         W9rA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=GKPa9M5PoAhtNnZV69xKXcRKiwNy/DZc5TLsis+amX4=;
+        fh=xbSq4tzo4T6QTMhgwFU0TCTQmM7da79VsmRmucCgKWc=;
+        b=bwmLzZItMALzlrwl2XNCfmVD8r+21JqdkuEcnWuRuQZN2g8Ulx1XSXu9VkGIgGcJ6I
+         ExEKG5ao1YtBb/Lmgyayp2uHy15eMel3gnQ1hUTAJrKeKbKaZjma7xf77iTLC7s+dUNr
+         7zFqB4m/1IlE9Wkw1NcGy1MaDD5q10UZ4tb5G5uJeitjjrYjBZK0A+YHid5MvnDO9WbO
+         7aHJ046yU21Eh4pBnaKBuECJY1w0ZvSgDHX5PNc9xFZaO/Vp4eyzb8P8A3mt4KVe163P
+         pN7kzp0tTk/P+miYJc6oQiACS/2IwobQJ+VwpoU08S71PdVPmMkUx2eHVyOzw1DBlrFV
+         AEGg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1793049847; x=1793654647; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=GKPa9M5PoAhtNnZV69xKXcRKiwNy/DZc5TLsis+amX4=;
+        b=JvW9vDSKDQCQ/Iv5gH7W5O3cS0g69FgaSrzXh+G3mKOnwtx1dD5k2+/f8z9S5LGEJp
+         qhfC119t2DQCRsdUB4RiBMCgW9qeU+bxBSK401Bk+wzfGwWxnoFATTv6HCNP19AxhKn5
+         4q8CfdqkdshtIy14X3UgKdFIgmQ8I8OYThvgeWi6M5mHA5jj/IEmz5LzhYukJ5xRd7Iu
+         69idP10I+bJCRRgR++AoP9HgxnDUUM1isC1kbmQG8h/snlHwe8L53Xc5dXrxDDUYZ3dW
+         ov5as3DD2BB9Qd+hgBkonsm2UFAu+VwMBLKG3UrP+36q9N8IuBaXClaE+/WlNYJ877aL
+         GaaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793049847; x=1793654647;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GKPa9M5PoAhtNnZV69xKXcRKiwNy/DZc5TLsis+amX4=;
+        b=PL6Sd3F+vrotoMpl+xkGO6cUQt6h15dfIYdRiAL4CZFajfQmRqGzo/cWVo2oEI9245
+         MTMvk8cxrL8WE/NZSmbGq2GmdrQ6DicJu1IoW311j9fU/MEQJt+3fXMsoGIn8ZPE94CI
+         JEghfmeMAUNaMO0ndBKgnBGcA3fTk/nvQDWDTcD8nT89IwXx+Bu08K2tm79UiMQte2zx
+         GoFVelQfeeIGya8xb19oxBrwC7rCsY1/9+9dFHE2h64Q17BdmPG8Ahaj5ERASX5VFuMX
+         HDcDzSq4m8CpmcTpTIwUeqyNG/Ni6Wu4MxRVDzDOWBOpvw6OCzBzJu/U2x1eWVgo7eEg
+         4wmw==
+X-Forwarded-Encrypted: i=1; AKwUvByeqkvpkE4MZd2qCpbXmQqIwcbwsG2cup4IwYQjeUAvK4msxb3zChqJ5WnMZ8dL5x/RkR5JE4Q=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI2B3EpTkHHdfBC4dGs1g9Kh9KPE2s704TW541rwTGngpuR09a7
+	Axm0n970Oi2bfKveEW/WJq1mjwlI7uf7y1YyHKR0EE9YYbyWDgAsm14V1XEodvFxZQOpHO/x0+C
+	wISvJ2C/XkIK1gUpESI6qpJltDqfgQHk=
+X-Gm-Gg: AYBFou0p68A2m187ksqXI23AbNdhwRRGJjzcTTzcvugCAbTVA3dhbSRyJFhWSfKX94C
+	iqsUSL4htHaXZVft+CwYJlMRrNBW50xgkFpvkYh+waArIE+TGQyL6zJOHj4RThfjQH5bOXlsWja
+	ipMVrJUrBLj8COV9/uknksDejMeL2baYufWr822ZYVdQYrMeR+k+SwrOaU3zUzhEPxcgEutAVHI
+	PT+xc0RXAVIn3zl7NElhthW2e4y5u19ZfhiIomtu8+/gcEXAElbH4yrEJAYpr8bkChUwglMFczN
+	6fshuM6VgwN/M7rwpyc+agqpd7QaSMHxxE0hpwmwZNnqmMOa2ds0GZe6gTBTnQXNBVgCbEMIiXT
+	lXNP11EUZm1ihLu9mlSOglsX3sIBFFC+QBCd4p1tb/h/lL9uyiiIIuYLdJkkfFHG07tQBG0poP/
+	5ppciLrhhHUoNRYBNXwUuNCxvW3htW4Fw58w==
+X-Received: by 2002:a05:6a00:12d6:b0:89e:3742:3e16 with SMTP id
+ d2e1a72fcca58-8a3666af17cmr6585603b3a.18.1793049847178; Mon, 26 Oct 2026
+ 14:24:07 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -142,199 +105,165 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|CO1PR11MB4931:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5910e8ad-3127-42f6-514b-08df33a77249
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|366016|1800799024|7416014|376014|261009223027099003|261021121427099003|261021123027099003|261022105027099003|261022075727099003|10067099003|56012099006|3023799007|261026140227099003|22082099003|18002099003|261026121527099003|5023799004|11063799006|4143699003;
-X-Microsoft-Antispam-Message-Info: wsqeH1rnNhVFX7ZW24pHf848lgi2c4K+dU2MluiNsJbqrfkNxJ+MU+v1fL0B1szNfzusv+qDnQQJvfwEBHL+uiE5l+7QTEUO824I+oaqVJv0VX5+SgzPM4WSvAk7ZpRVFMk0ttL77eau9/SugNTNsI/sNcmMZoj0iGq4NyhnyhIlKmZn6KCe1LPW5v6T2jI4wi28BiRXANmvdMuvZvyUhqYGqU7wCTmyeszw60XzsmQbVByYolrOPYg5DrRaD3ej1TSOd7712s+I+q8aQSs1aQmhpDp8ID5Om666Knjja+VHDpb1C50PeYussdt2zKR25yyXy+rB7nlRNAuqCBUHa03cdGcvMCZ4PaigPO5VNpS5oOIp+GX7AzFiHhnOdn++k5jEcKos8IGC9o60QTI+PuTC8K31w3wJCfgINE4UiVCWNd7p8EceESgQlYsBbh+q6TwbODm8WqYj7/t0RFNhVaLiuti5k30tpxipHNauIQJvE0ZQuXu9HvqK72Kpnl3CRLqmAv6544ry69OjXinxDCEEw6doJEovnfpqYBk7HGpSMU5hox4Uc9QTTvgMmHXmQUji8sHpL8fBqbnj++7FvAHiJJ/+B+A8pwJQivl2T6k=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(7416014)(376014)(261009223027099003)(261021121427099003)(261021123027099003)(261022105027099003)(261022075727099003)(10067099003)(56012099006)(3023799007)(261026140227099003)(22082099003)(18002099003)(261026121527099003)(5023799004)(11063799006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QlJ2QjNLVHZaRDlYMnZxY21OS1QreVMvNFR6RGdPQUl1UURLSmNRaXBvMTJp?=
- =?utf-8?B?ZHkvTnB5UlFuczRCVVlyNnBxcmozMnZ3Y2FuS2pVQ1FXUW96UmllL1EzenVU?=
- =?utf-8?B?cW8vUUJlRHF6UG82bjJtcjlwYzRwdkI0ZlVjSlFtcGJNRi8xaVJsOVduTTlk?=
- =?utf-8?B?cnBOektDT1AzYUI4eEs4emQzQnhmbkFxRjQvbjNteG5UV01xd1cydWRRVExF?=
- =?utf-8?B?ZGxCc1V5Smg4d2FlNTBRZ3Q5d2wzazRydG1RYVYzYlVWNUc2TWFJRjBrb1JC?=
- =?utf-8?B?cGdJTDM1RVNUV0krKzNGNERHTVZ2ZEdtSUNWZHhXK0FDeStpR1U0ZVVVYnZ2?=
- =?utf-8?B?WGJMcFAzNzQvSkNsZjRENGNQL0ZoZVZDQVc4bUkwUnR4T1hXZ3FLKzdkY3ow?=
- =?utf-8?B?ejZvVG14QktNaThCdk00THNrZGlmb0NMc0hKYTlZbnN0UTVtNHd1SnpzY0Yv?=
- =?utf-8?B?bmRlNDdjTmNxUkhwbzlLd3FJQXoybVVOK3ZrMnpXWDR1MTlEczVvOWNGUk9s?=
- =?utf-8?B?VTR4eGdSZ2JqSVc3TFBkT2V1R3FnVEhkSVc0UjI2TXpIRHp3OHVpRnlWR3RI?=
- =?utf-8?B?QkMxalJLd21zTklnNHhndWQyc0pwK1VrT1UwLzJtTGlDdUhWazdGRGZrRDdN?=
- =?utf-8?B?TmFHL09HM0tKOWdyNnJHZ1h5Tmh5MGFUQm4vTitmaXR6RTdLeGpacEZrYTNY?=
- =?utf-8?B?MWNPaVlPeTk2Z1M4UnVFcWl4L2JWUnp5cW4zSXA0OWdEaldKVi8vZTFqS3Vy?=
- =?utf-8?B?TC92aGd2NTdKQ0UyOTZrelM1S05idkdrdzFYakNvdHFJZ2xuclBWRU5hL2lR?=
- =?utf-8?B?eENBOUhQZG5GNWFVWlBuejdkcmR0dkg0ODczOUdJdVA5RHBHRVFSN1hUWG90?=
- =?utf-8?B?Y1M3Z2dQOGwxZzNVdnpma3ZVeGM1bVF3Nk9YL09GZEdqUlNITTBPZno4QzBO?=
- =?utf-8?B?UTJTcVVWcE9CVnFHcXVrZXRuRWJHL2FUN2V2dXduRlZvOGRPOWpEaG5ZQnp6?=
- =?utf-8?B?OGd3RXczU0o0Yk5LL0N4TUMya3ZzT1h5d3BDQVRpZEVId3dPTGZFaytWVGdj?=
- =?utf-8?B?WFdWcFY2d2piRzd6cGVHc01pZ3c2V2lOQWdHRzhSYlAvOW5BcCtVZ2I5VVQr?=
- =?utf-8?B?L1dCOElyb2Z4eGpPeEs4VnA2Z2V5bVRqaW9xVGV2VkpwcGU0RGtuTkFJNDZi?=
- =?utf-8?B?QXYyOG1samtXWTVjSzVrcmpZSEIxcDByUDUvOVZaWkpKREwyck8zbUxqWTUx?=
- =?utf-8?B?bldEYTh5eDJubjViMEtCQ3RzYSt0dFpTeit3c0VjSjFRc1k5NDcwRVArVXZi?=
- =?utf-8?B?ZE1tY0t2QjliRlMrZ2NCenkyUzduYVYyY3RmSm8zZ2dUNmdkRk9pZVlLc2Nx?=
- =?utf-8?B?c2Q0STJCL0p1amVSRkFuK0xKYUYxeVJaenVmZC8ybW5DNjE1ZE9CRElWS0xu?=
- =?utf-8?B?TURhV1Q0M3J5S2NRR3VTaDZFVm5WU2NUY2VLb3RIYVk4WFJ4K3EvZTVZMTA3?=
- =?utf-8?B?TXYxZ3RUc0NlUitLUUhzUHdwTU5BTEhTeXZ1cm9hMlhONlVoelZyYUZOSlQx?=
- =?utf-8?B?Z3B4QWQvb0ZRL200dEN0WWFuOVlzUHU1QU55MUtSYW1kcnVVS21JMmFaelgx?=
- =?utf-8?B?bG53NnZDMWFQbzFHRkhoWnl4Um5maDNPUXltMWpTUi9RaDg1TDBHQWdoZUNt?=
- =?utf-8?B?eHVkZTdkYUFNREowc0FkVTZKU3dFa213SEtJeUtrTlR5NkJ5cmxvLzAvb2U1?=
- =?utf-8?B?VWU3ZEdJWUZzNFFDWE9OOFZZbzlSRFBrcUdjdjdtbFMwR0RtUmFDMzBIV2E5?=
- =?utf-8?B?bVY3SG5ITnEyNDQvSThtVklTRHlPSVY3cDBGTi8zeklaT3JIL25ON25WYUlZ?=
- =?utf-8?B?OUdtemlpb3BkZkUzZXpCMWFTNUQ2LzBxcnJLM3FEQ0s4WkRESXl4ZW03UXFj?=
- =?utf-8?B?bG5VSnF5Y2dDUmhBS2R5M2dEbWRyL2V5RlRPaTcweHRld3l3azcyZlpYRDNR?=
- =?utf-8?B?dHA2cGlqUW5FTlcyQmY1UjdRN2ttUytneG5hck9HRVdQWFhaQnhQRmwxTWxq?=
- =?utf-8?B?Q3QwNkN2VS8ySlZlYUdLK2NnTDdnV2lJY1NkVzBBTmxyUDNmRmMxbStHeitY?=
- =?utf-8?B?TnEwVlZBTTBmdnEyQlFNeWh5d1ZJNDI2WHZ5NUdvTFRUWFNkeFhmM254Tk5l?=
- =?utf-8?B?cTBQVUROVU0vdzdLWTIxUXNNQlhpMnA3NHhoVmFtbFNTUHZwUlllK1h6N0xq?=
- =?utf-8?B?bXBuZ0lOWGlNa3ZOTlZBcTNzMXRGV1QrclNNUWdjT0VFREdhc2dEOU5hcTVM?=
- =?utf-8?B?ckRUWTFZdWtBTjZBQ2lvRlRwbXpGU3hlbm84bGsxd2hJbndxV3ZkUT09?=
-X-Exchange-RoutingPolicyChecked: XyuoADqaxIyXf6nb9gF+Ihs4MagM8FlXQa3DihqrdXtKxP+VXzzZ9hVbMhiGDB/dztnylfrJWBr/ep9dn60hinv7JDO7KfA99sSMA3n2mgc/eqkhfh5NcaLxyb12jxnb2XxOyG43xRhqbLG3Zzaq0AaA6Nret0IAD6KV4FSRXNZZJ/bNMpE78N3p6HheCHdi9cY+7r71EVxV/WlND18Ask9tgjgvUcA0cZpWQkQlSVVW6ga1L2EDW8zBMtG0g7SvyWhV4k7xyErAmFVl4u4zmoi3ZuQCjXlqo5+D3+DQP4QfaKhQ8pN1MxY3onVX7IhJ2UQHt5W6OlxXDkupQYUDPg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5910e8ad-3127-42f6-514b-08df33a77249
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 21:23:58.1574
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JuwmEXkhg0KkvSBAJ8KlP3DpvFOrzh8O1Z5gmdF+MndEXqENA83hsurOqFqVH1+mrvr1zVNEJWgL8x3IcdytZC3pBFV3GFQYs2E5XX0x2p4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4931
-X-OriginatorOrg: intel.com
+References: <20261024120627.837568-2-tim.budding@gmail.com>
+ <179293012722.3134.13316596865856977030@kernel.org> <20261026052706.187296-1-tim.budding@gmail.com>
+In-Reply-To: <20261026052706.187296-1-tim.budding@gmail.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Mon, 26 Oct 2026 17:23:55 -0400
+X-Gm-Features: AclHuK_mrIu1EVf0x2dV3mIZYP2JHGyJuazQowznGXy4YPuBCm1N0ChSU-JmIKI
+Message-ID: <CADvbK_du=-oT19kKBKYSjFKYscnQSH1mekRKMXgmLPMXTEH_=w@mail.gmail.com>
+Subject: Re: [PATCH net 1/4] sctp: purge abandoned I-DATA fragments by stream
+ and MID, not by TSN
+To: Tim Budding <tim.budding@gmail.com>
+Cc: netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org, 
+	linux-sctp@vger.kernel.org, marcelo.leitner@gmail.com, davem@davemloft.net, 
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	shuah@kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/25/2026 4:43 PM, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 2 (1) · Low: 0
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] The new error unwind in ice_ptp_init() destroys the PTP
->   kworker while the owner's PTP clock is still registered.
-> - [Medium] On E810 (has_ready_bitmap == 0), the Tx tracker now survives
->   CORE/GLOBAL/EMP resets.
-> 
-> Pre-existing issues:
-> - [Medium] Concern: ice_ptp_flush_all_tx_tracker(),
->   ice_ptp_restart_all_phy() and ice_ptp_prepare_rebuild_sec() walk…
-> 
-> --
-> 
-> ice: fix removal of PTP timestamp tracker during reset
-> 
-> This patch stops ice_ptp_prepare_for_reset() from releasing the Tx
-> timestamp tracker, so timestamping works again after CORE, GLOBAL or EMP
-> resets. It also reorders ice_ptp_init() so the kworker and tracker are set
-> up before the port is added to the port list, with a matching error
-> unwind. The non-READY branch of ice_ptp_release() now frees the tracker
-> and kworker.
-> 
-> Closes: https://sashiko.dev/#/patchset/20260821-jk-e825c-minimized-fixes-v1-0-9d0731eb4858%40intel.com?part=8
-> Closes: https://lore.kernel.org/netdev/20260916011213.1632286-1-kuba@kernel.org/
-> 
->> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
->> index eaec36ab6ae3..e1c66cd0f94f 100644
->> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
->> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
->> @@ -2939,8 +2939,6 @@ void ice_ptp_prepare_for_reset(struct ice_pf *pf, enum ice_reset_req reset_type)
->>  	if (ice_pf_src_tmr_owned(pf) && hw->mac_type == ICE_MAC_GENERIC_3K_E825)
->>  		ice_ptp_prepare_rebuild_sec(pf, false, reset_type);
->>  
->> -	ice_ptp_release_tx_tracker(pf, &pf->ptp.port.tx);
->> -
->>  	/* Disable periodic outputs */
->>  	ice_ptp_disable_all_perout(pf);
-> 
-> [Severity: Medium]
-> The tracker now survives CORE/GLOBAL/EMP resets. On E810, can the
-> cached_tstamp values then drift from the PHY state after the post-reset
-> flush?
-> 
+On Mon, Oct 26, 2026 at 1:27=E2=80=AFAM Tim Budding <tim.budding@gmail.com>=
+ wrote:
+>
+> On Sun, 25 Oct 2026 12:08:47 +0000, netdev-bot+sashiko@kernel.org wrote:
+> > > +           if (event->stream < sid)
+> > > +                   continue;
+> >
+> > [Severity: Low]
+> > Each call to sctp_intl_reasm_flush_mid() starts at the head of the queu=
+e.
+>
+> [...]
+>
+> Agreed. Walking each queue once per I-FORWARD-TSN would be a separate
+> change. I could send that to net-next.
+>
+> > > -   /* purge the fragmentation queue */
+> > > -   sctp_intl_reasm_flushtsn(ulpq, ftsn);
+> >
+> > [Severity: Medium]
+> > With the TSN-based purge removed, what frees an unordered fragment of a=
+n
+> > abandoned message that arrives after the I-FORWARD-TSN naming that
+> > message has been processed?
+>
+> [...]
+>
+> > Should the commit message also mention the lost rwnd and receive buffer
+> > space? Alternatively, could these fragments be dropped when they arrive=
+,
+> > or when the cumulative TSN moves past them?
+>
+> Correct, and the commit message is wrong to say such fragments stay
+> until the association is freed. An unordered fragment of an abandoned
+> message that first arrives after the last I-FORWARD-TSN naming that
+> message, with a TSN above the cumulative TSN, can't be reassembled. It
+> keeps its rwnd and receive buffer charge until a later unordered skip
+> on that stream with the same or a higher MID, a reset, or teardown. At
+> the tail of reasm_uo it also stops reneging, as any fragment below the
+> cumulative TSN already can.
+>
+> One late fragment is enough if nothing after it has arrived: the
+> receiver then delays its SACK for the I-FORWARD-TSN, the fragment fills
+> the gap within that delay, and the sender never names the message
+> again. With the last fragment of an abandoned three-fragment message
+> arriving in that window, that fragment stays queued (RX_QUEUE 1232). A
+> duplicate can't do it, as the TSN map drops the second copy.
+>
+> Before this patch a later I-FORWARD-TSN covering its TSN would have
+> freed it, so if another message is abandoned later, this patch keeps
+> it longer. Without such a later I-FORWARD-TSN, this patch frees more
+> than before: in the same test, the TSN-based purge leaves the
+> message's received fragments above the New Cumulative TSN queued
+> (RX_QUEUE 2464 without the delay), and this patch frees all but the
+> late one.
+>
+> For an ordered message the same late fragment aborts the association
+> instead: its MID is below the next expected one, so
+> sctp_validate_idata() fails. That happens on net today as well. I
+> could look at it separately.
+>
+> Freeing fragments once the cumulative TSN moves past them doesn't work
+> with interleaving: a live unordered message can have fragments below
+> the cumulative TSN, and freeing those is the loss this patch fixes.
+> Dropping late fragments on arrival needs new per-stream state, the
+> highest skipped unordered MID, which must be cleared on resets and must
+> not go stale when MIDs wrap. I'd rather do that in a separate patch
+> than grow this fix (question at the end). Either way, v2 will spell out
+> the cost in the commit message.
+>
+> > >     /* abort only when it's for all data */
+> > >     if (ftsn =3D=3D sctp_tsnmap_get_max_tsn_seen(&ulpq->asoc->peer.ts=
+n_map))
+> > >             sctp_intl_abort_pd(ulpq, GFP_ATOMIC);
+> >
+> > [Severity: High]
+> > Can this branch still flush the whole ulpq for an ordinary I-FORWARD-TS=
+N?
+>
+> [...]
+>
+> > A later patch in this series, "sctp: don't treat an I-FORWARD-TSN as an
+> > association reset", seems to address this. It drops the max_tsn_seen
+> > check from sctp_report_iftsn() and makes the stream reset paths call
+> > si->abort_pd() directly. This patch is tagged for stable on its own.
+> > Should that change be folded in here, or should the two be backported
+> > together?
+>
+> Yes. At this commit an I-FORWARD-TSN whose New Cumulative TSN is at or
+> above the highest TSN received still takes that branch, and
+> sctp_intl_abort_pd() frees every queued fragment, including those of a
+> message still being received on another stream: the same loss this
+> patch fixes below the leading edge. If that message is ordered and in
+> partial delivery, its MID is also skipped, and the association is
+> aborted when its next fragment arrives. With this patch alone the
+> ordered and unordered tests pass and leading_edge fails. The later
+> patch fixes it. v2 adds a leading_edge case without partial delivery,
+> which shows the loss directly.
+>
+> I kept the two apart because they are different mistakes in
+> sctp_report_iftsn(): the TSN-based purge, and treating ftsn =3D=3D
+> max_tsn_seen as a reset. But they share the Fixes: tag and the
+> symptom, so folding them is reasonable too. The later patch needs
+> patch 2 and the new pdapi_seq patch (see the reply to 3/4), and
+> neither of those needs this one, so folding would mean those two
+> first, then this patch and the later one as a single patch (question
+> at the end). If they stay separate, this commit message will say in v2
+> that the leading-edge case is only fixed by "sctp: don't treat an
+> I-FORWARD-TSN as an association reset". All three fixes are Cc: stable
+> and apply cleanly, in order, to the v5.10 through v6.18 release tags.
+>
+> > >                     sctp_intl_stream_abort_pd(ulpq, sid, mid, 0x1,
+> > >                                               GFP_ATOMIC);
+> > >             }
+> > > +           sctp_intl_reasm_flush_mid(&ulpq->reasm_uo, sid, mid);
+> >
+> > [Severity: Medium]
+> > This is a pre-existing issue, not one introduced by this patch. Does th=
+e
+> > new flush leave unordered partial delivery stuck when the skipped MID i=
+s
+> > the message currently being partially delivered?
+>
+> Yes, and that is the next patch in this series, "sctp: abort unordered
+> partial delivery when its message is skipped". At this commit no abort
+> notification is sent and the next unordered message on the stream is
+> delivered as the rest of the skipped one. The uo_pd test fails at this
+> commit and passes from the next patch on.
+>
+> Xin, Marcelo, two questions for v2:
+>
+> 1. Fold "sctp: don't treat an I-FORWARD-TSN as an association reset"
+>    into this patch, or keep it separate?
+> 2. Should dropping late unordered fragments be part of this series, or
+>    a follow-up to net?
+>
+Please try to fold it into this patch, and leave the drop to a follow-up.
 
-This is a pre-existing issue that should be resolved separately, as
-discussed on previous versions of this series.
+Thanks.
 
-> [Severity: Medium]
-> Is the PTP clock still registered while the kworker is torn down here?
-> 
-> On the clock owner, ice_ptp_init_owner() has already registered the
-> clock. /dev/ptpN stays live until err_exit calls ptp_clock_unregister().
-> 
-> The settime64 and adjtime ops do not check ptp->state, and they call
-> ice_ptp_reset_cached_phctime(). Suppose ice_ptp_update_cached_phctime()
-> returns -EAGAIN because ICE_CFG_BUSY is held, for example by a concurrent
-> adjtime on the same PHC. That function then does:
-> 
-> 	kthread_queue_delayed_work(pf->ptp.kworker, &pf->ptp.work,
-> 				   msecs_to_jiffies(10));
-> 
-> If this runs after kthread_cancel_delayed_work_sync() but before or during
-> kthread_destroy_worker(), a timer is left pending. Could
-> kthread_delayed_work_timer_fn() later touch the freed worker?
-> 
-> If it runs after ptp->kworker = NULL, would it dereference NULL?
-> 
-> One way to reach this window: ice_ptp_init_port() fails with -ENOMEM from
-> ice_ptp_alloc_tx_tracker() while a process with /dev/ptpN open calls
-> clock_settime() or clock_adjtime().
-> 
-> In this same patch, the non-READY branch of ice_ptp_release() unregisters
-> the clock before tearing down the worker. Should the init error path use
-> the same order? This ordering is still present at the end of the series.
-> 
-
-This is actually a problem that I think needs to be addressed
-separately, and work from other developers around the lifetime of
-adapter->ctrl_pf. I've tried multiple different ordering schemes while
-trying to get this series to pass Sashiko review, and every time I get
-something else as a problem.
-
-The current behavior is a problem, and the ways I've tried to fix it are
-less bad problems, (but still problems). I am getting extremely
-frustrated by this entire process.
-
->> @@ -3399,12 +3405,22 @@ void ice_ptp_release(struct ice_pf *pf)
->>  		return;
->>  
->>  	if (pf->ptp.state != ICE_PTP_READY) {
->> -		mutex_destroy(&pf->ptp.port.ps_lock);
->> -		ice_ptp_cleanup_pf(pf);
->>  		if (pf->ptp.clock) {
->>  			ptp_clock_unregister(pf->ptp.clock);
->>  			pf->ptp.clock = NULL;
->>  		}
->> +		ice_ptp_cleanup_pf(pf);
->> +		ice_ptp_release_tx_tracker(pf, &pf->ptp.port.tx);
-> 
-> [Severity: Medium]
-> This is a pre-existing issue and was not introduced by this patch.
-> ice_ptp_flush_all_tx_tracker(), ice_ptp_restart_all_phy() and
-> ice_ptp_prepare_rebuild_sec() walk the adapter port list without holding
-> ports.lock:
-> 
-> 	list_for_each_entry(port, &pf->adapter->ports.ports, list_node)
-> 		ice_ptp_flush_tx_tracker(ptp_port_to_pf(port), &port->tx);
-> 
-> At the same time, a peer PF's ice_ptp_release() can remove its port from
-> the list and free the tracker, kworker and ps_lock. Since trackers are now
-> kept across resets, the owner's flush walks memory that belongs to live
-> peers.
-> 
-> The next patch in the series, "ice: use reference counting and SRCU for
-> PTP port access", fixes this. It converts these walkers to
-> srcu_read_lock() with list_for_each_entry_srcu() and
-> kref_get_unless_zero(). It also makes ice_ptp_cleanup_pf() wait for the
-> references and SRCU readers to finish before the tracker and worker are
-> freed. The race is gone by the end of the series.
-> 
-
-Yes. I tried different orderings of the series, but putting the RCU
-fixes first  seemed to have it complain about problems fixed by this
-series. etc. etc.
+> Unless you prefer otherwise, v2 keeps them separate and leaves the drop
+> to a follow-up.
+>
+> pw-bot: cr
