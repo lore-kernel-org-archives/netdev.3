@@ -1,60 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.227.130
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792989794;
-	b=pCZUP5/obnEVQZni38C/AqV5sjqXNrCJE3LoHQtaTI0vIFGES7E9vIfQZV+eYebdZXMX
-	 1doJOd1Q0sRdWpYDXzXvwCYEZ3TR89c/v0vhZg1Fa3/xR1t3lUPMrX3znpl5h/Em78YSM
-	 IObWqPDVLcgBBvD2NYW7ulKYg4QvveQICeVdtCJaCRsR1sBgW8aDEY7Uw6+m8ZOqrf40e
-	 jYnO2QFmTVd9evqPTyxKzR//Qs6ICqw8DPIuKq0DZTmtB620oKWMjjc6cUlShU1z6KtkJ
-	 H/HzeCLoO6L4tUvx25yh/YlOwc2pMTz6zaDyiyDzn1/alez/qe5VZQJ/IjGyYgSNveA==
+	t=1792990095;
+	b=qtNDtyWXd6sGcvzp8QwgVLsVp+HdocAJp47aSp9GgInvJ3flg/JF3SjeFrOpH4xrV6jn
+	 V+TJXg6eWONfLq3YbnupnFVWug4JkARnfFI7Itjyc5JqY1wUmVArhfyR/8YkR0vOlq0i/
+	 17Tpcn/ZplTB3WCVBOk/6PmTbj+9DjvrDItJ/VjAXA/nfkVs051l4GmFmYu/Fqhb0Vb06
+	 Etf7bcwCHkCe+gLaaQVnQAGHJbhCivlcyuW2qCMnp8BjhY+rVbYpR6PEoIYn3kk6TFD2j
+	 0eCdqU8P+7qzSBeU6L7683U2l5puVFCcQv788pI/0gCJjOVDIQm3gwEtj3XU3qkXDvA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792989794;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=C3wmcsq5M8ZYfUOpWBYK3fngZJLQioceUB0ZD5J5oxY=;
-	b=BPFdYk+WCxKeSusI+bKVYoeGrRk74e3PHDEjbP2w9DtcQSQNFazbpyRTi/msmPrFrqNh
-	 etNSzKetbniRzRtmy/AS2uVwcqpDi6uJLL+SykYg1/vJCMdQH00mMW8o/YD8mzcq/jeOK
-	 Mc1oCgLZVXCjq/ZshW6G9TRIWVtqCqVAXO29WCoaeewAItr+4fJdFkizcT0oBrdzdpJ5D
-	 kxWmQCK9Fd88h7HJUcbogZLZSflZ3ZmKOM+8MUcujXt0dyfnd96/4Gcuca7XIPbVT8yWw
-	 V3CdU3rD5FRmFPtXRzJIjTfnXr6Pjrd3jr7JSAqnAvVpZJl8JXIB7iZcCREAzLIS27A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792990095;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=k/JB2/vnEe/nhNkdsVP6HUPiRtdVAo3aP+vpEA0X8co=;
+	b=dMWH9IYCECfLHBaNnwx+3s7/bUgqwceTcNUGgrQmKHKxwAxGK2MiTPuOMilDyfxtyJSp
+	 kuPuLUVO7UkSDRri78GURkcvzF8Pmj/SDNMMnWuZYRI1Rhl7FpfgeAIW0TunCbaz1rk3Y
+	 UxwoG0J6iYdTZQhIEBviEUf4vZ8Ca37fzxQPzizeUxhFAc+zT5KvMA3Z6KWnk+Kd0p2ZS
+	 66t4PGGHJg8v/3iaE8qqxxRmNFd62TM9JPQP2dXjhPnACjgxLeT7MabamZ/95bpgwZUcE
+	 uEXnLgWYuNDGrx9yatAEJS8JZ7q1gJQ1zuT5YISFTJmPuPdy4tylymjvhwV3v2ANzTw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UL62WYR9;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=EJ4WlZTI;
+	arc=none smtp.remote-ip=74.125.227.130
+Received: from mail-pj2-f2.google.com (mail-pj2-f2.google.com [74.125.227.130])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4CE606A31D;
-	Mon, 26 Oct 2026 04:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6674C606A31D
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 04:48:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6674C606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UL62WYR9
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 223621F01828;
-	Mon, 26 Oct 2026 04:43:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792989793;
-	bh=C3wmcsq5M8ZYfUOpWBYK3fngZJLQioceUB0ZD5J5oxY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=UL62WYR9wHfUyvGclkHE1jqewvO1f/PQouXboKg+eXXL851glUWbZLagl/vmJ06Xn
-	 m2BX4428qvRssyYYY56MLZPtasqi4TXS+eTuJegDjDD1cielm8KjwXUblSvayj4nKY
-	 UWE5AgWBLN8mIgt1YWuxbQbZdzJQ0QQpRcGbxHfRT+1hXLaP6cJGXE9hkZ4uFcF4Db
-	 E7ty4j15M6qNI3yUBEZZy6qh31vyNFf6uIa/VnCB0TPkC+EPXG8bCsatgRe20ld2oo
-	 H7CbkwVZSUAkTm9xumMMmvbynUDpe24HlIhn49bhfh7l2mp1MbSnnj+I53jNhxHGLG
-	 KTMcpLO3Gq9Nw==
-Subject: Re: [PATCH net] Subject: [PATCH] octeontx2-af: fix TX scheduler queue
- index mask for 2K schedulers
-From: netdev-bot+sashiko@kernel.org
-To: kmahammadraf@marvell.com
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, sgoutham@marvell.com,
- rkannoth@marvell.com, gakula@marvell.com, sbhatta@marvell.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, skoteshwar@marvell.com
-Date: Mon, 26 Oct 2026 04:43:12 +0000
-Message-ID: <179298979262.3134.248662363515081325@kernel.org>
-In-Reply-To: <20261022042653.2640537-1-kmahammadraf@marvell.com>
-References: <20261022042653.2640537-1-kmahammadraf@marvell.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=EJ4WlZTI
+Received: by mail-pj2-f2.google.com with SMTP id d9443c01a7336-2e613f813b0so4026405ad.1
+        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 21:48:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792990094; x=1793594894; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=k/JB2/vnEe/nhNkdsVP6HUPiRtdVAo3aP+vpEA0X8co=;
+        b=EJ4WlZTIcbgcuKmwpDrhJsKZFt4OasvMx1uaaMfnCbhaVB6Ea1F7Y+cZqMypQOXwiz
+         kjbvhoR27SoMV2Qd5nAecC2UwvkICePmaWHKy4f7rsompsKYuHIM00xbm1QzYwo4Vees
+         PrEiq48okHVRgJf2K24pzMrQ6avEYt5Efo8E9Pz43NvR8bPM1x2BrLud/DjVXhl1Bkbh
+         LNht6Fx0WANuYi/OPP6T3O7Zt78LfSv44bnEz7hkanPLZERqvk1Ce9His2omPpYiNuIj
+         S9Oe0yOmatN+pzhxEPHbYECcxbi51p8pmbigwifs9dKspLf2Yw6W1+h26/LqlenfOvCA
+         Qgiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792990094; x=1793594894;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=k/JB2/vnEe/nhNkdsVP6HUPiRtdVAo3aP+vpEA0X8co=;
+        b=SIlLpx+UiLMx6YVJWwSCC3Tnm63fM0hvmlazqkl8w24iaLi9kSgRgzFHHgFWU3UZ4Q
+         0kLIEc+FJVStAwzUsJc4ILY6jaX4+jB96wAtMRclzxwW3N0hztKNy5pvQs31tMlevqyf
+         gZXXbkkGqzG5XIQC+e7ScePYy/Y6ZyPbnZJfxNbDWZiNOngrF5CrWKwHQaiFsZmKyH5T
+         i6rbsIbPEx03eZJPEjfchuA3pO5OjnWVcUonBBq3PBF/raNCq+LY3Dk2ZtU9fXLwpSqJ
+         0r/Ou/rnqs/7Xv7aiTiwYNhpafCYckKtswMp0mdEOxqMo1E+YutN+Fh4Wz9/Cn4r0PEe
+         u+Kw==
+X-Gm-Message-State: AFq9FYIk4U0z80u34AkR2BSCwpQw9z4DaNt10m8CPXgGGQB2oryKrP92
+	QI5zdTV1Om7Vt5h7KJpiSuODDLM8W+CeyaFJRi8HESP8t2YOqxQNZfMrJpcFVk9UYB70gw5T
+X-Gm-Gg: AYBFou1zE8jKQ5cQ62VNfwRfKf5r/Em3APngHyGDyYtULK9ZjrsFibsUJpt7XXK2KVp
+	xjF+WkQKzfMadn523ZrEDdw8BaTzSJyMl86+htpXpD7g60CwWX5PgoWKNu+e/e3PAHTHdGL2wmM
+	w0XiGKxZ8XH52M5o+TIPRYvnehiM0Ifh5TT/in+3ki3ABlp2/WVZBb4xtLJg4onlp2CTMv5pypt
+	12/Xk59s/oGPvK1eKtX9gPuGtZ40RaG9afk3o6y2A2Y5hPQYzFAICRxWsEpE3/hpiXzgJrEXeXL
+	kGcG0JyThCZMeUNnxHFyCFEh8fttf/vRUzHEFqR5NWElkgzeQjlEK5CD1vltDUbnbkcGSOD95J6
+	jiR4l4hBjslCXQqvjZOE1N2a70nGjESozdxtTiaAkrO/8cxv6qcTrXeHWHQ1c2lmt9tyfpUNkTv
+	40SgpuQvJXJXrXnXzQ7jwQRaWTIzerVJ94lk4MWJoCAyI+tR1DGOhdOCqHz0Rf5WpY2iRBXQ7Om
+	Kn6V6iP8iRGoDhw0EwuyiekQWCumGMX4FQwkujOt8jM4C6Ru2AoOu5Oj+f8ov4NNOzKxt+qB5LO
+	NFEttyo9jwhg4CDHp4E=
+X-Received: by 2002:a05:6a21:880e:b0:3de:3f4d:f2bd with SMTP id adf61e73a8af0-3e7db876af6mr2824220637.6.1792990093603;
+        Sun, 25 Oct 2026 21:48:13 -0700 (PDT)
+Received: from LAPTOP-0A59PORJ ([119.234.82.208])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a36e7fbc64sm858163b3a.24.2026.10.25.21.48.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 25 Oct 2026 21:48:13 -0700 (PDT)
+From: Zhou Qiuyue <n0ps1edzz@gmail.com>
+To: netdev@vger.kernel.org
+Cc: David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Hangbin Liu <hangbin.liu@linux.dev>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] ipv6: raw: fix use-after-free in rawv6_send_hdrinc()
+Date: Mon, 26 Oct 2026 12:48:08 +0800
+Message-ID: <20261026044808.613-1-n0ps1edzz@gmail.com>
+X-Mailer: git-send-email 2.50.1.windows.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,181 +100,58 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+rawv6_send_hdrinc() caches the route before handing the skb to
+l3mdev_ip6_out(). The VRF output path may replace skb->dst and release
+the original route, leaving the cached pointer stale.
 
-Critical: 0 · High: 1 (1) · Medium: 0 · Low: 2
+The function later dereferences that pointer for statistics accounting
+and as the output device passed to NF_HOOK(). Its RCU read-side critical
+section starts after l3mdev_ip6_out(), so it cannot prevent the old route
+from being reclaimed in between.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Reload the route from the current skb destination after
+l3mdev_ip6_out() returns.
 
-- [High] Incomplete fix: the patch widens only the child scheduler index,
-  which comes from the register address (TXSCHQ_IDX_MASK becomes 11 bits…
-- [Low] The patch is a 'fix' for a user-visible bug on hardware the tree
-  already supports, but it has no Fixes: tag.
-- [Low] Submission/tag problems in the commit message: (1) The subject
-  literally reads 'Subject: [PATCH] octeontx2-af: fix TX scheduler queue…
+KASAN reports a slab-use-after-free in rawv6_sendmsg(), with the route
+allocated by ip6_dst_alloc(), freed by dst_destroy() from rcu_core(), and
+the related RCU callback queued from vrf_l3_out().
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but
-  rvu_mbox_handler_nix_txschq_cfg() validates the hierarchy on the raw…
+Fixes: 4c1feac58e06 ("net: vrf: Flip IPv6 output path from FIB lookup hook to out hook")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhou Qiuyue <n0ps1edzz@gmail.com>
+---
+Changes in v2:
+- Rebased onto the current net tree at 7076f684d513.
+- Regenerated the patch with git-format-patch so it applies cleanly.
+- Corrected the Fixes tag to the commit that made the IPv6 VRF path reachable.
+- Shortened the code comment and added the required recipients.
 
---
+v1: https://lore.kernel.org/r/6adad51d.8fc0b0c9.1ec657.1868@mx.google.com
 
-Subject: [PATCH] octeontx2-af: fix TX scheduler queue index mask for 2K schedulers
+Thank you to Hangbin Liu for reviewing v1 and pointing out the submission
+issues.
 
-CN20K raised the number of TX schedulers per layer from 1K to 2K. To
-match, this patch widens TXSCHQ_IDX_MASK from 10 to 11 bits and extends
-NIX_TX_SCHQ_MASK to cover bit 26.
+ net/ipv6/raw.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-> Subject: [PATCH] octeontx2-af: fix TX scheduler queue index mask for 2K schedulers
+diff --git a/net/ipv6/raw.c b/net/ipv6/raw.c
+index b965258cf..bdea82543 100644
+--- a/net/ipv6/raw.c
++++ b/net/ipv6/raw.c
+@@ -654,6 +654,9 @@ static int rawv6_send_hdrinc(struct sock *sk, struct msghdr *msg, int length,
+ 	if (unlikely(!skb))
+ 		return 0;
+ 
++	/* l3mdev_ip6_out() may have replaced the skb dst. */
++	rt = dst_rt6_info(skb_dst(skb));
++
+ 	/* Acquire rcu_read_lock() in case we need to use rt->rt6i_idev
+ 	 * in the error path. Since skb has been freed, the dst could
+ 	 * have been queued for deletion.
 
-[ ... ]
-
-> Signed-off-by: kmahammadraf <kmahammadraf@marvell.com>
-> Signed-off-by: Satha Rao <skoteshwar@marvell.com>
-
-[Severity: Low]
-This isn't a bug, but the mail header ended up in the commit subject:
-
-  Subject: [PATCH] octeontx2-af: fix TX scheduler queue index mask ...
-
-Since this is a fix, should it also be sent as [PATCH net]?
-
-The first Signed-off-by uses kmahammadraf, which isn't a real name as
-submitting-patches.rst asks for. It also doesn't match the author.
-
-If kmahammadraf wrote the patch, should the From: say so? If both people
-contributed, is a Co-developed-by: tag missing?
-
-[Severity: Low]
-Should this have a Fixes: tag?
-
-CN20K NIX support is already in the tree. nix_setup_txschq() sizes
-schq.max from the NIX_AF_*_CONST registers, so CN20K can already hand out
-scheduler queues >= 1024. With the old 10-bit TXSCHQ_IDX_MASK and a
-NIX_TX_SCHQ_MASK that leaves out bit 26, the AF would either reject a
-queue the function really owns or program schq - 1024.
-
-Could this get a Fixes: tag pointing at the commit that enabled CN20K TX
-scheduler handling, and target the net tree, so the stable tooling picks
-it up?
-
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-> index cece197d1074..1b62f9d7f00a 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-> @@ -1164,7 +1164,7 @@ struct nix_txschq_config {
->  	u8 lvl;	/* SMQ/MDQ/TL4/TL3/TL2/TL1 */
->  	u8 read;
->  #define TXSCHQ_IDX_SHIFT	16
-> -#define TXSCHQ_IDX_MASK		(BIT_ULL(10) - 1)
-> +#define TXSCHQ_IDX_MASK		(BIT_ULL(11) - 1)
->  #define TXSCHQ_IDX(reg, shift)	(((reg) >> (shift)) & TXSCHQ_IDX_MASK)
-
-[Severity: High]
-The child index is now 11 bits, but does the parent index need the same
-change? is_txschq_hierarchy_valid() still cuts the parent read from the
-PARENT register value down to 9 bits:
-
-drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c:is_txschq_hierarchy_valid() {
-    ...
-	schq = TXSCHQ_IDX(reg, TXSCHQ_IDX_SHIFT);
-    ...
-	parent = (regval >> 16) & 0x1FF;
-	/* Validate MDQ's TL4 parent */
-	if (regbase == NIX_AF_MDQX_PARENT(0) &&
-	    !is_valid_txschq(rvu, blkaddr, NIX_TXSCH_LVL_TL4, pcifunc, parent))
-		return false;
-    ...
-}
-
-After that, rvu_mbox_handler_nix_txschq_cfg() writes the full, unmasked
-regval with rvu_write64().
-
-nix_setup_txschq() takes schq.max from the NIX_AF_*_CONST registers, so on
-CN20K, TL4/TL3/TL2 indices of 512 and above can be allocated. On the PF/VF
-side, otx2_txschq_config() encodes the full parent as parent << 16.
-
-Say a PF or VF uses TL4 600 as an MDQ parent. The AF checks who owns TL4
-88 instead. Would that reject a valid config with NIX_AF_INVAL_TXSCHQ_CFG?
-Or would it pass only because TL4 88 happens to belong to the same
-function?
-
-The reverse case also looks possible. A VF that owns parent X < 512 could
-send X + 512 * k. The AF checks X, but hardware gets a parent that may
-belong to another function. Does that break the cross-function isolation
-that is_valid_txschq() is meant to enforce?
-
-The SMQ flush walk uses the same 9-bit decode:
-
-drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c:nix_smq_flush_fill_ctx() {
-    ...
-		if (parent_off) {
-			regval = rvu_read64(rvu, blkaddr, parent_off);
-			schq = (regval >> 16) & 0x1FF;
-		}
-    ...
-}
-
-With parents >= 512, the saved and restored CIR/PIR offsets would point at
-other schedulers. nix_smq_flush_enadis_xoff() would also skip the wrong
-TL2, so the real TL2 of the SMQ being flushed could get XOFF'd. Could the
-flush time out, and could other functions' rate limits be zeroed and then
-restored?
-
-The NIX_AF_MDQ/TL4/TL3/TL2_PARENT_MASK definitions in rvu_reg.h (9, 8, 8
-and 5 bits wide) look too narrow for 2K schedulers per layer as well.
-
-The tree doesn't document the CN20K PARENT field width. Still, with 2K
-TL4s per layer, the MDQ PARENT field has to hold TL4 indices up to 2047,
-so a 9-bit decode doesn't fit the premise of this patch.
-
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-> index 95f782d47927..a1d68afd7c9e 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-> @@ -2850,9 +2850,9 @@ static void nix_tl1_default_cfg(struct rvu *rvu, struct nix_hw *nix_hw,
->  }
->  
->  /* Register offset - [15:0]
-> - * Scheduler Queue number - [25:16]
-> + * Scheduler Queue number - [26:16]
->   */
-> -#define NIX_TX_SCHQ_MASK	GENMASK_ULL(25, 0)
-> +#define NIX_TX_SCHQ_MASK	GENMASK_ULL(26, 0)
-
-[Severity: High]
-This is a pre-existing issue, not one this patch introduced.
-rvu_mbox_handler_nix_txschq_cfg() runs the hierarchy check on the raw
-request regval, and only then merges in the caller-controlled
-regval_mask:
-
-		if (!is_txschq_hierarchy_valid(rvu, pcifunc, blkaddr,
-					       txsch->lvl, reg, regval))
-			return NIX_AF_INVAL_TXSCHQ_CFG;
-		...
-		val = rvu_read64(rvu, blkaddr, reg);
-		regval = (val & val_mask) | (regval & ~val_mask);
-		...
-		rvu_write64(rvu, blkaddr, reg, regval);
-
-For a PARENT register, can the parent that gets written differ from the
-one that was checked?
-
-For example, say the child's current parent is 1 (bit 16 set) and the
-caller owns parents 1 and 2. The caller sends regval = 2 << 16 with
-regval_mask = 1 << 16. is_txschq_hierarchy_valid() approves parent 2.
-The merge then keeps bit 16 from hardware and bit 17 from the request, so
-parent 3 is written and its owner is never checked.
-
-MDQ, TL4 and TL3 sit below nix_tx_aggr_lvl, so a VF can reach this path.
-Could a VF use it to attach its scheduler under another PF's or VF's
-scheduler?
-
+base-commit: 7076f684d5132e6a6145e1da2fa74771ecd052e5
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261022042653.2640537-1-kmahammadraf%40marvell.com
+2.50.1.windows.1
+
