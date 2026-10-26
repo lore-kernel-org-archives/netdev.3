@@ -1,67 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=62.72.0.81
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793056603;
-	b=lxfKK/TJnQyU0lKGMIRsWjhveFbccDWqdnmWWUqIs67vSR88u9t9TMn3MBTzxrJUZFru
-	 DSr9NATVkx9Mwr6lWZI5HURw1XPeeS/8EwYulUq81M4lUAlDWxDq+xQc3BCyM7XOCs3I0
-	 CpO9YUx+H4XN0HZEE0dDrKzd8QwSIx+rlSXSDn9WkoDZPxi1L7yKwcgagnaivFtVzg7du
-	 fsD+cyzbCEBpva6gnQm8snPYamzRFltLAUYLphsVoUtWy5B1zazGampLCTxxhTLlNlkd2
-	 +qaTxwgtnM8SKEy4D2GqdI0zGEiR8y+zOZdfbnhpyNwJB8azNRyUkDZ2lDv+QvbZeOg==
+	t=1793056812;
+	b=1XtsnU9PBOG8rxkARXGJLJYaWBfve9LDwhgmFr4DDahlml4RIaN/Xgv1ZN9E3tbT61BX
+	 2vsS4kWV/CdWj4b1IHysktmopjPTntyTDZB8csqJyBtLOPIWagruVSltgQ2kPlzNIpEiK
+	 KYOJ9Gm19Lx7iW4g35mTnqR+ym38ptOkHyY2iAzCSbuyaP6ldRq1qtIpPLJ3l5NueLDh+
+	 Q5dsTOs2DrfOs/aWlQY4TVIrukmds/USK0PaGpREdNz1iGYYxXkc1i8n2fj7qU7RdpxU3
+	 CI0khqtKmDbE1plzjL1pB6VFU/gpYIGrse//nj1G4392wh4XrNRuc+NaHQrX+sEVB6g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793056603;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:cc:
-	 Subject:In-Reply-To:Message-ID:References:MIME-Version:Content-Type;
-	bh=76DcOtJQlvUM8FkqGhwTxozzFwnxhvOl0D2p3vW2Sbg=;
-	b=fFbWgN4XMEIeR0a7EZvybIiArw9skZ1llkdSRZ6Su3d3f8L2jVYU+gpfV91iZwD+f0Er
-	 pDnwdEQk9ZWEF43nNME1Q8AtrutfZEtFQfgkGW6gRUwGvm9O6rYYURSMD00ZWk5qXo3tF
-	 nbrN5kZOaGczn962DIOpmE8HQPqDGQ+7L5XVjLpCaGRS0tT0NRm8EzCaIgWMhvcFjkDK/
-	 q0qxt0xC15d4Fd3LyCnHm129bgkvqAWSScrxu9goedif3ipDG3tM0XgUjgI2AbaRGhwDe
-	 vRoQp6JwfkDHAjTzmLkl1hURWTEvyQmmIrSnH3Twwu3kCeJAcCHbW+9qBnOdptrPZ2A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793056812;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=qK8orpGRHyt5JGdpBcDNln9vD5jTuQ7vbz/Adt8JaA4=;
+	b=OOOmBHipi+74MdEOZQi3SoLR+J/EXgNPbqM5Ce6NJnvKhhSDS2kS9GRqn1oYWH3j1T9k
+	 Mh1Dspqp7OFK6gfKZh69qeb04SXfICPaYbtflGNjdoHGajnQ/fIofPmYVwhlwithgJoFs
+	 3aZGx/g0cKeVDTtU61hZsQoLGh8RQab0zKBYfzA2Qbm9KG5b3HuIq1nHCv+d4X4dPTv0E
+	 KeD2VB5rTOAxawsNe3wcj8oQK5gCNVb41foNuYPjXkQHH9rAbG5EpC6oRXtaPfl/MhNJH
+	 1V/dUf4+DSm8np9rPtKDs3RnELcnQMZXKMFSGAcu1glrs59J/fchgL4urHKJfEsh8ug==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gentwo.org;
-	spf=pass smtp.mailfrom=gentwo.org;
-	dkim=pass header.d=gentwo.org header.i=@gentwo.org header.a=rsa-sha256 header.s=default header.b=VfAfR3KS;
-	arc=none smtp.remote-ip=62.72.0.81
-Received: from gentwo.org (gentwo.org [62.72.0.81])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DVWQcDdM;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE83606A31A;
-	Mon, 26 Oct 2026 23:16:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CBE83606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gentwo.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentwo.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF83606A31D;
+	Mon, 26 Oct 2026 23:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=gentwo.org header.i=@gentwo.org header.a=rsa-sha256 header.s=default header.b=VfAfR3KS
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gentwo.org;
-	s=default; t=1793056596;
-	bh=GaMVZdZtfEz95aFkhufC4OMQg51Qb7F3dqNgK1ZncbU=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=VfAfR3KSe9TgYDoa2LtKyianQzzZGJhawtw2soD84LLwGDns37ZE778n2LEeluVaW
-	 TEyLh+kY6gsBN+ChV6lNnq2daAV5D2gUqAXX5RnSYhgEuZQzp6TgINOr2Be3sDkyVr
-	 5a5ZHTnOFuSfBqrej0uXKjeRcjxIwujoTDp8LTcE=
-Received: by gentwo.org (Postfix, from userid 1007)
-	id 5F35F40B32; Mon, 26 Oct 2026 16:16:36 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-	by gentwo.org (Postfix) with ESMTP id 5A28D4029C;
-	Mon, 26 Oct 2026 16:16:36 -0700 (PDT)
-Date: Mon, 26 Oct 2026 16:16:36 -0700 (PDT)
-From: Shubhang <sh@gentwo.org>
-To: =?ISO-8859-15?Q?Jonas_K=F6ppeler?= <j.koeppeler@tu-berlin.de>
-cc: =?ISO-8859-15?Q?Toke_H=F8iland-J=F8rgensen?= <toke@toke.dk>, 
-    Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, 
-    "David S. Miller" <davem@davemloft.net>, 
-    Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-    Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-    Shubhang Kaushik <shubhang@os.amperecomputing.com>, 
-    "Christoph Lameter (Ampere)" <cl@gentwo.org>, 
-    =?ISO-8859-15?Q?Toke_H=F8iland-J=F8rgensen?= <toke@redhat.com>, 
-    cake@lists.bufferbloat.net, netdev@vger.kernel.org, 
-    linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net/sched: sch_cake: skip redundant cake_mq rate
- updates
-In-Reply-To: <3625cee3-3643-4ef8-808d-2fe8267593fd@tu-berlin.de>
-Message-ID: <a4511177-c3de-9ab5-7ace-74aea1e95db4@gentwo.org>
-References: <20261025-net_sched_sch_cake-v1-1-5165c924a590@gentwo.org> <3625cee3-3643-4ef8-808d-2fe8267593fd@tu-berlin.de>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DVWQcDdM
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C898A1F01829;
+	Mon, 26 Oct 2026 23:20:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793056806;
+	bh=qK8orpGRHyt5JGdpBcDNln9vD5jTuQ7vbz/Adt8JaA4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=DVWQcDdMfVqS7suofjXK2rHjn0rdjtyg8P382+vW6a66vRkkg5GCPBvDdEjcb62Eu
+	 3W6x9gnsHrDjIbWfSvhB5TZEbuYyzq3G8didoSKTNoGLkCwek4oqe3wceZf2YO196D
+	 Ms0Y9FUm0MtZu/h355nHnYpOuZt5393cLzSy873Ik1K0TTDYyJqhW7RTekxgaplkbu
+	 9aJl3BuwVBSMwT7zb8SkXT6Q5Wa853VokviulNj1NTHMnK9Cbzx3BxD1hJVDgxpH5L
+	 sj4WkhZKvcx6UJu2eMJyVtRDR5w5UZr61cRcXymBsbzS5MEEmgLCiH/69Qex1hPlHB
+	 M89C8aEna+5Ig==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BE4D13AA80F0;
+	Mon, 26 Oct 2026 23:20:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -71,30 +53,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-344181521-1793056596=:284822"
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v4] net: usb: lan78xx: avoid NULL PHY dereference in
+ WoL
+ setup
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179305680557.3450824.4724998894519023097.git-patchwork-notify@kernel.org>
+Date: Mon, 26 Oct 2026 23:20:05 +0000
+References: <20261020201537.2465655-1-prashantsengar25031@gmail.com>
+In-Reply-To: <20261020201537.2465655-1-prashantsengar25031@gmail.com>
+To: Prashant Sengar <prashantsengar25031@gmail.com>
+Cc: netdev@vger.kernel.org, Thangaraj.S@microchip.com,
+ UNGLinuxDriver@microchip.com, andrew+netdev@lunn.ch,
+ linux-usb@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hello:
 
---8323329-344181521-1793056596=:284822
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Hi Jonas,
+On Wed, 21 Oct 2026 01:45:37 +0530 you wrote:
+> LAN7801 supports fixed-link configurations without an attached PHY.
+> However, lan78xx_set_wol() unconditionally passes netdev->phydev
+> to phy_ethtool_set_wol(), causing a NULL pointer dereference when
+> a userspace WoL request reaches this path.
+> 
+> Report no WoL capabilities when no PHY is attached, and return
+> -EOPNOTSUPP from lan78xx_set_wol() before modifying the wakeup
+> configuration. Keep the existing phylib WoL handling for devices
+> with an attached PHY.
+> 
+> [...]
 
->>   -		cake_configure_rates(sch, new_rate, true);
->> +		if (new_rate != READ_ONCE(q->tins[0].tin_rate_bps))
->> +			cake_configure_rates(sch, new_rate, true);
-> Thanks! Yes, I think the idea is right. I think we could even omit the
-> READ_ONCE.
->
-> Best
-> Jonas>   		q->last_checked_active = now;
->>   		WRITE_ONCE(q->active_queues, num_active_qs);
+Here is the summary with links:
+  - [net,v4] net: usb: lan78xx: avoid NULL PHY dereference in WoL setup
+    https://git.kernel.org/netdev/net/c/dacb77e32e2b
 
-Thanks for the review. Yes, the qdisc lock serializes this access,
-so READ_ONCE() is not needed. I’ll send a v2 with it removed.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Regards,
-Shubhang Kaushik
---8323329-344181521-1793056596=:284822--
+
