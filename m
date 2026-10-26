@@ -1,124 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.145
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=82.195.75.108
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793015165;
-	b=pItLjXde3Zl5+TWulOcVBa3IF+MKPnyuXaMp3h+WMjpqCMt9d6m6gWERdKc0YJnN02Zv
-	 k1xShjQANlITsH/kGAt9hct8wasGvhTTJvhIf6+boj2bdDqjMapMfrnzOip/4x/+BdWLY
-	 2OivMCS0FPoRk8eUN0/qdtocwG0lptOT42OnUoY6c4UMXg4sO2ixDDZALUN+L2HAqRMKj
-	 LukpozWetvjAe8afpm2f5/6SXKN2Ypj9+O5/ZHTFf4w53NsEAdxvGFuTNTFdbNDJ61zt3
-	 ymXChTFPEGojAFXcxlkI/Vs6V/dFyV2p2Kyo+t8ffGv+U7EIYfDtJjYZB4vN6bZ1aGA==
+	t=1793015188;
+	b=0yYQCNdRmHBZ6lP4Cv8qaZtQCxTfxv9GaspwZWT6d6qAx2osKvro5X4BAxEOtWNPkq07
+	 fyANmKbtenj/aJwepBHfkdWSIsOVoRDp4Ppj8TOyC5JDj8nE7nmABxcsQJFQb9mCYlKPe
+	 8jDAnbp6rvp9w1PaymLBrGj+W3jE6JSbZgXx1P1YYqsT8Y9XdNq2aYZiKE7Zz4lFwM6OM
+	 YDjhYNdub5VOIEU4uvfx/Y7fi/BMNCvs3A9vlDtUjkzxVeZj9lB12QP7AZBKjtQ66zqt6
+	 fZhSNnBnjgAJ4gGjO0JMCnHtZpXQInG6ls6t5LwRDNzNEhOm4NVv/3DnkVw4m9yywQQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793015165;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
-	 In-Reply-To;
-	bh=cdHtGmitS+DpnzgyF7He7frabP8q7Ig2PWPVGAcUb5g=;
-	b=V+NADcGdQKqbdQVOpyfmQUheD6kcfm+oK8mlfNkZdbIjws/9wtBl4el/8XWTBKwsBpbH
-	 sx2mDnvVICF/6/XSnHtGC9z1Ae8SuqfqYfcOD7TXb7btLQPNm0rR+m4i1DjBjVFtfwQn6
-	 QfiQqX5MSJiRREBJSErYNMszG8YQj8US6ziwXS1AUlrrfvNxKaOrroYIBAvu6FBpWuCO+
-	 p5uHpCjeWfCqx186+WMJOIMsqC+MEIFDehBiWiwP7JWxeO1VkELJf/lirAOEz2bX28BNt
-	 X4j92sGURQrY7EuxNh7UeDg2jbnoW32Sw9McdYH9zA45O8cZcvrYMJkT2BU2Go4urUQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793015188;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-Debian-User;
+	bh=eteIyHggK7fdejTj9DTqqw4UqXgLh7y8GQE8hS71QVo=;
+	b=QtH/csm2aTZrWyzpQfl2y8Hx/yH8BTWui+JYAmOMM6o7ORF9S9YDHZ1Mn2eKGFDfIErg
+	 tgI8BbyojiMGs3U6PdjsKs2jANpXTzLxV+2LWNyCwSqrHXkrh+Lu7PVdulFKxGSBoZmOY
+	 4OUvbBMaQPW2YgAY5nGtsRicBs0k98IwS0huQydH2UBaL52YE+Oo1ZO8mwZrzCpI4oXq4
+	 GIkhjyyDMG/XAaeUh0utp4i+j83Zx62myZAty134kkQuFipCSXQ9r1bh+A8gIQ/uvwXA0
+	 hO5tSincxVNy05ax1uHlNb4aOBc9pRfBIkkZ4KrFAfDilUSsWG4UKouVI6z5yiez7rg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=kroah.com;
-	spf=pass smtp.mailfrom=kroah.com;
-	dkim=pass header.d=kroah.com header.i=@kroah.com header.a=rsa-sha256 header.s=fm2 header.b=QlMj379z;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=uSS0FpsI;
-	arc=none smtp.remote-ip=103.168.172.145
-Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
+	dmarc=pass header.from=debian.org;
+	spf=pass smtp.mailfrom=debian.org;
+	dkim=pass header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=VMOi4Av7;
+	arc=none smtp.remote-ip=82.195.75.108
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14018606A31B
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 11:46:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 14018606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B929606A31F;
+	Mon, 26 Oct 2026 11:46:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7B929606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kroah.com header.i=@kroah.com header.a=rsa-sha256 header.s=fm2 header.b=QlMj379z;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=uSS0FpsI
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id 21D48EC0A19
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 07:46:04 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Mon, 26 Oct 2026 07:46:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1793015164;
-	 x=1793101564; bh=cdHtGmitS+DpnzgyF7He7frabP8q7Ig2PWPVGAcUb5g=; b=
-	QlMj379zqQ6Gvm5zgcyXxsQZv4BkLX+B2Jey2fytuu6NEeaOOjV1G0/eYKG/EUyN
-	9AmA0faV+YbnPRCpqFWZS075lPgO2Zrs+J2xMBn5CweKGY7FV7q0G+eleK510l6F
-	tAWwYWrlwn+CK09BlBCxivhK2QjH+93LVUioOX3zF8t2SPbojdV0H6F7HJfVPKJP
-	CQnAJlWgHPVVhZ/aK6QDFofS5vEyFZmko274pzLhUKNmrIC9AJD1AY9fYM3AjM5S
-	coHakQKI6lIIwQkwDr3byKje8Toy8z0GrlgNzR7n/7sCZfEN2C+jSuBDGeaf6+kP
-	RMygVVZBkF8pCm1k2g5mHQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1793015164; x=
-	1793101564; bh=cdHtGmitS+DpnzgyF7He7frabP8q7Ig2PWPVGAcUb5g=; b=u
-	SS0FpsIAJSU7ZZb+KziNquNVEPNmuLBkdvmcUEhtQUUtmgvvyNI+kyxriIVvfXym
-	owOrWOzfvbwLXp0oxy3WLgIuw9yUN7hFnsMRNBoTyMgrW0aNmXbxspiRpqG6jRqQ
-	f91VjzjSlNFN73haofAtjG3FI+B4VqF2ZBEMSftwAPCTabqWQ6r85of9E5BCpkgF
-	YUFNfD7CwHhCTqFiXSmlb31RyRWsmw7wUxUuNN6F7ppv3c5HCBMyZSKi3dF1vaJK
-	5gce+jbMC91RKN0C40m8B376sTVzoP5dbYmzH6YyyNysk3WBhR+YEl1eacqYjY8H
-	9Z5GknsJahDaYKWdUTHLg==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=sign d=kroah.com a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793015164; d=kroah.com;
-	mf=PGdyZWdAa3JvYWguY29tPg==;
-	rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:J6fr6gUHLRMEvzv1CEwdO1HgPd7NxVveeUkGwtSnPw2C09e
-	oocfg+9aRNSNw4DGorhQ99eJxkhijq4Qwa2u5AJ6d/GHDSnfrgGnHNzkdB9Bcc8f
-	MKHkQTLbkc9zm/McThFRoJ8LGW+WiPe4V0wEBXT9rTLBKIRh9vG+7yeAbIrSYM+0
-	i5sYjN2GGc0pRve5abwHBE4sznDuqxDv3cKx/kt0W0UFT5Pw/T4Xov4Cy29erI1T
-	Zy2ris9UoBaL3kxpAbC70ySvVhz4z+PUZOM5vpjy3K0Ab430driB1mz/z8YxH1tz
-	fxXBCbQRAHg/573aeMekx6BMMxDh6LY6/zjTyZg==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=mi-m=1; hc=13;
-	hn=cc,content-disposition,content-transfer-encoding,
-	content-type,date,feedback-id,from,in-reply-to,message-id,
-	mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:lv6/d4gtCptFuLHPSCTAiMsohXFUNt3uk+EzD/tQTPA=:cdHtGmitS+DpnzgyF7He7frabP8q7Ig2PWPVGAcUb5g=;
-X-ME-Sender: <xms:ez3favU5qRnaQa0V8hfiRskkmbNoTMgkK7rZPDAVO5IVbTjA4MqjfA>
-    <xme:ez3faj9L3BvS5zi4Tt71B2fCDJcFxYPOK5EJ0AqFVpXbu5t_jLZXbglCV4LnHCJ_W
-    iJpz6MBspOixIilGJo1yw54vOi8T0-19uPFb0JpAGnOgJT4yVE>
-X-ME-Received: <xmr:ez3fav00NgumAgSilf0ZptjVhZ7tqfaE6dV-CFWPWYjogY1iFxYNX07Vz1YHiC4Yps-HvpIi3fNQezBRmaHcpSARxary46_LDhXJRFdoIPU>
-X-ME-Proxy-Cause: dmFkZTGlr3vRP2HiOL8+7Mped2TXdqbzMLCd1048OLauO2/4u17MywByvK6CW7xsQkYtf8
-    QTgz82V085Rw96avnGOJlpvOm+oa4HIXXpl9zwWqKMzTKMdUOMTJVykPwdotRMPhK2BY/0
-    Pbxuo6EARpL4It2vfnso+8qq1k8TLnp0+6xKa5hUV8AAQemWzMbpJDTJivzHKgUf0+kPty
-    wgKz84JaZwL5gFGaTjZrq2YEiklnczfuDewNWn6ZuKW3T6dyUyVTqj2sCe5mV712aA/3O4
-    x6O2aOgMjf0lnXOTmW3pDP8eazOgi6FBfDTqOPsicPvgigUh1ezjaHowMlxL2ip3xdoeLq
-    H9mEGkyW8YOuhfg1RdCtfF6laMTex94IrLU6IQohEdhY2QRKyEtBWDz1jl3O+TpPUdtxY/
-    ryklWUsWneuG3JNpdKHZsxHWMfmzvLlWEH+y5zdYPnj9BBDTr+y4TPjDgE2KbksTtqZeta
-    gR74/SZnBd13xJj6k5udxbFYVRYSn6M3ZSlxjG+Fnmx5W0IYjtWAB2UVTQNUg4J0mmUqPj
-    S7jCblBo2d0siPdIZz0JE1MBNL12bkzLBNw8lgh+SqmsszGHLUGau7zDnzttZKhWvwfc6m
-    3lmQOKSdNgo7HPAYUefRq/x/oqOGYsqc7Ks38SgtdT/1nj59vmZfgFSWbQ5A
-X-ME-Proxy: <xmx:ez3faofyIEBHaHxj-K5-IdiuuZz0-MjFtY4CMZg_5R7h11Tq9IRb_A>
-    <xmx:ez3famAtJzvuV06uayHVLUMnHekOv-8mpIewEIieddyoFgNeUUDKtg>
-    <xmx:ez3fav-1WZKFQqytwihWI5rwXE59jYcTy_OcFw1B6mIigUo3xwBNyg>
-    <xmx:ez3faqqc9GaBYJl7FjQ6og8-vHvTDte2nRegroJPR77NPftmCZqxWQ>
-    <xmx:fD3fajANlwS_F2dIVZXj1kFERamrKXzvoLfoG1kRgIDe0Eb1g3KT18xf>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 26 Oct 2026 07:46:03 -0400 (EDT)
-Date: Mon, 26 Oct 2026 12:46:03 +0100
-From: Greg KH <greg@kroah.com>
-To: =?utf-8?B?5bmz5LmL?= <treebacker@foxmail.com>
-Cc: netdev <netdev@vger.kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	YOSHIFUJI <yoshfuji@linux-ipv6.org>, Ahern <dsahern@kernel.org>,
-	stable <stable@vger.kernel.org>, security <security@kernel.org>
-Subject: Re: ipv6: skb_over_panic in __ip6_append_data() when mtu -
- fragheaderlen is in [1,7] (single sendmsg, since 2.6.12)
-Message-ID: <2026102604-circus-juvenile-c521@gregkh>
-References: <tencent_B58BAE2F5FF485D1B4F652E9980EAB132A09@qq.com>
+	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=VMOi4Av7
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=eteIyHggK7fdejTj9DTqqw4UqXgLh7y8GQE8hS71QVo=; b=VMOi4Av7zlpWWJ263lhlaJLcQ6
+	kAcTiECM907TE5mh2/TQVDQM9deyF4miUtXbM6A/10XVfoEwWgdO/vYFw66EDsD5JOoBjgRz8IsWy
+	d9ZkjWjD/8lmjZDWSOCjJNdK5aLLP5Vkw85sI79e34Vl1z2VawnL/93nBv7EZyd64sL3DVMcgiP8Q
+	D9RpAg6jdXEwTKPtu8h4zCqTKb12UT/2XOlGNQ/TfWefxbtqz3WLZzS6qJhYMdLy0i7LunGS2hGqP
+	goRO+sN1l0b3bHVATXcDrjeXUd9t1tkUb7KViF46nmMvpMj8RDeEfqhMWeYg8FEZgyWFf0wcEDhG4
+	EjoZgBWQ==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1xLJ9i-000eaW-28;
+	Mon, 26 Oct 2026 11:46:22 +0000
+Date: Mon, 26 Oct 2026 04:46:18 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Gustavo Luiz Duarte <gustavold@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Stephen Hemminger <stephen@networkplumber.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v4 1/3] netconsole: finish enabling the target before
+ releasing RTNL
+Message-ID: <at89fwMimRz6FU8K@gmail.com>
+References: <20261021-netcons-fixes-v4-0-3857120c6340@gmail.com>
+ <20261021-netcons-fixes-v4-1-3857120c6340@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -128,20 +70,32 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <tencent_B58BAE2F5FF485D1B4F652E9980EAB132A09@qq.com>
+In-Reply-To: <20261021-netcons-fixes-v4-1-3857120c6340@gmail.com>
+X-Debian-User: leitao
 
-On Mon, Oct 26, 2026 at 06:54:50PM +0800, 平之 wrote:
-> 5. Suggested fix
-> ----------------
+On Wed, Oct 21, 2026 at 03:19:05PM +0100, Gustavo Luiz Duarte wrote:
+> netcons_netpoll_setup() publishes nt->np.dev inside __netpoll_setup(),
+> then releases the RTNL and waits for an RCU grace period before
+> returning. Only after that does its caller store STATE_ENABLED.
+> 
+> A NETDEV_UNREGISTER event landing in that window tears the target down
+> and we end up storing STATE_ENABLED with a NULL np->dev, leading to a
+> null-ptr-deref in netconsole_write():
+> 
+>   BUG: KASAN: null-ptr-deref in netconsole_write+0xb9/0x7f0
+>   Read of size 8 at addr 00000000000000a8 by task pr/netcon_ext0/135
+>    netconsole_write+0xb9/0x7f0
+>    nbcon_emit_next_record+0x501/0x550
+>    nbcon_emit_one+0x10e/0x170
+>    nbcon_kthread_func+0x2ff/0x3b0
+>    kthread+0x199/0x1e0
+> 
+> Store STATE_ENABLED before dropping the RTNL lock to avoid racing with
+> netconsole_netdev_event().
+> 
+> Fixes: 2382b15bcc39 ("netconsole: take care of NETDEV_UNREGISTER event")
+> Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
 
-<snip>
-
-can you turn this into a real patch that can be applied so that you can
-get proper credit for resolving this?
-
-thanks,
-
-greg k-h
+Reviewed-by: Breno Leitao <leitao@debian.org>
