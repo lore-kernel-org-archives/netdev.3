@@ -1,62 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.146
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792979231;
-	b=qCeoReABIh0O+lAyVhs6aCmRXA5q5h+UKVf9y5ChbybJLaLzhQ6hBkfgXGae1ClGXgNC
-	 jnYtnsW44sOR/Kvq0zta5qah7SIEL22MIUVjGDhyd1nERatrsERkI1M8/fZdzySMIhLmZ
-	 uvyIWeXRWYn3GuDjyxMdLx7obyCvx9zV78bkDIiY49R+SDFTkdHRLk5klHp5RMwP3u3Wa
-	 yNgcO12E5i0LJKWnscKIgsgAu658/s5tZoJeJV07a1VUw8Yp4YdWEnaxjOfgfrZUdAgmw
-	 i3OOKD854hOH/wLFc17MW/S7uwujZhrZmDxl+MfIS5Hs//YBNsUdF6lVSW9E2XP2bfw==
+	t=1792979506;
+	b=BPAH2zDCKd4mtkNrvrX55Z4roLr88uqA9CokH9zoK68HXfO7rsPcFxiowouuEXrW18Kl
+	 +0uaT6NvbVFzHQ/9iZdir95/x5BfXtVGHfw9hPER4rwYCbFDaFqe6aYS6RixTLQ74KHRf
+	 VqstapREo61CH1s9gXmfFoZgLw6p+tL/m/zAUFnkZLrz8rd8zseUU1qI/VH8OOpzh/Ufr
+	 F2/lFSeKXgsnyz3dh2OvI6a5GuEvfWVbBzoZHtTpWkpTK2vQ25kjCgClakBD0vmdIrsv8
+	 91LQFNzhgYgTPo5uODHeW9opRb0I1e+vFzwRKAcqGNK6Z/UOfNGQhA7WS/OWsoRp1AA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792979231;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=vr8X29dQrrQJKmK5OdQoBdcR8wKwrCCJ4tUvXjR0kCU=;
-	b=bA+rH0hNdTJbDPZEhlSrmTYfWVeQRGgBbfiNR8D+i7yWZBSfsNxnDSLsH+vh78QCRgBG
-	 1o8N4Ku+UaL/LZOLgbt28FVGcPS/sTbS5RNrIEkLZmuFz6su83IkuBnVQlOR3idxH/xju
-	 8oe9L22VSUFm43qbJcc0iyNPhqgVGhxhbEwtkyPAGs2GDeQOhEsamfut2mctFMDrRjDkX
-	 rWh6H7AyfsU+qoKzaGUBqTmagDkUDM26DeRQwqbu5IZu8x27nU3M7amDJtuZhLQ9B9/JT
-	 OCK1EqvPsnJUeLuUVvYOEYuhg2HoktK7DtKkmuver9vdQA6IAmveA1MDNSqNt5EQN/w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792979506;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Content-Type:Date:Message-Id:Cc:Subject:From:To:In-Reply-To:
+	 References:X-Mailer:Content-Transfer-Encoding:MIME-Version;
+	bh=IXt5xvOrWgVG3N+GpdyyPOrA9kPOQI1oYFj+yIA1B0M=;
+	b=1n/GK26DYNj/iRdZt2f1+togn3hr+B6xhifwiD3yPmjgT70sIk8RQZPLz1GbvThbCQwg
+	 oXAxzfPWOOqqopPx3wIQwuYFG6eIHA0dads4kLLLBfc5lDYv2H/PccKnSP53XLb9ra3VR
+	 W6eXOZOt6ULJb9wCmAabb1kTl7Ie5EvP4XUa+fjPTkRLEvciAiL+GAvOdize7WaOK9QuS
+	 NEG7X4GbfeduX+yohJ3I0h454aTzDlaQN2IeQNYQ4wTamy2KMLjI7dywQhnmKKK3/v2nL
+	 bzHLaivuYKPSSS5vs++4zuVV5AV9r+mnP0cbzvsTzffQnnjDazHO0rHO44rz1IgkOfg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=eaFqB4uV;
-	arc=none smtp.remote-ip=91.218.175.146
-Received: from mta0.migadu.com (out-146.mta0.migadu.com [91.218.175.146])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=kpYYbdm4;
+	arc=none smtp.remote-ip=209.85.216.45
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48BDC606A31B
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 01:47:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 48BDC606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936E7606A31B
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 01:51:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 936E7606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=eaFqB4uV
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=nzYtk9ThRxKUkgTRTXSdCFqFhEwm/Eizg/eT16xq+V0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792979228; v=1; x=1793584028;
- b=eaFqB4uVTtEesZwscubNwEiLHXvdm/3BjaZga40Pb3ThZbD+krDzIX+owscspXJIgn/4lirW
- 1vQwRvZvxTpSGH90evMtP1ePJF8sENgOIoh6Ey4EJDs5zji57A5sNE6IW2GEt7O/XjFHqfP6NkO
- z/Ho4lA0ij1xVbR5aQTv+Zlg=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta11.migadu.com with ESMTPS id 5699498c42138b6c;
-	Mon, 26 Oct 2026 01:47:08 +0000
-X-Mizu-Trace-ID: 5699498c42138b6c
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 26 Oct 2026 09:46:59 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Justin Iurman <justin.iurman@gmail.com>
-Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Hangbin Liu <liuhangbin@kylinos.cn>
-Subject: Re: [PATCH iproute2-next] lwt: ioam6: allow options in any order
-Message-ID: <at6xE1zwuKqeO8yv@fedora>
-References: <20261022-ioam_fix_order-v1-1-6eac1e00455b@kylinos.cn>
- <1d0887eb-2ce1-4768-a1ee-6c05a0830f52@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=kpYYbdm4
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3ac7842c17dso1320801a91.3
+        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 18:51:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792979505; x=1793584305; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=IXt5xvOrWgVG3N+GpdyyPOrA9kPOQI1oYFj+yIA1B0M=;
+        b=kpYYbdm4UIaNLa+4gA2O6vViuDhEEOp89PGqsr6EZIpTsN4tT9rOukWJvOxKhiMzeL
+         GZsL88QdGFZkEGpbWgmYAFWisgtS4+VmFYBxz5F/QASaNM18840QlkwDndtICLSkDsYT
+         +wm+sqLmhdtZ0wQYO/YYpFSkRwbXYA8hTeJsttvMdEb3hJ17KHaxACnHIddAhMAUVsc8
+         zMiQZ/e/rOloj5PbH/wf2fzd0LKgnBXs3jpJ0hLVcoXa7yWfqzFCfpgz9PHDRvw+ZpKY
+         9dQj8TE8BR25EYre0sIPa9V9z1wBOa6KnuohoN8g3q6QdscMbq/p2/JPiJeBQ9mgjIk+
+         1qEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792979505; x=1793584305;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IXt5xvOrWgVG3N+GpdyyPOrA9kPOQI1oYFj+yIA1B0M=;
+        b=gGftgq9nvjMqFr0E9gSWcseieMQ4kwT3OFBQQCF8HcCZThBv1sj9Tc6l+kvPJRQBjr
+         H9I/6M1gyB0BmVV7sI88WUbQzZm/GIMaigjv452kN+hMm8UFZnSevBxmwpM8osL7954O
+         htHMezZ1t3/ynGuUd9ZAsPW1qHf0tUm7MboWx7zPQlv0ETvZ4PO3zBtGqvLJ5k9zgwTw
+         COBkjPestb4iYdao4U/lNxTms3G2pZ+RuBRBMI/2BTQGSn+AEF4iZNg3R7sYNNaDsioq
+         YOi/it9/O1W7lPm1XwafvNDSFvtXNRPiP+MrHH6gmbcOwCYCOaGebjAO5KbRCl4/zQNp
+         OYvQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwnP6d0EBXWS2frteZT3S1sc21Ju4oNqcpHlSLhYt4PQjWRlgp86eByeusV/eOpsPuvdeUpAN8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLWy2Rt294mqVAvEwndWUDPY7BViUVdWwyRt1B9uYYIKkkkd00+
+	/qrA3wAdDj9YeBKoK+ArmStl2+RFHHOSoAJqC3vQcbm9iukGkivL541bSF1ugg==
+X-Gm-Gg: AYBFou16xD3T9zurOIKPDjOYo/pUIgBVSl8F6NKVmKVqz9QUWtQN2+qEUVKS44p4TJS
+	xXmDu1iC/ENCvvEpH/0EP3qX6ZBdaMMJgrUQrCYZqTEN1Bb274AlXwBvxWsxq8tTwlHmTQVD9Ty
+	4/c5dtziEsHCzzWkxlzgwEKmOtHQg5Z8UK6YD1v0qfX7PiiRpkR5DqaFvnWvMzPfrN1if8pj//Y
+	Zbf/7oRi/5aClYiL/mdjiK11PXGQ7U+fWrT8BgolhCVJY5fwbzf9ot/mPofIzA8XEKqxXYFzYGh
+	IUBYoDqkjzfW9LOBIZfzjRl2vk8vfcPQsvNOWdjaAezEzL27xiKzpk9XwWQIngaKC8hv8vShwKA
+	KP+aMCpAC9GIt5KQfNstFveaM+pqtQmpbi5sRaSSlrCLwww5iSELel0HKMTDdjBopvSuQgsaCLk
+	EgJ2MrgUgmn5V0LyPjqQ+enl09BqPKRnPr71WSKM1GYcdVT7UbapznpoInv+lhU3jovBL4xQzDf
+	Smvp0KOLNYiYXerWpUINhE25yStWJ5r9x6SLynvw2ZjO7x0WmkpT1/YzGWpzXyf8OJJT3tBfYdz
+	/DkYVdcbs+IP2rLv0I6/zD0crV0IRMQaMo9zUCPQyZ50gOWU/X8EMQoHOsaDCw==
+X-Received: by 2002:a17:90b:17cc:b0:3ac:a5ff:2cc3 with SMTP id 98e67ed59e1d1-3ade9b2ff58mr4868899a91.8.1792979504834;
+        Sun, 25 Oct 2026 18:51:44 -0700 (PDT)
+Received: from localhost ([153.61.198.246])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3adebac408asm6281205a91.0.2026.10.25.18.51.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 25 Oct 2026 18:51:44 -0700 (PDT)
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 26 Oct 2026 01:51:43 +0000
+Message-Id: <DMEE6SW3UE97.2DF11HBEBKYYI@gmail.com>
+Cc: "Geliang Tang" <geliang@kernel.org>, <netdev@vger.kernel.org>,
+ <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>
+Subject: Re: [PATCH bpf 1/2] bpf, sockmap: Stop reporting EPIPE on
+ zero-length skb redirect
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: <kernel@eliskeggs.com>, "John Fastabend" <john.fastabend@gmail.com>,
+ "Jakub Sitnicki" <jakub@cloudflare.com>, "Jiayuan Chen"
+ <jiayuan.chen@linux.dev>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>, "Cong Wang"
+ <cong.wang@bytedance.com>, "Daniel Borkmann" <daniel@iogearbox.net>,
+ "Andrii Nakryiko" <andrii@kernel.org>, "Eduard Zingerman"
+ <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi" <memxor@gmail.com>, "Martin
+ KaFai Lau" <martin.lau@linux.dev>, "Song Liu" <song@kernel.org>, "Yonghong
+ Song" <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>, "Emil
+ Tsalapatis" <emil@etsalapatis.com>, "Ihor Solodrai"
+ <ihor.solodrai@linux.dev>, "Shuah Khan" <shuah@kernel.org>
+In-Reply-To: <20261025-sockmap-bare-fin-v1-1-bb8feae7c4a7@eliskeggs.com>
+References: <20261025-sockmap-bare-fin-v1-0-bb8feae7c4a7@eliskeggs.com> <20261025-sockmap-bare-fin-v1-1-bb8feae7c4a7@eliskeggs.com>
+X-Mailer: mkdraft (claude review draft; edit before sending)
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,67 +113,52 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1d0887eb-2ce1-4768-a1ee-6c05a0830f52@gmail.com>
 
-Hi Justin,
-On Sat, Oct 24, 2026 at 05:26:28PM +0200, Justin Iurman wrote:
-> On 10/22/26 04:53, Hangbin Liu wrote:
-> > From: Hangbin Liu <liuhangbin@kylinos.cn>
-> > 
-> > The ioam6 encap options must be given in a fixed order (freq, mode,
-> > tunsrc, tundst, trace, prealloc, type, ns, size). If a user uses a
-> > different order, the command fails with a misleading error even
-> > though every option is present:
-> > 
-> >    # ip -6 route change 2001:db8:2:1::/64 encap ioam6 mode encap \
-> >        trace prealloc tundst 2001:db8:2:1::2 type 0x800000 ns 0 size 12 \
-> >        via 2001:db8:1::3 dev dummy0
-> >    Error: argument "tundst" is required
-> > 
-> > Parse all options in a single while loop instead, then run the
-> > cross-option and missing-argument checks after the loop, reporting
-> > the missing arguments in the order the options are documented in
-> > ip-route(8).
-> 
-> The current order is not arbitrary by intent:
-> 
-> 1. freq
-> 2. mode
-> 3. tunsrc
-> 4. tundst
-> 5. trace
-> 6. prealloc
-> 7. type|ns|size
-> 
-> While I agree some could be swappable and the above order is too strict,
-> most are dependent on context (i.e., a previous keyword). For example,
-> (type|ns|size) are only valid in a 'prealloc' context, which one is only
-> valid in a 'trace' context. They form a group and their current order should
-> remain inside this group.
-> 
-> OTOH, as mentioned, some could be swapped. For example, both tunsrc and
-> tundst could come in whatever order. However, they are only valid in a
-> specific 'mode' context, so they should appear after it. With 'mode', they
-> form another group. 'freq' forms another group by itself.
-> 
-> So, I guess a new accepted (relaxed) order should accept groups in whatever
-> order, but the order inside a same group should remain. That said, I'd be
-> open to this proposal if other iproute2 commands also accept parameters in
-> any order, regardless of their scope or dependencies.
+On Sun, Oct 25, 2026 at 04:41 PM Eli Skeggs via B4 Relay <devnull+kernel.eliskeggs.com@kernel.org> wrote:
+> On an ingress redirect, the empty message is still queued as before, but
+> the target socket no longer reports EPIPE.
 
-Thanks for the reply. I agree your explanation about the ordering makes sense.
-Personally, though, I still think the ordering constraint is too strict. And
-the new patch also validates for mode mismatches and missing parameters.
+That leaves the target broken.
+Nothing dequeues the empty sk_msg. __sk_msg_recvmsg() sees
+sge->length == 0, returns -EFAULT and leaves it at the head of ingress_msg.
+tcp_bpf_recvmsg_parser() finds FIN in is_next_msg_fin(), returns 0 and
+does copied_seq++ on a socket that didn't receive any FIN.
+So every recv() on the target returns 0 and moves its copied_seq further
+past rcv_nxt, and the data redirected from other sockets stays behind
+that msg forever.
 
-I’ve checked all encap types: only mpls and ila require the address to be the
-first parameter, seg6 has an error info about the tunsrc order. All others allow
-arbitrary order.
+[...]
 
-I’m fine with keeping the existing behavior, as I can read the source code and
-know the order is fixed. But new users will likely hit this same issue again.
+> -			if (ret <= 0) {
+> +			if (ret < 0 || (!ret && len)) {
 
-Thanks
-Hangbin
+Lets skip empty skbs instead. That covers both directions.
+The socket's own FIN that goes through the backlog is not queued either,
+but SOCK_DONE check in tcp_bpf_recvmsg_parser() returns 0 anyway.
+
+Something like this (compile tested only):
+
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index df385a5..a5003c7 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -711,7 +711,7 @@ static void sk_psock_backlog(struct work_struct *work)
+
+ 		ingress = skb_bpf_ingress(skb);
+ 		skb_bpf_redirect_clear(skb);
+-		do {
++		while (len) {
+ 			ret = -EIO;
+ 			if (!sock_flag(psock->sk, SOCK_DEAD))
+ 				ret = sk_psock_handle_skb(psock, skb, off,
+@@ -735,7 +735,7 @@ static void sk_psock_backlog(struct work_struct *work)
+ 			}
+ 			off += ret;
+ 			len -= ret;
+-		} while (len);
++		}
+
+ 		/* The entire skb sent, clear state */
+ 		sk_psock_skb_state(psock, state, 0, 0);
+
+pw-bot: cr
