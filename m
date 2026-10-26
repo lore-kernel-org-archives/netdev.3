@@ -1,71 +1,48 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.2
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793008465;
-	b=GYLUyanj+AXNoYgwOfZJXtUGq8rBOrhTq9El5R2Yawfq3Q/B6qO18qBtuUJ+PaBfR887
-	 BpWTLnB3qTikGKcWWnVhJDSiJTffHyH3dhFuYreH5ERsek19505XS/N0Q3DunM34yOFQV
-	 jaPR07AXU96VeQ7OxA9Mj9xP8pBJ/tzaDltYKlu51ryfb1UwTnZ5ZEalUxOdtmS14s0tJ
-	 ixjY/+m5u+DptI0q/6cmVi1z3X94NBKuRcH9GDZ+JRF2HgSNXfm5AEnLDJhjx4UaNKIjc
-	 zxbuBp6ZRKFXWp/RKiylbMzVGuS66w4oP4fz63I4gzsLvmUN3TeS2+1olnGFb/dQqNw==
+	t=1793008650;
+	b=SFI4gzH+S+pfZJTepDLgx7NEMse3I3Q8GywJ62m1qyJ8Vmk8lM88B0Wzhs5hHdVD1YbN
+	 QGVN+Mjs+msiwRPKYJpSutPgmVwJsZ0wH67DjDEiuoTA2JlRjm5xh8iznmAn9jT/Btx4R
+	 wkEZPS3wC47LnUBQXqN38ZcvmbARSygu3xmR0XnEfsW07OJR9h4bMSQ6/f4/BRq0su5mT
+	 bL79L+VaqlF2unTBY0S3Gd9PubFzutHjkTiA0MLr+9vgsC+QBZuMI7U8ofBovpmWWYVTa
+	 rOuSmLILprhHyd7woDSWdkil+ZXTQvo2gT1YIRar9abw443dPHMx4VZYlXdlw/vfbpg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793008465;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=+CdnSQYOGYAynrzkG/QTB342cWFFcGggZ0YCcMYw7pY=;
-	b=NsqBhQXt/DKuY6XL6qjOSYQn59nro/4FroadSTiu7bYicBOF1zYe1DkqqmHPLPTWETmo
-	 w6J/uiz2GQ7f6wzNTKqZXuH1w32Qsxl7t9bp9um4ZIJYVuRocFlVCQo5LGSAHtHuBH6e6
-	 b7aA8SEee3Ik9Us6I7mwdRFxL3sjWgnPwza8BU9DruLk0vAbIYwUeTlNOceep7N3NDnJ3
-	 A4wVq22oeB49Mr83acsKNZr29j8LUqRG/pPQdjMqUK2GHgdUlKexmhifr8O5b6OqCI0hM
-	 ACDlIfNtXN6ihv/v/bWI2kPfTw93hB9wf62ECGzrFeLGsIKKEF2fMIMMpchU24dhI/w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793008650;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=vZbI+36cuLWKSblKMENitfEJ+yoA6aEpBQf4/oO9DlE=;
+	b=mwAqnBODCUonBlxs2hnBIE6zpbvHUOPWFiR+lx5vGLqx0D86MsrVoLKw0TYLG6Nw7tel
+	 il3VZYmMXkTWaui/xx981q2qPTeJghdubzmiBIkiZPLy7e9c0duejNjjKY1JiR5mtdqio
+	 t5JI6m/pCnbI82kuJWQk0HZwc28oJjtKvN8Y5GJfaNoO5uWADmsAfI+i0wSQSIVdm2uBg
+	 FDYauXAQCxnBVU4mb6aMKm0HUA2cdpGUfP8+ONxTlg5ESp2qXnuS7Lhvz5hldWRrZNEr3
+	 TOpKOGSwRZKxeCGGH4vzWKJPJcjsOaZhoI20pXH99Am3KRNpKwUIlhIGF/e25scXXnw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=T8HuUKEk;
-	arc=none smtp.remote-ip=91.218.175.2
-Received: from mta0.migadu.com (out-2.mta0.migadu.com [91.218.175.2])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=o0Sq3nJa;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB716606A325
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 09:54:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BB716606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778FA606A31A;
+	Mon, 26 Oct 2026 09:57:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=T8HuUKEk
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=FYVvf+389IS8ZL6LsNXMb88YYC2tzhligrXA3E/+ZL0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793008462; v=1; x=1793613262;
- b=T8HuUKEk9FzvU94JUU8uap2ICqIdV22wqC2IuByVBc2/vjNmmcnjnBFfbtVHMsRNGF0U9nYB
- ELs19emSE9ONB1pS8YQlaOERa3jplD1yuwTm4DvVrmaZOYBURryNX+2R/eCRTreSz59wZtETyAI
- v59R/Iv8h4Qm1CdxdDvAK33U=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 9e2f4d0ab2390074;
-	Mon, 26 Oct 2026 09:54:22 +0000
-X-Mizu-Trace-ID: 9e2f4d0ab2390074
-X-Migadu-Flow: FLOW_OUT
-From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
-To: netdev@vger.kernel.org
-Cc: saeedm@nvidia.com,
-	leon@kernel.org,
-	tariqt@nvidia.com,
-	mbloch@nvidia.com,
-	borisp@nvidia.com,
-	witu@nvidia.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-Subject: [PATCH net v1] net/mlx5e: kTLS, Fix missing error unwind when enabling RX offload
-Date: Mon, 26 Oct 2026 18:53:46 +0900
-Message-ID: <20261026095346.1212609-1-xuanqiang.luo@linux.dev>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=o0Sq3nJa
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBCF11F01829;
+	Mon, 26 Oct 2026 09:57:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793008650;
+	bh=vZbI+36cuLWKSblKMENitfEJ+yoA6aEpBQf4/oO9DlE=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=o0Sq3nJaIGTrjslbLGLcqnd8GPwnDlz0xCnvjLEp0i/i+axxAaa035NKi395WU1Xg
+	 hDRVsuKGFDY2xbAsWfPHhhMUD+tmWCaGPykq6pdC4Jv4CeiwtNrQWXl15NqOYWFUGz
+	 kVRrjJWt9BCAfaqEd2Fxkz7FDmeS3LY60h66pvafTuDyTJaljvKsvPN8BJ/5CflJja
+	 BM8jHg/Em2FadQNsECWj6rWK8zTGh7w6lnh65LE2xpkG+hhcg9XMiOqj/a3F0p7Y9b
+	 OzHrg72jVKoAGT+iqyNNyLA58AIx1hvy50oRqPVigC305acGqMwORQ6ze9gyA2BChR
+	 1UJwGe1/aVDKg==
+From: Christian Brauner <brauner@kernel.org>
+Date: Mon, 26 Oct 2026 10:57:09 +0100
+Subject: [PATCH 1/8] lsm: always call the namespace_free hook
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -75,61 +52,82 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261026-work-security-namespace_free-v1-1-ffa3ebbf71bd@kernel.org>
+References: <20261026-work-security-namespace_free-v1-0-ffa3ebbf71bd@kernel.org>
+In-Reply-To: <20261026-work-security-namespace_free-v1-0-ffa3ebbf71bd@kernel.org>
+To: linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org
+Cc: linux-security-module@vger.kernel.org, 
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+ Paul Moore <paul@paul-moore.com>, netdev@vger.kernel.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@kernel.org
+X-Mailer: b4 0.17-dev-ce4c1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2360; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=C2BO3VYPrmNUuuCqz/uwcSrR57rLhf95j9OE/k19Z48=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTdV2HKM6t3aJrDJvJ0gWz+3FfXjLVifxb81lUQOB1/c
+ uNLlXuzOkpZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACaSXcLIsMejKkgs42SX19mI
+ LT8DHmR19y9fpGErbcz580FnEWNHACPDsp479mV/mX2CXY+V3PvKeeqbbPy6Pxfy8+L4ZDpPla7
+ mBgA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+security_namespace_free() returns early if ns->ns_security is NULL and
+skips the namespace_free hook. But ns->ns_security is only allocated if
+an LSM requests a namespace blob via lbs_ns and currently no LSM does.
+So the namespace_free hook is never called at all.
 
-Since commit abed42f9cd80 ("net/mlx5e: Conditionally create async
-ICOSQ"), the async ICOSQ is only created when an XDP program is attached
-or priv->ktls_rx_was_enabled is set. When TLS RX offload is enabled for
-the first time, mlx5e_ktls_set_feature_rx() sets the flag and reopens
-the channels so that they get the queue, but it ignores the return value
-of mlx5e_safe_reopen_channels().
+Landlock only uses namespace_init and namespace_install so it doesn't
+care. But the bpf LSM attaches to every hook and a program attached to
+namespace_free never runs. We want to use it in systemd-nsresourced to
+get notified when a user namespace goes away. Right now it has to kprobe
+retire_userns_sysctls() for that.
 
-If the reopen fails, mlx5e_safe_switch_params() keeps the old channels,
-which have no async ICOSQ, while NETIF_F_HW_TLS_RX is still reported as
-enabled. The next offloaded RX connection then dereferences the NULL
-c->async_icosq in post_rx_param_wqes(). Enabling the feature again does
-not help, as the flag is already set and the reopen is skipped.
+Note that a bpf program can't work around this. The size of the
+namespace blob is fixed at boot and the bpf LSM doesn't request one.
+And security_namespace_init() allocates the blob before the
+namespace_init hooks are called anyway.
 
-Propagate the error, clear the flag and destroy the accel TCP flow
-tables again, so that the feature stays disabled and the next attempt
-retries the reopen.
+The check isn't needed. __ns_common_free() is only ever called after
+__ns_common_init() succeeded and security_namespace_init() only calls
+security_namespace_free() after the blob has been allocated. So if an
+LSM requests a namespace blob it is always there when the hook runs.
+Call the hook unconditionally like security_sb_free(),
+security_file_free() and security_bpf_map_free() do.
 
-Fixes: abed42f9cd80 ("net/mlx5e: Conditionally create async ICOSQ")
-Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+The bpf LSM attaches programs to its bpf_lsm_*() stubs so fentry on the
+stubs shows what a bpf LSM program sees. Booted with lsm.debug, which
+prints "LSM: blob(ns) size 0", and created 100 user and uts namespaces:
+
+  bpftrace -e 'fentry:bpf_lsm_namespace_init { @init = count(); }
+               fentry:bpf_lsm_namespace_free { @free = count(); }' &
+  for i in $(seq 100); do unshare -Uu true; done
+
+  before: @init: 200 @free: 0
+  after:  @init: 200 @free: 200
+
+Fixes: f675d2e95569 ("lsm: add LSM blob and hooks for namespaces")
+Cc: <stable@kernel.org> # mainline only
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
-Found by code inspection while backporting commit abed42f9cd80 to a
-downstream kernel. I do not have a crypto-enabled ConnectX NIC, so the
-failure has not been reproduced and the fix is only compile-tested.
+ security/security.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-The crash itself is the one described in the changelog of abed42f9cd80
-("async ICOSQ allocation is not triggered, causing a NULL pointer
-crash"). This patch only covers the case where the reopen that should
-create the queue fails. ktls.c is also the only caller that ignores the
-return value of mlx5e_safe_reopen_channels(); the callers in health.c
-and reporter_tx.c check it.
+diff --git a/security/security.c b/security/security.c
+index f6583d507395..1e76c097b28d 100644
+--- a/security/security.c
++++ b/security/security.c
+@@ -3412,9 +3412,6 @@ int security_namespace_init(struct ns_common *ns)
+  */
+ void security_namespace_free(struct ns_common *ns)
+ {
+-	if (!ns->ns_security)
+-		return;
+-
+ 	call_void_hook(namespace_free, ns);
+ 
+ 	kfree(ns->ns_security);
 
- drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c
-index 337201f128958..3cc1213c2f682 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c
-@@ -139,7 +139,11 @@ int mlx5e_ktls_set_feature_rx(struct net_device *netdev, bool enable)
- 		err = mlx5e_accel_fs_tcp_create(priv->fs);
- 		if (!err && !priv->ktls_rx_was_enabled) {
- 			priv->ktls_rx_was_enabled = true;
--			mlx5e_safe_reopen_channels(priv);
-+			err = mlx5e_safe_reopen_channels(priv);
-+			if (err) {
-+				priv->ktls_rx_was_enabled = false;
-+				mlx5e_accel_fs_tcp_destroy(priv->fs);
-+			}
- 		}
- 	} else {
- 		mlx5e_accel_fs_tcp_destroy(priv->fs);
 -- 
-2.43.0
+2.53.0
 
