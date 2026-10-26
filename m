@@ -1,88 +1,48 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793008683;
-	b=GexIVU9GPNCec9/tX9qDZrDgrWQIU1iIkNK/CohDwJiK97Q6FRhPZHNP+xArLvygt9BR
-	 dVcQaSCgZvZGF0TNWOxXhj5xkesMZ+GoRwXLHEauf9KZEOOx07qUZT5QKTuCOweDL5q/z
-	 UYxvJyS80Nd4Dk0KGeXcBq+qOwbBU+s7TjBZNqVtaU1fp82URI9QY4xmC6XpQAYgwgcsd
-	 cYjdThT8hNb52ZIYcfN2fAaaoa91rqtiK2EY2Z5AxWpg4dWwwZ4ugmcgZXN8Wqx/8cDxp
-	 YyKqwxogE0AS9iIdJ66ZwDvDhre/cR4fb+8gePBMtooNguftskuiExAMM6diN8ByDRQ==
+	t=1793008663;
+	b=VlRcmcwyfvbVHXYl971u6CK62hQwSsrGEKKT5tb4BwtOOznFbvstdi+ZwhRBha6b7Cch
+	 67CV/Hw5P+17xpRq08u2b+CDU8H8lFsikkwwerIY+RcvzXdi8c4OWA906lZ00frLG49HO
+	 p1Rpljs/XJ4x6MmKLc/TK5olQuEgC3a16uL8aZN7moGjtH65lnsOaCnt/CwcyBc87hBWd
+	 3lAewFfsANKkNP6eDuL3pnk7Ro3Ceo2mjI6ye2nWNBYeI7mgYAPuQL0kYxnJKPxKzZWgI
+	 aDuLfkMxOjG9+Ez2spEA1M76tqn49SjWbWqtEc1G02PbJsItbVvn0W0eVSGNOg8Redg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793008683;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:Date:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
-	 References:In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:
-	 X-Developer-Key;
-	bh=ZkrjTGKpjcuZ/tYx9QE/Yhm7rGoild+k5lq+5pxzVsM=;
-	b=rdKloht/pOEMQ/+/wL968eiVMuOtWb1mbEnzjZd9LIFoB242IMmWvlaWGXv9g9mpEwcI
-	 c+ky2okTzVa9/dqQWLX5+PuEhlhgNDlsZg/zOjcs3PtHSzdm1+PSo+geB5fD97bHZbcz5
-	 wKb1Kg3JZnwB5Fwd5YBQs/6Zg4EnvAGIAqGTXvPtkktFjmjKzwlQpec91SPM3uupebj8m
-	 p6MHZLInhM5jkgtB0uyLPguyz6hN5Rhs2eCfuaVui8qkvXTTGyFwGgavf+681VZ6eEyCS
-	 rpy2wh7aT+82lY1uQyfHzI7BtRIkWjYhY0fOEQnHciHSNcpMyXFq2Zb3uR1khu5n3tQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793008663;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=f4yalWXXSNIedpdmSjasV68YdTATiVUIW3zIVAq8TPY=;
+	b=G3ZTdLkOuVCjwnazaWe4GoM7sau3q6SVuc+2w/ysr1/AAtJUG4eqC2A2mTyeDGTakC2p
+	 +491S+M7N/s1OkD6L3m6vT3d3cVe8XoZ1JRrnxWdd43+4NhjCNSGvZ8ZU5G39bCchDHec
+	 sYbwQ9sLtyy+V8HgYD8oco00pGdrubLhF+k77eTMpBeTgwjM/5bIl8HoKCInuWd2li3CL
+	 +xRJ+mWJd/OVifFeHf8IwtgJL+qOBiEP6YQh7Ct/eGBAZt4nhNONvbbLKZxlwC/f7L84C
+	 u6BGa91Rjkty4QhFsaSkYcOU/T6Yp9i6O1av9XDUZjMZBTm9cOV+cTb2Atu+qV5gIkQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=A6kLDphG;
-	arc=none smtp.remote-ip=209.85.210.169
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k+lPtduY;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E9C606C23D
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 09:58:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E1E9C606C23D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF36560A5BDE;
+	Mon, 26 Oct 2026 09:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=A6kLDphG
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-8a06b44bd01so1497301b3a.0
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 02:58:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793008682; x=1793613482; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ZkrjTGKpjcuZ/tYx9QE/Yhm7rGoild+k5lq+5pxzVsM=;
-        b=A6kLDphGCGeqVBVIeolzEZd6o3SSCK1ZkOFxV27r03qo8RtyvT4ZnCpajo9MMtrsaq
-         SoHCYtJYk9j4zhW4f66GSang1cUaCaUdcuc0vzqeZkGoyvWWyz3KeXWozD3or94/BWgF
-         w2LTxmcmIpr5dyrE7rRw7bMnU+duIlwOXfto3FQiRLANBRa8m6DdRvOC4vKWA2fz2Bs6
-         XK8Pih/q565zVV56EB5wEls165pNOkwkoEggmMpfwpXwI9J5it0lm4OiYBC93vSY1iwJ
-         5Lo89sr1Zgp27+ClVP9t47y/uMOII3u5ZcwBSVUELfE9UiS3C2BN6xyTVDlGZ7/dahZ0
-         wIHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793008682; x=1793613482;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZkrjTGKpjcuZ/tYx9QE/Yhm7rGoild+k5lq+5pxzVsM=;
-        b=TwN85B0gpi0Iyz30oLtLTaCqvQUQHlRuqClvT6dKAKOBJYSJ6VlkkeUiQbI5VUw0ch
-         Q0OdejVCvK47+A0oUbfacWNDwdfc8n7Zt7TOt6O79Bmg1+MkvhPGGR6Mym5nPN0vh63h
-         ScTEIbgF/LBEUYJltTOrCv53jP9ooYlVtLo4ueBI/0DXPASeqjINBaWhlLlh7WV+ewcN
-         xd9E4iErv4zhJqWETxW/NCmc/sge9z0LqRSiTicGo88HWuOHUyWwnQEcgm6OAX+/wkDY
-         HXJU06DlON9eSXK+GlBqbJwCNb+BhewGeNry/CUuxQbvMt1iM7woxLhjCqyuIcXbyvmg
-         v2rw==
-X-Gm-Message-State: AFq9FYLhn1QIxtq4dLfLyegAS9/GU/sacb279BmNOe2CAfOmvbQxu2NS
-	V6vd8foV/q4T6hFFR+I8Zu3Ox33F9nCdEMQ+0u8BLnW0JGGVaMaVn/vVMa9tw1TS
-X-Gm-Gg: AYBFou0kZpLpydbOaA81kJp6wSiae3SnPMg5WTQhCKczO2FwJznT3Edb2MNBSLpm8FW
-	+H34O97i+CokAEe4w7gYbHjA22jIdqTnZE0FQNip87Qoe6RHDiI409SYlP+MDeHAC+pup9Ou99a
-	070jJQrnsDY4UKN3j5mZ99pX6IifKepaRDJyM+dEQdS6GY8y8F+gc21GhHRTnVEjpe6YASdmVtc
-	P8pEp48lHsj/jq/kRhapUEwhJPU2qI+wcvQE5LkMHspJYA2VwJK10ZH+3m99eFridREBaDXeMu4
-	YaRLkCC0yKAbGQTWVJGJCkN8BJ1JYDxYOaCM4Lmy3vMWjGSjmW5txED13fmoA2J+T8QvppVLOzf
-	6NazA/Y4mr+Qnr8LDpbZ3eEcWsYXJWVpTeViKOab53Qjj2DvoAvgr9FXNOP7Ify+hmJkIu9Ih+a
-	/hTLl9cD2kgcxspN7PG7gBmJCo+5l9BOn5uaygqkVnXZv0dE8mXfLnI3/QtmU0hQt6IfopTBKxr
-	90l4r/XcPMOKDOnsn5pkrVYtUGQ9lqrP558N2wrzL/Mht3Qcwmu1tmoYDTjbjqRRJQnKyRy5EGc
-	VCVLu/kp0w==
-X-Received: by 2002:a05:6a00:9093:b0:878:3783:8a88 with SMTP id d2e1a72fcca58-8a3689a9e0amr5082831b3a.52.1793008682324;
-        Mon, 26 Oct 2026 02:58:02 -0700 (PDT)
-Received: from [127.0.1.1] (59-127-145-64.hinet-ip.hinet.net. [59.127.145.64])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a36bf0f4dcsm1095577b3a.44.2026.10.26.02.57.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 02:58:02 -0700 (PDT)
-From: Zhi-Jun You <hujy652@gmail.com>
-Date: Mon, 26 Oct 2026 17:57:29 +0800
-Subject: [PATCH net v6 2/4] net: ethernet: mtk_wed: fix reset condition for
- rx wdma
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k+lPtduY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 915A11F01182;
+	Mon, 26 Oct 2026 09:57:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793008662;
+	bh=f4yalWXXSNIedpdmSjasV68YdTATiVUIW3zIVAq8TPY=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=k+lPtduYklIQMpzUU0MU9EY1fHU0Verw3mdxP7U1x7a0CABvVKMoBxwFqENg7uMF2
+	 66SSliZlJB9M4CafdYK/zCOrsRtx19BLwfrBtey3YdiTJPvs3W35s0h3KaSlSZrWsR
+	 PvWQiCAJqPLdAJcunLQhC1HoPP84B0cCWkwh6KDJv98WQy7sMJT3W2PYeztE00Qbp6
+	 +yhbq9mPwgvGz1CTx82QzeSV7pEgAvczuy1WcWoHcKP+bFZ0xqUtERib3wWeQepBkB
+	 Ys5h9y+4EFQvIixHM0+KcB8C8AZ77Z1+cXtKiqf6vrFjp/j+/BrfMgoPSQi65Q8ArU
+	 Xn0CuaNcqDo7Q==
+From: Christian Brauner <brauner@kernel.org>
+Date: Mon, 26 Oct 2026 10:57:14 +0100
+Subject: [PATCH 6/8] nstree: drop ns_tree_add_raw()
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -94,60 +54,141 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261026-wedfix-v6-2-a52f6b15d2fc@gmail.com>
-References: <20261026-wedfix-v6-0-a52f6b15d2fc@gmail.com>
-In-Reply-To: <20261026-wedfix-v6-0-a52f6b15d2fc@gmail.com>
-To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Sujuan Chen <sujuan.chen@mediatek.com>, Rex Lu <rex.lu@mediatek.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- Sashiko <sashiko-bot@kernel.org>, Zhi-Jun You <hujy652@gmail.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793008668; l=1247;
- i=hujy652@gmail.com; s=20261026; h=from:subject:message-id;
- bh=KHuNb2dXEaBZgB0w45LgKUexXhH4JlXqWzUxUbg3sfY=;
- b=ZGYVb454jS3iS7dka2Wxnt/z9ajD8qAN2Wb5iUIt2lWi9KINhIlEdsUJT8NTJapNe+/51Z8Oq
- /hngfvKzvT+AkkuPLM0fGdef/c2DGWGBEQtdQ/RmPTv9fVm7MLdmsdb
-X-Developer-Key: i=hujy652@gmail.com; a=ed25519;
- pk=uXjqvnRsKEfHEyUr63sOg4fEJIDs4AmiW/rB1cWarXg=
+Message-Id: <20261026-work-security-namespace_free-v1-6-ffa3ebbf71bd@kernel.org>
+References: <20261026-work-security-namespace_free-v1-0-ffa3ebbf71bd@kernel.org>
+In-Reply-To: <20261026-work-security-namespace_free-v1-0-ffa3ebbf71bd@kernel.org>
+To: linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org
+Cc: linux-security-module@vger.kernel.org, 
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+ Paul Moore <paul@paul-moore.com>, netdev@vger.kernel.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@kernel.org
+X-Mailer: b4 0.17-dev-ce4c1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4196; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=tj9kd7vELKufiPKwD+vHRyW4owW63ehZ7HlsaRDfc/w=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTdV2Fqc/QN3rHSbH7VLd7ZsbNitSoeCuddq6x/tPXmL
+ YsLWisTOkpZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACZiconhJ+N9jdqLrP5TFM/e
+ SlyltdjkXTWLd4DKQokMN4tlacXvHzEyPHq/x7+tfaum/8WgyKVpUupV7aZGf9uvs63zu6J4/m4
+ sLwA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-In mtk_wdma_rx_reset, currently only resets the CPU index of the rings
-that doesn't have a descriptor. This is wrong because no descriptor
-means the ring is not configured.
+Now that ns_tree_add() doesn't allocate an id anymore it does the same
+thing as ns_tree_add_raw(). Switch the remaining ns_tree_add_raw() users
+over to ns_tree_add() and drop it. Rename __ns_tree_add_raw() to
+__ns_tree_add() while at it.
 
-Also mtk_wed_start makes sure that all rx_wdma rings are set up this
-would lead to no ring getting their CPU index reset.
+No functional changes.
 
-Fix this by inverting the reset condition so allocated rings will be
-reset.
-
-Fixes: 4c5de09eb0d0 ("net: ethernet: mtk_wed: add configure wed wo support")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Link: https://sashiko.dev/#/patchset/20260724172040.1653-1-hujy652%40gmail.com
-Signed-off-by: Zhi-Jun You <hujy652@gmail.com>
+Fixes: f675d2e95569 ("lsm: add LSM blob and hooks for namespaces")
+Cc: <stable@kernel.org> # mainline only
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_wed.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/namespace.c           |  4 ++--
+ include/linux/nstree.h   | 13 ++-----------
+ ipc/namespace.c          |  2 +-
+ kernel/nstree.c          |  2 +-
+ net/core/net_namespace.c |  2 +-
+ 5 files changed, 7 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_wed.c b/drivers/net/ethernet/mediatek/mtk_wed.c
-index d55042ccaff1..3f0be70c3f14 100644
---- a/drivers/net/ethernet/mediatek/mtk_wed.c
-+++ b/drivers/net/ethernet/mediatek/mtk_wed.c
-@@ -257,7 +257,7 @@ mtk_wdma_rx_reset(struct mtk_wed_device *dev)
- 	wdma_w32(dev, MTK_WDMA_RESET_IDX, 0);
+diff --git a/fs/namespace.c b/fs/namespace.c
+index f81d6a4bc3fe..2f9a1460b4ac 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -3296,7 +3296,7 @@ static struct mnt_namespace *create_new_namespace(struct path *path,
+ 	}
  
- 	for (i = 0; i < ARRAY_SIZE(dev->rx_wdma); i++) {
--		if (dev->rx_wdma[i].desc)
-+		if (!dev->rx_wdma[i].desc)
- 			continue;
+ 	new_ns->root = new_ns_root;
+-	ns_tree_add_raw(new_ns);
++	ns_tree_add(new_ns);
+ 	return new_ns;
+ }
  
- 		wdma_w32(dev,
+@@ -4497,7 +4497,7 @@ struct mnt_namespace *copy_mnt_ns(u64 flags, struct mnt_namespace *ns,
+ 				p = next_mnt(skip_mnt_tree(p), old);
+ 		}
+ 	}
+-	ns_tree_add_raw(new_ns);
++	ns_tree_add(new_ns);
+ 	return new_ns;
+ }
+ 
+diff --git a/include/linux/nstree.h b/include/linux/nstree.h
+index 3293df17397d..eeed713804be 100644
+--- a/include/linux/nstree.h
++++ b/include/linux/nstree.h
+@@ -42,22 +42,13 @@ void ns_tree_node_del(struct ns_tree_node *node, struct ns_tree_root *root);
+ 		struct uts_namespace *:    &(uts_ns_tree))
+ 
+ u64 __ns_tree_gen_id(struct ns_common *ns, u64 id);
+-void __ns_tree_add_raw(struct ns_common *ns, struct ns_tree_root *ns_tree);
++void __ns_tree_add(struct ns_common *ns, struct ns_tree_root *ns_tree);
+ void __ns_tree_remove(struct ns_common *ns, struct ns_tree_root *ns_tree);
+ struct ns_common *ns_tree_lookup_rcu(u64 ns_id, int ns_type);
+ struct ns_common *__ns_tree_adjoined_rcu(struct ns_common *ns,
+ 					 struct ns_tree_root *ns_tree,
+ 					 bool previous);
+ 
+-/**
+- * ns_tree_add_raw - Add a namespace to a namespace
+- * @__ns: Namespace to add
+- *
+- * This function adds a namespace to the appropriate namespace tree
+- * without assigning a id.
+- */
+-#define ns_tree_add_raw(__ns) __ns_tree_add_raw(to_ns_common(__ns), to_ns_tree(__ns))
+-
+ /**
+  * ns_tree_add - Add a namespace to a namespace tree
+  * @__ns: Namespace to add
+@@ -65,7 +56,7 @@ struct ns_common *__ns_tree_adjoined_rcu(struct ns_common *ns,
+  * This function adds a namespace to the appropriate namespace tree and
+  * list. The namespace must already have been assigned an id.
+  */
+-#define ns_tree_add(__ns) __ns_tree_add_raw(to_ns_common(__ns), to_ns_tree(__ns))
++#define ns_tree_add(__ns) __ns_tree_add(to_ns_common(__ns), to_ns_tree(__ns))
+ 
+ /**
+  * ns_tree_remove - Remove a namespace from a namespace tree
+diff --git a/ipc/namespace.c b/ipc/namespace.c
+index 9084e0643017..b4fab86aee27 100644
+--- a/ipc/namespace.c
++++ b/ipc/namespace.c
+@@ -86,7 +86,7 @@ static struct ipc_namespace *create_ipc_ns(struct user_namespace *user_ns,
+ 
+ 	sem_init_ns(ns);
+ 	shm_init_ns(ns);
+-	ns_tree_add_raw(ns);
++	ns_tree_add(ns);
+ 
+ 	return ns;
+ 
+diff --git a/kernel/nstree.c b/kernel/nstree.c
+index 831f279d174a..94153dfddb3d 100644
+--- a/kernel/nstree.c
++++ b/kernel/nstree.c
+@@ -194,7 +194,7 @@ static int ns_cmp_owner(struct rb_node *a, const struct rb_node *b)
+ 	return ns_id_cmp(node_to_ns_owner(a)->ns_id, node_to_ns_owner(b)->ns_id);
+ }
+ 
+-void __ns_tree_add_raw(struct ns_common *ns, struct ns_tree_root *ns_tree)
++void __ns_tree_add(struct ns_common *ns, struct ns_tree_root *ns_tree)
+ {
+ 	struct rb_node *node;
+ 	const struct proc_ns_operations *ops = ns->ops;
+diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
+index ec4077b81389..54ba07eba003 100644
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -447,7 +447,7 @@ static __net_init int setup_net(struct net *net)
+ 	down_write(&net_rwsem);
+ 	list_add_tail_rcu(&net->list, &net_namespace_list);
+ 	up_write(&net_rwsem);
+-	ns_tree_add_raw(net);
++	ns_tree_add(net);
+ out:
+ 	return error;
+ 
 
 -- 
-2.55.0
+2.53.0
 
