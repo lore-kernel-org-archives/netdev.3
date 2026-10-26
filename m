@@ -1,73 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.80.4.37
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793023140;
-	b=caPnII5SgIVB/flxoein1WVoBhW9NRMRUF74Mud2MowNiHGTufFW6v2/cNpNRpKPvqQB
-	 FG55GyHHQhlpRdQq8xw4aNJRMHbqfQngb9OBYTqu5r5QJLyjhZye+Vuzyt3P/43eVwtiK
-	 3YtWL0OSnLRGbcISSRECflpU7MP3ZVI/ReEFjuxChMVzasabeSmQECiwpf40SkqHmohHh
-	 JAQJYV95+NAM47sga4S4mShA4FZ4TTyJCnzYDnj1TzV27GlxqDwDONno+RXG3dSq++JqD
-	 lj/Qp+IN7XxRlbEUZVvv6YdSKcszdgby1w794zVf4k7HrxrBKmPJoFFWaSpufQKI0BA==
+	t=1793023574;
+	b=Se8ojdLfN8bCE91m7KM1EmiFM81hQbWRMOl7UbdodNjzQBu18h6Pj+NuJWk5YjMhwUBu
+	 CbUEFDegeOYu1QMO5hOcBvd7gjqKzenAoLCtJ88QTOkM4BOOWaOG2XTgfjyl3XWL5++Wq
+	 W4rYBybUl7TfeLboEIRJXwOKtB88Co5Sy675qMv8Ot+umh9sfW1RvqF9jukjv38tt6VF5
+	 13lQI9eeqXAAavO+fOD8S0hRPFXlgN7H11LeZd33mJgvGLd/+YrC//2MeW+4QZJSGvpNw
+	 SOH3d0YtE2ycACxyef/YLDv/kILxyJfDijFWIhsx5sHLVlY8cNgBUuZMHicsGNRnyvQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793023140;
-	h=DMARC-Filter:DKIM-Signature:X-UI-Sender-Class:Received:Received:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding:X-Provags-ID:X-Spam-Flag:UI-OutboundReport;
-	bh=vTDWR4Av6DYB2fTr3K9DQEAWzrajqn487d3krJjj0o8=;
-	b=h5mF/vZhHUIYrCqTgqCEy1ZaMBmP68rae3O9m38YkL9ylKxhMbUep5CsK7fDLFapLjIq
-	 KCXgKt+/1WYfuiNNU8D//pPwuavHX59v22kWDe75e/E+a5CcDR8MdhStgaJxUSbDN6mQh
-	 aJuvRSQzjO93fM+XwAoDJSbyJSboqxC4Y0YoNOIRotXMUXpQ/oSpcxZ1G7T3O9ZhsifZ4
-	 R/i5xQ16ZXw8TFXZFk4Yl5sg3nCo95yxPLFpyOyQjF8SZiRg2h9unZC22XZ3eUPCWaVyT
-	 GoG31rGm+4BaPjuK0mmFdDwP6Q8oH6LGtkR6yKcjRE2CwPaA1/9wZ8imv7prypy+S+A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793023574;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:Date:
+	 From:To:Cc:Subject:Message-Id:In-Reply-To:References:X-Mailer:
+	 Mime-Version:Content-Type:Content-Transfer-Encoding:X-Virus-Scanned:
+	 X-Virus-Status;
+	bh=S+aChkfaMd9EivevKx38Q/7Syxky3lnzhcs/iXmA7Hk=;
+	b=QwxLNJMtkXkRoboqGtILc6LEoQmnfbKCOmEZCLymAoqBi6RbaMLhnnHP7Fmci9WyxIec
+	 lz+dy8AaaLVSzqnhfhKlKVHlFDGPnyVZqBdDAZQhilxGzkVsB1FX1NhpSAyf2NCp2gPLf
+	 /zv6SPMZ3jzXEsbzB+vVfh9SiODOgzTy64Cq6g5bdgRrMrJqr3CqeOkEBVIL5sShJb7rn
+	 XJz5UiFU9un1UMq0fDoBm2ytCUnGjXL2th6l9aFZkNr43jrxAwJ/96ct5aNg305hVxZSC
+	 BSBC6JoettlRvRZyuDHebjPj9bHGgrX8Qxg22ih2kGwF/c9/D3W4EEdBkRvwIeJNivQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmx.de;
-	spf=pass smtp.mailfrom=gmx.de;
-	dkim=pass header.d=gmx.de header.i=martin.ostertag@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=YrE0L1V3;
-	arc=none smtp.remote-ip=212.227.17.20
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5422606A31D;
-	Mon, 26 Oct 2026 13:58:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D5422606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+	dmarc=pass header.from=uniroma2.it;
+	spf=pass smtp.mailfrom=uniroma2.it;
+	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=UGmjf8VY;
+	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b="tp/eiOPR";
+	arc=none smtp.remote-ip=160.80.4.37
+Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C65606A31A;
+	Mon, 26 Oct 2026 14:06:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 53C65606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmx.de header.i=martin.ostertag@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=YrE0L1V3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1793023128; x=1793627928; i=martin.ostertag@gmx.de;
-	bh=vTDWR4Av6DYB2fTr3K9DQEAWzrajqn487d3krJjj0o8=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
-	 MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=YrE0L1V3viLF1HR/KjVM1F57sDDGe1DOZQkem4fg0eFJvonCYsuAsU92hzl+gMO2
-	 6OV7GpdzTf9Ky/A+jpKQz+JH4Io/4uKtKwdzTBg6iskFyTsJeR3VrgUHxkC3qPwmO
-	 91B9LvjQUf45+HP0Tje6OnJ18M/3QelSRG7//7fbYF22b6VErZ6Vdz6WfJMr3c7zx
-	 Prz3nD/QMnNYIxbmh05/nI8hLXS8iTrV35Aff4ijRbHXWLrfbQdmqA+sjWh3YB1qM
-	 h0OUnVSbkkfxISMaaT675uhp5wEHk/0ZREnz80z4q+y4exjfLIN0h3SCMK3Vqs+cz
-	 GHsrUIeQH2mxNNwTzA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M7sHy-1xGNPG0ZMo-007UOu; Mon, 26
- Oct 2026 14:58:48 +0100
-Received: from perseus.lan (perseus.lan [192.168.2.182])
-	by blackhole.local (Postfix) with ESMTP id E7F26122;
-	Mon, 26 Oct 2026 14:58:45 +0100 (CET)
-From: Martin Ostertag <martin.ostertag@gmx.de>
-To: Russell King <linux@armlinux.org.uk>
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Martin Ostertag <martin.ostertag@gmx.de>
-Subject: [PATCH net-next] net: sfp: add quirk for ZYXEL PMG3000-D20B
-Date: Mon, 26 Oct 2026 14:57:57 +0100
-Message-ID: <20261026135757.100139-1-martin.ostertag@gmx.de>
-X-Mailer: git-send-email 2.56.0
+	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=UGmjf8VY;
+	dkim=pass (2048-bit key, unprotected) header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b=tp/eiOPR
+Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 69QE5aHh010301;
+	Mon, 26 Oct 2026 15:05:42 +0100
+Received: from lubuntu-18.04 (unknown [160.80.103.126])
+	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 8AE4F1203BC;
+	Mon, 26 Oct 2026 15:05:42 +0100 (CET)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
+	s=ed201904; t=1793023543; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S+aChkfaMd9EivevKx38Q/7Syxky3lnzhcs/iXmA7Hk=;
+	b=UGmjf8VYEjQ3iKMxhBykCXQ2zVJ0aAgYaycPpfcNB4aRZ9SJPM99SxoBW9h5/j5FNCI1jX
+	G3aKXx7/2EAJL+Aw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
+	t=1793023543; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S+aChkfaMd9EivevKx38Q/7Syxky3lnzhcs/iXmA7Hk=;
+	b=tp/eiOPRb951NNKopf1HgWI0lb4Zs6BspwO+XzwB2jaDUstzbN2eXW0i7u0eX7/a3ivBQD
+	vcBj+CKvtZIg64wYdSRZ9f3RhdeKCe0iaDwQHsbm2yDP1hC8KZx7ZY0cF7QSs6RxviAOeX
+	Pie/ZdmIhSLLP9rfV+OU7dQo9SU3zbnlzx/FL7JSbEp2JB5SvX48W/tDe1zC72kg3Y21mP
+	mU124AcC124ed4z3oko1LbXMgpf4/Zz7ADttTv0eM1UU6W6LE2EEa4PbCeyaERdr02643j
+	dEsI56USpDzXKTGCYs8lo11ptlsipiiBM1HdUzhQKGKLeiaDZmymhH1wXt+YGA==
+Date: Mon, 26 Oct 2026 15:05:41 +0100
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
+To: Tristan Madani <tristmd@gmail.com>
+Cc: netdev-bot+sinfo@kernel.org, davem@davemloft.net, edumazet@kernel.org,
+        kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+        tristan@talencesecurity.com, david.lebrun@uclouvain.be,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        stable@vger.kernel.org, stefano.salsano@uniroma2.it,
+        Andrea Mayer
+ <andrea.mayer@uniroma2.it>
+Subject: Re: [PATCH net] seg6: fix tun_src RCU lifetime on namespace
+ teardown
+Message-Id: <20261026150541.a5a34642db9d1523f839f644@uniroma2.it>
+In-Reply-To: <20261025222222.1064464-1-tristan@talencesecurity.com>
+References: <179278529389.3327.1530536500905686255@kernel.org>
+	<20261025222222.1064464-1-tristan@talencesecurity.com>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -76,160 +85,65 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:TyQMohkcJlD5zDeCq3PDYXRSdUwsNQFRlM65IvnaWd/UqHKdXNl
- utlb06EkDFOYzcEr4ARKOXLscuHyqMjj3ZXlgUGraLEX6vHdkJkOBOEv5Cd/8flMZHLujp4
- mdM7TGfvBpv817YO4uYaeIJ9Z3uuLZJEvee6SSjh9tEyYNsn04C0xtYtkdF5xjwNkNZ3Nmt
- w3hxksEe6XDowYvYKzB3Q==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:DXWbX+l0tFc=;My8x0xTEQj78RX3CngBhqRmhX/O
- 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
- p0JOmiWrDhefAMt1DS0XacLVxGwfG1SK
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
+X-Virus-Status: Clean
 
-The ZYXEL PMG3000-D20B GPON SFP module reports LOS and TX_FAULT in a
-way that prevents the SFP state machine from initialising it. Its
-EEPROM also advertises autonegotiation support although the module does
-not implement it, and the module needs about 60 seconds before it is
-ready.
+On Sun, 25 Oct 2026 22:22:22 +0000
+Tristan Madani <tristmd@gmail.com> wrote:
 
-Ignore LOS and TX_FAULT, disable the advertised autonegotiation and use
-T_START_UP_BAD_GPON as the wait time before the module is assumed to be
-initialised.
+> Found by manual code inspection while auditing RCU lifetime
+> patterns in the seg6 subsystem.  The issue is theoretical --
+> found by reading the source, not triggered in production.
 
-Tested with a ZYXEL PMG3000-D20B in an SFP cage.
+Hi Tristan,
+thanks for the info.
 
-Signed-off-by: Martin Ostertag <martin.ostertag@gmx.de>
-=2D--
- drivers/net/phy/sfp.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+The pre_exit in this patch introduces a NULL deref. It sets tun_src to
+NULL before the netns devices are removed, while set_tun_src() can
+still read it.
 
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index 85e57a1..578d4d8 100644
-=2D-- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -472,6 +472,18 @@ static void sfp_fixup_potron(struct sfp *sfp)
- 	sfp_fixup_ignore_hw(sfp, SFP_F_TX_FAULT | SFP_F_LOS);
- }
-=20
-+static void sfp_fixup_zyxel(struct sfp *sfp)
-+{
-+	/*
-+	 * The LOS and TX_FAULT signals are not usable on this module, so
-+	 * ignore them. It also needs about 60s to become ready. Use
-+	 * module_t_wait, as module_t_start_up is not evaluated when
-+	 * TX_FAULT is ignored.
-+	 */
-+	sfp_fixup_ignore_tx_fault_and_los(sfp);
-+	sfp->module_t_wait =3D T_START_UP_BAD_GPON;
-+}
-+
- static void sfp_fixup_rollball_cc(struct sfp *sfp)
- {
- 	sfp_fixup_rollball(sfp);
-@@ -654,6 +666,10 @@ static const struct sfp_quirk sfp_quirks[] =3D {
- 	SFP_QUIRK_F("XikeStor", "SKT-2.5G-100M", sfp_fixup_xikestor_2_5g),
-=20
- 	SFP_QUIRK_S("ZOERAX", "SFP-2.5G-T", sfp_quirk_oem_2_5g),
-+
-+	/* The module advertises autonegotiation it does not support. */
-+	SFP_QUIRK("ZYXEL", "PMG3000-D20B", sfp_quirk_disable_autoneg,
-+		  sfp_fixup_zyxel),
- };
-=20
- static size_t sfp_strlen(const char *str, size_t maxlen)
-=2D-=20
-2.56.0
+I ran a stress test on net with KASAN. A userspace program sends UDP
+packets in a loop from init_net through a veth into a test netns, where
+a seg6 encap route without a per-route tunsrc forwards them. Meanwhile,
+the test netns is created and deleted repeatedly.
 
+With this patch applied, KASAN reported a null-ptr-deref in
+set_tun_src() and the kernel panicked:
+
+ BUG: KASAN: null-ptr-deref in set_tun_src+0xd1/0x240
+ Read of size 8 at addr 0000000000000000 by task udp_flood_user/379
+ Call Trace:
+  <IRQ>
+  set_tun_src+0xd1/0x240
+  __seg6_do_srh_encap+0x410/0x710
+  seg6_do_srh+0x65e/0x6a0
+  seg6_input_core+0x87/0x4c0
+  lwtunnel_input+0x18d/0x420
+  ipv6_rcv+0x44f/0x460
+  __netif_receive_skb_one_core+0xd6/0x130
+  process_backlog+0x2cc/0xa00
+  __napi_poll.constprop.0+0x56/0x270
+  net_rx_action+0x327/0x730
+  handle_softirqs+0x15a/0x6c0
+  do_softirq+0xb4/0xf0
+  </IRQ>
+  <TASK>
+  __local_bh_enable_ip+0xdd/0x100
+  __dev_queue_xmit+0x538/0x1030
+  ip6_finish_output+0x280/0x640
+  ip6_output+0x118/0x380
+  ip6_send_skb+0x99/0x210
+  udp_v6_send_skb+0x397/0x760
+  udpv6_sendmsg+0x1100/0x14d0
+  __sys_sendto+0x219/0x2d0
+  ...
+ Kernel panic - not syncing: Fatal exception in interrupt
+
+Without this patch, I ran the same test with 1000 netns deletions and
+KASAN reported nothing.
+
+Ciao,
+Andrea
