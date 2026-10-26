@@ -1,116 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.227
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793048842;
-	b=CSaTD3NIFrPKF5NTcpRXs7/LUYilgstg/am/AMMe5FdlgvwPZJDAnm1HmFG1f+z8d7sb
-	 GRt2bifYDsX36vRiqTuaxfT+A283xN5hZXZ97uNyKRRNrNsPeYG3toLhNb/vNDDbqB5zK
-	 vNqZZAt9odvWCeQDphc7kdkN8qr0rEA7FYRVeQ636Pv0WKXS+f6Mt6yxQgx84lF8b8n0P
-	 w/eanahaJRTP4wfG6jWnD+xBxY7IHYceSUeKZP129IZ1S4TZgo8EH30E5FTlLIJy6mxu9
-	 LTwAAdaf9q2zPXF00EoAb50o2aYswqpO9v/SwrHmamd0gKBIF44Petg45YvX9Vs76UQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793048842;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
-	 X-Gm-Gg:X-Received:Received:X-Relaying-Domain:X-CFilter-Loop:Received:
-	 DKIM-Signature:X-Received:X-Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-DetectorID-Processed;
-	bh=uTkZJ0Yzp0GGufzljGd6jbiq9eMnJlsjmW0Q6mSjuiU=;
-	b=dVbMQ/sOvMFfkbQAoXg9Yw3uyeEdhqEj6tL1phoJuceVwsh3AjCLv0xAkkgu7zAyxvaV
-	 hZLLK/WdoCvfsp1Xfr8KYrlaoaSBeLSk2jHDanNxHbBvakxPnWMBzwZjnRU63QjbB8Wlw
-	 QV+QsN0jU+zC4hoFUH8GSSr+5gJEu7kWmuYhERVJr+z9MRyZMWHsRU6traHuB29fB0wG7
-	 K8gRJyOADCVwNJmx4c6D7l9OiF6tah2d2pUskHnEynuN+BCJTPzAfaTHlK+1d0+Twv08M
-	 oOYQiii3Z1SXzhevyEOEqD6d/kkBYAJMr7ZKXdCkb376UEYqmCVOyzz4d3AEuPEYYGg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=broadcom.com;
-	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b="GB1J/OwO";
-	arc=none smtp.remote-ip=209.85.222.227
-Received: from mail-qk1-f227.google.com (mail-qk1-f227.google.com [209.85.222.227])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793048957;
+	b=zyQcjpoD2vvdy7QHgH+/KG17EuzzDjDZrvly+4Y6N3/M01cSXOfTH8zBWoZmBWDp6VEB
+	 1TSpgP+YFtx86iAmZOG8GZ6cBvjQFcebBtv/Rgz8/ukPCYM79vR3e1zXnT9jw9HnrTzEI
+	 Yf+su5pyVsvF7mgrB3XvEsXD4EF/HQe6cnkNkxyTbRlpWQyS7wxpEUw8jK0RPQwcnuuB4
+	 6TGqPxPtxSYQFxKqTJ62xtoLs7CVCI92HsLrUAcdlhY/CzrGc1/r7VDsZSlcaM3WqwkGX
+	 YmDuL4PrQDUkgfB17BYRLw3/F+7IY0+994MbHCGqqqkSOa+jOdtYE0ViLxOiymuKjUw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793048957;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=P5w/QGhcG86xp82d5uftEaCF9L09XL6IP5SJYwvQM/s=;
+	b=pkhTO9MEbYljuPfFYj0HqxaW0aXKWwbiYAWgy/sEnyoHmENWBhE2JP9q128cs3m4HMN1
+	 v0jsIrrcv12ORsZRAN1qYRAzNuwpNWSL5GIvx29pC7zAqOV+xzFvxgF7GfPwGCDq+4dsC
+	 x91t+/kZ8Ta34r96TESlKEo/ETbJLatkAaE46ugapkPOIwgTZSr0LyRhZGI+ezl/1Jzay
+	 qb7gWiaixJveigOMv2XgEQ2p75C1wAW4cG38erS53G7gAFsqGWK+vhR1zgI/PVtHEnrWP
+	 XQP2FXLkPhJh3e2iLRiSgzMg0M7IHFe2VUWTZO8z7NlZEYWkbIUkW3CLY10euku3ijQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=pengutronix.de;
+	spf=pass smtp.mailfrom=pengutronix.de;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=bK8vvrKG;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C53B606A323
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 21:07:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9C53B606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E8F606A322;
+	Mon, 26 Oct 2026 21:09:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A9E8F606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=GB1J/OwO
-Received: by mail-qk1-f227.google.com with SMTP id af79cd13be357-930c0f9c1b1so309316985a.1
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 14:07:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793048841; x=1793653641;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uTkZJ0Yzp0GGufzljGd6jbiq9eMnJlsjmW0Q6mSjuiU=;
-        b=eoIrTSkhGVNHt4ERCBPoAxJMUA2L3Xh4Xuv+b8oxIUR1gmFfGE6wyrhQAvBURRQGtq
-         fVtZRnuEtPvuR82gE84fh2dEd7m6kYPCKFlGCF1m9Kw8Xty+ilrqBjWMsf/5FBGnE/6I
-         7/PoAOBzbrRz2Om4HqgqgY1ge2XiTWHRw4Xs0AxIk8LgceZ6IR3z27U1Fkb9jmbxi4O5
-         z+k9VSEhpLOGUYqwrzGQZD8cHYpViNdJUBTRfm46lXaLlEBQEtAMOQiJyunIf4mE+oKn
-         qWzZxFV7tdaDV1SqDe8Nw4vTMjNlmPVOdBUcGI8pFq5cF9ppZNzPc+Jk6X+oHDD4uxxc
-         TfjQ==
-X-Gm-Message-State: AFq9FYKYylaLs4SZTrkOKWqcjmG33Lx+yjhsvSsbG9I45mruFHmLXCQC
-	kH0uHdK47d/rVL7pgpFxakr8fDK23uO81Uib0jLnl8BrBNf3pJjF5ME4ahqvE9R8SJULXXQ8Nwq
-	Oy6cHW/0ODW5hEv1beqjPn+1rvO+mQG70ZAtxCNdPPn0lx70u9z6VKIWTW2zviCsKICOfEfKS1V
-	S6A9BUwCMNuHgwvfFXFksqjPMc1x/6sLu7pW+WmmR5R2ctAzBUyZQB7QASejS/xnSJ/GQ+lCflu
-	64VuGuK/1mKkKLGB+I=
-X-Gm-Gg: AYBFou2ic14INK7SzonYBBqdhEOu5/bbDOlRXnV4t3oJhrBHNHg3mzDgUm/X1rYaRdQ
-	0TrV7uaI5+b2fuYrQyFelDPOdMxzIjIf92uLNx/yognwo1hG2xEvna24F7l9iWOUFCGohVk7sw+
-	hT2J5CBQbL3xTwDrZthbFaXKkMJ6y6vEU2qoUQdac59n2cWi2myWmJCFhv3U0Ss1YPo1vJDEHiR
-	mUg9lOVZhd2KZem6XEDAo8TmN4wtDYdH0EMZnUn9TtBHsgeiVWsmgzWSqzl143xLEsVeAf8jYFo
-	2eB848C+sLz3HdUI86pCqAIAfadluwNCYG/nQ72hme8c9rTsfqxKgHJrM7n12U2gWpnA4ggXiOX
-	3RK8gY9+Z37leDgOr0YPUeV8P3+SkhRqDQJjp1UC5/GKJkANCAusiaHapJDI00YdOYuLPdoyIKn
-	B92EDVYRrjz5znVYz63SRR8qQ8qgtXh9ES+WwUXbQf
-X-Received: by 2002:a05:620a:25c7:b0:93e:e531:b78d with SMTP id af79cd13be357-940ef7ca684mr1151109085a.7.1793048840616;
-        Mon, 26 Oct 2026 14:07:20 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-28.dlp.protect.broadcom.com. [144.49.247.28])
-        by smtp-relay.gmail.com with ESMTPS id af79cd13be357-940f06613cesm121233485a.6.2026.10.26.14.07.19
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 26 Oct 2026 14:07:20 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2ea71803effso35897235ad.3
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 14:07:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1793048838; x=1793653638; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uTkZJ0Yzp0GGufzljGd6jbiq9eMnJlsjmW0Q6mSjuiU=;
-        b=GB1J/OwOUp9OwFeIaRzNnLPUia/7R/jz4jRHDP/RgEsXdjC+vVEteMqdNlI8e7GNEg
-         bDl6Z6m2REAPpjX5/XAyHEyFl4huzQ/thNQDlJBr/2/4lGezIhGsQZoiDEbnAH6ebaWl
-         nPzzI6dpPLQFs5xn/pHzxjsXBvpE+aRYwwPD8=
-X-Received: by 2002:a17:902:fc45:b0:2e9:9a19:c5b with SMTP id d9443c01a7336-2ea9c7bf298mr69830685ad.47.1793048838629;
-        Mon, 26 Oct 2026 14:07:18 -0700 (PDT)
-X-Received: by 2002:a17:902:fc45:b0:2e9:9a19:c5b with SMTP id d9443c01a7336-2ea9c7bf298mr69830405ad.47.1793048838119;
-        Mon, 26 Oct 2026 14:07:18 -0700 (PDT)
-Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eae6ce5d92sm808245ad.75.2026.10.26.14.07.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 14:07:16 -0700 (PDT)
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-To: netdev@vger.kernel.org
-Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Jon Mason <jon.mason@broadcom.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net v3 2/2] net: dsa: b53: restore the NSP IMP port 2 Gbps mode
-Date: Mon, 26 Oct 2026 13:37:42 -0700
-Message-ID: <20261026203742.3198673-3-florian.fainelli@broadcom.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261026203742.3198673-1-florian.fainelli@broadcom.com>
-References: <20261026203742.3198673-1-florian.fainelli@broadcom.com>
+	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=bK8vvrKG
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id C5A88201EF3;
+	Mon, 26 Oct 2026 22:09:09 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1793048949;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=P5w/QGhcG86xp82d5uftEaCF9L09XL6IP5SJYwvQM/s=;
+	b=bK8vvrKGiX22xeC6DeJnf5YzcAr7f118aoVMWdF17yyvRFT+gxdSc0d+hZiAcq8LJoruzJ
+	xgSCchYWibXx6g22T+KRfwYbr79wsMlbIOokJZELItqNzcFXu3BEgdFAFEpMNdHdacimt7
+	qg1QedNn/jVD5UmRDN5nx86R3gU5wVIY5QlrgclRTZx/73fytbottkrNdIfdevjMsALwnb
+	DHCcgZSy0O3Xog2oTyaF17ooubydleODug5RFf7Rqil0Q8H61gMEIKAaDAB6ojXVHz+MTL
+	+0zJTmigxs9NoNbTqV3Y8dmhQ+bMhuJ2XeQJQJ8Ih/W4NmI5qE4+PKDBZLqBJw==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793048949; a=rsa-sha256;
+	cv=none;
+	b=e/bo4y53DHYdKi56QDm/+OmJxXP+TRXAYgcRRdF5RAkd8Xq+EMm8xehr6TMdUbHPN/txLS
+	VKYQovDuduRB6f/IoXhKFikwXoJqxiwC8mFb6YZhhmeFvVifmLSiGnVjt5c7OoT4Ioyjgr
+	Exrk0img1hTB5yERcwifOkc8AT3YPd0rUfTWu6PIWSYmpWBFVBQ3gFeL/Zh1M4B/Ug4B8q
+	Jt5T+CYTWqArV2y6nZDJAJq+7bbniUciHklLkaeXLsVi+O+KixooXrQTFWCRYdOWzhe8y/
+	QcSPQHzxo86hT9Dmhg0spPRy4xi2YiGXNdgrH5n9tZ05jX1blmHe/PlV6YJaZg==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1793048949;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=P5w/QGhcG86xp82d5uftEaCF9L09XL6IP5SJYwvQM/s=;
+	b=WMwo3KcHto1IsUWvFSmNkOVOy8V5d5u9LswJ0uyvcrnhSmTFicUuBMsylctLYWs4R95WHS
+	9TkgoQJ4wWnoY71DFzM8n6gt2IJtblfyvmCiQ4TaM8zkgu/wiBVDIz1jFlKM3tN72PiCed
+	4zWImALPW4jqrf7QXjrNDN8N9WNnCnxmJgdegaIt39EvJEIjMdC14Ka+TD78TKznc68DU1
+	T6cUMnkXTAWDMKjJAW/TepNhHk8WjuNMvQsUqvquGCFPbUHiMjKXfLRcHYGl9wVoQCZ38u
+	0TBvTf7Gn/Dnf3hAv/TZ0ZkJmGuvRuBGL1fpaOlAb7n2U4E90kO7XYlx4Pq3GQ==
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1xLRwL-001Kx6-2G;
+	Mon, 26 Oct 2026 22:09:09 +0100
+Received: from pengutronix.de (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 6811B5D7368;
+	Mon, 26 Oct 2026 21:09:09 +0000 (UTC)
+Date: Mon, 26 Oct 2026 22:09:08 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Fan Wu <fanwu01@zju.edu.cn>
+Cc: Vincent Mailhol <mailhol@kernel.org>, linux-can@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Song Li <songl@zju.edu.cn>
+Subject: Re: [PATCH] can: gs_usb: kill RX URBs before destroying the netdevs
+Message-ID: <20261026-armadillo-of-uplifting-excitement-9bcdba-mkl@pengutronix.de>
+References: <20260923070352.487595-1-fanwu01@zju.edu.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -120,48 +100,109 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="m6udzpjeck3ay5pl"
+Content-Disposition: inline
+In-Reply-To: <20260923070352.487595-1-fanwu01@zju.edu.cn>
 
-The Northstar Plus IMP port uses the switch's proprietary 2 Gbps mode for
-its internal link to the AMAC.  Its fixed-link description reports 1 Gbps,
-so applying that speed clears PORT_OVERRIDE_SPEED_2000M and leaves the two
-ends of the internal link configured at different speeds.
 
-Force the 2 Gbps mode and flow control for BCM5301x and NSP CPU ports.  The
-mismatch caused switch output queue discards on both copper and SerDes
-ports, with one discard for every TCP retransmission.  With both ends
-restored to their high-speed modes, iperf3 reports no retransmissions.
+--m6udzpjeck3ay5pl
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] can: gs_usb: kill RX URBs before destroying the netdevs
+MIME-Version: 1.0
 
-Fixes: b6a8a5477fe9 ("net: dsa: b53: fix resetting speed and pause on forced link")
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
----
- drivers/net/dsa/b53/b53_common.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+On 23.09.2026 07:03:52, Fan Wu wrote:
+> gs_usb_disconnect() destroys the channels one by one via
+> gs_destroy_candev()/free_candev(). gs_can_close() disposes the RX bulk
+> URBs on the shared parent->rx_submitted anchor only when the last
+> active channel is closed. With two or more channels up, the earlier
+> channels are freed while their RX URBs are still submitted, and a
+> completion in gs_usb_receive_bulk_callback() accesses the freed struct
+> gs_can and struct net_device.
+>
+> Fix this by killing the anchored RX URBs in gs_usb_disconnect() before
+> the first netdev is destroyed, and in the error path of gs_usb_probe()
+> before the previously created netdevs are destroyed.
+>
+> usb_kill_anchored_urbs() waits for running completions and a killed URB
+> completes with -ENOENT, so the completion handler returns without
+> resubmitting the URB. The kill in gs_can_close() of the last active
+> channel then operates on an already empty anchor.
+>
+> This issue was found by an in-house static analysis tool.
+>
+> Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devic=
+es")
+> Cc: stable@vger.kernel.org
+> Co-developed-by: Song Li <songl@zju.edu.cn>
+> Signed-off-by: Song Li <songl@zju.edu.cn>
+> Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+> ---
+>  drivers/net/can/usb/gs_usb.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
+> index ec9a7cb..663746d 100644
+> --- a/drivers/net/can/usb/gs_usb.c
+> +++ b/drivers/net/can/usb/gs_usb.c
+> @@ -1595,10 +1595,10 @@ static int gs_usb_probe(struct usb_interface *int=
+f,
+>
+>  			/* on failure destroy previously created candevs */
+>  			icount =3D i;
+> +			usb_kill_anchored_urbs(&parent->rx_submitted);
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 0880310c9ce3..743fc04da0a4 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1663,9 +1663,15 @@ static void b53_phylink_mac_link_up(struct phylink_config *config,
- 	}
- 
- 	if (mode == MLO_AN_FIXED) {
--		/* Force flow control on BCM5301x's CPU port */
--		if (is5301x(dev) && dsa_is_cpu_port(ds, port))
--			tx_pause = rx_pause = true;
-+		/* Force flow control and 2Gbits/sec on BCM5301x and NSP CPU
-+		 * ports
-+		 */
-+		if ((is5301x(dev) || dev->chip_id == BCM58XX_DEVICE_ID) &&
-+		    dsa_is_cpu_port(ds, port)) {
-+			tx_pause = true;
-+			rx_pause = true;
-+			speed = 2000;
-+		}
- 
- 		b53_force_port_config(dev, port, speed, duplex,
- 				      tx_pause, rx_pause);
--- 
-2.53.0
+I've fixed the root cause of this problem. Do not register an interface,
+before all interfaces are setup:
 
+https://lore.kernel.org/all/20261026-gs_usb-fixes-v4-2-59e3b6360053@pengutr=
+onix.de/
+
+>  			for (i =3D 0; i < icount; i++)
+>  				gs_destroy_candev(parent->canch[i]);
+>
+> -			usb_kill_anchored_urbs(&parent->rx_submitted);
+>  			kfree(parent);
+>  			return rc;
+>  		}
+> @@ -1636,6 +1636,8 @@ static void gs_usb_disconnect(struct usb_interface =
+*intf)
+>  		return;
+>  	}
+>
+> +	usb_kill_anchored_urbs(&parent->rx_submitted);
+> +
+
+The USB core disables all endpoints before calling gs_usb_disconnect(),
+so this isn't needed.
+
+>  	for (i =3D 0; i < parent->channel_cnt; i++)
+>  		if (parent->canch[i])
+>  			gs_destroy_candev(parent->canch[i]);
+>
+>
+>
+
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--m6udzpjeck3ay5pl
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCat/BcgAKCRDMOmT6rpmt
+0noWAP9LFdKbeYotc821LjsXYFEgC5EUxEHjvy0JtAvJ14m3oQD/V7UWEUeLecq9
+ReIxfAnAUjTM9paYTgJpLCIztbwfhwA=
+=0wRy
+-----END PGP SIGNATURE-----
+
+--m6udzpjeck3ay5pl--
