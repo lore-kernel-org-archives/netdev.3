@@ -1,61 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793057818;
-	b=o+/kU3SSXBbEeu9ffSbAIpNQmRyExvPEjDOCa7qKMOVs7OEODIbjPt78xsEwIwtynFEp
-	 6C8DNkOQxbe61Cu+mdLrHmD2xNit3rSedxktwz2Dz5FPMnu7R00hQPSB6LZTrVOzndz3o
-	 whQg4sHdXxqoGiFsB8akivpu216goaXBBopdrJ1/nRswotwkv/qfDc/I+dcglMdry/rO2
-	 QnoztLurJ24LaforEJa1nsN+Wtro1VWurgPCiz2awK2fc0jkVeOh67N78n/4Gyy+aSQQq
-	 q9jUXe0Zoco21d8EGFFYWkKQ4RXQ76c/SXzdollOuqyYeMBL3m0QFHZSRoc9g++7C+w==
+	t=1793057978;
+	b=1gbmOJWVSTTEx94TpLReaV0C4VeKK33f0VApSsFhvskMH5kh9tBoOlzcOY89jkkgvI9D
+	 rQ8WblIdJITgwJK8d/WIDDZv62TVumIEVi76tuDqHg/iL5tqc5eRAsvwl/YasFK3bZPjU
+	 OWDysPTyYS6+JPZjCLjzuTiCKTCiMM+OGSgRitoHl0JAZUPmI7SzWlViz167oShBcLZ4t
+	 ZtgWEwTH8O/tCeKkGmdtOarKIL7rSqbBf+HklhUiNUFAzjeC6Kbg7adm4g49znAk8HcvR
+	 pjzsKwejfUXS/0F5OQWx+RIArUJ+ZkQ5kU5tZ+5Gue3+mFZaw42/lGMSCzES/Ty8hqQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793057818;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793057978;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=iZ9qlG7Qoyxd+eBKyw4IThIbll3a9n903uIiotpa1Iw=;
-	b=xvnCGBOQhpeKze32Kts5OeEgIIrjvWXN85p7J73Dx6iTdQkuqLvhnNYLLj9yVrzLfBIQ
-	 rMEw5IIzIM7AhKd46FzK2Huxw6jPHTWc0D/LrqUAQEP+DJsBllOh+1xHemgTt7ovQ1lHe
-	 6DhZUsM0LOtnKKHDsMddCnF+zWDHK9XxBO//AqgbRn5bNaWuxe5vfxMEXggLZBqUPZkca
-	 jjW/bQldZOd7VuinE6nP8AZv5OMoKBVNLvIVONFSokBnXw+icDM7rFLPn3RIkJK8Say1L
-	 eeZrHgOWLS0yMDkntstCLLHrG7Hr7T/Gu4y8yym6UAnVBr4oG8yCmFKWpyMeVrjSDFQ==
+	bh=1hn4CaP171Pv+vV3T1+gKL8EoDmoJ6KQNIPs0XWUgyw=;
+	b=bCbFhuPwjrOsTQZwYmLWH5dBXjujT+nmYpSJR4To9RC2KE95M8KnuwhWwmWDE1SoqkGs
+	 ZJeO7GzTKCbcu7flanrxbo7Jvt4zdftUnJo+ltpXQfgWkFRBkhdYKJzHpJvrYLus3hNX6
+	 4MQ/K9rfLy/dTth0tkG9bJO8nUxuwpSIoQlJzAwU4qc17hfdKQXCR/QGV/carvWV0q51C
+	 XrbhIE75GxG+fb6YHMjJyIr2cnbvH1roIYI8NTMM0KFewF8MsQmfe1gdtWLFh0BVa5ink
+	 ZVuWtimcVcXendW86uW8ngssRzWK6ob0oVP9LpkX+uCfORUBcFyIF6GlGtcnyLRJdAQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="RpckNBo/";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b3P1ZFXH;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 153A7606A31B;
-	Mon, 26 Oct 2026 23:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE7A606A31A;
+	Mon, 26 Oct 2026 23:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RpckNBo/
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F4891F01825;
-	Mon, 26 Oct 2026 23:36:57 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b3P1ZFXH
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A0B1F01825;
+	Mon, 26 Oct 2026 23:39:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793057817;
-	bh=iZ9qlG7Qoyxd+eBKyw4IThIbll3a9n903uIiotpa1Iw=;
+	s=k20260515; t=1793057978;
+	bh=1hn4CaP171Pv+vV3T1+gKL8EoDmoJ6KQNIPs0XWUgyw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=RpckNBo/u8QrMl2KzA0AZfAoj58ytndZ4l0klp4DwiHcNxkyOqW1U0eNJUboD+q51
-	 gV9II0XW5nhkCBSt6kRTpCo7nNFm3rPRlltibU10DbYLd41PllO0XG+PsQ7CT412DE
-	 y4gkUpjvKNO2uPSrRNQdoKX6KwBH3Cszv9fTxKcpj8JUcQv0l5kX7ei3O0xsoiM/Ws
-	 bCZ5WYMaT2l2dZb213A/x2kwdVphU/HZo8AnKF/rTyybIju4nrCgP3ikgc5zC6h/GQ
-	 FbYvrFx8CNqmQ19gjMSNfOIpQz0tBp24HeUaEqFE1zW/yHHi1GIRt6Bq7E153bo361
-	 rYQCSldOu9wPA==
-Date: Mon, 26 Oct 2026 16:36:56 -0700
+	b=b3P1ZFXHJ5JUyJtivhpJfTqSBe75CyZbsDn2/hs39GG9lrzwVS6F/Hkh6UZTPVw6Z
+	 sCeesk9+/HXzh9t1EV1oncVN34lMN4ormkCf+vcEcjFbqIcogRe45vd/ZlZotSxPyb
+	 9fKmJRAHRAfJhkfu+pGzvOfX8b7KXg9baf+L6oOjtyWw8SLP4dNw2udB9zRJyo1mNi
+	 jppn5LoETkGOMAAt9444qlbht8CfS6rMERfjAuomPPTdSz5jYQyvsRdssM1T4nBsu0
+	 zxoaz3hLND1YsbtWbumDEg4L0+53KmNzRuQpeJ/iiIs7gV4B6ylVJBV/0VupDJqoRU
+	 41S83wl1Tcgzw==
+Date: Mon, 26 Oct 2026 16:39:36 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Florian Fainelli <florian.fainelli@broadcom.com>, Justin Chen
- <justin.chen@broadcom.com>
-Cc: Nicolai Buchwitz <nb@tipi-net.de>, Doug Berger <opendmb@gmail.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Florian
- Fainelli <f.fainelli@gmail.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v3 0/2] net: bcmgenet: fixes for a failed resume and
- the ring rebuild
-Message-ID: <20261026163656.5c1e7a38@kernel.org>
-In-Reply-To: <20261022-nb-genet-fini-dma-net-v3-0-6e9fc89c0156@tipi-net.de>
-References: <20261022-nb-genet-fini-dma-net-v3-0-6e9fc89c0156@tipi-net.de>
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, pabeni@redhat.com,
+ edumazet@kernel.org, dsahern@kernel.org, horms@kernel.org,
+ yoshfuji@linux-ipv6.org, stable@vger.kernel.org
+Subject: Re: [PATCH net 2/2] ipmr, ip6mr: validate packets injected into the
+ register vif on xmit
+Message-ID: <20261026163936.04fddbc4@kernel.org>
+In-Reply-To: <20261025071729.34967-3-idosch@nvidia.com>
+References: <20261025071729.34967-1-idosch@nvidia.com>
+	<20261025071729.34967-3-idosch@nvidia.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,9 +64,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 22 Oct 2026 10:54:05 +0200 Nicolai Buchwitz wrote:
-> Florian, Justin: if you have a board where the WoL irq is actually
-> wired, I'd appreciate a run on it too.
+On Sun, 25 Oct 2026 09:17:29 +0200 Ido Schimmel wrote:
+> Assisted-by: LLM
 
-Florian, Justin: could you LMK if you'd like use to wait or apply as is
-and test later?
+Hi Ido! FWIW these are no longer necessary.
