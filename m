@@ -1,74 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.203
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793017987;
-	b=HB81VjpiQaXpKfbJsCoWkmQX53EADdN6m93GLvelnIr6fI+RwKJupiWRe7CrPe47zv/y
-	 /VvAyeZ0zVXkB4fPJ+M9zmVBzFN1zegJSz6OCEwuuZimUMUb9AmMRgvv85gUrwHYHbEPH
-	 UIT6lAyrCw4WYq8UbF62RQgyyTRlUrgDqLW7vBX09qs3yA4WOSvmsQr89jEJeev10SZyX
-	 bf9OmBh6zy9DLEiRcreJTs396ogawLi8QFbtTkDn1sgDDiNdey0aWjDnFLE9yV8v/ka4E
-	 YV3n/sMwSG7dT1CAKwFvJKJ2t4lDiyYvrzm+OiZhyZE8EV6eTzXT0MkDIpFRoV0K63Q==
+	t=1793017996;
+	b=F2gSOgVgM5ogcSnTxs0G/KeESfsDJFgkVG5rhtASApwrf1FbAn7AlqC7OIIK5Y5nhs6E
+	 UiW9mwlfFQmmu6UVFYRvZ+9dipHfc4HRS1Ub0HpxJ6ge3yKw0RCTgLF6I45vic0xZYP6i
+	 WYA3LnhG+RrNEh56Z9P4blKV+IDdchI+W4Bl5GRnsiRLncl1v1yysCfoiVsombUhlxFjF
+	 02UCwRRXJKfbiL0o2qcLNmMzjBTcvYkNe2ZeS4KSuYWuZmHd+CZwAorB+0UDdAysJeb9v
+	 0ajTHf2ycskYV2cgftc2XWqOmomhvgP3vpnhfWY/R2LUlkwXd1sLkynj22Mb++JavXQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793017987;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=7mgiolJC8r3eZzy98FWtx4U1AHXNmN+96u0Ij+bgNDQ=;
-	b=h98R1PdM0XSHw78YEZsSvuNLCk4I8Ou7z9amoAuJhLB/QU4x6lDHXLIbKCxmsK8HjOUT
-	 sf0fMRZgSTggEUSRrRRGiPEuLGEOji5V6UZvvNmKEgUbVYZsrOtfOLmpRQpsRD8isDrW0
-	 AQ/dlxeXm5RWPWbt5ewihDfdfVWRSIuzJ4QQquMQ05UUIyaAlLHj/ZnO96Hfs44hfX/Jc
-	 rGt9yjc6igfXnkDh1J7aOa/sCGIIDBajLa6V6Bx+EJQx0K988unt3gz6NrLA+oFy6ZQLx
-	 /0kJQMDavgw9UR4EREp00nNCd9nIX4tfKeLrHz8zUiRVFmULyIAmpKdlUM+0sPo1NHw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793017996;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=rkisdwNIn8uTnkECMBdY4BzVA5wTAqs0WDJeDG4YWNY=;
+	b=yHYa2alqI8ROlF0fo4apdx+SHr+6r9QBGUb7Wd3M3/pEXkVPal2VRgn+OtK/wU7Z5I48
+	 WMLnwCH5YyywdnOqnNkC+/Ag/0jmKnkPHmDhTm7iHxqm46BwqbpZtRtTtuZrDkk6q8z1Z
+	 3R5Txt+mrDaaHi8qVQSlSteYJLeYcoLAKIn4+Dw6kiPWfdwXL/gHdCfPvm+UXFKjeZvfW
+	 st7W+F2qKXJ8/49gQ2T+GYvIm4UCooNLVkcI4/fcCblmR+VFdo2EOqdbKQWxXP4cVORF9
+	 JMWBdwLsrJ5mX8HNfG9zAwKEl5Z/qQ4uUCiVVSZrbcSbpJY/B7UrlezzucqhhtsP5BQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=LKMYI4Q7;
-	arc=none smtp.remote-ip=91.218.175.203
-Received: from mta0.migadu.com (out-203.mta0.migadu.com [91.218.175.203])
+	dmarc=pass header.from=cloudflare.com;
+	spf=pass smtp.mailfrom=cloudflare.com;
+	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b="C53h5S/J";
+	arc=none smtp.remote-ip=209.85.218.45
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94552606A32A
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 12:33:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 94552606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11144606A320
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 12:33:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 11144606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=LKMYI4Q7
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=9lM8ZmCt5oSDpMBB/mA6pb9f0mkJCYo0DmDEVHVew+A=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793017984; v=1; x=1793622784;
- b=LKMYI4Q73DkLwaO5yZpDGyBOgkU0E6i5edhX5Kc5KhSspTNV6Q1Ek9mREno+zN26UB1KtwyC
- EncgqdceAOagH0G821GpGVsFq5msIy/Ei0opQHiVvRf0zfH2CAD3hbCNZvOVVpIQDJrjuXWn3K9
- LmP6BruKJc0XNfqW2Y+A2FF4=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id ba99167e89fbca0f;
-	Mon, 26 Oct 2026 12:33:04 +0000
-X-Mizu-Trace-ID: ba99167e89fbca0f
-X-Migadu-Flow: FLOW_OUT
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: netdev@vger.kernel.org
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	stable@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2 2/2] tcp: fix shift-out-of-bounds in inet_csk_rto_backoff()
-Date: Mon, 26 Oct 2026 20:32:39 +0800
-Message-ID: <20261026123244.239766-2-jiayuan.chen@linux.dev>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261026123244.239766-1-jiayuan.chen@linux.dev>
-References: <20261026123244.239766-1-jiayuan.chen@linux.dev>
+	dkim=pass (2048-bit key, unprotected) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=C53h5S/J
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c247f6687dcso439500366b.2
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 05:33:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1793017994; x=1793622794; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :user-agent:references:in-reply-to:subject:cc:to:from:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=rkisdwNIn8uTnkECMBdY4BzVA5wTAqs0WDJeDG4YWNY=;
+        b=C53h5S/JyOfMGXKUYSZbrQurHCkZF/KaUJ/Vi4gQHfeVL8tXR6k17Cb77keeaBMbQQ
+         0VIfl38twCtNPUOKC65JivlvzsY59r7zFpE4sv8kka7+ywPIszBnGeFrcHZWzH3xyHyR
+         7P8hyNLyMVCSg2zyOA7AJNjjTpKlb5W2MyhHZFNuxPG29QHxbdGQQFwvMjd7DKYz7LIo
+         Qskhvi18uEJiMijRXcYBzmTrWhGu+goPCUh0zE1TeXaSb+olwbuq3iDE8w4755cc6xh1
+         pLLksE+z7I7yVEKnmnW5xIetEevSD7ajKxtUsX+1aHJK9UDf0S0owIjELZcCxVaDPjsK
+         Xl+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793017994; x=1793622794;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :user-agent:references:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rkisdwNIn8uTnkECMBdY4BzVA5wTAqs0WDJeDG4YWNY=;
+        b=Skm3Fas1xKIrM0Uclm45nUX6pZlMEPiLF59N5ac5ct+yhNvY/6phkmaiE20nRnHadF
+         9o6hImoWNMaE6n1yYixy03MlBxFQUNTXNM9RS6u5FZZBE36Rjirg9RFN1eAl+fGEXvuX
+         f/y1x/A6mNIZMKvvtjgsMrS5eopMjfkfsZTzJkhKlg3OIWPbVucMgYiJQ26qmlNqE7kh
+         c33u416Xl6oMjgvFbiJpIcDeveMAWCZO2OcOSuFbcYeIkwzErQxDIj9FWLYQdpkvUy5r
+         IfmhyCDjs8N7O+R/VwRcb5nWoU1nFYgLB2d4Wu1gPFBSFyxlG0+yppUYohNXhskwL66B
+         CfgQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwK4lyf0mHu1ok/4N4pMzkwGnV9RZL3YypDt4n3pjfvjr8jd7aSankKFM0X7b00XcLZLn9CJbw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLYM3bamAPs8i4aXHm/+lz2prNDRn7FfPo9bEoQ+KdQqrEAnqBS
+	E4oA4B08R4HT+cIMi0zxo5i6aL72LF9D5UPwYpX9bnWix7D/zzU6ypF2Z9qmGumA6JA=
+X-Gm-Gg: AYBFou3NriY+WKQ86zjOr4aDbo4FI8jK/zm5tZpfQgLPZQU68m05t+hyvWzNcBmIONv
+	O8FqwmyH6C8G7RacyQ4jdf+jJ+Td2z9KJk2fuwqfow3mbadFrCOLZZJXfJL+IIuFhwN3UCtVzpm
+	vAKIdMmsSmesW1NTbf4uVCuZ8I4jqS7n2l25t8J3fvOgTRBocsXDIcJ8SAkHPwd1/slo6Cj6L3x
+	2qQFUm8qQzbcGdCED6+0P7+MtX93diQLnIKwoQgAi9ViI6XP51qdXptjTMgm9jRbJ3wfBc0ADKR
+	y5/s8fOAVg9AJd46CEiEPHMgRWk9ydYdghe79tHERX02Em2zCMuuGLaJIGTefT7zw4qmkK00dT5
+	whEFwu2a9RJF2emRBeUxO1sWHpCgKut7bh45oqmP6GHwuCI8bBRM2G7pkR6Hh87F34gLl3XrTKt
+	aw2lwQ4LtP2YTc8O6GdZ29g4ggyHJERYjZOVuvdANjHaBfFV/vp+s9cPNq6Bv+VBVrEv0Hn/LNA
+	is6OT7yE88dtTcQgN6JE4wIctrFfdp2yIQOPQyYhUE2xg==
+X-Received: by 2002:a17:907:72c7:b0:c46:7643:ae91 with SMTP id a640c23a62f3a-c46bdbeff8emr745672166b.8.1793017994409;
+        Mon, 26 Oct 2026 05:33:14 -0700 (PDT)
+Received: from cloudflare.com ([2a09:bac6:5067:2dc::49:17d])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c46bd7975b2sm320027566b.73.2026.10.26.05.33.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2026 05:33:14 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Dudu Lu <phx0fer@gmail.com>,  John Fastabend <john.fastabend@gmail.com>,
+  Jiayuan Chen <jiayuan.chen@linux.dev>,  Network Development
+ <netdev@vger.kernel.org>,  bpf <bpf@vger.kernel.org>
+Subject: Re: [PATCH bpf v2] bpf, sockmap: annotate the psock teardown data
+ races
+In-Reply-To: <CAADnVQLTe611mm0iJEf5gJi2GtW42kxNHH3sUPevD039FvzL7g@mail.gmail.com>
+	(Alexei Starovoitov's message of "Fri, 23 Oct 2026 11:53:59 -0700")
+References: <20261021155629.68813-1-phx0fer@gmail.com>
+	<20261022054811.35008-1-phx0fer@gmail.com>
+	<DMBHB0TQOV1L.38MECMYFGUS5B@gmail.com> <871p9g6ym1.fsf@cloudflare.com>
+	<CAADnVQLTe611mm0iJEf5gJi2GtW42kxNHH3sUPevD039FvzL7g@mail.gmail.com>
+User-Agent: mu4e 1.14.1; emacs 30.2
+Date: Mon, 26 Oct 2026 13:33:12 +0100
+Message-ID: <87v76o63qv.fsf@cloudflare.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -78,80 +103,20 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-icsk_backoff is incremented by tcp_retransmit_timer() on every backed-off
-RTO with no cap of its own, and by tcp_send_probe0() up to tcp_retries2.
-It is used as a shift amount in inet_csk_rto_backoff():
+On Fri, Oct 23, 2026 at 11:53 AM -07, Alexei Starovoitov wrote:
+> On Fri, Oct 23, 2026 at 11:49=E2=80=AFAM Jakub Sitnicki <jakub@cloudflare=
+.com> wrote:
+>>
+>> >
+>> >  static bool sock_map_sk_state_allowed(const struct sock *sk)
+>>
+>> Code LGTM
+>
+> Jakub,
+> Could you commandeer it ?
+> Dudu is clearly a bot and doesn't care.
 
-	u64 when = (u64)icsk->icsk_rto << icsk->icsk_backoff;
-
-Once it climbs past 63 the shift is UB. Seen with tcp_retries2=255 and a
-silent peer, when an ICMP host unreachable goes through
-tcp_ld_RTO_revert():
-
-  UBSAN: shift-out-of-bounds in ./include/net/inet_connection_sock.h:258:40
-  shift exponent 73 is too large for 64-bit type 'long long unsigned int'
-  Call Trace:
-   <IRQ>
-   dump_stack_lvl+0xc1/0xf0
-   dump_stack+0x10/0x20
-   __ubsan_handle_shift_out_of_bounds+0x1d1/0x390
-   tcp_ld_RTO_revert.cold+0x16/0x92
-   tcp_v4_err+0xdb3/0x13e0
-   icmp_socket_deliver+0x1a7/0x390
-   icmp_unreach+0x2dd/0xe50
-   icmp_rcv+0x93e/0xe30
-   ip_protocol_deliver_rcu+0x36b/0x3e0
-   ip_local_deliver_finish+0x37d/0x620
-   ip_local_deliver+0x165/0x1d0
-   ip_rcv+0x284/0x320
-   __netif_receive_skb_one_core+0x16b/0x1c0
-   __netif_receive_skb+0x21/0x150
-   process_backlog+0x37e/0x1200
-   __napi_poll.constprop.0+0xa5/0x5e0
-   net_rx_action+0x4c0/0xf70
-   handle_softirqs+0x204/0x9b0
-   __irq_exit_rcu+0x13c/0x220
-   irq_exit_rcu+0xe/0x20
-   sysvec_apic_timer_interrupt+0x92/0xd0
-   </IRQ>
-
-The orphan check in tcp_probe_timer() calls the same helper. On x86-64
-the oversized shift count is taken modulo 64, so an orphan that should
-be dead can be seen as alive, and tcp_ld_RTO_revert() can end up with a
-smaller RTO than intended.
-
-Cap the shift at 32: any non-zero icsk_rto << 32 exceeds TCP_RTO_MAX, so
-the min_t() result is what the unbounded math would give. The
-ilog2(TCP_RTO_MAX / TCP_RTO_MIN) + 1 bound of tcp_probe0_when() does not
-fit here, as icsk_rto has no TCP_RTO_MIN floor the way tcp_probe0_base()
-has.
-
-Fixes: fcdd1cf4dd63 ("tcp: avoid possible arithmetic overflows")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
----
- include/net/inet_connection_sock.h | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/include/net/inet_connection_sock.h b/include/net/inet_connection_sock.h
-index 903499581db7..562e12033a5d 100644
---- a/include/net/inet_connection_sock.h
-+++ b/include/net/inet_connection_sock.h
-@@ -255,9 +255,10 @@ static inline unsigned long
- inet_csk_rto_backoff(const struct inet_connection_sock *icsk,
- 		     unsigned long max_when)
- {
--        u64 when = (u64)icsk->icsk_rto << icsk->icsk_backoff;
-+	u8 backoff = min_t(u8, 32U, icsk->icsk_backoff);
-+	u64 when = (u64)icsk->icsk_rto << backoff;
- 
--        return (unsigned long)min_t(u64, when, max_when);
-+	return (unsigned long)min_t(u64, when, max_when);
- }
- 
- struct sock *inet_csk_accept(struct sock *sk, struct proto_accept_arg *arg);
--- 
-2.43.0
-
+Ack. Will drive this.
