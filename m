@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793057411;
-	b=yKwzp+eE3FSjsLmrGIyNM77uE369xkHPyl9NsRtCYCJkq0k9GvMnEVGZ93f1uXnZgvrD
-	 nyC18G/8RxKa27dvQS83VkyQl0rx7DpSINODVGUqA6jvqT8kH95pg3Waje+6C23NpM9Ml
-	 vNroMsKodTaHh45i1ueMKEfAgGnFUChUAvhkOIFn4zwH7L+m7efHU4pOk4uxKdHf6dAlk
-	 YVKfWTaNy5bHbRfuA3mUugRKUX1exb9eZK/seCQQWKRyddaMBhzkf5dCMwPhcCJjltMww
-	 Y2ZptZnhzwJuiIAGkMeCV8/xw5MdcdriYoBs7ZNR5gfCB36TfjzQftdazyaOn69quOg==
+	t=1793057412;
+	b=POslGdf/4x3eK7XoY6iv1WKo+CdBsRWNr0nI0e4scTWuSsqf8oANbU6nXSjKF7RP5znL
+	 wJl4J361vB4v+vtrYvcBhro7U2j+6nZ93lJya2pjEDqgzCwhG6jZV7ukYuyUu2ndbBeFr
+	 Ccs2wgtKNEITa28o8yZvA3ohaix0oUy+rSchn+LjecptQGrhFZh678jfecq9q9oENcZBi
+	 3F/BuI42NJ/RSKNeTKbjwl4f80jSU23BxEpPfK6U1IvS5o2S4nFirB4Wkjz3Le9kkwSWE
+	 zOA8L5PpuSEm5xgoYEljR5gBBb6MT0ojqsUIPl5DWUro2omJvmq6oLoiB8qYvvwjaeg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793057411;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793057412;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=ELd/ELzNJjz0bIw2EWEPjJxgCZOcs5IP0CKCkXYBlCc=;
-	b=Ectkz5mopcnXQyJmW1PkflAhyGHNXB+RP3wkkAdEf3tl62fdZCOkOfy0zoyMEQIV9CD7
-	 m01wk+oQMCghje598pojx25zrNZIY9jsf92/qmkF2cU2QI7Z2B9GlRd1oYkoRpSLvB7ZE
-	 wdcHUwUvirT/Er55JWKMfhxttJJDvgapzjG3DAWgVzk6UjOYJCY9T7b+eQqSz/gJhR/3c
-	 DMvTr4J/buQSB1W88h9VZfHFwxIt+wJc3S1XpY2KkifRsNDBhPG5FlbXinxcEZvqa0ffO
-	 ynJJB47s4LVTzLtXGbaHPl9YZfQ01xs/R2/Mpjky3rdO/kygQLk1NN8pNRhVJgYGXKQ==
+	bh=80tOCrOp6Ey2wC5e4eExDj1W6gfvC9XlwH5pQFkSK4o=;
+	b=WgvANhCnwttoqxPo45gzToXUpIfjg/LmEwXPABpIUxD7XF9qXT3zWOGTFDBb8czwncdI
+	 kNfZH0F8XvaJPw1MNWh4X1BPTbFAxkG6BkS9HnqF+WkQCyus+aAqz9JlHkRVLfvRX1/Hn
+	 cjbnH9HQhTx+EpDVEuGOvJAMTTJRdIRnurjA28Vnvqez2KHl17wdI5+H1O6ZZ9kJCeRMy
+	 noYj7rqimlVDb9xbJJbJAbSh51sBqV6UIga30AIV6hOcJslpD/hSZY605Ycf5fJ4ctcGu
+	 Gq0JlUlDMXG48LM9zGhrHedrYFrCgxfMoNT/v8CBsnmJ3m3z04OKFhpQDKzOFnrO/tg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fHnI3wrf;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SuVmTPpL;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8E2606A324
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 23:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA7F60A260B
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 23:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fHnI3wrf
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6AAD1F031E5;
-	Mon, 26 Oct 2026 23:30:10 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SuVmTPpL
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394AB1F031E8;
+	Mon, 26 Oct 2026 23:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793057410;
-	bh=ELd/ELzNJjz0bIw2EWEPjJxgCZOcs5IP0CKCkXYBlCc=;
+	s=k20260515; t=1793057412;
+	bh=80tOCrOp6Ey2wC5e4eExDj1W6gfvC9XlwH5pQFkSK4o=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=fHnI3wrfFBCOOs7pkQIUr7Ry7W7zwtMPpkWLXEygyCrix9Wc0SZ1P5yy4WzhqBref
-	 kTGghX2ZJFVclZuKx1tlA9aYQNlQaw1lsJXuK8+X7msa7/U9n/LCizI1YYBQDvbscn
-	 wYD4wh0EJEvbE5wvN5wLkUj+3ZIo52uitODCTDfuksBAgMAjVocfYL5BN5HfcL0rHC
-	 WZx4Lara40/OVtiCV3JyvNWeuDlThZEdkOKMMpapoh3JbJxmyifeftlUJGXitQgi2i
-	 t+AusSRPOQTv4/mPDGNjVXzfpu86Lsaj/NQUGm9wnki/GS/+Bw2290tdQXqxkxW7Ph
-	 cVcahWm5fGDnw==
+	b=SuVmTPpLK77kSIxy4hvSzdoTok1prktEyt1QlKR2POcDp8v42uXO8S4cTC5gPM1UB
+	 zfMjBYbMbiLWSiWS88wZRA0eLU+1oQeFlgI6CdmfXiGli1gsDqkKF8wqi3NC4qwnaC
+	 SEIu8NFu0i8obrI5scFZdLui0kljUxnO/a743UhjYPFsj9fzAWBsjFDUulwQAA7ceq
+	 JQ6tg78bq/8YR/kIMGBqHiDN1azaM3Y4sS0CO99OBJGOS3Z0Cs+Hpe9Bd6QA4dVSee
+	 rIJhyaoqB26xjIvyR/mhoeS189IM/fQppi7+yJaAsrwF4V/WLpTP6de5Dvty1PshVp
+	 +jKz/HOBspahA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BE5A23AA80F0;
-	Mon, 26 Oct 2026 23:30:10 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 2F32D3AA80F0;
+	Mon, 26 Oct 2026 23:30:12 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,41 +54,36 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: harden qdisc_pkt_len_segs_init() against
- malicious
- GSO packets
+Subject: Re: [PATCH net] net/sched: taprio: unwind the netdevice notifier if
+ register_qdisc() fails
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179305740928.3456332.2890882737226798290.git-patchwork-notify@kernel.org>
-Date: Mon, 26 Oct 2026 23:30:09 +0000
-References: <20261022155436.117507-1-edumazet@kernel.org>
-In-Reply-To: <20261022155436.117507-1-edumazet@kernel.org>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- willemb@google.com, horms@kernel.org, netdev@vger.kernel.org,
- shawnq1@163.com, jhs@mojatatu.com, mst@redhat.com
+ <179305741081.3456332.957586637723940788.git-patchwork-notify@kernel.org>
+Date: Mon, 26 Oct 2026 23:30:10 +0000
+References: <20261021155417.66254-1-phx0fer@gmail.com>
+In-Reply-To: <20261021155417.66254-1-phx0fer@gmail.com>
+To: Dudu Lu <phx0fer@gmail.com>
+Cc: vinicius.gomes@intel.com, jhs@mojatatu.com, jiri@resnulli.us,
+ netdev@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 22 Oct 2026 17:54:36 +0200 you wrote:
-> An SKB_GSO_DODGY packet can carry untrusted gso_size and headers.
-> 
-> For instance, gso_size=1 and hdr_len=65532 for a 524275-byte frame
-> makes qdisc_pkt_len_segs_init() compute an accounted length of
-> about 4,294,574,091 bytes (after gso_segs silently wrapped in a u16).
-> 
-> With DRR quantum 256, the dequeue path then needs ~16.8 million
-> deficit refills before it can dequeue the skb, keeping the CPU in
-> the qdisc path long enough to trigger the soft-lockup watchdog.
+On Wed, 21 Oct 2026 23:54:17 +0800 you wrote:
+> taprio_module_init() registers taprio_device_notifier and then returns
+> register_qdisc()'s error directly.  When register_qdisc() fails the
+> notifier stays registered, but the loader's failure path frees the module
+> image without ever calling the __exit function, so netdev_chain is left
+> pointing at taprio_device_notifier.notifier_call -- a function pointer
+> that lives in text that has just been freed.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: harden qdisc_pkt_len_segs_init() against malicious GSO packets
-    https://git.kernel.org/netdev/net/c/c6648c9f3b51
+  - [net] net/sched: taprio: unwind the netdevice notifier if register_qdisc() fails
+    https://git.kernel.org/netdev/net/c/c5234f89d7cb
 
 You are awesome, thank you!
 -- 
