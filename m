@@ -1,101 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.210.179
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793049848;
-	b=QSDT1QkTH0/sMNBKAI6bzN+29DrA8z3HeXEHGfYSgDM35pbrUhvHGpcDP2PMldiSHjl5
-	 qZ1mLJwOPk17nkqM9K516o/xB9KW3cxV7F880fLef2H+PwYn6LfCDIiWdJkisBpeZj9oH
-	 LI6O66ojh0MfnrVFFXKLYYtKYsiLweTdO1dq28T5SIQx3R8/gFaK234HviDzjgvddVJa4
-	 BaeelcAOcLeVrz1/slxtWjtSRBg/PTNG/Ec3SFDymIzBmgQrdcKRDKOWKFEyfLsm8XmGl
-	 cWimOdYeL03jsCgG9u6ZCGwVPgtxCT5VMLQeRiAkA5tcMkjAWVxlZpTTHbCsbDD2PBg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793049848;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=GKPa9M5PoAhtNnZV69xKXcRKiwNy/DZc5TLsis+amX4=;
-	b=KbLorRRwj9TmAzScH6U5OOiDxeiqNqmY6qv3KIz2g3QDi2KX/kxqPrfkdU3zWObLsGEI
-	 /NasZd/cF501JzWQtgNhxRe4y0DdKd4VWlHYWZZgsS+X0XeAz/CY4FRgBdUj6puUZXUMX
-	 R4ON4TUSn0VrYqgXzNgZMe1/fLK+hCv397Z45EDXFFz9TELvlJvLR2dJ2fel7vQcDl5KN
-	 jQakVCjuWPbTVjEr+DmnHzQE04OthvcAZBpNJ5cZi+Y7cqRYCZqqv1UFiPdBrqalp/BEB
-	 NsRHv0nvPPRiYgW+3AM+mp8a+/AUiGIBdv8LeO1XwkHr8kkkthTkCinG0+gnBLVUbOw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=JvW9vDSK;
-	arc=fail smtp.remote-ip=209.85.210.179
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793049891;
+	b=bLW9TXJc1gznegsxCs6mXevFYRFaS54x5H8GQhyxz3q3FqJQpbv7c9J3q7uQ/GM1HHxg
+	 /pUmeXZq2qWiQnVDlaE6/3U2++TfXEE2fbyFsKRBYnRVdQob6u4PQCMEToUoEx1MWlZwX
+	 MAPDQz+tggQwOv2w2cDpJ4rCmRggfo1BP5uzrdrwG6RpwUsKtEQzYCm3u3s26VkzuLTbF
+	 hWb6iFpWGqP6ee74PrF1ExoGB80c/SvN0yKfaAhy2oKJx80NYiJFrCXx7+5nM4q03q2G5
+	 6wjtKjy5hk6t+KC1xeK3MRPVIDCbE6fSUQfbcEom8j8EDky2XlNmnU5uK2CCKIDuTgw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793049891;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=5hIZKPsRS+8gPS9TCdNpVxEXJl5lz8GjmPGkmljQvFQ=;
+	b=iQPdMGACAvWtDPa5my0Ic1wneub6LCw6gkLTrMwNzPs9nVCf+PC1bDH6opUcw3DoXEJg
+	 JDQY3o37elM9XC0gqgUyHTzLk1X7DnBrhClX64ZPr9Ad0vk2Ds6NCZMmmG5dZnJkHYEeY
+	 5vSzbTgYo4SUoPkuyMFsUxTVtaIL12OOFvYqYzLniZM09W/5JOh0UNk6YHz/kXlrGsMgf
+	 ofWxVnk7lRvhI7dxOJGDqHsAtnyf0I5e59lXELdqkVcZLEZ79+oab2k4HbklgjdTiSDOH
+	 QJqPnQgyKJZfLIMUEevCbl2bzu+1Wxd/IPV1ETUY38EblJe5bl0X0nNrHVjwnuWtk6w==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jSmYaN3s;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5A2606A32C
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 21:24:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DA5A2606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2E9606A31F;
+	Mon, 26 Oct 2026 21:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=JvW9vDSK
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-89f639ba307so1257289b3a.3
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 14:24:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793049847; cv=none;
-        d=google.com; s=arc-20260327;
-        b=nYj6YC3359XeqRFGTlhOp92GDADWJ/zjxY+7tq5oiyncwF6TAC60Igs+O6jdp0Z+IL
-         cJyDSx9lCLL8BRW7LOABcScRmoopfH+l4hzqDF+efl3tMQQg9ib+KYmRdSq6+X707Yua
-         kQzn9upUrpZL6Pvs77k/j3315URtEG8PtfKP9lgfMPxMgKgLPkg5pVsXcjchcPXZJuGf
-         gWKyjxvosVFINDlABoiTPkVoGb7l734H3nMhhzLhwu9dsd4X8yHYVxcOPw9iGSokCwtP
-         J7q28EklYJT2hJwD/sxHCpN4ugHsGW1ugzP70E9701Re6bsOsIzI+1ZPob1BBdYnRzNl
-         W9rA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=GKPa9M5PoAhtNnZV69xKXcRKiwNy/DZc5TLsis+amX4=;
-        fh=xbSq4tzo4T6QTMhgwFU0TCTQmM7da79VsmRmucCgKWc=;
-        b=bwmLzZItMALzlrwl2XNCfmVD8r+21JqdkuEcnWuRuQZN2g8Ulx1XSXu9VkGIgGcJ6I
-         ExEKG5ao1YtBb/Lmgyayp2uHy15eMel3gnQ1hUTAJrKeKbKaZjma7xf77iTLC7s+dUNr
-         7zFqB4m/1IlE9Wkw1NcGy1MaDD5q10UZ4tb5G5uJeitjjrYjBZK0A+YHid5MvnDO9WbO
-         7aHJ046yU21Eh4pBnaKBuECJY1w0ZvSgDHX5PNc9xFZaO/Vp4eyzb8P8A3mt4KVe163P
-         pN7kzp0tTk/P+miYJc6oQiACS/2IwobQJ+VwpoU08S71PdVPmMkUx2eHVyOzw1DBlrFV
-         AEGg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793049847; x=1793654647; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=GKPa9M5PoAhtNnZV69xKXcRKiwNy/DZc5TLsis+amX4=;
-        b=JvW9vDSKDQCQ/Iv5gH7W5O3cS0g69FgaSrzXh+G3mKOnwtx1dD5k2+/f8z9S5LGEJp
-         qhfC119t2DQCRsdUB4RiBMCgW9qeU+bxBSK401Bk+wzfGwWxnoFATTv6HCNP19AxhKn5
-         4q8CfdqkdshtIy14X3UgKdFIgmQ8I8OYThvgeWi6M5mHA5jj/IEmz5LzhYukJ5xRd7Iu
-         69idP10I+bJCRRgR++AoP9HgxnDUUM1isC1kbmQG8h/snlHwe8L53Xc5dXrxDDUYZ3dW
-         ov5as3DD2BB9Qd+hgBkonsm2UFAu+VwMBLKG3UrP+36q9N8IuBaXClaE+/WlNYJ877aL
-         GaaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793049847; x=1793654647;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=GKPa9M5PoAhtNnZV69xKXcRKiwNy/DZc5TLsis+amX4=;
-        b=PL6Sd3F+vrotoMpl+xkGO6cUQt6h15dfIYdRiAL4CZFajfQmRqGzo/cWVo2oEI9245
-         MTMvk8cxrL8WE/NZSmbGq2GmdrQ6DicJu1IoW311j9fU/MEQJt+3fXMsoGIn8ZPE94CI
-         JEghfmeMAUNaMO0ndBKgnBGcA3fTk/nvQDWDTcD8nT89IwXx+Bu08K2tm79UiMQte2zx
-         GoFVelQfeeIGya8xb19oxBrwC7rCsY1/9+9dFHE2h64Q17BdmPG8Ahaj5ERASX5VFuMX
-         HDcDzSq4m8CpmcTpTIwUeqyNG/Ni6Wu4MxRVDzDOWBOpvw6OCzBzJu/U2x1eWVgo7eEg
-         4wmw==
-X-Forwarded-Encrypted: i=1; AKwUvByeqkvpkE4MZd2qCpbXmQqIwcbwsG2cup4IwYQjeUAvK4msxb3zChqJ5WnMZ8dL5x/RkR5JE4Q=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI2B3EpTkHHdfBC4dGs1g9Kh9KPE2s704TW541rwTGngpuR09a7
-	Axm0n970Oi2bfKveEW/WJq1mjwlI7uf7y1YyHKR0EE9YYbyWDgAsm14V1XEodvFxZQOpHO/x0+C
-	wISvJ2C/XkIK1gUpESI6qpJltDqfgQHk=
-X-Gm-Gg: AYBFou0p68A2m187ksqXI23AbNdhwRRGJjzcTTzcvugCAbTVA3dhbSRyJFhWSfKX94C
-	iqsUSL4htHaXZVft+CwYJlMRrNBW50xgkFpvkYh+waArIE+TGQyL6zJOHj4RThfjQH5bOXlsWja
-	ipMVrJUrBLj8COV9/uknksDejMeL2baYufWr822ZYVdQYrMeR+k+SwrOaU3zUzhEPxcgEutAVHI
-	PT+xc0RXAVIn3zl7NElhthW2e4y5u19ZfhiIomtu8+/gcEXAElbH4yrEJAYpr8bkChUwglMFczN
-	6fshuM6VgwN/M7rwpyc+agqpd7QaSMHxxE0hpwmwZNnqmMOa2ds0GZe6gTBTnQXNBVgCbEMIiXT
-	lXNP11EUZm1ihLu9mlSOglsX3sIBFFC+QBCd4p1tb/h/lL9uyiiIIuYLdJkkfFHG07tQBG0poP/
-	5ppciLrhhHUoNRYBNXwUuNCxvW3htW4Fw58w==
-X-Received: by 2002:a05:6a00:12d6:b0:89e:3742:3e16 with SMTP id
- d2e1a72fcca58-8a3666af17cmr6585603b3a.18.1793049847178; Mon, 26 Oct 2026
- 14:24:07 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jSmYaN3s
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93AE21F01828;
+	Mon, 26 Oct 2026 21:24:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793049891;
+	bh=5hIZKPsRS+8gPS9TCdNpVxEXJl5lz8GjmPGkmljQvFQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=jSmYaN3sWiQ5P/zfDWKRPSP+vH9t3/z9ILOmqJwebHNuHod9Gxi+1rZ2T37coHNho
+	 IpsAlj7cKEvQEkLAF9hvqfaxDF228KI7yugHFOydGCMCR4DZgGbcBDYiFwmDhmWXd1
+	 B1Nyoqyr1qp2mSAiHf1EcA4hNl+l+OMAtk+TFlkeTMvZLf1PYNn6EloAHbvwr8jgD8
+	 B3VFG/2ENYPBADvXMTQlKW9JLPG+tAsFOzJoHKyFfUFYARFHKpthI7qwdcCxWkwiYP
+	 XTsVSsiXqAkYOf7lmR4TaVRzV3d/vRZInBnLG4emrAdHI0F5uYMxPZnpJUhfT1uuPo
+	 nscWFZK0dbxjA==
+Subject:
+ Re: [PATCH net v2 2/2] net: dsa: b53: restore the NSP IMP port 2 Gbps mode
+From: netdev-bot+sashiko@kernel.org
+To: florian.fainelli@broadcom.com
+Cc: netdev@vger.kernel.org, jonas.gorski@gmail.com, andrew@lunn.ch,
+ olteanv@gmail.com, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, rafal@milecki.pl, bcm-kernel-feedback-list@broadcom.com,
+ arnd@arndb.de, linux-kernel@vger.kernel.org
+Date: Mon, 26 Oct 2026 21:24:50 +0000
+Message-ID: <179304989018.3134.16623099883424149741@kernel.org>
+In-Reply-To: <20261022211104.2091128-3-florian.fainelli@broadcom.com>
+References: <20261022211104.2091128-3-florian.fainelli@broadcom.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,165 +64,216 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261024120627.837568-2-tim.budding@gmail.com>
- <179293012722.3134.13316596865856977030@kernel.org> <20261026052706.187296-1-tim.budding@gmail.com>
-In-Reply-To: <20261026052706.187296-1-tim.budding@gmail.com>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Mon, 26 Oct 2026 17:23:55 -0400
-X-Gm-Features: AclHuK_mrIu1EVf0x2dV3mIZYP2JHGyJuazQowznGXy4YPuBCm1N0ChSU-JmIKI
-Message-ID: <CADvbK_du=-oT19kKBKYSjFKYscnQSH1mekRKMXgmLPMXTEH_=w@mail.gmail.com>
-Subject: Re: [PATCH net 1/4] sctp: purge abandoned I-DATA fragments by stream
- and MID, not by TSN
-To: Tim Budding <tim.budding@gmail.com>
-Cc: netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org, 
-	linux-sctp@vger.kernel.org, marcelo.leitner@gmail.com, davem@davemloft.net, 
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	shuah@kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 26, 2026 at 1:27=E2=80=AFAM Tim Budding <tim.budding@gmail.com>=
- wrote:
->
-> On Sun, 25 Oct 2026 12:08:47 +0000, netdev-bot+sashiko@kernel.org wrote:
-> > > +           if (event->stream < sid)
-> > > +                   continue;
-> >
-> > [Severity: Low]
-> > Each call to sctp_intl_reasm_flush_mid() starts at the head of the queu=
-e.
->
-> [...]
->
-> Agreed. Walking each queue once per I-FORWARD-TSN would be a separate
-> change. I could send that to net-next.
->
-> > > -   /* purge the fragmentation queue */
-> > > -   sctp_intl_reasm_flushtsn(ulpq, ftsn);
-> >
-> > [Severity: Medium]
-> > With the TSN-based purge removed, what frees an unordered fragment of a=
-n
-> > abandoned message that arrives after the I-FORWARD-TSN naming that
-> > message has been processed?
->
-> [...]
->
-> > Should the commit message also mention the lost rwnd and receive buffer
-> > space? Alternatively, could these fragments be dropped when they arrive=
-,
-> > or when the cumulative TSN moves past them?
->
-> Correct, and the commit message is wrong to say such fragments stay
-> until the association is freed. An unordered fragment of an abandoned
-> message that first arrives after the last I-FORWARD-TSN naming that
-> message, with a TSN above the cumulative TSN, can't be reassembled. It
-> keeps its rwnd and receive buffer charge until a later unordered skip
-> on that stream with the same or a higher MID, a reset, or teardown. At
-> the tail of reasm_uo it also stops reneging, as any fragment below the
-> cumulative TSN already can.
->
-> One late fragment is enough if nothing after it has arrived: the
-> receiver then delays its SACK for the I-FORWARD-TSN, the fragment fills
-> the gap within that delay, and the sender never names the message
-> again. With the last fragment of an abandoned three-fragment message
-> arriving in that window, that fragment stays queued (RX_QUEUE 1232). A
-> duplicate can't do it, as the TSN map drops the second copy.
->
-> Before this patch a later I-FORWARD-TSN covering its TSN would have
-> freed it, so if another message is abandoned later, this patch keeps
-> it longer. Without such a later I-FORWARD-TSN, this patch frees more
-> than before: in the same test, the TSN-based purge leaves the
-> message's received fragments above the New Cumulative TSN queued
-> (RX_QUEUE 2464 without the delay), and this patch frees all but the
-> late one.
->
-> For an ordered message the same late fragment aborts the association
-> instead: its MID is below the next expected one, so
-> sctp_validate_idata() fails. That happens on net today as well. I
-> could look at it separately.
->
-> Freeing fragments once the cumulative TSN moves past them doesn't work
-> with interleaving: a live unordered message can have fragments below
-> the cumulative TSN, and freeing those is the loss this patch fixes.
-> Dropping late fragments on arrival needs new per-stream state, the
-> highest skipped unordered MID, which must be cleared on resets and must
-> not go stale when MIDs wrap. I'd rather do that in a separate patch
-> than grow this fix (question at the end). Either way, v2 will spell out
-> the cost in the commit message.
->
-> > >     /* abort only when it's for all data */
-> > >     if (ftsn =3D=3D sctp_tsnmap_get_max_tsn_seen(&ulpq->asoc->peer.ts=
-n_map))
-> > >             sctp_intl_abort_pd(ulpq, GFP_ATOMIC);
-> >
-> > [Severity: High]
-> > Can this branch still flush the whole ulpq for an ordinary I-FORWARD-TS=
-N?
->
-> [...]
->
-> > A later patch in this series, "sctp: don't treat an I-FORWARD-TSN as an
-> > association reset", seems to address this. It drops the max_tsn_seen
-> > check from sctp_report_iftsn() and makes the stream reset paths call
-> > si->abort_pd() directly. This patch is tagged for stable on its own.
-> > Should that change be folded in here, or should the two be backported
-> > together?
->
-> Yes. At this commit an I-FORWARD-TSN whose New Cumulative TSN is at or
-> above the highest TSN received still takes that branch, and
-> sctp_intl_abort_pd() frees every queued fragment, including those of a
-> message still being received on another stream: the same loss this
-> patch fixes below the leading edge. If that message is ordered and in
-> partial delivery, its MID is also skipped, and the association is
-> aborted when its next fragment arrives. With this patch alone the
-> ordered and unordered tests pass and leading_edge fails. The later
-> patch fixes it. v2 adds a leading_edge case without partial delivery,
-> which shows the loss directly.
->
-> I kept the two apart because they are different mistakes in
-> sctp_report_iftsn(): the TSN-based purge, and treating ftsn =3D=3D
-> max_tsn_seen as a reset. But they share the Fixes: tag and the
-> symptom, so folding them is reasonable too. The later patch needs
-> patch 2 and the new pdapi_seq patch (see the reply to 3/4), and
-> neither of those needs this one, so folding would mean those two
-> first, then this patch and the later one as a single patch (question
-> at the end). If they stay separate, this commit message will say in v2
-> that the leading-edge case is only fixed by "sctp: don't treat an
-> I-FORWARD-TSN as an association reset". All three fixes are Cc: stable
-> and apply cleanly, in order, to the v5.10 through v6.18 release tags.
->
-> > >                     sctp_intl_stream_abort_pd(ulpq, sid, mid, 0x1,
-> > >                                               GFP_ATOMIC);
-> > >             }
-> > > +           sctp_intl_reasm_flush_mid(&ulpq->reasm_uo, sid, mid);
-> >
-> > [Severity: Medium]
-> > This is a pre-existing issue, not one introduced by this patch. Does th=
-e
-> > new flush leave unordered partial delivery stuck when the skipped MID i=
-s
-> > the message currently being partially delivered?
->
-> Yes, and that is the next patch in this series, "sctp: abort unordered
-> partial delivery when its message is skipped". At this commit no abort
-> notification is sent and the next unordered message on the stream is
-> delivered as the rest of the skipped one. The uo_pd test fails at this
-> commit and passes from the next patch on.
->
-> Xin, Marcelo, two questions for v2:
->
-> 1. Fold "sctp: don't treat an I-FORWARD-TSN as an association reset"
->    into this patch, or keep it separate?
-> 2. Should dropping late unordered fragments be part of this series, or
->    a follow-up to net?
->
-Please try to fold it into this patch, and leave the drop to a follow-up.
+Thank you for your contribution! Sashiko AI review found 5 potential
+issue(s) to consider.
 
-Thanks.
+Critical: 0 · High: 0 · Medium: 2 (1) · Low: 3
 
-> Unless you prefer otherwise, v2 keeps them separate and leaves the drop
-> to a follow-up.
->
-> pw-bot: cr
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The patch never programs the 2 Gbps mode on BCM5301x CPU ports
+  other than the IMP port.
+- [Medium] The fix leaves out BCM583XX (Cygnus/Omega), which the Fixes:
+  commit broke in the same way.
+- [Low] Concern that b53_phylink_get_caps() advertises only
+  MAC_10|MAC_100|MAC_1000 (b53_common.c:1563-1573), while…
+- [Low] The comment in b53_phylink_mac_link_up() (b53_common.c:1666)
+  reads "Force flow control on BCM5301x and NSP CPU ports", but the…
+- [Low] b53_regs.h documents PORT_OVERRIDE_SPEED_2000M (line 103) and
+  GMII_PO_SPEED_2000M (line 149) as "BCM5301X only, requires setting…
+
+Pre-existing issues:
+- [Medium] This problem wasn't introduced by this patch, but
+  b53_force_port_config() mishandles non-IMP ports on is5301x()/is58xx()…
+
+--
+
+net: dsa: b53: restore the NSP IMP port 2 Gbps mode
+
+For fixed-link CPU ports on BCM5301x and BCM58XX (Northstar Plus)
+switches, this commit makes b53_phylink_mac_link_up() force speed 2000
+along with tx and rx pause. The goal is to restore the IMP port 2 Gbps
+mode that b6a8a5477fe9 started clearing, because clearing it left the
+switch and AMAC ends of the internal link at different speeds.
+
+> diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+> index 0880310c9ce3f..1f4964c28fc57 100644
+> --- a/drivers/net/dsa/b53/b53_common.c
+> +++ b/drivers/net/dsa/b53/b53_common.c
+> @@ -1663,9 +1663,13 @@ static void b53_phylink_mac_link_up(struct phylink_config *config,
+>  	}
+>  
+>  	if (mode == MLO_AN_FIXED) {
+> -		/* Force flow control on BCM5301x's CPU port */
+> -		if (is5301x(dev) && dsa_is_cpu_port(ds, port))
+> -			tx_pause = rx_pause = true;
+> +		/* Force flow control on BCM5301x and NSP CPU ports */
+
+[Severity: Low]
+This isn't a bug, but the comment only mentions flow control. The block
+below it also forces speed = 2000.
+
+The comment also says CPU ports, but the commit message describes the
+2 Gbps mode as a property of the IMP port.
+
+Could the comment mention the speed override and say which port it is
+meant for?
+
+> +		if ((is5301x(dev) || dev->chip_id == BCM58XX_DEVICE_ID) &&
+
+[Severity: Medium]
+Should BCM583XX_DEVICE_ID be covered here too?
+
+The clear added by b6a8a5477fe9 applies to every is58xx() chip:
+
+drivers/net/dsa/b53/b53_common.c:b53_force_port_config() {
+    ...
+	if (is5301x(dev) || is58xx(dev))
+		reg &= ~PORT_OVERRIDE_SPEED_2000M;
+    ...
+}
+
+is58xx() includes BCM583XX_DEVICE_ID, but the restore here only matches
+BCM58XX_DEVICE_ID.
+
+Cygnus appears to have the same topology as NSP. In bcm-cygnus.dtsi, the
+brcm,bcm11360-srab switch (BCM583XX_DEVICE_ID) uses IMP port@8 as the CPU
+port. That port has a 1000 full-duplex fixed-link to eth0, a brcm,amac
+with no phy-handle.
+
+For that AMAC, bgmac-platform.c uses bgmac_phy_connect_direct() and sets
+BGMAC_FEAT_FORCE_SPEED_2500, the same as for NSP amac0.
+
+On boards like bcm911360_entphn, won't b53_force_port_config() still
+clear the IMP 2 Gbps bit while the AMAC runs in high-speed mode? If
+BCM583XX is left out on purpose, could the commit message say why?
+
+> +		    dsa_is_cpu_port(ds, port)) {
+> +			tx_pause = true;
+> +			rx_pause = true;
+> +			speed = 2000;
+
+[Severity: Medium]
+Is the 2 Gbps mode actually programmed when the CPU port is not the IMP
+port?
+
+The condition checks dsa_is_cpu_port() but not port == dev->imp_port.
+For non-IMP ports, b53_force_port_config() uses the GMII override
+register:
+
+drivers/net/dsa/b53/b53_common.c:b53_force_port_config() {
+    ...
+	if (port == dev->imp_port) {
+		off = B53_PORT_OVERRIDE_CTRL;
+		val = PORT_OVERRIDE_EN;
+	} else if (is5325(dev)) {
+		return;
+	} else {
+		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
+		val = GMII_PO_EN;
+	}
+    ...
+	case 2000:
+		reg |= PORT_OVERRIDE_SPEED_2000M;
+		fallthrough;
+    ...
+}
+
+The two registers have the enable and 2000M bits swapped:
+
+drivers/net/dsa/b53/b53_regs.h:
+#define   PORT_OVERRIDE_SPEED_2000M	BIT(6) /* BCM5301X only, requires setting 1000M */
+#define   PORT_OVERRIDE_EN		BIT(7) /* Use the register contents */
+...
+#define   GMII_PO_EN			BIT(6) /* Use the register contents */
+#define   GMII_PO_SPEED_2000M		BIT(7) /* BCM5301X only, requires setting 1000M */
+
+On port 5 or 7, the case 2000 path only sets GMII_PO_EN again.
+GMII_PO_SPEED_2000M is never written.
+
+In-tree boards take this path. bcm53015-meraki-mr26.dts and
+bcm53016-meraki-mr32.dts use port@5 (ethernet = <&gmac0>) as the CPU
+port, with a 1000 full-duplex fixed-link and port@8 disabled. On the
+GMAC side, bgmac-bcma.c sets BGMAC_FEAT_FORCE_SPEED_2500 for these SoCs.
+
+Unless the bootloader already set BIT(7), won't the internal link on
+these boards stay mismatched? The commit message says:
+
+    Force the 2 Gbps mode and flow control for BCM5301x and NSP CPU ports.
+
+This isn't a regression, because BIT(7) was not touched before this
+patch either.
+
+Should b53_force_port_config() set GMII_PO_SPEED_2000M for non-IMP ports?
+If not, the condition and the commit message could be narrowed to the
+IMP port.
+
+[Severity: Low]
+This isn't a bug, but b53_regs.h still documents the bit set here as
+BCM5301X only:
+
+#define   PORT_OVERRIDE_SPEED_2000M	BIT(6) /* BCM5301X only, requires setting 1000M */
+
+Now that speed = 2000 is also used for BCM58XX_DEVICE_ID, the header and
+the code disagree on whether NSP has this bit.
+
+Should the comments for PORT_OVERRIDE_SPEED_2000M and
+GMII_PO_SPEED_2000M in b53_regs.h be updated to include the 58xx family?
+
+[Severity: Low]
+This isn't a bug, but b53_phylink_get_caps() only advertises MAC_10,
+MAC_100 and MAC_1000, and this line replaces the DT fixed-link speed
+with 2000.
+
+Phylink still validates the DT value of 1000, and CPU ports have no user
+netdev. No in-tree CPU port fixed-link uses a speed other than 1000, so
+I couldn't find a functional problem.
+
+Would it be worth noting in the comment that the DT speed is ignored
+here on purpose?
+
+> +		}
+>  
+>  		b53_force_port_config(dev, port, speed, duplex,
+>  				      tx_pause, rx_pause);
+
+[Severity: Medium]
+This is a pre-existing issue and was not introduced by this patch.
+Doesn't b53_force_port_config() disable the override on non-IMP ports of
+is5301x() and is58xx() chips?
+
+drivers/net/dsa/b53/b53_common.c:b53_force_port_config() {
+    ...
+	b53_read8(dev, B53_CTRL_PAGE, off, &reg);
+	reg |= val;
+    ...
+	reg &= ~(0x3 << GMII_PO_SPEED_S);
+	if (is5301x(dev) || is58xx(dev))
+		reg &= ~PORT_OVERRIDE_SPEED_2000M;
+    ...
+	b53_write8(dev, B53_CTRL_PAGE, off, reg);
+}
+
+For non-IMP ports, val is GMII_PO_EN, which is BIT(6). That is the same
+bit as PORT_OVERRIDE_SPEED_2000M.
+
+So for any speed other than 2000, the GMII override register is written
+with the override disabled. It stays that way until b53_force_link() ORs
+GMII_PO_EN back in.
+
+The real 2 Gbps bit for that register, GMII_PO_SPEED_2000M (BIT(7)), is
+never cleared either. Suppose the bootloader left a non-IMP port in
+2 Gbps mode and DT forces it to 100M or 10M. Wouldn't that produce the
+invalid speed and 2000M combination that b6a8a5477fe9 was meant to
+prevent?
+
+This patch doesn't make it worse. Non-IMP CPU ports now pass speed 2000,
+which sets BIT(6) again.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261022211104.2091128-1-florian.fainelli%40broadcom.com
