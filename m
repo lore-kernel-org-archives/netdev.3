@@ -1,49 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.175
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793008668;
-	b=TPW/v+7Np6iQqwbmyT6vc0/StvEopIDvx32Yy2Mk8so8oRWpyLrPCvzS3DzqfjIzyg1K
-	 P3+FuaGhXS5R3WOqhP0T8ONEp8jHLO8qx/7eHRn5HFcrbFyIYm6sb/3fD74xp6uTkwM23
-	 Lu/DPN1sJv+NnMaZLVw6e3mporBu+lbPcIoTE1ktN42G6HFfkqK+/v4VsaN/PmaN5F+WJ
-	 q/e7+11mDhlZuG/LHsQ3PQwzQzZMJ11wqYNHnSKPHF5zqmqRbSVDAk57s8IPA2NZGBhY/
-	 2s8peJmOv7Bz1IVWuikfwgVmzaAb53Yqwh1fRSxrgTMG5D9XdY1dwToi6y4v1ewoPbg==
+	t=1793008678;
+	b=Mw2mOLZG3/Ybnk508qPDaozr1/WmxXviRk8r7VhBZ/CciErLaLIxLAcPaeMLwrDQ/4hQ
+	 W9C9j9KpTP/Lme/OKCRyb56y6bFKesCo2hmCRb1jlSWqXptST+CtWBlnDcozSZpxJEp7t
+	 RauGDYAz7rTqmDddVq0xWFjRrn/HN8Sv55/g4gFXwlH4IJZchjzSjuEFWymODnhYjv92Y
+	 v8oxZX4rCDv/lGQZRnX0Yyk6aScYooBj1LU0ADz6FAK2pHWuzt0unY2s+GCPZQ32aEquH
+	 fCj9kCb0D7x+TzLE7qcJbRqeQIiRwRPKFEOVAxDmcyVi3ZC9GbHAsblmbAShYCLkqNQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793008668;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=nujbxywysw1THYDbs5pJnpdFcGsTn9DNVHlZbLoNeO0=;
-	b=NdXR6JupmirnFqjdVRqb/ujzpMYWfK2nqxULW1EJYyqgDgvs1qU4ICQg1H102TiodCF4
-	 RjGLAu32kuo6+FP31LbPhPtvGh79mISG3nS8Uqwe3h3kKbqCygnuad4dH+jbeSuWnHygs
-	 8T97Ax3jlfwLkuMZOhCnRmkm4Ukv6tEvyCJ9QfydSvNEVa6BO2kcIdFPDSUUxlf59uOwd
-	 5UJsFyHaQ/pY3KAbm/WOsn71E21W4s/EZA0J7CFGwvMouzE3TIrpsCUJ9kyYWLrUSE2uu
-	 CDtT6qtib/GcLluR5V5BYsaVDsaPU9ZhvrlrWWJpoLxXmQQ4epz6MGMl1mvz80a7AUQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793008678;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:Date:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
+	 References:In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:
+	 X-Developer-Key;
+	bh=LjTeBwZfLj61tdlg9QM+luzkf0OxdymEDqLC72F5nSQ=;
+	b=a3rhYxD/jyQ252Ly106kXbAUB2wlbK+k8pK3RjC2D6C8tckD6NXMWE1JPfzaHoGJY5Kc
+	 7AlxNaG7I1iaJt3gWrsBfTigxvgfT8NKPqxCLTOwcK47bgORZYVs7j/XV9Wnh/nXf4Ysf
+	 HdmyfUmAgVGTI1JL6L+qVBkMJEPhIroUORoAbtDyees4X5StGEbYnXpvrVJDr/4e6i1qc
+	 CxfRmlkZszaVDb7n99PACID9QVG6hcoWt4a5E9kyfEziPM7ntTAB7jXvu+1c9VcBFoiLH
+	 ovCyBZQL5Kh9IjT1DU2cl18KQA8vdeUFStBTbwcqL2aV4pzBIQ/kcqFzt9tAsitxd6Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aVszNAVi;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Pakz9oUB;
+	arc=none smtp.remote-ip=209.85.210.175
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D78606A9DF;
-	Mon, 26 Oct 2026 09:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437BB606C202
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 09:57:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 437BB606C202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aVszNAVi
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3DEF1F01189;
-	Mon, 26 Oct 2026 09:57:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793008667;
-	bh=nujbxywysw1THYDbs5pJnpdFcGsTn9DNVHlZbLoNeO0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=aVszNAVisauaQUvQDEhMMsU4Hq+b4XrxWm+JJK4b4zTPzkR9OfJc+Kgao/yPRvB8C
-	 VZWVdZXDMh56LuhNco81/eSOD8HbuWbthsiZKLUaMWWdDjSdAz2uVfGDaMlQo7qDLb
-	 S+LCjCo6/8qs2X19zhYjt1+ITKCGo5JqbpZwN05/S+WCSwtozU+uOXM+OdL49KlOwO
-	 1EjjIo5goNGwaFTz+G5HVhb+2Qaa2hSWn/IgZHHxmM9lC4yy01JQ4JCBOU5t4o/lX9
-	 OUdDzM4QmrJuEOLmnhtLcMrcitNQJdDyuUhp6MD16p5vTxMVvr1UApekd9nFi3/ORN
-	 vGbijlj1waOcQ==
-From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 26 Oct 2026 10:57:16 +0100
-Subject: [PATCH 8/8] selftests/bpf: add a lifecycle test for the namespace
- LSM hooks
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Pakz9oUB
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-8a064dcfcfdso830548b3a.2
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 02:57:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1793008678; x=1793613478; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=LjTeBwZfLj61tdlg9QM+luzkf0OxdymEDqLC72F5nSQ=;
+        b=Pakz9oUBgjqnaFkIykgG43IKOzWvt7NcUyAe/SfusIsphTwLS7PGkpWiGL+khoCFcB
+         asQnS2PP1VrclFzFld8xZ8iuCXBT9upKcvbEBr/J+oxJ4OIjyIhBS4myjz+xKedE/2MA
+         RXUFuk15v61MCOnFyLaNNbfQLieWSGuIa/bu4PRKlmy6M37mFx4pOm8AlV+VXUnxbc+4
+         dXd6GidZQs8OwA62au21dg/LeY4KN5bTMMgpZ9HvjeiyD6BMChjpMlrKBBxXvhI8RxWP
+         4ONeItzqvVHYgIJkH64MN+5NXjIo4Ycob5ruX4pPTDWG2xwUBSNx+ZYS2hZ9EXHUJLif
+         mB+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793008678; x=1793613478;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LjTeBwZfLj61tdlg9QM+luzkf0OxdymEDqLC72F5nSQ=;
+        b=ZbJVG3qWUAokXT5m6aBz+/RKl1FT2pY6zqBSdHXJb74Y4wKHVZiOEsX283ERM1s7XW
+         dPub0uAhP70/0gicQwXLWMiTO4vJJLjkvXOo8JlooyxHpq+D5LaLllHGkirqN2mGuwR7
+         8lGCNIkCW7LzbJCLcYoXNaFJ+gry5nPo3tAJwMDJuyPasT5xkR4ai8vcCXul1hpRkWO4
+         k/iYx/QOW20TkeMC7YL2kCKlcVHxRhVE9Tnnm9+eyntxqEFDgeWkwkzxl87jcrAdSNIC
+         Xhi24+c08J+GUJcoWjU1LTuF3on4H/fcYtlHZ/3BjC8PR8bbXRQLOBvHyZM3ufYey3tk
+         L6hg==
+X-Gm-Message-State: AFq9FYLvhRUdjVvJikVXJk9/g6f9D92fZ3gL7aI01aze81qrYVkl7ro3
+	UuH2LWD647yGATxtXAHF21Gx2LCxKZgxV/reM+pTfuxeE3KD9YCS/G1T
+X-Gm-Gg: AYBFou3Np5EkPJD2DNY7vDj56ed4d+Ey0kw+x6UjxeQkiZY9OUtCTUpD2GgBmT8g7Lh
+	fw2mLzr+Em+ZFVkIf4AVMPxZNGu4/sA4j1y0TbUGfeya9sveEznpEHNphy2SL4noj0GunHti+Y+
+	pD0VvCwEL8fukYROnackghYXx3i2v/JF68/TUOaAwNwerbXn8uystVEboe+y0IrtBB+IiG8WHf0
+	HPLuhaznZ4Na+BXbUBM1aFkqozvtW6aXIdj3gPOpN0uUjTK0+Lhfz9R0QRHI2D6Kw3pHpn6E8Eg
+	6+X7hd4EP/ZO4bzSQaYQOjl7UBJKbws2HF8bO5kvVSr8LT8MRaEX9ILuq0KXfj3Yr320yTMRmHA
+	2Jb/QUGL75K3/iB9JJshmSwbAtSrhfhLPdE1wtXsTsoRG7BU9jv4pSi8SoGtjZb9zSKdIELA9md
+	RRtl5to/eT0ZWd9HJqyUDc4ifTpSDAqpspmsb45Rm1oMdfv5bm0ErSg4Irc9vRk4MM8HTd9o62T
+	zulIWs+SrCXE5Tjz8nKScxg1L0zxCmxK1hj5iLLfUICOiPdyc8i762MnpniqCaBUj3iTgHDHuls
+	Yp2UK7E+Sw==
+X-Received: by 2002:a05:6a20:9c16:b0:3e2:8fdc:a6cf with SMTP id adf61e73a8af0-3e7bfab8c31mr5045545637.30.1793008677695;
+        Mon, 26 Oct 2026 02:57:57 -0700 (PDT)
+Received: from [127.0.1.1] (59-127-145-64.hinet-ip.hinet.net. [59.127.145.64])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a36bf0f4dcsm1095577b3a.44.2026.10.26.02.57.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2026 02:57:57 -0700 (PDT)
+From: Zhi-Jun You <hujy652@gmail.com>
+Date: Mon, 26 Oct 2026 17:57:28 +0800
+Subject: [PATCH net v6 1/4] net: ethernet: mtk_wed: skip ring reset in
+ wdma_tx_ring_setup for WED v3
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -55,287 +94,60 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261026-work-security-namespace_free-v1-8-ffa3ebbf71bd@kernel.org>
-References: <20261026-work-security-namespace_free-v1-0-ffa3ebbf71bd@kernel.org>
-In-Reply-To: <20261026-work-security-namespace_free-v1-0-ffa3ebbf71bd@kernel.org>
-To: linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org
-Cc: linux-security-module@vger.kernel.org, 
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
- Paul Moore <paul@paul-moore.com>, netdev@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>
-X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7056; i=brauner@kernel.org;
- h=from:subject:message-id; bh=x/mOnOiE+IxXo39rBsPXme0Vz67VAdaym4XN6zZLZEg=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTdV2GaGL5u+3zZzkiDp9uPC3OqCVre/J15z1ZTtX/Kv
- uD24vmMHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABM5torhn0nNK9Y07ZT0Rfmn
- UqvXaK4KCynz11550vRA+7zvvY+nLWRkeNnms6zkEI/th8Nn/pdcjG+/N22l3VfD6apbtM6ELXp
- +kQkA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Message-Id: <20261026-wedfix-v6-1-a52f6b15d2fc@gmail.com>
+References: <20261026-wedfix-v6-0-a52f6b15d2fc@gmail.com>
+In-Reply-To: <20261026-wedfix-v6-0-a52f6b15d2fc@gmail.com>
+To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Sujuan Chen <sujuan.chen@mediatek.com>, Rex Lu <rex.lu@mediatek.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+ Sashiko <sashiko-bot@kernel.org>, Zhi-Jun You <hujy652@gmail.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793008668; l=1333;
+ i=hujy652@gmail.com; s=20261026; h=from:subject:message-id;
+ bh=8HcC/sQ6Padav5RauewUundESxCJLuNyI/jOB6FPbeM=;
+ b=R5SprU2ynkzohGH0ikExaLYx4+eF5xyVGdW5pS1EiVbSfrSOVQZkSRDrh4OMF2weeFfeqLWGL
+ ZcrEU0rxM1SCaaLklufzqHafB/m9GBLE0QH7+amfullCkw11RjQdxO6
+X-Developer-Key: i=hujy652@gmail.com; a=ed25519;
+ pk=uXjqvnRsKEfHEyUr63sOg4fEJIDs4AmiW/rB1cWarXg=
 
-Track new uts, ipc and net namespaces from a bpf LSM by their namespace
-id and check that:
+Currently WED v3 tx wdma ring, ring reset happens in a separate code
+block unconditionally.
 
-- namespace_init already sees the id that NS_GET_ID reports
+Moreover, v3 has double the size of wdma_desc and has different init
+values. mtk_wed_ring_reset doens't deal with that and would corrupt the
+wdma_desc.
 
-- namespace_init, namespace_install and namespace_free fire exactly once
-  for each of them
+Fix this by skipping mtk_wed_ring_reset in mtk_wdma_tx_ring_setup for
+WED v3.
 
-The test fails if the namespace_free hook isn't called or if the
-namespace id is allocated after namespace_init.
-
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Fixes: e2f64db13aa1 ("net: ethernet: mtk_wed: introduce WED support for MT7988")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Link: https://sashiko.dev/#/patchset/20260711112128.971-1-hujy652@gmail.com?part=1
+Signed-off-by: Zhi-Jun You <hujy652@gmail.com>
 ---
- .../selftests/bpf/prog_tests/ns_lifecycle.c        | 145 +++++++++++++++++++++
- .../selftests/bpf/progs/test_ns_lifecycle.c        |  88 +++++++++++++
- 2 files changed, 233 insertions(+)
+ drivers/net/ethernet/mediatek/mtk_wed.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/ns_lifecycle.c b/tools/testing/selftests/bpf/prog_tests/ns_lifecycle.c
-new file mode 100644
-index 000000000000..8ea4939efb23
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/ns_lifecycle.c
-@@ -0,0 +1,145 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/*
-+ * Exercise all namespace LSM hooks from a BPF LSM: unshare() new
-+ * namespaces (namespace_init), setns() into them (namespace_install) and
-+ * drop the last reference (namespace_free).
-+ */
-+
-+#define _GNU_SOURCE
-+#include <test_progs.h>
-+#include <sched.h>
-+#include <fcntl.h>
-+#include <unistd.h>
-+#include <sys/ioctl.h>
-+#include <sys/stat.h>
-+#include <linux/nsfs.h>
-+#include "task_local_storage_helpers.h"
-+#include "test_ns_lifecycle.skel.h"
-+
-+struct ns_stat {
-+	__u32 ns_type;
-+	__u32 init_count;
-+	__u32 install_count;
-+	__u32 free_count;
-+};
-+
-+static const struct {
-+	const char *path;
-+	int type;
-+} namespaces[] = {
-+	{ "/proc/self/ns/uts", CLONE_NEWUTS },
-+	{ "/proc/self/ns/ipc", CLONE_NEWIPC },
-+	{ "/proc/self/ns/net", CLONE_NEWNET },
-+};
-+
-+#define NR_NS ARRAY_SIZE(namespaces)
-+
-+static bool all_freed(int map_fd, const __u64 *ns_id)
-+{
-+	struct ns_stat stat;
-+	int i;
-+
-+	for (i = 0; i < NR_NS; i++) {
-+		if (bpf_map_lookup_elem(map_fd, &ns_id[i], &stat) || !stat.free_count)
-+			return false;
-+	}
-+	return true;
-+}
-+
-+void test_ns_lifecycle(void)
-+{
-+	int orig_fd[NR_NS] = { -1, -1, -1 }, new_fd[NR_NS] = { -1, -1, -1 };
-+	struct test_ns_lifecycle *skel = NULL;
-+	int pidfd, map_fd, err, i, tries;
-+	struct ns_stat stat;
-+	__u64 ns_id[NR_NS];
-+	struct stat st;
-+
-+	for (i = 0; i < NR_NS; i++) {
-+		orig_fd[i] = open(namespaces[i].path, O_RDONLY | O_CLOEXEC);
-+		if (!ASSERT_OK_FD(orig_fd[i], "open orig ns"))
-+			goto close_fds;
-+	}
-+
-+	pidfd = sys_pidfd_open(getpid(), 0);
-+	if (!ASSERT_OK_FD(pidfd, "pidfd_open"))
-+		goto close_fds;
-+	err = fstat(pidfd, &st);
-+	close(pidfd);
-+	if (!ASSERT_OK(err, "fstat pidfd"))
-+		goto close_fds;
-+
-+	skel = test_ns_lifecycle__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "skel open_and_load"))
-+		goto close_fds;
-+
-+	err = test_ns_lifecycle__attach(skel);
-+	if (!ASSERT_OK(err, "skel attach"))
-+		goto destroy;
-+
-+	map_fd = bpf_map__fd(skel->maps.ns_lifecycle);
-+	skel->bss->monitored_pidfd_ino = st.st_ino;
-+
-+	err = unshare(CLONE_NEWUTS | CLONE_NEWIPC | CLONE_NEWNET);
-+	if (!ASSERT_OK(err, "unshare"))
-+		goto disarm;
-+
-+	for (i = 0; i < NR_NS; i++) {
-+		new_fd[i] = open(namespaces[i].path, O_RDONLY | O_CLOEXEC);
-+		if (!ASSERT_OK_FD(new_fd[i], "open new ns"))
-+			goto restore;
-+		if (!ASSERT_OK(ioctl(new_fd[i], NS_GET_ID, &ns_id[i]), "NS_GET_ID"))
-+			goto restore;
-+	}
-+
-+	/* Leave the new namespaces and install them again. */
-+	for (i = 0; i < NR_NS; i++) {
-+		if (!ASSERT_OK(setns(orig_fd[i], namespaces[i].type), "setns orig"))
-+			goto restore;
-+		if (!ASSERT_OK(setns(new_fd[i], namespaces[i].type), "setns new"))
-+			goto restore;
-+		if (!ASSERT_OK(setns(orig_fd[i], namespaces[i].type), "setns orig again"))
-+			goto restore;
-+	}
-+
-+	skel->bss->monitored_pidfd_ino = 0;
-+
-+	/* Drop the last references. Network namespaces are freed asynchronously. */
-+	for (i = 0; i < NR_NS; i++) {
-+		close(new_fd[i]);
-+		new_fd[i] = -1;
-+	}
-+
-+	for (tries = 0; tries < 1000 && !all_freed(map_fd, ns_id); tries++) {
-+		kern_sync_rcu();
-+		usleep(10000);
-+	}
-+
-+	for (i = 0; i < NR_NS; i++) {
-+		/* namespace_init must already have seen the id. */
-+		if (!ASSERT_OK(bpf_map_lookup_elem(map_fd, &ns_id[i], &stat), "lookup ns_stat"))
-+			continue;
-+
-+		ASSERT_EQ(stat.ns_type, namespaces[i].type, "ns_type");
-+		ASSERT_EQ(stat.init_count, 1, "init_count");
-+		ASSERT_EQ(stat.install_count, 1, "install_count");
-+		ASSERT_EQ(stat.free_count, 1, "free_count");
-+	}
-+	goto destroy;
-+
-+restore:
-+	for (i = 0; i < NR_NS; i++)
-+		setns(orig_fd[i], namespaces[i].type);
-+disarm:
-+	skel->bss->monitored_pidfd_ino = 0;
-+destroy:
-+	test_ns_lifecycle__destroy(skel);
-+close_fds:
-+	for (i = 0; i < NR_NS; i++) {
-+		if (new_fd[i] >= 0)
-+			close(new_fd[i]);
-+		if (orig_fd[i] >= 0)
-+			close(orig_fd[i]);
-+	}
-+}
-diff --git a/tools/testing/selftests/bpf/progs/test_ns_lifecycle.c b/tools/testing/selftests/bpf/progs/test_ns_lifecycle.c
-new file mode 100644
-index 000000000000..88c5d40ba27a
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/test_ns_lifecycle.c
-@@ -0,0 +1,88 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include "vmlinux.h"
-+#include <bpf/bpf_helpers.h>
-+#include <bpf/bpf_tracing.h>
-+
-+struct ns_stat {
-+	__u32 ns_type;
-+	__u32 init_count;
-+	__u32 install_count;
-+	__u32 free_count;
-+};
-+
-+/* Unlike inode numbers namespace ids are never recycled. */
-+struct {
-+	__uint(type, BPF_MAP_TYPE_HASH);
-+	__uint(max_entries, 16);
-+	__type(key, __u64);
-+	__type(value, struct ns_stat);
-+} ns_lifecycle SEC(".maps");
-+
-+__u64 monitored_pidfd_ino = 0;
-+
-+char _license[] SEC("license") = "GPL";
-+
-+static bool is_monitored(void)
-+{
-+	struct task_struct *task;
-+
-+	if (!monitored_pidfd_ino)
-+		return false;
-+
-+	task = bpf_get_current_task_btf();
-+	return task->thread_pid->ino == monitored_pidfd_ino;
-+}
-+
-+SEC("lsm/namespace_init")
-+int BPF_PROG(ns_init, struct ns_common *ns, int ret)
-+{
-+	struct ns_stat new = {}, *stat;
-+	__u64 ns_id;
-+
-+	if (ret)
-+		return ret;
-+
-+	if (!is_monitored())
-+		return 0;
-+
-+	ns_id = ns->ns_id;
-+	new.ns_type = ns->ns_type;
-+	bpf_map_update_elem(&ns_lifecycle, &ns_id, &new, BPF_NOEXIST);
-+	stat = bpf_map_lookup_elem(&ns_lifecycle, &ns_id);
-+	if (stat)
-+		__sync_fetch_and_add(&stat->init_count, 1);
-+	return 0;
-+}
-+
-+SEC("lsm/namespace_install")
-+int BPF_PROG(ns_install, const struct nsset *nsset, struct ns_common *ns, int ret)
-+{
-+	struct ns_stat *stat;
-+	__u64 ns_id;
-+
-+	if (ret)
-+		return ret;
-+
-+	if (!is_monitored())
-+		return 0;
-+
-+	ns_id = ns->ns_id;
-+	stat = bpf_map_lookup_elem(&ns_lifecycle, &ns_id);
-+	if (stat)
-+		__sync_fetch_and_add(&stat->install_count, 1);
-+	return 0;
-+}
-+
-+SEC("lsm/namespace_free")
-+int BPF_PROG(ns_free, struct ns_common *ns)
-+{
-+	struct ns_stat *stat;
-+	__u64 ns_id;
-+
-+	ns_id = ns->ns_id;
-+	stat = bpf_map_lookup_elem(&ns_lifecycle, &ns_id);
-+	if (stat)
-+		__sync_fetch_and_add(&stat->free_count, 1);
-+	return 0;
-+}
+diff --git a/drivers/net/ethernet/mediatek/mtk_wed.c b/drivers/net/ethernet/mediatek/mtk_wed.c
+index 53d3b7e00e1c..d55042ccaff1 100644
+--- a/drivers/net/ethernet/mediatek/mtk_wed.c
++++ b/drivers/net/ethernet/mediatek/mtk_wed.c
+@@ -1938,7 +1938,7 @@ mtk_wed_wdma_tx_ring_setup(struct mtk_wed_device *dev, int idx, int size,
+ 	wdma_w32(dev, MTK_WDMA_RING_TX(idx) + MTK_WED_RING_OFS_CPU_IDX, 0);
+ 	wdma_w32(dev, MTK_WDMA_RING_TX(idx) + MTK_WED_RING_OFS_DMA_IDX, 0);
+ 
+-	if (reset)
++	if (!mtk_wed_is_v3_or_greater(dev->hw) && reset)
+ 		mtk_wed_ring_reset(wdma, MTK_WED_WDMA_RING_SIZE, true);
+ 
+ 	if (!idx)  {
 
 -- 
-2.53.0
+2.55.0
 
