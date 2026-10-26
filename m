@@ -1,56 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.153.233
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792999909;
-	b=s6DypAVx5dCWx+a/VySB9ulGysoykR1Y4G+Noy0sqEXP19Fz7GJwFQoj8kI0s/FzQktl
-	 nsJ5snxDrh3vN1Xc02JtETYycdlsDsV8l1De6z4wSB+uViqhH/kCiLQSahSfK6xTTEayW
-	 y5jTfs8ov19E2SR3XKE/TGe2C1o6e6kSHaPGUtKiQFx3xuTZQKeB7+Bs/rDuV5unuQ1nK
-	 O9WKawjLt1dgeFdmK1+7k1N2bIapPgJgpKpYKu/hDBstdvhegqv+ZSLric5Ae25PinJHG
-	 ctSazjgJBfoxt97RGUFMCCrq2QZDxzhONQW5IrWrbak6UqebgZ3hYjQ7ALCKdLy6iKA==
+	t=1792999966;
+	b=sswNGVLRs1nvcXklYmju9u0AsGVkSPVe/qTDUxb+et5CDS6FGDUUdLObbkWGlUH6sGDT
+	 tC61D9Bh2lQQT/Od/4EUiTuhkdk8zrPOd4ybZGu/BPmcQP/cZa+U7brHtrSfDV5liQymb
+	 45Qy136gohh55UaoQAso6ZmyygepRSDHLSZtVJCYPhFbC+c6omKeogyV9Zwdkf2G0RNMx
+	 mwi1+z/ujQ3It94+fEtLg83z0pVQ98ovi7vpEwWvzS63sJBqj80y+qLG/FhL4FOlvwOmG
+	 CPVL5N113Nc0sUQo0eQHeO/4Zt37tAkNRqVlBWJWwUjR+KdthcpU7fELZYPAnbWW+9Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792999909;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=ZkqQpyyWgiCT7yM+GqqzrqW+e2YFFZpIluFHk3eQPZ0=;
-	b=pebzMGwvxnr5mjpJNuiKH1cW3Mpg42oyOwaScV5IsSSVhZ6QKGXyy+/WWFs5kRMgb6lc
-	 SmSqQcoeuxJK6eOXNOMQJ2DAJVuJgCtLM5n1WQS44Qxiwdto+piozzuvLGp8xFszSK/4Q
-	 uB1ZDKDdczQtAVJah03yUXL+ACAdKYTAPtCH+zsmvKB29MAnEtyotsM8EgpYEuUqcGmOw
-	 QlnRr7Dy9p2Hot9380UTMaRsjGMra5FXWg9PWkejcCigq7AnRkmkiUgE7jTnmovbsoXuS
-	 uBrJha6eetu5Xieq6gngKUnT6fWpzC+3ATc4S09c4jH4FwN/KQ+ygfP6WSifn5Evk8Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792999966;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:Date:From:To:CC:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=W+cxyww2TucNEepNfRrQ0ekDRXr+LHAHYoofn3JixiI=;
+	b=1STtIzrxeQrgm1uDUjfHWp/uAdjjbS4ERHUe2mx2ziAHPX6ybu+OS7NrhI05kVKFlRuJ
+	 d+sDe9XVJh8DjFmACVmMID59mvHvihaDL3wiqA1MC/USYeCfihCzbArUkkWZjkijOtrhE
+	 9had0OLTqg7OX8nxEpAjEF8cwnbSy2GqXlHTtm4dCSgfe5tBlTfwAglNWRqN5zEN4juu0
+	 4Keh5j1jN4MlbQspdUlPjFCdIKbk8NNIKPyq5kfggiFdLgx8Mu/thny+6+imJJrIwm0Dl
+	 5+Wqu9CDyHcz1jA8wT85FfrhiwU57gKJDPe7dboAsF4DatefFcF7OsQdfr4m2FIFCBQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Oa3hquin;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=microchip.com;
+	spf=pass smtp.mailfrom=microchip.com;
+	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=puZ9RAZF;
+	arc=none smtp.remote-ip=68.232.153.233
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC13606A31A
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 07:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FC4606A31A;
+	Mon, 26 Oct 2026 07:32:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 31FC4606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Oa3hquin
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 113131F01825;
-	Mon, 26 Oct 2026 07:31:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792999908;
-	bh=ZkqQpyyWgiCT7yM+GqqzrqW+e2YFFZpIluFHk3eQPZ0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Oa3hquin0ij2801hUnrC4cTmvA9l9ed8+ue1o6FW8TVNFEZNB2fhyNrg5b51Z3Chh
-	 KHfQmmRPKGu3k1CY7BDtpuY7sA/sbsTZ0hmICskKuEGYvBrGph1KCcjYE/KICJda8x
-	 kzKcRFLtDR1jx+ssq3F1hphltCWLg3oM0rrXk9e21PqaEKkfPJZ//VRM/Yd7hfdYiO
-	 3GaA53yb7rdej0YSohAPs6AtUWmsWgHXto82dme/LkO37dO0W8/c1aciS+SHL9+Izr
-	 p/cxYAcpoK7P7uc7jF+qtbkgG1bTfPtJHzGatBKHmqwWgb8nDKVERSOW8zaPQ9lW/I
-	 PTDj7ZS2ZYGqQ==
-Date: Mon, 26 Oct 2026 08:31:46 +0100
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Chad Monroe <chad@monroe.io>, SAYANTAN NANDY <sayantann11@gmail.com>,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH net v4] net: airoha: keep PPE offload when NPU refuses
- flow stats
-Message-ID: <at8B4YDW0-dL22QY@lore-desk>
-References: <20261021100423.9159-1-sayantann11@gmail.com>
- <05adf618-f608-4c8e-a862-4c1d0779567c@lunn.ch>
- <J3XqO9fJOEvpsUH9m_DyrV8wgQzdtZdfhE8KZHv9ejvVty51zjizvG-0nmYn8ZhTGRJnLq0OcEbX7l3DvpqFp8dFEYuWYVpV5ZRKnGXmGKc=@monroe.io>
- <54711f8d-d71a-43f6-876c-d32f4c562b8d@lunn.ch>
+	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=puZ9RAZF
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1792999966; x=1824535966;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=7xCx4d3ZGL9TKpbq2riWZWJdYVevoxdH+V0DwFIpJy0=;
+  b=puZ9RAZFKyGBVQtFhlj+WLHMB4Z6vBxAdASC3LmccygbwTw2wh5CtdZY
+   ntnPXeirPd4dah3tAM43XOcYUe4ftwl5Xyau8yUQFsXn6JggxhBdnB7TW
+   ScEaISnzEF91nnJyNdGtrrB/+SYMo+U+KJR0vKDKlSdnjtoWCkhD1dqA0
+   QACjsqmDoxmoJSQ9SBqCtuZNBuF00RW3kQdmPMTf0IcmI6NS9XJ0vmPnK
+   PijS/fF+xTcb8NuoBvUyKtWERI8QgJ2iBbf9wkt6KtsQeA6ngQ0+Ba3YN
+   fY26vALTFjOmvaMD5fO0CBIHTH7/HO702IpQnkTR697ROB4zH1g0990tq
+   Q==;
+X-CSE-ConnectionGUID: lx7BMXXCT0Kk/SReMKYRFA==
+X-CSE-MsgGUID: z6QjRkdEQLmY3DY7Pm5BNg==
+X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
+   d="scan'208";a="296974928"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 26 Oct 2026 00:32:39 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Mon, 26 Oct 2026 00:32:38 -0700
+Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex02.mchp-main.com
+ (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Mon, 26 Oct 2026 00:32:36 -0700
+Date: Mon, 26 Oct 2026 08:32:35 +0100
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Joas Antonio dos Santos <joasantonio108@gmail.com>
+CC: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Tony Nguyen
+	<anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	<intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] net: dcb: initialize PFC value before calling
+ getpfccfg
+Message-ID: <20261026073235.3huvz6o5h6psyv76@DEN-DL-M70577>
+References: <179289284460.50470.572724041164324949@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -60,72 +83,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="0/0oVR3u5epgDrzE"
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <54711f8d-d71a-43f6-876c-d32f4c562b8d@lunn.ch>
+In-Reply-To: <179289284460.50470.572724041164324949@gmail.com>
 
---0/0oVR3u5epgDrzE
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> dcbnl_getpfccfg() and dcbnl_cee_fill() pass the address of an
+> uninitialized stack u8 to the driver's getpfccfg() op and then put it
+> into the netlink reply unconditionally.  The op returns void, so the
+> core cannot tell whether the driver wrote the value.
+> 
+> i40e_dcbnl_get_pfc_cfg() and ice_dcbnl_get_pfc_cfg() return without
+> writing *setting unless the DCBX agent is host managed and in CEE mode.
+> Both drivers normally run with firmware managed DCBX
+> (DCB_CAP_DCBX_LLD_MANAGED), and i40e with FW LLDP disabled runs host
+> managed in IEEE mode, so on a DCB capable i40e/ice port the PFC values
+> in DCB_CMD_PFC_GCFG and DCB_CMD_CEE_GET replies, and in the CEE part of
+> RTNLGRP_DCB notifications, come from uninitialized stack.  The same u8
+> is reused for all eight priorities, so this is one byte per reply.
+> 
+> dcb_doit() only requires CAP_NET_ADMIN for RTM_SETDCB, so the GET
+> commands are available to unprivileged users.
+> 
+> Set the value to 0 before each call, like the PG config path already
+> presets its outputs to DCB_ATTR_VALUE_UNDEFINED.  0 is also what the
+> reply contains today on kernels built with CONFIG_INIT_STACK_ALL_ZERO,
+> so nothing changes for those.
+> 
+> Fixes: b94b013eb626 ("ice: Implement DCBNL support")
+> Fixes: 5effa78e7c94 ("i40e: Add netlink callbacks support for software based DCB")
 
-> On Sun, Oct 25, 2026 at 03:25:28PM +0000, Chad Monroe wrote:
-> > On Wednesday, October 21st, 2026 at 5:49 AM, Andrew Lunn <andrew@lunn.c=
-h> wrote:
-> >=20
-> > > On Wed, Oct 21, 2026 at 03:34:23PM +0530, SAYANTAN NANDY wrote:
-> > > > From: Chad Monroe <chad@monroe.io>
-> > > >
-> > > > With flow stats enabled, PPE offload setup requests flow statistics
-> > > > from the NPU. If the running NPU firmware does not support flow
-> > > > counters, the request fails and the current setup path aborts PPE
-> > > > offload.
-> > >=20
-> > > Since this never worked, it is not a regression fix.
-> > >=20
-> > > Why not keep it KISS and report the firmware is too old and suggest
-> > > the firmware is updated?
-> > >=20
-> > > Can the driver do the firmware upgrade?
-> > >=20
-> > >     Andrew
-> > >=20
-> >=20
-> > Hi Andrew,
-> >=20
-> > The NPU firmware bin is downloaded at each boot and is present in
-> > linux-firmware so no issue with keeping it up to date.
-> >=20
-> > The main reason for this change is to behave better when flags mismatch.
-> > Previously, loading a driver compiled with flow stats support enabled
-> > would silently fail to offload if the firmware didn't have support.
->=20
-> Sayantan suggested this is a regression. It used to work, but does not
-> now?
->=20
-> We should avoid regressions.
+I am not entirely sure, but should this patch add a fixes tag for a driver, when
+the change is only in the API?
 
-I do not think this is a regression. In this case, the default behaviour is
-just fall-back to sw flowtable acceleration.
+Also, if this dates back to the introduction of DCBNL then I guess its not a
+regression and maybe a fix for net-next?
 
-@sayantan: can you please confirm?
+> Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
+> Assisted-by: Yaga Agent HackerSec Claude:claude-opus-5-5
+> ---
+> Found by code inspection, compile-tested only (W=1).  I don't have
+> i40e/ice hardware to check the reply.  On kernels built with
+> CONFIG_INIT_STACK_ALL_ZERO the byte is already zero, so in practice
+> it only leaks on builds without stack auto-initialization.
+> 
+>  net/dcb/dcbnl.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/net/dcb/dcbnl.c b/net/dcb/dcbnl.c
+> index ab71f53128..ad0aebe0ad 100644
+> --- a/net/dcb/dcbnl.c
+> +++ b/net/dcb/dcbnl.c
+> @@ -281,6 +281,7 @@ static int dcbnl_getpfccfg(struct net_device *netdev, struct nlmsghdr *nlh,
+>  		if (!getall && !data[i])
+>  			continue;
+>  
+> +		value = 0;
 
-Regards,
-Lorenzo
+Why noy initialize this at the declaration, like getall is?
 
->=20
->    Andrew
+>  		netdev->dcbnl_ops->getpfccfg(netdev, i - DCB_PFC_UP_ATTR_0,
+>  		                             &value);
+>  		ret = nla_put_u8(skb, i, value);
+> @@ -1395,6 +1396,7 @@ static int dcbnl_cee_fill(struct sk_buff *skb, struct net_device *netdev)
+>  			goto nla_put_failure;
+>  
+>  		for (i = DCB_PFC_UP_ATTR_0; i <= DCB_PFC_UP_ATTR_7; i++) {
+> +			value = 0;
 
---0/0oVR3u5epgDrzE
-Content-Type: application/pgp-signature; name=signature.asc
+Same.
 
------BEGIN PGP SIGNATURE-----
+>  			ops->getpfccfg(netdev, i - DCB_PFC_UP_ATTR_0, &value);
+>  			if (nla_put_u8(skb, i, value))
+>  				goto nla_put_failure;
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCat8B4QAKCRA6cBh0uS2t
-rHTpAP40CYiwB34cqilOMLaCbBIJ6v5uA2+axkwRM5T2R7mtRQEApnIIVLJYmOrt
-ZebAaxUcBB1eKe39QGeFpe/hykg8Vgk=
-=kHBZ
------END PGP SIGNATURE-----
-
---0/0oVR3u5epgDrzE--
+/Daniel
