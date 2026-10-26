@@ -1,98 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.42
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793031121;
-	b=o8hdzQ3B9euu9+3MCmEft9I5jX6njNu6bNeu7DHcUvma8vLLZXHDXTUnB10GW7/BHtPS
-	 zgkFmdZiynrcZHnjK7tteeM8hE2CQMxGx4ywQvkNwpJY319m8j3Ft/K/cQxUfaRBB2fCP
-	 M/mEOQWnNupj5+WF04uvPWOwNNUWNJe4wE2uxTuouE/GaB9oPgdHtSdcy8er2P8OVrshl
-	 M2Y4N8cPDESviLQifAenw5Cd4e7HPdlY9fA0B74TlERldB2QxuhEDs0qL7XQcm+LE4Nsh
-	 vJbhUeVTzDhvZhjkdiBxIp94ze1dWzpSzDAq4kv0hHivNFVs3OAJQaGI4eGH0ERClaQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793031121;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=g+jO8UtF+vwChY1eYvPs5m/UaJWywgw4H0Nc0Yjcw8U=;
-	b=WZpQbzlu2W3dlof9PPRos/ik2bh1HpEFIUdoLke2pKtOnHb2kv8GJ1SpGKVclUmlhOKX
-	 5L3hQe2SqhCxYIALA4XGbmJyzdmiW4GUGKN0FvgUNxZkKFUBiI+Yq7q+B/rvhs5PGT4mr
-	 0UcKjHj6cPPPpioaMXS1FRUruOj38Og3oXlWrjpeTs6YISrb9liPLZSuatH94+cHesQdA
-	 kiUPSxJ1umtRJefUmTn4Z3CHRJBV8RCUGBCssW4Y9XR1RePGvn5tyNE3zKvqzJ4m0s/MD
-	 SYS5qW8OeW3j8J/G3xFIQsNCCs48WVF/Yt3BSGkn5urcpmB6IcdVn3P5a5CBvArUviQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mojatatu.com;
-	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=D6N53ke6;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.42
-Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793031714;
+	b=LVd7Cg7jrGk87wrowE3vphSmsitjuuYskuAJV4aibIjrw/sIaG68o/iFZzaJynInA22M
+	 w6FYmS0itxp9ZRNdsfD0HLiVIMEd0jvuwR41x+rZLtP+77nmjXD4Hcp3X7iiYBNSyRENu
+	 rGoiRr0VUBZypnL7uWKL4SI2P8t6OExHd9okjIG1mGiez5kVPNhJ63ZjfJUydxJSTnrxr
+	 xYJkw/M4DifnSWH+Jwtu6xSr1KWM7lEZBZW2Jmad5xEWmsZlVWbk776rLyMWAgBWSUFJa
+	 WsHKiMeDcc/wxXe3nIFlwraNiWTX9HUTOnAcZMAYf3SL5FAK49MNVUsSDoYsXllJDng==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793031714;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=vFJvSTUDUI+jot4qzzEf7rMhildAD64LDwSLK2QFNKk=;
+	b=g7bW8uXud3tAIHfJj7Q52xe6w6ePNFAWXAlOc1sW8093pN8ngHUb+eHMLcy42OUYKWv4
+	 xFpBvtOQkHMkthiaESHQewaK5TouO2+ghCm6JkQqwxzlzMgFtMRZiuXj0qjD7L+Zny4gi
+	 IWZB9FzHeobaunnjFb1RniiFBhPaQkmfNVoeQQdqkcFUHTT1M3Cr5dRGQj9/qfbG9C0l/
+	 Q0AG6L26XYDLHJZBrVLOpfU2/YRokZGZI1CYY4p9HHzTPn6weonOA40JsT5zxdspb7K8J
+	 CxiVhf/3ZUlpGWSyUjU4A9j0LZZnYmovDKXLkqbOnplQGAzXw7LcL84NpN0hx02tcWQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="ZnDX5/NU";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 517D4606A31A
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 16:12:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 517D4606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D7C606A31A;
+	Mon, 26 Oct 2026 16:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=D6N53ke6
-Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-679965fb848so3268187d50.1
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 09:12:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793031120; cv=none;
-        d=google.com; s=arc-20260327;
-        b=m405mWGhKDy0lvbb5fLF5702tWy5gsQlWdUFWx3HUVPYI7gkRklfOZ21rLWJ1Cy5cJ
-         +H3fR6R+BoYrvvvDx8eoGuCJgMICELuQg0ad6zJug7X979nbaJ/X6K9Sfa9xcBQelFWr
-         foLnkqq5ryfbWI+uMYecccEmvhRS1eNMZW/fZWRfQ5c/X8czC5+Sl1DId7cSyUcAvaTo
-         8qMxEWf5e1FzXnSVPhMDvcF9RvmHRchzBh39waKc01h63lM2n70NF7Fo+v02jXDwPtKn
-         pd1bt7xXf/KFGjcj3oofinKUgv5x/nsVNMvnF3hXxKEvS5+tbeF5ME6tsULSlyI8jZs0
-         sHuA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=g+jO8UtF+vwChY1eYvPs5m/UaJWywgw4H0Nc0Yjcw8U=;
-        fh=YLbNu57TLgW1tTp8R1g5GHpbFjSf143SzLm6UYkE3oE=;
-        b=jlxCgj2Sch+mplWW+kyV9Rsi60ycEVq/Cuk4Ss43cWvScK6qQI9SCi+xzvx+p5Lzse
-         kZVhb9MsPAcSbsI5FuOwVsqMMfRdLnT1p16Nb1Qy3Xjmodbw+wYcV5fYY/o3p7knShVu
-         OsJ+flSWT6BEy3OBhU/1gN8IRFyZaZSAB1fO+92XqH/wGCT4OfU/8E7/vN5aPnbyibQA
-         xqxUYjqyY4vJASublobL9EfxwErVIwYsoq4zIQPO1113mIYnRQsDZitwHjwt9LTVIxRo
-         ZZYz6STb0q8Cm01vQBAlQesE/gF8XQxjigSyGK28v2wngYKE5p70VNAAWEUot5DVX8ef
-         0eUw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1793031120; x=1793635920; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=g+jO8UtF+vwChY1eYvPs5m/UaJWywgw4H0Nc0Yjcw8U=;
-        b=D6N53ke6ER6ewLIGaSEG63QcTcfV18jBsCfNOw+Qf4Yc0SpRpHF7p5Q2aJYvevTt/j
-         qhmsHUAJVSQ8w0M2GaTF/OZfU9bj3Yxfd4rvFMD4Do+3axLHs6zImrWg8SxhOH2EQLFG
-         xRmaJK9nF/aN5kCAhvhgzmgnQ3VoXzS/XZojw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793031120; x=1793635920;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=g+jO8UtF+vwChY1eYvPs5m/UaJWywgw4H0Nc0Yjcw8U=;
-        b=zE8bEH3goR2elIe2ZZbMdyJgnaDIiNEnXvp6V2Rf9JNzUKjcohjtLjbVlorR0jnjKQ
-         LOldXHkY/IVrdcuPo0+qh3h646cXbbjmBCK5UYtZ68atrvfILLWykn5PJbTLZRkOxqqu
-         +GV14jNUs+M/SWMUjVzz7UZjetPO5jwUu+KGSg7kKr5TGsOQI9HLXBdxg6Kcq+VLKibq
-         C6I6mPGnDCw4k6XfjaclSe3dd1IV40dnX5EaGSDXaIxDvIbjLDdjQm4yKjIhvL6AzF0e
-         Bs3hQyrAAbEHo/LGyNNAod7aSnY4nYhvTGGTW7z3nI3BV3X+xGd++bjV/vZjy45w2gxR
-         g2/w==
-X-Forwarded-Encrypted: i=1; AKwUvBzsW1rxaMHcP+gNumJbbLzJPQwyNVETFP3I989r/tEx+UbwpT8KVswTjhJHeCezyP4x7xBeVJM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIXO+KSQJfxz9NEKsj1Q3Xk/7AeF8nCk0n3AMc4tvYRZ0GBVO6m
-	Uyo5Lwia2KT5UvHgOcZaThmKmomFZeclwuiiWZnD9qVjtxlFlBD6TyrK64Xac5I/qXpDqYKUzR5
-	jy/8xFGXEUxk8x+SIvhmnMvO0F3QDj5WKVS8KDIVK
-X-Gm-Gg: AYBFou0SZinVAbfpYnL3DXdQBDw79hGBwNvh4gmKghzoiE4zqVPrw61KwC9Sd5aNOLa
-	Q9ASDi0vYUXgPny6NwmySBKlUOCE8fNU6aBzb/SEOwQefswomUonaChRtopdj3Q55+i5DVN9uaZ
-	TjtxB0ZWiQ0jl0UJJ38+hmu7UUoT+L49k+TwRdwX+MlUl4a2aI5pWjTeMy67RM5dcFLVa3eC/ku
-	4Fk9WkatoR9WgmX34NdgEKXToddgxprh192+kK+q03jyCnppp607AHktIbTUy5pPjkDVjN21wPc
-	pM7AkW8leX1RVJSIkkS7qsoSCsxf4RVrzWynIp7+xFb/HFC+RWd5g2MbfU82J3HxVqZrDV9D1EQ
-	vCi0jyG3A/xbwN5YWDP11QoU17YVohXdNrCJmS+e/cbVkwFSvFTlQfcas36T0UDno2RsSyTKC/Z
-	1+dxLkiuayIinUquuU
-X-Received: by 2002:a05:690e:4390:b0:679:c9af:6d30 with SMTP id
- 956f58d0204a3-67a453fa58amr2903732d50.54.1793031120103; Mon, 26 Oct 2026
- 09:12:00 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZnDX5/NU
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D56A21F01825;
+	Mon, 26 Oct 2026 16:21:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793031713;
+	bh=vFJvSTUDUI+jot4qzzEf7rMhildAD64LDwSLK2QFNKk=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ZnDX5/NUB/Yw2H2bYzCKezL16HGsJsa94oypBA6W1FgmppfufYwKhhlTdJmAMzAPS
+	 HGxV/A8x1hpp8Y+mHY4dIiHTBpjphUF0UdN8xpBVyThbdHy6g/iGUZ9t/lBSSpFk2Y
+	 nZvS+QyNWfmPTYAyWzq5t2RmjFJPElKQqe4+D7+tJAsoYSTCEwPKFvzA7lU5/Yy5gN
+	 kztzERck2uzND2XtmPvpBeXn4DH1lMY7v1ZEUZPOw67xMahZaOsZjTF6g0fsna/cn4
+	 gOErYJ5290bD0XdxEMh4SKhUA+94VmLGSUJVx9QHKa7NnTkKrqyx5qKs3ebAo9hBlA
+	 t2gg8pfCiRoJA==
+Subject:
+ Re: [PATCH net v7] net: dsa: qca8k: preserve port state across MTU changes
+From: netdev-bot+sashiko@kernel.org
+To: yongzhao.derek@gmail.com
+Cc: netdev@vger.kernel.org, ansuelsmth@gmail.com, andrew@lunn.ch,
+ olteanv@gmail.com, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, linux@armlinux.org.uk,
+ florian.fainelli@broadcom.com, linux-kernel@vger.kernel.org,
+ hzyitc@outlook.com
+Date: Mon, 26 Oct 2026 16:21:52 +0000
+Message-ID: <179303171241.3134.15019965307136674652@kernel.org>
+In-Reply-To: <20261022155837.760-1-yongzhao.derek@gmail.com>
+References: <20261022155837.760-1-yongzhao.derek@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,58 +65,144 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <BYAPR01MB3830CECF5D0871064C59BA0280662@BYAPR01MB3830.prod.exchangelabs.com>
- <CAL4WiipTihtytPEPj5cSY+=t9NwRwRTfUQ_efCSWPT7nQ=0K0Q@mail.gmail.com>
- <willemdebruijn.kernel.178cac71d218b@gmail.com> <20261022160251.GW2009045@noisy.programming.kicks-ass.net>
- <BYAPR01MB383065E105701C81A3D0472D80652@BYAPR01MB3830.prod.exchangelabs.com>
- <atplVXLEE_mNqhek@1wt.eu> <20261022212025.GV2823843@noisy.programming.kicks-ass.net>
-In-Reply-To: <20261022212025.GV2823843@noisy.programming.kicks-ass.net>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Mon, 26 Oct 2026 12:11:47 -0400
-X-Gm-Features: AclHuK___KN_ZCi6KmdQxWiaEn7V7IZhvF8iqyoioEnZWSerq3wzmVRKx-efROI
-Message-ID: <CAM0EoMkD7AL6ZE1Z21-fQteo55SJBVk_piTp4ekrYSybva2kMw@mail.gmail.com>
-Subject: Re: ZDI-CAN-33367: New Vulnerability Report
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Willy Tarreau <w@1wt.eu>, 
-	"zdi-disclosures@trendmicro.com" <zdi-disclosures@trendmicro.com>, 
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, Eric Dumazet <edumazet@kernel.org>, 
-	"security@kernel.org" <security@kernel.org>, 
-	"maintainer:NETWORKING [GENERAL" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, "open list:NETWORKING [GENERAL" <netdev@vger.kernel.org>, 
-	open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 22, 2026 at 5:20=E2=80=AFPM Peter Zijlstra <peterz@infradead.or=
-g> wrote:
->
-> On Thu, Oct 22, 2026 at 09:34:45PM +0200, Willy Tarreau wrote:
-> > > We will have some discussions internally, but in the meantime, we wil=
-l send the cases to you as we always have.
-> > > If you don't want to do anything with it, that's fine too. We will re=
-lease the findings at rejection, or 120 days.
-> > > Whichever comes first.
-> >
-> > The main problem we're having is that it's not possible to have anyone =
-on
-> > your side nor the reporter test a patch. But I won't rehash this, it's =
-not
-> > new, but *this* is what makes your reports way more painful to deal wit=
-h
-> > than many other ones. You (unvoluntarily it seems) act as an insulation
-> > layer between reporters and develoeprs and that really doesn't help.
->
-> This; Willy is far more eloquent than I am, but the zdi reports have
-> been very painful. And as said; this has been raised a fair number of
-> times.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-+1 (from experience)
-They just dump stuff and run. They wont even respond to basic
-questions about what they send.
-It looks like those parking enforcement people who have a quota of
-parking tickets to meet on a friday.
-As Willy mentioned, on the positive side, though they do produce good
-reports (although once or twice the repros didnt work)
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-cheers,
-jamal
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] In qca8k_port_change_mtu()
+  (drivers/net/dsa/qca/qca8k-common.c), the decision to pause a CPU MAC…
+
+--
+
+net: dsa: qca8k: preserve port state across MTU changes
+
+This patch adds a dedicated mutex that serializes the MTU update with all
+PORT_STATUS writers. During the update, the MAC bits of the enabled CPU
+ports are saved and restored instead of being forced back on afterwards.
+Failed status writes are recorded and retried from a delayed work, and the
+committed MAX_FRAME_SIZE is tracked so a duplicate call for the same value
+returns early.
+
+> diff --git a/drivers/net/dsa/qca/qca8k-common.c b/drivers/net/dsa/qca/qca8k-common.c
+> index 13005f10edb7d..d9db5e57928ee 100644
+> --- a/drivers/net/dsa/qca/qca8k-common.c
+> +++ b/drivers/net/dsa/qca/qca8k-common.c
+
+[ ... ]
+
+> @@ -782,27 +856,59 @@ int qca8k_port_change_mtu(struct dsa_switch *ds, int port, int new_mtu)
+>  	if (!dsa_is_cpu_port(ds, port))
+>  		return 0;
+>  
+> -	/* To change the MAX_FRAME_SIZE the cpu ports must be off or
+> -	 * the switch panics.
+> -	 * Turn off both cpu ports before applying the new value to prevent
+> -	 * this.
+> +	/* To change MAX_FRAME_SIZE, pause enabled ports 0 and 6.
+> +	 * Serialize with phylink and restore the saved MAC state.
+>  	 */
+> -	if (priv->port_enabled_map & BIT(0))
+> -		qca8k_port_set_status(priv, 0, 0);
+> +	mutex_lock(&priv->port_status_lock);
+
+[ ... ]
+
+> +	ports &= priv->port_enabled_map;
+> +	for_each_set_bit(i, &ports, QCA8K_NUM_PORTS) {
+> +		ret = regmap_read(priv->regmap, QCA8K_REG_PORT_STATUS(i),
+> +				  &status[i]);
+> +		if (ret)
+> +			goto unlock;
+> +	}
+> +
+> +	for_each_set_bit(i, &ports, QCA8K_NUM_PORTS) {
+> +		u32 mask = qca8k_port_status_mask(i);
+> +
+> +		if (!(status[i] & mask))
+> +			continue;
+
+[Severity: Medium]
+Can a concurrent register reader corrupt the status[] snapshot here and
+make this skip the pause?
+
+qca8k_regmap_config in qca8k-8xxx.c has:
+
+    .disable_locking = true, /* Locking is handled by qca8k read/write */
+
+So regmap_read() goes through _regmap_bus_read() and takes no regmap lock.
+The register address is formatted into the shared map->work_buf, and
+qca8k_bulk_read() reads it back from there:
+
+    u32 reg = *(u16 *)reg_buf;
+
+The value is parsed from the shared work_val only after the transport has
+released mdio_lock:
+
+drivers/base/regmap/regmap.c:_regmap_bus_read() {
+    ...
+    ret = _regmap_raw_read(map, reg, work_val, map->format.val_bytes, false);
+    if (ret == 0)
+        *val = map->format.parse_val(work_val);
+    ...
+}
+
+port_status_lock does not cover readers such as qca8k_pcs_get_state().
+Phylink calls it from its resolve worker without RTNL, and it is polled
+because qca8k_setup_pcs() sets pcs.poll = true. The LED hw_control_get
+path is another reader that takes no lock.
+
+For example, with port 0 enabled and port 6 in in-band mode after a
+link_down:
+
+CPU1 (RTNL held)
+qca8k_port_change_mtu()
+  regmap_read(QCA8K_REG_PORT_STATUS(0))
+
+CPU2
+phylink_resolve()
+  qca8k_pcs_get_state(port 6)
+    qca8k_read(priv, QCA8K_REG_PORT_STATUS(port), &reg)
+
+Suppose port 6's address or value lands in work_buf before port 0's value
+is parsed. Then status[0] would have no TXMAC/RXMAC bits, the continue
+above would skip port 0, and this write would run with the port 0 MAC
+still enabled:
+
+> +		__set_bit(i, &stopped);
+> +		ret = regmap_clear_bits(priv->regmap, QCA8K_REG_PORT_STATUS(i),
+> +					mask);
+> +		if (ret)
+> +			goto restore;
+> +	}
+>  
+> -	if (priv->port_enabled_map & BIT(0))
+> -		qca8k_port_set_status(priv, 0, 1);
+> +	ret = qca8k_write(priv, QCA8K_MAX_FRAME_SIZE, frame_size);
+
+Commit 386228c694bf says this state stops the switch from sending packets
+until reset.
+
+The shared work_buf race itself predates this patch. However, the old pause
+was an unconditional regmap_clear_bits(), which goes through
+qca8k_regmap_update_bits() and does not use work_buf. So it could not be
+skipped this way.
+
+The window is small, but should the pause avoid depending on this unlocked
+read? One option would be to clear the MAC bits of the enabled CPU ports
+unconditionally, as before.
+
+> +	if (!ret)
+> +		priv->max_frame_size = frame_size;
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261022155837.760-1-yongzhao.derek%40gmail.com
