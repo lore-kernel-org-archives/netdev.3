@@ -1,115 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.57.41
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793017860;
-	b=0+Z51zj5vl72XLgyhlK8XDKlCw/bjfk5KHuO4oRiVTA/FJMBF5trCRpC9237Yvjp0YU/
-	 ZuC+hQpI9diOaH4ti6Dc//Yo3R1dr+6yIShnN+/+TKTLlWWZ+Kqf2/7d782QLFk0DmJZ3
-	 t6gdMXdE88okCDfNs8srX+NQuWiSQz70b2QJe+wn1f6uhxdvCbVTm4+/LvGDJdzIhrnAn
-	 3GRqQf5l5GWNEYDhE7CEhmnDwZPh/hCCfrPGw5sVyMgPrM5w5vBAw/eIQHafWUXdQDIgI
-	 m5kncHvflA6KJLbKks+/vHICXRUHd+2IEMwtAhDKoLV1yxAPYAlDKcLrxwzbEo/L+QA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793017860;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:
-	 Content-Type:X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=bmHZPjfmIc4enEGR6naj+q1z5ghYzD/WaoQyJfH0jN8=;
-	b=Oapb+qJ95JPsz+w/AMBNRql9mxMiDFpRmXyBpccKqgtb+ZtvgjTj10RmeTYHlsXm4gQv
-	 nloUkwfStqv5NNvH595MeUc3TrhonrJMeQAy0sINrV3slpY0fx/GSSFrfHD3eT5PJJgr8
-	 RWlW9oHf4Gy0G9+Ly7+B+UuChE8yqFvOdrjZuIccB84M+ra+h2HoyTZyLp3smnOPFE468
-	 UevqAGs8xCy0IDaBWdJzoh/MtpLq1kxVRzYdgR1f8AXjn8m8SZ+7rKe8qDsK6AaLFMDlh
-	 C9bCMQHQChGs+Io1lWszG8iWMs71g7+GMaeIAA6oyi9BApOkMBXxQ8A19QeYquBJJlA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=X1fGiw72;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.57.41
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011041.outbound.protection.outlook.com [52.101.57.41])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.191
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793017977;
+	b=l0m933h8vCoYKrEUjhqSKzmLzBdFPnMU1q+7aXPLPQBeyzpt5wTRucCTl/T7iYUVPuxN
+	 La+MnfjB5pSkQusllZ1pjNiVOrHwuTxtDxAJV2VBIpFAVoNggDDE7jAiFFrHXqlsw1tji
+	 1a+HzgynXAZOvriziKabBYa3zEaEJjUXYN+lP+DYqRgvr/dhLHDyf1OdoTvYUd85QeaNN
+	 WggbWlMrAACSw0qhvYEkffMkON8x/UDS7UnXOupylGaXJwMKdglL7Ptg9gyGfFSi1hcXu
+	 iG5ceygWC7aaKQLpByhAtmWNvKu8oDYnABeSUGd0KFbVqibe1O/DPs1lO6YiJKA9JCw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793017977;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=wBWKAJ7Sj6JriSj5p7Z5YlnSwdpQx47a7utMt3KjLrQ=;
+	b=WbvE4ONyxLrrDmeyWctZG96hDvuN/SRnZ6KObCbtGN3fAObUkUurxs9NtbRcJ8VgbGHb
+	 brnguW0FhsMWlD8vH3QRVvscIh2wlLpBDIfsdA9ogXlmNnKUBVn8lR6NzgN6Oul1EPMOR
+	 YUwK6XkrkN4VP3LvPuOxgrUD5e720+aAgCFjWfUYI+dBWiyuiFzAcOESxwmlhm7nd+DvZ
+	 qyxZfjQoCQLo+zb0dT51zL/skozYXJjLIy8qx5j9n2ZhhUk3u41N6xYPuDnA0YCOHmAhS
+	 zw97qOvkUBcM3oJ0J2cqtpaMFnp9IbP+Y6YfbhtcWdgeegJZLxXtS9giefd6EfOpfqw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=RtptRIX1;
+	arc=none smtp.remote-ip=91.218.175.191
+Received: from mta0.migadu.com (out-191.mta0.migadu.com [91.218.175.191])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3D5606A31F;
-	Mon, 26 Oct 2026 12:31:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5E3D5606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B83606A31F
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 12:32:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F2B83606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=X1fGiw72
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hhKRIooOo0Q6sLoMhi+s0/ew6NpK5x+DZWhXnYMl0Nz6PYksiyOV3l8AN/c+FACjmK8ayTWFeNHMp6w+G9Z9eEWzqR8AOUduLj0YPM/LKFU3z73ShxipH2iotyJ1ZpCNtwmL5mBEiuRQ5Mf/hhtO9r/rXM9aiTqPiXAR1hocQw/8npF/xvt3NALcU6hfr5oWPTL7a+FFcO8jWwxyf5O4nfXxy8ntrJJzungxUxl23v0yC/RX5/6W5ypmHY5WK6JHGzF6kFGoM1JDH2qsuLmrhnX6Y0TaTSUYhomEv53YzZC7x4066c017i0et6GK/gKJeDM9rnb70DXeoRp2EtEh2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bmHZPjfmIc4enEGR6naj+q1z5ghYzD/WaoQyJfH0jN8=;
- b=EA5qEcPQx19Kn0VunBF8gwRrsfExxGOR1nwbdC9E8M4mEVL2Kx4aeenjy5bV1DnHQOml7Cc6xZczuT+AykswyJHjAzmx0y0jBmPevjIUHDIolLfzdEXEHAY+miybsh5nEPPehrktrdQSd6L9x+V0WgyntVAuctW8+IN0KdmosD/etsf8berc0ChvwbQQfWIkx5qih6qziz+YJ35yqKu2fNFn46TlsYMuUGX2Xsjiy7fog6JRBGWnB9FjITqqWLMtzKcAjQBQJWzbXgIzMLsANn9Xvnek96dLlYQws/NPnXMHLDdmz+Y9kuiw5yGfTqi8D9XHSDQB86v1klYF0Joypw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=gmail.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bmHZPjfmIc4enEGR6naj+q1z5ghYzD/WaoQyJfH0jN8=;
- b=X1fGiw72ML9GP//wIW6gtHR1deSP4QP+730xCvaaqa8aySLyiVuZ+PF9+FHXczAA4MaXvdkv//gtcbVhL6nf2q9GUdnS9vNmQe/M4cqgXk1Aw7YjXLEjvr3EQx/hO4ThHX31itZUJcK+hw10gEblGgCUAUDScR7+XBokty/QBb0=
-Received: from CH0PR04CA0069.namprd04.prod.outlook.com (2603:10b6:610:74::14)
- by SA5PPFD8C5D7E64.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8e3) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
- 2026 12:30:53 +0000
-Received: from CH2PEPF0000014A.namprd02.prod.outlook.com
- (2603:10b6:610:74:cafe::4a) by CH0PR04CA0069.outlook.office365.com
- (2603:10b6:610:74::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.546.22 via Frontend Transport; Mon,
- 26 Oct 2026 12:30:53 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- CH2PEPF0000014A.mail.protection.outlook.com (10.167.244.107) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.569.4 via Frontend Transport; Mon, 26 Oct 2026 12:30:53 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Mon, 26 Oct
- 2026 07:30:41 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Mon, 26 Oct
- 2026 07:30:41 -0500
-Received: from xcbalexaust42x.xilinx.com (10.180.168.240) by
- satlexmb08.amd.com (10.181.42.217) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.53 via Frontend Transport; Mon, 26 Oct 2026 07:30:40 -0500
-From: Alex Austin <alex.austin@amd.com>
-To: Edward Cree <ecree.xilinx@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-CC: Richard Cochran <richardcochran@gmail.com>, Alejandro Lucero
-	<alucerop@amd.com>, Pieter Jansen van Vuuren
-	<pieter.jansen-van-vuuren@amd.com>, <netdev@vger.kernel.org>,
-	<linux-net-drivers@amd.com>, <linux-kernel@vger.kernel.org>, Alex Austin
-	<alex.austin@amd.com>
-Subject: [PATCH net v4 3/3] sfc: ptp: avoid racing PPS timestamp updates
-Date: Mon, 26 Oct 2026 12:30:23 +0000
-Message-ID: <20261026123023.3566549-4-alex.austin@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261026123023.3566549-1-alex.austin@amd.com>
-References: <20261026123023.3566549-1-alex.austin@amd.com>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=RtptRIX1
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=wRMLJQ0LgYvQePRIKO1OVjTSBPiwUDDy98B0yUAI2W8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793017974; v=1; x=1793622774;
+ b=RtptRIX1cRj6FNyXpSrJIFOchTzXeEqfQTqT6pMyNZdoqV3jrX1n9651T0XVRL8q5inUHKnd
+ oKrGbUNZnMuyS+YSdnbISbCJf4pcARd7HcCtPgPSvluprD4ybP6932TQ1nZvcLjiS1dtKBYGiU/
+ aWYR0S1T9SOLJTi+SJ+yZjyM=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 4b9b247da60df294;
+	Mon, 26 Oct 2026 12:32:54 +0000
+X-Mizu-Trace-ID: 4b9b247da60df294
+X-Migadu-Flow: FLOW_OUT
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: netdev@vger.kernel.org
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
+	stable@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v2 1/2] tcp: fix shift-out-of-bounds in SYN-ACK retransmit timers
+Date: Mon, 26 Oct 2026 20:32:38 +0800
+Message-ID: <20261026123244.239766-1-jiayuan.chen@linux.dev>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -120,152 +76,166 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF0000014A:EE_|SA5PPFD8C5D7E64:EE_
-X-MS-Office365-Filtering-Correlation-Id: febe6a64-581e-4d1c-5de9-08df335cfa41
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|36860700016|82310400026|376014|1800799024|18002099003|22082099003|56012099006|11063799006|261021123027099003|10067099003|261009223027099003|261021135927099003|261021121427099003|261022105027099003;
-X-Microsoft-Antispam-Message-Info:
-	anNMXMv582xsLbdUm2+vZq+cWaDdbaviO3yRPsmRHMSGrvI/RnFG15IbVTdOQ+ZlbBmGTYW9vtABYZMEk5GPTeBBOWGzGG1oEu72gqSBdjcn2Jr5Q2V5ZmkqlsZzt9SMd1dIs/NAWTk+ZzYLdu1RRXI8UQF/beOJQJXAWlotJsgFMgLZ1aQDLj/hpsue0mDh+uMTKV5ZQk3Zib3TJerUr19NPvCTBYsttzGJ3m++81CG4dxeUM/XLZe8Yj+TNeNEcwNWh2zMr51aOTIzlPSzL8gwT0TktU6QAzVCRfw2gHNVcyKy/lMrzGCVzQXYXe1PDcTiTrnU0rLrb2v4GB7O4DtB8FDpz1pRNV+Qvhpv7IBreyJehlVecCm8D2aQ0SRsJSf0v6ts3JugzTN81lkAQJDqX9KgmXXqJCXXK7cji629f1WkQN2WJshycAMPt6oYIBtmh2VvTqMdzejOJmifrTOQfaJgmUlIuVs4Ea6hE2szfCSDnDFpqRhn+pNrVa3rY3CSGw+boVF8YdCezS7xjd45wxN2LeaZqQNCBvIYutGlwFAMMW8rI4u3aUsU7HjZa1NwJ0UUoZyj/tZwzdFTHkBYeTGJMcCKJA/doJtvrCVGHb7kFfBXNWhcO8z0qfurPsUpj4OP91mp/sOV2rbPHxHueibOJJsl6iPPQYam9w7t2cJdjaBb8mQStKNVOUpyEqUIrykvqarrrs+Qg5Avmw==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(36860700016)(82310400026)(376014)(1800799024)(18002099003)(22082099003)(56012099006)(11063799006)(261021123027099003)(10067099003)(261009223027099003)(261021135927099003)(261021121427099003)(261022105027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	T3p7RQ9LGS5mkljZ6GNoMiJPLK2POpX/uaJ8u13HAQQLRvzKMqA5OPsMDJnpfcgCdGj8pC6oHKlEaKpltWDr+iWyrulISW5qpn6MD0WsG30yb33v7NWKZajqeLOKd9GUyUz8GxoQqNIyWlvB128ShgB7WElwBbPzIoAEUS27Litaapg3QhK2qo1c1X/4BQ/ILl+EUyia8afKHK1YuGY4g770nAGYjoZTmCJX9F1VIPvIVaZjSNdW8vikrF/jfq/QbgwvI3IytF3MBmYbQUiLgL8GgM0tRblF0WuTDff2g/1wq42ZqUf+zsGoewXz4YsNjiHtMPku+fhTCzvsbB59wbBSozx2Cn9N3pFkyAIq9BVrkAHzATjXZCADKMEtVpAPVkp7jO1qCl6zRH3+xASv+Xxu2RGoNnNVkoMceH6yZ6InznaKutHeQZ52/5ABANRN
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 12:30:53.7915
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: febe6a64-581e-4d1c-5de9-08df335cfa41
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH2PEPF0000014A.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPFD8C5D7E64
 
-efx_ptp_pps_worker() can race with SIOCHWTSTAMP via
-efx_ptp_change_mode(). After the worker completes synchronization, the
-ioctl can start another synchronization and update host_time_pps while
-the worker copies it into the PPS event. This can report a partially
-updated timestamp. Serializing synchronization transactions alone does
-not protect this copy, which happens after phc_lock is released.
+req->num_timeout counts the SYN-ACK timeouts of a request and is used as
+a shift amount:
 
-Return the timestamp through the caller's own pps_event_time rather
-than the shared field in efx_ptp_data, so the worker reads storage no
-one else can write.
+	/* tcp_reqsk_timeout() */
+	u64 timeout = (u64)req->timeout << req->num_timeout;
+	/* tcp_fastopen_synack_timer() */
+	req->timeout << req->num_timeout
 
-Fixes: 7c236c43b838 ("sfc: Add support for IEEE-1588 PTP")
-Signed-off-by: Alex Austin <alex.austin@amd.com>
-Reviewed-by: Alejandro Lucero <alucerop@amd.com>
-Reviewed-by: Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>
+Once it climbs past the width of the shifted type the shift is UB. Seen
+with tcp_synack_retries=255 and a peer that never completes the
+handshake:
+
+  UBSAN: shift-out-of-bounds in ./include/net/tcp.h:917:34
+  shift exponent 64 is too large for 64-bit type 'long long unsigned int'
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0xc1/0xf0
+   dump_stack+0x10/0x20
+   __ubsan_handle_shift_out_of_bounds+0x1d1/0x390
+   reqsk_timer_handler.cold+0x1c/0x5d
+   call_timer_fn+0x17d/0x510
+   __run_timers+0x662/0xab0
+   run_timer_softirq+0xdf/0x260
+   handle_softirqs+0x204/0x9b0
+   __irq_exit_rcu+0x13c/0x220
+   irq_exit_rcu+0xe/0x20
+   sysvec_apic_timer_interrupt+0x40/0xd0
+   asm_sysvec_apic_timer_interrupt+0x1b/0x20
+
+num_timeout is a 7-bit field. Once a retransmit limit is above 127 the
+"num_timeout >= limit" check can never be true, the request is never
+expired by that limit, and after the field wraps to 0
+reqsk_timer_handler() decrements queue->young again on the next expiry.
+
+ - split tcp_reqsk_timeout() into tcp_reqsk_timeout_sk() and bound the
+   shift there; a num_timeout well under 30 already saturates the
+   tcp_rto_max() clamp, so nothing reachable changes for the u64 path.
+ - cap max_retries / max_syn_ack_retries at 127, the largest value the
+   field can hold, instead of narrowing the sysctl; 128..255 are still
+   accepted and act as 127.
+ - cap the TCP_DEFER_ACCEPT conversion in secs_to_retrans() at 127 too;
+   larger values kept an acked request from ever expiring. getsockopt()
+   now reports at most 14527 instead of 29887 seconds.
+ - route the TFO path through the same helper; its u32 shift could also
+   wrap to 0 before reaching UB.
+ - document that tcp_synack_retries values above 127 act as 127.
+
+Fixes: e6c022a4fa2d ("tcp: better retrans tracking for defer-accept")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 ---
- drivers/net/ethernet/sfc/ptp.c | 26 ++++++++++++++++----------
- 1 file changed, 16 insertions(+), 10 deletions(-)
+v1 -> v2: reworded the commit message, no code change.
+v1: https://lore.kernel.org/netdev/20261023064915.401112-1-jiayuan.chen@linux.dev/
+---
+ Documentation/networking/ip-sysctl.rst |  4 +++-
+ include/net/tcp.h                      | 16 ++++++++++++----
+ net/ipv4/inet_connection_sock.c        |  2 ++
+ net/ipv4/tcp.c                         |  2 +-
+ net/ipv4/tcp_timer.c                   |  3 ++-
+ 5 files changed, 20 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/sfc/ptp.c b/drivers/net/ethernet/sfc/ptp.c
-index eedab53..3c6a85b 100644
---- a/drivers/net/ethernet/sfc/ptp.c
-+++ b/drivers/net/ethernet/sfc/ptp.c
-@@ -268,7 +268,6 @@ struct efx_ptp_rxfilter {
-  * @evt_frag_idx: Current fragment number
-  * @evt_code: Last event code
-  * @start: Address at which MC indicates ready for synchronisation
-- * @host_time_pps: Host time at last PPS
-  * @adjfreq_ppb_shift: Shift required to convert scaled parts-per-billion
-  * frequency adjustment into a fixed point fractional nanosecond format.
-  * @current_adjfreq: Current ppb adjustment.
-@@ -330,7 +329,6 @@ struct efx_ptp_data {
- 	int evt_frag_idx;
- 	int evt_code;
- 	struct efx_buffer start;
--	struct pps_event_time host_time_pps;
- 	unsigned int adjfreq_ppb_shift;
- 	s64 current_adjfreq;
- 	struct ptp_clock *phc_clock;
-@@ -912,7 +910,8 @@ static void efx_ptp_read_timeset(MCDI_DECLARE_STRUCT_PTR(data),
- static int
- efx_ptp_process_times(struct efx_nic *efx, MCDI_DECLARE_STRUCT_PTR(synch_buf),
- 		      size_t response_length,
--		      const struct pps_event_time *last_time)
-+		      const struct pps_event_time *last_time,
-+		      struct pps_event_time *host_time_pps)
- {
- 	unsigned number_readings =
- 		MCDI_VAR_ARRAY_LEN(response_length,
-@@ -990,6 +989,10 @@ efx_ptp_process_times(struct efx_nic *efx, MCDI_DECLARE_STRUCT_PTR(synch_buf),
- 			   "PTP bad synchronisation seconds\n");
- 		return -EAGAIN;
- 	}
-+
-+	if (!host_time_pps)
-+		return 0;
-+
- 	delta.tv_sec = (last_sec - start_sec) & 1;
- 	delta.tv_nsec =
- 		last_time->ts_real.tv_nsec -
-@@ -1006,8 +1009,8 @@ efx_ptp_process_times(struct efx_nic *efx, MCDI_DECLARE_STRUCT_PTR(synch_buf),
- 	delta.tv_nsec += ktime_to_timespec64(mc_time).tv_nsec;
+diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
+index 4b19c8d3efda..eac33072be2d 100644
+--- a/Documentation/networking/ip-sysctl.rst
++++ b/Documentation/networking/ip-sysctl.rst
+@@ -956,7 +956,9 @@ tcp_stdurg - BOOLEAN
  
- 	/* Set PPS timestamp to match NIC top of second */
--	ptp->host_time_pps = *last_time;
--	pps_sub_ts(&ptp->host_time_pps, delta);
-+	*host_time_pps = *last_time;
-+	pps_sub_ts(host_time_pps, delta);
+ tcp_synack_retries - INTEGER
+ 	Number of times SYNACKs for a passive TCP connection attempt will
+-	be retransmitted. Should not be higher than 255. Default value
++	be retransmitted. The sysctl accepts 0-255, but values above 127 are
++	silently capped by the SYN-ACK timers to match the 7-bit
++	request_sock::num_timeout field. Default value
+ 	is 5, which corresponds to 31seconds till the last retransmission
+ 	with the current initial RTO of 1second. With this the final timeout
+ 	for a passive TCP connection will happen after 63seconds.
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 0265c27a5fd7..986b7ea05e4a 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -183,6 +183,8 @@ static_assert((1 << ATO_BITS) > TCP_DELACK_MAX);
+ #define MAX_TCP_KEEPINTVL	32767
+ #define MAX_TCP_KEEPCNT		127
+ #define MAX_TCP_SYNCNT		127
++/* request_sock::num_timeout is a 7-bit field. */
++#define MAX_TCP_SYNACK_RETRIES	127
  
- 	return 0;
- }
-@@ -1020,7 +1023,8 @@ efx_ptp_process_times(struct efx_nic *efx, MCDI_DECLARE_STRUCT_PTR(synch_buf),
-  * the function that registered it, so a secondary function can capture here
-  * without serializing against the primary.
-  */
--static int efx_ptp_synchronize(struct efx_nic *efx, unsigned int num_readings)
-+static int efx_ptp_synchronize(struct efx_nic *efx, unsigned int num_readings,
-+			       struct pps_event_time *host_time_pps)
- {
- 	struct efx_ptp_data *ptp = efx->ptp_data;
- 	MCDI_DECLARE_BUF(synch_buf, MC_CMD_PTP_OUT_SYNCHRONIZE_LENMAX);
-@@ -1069,7 +1073,7 @@ static int efx_ptp_synchronize(struct efx_nic *efx, unsigned int num_readings)
- 				 &response_length);
- 	if (rc == 0) {
- 		rc = efx_ptp_process_times(efx, synch_buf, response_length,
--					   &last_time);
-+					   &last_time, host_time_pps);
- 		if (rc == 0)
- 			++ptp->good_syncs;
- 		else
-@@ -1501,14 +1505,15 @@ static void efx_ptp_pps_worker(struct work_struct *work)
- {
- 	struct efx_ptp_data *ptp =
- 		container_of(work, struct efx_ptp_data, pps_work);
-+	struct pps_event_time host_time_pps = {};
- 	struct efx_nic *efx = ptp->efx;
- 	struct ptp_clock_event ptp_evt;
- 
--	if (efx_ptp_synchronize(efx, PTP_SYNC_ATTEMPTS))
-+	if (efx_ptp_synchronize(efx, PTP_SYNC_ATTEMPTS, &host_time_pps))
- 		return;
- 
- 	ptp_evt.type = PTP_CLOCK_PPSUSR;
--	ptp_evt.pps_times = ptp->host_time_pps;
-+	ptp_evt.pps_times = host_time_pps;
- 	ptp_clock_event(ptp->phc_clock, &ptp_evt);
+ /* Ensure that TCP PAWS checks are relaxed after ~2147 seconds
+  * to avoid overflows. This assumes a clock smaller than 1 Mhz.
+@@ -912,12 +914,18 @@ static inline u32 __tcp_set_rto(const struct tcp_sock *tp)
+ 	return usecs_to_jiffies((tp->srtt_us >> 3) + tp->rttvar_us);
  }
  
-@@ -1844,7 +1849,8 @@ int efx_ptp_change_mode(struct efx_nic *efx, bool enable_wanted,
- 				rc = efx_ptp_start(efx);
- 			if (rc == 0) {
- 				rc = efx_ptp_synchronize(efx,
--							 PTP_SYNC_ATTEMPTS * 2);
-+							 PTP_SYNC_ATTEMPTS * 2,
-+							 NULL);
- 				if (rc != 0)
- 					efx_ptp_stop(efx);
- 			}
+-static inline unsigned long tcp_reqsk_timeout(struct request_sock *req)
++static inline unsigned long tcp_reqsk_timeout_sk(const struct sock *sk,
++						 const struct request_sock *req)
+ {
+-	u64 timeout = (u64)req->timeout << req->num_timeout;
++	u64 timeout = (u64)READ_ONCE(req->timeout) <<
++		      min_t(u8, req->num_timeout, 30);
++
++	return (unsigned long)min_t(u64, timeout, tcp_rto_max(sk));
++}
+ 
+-	return (unsigned long)min_t(u64, timeout,
+-				    tcp_rto_max(req->rsk_listener));
++static inline unsigned long tcp_reqsk_timeout(struct request_sock *req)
++{
++	return tcp_reqsk_timeout_sk(req->rsk_listener, req);
+ }
+ 
+ u32 tcp_delack_max(const struct sock *sk);
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index 8151c638a24c..ee7b64f3141c 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -1072,6 +1072,8 @@ static void reqsk_timer_handler(struct timer_list *t)
+ 	net = sock_net(sk_listener);
+ 	max_syn_ack_retries = READ_ONCE(icsk->icsk_syn_retries) ? :
+ 		READ_ONCE(net->ipv4.sysctl_tcp_synack_retries);
++	max_syn_ack_retries = min_t(int, max_syn_ack_retries,
++				    MAX_TCP_SYNACK_RETRIES);
+ 	/* Normally all the openreqs are young and become mature
+ 	 * (i.e. converted to established socket) for first timeout.
+ 	 * If synack was not acknowledged for 1 second, it means
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 99d7237a623d..a309fd45ad42 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -358,7 +358,7 @@ static u8 secs_to_retrans(int seconds, int timeout, int rto_max)
+ 		int period = timeout;
+ 
+ 		res = 1;
+-		while (seconds > period && res < 255) {
++		while (seconds > period && res < MAX_TCP_SYNACK_RETRIES) {
+ 			res++;
+ 			timeout <<= 1;
+ 			if (timeout > rto_max)
+diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
+index e56eae4bc341..f7b100334a89 100644
+--- a/net/ipv4/tcp_timer.c
++++ b/net/ipv4/tcp_timer.c
+@@ -469,6 +469,7 @@ static void tcp_fastopen_synack_timer(struct sock *sk, struct request_sock *req)
+ 	 */
+ 	max_retries = READ_ONCE(icsk->icsk_syn_retries) ? :
+ 		READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_synack_retries) + 1;
++	max_retries = min_t(int, max_retries, MAX_TCP_SYNACK_RETRIES);
+ 
+ 	if (req->num_timeout >= max_retries) {
+ 		tcp_write_err(sk);
+@@ -490,7 +491,7 @@ static void tcp_fastopen_synack_timer(struct sock *sk, struct request_sock *req)
+ 	if (!tp->retrans_stamp)
+ 		tp->retrans_stamp = tcp_time_stamp_ts(tp);
+ 	tcp_reset_xmit_timer(sk, ICSK_TIME_RETRANS,
+-			  req->timeout << req->num_timeout, false);
++			     tcp_reqsk_timeout_sk(sk, req), false);
+ }
+ 
+ static bool tcp_rtx_probe0_timed_out(const struct sock *sk,
 -- 
-2.34.1
+2.43.0
 
