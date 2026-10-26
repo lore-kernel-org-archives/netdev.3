@@ -1,59 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793023873;
-	b=f+ktnaoWbc7dYWtpylmniemCi2EDNUcBXPX20CHNzlT9PTHw7Q3jO6IqjHoZdF7Z/7jp
-	 TUpRLaTujpztiALKVttYDpacHkcQcuDPgI1Dsa2E65DUKNiZxZ/8nTKtq4OVew7XpOUFT
-	 3XlKpGpL3JztA3d8p47NcyTOyw7LN8V5Am5x+D5HSzmH7IESwbb5y7ZjAhZNlNcBSiVRy
-	 LaaG8hUGmFG+eGPBHrrMmQ1HgEdGJDmdguY77QHslYfHeYJyMhLkjMqGuAhD2Cac5MF5n
-	 ecyupvn8I9NLDKW19aKdbTMo6MVomeUsA9pCZz7n4v6N5Y/2bC5bhnmkZTqGtEmFyYg==
+	t=1793024173;
+	b=Cnm6UnYt0cRKlgN7z1ednZqKmBGAgsM72svcPbGGZdNggJp6nPMOxB7/g5PKaGcFQwe4
+	 qZBX1dG9zJObR6LG49Af3LPg8yI4c9MlRlkELqYYxTNVI/UI1zZbWYTxATon2tihu4kuK
+	 xsCzpzyhJYRkpSlQIW+4knDd1gN7Xq+GHOFNzaDoK0G7+99GjZMgParH8Wcn8qqIY2GRn
+	 YmshTV12PTGzgOaG6bVEp7OJiVr+82oq1AozROkD90Jw9A8oGg/uLawiYFy2Eo3ZO1zg9
+	 cFr2GFase97O9hZGt1fHR+8BlVkPv5YrEslDYT6jgD4fSCgLMPf/8Wk2ftcFrE+YDlw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793023873;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=BpPlCyW8MdukDPLDPoCBq82lXRwMXzHMiBUUHDnO06E=;
-	b=1aKJSNooIcccQp9hT1607cuXKq5HlOCfv7ZJkvxhxMFNsn5MN3AAMiI6Yay/yZF7ePAK
-	 5qqEMXDXLH+vfeTEFbZncRA47lZJFQazcrD0NLbuFbcaLZpHS6SDfXUHHs3DKJzmQ1bZ3
-	 vTYFddwe4rI0aSE02f3uMjK/1U3a1Uk2ITIzJutBeHuF00E+gTvkOWknaS6vcD4P2aJmi
-	 8uS0lIVPPOwPzUlOgQsJKIPnu2HLzB4ZP6Oi0Vb82rll6wy09v6JT1SETwHGLff6bdMLl
-	 QDVFRnorXD8qOIjVwQgNJ2S83yS0v82unATVAtPELQqXEyJnGs9niXwFJQvDmZynBig==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793024173;
+	h=Received:DKIM-Signature:Received:X-Gm-Message-State:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=+cY3MnydBaxpTejs+U772a+2Cy8wWYNpsnXZyyAN6zs=;
+	b=aMAU8MyqQo/rrFns3niMRkUamZxFw3LgyuM/y1rq8yg6QF3Wvcz1PWsbG7IJnpvF0nR7
+	 N0Qz/NWH6pTKxHDsu03sL5zCFYcdOUib0QM6jjz7ggKzQ5VREYAWyCLUChglrbYtRK+lu
+	 swoc2q9wUbWjSZS20i/Y84RX/3+4xkRgj8pPMoTPr9h9z0AaJZsZZJl3+PQMLZEQBj1x9
+	 rIIsB4QQlTf2RNRJsZj4i3cb5XRFbMUylFftJFRuzaBTcQfFZJQsvj23s+4kgzXP4l/bS
+	 +3oGIyaMfmpYg0SHXrSvDB85Un7khUa2+z5T/URfdrTiHNlZkSmF+edx/m2BGDNeV4Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j2qzC504;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="nqNa1/Dy";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048CA606A336;
-	Mon, 26 Oct 2026 14:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942F0606A31B
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 14:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j2qzC504
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 152511F031E4;
-	Mon, 26 Oct 2026 14:11:12 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nqNa1/Dy
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AC7D1F01828
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 14:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793023872;
-	bh=BpPlCyW8MdukDPLDPoCBq82lXRwMXzHMiBUUHDnO06E=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=j2qzC504KeoyuAp8rjboPSm/y/7l8ynmvGfsmXS5S39FeXCV8NQ2evyzWdMS5H2Mn
-	 Meo63FrQKk7CnNjncoJwNsQrce6wP2zvYS+zEhYyUO2yIsgZaXw7Ukmv2m0P1l/YMp
-	 RSismZDgdpgIBT9XRIsp13c8VOw+s4S4JUwAOJ08Nf+QXcj4VnfgVnjmX2sW6AssCJ
-	 pw9LIHlgTlSwyPGhArunpzCOb47DnEbc6XfndgsFRychSu+9tTpvF4N/pbD/Fruzki
-	 dZeN6FRFEOOAmQ4ObDYD/rZiCt9ar+7aS4Y7Jp8ECXrC4of2MbtlPH1NXExN26aXYd
-	 kpOFmqwbXcGPQ==
-Subject: Re: [PATCH net] sfc: fix use-after-free of filter_work in
- efx_realloc_channels()
-From: netdev-bot+sashiko@kernel.org
-To: congei42@163.com
-Cc: netdev@vger.kernel.org, ecree.xilinx@gmail.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- kees@kernel.org, linux-net-drivers@amd.com, linux-kernel@vger.kernel.org
-Date: Mon, 26 Oct 2026 14:11:11 +0000
-Message-ID: <179302387159.3134.8640588618973558922@kernel.org>
-In-Reply-To: <20261022133927.3860186-1-congei42@163.com>
-References: <20261022133927.3860186-1-congei42@163.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1793024172;
+	bh=+cY3MnydBaxpTejs+U772a+2Cy8wWYNpsnXZyyAN6zs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=nqNa1/Dy/3OuGHMDuHCxnDA69VqYaxF8iPNvDPaxcQSNUT83yoVdg/v8pp6IySMLR
+	 0lvCuURfNH58fdR2qbgZZLTWBq5A83x68WlcSlxLjB1o5eqlhfr/rPmd3OAwdroxBF
+	 2K8ZlLiFKwdf+yo0nz109mAjMypebWcGiniID4IaVbP5M3RO7bWLTl8SalXu0KYVe/
+	 oSiA69ikaaqm7OCIkrPSpEXmKxm5lq7l1Sm40hyiyuxRka/S5tZDnkc6NaxMFGVoqf
+	 /MWU8NQapaakuG4TajgTnlqlg/b0++c1jC2FNP+JLEAVc7fJuWvmePKWZMual9vWfZ
+	 PNUW8n1NQHsZg==
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-48ed0b68895so1594419fac.1
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 07:16:12 -0700 (PDT)
+X-Gm-Message-State: AFq9FYKMrEq3cfe+cafuUFfGvp6V44bOMkf4fQsAf73ouaAUsy4MD7do
+	TjqVuqgP1SQ9S1DN20ltFJLQcj1AnM3PDvBeATKjJ6/iIUYJMYd3yBxafwXLNKBoITflD9jReLo
+	JRD2AEJNMj/xZLqbASm0+82mCKBNOJxg=
+X-Received: by 2002:a05:6871:690e:b0:48f:e22e:7f8d with SMTP id
+ 586e51a60fabf-4a83f6309demr3886521fac.46.1793024171246; Mon, 26 Oct 2026
+ 07:16:11 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,116 +58,223 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+References: <ACT-N6N4.v3.r0.20261023200137@mojatatu.com> <ACT-N6N4.v3.r0.20261023200137-1@mojatatu.com>
+ <ACT-N6N4.v3.r0.20261023200137-2@mojatatu.com> <CAM0EoMnjxmnoZ3a4XCB9YERcCwYhYW8-jKw1UZ79YzhFct9+KQ@mail.gmail.com>
+ <CAM0EoMkct9bMMZHPRKh3xZ-L5GTX0SeLdnp_NQd+C_QWspHW8w@mail.gmail.com>
+ <CAL4WiirtOb9t7DHTk_bawuhAUeKYTQL_p0DvOZDL-HhuKr+h2w@mail.gmail.com> <CAM0EoMmGnxd6s+e_VN734KbbYK5UVZH6yzeU55En2-VqyGkSrw@mail.gmail.com>
+In-Reply-To: <CAM0EoMmGnxd6s+e_VN734KbbYK5UVZH6yzeU55En2-VqyGkSrw@mail.gmail.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Mon, 26 Oct 2026 15:16:00 +0100
+X-Gmail-Original-Message-ID: <CAL4WiiovvM9OTbMdN3+-74gSV520ihh1yqevH2T+OoWNiL2k4Q@mail.gmail.com>
+X-Gm-Features: AclHuK8sa-GSJA3YvJjIOMkEBqSSsZbALKWquXdky5Cq4xCTPHK6cecO9xXd7fw
+Message-ID: <CAL4WiiovvM9OTbMdN3+-74gSV520ihh1yqevH2T+OoWNiL2k4Q@mail.gmail.com>
+Subject: Re: [PATCH net v3 2/6] net/sched: act_mpls: pull the inner Ethernet
+ header after POP
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
+	Victor Nogueira <victor@mojatatu.com>, "David S . Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Martin Varghese <martin.varghese@nokia.com>, Pravin B Shelar <pshelar@ovn.org>, Vega <vega@nebusec.ai>, 
+	Willem de Bruijn <willemb@google.com>, Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Le lun. 26 oct. 2026 =C3=A0 14:52, Jamal Hadi Salim <jhs@mojatatu.com> a =
+=C3=A9crit :
+>
+> On Mon, Oct 26, 2026 at 9:10=E2=80=AFAM Eric Dumazet <edumazet@kernel.org=
+> wrote:
+> >
+> > Le lun. 26 oct. 2026 =C3=A0 11:32, Jamal Hadi Salim <jhs@mojatatu.com> =
+a =C3=A9crit :
+> > >
+> > > On Mon, Oct 26, 2026 at 5:42=E2=80=AFAM Jamal Hadi Salim <jhs@mojatat=
+u.com> wrote:
+> > > >
+> > > > On Sat, Oct 24, 2026 at 10:28=E2=80=AFAM Jamal Hadi Salim <jhs@moja=
+tatu.com> wrote:
+> > > > >
+> > > > > The issue:
+> > > > > When the configured inner protocol is ETH_P_TEB, act_mpls POP can=
+ leave
+> > > > > the inner Ethernet header in a page fragment after skb_mpls_pop()=
+, either
+> > > > > on an L3 device (mac_len =3D=3D 0) or chained after act_vlan POP_=
+ETH.  A
+> > > > > following eth_type_trans() can then BUG in __skb_pull().
+> > > > >
+> > > > > The Fix:
+> > > > > After the pop, pull the inner Ethernet header into the linear are=
+a only
+> > > > > when p->tcfm_proto is ETH_P_TEB; drop the packet only when that p=
+ull
+> > > > > fails.  Other inner protocols (IP, MPLS, ...) have no inner Ether=
+net
+> > > > > header and must not be required to carry one.  The pull is a no-o=
+p when
+> > > > > the header is already linear.
+> > > > >
+> > > > > Conditions to recreate the bug:
+> > > > > - egress tc filter on lo: action vlan pop_eth action mpls pop pro=
+tocol teb
+> > > > >   (chained), or on an L3 device where mac_len =3D=3D 0.
+> > > > > - AF_PACKET SOCK_RAW with PACKET_VNET_HDR, hdr_len=3D28, and a no=
+n-linear
+> > > > >   eth / mpls / inner-eth frame.
+> > > > > - The inner header is in page frags; a following eth_type_trans()=
+ can BUG
+> > > > >   in __skb_pull().
+> > > > >
+> > > > > Fixes: 2a2ea50870ba ("net: sched: add mpls manipulation actions t=
+o TC")
+> > > > > Reported-by: Vega <vega@nebusec.ai>
+> > > > > Link: https://lore.kernel.org/r/40fe2d7dfce13411bfbe9271c0f7c54fb=
+7e88e3b.1782548651.git.bronzed_45_vested@icloud.com/
+> > > > > Link: https://lore.kernel.org/netdev/CAL4WiiqSMdYQYeeW0Fk_GK6ekR4=
+xiS4zPrGKrbB9wZknpqf1-w@mail.gmail.com/
+> > > > > Link: https://lore.kernel.org/netdev/willemdebruijn.kernel.26d1dd=
+b3bd2ae@gmail.com/
+> > > > > Cc: stable@vger.kernel.org
+> > > > > Suggested-by: Jakub Kicinski <kuba@kernel.org>
+> > > > > Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+> > > > > Suggested-by: Eric Dumazet <edumazet@kernel.org>
+> > > > > Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+> > > > > Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> > > > >
+> > > >
+> > > > For the series
+> > > >
+> > > > pw-bot: cr
+> > > >
+> > > > Eric, you are reading this? See the discussion with Willem.
+> > > >
+> > >
+> > > And to be clear, I am suggesting we fix both the producers and consum=
+ers.
+> >
+> > I don't think we need to touch loopback / eth_type_trans() directly
+> > (that's the per-driver cost I pushed back on for tun). There is a singl=
+e
+> > natural choke point: the egress fall-through in sch_handle_egress(),
+> > right before the skb goes back to the driver's ndo_start_xmit(). A
+> > device advertises how much link-layer header it needs via
+> > dev->min_header_len, and that is exactly the amount eth_type_trans()
+> > will pull. One check there covers act_vlan, act_mpls with any inner
+> > protocol, act_ife, pedit, and BPF, now and in the future:
+> >
+>
+> You are resolving part of it with this choke point but: the primary
+> concern is that ebpf can make changes that will still cause crashes at
+> the consumer.
+> Point is not whether you guard against bpf_skb_adjust_room() but more
+> the boundary coverage i.e not correctness of the check. You are
+> suggesting to (iiuc) to fix the other stuff inside ebpf? Here are some
+> sample holes (there are probably others):
+>
+> 1) bpf_skb_adjust_room() then bpf_redirect() - note: bpf_redirect()
+> returns TC_ACT_REDIRECT; sch_handle_egress() returns at the redirect
+> case before the check
+> 2) bpf_skb_adjust_room() then bpf_clone_redirect(); The clone is sent
+> immediately inside the helper and escapes; the original skb may then
+> return TC_ACT_OK and be checked
+> 3) you are handlin egress only - ingress still vulnerable
+>
+> and xdp totally bypasses sch_handle_egress() [think
+> bpf_xdp_adjust_head() then XDP_PASS or XDP redirect to veth
+>
+> I havent looked closely at the OVS ones you said to drop but hand wave
+> review seems they can be bypassed (likely i am missing something), so
+> we cant drop those.
+>
+> summary?
+> The concern =E2=80=9Cproducers alone cannot protect=E2=80=9D remains vali=
+d unless you
+> convince other wise ;-> Your turn...
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 1
+We agree on the premise: producers alone cannot protect. Your bpf
+skb_adjust_room case is the proof - no act_vlan/act_mpls change stops a
+later program from shrinking mac. That is exactly why I went to a
+boundary rather than to the producers. So the question is only whether
+the egress fall-through is the *complete* boundary, and you are right to
+push on that. I went and tested your holes instead of hand-waving.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Setup: inject a non-linear frame on lo via AF_PACKET+PACKET_VNET_HDR
+with hdr_len=3DETH_HLEN, so the linear area holds only the outer Ethernet
+header and the inner one sits in frags (this geometry is what actually
+BUGs; hdr_len=3D28 keeps the inner header linear and nothing crashes).
+Each case in its own netns, PANIC_ON_OOPS=3Dy:
 
-- [High] sfc: missing flush of efx_filter_rfs_work() in
-  efx_realloc_channels()
-- [Low] The commit fixes a use-after-free in efx_realloc_channels() and
-  efx_siena_realloc_channels() that a CAP_NET_ADMIN user can trigger…
+  A  vlan pop_eth                                  (TC_ACT_OK)
+  B  vlan pop_eth + mpls pop protocol ip           (TC_ACT_OK)
+  C  vlan pop_eth + bpf skb_adjust_room(-1, MAC)   (TC_ACT_OK)
+  D  vlan pop_eth + bpf_redirect(veth, 0)          (TC_ACT_REDIRECT)
+  E  vlan pop_eth + bpf_redirect(lo, 0)            (TC_ACT_REDIRECT)
 
---
+                          net          net + egress guard
+  A  pop_eth              BUG          dropped, no BUG
+  B  + mpls pop ip        BUG          dropped, no BUG
+  C  + bpf shrink         BUG          dropped, no BUG
+  D  + bpf_redirect veth  no BUG       no BUG
+  E  + bpf_redirect lo    no BUG       no BUG
 
-sfc: fix use-after-free of filter_work in efx_realloc_channels()
+So the egress fall-through guard covers A/B/C, i.e. everything that
+leaves tc on the TX path, for any inner protocol and including the BPF
+shrink - no ETH_P_TEB guessing.
 
-The patch cancels each old channel's aRFS filter_work before
-efx_realloc_channels() frees the channel. Without this, an ethtool -G ring
-resize can leave a self re-arming delayed work pending inside a freed
-efx_channel. The same fix is applied to efx_siena_realloc_channels() in the
-Siena driver.
+On your holes 1 and 2 (bpf_redirect / bpf_clone_redirect): I could not
+make them BUG, on net or with the guard. The reason is that these go
+through __bpf_redirect_common(), and after a pop_eth the mac header sits
+exactly at the network header, so the existing
 
-> Signed-off-by: Sicong Huang <congei42@163.com>
+    if (skb->mac_header >=3D skb->network_header || skb->len =3D=3D 0)
+            kfree_skb(skb);
 
-[Severity: Low]
-Should this patch carry Fixes: tags? The only trailer is Signed-off-by. A
-CAP_NET_ADMIN user can trigger this use-after-free with ethtool -G. Without a
-Fixes: tag, stable and backport tooling cannot tell which trees need the fix.
+already drops the frame before it can reach eth_type_trans() (confirmed:
+the skb never lands on the peer, rx_bytes does not move). clone_redirect
+takes the same __bpf_redirect() path, so same outcome. In other words
+that boundary is already guarded for this producer - just by a different
+test than min_header_len.
 
-The work stays pending because of the unconditional re-arm at the end of
-efx_filter_rfs_expire() in drivers/net/ethernet/sfc/efx_channels.c:
+The residual there is the case I flagged in my previous mail: a producer
+that leaves mac_header strictly below network_header (so the check above
+passes) yet with fewer than dev->min_header_len bytes linear. I could
+not build one out of pop_eth / mpls pop (both leave mac =3D=3D nh). If you
+can craft that, that is the one I want to see - and the fix is the same
+dev->min_header_len test added to __bpf_redirect_common(), not a
+per-producer change.
 
-    schedule_delayed_work(dwork, 30 * HZ);
+Hole 3 (ingress): the plain RX path does not call eth_type_trans() a
+second time - the mac header was already pulled by the real driver. The
+only way an ingress action reaches eth_type_trans() again is by
+redirecting to a device's TX/forward, and that goes through the same two
+boundaries: __bpf_redirect_common() for bpf, and your act_mirred patch
+(patch 3) for mirred. So ingress is covered by the same choke points,
+not by the producers.
 
-That re-arm came in with commit 6fbc05e59163 ("sfc: do ARFS expiry work
-occasionally even without NAPI poll"). The resize path never cancels that
-work.
+Hole 4 (XDP): agreed, and this one is genuinely separate. XDP mangles
+the xdp_buff before an skb exists and bypasses sch_handle_egress()
+entirely; bpf_xdp_adjust_head() + XDP_PASS/redirect is an XDP-core
+question, not something an skb-level tc series can or should address. If
+the build-skb path can hand eth_type_trans() a short head there, that is
+its own fix. I will look, separately.
 
-The Siena copy in drivers/net/ethernet/sfc/siena/efx_channels.c came in with
-commit 6e173d3b4af9 ("sfc: Copy shared files needed for Siena (part 1)").
+So my reading of the bounded set, for skb, is:
+  { sch_handle_egress() fall-through, __bpf_redirect_common(),
+    act_mirred } - a handful of boundaries, each a cheap
+  dev->min_header_len test, not every producer and not eth_type_trans()
+  itself (I still don't want a pull on the RX hot path).
 
-Would something like this be appropriate?
+Which maps to the series as:
+  - drop patches 1 and 2 (the egress guard subsumes them; ETH_P_TEB
+    question gone);
+  - keep patch 3 (act_mirred) - redirect boundary;
+  - keep patch 4 (act_ife) - fixes the egress frame, not just the crash;
+  - keep patches 5 and 6 (OVS) as-is - different datapath, no arbitrary
+    BPF, already reviewed.
 
-Fixes: 6fbc05e59163 ("sfc: do ARFS expiry work occasionally even without NAPI poll")
-Fixes: 6e173d3b4af9 ("sfc: Copy shared files needed for Siena (part 1)")
+If you still think 1 and 2 earn their place, the concrete thing that
+would settle it is a redirect repro that BUGs with mac < nh - I will
+happily eat my words. I can share the reproducers above if useful.
 
-Another option is to split the patch per driver, so that each half has its
-own Fixes: tag.
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/sfc/efx_channels.c b/drivers/net/ethernet/sfc/efx_channels.c
-> --- a/drivers/net/ethernet/sfc/efx_channels.c
-> +++ b/drivers/net/ethernet/sfc/efx_channels.c
-> @@ -896,6 +896,9 @@ int efx_realloc_channels(struct efx_nic *efx, u32 rxq_entries, u32 txq_entries)
->  	for (i = 0; i < efx->n_channels; i++) {
->  		channel = other_channel[i];
->  		if (channel && channel->type->copy) {
-> +#ifdef CONFIG_RFS_ACCEL
-> +			cancel_delayed_work_sync(&channel->filter_work);
-> +#endif
->  			efx_fini_napi_channel(channel);
->  			efx_remove_channel(channel);
->  			kfree(channel);
-
-[Severity: High]
-Does this close the whole window, though? filter_work is not the only
-deferred work that holds a pointer to an efx_channel.
-
-When aRFS steers a flow, efx_filter_rfs() claims a slot in
-efx->rps_slot[] and schedules req->work. That work runs
-efx_filter_rfs_work() in drivers/net/ethernet/sfc/rx_common.c, which
-looks up the channel once at entry:
-
-    struct efx_channel *channel = efx_get_channel(efx, req->rxq_index);
-
-It then calls efx->type->filter_insert(). That call can sleep on
-efx->filter_sem and the filter table locks, and can wait for MCDI.
-After filter_insert() returns, the work goes on using the cached
-pointer. It reads channel->rps_flow_id and updates
-channel->rfs_filter_count and channel->n_rfs_succeeded or
-channel->n_rfs_failed. It may also call
-__efx_filter_rfs_expire(channel, ...).
-
-Suppose a request is queued just before efx_stop_all() and is still
-inside filter_insert() when efx_realloc_channels() swaps
-efx->channel[] and kfree()s the old channel. Those accesses then hit
-freed slab memory.
-
-There is a second effect. The counter update lands in the old channel
-rather than the copy, so the replacement channel's rfs_filter_count no
-longer matches what was installed in the hardware table.
-
-Nothing on the resize path waits for efx->rps_slot[].work. That covers
-efx_stop_all(), efx_soft_disable_interrupts() and the teardown loop,
-so cancelling filter_work alone does not stop this. Siena has the same
-efx_filter_rfs_work() in drivers/net/ethernet/sfc/siena/rx_common.c
-and the same gap in efx_siena_realloc_channels().
-
-This patch already fixes the old channel being freed under a work
-item. Could it also wait for in-flight aRFS insertion work before the
-old channels are freed? One option is to flush each
-efx->rps_slot[i].work after NAPI is stopped and before the swap. Or is
-there something that already serialises efx_filter_rfs_work() against
-the resize that I am missing?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261022133927.3860186-1-congei42%40163.com
+Thanks,
