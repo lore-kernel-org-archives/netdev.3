@@ -1,57 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793056025;
-	b=BkOhwIML2gtr+jVXOXlw2EBQbweCOCcro29k+g37TkCimP8BUWu1x4qYsw88Wr+c4z+h
-	 /PGhpLwt6ylUPOUAkb2dGWLNEnZsezYivFy1qXzijP/xwx/f1VVfOZt9Kz7unKRNu01vi
-	 gD4N2uAgt2HUgc3//PShcciHScUwj6bAMNHU9CftmN4K/oBPBnseQQTLl05NuLYizWAOL
-	 L3CK3/a86nrskj7ClKNzMwJAEjNb8P06zPQtjDwLFoTDS8p1Yz9Hm4KCWLVQ2jTzJh2RI
-	 GpOIwmMrxL9TV+7HzvsTFOPKdt+tNyxgqwobr0Cb9XEWr+B5oUYDEM3S+RshNGXe2lQ==
+	t=1793056027;
+	b=gLc2iL4YAYD+Pn04YcxtfX2RqGKKeoNAjHtURFQ4wWvYEQzGYYBflRIylRQkLMdNV99m
+	 bbXwaT7LK4sozU1JcYnLZlq3h14YVqIuubJwnYgaKLHgWXuim9sDWW1rZMQTKy8g/i6A6
+	 jZMY+H0iwN5l5SHACQLYKbjVqosLIQ4VJ3GK0C1QpLOJ1Zb+5Oi/PDyc2x84mstB9DLQA
+	 PlDGQKu4kyVDvkGaGfhO+PZVwaTYW0qOlWKFyPMToRHd0tqCThHcdLwFX5XN+ON3Wu1HF
+	 /gRLaWHkFd1PBN08mLaPqPnzSgY6DxODFtGeO6Am7h/oWgF79atDU7c6LUb6Iv/5PrQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793056025;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793056027;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=oPD5SqKlTZOC0NnEMGcHJVShraHtb9hDhDLXr3wErmU=;
-	b=NXX9K45gaCahflBMIQXrGXSVx4UG2IW0YZsdnsnEveYK6p7YxjeWvWedWVmaM3qkJPWy
-	 2cQ4lC/G7Cqa5KaNhS7wdbIq4rWXZibr7qdmdskEPgIU4Q51gT7Y/K1KELkEHD1Gm9TeZ
-	 +ahkjBqTjkq5oNhpXR3SN67htT+8GXxuQ7e53yuIX0uAozGb0eQj7zYQfSlKUapP2CVca
-	 sgQQjjyy7uE0brDguj8F4PFTFwCU8iE2yyeAvG0viy+hbmuNqo4rmyQlsCLrA2ExuBX6F
-	 mnZeGg8c4BabWa+mO9mtN707vogmcF7ki3bKM166uZcAqPzmsztCVntrjc7kt97j4Kw==
+	bh=cHpKnaLvTFTPYsx/NVwHyh0ZcsClx45PWlCQo1pFj+w=;
+	b=N324n3iLJWt0MnhI5wZqTiBv3Y35tlv5fHM/ZiZzODOka6l2lqcqNS4bFumIK3jv+xNp
+	 mQYLhEhGyIWWj3TimM1jNK7qPP/1Fj+V12yq3LLjhH25uJjY+mEhtp3x6XTpZ+dDN0RIq
+	 jvzPyuSWR+7t31g97J+b19LLb6nm+5jRdiEZ8PcYFQOgCUmoVW/M10/qeFL5Vjo3x5HQi
+	 68yfvZT+1A9IgwA2bbLVKHQ2AFG7GTv6PNpd3Q+t+T5WzmaMNLNn7gcxB15a78X59pjUl
+	 ZrOrx4sRzsuqhXIiEo5AbAmagUUYC9ufqLKVuO/GGb600QKpi6lq135NdkoHwkIeQWw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="mz/ypiZT";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Z98xm/jV";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E43606A322;
-	Mon, 26 Oct 2026 23:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8914D606A325;
+	Mon, 26 Oct 2026 23:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mz/ypiZT
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 787EB1F031E1;
-	Mon, 26 Oct 2026 23:07:04 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Z98xm/jV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAD871F031E6;
+	Mon, 26 Oct 2026 23:07:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793056025;
-	bh=oPD5SqKlTZOC0NnEMGcHJVShraHtb9hDhDLXr3wErmU=;
+	s=k20260515; t=1793056027;
+	bh=cHpKnaLvTFTPYsx/NVwHyh0ZcsClx45PWlCQo1pFj+w=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=mz/ypiZTINTy1u8SRMIn/2UCfkCCeTs6Ki6fA97t4Vz0KTe9Z1aEIG84Ad2KXwE5f
-	 E3wQ3P4IhKoNZzN1ZMgEZvLboEHEvDJ07CS2JsRv+DYQfcUwNB9vEEbA7lPu8eqiD+
-	 XRXVLLKO6v80TFKmIOYGhh6yziDTJrHi/AKVlrjUca8e/i9VcL7pObgzeT3O0nCKGs
-	 aCBSSH/hPhtAluQvlFpqTowdQTD00w6FKu9UJsAlgLD1TWF3nR1eSn6MhF6rifc6oo
-	 4Z6kPmcKrVcI/fB16MsNfVcyzCp3Z1Ecs4jFylLR60cd+X5sNwmophUjGufEe1nXEZ
-	 O9U/pQlmAm51g==
-Subject: Re: [PATCH net v2 1/4] net: phy: as21xxx: handle corner case with
- link and autoneg complete
+	b=Z98xm/jVPcJrFcR5BChPoLPJpmAObj6q7LUEbYg8O8yfQ7tY1Z4bSA9H4nl6mVUQM
+	 eG/sJWl2DwLJKRamCYkbU9OstNDZ2wbi9mcfri2RBIy9mz3db21GqIrfct807FMWYN
+	 xAUNrc1TshJGLZGPlM74umrBO3nzZWzTLcpsHrx9b6h3tgGRJJRrqt6lFO4Q20XgaU
+	 IIUMgGVbPq2/mlBnr5ZuVoVk4gDM8S4D/0sEPHb36PuF5Dih1AWzJbHkaDbPqxk9nN
+	 +xnfsZf/LfZXev5E8TnQh5g2gOXKwsyKuIdxBRBnHf7Q/RIKhZU0DtkxQrtOfumvFu
+	 2hc8IbQyTwTcA==
+Subject: Re: [PATCH net v2 3/4] net: phy: as21xxx: force C45 OPs for AUTONEG
 From: netdev-bot+sashiko@kernel.org
 To: ansuelsmth@gmail.com
 Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
  davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 26 Oct 2026 23:07:04 +0000
-Message-ID: <179305602406.3134.12536030010913078225@kernel.org>
-In-Reply-To: <20261022222955.698722-1-ansuelsmth@gmail.com>
-References: <20261022222955.698722-1-ansuelsmth@gmail.com>
-X-sashiko-severity: Low
+Date: Mon, 26 Oct 2026 23:07:06 +0000
+Message-ID: <179305602633.3134.8105334301986052059@kernel.org>
+In-Reply-To: <20261022222955.698722-3-ansuelsmth@gmail.com>
+References: <20261022222955.698722-3-ansuelsmth@gmail.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -64,68 +63,146 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 2 · Low: 0
 
-- [Low] The commit message for "net: phy: as21xxx: handle corner case
-  with link and autoneg complete" describes the wrong condition.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The new as21xxx_config_aneg() in drivers/net/phy/as21xxx.c
+  never checks phydev->autoneg, so a forced speed/duplex request is…
+- [Medium] Installing the custom as21xxx_config_aneg() also drops
+  master/slave (timing role) programming.
 
 --
 
-net: phy: as21xxx: handle corner case with link and autoneg complete
+net: phy: as21xxx: force C45 OPs for AUTONEG
 
-This commit makes as21xxx_read_link() store the autoneg complete bit
-from MDIO_STAT1 in phydev->autoneg_complete. When autoneg is enabled
-but has not completed, it reports the link as down. This is the same
-approach genphy_update_link() takes.
+This patch clears the C22 bit from devices_in_package in as21xxx_probe().
+It adds a custom as21xxx_config_aneg() that uses the generic C45 AN helpers
+and also writes the 1000BASE-T advertisement through the mapped C22
+CTRL1000 register in MMD 7. The new callback is hooked into all of the
+post-firmware driver entries.
 
-> Add missing case in custom read_link, when autoneg is started, autoneg
-> complete bit is reset but link is still not up.
+> diff --git a/drivers/net/phy/as21xxx.c b/drivers/net/phy/as21xxx.c
+> index 519b78d3579d3..e2988cb10c047 100644
+> --- a/drivers/net/phy/as21xxx.c
+> +++ b/drivers/net/phy/as21xxx.c
 
-[Severity: Low]
-Is this the condition the new code actually handles?
+[ ... ]
 
-If the link is not up, MDIO_STAT1_LSTATUS is already clear. That means
-phydev->link is already 0 before the new check runs:
+> @@ -633,6 +640,32 @@ static int as21xxx_probe(struct phy_device *phydev)
+>  	return aeon_dpc_ra_enable(phydev);
+>  }
+>  
+> +static int as21xxx_config_aneg(struct phy_device *phydev)
+> +{
+> +	bool changed = false;
+> +	int ret;
+> +	u16 adv;
+> +
+> +	ret = genphy_c45_an_config_aneg(phydev);
 
-	phydev->link = !!(status & MDIO_STAT1_LSTATUS);
-	phydev->autoneg_complete = !!(status & MDIO_AN_STAT1_COMPLETE);
-	...
-	if (phydev->autoneg == AUTONEG_ENABLE && !phydev->autoneg_complete)
-		phydev->link = 0;
+[Severity: Medium]
+What happens here when phydev->autoneg == AUTONEG_DISABLE? There is no
+forced-mode branch, so a request like "ethtool -s ethX autoneg off speed 100
+duplex full" goes through:
 
-The check only changes anything when MDIO_STAT1_LSTATUS is still set
-and MDIO_AN_STAT1_COMPLETE has already been cleared. The in-code
-comment, copied from genphy_update_link(), describes it that way:
+phy_ethtool_ksettings_set()
+  _phy_start_aneg()
+    phy_config_aneg()
+      as21xxx_config_aneg()
+        genphy_c45_an_config_aneg()
+        genphy_c45_check_and_restart_aneg()
+          genphy_c45_restart_aneg()
 
-	/* Consider the case that autoneg was started and "aneg complete"
-	 * bit has been reset, but "link up" bit not yet.
-	 */
+genphy_c45_restart_aneg() sets MDIO_AN_CTRL1_ENABLE | MDIO_AN_CTRL1_RESTART.
+So autoneg stays enabled, or gets turned back on, and no forced speed or
+duplex is programmed.
 
-Could the commit message be reworded to match? The case being handled
-is that the link up bit has not been reset yet, not that the link is
-not up.
+Before this patch there was no .config_aneg, so phy_config_aneg() used
+genphy_config_aneg()->__genphy_config_aneg(). That path handled forced mode
+with genphy_setup_forced() below 1000, and for 1000 it advertised only the
+requested mode. genphy_c45_config_aneg(), which this code seems to be
+based on, also starts with:
 
-It could also help stable backporters to state the user-visible effect.
-Without this check, as21xxx_read_status() can move from link down to
-link up while genphy_c45_read_lpa() is taking its
-!MDIO_AN_STAT1_COMPLETE branch:
+	if (phydev->autoneg == AUTONEG_DISABLE)
+		return genphy_c45_pma_setup_forced(phydev);
 
-	if (!(val & MDIO_AN_STAT1_COMPLETE)) {
-		linkmode_clear_bit(ETHTOOL_LINK_MODE_Autoneg_BIT,
-				   phydev->lp_advertising);
-		mii_10gbt_stat_mod_linkmode_lpa_t(phydev->lp_advertising, 0);
-		mii_adv_mod_linkmode_adv_t(phydev->lp_advertising, 0);
-		...
-		return 0;
-	}
+The config_aneg kernel-doc in include/linux/phy.h says the callback "forces
+the speed to the current settings in phydev if phydev->autoneg is off".
+as21xxx_read_status() also still has an AUTONEG_DISABLE branch.
 
-In that case phy_resolve_aneg_linkmode() resolves speed and duplex
-after the base page and 10G link partner bits have been cleared. The
-link can then be reported up with an unknown or stale speed.
+Is this a regression for forced link modes? Against a partner forced to
+10/100 full duplex, this side would fall back to parallel detection and end
+up at half duplex. A forced 1000 request would also no longer restrict the
+advertisement, so the link could come up at 2.5G or higher.
+
+Would it make sense to add an AUTONEG_DISABLE branch at the top of
+as21xxx_config_aneg(), for example returning
+genphy_c45_pma_setup_forced(phydev)?
+
+> +	if (ret < 0)
+> +		return ret;
+> +	if (ret > 0)
+> +		changed = true;
+> +
+> +	adv = linkmode_adv_to_mii_ctrl1000_t(phydev->advertising);
+> +
+> +	ret = phy_modify_mmd_changed(phydev, MDIO_MMD_AN,
+> +				     AS21XXX_MDIO_AN_C22 + MII_CTRL1000,
+> +				     ADVERTISE_1000FULL |
+> +				     ADVERTISE_1000HALF, adv);
+
+[Severity: Medium]
+Does this drop master/slave (timing role) programming? The mask only covers
+ADVERTISE_1000FULL | ADVERTISE_1000HALF. genphy_c45_an_config_aneg() only
+writes the advertisement registers, so nothing in this callback uses
+phydev->master_slave_set.
+
+Before this patch, __genphy_config_aneg() called genphy_setup_master_slave().
+That function does:
+
+	return phy_modify_changed(phydev, MII_CTRL1000,
+				  (CTL1000_ENABLE_MASTER | CTL1000_AS_MASTER |
+				   CTL1000_PREFER_MASTER), ctl);
+
+Its result was also counted toward the AN restart decision.
+genphy_c45_config_aneg() does the same through
+genphy_c45_an_setup_master_slave().
+
+The ethtool paths can't reach this for this PHY, because master_slave_get is
+never set and stays MASTER_SLAVE_CFG_UNSUPPORTED. A DT "timing-role"
+property still sets master_slave_set through
+phy_probe()->of_set_phy_timing_role().
+
+With this patch that role is no longer written to the PHY. A role change on
+its own also no longer causes an AN restart. If the link partner is forced
+to the same role, master/slave resolution would fail and the link would not
+come up.
+
+as21xxx_read_c22_lpa() still prints "Master/Slave resolution failed, maybe
+conflicting manual settings?", which suggests manual roles are meant to work.
+
+Should the CTL1000 role bits be programmed in the mapped register as well,
+or genphy_c45_an_setup_master_slave() be called, with the result folded
+into changed?
+
+> +	if (ret < 0)
+> +		return ret;
+> +	if (ret > 0)
+> +		changed = true;
+> +
+> +	return genphy_c45_check_and_restart_aneg(phydev, changed);
+> +}
+> +
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261022222955.698722-1-ansuelsmth%40gmail.com
