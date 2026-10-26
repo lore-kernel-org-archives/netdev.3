@@ -1,112 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.168.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793033715;
-	b=Dd3q9tIImz6dlS/dwckwuJziYN4YmnDhfxYRu72e3K/oY9pmrN/m2yROmoLKjsxbJG1t
-	 /sXuBk1ObLlyK4kFWFu3zoTKPWjMFUHeJfxCDNuDpdKg+2hhFvHklkhiX+sFdSZfel9lH
-	 GFg7svVyYZBfo7CReDcXPfS8sMAMtYoutOVIiw8DF3nLCEsC9ObHtw+yyPWk3yoTE1GjJ
-	 czYwGaUIhPCY4VHBP3jkfmEcrJp19KwUX962ab6NSjY5C8uGnaYfT6QQeMICA32zSl89o
-	 qtcyedJFTPmqJmW9S9giz7j7lxKhCwAwY0K01551EeEy/g/ByWiSLttTwG4dROrH78w==
+	t=1793033782;
+	b=X5HWUJ1wV63w8bn/d5N7micjYOeM8GlHqAOJ6QxCdCZKjebVQ7BJHzYiKF1GnPOQPrBA
+	 xwCJtP3S/jv7KgveaQ6XCQ4Z1auZwyyPEZiuIC141/UxaBmEtailPzpM3/H5atb1XKrBy
+	 O2vcFvMYhD//9wEmUJHf1C7WrQz1CKj5U0RBJl9EGaEC2CeWedp7vfnu/kCQHb0Asgj4m
+	 WB0vAtWBIoakse5kdTPSm1b9VuuWj7ji7+BBHxSRG617bEPZX9/BQkLPD282xjdNHbZCI
+	 dX7CkJk5rcUdAX6/zQy9yENmVbqdHhsMs8PiBokLwulydPPX76hWQvLeomuzOAuRDbA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793033715;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Date:From:
-	 To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=5Ncfe7f40m4/oOnMLlmDO2VljgiOBDlSptMgbtqfgow=;
-	b=aMA+x4hgsHLzMUS1EyWNWfofaSFVy2k+3p8+x0RL/i9TZTpEnc95sAOOWHz0QX2JkPYm
-	 UX0VG8yH+dpHI5E8t8Xm42acyPy88OVmcDioH52Vx5RsZM50VwHL1Zr2BqZVaD86kJiwy
-	 r6Zr6doWwR5WMIPLB6m6X4IbXTqxrmHd4TVMww0n/w2zgw3a2zuSa3IQ74X/9TAWjkYp3
-	 k7LtOvQZDJfcTkSPh1jEspCfVLwegBgiJKb7XJqFPpJ0X9+Q3ZWw6NhzZiQaf/TsM4HZw
-	 NWvZ5WHy0rEawo1pkZbhrNUcYunPn0tCi/3DHty5vAgWTpSCwykKEgq3yL6Y6HTM59w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793033782;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 DKIM-Signature:X-Google-DKIM-Signature:X-Gm-Message-State:X-Gm-Gg:
+	 X-Received:X-Received:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
+	 In-Reply-To:To:Cc:X-Mailer:X-Proofpoint-Spam-Info:X-Proofpoint-GUID:
+	 X-Authority-Analysis:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=F7HsIGgAX4kJ2vdSLJyB0ReVskjk1f4s2+YTG04Qsws=;
+	b=m4it6w6Mdq2VJTMRt/ZuI2xUUoYRPQuLycjlzWIDv5MbAcPq74253DqKyikpCX9Kz7xf
+	 FrA7j036Amj9FMV8OZqAMEH50PwMSpB32teTDwLfcIf1OBRI5EKXCeOygQTc3HcwDScjF
+	 qOkrPcd8ucfh0BZhr+AhXPD44HHOKiLO/hGmSQvxi2Rt8q6ElROWMAsn9zsFUgIbc06wy
+	 +ZK5FBu0n6DJ1fd73CTAJXdOO0SrwLlIHz1HYh6QxfjkoS9c+jJBD5v1ct8DIsZW9yaew
+	 FSFrTu9Lw3Y/UfpEk/AKsxzSZTSgZpBgkCrFStPWMVPaBmRcmyniXTZF9AvDJRkLvSA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SHW2vJaE;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=H5FYDCgr;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=oss.qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=Y7PdC8nF;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=GmzxOt09;
+	arc=none smtp.remote-ip=205.220.168.131
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F68606A31D
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 16:55:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B0F68606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A465606A31A
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 16:56:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6A465606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SHW2vJaE;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=H5FYDCgr
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793033713;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5Ncfe7f40m4/oOnMLlmDO2VljgiOBDlSptMgbtqfgow=;
-	b=SHW2vJaE8L72XFwSgZYJ3W/eXn5K43R8PjoUBNvveTtztnGStSRsYfKXkCYL/YSnp0lXbh
-	8uIkRXUN4UAVcpJlGEE5khtn4hu+i3xbslxOVzitGP/Ho63d2vvj6X8ALgbV4oL/w4vHSn
-	RMyHZ8AjzoW9kY8O0avgejBKutNEwbw=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-664-Vm_1u_KhOfOGQqTya5qiSw-1; Mon, 26 Oct 2026 12:55:11 -0400
-X-MC-Unique: Vm_1u_KhOfOGQqTya5qiSw-1
-X-Mimecast-MFC-AGG-ID: Vm_1u_KhOfOGQqTya5qiSw_1793033711
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48dfa054f26so2793788f8f.2
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 09:55:11 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=Y7PdC8nF;
+	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=GmzxOt09
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69QEwRxg2082464
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 16:56:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	F7HsIGgAX4kJ2vdSLJyB0ReVskjk1f4s2+YTG04Qsws=; b=Y7PdC8nFYb84EkT8
+	53Jiip9p9MA4fsuiX6aA5hG2XK5Rf7ZO4wcX+oMtG1DKKKPXKkCV5Ea0zxH5Ayq2
+	7Q568PHjxn0ElgtDNLmIVaseMOHzcNqEnGtCR0PGocGUUEUsELZGqv9wpMmtZuHc
+	pMaVB9FYVe7hjheSTNPS2fSrMZ5L3R627798gyzLM3VdbIP52SBb4WPyOHLOZZGi
+	QRVfehpBV5ZZrblHjoaw3/VEjfhtqh32J934pbRS3V8tRxcjdXX8BwANJNvJ8VaD
+	QSxcs5Y1s5nEcCjwDuNEmurVQQevDmte5Eklk5Ir8X6ETSRPiIpTseesofStoVkL
+	1Fn1gg==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hhsgsuf9k-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 16:56:21 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93f3969a2a7so578561185a.2
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 09:56:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793033711; x=1793638511; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5Ncfe7f40m4/oOnMLlmDO2VljgiOBDlSptMgbtqfgow=;
-        b=H5FYDCgrOLpHHY0fFZiBp1vY72aSIO8apIc2pPWbatVpT7yosRJKpcT8/VyYaF9WfF
-         N3xbZJnzAX4JKvrmH0JIOR3XS/84Miqppmw4dHWDExrOXd53vIw2xBx4sLaiyj7RtiiL
-         QlRnC4+HiKP4b63jooxapCVq/9NWq5r8dc1LIlALJPMlmcr+nV3FBpVooVOgLKe6eSpL
-         UZJxIWnxwBfq+csBvEitWNMZ8+9eE5mjs+pMydmDoHsNwXYVCsqAqRohSzMKu43BgqZz
-         wau46rzKd9NwwJfySl+zXrUU6nQVNTCIZmtpcCnU55xLVZZmZfM6g4dioDl6w8s+df45
-         jqIQ==
+        d=oss.qualcomm.com; s=google; t=1793033780; x=1793638580; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=F7HsIGgAX4kJ2vdSLJyB0ReVskjk1f4s2+YTG04Qsws=;
+        b=GmzxOt09TNDli66ndOltfH2bu6sfQM1xEegyWqWqRmjwVk/wrhc/S1953sOZ70do6E
+         G8qc9MHbd1auEb0OqA9GjkdFQbpZzkXu3hJe76pnU1/K3w1SMrGSQ0BTE7lPap+wMmaR
+         v/WJUV9Byi10S4Oltwct7ECCwfonAqZ9/rhHkhNsIqEUUF5/zsiIFGn/GvXQMAV0Yy40
+         jQiIuVTIJsU7Yx2DOiY9qPmDYTVsTl3rE6UlzqVcPhpEL9M2QTtHvtKzhhhvrtDOgAkt
+         3a6nvf9rGf5gAvwEG6Idiv0LBY5s3kK15pmvcjyCD/Asa8t2eZw4caRs92oMcnDAKT9o
+         RNnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793033711; x=1793638511;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1793033780; x=1793638580;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=5Ncfe7f40m4/oOnMLlmDO2VljgiOBDlSptMgbtqfgow=;
-        b=qgvcM1MwRqzIfill98u9p+Llb0XPNFJ/eVIf4q1Wz4FrUGIsL443LX1BDAJUNy4Y/X
-         iOjvOtXV1gflLtKkxQVjUO0pzTQaq5xB4B8CWM7+UTS2ICsFNwW04f0nRBWU7e3TygRp
-         W+GSuh6s1SXgt33ZFrnCsJ0yuaQ6oQyiXMeSVDtM5amqpjbOgum7f5xoS4PGwsiErD/x
-         lfsHNAymuJVlrVTblFvCHGVXc9dtqybzSNhq62VRKRWwcHK9oUxLd9HNSsppb6TJlTqu
-         qF+wQIlFBa0PvrBLL/wBu5oueZlFSLYqLxLIo8JGVHAPdv21/2Hzxy9Ea6AfkVyIVzJY
-         3FPA==
-X-Gm-Message-State: AFq9FYJorIz3aVZ68Hhxi2oMBsVEXPsw+hh2ISHhK2W4NEWmkzCR3jfA
-	I4dzxkpbXKYibGo6I1uf61exMVdIO2b+02YnO9njKRKCHW6xBEnaMjJJ/7G39AGJlTZBxXNqxTW
-	bQoxVcKOwTOsfi6JUf/wKdSiszyYekKL4OxubpP9KTKtsNm8/7ByVl+lqEg==
-X-Gm-Gg: AYBFou0x/ubT594/tJfcsqIfxvUjzpeSlCFKu+FfBR81tEHdT4pkU/mU7K48wCOzg9t
-	3Nx56nLdRUE1TkwbquKY5H9RWDCGZ9OJDz17CEpal+V4o+tNJ8KTbVgpa2cC6uR7RkQ6kR8Bosw
-	zCaUCSZqeng0NV91PXJbfpCczPH6mQetOprGOjaSREmAj0KIU6bdpRf9aPXcQ8/PgFaxdH04Vb9
-	kTar9kBhIkSX2SzpwUaBVc37DmgWrXwu+ad1AmQYQtOdTa0axI9O0NRK5yecK0XJJbIRgr4YGB4
-	TUUnXz/KGy7QwN2e4o5CuXa3SIhM7FbsTpIGuZhdbdE/P+kBtZR7wZTkWYA8sjxA+9B2++iYtoN
-	e584ZiijCxrhzPTV952eMp6TaTTthV12G+I+gp5L/Mb/iJ5M3bCyoQw==
-X-Received: by 2002:a05:6000:2504:b0:48e:1421:ed49 with SMTP id ffacd0b85a97d-48e3eb75c9dmr15133866f8f.18.1793033710707;
-        Mon, 26 Oct 2026 09:55:10 -0700 (PDT)
-X-Received: by 2002:a05:6000:2504:b0:48e:1421:ed49 with SMTP id ffacd0b85a97d-48e3eb75c9dmr15133824f8f.18.1793033710329;
-        Mon, 26 Oct 2026 09:55:10 -0700 (PDT)
-Received: from debian (2a01cb0580324c0086a938fffe1eee25.ipv6.abo.wanadoo.fr. [2a01:cb05:8032:4c00:86a9:38ff:fe1e:ee25])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ecdd5b3sm17359379f8f.53.2026.10.26.09.55.09
+        bh=F7HsIGgAX4kJ2vdSLJyB0ReVskjk1f4s2+YTG04Qsws=;
+        b=TLVodYYR18xWd2dtYZtX9l7XzoNRGSf/8/jwsSLjUctOH47yBsqa+0lIOhv1E3AYAm
+         9IzU27xzo98mMwalMvv3VL/XOU4ucLahFePc+e0LqM2i29CFi29q+qfBCmIHYUsb0R25
+         yLnNcTUE97TT5KMUw5mITg20qjbhNuvf6eD0/ivFYLvhvkK2UDWh3GhPYpU1lVIQpJkO
+         0w5Mq+SlpEjLB27uVLCfIlyq+FABjzxNVl2UFfm9eqfa4SApQfRGRJtcfm5xI1e6XLvQ
+         zdntX1IeVNl47f3Emevxs7OcwjeyssSgpoBGx/m7kQ83twhbXCBD0u7cSfCbd8uU4vR7
+         Kd5A==
+X-Gm-Message-State: AFq9FYI0tDIiw4vC0g7PS1i7sVwLifaMfDwJt9aWBXtP99f1QmsESF5S
+	CeilcFvFaLPr8deIHvOi+M5betFJwWL2yQjpGRN691C/XGMM3fuf5rRhSjwd3xGAkSXdNP7rPuF
+	D5OFP+wKp1lJKHJH+o4GorXzLasNsTrRG4YpeYCFR55lHIaVRKvIt/IQ8zxY=
+X-Gm-Gg: AYBFou2bvMUgPgdYi33UcPNKF0bZudtoHmXjVk0nej0W/Xk+5h6b3BsdlqSgJtiTp7G
+	M7xAlto5ZHpCYNbS8TvhdFHxeRk5BQhYSgXN+Dtt+Knl3ooX5omKdmnFtkXLNkILRTfyzpk544O
+	T6LcITBcDbsYsKdSd7QMoV1ic5Txn+bZlcinJj1Gm9qAPTjvzw0EiCXn1gBxqpjaDA1RHDDx6s2
+	ZboJjLMZZ/g5WQ4h8N3wgy64CWIQpxP7CmGEq3jgg0IEduQJb3q9rlZHpueVmB9KrjflE3OqtOZ
+	W9wCBXMpAUt/H5yOp3csWv1gUD0MzfeLX7fzJRzKa3srDvnInlWtNugA8n8BXf4TiS+8tvHoTcV
+	DCyveGmBRWjpmoQtUGdXt/j17TJ2EoFt2UyhvNs9BFhiyo22yQxYFAkScZR2N5I140NZUXD/DUD
+	yGR6AJfq582RDSlsZ9VxKJjw==
+X-Received: by 2002:a05:620a:2b4a:b0:93e:3824:4123 with SMTP id af79cd13be357-940ef9a6b9cmr1108920685a.65.1793033780210;
+        Mon, 26 Oct 2026 09:56:20 -0700 (PDT)
+X-Received: by 2002:a05:620a:2b4a:b0:93e:3824:4123 with SMTP id af79cd13be357-940ef9a6b9cmr1108914085a.65.1793033779685;
+        Mon, 26 Oct 2026 09:56:19 -0700 (PDT)
+Received: from localhost (net-93-144-6-81.cust.dsl.teletu.it. [93.144.6.81])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a35a56992dsm195870245e9.6.2026.10.26.09.56.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 09:55:09 -0700 (PDT)
-Date: Mon, 26 Oct 2026 17:55:07 +0100
-From: Guillaume Nault <gnault@redhat.com>
-To: Hengyu Liang <hengyul@cs.unc.edu>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	jchapman@katalix.com, tparkin@katalix.com
-Subject: Re: [PATCH net] l2tp: only return sessions of the given tunnel in
- l2tp_session_get()
-Message-ID: <at-F69h64Ineg2gp@debian>
-References: <at8-2mFyrmPxfu29@debian>
- <20261026125702.3101778-1-hengyul@cs.unc.edu>
+        Mon, 26 Oct 2026 09:56:18 -0700 (PDT)
+From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Date: Mon, 26 Oct 2026 17:55:56 +0100
+Subject: [PATCH net v4 1/3] net: stmmac: initialize est_lock at probe time
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -116,58 +114,107 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261026125702.3101778-1-hengyul@cs.unc.edu>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261026-stmmac-est-fixes-v4-1-999dac4de44f@oss.qualcomm.com>
+References: <20261026-stmmac-est-fixes-v4-0-999dac4de44f@oss.qualcomm.com>
+In-Reply-To: <20261026-stmmac-est-fixes-v4-0-999dac4de44f@oss.qualcomm.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Jose Abreu <Jose.Abreu@synopsys.com>,
+        James Hilliard <james.hilliard1@gmail.com>
+Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI2MDA2NyBTYWx0ZWRfX+26j+Vv4a3/2
+ u6BLCNKfuArS2xjlqRYtrPwZDwXimXYmh91r8EwvAzFZZWePi1LUECpkjGnbORfb+hOIjzS5Wz5
+ gIWbXVXnlAbScimp6cnHbhkhf/PFGn8=
+X-Proofpoint-GUID: klcidFkaHy6K7zZU5u7Auf4pULQX5o6o
+X-Authority-Analysis: v=2.4 cv=c+8+0h9l c=1 sm=1 tr=0 ts=6adf8635 cx=c_pps
+ a=HLyN3IcIa5EE8TELMZ618Q==:117 a=7fYLNvKHbgS61GKHX+yayQ==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
+ a=EUspDBNiAAAA:8 a=122XcF769uAcj9t3WpgA:9 a=QEXdDO2ut3YA:10
+ a=bTQJ7kPSJx9SKPbeHEYW:22
+X-Proofpoint-ORIG-GUID: klcidFkaHy6K7zZU5u7Auf4pULQX5o6o
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI2MDA2NyBTYWx0ZWRfX/0x1wf96hF0y
+ mDgrYwD6qZ+6y6gWtwN5tUXr3W6NRMoN73uNFwPAPDnZ3o6dC6xq8UJRDIIjMCIxA/KUkU/AkbC
+ pgTa7vvl/v8yn4WNjp+YopxogxfimR1nOMAbmBMxHz/pnDjWxPt5LdnxGs08RfESi66SQ3Aixmx
+ 51ae3DISubDBR8BQV039+L5OJIKds+MB7olN5c9BoD65oXC4H/Zl1gs48Qbl8dL0HNLhAgu3BWu
+ tNTKlGed7fAGbcVmIuiaeMIHtLNHqbyLuWXLsuma+gjgAMbgELeSPGMmkHmIqgZ0Ifad6jQwquX
+ TMWUc7DY44XUJeNSpVHUvgejHZwyPnY/r3abOiMKPmryHBzN0+1gqWA7sf3fdbw2yEhAKcGXN5q
+ 741eFyuA2WhHGs8dAyNZpcYaqbIxi1v7sGIlX8WGP4DEJX8xm1qg+1QGPCB6cHW9g4L2IqmcZhq
+ FP8YWrLUgTTw5kyh+OA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-10-26_03,2026-10-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 lowpriorityscore=0 clxscore=1015 priorityscore=1501
+ suspectscore=0 adultscore=0 phishscore=0 impostorscore=0 spamscore=0
+ bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2610190000
+ definitions=main-2610260067
 
-On Mon, Oct 26, 2026 at 08:57:02AM -0400, Hengyu Liang wrote:
-> Hi Guillaume,
-> 
-> Thanks for looking at this.
-> 
-> I wasn't sure about the intended semantics. l2tp.rst says "L2TPv3
-> session ids are unique across all tunnels", but it also says Linux
-> allows the same ID in different tunnels, told apart by sk, and
-> l2tp_session_register() still allows that for UDP encap.
+priv->est is allocated with devm_kzalloc() on the first TAPRIO REPLACE
+and priv->est_lock is initialized in the same place, which ties the
+validity of the lock to whether TAPRIO has ever been configured. The
+lock is also never destroyed.
 
-My understanding is that L2TPv3 session IDs are unique across their
-network namespace. There's an exception for those that are transported
-over UDP, as they're now unique for a given UDP socket (the one of
-their parent's tunnel).
+Initialize priv->est_lock in __stmmac_dvr_probe() next to priv->lock
+and destroy it in stmmac_dvr_remove(). This keeps the lock valid for
+the entire lifetime of the device, independent of the TAPRIO state,
+and removes the lazy initialization from the TAPRIO configuration
+path.
 
-As a result, looking up a UDP L2TPv3 session requires a socket and a
-session ID. That works when demultiplexing an incomming packet, as we
-have both information in this case. But that's a problem when selecting
-a session from user space.
+No functional change intended.
 
-The correct approach would be to pass both a session ID and a socket
-for any L2TPv3 UDP session lookup. But the netlink interface currently
-doesn't support passing a socket fd for SESSION_GET, SESSION_MODIFY
-and SESSION_DELETE operations. That could be done for managed tunnels
-though.
+Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 ++
+ drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c   | 2 --
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-However, for unmanaged tunnels, as used by iproute2, user space doesn't
-know anything about the UDP socket. In that case, all we can do is to
-replace the socket parameter with a tunnel ID. Then we'd have to loop
-through all the sessions that match the requested session ID and return
-the one whose tunnel's socket matches the socket of the tunnel ID
-passed as parameter. This last operation could maybe be simplified to a
-simple tunnel ID check, as, in my understanding, we have an 1:1
-relationship between tunnel IDs and their sockets (but I'm a bit wary
-of such shortcuts given that code have proved to be brittle in the past).
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index b20e5038eead..9e09e11cc35e 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -8204,6 +8204,7 @@ static int __stmmac_dvr_probe(struct device *device,
+ 	stmmac_napi_add(ndev);
+ 
+ 	mutex_init(&priv->lock);
++	mutex_init(&priv->est_lock);
+ 	rwlock_init(&priv->ptp_lock);
+ 
+ 	stmmac_fpe_init(priv);
+@@ -8337,6 +8338,7 @@ void stmmac_dvr_remove(struct device *dev)
+ 
+ 	destroy_workqueue(priv->wq);
+ 	mutex_destroy(&priv->lock);
++	mutex_destroy(&priv->est_lock);
+ 	bitmap_free(priv->af_xdp_zc_qps);
+ 
+ 	pm_runtime_disable(dev);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+index e137fb9012d4..aea235a69105 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+@@ -1028,8 +1028,6 @@ static int tc_taprio_configure(struct stmmac_priv *priv,
+ 					 GFP_KERNEL);
+ 		if (!priv->est)
+ 			return -ENOMEM;
+-
+-		mutex_init(&priv->est_lock);
+ 	} else {
+ 		mutex_lock(&priv->est_lock);
+ 		memset(priv->est, 0, sizeof(*priv->est));
 
-> The patch only changes callers of l2tp_session_get() that pass a
-> tunnel_id, and the result differs from v6.8:
-> 
->  - pppol2tp_connect() for session 5 in tunnel 2 fails with EEXIST if
->    tunnel 1 (another UDP socket) already has a connected session 5.
->  - "ip l2tp del session tunnel_id 4 session_id 7" deletes tunnel 3's
->    session 7 when only tunnel 3 has it. On v6.8 it fails. l2tp.rst
->    describes CONN_ID there as the parent tunnel of the session.
-> Am I misreading the documentation, is the documentation out of date, or
-> is this behaviour not intended?
-> 
-> Thanks,
-> Hengyu
-> 
+-- 
+2.56.0
 
