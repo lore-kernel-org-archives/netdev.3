@@ -1,60 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793055916;
-	b=Ve3pDYKitpN7TWAUC8CX5Mdq4/ra2OSqnhh5FIp0NRZ3iA+PI1FzV4aiP1LlXmbBEPE0
-	 UW8EpjNHaxXGDy/Y456zpGmV+wRCXATx1j4mhAJm3gHcBzWPYnOw2rZ8Y2KHWGT7BdvWw
-	 597P9xIt2QGJWO8ypI2T3K9BtBj0WAq8PZeLPCZijRe0U2gCJMokdcWLnQF5Hzly5b5ev
-	 baTiKTyRVrZ2+BGobh+3q8SdvLbVAjaQjDHGeAkhWd3Td2D4JnScK18nAOJDZ2hq18H4y
-	 jv4YySreE90/20DWud1ur2mcnooMFkNwWeKpjzsm+hJmJz9Cm/oiY/8t3rbKQRVZHLg==
+	t=1793056029;
+	b=I+V+W6og6xImcVMUVkTqTy1/hXB9/+h2B+9Ux3a3erXdTPcvadpjaOVUUELgOvcyh73v
+	 SQLEskhoi3xUOn7NUHXrEJX5/a7WKZcQ4ST80fi//cFqWMN/14aDvBCIUXyDgTBf63EEu
+	 j36BkkundyhU27M+gBz9exSSRRb+IFooLOkph0Wc6GFJsMU+de+thhvWHwEfpMiaMA433
+	 emLCIDef2Y0awpCX4m/hjU2qM0qyxFdpVa7e95f959lKPOb2airIyfYf1Ak+tQW+WbS0g
+	 C1P4TbVv4h0+qfCZ1qcg+cU29Ks6+cIT5tp2ZOsQRsZD5e99XmokTo2GULIQt43OYnQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793055916;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793056029;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	b=u+pcA88uqljIuM4J+8W32stD+B35hyJR5+c7Ut/D2VScHyj7d8qfRbiTVX/dqkIRpVDF
-	 QckkfzLo/L6Uh2x9FmyI81EsNMW+6xBb8zEvqlN0dHki60urajDcSTyIfD/2HUB9DwdIl
-	 J0kIQY0q4vf4L582sFzAon11mVPT1JOJsVRFbs+GA5OdqF0bVvuKegRvYD78QOfLYcuPj
-	 kjVoPGtzWPI5GOk9nLo5lbAx1H27w8Q7wL+q9js7mB1V45p3rmk2gd7dd9RbQRB+MtS87
-	 3yOokRnLl/WNdwTRZFYjU2lgonx9PiQNVBIGtlZrFkBXDVDtynUN/Q6XrB/KnCTMiDg==
+	bh=V+H0UeILhgx+FzPqIGM1ayP/WqlqIwGNT6ggr7OtvKo=;
+	b=p90Y+uckga36FG4zNj3olxgDPmItfXm+A7ukLSLAGwFP3WVCmIBLLN81jitdlgVSypaZ
+	 gGafcJk7/ebvbkDkbTjlrryDAEJkojiLfRvVzUz+Q4sNKYfmqUm1zI3iEhwGYpGKdbTuh
+	 UYqTS1NxoI6VOODvPOSy53RUTTop8sC7I9tVoWsXdiSkPXRC2GJNxsuImB5UeLbCF1xN0
+	 fiyMk3BPNzGQQu3oIzS0Ub/yMJ1rGmf4qJdY8mfhtEy3v10be0rQHKCrmtj2rkRjN5Vhu
+	 NxZHVtk4w3KuQI5o8VMykPvrFsEviGQV2Suy057nFmxDayzzfbLhWw/zUBhWzqfm7GA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NgCp+P8y;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ICnadLoG;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0486E606A31B;
-	Mon, 26 Oct 2026 23:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17CF0606A324;
+	Mon, 26 Oct 2026 23:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NgCp+P8y
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26ADE1F01825;
-	Mon, 26 Oct 2026 23:05:15 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ICnadLoG
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E2F1F031E1;
+	Mon, 26 Oct 2026 23:07:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793055915;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NgCp+P8yU7DZ/iuJx+Xl9oNUKf3stDCxcL2Axv+GMxovwBp44dFoddxt1qBH0iNER
-	 Sdh0ZYQCQXSnduPmLEHWtbMX2E2QqgXV33SFtIxkP2CSFYl9EWdT5Ex6sKiOFsWz1U
-	 mBea+HGRt+SDXYjL6eCRqGv0uZBzoHddNJh8p8uMk4fbb8L9eosrv5M/4y4YL3vcq4
-	 SIByfPZ/jdx9Lm4mQ7nnSMkCWTHQBXtQEOZt/N7hjYHZn7G00NAhiwB8xb7QogLb6i
-	 RnVGbh+kHB4VB1Y/9hOsTTpwEFeIUw1Y4T6du5DuyHmBLRPzIXeaedMCnI6Gxv7xkz
-	 EidBavGRi7i4w==
-From: netdev-bot+sinfo@kernel.org
-To: David Yang <mmyangfl@gmail.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
- Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org
-Subject: 
- Re: [PATCH net v3] net: dsa: motorcomm: Isolate all ports during chip setup
-Date: Mon, 26 Oct 2026 23:05:14 +0000
-Message-ID: <179305591469.3327.15926756079213213876@kernel.org>
-In-Reply-To: <20261026230300.1108190-1-mmyangfl@gmail.com>
-References: <20261026230300.1108190-1-mmyangfl@gmail.com>
-Auto-Submitted: auto-generated
+	s=k20260515; t=1793056028;
+	bh=V+H0UeILhgx+FzPqIGM1ayP/WqlqIwGNT6ggr7OtvKo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ICnadLoG14ZCmYuBvXwz6QpKR2QsKMo/GbEC83FNh4Nzh7X3g9sTVuQU5TVQen8p5
+	 TD3VILq+UMJg1WeF6Tge4BPRGHl4+QyMqIyRncryAYevCMBt0567q7blYmybHCewhU
+	 viN1ihwPJXAgXK5nmKv0D0A4uOJzYeF5TI1i5jgYZ/DXp30eVoo93ZJAv+us2qwBPp
+	 fOtLchB+wBC3+OsC8eDgpqSz+qYYX/iJzM9hvPTgWMGzctGSHRaWjPCPalmyqx6jzG
+	 e7l9nj6eXf1E7ctDVdZEf0z/S7qeh4EIwUGfAftdCzKIxeVqUOWLtAhNntBDnAmgFt
+	 4AnIUCcl8I13Q==
+Subject:
+ Re: [PATCH net v2 4/4] net: phy: as21xxx: handle odd firmware on loading
+From: netdev-bot+sashiko@kernel.org
+To: ansuelsmth@gmail.com
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 26 Oct 2026 23:07:07 +0000
+Message-ID: <179305602759.3134.6990761386999914981@kernel.org>
+In-Reply-To: <20261022222955.698722-4-ansuelsmth@gmail.com>
+References: <20261022222955.698722-4-ansuelsmth@gmail.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,24 +64,59 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Hi!
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Low priority / nit picks for your consideration:
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+- [Low] In aeon_firmware_boot() (drivers/net/phy/as21xxx.c), the comment
+  directly above the firmware upload loop still reads "/* Firmware is…
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+--
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+net: phy: as21xxx: handle odd firmware on loading
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+This commit changes the firmware upload loop in aeon_firmware_boot() so it
+checks the index before reading data[i + 1]. If the firmware image has an
+odd size, the last byte is now sent to the PHY mailbox as a zero-padded
+16-bit word.
+
+> diff --git a/drivers/net/phy/as21xxx.c b/drivers/net/phy/as21xxx.c
+> index e2988cb10c047..db1a7cd68cef1 100644
+> --- a/drivers/net/phy/as21xxx.c
+> +++ b/drivers/net/phy/as21xxx.c
+> @@ -325,7 +325,9 @@ static int aeon_firmware_boot(struct phy_device *phydev, const u8 *data,
+>  
+>  	/* Firmware is always aligned to u16 */
+>  	for (i = 0; i < size; i += 2) {
+> -		val = data[i + 1] << 8 | data[i];
+> +		val = data[i];
+> +		if (i + 1 < size)
+> +			val |= data[i + 1] << 8;
+
+[Severity: Low]
+This isn't a bug, but should the comment above the loop be updated too?
+
+It still says "Firmware is always aligned to u16". The new i + 1 < size
+check exists only because size can be odd. The commit message also says
+"we can't assume this will be the same forever".
+
+Nothing enforces an even size either. aeon_firmware_load() passes the
+size from request_firmware() straight through:
+
+    ret = aeon_firmware_boot(phydev, fw->data, fw->size);
+
+Someone who trusts the comment later could remove the guard as redundant.
+That would bring back the out-of-bounds read of data[size] that this
+patch fixes.
+
+Maybe the comment could say something like "Firmware should be u16
+aligned, zero-pad a trailing odd byte"?
+
+>  
+>  		ret = phy_write_mmd(phydev, MDIO_MMD_VEND1,
+>  				    VEND1_GLB_REG_MDIO_INDIRECT_LOAD, val);
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261022222955.698722-1-ansuelsmth%40gmail.com
