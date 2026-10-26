@@ -1,58 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793058446;
-	b=M/HJuOAF+Ax/ycKK72DT75g9vbZDzSFFSkLiFcygjs2CT2/R2pEYKyErjrEi6VrLbyGv
-	 CjRVB93NfDTzfiNd0+ui345q6RIQWqJzsqtdXYl/5A+GllICfEnO08d80NbDjuMo3/7sp
-	 XfzakM5o5Va39Q/sVyOO0grMCcxFxlf1+BqUPAGUtg17xeqRS+C1sRcURt+2bCskksXZc
-	 gmkCldXBSVPOiyLNHmx6sGzTPyEaPHRWmZ1+7ybicCuy2Vph7TTlHqOUBoiTgcM3oJ97O
-	 0aA0Zvy/9uYj7SCuCL/zeafZyA79+/q+yMBwEm+PhLt7YsouhQjpefrFgZ+CTqL4IDA==
+	t=1793058439;
+	b=VMZwRlOspeJ+GxUidD0DMXLif5oUV0LnIoaGfgn1vd+UujW3z0a4kf4rnRNMwYXMdMGb
+	 +s6Ky9kNJamZwDbqJdG766j1qan52eyfPh8DIsFgcy9/qdYvCaxWywh7+F7x9PvdfGfdp
+	 Ge5dKWMSK5q5CmEiLR9/cQzfZL/sa3UIQs7AsIk3lSLzYby9FOmHqw5Kbnvlhww4ymfIv
+	 J6iYwqlkMf/GEgpPWi0mYj1G7aCQ2st4Fl0qoxZ9e6cBdFGZSgOPKOdq6oJNOH6X0C+z5
+	 d7VfqKG8Ifrj+3V/UgAtXLkSDACFRF7zRGuPgtL3XTdvJ+rBa+uoaw0A1G2am/dZoIw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793058446;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793058439;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=r0eA03fdm/ulrgEITtCEML1V17mWf2+AdSWODinmnFI=;
-	b=B8qiINcw5/7qIQ9+yqz2C4LIyWPOvJaxq2QFZzqNUuNSVeMUp9ySuKy2Rx7Ir7PXc3oX
-	 7uk9lvPFZA+dzX5KMbQxgm0KLx1CHqEwboio2O0vwjlqWDk9m2ZsZ3ypGFcwrbEWYsVI2
-	 bS2lyGKMXpNeFyfAQRPzbp1jJXVT7rage9WF92O2VR+7Hhlo70UNr4BcJdE1tlxUCodD7
-	 wSrfXd2BUP9xQ7Cv/hmEqqXFh2X1H3ZTllhrj6wF4CRDqRJTs7CWLY2MXFSz9xK1r7A3z
-	 3YLFmTOaefWI/TzvTCIeSydxFvYQszkShCp7eDSnmO+DI/fEjRzqmYE0WbE0HhEtNKg==
+	bh=ppFx90XeEhiQ+j8jf3QERNJ5cqKd4iFeH6V9C3NnjXU=;
+	b=uvCDUu+3HJkZNWT+ChgirX2X4hSpI0iWlvkmq5luiQSHUaVK1TuZephxtFLoMA6WdQSI
+	 Uez4iwsrhfm3mNXlQUhWhaui/h6ocHZaw0F0AEWErszAMF97r9IxVduQm/HDSfaLDxivH
+	 XGakw9cfO/vu0aHSJ05YxSILdX3qNkc0+iMH8yZh7LFtUSL/gkrh+t/QFh++hiaHq/Cgq
+	 9fNKOzXkIXkiX+ak/ILssh5njYERhILW18lgHWxxts+lwVA0FMk43r0ymzhROSQK5ce4Y
+	 7epPE+euaMJPAY4yIUxBVq2eIOhzdYRLZSf0coQW+1eH9Ls8gtH9RYFvqfa7VkB/U9g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="VnmJ/2GE";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P5PWzIZX;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9321606A328;
-	Mon, 26 Oct 2026 23:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04447606A31A;
+	Mon, 26 Oct 2026 23:47:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VnmJ/2GE
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6DC21F031E4;
-	Mon, 26 Oct 2026 23:47:21 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P5PWzIZX
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D9D1F031E0;
+	Mon, 26 Oct 2026 23:47:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793058442;
-	bh=r0eA03fdm/ulrgEITtCEML1V17mWf2+AdSWODinmnFI=;
+	s=k20260515; t=1793058438;
+	bh=ppFx90XeEhiQ+j8jf3QERNJ5cqKd4iFeH6V9C3NnjXU=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=VnmJ/2GEdCoiPW0eIcpYLBtcscXX1HG6m1v27rVueB697nGM13AaBFUccOVJATOuE
-	 ZroWTDwUw0iwAFjkkvo+8Q5SiYpvY2cYaOpXgBbNe2/pdcV8zaeK2UjiW228fi0hxQ
-	 qv2qaMwxycaFAmS99arH9+O0iEAitie8t3C1zzTf7/tvZMq6GEQQScclEqLUHfCG7p
-	 JIfz4DDx8wRip0Keb+ZZykYad2jYib7trhRlrpij6iZGzkfBfH/NMfLgrpN1rTjyER
-	 q3IBwT3yghiyS5j/P9yhb2mpi2VsAVdrFK9Yt6J8aXOuqCTbFOtbXl+OUqUDeHAz7A
-	 aRsq0njDrBWEA==
-Subject:
- Re: [PATCH net 5/6 RESEND] net: dsa: b53: report link state through the PCS
+	b=P5PWzIZXwHWKBE5Nsx5IUlUWD5u5limIJnX4/rhB5qwKnDiCc/VQ0AWpJ6EAsRQ2G
+	 Kb3UUvNYWx5ZXeQT5fQn5qE4A498SjDl8pxyS8QpykhmAFcgq8DF9aVgi8a7bPbIzR
+	 Y4qR+l7+t0MS0FjHKUizgv4RRvNcN7nI8m9Lv3iwnghXK0Zs11gSTAyMS8K+QB/7J1
+	 2xrjXPeX3cg5QWwUJ70p8QAgiU6ejRAsHsYuNBkny0zwNS9oCisH86x568Zv7UvxSb
+	 xg6e0dG9JSdkjYvOipXEA6IiHmeG567tyA+Ao1z+OQzH+k5Z+jKEBRJ91poabEVr2y
+	 10i9ns9D7QKEg==
+Subject: Re: [PATCH net 2/6 RESEND] net: dsa: b53: manage SerDes power through
+ the PCS callbacks
 From: netdev-bot+sashiko@kernel.org
 To: florian.fainelli@broadcom.com
 Cc: netdev@vger.kernel.org, jonas.gorski@gmail.com, andrew@lunn.ch,
  olteanv@gmail.com, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
  pabeni@redhat.com, linux@armlinux.org.uk, rmk+kernel@armlinux.org.uk,
  linux-kernel@vger.kernel.org
-Date: Mon, 26 Oct 2026 23:47:21 +0000
-Message-ID: <179305844139.3134.6974876926759672110@kernel.org>
-In-Reply-To: <20261022225656.1387306-6-florian.fainelli@broadcom.com>
-References: <20261022225656.1387306-6-florian.fainelli@broadcom.com>
-X-sashiko-severity: Medium
+Date: Mon, 26 Oct 2026 23:47:17 +0000
+Message-ID: <179305843757.3134.4007285132700969521@kernel.org>
+In-Reply-To: <20261022225656.1387306-3-florian.fainelli@broadcom.com>
+References: <20261022225656.1387306-3-florian.fainelli@broadcom.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -65,62 +65,121 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 1 (1) · Low: 1
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] b53_srab_port_thread()
-  (drivers/net/dsa/b53/b53_srab.c:371-380) now calls…
-- [Low] In b53_serdes_link_change()
-  (drivers/net/dsa/b53/b53_serdes.c:317-330), if the…
+- [Low] Baseline decision: discard.
 
 Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but
-  b53_srab_request_grant() (drivers/net/dsa/b53/b53_srab.c:91-112) has a…
+- [Medium] Baseline decision: discard (pre-existing, medium).
 
 --
 
-net: dsa: b53: report link state through the PCS
+net: dsa: b53: manage SerDes power through the PCS callbacks
 
-This commit changes b53_serdes_get_state() to decode the Clause 22 BMSR
-and LPA registers with phylink_mii_c22_pcs_decode_state(). The SRAB
-port interrupt now notifies phylink through phylink_pcs_change(), using
-the SerDes digital status LINK_STATUS bit instead of the MAC link status.
-The patch also removes b53_port_event() and turns on PCS polling.
+This patch moves SerDes power management out of the b53 mac_link_down()
+and mac_link_up() handlers and into new pcs_enable() and pcs_disable()
+callbacks. It removes the serdes_link_set io op. It also adds a
+b53_serdes_modify() helper that does read-modify-write of SerDes
+registers under reg_mutex.
 
 > diff --git a/drivers/net/dsa/b53/b53_serdes.c b/drivers/net/dsa/b53/b53_serdes.c
-> index fc20e211e67e1..c7f3e131f2def 100644
+> index c90894877626e..87771e3788f7f 100644
 > --- a/drivers/net/dsa/b53/b53_serdes.c
 > +++ b/drivers/net/dsa/b53/b53_serdes.c
-> @@ -291,50 +291,44 @@ static void b53_serdes_link_up(struct phylink_pcs *pcs, unsigned int neg_mode,
->  static void b53_serdes_get_state(struct phylink_pcs *pcs, unsigned int neg_mode,
->  				 struct phylink_link_state *state)
->  {
 
 [ ... ]
 
->  	bmsr = b53_serdes_read(dev, lane, B53_SERDES_MII_REG(MII_BMSR),
->  			       SERDES_MII_BLK);
-> -	if (bmsr < 0) {
-> -		state->link = false;
-> -		b53_serdes_error(dev, lane, bmsr);
+> @@ -202,32 +235,31 @@ static void b53_serdes_get_state(struct phylink_pcs *pcs, unsigned int neg_mode,
+>  		state->pause |= MLO_PAUSE_TX;
+>  }
+>  
+> -void b53_serdes_link_set(struct b53_device *dev, int port, unsigned int mode,
+> -			 phy_interface_t interface, bool link_up)
+> +static int b53_serdes_enable(struct phylink_pcs *pcs)
+>  {
+> -	u8 lane = b53_serdes_map_lane(dev, port);
+> -	int reg;
+> +	struct b53_pcs *priv = pcs_to_b53_pcs(pcs);
+> +	int ret;
+>  
+> -	if (lane == B53_INVALID_LANE)
 > -		return;
-> -	}
-> +	if (bmsr < 0)
-> +		goto error;
+> +	ret = b53_serdes_modify(priv->dev, priv->lane,
+> +				B53_SERDES_MII_REG(MII_BMCR), SERDES_MII_BLK,
+> +				BMCR_PDOWN, 0);
+> +	return ret < 0 ? ret : 0;
+> +}
+
+[Severity: Low]
+Should b53_serdes_enable() also pass the error to b53_serdes_error(), as
+b53_serdes_disable() does below?
+
+The phylink core ignores the return value of pcs_enable() in
+phylink_major_config():
+
+drivers/net/phy/phylink.c:phylink_major_config() {
+    ...
+	if (pl->pcs_state == PCS_STATE_STARTING || pcs_changed)
+		phylink_pcs_enable(pl->pcs);
+    ...
+}
+
+If clearing BMCR_PDOWN fails, the lane stays powered down and the link
+won't come up until the interface is cycled.
+
+b53_srab_op() and b53_srab_request_grant() already hit WARN_ON() before
+they return -EIO, so the failure does show up in the log. This is mostly
+about keeping the enable and disable paths consistent.
+
+>  
+> -	reg = b53_serdes_read(dev, lane, B53_SERDES_MII_REG(MII_BMCR),
+> -			      SERDES_MII_BLK);
+> -	if (reg < 0)
+> -		goto out;
+> +static void b53_serdes_disable(struct phylink_pcs *pcs)
+> +{
+> +	struct b53_pcs *priv = pcs_to_b53_pcs(pcs);
+> +	int ret;
+>  
+> -	if (link_up)
+> -		reg &= ~BMCR_PDOWN;
+> -	else
+> -		reg |= BMCR_PDOWN;
+> -	reg = b53_serdes_write(dev, lane, B53_SERDES_MII_REG(MII_BMCR),
+> -			       SERDES_MII_BLK, reg);
+> -out:
+> -	b53_serdes_error(dev, lane, reg);
+> +	ret = b53_serdes_modify(priv->dev, priv->lane,
+> +				B53_SERDES_MII_REG(MII_BMCR), SERDES_MII_BLK,
+> +				BMCR_PDOWN, BMCR_PDOWN);
+> +	b53_serdes_error(priv->dev, priv->lane, ret);
+>  }
+
+[ ... ]
+
+> diff --git a/drivers/net/dsa/b53/b53_srab.c b/drivers/net/dsa/b53/b53_srab.c
+> index b9939bbd2cd51..9818b3922a377 100644
+> --- a/drivers/net/dsa/b53/b53_srab.c
+> +++ b/drivers/net/dsa/b53/b53_srab.c
+> @@ -493,7 +493,6 @@ static const struct b53_io_ops b53_srab_ops = {
+>  #if IS_ENABLED(CONFIG_B53_SERDES)
+>  	.phylink_mac_select_pcs = b53_serdes_phylink_mac_select_pcs,
+>  	.serdes_map_lane = b53_srab_serdes_map_lane,
+> -	.serdes_link_set = b53_serdes_link_set,
+>  #endif
+>  };
 
 [Severity: Medium]
-This is a pre-existing issue and was not introduced by this patch.
-The SRAB accessors behind b53_serdes_read() have a mismatched timeout
-check in b53_srab_request_grant() in drivers/net/dsa/b53/b53_srab.c:
+This is a pre-existing issue, not one introduced by this patch. The new
+SerDes power paths go through the SRAB accessors, and the timeout check
+in b53_srab_request_grant() does not match its loop bound:
 
+drivers/net/dsa/b53/b53_srab.c:b53_srab_request_grant() {
+    ...
 	for (i = 0; i < 20; i++) {
 		ctrls = readl(regs + B53_SRAB_CTRLS);
 		if (ctrls & B53_SRAB_CTRLS_RCAGNT)
@@ -129,106 +188,21 @@ check in b53_srab_request_grant() in drivers/net/dsa/b53/b53_srab.c:
 	}
 	if (WARN_ON(i == 5))
 		return -EIO;
+    ...
+}
 
-If the grant never arrives, the loop exits with i == 20 and the function
-returns 0. The register access then goes ahead without the RCA grant.
+If all 20 polls time out, i ends up as 20 and the function returns 0. The
+caller then goes ahead with the SRAB access without having seen RCAGNT.
 
-If the grant arrives on the sixth poll (i == 5), the function warns and
-returns -EIO for an access that should have succeeded.
-b53_serdes_get_state() then reports that error as link down.
+If the grant shows up on the sixth poll, i is 5. The function then WARNs
+and returns -EIO even though the grant was obtained.
 
-Should this check be i == 20?
+Was the check meant to be i == 20? It dates back to commit 967dd82ffc52
+("net: dsa: b53: Add support for Broadcom RoboSwitch"). It is reachable
+from this patch's code through:
 
-[ ... ]
-
-> +void b53_serdes_link_change(struct b53_device *dev, int port)
-> +{
-> +	u8 lane = b53_serdes_map_lane(dev, port);
-> +	int dig;
->  
-
-[ ... ]
-
-> +	if (lane >= B53_N_PCS || !dev->pcs[lane].dev)
-> +		return;
-> +
-> +	/* Use the live PCS status, not latched BMSR or MAC override status. */
-> +	dig = b53_serdes_read(dev, lane, B53_SERDES_DIGITAL_STATUS,
-> +			      SERDES_DIGITAL_BLK);
-> +	b53_serdes_error(dev, lane, dig);
-> +	phylink_pcs_change(&dev->pcs[lane].pcs, dig >= 0 && (dig & LINK_STATUS));
-
-[Severity: Medium]
-Can this force a fixed-link SerDes port down?
-
-b53_srab_port_thread() calls b53_serdes_link_change() for every port
-whose mux mode is SGMII. Nothing on this path checks the phylink AN
-mode. b53_serdes_phylink_mac_select_pcs() returns the PCS for SGMII and
-1000BASE-X in every mode, so pcs->phylink is also set for fixed-link
-ports.
-
-When the SerDes has no sync, for example because the peer is not up
-yet, this is the call chain:
-
-b53_srab_port_thread()
-  b53_serdes_link_change()
-    phylink_pcs_change(pcs, false)
-      phylink_link_changed()
-        pl->link_failed = true;
-
-phylink_resolve() checks link_failed before the fixed-link branch:
-
-	} else if (pl->link_failed) {
-		link_state = pl->link_config;
-		link_state.link = false;
-		retrigger = true;
-	} else if (pl->act_link_an_mode == MLO_AN_FIXED) {
-
-As a result, b53_phylink_mac_link_down() calls
-b53_force_link(dev, port, false). The retriggered resolve then takes
-the MLO_AN_FIXED path, and b53_phylink_mac_link_up() calls
-b53_force_link(dev, port, true).
-
-Before this patch, b53_port_event() read B53_LINK_STAT. That register
-follows the forced override, so a fixed link always reported up=true
-and this interrupt never took it down.
-
-The commit message says MAC link status "can be overridden by
-mac_link_up/down()". Does the link_state_pN interrupt also fire when
-those override bits change? If so, each forced toggle would raise
-another interrupt that reports SerDes down again. The forced MAC link
-and the carrier would then keep flapping until the SerDes gets sync. I
-can't confirm that hardware behaviour from the code.
-
-Would it make sense to call phylink_pcs_change() only when the PCS
-provides the link state (in-band), or to keep the previous MAC-status
-notification for the other modes? The commit message also doesn't
-mention this change in fixed-link behaviour.
-
-[Severity: Low]
-What happens here when the B53_SERDES_DIGITAL_STATUS read fails?
-
-b53_serdes_read() can return a negative errno, for example -EIO from
-b53_srab_request_grant() or a b53_srab_op() timeout. In that case the
-expression evaluates to false and phylink_pcs_change(pcs, false) is
-called. phylink_link_changed() then sets pl->link_failed. As a result,
-phylink_resolve() forces a link down/up cycle while the real link state
-is unknown.
-
-The phylink_pcs_change() kernel-doc says:
-
-  If in doubt about the link state at interrupt time, then pass true if
-  pcs_get_state() returns the latched link-down state, otherwise pass
-  false.
-
-b53_serdes_get_state() now reads MII_BMSR, which latches link-down.
-Should the error case pass true, so that a transient access failure in
-the IRQ thread doesn't cause a link flap?
-
->  }
-> +EXPORT_SYMBOL(b53_serdes_link_change);
-
-[ ... ]
+b53_serdes_enable()->b53_serdes_modify()->b53_serdes_write_blk()->
+    b53_srab_write16()->b53_srab_request_grant()
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261022225656.1387306-1-florian.fainelli%40broadcom.com
