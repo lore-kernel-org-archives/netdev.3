@@ -1,66 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793034057;
-	b=lmJBstg/nu2eU8jSQA/6HmPeGm96MizAJrzyG7b0/SmMNylTr3qSMy3YxzzIdJAEr6rw
-	 GBlTkG6GM7OluBaHVKwJeVD+zhxGwFW0dHNk4nAfWcEPDasi84dJbmQ/QkBkbwbCwb72a
-	 l7GBgfAkG+ucwsbH8LuW2IN5xHjNKPtlO+uLE1UIeKnUxV0exiNLYZ88y4pOuVo01BHbQ
-	 wJ/DhMR5jauIc2crIDJkeOCnpcVEfrTURjo2I01HDLN2z+nGTGA+NIsk+OwAhSkJ6M1zj
-	 VVOMvpGMkL87RC9k4OXp8/g+K344JKXnb4U6xzm9Bl/oDDXRHOS4N5g6KNG64LTh/Mg==
+	t=1793034125;
+	b=QD/JfQvW9LkSe/G1bhs4lrDYErFxTsGt57xdr8AGL/zR7CN+Flz1RQelO4HlJK45k6Ff
+	 VxWOoDFG7JZtQWCUOF4EI4hJpisbigUudxiDsPbANpdATNPDv2nj54Jthl/lvuLhWAwTJ
+	 FPl8nr52tWHeWDbhrbys7lDYW1EFlU1UC1LTXGQfm7zAnmhCAQWFhCsRDmfFo+vDtRFoQ
+	 HDWvBFHublCY9akf2XUceswlGMzu6kkrSoQ/sCq/ZdSkuUs0V19Y598+bBoPcyJUn9nrV
+	 eF0kZqr8PWgGTvyCHOjRNjM+hugatrJcnKq+PJ3XsScKqsR9eZPqiJAhlLXbzt+0TjA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793034057;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	b=5HQ9FyFN6hNHmlUBl0gpcj4ziO79DsN2Skm/oOYMFnWlCM3gxy2qkGCNGt5pC7e8aviQ
-	 9hKhHCCa2QhpVtCT789EoEid6DtePZGYfnNtBV1z9BKKe86zrQf4gYQVP0N2MsduC9pOu
-	 h1SJm1+IeE8XKaV5CbLhN6+fVzIKIYWcRTJ2/ChLoxOzmspsC4nCnt7s1MNCPR5qy0XMb
-	 Wa3zQBgYxOnezLcmfWJGOZTJZZuV9mWLBC97ujowdl36b24dmrZVhx6Nu2+CPOxk1ustS
-	 cY13LuJxqve0SzRutZ76SUBP+CABpaodm1WjvHUzpDWVilDFx+2XBpE0WETuZRDtXDQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793034125;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=qkqhPHOCo4fTWwPKT7Kxijt1nrEHB3Og6VjW7E1Dyb0=;
+	b=CmmoFA+IBfwgIpC//0gtvCgDs+Kn80dG4FyKncYyDWGNmmPBQdT03wjib2UlIN82sus5
+	 aaS/v1t69xy5bnUkKBiCSBS4tw+edkre2QACbtogtQQ+dvECzGglGaabksHeI9jHsWLyZ
+	 swqLx+Peic18CMfKKrAB3ehpvznYhTvy0B2zi9kgaGUs8iw2WtZxGRODcfqFsSFKiImUD
+	 JsUJi4pgPEIY57nzKiJpDuX+lhlyJybkywH/BlSggdhdNVVbb8quItBLSsAp2d9+8OS5t
+	 ESZbWUKJTwHyVOMom7xsxmmj2rFn1e7jss3HijkQWorIdx7nMZAh/FmQxXf+CcYNqwg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ef1oLSkC;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=awEcjpuD;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFFF0606A31D
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 17:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37EA606A31A;
+	Mon, 26 Oct 2026 17:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ef1oLSkC
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E5FE1F01825;
-	Mon, 26 Oct 2026 17:00:55 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=awEcjpuD
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 797861F01825;
+	Mon, 26 Oct 2026 17:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793034056;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ef1oLSkCt8aX5JQdrJUpCoYYWU3gtpGQlEqkLpTBsGra9JpKJsyeM7A1sIpgKCuWU
-	 OgaQxTBucA6dtRzBAzKHdkx16H+Abyf5qZSzVR9rVuTRhrs9DPTOyT4wCt4f7GEFmq
-	 tId57QxGu3eal6P7GEAMiA0odz8/lL8LGn9tZoTpB7wJPmnj7hhKjQlgfA4uWBvHu5
-	 NXpLd1j2J2W9GeziiHjh9FPScsToZNT5wcXsXS3t0dA/QSQqBh+nihvibM7d3vB/X/
-	 2i2o7Nh1Oa6KMWP1VAuc0oYyTy4k6MZ+XIneq90F4i7YO8OYRWbfk46ZiqKKX7KhCS
-	 lbx8Yw1qTw2mA==
-From: netdev-bot+sinfo@kernel.org
-To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Richard Cochran <richardcochran@gmail.com>,
- Russell King <linux@armlinux.org.uk>, Jose Abreu <Jose.Abreu@synopsys.com>,
- James Hilliard <james.hilliard1@gmail.com>, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- Rayagond Kokatanur <rayagond@vayavyalabs.com>
-Subject: Re: [PATCH net v4 0/3] net: stmmac: re-apply taprio offload in
- __stmmac_open() and stmmac_resume()
-Date: Mon, 26 Oct 2026 17:00:54 +0000
-Message-ID: <179303405498.3327.6709797406209936415@kernel.org>
-In-Reply-To: <20261026-stmmac-est-fixes-v4-0-999dac4de44f@oss.qualcomm.com>
-References: <20261026-stmmac-est-fixes-v4-0-999dac4de44f@oss.qualcomm.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=k20260515; t=1793034124;
+	bh=qkqhPHOCo4fTWwPKT7Kxijt1nrEHB3Og6VjW7E1Dyb0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=awEcjpuD1v4ke9BAf8ab8An27hYYxZqCuvHfrQXBrDxsbhGC8Q0pnoyO/s7yM3Hbh
+	 dxAzdCDsJDokzQs3Hqcq4dAFDYXCch3aRJO1/38iG0D34aKc1sbOj5P9MOLlc2Ix9E
+	 QivOq0RPc4hjrcLC2tksBDa0O9Ivy8CMEUPtziBOOmZoaeT+0HKUV3CzD2IILMhm6i
+	 /Z+oeMh9XxubnHZl55OXoblC8+CC6lCN8NMHj3//5iDQvLjh6v0OUqa6Y03SU6xUbG
+	 jUidKixUOV5C9bucVx+27g63uiiNa88zCRgqV9dmWtoBLQdPUg6FaOGyAkJalb/1eZ
+	 LOVf4Ead/0R7Q==
+Date: Mon, 26 Oct 2026 17:02:00 +0000
+From: Simon Horman <horms@kernel.org>
+To: Arnav Kapoor <kapoorarnav43@gmail.com>
+Cc: Ronak Doshi <ronak.doshi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	syzbot+8eed6f83440ecdaf4be6@syzkaller.appspotmail.com
+Subject: Re: [PATCH net] vmxnet3: stop DMA mapping the adapter structure
+Message-ID: <20261026170200.GF257209@horms.kernel.org>
+References: <20261021221221.502428-1-kapoorarnav43@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,29 +62,56 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261021221221.502428-1-kapoorarnav43@gmail.com>
 
-Hi!
+On Thu, Oct 22, 2026 at 03:42:12AM +0530, Arnav Kapoor wrote:
+> vmxnet3_probe_device() maps the whole struct vmxnet3_adapter with
+> dma_map_single() and passes its address to the device as the "driver
+> data" (misc.ddPA/ddLen) in the shared area.
+> 
+> The adapter is the netdev private area, and alloc_netdev_mqs() allocates
+> it with kvzalloc(). struct vmxnet3_adapter embeds 32 tx and 32 rx queues
+> and is well above PAGE_SIZE, so when a high-order allocation fails the
+> adapter ends up in vmalloc memory. dma_map_single() then warns
+> ("rejecting DMA map of vmalloc memory") and returns DMA_MAPPING_ERROR,
+> and probe fails with -EFAULT. syzbot hit this with page allocation
+> fault injection.
+> 
+> The driver data is only informational: the mapping is DMA_TO_DEVICE,
+> done once at probe and never synced, so the device could only ever see
+> a stale copy. The per-queue descriptors in this driver already report
+> no driver data with ddPA = ~0ULL and ddLen = 0, and other vmxnet3
+> drivers, such as the one in DPDK, never set misc.ddPA at all.
+> 
+> Drop the mapping and report no driver data in the shared area as well.
+> This also removes a probe failure path and the adapter_pa field.
+> 
+> Fixes: b0eb57cb97e7 ("VMXNET3: Add support for virtual IOMMU")
+> Reported-by: syzbot+8eed6f83440ecdaf4be6@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=8eed6f83440ecdaf4be6
+> Signed-off-by: Arnav Kapoor <kapoorarnav43@gmail.com>
+> ---
+> Tested in QEMU (q35, KVM) on net/main (abeacca61eea), with KASAN,
+> CONFIG_DMA_API_DEBUG and fail_page_alloc (min-order=4, as in the syzbot
+> reproducer):
+> 
+> - syzbot C reproducer: before, "rejecting DMA map of vmalloc memory"
+>   WARNING and probe fails with -EFAULT; after, no warning (probe then
+>   fails at BAR mapping, as the reproducer binds vmxnet3 to a non-vmxnet3
+>   device).
+> - QEMU's emulated vmxnet3 (-device vmxnet3): probes, link up, ping
+>   works, before and after.
+> - Same NIC unbound and rebound with order>=4 page allocations failing:
+>   before, the WARNING and probe fails, so the NIC is gone; after, it
+>   binds and ping works.
+> 
+> No new W=1 warnings in drivers/net/vmxnet3/. Not tested on ESXi.
+> 
+>  drivers/net/vmxnet3/vmxnet3_drv.c | 19 +++----------------
+>  drivers/net/vmxnet3/vmxnet3_int.h |  1 -
+>  2 files changed, 3 insertions(+), 17 deletions(-)
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Reviewed-by: Simon Horman <horms@kernel.org>
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
-
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
-
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
