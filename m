@@ -1,63 +1,135 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793004993;
-	b=ppXe400yvtV/G8OWSU4eL4R7oKlgZYomGebGMLI7SWEow6VTtxCPhbOsyJptLp1CBbp8
-	 UketrXBOKKOzNCYxV4ZQc4Ue2xVLptvd50uRcavoufkvopns6oaOgZIztwGHhbguMHIPH
-	 EH65XnAKfPRPewfpveRmc1v/ZSh9yeQhLSkOLCSWABI3I5pOuVcPS7DGFgHaTB/mgPso4
-	 R9VaoFyIPdKs5dPu9tGbdltxiz0Xd2SAeOdN9ulNq4w8XW8iWB3YA6qDegrI+FiMJItda
-	 r5T2vireoS4r+fH5dz9CWqrQt7KuJdx/8uiblO9X+aZyAPT/dGWxI9d4/mta+/v81dw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793004993;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	b=xzHfVc5k+Wi4j5wWDYsGEF0xVgqRFt4YuOVi8uy3ADPhWMJNVKL+8liLnVplSVkIrnyS
-	 8fLT3z2DAckzV8xGarRoxh2uknzKWlro0UHraW8A/38CMnI2RI6K1GeSp536YZ1V/sDrP
-	 ksIU0jSGopyeC1tLovxaLukvRQFthwLDV+F5xtxv2/a1U4gGOZxrlv3X7Q1xBTyB4lUTB
-	 ioeUirt85yhmLM/jW7a8FXgzIjHWKLagYIGuNvXcd04f6/CS83MkCAr2/DHSBvXqAXfo6
-	 BanQHx16L+/U85q8bJTKJFXwxiOeHR2dKjpVvgq0EK7yiuiblxOTnzjEFNQAWXeQZVg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=deKM2usx;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=198.175.65.17
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1793005447;
+	b=LpLGrEpOh4pmx0F1TJ/J3vMmd95Xq4+6FOGAERda7OJdHHls0KzLrdldiWo/nryMUMUp
+	 zKMZlBccXbxB5ASeusFWquqm3AS7HqPfKPf6KPcMO1hzDiwtHW+Qlw+JxVXT9pohcgFzh
+	 TXK8xSUrN+tuX9Gv8b7YpJbwobVdxQUtgPGexl8+/06GyiDcEdEOBmvsRU9FG6/tu9WCz
+	 D4QQgpF5aQins8N+lNnjvhYTfF00UYKIvatyAbjgmrG7uJ7y/7OBNf7WorOCyFko8K38z
+	 WKzBQW41nNkV/sDqERrgNFlZiqqB9evHYXMGM28fSIYLg0rMTyph2dszxBO1uj6wXag==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793005447;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
+	 Received:Received:Received:Message-ID:Date:User-Agent:Subject:To:CC:
+	 References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+	bh=wzI3no4mOQdCEky9Mx5Fiob8TAky87pjhb8yO9Lww/E=;
+	b=l+m/+wsh7EcmTxsUUwSYTnMvREb5/gVl1B9MQPd5M9Od0yPM+YKI3BpgNBBaa08Eff46
+	 n8hHdtk3v/UZCeRhDZ4sXsIaRbmUDEozSODE32jOxjU0+wrcDdBc/CF9ZD3lym3PR6ZoF
+	 CU6Tj4AMzMUBnBM1en4MrCOzlOeyTKFKmIrkZacEbhZ7WygMAsNESxyVhdwsZrwG/0otQ
+	 oObOd+OKtgBs1hxrud5ifvGexx61qEnVj6SytlSLT41xI8NaDDrAL5Ztw93nzjBE3JPxf
+	 ntHwXZsRcTrOzM4XUOszXWG7mRgeWnqYQK4+jJcm4+Oz/kZzgOndDPY/DjZ1cIFKiWg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KQVMZYGe;
+	arc=fail smtp.remote-ip=198.175.65.17
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97EA9606A31A
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 08:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784D8606A31F;
+	Mon, 26 Oct 2026 09:04:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 784D8606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=deKM2usx
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C4441F01825;
-	Mon, 26 Oct 2026 08:56:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793004993;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=deKM2usx7YptNPuS3iqVOUudK2QUDFABxD/pdlCGBtD90+xKEBUhew68XnjXLcLR5
-	 5F32zLh6yFreanZKRSWZvSDmLU48FeUCiOyCW5AViw0OV0aOgslSWf3C9AMxl37f4C
-	 TT838u2Vd+ZH8wB2UHlTGBXrkPnwFDeiCgeNgB7OBUeK0mzLJT9HeHZ//A0V+aEBRp
-	 mFsEmoxMPcMWiNvBHXqfm2YdM/mXqns4bb/aLYJ0EdnNcD7P6ikDhITEDOX6lvAffz
-	 dmMIRW7S21Ps2syK7N48C+l/SWJBOzuhEmDpuU+umlY5IXdxnMP0W4yJrkgEMkGDXZ
-	 /SnwjjTWG29HQ==
-From: netdev-bot+sinfo@kernel.org
-To: Simon Wunderlich <sw@simonwunderlich.de>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- b.a.t.m.a.n@lists.open-mesh.org, Deepanshu Kartikey <kartikey406@gmail.com>,
- syzbot+a079f084653164a652d1@syzkaller.appspotmail.com,
- Sven Eckelmann <sven@narfation.org>
-Subject: Re: [PATCH net 01/10] batman-adv: avoid WARN_ON for orig_ifinfo
- allocation failure
-Date: Mon, 26 Oct 2026 08:56:32 +0000
-Message-ID: <179300499206.3327.5380876117216211782@kernel.org>
-In-Reply-To: <20261026085309.1074911-2-sw@simonwunderlich.de>
-References: <20261026085309.1074911-1-sw@simonwunderlich.de>
- <20261026085309.1074911-2-sw@simonwunderlich.de>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KQVMZYGe
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793005446; x=1824541446;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=RuF4FZs70S5bJ8vo6yvpK87OSzucU0qeH3p67LGnu/U=;
+  b=KQVMZYGezkau+s/1ihoo36YLucjTXCICwV1tjb16Fw3uNlMfpRPhDNzn
+   nbpGMzR9LOP5zGxhqVwJJBO8Be0a+l7u2XPzxd+ksJpzCLgMv3FphkmnJ
+   303W3Kc647gXHM7iaIXpDnbU5n+O08EOTNrGmFl7+OgkxbaYpn8XwLUJj
+   nGKO53cxVUrjVqPeT7x/6MqXXLRaOJn6PGCh1dfH5CJPawqBp+DRRHx2f
+   ShzaMm9rAWINCjTDkQ05Mp8gmp+ZSTlSsJO3Yg2iSso+p6BgJ3DU1PIka
+   R+Hzv5xcW4yjDrfXIMcCL4j3ZZTuo6ZGP+ZfShrOiWv9eUH5vWHdPoJeY
+   Q==;
+X-CSE-ConnectionGUID: u/RoaBp6S72Dl6cQtSCn7Q==
+X-CSE-MsgGUID: 6g2nD1EWSa+d2H+VK8gKEA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11946"; a="1678279"
+X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
+   d="scan'208";a="1678279"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 02:04:05 -0700
+X-CSE-ConnectionGUID: YXTAkqqGS+GOMPhgA06LBw==
+X-CSE-MsgGUID: nIGpr1G1SWeVMqpRcwncVw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
+   d="scan'208";a="4318125"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 02:04:04 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Mon, 26 Oct 2026 02:04:04 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Mon, 26 Oct 2026 02:04:04 -0700
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.62) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Mon, 26 Oct 2026 02:04:04 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Svs3WUMZZ+10a3oZRhz6sael98pSjn8r/dx3cbJFKiRM2QabX4RCh7abYPHjXwkMikwmA3+qS/CHd008dVBJJwO/p6pbBqENq9IdI7qR9GLNrVlA7usrLl0KZVeof6uwq946Su/k1tKBqHfkIIUYpEdgcqlM9wBfkElMqqthAuUpk48c7aWPwJEN7pjDqHWBHnRg6nBROiMx5dgIa+mo/0mNNAunAhvvhv8i9HtDpt362SfOV9jgfIsRhA8cCH1m6a71KGfi+D+so2kNROiusbtpD8Wi46YvHFzW2dlRiFAOic+WDQtSE8ZIWkcuLPGzyehNrD9WXSzEtllIpkbbuw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wzI3no4mOQdCEky9Mx5Fiob8TAky87pjhb8yO9Lww/E=;
+ b=JOmuJsiQizhMT28m0BcgUqQ1b0dUiqkAMSUUgbXX3qHle5NTVciryOLn37Mn75NuGBNce+W7EYZ6T/d6etjhfVtCrJMJJrCLXwawnKTLneosyY77WqUe5I//n04GOwnQe9P8640BGPMlyxdQY1tZJvB75kUMXIidssdeSsbxWIOOUC7ChXSeNm1GdKMYpOixnyb63V9up13zjzjRCfkHWICeCLxdwBIIqUhgud1d1rlVhtjaZ6z73cc3+pBbLlOLSiB0KZ9egRBAOWBJ4jUuQ7Q9spXjl/VN5KlZzNMzL5kICmf3SuolATPsSLHMUZ5XUGd8282ZTkYrUbj5kvTjtw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SJ0PR11MB5630.namprd11.prod.outlook.com (2603:10b6:a03:3bb::6)
+ by MW4PR11MB7164.namprd11.prod.outlook.com (2603:10b6:303:212::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
+ 2026 09:04:02 +0000
+Received: from SJ0PR11MB5630.namprd11.prod.outlook.com
+ ([fe80::79de:af84:3b43:84e3]) by SJ0PR11MB5630.namprd11.prod.outlook.com
+ ([fe80::79de:af84:3b43:84e3%4]) with mapi id 15.21.0546.017; Mon, 26 Oct 2026
+ 09:04:01 +0000
+Message-ID: <e8669ef4-1b3e-4429-a6b2-db4c6a734f7f@intel.com>
+Date: Mon, 26 Oct 2026 11:03:54 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iwl-net 0/2] igc: Fix Tx hangs after NETDEV_TX_BUSY with
+ TSO
+To: Benoit DE RANCOURT <b2rancourt@gmail.com>, Tony Nguyen
+	<anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	<intel-wired-lan@lists.osuosl.org>
+CC: <netdev@vger.kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Vinicius Costa
+ Gomes" <vinicius.gomes@intel.com>, Sasha Neftin <sasha.neftin@intel.com>,
+	<linux-kernel@vger.kernel.org>
+References: <20261004152840.61222-1-b2rancourt@gmail.com>
+Content-Language: en-US
+From: "Ruinskiy, Dima" <dima.ruinskiy@intel.com>
+In-Reply-To: <20261004152840.61222-1-b2rancourt@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TL0P290CA0004.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:5::17) To SJ0PR11MB5630.namprd11.prod.outlook.com
+ (2603:10b6:a03:3bb::6)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,25 +139,175 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR11MB5630:EE_|MW4PR11MB7164:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3c556ee3-fb17-40ff-a515-08df334013fb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|261009223027099003|261022075727099003|261021121427099003|261021123027099003|261022105027099003|10067099003|56012099006|6133799003|22082099003|18002099003|11063799006;
+X-Microsoft-Antispam-Message-Info: np+kFJpAekBf/pXCJ5q29CvJVl+1GfuXen5PDHTyIOseFzPMpSdAwJnQwYi3Mu3wZcy1SSQcYNYSFzcBqZlYofEYjMk5yZmfw92Ruwcd/HxdI9pV3SKgrAouxmW4vEO79HXLTv3RoxkO7aVn2cB0/u0up570+o2iv+qB5IwTXZpVkbiOB7CMXxY7YZWE+jGzPFDHO2aPUniwRdgL0RQxDMfNDYD4KS8QJdKzTkKi9uicJrC5boPDbly+ZjpCFTQiQNmKqwfQaYw+eJRzcqlA3JfPpqoBdAsoxIWjOeiUtOuzhKcRjtWJLXEYOfQz3xl15za0xyBy8FW7jm1l/D2+d5CLOalLPnpWq7Fl3AVpensa7EW5PYUdhuJ4fbcjrxyHxoI84XGCcC9iir7V+ne2SjedNDuVbzyB1B2eHkKZ2x7Cgd3pDfbQoPInaWyM60mrChuDfpuHTIg8pjLNPugzBdxBw+SMcg2AihxuwUnFWlNRM9sfUuV0igRiB5ybzOsWLA0sgEaoP1CPDOyXzFFELb3+S79LZT7vwQFE/x8a3mTNbZi57Xcgh9OhMpu6d3DH8dltFseB0ZGbXX4EOSesa+8QNeSQrR42wmzPSoPqOmlTq7FQDk2AJUnvLVBNt/0k22EAlItsVUlUz10lOjgF6krTDc/MV6FahJigCGCeAW8=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5630.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(261009223027099003)(261022075727099003)(261021121427099003)(261021123027099003)(261022105027099003)(10067099003)(56012099006)(6133799003)(22082099003)(18002099003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YXJ6NUNIL3cxc0NCczJERXR2NUhLcnlkbm1VQkFBNzIxNXluS3EyRzRZUVhI?=
+ =?utf-8?B?N2FQQnBuVFRXR0VyYXlKRDdVZG1zVnkzaHV0UnphSWFubk94R2RWd3BUUEVX?=
+ =?utf-8?B?UC85bUZPR3pqaW9mS0VHS0RYemNUWFJXVUNzTjduYWpTNWlLeTJwaElFZmlh?=
+ =?utf-8?B?d1ArQjg2dGZZbE4zb2JoeEhCamRESzBIUk51QjJlSzRvS0lEeVNtU2g0a3RU?=
+ =?utf-8?B?c1diaFBnU0ZBdVRjZFlnSlJvMDZKTWZrVWpTZHBMcUpJaDZSL1VkTTZXTlk3?=
+ =?utf-8?B?dnZCN2FkTzQ0dE9rZHhQaFU2N1djSWRoK3RjRnpzSERYUGQ2ZHFyL0VZWjdE?=
+ =?utf-8?B?aGhZbmV0a21tMjZpRUlMM3JhK2hFc3JHRHpjeHJkYUNsV01RNGFiN0pnZlVI?=
+ =?utf-8?B?Rk5vM3QrSDlRT1Jwam43YnYzTVc0aEpqVWpBdG5OL2ZpMnk4ck84MC9RTUJ2?=
+ =?utf-8?B?c2VtZTNmd3o1cWxrcklOVUN3dVJmcWMxZHI0K0s1ZCtNT3J6akpoeVkvWnV3?=
+ =?utf-8?B?TzhWNlU3Yzc5Qkgrc1ExY2x1UlFMeGJXTlc4eVpSQVk2VUdTZUx3a1VxQVdK?=
+ =?utf-8?B?Wis4dE1aa1cxM2VKRWRKSEcySTRvc1BqNElYeU54NHQ5dkt4MnFtejhHL3NH?=
+ =?utf-8?B?Y1FpR2JPRDBmZVF1dDQwNGhxNkFURGc0OE11MmpkWEZEVzk1OUxzNDh5WHRy?=
+ =?utf-8?B?WHVnWVpNTzByWlhZSTlWOVNTMWhVUEpFeVFjR1h6OVd0b1BWdUN6TkZ4QmRX?=
+ =?utf-8?B?M1NJUHlDcmF6aUkxV3BHeHFzZGI2OGQ5MG5QeFFEbm4vVXhOdGdPaVVFMERj?=
+ =?utf-8?B?dWI1RXg4TEdRN2pFWVhOcWhVVkIyQnJHWlA4a0RhQ2lkNmdkRHdMRjJqejNO?=
+ =?utf-8?B?aU9yaXQxTGt2RU82NlZRa2dpRG9qeHhYcXkwS09MVi9XcTV5dDhlUThXbkli?=
+ =?utf-8?B?SVRlditPcnliTmxzcW1mOTIwMG1ML1ptUTNqYmNXK0RXTWdUN1k4VmdRakxz?=
+ =?utf-8?B?NGVxNjB6NjdURElEUWlpWllJWlpNNEwwcGtLekVBMWFQbldkZFljSUxmTWJ1?=
+ =?utf-8?B?OS9TQ0lYZ1lRWGpwZUU1a3FlOG5XLzFMK09kaVRhMWFTVFMzaDZkc3hhNDl0?=
+ =?utf-8?B?RGNSdmZHLzByeWxnT1RoTU16bmRSSS9PSGF4cmI2QVB6UHhoNFY0M3pnOWNt?=
+ =?utf-8?B?dHo5WE1WaEdSTzdQdnd4bFEvMHNwYlVabytqbzdUQU5pTHN5NGMzNkFTZ0Qz?=
+ =?utf-8?B?aU9VVm9zU05QZWI5bEw3YlVyTFRZcUd5Q0VLZzdQSGZXekNqSlF3Mm5mRk9N?=
+ =?utf-8?B?dVo0amFudkZ4TGZGQUxMNHVMQjkxdjNyZUpTSjNIdEdxY09nMVBaejNURHRz?=
+ =?utf-8?B?eG81TnFaZEV2OElpOXRFRER3enZLRHl1ek0rRjdwUlhFMk9zNTkxVzFNREJF?=
+ =?utf-8?B?Y0JvQXR0VDgyUTBreEU4QlczM2t4b094RzJkUFNaSlBhNnB5eE5jQ1hhZ0Fx?=
+ =?utf-8?B?VEwzK1RYMlBhN0IxelhJbndXRVFOM2k4bHFVOEJsYjJiZWhiODJ5b2VEbDBM?=
+ =?utf-8?B?NVBuZjdiVWNGTVZlZ2Y4cEtvNnVqU204WWVsV1pGVzBzQXQ0enNQcVlXZUh3?=
+ =?utf-8?B?Zk9NWi9kZHEzWDdjTVVCRUVTTU5DK09FVktSb3FEVE5NRmlsRkNHVW10bGNm?=
+ =?utf-8?B?cDhxbUhUblVNbExYRmlYcUdwQjIvY2dVbXg3am8wWWVVS0Jmd2hQYXRqVlRq?=
+ =?utf-8?B?OXBOTzdrSFBBTnExOEhIVWtIN2Y2b3M2RXQzdFFMZGhLeFpVaGVQWkF5cktM?=
+ =?utf-8?B?Q3VmZ1ZhUjJNVHBJZ2ZNMVdwdGVvaW9UZUltTmFrcGdKZWMwK2FPa0RqQmQ0?=
+ =?utf-8?B?RWFhbkd5SFpxUGV3RThCVm9JTjRzNlZaZ0ovUzRXSW1TU0FvcCs0cUY0ckVl?=
+ =?utf-8?B?bi9BSHRrR0Rhb3QvWXBycTQrejRmSUVtUjJTdUxYTnVVSk5iaFF0SU10RU9s?=
+ =?utf-8?B?TStENDcxNExyZ1ZhSFRwcDNQaDV5eHRzaE9PN092MmllbFUrZE4weDJJUVRG?=
+ =?utf-8?B?MkUwV3N0d2ViSlFVWjdEcTR3N2ZaclRQcGpXK3VRQW9kcW14SWs0b0J3b0Ni?=
+ =?utf-8?B?c2ZRazVIT3lmdjNsLzZYdjV1em5XR3pwaUdQS1VMbTRLUFhENUVTRWczS1Zr?=
+ =?utf-8?B?M2paK1pDTDNIeTZwbm9QMG0reDc3Z21rcnFJaTNrTXJla3k3TTFTNG5nU3h3?=
+ =?utf-8?B?THlhWGNLUkxBRGpma2dPYXdPeitXWkRlWk4xbEgvdGNId3FWMTZqdndEdC9Z?=
+ =?utf-8?B?ZVdvYWJucHdDdmx1TTdDaHhscE1RVFA2ZDNmZzlSQ2lqNEVHN212QT09?=
+X-Exchange-RoutingPolicyChecked: NcvwoV8XLZbvxSIS8jLQdergPX+VZrFochVK/+hfL+wZ4/YMlyLQSGw1nC3fUjO2Upi6+TJMaCZfj5UXF0Q7osJ8K9LpLdD3FYFUqOmklyYNlNgZOgAkTEBbR7TL+OoLGP3xeDcl3koAwQpxWQTedf0CPfk20VdzapEGWhkltigV9fPbU8zRKpPvJLSNyzSkCud5ohyuRuQJu355Unectf0fBUdBLqXID9HKum9EquMpiUX6quXS7PUnwuOuwLfD3C2rSnia+xQKjUcCLFOmZeFOf/zhJ3P0A1SWtY9j1+GWM0AzSfCRDwm2yoBW0IlQ2EwlnAM/ZwNUMENxqtcGrQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3c556ee3-fb17-40ff-a515-08df334013fb
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5630.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 09:04:01.7108
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GMidUvyndSBQaEur+BZybRM6rVeO4dmJ97+W7qhnyGYPSXN/7awm38rhvUh5B6YJE4XToLU1btxASvCRClOgUA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB7164
+X-OriginatorOrg: intel.com
 
-Hi!
+On 04/10/2026 18:28, Benoit DE RANCOURT wrote:
+> Since commit db0b124f02ba ("igc: Enhance Qbv scheduling by using first
+> flag bit"), igc_xmit_frame_ring() requires count + 5 free descriptors,
+> while the queue is only stopped in advance below DESC_NEEDED =
+> MAX_SKB_FRAGS + 4. TSO skbs with 16 or 17 fragments then hit
+> NETDEV_TX_BUSY. That return skips the tail write deferred by
+> xmit_more, so the queue can stay stopped with descriptors the hardware
+> never saw, until the Tx watchdog resets the adapter.
+> 
+> Patch 1 aligns DESC_NEEDED with the admission check. Patch 2 writes the
+> tail before returning NETDEV_TX_BUSY, which remains reachable for skbs
+> with buffers larger than IGC_MAX_DATA_PER_TXD. Each patch was tested
+> alone; together they keep the queue stop logic consistent and the
+> remaining busy path safe.
+> 
+> Setup: CWWK router, Pentium Gold 8505, six I226-V (8086:125c rev 04,
+> NVM 2017:888d), 7.2.8, default MAX_SKB_FRAGS = 17. Load: CPU saturated
+> with busy loops, a remote build routed through the port, two SSH bulk
+> streams in each direction and short TCP bursts, 180 seconds of load
+> per run observed during a 195-second probe window, TSO enabled on the
+> egress port. bpftrace probes on igc_xmit_frame, __igc_maybe_stop_tx
+> and igc_poll recorded NETDEV_TX_BUSY returns, the inferred last tail
+> write and next_to_clean stalls.
+> 
+>                         runs  Tx timeouts  NETDEV_TX_BUSY  TX_OK returns
+>    unpatched 7.2.8         3           25           10890       7.3M
+>    patch 2 only            3            0           10751       9.5M
+>    patch 1 only            3            0               0       8.8M
+>    both patches            3            0               0       9.4M
+>    unpatched, TSO off      1            0               0      21.5M
+> 
+> In all 25 timeout episodes, the stalled queue had pending descriptors
+> after a NETDEV_TX_BUSY return. The probes inferred at least 214
+> descriptors beyond the last tail write. For that queue, the hardware
+> register dump showed TDH = TDT = the next_to_clean value recorded by
+> the probe.
+> 
+> With both patches applied, no NETDEV_TX_BUSY occurred, so the flush
+> path of patch 2 was not exercised in that run; its effect is shown by
+> the patch 2 only runs.
+> 
+> TX_OK returns count igc_xmit_frame() calls returning NETDEV_TX_OK,
+> excluding NETDEV_TX_BUSY retries. These are software call counts,
+> not hardware packet counters; with TSO disabled, segmentation occurs
+> before the driver.
+> 
+> Related code, not addressed in this series and not tested:
+> 
+> - bnxt: commit e8d8c5d80f5e ("bnxt: make sure xmit_more + errors does
+>    not miss doorbells") rings a pending doorbell on the drop paths. It
+>    leaves the busy path alone, reasoning that busy can only happen if
+>    start_xmit races with completions that both enable the queue, in
+>    which case no kick can be pending; the current code warns "ring busy
+>    w/ flush pending!" if that assumption breaks. In igc, patch 1
+>    restores that property for skbs whose buffers each fit in one
+>    descriptor, and patch 2 covers the remaining case.
+> 
+> - igc drop paths (skb_put_padto() failure in igc_xmit_frame(), out_drop
+>    in igc_xmit_frame_ring(), the DMA mapping error path of igc_tx_map())
+>    also return without writing a pending tail, the case bnxt fixed in
+>    e8d8c5d80f5e and 00eeab0c644a ("bnxt_en: Write doorbell when
+>    linearizing skb fails"). The queue is not stopped there, so pending
+>    descriptors are delayed until the next transmit on that queue rather
+>    than stranded.
+> 
+> - igb, ixgbe, fm10k, i40e, iavf, ice, e1000e and e1000 also defer the
+>    tail write with xmit_more and return NETDEV_TX_BUSY from their
+>    admission check without writing it. Their stop thresholds match
+>    their admission checks, so this should only be reachable for skbs
+>    needing more descriptors than the stop threshold assumes.
+> 
+> Not done:
+> - runtime test on a kernel built from this tree; the patches were
+>    tested on 7.2.8, where the affected code is identical, and apply
+>    cleanly here;
+> - launch time (ETF/taprio) and XDP/AF_XDP traffic, which share the
+>    ring and the wake threshold;
+> - longer runs and other I226/I225 boards;
+> - only the igc objects were built with W=1 under allmodconfig, not
+>    the full tree.
+> 
+> The analysis and the patches were prepared with an LLM-based coding
+> assistant, which also wrote the bpftrace probes; the results above come
+> from those probes and the kernel log on real hardware.
+> 
+> Benoit DE RANCOURT (2):
+>    igc: Fix Tx stop threshold to cover empty frame descriptors
+>    igc: Flush pending Tx descriptors before returning NETDEV_TX_BUSY
+> 
+>   drivers/net/ethernet/intel/igc/igc.h      | 8 ++++++--
+>   drivers/net/ethernet/intel/igc/igc_main.c | 6 +++++-
+>   2 files changed, 11 insertions(+), 3 deletions(-)
+> 
+> 
+> base-commit: a83267db14681b3be481e02a4d5a38177507006c
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Hi Benoit,
+Thank you for this fix. Much appreciated.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+I wonder if we can go just with patch 1 for now. Reasons:
+- As per the analysis, just Patch 1 resolves all the issues encountered 
+(the corner case resolved by patch 2 is not reached anymore, although it 
+remains theoretically possible)
+- As explained in the cover letter, Patch 2 changes the behavior in a 
+way that makes it inconsistent with what other drivers are doing. Maybe 
+the new behavior is more correct in all cases, maybe not, but in general 
+I prefer to avoid introducing inconsistencies, especially when I don't 
+fully understand the effects.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Best,
+Dima
