@@ -1,61 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792975837;
-	b=qF99QQo3Qw8Q2HMsHPtavrKx+P6N2m6deoq0nS8c8ZallgXv7dHc5w8kiCIllh4QN2vm
-	 QEbdRaplCn0s3XLxcefBFA/etF9c1gOYEze4zoZ6tdtKRGwxnVtLbPTw4O1fkcy2abelI
-	 mTaqcmFexOxqg59CTexXS5fVdJKaWre5HXEUUa9rpdUtog5daumOLZggPlUlAoTlOBbye
-	 JNzj6nq8T3fhddBE1zo/devhJGYkEUHFSXyHm/GgC/PbAI+uITHU1B6fIUqb4C4p4ceJs
-	 ZbQ4rbq+u4fTFZLVxwpe4unRj9zuT1BvT8MloJwFnVDMoMZ62k3zZYzi2WiG3f40aGg==
+	t=1792976215;
+	b=gJcWCG5gKhmv0TsflfOdT+tVPZQCyZiGgatfKW3FZYPzz5fw0ionLaV+nVTKCR5Z9zzq
+	 wH0lxPa0964x7bY0e0Hj+CNhTRgRwBR9WjVOdDVAZKX2QA15uHL8lFEIL5xYBbBCpAse/
+	 TyFOWDE9T+kWVI5oL/jAh8sGz5njU8iVX7amMVHFPO8Pq8Mq24JaIPmK3JAgHVhLcjVVm
+	 mcTq73LDgL81Rwk/Af4V1ixt1uNKiwo1Pa0/Zxz+54kHwfL+qyaew4kcJHnA6d8P9cK0O
+	 qNIqjPFUX0AiSNY4OcclJAGI2m0NpHZ/43nms211pANtB40MKFXm5AwJC0d5dJ07DLA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792975837;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=hKJItMY3kaYlNl5o01G2gU4B2dpN9KdP/5hai7PL+/Y=;
-	b=CjDuYB2pfUHKWqJWGv0ZDIkCjDwfyc/jmhHiRg2TySfw/HwUanJhHPU6uUWYtD/mPEQ1
-	 cl2ga41ey7WI1w05ft4wkvEARmV0tk1hjXqS39Tv03rDBBJhjIoZ5ee9qMjeyaFHCpchE
-	 ar3+IS+NZ/RVXsVUwNIOOPftAXOHoNvbkMy/3JN2RCoLfKTxfWPRIigaISo6O+hYYIDnM
-	 8Q03D8cHO1at9id9Ck5N43Q8fkQZC2joAHPAtS4Q1avYDlopD5RQ/ZWe3DygGczedh6QD
-	 zYswjTthpnHPddBC2w660e9m6/3gXbsLTgAiEOp01Zv8YeiJBu5ZMMsxB210YAXI6/Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792976215;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=RLx2Ro+oXYG6Esl8h8Oz8vJrCiQY2x6fL9DTdSUob0M=;
+	b=qH1fXoIRDvAKQkqR42PBcCBnN/FuOxKNCVO5xBWDV3cOWD+13vATNN72Zir34y3PdmEm
+	 veYLtilFqYuv1C0tsh5549GuvWlsrDHTutvSX/Yd96lFfE0E1viGSOmaD5XYVYFo1MR3u
+	 Il7pIEYa7eTtJhwBkK52vnbeQKgmg0QM66tLRCA2lbusYCOfscuSq9mqbx2uFRpY7I8ty
+	 Z3FVnoSGekus5xs2u1hCdiot4U7AWZOgSEaIrAE2tThk/GDKcdgWtyfDbmeaP6tmQxe2j
+	 6iJC2uPYO26a8tzYQvGTkh872V4Z3D7A+ppkPzOnWX4exp/rICvlz6jJs+PFMrM72oQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=KP70H40N;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=D3HVgW8u;
+	arc=none smtp.remote-ip=95.215.58.34
+Received: from mta1.migadu.com (out-34.mta1.migadu.com [95.215.58.34])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3B1606A31A;
-	Mon, 26 Oct 2026 00:50:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0A3B1606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E252606A31D
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 00:56:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5E252606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=KP70H40N
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=hKJItMY3kaYlNl5o01G2gU4B2dpN9KdP/5hai7PL+/Y=; b=KP70H40NKyO7perI+wo3rpfXsq
-	9aQuaS0a8CARTRJs+sigOQTxOxlXL0HDfNtHQhcIkK1zycwC6aLC8pqO0LIjd6R12t9v54cmdpOiT
-	yFyQIIxAeMM5ClRHOz3xD52x5rvj2nXS+jPO//u2mJNHYuWd+pGXP2QFAJRpyOwraRWo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xL8v0-00CjTU-V4; Mon, 26 Oct 2026 01:50:30 +0100
-Date: Mon, 26 Oct 2026 01:50:30 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: David Yang <mmyangfl@gmail.com>
-Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>,
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=D3HVgW8u
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=DhZfvcVUIAIZszQSJBwAYpMOK0X26Pzmzgl/OqwUSZI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792976212; v=1; x=1793581012;
+ b=D3HVgW8u+Is1mGe+u+pOX/SkrZtonVjGkXjBIqj0GBsj+Rc8JDSpV3aWyYoVKQdhzmmU1+wm
+ 8r0ZVJ801W+QlSPfzu9ykiPFe7+evZWPLIcrsiCL4fXZHzHQN9fAE2VZrVh0Takx0cAQMGu14fd
+ VAmXyfHnCnUf+9evqXJvr2zw=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id 0f3592458cc6a98b;
+	Mon, 26 Oct 2026 00:56:52 +0000
+X-Mizu-Trace-ID: 0f3592458cc6a98b
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 26 Oct 2026 08:56:44 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Timur Stukan <timur.stukan.linux@gmail.com>
+Cc: netdev@vger.kernel.org, Hangbin Liu <liuhangbin@gmail.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] net: dsa: motorcomm: Isolate all ports during
- chip setup
-Message-ID: <0fe75791-3a1d-4a33-968d-c5c5fb28f86b@lunn.ch>
-References: <20261025144834.2810828-1-mmyangfl@gmail.com>
+	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] bonding: fix missing down path on speed/duplex
+ failure after FAIL->UP
+Message-ID: <at6lTNHwA1V9Xja9@fedora>
+References: <20261022103821.89552-1-timur.stukan.linux@gmail.com>
+ <atsRW-aYHeB-cEgi@fedora>
+ <CAF+_u5Byu9BccKQpZ9VcXAb-fMEhpKAD9A65LktLDJ77ng+KfQ@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,20 +75,42 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261025144834.2810828-1-mmyangfl@gmail.com>
+In-Reply-To: <CAF+_u5Byu9BccKQpZ9VcXAb-fMEhpKAD9A65LktLDJ77ng+KfQ@mail.gmail.com>
 
-On Sun, Oct 25, 2026 at 10:48:31PM +0800, David Yang wrote:
-> The chip setup only blocked unknown unicast and unknown multicast
-> frames, known multicast and broadcast were left open (though the former
-> cannot appear while the FDB is still empty). Before port_setup() runs,
-> broadcast frames received on a port flood out of the other ports.
+On Fri, Oct 23, 2026 at 03:35:57PM +0300, Timur Stukan wrote:
+> On Fri, 23 Oct 2026 at 10:48, Hangbin Liu <hangbin.liu@linux.dev> wrote:
 > 
-> Close the window by fully isolating every port right after the hardware
-> reset.
+> > >  static void bond_miimon_commit(struct bonding *bond)
+> > >  {
+> > >       struct slave *slave, *primary, *active;
+> > > @@ -2807,10 +2828,21 @@ static void bond_miimon_commit(struct bonding *bond)
+> > >                       err = bond_update_speed_duplex(slave);
+> > >                       netdev_unlock_ops(slave->dev);
+> > >                       if (err && bond_needs_speed_duplex(bond)) {
+> > > -                             slave->link = BOND_LINK_DOWN;
+> >
+> > Hmm, this issue only happens when link_state is on
+> >
+> >         netif_running(slave->dev) && netif_carrier_ok(slave->dev);
+> >
+> > while !netif_device_present. Should we set the link up when device detached?
 > 
-> Fixes: 186623f4aa72 ("net: dsa: yt921x: Add support for Motorcomm YT921x")
-> Signed-off-by: David Yang <mmyangfl@gmail.com>
+> 
+> Hi Hangbin,
+> 
+> Thanks for the review and the suggestion.
+> 
+> A detached device is one way to get there, but it does not cover all
+> the ways to hit this bug. In particular, it does not cover the case i
+> reproduced: during inspect both link_state and netif_device_present()
+> are true, but the carrier is lost after inspect and before commit, so
+> reading speed/duplex fails in commit.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Hi Timur,
 
-    Andrew
+Thanks for the explain, but the same question to this patch. How do you
+make sure the carrier is not lost during bond_miimon_inspect() and 
+this slave->link_prev_state setting?
+
+Thanks
+Hangbin
