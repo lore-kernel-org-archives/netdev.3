@@ -1,58 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793054725;
-	b=t67MR8dahMiH61aCVMjRSdKJpo7BgZeLqEs44CGsx9b0nnerDfwV+oU2DdkZ6f8pk1Sg
-	 2uvD8e/b7KDeQ4K+7qhzyN6fRx3zrJEUfe8ShzV8hNBVfA3AXgeEUw2ruCSJAToFgBdvI
-	 PVHcpGodwnR5nLk2fS0XfDJFn6NI/yMX+j0yxD+1abjg61rmkNx2qrudk+0/49F0oUL+s
-	 s9Qgj+W7+CU4Fyiu8wQQ8KT2lyZeNKPaLzvIKyjiJlWqUhf7CsL/1+h9LYP+TrHAl6ZNJ
-	 AYmN7WCBpamJPoDEcxdBHNxGCBb+s9BuZyUE7YpTt/6R4+fQNYh0jfuxrv/g3xe7O6g==
+	t=1793054910;
+	b=4Whsns/Tqw6Ibipf/t3ThPRg/+GcaQy3sW+kNZ1EjljKrbmDvLqzOFFxm3IHf3cFnnzQ
+	 c1qAyvNo1gXhf0B1Cen1xzsGHoJfm2bCs1ufbKVtpGMVPF2tocJQFvfXy6dINCPfghdq8
+	 P6hYdfeHMbF5WjFX96zIMp+3fIkfc9vZr/rZJROftNjpAQFtf98eGhN4D2BUR8gxnG7Xc
+	 sQ8/FfAyCj5AIvcUY9nLKpKa3QWEzUp4lIXQD2QkzgI3BLZUY2wF3Pxw9XY9XqEDs6SFx
+	 KuyrMz9k8C0XxYG1MNxv+qy1t1fKTyHg7ruX394NQguTB9lbOoS1UbV9CyNCqFJKCCA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793054725;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793054910;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=d/Its1iiRQhvUeA0+stemr9eVBlS8UDliWgmRnQ6fg8=;
-	b=EilitSI+Jxw9asVjO5/R3XYyK9FXOSv8dVrXE2tSIs0h0MIOPyl6RrIV3ZctzMGwqlNG
-	 haw/O5Uthcc92O45QVH+iLJUsEYnom2jRVMMqS4A4QOi5Fo+tci0KnBGgs9f9taoVmotP
-	 k0PgEBCNnHR7WBVHIzxaHTRgt0SB4QSj/3/v75GQjSElxpf/6/75WmKHcdNfn4DKWSYgL
-	 z8cju6XTFn0Ymm17I7bptjleLQUd144B7kXd25dkgtNASszP6PqKy3ZplDZCcUnvhf2Rx
-	 RKW+7ShFxSqvaFO1W6WNA54HqU7ySBUEGccakwkNHyFONmVojzhYeuIuCamOtSPH6dw==
+	bh=jcxyz7Cy7L3/Rzx1d3XkFGe0VxaGpBfmgU6arFQu+pk=;
+	b=2neaXF3yj4h/Xlf0qOw8CCTEPFFZxy/CaUnLKI6dJ2KwkpMjmJJorTTBOp5olG2LByXS
+	 P6dDCn/xchnYwqD7HLB79r5u1g0wFmu3CL/+CknfGVpgu1H87fd+Lg/XjSBOTjbQ9H4u1
+	 Dl0BwGKtZ8KdUICt0wxxPH6HkYTP3NScp5Zc2mu+CJCSBmTrXj9zKN74+cX3BUf4j3wLS
+	 CI7J34Wr9NCuLnxFkXRZ2KsP7S7sXVimnoyNvWMGAL1cL2sGMANF+HpHjnubmLGxPwcPU
+	 Uw2b3wvMyDWRmgnCEecIltQTN/39UDnnJIVrftft50PpEEFU1JnZOYMOCtEi6Lf3chA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=luT1sQdk;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XJfD80vz;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0CD7606A327;
-	Mon, 26 Oct 2026 22:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11AE9606A31A
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 22:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=luT1sQdk
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA2CF1F031E0;
-	Mon, 26 Oct 2026 22:45:23 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XJfD80vz
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 677C41F01825;
+	Mon, 26 Oct 2026 22:48:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793054724;
-	bh=d/Its1iiRQhvUeA0+stemr9eVBlS8UDliWgmRnQ6fg8=;
+	s=k20260515; t=1793054909;
+	bh=jcxyz7Cy7L3/Rzx1d3XkFGe0VxaGpBfmgU6arFQu+pk=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=luT1sQdkBDa0hHwdiWLEVoVLBT3log5jGP4FV/CZkM/Obum2zLRRqO6FvxPNHRh9l
-	 WSjC7bKahtm+glyKQoW6u1aOo5/HVc0qaYwWXPKjLNhYeVCJFTBTIZwsoiKGA5cwQN
-	 mkCBqy3XLq0t5EqmRWUXK2g606+6hzalpZW51YZdV+QlempeReQknZC7VkpkRR583u
-	 Vd7Gtt+79a3+l0YVFVwkajzUjDqQjZAnFmCuABrv+TYRKKRgVN0Pt4eajNYybM4eno
-	 REsCJ78ETKpNrS3TqDMCQxYMG51RBnZVFBt3wTmFBUT34Fkd+dFBanprBewMdNElTt
-	 tLML8UGcDzziw==
-Subject: Re: [PATCH net] inet: frags: prevent acceptance of partially
- authenticated reassembly
+	b=XJfD80vzREdmw8Gq2FfRAxfgx0ZC+24a0p0VVUbyWKj7BgrVR+fgTlSykOJ9MSJtB
+	 mdFhzSxiKbidCu3L/czUKNRcuwl4TtdolAyabYF6M6l39bylVAwf2WJ61h+RrAESkC
+	 2jY7/Iz62p6zu9C8Pl5bDgCN6UT1WJz9dFX0YOicisqsrKULJzZufsbKDwzWGXdCRP
+	 qzy0s5xHDn7qUfTvS3M8yUJrBfy7LhndO30KSGgw6UJ937MF83ofSoKuhYYRYZ9cJT
+	 YSLazyGuzvSydOqHhfQjxk23+am5AYrhqxbVSS7FqweJ7uEBB16OmZzhDOSCf7JmY5
+	 cuUlmfHljh7TA==
+Subject: Re: [PATCH net v2 2/4] tls: device: fix next-record sequence in
+ core-driven RX resync
 From: netdev-bot+sashiko@kernel.org
-To: Jeremy.Jean@oss.cyber.gouv.fr
-Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
- dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Mon, 26 Oct 2026 22:45:23 +0000
-Message-ID: <179305472320.3134.6433883285308503818@kernel.org>
-In-Reply-To: <20261023074515.2347924-2-Jeremy.Jean@oss.cyber.gouv.fr>
-References: <20261023074515.2347924-2-Jeremy.Jean@oss.cyber.gouv.fr>
-X-sashiko-severity: High
+To: rjethwani@purestorage.com
+Cc: netdev@vger.kernel.org, kuba@kernel.org
+Date: Mon, 26 Oct 2026 22:48:28 +0000
+Message-ID: <179305490892.3134.14812552886616716829@kernel.org>
+In-Reply-To: <20261022221732.1397620-3-rjethwani@purestorage.com>
+References: <20261022221732.1397620-3-rjethwani@purestorage.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -65,10 +62,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 2 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -76,181 +73,113 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The fix misses IPsec tunnel devices that strip the secpath (VTI,
-  and xfrmi across netns), so partially authenticated reassembly can…
-- [Medium] secpath_equal() (include/net/xfrm.h:1213-1218) requires every
-  fragment to carry identical xfrm_state pointers and an identical…
-- [Medium] secpath_equal() treats sp->verified_cnt as stable fragment
-  metadata, but it can change after a fragment is queued.
+- [Medium] In tls_device_core_ctrl_rx_resync() (net/tls/tls_device.c),
+  this patch makes the next-record sequence sent to the device…
+
+Pre-existing issues:
+- [Medium] The other CORE_NEXT_HINT resync path, tls_rx_msg_size() ->
+  tls_device_rx_resync_new_rec() (net/tls/tls_sw.c:2234-2235 at this…
 
 --
 
-inet: frags: prevent acceptance of partially authenticated reassembly
+tls: device: fix next-record sequence in core-driven RX resync
 
-This patch adds secpath_equal(). It makes inet_frag_queue_insert() reject
-a fragment whose secpath differs from the queue tail, so a reassembled
-skb cannot carry a secpath that covers only part of its payload. It also
-limits the REASM_OVERLAPS counter to actual overlaps.
+tls_device_core_ctrl_rx_resync() used to pass tcp_sk(sk)->copied_seq to
+tls_device_resync_rx() as the TCP sequence of the next record. This patch
+passes tls_strp_msg_seq() + rxm->full_len instead. The commit message
+says the result is the start of the next record in both strparser modes.
 
-> diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-> index a6d69aaa6cd2d..493faac0faa45 100644
-> --- a/include/net/xfrm.h
-> +++ b/include/net/xfrm.h
-> @@ -1201,6 +1201,23 @@ secpath_reset(struct sk_buff *skb)
->  #endif
+> diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
+> index fbfe6ec3df048..a6c4d0cc54c73 100644
+> --- a/net/tls/tls_device.c
+> +++ b/net/tls/tls_device.c
+
+[ ... ]
+
+> @@ -877,8 +878,9 @@ static void tls_device_core_ctrl_rx_resync(struct tls_context *tls_ctx,
+>  		memcpy(rcd_sn, tls_ctx->rx.rec_seq, prot->rec_seq_size);
+>  		tls_bigint_increment(rcd_sn, prot->rec_seq_size);
+>  
+> -		tls_device_resync_rx(tls_ctx, sk, tcp_sk(sk)->copied_seq,
+> -				     rcd_sn);
+> +		tls_device_resync_rx(tls_ctx, sk,
+> +				     tls_strp_msg_seq(sw_ctx) +
+> +				     rxm->full_len, rcd_sn);
+
+[Severity: Medium]
+The sequence passed here no longer depends on the strparser mode. Does the
+check that picks this branch still depend on it?
+
+Earlier in tls_device_core_ctrl_rx_resync():
+
+	/* head of next rec is already in, parser will sync for us */
+	if (tcp_inq(sk) > rxm->full_len) {
+		trace_tls_device_rx_resync_nh_schedule(sk);
+		ctx->resync_nh_do_now = 1;
+	} else {
+
+tcp_inq() counts from copied_seq. In copy mode, tls_strp_read_copy() has
+already moved copied_seq past the current record, so tcp_inq() counts only
+the bytes of the next record.
+
+Suppose between 1 and rxm->full_len bytes of the next record are already
+queued. The else branch runs, and tls_dev_resync() is called for a TCP
+position the device has already passed. resync_nh_do_now is never set, so
+tls_device_rx_resync_new_rec() also returns early:
+
+	case TLS_OFFLOAD_SYNC_TYPE_CORE_NEXT_HINT:
+		if (likely(!rx_ctx->resync_nh_do_now))
+			return;
+
+Would this waste the resync attempt and keep the stream on software
+decryption until the backed-off retry?
+
+This tcp_inq() check was already there before this patch. The later commit
+"tls: device: fix next-record queued checks in core-driven RX resync" in
+this series appears to fix it. That commit replaces the check with
+after(READ_ONCE(tcp_sk(sk)->rcv_nxt), next_seq).
+
+[Severity: Medium]
+This is a pre-existing issue and was not introduced by this patch. The
+commit message says the reported sequence "no longer depends on which mode
+the strparser is in". Does that also hold for the other CORE_NEXT_HINT
+path?
+
+tls_rx_msg_size() in net/tls/tls_sw.c still computes the record start from
+the anchor skb:
+
+	tls_device_rx_resync_new_rec(strp->sk, data_len + TLS_HEADER_SIZE,
+				     TCP_SKB_CB(skb)->seq + strp->stm.offset);
+
+In copy mode, tls_strp_read_copy() resets stm.offset to 0 but keeps the
+anchor's old cb. The value above can then be lower than the real record
+start, while tls_device_core_ctrl_rx_resync() now uses strp->seq.
+
+When tls_device_core_ctrl_rx_resync() sets resync_nh_do_now, it hands the
+resync to this path. tls_device_rx_resync_new_rec() also still assumes
+normal mode:
+
+		/* head of next rec is already in, note that the sock_inq will
+		 * include the currently parsed message when called from parser
+		 */
+		sock_data = tcp_inq(sk);
+		if (sock_data > rcd_len) {
+
+In copy mode, could the device then get the wrong next-record boundary for
+CORE_NEXT_HINT? Could the request sequence also fail to match for
+DRIVER_REQ and DRIVER_REQ_ASYNC?
+
+Two later commits in this series look like they fix this:
+
+  "tls: device: fix record start reported to RX resync in copy mode"
+  changes the argument to strp->seq.
+
+  "tls: device: fix next-record queued checks in core-driven RX resync"
+  changes the tcp_inq() check in tls_device_rx_resync_new_rec() to
+  READ_ONCE(tcp_sk(sk)->rcv_nxt) - seq.
+
+>  	}
 >  }
->  
-> +static inline bool
-> +secpath_equal(const struct sk_buff *skb1, const struct sk_buff *skb2)
-> +{
-> +	const struct sec_path *sp1 = skb_sec_path(skb1);
-> +	const struct sec_path *sp2 = skb_sec_path(skb2);
-> +	int i;
-> +
-> +	if (!sp1 || !sp2)
-> +		return sp1 == sp2;
-> +	if (sp1->len != sp2->len || sp1->verified_cnt != sp2->verified_cnt)
-
-[Severity: Medium]
-Is verified_cnt stable enough to compare here?
-
-Clones share the skb_ext allocation, because __skb_ext_copy() only bumps
-ext->refcnt. __xfrm_policy_check() gets sp through skb_sec_path() with no
-copy-on-write and writes the shared field in place, without q->lock:
-
-net/xfrm/xfrm_policy.c:__xfrm_policy_check() {
-    ...
-	sp->verified_cnt = k;
-    ...
-}
-
-One way to hit this is an IPsec gateway that forwards tunnel-mode
-decapsulated inner fragments, with an AF_PACKET fanout socket using
-PACKET_FANOUT_FLAG_DEFRAG on the receiving device:
-
-packet_rcv_fanout()
-  ip_check_defrag()
-    skb_share_check()   <- clone of fragment 1 queued, verified_cnt == 0
-    ip_defrag()
-
-The original fragment 1 then continues through:
-
-ip_forward()
-  xfrm4_policy_check(NULL, XFRM_POLICY_FWD, skb)
-    __xfrm_policy_check()   <- shared sp->verified_cnt = k
-
-Fragment 2 then arrives with verified_cnt == 0. Wouldn't secpath_equal()
-return false here, so that ip_frag_queue() kills the IP_DEFRAG_AF_PACKET
-queue and the AF_PACKET consumer never gets these datagrams?
-
-tc mirred (tcf_mirred_to_dev()->skb_clone()) looks like another way to
-end up with a shared secpath across skbs that are processed independently.
-
-On different CPUs, this also looks like a data race between the unlocked
-write in __xfrm_policy_check() and this read under q->lock.
-
-> +		return false;
-> +	for (i = 0; i < sp1->len; i++)
-> +		if (sp1->xvec[i] != sp2->xvec[i])
-> +			return false;
-
-[Severity: Medium]
-Can this reject legitimate datagrams whose fragments were protected by
-different SAs that each satisfy the policy?
-
-Two cases where xvec[i] could differ between fragments of one datagram:
-
-  - per-CPU SAs (pcpu_num / XFRMA_SA_PCPU) on the sending gateway, where
-    the fragments of a forwarded datagram are steered to different CPUs.
-    For example, UDP 4-tuple RSS can hash the port-bearing first fragment
-    differently from the rest.
-
-  - a datagram whose fragments straddle a make-before-break rekey.
-
-Before this patch these datagrams were reassembled and passed the final
-policy check.
-
-The commit message says "Reject a fragment when its secpath differs".
-However, IPFRAG_MIXED_SECPATH falls through to the same path as an
-overlap in ip_frag_queue():
-
-	err = -EINVAL;
-discard_qp:
-	inet_frag_kill(&qp->q, refs);
-	__IP_INC_STATS(net, IPSTATS_MIB_REASMFAILS);
-
-It does the same through discard_fq in ip6_frag_queue() and insert_error
-in nf_ct_frag6_queue(). So the whole queue is thrown away, not just one
-fragment.
-
-Should the commit message mention the whole-queue discard, and the
-tightening of matching to SA identity?
-
-The drop is also counted only as IPSTATS_MIB_REASMFAILS, with the default
-drop reason. Would a dedicated counter or drop reason make this easier to
-diagnose?
-
-> +	return true;
-> +}
-> +
-
-[ ... ]
-
-> diff --git a/net/ipv4/inet_fragment.c b/net/ipv4/inet_fragment.c
-> index b286ee429da8f..c18da91c1f031 100644
-> --- a/net/ipv4/inet_fragment.c
-> +++ b/net/ipv4/inet_fragment.c
-
-[ ... ]
-
-> @@ -441,6 +442,10 @@ int inet_frag_queue_insert(struct inet_frag_queue *q, struct sk_buff *skb,
->  {
->  	struct sk_buff *last = q->fragments_tail;
->  
-> +	/* The reassembled skb keeps the first fragment's secpath. */
-> +	if (last && !secpath_equal(last, skb))
-> +		return IPFRAG_MIXED_SECPATH;
-
-[Severity: High]
-Does this cover IPsec tunnel devices that strip the secpath before
-reassembly, such as VTI, or xfrmi across netns?
-
-vti_rcv_cb() in net/ipv4/ip_vti.c runs xfrm_policy_check() on each
-decapsulated inner fragment and then does:
-
-	skb_scrub_packet(skb, !net_eq(tunnel->net, dev_net(skb->dev)));
-	skb->dev = dev;
-
-vti6_rcv_cb() in net/ipv6/ip6_vti.c does the same.
-
-skb_scrub_packet() always calls skb_ext_reset(), whatever the value of
-xnet, and that drops SKB_EXT_SEC_PATH. Inner fragments authenticated by
-the VTI tunnel therefore reach reassembly with a NULL secpath. A spoofed
-plaintext fragment that arrives on the underlay interface also has a NULL
-secpath.
-
-Without a VRF, ip_defrag() gets the same vif from
-l3mdev_master_ifindex_rcu(dev) for both kinds of fragment, so they go
-into the same queue. secpath_equal() then returns true for NULL == NULL:
-
-	if (!sp1 || !sp2)
-		return sp1 == sp2;
-
-ip_frag_reasm() and ip6_frag_reasm() then set skb->dev to the device of
-the last fragment to arrive. If that device is vti0, could
-attacker-supplied bytes be treated as tunnel-authenticated by
-interface-based checks? Examples are rp_filter when conntrack defrags at
-PREROUTING, or INPUT rules using -i vti0 after local-deliver defrag.
-
-The subject and commit message say this prevents "acceptance of
-partially authenticated reassembly" for "IPsec tunnel traffic". Should
-the commit message say that VTI and xfrmi across netns are not covered?
-Alternatively, should fragment provenance be tracked beyond the secpath,
-for example by recording VTI/xfrm decapsulation or by comparing the input
-device or tunnel?
-
-> +
->  	/* An IP fragment is never a GSO packet, but an untrusted source
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261023074515.2347924-2-Jeremy.Jean%40oss.cyber.gouv.fr
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261022221732.1397620-1-rjethwani%40purestorage.com
