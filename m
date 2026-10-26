@@ -1,63 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.231.137
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792982975;
-	b=cTdEPgddSGBJv4Q2GzKVMP01bf+ePny0Ywiisb0+hLZdtQHDWDPqQegVwtHTmqUVfy6t
-	 zxeKtFyIfR48Hg8ivrfN17exuys0+fSaegl9zpBl19dYzBNGZtEQbOrCLHnMY6lSjIJMG
-	 H9MYJZCYxg3i7YwR4M0Q5cuetOjukm3QS+gONs+mcFzq/aJz2OeGzFD9rOgJ+NnX8ejCc
-	 UlODX4RAsIkG1pGG6avs8TRRiq15+15ZU7mlqK1optGfxqJyW8f0OBaniC8dD8dWgZquM
-	 PHgGkeFOoEh94jDkV7WwDq6BrPkLA7JREFVLPCVXLAoEi4+RBurEpmrAjRWwROspUag==
+	t=1792984181;
+	b=gzpBT5nQgFetGv90nXTAHXKWnZyPk6VeLt9p+kIBgSWWRiXFgoGWEQFrgwGTrF/Cm9SW
+	 HAfgwh6eUZUtTAP1LyFbb/5+xjjA9nq9pgG0eLQJVZ/Ujh9jpDKotDc1Y4lAt03QS6Lzj
+	 J7OVXe9WxyFs0IdVosjUdGECnyT8k8oVfy3tp5APeRsFqn+uq8zs1zAnnxBhlnryaX+sD
+	 N/ByAvlx8dkK5G6kO1Ry7zOWW0AVeI1CO9JnhhQ4BfCSmYbH8ZYcEJRsKj/nPyPHxT9mM
+	 vhF80q1HZdiL8t47/4saZSqA7IL3mla6+CBvduNGEmgYUTi1xeJiemwqGt0J56bekWQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792982975;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=5GUYvAPFvtVupJ3SF64U/LXEmmq/jYsbE3zKitYVfss=;
-	b=RDKPbw8nUcBGdG8pt/K0dEWiYBEafWsm0W4iK/UYpWRIiIflmUtKaMhsoOFCyTJqSsAg
-	 UH0tbLsfYvgC/MFwT9XTUUtdapvQWq13zk0PkSu7YonrB2I+MURnuIZ8dGa+SP5agjwVM
-	 skHfAfcNKMuKf6Rw3oHCSAjEfSt/Vq7FiEq45DCVYoiaynT4mZegHIXy8CBpWy9irgZ9w
-	 OvzSr2skaItUSDmJ9Pu/Y1Rua+XEBoRvRSikfcQLczj2SCL2R9vsrv1fSGx5bbxi8NvlR
-	 G72HjvQRyYFbs3le8p50OZiVKcajJlr1STxXE4/KKvmpcTMyDnKx/I90hAFzwFuBO0A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792984181;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=cTXVJUOKRughwuSMYrqOOlwP+3rFl6wn/3gsJxxcBAs=;
+	b=4TxgiIdhnbwpX/Lu6i+KCIseJ+vf4rAsL2ZwAgwvpRzm3BUE43swOGLyc5OL/eK1Cx5k
+	 dXffY1jViYHz2cthRMePkcbPIjsPhuJIJhQEkcx8rHt00IlEy8+87BddXW0GT5wFJKwTg
+	 /QwXHJV2O+MZMJFwzUkUwCW9DNGM/VAytpVGMuxQaK2nftYFWr3P4f4fvzDEH1pPUatSz
+	 Y1EgUqbsJH0CiW/G//M8+gSfgmLZH2vfmU80LD3+V/gTqCu0JL83ypUDTyyvLimO2cZ13
+	 4xhbo80XbX4iyX8x9MsJ/eVUEyySjuuwbhkUXeMivveST5oSB6wP/G7hDQXRYghm1Bg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=YdbpKPcj;
-	arc=none smtp.remote-ip=95.215.58.101
-Received: from mta1.migadu.com (out-101.mta1.migadu.com [95.215.58.101])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=a9vwO6vH;
+	arc=none smtp.remote-ip=74.125.231.137
+Received: from mail-oo2-f9.google.com (mail-oo2-f9.google.com [74.125.231.137])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B543606A31A
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 02:49:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0B543606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB370606A31B
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 03:09:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DB370606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=YdbpKPcj
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=Gx1oyz2KGlb/ejgVNmf/mo3hj1fG5G50vh0VLMCMrA4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792982973; v=1; x=1793587773;
- b=YdbpKPcjNkBm5upUdDNiR2Isxue6605jBjLhK+QoCinGTMLC8Uzr+yt4bJZ+fcNhyf1puMcL
- 8Ust/v/t/j7u7tA5ZjB32KUs3aqy02A4qI/E9gkt6gRWfCkxctC6vPQkuootsVqgcOUyKgLc97A
- s8McvdSU89sfRohuEsUTnt5I=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id 0d02624ae5d230dd;
-	Mon, 26 Oct 2026 02:49:33 +0000
-X-Mizu-Trace-ID: 0d02624ae5d230dd
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 26 Oct 2026 10:49:11 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Xia Yan <yana06070@163.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@kernel.org, horms@kernel.org, kuba@kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	pabeni@redhat.com, shuah@kernel.org
-Subject: Re: [PATCH net v4 2/2] selftests: net: check veth carrier after
- changing channel counts
-Message-ID: <at6_pw9Ng-UEFVB6@fedora>
-References: <20261024093007.12981-1-yana06070@163.com>
- <20261024093007.12981-2-yana06070@163.com>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=a9vwO6vH
+Received: by mail-oo2-f9.google.com with SMTP id 006d021491bc7-6de19ccd89bso366866eaf.0
+        for <netdev@vger.kernel.org>; Sun, 25 Oct 2026 20:09:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792984180; x=1793588980; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=cTXVJUOKRughwuSMYrqOOlwP+3rFl6wn/3gsJxxcBAs=;
+        b=a9vwO6vHViR2IX71zNqDPxMmiKNbdhMXQsJDsyOC6Dc3KyPpmggtN6/HcRB5LPL0KS
+         KrflVexMxIHJZLnl58zHgz5pcVGamHHVCcmTuNfYJgqysLIwKYAbIlCHDPvYlmaHkkDe
+         gCXTvxAwVxiCPNHi858NcbI0SrwXK8X7W79fsLHMkjnAcMP0QkL/YwdM1x9VR0nBOPSO
+         hdUomy6/i/ehZc7jXvjfYuNb4u0GtYx2YhFtPJtKIh5DDPKY1p1AiDmzMJCs87hiSaUj
+         lQz17fXmF0n1CqTa5jVcRQwpY5LnyBYEzZJ43foTCPO5bC7XApYEuTkLfamggna2TUgB
+         c7zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792984180; x=1793588980;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=cTXVJUOKRughwuSMYrqOOlwP+3rFl6wn/3gsJxxcBAs=;
+        b=bnKSgU06V7jAETMBAvg28xHlaU/oky+cHwEFp170lY06QlOYevWUu+Z2k7Ap2mbhcV
+         fxcOKSlLVjv6cxGs0PCmLeWfm7Cpq7RDbI1AurpR1anJgVvu/aMBK90UTb4wnI220vBL
+         BE5MugIdiYTpuo/Cq9bO2m8JGQQNFF3Xe2Pi2WYeEkSwDI1koYGpHZuuIWX0lxmvzATL
+         +J3kbCW0NuueGqxk8f0gOT1HKm/Ai8nwXy/MXyU7HxIQJI69wNu/U3PAoNNYVQvzr9t8
+         zwAy6zhC6/exsk4QYucqAH3x0YXMXLmtpf5fP4f/OOCnbBiVUc/TJi2I/V0CMFAWAPWu
+         XhuQ==
+X-Gm-Message-State: AFq9FYJqd61SxmF6qlgxAn+5vuDmn3P3ODH8XnkbVsCghEZrEKWlPTSQ
+	q/JGiRqPFmO5RnPZ3vfnD8s/Ax27PnldaN4osaMr8n2lPyBcscXFasEh
+X-Gm-Gg: AYBFou1L5h4dURBpyWgT5FeWJ6fD8Cqisvk8e0KWKab9dgXyBsB4YoX2aD8lDPkiO+o
+	F+hjJXm/QUFZc1qyAQI1SiKxjjy7k31qmp50Wy8zucGHBHBXrE7P2u3vhpu+WgFniN3/RA9aVF+
+	D3k8ynSzw4cgpzXrryD9SZe1Eth2RCciTcNa0OqdJKwLoWTZWLkmF334i/FwyHvcG0butKrYdkQ
+	fczBG5R6lVSrK2t+97D5O53zsrFCyQD1NX5Omhzh+GpFd8vMXvNDf4lNNQMhD3/ycycjOc+nKvN
+	sKvWOmJKJBaapjmQGdIxFxVsAt77MdH55FI9MNASMr0GOS41/SuI9ZrPc43QjNVoYy/n8fsPbTn
+	CIdwjZyYtFgX7qi7NTuY97jDc6ES43/NpWEGbeMA67EktfMnxFsXBDVxIoHCgaBSoDkO0pSbPiw
+	Qv05JC7ZQ6GUVTCc3KQtX6Xmn0Q8mfM+u8R/mcW7MQrcWVKlNoPUhWMVtCtc0naw1dYee+39vN9
+	bIhTm6Wd4Zrxui+383In+8NAjmmhswtQBceXOY0nvqy3gTaKOD297syDRPjYkhLLnI73c7u7aXz
+	GuGFkwbSAXmo14XfVnZji3UNOK3eoRlRrY9NF6RLaQ==
+X-Received: by 2002:a05:6820:440c:b0:6cd:3fdc:a936 with SMTP id 006d021491bc7-70ba0f81592mr2345843eaf.83.1792984179731;
+        Sun, 25 Oct 2026 20:09:39 -0700 (PDT)
+Received: from localhost.localdomain ([14.116.239.40])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-70b9e04aa58sm6421308eaf.7.2026.10.25.20.09.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 25 Oct 2026 20:09:38 -0700 (PDT)
+From: Henry Martin <bsdhenrymartin@gmail.com>
+To: Eric Dumazet <edumazet@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	Kees Cook <kees@kernel.org>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Breno Leitao <leitao@debian.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Kexin Sun <kexinsun@smail.nju.edu.cn>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Henry Martin <bsdhenrymartin@gmail.com>
+Subject: [PATCH net v4] netlink: fix out-of-bounds bitmap access clearing stale mc groups
+Date: Mon, 26 Oct 2026 11:09:28 +0800
+Message-ID: <20261026030928.719276-1-bsdhenrymartin@gmail.com>
+X-Mailer: git-send-email 2.43.7
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,189 +103,72 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261024093007.12981-2-yana06070@163.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Yan Xia,
-On Sat, Oct 24, 2026 at 05:30:07PM +0800, Xia Yan wrote:
-> Extend veth.sh to check that changing channel counts preserves carrier
-> state. When only one end is up, the running end must not report LOWER_UP.
-> 
-> Cover up/up and both mixed up/down combinations. Resize RX and TX queues
-> in both directions on each endpoint, and check carrier after a rejected
-> out-of-range request as well. Create the pair with two queues explicitly
-> so the carrier cases also run on single-CPU systems.
-> 
-> Reuse the existing namespace setup and cleanup. Run each carrier case
-> in a subshell to keep its variables separate from the other tests, and
-> accumulate failures in the caller. Only check LOWER_UP on running
-> interfaces, where the flag exposes carrier state.
-> 
-> Assisted-by: LLM
-> Signed-off-by: Xia Yan <yana06070@163.com>
-> ---
-> Changes in v4:
-> - Drop the extra GRO on/off runs, as discussed with Hangbin.
->   Keep up/up and both mixed up/down states.
-> - Use subshells for the new helpers and accumulate failures in the
->   caller. Quote single-value arguments and wrap long lines.
+netlink_realloc_groups() sizes nlk->groups to the number of groups
+that exist at bind/ADD_MEMBERSHIP time.  When more multicast groups
+are registered later (e.g. a new genl family), existing sockets keep
+their smaller bitmap.
 
-Which single-value arguments do you mean?
+When clearing a multicast group of a departing family,
+__netlink_clear_multicast_users() runs netlink_update_socket_mc() on
+each socket on mc_list, which does test_bit()/__assign_bit() on
+group - 1 with no regard to nlk->ngroups.  Skip sockets whose bitmap
+predates the group: such a socket can never have joined it.
 
-> - Driver code is unchanged.
-> 
-> v3: https://lore.kernel.org/netdev/20261022085842.2527-1-yana06070@163.com/
-> 
-> Testing on 513444cc62e2, x86_64 QEMU/KVM with three vCPUs:
-> - Complete default veth.sh:
->   before: 56 checks pass, two mixed up/down carrier checks fail;
->   after: all 58 checks pass. The 55 existing checks pass on both.
-> - Script exit status: 1 before, 0 after. No checks were skipped.
-> - Both guests powered down normally.
-> - bash -n and git diff --check pass.
-> 
->  tools/testing/selftests/net/veth.sh | 81 ++++++++++++++++++++++++++++-
->  1 file changed, 80 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/net/veth.sh b/tools/testing/selftests/net/veth.sh
-> index 8b867e0675a7c1eea300468c26f2a9528ddc1194..e438e9ee7b33b151099d8ce779a9c9b47b0cc0af 100755
-> --- a/tools/testing/selftests/net/veth.sh
-> +++ b/tools/testing/selftests/net/veth.sh
-> @@ -41,13 +41,16 @@ create_ns() {
->  		ip -n $ns link set dev lo up
->  	done
->  
-> -	ip link add name veth$SRC type veth peer name veth$DST
-> +	ip link add name "veth$SRC" "$@" type veth \
-> +		peer name "veth$DST" "$@" || return 1
->  
->  	for ns in $SRC $DST; do
->  		ip link set dev veth$ns netns $BASE$ns up
->  		ip -n $BASE$ns addr add dev veth$ns $BM_NET_V4$ns/24
->  		ip -n $BASE$ns addr add dev veth$ns $BM_NET_V6$ns/64 nodad
->  	done
-> +
-> +	return 0
->  }
->  
->  __chk_flag() {
-> @@ -130,6 +133,78 @@ chk_channels() {
->  	fi
->  }
->  
-> +chk_carrier() (
-> +	target=$1
-> +	state=$2
-> +	expected=$3
-> +	carrier=0
-> +
-> +	# IFF_LOWER_UP is reported only for running interfaces.
-> +	[ "$state" = up ] || return 0
-> +
-> +	if ! link=$(ip -n "$BASE$target" -o link show dev "veth$target"); then
-> +		echo " fail - cannot read veth$target link state"
-> +		return 1
-> +	fi
-> +	case "$link" in
-> +		*LOWER_UP*) carrier=1 ;;
-> +	esac
-> +	if [ "$carrier" -ne "$expected" ]; then
-> +		printf ' fail - veth%s carrier is %s, expected %s\n' \
-> +			"$target" "$carrier" "$expected"
-> +		return 1
-> +	fi
-> +)
-> +
-> +# Keep per-case variables separate from the other tests.
-> +chk_channels_carrier() (
-> +	src_state=$1
-> +	dst_state=$2
-> +	expected=0
-> +	err=0
-> +	msg="carrier after channel change ($src_state/$dst_state)"
-> +
-> +	if ! create_ns numtxqueues 2 numrxqueues 2; then
-> +		printf "%-60s" "$msg"
-> +		echo " skip - cannot create veth pair"
-> +		cleanup
-> +		return 0
-> +	fi
-> +
-> +	ip -n "$NS_SRC" link set dev "veth$SRC" "$src_state" || err=1
-> +	ip -n "$NS_DST" link set dev "veth$DST" "$dst_state" || err=1
-> +	[ "$src_state" = up ] && [ "$dst_state" = up ] && expected=1
-> +	chk_carrier "$SRC" "$src_state" "$expected" || err=1
-> +	chk_carrier "$DST" "$dst_state" "$expected" || err=1
-> +
-> +	for target in "$SRC" "$DST"; do
-> +		for count in 1 2; do
-> +			ip netns exec "$BASE$target" ethtool -L "veth$target" \
-> +				rx "$count" tx "$count" || err=1
-> +			chk_carrier "$SRC" "$src_state" "$expected" || err=1
-> +			chk_carrier "$DST" "$dst_state" "$expected" || err=1
-> +		done
-> +
-> +		if ip netns exec "$BASE$target" ethtool -L "veth$target" \
-> +			rx 3 tx 3 \
-> +			>/dev/null 2>&1; then
-> +			echo " fail - out-of-range channel counts were accepted"
-> +			err=1
-> +		fi
-> +		chk_carrier "$SRC" "$src_state" "$expected" || err=1
-> +		chk_carrier "$DST" "$dst_state" "$expected" || err=1
-> +	done
-> +
-> +	cleanup
-> +	printf "%-60s" "$msg"
-> +	if [ "$err" -eq 0 ]; then
-> +		echo " ok "
-> +	else
-> +		echo " fail "
-> +	fi
-> +	return "$err"
-> +)
-> +
->  chk_gro() {
->  	local msg="$1"
->  	local expected=$2
-> @@ -257,6 +332,10 @@ fi
->  [ $STRESS -gt 0 -a $CPUS -lt 3 ] && echo " stress test will be skipped, too"
->  [ ! -f "$YNL" ] && echo "ynl cli not found, ndo-xmit tests will be skipped"
->  
-> +chk_channels_carrier up "up" || ret=1
+The overflow windows differ per architecture, both needing privileged
+module (un)loading.  On 32-bit kernels the ~54 dynamically allocated
+genl groups already exceed the initial 32-bit bitmap, so the table
+can grow there directly.  On 64-bit kernels the same in-tree set fits
+the initial 64-bit bitmap only while allocation stays contiguous:
+genl_allocate_reserve_groups() takes the first free contiguous range
+and unregister does not compact, so an unload/reload sequence can
+fragment the ~59 free IDs until no fitting range remains, forcing
+the table past 64 bits and reaching the same stale-bitmap overflow on
+the next family teardown.
 
-Nit: there is an extra "" quote.
+This issue was discovered by Tencent CodeBuddy Security.
 
-> +chk_channels_carrier up down || ret=1
-> +chk_channels_carrier down up || ret=1
+Fixes: 84659eb529b3 ("[NETLIKN]: Allow removing multicast groups.")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+---
 
-Note: When set the src state as down first. The ethtool -L will has no
-effect as it link is down. So the errors would look like
+v4: Skip stale-bitmap sockets in __netlink_clear_multicast_users()
+    itself instead of guarding inside netlink_update_socket_mc(), so
+    the guard cannot silently swallow a future
+    netlink_update_socket_mc(..., 1) caller (suggested by Eric
+    Dumazet).
 
-# ./veth.sh
-carrier after channel change (up/up)                         ok
- fail - veth2 carrier is 1, expected 0
- fail - veth2 carrier is 1, expected 0
- fail - veth2 carrier is 1, expected 0
- fail - veth2 carrier is 1, expected 0
- fail - veth2 carrier is 1, expected 0
- fail - veth2 carrier is 1, expected 0
-carrier after channel change (up/down)                       fail
- fail - veth1 carrier is 1, expected 0
- fail - veth1 carrier is 1, expected 0
- fail - veth1 carrier is 1, expected 0
-carrier after channel change (down/up)                       fail
+v3: Correct the reachability again (sashiko review): 64-bit is also
+    reachable - group IDs are allocated in contiguous ranges without
+    compaction, so fragmentation from an unload/reload sequence can
+    force the table past the initial 64-bit bitmap too.
 
+v2: Correct the Fixes tag (the clear path was added by 84659eb529b3,
+    not by the dynamic bitmap commit), drop Cc: stable and describe
+    the actual reachability (32-bit kernels with in-tree families)
+    instead of implying generic heap corruption.
 
-This may leading the result a bit weird as the failure count is not sync.
-But the test passed on patched kernel. So no need to change from my side.
+ net/netlink/af_netlink.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-> +
->  create_ns
->  chk_gro_flag "default - gro flag" $SRC off
->  chk_gro_flag "        - peer gro flag" $DST off
-> 
-
-Tested-by: Hangbin Liu <liuhangbin@kylinos.cn>
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index 9fdf964224ab4..ee0a6df6eb5d6 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -2156,8 +2156,12 @@ void __netlink_clear_multicast_users(struct sock *ksk, unsigned int group)
+ 	struct netlink_table *tbl = &nl_table[ksk->sk_protocol];
+ 	struct hlist_node *tmp;
+ 
+-	sk_for_each_bound_safe(sk, tmp, &tbl->mc_list)
++	sk_for_each_bound_safe(sk, tmp, &tbl->mc_list) {
++		/* bitmap predates the group, can't be a member */
++		if (group - 1 >= nlk_sk(sk)->ngroups)
++			continue;
+ 		netlink_update_socket_mc(nlk_sk(sk), group, 0);
++	}
+ }
+ 
+ struct nlmsghdr *
+-- 
+2.43.7
