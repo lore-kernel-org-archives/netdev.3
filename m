@@ -1,88 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.175
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793010313;
-	b=QcrQVYpw9/Bg94c8OC6Mx2l2/Si4O836pvFd152ZtWhRyjQ/dSC0FxT/xLWhN/z8b0FX
-	 gM+ITi6y760o4ehic6x0Xfo4d1yZe4ifFeKExiLM9fojf6xg3rQZe5LiZwH/ltKIASaUA
-	 5RTZktEZjxRjLzm49SsaIH66VBn31NX+Dg3/RN4KM5eGYuUbnqRr8AkrucCGAdmesW/J6
-	 VohFifYYB0/SRPTNESg3Qiupb4cPVqS7S2HbZM231qubyXLY93iYQPu6/3hCpGqPGmLtY
-	 YiXO6tePBpYbkOCLyYAFkWDRxzoRGD5bEaSH6CtN9ZEVcsi0BGthdSGIuSu9yQAWYbw==
+	t=1793010605;
+	b=cu7eu7BiwKmwNTeXd+yoau9jy6h2PVgvAZcapOPNNAqj4ngnPr6k27CHUCpMEmYBqrdX
+	 igw6pCPcEU6zHXvFtjV64NJd5s1+JCO0rLY4/h1n1/vtGlGWvOI9BeYTiA+iy6QYVA+mC
+	 GPcr+/B8XDxXyVYnDJrgAvZjZ0gFlUtSvAe61jCmKFXI6uRIE+WwcGRzI1wkhch7Y/qnz
+	 bw7s6qby+vwIECC+qfutYahnzfP8yc9NFSoz82NwjeFiBLLYOMZLO99WvOWYx6q3sRhwF
+	 /EITL8no8NyIa3F9GrmjUzjWSHirPMuJo1RBlQqJVW0pG00JC6z0V49dnqi4zpb9c2A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793010313;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793010605;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=59acJgaFRxP57eXc6akdfuQXd7riCvSJNlZRLlRhCI8=;
-	b=HUA6g5grliqhoyoqQXbJ+PePw9RT3EqnpA0fo8y2zDP4HQOgxbT/P61uvAubJgFJyO8C
-	 4S+j3mSJb+eTwBOMTw5hC//WrCJ/LTJJ9MN1BUwrtw/8GAGbGl8yb8wVHcGIFW8flnxv3
-	 N4fjyvRDKBg7ddbwacUHf3cCTGklX0DjDLe3+c2Y65Mv8iN9y1AvVktYXHpwL3R33ogPk
-	 XQ9qVYCUrkjgc00z98+pqvoelSmMUDhboX/DjERufAHRMdLXHkfABUQKeFGkjzIBZcatW
-	 GT9zDEg6nc778GVwayYikl+hql8kI0Mdxpu5pTQq0BcNfOxTrdqmH2++AyOZxG+fZ3Q==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=NDSA+pzge1C0zTEnSXsB3WKAsTlM2nQWx+uXvGZECG4=;
+	b=a66SKkC6CHUUkjGU2Etj+av2a2+Xxlt8Wfx6XQwUycmBA3x3mtN+wYwpnoA+2oSodyM1
+	 yFYmu9+SHqxbBs/Q+/0jf13s3GMz3a/PygpmD2U7Ci+KF6W0uUSsc9Wkb+HgwMhjFgRm8
+	 0RTiX5WywQE2E/ZRVODu0jrddZd57iDS4uwYuZ6KFHXhfhHBezxvqfbS/EOwgmexnnenV
+	 2suTWOBot+rw9wy+MpsP56bHFzfz+WNoiT8tSg04V6qENqjXqK27ma5dvbfCJaSQQKHrf
+	 f2i9Pjs+qzbOPNU38Oj0QtBqOifdnPIFWBGnW6uLxaH0BeVLb97I1ckwA9Xdt28AuhA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=K4nPWItR;
-	arc=none smtp.remote-ip=209.85.216.54
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=BcFpsY2B;
+	arc=none smtp.remote-ip=209.85.210.175
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD96606A31B
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 10:25:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DCD96606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4001606A324
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 10:30:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E4001606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=K4nPWItR
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3ac91ac8924so1454156a91.1
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 03:25:12 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=BcFpsY2B
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-8a06210b29fso1015685b3a.1
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 03:30:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793010312; x=1793615112; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=59acJgaFRxP57eXc6akdfuQXd7riCvSJNlZRLlRhCI8=;
-        b=K4nPWItRtPtProXnsVl8pShe386rtOHDcD3kZzGzkvrKZl07TdiHGFbTTs8lm5TGI+
-         ZTneROgkmW+RICHQDOkGo2gwvTKMHy6IxB+BzsZMWt+e1SKfFBYg2YF7jVRzVae458Qn
-         Jx1CL9ZYSLxaiZBF1VtWx+6lqw/HQWX02xfAgSm6yeBdad5VY37Tk4VqPLMSIBDokrlh
-         f29tWUsos/j0l/hnASpC7E60QP13U5fcKgf47g75eAd5EdtAnZzOHhHs9ODONOk15L/x
-         Q9qCyjsRYKZRWh5Kv+VkO7xYQksJCFuEf7PQ3EHWszT6fD8oVmEbk2z/6IV8wh7yPCM1
-         m2iQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793010312; x=1793615112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1793010604; x=1793615404; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=59acJgaFRxP57eXc6akdfuQXd7riCvSJNlZRLlRhCI8=;
-        b=b6HpZkG9GNxFY6rfY2mcJoBOqNwJRt1NCYNkS2uOfXJ8YLM4DvreuhITEuILbnnFuy
-         +7PY4ANvJ1j3ncyzQF7KML+g64UyaQJKiK7TPbOXcMLyR4ujKLlNX4Xn9eOZVAX5UEzR
-         23LJGfrKVw6p8pOswCE5H+0MZmwSZmOHENZE2Cs+HV+RfyleUipHMX2VjtFu+GdhwTJb
-         HgahaTSZSNTbCoeIMvHnJbKMXWHgbOe9KTZ0+ywAyAsFE6Pu5AcX2f8hFSN3iYrPFgO+
-         hMXQHGZMi/pTSiwRbOiFpf8fxxvEiHdCxkhns2QymqApCb5UTG67n7V/sKrANghl7gaY
-         Bnsg==
-X-Gm-Message-State: AFq9FYJSdNCU7tgMjEQZass4R2liBA5IjHR4+3u1hVRFSw3/VA/3x2U1
-	qYW6uJ2Q4IVRm40n2gkMtvBpox3nIFt8DRVm21K4zcONTq2f7pztW4WaUaex+YA0Nhc=
-X-Gm-Gg: AYBFou3qMXvciTJzboDr8jaJMaeuXkXo74gxJDDeurEbf1kAclaC9rPXutTSY+2QG0K
-	qdQnucxHmEzBXZZWCWDQK6ZK/4FRWsTlKrMHewovxXOGSdL+CKMSJVzz35IZyonKcP+dyS5T4Kq
-	aRiaZuxwnciM91OIrJZtv/cf7mBvJHTZL9jB8LFy7KoJGzev81/ah9GHt5W4vh31crJ5JzGxAAl
-	3Pa/qbl5DarHb//tThGb+G/sE2bj5kuT3LyYrL+9MIqvTu4jzGhntGp2657fMGbq1c+a3oXBb7H
-	Q1WTZO52soEmpbu9l8loYQwkCh/fuJYZSPly991uzyxsvgG6iq/3RcA4QZ7DpSt3RuVW5IZVj6d
-	XOyT/vzh9/sk8uGQuAPkfF+2iH/27/cuwN6qaJISqocHVc0IKMoxKU/J8APdU1Ti4q1uH8FzFC4
-	ccbya3D3gDJ/a9FPICuBK1X5wlla01LxInT/6nR7pDkbBdsu8jpqM7jegic3GeqsJLTmHQ7KB/2
-	XCt6LGTJ22m1U3tJR0y1rAYhROreVdTlqznaMpJ3ryOVks4WX7S+Y5T9rvzJ4frKSc0QcQuB1AM
-	jzINQga3SUMjeb6mvxtVpmOIZITOxG/3VZkC0yJPrMImikbF/8pRS/X7HppzTlKEMmsQ1ju1Zxo
-	Tef0PAFy1loUaHw==
-X-Received: by 2002:a17:90b:1b0e:b0:398:c3ca:1ebc with SMTP id 98e67ed59e1d1-3adea89942bmr5319972a91.18.1793010312029;
-        Mon, 26 Oct 2026 03:25:12 -0700 (PDT)
-Received: from zypulse-in-radeon-MS-7E24.lan (ec2-18-138-159-236.ap-southeast-1.compute.amazonaws.com. [18.138.159.236])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3adec0bcb18sm7837448a91.15.2026.10.26.03.25.08
+        bh=NDSA+pzge1C0zTEnSXsB3WKAsTlM2nQWx+uXvGZECG4=;
+        b=BcFpsY2BMaqSEmqQx5qNCvNjQnYLWc9QDvOUWbRzUBasLilpoTUeSQ+Ri4YnLxOFDs
+         De7d1+Wl2XycUVlgRVsUQjM5jqXrbQCqgS6b4Hohm4wAEVRh83m3BxqR1RcSOR4PIotq
+         2bEiYYZkax1er7W4aRdE5JjBi4B0ICknjoH9S6FZkBhfYjMu5TvlTJni7/PwRnvZyfTj
+         lISOXwruO24sdXkcl+c7uvjdt20HfyXGDF3nhKiTOLUIDc2rNNjLytAXtqVBErkmBH10
+         oI6+M3tfySQwNG7ZgJTaQja7CWJSdl5CAoxnsa1D84Cjm+gnJL/kIMpWRyCQEQep4Mwl
+         wazg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793010604; x=1793615404;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=NDSA+pzge1C0zTEnSXsB3WKAsTlM2nQWx+uXvGZECG4=;
+        b=ich0YhLrm7leQ4o9TM446A+cTMW3rVTRubgbNf121dBwQKwFjk3PWtT0yJMurNJ9jS
+         uL9RShxLVBfZtd0dizgyYr6zzJhybdz1K3cLVbPQ+L8tWONryc6PdXTaArArIhDMXGi7
+         BSZfHHUzn5CbYlVLHF99UwpXGrA2fF3kgd9mnOu3KyXq1ODmV7KERhoINLMspgH6XHPk
+         +kVHx7wUHziYlENHlrY9GEIz38ptKqd5gRjj7/HMqCM3CpCLzmtqaoOxu+/3S05/5lo1
+         CwMaVarBO7GKySxmntGr5ICf6ZVp70qYup0BhXUvVMWkdkQN38tvAFQoo086svv1ZYyp
+         1m6A==
+X-Forwarded-Encrypted: i=1; AKwUvBxEKAEyzBwBbVn5lA74wNVhCSYP+H/yO3C++mzkLmniWy5JeNHcTXpQRG7M0jmx0AtkYgGGJ7s=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIy1gTsxmBxwp1VqyvpEtYjqlAvStuNTP6dNUrrVvgi5tvitwkn
+	aslYiiZrZLOBfGFPOyxOM7wcqafTKqpAW9p4T9DrFlsP6ijfS45Uk+1Gna+fKELrLgU=
+X-Gm-Gg: AYBFou1AbU105TtHYHNEox2eJWOftxhL6t9dMb8w1BVf+rg+7E6lxUAkIQBwb2zRiBa
+	7Xu063QOfK5XqY4AOOhKkF7kXDgpEK+sp6ej8q6H5IkcD4kBbGOQwI3kVYtNkwEQE5L1H6gpOKz
+	lOXjt83tuvJbHPOgsmeoU0EQ+1IJJOBux70zt+MoJbhFE9tCfHRxU6CJxOvpwYXCszArP1pWe4J
+	S1ByoyhHOnu4kBJCBCp9k3N7OnEMdo5uk0C7LilsZMdsyKFKj3TH48kT4GSbaZsGnF2lLv66hWF
+	zIIi4vmte3jgtEcN3IxDjbFuR1r55U2x+kZlHioBk476xf+Ay/hev1fsK156g0M5AGcH4nmaiQS
+	fMnC3YY0U4yDWI7hBPtAsjqHQW0N21o51ZBAh6yyatuuu0RaGNxUq3dN+qONU6DWyFJA+QjHmho
+	8NUDplOY31oEsGuFqRMtZ5AV4mJgupqST+wP06pbngLJHQHEOGfGWsrut28vapMkwbYcrg5/l/x
+	o/ME1qLWx9OD3lWT8jzP9IFWRUj7P94QjN517I4RQ1wTbPwHmhZpDtMZomvYND+pCs5RI/umWV0
+	fWU=
+X-Received: by 2002:a05:6a00:ad0e:b0:899:9267:3a9d with SMTP id d2e1a72fcca58-8a3695472a8mr4851008b3a.59.1793010604152;
+        Mon, 26 Oct 2026 03:30:04 -0700 (PDT)
+Received: from gmail.com ([223.153.219.249])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a36c0fdfefsm1097110b3a.50.2026.10.26.03.29.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 03:25:10 -0700 (PDT)
-From: Yuen Su <zypulsecore@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Stephen Hemminger <stephen@networkplumber.org>
-Subject: [PATCH iproute2 v2] ip: flush nexthop-object routes without compatibility attributes
-Date: Mon, 26 Oct 2026 18:24:20 +0800
-Message-ID: <20261026102420.612573-1-zypulsecore@gmail.com>
-X-Mailer: git-send-email 2.55.0
+        Mon, 26 Oct 2026 03:30:03 -0700 (PDT)
+From: Xue Boyang <fuchen.dust@gmail.com>
+To: kadlec@netfilter.org,
+	pablo@netfilter.org,
+	fw@strlen.de
+Cc: netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	phil@nwl.cc,
+	Xue Boyang <fuchen.dust@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH nf v3] netfilter: ipset: fix double free on kernel-side delete during resize
+Date: Mon, 26 Oct 2026 05:29:57 -0500
+Message-ID: <20261026102957.5530-1-fuchen.dust@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261025090609.v2reply.4093.fuchen.dust@gmail.com>
+References: <20261025090609.v2reply.4093.fuchen.dust@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -94,246 +106,275 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Route dumps can contain RTA_NH_ID plus expanded nexthop attributes.
-The kernel rejects that combination on route deletion. Strip the
-expansion from the flush copy, keeping the ID and route selectors.
-Use the compacted length for batching and retain the dump for display.
+A kernel-side delete, i.e. a delete triggered by the SET target while
+the set is being resized, is applied to the current table and saved in
+the resize backlog, to be replayed against the new table when the
+resize finished. Both tables share the element extensions: the resize
+copies the element to the new table, keeping the pointer to the
+extension data, e.g. to the comment. Deleting the element in the
+current table calls ip_set_ext_destroy() and releases the shared
+extension. The replay then deletes the copy from the new table and
+releases the same extension again, i.e. the same rcu_head is queued
+twice. With CONFIG_DEBUG_OBJECTS_RCU_HEAD (and slub_debug=F, which
+keeps kfree_rcu() off the sheaf fast path):
 
-IPv4 fib_dump_info() also reports blackhole nexthop objects as
-RTN_BLACKHOLE instead of the alias type, independently of
-nexthop_compat_mode. Work around this with RTN_UNSPEC only when no
-type filter was requested. The kernel then deletes the first alias
-matching the remaining selectors; alias order and changes between
-dump and deletion can affect that choice. Preserve explicit types.
+  ODEBUG: activate active (active state 1) object type: rcu_head
+  WARNING: lib/debugobjects.c:629 at debug_print_object+0x7b/0x100
+  kvfree_call_rcu(): Double-freed call. rcu_head ffff88810474ce40
+  WARNING: mm/slab_common.c:2041 at kvfree_call_rcu+0x10b/0x140
+  Call Trace:
+   <TASK>
+   debug_object_activate (lib/debugobjects.c:905)
+   kvfree_call_rcu (mm/slab_common.c:2039)
+   hash_ip4_del (net/netfilter/ipset/ip_set_hash_gen.h:1226)
+   hash_ip4_kadt (net/netfilter/ipset/ip_set_hash_ip.c:96)
+   ip_set_del (net/netfilter/ipset/ip_set_core.c:820)
+   set_target_v3 (net/netfilter/xt_set.c:411)
+   ipt_do_table (net/ipv4/netfilter/ip_tables.c:345)
+   nf_hook_slow (net/netfilter/core.c:619)
+   raw_sendmsg (net/ipv4/raw.c:652)
+   __sys_sendto (net/socket.c:2281)
 
-Add namespace regressions covering ID-based flushes, ordinary routes,
-batching and type selection, with a nexthop capability probe.
+The double free is reachable from an unprivileged user namespace and
+permits local privilege escalation.
 
-Signed-off-by: Yuen Su <zypulsecore@gmail.com>
+Fix this by deferring the delete when a resize is in progress: the
+element is not deleted in the current table, only saved in the backlog,
+like it is done for kernel-side adds. The resize copies the element
+including its extension pointers, and the replayed delete releases the
+extension exactly once. This also avoids updating the cidr counters
+twice for the same element.
+
+Clearing the used bit of the deferred delete instead is not an option:
+the extension of an element the resize copy loop has not reached yet
+would never be freed, the old table is destroyed with ext_destroy=false
+to protect the extensions shared with the copied elements. The element
+thus stays in the current table until the resize completes, so
+
+- a kernel-side add of such an element must be deferred too, otherwise
+  it is rejected with -EEXIST and lost, and the replayed delete removes
+  the element for good, leaving the set without an element the last
+  packet-path operation added;
+
+- the backlog must keep the arrival order of the operations: deferred
+  deletes are queued with list_add_tail() like the deferred adds, so an
+  add followed by a delete of the same element is not replayed the
+  other way around, resurrecting the element.
+
+A resize which is aborted before the new table is in place replays the
+backlog against the original table, which stays the live table, instead
+of dropping it. This covers the allocation failure in the copy loop and
+the early exits of a retry after -EAGAIN, which inherits the backlog of
+the previous attempt: the deferred deletes are the only record of the
+delete there, dropping them would leave elements in the set which the
+packet path believes deleted, and the backlog entries would leak.
+
+The deferred delete reports -ENOMEM when the backlog entry cannot be
+allocated, instead of returning success without deleting anything.
+
+Fixes: f66ee0410b1c ("netfilter: ipset: Fix "INFO: rcu detected stall in hash_xxx" reports")
+Cc: stable@vger.kernel.org
+Signed-off-by: Xue Boyang <fuchen.dust@gmail.com>
 ---
-v2:
-- Document the IPv4 dump workaround and its alias-matching tradeoff.
-- Remove the unused namespace guard and probe nexthop availability.
-- Rename the delete-request pointer and shorten the submission notes.
-- Use git send-email for delivery.
 
-AI assistance was used.
+Changes in v3:
 
-Link: https://lore.kernel.org/netdev/CAC9WPdwmM4=64DH5nY85srnLhRBS7PkjR9vrsALpob-GutbmZw@mail.gmail.com/
+- Drop the non-standard "Assisted-by:" trailer with no email address,
+  which fails checkpatch; the AI assistance is documented in the
+  changelog below instead.
 
- ip/iproute.c                             |  39 ++++++-
- testsuite/tests/ip/route/flush_nexthop.t | 140 +++++++++++++++++++++++
- 2 files changed, 178 insertions(+), 1 deletion(-)
- create mode 100755 testsuite/tests/ip/route/flush_nexthop.t
+Changes in v2, addressing the review of v1 linked in
+https://sashiko.dev/#/patchset/20261012163353.4093-1-fuchen.dust%40gmail.com :
 
-diff --git a/ip/iproute.c b/ip/iproute.c
-index 1ce71f7..bd436c1 100644
---- a/ip/iproute.c
-+++ b/ip/iproute.c
-@@ -766,6 +766,38 @@ static void print_rta_multipath(FILE *fp, const struct rtmsg *r,
- 	close_json_array(PRINT_JSON, NULL);
+- Defer the kernel-side add of an element still present in the current
+  table during the resize ("missing clear_bit() breaks operation
+  ordering during resize"). The add was rejected with -EEXIST without
+  being queued, so an add following a deferred delete was lost and the
+  replayed delete removed the element.
+
+- Replay the backlog on all resize failure exits, not only on the
+  allocation failure in the copy loop ("memory leak of deferred
+  operations on resize failure"). The exact path claimed there, an
+  allocation failure of the first attempt, exits before the table is
+  marked resizing and the backlog is empty; the leak is real however
+  for the early exits of a retry after -EAGAIN, which inherits a
+  non-empty backlog from the previous attempt.
+
+- Queue the deferred deletes with list_add_tail() ("backlog replay
+  ordering during resize resurrects deleted elements"). The prepend
+  predates this patch, but the fix relies on the backlog preserving
+  the arrival order, so all deferred operations are now queued FIFO
+  and the failure path replays the full backlog in order instead of
+  dropping the deferred adds.
+
+- Report -ENOMEM when the deferred delete cannot allocate its backlog
+  entry.
+
+The "memory leak of extensions for expired elements" concern is
+preexisting (the resize copy loop skips expired elements and the table
+destroy keeps ext_destroy=false) and is not addressed here.
+
+The reproducer (SET --del-set rule plus a userspace add triggering the
+resize) was run against v7.3-rc5 (mainline tree at 6d25ffca055a):
+before the patch the double free shows up as the warning quoted in the
+commit message and as duplicate objects in the SLUB RCU sheaves; with
+the patch applied it no longer reproduces in repeated runs. The
+reproducer is not attached; it is available and can be shared privately
+upon request. The ordering of the deferred operations and the replay of
+the backlog were verified with a packet-path del+add / add+del
+regression test racing continuous resizes: v1 shows the lost add and
+the resurrected element, v2 shows neither in repeated runs.
+
+Found with AI assistance (DeepSeek V4.1 Flash); the
+patch was reviewed, reproduced and tested by hand.
+---
+ net/netfilter/ipset/ip_set_hash_gen.h | 77 +++++++++++++++++++--------
+ 1 file changed, 56 insertions(+), 21 deletions(-)
+
+diff --git a/net/netfilter/ipset/ip_set_hash_gen.h b/net/netfilter/ipset/ip_set_hash_gen.h
+index 80ca523f304b..f24c51d489e2 100644
+--- a/net/netfilter/ipset/ip_set_hash_gen.h
++++ b/net/netfilter/ipset/ip_set_hash_gen.h
+@@ -764,6 +764,7 @@ mtype_resize(struct ip_set *set, bool retried)
+ 	struct hbucket *n, *m;
+ 	struct list_head *l, *lt;
+ 	struct mtype_resize_ad *x;
++	LIST_HEAD(backlog);
+ 	u32 i, j, r, nr, key;
+ 	int ret;
+ 
+@@ -786,13 +787,13 @@ mtype_resize(struct ip_set *set, bool retried)
+ 	t = ip_set_alloc(hsize);
+ 	if (!t) {
+ 		ret = -ENOMEM;
+-		goto out;
++		goto drain;
+ 	}
+ 	t->hregion = ip_set_alloc(ahash_sizeof_regions(htable_bits));
+ 	if (!t->hregion) {
+ 		ip_set_free(t);
+ 		ret = -ENOMEM;
+-		goto out;
++		goto drain;
+ 	}
+ 	t->htable_bits = htable_bits;
+ 	t->maxelem = h->maxelem / ahash_numof_locks(htable_bits);
+@@ -934,20 +935,34 @@ mtype_resize(struct ip_set *set, bool retried)
+ 	if (ret == -EAGAIN)
+ 		goto retry;
+ 
+-	/* Cleanup the backlog of ADD/DEL elements */
++drain:
++	/* Cleanup the backlog of ADD/DEL elements: replay them in arrival
++	 * order against the original table, which is still the live table.
++	 * Kernel-side adds of elements still present are no-ops, the
++	 * deferred deletes remove the elements. This is also reached when
++	 * the resize fails early, e.g. on allocation failure in a retry
++	 * after -EAGAIN: the backlog may still hold deferred operations
++	 * from the previous attempt.
++	 */
+ 	spin_lock_bh(&set->lock);
+-	list_for_each_safe(l, lt, &orig->ad) {
++	list_splice_init(&orig->ad, &backlog);
++	spin_unlock_bh(&set->lock);
++	list_for_each_safe(l, lt, &backlog) {
++		x = list_entry(l, struct mtype_resize_ad, list);
+ 		list_del(l);
+-		kfree(l);
++		if (x->ad == IPSET_ADD)
++			mtype_add(set, &x->d, &x->ext, &x->mext, x->flags);
++		else
++			mtype_del(set, &x->d, NULL, NULL, 0);
++		kfree(x);
+ 	}
+-	spin_unlock_bh(&set->lock);
+ 	goto out;
+ 
+ hbwarn:
+ 	/* In case we have plenty of memory :-) */
+ 	pr_warn("Cannot increase the hashsize of set %s further\n", set->name);
+ 	ret = -IPSET_ERR_HASH_FULL;
+-	goto out;
++	goto drain;
  }
  
-+static void flush_nexthop_compat(struct nlmsghdr *n,
-+				const struct nlmsghdr *source)
-+{
-+	const struct rtmsg *r = NLMSG_DATA(source);
-+	struct rtmsg *dr = NLMSG_DATA(n);
-+	const struct rtattr *rta = RTM_RTA(r);
-+	int len = RTM_PAYLOAD(source);
-+	char *dst = (char *)n + NLMSG_LENGTH(sizeof(*r));
-+
-+	for (; RTA_OK(rta, len); rta = RTA_NEXT(rta, len)) {
-+		switch (rta->rta_type & NLA_TYPE_MASK) {
-+		case RTA_OIF:
-+		case RTA_GATEWAY:
-+		case RTA_MULTIPATH:
-+		case RTA_VIA:
-+		case RTA_ENCAP_TYPE:
-+		case RTA_ENCAP:
-+			continue;
-+		}
-+		memcpy(dst, rta, RTA_ALIGN(rta->rta_len));
-+		dst += RTA_ALIGN(rta->rta_len);
-+	}
-+	n->nlmsg_len = dst - (char *)n;
-+	/* Work around fib_dump_info() replacing the IPv4 alias type with
-+	 * RTN_BLACKHOLE for blackhole nexthop objects, independently of
-+	 * nexthop_compat_mode. Keep explicit type constraints.
-+	 */
-+	if (!filter.typemask &&
-+	    r->rtm_family == AF_INET && r->rtm_type == RTN_BLACKHOLE)
-+		dr->rtm_type = RTN_UNSPEC;
-+}
-+
- int print_route(struct nlmsghdr *n, void *arg)
- {
- 	FILE *fp = (FILE *)arg;
-@@ -810,10 +842,15 @@ int print_route(struct nlmsghdr *n, void *arg)
+ /* Get the current number of elements and ext_size in the set  */
+@@ -1053,6 +1068,19 @@ mtype_add(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ 				j = i;
+ 				goto overwrite_extensions;
+ 			}
++			if (t->resizing && ext && ext->target) {
++				/* Resize is in progress and kernel side add
++				 * of an existing element: the element may
++				 * have a deferred delete pending in the
++				 * backlog and it is going to be copied to
++				 * the new table, sharing the extensions.
++				 * Defer the add too, so that the replay of
++				 * the backlog after resize keeps the order
++				 * of the operations.
++				 */
++				ret = 0;
++				goto resize;
++			}
+ 			ret = -IPSET_ERR_EXIST;
+ 			goto unlock;
  		}
- 		fn = (struct nlmsghdr *)(filter.flushb + NLMSG_ALIGN(filter.flushp));
- 		memcpy(fn, n, n->nlmsg_len);
-+		/* Keep the exact nexthop ID; its compatibility expansion conflicts
-+		 * with that ID in the delete request.
-+		 */
-+		if (tb[RTA_NH_ID])
-+			flush_nexthop_compat(fn, n);
- 		fn->nlmsg_type = RTM_DELROUTE;
- 		fn->nlmsg_flags = NLM_F_REQUEST;
- 		fn->nlmsg_seq = ++rth.seq;
--		filter.flushp = (((char *)fn) + n->nlmsg_len) - filter.flushb;
-+		filter.flushp = (((char *)fn) + fn->nlmsg_len) - filter.flushb;
- 		filter.flushed++;
- 		if (show_stats < 2)
- 			return 0;
-diff --git a/testsuite/tests/ip/route/flush_nexthop.t b/testsuite/tests/ip/route/flush_nexthop.t
-new file mode 100755
-index 0000000..70d09f8
---- /dev/null
-+++ b/testsuite/tests/ip/route/flush_nexthop.t
-@@ -0,0 +1,140 @@
-+#!/bin/sh
-+# SPDX-License-Identifier: GPL-2.0-only
-+
-+. lib/generic.sh
-+
-+# The testsuite normally supplies IP and runs each test under unshare -n.
-+[ -n "$IP" ] || ts_skip
-+if ! LC_ALL=C "$IP" nexthop list > "$STD_OUT" 2> "$STD_ERR"; then
-+	if [ "$(cat "$STD_ERR")" = "$(printf '%s\n' \
-+		'RTNETLINK answers: Operation not supported' 'Dump terminated')" ]; then
-+		ts_skip
-+	fi
-+	ts_err "$0: nexthop feature probe failed:"
-+	ts_err_cat "$STD_ERR"
-+	exit 1
-+fi
-+
-+ts_log "[Testing route flush with nexthop objects and compatibility attributes]"
-+DEV=nhflush0
-+ts_ip "$0" "Bring namespace loopback up" link set lo up
-+ts_ip "$0" "Create private dummy device" link add "$DEV" type dummy
-+ts_ip "$0" "Bring device up" link set "$DEV" up
-+
-+for family in 4 6; do
-+	if [ "$family" = 4 ]; then
-+		addr=192.0.2.2/24
-+		gw=192.0.2.1
-+		gw2=192.0.2.3
-+		prefix=203.0.113.0/24
-+		group_prefix=198.51.100.0/24
-+		plain_prefix=198.18.0.0/24
-+		nh=101
-+		nh2=102
-+		group=103
-+	else
-+		addr=2001:db8:1::2/64
-+		gw=2001:db8:1::1
-+		gw2=2001:db8:1::3
-+		prefix=2001:db8:2::/64
-+		group_prefix=2001:db8:3::/64
-+		plain_prefix=2001:db8:4::/64
-+		nh=201
-+		nh2=202
-+		group=203
-+	fi
-+	if [ "$family" = 6 ]; then
-+		ts_ip "$0" "Assign IPv6 address" -6 addr add "$addr" dev "$DEV" nodad
-+	else
-+		ts_ip "$0" "Assign IPv4 address" -4 addr add "$addr" dev "$DEV"
-+	fi
-+	ts_ip "$0" "Create first nexthop" -"$family" nexthop add id "$nh" via "$gw" dev "$DEV" onlink
-+	ts_ip "$0" "Create second nexthop" -"$family" nexthop add id "$nh2" via "$gw2" dev "$DEV"
-+	ts_ip "$0" "Create nexthop group" nexthop add id "$group" group "$nh/$nh2"
-+	ts_ip "$0" "Add selected single-nexthop route" -"$family" route add table 111 "$prefix" nhid "$nh" metric 10 mtu 1400 advmss 1360
-+	ts_ip "$0" "Add another metric on same prefix" -"$family" route add table 111 "$prefix" nhid "$nh2" metric 20
-+	ts_ip "$0" "Add same route in another table" -"$family" route add table 112 "$prefix" nhid "$nh" metric 10
-+	ts_ip "$0" "Flush selected metric only" -"$family" route flush table 111 metric 10
-+	ts_ip "$0" "Check other metric survived" -"$family" route show table 111 "$prefix"
-+	test_on "nhid $nh2"
-+	test_on "metric 20"
-+	test_lines_count 1
-+	ts_ip "$0" "Check other table survived" -"$family" route show table 112 "$prefix"
-+	test_on "nhid $nh"
-+	test_lines_count 1
-+	ts_ip "$0" "Add multipath nexthop-object route" -"$family" route add table 111 "$group_prefix" nhid "$group" metric 30
-+	ts_ip "$0" "Flush group with verbose display of original dump" -"$family" -s -s route flush table 111 to "$group_prefix"
-+	test_on "nhid $group"
-+	ts_ip "$0" "Check group route was removed" -"$family" route show table 111 "$group_prefix"
-+	test_lines_count 0
-+	ts_ip "$0" "Check nexthop group itself survived" nexthop show id "$group"
-+	test_on "id $group group"
-+	ts_ip "$0" "Add ordinary multipath route without ID" -"$family" route add table 111 "$plain_prefix" nexthop via "$gw" dev "$DEV" weight 1 nexthop via "$gw2" dev "$DEV" weight 2
-+	ts_ip "$0" "Flush ordinary multipath route" -"$family" route flush table 111 to "$plain_prefix"
-+	ts_ip "$0" "Check ordinary route removed" -"$family" route show table 111 "$plain_prefix"
-+	test_lines_count 0
-+	# One flush batch mixes compacted single/group messages with an unchanged
-+	# ordinary route. The next message must start at the new compacted length.
-+	ts_ip "$0" "Add group to mixed flush batch" -"$family" route add table 111 "$group_prefix" nhid "$group" metric 30
-+	ts_ip "$0" "Add ordinary route to mixed flush batch" -"$family" route add table 111 "$plain_prefix" dev "$DEV" metric 40
-+	ts_ip "$0" "Flush mixed batch with original dump display" -"$family" -s -s route flush table 111
-+	test_on "nhid $nh2"
-+	test_on "nhid $group"
-+	ts_ip "$0" "Check no selected routes remain" -"$family" route show table 111
-+	test_lines_count 0
-+	ts_ip "$0" "Flush second table" -"$family" route flush table 112
-+done
-+
-+# A blackhole object has no compatibility gateway/device fields to strip.
-+ts_ip "$0" "Create IPv4 blackhole nexthop" -4 nexthop add id 301 blackhole
-+ts_ip "$0" "Add blackhole-object route" -4 route add table 111 192.0.2.0/24 nhid 301
-+ts_ip "$0" "Flush ID-only blackhole route" -4 route flush table 111
-+ts_ip "$0" "Check blackhole object retained" nexthop show id 301
-+test_on "id 301 blackhole"
-+for type in blackhole unreachable prohibit; do
-+	ts_ip "$0" "Add $type alias using blackhole object" -4 route add "$type" 192.0.2.0/24 table 111 nhid 301
-+	ts_ip "$0" "Flush $type alias without relying on synthesized dump type" -4 route flush table 111
-+	ts_ip "$0" "Check $type alias removed" -4 route show table 111
-+	test_lines_count 0
-+done
-+ts_ip "$0" "Create IPv6 blackhole nexthop" -6 nexthop add id 302 blackhole
-+ts_ip "$0" "Add IPv6 blackhole-object route" -6 route add table 111 2001:db8:5::/64 nhid 302
-+ts_ip "$0" "Flush IPv6 ID-only blackhole route" -6 route flush table 111
-+ts_ip "$0" "Check IPv6 blackhole object retained" nexthop show id 302
-+test_on "id 302 blackhole"
-+ts_ip "$0" "Add ordinary blackhole route without ID" -4 route add blackhole 192.0.2.0/24 table 111
-+ts_ip "$0" "Flush ordinary blackhole route" -4 route flush table 111
-+ts_ip "$0" "Check ordinary blackhole route removed" -4 route show table 111
-+test_lines_count 0
-+
-+# Type filtering must not delete another alias sharing the prefix, metric and ID.
-+ts_ip "$0" "Add unicast type-filter sentinel" -4 route add 203.0.113.0/24 table 111 nhid 101 metric 50
-+ts_ip "$0" "Append explicit blackhole alias with same nexthop" -4 route append blackhole 203.0.113.0/24 table 111 nhid 101 metric 50
-+ts_ip "$0" "Flush only explicit blackhole type" -4 route flush table 111 type blackhole
-+ts_ip "$0" "Check unicast alias survived type filtering" -4 route show table 111
-+test_on "nhid 101"
-+test_lines_count 1
-+ts_ip "$0" "Delete remaining unicast sentinel by exact type" -4 route del unicast 203.0.113.0/24 table 111 nhid 101 metric 50
-+
-+# A blackhole object hides the original IPv4 alias type in dumps. An explicit
-+# type request must fail conservatively, rather than delete the unicast alias.
-+ts_ip "$0" "Add alias with synthesized dump type" -4 route add 192.0.2.0/24 table 111 nhid 301
-+if $IP -4 route flush table 111 type blackhole > "$STD_OUT" 2> "$STD_ERR"; then
-+	ts_err "Ambiguous blackhole-object type filter unexpectedly succeeded"
-+else
-+	ts_log "Ambiguous explicit type failed conservatively:"
-+	ts_cat "$STD_ERR"
-+fi
-+ts_ip "$0" "Check ambiguous unicast alias retained" -4 route show table 111
-+test_lines_count 1
-+ts_ip "$0" "Delete retained alias by its actual unicast type" -4 route del unicast 192.0.2.0/24 table 111 nhid 301
-+
-+# IPv4 via an IPv6 nexthop expands to RTA_VIA rather than RTA_GATEWAY.
-+ts_ip "$0" "Add cross-family nexthop route" -4 route add table 111 203.0.113.0/24 nhid 201
-+ts_ip "$0" "Flush cross-family route" -4 route flush table 111
-+ts_ip "$0" "Check cross-family route removed" -4 route show table 111
-+test_lines_count 0
-+
-+ts_ip "$0" "Delete test device and its nexthops" link del "$DEV"
-+ts_ip "$0" "Delete blackhole nexthop" nexthop del id 301
-+ts_ip "$0" "Delete IPv6 blackhole nexthop" nexthop del id 302
-
-base-commit: fb6f0637f16b974767004f50d5e9905c8401815a
+@@ -1217,6 +1245,26 @@ mtype_del(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ 			goto out;
+ 
+ 		ret = 0;
++		if (t->resizing && ext && ext->target) {
++			/* Resize is in process and kernel side del: do not
++			 * delete the element and free its extensions here,
++			 * the extensions may be shared with the copy in
++			 * the new table. Save the values, the resize replays
++			 * the delete against the new table.
++			 */
++			x = kzalloc_obj(struct mtype_resize_ad, GFP_ATOMIC);
++			if (!x) {
++				/* Don't bother, deleting the element here
++				 * could free the shared extensions twice.
++				 */
++				ret = -ENOMEM;
++				goto out;
++			}
++			x->ad = IPSET_DEL;
++			memcpy(&x->d, value, sizeof(struct mtype_elem));
++			x->flags = flags;
++			goto out;
++		}
+ 		clear_bit(i, n->used);
+ 		smp_mb__after_atomic();
+ 		if (i + 1 == pos)
+@@ -1224,19 +1272,6 @@ mtype_del(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ 		t->hregion[r].elements--;
+ 		mtype_del_cidr_all(set, h, d);
+ 		ip_set_ext_destroy(set, data);
+-
+-		if (t->resizing && ext && ext->target) {
+-			/* Resize is in process and kernel side del,
+-			 * save values
+-			 */
+-			x = kzalloc_obj(struct mtype_resize_ad, GFP_ATOMIC);
+-			if (x) {
+-				x->ad = IPSET_DEL;
+-				memcpy(&x->d, value,
+-				       sizeof(struct mtype_elem));
+-				x->flags = flags;
+-			}
+-		}
+ 		for (; i < pos; i++) {
+ 			if (!test_bit(i, n->used))
+ 				k++;
+@@ -1273,7 +1308,7 @@ mtype_del(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ 	spin_unlock_bh(&t->hregion[r].lock);
+ 	if (x) {
+ 		spin_lock_bh(&set->lock);
+-		list_add(&x->list, &t->ad);
++		list_add_tail(&x->list, &t->ad);
+ 		spin_unlock_bh(&set->lock);
+ 	}
+ 	if (atomic_dec_and_test(&t->uref) && t->resizing) {
 -- 
-2.55.0
+2.53.0
 
