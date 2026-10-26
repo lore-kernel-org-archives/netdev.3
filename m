@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793049891;
-	b=bLW9TXJc1gznegsxCs6mXevFYRFaS54x5H8GQhyxz3q3FqJQpbv7c9J3q7uQ/GM1HHxg
-	 /pUmeXZq2qWiQnVDlaE6/3U2++TfXEE2fbyFsKRBYnRVdQob6u4PQCMEToUoEx1MWlZwX
-	 MAPDQz+tggQwOv2w2cDpJ4rCmRggfo1BP5uzrdrwG6RpwUsKtEQzYCm3u3s26VkzuLTbF
-	 hWb6iFpWGqP6ee74PrF1ExoGB80c/SvN0yKfaAhy2oKJx80NYiJFrCXx7+5nM4q03q2G5
-	 6wjtKjy5hk6t+KC1xeK3MRPVIDCbE6fSUQfbcEom8j8EDky2XlNmnU5uK2CCKIDuTgw==
+	t=1793049890;
+	b=f7M0lUTXt35ETcLYdDWvjoM7R6LB7QEmuTOCRRT41NPhv2jXd4RTpJTJ2uYpGlFVGoD9
+	 ZyyLnzVYMg+4Bq9Y5UsrQAOpB9KJMyOJSjLhS8GE0tPcCK0ZBF89APz07nS5YEmPAbzlH
+	 YJ8NyeprkvCFI9m+OhVY3/ejwLgMRDtjzerAPKcgJRRUJk0ujNIv7xF/LNuyA64HEPMTK
+	 d/OdwcB/f2ZLcocnyYw+xNPbpemPqARUpudiqzUdbndCinwbzMaUX2iUe3Gkt59LWOrVH
+	 CU+G3jbwLjn7DEltvpEaBNBObPd1/bFn136M6+PVIDxPKZQ7XcHnafPe0rwUqyiidGw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793049891;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793049890;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=5hIZKPsRS+8gPS9TCdNpVxEXJl5lz8GjmPGkmljQvFQ=;
-	b=iQPdMGACAvWtDPa5my0Ic1wneub6LCw6gkLTrMwNzPs9nVCf+PC1bDH6opUcw3DoXEJg
-	 JDQY3o37elM9XC0gqgUyHTzLk1X7DnBrhClX64ZPr9Ad0vk2Ds6NCZMmmG5dZnJkHYEeY
-	 5vSzbTgYo4SUoPkuyMFsUxTVtaIL12OOFvYqYzLniZM09W/5JOh0UNk6YHz/kXlrGsMgf
-	 ofWxVnk7lRvhI7dxOJGDqHsAtnyf0I5e59lXELdqkVcZLEZ79+oab2k4HbklgjdTiSDOH
-	 QJqPnQgyKJZfLIMUEevCbl2bzu+1Wxd/IPV1ETUY38EblJe5bl0X0nNrHVjwnuWtk6w==
+	bh=QjH6AeElTt4HqVLm1otp9FwHPYVIoaC9nSMLdYjdK4Y=;
+	b=Zp6N5KjYCyh1AuwbTr9GmA4E5Iah9FQA2hvbnlz3E97J3sLrtTvn3ASinbHIxbBDe+yG
+	 PB2xT7N2S2LYWcrMTuDf0ZIxw5LbSAqVaU/H/NMd91ParwRVGa9DWQy19cYgLk6ytzLJQ
+	 ZEiTNMSNS5Q7HcVe64qQiI8g2KonV2kJ4GrRq5ciPXJ/R6aF68O1PUQtWrk9Wb3huZjSE
+	 6nQCZDtweT/2aacu2GRnEDBIKSGdxvkaWW7Ve5s/PMwLS4246jjsWD6XA+bsRV7b0DvPx
+	 JnAAMu0g5dZuXXWuIAXwg0mlusc5dDbWvlyyRkRHAMSbl9pYqljsxFC07KcvToLgeAQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jSmYaN3s;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bxpZdsBh;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2E9606A31F;
-	Mon, 26 Oct 2026 21:24:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jSmYaN3s
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93AE21F01828;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FAE7606A31A;
 	Mon, 26 Oct 2026 21:24:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bxpZdsBh
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FD8D1F01825;
+	Mon, 26 Oct 2026 21:24:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793049891;
-	bh=5hIZKPsRS+8gPS9TCdNpVxEXJl5lz8GjmPGkmljQvFQ=;
+	s=k20260515; t=1793049890;
+	bh=QjH6AeElTt4HqVLm1otp9FwHPYVIoaC9nSMLdYjdK4Y=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=jSmYaN3sWiQ5P/zfDWKRPSP+vH9t3/z9ILOmqJwebHNuHod9Gxi+1rZ2T37coHNho
-	 IpsAlj7cKEvQEkLAF9hvqfaxDF228KI7yugHFOydGCMCR4DZgGbcBDYiFwmDhmWXd1
-	 B1Nyoqyr1qp2mSAiHf1EcA4hNl+l+OMAtk+TFlkeTMvZLf1PYNn6EloAHbvwr8jgD8
-	 B3VFG/2ENYPBADvXMTQlKW9JLPG+tAsFOzJoHKyFfUFYARFHKpthI7qwdcCxWkwiYP
-	 XTsVSsiXqAkYOf7lmR4TaVRzV3d/vRZInBnLG4emrAdHI0F5uYMxPZnpJUhfT1uuPo
-	 nscWFZK0dbxjA==
-Subject:
- Re: [PATCH net v2 2/2] net: dsa: b53: restore the NSP IMP port 2 Gbps mode
+	b=bxpZdsBh42mgt9dog7dTDxOZJBHQsgIJQAb23sYvSekI5l5SrkUBMnL1OqCgI7djH
+	 lqkT7hzR1+vZsziR+98SId7M2ya14+Iw9PbKPbKmJGHkwkSj91nHPlJ3On8P+SufE5
+	 TETFfh3n4azIar1CB6rxgQMUhtPR7UeHuNqYF+Dk2d/E5XUKSwabuZq/m3Vhk6uEDb
+	 qZZI5ivvAT/A7lfw7qsXvFgYOgQliPK4v02V+7zgmKd9UA5Di0xTK3Ijqeopvup8Cg
+	 jceAJPl26VLfqhf0/Gz+orLwSbAvcj8ZyHtZxfDgq6cyKkcUQfdRF95aZ3JkrZQnB5
+	 SSzZKG0ASTxJQ==
+Subject: Re: [PATCH net v2 1/2] net: ethernet: bgmac: preserve forced 2.5 Gbps
+ link speed
 From: netdev-bot+sashiko@kernel.org
 To: florian.fainelli@broadcom.com
 Cc: netdev@vger.kernel.org, jonas.gorski@gmail.com, andrew@lunn.ch,
  olteanv@gmail.com, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
  pabeni@redhat.com, rafal@milecki.pl, bcm-kernel-feedback-list@broadcom.com,
  arnd@arndb.de, linux-kernel@vger.kernel.org
-Date: Mon, 26 Oct 2026 21:24:50 +0000
-Message-ID: <179304989018.3134.16623099883424149741@kernel.org>
-In-Reply-To: <20261022211104.2091128-3-florian.fainelli@broadcom.com>
-References: <20261022211104.2091128-3-florian.fainelli@broadcom.com>
+Date: Mon, 26 Oct 2026 21:24:48 +0000
+Message-ID: <179304988884.3134.8268916280620527688@kernel.org>
+In-Reply-To: <20261022211104.2091128-2-florian.fainelli@broadcom.com>
+References: <20261022211104.2091128-2-florian.fainelli@broadcom.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -65,10 +65,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 5 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 (1) · Low: 3
+Critical: 0 · High: 0 · Medium: 2 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -76,204 +76,151 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The patch never programs the 2 Gbps mode on BCM5301x CPU ports
-  other than the IMP port.
-- [Medium] The fix leaves out BCM583XX (Cygnus/Omega), which the Fixes:
-  commit broke in the same way.
-- [Low] Concern that b53_phylink_get_caps() advertises only
-  MAC_10|MAC_100|MAC_1000 (b53_common.c:1563-1573), while…
-- [Low] The comment in b53_phylink_mac_link_up() (b53_common.c:1666)
-  reads "Force flow control on BCM5301x and NSP CPU ports", but the…
-- [Low] b53_regs.h documents PORT_OVERRIDE_SPEED_2000M (line 103) and
-  GMII_PO_SPEED_2000M (line 149) as "BCM5301X only, requires setting…
-
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but
-  b53_force_port_config() mishandles non-IMP ports on is5301x()/is58xx()…
+- [Medium] The new override in bgmac_adjust_link()
+  (drivers/net/ethernet/broadcom/bgmac.c:1421-1427) sets UMAC_CMD to…
+- [Medium] On FORCE_SPEED_2500 devices, the patch makes link reporting
+  disagree with the hardware, and the commit message does not say so.
+- [Low] In bgmac-bcma.c, bgmac_probe() sets BGMAC_FEAT_FORCE_SPEED_2500
+  from the chip ID alone (BCM4707/BCM47094/BCM53018, line 282).
 
 --
 
-net: dsa: b53: restore the NSP IMP port 2 Gbps mode
+net: ethernet: bgmac: preserve forced 2.5 Gbps link speed
 
-For fixed-link CPU ports on BCM5301x and BCM58XX (Northstar Plus)
-switches, this commit makes b53_phylink_mac_link_up() force speed 2000
-along with tx and rx pause. The goal is to restore the IMP port 2 Gbps
-mode that b6a8a5477fe9 started clearing, because clearing it left the
-switch and AMAC ends of the internal link at different speeds.
+This patch changes bgmac_adjust_link() to use SPEED_2500 when
+BGMAC_FEAT_FORCE_SPEED_2500 is set. Without it, the 1 Gbps speed of the
+fixed PHY overwrites the 2.5 Gbps setting from bgmac_miiconfig().
+Together with the switch IMP port 2 Gbps change, it is meant to remove
+output queue discards on Northstar and Northstar Plus.
 
-> diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-> index 0880310c9ce3f..1f4964c28fc57 100644
-> --- a/drivers/net/dsa/b53/b53_common.c
-> +++ b/drivers/net/dsa/b53/b53_common.c
-> @@ -1663,9 +1663,13 @@ static void b53_phylink_mac_link_up(struct phylink_config *config,
->  	}
+> diff --git a/drivers/net/ethernet/broadcom/bgmac.c b/drivers/net/ethernet/broadcom/bgmac.c
+> index 3e9c57196a397..11487ff48e0d7 100644
+> --- a/drivers/net/ethernet/broadcom/bgmac.c
+> +++ b/drivers/net/ethernet/broadcom/bgmac.c
+> @@ -1415,11 +1415,15 @@ void bgmac_adjust_link(struct net_device *net_dev)
+>  {
+>  	struct bgmac *bgmac = netdev_priv(net_dev);
+>  	struct phy_device *phy_dev = net_dev->phydev;
+> +	int speed = phy_dev->speed;
+>  	bool update = false;
 >  
->  	if (mode == MLO_AN_FIXED) {
-> -		/* Force flow control on BCM5301x's CPU port */
-> -		if (is5301x(dev) && dsa_is_cpu_port(ds, port))
-> -			tx_pause = rx_pause = true;
-> +		/* Force flow control on BCM5301x and NSP CPU ports */
-
-[Severity: Low]
-This isn't a bug, but the comment only mentions flow control. The block
-below it also forces speed = 2000.
-
-The comment also says CPU ports, but the commit message describes the
-2 Gbps mode as a property of the IMP port.
-
-Could the comment mention the speed override and say which port it is
-meant for?
-
-> +		if ((is5301x(dev) || dev->chip_id == BCM58XX_DEVICE_ID) &&
+> +	if (bgmac->feature_flags & BGMAC_FEAT_FORCE_SPEED_2500)
+> +		speed = SPEED_2500;
 
 [Severity: Medium]
-Should BCM583XX_DEVICE_ID be covered here too?
+This programs CMD_SPEED_2500 on every AMAC that has
+BGMAC_FEAT_FORCE_SPEED_2500. Is the switch side always in its 2 Gbps mode
+for those AMACs?
 
-The clear added by b6a8a5477fe9 applies to every is58xx() chip:
+The companion b53 change only passes speed = 2000 for MLO_AN_FIXED CPU
+ports on is5301x() or BCM58XX_DEVICE_ID, in b53_phylink_mac_link_up():
 
-drivers/net/dsa/b53/b53_common.c:b53_force_port_config() {
-    ...
+	if ((is5301x(dev) || dev->chip_id == BCM58XX_DEVICE_ID) &&
+	    dsa_is_cpu_port(ds, port)) {
+		tx_pause = true;
+		rx_pause = true;
+		speed = 2000;
+
+On Northstar, gmac0 and gmac1 connect to switch ports 5 and 7
+(bcm-ns.dtsi). On many in-tree boards, port 5 is the CPU link and port 8
+is disabled. Examples are bcm4708-netgear-r6250, Luxul XAP/XWR/XBR/ABR,
+Buffalo WZR, SmartRG SR400AC, Meraki MR26/MR32 and bcm953012er.
+
+If port 5 has no fixed-link, dsa_shared_port_link_register_of() skips
+phylink registration, and b53_phylink_mac_link_up() is never called.
+
+If port 5 has a fixed-link (MR26/MR32), b53_force_port_config() writes
+B53_GMII_PORT_OVERRIDE_CTRL(5) with PORT_OVERRIDE_SPEED_2000M, which is
+BIT(6):
+
 	if (is5301x(dev) || is58xx(dev))
 		reg &= ~PORT_OVERRIDE_SPEED_2000M;
-    ...
-}
 
-is58xx() includes BCM583XX_DEVICE_ID, but the restore here only matches
-BCM58XX_DEVICE_ID.
-
-Cygnus appears to have the same topology as NSP. In bcm-cygnus.dtsi, the
-brcm,bcm11360-srab switch (BCM583XX_DEVICE_ID) uses IMP port@8 as the CPU
-port. That port has a 1000 full-duplex fixed-link to eth0, a brcm,amac
-with no phy-handle.
-
-For that AMAC, bgmac-platform.c uses bgmac_phy_connect_direct() and sets
-BGMAC_FEAT_FORCE_SPEED_2500, the same as for NSP amac0.
-
-On boards like bcm911360_entphn, won't b53_force_port_config() still
-clear the IMP 2 Gbps bit while the AMAC runs in high-speed mode? If
-BCM583XX is left out on purpose, could the commit message say why?
-
-> +		    dsa_is_cpu_port(ds, port)) {
-> +			tx_pause = true;
-> +			rx_pause = true;
-> +			speed = 2000;
-
-[Severity: Medium]
-Is the 2 Gbps mode actually programmed when the CPU port is not the IMP
-port?
-
-The condition checks dsa_is_cpu_port() but not port == dev->imp_port.
-For non-IMP ports, b53_force_port_config() uses the GMII override
-register:
-
-drivers/net/dsa/b53/b53_common.c:b53_force_port_config() {
-    ...
-	if (port == dev->imp_port) {
-		off = B53_PORT_OVERRIDE_CTRL;
-		val = PORT_OVERRIDE_EN;
-	} else if (is5325(dev)) {
-		return;
-	} else {
-		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
-		val = GMII_PO_EN;
-	}
-    ...
+	switch (speed) {
 	case 2000:
 		reg |= PORT_OVERRIDE_SPEED_2000M;
-		fallthrough;
-    ...
-}
 
-The two registers have the enable and 2000M bits swapped:
+In the GMII override register, BIT(6) is the enable bit and the 2G bit is
+BIT(7):
 
-drivers/net/dsa/b53/b53_regs.h:
-#define   PORT_OVERRIDE_SPEED_2000M	BIT(6) /* BCM5301X only, requires setting 1000M */
-#define   PORT_OVERRIDE_EN		BIT(7) /* Use the register contents */
-...
 #define   GMII_PO_EN			BIT(6) /* Use the register contents */
 #define   GMII_PO_SPEED_2000M		BIT(7) /* BCM5301X only, requires setting 1000M */
 
-On port 5 or 7, the case 2000 path only sets GMII_PO_EN again.
-GMII_PO_SPEED_2000M is never written.
+On these boards, does the MAC now run at 2.5G against a switch port that
+the kernel never puts into 2G mode? The port is only in 2G mode if the
+bootloader left it that way.
 
-In-tree boards take this path. bcm53015-meraki-mr26.dts and
-bcm53016-meraki-mr32.dts use port@5 (ethernet = <&gmac0>) as the CPU
-port, with a 1000 full-duplex fixed-link and port@8 disabled. On the
-GMAC side, bgmac-bcma.c sets BGMAC_FEAT_FORCE_SPEED_2500 for these SoCs.
+Cygnus looks similar. In bcm911360_entphn.dts, eth0 is brcm,amac with no
+phy-handle, so bgmac_probe() in bgmac-platform.c sets
+BGMAC_FEAT_FORCE_SPEED_2500.
 
-Unless the bootloader already set BIT(7), won't the internal link on
-these boards stay mismatched? The commit message says:
+The switch there is brcm,cygnus-srab, which maps to BCM583XX_DEVICE_ID.
+The chip_id == BCM58XX_DEVICE_ID check above does not match that ID, so
+b53_force_port_config(dev, 8, 1000, ...) runs. Because is58xx() includes
+BCM583XX, it clears PORT_OVERRIDE_SPEED_2000M.
 
-    Force the 2 Gbps mode and flow control for BCM5301x and NSP CPU ports.
+Before this patch, both ends of the Cygnus link were at 1G. After the
+series, would the MAC be at 2.5G and the IMP port at 1G? The series names
+that kind of mismatch as the cause of the output queue discards.
 
-This isn't a regression, because BIT(7) was not touched before this
-patch either.
-
-Should b53_force_port_config() set GMII_PO_SPEED_2000M for non-IMP ports?
-If not, the condition and the commit message could be narrowed to the
-IMP port.
-
-[Severity: Low]
-This isn't a bug, but b53_regs.h still documents the bit set here as
-BCM5301X only:
-
-#define   PORT_OVERRIDE_SPEED_2000M	BIT(6) /* BCM5301X only, requires setting 1000M */
-
-Now that speed = 2000 is also used for BCM58XX_DEVICE_ID, the header and
-the code disagree on whether NSP has this bit.
-
-Should the comments for PORT_OVERRIDE_SPEED_2000M and
-GMII_PO_SPEED_2000M in b53_regs.h be updated to include the 58xx family?
+Also, if this patch is applied alone (a bisect point, or a stable backport
+based only on the Fixes: tag), the IMP port boards look mismatched too,
+because b6a8a5477fe9 already clears the 2000M bit. The companion b53 patch
+covers that case. Should the two patches be kept together for backports?
 
 [Severity: Low]
-This isn't a bug, but b53_phylink_get_caps() only advertises MAC_10,
-MAC_100 and MAC_1000, and this line replaces the DT fixed-link speed
-with 2000.
+The override depends only on the feature flag. In bgmac-bcma.c,
+bgmac_probe() sets BGMAC_FEAT_FORCE_SPEED_2500 from the chip ID for the
+whole 4707 family. bcma_phy_connect() tries a DT phy-handle first:
 
-Phylink still validates the DT value of 1000, and CPU ports have no user
-netdev. No in-tree CPU port fixed-link uses a speed other than 1000, so
-I couldn't find a functional problem.
+	phy_dev = of_phy_get_and_connect(bgmac->net_dev, bgmac->dev->of_node,
+					 bgmac_adjust_link);
 
-Would it be worth noting in the comment that the DT speed is ignored
-here on purpose?
+If a phy-handle attached a real autonegotiating PHY, would this ignore the
+negotiated 10/100/1000 speed and program CMD_SPEED_2500?
 
-> +		}
->  
->  		b53_force_port_config(dev, port, speed, duplex,
->  				      tx_pause, rx_pause);
+Duplex is still copied from phy_dev->duplex. A half-duplex result would
+therefore give CMD_SPEED_2500 | CMD_HD_EN.
+
+No in-tree 4707-family DT does this, and that family registers no MDIO
+bus. bgmac-platform.c sets the flag only on the bgmac_phy_connect_direct()
+path, so the two glue drivers use the flag differently.
+
+Could the override be limited to the direct fixed PHY case, or could
+DUPLEX_FULL be forced together with the speed?
+
+> +
+>  	if (phy_dev->link) {
+> -		if (phy_dev->speed != bgmac->mac_speed) {
+> -			bgmac->mac_speed = phy_dev->speed;
+> +		if (speed != bgmac->mac_speed) {
+> +			bgmac->mac_speed = speed;
+>  			update = true;
+>  		}
 
 [Severity: Medium]
-This is a pre-existing issue and was not introduced by this patch.
-Doesn't b53_force_port_config() disable the override on non-IMP ports of
-is5301x() and is58xx() chips?
+Is this branch ever taken on FORCE_SPEED_2500 devices now?
 
-drivers/net/dsa/b53/b53_common.c:b53_force_port_config() {
-    ...
-	b53_read8(dev, B53_CTRL_PAGE, off, &reg);
-	reg |= val;
-    ...
-	reg &= ~(0x3 << GMII_PO_SPEED_S);
-	if (is5301x(dev) || is58xx(dev))
-		reg &= ~PORT_OVERRIDE_SPEED_2000M;
-    ...
-	b53_write8(dev, B53_CTRL_PAGE, off, reg);
-}
+bgmac_open() calls bgmac_chip_reset() before phy_start().
+bgmac_chip_reset()->bgmac_miiconfig() has already set:
 
-For non-IMP ports, val is GMII_PO_EN, which is BIT(6). That is the same
-bit as PORT_OVERRIDE_SPEED_2000M.
+		bgmac->mac_speed = SPEED_2500;
+		bgmac->mac_duplex = DUPLEX_FULL;
+		bgmac_mac_speed(bgmac);
 
-So for any speed other than 2000, the GMII override register is written
-with the override disabled. It stays that way until b53_force_link() ORs
-GMII_PO_EN back in.
+When the fixed PHY reports link up at 1000/full, speed is forced to 2500
+and both comparisons match, so update stays false. Does that mean
+phy_print_status() is never called, and the "Link is Up" message is lost
+on every open? Before this patch, the 1000 vs 2500 difference made this
+branch run on each link up.
 
-The real 2 Gbps bit for that register, GMII_PO_SPEED_2000M (BIT(7)), is
-never cleared either. Suppose the bootloader left a non-IMP port in
-2 Gbps mode and DT forces it to 100M or 10M. Wouldn't that produce the
-invalid speed and 2000M combination that b6a8a5477fe9 was meant to
-prevent?
+The attached PHY also still reports 1000. That is either the synthetic
+fixed PHY in bgmac_phy_connect_direct() (.speed = SPEED_1000) or the DT
+fixed-link in bcm-ns.dtsi (speed = <1000>). So ethtool and
+/sys/class/net/*/speed show 1 Gbps while UMAC_CMD is set for 2.5 Gbps.
 
-This patch doesn't make it worse. Non-IMP CPU ports now pass speed 2000,
-which sets BIT(6) again.
+Should the commit message mention this reporting change, or should the
+reported speed be made to match?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261022211104.2091128-1-florian.fainelli%40broadcom.com
