@@ -1,147 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.12
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.178
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793046701;
-	b=W+I4YHWpKr2DpZiWGgIRLRseUEDvRG0d4hS1hDz8yZuOIobi/PTh7r4j7tJtPuuSskjh
-	 /hob5GSyLD82+MvSXXdw7504Js755KXpugOUEMQPUvxXgMBRrCzRyc8xQGopkOpM52XlR
-	 EXiGn97nLHpcjvq1SB05RgKZPUOeDztFAqoovCevGXCPGVZeBDc90s3nTPIv0Z0Mp1p57
-	 23jIObcvPxVt1NIVwqE2XvBTrmznEaOQVKWN4nBjD2aljbUoqM+GrRQS3KQ4F4S8ozqBH
-	 cW1uKMaBIsdh2+fgS2MuYOY3ii+TzPyB2A58C8DJ0Uz0myeNbwpOTQ4QW5qrolw1p2Q==
+	t=1793046699;
+	b=MLDl6TYbogYBEqQP6+xueAIr+LF7dW1nK1yOB5S8+QN8VrWgFfLom5vuCwRkZHmOsr01
+	 0fpeLDRJ5ZXsAOZeJZFP7/s4ai1guyhpZnpMzTNewn7zss4s0vCrXk3UPAi88UX/fhQN/
+	 2v9Uk6koMuSuCLROjrSzFiHEvnrdHXvAMGPOCmJGvf7lQxRhMtz8mnBIrU4Zq1yElSGel
+	 WQOF0bIgaxsglFGmbihpdXpmFIT1DTJmX1zcblTPkwJqEg794rresVjVrOx4Il3kBAdmN
+	 TwLTN8q0ECh2Gol3HetgN7+SmRRWMci2mPW9ezhOovtpKhqFEwHBvqqWTN0rib3SbZw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793046701;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:CC:Subject:
-	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
-	 Accept-Language:Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
-	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
-	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
-	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
-	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
-	 x-ms-exchange-antispam-messagedata-chunkcount:
-	 x-ms-exchange-antispam-messagedata-0:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-originalarrivaltime:
-	 X-MS-Exchange-CrossTenant-fromentityheader:
-	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
-	 X-MS-Exchange-CrossTenant-userprincipalname:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=B0Tpg02rWVh77UxHasrvLTC0mtBrwXx6d3ABXV5YaWQ=;
-	b=QAaeuhJj0HknY64B767m/jcDAFwCwOgzaKA6NGhDxS1RvI5bcaFunCkwxgvOVT0CejIT
-	 11NxkWEy/lpoHOP8YoDhjOINaUO6c2q+MN6J0m3b2PbDBb8dLT4PdyhM2uXxHJPQ10LpS
-	 LRMvxlMJQ1PON/zDyee5rflEKlUwGDa6gtHEVrA3AEE+/EmZH19sCvEYiGZCpBDII5wUX
-	 byQ0e1eS7P7fdn7MneTvBR3DCRIKqg4liEkaAhEFMdLZ5rXsLRtoJvZTJ2JSwQSlIoDzD
-	 s2qzBv784k/jobzHCqK0luOP17/sVHNOWY7ct6/OnWJdBgQevMFZqHlAQZqmPtZDOoQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793046699;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=oLlOcSCQ32pMuVJGiKdjmwfrqV55t/QVJ+mNxxfwt1w=;
+	b=u+36vsxXdVGFfCdEAFeUVvTPWoMyRhzofN2pCu/g413C88HhWNprdRN1T6xr7+nvAnyw
+	 Hp2kaIf2dE3UTb05725BWt/8HiPzuWIU1WtNRJGO86MLpQsoCM1jyQAavTy7wZfoIhWPW
+	 QDK9XfHdwnIFUMCRLRHAeWx/tFcnEl9oqOagZucCIsRfdti73neu6V0lewYj74oPyEqcR
+	 +X8/japWQ/DzstbS2JVmEaFeTLUnXVBXp74q5Tit/rRIRqypi/FXGuEiHGkTRjoqeKuc+
+	 RTy4kvO4fNArCoDRvbF8HXSNRNbVyf868YcyYEyzc6Q3RmaqZZa1GDWqUYdyQJlwEyA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=microchip.com;
-	spf=pass smtp.mailfrom=microchip.com;
-	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=selector1 header.b=yo3sGaO9;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.12
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010012.outbound.protection.outlook.com [52.101.61.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=paul-moore.com;
+	spf=pass smtp.mailfrom=paul-moore.com;
+	dkim=pass header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=L+wootqW;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.178
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D4A606A31B;
-	Mon, 26 Oct 2026 20:31:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 68D4A606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1BA6606A31F
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 20:31:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A1BA6606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=selector1 header.b=yo3sGaO9
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=te520p4uYRLk5fVXNyxSHOzijmRmv3zbBuMI1pa/LtIOgL7eFzjum61zlUKeamwrHecukHzmF7QU25htXSi/gQtF2/x6RbWeAe6X1Wpzcs1LfC+pCM5NSW+xYitdTPIELxo0edjxDJB+AZ/aPupZEOUiJoNTV9/0+zo254jWLNScVunmlSG9Oh0OtbsoN+7DhhQoE1LIHCTYux45YkhJkpBkX/bSmqbfBGXtT9iJWKdhrk3uesInjcSfWqeXcMSPXxpZqrNJus1VSSNdrA9jx6jqr5wT19tXr0NgJD+wlXX49XRPKjdYX2KxdlmEX9Rr8TWTMsTH5KRP22O2LQIW2w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=B0Tpg02rWVh77UxHasrvLTC0mtBrwXx6d3ABXV5YaWQ=;
- b=bh4s3E3a7/olXVrsGxF02TTPGu3nZVVWx/6yMCLhQGvSc5rl1nHdy3EI5rNGawm3DMumyHrw5XZxzWkVIUkZeB/qcNci1GEaBHqwNzCHdj9KHd0ahmwWQOzUJuOnYgMrNj0pCYVndvV13fRcYZlBavhXkW7ngYxfoRsPDdNaPHvedOFMrfOYeyOTSHIy4p8YXzc4gX9O46we5AO1spxVoICRguOkb2HBXoKlbipMbX8oQJ+R0f29hu7wZwGcEWJsGkNWT+veKpBIaDVb9St1MsHPTynZ9hDha/2lm9Gkv24MS0Wq951lqgaTkCH/uu59RTGcG6fgdxOXWprOuJgtOw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microchip.com; dmarc=pass action=none
- header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microchip.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=B0Tpg02rWVh77UxHasrvLTC0mtBrwXx6d3ABXV5YaWQ=;
- b=yo3sGaO9kbdkA4/Fl+weJ7tR5VupPTweFE2fcfbfxPtVo22sCGLWx4IUS10kMzEoNQpo/9D+YYxaJMqt/64N69GLJPao4P7hAsLxHYTUJZ7fpQtsf3aTW9lCS2m+h/Uc9bPFdibH969qg5RJ7M8sNdt3686m16mbFgpeILcL0c91bXsWSwKw6x8LPvDP6udh85/fcvuGJbagJQOnAhUyyDAzl8/mOmkCXxQQ+B/mJYlKqwlqCbnODSs+MgFjUPASnO6YF2+8T4hsB5rTjFpF8kXcZBxzhcQ+6m5OaFagqWt0CmehxYv5lb+R2ZBJdmHKxeuJwfhJDzKvzti7O7uYaA==
-Received: from BN7PR11MB2836.namprd11.prod.outlook.com (2603:10b6:406:ad::26)
- by SA2PR11MB5082.namprd11.prod.outlook.com (2603:10b6:806:115::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Mon, 26 Oct
- 2026 20:31:36 +0000
-Received: from BN7PR11MB2836.namprd11.prod.outlook.com
- ([fe80::ac36:7540:4e6f:8d3b]) by BN7PR11MB2836.namprd11.prod.outlook.com
- ([fe80::ac36:7540:4e6f:8d3b%4]) with mapi id 15.21.0546.021; Mon, 26 Oct 2026
- 20:31:36 +0000
-From: <Woojung.Huh@microchip.com>
-To: <cbabroski@nvidia.com>, <Bryan.Whitehead@microchip.com>,
-	<UNGLinuxDriver@microchip.com>, <andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>, <edumazet@kernel.org>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <richardcochran@gmail.com>,
-	<linux@armlinux.org.uk>, <Yuiko.Oshino@microchip.com>
-CC: <maxime.chevallier@bootlin.com>, <davthompson@nvidia.com>
-Subject: RE: [PATCH net-next v1 0/5] net: lan743x: automatically recover from
- TX hang
-Thread-Topic: [PATCH net-next v1 0/5] net: lan743x: automatically recover from
- TX hang
-Thread-Index: AQHdXLZJRDal+7y/lUO1u0C2MYCT0bcFOV+ggAsew1A=
-Date: Mon, 26 Oct 2026 20:31:36 +0000
-Message-ID:
- <BN7PR11MB2836B1C7BA745AA99EC3F3F0E7612@BN7PR11MB2836.namprd11.prod.outlook.com>
-References: <cover.1792008404.git.cbabroski@nvidia.com>
- <BN7PR11MB283630E3A3DAFE8C50751201E7982@BN7PR11MB2836.namprd11.prod.outlook.com>
-In-Reply-To:
- <BN7PR11MB283630E3A3DAFE8C50751201E7982@BN7PR11MB2836.namprd11.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microchip.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BN7PR11MB2836:EE_|SA2PR11MB5082:EE_
-x-ms-office365-filtering-correlation-id: c9ffc7ea-f64e-4cac-3600-08df33a021bf
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|376014|7416014|366016|1800799024|261026121527099003|56012099006|4143699003|261021135927099003|261022075727099003|261022105027099003|11063799006|921020|261021123027099003|261021121427099003|261009223027099003|10067099003|38070700021|6133799003|22082099003|18002099003|261026140227099003;
-x-microsoft-antispam-message-info:
- 6uGUgmm0mj7J0ZYW+KiZ6BCs1wpTj0Ql+CwyQBMr6WRUMJDp6L3fdweVAdr15nJ5S1bPRe4lJqIk8EiW66cvnfxwhAKdDZohfp3a+7gWyDZtPpp7kaM091WoiqTXw6+KSydRu3YeNcC0BQMbN1OMxnhk0RN9658fHx56IiXxfJMp0fYmxH6DoXBhtFkMtt5cGx4cYitxYNpBgFDXDdXjb9a6qRG7tBzZ3C26shIhlE8YLN5OOWcnPf6KaqsApb45BTfW0D7Q6731xSKHMJMpTisD5ej0rxH39+UWh0x57Tuibk/2hpGViSUidULlW0fvlk0V8+AFIbHAELMeiR6sh42nW8aBZpp7/jnYXxoin0aDijF3nXbPmqpo/2IehPfDAvBsK6Zeg2h3EHAUkmSg7th+jktoRI1KmrgTMKIqJY9VQQG8Tl6QAiGcfE/CygEuLJtDNWpxN7sZglGhgg5ZLgS1VypAakZEqoYRqTXfq4h9M+IdQ3bNdtI9p3mEZ7IRVfqpmT7+Rq5C+mNHo1oRiDYQdCXWtGCdPp/eEl/EHR3Sh4EFyzMxVa3rE3a/L/XX0PoLNJL/wJp6XlU74sL8avY0Ax2Cl2mBrqXAMmR7Y9ymD4WvHa3KK9cP2WI4rGTZV+piwGcEBGCOWtxzQNIqg3i6ziiulcjzfQnU/N2FQ4RxD95PhYV7e8NaiP7gtaow3lkRQoLdOfLR5BrCJxbEjUKvdvuiJqQ80Dl0kRjpCAS/GV0og7RW2Wc4IQjegQJo
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN7PR11MB2836.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(366016)(1800799024)(261026121527099003)(56012099006)(4143699003)(261021135927099003)(261022075727099003)(261022105027099003)(11063799006)(921020)(261021123027099003)(261021121427099003)(261009223027099003)(10067099003)(38070700021)(6133799003)(22082099003)(18002099003)(261026140227099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?f9RxqkTnW/+T31GfpfmYGxidHKSzHAxjU602UPmuXL8bziDGDwCASWLlWbau?=
- =?us-ascii?Q?cHUd08S2JrO9tXPcF/f49/v0Ot+AILhk9AgBW/w81vJa1bKKu6AJA/RvelQQ?=
- =?us-ascii?Q?gQFxEDOZzgKwWovwCdzqDKZK9ar3FHWyMt+BbwEYno60xko/IvMa1JjLDsmm?=
- =?us-ascii?Q?rzpkjogF/w2EosBqfitmI6aUgz8i8P8Y+vnRVcCx9eyvLl4rVkfEfzBBO+Y9?=
- =?us-ascii?Q?MeV53HkehgOOj1oXEzOGUjiFVOvg/pjf3K3q5VH6Bc/Xqmw83Bh6lU0RqXTt?=
- =?us-ascii?Q?58ETL0G01COoqQterwYMB8B6C1yxijZTW4cJx24L3StiU44nCuX+d3IcDd8L?=
- =?us-ascii?Q?njg4sSKTGQYllNVMRUztWgVtP3kd/rZTZgiQy2KQYEv2tEwX0Iu94cdzSdGQ?=
- =?us-ascii?Q?2glvxcyVUyzCs/fK1KLvAL1Z4gNxRXDuWyJdfO7oisKmz8h0byWw4BSS+P5a?=
- =?us-ascii?Q?XrfDnXCgnbpRhCfGrA9ebYC+IyR8b0WXPUPzYRm/1zMDx5lvjXdmGFeSewia?=
- =?us-ascii?Q?Xs9KtummWXan8tZ/i1LrTo7A5wSBD8y42Mpapx4i8SVn3mYs+8HAMInX9BTX?=
- =?us-ascii?Q?Adg/OTAOZ/67LHpikMjR86NqhogfMpIPkfudCGzIYf6NHHTSdyGFYQ2lNhWI?=
- =?us-ascii?Q?NZbzuaLNYdjcpGlpGWFhe0tkdJR8GsHGX4N08xaSljM7gOzQDxJ3JqyefgJ5?=
- =?us-ascii?Q?oRmjLizWxcw2eFPB2OndL71OEpvm4zdEDrgMNYPzx8TVsVMWO3VA3AeXT+GR?=
- =?us-ascii?Q?aJlR3Zm02v3IQ0+kdTIBvW4CDVMag70jTgcwhZycnAcNxe25O01icNz8IaDd?=
- =?us-ascii?Q?R1t25Du84EjU7s9n/hzvodYJrD0+cbmzfuIvCZkXtZmB8JerTGx5dRq286Wi?=
- =?us-ascii?Q?+oygbdLt7KqvLbtaBJZVn7Wg2u8oDZBwW7n83qh6FJAHxHAG86KIVEEN9f7t?=
- =?us-ascii?Q?5mxZ0G2aYISMY07cScAMCHTHWbrezrXHHdpx1BHg0XxF/GM95IT4bpiNk1j4?=
- =?us-ascii?Q?lsnQi8jgn8FjuM+LpTqNbZ8SO30Kqk+rkzuuV7aLuB9b46USYFkhZNsmY/5H?=
- =?us-ascii?Q?2lJtGI0203yXeMW9flHzKByMjgQDu3+H9CVI4qrm+xsvE8U5AyYUZBlAZTAr?=
- =?us-ascii?Q?9s3EKkhbXr52M+pg2xwm14ko47rVQ2Q5MeoZO8FSIKQiRzbaSr+GpZajJGXE?=
- =?us-ascii?Q?JbQXO/dHeg7wXnoec3CLQknKFvkFTKw5HAHp7P6pwZ/rdVTLFXBpeG1VgFMW?=
- =?us-ascii?Q?nbmkv/iAOOg3DVeD/PBNGnhlzhUqU+tj0oJge6h1Fxm0cd3HKAPwsAyITqyl?=
- =?us-ascii?Q?f7UUdypCYGNdLtUyqTFyk5pU++DmGegdWNTWfAqB5vY65fjFANZcyWJkCBym?=
- =?us-ascii?Q?ZPKMhgD3korPdZOYodFN8txZWqrnTjFGFSg75mttHZDGnx6WqCkctzEGGyQD?=
- =?us-ascii?Q?SlhAB1qkK/kLbd9nUm23Y0LUehCP8tfJ22RkdW9BPoAs7vyOtZ58s+mQ/JWh?=
- =?us-ascii?Q?5zCZDXTews87YxDDsZIS4cCsU8iv/3cwTHPzXth3S6sve0L215fsAPeKB036?=
- =?us-ascii?Q?h7kkcYbesZhS06JpAzKwG4r4IaKr5pQV4qvcdgxjWdPi0imzRF7yTeg2YQM/?=
- =?us-ascii?Q?1SOxI0IJgfM7jnN2dinPOmO7IDBb62BXwT2U87s04l+/ms43GCcbVu+hcKfR?=
- =?us-ascii?Q?cUpkDhvBS+wxMXNQfuNukR1cmPRcIiErFOz0j6/hpXpmshYI63ZizbB115AR?=
- =?us-ascii?Q?dIakRrrUPQ=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key, unprotected) header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=L+wootqW
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2e9d1114320so26208495ad.3
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 13:31:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793046698; cv=none;
+        d=google.com; s=arc-20260327;
+        b=QdBy4no6DiXsomag27c809JZBsoeyoboisdSD9ESbsDknNjLZSZ4zDT97bHKaFGv8H
+         RDv6/Fuul/LXGmry5Mnilw4bOPjsjvqs2LERb3OKs0Iq3IzO+YArhecwpv6CL8ob36s8
+         cZxqJnFN2YR3awdCzdkTF041RXmbVmogzfPMVrwvXli9GSqwmjNjK1WdhFwRukyeD3XP
+         rLj/hqZMXTHmXZR7Y1cypiSrQSK9N2kfyhGGcp1KvUDp0mOqFMrD5ztvioNBkVDYSinI
+         pYIYizOboPyMg6IFob1tuNFX4tUqBapvTccQm6AFeRyMaD5XomdqlUl39LolN2RGotRb
+         rN9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=oLlOcSCQ32pMuVJGiKdjmwfrqV55t/QVJ+mNxxfwt1w=;
+        fh=/j6ENi5IKAzYGWWPsU8EgVyL0BnxBx5TYoY99tDfcag=;
+        b=WZDeax8mGBoAZRv+EKDb08xqhq7KX57p4Z1YfoKu3lGACRAsV5Xw5Ax90kI5qWyIAg
+         NsOtca2unzq29LUiksOBvAB7MLaGeJZ+fxdGi4jSUXpFTRjSAd+HmIp2CsjUE2ATTmKu
+         xtLpJASKwLowzZ6s8O2Fbc28g6/Gga0UldereSA4Tpc2yAPJ8EEM7SEq7pjC0340Wtl/
+         iS0I0KKqFUJw7t4fmW8VgI02w5hhqLgPuUWrxsIrrY8FBudcj961+XEP1LKLtdWq22Xo
+         ZbUuvwsIXgNRTBD9pI4sPTO4APfOPoI9XtYpwKP6qVB0lfTR3YvQchPk5vcGsJ9TKJvn
+         lPHg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1793046698; x=1793651498; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=oLlOcSCQ32pMuVJGiKdjmwfrqV55t/QVJ+mNxxfwt1w=;
+        b=L+wootqW5T77UGOryyw3TrOnPRmPjLL2i4uoI36Fb52hAChavbUjC2oAErcwcWcJq1
+         gwgn++rWkrUiN4eZmtVkxuIBOAsAZefl8wqr6EQCDZZBTjk1hO2UkuEyI8i5m5RjX7DJ
+         EK1ndGeANRMX4aTbpO+nvR7fIU63VxFQ9ffp4FXCojFjYD+fdWAL9RHBV9A1L4pnrwWe
+         CwArxDWTNOmGZ0DS0oKM86YGqSE9zdjWjrY330iiwsDo23ENOID23IQ7tNUIGTMjbHgT
+         BUbvwez+Hzl4lCCb8TSHKJZNqHNNnbu8YjtxV98iTts8xUYoVruc0kCp8wqVv0S6jf5w
+         /EUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793046698; x=1793651498;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=oLlOcSCQ32pMuVJGiKdjmwfrqV55t/QVJ+mNxxfwt1w=;
+        b=AwRs6SP550C2f6q9KeNSkzJzfPppRDN9TY6Jh9+yhJt7G1V3IFfDDZ8CuCLmL6uBre
+         5PZP+5OC48sii1nnJbX/KRGLqymnu704vMACAyOf1ROmty+p7tl+OYkqTzS4kANpln24
+         HBmj1BOn7icEWpFhl7fgu++UocZ/bEfsayNEZlItwxpv+f1M12gLJF0aojydhvJJsmyv
+         UJymLxvyz/r6F0dpPj4WYQQMlMF20cxjLAGkS/PlbnbC2kxNnPBiB59ZmQNpIL+Joekm
+         UWtfjwc9BpSRLIKbXFgJibdHPxiSoWR0C7ubIO6kA742OxOpgTHBDnbhBt0KrS7ZHm6m
+         2FaQ==
+X-Forwarded-Encrypted: i=1; AKwUvBygntrKIiUjFqYia/TnMwLJVf8J+qARK6V0tn1EIxHikvGW5yD4iUmYJsZ95J0ypDEVCVejlkg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ23T4La6TICCPJ+bdRuU2kHWlgR0YtTWg6o7Vvfpp9Oxt30oUc
+	Lrz0itlLPDplF1r5sgnHLU8b5MRSQi3LYtzV5GCCFPHcYzbhxbOuesWCwvdDwkUzMO59oOjANE1
+	7C4HDjNxsZGHvYqJV9GMyB+I8w07Edrrvjq4skY9m
+X-Gm-Gg: AYBFou1NyFjhRbmhCZwm1xA7rn8pc8hA7ZEvZbGNeKxAz3s5CvNwaI1Ya5/CBX/3aXZ
+	B2tXlxgcpcivis6B9RBKhIKPkR3b3Ja2X0bD+9OCnKIWeVDYUd836Py7HWLdoDbevyMnoGbxSnx
+	wKFLsG5wXrC71CckDfUw8O3veda3aCDuQ5fbNpEtkidENlgW7TrCece/6Jy5mq/YapUG2epthHS
+	ASTIF1ldN4U2nsJH7038J6gvtljLmmTRdifMRRQvyUgZ7/yjOaY3aVyJGU56Mgd9FvJcNDagE1d
+	n+CDPahvc/5VGgrndztJeH8oo7Pzi92gFha+LavWxbamWRsx605PHoohNeI1F+4oM2iZb6NFOE4
+	QCA2LND1R/jDn/chOnvXQnQ4SR93UC9PROjw7Bps+c/LAQWoB9ogdndkgXv/jsJruHlJmUDhNsr
+	ei8Qz7qzhbIXpmvw==
+X-Received: by 2002:a17:902:ecd2:b0:2e8:30dd:523d with SMTP id
+ d9443c01a7336-2ea9c620609mr71569325ad.13.1793046697876; Mon, 26 Oct 2026
+ 13:31:37 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -151,160 +105,109 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-OriginatorOrg: microchip.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BN7PR11MB2836.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c9ffc7ea-f64e-4cac-3600-08df33a021bf
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Oct 2026 20:31:36.3780
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: jhVCReMxh96pHt4xS16rHEBmSs4KlbrY0vXmsn4oGHBkxPB7znNdabN0BkxtQfefBMgUQvSF/hW/yCqs2Kem2oQXBBuVlodIFVe3a0WRArA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5082
+References: <20261026-work-security-namespace_free-v1-0-ffa3ebbf71bd@kernel.org>
+In-Reply-To: <20261026-work-security-namespace_free-v1-0-ffa3ebbf71bd@kernel.org>
+From: Paul Moore <paul@paul-moore.com>
+Date: Mon, 26 Oct 2026 16:31:25 -0400
+X-Gm-Features: AclHuK_MBYtdpmV00LiIGiHwgdDyciJ8YZFfqnRLK0ynU1qoZWOLvejR9vdc3xM
+Message-ID: <CAHC9VhR4rMydWiD-RFv-ABiYSG_txJuyrtdaowEXPY=CHEvFXA@mail.gmail.com>
+Subject: Re: [PATCH 0/8] ns: fixes for the namespace LSM hooks
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, netdev@vger.kernel.org, stable@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Chris,
+On Mon, Oct 26, 2026 at 5:57=E2=80=AFAM Christian Brauner <brauner@kernel.o=
+rg> wrote:
+>
+> I tried to switch systemd-nsresourced over to the namespace_free LSM
+> hook that went in this cycle. I explicitly developed it to work nicely
+> with that. But the version that is merged is broken for that case.
+>
+> The namespace_free hook is never called. security_namespace_free() bails
+> if ns->ns_security is NULL and that's only allocated if an LSM requests
+> a namespace blob. Nobody does. Landlock doesn't care as it only uses
+> namespace_init and namespace_install but a bpf program attached to
+> namespace_free never runs. And it can't work around that either. We
+> could make the bpf LSM request a blob but that would just be a way to
+> make the hook fire. So call it unconditionally like we do for
+> superblocks, files and bpf maps.
+>
+> The bpf LSM also marks the arguments of namespace_init and
+> namespace_free as trusted. Curiously that patch was also dropped.
+>
+> namespace_init is called before the namespace is set up and if anything
+> fails afterwards the namespace is freed without looking at its reference
+> count. namespace_free is called on the way out. There's no kfunc that
+> takes a namespace yet but once there is one a program could take a
+> reference to a namespace that's about to be freed. So add both hooks to
+> untrusted_lsm_hooks.
+>
+> The namespace_init hook also always sees a namespace id of zero because
+> the id is only allocated after the hook has run. The id is the only
+> identifier of a namespace that is never recycled. So it's what a bpf LSM
+> wants to use to track a namespace from namespace_init until
+> namespace_free.
+>
+> The inode number is recycled way too quickly for that. So allocate the
+> id in __ns_common_init() before the hook is called. Then ns_tree_add()
+> doesn't need to allocate ids anymore and ns_tree_add_raw() can go.
+> Landlock keeps logging zero for denied namespace creation because that's
+> what it documents.
+>
+> I'd want to get the first three patches into v7.4 since the hooks are
+> new this cycle. The systemd change I have for this uses the
+> namespace_free hook whenever the kernel has it. On a kernel with the
+> hook but without the first fix it would never learn about dead user
+> namespaces.
 
->=20
-> Hi Chris,
->=20
-> Thanks for the patch.
-> We (UNGLinuxDriver@microchip.com) are under review and
-> plan to test with our devices of different configurations.
->=20
-> Best regards,
-> Woojung
->=20
+From what I'm reading the LSM framework patches don't meet the typical
+LSM criteria for stable/RC fixes: there is no serious bug/panic, and
+there is no functional regression from a previous release.  It also
+appears that the existing Landlock namespace code still works as
+expected.  This looks like one of those unfortunate circumstances
+where a new use case wasn't tested thoroughly enough before the merge
+window, so it can wait for the next one.  We've already identified
+other LSM/namespace issues that are targeting Linux v7.5, the
+security_namespace_free() change is one of those as far as I'm
+concerned.
 
-This series is tested with LAN7430, LAN7431+external PHY and PCI11414.
-No regression is observed by tests including traffic tests, sleep/wakeup,
-link up/down, cable in/out and etc.
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+> ---
+> Christian Brauner (8):
+>       lsm: always call the namespace_free hook
+>       bpf: don't mark namespace_init and namespace_free arguments as trus=
+ted
+>       selftests/bpf: add verifier tests for the namespace LSM hooks
+>       landlock: pass the namespace id to log to check_ns_type()
+>       ns: allocate the namespace id before the namespace_init hook
+>       nstree: drop ns_tree_add_raw()
+>       lsm: fix the security_namespace_init() kernel-doc
+>       selftests/bpf: add a lifecycle test for the namespace LSM hooks
+>
+>  fs/namespace.c                                     |   6 +-
+>  include/linux/ns_common.h                          |  16 ++-
+>  include/linux/nstree.h                             |  29 +----
+>  ipc/namespace.c                                    |   3 +-
+>  kernel/bpf/bpf_lsm.c                               |   2 +
+>  kernel/nscommon.c                                  |   7 +-
+>  kernel/nstree.c                                    |   2 +-
+>  net/core/net_namespace.c                           |   4 +-
+>  security/landlock/ns.c                             |  11 +-
+>  security/security.c                                |   9 +-
+>  .../selftests/bpf/prog_tests/ns_lifecycle.c        | 145 +++++++++++++++=
+++++++
+>  tools/testing/selftests/bpf/prog_tests/verifier.c  |   2 +
+>  .../selftests/bpf/progs/test_ns_lifecycle.c        |  88 +++++++++++++
+>  .../selftests/bpf/progs/verifier_lsm_namespace.c   |  38 ++++++
+>  .../testing/selftests/bpf/test_kmods/bpf_testmod.c |   5 +
+>  .../selftests/bpf/test_kmods/bpf_testmod_kfunc.h   |   1 +
+>  16 files changed, 314 insertions(+), 54 deletions(-)
+> ---
+> base-commit: 21a7f44fd0765fcc5194130b28767786eba1d1e7
+> change-id: 20261026-work-security-namespace_free-7aaf89b5b00e
 
-Will retest when revised series is ready.
-
-Tested-by: Yuiko Oshino <Yuiko.Oshino@microchip.com>
-
-Thanks
-Woojung
-
-> > -----Original Message-----
-> > From: Chris Babroski <cbabroski@nvidia.com>
-> > Sent: Thursday, October 15, 2026 11:01 AM
-> > To: Bryan Whitehead - C21958 <Bryan.Whitehead@microchip.com>;
-> UNGLinuxDriver
-> > <UNGLinuxDriver@microchip.com>; andrew+netdev@lunn.ch; davem@davemloft.=
-net;
-> > edumazet@kernel.org; kuba@kernel.org; pabeni@redhat.com;
-> > netdev@vger.kernel.org; linux-kernel@vger.kernel.org;
-> > richardcochran@gmail.com; linux@armlinux.org.uk
-> > Cc: maxime.chevallier@bootlin.com; Raju.Lakkaraju@microchip.com;
-> > cbabroski@nvidia.com; davthompson@nvidia.com
-> > Subject: [PATCH net-next v1 0/5] net: lan743x: automatically recover fr=
-om
-> TX
-> > hang
-> >
-> > EXTERNAL EMAIL: Do not click links or open attachments unless you know =
-the
-> > content is safe
-> >
-> > Background
-> > ----------
-> > On a custom HW platform that uses the LAN7430 NIC we have been able to
-> > reproduce a scenario where the SoC stops receiving TX completion
-> > interrupts, appearing as a TX hang. After dumping and decoding the
-> > LAN7430 registers we see that the TX channel reports that it is in
-> > started state with no error, but TX_HEAD stops advancing. TX MSI-X stop=
-s
-> > incrementing while RX interrupts continue to increment.
-> >
-> > This scenario has most often been reproduced in large server cluster
-> > environments, but it's also been seen locally during repeated SCP and
-> > iperf testing.
-> >
-> > The root cause of this issue is still unknown and we are continuing
-> > debug. It was found that bringing the interface down and up recovers th=
-e
-> > network. This issue has not been reproduced with the LAN7430 EVB
-> > connected to a standard Linux server.
-> >
-> > What this patch series does
-> > ---------------------------
-> > This patch series attempts to implement automatic recovery of the
-> > network interface after a TX hang is detected. It does not fix the
-> > underlying root cause of the TX hang.
-> >
-> > At a high level, the patches implement the following:
-> > 1. ndo_tx_timeout support to reset and recover the interface when the
-> >    netdev TX watchdog triggers.
-> > 2. BQL support to decrease the amount of time it takes for the watchdog
-> >    to trigger.
-> > 3. Stability improvements and error handling around the open/close path=
-s
-> >    that now get executed more frequently as part of the TX hang recover=
-y
-> >    flow.
-> >
-> > Potential issues and concerns
-> > -----------------------------
-> > * One of the patches adds new lan743x_dmac_tx_reset and
-> >   lan743x_dmac_rx_reset helper functions. There is no cleanup handling
-> >   introduced if these return an error, only a new error log. This
-> >   matches pre-existing behavior: if a reset timeout occurs then it is
-> >   possible to DMA freed memory. The datasheet states that these resets
-> >   are performed immediately in HW so I'm not sure if these will ever
-> >   time out, but I'm open to suggestions on how we should handle an erro=
-r
-> >   in these cases.
-> > * The TX timeout reset flow does a full lan743x_netdev_close followed b=
-y
-> >   lan743x_netdev_open instead of individual TX channel reset. If the
-> >   stall is happening inside the NIC DMA engine then the theory is that =
-a
-> >   full reset may be needed to recover. For internal use we also wanted
-> >   to reduce risk by putting the NIC into a clean state after recovery
-> >   with full reset. It would be great to have Microchip/LAN743x experts
-> >   confirm the best reset flow.
-> > * LLM review tools flagged several possible bugs during development
-> >   that resulted in the inclusion of three "Fixes:" tagged patches in th=
-is
-> >   series. They are included in this series with the ndo_tx_timeout
-> >   support because lan743x_netdev_open and lan743x_netdev_close are now
-> >   called more frequently as a result of TX hang recovery.
-> >
-> > Testing
-> > -------
-> > Testing was performed on a 7.0 based kernel using the same driver code.
-> > Please let me know if you would like me to run any other tests.
-> >
-> > Tests:
-> > * Verified the TX timeout watchdog triggers and recovers the network
-> >   interface when TX hang is reproduced. This was done as part of
-> >   repeated SCP loop testing and is also being tested in a server cluste=
-r
-> >   environment. dmesg was inspected for "NETDEV WATCHDOG" to verify that
-> >   the watchdog is being triggered. No errors were seen in dmesg after
-> >   reset.
-> > * Performance tests using iperf3 to measure RX and TX throughput show n=
-o
-> >   noticeable difference with the patches applied.
-> > * Repeated module load and unload cycles produce no errors in dmesg.
-> >   Network appears to function as expected when module is loaded.
-> > * Repeated ifconfig down and up cycles produce no errors in dmesg.
-> >   Network appears to function as expected when interface is back up.
-> >
-> > Chris Babroski (5):
-> >   net: lan743x: reset DMA channels that fail to stop
-> >   net: lan743x: start phylink last and stop it first
-> >   net: lan743x: quiesce TX before freeing the rings
-> >   net: lan743x: reset the device on TX timeout
-> >   net: lan743x: add byte queue limits support
-> >
-> >  drivers/net/ethernet/microchip/lan743x_main.c | 177 +++++++++++++++---
-> >  drivers/net/ethernet/microchip/lan743x_main.h |   2 +
-> >  2 files changed, 155 insertions(+), 24 deletions(-)
-> >
-> > base-commit: 05b5019b01fb9443b09ae4ed34af1135a80a84c8
-> > --
-> > 2.34.1
-
+--=20
+paul-moore.com
