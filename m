@@ -1,100 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793026107;
-	b=3DjhWjsxFJC3VSUXX4KrMyltqEwrAQYR3R4W0Mw42xBEJM/2mfe1npIo/o3D3RgXSBOv
-	 0svZl9/TKwJSjGhzlsUAhm/pSi2w9TtUjgPC9mOUrJ5YVCH/jEqfHjc4I6iwg0xR/LDZY
-	 pbhQ92JU8p0AfNyC1kIjhSzx9TcP7vwDv4hI4oGgiXXKKTWIMFQ3MiZ3FpizjHA/tKg5r
-	 tc1UEGdHPh4BknsXJkZJ7GKsH997OMGnf5AvH/sq/1eXM1Lo0r/qpGeYjwXCVBwAT/Yys
-	 kg/E/lsW4K94BuvZf0S4bUJt53hspRhDgZ658RyB0vSCJQQh+tmjxSqvqUcTse3yiDw==
+	t=1793026217;
+	b=bEYIzk03dadpobC1BL/dnYao1NeMqN9IMDGTseg7wvPg+wsM8wapITrdhc5SMj6rQDkq
+	 u0gEmAhWI8qCTjRn5oWVKNOPNEieFpNyIuyKNyFH8zCSuj+4Jm0BeivnTwzEy5ulxJ47P
+	 ikWiHVkBxa6Ea6Z9ymKzgbU7NEZj7Pg68II1f5HFAFOSx+W/964K98389zRorlPVTaA5S
+	 /+OiK3SVoWwQQ5vJ0k61+AlciM39q6wgD072PHPMKwG+tlFODqgsLahIkObZtWaWXqY3K
+	 eZzmhJQS0h41SrIrhaaPJlKHz3yj80JKOPIWW6z1IQNrNsGFuW5Vxs6qci5KS6usvcw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793026107;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=442TJjXt4vKnHWbQnMiG4TV2+d8tX1KqEwlL9mdaH/k=;
-	b=DnfNe3GNXy6HIUu0fmzkQQXlkahDkvIrfWL40RGf+IBkHgKgkAcLu/n+tCCyUfZBhbeH
-	 ohqOcDX2vtsIRtVwvA2HCgplN3BeZa4uKUJH27NUaz+8sd8+SI8MGW2A/qy+PguahBIwV
-	 tevRjZiKMf3LwcJMwaBBXIQdekt6kSM90v/9zXQE1UXAQcw1/VmYSzFVYVy7E4ya5JobC
-	 /xW5dWxKsGMfXsDvVp9w12xO8qVDg/jDYoR0LiXsMISQX/GiGnIZn4TMPIkKrGD+i9k9o
-	 uv2AJt90ShLoOLrLaJ0ciCS69REr0xKaXWO9iI/x4v1iT3QxQysvPJUZ8UHQ+psA/EQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793026217;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=p2Y0ewCR7R8xG92WWc1IJLfHg4RXwgJ2QKJmcFiaHq8=;
+	b=w4Rv6+jVZoxSNE8lBpr9vkEx1xKzV0/tjnRVZm5rgnJYwZ/qHOcn2VnulQemVVp8DR0u
+	 uVjnVX2ydZA8l0wTTDkDiGDoA8K/R3+dGzyf4scInMBztsybb/L8MBRq9nOI3U12gYZa4
+	 KT1aDbIjVBvpf6NOk09QQMPqozZKqiAMDduk0oKE0PtHhTuFZusr8AjJpSVAJpqBXyjio
+	 +jUIZw5TYXWm0N17ZXSZL5lhkJCXrh4I5B84GualLHLA5wSl8BIwQ3SdFHbZUsf0G0xGF
+	 w6mKk549YLjC57V4ksLnV6una4ZG1P+Rxt3EYxJdtVuDQazC/JMFNIcVgq8LKZQHmCA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=eibNHlAv;
-	arc=none smtp.remote-ip=209.85.214.173
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ADfa2vmw;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41BE606A31D
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 14:48:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B41BE606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A50606A31A;
+	Mon, 26 Oct 2026 14:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=eibNHlAv
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ea138a3497so20169595ad.2
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 07:48:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793026106; x=1793630906; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=442TJjXt4vKnHWbQnMiG4TV2+d8tX1KqEwlL9mdaH/k=;
-        b=eibNHlAvtye8ze+fjqlWmQ/QzN6w7RSu/QYc7xyQurO8SYf4+rIjdzaMPmDxg+rotq
-         Gg8jRxzz9HbeLXimQqyVZpWXUswfkssAf6n/aCeHxgXCgZ6vOVftHpTO/HuadlCEwleH
-         iwnygPo7DX4Dz2BhDzyZZLWujcydwyXBe6O4ZJxlYfWONgzOMGZnawF0Wo8jkh6Dr3MO
-         2E7Nf3gA346nF/k+VvLyq7Kljpot18ysqNdJKKrNGt2OVW4FgwNdWC7OCYPFVbeYsNtm
-         ed/7jyiRckC5I2PV3s6P0ElXXvJk3hsv83tp9kb6xM9AjPl0nu2Zb5wEIm/U4qdf06Gf
-         +Z7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793026106; x=1793630906;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=442TJjXt4vKnHWbQnMiG4TV2+d8tX1KqEwlL9mdaH/k=;
-        b=ueRnTmfNPKchx5asH4RW/52IWD3BPxe65znD9HEVxZMeM22p21rGM9QU+Q7vZ4Kipv
-         eI0N6T5OLMEeGNtrm/G1Hu9/fGC6Ir//xZKF3+oD3inDYBaPtqoNRzLRzPaoy5NYN0JT
-         HkzQxj27dE5oFxJ87DQO4I/GSu/Y62fo5TMeMJ3Sxet9sxZAnNVju9wJU6N0L2ox/RSx
-         BB/N3AmHihEKFH2SdlJVgGFywLKBhlvVVyPzdQ7UiWmgXGcPD82hM+Gonym23TzwUydW
-         EUgBU6OUIkKJ4ADeZY7Wil4zEdPeaTzkPfz5mqJXnm9/Bt6H9jIC+q0pR4XFzmtY9lYK
-         rhxQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw+ZfnO/nh5fTCAKFO2InExLl1Ic3Z14m9hoKOVknWjA3MxFYEwVuUdIObAUELt5vyYodhidPM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLJWDqy36kcpA+3KHcm8ThMMes+bSSERaTSMxzKILXvBVIt2yip
-	XqSAzCO7cK3YLhT9+27n0qRleLqhMtrixEvxwaQz298+9djKzQ6zpmYx
-X-Gm-Gg: AYBFou2QifELvzTDtlG6YsAQJcSF71D0R/yPbhgQL+MGFf4zFueXvoL/NThNYUhh1qa
-	DCpbyNuDOwekAfJ2wz4j+pGLhXdmmCEsppMYBYWfpafjNkZPntKF+QawslPjj03LrZQVI+Pn6bZ
-	g9yQJDTaDPrFtUb28AzQeEnCVKSQcN4GbqcNweTVeOjeqZakMc7nNP0FS8NIh0ekBKgGGrnmamR
-	Bo71ldSA/dbocrUQfHRREptBNeu3Ci71pOWeO9Zhhz8VH8nhjcORrbC5w/2qfkTAUITX7ez4cGc
-	ZoJX7DXIMh1+Yf7WF3RqfSzKblqNUJmfBh3N3t1RaasnmhOfMVLES9Hq1M+LCmFS3JxrFQd1ZNb
-	/sRvwnbhWdK0xDKH1x7cp0Rin5WBkP8TSGfPfcFWifJweBZqMg9PpSyRG/jCXxMzR4Png3fwsAk
-	8W53RbHy1sHzjqHnmtNW9BmwNXa3z08DZWs250us3HfwC0zSYNzMgs5sXfZLqcV59ecMwR9Byn0
-	pXI/aHLfjSGnuXL1F68KKVmquzK4I/qV6uAd8NX6ADJhWXCDE8=
-X-Received: by 2002:a17:902:eccf:b0:2e2:be61:a882 with SMTP id d9443c01a7336-2ea9c6c8bc8mr60967235ad.11.1793026105945;
-        Mon, 26 Oct 2026 07:48:25 -0700 (PDT)
-Received: from localhost ([111.228.63.84])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea9b1499c4sm18570185ad.31.2026.10.26.07.48.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 07:48:25 -0700 (PDT)
-From: Cen Zhang <zzzccc427@gmail.com>
-To: matttbe@kernel.org,
-	martineau@kernel.org,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: geliang@kernel.org,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	mptcp@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	baijiaju1990@gmail.com,
-	jjzuming@gmail.com,
-	zzzccc427@gmail.com
-Subject: [PATCH net v2] mptcp: protect listener backlog reads in diagnostics
-Date: Mon, 26 Oct 2026 22:48:16 +0800
-Message-Id: <pm-mptcp-objects-candidate-0066-v5-4d1b83d62fcde2d57e8d@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ADfa2vmw
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 217BB1F01828;
+	Mon, 26 Oct 2026 14:50:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793026217;
+	bh=p2Y0ewCR7R8xG92WWc1IJLfHg4RXwgJ2QKJmcFiaHq8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ADfa2vmwrHaq6Cw87D7xoZlsX2o0pkNyxKUrI+5+vFM62gAyKxTly3E8ktnrWA+WU
+	 NYTqhhfautYQKtvR7P88HhQy9YLndnsoXlLotl0O5mQcYzgddrn6wKpE8jfWW6HInS
+	 VE8WGv6JW3tn5X4XRxemxhuCBg8ib4mIbu94Xq9V3SGSNv7hRsHAfICkAeehBVTail
+	 5EDq9DGuYGqS/wivKYYztdku7NIySprHmMJQKDYRMNHNI4Tev4/YdQzMFE49oGJEgJ
+	 1AHoaxq6qGCjkGYnM9IvIQC0zAtsDyuH98eV59fhKGytU+hY4DKSoWVvXmqgtJZRGe
+	 ryb3znwlyQTrA==
+Date: Mon, 26 Oct 2026 20:20:06 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Igor Opaniuk <igor.opaniuk@oss.qualcomm.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Pranav Mahesh Phansalkar <pranav.phansalkar@oss.qualcomm.com>, Chris Lew <christopher.lew@oss.qualcomm.com>, 
+	Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>, linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] net: qrtr: don't lose name server packets behind the
+ HELLO gate
+Message-ID: <at9n5CR6de3echo_@debian>
+References: <20261019-upstream-qrtr-hello-gate-fix_b4-v1-0-bd420aec171b@oss.qualcomm.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,122 +62,54 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261019-upstream-qrtr-hello-gate-fix_b4-v1-0-bd420aec171b@oss.qualcomm.com>
 
-mptcp_diag_get_info() reports the accept queue of a listening MPTCP
-socket by reading msk->first. The token based dump and the exact token
-query only hold a reference on the MPTCP socket, which pins neither the
-first subflow nor the listener hash bucket, and __mptcp_close_ssk()
-drops the last reference on the first subflow before clearing
-msk->first.
+Hi Igor,
 
-An application can disconnect a connected MPTCP socket with AF_UNSPEC,
-which removes the token but retains the first subflow, listen on it
-again and close it. A dump that obtained the MPTCP socket before the
-disconnect then reads the backlog of a freed TCP listener:
+On Mon, Oct 19, 2026 at 01:12:00PM +0200, Igor Opaniuk wrote:
+> Since commit 544d85de4dc2 ("net: qrtr: Send HELLO message on endpoint
+> register") the core refuses every non-HELLO packet to a node until the
+> HELLO to it has been sent, and retries a HELLO that cannot be sent yet
+> 100 ms later. A freshly booted remoteproc has no glink rx intents, so
+> the first HELLO fails, and the name server's announcements in that
+> window (the replies to the remote's HELLO and the NEW_SERVER broadcasts
+> of local servers) are dropped for good. The name server then also skips
+> the lookup notifications for a server whose broadcast failed.
+> 
+> On QCM2290 (Arduino UNO Q) this stalls the modem in about one boot in
+> five: it waits for the RMTFS service, which rmtfs registers in the same
+> instant the modem starts, until its watchdog fires 40 s later; WiFi,
+> whose firmware runs on the modem, comes up a minute late.
+> 
+> Patch 1 makes the name server carry on after a failed send (announce
+> the remaining servers, notify the pending lookups). Patch 2 holds
+> control packets for a node behind its HELLO and sends them right after
+> it, instead of dropping them; data packets are still refused before the
+> HELLO, so flow control is unchanged.
+> 
+> Initially tested on the Arduino UNO Q (QRB2210) with v7.3-rc6 plus the board
+> support it needs: 10 fresh boots and 10 modem stop/start cycles, no
+> "failed to announce new service", no modem watchdog, WLAN firmware up
+> 6.4-8.2 s after boot every time; unpatched, 2/10 boots and 1/18 restarts
+> stalled. Built with W=1 on net/main; applies to next-20261016.
+> 
+> I'm not deeply familiar with QRTR; an alternative would be to have the
+> core trigger announce_servers() for the node once its HELLO is sent.
+> Happy to rework it that way if preferred.
+> 
 
-  Token diagnostic                 Application
-  mptcp_token_iter_next()
-    retain MPTCP socket
-                                   connect(AF_UNSPEC)
-                                     remove token, retain first
-                                   listen()
-                                     reuse first
-  mptcp_diag_get_info()
-    observe TCP_LISTEN
-    lsk = msk->first
-                                   close()
-                                     mptcp_destroy()
-                                       __mptcp_close_ssk()
-                                         release first
-    read lsk->sk_ack_backlog
+Thanks for the series. There is already a patch floating [1] to fix the issue
+you are trying to fix and it looks simple compared to this series.
 
-The report below was decoded with scripts/decode_stacktrace.sh against
-the 7.2.0-rc5 based test kernel that produced it, with the line numbers
-mapped to this tree; only the relevant frames are kept:
+But still, this series is useful, atleast patch 1. So you can resend this series
+on top of v3 of [1] after fixing Sashiko's comments.
 
-  BUG: KASAN: slab-use-after-free in mptcp_diag_get_info (net/mptcp/mptcp_diag.c:209)
-  Read of size 4 at addr ffff888111763818 by task python3/499
+- Mani
 
-  Call Trace:
-   mptcp_diag_get_info (net/mptcp/mptcp_diag.c:209)
-   inet_sk_diag_fill (net/ipv4/inet_diag.c:330)
-   mptcp_diag_dump (net/mptcp/mptcp_diag.c:23 net/mptcp/mptcp_diag.c:177)
-   __inet_diag_dump (net/ipv4/inet_diag.c:823)
-   netlink_dump (net/netlink/af_netlink.c:2351)
+[1] https://lore.kernel.org/netdev/20261022163116.1042-1-26rote@gmail.com
 
-  Allocated by task 497:
-   sk_alloc (net/core/sock.c:2337)
-   inet_create (net/ipv4/af_inet.c:333)
-   __sock_create (net/socket.c:1679)
-   mptcp_subflow_create_socket (net/mptcp/subflow.c:1836)
-   __mptcp_nmpc_sk (net/mptcp/protocol.c:111 net/mptcp/protocol.c:143)
-   mptcp_setsockopt (net/mptcp/sockopt.c:313 net/mptcp/sockopt.c:916)
-
-  Freed by task 0:
-   slab_free_after_rcu_debug (mm/slub.c:6571)
-   rcu_core (kernel/rcu/tree.c:2919)
-
-  Second to last potentially related work creation:
-   __call_rcu_common.constprop.0 (kernel/rcu/tree.c:3287)
-   sk_destruct (net/core/sock.c:2446)
-   __sk_free (net/core/sock.c:2459)
-   sk_free (net/core/sock.c:2470)
-   __mptcp_close_ssk (include/net/sock.h:2024 net/mptcp/protocol.c:2721)
-   mptcp_destroy_common (net/mptcp/protocol.c:3579)
-   mptcp_destroy (net/mptcp/protocol.c:3815)
-   __mptcp_destroy_sock (net/mptcp/protocol.c:3421)
-   __mptcp_close (net/mptcp/protocol.c:3523)
-   mptcp_close (net/mptcp/protocol.c:3538)
-   inet_release (net/ipv4/af_inet.c:442)
-
-The first subflow is a TCP socket: TCP listeners carry SOCK_RCU_FREE
-and tcp_prot/tcpv6_prot sockets live in SLAB_TYPESAFE_BY_RCU caches, so
-reading the two backlog counters under rcu_read_lock() is safe, and a
-stale value is acceptable for diagnostics. mptcp_diag_dump_listeners()
-already runs the formatter inside an RCU read-side section; only the
-token dump and mptcp_diag_dump_one() reach it without one. Take
-rcu_read_lock() around the msk->first snapshot and the backlog reads.
-
-Fixes: 4fa39b701ce9 ("mptcp: listen diag dump support")
-Suggested-by: Eric Dumazet <edumazet@kernel.org>
-Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
-Assisted-by: LLM
----
-Changes in v2:
-- Take rcu_read_lock() around the first subflow reads instead of the MPTCP
-  data lock plus an owner check, as suggested by Eric Dumazet; this avoids
-  the new msk slock -> listener hash lock nesting and keeps ss reporting the
-  accept queue while the socket is owned.
-- Decode the stack trace with scripts/decode_stacktrace.sh, map the line
-  numbers to this tree and keep only the relevant frames.
-
-Link to v1: https://lore.kernel.org/r/pm-mptcp-objects-candidate-0066-v3-73df72b7a543d4cada0e@gmail.com
-
- net/mptcp/mptcp_diag.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/net/mptcp/mptcp_diag.c b/net/mptcp/mptcp_diag.c
-index 136c2d05c0ee..28a42eee6651 100644
---- a/net/mptcp/mptcp_diag.c
-+++ b/net/mptcp/mptcp_diag.c
-@@ -200,8 +200,10 @@ static void mptcp_diag_get_info(struct sock *sk, struct inet_diag_msg *r,
- 	r->idiag_wqueue = sk_wmem_alloc_get(sk);
- 
- 	if (inet_sk_state_load(sk) == TCP_LISTEN) {
--		struct sock *lsk = READ_ONCE(msk->first);
-+		struct sock *lsk;
- 
-+		rcu_read_lock();
-+		lsk = READ_ONCE(msk->first);
- 		if (lsk) {
- 			/* override with settings from tcp listener,
- 			 * so Send-Q will show accept queue.
-@@ -209,6 +211,7 @@ static void mptcp_diag_get_info(struct sock *sk, struct inet_diag_msg *r,
- 			r->idiag_rqueue = READ_ONCE(lsk->sk_ack_backlog);
- 			r->idiag_wqueue = READ_ONCE(lsk->sk_max_ack_backlog);
- 		}
-+		rcu_read_unlock();
- 	}
- 
- 	if (!info)
+-- 
+மணிவண்ணன் சதாசிவம்
