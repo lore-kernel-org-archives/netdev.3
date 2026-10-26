@@ -1,89 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793038306;
-	b=BdbCBf6kRU9VnieorGpIHjZDPFI1pgnoCuNh/iwUFCRPc7M+WmmwsCX/QNk4UBa50EUh
-	 9i7AnvzbTiSa0jaRggUAGyWvG9CDVd7/NtJ09j6uI1SGZzbu+Pf4ErnYszKMXk0MwzxMk
-	 utrsXSpCCkrUyGqPCh2mzTP+YiQa7fJKJF7+j23Vl3uN/PNNfYZVCPctaqNvVdtz1sakJ
-	 2wJJWb1qQaF746o3hHnoNSBoA59Zmo4bhpbVOBlxiOt8eMcfZ4XW3y7v0LpPJM+gSgUn8
-	 DA9+CcDyLcSjS9xKS9vZhyaFKpOvu5TtEahajrvJxpLITX09D4E8pqOcub/2hgJi/Cw==
+	t=1793038309;
+	b=3MRV1kULW0ZGe5qZPY2G1Wz3E/AgeU4GsVeZFnpvQwVyCzJmaXu58eITXOVQVK0WT7oV
+	 7Y140Vd9cV89Ar/ZiNVnkO71k7wJs1es6o6CHqUbdnKHiMbz8fayS825dsREQms2l1Owi
+	 pMB3FiJhr98CncvqxwJejady21BevypvmzD1/xQyBlkSmpgygboRA2Wl2PiegHujsiFXq
+	 imFO+VHp3kNIF5LS11+U/9I4v6DygNqNgqK4+BVI1jVxp1kpyaPBze9Bln6kmnxEZhoqJ
+	 4IDdykTceGdcMdC88opFVgZkNHBAKOZ8bacRcD3+BKtGxZ2qJQJE5MylXx6yFfqjkWQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793038306;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793038309;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:Date:Subject:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
 	 References:In-Reply-To:To:Cc:X-Mailer;
-	bh=bOkoHWGuOpgRmWACFRvEzWssB8GJAemNp1/k5sDiugU=;
-	b=vB347NpxA9++1HQ8DVP7DnTKlmMWmHmLG0txdpsmMx7yjXQjM5e9upihSsWIZWmZeSwI
-	 fh2VnX6zMYU6X0WFx8v+GP8aRRr5KQFWpJrY2uCoEfWnr34I4wvytnzWmeTnKzdTruUiU
-	 hGgqcPvn00XUNCrD91M9IHA+IRz3Hs0zhaFV6TDQT0hLfi36pje8otTB0Onnvb3gpFRo2
-	 efv11XqZ8WCPPFf2sre07id4E7vCYHDQqLJhx8d1TRJMAAWgOlurfrzemO/agdj52qaOd
-	 Rz2uVEL5+nzfN6f5WwmR29hBjG5QPmsPetF5hjiwwxpbp9nE37uvC2vSq3ZAK7S6/5g==
+	bh=dKZQGmpkqBbaYMDOWkJ2IvHQIpl030vIHdXqdzHEmeY=;
+	b=TzzZr+pdHY6cfiHoqeVBB1yspXu6kmCrxAVbEgJYPPHrqu4buTK8tQNAZHfqajhhB4TP
+	 fFb1yulo/PfFmXzKVyoofXL9W58nAO9vmABOaFi1H3sXyc02cudatz93uEM2EsQFG3e91
+	 9L/g2zjTk8wsYxGJLSeF9C3vga6iB8p9xiCLhiITSlbwnJApkXk+TOr4khw2/H4D0urE6
+	 le7Xw7F2vTNy9xfpC767rLRzfBN9rEx2paD7eom3frqfhnWy12zgKLzgz7zl5tq7B+Zpy
+	 O4OIl1NdDrzdQHBdm7rg/bS/s5k6ZSth6REUTmZ0DEN9Qrd/eUt/VzekTp8ZM7vvOXA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=rHRIvoVx;
-	arc=none smtp.remote-ip=209.85.167.176
-Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="N96cCwQ/";
+	arc=none smtp.remote-ip=209.85.210.43
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A546606A31F
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 18:11:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8A546606A31F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A71606A320
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 18:11:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 00A71606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=rHRIvoVx
-Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-53ec2cc397aso2405098b6e.1
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 11:11:46 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=N96cCwQ/
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-825b40f8a26so1643686a34.1
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 11:11:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793038305; x=1793643105; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1793038308; x=1793643108; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=bOkoHWGuOpgRmWACFRvEzWssB8GJAemNp1/k5sDiugU=;
-        b=rHRIvoVx8n1PVA4udVrpzyrWFGucX36ATP9DDKkXQ4v8oGM8tdl5k5v/sXnFXWqtuK
-         FW7bNPLBP7NpjdSGK3SPdjayzMSxXGwwcmcJ7yYFJcwEU3T8yIp94HF/wzBym814dj1D
-         g0DwdVcD+V1RhdCt2Z6+nxLDWR+mhsCeYWDSXFqswsng6zfCdzekUgMeiinY1cAI3ws9
-         P/vLudHni14pkiygiD7Zo2gVg0CMKZi9W59SPPZCc3YAE0goWGR8MXL8xKHJEF0PC7vy
-         s/KDDO+k9a/+dSxIEXZJagmLXZMgdAg/+quMzASIVOtHIlSLgmxlzqj2ZhYlkrgRiNlk
-         XQ/w==
+        bh=dKZQGmpkqBbaYMDOWkJ2IvHQIpl030vIHdXqdzHEmeY=;
+        b=N96cCwQ/43Ar2T0LsDO5t0baZsWuCMSpKTC3NnKx+TRRhcbextYRuL3yMbs99AzRMa
+         +/ejSMk5xs+FrDT3oA6yCczdIvzec/w02QBezremJ7/xfDs5/zet/hm3KHrGAr9eAVWy
+         LD+BD7W/HCy69rkR5/6RBhkEHf+zRauDniBagleatWwEF2PldzTXS7U9hcn9+fud5M4Z
+         QP/Tbr6xhkkun24k9C71hjxmcx2WpiZRGphNpHpgETOwkRUKXBrtnoLEsNvnV3Vj+08b
+         9W/MxTrVn9wrFTqP55Z9axwqZLx+ZYGjg4ZFdCcI6wtfR/3vMweAap8sStFlRWI0G+7Z
+         fPww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793038305; x=1793643105;
+        d=1e100.net; s=20260707; t=1793038308; x=1793643108;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=bOkoHWGuOpgRmWACFRvEzWssB8GJAemNp1/k5sDiugU=;
-        b=TF0gYlxHBzwevf3wRUkge7Ok2W339cdOI0vHpjDJVyqswKBUedsMf8SS54+V4e5+dI
-         enbgF3UsvSIA0pJ4EEbwdpQKPn2M2KI5+6i1TzWjjtHHBvzA13xIjFlUOhIwtDpChVmH
-         pbuvEbYwUvxkUtyyCBcYART9He8ISHA64Y+sofFAtF1iWDPskLQ1ZTZ/WXEU4ILtsfIb
-         QVgnolfOXuzx8Hduh4k2RzcVWq4XZ6s98eIooO3R7VJ8xR6k5dPC94N245gZKuraWnHP
-         vO23+iQh6AV40PpWUALqikZ/AmnqbD6SqGvhfLgr+kRSGNaFOIi5slw0cITpk33H4Zp+
-         clzw==
-X-Gm-Message-State: AFq9FYJcFVM98i+coZAYZcOidySNFe3D4l7ibZpPX356XfotjgBhKVdi
-	j7pKZxBmcJ3EdewTEBazZkuOXqTSRwyYPjoZzxtWMvwxE5arFP3INnYM
-X-Gm-Gg: AYBFou1GO0K44LRrKZAzxmAlYxEO5SyNmTDngwBVxuZzcE2yvRTAnf3Bd3rmbSbHaff
-	RNRAX7D9U4cyqQUCCeNgziVtbC4qZ45M9xTPMtPs/Onhi4T08eODIQNNQwfFoZGPzF1GyKhcXqR
-	6qFN1XgkyMo2YpJfz+WKuK8RY4VhpCmmvFchHMA5gyEb7UMjlODT5P9vPCiKpy+gLhp6/l9nYjn
-	UbHQGiSVlnZLOahnp1rQZcZuhZLgZxKnS49P+ZytkkZYUc7WE51FJQo3fxQzfiClpG9D9e3yMnr
-	UrxzIPg0q/RjUDkKllhzEaP6gq82yxTXAcNu6WkZWhoEWYks+36MTm+8rYO/ulKnTIUUXUPB+Bb
-	pLVbxZIHf1PrtOrTL0cK4x9nZ5PXbvUuD+5LWvsdq11qfk/FITcgL1NvflQX5cf8RjLu9BUbsTC
-	1bZUfZ/e1U/p2GXG72vYCIjJ7YXRotAx/JMFnNpVDqMjxSalOywPps/M03stVJo7w9mLqyKWnSZ
-	G3T/fphiZLsPtVT3cFds6S/pXtSvjrXV5f5fociwEF9lkWN7YSqEuPAzsX/+MxOthCJxu2ZFNBV
-	5ZfduOVHF01rhpdvksWT0sCdgTl/uSNHgrWuCmTQMoS+Ai6gBNHy6KQ1+lYt29/qt0/W9LFVaKP
-	uz+tZZcjCLp5O/PKBirlzdU5YHBs8hvecs68ewSL71zormY0TgNBVwKoe20wsqwlNzmcECSlW2P
-	788Q==
-X-Received: by 2002:a05:6808:1b11:b0:4bc:336d:7494 with SMTP id 5614622812f47-55c002734bemr4688923b6e.30.1793038305593;
-        Mon, 26 Oct 2026 11:11:45 -0700 (PDT)
+        bh=dKZQGmpkqBbaYMDOWkJ2IvHQIpl030vIHdXqdzHEmeY=;
+        b=iPQMkbl9sDMk1gtrRfpjObk13A7hMhTxJet5ZHKWh6Ru2QbXc/MzfyEO6tLwXv9u9G
+         6o3a5zAoCs4IO6vLly8sddtSIRltwx9AyiRMvM5XkjljVzzrICeV3P8ZFPw2cKZ9/wrY
+         85eWNrxGCMQmYy/8A7jliAgIO0zsRTqYFU8qjskSFxeiUgBKR5MrCd7VgZlCcWFAoqpS
+         hAnc4FU3cwONTUfN1rsiwOk4Zk2PcYSCZ/A5IS5dpa8o+rOgK4inxq0upp9SvwHUm+k1
+         gBhpeHFlo0CAUfEoN+7RC8KM+T3bGGz3ccyyhcxBJSsdXZ1mTGIQMXBokU8Q3saAkjVx
+         LqLg==
+X-Gm-Message-State: AFq9FYLOdz614BSy1I0+yjEKnIgJfKVDjG3BoZIjjgs5QXh2nVDWs5J/
+	Sd96MByT40mD+LlpPoCxJdLio+XyNx0OTsmFn9ogoqvByULOiZwmM5sQ
+X-Gm-Gg: AYBFou30GoWK36pGxQmZFybNGfbmHGwYpMlzMq3IvU56I4QA9x0PDw7hNqIlR87KwF1
+	eDolv9Og3BYowz566HLJEYunCrxYO8i2vhkWSJGaDsjakHwkD8+myM3XtTZ3byHHRpyd2LeVXrm
+	aIDgOvX5mm9SUGhdZHgDi7zScFK0ePFu/cK2pAl3PomsfEqs+jLu8/KDCnvjWqW88hmyjTCT0Fc
+	/T4AXEpr2mQKJbbf8cyXWrF1k2rJsCqSCymlp/Mk3KO99RYzNQeXKSq7SstI5SFHkSG6Us8cRor
+	L9gUoSLdmCk6I7O9UB9FsXfuHpWUnhGhbJdxabWE/GXv0kxsbxxPvJkbo92TtQWFqoLqyGt/K4T
+	pPk8JU39VGcsuAmpKXuSucu2vPO2Qx7arSu8V7qxjPmS5REWeptrbnr7MJM0IyNWxSA/oFVR5jT
+	yLZD9bm1Z90CNjyjdJVUlJUsASvLwMaqaIay1bdl5UfESE+P0NTzR2qYpZ9dVMAUMIay47hu31a
+	7UqndwvZWD7tLs+FNoVrMIY0hqVVSquW/LplwVqgZnt4ygjga24IyyRhmAUjrKv54VStTCKZz6j
+	yioxGwdt1/XO9e1Z47LZ4JYJZ5/xtXbfeZT17aKvPFGZrOK763M73xF2r90pj9nQjGDzqQZcBRl
+	mFY3789Gg7iS/yN6XhaPjQpfyA/aAk2jnh+Cy0X4V78G2vt5Rqht/HcF7B3Jves7WwFJd/W/cuV
+	yz3mG8O/K6rvwtVNqXgDxpQA9udjtg6lPkHi5v4hQ071RJvDRYAd0=
+X-Received: by 2002:a05:6808:1919:b0:4d6:90d4:6bc with SMTP id 5614622812f47-55c002d9eb8mr6400473b6e.46.1793038307885;
+        Mon, 26 Oct 2026 11:11:47 -0700 (PDT)
 Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-55c043115bcsm5795251b6e.15.2026.10.26.11.11.41
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-55c043115bcsm5795251b6e.15.2026.10.26.11.11.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 11:11:41 -0700 (PDT)
+        Mon, 26 Oct 2026 11:11:47 -0700 (PDT)
 From: James Hilliard <james.hilliard1@gmail.com>
-Date: Mon, 26 Oct 2026 12:11:30 -0600
-Subject: [PATCH net v6 4/5] ptp: vclock: serialize extended samples with
- counter updates
+Date: Mon, 26 Oct 2026 12:11:31 -0600
+Subject: [PATCH net v6 5/5] ptp: vclock: preserve missing hardware
+ timestamps
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -95,7 +95,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261026-ptp-vclock-sampling-v6-4-e705612541f1@gmail.com>
+Message-Id: <20261026-ptp-vclock-sampling-v6-5-e705612541f1@gmail.com>
 References: <20261026-ptp-vclock-sampling-v6-0-e705612541f1@gmail.com>
 In-Reply-To: <20261026-ptp-vclock-sampling-v6-0-e705612541f1@gmail.com>
 To: netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
@@ -109,89 +109,52 @@ Cc: Eric Dumazet <edumazet@kernel.org>,
  James Hilliard <james.hilliard1@gmail.com>
 X-Mailer: b4 0.15.2
 
-The extended and cross-timestamp callbacks sample the physical clock
-before taking the virtual clock mutex. A concurrent frequency adjustment
-can advance the timecounter and change its multiplier in between, so the
-older sample is converted using a different frequency than the one in
-effect when it was taken.
+Socket timestamp delivery converts hardware timestamps to a bound
+virtual clock before checking whether a hardware timestamp is present.
+A zero timestamp means that the packet has no hardware timestamp, but
+timecounter_cyc2time() can turn that zero into a nonzero virtual time.
+The socket then reports a hardware timestamp which was never supplied.
 
-Take the mutex before sampling and keep it held through the conversion.
-Retain timecounter_cyc2time() and its existing conversion window. A PHC
-sample need not advance the counter: for example, e1000e explicitly
-allows non-monotonic SYSTIM readings. Treating a slightly older sample
-as a forward delta would instead advance virtual time by nearly a full
-counter wrap.
+Return zero without conversion when the input timestamp is absent.
+This also covers skb_get_tx_timestamp(), which checks for an absent
+timestamp after the same conversion.
 
-This race was found by code inspection of the virtual clock sampling
-paths.
+This was identified during review of virtual clock sampling changes.
 
-Fixes: f0067ebfc42b ("ptp: add gettimex64() to virtual clocks.")
-Fixes: 21fad63084c2 ("ptp: add getcrosststamp() to virtual clocks.")
+Fixes: d7c088265588 ("net: socket: support hardware timestamp conversion to PHC bound")
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
 ---
- drivers/ptp/ptp_vclock.c | 32 ++++++++++++++------------------
- 1 file changed, 14 insertions(+), 18 deletions(-)
+ drivers/ptp/ptp_vclock.c         | 2 ++
+ include/linux/ptp_clock_kernel.h | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/ptp/ptp_vclock.c b/drivers/ptp/ptp_vclock.c
-index b97f3a877260..679ae40916f7 100644
+index 679ae40916f7..e9cf4da3ed8a 100644
 --- a/drivers/ptp/ptp_vclock.c
 +++ b/drivers/ptp/ptp_vclock.c
-@@ -115,20 +115,18 @@ static int ptp_vclock_gettimex(struct ptp_clock_info *ptp,
- 	struct ptp_clock *pptp = vclock->pclock;
- 	struct timespec64 pts;
- 	int err;
--	u64 ns;
--
--	err = pptp->info->getcyclesx64(pptp->info, &pts, sts);
--	if (err)
--		return err;
+@@ -326,6 +326,8 @@ ktime_t ptp_convert_timestamp(const ktime_t *hwtstamp, int vclock_index)
+ 	u64 ns;
  
- 	if (mutex_lock_interruptible(&vclock->lock))
- 		return -EINTR;
--	ns = timecounter_cyc2time(&vclock->tc, timespec64_to_ns(&pts));
--	mutex_unlock(&vclock->lock);
-+	err = pptp->info->getcyclesx64(pptp->info, &pts, sts);
-+	if (!err) {
-+		u64 ns = timecounter_cyc2time(&vclock->tc, timespec64_to_ns(&pts));
+ 	ns = ktime_to_ns(*hwtstamp);
++	if (!ns)
++		return 0;
  
--	*ts = ns_to_timespec64(ns);
-+		*ts = ns_to_timespec64(ns);
-+	}
-+	mutex_unlock(&vclock->lock);
+ 	srcu_idx = srcu_read_lock(&vclock_srcu);
  
--	return 0;
-+	return err;
- }
- 
- static int ptp_vclock_settime(struct ptp_clock_info *ptp,
-@@ -154,20 +152,18 @@ static int ptp_vclock_getcrosststamp(struct ptp_clock_info *ptp,
- 	struct ptp_vclock *vclock = info_to_vclock(ptp);
- 	struct ptp_clock *pptp = vclock->pclock;
- 	int err;
--	u64 ns;
--
--	err = pptp->info->getcrosscycles(pptp->info, xtstamp);
--	if (err)
--		return err;
- 
- 	if (mutex_lock_interruptible(&vclock->lock))
- 		return -EINTR;
--	ns = timecounter_cyc2time(&vclock->tc, ktime_to_ns(xtstamp->device));
--	mutex_unlock(&vclock->lock);
-+	err = pptp->info->getcrosscycles(pptp->info, xtstamp);
-+	if (!err) {
-+		u64 ns = timecounter_cyc2time(&vclock->tc, ktime_to_ns(xtstamp->device));
- 
--	xtstamp->device = ns_to_ktime(ns);
-+		xtstamp->device = ns_to_ktime(ns);
-+	}
-+	mutex_unlock(&vclock->lock);
- 
--	return 0;
-+	return err;
- }
- 
- static long ptp_vclock_refresh(struct ptp_clock_info *ptp)
+diff --git a/include/linux/ptp_clock_kernel.h b/include/linux/ptp_clock_kernel.h
+index 36a27a910595..56f6ab1855d3 100644
+--- a/include/linux/ptp_clock_kernel.h
++++ b/include/linux/ptp_clock_kernel.h
+@@ -496,7 +496,7 @@ int ptp_get_vclocks_index(int pclock_index, int **vclock_index);
+  * @hwtstamp:     timestamp
+  * @vclock_index: phc index of ptp vclock.
+  *
+- * Returns: converted timestamp, or 0 on error.
++ * Returns: converted timestamp, or 0 if @hwtstamp is zero or on error.
+  */
+ ktime_t ptp_convert_timestamp(const ktime_t *hwtstamp, int vclock_index);
+ #else
 
 -- 
 2.53.0
