@@ -1,58 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=136.143.169.15
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=136.143.169.17
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792990495;
-	b=Qbqke2JArIB81KoZwoUqS+x2JLzUUvD1uXkAruq3iArm/lkqAajI9CoQetj3Vuvt3RVa
-	 R5YjB4AAS8yVCR6JuwCVGbt+YZuYF4EFyZd1d8iWfyaFyOgfN2RVyQE3pUIsgKhQZyF26
-	 fEXwyRFJ84uR28TLPB2/xTDu25AIQYmGveY6fxqCf5b1BXfkxzuRlCyDfYFxyiSas7skz
-	 kt+d+iyk2fxyWw6315qHN5k5gmwGldsGNZ9kvCxfU2Kz3tabAo1MKYUijnhGXZWJXvgCs
-	 QBfPhHOlnKre7omj+TJ7V7YdW3sY1uzo/bCWgXkYO0bQpX94udZznXblhW5z07qc/RA==
+	t=1792990504;
+	b=fCsFIHp6T+usguq75SCSklYEnfGojOTd0K0SdHzwG7k8/i0mOkMwMFgw6yBPCDyxLjZM
+	 COuqpXJ2rdq/GdSFqOFC/IQaJ6+/GoJHgoLkLGzGZbDM9wdrpqdHJ3i2OMoJqgz3p4YRs
+	 QGk93U+f6zDuuD7exFFEWUKGvtS2DXKWizIq/pmj8XXc06sGPJ736GQydjBRnI/fnlwSA
+	 rCq0Bd3izg0qOlaPVLqqgVYNo3NCsDUoXfgy96aDv16OLgIL7TAUe03WY3IUpvZNl9qcN
+	 R1YnA0FHasOJcXZq3apdpsIZwR59BHk4td4ElxTgfa4c1Hk4d/6KXUn7Nb8CCPH6JMg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792990495;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792990504;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=1B67bd36Pnf8qzGqrytuX93TJqsxVxqzw/Os2fTeuz4=;
-	b=PJmtH2vRwqglWoo/G9Abo5dsfKoJd63mLDSlmfy6feXJctjbVEnSoxBTCE8PIuNB/vow
-	 DxBgGlQyk7O6BPg5UDz72XYXc6+e/lAe6nhxj+Eg2kQncYydohku4wHCCuMnvxibPstRN
-	 MTb51saB0sL1yjQ8Ki92eJcQBhKsk9eF7wM6/+rp2JYOP9BkT3N7Y7a1hgW1uLs4jilhK
-	 weCWmO2NHgNxA8e4ZTqXuH5ipAQns/hqqb1iTCXe4c81nIEZy5ypHd6tdcXaQl20XAzPg
-	 31uPV5gvjOJKuomMcLmVjC6N6jdkDcGXOCum90rqo7TDqr1V9lx5AZElqJvjwdoL3BA==
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=Tx6DnqrGDY9IqsJ3uNvaKkne162q5Mtmc+8Cn5vVktU=;
+	b=L2LmFYl9RuU8uwc6zlLPX4pMbbCsoXeSAfBDlHRfDiINYyM4rfzs1FbANlDQnbPyG165
+	 jVcb85H7JkWB9PIoItwBcwYsXo0LSobdG1WHW+J4GU01+H1jA9aFJHHyCiR/qe/TD7sSw
+	 qWmqEOkV6M+/le2qM/OupUFyf+k0QnEZn7A3MUqQxgfgxZMHZVptqr+sJoR5JM5rRUVrt
+	 HyYWgVTpQzIdgmxaETnMez0FUJp0PBGSea3Pvw3d4Lzu8JVOJPyK5ZHV8aDxFcQ9Wy62M
+	 4Dd3GtgCw4sVnORnu41icaSD6ZHTsV3r/EjJKcKFzrk0veTFIv0OBbA1OTtJaVapauw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=none header.from=iav.lv;
 	spf=pass smtp.mailfrom=iav.lv;
-	dkim=pass header.d=iav.lv header.i=iav@iav.lv header.a=rsa-sha256 header.s=zoho header.b=ebjDbegg;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=136.143.169.15
-Received: from sender-op-o15.zoho.eu (sender-op-o15.zoho.eu [136.143.169.15])
+	dkim=pass header.d=iav.lv header.i=iav@iav.lv header.a=rsa-sha256 header.s=zoho header.b=YjTbs8pV;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=136.143.169.17
+Received: from sender-op-o17.zoho.eu (sender-op-o17.zoho.eu [136.143.169.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB25E606A31A;
-	Mon, 26 Oct 2026 04:54:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CB25E606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3279B606A329;
+	Mon, 26 Oct 2026 04:55:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3279B606A329
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iav.lv
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iav.lv
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=iav.lv header.i=iav@iav.lv header.a=rsa-sha256 header.s=zoho header.b=ebjDbegg
-ARC-Seal: i=1; a=rsa-sha256; t=1792990460; cv=none; 
+	dkim=pass (1024-bit key, unprotected) header.d=iav.lv header.i=iav@iav.lv header.a=rsa-sha256 header.s=zoho header.b=YjTbs8pV
+ARC-Seal: i=1; a=rsa-sha256; t=1792990452; cv=none; 
 	d=zohomail.eu; s=zohoarc; 
-	b=TSa1CqlN+RW/8/i+4FqED9x93b38/nY6vYNP9GCe0laDtnRSwAq/BvWA3OYyZ4YF+XyN6JGi6V2P76v4y+xwulvg3XTnM4xuPMEbBObWfacoSfTAgAj2EAHZ0Nm0dHQ5LtwmZ7di3FBb4heU4xtorH1agWZuMhighuiYytjdpfI=
+	b=Vnyl0/xgFPk4QCdETPkuQ00PzvB3gszxmomqlXk0j0Pv36bYyX0DxMPqMts6+MLkxIdTHDneD3qYG1QWfdUIYHNKOY4kY2l5Y8+RtPjbxSMnyaq/qylZKrWoRlUTZPf5jRolac4nxup5PiVk0ZChQVgThtuo6v37IhJOLwksQ4A=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1792990460; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=1B67bd36Pnf8qzGqrytuX93TJqsxVxqzw/Os2fTeuz4=; 
-	b=Nc9dOQjogpufqXoQjGFrXX+H5u4znFC04oaOPlTADRjiOqPxzNEl4XbCTAbEp455XExDMl03m0qrJlUaPy4qs2qpORyMa1Fj3/64DU+YOINA4T/abZaXYNZDJDdvfMxPuag5Ow0kJ7hGKnKaBArvwxANDpQxR0igME7bzeZKvho=
+	t=1792990452; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=Tx6DnqrGDY9IqsJ3uNvaKkne162q5Mtmc+8Cn5vVktU=; 
+	b=CNO8aQelAvD3IL9RWonfRnB0rQcSVort6vpuEeEZ6yimZhsExLjZPmutAut36vzC7roFu1ldQtbT94bjwF4mznZ2aaRZWx0+bA88tgX4z3edE/COjv5a+wZdPdq6DpjLd53zv3CVNMxztulV4dvwvixhz9bEzBRz971CVqlrbHo=
 ARC-Authentication-Results: i=1; mx.zohomail.eu;
 	dkim=pass  header.i=iav.lv;
 	spf=pass  smtp.mailfrom=iav@iav.lv;
 	dmarc=pass header.from=<iav@iav.lv>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1792990460;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1792990452;
 	s=zoho; d=iav.lv; i=iav@iav.lv;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=1B67bd36Pnf8qzGqrytuX93TJqsxVxqzw/Os2fTeuz4=;
-	b=ebjDbeggtTCHT+N06YPzwGrtJbB7UIdAeWw4Qvn5ZjNjEf51tH/NuP96fWuqApIh
-	8Oj04Af8VEPPQefy4MgEUg/WtZ9DOCdRiM9m5UIBKrMQMhN19sNdXeDgHQKQbilJkr/
-	C3PzV23PLMJKcRXKc+VWwpjTRl36lRpyMg2RL7EI=
-Received: by smtp.zoho.eu with SMTPS id 1792990458380265.63495947933006;
-	Mon, 26 Oct 2026 05:54:18 +0100 (CET)
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=Tx6DnqrGDY9IqsJ3uNvaKkne162q5Mtmc+8Cn5vVktU=;
+	b=YjTbs8pVv5KrvPDTqSRpMhSB2I8VPhSF4LKBW0jfX4TAGryuG9ythidX02ANviWb
+	F0lFX9wA/1NHwVROp8jElumGX51ybbD1CfVMHTsxWoqSJjPNrBpdsiXTHQzWErfUCgS
+	MqPCOXMSJPe3pafQwpVUYqebmIgVwNN08Yx3Ax10=
+Received: by smtp.zoho.eu with SMTPS id 1792990450628417.61970225618165;
+	Mon, 26 Oct 2026 05:54:10 +0100 (CET)
 From: Igor Velkov <iav@iav.lv>
 To: Andrew Lunn <andrew@lunn.ch>,
 	Heiner Kallweit <hkallweit1@gmail.com>,
@@ -72,12 +71,10 @@ Cc: Lukas Wunner <lukas@wunner.de>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Igor Velkov <iav@iav.lv>
-Subject: [PATCH net v2 2/2] net: phy: postpone PHY interrupts during sleep with MAC-managed PM
-Date: Mon, 26 Oct 2026 06:53:43 +0200
-Message-ID: <20261026045343.837889-3-iav@iav.lv>
+Subject: [PATCH net v2 0/2] net: phy: postpone PHY interrupts during sleep with MAC-managed PM
+Date: Mon, 26 Oct 2026 06:53:41 +0200
+Message-ID: <20261026045343.837889-1-iav@iav.lv>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261026045343.837889-1-iav@iav.lv>
-References: <20261026045343.837889-1-iav@iav.lv>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -89,149 +86,52 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-mdio_bus_phy_suspend() and mdio_bus_phy_resume() return early when the
-MAC driver manages PHY PM, so the PHY never gets irq_suspended and
-phy_interrupt() runs the PHY driver's handler at any point of the sleep
-transition. If the MAC driver powers the MDIO bus down, the MDIO access
-in that handler can stall the CPU. This happens on both sides:
+When the MAC driver manages PHY PM, phylib never sets irq_suspended, and
+a PHY interrupt during the sleep transition runs the PHY driver's
+handler while the MDIO bus may be powered down. On Helios64 (dwmac-rk)
+this hangs the board on suspend as well as on resume.
 
-- suspend: the MAC's suspend callback stops the PHY, the link goes
-  down, and the handler runs while the MAC powers down;
-- resume: resume_device_irqs() re-enables a pending interrupt before
-  the MAC resumes.
+Patch 1 moves the two flags out of a bitfield they share with the link
+state written under phydev->lock; patch 2 sets irq_suspended for these
+PHYs too.
 
-On Helios64 (dwmac-rk, RTL8211F with its interrupt line described in
-DT) both hang the board: the handler reads INSR while the GMAC clocks
-are off, after rk_gmac_suspend() or before rk_gmac_resume().
+mac_managed_pm (fba863b81604) means the MAC driver suspends and resumes
+the PHY; it does not cover the PHY interrupt. Neither phylink nor any
+MAC driver touches irq_suspended, and resume_device_irqs() runs at the
+end of the noirq phase, before the normal resume callbacks of the MAC,
+the MDIO bus and the PHY, so callback order does not help the
+interrupt. v1 asked whether phylink_suspend()/phylink_resume() would be
+the better place; v2 keeps the fix in phylib, which also covers MAC
+drivers that use phylib without phylink.
 
-Set irq_suspended for these PHYs too. The PHY device is a child of its
-MDIO bus, so mdio_bus_phy_resume() runs after the bus is back (with
-stmmac, after the MAC) and replays the postponed interrupt then.
-phy_suspend(), phy_resume() and the state machine stay with the MAC
-driver. As for other PHYs, an interrupt in that window now signals a
-wakeup event if Wake-on-LAN is enabled or the device may wake the
-system.
+Changes in v2:
+- new patch 1: bools instead of bitfields (Sashiko); sizeof(struct
+  phy_device) is unchanged on arm64
+- phy_free_interrupt(): re-enable a shared line after free_irq()
+  instead of dropping irq_rerun before it (Sashiko)
+- reworded the comment in mdio_bus_phy_suspend() (Andrew)
+- described and tested the suspend-side window, noted the wakeup
+  event; the v1 tests with Wake-on-LAN (Helios64 20/20, ODROID-HC4
+  10/10) were on v1 code
+- W=1 allmodconfig/allyesconfig: no new warnings
 
-MAC drivers that close the interface in suspend free the interrupt
-before the PHY resumes, so phy_free_interrupt() re-enables a line left
-disabled by a postponed interrupt if other handlers still share it.
+Not tested: patch 1 alone, and a vanilla net kernel on hardware; the
+tests ran on an Armbian 7.3 kernel whose Helios64 DT describes the PHY
+interrupt.
 
-Tested on Helios64 with 7.3, s2idle without Wake-on-LAN, GMAC clocks
-off in suspend: 10 of 10 cycles got through suspend, 4 of them then
-hit a separate PCIe error on resume. The same kernel without these
-changes hung or reset after the link went down in 10 of 10.
+Link to v1: https://lore.kernel.org/r/20261002043548.1302145-1-iav@iav.lv
 
-Fixes: 1758bde2e4aa ("net: phy: Don't trigger state machine while in suspend")
-Signed-off-by: Igor Velkov <iav@iav.lv>
----
+Igor Velkov (2):
+  net: phy: move irq_suspended and irq_rerun out of the bitfield
+  net: phy: postpone PHY interrupts during sleep with MAC-managed PM
+
  drivers/net/phy/phy.c        |  9 ++++++++
  drivers/net/phy/phy_device.c | 44 ++++++++++++++++++++++--------------
- 2 files changed, 36 insertions(+), 17 deletions(-)
+ include/linux/phy.h          |  5 ++--
+ 3 files changed, 39 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index fce9bc7be330..00aa48e807a5 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -1508,6 +1508,15 @@ void phy_free_interrupt(struct phy_device *phydev)
- {
- 	phy_disable_interrupts(phydev);
- 	free_irq(phydev->irq, phydev);
-+
-+	/* Undo the disable_irq_nosync() of a postponed interrupt if the line
-+	 * is still shared; otherwise the next irq_startup() resets the depth.
-+	 */
-+	if (phydev->irq_rerun) {
-+		phydev->irq_rerun = 0;
-+		if (irq_has_action(phydev->irq))
-+			enable_irq(phydev->irq);
-+	}
- }
- EXPORT_SYMBOL(phy_free_interrupt);
- 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 5d4508bcfbe9..e2807e08e436 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -336,18 +336,20 @@ static __maybe_unused int mdio_bus_phy_suspend(struct device *dev)
- {
- 	struct phy_device *phydev = to_phy_device(dev);
- 
--	if (phydev->mac_managed_pm)
--		return 0;
--
- 	/* Wakeup interrupts may occur during the system sleep transition when
- 	 * the PHY is inaccessible. Set flag to postpone handling until the PHY
- 	 * has resumed. Wait for concurrent interrupt handler to complete.
-+	 * This holds when the MAC manages PHY PM too: an interrupt can still
-+	 * fire while the MAC has the PHY or the MDIO bus powered down.
- 	 */
- 	if (phy_interrupt_is_valid(phydev)) {
- 		phydev->irq_suspended = 1;
- 		synchronize_irq(phydev->irq);
- 	}
- 
-+	if (phydev->mac_managed_pm)
-+		return 0;
-+
- 	/* We must stop the state machine manually, otherwise it stops out of
- 	 * control, possibly with the phydev->lock held. Upon resume, netdev
- 	 * may call phy routines that try to grab the same lock, and that may
-@@ -364,13 +366,33 @@ static __maybe_unused int mdio_bus_phy_suspend(struct device *dev)
- 	return phy_suspend(phydev);
- }
- 
-+static __maybe_unused void mdio_bus_phy_resume_irq(struct phy_device *phydev)
-+{
-+	if (!phy_interrupt_is_valid(phydev))
-+		return;
-+
-+	phydev->irq_suspended = 0;
-+	synchronize_irq(phydev->irq);
-+
-+	/* Rerun interrupts which were postponed by phy_interrupt()
-+	 * because they occurred during the system sleep transition.
-+	 */
-+	if (phydev->irq_rerun) {
-+		phydev->irq_rerun = 0;
-+		enable_irq(phydev->irq);
-+		irq_wake_thread(phydev->irq, phydev);
-+	}
-+}
-+
- static __maybe_unused int mdio_bus_phy_resume(struct device *dev)
- {
- 	struct phy_device *phydev = to_phy_device(dev);
- 	int ret;
- 
--	if (phydev->mac_managed_pm)
-+	if (phydev->mac_managed_pm) {
-+		mdio_bus_phy_resume_irq(phydev);
- 		return 0;
-+	}
- 
- 	if (!phydev->suspended_by_mdio_bus)
- 		goto no_resume;
-@@ -393,19 +415,7 @@ static __maybe_unused int mdio_bus_phy_resume(struct device *dev)
- 	if (ret < 0)
- 		return ret;
- no_resume:
--	if (phy_interrupt_is_valid(phydev)) {
--		phydev->irq_suspended = 0;
--		synchronize_irq(phydev->irq);
--
--		/* Rerun interrupts which were postponed by phy_interrupt()
--		 * because they occurred during the system sleep transition.
--		 */
--		if (phydev->irq_rerun) {
--			phydev->irq_rerun = 0;
--			enable_irq(phydev->irq);
--			irq_wake_thread(phydev->irq, phydev);
--		}
--	}
-+	mdio_bus_phy_resume_irq(phydev);
- 
- 	if (phy_uses_state_machine(phydev))
- 		phy_start_machine(phydev);
+
+base-commit: 7076f684d5132e6a6145e1da2fa74771ecd052e5
 -- 
 2.43.0
 
