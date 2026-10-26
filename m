@@ -1,59 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=54.206.16.166
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793001359;
-	b=SdxOpIejT/HvQ5/iDYC6V7WGByL6+llMuLElrpbLtLLrMzk96RvS75znWtlNLVsTQwdE
-	 j9DZf1RRWpCpAueMbRcWApxsy7oU0a74JyV1roQirG8hQZl+6LJLLukWT2HUwslsqQORN
-	 D4AFzo2/51K1XcYGm8J3UcAYlYuWqrmtXxc4KFpAUMhK4g6ecV5nlm1LggTp8/BOA59Ww
-	 2uFJpBNdtbzwszliWVkvKuAuQILRDAK8I61FaLBnphOFxGY27EFjyhboxCWtSfleSodXx
-	 Stzg8+QcOEvB83RCpmc7P+SDiaO4QqIW8f6qq/VMiipICEGwD44ijSCqxUzBPvGaMTA==
+	t=1793001530;
+	b=aQEtkibwX0vE+qVHFTFS8ob4eWe9KyqsjYvqyxOI5/jyp6+WGgc1DxOL90K1Vr1FUmm3
+	 BI1yLPq4oXMvWHDv8m6EowGhGAglOtTEYRjxa7C8fWP84JMGnC11UbTBTuKX+3RS9VPHL
+	 F2U6ev4h1TZdy3V8G59alg7CZpeGryf6Ke4olWMImGOyapPiPr6AzSnG4gW32W58wjkb8
+	 MJFBh/V7hlcnr92WHnvDUedONNjOCGm19dkp8XmgAzO515XjmqqfGdO6Qrqws6K8PtRMu
+	 rT21qms1k5b/0T+g9Nh+vxF9p0hozfs26Ll8TK3CqqBxNSBIoDnetW4GTIas+efFq2w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793001359;
-	h=DMARC-Filter:X-QQ-mid:X-QQ-Originating-IP:Received:X-QQ-SSF:
-	 X-QQ-GoodBg:X-BIZMAIL-ID:EX-QQ-RecipientCnt:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-QQ-SENDSIZE:Feedback-ID:X-QQ-XMAILINFO:X-QQ-XMRINFO:X-QQ-RECHKSPAM;
-	bh=Me1IHTGh7HaHL/Lp2GiEA8ohCBtZ5+Ph03H7s2kqLjo=;
-	b=5dmxp1+LespzUFJw/hsandoMpIxfjzxMk6SZCfLl3XZrxJtjvxgi5n6B2OpYmNV0u7JS
-	 D8dnDX2yljvkA1WHN9Xb7a5u0mdUelDitZ7W4aYEzehkq2mJ+fecorMQ8gcyRv/uui8KZ
-	 d85siA4zOeOkvGyTI3GX67UIvK64OciISe/aMmWsv1mp5lz9jBLegkK2u7WKObOwDApue
-	 bBIp3i3t8Lf44nE8AelYr+wSlfV53i0RmdnuArk9TfrPT7nE9dfUVGZiADf430NMrMk8P
-	 e2ZmwBNZy/FwS03YB0q7WgmCcdcmYaDnuZYszNilBkLrro35TkbOwpMzRXeUHPPcYYg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793001530;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:Content-Language:To:Cc:References:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=Qy+l+P3/Ur6+HWnHNoQlQuqGZxsGTPMqagOFnx35yX4=;
+	b=mzIvitm25eHayDdWNxWX1BPQFFBo/mOXXzKGQmeCaG5Fv63FR/40ukJVhnXfkHRc1KYb
+	 wKOtHpZG/FSWrYXwVVFCvvBY86Xc8DTmgVAvsFLat7PKZ0iX8yhzQM53LdHK4/8xWidhM
+	 3hQdltbwuRjW2h2B9Y+Cj6e/vCUtKdTI6tEvYQYrXwa4SejjvhQ0XYSM2p9qCmX2x0AfU
+	 StxkGunToKTLEFUUnL1vy475M1YSkbp7gF4CvbaDSxlPcpC2LwWTHmCNqc1wf/V1sikBv
+	 0ReAD6M+oqfeFOVLTToi9rx/5c3RDPUgknFMx5mHUPpvNnwKnbzOt3ZoZwLhaf1jpJw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mucse.com;
-	spf=pass smtp.mailfrom=mucse.com;
-	arc=none smtp.remote-ip=54.206.16.166
-Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=none header.from=blackwall.org;
+	spf=none smtp.mailfrom=blackwall.org;
+	dkim=pass header.d=blackwall.org header.i=@blackwall.org header.a=rsa-sha256 header.s=google header.b=JhBY4Kpu;
+	arc=none smtp.remote-ip=209.85.221.50
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F8E606A31A;
-	Mon, 26 Oct 2026 07:55:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06F8E606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mucse.com
-X-QQ-mid: esmtpsz18t1793001290tb456ae39
-X-QQ-Originating-IP: iSu4K1cwzRODviiMBIePWVeQmAUrC3usdp+Obm7KSdQ=
-Received: from nic-Precision-5820-Tower.tail7b ( [203.174.112.180])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 26 Oct 2026 15:54:47 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 17866973158191589033
-EX-QQ-RecipientCnt: 10
-From: Dong Yibo <dong100@mucse.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	vadim.fedorenko@linux.dev
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	dong100@mucse.com,
-	yaojun@mucse.com
-Subject: [PATCH net] net: rnpgbe: Accept link-down events without speed magic
-Date: Mon, 26 Oct 2026 15:54:45 +0800
-Message-ID: <C2DFBBF04F1DCFD2+20261026075445.920572-1-dong100@mucse.com>
-X-Mailer: git-send-email 2.50.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29EB606A31A
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 07:58:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F29EB606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=blackwall.org header.i=@blackwall.org header.a=rsa-sha256 header.s=google header.b=JhBY4Kpu
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-48dfaa3fa12so2624249f8f.0
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 00:58:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall.org; s=google; t=1793001527; x=1793606327; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Qy+l+P3/Ur6+HWnHNoQlQuqGZxsGTPMqagOFnx35yX4=;
+        b=JhBY4KpuTb8AB7KiwzftXNeqirFzEIxFpxEZIiFZzWEFmfZSU94eBuSFZdmf9CZd8y
+         uddB/AFRX3Q67r5jexNNnB9kII4vlxzT0b4z8ZJdlPu8y9XP/DV9nItnKNymMYIpfeio
+         LlOeMmZyD0/JjjclK0290FZsTxObBB4+M7bKM9QLZHLCi/SMCzZ/bfoH2qKPZW+OY7va
+         HVDqA4INsP6zaexrA1AupraSc0OjBvSmM28yXQxOvZAUUTenVeOWgbaD4pm5gbJo6ACA
+         ll5pEg8Y/2GL1MzDv7RCmoKkhWP8yQh1vG4hxiYpg6XV4FGqbHnWb6QRSpTq2oLboQ9Q
+         NekQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793001527; x=1793606327;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Qy+l+P3/Ur6+HWnHNoQlQuqGZxsGTPMqagOFnx35yX4=;
+        b=jxGtDgmWNoMpvZQ0BQ2zrXhG1/dl1Y7jnrwK6ZB6o+HEY9lmbcjg0OEbWtdUmgnD7t
+         H9oLjL2YmF2c7gwqaOkWJS4SM49iESMLVFvqU1GjsIsiku8hsyk80zlgTwpuwyF5ZDWw
+         qLzXIU96WnH8undomndz0nrj1Dr3EUlyudx+94285+frYHk/iixZjO9Vr6i8XrAPCW9x
+         8jKS840ULdTdeiZ2bo4T/1h6ONH7U8HMN33czYR1+cOFWdqR630dWNl1v0NdFaqml3Bf
+         Yt1OfsauxOyVZDrHg9KC5Z7sVKmkYT+AtPhiZphtU6F771Ih84kvYk23TVFsTPmjl69l
+         AM/Q==
+X-Gm-Message-State: AFq9FYIGYngf0w7cte1xpMxq85zDtHsMU80e+cM0a8+Nl6UhJ8AyRkwI
+	2yhb3P6EWqvwwfX3yaWg9uK1CBUnV0MEdHVymFplrQ4NeKFZRrtXBr8hMZaKVrcI2dg=
+X-Gm-Gg: AYBFou1B5mnlICtRp2WnkoJ5n8qRKCzi5lTsen6s9hFDg+7LHX+0SoR+4P1x6G5c9oe
+	Xoso0LGkJFsztZlCEvAM2QGKC4SQoxxHU4dSfqzDCbFQsAVUoM3jg9pmk03aegIxUJ948AXERF7
+	NDvmrTaxRGf0o6IMV1ZAMo76RmB3bYJ2vO/oQBmW8NHxpePOSJ1IxQzB6xL/sGDiH38wdJyEO3z
+	JpEvmfZncXKVqCi1X91OTnHeEr/wrX0Ibn9tzHOE0C8gzcSFXzZogZdmi77POtLsWBLpMJrazhR
+	fgAEZr6mfUNQMKtYszzdbD1eVOBDov2If6hBx423heNF/ZPsfzn/BVbpl+4tBwT/C+3M6tnoy4g
+	oJz/KdtyiLQNdNf0LCEivU8POHWkREASrpIANULmRkE7hrsF9hACqyU4bcDBV8rJimMgZ6xvgSP
+	3c+LgHJUs6g2mMnH4J6+51B155qVdJi0tTQbqdzNo0Naix2X2ogDY1os6S+bZRDxef30cIrjypl
+	2PBOhkwwv6Q30O/39yNvM0m/WKJIGpX5HoEIYwlIa/E0B0QSE0F4reuA1xbG/5Do5sGKwg/OjtR
+	Ix8mTFhU0VXzCLg4NgUcKFhS/0F5G10=
+X-Received: by 2002:a05:6000:3102:b0:48e:1ceb:e8a4 with SMTP id ffacd0b85a97d-48e3ed32b8fmr12097363f8f.17.1793001527070;
+        Mon, 26 Oct 2026 00:58:47 -0700 (PDT)
+Received: from [192.168.0.161] (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ecde7easm15095984f8f.52.2026.10.26.00.58.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 Oct 2026 00:58:46 -0700 (PDT)
+Message-ID: <af8e4351-d8ac-43c7-939f-810adf35c760@blackwall.org>
+Date: Mon, 26 Oct 2026 09:58:45 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,66 +89,85 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:mucse.com:qybglogicsvrgz:qybglogicsvrgz3a-1
-X-QQ-XMAILINFO: NU4e3V92LJuQi/2w+WXj/grTUfD3Dc4ce6ext5jmL93DdEiXE9ECyIXi
-	UJ534xj55WfZ8LJm5s/v8tAwJQNdxl5rMDiET1fRf74o/zobTfAzpPARXAedbu6uGvT41pI
-	J1FD9qPNimlmu3By38z9wRnLJ65A2uDtP+qQOaDgyKtQhLY+zgoCsHDu83fPgPP4j55f33v
-	pjjlSIhMwBMjNX+VXrLt7XZDhPjiSa00MBwLVtbBtcPntDMm7sST80nb2WEIz8c6PmRrp/6
-	Y3h1NiNgGQ4ilgRA8ZxDBr+4LJJRM9/h4Ve5xsJaAe4YWOp+WHpAlYXgkHHibSGPKo+BIAN
-	3V8Xlvae3nUqcOLCZZqR4thxJVAgxfCfxr/h6U9xWHwP4RglKQ+cJZuOhxmxRqbMpkfYRxh
-	FDLZSigpU2ZBglzi14+YWKS/0zAX9M/08pV/j5NYwwZowmEGLntHRwQsZl5n2rd0NQD2UsL
-	HvtZXKDJRt9oAklp+RGtxDLNVhuygYVIP22wZuEmjVm91Tv8HTK0CedztM5Xt9i1znAiO2U
-	oNkcDJD5d2hD5O0viiVtRRDG3SizGZJnU9Qel42aFtFY0lvek7WSPOcdc8EarmSu2MCE4/N
-	e8ScuYUIxV2B9q1AbOO5f6ojGJ+Tf3Ky1mEQH3ZA/qWy1TIs59dRUMr+Q1ra1RiaQy5NPtu
-	aP5HYQg/IybXqoFpQlNiDJAr4b23tRMjYcRyn6HDi9/MDh1Bv7elRFzsGMEri4x5cDI4Hv8
-	7eGjdyyTNAnTse0fJb+5ZCyRTdXCukaB4h8I6ug4ck1eCEesH1Y3osqGdW/loWswRhltBH3
-	WK+T2DReOUYLIIe0mVI9BEILur6pfy6EgXjuIKb3lPOrMNeKumLHT6kMpgjV0Ru7kUaBnLu
-	2h1E5js3UvlzixI4M8ReO8rAY18X5M8JKWwPXBYY8JMXWgyGZVxnSaVpGwQ6ogqsyr8LvSE
-	sp0QLFCpNdQd6Ixq8v/bsmzsNMcfp5HqHaR5Out2dvM4kcSOL9A1IxWYD3cKmuVNv97uBRA
-	VU4CS/F44GAV8i84pqPuQSSnQm9cMSice12b9A6SIHLJaACBTg
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-X-QQ-RECHKSPAM: 0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 1/2] vxlan: keep reserved_bits across changelink
+Content-Language: en-US, bg
+To: Hannes Laimer <h.laimer@proxmox.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Ido Schimmel <idosch@nvidia.com>,
+ Petr Machata <petrm@nvidia.com>, David Ahern <dsahern@kernel.org>,
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+References: <20261023-b4-vxlan-changelink-gbp-v1-0-f0d13951c09b@proxmox.com>
+ <20261023-b4-vxlan-changelink-gbp-v1-1-f0d13951c09b@proxmox.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <20261023-b4-vxlan-changelink-gbp-v1-1-f0d13951c09b@proxmox.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The interface can continue reporting carrier up after the link goes
-down because the driver ignores the firmware's link-down notification.
+On 23/10/2026 14:14, Hannes Laimer wrote:
+> vxlan_nl2conf() derives reserved_bits from the extension attributes
+> set in the netlink message if IFLA_VXLAN_RESERVED_BITS is absent. A
+> changelink having it set is rejected, so this means that every
+> changelink will reset all extension bits and reserve them again.
+> vxlan_nl2flag() rejects setting a flag on an attribute that is
+> create-only on changelink. So also setting an extension attribute will
+> fail before it can un-reserve its fields.
+> 
+> The extension's header bits being reserved again then makes
+> vxlan_rcv() drop frames that have them set in their header as invalid.
+> The device still reports the extension as enabled, because only the
+> reserved_bits are rebuilt and the flags are just copied.
+> 
+> A simple reproducer is
+> 
+>      ip link add vxgbp type vxlan id 1 dstport 4789 local 10.0.0.1 gbp
+>      ip link set dev vxgbp type vxlan ageing 300
+> 
+> After setting the unrelated ageing, incoming packets with the GBP bit
+> set in the header start getting dropped.
+> 
+> Keeping the reserved_bits on changelink is safe because anything a
+> changelink accepts leaves the header bits enabled extensions use
+> unchanged.
+> 
+> Ran into this when adding support for the GBP flag in ifupdown2, see
+> link below. The device kept dropping packets after some time, it
+> turned out it always started after a changelink.
+> 
+> Tested this by changing ageing by hand on a vxlan device that was
+> created by ifupdown2 with the gbp flag, and checking the reserved bits
+> using
+> 
+>      ip -d link show vxgbp | grep -o 'reserved_bits 0x[0-9a-f]*'
+> 
+> Without the fix I got 0xf7ffffff000000ff after the changelink, and
+> with the fix it stayed 0x77000000000000ff. The following patch
+> contains a selftest that fails without the fix and passes with it.
+> 
+> Fixes: e4f8647767cf ("vxlan: Track reserved bits explicitly as part of the configuration")
+> Link: https://lore.proxmox.com/pve-devel/20260828134708.692354-1-h.laimer@proxmox.com/
+> Signed-off-by: Hannes Laimer <h.laimer@proxmox.com>
+> ---
+>   drivers/net/vxlan/vxlan_core.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+> index 278d41f58d89..223539099778 100644
+> --- a/drivers/net/vxlan/vxlan_core.c
+> +++ b/drivers/net/vxlan/vxlan_core.c
+> @@ -4488,7 +4488,7 @@ static int vxlan_nl2conf(struct nlattr *tb[], struct nlattr *data[],
+>   		}
+>   
+>   		conf->reserved_bits = reserved_bits;
+> -	} else {
+> +	} else if (!changelink) {
+>   		/* For backwards compatibility, only allow reserved fields to be
+>   		 * used by VXLAN extensions if explicitly requested.
+>   		 */
+> 
 
-Firmware reports link-down events with a zero port_magic and no
-valid speed or duplex information. The driver requires ST_VALID_MAGIC
-for every link event and returns before updating the cached link state
-when this check fails. It also writes an invalid driver snapshot to
-firmware instead of acknowledging the link-down state.
-
-Validate the speed magic only for link-up events. This allows link-down
-events to update the cached state, propagate carrier loss, and update
-the snapshot exported to firmware. Keep the checks for invalid link-up
-magic and unsupported speeds.
-
-Fixes: 92a671d510a8 ("net: rnpgbe: Add link status handling support")
-Signed-off-by: Dong Yibo <dong100@mucse.com>
----
- drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
-index 683e0ea74113..c6ce9dbee3d0 100644
---- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
-+++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
-@@ -392,8 +392,11 @@ static void mucse_mbx_fw_req_handler(struct mucse_hw *hw,
- 		u16 speed = le16_to_cpu(req->link_stat.st.speed);
- 
- 		spin_lock_irqsave(&mucse->link_lock, flags);
--		if (magic != ST_VALID_MAGIC) {
--			/* Do not change the cached state for an invalid event.
-+		/* Link-down events do not carry valid speed/duplex information
-+		 * and may have a zero port_magic. Validate it only for link up.
-+		 */
-+		if (mucse_link_is_up(hw, req) && magic != ST_VALID_MAGIC) {
-+			/* Keep the cached state for an invalid link-up event.
- 			 * Use an invalid speed encoding to make firmware report
- 			 * again.
- 			 */
--- 
-2.50.1
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
 
