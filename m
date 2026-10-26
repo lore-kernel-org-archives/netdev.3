@@ -1,82 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.80.4.37
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793023574;
-	b=Se8ojdLfN8bCE91m7KM1EmiFM81hQbWRMOl7UbdodNjzQBu18h6Pj+NuJWk5YjMhwUBu
-	 CbUEFDegeOYu1QMO5hOcBvd7gjqKzenAoLCtJ88QTOkM4BOOWaOG2XTgfjyl3XWL5++Wq
-	 W4rYBybUl7TfeLboEIRJXwOKtB88Co5Sy675qMv8Ot+umh9sfW1RvqF9jukjv38tt6VF5
-	 13lQI9eeqXAAavO+fOD8S0hRPFXlgN7H11LeZd33mJgvGLd/+YrC//2MeW+4QZJSGvpNw
-	 SOH3d0YtE2ycACxyef/YLDv/kILxyJfDijFWIhsx5sHLVlY8cNgBUuZMHicsGNRnyvQ==
+	t=1793023663;
+	b=M+cjLf5Dsu5KdfGADKq3S/rm92LHtqmr/fupMPjZptkByAObCrNVabwIXbuoUjtYWgkj
+	 6kkcEWndgp7e+Ya4++O6GrKoZneyzTR2axvt5YDVQz709i75BxJEtVXow5RRjc1B997fS
+	 FeeKKusiaOhdEhcCxesCOikAz1M5+Ee1nESujiGVnGwtEEh1akqLL6G7WgegVhOC68RmQ
+	 veK1EpkSowNER+D70mjRAp4H+J0Rq18WY9PtidU3S+BwDuoC514C17hzFH/q96bVaCp01
+	 8XRlhatPsH5ZV2Gkli8SNFAxervCTZ9fvQ2Ry6BWZXAECsIaoJ4MNF2JA8+8cIpXw0A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793023574;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:Date:
-	 From:To:Cc:Subject:Message-Id:In-Reply-To:References:X-Mailer:
-	 Mime-Version:Content-Type:Content-Transfer-Encoding:X-Virus-Scanned:
-	 X-Virus-Status;
-	bh=S+aChkfaMd9EivevKx38Q/7Syxky3lnzhcs/iXmA7Hk=;
-	b=QwxLNJMtkXkRoboqGtILc6LEoQmnfbKCOmEZCLymAoqBi6RbaMLhnnHP7Fmci9WyxIec
-	 lz+dy8AaaLVSzqnhfhKlKVHlFDGPnyVZqBdDAZQhilxGzkVsB1FX1NhpSAyf2NCp2gPLf
-	 /zv6SPMZ3jzXEsbzB+vVfh9SiODOgzTy64Cq6g5bdgRrMrJqr3CqeOkEBVIL5sShJb7rn
-	 XJz5UiFU9un1UMq0fDoBm2ytCUnGjXL2th6l9aFZkNr43jrxAwJ/96ct5aNg305hVxZSC
-	 BSBC6JoettlRvRZyuDHebjPj9bHGgrX8Qxg22ih2kGwF/c9/D3W4EEdBkRvwIeJNivQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793023663;
+	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
+	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=XakBI9gtX78sZAtOezqM1zuZ81mvr8zjp5zgGUEv5HU=;
+	b=1pjm87dwOZeOWhllJXQzE9vh2G3QttK4UW5QHrSmKVAxg/x7dnQcF4qfn4wgwIE4yvOQ
+	 FChoGzn4I7ZootSB1KT0kMcqfBeVC59LFsglAE1EmvDddypGwqkL6v3w5pN9SopLB0NYX
+	 xugY0BiJniueR/bWVs/8j7ROkDJxPLOwTQDT2hpVmyMb56haCXyPiecjAJWHNfkDQms36
+	 c3gwWDrBzOGmx4wVOqD+Cy7CfxTtW0nH/Rb2NCoYxkerRrlWkheVDy0gtYFoSPjJeOToP
+	 0fJhXdysiv49VpECyye/TkOz8TpMMZyW8sle/+XlMGCc8BRwJSi2MWGu+xt5sTi5N2g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=uniroma2.it;
-	spf=pass smtp.mailfrom=uniroma2.it;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=UGmjf8VY;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b="tp/eiOPR";
-	arc=none smtp.remote-ip=160.80.4.37
-Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C65606A31A;
-	Mon, 26 Oct 2026 14:06:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 53C65606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WxCaJxpS;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE625606A31B
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 14:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=UGmjf8VY;
-	dkim=pass (2048-bit key, unprotected) header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b=tp/eiOPR
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 69QE5aHh010301;
-	Mon, 26 Oct 2026 15:05:42 +0100
-Received: from lubuntu-18.04 (unknown [160.80.103.126])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 8AE4F1203BC;
-	Mon, 26 Oct 2026 15:05:42 +0100 (CET)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1793023543; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=S+aChkfaMd9EivevKx38Q/7Syxky3lnzhcs/iXmA7Hk=;
-	b=UGmjf8VYEjQ3iKMxhBykCXQ2zVJ0aAgYaycPpfcNB4aRZ9SJPM99SxoBW9h5/j5FNCI1jX
-	G3aKXx7/2EAJL+Aw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1793023543; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=S+aChkfaMd9EivevKx38Q/7Syxky3lnzhcs/iXmA7Hk=;
-	b=tp/eiOPRb951NNKopf1HgWI0lb4Zs6BspwO+XzwB2jaDUstzbN2eXW0i7u0eX7/a3ivBQD
-	vcBj+CKvtZIg64wYdSRZ9f3RhdeKCe0iaDwQHsbm2yDP1hC8KZx7ZY0cF7QSs6RxviAOeX
-	Pie/ZdmIhSLLP9rfV+OU7dQo9SU3zbnlzx/FL7JSbEp2JB5SvX48W/tDe1zC72kg3Y21mP
-	mU124AcC124ed4z3oko1LbXMgpf4/Zz7ADttTv0eM1UU6W6LE2EEa4PbCeyaERdr02643j
-	dEsI56USpDzXKTGCYs8lo11ptlsipiiBM1HdUzhQKGKLeiaDZmymhH1wXt+YGA==
-Date: Mon, 26 Oct 2026 15:05:41 +0100
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: Tristan Madani <tristmd@gmail.com>
-Cc: netdev-bot+sinfo@kernel.org, davem@davemloft.net, edumazet@kernel.org,
-        kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-        tristan@talencesecurity.com, david.lebrun@uclouvain.be,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        stable@vger.kernel.org, stefano.salsano@uniroma2.it,
-        Andrea Mayer
- <andrea.mayer@uniroma2.it>
-Subject: Re: [PATCH net] seg6: fix tun_src RCU lifetime on namespace
- teardown
-Message-Id: <20261026150541.a5a34642db9d1523f839f644@uniroma2.it>
-In-Reply-To: <20261025222222.1064464-1-tristan@talencesecurity.com>
-References: <179278529389.3327.1530536500905686255@kernel.org>
-	<20261025222222.1064464-1-tristan@talencesecurity.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WxCaJxpS
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4655D1F01829;
+	Mon, 26 Oct 2026 14:07:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793023662;
+	bh=XakBI9gtX78sZAtOezqM1zuZ81mvr8zjp5zgGUEv5HU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=WxCaJxpS4RT5Rt6eFzT7+wZgOe/GRPAmjH3AqsGfiakObwHg1VY1JJNi0pIrPnik7
+	 LWYUmo8hc6UufQZ6WHKxTq9xYwbctTZ+0V8AZm/Z02qLsvfpJt7QpBAZgJOCKzRq8b
+	 sO7fSzYxI/xVJdBACOmvAHKmydVSAMW8sUJZZm+pSIFUmUMVDQnzgfjRaYB7HOKPfB
+	 8K/X3fm9h1Ezl7Pbgv0hIS5Bah6UFMYHfpQFCQK7NfXthDC1gzOTcq7h57iFe/sWML
+	 xIx3xXObFoyp8zxwmf0IcVx7xyYYpYRotsMlMTcylm+ek7EU4LeQjkZ4lLZHCkyk9l
+	 9Az6ytO70tYAw==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 4787AF4006B;
+	Mon, 26 Oct 2026 10:07:41 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Mon, 26 Oct 2026 10:07:41 -0400
+X-ME-Sender: <xms:rV7falXFc8rgY0kZiZWLQpp1duK7t-4d9jeFRjqXvwSfhMHN10ofSA>
+    <xme:rV7fasECXzzTPU7FmoGw7wHH_lOJhNS2cuSzui5LWFp97epFbQfWb0yhOIIzvShvW
+    J2W6gz3ZRtykHe8PTuZj89CZkbws1-vFkPZfgQROlgNwVXF-uwY1A>
+X-ME-Received: <xmr:rV7favacw5EJcxahdH_aor83_I4OEGEoUXOjpNBI5g89xHlgNZWIDn8bDq-hDy_XMmb09fOiJ0NxRXTDf1HPXYUcXD4Uapm6>
+X-ME-Proxy-Cause: dmFkZTGHPTZoVgbYo32XJYjko3kEymooXPsi2xL+ta6zn/3CUgwvCNza6QO5ml4d3WEJSX
+    B81f6OQ8BX84Th8MBukku5MrddiFNHjISGbII1oow9cL+KR1qJtAn3Rfwc6udslhg5fBBp
+    NAkuxktdRq/ThSyoW/6sYm66Cx/DQ3w7QOCjEdJxbQd42O8vjWlPjxpr3/wSVNEQejPqjv
+    aKoaOW4wQlRbkOCDqqLh7kwEaiRAbG45JUeMUE3BPjDvbzO33lTRXHrwK3qQ7jmjepaNUU
+    Tg+7i3Ffl+6pV5qh9j3V7RIBtcc25Tt+4S+gMFFdS81OnFT7XartKSIMtVN4JSyO6qSObr
+    T7UrxbOlATSwsvTh0zS0YBns1MjUgFDrqQpjSBCY3phjoAbdeiKt5RDc58KbUkNLJigsSB
+    UavNU12IDc/Vl0iH5helDCcurXjtOc5wNNv/gfdFf0MceCdCqkyvz+gRgYBag/4r7xHLiJ
+    PJclNhsn5D1ldF8pMVmWGN2xcD4teWGa7DqqVXl7gOpClUjLo8iBX3W+18hJrPB2LqZwTI
+    qqNKh4T/NYOyVIsZzeG1C+GtoSzCyag57mSEBGmaRHIQq5+OpLkKKLz90eMd6aBAxmR++6
+    5qqp5iTOyk90EdfAprSHPCRTO619iQxYKKz1RB2W2iPvLV4bqJaZC3KrU5mg
+X-ME-Proxy: <xmx:rV7farEkwePmR4sfQRVoe5Hm-SU5qBwawyb2C790iv0A5eWl3zj9sw>
+    <xmx:rV7fal2ITUuwZfrcHWTVWXb6FsV6O_9_XTUUpORo0oB2y_6W9Aag1A>
+    <xmx:rV7favyQCLK6X5mq_0aCQY5GHIagP8RdKxmzxQLtm-UwUAQkSpfn1Q>
+    <xmx:rV7fauhwr3eY2MdtPVEq4FUUJfYmy68tIIWhUT3azTJhfSbtPkd6nQ>
+    <xmx:rV7fakPKgwsOlzoHYmI3hM607W9wsrCo-oIKB5fXC-woliI2ku0BskAO>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 26 Oct 2026 10:07:40 -0400 (EDT)
+Date: Mon, 26 Oct 2026 07:07:39 -0700
+From: Boqun Feng <boqun@kernel.org>
+To: Vlad Poenaru <vlad.wing@gmail.com>
+Cc: Bart Van Assche <bvanassche@acm.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Davide Caratti <dcaratti@redhat.com>,
+	Breno Leitao <leitao@debian.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH] lockdep: Keep dynamic key hash nodes in
+ lockdep-owned storage
+Message-ID: <at9eq_3YUIL1ACEK@tardis.local>
+References: <ef57e0ab-f0b4-46d6-a2f8-f6c97fec8d8e@acm.org>
+ <20261023121946.2260882-1-vlad.wing@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -85,65 +93,60 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261023121946.2260882-1-vlad.wing@gmail.com>
 
-On Sun, 25 Oct 2026 22:22:22 +0000
-Tristan Madani <tristmd@gmail.com> wrote:
+On Fri, Oct 23, 2026 at 05:19:46AM -0700, Vlad Poenaru wrote:
+> On 10/21/26 8:01 PM, Bart Van Assche wrote:
+> > This patch introduces a new hard upper limit on the number of dynamic
+> > lockdep keys. That's unfortunate but I assume it's not possible to
+> > eliminate this hard upper bound if the key storage is owned by
+> > lockdep?
+> 
+> It isn't inherent; it comes from preallocating the nodes the way lockdep
+> does for its other tables. Two ways to lift it:
+> 
+> 1. Fall back to the embedded node when the pool is full. Keys
+>    registered after that are linked through their own hash_entry, as
+>    today, and only those wait for a grace period when they are
+>    unregistered. The key stays at 16 bytes and there is a second lookup
+>    path, but running out becomes a slowdown instead of lockdep turning
+>    itself off.
+> 
 
-> Found by manual code inspection while auditing RCU lifetime
-> patterns in the seg6 subsystem.  The issue is theoretical --
-> found by reading the source, not triggered in production.
+This gives me feeling that we did something for nothing, because in a
+system where there are a plenty of dynamic keys, we back to the current
+status after we introduce another hashlist.
 
-Hi Tristan,
-thanks for the info.
+> 2. Grow the pool in chunks allocated outside the graph lock in
+>    lockdep_register_key(). That removes the bound without a fallback,
+>    but it is the allocation Boqun preferred to avoid.
+> 
+> For what it's worth, keys whose locks are ever taken already count
+> against MAX_LOCKDEP_KEYS (8K classes), and the default pool is 16K, so
+> what the cap adds is a limit on keys that never get a class.
+> 
 
-The pre_exit in this patch introduces a NULL deref. It sets tun_src to
-NULL before the netns devices are removed, while set_tun_src() can
-still read it.
+Yeah, I think if everyone call lockdep_init_map_type() right after
+lockdep_register_key(), MAX_LOCKDEP_KEYS will be reached to the limit
+before MAX_LOCKDEP_DYNAMIC_KEYS. So technically it's not a new
+limitation. Honestly you can just make MAX_LOCKDEP_DYNAMIC_KEYS = 2 *
+MAX_LOCKDEP_KEYS (i.e. without introducing a Kconfig), "2 *" is needed
+because a key can be in-between lockdep_register_key() and
+lockdep_init_map_type() and pending_free can be delayed, so "2 *"
+provides a buffer for when active key numbers > class numbers.
 
-I ran a stress test on net with KASAN. A userspace program sends UDP
-packets in a loop from init_net through a veth into a test netns, where
-a seg6 encap route without a per-route tunsrc forwards them. Meanwhile,
-the test netns is created and deleted repeatedly.
+It might be worth checking whether a lockdep_register_key() is always
+followed by a some sort of lockdep_init_map_type() in the kernel code
+base.
 
-With this patch applied, KASAN reported a null-ptr-deref in
-set_tun_src() and the kernel panicked:
+Regards,
+Boqun
 
- BUG: KASAN: null-ptr-deref in set_tun_src+0xd1/0x240
- Read of size 8 at addr 0000000000000000 by task udp_flood_user/379
- Call Trace:
-  <IRQ>
-  set_tun_src+0xd1/0x240
-  __seg6_do_srh_encap+0x410/0x710
-  seg6_do_srh+0x65e/0x6a0
-  seg6_input_core+0x87/0x4c0
-  lwtunnel_input+0x18d/0x420
-  ipv6_rcv+0x44f/0x460
-  __netif_receive_skb_one_core+0xd6/0x130
-  process_backlog+0x2cc/0xa00
-  __napi_poll.constprop.0+0x56/0x270
-  net_rx_action+0x327/0x730
-  handle_softirqs+0x15a/0x6c0
-  do_softirq+0xb4/0xf0
-  </IRQ>
-  <TASK>
-  __local_bh_enable_ip+0xdd/0x100
-  __dev_queue_xmit+0x538/0x1030
-  ip6_finish_output+0x280/0x640
-  ip6_output+0x118/0x380
-  ip6_send_skb+0x99/0x210
-  udp_v6_send_skb+0x397/0x760
-  udpv6_sendmsg+0x1100/0x14d0
-  __sys_sendto+0x219/0x2d0
-  ...
- Kernel panic - not syncing: Fatal exception in interrupt
 
-Without this patch, I ran the same test with 1000 netns deletions and
-KASAN reported nothing.
-
-Ciao,
-Andrea
+> Boqun, would you prefer (1), so that the cap can never turn lockdep off?
+> 
+> Thanks,
+> Vlad
