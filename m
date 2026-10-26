@@ -1,55 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.227.138
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793024447;
-	b=Hy/xgyKUBR4jpCbRzhvNdcTuxgJiSvPnyB/vtDbOl191bIzQZyJL0U+IhfoHv8iG/WLU
-	 Ei1Gh5Yo8Z8Jj5ENudaqZfXNvaInS4F3teusrVc+pAPruGeBpDTNRZE8rIi9e/jeWxJty
-	 rRfabkDuGflI/By0HUm2/les/R68ITSEj7uNgV60LD9lohMo76jxs8fxEg1lF53bW+jkH
-	 nqMc0daqDQnwdVoi9w5SBlDDTLv9B9X/K6s8ybFwoCuqoclirqN6dMxSLdt5QmsUn/Aql
-	 WYiio2FuC2QdBQ8fJjzB6IoursHsJ5/cj0Bn8B4muRSU7gGecsE10EXrL+sXVn75TJg==
+	t=1793024843;
+	b=KiEg7twXdDY2X52K20UB4DQhpZhFR3JJNQTfhiumGiLbv33U03m/IXx8SXVRmimPPpcw
+	 8fvaSJSG5BwyVgdW+w2+RR36JNiKMaiAQk2+0xPGoNc7LW2ISL5VippTYJSXquT0aTN10
+	 S1SJhKfSId+4EFqWqSiRYA11EU6kNPuJCxN3eBWeJecylelXtpkJZNRyjeNMk9wbvb1u1
+	 JsqPI3XlL3Y0tpawJz4siEG89MYFA/uPfEAc/1a+6d9coyIoOtujhTTBKVvrsVq47OYuO
+	 t5ZvGOjiPRvMpP5q/SyYA+VIGOZbvdZ3NEoSaxS/8YpCEcO9uWWJsUJHDc2T/HnNK0Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793024447;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=AmlF0+0aAM2fRJ2RV4wjFXkBSJJqDWyBurX+4vn392I=;
-	b=jeZDRBlrB6TXBoVyjnIy9Czuv8q8I3beBAmW1BLrKpfLltkw9e1EEk29TjuNZA0SyoYc
-	 h0z0KqS7zOkKTlVZ5rpZ/bF1QCw0o5V+MIDML8IxQ0YqMFUMiTZA22NmVwV3ZPrY2KNpP
-	 PVV2I7QGNmJLfjvXYRR2e94m/dcGq0U4aUmT6W/bHlYOKE8HWUIOH8raoDGJm7TlI6xli
-	 YPWS9HfG+7dGUQarV6IVHbsjYPRFKoKmllEtm7uicJcmyoX1eH2/zQLrdBFmrjj6UuOc1
-	 K3KIUmTLuRPKkuuHu/ybyNtePCcVpuYObo/wEU/PZnljXj3hSaSopOI/oQVGPWqfbHQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793024843;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=pWNIDudccydM955IzkAINXE2ZjY/ipVqw0niCy80XBs=;
+	b=UnxmhlzZHJ4Y8QDkaSeYqFDTEYESxhjDZLyCqaAAUL2Q3vul7ZLemdgdkruduaZmmuwC
+	 clEeq9BxEK0t+LnlQ8T5BC9+VYWAIf+m6NSBmbqqO22Tx0CkDsHZGaAbgM/e0Zghqvqy2
+	 OQU3uaVQnTBJLUQCDkGfkMo04O+Sbhl1XDryWUG/eleqeBBiQjGhdTDhJ5rC8RkiDR4zL
+	 CsFRI1ifhRt1lhgEGJgEQDZoUw9qX00IiSNbaURm5QU/7bZZBv4oz3KL4dlldjLeMkaHU
+	 aeKhUh27qdqO8rytzcqcF77FvN8gDEA2JCLLcdhItbRjCqLTd4LagzyFR6LkF1zzzBg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PwrHKO5q;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=XhlxvgU1;
+	arc=none smtp.remote-ip=74.125.227.138
+Received: from mail-pj2-f10.google.com (mail-pj2-f10.google.com [74.125.227.138])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E9C606A321
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 14:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0999606A31F
+	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 14:27:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D0999606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PwrHKO5q
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 822E31F031E8
-	for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 14:20:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793024446;
-	bh=AmlF0+0aAM2fRJ2RV4wjFXkBSJJqDWyBurX+4vn392I=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=PwrHKO5qtJxFxRGL1vGL4JNW8fYL9264QY5VABTbch1W/dcwzLpgjUqGj/urzbo9E
-	 0e2w6D5H9unmPYvIpHrm+qvIJW6BgV9qch9v/TWQ/uMoqRtPul6ao+kJRwJUGmNb10
-	 GpX+/RfBNqRdOAxcFdo8ik4GWr089+Exfk9OHK3PquqEf19qG47JwzBLmA7gjzm+ie
-	 HnRJNoBVVzGjl5I44Gd1rLthKrXjSL9DTz47XF/SdhbfV1Md5hQTV/K2GqxH3nOCqP
-	 1SGaAQ87/uKKBq4FBrOujGqClneAKphm67ZhBntCtdKtN5loSvSMSvv0qMJ79FRDsI
-	 fZPhLhUz80/iw==
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-43bf9548df4so2717383fac.0
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 07:20:46 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwjD+lmI1iz+yQovK6lrosI+L97Sv0KDm7yIyVz3tXRq42SBknVo6K5pGBoPSaM4RXZI7DB3Lo=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKelhJ/yXyelnZo7olLz2rgyfcwUoZ1cWvHDF9elelXId57Jmn/
-	DfhmTVpr4eNuSC5JhiVSJD3UgPiAXe25vy4IokhpXE+SlKAC20Sb7KEMhMM56E7+zLm3COzpMte
-	vthJz40Ck+RtFODOlZgxpBYqaMYC0rzg=
-X-Received: by 2002:a05:6871:419b:b0:49d:c9ed:21f2 with SMTP id
- 586e51a60fabf-4a83f42e1c8mr3861088fac.18.1793024445749; Mon, 26 Oct 2026
- 07:20:45 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=XhlxvgU1
+Received: by mail-pj2-f10.google.com with SMTP id d9443c01a7336-2e934c6c1c8so12380495ad.0
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 07:27:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1793024842; x=1793629642; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=pWNIDudccydM955IzkAINXE2ZjY/ipVqw0niCy80XBs=;
+        b=XhlxvgU1GrMaPNJspEjfRmGarJy5LJYRRhTg1Hq/82/Zw43IZLmp1XR/SVpCsCs05U
+         BoGs9OSrt8nbSJESb3b6dLlIhykpaBy28HH8+8wK9xG+vb2OSN/fiGslwFxR/GKZEZ8z
+         m19YStf2V0YttCwB+h1Ew2WhtANJutgxfoX0HLvXOn6juDf2bZROzyGtjQ4vvRzF+7XO
+         pm4XP+AZgP36L+2ig5rDwJ0P1QJdE8Q0aVP36TEb1uirPl3ZKJ1WrDZOhzgckhWRNmIn
+         GkkvbnCuyiz50A6qCwqJCiz9XxLWrqnGx7fqHQfrfdSw5/PXSL0VMpNbQxZQedFvav1G
+         +gzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793024842; x=1793629642;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pWNIDudccydM955IzkAINXE2ZjY/ipVqw0niCy80XBs=;
+        b=eThCOgFIDsMbYQ3AQWGIjvf/cg0H71sKt2zLScz8EjjyAOTo5+/6RHjQJ5oJhJfGkf
+         1nO3o3qTbKM4apLvAWGwwNqi7lHEDSWN78K+6OSdZbJFPpdiL/A8/2eqeU2md/vn/zMp
+         nS04eHP5sdI+uzcf4ZJ8tPFF/pRJhjigONH26YtylJrHqURF3J4XXCGy1mEgH1lolYTb
+         3NxgAwHhRb/NfPPHFdytqRPnbB/87QbP1c0TKOukZygxO2KML5hw7eRMQMfa3LgtGEZo
+         eEQnkXDLPaft02pEbOt2ClEX8HB6KpHeRWeo+E9MFWq6E5wu3lyLsbOBylqiNNcMYEDG
+         XNiQ==
+X-Forwarded-Encrypted: i=1; AKwUvBznfCg8vZLvZFGKWI9zs+09nM+99WZIj2tZgQAtDJZ1Goubtvttqz2YNO1gSaVdIWt1EwRyC5Y=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJQwKf8cjEueVE9Lco+4CJLsxawZcRKjjB4dlkXqrJelEZK8eF7
+	fYVsevARcFy+3e9o4mk3+DjPs3q+jJVkTITzbgCkxRLGCBJH7ncQUYjr
+X-Gm-Gg: AYBFou3g8kDdh+grR15pUEhuR0uAk7SITKGfUymwgCIylzLj+PTLQyQh94WCHTWh8sH
+	pmj4vmnkjmh+/3toTH/o9Klcmo+B8qAw1nPXum1lcFZ9wysnJzPK6msexf41sKI4CYGbH1bu/ai
+	VXClH0fZ7yUr4CLoGFyWkbdT22cS/FDsLSefKgSYMmoisw8tz7G1o542dx3VAncU1el455qxZVM
+	tCtUPs9QUu4OgmOTQQiE84VWs6UCJv8Tb9xyzzycJ0ZNlPI0VdAco6pPNvJPhvfutUY2v+lTLZC
+	iMkp9Owck5d2wGA/J++pnXKassy7gKgRFtF52rJ2cPn6o89J0OOD4jaXBGgvDDolO6DmWc9qMqX
+	VaBVnA0Sn3fdIu3yjU/s0JHfWVeYZFghn0geYAzC985o+6MUYNh1PsLuRCUDjU8fqzOZTG9+mHV
+	OJtkHE9rkePgusjGZI2lhwadrrY9+c7PC3sUaFhTi9HC0nkkkdozMaoBdwQZ9NtLgmAR2m0PB4r
+	MvfAqWxgQ4aAvGgexlcnmMTz7+s8ACwNUCgqAEhajlnPoe/QvUvhS3qt4iYC3wgfBxbJmlGdD5z
+	ZdCoR3gbUrH1BfpY
+X-Received: by 2002:a17:902:f68d:b0:2e9:a090:dd80 with SMTP id d9443c01a7336-2ea9c69710dmr55298395ad.22.1793024842080;
+        Mon, 26 Oct 2026 07:27:22 -0700 (PDT)
+Received: from localhost.localdomain ([240e:46d:2300:286:8580:7ae4:15b1:705])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea9b121725sm17638495ad.14.2026.10.26.07.27.14
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 26 Oct 2026 07:27:20 -0700 (PDT)
+From: Rongzheng Wang <testwrzwrz@gmail.com>
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: Magnus Karlsson <magnus.karlsson@intel.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Stanislav Fomichev <sdf@google.com>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	stable@vger.kernel.org,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2 1/2] xsk: defer software checksum until the skb is complete
+Date: Mon, 26 Oct 2026 22:27:05 +0800
+Message-Id: <20261026142705.4564-1-testwrzwrz@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <at82NLzM7g8HGgum@boxer>
+References: <20261024091256.17918-1-testwrzwrz@gmail.com> <20261024141157.59301-1-testwrzwrz@gmail.com> <20261024141157.59301-2-testwrzwrz@gmail.com> <at82NLzM7g8HGgum@boxer>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,93 +104,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <179278529389.3327.1530536500905686255@kernel.org>
- <20261025222222.1064464-1-tristan@talencesecurity.com> <20261026150541.a5a34642db9d1523f839f644@uniroma2.it>
-In-Reply-To: <20261026150541.a5a34642db9d1523f839f644@uniroma2.it>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Mon, 26 Oct 2026 15:20:34 +0100
-X-Gmail-Original-Message-ID: <CAL4WiirtzVke8V8f6LJEWdOCDNevGxdQCFhXxEGiEMq-TNbsVA@mail.gmail.com>
-X-Gm-Features: AclHuK8L92wlrbdXy0m1rYg5r51z1Kquhpb4YkZm0AcuyqBb82vwpDIOASY1obs
-Message-ID: <CAL4WiirtzVke8V8f6LJEWdOCDNevGxdQCFhXxEGiEMq-TNbsVA@mail.gmail.com>
-Subject: Re: [PATCH net] seg6: fix tun_src RCU lifetime on namespace teardown
-To: Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: Tristan Madani <tristmd@gmail.com>, netdev-bot+sinfo@kernel.org, davem@davemloft.net, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	tristan@talencesecurity.com, david.lebrun@uclouvain.be, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, stable@vger.kernel.org, 
-	stefano.salsano@uniroma2.it
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Le lun. 26 oct. 2026 =C3=A0 15:05, Andrea Mayer <andrea.mayer@uniroma2.it> =
-a =C3=A9crit :
->
-> On Sun, 25 Oct 2026 22:22:22 +0000
-> Tristan Madani <tristmd@gmail.com> wrote:
->
-> > Found by manual code inspection while auditing RCU lifetime
-> > patterns in the seg6 subsystem.  The issue is theoretical --
-> > found by reading the source, not triggered in production.
->
-> Hi Tristan,
-> thanks for the info.
->
-> The pre_exit in this patch introduces a NULL deref. It sets tun_src to
-> NULL before the netns devices are removed, while set_tun_src() can
-> still read it.
->
-> I ran a stress test on net with KASAN. A userspace program sends UDP
-> packets in a loop from init_net through a veth into a test netns, where
-> a seg6 encap route without a per-route tunsrc forwards them. Meanwhile,
-> the test netns is created and deleted repeatedly.
->
-> With this patch applied, KASAN reported a null-ptr-deref in
-> set_tun_src() and the kernel panicked:
->
->  BUG: KASAN: null-ptr-deref in set_tun_src+0xd1/0x240
->  Read of size 8 at addr 0000000000000000 by task udp_flood_user/379
->  Call Trace:
->   <IRQ>
->   set_tun_src+0xd1/0x240
->   __seg6_do_srh_encap+0x410/0x710
->   seg6_do_srh+0x65e/0x6a0
->   seg6_input_core+0x87/0x4c0
->   lwtunnel_input+0x18d/0x420
->   ipv6_rcv+0x44f/0x460
->   __netif_receive_skb_one_core+0xd6/0x130
->   process_backlog+0x2cc/0xa00
->   __napi_poll.constprop.0+0x56/0x270
->   net_rx_action+0x327/0x730
->   handle_softirqs+0x15a/0x6c0
->   do_softirq+0xb4/0xf0
->   </IRQ>
->   <TASK>
->   __local_bh_enable_ip+0xdd/0x100
->   __dev_queue_xmit+0x538/0x1030
->   ip6_finish_output+0x280/0x640
->   ip6_output+0x118/0x380
->   ip6_send_skb+0x99/0x210
->   udp_v6_send_skb+0x397/0x760
->   udpv6_sendmsg+0x1100/0x14d0
->   __sys_sendto+0x219/0x2d0
->   ...
->  Kernel panic - not syncing: Fatal exception in interrupt
->
-> Without this patch, I ran the same test with 1000 netns deletions and
-> KASAN reported nothing.
->
-> Ciao,
-> Andrea
+Hi Maciej,
 
-Right, and there is no bug to fix in the first place.
+Thanks for the review.
 
-ip6_segments_ops is a pernet subsys, so seg6_net_exit() runs after
-all netns devices have been unregistered (default_device_exit_batch()
-and the RCU grace periods in netdev_run_todo()). At that point no
-packet can reach set_tun_src() for this netns, and no socket can
-issue SEG6_CMD_GET_TUNSRC either.
+Yes. xsk_skb_metadata() is only called for the first descriptor when
+skb is NULL; continuation fragments do not call it. So
+skb->ip_summed == CHECKSUM_PARTIAL means the first fragment requested
+the checksum.
 
-pre_exit runs before devices are dismantled, hence the crash Andrea
-reported.
+I'll preserve unlikely() around pool->tx_sw_csum like this:
 
-pw-bot: rejected
+    static int xsk_skb_sw_csum(struct sk_buff *skb,
+                               struct xsk_buff_pool *pool)
+    {
+            if (unlikely(pool->tx_sw_csum &&
+                         skb->ip_summed == CHECKSUM_PARTIAL))
+                    return skb_checksum_help(skb);
+
+            return 0;
+    }
+
+For the drop path: xsk_drop_skb() increments tx_invalid_descs and
+consumes the skb; sendto() returns the error from skb_checksum_help().
+Since the descriptors are already consumed, retrying is not useful. The
+current metadata validation makes the malformed-packet path effectively
+unreachable, so this is a defensive drop.
+
+I verified the propagation in a local QEMU test kernel. For the test
+only, I temporarily changed xsk_skb_sw_csum() to:
+
+    static int xsk_skb_sw_csum(struct sk_buff *skb,
+                               struct xsk_buff_pool *pool)
+    {
+            if (unlikely(pool->tx_sw_csum &&
+                         skb->ip_summed == CHECKSUM_PARTIAL))
+                    return -EINVAL;
+
+            return 0;
+    }
+
+and ran test_xdp_metadata. It failed at the first generate_packet()
+sendto:
+
+    generate_packet:FAIL:sendto unexpected sendto: actual -1 < expected 0
+    Summary: 0/0 PASSED, 0 SKIPPED, 1/0 FAILED
+    TEST_RC=1
+
+The normal kernel still passes. The test harness does not print errno,
+so I can only state that sendto() returned -1; the injected error was
+-EINVAL. I restored the source after the test.
+
+Magnus suggested a distinct counter for malformed packets. I agree that
+would be more precise than tx_invalid_descs, but I'd prefer to do that
+in a separate patch instead of extending the UAPI in this stable fix.
+
+I'll address the remaining feedback and send v3 as a new thread.
+
+Thanks,
+Rongzheng
