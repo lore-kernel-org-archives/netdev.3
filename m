@@ -1,61 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793003186;
-	b=QsUI8hlg3Xc4jNGvOzApOQM6CFn4fm8vX6eZwgy+AXP5Yd8/IoFcv1LBjTTOD2Vo8cD9
-	 eSYz2ur0jtOTw1m0ZuoQEr+Jm0BpNYPo62nKIFB29P5j1FAC6FEQsPN2a4/uTdZ3u6sEh
-	 BIBA0kAU0x4T2rt+BQ6poubu6yODN/P7wedY7evAyyZNjkDTlXBIGAvcaWcioQU1owK9v
-	 kESPzGfRlbKTfwo2qlrwKjDHJ3UPj3mzUt5xyNQ+FDFu0rL/kfmjbzfZ6uPPJJeQMTBy0
-	 v3ER/ZYjMbtEK8k8xmeDsdaJQqcpL6HzBvdUcfu7D48muXuiVkHg83GGUlLHmJW4vNA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793003186;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	b=RAR/RUlYSy43M5HA75RJ7C18834o3KkEI8KfeDcLRYxFoelRc8UosIaN5ij3OrHeK/xg
-	 acujOxgG4IU2NFZGuXT0h0HgulkIOaA96hEpL6+IzEbL8vySxNSAgFh8x825wjCqE9n3T
-	 Q4E5t5BauNscKDdfVcfyba6i/MTKw72QB7XJ7nljcpWywnqbjV9Eny6NnHZqsalWW+R+j
-	 QszwgsnCe65VjQmvI6iUNuxukDIkCflot0RVoNT2odS3z+Ddy2S2/OW0XfjNmsjP+hj+U
-	 La4RWrT3r6xarkfSmpy9UGCTI68QzLe+1SIY+zwj6sYYCAcUfMVo/j6+qP4y7UM4B6A==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eU1Labve;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793003367;
+	b=G9cD+X95wJ1pZ6EfxcXmx5JaBJ5MNWOCY5Z9Bggey/mTsKZXsqgJS0/xraM1G3EYefXk
+	 K6QWy/l+pZQrrdv9KMJlMW+FJ2YjIWgmqdchxVXruOsYU32vutlMiqCKeuEdvgCUa1WIx
+	 wAnwJkF9AT4ZYlLptxspqV4NCkLSOaTZ4ORxdkXdPmFCAvOakH470KggZo0XF1bw+5x1r
+	 OGE3cslKImT8v8ZxmzWu4zDeNDRgHlKEczbyKzWtYf24QcJ8cWYQp2taQeHJ1iQW5krRI
+	 n8xmwPgzS/BF9VB02W7bzKP0beA8MLt4PyZ0pcImjevcnHLKxy0xwxEBBa02jpDLh2A==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793003367;
+	h=DMARC-Filter:Received:DKIM-Signature:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
+	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=J9bMC2JXJdHhNlivZ17H90LnRx8yIYx/tOvnM0y2Ydo=;
+	b=pg4gUkvIq3tUvvNiDtRF7YNOf3EB6i4pP/ZDX9yZKPcq0Bj9HrUoBWw9l70ZxG7tjG6g
+	 YkyTUcPI+DCyhWPRNGCL+NvaMOrx5t1959rgrHqaZSR8DFkFnQcoA4Ld50qz4wKUGWW+a
+	 D2AXLHEIbiNXfUtpx41mrYYLTC2PWb0U9Nk0tGCfm95fJUT+4gCzPn+8QAywo53X22sE0
+	 Q55kMBm9AjwHCN/GC9dPX+9xOQw5aYOPKvb61+2Ec8wTSxBp1VgaSmKvaFh7tUUyGrkdU
+	 /qucPz6RP9AoFQoITrQsijdevf/4Zb58+ToCznikDAFPvdooli0Gp7FJFKdjy3VWCVA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=pengutronix.de;
+	spf=pass smtp.mailfrom=pengutronix.de;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=XGtIHxWW;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8F9606A31A;
-	Mon, 26 Oct 2026 08:26:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F25606A325;
+	Mon, 26 Oct 2026 08:29:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E7F25606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eU1Labve
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D311F01825;
-	Mon, 26 Oct 2026 08:26:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793003185;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eU1LabveWxUpu10bxtC05VOu2VYoKVI2Yn3uddQRjePl89FglRmm+u0MUlteyBVPE
-	 jejzzMYSaEiBeyqOKV8ukt7gVsinRonOwHpk+94GjuAry+dhuPlF2/XAyRM//rtl86
-	 GGg7IIhXVJAkjk7rDQggsRuWfRMJI8x8ROrsCHS927Yiuh6pqeiVaUtbaGLzsIe82A
-	 5ukeE4AP2GeqtZ5HjD/KCqNw8jglkQdBCoBPuz4dzAVyaRPlyxa80A7fy6RfytNJIZ
-	 RSb/ZYqlO2Y9hAVkqKXEPEfTsKeXjvnctuHxoX9NfM/q8HY8HMdTfXiGZEB8QPgtpM
-	 ZuDtA4Piqm6ig==
-From: netdev-bot+sinfo@kernel.org
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>,
- Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
- stable@vger.kernel.org, Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>
-Subject: Re: [PATCH net] ixgbe: reserve TX timestamp after skb preparation
-Date: Mon, 26 Oct 2026 08:26:24 +0000
-Message-ID: <179300318428.3327.13029076428746317520@kernel.org>
-In-Reply-To: <20261026082035.335770-1-edumazet@kernel.org>
-References: <20261026082035.335770-1-edumazet@kernel.org>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=XGtIHxWW
+Received: from ratatoskr.trumtrar.info (unknown [IPv6:2a00:1f:f805:2b01:a03:2f4:308a:7b52])
+	(Authenticated sender: str@pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id CE6A120154A;
+	Mon, 26 Oct 2026 09:29:22 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1793003363;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J9bMC2JXJdHhNlivZ17H90LnRx8yIYx/tOvnM0y2Ydo=;
+	b=XGtIHxWWmsdm5qBUCBNyHFpqh85GVQ0fbZrmFvRWwwFnLIJgnyB6nIlNW379Y6WLbUvs2j
+	jiP6Ir+3+Y64qwMqyXT7u+SxTu+J3f5FUnz7tSK2abBYoU4YB1kTb0BpBOo1lEPwE+oW1i
+	IItWtTpp4ISdbqYFiTjgyWntUPMr35ia8iMs6BAzhGaZXcAogxXWNb6CVg8yN+o35tTFeC
+	bSfVBJc/8gTWtoH2/K8ifTtGx6FzxOknAPTuCsGFhogcfB/NLWFMBVOU1gt77te5ABfceb
+	kcLMh++1DMCt+XkVF1A8YSfY1eSO5ZLKYPwvky7F4tdvUJjlnYQ5XNG6meze6Q==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793003363; a=rsa-sha256;
+	cv=none;
+	b=Tmbah0ru6d77gv9yvsklHy2LJ54I+DTgFZ6HgT5xJD8jx0C0nhSPoXMCHJuG7/1Uj6OCC4
+	lfx+Fr4U4IJWPYLia5vf6BRP+V7UYYavr3CiAUm9CB5+JSimDENYSOev008J7ENS8aVjnz
+	ozrGEtLZHzJn+zWsM/QEmjMD9WC6NIpYf5yfxLgUFIMxpb/Tp5ax4q0WtZ6wwtozYSuMtu
+	SZzC+fzR6srYP7xBcZamC7sMDzM3Rk+KsNUp0cYCa1SjenGh5FkuBnoHO+IHmNGtj1uq6w
+	pD+qn6x0wRiSr/ERrcUhA+zkjyffOtYLjAzMmr1uW9GIU4tMhnDfmmUc3sOFHA==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=str@pengutronix.de smtp.mailfrom=s.trumtrar@pengutronix.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1793003363;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J9bMC2JXJdHhNlivZ17H90LnRx8yIYx/tOvnM0y2Ydo=;
+	b=KE1mswsBOPj5Bv7k1ghe/ZD7SnJ3HLuA0w0OAsh8qq2wNqcSnfLKD4rX9/xm5oKcW/2BU0
+	+4YsShdJXP1LDWn+0xkFHxT60tGd0Jcp8JXli+lpyvCtu5ejtw7YqWSD99Q0hTWzYqCyxT
+	I0ZRJ2haE5XDA/knfT/VP3R/PX1DTwqdcDj2MCdQfBUbZ6W7j3VP0hcoM7hzwcyjG/csqZ
+	Pj50RiiLbkUZN5UZjjV+chYmovJ+9znOL4D+73KxMkts27tNrSBBI2kLoQNIInzGZtXSfB
+	iUTqJjRnNpc1ioJl2cFSEvtBOKBZtsX2Y2yUB7g9hZLffeAciISH5qFBwluMzQ==
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Mon, 26 Oct 2026 09:29:01 +0100
+Subject: [PATCH RFC v4 1/6] virtio-net: move virtio_net_common_hdr to
+ virtio_net.h
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,29 +84,92 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261026-v6-7-topic-virtio-net-ptp-v4-1-008af03cd43b@pengutronix.de>
+References: <20261026-v6-7-topic-virtio-net-ptp-v4-0-008af03cd43b@pengutronix.de>
+In-Reply-To: <20261026-v6-7-topic-virtio-net-ptp-v4-0-008af03cd43b@pengutronix.de>
+To: "Michael S. Tsirkin" <mst@redhat.com>, 
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ Jason Wang <jasowangio@gmail.com>, Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, 
+ Jesper Dangaard Brouer <hawk@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>, Eric Dumazet <edumazet@kernel.org>
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
+ virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org, kvm@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1775;
+ i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
+ bh=YPEGObAtm5jMMsT7YJ+7C5++HnFr5unwD6moD0fXr9c=;
+ b=owGbwMvMwCUmtVehiCsuTInxtFoSQ9Z9/oSJibtyyiY9c08Lvjzr3SSehO3vxfoXWMp8+ZRq+
+ Uvi2LWfHaUsDGJcDLJiiiwqCyv4RD0+eEZOE+GCmcPKBDKEgYtTACayZB4jw+5wPpMMjYULJj92
+ UdfYIqlx3CrM5BSL/7PHZgXbA11PzWRk2Kshezm7LiP9EQdPrfwJ87lb2oK/8h81+hw0P/zL2xc
+ l7AA=
+X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
+ fpr=24A1780E1548F0495996140A1ABD20720A5E5622
 
-Hi!
+tun and vhost need to know the layout and size of the virtio-net
+header as the driver uses it, e.g. to fill in fields behind
+virtio_net_hdr_v1_hash_tunnel. Move struct virtio_net_common_hdr to
+the kernel-internal header that they include already.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+No functional change.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Assisted-by: Claude:claude-opus-5-5
+---
+ drivers/net/virtio_net.c   | 9 ---------
+ include/linux/virtio_net.h | 9 +++++++++
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index daab43ac92ce4..17d3e32eed9d6 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -492,15 +492,6 @@ struct padded_vnet_hdr {
+ 	char padding[12];
+ };
+ 
+-struct virtio_net_common_hdr {
+-	union {
+-		struct virtio_net_hdr hdr;
+-		struct virtio_net_hdr_mrg_rxbuf	mrg_hdr;
+-		struct virtio_net_hdr_v1_hash hash_v1_hdr;
+-		struct virtio_net_hdr_v1_hash_tunnel tnl_hdr;
+-	};
+-};
+-
+ static struct virtio_net_common_hdr xsk_hdr;
+ 
+ static void virtnet_sq_free_unused_buf(struct virtqueue *vq, void *buf);
+diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+index d6466f96cdd00..a6de308b8f25e 100644
+--- a/include/linux/virtio_net.h
++++ b/include/linux/virtio_net.h
+@@ -10,6 +10,15 @@
+ #include <uapi/linux/tcp.h>
+ #include <uapi/linux/virtio_net.h>
+ 
++struct virtio_net_common_hdr {
++	union {
++		struct virtio_net_hdr hdr;
++		struct virtio_net_hdr_mrg_rxbuf	mrg_hdr;
++		struct virtio_net_hdr_v1_hash hash_v1_hdr;
++		struct virtio_net_hdr_v1_hash_tunnel tnl_hdr;
++	};
++};
++
+ static inline bool virtio_net_hdr_match_proto(__be16 protocol, __u8 gso_type)
+ {
+ 	switch (gso_type & ~VIRTIO_NET_HDR_GSO_ECN) {
 
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
+-- 
+2.52.0
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
