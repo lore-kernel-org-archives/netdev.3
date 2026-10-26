@@ -1,79 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792975014;
-	b=e62j9UY1hTr1GjIjVlL3XKP1eAJXUE6ycHlOOloXhhzmnHm6tBE0tVDAljT3NzftLjCZ
-	 YN988E8X0hJGPrBDEluINzZcQOoEj5mXVchDFyl4p5Dn+w3TijgljY/vr8gIhzh1pJgtb
-	 4xQznlonjMb7Fc0jKL/PRUmrTw8HttEPlfKNnt1Cai/5LlEmg+bxj0291+j2NzBVWpFhx
-	 KjHYfQ5miPmeZHLN7Oz72KLsufgte9HHrmMPnmuXrA2iZf6ii5cibZlNmoIzsZr3Z6dKL
-	 8ysRRCxrLy/UsqDflVDfUl+VPzsq23ihoX2w50prmj2A/YoPM8+CqsiVh80ZAEKehjg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792975014;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
-	 X-Endpoint-Received:X-Original-From:Reply-To;
-	bh=jEfZ5R4FSozjLO0Zv56VX5Utg/dxxI39TSzbY5TNJdM=;
-	b=0LO+99orJMHsPvu4boGOfU1+oVaRVMsnAMD7rylt2HFz/d/zndy4NnQUFWo6hjsyiyBa
-	 oF1c9FsutRlpsNYP+wWh+yBotcaQAkcTMWOhLzKppBKPOAI9KuSFxiClnWcuWjgwTKRlB
-	 hWZuyezsOq6HQgPPsraKF0m1FQSnKHg1d+FTfgxMb21VyCCg11qpI0j4L0H1O0iX3FlEQ
-	 1lBkIUzNPyaa1Jv0gcxZno7Gq/4YmMli6/CjqkdFODGt4PLHvIYCVevQM/GaGrMsGew5U
-	 g6FyrczSTOut375JGjTKgxYcXzlMkz7FXwjZ7KhPfjBmW+69ETp4H2lA9UStJqMLAoA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M5sVcatE;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792975075;
+	b=b/3IVKLoMUcy2G3QLOue+d0gIsDUCtI3rPzaXDte7Zoi/YPtIc3Dd+iO1IvrfAgwnVQN
+	 8uFreIHMe78yRBhm3b++TSTnbF4pjh5451BmPFEj2hhKt0foeijpj8gEm9wQ8hLBD4ETj
+	 liC2jyJLWjO5TMrCWcjtfTmxOj1Uiju27izniiSxPab3VmK2SdGyOBdpqeu39Tscn94of
+	 zapNKlJwHVkb5J9ebRNY41Am7/UHYf1aaLyb0bd5TyVzEgjn0uBwMY+xKovOHth4Wpz2K
+	 eZhsC9SFkVPzQXIvXHnOvsadOi+v09PulAZLzkch9ZeE7cVr1vGcNGycyrxLDuXrDtQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792975075;
+	h=Received:DKIM-Signature:Message-ID:Subject:From:To:Cc:Date:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
+	 User-Agent:MIME-Version;
+	bh=3OpWhHDiC0q0IeZapx7WAsAnnypbwyXltg3+JfcCVTY=;
+	b=qyEak75youwFw1vCx4YKhU1AICtfR8wIKV/S/uMGNv+wRkm144xwAIARv19BsVQmROOI
+	 tmutKqQqdUsqxTEhtJpZp2PU4JIgzsLIlgVMOzzcIs9cgEwskgLfII1cEUEj1rVYs0Cpa
+	 nXZn1xpjczTm0k1rSjlQ2K0OzHyIn+mcZ4MjpGoAqZoxeH0QpgwDKDWv9JFF88rfw5Wj/
+	 srnNi8gAs7LXCLpS17iG1Z7fHdIFEF3U24UramC1wpruXzm1Eq6oGReB1w5xlH/t8D/6h
+	 x0LLUJQuiR7HbQm3zhn7RyBlQflUEcVg3llMzeIq8KPc1uWG+aZZrBxLfc6Hgeu6B8g==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mniVaYXS;
+	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0DA606A333;
-	Mon, 26 Oct 2026 00:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365BF606A31A;
+	Mon, 26 Oct 2026 00:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M5sVcatE
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1792975013;
-	b=yq0vq6HJ24geOgAD1LuBi07GJ5b1M+BIz1XoW9CDoBXSQiGHHdCn6SkCmfCJMetX4QaL
-	 GfjXHediy2dNA5SygK8DroUjz/gnSpb4Mnnvih8U5OXwbGzMDeZDTdfKOBiHo+mO54/0v
-	 SiFcSV7vK51W26KpjPB5WlvHXElVnBKGSx/ojLYs/RFxFB5go9/fB4X2QIGHIYDpC6/rX
-	 CaVHdGpP1/ZunBL5/o1KS+dRc5RLVcjDOQT/HQKaEPnq0vL/LF+7wx9xW0xzrrVEXKa1s
-	 1XmJqMVSeXRXcRxp7Hq1TsVKGJTebWs2ZEyOo4tToqBnAucs8+KP7kZFuyC/ml6EcjQ==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1792975013;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To;
-	bh=jEfZ5R4FSozjLO0Zv56VX5Utg/dxxI39TSzbY5TNJdM=;
-	b=dBdxqq9NXw1VOUKK4qpt/I+0lc6IWSR24ZMTbqj6RkRzw9CLkxZX1eFZDA+90BVn0GMW
-	 Q9cLOMwk5DN2k3Evc+33s1i8jY3+Hix/lpNW2CDeIjaVgdARxd6UfJ6W/7O4m7eQRPZl7
-	 F0KsGNbF/c4WpRdhGVer86boiz4Y+Q+CoNBPMDQeQVi4wtBpo9SAMFDhn4AwnUpQ0FuZ0
-	 06vUW3UjP3V+QOPaRza6CGsUV2pb6aXm5p0+gFTbsNrktnPMYmLqwg4cf6xeRYMPIwP7p
-	 gwChPkGK6VbgTJOMGCO8zpCBN5eht2tWyo5bi0tsbL1Y6Mp83opNbISdaaCQ3XI27VA==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id C931C1F01825;
-	Mon, 26 Oct 2026 00:36:51 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mniVaYXS
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41A1E1F01825;
+	Mon, 26 Oct 2026 00:37:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792975013;
-	bh=jEfZ5R4FSozjLO0Zv56VX5Utg/dxxI39TSzbY5TNJdM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=M5sVcatEIZ2QvoKm5g1gGwF+QGjnksRy9D6rrsbVx4El4yZLqpbjCHc/z3VbJ5E/W
-	 ElvGjuQ5EmnsQnPon8k0IoIlgiWjNEqOFYMS+6o2f1Q2uTT/N0omO1Fnz1NNXWtScG
-	 kl4adT7eKE7vQ9IXTiQDxIB9mKsovJq1SQwFlwzsKSIO0qhLTevlp/1SVJCBMMT8CD
-	 3VzhuC3+OdY37mHymYuzms0Q3an3SUCOsvTy5A6jhIFzzMl+8ybsbra5TuKE7u8vbJ
-	 leXaOxD7YMMf+TnDzEGcYSItMlwfvSW902iH1q3LyNiL9+Qg2SXg/sXKN6Kia4cRum
-	 UCMmfXMe7+cHA==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 33FAF44B35;
-	Mon, 26 Oct 2026 00:36:51 +0000 (UTC)
-From: Martin Belanger via B4 Relay <devnull+martin.nvme.dev.gmail.com@kernel.org>
-Date: Sun, 25 Oct 2026 20:36:48 -0400
-Subject: [PATCH RFC net-next 1/5] tls: add HKDF-Expand-Label for the TLS
- 1.3 key schedule
+	s=k20260515; t=1792975074;
+	bh=3OpWhHDiC0q0IeZapx7WAsAnnypbwyXltg3+JfcCVTY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=mniVaYXSw+J4T6DIlCx0v+dCBHkQHE+jD8iQly4/+6u8gr05I/QdIA65+slb44n6O
+	 9WZ6CpkQOI+m5tX82JuJiWn+M4LhreXySfmykgGN3xgIsZow5JZWw7IhpiAcxioTpP
+	 3Ux/uuztLXPUrcz96IghTPYv86/O8MXXtuEUL1zHyaouaqGMWbicGydS9NzhsGyLb5
+	 I5TAkyc2pN4kVXYWXkPIXm0LuxtiUL1TNzHNuq5gEuxL2sdAAK9CDSmLfPUsoUZVrI
+	 4fwdVjMQ6earOBEL2T0vD6DYyPoB5E+INh71qMUz9DCu4TOtzt7iWHAQe0z/8HsNxP
+	 XtGh0M3kfE4Zg==
+Message-ID: <dc5e58c172ad4b4bab4b8e0a385c608245618a65.camel@kernel.org>
+Subject: Re: [PATCH] net/rds: hold IB device reference through deferred
+ cleanup
+From: Allison Henderson <achender@kernel.org>
+To: Eduard Zateev <hackerowskiy@gmail.com>
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com,  horms@kernel.org, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org,  rds-devel@oss.oracle.com,
+ linux-kernel@vger.kernel.org, 
+ syzbot+221e213bf17f17e0d6cd@syzkaller.appspotmail.com
+Date: Sun, 25 Oct 2026 17:37:53 -0700
+In-Reply-To: <20261023100206.126692-1-hackerowskiy@gmail.com>
+References: <20261023100206.126692-1-hackerowskiy@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,185 +65,122 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261025-keyupdate-rfc-v1-1-60b7756eccbd@gmail.com>
-References: <20261025-keyupdate-rfc-v1-0-60b7756eccbd@gmail.com>
-In-Reply-To: <20261025-keyupdate-rfc-v1-0-60b7756eccbd@gmail.com>
-To: John Fastabend <john.fastabend@gmail.com>, 
- Jakub Kicinski <kuba@kernel.org>, Sabrina Dubroca <sd@queasysnail.net>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- Randy Dunlap <rdunlap@infradead.org>, Shuah Khan <shuah@kernel.org>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- Hannes Reinecke <hare@kernel.org>, Chuck Lever <cel@kernel.org>, 
- kernel-tls-handshake@lists.linux.dev, linux-nvme@lists.infradead.org, 
- Alistair Francis <alistair.francis@wdc.com>, 
- Martin Belanger <martin.belanger@dell.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792975010; l=5260;
- i=martin.nvme.dev@gmail.com; s=20261014; h=from:subject:message-id;
- bh=KFb/WEz4iFeKmXNASo0mrUcGnSDIwkKN7bp4a4n7vAw=;
- b=11as8MymhIqjTUV33YbNlHSCn+8eFNAFoLHlPaUSFZLiwaVGnlI1Z9yvksdSX6rBSU1CsePy0
- rhKPHLDxLE+A1fWltSiJWemh4K40WlemrBL0FOyyZ6QFBQjzIcki8Qp
-X-Developer-Key: i=martin.nvme.dev@gmail.com; a=ed25519;
- pk=4K+XXetGK35w2LzRRddd/bbHawZU222BN+YZRuSpN+k=
-X-Endpoint-Received: by B4 Relay for martin.nvme.dev@gmail.com/20261014
- with auth_id=1176
-X-Original-From: Martin Belanger <martin.nvme.dev@gmail.com>
-Reply-To: martin.nvme.dev@gmail.com
 
-From: Martin Belanger <martin.belanger@dell.com>
+On Fri, 2026-10-23 at 12:02 +0200, Eduard Zateev wrote:
+> RDS device teardown queues rds_ib_dev_free() on rds_wq. Hold a
+> reference to the underlying IB device until deferred cleanup releases
+> its resources. This prevents device removal from freeing it while the
+> work is running.
 
-A TLS 1.3 KeyUpdate derives the next traffic secret, key and IV with
-HKDF-Expand-Label (RFC 9846, section 7.2). Add the helper for the
-kernel to do this itself.
+Hi Eduard,
 
-Only the part of the key schedule after the handshake is needed. The
-input is a traffic secret, which is already a pseudorandom key, so
-HKDF-Extract is not needed. Each output is at most Hash.length bytes,
-so each derivation is a single HMAC with the library SHA-256 or SHA-384
-functions.
+Thanks for the patch.  Some comments below:
 
-Assisted-by: LLM
-Signed-off-by: Martin Belanger <martin.belanger@dell.com>
----
- net/tls/Kconfig    |  2 ++
- net/tls/Makefile   |  2 +-
- net/tls/tls.h      |  2 ++
- net/tls/tls_hkdf.c | 82 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 87 insertions(+), 1 deletion(-)
+>=20
+> Reported-by: syzbot+221e213bf17f17e0d6cd@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3D221e213bf17f17e0d6cd
+The report referenced here doesnt actually point to RDS, it's a warning in =
+rxe_pool_cleanup.
+Do you have a trace or a syz test result showing that the leftover rxe obje=
+ct is the RDS PD
+or MR and that this patch resolves the warning? Otherwise, I think the clos=
+es tag should be
+removed.
 
-diff --git a/net/tls/Kconfig b/net/tls/Kconfig
-index 4f4d5973a28f..6183ebe954ee 100644
---- a/net/tls/Kconfig
-+++ b/net/tls/Kconfig
-@@ -8,6 +8,8 @@ config TLS
- 	select CRYPTO
- 	select CRYPTO_AES
- 	select CRYPTO_GCM
-+	select CRYPTO_LIB_SHA256
-+	select CRYPTO_LIB_SHA512
- 	select NET_SOCK_MSG
- 	default n
- 	help
-diff --git a/net/tls/Makefile b/net/tls/Makefile
-index 4c7d296081ee..6edcf1271b75 100644
---- a/net/tls/Makefile
-+++ b/net/tls/Makefile
-@@ -7,6 +7,6 @@ CFLAGS_trace.o := -I$(src)
- 
- obj-$(CONFIG_TLS) += tls.o
- 
--tls-y := tls_main.o tls_sw.o tls_proc.o trace.o tls_strp.o
-+tls-y := tls_main.o tls_sw.o tls_proc.o trace.o tls_strp.o tls_hkdf.o
- 
- tls-$(CONFIG_TLS_DEVICE) += tls_device.o tls_device_fallback.o
-diff --git a/net/tls/tls.h b/net/tls/tls.h
-index 60a37bdaaa25..b2061f6bf065 100644
---- a/net/tls/tls.h
-+++ b/net/tls/tls.h
-@@ -147,6 +147,8 @@ void tls_strp_abort_strp(struct tls_strparser *strp, int err);
- int init_prot_info(struct tls_prot_info *prot,
- 		   const struct tls_crypto_info *crypto_info,
- 		   const struct tls_cipher_desc *cipher_desc);
-+int tls_hkdf_expand_label(const u8 *secret, size_t secret_len,
-+			  const char *label, u8 *out, size_t out_len);
- int tls_set_sw_offload(struct sock *sk, int tx,
- 		       struct tls_crypto_info *new_crypto_info);
- void tls_update_rx_zc_capable(struct tls_context *tls_ctx);
-diff --git a/net/tls/tls_hkdf.c b/net/tls/tls_hkdf.c
-new file mode 100644
-index 000000000000..49e33146ac7e
---- /dev/null
-+++ b/net/tls/tls_hkdf.c
-@@ -0,0 +1,82 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/* Copyright (c) 2026 Dell Technologies Inc. or its subsidiaries.
-+ *
-+ * TLS 1.3 HKDF-Expand-Label, RFC 9846 section 7.1.
-+ *
-+ * TLS 1.3 derives all of its secrets and keys with HKDF (RFC 5869). The
-+ * TLS handshake runs in user space and gives the kernel one application
-+ * traffic secret for each direction. For a KeyUpdate, the kernel derives
-+ * the next traffic secret from the current one (section 7.2), and the
-+ * new key and IV from the next traffic secret (section 7.3). Both steps
-+ * use only HKDF-Expand-Label, so this file implements only that
-+ * function, not the full key schedule of the handshake.
-+ *
-+ * The input is always a traffic secret. It is already a random key of
-+ * the hash length, so HKDF-Extract is not needed. No output is longer
-+ * than the hash, so HKDF-Expand is a single HMAC.
-+ */
-+
-+#include <crypto/sha2.h>
-+#include <linux/errno.h>
-+#include <linux/string.h>
-+#include <linux/unaligned.h>
-+
-+#include "tls.h"
-+
-+#define TLS_HKDF_LABEL_PREFIX		"tls13 "
-+#define TLS_HKDF_LABEL_PREFIX_LEN	(sizeof(TLS_HKDF_LABEL_PREFIX) - 1)
-+#define TLS_HKDF_LABEL_MAX		32
-+
-+/**
-+ * tls_hkdf_expand_label - HKDF-Expand-Label with an empty context
-+ * @secret: the secret
-+ * @secret_len: length of @secret, which selects the hash: SHA-256 for
-+ *	SHA256_DIGEST_SIZE, SHA-384 for SHA384_DIGEST_SIZE
-+ * @label: the label, without the "tls13 " prefix
-+ * @out: output buffer
-+ * @out_len: number of bytes to derive, at most @secret_len
-+ *
-+ * Return: 0 on success, -EINVAL if a length is not valid.
-+ */
-+int tls_hkdf_expand_label(const u8 *secret, size_t secret_len,
-+			  const char *label, u8 *out, size_t out_len)
-+{
-+	u8 info[2 + 1 + TLS_HKDF_LABEL_PREFIX_LEN + TLS_HKDF_LABEL_MAX + 1 + 1];
-+	size_t label_len = strlen(label);
-+	u8 tmp[SHA384_DIGEST_SIZE];
-+	size_t pos = 0;
-+
-+	if (secret_len != SHA256_DIGEST_SIZE &&
-+	    secret_len != SHA384_DIGEST_SIZE)
-+		return -EINVAL;
-+	if (!out_len || out_len > secret_len || label_len > TLS_HKDF_LABEL_MAX)
-+		return -EINVAL;
-+
-+	/* struct {
-+	 *	uint16 length;
-+	 *	opaque label<7..255>;
-+	 *	opaque context<0..255>;
-+	 * } HkdfLabel;
-+	 *
-+	 * followed by the HKDF-Expand counter for the first output block.
-+	 */
-+	put_unaligned_be16(out_len, info);
-+	pos += 2;
-+	info[pos++] = TLS_HKDF_LABEL_PREFIX_LEN + label_len;
-+	memcpy(info + pos, TLS_HKDF_LABEL_PREFIX, TLS_HKDF_LABEL_PREFIX_LEN);
-+	pos += TLS_HKDF_LABEL_PREFIX_LEN;
-+	memcpy(info + pos, label, label_len);
-+	pos += label_len;
-+	info[pos++] = 0;	/* empty context */
-+	info[pos++] = 1;	/* counter */
-+
-+	if (secret_len == SHA256_DIGEST_SIZE)
-+		hmac_sha256_usingrawkey(secret, secret_len, info, pos, tmp);
-+	else
-+		hmac_sha384_usingrawkey(secret, secret_len, info, pos, tmp);
-+
-+	memcpy(out, tmp, out_len);
-+	memzero_explicit(tmp, sizeof(tmp));
-+
-+	return 0;
-+}
+> Signed-off-by: Eduard Zateev <hackerowskiy@gmail.com>
+> ---
+>  net/rds/ib.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/net/rds/ib.c b/net/rds/ib.c
+> index 786f39169bc..597872e4fe9 100644
+> --- a/net/rds/ib.c
+> +++ b/net/rds/ib.c
+> @@ -115,6 +115,7 @@ static void rds_ib_dev_free(struct work_struct *work)
+> =20
+>  	kfree(rds_ibdev->vector_load);
+> =20
+> +	ib_device_put(rds_ibdev->dev);
+>  	kfree(rds_ibdev);
+>  }
+> =20
+> @@ -142,6 +143,12 @@ static int rds_ib_add_one(struct ib_device *device)
+>  				 ibdev_to_node(device));
+>  	if (!rds_ibdev)
+>  		return -ENOMEM;
+> +	/* Keep the device registered until the deferred cleanup completes. */
+> +	if (!ib_device_try_get(device)) {
 
--- 
-2.53.0
 
+The commit message doesn't quite describe what this does. Holding the refer=
+ence doesn't stop
+the device from being freed while the work runs. It makes ib_unregister_dev=
+ice() block in
+disable_device() until the refcount reaches zero, which now only happens wh=
+en rds_ib_dev_free()
+calls ib_device_put(). For connections that wait is short, since rdma_cm te=
+ars them down during
+the same removal, but connections are not the only things that hold the rds=
+_ib_device.
+
+A registered MR keeps the reference it takes in rds_ib_get_mr() until rds_i=
+b_free_mr() drops
+it. That only happens once everything using the MR has let go. Including th=
+e socket (when it
+frees the MR or closes), and every queued message that uses it (when the pe=
+er acks it or the
+socket closes).=C2=A0 Those messages also survive connection drops (rds_sen=
+d_path_reset() requeues
+them), and with the=C2=A0 device gone the connection can't come back up ove=
+r it to get them acked.=C2=A0
+
+So with this patch,=C2=A0whoever is unregistering the device (rdma link del=
+ete, driver unload, PCI
+hot-unplug) blocks=C2=A0in disable_device() until the process that owns the=
+ socket lets go, which
+it may never do. It=C2=A0 also turns any leaked rds_ib_device reference int=
+o a permanent unregister
+hang. I have a fix=C2=A0for one such leak, a connection left attached at mo=
+dule unload, in the
+connection-lifetime=C2=A0series I've been iterating on, but it hasn't lande=
+d yet.
+
+Unfortunately this is not a simple fix, even after kref lands.=C2=A0To wait=
+ for the free safely,
+remove_one first needs a way to make the device's MRs be released, so that =
+the wait is
+guaranteed to finish.  The uek tree approach is a socket accounting feature=
+:
+
+https://github.com/oracle/linux-uek/commit/ba92066dbf13e573a292252ea07e686b=
+5104f091
+https://github.com/oracle/linux-uek/commit/dc4c8c665368bca276db02ba7071d2d3=
+fd653a10
+https://github.com/oracle/linux-uek/commit/fcd394a1095625a39c44aa709bd976c6=
+b9b98373
+
+You're certainly welcome to look at it, but it is a bigger rework of the re=
+moval path than
+this patch, and I'd rather not take a partial fix that turns the warning in=
+to a hang.
+
+Thank you for looking at this though!
+
+Allison
+
+> +		kfree(rds_ibdev);
+> +		return -ENODEV;
+> +	}
+> +	rds_ibdev->dev =3D device;
+> =20
+>  	spin_lock_init(&rds_ibdev->spinlock);
+>  	refcount_set(&rds_ibdev->refcount, 1);
+> @@ -180,7 +187,6 @@ static int rds_ib_add_one(struct ib_device *device)
+>  		goto put_dev;
+>  	}
+> =20
+> -	rds_ibdev->dev =3D device;
+>  	rds_ibdev->pd =3D ib_alloc_pd(device, 0);
+>  	if (IS_ERR(rds_ibdev->pd)) {
+>  		ret =3D PTR_ERR(rds_ibdev->pd);
 
