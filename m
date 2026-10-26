@@ -1,64 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=23.88.38.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793004628;
-	b=kO9eR/MFOFoWRXUVExmfbQLrlefD6yxtNGd4nmtQnSkNISy0VO5wS3hm52i9pzwmYiPJ
-	 QzxE8C4ausn8TnzjxXulD2G8pHgLO4U4u4Wyxx3e1BjYG6aRai27P1Ikkh9YtHyKOX0Lv
-	 B98IqzEklpiVju+CbHnCTllooh3z9KMBqiPqeWE/WOmaO4D6giiOJgobjrwgf8zEAIh6D
-	 IN0NfK0k2SU/0r3uJsMNWu4jXE2n2N0NAg5jd7PFbOZrczI6z76+kLT37z/eUBs5MNfI1
-	 HtIxdi9LUyjqnIi0jvp4CIvxINF19h2ft9qVAmLvgvAJpt9c0f7flwwGafSAlZADIkQ==
+	t=1793004802;
+	b=Fk2b9gfvGsJev85S9O+BUg6BKbTaJcrfpH2Pxvv34CJa+aEulFq7ZMVq5ZpuWxTwqYLQ
+	 OayvwHBZSaDbRoifnZLhtCfX++zx9mzHfofJZOzTkm1tG+vf+Ct82wt4NFb/y6u30oNZz
+	 JeerxsBPvH6OL79fTF5/tC68lhuXRwKb+ZFwMEgE6fCKcEvnCIlvzepBk8jz5gZUQULop
+	 f5AKKTsZ5e7ApYBZs3OcEIQzeQPda73g7phfGAyZy/UAYvbWXAulTk/G28pVWsL9iWmQ6
+	 t//iKtMA/C/+p0X4Rd2kec1kB7hihDnLDr5QfxuIThpZ+sWSx3RBn1khCtN1M83C5pw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793004628;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	b=db1gn0PX5W60ryENuYSZgm3FO/zmb427K4oeiteMsEQK+IQKlTHnWUaAh2XWUkR2pewT
-	 uoiMEIiuYy9H9ARAnCO/VQnCPj+5+QheUbP48kgIPAWsNqq4cAqqgfs6048w2D5nLCyh1
-	 Y4Cp4gEPfrCtuVEZoIcjMElCpxVKdKJk4yiexyNYErXDOh+i6x1VnUjswN8OsP6Tc6WL7
-	 dIeEFMNT+YdjJz60mCPDUSc0aKn9qjGaIyGXJj9ont8juWg6JpMkIsXEO5jL42GIhmbNl
-	 3lrC6XHudaOHinGMyt6fkaL4//RnWap/bOlum9LdrK0ddgLBpbU7/7dVyS/A5fZgc6g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793004802;
+	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=zooGUg5U79hEFPrT6Hi6K1nHULVSW/Tn4sEvAK4VHgM=;
+	b=ZKQSZmsrDrnPuZ7zqAnvW+02c0AToyIov4i8epFBhNCJdQ8MvDw5pc8dGGPSd0sdc1QQ
+	 RK7OnC8g5/6JldMF/1RkQwabgDWUfc3FpCKGwx719yLhx3LArk2uVItWuPFsauVDqJTus
+	 Q94vx5D5yhYSE/6tMtj3o3mn9to/Z67JgmrS5UsZ0HX0YXtZ7Uqb6EFoSY+BdrjXbQ/sM
+	 p0m71i5dRPYhVN4CBafnBgRQOJVM16QQCf4LsREf/113ZNcybjY8AccXSE/+PKSR5z12d
+	 d+7equ80koDtzWR1BkFawppdjxk441LrFQSEDg+YhSYfUoH+KAevkDyJ8dBbQnYHvPQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E1jm0Cc2;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=simonwunderlich.de;
+	spf=pass smtp.mailfrom=simonwunderlich.de;
+	dkim=pass header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=xOMgBnOp;
+	arc=none smtp.remote-ip=23.88.38.48
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B74606A31A;
-	Mon, 26 Oct 2026 08:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 7D0A7606A32E;
+	Mon, 26 Oct 2026 08:53:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7D0A7606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E1jm0Cc2
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6CCB1F01825;
-	Mon, 26 Oct 2026 08:50:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793004627;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=E1jm0Cc25sYmSkB9DibXJ/s350fBwygID0LtwH1PlTxiuiX0+NS+J8ysVRodHS3oj
-	 /YdXu/XAb361q+/OivW/0Ii31cBDExdH+fFDV7deVK9OCpRKx3KBvpAJmNPYPe+DI6
-	 j9BTAaaZhOPOs45MMXKncGimzgAMCkmkGoAXcGbCEl7olxUjUaniHJdyuCk0IHF1zo
-	 xPd5I+6giTyxBcxFO7OjkhDqwgs8sGr3mamcTlizofj0ecUwv9TdgcLsL//y0WJeFG
-	 0H6n6O+uFjII0DwrKa0gUm+Ezi72TOFO073aYeXUyZl1AwG6u2aBjO6DWA7WhPoOaF
-	 FePbV+AWswPnA==
-From: netdev-bot+sinfo@kernel.org
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
- Paolo Abeni <pabeni@redhat.com>, Cosmin Ratiu <cratiu@nvidia.com>,
- Dragos Tatulea <dtatulea@nvidia.com>, Gal Pressman <gal@nvidia.com>,
- Leon Romanovsky <leon@kernel.org>, open list <linux-kernel@vger.kernel.org>,
- linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Simon Horman <horms@kernel.org>
-Subject: 
- Re: [PATCH net] net/mlx5: Only set num_doorbells on a fully initialized SF
-Date: Mon, 26 Oct 2026 08:50:26 +0000
-Message-ID: <179300462647.3327.12553481287889944518@kernel.org>
-In-Reply-To: <20261026084503.4122732-1-tariqt@nvidia.com>
-References: <20261026084503.4122732-1-tariqt@nvidia.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key, unprotected) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=xOMgBnOp
+Received: from kero.packetmixer.de (p200300c5973Ce5d80Fc8dfE94A24022d.dip0.t-ipconnect.de [IPv6:2003:c5:973c:e5d8:fc8:dfe9:4a24:22d])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.simonwunderlich.de (Postfix) with UTF8SMTPSA id F1FC7FA1DA;
+	Mon, 26 Oct 2026 09:53:13 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
+	s=09092022; t=1793004794;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zooGUg5U79hEFPrT6Hi6K1nHULVSW/Tn4sEvAK4VHgM=;
+	b=xOMgBnOpjIEKs567hEgwRcEEpAczhvNU3VlMu7J+24ohb/EiruGY05gGdc43DNjfDsviHV
+	YiNy547Ofd+bLg0w+PrxAQaUSAeUYxW/0f7I6lJoPVrNo6Iih4Mxf/WPHF8Z+//gVh209A
+	m0xix3+j7BcD6nud5JZNdaEA6V+Junsy2Z3g73u582wbw6n9+i7q872Gb3dWktmhghc/Uf
+	NvpruixTYcemMbXHu4SAR1g5cQwVvZcWffpcHnNDbOCQuNQd0zK8rMQhQYcObFZqa8UcXE
+	yllsiZziv9R+1c06Yi3YAaSbtf5h1S7Ffg36W24vjB/3m7srny81MGj9gk28eg==
+From: Simon Wunderlich <sw@simonwunderlich.de>
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	b.a.t.m.a.n@lists.open-mesh.org,
+	Sven Eckelmann <sven@narfation.org>,
+	stable@vger.kernel.org,
+	Sashiko <sashiko-bot@kernel.org>,
+	=?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH net 04/10] batman-adv: dat: initialize orig_node of unfilled candidate slots
+Date: Mon, 26 Oct 2026 09:53:03 +0100
+Message-ID: <20261026085309.1074911-5-sw@simonwunderlich.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261026085309.1074911-1-sw@simonwunderlich.de>
+References: <20261026085309.1074911-1-sw@simonwunderlich.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,29 +79,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi!
+From: Sven Eckelmann <sven@narfation.org>
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+batadv_dat_select_candidates() allocates the candidate array without
+zeroing it. batadv_choose_next_candidate() marks each slot as
+BATADV_DAT_CANDIDATE_NOT_FOUND but only sets orig_node when an eligible
+originator was found. In the following rounds,
+batadv_is_orig_node_eligible() compares res[j].orig_node of all previous
+slots against the evaluated originator. For slots without candidates, it
+reads uninitialized memory.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+The orig_node has to be cleared together with the
+BATADV_DAT_CANDIDATE_NOT_FOUND type.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+Cc: stable@vger.kernel.org
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/bug/linux-b25d9aa4-10bb-427c-a145-ccaadc2a1bb9
+Fixes: 785ea1144182 ("batman-adv: Distributed ARP Table - create DHT helper functions")
+Acked-by: Linus Lüssing <linus.luessing@c0d3.blue>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+---
+ net/batman-adv/distributed-arp-table.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
+diff --git a/net/batman-adv/distributed-arp-table.c b/net/batman-adv/distributed-arp-table.c
+index 74050bffedbce..0260ed7e828b2 100644
+--- a/net/batman-adv/distributed-arp-table.c
++++ b/net/batman-adv/distributed-arp-table.c
+@@ -653,6 +653,7 @@ static void batadv_choose_next_candidate(struct batadv_priv *bat_priv,
+ 	 * NOT_FOUND
+ 	 */
+ 	cands[select].type = BATADV_DAT_CANDIDATE_NOT_FOUND;
++	cands[select].orig_node = NULL;
+ 
+ 	/* iterate over the originator list and find the node with the closest
+ 	 * dat_address which has not been selected yet
+-- 
+2.47.3
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
