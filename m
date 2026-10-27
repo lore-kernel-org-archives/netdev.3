@@ -1,47 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=54.92.39.34
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793085926;
-	b=d79qZQSHwltPJhFDJNFYHmerQ5fQKTBjiceFbixIqfnkLDfMj+E9f2DhxibTn9LCUVtb
-	 dVH9ka4Z1DzaMfv1Ga60jKPCJila0Y/pxDjceOHpR6Tp0bxzWFuFFpo6NfAfjIJkUZW48
-	 h7Wfzt7k9iVsxFaWvDDe8rYweql3RjEB6MBhTKb5ETqtaq9LftOtlwZX8RJ5MmrEvaCD2
-	 G0aJhXS8c8Q02oH0rNnDTKPi54uD+6QboD/8UzgSDWf33VP4cUwak7pM2IPDhLHjzh3cn
-	 hR7TGS1taO8crY6kEeEpa6BxnA5RH9Tc72lOwkzBs87IWy183oiJOiY4mTw/EuXRUpw==
+	t=1793086268;
+	b=LLC1kmP8VFRDJwV+UIUCXZou8jiwDVtK8wlBjJoyXy09/JQ8eoZcuRjt/qp+/gwngpW0
+	 jqmwZ5Av1nLU0dOXWh2goVuhh6AXBj2f1wiGqP43wWFLYKEOlcqc2lgYWHwBnUutlsK29
+	 /8hF8C9631tgpsjUU8XK2UD1aZW1usZnFztGj3nhR0QFBkcUU4d0ezauKTgaJ/kT7P+6J
+	 U5ZUrgZNPWDCMlwKwr5qw9KVfpwrk52Lu6gG604MrMX2vDroQCm4ZB5eaEUW/RKQM949o
+	 tCq7iqHTBiyt8xE611C1ZGK4/JshiqFpz4Esr8JRgfJ1/rLpj7TjjKvrwo88NOmZoqg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793085926;
-	h=DMARC-Filter:X-QQ-mid:X-QQ-Originating-IP:Received:X-QQ-SSF:
-	 X-QQ-GoodBg:X-BIZMAIL-ID:EX-QQ-RecipientCnt:Content-Type:Mime-Version:
-	 Subject:From:In-Reply-To:Date:Cc:Content-Transfer-Encoding:Message-Id:
-	 References:To:X-Mailer:X-QQ-SENDSIZE:Feedback-ID:X-QQ-XMAILINFO:
-	 X-QQ-XMRINFO:X-QQ-RECHKSPAM;
-	bh=54IG6ql9KgTDI9H+AnSJiw6y1w0PHnGKhrjTP0qwg2I=;
-	b=4awtlRR0CghJXFduwtOeqCpZoA+0BCiRBXMPdmD/a3CmDriCIejgjWksCo2VOmwFKNnE
-	 1WcknTB0VKkmiRrCz7z7c+hlZXDUQQNpSw60gjQ/MF0Cz1I/4HUi1Bx4EoRZfKZ6nnEmd
-	 DHKIoKv7175wyiEuF9i/9rXhlumpc2FZk5MdDFHzHilYOm8fAIsFK2WU/KxmajXLr+F45
-	 PzVrMR3L1GlGvR3EChdsJZyGHZfSJI9B5+kP9+8ecsA0y+xSyeJ3JuqebQnp2nweLi6K3
-	 ogx2/u6W/2QCPIoSY4TYBv6A8MuBwkFHXaEUikkvntLSWCyn+rU0h6L61LGEcgfWYGw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793086268;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=TSzWHCPYD+61FDYzvIaUM/XSpeBKrTUMpoKDAlcttLw=;
+	b=K86N8BVr8zBIhOOCCNgdYZLHmZvwmAIhfSuaS44nV+XjT5BV5gF41a4EoCcAuF6cw6Ab
+	 pkzIMxWHNKsaSG61pgU4dK5NZLaU/DiR/dhplzYXi550NHzUL9R6Ugm18U4l2CIMBevYL
+	 Yz+8iYYVKdgQmGVYrfjQhfR/EebLiSXTAx8E+y0+TrwDTwUWXXTrOOru2QcKbQqX8uI75
+	 HyM67VSDcO1byjcqQS/KuRqKW89iT2V4OKoSegLmMCO/isuf0UgaG4idAakWlnQJpSUwW
+	 39ooH9yIa9bBlQ/Tk53n2hPLpKFxaSf5RvK+LPJsPo6SmtONbsarFtfXDH+IfXy3C6Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=net-swift.com;
-	spf=pass smtp.mailfrom=net-swift.com;
-	arc=none smtp.remote-ip=54.92.39.34
-Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M7g9fxfM;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14DF606A31D
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 07:25:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B14DF606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
-X-QQ-mid: zesmtpsz5t1793085873ta07ad9a8
-X-QQ-Originating-IP: M6rwgO4/qz23Z7aPtn/QADvwEcfQrS0QznLdFNBSP2U=
-Received: from smtpclient.apple ( [115.227.112.25])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 27 Oct 2026 15:24:31 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 17027930280472250786
-EX-QQ-RecipientCnt: 14
-Content-Type: text/plain;
-	charset=utf-8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4402C606A31A;
+	Tue, 27 Oct 2026 07:31:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M7g9fxfM
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E4D1F01825;
+	Tue, 27 Oct 2026 07:31:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793086267;
+	bh=TSzWHCPYD+61FDYzvIaUM/XSpeBKrTUMpoKDAlcttLw=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=M7g9fxfMXawEb4o84LE3DlT49o4CGS+NuHl7wlKbmcWmn4I7EOZMpv1Rr60pITHgg
+	 Dqub4aRSd6IBNEnL3hUn1HiryZFfKQvr9frfsy2q//7GeQbxvG3TGmqZklF85tx4oq
+	 P7f58F8+wY6DAAMmzRxaE/F/12KTxkDHKEdgbEvmUBxrgpcmdUKMdcdFdFvizKt4P3
+	 m2gB66ToFe2tv+cAeDe4ouaXIp3kEuLfI9Ouals+wH76B2F6TacSsrBKriNZXpW1pu
+	 cZ2U+ndptccftx8WpToOR3zREPcneEIxezbP86VemeGq0XX+Qwr5VLmw+24yOyMjRo
+	 VlWnCOTp507gg==
+Subject:
+ Re: [PATCH net v3] xfrm: esp: reset outer TCP GSO metadata on espintcp input
+From: netdev-bot+sashiko@kernel.org
+To: yangguoshuai@gmail.com
+Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
+ sd@queasysnail.net, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Tue, 27 Oct 2026 07:31:06 +0000
+Message-ID: <179308626642.3134.14988418944940808850@kernel.org>
+In-Reply-To: <20261023065311.65031-1-yangguoshuai@gmail.com>
+References: <20261023065311.65031-1-yangguoshuai@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -50,295 +63,183 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH net v6] net: libwx: fix VF PM suspend/resume flow
-From: "mengyuanlou@net-swift.com" <mengyuanlou@net-swift.com>
-In-Reply-To: <20261026151608.GA257209@horms.kernel.org>
-Date: Tue, 27 Oct 2026 15:24:21 +0800
-Cc: netdev-bot+sashiko@kernel.org,
- netdev@vger.kernel.org,
- jiawenwu@trustnetic.com,
- duanqiangwen@net-swift.com,
- linglingzhang@net-swift.com,
- andrew+netdev@lunn.ch,
- davem@davemloft.net,
- edumazet@google.com,
- kuba@kernel.org,
- pabeni@redhat.com,
- hramamurthy@google.com,
- jacob.e.keller@intel.com,
- stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <207CCD99-673A-4E63-8E53-05883953AEC9@net-swift.com>
-References: <20261019060216.38458-1-mengyuanlou@net-swift.com>
- <179265975476.3135.4456951664798289210@kernel.org>
- <4ED66BF6-3475-4933-8BE3-8779745C2ABD@net-swift.com>
- <20261026151608.GA257209@horms.kernel.org>
-To: Simon Horman <horms@kernel.org>
-X-Mailer: Apple Mail (2.3864.600.51.1.1)
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:net-swift.com:qybglogicsvrgz:qybglogicsvrgz5b-1
-X-QQ-XMAILINFO: OE2BWzPe+8GtTr72lC2l0PJ1iNDLYgcTVn4dQwVqZ0ERk7++fkiP5+v0
-	NElmP/9d6zBBMIEAr29AuqTvBwou4+/M87L0/wY77W6h+UOsBkvuh6lCAPvXiKnOblQ1exv
-	GTR14AxXEikZF7C6N/bSUaaf44wCkg5YyQgu7aJ4xu1IJqyAPsxVzcrsDWi2/NBYkay03oP
-	UHaCCfV/3551f65s3m0gBoYFfBD+bB9Fpz/5sNPsLhoTIVqrmKfy3PfVPanY/jNCRropco9
-	x8LvcqnjMQRxDsjYe0rtS5xSDO8yd6QdOnuF2yMFj2nZlfOu9AdIiGdX3doGyz+hWCgQqUC
-	w6tkCOeZeWVVLo53AAohApF56iHD6YNdceopm9dXFtCktl1RqOMdPEQvyEivggeBlWQQ+Vk
-	R2GpLkY9DqHOhsu4WlsXesqh5tHnt3VRf2ASFKw5BNiNRMFinFZlxz1EJ89WQAmq8A2Kfz4
-	bV9ut7pBi3w0zzQz/iEtocJvqlKeNs6PeppqAK7lQjRgtprm/xFq8jUg7hPKnwuRl9OyOh8
-	fqo896XLBTZ9OErls0NCoMDrlM6OL1b2nwQDC+V4hRagFYGdKov/17MDVVCsHGKlvWAvieC
-	qXOK0kNvtiysjEEc1sxsG12GkIZdJ3Xk8FEfpV+l9oms8C82FhRpXJh68XLbAX3QG0FpVBR
-	qS8j3ZEO1tU90rZNR6M3/CW0LqFbyfpGTjqkW3XGArXCPXq3+2/UPsf04sTJ9i+d+Gyi55c
-	VCwoJLoN/S6CI/l8WSv7++lvgfnLZzOgSg9ohqEgnNNRwK8rPm0esMwkd1gaXdoiuosDCBW
-	6v9APGFJjVdh5Bq7vl+dENnqpAW4T8xy2qta2RcLteUfDPg3gyUDhlDV+aIZNGjmKsh1rNM
-	gUJPRszJfA4Xsn3Q1jt8EQ4Wu/D7PsyyCti2vAoQhr0EpDcSCYqN0B1/Gx7XMN8Z0E3mLCL
-	Wi4n6l+zUING+mAZ5UDS1wTYYpAt3eKqkaG4IU1lnoldmYqwhU3OSf1bYKNT5NkmC/p890B
-	Fh99HvRoPvfVUQpEx0dkRyNrQ7kQ0WveAXFtf0QiZQeQZKQ/bXCVQe5j5L7FFCat3rHTv96
-	Q==
-X-QQ-XMRINFO: NyFYKkN4Ny6FLGRMIdbkxQVOxAOQsP/XxA==
-X-QQ-RECHKSPAM: 0
+MIME-Version: 1.0
 
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
+Critical: 0 · High: 0 · Medium: 2 · Low: 1
 
-> 2026=E5=B9=B410=E6=9C=8826=E6=97=A5 23:16=EF=BC=8CSimon Horman =
-<horms@kernel.org> =E5=86=99=E9=81=93=EF=BC=9A
->=20
-> On Mon, Oct 26, 2026 at 02:59:59PM +0800, mengyuanlou@net-swift.com =
-wrote:
->>=20
->>=20
->>> 2026=E5=B9=B410=E6=9C=8822=E6=97=A5 =
-17:02=EF=BC=8Cnetdev-bot+sashiko@kernel.org =E5=86=99=E9=81=93=EF=BC=9A
->>>=20
->>> Thank you for your contribution! Sashiko AI review found 2 potential
->>> issue(s) to consider.
->>>=20
->>> Critical: 0 =C2=B7 High: 1 (1) =C2=B7 Medium: 0 =C2=B7 Low: 1 (1)
->>>=20
->>> If you believe none of the issues are legitimate, please reply to =
-each
->>> issue of Medium severity or higher and explain why the AI is wrong.
->>> If any of them are legitimate and you plan to respin, please let =
-patchwork
->>> know by including "pw-bot: cr" as a separate line at the end of your =
-reply
->>> (one such reply per series is enough).
->>>=20
->>> - [High] net: libwx: race between wxvf_remove() and =
-wxvf_reopen_subtask()
->>> - [Low] The v5 changelog says "Schedule the reopen subtask =
-immediately on
->>> resume; keep the service timer to retry if the PF is not ready."=E2=80=
-=A6
->>>=20
->>> Pre-existing issues:
->>> - [High] This problem wasn't introduced by this patch, but the patch =
-adds
->>> a new caller that depends on it.
->>> - [Low] This problem wasn't introduced by this patch, but VF =
-teardown
->>> never frees the coherent interrupt-status block (wx->isb_mem) =
-that=E2=80=A6
->>>=20
->>> --
->>>=20
->>> net: libwx: fix VF PM suspend/resume flow
->>>=20
->>> This patch reworks the shared txgbevf/ngbevf PM callbacks. Suspend =
-now
->>> closes a running VF under RTNL and drains the service timer and work
->>> before disabling PCI. Resume re-enables PCI and hands the PF =
-readiness
->>> check, VF reset, interrupt setup and reopen to the service task =
-through
->>> a new WX_FLAG_NEED_REOPEN flag.
->>>=20
->>>> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c =
-b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
->>>> index 26de78e9a69ef..e2271e8bffcda 100644
->>>> --- a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
->>>> +++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
->>>=20
->>> [ ... ]
->>>=20
->>>> @@ -34,11 +48,20 @@ int wxvf_resume(struct device *dev_d)
->>>> {
->>>> struct pci_dev *pdev =3D to_pci_dev(dev_d);
->>>> struct wx *wx =3D pci_get_drvdata(pdev);
->>>> + int err;
->>>>=20
->>>> - pci_set_master(pdev);
->>>> - wx_init_interrupt_scheme(wx);
->>>> - netif_device_attach(wx->netdev);
->>>> + err =3D pci_enable_device_mem(pdev);
->>>> + if (err) {
->>>> + dev_err(&pdev->dev, "Cannot enable PCI device from suspend\n");
->>>> + return err;
->>>> + }
->>>>=20
->>>> + clear_bit(WX_STATE_DISABLED, wx->state);
->>>> + pci_set_master(pdev);
->>>> + rtnl_lock();
->>>> + mod_timer(&wx->service_timer, jiffies + HZ);
->>>> + set_bit(WX_FLAG_NEED_REOPEN, wx->flags);
->>>> + rtnl_unlock();
->>>> return 0;
->>>> }
->>>=20
->>> [Severity: Low]
->>> The v5 changelog says:
->>>=20
->>> Schedule the reopen subtask immediately on resume; keep the service
->>> timer to retry if the PF is not ready.
->>>=20
->>=20
->> This is removed in v6 after test.
->> And it was not mentioned in the changelog, which is a mistake.
->=20
-> ...
->=20
->>> [Severity: High]
->>> Can wxvf_remove() race with a reopen that is still pending after
->>> resume?
->>>=20
->>> After wxvf_resume(), WX_FLAG_NEED_REOPEN is set, service_timer is
->>> armed, and WX_STATE_RES_FREED is still set from wxvf_suspend(). The =
-VF
->>> can be unbound before wxvf_reopen_subtask() has completed. That =
-window
->>> includes the first second after resume, and any period where the PF
->>> ping or wx_reset_vf() keeps failing and the subtask keeps retrying. =
-In
->>> that case wxvf_remove() calls unregister_netdev() before it shuts =
-down
->>> the timer or cancels the work.
->>>=20
->>> If the interface was up, unregister_netdev() reaches wxvf_close(),
->>> which returns early because WX_STATE_RES_FREED is already set. If =
-the
->>> interface was down, wxvf_close() is not called at all. Either way,
->>> nothing clears WX_FLAG_NEED_REOPEN and nothing sets
->>> WX_STATE_DISABLED. WX_STATE_DISABLED is only set at the very end of
->>> wxvf_remove().
->>>=20
->>> Once unregister_netdev() drops RTNL, the timer can still queue the
->>> service task. wx_service_event_schedule() now lets it through =
-because
->>> WX_FLAG_NEED_REOPEN is set. An already queued work can also run =
-while
->>> wxvf_remove() waits in cancel_work_sync(). The guard in
->>> wxvf_reopen_subtask() passes, so it proceeds against a netdev that =
-has
->>> already been unregistered:
->>>=20
->>> wxvf_reopen_subtask()
->>>   wx_mbx_write_and_read_reply()    /* PF mailbox traffic */
->>>   wx_reset_vf()                    /* VF reset */
->>>   wx_init_interrupt_scheme()
->>>     wx_set_interrupt_capability()  /* MSI-X vector allocation */
->>>     wx_alloc_q_vectors()           /* netif_napi_add() */
->>>   netif_device_attach()
->>>=20
->>> wx_clear_interrupt_scheme() later in wxvf_remove() frees those
->>> q_vectors again. Even so, adding NAPI instances to a netdev after
->>> unregister_netdevice() has torn it down does not look safe. Neither
->>> does resetting the VF over the mailbox and allocating IRQ vectors in
->>> the middle of remove.
->>>=20
->>> Should wxvf_remove() quiesce the service machinery before
->>> unregister_netdev()? For example, it could clear WX_FLAG_NEED_REOPEN =
-or
->>> mark the device as being removed, then call timer_shutdown_sync() =
-and
->>> cancel_work_sync() first. That is similar to how ixgbevf_remove() =
-sets
->>> __IXGBEVF_REMOVING and cancels service_task before
->>> unregister_netdev(). Alternatively, should wxvf_reopen_subtask() =
-refuse
->>> to run once the netdev is no longer registered?
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
+- [Medium] The commit message presents a crash as the current failure
+  mode: skb_segment() 'hits BUG_ON(!list_skb->head_frag)', followed by…
+- [Medium] esp_reset_espintcp_fraglist_gso() (include/net/esp.h:31-71)
+  replaces a shared frag_list member by writing `*fragp = frag` (line…
+- [Low] The commit message names 'rx-gro-list is enabled' as the example
+  trigger for the SKB_GSO_FRAGLIST case.
 
-The VF may resume before its PF, and the mailbox is not usable until the =
-PF has resumed.
-So resume only sets WX_FLAG_NEED_REOPEN and defers the reopen to =
-wxvf_reopen_subtask(),
-which retries over the mailbox until the PF is ready.
+--
 
-It's right about that WX_STATE_DISABLED is only set at the end of =
-wxvf_remove(),
-after unregister_netdev() has returned, so a pending (or newly queued) =
-service
-work could pass that guard and touch the netdev while it is being =
-unregistered.
-That window was real.=20
+xfrm: esp: reset outer TCP GSO metadata on espintcp input
 
-V7 will add check: the netdev to still be registered
+This patch clears stale outer TCP GSO metadata from espintcp ESP records
+in esp_input() and esp6_input(). Before skb_cow_data(), a new helper
+unclones the head and any frag_list members that carry SKB_GSO_FRAGLIST.
+At skip_cow, skb_gso_reset() is called on the head and on every
+frag_list member.
 
- 	rtnl_lock();
- 	if (!test_bit(WX_FLAG_NEED_REOPEN, wx->flags) ||
- 	    test_bit(WX_STATE_DISABLED, wx->state) ||
- +++	    wx->netdev->reg_state !=3D NETREG_REGISTERED) {
- 		rtnl_unlock();
- 		return;
- 	}
-wxvf_reopen_subtask() and unregister_netdev() serialize on the same =
-RTNL, and reg_state
-leaves NETREG_REGISTERED before that lock is dropped.
+> Furthermore, if an outer TCP GRO aggregate carried SKB_GSO_FRAGLIST (e.g.,
+> when rx-gro-list is enabled) and was chained onto
+> skb_shinfo(head)->frag_list by __strp_recv(), skb_cow_data() invokes
+> skb_copy() / skb_copy_expand() on that frag_list member and hits
+> WARN_ON_ONCE(skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST), failing with
+> -ENOMEM before decryption even begins.
 
-Thanks,
-Mengyuan
+[Severity: Low]
+Is enabling rx-gro-list enough on its own to reach this case?
 
+tcp4_check_fraglist_gro() looks up an established socket in the netns of
+the GRO device. It enables fraglist GRO only when no socket is found:
 
+net/ipv4/tcp_offload.c:tcp4_check_fraglist_gro() {
+    ...
+	net = dev_net_rcu(skb->dev);
+	sk = __inet_lookup_established(net, iph->saddr, th->source,
+				       iph->daddr, ntohs(th->dest),
+				       iif, sdif);
+	NAPI_GRO_CB(skb)->is_flist = !sk && !skb_is_gso(skb);
+    ...
+}
 
->>>=20
->>> [Severity: Low]
->>> This isn't a regression from this patch, but does the VF teardown =
-path
->>> leak wx->isb_mem?
->>>=20
->>> wxvf_open()->wx_setup_resources()->wx_setup_isb_resources() =
-allocates it
->>> with dma_alloc_coherent(), which is not devm-managed:
->>>=20
->>> wx->isb_mem =3D dma_alloc_coherent(&pdev->dev,
->>> sizeof(u32) * 4,
->>> &wx->isb_dma,
->>> GFP_KERNEL);
->>>=20
->>> wxvf_close() frees only the IRQs and the RX/TX rings. wxvf_remove() =
-never
->>> calls wx_free_isb_resources(). That function is called only from
->>> ngbe_main.c and txgbe_main.c.
->>>=20
->>> wx_setup_isb_resources() returns early when isb_mem is already set, =
-so
->>> repeated open/resume cycles do not leak more. Even so, the 16-byte
->>> coherent buffer seems to be left behind on every VF unbind if the
->>> interface was opened at least once.
->>>=20
->>> [ ... ]
->>>=20
->>>> +static void wxvf_reopen_subtask(struct wx *wx)
->>>> +{
->>>=20
->>> [ ... ]
->>>=20
->>>> + if (wx_init_interrupt_scheme(wx)) {
->>>> + dev_err(&wx->pdev->dev, "Failed to initialize interrupt =
-scheme\n");
->>>> + goto hard_failure;
->>>> + }
->>>> +
->>>> + if (netif_running(wx->netdev)) {
->>>> + if (wxvf_open(wx->netdev))
->>>> + goto open_failed;
->>>> + }
->=20
-> Hi Mengyuan,
->=20
-> I apologise if I am missing something obvious.
-> But could you respond to the High concern above?
->=20
-> ...
+tcp6_check_fraglist_gro() does the same.
 
+An espintcp flow always ends at a locally established TCP socket. If that
+socket is in the same netns as the GRO device, is_flist stays 0. In that
+case only plain SKB_GSO_TCPV4/V6 state reaches esp_input(), and the
+skip_cow reset handles it without the new pre-pass.
 
+It looks like esp_reset_espintcp_fraglist_gso() only matters when GRO runs
+in a different netns from the espintcp socket and the aggregate arrives
+unsegmented. One example is a host NIC forwarding into a container over
+veth, since VETH_FEATURES includes NETIF_F_GSO_SOFTWARE and so
+NETIF_F_GSO_FRAGLIST.
+
+Could the commit message describe that topology? Could it also say that
+this half of the fix depends on TCP fraglist GRO? That feature is much
+newer than e27cca96cd68 from the Fixes: tag, so on stable trees without it
+the pre-pass does nothing.
+
+> stale gso_size and SKB_GSO_DODGY is not set, skb_segment() attempts to map
+> the slab-backed frag_list member as a scatter-gather page fragment and hits
+> BUG_ON(!list_skb->head_frag):
+>
+>   Internal error: Oops - undefined instruction: 0 [#1] SMP ARM
+>   PC is at skb_segment+0x574/0xd20
+
+[Severity: Medium]
+Is there still a BUG_ON() at this point? In the tree this patch targets,
+skb_segment() handles the condition like this:
+
+net/core/skbuff.c:skb_segment() {
+    ...
+				} else {
+					if (unlikely(!list_skb->head_frag)) {
+						DEBUG_NET_WARN_ON_ONCE(1);
+						err = -EINVAL;
+						goto err;
+					}
+    ...
+}
+
+On current kernels, segmentation seems to fail and validate_xmit_skb()
+drops the packet. A warning appears only with CONFIG_DEBUG_NET, and there
+is no oops.
+
+Could the commit message say which kernel the trace came from? Could it
+also describe the behavior on the kernels this patch targets?
+
+> diff --git a/include/net/esp.h b/include/net/esp.h
+> index 322950727dd0a..09ed682209113 100644
+> --- a/include/net/esp.h
+> +++ b/include/net/esp.h
+> @@ -28,6 +28,57 @@ static inline void esp_output_fill_trailer(u8 *tail, int tfclen, int plen, __u8
+>  	tail[plen - 1] = proto;
+>  }
+>
+> +static inline int esp_reset_espintcp_fraglist_gso(struct sk_buff *skb)
+> +{
+
+[ ... ]
+
+> +	if (skb_unclone(skb, GFP_ATOMIC))
+> +		return -ENOMEM;
+> +
+> +	for (fragp = &skb_shinfo(skb)->frag_list; (frag = *fragp);
+> +	     fragp = &frag->next) {
+> +		if (!(skb_shinfo(frag)->gso_type & SKB_GSO_FRAGLIST))
+> +			continue;
+> +
+> +		if (skb_shared(frag)) {
+> +			struct sk_buff *nfrag;
+> +
+> +			nfrag = skb_clone(frag, GFP_ATOMIC);
+> +			if (!nfrag)
+> +				return -ENOMEM;
+> +
+> +			nfrag->next = frag->next;
+> +			consume_skb(frag);
+> +			frag = nfrag;
+> +			*fragp = frag;
+
+[Severity: Medium]
+Can fragp point at the ->next field of a member that is still shared when
+this store happens?
+
+When the head is cloned, the skb_unclone(skb) call above goes through
+pskb_expand_head(). That calls skb_clone_fraglist(), which only takes a
+reference on each member:
+
+net/core/skbuff.c:skb_clone_fraglist() {
+	skb_walk_frags(skb, list)
+		skb_get(list);
+}
+
+After that, the old shinfo and the new shinfo both walk the same ->next
+pointers.
+
+Take a chain A -> B where A has no SKB_GSO_FRAGLIST, B does, and both are
+now shared. The loop skips A with continue. It then clones B into N, calls
+consume_skb(B), and writes A->next = N.
+
+A is shared, so the other owner's chain now points at N as well. B still
+holds one reference but is no longer linked anywhere, so it leaks. N has
+users == 1 but two chains reach it.
+
+skb_cow_data() runs next. It sees that A is shared, copies A and
+everything after it, and calls kfree_skb() on N, while the other owner's
+A->next still points at N. Can that lead to a use-after-free or double
+free of N?
+
+The -ENOMEM returns after this point can leave the same cross-linked chain
+behind.
+
+This relink pattern looks like it comes from ___pskb_trim(). That function
+handles skb_shared() on every member before skipping any, so it never
+writes through a shared predecessor. Would it be safer to privatize every
+member walked so far, including the skipped ones, or to copy from the first
+shared member onward the way skb_cow_data() does?
+
+I could not find a current producer that hands esp_input() a cloned head,
+or a shared non-FRAGLIST member in front of a FRAGLIST member. strparser
+unclones the head or allocates a fresh one before chaining. Still, the
+skb_unclone(skb) and skb_shared() branches here exist only for that case.
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261023065311.65031-1-yangguoshuai%40gmail.com
