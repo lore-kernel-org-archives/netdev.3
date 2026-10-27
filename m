@@ -1,60 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793101752;
-	b=Xn2fqd6D92uQJF/Um9ar/GFDz61vnwPAtJh8q9xyxDsdCMNdwI0zJjJAjIh3HCjBXiIh
-	 ydNBfFSmiGBGsoN7VVrSYnhxqWsj52Iqu0NdVzs6ukrCf8aYMbibPJ2tiAlkWlD/wiE2o
-	 1balM8pLEWepz4B/jVV2VjgPFNXsgA2CRbVcRW8dIJBsqRBRJFbLne5cHTxCYkNndpsI5
-	 IErhFEjf0llw5wtHAN6tA3TNpkcMVp+SxPJU+zO69CSUdDoRLFIggIUvILSKL6mU3prDQ
-	 6sm58hpCVHRp6Y4YnmigzhwX5Yrqfzi9WIuT2Kdj+8ESBCNgdHHgxiOH0skCFxS8EKw==
+	t=1793101791;
+	b=iN8sCTSRR9KtvqW/n0OYAxLszT9sBEfZ7QmdlkKOUVL5P0ZnjztcL/BWhLL01iT0wHdn
+	 EnKyeCSZRiTSKq1dD+3h80gD4k1o0uAReS/o/L7/jZiaaTCjncC5Yj6eNBP0VGgKtD1wc
+	 v1bYyvcx1V+5s+0XhbdPwTLIPo4valt/Zv+JPWXvMzPVujbWu51JQ3gL/bb8N3Xd5KaW4
+	 XJWoVSu0uLVNC8YxDsH0trf7zyiEpFFOR3Hf9v/C0ArWp+SysRhPA5lyU5lH7UAokwVSJ
+	 i2hPmGC2pqdZFClhqlXslEZXP9sg9VqHUjuar/T95I/bFkXLljcWcTCoUhbmuw7vhYw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793101752;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=4fyuBJ+a3h7buKYW0HFnv+SBVn1FNv0YDNNGL3FIiEM=;
-	b=i3nCIrxFerqlHIzlES2SZONBDKVKmqGqw0S8GPwbe/VA0qR4cpu0+vDF3OxgqlnsMbOH
-	 zz8TP1ela1sTMA3W70Sly5jMdFNRdjG2+SlyUQXuHUmi/PIhsLJtvL5JCWGlDupoV+Gts
-	 6GHkXHsLQKKN232TPstLGIqzJ2IS/DeN35ST3vb5QL8v/oADCF2pIWuu+xnZtmGif4585
-	 idiOvZvdjDyh58CCHAfyRe77BVDzguQ8PpDDDpjKX8bgzf2LSlTnsQPE3/Oxnwn0Mpebp
-	 vzrgJkS6jt3rE+YrVdEx7/oaIP0DuwxQ0bDiWCuqOR5zlXR+oG+Xm+ZmFtVtZGrrlzw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793101791;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=Toy1KB2l9TskJSYparsyEzIH0pnl+RyxkKZ4uTyQvZE=;
+	b=FUD0iNWTka+GVHUD0GONUb8pm2+Wnal3goGU6PyFO1f81n2HFCxa1hyb35CRIaAcDqtE
+	 CK70Ba5oOzN0sqSAFL8ZjaJpyzt0Grt5MIGRAZAbpPpglD3qsngNOEP3GNgBctihmHr8H
+	 inrGtXupLz09QdcYOIGD7Q3q2k+bmTe5ps1hMpYgz6QyGwG2MJ/x5wUkhJ8m/3X1vz9xH
+	 8g7Zdf7vJtS0K42i8YmXK+HxHB2EcS/P13KeOX0JRx+HlZRgl/nl5tgUMzourb7f/yhcO
+	 qUqAIREe+H9DKmcGP++3e7//dAljtVPk4VytvWTQZeBErIQLnSSXIqOTQALMj6zFm+A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ARq3XbOw;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CoPkQ77y;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=B4hfE8EH;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88545606A327;
-	Tue, 27 Oct 2026 11:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77E5606A31A
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 11:49:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E77E5606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ARq3XbOw
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 943CF1F01825;
-	Tue, 27 Oct 2026 11:49:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793101752;
-	bh=4fyuBJ+a3h7buKYW0HFnv+SBVn1FNv0YDNNGL3FIiEM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ARq3XbOw+OUFVGZRZcouLDKo1UTdUsaKCYr6QMSAFCJa+y+ZowBtWS7nHpyyw40Ya
-	 mtCUj9CuSXig6qpjMiU/Fqc59+7sDHcl2liIQz3WCt+/ESXN+skbSBStbQ3RwjTasm
-	 ziC3bAEDdeVsPyljX4kOiBE+sY16m3PF/8Enf/gd93Lp+swSHPV+vD8IKwBL3Efwyn
-	 JwgVqreEyxEhnqxPi1XDAW1WqqZhSC/7x7e9XL9pjWH+wvyCpeS/NACpUstvW3CEA9
-	 v9ZzyeqzYKjh6FltEyDNpagt7pWqbzoQKSTPATVxuk0sFKm7gntH7oYF1xOjiev99r
-	 VtO4beVAIkn3g==
-Subject: Re: [PATCH net 1/2] netlink: retry a dump skb that does not fit with
- the minimum size
-From: netdev-bot+sashiko@kernel.org
-To: jhonata.poma@gmail.com
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, shuah@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- kuniyu@google.com
-Date: Tue, 27 Oct 2026 11:49:11 +0000
-Message-ID: <179310175111.3134.9177648236285208856@kernel.org>
-In-Reply-To: <20261023-netlink-dump-livelock-v1-1-478214a635d2@gmail.com>
-References: <20261023-netlink-dump-livelock-v1-1-478214a635d2@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CoPkQ77y;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=B4hfE8EH
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793101789;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Toy1KB2l9TskJSYparsyEzIH0pnl+RyxkKZ4uTyQvZE=;
+	b=CoPkQ77yJWHZezpTcHIG1Hng71GyQLKJBcMdJ+HiuGmjiMX2DbfrNOPnNXFNu/jkIxvW+t
+	RDWm3ik2cyuLuzITZRJuVo4P3bNL5IZRuvwaOhJL1jB+HpKQsUfUbegdVn1oGFYxT0oCFT
+	oqzc2WY2Uj75FypIvmLASbBasAt9OPE=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-520-lCetBGMpNGaKqjCq_oNA9g-1; Tue, 27 Oct 2026 07:49:48 -0400
+X-MC-Unique: lCetBGMpNGaKqjCq_oNA9g-1
+X-Mimecast-MFC-AGG-ID: lCetBGMpNGaKqjCq_oNA9g_1793101787
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48dfaaea30cso2904372f8f.0
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 04:49:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1793101787; x=1793706587; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Toy1KB2l9TskJSYparsyEzIH0pnl+RyxkKZ4uTyQvZE=;
+        b=B4hfE8EH0wkRUhkNpP27oYtpTVWt/gDNXnEp983VhEtbH5Xm3IM88VENP646FWin8U
+         D2NpkuPgjoqFEw3jqs0Izrvzs63Z6jsmMHpulh9afv0fyeQJijOpyFhJhwQ3cNqKh4dp
+         6tQOVxUeYMLAn2EEReC9ke3bU9vszuht85Epsv/GwCreeRKbRH69as41+RpMgThoUxQV
+         bdAWHObUv82gtHDNPLrqhMytIPZr9EZeX6lRMbU19h8Xo9AlEXMqjRy82gdcsR0lpCde
+         ATBSHXuXJGYSqkZ1RaRAB6UanCagX+3bqSc3XU1WINKkyOPRVY1ZZifuc154T20Tq+nu
+         FENA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793101787; x=1793706587;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Toy1KB2l9TskJSYparsyEzIH0pnl+RyxkKZ4uTyQvZE=;
+        b=gz6gViiNknah0M/4r17ONXn2vQpYEt9ByhpVR0gMEFOC+c8ZKyMBv3OhovTa5YOerk
+         E/chesYmu2lyQsKlexwkBINI+U8yBNoPABz7bZLRgHZPIzYZVLvVwZa4Xc48tQ4QfLiA
+         nmri01se7i7x77HFFqS760y6CutNsgg6v/9IPyVU+5pI8QUBhHDgs+WmWZKZsjIetj1K
+         IKlzh2jEzIopI1hY9q19FLbDtnc1JwokeXY0I/Q/2dSS0hEKFNWy/tbKqmxxvg2BWHFi
+         5+9NjN21VEtfVICFGycYPoP1xiU26yCKQWogGOWAvzxPCvK8HawpFdqWJV709gpEsaUR
+         R10g==
+X-Forwarded-Encrypted: i=1; AKwUvBzXvGRXBxVUkC1uMTUnEXG02suam9bPbzIJqvkqllumMefO7AmiCuQeHHSpzFzB/rYebWR8xyQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYISOlEoteWydzujxfWUoODqDOHx1CfuqdHgpq6kgXLk2c2X77sA
+	/nXdn9M+PAp5X+Z75oGdOUaPOaIk0qr9JkI/Ra3wVHSLEkt5CGk9IuMqxnHGj/mlLtsCvbWHxH/
+	bBDhFrv5yuqGCH0kPW2EsN6CpSiVqZ00UnMqJYkpzgv5WaaIxb+yzSWfVTQ==
+X-Gm-Gg: AYBFou1mVWe9M/K64f07qALClmgqgBQeRlxHx5llly7nQ8mvLambX+KAhNzWCVSekp1
+	YxPiXb3C00AW9QM/DhZRIxmMfbnCRLkGKzaEosuyhTMPTUk8YQszLv8KWrOAtPUVDSF4MsecBvd
+	6SZN63eIcb0C+VHaOJM6VBBhC1oKIUVD2UHHG4WQkXgSmTrzQ9QxR5wRB8hf/yfd1tp74idqrKZ
+	pti+sXCuu5d39x/RNwX/QI5gpJc/SU5LHnAaZtxwnkXzwP/GU6xkvGG1fLVkTLhGg+lXVCyFnR3
+	mY/FfEjZKdigHzqDk5g3TcevOZxSiGvP+HDAHqBCsY/9jEsGECGAOf4+BduawMyB24Zgw3QXpjC
+	vd+QfsaFuUg6FdT649V9SQzawkLbPEeAR8oUsrNsyCNyfArpteOzOCcLVkOvQa2dYyhQpamM/UQ
+	==
+X-Received: by 2002:adf:e00e:0:20b0:48b:9ed:b81f with SMTP id ffacd0b85a97d-48e3eb75a46mr12581585f8f.10.1793101787241;
+        Tue, 27 Oct 2026 04:49:47 -0700 (PDT)
+X-Received: by 2002:adf:e00e:0:20b0:48b:9ed:b81f with SMTP id ffacd0b85a97d-48e3eb75a46mr12581524f8f.10.1793101786725;
+        Tue, 27 Oct 2026 04:49:46 -0700 (PDT)
+Received: from [192.168.188.234] (ip174-129-192-82.pool-bba.aruba.it. [82.192.129.174])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ece14a1sm23040422f8f.57.2026.10.27.04.49.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Oct 2026 04:49:46 -0700 (PDT)
+Message-ID: <cf0a87b7-1039-4688-85eb-9efc8a25dfe5@redhat.com>
+Date: Tue, 27 Oct 2026 12:49:44 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,119 +112,28 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] octeontx2-pf: fix skb use-after-free with ipsec
+ crypto offload
+To: netdev-bot+sashiko@kernel.org, nb@tipi-net.de
+Cc: sgoutham@marvell.com, gakula@marvell.com, rkannoth@marvell.com,
+ sbhatta@marvell.com, bbhushan2@marvell.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261022-nb-otx2-xfrm-unshare-net-v2-1-5590c9325bcd@tipi-net.de>
+ <179296218017.3134.5170259489302207876@kernel.org>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <179296218017.3134.5170259489302207876@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On 10/25/26 22:03, netdev-bot+sashiko@kernel.org wrote:
+> - [High] The fix only partly covers its target.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+I've mixed feeling WRT the above points; it's (borderline) pre-existing,
+but it's IMHO bad enought that should be addressed in the same fix.
+Thoughts?
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+/P
 
-- [High] The fix is incomplete: the ENOBUFS livelock it targets is still
-  reachable whenever a minimum-size dump skb also does not fit.
-
---
-
-netlink: retry a dump skb that does not fit with the minimum size
-
-When the skb sized after max_recvmsg_len is rejected by the sk_rcvbuf
-admission check, netlink_dump() now frees it and retries once with an
-alloc_min_size skb. The goal is to fix a livelock added by commit
-ae8f160e7eb2, where a reader that peeks before reading, such as libnl,
-spins on ENOBUFS.
-
-> diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-> index a904dc3bcad6b..b750e79fed2ed 100644
-> --- a/net/netlink/af_netlink.c
-> +++ b/net/netlink/af_netlink.c
-> @@ -2318,10 +2318,21 @@ static int netlink_dump(struct sock *sk, bool lock_taken)
->  	if (!skb)
->  		goto errout_skb;
->  
-> +retry:
->  	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
->  	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
->  	if (rmem != skb->truesize && rmem >= rcvbuf) {
->  		atomic_sub(skb->truesize, &sk->sk_rmem_alloc);
-> +		/* A skb sized after max_recvmsg_len may not fit next to data
-> +		 * still charged to the socket, while a minimum size one does.
-> +		 */
-> +		if (alloc_size > alloc_min_size) {
-> +			kfree_skb(skb);
-> +			alloc_size = alloc_min_size;
-> +			skb = alloc_skb(alloc_size, GFP_KERNEL);
-> +			if (skb)
-> +				goto retry;
-> +		}
->  		goto errout_skb;
->  	}
-
-[Severity: High]
-Does this fully close the livelock described in the commit message?
-
-The admission rule is unchanged. The minimum size skb is still rejected
-when rmem_before != 0 and rmem_before + T_min >= sk_rcvbuf, where T_min
-is the truesize of an alloc_min_size skb. The comment says a minimum
-size skb "does" fit, but nothing here guarantees that.
-
-On the recvmsg side, the dump is only re-run once rmem drops to half of
-sk_rcvbuf:
-
-net/netlink/af_netlink.c:netlink_recvmsg() {
-    ...
-	if (READ_ONCE(nlk->cb_running) &&
-	    atomic_read(&sk->sk_rmem_alloc) <= sk->sk_rcvbuf / 2) {
-		ret = netlink_dump(sk, false);
-		if (ret) {
-			WRITE_ONCE(sk->sk_err, -ret);
-			sk_error_report(sk);
-		}
-	}
-    ...
-}
-
-When sk_rcvbuf < 2 * T_min, that check does not guarantee
-rmem + T_min < sk_rcvbuf. A few configurations appear to land in that
-window:
-
-- On 4K pages T_min is roughly 4352 bytes. An unprivileged
-  SO_RCVBUF=4096 gives sk_rcvbuf=8192 via __sock_set_rcvbuf(). Any
-  rmem_before in roughly [3840, 4096] then fails both the large attempt
-  and the retry.
-
-- On PAGE_SIZE >= 8K, NLMSG_GOODSIZE is SKB_WITH_OVERHEAD(8192), so
-  T_min is roughly 8448. With iw's 16KiB sk_rcvbuf, rmem in roughly
-  [7936, 8192] fails both attempts. A few notifications that are still
-  charged could reach that range, since do_one_broadcast() holds them
-  via skb_get() until netlink_broadcast() returns.
-
-- When cb->min_dump_alloc is at least the capped max_recvmsg_len,
-  alloc_size > alloc_min_size is never true and the retry never runs.
-  smc_diag_handler_dump() is one example: it uses
-  SKB_WITH_OVERHEAD(32768).
-
-In those states the original sequence still looks reachable:
-
-__netlink_dump_start()
-  netlink_dump()            -> -ENOBUFS, cb_running stays true
-netlink_recvmsg(MSG_PEEK)
-  netlink_dump()            -> -ENOBUFS, sk_err = ENOBUFS
-netlink_recvmsg()
-  __skb_try_recv_datagram()
-    sock_error()            -> ENOBUFS returned, nothing dequeued
-
-rmem never changes, so the peek/read loop keeps spinning at 100% CPU.
-
-Before ae8f160e7eb2, the dump skb was admitted whenever
-rmem_before < rcvbuf, so a dump triggered from recvmsg could not fail
-this way.
-
-Would it be better to relax the admission rule for dump skbs, instead of
-adding a second, smaller skb size?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261023-netlink-dump-livelock-v1-0-478214a635d2%40gmail.com
