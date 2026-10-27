@@ -1,95 +1,45 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.226
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793078904;
-	b=pUvzIzmgktuUNkeGdaiMsTS7u+AVL1bI0HiCjs2y5hRE5YFIY3IQ9RmusLyKU/SLWZv0
-	 wZ/xDgH34/p3o95RrCbHFyJeeifILO56yW37qTk2kzl4AGxf34ADWQPIvy0/CUW8CFxj2
-	 /KE4HdcUzrGqO5akbrhPlv3iOz3uSHPQ3CjeE1FiiBSdmrT3vXUzKHSYQ/ujymUxyyH1h
-	 YuJCyH2deGNNX9uS/vKYI8QAhoixobO3+lA+9rRe1rGkEPfNV1anGlhvMjLtElMoYAmb9
-	 vg6uhb+xyHDfaVROHso1AJpJCe9HaJY94AtvybdaahJG7TxEui3Ad72JsY3ifCkvHwg==
+	t=1793079022;
+	b=2aDaKbt248CK4tndNwNXbC+rLEhpxCXMo1NCIiJtD8U/KbA2yGIfudHUrNCFdO88rS5P
+	 eoCcde/xl9DqPKipuBST6ZD7KwMvFQW9ZzI4A5sbtz5VveudQ5dDKiodfk44VxNVSYz/J
+	 6sEllN/xUIIzOZ/3epQbs1aAFLIk4rvBExV6tRCqezCfdtgE1bNA5UvDimJCfNcwW/g+R
+	 KvBiEM4wclpw4Kmu8QLRbW/vbLl33ayYUX24ZmzF5eOamksk/gqN5Q49rJxgoCdc8KLxZ
+	 ggGYUh1albIPmByAtZWXV5GEqzH15S8ZlJQ27efXa0dzljkNBwZpk568ZEIKKeDNmXg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793078904;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
-	 X-CFilter-Loop:Received:DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Received:X-Received:MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type:
-	 Content-Transfer-Encoding:X-DetectorID-Processed;
-	bh=i0Omha6OI9MUeQUJmEdArgRodEoTi21Ihq4kzkDpg+k=;
-	b=itdYG3Kx7RosWw6SIA/nsP4rNBiycuU2uCXFxY60JeTLPGAQ3dhRet+eYYMvPk4ZNg2e
-	 3CabjGyVYks7yaXCNk+4jAXMJhyoQ+G5sDuZXexzCXE5lYjDZFp4ksWGAmz9mpdmhrdSI
-	 G8a7dK3h0fdunHZfaObz00qpRRq0gI1eqxTkfd0qgasBcocPaOoroiC04BNFTk4JjAlY6
-	 GX9IYFegbvbic/7V0q09Uj5Vu+ukMKwe1OeaWqoa+r5AcNsFQsNju/FZ2254AGMuQyJVo
-	 tibQWrGDW+t8iOrZDQloY5ncmYsSsIpPEN6orZikK0SzI1JrEbw1AXLlJg/FCdvtB1w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793079022;
+	h=Received:DKIM-Signature:Content-Type:MIME-Version:Message-Id:
+	 In-Reply-To:References:Subject:From:To:Cc:Date;
+	bh=wgDX8AZbuhQDLrambpgz70Jd1qU/J3fq5NqVCzjiHh4=;
+	b=wykVFEQNfikmd2Ozy1R9sQUiKmSljqu1C03m8cHWP8OOwMbxILiKkWP2X8XHaMQP+OHr
+	 777CvAv7odWDYom0qmotOpNa7ZIEFTOhNICI/yeEcOv+GnsW7H3RnpATa2VB+1w+Mtn3/
+	 Ob2OkNLqGLyESu6uuOcNPQxvOrqfUgp4ZD9aADakQphkydz2km+ggKLTw+g92Pi+reOsQ
+	 KnCUJtPo5MGzvA2L8yPTQL2VGloz+JqhvIN3nXkobyUsHeM/WgqD78aO5V4+52lpPcXz6
+	 xfpuePcy0eDsOLgNbJhCJiB2ccMS6fGQFfnVww865HMmHP34E+S7ctVfpszNrEiqZRg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=broadcom.com;
-	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=Hv5ts+VE;
-	arc=none smtp.remote-ip=209.85.215.226
-Received: from mail-pg1-f226.google.com (mail-pg1-f226.google.com [209.85.215.226])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aQczWL6q;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA22606A31D
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 05:28:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AFA22606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0825606A31D;
+	Tue, 27 Oct 2026 05:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=Hv5ts+VE
-Received: by mail-pg1-f226.google.com with SMTP id 41be03b00d2f7-cc7d154ec4fso1520617a12.0
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 22:28:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793078903; x=1793683703;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:dkim-signature
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=i0Omha6OI9MUeQUJmEdArgRodEoTi21Ihq4kzkDpg+k=;
-        b=dbUHfp5J7SqIMfNDljY8VyBLc3FEa88Z2CpgfsMgdZ4jAiPu9aT2uLWZ99sLCAskXW
-         l03zxvh+i7PD+NRvig31WB/LNRZviEKUqmkzus9r8reoKpXirZyMIVLE/zuXXrq9g1Vh
-         A3ka/I/ZUgTunt+8zyUzCgNOasOS6oZELkG6Gx8YXQjFXlnmezFzhKtwNb1rHdpfpbH2
-         0TAAWxl7P0PHfw8yOgOOX5FPqNFMFFTmUs41rWxXQ8TaqRAV4ryBuDaEzibp41ZTWyMw
-         rgY5VrJGk0F7zie9LEwcM4LT96CAoF+PxUw1CMS3eBp2JxaEFnyQvtyzBigpMjwQVIER
-         JM+A==
-X-Forwarded-Encrypted: i=1; AKwUvBxu4zgXQA59zYft7G0Db6ec7WxokgXbuYIppWOgY6wtlGN0jT4qG5mYYWsuf5YnpiAYF02iMFo=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJy94Vl484r0RT66+RrcW1evz8ZhyJ8IGc3cvsmt+5OMoqGJXNq
-	krGrppTdJlNvZ33nZN23UtujYMA9dYd3uKc4mlY5UstjDB9Q/0xnDmGBeSWPMW1WBA3JOJ5cM7n
-	ND+dNpTLAF5v875EXqmwgw22ZyhJ14Zm9VEIAdmMYrbiO342ifg3rr71NilONeYtcXIxax3rcqb
-	zCeLkx28yjcxqEyYgJ3f4e+cwIObXRu8SzB5AQj48OMeBRN57arrYRJ8LYtWvw3Ykgv2OOftwhF
-	t8qmhQTIA==
-X-Gm-Gg: AYBFou1FnWgTckIDrgUDWF93TATxgIBDRU8t2k9XRs84xM6epm34EDso55tGZQ1KAtF
-	6tMujIBPGq3ubgVVsLEQiNS2Lgj/+XVPmjiod5uiKkMZQkEcfCUVEoLOLQHuPksjjv1ewzIMm2b
-	23ED/jak/8J5jhTRpPiUf84JCNaTJBtqnEfMRl5B2++MBE+BmPloc6EtQ7cL7M3IvHRXyRE7RNK
-	D/wpiD3uHSR9Br9Y3+AXCoZTydcEnX2VxEMVT7RSLqsfUGoBSFLeEHr/R8QBS0X9SFELLUjYPgR
-	oU9QBVsTAhgeChVNDrpdsFhKeOseBb/PVFipS8K69PS6mttr+J+75WfEm2daUEpskdgUACxQcu3
-	v3plLt48jDDHLxKXakw2r+oR0bk44G2xYmE/wyGAOwgJSefyB5kdzy56lYKiogLuvJTGjUnemOU
-	RK3MNWkkZhAQxLIwXlmD0Z7lILqALywnp+0w==
-X-Received: by 2002:a17:90a:fc48:b0:3ad:50a2:9abf with SMTP id 98e67ed59e1d1-3adeae88e5bmr7596588a91.38.1793078902996;
-        Mon, 26 Oct 2026 22:28:22 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-28.dlp.protect.broadcom.com. [144.49.247.28])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ae406dc8fbsm1323004a91.1.2026.10.26.22.28.22
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 26 Oct 2026 22:28:22 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-vk1-f199.google.com with SMTP id 71dfb90a1353d-5eb510afc00so1018320e0c.0
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 22:28:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1793078902; x=1793683702; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=i0Omha6OI9MUeQUJmEdArgRodEoTi21Ihq4kzkDpg+k=;
-        b=Hv5ts+VEac2dOY47cVEwh8LEduIMGy0w2R+fpKFa3THYi3LPzXdm+LxiFX+LLcCM2K
-         eeEjdhrkx21NWicVviE2eOLtjBg4ATMksb2vUzWhubzHbcHGBJT9Lj4kQbgwDCSqzzEK
-         YmiDYRvSBDW6DJdn60XcSRgqkTVgg/YsBc7FI=
-X-Forwarded-Encrypted: i=1; AKwUvByHuBLpRs1rAkmOOfiWes01FEMVgKNCZbvZIEBgXVgzkc3BPbEpo768cQIs6OVR3ElUzw7t1S4=@vger.kernel.org
-X-Received: by 2002:a05:6102:334b:b0:7cc:1d0b:6d33 with SMTP id ada2fe7eead31-7ce5cda3f5bmr2464710137.26.1793078901773;
-        Mon, 26 Oct 2026 22:28:21 -0700 (PDT)
-X-Received: by 2002:a05:6102:334b:b0:7cc:1d0b:6d33 with SMTP id
- ada2fe7eead31-7ce5cda3f5bmr2464700137.26.1793078901403; Mon, 26 Oct 2026
- 22:28:21 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aQczWL6q
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 186FB1F01825;
+	Tue, 27 Oct 2026 05:30:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793079021;
+	bh=wgDX8AZbuhQDLrambpgz70Jd1qU/J3fq5NqVCzjiHh4=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=aQczWL6qjZ197z2M/CPl+k8ZV2edDG4gk/ybWC01FHIEBuZ0mMaM1tVR8WNt6swJF
+	 XBJaBhysX7q2U4W7uzHTVY7VyKk7gwLlj0iBhHrMdITwuApKCsgs2PQ2RMhOheK0u+
+	 i5vfKqHyEvmyKcROFVkx8lvXxEqwEpFEkHcQRmcPwT1AOmQDjq9O2Fpg2aexI85z7W
+	 5+0AA9p96L7geFHWSF66tFek6X3PENg8vhy9bHUo9Ouk1cHB2Q91FrULa6clN02Tpe
+	 sbyvLuVc8wI0rYSOAorlFdIk1rVjuf/1Vz1eWsXtV1RFvpTrui3LNvAxaGntssDbLh
+	 ImHiWGjzbe2kg==
+Content-Type: multipart/mixed; boundary="===============1515168815184980910=="
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -99,56 +49,162 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261026092757.9168-1-vikas.gupta@broadcom.com> <179300703050.3327.1854487549237861268@kernel.org>
-In-Reply-To: <179300703050.3327.1854487549237861268@kernel.org>
-From: Vikas Gupta <vikas.gupta@broadcom.com>
-Date: Tue, 27 Oct 2026 10:58:08 +0530
-X-Gm-Features: AclHuK-e-IEGXyZmkxyrolV4vzi29eNKxFEsXYfr1j1mgNehM7DbZTSy-5Bbvrc
-Message-ID: <CAHLZf_t1t41ftc4o8i6cS_VVT1RgyLW-o9KeZst_VPPmD9x2oQ@mail.gmail.com>
-Subject: Re: [PATCH net v3 0/2] bnge fixes
-To: netdev-bot+sinfo@kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	bhargava.marreddy@broadcom.com, rahul-rg.gupta@broadcom.com, 
-	vsrama-krishna.nemani@broadcom.com, rajashekar.hudumula@broadcom.com, 
-	dharmender.garg@broadcom.com, ajit.khaparde@broadcom.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Message-Id: <5d549ed21ea51f32d19eaf6e553c1ab8b6d99ea0134d75f835b902873d16d7d2@mail.kernel.org>
+In-Reply-To: <da2b3b99a2f41142acd0eab4b7ecd2210c3f4a51.1793076960.git.zhilinz@nebusec.ai>
+References: <da2b3b99a2f41142acd0eab4b7ecd2210c3f4a51.1793076960.git.zhilinz@nebusec.ai>
+Subject: Re: [PATCH bpf v2 1/1] tcp_bpf: update copied_seq from current value
+From: bot+bpf-ci@kernel.org
+To: zhilinz@nebusec.ai,alexei.starovoitov@gmail.com,netdev@vger.kernel.org,bpf@vger.kernel.org
+Cc: edumazet@kernel.org,ncardwell@google.com,kuniyu@google.com,john.fastabend@gmail.com,jakub@cloudflare.com,jiayuan.chen@linux.dev,davem@davemloft.net,pabeni@redhat.com,horms@kernel.org,daniel@iogearbox.net,vega@nebusec.ai,zhilinz@nebusec.ai,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Tue, 27 Oct 2026 05:30:21 +0000 (UTC)
 
-Hi,
-  We found these issues during the Sashiko code review.
-  The fixes were tested on the Thor Ultra platform.
+--===============1515168815184980910==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Thanks,
-Vikas
+> tcp_bpf: update copied_seq from current value
 
-On Mon, Oct 26, 2026 at 3:00=E2=80=AFPM <netdev-bot+sinfo@kernel.org> wrote=
-:
+TL;DR:
+- In strparser mode, the new copied_seq write-back may over-advance past
+  rcv_nxt after multiple rounds, stalling the receiver
+- Commit message wrongly says tcp_data_ready() releases the socket lock
+
+> tcp_bpf: update copied_seq from current value
 >
-> Hi!
->
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
->
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
->
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
->
->  - What hardware the change was tested on. For driver fixes please
->    mention the device (and if relevant firmware version) used for
->    testing, or say that the change was not tested on real hardware.
->
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
->
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+> tcp_bpf_recvmsg_parser() snapshots tcp->copied_seq before processing
+> queued data and waiting for more. tcp_data_ready() and
+> tcp_msg_wait_data() can release the socket lock. While it is released,
+> a sockmap verdict can drop or redirect data and advance copied_seq. At
+> exit, writing back the old snapshot plus copied_from_self rewinds that
+> progress, leaving ordinary TCP receive behind queued data.
+> Keep copied_from_self as the count of bytes consumed from this socket,
+> but add it to the current tcp->copied_seq at exit instead of writing
+> back a stale snapshot. Count the FIN byte in copied_from_self as well.
+> Fixes: e5c6de5fa025 ("bpf, sockmap: Incorrectly handling copied_seq")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vega <vega@nebusec.ai>
+> Suggested-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+> Assisted-by: LLM
+> Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
+
+The changelog says tcp_data_ready() can release the socket lock.  Is that
+accurate?
+
+tcp_data_ready() calls sk->sk_data_ready synchronously while recvmsg still
+owns the socket.  In verdict mode the verdict runs inline:
+
+tcp_data_ready()
+  sk_psock_verdict_data_ready()
+    tcp_read_skb()
+      sk_psock_verdict_recv()
+        sk_psock_verdict_apply()
+          tcp_eat_skb()
+
+and tcp_eat_skb() advances copied_seq after the old snapshot was taken.
+
+In strparser mode, strp_data_ready() sees sock_owned_by_user_nocheck() and
+only queues work.
+
+The conclusion that the snapshot is stale still holds, but for
+tcp_data_ready() the stated reason does not match the code.  Since this is
+tagged for stable, could the message say that the verdict runs inline from
+tcp_data_ready(), and that only tcp_msg_wait_data() (via
+sk_wait_event() -> release_sock()) drops the lock?
+
+> diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+> index 8cf63a9e7fed..a01d6d5449c7 100644
+> --- a/net/ipv4/tcp_bpf.c
+> +++ b/net/ipv4/tcp_bpf.c
+
+[ ... ]
+
+> @@ -319,7 +316,7 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+>  	}
+>  out:
+>  	if (!peek)
+> -		WRITE_ONCE(tcp->copied_seq, seq);
+> +		WRITE_ONCE(tcp->copied_seq, tcp->copied_seq + copied_from_self);
+>  	tcp_rcv_space_adjust(sk);
+>  	if (copied > 0)
+>  		__tcp_cleanup_rbuf(sk, copied);
+
+Can this over-advance tcp->copied_seq in strparser mode (stream_parser +
+stream_verdict)?
+
+The new write-back assumes that whatever changed tcp->copied_seq while the
+socket lock was dropped only added bytes that this recvmsg will not count
+again.  That holds in verdict-only mode, where tcp_eat_skb() only adds
+skb->len for dropped or redirected skbs.
+
+It does not hold in strparser mode, which also reaches
+tcp_bpf_recvmsg_parser() through TCP_BPF_RX.  There
+tcp_bpf_strp_read_sock() writes an absolute value:
+
+    psock->ingress_bytes = 0;
+    copied = tcp_read_sock_noack(sk, desc, recv_actor, true,
+                                 &psock->copied_seq);
+    ...
+    tp->copied_seq = psock->copied_seq - psock->ingress_bytes;
+
+psock->ingress_bytes only covers the bytes passed to self by the current
+read_sock call.  After a second strparser round, tp->copied_seq already
+includes the self bytes from the first round, which are still unread in
+ingress_msg.
+
+For example, start with tp->copied_seq == psock->copied_seq == P and nothing
+queued:
+
+1. The reader blocks in tcp_msg_wait_data() -> sk_wait_event(), which calls
+   release_sock().
+
+2. A 100-byte message arrives.  In softirq, tcp_data_queue() ->
+   tcp_data_ready() -> sk_psock_strp_data_ready() -> strp_read_sock() ->
+   tcp_bpf_strp_read_sock() runs and the verdict passes it to self
+   (sk_psock_skb_ingress_self() adds 100 to ingress_bytes).
+   psock->copied_seq becomes P+100 and tp->copied_seq becomes P.  The
+   reader is woken.
+
+3. A second 100-byte message is processed before the reader takes the lock
+   again, e.g. in the same softirq batch.  ingress_bytes is reset to 0 and
+   then set to 100, psock->copied_seq becomes P+200 and tp->copied_seq
+   becomes P+100.
+
+4. The reader takes the lock, goes to msg_bytes_ready and reads both
+   messages (copied_from_self = 200).
+
+The old code wrote back snapshot + 200 = P+200, which is correct.  The new
+code writes P+100 + 200 = P+300, which is 100 bytes past rcv_nxt.
+
+While copied_seq is ahead of rcv_nxt:
+
+- tcp_epollin_ready() computes avail = rcv_nxt - copied_seq <= 0 and
+  returns false.  tcp_data_ready() then does not call sk_data_ready, so
+  the strparser does not run for new data until more than 100 extra bytes
+  arrive.  In a request/response exchange, the receiver stalls.
+
+- tcp_bpf_recvmsg_parser() itself sees a non-empty sk_receive_queue that
+  tcp_data_ready() will not drain, and returns -EAGAIN.
+
+- tcp_rcv_space_adjust() computes a negative inq.
+
+- If the socket later leaves the sockmap, tcp_recvmsg() starts from an
+  advanced copied_seq.
+
+The overcount comes from tcp_bpf_strp_read_sock(), and it also happens with
+the old code when the rounds finish before recvmsg takes the lock.  With the
+old snapshot, however, rounds that ran while a blocked reader waited came
+out right, and with this patch they now overshoot.
+
+Should this patch handle the strparser case, for example by making
+tcp_bpf_strp_read_sock() account for all self bytes still unread rather than
+only the current call's ingress_bytes?  Otherwise, could the commit message
+explain why the strparser path is still correct?
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/40453304549
+--===============1515168815184980910==--
