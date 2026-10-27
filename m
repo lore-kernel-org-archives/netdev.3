@@ -1,57 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=109.224.244.22
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793117112;
-	b=e6qAIY+lDIWMuAKdhVs8bVOhRQy1lruHV0dEprN3RK7QmpZEzA4kSFvbn9t204H2G/XP
-	 lYwqOVL0jBikHjm4JUyXcapz6B4nHYmHEgTYz1cuwW1yKndqjZLrWaNcWFl15CWy70ABN
-	 4g83mLmdIztHugcJH159Z4yPsIgNZMBtr5ZBzW2faw5vNyE1F/ZQvvrFH+ECtyE59o2e7
-	 BUK8MHv99Q4/NhI8RF50YxEfdxMYzRonlcIHgPHMuZ9TsBZK9NFbF5Jn5xzZAyh1fSgZl
-	 m43KY9Yw6aOdzxhPlwLT404RCNva6uMnkLD7c+idSFaB7ZYIJHkeUbbrXwdi2MzYntw==
+	t=1793117208;
+	b=lpp6lvWQilJJps7HChIw7VeaTUICu2J8xT+hUSulW6VK1n/sWKAmXEkAM04cZAiJ+7Ch
+	 gCDPywOPIHwHl7k9Ib746AF4BrfVqVhk14r5Jap/ex10zup8UQgNTXaeTxfTqp8ep2dAn
+	 NLP502LHRB6Cx7MRa6hH2GENA+oQXOBFtjcKRnnv379KjAm8ObndxjytlbYNfQzQVt9BO
+	 tdRph9UNMnwhr4csWSka3nJwm+R0A+1TgVN6vlij2QHj/2t2wadUBlAyH3T9ihvu4Fwc9
+	 S84593ZO2Mhen56a64F1Xcm3cP4ulZVvnVwENPOzIbRJ4NOACWiMxIb/ZTwMW4ohMDQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793117112;
-	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
-	 In-Reply-To:References:Feedback-ID:X-Pm-Message-ID:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=nH+VUOwPiLWELl3Tmh6lF2sEqX8N/UojmX/Q6srT+o0=;
-	b=vNfeUbm9NYuOoWK+ib8w0WSX0oaho6SddOgah7r4Gh9wyyh5yWa9zfzyG2im5II9DYIi
-	 gLAbpJN6POgg5Z8yNwTpVxOOFFtvTZFB/CLWi0S27LWcv51d+QVai2BFY4s9egi1zrQpC
-	 mp+4c8OtMJR06jVuXSlR7VqNcEIXLHQQul2gxs9y/+XT9Lexg/bDMHZC92L/4xQBA3LA4
-	 uK7ll8zrJWjXF48dapGu8QxGJOHVYEtRDfIB4XMvXjQFJVmqJ9b9bCcAQR8TDiapjL0Fj
-	 gDwgIx2iJhokwNlE+Ywwb7Pc55iogMIeRFwgJVQcvIstvGgrRvawvyGp22fFLjO24/A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793117208;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
+	 Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=KNEVjBhfTHDsZCQ7qnL/mlUBzN1xy9MkobZSRlmWQJg=;
+	b=wUiI5aXyuSdCbw3Op9MBi9aSRMzSSXqU88ZsxWetxC8HQSaoPFmx/VC68tmS5VBD+IOz
+	 L6TsZpvRzD3PqNb7eCwZVQJWfLLmm1jAIlYfbuyqFDrlUXRR+Bd1m7oyvv55zfq07pIXe
+	 cD7gXN+kGPC2+1QVPwEMgRvcESw20JhTgHJDfEnEj5nfYDQ09cK3OT96mmY4wjW94rGt0
+	 w0vFuzAeIajuiFJQkSUhrVNxHfBjhzHyYb7YILIQkDI/x5SYDErzw6OiZmzKrCZCPT36c
+	 ILHR5wwEtjN2FfWfAJvPRrp9SS5VX+Nnu1ZHGG3nb9L9j/4qTMikTi1v8tdZzVXw9Uw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=1g4.org;
-	spf=pass smtp.mailfrom=1g4.org;
-	arc=none smtp.remote-ip=109.224.244.22
-Received: from mail-24422.protonmail.ch (mail-24422.protonmail.ch [109.224.244.22])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZsmaVZvf;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5447E60A2616;
-	Tue, 27 Oct 2026 16:05:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5447E60A2616
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
-	s=protonmail; t=1793117104; x=1793376304;
-	bh=nH+VUOwPiLWELl3Tmh6lF2sEqX8N/UojmX/Q6srT+o0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=tmpzVkCVtFh8fUl4Zw3KkD/B61mnXrSGU3g1xMp8Bi6peJUc9iZhhdrWzm+Pu4SM3
-	 6Kw2lLpVlKLplc5a3WYkYIPp7N1YSo/ImoZzlt649QL6OEsTYG7Jx+t/2wbTP1Y0OS
-	 n96sS8bSVk1JKuQTneyTNREkq85X+qYRgg/HljvhJ0MxvuunFvDDtsjaH1CP1EuRYL
-	 1qvbLOWo8AAh00ALfFOfQbx7jCZk5KjcVc8gvFlg+BvZRjMipTzxLNRxPN+ZdWBBww
-	 v4VlrJfG4pY3hLL6VBc9b+OW/Ib9byNfSneONKg7/btwAX788g06UD9pkJrb1FEbxE
-	 cmo5RSTfjHc6w==
-Date: Tue, 27 Oct 2026 16:04:55 +0000
-To: netdev-bot+sashiko@kernel.org
-From: Paul Moses <p@1g4.org>
-Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com, intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, aleksandr.loktionov@intel.com, chwee.lin.choong@intel.com, faizal.abdul.rahim@linux.intel.com, horms@kernel.org, vinicius.gomes@intel.com, sasha.neftin@intel.com, matthew.vick@intel.com, aduyck@mirantis.com
-Subject: Re: [PATCH net 3/3] igb: prepare TSO and checksum offloads before TX timestamps
-Message-ID: <i3Glqm96F2TwAGa6takMMBWz5Fe0r5gw23k57lIUGuQSqsiCFRrzCutLPLR09oErj81K8M1EocaXjYXMH0omemFq_0aqO9HSat904_5_c0k=@1g4.org>
-In-Reply-To: <179310343105.3134.12907560938189136535@kernel.org>
-References: <20261026091549.605810-3-p@1g4.org> <179310343105.3134.12907560938189136535@kernel.org>
-Feedback-ID: 8253658:user:proton
-X-Pm-Message-ID: 5577dc02ccf452cd87aa75f780246daa3d7ea01b
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABF9606A31A;
+	Tue, 27 Oct 2026 16:06:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZsmaVZvf
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EDBE1F031E1;
+	Tue, 27 Oct 2026 16:06:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793117207;
+	bh=KNEVjBhfTHDsZCQ7qnL/mlUBzN1xy9MkobZSRlmWQJg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=ZsmaVZvfr7J7TBgWFxSPQ9veQigACtPQGB35EOT1ct2y9xwurgSDAkwA6XpQkZ1/G
+	 DHE2vd7PCv+1aHZYQSu2VOfcu0O7UIZCnLQU12gTd7tzySfO5sEUd2u+XrdwDZCjkt
+	 NXYoexcTbx52YJHdFJL3kkNazlxOZlTk7yqxAoMGMi4Ki8MifENmMTvsn4Fu7on/AD
+	 3Px1CIvyGUpJy93v0QlFDneEtPsU+YAzzZav46K7sK6lcXVWmEsEJHIng9A2z73Xdg
+	 T77y+4RjFV/PZoJbgoGRXJiSaFcObm0OjarMB9L7Sq4nXLddr+NN0OOMLA7ZC7hBoX
+	 24rXjqVFMv2og==
+From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: robin.murphy@arm.com, m.szyprowski@samsung.com, tglx@kernel.org,
+ dave.hansen@linux.intel.com, x86@kernel.org, joro@8bytes.org,
+ will@kernel.org, leon@kernel.org, mbloch@nvidia.com,
+ iommu@lists.linux.dev, netdev@vger.kernel.org
+Subject: Re: [RFC 07/11] eth: ixgbe: use dma_alloc_coherent_node()
+In-Reply-To: <20261027085133.2832f2f5@kernel.org>
+References: <20261027022528.633359-1-kuba@kernel.org>
+ <20261027022528.633359-8-kuba@kernel.org>
+ <87ecdb5x8k.fsf@all.your.base.are.belong.to.us>
+ <20261027085133.2832f2f5@kernel.org>
+Date: Tue, 27 Oct 2026 17:06:44 +0100
+Message-ID: <87wlr33z6z.fsf@all.your.base.are.belong.to.us>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,30 +65,28 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-> [Severity: Low]
-> Does this description match the tree this patch applies to?
+Jakub Kicinski <kuba@kernel.org> writes:
 
-It needs to be clear that it is affected by that commit.
+> On Tue, 27 Oct 2026 10:06:03 +0100 Bj=C3=B6rn T=C3=B6pel wrote:
+>> > -	set_dev_node(dev, orig_node);
+>> > +	tx_ring->desc =3D dma_alloc_coherent_node(dev, tx_ring->size,
+>> > +						&tx_ring->dma, GFP_KERNEL,
+>> > +						ring_node);
+>> >  	if (!tx_ring->desc)
+>> >  		tx_ring->desc =3D dma_alloc_coherent(dev, tx_ring->size,
+>> >  						   &tx_ring->dma, GFP_KERNEL);=20=20
+>>=20
+>> Not really this series, but the fallback here is odd, no? I thought the
+>> allocator already did cross-zone fallback?
+>
+> Fair, I was too lazy to check. I'll remove the fallbacks in the same
+> patch. Seems obvious enough. LMK if you prefer separate.
 
-> - [Medium] igb_tx_csum() still ignores the return value of
->   skb_checksum_help() (igb_main.c:6170, `default:=E2=80=A6
+Hmm. Seems like dma_alloc_contiguous() doesn't spill over to other
+nodes. It only tries the per-NUMA CMA... so keeping it is bit more
+robust. (Then again, I dunno...)
 
-out of scope
-
-> - [High] This problem wasn't introduced by this patch, but
->   ixgbe_xmit_frame_ring() has the same ordering bug this series fixes in=
-=E2=80=A6
-
-fixed
-
-> - [Medium] This problem wasn't introduced by this patch, but on the
->   igb_tx_map() failure path, cleanup_tx_tstamp in igb_xmit_frame_ring()=
-=E2=80=A6
-> - [Medium] This problem wasn't introduced by this patch, but the
->   cleanup_tx_tstamp path in igb_xmit_frame_ring() calls=E2=80=A6
-
-out of scope
-
-No plans for immediate followups, anyone/everyone feel free.
+I'd say keep it.
 
 
+Bj=C3=B6rn
