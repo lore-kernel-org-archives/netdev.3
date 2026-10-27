@@ -1,117 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.72.3
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793113625;
-	b=rXcnk+GfBnZOxvgbhhE8e2V1IdWFiZxT+CCFBsFw0lMZcJo9YNR+EMdaa2PLanNwISrn
-	 YQmuQnMvgUgVHEegTJfM4tzotxEdE+scm1LmfIg3wKpPVyw7am8XDisd4NzpZjcE9UPSg
-	 iLjD0I35M39txX+Q8MeTGz8UWASjQeiEQcvWufTl4wk96Tw4yHNJ54tmphjkQZ/4wbgPT
-	 5lS0tG4U5RQxvWxM+MuAqsVjLJ+mLI/0chCN9UdXhB2mkv/g5MZ0B9HJjbskNksdmNIJ9
-	 ymjfahyTthvORV2Yy0SSl83R5R5zQbP+e/iDb45PWG9vEoURsrA4/LMpEtu2CU87v4g==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793113625;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:Content-Type:
-	 X-Originating-IP:X-ClientProxiedBy:X-EOPAttributedMessage:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=ef+5QiXjgOgYRxWhtr5Pf1hnaNoPslQuqmd0dWf3cMo=;
-	b=zj2lHBFJy8qCvB+Npmtv+EjCwcBTynb7cs4RVK7fY64kA2z0fBE+e3FrxFifyCFQrcs8
-	 AApzeHYV51a1UzR0v3l2acqU2oNIyEqZWKXnZFQyRQB0EfbvTB0WgsoxN/Fem1Hc7e6zB
-	 Et5fl95tQctbIAWZO697TDSLw99SRwGnDORxvbU80NpfFVO/nzLoc/OYwn5WB2TQJ3ZKS
-	 p8vyWEdcBpobaV/saiXtZLxmIMWJcGcA4l/6Zc3ahXoCyb0uvkV6e3vh26vDxBgcEx95C
-	 rmD+INd1p+u48OqYHpOVTwu6O+CQiiFjABNc5ZOiaIXIM+lOzghdVJjt05JGii6ud/w==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=foss.st.com;
-	spf=pass smtp.mailfrom=foss.st.com;
-	dkim=pass header.d=foss.st.com header.i=@foss.st.com header.a=rsa-sha256 header.s=selector2 header.b=G5EuOI7m;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.72.3
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013003.outbound.protection.outlook.com [52.101.72.3])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=173.37.86.78
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793114135;
+	b=tqxEZUu4xeu+wz8DOS7IOCi5AQ4Bh5OskwWNyhmzl9MQZ+xBn6oI8C7B/tMF07DiK+M4
+	 9HK6NZD41AfwU6f8kp/LujzMIpBjiwLCMaONlxNNSjgfIh/dIUFSaCRfhcgg8nnsMEPJ+
+	 t6gtqyBhVwmCrHdC2wy7KtBSOEmRaJDSGatCPg7IWWKnYlraKrI3gE7fMZYJx6SHo8iDI
+	 uCJvms6m2CEstvIxQO8yKTLs2k19OEXJ11Lh9gce6YqZXAJOqNjgoTKNUXNsic791Rqmo
+	 6uDaL3XWgsvF0A5NCH8CF+Rt8bByUAS/7NLjYc24/Zte71QlH4MokTR90MkxP2eFGvQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793114135;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IPAS-Result:IronPort-Data:IronPort-HdrOrdr:X-Talos-CUID:
+	 X-Talos-MUID:X-IronPort-Anti-Spam-Filtered:X-IronPort-AV:Received:
+	 Received:From:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Outbound-Client-TLS:
+	 X-Outbound-SMTP-Client:X-Outbound-Node;
+	bh=SGZ5v8jYfs09yX68TlPxrVHyGxDYPI+9BJCitLuEo6k=;
+	b=kfKonOH5e7XDEvYjX1unerO7EtPlAZlpns/jwFNVPQO2jzBBW5M/btBx9hKKWN4cpfXx
+	 vUalBQlayNfJdyfu3hcM3urImZbPoDaLURNglLupIi1lSMKUtFZiezCojEETCUkPJUOXg
+	 6cQdGZaG4P7FooKZ+XeTkI7i6S+16q7E0OC/pm4CemSMiLYbGr/F6vG1gs5TrtZSkqtZp
+	 UVbLn//Zqum8dQWJO7hZgO0a/1+Z0KGF34ZFrnQUwJFuEUioX21tCHWPQpZTIQaqa9vB7
+	 3O5bp+W2g88y9jZLeHFTpsOnrRnV8jFh1kdDNk7+MUHItDWSLqUXR8GYe+szILEztqw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=cisco.com;
+	spf=pass smtp.mailfrom=cisco.com;
+	dkim=pass header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport01 header.b=CVNR2JED;
+	arc=none smtp.remote-ip=173.37.86.78
+Received: from rcdn-iport-7.cisco.com (rcdn-iport-7.cisco.com [173.37.86.78])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47D3606A31A;
-	Tue, 27 Oct 2026 15:07:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C47D3606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D6E606A31B
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 15:15:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 16D6E606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=foss.st.com header.i=@foss.st.com header.a=rsa-sha256 header.s=selector2 header.b=G5EuOI7m
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=h1SvEmnRiSG/hRgmHomeVMNngw/wAXs9BKmxB0Q6emCfKubQzqT9UQGDntsyjg+AIkSKMjOSzwfoGxeM25FvbUu/GDiTHjkekYJ1vPM5d6XkNZl9pF/9wzAwaoFT7UqzYfu1o79H2qncX73BtrVxwGqKWe2ZUWyT9ZFI/H7hRg+ukyBmO+jX0mdxS1k5dCHC/hz4XdPk45eoGs7YfHCKihaMhMR4vEckHJl+qsG4ou38hMrG9Od83zXpOBzLzW5oGqu5mrj75J0sTU1XNlsQVfJ/fNxWebWbZryEtoJ4byqsHolEPNVJIVeO6YHKxMfdRwZRKz88ej2fJ5rphO2Zfw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ef+5QiXjgOgYRxWhtr5Pf1hnaNoPslQuqmd0dWf3cMo=;
- b=aDf3i6Ez4+H6Fqu2fmd+oLiRf3CAVRI952oXu05jUx1EP2jQ9zmd54FKHKb8WviS84r1dtgIRV0Y4zGsKzCLofFvuzMrPc1KEPD7CQvjeWqthEwfydRsoxkKg+IMor2IxBl5gcqaTMsLcZ+PR/uSz07anyCaRJ0zx+RWbS7JDLK6mStZNfCiVDTsCTjw67xeoTTP0JA2UJSQVhMQwqzuhLogf6tfsKQteNv3TeLt14lzgntP8FthdU5BhSuJ/o5/ucHxCj2+lkOr2jssnXQCxQNKSq5tGoHiIj49ECAtJo6eWo6ZpwbPsPbSO+QBM4KhRB9HVl5epzO5PjPnCf/PsA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
- 164.130.1.60) smtp.rcpttodomain=bootlin.com smtp.mailfrom=foss.st.com;
- dmarc=fail (p=none sp=none pct=100) action=none header.from=foss.st.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ef+5QiXjgOgYRxWhtr5Pf1hnaNoPslQuqmd0dWf3cMo=;
- b=G5EuOI7mZQvFz6bYKo93+vZxgs68FyGMNlTvQEjvxbSeaA+b7+53iMaRJg3cW0i2sV56ZYQK0qVzLgGuVWEkol4Rv9V9BZWzaQFS+RjifTXkKeCmIflEGJxgQkGzBVzpBx+bkjdO+8th4B7rgpMqmdResHeS2XroANGEGNjs+LyGGA+Op7Lu4GHE4IhuGYLMYr79jU+XtV/T6poawnBu6hbftI3dGO+7WmuidHc6PS2Pts5tZb66Y+P/OL+1vKPVeUoxZwa46nZxmfP4uA/augPw2deLeAtETuevL+tAurfbUcRPVEWMZ/6fwUDssiEtgdt6TZky7NlMS3GVclEacA==
-Received: from PR3P191CA0041.EURP191.PROD.OUTLOOK.COM (2603:10a6:102:55::16)
- by PAVPR10MB7114.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:102:318::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.7; Tue, 27 Oct
- 2026 15:07:00 +0000
-Received: from MI3PEPF00008555.eurprd05.prod.outlook.com
- (2603:10a6:102:55:cafe::69) by PR3P191CA0041.outlook.office365.com
- (2603:10a6:102:55::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.546.22 via Frontend Transport; Tue,
- 27 Oct 2026 15:07:00 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=fail (sender IP
- is 164.130.1.60) smtp.mailfrom=foss.st.com; dkim=none (message not signed)
- header.d=none;dmarc=fail action=none header.from=foss.st.com;
-Received-SPF: Fail (protection.outlook.com: domain of foss.st.com does not
- designate 164.130.1.60 as permitted sender) receiver=protection.outlook.com;
- client-ip=164.130.1.60; helo=smtpO365.st.com;
-Received: from smtpO365.st.com (164.130.1.60) by
- MI3PEPF00008555.mail.protection.outlook.com (10.167.240.9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.569.4 via Frontend Transport; Tue, 27 Oct 2026 15:07:00 +0000
-Received: from STKDAG1NODE1.st.com (10.75.128.132) by smtpO365.st.com
- (10.250.44.72) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Tue, 27 Oct
- 2026 16:07:20 +0100
-Received: from localhost (10.48.86.230) by STKDAG1NODE1.st.com (10.75.128.132)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Tue, 27 Oct
- 2026 16:06:39 +0100
-From: Thomas Bourgoin <thomas.bourgoin@foss.st.com>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, "Alexandre
- Torgue" <alexandre.torgue@foss.st.com>, Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer
-	<hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, "Stanislav
- Fomichev" <sdf@fomichev.me>, Lorenzo Bianconi
-	<lorenzo.bianconi@oss.qualcomm.com>, Christophe Roullier
-	<christophe.roullier@foss.st.com>
-CC: <netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<bpf@vger.kernel.org>, Thomas Bourgoin <thomas.bourgoin@foss.st.com>
-Subject: [PATCH 1/1] net: stmmac: rebuild RX descriptors before restarting DMA on resume
-Date: Tue, 27 Oct 2026 16:05:56 +0100
-Message-ID: <20261027150556.51209-2-thomas.bourgoin@foss.st.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261027150556.51209-1-thomas.bourgoin@foss.st.com>
-References: <20261027150556.51209-1-thomas.bourgoin@foss.st.com>
+	dkim=pass (2048-bit key, unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport01 header.b=CVNR2JED
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=cisco.com; i=@cisco.com; l=7598; q=dns/txt;
+  s=iport01; t=1793114135; x=1794323735;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=SGZ5v8jYfs09yX68TlPxrVHyGxDYPI+9BJCitLuEo6k=;
+  b=CVNR2JEDcPUVrlRcQfHAepKabKlp5xG3ctNtjyCXYtVUzAUriZZMPBUC
+   i0536vPJz2EODyiWmTWF+ys2u98ybuPWH8P9DrmuNWy1Jt7r3VzCqNLb1
+   X7bKRf6GvgRuMVvP6S73EXeGGahwED0sCVpPQ74+hTpT2XeOLGghI52yb
+   QEXL29or1ADs0RjYGVmhtLDNRNKnY6NZXm1CAoNqxwhT5mmBBjikWozwl
+   ws6sadyl1MXMSGwRqXm3o3rNfsImGxrDmgRAzkvRxvdkQ1mq5VuumolpM
+   69cazdn4E7LndvcWgSO0M5okbAdFWXNirvj0wzvZJf3DR1UlzdGvdQJ1+
+   g==;
+X-CSE-ConnectionGUID: 02sn1CQ+QvSKPkduCB3uUg==
+X-CSE-MsgGUID: xfT3lDECRUyt9pMQ7WLn4Q==
+X-IPAS-Result: =?us-ascii?q?A0AEAADyvuBq/5T/Ja1QChoBAQEBAQEBAQEBAwEBAQESA?=
+ =?us-ascii?q?QEBAQICAQEBAUyBMAUBAQEBCwGDS2BDSYRXiBuHOIIhgRaQN4xSFIFqDwEBA?=
+ =?us-ascii?q?Q9KBwQBAYUFURWNMwImNAkOAQIEAwIDAQEBAQEBAQEBAQEBCgEBBQEBAQIBB?=
+ =?us-ascii?q?wWBDhOGTw2QFSdWNQImAkgpgwIBgnQDEQUBtX96gTKBAYR+2UuBbgYVgQouA?=
+ =?us-ascii?q?YVxgm0BgXGECIR9JxuBSUSBFAGCc3aEFgkLg3SCagSBDoEUgQyCWIVahB2BO?=
+ =?us-ascii?q?IglCT+BAhwDWSwBVRMNCgsHBWOBBQM1EioVbjIdgSM+Fy9YGwYFgR2BBwQTg?=
+ =?us-ascii?q?T6BB12BKylgASGBCIF2AoJRggACAUlBDgdFUwklQxJHJCIIEgkBExouC4EaN?=
+ =?us-ascii?q?TwJJkEVDGQIAxoFQAIgCAINDHc5EDEgJBgNSBEsNxUZBD0BbgeROoIYAS1DA?=
+ =?us-ascii?q?QEGBwgXIwgBARsGCQsHDBgXOSsHDwgbESMVBgICDAYZCxEQGZJjg3+MKIE2a?=
+ =?us-ascii?q?4E1n1qEKIFmijyVVDOXZ5MImQiOCoofiy0cDwyFNoFoPIFZMxoIGxWDIlMZD?=
+ =?us-ascii?q?44uFocyywgnMgI7AgcCBw4DC4ZGiyQPFweBTwEB?=
+IronPort-Data: A9a23:CjUFG6LACYK0JdYJFE+R85QlxSXFcZb7ZxGr2PjKsXjdYENS3mBVn
+ WZLWDqDM/yDN2bxftoiaY6x8B5Vv5LUz99hSgEd+CA2RRqmiyZq6fd1j6vUF3nPRiEWZBs/t
+ 63yUvGZcoZpCCea+Uf1WlTYhSEU/bmSQbbhA/LzNCl0RAt1IA8skhsLd9QR2uaEuvDnRVnS0
+ T/Oi5eHYgH8g2Qrajt8B5+r8XuDgtyj4Fv0gXRmDRx7lAe2v2UYCpsZOZawIxPQKqFIHvS3T
+ vr017qw+GXU5X8FUrtJRZ6iLyXm6paLVeS/oiI+t5qK23CulQRuukoPD8fwXG8M49m/c3+d/
+ /0W3XC4YV9B0qQhA43xWTEAe811FfUuFLMqvRFTvOTLp3AqfUcAzN02VlowZKYhud9pOkJ29
+ vAFAxpWcy2M0rfeLLKTEoGAh+w5J8XteYdasXZ6wHSAVLAtQIvIROPB4towMDUY358VW62BI
+ ZBENHw2MESojx5nYj/7DLollfupnXn8cxVTqUmeouw85G27IAlZjeS1aoSPJYXVLSlTtlaWm
+ jnC00nSOCwLKI2H7APazVaq2taayEsXX6pXTtVU7MVCjFSNy2k7BBQIWF6/pvelzEizR7p3J
+ kAJ/yM8oLQa90GxSNT5GRqirxasvQMWUvJTHvc85QXLzbDbiy6QAGQeQyECbtE6uMIobTg30
+ FnPlNOBLSRmurCTSFqH+7uUpC/0Mi8QRUcEaDMIQBUt/dbuuscwgwjJQ9IlF7S65uAZAhnqy
+ DyM6Sx7jLIJgItSjuOw/EvMhHSnoZ2hohMJ2zg7l1mNtmtRDLNJraTxgbQHxZ6s9Lqkc2Q=
+IronPort-HdrOrdr: A9a23:cnhiqKgZRYtiR8nkDJt5rRs6GXBQXkQji2hC6mlwRA09TyVXrb
+ HLoB1973/JYVcqOU3I9urtBEDtexnhHP1Oj7X5Q43MYOCOggLBR72KhrGO/9SPIVyaysdtkY
+ w8N5VkANfzDV915PyKgzWQIpILwdGB/qztpcq29QYOcShaL4xt8At9DB+WCQlVSBkuP+tBKL
+ OsoudKuDakf20adYCABncDV/XevNGjruOBXfd/PW9B1CC+yRW19bX9Dx+Umj0aUz9J3PMe1F
+ KtqX2A2k1m2MvLsCM1EATonu9rpOc=
+X-Talos-CUID: =?us-ascii?q?9a23=3APBHnC2mSJ0AaqLfAAhaDbOWc4+XXOSWH13GJCHb?=
+ =?us-ascii?q?7MHhSa4WWRUK70vh5rsU7zg=3D=3D?=
+X-Talos-MUID: =?us-ascii?q?9a23=3A888E0A9ZV58VbDzjMbdXUe6Qf9dm3/+qJG0mq6g?=
+ =?us-ascii?q?Xp5icEBUvBBOb0A3iFw=3D=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.27,181,1787011200"; 
+   d="scan'208";a="540262717"
+Received: from rcdn-l-core-11.cisco.com ([173.37.255.148])
+  by rcdn-iport-7.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 27 Oct 2026 15:15:28 +0000
+Received: from [127.0.0.1] (unknown [10.25.129.52])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by rcdn-l-core-11.cisco.com (Postfix) with ESMTPS id A3C831800026C;
+	Tue, 27 Oct 2026 15:15:27 +0000 (GMT)
+From: Satish Kharat <satishkh@cisco.com>
+Subject: [PATCH net v3 0/2] enic: retain admin DMA resources and identify
+ V2 VFs
+Date: Tue, 27 Oct 2026 08:15:15 -0700
+Message-Id: <20261027-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v3-0-ba237ed71241@cisco.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -121,185 +109,166 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: STKCAS1NODE1.st.com (10.75.128.134) To STKDAG1NODE1.st.com
- (10.75.128.132)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PEPF00008555:EE_|PAVPR10MB7114:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7fa953c8-89aa-483a-1538-08df343bf373
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|82310400026|23010399003|376014|7416014|1800799024|18002099003|22082099003|921020|11063799006|5023799004|56012099006|261026140227099003|261021121427099003|10067099003|261021123027099003|261009221227099003|261009223327099003|261009223027099003|261009220027099003|261009221727099003|261022105027099003|261022075727099003;
-X-Microsoft-Antispam-Message-Info:
-	nR9G1MpjPthTxpaMBrpvrllt/35j5VQlNeWvtr5CY2PU5ym7wivAGkawI8bF4uKwQu8MAirpcfF9+9dAyNU2S3jIHicf40ifAVphX47RhlpVlDJCMdt1dHwgAIdWN+HNJpCxjcDjA9v24uu7cOHuNLVXkCDC8z0M3dUrxP7HKYNEgD78b2QF/1yOgAG/rj6kklvjqyeydP5IK9+NOzKqlPMt6BAvaFbiMAAofYCA/9G4TqY2td29ZAy6scrH1JwaBk2TSV6YHQpKhrzSXRrTigNXbD5/OxhGr14hY+yS+yUixXFLyQsC1k25YtVvUzbQjNlXG+EOivF/ArXuQMira6elLLETcL/a3XRvsfMsiTKSSWPzcqhIUx8Hsrjl80oXgJ9TJd6oiUPnlHrFaK/5v5nJTFvarURasb1yGbHdfcfdmHEhx0vuXE4oP/NrwPCCn9FWuOXmPpWx276FupESkWvmyQxuAXfwZ1xyw8y3u5YgoFn80uxCp9iaqgsWre8ibbdlmRhvOtufAPTKO3motD+pZa7COMN33wcb2EoWHRzSgKrb1q7Jf4leehd4E5oKEI6/DA64EKNf3j2hsGi3HBd+hAQz1jZIMn28fCVhM27j4ILx9Pl7VqoTZnzfOz/z9Hr+fKXxA7W9FmICHrU0K4cfdQT2TI385HfxTgJ1R2cZHL3myP45GMsLviNmnuSE3jHqZ32BjqOkWMdBUOR+FrW3hyye1awKTboC2M7fbtUUJARNF3GTxTvEHwhOfvHA
-X-Forefront-Antispam-Report:
-	CIP:164.130.1.60;CTRY:IT;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:smtpO365.st.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(23010399003)(376014)(7416014)(1800799024)(18002099003)(22082099003)(921020)(11063799006)(5023799004)(56012099006)(261026140227099003)(261021121427099003)(10067099003)(261021123027099003)(261009221227099003)(261009223327099003)(261009223027099003)(261009220027099003)(261009221727099003)(261022105027099003)(261022075727099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	5rvPoeIca6UFUHYapw0CLefQRdxrC1LTwD2tG4yPW1HOE2+GhR8nF3ElIgaDamVA942qxtGeXyDhJU3cKXn+KoX78NAmH/Fpofank4Xbm9xvFSrYHAmJowyq2UGGg1pw1A6mqK0VHJCn4gwia5JVcAkM/ACmrJmO4E6tbCDjX2j3QiyIUxq3NB4Jyy2vbt5x65tuomA3l7gjcH1h15m/cq7TcsChXoLNAumnzXd3QEpyV6lz18na/7oqigD9D+SrcOoK6nWFl1blSqPUg32F+FiFoZtdNeCRFbFEp+qoUew/c6VeMNT1zVuabgBewTYZiEeLTW5gB1KgfXcu/HlON4cXLNP5YghCJB0lO4hR1itJbg1xPc0S6t/Lk99+XxVos/TptIbJbkZALTIVw5oFQ1F+byb1QLmOxxgAqncthzgJCghR2SJf1bJ416YWzbDv
-X-OriginatorOrg: foss.st.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2026 15:07:00.1265
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7fa953c8-89aa-483a-1538-08df343bf373
-X-MS-Exchange-CrossTenant-Id: 75e027c9-20d5-47d5-b82f-77d7cd041e8f
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=75e027c9-20d5-47d5-b82f-77d7cd041e8f;Ip=[164.130.1.60];Helo=[smtpO365.st.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MI3PEPF00008555.eurprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAVPR10MB7114
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAPA4GoC/52OzQ6CMBCEX4X07BpafgRPvofxQNstrgmtabHRG
+ N7dgsZw5razmZlv3iygJwzsmL2Zx0iBnE2i2GVMXTvbI5BOmolc1DznOcgS0JICPXQQDZDV+AS
+ LI/RoU5UCQz6MEDn8I7rtpCkrnhdFxVLx3aOh5wI9sxRll+8zPOQN1TjjZtuVwuj8a5kW+WL+V
+ dZbVqQ7TREHWVWmbpumOCkKyu2VG5YBUawQQmxCiIRotOStLLsDL3GNmKbpA788mGVuAQAA
+X-Change-ID: 20261010-b4-enic-dma-vf-index-net-generic-first-v1-20261010-d9abf4510335
+To: netdev@vger.kernel.org
+Cc: Sesidhar Baddela <sebaddel@cisco.com>, 
+ Aravind Dhanasekaran <aradhana@cisco.com>, 
+ Reese Faucette <rfaucett@cisco.com>, Satish Kharat <satishkh@cisco.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793114127; l=7667;
+ i=satishkh@cisco.com; h=from:subject:message-id;
+ bh=tF0VxSdecSTumJX1V5+XRM6FN29ypyowy8JUVLT4B1Q=;
+ b=YHxQNa3wqoLHuquZ+aUc5gDwNDfgHrk3wmFoRYEVUv56NoB7s7I5ZvBD05loe6fyIgn4FUMVD
+ XZaf4U8cshrCPQx6iO2ZgQT1V/cXnEw60+MQVvNdwbO5VCcPUEOCLCI
+X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
+ pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
+X-Outbound-Client-TLS: ANONYMOUS;unknown [10.25.129.52];TLSv1.3;TLS_AES_256_GCM_SHA384;256
+X-Outbound-SMTP-Client: 10.25.129.52, [10.25.129.52]
+X-Outbound-Node: rcdn-l-core-11.cisco.com
 
-An RX descriptor can be written back by the DMA before suspend without
-being processed by NAPI. Its buffer address fields then contain receive
-status rather than DMA addresses.
+Fix premature freeing of admin-channel buffers and set the correct V2 VF
+source ID in mailbox messages. This is v3 of the two-patch admin-only
+series. The generic datapath quarantine proposal withdrawn in v2 remains
+out of scope, including its page-pool/device lifetime problem.
 
-On resume, stmmac_clear_descriptors() returns RX descriptors to the DMA
-without restoring their buffer addresses. On DWMAC4, the DMA will
-therefore consider a descriptor for the application as one for the DMA.
-This can lead to illegal access from the DMA anywhere.
-For example, on STM32MP21 the DMA address bus is 40 bits, thus the
-extended status from the write-back descriptor is read as an high
-address by the DMA. DMA will then try to write in the DDR at 0x100000000
-whereas on STM32MP215f-dk DDR is only 2Gb from 0x8000 0000 to
-0xffff ffff and nothing is mapped at 0x100000000.
+The first patch releases the admin WQ/RQ/CQ allocation only after both
+complete queue-disable helpers succeed. Give both queues a first attempt,
+then retry once only a helper which timed out. The 500 ms polling bound
+is local to admin shutdown, and both RQ disable/check passes are preserved.
+Ordinary datapath and DEVCMD2 queue timeouts are unchanged. Admin receive
+buffers are driver-owned mappings, not page-pool pages returned later
+from the networking stack.
 
-To fix this, reconstruct the entire RX ring before rearming descriptors
-and restarting the DMA. Reuse existing buffers, allocate missing ones,
-and restore their DMA addresses independently of the saved RX producer
-and consumer indices. Reset the queue indices only after descriptor
-reconstruction succeeds.
+Keep PCI bus mastering enabled during runtime admin quarantine so command
+transport and ordinary teardown can continue. An affected V2 VF is closed
+and cannot reopen while its control channel is quarantined. Serialize
+removal against open and skip admin reopen after a failed datapath open.
+Clear local VF registration after channel replies have been drained so
+an early recovery exit cannot leave stale registration state.
 
-Update stmmac_init_rx_buffers() to preserve an existing split-header
-secondary page and restore its DMA address. Fold TX buffer cleanup into
-the descriptor resume helper before clearing the TX descriptors.
+Removal makes a final direct admin queue check. If it still fails, finish
+normal generic teardown and attempt CMD_CLOSE before final containment. Retain
+the inert owner and unresolved DMA targets rather than free memory the
+device might still reference. This intentionally leaves allocations and
+a BAR reservation behind. It blocks ordinary reprobe while the PCI device
+remains enumerated; PCI remove/rescan is not a supported recovery method.
+A PCI-device reference keeps the reservation name valid, but does not
+preserve IOMMU attachment or establish that DMA stopped. No IRQ, work or
+other CPU callback may enter retained objects after module unload. DMA
+debugging can report pending allocations. Reboot is the supported recovery.
 
-Signed-off-by: Thomas Bourgoin <thomas.bourgoin@foss.st.com>
+The second patch requires DEVCMD2 for SR-IOV V2 and obtains the VF source
+index from CMD_SRIOV_STATS_GET. A deployed async PF compares that source
+against the CQ-derived sender. After QP enable, obtain and validate the ID
+while receive interrupts remain masked. Publish send readiness before
+unmasking, so queued notifications can be processed and acknowledged with
+a valid source. Sends remain disabled until the ID is valid, using the
+existing send gate. Notification handling does not rely on PF retransmission.
+
+Keep the statistics target persistent and observe command completion
+separately from firmware status. A later blocking QP or close result
+fences earlier statistics DMA, including an error result. A pre-post
+failure, posted timeout or NOWAIT posting does not establish completion.
+This command ordering does not replace admin queue-stop proof.
+
+Sashiko's feedback prompted this audit. The pre-existing failed-reset
+reopen lifecycle and generic queue-disable error paths remain separate
+follow-up work; this revision does not claim to fix them. Source review
+and testing were assisted by LLM tools. The author is responsible for
+the submitted changes.
+
+Validation:
+
+- V3 passed build and static checks at both patch boundaries. Sparse
+  reported the same existing diagnostics as the public base.
+- Full functional and interoperability tests passed with Cisco VIC PFs
+  and V2 VFs, including a nonzero VF and all four combinations of the
+  development ENIC and deployed async PF/VF drivers. Traffic covered
+  bidirectional ICMP, TCP, UDP and jumbo frames.
+- Tests covered station/address/filter and administrative-MAC policy
+  changes, concurrent address updates and reopen, and multiple module
+  reload, ring resize, interface reopen and VF destroy/recreate cycles.
+- A test-only mailbox-send failure exercised reset recovery. The real
+  send completed before the failure was injected; recovery restored
+  traffic, and the uninstrumented candidate then reloaded successfully.
+- Focused V3 tests verified queued PF notification delivery after VF-ID
+  discovery, discovery-failure cleanup and statistics-buffer cleanup
+  after a completed close. Fault injection let real DMA complete.
+- Earlier fault-injection tests covered admin queue retry, quarantine,
+  final removal cleanup and terminal retention. They let the real queues
+  stop; they did not reproduce a physically stuck queue.
+
+The functional and interoperability tests included later VF/PF feature
+patches. These two fixes alone do not enable in-tree PF SR-IOV support.
+Physical device removal was not tested; a physical DMA-engine failure
+was not reproduced.
+
+Signed-off-by: Satish Kharat <satishkh@cisco.com>
 ---
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 86 +++++++++++++++----
- 1 file changed, 68 insertions(+), 18 deletions(-)
+Changes in v3:
+- Use observed blocking CMD_CLOSE completion, including an error result,
+  to fence earlier statistics DMA in probe unwind and removal.
+- Obtain the VF source ID after QP enable but before receive interrupts
+  are unmasked, and permit sends before delivering queued notifications.
+  Use the existing send gate instead of a redundant invalid-ID check.
+- Validate delayed notifications, discovery failures and completed-close
+  cleanup on a VF.
+- Rerun the full functional suite and all four PF/VF driver pairings
+  with the v3 fixes in the later VF/PF feature compositions.
+- Clear local VF registration after channel close in both reset workers.
+- Correct comments and explain quarantine, recovery and retention limits.
+- Link to v2: https://patch.msgid.link/20261022-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v2-0-8db19b4a714e@cisco.com
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 9ded31150fbe..198629265c90 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -1700,8 +1700,10 @@ static int stmmac_init_rx_buffers(struct stmmac_priv *priv,
- 		buf->page_offset = stmmac_rx_offset(priv);
- 	}
- 
--	if (stmmac_rx_check_buf2_cap(priv) && !buf->sec_page) {
--		buf->sec_page = page_pool_alloc_pages(rx_q->page_pool, gfp);
-+	if (stmmac_rx_check_buf2_cap(priv)) {
-+		if (!buf->sec_page)
-+			buf->sec_page = page_pool_alloc_pages(rx_q->page_pool,
-+							      gfp);
- 		if (!buf->sec_page)
- 			return -ENOMEM;
- 
-@@ -2149,19 +2151,6 @@ static void dma_free_tx_skbufs(struct stmmac_priv *priv,
- 	}
- }
- 
--/**
-- * stmmac_free_tx_skbufs - free TX skb buffers
-- * @priv: private structure
-- */
--static void stmmac_free_tx_skbufs(struct stmmac_priv *priv)
--{
--	u8 tx_queue_cnt = priv->plat->tx_queues_to_use;
--	u8 queue;
--
--	for (queue = 0; queue < tx_queue_cnt; queue++)
--		dma_free_tx_skbufs(priv, &priv->dma_conf, queue);
--}
--
- /**
-  * __free_dma_rx_desc_resources - free RX dma desc resources (per queue)
-  * @priv: private structure
-@@ -8425,6 +8414,63 @@ static void stmmac_reset_rx_queue(struct stmmac_priv *priv, u32 queue)
- 	rx_q->dirty_rx = 0;
- }
- 
-+static int stmmac_resume_rx_descriptors(struct stmmac_priv *priv,
-+					struct stmmac_dma_conf *dma_conf,
-+					u32 queue)
-+{
-+	struct stmmac_rx_queue *rx_q = &dma_conf->rx_queue[queue];
-+	int i;
-+	int ret;
-+
-+	for (i = 0; i < dma_conf->dma_rx_size; i++) {
-+		struct dma_desc *p = stmmac_get_rx_desc(priv, rx_q, i);
-+		struct stmmac_rx_buffer *buf = &rx_q->buf_pool[i];
-+		dma_addr_t dma_addr;
-+
-+		if (rx_q->xsk_pool) {
-+			if (!buf->xdp) {
-+				buf->xdp = xsk_buff_alloc(rx_q->xsk_pool);
-+				if (!buf->xdp)
-+					return -ENOMEM;
-+				}
-+			dma_addr = xsk_buff_xdp_get_dma(buf->xdp);
-+			stmmac_set_desc_addr(priv, p, dma_addr);
-+			stmmac_set_desc_sec_addr(priv, p, 0, false);
-+		} else {
-+			ret = stmmac_init_rx_buffers(priv, dma_conf, p, i,
-+						     GFP_KERNEL, queue);
-+			if (ret)
-+				return ret;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int stmmac_resume_descriptors(struct stmmac_priv *priv,
-+				     struct stmmac_dma_conf *dma_conf)
-+{
-+	u32 rx_queue_cnt = priv->plat->rx_queues_to_use;
-+	u32 tx_queue_cnt = priv->plat->tx_queues_to_use;
-+	u32 queue;
-+	int ret;
-+
-+	for (queue = 0; queue < rx_queue_cnt; queue++) {
-+		ret = stmmac_resume_rx_descriptors(priv, dma_conf, queue);
-+		if (ret)
-+			return ret;
-+
-+		stmmac_clear_rx_descriptors(priv, dma_conf, queue);
-+	}
-+
-+	for (queue = 0; queue < tx_queue_cnt; queue++) {
-+		dma_free_tx_skbufs(priv, &priv->dma_conf, queue);
-+		stmmac_clear_tx_descriptors(priv, dma_conf, queue);
-+	}
-+
-+	return 0;
-+}
-+
- static void stmmac_reset_tx_queue(struct stmmac_priv *priv, u32 queue)
- {
- 	struct stmmac_tx_queue *tx_q = &priv->dma_conf.tx_queue[queue];
-@@ -8507,10 +8553,14 @@ int stmmac_resume(struct device *dev)
- 
- 	mutex_lock(&priv->lock);
- 
--	stmmac_reset_queues_param(priv);
-+	ret = stmmac_resume_descriptors(priv, &priv->dma_conf);
-+	if (ret < 0) {
-+		netdev_err(priv->dev, "%s: Resume descriptor failed\n",
-+			   __func__);
-+		goto error_unlock;
-+	}
- 
--	stmmac_free_tx_skbufs(priv);
--	stmmac_clear_descriptors(priv, &priv->dma_conf);
-+	stmmac_reset_queues_param(priv);
- 
- 	ret = stmmac_hw_setup(ndev);
- 	if (ret < 0) {
--- 
-2.43.0
+Changes in v2:
+- Withdraw v1 patch 1's generic datapath quarantine proposal. Rewrite v1
+  patch 2 as the first patch here, followed by the VF mailbox-source fix.
+- Keep the admin buffers' lifetime separate from generic page pools and
+  notification teardown. Keep bus mastering enabled at runtime.
+- Bound longer polling to the two admin queues, preserve both RQ passes,
+  and retry only a complete disable helper returning -ETIMEDOUT.
+- Serialize remove/open and skip admin reopen after datapath-open failure.
+- Observe DEVCMD2 transport completion independently of command success,
+  including a completed QP error, without treating pre-post errors or
+  NOWAIT posting as a fence.
+- Clarify final remove recheck, terminal retention and reprobe limits.
+- Link to v1: https://patch.msgid.link/20261016-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v1-0-d27b55f69883@cisco.com
+
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@kernel.org>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+
+---
+Satish Kharat (2):
+      enic: retain admin-channel DMA until queues stop
+      enic: require DEVCMD2 and set the V2 VF mailbox source
+
+ drivers/net/ethernet/cisco/enic/enic.h        |  22 ++-
+ drivers/net/ethernet/cisco/enic/enic_admin.c  | 247 +++++++++++++++++++++-----
+ drivers/net/ethernet/cisco/enic/enic_admin.h  |   4 +-
+ drivers/net/ethernet/cisco/enic/enic_dev.c    |  44 +++++
+ drivers/net/ethernet/cisco/enic/enic_dev.h    |   3 +
+ drivers/net/ethernet/cisco/enic/enic_main.c   | 111 +++++++++++-
+ drivers/net/ethernet/cisco/enic/enic_mbox.c   |  13 +-
+ drivers/net/ethernet/cisco/enic/vnic_dev.c    |  85 ++++++++-
+ drivers/net/ethernet/cisco/enic/vnic_dev.h    |  15 ++
+ drivers/net/ethernet/cisco/enic/vnic_devcmd.h |  34 ++++
+ 10 files changed, 511 insertions(+), 67 deletions(-)
+---
+base-commit: 0df412012a26389582b120844d098e1e961f10a6
+change-id: 20261010-b4-enic-dma-vf-index-net-generic-first-v1-20261010-d9abf4510335
+
+Best regards,
+--  
+Satish Kharat <satishkh@cisco.com>
 
