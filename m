@@ -1,52 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=62.72.0.81
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793076128;
-	b=wgWi+aRKIq1sjpWtuCov3qF69YT0/B82vx/ewflQJRB5rJSJ+FNe80abcvs4RZHKpUFr
-	 nosfzmUzsEagIKal6EviTuVW7EWiSb4BonGokq8+GgoxQiih+DvWKqLo0/fb8e8tEZo+h
-	 hjdTp8rm3j8DCLOajCjx4EjHuzC8VCwF+jp2cYU1xOMQNxgnXkv63/0WKp5YYkqjuHkxJ
-	 EbemQJ9kKIzYsZ6xpOpjBdzc5zPk2+WZLv4UIFix5hs0is+VXgEZBad/ECtF8hy2Hr8Ry
-	 9RJlu3QjADNovCsGdgSDOLg7kvFYgQnKlxr6EFUe530ijBGxFm/6+F6ctGApEt/kRXA==
+	t=1793076423;
+	b=lDQwunUN9DKv2tQ1ZLmtCppzoqIe9XB5S+bt5DXjz7bJhXR8KTYuNPzbJRkGCivaU9T6
+	 WxGj5tPVQWdwUOmDDgziQBY9GZyVRYRiLEwqdOt+QGimzbTIQs8LmqeDCla29IUqo+jDR
+	 VjVwzF1PioeNvDdlauBgOXuOasF2sTDXdfKnjbxLE3GAxe6nvp5gzsy/1Se/obDNkIIku
+	 hHrCtCh2gqC6vzvndCdCBDtvC+T58iN3LzsxYpl6oEiklCkOzF07CVUJSbcXWoJ4+rYSz
+	 l9tbqGiyD5j2sjSBVmEheaBMnTaBEpxTrGoKEqQUP4TEZOHGxeyL7k23Pk68qv9Y8LQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793076128;
-	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=UqKyYrrqVaVWvuABCfIICIVMu/pS61TObzLyZy4KWf0=;
-	b=eAOdP42/LgyUyqwzkns7FHDCPunUr5+fxmAeMFuZDTNUVN5omeuAs1GcsANvc7wnQxRt
-	 TUxGc0+EiyoNLitkAsiX30SsjLCKYXkoXVY9zxkRRMQ0A+cFIQloplxRqU5baXp56i8YQ
-	 gHVy454Vx9LFZjChvVRADhikWQhUfVEi2GpzWjvt4kkpQEdQ32qMelYAtr67iPTYjmQ9W
-	 tYBwe4fMmcInTQ+AUIWWBfZlX7hXk/s27EsjIc+CgKZSyMtmAv3bvIWQ1uvGYQSvKi4C9
-	 9uPwc9FxzzdLyB2U8uynW7nw0s4yUlCc9nW3ZddKHK4sFU1PQ6CsNwmJrRTZMld+Z0w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793076423;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=WURMcEEiv9km0HuI6txsDrElGgFNRy2mTCX0NtkHLm4=;
+	b=N7s+M1xngrkzYPDT7swBEX3KDKRmCUFRWW/lQTMGMf8y/6IRKHFEG4VBKRcIfNrUJh0J
+	 pSZK14KDeslXRDlim70uVluQM+L1hUfYze7B/uxsn6+W9VeAE9gNl7yrJbyrQPPL4rAfu
+	 F120gIeF8VIZ/lLL2Qjq8+GaOguiNt3FYboonQCDKcG4XpFp83MqD9PtYM/RHKDzTfUyQ
+	 bkL9ZUdsHo1C2LedvYM4/fx2pfiCHsYmYz3OfvCtn4sXtGVJrNTx0n2CSSJdMnjYs8Pl8
+	 YvtXUmF08A4udt3qOhd7QBPgNFEmCYr1H0o2JYYo++uVmyygjmjCtEUD9JXkHun8oJA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gentwo.org;
-	spf=pass smtp.mailfrom=gentwo.org;
-	dkim=pass header.d=gentwo.org header.i=@gentwo.org header.a=rsa-sha256 header.s=default header.b=BrGIB0Iu;
-	arc=none smtp.remote-ip=62.72.0.81
-Received: from gentwo.org (gentwo.org [62.72.0.81])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=nebusec.ai;
+	spf=pass smtp.mailfrom=nebusec.ai;
+	dkim=pass header.d=nebusec.ai header.i=@nebusec.ai header.a=rsa-sha256 header.s=google header.b=m6bBvmSW;
+	arc=none smtp.remote-ip=74.125.82.46
+Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36A6606A31A;
-	Tue, 27 Oct 2026 04:42:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C36A6606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gentwo.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentwo.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41628606A31B
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 04:47:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 41628606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=gentwo.org header.i=@gentwo.org header.a=rsa-sha256 header.s=default header.b=BrGIB0Iu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gentwo.org;
-	s=default; t=1793075568;
-	bh=TI6xN8cNHM+PNcaHI3msiigLEKk+1ylQ2+6euVaaNGs=;
-	h=From:Date:Subject:To:Cc:From;
-	b=BrGIB0IuR3sEm1Df1dXGTMXMm0RJeiE0e2W7KZvAmKVdSnKUMUVlDCB69kEyTCDf4
-	 VdZixOD09cp6V70zwLHkBuebZcyI9fZDODNA2OGKrvb2KbLx0gX3pXEgA0gyNxtrkE
-	 eafpYABqtSHUKkTWPV6LIGZy1SSDWQS4DWwhUlPw=
-Received: from sut02sys-r112.scc-lab.amperecomputing.com (localhost [127.0.0.1])
-	by gentwo.org (Postfix) with ESMTPS id 4DF21401B0;
-	Mon, 26 Oct 2026 21:32:48 -0700 (PDT)
-From: "Shubhang Kaushik (Ampere)" <sh@gentwo.org>
-Date: Mon, 26 Oct 2026 21:32:41 -0700
-Subject: [PATCH v2] net/sched: sch_cake: skip redundant cake_mq rate
- updates
+	dkim=pass (2048-bit key, unprotected) header.d=nebusec.ai header.i=@nebusec.ai header.a=rsa-sha256 header.s=google header.b=m6bBvmSW
+Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-156cbe59622so3073172c88.0
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 21:47:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1793076421; x=1793681221; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=WURMcEEiv9km0HuI6txsDrElGgFNRy2mTCX0NtkHLm4=;
+        b=m6bBvmSWGHaosFaUuodvNtqp3GmNS1tz0C5ZGlflVDcZ7YcZiKwBrG8N7/58QywOrP
+         nGo7Yeek8LM4Ma338xJnPpxzBdoLYWDiucejDkX5D2uOa6sG03WeW4JT7OnCxU6xVf7y
+         2dG06cKm+PIISj2kww+AwE7IazcUUQVEBOzazPPoltwZ+K/0j/g+Sh2WJ8MRxKnCVFiS
+         qQEJ9GlFgIIyx25iw1VzwoqfOE6Rr2spBipHeoXmiiaT3yAjMa69VJyfh6oFG4kCgXMA
+         VWudhOa3qykkzrUObW5XGPe/bPMS98tSM4C6z9jjn6V4bseCwB1tS3XFYJ+YpdxtmlHY
+         DrXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793076421; x=1793681221;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=WURMcEEiv9km0HuI6txsDrElGgFNRy2mTCX0NtkHLm4=;
+        b=ZFq9NfrvwZsBGUjOdydXi/bqyzmXlddjsDJb+rr7Hbx4odg3iF13aykFqPi2OQqs2U
+         EXdZXk+OlFuBJGx0igdctrIpT0VACyM0jJTxEJ8SkYaHnaJovOYDNs+Wg9e4Pbm84vRF
+         xePIonDPzUhBvAC3sb5gtjHbDTjpwV0KEyxGSUPBTPifjvOq1228bypcnwPyobcOxzdS
+         21DYfdgMxSN85T29K2S8PHeeNeh4L8jQ7GK63f3p2VEAFDcQdGn2eRk3EjtmVhOacB4b
+         Y5Vb4QNuGkNSdPmJY0OO/mFm+/MCvPUs1djS72+GW3egaGguAsahDABrsnaTJIlzAhl4
+         fpnA==
+X-Forwarded-Encrypted: i=1; AKwUvBzDeOVqpim8HHhcNfkdQcUxItUUGNvyfp4bggSVn936PjAhdwBMdwe+7mSv0+1k+SRNIPmc5rM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKxkPhg3kZqUG6eJwdeTND5M7GDnI9hpTLRynvAHAzHQMN7r3qv
+	NwYV1DVHew824svetrZ8L0YHAuHhVTme/0HJoi4vPNspMcpd01xQdauNyCmqj/5YJjSf
+X-Gm-Gg: AYBFou3kEKWDA8h6aJngWrR/+ij/2mGmut1W5S4chTrMtNThnYTGw0N/6ghHHZjTodW
+	gloGlwwJIE8Z359t3XbrVM68vrzlnx47z4VDNMSIB7oKd/DtdbCPyTL5K15XxfxP6TurhT1lfyK
+	BPkZn4c4SJwqtmPYsluDwzglexBWCByh5dky2e1zKpbb9zeiiurLtp0iRMJwDT2iBOzHgc7OyMv
+	hOeUrWZyG1h8fLgaMcJifHWAPO+Cd3jmcd/Vn1Idc/reS6D3Hwx24TaqLQ+KCMSX0Lg9cjmTFPS
+	P4QUWjjIBA6dhtctTQlQK/taO0WlkxixEfXaq2sSM1sYKOYRt3ApZxl7VaQmGWZpQPUzJPSYXXZ
+	EWVK3Tzh8ghMGoDu20mLnpxmEfRsBXFhtyLxlVT+Yikhn9OUWDYAZZ3XXFTxZAUYLua3uXzSxZz
+	aJjWzn1aL4OnfbMQv+WfbAH/fOiSdwrn6F/G15EG2oZUgpYhWM1EEnNLQgEiVCAI8PIiVRdgWV0
+	X7zzlYmOcd57IF1qcEFKBhSFNHCKoP15gsV39MNMAaVoL/yVxnktW0rb7EeSbNWs9g7bO6TfyyD
+	ypcE58AKxET/LJ3dAox812Stsykxa1WD/Eujf4u3Dg==
+X-Received: by 2002:a05:701a:c941:b0:144:fa58:95d8 with SMTP id a92af1059eb24-19935fcbb52mr8965104c88.27.1793076420958;
+        Mon, 26 Oct 2026 21:47:00 -0700 (PDT)
+Received: from Roxy.sysu.edu.cn ([2001:49f0:d0db:fffe:97d4:c0de:15a1:9c01])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-198a32ff780sm28781261c88.22.2026.10.26.21.46.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2026 21:47:00 -0700 (PDT)
+From: Zhiling Zou <zhilinz@nebusec.ai>
+To: edumazet@kernel.org,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org
+Cc: ncardwell@google.com,
+	kuniyu@google.com,
+	davem@davemloft.net,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	jonathon.reinhart@gmail.com,
+	vega@nebusec.ai,
+	zhilinz@nebusec.ai
+Subject: [PATCH net v2 1/1] tcp: check congestion control restriction first
+Date: Tue, 27 Oct 2026 12:46:49 +0800
+Message-ID: <71c142b2d45af6a2fe7fc6cd4a5ca52c53afbe23.1793075984.git.zhilinz@nebusec.ai>
+X-Mailer: git-send-email 2.55.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -56,102 +102,57 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20261026-net_sched_sch_cake-v2-1-cb1d4e6ed990@gentwo.org>
-X-B4-Tracking: v=1; b=H4sIAGgp4GoC/32NWwrDIBREtxLudy0+qmC/uo8QQtAblYIWlbQlu
- PeaLKA/A2dgzuxQMAcscB92yLiFElLswC8DGL9EhyTYzsApV4xySSLWuRiP9sjZLE8kqJQUqxV
- aWAV9+Mq4hs8pHafOPpSa8vf82NjR/tVtjDAimZJG89siNX04jPWdrik7mFprP/L1f9W1AAAA
-X-Change-ID: 20261025-net_sched_sch_cake-e6653fd393d6
-To: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>, 
- Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- =?utf-8?q?Jonas_K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>, 
- Shubhang Kaushik <shubhang@os.amperecomputing.com>, 
- "Christoph Lameter (Ampere)" <cl@gentwo.org>
-Cc: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>, 
- cake@lists.bufferbloat.net, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, "Shubhang Kaushik (Ampere)" <sh@gentwo.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793075568; l=2810;
- i=sh@gentwo.org; s=20251010; h=from:subject:message-id;
- bh=TI6xN8cNHM+PNcaHI3msiigLEKk+1ylQ2+6euVaaNGs=;
- b=f2wK0okAfLnGSZj7kZ8rNc1SnN0ZQkwxBdtrVNAsLv9k8f/PrNDlLHejBHXW4nlmhXC27eDzo
- fQUVbtzXpotBwqCGHZ97zDrAvjFCTYoi0lx4va4H862EV7a9ivWuhIT
-X-Developer-Key: i=sh@gentwo.org; a=ed25519;
- pk=jc8YIRvxPSyJaBRe5y+a4N0RXKBUEcAh8+OFhlROXPY=
 
-cake_mq periodically counts active child qdiscs in cake_dequeue() and
-derives an effective per-child shaper rate. cake_dequeue() currently
-reconfigures every tin after each scan, even when that effective rate
-is unchanged.
+tcp_set_default_congestion_control() takes a reference to an algorithm
+before checking whether a non-init network namespace may select it. A
+rejected request returns -EPERM without dropping the reference.
 
-The dequeue-time call chain is:
+This affects module-backed algorithms too; BPF is not required. For
+example, after root loads tcp_bbr, a user with CAP_NET_ADMIN in a
+non-init network namespace can repeatedly request it as the default
+although it is not in tcp_allowed_congestion_control. Each rejected
+write leaks a module reference. Since module->refcnt is an atomic_t,
+2^31 such writes can make it negative; later module_put() calls warn,
+and rmmod can hit the BUG_ON() in try_release_module_ref().
 
-  cake_dequeue()
-    -> cake_configure_rates(..., true)
-      -> cake_config_*()
-        -> cake_set_rate()
+Check the namespace restriction before acquiring the reference, as
+tcp_set_congestion_control() already does.
 
-With rate_adjust=true, cake_set_rate() only refreshes rate-derived
-state. Tin 0 records the unscaled rate argument in every supported
-CAKE tin mode, so its installed rate identifies whether this call chain
-would change any state.
-
-Skip the reconfiguration when the effective rate is already installed,
-while continuing to update the activity-sampling timestamp and
-active-queue statistic.
-
-Fixes: 1bddd758bac2 ("net/sched: sch_cake: share shaper state across sub-instances of cake_mq")
-Signed-off-by: Shubhang Kaushik (Ampere) <sh@gentwo.org>
+Fixes: 8d432592f30f ("net: Only allow init netns to set default tcp cong to a restricted algo")
+Cc: stable@vger.kernel.org
+Reported-by: Vega <vega@nebusec.ai>
+Suggested-by: Eric Dumazet <edumazet@kernel.org>
+Assisted-by: LLM
+Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
 ---
-Tested on an 80-core SMP, non-SMT Ampere Altra system (aarch64)
-The test used a 32-TX-queue veth pair, with cake_mq
-bandwidth 2gbit on the transmit side and the peer in a network
-namespace. The workload was:
+changes in v2:
+  - Check the namespace restriction before bpf_try_module_get(), following
+    tcp_set_congestion_control().
+  - Describe the module-backed reference leak and module refcount overflow.
 
-  iperf3 -c 198.18.0.2 -P 32 -t 30
+ net/ipv4/tcp_cong.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Validation against mainline commit a32e63a613aa80, the patched kernel
-reduced cake_configure_rates() calls by 99.99% (2,477,627 to 206) and
-aggregate helper time by 99.986% (3.477 s to 0.498 ms), while retaining
-approximately 1.91 Gbit/s aggregate throughput (baseline:
-1.91-1.92 Gbit/s). A separate per-child trace observed no
-same-effective-rate calls on the patched kernel (@unchanged: 0).
-Changing cake_mq bandwidth from 2Gbit to 1Gbit and back invoked
-cake_configure_rates() 64 times, matching all 32 child CAKE qdiscs
-updated for each of the two control-plane changes.
-
-Changes in v2:
-  - Drop READ_ONCE() as suggested by Jonas Köppeler.
-
-Link to v1: https://lore.kernel.org/r/20261025-net_sched_sch_cake-v1-1-5165c924a590@gentwo.org
----
- net/sched/sch_cake.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index aa4043d662c1cc18858d3f9c80f9d9b281f26f72..3faccdbc03f765164e9695a42e4658467183294b 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -2052,7 +2052,8 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
- 		if (num_active_qs > 1)
- 			new_rate = div64_u64(new_rate, num_active_qs);
- 
--		cake_configure_rates(sch, new_rate, true);
-+		if (new_rate != q->tins[0].tin_rate_bps)
-+			cake_configure_rates(sch, new_rate, true);
- 		q->last_checked_active = now;
- 		WRITE_ONCE(q->active_queues, num_active_qs);
- 	}
-
----
-base-commit: d135ab453a7400a34930bdda1ef4bdc8acfac80e
-change-id: 20261025-net_sched_sch_cake-e6653fd393d6
-
-Best regards,
+diff --git a/net/ipv4/tcp_cong.c b/net/ipv4/tcp_cong.c
+index 8e83ef81fc187..e3f462f161dd6 100644
+--- a/net/ipv4/tcp_cong.c
++++ b/net/ipv4/tcp_cong.c
+@@ -288,12 +288,12 @@ int tcp_set_default_congestion_control(struct net *net, const char *name)
+ 	ca = tcp_ca_find_autoload(name);
+ 	if (!ca) {
+ 		ret = -ENOENT;
+-	} else if (!bpf_try_module_get(ca, ca->owner)) {
+-		ret = -EBUSY;
+ 	} else if (!net_eq(net, &init_net) &&
+ 			!(ca->flags & TCP_CONG_NON_RESTRICTED)) {
+ 		/* Only init netns can set default to a restricted algorithm */
+ 		ret = -EPERM;
++	} else if (!bpf_try_module_get(ca, ca->owner)) {
++		ret = -EBUSY;
+ 	} else {
+ 		prev = xchg(&net->ipv4.tcp_congestion_control, ca);
+ 		if (prev)
 -- 
-Shubhang Kaushik (Ampere) <sh@gentwo.org>
+2.55.0
 
