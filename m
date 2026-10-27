@@ -1,99 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.100
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.97
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793124319;
-	b=mB96mXXUWgS8YIkdYJYqyCaIKef3wGyKGGGGkjeObM1Yc1caqgizpYA4iDOvChkl5Hvs
-	 VddMAITTAk+nNopxI5Hw4FzOXwIInTxpeLN+7xxuc5mEDwcqmTI13IUmi4qJBUIva4Czv
-	 39FEtmLE65GsYFLETdrYXvsezSjQE5OeBPReFgPAAN+bGbMCgUWUh23T5XLBX2VB4XYfp
-	 ACz75vvTTvF1COa3HSuaabfKHDa890G636XGcGWlceZx8w6awIG20tMfvodOqpXdKJ44X
-	 kcGhOimuFSRuCIem7U9yIIaFXHRvkVjzhJBDs5VqVwLJ5Hf72Q2fSQb3SPsMdlvQLZA==
+	t=1793124381;
+	b=02wVQCRqNT4qTCVYX/hJ33j0EphoZVvTUWV8dZpOje1jkiYMqJj2fcufKixsMGKAb/A+
+	 XzLP45zS++Q4eSn3cckLwo4dAIJY7EGI42Qyb3MVCNmzkmtJK99OMG40SyOomng1yh93w
+	 /ouHGRcx77j4q1mvsbcoyNTorUqIoMb5k4mGOjaVD4hZ2RZfDvQv30G+rIuMdLhIQC1kz
+	 riR6/299D4Pazlic2Nh9N2ItNPC06CcZbKSvkjNdiq1w+FTdgLwA6nWL28hpBDYW33fR9
+	 IbOblFAWKQBwAjRTtJAHA/8tXWYknU5yfj8Ql9Nbey4OvUmAaG0dtHZmw4zAt0iwsyw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793124319;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793124381;
 	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
 	 X-Gm-Gg:X-Received:Received:X-Relaying-Domain:X-CFilter-Loop:Received:
 	 DKIM-Signature:X-Received:X-Received:Received:Message-ID:Date:
 	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
 	 From:Autocrypt:In-Reply-To:Content-Type:Content-Transfer-Encoding:
 	 X-DetectorID-Processed;
-	bh=C5UG/od4jnm6GtQPKVHk+hFGTYbFM2nx1L5LhnGODlw=;
-	b=Oo++xflKJgQ+kWApRmQotJvsevhKckTeeE1E6aPq1QIt6lExc8qOFOTgGUWl/lziou76
-	 nV360UlzSUu8IfTdy6l4q8bszaoqTdS+b6vtbrUgosUQXd9/mdH5xPhB2E2C+JvN+eRiL
-	 RkAPcNfNndWnFYmOGbSJLMoOlKcVb9B/ieCMQCGBRSuH9yO7b6+sn98ZS0gIdJE8Yq3aS
-	 xuz/Uk929EBKn3qwyJhyyRuHbWXI0HMg67SjnOpYRGBfE/UGRayAIt4BXkYB1QFAmD533
-	 0dXMvhuliwkAyCHR1Yb+gLhQ5wz/QY+StmOtOtQ3bJZGi+Wbxm57XMPbvRx9kbJw+fw==
+	bh=66cNEccWGpyjNnFJrodUk/m7tUZG3QXdwqn4vHPr+zQ=;
+	b=NmjV7DjZdcYRh3mM4ByA3WGheUMT2ZKNQVqs/X1RtbCfK/YiwiOzuzCM+P+m6mXTYk0v
+	 rctF3BoNIdn3NbzkNcubkHHK6l1wJ6QlEDKXe6iLhFBoJvedi4KP8BjQ3O1fLPlIAwVCn
+	 J9R4mIcyRiku4YzfzJJcFfCwcngcKBRJTKCcA/IPXP8TkeydQtdKK6KqMa1G/uXSiNrYQ
+	 uWhQbKMsiTmDTiW3cioiWCuESiBgu78KlIKWuerAWi8pBTkouGb1kNwqCVh53q+m+yXjW
+	 HGXIgFh6mO+CVh1OowGiJD9azXv/ori/ULADUwZlVmSTxk9gs8NK5s+ibtQZN7oDFjg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=broadcom.com;
 	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=e3O9vfjh;
-	arc=none smtp.remote-ip=209.85.210.100
-Received: from mail-ot1-f100.google.com (mail-ot1-f100.google.com [209.85.210.100])
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=bXFhRoLq;
+	arc=none smtp.remote-ip=209.85.216.97
+Received: from mail-pj1-f97.google.com (mail-pj1-f97.google.com [209.85.216.97])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D97606A32C
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 18:05:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D8D97606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31CA606A31E
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 18:06:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F31CA606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=e3O9vfjh
-Received: by mail-ot1-f100.google.com with SMTP id 46e09a7af769-843b6f8e2c7so176243a34.1
-        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 11:05:18 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=bXFhRoLq
+Received: by mail-pj1-f97.google.com with SMTP id 98e67ed59e1d1-3ac91ac8924so126515a91.1
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 11:06:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793124318; x=1793729118;
+        d=1e100.net; s=20260707; t=1793124380; x=1793729180;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=C5UG/od4jnm6GtQPKVHk+hFGTYbFM2nx1L5LhnGODlw=;
-        b=T/M4PZ8yYnrYBLe/9Hw3HRtVUVC7jcwEyMTPR59hXKZ3Me+lTePCKkYECw7LY5eUhl
-         OqFgARWB2CPBNDcc7AU54SWhwPqIbZr17qsXekSHY+J+Ohg0iWCjLIBglpFt0PMQhSvx
-         QT3mF9AMQP0fUCxk/98wU38/KelOZtXP1Qhgn20/MYK7rkP9IjR3vr3fq7EplTSpKSat
-         tz4ix2uLOH/mJ83mAgHoZjUvQv/yIW+XcSiapCaoTrbMVtV78GGl2vz1TpeNTv7u2qgl
-         BSZi42EjOatZXwbGXcwvQdpS5A2O+fzvEjuoyiDjoNvWdbb2xvN53yfXiG8m7YCyNgDa
-         y6zw==
-X-Gm-Message-State: AFq9FYIlr5bA/y7yZFxF/Wc32b9LgtChkWGE2sO9otxmZoXkee610Qwc
-	W41QIIXhoM6KAsYrer2oEMjo/z3Uz8xSc8UuAU2AaR/DLsJvazDmPfAPiwMIHW499XUEU6+9Qfc
-	H52+qzpxNtaF14cS1rone10XY4KEnQezrPIIUH8TJWWdFybfo6hafSCPRH2Nj0EY85p4Db5m5s5
-	vMKrsucfKGX2dpuhhEdZ5tUBuz/WBvuhZ+mMO31CkuxBYFA9sAtHtAQ0O1AYw9HYDeUjkN2YRfK
-	ppNP2kiaOkNzZm8HJQ=
-X-Gm-Gg: AYBFou1xVQAGr4NNkiiGXcP3FvSxpYOl94gibEYY2PkdmZuCmKEWGW2P1XTLRGHTJPD
-	eYo27ZZXc+H5TNRgh5j7JT9Zco7Z30kGLlv863cegEi06u+5a+UGv+vaJW1YKDC2rNIU5fQ+D9U
-	o25t0Xoz6NAa48J3ZeTiIXNSdLtDURlLys7LLxbsc5fp414s0p0xNcJ5hK1y+HOk7p8dlV58Rnt
-	2J+0lrZB7lLbKyEWa5Xk1lQLBwLOsArD+l/RjiElJEv0RoKIGnroY/TNPhL46Xdj0OIoQI9oTJd
-	yGrehplFdECF0JZ359tZ6DNAYkI6MAk4kznvOStTbAeTVTpuWDIzXY4ayP5lstpe6L6M1TpoDRE
-	HxvzVVNm1Dp0o+RY+ycXCypEjVXSMFbM4kZT1IiAYSgliBwLzZ3lhf0Vi23laHkrc/8IrLhfvPz
-	Z+nJ/U7H58ZFbQCv6F4vBahxwpzBq+olcJwTQQejv5ncQ=
-X-Received: by 2002:a05:6830:44a3:b0:843:b6f8:de3f with SMTP id 46e09a7af769-85ab7c048d4mr321375a34.18.1793124317688;
-        Tue, 27 Oct 2026 11:05:17 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-120.dlp.protect.broadcom.com. [144.49.247.120])
-        by smtp-relay.gmail.com with ESMTPS id 46e09a7af769-850faa931d4sm105508a34.7.2026.10.27.11.05.16
+        bh=66cNEccWGpyjNnFJrodUk/m7tUZG3QXdwqn4vHPr+zQ=;
+        b=Yp1vGEl3W6AcGjhOrhZiPwixlp2A0D6/5bYdXZ939PFzV+esDm0k7XzLtGo6d3TYre
+         mhTvOq9y5PsTGaQ6kAkJ6H1Z+6wabMCv/yy9crKftQRRh1NkLqChz//rlbaCFe8T3pM3
+         wq5R+Pha78CmZy3NUwyQPg99KZiUsiYLfUejEyW4uLrhQh1cKYczJ4h6JglsaatDF+Ia
+         CFlr89LaQPwNzWYjyfjuxvuhFRYaa87k38zQf399fvznh8+7wHUyuaBZ/DAwImu3V2ym
+         HhUm9FBB+8b1yZO0A65riFMjjvk6EiIlqVAbnaWMQTb3AU24iw/Grpq+LfffZ4GcuTq/
+         3/ig==
+X-Gm-Message-State: AFq9FYLjeETemujZ4L3o65fjAgx4n7aqRRPw8nXOUv1Q4aAWlwaffACO
+	lhNXXrvSuCLw17z+FuPnSKWSjIkx4oqdoNVgDsJcXcYAylXvAoMaOFy2iC3jBzo3BFboL5I/mjN
+	wmebgpzY+d1JKUmSb9jnBmXaSbPil8yyTziotgovdxity6tfG5orsy0GEtGlKdizB0I5USo7zjA
+	29S1XjSBRKy0aL7nuvDEltyPtb/pqfcDAnmz7PHY+PVvoofvMrCXBCiuc1j6fTcRDSDg2YGwT/R
+	FOrHRNEmtPAi1UdjYs=
+X-Gm-Gg: AYBFou3NYEjD2c7oi4uYPUkLT72M1YHbPT6hLlG/FX9qTE9EDwaBntw5Mjz+CiBokOq
+	LfZecBq0RjOMAfTacvVKQ41RJ8E/dve7qxgmHdotqIFJN8JyDX0IpXjoDxmu1HDnjYYU3rH/3Y6
+	uxLJGKtc2YSq7b4GEu3X0yYsq2lXlDNyTnuEt7ytnjLF/rFUAQvP0u2+lpV8WPKB+4ZQp0cTv9U
+	K/gJwyXIWhnmtk16aH9q0aIW6gLRhCTWm7wIXj73DpRTuiuuiPH0G+v916heOr0HADv9+3H7iFR
+	Hy2sWSzDb7Ko2HiJON8ihD/35ukkhdnxTIjQELU1yM4lgslC28L1SAAfn4xFs6kq1mm3nENgkrK
+	1yPVvUECQy5XbV7L3D6Qg7bOfd/fNiasVIAVWlSHlEXLljZRrlchCOaxZvSiCU30AjT/1EOTUhI
+	IG7HZrA2lpt+ubTgiuiWbay/szBnNVPMJ5nzcK2bNs
+X-Received: by 2002:a17:90b:2d82:b0:3ab:f38:2b3b with SMTP id 98e67ed59e1d1-3adea899420mr8764386a91.21.1793124380154;
+        Tue, 27 Oct 2026 11:06:20 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-13.dlp.protect.broadcom.com. [144.49.247.13])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ae55a6e1b0sm66236a91.2.2026.10.27.11.06.19
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 27 Oct 2026 11:05:17 -0700 (PDT)
+        Tue, 27 Oct 2026 11:06:20 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8a073778890so250387b3a.1
-        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 11:05:16 -0700 (PDT)
+Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-36998507c13so179304eec.0
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 11:06:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1793124315; x=1793729115; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1793124378; x=1793729178; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=C5UG/od4jnm6GtQPKVHk+hFGTYbFM2nx1L5LhnGODlw=;
-        b=e3O9vfjh4hSlcMGOOZf9K7Dxco1sxNhXWZnNpUxfZ1v8f+uNhhjut1P9qnELwJgV01
-         Fl8e8WyGawZdm9yMNJhVelK5kzbp8MHczqJfJhT2RrkmDUWG5BJAZMfCR5RROCMKgnVr
-         /x6o5XY7g3VfvMPaShYC75qI3ILtK0sKe0JHc=
-X-Received: by 2002:a05:6a00:299a:b0:89e:33ba:54ce with SMTP id d2e1a72fcca58-8a6e8e74924mr22338b3a.46.1793124315226;
-        Tue, 27 Oct 2026 11:05:15 -0700 (PDT)
-X-Received: by 2002:a05:6a00:299a:b0:89e:33ba:54ce with SMTP id d2e1a72fcca58-8a6e8e74924mr22313b3a.46.1793124314734;
-        Tue, 27 Oct 2026 11:05:14 -0700 (PDT)
+        bh=66cNEccWGpyjNnFJrodUk/m7tUZG3QXdwqn4vHPr+zQ=;
+        b=bXFhRoLqxqgBCp4kEKyKwFDYimyqtCtN8WbfZwHD2exPBhv+s3790zGlccIITab6O0
+         X4xIWIpCdkRkPy0WsQf42K3H+ys6sSDaJn1NAxciaI3dy/LLMb9tTzngOM9nrdrfpv7B
+         Q/mAz14BU4UuHhab/jf7FuoXFAzaacmf3qL8E=
+X-Received: by 2002:a05:693c:401a:b0:366:fbdb:2070 with SMTP id 5a478bee46e88-36a203ffc42mr298454eec.34.1793124378211;
+        Tue, 27 Oct 2026 11:06:18 -0700 (PDT)
+X-Received: by 2002:a05:693c:401a:b0:366:fbdb:2070 with SMTP id 5a478bee46e88-36a203ffc42mr298388eec.34.1793124377391;
+        Tue, 27 Oct 2026 11:06:17 -0700 (PDT)
 Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a6a662d68asm339452b3a.24.2026.10.27.11.05.12
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-369e8d93663sm40527392eec.13.2026.10.27.11.06.15
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Oct 2026 11:05:13 -0700 (PDT)
-Message-ID: <7e2f2f3e-adfb-47e7-a60f-ec475ab4bef5@broadcom.com>
-Date: Tue, 27 Oct 2026 11:05:11 -0700
+        Tue, 27 Oct 2026 11:06:16 -0700 (PDT)
+Message-ID: <fdd3cb6d-681e-43a8-927e-0c33c0be63f0@broadcom.com>
+Date: Tue, 27 Oct 2026 11:06:14 -0700
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,15 +104,15 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 3/6 RESEND] net: dsa: b53: constrain SerDes interfaces
- to initialized PCSes
+Subject: Re: [PATCH net 4/6 RESEND] net: dsa: b53: configure PCS negotiation
+ and forced link parameters
 To: netdev-bot+sashiko@kernel.org
 Cc: netdev@vger.kernel.org, jonas.gorski@gmail.com, andrew@lunn.ch,
  olteanv@gmail.com, davem@davemloft.net, edumazet@kernel.org,
  kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk,
  rmk+kernel@armlinux.org.uk, linux-kernel@vger.kernel.org
-References: <20261022225656.1387306-4-florian.fainelli@broadcom.com>
- <179305843878.3134.5626134378768180663@kernel.org>
+References: <20261022225656.1387306-5-florian.fainelli@broadcom.com>
+ <179305844003.3134.7429976502843350858@kernel.org>
 Content-Language: en-US, fr-FR
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
@@ -147,117 +147,97 @@ Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
  MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
  7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
  95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <179305843878.3134.5626134378768180663@kernel.org>
+In-Reply-To: <179305844003.3134.7429976502843350858@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
 On 10/26/26 16:47, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
+> Thank you for your contribution! Sashiko AI review found more severe
+> issue(s) in other patches of this series. This mail is only an FYI, in case
+> you want to address the nit picks below when you respin.
 > 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 0
+> Low priority / nit picks for your consideration:
 > 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] Ports muxed to SGMII now fail phylink creation when SerDes
->    discovery fails or CONFIG_B53_SERDES=n.
+> - [Low] b53_serdes_config() ignores permit_pause_to_mac.
 > 
 > --
 > 
-> net: dsa: b53: constrain SerDes interfaces to initialized PCSes
+> net: dsa: b53: configure PCS negotiation and forced link parameters
 > 
-> This patch stores a supported interface bitmap on each b53 PCS that is
-> discovered, and uses that bitmap for capability reporting and PCS
-> selection. On SRAB ports whose mux selects a SerDes, it clears the
-> parallel interfaces inherited from the common code. It also stops
-> advertising 2500BASE-X.
+> This commit makes b53_serdes_config() program the advertisement, the BMCR
+> autonegotiation enable, the protocol selection and SGMII MAC mode based on
+> phylink's negotiation mode. It adds pcs_inband_caps(). It also adds a
+> pcs_link_up() handler that forces speed and duplex when in-band negotiation
+> is disabled.
 > 
->> diff --git a/drivers/net/dsa/b53/b53_srab.c b/drivers/net/dsa/b53/b53_srab.c
->> index 9818b3922a377..3fabae80dc1a8 100644
->> --- a/drivers/net/dsa/b53/b53_srab.c
->> +++ b/drivers/net/dsa/b53/b53_srab.c
->> @@ -451,9 +451,11 @@ static void b53_srab_phylink_get_caps(struct b53_device *dev, int port,
->>   
->>   	switch (p->mode) {
->>   	case PHY_INTERFACE_MODE_SGMII:
->> +		/* The mux connects this port to a SerDes, not a parallel bus. */
->> +		phy_interface_zero(config->supported_interfaces);
->>   #if IS_ENABLED(CONFIG_B53_SERDES)
->>   		/* If p->mode indicates SGMII mode, that essentially means we
->> -		 * are using a serdes. As the serdes for the capabilities.
->> +		 * are using a SerDes. Ask it for the supported interfaces.
->>   		 */
->>   		b53_serdes_phylink_get_caps(dev, port, config);
->>   #endif
+>> diff --git a/drivers/net/dsa/b53/b53_serdes.c b/drivers/net/dsa/b53/b53_serdes.c
+>> index d521050d7c8f7..fc20e211e67e1 100644
+>> --- a/drivers/net/dsa/b53/b53_serdes.c
+>> +++ b/drivers/net/dsa/b53/b53_serdes.c
 > 
-> [Severity: Medium]
-> Could an SGMII-muxed port end up here with an empty supported_interfaces
-> mask, so that phylink_create() fails for it?
+> [ ... ]
 > 
-> b53_srab_mux_init() sets p->mode before it tries discovery. If discovery
-> fails, the loop continues with p->mode still set to SGMII and
-> pcs[lane].dev still NULL:
+>>   static int b53_serdes_config(struct phylink_pcs *pcs, unsigned int neg_mode,
+>>   			     phy_interface_t interface,
+>>   			     const unsigned long *advertising,
+>>   			     bool permit_pause_to_mac)
+>>   {
 > 
->      case MUX_CONFIG_SGMII:
->          p->mode = PHY_INTERFACE_MODE_SGMII;
->          ret = b53_serdes_init(dev, port);
->          if (ret) {
->              dev_err(...);
->              continue;
->          }
+> [ ... ]
 > 
-> In that state b53_serdes_phylink_get_caps() returns early on
-> !dev->pcs[lane].dev, so nothing goes back into the mask.
+>> +	bmcr = neg_mode == PHYLINK_PCS_NEG_INBAND_ENABLED ? BMCR_ANENABLE : 0;
+>> +	/* phylink requests Clause 37 restarts separately, but not SGMII. */
+>> +	if (bmcr && changed && interface == PHY_INTERFACE_MODE_SGMII)
+>> +		bmcr |= BMCR_ANRESTART;
+>> +	ret = b53_serdes_modify(dev, lane, B53_SERDES_MII_REG(MII_BMCR),
+>> +				SERDES_MII_BLK,
+>> +				BMCR_ANENABLE | BMCR_ISOLATE | BMCR_ANRESTART, bmcr);
+>> +	if (ret < 0)
+>> +		return ret;
+>> +
+>> +	/* The MAC applies phylink's resolved pause policy in mac_link_up(). */
 > 
-> With CONFIG_B53_SERDES=n, the b53_serdes_init() stub in b53_serdes.h
-> always returns -ENODEV and the refill call is compiled out. Every
-> SGMII-muxed port then ends up in this state.
+> [Severity: Low]
+> Is this comment accurate at this point in the series?
 > 
-> phylink_create() then rejects the port:
+> b53_serdes_config() ignores permit_pause_to_mac and relies on this comment
+> to justify that. However, b53_phylink_mac_link_up() in b53_common.c has no
+> MLO_AN_INBAND branch. Its MLO_AN_PHY branch only programs pause on 63xx
+> RGMII ports:
 > 
->      if (phy_interface_empty(config->supported_interfaces)) {
->          dev_err(config->dev,
->              "phylink: error: empty supported_interfaces\n");
->          return ERR_PTR(-EINVAL);
->      }
+> drivers/net/dsa/b53/b53_common.c:b53_phylink_mac_link_up() {
+>      ...
+> 	if (mode == MLO_AN_PHY) {
+> 		/* Re-negotiate EEE if it was enabled already */
+> 		p->eee_enabled = b53_eee_init(ds, port, phydev);
 > 
-> DSA then sets the user port up as unused. Before this patch, these ports
-> kept GMII/MII/REVMII from b53_phylink_get_caps() and registered normally.
+> 		if (is63xx(dev) && in_range(port, B53_63XX_RGMII0, 4)) {
+> 			b53_force_port_config(dev, port, speed, duplex,
+> 					      tx_pause, rx_pause);
+> 			b53_force_link(dev, port, true);
+> 		}
 > 
-> Ports that never select the PCS are hit as well. In
-> bcm958625-meraki-alamo.dtsi, SRAB port@4 and port@5 (sw0/sw1) use a
-> 1000 Mb/s fixed-link with no phy-mode, so DSA passes
-> PHY_INTERFACE_MODE_NA. b53_serdes_phylink_mac_select_pcs() returns NULL
-> for that mode both before and after this patch.
+> 		return;
+> 	}
+>      ...
+> }
 > 
-> These two ports are the conduits for the cascaded QCA8337 switches
-> (ethernet = <&sgmii0> / <&sgmii1>). Wouldn't those switches lose their
-> upstream link too?
+> As a result, SGMII and 1000BASE-X SerDes ports in in-band or PHY mode never
+> get phylink's resolved tx_pause/rx_pause applied to the MAC. This is not a
+> change in behavior, since pause was not applied before this patch either.
 > 
-> The commit message says:
+> A later patch in this series, "net: dsa: b53: apply resolved link settings
+> to serial port MACs", adds b53_phylink_mac_needs_override(). That helper
+> covers SGMII and 1000BASE-X in every mode and calls b53_force_port_config()
+> with tx_pause and rx_pause, which makes the comment correct.
 > 
->      A failed discovery must not leave a usable serial interface
->      advertised without its PCS.
-> 
-> It does not mention that the port then fails to register at all, or that
-> fixed-link/NA ports are affected. Is that the intended result?
-> 
-> Later patches in the series do not change b53_srab_phylink_get_caps() or
-> b53_srab_mux_init(), so this still applies at the end of the series.
-> 
+> Could the comment be added in that later patch, or could this commit
+> message note that the MAC side is handled later in the series?
 
-Agreed, this was an unintended regression. The next revision preserves 
-the legacy interface capabilities when SerDes discovery fails or 
-CONFIG_B53_SERDES is disabled, allowing fixed links without phy-mode to 
-continue registering. Only successful PCS discovery replaces those 
-capabilities with the supported serial interfaces. The commit message 
-has also been updated.
-
-pw-bot: cr
+Agreed, the comment was premature at this point in the series. It has 
+been removed, and the commit message now explicitly notes that the later 
+“apply resolved link settings to serial port MACs” patch handles MAC 
+pause policy.
 -- 
 Florian
