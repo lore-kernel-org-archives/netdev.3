@@ -1,109 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.42
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793140337;
-	b=YRGrqlw8h8zJM6GDU6xlbrw5BYGl65Jx1nTL7mAuXQBewO81WcFwNJ8l8063d0ScLFsc
-	 Qwb1xmbZE8TJFqT3T9kW40NHD6TNuStwmByv7uOBJ9bnMIfVL4Cyn8AJr0HRltN2ekHdo
-	 6N8UQb4a3FIc3Mc+ygfeSv7dyj93UvPNm4zkNS8iaO3sEjskCdd2VL/M0MAXgamAoo1DR
-	 DWtJQpZ06zJmNbGcffQPemMGiQnVgUjeLcUPoo0dX9eQOdEPOpCEq+dN6OXgjvvftxunE
-	 m4bojd79cwA/TtmjVSM7J50vi+J/BiXUTHjrdzPOqTvVhcPksw5T2kvFcwycD/7cXhQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793140337;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.180
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793140676;
+	b=UqQ0K4KxUQo4FqCpKb7DZEFyYbXjrQakEIjvHVTS+RHb0xAGLnmYZgGEG7+ZsK+IlC5z
+	 WPade5BNZ3C+5pxh6oTdYWe/ejtP+TAGqFmS/te5x/f2uKa8vNISQo8iLBstT7v10Yb0D
+	 dsU3FtV+ZieNbh51TheAVdEjvADH/ejrKXgxrx2oQKbdgSFK6xdf7eE+QDRUutvCY4FC/
+	 4AjJ//cP2Xak9//h0kkt3d/O06GPKw6g5y028Tlb+IxxfC/AK7rXgpyHxk/r48tHevRzU
+	 14qjQjNrnwuTMmaNVSnE/t9ly0DWdJ6N+ARYEV9fnEo98aiE8iGi8M4XKpLZ8+WXKow==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793140676;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=u4BQktSMRlYHvWF/4DH3ceG+qWnGiYhdIgnI5VmkEx0=;
-	b=PuP+F/OORtxeHjyhNtgcmWbLGHO6UV/9WZrAcQLIUgiMHIT40F1M2fmeqRzIDTkr+/k3
-	 xiDBltoD4xOYVqfDVkXYCgpwtcZd9kJ7OmV6PLELFoRDYcqvL3H8wRHIB6gwrKojJM9aU
-	 a78AQDz01jhOTjCn7bQZlP9+FtFnpm4ad+3kH4vXgvwCDOc8rDuLpG5x2YeOBMRaEBLu0
-	 DiO0NZ2si8GrIUxcMN97YQF+w554KzkElGDDZp6nBIwP72V9lW+EYBf3TCfMTJHTm3CMj
-	 N77+dTauOZSCKi1brIn4W5ygUzfJ2O48I6VCS4qbXCZ8PspDqA/raPHkyRh1X1BaaKA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JQrJ57+l;
-	arc=none smtp.remote-ip=74.125.82.42
-Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=t5xhlGartaiIZUAGJb1P17Ap9eQ10+LChVLHP/V0nA0=;
+	b=q69fYIOsv7ZwbvCOmZl2AZUu/MlHp6sw8vPRxOQoWL6c+7H9PlEAKbxS2tklvNrOAcM5
+	 6dhi//x8prcGYaPsHQN46hxcsHyeCOiH1ar956ZJVA7/e+Dmna8ZaNRw4aCTm3csJ5Fdh
+	 qXWnY7x1dWjdcmBY/c7r6P0rNasDK9zCw+PyHWKcsOiQuyNq7kisnpBeWuQhTvPpaW2GX
+	 bv0pxREqttTkeYtLVS4qYbaJGupRx7xwXuzV0KM6CWc8kcx438tzCF0KAyUSajcBm0uDN
+	 D8sZ1/SJ+zbRl+Rflw5tHx0hnay8DWgGPeESI2QW+RZcgadi4c8qgxZMqiv7jCtO3NQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=paul-moore.com;
+	spf=pass smtp.mailfrom=paul-moore.com;
+	dkim=pass header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=CmmfcGZ7;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.180
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D0160A5BD4
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 22:32:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F1D0160A5BD4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DD5606A31A
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 22:37:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 33DD5606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JQrJ57+l
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-1931ff67a29so756743c88.1
-        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 15:32:16 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=CmmfcGZ7
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8a05effaf8dso252795b3a.2
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 15:37:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793140675; cv=none;
+        d=google.com; s=arc-20260327;
+        b=H6SOwUwO01JF4aUiBRh1im6o6YrP96nspp6Ep1vf6WGIQl0Z8L3aTyQSA/jzUVlSX6
+         mGT4V3sO9AniAnKaeSDLkO321HnxixE/fZh6dosOIhTf0AV9pLFcLBxMlOrcSn8gaXx3
+         Dpkh1QS0E3uQZaNuju0HwyJylwjcJ+j0qC9j3/V/BYMbKQZVFExH/19bLhJkRd06UYDY
+         oqfOwmDizYY5XFXHP6J87l318ccq0DOpiYP0YuOSYe6RYuk5EMUgtU3EPy5HJVdBn+NM
+         gN2WJxnCUjk5I5vyZPrG6zuMErzB7+SpxD0Scot1Ub3mN2QsOxSDpBKRxvaLPjlFwDbM
+         oSvg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=t5xhlGartaiIZUAGJb1P17Ap9eQ10+LChVLHP/V0nA0=;
+        fh=0TR+H1alsQl75RpqWIttTdeovOcsr3q4olwEAbTrEzA=;
+        b=KKrdYsGvuoL9F0m6VNmtYQzqxEWaFv0yPkW01vdPRUns7e/CaDr3CoyfbqMNw/r4IM
+         H7gw1KbIRkA1dc8cyF7nPNLs5JaSvqT8741IzEhndZR+7DozXZ71FeEVCZdTnaO4agC2
+         PCIsi5L4I8VbD6gOc/81cEQDS3q7vbFmzX+nbFqcn9lsEPA3VV2sylgWi9O75N5+MqpN
+         wqXEPVU9eagRPGCyrnsCAwSr0he+3xyK3CRV8XZPpkG5ZRPUBzr68i0f5cFXI1q7fEuy
+         xKxKVQEkr+nz/TIYaDwDxS2cF4gtSwyIZ8bU7w3tYBVUjt1Mt/8wUV2RMOaFLIND8VJh
+         QAog==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793140336; x=1793745136; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=u4BQktSMRlYHvWF/4DH3ceG+qWnGiYhdIgnI5VmkEx0=;
-        b=JQrJ57+lHenhwTyAjh7P9W6trOV22I4mZb5s2ncXIuMNkkMWYLbCU8m58HXWcDia6W
-         f0KbQt+6vvaFA1BEKH/r1JBnCDuVIdm5AgXJtuzcqI9EzW9aUiBmeLGlMWIRWCMZE93z
-         Kljf+4rLzdnP9glTyVIdLRm6ZtLp4ykQKrnlnn2WaJDxrRpweSxOJ9sRj3HRlC6BLcCv
-         z4FHjU+4nCy9eHCGrcZ21wm+s9xZR9mgmUF13PQHLCCPSVAkG1ZvfIHclBVyNN1ciJjM
-         G8CbKTY5PlddnniD/3WW32CQDm24zBRVdyX4xEivOqT7Tapvg7nUxC/0bP8YqqPdnVQh
-         nFfQ==
+        d=paul-moore.com; s=google; t=1793140675; x=1793745475; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=t5xhlGartaiIZUAGJb1P17Ap9eQ10+LChVLHP/V0nA0=;
+        b=CmmfcGZ7nENUuOJDqfOA+U+yawbLWPNguEYYehiaT86nUJPExK4LIUr0b+k1BDuc26
+         I6hx3Xfzp7YLAMCi0JlAztaJL1LJ07peoMRn4mvEVYQV9ao935CKi7xkqxxr8DV6Yock
+         rxkAlWa6dKfZUDSA/ldivMN/wB1R2F6oZJ/Z+KQbMx5hox/gtEbE+yCicUOTZpRrKE4P
+         T+53go7ZXNYLqMuC/UuR39tYwAuemgUaV9GLdZTVfA4cl0AKkhPeDhUFFxNVxK9mTwol
+         FatP7g9VML/VQBnIOClMGPtwnF6f1eMMmXa3sADMNe6RaLLPzr5XUkxKolK7HPzqhrTk
+         WZQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793140336; x=1793745136;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=u4BQktSMRlYHvWF/4DH3ceG+qWnGiYhdIgnI5VmkEx0=;
-        b=24o2NIr4/vPkn+mXMTpRivo8Sbug+eb5Nbmo2B8OPNsRfW9PPYzgOMm6Rh+Z8acUfU
-         Imh7BUXvPsKvl7T/lMy3iBV03Yiyt4pLN0aTjfrxN4a85g0sUmRvQKPzQEEPApJUjdu9
-         wTDtLJpFR/OclVGO8/p3VUU4eM5KfaUit4j4mKJMEJF7JWiLBRdNB/bNfNqrVB5LeND/
-         IrVmQZXLBIaGLwzm20owqYUCoNdYqQdnKt+VHRTVmYX0jRXIIih2ZEYAEIE/tYzJeY6i
-         WMvLic6SjsZZiCTWfJr3iZjn578YknXF/nipgR6yaz61GOUf2DcER9XPtLhvqMHO4EOA
-         /wZA==
-X-Gm-Message-State: AFq9FYIPmlbb+f6aUiF9myWrY6lVtSKlqd6ETR0svrImmbCmJAFxMN96
-	bugqZIAXND99Ag1e1faoNrMmk9uHlJEzProV7E0Ge8kqW5QMMutStLRI/YRDSIuL
-X-Gm-Gg: AYBFou3kPtd9rerwKQnhO/zjugLAcDZtXfTX0Z++oyWJrim4XlvoZuDNwZlBepV1pzx
-	b7XTwJgAv/Zloz4UvBk8sqIMKSu74GIlL4cZzSibsrkEQfWHT+wQaaZC2e8Y0pf/g/TlLcf39qS
-	Sz/ckGrO579p90hwXcBA2hVF0ldXkXbUQCRJIS5KRHCV4oVaYooL8s/WMhKNNDBKabVmLhtQgYh
-	P23zeWvCzJpSBsRIEGRjHw/6W525rGAc6UgGP0DD8MSxK7tjhw6wqaV2T4IizTwfZlbLcXKmffL
-	nE29gnII+VfiC/zs33p0JhBsTSCJt/z1gfSnhA/HP6ZnBbNdIxDosWwF85I4qIRkMB4mekdtWat
-	Qrg2beyTuQ3DlQi0mxX8ozQ/0Urz/iQ0PijnC4P7DMi9D8ZkF0mJV74P3sNRt+K1TccT2pPKipi
-	t4zJWQXQX1pROeQxc+Wc187qWaAFo8kXdGkZlGbONmi5ZnaHICXO9uL2Hlk4mB3y314HEbK7lHQ
-	MddW2s9Th4snEYmr7ZySG9X++GMw95SyePQmjULKU+6w2zMYjQKCKuazHerIf093gHZ1nutDoMs
-	3QYzog==
-X-Received: by 2002:a05:701b:4651:20b0:180:15be:1f9c with SMTP id a92af1059eb24-1a6cd499691mr736339c88.30.1793140335703;
-        Tue, 27 Oct 2026 15:32:15 -0700 (PDT)
-Received: from eldorado (ip70-187-214-22.oc.oc.cox.net. [70.187.214.22])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1a6d98c93d7sm1130735c88.13.2026.10.27.15.32.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 15:32:14 -0700 (PDT)
-From: Florian Fainelli <f.fainelli@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Florian Fainelli <f.fainelli@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Runyu Xiao <runyu.xiao@seu.edu.cn>,
-	David Yang <mmyangfl@gmail.com>,
-	Herbert Valerio Riedel <hvr@gnu.org>,
-	Jeff Garzik <jeff@garzik.org>,
-	Danny Kukawka <danny.kukawka@bisect.de>,
-	Mugunthan V N <mugunthanvnm@ti.com>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	linux-kernel@vger.kernel.org (open list),
-	Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH net 11/11] net: phy: smsc: wait for LAN83C183 power-down recovery
-Date: Tue, 27 Oct 2026 15:31:40 -0700
-Message-ID: <20261027223140.3774570-12-f.fainelli@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261027223140.3774570-1-f.fainelli@gmail.com>
-References: <20261027223140.3774570-1-f.fainelli@gmail.com>
+        d=1e100.net; s=20260707; t=1793140675; x=1793745475;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=t5xhlGartaiIZUAGJb1P17Ap9eQ10+LChVLHP/V0nA0=;
+        b=r9tz5jSRCCo9mKozN33Ti8LglPV3fGqkfqHOiIArMLU1/Z7zWMekXGPt79PXkMM0Jc
+         AJ+5IPwd7TlryZMEIE0oQEcNfyGjPJ3KcZK9lAm2o2ePW0RLThGgDaosoOMW3IlbJq5a
+         xaqg+Y73d1+/Zto+m+N7iSLtgDLaBUl6blUTZbme+rzMe+mSUZGRyTF+ocYApCygFrww
+         N1S8qEg2tH3w91TA34TiSBk+rjibWUNVGdXs50WKnAeTvvGyLsNk7ITNMiJcHf/pV61t
+         iPzkYYg2QJgwTdz4oxMcV1ZIgigIE1o3nzD2bixan13iYoJJMQJqAxF5JVfkTNx7nlfD
+         08lg==
+X-Forwarded-Encrypted: i=1; AKwUvBxBCAt0CseRUVvPMcM/4VI7SZN9NVixegfqgsvGDlowHz80X3a3TU4+xnaWeOul718qpAH4Hj4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJmJSewBkTnku7dmDdDJrjqmowsMZ5wn0gQiDiQbnz94+tTeAEP
+	XZ+Nla0cVU2kqbOteTMbuX3vlgjBuePcalcrQX/ymVTrFWTBKamOZxu2V8VOfD/X3dFAjUYcSFX
+	HEf2VpwNur6/ncQ1Ot5gmSZqkX7Cgzl39IGX6VRE7
+X-Gm-Gg: AYBFou06EAh1bvHv3ZA7sdAhsu+rpX78rri/JCDYA4zDndclOeeWNoHR6vC73J3fMN6
+	K5gtjCLuMaL3XIuEEO1aKuMh4cXvRie3Kr4eiJWBpaKvCc/MAYR4YOb2gjcortLAhtbpI+aWoBg
+	OiblNVWKclGft/NTdA+LLZXarX3RvWA3EtvNOOpVux0xgalQ3su0EPv1MCeXEhUiaObfKtZHWk8
+	kBcuG+jKkMjsguncuSYuK4Udkd2KkKW7JDDkh4WM/vKcMkSqDPnLKVboruG6nisRq9ydJrOmAnF
+	hn6zGjrk4jXHw1eNwj1HJSla6jDq/ljjKeC6MRmYZ3LmbxIwCBfhPBlDbpLnbD9ChdObEEtVRbz
+	XfFVCDfrpGlh+ULGKTuHfUSQ3fgfPIM1TAcEU/YR9OncuagSY5ksomJZ6O3524Q1oLW2m
+X-Received: by 2002:a05:6a00:909d:b0:8a0:3ed7:93a1 with SMTP id
+ d2e1a72fcca58-8a6e7ccf00cmr440746b3a.50.1793140675521; Tue, 27 Oct 2026
+ 15:37:55 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -113,91 +104,144 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261026-work-security-namespace_free-v1-0-ffa3ebbf71bd@kernel.org>
+ <CAHC9VhR4rMydWiD-RFv-ABiYSG_txJuyrtdaowEXPY=CHEvFXA@mail.gmail.com> <20261027-heckklappe-halbmarathon-vorsorgen-849ffdc42aac@brauner>
+In-Reply-To: <20261027-heckklappe-halbmarathon-vorsorgen-849ffdc42aac@brauner>
+From: Paul Moore <paul@paul-moore.com>
+Date: Tue, 27 Oct 2026 18:37:43 -0400
+X-Gm-Features: AclHuK_35bukQeeBWCt3UKqoCps6Vj2Zz_3Ju5zoX-GW6fl3dw3mrid-lC1zJpA
+Message-ID: <CAHC9VhSJMPOY4X78ENEkAiNeVTCpvP76PgVDqTQfwaYfwnYwAQ@mail.gmail.com>
+Subject: Re: [PATCH 0/8] ns: fixes for the namespace LSM hooks
+To: Christian Brauner <brauner@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-fsdevel@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	=?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
+	=?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, 
+	KP Singh <kpsingh@kernel.org>, Matt Bobrowski <matt@bobrowski.net>, netdev@vger.kernel.org, 
+	stable@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The LAN83C183 uses the generic PHY driver, which returns immediately
-after clearing BMCR_PDOWN. Section 1.11 of the datasheet allows 500 ms
-before normal operation is restored. Starting the Au1000 MAC before the
-MII clocks recover can hang the MTX-1 when reopening its interface.
+On Tue, Oct 27, 2026 at 5:24=E2=80=AFAM Christian Brauner <brauner@kernel.o=
+rg> wrote:
+> On Mon, Oct 26, 2026 at 04:31:25PM -0400, Paul Moore wrote:
+> > From what I'm reading the LSM framework patches don't meet the typical
+> > LSM criteria for stable/RC fixes: there is no serious bug/panic, and
+> > there is no functional regression from a previous release.
+> > This looks like one of those unfortunate circumstances where a new use
+> > case wasn't tested thoroughly enough before the merge window, so it
+> > can wait for the next one.
+>
+> My original patchset had a selftest that excercised the BPF LSM usability
+> extensively. The hooks are new this cycle and broken for the main use-cas=
+e I
+> wrote the patchset for.
 
-Add a LAN83C183 driver entry and resume callback. Wait for recovery only
-when BMCR_PDOWN was actually cleared, and propagate MDIO errors without
-waiting. Resuming an already awake PHY does not incur the delay.
+The hooks were merged into the LSM tree on August 31st, and due to
+timing I'm guessing they appeared in linux-next the next day,
+September 1st.  Considering the merge window opened on October
+18th/19th, that's conservatively a month and a half during which
+testing could have uncovered this issue and the behavior of the hook
+could have been changed to accommodate your use-case.  I know the
+Landlock folks were testing the hooks for their usage, but I've gone
+back through my inbox and I don't see any reports of BPF LSM failures
+using these new hooks in v7.4 until you posted this patchset during
+the merge window.
 
-Fixes: be9dad1f9f26 ("net: phy: suspend phydev when going to HALTED")
-Link: https://pdf.dzsc.com/LAN/LAN83C183.pdf#page=44
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
----
- drivers/net/phy/Kconfig |  2 +-
- drivers/net/phy/smsc.c  | 26 ++++++++++++++++++++++++++
- 2 files changed, 27 insertions(+), 1 deletion(-)
+> Curiously, your pull request told Linus "I expect that BPF LSM developers=
+ will
+> also be making use of the namespace hooks, if they haven't already". So i=
+t
+> seems very strange to claim this as a new use-case.
 
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index 30e9d22c8d1a..10466b2574eb 100644
---- a/drivers/net/phy/Kconfig
-+++ b/drivers/net/phy/Kconfig
-@@ -421,7 +421,7 @@ config SMSC_PHY
- 	tristate "SMSC PHYs"
- 	select CRC16
- 	help
--	  Currently supports the LAN83C185, LAN8187 and LAN8700 PHYs
-+	  Currently supports the LAN83C183, LAN83C185, LAN8187 and LAN8700 PHYs
- 
- config STE10XP
- 	tristate "STMicroelectronics STe10Xp PHYs"
-diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
-index 48487149c225..c3b51afd4b1e 100644
---- a/drivers/net/phy/smsc.c
-+++ b/drivers/net/phy/smsc.c
-@@ -13,6 +13,7 @@
-  */
- 
- #include <linux/clk.h>
-+#include <linux/delay.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/mii.h>
-@@ -684,8 +685,32 @@ int smsc_phy_probe(struct phy_device *phydev)
- }
- EXPORT_SYMBOL_GPL(smsc_phy_probe);
- 
-+static int lan83c183_resume(struct phy_device *phydev)
-+{
-+	int ret;
-+
-+	ret = phy_modify_changed(phydev, MII_BMCR, BMCR_PDOWN, 0);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* The PHY needs up to 500 ms to restore operation after power-down. */
-+	if (ret)
-+		msleep(500);
-+
-+	return 0;
-+}
-+
- static struct phy_driver smsc_phy_driver[] = {
- {
-+	.phy_id		= 0x0016f840,
-+	.phy_id_mask	= 0xfffffff0,
-+	.name		= "SMSC LAN83C183",
-+
-+	.get_features	= genphy_read_abilities,
-+	.suspend	= genphy_suspend,
-+	.resume		= lan83c183_resume,
-+	.set_loopback	= genphy_loopback,
-+}, {
- 	.phy_id		= 0x0007c0a0, /* OUI=0x00800f, Model#=0x0a */
- 	.phy_id_mask	= 0xfffffff0,
- 	.name		= "SMSC LAN83C185",
-@@ -887,6 +912,7 @@ MODULE_AUTHOR("Herbert Valerio Riedel");
- MODULE_LICENSE("GPL");
- 
- static const struct mdio_device_id __maybe_unused smsc_tbl[] = {
-+	{ 0x0016f840, 0xfffffff0 },
- 	{ 0x0007c0a0, 0xfffffff0 },
- 	{ 0x0007c0b0, 0xfffffff0 },
- 	{ 0x0007c0c0, 0xfffffff0 },
--- 
-2.53.0
+The LSM namespace hooks are new to Linux v7.4, they did not exist in
+Linus' tree prior to this merge window which is why I consider both
+the BPF LSM and Landlock usage of these hooks to be "new".
 
+> >From my perspective the timeline looks like this - I'm sure yours differ=
+s:
+>
+>   I wrote an implementation for the BPF LSM to use a set of new hooks in =
+a
+>   subsystem I maintain months ago.
+>
+>   You rejected the hooks because BPF LSM programs cannot serve as justifi=
+cation
+>   to introduce new hooks. Only in-tree LSM (selinux, apparmor, landlock, =
+etc) can.
+>
+>   I cannot fulfill this requirement because I neither have the expertise =
+nor
+>   the use-case for any in-tree LSMs.
+>
+>   Landlock wants to make use of this by pure chance. So the maintainer of=
+fers
+>   to take over the patchset. He does.
+>
+> End result after more than two kernel releases: The patchset that ends up
+> merged into upstream doesn't work with the original motivating use-case b=
+ecause
+> all the BPF LSM bits got dropped. So far, no problem. That may happen as =
+long
+> as we can the fix it rapidly.
+
+As mentioned previously, I'm pretty consistent about what goes up to
+Linus once the merge window opens: there is the initial pull-request
+with the changes from the last development cycle and then after that
+I'm pretty strict about only serious bugs/panics and regressions.  In
+this case there is no existing LSM support for namespace controls in
+any of the tagged releases from Linus so there are no regressions, and
+by all accounts there are no panics related to these new hooks as-is.
+
+Holding this change for Linux v7.5 will give you and others a chance
+to fully test the new LSM hooks from a BPF LSM perspective, something
+that evidently didn't happen during the Linux v7.4 development cycle.
+Disabling the BPF LSM support for the new hooks in Linux v7.4 should
+be relatively easy, much simpler than this patchset, and eliminate any
+claimed harm.
+
+Also, as the ongoing friction between the LSM and BPF developers was
+brought up, I want to point out that SELinux support for the new LSM
+namespace hooks was delayed to Linux v7.5 due to issues uncovered with
+these new hooks during the Linux v7.4 development cycle (well before
+the merge window opened).
+
+> Then I take the time to send this series of fixes to actually restore the
+> original use-case so we don't release a kernel with a new api that doesn'=
+t work
+> for the main use-case I developed this for.
+>
+> Once again, I get told no. This time because the functionality isn't brok=
+en the
+> right way to justify a merge-window follow-up. Instead, we'll release
+> half-working functionality.
+
+I told you "next merge window", which is far from "no".  Considering
+no one tested the BPF LSM support for these new hooks during the v7.4
+development cycle, that seems pretty reasonable to me.
+
+> I'm really on the fringes of this endless debacle but this seems to be an=
+other
+> iteration of "BPF people don't get along with LSM people" therefore they =
+make
+> each other's lifes and that of innocent bystanders that just want to get =
+work
+> done difficult.
+
+First, please read what I wrote above about SELinux being in a similar
+situation.  If a LSM which identified an issue with the hooks well
+before the merge window is being pushed to Linux v7.5, I'm not going
+to make an exception and rush a functional change for a LSM that
+didn't identify an issue until *after* the merge window opened when it
+could have been easily identified with testing during the Linux v7.4
+dev cycle.
+
+I'm not going to argue that there isn't ongoing friction between the
+BPF and LSM devs, and I'll admit to finding it odd that you seem to
+keep inserting yourself into that friction point, but my approach here
+is the same as what I would have taken with any other LSM (and have in
+this particular case).
+
+--=20
+paul-moore.com
