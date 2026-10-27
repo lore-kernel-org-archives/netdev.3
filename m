@@ -1,65 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793114266;
-	b=ypPxK2n1NwLdBrZ01BCi/PIo9DtzNePLvgI75rojOU88ZEiSqUHnJHTgR1MuB2L94g4w
-	 0xscQWGBtfl9+5uyFnQeWjZMqKFub7owHuTReRJNwmoJGjuS0eVnULt4O2F+I5hhG1GwW
-	 IMy4Jhm8sUvtxGaGyJdMV4mK3Z6jLW45iu8cEpc0Vw5Eyu5s5Eu3VvyA/Y3UviM/H4nT1
-	 YI7O/z7C6inIabDPzVwL3r7drpy2C6lXZI3KMe/w4g8N2VipZz4PeDgWvTNjaQTDyiekr
-	 yCh9IukfBEbCgFQtvT1ExCbHEBwT18xEQ1Kr9VMcYLgAsi3yAl5nTquxOUsKX1JGp4g==
+	t=1793114356;
+	b=PJt3qmsaoGxXWuKthyY1U1QkS23SjVXPOcCew9KYqwo5Tgu81B1irN9tGbUJ/owHGz1C
+	 LqFBVtepfK0odnntMgIb/mTb2Ystc0+0Ma2ny1rjaYzWgdst430+yAgnkwQUhFIBwNOd7
+	 gP3ea5prbuMRABo2SsXmXXO1BmLZ1FGX97OyEKmck22sWo/y5y7BfPueCItjYtsEuCRHr
+	 2nZ7Px/DpAxXt9wRgMt2H6ToBUrjCgeZZLeXFvwXdDBkrN/ZPXsWmAFPykHIwDOeqbDEl
+	 ZsZbI3M+ZkzDMc+y7lDeVGHf3t7bNmrG8LxehAKRAV/uJQj5RgyttH04zSnkDe72lgg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793114266;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=47NP/PYX9H8WhXFGuiSEfQYgXCHwbDC0hNK6ORbtpNU=;
-	b=Z2qK+uNwBYQm0k8fwYjZ9gedWFOn1mR9AlyRlRvuzpBiifvslYzIeIC1P2UBxbdqpnhc
-	 hcX5vZYMLPq8cPhIKA5Mli7/lbhOjmPjyiuHKv6rcOcd8t+oDIYDv+ii7ZKSJWCQmOrij
-	 V1JV7fpt04M6COGrI2Puh+TBTdKow5vYInrWGbohYY/ukhW0Pf9w60iRwmRH9zU9ZF2ta
-	 Lp6NCsjzSitTVhod3CsR3SlPcqyXiRq0fcYmkgOfduXxUMXAQF6gWk7O5Oev+Z6RTbHso
-	 0GJKAYdyRUVJe8yw5lEiEF+nnLPOyUjKYDw1ataFHBqeH41jWshaesDnZKw4aCskaIQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793114356;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=qVOyjGft3yl8t21QQK6X5h58hFCy9arSFXCjxP8+GvE=;
+	b=o0uHvYjSQn2Q/b9J47WMZE7x69xXNNvkEBZdW7osEl2p3jF5gP0lY73NehX6ifZREFRH
+	 FEKi5qHoJ61KuM7K7xoiCgCK0ulDp6OQY2Rb7/kWK1ZAMaxSdhDiGvqKatFFhDW/Ft/14
+	 aXGv44S1zywP2IY/T/018Xkn4LlO9BDogW+y3f1bIO0Sjo52rlQFv8JczufA+bXSrQS3K
+	 y5le8BEupLd3yP0yOnES1cY19EWnTvGcEsZlQUoQDrtO0WqH6AyL3l8eFFlJEXFmEULZn
+	 I2lufYSoRdzkIxzRx1BiCnLCM3vk22m6W0NByVwmPoDM38ejLuT2n6JhRiGing9QUbw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="oMTa/ju9";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Lx9IsB10;
+	arc=none smtp.remote-ip=185.246.85.4
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5B9606A31A;
-	Tue, 27 Oct 2026 15:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76904606A31A
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 15:19:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 76904606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oMTa/ju9
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBF831F031E2;
-	Tue, 27 Oct 2026 15:17:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793114265;
-	bh=47NP/PYX9H8WhXFGuiSEfQYgXCHwbDC0hNK6ORbtpNU=;
-	h=From:To:Cc:Subject:Date;
-	b=oMTa/ju9Ixd+kJ9VWqX275nUfLHjQf3HaZ/Svrw9+zkX6n2Z3YkZuAppFYezCNXI/
-	 xaAi6IcoATVevxfqrFOqn8WR5L+F96+uVe5CEOQWngysqqY5UxJLPDibZTAJcoRccU
-	 7wE/txWnaZ0l2mFFp6byoPKkAoihXit2fud8z09xFa5Rc06SB6r914rQoqtZLxsg/e
-	 yTFHoHVuVozzfld7fC3DSFivC77MqiWQhOF6VLBUq1fPJkhqZ+/ZLVSj0MAF59b0cz
-	 +JunLM9NXVBCNyCqR3iBBhqYhKB2TNAsWB819Lr8e3bv9QdXGmAB9nB/m9J7rl84rn
-	 sNuAE7cBLfOnA==
-From: Arnd Bergmann <arnd@kernel.org>
-To: Sunil Goutham <sgoutham@marvell.com>,
-	Ratheesh Kannoth <rkannoth@marvell.com>,
-	Geetha sowjanya <gakula@marvell.com>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Suman Ghosh <sumang@marvell.com>,
-	Nitin Shetty J <nshettyj@marvell.com>,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Jiangshan Yi <yijiangshan@kylinos.cn>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] net: octeontx2: fix building without DEBUGFS
-Date: Tue, 27 Oct 2026 16:17:21 +0100
-Message-ID: <20261027151737.386155-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Lx9IsB10
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id CE30E4E4130E;
+	Tue, 27 Oct 2026 15:19:07 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 90477603BD;
+	Tue, 27 Oct 2026 15:19:07 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D8E5310328D57;
+	Tue, 27 Oct 2026 16:18:54 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793114346; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=qVOyjGft3yl8t21QQK6X5h58hFCy9arSFXCjxP8+GvE=;
+	b=Lx9IsB10zLwRififq18Vz4f1nNHDehrBnlXxwgOhAP+wxSg7U/q43gZuD1al62hhYFIKuQ
+	y3lOVI+kCxXZk0VZhn45QsWfo1FeRxHHug5oXzJeBBz/pkMDW2wkzQFF4RNTSX1PRwVVOu
+	fZfkA3d+qLoIvSI3d6ISPM5Nv0r16emp9QCCwyfnB1l3/tD+YVJR9MZjUFJGKrVFpE0vjY
+	Pd7NeZBp4SF2WXTNrslrxtNGsc9xFcHEwxFEhqp5GbjG1Bwkv8Lsjx2gxDCxzBld3lvHNy
+	xWb0PMGxdayeOXdOiQwtR+WicMTwJp5IEI04oxKrke+MRAV+Q2Y5TAvgWXja+w==
+Message-ID: <8a1547bb-cc42-465b-8a8a-d4790cd0867f@bootlin.com>
+Date: Tue, 27 Oct 2026 16:18:53 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,50 +62,73 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/1] net: stmmac: descriptor management issue during PM
+ sequence
+To: Thomas Bourgoin <thomas.bourgoin@foss.st.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>,
+ Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
+ Christophe Roullier <christophe.roullier@foss.st.com>,
+ Ding Hui <dinghui1111@163.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org
+References: <20261027150556.51209-1-thomas.bourgoin@foss.st.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20261027150556.51209-1-thomas.bourgoin@foss.st.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Arnd Bergmann <arnd@arndb.de>
+Hi Thomas,
 
-This error came up on my randconfig tests this week:
+On 10/27/26 16:05, Thomas Bourgoin wrote:
+> Hello,
+> 
+> During low power sequence on STM32MP21 we sometimes observe out of range access
+> to the DDR by the GMAC ethernet. I managed to narrow down the issue to the
+> resume sequence of the RX descriptors with the function
+> stmmac_clear_descriptors().
+> 
+> On resume, stmmac_clear_descriptors() returns RX descriptors to the DMA
+> without restoring their buffer addresses. On DWMAC4, the DMA will
+> therefore consider a descriptor for the application as one for the DMA.
+> This can lead to illegal access from the DMA anywhere.
+> On STM32MP21 the DMA address bus is 40 bits, thus the extended status from the
+> write-back descriptor is read as an high address by the DMA. DMA will then try
+> to write in the DDR at 0x100000000 whereas on STM32MP215f-dk DDR is only 2Gb
+> from 0x8000 0000 to 0xffff ffff and nothing is mapped at 0x100000000.
+> All the other SoCs of the STM32MP1x or STM32MP2x are using a GMAC with a 32bits
+> DMA address, so I do not have illegal attemps.
+> 
+> To fix this, I propose to reconstruct the RX descriptors that have been used by
+> the DMA but not forwarded to the NAPI function stmmac_rx() before suspend.
+> 
+> I'm not used to this driver especially the xsk management and zero copy part.
+> Since this driver is used by a lot of plateforms I'm open to all suggestions.
+> 
+> This V1 propose to reuse stmmac_init_rx_buffers() but maybe using
+> stmmac_refill() would better fit the issue. From what I read, I could not call
+> stmmac_refill() as rx_q->cur_rx is only updated in stmmac_rx(), so
+> stmmac_rx_dirty() returns 0.
 
-drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.c: In function 'npc_cn20k_debugfs_init':
-drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.c:392:55: error: 'struct rvu' has no member named 'rvu_dbg'; did you mean 'rvu_dl'?
-  392 |         debugfs_create_file("mcam_layout", 0444, rvu->rvu_dbg.npc,
+Thanks for the series :) However it looks like this is already being addressed by
+Ding Hui's series (currently in V5) :
 
-The problem here is that the rvu_dbg member is hidden in an #ifdef
-block, but the reference to it is not.
+https://lore.kernel.org/r/20261025100636.613670-1-dinghui1111@163.com
 
-Remove the #ifdef and waste the 8 bytes in the structure in this
-config. Note that the debugfs_create_file() call end up ignoring
-the arguments, so the actual debugfs implementation is still
-ignored here.
+Can you take a look and maybe provide some reviews/tested-by tags ?
 
-Fixes: 45229e9a9ab5 ("octeontx2-af: Extend debugfs support for cn20k NIX")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
-I cannot tell why this showed up now and not earlier, so maybe the
-'Fixes' line is misplaced. In randconfig builds, debugfs is almost
-always selected by something else, while the octeontx2 driver is
-usually disabled, so it does make some sense that this config
-would be rate.
----
- drivers/net/ethernet/marvell/octeontx2/af/rvu.h | 2 --
- 1 file changed, 2 deletions(-)
+Thanks,
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-index fb4870cd18e9..3b647e7b4bc2 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-@@ -649,9 +649,7 @@ struct rvu {
- 	int			mcs_blk_cnt;
- 	int			cpt_pf_num;
- 
--#ifdef CONFIG_DEBUG_FS
- 	struct rvu_debugfs	rvu_dbg;
--#endif
- 	struct rvu_devlink	*rvu_dl;
- 
- 	/* RVU switch implementation over NPC with DMAC rules */
--- 
-2.53.0
+Maxime
 
