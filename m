@@ -1,141 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.100
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793123985;
-	b=CVYo0/7+B1zonEMzPkutmPKuY1hi0zA0/m3nEwzvpGnuMweePFqSfh89nQYNn6wT5cw3
-	 4lg+PBMk+UzWOuX1hUZ9Kfk43W9wnPmHf6KkT69FIhz2w7UesVv11L1pfxxHkEimjw9J/
-	 aki3n3DM8s7gZg6XOoE3n5E/E51EsYk7AMOJcq8TCiqLPEZC2Pfm0sIZXgC5gtDsjYB8X
-	 qjsQFuAnBbklhfKur77s9hsGAMDdEjNM3s35eUdmBpQhE0+Sr6ZkruV/U7FrzXcJKytI1
-	 Kv4ZaUkauoqRMaSyE2eqexYqmhBPafnVcyRkTMXhsKB0EHFVkyS1taGkpQmNyOvcEGQ==
+	t=1793124319;
+	b=mB96mXXUWgS8YIkdYJYqyCaIKef3wGyKGGGGkjeObM1Yc1caqgizpYA4iDOvChkl5Hvs
+	 VddMAITTAk+nNopxI5Hw4FzOXwIInTxpeLN+7xxuc5mEDwcqmTI13IUmi4qJBUIva4Czv
+	 39FEtmLE65GsYFLETdrYXvsezSjQE5OeBPReFgPAAN+bGbMCgUWUh23T5XLBX2VB4XYfp
+	 ACz75vvTTvF1COa3HSuaabfKHDa890G636XGcGWlceZx8w6awIG20tMfvodOqpXdKJ44X
+	 kcGhOimuFSRuCIem7U9yIIaFXHRvkVjzhJBDs5VqVwLJ5Hf72Q2fSQb3SPsMdlvQLZA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793123985;
-	h=Received:DKIM-Signature:Message-ID:Subject:From:To:Cc:Date:
-	 In-Reply-To:References:Autocrypt:Content-Type:
-	 Content-Transfer-Encoding:User-Agent:MIME-Version;
-	bh=zNuaeVQHNQqFUJa+PqI7b/TO/F47lbspMzWZbs2KJoM=;
-	b=oazxnNoDNC1pI14MMId2onHwZE7YSHi1vv5O4uKuwsHVkbQKMr+3ynHigX/8jENql0se
-	 eVIXItak+jozr6ktRH77neRjZVLOSSwS48jEd73/WnnpbcsKni+3Cs4J+z7ZO+vWduMfm
-	 EZqmz/HJqPJhwX+6WS4+Vlfc/YVQFb4DVTyohYoW5IAO3YWTXxYmu3qdsjdxhh8j24moF
-	 HuvxqrTGB8qLIJx53vzv0R2t8fusEwtpaQuvgIxZ4rtflG3vG0JVX8vA7HrzUAGdnRI+V
-	 pQ9aOeNajMM2iPhcLbg7bGD8ikc5r06nsYyRKewETI+hkge6x4p6BPxujuQu+IYf45w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793124319;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
+	 X-Gm-Gg:X-Received:Received:X-Relaying-Domain:X-CFilter-Loop:Received:
+	 DKIM-Signature:X-Received:X-Received:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:Autocrypt:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-DetectorID-Processed;
+	bh=C5UG/od4jnm6GtQPKVHk+hFGTYbFM2nx1L5LhnGODlw=;
+	b=Oo++xflKJgQ+kWApRmQotJvsevhKckTeeE1E6aPq1QIt6lExc8qOFOTgGUWl/lziou76
+	 nV360UlzSUu8IfTdy6l4q8bszaoqTdS+b6vtbrUgosUQXd9/mdH5xPhB2E2C+JvN+eRiL
+	 RkAPcNfNndWnFYmOGbSJLMoOlKcVb9B/ieCMQCGBRSuH9yO7b6+sn98ZS0gIdJE8Yq3aS
+	 xuz/Uk929EBKn3qwyJhyyRuHbWXI0HMg67SjnOpYRGBfE/UGRayAIt4BXkYB1QFAmD533
+	 0dXMvhuliwkAyCHR1Yb+gLhQ5wz/QY+StmOtOtQ3bJZGi+Wbxm57XMPbvRx9kbJw+fw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ax7OJx6p;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=broadcom.com;
+	spf=fail smtp.mailfrom=broadcom.com;
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=e3O9vfjh;
+	arc=none smtp.remote-ip=209.85.210.100
+Received: from mail-ot1-f100.google.com (mail-ot1-f100.google.com [209.85.210.100])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B850606A31A;
-	Tue, 27 Oct 2026 17:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D97606A32C
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 18:05:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D8D97606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ax7OJx6p
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CC631F01825;
-	Tue, 27 Oct 2026 17:59:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793123985;
-	bh=zNuaeVQHNQqFUJa+PqI7b/TO/F47lbspMzWZbs2KJoM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ax7OJx6p4umsu2oVnHrePRQPcEr5Z602yD1I7UIqAseRRa6me8ZFktJfQYURMg2Jv
-	 LtcrAx8nujniNItLa9TGApRpM0W2nT2CQi7gUHHIMTeOVym36GyvkI0Vf9lsLp1vVS
-	 l21xeaz/NkxPNUMJIMD0upztwHjaM75WQHGR1ZSDBKf6k2HVIp0PQ/FFO9r826Xau8
-	 EKd8oma/FmNOz+34gMhWypP6BefzqGtBLqi55L/LZyX3uozLcvIvH/MGJcZ8bJyvom
-	 eSUPSeMRQjuQN04/YD7do5hTlBrcc7uj304pokkdZplwto5Xda4eQnWHczbnRQXW6a
-	 6CA9BT9M/jTRg==
-Message-ID: <31238159b7a4753e0a10c9f8b9fdecc4b92fb2f5.camel@kernel.org>
-Subject: Re: [PATCH 2/6] NFSD: Apply per-export I/O modes to READ and WRITE
-From: Jeff Layton <jlayton@kernel.org>
-To: Chuck Lever <cel@kernel.org>
-Cc: NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, 
- Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, Trond Myklebust
- <trondmy@kernel.org>,  Anna Schumaker	 <anna@kernel.org>, Jonathan Corbet
- <corbet@lwn.net>, Shuah Khan	 <skhan@linuxfoundation.org>, Randy Dunlap
- <rdunlap@infradead.org>, Mike Snitzer	 <snitzer@kernel.org>, Donald Hunter
- <donald.hunter@gmail.com>, Jakub Kicinski	 <kuba@kernel.org>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet	 <edumazet@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman	 <horms@kernel.org>, Steve Dickson
- <steved@redhat.com>, netdev@vger.kernel.org, 	linux-kernel@vger.kernel.org,
- linux-nfs@vger.kernel.org, 	linux-doc@vger.kernel.org
-Date: Tue, 27 Oct 2026 13:59:41 -0400
-In-Reply-To: <ad5ac019-34ac-4c7f-8b90-cde8a0dc0546@slotpi15m67>
-References: <20261027-export-iomode-v1-0-262ed932a036@kernel.org>
-	 <20261027-export-iomode-v1-2-262ed932a036@kernel.org>
-	 <ad5ac019-34ac-4c7f-8b90-cde8a0dc0546@slotpi15m67>
-Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
- keydata=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
- QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
+	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=e3O9vfjh
+Received: by mail-ot1-f100.google.com with SMTP id 46e09a7af769-843b6f8e2c7so176243a34.1
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 11:05:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793124318; x=1793729118;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=C5UG/od4jnm6GtQPKVHk+hFGTYbFM2nx1L5LhnGODlw=;
+        b=T/M4PZ8yYnrYBLe/9Hw3HRtVUVC7jcwEyMTPR59hXKZ3Me+lTePCKkYECw7LY5eUhl
+         OqFgARWB2CPBNDcc7AU54SWhwPqIbZr17qsXekSHY+J+Ohg0iWCjLIBglpFt0PMQhSvx
+         QT3mF9AMQP0fUCxk/98wU38/KelOZtXP1Qhgn20/MYK7rkP9IjR3vr3fq7EplTSpKSat
+         tz4ix2uLOH/mJ83mAgHoZjUvQv/yIW+XcSiapCaoTrbMVtV78GGl2vz1TpeNTv7u2qgl
+         BSZi42EjOatZXwbGXcwvQdpS5A2O+fzvEjuoyiDjoNvWdbb2xvN53yfXiG8m7YCyNgDa
+         y6zw==
+X-Gm-Message-State: AFq9FYIlr5bA/y7yZFxF/Wc32b9LgtChkWGE2sO9otxmZoXkee610Qwc
+	W41QIIXhoM6KAsYrer2oEMjo/z3Uz8xSc8UuAU2AaR/DLsJvazDmPfAPiwMIHW499XUEU6+9Qfc
+	H52+qzpxNtaF14cS1rone10XY4KEnQezrPIIUH8TJWWdFybfo6hafSCPRH2Nj0EY85p4Db5m5s5
+	vMKrsucfKGX2dpuhhEdZ5tUBuz/WBvuhZ+mMO31CkuxBYFA9sAtHtAQ0O1AYw9HYDeUjkN2YRfK
+	ppNP2kiaOkNzZm8HJQ=
+X-Gm-Gg: AYBFou1xVQAGr4NNkiiGXcP3FvSxpYOl94gibEYY2PkdmZuCmKEWGW2P1XTLRGHTJPD
+	eYo27ZZXc+H5TNRgh5j7JT9Zco7Z30kGLlv863cegEi06u+5a+UGv+vaJW1YKDC2rNIU5fQ+D9U
+	o25t0Xoz6NAa48J3ZeTiIXNSdLtDURlLys7LLxbsc5fp414s0p0xNcJ5hK1y+HOk7p8dlV58Rnt
+	2J+0lrZB7lLbKyEWa5Xk1lQLBwLOsArD+l/RjiElJEv0RoKIGnroY/TNPhL46Xdj0OIoQI9oTJd
+	yGrehplFdECF0JZ359tZ6DNAYkI6MAk4kznvOStTbAeTVTpuWDIzXY4ayP5lstpe6L6M1TpoDRE
+	HxvzVVNm1Dp0o+RY+ycXCypEjVXSMFbM4kZT1IiAYSgliBwLzZ3lhf0Vi23laHkrc/8IrLhfvPz
+	Z+nJ/U7H58ZFbQCv6F4vBahxwpzBq+olcJwTQQejv5ncQ=
+X-Received: by 2002:a05:6830:44a3:b0:843:b6f8:de3f with SMTP id 46e09a7af769-85ab7c048d4mr321375a34.18.1793124317688;
+        Tue, 27 Oct 2026 11:05:17 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-120.dlp.protect.broadcom.com. [144.49.247.120])
+        by smtp-relay.gmail.com with ESMTPS id 46e09a7af769-850faa931d4sm105508a34.7.2026.10.27.11.05.16
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 27 Oct 2026 11:05:17 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8a073778890so250387b3a.1
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 11:05:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1793124315; x=1793729115; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=C5UG/od4jnm6GtQPKVHk+hFGTYbFM2nx1L5LhnGODlw=;
+        b=e3O9vfjh4hSlcMGOOZf9K7Dxco1sxNhXWZnNpUxfZ1v8f+uNhhjut1P9qnELwJgV01
+         Fl8e8WyGawZdm9yMNJhVelK5kzbp8MHczqJfJhT2RrkmDUWG5BJAZMfCR5RROCMKgnVr
+         /x6o5XY7g3VfvMPaShYC75qI3ILtK0sKe0JHc=
+X-Received: by 2002:a05:6a00:299a:b0:89e:33ba:54ce with SMTP id d2e1a72fcca58-8a6e8e74924mr22338b3a.46.1793124315226;
+        Tue, 27 Oct 2026 11:05:15 -0700 (PDT)
+X-Received: by 2002:a05:6a00:299a:b0:89e:33ba:54ce with SMTP id d2e1a72fcca58-8a6e8e74924mr22313b3a.46.1793124314734;
+        Tue, 27 Oct 2026 11:05:14 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a6a662d68asm339452b3a.24.2026.10.27.11.05.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Oct 2026 11:05:13 -0700 (PDT)
+Message-ID: <7e2f2f3e-adfb-47e7-a60f-ec475ab4bef5@broadcom.com>
+Date: Tue, 27 Oct 2026 11:05:11 -0700
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -145,57 +103,161 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 3/6 RESEND] net: dsa: b53: constrain SerDes interfaces
+ to initialized PCSes
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, jonas.gorski@gmail.com, andrew@lunn.ch,
+ olteanv@gmail.com, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk,
+ rmk+kernel@armlinux.org.uk, linux-kernel@vger.kernel.org
+References: <20261022225656.1387306-4-florian.fainelli@broadcom.com>
+ <179305843878.3134.5626134378768180663@kernel.org>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
+ xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
+ M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
+ JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
+ PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
+ KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
+ AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
+ IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
+ ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
+ bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
+ Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
+ tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
+ TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
+ zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
+ WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
+ IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
+ U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
+ 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
+ pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
+ MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
+ IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
+ gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
+ obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
+ N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
+ CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
+ C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
+ wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
+ EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
+ fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
+ MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
+ 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
+ 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
+In-Reply-To: <179305843878.3134.5626134378768180663@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-On Tue, 2026-10-27 at 13:54 -0400, Chuck Lever wrote:
-> On 10/27/26 12:45 PM, Jeff Layton wrote:
-> > Resolve each export's effective I/O mode (explicit setting, else the
-> > global io_cache_read/write knob) in nfsd_iter_read and nfsd_vfs_write,
-> > and skip splice for reads on exports whose effective read mode is not
-> > buffered. Update the debugfs knob comments to match.
->=20
-> [ ... ]
->=20
-> > -	if (file->f_op->splice_read && nfsd_read_splice_ok(rqstp))
-> > +	if (file->f_op->splice_read && nfsd_read_splice_ok(rqstp) &&
-> > +	    nfsd_read_iomode(fhp->fh_export) =3D=3D NFSD_IO_BUFFERED)
-> >  		err =3D nfsd_splice_read(rqstp, fhp, file, offset, count, eof);
->=20
-> nfsd_io_cache_read_set() still sets nfsd_disable_splice_read whenever
-> the global knob is switched to dontcache or direct, so
-> nfsd_read_splice_ok() returns false before this per-export test is
-> reached. An export pinned to riomode=3Dbuffered on such a server never
-> gets splice; it falls through to nfsd_iter_read() and does vector
-> buffered reads. The same applies to the splice_ok decisions in
-> nfsd4_encode_read() and nfsd4_encode_read_plus_data().
->=20
-> Patch 3/6 says an explicit per-export setting pins that export's
-> IO mode "regardless of the global knob", and that isn't quite true
-> now for the buffered case.
->=20
-> I need to think carefully about the interaction between the "disable
-> splice" setting, which is global, and the per-export I/O setting.
->=20
+On 10/26/26 16:47, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 0 · Medium: 1 · Low: 0
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] Ports muxed to SGMII now fail phylink creation when SerDes
+>    discovery fails or CONFIG_B53_SERDES=n.
+> 
+> --
+> 
+> net: dsa: b53: constrain SerDes interfaces to initialized PCSes
+> 
+> This patch stores a supported interface bitmap on each b53 PCS that is
+> discovered, and uses that bitmap for capability reporting and PCS
+> selection. On SRAB ports whose mux selects a SerDes, it clears the
+> parallel interfaces inherited from the common code. It also stops
+> advertising 2500BASE-X.
+> 
+>> diff --git a/drivers/net/dsa/b53/b53_srab.c b/drivers/net/dsa/b53/b53_srab.c
+>> index 9818b3922a377..3fabae80dc1a8 100644
+>> --- a/drivers/net/dsa/b53/b53_srab.c
+>> +++ b/drivers/net/dsa/b53/b53_srab.c
+>> @@ -451,9 +451,11 @@ static void b53_srab_phylink_get_caps(struct b53_device *dev, int port,
+>>   
+>>   	switch (p->mode) {
+>>   	case PHY_INTERFACE_MODE_SGMII:
+>> +		/* The mux connects this port to a SerDes, not a parallel bus. */
+>> +		phy_interface_zero(config->supported_interfaces);
+>>   #if IS_ENABLED(CONFIG_B53_SERDES)
+>>   		/* If p->mode indicates SGMII mode, that essentially means we
+>> -		 * are using a serdes. As the serdes for the capabilities.
+>> +		 * are using a SerDes. Ask it for the supported interfaces.
+>>   		 */
+>>   		b53_serdes_phylink_get_caps(dev, port, config);
+>>   #endif
+> 
+> [Severity: Medium]
+> Could an SGMII-muxed port end up here with an empty supported_interfaces
+> mask, so that phylink_create() fails for it?
+> 
+> b53_srab_mux_init() sets p->mode before it tries discovery. If discovery
+> fails, the loop continues with p->mode still set to SGMII and
+> pcs[lane].dev still NULL:
+> 
+>      case MUX_CONFIG_SGMII:
+>          p->mode = PHY_INTERFACE_MODE_SGMII;
+>          ret = b53_serdes_init(dev, port);
+>          if (ret) {
+>              dev_err(...);
+>              continue;
+>          }
+> 
+> In that state b53_serdes_phylink_get_caps() returns early on
+> !dev->pcs[lane].dev, so nothing goes back into the mask.
+> 
+> With CONFIG_B53_SERDES=n, the b53_serdes_init() stub in b53_serdes.h
+> always returns -ENODEV and the refill call is compiled out. Every
+> SGMII-muxed port then ends up in this state.
+> 
+> phylink_create() then rejects the port:
+> 
+>      if (phy_interface_empty(config->supported_interfaces)) {
+>          dev_err(config->dev,
+>              "phylink: error: empty supported_interfaces\n");
+>          return ERR_PTR(-EINVAL);
+>      }
+> 
+> DSA then sets the user port up as unused. Before this patch, these ports
+> kept GMII/MII/REVMII from b53_phylink_get_caps() and registered normally.
+> 
+> Ports that never select the PCS are hit as well. In
+> bcm958625-meraki-alamo.dtsi, SRAB port@4 and port@5 (sw0/sw1) use a
+> 1000 Mb/s fixed-link with no phy-mode, so DSA passes
+> PHY_INTERFACE_MODE_NA. b53_serdes_phylink_mac_select_pcs() returns NULL
+> for that mode both before and after this patch.
+> 
+> These two ports are the conduits for the cascaded QCA8337 switches
+> (ethernet = <&sgmii0> / <&sgmii1>). Wouldn't those switches lose their
+> upstream link too?
+> 
+> The commit message says:
+> 
+>      A failed discovery must not leave a usable serial interface
+>      advertised without its PCS.
+> 
+> It does not mention that the port then fails to register at all, or that
+> fixed-link/NA ports are affected. Is that the intended result?
+> 
+> Later patches in the series do not change b53_srab_phylink_get_caps() or
+> b53_srab_mux_init(), so this still applies at the end of the series.
+> 
 
-Maybe disable_splice should be an export option of its own? It seems
-like that should be doable.
+Agreed, this was an unintended regression. The next revision preserves 
+the legacy interface capabilities when SerDes discovery fails or 
+CONFIG_B53_SERDES is disabled, allowing fixed links without phy-mode to 
+continue registering. Only successful PCS discovery replaces those 
+capabilities with the supported serial interfaces. The commit message 
+has also been updated.
 
-> Separately, on the names of the export options: "riomode" and
-> "wiomode" are hard to read, and "mode" might suggest "permission bits"
-> to an administrator. How about read_io=3D and write_io=3D instead? They
-> follow the underscore style of the other multi-word export options
-> (no_subtree_check, root_squash, security_label) and read naturally:
->=20
->   /srv/data  client(rw,read_io=3Ddirect,write_io=3Ddontcache)
->=20
-> The values buffered, dontcache, and direct then carry the meaning
-> without "cache" or "mode" in the name.
->=20
-> The name appears in the exports syntax, the nfsd.export/content
-> output, the netlink YAML spec, and the forthcoming nfs-utils series,
-> so it's worth settling before v2 and before the nfs-utils side gets
-> merged.
->=20
-
-Ok, I'll look at renaming them. Thanks for the initial review!
---=20
-Jeff Layton <jlayton@kernel.org>
+pw-bot: cr
+-- 
+Florian
