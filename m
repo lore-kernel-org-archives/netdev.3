@@ -1,106 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.175
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793077813;
-	b=iKQ1xAA33t2E50+CH77ZZGRX+SZXr3DSgHyw2yWzRjSLQJYYKfWLTW11fSbj3MgW/Rio
-	 BniE4qIj94+aASm2eOleLy8aUcGGCsmHprr9IQdRR133nKHbWqrIDc4QZb2vJUOFE7SAY
-	 rmh3SPdgYzjCZNnWVvRQ2pXNEdQVOD9fsMIMKHCxPbh2SFvdFxkshK8HbwwC95fq0ASXI
-	 WHLPCBX9ecoWWYNe/jTg14aazO5TTD0V1+MW0WgIin5n6bdhy3MaBZI7qKfwf1lgXtaai
-	 qJGnFyyvWZQxSC+wP4k563PfDfKTlasR6kHhlYjTSISuVLCHHyJBrZSiWJmAPCKjupg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793077813;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.49
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793077866;
+	b=Wl0QiAD3i4SodOLsFx4RD8m/eISKllh9x2ISwITEysB8eicNx2EEKbS16MslG48l94WY
+	 nxJ2I8L3ReT5dIyM0iv4faifEEaPR/f00FqPlZTuCrKafsV0hUc1aEtDbsZnIbs8Wn4R9
+	 ptD1mUsrjYcyav0YhpNq8dC6PGcCQTvt3QlS67cxift4DSGGmWE+7yauRile7yuQm3Pi7
+	 VuORnc2XhC2iBJk4Q6NGqs1rocpXjhGBuyW0Hn9GY1/0urGHCvHw0izmBt7g1qVOsEevF
+	 7VNkib1f7EYNGypR+NRezQhB/4idIX6AjYHayf4jRmY5sRxdLUFCWsSG2lsw98OOzMg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793077866;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=EhQnVDe9USo4MEDAt10lIRyoDXqtd5qy3HB/D8OuXxY=;
-	b=isOs62QZ+AV+zTl62eJ8Phel+hPAKnRKURMwyw5hdNOWVaATWYLrgP74kHqMTmuFkhVY
-	 QcLgDBVO3vtH71eAaCr3poDCet6RIGiYErPCSgOpipnzX+GNFsERlrHgHFMLPgR11olrn
-	 5aBR+TVEFUvDWfXt4V+8oCSs8/lWEUge1+adU0jykQauL19p5DOfCNCQM7nS5++YPKPL9
-	 /h+ziHV3YLVKeo7MP1ht3g1j0HMBS60f7FiF3xnZThTgqZV1jZQuUjLdd+2SAV+c887XZ
-	 ccAJJI52mo52HVJXBF7zSZ5o/uPrFJUT6JXz6TeNSNNsgnEBGwjvmmcURmClokMnrhQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=hcNgqETn4qg51KIAcMQi3G8nxBEASfodX0BihEo8ers=;
+	b=xfHliYd1iM89gQFkM7ka4fa4T3xyghoiXtl4uyL+9CNNOUQ79m3X2RAG80lXF1CYyI1x
+	 z52t/TOgjlAI6Cg6uUQcDu9/gkwwmWjDqyxyJDZ9/wVlmNdvxfWEj7zMx0ywKgo1yxodU
+	 WkoJkMNVzgCiXoLSIkQXEGu9x8/t5h3ss88CuCBTMn5AR45aIraGc3XCPjeymGAO+upnz
+	 O/tX9WBw4VYoFrrHQ2J2gcWlmpReX3gtz3piqIQarvJYYuvAd6cZyj+e1F/ViifB3zhmu
+	 5oj9miHcwE827MFXh6lOct18dg+2f8NJ92jDWxooWrYPy4JxX2tYZqfAWbEg8zdahFA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=bvhShgG7;
-	arc=none smtp.remote-ip=209.85.215.175
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=rIng+qXu;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.49
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A206B606A31A
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 05:10:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A206B606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB962606A328
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 05:11:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DB962606A328
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=bvhShgG7
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-cd8ba7c2694so1112993a12.1
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 22:10:12 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=rIng+qXu
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-91befbcad6dso64163446d6.3
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 22:11:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793077865; cv=none;
+        d=google.com; s=arc-20260327;
+        b=lStMJwGaEFQHuN0FcA4Q188OwD70zMlEmUFDCFHFxXLg/dMiF/IaD9c7LNyU+pMAF8
+         JzziCwycFC7aN/n8b1Oxdlj2dJK0myvlf2IyyYiEdeWPtlfsNhU6ZUJ6/BxzfyHHBR6c
+         iLCGtJPuooTUOsg64YKjWQR99n4I5oDKra7J2lorqFo8LhOLgrVBilNsrNdq7Xags/2X
+         m50Rq2Sk4+hWzBfWBb/4I6HB+HnsimEeKifasLuRXJN16WIxixbyk44Pqc23lkVlojER
+         KxsQ4XFk7EBInNw19GGYoB0EKDBGUNrRTodkLQfzuchfim9nBl2Xb0jbuT1KLsTObM2N
+         EnTQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=hcNgqETn4qg51KIAcMQi3G8nxBEASfodX0BihEo8ers=;
+        fh=Gr4Yc6oYa0MTlB7hjj7e5yQ1YYXnnCLLzdVmM/joqrg=;
+        b=pKZvgOR2CIAj8sNin9NDrWdwpDkcZR80jZjBKobzaCOG14V2Y/Xv1TicF4nVaUliD4
+         NgoqYHfiviejua5VR51P+x8x6pjeC0UdFM1xRYerJXiLAPnoi4kCvxd7tEbJ9xla0lnt
+         wIdEe2/qgTD1Pv0Z2l96c24zr1ksFieorhySNjzy29tyybeeIDcwSG0dOUgTRqEhEVbr
+         os3TN6E/H++SPm4utLilgfla9nNnnO7wQkMEy0eeigqHUy2XHUlnnQuV1lxwqHagh69D
+         pjM2AbRtCJ/qkHgqCHJm61eRO859GTzdxCzvD4mGMemV7uPxQhQIVGmADHmbOEIyaGwN
+         Wylw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793077812; x=1793682612; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=EhQnVDe9USo4MEDAt10lIRyoDXqtd5qy3HB/D8OuXxY=;
-        b=bvhShgG7D7zcmztInFea9OSn7D5JSB0D4i6yf2n+crTq7yi8sQ9L3LLKQSM8xXnhkp
-         AqbuI5FqtrdowocluYV2ukrP3D2+6rsKCdi1Z41pOP7b0xldyB01FWsU87xcrM1ltKwt
-         kcr3vYsZ4f88sTfTaGS/12FRaQs3mo6OTf+MfJiFNZx7PdYwgY7Y/5XkHklFZ3etM9nJ
-         RgVAgbYVxMhelPq7iSNSZhjFSWLaT1v5Vhtg/pvm67NtxQsd+f5YoS+gOBVzn176vHZz
-         MPR2DrAz13Zck1vA7Ep9FKsc3GjKSyDQCbtFP8lGYIvNws58FuwvoNcq4dC31tEtn1pQ
-         v3TA==
+        d=gmail.com; s=20251104; t=1793077865; x=1793682665; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=hcNgqETn4qg51KIAcMQi3G8nxBEASfodX0BihEo8ers=;
+        b=rIng+qXurfJFZxT0RCoaYirVO3IL/w0C8jVHZFhFKiLv8JNAlFJMB8he1Buv5BFHNQ
+         zQ1By0HSuQJqxazI7ykxj+3rSvVBJdgZN9hefkOCEIAKTxLyb9XDaff/wohWf1F1xS4T
+         f5KcfTT6ieuacJXIOqpjAMpKaCpMDSTRe2UMnq6R0m3IgNONvfg/f1cY4iLIYyh4V/K1
+         r/oKuzElfxGliQuG9/ji8V7DY9zVBl6Yapg7a3U0AqchoUJFnHSefMtgJt/L5L37K3NU
+         uI5p110StyfiNjt1wuHu5+wV400lcxCToLXf8f1aIc56aAEfrXopKOjT/fCnfkKGCeeH
+         T2JQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793077812; x=1793682612;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=EhQnVDe9USo4MEDAt10lIRyoDXqtd5qy3HB/D8OuXxY=;
-        b=HGrJs5cKSN29IpBgGhh2bKdQftrwCPO0RHP08t0fhuzuC9olZg+jKPDMMUI+TUiwqj
-         ey55p6UoB0OmODbAw38ID3gidTxqJRtqJbgsSTg+ms/ykUGnWzG6nUz5mu/xnHZAEQfJ
-         F87BjrHXtil5nwk2EoGXZrTgqmHNK/KrUpk2p85GXyEvmJ1+iN4FRGBirANJbXcerJUz
-         DJoRYoeYgvKNoVX2lNvHLLNp/3gLmHxsxhV30bWoUoBJ9ZVgzH3IVa8KLxoOEVoLU82X
-         bC0ZENZv0u69GEYzyBgLw61/mdjEGtS74rGgqAGQYXvuUIQBQmXSIZRLoxTSYKj55GQ0
-         LYEw==
-X-Gm-Message-State: AFq9FYLv95g/vVvAp/7DgXrmUbAjj0H1K0zQawIaN+qMmsxsu+nWihL/
-	RjulzFjvXhX3xwiQrNaBNkkkAwuMX7AaoO9zvGi8eZ632LRCe1elOYPLkEz3f9yT
-X-Gm-Gg: AYBFou0/ktOxfRKivKwFvFaWNdRv/jfAJeVEAuRnkSEOVT/tMz+RxaPhjep0iZzF+GB
-	+uYIzdYb9ulEXnOGSwVGE7HButH2uyGnUscw96/XlekLqCJdF2BdVgBSx8B484cm+rE3YYGNI+O
-	afJXR7b5QOjkynTKrwlE55IM5zrX0bwBGlIOmq9J7HfbYSr4HWFrRMtxlZv5y7y071IjBGwTkPL
-	t8fzRCUmRn9Lcnkq4+RxzDBQ4iyFg+u8jP7o4bcj33RtIWEi0Jzy3QPdqHGMbtUOtIXY4q0nlYi
-	gHd2feblbu5+3dC+97XXtqaVd9L3eKY3QAW0bDb9oKGYZN75TBbAVujbSGst1xukokskW1YVvqF
-	BUciiduiTYFXvon7JsCirI5fkUUGM1uNH3wbTQdKzvkPMEEyPhioOJ2rlRgP3Q6brlGNiYXrAD4
-	5/0I9huYW0uW1n03WU/Nzq7FMpfhJPW4AMVksEvcln3GiFnjgtzgLO0JzLCdmwxOTEuBY4wDJa0
-	VkZwA5sCAVvHtg/LYFZXRNYPTNf30H4lCs7Iw==
-X-Received: by 2002:a17:90b:3b45:b0:3a8:7096:9b48 with SMTP id 98e67ed59e1d1-3ade9b2cff5mr8125294a91.1.1793077812053;
-        Mon, 26 Oct 2026 22:10:12 -0700 (PDT)
-Received: from plex ([2406:6d00:a27c:4200::7be])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae404556fbsm1893858a91.11.2026.10.26.22.10.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 22:10:11 -0700 (PDT)
-From: Chris Scott <gilroyscott1970@gmail.com>
-To: lorenzo@kernel.org
-Cc: netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	pawlik.dan@gmail.com,
-	zhengping.zhang@airoha.com
-Subject: Re: [RFC net-next 2/3] net: airoha: npu: attach a coherent pool in the NPU window
-Date: Tue, 27 Oct 2026 15:10:02 +1000
-Message-ID: <20261027051002.3360392-1-gilroyscott1970@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <at8FyOLeaMlpS7mR@lore-desk>
-References: <20261024154150.45733-1-gilroyscott1970@gmail.com> <20261024154150.45733-3-gilroyscott1970@gmail.com> <at8FyOLeaMlpS7mR@lore-desk>
+        d=1e100.net; s=20260707; t=1793077865; x=1793682665;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hcNgqETn4qg51KIAcMQi3G8nxBEASfodX0BihEo8ers=;
+        b=BuSzfRybTRSI3PnL22JSwNLUHWn5eWvvcL4kKIqOSImoMu3Z279aMftR4A2/BwVqci
+         Mo4hqYP48fhmRnJC8hgLlrJ/pu9HyQFhgG0H+vwiGwnRG6tdYAb9AUrtgCil15YUErTN
+         XF/0kVsEH5l77tSSP+h4Z6Xd7iL7QHoYStTEl45oFU8oCtaqLj0KcjMu6FBLTwL4L03M
+         nCR5er7RIbiyEEa5nYoG0QLih1tzmnRPYX9Q9E5W95umpcsnwBSvPtJXr9rWqGM9Dr4K
+         U8cKVio3Ph1/PnXj0f9P3SvooCVvtKLKvAEVr0VQYTgNrag053R7LMPM6CAOlZSJ+mV9
+         I42A==
+X-Forwarded-Encrypted: i=1; AKwUvBw8lfxE33Lrj6s8DhRiI6wDezIiJOu/w6lyM0JFACLdMUa7G/wq1ThFIDawlcbYwsDL1doeJK8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJDkFK/JNqijUyF1rtKxju3srGjdDY1idnY7hT/pZ9q+wpNfJLK
+	mEEf3XbBURAWCUS/U0r8LPJAwWXGTWPY450Rh1IGVq5HTEayVdR1jk0tQvlzNEZiK3kCM72IZnr
+	NdP9TaTmcgsk4OHLCTNNTpQIgXFSgwus=
+X-Gm-Gg: AYBFou2NKr0PpYTb41Km5E6GpELRcF0IX+KSTTKuy/mT/um7yzI3/X6KReWmMCA1JMx
+	G6BfambkZafML3UubLPbW+5dP6a69wBHnj3dA63j19hLF7n/vEAwFnV88jpDuzXrlLkBKlrTsvs
+	9pqTlIQbq5dII68FBUqXUVphmKM2HQjmsonWxx17c4BX1xD9SqT/lyShh04vEyncYDVtUlEJZDS
+	nUBRvVtufLecZjbAlQuNk6yzDkfsR10shfHp+p6K4UlZhw26qZTwm5ayWSUgX9eLibHmSv8yevA
+	l1/BnojgUu+omEMKaK3Zn1wqFRi3+9/FRneaOV891E4vh2pE5/ngM+2HGi05Um1qFIwuDJPRUt2
+	4tH6Jt2AoiRYamNqriKA4nBJcqo0fG9exWtcSz979Cm/el/Fq0PdFMnx8NvjfzwbUu8tPcPnhAt
+	xTJvFhmHARm3GHSjf9mlk=
+X-Received: by 2002:a05:6214:48e:b0:919:8962:53f3 with SMTP id
+ 6a1803df08f44-91c48e41550mr169271956d6.14.1793077864886; Mon, 26 Oct 2026
+ 22:11:04 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -110,25 +105,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261021155629.68813-1-phx0fer@gmail.com> <20261022054811.35008-1-phx0fer@gmail.com>
+ <DMBHB0TQOV1L.38MECMYFGUS5B@gmail.com> <871p9g6ym1.fsf@cloudflare.com>
+ <CAADnVQLTe611mm0iJEf5gJi2GtW42kxNHH3sUPevD039FvzL7g@mail.gmail.com> <87v76o63qv.fsf@cloudflare.com>
+In-Reply-To: <87v76o63qv.fsf@cloudflare.com>
+From: phx <phx0fer@gmail.com>
+Date: Tue, 27 Oct 2026 13:10:52 +0800
+X-Gm-Features: AclHuK-szubO8IzEfkitMXTwqSUXBlid_2AlglfmxC79PBz8mekTtdM3GkUQCq4
+Message-ID: <CAKvCo-zf6=ABrMEn_8r7rJFFvaaXQrz8GAUQ9Uz4h0Ze9gY68w@mail.gmail.com>
+Subject: Re: [PATCH bpf v2] bpf, sockmap: annotate the psock teardown data races
+To: Jakub Sitnicki <jakub@cloudflare.com>
+Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>, John Fastabend <john.fastabend@gmail.com>, 
+	Jiayuan Chen <jiayuan.chen@linux.dev>, Network Development <netdev@vger.kernel.org>, 
+	bpf <bpf@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 26, 2026, Lorenzo Bianconi wrote:
-> nit: what about creating a dedicated routine for both firmware and dma
-> memory regions. Something like:
+Hi Jakub, Alexei,
+
+Sorry for the long silence =E2=80=94 my laptop died right after v2 and took=
+ the
+local mail and the working tree with it. Agreed that the ordering fix is
+the right one; please go ahead with the commandeer, Jakub.
+
+I do still have the reproducer (a KCSAN selftest for this race, verified
+in QEMU). Say the word and I will post it, or send it to you to fold into
+your respin.
+
+Thanks,
+Dudu
+
+
+On Mon, Oct 26, 2026 at 8:33=E2=80=AFPM Jakub Sitnicki <jakub@cloudflare.co=
+m> wrote:
 >
-> +static int airoha_npu_reserve_mem_region(struct device *dev,
-> +					 struct resource *res)
-[...]
-
-Hi Lorenzo,
-
-Thanks for the review. Sure, I will move both into
-airoha_npu_reserve_mem_region() in v1. The pool attach then moves
-ahead of dma_set_mask_and_coherent(), which is fine since nothing
-allocates coherent memory in between.
-
-v1 will follow once net-next reopens, together with a binding fix
-from the Sashiko review of 1/3.
-
-Regards,
-Chris
+> On Fri, Oct 23, 2026 at 11:53 AM -07, Alexei Starovoitov wrote:
+> > On Fri, Oct 23, 2026 at 11:49=E2=80=AFAM Jakub Sitnicki <jakub@cloudfla=
+re.com> wrote:
+> >>
+> >> >
+> >> >  static bool sock_map_sk_state_allowed(const struct sock *sk)
+> >>
+> >> Code LGTM
+> >
+> > Jakub,
+> > Could you commandeer it ?
+> > Dudu is clearly a bot and doesn't care.
+>
+> Ack. Will drive this.
