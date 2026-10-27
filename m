@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793065207;
-	b=15yoQP4wbepIgJs26/q3R6MrAUNA5xka2ii4szLdW/+wqZrK9wwhoXsUeXW2czqQV84y
-	 g7HT6iM8wTFsDkI3nQHkTXoJ62Xky5fc51lvuZeUiQVm46ZEe48/J+coe8uoHZqZwJXlA
-	 NCd3WkZHKSamlkdLyl+jhsbzC6KMoY8wVFbhIRdYFLb2/4ZQOvLnx47F4aYJvVxH1XxWD
-	 DgbN4KK0ZKUOMlD5bMxKBUx0bU97IoagvJ7pWN75m5LtAXQc89fpANJCMsAq3IpBhEVAi
-	 VGADaKC7qytUHnIMeLqdmxt2cbYruvrx7ozd3NgtnxrWlSn1uQNRA2sWkZK7A3LXuzA==
+	t=1793065222;
+	b=TValO76TXWf/WvCnbqKLpK1FgXJS3U+QY0+KMInDHBmPE8haD5kkneTEGoA74Z5PFmoJ
+	 lzfSZ9hpGNQvKFAgZbJuUpE2WgX5alHN32DLZhiCxkeMpTeLSOWLBlhWpRQeZd5nxAOC2
+	 aLCvfCdqP/EoC7EalY7gd7JDu7iEFf7BgVeVswwBblXBHWBZeTd946+NmQZF/4Ca04Cqa
+	 pMx2hn4b4B5YTTAVVZAiXrLzwHmO9bcMsa+LYejZdhyOeBIcY46gAJ7H+WVcmsA+ft+RG
+	 dt/tMzDPN2Xwjh4PQI+n4yL9hxjhBtZDZya+xJzo6s+s3QwTt2XObd8qHQXci5OAmyQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793065207;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793065222;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=oLLGLsviN+AyNUwtthLtGQRS/ZFe1aWIbjzfKtVXnoI=;
-	b=ec+CL2sJuMccwl7xcf74LxlDlM6VLEUEWtLyzcJZj7VhZC1yUj5hrEvkUs5UHv0E6kAK
-	 PBqfQZUMqKaAN2elpvGcErCu3z5+53nVOTWSXteZJGGb8DRuYbKywcgU0fF+VQxnVc0kC
-	 0ytVcv1cRmUB8cM8IdFXJLcpuVJELU3aHO1r0ly1IZJWVvz0oYDoGJlKMp0RCqU/Ravdo
-	 9CEpPLXM7nflz2jtrCuG5URtoMUKZ7ORzaQRoSG+MngRqoUsBL66Bkz+f4ht2r6+oQ2tr
-	 ew1mYlZBU2ujH8zlVJfpF6o2KlpxIx/Ow5y8yTnbwCyAYlS7yKLjxgvR7fvn8Bvq4Zg==
+	bh=fjhejy/igLQraiqiZTbJTSw1GybJnz6qiTwev6y1yhU=;
+	b=QQccJxTUh/Owi7Y5ZtjJqgqptovjY7Kl6vmsY+gJoo5ZWNXxvlPHyy/vBwPfSL/QWcmv
+	 Kq4nU72Ya7lMC1bTjmjos3Q2apMk2aszXafNWah1aKzZIbU7oKpg9W9bvw0eNsNktLv2I
+	 Mv9YvhYQ6Nqn7K9S1lSH/9LUFDzsP/Mnm8YeAA7SexC4DXHpd2LphVwLqGusiWeKvl0iW
+	 jzWG5ExxLOc5fQhe2tQntnB6WbvzznTBUOIy/8p1b+D0FL36woDCvQXbZIHV2bDj/73aJ
+	 AhvPXefBX2dyewyA0apanhZNGa/ShLCCEF+3LLtVCIc9c3nHijmAjYwVLJN9sf4nyuA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i73fqt55;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="QOUcL/0O";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33357606A32D;
-	Tue, 27 Oct 2026 01:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7389B606A325;
+	Tue, 27 Oct 2026 01:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i73fqt55
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D801F01825;
-	Tue, 27 Oct 2026 01:40:06 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QOUcL/0O
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E16C1F01825;
+	Tue, 27 Oct 2026 01:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793065206;
-	bh=oLLGLsviN+AyNUwtthLtGQRS/ZFe1aWIbjzfKtVXnoI=;
+	s=k20260515; t=1793065208;
+	bh=fjhejy/igLQraiqiZTbJTSw1GybJnz6qiTwev6y1yhU=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=i73fqt558eAnmGmhGUYMZnaF1B+DYgoGrf0uh6aV2cWpFpgZfCNDmbrIEJyR29c+t
-	 rut+VhYotqssVs85f0xKoDiKUwXFiS17OzVVedCdJG+1hWnPaCj7Vz8hUCdl+Ei7sk
-	 SF2zB9vUZnoWee/Ihzk/a6h/+++0ibndt2kXGFYWbJGsvbDPO0Qz90/Txwhw6XjNEy
-	 BpeHaejIFHpMqWmW9FumIP+nVRHEeAL338G6kz3NsHFiB6afYWI5u2fSnBic+TANVi
-	 DCtBCmgAVF8yneqrQ1V7iQKxus7ALUBRq2HHXOqmWMZu/Rz6n2VqtXiRoLaSuzbGjd
-	 tCeNK0n55iYhQ==
+	b=QOUcL/0Op0cxJhMhldeYD5WC1R5dgqjOQ237Ged78C15RisZFDmF3D+ZcZXHwia3z
+	 2LNSvDbiG6lxZWPGObNasQbvS5jDr5qD9tc3G2j/620txVgZTov+4CxiUm03auQFZh
+	 eq5LfZL3r4lpVPT0/YSDZ5oWtyqeSCX7TuzLitqCAffvV79rIz1MYbONP75hZXfZsx
+	 ErNgwoXdAu2yEeuiyQo5G1GG+ObxrDW0csqOL/R6lmkZLQIDyQqA3H82AGV1yvTVPv
+	 kEQGCU/tfVJkbvaHrqE3fTmsozFST5aj1rFDVTJDmi7+9FoGSn60iC+DQ/Z63VrQG1
+	 6B3Sy3YwB4ooA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BE57A3AA80F1;
-	Tue, 27 Oct 2026 01:40:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 4440E3AA80F1;
+	Tue, 27 Oct 2026 01:40:08 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,43 +54,41 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3 0/2] net: usb: cdc_ncm/cdc_mbim: fix netpoll lockup
- in tx_fixup
+Subject: Re: [PATCH net-next v2] selftests: net: forwarding:
+ bridge_vlan_mcast:
+ Allow default startup query interval to vary by HZ
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179306520565.3504795.7927315467376347222.git-patchwork-notify@kernel.org>
-Date: Tue, 27 Oct 2026 01:40:05 +0000
-References: <20261024-cdc-ncm-netpoll-v3-0-6284ca03f967@tipi-net.de>
-In-Reply-To: <20261024-cdc-ncm-netpoll-v3-0-6284ca03f967@tipi-net.de>
-To: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: oliver@neukum.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- sjur.brandeland@stericsson.com, alexey.orishko@gmail.com, bjorn@mork.no,
- gsuarez@smithmicro.com, leitao@debian.org, linux-usb@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, mke@visotia.com
+ <179306520682.3504795.11521290677798073132.git-patchwork-notify@kernel.org>
+Date: Tue, 27 Oct 2026 01:40:06 +0000
+References: <20261022103023.834927-1-jinli@lanxincomputing.com>
+In-Reply-To: <20261022103023.834927-1-jinli@lanxincomputing.com>
+To: Jin Li <jinli@lanxincomputing.com>
+Cc: idosch@nvidia.com, shuah@kernel.org, dsahern@kernel.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sat, 24 Oct 2026 15:23:05 +0200 you wrote:
-> Mikkel reported lockups with netconsole on a cdc_ncm device. Further
-> analysis showed that netpoll calls ndo_start_xmit() with IRQs off but
-> BHs on while holding the txq lock, and the spin_unlock_bh() in the
-> tx_fixup paths runs pending softirqs. A transmit from one of them then
-> spins on that txq lock.
+On Thu, 22 Oct 2026 18:30:22 +0800 you wrote:
+> The mcast_startup_query_interval default value is calculated as
+> 125 * HZ / 4. With CONFIG_HZ=250, this results in 3124 instead of
+> 3125 due to integer truncation. The test currently hardcodes 3125,
+> which fails on kernels built with CONFIG_HZ=250.
 > 
-> Patch 1 fixes cdc_ncm. Mikkel tested the v2 version of it. Patch 2
-> fixes the same code in cdc_mbim and is untested.
+> Allow a +/- 1 tolerance for the default value check to account for
+> this rounding, while still catching genuine regressions in the
+> default value.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v3,1/2] net: usb: cdc_ncm: don't enable BHs in tx_fixup under netpoll
-    https://git.kernel.org/netdev/net/c/108ca34cf4b4
-  - [net,v3,2/2] net: usb: cdc_mbim: don't enable BHs in tx_fixup under netpoll
-    https://git.kernel.org/netdev/net/c/bfd7ced012c7
+  - [net-next,v2] selftests: net: forwarding: bridge_vlan_mcast: Allow default startup query interval to vary by HZ
+    https://git.kernel.org/netdev/net/c/9e2ba4a17735
 
 You are awesome, thank you!
 -- 
