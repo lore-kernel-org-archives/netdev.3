@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793140825;
-	b=m01OdbqF34fJCQ/0NFPIGYLsGudKOgpZH/EUUreLRahT8NHrwC8VDwvMvoZloltp7dVR
-	 DGPf4Vh7WEgrT3H0fgRnnTWipnzZboD/bvX7PSySY/HsRQxlTPaTwo/sYlWSthsvMREky
-	 C/7N07wyZAL6YMPq4ftjxHp7UGJRIvwsdg/KZ/3Jqj8exHtwIdk+QgJuMap0fWdfOtIm/
-	 uuuk179eZkLjhiICIEybVxEKitfvypQ6WUFjBYGWMKEQaXq8edmLx3Mstsco4Q53l2LeM
-	 7LJf2lrhheMC+gule9qvBnocPESn02spwiKLfIs5M567R4V8xvLVlr3QV6rQUqMA/wQ==
+	t=1793140827;
+	b=PquXO85xHXB++DUjyNprstGBkl3+r7VEE6+OxwxB0TIXOF1Lhmwv5ouzWQcJDO0tWDY8
+	 PnzC9EfV8Z81syrvIU2cZ/ogaOKaQFpccZax85ruuTPWfC7ZrKTkef4gSgTFgpK4foA69
+	 WbIHsnnbtONf9i676ua0mfh2famRRNE/gYJr+GBWT0EUUY5YfxCYzTywvmfeOqKT0wlB+
+	 sVwfiugnV4z7YAwRRnMA6dd3uPFgj+hhULHtO1lybWDlXl/1olP+4D79k61C7nDr2OVBm
+	 /MkLwGoetddCQHMKvuPruIniYEqqxtA1hOcjnL0D2Lgyuvq3No/mdwacuY0NVvosZYA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793140825;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793140827;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=QIfX8wI4BaY3EOa8JEO41r1+x9SiDeIv5YiniQCAADQ=;
-	b=MSEjHLksn1iEXIXyRTDNLkTlzZBV1IlhalPfTxn4N0ZbRGBpB0F/yTuuK0TTYg/bff/F
-	 x/oHooHht99R2mnGVpkO72RrCkryn00I05zcKV2QJZFtFEObcaP0Y34mKga6h1cSPDN9R
-	 pBfaR+a6i7/haCWNVAPEK/edOJKeqdHJpsLr2HuYXKCtT1SiPW6uisxUpmBNA7aWEPFD2
-	 87AlykkwuU79o/wKm7MVeUDxTJ76IMt2RgSfezocGigjwueby5kHYkMvLMN227c6N44rz
-	 IbEOVEY5KcBsMoehW68ZWw04Z/dovjmuhqOXJdw15dRQaDcKxKaZdGXrP1xv/3oHXAA==
+	bh=yDDXDdTksahjrevZXicQEYxdvExKZLj2RyNMKHVmqso=;
+	b=umCb0adMwRomBytK2K+z3ztl9g5ZhXPB9HxFEkV28wMar/NHf72Ni7Zi7x/Injz/RPv9
+	 xTBl3xJg02wO8zvH3VUzv5pcZ0LFw0pB/0MK5iyPbfV04JwXVSMYHJmTCI/BULkwEK/fF
+	 dFR4DfxdrTBQ9RI63pUoMnrXDwxwqTbZt+P1ssefXfAZPSgem1Bjf2m/VTlY5aQpF4kVH
+	 mWPAwlk46Ig6tnrGIQRxD+njaJfgZ8bvwS2Zw18MKxQK6nmRoPo2SWphkCJHPyMolNBg9
+	 BwUdq5DsFOYg7zUso+wpWpdL58uRg3Wk6Ps2H1313vQu7IZnu98UmWaZ3p9VwoFHFig==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ff9X5lc1;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CdUsGMrA;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BEF8606A323
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 22:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB464606A32F
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 22:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ff9X5lc1
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 139E81F01825;
-	Tue, 27 Oct 2026 22:40:25 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CdUsGMrA
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F321F031E8;
+	Tue, 27 Oct 2026 22:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793140825;
-	bh=QIfX8wI4BaY3EOa8JEO41r1+x9SiDeIv5YiniQCAADQ=;
+	s=k20260515; t=1793140826;
+	bh=yDDXDdTksahjrevZXicQEYxdvExKZLj2RyNMKHVmqso=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Ff9X5lc1sIcNRLzA2w4HWHYo9RX+YY8QJwVULfxSUK5J+2XH5XsM7nDem/fTIy037
-	 LyrUvh8buByQYJcmnkUGiW9fAsgp20mZgMRnTqRn9FIJDfvjhkLcELjH+o0zzCMK/2
-	 XqecQRb87E+WuzUGnPM844ScquIchABitTIRwsnmz2LW4OAoKn5qL8Nh7QRBy4qxDm
-	 6ZkZSWRnxDQIT4HhK0Zs35lth84Kf6tUAAskHlS4VPA2lAQCzJQ9n4rqlPIc8svTXQ
-	 5Zjn//2nxSFMeLP+aBAC+Tanotc6HpRMg6WN/dIeiDKfKnn9598enMjXY0UFyMiq+S
-	 wYT/3acKt7U+A==
+	b=CdUsGMrAqm9PDXQ70MEsthLNUygdmjvqByP8Gh3leQ+rBc0crf+TcGMgU8QCTxjFm
+	 ZLEy+06mpU02mBIR/qaeJW7rSLCxSrfYdEhINQ1nUR/x/ITKLzPXO0BbbabsSFyMuW
+	 9fN3IhHqs9UH2BGuW/6N6O9Op66ZZA8psb0mY7HKxwKajrZfGhqLplewyB3nlH5KzK
+	 rKZeVcdK3WbpxFNTO5Vi8qFTAkQpxlrgqRNO8nJZUnF42YUznANMdYKXgsLqUKZ7mY
+	 ZBVcd5UER6V5FD2H/NudC5+Y7/Cer1Qq95z2tRc4nrP31/FMRCcXbAnYcQSW+UwaTk
+	 CGsILlP/y05Ng==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 0738D3AA940B;
-	Tue, 27 Oct 2026 22:40:25 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 815163AA940B;
+	Tue, 27 Oct 2026 22:40:26 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,36 +54,39 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net-sysfs: reject a one-entry RPS flow table
+Subject: Re: [PATCH net v2] net: limit priority VLAN untag depth
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179314082346.370091.18360710136387266095.git-patchwork-notify@kernel.org>
-Date: Tue, 27 Oct 2026 22:40:23 +0000
-References: <20261021155522.67521-1-phx0fer@gmail.com>
-In-Reply-To: <20261021155522.67521-1-phx0fer@gmail.com>
-To: phx <phx0fer@gmail.com>
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, netdev@vger.kernel.org
+ <179314082509.370091.14688479327825567155.git-patchwork-notify@kernel.org>
+Date: Tue, 27 Oct 2026 22:40:25 +0000
+References: <20261024004835.17862-1-user148783812897@gmail.com>
+In-Reply-To: <20261024004835.17862-1-user148783812897@gmail.com>
+To: Kamil Sawicki <user148783812897@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ willemdebruijn.kernel@gmail.com
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 21 Oct 2026 23:55:22 +0800 you wrote:
-> store_rps_dev_flow_table_cnt() accepts rps_flow_cnt == 1.  For count == 1
-> the round-up loop leaves mask == 0, which is stored as log == 0 in the
-> tag (tag_ptr |= ilog2(mask) + 1).  get_rps_cpu() then calls
-> rfs_slot() -> hash_32(hash, rps_tag_to_log(tag_ptr)) with log == 0:
+On Fri, 23 Oct 2026 20:48:35 -0400 you wrote:
+> The priority VLAN receive path can repeatedly remove VID 0 tags and retry
+> packet processing. Unlike the read-only VLAN protocol parser, this path has
+> no limit on the number of nested tags it consumes.
 > 
->   include/linux/hash.h:68
-> 	return __hash_32(val) >> (32 - bits);   /* bits == 0 -> shift by 32 */
+> Each skb_vlan_untag() advances skb->data and resets header offsets. The
+> offsets are stored in 16-bit fields. With enough nested tags, the network
+> or transport offset can wrap. A later protocol handler can then derive a
+> large pull length from the wrapped offsets and access memory outside the
+> skb allocation.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net-sysfs: reject a one-entry RPS flow table
-    https://git.kernel.org/netdev/net/c/24927bdf0f62
+  - [net,v2] net: limit priority VLAN untag depth
+    https://git.kernel.org/netdev/net/c/d3ff07f5acc5
 
 You are awesome, thank you!
 -- 
