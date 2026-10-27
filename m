@@ -1,67 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=130.117.225.111
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793113039;
-	b=0GS4Q/1sEKDmO9yv0gtiBB8A5ZbdMZ8z1O9NevoeSxqQMwxT2iMzkvrjMK9sqcxKUbdU
-	 aj6kfv5PD+Ut+Zpb4u5cg28XOL8xcaX5A/c75B1+rIO7BRcpo2rHezqraOCmwCVENG/hH
-	 WbZrYPjO8O+4sgxpGAbXz+zy3iLbmc6H5qE7/ta+G/dr82XGuRIT09plFsSYpg5/caMgg
-	 +c8PiNcamOMkdUjQd+xckIOm+h9vk2wKn415Z6LkZsH9AC9ifxPSwNVURBZS0yvfQuW5M
-	 lC1Dk7dW2smfdayqieOhnbheXKdAumaPaKBaAjHDbo7Z7/MZSy47DYGA0ASQui2VCJA==
+	t=1793113351;
+	b=PcVAwJPfs9RzIEin35JesUPQ74BuQRHd6eR5S9zy7fsRy7ILyXDfOfmQ2DK8F422KQxY
+	 e9Qc62fK1qZRCLWE9iSsUeNYSSeeo2xFrDDE1akxgAsYTyc1RP27B7kktaq8Zrqnx/0nU
+	 5XU3LTleKCfj20xKABCGxJKHXnjOSu01/B+aBUI3or86WCmZB5nIITs6KV4wy6XJxzaqH
+	 v+FkzhnXeVwgpTuJG0dNbgyKSQ8qrPgctSVlhBKzpmvgd942KH3My8+GMEYAU7aezzhUU
+	 v9ptqZGMvvopWHt00mSQCoTu9by9NYvwK8gTHuwD2Tk7I93xzluF3rvQFV3nEI2UXNw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793113039;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=Bvj+VEfapM0R1/crUGbkmB9nlGglctmeDzltg5vYsMA=;
-	b=RbwxOaJ/3XhDWeRCCKWo9wDKZ2z+rAQgv4YEj90g4dO5jXM5JVS3xqgauQSWS1Q36bG6
-	 uYezewISXArKFzcMEb+GMAYFiXETJZkNUSEN4gUH93mP0NaXB6nhegPcqc3fG+RDwxtB2
-	 FpoL5v0UrF3L0sN2/y+9Ay5tcMxI1lHvdL8nqAUvK0j7m5+++RhggWo9JOEaotkQWkaFX
-	 frGdiagKblKMUh5sutGb5K8dsHwLsecmHqlejVjoGhNOLr+JAwGojckZs0+aI+0X7eyoz
-	 ATMIZJNNrBf8I4dB5L386jGqjhhrr+hWYAneV9W8bOAO9OcyeHJfV4g97+8VwnVCVmg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793113351;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=HGMtvMUKn1QVhLCJSoyj+PiRyLHwn+umCHA4XuRfwu4=;
+	b=Gg6XwTuKVEv/iRLesMhCeR3qc/1CnVWBwL16NsKTym45yyls3CP6BPipZL/c4qXQs2XM
+	 4l5qQwrCbwkM5zfxuHIeaR7dOH+Crw6KV4s9VM4JW+y8QBVybIN4ZZlxOnSggUOj0A7OC
+	 5uhhPRrFE+o2ofkKNKfqreCFQe09Soz3Et3TooqzUh15aTDwOCXDorT8XN+Gbr/uEpQQa
+	 F0kvfq/yXnIds9uFslzk4CQtXQrEdV5MS2hTi7KZpGT0dmtqTjI9jUQ68GqkLQQWdeixZ
+	 Kz7JtWaRrnADP/QVlqcX/HyHCYFzny2B/rzjy5p7pFbn6wWo0JTv1INEktsIevaZ3qA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=virtuozzo.com;
-	spf=pass smtp.mailfrom=virtuozzo.com;
-	dkim=pass header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=relay header.b=tN3fofTP;
-	arc=none smtp.remote-ip=130.117.225.111
-Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=V04qkQfl;
+	arc=none smtp.remote-ip=209.85.217.41
+Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com [209.85.217.41])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8508F606A31A;
-	Tue, 27 Oct 2026 14:57:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8508F606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9F1606A320
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 15:02:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DB9F1606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=relay header.b=tN3fofTP
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
-	Content-Type; bh=Bvj+VEfapM0R1/crUGbkmB9nlGglctmeDzltg5vYsMA=; b=tN3fofTPUpWv
-	F8Dlif9CUns04hM+TM7EQoSaI6bJcsPiSZikR2ecvNpMzU/zZRQPnJmxkaXZW55Pxt2/dBshLpoQE
-	ouZCooicxEuxwGhRRivxVyzyjXtvAQaIeiKb0/vnOjIGEX6zGWQ+MbLnEaJQkgUw4dMZ0arC/xVLG
-	uLuFkAoDJCJDL/IKueDX/KkujoKlkoFEPJwTkSA8UIhtPaI7DSSp1T2FNjZxlIQVtIlfJbfBgOsEw
-	4kfqckP9m+IQrvh5309YOhxPl8Pn25wzU8mcv40bA8WEEQGCc2eEDQFoJRWHjBXwjL5U27Fq81IZr
-	7P6BaOha4H+mbxb1yC6x6g==;
-Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=LekKit-T14)
-	by relay.virtuozzo.com with esmtp (Exim 4.96)
-	(envelope-from <eva.kurchatova@virtuozzo.com>)
-	id 1xLiXw-00FAir-2k;
-	Tue, 27 Oct 2026 15:56:47 +0100
-From: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Stanislav Fomichev <sdf@fomichev.me>
-Cc: linux-kernel@vger.kernel.org,
-	syzbot+c6c86a1c56b5131f2d97@syzkaller.appspotmail.com,
-	Eva Kurchatova <eva.kurchatova@virtuozzo.com>,
-	netdev@vger.kernel.org
-Subject: [PATCH net v2] net: fix self-deadlock when an upper disables a feature of its lower
-Date: Tue, 27 Oct 2026 16:00:49 +0200
-Message-ID: <20261027140121.1192299-1-eva.kurchatova@virtuozzo.com>
-X-Mailer: git-send-email 2.56.0
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=V04qkQfl
+Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-7cc2bb73cd9so1299787137.3
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 08:02:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793113350; x=1793718150; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=HGMtvMUKn1QVhLCJSoyj+PiRyLHwn+umCHA4XuRfwu4=;
+        b=V04qkQflkGLKDmKvJ0zTwrQh8Jj7hE+4GupV7lkW9yYSqAFSD+gpyQJlIzmmPiRKbq
+         mL3klPhaOsleghQq9oRRmix7ADtuVP7LRDDjpaxMZVlZ0E9LFRODKeZ86RthZR+5KrAk
+         Yf0A3OuhGxVeV3BnwqdTCtD6g/0N19lGVKsz1pgB1CmnQcNMIXq7uNS4qDU4YVQ4sHOC
+         2c/vb7M/eTlovlW9d8YC7DYKyCNoPE4BYHrimajW1aHQFdOystT4bVV4r2+g80ms1xvb
+         /fuTtViKBdXDkBw9K/fVjt8slLN+5iVZl5hUeBUxheIJLFtBUAkwxgnlrF3ywnWHNtUl
+         xvMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793113350; x=1793718150;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=HGMtvMUKn1QVhLCJSoyj+PiRyLHwn+umCHA4XuRfwu4=;
+        b=giD8px7RQhf+auqswLm1LC5wdClQrFmHR/KHojJWF9Rveyv8W8n+16e0iJNeScW4mv
+         B1b60DrpBvd+33MDKhf9lJduSDX/wp5FaG2MyEdFUTBIaVwjxlMU9wzBv7NKKK7KwF/y
+         ACCc6MzowCFstXJ988/9lo10wvPbJzDKHQp8X2mm2F9jkK4EKgIn40qC536w6QrB9Rp/
+         +HN3urAxg3Xniao/9H+JaTlkptp4dLP+uN1vniH4XiN2qWn5uEJzaFbmxUVvOT8vzMzd
+         RALffA2rA+pdwpYORyBLHjj3gFcL7dczELgVS5nxw0Bvw1oYbAWkFXJae2JVpNnAWW24
+         pFeA==
+X-Forwarded-Encrypted: i=1; AKwUvBz3Vum76fb68e9U6xpL5FjzOU6koGKV5DBLgBRJDULJCwOKRwt698NO14L33ZAiv6SKBem1u4I=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLpYVzSgsp8vg6ehjhf/CojDWrrIxgwYq4Tjg0Qvx9CUMke4BWV
+	Yytab248dpFW66hsCGUzaNA1c8Ff5Z/EYecYGV3hUU/14wFeXCmasWM8
+X-Gm-Gg: AYBFou0aKeVLjSwte7RYOop6NrKSEM3Ijh4IiHrqbu6ptW1WpJA0l86OlTzUziqpkXs
+	7MDT0JBOl1ijCJ4cqjh6CybFmjheabQ4uXSvWYMSXCfOH3KOkT2cF1fyiQPO5RVCTU9zkVlCf6I
+	rswVNY8dD5yN4De+6Ex8LAoM+IpzsY+SWHysOayRFqbOAFa+9aPXW1ZqcU2TdG/0kGLlRsa1iWL
+	QMwj/3JeZRXyZjsEJ+dBXzCpSmxtP1yVDSQKCM+0z86dpYIzRQ/C83QFJaVyFasrtdoeOPGo/Zh
+	5bCXaa2410CW7iuhm/pTFaJ9UwZh+RpE05g4xO47ffxuEtOW8cEmzkyCX8HZAMgjHSKTf1Tftex
+	k+n+TJTjBRxZkRd6uzDEmQkW+tybufO2YfehiyF7z3lVA9NUGxXhN96joXhlZhnRoDcYEIe5iqK
+	tJTuzqtaUhHZJrggqsbejp+jlCinMd1fAG6G1dG1uqnbPMhnC9gWywJw9iM/jOGvaVps06kqZNi
+	coJxE3zvVuIAeX/bMyibGKLKM1v85RffrbubJ+cnfSFQ0e2LzZbniLiMkaB9zHGAB6N0ZRNxjtR
+	jVj9XBP1MRniF9Ezs7z0Ud/bGhosclWZ9jv6a8yqykuJiE6rWFTSdNYkh8iEctN3XT2S3L31+/A
+	yEWzkSTiQ7DjXO0ob0ZTajttcjzA4505DYqYG/1IX
+X-Received: by 2002:a05:6102:50a6:b0:7cc:23e7:e743 with SMTP id ada2fe7eead31-7ce5ccc0438mr3378821137.15.1793113348309;
+        Tue, 27 Oct 2026 08:02:28 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7cea3c44ee7sm2664693137.6.2026.10.27.08.02.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2026 08:02:27 -0700 (PDT)
+Date: Tue, 27 Oct 2026 11:02:27 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Eric Dumazet <edumazet@kernel.org>, 
+ "David S . Miller" <davem@davemloft.net>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Willem de Bruijn <willemb@google.com>, 
+ Simon Horman <horms@kernel.org>, 
+ netdev@vger.kernel.org, 
+ Eric Dumazet <edumazet@kernel.org>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Aaron Conole <aconole@redhat.com>, 
+ Eelco Chaudron <echaudro@redhat.com>, 
+ Ilya Maximets <i.maximets@ovn.org>, 
+ Jamal Hadi Salim <jhs@mojatatu.com>, 
+ Jiri Pirko <jiri@resnulli.us>, 
+ dev@openvswitch.org, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Ren Wei <weir@nebusec.ai>
+Message-ID: <willemdebruijn.kernel.1c62007f7ebd4@gmail.com>
+In-Reply-To: <20261027082604.1485903-2-edumazet@kernel.org>
+References: <20261027082604.1485903-1-edumazet@kernel.org>
+ <20261027082604.1485903-2-edumazet@kernel.org>
+Subject: Re: [PATCH net 1/5] net: add eth_type_trans_careful()
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -71,191 +113,26 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-When an upper device ends up without a NETIF_F_UPPER_DISABLES feature
-(LRO) that its lower device has, netdev_sync_lower_features() disables
-it on the lower device, taking the lower's instance lock since commit
-af5f54b0ef9e ("net: Lock lower level devices when updating features").
+Eric Dumazet wrote:
+> eth_type_trans() assumes ETH_HLEN bytes are present in skb->head.
+> NIC drivers always provide this, and they should keep using the fast
+> version.
+> 
+> Devices looping skbs from their transmit path back to their receive
+> path get skbs built by the stack instead. Their link-layer header
+> might have been popped by tc actions (act_vlan pop_eth, act_ife decode)
+> or OVS actions (pop_eth + pop_mpls / pop_nsh), leaving fewer than
+> ETH_HLEN bytes in the linear part. eth_type_trans() then hits
+> the BUG() in __skb_pull().
+> 
+> Add eth_type_trans_careful(), which first pulls the Ethernet header,
+> and returns a drop reason on failure, so that the few devices exposed
+> to this can drop such packets.
+> 
+> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
 
-Upper devices recompute their features in response to NETDEV_FEAT_CHANGE
-of the lower device, and for ops locked devices that notification is
-sent with the lower's instance lock held, e.g. from ethtool. The task
-then blocks on the lock it already holds:
-
-  dev_ethtool()                        takes lower's instance lock
-    netdev_features_change(lower)
-      <upper>_device_event()
-        netdev_update_features(upper)
-          netdev_sync_lower_features()
-            netdev_lock_ops(lower)     deadlock
-
-Triggered by enabling mlx5 LRO on a host with VM macvtaps on top of it:
-
-  INFO: task ethtool:5963 blocked for more than 122 seconds.
-  Call Trace:
-   __mutex_lock.constprop.0
-   __netdev_update_features
-   netdev_update_features
-   macvlan_device_event
-   notifier_call_chain
-   netdev_features_change
-   ethnl_set_features
-  INFO: task ethtool:5963 is blocked on a mutex likely owned by task ethtool:5963.
-
-Reproduced with these upper device configurations, and netdevsim as the
-ops-locked lower device.
-
- - macsec with LRO in hw_features, but masked by macsec_fix_features().
- - macvtap without LRO enabled via TUNSETOFFLOAD.
- - macvlan, bond or team enslaved to a VRF or batman-adv device.
-
-There is no way to tell whether the current task owns the lower instance
-lock. Try to take it, and otherwise leave the job to netdev_work, which
-disables the features the uppers lack under the lower's instance lock.
-In the deadlock case above, the lock holder is the context that sent
-NETDEV_FEAT_CHANGE, so steal the pending work at the end of
-netdev_features_change() and run it inline, like netif_rx_mode_sync()
-does for rx_mode. The lower device's features are then consistent with
-its uppers when the operation returns, as before. The work only runs
-asynchronously if an unrelated task held the lock.
-
-Tested in QEMU with lockdep enabled. The stacks above hang without this
-patch, and with it the features end up disabled on the lower device
-without lockdep reports.
-
-Stacks with bridge, bond, team, ipvlan and VLAN on top of netdevsim
-behave as before: these call dev_disable_lro() on their ports.
-
-Fixes: af5f54b0ef9e ("net: Lock lower level devices when updating features")
-Reported-by: syzbot+c6c86a1c56b5131f2d97@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6a6be82b.77639fcc.3d4fd0.0014.GAE@google.com/
-Signed-off-by: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
----
-
-Changes in v2:
-- Send no NETDEV_FEAT_CHANGE when disabling the feature fails, the upper
-  deferred the job again and the recursion overflowed the stack.
-- Run the deferred job on a detached device too, instead of dropping it:
-  before the patch the caller waited for the lock and then disabled the
-  feature regardless of the presence.
-- Correct the kernel-doc of netdev_features_change() that it may disable
-  features, and explain its locking.
-
-Link to v1: https://lore.kernel.org/netdev/20261023000951.237641-1-eva.kurchatova@virtuozzo.com/
-
- net/core/dev.c         | 47 ++++++++++++++++++++++++++++++++++++++++--
- net/core/dev.h         |  3 +++
- net/core/netdev_work.c |  4 ++++
- 3 files changed, 52 insertions(+), 2 deletions(-)
-
-diff --git a/net/core/dev.c b/net/core/dev.c
-index e76762e29360..853e34d5765e 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -1605,11 +1605,20 @@ int dev_get_alias(const struct net_device *dev, char *name, size_t len)
-  *	netdev_features_change - device changes features
-  *	@dev: device to cause notification
-  *
-- *	Called to indicate a device has changed features.
-+ *	Called to indicate a device has changed features. Also disables the
-+ *	features which upper devices of @dev have off and could not disable
-+ *	on @dev while its instance lock was held, so the caller must hold
-+ *	RTNL and, for an ops locked @dev, its instance lock.
-  */
- void netdev_features_change(struct net_device *dev)
- {
- 	call_netdevice_notifiers(NETDEV_FEAT_CHANGE, dev);
-+
-+	/* Uppers reacting to the notification couldn't take our instance
-+	 * lock to disable features they lack, do it now.
-+	 */
-+	if (__netdev_work_core_cancel(dev, NETDEV_WORK_SYNC_UPPERS))
-+		netif_sync_upper_disables(dev);
- }
- EXPORT_SYMBOL(netdev_features_change);
- 
-@@ -10968,6 +10977,31 @@ static netdev_features_t netdev_sync_upper_features(struct net_device *lower,
- 	return features;
- }
- 
-+/* Disable the features of @dev which any of its upper devices has disabled,
-+ * deferred from netdev_sync_lower_features().
-+ */
-+void netif_sync_upper_disables(struct net_device *dev)
-+{
-+	netdev_features_t disable = 0;
-+	struct net_device *upper;
-+	struct list_head *iter;
-+
-+	netdev_for_each_upper_dev_rcu(dev, upper, iter)
-+		disable |= ~upper->features;
-+	disable &= NETIF_F_UPPER_DISABLES & dev->features;
-+	if (!disable)
-+		return;
-+
-+	dev->wanted_features &= ~disable;
-+	__netdev_update_features(dev);
-+
-+	/* Notifying a failure would make the uppers defer this again */
-+	if (unlikely(dev->features & disable))
-+		netdev_WARN(dev, "failed to disable %pNF!\n", &disable);
-+	else
-+		netdev_features_change(dev);
-+}
-+
- static void netdev_sync_lower_features(struct net_device *upper,
- 	struct net_device *lower, netdev_features_t features)
- {
-@@ -10980,7 +11014,16 @@ static void netdev_sync_lower_features(struct net_device *upper,
- 		if (!(features & feature) && (lower->features & feature)) {
- 			netdev_dbg(upper, "Disabling feature %pNF on lower dev %s.\n",
- 				   &feature, lower->name);
--			netdev_lock_ops(lower);
-+			/* The caller may hold the lower's instance lock already,
-+			 * e.g. when the upper reacts to NETDEV_FEAT_CHANGE of
-+			 * the lower. Don't wait for it, let netdev_work disable
-+			 * the feature instead.
-+			 */
-+			if (netdev_need_ops_lock(lower) && !netdev_trylock(lower)) {
-+				__netdev_work_core_sched(lower,
-+							 NETDEV_WORK_SYNC_UPPERS);
-+				continue;
-+			}
- 			lower->wanted_features &= ~feature;
- 			__netdev_update_features(lower);
- 
-diff --git a/net/core/dev.h b/net/core/dev.h
-index 04fb0e9a571e..c3d9d66bfb5b 100644
---- a/net/core/dev.h
-+++ b/net/core/dev.h
-@@ -174,8 +174,11 @@ void netif_rx_mode_cancel_retry(struct net_device *dev);
- /* Events for the async netdev work, tracked in netdev->work_core_pending. */
- enum netdev_work_core {
- 	NETDEV_WORK_RX_MODE	= BIT(0),	/* run the rx_mode update */
-+	NETDEV_WORK_SYNC_UPPERS	= BIT(1),	/* disable features uppers lack */
- };
- 
-+void netif_sync_upper_disables(struct net_device *dev);
-+
- void __netdev_work_core_sched(struct net_device *dev, unsigned long event);
- unsigned long
- __netdev_work_core_cancel(struct net_device *dev, unsigned long mask);
-diff --git a/net/core/netdev_work.c b/net/core/netdev_work.c
-index e721a06d58df..097c9535845b 100644
---- a/net/core/netdev_work.c
-+++ b/net/core/netdev_work.c
-@@ -118,6 +118,10 @@ __netdev_work_core_cancel(struct net_device *dev, unsigned long mask)
- static void netdev_work_run(struct net_device *dev, unsigned long events,
- 			    unsigned long core)
- {
-+	/* Not gated on presence: the caller used to wait only for the lock */
-+	if (core & NETDEV_WORK_SYNC_UPPERS)
-+		netif_sync_upper_disables(dev);
-+
- 	if (!netif_device_present(dev))
- 		return;
- 
--- 
-2.56.0
-
+Reviewed-by: Willem de Bruijn <willemb@google.com>
