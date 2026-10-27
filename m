@@ -1,47 +1,46 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793092254;
-	b=iBpnWFfbTSlTHYsSq5QkTS3Sykm4uMbW/5L+VEn8elzwDlodSJB2GokKw/GqnSg7nmJ0
-	 GAyhxJgv1GHSIb1zWQdRn0Iw/WFF99FQHRW8Gv5kFBUlV9oo3Gsx5k16TjfR4cvBQBSDu
-	 C2wIa7H7aXq4HLCS1NbOIQdxHpkcVe7+EGUXYwBY/fqShdHI6/X6w44tUxniJ9TPqaazC
-	 AzEYH0LwIwhOFjNVcLw+ZgqWSmFuyu9YCroQ7ZLzbbYCK/ZZyF60vdxOLlRCGK6I475Qr
-	 XO6tKVEbyLcK/1AK5jYQCPRS/CnB/LXVbecV7L6qb7qHEPmPJJEYhKMx3036N+sWaJQ==
+	t=1793092256;
+	b=hvGvzIHwI1iijyPV81jlX2CYpxkPDjlJZP/MQdqp4Q4Du1Az3uq4+6BFccyo7cFO59AF
+	 UrJxCfaNobLU1LryVhpMwX66VzfMi71bVbn7kLMTrcsH2JyJhwlXDEVpp00Xt8kTyoTwR
+	 WbAdGrKE/6nXHO+Lp2DQSfAQmPIquxpaJrgT6uW+agxxFPXorkw8fraF6hnRC4uCQTVU3
+	 QpRcN1WkjK4spOpRRZOyACkVT/M6hNNzPCKFbr+uyEBamDhIWWHZoVs10Bl6/hZ4Sc+m+
+	 6o6S3mQzsQP2SKkcGnKpbABytrW7vZgVE/MvCFARhrNccPEMci7y+u7G/T2S3FwoOeg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793092254;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793092256;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=u/flFy7ABkA1eA9YdJuR33AjqMLm+c8/F20IoDK/Kt4=;
-	b=1LI6KvD/5fcSnERovjhG3f2XLqLIFYMMdImmviIUQPBctL96CWsQv9CFd0ppTPWc7jBS
-	 U38zEtjlNv6lT8+tEz+qvq+nvOff7Xb6ztDh57kA03C5px9L7Js3S6QuJ7e9ni8eePMEW
-	 72upHyICf7yj4MpkV78hn92PrFsewD4AIkZNdbFehf5fs5EHRJHwcOHM1DJ3Vk75nQ2vL
-	 XTtBIQ7Ri0qyqI2aejprcmrgf23zL6fq5BYZQ9WWywQebQlCdryENHi+RVvTWJ+0ba1BI
-	 2QLe12qgB0+ZeSRvMH/goaIHGCwKpPvmjMojJ7hRg/Gl2tilclFmOxTukHEWOskLv4Q==
+	bh=uGJBMOzeGvE2Nb+TZ2KRWS5LM8HfN0Oo/8rnIRB4zSs=;
+	b=foF+ChvYyOb5lTCOUfccQ9xd3jGo7MNdHfwuFC3j/RFqVZzSIWyJjonF1kXTup+Z9fn1
+	 xTu/nj3ro6JHu1LmgwlPHJdEcuwpss5DUNn5bH0twNwiBY2AD1A6SrneuwaCfA8xzZBRy
+	 kpO+iwoXJPdB+RfwVlXagdnNfLqV+62WfroAyp37RoSdAFLaEnB+9C5W/WAhPXdQ8qJ5i
+	 XWHKinIztZLqOTOTycvSYmqAw/ZfiJ6sXTGGmOhfRI82Su3QyUNsmcVPOmOfJl1pfsQiT
+	 gmtKf/XTWS1LHEVH1WqSyJMt6xrGTeptMXs9lWz8FabTPnvjDqwWAwk+iYn1fOLqiSA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gAcbwxK7;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KbNMM3s5;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED6D606A31E;
-	Tue, 27 Oct 2026 09:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8334606A32A;
+	Tue, 27 Oct 2026 09:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gAcbwxK7
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE63F1F01828;
-	Tue, 27 Oct 2026 09:10:52 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KbNMM3s5
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70AEC1F031E1;
+	Tue, 27 Oct 2026 09:10:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793092253;
-	bh=u/flFy7ABkA1eA9YdJuR33AjqMLm+c8/F20IoDK/Kt4=;
+	s=k20260515; t=1793092255;
+	bh=uGJBMOzeGvE2Nb+TZ2KRWS5LM8HfN0Oo/8rnIRB4zSs=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=gAcbwxK7JAN0bXoYlG36I7L0p+Gxz/+fWu2Z5DcnwpErAYl7FZSjs6UMHUQRsBQvx
-	 fo1ookShiG+ckmXWBsp45AMJKN5p8LHWdQbWsVbOQea/fLKGruqGBgA8zEgC5NN37f
-	 GXMO4N8DapcKw0DcTZ3E/7LtPfaGPgFb5do6ypdDQ2kQZu6n2tAUVtRslFVyZNheW0
-	 1xLgvKj8+ZLW2HG7aEqpucUN2Aby3T3yN3O1q4o661u5MUQmM1DkwTAUYehfSCZGCV
-	 OvX6iJUKdGY+spIXUUcPEFK2k8yVwZBt36+yPhB0Mj7Up8b+MbLpIl+t3eaP86nEcc
-	 cJ2LxBJTosqCg==
-Subject:
- Re: [PATCH net 2/6] net: stmmac: drop split frames on AF_XDP zero-copy RX
+	b=KbNMM3s58kunelRF3V/7PEtxaciElEGQUR4fCSgo9Uzw7Qvj/y7mze/HfbTb7dAWL
+	 9tSY5hNQGCNDR3QfNL5KiCdD7Wj/Q1VZN/bHjwufVZO9K2he3lpcs3gmSGxiQ4JpV7
+	 n1d0IkKPps2yxzyOv8MVhiNhdfWF1rE94IuXfSs9WLvU5Ts0PLUgbrtSffMwYsUa9N
+	 If2VqsBU31BRRuhKZ8AQGqPw0laFcOU54J2hObG6eMpzKNHJs0bs1Z2qsYxMUJHoC+
+	 ffzBeUlXTXFep45t5iY7mpE/pWbxYWRhmZvSbaElcO79TpDccbJ0IGJeLxrhtELnfo
+	 rcXv2e8NiTSNA==
+Subject: Re: [PATCH net 3/6] net: stmmac: drop multi-buffer frames in XDP mode
 From: netdev-bot+sashiko@kernel.org
 To: lorenzo.bianconi@oss.qualcomm.com
 Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
@@ -51,11 +50,11 @@ Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
  sdf@fomichev.me, Jose.Abreu@synopsys.com, boon.leong.ong@intel.com,
  o.rempel@pengutronix.de, netdev@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
-Date: Tue, 27 Oct 2026 09:10:52 +0000
-Message-ID: <179309225249.3134.13360572151220701495@kernel.org>
-In-Reply-To: <20261023-stmmac-xdp-fixes-v1-2-efb37e19f5bd@oss.qualcomm.com>
-References: <20261023-stmmac-xdp-fixes-v1-2-efb37e19f5bd@oss.qualcomm.com>
-X-sashiko-severity: Medium
+Date: Tue, 27 Oct 2026 09:10:54 +0000
+Message-ID: <179309225404.3134.13890305235467768199@kernel.org>
+In-Reply-To: <20261023-stmmac-xdp-fixes-v1-3-efb37e19f5bd@oss.qualcomm.com>
+References: <20261023-stmmac-xdp-fixes-v1-3-efb37e19f5bd@oss.qualcomm.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -68,214 +67,187 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 (2) · Medium: 1 (2) · Low: 0
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The commit message does not describe one behaviour change the
-  patch makes, and nothing explains the second Fixes tag.
+- [Low] The patch cites only `Fixes: 5fabb01207a2` ("net: stmmac: Add
+  initial XDP support").
 
 Pre-existing issues:
-- [High] On GMAC4/XGMAC, stmmac_rx() in native (non-ZC) XDP mode still
-  handles split RX frames wrongly at this commit.
-- [High] On AF_XDP zero-copy XDP_PASS, stmmac_dispatch_skb_zc() ignores
-  the csum_none bit from the descriptor status.
-- [Medium] In stmmac_rx(), if napi_build_skb() fails on the first
-  descriptor of a multi-descriptor frame, the code does `rx_dropped++;…
-- [Medium] priv->xstats.rx_dropped and priv->xstats.rx_errors are device-
-  wide `unsigned long` counters.
+- [High] Without an XDP program, stmmac_rx() still re-parses the rest of
+  a frame as a new frame when napi_build_skb() fails on a non-last…
+- [Medium] stmmac_rx() adds its per-poll local counters to the device-
+  wide `priv->xstats.rx_dropped` and `priv->xstats.rx_errors` (plain…
 
 --
 
-net: stmmac: drop split frames on AF_XDP zero-copy RX
+net: stmmac: drop multi-buffer frames in XDP mode
 
-When stmmac_rx_zc() drops a frame that spans more than one RX descriptor,
-it now sets error, so the remaining descriptors are freed and the tail is
-not handled as a new frame. The dwmac100/dwmac1000 descriptor callbacks now
-return rx_not_ls together with discard_frame for non-last descriptors. The
-discard_frame checks in stmmac_rx_zc() and stmmac_rx() change from == to &.
+This patch makes stmmac_rx() drop frames that span more than one
+descriptor, or that use the second buffer of a descriptor, while an XDP
+program is attached. Discarded buffers are no longer returned to the page
+pool, so stmmac_rx_refill() can reuse them in place. The re-parse of the
+remaining descriptors after an XDP_CONSUMED verdict is also removed.
+
+> Fixes: 5fabb01207a2 ("net: stmmac: Add initial XDP support")
+
+[Severity: Low]
+Should this also carry a Fixes tag for 88095728511e ("net: stmmac: fix rx
+Scatter-Gather support")? Two of the failures described in the commit
+message seem to come from that commit, not from the initial XDP support.
+
+First, the buf1_len underflow. Before 88095728511e, stmmac_rx_buf1_len()
+returned min_t(unsigned int, dma_buf_sz, plen) for the last descriptor. A
+tail re-parsed after XDP_CONSUMED therefore got dma_buf_sz bytes.
+
+88095728511e changed the return to:
+
+	return min_t(unsigned int, priv->dma_conf.dma_buf_sz, plen - len);
+
+It also moved the XDP-mode FCS strip into the if (!skb) block:
+
+	if (stmmac_xdp_is_enabled(priv) && !buf2_len) {
+		buf1_len -= ETH_FCS_LEN;
+
+Together, these two changes let a 0-3 byte buf1_len underflow.
+
+Second, the second-buffer case. Before 88095728511e, stmmac_rx_buf2_len()
+started with:
+
+	if (!priv->sph_active)
+		return 0;
+
+stmmac_xdp_set_prog() clears sph_active while XDP is enabled, so buf2_len
+was always 0 in XDP mode. That check is now:
+
+	if (!stmmac_rx_check_buf2_cap(priv))
+		return 0;
+
+So "GMAC4/XGMAC always provide a second data buffer per descriptor" has
+only been true since 88095728511e. The new buf2_len drop fixes a condition
+that commit introduced.
+
+The last patch in this series ("net: stmmac: fix XDP RX buffer DMA sync
+length") already carries Fixes: 88095728511e.
 
 > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index fba21599a5e15..3fa2c15222d88 100644
+> index 3fa2c15222d88..30a2774d722b7 100644
 > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
 > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -5710,18 +5710,21 @@ static int stmmac_rx_zc(struct stmmac_priv *priv, int limit, u32 queue)
->  		if (priv->extend_desc)
->  			stmmac_rx_extended_status(priv, &priv->xstats,
->  						  rx_q->dma_erx + entry);
-> -		if (unlikely(status == discard_frame)) {
-> -			xsk_buff_free(buf->xdp);
-> -			buf->xdp = NULL;
-> -			dirty++;
-> +
-> +		if (unlikely(!error && (status & discard_frame))) {
->  			error = 1;
->  			if (!priv->hwts_rx_en)
->  				rx_errors++;
->  		}
-
-[Severity: High]
-This is a pre-existing issue, but with this test, a dwmac4 frame that only
-has csum_none set still reaches the XDP program. That covers an L4 payload
-checksum error without RDES3 ERROR_SUMMARY. On XDP_PASS the frame goes to
-stmmac_dispatch_skb_zc(), and that function never receives status:
-
-stmmac_dispatch_skb_zc() {
-    ...
-	if (unlikely(!coe) || !stmmac_has_ip_ethertype(skb))
-		skb_checksum_none_assert(skb);
-	else
-		skb->ip_summed = CHECKSUM_UNNECESSARY;
-    ...
-}
-
-dwmac4_dma_rx_chan_op_mode() always sets MTL_OP_MODE_DIS_TCP_EF, so the
-hardware does not drop these frames. dwmac4_wrback_get_rx_status() reports
-them with no discard_frame:
-
-	if (rdes1 & RDES1_IP_PAYLOAD_ERROR) {
-		x->ip_payload_err++;
-		ret |= csum_none;
-	}
-
-Can a packet with a bad TCP/UDP checksum get marked CHECKSUM_UNNECESSARY
-on the AF_XDP zero-copy XDP_PASS path and be delivered to sockets?
-
-stmmac_rx() checks (status & csum_none) before it sets
-CHECKSUM_UNNECESSARY. Should stmmac_dispatch_skb_zc() do the same check?
-The gap is still there at the end of the series.
+> @@ -5903,18 +5903,23 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
 
 [ ... ]
 
-> @@ -5730,8 +5733,9 @@ static int stmmac_rx_zc(struct stmmac_priv *priv, int limit, u32 queue)
->  		if (likely(status & rx_not_ls)) {
->  			xsk_buff_free(buf->xdp);
->  			buf->xdp = NULL;
+> -		if (unlikely(error && (status & rx_not_ls)))
+> -			goto read_again;
+> +		/* We do not support SG in XDP mode */
+> +		if (unlikely(!error && (status & rx_not_ls) &&
+> +			     stmmac_xdp_is_enabled(priv))) {
 > +			rx_dropped++;
 > +			error = 1;
->  			dirty++;
-> -			count++;
->  			goto read_again;
+> +		}
+>  
+>  		if (unlikely(error)) {
+> +			if (status & rx_not_ls)
+> +				goto read_again;
+> +
+>  			dev_kfree_skb(skb);
+>  			goto next;
 >  		}
 
+[Severity: High]
+This is a pre-existing issue, and this patch did not introduce it. The new
+error-and-drain handling only runs when stmmac_xdp_is_enabled() is true.
+Without an XDP program, can the same re-parse still happen when
+napi_build_skb() fails on a non-last descriptor?
+
+The failure branch in stmmac_rx() leaves skb == NULL and error == 0:
+
+	skb = napi_build_skb(page_address(buf->page),
+			     rx_q->napi_skb_frag_size);
+	if (!skb) {
+		page_pool_recycle_direct(rx_q->page_pool,
+					 buf->page);
+		buf->page = NULL;
+		rx_dropped++;
+		count++;
+		goto drain_data;
+	}
+	...
+drain_data:
+	if (likely(status & rx_not_ls))
+		goto read_again;
+
+The next descriptor of the same hardware frame then passes the error check
+and is handled as the start of a new frame.
+
+SPH is active by default on SPH-capable GMAC4/XGMAC when no XDP program is
+attached. In that case stmmac_rx_buf1_len() returns 0 for this descriptor:
+
+	if (priv->sph_active && len)
+		return 0;
+
+napi_build_skb() then builds an skb with an empty linear area, and the
+payload is only in a buf2 frag. pskb_trim(skb, len) does nothing, because
+the stale len is larger than skb->len.
+
+With the default hw_vlan_en, nothing pulls the header into the linear area
+before this call chain:
+
+	eth_type_trans()
+	  eth_skb_pull_mac()
+	    skb_pull_inline(skb, ETH_HLEN)
+	      __skb_pull()
+	        BUG()
+
+Under memory pressure, could an on-link peer panic the machine this way by
+sending a frame larger than one buffer? GMAC_CONFIG_JE is set in
+GMAC_CORE_INIT, so such frames are accepted even at MTU 1500.
+
+Without SPH, the stack instead gets a frame whose Ethernet header comes
+from the middle of the peer's payload.
+
+This path is still unchanged at the end of the series. The VLAN rework in
+"net: stmmac: fix VLAN tag stripping on short and non-linear RX frames"
+adds pskb_may_pull() only to the software stmmac_rx_vlan() path.
+
+Would it drain the frame correctly to set error = 1 in the
+napi_build_skb() failure branch, as this patch does for XDP mode?
+
+> @@ -5926,6 +5931,14 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+>  		buf2_len = stmmac_rx_buf2_len(priv, p, status, len);
+>  		len += buf2_len;
+>  
+> +		/* Drop the packet if it is split over buf1 and buf2 on a
+> +		 * single descriptor if the interface is running in XDP mode.
+> +		 */
+> +		if (unlikely(stmmac_xdp_is_enabled(priv) && buf2_len)) {
+> +			rx_dropped++;
+> +			goto next;
+> +		}
+
 [Severity: Medium]
-This is a pre-existing issue, but the rx_dropped count added here is added
-to the device-wide counter at the end of stmmac_rx_zc():
+This isn't a bug introduced by this patch. The new drop paths add to
+rx_dropped, which stmmac_rx() folds into a device-wide counter at the end:
 
 	priv->xstats.rx_dropped += rx_dropped;
 	priv->xstats.rx_errors += rx_errors;
 
-stmmac_rx() does the same thing, and stmmac_dispatch_skb_zc() does
-priv->xstats.rx_dropped++. These are plain unsigned long read-modify-writes
-with no lock, no atomic and no per-queue split.
+These are plain unsigned long fields in struct stmmac_extra_stats. They
+are updated with a non-atomic read-modify-write, and no shared lock is
+held.
 
-NAPI polls for different RX queues can finish at the same time on
-different CPUs. Can they lose increments here, so that stmmac_get_stats64()
-under-reports rx_dropped and rx_errors?
+Each RX queue has its own NAPI instance. Can two queues polled on
+different CPUs lose each other's increments here? The napi_syncp section
+just before this only protects the per-queue rxq_stats.
+
+The race goes back to 133466c3bbe171 ("net: stmmac: use per-queue 64 bit
+statistics where necessary").
 
 [ ... ]
-
-> @@ -5898,7 +5902,8 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
->  
->  		if (priv->extend_desc)
->  			stmmac_rx_extended_status(priv, &priv->xstats, rx_q->dma_erx + entry);
-> -		if (unlikely(status == discard_frame)) {
-> +
-> +		if (unlikely(status & discard_frame)) {
->  			page_pool_put_page(rx_q->page_pool, buf->page, 0, true);
->  			buf->page = NULL;
->  			error = 1;
-
-[Severity: Medium]
-The commit message does not seem to describe this change or explain the
-second Fixes tag:
-
-    Fixes: 644b8437ccef9e ("net: stmmac: dwmac4: report Rx checksum errors in status")
-
-Is this change from == to & the actual fix for 644b8437ccef9e?
-dwmac4_wrback_get_rx_status() sets ret = discard_frame on
-RDES3_ERROR_SUMMARY. It then ORs in csum_none on RDES1_IP_HDR_ERROR or
-RDES1_IP_PAYLOAD_ERROR, so it can return discard_frame | csum_none.
-
-The old status == discard_frame test missed that value. Frames with CRC,
-overflow, watchdog or giant errors that also failed the IP checksum were
-passed to the stack in stmmac_rx(), or to XDP/XSK in stmmac_rx_zc().
-
-The fix looks correct. However, the body only covers the AF_XDP zero-copy
-1:1 drop and the dwmac100/dwmac1000 descriptor change, and this hunk
-changes the regular non-XDP RX path on every GMAC4/XGMAC system.
-
-Could the commit message describe this change and the 644b8437ccef9e
-regression it fixes?
-
-[Severity: High]
-This is a pre-existing issue, but does stmmac_rx() in native XDP mode
-still mishandle split frames on GMAC4/XGMAC? For a non-last descriptor,
-dwmac4_wrback_get_rx_status() returns rx_not_ls without discard_frame:
-
-	if (likely(!(rdes3 & RDES3_LAST_DESCRIPTOR)))
-		return rx_not_ls;
-
-So the discard_frame drain above never starts, and the XDP program sees
-the first fragment as a complete frame. On XDP_DROP:
-
-				if (xdp_res & STMMAC_XDP_CONSUMED) {
-					...
-					skb = NULL;
-
-					if (unlikely((status & rx_not_ls)))
-						goto read_again;
-
-skb is NULL and error is still 0. The tail then goes through XDP again
-and can be passed to the stack as a new packet.
-
-On XDP_TX or XDP_REDIRECT the code does goto next, which clears
-in_progress. The next iteration resets len to 0, so stmmac_rx_buf1_len()
-reports the full dma_buf_sz for the tail. Can that expose stale page_pool
-contents that DMA did not write for this frame?
-
-This is the same kind of bug the patch fixes for stmmac_rx_zc(), but here
-stmmac_rx() is only covered for dwmac100/dwmac1000. The next patch in the
-series, "net: stmmac: drop multi-buffer frames in XDP mode", appears to
-fix it. That patch sets error on rx_not_ls in XDP mode, drops frames that
-use buf2_len, and makes the XDP_CONSUMED path goto next.
-
-[Severity: Medium]
-This is a pre-existing issue, but stmmac_rx() has a similar problem when
-napi_build_skb() fails on the first descriptor of a multi-descriptor
-frame:
-
-			skb = napi_build_skb(page_address(buf->page),
-					     rx_q->napi_skb_frag_size);
-			if (!skb) {
-				page_pool_recycle_direct(rx_q->page_pool,
-							 buf->page);
-				buf->page = NULL;
-				rx_dropped++;
-				count++;
-				goto drain_data;
-			}
-
-error is not set, so drain_data jumps to read_again with skb == NULL and
-error == 0. If allocation succeeds on the next descriptor of the same
-frame, the if (!skb) branch builds a new skb from only the tail fragment.
-
-At the last descriptor, pskb_trim(skb, len) does nothing. len still
-includes the dropped first fragment, so it is larger than skb->len.
-
-Does this pass the tail to the stack as a standalone packet with its FCS
-still attached, and count the frame against the budget twice? Should this
-path set error so the rest of the frame is drained?
-
-At the end of the series this only happens in non-XDP mode, because XDP
-mode now sets error on rx_not_ls.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261023-stmmac-xdp-fixes-v1-0-efb37e19f5bd%40oss.qualcomm.com
