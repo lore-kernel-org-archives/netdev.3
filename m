@@ -1,55 +1,66 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793092936;
-	b=rByAkyeBAQN9LBp5AI9n7qfLgGkFHJP2c0/mDSuUpAmo+NiLGe8kyha4RoXk4HUcp7dB
-	 hzIFDtgmHQotjkT4PSpX4HRN1ifMYorUXVr4iTvyPxYux7SNazVBZOwQFMVc6+kzd9//q
-	 bamFeOIPekKmo8AtymVGyE6J7oBFFmEYPZiINkAb89x1wONKu3LjHPZ4WIDO1bJPa1sHd
-	 +XPIUcvLgdq3lrMg7f7U2aMZs2ejHPoiTx9sGuCab99iIV9GHB8sqv9sJrEP9VwiHVQ3F
-	 1BJlFtt31OcMHCupUmVALCGTx2wBj7XOqsscwjGxZ8E2+XVtNrpkINcd8N1BaIb4gSg==
+	t=1793093097;
+	b=QTi+4j01dqKFLtadqnSTh4sMgUzeUM9g0EuTm+iDDvxYD0cN/hBZR43VZC7OAMqVHRvM
+	 mLeWLSCwmVujp4PY4QvG78eJ771Bs6kKMtpsuYRRSVmunc54fVRuNB0aB+11SoMNk2bOv
+	 dlEmmxUkH5xVTIel7B7BsemtmeUt08CvWK17lkPtA2ufOdyXc/AS+O8AAs/TlNas3Pn0u
+	 RNhQGLYxr67GUJQLdGF5fqwIwguh8PeoUT5ujbM+WKiBVqnrfDW1bmx0nDHKt/SGHLlRE
+	 EOk0v8geRyFz6gfJ2xU3jawz3bB5NIDH86MRxvTbLBKKSCpm5KhmlOW+fdu5yMzW9Qw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793092936;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=5wbVVmWcm5uyGXGomrFfyWmbiAFVDweHi8XdGjAXgF4=;
-	b=oGAVbhQpap33ANrAIS2YJqP47QLbgsEIUvEkBdyWK57TMulwQbDu78OOIhUJU/BQMtww
-	 Xn3CThYw3skg8wPsRR0FL+OZ7j/BA/JYrGblokyTrqplVR6y1htKjCHL3Se2SPcnImpul
-	 KVoV+I3lNWA05ZrA23FSsDsqHRBO+2YNoX0lowWgXHxBm2iRVW8NT3lkeraQyC8Ae8ZkD
-	 0NrM+55wuik6vyZdjaqRoqGYhP3JLnz4DBI/TwaYIxdw97GfA1EIfweSutixwjZ05ivvf
-	 LILHbBqOTG9Kg4s8pYvHZfY/rX2wku4hjNXKUHLoUhuhsNLy/Pl04JCqzOb97tCfZJQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793093097;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:X-Developer-Signature:
+	 X-Developer-Key:Content-Transfer-Encoding;
+	bh=jVmoiMOYtuI9ktRo1elrluNIumXG5xfU1JF0RrrL6LA=;
+	b=hDVxuDSGz+Bdqa6hMW8Jbm6fJg9P8RC4Rlf8Qm48pwt9cI/YlLF5+aOkwyoP8gWzXVk6
+	 0GQryS+SCcjI4jlWnxKEmTiEL7/GrzZasorTXiJZtNB4IO9PaOt4ZYEtZupshTxKnucys
+	 kew2RvUa+1d9+jD+e8gsi5/0iCItO8ox0NjZAWoHP1SENy4A5ynHcJVzSuagEWT/nfLug
+	 d6xry8rAc75T2nFufFEVMclBfNa3Ui9aM/Oizc9yRGDMCxGmt8sI3LxbLKw67rtPOdSN2
+	 NIOi7Wj3PiF7EsXEICDRTf3UuUenqJ3E9V3B9uZ+2nIpuXNKvdewYVKLGEp2icjKWFQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ez5tb28q;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kZoU+cvv;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F205606A31E
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 09:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E5F0606A31D;
+	Tue, 27 Oct 2026 09:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ez5tb28q
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B9241F031E6
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 09:22:14 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kZoU+cvv
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A271F01825;
+	Tue, 27 Oct 2026 09:24:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793092935;
-	bh=5wbVVmWcm5uyGXGomrFfyWmbiAFVDweHi8XdGjAXgF4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=ez5tb28q5dvJNGVK4Rjxx+DLwqUUtIqvY9etVQnsj3zVLBx8xjHSyx8zkcoXK8J3W
-	 1ZkKGkQYz+WENAn58OGZerReIUtQZFJO9HyET7kB9bFKZPrTiPJa3Xt9YfqyYk0EI9
-	 Iek9HflGqeEeKPlrxdMMjqdfbnGKXlqz0rePQjtJYgoQEJbPSZD+SX2gRX0suGSRAC
-	 xPpvFVNbO2Gcx881PWurkgxDMRZX/9G2+kFCNPfTbby3OJqK6loSZUYYHC2WfpbTf6
-	 V3jBtumX7mKJtsFC+2yLRoQdBHY3ykcgoSKnSslEoMjUPCGTx2Dq4BCFljkchPRT42
-	 S+g7L6XNTgunQ==
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-3ab4c608a6dso30317181fa.1
-        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 02:22:14 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxCjjZ5qeeX6kyCv6e66W9Ua5k6jw7ruavUTGNMDWFF+feqyswkD2YrvdxON26ajc805OkhlPs=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLtiQi5PvRDeajNOAzSLC9ni2CY25Qm2CGYnCcZuENp2QbClDqb
-	GfeiQ1rZQGerqRTRz9DEUAuF6huV5H+cMhXMfc10s5ucgYjxjZe3GuLy3tG9KjvAUN3RehniN4C
-	XBvMue+7H6sEiejcfeNHVWtWPgmmYVcE=
-X-Received: by 2002:a05:651c:1445:b0:3ab:4c60:897c with SMTP id
- 38308e7fff4ca-3ac6fd59c08mr21629081fa.27.1793092933744; Tue, 27 Oct 2026
- 02:22:13 -0700 (PDT)
+	s=k20260515; t=1793093097;
+	bh=jVmoiMOYtuI9ktRo1elrluNIumXG5xfU1JF0RrrL6LA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=kZoU+cvvg+Uaxt93WSvNa39ekC/nms9Dh3D6qeSoLDOvmquKzCzkQi0CgBe1v2nWL
+	 5GD+Rb35FYjNMAD4RHbnqheUJ/tzr+bf3FW1OgW191FshAlozCsk2UZljjWo1gdKsl
+	 cAZhTYeVhsid7Uf/F5pFYqYlemM/IjJ2jbuZynePh4AFeqJCpWG4gZmizxVyPUpjqz
+	 qoBtP8hH/kDlIBY1SPPmhVFs7HkxO+Teg4GNIdLYi1jEwYkdg6O3gg3VsZtB5I6aem
+	 0hIQ8Ghi75+hiG6CVVgVJQwDaEfyCGIXY0WcoMBmlKXQxwe4fkSh31fLVxoPFFyZn2
+	 ovNfkW9oEvH5A==
+From: Christian Brauner <brauner@kernel.org>
+To: Paul Moore <paul@paul-moore.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Christian Brauner <brauner@kernel.org>,
+	linux-fsdevel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	KP Singh <kpsingh@kernel.org>,
+	Matt Bobrowski <matt@bobrowski.net>,
+	netdev@vger.kernel.org,
+	stable@kernel.org
+Subject: Re: [PATCH 0/8] ns: fixes for the namespace LSM hooks
+Date: Tue, 27 Oct 2026 10:24:28 +0100
+Message-ID: <20261027-heckklappe-halbmarathon-vorsorgen-849ffdc42aac@brauner>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <CAHC9VhR4rMydWiD-RFv-ABiYSG_txJuyrtdaowEXPY=CHEvFXA@mail.gmail.com>
+References: <20261026-work-security-namespace_free-v1-0-ffa3ebbf71bd@kernel.org> <CAHC9VhR4rMydWiD-RFv-ABiYSG_txJuyrtdaowEXPY=CHEvFXA@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,40 +70,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261021235732.1313305-2-kj2864@nyu.edu>
-In-Reply-To: <20261021235732.1313305-2-kj2864@nyu.edu>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Tue, 27 Oct 2026 10:22:00 +0100
-X-Gmail-Original-Message-ID: <CAL4Wiiq0Ti5kAr4sRsG+XV6XJDMJkhk0eMaQW7n_AZAbghDOYA@mail.gmail.com>
-X-Gm-Features: AclHuK8APDmMNo0ydcpfXRwiZ53y6y4WHS1Nwl34pF8p4sVxWR75dI3yGh_H4Dg
-Message-ID: <CAL4Wiiq0Ti5kAr4sRsG+XV6XJDMJkhk0eMaQW7n_AZAbghDOYA@mail.gmail.com>
-Subject: Re: [PATCH net v6] net: ipv4: add zero check for snd_cwnd_clamp
-To: Kaho Jiang <kj2864@nyu.edu>
-Cc: ncardwell@google.com, kuniyu@google.com, davem@davemloft.net, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, edumazet@google.com, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	co+71b6509cb791e531@bugs.sh, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2717; i=brauner@kernel.org; h=from:subject:message-id; bh=a0tQj4zM6yRVUYT5loClZPWWa4Kil1MrBWSlYtSs7uE=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ9yL21Lirg4n7HnDqL3r2nWabsbIwt37H6e+pdlge1G Refhh+80FHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCRroOMDAfmsrsIqdlufX3l 5eG9OWfyIqJ7tBoC/z7+vbr3XLt+2jNGhiOZKmWb/bon622Ne6Cksc158o6szgbZNM2Jmzu3r+P y5QEA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-Le jeu. 22 oct. 2026 =C3=A0 01:58, Kaho Jiang <kj2864@nyu.edu> a =C3=A9crit=
- :
->
-> When RTAX_CWND is locked, user is able to pass 0 into it.
-> This could lead to writing 0 to tp->snd_cwnd, leading to a
-> division by zero error.
->
->
+On Mon, Oct 26, 2026 at 04:31:25PM -0400, Paul Moore wrote:
+> From what I'm reading the LSM framework patches don't meet the typical
+> LSM criteria for stable/RC fixes: there is no serious bug/panic, and
+> there is no functional regression from a previous release.
+> This looks like one of those unfortunate circumstances where a new use
+> case wasn't tested thoroughly enough before the merge window, so it
+> can wait for the next one.
 
->
-> Fix by checking if user pass in zero as parameter and if lock is present.
->
-> Fixes: 814d488c6126 ("tcp: fix the timid additive increase on stretch ACK=
-s")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Eric Dumazet <edumazet@kernel.org>
-> Reported-by: co+71b6509cb791e531@bugs.sh
-> Assisted-by: LLM
-> Signed-off-by: Kaho Jiang <kj2864@nyu.edu>
+My original patchset had a selftest that excercised the BPF LSM usability
+extensively. The hooks are new this cycle and broken for the main use-case I
+wrote the patchset for.
 
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+If we don't fix them now they need to be backported next cycle which I'm sure
+the stable developers will enjoy.
+
+Curiously, your pull request told Linus "I expect that BPF LSM developers will
+also be making use of the namespace hooks, if they haven't already". So it
+seems very strange to claim this as a new use-case.
+
+>From my perspective the timeline looks like this - I'm sure yours differs:
+
+  I wrote an implementation for the BPF LSM to use a set of new hooks in a
+  subsystem I maintain months ago.
+
+  You rejected the hooks because BPF LSM programs cannot serve as justification
+  to introduce new hooks. Only in-tree LSM (selinux, apparmor, landlock, etc) can.
+
+  I cannot fulfill this requirement because I neither have the expertise nor
+  the use-case for any in-tree LSMs.
+
+  Landlock wants to make use of this by pure chance. So the maintainer offers
+  to take over the patchset. He does.
+
+End result after more than two kernel releases: The patchset that ends up
+merged into upstream doesn't work with the original motivating use-case because
+all the BPF LSM bits got dropped. So far, no problem. That may happen as long
+as we can the fix it rapidly.
+
+Then I take the time to send this series of fixes to actually restore the
+original use-case so we don't release a kernel with a new api that doesn't work
+for the main use-case I developed this for.
+
+Once again, I get told no. This time because the functionality isn't broken the
+right way to justify a merge-window follow-up. Instead, we'll release
+half-working functionality.
+
+I'm really on the fringes of this endless debacle but this seems to be another
+iteration of "BPF people don't get along with LSM people" therefore they make
+each other's lifes and that of innocent bystanders that just want to get work
+done difficult.
+
+I really don't understand why it's preferable to release a kernel where the
+original use-case that I was forced to explicitly abandon doesn't work and
+there's no reliable or cost-efficient way for userspace to detect whether the
+hook works correctly.
