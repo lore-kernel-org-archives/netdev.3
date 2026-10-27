@@ -1,80 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.231.64
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.231.136
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793098049;
-	b=DsC3oSi/UUGZOhz7OH7aOPUxFq7ZFFFZaqSo+yzYE1hQukpytGs4SzFrhck1Rl22mgcj
-	 c9rO5P3D/NC/LjMKmVdDjHuDie6DdIuP4wpKKbi+dkI9XsoXUqjrPd63Gd/Qt7A0klTb5
-	 d8ejOpl5q0rftLkcOWTJPoFYGS9a6C/4NIXln88JwcNhF+4M4vcascTYxuOqdgBTikk75
-	 8j8fyi3xRo7s6jmwi0CGvOHW96aFFm5I2g2wf/Q/wCsO2nHde1kTRRQvVlDpI2jSFEzWt
-	 bhpcCnCCBJ4rCzOAIz4cjZ4EjApLtdYuEGg4xJtG8EqBEvNZwnaZ1brg0QyNl9fILPA==
+	t=1793098065;
+	b=NlnGtvFOOC6G6xfdWRZGNL/D9dDkaFwcddHqIHDyOR0ofv6AWTs0U5pR6zb6evYX57Cc
+	 er64Uez7PZcMMVl+ueu7KrvL+YDePtSChvy64PpvAwksovSQoMMJiGimh5ZPwmT6F7nGY
+	 gcuPus9O8OnGM6SQ8qnN8lLBplfoXRruakLnbW29JTeU4gNbXg/sBxnmylhzBy24JI5um
+	 JaHwIbjliLIzXXG85KsNSotHKFhqoDL1Ij9uz/FoUlDV/FpQoZylD5Nk6my67FsAe7Ha6
+	 TQr+K5GWP+sHJB8gwIEcvZ3KhGJiqwtsTljPFr0XOBgwnmZ/STdmQAs3rHf8MHpwCIw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793098049;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793098065;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=KNgfDwC+3+GosfqLGHUx6kr+kkAHjH7KEB5LS7CnCmM=;
-	b=PetSQUn+j+XjJDUH3wzRpAYyLCl1MVomp15ZMKppeaERnXuWvlWaFkbrDlcLcTHOTEm1
-	 yjNfrmuVRkOFY9YEVeaO6XWtOnCmx+pJZi5TNxjN6tMsYFZiO7m3dwM6Qbvb55wQrm9ym
-	 Umvuhq550qB/h1XN5T+TlLNXOLklO1CEBRJgfoAZM4LYYVhhEDGuvOqJYJHK/gWGu8Y0F
-	 u16NKXRlnzmjEbZ77n6X7HUCh7afieheh36GsuOfHJ7QRt/HmFYEYA8tbwS1eKLtLeA/a
-	 Th3luKocySLwDGE1OBkPdb215HDIlApn/sWBO1MvlLHArHefilPOJcf6lhXZ2j5Uctg==
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=31yePHJkZvVIMPqk+qU1LWlJ9GBJamyVeNTyh7KlbfM=;
+	b=J0GC4IpGsBf7HQUXGHLEHPxBaZPg0I068KfflJd8JysdPneIcf9mrS+NFnT9DxzGw3bD
+	 GMycVAel6wri1i6c8gxjE33HNI9jTOv+3PktsV4g7Ime0w3DiB/ZNjt1zNnwYn7lg6itB
+	 +Eu7yInHXUGpih97XqpSMrIUdMfltf3TgiYmBZhN3pYm5FhCJKmeGIlzMu5OSnUcrvCMX
+	 +/51+G42uIlp7p7CYWt6IKff0W8C4FUc/wIkmKFXsxhSGxq3Tw8EspoocULJJ42nOWnVv
+	 UarGzcPS9oexkQaxNXgqfAjaNA0OxoumDPQ4kE51cFichDivubw+fS18ym8qp8xFfyQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=MQKmLPZJ;
-	arc=none smtp.remote-ip=74.125.231.64
-Received: from mail-oa2-f0.google.com (mail-oa2-f0.google.com [74.125.231.64])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=nv9rbupi;
+	arc=none smtp.remote-ip=74.125.231.136
+Received: from mail-oo2-f8.google.com (mail-oo2-f8.google.com [74.125.231.136])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7836E606A329
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 10:47:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7836E606A329
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A4B606A32F
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 10:47:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 92A4B606A32F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=MQKmLPZJ
-Received: by mail-oa2-f0.google.com with SMTP id 586e51a60fabf-4511f6a63edso633755fac.1
-        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 03:47:29 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=nv9rbupi
+Received: by mail-oo2-f8.google.com with SMTP id 006d021491bc7-6debc457754so1634639eaf.0
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 03:47:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793098048; x=1793702848; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KNgfDwC+3+GosfqLGHUx6kr+kkAHjH7KEB5LS7CnCmM=;
-        b=MQKmLPZJuqcgyjnXyDxD/97XlTCvnNhUq2zFaKUbbWiYi5z8O2IpZhAHn1GVymp1kQ
-         j7DW2bgalslQl2+/IGXCfHhSmtQVVPaA6O70ssIj7KARyNJBZbsgHbCx4Shs4gu3brlc
-         t67KQMtNaVjBi1eL7CetaAX/3mubCTVDxvLcqwpKpczazzxFIBYEMWlCPoQAhTBbIKC8
-         DbqYiw8tnf+mQQxH1FH4ktcyxqC5N72wt8W+RfCxikmlQIOW4pq1QhGK3kZg2FueRDbY
-         /GM7m1trkNTyAzWVJAHYIzdstugpuQx7HBV5fuBZCkIVzQGbdIV/rpykyrYbNK5QmXkK
-         NZBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793098048; x=1793702848;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1793098063; x=1793702863; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=KNgfDwC+3+GosfqLGHUx6kr+kkAHjH7KEB5LS7CnCmM=;
-        b=mtYHVltteHAIEDM3qXMgPo+rRe0RJCgqDoCHDkwa6LbeaadYTqG3b6pGw3iSXodGe0
-         6eS34NpVG9pvE0b1OQ1W2LdV6pao7jWm21O5QTaIoJng/Up6uEwbeCHFqymRnn7gzN+l
-         ns+V8WIiwIbve2Von9Dc0yii2EAjS8iw+AWZzxiB0b2E/wh0z8/0EfrXcnc7S2qCq/YT
-         85NSzKwCyGNJeVxhpG5loFA3u+0cqsQ63wszzzjrgbdtR9YUF8OZW2DQBsJrohQdhMCP
-         ff8HGibr23jJxK9nRpZXQsnKM5U50h7QNO7yt+4ybbQ1KEApjlam80O9VcupkstwOehP
-         6pwQ==
-X-Gm-Message-State: AFq9FYKruyvJY5dqqmUqfHx24Quukr7F4tXbuVXUcsNMfgD+mODYS3g1
-	OX9lpGWmzkSj2wZhycXIfZZIlC7qgGio2iv93ISlHy83vjmszY2Otsvo
-X-Gm-Gg: AYBFou2bTU2cy1WKXMISWZ9WOkNq3foLW8N0glhm6A7B3EBzerigrXi2q7NUu4bvfx6
-	K15qrq0FHYh4Qvu8PjS9ECBIBMyAL4ebvP8RQJ0NLcclASV9a/x+aZIt4kHrDhMuKOT9vBNXPQL
-	gtOlAIpqPI0O9hjf75ruJeK2ZlEu81iKerelBRrnaRIIvDSe8lWpq0RzyjHSJ9FQk1fKDJtonlP
-	VLgKC7HToJ5lPeVkoeJ2RTZGrCLGby9gZ0bV7B/vnLdXjqQLFyPElS7riP7uSydF3mpkqwASgBt
-	yinNfdOsGBTu4vg6mLD3Q+4bDLAI+Y7QK7X3xGqDVa1EgL/KIm3+E+xIFDa6IY55az0Lloz1dCT
-	unsGZ2wFf7wPLOgR0Kk4roHIfARzDzJW30KG7W7wvUkTxPu2rGQuA0l9McJVqRDDZUAxeC6ivvv
-	VLHZYJAMMAtaSeWNpHw6wmwsiLorcgW80YxLBlrxoMNrmiIjMqZzgMWSArvOGetgTNtIYsew6sq
-	RWURUqMgvium65TaDRX881FLsqSYjtu1Q5/kuja73bLOdmrhPMLoDonovt1yoPVoD/aYIIhebCJ
-	2BysvyObUpryeQ7OQozNLr9mS3Y3oTFMEokuh5WC2v01F6ZE3dwsQfhmdUcYNybINkUjMw==
-X-Received: by 2002:a05:6870:658a:b0:4a7:df5e:d6ee with SMTP id 586e51a60fabf-4a83f53b9aemr5207325fac.45.1793098048302;
-        Tue, 27 Oct 2026 03:47:28 -0700 (PDT)
+        bh=31yePHJkZvVIMPqk+qU1LWlJ9GBJamyVeNTyh7KlbfM=;
+        b=nv9rbupi+ErQQzelJi+myJQTS+9F61QxOVOWKDArpr6CskZuZxl7X+alV1TdNTdN9R
+         +4/q256sSuKxfiNWGbkZVJIArsvnOzyun9qOyjB9AzykLR0T444643LiJcufHYdOfE0P
+         /WGRcjXnyR5E9cEREYWGr9ruXm/MONtTYCXSpJ8ecgs4E8ft6hCKx6YLB3ab3O96ON+L
+         hGWoVn2m5nY2HwJb7uREQxhgrk+nhbhEQ+kZdj+stW6nFirl9A6YWeAw3drYoyldwc+U
+         15BMmktxdaiiaipNAp9w98JtQrcGJ+I7Lwlaga2fOf4qf12ATD6/pFGOvdJf2jqy88cd
+         VYmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793098063; x=1793702863;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=31yePHJkZvVIMPqk+qU1LWlJ9GBJamyVeNTyh7KlbfM=;
+        b=jM4DZlcY5EgNlHAmUodgjRl4kLMF2A8Pe4VhULILUDJ3IKl+RTfeG0SQ4TRX7hnQJb
+         JyyNShTp04bIgbhvmKO6MCeqrDSUlD9taW4EvTfMd0Bdt2E1ZiF+cTYW2DoQPe+Xs8JA
+         CRFYxOJ2IEA0DiTW1t2tt11kxiZe9f2KB+aa7c9ppdoxosXomJ9SONjRXVk+guco7y1U
+         VLk2UeD+8xMkMtaN9L3hy7E1GjhbeJq7d43x5jap6lYKUIQdnwKMvA76rimH6to6DXkp
+         4tzPZKZAFbiqCtSa6l/mKuT2RhcBXX2Q1C0ib4ODXi6ge+tOWj/eDISzL42PW3FaGL/6
+         ONqQ==
+X-Gm-Message-State: AFq9FYIpIm1PB/ZQE7IhOjwgAJzuaNapXMAXNF1xLSI6EYSkajXK7aY+
+	pQNY5jzTJYC5RJ+Q8Pqd8Po2+3cHbX4QEiWk2WRo8AfHG+iEY1rGte7z
+X-Gm-Gg: AYBFou0SgRLy4iLqwRaC/DXUC+Lt3qgMuw+4ie6V3JdcNsMzYX0ChTzRiuTPwySy9PG
+	0SfMSCkh0GZ0jtPoAs+tInQW5Scn5N67Vj1bBN7yptmYLrJvpPfL/urGrSHDUmY7u2nSWW4NRCB
+	iASl2+fLXF9dYSgfXIdKnlSpgOcDU8NwaC95OQwkD5svcUTrzDuDcr86v8XYCwCLRw9Q7cU2wUZ
+	XgR2ePoC6LDwEpjYahiBGpOdhnp4r+AwZFTEdsCOWWdzVZ/r21hQ1OMzCWCZ6nxRp8oAnCI/P7v
+	BwnaVbszf+4Y/28ohUWAvhgo0uN34tAhxjbYl61/Dyrvb0tAf3Uv2z8IpoXyDDpn/i1f6r+gRF0
+	geiX51N7YDDZz3tel7VBIUqwLM6NOYjGCusUYHckPj3qz8rCcW/eFZ1yBHWAbWQG4tqDI3JEii/
+	8woFLqZp354C2DIGih71m+AujPsEac0bBXUDibZ6YzDVVXt5LPnucH7hsDn8NVyfcNhmht3Jyn4
+	C9gkDSK1Myrj+TxCm402cb7DriDJxxa8NWA24mw+dnbulp9xDLIQ7SXquxFoNiZKLLQ6VQUtODJ
+	UaypG2fFDwL80yRzQx0=
+X-Received: by 2002:a05:6820:1c84:b0:6b1:a812:9871 with SMTP id 006d021491bc7-70da9e1b77emr3695466eaf.18.1793098063493;
+        Tue, 27 Oct 2026 03:47:43 -0700 (PDT)
 Received: from localhost.localdomain ([14.116.239.36])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4a842e89b77sm6597299fac.2.2026.10.27.03.47.19
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4a842e89b77sm6597299fac.2.2026.10.27.03.47.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 03:47:26 -0700 (PDT)
+        Tue, 27 Oct 2026 03:47:41 -0700 (PDT)
 From: Henry Martin <bsdhenrymartin@gmail.com>
 To: Ido Schimmel <idosch@nvidia.com>,
 	Ilya Maximets <i.maximets@ovn.org>,
@@ -93,10 +95,12 @@ Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Henry Martin <bsdhenrymartin@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH net v4 1/2] vxlan: reject adding a remote to a nexthop fdb entry
-Date: Tue, 27 Oct 2026 18:47:12 +0800
-Message-ID: <20261027104713.328028-1-bsdhenrymartin@gmail.com>
+Subject: [PATCH net v4 2/2] vxlan: reject VNI add when the default fdb entry is nexthop-backed
+Date: Tue, 27 Oct 2026 18:47:13 +0800
+Message-ID: <20261027104713.328028-2-bsdhenrymartin@gmail.com>
 X-Mailer: git-send-email 2.43.7
+In-Reply-To: <20261027104713.328028-1-bsdhenrymartin@gmail.com>
+References: <20261027104713.328028-1-bsdhenrymartin@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -108,170 +112,101 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-FDB entries backed by a nexthop group must not carry a remote
-destination list.  vxlan_fdb_update_existing() currently appends a
-remote via vxlan_fdb_append() on an NLM_F_APPEND request with a
-multicast or zero MAC even when the entry is backed by a nexthop,
-breaking that invariant through three different callers:
+vxlan_vni_add() installs the new VNI - hash table insert, group list,
+socket attach and the RTM_NEWTUNNEL notification - before calling
+vxlan_vni_update_group(), which in turn calls
+vxlan_update_default_fdb_entry() to store the group (or the device's
+default remote) into the all-zeros fdb entry of that VNI.
 
-- "bridge fdb append" with a dst on a nexthop entry;
-- "ip link set dev vx0 type vxlan remote <ip>" (vxlan_changelink());
-- "bridge vni add" on a vnifilter device
-  (vxlan_update_default_fdb_entry()); this includes a plain
-  "bridge vni add vni N" without a group, which falls back to the
-  device's default remote, and a unicast group.
-All three reach the append block with nhid == 0 and a PERMANENT
-state, so they pass the earlier nexthop checks.
+Now that vxlan_fdb_update_existing() rejects appending a remote to a
+nexthop-backed default entry, the group store can fail with
+-EOPNOTSUPP after the VNI has already been installed and announced,
+leaving it half-installed: present in the tables and announced, but
+with no remote stored and no multicast join.
 
-There is no crash and no leak: the appended remote is freed with the
-entry, and the transmit path ignores it (vxlan_xmit() follows the
-nexthop whenever f->nh is set).  But the stray remote changes
-deletion semantics: __vxlan_fdb_delete() destroys the whole fdb entry
-when the matched remote is the only one on the list, so removing it
-via "bridge fdb del ... dst <remote>" or "ip link set ... remote
-0.0.0.0" tears down the nexthop entry, not just the stray remote.
-The entry state is also misreported: vxlan_fdb_notify(), RTM_GETNEIGH
-dumps and the switchdev FDB programming all prefer the remote list
-over the nexthop, so user space sees the dead remote while the
-datapath follows the nexthop group.
+Check whether the default fdb entry for the VNI is backed by a
+nexthop before installing the VNI, and reject the add up front.
 
-Reject the combination at the top of vxlan_fdb_update_existing(),
-next to the existing nexthop guards, so a refused request has no side
-effects.
-
-Also move the non-unicast NLM_F_REPLACE rejection to the same place;
-it previously returned -EOPNOTSUPP only after the entry state and
-flags had been rewritten, skipping both the notification pass and
-the err_notify rollback.
-
-Note the resulting behavior change for the rtnetlink callers:
-operations that previously succeeded while silently attaching a
-remote to a nexthop entry now fail with extack
-"Cannot add a remote to a nexthop fdb entry".
-
-Add test cases to fib_nexthops.sh in the same fashion as the sibling
-fix, commit 98fc57d16744 ("vxlan: reject dynamic fdb entries that
-reference a nexthop id").
-
-This issue was discovered by Tencent CodeBuddy Security.
+Note: the missing unwind in vxlan_vni_add() predates this series;
+this check avoids giving user space a deterministic way to reach it.
 
 Cc: stable@vger.kernel.org
 Fixes: 1274e1cc4226 ("vxlan: ecmp support for mac fdb entries")
 Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
 ---
 
-v4: Also move the non-unicast REPLACE rejection before the entry is
-    modified (the same half-update class, pre-existing), describe the
-    stray remote's effect on __vxlan_fdb_delete() instead of calling
-    it "unused", and note that a plain "bridge vni add" or a unicast
-    group hits the check too (sashiko review of v2).
+v4: new patch; the failure path was made reachable by patch 1, so
+    guard it before the VNI is installed (sashiko review of v2).
 
-v3: Describe the actual consequence and add fib_nexthops.sh test
-    cases as requested by Ilya Maximets.
-
-v2: Move the check before the entry state/flags update, next to the
-    other nexthop guards (reported by sashiko, confirmed by Jakub).
-
- drivers/net/vxlan/vxlan_core.c              | 26 +++++++++++++--------------
- tools/testing/selftests/net/fib_nexthops.sh | 18 ++++++++++++++++++
- 2 files changed, 40 insertions(+), 4 deletions(-)
+ drivers/net/vxlan/vxlan_core.c      | 14 ++++++++++++++
+ drivers/net/vxlan/vxlan_private.h   |  2 ++
+ drivers/net/vxlan/vxlan_vnifilter.c | 14 ++++++++++++++
+ 3 files changed, 30 insertions(+)
 
 diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
 index 3390e341d1e58..13143085065f6 100644
 --- a/drivers/net/vxlan/vxlan_core.c
 +++ b/drivers/net/vxlan/vxlan_core.c
-@@ -1002,6 +1016,22 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
- 		return -EOPNOTSUPP;
- 	}
+@@ -422,6 +422,20 @@ static struct vxlan_fdb *vxlan_find_mac(struct vxlan_dev *vxlan,
+ 	return f;
+ }
  
-+	if (rcu_access_pointer(f->nh) &&
-+	    (flags & NLM_F_APPEND) &&
-+	    (is_multicast_ether_addr(f->key.eth_addr) ||
-+	     is_zero_ether_addr(f->key.eth_addr))) {
-+		NL_SET_ERR_MSG(extack,
-+			       "Cannot add a remote to a nexthop fdb entry");
-+		return -EOPNOTSUPP;
-+	}
++bool vxlan_fdb_entry_nh_backed(struct vxlan_dev *vxlan, const u8 *mac,
++			       __be32 vni)
++{
++	struct vxlan_fdb *f;
++	bool ret;
 +
-+	if ((flags & NLM_F_REPLACE) &&
-+	    (is_multicast_ether_addr(f->key.eth_addr) ||
-+	     is_zero_ether_addr(f->key.eth_addr))) {
-+		NL_SET_ERR_MSG(extack, "Cannot replace non-unicast fdb entries");
-+		return -EOPNOTSUPP;
-+	}
++	spin_lock_bh(&vxlan->hash_lock);
++	f = vxlan_find_mac(vxlan, mac, vni);
++	ret = f && rcu_access_pointer(f->nh);
++	spin_unlock_bh(&vxlan->hash_lock);
 +
- 	/* Do not allow an externally learned entry to take over an entry added
- 	 * by the user.
- 	 */
-@@ -1018,22 +1048,18 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
- 	}
- 
- 	if ((flags & NLM_F_REPLACE)) {
--		/* Only change unicasts */
--		if (!(is_multicast_ether_addr(f->key.eth_addr) ||
--		      is_zero_ether_addr(f->key.eth_addr))) {
--			if (nhid) {
--				rc = vxlan_fdb_nh_update(vxlan, f, nhid, extack);
--				if (rc < 0)
--					return rc;
--			} else {
--				rc = vxlan_fdb_replace(f, ip, port, vni,
--						       ifindex, &oldrd);
--			}
--			notify |= rc;
-+		/* Only change unicasts; non-unicast replace is rejected
-+		 * before any state is modified.
-+		 */
-+		if (nhid) {
-+			rc = vxlan_fdb_nh_update(vxlan, f, nhid, extack);
-+			if (rc < 0)
-+				return rc;
- 		} else {
--			NL_SET_ERR_MSG(extack, "Cannot replace non-unicast fdb entries");
--			return -EOPNOTSUPP;
-+			rc = vxlan_fdb_replace(f, ip, port, vni,
-+					       ifindex, &oldrd);
- 		}
-+		notify |= rc;
- 	}
- 	if ((flags & NLM_F_APPEND) &&
- 	    (is_multicast_ether_addr(f->key.eth_addr) ||
++	return ret;
++}
++
+ /* caller should hold vxlan->hash_lock */
+ static struct vxlan_rdst *vxlan_fdb_find_rdst(struct vxlan_fdb *f,
+ 					      union vxlan_addr *ip, __be16 port,
 
-diff --git a/tools/testing/selftests/net/fib_nexthops.sh b/tools/testing/selftests/net/fib_nexthops.sh
-index 431d7bed76224..bdc23205bde4c 100755
---- a/tools/testing/selftests/net/fib_nexthops.sh
-+++ b/tools/testing/selftests/net/fib_nexthops.sh
-@@ -547,6 +547,15 @@ ipv6_fdb_grp_fcnal()
- 	run_cmd "$BRIDGE fdb append 02:02:00:00:00:17 dev vx10 dst 2001:db8:91::11 self dynamic"
- 	log_test $? 255 "Fdb mac append with nexthop group and dynamic state"
+diff --git a/drivers/net/vxlan/vxlan_private.h b/drivers/net/vxlan/vxlan_private.h
+index b1eec22163608..0454689965aeb 100644
+--- a/drivers/net/vxlan/vxlan_private.h
++++ b/drivers/net/vxlan/vxlan_private.h
+@@ -11,6 +11,8 @@
  
-+	# fdb entries with a nexthop group cannot take a remote append
-+	run_cmd "$BRIDGE fdb add 00:00:00:00:00:00 dev vx10 nhid 102 self static"
-+	run_cmd "$BRIDGE fdb append 00:00:00:00:00:00 dev vx10 dst 2001:db8:91::11 self"
-+	log_test $? 255 "Fdb append with nexthop group"
-+
-+	# fdb entries with a nexthop group cannot be replaced with a non-unicast MAC
-+	run_cmd "$BRIDGE fdb replace 00:00:00:00:00:00 dev vx10 dst 2001:db8:91::11 self permanent"
-+	log_test $? 255 "Fdb replace with nexthop group"
-+
- 	run_cmd "$IP -6 ro add 2001:db8:101::1/128 nhid 66"
- 	log_test $? 2 "Route add with fdb nexthop"
+ extern unsigned int vxlan_net_id;
+ extern const u8 all_zeros_mac[ETH_ALEN + 2];
++bool vxlan_fdb_entry_nh_backed(struct vxlan_dev *vxlan,
++			       const u8 *mac, __be32 vni);
+ extern const struct rhashtable_params vxlan_vni_rht_params;
  
-@@ -697,6 +706,15 @@ ipv4_fdb_grp_fcnal()
- 	run_cmd "$BRIDGE fdb append 02:02:00:00:00:17 dev vx10 dst 10.0.0.3 self dynamic"
- 	log_test $? 255 "Fdb mac append with nexthop group and dynamic state"
+ #define PORT_HASH_BITS	8
+
+diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
+index dd94085e08865..f07ae2a6a59ed 100644
+--- a/drivers/net/vxlan/vxlan_vnifilter.c
++++ b/drivers/net/vxlan/vxlan_vnifilter.c
+@@ -737,6 +737,20 @@ static int vxlan_vni_add(struct vxlan_dev *vxlan,
+ 		return err;
+ 	}
  
-+	# fdb entries with a nexthop group cannot take a remote append
-+	run_cmd "$BRIDGE fdb add 00:00:00:00:00:00 dev vx10 nhid 102 self static"
-+	run_cmd "$BRIDGE fdb append 00:00:00:00:00:00 dev vx10 dst 10.0.0.3 self"
-+	log_test $? 255 "Fdb append with nexthop group"
++	/* A default fdb entry that is backed by a nexthop group can
++	 * never take a remote; reject before the VNI is installed,
++	 * otherwise a failure in vxlan_vni_update_group() would leave
++	 * the VNI half-installed.
++	 */
++	if ((group && !vxlan_addr_any(group)) ||
++	    !vxlan_addr_any(&vxlan->cfg.remote_ip)) {
++		if (vxlan_fdb_entry_nh_backed(vxlan, all_zeros_mac, v)) {
++			NL_SET_ERR_MSG(extack,
++				       "Cannot add a remote to a nexthop fdb entry");
++			return -EOPNOTSUPP;
++		}
++	}
 +
-+	# fdb entries with a nexthop group cannot be replaced with a non-unicast MAC
-+	run_cmd "$BRIDGE fdb replace 00:00:00:00:00:00 dev vx10 dst 10.0.0.3 self permanent"
-+	log_test $? 255 "Fdb replace with nexthop group"
-+
- 	run_cmd "$IP ro add 172.16.0.0/22 nhid 16"
- 	log_test $? 2 "Route add with fdb nexthop"
- 
+ 	vninode = vxlan_vni_alloc(vxlan, v);
+ 	if (!vninode)
+ 		return -ENOMEM;
 -- 
 2.43.7
