@@ -1,63 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793065326;
-	b=toDaVXuuMJvHohBjvCpj/WHi09yujEECazq8luTXIPLd1I48+PzRufOLIg5fYRSEsh2m
-	 xlO1HPF6nGeKKIwa+eqcGZEoB5Gmsx3TZY9i/39P6H2IKECQlvsz52CehLVRue+70PwSu
-	 n9IFsGAIuQshJ3ea8ZXQLii3VmSa6cObevqEK27Blne4U+9ezZqgtmI/G7+R010JFeRfE
-	 IvG3BPDxCO6G4ytEpOFGc7RTQXpX3XVKVVxBDH5UsemeoihljqgJlsS3t/nkvlivTRFeM
-	 E90RzTeNfJqgohqFDM69ENokkP+7vUtKVkQeALEJ3DNQ/pdlUN4pJDPqV8PSq2vOf/A==
+	t=1793065327;
+	b=zJPv1CXbqCZwKEyY3N4LBmL1Izh7TdJLUpsoh2EEZoJ6+px6OSYcf1OxJPMeH3BdoEsb
+	 7q1ub/1H/i+mgs38IdIyzzsz5G0JiVwxvwtwgpV6aLUg+pL2TFXFPPMYkz5aAmMZGht8p
+	 nAyI6s5UR11lCcHg09k08JdMxyIb+yS+qxlGfxpBuFgQ/XeghHoRw7g4zXjqhbhmVWT4w
+	 MaBtjDArMXCPsu9+mkzm4bk4qxg+dxfZpC7vstYQ9t25TB4L+xIaZGf9w3AHFHyIu0coW
+	 BB2DURC6HowRoE7U+PcNw2/h4Oo7lAUSu0uev4+4AtPTc1/uMo8Q4NSlgrhc0YjPlpw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793065326;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=EP4YgNCg7ZXlQtYlPniwoONbl1AzoccUkYGSOmCIHHc=;
-	b=SpQb0OO1abuZB0WDMYT/Cbtwjixd3asNvvjhXrk/0GKzR9Cg/NUT8yfljiLAq53HiJFd
-	 Ru1a5XMCpoKMIEwTnCnr6ROiqoz/OLqtlU1ulx2npINP08W3WavLMF2zH8LjHrNmJdUkv
-	 M4M/q09Qz589C+XZXBeguGC3VRsmboKBEZrzhQa/P1W2sCKaanrRWqz8TVE0k4ZqANTR9
-	 khIoN5y4SP+YSMxrwo2rFnwl2Q7PfJWGBaItCVJttx+amgD548A2v0dQsTIxybjtBflPF
-	 DjurfLuSXzOI4sVMfQCZL2Gh+jbyb+oQpeFsFZxQhZSlJoMcCZ26J4QcVvvS+VTe6+w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793065327;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=PxhKt4ewbW887pppfVDxKOmckuc+6YqylYK09wMwPvI=;
+	b=DDFjHitmOxQpYzhsxb4p5BI3+4F/PXj4XdlhwHzBZEk/R4e5JxFGroI/f3jhj4JcfJrK
+	 mJEORBl2IWaXe1TTWzMeb+PEsWt06Peppz0487WwokNJFJN49VLIfQ4jyFA9aaFF5zxne
+	 VZAZiuHWaEzHxKtyVZMV9oQndzvbEwTtCp2GykX7zIsZ/QCQH5p3jE0JvOadiYygotE7x
+	 9Tzme0RnxjVZ/bSTv+tA+jzy6Y9KEZSAHtf2tnm9CzwwphRIgVEeEoEnletyX0gLV6puc
+	 LlYYhgUkw4ooxkthMOGMPrlvo261Zl0iK31EY/0T+owOlnGv8+6A2Sz5v1uknii5Nhw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lXniuL12;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b="g/knnsl9";
+	arc=none smtp.remote-ip=209.85.215.197
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13322606A31B;
-	Tue, 27 Oct 2026 01:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8363606A322
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 01:42:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D8363606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lXniuL12
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B3C1F01825;
-	Tue, 27 Oct 2026 01:42:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793065325;
-	bh=EP4YgNCg7ZXlQtYlPniwoONbl1AzoccUkYGSOmCIHHc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=lXniuL12zqlMN7UmCIEWJf4yx1l6hozChVPvstpRuXB79riVd1CUuGXoGYHuZvxaM
-	 EhMRpiRGR6AMdgEwFusyesBjPUXX1BbezXTs6WpbSwtxRgsd6BB+lPEddE88DzImiu
-	 UAqelpF0rwmqZBNsLh6GC6gUCN5n9rW1LqtXKWS7X+KOirQKV/mJzy6pDXPyMWOKOZ
-	 4BMwbF7Nr+5KANAJ74dj+kE2kL7RA5wmC5khxNCS9eN6iotiQg8dxcLqkRKUnaZT+m
-	 yAA+qpwpTw0rWxzwCoVYcqLc5jM0EbwMn3lmWHbdJ/YtiJKTrFjCs3PzK/kjXHI5pJ
-	 6Uwf9Scuxzs9A==
-Subject:
- Re: [PATCH net v3 1/4] gve: Fix race between stats query and queue reconfig
-From: netdev-bot+sashiko@kernel.org
-To: hramamurthy@google.com
-Cc: netdev@vger.kernel.org, joshwash@google.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- jordanrhee@google.com, willemb@google.com, przemyslaw.kitszel@intel.com,
- nktgrg@google.com, maolson@google.com, jacob.e.keller@intel.com,
- pkaligineedi@google.com, yangchun@google.com, patricion@google.com,
- awogbemila@google.com, stable@vger.kernel.org, linux-kernel@vger.kernel.org,
- treapking@google.com
-Date: Tue, 27 Oct 2026 01:42:04 +0000
-Message-ID: <179306532408.3134.10931264635310564601@kernel.org>
-In-Reply-To: <20261023204706.3112215-2-hramamurthy@google.com>
-References: <20261023204706.3112215-2-hramamurthy@google.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=g/knnsl9
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cd6969473a4so2135093a12.0
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 18:42:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1793065326; x=1793670126; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PxhKt4ewbW887pppfVDxKOmckuc+6YqylYK09wMwPvI=;
+        b=g/knnsl9kYCBewBGyHtxjeHICS2L5Hw2DX0ijDDaApZ9CtRSJQb0PUvpWyfuQm6QKD
+         u1UZXxnLQKcUxB9pelvME0T/DlAsnUI+BAJ2zdQNewrqRxvVjMdIXLao3KvVgt49MU1/
+         2YvLfXRoAGImmM54FcAQDb335sU6X1Ui6kfv64hTrLch1yPWyrD98rNbaJcSqNzYTnqi
+         LW4aEtMi087jzeXNqTicPKEBAfwOGWGFdXHEsmeaY6IfQ3GwSS6Wtqna3nqMyeSP5Wb9
+         ppr1c/F305tfTNV6G86eNtFrWjySieAu8zAUrxzjctjvCI87LUjBkUBxQ9LrHTZtybn4
+         1Vqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793065326; x=1793670126;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=PxhKt4ewbW887pppfVDxKOmckuc+6YqylYK09wMwPvI=;
+        b=EblZ83Sd8pLbBvkkE3I24hq4HTzFoBcM4CpwlvJgIY8TxCN7RDqX+OB0Sz9YgQIfeX
+         I/eiindRtqNdEhXxdIuc2v7fQgUVpSepkG3iR4oKf7QyVe+fuiQT4WhFZ0ChKb1GMTRX
+         9wWxaW5j/ywDo6dJly3JRHKCk3Xcl6oFFwGgH8yCvWpDZfWJ2OJ/mL5u+WJmU5xDBki7
+         d8uY42xMb8nnsGkjiuI7aP26Twq1IhP6RwdpJAF6PXR47vL492VIp/Vu0e5Xf+M8qffl
+         B3c/3s69OQvpxiZDzHDKkqbqMNgAAnt74Ziuk5YpSrdFmF6hjkUZOX9lPdMTJVeVl3O2
+         Ij5A==
+X-Forwarded-Encrypted: i=1; AKwUvBzb6JBtlGaD+VG2qYCu2Jau2Oiy8qgew4dFMsvGSDKBzQCUgAAZ5wNFJoyyaH0dngMblM2NXdw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIQerMZowthjfA9pkx9Nz54a4oGnKsuo0ZEsLR+dL6MZeGzSdbv
+	x4DVqp7yeE7pylTpdsLo+/VTEKPfmayZ50gJBLuhtbMINb9Y1H7kQRjiqhEnRFpGKnsQc8b5C9W
+	hOhvm2g==
+X-Received: from pfff18.prod.google.com ([2002:a05:6a00:bd12:b0:8a2:1bc3:8884])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1f0e:b0:874:705d:f63d
+ with SMTP id d2e1a72fcca58-8a368a9fde8mr6298199b3a.31.1793065325885; Mon, 26
+ Oct 2026 18:42:05 -0700 (PDT)
+Date: Tue, 27 Oct 2026 01:42:05 +0000
+In-Reply-To: <tencent_287A56749EA8448A970F2715FFF29F334108@qq.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,215 +77,95 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <tencent_287A56749EA8448A970F2715FFF29F334108@qq.com>
+Message-ID: <auABC6uMYxXmPqtb@google.com>
+Subject: Re: [PATCH net] af_unix: order MSG_PEEK references against garbage collection
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Yingjie Wang <1075151112@qq.com>
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
-
-Critical: 0 · High: 0 · Medium: 1 · Low: 1 (1)
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The commit message describes the bug wrongly and the Fixes tag
-  points at the wrong commit.
-- [Low] Baseline decision: not valid for the final state of the series.
-
-Pre-existing issues:
-- [Low] Baseline decision: not valid for the final state of the series.
-
---
-
-gve: Fix race between stats query and queue reconfig
-
-This commit adds a stats_lock spinlock to struct gve_priv. The lock is
-taken in the stats readers (ndo_get_stats64, the report stats worker and
-the per-queue qstats callbacks) and around the priv->tx/priv->rx updates
-in gve_queues_start() and gve_queues_mem_remove(). The qstats callbacks
-also return early when the queue arrays are NULL.
-
-> Fix a concurrency bug where network statistics queries race with queue
-> reconfiguration or interface teardown, causing a Use-After-Free (UAF) or
-> NULL pointer dereference.
-
-[ ... ]
-
-> This issue was discovered and actually triggered by the
-> drivers/net/stats.py selftest. When an interface was brought down,
-> querying per-queue statistics via Netlink caused a kernel NULL pointer
-> dereference in gve_get_rx_queue_stats():
-
-[ ... ]
-
-> Fixes: 2e5e0932dff5 ("gve: add support for basic queue stats")
-
-[Severity: Medium]
-Is the crash in this trace a race?
-
-gve sets dev->queue_mgmt_ops, so netdev_need_ops_lock() returns true.
-netdev_nl_qstats_get_dumpit() takes the instance lock through
-netdev_get_by_index_lock_ops_compat() and
-for_each_netdev_lock_ops_compat_scoped(). The struct netdev_stat_ops
-comment in include/net/netdev_queues.h says:
-
-  Ops are called under the instance lock if netdev_need_ops_lock()
-  returns true, otherwise under rtnl_lock.
-
-Every caller of gve_queues_mem_remove() also holds the instance lock:
-gve_close() via ndo_stop, gve_adjust_config() via ethtool and XDP, and
-gve_handle_reset()/suspend/shutdown via netdev_lock(). So the qstats
-callbacks can't overlap with teardown.
-
-The trace looks like a NULL dereference that happens every time instead.
-netdev_nl_stats_by_netdev() sums the queues even when the device is down:
-
-	netdev_stat_queue_sum(netdev, 0, netdev->real_num_rx_queues, &rx_sum,
-			      0, netdev->real_num_tx_queues, &tx_sum);
-
-and gve_get_rx_queue_stats() then computed &priv->rx[idx] with priv->rx
-set to NULL. The new NULL check fixes that. The spinlock in the qstats
-callbacks makes no difference on this path.
-
-The lockless readers that do race with gve_queues_mem_remove() are:
-
-  gve_get_stats(): ndo_get_stats64, reached under RCU only from
-  /proc/net/dev via dev_seq_printf_stats()->dev_get_stats()
-
-  gve_handle_report_stats(): runs from gve_wq
-
-The priv->rx check-then-use in gve_get_stats() dates back to
-f5cedc84a30d ("gve: Add transmit and receive support") from 2019, which
-predates 2e5e0932dff5.
-
-Should the Fixes tag point at the older commit? Stable trees without
-qstats won't otherwise pick up the ndo_get_stats64 use-after-free fix.
-Also, could the commit message keep the qstats NULL dereference separate
-from the ndo_get_stats64 and report stats race?
-
-> diff --git a/drivers/net/ethernet/google/gve/gve.h b/drivers/net/ethernet/google/gve/gve.h
-> index b7ce6e8632db6..104468c2c07f8 100644
-> --- a/drivers/net/ethernet/google/gve/gve.h
-> +++ b/drivers/net/ethernet/google/gve/gve.h
-> @@ -957,6 +957,8 @@ struct gve_priv {
->  	struct workqueue_struct *gve_wq;
->  	struct work_struct service_task;
->  	struct work_struct stats_report_task;
-> +	/* Synchronizes stats accesses and queue teardown */
-> +	spinlock_t stats_lock;
-
-[Severity: Low]
-Does this lock cover every place that rewrites priv->rx[idx] in place?
-gve_rx_queue_stop() still copies the ring out and clears it without
-taking stats_lock:
-
-drivers/net/ethernet/google/gve/gve_main.c:gve_rx_queue_stop() {
-    ...
-	gve_per_q_mem = (struct gve_rx_ring *)per_q_mem;
-	*gve_per_q_mem = priv->rx[idx];
-	memset(&priv->rx[idx], 0, sizeof(priv->rx[idx]));
-	return 0;
-}
-
-gve_get_stats() (from /proc/net/dev under RCU) and
-gve_handle_report_stats() (from gve_wq) hold only stats_lock. During a
-single-queue restart they can read a partly zeroed ring, including the
-statss seqcount. The result is briefly torn or zeroed rx counters. It is
-not a use-after-free, because the priv->rx array is still allocated.
-
-The next patch in the series, "gve: Fix backward stats when interface
-goes down or configuration is adjusted", moves this copy and memset under
-spin_lock_bh(&priv->stats_lock).
-
-After that patch, two writes in gve_rx_queue_start() still happen without
-the lock: the struct copy priv->rx[idx] = *gve_per_q_mem and the
-abort-path memset. Both only replace zero counters with zero counters.
-The incoming ring is either freshly allocated (memset(rx, 0, sizeof(*rx))
-in gve_rx_alloc_ring_dqo()/gve_rx_alloc_ring_gqi()) or the old ring,
-whose counters gve_rx_queue_stop() zeroes. Readers would not see wrong
-values, but KCSAN could still report the race.
-
->  	unsigned long service_task_flags;
->  	unsigned long state_flags;
+On Thu, 22 Oct 2026 22:05:36 +0800, Yingjie Wang wrote:
+> Commit e5b31d988a41 ("af_unix: Give up GC if MSG_PEEK intervened.")
+> made unix_peek_fpl() invalidate unix_peek_seq when gc_in_progress is
+> set.
+> 
+> scm_fp_dup() increments the received files' reference counts before
+> unix_peek_fpl() checks that flag, while unix_gc() sets the flag before
+> reading the same reference counts. The reference-count operations and
+> flag accesses are relaxed. spin_lock() provides acquire ordering, but
+> does not order the earlier flag store against the later file_count()
+> loads.
+> 
+> On weakly ordered machines, GC can therefore miss the reference acquired
+> by MSG_PEEK while MSG_PEEK misses gc_in_progress. unix_peek_seq then
+> remains unchanged, allowing GC to classify an SCC as dead and purge a
+> live receive queue.
+> 
+> Add smp_mb__after_atomic() after scm_fp_dup()'s reference increments and
+> smp_mb__after_spinlock() before GC samples the reference counts. This
+> ensures that either GC observes the new reference or MSG_PEEK observes
+> the active GC and invalidates the seqcount.
+> 
+> LKMM admits the stale/stale outcome without these barriers and forbids it
+> with them. An explicit AArch64 model gives the same result. The original
+> workqueue layout in that commit also lacked the PEEK-side ordering, so the
+> incomplete handshake dates to e5b31d988a41.
+> 
+> Fixes: e5b31d988a41 ("af_unix: Give up GC if MSG_PEEK intervened.")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yingjie Wang <1075151112@qq.com>
+> ---
+>  net/unix/garbage.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+> 
+> diff --git a/net/unix/garbage.c b/net/unix/garbage.c
+> index da774f56ca648..c3ed00f52b04e 100644
+> --- a/net/unix/garbage.c
+> +++ b/net/unix/garbage.c
+> @@ -329,6 +329,14 @@ void unix_peek_fpl(struct scm_fp_list *fpl)
+>  	if (!fpl || !fpl->count_unix)
+>  		return;
 >  
-> diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-> index 2437cd8ba6331..26fdd22644f4d 100644
-> --- a/drivers/net/ethernet/google/gve/gve_main.c
-> +++ b/drivers/net/ethernet/google/gve/gve_main.c
+> +	/*
+> +	 * Pair with smp_mb__after_spinlock() in unix_gc(). get_file() in
+> +	 * scm_fp_dup() increments an atomic reference count, so this ensures
+> +	 * that either GC sees the new references or this thread sees
+> +	 * gc_in_progress and invalidates unix_peek_seq.
+> +	 */
+> +	smp_mb__after_atomic();
+> +
 
-[ ... ]
+Thanks for the patch, and sorry for the late reply.
 
-> @@ -2786,9 +2796,15 @@ static void gve_get_rx_queue_stats(struct net_device *dev, int idx,
->  				   struct netdev_queue_stats_rx *rx_stats)
->  {
->  	struct gve_priv *priv = netdev_priv(dev);
-> -	struct gve_rx_ring *rx = &priv->rx[idx];
-> +	struct gve_rx_ring *rx;
->  	unsigned int start;
+Actually there is another thread going on for this issue and
+I suggested another aproach, so ...
+
+pw-bot: cr
+
+
+
+>  	if (!READ_ONCE(gc_in_progress))
+>  		return;
 >  
-> +	spin_lock_bh(&priv->stats_lock);
-> +	if (!priv->rx)
-> +		goto unlock;
-> +
-> +	rx = &priv->rx[idx];
-> +
-
-[ ... ]
-
->  static void gve_get_tx_queue_stats(struct net_device *dev, int idx,
->  				   struct netdev_queue_stats_tx *tx_stats)
->  {
->  	struct gve_priv *priv = netdev_priv(dev);
-> -	struct gve_tx_ring *tx = &priv->tx[idx];
-> +	struct gve_tx_ring *tx;
->  	unsigned int start;
+> @@ -614,6 +622,12 @@ static void unix_gc(struct work_struct *work)
+>  	WRITE_ONCE(gc_in_progress, true);
 >  
-> +	spin_lock_bh(&priv->stats_lock);
-> +	if (!priv->tx)
-> +		goto unlock;
-> +
-> +	tx = &priv->tx[idx];
-> +
-
-[ ... ]
-
-> +
-> +unlock:
-> +	spin_unlock_bh(&priv->stats_lock);
->  }
+>  	spin_lock(&unix_gc_lock);
+> +	/*
+> +	 * Pair with smp_mb__after_atomic() in unix_peek_fpl() to ensure that
+> +	 * either the file-count reads below see MSG_PEEK's increments or
+> +	 * MSG_PEEK sees gc_in_progress.
+> +	 */
+> +	smp_mb__after_spinlock();
 >  
->  static void gve_get_base_stats(struct net_device *dev,
-
-[Severity: Low]
-This is a pre-existing issue and was not introduced by this patch. With
-the early returns above, device-level qstats now drop to zero after
-ifdown, because gve_get_base_stats() still hardcodes zeros:
-
-static void gve_get_base_stats(struct net_device *dev,
-			       struct netdev_queue_stats_rx *rx,
-			       struct netdev_queue_stats_tx *tx)
-{
-	rx->packets = 0;
-	rx->bytes = 0;
-	rx->alloc_fail = 0;
-
-	tx->packets = 0;
-	tx->bytes = 0;
-}
-
-Once gve_queues_mem_remove() sets priv->rx and priv->tx to NULL, the
-per-queue callbacks add nothing, so the totals equal the zero base. That
-goes against the get_base_stats contract in include/net/netdev_queues.h.
-It would also fail the "went backwards" check in check_down() in
-tools/testing/selftests/drivers/net/stats.py on this commit.
-
-The next patch in the series, "gve: Fix backward stats when interface
-goes down or configuration is adjusted", fixes this. It accumulates ring
-stats into base_net_stats and base_ring_err_stats under stats_lock in
-gve_queues_mem_remove() and gve_rx_queue_stop(), and gve_get_base_stats()
-then reports those accumulators.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261023204706.3112215-1-hramamurthy%40google.com
+>  	if (unix_graph_state == UNIX_GRAPH_NOT_CYCLIC) {
+>  		spin_unlock(&unix_gc_lock);
+> 
+> base-commit: f4377bf85887f57b59abb5479f7660a81ffe4449
+> -- 
+> 2.43.0
+> 
