@@ -1,51 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793115855;
-	b=3GEcYfIo7qkbS1I0GMH3f9l5waXHN1fQ9mgdmWy0zT3f7yAXnMXPu538xJFZ7pJOYdX/
-	 4840iaLq2JCLpQa7MqeQ93S4kuqbQgZcShLit3CP6Citq8tyM3O4irsilqce92nHzHrrb
-	 orXZ26d++71/7gp9iLuZrJgJDUyTdsLcKAdSsCx0b4WgcypAue7xCIXh5RhrJPFR1SHUz
-	 WOJGoA/pFB04hLCTmUPOeUaKTyPiuyfhECESHTytr3WzFlHe+n+3/HS5n8BPhgZE5A+cN
-	 bkWff8uKU6cNAnRQsV24/j+QG8aisxzZDiVKh5Q9QWV6UJhymSV3ER0GQgAYhOqDxtQ==
+	t=1793115854;
+	b=ifOMWRYoVJD9cntprpzZatBCprsK2i02sQ4OF5+D/lRkKX/WbmOusl+ASopzd6b/xH9K
+	 0ZPjRhCjv8OexodC2m+gqXMGe+6TFEb/Lfy8iugUi/uGpd55wiqfUYPaS8NPqgoF6G8QL
+	 yM8yBwqxVVkUDpz3GfqeX4wAhAE7XzQmyMq0KwX0zN9G+w+O6O3wiAleovt3JBc6nE+hy
+	 XvJT7scC2suqjepbxXm4v5oXGchwJx8PCtKPnhOCDXkz1hew+DsdCW19EmnQtOd3ewzwf
+	 Ow3zu154KnsClfFO85lvKChPe5aU9EUBNKxqfNTr63nLstkeFcYU3WPC/JjZCeLoZNw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793115855;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793115854;
 	h=Received:DKIM-Signature:Received:Message-ID:User-Agent:Date:From:To:
 	 Cc:Subject:References:MIME-Version:Content-Type;
-	bh=/z7vULV9ET96OVawlpuKhOOFOEzaoRsKx7ENimt5WTY=;
-	b=4tGC9v1YPOrmhv3E4tuSmGTIH36olEpnskyUp0vPlUAhn7KcceUbwlBPggcv0sPd0Xrm
-	 15TzA8arSEN2A6z1y9SMQcWViRopOuCoWctzunz1OearV9xPY69xNhV7xnD1UgHO3VbmS
-	 26fSlmHa3M6aGvkO01se0KRQIaweYxvQR1taxuDUpA6fsYghAA4wCIzGsi2ogAaUp52rw
-	 +zn1iy7JjugyRwsjSeuV4OLm2iP8KqBFKptUCQljB5eUim10NODgbYuslkTNjqaP0qBvN
-	 kz8kvA6fic1bz9Ev5nNSwqT8npiTlP5khYncGrANge5ddc+s0OyLecf0v9ZbIg5UzFQ==
+	bh=7V1o3THBsVPSIJpnHm1gJN2cks+b9EypDUR8GPnuLtM=;
+	b=kZGWC6qf6mO6A9e+p2+FzD87ebuWMZLak/RC9aZRQG8d6cn2daAbRYv6uauJdSvvzd+/
+	 yN/vMVOm7Iw/hmRA+zHsHQnzAdzfTyqu3XPZaQD2Jw3XV07I/5OmQuC9zgOebeG6Ga96k
+	 iDEpfv4xSPJBtQwh2VxU7oWb3MBKjrqtyzClMJ76SfVs940BxjyYeAQoJiDO2SlNfDymL
+	 uFjM4nMBFUapYKsjTmdwnT7jmSq3reA6xKoWPqbOHyjzgAMNE6nQ8yTe2TIUc+uMiKa4P
+	 o++SYdmwgTrIjh64AaKqrVLL5RaFAuWtmS1SObJpw9TxSvtqirYmPBYkWq3o6I+66Rg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jdXfyJo0;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="h/Uk7vit";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E1460A261E;
-	Tue, 27 Oct 2026 15:44:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jdXfyJo0
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDEA01F031E1;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33512606A326;
 	Tue, 27 Oct 2026 15:44:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h/Uk7vit
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E01891F031E1;
+	Tue, 27 Oct 2026 15:44:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793115855;
-	bh=/z7vULV9ET96OVawlpuKhOOFOEzaoRsKx7ENimt5WTY=;
+	s=k20260515; t=1793115854;
+	bh=7V1o3THBsVPSIJpnHm1gJN2cks+b9EypDUR8GPnuLtM=;
 	h=Date:From:To:Cc:Subject:References;
-	b=jdXfyJo0CGxQAq6lrM+rdnAC5kkyIyDGCyaXy8RY12C/xhAmDv3kBWgF640VC9QLr
-	 5ShJWb1/tqFMTWp3gx+4Bu638fVHYryIf65TpGBn9iErS6v5zw4chc+UIqthKMFSol
-	 m7QJgZDgqjgnpl6sFCER7TZcLp5ZqjJm9yTM5hebyb6YNCzPAgGsdwC0gbxsalLn38
-	 6BtLExOerDeAlk2bQKM+UiC1Lxrm5PIavqM9G8sYWMn19MLQ3I2DWjlYV/2TCRcwCQ
-	 2IqeWVq3OUlxSdmQQEVXdpj261/935ndAUdylVs9l3k+qqwUfbv56vUmNl7D9zeeR4
-	 0hWk1S9PZO1eQ==
+	b=h/Uk7vitfWDO/h1gJuB0QkLG4PxV5tWVEb27yPYN65h4Tuaoei/grvaUBxVVMaHpT
+	 ECZRcGLBcA8tsHZ1Fg0HbWzH3tvYNGZNUFTnMqDhRcUnj/LF12BfyD9p+X+VeV1OXE
+	 GRS81++tpZ0ZP1HADog9dU47GF50lPCuK/FARBHKbo7psDms+0UG641cVxGQMtspRe
+	 qlZYy9mcbwEP6ZqTPFAOeFvBl8M5EuMHBeVOmqyrU+eAVEAud/29omvbUdgBIh93sR
+	 /60UR+yFCX6azSPyOkLAzCIAB5xs38NRMv2lIQfq2Ko6ujhOtAzKpZUsTeyW3TlBSX
+	 uauGVrji6eK8w==
 Received: from rostedt by gandalf with local (Exim 4.100.1)
 	(envelope-from <rostedt@kernel.org>)
-	id 1xLjLS-000000078je-0hhf;
-	Tue, 27 Oct 2026 11:44:14 -0400
-Message-ID: <20261027154413.997660461@kernel.org>
+	id 1xLjLR-000000078gq-0u2O;
+	Tue, 27 Oct 2026 11:44:13 -0400
+Message-ID: <20261027154413.039021489@kernel.org>
 User-Agent: quilt/0.69
-Date: Tue, 27 Oct 2026 11:37:06 -0400
+Date: Tue, 27 Oct 2026 11:37:01 -0400
 From: Steven Rostedt <rostedt@kernel.org>
 To: linux-kernel@vger.kernel.org,
  linux-trace-kernel@vger.kernel.org
@@ -107,8 +107,7 @@ Cc: Masami Hiramatsu <mhiramat@kernel.org>,
  linux-scsi@vger.kernel.org,
  linux-sctp@vger.kernel.org,
  netdev@vger.kernel.org
-Subject: [PATCH 8/9] kernel: time, trace: Use trace_call__##name() at guarded tracepoint
- call sites
+Subject: [PATCH 3/9] devfreq: Use trace_call__##name() at guarded tracepoint call sites
 References: <20261027153658.703730257@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -136,72 +135,28 @@ Parts of the original v2 series have already been merged in mainline.
 This patch is being reposted as a follow-up cleanup for the remaining
 unmerged pieces.
 
-Link: https://patch.msgid.link/20260515135959.2238922-1-vineeth@bitbyteword.org
+Link: https://patch.msgid.link/20260515135920.2238808-1-vineeth@bitbyteword.org
 Suggested-by: Steven Rostedt <rostedt@goodmis.org>
 Suggested-by: Peter Zijlstra <peterz@infradead.org>
 Signed-off-by: Vineeth Pillai (Google) <vineeth@bitbyteword.org>
 Assisted-by: Claude:claude-sonnet-4-6
 Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 ---
- kernel/time/tick-sched.c       | 12 ++++++------
- kernel/trace/trace_benchmark.c |  2 +-
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ drivers/devfreq/devfreq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-index 5d53ab18b31a..9bdd49e66acf 100644
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -346,32 +346,32 @@ static bool check_tick_dependency(atomic_t *dep)
- 		return !!val;
+diff --git a/drivers/devfreq/devfreq.c b/drivers/devfreq/devfreq.c
+index 82dd9a43dc62..9f71d9dc4a70 100644
+--- a/drivers/devfreq/devfreq.c
++++ b/drivers/devfreq/devfreq.c
+@@ -370,7 +370,7 @@ static int devfreq_set_target(struct devfreq *devfreq, unsigned long new_freq,
+ 	 * change order of between devfreq device and passive devfreq device.
+ 	 */
+ 	if (trace_devfreq_frequency_enabled() && new_freq != cur_freq)
+-		trace_devfreq_frequency(devfreq, new_freq, cur_freq);
++		trace_call__devfreq_frequency(devfreq, new_freq, cur_freq);
  
- 	if (val & TICK_DEP_MASK_POSIX_TIMER) {
--		trace_tick_stop(0, TICK_DEP_MASK_POSIX_TIMER);
-+		trace_call__tick_stop(0, TICK_DEP_MASK_POSIX_TIMER);
- 		return true;
- 	}
- 
- 	if (val & TICK_DEP_MASK_PERF_EVENTS) {
--		trace_tick_stop(0, TICK_DEP_MASK_PERF_EVENTS);
-+		trace_call__tick_stop(0, TICK_DEP_MASK_PERF_EVENTS);
- 		return true;
- 	}
- 
- 	if (val & TICK_DEP_MASK_SCHED) {
--		trace_tick_stop(0, TICK_DEP_MASK_SCHED);
-+		trace_call__tick_stop(0, TICK_DEP_MASK_SCHED);
- 		return true;
- 	}
- 
- 	if (val & TICK_DEP_MASK_CLOCK_UNSTABLE) {
--		trace_tick_stop(0, TICK_DEP_MASK_CLOCK_UNSTABLE);
-+		trace_call__tick_stop(0, TICK_DEP_MASK_CLOCK_UNSTABLE);
- 		return true;
- 	}
- 
- 	if (val & TICK_DEP_MASK_RCU) {
--		trace_tick_stop(0, TICK_DEP_MASK_RCU);
-+		trace_call__tick_stop(0, TICK_DEP_MASK_RCU);
- 		return true;
- 	}
- 
- 	if (val & TICK_DEP_MASK_RCU_EXP) {
--		trace_tick_stop(0, TICK_DEP_MASK_RCU_EXP);
-+		trace_call__tick_stop(0, TICK_DEP_MASK_RCU_EXP);
- 		return true;
- 	}
- 
-diff --git a/kernel/trace/trace_benchmark.c b/kernel/trace/trace_benchmark.c
-index e19c32f2a938..189d383934fd 100644
---- a/kernel/trace/trace_benchmark.c
-+++ b/kernel/trace/trace_benchmark.c
-@@ -51,7 +51,7 @@ static void trace_do_benchmark(void)
- 
- 	local_irq_disable();
- 	start = trace_clock_local();
--	trace_benchmark_event(bm_str, bm_last);
-+	trace_call__benchmark_event(bm_str, bm_last);
- 	stop = trace_clock_local();
- 	local_irq_enable();
- 
+ 	freqs.new = new_freq;
+ 	devfreq_notify_transition(devfreq, &freqs, DEVFREQ_POSTCHANGE);
 -- 
 2.53.0
