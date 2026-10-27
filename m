@@ -1,80 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793125033;
-	b=oNjDGwAYUjufgXvFqfZDOtk8ygR7JOJkqErv5xf9ugCrtTCgjVgxFACe3TpciUA4EPhk
-	 2pj4SAUl6XnAKVGjRyJ+e42O/hNrzVCvSYoRFrzyRl0pCm3lv1eAThowOmOjjQJypXSuc
-	 KH1RSOtlFNIoykUGS1/Jl3IaQ4XDR3xnfCbRwaF5gNHfPlfQ3sMZXYmPUWTRBxY0IJQLB
-	 wZ5BFcnNayl4WBnAl7XQFpAPNnFrVngiASH95VykkiTPdJR1bdEU4zDMI7B2L/f3l3g7I
-	 99QwHF4YgfBP/WOViJs8W1MLUbOPm8MFjXI1FrHg28xGMcoXzPPuJREtO3D40xE+jpw==
+	t=1793125205;
+	b=wCklMLZwNTsajZzFfLi9FV54CmsgRAtN1E1PE4ZkOXzXMnsid9xGWuvK2SCawbohSft8
+	 HM8UtkTGlooFFQ5Gy30n6QNNxG0RzwzaIoK+YHveUtOKlvwigKN44ulqS0pvKZ4o0nQVs
+	 3e6iwkD4WW/N57W+fG8YvwyXXhqLuaF3w4xveHXyEJ5yyAtFvc5vi/12mbkhgyEdtnlyh
+	 f1KuCEsaMx626+PWYW3HVlHrAH2QTxiOONYC3yXA4cocn63e84cBEkg8ZvKUSz37VCgUw
+	 KhrtOJqU2nvvCDoacZPMt6LDEIAeWdk8Cs8MUxrs9TiJ3V68RBn2T4FCNrE3jJfxSRg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793125033;
-	h=Received:DKIM-Signature:Date:Message-ID:From:To:Cc:Subject:
-	 In-Reply-To:References;
-	bh=BQlG+dpy8YjBQ/Jf8HDAX4aO1LrQ0VKAd1X1FNGlEsc=;
-	b=ydZxHM1FTxOwNYGeKHuCcwOpP2FCqg1peeharRkys3ckSn4oRIJpFd8sM4rE9WMFAWMs
-	 hOFFNxn5Sf2D5Q5R6s+bzbabmL01o/RpN9Po6PeVyzCYiHDz4+v7Df3d7CXlBYAyb+i3K
-	 QwrlJYMwM17G96vc/+4ZQl2PyukcfMEKcrX+i01uKRrBwD8kQAxRkwztdf/YDdnN92/zZ
-	 M4yhfb+9KWDd36FWutp5kObQs8INneuewYT6jhR+GV5pKISabpDieQHwX/tDoyapb3NSj
-	 cVfUryrC9d9Prniftp89AEJNTLvFmsngl2RTUJFIEFhqXafVPi+XtfvIcfgudgDeVAA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793125205;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=gAl89fyJdbv1sAJU0zLFzuIBO7vcKyX3qqqs2bLWiPM=;
+	b=E8rnzcH3aYBJ7/awY38yquffP8avvxIpBfLR5q7BG7oXtzrYgJxAzS29VleQAHmnTCrA
+	 OhikKkWurl9bp61qBcerBMcK9WJDXI/nxILbCtsO56Mjfmcr9y02c2ov6hz3oNwuHm9UM
+	 SLCBlLhUY9v1toZ2/syqluiaTiCXuggFp0X95RHFNbNKhHpDiUsitPPOlLcM4iItyxAkt
+	 C+K1VpzqoA5L7IL5YRgu7DRLQOGRLYKC7aKD4OUuhuLrlH+ToWhKiUUlr9GX+1e86nNFm
+	 en1qvF/N3sh4o1wlxcMRiwwaUTXGcgdLl/uLYZLJrHzbJvAJEYx4mRwxIDy0UJ4Zsmw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jLPqgKVf;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gjPcTOJd;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2CF606A31D;
-	Tue, 27 Oct 2026 18:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0EAB606A31A;
+	Tue, 27 Oct 2026 18:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jLPqgKVf
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6511F031E5;
-	Tue, 27 Oct 2026 18:17:11 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gjPcTOJd
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 046441F01828;
+	Tue, 27 Oct 2026 18:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793125032;
-	bh=BQlG+dpy8YjBQ/Jf8HDAX4aO1LrQ0VKAd1X1FNGlEsc=;
+	s=k20260515; t=1793125204;
+	bh=gAl89fyJdbv1sAJU0zLFzuIBO7vcKyX3qqqs2bLWiPM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=jLPqgKVfOPVsDgLwoMZ16UseK8OHOo8JpJwNW/YVi0kw3fyQlEsd/UVg32FMZs3OW
-	 r4P5KEJCPIj/KOyDQJDreVJVPyrB9ZKlgbeWThq5yAcHYydcr3eWO39CsPMsWs4YzX
-	 ty8ec6TIzned9CARBFQmSPik48yQoBZn5DuK+GyZh73+m/oGiaCpMUsswuEpUy1+/B
-	 23Ww8KgzPaUGxYKedH2WJ6EK08iuAw/pGCySpsh73GwcFgXbpCs1fGhaD+DjqHzW4p
-	 yCNW05kom5Kf5o1qvD3E9oL7GPtzdiHaTHg/5xmtSzKc2wlh09rM45Nyjj1+dO0iMI
-	 u+HyATTnHHaaA==
-Date: Tue, 27 Oct 2026 08:17:11 -1000
-Message-ID: <769e80ffa618327ac03c13c4657e7229@kernel.org>
-From: Tejun Heo <tj@kernel.org>
-To: Hui Zhu <hui.zhu@linux.dev>
-Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
- Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, JP Kobryn <jp.kobryn@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
- davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>,
- Jesper Dangaard Brouer <hawk@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
- KP Singh <kpsingh@kernel.org>, Tao Chen <chen.dylane@linux.dev>,
- Mykyta Yatsenko <yatsenko@meta.com>, Leon Hwang <leon.hwang@linux.dev>,
- Anton Protopopov <a.s.protopopov@gmail.com>, Amery Hung <ameryhung@gmail.com>,
- Tobias Klauser <tklauser@distanz.ch>, Eyal Birger <eyal.birger@gmail.com>,
- Rong Tao <rongtao@cestc.cn>, Hao Luo <haoluo@google.com>,
- Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>,
- Nathan Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>,
- Jeff Xu <jeffxu@chromium.org>, mkoutny@suse.com, Jan Hendrik Farr <kernel@jfarr.cc>,
- Christian Brauner <brauner@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
- Brian Gerst <brgerst@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>,
- Willem de Bruijn <willemb@google.com>, Jason Xing <kerneljasonxing@gmail.com>,
- Paul Chaignon <paul.chaignon@gmail.com>, Lance Yang <lance.yang@linux.dev>,
- Jiayuan Chen <jiayuan.chen@linux.dev>, Emil Tsalapatis <emil@etsalapatis.com>,
- Ihor Solodrai <ihor.solodrai@linux.dev>, Barry Song <baohua@kernel.org>,
- Geliang Tang <geliang@kernel.org>, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- Hui Zhu <zhuhui@kylinos.cn>
-Subject: Re: [RFC PATCH 0/2] memcg_ext: dynamic memory.low and memory.min protection
-In-Reply-To: <cover.1793086858.git.zhuhui@kylinos.cn>
-References: <cover.1793086858.git.zhuhui@kylinos.cn>
+	b=gjPcTOJdnz/kwIbD7O08J5pbG/jBpJ1E5nKawunXt/p8zb/KyS1c44NWDYKrWstgW
+	 15MZ5ceFNZJL+S0yGkmhIw9v2IvWfmj9OzUMX/nBWBuaEBNGI+RqeQPmspGZvaWRL0
+	 vlTzc52BL5WtDqwnLBro55rrNFU16U9auxIUUYZplS1G+6H94hy+nRYxvaS3xSdnYH
+	 bBRD1xHiZWb9IQO045KnZY68e3YYQ0Y7Uuwep0sBfXya8SQUkVhwgdt/an1fTX4JTs
+	 UkxIJDr55VMRMcMOBVVEdPRc74LZK4xcAsuX0WtoPXVnqCZ8oJ42Nz9WksF7ZaADV9
+	 PSAgm0nITmhIQ==
+Date: Tue, 27 Oct 2026 11:20:03 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+Cc: robin.murphy@arm.com, m.szyprowski@samsung.com, tglx@kernel.org,
+ dave.hansen@linux.intel.com, x86@kernel.org, joro@8bytes.org,
+ will@kernel.org, leon@kernel.org, mbloch@nvidia.com, iommu@lists.linux.dev,
+ netdev@vger.kernel.org
+Subject: Re: [RFC 07/11] eth: ixgbe: use dma_alloc_coherent_node()
+Message-ID: <20261027112003.330bbded@kernel.org>
+In-Reply-To: <87wlr33z6z.fsf@all.your.base.are.belong.to.us>
+References: <20261027022528.633359-1-kuba@kernel.org>
+	<20261027022528.633359-8-kuba@kernel.org>
+	<87ecdb5x8k.fsf@all.your.base.are.belong.to.us>
+	<20261027085133.2832f2f5@kernel.org>
+	<87wlr33z6z.fsf@all.your.base.are.belong.to.us>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,22 +63,58 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hello, Hui.
+On Tue, 27 Oct 2026 17:06:44 +0100 Bj=C3=B6rn T=C3=B6pel wrote:
+> Jakub Kicinski <kuba@kernel.org> writes:
+> > On Tue, 27 Oct 2026 10:06:03 +0100 Bj=C3=B6rn T=C3=B6pel wrote: =20
+> >> Not really this series, but the fallback here is odd, no? I thought the
+> >> allocator already did cross-zone fallback? =20
+> >
+> > Fair, I was too lazy to check. I'll remove the fallbacks in the same
+> > patch. Seems obvious enough. LMK if you prefer separate. =20
+>=20
+> Hmm. Seems like dma_alloc_contiguous() doesn't spill over to other
+> nodes. It only tries the per-NUMA CMA... so keeping it is bit more
+> robust. (Then again, I dunno...)
+>=20
+> I'd say keep it.
 
-On Tue, Oct 27, 2026 at 05:11:58PM +0800, Hui Zhu wrote:
-> Why it matters: memory.low and memory.min protect a cgroup by a fixed
-> threshold and have no idea whether it is using the memory.  A
-> high-priority cgroup that holds a large working set and then goes idle
-> keeps suppressing reclaim on its siblings, and that memory is wasted.
-> A policy program sees the real activity - page faults, charges - and
-> can grant or withdraw protection as it changes.
+Or we fold the retry into the helper? I tried to write the kdoc:
 
-This doesn't justify the changes. Why can't the same be achieved by
-adjusting memory.low and memory.min from userspace? The arguments made
-so far are neither convincing nor proven.
+/**
+ * dma_alloc_attrs_node - allocate coherent memory on a given NUMA node
+ * @dev: device to allocate the memory for
+ * @size: size of the allocation
+ * @dma_handle: returns the DMA address of the allocation
+ * @flag: GFP flags for the allocation
+ * @attrs: DMA_ATTR_* flags for the allocation
+ * @node: NUMA node to allocate the memory on, NUMA_NO_NODE for no preferen=
+ce
+ *
+ * Same as dma_alloc_attrs() but places the memory on @node rather than on =
+the
+ * node of @dev. Like with kmalloc_node() the node is only a preference,
+ * the page allocator may fall back to other nodes if @node is out of memor=
+y.
+ * The contiguous memory allocator (CMA) does not: only the CMA area of @no=
+de
+ * and the global CMA area are tried. The allocation may fail even though t=
+he
+ * CMA area of another node, e.g. that of @dev, still has free space.
+ *
+ * Allocations served from per-device coherent pools or CMA areas, restrict=
+ed
+ * or atomic pools, or by dma_map_ops implementations do not take @node into
+ * account.
+ *
+ * Return: the CPU address of the allocation, or NULL on failure.
+ */
 
-Thanks.
+This feels like too much explaining of the internals for a commonly
+used APIs. If we retry in the helper all we have to say is basically
+"acts like kmalloc_node()".
 
---
-tejun
+WDYT?
