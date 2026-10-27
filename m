@@ -1,55 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.6
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793092171;
-	b=vWviR6h/5rlcaOFVy1VB91tyVNpJVyfBbGtwAg41dPrqjwkgroPhIfxSOzvygKsSB8G4
-	 2hx8Scoiyw86urdzy/rai88499kpbd5tMeGLj+a0qzNOcepwHCuz5LtXdwc+qLQ732+OV
-	 Ym54d/XVz9LXKheJeZvPU0TKlzNaEyOFiPIj6P00F2H6qZ6YRAbfj2MglOAtK8Kd0BKS2
-	 x3sewnHBYMWhdG+06//Mj/Wq7A+DoPJdmNFtAiRju7/iA73vOFOwfLHFR6oZ9GoYCZBGB
-	 Y00pUcaU5GzquN1WrapaCwTUFfFJ1hh6Oqu7dvaZ/PLZT5w7f/GYXvXqqz67ZXChFWA==
+	t=1793092239;
+	b=wPAkKdTV38IifxSmrtCPcmQY8HvV0ggespoodOqR1+GiSf6z4/XEmknS7xddzAr5ep6K
+	 ZVLEIeHlw15h3brDH0gg1yWoeSKOG2yzLe+DRYkXtjDbATbvAKPvCVGnuVv04SrmQQgxL
+	 jYdpucgTs7zWsVDtRODGQGi/l+hXOTyucM7P2/6AlEMeXiU9vjq3m8zTQTyMx5rYnzBqJ
+	 A5EM2fkTkBItngOVbHgDnZU4/47lfCxnkouHeQgTqtwpkrFIFJM3ENxU8/zM87GMOx0gS
+	 6Vx0V9rjUiT7jzml3TNgyviYDjwkpq6kyL7ci3lPFIPnSMYVeZsZ330GmLMqi+gR5OA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793092171;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=VT3Y5OvSFbO9QB1vLrL/JDIAFG6W923q7UqKoS0saRw=;
-	b=yY1SD7KENbEsXvDi+abVSOGdFQb8vPvVo396VSYKrdjvjTxHzSKp/Cojj3WLJ2DKmVcm
-	 d2ZlGo7pl3HzFmHK7jAWE1vMG6Y1ctRlfdMGn9xKmNHYLyG0jdOTW1OVVvcGVdHk7UHHw
-	 WF03XMw4lumoIr2BFNGCDRfJnOhP0fkXmpjI40Pxz1qSnX0kZaVRjOCtz/Tzf6AV5C+Ny
-	 1bAHI3o7xFLhZgpDzD9+ACWs8bPCxbahp1Vt4wQSkUTDPwv2GbiV+37xjbwVQ1MPptFve
-	 tPT9qE/SCYatCwy5t07WxxwISxPDQn88blke30fumt3YtM1tB7VNsaMAzMf3Sjjy/6Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793092239;
+	h=DMARC-Filter:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-CM-TRANSID:
+	 X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=bUwFovR37/0YXm0NK1fQDRB+635h59wnlNOapHrj0Dg=;
+	b=w4uSQVlvdOL0bJ10FxIq3EksE2Yq6HNmRr/sMs9wN/E+rDAeJYbMaEmy0Ijr9yrAtRZ7
+	 jCQDJsnMazTQooJgCIvrNaoqTkXBIQTkMcQF5W9J4C0WWY9sC6s8v0hTYpamaYe6K795m
+	 OzvTZKxxM14sW0HQpXYUuBbZgNsUmWPMRtEPOMV4Sd7G1KnEJEKfjBCNgXXt/I9wvYZsT
+	 58F2Z3WdY/Z4ZkPsXviXvKK7xGIQdGBybpS9dycrL4wNBB/Q0syg5KPjS5gaaAlbLO6bA
+	 Gf8Jp3VIQ+ahUgdyeXhB0xljFKqD9mKPDpkc9MXoDJf4+agzonvoFLBOiW3T4wqqrVA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gL6g0cDE;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=126.com;
+	spf=pass smtp.mailfrom=126.com;
+	dkim=pass header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=YfTKfOk9;
+	arc=none smtp.remote-ip=117.135.210.6
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.6])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3785606A321
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 09:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6D6606A31D;
+	Tue, 27 Oct 2026 09:10:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7B6D6606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gL6g0cDE
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 692E71F031E5
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 09:09:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793092170;
-	bh=VT3Y5OvSFbO9QB1vLrL/JDIAFG6W923q7UqKoS0saRw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=gL6g0cDE/fM1YcljoA1aZnBkluyETfSVdCPCFznt39+S1LfqX3W7PXafW2wNDlgYC
-	 Hu+y4trakWqb+ewn7BqriCAIhkt0cawB9tPQ21k4vGD12sliSPExBxINuJxv2rQotr
-	 vNDOCC/e1xCvkCGiWU8EzPqlORFljrhhZ2/AIe1AqHBZgJ2kp8cv2NPWpscdff3UUQ
-	 vA8WqiGKhwBKQUj4QIKqzNunDhvnOAIJ4Kl6wTo1DiCt6gDREEwwCyQKCJkGGfTZpw
-	 EBg/NC6iNMSupxIDQeZ2UmHxXbGEwAfzhWo5W6tsOVBigBCnOwL+4lY/WSBItmSvb3
-	 AO3lKl6893s+Q==
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-3ab07d956f2so25436671fa.0
-        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 02:09:30 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvByZthv0QSqvWT8hoGyz9mgDezKKDx4c4HjadoGKmw7BPCaBTP/ifSdjsDy1QBO2nT832x87QAE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJyrAHT3zCB9jzM/ltOFWmrSdq2gg5mXqFUQumiMOgf5+gKiLPg
-	mLZUtuEHSkST+XvJBHTkE9S31zOxt4NhPpWG2tpCqcNTAZCKsDnHeK9lgh91z15SZSn3EMxZqrw
-	wFaIiEcNW516wDinT7lLmfMIryDuHHZ4=
-X-Received: by 2002:a05:651c:1444:b0:3ab:5423:dd80 with SMTP id
- 38308e7fff4ca-3ac6fce6af2mr24493581fa.9.1793092169187; Tue, 27 Oct 2026
- 02:09:29 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=YfTKfOk9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=bUwFovR37/0YXm0NK1fQDRB+635h59wnlNOapHrj0Dg=;
+	b=YfTKfOk9H1wlZk+Ube5R3QSQC2eoaOSZlZRKt1oN9BTxEISJxoCW4UIa0LJM7p
+	Os+woGcubcvXuH8yc1ZCgjPRbNhQFC7QVz2qhQwFHWghc2JM4fYyJ/dOPFGhPrGS
+	X0oJEYIqvc1qiAnJZj67YLiXLljMPeMK3nlxahbzpxRHI=
+Message-ID: <6b1d38f9-458e-47a0-a593-e47a219ff13e@126.com>
+Date: Tue, 27 Oct 2026 17:08:50 +0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,48 +51,71 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: bridge: netlink: do not clear the vlan info dump
+ error
+To: netdev-bot+sinfo@kernel.org
+Cc: razor@blackwall.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ bridge@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Linkui Xiao <xiaolinkui@kylinos.cn>
 References: <20261027085200.1501599-1-xiaolinkui@126.com>
-In-Reply-To: <20261027085200.1501599-1-xiaolinkui@126.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Tue, 27 Oct 2026 10:09:16 +0100
-X-Gmail-Original-Message-ID: <CAL4WiioJcbB9gB7tbBcwLdRUPG=zX-5B-7G5=oMXGiy=f_WLSg@mail.gmail.com>
-X-Gm-Features: AclHuK8EVwFrXUj1qFMsxab1jfMHpLxrzYP4DKEcT8xEm71gKtZLAmqWJRAV0jE
-Message-ID: <CAL4WiioJcbB9gB7tbBcwLdRUPG=zX-5B-7G5=oMXGiy=f_WLSg@mail.gmail.com>
-Subject: Re: [PATCH net] net: bridge: netlink: do not clear the vlan info dump error
-To: Linkui Xiao <xiaolinkui@126.com>
-Cc: razor@blackwall.org, idosch@nvidia.com, davem@davemloft.net, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, bridge@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Linkui Xiao <xiaolinkui@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <179309134717.3327.17438354236814047357@kernel.org>
+Content-Language: en-US
+From: Linkui Xiao <xiaolinkui@126.com>
+In-Reply-To: <179309134717.3327.17438354236814047357@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:_____wD3XywiauBqENglCA--.65308S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7AFykCry5Xw4UGryUWr17ZFb_yoW8CF1xp3
+	98KanxJan5JF1Skr1vvw40va4Fk393Ga1UXr1UKr1jv3Z8GFy7tr42gr4jka4DuFWrA34F
+	gw4qgr1DAryqyaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UtpnQUUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqAR2TWrgaiRJnwAA3F
 
-Le mar. 27 oct. 2026 =C3=A0 09:52, Linkui Xiao <xiaolinkui@126.com> a =C3=
-=A9crit :
->
-> From: Linkui Xiao <xiaolinkui@kylinos.cn>
->
-> br_fill_ifinfo() assigns the result of br_fill_vlan_tunnel_info() over
-> the result of br_fill_ifvlaninfo() or br_fill_ifvlaninfo_compressed()
-> instead of only running the second helper when the first one succeeded.
->
-> When the vlan information no longer fits in the skb but the port has no
-> vlan mapped to a tunnel dst, br_fill_vlan_tunnel_info() walks the vlan
-> list and returns 0 without touching the skb. The -EMSGSIZE is lost,
-> br_fill_ifinfo() completes a message whose IFLA_AF_SPEC is truncated,
-> and the dump carries on to the next interface instead of stopping, so
-> userspace silently sees an incomplete vlan list.
->
-> Only fill the tunnel information when the vlan information was filled
-> successfully.
->
-> This was flagged as a pre-existing issue in the Sashiko review of the
-> net-next series, which noted that the VLAN fill result is overwritten
-> before it is tested (see the Link tag below).
->
-> Fixes: efa5356b0d97 ("bridge: per vlan dst_metadata netlink support")
-> Link: https://lore.kernel.org/bridge/ed1de95e-e112-4076-93f0-6f7668e657ad=
-@blackwall.org/T/#u#5
-> Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+Hi,
 
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+Thanks for the notice. Please find the missing information below.
+
+On 2026/10/27 16:55, netdev-bot+sinfo@kernel.org wrote:
+> Hi!
+> 
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+> 
+>   - Whether the issue was actually triggered, or is only theoretical
+>     (e.g. found by code inspection). If it was triggered please include
+>     the symptoms, like the stack trace or error messages.
+> 
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+> 
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
+
+How the issue was discovered: Found during Sashiko AI review of the 
+bridge netlink code. The review identified that 
+br_fill_vlan_tunnel_info() could overwrite a previous -EMSGSIZE error 
+from br_fill_ifvlaninfo*() when the port has no VLAN-to-tunnel mapping. 
+The relevant review comment is already referenced in the commit message 
+via the Link: tag.
+
+Whether the issue was actually triggered: Not triggered at runtime. This 
+is a theoretical error-path issue found by code inspection/AI review, 
+not by syzbot, a static analysis tool scan, or a production report. No 
+stack trace or error message was observed, and no test case was written 
+to reproduce it.
+
+Testing: The change was compile-tested only. No hardware or runtime test 
+was performed, as reproducing the exact -EMSGSIZE + no-tunnel-mapping 
+combination requires a specific skb size boundary that was not constructed.
+
+If a v2 is needed for other review reasons, I will include this 
+information in the commit messages.
+
+Thanks,
+Linkui Xiao
+
