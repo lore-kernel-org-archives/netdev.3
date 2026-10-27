@@ -1,62 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.154.123
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793104544;
-	b=HEzqjeWT90vKDN5vKNK0d1i21WBLTfor0D4DuFVQ7xxcoSIOHoOUKt/2951xQkdYp1Sn
-	 sn1LbE4U88uB/vrs9U1emJKkeTjIo6lhJBw16Vvrb8OlCCG3UdCsHFXIFFkjN/sEVsGDS
-	 5h1Ds88wt89PQ7/8fu7ZN3j3K2eW60wgNcpIOU6lWwjKZRo5T2eO6RmvHJAd+nADZaVJj
-	 cZeMWq7fgAxuqhYqt5pDIrijGqvMwIQXgxQtIuA6Uy9LtOJcT64OUvK+om22VmAYBewY2
-	 7WVxRXz3+St5B6XMiypzTlacWhxv+8ME1YaOCTOI+g81z7YBKXOsAHByY3rcMwiYRtA==
+	t=1793104717;
+	b=nx3TZVBhaXygp8d+t5JfBJKbXiyG1usqR+OaR7ddQvJu/w5zo5Qk85uD7S5tqvOpJIlp
+	 b9iRPZrqMwQNGXTZfbuDsknvTjE7U1T18pjg0cO4zADVbrRHs5EvNA1RFGTGQhNhzHDA1
+	 DqckFavfrUJyRsOPv51ahyZ3uwRp+5ovD9FbEK3Wu5Rubsq7lj6uh+GZCtjgJwP/74AbS
+	 XbT1wF8z5WC792xyWDgV8EsFcgJrHlCvwGKdSGTQ30KOTh/Rvpkv06/aoRm0xW7jvyTXM
+	 giynoL+YpfVnv0dMrdhckmmeHTVDPq4X7+wRJC98LIkQZ+tP75vLYWFSwnsMuV5X4ig==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793104544;
-	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
-	 Message-ID:In-Reply-To:References:MIME-Version:Content-Type;
-	bh=K+i0Ir8NB1/YA/OFJN2Vo6ahQORxDCkTkkHvWg7tAU0=;
-	b=FZnL/r9P7YHUrT1SclzP156rNICVWZIVwWptShWmZiue78aZ99cV+iWRoMWszZJQXOPB
-	 cBP/q3BH7u9ZeuxLPPXugZFZx/qNOint40S6Wu9+GEHJAr65FBNY4hpvJCOhRDGRciW+A
-	 Qf2IPEA6UkOyBghqduwesdD1XBtE6vZb1hzA9fZElYEnuT6qSv4xn+0t/TNlGDmjmcttX
-	 2a6DBCFqy8RmU0R4F3GN8oHSOFmDOOs7izr923N6Q/6WmkIajldj5xkVVu1PZ6RG28xJG
-	 6Q4GenFQyjZnDy68mPERuyTUX8gAJcn9LqcuFPRkQ/0XrlLqfDsDubgwf6XXRe/AZOA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793104717;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:Date:From:To:CC:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=jPVJ1cDNGbYm4OpEQ76gnpLJPBDVc6YZIrK9UtAnw90=;
+	b=t1LzYTwiXh1lSM9q6XlD5BP3hQ6mrlukeSORsOaN/zAMLXs6DwBIddS/4MHrnkIKzBR4
+	 McngRlVVNhlnJEnpC5cDdS5rml3xMZjRyrhDdhSc/FalauA66CbB5N+tHVxNOX2hCQBg2
+	 ZSg9CadLRhs+0OZ8+oD8vLG+YpmcK1RbYRctT03Z4++mCNt9Z/AMliFhL9fHOENpeGDtn
+	 Q5uosAN9Jnzz40oVQupYk0/JWPfVCyG5zALjzNP0fiCgNDwDl7OKWdehk11wzRVOJotRA
+	 EejS/GniJiae8AcnbuABwn541DAJk6qcla6YsJ1KON6X3OELa8PojZiEXLKGv2AKZsQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=narfation.org;
-	spf=pass smtp.mailfrom=narfation.org;
-	dkim=pass header.d=narfation.org header.i=@narfation.org header.a=rsa-sha256 header.s=20121 header.b=VALFiym6;
-	arc=none smtp.remote-ip=213.160.73.56
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+	dmarc=pass header.from=microchip.com;
+	spf=pass smtp.mailfrom=microchip.com;
+	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=IJf1AIMI;
+	arc=none smtp.remote-ip=68.232.154.123
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED50606A31F
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 12:35:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2ED50606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD2F606A332;
+	Tue, 27 Oct 2026 12:38:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5BD2F606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=narfation.org header.i=@narfation.org header.a=rsa-sha256 header.s=20121 header.b=VALFiym6
-Received: by dvalin.narfation.org (Postfix) id 4D1BC20581;
-	Tue, 27 Oct 2026 12:35:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1793104541;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K+i0Ir8NB1/YA/OFJN2Vo6ahQORxDCkTkkHvWg7tAU0=;
-	b=VALFiym6jC5QNhPgDk4uS8ZY59hMZJ7Y3BaVeeQLQ+tqQ+aFB/nJ7xK6D9+QPm2+BiZzty
-	zC+PDPCI02H57dC5vhI07HwiQEDnlVqGftt/cQPdln0yCyDk32s3GYGrlbO57Nu0mMJuMt
-	HJ+Xvgohx9RfqAQ6kEDMD8S7W3hFRZk=
-From: Sven Eckelmann <sven@narfation.org>
-To: sw@simonwunderlich.de, netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- b.a.t.m.a.n@lists.open-mesh.org, sashiko-bot@kernel.org
-Subject:
- Re: [PATCH net 10/10] batman-adv: tt: limit local table to single TVLV
- response size
-Date: Tue, 27 Oct 2026 13:35:33 +0100
-Message-ID: <2934231.BEx9A2HvPv@ripper>
-In-Reply-To: <179309132480.3134.3568656714789779480@kernel.org>
-References:
- <20261026085309.1074911-11-sw@simonwunderlich.de>
- <179309132480.3134.3568656714789779480@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=IJf1AIMI
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1793104717; x=1824640717;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=c6UIOgzPxsSvzq2lcgh7cv5Yo6+3mJZ8wHbFKnDYEB4=;
+  b=IJf1AIMICrXU/S5RMG729SJtXyaLQm+O5WIjXx+FLgfYB8WVo/zbJbrg
+   GmShHVfmFDJhtI5EyrJ6jiI3AUuD0BOW4Roe3QlmyTbcRtYCYJfvK4h5v
+   NtGi9FDjEXlD+fLG5Fzzwdukpoqod5sskhMx8GFkmg/bJY0j8E6rLBAYZ
+   IqBUw6m1LbmASq7FRxmAaGQc/a6In3ZGwK8pBspVMTYxuNPT7byWumRmV
+   1rz3VnE7CGbo8VvXpwtjnabUzi3qKZYm0NlDbbLYQHZpXISlKzpE3ghM+
+   YyRx5T9haWqVECFXuYQ+8T35F8JL7OIT+WwmvaCMXS034OYmDvDQxojpu
+   g==;
+X-CSE-ConnectionGUID: JLktRhCjScW6uyrDdvst3Q==
+X-CSE-MsgGUID: bQcQRXadTsKA2hvBS0UuYw==
+X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
+   d="scan'208";a="64649368"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 05:38:30 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
+ chn-vm-ex4.mchp-main.com (10.10.87.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.56; Tue, 27 Oct 2026 05:38:30 -0700
+Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Tue, 27 Oct 2026 05:38:28 -0700
+Date: Tue, 27 Oct 2026 13:38:27 +0100
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Sicong Huang <congei42@163.com>
+CC: <netdev@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>, Simon Horman
+	<horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Louis Peens <louis.peens@corigine.com>, Hui Zhou
+	<hui.zhou@corigine.com>, <oss-drivers@corigine.com>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] nfp: flower: fix use-after-free in neighbour update
+ work
+Message-ID: <20261027123827.ouy6z635674mme4s@DEN-DL-M70577.microsemi.net>
+References: <20261024044903.1130380-1-congei42@163.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,79 +83,63 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart15872503.tv2OnDr8pf";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261024044903.1130380-1-congei42@163.com>
 
---nextPart15872503.tv2OnDr8pf
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-To: sw@simonwunderlich.de, netdev-bot+sashiko@kernel.org
-Date: Tue, 27 Oct 2026 13:35:33 +0100
-Message-ID: <2934231.BEx9A2HvPv@ripper>
-In-Reply-To: <179309132480.3134.3568656714789779480@kernel.org>
-MIME-Version: 1.0
-
-On Tuesday, 27 October 2026 09:55:24 CET netdev-bot+sashiko@kernel.org wrote:
-> [Severity: Low]
+> The netevent notifier handles neighbour updates and redirects by
+> queuing nfp_tun_neigh_update() on system_highpri_wq. Each work item
+> holds a reference to the neighbour, but only stores a pointer to the
+> flower app.
 > 
-> Does this Fixes: tag point at the commit that introduced the problem?
+> During device removal, nfp_tunnel_config_stop() unregisters the
+> notifier. This waits for notifier callbacks to return, but does not
+> wait for the work they queued. The teardown then frees app->priv and
+> app without waiting for these work items. Flushing cmsg_work in
+> nfp_flower_clean() does not cover the neighbour update work.
 > 
-> 85fb027f611b removed a check from batadv_tt_local_create() that already
-> limited the table by packet_size_max only:
+> A pending work item can therefore run after the app has been freed.
+> Its call to nfp_flower_get_port_id_from_netdev() can then access freed
+> memory while checking whether the neighbour's device can be offloaded.
+> Even notifications for unrelated devices can reach this check. The
+> same problem affects shutdown and probe error paths that tear down the
+> app after the netevent notifier has been registered.
 > 
-> -       /* Ignore the client if we cannot send it in a full table response. 
-*/
-> -       table_size = batadv_tt_local_table_transmit_size(bat_priv);
-> -       table_size += batadv_tt_len(1);
-> -       packet_size_max = READ_ONCE(bat_priv->packet_size_max);
-> -       if (table_size > packet_size_max) {
+> One possible interleaving is shown below. The neighbour belongs to
+> another network device that remains registered.
 > 
-> That older check had no cap at the 16-bit tvlv_len either. So the missing
-> limit seems to predate 85fb027f611b.
+>   CPU0 (remove)                   CPU1 (notifier / kworker)
+>                                   nfp_tun_neigh_event_handler()
+>                                     queue_work(system_highpri_wq, ...)
+>                                     return
+>                                   /* Work has not run yet. */
+>   nfp_tunnel_config_stop()
+>     unregister_netevent_notifier()
+>     /* Notifier callbacks have finished, but work may be pending. */
+>   nfp_flower_clean()
+>     vfree(app->priv)
+>     app->priv = NULL
+>   nfp_app_free()
+>     kfree(app)
+>                                   nfp_tun_neigh_update()
+>                                     app = update_work->app
+>                                     nfp_flower_get_port_id_from_netdev()
+>                                       app->priv  /* use-after-free */
 > 
-> Blame on the parent of 85fb027f611b points at defa87f5ce75fe
-> ("batman-adv: tt: extract allocation of new local entries"). That commit
-> only moved this code, so the check is older still. The original commit
-> was not identified.
+> The work items are allocated per event and free themselves, so they
+> cannot be cancelled individually, and flushing system_highpri_wq is
+> not allowed. Use a dedicated workqueue for neighbour updates instead.
+> In nfp_tunnel_config_stop(), unregister the notifier and destroy the
+> workqueue before cleaning up the tunnel state. This prevents new work
+> from being queued and waits for pending and running work to finish
+> while the app and its resources are still valid.
 > 
-> Kernels without 85fb027f611b can still let the local table grow past what
-> one unicast TVLV full table response can carry. This happens with
-> fragmentation disabled and a hard interface MTU above
-> sizeof(struct batadv_unicast_tvlv_packet) + U16_MAX. In that case,
-> batadv_tt_prepare_tvlv_local_data() hits its check_add_overflow() path and
-> returns 0, so no response is sent.
+> Found by code inspection.
 > 
-> With the current tag, stable tooling would only pick this fix for trees
-> that contain 85fb027f611b. Could the tag name the commit that first added
-> the packet_size_max-only check? Or could the commit message say that
-> older trees are affected too?
-> 
+> Fixes: 0ad722bd9ee3 ("nfp: flower: fix for take a mutex lock in soft irq context and rcu lock")
+> Signed-off-by: Sicong Huang <congei42@163.com>
 
-The code only does it job partially after this commit. All of the previous 
-commits would need a big revamp of the TT code - which is not backport-able 
-via stable.
+Looks right to me.
 
-The really relevant part is in batadv_tt_local_reserve() and this was only 
-introduced with this specific commit. And only for this commit, Sashiko 
-pointed this out.
-
-Regards,
-	Sven
---nextPart15872503.tv2OnDr8pf
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCauCalQAKCRBND3cr0xT1
-y8TcAQDjHcUwP2NnzQWPSyWeev4w3Dn2s9iUlhfIyglDNphWaQEApfjfe4DbHT5L
-NYy4eR55gRf5HWQ8hcEEXHkCgWA/rwc=
-=XFF3
------END PGP SIGNATURE-----
-
---nextPart15872503.tv2OnDr8pf--
-
-
+Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
 
