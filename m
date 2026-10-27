@@ -1,81 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.236
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793076672;
-	b=YBk/05BE/lWsP/E73kM4LdIDSd/MlSy+w37+LgymueSoF77Fty4uf2iHSu9TWNIZi1hL
-	 iae3G+Q0J9JNIT9YCkv55CjRgT4/vXQt4JHp5ARHDyNlhiS4qZT9NeEte8Lspn1JGcMLB
-	 9ZGbJpIapMb4fcb9U7DGzmX6j+hubYifHjOav1HXyFzrl8yfOIRjGNoRfJYLx9v1yg5tZ
-	 tzC+mg65whfjYGJ1lDOJippPI87aKthCf/pwRpCkGUWLlsOA2ODFlnZdHxgZJhqsKGotE
-	 w9ihmHu0GbZ9eLOfvda0xLdxY3++zpt8SLFsKP1QSVsQW+hueiRNNxSwAUA5Rxt4qPw==
+	t=1793076697;
+	b=Kz50rVJi+FYJaPaAyWChL2pvdzmI5BPzBcojkZVgoRvRoq91MjIa+iUoIlD9g7f/m7UP
+	 DMS1SiKuJL5PRjrpIuUrdM2Fs8UoXw3O3xdCJEr4BnLbCMwle7zdzMvDiAhvLHSbmXtyG
+	 cB2dHRELjFAVaAY+eFcUxFhyCoAhuXTxcW06M+K5tcCQ/I2FzoB8j1+Nqmwb0H/29szIH
+	 eUBV88A/9LFu3cLvHoqEm4Y6lya0F7j9d50Ic1R9Xxl35mt2ixiD17uGoD+WXnaY/jTFq
+	 vg3mRAo8fPx6pLjDyG2nkSzwjyQ03QNYA8+suheidQ6YKCiv4gtVKwAokb0vrKNjvFA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793076672;
-	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
-	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=UorkZN7XGO6iTpvoLvTmemMJ2RzNdn72w5oN6AlbaTc=;
-	b=tJAkVEUCGa/bXCsGxdVBIUPCbXBGyp1uZmfcIR482NS0Iy4wZH5TFVljsg1ZsrKVvwig
-	 giDtCAorBGhW9syA+1OLMByJyJY/Jvzx8q6UNu+poJZVAUTYR9tgVsN7pzQcmA4TSv8mW
-	 Sky7RqkbPdDDdnjTSAPPn3SWhlXtOhLUkdOSqnXcWndUhMqi0x9tuSVegrV4uFmcK3oCT
-	 DbEpukiQVg6eAGn1regC6JoIfPGy2RlscBhCHb6ak6okntcbp2lAEQRFlPkouC+r8tw+n
-	 aj0YuJIERhUZx+53JvkRv2ATuiqZeey/KGEL4Hcjy4NEWLzkolK/z2ODwt4ruaVWpBQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793076697;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	b=oz+TjJFgYpl886F3MasxIw2TQ5vlVle6GHx3GPHh5fNesjBtzIvdHRl7hL7jJdRVVcZ4
+	 RbYEOjXdhPVKF7kfcWPA/lArvBe/akXWrA5G+iHy0Qe7JzwLxNXd8/IwC34XPgk/yZgn4
+	 FKSQaWRrxL1v80ETTT2tLogqf7z5gYX828kpKEo0zCJqbLiWEMOyMPCkqgpmEAPZi3xP0
+	 JMBNIA60ltFyz0Dt0KQ4yvXRa+8LWqWQjTc2B9vHUek+6vGcRQLAlpbVDLHaId/9zAMy3
+	 XLSmxsUlDUnnoDaTbEx1vEdpj9QSAbZImwXBIJ2NV9RdhVu/P97fBisdjinOc+Ehy6g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=qq.com;
-	spf=pass smtp.mailfrom=qq.com;
-	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=LYM5HoMj;
-	arc=none smtp.remote-ip=203.205.221.236
-Received: from out203-205-221-236.mail.qq.com (out203-205-221-236.mail.qq.com [203.205.221.236])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Gb2Fojc7;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5382F606A31A;
-	Tue, 27 Oct 2026 04:51:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5382F606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F950606A31B;
+	Tue, 27 Oct 2026 04:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=LYM5HoMj
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1793076666; bh=UorkZN7XGO6iTpvoLvTmemMJ2RzNdn72w5oN6AlbaTc=;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Gb2Fojc7
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FA181F01825;
+	Tue, 27 Oct 2026 04:51:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793076697;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LYM5HoMjLp2fnyYyMLHmEEsZ6Pc6H4J80F/wJZ+8Zfsct8nxjkVpubi7Z2pJPm6zq
-	 2MK5IpQaYAZIZNm1/5xq/w/X/HEwxG2tEn7y8/r6Gva+t84Pnb2tY6NI0f4XdrNxL6
-	 +C5cHLn4VFjiBtEiRhvJFOSBlQ6CcAZtKu56nxcs=
-Received: from kernel-lab.tail5e91bb.ts.net ([2409:8950:57d:63:ad3c:addd:6586:2a94])
-	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
-	id CC41E4C1; Tue, 27 Oct 2026 12:51:04 +0800
-X-QQ-mid: xmsmtpt1793076664t4f3k1b4q
-Message-ID: <tencent_604E28FF9F3ED582CCAC563D0788102E8109@qq.com>
-X-QQ-XMAILINFO: OEUhVsHQax4MacOqvanj1DwW9XK6UfrtiZ7MhPCNLdhXV5VcJwJw/9pM8kYm8X
-	 Y4Bt8XvuziYr3chxXzmw/aznxt6hWwlICeMR7O74mgCgeCxqCfniujwxPAe4yq/E160FqjWQvVUX
-	 ZP7Fwq0WxPwMl9VZWhB+GzdsEN5rboOSH/i+ob8A/SXrNog52jtHq/JoZsULLsJfmtr4W+9cTHph
-	 XPfOXiZ2KZ+JoI2alMIRq76G3CzAbxcpHtGX+L7wegJocSBbNWe0thzhjS1eldqvWjNSiGI1B6zk
-	 UtwlLdzeC8s6FdpKf+ooHgdGcq92So11e1zq/vPbQS8JbbicUtSlT/FZ5Sb7ByWW17V2KOFciSEi
-	 Rc8CcWIo6/yz5XfNnqmRhqKe0qD/dEr10RlV3UyKtHD5rrnc28sBwnBDKVTRGAOnmqrUQ6lvOjsz
-	 TkkKMhgIbn55P2Ah2/FeHl7qem/0Dz+LiKGgC2rXT7GRIHxS7AOHsk3PWfHNgxy3bNr7g+M+hKRM
-	 tcxQKyqz3LFF77FRMWTtQSbKZoA3haJuOfaYFm3Tpk0DyFf7mwLlVQWzBemnTRkTn//z6IuATbKS
-	 PcbHAJh2ICsAQ7koErnN1MJiZBrwmS1Wy7RLqH/yFewM5nue2kKoRBiFqr8gx2XRJFkR7zQfv5i9
-	 bIfzBCoYuwTnVlE34jAuMCLkDP4sfHhx1cQsNIHKxsna0P0qBFIGW2/PSaWL2OuMTUpSu/8OTNTI
-	 37chlhLiKnSAKhBYx8JFQc+XQCbm6ijM+YCdrTl1WJOy+j5d1QiKrlSeFQ2LiCydlKDlcuDkeD4k
-	 /uk//zEWeF+UUBHmM+szYPlaMsmJJLMzWsovhp4gYb74Wm4TIvSQc+BQMOUzIa+FHsCroLxhBE7m
-	 Frg0mDXRT4k08GuXKb9VpQM5gBrokGyMmpPU7fch2J0QI1Ig4qmCqMx6VvbHVFkV0uNP6UpuuEoK
-	 MOOP/VudDiJX56mBQ4qle/hId1jD7wmN0e1OYQN236WFs1dFKT186Bx1/O9jgoVXhvBgaV23dX0M
-	 Q1go2u3CL2+vv+MI2U9376EusoAXya5OLN4/j8yri8EcsuYOEsRI/7BfZrw9Y=
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
-From: Yingjie Wang <1075151112@qq.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] af_unix: order MSG_PEEK references against garbage collection
-Date: Tue, 27 Oct 2026 12:51:03 +0800
-X-OQ-MSGID: <20261027123817.af-unix-thread-pointer.0d699734-c1fe-4ef3-ae49-db494da51216@qq.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <auABC6uMYxXmPqtb@google.com>
-References: <tencent_287A56749EA8448A970F2715FFF29F334108@qq.com> <auABC6uMYxXmPqtb@google.com>
+	b=Gb2Fojc7fwfLI7dkiic+0QLYi7rNpHnOlRGICmV+UBDPI6QHY2ASym8zS/ey1IjyP
+	 KC5XMLhd2edQIar2oflKF5RSZqw0J/8VzTwrEYU0GbQ6dInYtoeb+DIiH03ktx0DBR
+	 TNEc/6RFJP8xrq7seQNV+tJaeCu64RBVYKH+Cg+BAZfUwcLy9LqglaH1mTZ/pX9VnO
+	 7rbx4/fJCXthq4jMktPmkguA+U0ZnE1qVFgOVKA9KqDQokrLriczS+lU66AqLt8boe
+	 DxdewLthUlE9MbjeQ4XtCmYmlP2h278HIAPjDuyynKsMs4eCZOwdecFvu7phLVrZ3t
+	 mdqhqJ1h7RmLg==
+From: netdev-bot+sinfo@kernel.org
+To: Zhiling Zou <zhilinz@nebusec.ai>
+Cc: edumazet@kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org,
+ ncardwell@google.com, kuniyu@google.com, davem@davemloft.net,
+ pabeni@redhat.com, horms@kernel.org, jonathon.reinhart@gmail.com,
+ vega@nebusec.ai
+Subject: 
+ Re: [PATCH net v2 1/1] tcp: check congestion control restriction first
+Date: Tue, 27 Oct 2026 04:51:36 +0000
+Message-ID: <179307669618.3327.10896657466319560651@kernel.org>
+In-Reply-To: 
+ <71c142b2d45af6a2fe7fc6cd4a5ca52c53afbe23.1793075984.git.zhilinz@nebusec.ai>
+References: 
+ <71c142b2d45af6a2fe7fc6cd4a5ca52c53afbe23.1793075984.git.zhilinz@nebusec.ai>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -85,14 +66,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 27, 2026 at 01:42:05AM +0000, Kuniyuki Iwashima wrote:
-> Actually there is another thread going on for this issue and
-> I suggested another aproach, so ...
+Hi!
 
-Could you please point me to that thread?  I could not find it in the
-recent netdev or Patchwork archives.  If it is not public, should I wait
-for that approach before revising this patch?
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
+
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
+
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
