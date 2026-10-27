@@ -1,63 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793067971;
-	b=0UJQUkl39MVjenGzluGxdPwO+p8ygitpJ9I/itScmCjhC843I+rc5/OaTG7JbyW2DGxu
-	 d8ogI8p5O9LQLzTvsNb5OSqTQH4GoY09iuaZ66TNaSvNNyNA8xAc58Y1e1kuGHdcuFNJi
-	 GFtERfRTV7oq0FupVMy8t8IHUlNFgyeHWjLACaOlF2wECjPttlSsReful2/f95GtvS+UW
-	 S8UGGgQFGuf8vYzebvNh6YPXaCVfxML42DIKUM+K6yg7bs6j3PHd3q5TQDwtXwJo4DDS3
-	 itAGiL1JLkeWZ7Qi/z8XNjmXDGh1b8H0gCCRtFgfO6Cke3R9oSSYq+mG/0fj/OGtBEg==
+	t=1793068135;
+	b=3ABVpzoPvCbzYxXrGqx8lNPC7cTZjNebgfFluTRLH+fulN6FK2CK0Fp1JRE3zReoJ3Ga
+	 zeR58rs6bBCgM3ukuikVU99lZeiniRBHBQzTWxUAmiboW4n9jRSUXtGma2fXP594NpBaa
+	 Q5lIAOqwyzFRt/drLaZJGYZJ2wbWDPUc8cwzyXfSQkB2tvuxi0+W5XMylNTspHSwwqz4y
+	 B6VeQwrZTRYzUz+5f+Tyf6eHC1NIgYcOJo3tp6jy4RbWP0buHqGcNthzymf4wYk5tgH4d
+	 R6LrBSAK4ukoCXD9xDfe317UQiTDAFq9Y6mavcuFF05bPrE1TJjfG/Sd0SJhAztt2dQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793067971;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=rErQTo2Nunqq6i62Mdon6M+XdYGNQOYXujl7TnxQuV8=;
-	b=a10yBfPeDNiFJDaMxSLCq5u5kj1F4aj1Ip1mn6x5DzuLrehGXAqEBTQn0egBGfWKvCY2
-	 IeScRl/cBrkpQPDGVvItxsRlOSfjTI6nIjHyBowQoOkqbtYPDdLXwIl1wuVYIb9ZGq8VJ
-	 rpAE55cy06dH0mJC/ciOvqg/wXW/N1MdxnsypCh582Qv9Kc1MYHausaHyCxsBLHAD7fbo
-	 lPp9A5XZ2IAOwdniHIVAJ2R892GPFH7FJzFphZWpaYdBusaOH3zPgDa2UQojnpKVukWx+
-	 ZUWzIwkyQf12Se7w0p8U7adqrQuFATCItjnp8jYByWae3MnUwT4Jo6t1hRtu176A7BQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793068135;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=0DKYkKim1zCQPtEbSstx8AMdlP0KYJRU77N3GxfZjCQ=;
+	b=bYn3fdtreeHEfVyd40VnV9ANjP/XoE5s5jo9KQ+A83iik+fiDVNnCe19e8WdeULHCEn9
+	 3KtlAgqW9+J8+4OyiMuulHR93D06I2PBo+2s3NnELUFy3vScOZ/T94zhH9Nb/vFsO/z9I
+	 Z1cboVE7pQb1lrkEY4+PNCdNA5e4UIRfOJGqzK/22CZIMgHkbkrrKsDfEadJfetd82svA
+	 J3FsgOeDUft5mYENtuwH8YFpyifpSCOp4qqcE7+Kc73MX1FGd+vB/p+GK+mtdvOuDPPUI
+	 ZQ+vPprmisRtDB6I+MrYqbKONsTyXRO72rAS84SYBt3jXpX1/qZOtBQWycpqETLqQ7w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fqhgXJdK;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Qh9HjegA;
+	arc=none smtp.remote-ip=209.85.210.197
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB7E606A32E;
-	Tue, 27 Oct 2026 02:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52CA606A31A
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 02:28:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A52CA606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fqhgXJdK
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F85F1F031EE;
-	Tue, 27 Oct 2026 02:26:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793067970;
-	bh=rErQTo2Nunqq6i62Mdon6M+XdYGNQOYXujl7TnxQuV8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fqhgXJdKQ4PaG8z5B2zknj9MDC77/TbEOI3aoYkxcw2dWSBXHTKmhxeuraa1bUwaW
-	 AjXrSd60/JTJLrz6PCSDl2tLT4CfmKeTVgTaxKvlTZY59IUgXHy95YQ88nhk+IUKmE
-	 0eCQWwyInq95RPDzdY3KS6I8/OYZWr6cTExvgXHsgJzK+WyZ4LcHOT1Djhwa1gBDeh
-	 mv/sKskiACauRUN2MnQlrqTO9fVBFe01vMTZq/uu/PrP/2B6M+pwXdPDmcHiwUUEa/
-	 +/4RSpMTbD7B91dwStLkuLiMGXIWYMQmb1KG/DVfxXGREUFs4zH8Thv8KvfmCs4We8
-	 SlULTZQ+T1KPA==
-From: Jakub Kicinski <kuba@kernel.org>
-To: robin.murphy@arm.com,
-	m.szyprowski@samsung.com
-Cc: tglx@kernel.org,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	joro@8bytes.org,
-	will@kernel.org,
-	leon@kernel.org,
-	mbloch@nvidia.com,
-	iommu@lists.linux.dev,
-	netdev@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [RFC 07/11] eth: ixgbe: use dma_alloc_coherent_node()
-Date: Mon, 26 Oct 2026 19:25:24 -0700
-Message-ID: <20261027022528.633359-8-kuba@kernel.org>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261027022528.633359-1-kuba@kernel.org>
-References: <20261027022528.633359-1-kuba@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Qh9HjegA
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-88c768885b4so6439549b3a.0
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 19:28:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1793068134; x=1793672934; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=0DKYkKim1zCQPtEbSstx8AMdlP0KYJRU77N3GxfZjCQ=;
+        b=Qh9HjegAyEtpn6PG1OPFrqSgqRSnAT+UgBbUz6YO/svCJETYoLjJh3Xbyh6i3MFnHo
+         0mT1hXeXE6AoQERRJDjzqP6egkXGq+qGL/pjaQpKzcjYf71ePPRxVT4Agph23mcdKRMe
+         hGwSatkqZjIz8eypALgUtTYx6MTXjWuJ6kNks3g+hL2FODNfeVDDDsChdJm47LfTVP7X
+         BE6C7QiHgucjS8AF3PCPSnkfeLnKR9A5a5oKMxfAD09nTrinGvadnqVPN7wD80lzAyJk
+         cdccKhOiORVJG4FjBCfmhllHamFSCPzAQoMJZVdRjkoPT+nqIdyV3D4Nv5LNNbL7XJ3/
+         c6Sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793068134; x=1793672934;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0DKYkKim1zCQPtEbSstx8AMdlP0KYJRU77N3GxfZjCQ=;
+        b=lGLQzr4UbPt26I1NdbHrezmlGB2fwjBAajXjfspBNoMdjcmPSENQ7/WN9ZBM+8KIvU
+         HuYrjHXYL14tOwgbyYaOsJytuNULYlIzzVMiM4oqoUUe856u6obZU/JPQizDowwwY7NZ
+         e/yIshbmMBlfOk2ANNdnPoUPR+Z9oQoM5SDTOp0sE4Q6T8UHXWME6vzSjeMwc4w2Q5XU
+         dxiyCfikHkpP8lYycvFD2YybM5C4A6eoUyZEXPK/YpnsC5lxldjLcMBF7ISi4e9pA84s
+         Z/msD+umcEtob+SfE5UJ6fW2/oHk6v/KFsORzGfAGLD46u81otRjkVCX05iSYMLmEuy8
+         N80Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxzCERRlCE1iGTwQyWTOYpNt92/Fh7ra0a47hfBX6A2+KAlC+W3aWkMsDaX/ebuRrMHbXcg6Mg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLy4kRE0tAXQAIWStLdpYXdI/1RwEuSDZ7CO3T2GdquR6Jz9Y78
+	dNsC3edR0lJoWCD1l+wExFj0gyJcADvr66h+y+iudKqpanpRGShZWnoeeouaX1HLqCcgZtIkd6K
+	2im5h3g==
+X-Received: from pfak4.prod.google.com ([2002:aa7:92c4:0:b0:887:8dda:c9e4])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3f90:b0:3e2:8ca9:5c6c
+ with SMTP id adf61e73a8af0-3e7bfbd65f6mr5850646637.20.1793068133781; Mon, 26
+ Oct 2026 19:28:53 -0700 (PDT)
+Date: Tue, 27 Oct 2026 02:28:53 +0000
+In-Reply-To: <CAL4WiiqQ3cychvCccpNW+WOU2SYCfNt6L=wgPkNmfTLHLy605Q@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,71 +79,131 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20261026032216.1145201-1-tavip@google.com> <20261026032216.1145201-2-tavip@google.com>
+ <CAL4WiiqQ3cychvCccpNW+WOU2SYCfNt6L=wgPkNmfTLHLy605Q@mail.gmail.com>
+Message-ID: <auALgSUuoYmfKSz3@google.com>
+Subject: Re: [PATCH net v4 1/2] tcp: clamp return value of tcp_wmem_schedule()
+ to non-negative
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: Octavian Purdila <tavip@google.com>, Eric Dumazet <edumazet@google.com>, 
+	Neal Cardwell <ncardwell@google.com>, "David S . Miller" <davem@davemloft.net>, 
+	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>, 
+	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Use dma_alloc_coherent_node() to place the descriptor rings on the
-node of the ring's q_vector, instead of temporarily changing the node
-of the device. NUMA_NO_NODE (ring without a q_vector) means no
-preference, same as what set_dev_node(dev, NUMA_NO_NODE) resulted in.
+On Mon, 26 Oct 2026 13:06:56 +0100, Eric Dumazet wrote:
+> Le lun. 26 oct. 2026 =C3=A0 04:22, Octavian Purdila <tavip@google.com> a =
+=C3=A9crit :
+> >
+> > When sk_wmem_schedule(sk, copy) fails under TCP memory pressure and
+> > sk->sk_wmem_queued already reaches or exceeds sysctl_tcp_wmem[0],
+> > tcp_wmem_schedule() returns min(copy, sk->sk_forward_alloc).
+> >
+> > However, sk->sk_forward_alloc is a signed int that can transiently
+> > become negative when tcp_collapse() re-packs partially read or high
+> > payload-to-truesize SKBs in the receive queue and charges newly
+> > allocated SKBs via sk_mem_charge() before freeing the original SKB.
+> >
+> > If tcp_wmem_schedule() returns a negative value, tcp_sendmsg_locked()
+> > passes that negative copy length to skb_copy_to_page_nocache() ->
+> > copy_from_iter_full() -> check_copy_size(), where it is converted to an
+> > unsigned size_t > INT_MAX, triggering a WARN_ON_ONCE(bytes > INT_MAX)
+> > in production and returning -EFAULT instead of waiting for memory or
+> > returning -EAGAIN:
+> >
+> >   WARNING: CPU: 1 PID: 939331 at include/linux/thread_info.h:249 tcp_se=
+ndmsg+0x10c1/0x1530
+> >   Call Trace:
+> >    <TASK>
+> >    __sys_sendmsg+0x292/0x490
+> >    do_syscall_64+0x88/0x340
+> >    entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> >
+> > Clamp the return value of tcp_wmem_schedule() to [0, copy] so callers
+> > treat negative sk_forward_alloc as 0 available bytes.
+> >
+> > Fixes: 849b425cd091 ("tcp: fix possible freeze in tx path under memory =
+pressure")
+> > Assisted-by: LLM
+> > Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+> > Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+> > Signed-off-by: Octavian Purdila <tavip@google.com>
+> > ---
+> >  net/ipv4/tcp.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+> > index 87ef6d5cbfeba..0e062fcd94a6c 100644
+> > --- a/net/ipv4/tcp.c
+> > +++ b/net/ipv4/tcp.c
+> > @@ -1037,7 +1037,7 @@ int tcp_wmem_schedule(struct sock *sk, int copy)
+> >         left =3D READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_wmem[0]) - sk-=
+>sk_wmem_queued;
+> >         if (left > 0)
+> >                 sk_forced_mem_schedule(sk, min(left, copy));
+> > -       return min(copy, sk->sk_forward_alloc);
+> > +       return clamp(sk->sk_forward_alloc, 0, copy);
+> >  }
+> >
+> >  void tcp_free_fastopen_req(struct tcp_sock *tp)
+>=20
+> I do wonder if the following fix could be better (no change in the fast p=
+ath)
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 20 ++++++-------------
- 1 file changed, 6 insertions(+), 14 deletions(-)
+Exactly, this looks better too, we can avoid negative
+sk_forward_alloc and clamp().
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-index f91856498eb2..770648f8ab89 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-@@ -7083,7 +7083,6 @@ static int ixgbe_sw_init(struct ixgbe_adapter *adapter,
- int ixgbe_setup_tx_resources(struct ixgbe_ring *tx_ring)
- {
- 	struct device *dev = tx_ring->dev;
--	int orig_node = dev_to_node(dev);
- 	int ring_node = NUMA_NO_NODE;
- 	int size;
- 
-@@ -7102,12 +7101,9 @@ int ixgbe_setup_tx_resources(struct ixgbe_ring *tx_ring)
- 	tx_ring->size = tx_ring->count * sizeof(union ixgbe_adv_tx_desc);
- 	tx_ring->size = ALIGN(tx_ring->size, 4096);
- 
--	set_dev_node(dev, ring_node);
--	tx_ring->desc = dma_alloc_coherent(dev,
--					   tx_ring->size,
--					   &tx_ring->dma,
--					   GFP_KERNEL);
--	set_dev_node(dev, orig_node);
-+	tx_ring->desc = dma_alloc_coherent_node(dev, tx_ring->size,
-+						&tx_ring->dma, GFP_KERNEL,
-+						ring_node);
- 	if (!tx_ring->desc)
- 		tx_ring->desc = dma_alloc_coherent(dev, tx_ring->size,
- 						   &tx_ring->dma, GFP_KERNEL);
-@@ -7184,7 +7180,6 @@ int ixgbe_setup_rx_resources(struct ixgbe_adapter *adapter,
- 			     struct ixgbe_ring *rx_ring)
- {
- 	struct device *dev = rx_ring->dev;
--	int orig_node = dev_to_node(dev);
- 	int ring_node = NUMA_NO_NODE;
- 	int size;
- 
-@@ -7203,12 +7198,9 @@ int ixgbe_setup_rx_resources(struct ixgbe_adapter *adapter,
- 	rx_ring->size = rx_ring->count * sizeof(union ixgbe_adv_rx_desc);
- 	rx_ring->size = ALIGN(rx_ring->size, 4096);
- 
--	set_dev_node(dev, ring_node);
--	rx_ring->desc = dma_alloc_coherent(dev,
--					   rx_ring->size,
--					   &rx_ring->dma,
--					   GFP_KERNEL);
--	set_dev_node(dev, orig_node);
-+	rx_ring->desc = dma_alloc_coherent_node(dev, rx_ring->size,
-+						&rx_ring->dma, GFP_KERNEL,
-+						ring_node);
- 	if (!rx_ring->desc)
- 		rx_ring->desc = dma_alloc_coherent(dev, rx_ring->size,
- 						   &rx_ring->dma, GFP_KERNEL);
--- 
-2.56.0
+The packetdrill will need to be adjusted as it triggers cgroup
+OOM with this approach, or we could defer the test to net-next too.
 
+
+>=20
+> Before a complete fix in tcp_collapse() (in net-next)
+>=20
+>     tcp: do not let tcp_collapse() drive sk_forward_alloc negative
+>=20
+>     tcp_collapse() charges each newly allocated skb with skb_set_owner_r(=
+)
+>     before the skbs it replaces are freed, without scheduling memory firs=
+t.
+>=20
+>     Since sk_mem_uncharge() reclaims eagerly, sk->sk_forward_alloc has no
+>     cushion and can become negative. This can be durable when the collaps=
+ed
+>     skbs had a high payload/truesize ratio or were partially read, becaus=
+e
+>     the new skbs can have a bigger total truesize than the old ones.
+>=20
+>     A negative sk_forward_alloc then confuses tcp_wmem_schedule(), which
+>     can return a negative length to tcp_sendmsg_locked(), triggering
+>     a WARN_ON_ONCE(bytes > INT_MAX) in check_copy_size().
+>=20
+>     Call sk_forced_mem_schedule() before charging nskb.
+>=20
+>     Fixes: 4890b686f408 ("net: keep sk->sk_forward_alloc as small as poss=
+ible")
+>=20
+> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+> index 1ddce9c4b7e8cf91bfd4f5361abec3925fe25046..e879bdfddf1abe2ced80b12ea=
+8a40c1f7c958708
+> 100644
+> --- a/net/ipv4/tcp_input.c
+> +++ b/net/ipv4/tcp_input.c
+> @@ -5847,6 +5847,10 @@ tcp_collapse(struct sock *sk, struct
+> sk_buff_head *list, struct rb_root *root,
+>                         __skb_queue_before(list, skb, nskb);
+>                 else
+>                         __skb_queue_tail(&tmp, nskb); /* defer rbtree
+> insertion */
+> +               /* nskb is charged before the skbs it replaces are freed.
+> +                * Make sure sk->sk_forward_alloc can not become negative=
+.
+> +                */
+> +               sk_forced_mem_schedule(sk, nskb->truesize);
+>                 skb_set_owner_r(nskb, sk);
+>                 mptcp_skb_ext_move(nskb, skb);
