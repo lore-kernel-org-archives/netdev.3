@@ -1,57 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=79.135.106.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793099814;
-	b=LXAWbCh8tsojLwOIVAHG4hqwCBVWQe3qXM2SjTKN8ixeVEzuQ5W9iRN5tePDCiDucnP6
-	 +ElMLDOGEzHn30fv1DrIYbSnfrUVEPNO+phPs6Z9eI5liJQmB9iKPbqVeOeeK63eaCHj1
-	 vIhMeMku8N2xGOXLef1hn/8v9/wWSZD/+AsktOcztGJ2h3NAjm99+Rhtg83qMiCaJgtHH
-	 jGYiycELMTnvKs2WGTAx4QrWpjrhMSna0jpsRy/4CkjhJG1ECKoWBfApwUaoutpxiyUTQ
-	 exF/ztslXL2aHeZeRyN2MO6WbvI8C5Zl+OMQ4EBxISJTCZ5uy0tE7AaTQ5KYDhnDd5w==
+	t=1793100016;
+	b=qj0wqjm/6k7u4TThIbUTP32Kbxu5xyRklagI6tYTUDUsRoVHyIoQN8JsNiQik5UdfkAN
+	 3e5H2pFl+QlNrix5c/PcMrn93cYLYr+S8iFJl8UXuSxENIUskiHmEQazyIBGHZijKGaqW
+	 58FRMbVq4RzJQldLGgjXprClpRWnzNnZIjF1N3uCtNnJ04HzyEa9d59bgHPeWty5HQsCg
+	 McVXHKQbHdfQkqX9c6eXFRFUyzYCRjbgx0dltHoir3Sf2TGMLWlld/Vw+ovNZOzX5fJk3
+	 U2HVP7/GX4G7KO6a4YWc2APF3W2MA/SISOe10N4l2gCWEpvrMmUqcNF9Xnpz5WChdZQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793099814;
-	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
-	 Feedback-ID:X-Pm-Message-ID:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=4e/ijGid9rqc5SgoybakUdWyi0vXdqYvSUZK3BN12UM=;
-	b=ghMAV+LFyRG+7Pc4d1rNIfRQRyBywgH/aurtwRB04p0GlQ61Md9TBu+dwLmnsBSN5u0I
-	 tL8RqqwPDBnl7/LkSLHd/ZXLe4H8lc5Tapdu356PKSfgRNu+DIq/MQr7C7Z+IM46RAPXs
-	 l6sYSROumWH2Gegq9AgOGRyFnJ++2ds8oM+WAUnd/G9NtiUDL3upLS6T4QZKYgww10rx9
-	 bzdYUWJfqemcuH0ohWGu6dXUZ66Nb4VbHIeP7eDER9aR7no8tWFL7gvd6XnAvY+6lv5iD
-	 tfVjg99RE3BTNTxPKmHfml65HlXq0NjiFSYhgNuhWbUivII1nyD5FzbCUyjw8Gki47w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793100016;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=CuiZddo/01BhTAXEP7M7RaEfIKgYuXoE3a1KQe8iOqo=;
+	b=4jbf6k1r5GDwKfWjYWq7sDS6vyrvW3jEi/icl13Wwu4fJS12rcle/iUIoE1jrDbZh8m+
+	 SgiPMKCTOgJjNvrAz0QS4nYPoWzy7MCErYM5lEIxKlziZkUIhUPCn9bQRymKZmdnXdjTV
+	 O9WBz87p1RvzB2OU6/6ARt4fPsgUeM40/KoioZ7fdiuMADT0D7iyjN5t6mam8TLzcrkuu
+	 /exLP0DEyFw/NsKrqHwxJ0BXAw8TDrmEiojz09GdPBY0quAyEUa0OR+2Sf1D1kPDeo+32
+	 O4Lgb+WSn61BokbFZHrkXADrugzoML1sX56XBE0pQiOt9SE8zzYxE5/fa442pai6EDA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=proton.me;
-	spf=pass smtp.mailfrom=proton.me;
-	dkim=pass header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=protonmail2 header.b=lNWF3+MR;
-	arc=none smtp.remote-ip=79.135.106.101
-Received: from mail-106101.protonmail.ch (mail-106101.protonmail.ch [79.135.106.101])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XGlPIRoh;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AAFC606A31B
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 11:16:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2AAFC606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C039606A31A
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 11:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=protonmail2 header.b=lNWF3+MR
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail2; t=1793099810; x=1793359010;
-	bh=4e/ijGid9rqc5SgoybakUdWyi0vXdqYvSUZK3BN12UM=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=lNWF3+MR5sLECC4JQlckLBtL+WL4mvPKwdqJ0UgMscASIaGKRpCvQHPuiM4w6GRYj
-	 nemmKqlDqJKH9JeUZucx9/gGYzm6dJON4jO13jz9iP2s04u8vOs9gcm4EC76f0VejP
-	 lFbAVlvTycW59jSQU1x+yfkBQz6tReaMh5l79RMDm3S+bh/XnGz4ddDu0LK2YAiExS
-	 R8gp2P3fFmqUuBHxIpXno74ehAE+zQEWzSmF5qHHmoFtdL18hZUkjRW9daKx6MG4Id
-	 qrKb2jJ9HucbdzO4In/BncDMVbyotX3MISBQT6mLa3gLPO8tpcReknjwG7SzkLA6D/
-	 iWyAg9H9AE0jw==
-Date: Tue, 27 Oct 2026 11:16:46 +0000
-To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-From: omniameasunt@proton.me
-Cc: Paul Moore <paul@paul-moore.com>
-Subject: [PATCH net v2] cipso_v4: fail the walk on malformed options
-Message-ID: <uOcTaW7-g5e97ng6BG_DcH5mlMnpw7KzU25SZjL69pkAVINTMiL26FryLAuYPSNowDo8qwfb9hm_I4dQ1BwpiRe62E-I2TyUkJZ_eBeuLoo=@proton.me>
-Feedback-ID: 219316618:user:proton
-X-Pm-Message-ID: 5b9968d5edb6bce6b1f90add939ee14d7fc34066
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XGlPIRoh
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F2541F01825;
+	Tue, 27 Oct 2026 11:20:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793100016;
+	bh=CuiZddo/01BhTAXEP7M7RaEfIKgYuXoE3a1KQe8iOqo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=XGlPIRohVj/j60H1/kL8KNzIiIfM3rNfeHke70FxRYvp6IxY4rWQmD9oMKVrXiuHh
+	 bKlaapwpQ/AhdyqGHwbCIhBtrvvfp7MPtR7jASuqrmNs2C/BI6KM4iFN4lVTzvyjsx
+	 AUkmCSRryI5xyHIHT4MeczgwDDhjBqomyI24jqM/fDnTg0gA8O5JojyUt+GrrIqxSO
+	 4F15CLsAa++ZBBhmd+2SxMsZjEEQLvQgrbev5yHvVHJ3/vXcND5KDpjvKyc/MqgHC6
+	 j8SgiuE2ybxTt3Mc2b3mjWX0tww+WGYEXtMiFniJ8PMQ64L+7HI6EMxliql6dbnQ6o
+	 yQVwTYvOwLZ4Q==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 0741B3AA9388;
+	Tue, 27 Oct 2026 11:20:16 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -61,238 +53,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: xps: bound the cleanup loop by the old map's
+ num_tc
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179310001483.3743855.12990694604364154535.git-patchwork-notify@kernel.org>
+Date: Tue, 27 Oct 2026 11:20:14 +0000
+References: <20261021155538.67867-1-phx0fer@gmail.com>
+In-Reply-To: <20261021155538.67867-1-phx0fer@gmail.com>
+To: phx <phx0fer@gmail.com>
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, netdev@vger.kernel.org
 
-cipso_v4_get_actual_opt_len() walks a compacted IP option buffer with no
-validation of the option it is standing on: it reads data[iter + 1]
-without checking that the length byte is inside the buffer, it accepts a
-zero length byte (spinning forever), and it never clamps the walked
-offset to len, so the returned length can exceed the 40-byte MAX_IPOPTLEN
-bound that every caller assumes.
+Hello:
 
-After cipso_v4_delopt() memmove-compacts a socket's options, the bytes
-past the compacted region are stale and attacker-controlled via
-setsockopt(IP_OPTIONS).  An unprivileged user (CAP_NET_RAW in a user
-namespace, CIPSO labeling configured) can trigger the walk with
-connect(AF_UNSPEC), which reaches cipso_v4_sock_delattr() through the
-SELinux NetLabel hook.  The poisoned optlen is later used in
-do_ip_getsockopt(), where it causes
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-  * an out-of-bounds read of the adjacent heap object copied back to
-    userspace (kernel pointer disclosure, KASLR defeat), and
-  * a stack buffer overflow when optlen exceeds the 60-byte scratch
-    buffer (return-address overwrite; exploitable for privilege
-    escalation on kernels built without stack protector).
+On Wed, 21 Oct 2026 23:55:38 +0800 you wrote:
+> __netif_set_xps_queue() walks the OLD dev_maps to free its entries.  The
+> per-row trip count uses the NEW num_tc while the row stride uses the OLD
+> dev_maps->num_tc, so when dev->num_tc was raised without rebuilding the
+> XPS map the last row indexes attr_map[] past the allocation:
+> 
+>   BUG: KASAN: slab-out-of-bounds in __netif_set_xps_queue+0x1458/0x1ee8
+>   Read of size 8 at addr ffff000014f69458 by task insmod/112
+> 
+> [...]
 
-The same helper is also called from cipso_v4_skbuff_delattr() when a
-label is removed from output or forwarded packets; the option bytes there
-have already been validated by ip_options_compile(), so the new checks
-are defensive for that caller.
+Here is the summary with links:
+  - [net] net: xps: bound the cleanup loop by the old map's num_tc
+    https://git.kernel.org/netdev/net/c/6d5a2cb0b7d6
 
-Fix the defects by making the walk fail with -EINVAL as soon as an
-option header is truncated or malformed (length byte missing, zero, or
-one) or an option would run past len.  cipso_v4_delopt() then drops the
-socket's entire option set (reusing the existing branch that frees the
-ip_options_rcu when CIPSO was the only option), and
-cipso_v4_skbuff_delattr() leaves a malformed packet unchanged instead
-of rewriting its header based on untrustworthy bytes.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Well-formed option streams are unaffected: a socket whose options
-survive the compaction intact keeps them; only malformed streams now
-lose all options instead of carrying a partially parsed set.
-
-The function also compacted the option object in place while the
-ip_options_rcu remained published.  Lockless readers such as
-getsockopt(IP_OPTIONS), UDP sendmsg(), raw sendmsg(), and ping sendmsg()
-copy the object under rcu_read_lock(), so they can observe a mixture of
-old and new offsets or option bytes.  Build the compacted object in a
-replacement ip_options_rcu, modify only the replacement, publish it with
-rcu_assign_pointer(), and retire the old object with kfree_rcu().  If the
-replacement cannot be allocated, leave the old object untouched and
-return -ENOMEM.
-
-Fixes: 014ab19a69c3 ("selinux: Set socket NetLabel based on connection endp=
-oint")
-Signed-off-by: Lucas Dupr=C3=A9--Rabinovici <omniameasunt@proton.me>
----
-Previous version:
-https://lore.kernel.org/netdev/CBLsHx48w8Bn1k_Xg6kJFliLNkxLCqi8SnkifapxYYpV=
-tll4w-W_2JJePtbk9ssIS701IFJvi0Q2n5l-2GFFe8hNHU9Y_CgD_sdzcAbILVA=3D@proton.m=
-e/
-
---- a/net/ipv4/cipso_ipv4.c
-+++ b/net/ipv4/cipso_ipv4.c
-@@ -1824,7 +1824,11 @@
- =09=09} else if (data[iter] =3D=3D IPOPT_NOP) {
- =09=09=09iter++;
- =09=09} else {
-+=09=09=09if (iter + 1 >=3D len || data[iter + 1] < 2)
-+=09=09=09=09return -EINVAL;
- =09=09=09iter +=3D data[iter + 1];
-+=09=09=09if (iter > len)
-+=09=09=09=09return -EINVAL;
- =09=09=09optlen =3D iter;
- =09=09}
- =09}
-@@ -1992,53 +1996,79 @@
-  *
-  * Description:
-  * Deletes the CIPSO IP option from a set of IP options and makes the nece=
-ssary
-- * adjustments to the IP option structure.  Returns zero on success, negat=
-ive
-- * values on failure.
-+ * adjustments to the IP option structure.  Returns zero or a positive hea=
-der
-+ * length delta on success, negative values on failure.
-  *
-  */
- static int cipso_v4_delopt(struct ip_options_rcu __rcu **opt_ptr)
- {
- =09struct ip_options_rcu *opt =3D rcu_dereference_protected(*opt_ptr, 1);
-+=09struct ip_options_rcu *new;
- =09int hdr_delta =3D 0;
-+=09u8 cipso_len, cipso_off;
-+=09unsigned char *cipso_ptr;
-+=09int optlen, optlen_new;
-=20
- =09if (!opt || opt->opt.cipso =3D=3D 0)
- =09=09return 0;
--=09if (opt->opt.srr || opt->opt.rr || opt->opt.ts || opt->opt.router_alert=
-) {
--=09=09u8 cipso_len;
--=09=09u8 cipso_off;
--=09=09unsigned char *cipso_ptr;
--=09=09int optlen_new;
--
--=09=09cipso_off =3D opt->opt.cipso - sizeof(struct iphdr);
--=09=09cipso_ptr =3D &opt->opt.__data[cipso_off];
--=09=09cipso_len =3D cipso_ptr[1];
--
--=09=09if (opt->opt.srr > opt->opt.cipso)
--=09=09=09opt->opt.srr -=3D cipso_len;
--=09=09if (opt->opt.rr > opt->opt.cipso)
--=09=09=09opt->opt.rr -=3D cipso_len;
--=09=09if (opt->opt.ts > opt->opt.cipso)
--=09=09=09opt->opt.ts -=3D cipso_len;
--=09=09if (opt->opt.router_alert > opt->opt.cipso)
--=09=09=09opt->opt.router_alert -=3D cipso_len;
--=09=09opt->opt.cipso =3D 0;
-=20
--=09=09memmove(cipso_ptr, cipso_ptr + cipso_len,
--=09=09=09opt->opt.optlen - cipso_off - cipso_len);
--
--=09=09optlen_new =3D cipso_v4_get_actual_opt_len(opt->opt.__data,
--=09=09=09=09=09=09=09 opt->opt.optlen);
--=09=09hdr_delta =3D opt->opt.optlen;
--=09=09opt->opt.optlen =3D (optlen_new + 3) & ~3;
--=09=09hdr_delta -=3D opt->opt.optlen;
--=09} else {
-+=09if (!opt->opt.srr && !opt->opt.rr && !opt->opt.ts &&
-+=09    !opt->opt.router_alert) {
- =09=09/* only the cipso option was present on the socket so we can
- =09=09 * remove the entire option struct */
--=09=09*opt_ptr =3D NULL;
-+=09=09rcu_assign_pointer(*opt_ptr, NULL);
- =09=09hdr_delta =3D opt->opt.optlen;
- =09=09kfree_rcu(opt, rcu);
-+=09=09return hdr_delta;
- =09}
-=20
-+=09new =3D kzalloc(sizeof(*new) + opt->opt.optlen, GFP_ATOMIC);
-+=09if (!new)
-+=09=09return -ENOMEM;
-+=09memcpy(&new->opt, &opt->opt, sizeof(new->opt) + opt->opt.optlen);
-+
-+=09cipso_off =3D new->opt.cipso - sizeof(struct iphdr);
-+=09if (cipso_off + 1 >=3D new->opt.optlen)
-+=09=09goto drop_all;
-+=09cipso_ptr =3D &new->opt.__data[cipso_off];
-+=09cipso_len =3D cipso_ptr[1];
-+=09if (cipso_len < 2 || cipso_len > new->opt.optlen - cipso_off)
-+=09=09goto drop_all;
-+
-+=09if (new->opt.srr > new->opt.cipso)
-+=09=09new->opt.srr -=3D cipso_len;
-+=09if (new->opt.rr > new->opt.cipso)
-+=09=09new->opt.rr -=3D cipso_len;
-+=09if (new->opt.ts > new->opt.cipso)
-+=09=09new->opt.ts -=3D cipso_len;
-+=09if (new->opt.router_alert > new->opt.cipso)
-+=09=09new->opt.router_alert -=3D cipso_len;
-+=09new->opt.cipso =3D 0;
-+
-+=09memmove(cipso_ptr, cipso_ptr + cipso_len,
-+=09=09new->opt.optlen - cipso_off - cipso_len);
-+
-+=09/* Only the compacted region is live.  The old tail is stale and
-+=09 * must not take part in the walk or remain visible as IP options.
-+=09 */
-+=09optlen =3D new->opt.optlen - cipso_len;
-+=09memset(new->opt.__data + optlen, IPOPT_END, cipso_len);
-+=09optlen_new =3D cipso_v4_get_actual_opt_len(new->opt.__data, optlen);
-+=09if (optlen_new < 0)
-+=09=09goto drop_all;
-+
-+=09hdr_delta =3D opt->opt.optlen;
-+=09new->opt.optlen =3D (optlen_new + 3) & ~3;
-+=09hdr_delta -=3D new->opt.optlen;
-+=09rcu_assign_pointer(*opt_ptr, new);
-+=09kfree_rcu(opt, rcu);
-+=09return hdr_delta;
-+
-+drop_all:
-+=09kfree(new);
-+=09rcu_assign_pointer(*opt_ptr, NULL);
-+=09hdr_delta =3D opt->opt.optlen;
-+=09kfree_rcu(opt, rcu);
- =09return hdr_delta;
- }
-=20
-@@ -2248,14 +2278,18 @@
-  */
- int cipso_v4_skbuff_delattr(struct sk_buff *skb)
- {
--=09int ret_val, cipso_len, hdr_len_actual, new_hdr_len_actual, new_hdr_len=
-,
--=09    hdr_len_delta;
-+=09int ret_val, cipso_len, cipso_off, hdr_len_actual, new_hdr_len_actual;
-+=09int new_hdr_len, hdr_len_delta, optlen;
- =09struct iphdr *iph;
- =09struct ip_options *opt =3D &IPCB(skb)->opt;
- =09unsigned char *cipso_ptr;
-=20
- =09if (opt->cipso =3D=3D 0)
- =09=09return 0;
-+=09if (opt->cipso < sizeof(struct iphdr) ||
-+=09    opt->cipso - sizeof(struct iphdr) + 1 >=3D opt->optlen)
-+=09=09return -EINVAL;
-+=09cipso_off =3D opt->cipso - sizeof(struct iphdr);
-=20
- =09/* since we are changing the packet we should make a copy */
- =09ret_val =3D skb_cow(skb, skb_headroom(skb));
-@@ -2263,12 +2297,19 @@
- =09=09return ret_val;
-=20
- =09iph =3D ip_hdr(skb);
-+=09if (opt->optlen > (iph->ihl << 2) - sizeof(struct iphdr))
-+=09=09return -EINVAL;
- =09cipso_ptr =3D (unsigned char *)iph + opt->cipso;
- =09cipso_len =3D cipso_ptr[1];
-+=09if (cipso_len < 2 || cipso_len > opt->optlen - cipso_off)
-+=09=09return -EINVAL;
-=20
--=09hdr_len_actual =3D sizeof(struct iphdr) +
--=09=09=09 cipso_v4_get_actual_opt_len((unsigned char *)(iph + 1),
--=09=09=09=09=09=09     opt->optlen);
-+=09optlen =3D cipso_v4_get_actual_opt_len((unsigned char *)(iph + 1),
-+=09=09=09=09=09     opt->optlen);
-+=09/* malformed option stream, leave the packet unchanged */
-+=09if (optlen < 0 || cipso_off + cipso_len > optlen)
-+=09=09return -EINVAL;
-+=09hdr_len_actual =3D sizeof(struct iphdr) + optlen;
- =09new_hdr_len_actual =3D hdr_len_actual - cipso_len;
- =09new_hdr_len =3D (new_hdr_len_actual + 3) & ~3;
- =09hdr_len_delta =3D (iph->ihl << 2) - new_hdr_len;
 
