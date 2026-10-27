@@ -1,107 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793092041;
-	b=ADi+KF4UbQSfG2OiM++rvPBwORcIfl39sujiBFD6KBxMT6haKefP832VstwBmpszYTkN
-	 hLrDyv60NERv0cy+LTwJSdeYTsXNtEaRzR85oEmjRuj0XziBp5YvUP1og9oYhW0EPmuwb
-	 HatFExGQMywsfs0s323DwwQjtG/qAXwPK+2z9Qjc4jNddbdcDPflms75VlSQQ3/6xdZty
-	 k9sMWqF0+MTP4Pr7FJxRgmsOX/Ws5M+xjqmmEzWpR0ToV5Yk8pY1bdY1P75GdiqyKEqhr
-	 /XJZE54BRDppdBtWr6P62N5dMPI4XRC6eGKbfc8pj4eN+U9mPaWy3w1QTmt2Kufuwmw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793092041;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=CvG9nuygN0yktJ32UyxWM2+If6+E11EHBfx2QJOffRY=;
-	b=kJbm6+dCbTe4uTidM8zAzKC5+2mEyQS0wITkK28Vc59p2Xsn0VPhxB1dpebspzuDTsA3
-	 5ITu++o03/SOd2c9u1k7XX/CBKAE1kOrWWG5hCw4ZLxuBisROqtjEs0MTo2/jyeqMOFly
-	 rGJoejlw5r5WKCut4mz8FK755Gk/HZL/0ijk/dwYPMzEA8FWnPVSusAcJLuGr4e/Ds9FP
-	 9ktF7GVZB4svuaynoFZv/BDcSmuDLSxYIQYg8d+0uiNhnba6wRsR7vm4MZDy+ni9IDzds
-	 mln8amrnnH70VY87OSZDvfDRKkWuD+QkCR/z8VepBpiOFTtX78YZmq7uyQ9MJvddMVw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IWMnAgtZ;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=ZGH3OXvT;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.178
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793092069;
+	b=YKfDdbOsE71w3M0yjxrNd9Zm00DqkMDykVPiL3bg896AEEVsRwbwpClJS6RRUaSiHieH
+	 w6o5oQZECp7zcyxDYgP8gcQXsvn0DUKywtS24bslp5urQT6FFOyjE+eGSEsuhCqYlK/xZ
+	 0oN/bVsYHcunjW7VNyI46/TAj/+Z2Czuz3oa8Su/FUaNI5/8P+18igjJDYJAw2OdcJxRI
+	 yBgRmhvnn8DrCK68VVcK5Huf8sYVFvZ7NMD1YN9z6i0M0XPakRTzKsc96DSsSBP6opp1E
+	 ELvBSd6PMvfTx2SK431uACR8dlyc/5tS1z1JEr81ONGDbnzHNWYhsvhqlvq6pI5xbRw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793092069;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=J50MjdbeXeR0wrBPwx4kRTNSm8kxLqeUdZkQeCxWhMw=;
+	b=H0W05fQNR0LsDQxDGB56sXYdDMNU33gsuHSXNEfJ7kHg2rf8l813mJkeViEFkJncur60
+	 LSaCstGcyF4S0gjhNeNngTbyPyazlE5E1LsJROjtNrOL2kEIg2AkfZtSM4hMsyemW7PDg
+	 FjCvkXZyJwh0Sa9aO/yuQVpZpeZsKkwyrmlvmwoy06nAXwDjighBvCbvJTiV8j8FrSCtH
+	 Y15G2itduQ3BOhInyBUPc15ONlvqQCJEmW7/BOujR9t3Q+a7HPpOVvQK++3nju1nmaVeu
+	 wi1UpL7mozpTa8kSMK5RxsXOaaNFhfak5dhcKLQKutTYjl8/3NEp7scoFPHSe2b5mZQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=mojatatu.com;
+	spf=none smtp.mailfrom=mojatatu.com;
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=G84K39SC;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.178
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9172D606A31A
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 09:07:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9172D606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66EA606A31D
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 09:07:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B66EA606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IWMnAgtZ;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=ZGH3OXvT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793092039;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CvG9nuygN0yktJ32UyxWM2+If6+E11EHBfx2QJOffRY=;
-	b=IWMnAgtZBibjGWiVemPH0LYVfbX21tcYOqtX0zb2IbBLG1/PiXp60/yLYg9VAnvxm2+gk8
-	LLX3H/tU433xLjYsQM84MeKwUCdCBuBj9GDXq1kIXoTT/rrpn0UdfG9lnX+pX5lHa8N8YD
-	RTOAPMy7cqL2zYrS/LTXLdgjWsXsYzs=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-588-jMbisS9hOhCPVcHPP3-bsg-1; Tue, 27 Oct 2026 05:07:18 -0400
-X-MC-Unique: jMbisS9hOhCPVcHPP3-bsg-1
-X-Mimecast-MFC-AGG-ID: jMbisS9hOhCPVcHPP3-bsg_1793092037
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a77c1cbd15so10205555e9.0
-        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 02:07:17 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=G84K39SC
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-886e61fa30fso1605945b3a.1
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 02:07:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793092063; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LIcJZb/Jz8Lk+2gLKpufr6kpPWGm7v2KWDUH/1WKf8k2WKaNaJLd0SAKvPe6bIPA+d
+         lS0Ewyzwfd1f93FdWTxSH5gA91saofAzoIReN2fU/q7ShyegSrWSHw7muctP9uLyZZLq
+         idZLGlO+HgZsF3Y7oJsPUIjKij7z1AbDCaYHidyYsNe//CR4JoAJJG4o3MA4QPdBMxeH
+         1Q2PmoQKrEcIt1yITP0cT9tE7P9tRDU+nUZpDppfUvThAkgUEhRWhjHB2ZwWpaLkuyiQ
+         LYiZGl8BibG8OOwEycr0e0UnT2aALjx/HpY5oEpCmKZ4/2sIg1D1T/+fODlVUdAT8YrC
+         Hq+Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=J50MjdbeXeR0wrBPwx4kRTNSm8kxLqeUdZkQeCxWhMw=;
+        fh=5BKlMRgnuhrtrN9pqF3uiOKbHpLsfP+PPCk/2znyjr8=;
+        b=L/ebHiDd5jP6CwgLVUG+n7PxtSa0uccAs3GiivpOF6wQP2ZZfFfS3rKMk5qkC9uKeF
+         hWDnh/HxA6XMrkR2RPNnvxLHh80/4yHGAYPamICnk4ZrRfXNyxtVlVilDGSUTJP3Afoo
+         SR4if5q+WOHYLenDtwWzQqcbPVysEBzQrG8LSOTI5WDuts+WPRj8WCIrksufgZXwCCmq
+         7L8YddHj4/qp+rI9cOUEmf9d3d3s4eAt55ftDnOpb7Di1Apz1MTVGu0IJUTkS7q3/w/j
+         KBekoj4Z6Alb59giP9O6EHJuuy+aD0mtXYvhlHG4N0xi5B4kn6/pUeO2jSiegUBb3GLt
+         i+LA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793092037; x=1793696837; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CvG9nuygN0yktJ32UyxWM2+If6+E11EHBfx2QJOffRY=;
-        b=ZGH3OXvTbDPuFQS3PLOceC4AkGEYOj6E0wYTqriuirsATNGRSAm4p+UWN0rulZxVrM
-         PiP+jOgS6xpKIKWSyOSDFvU+c5g5oKaKWzshtwwcKUTV6LxzQlAkz0FQE33sWVGhsf+Y
-         kbsbGK3AVei8YLlWayK/qqjivSnI29T9TSyfmicGXftowA4hXqzAH7vvuVuvMugyiZyL
-         UH5eUlWz/JQORgtOfN0WNofCyeklipg9cG9n3/QfgvWfiwExYWZ/FoTi7f0OQq43NJFn
-         K7w57jsXLQ+CKfC49fIvKIFguOShYpCBkiFA2AV25mTFODtmWSHeziN2cEAQoCGdlHMe
-         qUTg==
+        d=mojatatu.com; s=google; t=1793092063; x=1793696863; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=J50MjdbeXeR0wrBPwx4kRTNSm8kxLqeUdZkQeCxWhMw=;
+        b=G84K39SCwuHHBvc+MO5/wCRtcI3mXN7cKHRkHkiE3pY7m+FKUJa6WEGgo0KVwCJoWm
+         34NYLJK07mpqdKBTmxO2iklWV+MJLFe2bcPvJkLLDFYPjLHSNxW3LdCx1tu96RBXVwU2
+         O5r0AC2sSHXTH3cBnCNy3pjOixYYwQWexJS1s=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793092037; x=1793696837;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=CvG9nuygN0yktJ32UyxWM2+If6+E11EHBfx2QJOffRY=;
-        b=mST7p+Pkjha+yffd9RaGRJTnN0Kle93hNyHv32nB9ZdknxbX0g5PNdNrtqlPptEBqb
-         Gzb7kv5LwrW6cdpN2WdejhFpd7nutIhVMWU4qGwWejZHtG7y7RdCsJkGC1AUG8kOTPLa
-         57VlYHVFgqzllag8SU9OyVMrSmvIFrYbuAGN/iChH0+zCHoY7WBrvJNGDVubqpmNFzHk
-         rebbwqrHz+nBrbkkn/R1Ltu9AptXyQ9H4DygN/b7rGN4mBhy5ylqFoP9ASRxOrFZVLdO
-         fHsdTfyz32tQ+M8Lq0lcGOGQAzq+2JjjRZPe49YsPgWCBqpZ8qlJYeoO6WUVCryASd29
-         GOKQ==
-X-Gm-Message-State: AFq9FYJVxgERyBM5JtyVv3ZmmQTW0Xcf+WH6JcWUoWlEjK74lnJc40Wk
-	S8jrQlBYjVzemh6KS1l2g+SO74fMpaG/+GgKP/DAxbAFjfhwDnF4EsdWfNfoygpzqTayq9M21hJ
-	4vqmc2pvbbDVvq8z/RgHKkkRn6zDjtMCDza7znb94459VzhVcfY+wURqAMA==
-X-Gm-Gg: AYBFou3daoQauuqQbEEB3Fril7i+DRPuvXNYKHgWcyl6NeqQY4nkHDwPoaklc52zPBV
-	QX6cXGeKbaH4PZB37e/yzm5nuTwXXfcjb1krPqaiqNQT0cPw6yXzOgnXgkn0HCEgGEXPZRqzEWr
-	EmcB6cE1WiIQuysFriO9UcdNgsn1G8YXLjwIB/yzg+Q+eoKn8GO5r6JTCY2IrtPorVk8xl5XJem
-	7cuQajN8yH+8nJWZFgAmpdhq3HWz2hLEeCswOI4PndFur4wh6Rq5h4r52Tipsx5MKB+Ki+FuQE3
-	B2OxDBa5zg/t749NekY1jQ3+OxXMNk1YJQvfsPikBo8unfhy47JJYMwjXwHp1ngGfWd7fdtrsP5
-	yjgYYOuOZ9/xm0YHcH5Dy988cPtl5y54XmHmbTKvopJ+OQeeGM4dqUFaROdguHw4Z9xm49G3E4g
-	==
-X-Received: by 2002:a05:600c:620f:b0:4a1:e672:5721 with SMTP id 5b1f17b1804b1-4a35ac9956fmr157313805e9.13.1793092036770;
-        Tue, 27 Oct 2026 02:07:16 -0700 (PDT)
-X-Received: by 2002:a05:600c:620f:b0:4a1:e672:5721 with SMTP id 5b1f17b1804b1-4a35ac9956fmr157313435e9.13.1793092036309;
-        Tue, 27 Oct 2026 02:07:16 -0700 (PDT)
-Received: from [192.168.188.234] (ip174-129-192-82.pool-bba.aruba.it. [82.192.129.174])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a35a5698f1sm250416975e9.8.2026.10.27.02.07.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Oct 2026 02:07:15 -0700 (PDT)
-Message-ID: <0f7f68bf-d02e-4bc5-accf-5f89a599d37f@redhat.com>
-Date: Tue, 27 Oct 2026 10:07:14 +0100
+        d=1e100.net; s=20260707; t=1793092063; x=1793696863;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=J50MjdbeXeR0wrBPwx4kRTNSm8kxLqeUdZkQeCxWhMw=;
+        b=mLzeObsLMoPxpyLKOFV63VpSOWCOOpNbVD2Q0uzo2s5FENbmCn2jmxXnN6peNTdp0U
+         iuC9I5Cj2ltNkE7M4hIViJSDWrEsmKuw+VDiDt1V07xSp9oo6eY2kDFUotKm2LbhQb2F
+         t69IduKHpMxO4T/PMFXfRQ1XM9wCpmW3blXHCCIMYzVD2C9CiaApP/Ik15SwIrqMJR5x
+         x3hG0NvZZ7Oq0UUd0CMypySwF2A1FV0xMvY3/bDVDLLuv34UFMhmZ4hTS2kXGRiFpZh9
+         xVIAwbEsauyfAt8BMUN+B6/Mfjk78eZgF3fUAKNGp2jf2ZcC8DGKxZAYEAf/jVcKTpMh
+         9SJg==
+X-Gm-Message-State: AFq9FYK3rBbV/h8WckRM3kJJj6+n/sd55D6t4VklL56W9QpxzRTAPqwx
+	rg4GHi2TeLVctytoeGT4hBZhvUxAUFv1w5N+7Xh9hzTWeriLK2UG4DyTImXgu4ay+LbylivDASv
+	DmnqE1JCg+uRhgyBt22LpbXh+NFgUxy+7CBzaYMyt
+X-Gm-Gg: AYBFou3isbgu+m55/otPR0WMfEzt0xHrw0sQT3uCuGf28TkjlSoppRltwuFfx6aE5CT
+	cJ6XRofF3SSjUfLJMEPewbsqB1/4ETwFOAu3oC6nFPFyQHL18Q7rMtQryutIyvrR/kgwcOGL90S
+	6AtqkRtv37BwHmA9pEmnXwdOhwM7Ak6CMt89Qk5qj8EbB28HNMM4ewV7L/qoRHBLnlbJpYdE4lL
+	rJmA58KzTCOgIeZaxaYzlGDlfAisTGI4X2vmwmVRL1s8MfZBex6s4KtytY5S+PpPT3XtyaAKgW8
+	CV7IA8H/do0LDM4rZdBllkZY8c8Nd7aDonGXyRc+0xtR0Jd8yekHPw318gpXLKbN1dJM/11e0Kf
+	5pUs1oCvlRYs4x47mJTD4Tt3Zdk723DzONM0+MoQFIGizu9HrotCaK5isQWL3QytQR8P5wrQLuT
+	0BTJi7rt7Mri0nGzQ=
+X-Received: by 2002:a05:6a00:2406:b0:8a0:3c:a8cb with SMTP id
+ d2e1a72fcca58-8a364e531b0mr6883577b3a.1.1793092062949; Tue, 27 Oct 2026
+ 02:07:42 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -111,43 +101,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 2/3] rxrpc: Fix counting of in-flight transmitted
- packets
-To: dhowells@redhat.com
-Cc: netdev@vger.kernel.org, marc.dionne@auristor.com, kuba@kernel.org,
- davem@davemloft.net, edumazet@google.com, horms@kernel.org,
- linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org,
- jaltman@auristor.com, stable@vger.kernel.org, netdev-bot+sashiko@kernel.org
-References: <20261020201258.290827-3-dhowells@redhat.com>
- <179262720290.3135.1509720869529893686@kernel.org>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <179262720290.3135.1509720869529893686@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <QDISC-6HS9.v1.r3.20261027034729@mojatatu.com> <179308810546.3327.8505039495265223974@kernel.org>
+In-Reply-To: <179308810546.3327.8505039495265223974@kernel.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Tue, 27 Oct 2026 05:07:30 -0400
+X-Gm-Features: AclHuK_Cr6xryEy8YJzQiqxJYKCJVeHztHClEIm6xa5N_nPm9qgWgpwlRoLVrKc
+Message-ID: <CAM0EoMnHOFLc6m3zYS7YdC7ZA8LvwXvGjPg+fUKqCJ-+RrVczw@mail.gmail.com>
+Subject: Re: [PATCH net 0/2 repost3] net/sched: sch_teql: fix header-cloned
+ write and retry strip
+To: netdev-bot+sinfo@kernel.org
+Cc: netdev@vger.kernel.org, Victor Nogueira <victor@mojatatu.com>, 
+	Jiri Pirko <jiri@resnulli.us>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, stable@vger.kernel.org, sashiko-bot@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/22/26 02:00, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 2 · Low: 0 (1)
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] Incomplete in-flight accounting: if a segment that is already
->    soft-ACKed gets retransmitted, its tq->in_flight bit is set again and…
-> - [Medium] Behaviour change on soft-ACK reneging (ACK->NAK flip).
-Basically sashiko says that the accounting looks still not perfect. Is not
-clear to me the new status is good enough.
+cheers
 
-Side notes: sashiko comments on patch 3/3 are not blockers, but you should
-revisit the commit message in case of a repost (and do not include patch 1/3,
-postponed to net-next).
+On Tue, Oct 27, 2026 at 4:01=E2=80=AFAM <netdev-bot+sinfo@kernel.org> wrote=
+:
+>
+> Hi!
+>
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+>
+>  - Whether the issue was actually triggered, or is only theoretical
+>    (e.g. found by code inspection). If it was triggered please include
+>    the symptoms, like the stack trace or error messages.
+>
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+>
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
 
-/P
+My bad for not explicitly calling it out in the commit this time to
+avoid you sending this email; answer is the same as before:
+https://lore.kernel.org/netdev/CAM0EoM=3DyCSeB9+Q8gFsB8sjQhddM9qWh8DOfSqqNt=
+p6byubv2w@mail.gmail.com/
+https://lore.kernel.org/netdev/CAM0EoMnb78SoNwrqgH5308B_+Mh1sBtm+wJ=3DSFXtM=
+HS-L2zfXg@mail.gmail.com/
 
+cheers,
+jamal
