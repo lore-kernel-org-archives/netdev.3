@@ -1,73 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793066474;
-	b=J3kZoIrYO8D7rh8+rpGCQ2PPoP5TawEWJceT9YCnqKj/A4kiq8SaT1F/8UUhfB4Vn2S5
-	 3ox9V5zLVFo4xPCRjL0nLvqSX5JFAjtM9lG8ItRfkRtuI2WGi57y6tctVyNzSUoOn2+6k
-	 /j0CmyaNTC6wx0wq0V30YVIYL+P8cR3jDuk2ivaHyddSyK2lcbr4pzABmEaXcf+7I4nn5
-	 WAQOlNKIv1q67xNHx4eVYWMId+GkrpkICT/0nji9bO41U7lsTm9DPB1LVg3OD3dxFQYP9
-	 E8Op/V3jAgerJl2dVb/aPgYYL+Jc2SkSCHtJMAV/FbtqBlVZd+W+nV0ZDmzg1Ij7i1A==
+	t=1793067967;
+	b=PbZNnkD9F+xQPEzOsAstFLethatTYIFreF+Xd377YfD7IKQ0SWK8/5j+byI8hNsvHgbw
+	 CJfSjCa3hDMProzNp/J/Hm6boGanvTX/AhekU1tqgJOYcOYLuOJLSzxkv8KhdexQST/QF
+	 +yqF2yoihlmeXHJVVxeg8qyun0JSq//J1q+AWLVVyaZ7Ux4VbevV9OvPRMXhAJ3y3nv1B
+	 6GrCn8QqTq+Hkca5CvkmpOCxU48T4IwFP1rC13yiNXpAk2mVq5QzYrC4nM0z4yywOQaVP
+	 o5Ksz8D0QSe4wgRmoKARTRzjEFtifjSy0BrpRFEEYMjgI/qix/xmw323qUSFNJoDDnQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793066474;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
-	 References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=ILpHxFRhbHQUqgfLQdu6bP24Wd5BWfFHmPEKysq9O0A=;
-	b=rxY8B3atHvu+6r8E0tQ7wXGHGt0qoO5Cw2pm0PzeQkrqrP2FFyEKzBLTpQOqasn69WyL
-	 JY446V81aG4/VWl34robyYhv3omSMjHcktwDh8eaf51owrLY9OXpFpGxUrmZCFtO5t7qC
-	 RGzqiOSr5M5tt2Onil1eWPO31uBzZp+W3N5V4baKH/ViTWIdflFIFKsHUbMy8zHYs2zy6
-	 0lke69xKHVFpdU2aylisratfynxUcGbgRD075OZpvld8m7t6HgpLSihEcF/t/CWyGuuxI
-	 8+iPE3ef7foArRpNxH1goaZoloCPO+nPEXGmKiFJRxV4W58o9d7SsHspTUt5jNuuHBg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793067967;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=oRhShPPOcteMIklOC32ElFWu5deX0aw4aDjLcQqHn0s=;
+	b=1aSZVOtVlXi7A4FEmi4eKzrJxzeT6+t6ZnRxUAfIqJa4KeP+oEpC7KyFxRtpW5CxbTos
+	 aUR5LjRMJhlxM0Z2MICA08eSvgB9yyW3c1IneshaHqfmxkH8s5qmMfGwtgatQTc8uGQTX
+	 1c3MwaXcUd/V/ieBlvj1dFzTjTTgChSJjzDAHrEHAuvhfiqAy2FU9xbbAZ+LojOJ+9GXE
+	 v8kkUCMpWf7SwPTDErgSh58uzDfKuvOYynShEiKli82cKk8qRcFFysE7znvzEZavyuF9J
+	 ixbD/sRhf//ENcRmCXLhj3My6J3tCAx0aFLCJ7uWXiWb/piuLcyoKNx19wh1NoJ6pgg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=ozXcZo2m;
-	arc=none smtp.remote-ip=209.85.210.198
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=R1kQRTeX;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6DFD606A31B
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 02:01:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6DFD606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6E7606A31A;
+	Tue, 27 Oct 2026 02:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=ozXcZo2m
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8a03834d8ffso5092103b3a.3
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 19:01:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1793066473; x=1793671273; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ILpHxFRhbHQUqgfLQdu6bP24Wd5BWfFHmPEKysq9O0A=;
-        b=ozXcZo2m+3uCrn1xmYp0nUqxjRbqTdfUnuXy6B6CgN6CfqwnQza8kt5Z1uVCskmsJE
-         xV0hGYtJw4f3wU7xxonDfd0FlUcUbfDOGM69m2N5Z+bPuGz03YSeH5RVMfaJs/bFInSs
-         yAaOc+Gw54GroWEkeFmxPcDwNvyttJhcnzoOeZoJIelg1MKwi6fq71ZleT3sZpdymS+c
-         x5EkMPn3nl0bRCBu9VYY1OEaqDqmDVqvjbCZbTmdSqAgDzH0z1IkFMyF45mV9AZy0997
-         Mz8qcrJgXQSebLwgC4gu/FBPDSkEDRSOlY5kr7r4KG0Nzt5F5n9sX5V1HA55RDYxO4SG
-         Trag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793066473; x=1793671273;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ILpHxFRhbHQUqgfLQdu6bP24Wd5BWfFHmPEKysq9O0A=;
-        b=JtiqAttK34oZP+aGMiFoiPRsNn0Z7gSnmu/JgsLJJJjjr8gzr0tt/mPzei6iPszN64
-         wPQafY5S3g3Igqs9rIyMr7BEiczF31qj4rlLO2PYQTTdsg895uDSHZ/8Da9vcqzo+7wq
-         qVacT4miS8OtNm+03jzLCWR2UkXkOl4W2RssW457nEfwr8VhXd/HNRgkrhvWf2RXc+GS
-         POeDwuZHtr1X0DjHsNytG6aRmz4kkNRr86jLLANv8UaQQxEri/tLfoSYAgypoJjfLB6U
-         zDsDUQ1voytTKNQL5RX4Fx/daqMjQgDRovib180WJvSkCLn3vRcqN3WSQtnj64Yck7XS
-         JPTg==
-X-Gm-Message-State: AFq9FYIgbmzHiEQJhqL3+Va/rwzywnI8GFpL9c6UqvjkftSx9Q+gJ3eZ
-	IVWmkXSnZRKXnGjn6frWaEkYRXdfDs2VroKOin34h3/jrKMQFvUHqoht5pOZWLGRykapTiCfHJZ
-	jzx5/RA==
-X-Received: from pfnu20.prod.google.com ([2002:aa7:8494:0:b0:89d:4e13:90d1])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4196:b0:899:74d0:8a58
- with SMTP id d2e1a72fcca58-8a369c1f7bdmr6652440b3a.55.1793066472760; Mon, 26
- Oct 2026 19:01:12 -0700 (PDT)
-Date: Tue, 27 Oct 2026 02:01:12 +0000
-In-Reply-To: <20261026095208.58504-1-yzwlhm@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=R1kQRTeX
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A81571F01825;
+	Tue, 27 Oct 2026 02:26:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793067967;
+	bh=oRhShPPOcteMIklOC32ElFWu5deX0aw4aDjLcQqHn0s=;
+	h=From:To:Cc:Subject:Date;
+	b=R1kQRTeXc5NVba7ZOeHyJdIykGyfdmHmg91Qk1iPskX5Z0DeaYkGLWo88aSHX7dca
+	 AlaNjqhUvP4uc7zSKVXRkB/jg+1llW5FIO6VayIMaFu8f5YTxgPGNcD6EpN3tW4Q7z
+	 nPiAsrJucHfHfGYB5bf+sMvbiMnHTviJL9hklyVXoXPxxmtI0VJpFHe3NC0DOM5uhS
+	 aeFYZZ1+QWFw2nQDEQf1+QxBpo4EBntftL1EQ/vmINbjURnY0XIa8B7VynbcvVJloL
+	 IdCLm4jfMC9qdDOJ0wsCIy6ciW6gFhn3LGyejmrSR8XoPCADtIwsIqLnog2/9mQUgA
+	 Gc62zJLgUCH6Q==
+From: Jakub Kicinski <kuba@kernel.org>
+To: robin.murphy@arm.com,
+	m.szyprowski@samsung.com
+Cc: tglx@kernel.org,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	joro@8bytes.org,
+	will@kernel.org,
+	leon@kernel.org,
+	mbloch@nvidia.com,
+	iommu@lists.linux.dev,
+	netdev@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [RFC 00/11] dma-mapping: add dma_alloc_attrs_node() and dma_alloc_coherent_node()
+Date: Mon, 26 Oct 2026 19:25:17 -0700
+Message-ID: <20261027022528.633359-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -76,41 +64,72 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261026095208.58504-1-yzwlhm@gmail.com>
-Message-ID: <auAFN8CJvmXdO0Zu@google.com>
-Subject: Re: [PATCH net v2] tcp: Fix fastreuse cache initialization on first bind
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Zhewei Yuan <yzwlhm@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon, 26 Oct 2026 09:52:07 +0000, Zhewei Yuan wrote:
-> inet_csk_update_fastreuse() initializes the reuse caches only when
-> tb->bhash2 is empty, but both inet_csk_get_port() and
-> __inet_inherit_port() link tb2 before calling it, so the first-bind
-> branch is never taken.
-> 
-> As a result, SO_REUSEADDR binds never get fastreuse=1 and keep
-> scanning existing owners, and SO_REUSEPORT starts in STRICT instead
-> of ANY.
-> 
-> Initialize the caches when tb2 is the only entry in tb->bhash2 and has
-> no owners. Timewait sockets are also linked on tb2->owners, so this is
-> equivalent to the old hlist_empty(&tb->owners) test.
-> 
-> Found by manual code inspection and confirmed with GDB. Binding 16000
-> SO_REUSEADDR sockets to one address/port in a KVM guest takes 4.18 s
-> before and 19.4 ms after this patch. Existing bind/reuse selftests
-> pass. Analysis and testing were assisted by an AI tool (Codex).
-> 
-> Fixes: 8002d44fe84d ("tcp: Check hlist_empty(&tb->bhash2) instead of hlist_empty(&tb->owners).")
-> Reviewed-by: Eric Dumazet <edumazet@kernel.org>
-> Signed-off-by: Zhewei Yuan <yzwlhm@gmail.com>
+Hi!
 
-Good catch, thanks !
+I want to add NUMA-awareness to a networking driver (bnxt) and
+I run into the inexistence of dma_alloc_coherent_node().
 
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+On NUMA systems networking drivers want to allocate rings
+and buffers close to the NAPI-handling core rather than
+allocating all from where the device is connected.
+
+Looks like we have accumulated 6 drivers which do:
+
+       set_dev_node(dma_dev, numa_node);
+       va = dma_alloc_coherent(...);
+       set_dev_node(dma_dev, old_node);
+
+IMHO this looks like an ugly hack. Can we add an API
+with the Node ID explicitly passed in?
+
+
+In the unlikely case anyone feels the urgent need to merge
+this please pull (so that we can also pull this into net-next):
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/kuba/linux.git tags/dma_alloc_coherent_node
+
+Jakub Kicinski (11):
+  dma-contiguous: pass the NUMA node to dma_alloc_contiguous()
+  dma-direct: pass the NUMA node to dma_direct_alloc()
+  iommu/dma: pass the NUMA node to iommu_dma_alloc()
+  dma-mapping: add dma_alloc_attrs_node() and dma_alloc_coherent_node()
+  eth: libwx: restore the device's NUMA node after ring allocation
+  eth: libwx: use dma_alloc_coherent_node()
+  eth: ixgbe: use dma_alloc_coherent_node()
+  eth: xgbe: use dma_alloc_coherent_node()
+  eth: fungible: use dma_alloc_coherent_node()
+  eth: mlx5: use dma_alloc_coherent_node()
+  eth: mlx4: use dma_alloc_coherent_node()
+
+ Documentation/core-api/dma-api.rst            | 15 ++++++++
+ include/linux/dma-direct.h                    |  2 +-
+ include/linux/dma-map-ops.h                   |  5 +--
+ include/linux/dma-mapping.h                   | 14 ++++++++
+ include/linux/iommu-dma.h                     |  2 +-
+ include/linux/mlx4/device.h                   |  2 +-
+ include/linux/mlx5/driver.h                   |  2 --
+ arch/x86/kernel/amd_gart_64.c                 |  3 +-
+ drivers/iommu/dma-iommu.c                     | 30 +++++++++-------
+ drivers/net/ethernet/amd/xgbe/xgbe-desc.c     |  6 +---
+ .../net/ethernet/fungible/funcore/fun_queue.c |  8 ++---
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 20 ++++-------
+ drivers/net/ethernet/mellanox/mlx4/alloc.c    | 12 +++----
+ drivers/net/ethernet/mellanox/mlx4/en_cq.c    |  9 ++---
+ .../net/ethernet/mellanox/mlx4/en_netdev.c    |  2 +-
+ drivers/net/ethernet/mellanox/mlx4/en_rx.c    |  5 ++-
+ drivers/net/ethernet/mellanox/mlx4/en_tx.c    |  5 ++-
+ .../net/ethernet/mellanox/mlx5/core/alloc.c   | 24 ++-----------
+ .../net/ethernet/mellanox/mlx5/core/main.c    |  4 ---
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c   | 22 +++++-------
+ kernel/dma/contiguous.c                       | 12 +++----
+ kernel/dma/direct.c                           | 20 ++++++-----
+ kernel/dma/mapping.c                          | 34 ++++++++++++++++---
+ kernel/dma/ops_helpers.c                      |  5 +--
+ 24 files changed, 137 insertions(+), 126 deletions(-)
+
+-- 
+2.56.0
+
