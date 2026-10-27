@@ -1,51 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1793115855;
-	b=YJZGGqc2Ty866RubH8lOrBGrxxpj/qdNycKZehIHTZsPWKgbgMgswexr2sa7eVxw/1V8
-	 uGFjlPaLYi1c28S8w4S5lFtLzQqfePA6U3Mc6j1MfuHnx1dcSsbp+5leLYhZoKfDptij4
-	 b0K8ZkNYrPGiLhFnJRHiTxtaOLm6Tu0nTiFdvbaKFyP5xC0UlKtHzHqFCQRUcTS/W6zhe
-	 RCDLVkEsGlfnWrL0D059L2Y/jjqDWBYj3zQtQXQDC4mIMSMd4aPweciaaYlmgDSb+FP2Q
-	 0KzkjYYky8bXuaSp3PRh6tw4HhApi5NFfhZnuy3+jiB7EVpvqDWrr1d1syM96fYk+vQ==
+	b=AZQdHTgd/iFGntHZuUVYl1Kf1HgfP1rDkEP/6+Cc+mkiF5R3ijtvouuBBgoHmQYvggyt
+	 ufdoFriPh03h+UbAlBUNGw9rkm7Tn8FMF8YZtOkKFIqtbS7JaqWv9stkNOwz/GCissxXH
+	 /4XCYrO+eMFqtbxqom4fj4JutAc0suJZnHlnaRyKXHx9nY692ZH44h1CTon7ilp3gEaDq
+	 deb5pPr3lauE1Uy55QSEZV9MQU47qemwRsMtpNeXcaNp+nroS9QrJng90Z3RfIO8YIJCV
+	 4nn2ZvvZH7jOlfJgGArOVOEN4JeaflzsEntWUJNwRTk1MVyFeWWe3u50JH7dZf6uO1Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793115855;
 	h=Received:DKIM-Signature:Received:Message-ID:User-Agent:Date:From:To:
 	 Cc:Subject:References:MIME-Version:Content-Type;
-	bh=EnDqdoBlLXNNsQWF1PTAQfygtIq8DiYIDOwKN0S5TYo=;
-	b=xbtJo5024VQYK1zULUca5HdA5IM6E8fsgnvb8t8qpBhR/zkLHTPAAfFaGuo44j6pSy/t
-	 s9AYzd6V7UINHSdhTZHUPGRaEaWxYgsJwd11YYI2BBWD2bOXQhQaPZtySQuKKu0ZyYZUy
-	 Ra3VkynqVr8KaThDcfGuuUVeU5eM53Ma0xo+MI880EG0VBUrcjh85uxMGBWxWpHkNstJ2
-	 KNYUBT/sIc/SVK8bfufh5TUeHkbKe/AwSoHnPEnxfyvWCtNWDajGwxeGtikb0VLRStzaH
-	 JhbrPENV8Uv2DyYTy3fKwt0ferhjim5J9kzrDfvz6+6d7jgjSyPRSNDkgdo7//9iIwQ==
+	bh=65ibzMdITZGSAinHNOg+LTDdIfpABOn2+CpyYHzaFRs=;
+	b=w2vjufNOoKuwPYCE4+EYmWTkJUPUaMsd4wCvIMBRJ3atOuyZFqiXNnRN58D/2PSCUm2x
+	 cZvXCAUXahjLWKoYtw+dAXVgJvCq/xEvXaWLgREEYfmKIGSZV9iid/Oh3iyS1oZ4gQAH5
+	 vv/GCRwC925Z6NfPBywF1Uj1CT4mlZSrOYQL/bqjS/js6YgnGX14eMD83XUsmiLwjKN8m
+	 kQJ9a1AV5+q5ajbbFzVA6R04mLAouMflj+H1kO8WFMzaRiK//ZaWxLGJTE/2w4Xn553jg
+	 ypRGAgUrwROHK5gY6AGtEXt9uVoHHtmy7EEHWOa+W5pKMsEDE/4MhHkiYyKiyjzQL7g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JRTNu4g7;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ILrstzel;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1B9606A33F;
-	Tue, 27 Oct 2026 15:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480EF60A262A;
+	Tue, 27 Oct 2026 15:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JRTNu4g7
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 718051F031E3;
-	Tue, 27 Oct 2026 15:44:14 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ILrstzel
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15EB01F031EC;
+	Tue, 27 Oct 2026 15:44:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793115854;
-	bh=EnDqdoBlLXNNsQWF1PTAQfygtIq8DiYIDOwKN0S5TYo=;
+	s=k20260515; t=1793115855;
+	bh=65ibzMdITZGSAinHNOg+LTDdIfpABOn2+CpyYHzaFRs=;
 	h=Date:From:To:Cc:Subject:References;
-	b=JRTNu4g77Y9W+naHrADfdMOHHQ9syVNyuM9xuMSXf3IuDIeWHdAFsn5XSf+e4kBfC
-	 a5hguQUVEWlTVw0jOJOcIAbOSLJw7XAY7O7x1NyvbIVcFZuf1iKx9xxR9haMcpnMQQ
-	 Dz22lwb0JIesfTJczu36lzaG8VJgEtG/H2KHPfJd5I7cEQcvF/DeTc2cm5LNOX5J6r
-	 vG+5VARedfxaW466FILJdpYspMDYinA+T/0PE3+gsmkoOYK53dL6lNixOTUKparNzU
-	 qBkZvBEN34T6qIx9SOwEasvcNuhC2ZH94OsnAE2mLKvDHnj+0gFDUd0U5dTRt76BYp
-	 Gjd2BmjfO8DFA==
+	b=ILrstzel9sh37XBGgpdGLVoMZZPwgFmzqTPYiJYdvHBD2VW/wP7qteo/K2QbcrcgN
+	 hHTd29eWnKhMWjnGR6ag5JLvmd0f+VAVAcMjHbxUFv7v6i6p8LO3QgMbHcuOBAyA6r
+	 PRwNWLLNmG/DdOwJpG4XAz1QoP+ANfM0NLFCjQ1xSYxSU3sr1nI7FYlBg4cpLsHYvP
+	 b8ykWLq92n2UhVg1XBzUtlktg7Zvf/Tpzl3/2WFxAW7/cWK0juK5sz6qDJFK8o3rn8
+	 imb0TrnpC8AATsUq8uc4J8Is1et9nN/XgP/s1eRBRG5fRWoiOyTW16S16Aw/4zFPXk
+	 BdM2I95nC1z/w==
 Received: from rostedt by gandalf with local (Exim 4.100.1)
 	(envelope-from <rostedt@kernel.org>)
-	id 1xLjLR-000000078iW-3Joy;
-	Tue, 27 Oct 2026 11:44:13 -0400
-Message-ID: <20261027154413.617192888@kernel.org>
+	id 1xLjLS-000000078kD-1Ukd;
+	Tue, 27 Oct 2026 11:44:14 -0400
+Message-ID: <20261027154414.184324075@kernel.org>
 User-Agent: quilt/0.69
-Date: Tue, 27 Oct 2026 11:37:04 -0400
+Date: Tue, 27 Oct 2026 11:37:07 -0400
 From: Steven Rostedt <rostedt@kernel.org>
 To: linux-kernel@vger.kernel.org,
  linux-trace-kernel@vger.kernel.org
@@ -107,7 +107,7 @@ Cc: Masami Hiramatsu <mhiramat@kernel.org>,
  linux-scsi@vger.kernel.org,
  linux-sctp@vger.kernel.org,
  netdev@vger.kernel.org
-Subject: [PATCH 6/9] scsi: ufs: Use trace_call__##name() at guarded tracepoint call sites
+Subject: [PATCH 9/9] x86: msr: Use trace_call__##name() at guarded tracepoint call sites
 References: <20261027153658.703730257@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -135,86 +135,44 @@ Parts of the original v2 series have already been merged in mainline.
 This patch is being reposted as a follow-up cleanup for the remaining
 unmerged pieces.
 
-Link: https://patch.msgid.link/20260515135946.2238888-1-vineeth@bitbyteword.org
+Link: https://patch.msgid.link/20260515140004.2238951-1-vineeth@bitbyteword.org
 Suggested-by: Steven Rostedt <rostedt@goodmis.org>
 Suggested-by: Peter Zijlstra <peterz@infradead.org>
 Signed-off-by: Vineeth Pillai (Google) <vineeth@bitbyteword.org>
 Assisted-by: Claude:claude-sonnet-4-6
 Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 ---
- drivers/ufs/core/ufshcd.c | 31 ++++++++++++++++---------------
- 1 file changed, 16 insertions(+), 15 deletions(-)
+ arch/x86/lib/msr.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index cc75384c6502..7a169cf0093b 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -421,8 +421,8 @@ static void ufshcd_add_cmd_upiu_trace(struct ufs_hba *hba,
- 	else
- 		header = &lrb->ucd_rsp_ptr->header;
- 
--	trace_ufshcd_upiu(hba, str_t, header, &rq->sc.cdb,
--			  UFS_TSF_CDB);
-+	trace_call__ufshcd_upiu(hba, str_t, header, &rq->sc.cdb,
-+			       UFS_TSF_CDB);
+diff --git a/arch/x86/lib/msr.c b/arch/x86/lib/msr.c
+index dfdd1da89f36..14785fe5e07b 100644
+--- a/arch/x86/lib/msr.c
++++ b/arch/x86/lib/msr.c
+@@ -125,21 +125,21 @@ EXPORT_SYMBOL_FOR_KVM(msr_clear_bit);
+ #ifdef CONFIG_TRACEPOINTS
+ void do_trace_write_msr(u32 msr, u64 val, int failed)
+ {
+-	trace_write_msr(msr, val, failed);
++	trace_call__write_msr(msr, val, failed);
  }
+ EXPORT_SYMBOL(do_trace_write_msr);
+ EXPORT_TRACEPOINT_SYMBOL(write_msr);
  
- static void ufshcd_add_query_upiu_trace(struct ufs_hba *hba,
-@@ -432,8 +432,8 @@ static void ufshcd_add_query_upiu_trace(struct ufs_hba *hba,
- 	if (!trace_ufshcd_upiu_enabled())
- 		return;
- 
--	trace_ufshcd_upiu(hba, str_t, &rq_rsp->header,
--			  &rq_rsp->qr, UFS_TSF_OSF);
-+	trace_call__ufshcd_upiu(hba, str_t, &rq_rsp->header,
-+			       &rq_rsp->qr, UFS_TSF_OSF);
+ void do_trace_read_msr(u32 msr, u64 val, int failed)
+ {
+-	trace_read_msr(msr, val, failed);
++	trace_call__read_msr(msr, val, failed);
  }
+ EXPORT_SYMBOL(do_trace_read_msr);
+ EXPORT_TRACEPOINT_SYMBOL(read_msr);
  
- static void ufshcd_add_tm_upiu_trace(struct ufs_hba *hba, unsigned int tag,
-@@ -445,15 +445,15 @@ static void ufshcd_add_tm_upiu_trace(struct ufs_hba *hba, unsigned int tag,
- 		return;
- 
- 	if (str_t == UFS_TM_SEND)
--		trace_ufshcd_upiu(hba, str_t,
--				  &descp->upiu_req.req_header,
--				  &descp->upiu_req.input_param1,
--				  UFS_TSF_TM_INPUT);
-+		trace_call__ufshcd_upiu(hba, str_t,
-+					&descp->upiu_req.req_header,
-+					&descp->upiu_req.input_param1,
-+					UFS_TSF_TM_INPUT);
- 	else
--		trace_ufshcd_upiu(hba, str_t,
--				  &descp->upiu_rsp.rsp_header,
--				  &descp->upiu_rsp.output_param1,
--				  UFS_TSF_TM_OUTPUT);
-+		trace_call__ufshcd_upiu(hba, str_t,
-+					&descp->upiu_rsp.rsp_header,
-+					&descp->upiu_rsp.output_param1,
-+					UFS_TSF_TM_OUTPUT);
+ void do_trace_rdpmc(u32 msr, u64 val, int failed)
+ {
+-	trace_rdpmc(msr, val, failed);
++	trace_call__rdpmc(msr, val, failed);
  }
- 
- static void ufshcd_add_uic_command_trace(struct ufs_hba *hba,
-@@ -477,7 +477,7 @@ static void ufshcd_add_uic_command_trace(struct ufs_hba *hba,
- 		arg3 = ufshcd_readl(hba, REG_UIC_COMMAND_ARG_3);
- 	}
- 
--	trace_ufshcd_uic_command(hba, str_t, cmd, arg1, arg2, arg3);
-+	trace_call__ufshcd_uic_command(hba, str_t, cmd, arg1, arg2, arg3);
- }
- 
- static void ufshcd_add_command_trace(struct ufs_hba *hba, struct scsi_cmnd *cmd,
-@@ -526,8 +526,9 @@ static void ufshcd_add_command_trace(struct ufs_hba *hba, struct scsi_cmnd *cmd,
- 	} else {
- 		doorbell = ufshcd_readl(hba, REG_UTP_TRANSFER_REQ_DOOR_BELL);
- 	}
--	trace_ufshcd_command(cmd->device, hba, str_t, tag, doorbell, hwq_id,
--			     transfer_len, intr, lba, opcode, group_id);
-+	trace_call__ufshcd_command(cmd->device, hba, str_t, tag, doorbell,
-+				   hwq_id, transfer_len, intr, lba, opcode,
-+				   group_id);
- }
- 
- static void ufshcd_print_clk_freqs(struct ufs_hba *hba)
+ EXPORT_SYMBOL(do_trace_rdpmc);
+ EXPORT_TRACEPOINT_SYMBOL(rdpmc);
 -- 
 2.53.0
