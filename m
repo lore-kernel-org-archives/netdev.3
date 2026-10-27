@@ -1,63 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793125766;
-	b=Gd8ToRm0h48HvvR5e+lkgFV7oLtG2/7I4vVihsiaHivQVva4zXcHIBL8iMIkV69InsYW
-	 YC2fMCkbNjSsHchoOoE9pu5+btVHt4Ximou6Kfu6vpABhom6vN3lMrnKtS+fMemqOJVjs
-	 Dtylx+I3+9ZIowkP/7TOIltSfvdKNDcPj3LkdL11BM3ON2vfdeu6Jj9Q5zno9YFJCqnLO
-	 o+TaalgS/gPEaSQpjCp+5ODQIoIboB6vxSUkaZg+2Y0KjfMAGtrqs7oyHuBGMl2cW2qpO
-	 en/7R0fyAYeX/jK7v9XWH6gBIiHTquOcBLFC3FogrWuF8OpOPhd3C4/L0R3I6VeQhPg==
+	t=1793125903;
+	b=qpym3YYM5Cw67bXpO4fByb0s4ZLzX04HV6ukfi7M+UsppzF8J88Go65hGfZ9ZEhtxPDu
+	 Q+PbsnYKjLlgfvBnOREnmjiWTZPhWXZNT4K5iRmUEEaUyOY5qc95JxC8xWV1vqSZ3gKIs
+	 ups9f+Num1C7S4HjuS0/L9Xstv5+r2/+YPpA/4pyrp/W0wNOXkgi6ZHmW+WQcK+Ogkz1m
+	 Pw2idunBTZfrYCY5fVeAgyqzmULN4hl3SrEDJX3aSRtAJknjfD6o8DcZGdeBPS2T7KeLI
+	 97NXxCVVuEuo0C82XVYnYxXk5OOmJzVgjNhJnhVIjpX+Hry5QUg7VfwA8C5qsyRmaww==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793125766;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=3PTtTHc5HD5DW7DQJPcE16Csk4d4BtXbVYfclUnPyE4=;
-	b=l3K6xBWMMzNzBNDMRRme7ZCzAhbTt6oIIH2lVaFftLAm+D/OhN9h37jqZLarDwWZfFfP
-	 Sm1DvZzXtqpjiIqYUeVJv3yggf35zlfj+vui22rJOpyXgvsEZvNubV0Exfy51M9Bn+Hhc
-	 xu98DbtdJU4jz+zzWsRq1s672riW4EOVvevigsbebY1JDACRKr45cb8dSKvABN+9Zsdd6
-	 sLWvaIyrsU7Q4lvgoEezL5S8J/HH3gStc25ldoO5XOKfqpNDzqgBo9VIQoV7TDWe6/WA2
-	 gmK4P4DS1RKCUqs89A+TcZwe2M0ygbsBHasNze32Obm2tekmzO5lvCi3SM0ZbkdNzeg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793125903;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=jwVMYqATmMoi+MfU2NzwBtahzJeExlYAhj124bRfpQQ=;
+	b=u+w8hFdT/9cpfBxX1AenH/TXGzKI60bTpqZPdZDXL/bcOggADrB5eXJl1rvbTTVJvZLg
+	 gY6tzpKgH7Y5m6Rv9U5dCJK5dLWGFJNNim+JarktEILkrgnaZvL9kcOPU4Z9boEsc3oek
+	 tRmIO51M+AWs47mcLiXapStB+ypID5uPUYMAfbv24t3QBaUVVekgDdvq67VE/lR95yFey
+	 /mU42foGp0A+uGxzjq4fKtM7TZo0KyZ/z5o/1MQI5vwVBrh1yw329OCE8u98JFXSHqz94
+	 1in6U4VFAl8a90dB7nLZI7AkNOGjtpY+DMdpZC2/cMW6XQtNYhKnxCqxHMvHalr+fhQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dSvPOfsx;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RtOJEvqY;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14927606A31E;
-	Tue, 27 Oct 2026 18:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689B6606A336;
+	Tue, 27 Oct 2026 18:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dSvPOfsx
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C891F031E0;
-	Tue, 27 Oct 2026 18:29:23 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RtOJEvqY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78FA31F031E1;
+	Tue, 27 Oct 2026 18:31:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793125765;
-	bh=3PTtTHc5HD5DW7DQJPcE16Csk4d4BtXbVYfclUnPyE4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dSvPOfsxwbUYPXgfaL6y1eduyKpzlq4vYz23awiakrSk6gZvUZzfrRbthqCaxW7E3
-	 j06b5g1ADWs84KEYnBFie+SAe04AAxkk5TqrmOuwI8tfAODtEGfufnFPQaIS/TOLfl
-	 /wtIM4twpEPfDoRh9t04+r+ckrzdeMCXcWzo35SarCvk6UAW2X7OZJwMsWfs5LHqww
-	 O01qv0AY5uO7wSYeCBFzVFzT3T7zQ0ugSno0qb8IwYvdBd+U+etCnjMzMFyTgfA7CN
-	 +IMehYBdG/f6VLU4w6x9IZJqsrlxZONyNi+yifWoSQdr+4xHR2iuXup6p74dduRvIW
-	 FV59KdlrLMGzA==
-From: Simon Horman <horms@kernel.org>
-To: jhs@mojatatu.com
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	owen@verialabs.com,
-	jiri@resnulli.us,
-	victor@mojatatu.com,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	sashiko-bot@kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v2 2/2] net/sched: sch_teql: fix use-after-free on lower qdisc drop
-Date: Tue, 27 Oct 2026 18:26:08 +0000
-Message-ID: <20261027182608.448075-1-horms@kernel.org>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <QDISC-Y0BY.v2.r0.20261024060625-2@mojatatu.com>
-References: <QDISC-Y0BY.v2.r0.20261024060625-2@mojatatu.com>
+	s=k20260515; t=1793125903;
+	bh=jwVMYqATmMoi+MfU2NzwBtahzJeExlYAhj124bRfpQQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=RtOJEvqYrmf4Gv3UUj4FUc1RKQOAxGc7QrR8+1C1H1aKLA19ft2ieBfxRDtSAiEpn
+	 kiL6ortvW8eU/9nAcAGvFFt5MgbzfiQB/xlqVgMSqGnxtf3vQPOeFqGONlo+hgljzJ
+	 CCsqczZ09+ye4LnWxoyU9d9DXwPJKQr4lZGOFMG2IXerAVFeqNP8pXSxIG85VwRRT+
+	 ksPN5+6lhWv7XsC/C9cpj+Lv2EecXKSQY/aHrhCC+sf4APC4qngySz1DRCzPlUwo1e
+	 BaCcjc7JUexHnEw0K5Q6iPfsNP+9GM8pHsl4eoBpUo/tVFgNTkbvtvm8n8fBHbgStw
+	 sgZznyV1gpaJQ==
+Date: Tue, 27 Oct 2026 19:31:39 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Cunhao Lu <1579567540@qq.com>
+Cc: Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
+	Jerome Brunet <jbrunet+clk@baylibre.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Heiko Stuebner <heiko@sntech.de>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Elaine Zhang <zhangqing@rock-chips.com>, Richard Cochran <richardcochran@gmail.com>, 
+	linux-clk@vger.kernel.org, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v4 1/4] dt-bindings: clock: rockchip: Add RK3572 CRU
+Message-ID: <20261027-amiable-dazzling-kelpie-cef3ab@quoll>
+References: <20261027-add-board-ok3572-c-clk-v4-0-d4152b4fedaa@qq.com>
+ <20261027-add-board-ok3572-c-clk-v4-1-d4152b4fedaa@qq.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,127 +62,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261027-add-board-ok3572-c-clk-v4-1-d4152b4fedaa@qq.com>
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-Y0BY.v2.r0.20261024060625-1@mojatatu.com?part=2
----
-net/sched: sch_teql: fix use-after-free on lower qdisc drop
+On Tue, Oct 27, 2026 at 06:04:28PM +0800, Cunhao Lu wrote:
+> From: Elaine Zhang <zhangqing@rock-chips.com>
+> 
+> The RK3572 CRU uses the PMU0 GRF for the AUPLL reference mux.
+> Describe the controller and define its clock and reset IDs.
+> 
+> Signed-off-by: Elaine Zhang <zhangqing@rock-chips.com>
+> 
+> - Documented the xin24m input.
+> - Made the PMU0 GRF phandle required.
+> - Updated the example.
+> - Closed the reset ID gap while preserving each named reset's register
+>   mapping.
+> - Removed CLK_NR_CLKS from the clock binding.
+> 
+> Signed-off-by: Cunhao Lu <1579567540@qq.com>
 
-This patch changes teql_master_xmit() to use dev_xmit_complete() to decide
-whether a slave consumed the skb. Before, a slave such as VLAN could free
-the skb and return NET_XMIT_DROP, and the loop would keep using the freed
-skb. Consumed results other than NETDEV_TX_OK and NET_XMIT_CN are now
-charged to tx_dropped, and the function returns.
+Same comments as in other places. I probably responded to older version.
 
-Link: https://lore.kernel.org/netdev/179248763469.3135.1739559328868319628@kernel.org/
-Link: https://lore.kernel.org/netdev/20261023162821.GN708417@horms.kernel.org/
+Best regards,
+Krzysztof
 
-> Only NETDEV_TX_OK keeps
-> the packet counted in tx_packets/tx_bytes and advances the slave; a
-> consumed result that is neither a success nor NET_XMIT_CN ends the
-> attempt and is charged to tx_dropped, so lower-qdisc drops are no longer
-> reported as good transmits. NET_XMIT_CN is counted like success because
-> it can accompany acceptance of the current packet: pfifo_head_drop drops
-> the old head, enqueues the current skb and returns NET_XMIT_CN.
-
-[Severity: Low]
-Is this description accurate? The code sends NET_XMIT_CN down the same
-path as NETDEV_TX_OK. So NET_XMIT_CN also advances master->slaves and
-increments master->tx_packets and master->tx_bytes. The "Only
-NETDEV_TX_OK" sentence seems to contradict the NET_XMIT_CN sentence that
-follows it, and the v1 -> v2 notes say the same thing.
-
-Several qdiscs also drop the current skb and still return NET_XMIT_CN.
-One example is noop_enqueue():
-
-	dev_core_stats_tx_dropped_inc(skb->dev);
-	__qdisc_drop(skb, to_free);
-	return NET_XMIT_CN;
-
-Another is red_enqueue():
-
-	qdisc_drop_reason(skb, sch, to_free, reason);
-	return NET_XMIT_CN;
-
-choke, gred, fq_pie and sfb behave the same way. When a VLAN or macvlan
-slave sits on top of one of these, teql would still count those drops as
-good transmits in tx_packets and tx_bytes.
-
-Treating NET_XMIT_CN as success matches net_xmit_eval() and
-vlan_dev_hard_start_xmit(), so the code choice is probably fine. Could
-the commit message drop the "Only NETDEV_TX_OK" wording? It also says
-that lower-qdisc drops "are no longer reported as good transmits", which
-does not hold for these qdiscs.
-
-> diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
-> index 6764f0dd38dfb..70c948a26f809 100644
-> --- a/net/sched/sch_teql.c
-> +++ b/net/sched/sch_teql.c
-> @@ -360,12 +360,18 @@ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
->  		case 0:
->  			if (__netif_tx_trylock(slave_txq)) {
->  				unsigned int length = qdisc_pkt_len(skb);
-> +				int rc = NETDEV_TX_BUSY;
->  
->  				skb->dev = slave;
-> -				if (!netif_xmit_frozen_or_stopped(slave_txq) &&
-> -				    netdev_start_xmit(skb, slave, slave_txq, false) ==
-> -				    NETDEV_TX_OK) {
-> -					__netif_tx_unlock(slave_txq);
-> +				if (!netif_xmit_frozen_or_stopped(slave_txq))
-> +					rc = netdev_start_xmit(skb, slave, slave_txq, false);
-> +				__netif_tx_unlock(slave_txq);
-> +				if (dev_xmit_complete(rc)) {
-> +					if (rc != NETDEV_TX_OK && rc != NET_XMIT_CN) {
-> +						master->tx_dropped++;
-> +						rcu_read_unlock();
-> +						return NETDEV_TX_OK;
-> +					}
-
-[Severity: Medium]
-Should this drop path also move master->slaves on to NEXT_SLAVE(q)
-before it returns?
-
-Only the success block below and the case 1 path rotate master->slaves.
-Every call to teql_master_xmit() starts from the same pointer:
-
-	start = rcu_dereference(master->slaves);
-
-If a slave keeps returning NET_XMIT_DROP or a negative errno, each later
-packet would go to that slave first and be dropped. The other slaves
-would never be tried.
-
-A VLAN slave can do this for a long time. vlan_dev_hard_start_xmit()
-returns the raw dev_queue_xmit() result and never stops its own queue:
-
-	ret = dev_queue_xmit(skb);
-	...
-	return ret;
-
-So neither the netif_xmit_stopped() check nor the netif_running() check
-would skip it. macvlan_start_xmit() behaves the same way. This can
-happen when the lower device has a pfifo with limit 0, a full fifo or
-tbf, or an egress tc or netfilter drop.
-
-When a slave is busy, teql retries the same skb on the next slave. A
-dropped skb can't be retried, so without rotation the drops build up on
-one slave. If that slave drops every packet, is all traffic through the
-teql master lost?
-
-The case 1 path already rotates master->slaves after the skb is consumed
-by neighbour queueing:
-
-	case 1:
-		raw_spin_lock_irqsave(&master->slaves_lock, flags);
-		if (rcu_dereference_protected(master->slaves, ...) == q)
-			rcu_assign_pointer(master->slaves, ... NEXT_SLAVE(q) ...);
-
-Would doing the same rotation here keep traffic spread across the slaves?
-
->  					raw_spin_lock_irqsave(&master->slaves_lock, flags);
->  					if (rcu_dereference_protected(master->slaves,
->  								      lockdep_is_held(&master->slaves_lock)) == q)
-
-[ ... ]
