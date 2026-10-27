@@ -1,60 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=109.224.244.21
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793118612;
-	b=5lrAAvnlHkCfu6JCTsKV1cjV4MGD/jLyec66VaT+EpTmw3JFbYgW6LvwhLRQ0p68tGTm
-	 G4PnT/RIHMf3pWfHTygTiUvHV9er3ELH01ZLHaL+yoy6LZA92vN3RyK+dMOyA+OsB8VIq
-	 CGV/HLDrsjMVV3X6f7WNQvoBOhEpF8tbwHVzQZUx13YlSXBc1E0NSkKTtZflDLJtiuY66
-	 9Wpbuj9xf26nimf5eoCc//zwQm5wM4svLIXKd6kbWCVp/sG/b7PqXzjiMJ2pFdNIDKmHU
-	 y31sS+DmRQdcccqsaSGONu3cI4gnivM2zLC9Pzmu/HE8ZvBkhZbW5RsilVmT24a1DOQ==
+	t=1793118799;
+	b=BaQfWeIJC31QBf68hvjyrKKDidpuLz4l5ebI/oyo7h1tF0uvSf3tGgeP23fj5znclA3a
+	 du5qfguqO43GT3s+uz4S8PxqMvAX56DBPM74SzhM4gsfV1vlIvXBl3hT1NqpIKBhlg7KE
+	 f0A5ITUH/+EBpVL1DsCQa8yNe/IMe5S7Ma+qLYVOVKiIG9Y2a7jaSjHrlC5o3If2Rb7nX
+	 VNP20Dm5KGKRLjLqxa6kAuJl+09aytcw1/aaL8qCcE3D6VHLX20u1W+HK0Cjziui8r2DW
+	 x7j/Ty81n8KcnfGK/pwQGkHTY8F/y1F8MR1EPZJ26uecojmN2lMozJpEcWpOzs8kvtw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793118612;
-	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
-	 In-Reply-To:References:Feedback-ID:X-Pm-Message-ID:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=z/3jpXuKR8Ek75myDtIS6oISZLc5tTxlxTmwToUVi/Q=;
-	b=BsFPPcGyOGsK+UfOueVuy0F6cHGAn90khhg9eN7dbit9YEKV7JLm8veKs2JK/xZ8QvYk
-	 23lkmoTWmpsn8/+pMHjsbn8YtLaLBXK+5Hua8PXuWMh/FuDC991I7u+UXng+PD2hTgbvE
-	 9ji/vLBEZRZ0GcLsRpHvaAD8zpI9CSTY3cMvX+2pPTlnrhN4ajD2w8SHGCwOGbYiDH2GT
-	 kDtud3M6UpHyyeDAZiQkvR6Npx55WEWQsvgMslRUIHHbmb9VrXPABAHXsLcmIwo0Qbmcg
-	 QC/oCdHqrMkzNFZZVyC0LbR97679AkGM/kQMIOU3QuCXEX4WEi/wVZhgkvs8tXUb+HA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793118799;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=I0iNj3mQ8BtY35+vPtf2TGLh4aOWNpD/xEhhJMSPSv4=;
+	b=t3g4V5KD1jF6MoIPCcDKcQTJ/l9ZoMsSLcOA30LTP0zmQzxBa1bpnku5LnzntNsadymR
+	 fb1miTsky00W43BF7Xl+RAiHwLTNxDzE2d2RMwEw4Ng6OR+r4PWtAVhoZF2lsz0iwkbXy
+	 V0aG7ShgEyR4JfxETOuN4ebHUm+VwiPHyT5L/TerUCsp1sMpjcV573l7qyTrZSnRfr2Ux
+	 vCHjPVlB48UYPSohu++MrMgZJNmHy5BoHB0ySrlNkZ1KrMyyR8Z2DsJWKN6/chAmhBG8T
+	 0JYV9W1SjhVMvtu9mauKF6aMVeHgkjxpjn7h+nH81FnTaVEnraIMu6FJ84MpprOaCWQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=1g4.org;
-	spf=pass smtp.mailfrom=1g4.org;
-	dkim=pass header.d=1g4.org header.i=@1g4.org header.a=rsa-sha256 header.s=protonmail header.b=nSWkwrSp;
-	arc=none smtp.remote-ip=109.224.244.21
-Received: from mail-24421.protonmail.ch (mail-24421.protonmail.ch [109.224.244.21])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=cloudflare.com;
+	spf=pass smtp.mailfrom=cloudflare.com;
+	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=XEdAllwd;
+	arc=none smtp.remote-ip=209.85.218.45
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5604F606A326;
-	Tue, 27 Oct 2026 16:30:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5604F606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB291606A321
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 16:33:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CB291606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=1g4.org header.i=@1g4.org header.a=rsa-sha256 header.s=protonmail header.b=nSWkwrSp
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
-	s=protonmail; t=1793118607; x=1793377807;
-	bh=z/3jpXuKR8Ek75myDtIS6oISZLc5tTxlxTmwToUVi/Q=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=nSWkwrSpNgrFzE4n9LAMKt6PEdv8HOS2JVM7mE3Zo09iiDZ13pynId9Ydvnu4M3UB
-	 iH+w5WgWV/iHrwO47RGhPAi6+bmNcOPtitVsUlSfGdJCSIlAHRd6BbG94qmZ+xSyul
-	 rDSTVeY2trT697oMv+92cyxI352rU1n6bk0KSbECfuc/7AlHklW5cKiQrqRDt1KKzg
-	 bYsieFz0X+ril90PfxYHhQ/e3VS4+YLMHW8TcDB2aU7+VihwSB7HXvcxU9l1L2WDkk
-	 mO9hPcQuc43TgjhFE67L2w8U9mRD6Va6YwzNOEfGWgGKoQ6fiaYzjZ2EG12NM0Ibi+
-	 5GqNUmSUtU1pw==
-Date: Tue, 27 Oct 2026 16:30:02 +0000
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-From: Paul Moses <p@1g4.org>
-Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me, vedang.patel@intel.com, jithu.joseph@intel.com, andre.guedes@intel.com, intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH net] igc: track rx frame boundaries independent of skbs
-Message-ID: <eZWITZTcOwr2NglsQ81lTVz7KdBTIb7L8jpSRGGX3Ts-wlGb6eIUGco_iev6GD5OFkaOmIMwKlADpfVh9KE-FdHCRgfFDSs6ZzYCaJbgp8I=@1g4.org>
-In-Reply-To: <auBfnRqpsuF4B+J9@boxer>
-References: <20261025065154.2037149-1-p@1g4.org> <at+t/jHczGvyXKRN@boxer> <XxgY3anjXL5MwVEpWmTA-tZLeDhfNvdTDJ3n_8jTLgnomanMs92AQS6-QHZyNzAi5tSQM4UDHEZyKs1sG39MrfHwma2BkaoxScclyny5KOw=@1g4.org> <auBfnRqpsuF4B+J9@boxer>
-Feedback-ID: 8253658:user:proton
-X-Pm-Message-ID: 2f363783c4d49599380b8b788c0128422907cb62
+	dkim=pass (2048-bit key, unprotected) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=XEdAllwd
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c37b612635bso587844466b.3
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 09:33:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1793118797; x=1793723597; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :user-agent:references:in-reply-to:subject:cc:to:from:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=I0iNj3mQ8BtY35+vPtf2TGLh4aOWNpD/xEhhJMSPSv4=;
+        b=XEdAllwdCkqIgxXu+9bXEkBIi36DzRQwxWRhKQlVdC1xvJN70dwZhU5b18swGOpJj2
+         u9raY4q6DL49OdQYfYyO6HehetZT8xrXylxcIQMVXsrGgalnp5RQkHWtq2y/RKPZ1gCT
+         GLWye7RpdC5QoTtoU3/XYkaAfnOB3Bbn8RlTN7RhqYoCHB+4ZSSumkvf3bXfb5vkYTvK
+         bzCmgsBHCvG9Ghj1JTeuxRpqeRdi0E4AHgiPk7UeyBA4D8Wr01cozDHBPVIzr1epXCI4
+         IVEscegJO1EAvD0GX6MvChjumpmJCw6fH4pIQ6iTdu+iWVpXZLyTKoYey+dzynAYI6xe
+         EJlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793118797; x=1793723597;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :user-agent:references:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=I0iNj3mQ8BtY35+vPtf2TGLh4aOWNpD/xEhhJMSPSv4=;
+        b=L5WX80Nbzy4qrkPENKe2+Dq+I+oq6oZ3LylXPvYH3JlQ0ZKT/DJOGOJw94LmREPKcR
+         DZI58G/rL5AEuuev0joo+FCO/Lc77U/ZpLIYuoler/yRnm/KBIZUrgICBdGOHP1VdSnp
+         ewgyNPDqb9MRmqMzWr+xzVJSQr/ryoFAME60n40gKsv0IPDv012jJFY5RucXwjjqrpao
+         VaJMZm8TttKErYwYwC57Z/8WiRPKKauIBcz+vXCTOfbCR6ieFa3H332n+E2mg7Wk6lFL
+         EMjjOEl99l22BwpGFWn9t7ZWMFFr+FJrnBuShUpgahFPz32S8JYgqFMXk/nHZhiehEb+
+         Nlmg==
+X-Forwarded-Encrypted: i=1; AKwUvBw6kysDiYYOPxyHJlx4OddqKVCGBlhCAdYa2eTiBRN0rfgFSm1fvsrrOvf+wwRScTuFHu+Jr/4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLX1mFJuv5dl6a0SBl7zl1UvouBPv150PO5az7ujYFhRuThMpo/
+	MWi9aJR3+CuMsVVlbwZTJY6vvDDByJLY5Ojmd+nU+2kERh6tmnTgYb5q3Nt4oKbw1zj6JRXDOQD
+	zdcO+07g=
+X-Gm-Gg: AYBFou1q5TJnoPbA/pSv01Vsg/wP9+3aTbgJ9gSwQu14J2CAAFdoi+ZPRTu3eujHn0w
+	pOTWJUYE8Io3IRgYk8IsKW6pd1TEC3gQAdjP7d/EA+jTYUHq9Plk5+Tox7+/bA0/kd/2Lxvtfq7
+	jbxFUD5LFwOzU1nPVj3m1aLnus2I0Xs/Hxs3djqXbEcsGIXd7MJmYik0vFavtkvcIgqO4vIQZ9C
+	wd7IGSV2iV+SHur649UEFSUjJgeVO+z6Vy6a8GXTUCcKfBmm512OxYMh+jGNO8RIcza4XI2Ldoy
+	zJKG+j11jtTy/IkjSctx5yLHd7c8MglisFpheNuuIR3K+ySTbUKG+hqb4fsIbJjJV0Lv63ohB/K
+	GmIkr3AeZhO2thxzy82x0BqCl3YYlDnlwIBAyo3cedC2cwaomzNPdqignO8oZBL0X8jXknxFkeJ
+	e92UazKHx2EAsvcb4XF7XDO92ukSfIFmVVc9EG0ujsQxV1fUoXCyFDDziDq4oSJQ+xSv/aPwZPv
+	CLhTb3MwKIRmUHQUVzRsjIel/yb3KZpxG3xgN4ITf4H1qnFhe0OmT8v3uMzXbDpkpA+Zf9oVvAC
+	oTYEfEoWbgfT1asdhu43CdAH+Y8fjqpFa5W0OsWU
+X-Received: by 2002:a17:906:7314:b0:c42:102f:15e8 with SMTP id a640c23a62f3a-c46bdd68f4emr1061585666b.14.1793118797178;
+        Tue, 27 Oct 2026 09:33:17 -0700 (PDT)
+Received: from cloudflare.com ([2a09:bac6:5067:2dc::49:1e9])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c46bd79b884sm481105066b.75.2026.10.27.09.33.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2026 09:33:16 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+To: phx <phx0fer@gmail.com>
+Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>,  John Fastabend
+ <john.fastabend@gmail.com>,  Jiayuan Chen <jiayuan.chen@linux.dev>,
+  Network Development <netdev@vger.kernel.org>,  bpf <bpf@vger.kernel.org>
+Subject: Re: [PATCH bpf v2] bpf, sockmap: annotate the psock teardown data
+ races
+In-Reply-To: <CAKvCo-zf6=ABrMEn_8r7rJFFvaaXQrz8GAUQ9Uz4h0Ze9gY68w@mail.gmail.com>
+	(phx's message of "Tue, 27 Oct 2026 13:10:52 +0800")
+References: <20261021155629.68813-1-phx0fer@gmail.com>
+	<20261022054811.35008-1-phx0fer@gmail.com>
+	<DMBHB0TQOV1L.38MECMYFGUS5B@gmail.com> <871p9g6ym1.fsf@cloudflare.com>
+	<CAADnVQLTe611mm0iJEf5gJi2GtW42kxNHH3sUPevD039FvzL7g@mail.gmail.com>
+	<87v76o63qv.fsf@cloudflare.com>
+	<CAKvCo-zf6=ABrMEn_8r7rJFFvaaXQrz8GAUQ9Uz4h0Ze9gY68w@mail.gmail.com>
+User-Agent: mu4e 1.14.1; emacs 30.2
+Date: Tue, 27 Oct 2026 17:33:15 +0100
+Message-ID: <87pkwv5cj8.fsf@cloudflare.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,107 +110,19 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
+On Tue, Oct 27, 2026 at 01:10 PM +08, phx wrote:
+> Sorry for the long silence =E2=80=94 my laptop died right after v2 and to=
+ok the
+> local mail and the working tree with it. Agreed that the ordering fix is
+> the right one; please go ahead with the commandeer, Jakub.
+>
+> I do still have the reproducer (a KCSAN selftest for this race, verified
+> in QEMU). Say the word and I will post it, or send it to you to fold into
+> your respin.
 
+Feel free to iterate on the patch once you get your dev env restored.
 
-
-
-On Tuesday, October 27th, 2026 at 3:24 AM, Maciej Fijalkowski <maciej.fijal=
-kowski@intel.com> wrote:
-
-> On Mon, Oct 26, 2026 at 10:12:51PM +0000, Paul Moses wrote:
-> >
-> >
-> >
-> >
-> > On Monday, October 26th, 2026 at 2:46 PM, Maciej Fijalkowski <maciej.fi=
-jalkowski@intel.com> wrote:
-> >
-> > > On Sun, Oct 25, 2026 at 06:52:06AM +0000, Paul Moses wrote:
-> > > > TSIP remains set on continuation descriptors, but the inline timest=
-amp
-> > > > header exists only in the first buffer. Stripping it from every
-> > > > descriptor truncates split frames and can underflow short buffers.
-> > > >
-> > > > skb ownership cannot identify frame boundaries when XDP consumes th=
-e
-> > > > first buffer or AF_XDP uses zero-copy.
-> > > >
-> > > > Track rx_in_frame per ring and update it as descriptors are consume=
-d.
-> > > > Strip timestamps only from first buffers, reject unsupported split
-> > > > frames before XDP and drain continuations. Account discarded
-> > > > descriptors against NAPI work without counting successful RX.
-> > > >
-> > > > Fixes: e1ed4f92a625 ("igc: Refactor Rx timestamp handling")
-> > > > Fixes: 26575105d6ed ("igc: Add initial XDP support")
-> > > > Fixes: fc9df2a0b520 ("igc: Enable RX via AF_XDP zero-copy")
-> > > > Cc: stable@vger.kernel.org
-> > > > Signed-off-by: Paul Moses <p@1g4.org>
-> > > > ---
-> > > > - This supersedes "igc: only strip RX timestamp header from first b=
-uffer"
-> > > >   following feedback from Simon Horman, Maciej Fijalkowski and Sash=
-iko.
-> > > >
-> > > > Changes:
-> > > > - track frame boundaries independently of skb ownership
-> > > > - guard timestamp stripping and drain unsupported split frames
-> > > > - cover the AF_XDP zero-copy RX path
-> > > > ---
-> > > >  drivers/net/ethernet/intel/igc/igc.h      |  1 +
-> > > >  drivers/net/ethernet/intel/igc/igc_main.c | 87 ++++++++++++++++---=
-----
-> > > >  2 files changed, 64 insertions(+), 24 deletions(-)
-> > >
-> > > Hi Paul,
-> > >
-> > > I think this implementation went off track. We should make sure we *n=
-ever*
-> > > enter data path for XDP/AF_XDP multi-buffer scenario until we add rea=
-l
-> > > support to it within this driver. Now you sorta handle fragmented pac=
-kets
-> > > in data path.
-> > >
-> > > I tried to argue with bot reports that it hallucinated for
-> > > igc_clean_rx_irq() content (which was concise and to the point) and a=
-greed
-> > > the AF_XDP should *not* be exposed to any fragmented traffic, which s=
-hould
-> > > be addressed on HW RX ring configuration side, not within data path.
-> > >
-> > > Also this should have been a v3 with a link to previous revisions so =
-we
-> > > could keep track what has been changing between versions.
-> > >
-> > > Here's something that would address ZC fragmentation issue. Could you=
- give
-> > > it a spin on your side as I don't currently have igc in my setup hand=
-y.
->=20
-> [...]
->=20
-> >
-> > Looks good to me, passes basic testing, and I would rather you/intel do=
- this patch
-> >
-> > For posterity, I did email Tony with handoff notes stating I'd rather n=
-ot do the
-> > xdp/xsk/af_xdp/fpe side of things, but hadn't heard back so I kept goin=
-g.
->=20
-> I think this was within the thread where AI hallucinated and I stepped in=
-.
-
-No worries, it turned out more interesting than expected.=20
-
-> If you are not fed up yet you can take your v2 and the patch I added here
-> and send this as a change set. From my POV it would be better as you have
-> the HW to test this against and ironically my igc card went into
-> /dev/null's lab.
->=20
-> >
->=20
-Not fed up but sleep deprived, yes, I'll do that.
-
+We would also need selftest coverage for the race, if it reproduces
+relatively fast. You can take a look at test_race_insert_listen for an
+example.
 
