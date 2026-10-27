@@ -1,53 +1,52 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1793130869;
-	b=ASM81FuYSj5uJGoUtgCt8/oWrt/vvh6FlUJyRgULULgbLLo6OUWEZNY+zwQenpnmIEIu
-	 PzBw7UKH4pQr9MSIU0qCWpcdYWfq2wcAlJKGQFiQYyIDCsRe/dduJcAP2VCAXd6SEoIY7
-	 0sRCSli2GvYpJmrrOrho1BHETtr+Cue9gpEeHx3+5ozVgvmqU6ZdBYRzKbguOGwKqha+C
-	 0yP2GPnzpwF3xguaKv8V63ajJ7xBJomI8FTUDTi4cG21orPPBPY8XQBBz2Xs79SAsP6AU
-	 o+rPlssgMJBHz4pslAA3CIGQ7pGXeVJHt5Z5fAgNtmZsOGp2cW/gFomLuxy5kTPE2Ng==
+	b=dnTZf7zeFRPj++F9LxSz2AAQlOsypirgxYO21+jmGAYN5r5HvevO2uvngpOYbWNxiOVC
+	 oM9IiSWq+7UhVUEeMGVOdwFgsvSz929IE9fgZ8ay7sTH/prtNedbQPn8YLJ0zcxOA9HPj
+	 hxbvT198bHSLJAhwb01EMLWm/Nhv76+8hMWq0QopsgMbhIf3Vx4M7cfdUO69/HARiBuBt
+	 2L1ReNw/8XJd1aQhDJvuO/PXERviwIq0kZz3UOV0Vyj/w9re0yvNe6IpWIqrtGJWyuYkW
+	 L8xfnmbhij2Robw3FCUE8XhqM/WS1rsF/wSl9+jDP71vNmfL6T9mdHwH8d3eDHp85sQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793130869;
-	h=DMARC-Filter:Received:DKIM-Signature:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:Cc:X-Mailer:X-Last-TLS-Session-Version;
-	bh=uMUAvH+gylo3aGfBUzHy5/oge2cBB7PCRzSrhUkZMmM=;
-	b=MQdBMFBQ4Hq67jdsWfeKbOF+cw+ZUewlCD8v0ik+3vzJMNu4IrUUfD84/ZJblkVPYpdu
-	 WCBYTxCdQUWXkD8my17kG5ARtau/lH7LeLVGz+lir9e4tiHtEypZQWCXMW3NM/Q8l/5oj
-	 XqDXqsUgqYlBvCMWOwRW0I+2RwOe2YksfeWWmVWmBW6Ae0fj+b8yi2Tkaj4juP+XnoheU
-	 1fHObPbK4+Uu4RhRIdru3BkCOwWpKFsRQlHoncrDX562fC+513lagafkpl9TmkgoUHUty
-	 hlqoDsq5Qm4fagTKzcnJa/6vKcYdWr/0y1BWg/qQQZjuL4hETMl9ZPR0+kf804zfHqg==
+	h=DMARC-Filter:Received:DKIM-Signature:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Last-TLS-Session-Version;
+	bh=e0cNosVIvrwrLg1oyemNTICbA8kWNi/5IpjZtAuHw0M=;
+	b=nK/TPdh/qr1ahyEfkmvNORh+W1IxO9xPi1KjDA+xgwQS5wWzjfarYSrqQ8rjrcytQe+k
+	 jXutTrsfqeEoymtNmthgWVZ0eYFKkSfLfe7097yrsi1QOZGpiOkgo8wVA85Rz9+zF6Soz
+	 UifwHzQCD1ua9+igt3vGx/XgFZND9sVtDfuuEyxrLtx1mLFIUlK83S0hwIc9IJ7EqQLDQ
+	 kmq3cGPG/8QYlNxrR0eJS0P+ZyJuGl9GMOYoA7du+z2t3QNT2nh8Nzln1dVHFNgfHdMQT
+	 +20t8i8T6lIbKefGeQ++5LD6K0RLeEDwSkqCYidQmWZxrAVtP88g3WjfNRKS2ZpdzMg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=tipi-net.de;
 	spf=pass smtp.mailfrom=tipi-net.de;
-	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=VQVXz5Fu;
+	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=qfkxsh1r;
 	arc=none smtp.remote-ip=194.13.80.246
 Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B67A606A31D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B702606A31E;
 	Tue, 27 Oct 2026 19:54:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6B67A606A31D
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6B702606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=VQVXz5Fu
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 18BFBA50BC;
-	Tue, 27 Oct 2026 20:54:25 +0100 (CET)
+	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=qfkxsh1r
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 79884A3764;
+	Tue, 27 Oct 2026 20:54:21 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1793130865; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=uMUAvH+gylo3aGfBUzHy5/oge2cBB7PCRzSrhUkZMmM=;
-	b=VQVXz5FuGAGcIWC6YCwdDF3Y3xmzAneEvnasNs+h3ctScrS2LFNoTCZh0X1ruVwIXleDXc
-	UyRmv9MVHA3ah/hTYTBtvw3ycDv/hphsV+Xhc8WILhpKdV5RZD62uM0cz18d1M55K1lE91
-	L6LVY0sZo7tbNAZwcoHTc+HILYcXXlNuGhdSxZfecH2crCNR5hpcO5pLFBchDSc6EDKWXA
-	dduZ37rESV8cPbgGa23dwwqFSTiM2b05IqhjrY8LSCPv8anKibHzMjjvwH/GrEXQCZyX/D
-	fTxfV93hdq8sQGjYN3036SptVAzXO15FUZuOhXjg8bCwrLhgKOJ/cdFts3i+4Q==
+	t=1793130864; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=e0cNosVIvrwrLg1oyemNTICbA8kWNi/5IpjZtAuHw0M=;
+	b=qfkxsh1rAKW1wNqU8PbiW83tUJZduSKcfU8wo2MTD+9rHU3bhPu1ho28M3p+gnufPyymoi
+	QDW1CSorX6F8MQBsYQv3IJzhpe8bDC71URfOQn/PXZ9Pz/z+ZHzP8qy8YZJQvgP+now76U
+	WgeyUkYoEVE8uJKtcajo/wcBycWNVDdk7qNbyen3oeSDIuVVWHsbEtCbGxHVY8063l5A5U
+	ljeVT6IMizyZfwO88E69Mg9lgPqPkaTSQzdcy5kdsYJhIlsa2Hd3t41e2cgCTT9f41aXdQ
+	w/7Xmxk82cKqeS89nNoqXsFcuy+KiZM6To8QZlXgYT7zw9gY7F5vi34DK7L6Fg==
 From: Nicolai Buchwitz <nb@tipi-net.de>
-Date: Tue, 27 Oct 2026 20:54:06 +0100
-Subject: [PATCH net 1/2] octeontx2-pf: fix skb use-after-free on ipsec
- transmit drop
+Subject: [PATCH net 0/2] octeontx2-pf: fix ipsec transmit error paths
+Date: Tue, 27 Oct 2026 20:54:05 +0100
+Message-Id: <20261027-nb-otx2-ipsec-tx-fixes-net-v1-0-2114c4f10c36@tipi-net.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,9 +58,10 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261027-nb-otx2-ipsec-tx-fixes-net-v1-1-2114c4f10c36@tipi-net.de>
-References: <20261027-nb-otx2-ipsec-tx-fixes-net-v1-0-2114c4f10c36@tipi-net.de>
-In-Reply-To: <20261027-nb-otx2-ipsec-tx-fixes-net-v1-0-2114c4f10c36@tipi-net.de>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMywrCMBBFf6XM2oE2YBR/RVykya2Oi7RkogRK/
+ 71TXZ77OCspikDp1q1U8BWVORsMp47iK+QnWJIxud75oXcXziPPtTmWRRG5Np6kQTmj8vkaJ58
+ QkIInEywFv9L+d7IBPf6hfsY3Yj20tG07WEHQcYMAAAA=
+X-Change-ID: 20261027-nb-otx2-ipsec-tx-fixes-net-58cf6deaeda6
 To: Sunil Goutham <sgoutham@marvell.com>, 
  Geetha sowjanya <gakula@marvell.com>, 
  Ratheesh Kannoth <rkannoth@marvell.com>, 
@@ -74,32 +74,33 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
 X-Mailer: b4 0.16.0
 X-Last-TLS-Session-Version: TLSv1.3
 
-When an SA is removed while packets for it are still queued, the
-transmit path frees the packet but reports the queue as busy. The stack
-then requeues the freed skb, and the DMA mappings leak.
+Two pre-existing bugs in the ipsec transmit error paths, flagged by the
+clashiko review of my earlier ipsec fix for this driver [1].
 
-Fixes: 6a77a158848a ("cn10k-ipsec: Process outbound ipsec crypto offload")
+Both look like edge cases to me, but at least the path in patch 1 (an SA
+removed during rekey or teardown while packets are still queued) looks
+plausible to me. But don't take my word for it, I'm not an octeontx2 user.
+
+Compile-tested only, I have no octeontx2 hardware.
+
+[1] https://lore.kernel.org/all/20261022-nb-otx2-xfrm-unshare-net-v2-1-5590c9325bcd@tipi-net.de/
+
 Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/cn10k_ipsec.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Nicolai Buchwitz (2):
+      octeontx2-pf: fix skb use-after-free on ipsec transmit drop
+      octeontx2-pf: pass the skb to otx2_dma_unmap_skb_frags()
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_ipsec.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_ipsec.c
-index 77543d472345e..3920cd0985831 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_ipsec.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_ipsec.c
-@@ -1037,6 +1037,9 @@ bool cn10k_ipsec_transmit(struct otx2_nic *pf, struct netdev_queue *txq,
- 	cn10k_cpt_inst_flush(pf, &inst, sizeof(struct cpt_inst_s));
- 	return true;
- drop:
-+	otx2_dma_unmap_skb_frags(pf, &sq->sg[sq->head]);
-+	sq->sg[sq->head].skb = (u64)NULL;
-+	atomic_long_inc(&pf->hw.dev_stats.tx_discards);
- 	dev_kfree_skb_any(skb);
--	return false;
-+	return true;
- }
+ drivers/net/ethernet/marvell/octeontx2/nic/cn10k_ipsec.c |  5 ++++-
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c |  5 ++---
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h |  3 ++-
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c   | 10 +++++-----
+ 4 files changed, 13 insertions(+), 10 deletions(-)
+---
+base-commit: 06e1899f01565572d746a8c9ed1bc94041dd7690
+change-id: 20261027-nb-otx2-ipsec-tx-fixes-net-58cf6deaeda6
 
--- 
-2.53.0
+Best regards,
+--  
+Nicolai Buchwitz <nb@tipi-net.de>
 
