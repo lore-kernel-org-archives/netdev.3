@@ -1,97 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.178
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793092069;
-	b=YKfDdbOsE71w3M0yjxrNd9Zm00DqkMDykVPiL3bg896AEEVsRwbwpClJS6RRUaSiHieH
-	 w6o5oQZECp7zcyxDYgP8gcQXsvn0DUKywtS24bslp5urQT6FFOyjE+eGSEsuhCqYlK/xZ
-	 0oN/bVsYHcunjW7VNyI46/TAj/+Z2Czuz3oa8Su/FUaNI5/8P+18igjJDYJAw2OdcJxRI
-	 yBgRmhvnn8DrCK68VVcK5Huf8sYVFvZ7NMD1YN9z6i0M0XPakRTzKsc96DSsSBP6opp1E
-	 ELvBSd6PMvfTx2SK431uACR8dlyc/5tS1z1JEr81ONGDbnzHNWYhsvhqlvq6pI5xbRw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793092069;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=J50MjdbeXeR0wrBPwx4kRTNSm8kxLqeUdZkQeCxWhMw=;
-	b=H0W05fQNR0LsDQxDGB56sXYdDMNU33gsuHSXNEfJ7kHg2rf8l813mJkeViEFkJncur60
-	 LSaCstGcyF4S0gjhNeNngTbyPyazlE5E1LsJROjtNrOL2kEIg2AkfZtSM4hMsyemW7PDg
-	 FjCvkXZyJwh0Sa9aO/yuQVpZpeZsKkwyrmlvmwoy06nAXwDjighBvCbvJTiV8j8FrSCtH
-	 Y15G2itduQ3BOhInyBUPc15ONlvqQCJEmW7/BOujR9t3Q+a7HPpOVvQK++3nju1nmaVeu
-	 wi1UpL7mozpTa8kSMK5RxsXOaaNFhfak5dhcKLQKutTYjl8/3NEp7scoFPHSe2b5mZQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mojatatu.com;
-	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=G84K39SC;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.178
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793092171;
+	b=vWviR6h/5rlcaOFVy1VB91tyVNpJVyfBbGtwAg41dPrqjwkgroPhIfxSOzvygKsSB8G4
+	 2hx8Scoiyw86urdzy/rai88499kpbd5tMeGLj+a0qzNOcepwHCuz5LtXdwc+qLQ732+OV
+	 Ym54d/XVz9LXKheJeZvPU0TKlzNaEyOFiPIj6P00F2H6qZ6YRAbfj2MglOAtK8Kd0BKS2
+	 x3sewnHBYMWhdG+06//Mj/Wq7A+DoPJdmNFtAiRju7/iA73vOFOwfLHFR6oZ9GoYCZBGB
+	 Y00pUcaU5GzquN1WrapaCwTUFfFJ1hh6Oqu7dvaZ/PLZT5w7f/GYXvXqqz67ZXChFWA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793092171;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=VT3Y5OvSFbO9QB1vLrL/JDIAFG6W923q7UqKoS0saRw=;
+	b=yY1SD7KENbEsXvDi+abVSOGdFQb8vPvVo396VSYKrdjvjTxHzSKp/Cojj3WLJ2DKmVcm
+	 d2ZlGo7pl3HzFmHK7jAWE1vMG6Y1ctRlfdMGn9xKmNHYLyG0jdOTW1OVVvcGVdHk7UHHw
+	 WF03XMw4lumoIr2BFNGCDRfJnOhP0fkXmpjI40Pxz1qSnX0kZaVRjOCtz/Tzf6AV5C+Ny
+	 1bAHI3o7xFLhZgpDzD9+ACWs8bPCxbahp1Vt4wQSkUTDPwv2GbiV+37xjbwVQ1MPptFve
+	 tPT9qE/SCYatCwy5t07WxxwISxPDQn88blke30fumt3YtM1tB7VNsaMAzMf3Sjjy/6Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gL6g0cDE;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66EA606A31D
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 09:07:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B66EA606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3785606A321
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 09:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=G84K39SC
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-886e61fa30fso1605945b3a.1
-        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 02:07:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793092063; cv=none;
-        d=google.com; s=arc-20260327;
-        b=LIcJZb/Jz8Lk+2gLKpufr6kpPWGm7v2KWDUH/1WKf8k2WKaNaJLd0SAKvPe6bIPA+d
-         lS0Ewyzwfd1f93FdWTxSH5gA91saofAzoIReN2fU/q7ShyegSrWSHw7muctP9uLyZZLq
-         idZLGlO+HgZsF3Y7oJsPUIjKij7z1AbDCaYHidyYsNe//CR4JoAJJG4o3MA4QPdBMxeH
-         1Q2PmoQKrEcIt1yITP0cT9tE7P9tRDU+nUZpDppfUvThAkgUEhRWhjHB2ZwWpaLkuyiQ
-         LYiZGl8BibG8OOwEycr0e0UnT2aALjx/HpY5oEpCmKZ4/2sIg1D1T/+fODlVUdAT8YrC
-         Hq+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=J50MjdbeXeR0wrBPwx4kRTNSm8kxLqeUdZkQeCxWhMw=;
-        fh=5BKlMRgnuhrtrN9pqF3uiOKbHpLsfP+PPCk/2znyjr8=;
-        b=L/ebHiDd5jP6CwgLVUG+n7PxtSa0uccAs3GiivpOF6wQP2ZZfFfS3rKMk5qkC9uKeF
-         hWDnh/HxA6XMrkR2RPNnvxLHh80/4yHGAYPamICnk4ZrRfXNyxtVlVilDGSUTJP3Afoo
-         SR4if5q+WOHYLenDtwWzQqcbPVysEBzQrG8LSOTI5WDuts+WPRj8WCIrksufgZXwCCmq
-         7L8YddHj4/qp+rI9cOUEmf9d3d3s4eAt55ftDnOpb7Di1Apz1MTVGu0IJUTkS7q3/w/j
-         KBekoj4Z6Alb59giP9O6EHJuuy+aD0mtXYvhlHG4N0xi5B4kn6/pUeO2jSiegUBb3GLt
-         i+LA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1793092063; x=1793696863; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=J50MjdbeXeR0wrBPwx4kRTNSm8kxLqeUdZkQeCxWhMw=;
-        b=G84K39SCwuHHBvc+MO5/wCRtcI3mXN7cKHRkHkiE3pY7m+FKUJa6WEGgo0KVwCJoWm
-         34NYLJK07mpqdKBTmxO2iklWV+MJLFe2bcPvJkLLDFYPjLHSNxW3LdCx1tu96RBXVwU2
-         O5r0AC2sSHXTH3cBnCNy3pjOixYYwQWexJS1s=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793092063; x=1793696863;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=J50MjdbeXeR0wrBPwx4kRTNSm8kxLqeUdZkQeCxWhMw=;
-        b=mLzeObsLMoPxpyLKOFV63VpSOWCOOpNbVD2Q0uzo2s5FENbmCn2jmxXnN6peNTdp0U
-         iuC9I5Cj2ltNkE7M4hIViJSDWrEsmKuw+VDiDt1V07xSp9oo6eY2kDFUotKm2LbhQb2F
-         t69IduKHpMxO4T/PMFXfRQ1XM9wCpmW3blXHCCIMYzVD2C9CiaApP/Ik15SwIrqMJR5x
-         x3hG0NvZZ7Oq0UUd0CMypySwF2A1FV0xMvY3/bDVDLLuv34UFMhmZ4hTS2kXGRiFpZh9
-         xVIAwbEsauyfAt8BMUN+B6/Mfjk78eZgF3fUAKNGp2jf2ZcC8DGKxZAYEAf/jVcKTpMh
-         9SJg==
-X-Gm-Message-State: AFq9FYK3rBbV/h8WckRM3kJJj6+n/sd55D6t4VklL56W9QpxzRTAPqwx
-	rg4GHi2TeLVctytoeGT4hBZhvUxAUFv1w5N+7Xh9hzTWeriLK2UG4DyTImXgu4ay+LbylivDASv
-	DmnqE1JCg+uRhgyBt22LpbXh+NFgUxy+7CBzaYMyt
-X-Gm-Gg: AYBFou3isbgu+m55/otPR0WMfEzt0xHrw0sQT3uCuGf28TkjlSoppRltwuFfx6aE5CT
-	cJ6XRofF3SSjUfLJMEPewbsqB1/4ETwFOAu3oC6nFPFyQHL18Q7rMtQryutIyvrR/kgwcOGL90S
-	6AtqkRtv37BwHmA9pEmnXwdOhwM7Ak6CMt89Qk5qj8EbB28HNMM4ewV7L/qoRHBLnlbJpYdE4lL
-	rJmA58KzTCOgIeZaxaYzlGDlfAisTGI4X2vmwmVRL1s8MfZBex6s4KtytY5S+PpPT3XtyaAKgW8
-	CV7IA8H/do0LDM4rZdBllkZY8c8Nd7aDonGXyRc+0xtR0Jd8yekHPw318gpXLKbN1dJM/11e0Kf
-	5pUs1oCvlRYs4x47mJTD4Tt3Zdk723DzONM0+MoQFIGizu9HrotCaK5isQWL3QytQR8P5wrQLuT
-	0BTJi7rt7Mri0nGzQ=
-X-Received: by 2002:a05:6a00:2406:b0:8a0:3c:a8cb with SMTP id
- d2e1a72fcca58-8a364e531b0mr6883577b3a.1.1793092062949; Tue, 27 Oct 2026
- 02:07:42 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gL6g0cDE
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 692E71F031E5
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 09:09:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793092170;
+	bh=VT3Y5OvSFbO9QB1vLrL/JDIAFG6W923q7UqKoS0saRw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=gL6g0cDE/fM1YcljoA1aZnBkluyETfSVdCPCFznt39+S1LfqX3W7PXafW2wNDlgYC
+	 Hu+y4trakWqb+ewn7BqriCAIhkt0cawB9tPQ21k4vGD12sliSPExBxINuJxv2rQotr
+	 vNDOCC/e1xCvkCGiWU8EzPqlORFljrhhZ2/AIe1AqHBZgJ2kp8cv2NPWpscdff3UUQ
+	 vA8WqiGKhwBKQUj4QIKqzNunDhvnOAIJ4Kl6wTo1DiCt6gDREEwwCyQKCJkGGfTZpw
+	 EBg/NC6iNMSupxIDQeZ2UmHxXbGEwAfzhWo5W6tsOVBigBCnOwL+4lY/WSBItmSvb3
+	 AO3lKl6893s+Q==
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-3ab07d956f2so25436671fa.0
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 02:09:30 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvByZthv0QSqvWT8hoGyz9mgDezKKDx4c4HjadoGKmw7BPCaBTP/ifSdjsDy1QBO2nT832x87QAE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJyrAHT3zCB9jzM/ltOFWmrSdq2gg5mXqFUQumiMOgf5+gKiLPg
+	mLZUtuEHSkST+XvJBHTkE9S31zOxt4NhPpWG2tpCqcNTAZCKsDnHeK9lgh91z15SZSn3EMxZqrw
+	wFaIiEcNW516wDinT7lLmfMIryDuHHZ4=
+X-Received: by 2002:a05:651c:1444:b0:3ab:5423:dd80 with SMTP id
+ 38308e7fff4ca-3ac6fce6af2mr24493581fa.9.1793092169187; Tue, 27 Oct 2026
+ 02:09:29 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,51 +59,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <QDISC-6HS9.v1.r3.20261027034729@mojatatu.com> <179308810546.3327.8505039495265223974@kernel.org>
-In-Reply-To: <179308810546.3327.8505039495265223974@kernel.org>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Tue, 27 Oct 2026 05:07:30 -0400
-X-Gm-Features: AclHuK_Cr6xryEy8YJzQiqxJYKCJVeHztHClEIm6xa5N_nPm9qgWgpwlRoLVrKc
-Message-ID: <CAM0EoMnHOFLc6m3zYS7YdC7ZA8LvwXvGjPg+fUKqCJ-+RrVczw@mail.gmail.com>
-Subject: Re: [PATCH net 0/2 repost3] net/sched: sch_teql: fix header-cloned
- write and retry strip
-To: netdev-bot+sinfo@kernel.org
-Cc: netdev@vger.kernel.org, Victor Nogueira <victor@mojatatu.com>, 
-	Jiri Pirko <jiri@resnulli.us>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, stable@vger.kernel.org, sashiko-bot@kernel.org
+References: <20261027085200.1501599-1-xiaolinkui@126.com>
+In-Reply-To: <20261027085200.1501599-1-xiaolinkui@126.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Tue, 27 Oct 2026 10:09:16 +0100
+X-Gmail-Original-Message-ID: <CAL4WiioJcbB9gB7tbBcwLdRUPG=zX-5B-7G5=oMXGiy=f_WLSg@mail.gmail.com>
+X-Gm-Features: AclHuK8EVwFrXUj1qFMsxab1jfMHpLxrzYP4DKEcT8xEm71gKtZLAmqWJRAV0jE
+Message-ID: <CAL4WiioJcbB9gB7tbBcwLdRUPG=zX-5B-7G5=oMXGiy=f_WLSg@mail.gmail.com>
+Subject: Re: [PATCH net] net: bridge: netlink: do not clear the vlan info dump error
+To: Linkui Xiao <xiaolinkui@126.com>
+Cc: razor@blackwall.org, idosch@nvidia.com, davem@davemloft.net, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, bridge@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Linkui Xiao <xiaolinkui@kylinos.cn>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-cheers
+Le mar. 27 oct. 2026 =C3=A0 09:52, Linkui Xiao <xiaolinkui@126.com> a =C3=
+=A9crit :
+>
+> From: Linkui Xiao <xiaolinkui@kylinos.cn>
+>
+> br_fill_ifinfo() assigns the result of br_fill_vlan_tunnel_info() over
+> the result of br_fill_ifvlaninfo() or br_fill_ifvlaninfo_compressed()
+> instead of only running the second helper when the first one succeeded.
+>
+> When the vlan information no longer fits in the skb but the port has no
+> vlan mapped to a tunnel dst, br_fill_vlan_tunnel_info() walks the vlan
+> list and returns 0 without touching the skb. The -EMSGSIZE is lost,
+> br_fill_ifinfo() completes a message whose IFLA_AF_SPEC is truncated,
+> and the dump carries on to the next interface instead of stopping, so
+> userspace silently sees an incomplete vlan list.
+>
+> Only fill the tunnel information when the vlan information was filled
+> successfully.
+>
+> This was flagged as a pre-existing issue in the Sashiko review of the
+> net-next series, which noted that the VLAN fill result is overwritten
+> before it is tested (see the Link tag below).
+>
+> Fixes: efa5356b0d97 ("bridge: per vlan dst_metadata netlink support")
+> Link: https://lore.kernel.org/bridge/ed1de95e-e112-4076-93f0-6f7668e657ad=
+@blackwall.org/T/#u#5
+> Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
 
-On Tue, Oct 27, 2026 at 4:01=E2=80=AFAM <netdev-bot+sinfo@kernel.org> wrote=
-:
->
-> Hi!
->
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
->
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
->
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
->
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
-
-My bad for not explicitly calling it out in the commit this time to
-avoid you sending this email; answer is the same as before:
-https://lore.kernel.org/netdev/CAM0EoM=3DyCSeB9+Q8gFsB8sjQhddM9qWh8DOfSqqNt=
-p6byubv2w@mail.gmail.com/
-https://lore.kernel.org/netdev/CAM0EoMnb78SoNwrqgH5308B_+Mh1sBtm+wJ=3DSFXtM=
-HS-L2zfXg@mail.gmail.com/
-
-cheers,
-jamal
+Reviewed-by: Eric Dumazet <edumazet@kernel.org>
