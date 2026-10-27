@@ -1,49 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793140827;
-	b=PquXO85xHXB++DUjyNprstGBkl3+r7VEE6+OxwxB0TIXOF1Lhmwv5ouzWQcJDO0tWDY8
-	 PnzC9EfV8Z81syrvIU2cZ/ogaOKaQFpccZax85ruuTPWfC7ZrKTkef4gSgTFgpK4foA69
-	 WbIHsnnbtONf9i676ua0mfh2famRRNE/gYJr+GBWT0EUUY5YfxCYzTywvmfeOqKT0wlB+
-	 sVwfiugnV4z7YAwRRnMA6dd3uPFgj+hhULHtO1lybWDlXl/1olP+4D79k61C7nDr2OVBm
-	 /MkLwGoetddCQHMKvuPruIniYEqqxtA1hOcjnL0D2Lgyuvq3No/mdwacuY0NVvosZYA==
+	t=1793141229;
+	b=H04rrX2ilPHU5bXkFrhf7MlI1dUPAeNJkUSNZitJ1lW/7+/TqEK4L6jQt1jhdKEBmFig
+	 vKzNTdK4OXoxjLm3WIKZ5mwxN/QsbjuRJuEXnmfbbpM1q+lGEmlquAXkxTa9VuR34JRwc
+	 3rV8XLexHlvtxpuRCeUwQzE3y1F36cM5snG7biuXfAAcjtU3DoU/lO+K9K8QfmwFYHebt
+	 MXgeQ13p+thTK5MYxNy9xhN5i7ueGzGWtaNeUlaWiGvo5FxnuMV//cSD4Vq+opaa67xea
+	 6vRqc53rLGCbGhtE8AjJDD56yN9Jyt0POQuU+/YzM6V96FpcDhvOYi/fXRnw8ZvvzvQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793140827;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=yDDXDdTksahjrevZXicQEYxdvExKZLj2RyNMKHVmqso=;
-	b=umCb0adMwRomBytK2K+z3ztl9g5ZhXPB9HxFEkV28wMar/NHf72Ni7Zi7x/Injz/RPv9
-	 xTBl3xJg02wO8zvH3VUzv5pcZ0LFw0pB/0MK5iyPbfV04JwXVSMYHJmTCI/BULkwEK/fF
-	 dFR4DfxdrTBQ9RI63pUoMnrXDwxwqTbZt+P1ssefXfAZPSgem1Bjf2m/VTlY5aQpF4kVH
-	 mWPAwlk46Ig6tnrGIQRxD+njaJfgZ8bvwS2Zw18MKxQK6nmRoPo2SWphkCJHPyMolNBg9
-	 BwUdq5DsFOYg7zUso+wpWpdL58uRg3Wk6Ps2H1313vQu7IZnu98UmWaZ3p9VwoFHFig==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793141229;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=BRhWps6yiPo6vqGKqMu5wMjShEbWK2OtLM+mwipcvo0=;
+	b=E93zvxaJjM+gR+WMFAdYyFuUCqn3TAYc9ZxLK8t+0mRK7NvnAvDOqakFcsREdlVCVqic
+	 FdnmtD9HXqYXhkocEXgTWpOGm1uINojvCqQLy8HXyiaqDhrSsAbBt+Eto3XqdBtpKkVhD
+	 2mVWAi2KFSce4qcueJycWwpCj7V699hHd4GFyTf38PqFzacL4Suqxx+RG1ZKX5OHzLrER
+	 /p8OTN5rClui/enUZ8/1xRo3B6KpX48zH7JEnI0NJQUOnhblnemwSRcJ90kjUlMRoyOm3
+	 K1q+Kwdu7H8RjWuKzJdCtuQzBb1yOTd+ONuf3KnUjMMedbQhLuFGrNgmvhvlF+UFYhg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CdUsGMrA;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=inJSfAYG;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB464606A32F
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 22:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44377606A31A
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 22:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CdUsGMrA
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F321F031E8;
-	Tue, 27 Oct 2026 22:40:26 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=inJSfAYG
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAE781F01825;
+	Tue, 27 Oct 2026 22:47:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793140826;
-	bh=yDDXDdTksahjrevZXicQEYxdvExKZLj2RyNMKHVmqso=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=CdUsGMrAqm9PDXQ70MEsthLNUygdmjvqByP8Gh3leQ+rBc0crf+TcGMgU8QCTxjFm
-	 ZLEy+06mpU02mBIR/qaeJW7rSLCxSrfYdEhINQ1nUR/x/ITKLzPXO0BbbabsSFyMuW
-	 9fN3IhHqs9UH2BGuW/6N6O9Op66ZZA8psb0mY7HKxwKajrZfGhqLplewyB3nlH5KzK
-	 rKZeVcdK3WbpxFNTO5Vi8qFTAkQpxlrgqRNO8nJZUnF42YUznANMdYKXgsLqUKZ7mY
-	 ZBVcd5UER6V5FD2H/NudC5+Y7/Cer1Qq95z2tRc4nrP31/FMRCcXbAnYcQSW+UwaTk
-	 CGsILlP/y05Ng==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 815163AA940B;
-	Tue, 27 Oct 2026 22:40:26 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1793141229;
+	bh=BRhWps6yiPo6vqGKqMu5wMjShEbWK2OtLM+mwipcvo0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=inJSfAYGOqiY43LEC4aYEatk1t9+uTRH7U4HgtLYiHqLP+Xo+UikC6cuh29ezbIcK
+	 FumuJ9m40PiE3bQKvcRUjG/AhyCpNzic/E3yBmqa8Uaso3iX5Pkhw9YBLZJUJl+rKt
+	 xAY+/7UJhGASOj61W06VC5NUmkmFZzFCxalIYvdzh1GvDM4ExRotILphtBQMjkZ/+e
+	 5yG9CdzUK3GPktL81eRuzCq7IYP0cZlCVwsu0jx74E2YQB9LHrwlIIcCIsUiLBJAAK
+	 Vf1RC8RiyIa1Ot0rksAD486g55mAEcekJhBZ0TBN9F06z9vmWEw5CvA9J58f8CIRVK
+	 UcBGAG80aW0Tg==
+Date: Tue, 27 Oct 2026 15:47:08 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Fernando Fernandez Mancera <fmancera@suse.de>
+Cc: netdev@vger.kernel.org, jacob.e.keller@intel.com, horms@kernel.org,
+ pabeni@redhat.com, edumazet@kernel.org, davem@davemloft.net,
+ jiri@resnulli.us, Guikun Yang <yangguikun19@qq.com>
+Subject: Re: [PATCH net] devlink: region: fix snapshot id leak on
+ kernel-allocated ids
+Message-ID: <20261027154708.5138e1af@kernel.org>
+In-Reply-To: <20261026174403.512-1-fmancera@suse.de>
+References: <20261026174403.512-1-fmancera@suse.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,44 +60,30 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: limit priority VLAN untag depth
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179314082509.370091.14688479327825567155.git-patchwork-notify@kernel.org>
-Date: Tue, 27 Oct 2026 22:40:25 +0000
-References: <20261024004835.17862-1-user148783812897@gmail.com>
-In-Reply-To: <20261024004835.17862-1-user148783812897@gmail.com>
-To: Kamil Sawicki <user148783812897@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- willemdebruijn.kernel@gmail.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Fri, 23 Oct 2026 20:48:35 -0400 you wrote:
-> The priority VLAN receive path can repeatedly remove VID 0 tags and retry
-> packet processing. Unlike the read-only VLAN protocol parser, this path has
-> no limit on the number of nested tags it consumes.
+On Mon, 26 Oct 2026 18:44:03 +0100 Fernando Fernandez Mancera wrote:
+> When DEVLINK_CMD_REGION_NEW is issued without a snapshot id, the kernel
+> allocates one with __devlink_region_snapshot_id_get(). That helper counts
+> the caller as a user of the id, and the caller must release this hold
+> once it is done.
 > 
-> Each skb_vlan_untag() advances skb->data and resets header offsets. The
-> offsets are stored in 16-bit fields. With enough nested tags, the network
-> or transport offset can wrap. A later protocol handler can then derive a
-> large pull length from the wrapped offsets and access memory outside the
-> skb allocation.
+> devlink_nl_region_new_doit() never drops it. The refcount of the id goes
+> 1 (allocation) -> 2 (snapshot created) and stays at 2. When the snapshot
+> is deleted the count only drops to 1, so the id is never erased from
+> the snapshot_ids xarray. The id then stays in use for the lifetime of
+> the devlink instance: requesting a snapshot with that explicit id fails
+> with -EEXIST, and there is no snapshot left to delete to clean it up.
 > 
-> [...]
+> Reproducer steps:
+>   # devlink region new pci/0000:13:00.0/device-caps
+>   pci/0000:13:00.0/device-caps: snapshot 0
+>   # devlink region del pci/0000:13:00.0/device-caps snapshot 0
+>   # devlink region new pci/0000:13:00.0/device-caps snapshot 0
+>   kernel answers: File exists
+> 
+> Drop the caller's reference right after the snapshot has been created,
+> as the snapshot then holds its own.
 
-Here is the summary with links:
-  - [net,v2] net: limit priority VLAN untag depth
-    https://git.kernel.org/netdev/net/c/d3ff07f5acc5
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+bit of an odd reference counting flow in this code but okay..
