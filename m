@@ -1,79 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793103813;
-	b=D+RPtFR3xmrNjbcpct8SoIvtenkgaMvOE0NBaDOP369VI1lhjDWnpULjsVz7fWJeoAJ8
-	 Rhqix3uxu8PgwBmkUbq5sWVccjeqJa4S/CafeLdeYuCJ1WMJprF9eF1CaMI6ZWv98QxWO
-	 bU5XYhQzPy+CnXS6ZteGs67LLnY2a9fNeGqPXCQ1KuHr2XonXmK3VsK+ebu/z47yJWdi+
-	 uxDoyPXc8mgL+SQRLtFsVR+0bIzCLyEWYH4sQWXbGgdUm6Rftnr1JfdxTahelswG4CSXi
-	 +KFFFjBOIqYqWwxU0riN3eEYubqoBxdi46FxWjqSIjouajrG6t6XuUCEca7XdkCHZ0w==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793103813;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=fpfsmU+OZOP/dnJV2FFDnyzaNyuyVQpqhZJOIXOEgto=;
-	b=ALD/kOfI0Xxa9AdjQs+9NoZb6s6oadZeeVo/ha/dU6xc5XlMiYb/Sy+UZjbaHcDetj9C
-	 obRWDvwKsLzcu7ViLXsG9c6AannnZq+CjlmqWLJTb8DSqYny13RtYy58Qs5VE396M5bwx
-	 q9necv4WbFn/9HzY4+1BfZ9VHgRBsto3D3a/BmW/bKmtgy82C5Bbx/tbNvwq3JvVc/4sx
-	 RwVv2wI7GPfX8CwdPBASofXjbJA2FvABEwjSopI5DDwqFgdcb/xY2jHviDfRe/XeWMPoG
-	 ifWmcA0vQR8I6flhgQKseMT9kQJ9uz04J0YWFAnkFxcOQCYCU3op+/ZRO3K+t2u0RXA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ceKt1GWr;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1036B606A31B;
-	Tue, 27 Oct 2026 12:23:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ceKt1GWr
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793103812;
-	b=mApP1oDtXXpJYnSQkPq8dywRMWr4VjGoNBk0eAgG4MI9234EVYTy0ClmKZ4744z24zRf
-	 sZ1r9fyzrSqk6jRIaVu/gDuLhWRYMiFusW0a6Lp3bu9o8q2aPE/c9xWLJT7i6z2iBmChD
-	 tMxP8Y6tusHo6cbBW3bdoIv1wwSWsO1Vf/ANPabfKPfPHiGDcOiOu8Glsn/jwAfSd3ZS2
-	 BQ00zgsdFM9APCJ7hjc6xIABhv6JVR2/4uvGW6Q6a3ySx5YygLPLoDXSEt6f639q4AvJl
-	 2zVSPHpuz6Ap0E/zyAuvIJp2r6ro9rO354FoEMK2x2wg71dTch8XXrRWKzHmtFEeuJA==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793103812;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=fpfsmU+OZOP/dnJV2FFDnyzaNyuyVQpqhZJOIXOEgto=;
-	b=tTiKjryWpI7sCPVhXnh1IuaE+dvRtdD49lMMpeBP4X5HGhOHb970vyLRrFNn7HNT+5JC
-	 nYy+vHb2qxJD+nmsOX6LLxLKn3Oe1+ncYLtc24HjrjeFtQNEmAthxZc6PuwWxO/UXXLrS
-	 0clXejoRXJ1I/qVjGF4rVTlyDoNRm/vxg49ePNY5Wf/XSK8qaY/Jo7Ja5b6VaZDbFuJel
-	 aPPYYj/cNJQMsabpHAfiH1YyO3lnTHc4QHI58YeOEFcJgkYXXBveu4u5VK1uRr1Vgw5VD
-	 VkgF+cr8KwIjY7Adzvto1fZKBOt7Y5sZJQypcRfZdsaSuJVU2UcvRjO7u0xDbdFtGGg==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=37.230.196.243
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793103816;
+	b=KDzEpHz2jkD2TwmMJRAxGiia5lGFtDWGIqcLhvj5FKWeeIdKn82i3dMlA2P6KGR6bFYA
+	 p0MHoR6Ffe/JMoeGXbsMIanLIfGNCaWo4y6lV2zNEtdb8ERPTI9x2ECHZN7txQV1AvvWM
+	 RcdgdkhgvTRk9CRxLOEPZnnOcOs3d1Cn5w36moi716l9VBSyxGwcKyCuLukkYOqzEsxFg
+	 7mpcnavCU82kAQtFghUBVOu8I2KHbz0zrVBk/RHpS/WvdbHTIDPDkcnIBHQUxoGrcKQ/y
+	 BlunK+exZ4wyj1WcCEILLiwOD5ay4Ireg81UsaX9NDS5vihKvAVP8+sbY5gsE8o+y0w==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793103816;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Received:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:X-KSMG-AntiPhishing:X-KSMG-AntiSpam-Auth:
+	 X-KSMG-AntiSpam-Envelope-From:X-KSMG-AntiSpam-Info:
+	 X-KSMG-AntiSpam-Interceptor-Info:X-KSMG-AntiSpam-Lua-Profiles:
+	 X-KSMG-AntiSpam-Method:X-KSMG-AntiSpam-Rate:X-KSMG-AntiSpam-Status:
+	 X-KSMG-AntiSpam-Version:X-KSMG-AntiVirus:X-KSMG-AntiVirus-Status:
+	 X-KSMG-LinksScanning:X-KSMG-Message-Action:X-KSMG-Rule-ID;
+	bh=sYqvNFORyvDOQZXc7kZrBRIQxzHNGGA8imPy97/ddqQ=;
+	b=aE1SwJyqcc79j+IZ3nYaLLpgN/lGN5Gpj8XFrc3zXbEjo1U/IxhY38HwzcSAsgJYHaPA
+	 RbEITi6DvE6S286s02xqciq/spA4QUsC1RJ+e6v6XuPtambuvZMcGR+blCsghvlYm/MW3
+	 3mCBxLTeMNHVXPA+ygxtcsaUM09sVf/YGN+tiytJYdTcwB5pOZG2yQz8X8+x9bzD0laHR
+	 vs1gaHNQFEMcScxxqPBm9FMNr1GXl2QSipvDN+ejH+HnMt9pFh9deKjBAx4gMNOmlM8gu
+	 Pw8JeE+CB8qxuX8lbnlNfYXj/HKKS2ReyW9m373ylzxzhBy8gA6G8HfNty4I0Iek+IA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=astralinux.ru;
+	spf=pass smtp.mailfrom=astralinux.ru;
+	dkim=pass header.d=astralinux.ru header.i=@astralinux.ru header.a=rsa-sha256 header.s=mail header.b=DnjjdCRR;
+	arc=none smtp.remote-ip=37.230.196.243
+Received: from mail-gw01.astralinux.ru (mail-gw01.astralinux.ru [37.230.196.243])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 102561F01825;
-	Tue, 27 Oct 2026 12:23:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793103812;
-	bh=fpfsmU+OZOP/dnJV2FFDnyzaNyuyVQpqhZJOIXOEgto=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=ceKt1GWrVji2BS5PBXOOpPeCS5OIj8k6aAYvRxKFByT3BvU2mVxc9pp3r3jYBCHIJ
-	 wCzKm5LONpHit+PHLz50oRlApTkrgecvhjQQ+xLbz/MfxQfLSImnxE2F7dJgVCmAlF
-	 29nQy6gStAjQOh4V/25MsiMp4R9RXlm6GEhE6i/EWO0nbvxSl4o2jKqGjffFrbYxxh
-	 mRYZnq/B+LM2VcP7PA0axLBaQH95w11kF1YSM2ObmXOJZa6a87xPDmbeYaTKXS4BPN
-	 GtcDv7vT+8coJK+pH4xMxQ2x/rwQoODNvPrrjhq5O9dwLawe8nAJKDxlVzndnCEmPt
-	 7UgZ9/O+EsX+g==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 96FA1450B8;
-	Tue, 27 Oct 2026 12:23:31 +0000 (UTC)
-From: Ramses de Norre via B4 Relay <devnull+ramses.well-founded.dev@kernel.org>
-Date: Tue, 27 Oct 2026 13:23:29 +0100
-Subject: [PATCH net v3] bonding: fix initial last_rx vs ARP-monitor slack
- window
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5CF606A320;
+	Tue, 27 Oct 2026 12:23:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0F5CF606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=astralinux.ru header.i=@astralinux.ru header.a=rsa-sha256 header.s=mail header.b=DnjjdCRR
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
+	s=mail; t=1793103810;
+	bh=P3E5JJo9apThsCrIhdY5xdcWa1BI+V6kQr+vHn2p5qM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=DnjjdCRRmoprcy4jQCQtG7mESis82J6RBtAkK/OAVm4NKRr/AS7xllFmProxGSUIL
+	 GCf6pc4qlM9+i55rZ7uUbTWh00QTBtTJn8IKuzEcDUXdoqG/rKDANlpQ7H+AWyCWQn
+	 H9az5BZ6kyupil/an5Si5LDa5YQLQIsxqNfNSnJXqh3knGUbArP5v12hDXRdO7MkA/
+	 S9FysrJhRWBGgLQw2j9mn9ICjGaBiYbepc2Eyhy3GdSJJklIHh7ODQ/xObPUP8/H9p
+	 lGaafs0WzMZNHc4IhF/mc+lxtq0F5yOvW28bgEYHSc6GEzbw4d1mwKbSu0ehl9axEa
+	 f5ncQEBlACRKw==
+Received: from gca-sc-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
+	by mail-gw01.astralinux.ru (Postfix) with ESMTP id 035A225E57;
+	Tue, 27 Oct 2026 15:23:30 +0300 (MSK)
+Received: from new-mail.astralinux.ru (unknown [10.205.207.10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail-gw01.astralinux.ru (Postfix) with ESMTPS;
+	Tue, 27 Oct 2026 15:23:26 +0300 (MSK)
+Received: from DESKTOP-D46TNHI (unknown [10.198.50.125])
+	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4jDTdn3vy6z2w2F;
+	Tue, 27 Oct 2026 15:02:53 +0300 (MSK)
+From: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>,
+	Sasha Levin <sashal@kernel.org>,
+	Chris Mason <clm@meta.com>,
+	Chuck Lever <cel@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-nfs@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org
+Subject: [PATCH 5.10 v2 0/2] xprtrdma: Fix bcall rep leak and unbounded peek
+Date: Tue, 27 Oct 2026 15:01:36 +0300
+Message-ID: <20261027120143.1596-1-mdmitrichenko@astralinux.ru>
+X-Mailer: git-send-email 2.54.0.windows.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,120 +96,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261027-bonding-last-rx-v3-1-54907f1fb042@well-founded.dev>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XNQQ7CIBAF0KsY1mJgMC115T2MixaGFtNQAxRrm
- t7dFjcu6vJP/rw/k4DeYiCXw0w8Jhvs4NYgjgeiutq1SK1eMwEGBZO8pM3gtHUt7esQqZ8oE0y
- Ymp2lqTRZv54ejZ2yeCMOI7l/j2FsHqjiZm21zoY4+HfeTTyX/04kTjmtdF2Y0mgjOVxf2PfUD
- KPTqE8aUx5J8MPADgMrUyohhZAACsQOsyzLB7lsV8cTAQAA
-X-Change-ID: 20260817-bonding-last-rx-0303fa048f9d
-To: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Jiri Bohac <jbohac@suse.cz>, 
- Eric Dumazet <edumazet@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Nikolay Aleksandrov <razor@blackwall.org>, 
- Hangbin Liu <liuhangbin@kylinos.cn>, 
- Ramses de Norre <ramses@well-founded.dev>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793103811; l=3887;
- i=ramses@well-founded.dev; s=20260817; h=from:subject:message-id;
- bh=iLuXMQJ1SxlaYAgJ6k8T6L5P5ZUpQnl669RJjA7KhuI=;
- b=egGJkC94lXuW0zEaKLESCsSkMiu5EmZPrr3lE2In3Bof0dnjmZZWq9wH8A97RhZNl12/YvHI0
- NRTktxnngChCKVB2BJwwHAhhrD+AuF5ntrFDgOzcSTamrda8Z8QoGu1
-X-Developer-Key: i=ramses@well-founded.dev; a=ed25519;
- pk=1vBXHBVeJBMaC+2Zuonl0QQhEgGIQHERyF5RZNnrCmw=
-X-Endpoint-Received: by B4 Relay for ramses@well-founded.dev/20260817 with
- auth_id=957
-X-Original-From: Ramses de Norre <ramses@well-founded.dev>
-Reply-To: ramses@well-founded.dev
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-KSMG-AntiPhishing: NotDetected, bases: 2026/10/27 11:50:00
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Envelope-From: mdmitrichenko@astralinux.ru
+X-KSMG-AntiSpam-Info: LuaCore: 132 0.3.132 b92628ca234da971a1a6d61b32804bb3075f0fd2, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, lore.kernel.org:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;new-mail.astralinux.ru:7.1.1;astralinux.ru:7.1.1;127.0.0.199:7.1.2, FromAlignment: s
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 207024 [Oct 27 2026]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.27
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2026/10/27 10:49:00 #28748526
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected, bases: 2026/10/27 11:50:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 1
 
-From: Ramses de Norre <ramses@well-founded.dev>
+This is a backport of the fix for CVE-2026-72466 to 5.10.y.
 
-bond_enslave() seeds a new slave's last_rx with a timestamp old enough
-that the ARP monitor does not consider the slave up until a real ARP
-reply arrives. That is the purpose of the seed, see commit f31c7937c254
-("bonding: start slaves with link down for ARP monitor").
-
-The seed is one arp_interval (plus a tick) in the past, which was just
-old enough when the test was "jiffies <= last_rx + arp_interval".
-Commit da210f559019 ("bonding: add some slack to arp monitoring time
-limits") added arp_interval/2 of slack to every such comparison without
-adjusting the seed, so the seed now sits inside the window instead of
-outside it. For the first half ARP interval after enslavement,
-bond_ab_arp_inspect() therefore sees "received recently" for a slave
-that has not received anything and proposes it UP. This happens for any
-freshly enslaved slave, independent of primary_reselect.
-
-When the slave is the configured primary, the still-armed force_primary
-then makes it the active slave. ARP validation fails it shortly after,
-since the link has not received anything (on SFP+ ports the PHY is
-often still negotiating), and the bond falls back to the backup. With
-primary_reselect=always the bond recovers once the port really comes
-up, but drops traffic until then. With primary_reselect=failure,
-force_primary has been spent and the bond stays on the backup.
-
-Reproducer:
-
-  ip link add bond0 type bond mode active-backup arp_interval 1000 \
-      arp_validate all arp_ip_target 192.0.2.1 \
-      primary eth0 primary_reselect failure
-  # eth0: SFP+ (slow link-up), eth1: RJ45 (fast link-up)
-  ip link set eth0 master bond0
-  ip link set eth1 master bond0
-  ip link set bond0 up
-  # bond0 lands on eth0 via force_primary, ARP-fails it before the
-  # SFP+ has carrier, falls to eth1, and stays there.
-
-Seed last_rx (and with it the per-target array and last_tx) two
-intervals in the past, so it is outside the slack window from the
-start. The initial link state is unchanged, it still comes from
-netif_carrier_ok().
-
-Fixes: da210f559019 ("bonding: add some slack to arp monitoring time limits")
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
-Signed-off-by: Ramses de Norre <ramses@well-founded.dev>
----
-Changes in v3:
-- No code changes. Rebase on current net.
-- Reword the commit message along the lines of the v2 discussion: lead
-  with what the last_rx seed is for, state that the false UP happens
-  independent of primary_reselect, and that the initial link state is
-  unchanged.
-- Pick up Reviewed-by from Hangbin.
-- Cc Nikolay. Hangbin asked for a second review, Jay or Nikolay, would
-  you have a look?
-- Link to v2: https://patch.msgid.link/20260827-bonding-last-rx-v2-1-7c3833822c23@well-founded.dev
+Patch 2 does not apply to 5.10 on its own: rpcrdma_is_bcall() there
+still has the out_short label that commit 84dff5eb86ce ("rpcrdma: Fix
+comments about reverse-direction operation") replaced with a direct
+return in v5.12. Patch 1 takes that commit as a prerequisite. Apart
+from comment rewording it only drops the pr_warn() on the short call
+path, and with it in place patch 2 applies as is.
 
 Changes in v2:
-- No code changes. Resend with my personal name in the From and
-  Signed-off-by lines instead of my handle, as requested for the DCO.
-- Link to v1: https://patch.msgid.link/20260817-bonding-last-rx-v1-1-9da6f7fdf812@well-founded.dev
----
- drivers/net/bonding/bond_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+- take 84dff5eb86ce as a prerequisite instead of removing the
+  out_short label as part of the fix itself
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 7019e5d8fdc8e..269384fadfa6f 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2123,7 +2123,7 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
- 		new_slave->link = BOND_LINK_DOWN;
- 
- 	new_slave->last_rx = jiffies -
--		(msecs_to_jiffies(bond->params.arp_interval) + 1);
-+		(2 * msecs_to_jiffies(bond->params.arp_interval) + 1);
- 	for (i = 0; i < BOND_MAX_ARP_TARGETS; i++)
- 		new_slave->target_last_arp_rx[i] = new_slave->last_rx;
- 
+v1: https://lore.kernel.org/all/20261022115004.1615-1-mdmitrichenko@astralinux.ru/
 
----
-base-commit: f75062536e2d45ee182828f0e47e0124be2fdc8d
-change-id: 20260817-bonding-last-rx-0303fa048f9d
+Chris Mason (1):
+  xprtrdma: Fix bcall rep leak and unbounded peek
 
-Best regards,
---  
-Ramses de Norre <ramses@well-founded.dev>
+Chuck Lever (1):
+  rpcrdma: Fix comments about reverse-direction operation
 
+ net/sunrpc/xprtrdma/backchannel.c          | 4 ++--
+ net/sunrpc/xprtrdma/rpc_rdma.c             | 8 +++-----
+ net/sunrpc/xprtrdma/svc_rdma_backchannel.c | 4 ++--
+ net/sunrpc/xprtrdma/xprt_rdma.h            | 6 +++---
+ 4 files changed, 10 insertions(+), 12 deletions(-)
+
+-- 
+2.43.0
 
