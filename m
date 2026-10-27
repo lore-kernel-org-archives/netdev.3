@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793089600;
-	b=dcufFH5EF3uhO/OKMKaWevvK9deCU+0ZMmJHWjK1DuHyXK7szocMKMaQfpN2Z7cOXAbB
-	 +ICBZmW9hOTqhaOv5/AzLs8BFfn1Ip3MJnR6VPmN8bzNSIY+SL8+jxKc+tNXOjKlk+PDo
-	 I3Thsg3atRMudS9f77bzOQfPwPibMo4SB6XVcjV1t9Em6EjoNqw0BGGZVaxCQj+rzlenf
-	 4G4PRyCCWVA6XafKrZPR5nFws8eOA3tUv9FfvGp5Wpe4jiESZZsFyIU4n8cRA4WW8xO3B
-	 nnyhhOrc+xA92eVignBd28M3xYWMylpiHOnvASrEojAvjepgdFO/2Hju9dGBxRjiPuQ==
+	t=1793089605;
+	b=dmAAZpn/5bnQH1beoMtQHj3RCelegt9kUEqvLVWWzt3YT3TR2ftA+tH0gaNST0hZMuau
+	 fWOidJ7AsdbngCIrrgzFmpdpiS3j2B3744rq6diA0JayHFgwNfKlE0Bludzm3p01Y5Y5X
+	 7DUMwW5/LM67rIbiUWCpAISpZALEvvkWqrIhGG8bmwAtAztrtd6rXrfxni4upWJDzb+Go
+	 1kCK9Fw7ingFs74sOSD3fGzdB1KHf40MZr8o+MC/a+M2Zm15ukc6n+Ic+2+sI2wDQzfL0
+	 yN/ZCTV2MLmsyf7DSCMu0SlkPWvlQjFed8w5dwFPLW3cQcPpsnmisLFsTRMktnx8Lqg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793089600;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793089605;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=wxlEUOPDWrWSjb+U69g4A3AvQlYOq0xjZK0iGo8qV7w=;
-	b=R6N+iAbqxpaEUJvPpvcdGTKkqblplJ23nbntWYrnP7nO2+HfKJTbCIK6XzDD5MAynze4
-	 6dYIekgaivyNOpgQ+aF1dMhUJZgnjzaCyVhCkGzCEbZNU/8X67vcfHN1WyoHreXMr/ucF
-	 EgrSxGWoD+GbSuG3HhTA1TzD5jevqfInjYo9Nt5hhLus9ZmQ6GwUEzt/jYQrfNJt58qP2
-	 kgdxV+fRbz0K88tIqV596VN4vH29ssuVF9vyImWQpmxDMbLbqjFcMjlaYaG6MaEn4SSVt
-	 +le6kkV5R34gx2tbHZwFQ4biSemv7bRLjVfv7kRuTpqdLEKFmosDmv7Rt0Q9tm2mRWg==
+	bh=2mAQAxNJCmgorWtFYC1x4ukB0tp8HVcxnxU1mYBs9GQ=;
+	b=iQexALRKkTjgcwH2oVLaVW9m+WkCHNY8PBWjMVbcP5Owex8Eac9MQht6ENouMAXAhZ2n
+	 dnHf8XZgtNi5id00HSw83jKiQaCddSjMpy/q5uIeh69VDMqNzV4mwswdYLYuRIV8xf1mn
+	 mNJ2iZLnLKmS8IXubAf49rUcROqi/S9VVKYqQMa086bRiB/EhvIsI4r3QRwyDQtX2qPJ5
+	 gGFzrhP4a3RSaHbXn9o4oVmBpkqEFB5bSzq6ZGdC623LxnJLNZ7Fny06fAHvvzbgfZTAw
+	 nDwv/HZ8tgAOcYWv7OUPAqkk54KWsq3uTBTptP1DbYF4FL4d9BMQu39y22UBFFysKvw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bJL9glBL;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O2aiKLSh;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774C4606A31B
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 08:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E09606A31B;
+	Tue, 27 Oct 2026 08:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bJL9glBL
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD61C1F01825;
-	Tue, 27 Oct 2026 08:26:36 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O2aiKLSh
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 069071F01825;
+	Tue, 27 Oct 2026 08:26:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793089600;
-	bh=wxlEUOPDWrWSjb+U69g4A3AvQlYOq0xjZK0iGo8qV7w=;
+	s=k20260515; t=1793089604;
+	bh=2mAQAxNJCmgorWtFYC1x4ukB0tp8HVcxnxU1mYBs9GQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bJL9glBL9FnvSW80kttAQlhFmMmILzNHALQEc2jliN6yffayQ51iNaLhRNm53fRrq
-	 BwplPAYeOAjg6LUOxZHtN73OfwthRtUQoqh69TuhUlWKG6mQzTWenmCaT2/DnI9UYA
-	 6YFsu5W45Xz2p7NRjTaAUeTq5d1zdy0YjP75hTCxBPjuBKH509KVimJjnjtOV86hZK
-	 qt2B4qnAEBxmgO24H8MNAKxdBxkHiujFOynAiXd7l10twHv2nGFPJD1bfu3mZyvXP2
-	 HEe9vppsRaFhrXn1S/Cqq/S4+ZRCONLD5iiJcypoY7KwCyrFUp4OrAtY5Y6eFybsNF
-	 gcPiZm5oQiCmQ==
+	b=O2aiKLShXReTJCgUIhmKSGZFMBb1Okr2Lt3LXRJAKrbuQTwrd5O8bkiaog1wmxOxy
+	 eu2iL4be2Fqp8EsiSnaeMGFrIKgin4x/wW4HpPQAIOkakuVZJG8nFVlHNOkg2jbbww
+	 Psi/gcfqt+eD9uzmQ4Jw/Y40Jtq5AWSBzu2BtANE2LlUthfLlNDeqXUuHcUUmLoy4Y
+	 oaoAwBIMcdeudiZM/tvXWDrGmUT01qpfWydgqNAFgQfxh3G8BIVTGuZI2nFekz2d+C
+	 1+goT8Z07/IP1ZCwGrIoZeodfugM9olCnZC92yDVLoA0afEmroe1z7ltiVacYmPM7C
+	 H91hZm19eJj8A==
 From: Eric Dumazet <edumazet@kernel.org>
 To: "David S . Miller" <davem@davemloft.net>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -46,19 +46,20 @@ To: "David S . Miller" <davem@davemloft.net>,
 Cc: Willem de Bruijn <willemb@google.com>,
 	Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org,
-	Eric Dumazet <edumazet@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	Aaron Conole <aconole@redhat.com>,
 	Eelco Chaudron <echaudro@redhat.com>,
 	Ilya Maximets <i.maximets@ovn.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
 	Jiri Pirko <jiri@resnulli.us>,
 	dev@openvswitch.org,
 	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Ren Wei <weir@nebusec.ai>
-Subject: [PATCH net 4/5] openvswitch: use eth_type_trans_careful() in internal_dev_recv()
-Date: Tue, 27 Oct 2026 09:26:03 +0100
-Message-ID: <20261027082604.1485903-5-edumazet@kernel.org>
+	Ren Wei <weir@nebusec.ai>,
+	stable@vger.kernel.org,
+	Eric Dumazet <edumazet@kernel.org>
+Subject: [PATCH net 5/5] net/sched: act_ife: do not consume the inner header on egress
+Date: Tue, 27 Oct 2026 09:26:04 +0100
+Message-ID: <20261027082604.1485903-6-edumazet@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261027082604.1485903-1-edumazet@kernel.org>
 References: <20261027082604.1485903-1-edumazet@kernel.org>
@@ -73,64 +74,60 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-OVS actions like pop_eth followed by pop_mpls(ETH_P_TEB) or pop_nsh
-can expose an inner Ethernet header which is not in the linear part
-of the skb. Output to an internal port then crashes in eth_type_trans():
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-  flow: in_port(0),eth(),eth_type(0x8847),mpls(lse=0x00010140)
-  actions: pop_eth,pop_mpls(0x6558),0
-  # AF_PACKET SOCK_RAW on dp0: eth / mpls / eth / 4096 bytes of payload
+The issue:
+tcf_ife_decode() unconditionally calls eth_type_trans(), which pulls
+ETH_HLEN.  On egress this consumes the inner Ethernet header, and the
+device receives an skb whose data points to the L3 header:
 
-  kernel BUG at include/linux/skbuff.h:2839!
-  RIP: 0010:eth_type_trans (include/linux/etherdevice.h:635 net/ethernet/eth.c:163)
-  Call Trace:
-   internal_dev_recv (net/openvswitch/vport-internal_dev.c:202) openvswitch
-   do_execute_actions (net/openvswitch/actions.c:1296) openvswitch
-   ovs_execute_actions (net/openvswitch/actions.c:1606) openvswitch
-   ovs_dp_process_packet (net/openvswitch/datapath.c:310) openvswitch
-   ovs_vport_receive (net/openvswitch/vport.c:448) openvswitch
-   internal_dev_xmit (net/openvswitch/vport-internal_dev.c:42) openvswitch
-   dev_hard_start_xmit (include/linux/netdevice.h:5455 include/linux/netdevice.h:5464 net/core/dev.c:4057 net/core/dev.c:4073)
-   __dev_queue_xmit (net/core/dev.c:5066)
-   packet_sendmsg (net/packet/af_packet.c:3157 net/packet/af_packet.c:3189)
+- loopback_xmit() parses L3 data as Ethernet: the "ethertype" comes
+  from the inner IPv4 source address, and the decapsulated packet is
+  dropped or misparsed.
+- a real NIC transmits the frame without its Ethernet header.
 
-Use eth_type_trans_careful(), and drop the packet if the Ethernet
-header can not be pulled. This covers all OVS actions at the consumer,
-instead of fixing each producer.
+(The __skb_pull() BUG this used to trigger in loopback_xmit() when the
+remaining linear area was short is handled by "loopback: use
+eth_type_trans_careful()".)
 
-Fixes: b2d0f5d5dc53 ("openvswitch: enable NSH support")
-Fixes: f66b53fdbb22 ("openvswitch: New MPLS actions for layer 2 tunnelling")
+The Fix:
+Parse the inner Ethernet header with eth_type_trans() in both directions,
+then restore the egress data position and MAC length.  On ingress the
+existing behavior is unchanged.  On egress, push the inner Ethernet header
+back after parsing so the xmit path sees the original frame and later
+actions see a consistent network header.
+
+Conditions to recreate the bug:
+- egress tc filter on lo: action ife decode pipe;
+- AF_PACKET SOCK_RAW frame: outer Ethernet with ETH_P_IFE, IFE metadata,
+  inner Ethernet + a valid IPv4 ICMP echo request to a local address;
+- before this patch, no echo is received; after it, the echo is
+  delivered and answered.
+
+Fixes: ef6980b6becb ("introduce IFE action")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+[edumazet: reworded changelog, the crash is now handled in loopback]
 Signed-off-by: Eric Dumazet <edumazet@kernel.org>
 ---
- net/openvswitch/vport-internal_dev.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/sched/act_ife.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/openvswitch/vport-internal_dev.c b/net/openvswitch/vport-internal_dev.c
-index 77a16d5ebd54343c80a2def261aadcb8ff0d1274..8f035087f0eec80eddf6b493cf5ba7915a3e01c6 100644
---- a/net/openvswitch/vport-internal_dev.c
-+++ b/net/openvswitch/vport-internal_dev.c
-@@ -188,6 +188,7 @@ static void internal_dev_destroy(struct vport *vport)
- static int internal_dev_recv(struct sk_buff *skb)
- {
- 	struct net_device *netdev = skb->dev;
-+	enum skb_drop_reason reason;
+diff --git a/net/sched/act_ife.c b/net/sched/act_ife.c
+index 2afd68983ece40d8cae6c96af86e2ea65be476bc..3946a9589bb8fcd296e6f1f9234c00238df4d954 100644
+--- a/net/sched/act_ife.c
++++ b/net/sched/act_ife.c
+@@ -769,6 +769,10 @@ static int tcf_ife_decode(struct sk_buff *skb, const struct tc_action *a,
  
- 	if (unlikely(!(netdev->flags & IFF_UP))) {
- 		kfree_skb(skb);
-@@ -199,7 +200,12 @@ static int internal_dev_recv(struct sk_buff *skb)
- 	nf_reset_ct(skb);
- 
- 	skb->pkt_type = PACKET_HOST;
--	skb->protocol = eth_type_trans(skb, netdev);
-+	reason = eth_type_trans_careful(skb, netdev);
-+	if (unlikely(reason)) {
-+		dev_core_stats_rx_dropped_inc(netdev);
-+		kfree_skb_reason(skb, reason);
-+		return NETDEV_TX_OK;
+ 	skb->protocol = eth_type_trans(skb, skb->dev);
+ 	skb_reset_network_header(skb);
++	if (!skb_at_tc_ingress(skb)) {
++		skb_push(skb, ETH_HLEN);
++		skb_reset_mac_len(skb);
 +	}
- 	skb_postpull_rcsum(skb, eth_hdr(skb), ETH_HLEN);
- 	dev_sw_netstats_rx_add(netdev, skb->len);
  
+ 	return action;
+ }
 -- 
 2.53.0
 
