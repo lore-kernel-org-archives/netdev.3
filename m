@@ -1,65 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.137
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793084510;
-	b=dK0RbAnnzadL5MEy2jPnxFGi4qnZ2AtI90grwdA7yIuT6BmdBfQxHH09EiVYbS4lEY4v
-	 Z7oHqO12Z3PXQ46Psu1MziMaOx/1/ZudTVO+X+z8zZusuBxtvw2WyI/8D3Ae8bt6JDO4n
-	 dx5uKkEBuyNORhauVhMKJe5SwMadglU742Gp1kCFOlG3xlycSOKRdbN4D/LRK/Emmjyx0
-	 Jufh508+Bsy0i4gqA9DSPtYf7CH5UGmBNbO7kf1V+mfykzsbK0w7CG8kHO86uYC4+g/Bs
-	 0e6nL33SUSMUUUFk6LFvUqnnEONYdDSI0lN1Mq2TMTB1C/e+X+TaiPej4gvCvyr6MFA==
+	t=1793084825;
+	b=smpZyhnqgJNPSHX18xaLtLNl035WfN+ZxzLxE4YkUmZtpdn5qJ6APbOIdO2RFwLMdCuk
+	 IBMScPBBFJ7Ochagk2G4eNtlhy4QnxB/qU0O/yf4e86d33nLrRHnPyJzglmaYG1Y3KiU8
+	 GU315r8BfawjtVa9rgoWSAPQc0uyXwE32wJ5/VWrxHKhvm+VdOLAsQ5LK2JkT2WbFLdnM
+	 +mYImzR/AFizIsbp1siRCgKhG2NwlOM3sWag8o/9b0KJhwi+W2w0dbpQQBLCd9H4EURer
+	 nrgCfkf+YO0zwUYEmcYnx8ehij9WB6CFf3jClBtPNjIbe/XM2JG6Zd3Vet091QURrHQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793084510;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=4/uN1Zp2J/k/3SLIBOCDwzRSoBK60Gc0psw5pmXaNiM=;
-	b=LxdBYmHyirS3Dr6RWRWlPjYea+pEhaxWCyue4z767uCsDVs1lVl6IIECQrCsp1P+DqgS
-	 3umQTYLP2CAOYkZTRktEf6BJtpjPGRQuuMV7d03VK1y5G479oBZLwzE1AuVxi6dfdp9+c
-	 wL499ifToVxHm0HmsJUKc6HgIsVCQ7VblwRCd8HaMXZC9ViDlZMuL65nUFWoXySmgQmOM
-	 kHjOfXfBZ7IHqW7loN/OYTUpG3+5kR9oG0jO0TlShAOVzz/Xiw6cGOKxhmlcussfdgOuh
-	 D950TvLyrKIZD8CdUe5GR/OBgQViKrfTWAt16pUUWpuox8669ejVgApygwEw881bg/g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793084825;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=Haij1UMGI31cJqxu2zopCZgwJAF8QICo8mOxt+3rrII=;
+	b=fFCr8R24fuM5ZxUa0++UVkAw45PDRS/6awZEc+OqyGCWcuLZS4u7ws1oM0M+Vi2qaMwJ
+	 n3WebbIRxD2/buMcWIu7JG+n6RyyWw2l+ulZNYapZ5z/sBc3IPKo2BF2xyCwKeBnmNrJ3
+	 cy3R4Cvjl2RCJQgXCsPS0tNvBFMRAzgpZkx3CmFskImz+YrFiHcP9ftY8EBddtOZab/ho
+	 i36uV/8FkqZMhh3nE7dorhWUwv88AWDdhuJDzAjARpDG3uIlQn01eCj2LwbmPvDLCyfVp
+	 A0Fq3JZUShagPMgnP4Qo/MDvKxGJUbPjNtcCJsXGF/88L6PnSe2qWmBNR+58DFyzA9g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=XSZez1WK;
-	arc=none smtp.remote-ip=111.22.67.137
-Received: from cmccmta4.chinamobile.com (cmccmta4.chinamobile.com [111.22.67.137])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8931A606A32A;
-	Tue, 27 Oct 2026 07:01:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8931A606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fT0F8iCo;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE53606A31A
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 07:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=XSZez1WK
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=XSZez1WK6xpj/BdbouJwFcPWPQkOxJKlaSkjGZaEpph50eorQGU5+6P6z26yWcVgSZgPldry777ue
-	 5hhBvQnz4SFLNwIY/Shcfl9TzHSX1Lze9wIshL2+BBlP71oZZQbcv4YGFAsmFkLppTi3l2fl10BaHh
-	 8rVEl9LdJua9J5dc=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app08-12008 (RichMail) with SMTP id 2ee86ae04c52739-f4d96;
-	Tue, 27 Oct 2026 15:01:38 +0800 (CST)
-X-RM-TRANSID:2ee86ae04c52739-f4d96
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from Z04181456177947 (unknown[10.55.1.71])
-	by rmsmtp-syy-appsvr06-12006 (RichMail) with SMTP id 2ee66ae04c509fb-d0e51;
-	Tue, 27 Oct 2026 15:01:38 +0800 (CST)
-X-RM-TRANSID:2ee66ae04c509fb-d0e51
-From: Zhao Feng <zhaofeng2@cmss.chinamobile.com>
-To: netdev@vger.kernel.org
-Cc: krzysztof.kozlowski@linaro.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+1c5368988052dc2d8201@syzkaller.appspotmail.com,
-	Zhao Feng <zhaofeng2@cmss.chinamobile.com>
-Subject: [PATCH v2 0/2] nfc: pn533: fix hung task on stalled USB send
-Date: Tue, 27 Oct 2026 15:01:33 +0800
-Message-ID: <20261027070136.1339-1-zhaofeng2@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.55.0.windows.5
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fT0F8iCo
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 666B41F01825
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 07:07:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793084824;
+	bh=Haij1UMGI31cJqxu2zopCZgwJAF8QICo8mOxt+3rrII=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=fT0F8iCoZMuj8/wjSjb0BHVbhQV1zhGjDM5Hz/rdImckfkHN0Zdf/dcmjUHswKHf3
+	 9iFeHMtT3t2F1LWeUm5k8g5W4rG37JDhwuVsy3SoF4KUH6NTYXwYh7oJcX7lXLDp1P
+	 TJUTpHxP+bJ5g1eoCJxUV92G4xTkzV3T63L0yrgphrY3V4UsCummnirAXWNr/PGPux
+	 lJ2QQo8pUm03ri9UpY1Fgp6AaSeMSN25tAe0bBHNePHWge20FEIW3I3SfnHAHuods1
+	 Wx5pE/K2PoYHgf95+kDqs9/GPmxnLn4FY8eHp6hLsh78fKz/CCQNWqB8UoqzDz98ae
+	 s6T6gEHnPIxEg==
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-483a66818edso1885496fac.0
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 00:07:04 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwxbJr3GzHH15rj1bN3NbLLhq0tGL7i/diQe0uomsfaeuee6i3bgB4Sa2d9d+tap2jE//NQbTU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK5zU4N6LhvbKy+pIA1VV59TCX61Lb2dgC7qXaHt9Gn6cW8KWq8
+	W3JpFtkLFPkYtVH7Ia9aSTrfn+xs4J6rtLRuwBYcI1/yqwaYQHgIz+kypL1KOrMwjj+R0DuBaXP
+	Oyk6LM63DM6m2Y5R3Fl7xMmcRx/5DPXQ=
+X-Received: by 2002:a05:6870:1641:b0:497:4b0a:61fa with SMTP id
+ 586e51a60fabf-4a83f48b0b9mr5659905fac.28.1793084823789; Tue, 27 Oct 2026
+ 00:07:03 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,33 +59,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261024004835.17862-1-user148783812897@gmail.com> <auAA6ww0o6W07hGF@google.com>
+In-Reply-To: <auAA6ww0o6W07hGF@google.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Tue, 27 Oct 2026 08:06:52 +0100
+X-Gmail-Original-Message-ID: <CAL4Wiiqu-tO8pVaLpGeeKneuSY+6X-1OchyXf6zNG9mfq=CQXg@mail.gmail.com>
+X-Gm-Features: AclHuK9tZmdKALCq4z_lDeF2v4rWTvmmDPqjsb821Np52nbuDnodqoxjrRygB3U
+Message-ID: <CAL4Wiiqu-tO8pVaLpGeeKneuSY+6X-1OchyXf6zNG9mfq=CQXg@mail.gmail.com>
+Subject: Re: [PATCH net v2] net: limit priority VLAN untag depth
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Kamil Sawicki <user148783812897@gmail.com>, netdev@vger.kernel.org, davem@davemloft.net, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	willemdebruijn.kernel@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The out URB wait in pn533_usb_send_frame() is unbounded, so a device
-that never completes the transfer hangs the task holding the command
-lock (syzbot report).  Simply adding a timeout is not enough, because
-the error path of pn533_wq_cmd() cannot deal with a send failure: it
-drops the queued command without completing it, leaving synchronous
-callers asleep forever and the command queue frozen.
+Le mar. 27 oct. 2026 =C3=A0 02:40, Kuniyuki Iwashima <kuniyu@google.com> a =
+=C3=A9crit :
+>
+> On Fri, 23 Oct 2026 20:48:35 -0400, Kamil Sawicki wrote:
+> > The priority VLAN receive path can repeatedly remove VID 0 tags and ret=
+ry
+> > packet processing. Unlike the read-only VLAN protocol parser, this path=
+ has
+> > no limit on the number of nested tags it consumes.
+> >
+> > Each skb_vlan_untag() advances skb->data and resets header offsets. The
+> > offsets are stored in 16-bit fields. With enough nested tags, the netwo=
+rk
+> > or transport offset can wrap. A later protocol handler can then derive =
+a
+> > large pull length from the wrapped offsets and access memory outside th=
+e
+> > skb allocation.
+> >
+> > Apply the existing VLAN_MAX_DEPTH limit to the exceptional VID 0 retry.
+> > Count the tag already stored in skb VLAN metadata as the first level, t=
+hen
+> > stop before untagging a ninth level. Keep the accounting inside this
+> > uncommon branch so the regular VLAN receive path is unaffected.
+> >
+> > A single VID 0 priority tag before a real VLAN tag is valid. No normal
+> > deployment was found that intentionally emits multiple consecutive VID =
+0
+> > tags; permitting eight levels is therefore conservative.
+> >
+> > The issue was found while researching the Linux network receive path fo=
+r
+> > Google kvmCTF, with OpenAI Codex (gpt-5.6-sol) assisting the analysis. =
+The
+> > affected path, reproducer and fix were manually reviewed and tested.
+> >
+> > Fixes: 36b2f61a42c2 ("net: handle 802.1P vlan 0 packets properly")
+> > Cc: stable@vger.kernel.org
+> > Reviewed-by: Willem de Bruijn <willemb@google.com>
+> > Signed-off-by: Kamil Sawicki <user148783812897@gmail.com>
+>
+> Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
 
-Patch 1 fixes that pre-existing error path; patch 2 then adds the
-actual send timeout, handling the race where the transfer completes
-right between the timeout expiring and the URB being killed.
-
-Issues pointed out by the Sashiko AI review of v1.
-
-Link to v1: https://lore.kernel.org/netdev/20261023025602.1746-1-zhaofeng2@cmss.chinamobile.com/
-
-Zhao Feng (2):
-  nfc: pn533: complete failed queued commands and keep queue moving
-  nfc: pn533: add timeout to USB frame send completion wait
-
- drivers/nfc/pn533/pn533.c |  8 +++++++-
- drivers/nfc/pn533/usb.c   | 20 ++++++++++++++++----
- 2 files changed, 23 insertions(+), 5 deletions(-)
-
--- 
-2.39.2
-
-
-
+Reviewed-by: Eric Dumazet <edumazet@kernel.org>
