@@ -1,46 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793092260;
-	b=hA+knpKWFM0zmadA54P0X5d19nO1qvddtMuGLhwKrBezacphoZz+wGq31isWLCPeDOdL
-	 ELGzZk96wE7vSO4sUo27/4zdBgUtNVlAnGvt3zvvxtfazvQ74N15P6E602Qx17hFdTZ6X
-	 IUiMHwId6dfQzkaqewiS+TNk/T9Tg+IaCe6Quh19tDkCQ5tpDYbro1eKmTp3u8NctkW5/
-	 4fYiV+Y3Wh4OF6ZroytI+ynyeBvff0gyMIjWHaM/HLoWNt0PSBnxK39Ov17z1dq8JzwXe
-	 G0OaphMGmG7I/N85jhoNgwN8hNp7aOe712obOH23DAaIRZSVzEJz4ClidXp+RK0mvSg==
+	t=1793092259;
+	b=FJ9hghtbo24pz2VgMdv4pQ2IaDleiQjXUEpFEi6rNrCtwSgLm5eS+TZzSL9punsdDo0b
+	 IxFP0aS8fyW3SguklkfBFSq6MPlxZOYsGslG4MjANH5Zqvwe5AJlMQZzCnlLOen0+VSmj
+	 syl/335sUjeVa+SScPoioOKACl0Kail/NunnH5O2eszeyaSNJ6uANtLjQZz8tkalMz+uH
+	 RBhkYOLOKpvWktFKyMcJtwSFPJXnM2U+nZfFIN4xWvZTeoixfHoNP3e+gdIa9B12SUL8r
+	 1InTpH4ZsHgHXqFZvWOjUHtwrh6fu4WN/fa0xT2Q3RhAbnMj4kO7pL8D2ftWcYg7hjw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793092260;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793092259;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=NMwzOBgLak0sHODIyBF4CYGTZyqMPZeg2NfCnH9H41E=;
-	b=W8Iuf7p2D41bSXv0AZfLqAf91yqyNhlbc0qlbvibnXWeTw+NciMsrBlGzaH4SRgjEgqz
-	 vIPw7ERw6Wa7XWAHQzsTaeGXsa4cTmSW2ErsnPd9iJKo7R3HU8MH1qKX+ekfLMpvDncrU
-	 cKtYiqeUmJEzLrYrHyJN0oLh/AMZRKttPx3jP2HYsF92MrqfbCx7KP42uTKYU0M8B+VKZ
-	 rTRAgd2V+IlIKJsRzP+5h6oQVX1ZvAHVazAxeODn7aRfo1sqeqZuqAlfdaOo1zft7PUTR
-	 RWddxEgrSUwZGl9569F+ERYX/DzbDTJwJr5vQK4AnPRtvu+KUBb1IEO+SU911mHJqkw==
+	bh=mlggcwoG0DvfTCXP7ejSDYVRjRbl/qkcqpGTFuN6n2s=;
+	b=Obz7toPFb9Xljj7z3G+sbhs1kxzm9m6QxHF1zbmo1mQQEPReeKwIzDjbfjIS7W2mADIq
+	 lTZ1rNf/FjGsNdrzpNCrPLaWcNcrp0O1/Y3wF4DPQYMbyI9xtlTAx+P9LYIorMLoALdUH
+	 X+P2UyUy2kullKLqj4tQ1fBr49xWTiLrUrMir1BEpuce1h6Vgr3kCbp/sxFBZo2Qr6cEV
+	 5JJr+7JTNpRuzKAhIRvYnmVuIUr1310s31u690O2mxvc53T2IfP9vjqgGD5JhvESoKnQE
+	 tkcD1huPU2/jwpHKllEBzO8Q/DuSGPFm7KYnaOWaG9gZDSi9k2XYW30MspyhMZMZ48g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ivj4YrMJ;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YsUzvWop;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E90606A31D;
-	Tue, 27 Oct 2026 09:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0141606A323;
+	Tue, 27 Oct 2026 09:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ivj4YrMJ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 473211F01825;
-	Tue, 27 Oct 2026 09:10:59 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YsUzvWop
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953231F031E1;
+	Tue, 27 Oct 2026 09:10:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793092260;
-	bh=NMwzOBgLak0sHODIyBF4CYGTZyqMPZeg2NfCnH9H41E=;
+	s=k20260515; t=1793092258;
+	bh=mlggcwoG0DvfTCXP7ejSDYVRjRbl/qkcqpGTFuN6n2s=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Ivj4YrMJUMYBYm++ZtfNi8DsvatmvdbpZhlDJ/0FzEzKVTh4qKyW2ctQlHCPBDo2x
-	 e/6nOVVWxx3NOxYdLBnAA4ny7IwV7xP/svJzlQ+2x9qLK07sHBK0FhDzea706Y6iBo
-	 QeBjfnKuwCFiuC5og/0i+ybPPaBgg98We38cW14aizhB3MYTGdOM7t2eMvz1vySB/h
-	 wrgJJdQWYInNndHboKVqsOPQIW8rYFtLKEUjnrFfElGuAfz6AmJSfkmDrfpSeZk2Dz
-	 CToDXnRpczImzHyOIZ+UhAOF37BUdxppn/3K05DJuYbGZ0ZRODkJnc8qlgBbjPSfuc
-	 Z/n+7Dn/jRrFg==
-Subject: Re: [PATCH net 6/6] net: stmmac: fix XDP RX buffer DMA sync length
+	b=YsUzvWopm3C/u14vd2Db/AOVOM0G0Qyw/Xz2nXXSUQgeLOjWiQqOCDJ0AVroBk6bP
+	 ppvu0E+RoPeukmmAUh70/0DWFBh285VvP2xD88PwA0ZXejzaCMs1r8zfoDy/mh5FXO
+	 i8CAqHmReZ0qAH48AWsmXV1iwJzUv/ZyFFolIyWn+ymenLABah90ekVv44jKGTPoVC
+	 mrqLZm8pA6YjKFauaLH2ZRMaFUuSXOqGX1FkCUHvPywwniDfpIX6WA948vmSSlgNGH
+	 qNWcqPFENOwxPOxIVINLQCYn2EvfgsbUhHwqWgdWBJLq5uxufSG3DqnmjtGlBbUPxX
+	 v+pUdOQPQg+8g==
+Subject: Re: [PATCH net 5/6] net: stmmac: fix VLAN tag stripping on short and
+ non-linear RX frames
 From: netdev-bot+sashiko@kernel.org
 To: lorenzo.bianconi@oss.qualcomm.com
 Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
@@ -50,11 +51,11 @@ Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
  sdf@fomichev.me, Jose.Abreu@synopsys.com, boon.leong.ong@intel.com,
  o.rempel@pengutronix.de, netdev@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
-Date: Tue, 27 Oct 2026 09:10:58 +0000
-Message-ID: <179309225887.3134.17502896212947474889@kernel.org>
-In-Reply-To: <20261023-stmmac-xdp-fixes-v1-6-efb37e19f5bd@oss.qualcomm.com>
-References: <20261023-stmmac-xdp-fixes-v1-6-efb37e19f5bd@oss.qualcomm.com>
-X-sashiko-severity: High
+Date: Tue, 27 Oct 2026 09:10:57 +0000
+Message-ID: <179309225715.3134.11251912403308890296@kernel.org>
+In-Reply-To: <20261023-stmmac-xdp-fixes-v1-5-efb37e19f5bd@oss.qualcomm.com>
+References: <20261023-stmmac-xdp-fixes-v1-5-efb37e19f5bd@oss.qualcomm.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -67,112 +68,178 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+- [Low] In stmmac_rx_vlan()
+  (drivers/net/ethernet/stmicro/stmmac/stmmac_main.c), the patch adds an…
 
-- [High] In stmmac_rx()
-  (drivers/net/ethernet/stmicro/stmmac/stmmac_main.c), the length passed…
+Pre-existing issues:
+- [Medium] Only one of the two stmmac RX paths that call stmmac_rx_vlan()
+  records XDP metadata in the skb.
+- [Medium] The new VLAN-error drop branch in stmmac_dispatch_skb_zc()
+  does a plain `priv->xstats.rx_dropped++` (line 5567).
 
 --
 
-net: stmmac: fix XDP RX buffer DMA sync length
+net: stmmac: fix VLAN tag stripping on short and non-linear RX frames
 
-This commit changes the XDP path in stmmac_rx() so that pre_len and
-sync_len are measured from data_hard_start, and buf->page_offset is no
-longer subtracted. That matches the page_pool DMA window, which now
-starts at offset 0. The goal is for page_pool_put_page() on the
-consumed XDP path to sync the whole region the CPU touched.
+This patch changes stmmac_rx_vlan() so that it pulls ETH_HLEN before
+reading h_vlan_proto, and pulls VLAN_ETH_HLEN before reading the TCI. It
+returns an error so callers can drop frames that claim a VLAN tag but lack
+the full header. It also moves XDP metadata together with the MAC
+addresses when the tag is popped.
 
 > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 32b2c5834c340..c51358c51fae7 100644
+> index 8a2faf50d6957..32b2c5834c340 100644
 > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
 > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -5980,8 +5980,7 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
->  			xdp_prepare_buff(&ctx.xdp, page_address(buf->page),
->  					 buf->page_offset, buf1_len, true);
+> @@ -5102,22 +5102,35 @@ static netdev_features_t stmmac_features_check(struct sk_buff *skb,
+>  	return vlan_features_check(skb, features);
+>  }
 >  
-> -			pre_len = ctx.xdp.data_end - ctx.xdp.data_hard_start -
-> -				  buf->page_offset;
-> +			pre_len = ctx.xdp.data_end - ctx.xdp.data_hard_start;
+> -static void stmmac_rx_vlan(struct net_device *dev, struct sk_buff *skb)
+> +static int stmmac_rx_vlan(struct net_device *dev, struct sk_buff *skb)
+>  {
+> -	struct vlan_ethhdr *veth = skb_vlan_eth_hdr(skb);
+> -	__be16 vlan_proto = veth->h_vlan_proto;
+> -	u16 vlanid;
+> +	struct vlan_ethhdr *veth;
 >  
->  			ctx.priv = priv;
->  			ctx.desc = p;
-> @@ -5991,8 +5990,7 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
->  			/* Due xdp_adjust_tail: DMA sync for_device
->  			 * cover max len CPU touch
->  			 */
-> -			sync_len = ctx.xdp.data_end - ctx.xdp.data_hard_start -
-> -				   buf->page_offset;
-> +			sync_len = ctx.xdp.data_end - ctx.xdp.data_hard_start;
->  			sync_len = max(sync_len, pre_len);
+> -	if ((vlan_proto == htons(ETH_P_8021Q) &&
+> +	if (!pskb_may_pull(skb, ETH_HLEN))
+> +		return -EINVAL;
 
-[Severity: High]
+[Severity: Low]
+This pull happens before the h_vlan_proto and dev->features checks. A frame
+shorter than ETH_HLEN is now freed and counted in rx_dropped by both
+stmmac_rx() and stmmac_dispatch_skb_zc(), even with CTAG/STAG RX stripping
+disabled. The hw_vlan_en branch in those callers has no matching check.
 
-Does this cover the furthest point the CPU touched if the XDP program
-grows the tail and then shrinks it again before it returns?
+Is that intended? The commit message says:
 
-The comment says the sync covers the "max len CPU touch". However,
-max(sync_len, pre_len) only looks at data_end before the program runs
-and after it returns. bpf_xdp_adjust_tail() writes to the grown area
-when the tail grows:
+    untagged frames, including short ones, are left untouched.
 
-net/core/filter.c:bpf_xdp_adjust_tail() {
+That holds only for frames between ETH_HLEN and VLAN_ETH_HLEN in length.
+
+XDP doesn't seem able to reach this case, because bpf_xdp_adjust_head()
+and bpf_xdp_adjust_tail() both refuse to go below ETH_HLEN. Dropping such
+a runt is also arguably safer than handing it to eth_type_trans().
+
+Could the commit message mention that frames shorter than ETH_HLEN are now
+dropped?
+
+> +
+> +	veth = skb_vlan_eth_hdr(skb);
+> +	if ((veth->h_vlan_proto == htons(ETH_P_8021Q) &&
+>  	     dev->features & NETIF_F_HW_VLAN_CTAG_RX) ||
+> -	    (vlan_proto == htons(ETH_P_8021AD) &&
+> +	    (veth->h_vlan_proto == htons(ETH_P_8021AD) &&
+>  	     dev->features & NETIF_F_HW_VLAN_STAG_RX)) {
+> +		__be16 vlan_proto = veth->h_vlan_proto;
+> +		u8 meta_len = skb_metadata_len(skb);
+> +		u16 vlanid;
+> +
+>  		/* pop the vlan tag */
+> +		if (!pskb_may_pull(skb, VLAN_ETH_HLEN))
+> +			return -EINVAL;
+> +
+> +		veth = skb_vlan_eth_hdr(skb);
+>  		vlanid = ntohs(veth->h_vlan_TCI);
+> -		memmove(skb->data + VLAN_HLEN, veth, ETH_ALEN * 2);
+> +		memmove(skb->data - meta_len + VLAN_HLEN,
+> +			skb->data - meta_len, meta_len + ETH_ALEN * 2);
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but skb_metadata_len() can only
+be non-zero for skbs built by stmmac_construct_skb_zc() on the AF_XDP
+zero-copy path:
+
+stmmac_construct_skb_zc() {
     ...
-	/* Clear memory area on grow, can contain uninit kernel memory */
-	if (offset > 0)
-		memset(xdp->data_end, 0, offset);
-
-	xdp->data_end = data_end;
+	memcpy(skb->data - metasize, xdp->data_meta, datasize + metasize);
+	if (metasize)
+		skb_metadata_set(skb, metasize);
     ...
 }
 
-A later negative adjust only moves data_end back.
+On the page_pool path, stmmac_rx() calls xdp_prepare_buff() with
+meta_valid set to true, so bpf_xdp_adjust_meta() succeeds there. The
+XDP_PASS skb is then built without recording the metadata length:
 
-Take a 64 byte frame at page_offset 256 and a program that does
-adjust_tail(+512), then adjust_tail(-512), then returns XDP_DROP. Both
-pre_len and sync_len end up at the original end, around 316. The memset
-dirtied the cache lines in [316, 828), but this call does not clean
-them:
+stmmac_rx() {
+    ...
+			/* XDP program may adjust header */
+			head_pad_len = ctx.xdp.data - ctx.xdp.data_hard_start;
+			skb_reserve(skb, head_pad_len);
+			skb_put(skb, buf1_len);
+			skb_mark_for_recycle(skb);
+    ...
+}
 
-    page_pool_put_page(rx_q->page_pool,
-                       virt_to_head_page(ctx.xdp.data),
-                       sync_len, true);
+So skb_shinfo(skb)->meta_len stays 0 for these skbs. Doesn't that mean
+metadata written by a non-ZC XDP program is lost before tc BPF can see it?
+It would also mean this memmove only moves metadata for zero-copy skbs.
 
-__page_pool_dma_sync_for_device() caps the length at p.max_len but
-never extends it. The direct recycle cache does no further sync.
-stmmac_rx_refill() gives the buffer back to the device after dma_wmb(),
-with no more cache maintenance.
+Should stmmac_rx() also call skb_metadata_set() with
+ctx.xdp.data - ctx.xdp.data_meta?
 
-max_len is dma_buf_sz + stmmac_rx_offset(priv), which is 1792 with
-dma_buf_sz = 1536. So that range lies inside the window the device DMAs
-into.
+This patch's own claim still holds on that path, since meta_len is 0
+there and data_meta cannot end up pointing at the wrong bytes.
 
-On a non-coherent platform, could one of those dirty lines be evicted
-after the device has written the next frame into the recycled page, and
-corrupt that frame? It looks like the same failure the commit message
-describes:
+>  		skb_pull(skb, VLAN_HLEN);
+>  		__vlan_hwaccel_put_tag(skb, vlan_proto, vlanid);
+>  	}
+> +
+> +	return 0;
+>  }
 
-    Dirty cache lines in the tail of the frame can be written back
-    after the device has DMA'd a new frame into that page.
+[ ... ]
 
-The commit message names "grow the tail" as a trigger and says "the
-whole CPU-touched window is synced". The max(pre, post) approach was
-already there before this patch.
-
-Would it be better for the STMMAC_XDP_CONSUMED path to sync the full
-pool window instead of checking only the two endpoints? Passing
-p.max_len, or using page_pool_recycle_direct(), would do that.
-
+> @@ -5546,12 +5559,15 @@ static void stmmac_dispatch_skb_zc(struct stmmac_priv *priv, u32 queue,
+>  	}
 >  
->  			/* For Not XDP_PASS verdict */
+>  	stmmac_get_rx_hwtstamp(priv, p, np, skb);
+> -	if (priv->hw->hw_vlan_en)
+> +	if (priv->hw->hw_vlan_en) {
+>  		/* MAC level stripping. */
+>  		stmmac_rx_hw_vlan(priv, priv->hw, p, skb);
+> -	else
+> -		/* Driver level stripping. */
+> -		stmmac_rx_vlan(priv->dev, skb);
+> +	} else if (stmmac_rx_vlan(priv->dev, skb)) {
+> +		dev_kfree_skb_any(skb);
+> +		priv->xstats.rx_dropped++;
+
+[Severity: Medium]
+This is a pre-existing issue, but priv->xstats.rx_dropped is one
+device-wide unsigned long in struct stmmac_extra_stats. Every channel's
+NAPI poll updates it with a plain read-modify-write:
+
+stmmac_dispatch_skb_zc()
+    priv->xstats.rx_dropped++;
+
+stmmac_rx_zc() and stmmac_rx()
+    priv->xstats.rx_dropped += rx_dropped;
+
+stmmac_napi_add() registers a separate rx_napi/rxtx_napi for each channel,
+so these polls can run at the same time on different CPUs. No lock, atomic
+or u64_stats_sync protects the counter.
+
+Can drop increments be lost this way? stmmac_get_stats64() also reads the
+field without READ_ONCE().
+
+This patch only adds one more site that follows the existing pattern.
+
+> +		return;
+> +	}
+> +
+>  	skb->protocol = eth_type_trans(skb, priv->dev);
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261023-stmmac-xdp-fixes-v1-0-efb37e19f5bd%40oss.qualcomm.com
