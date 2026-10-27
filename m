@@ -1,87 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793096326;
-	b=SoJOI0k1Xd9uhBnH8fBjzlmADCmqrh4GPID6Z8udmSXYWFL1WbETjys61+BLFPf9Qc9Q
-	 7eeXs0+AqErRZHIa5Ku92p3IeNNTdoBowCyHIsATMLDVe9DMJzMAtLMNvwmzVzxhoLhqy
-	 sdHCwyINjQWBUm9iDJybrwndVJdHFqFJTPzy/GBSy7qyw+1qFJuQmdiwTfufw4qnLifzv
-	 aw3jypRSdceGPeVqrglE8h0H3vlmfwGmy3Ni4YNDoXOELvQVABMMSGiWSXMpkAHq9vQ5f
-	 D3DBeQajfzpktCZYS6Rkj20Pk0U2cSyC4LrbaY6T1EtvHZ7nadDkIjSBvJ9pxzucEkQ==
+	t=1793096517;
+	b=qr82sFGtY3f0SZC7BbFEXKXSdt2Th6Gw43dDaDehstPFoQ2RAULbwpgDeZGN9H9GQtm+
+	 VOVHnQerVaFrFIXUYyGT9+irDNpgB5FlVWdeurj8zd8XabkbO581Q2Be/Zh0lqfJOZQeA
+	 +ICiAGJLxpAyuiyCrFGqet7ehQ3BSdZ+egesC4WYZWWZQ4t4oMuXJGoC8KFBZ7IqUJOuX
+	 jkOJAWFmTYVwa24Q2AX03rUm/5LQhmT+xwpps0izZnx1YDUmuhF1PhqYnIMTPZ0xgzi5V
+	 Cuebgho/i1N9QdZuOn8ezNrlZ+FPbraZ0cgaOxO9nQSd8WVG7smH/NgYbVJwlNbxNew==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793096326;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=GeuP82OoQJyfsoRLW0M/dQ6bKN3b3en2bYN7HzilbDU=;
-	b=YTW/Bs1qdElpm3Mn3o7yj8+gYtT5VQrOicpZDKCWo4HvsQuN3e45mGwVBEhdWWzQBX/i
-	 ON9kIJ7GZ9g4b5zkhjR0k2iefMmFCllmg89HI+zAwXlbzm0O/UljZW9MUaK0VQRZM420z
-	 YsgexKmuIptNWKVZO/3KRg/cUgwgQklKxwIJnOZwe3YZBC7YSV3HVVOwayrurthWV55vH
-	 5OIvhhekc75T4jUj+2v3E7O7ACZ5ioQ0q4ijSEmNho3sowHo/Mny30LQnDBx9I4bBPgff
-	 r46ZpFb3dOawR7+s5pnpAooGDFk3pxlWbD9oZk9rGiZk62ABFUC5lotgt0E7v2rapBQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793096517;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	b=QkqrDY4NlXe8i9kkNgQC8NbOUzfMmQodM+mJ9CvRXbyRgRaKrp+EBaiOzoM5en1i6oK3
+	 HwzbbRii06J5bkmbuN3K3F3mHUKE5xHQaji5mbxeNgyUYwrw5Cf2q4BeXg7POtZtxJdYk
+	 wCCcpmO0wX4oV0Z3EYIet7xTNHL20CC9hwibk/VUrkvadwAteQlwQylQNqCavPugEzkU2
+	 GEPhqopucc/i7AEeMFWX/VEHyXXJ4KbLSzGEp1/vTSmRnCqMoqlupx0UF+35uyh2Pjymj
+	 QjyqAXwOABWEh3PHv8jPSuSMHYv26NZw9mDraQ1EZi7ca0u8+Env6rbkXD2XkWQyhzQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=JjzMpGlA;
-	arc=none smtp.remote-ip=209.85.215.178
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UqoYNZNE;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBB9606A31B
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 10:18:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9EBB9606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A40606A31A
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 10:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=JjzMpGlA
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cdab6ae1ee9so806558a12.1
-        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 03:18:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793096325; x=1793701125; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=GeuP82OoQJyfsoRLW0M/dQ6bKN3b3en2bYN7HzilbDU=;
-        b=JjzMpGlAa1hgP31nL7dDFwOPMqpKi/hyCzrQ0rpnwVoNZlh730eyfE33VlCHYveuOw
-         b2thGTjxfy7M4GarN/6C6/ctudRzC5S8YXOPgGTioYRCeqSc9SuViXDoKrQokgAZztgW
-         s14/dbiQGDkXpJGengr01vHywNlZQ7M/b2oWu0DpPpVtmzMllN7KenRiX0RSPZL1lBuk
-         DHugQEc2uYAFCalmevAoq+1/a/CSsyDaTBH+8qfg0r9HR5aLsxKcWcKETT8M/CS4MTI2
-         TWxAL/FOiV6vGcAvWE5PFtU2qY73mrRebc+ZrLLLbeuIyxtqnja2lGBn2RtCmRQr3P+t
-         akEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793096325; x=1793701125;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=GeuP82OoQJyfsoRLW0M/dQ6bKN3b3en2bYN7HzilbDU=;
-        b=pp08rjQAWjpjH5tA3uSSNIRiD+p+Ovit0cEu0Sz86OOkUBEN7OwZEWcNyA1ysFoo+5
-         TAQhVLWWwdZTsu8xQ7/745RJKWh/OgSKuH1dLeXIddH51uMTUwcrcVBr68d2/v9t4hhj
-         WeDW6w2unsV9w8DaVfuJaJvUB2Lc/QkcSnxtv9ypAw8YDHaANg/pHhafhfBtiCv0oX9w
-         uqRxNcmWAAS4kvo3vflnpVxUtv/GztEcyTW92VvCDSfP8txRKjiPnUBZ2CGxrtK9zHPd
-         7C9ToTNFfeKnp+m4YdscsoWR1OeKGFa0+rDYnGD3uG0espO7saD9ut3ezNmzHmsBA0iD
-         JXAA==
-X-Gm-Message-State: AFq9FYJTf676+qdGdTEZBF/yfTj35OU1nxltDulKNk9bZ+RGa+vNKhJs
-	EzKNOO7PGdMM7rjr1/uRsewsHNpFCxsjoizsE0ghlXpj6Wllk9zQxhCU
-X-Gm-Gg: AYBFou361cA7h3SMAundQhv10VvkyAeVSq48Ux5PURul1O/kg+162PxryNQzNnWr0Ta
-	u+HDaK50uwomJS+WmrB9VtbPxjKZSnhgV1trNkas/3TP+s9HmYXVturbb9On8yjk/5c9pcifELH
-	MACCr/NEXplk9hF4E5JNKCYxPD0q7Q/OrXUxtj6/C8sj3H/TGGyQ2+ntHgb1OAlREcsXESOA34+
-	fHPWOCA7ovfBYuow9JLlwzlCm+Nppcc/USCK2Iwyj8YwbzaLWnMGuZHW/4lNWvfBFQU4mwH14h9
-	t5TEN0YqnMVBx1Eg7l3EvGMqqqW85gdQvXetymiYjeipk6Im8maIUhIQdF6h9I/4MfbsWKRStuE
-	4sVvCdnB46BE/wcSRa2cFHWhovwAbs2gmiCvOPtaONYCUsbbF5fTSYQKbknYzhBCEO7ZTGa2Z5D
-	yF2+yFWvJurAu0uVUIgfltJCowIz3b6s1y91L4ESKb4voQeYTiF3FLXkhLekkIIV11ULVbNafuK
-	ttXVCtdAazcVHGBC1MW4freZc6ua0WSJFyX4ca6QR7xfhx8hd5qYuQoYLWicDj947QfXfkfyvVQ
-X-Received: by 2002:a17:90b:528a:b0:3ac:a11a:7c79 with SMTP id 98e67ed59e1d1-3adeae6db13mr6980934a91.16.1793096324799;
-        Tue, 27 Oct 2026 03:18:44 -0700 (PDT)
-Received: from ws ([103.197.28.179])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae40635a87sm3097896a91.7.2026.10.27.03.18.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 03:18:44 -0700 (PDT)
-From: Xiao Liang <shaw.leon@gmail.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jason Wang <jasowangio@gmail.com>
-Cc: netdev@vger.kernel.org
-Subject: [PATCH net] tun: drop batched packets while the device is down
-Date: Tue, 27 Oct 2026 18:18:27 +0800
-Message-ID: <20261027101830.85327-1-shaw.leon@gmail.com>
-X-Mailer: git-send-email 2.56.0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UqoYNZNE
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E5B11F01828;
+	Tue, 27 Oct 2026 10:21:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793096516;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=UqoYNZNEcZrkA+jxextXQe7x2VupS/j1z8cRc5dE2+PvX7Ix/Tv35Zh61tNuuph3J
+	 P7LFGVUynwLwKcrd/oo0u4q8PvC0JlUTv5ua+OSlljI/OmaadyooqDUZ1fXy1QZ7/1
+	 gXNuJ/KZ0mVT0/mCTius3GbH/8lVbCRgrBwDV18WZg35UeOk4N2fQMI+TOyko8mv7x
+	 HgfKhIZzU6gWtd7rf63g6lK1NgqnxjOJqGbJdihmKtVox94aZ9OGoIf8ijPG80cnS4
+	 EmD2zOAtb43j/R5RoEBa2Mse6DvEAIHm4iDizvUPcu1cTfgviCqQHLTPK7VwRPWi/7
+	 J4Ersy2lCvMQg==
+From: netdev-bot+sinfo@kernel.org
+To: Xiao Liang <shaw.leon@gmail.com>
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ Jason Wang <jasowangio@gmail.com>, netdev@vger.kernel.org
+Subject: Re: [PATCH net] tun: drop batched packets while the device is down
+Date: Tue, 27 Oct 2026 10:21:55 +0000
+Message-ID: <179309651562.3327.6162426698384505337@kernel.org>
+In-Reply-To: <20261027101830.85327-1-shaw.leon@gmail.com>
+References: <20261027101830.85327-1-shaw.leon@gmail.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -91,39 +61,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-tun_sendmsg() handles TUN_MSG_PTR batches from vhost-net by calling
-tun_xdp_one() instead of tun_get_user(). But this path does not check
-IFF_UP, allowing packets from a guest to be injected into the host
-receive path while the device is administratively down.
+Hi!
 
-Check IFF_UP in tun_xdp_one() before running XDP or building an skb.
-Drop the packet when the device is down, matching tun_get_user().
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Fixes: 043d222f93ab ("tuntap: accept an array of XDP buffs through sendmsg()")
-Signed-off-by: Xiao Liang <shaw.leon@gmail.com>
----
- drivers/net/tun.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index 439565a264ee..2cb0de36e186 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -2551,6 +2551,12 @@ static int tun_xdp_one(struct tun_struct *tun,
- 		return -EINVAL;
- 	}
- 
-+	if (unlikely(!(READ_ONCE(tun->dev->flags) & IFF_UP))) {
-+		put_page(virt_to_head_page(xdp->data));
-+		dev_core_stats_rx_dropped_inc(tun->dev);
-+		return -EIO;
-+	}
-+
- 	xdp_prog = rcu_dereference(tun->xdp_prog);
- 	if (xdp_prog) {
- 		if (gso->gso_type) {
--- 
-2.56.0
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
