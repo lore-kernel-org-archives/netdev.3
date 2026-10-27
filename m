@@ -1,82 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793103300;
-	b=MKRFkXhLZoU01WGBnlBGf94EjVTNnNHRdWM+ztAvdNHSwp792yf3t/3Fzb409dZaMiH3
-	 K3hvrmVS4Yplr0S2o1boU7xBsi6cgen8lNvbj83xaUvxTtJ0jCRLlqtlI8zuF14XO2owA
-	 FN202OqX6HMZ5QSHI/6R0NH/kzw3Pgglz4UzyGlJ9XB6fXErwjff3OhX2vGubvstRTuf0
-	 fabZESqbd9SQtflwuRwTk0WmbR7rgYk3NKNc+o5BmPYTN4RLP6EFp7RWzs5mUvsjCNTsO
-	 Uh44hF4n7A8hJshcwVOZhssCDFN/4NxQxL+Cl0FlaNpWV8CtF/PkW0a8UDHG3g0cU0Q==
+	t=1793103295;
+	b=FWOfe4HNScrTiWS3MJLbynRsi0dqLRJKKnF/IOm3xXE1887+lZK8ctvemhd/lDAy2vUs
+	 yN+nJskRf2el/TFqh3JVfAyTjLpBGbGU51XmA3oHxHRg1tM4Jc5xcYu5fs1qFDshI6Doz
+	 mnLYo+b4/ZiAHWU3dfM0QV3MOjgRwAcBfpmNdnA7p1yh3+69/fuOPircPCE8iZH/J+uR2
+	 ++L83MpscCHfiSvOL3kTTRabZ1K0K1/BzTO94PVX8grFCPuw0Zo5LN2NlQFCVFDJFkhXR
+	 /dzFvzxoteTgG+S0nb500jpBDu2grqHc9RiyLRGNrnXkh8+JuFr4LtAhxEwtGl+MLLA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793103300;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=wsO1juH+qPygKRAFBHgPVkSB8xyUy8Z/UqIehySmMw0=;
-	b=M8tFSPC0ooudPoN0wSGleRPkc1qClUZyscYicucuXMk8ZoWuPCeG8ZL7dj64+N9lP8ay
-	 nMl4AEUtG4lLgPEyAo2Pgs0xeYNquVLAyqIhbMF0sGyodTYUpLP448ECWp7USBGze8jk7
-	 8Yj8LgN76jgZTCiXQFLUENFLFulzooKpfm27Q7Hue1MKBG6dluBauT6Wlfz087CE2I3rm
-	 mQaYunniWqsbSRCb42qW8bMso7tceLieizWYAocuIA43cc3Zllgwh8tENnERM8MzAZAmI
-	 bADZyYj4X4FtnjPNUcvUkI2xmsAHcYgJEX9E7SQca/AtS5fsyOGYWmgPJnV7IosNyHA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793103295;
+	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:CC:Subject:
+	 User-Agent:In-Reply-To:References:Message-ID:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=W9eRxKylZ2IDdUCQv0zvUbAtiUFib8STcgRGkP/FDkc=;
+	b=QkO7g8q5aHcYAkB8CVSmSLCJ4draL3H/tfH0sQHer62Wk61uFw6MXKKplsrVfXAyui0z
+	 piWVa+VxRrwvpLPobXozOUu2cOuQSbVT2EVB5snigyeezhQreopJ0DeI2DxfDSKKiUpxh
+	 f8tlvt7Yn5iO3ODb3EzTD8usiw8Afhc6nJ13wV70EZm6aacWmlIVBjftApqWWttPTu4Xw
+	 tgOo8AU73gX1hDkThgTCCERUiEtG32csrCAuDyFAO3UVVtVy8zO/9ahlxYA4EhxQhEitL
+	 TsmoOEX2bCngIpXTwSGfWmqxypA3Axf2FpaJIibfBr3am4KnQWHQcSUV0UoxiaGbt3A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Td8ncVxA;
-	arc=none smtp.remote-ip=192.198.163.11
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=none header.from=tipi-net.de;
+	spf=pass smtp.mailfrom=tipi-net.de;
+	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=N6cm7en5;
+	arc=none smtp.remote-ip=194.13.80.246
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E423A60A2622
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 12:14:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E423A60A2622
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CE7606A324;
+	Tue, 27 Oct 2026 12:14:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 02CE7606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Td8ncVxA
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793103298; x=1824639298;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=xgVhCO7AITK5Da2R66zir1pxG+0NCGYhJxcbZJcq+8s=;
-  b=Td8ncVxAMhMkEHVubYwM0TwP4mARjw9KRMOsThMTHOcTbtJ8jwi7qplV
-   f3fTexIvp/TXIXZvfXP/wRdhlTrv8rtPMZMd+TWAWERZhM8EMS5y9mDji
-   Tz4nx7VfQSEue1GZtzhTabpdmesk+xeabY+ZC/FgWPppLxQgjaA25bTsm
-   2qSTNK/MVW/UsSpNBE90hJKvDKSr6abzKjAqhbKSFt6pJ9fClwmNRtibu
-   qiXs5xyD8kYYXm3DxxKs6gsgS5MnXT7fVcJ7J1hgr3ulrjro1tG+OOD9A
-   rJ2XtsyywVYgWPEeXQ+y0DzdX6wtXcTtbrQWsLvIPx08L1FH5QZczjb9o
-   g==;
-X-CSE-ConnectionGUID: Hlxl+3sxRF237h4N1RAMCg==
-X-CSE-MsgGUID: QZ7qA9lISN6OjzhlVT+cFA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11947"; a="1709345"
-X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
-   d="scan'208";a="1709345"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 05:14:56 -0700
-X-CSE-ConnectionGUID: FyuuJV9CRuqLtWENRAVZ0Q==
-X-CSE-MsgGUID: 9M7TgGGaSgyYHYOLaFEAQQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
-   d="scan'208";a="4529793"
-Received: from boxer.igk.intel.com ([10.102.20.173])
-  by orviesa002.jf.intel.com with ESMTP; 27 Oct 2026 05:14:54 -0700
-From: Magnus Karlsson <magnus.karlsson@intel.com>
-To: magnus.karlsson@gmail.com,
-	intel-wired-lan@lists.osuosl.org,
-	anthony.l.nguyen@intel.com,
-	netdev@vger.kernel.org,
-	maciej.fijalkowski@intel.com,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: Magnus Karlsson <magnus.karlsson@intel.com>
-Subject: [PATCH iwl-net 0/2] ice: iavf: fix USO for 32-bit systems
-Date: Tue, 27 Oct 2026 13:14:40 +0100
-Message-Id: <20261027121442.907414-1-magnus.karlsson@intel.com>
-X-Mailer: git-send-email 2.38.1
+	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=N6cm7en5
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1FF1DA160B;
+	Tue, 27 Oct 2026 13:14:42 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1793103285; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=W9eRxKylZ2IDdUCQv0zvUbAtiUFib8STcgRGkP/FDkc=;
+	b=N6cm7en5vAwGPTMoOJJMiJaZktzohdMuhQKcSNF6WD3kWBR4h6+3JD/J/35unxOjjViP9Q
+	Uab90tDWUedy/X9JzhUqkeY1tXWG5Ns4bRPCNMmN8zJYQknHkSZ9D4mKooIOeEttmJcbz0
+	kon5sDIw+L1jp4lema2EV9oEiDX1HjHZP7twOZh6AeAnVTR2Na5M51KplGZeIMCfXlTelC
+	Qa16taAtTRPPCbDnkXMRrRDz3hfjdF441PltqpyiEXN/cryjIREkvMIoNT04mDIdhjL1bU
+	Rb+Q8fpOKYALM7ZRZXlic1Noxka0k9Btph+vq9S2mnWjeBhB8WWygyJyqMuxfg==
+Date: Tue, 27 Oct 2026 13:14:41 +0100
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Paolo Abeni <pabeni@redhat.com>, netdev-bot+sashiko@kernel.org
+CC: sgoutham@marvell.com, gakula@marvell.com, rkannoth@marvell.com,
+ sbhatta@marvell.com, bbhushan2@marvell.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_net_v2=5D_octeontx2-pf=3A_fix_skb?=
+ =?US-ASCII?Q?_use-after-free_with_ipsec_crypto_offload?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <cf0a87b7-1039-4688-85eb-9efc8a25dfe5@redhat.com>
+References: <20261022-nb-otx2-xfrm-unshare-net-v2-1-5590c9325bcd@tipi-net.de> <179296218017.3134.5170259489302207876@kernel.org> <cf0a87b7-1039-4688-85eb-9efc8a25dfe5@redhat.com>
+Message-ID: <3703F128-A6A9-426D-A177-2E804C67E2F2@tipi-net.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -86,27 +66,28 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-That USO works for these two cards on 64-bit systems is just pure
-luck. Currently, the computation of the UDP segmentation header is
-performed using sizeof() a pointer instead of the sizeof() the UDP
-header that the pointer points to. Since the UDP header happens to be
-8 bytes long and a pointer is 8 bytes long on a 64-bit system, this
-works on all those systems. But no such luck for anyone using a 32-bit
-system as 8 bytes != 4 bytes. So fix this by using sizeof() the UDP
-header that the pointer points to instead.
+Hi Paolo
 
-This was found by an LLM while implementing something else that used USO.
+On October 27, 2026 12:49:44 PM GMT+01:00, Paolo Abeni <pabeni@redhat=2Eco=
+m> wrote:
+>On 10/25/26 22:03, netdev-bot+sashiko@kernel=2Eorg wrote:
+>> - [High] The fix only partly covers its target=2E
+>
+>I've mixed feeling WRT the above points; it's (borderline) pre-existing,
+>but it's IMHO bad enought that should be addressed in the same fix=2E
+>Thoughts?
 
-Magnus Karlsson (2):
-  ice: fix USO for 32-bit systems
-  iavf: fix USO for 32-bit systems
+Let's make it a proper fix, instead of adding another patch soon after=2E =
+I will send a v3 within the next days=2E
 
- drivers/net/ethernet/intel/iavf/iavf_txrx.c | 2 +-
- drivers/net/ethernet/intel/ice/ice_txrx.c   | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+>
+>/P
+>
 
--- 
-2.38.1
-
+Regards,
+Nicolai
