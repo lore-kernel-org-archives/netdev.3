@@ -1,55 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793096164;
-	b=rvhF+pkP3YiKqhTAoJ7xrLhzYquD+uu4C+Nftwg3q5206xJIV99oYNqDDdrdrCBfdN88
-	 WiWNkcHZjQMwhcmLyGXnZIHo527e1O0YdacdeZO4GSYFv8seX1TE5+qT07IfKfGBhUjun
-	 oE08nN6viq41OxDlytvBl/QzopZWYhbP5EGEokS3WexpRq8zR72XNiL6csorqfLLfxtGa
-	 ZwNtFRFFqqpTrZAGeZM2BaNE0mJZVV1RXgPgSoDg+yUXZXTvPvFYdjlqEZEMp9LpZVjBG
-	 MLAQYfiipUIOfyGB73j4uZwdM5hQTBbkPNOxTyGT+zP8ORkeZTv0W4t5RjNh3FTWXGA==
+	t=1793096169;
+	b=1/yn4AAizfA7KjNuj7D2NnYJdZAVuaPhyBVBkgo9Xo0nWK2KylRUO0GX8F7FN/C6z80F
+	 G1UXCuc3F/XKeiCzeorX1Qowek03Y1qOF5Tx5xSCu6TqTJo/Y2yRFRo4JWqsOEtxl+5gi
+	 8UVyfBCYwArfhWeg6kbzG0b7ztpE66SR5LoM23Nvy73qVGMmKWqkoEZ/DUj9+rXqt47gC
+	 +lJInTD8LBF/AC7TrK7Lfm9KqiXQ+1Xlof/ML6hXGiiWB+v3S7MYuqjsH4a/zviQne9rz
+	 +sjYmRKoL/VdD8GcC83REuqOwcQ5bw93+L0fAtfe3Gu+VXJwqfg3uWR78als8D1Kt/g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793096164;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793096169;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=BA/tPw/dZNvXJEztZ2BwkPYu53BGcCL258NB85M1ivg=;
-	b=C826pTwXLqaISzgqdZj6UDf32GuK95LBrB4dm2JkfTfsK3V7iQBCbpis/oPup1WfCyg9
-	 B+jB2DrAOOae/3e4SYRFw7QjCKwodIq7optoIS1BzCN2Fe/HLVnI8+7Aks1ESSK/XGcSF
-	 tU9I61aoJGYWaBY4E5bsmZNx/8uSIAY+68ePNlG4fefuol/IXz+DVorHlo3XTizHazp39
-	 xFNnK7whr7roLY1tttj4G1TOTeyXBO0C+G/YjOjkbGugf/jDKqdM8ny1cVxMM6wtGNTwX
-	 oAfnv+7IACjgqXbLjK6ZqDnHqkwGt/qFfczDF7VKjJiuXcoHkiY7bjOoWFBgPtFJSuw==
+	bh=BkhzKqHk57FsBIcZJDbLzkOn5QW17cXML6NAzTysNJs=;
+	b=de+H3kX7h5tUkoPFJVTJidUuNuBKlWghIz8jvXAfbD9qdeJv9x8mAgbW939YYdy4SNGM
+	 76k4FZ4D6t6qS6T0gtERbWOpqdJmHlUzR8a2f4KRr2gT9JQmBWjrmQ+mXEO2a4G1WKsNG
+	 yfd0ujUEg/Igf79nDZap+eyC8HACzXV5mTuUKFGkXfECZh37HSP0BZHJlkaMr7XQAxsNw
+	 +I2hEoqEI1CXoaJFB8lhGhC1OlYusHuiE/LMk+aOTGBy4wNIOHO4c+A1Hlp6XZe6LERqN
+	 3KgypEZo3LpOqarvmRCuVnrad6mGhsdVWwanICdKcu7QolEHn9ziYvzqC0ceJgQxJrA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hb8aXiTD;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Rck7OHEG;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F8E606A31A;
-	Tue, 27 Oct 2026 10:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8A6606A31E;
+	Tue, 27 Oct 2026 10:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hb8aXiTD
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1A6A1F01825;
-	Tue, 27 Oct 2026 10:16:03 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Rck7OHEG
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2468D1F01825;
+	Tue, 27 Oct 2026 10:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793096164;
-	bh=BA/tPw/dZNvXJEztZ2BwkPYu53BGcCL258NB85M1ivg=;
+	s=k20260515; t=1793096167;
+	bh=BkhzKqHk57FsBIcZJDbLzkOn5QW17cXML6NAzTysNJs=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=hb8aXiTDbUaY8eeaZmjnrA645MATKKHCPCwApyWD6E8g1fZO8wgw4Ns3p4RL5Z+df
-	 zuyjwIeaT5MTS/PxjsWUFU2Oex9n2Q41+RMa05C+f3a+rYtTZJt76ELz8FmHmObArd
-	 Yp6e+uAnulsAm/69NrjsOI1JJetVOhmnDuOMMa6MioGTVT40p6tuzS0kAjOgiwGSHV
-	 mx2xzmyhSPn4qoAhWNivkxSd6NV1QRh/YC1p6WTcgFPaIDx/doq/wwN+CqJ2lCag00
-	 6UoJNM2VWo2Sp2xFHTXmHhAkcu+RBvg5x0lWvFUM5bYR7o24P/EJ8DH5luZLCLL+U+
-	 mdN2FVQIhp2Mw==
+	b=Rck7OHEG8G6OagRdPHGjL0nDzragotKIxn9I7T5odO8P3SEFIS4ro5D9gHjazdarP
+	 8LEvJBPVb8lpK5Lo8+VAQfglcWupzBiS3Z0ke6oB2ZtMpdKCok+cDKyKJtERPVGHGL
+	 fvRcNvxgCwgrW798nDREbllmt65oGTCXm1HXquY+xg0y5Au03PGiKyw7UFM2OO1Dgk
+	 6bi6/PRH6EXcmL7o1Aw/JIgGJgqyEeZdzQRBAU7ROD2U/oSLBtMwuSeBg7Pe/beHgR
+	 VxqBNw8prDeTR0xvK8kLbF14+H17x1eC+9+ZmkgMUSTD0lcxsOWL3xNNSBShuDoev9
+	 4/qm9zg4N7VwQ==
 Subject:
- Re: [PATCH net] net: atl1c: drop oversized RX frames instead of panicking
+ Re: [PATCH] net/rds: hold IB device reference through deferred cleanup
 From: netdev-bot+sashiko@kernel.org
-To: federico@rimpianto.com
-Cc: chris.snook@gmail.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, kuba@kernel.org
-Date: Tue, 27 Oct 2026 10:16:03 +0000
-Message-ID: <179309616319.3134.17215984373035106773@kernel.org>
-In-Reply-To: <20261023093000.73535-1-federico@rimpianto.com>
-References: <20261023093000.73535-1-federico@rimpianto.com>
+To: hackerowskiy@gmail.com
+Cc: achender@kernel.org, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com,
+ linux-kernel@vger.kernel.org,
+ syzbot+221e213bf17f17e0d6cd@syzkaller.appspotmail.com
+Date: Tue, 27 Oct 2026 10:16:06 +0000
+Message-ID: <179309616666.3134.5893578581226620529@kernel.org>
+In-Reply-To: <20261023100206.126692-1-hackerowskiy@gmail.com>
+References: <20261023100206.126692-1-hackerowskiy@gmail.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -63,10 +66,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 5 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 2 (1) · Medium: 1 · Low: 2
+Critical: 0 · High: 2 · Medium: 0 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -74,220 +77,164 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The new check in atl1c_clean_rx() compares the reported length
-  against skb_tailroom(skb), but the device only gets…
-- [High] In atl1c_clean_rx(), atl1c_clean_rfd() runs before the new
-  check: it marks the RFD slot ATL1C_BUFFER_FREE and advances…
-- [Medium] The new drop path does `netdev->stats.rx_length_errors++` and
-  `netdev->stats.rx_dropped++`.
-- [Low] The patch also adds a lower-bound check, `length < ETH_HLEN +
-  ETH_FCS_LEN`, in atl1c_clean_rx().
-- [Low] The new error path in atl1c_clean_rx() frees the rejected frame
-  with dev_kfree_skb(), which include/linux/skbuff.h line 1485 defines…
-
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but the existing
-  hardware-error branch in atl1c_clean_rx() (`if (rrs->word3 &…
+- [High] The patch takes an ib_device registration reference
+  (ib_device_try_get) in rds_ib_add_one() and releases it only in…
+- [High] In rds_ib_get_mr() (net/rds/ib_rdma.c), the ODP branch (need_odp
+  == ODP_ZEROBASED or ODP_VIRTUAL) takes an rds_ibdev reference through…
+- [Low] The patch is presented as a fix for a syzbot-reported use-after-
+  free: rds_ib_dev_free() runs on rds_wq after rds_ib_remove_one() has…
 
 --
 
-net: atl1c: drop oversized RX frames instead of panicking
+net/rds: hold IB device reference through deferred cleanup
 
-This patch adds a length check to atl1c_clean_rx() before skb_put(). A
-frame whose RX return descriptor reports a length that does not fit in
-skb_tailroom(), or that is shorter than ETH_HLEN + ETH_FCS_LEN, is now
-dropped and counted instead of triggering skb_over_panic. It targets
-peers whose L2 MTU is larger than the host MTU.
+This patch takes an ib_device registration reference in rds_ib_add_one()
+and drops it at the end of rds_ib_dev_free(). The IB device then stays
+registered until the deferred cleanup on rds_wq has run. It addresses a
+syzbot-reported use-after-free in that deferred cleanup.
 
-> diff --git a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-> index e58f1d2c26bdf..11de6439ddd3c 100644
-> --- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-> +++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-> @@ -1934,6 +1934,24 @@ static int atl1c_clean_rx(struct napi_struct *napi, int budget)
->  			break;
->  		}
->  		atl1c_clean_rfd(rfd_ring, rrs, rfd_num);
-> +
-> +		/* A peer with a larger L2 MTU than ours can hand us a frame
-> +		 * that does not fit the buffer allocated for this MTU.  The
-> +		 * driver used to skb_put() it anyway, which trips
-> +		 * skb_over_panic and takes the host down; drop it instead.
-> +		 */
-> +		if (unlikely(length < ETH_HLEN + ETH_FCS_LEN) ||
-> +		    unlikely(length - ETH_FCS_LEN > skb_tailroom(skb))) {
+Closes: https://syzkaller.appspot.com/bug?extid=221e213bf17f17e0d6cd
+
+> Reported-by: syzbot+221e213bf17f17e0d6cd@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=221e213bf17f17e0d6cd
+> Signed-off-by: Eduard Zateev <hackerowskiy@gmail.com>
+
+[Severity: Low]
+This isn't a bug, but should there be a Fixes: tag here?
+
+git blame of rds_ib_dev_free() and rds_ib_dev_put() points the deferred
+free design at commit 3e0249f9c05c ("RDS/IB: add refcount tracking to
+struct rds_ib_device").
+
+Should this also have a Cc: stable?
+
+> diff --git a/net/rds/ib.c b/net/rds/ib.c
+> index 4ea9838d090c3..ca6be8b2c3227 100644
+> --- a/net/rds/ib.c
+> +++ b/net/rds/ib.c
+> @@ -115,6 +115,7 @@ static void rds_ib_dev_free(struct work_struct *work)
+>  
+>  	kfree(rds_ibdev->vector_load);
+>  
+> +	ib_device_put(rds_ibdev->dev);
+>  	kfree(rds_ibdev);
+>  }
+>  
+> @@ -142,6 +143,12 @@ static int rds_ib_add_one(struct ib_device *device)
+>  				 ibdev_to_node(device));
+>  	if (!rds_ibdev)
+>  		return -ENOMEM;
+> +	/* Keep the device registered until the deferred cleanup completes. */
+> +	if (!ib_device_try_get(device)) {
+> +		kfree(rds_ibdev);
+> +		return -ENODEV;
+> +	}
+> +	rds_ibdev->dev = device;
 
 [Severity: High]
-Is skb_tailroom() the right upper bound here? The device only gets
-buffer_info->length bytes, which is adapter->rx_buffer_len:
+Can this make ib_unregister_device() wait on userspace?
 
-atl1c_alloc_rx_buffer() {
+The reference taken here is dropped only in rds_ib_dev_free(), which runs
+only after rds_ibdev->refcount reaches zero. rds_ib_remove_one() drops
+just the client data and device list references:
+
+net/rds/ib.c:rds_ib_remove_one() {
     ...
-    skb = napi_alloc_skb(&rrd_ring->napi, adapter->rx_buffer_len + 64);
+	synchronize_rcu();
+	rds_ib_dev_put(rds_ibdev);
+	rds_ib_dev_put(rds_ibdev);
+}
+
+Sockets can hold other references. For example, an FRMR MR created
+through an RDS_CMSG_RDMA_MAP cmsg holds one:
+
+sendmsg()
+  rds_cmsg_rdma_map()
+    __rds_rdma_map()
+      rds_ib_get_mr()
+        rds_ib_get_device()        <- takes an rds_ibdev reference
+        rds_ib_reg_frmr()
+          ibmr->device = rds_ibdev;
+
+The MR is stored in rs->rs_rdma_keys. Its reference is dropped only in
+rds_ib_free_mr(), which runs when userspace issues RDS_FREE_MR or closes
+the socket.
+
+Neither rds_ib_remove_one() nor rds_ib_dev_shutdown() revokes these MRs.
+Suppose the HCA is unregistered (driver unload, hot-unplug, rxe/siw link
+delete) while such a socket is open. disable_device() then does:
+
+drivers/infiniband/core/device.c:disable_device() {
     ...
-    buffer_info->length = adapter->rx_buffer_len;
-    mapping = dma_map_single(&pdev->dev, vir_addr,
-                             buffer_info->length, DMA_FROM_DEVICE);
+	/* Pairs with refcount_set in enable_device */
+	ib_device_put(device);
+	wait_for_completion(&device->unreg_completion);
     ...
 }
 
-atl1c_configure_des_ring() writes the same value to the hardware:
+Wouldn't that wait block uninterruptibly, with unregistration_lock held,
+until the user frees the MR or closes the socket?
 
-    AT_WRITE_REG(hw, REG_RX_BUF_SIZE,
-                 adapter->rx_buffer_len & RX_BUF_SIZE_MASK);
+The comment above add_client_context() and remove_client_context() says
+client add and remove must be a fence. Keeping the registration refcount
+past .remove() seems to break that rule.
 
-The skb gets 64 extra bytes for the 0x...fc0 erratum, plus
-SKB_DATA_ALIGN rounding. At the default MTU, tailroom is therefore about
-1600 bytes while the DMA buffer is 1522 bytes. When skb_reserve(skb, 64)
-is applied, tailroom is still about 1536.
+Would it work better to tear down the PD and MR pools synchronously in
+rds_ib_remove_one() instead?
 
-atl1c_configure_mac() sets REG_MTU to max_frame_size + ETH_HLEN +
-VLAN_HLEN + ETH_FCS_LEN (1522 by default). atl1c.h describes rx_sz_ov as
-packets "more than MTU size truncated by Selene". The panic in the commit
-message suggests the RRD still reports the untruncated length.
+The commit message also doesn't mention that unregistration now waits on
+RDS reference holders.
 
-If that is the case, wouldn't a frame from the same l2mtu 1600 peer with a
-reported length of about 1527 to 1604 bytes pass this check?
+[Severity: High]
+Does the ODP path in rds_ib_get_mr() turn this into a permanent hang?
 
-skb_put() would then include up to about 78 bytes the device never wrote.
-Those bytes are stale page-frag data from earlier packets or other kernel
-memory, and they go to napi_gro_receive(). With swiotlb (the driver uses
-a 32-bit DMA mask), dma_unmap_single() copies back only
-buffer_info->length bytes, so the tail is stale either way.
+In net/rds/ib_rdma.c, the ODP branch takes a reference with
+rds_ib_get_device(). It returns without storing that reference in
+ibmr->device and without dropping it:
 
-The commit message says such frames cannot be delivered because "the
-buffers were sized for it". Wouldn't the check need to bound length by
-buffer_info->length (rx_buffer_len), not skb_tailroom(), to enforce that?
-
-[Severity: Low]
-This isn't a bug, but the condition also adds a lower bound:
-
-    if (unlikely(length < ETH_HLEN + ETH_FCS_LEN) ||
-
-Descriptors shorter than 18 bytes are now dropped and counted as length
-errors. Before this patch, a reported length below 4 made
-length - ETH_FCS_LEN underflow in skb_put(), which was a second panic
-path.
-
-The commit message only describes the tailroom check ("drop ... any frame
-that does not fit"). Could it also mention the runt rejection, for stable
-backporters?
-
-> +			netdev->stats.rx_length_errors++;
-> +			netdev->stats.rx_dropped++;
-
-[Severity: Medium]
-Will userspace ever see these increments? atl1c_get_stats() takes
-net_stats = &netdev->stats and overwrites both fields from hardware
-counters on every read:
-
-atl1c_get_stats() {
+net/rds/ib_rdma.c:rds_ib_get_mr() {
     ...
-    net_stats->rx_length_errors = hw_stats->rx_len_err;
+	rds_ibdev = rds_ib_get_device(rs->rs_bound_addr.s6_addr32[3]);
     ...
-    net_stats->rx_dropped       = hw_stats->rx_rrd_ov;
+	if (need_odp == ODP_ZEROBASED || need_odp == ODP_VIRTUAL) {
+    ...
+		ibmr = kzalloc_obj(*ibmr);
+    ...
+		ibmr->u.mr = ib_mr;
+		ibmr->odp = 1;
+    ...
+		return ibmr;
+	}
     ...
 }
 
-It also rebuilds rx_errors from hw_stats only. dev_get_stats() calls
-ndo_get_stats before copying the values out. That means ip -s link,
-/proc/net/dev and rtnetlink reads all discard the software counts.
+When the MR is freed, rds_ib_free_mr() returns early for ODP MRs, before
+it reaches rds_ib_dev_put():
 
-This seems to contradict "counting it in rx_length_errors/rx_dropped" and
-"dropped and counted" in the commit message.
+	if (ibmr->odp) {
+    ...
+		INIT_DELAYED_WORK(&ibmr->work, rds_ib_odp_mr_worker);
+		queue_delayed_work(rds_ib_mr_wq, &ibmr->work, 0);
+		return;
+	}
 
-These increments are also unlocked read-modify-writes. On athr_mt,
-atl1c_probe() registers up to 4 atl1c_clean_rx() NAPI instances and
-enables threaded NAPI, so concurrent pollers can lose updates.
+rds_ib_odp_mr_worker() then only calls ib_dereg_mr() and kfree(ibmr).
 
-Would driver-private software counters (or
-dev_core_stats_rx_dropped_inc() for rx_dropped) work better here, with
-atl1c_get_stats() adding them to the hardware totals?
+Before this patch, that imbalance only leaked the rds_ibdev and the PD.
+With this patch, a single ODP MR keeps rds_ibdev->refcount from ever
+reaching zero, so the new ib_device_put() in rds_ib_dev_free() never
+runs.
 
-> +			if (netif_msg_rx_err(adapter))
-> +				dev_warn_ratelimited(&pdev->dev,
-> +						     "bad rx frame: len %u tailroom %d\n",
-> +						     length, skb_tailroom(skb));
-> +			dev_kfree_skb(skb);
+Any later unregistration of that HCA would then block forever in the
+wait_for_completion() in disable_device(), even after the socket is
+closed.
 
-[Severity: Low]
-This frame is dropped as an error, but dev_kfree_skb() is consume_skb():
+A local user can reach the ODP branch on an ODP-capable HCA such as mlx5.
+It is taken when rds_pin_pages() returns -EOPNOTSUPP in __rds_rdma_map()
+or rds_cmsg_rdma_args(). One case is an FS-DAX mapping, where
+FOLL_LONGTERM pinning is refused.
 
-    #define dev_kfree_skb(a)	consume_skb(a)
-
-Should this be kfree_skb(), or kfree_skb_reason() with
-SKB_DROP_REASON_PKT_TOO_BIG, so that drop_monitor and the skb:kfree_skb
-tracepoint report it as a drop?
-
-> +			continue;
-
-[Severity: High]
-Can this path drain the RFD ring? atl1c_clean_rfd() has already marked
-the slot ATL1C_BUFFER_FREE and advanced next_to_clean. This continue then
-skips work_done++.
-
-The only runtime refill, and the only rfd_prod mailbox write, is gated on
-work_done at the end of atl1c_clean_rx():
-
-    if (work_done)
-        atl1c_alloc_rx_buffer(adapter, rrd_ring->num, true);
-
-Suppose about rfd_ring->count (512) oversized frames arrive before any
-poll delivers a good frame, which is the sustained l2mtu 1600 case this
-patch targets. Every hardware RFD would then be used up without being
-replaced.
-
-After that no RRDs are posted, no RX interrupt fires, and NAPI does not
-run again. atl1c_intr() only logs ISR_OVER, which includes ISR_RFD0_UR:
-
-    if (status & ISR_OVER)
-        if (netif_msg_intr(adapter))
-            dev_warn(&pdev->dev,
-                "TX/RX overflow (status = 0x%x)\n",
-                status & ISR_OVER);
-
-Would RX on the interface then stay dead until a down/up or reset?
-
-The existing RRS_RX_ERR_SUM branch accounts the same way. This new path,
-though, makes the stall reachable from oversized traffic.
-
-Should dropped frames also trigger the refill? For example, the poll
-could refill whenever any RFD was consumed, or count drops as work.
-
-> +		}
-
-[Severity: High]
-This is a pre-existing issue and was not introduced by this patch. The
-hardware error branch earlier in atl1c_clean_rx() handles its buffer
-differently from the new drop path:
-
-    if (rrs->word3 & (RRS_RX_ERR_SUM | RRS_802_3_LEN_ERR)) {
-        atl1c_clean_rfd(rfd_ring, rrs, rfd_num);
-        ...
-        continue;
-    }
-
-All atl1c_clean_rfd() does is:
-
-    buffer_info[rfd_index].skb = NULL;
-    ATL1C_SET_BUFFER_STATE(&buffer_info[rfd_index], ATL1C_BUFFER_FREE);
-
-Does this leak the RX skb and its DMA mapping for every errored frame
-(CRC, alignment, truncation, runt)?
-
-Nothing on that path calls dma_unmap_single() or frees the skb.
-atl1c_alloc_rx_buffer() later maps a new skb into the slot.
-atl1c_clean_buffer() returns early for FREE slots, so teardown does not
-recover it either.
-
-The driver uses a 32-bit DMA mask. On hosts without an IOMMU, each
-leaked mapping could also pin a swiotlb slot.
-
-Could the error branch unmap and free the skb the way the new path does?
-
-> +
->  		skb_put(skb, length - ETH_FCS_LEN);
->  		skb->protocol = eth_type_trans(skb, netdev);
->  		atl1c_rx_checksum(adapter, skb, rrs);
+[ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261023093000.73535-1-federico%40rimpianto.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261023100206.126692-1-hackerowskiy%40gmail.com
