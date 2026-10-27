@@ -1,52 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793126659;
-	b=YvUg9y1SKb9NkKbod8eblEg0X3E0UkWEMNvP4UnmASbKzfhmx0ASUZMX3mOmNw7fWjrO
-	 HO62UFCPLBsfnUj0cXuGq5dWNz63Oin8qdCsmjztdzWgG59wSWTu1Hg1jXYJzNq98pQME
-	 WLh0xgAt2LBHYzqbHnmaz+N9P01IMU1dSxFuoDnCXtktBoIdZNJzeuEaN7DERwNXbwDcl
-	 wBo+iSPHyjVLFGlDj9rsWu7odPpOSG+1QzykTRNUKFXImaYdKcDJr/iQnCt7Vea1l2Ovw
-	 +e89zpzjXRyW71N5m8xT61Prqwgtyy1oFOQr8+ofS3Q4iht7OSgyAgDYxPwsCjjQCKg==
+	t=1793126863;
+	b=BMMRAmOGCF8J3jyuFJpIZ5QgWANKg4MWE+IZRTFUEnc3z4mHBX7YjZUbsQFQQwYYLkRU
+	 XvjimbWZcgtle1tqLbPUJV6woq3dBoxMBSoW9s2H8cT4Ak+EeS0iiHYAAczvDLNvnThM2
+	 GVKrAsTn+1vk8bfRYN/T87KFV3xjQawWSZ14UWfhXSRLQHAdGTfTmH5R5VuvicgEtwVXF
+	 zt423x1ATdyAaxQOStPPdjUZ6HN65oxFCCGof12A5XyBe0ObdooGbgLpdwXIIRmiaFYcg
+	 IOQY/fZGwsapy/qZgZWAwe9Z0f7+o5iyopfcNqaAdKevSu4ncGTuMyqdOR2rrnmUnig==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793126659;
-	h=DMARC-Filter:Received:DKIM-Signature:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-Last-TLS-Session-Version;
-	bh=2FcWg1V/3aBTP3KwZYU/FI1oXS/QXKtS31y8wgVo5lM=;
-	b=YvqxAbc/GVdJPVkrycXrK4tv3dQjVEOtELCJAbN8YKJqJm6kvwML6FvpcF5koFjOUiJD
-	 bhmpiUBMwuVAsCTtDqF2tnuCkl3+OAqZEJVfvgyN/6Dw+J7qI0+3Om6UKTmtRuDpxaXUZ
-	 KokGm6tdd/7vkAlCNDkI/gCxbcOnKswljnR/IFZ3QFmopgPVQDMdMj44ZKVjbdMMgt45j
-	 wEx470TeqVbxzdWj1UKVQZ2hbgHe2ujBlOFRVvAjmsqfkR4079oMBs+0PDxaCtVUWTR/s
-	 ouLeU8g+0OkbIkvGfHrRZUhSEqiXaktwiJ2Al0DdptTmBzfQzWvhTM5M1fHb1FNvvYA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793126863;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=0qhzg2EwORmkMVCDp5YuggGXSTQZPJfFE6qUzVOGdyU=;
+	b=XmtGhT7LnHBP2rdlW8VbUbbcYLgK9WbOHgESSGM8eZtgWHdsZer0/BUbzV6yOGvl5MMI
+	 qI2ysTXAX3Z9WA13Bhx6XEj1FRd+JQEYe0gBq6OCxcuacEN+nzpTCnN98UwspMKMlnIVA
+	 kIOH8Tgz3hSaNaY3wZ1r+euVFdNLS96GbYeTn2vqYdB5PeHpaTO2wTXjiOsW95EC1U9Oq
+	 nEaYqDH5VdAt/uP3MACr4c5+jjWc9oaqwQ0TLBCnouB7u9zdzBelmhpA/MPNm0ew8f0ua
+	 qOBUN0hqTu20Kp0OrO5jBxlYZK3AFBbIF6wI3qZaDx/nkGtVI+XWLut6SmW/nuIa+hg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=tipi-net.de;
-	spf=pass smtp.mailfrom=tipi-net.de;
-	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=KX+TpbtE;
-	arc=none smtp.remote-ip=194.13.80.246
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ojAow+ie;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3BB8606A31A;
-	Tue, 27 Oct 2026 18:44:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C3BB8606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0662606A31A;
+	Tue, 27 Oct 2026 18:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=KX+TpbtE
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DCE36A50C8;
-	Tue, 27 Oct 2026 19:44:10 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1793126654; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=2FcWg1V/3aBTP3KwZYU/FI1oXS/QXKtS31y8wgVo5lM=;
-	b=KX+TpbtELSQM0CG8heszhVDiIrQ7Sq2zR2SosWBHXg4On0jjcUZ3eA77V56vs15sXPp99R
-	eN/5HpRu/o9+o5DSPTQcQ7U3zZABkme71lIC9e7Mw/3X2WmYHQFrmRYYrydI0641nBHfE+
-	aul/cUeVrjO2+tHCRIvR/iBk8AOzvyCk3P8lJ/qzKYE6MWNPBvraZM36fs28bHOfwPUs4k
-	8ZjJUI/JREdRYqMEAvv8/Ly8MYSB1lr1cnZN2FABf4Wcc2ZDhfooijMvXVF/1l+bTRJ4px
-	edIfo1/O+48Zz9dsoQR8FQPbBT1BwVgFVTRNm745UAK2JoDAlEzZB0+Y8cCcQw==
-From: Nicolai Buchwitz <nb@tipi-net.de>
-Date: Tue, 27 Oct 2026 19:44:09 +0100
-Subject: [PATCH net v3] octeontx2-pf: fix skb use-after-free with ipsec
- crypto offload
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ojAow+ie
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3B1B1F01825;
+	Tue, 27 Oct 2026 18:47:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793126862;
+	bh=0qhzg2EwORmkMVCDp5YuggGXSTQZPJfFE6qUzVOGdyU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ojAow+ieUh/EOpAg3bYdgQjiHFFB3Qxr6m6PsLche8O/YCbSm/53/GKM3HMZuaI9x
+	 Em3yk3GzQTeL1WGR/FoQfwQ49+TUqHSpD4woTE5INztRADnwNu12e1FgTwmC6bkq1w
+	 1tPtfE1L7nKhqK+cZlM6VPzVR+OeuQSVUTcDi26D38rDTHOauDmqo7JRU3UluWlo6I
+	 XzZWMcCI0M8j8qtel1MSkuO44ewrsjn0bAG2z360ZthvoFVdSUKOLFaAcGmYE1x2Cl
+	 tH40ofNtWkFz/3iRjGSXe5je0anY/dsvu1ib7saTEIvwT77nw74u32qGCdC0gsPPnY
+	 PRebnwj+FHp3A==
+Date: Tue, 27 Oct 2026 19:47:39 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Taniya Das <taniya.das@oss.qualcomm.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, 
+	Abel Vesa <abelvesa@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
+	Brian Masney <bmasney+clk@redhat.com>, Jerome Brunet <jbrunet+clk@baylibre.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
+	Linus Walleij <linusw@kernel.org>, Richard Cochran <richardcochran@gmail.com>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Ajit Pandey <ajit.pandey@oss.qualcomm.com>, 
+	Imran Shaik <imran.shaik@oss.qualcomm.com>, Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>, 
+	linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v2 01/12] dt-bindings: clock: qcom: Add bindings for PDM
+ GP_MN clock divider
+Message-ID: <20261027-inescapable-rough-viper-6cd56d@quoll>
+References: <20261026-b4-pdm_clk_gp_mnd_v2-v2-0-ff8e4bc8d567@oss.qualcomm.com>
+ <20261026-b4-pdm_clk_gp_mnd_v2-v2-1-ff8e4bc8d567@oss.qualcomm.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -56,117 +66,125 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261027-nb-otx2-xfrm-unshare-net-v3-1-31dc9d79d11d@tipi-net.de>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WOQQ6CMBBFr2K6dgwdoFhX3sO4oO0gNbGQthAM4
- e4W3OhGl3/mzfszs0DeUmCn3cw8jTbYzqWQ73dMt7W7EViTMsMMBc+4BKegixPC1PgHDC60tSd
- wFEGoqqilqI9GEkvnvafGTpv6whLAru9hGNSddFylK9baEDv/3B4Y+Qb/7xo5cCCSCotGkqjyc
- 7S9XVcHQ1vRiB8qxB8qTKqylJmWOZZKm2/VsiwvhJqGXCQBAAA=
-X-Change-ID: 20261019-nb-otx2-xfrm-unshare-net-6b74a96a8d9e
-To: Sunil Goutham <sgoutham@marvell.com>, 
- Geetha sowjanya <gakula@marvell.com>, 
- Ratheesh Kannoth <rkannoth@marvell.com>, 
- Subbaraya Sundeep <sbhatta@marvell.com>, 
- Bharat Bhushan <bbhushan2@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Nicolai Buchwitz <nb@tipi-net.de>
-X-Mailer: b4 0.16.0
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261026-b4-pdm_clk_gp_mnd_v2-v2-1-ff8e4bc8d567@oss.qualcomm.com>
 
-otx2_dma_map_skb_frag() calls skb_unclone_full() on its own copy of the
-skb pointer. For a cloned skb, for example with tcpdump running on the
-interface, this frees the skb and the new copy is lost on return. The
-transmit path then uses the freed skb and the copy leaks.
+On Mon, Oct 26, 2026 at 04:59:27PM +0530, Taniya Das wrote:
+> Add device tree bindings for the Qualcomm Peripheral Web's PDM GP_MN
+> clock divider. The hardware generates a fractional output frequency
+> from a fixed input clock (typically TCXO4) using the relation
+> Fout = Fin * (M / N), with duty cycle controlled by a separate D
+> register. The clock output is routed over a gpio controlled pin.
+> 
+> Signed-off-by: Taniya Das <taniya.das@oss.qualcomm.com>
+> ---
+>  .../devicetree/bindings/clock/qcom,clk-gp-mnd.yaml | 98 ++++++++++++++++++++++
+>  1 file changed, 98 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/clock/qcom,clk-gp-mnd.yaml b/Documentation/devicetree/bindings/clock/qcom,clk-gp-mnd.yaml
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..8141f392c5d70acfc42cf1ff4b1722e1eff23afa
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/clock/qcom,clk-gp-mnd.yaml
 
-Make the skb writable in place in otx2_sq_append_skb() instead, so the
-pointer stays valid. Also do this for nonlinear skbs, as the hardware
-writes the encrypted data back into the frags, which may be shared,
-for example with the TCP retransmit queue.
+Use fallback as filename, so qcom,sc7280-gp-mnd.yaml
 
-Fixes: 195c3d463181 ("octeontx2-pf: map skb data as device writeable")
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
----
-This was flagged in the clashiko review of my skb_unshare() rename patch [1].
+> @@ -0,0 +1,98 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/clock/qcom,clk-gp-mnd.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Qualcomm Peripheral Web's PDM GP_MN Clock Divider
+> +
+> +maintainers:
+> +  - Taniya Das <taniya.das@oss.qualcomm.com>
+> +
+> +description: |
+> +  The Peripheral Web's PDM GP_MN clock divider receives an input clock
+> +  (TCXO4) with frequency Fin and generates an output clock with
+> +  frequency Fout = Fin * (M / N) and a duty cycle controlled by D
+> +  and routed over a gpio pin.
+> +
+> +  The divider is configured using three registers:
+> +
+> +  - GP_MN_CLK_MDIV: holds the M value.
+> +  - GP_MN_CLK_NDIV: holds the ones complement of (N - M).
+> +  - GP_MN_CLK_DUTY: holds the D value.
+> +
+> +  For every N input clock cycles the GP_MN produces M output clock
+> +  cycles. D is the number of native clock cycles in which the GP_MN
+> +  output is low, counted over 2^13 native clock cycles.
+> +
+> +  Hardware constraints:
+> +
+> +    M <= 511
+> +    N <= 8191
+> +    N > 2 * M
+> +    M < D < (N - M)
+> +    M and N must be coprime (no common divisor)
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - const: qcom,sc7280-gp-mnd
+> +      - items:
+> +          - enum:
+> +              - qcom,sa8775p-gp-mnd
+> +              - qcom,qcs8300-gp-mnd
+> +              - qcom,qcs615-gp-mnd
+> +          - const: qcom,sc7280-gp-mnd
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    items:
+> +      - description: PDM XO4 source clock
+> +      - description: PDM AHB bus clock for register access
+> +
+> +  clock-names:
+> +    items:
+> +      - const: pdm_clk
 
-Compile-tested only, I have no octeontx2 hardware.
+pdm
 
-[1] https://lore.kernel.org/all/20261015-nb-skb-unclone-full-v1-1-0dfbf01f60f2@tipi-net.de/
----
-Changes in v3:
-- Also copy nonlinear skbs, GSO segments share frag pages with TCP
-  (sashiko, Paolo)
-- Count the drop in tx_discards
-- The other pre-existing issues flagged on v2 will follow separately
-- Link to v2: https://patch.msgid.link/20261022-nb-otx2-xfrm-unshare-net-v2-1-5590c9325bcd@tipi-net.de
+> +      - const: ahb_clk
 
-Changes in v2:
-- Also handle skbs with shared frags (Jakub)
-- Note: conflicts with "net: rename skb_unshare() to skb_unclone_full()"
-  in net-next, the resolution is to drop the skb_unclone_full() line
-- Link to v1: https://patch.msgid.link/20261019-nb-otx2-xfrm-unshare-net-v1-1-ee9b24f9e673@tipi-net.de
+ahb
 
-To: Sunil Goutham <sgoutham@marvell.com>
-To: Geetha sowjanya <gakula@marvell.com>
-To: Ratheesh Kannoth <rkannoth@marvell.com>
-To: Subbaraya Sundeep <sbhatta@marvell.com>
-To: Bharat Bhushan <bbhushan2@marvell.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>
-To: "David S. Miller" <davem@davemloft.net>
-To: Eric Dumazet <edumazet@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
----
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c | 4 +---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c   | 9 +++++++++
- 2 files changed, 10 insertions(+), 3 deletions(-)
+> +
+> +  '#clock-cells':
+> +    const: 0
+> +
+> +  assigned-clocks:
+> +    maxItems: 1
+> +    description: Parent clock phandle used to set the input frequency.
+> +
+> +  assigned-clock-rates:
+> +    maxItems: 1
+> +    description: |
+> +      Rate for the parent clock in Hz.
+> +      Supported rates: 19200000, 9600000, 6400000, 4800000.
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-index 4e418c7456b7e..c441c0161dbf4 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-@@ -2115,10 +2115,8 @@ dma_addr_t otx2_dma_map_skb_frag(struct otx2_nic *pfvf,
- 	int offset;
- 
- 	/* Crypto hardware need write permission for ipsec crypto offload */
--	if (unlikely(xfrm_offload(skb))) {
-+	if (unlikely(xfrm_offload(skb)))
- 		dir = DMA_BIDIRECTIONAL;
--		skb = skb_unclone_full(skb, GFP_ATOMIC);
--	}
- 
- 	/* First segment is always skb->data */
- 	if (!seg) {
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-index 8d2d607bc92f9..3d38ca2402e38 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-@@ -1205,6 +1205,15 @@ bool otx2_sq_append_skb(void *dev, struct netdev_queue *txq,
- 	if (free_desc < otx2_get_sqe_count(pfvf, skb))
- 		return false;
- 
-+	/* Crypto hardware need write permission for ipsec crypto offload */
-+	if (unlikely(xfrm_offload(skb)) &&
-+	    (skb_cloned(skb) || skb_is_nonlinear(skb)) &&
-+	    skb_ensure_writable(skb, skb->len)) {
-+		atomic_long_inc(&pfvf->hw.dev_stats.tx_discards);
-+		dev_kfree_skb_any(skb);
-+		return true;
-+	}
-+
- 	num_segs = skb_shinfo(skb)->nr_frags + 1;
- 
- 	/* If SKB doesn't fit in a single SQE, linearize it.
+Neither assigned-clocks nor assigned-clock-rates should be needed.
+Parent clock is outside of scope of this binding.
 
----
-base-commit: 2cffcf1aeabb187e4f08fe4f5363128a3c45d786
-change-id: 20261019-nb-otx2-xfrm-unshare-net-6b74a96a8d9e
+
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +  - clock-names
+> +  - '#clock-cells'
+> +  - assigned-clocks
+> +  - assigned-clock-rates
+
+And these two should not be required, either.
 
 Best regards,
---  
-Nicolai Buchwitz <nb@tipi-net.de>
+Krzysztof
 
