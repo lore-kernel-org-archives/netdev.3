@@ -1,63 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.100
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793065938;
-	b=uPPoz28DF6ck7bwb2gFu0xgcGNmRzrrDUaKuFe1kdMt/sK/LSFKRKjqWz1YqhzD/qXcm
-	 P9cES4PivXZ864mYl5AH38z6VDUVbs9VdObvLaldpKPjNl91C/7TGDN5TIcT59wsz9IGP
-	 sW+lACT+9K6HX25JRA2NQWWO0eRv43HUcDpTnUBuimoNdsgtBKs8Yte/pfdadvdcybxbH
-	 umls5w2zz7tAsURLztEBS3YiSu4eRkU/eCkjcX0vxJfgf3VJgWfzTCFP8vbRmd5xoxCaA
-	 qSPjcgNSdsqXwE4CI3EI1qoS21O+V3qvxouGIOVEevNB9lEhUam0zbwjhag3qXmKn9A==
+	t=1793065932;
+	b=PSOvIHh4YEjGiKeGxCRWusb49kUKYEoFOgQ0S7WX0362iM+Y6kcWD0W/P/2fo2gNKiwY
+	 XzUMsXvKp22tH09Te8UQ2vg6fePDPqekbyjx17sXOPe+GHdjVQxbAPpYy6UwqQS7PMO7m
+	 R89zsW77kfA/q6MpOx6xb4v8EDpUZ8RgdUzpeKjmoOiUkOVuGdlFglYhUA54Zloma8uzE
+	 UZpVgKLYJsIG0MfR/YJaDp1XmEwhGPoh3wys88Rdy+vNXJI2TDdMj/UQO/wbOjL2Z8JhC
+	 ruM1VO+yLAApZ5/hkxyldevTnI/MZACK981n+P6Y4n3q0hqZQuMSNa741z7Kytrbzww==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793065938;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=8Xz/O4SoFdzeWrW3v+OQB6Ik0lhhudsEz7WYi/c75v4=;
-	b=T4fPMySBGuQ22XAKxsmldEPGVkKw9RwW0ETGmxgL1uLAcDAhZLyxuL2kktZPHqylrZDb
-	 gJ6YDByKVEwDFwMze5ggDiK0r4NaORr12y7IEJqK7ojuFfeLMlVnzbutpBNQsILzFLdgB
-	 2JvrwY7+5G+sUXUztLzi8xq2MMydm9rpYw+QLRZw0RoHwlweuy8IXHKCBKDg0TzjRopw/
-	 3X7WpLJ+g8VEDXv5R+CHhQUsxW8PaYfcO8wlH0LONJeF5+6VQhgJ79L5k2QPYID9XqGr8
-	 CH3IWjBARq9GVQKie8VCGH173t2tMcD7COKGaxM70fVNGiVPRdyk+azS8Hemx2dpqeA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793065932;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
+	 Received:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=Dmw+4NxcC4V2T43bzcaT/Js2XAXbRw0OaytvY2/dX+M=;
+	b=ewVII6WTUogy24DeQtF470ym4Gs7xmHUnGH49hGFFm1XW/qpfnG5WO06gearGtdqXPQN
+	 6GCGl5hX076e3wjMEDUaYwZzCM2Ql45ym94fGa/teLNFfenNEY1tnhYh/+rj6qWH/6Wi7
+	 opoR8EEyYELCYct2X4V9chtFLVvlX02TLarPJ1vT4jsleGmmq6zLUrWj5xcwI0W6HhN85
+	 ss0Q5jbN2wPu49ficaTCzEexrkr4zi9tkccn3I+1Y4fKoFAq2J7DTH0jgvtRXWTAZnJkX
+	 XxPyPkJAWv7oxU1SMXqShw6JmNKGS5VffnqaqGmrojqqvFWEZDaph48DdD+vpcM72PA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Vx0MbS5w;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=purestorage.com;
+	spf=pass smtp.mailfrom=purestorage.com;
+	dkim=pass header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=G6JO7Vam;
+	arc=none smtp.remote-ip=209.85.208.100
+Received: from mail-ed1-f100.google.com (mail-ed1-f100.google.com [209.85.208.100])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619A9606A31D;
-	Tue, 27 Oct 2026 01:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A7C606A31B
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 01:52:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 86A7C606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Vx0MbS5w
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD1CA1F031E3;
-	Tue, 27 Oct 2026 01:52:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793065938;
-	bh=8Xz/O4SoFdzeWrW3v+OQB6Ik0lhhudsEz7WYi/c75v4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Vx0MbS5wREwM8lfqmytYlNyB1CbyV/HFXVYS1KFqhu+c+wKLGPMO+CaYvkx4LPdhV
-	 vkb21x4m4D7Lp9lq1d5AXJPhtLCnZ5iwamYEb9RamQnkqW+Y7g7aJ4KynKsCAX3TpL
-	 tLv/DJ5K+Lsc6kvkPSh/JDxSARWq0nBG7xbmcBGoETMh1ba19apl0rMgobRh/tj8HU
-	 CBKh6P5RSbDnEbsjyh9rvwTjkvT7Jybpx2Cnl1TUnnCVZE0u69lTIcHsRfVwe5Xg3e
-	 d2YUmUisnUZrEyNJxBXj/5hzSl5xOQqUuxWcHlA+rV95oiiIRH3edXq+8FVoKS25Jk
-	 EDoB512loCExw==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	sd@queasysnail.net,
-	john.fastabend@gmail.com,
-	shuah@kernel.org,
-	cel@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net 1/2] tls: Honor O_NONBLOCK in tls_sw_splice_read()
-Date: Mon, 26 Oct 2026 18:52:14 -0700
-Message-ID: <20261027015215.605919-2-kuba@kernel.org>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261027015215.605919-1-kuba@kernel.org>
-References: <20261027015215.605919-1-kuba@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=G6JO7Vam
+Received: by mail-ed1-f100.google.com with SMTP id 4fb4d7f45d1cf-6b3dd83e779so6210933a12.1
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 18:52:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=purestorage.com; s=google2022; t=1793065930; x=1793670730; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Dmw+4NxcC4V2T43bzcaT/Js2XAXbRw0OaytvY2/dX+M=;
+        b=G6JO7VamvuhFqGO4lSSNfUKa+vnljUJXzw/dWT+d+1O2l3q2S/bUr0OYEkJV4qn0Av
+         H9zZoPH3ryQGKsg3Qpx8ygAtdmqQZFbaNqdNVhQK5Wqnl5MBaHxECugWWrn8VIxNSn0A
+         RZ0V6yspWWdNScKxWjegOO1NZiaMy5LNHSo2Ka8drakqN1+iFpJlDI0FCrNykhLtEorE
+         NhdypyIYw2ZjwJWTXSK9wrPv4w/quyhgzI1JF1ZHeM1pSwxitpLw4YUa+OmKwIZgzrAQ
+         ZRqsbEaIi5F1Vu5NmXkVROqtd7cSjWyLys6ir2wNVSVHqEy0Epq/qImfBpu9mp/CK/Rq
+         eUfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793065930; x=1793670730;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Dmw+4NxcC4V2T43bzcaT/Js2XAXbRw0OaytvY2/dX+M=;
+        b=rm0auNdA0ksPygcG72CJdKkZLW8YOXcaKjo3/BzV7ydho5pIsk/QN/bxXwl+SMAXjH
+         7xGyfBkjE6qEREQxXSyfCeA2LFDAwlChdKd6KDPmete7ls8YPTlNMwdfoSLWpcbky23z
+         j65a/UD7H3OxNvBiylXvh9f518DGk4u8jY9mWTXLeiwqwIAuVCW2F5pP7l6lt3ussK8e
+         woR4ZqJlQijNUihPyTA4CdKBrJLqef88DhX/sEcR+BGIPDfiqnGV4oOXfhNbmu7e6wty
+         HR5TrDaUxCMJ+pEDMfjCYM40lF7Iyi0AN2YKSohYVhQkP2eaIlV6WF5kEuWZg9CpD3mG
+         busw==
+X-Gm-Message-State: AFq9FYLOgCwlmAG6p6jhzmzeLVc2u2LU/ta+wyEIzfPh5zUTiM+w08XA
+	61DwTJwxMA1YeKsZMxtDq4EjlRY9XQ20rZwhf/EzWN/FR4PvxUehHPJk0tIT0dliYzLDZQaicTb
+	U0DfbslXP47r8Lf3/TLqF3DPiHEcL0rxGypob
+X-Gm-Gg: AYBFou1zTJuIXczSm/4l9lAwKpCnrBOXMhP5qe13Fxbw1pwY14Hb8UvIyWwnkAjw4Sa
+	KkO3jY6qsSdJxGEbtIpGPvWWDaSj/JP4Y5uVrpFe5BoNHGmQxZKYFVz4C2CG/EEBISUrHbL8R5o
+	ggSaJaAtcO/JYRryYmHO4Mp74QLDrSAqjv3uMDidwYgNEkH/K5KVvf4bED8uRmdrQPapIwq7ND2
+	LCV+NyTGI50soJoiq4FbATSofL/3svTtKwR5+0iCvG/FPyYuEsJkhF47B/zbIqfPpAv5uBF9qWY
+	BfV0AT8+gXxIEiA0OUvGPE4qyLQV2a13gb+xvCyAZ5Va2Z9hQIv+UVpv44PpvdmMfehOZxS3reQ
+	3Xl2LAvEgJrXybbWqFtZYpq8HK6VNO4DlPGk=
+X-Received: by 2002:a05:6402:2142:b0:6b3:b10c:40f9 with SMTP id 4fb4d7f45d1cf-6b442ff1deamr6770420a12.31.1793065929813;
+        Mon, 26 Oct 2026 18:52:09 -0700 (PDT)
+Received: from c7-smtp-2026.dev.purestorage.com ([208.88.159.128])
+        by smtp-relay.gmail.com with ESMTPS id 4fb4d7f45d1cf-6b4458fa8dcsm1689318a12.4.2026.10.26.18.52.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2026 18:52:09 -0700 (PDT)
+X-Relaying-Domain: purestorage.com
+Received: from dev-rjethwani.dev.purestorage.com (dev-rjethwani.dev.purestorage.com [10.17.2.234])
+	by c7-smtp-2026.dev.purestorage.com (Postfix) with ESMTP id A7E1E40146;
+	Mon, 26 Oct 2026 19:52:07 -0600 (MDT)
+Received: by dev-rjethwani.dev.purestorage.com (Postfix, from userid 1557719937)
+	id 9DA37DCE126; Mon, 26 Oct 2026 19:52:07 -0600 (MDT)
+From: Rishikesh Jethwani <rjethwani@purestorage.com>
+To: netdev@vger.kernel.org
+Cc: Rishikesh Jethwani <rjethwani@purestorage.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Alice Mikityanska <alice.kernel@fastmail.im>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Boris Pismenny <borisp@mellanox.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v2] tls: restrict device-down TX fallback to hardware TX sockets
+Date: Mon, 26 Oct 2026 19:52:05 -0600
+Message-ID: <20261027015205.2169253-1-rjethwani@purestorage.com>
+X-Mailer: git-send-email 2.50.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,72 +109,121 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Chuck Lever <cel@kernel.org>
+tls_device_down() installs tls_validate_xmit_skb_sw() on every socket with
+hardware offload in either direction, but tls_sw_fallback() needs a
+hardware TX context in priv_ctx_tx. An RX-only socket's NULL priv_ctx_tx
+crashes the fallback on its next transmit, for instance after the device
+comes back up:
 
-tls_sw_splice_read() takes its blocking behavior from
-SPLICE_F_NONBLOCK alone. When splicing from a socket to a pipe,
-do_splice() sets that flag from the pipe's O_NONBLOCK, not the
-socket's. On a nonblocking socket, a splice(2) call without
-SPLICE_F_NONBLOCK therefore sleeps in tls_rx_rec_wait() until a
-record arrives. tcp_splice_read() instead reads sock->file->f_flags
-and returns -EAGAIN.
+  BUG: kernel NULL pointer dereference, address: 0000000000000008
+  RIP: 0010:_raw_spin_lock_irqsave+0x31/0x60
+   tls_sw_fallback+0x11b/0x450
+   validate_xmit_skb.isra.0+0x14f/0x420
+   __dev_queue_xmit+0x5e8/0xf30
 
-Polling first does not avoid the sleep once tls_sw_splice_read()
-consumes zero-length records, as it does after a later patch in this
-series. tls_sw_sock_is_readable() reports the socket readable while
-any record sits on rx_list, including a zero-length record that
-delivers no bytes to the pipe. For TLS 1.3 the strparser announces a
-record before decryption, when its plaintext length is still unknown,
-so the readiness test cannot screen such a record out. A splice that
-consumes the record and waits for the next stalls every connection
-an event loop multiplexes.
+A software-TX socket's priv_ctx_tx is a tls_sw_context_tx, which the
+fallback would walk as a hardware context.
 
-An LLM audit of the TLS read paths found this defect.
+Only install the fallback on hardware TX sockets. Today tx_conf alone
+cannot identify them from tls_device_down(): tls_set_device_offload()
+drops device_offload_lock before it publishes the validator, and
+do_tls_setsockopt_conf() stores tx_conf = TLS_HW later still, under
+lock_sock, which tls_device_down() does not take. That leaves two
+windows. A NETDEV_DOWN before the validator store installs the software
+fallback, only for the hardware validator to overwrite it with
+ctx->netdev already cleared. A NETDEV_DOWN after the validator store
+leaves the fallback in place. Both read tx_conf as TLS_BASE and skip
+tls_dev_del(TX) today, which the destructor never retries
+(tls_device_queue_ctx_destruction() only queues it while ctx->netdev is
+set), so the driver TX context leaks. Gating the fallback on tx_conf
+alone would make the second window a regression: the hardware validator
+would stay in place with ctx->netdev cleared, so
+tls_is_skb_tx_device_offloaded() keeps reporting offloaded.
 
-Treat the socket's O_NONBLOCK as nonblocking too. A caller that
-sets O_NONBLOCK on the socket and splices without SPLICE_F_NONBLOCK
-now gets -EAGAIN where the splice blocked before. sendfile(2) from
-a TLS socket changes the same way, because do_sendfile() leaves the
-input file's O_NONBLOCK out of the splice flags. Both now behave as
-they do on a plain TCP socket.
+Set tx_conf to TLS_HW in tls_set_device_offload() before dropping
+device_offload_lock, and publish the validator there too, so
+tls_device_down() sees both or neither. rx_conf has the same window and
+leaks the driver RX context, as tls_device_offload_cleanup_rx() skips
+tls_dev_del() once ctx->netdev is NULL, so set it the same way in
+tls_set_device_offload_rx().
 
-Fixes: c46234ebb4d1 ("tls: RX path for ktls")
-Signed-off-by: Chuck Lever <cel@kernel.org>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The unconditional fallback install, and its overwrite by the hardware
+validator, date from c55dcdd435aa; the TX and RX leaks from 4799ac81e52a.
+
+The NULL dereference was reproduced on an RX-only socket, which now
+survives an interface down/up cycle and keeps receiving TLS records. The
+software-TX case and the setsockopt/NETDEV_DOWN races are from code
+inspection only.
+
+Fixes: c55dcdd435aa ("net/tls: Fix use-after-free after the TLS device goes down and up")
+Fixes: 4799ac81e52a ("tls: Add rx inline crypto offload")
+Signed-off-by: Rishikesh Jethwani <rjethwani@purestorage.com>
 ---
- net/tls/tls_sw.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ net/tls/tls_device.c | 22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 312e51270f29..771e02bff519 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -2007,10 +2007,14 @@ ssize_t tls_sw_splice_read(struct socket *sock,  loff_t *ppos,
- 	struct tls_msg *tlm;
- 	struct sk_buff *skb;
- 	ssize_t copied = 0;
-+	bool nonblock;
- 	int chunk;
- 	int err;
+diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
+index 1a5f328d80a5..9e0863dd2f96 100644
+--- a/net/tls/tls_device.c
++++ b/net/tls/tls_device.c
+@@ -1176,13 +1176,15 @@ int tls_set_device_offload(struct sock *sk)
+ 		goto release_lock;
  
--	err = tls_rx_reader_lock(sk, ctx, flags & SPLICE_F_NONBLOCK);
-+	nonblock = flags & SPLICE_F_NONBLOCK ||
-+		   sock->file->f_flags & O_NONBLOCK;
+ 	tls_device_attach(ctx, sk, netdev);
+-	up_read(&device_offload_lock);
+ 
+ 	/* following this assignment tls_is_skb_tx_device_offloaded
+ 	 * will return true and the context might be accessed
+-	 * by the netdev's xmit function.
++	 * by the netdev's xmit function. Publish it and tx_conf under
++	 * device_offload_lock so tls_device_down() sees both or neither.
+ 	 */
+ 	smp_store_release(&sk->sk_validate_xmit_skb, tls_validate_xmit_skb);
++	ctx->tx_conf = TLS_HW;
++	up_read(&device_offload_lock);
+ 	dev_put(netdev);
+ 
+ 	return 0;
+@@ -1258,6 +1260,11 @@ int tls_set_device_offload_rx(struct sock *sk, struct tls_context *ctx)
+ 		goto free_sw_resources;
+ 
+ 	tls_device_attach(ctx, sk, netdev);
++	/* do_tls_setsockopt_conf() stores rx_conf too, but only after
++	 * device_offload_lock is dropped. Set it here so tls_device_down()
++	 * sees TLS_HW and releases the driver RX context.
++	 */
++	ctx->rx_conf = TLS_HW;
+ 	up_read(&device_offload_lock);
+ 
+ 	dev_put(netdev);
+@@ -1326,10 +1333,17 @@ static int tls_device_down(struct net_device *netdev)
+ 	spin_unlock_irqrestore(&tls_device_lock, flags);
+ 
+ 	list_for_each_entry_safe(ctx, tmp, &list, list)	{
++		bool tx_hw = ctx->tx_conf == TLS_HW;
 +
-+	err = tls_rx_reader_lock(sk, ctx, nonblock);
- 	if (err < 0)
- 		return err;
+ 		/* Stop offloaded TX and switch to the fallback.
+ 		 * tls_is_skb_tx_device_offloaded will return false.
++		 * Only HW TX sockets have the context the fallback needs.
++		 * The single read above keeps the fallback and tls_dev_del()
++		 * below in agreement.
+ 		 */
+-		WRITE_ONCE(ctx->sk->sk_validate_xmit_skb, tls_validate_xmit_skb_sw);
++		if (tx_hw)
++			WRITE_ONCE(ctx->sk->sk_validate_xmit_skb,
++				   tls_validate_xmit_skb_sw);
  
-@@ -2024,8 +2028,7 @@ ssize_t tls_sw_splice_read(struct socket *sock,  loff_t *ppos,
- 	} else {
- 		struct tls_decrypt_arg darg;
+ 		/* Stop the RX and TX resync.
+ 		 * tls_dev_resync must not be called after tls_dev_del.
+@@ -1346,7 +1360,7 @@ static int tls_device_down(struct net_device *netdev)
+ 		synchronize_net();
  
--		err = tls_rx_rec_wait(sk, flags & SPLICE_F_NONBLOCK,
--				      true, false);
-+		err = tls_rx_rec_wait(sk, nonblock, true, false);
- 		if (err <= 0)
- 			goto splice_read_end;
- 
+ 		/* Release the offload context on the driver side. */
+-		if (ctx->tx_conf == TLS_HW)
++		if (tx_hw)
+ 			netdev->tlsdev_ops->tls_dev_del(netdev, ctx,
+ 							TLS_OFFLOAD_CTX_DIR_TX);
+ 		if (ctx->rx_conf == TLS_HW &&
 -- 
-2.56.0
+2.50.1
 
