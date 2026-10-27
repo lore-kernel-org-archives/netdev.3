@@ -1,66 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793093097;
-	b=QTi+4j01dqKFLtadqnSTh4sMgUzeUM9g0EuTm+iDDvxYD0cN/hBZR43VZC7OAMqVHRvM
-	 mLeWLSCwmVujp4PY4QvG78eJ771Bs6kKMtpsuYRRSVmunc54fVRuNB0aB+11SoMNk2bOv
-	 dlEmmxUkH5xVTIel7B7BsemtmeUt08CvWK17lkPtA2ufOdyXc/AS+O8AAs/TlNas3Pn0u
-	 RNhQGLYxr67GUJQLdGF5fqwIwguh8PeoUT5ujbM+WKiBVqnrfDW1bmx0nDHKt/SGHLlRE
-	 EOk0v8geRyFz6gfJ2xU3jawz3bB5NIDH86MRxvTbLBKKSCpm5KhmlOW+fdu5yMzW9Qw==
+	t=1793093248;
+	b=nXK3AKXPN9+csaTrML2Ej1CVTiLTbefykU97/UFzVrCfETHq9klcl3gAYIXPbm3KRXsJ
+	 IupeYyXyNTtN3/hNZaSUFWK9mgAAa2bCjuJfDtlzQkZuH+N0EdMi0DJTrXyGXkvZm8es1
+	 Cd86Gui0srIdDCEl+R/LJOcjxRiO5iO3e/ekRvDqwvwRCM0EattYxYy9DhclaloyghgvT
+	 q7yB8p2UbGVnLKWQ1P6xxr5BxO9j4FNNGQ1Oft/EA+m796C0E0mZttBUee4+4UR2/Lt15
+	 /v0+aGEPdDEIaJRuwgWK3QIYCT9OP6bWMCHVAio8gaAAScAf3648O3HMxGnGOIw21RQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793093097;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:X-Developer-Signature:
-	 X-Developer-Key:Content-Transfer-Encoding;
-	bh=jVmoiMOYtuI9ktRo1elrluNIumXG5xfU1JF0RrrL6LA=;
-	b=hDVxuDSGz+Bdqa6hMW8Jbm6fJg9P8RC4Rlf8Qm48pwt9cI/YlLF5+aOkwyoP8gWzXVk6
-	 0GQryS+SCcjI4jlWnxKEmTiEL7/GrzZasorTXiJZtNB4IO9PaOt4ZYEtZupshTxKnucys
-	 kew2RvUa+1d9+jD+e8gsi5/0iCItO8ox0NjZAWoHP1SENy4A5ynHcJVzSuagEWT/nfLug
-	 d6xry8rAc75T2nFufFEVMclBfNa3Ui9aM/Oizc9yRGDMCxGmt8sI3LxbLKw67rtPOdSN2
-	 NIOi7Wj3PiF7EsXEICDRTf3UuUenqJ3E9V3B9uZ+2nIpuXNKvdewYVKLGEp2icjKWFQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793093248;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=NO/PULJuoH8GueUl87hWZsGj557aWTq0iq+P8FZEMew=;
+	b=CmGeS09EQ8Rj8mv/9yqa6Bo7ZsiYKu1CApA1cKHkeFS5bpiK4w/pIuLtcg/DG/QJnky8
+	 fbSnGpm7Ukwa2X7rDtWBOsmEUq8iGZea3CUCl4AqFbHziI53/9H/HBCTQ1HObQa39J0+L
+	 cjNYzfnVkGAOy0UybayytqW52DrIqyhevGzt1rHJxKafSj7fmWl2bj3yNpxlAI9DPuUp5
+	 iBRBlgzALqQHokyKS2zrv/Ps/t0dL41Khr/3eP97nxk0VuKmJ0zcdfjAEg7wrFuoKI6KB
+	 fzpdw0kEjJJFM62pGp0UZQQN+jYqz6px+GIAAoFXH5CHBnBUg1kcCEanK6KIUttmVwg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kZoU+cvv;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="rtA7yWz/";
+	arc=none smtp.remote-ip=209.85.218.50
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E5F0606A31D;
-	Tue, 27 Oct 2026 09:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34683606A328
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 09:27:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 34683606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kZoU+cvv
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A271F01825;
-	Tue, 27 Oct 2026 09:24:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793093097;
-	bh=jVmoiMOYtuI9ktRo1elrluNIumXG5xfU1JF0RrrL6LA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kZoU+cvvg+Uaxt93WSvNa39ekC/nms9Dh3D6qeSoLDOvmquKzCzkQi0CgBe1v2nWL
-	 5GD+Rb35FYjNMAD4RHbnqheUJ/tzr+bf3FW1OgW191FshAlozCsk2UZljjWo1gdKsl
-	 cAZhTYeVhsid7Uf/F5pFYqYlemM/IjJ2jbuZynePh4AFeqJCpWG4gZmizxVyPUpjqz
-	 qoBtP8hH/kDlIBY1SPPmhVFs7HkxO+Teg4GNIdLYi1jEwYkdg6O3gg3VsZtB5I6aem
-	 0hIQ8Ghi75+hiG6CVVgVJQwDaEfyCGIXY0WcoMBmlKXQxwe4fkSh31fLVxoPFFyZn2
-	 ovNfkW9oEvH5A==
-From: Christian Brauner <brauner@kernel.org>
-To: Paul Moore <paul@paul-moore.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Christian Brauner <brauner@kernel.org>,
-	linux-fsdevel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Matt Bobrowski <matt@bobrowski.net>,
-	netdev@vger.kernel.org,
-	stable@kernel.org
-Subject: Re: [PATCH 0/8] ns: fixes for the namespace LSM hooks
-Date: Tue, 27 Oct 2026 10:24:28 +0100
-Message-ID: <20261027-heckklappe-halbmarathon-vorsorgen-849ffdc42aac@brauner>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <CAHC9VhR4rMydWiD-RFv-ABiYSG_txJuyrtdaowEXPY=CHEvFXA@mail.gmail.com>
-References: <20261026-work-security-namespace_free-v1-0-ffa3ebbf71bd@kernel.org> <CAHC9VhR4rMydWiD-RFv-ABiYSG_txJuyrtdaowEXPY=CHEvFXA@mail.gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=rtA7yWz/
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c46d41f6af3so311663866b.1
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 02:27:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1793093246; x=1793698046; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=NO/PULJuoH8GueUl87hWZsGj557aWTq0iq+P8FZEMew=;
+        b=rtA7yWz/OJQELSB1HmzDG3zKW06pzYRIBoQhVr9HylKEpl/8BpK2yi87g1x16ip+Pi
+         fL7L7LTZU/P+LP6tqSBF2kn+T3PkbIfav6AB+p7jJfqohB07r1R3PbJj+iHSDOfA2lkC
+         Zo98+IGjED3QcvcZfTPyx9AkDAhssqZbALgRPWpyzhQ5XfYz/54hiiM5bcbgRREcz91j
+         r1fmiKeQgLmKHQGkRW90lyoG1oL9Fby0BbWxiRMH8PoasiIzLMc5HTazYLRzyjMDVEYa
+         m4F2fy6M9vyjirx33RfXRrSwve2RUm0QyLdHG+qFq6/zklsWGKJZJvNL6FZccBRQL9up
+         L6eQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793093246; x=1793698046;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=NO/PULJuoH8GueUl87hWZsGj557aWTq0iq+P8FZEMew=;
+        b=thLy3jh0aqWTfRCIGDFKsxr82CvP+jqcVRLXW09e4vdFEsh1zNF74SuVln6ikrQufz
+         3Pvb0kS7wEz6OtsrNAq2AoKHJtF9ZgX6YihBnPZVTtp0FI+UW4h6ZWzn3EWYPIlObYdt
+         27TDHn1geUiTvUTMvV6+m94TA3HiQEPCjuOO0y7Sxg/plTTY09olEF5UdbdSdmtPwick
+         RZRTb2VF0uXeMPz6KlnhtImcy4Ac6PXIwJBigngiT7rF9ffglKJCizRmkpe1wRUVuDNo
+         qvAa41/rTiDur0VhvV2fGu1dYBtuhTVIz1H+e34/q/HsXszGECP/J+kSmoWiLhUO5GXo
+         lSIg==
+X-Gm-Message-State: AFq9FYIzRV/+U+7QHkg5mmA8lDDN9BPnwh1gZpENbtUCApNddxAJpahE
+	Lo31GIxHpXwu3YRG2ES5irrolJoeGSHKSHjBMgtKGIpF4bVWnc7OdWVu
+X-Gm-Gg: AYBFou0fvPhlOdNqbvchX6OtcddS5cWy1jDv0AFyCm8JeAtSk3vPuCzDtautGx/TwtR
+	9npVSqll4a2RWu34yrcNtTClHFVNqpKikyLQNsBcieD92yB+tNEhcd6/ZAbl0gT7ozqkCCWxdj9
+	mv7Yo5kg1DVYrcGh6OadJtU3XEd3tI53Z+LqzQWux5IQlLV2e5RAmpln/c5+Fzj6wEi5M0Av5+S
+	+YVfoToiLxLhYPjp2+3vEmauKMzrklVYW7aEAKQpj/Bp+1onvPVCAPpYtRij9Y5P+EFTiiGdZ/p
+	yNPT2kJSO59l5rjHYvxIlYD81j/yvdIKc1VHHadSzGmECCM5cWh3BOd+HDe21CCF3N1Fy8wjqhq
+	Ov9HPNVVCWuwIePPS0A1+rdqXntEGcGSgu37CTRet8lc4zrA+KgLqOLpiBqm9kQmz3kWnurorKJ
+	qUGV4TP/CDSd6AO2IOpI1mBX9vPqzwOHkkC90ATqUzxiiIHhzj6jfIskHJSxF5p7DD1KXlbFyJn
+	rPP6bXyST+GoaKJqffItLivkXKeG3QVHTNEiyXluwBwbha6UG9YobIi3egR2Dr79YnoDdqxo6FU
+	7KbW+VSfyNqOYK+foUNAV5DftqBw8wLmCdd5HJYmACzMkuFaio1tMzuNUPfic0tbtBXKrmAP6YB
+	jhkMWiw==
+X-Received: by 2002:a17:907:3fa6:b0:c41:f29:72b1 with SMTP id a640c23a62f3a-c46bdeba202mr1042190766b.47.1793093246326;
+        Tue, 27 Oct 2026 02:27:26 -0700 (PDT)
+Received: from CCM-PC (83-233-221-133.cust.bredband2.com. [83.233.221.133])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c46bd7984f5sm417942766b.77.2026.10.27.02.27.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2026 02:27:25 -0700 (PDT)
+From: Yongzhao Chen <yongzhao.derek@gmail.com>
+To: netdev-bot+sinfo@kernel.org
+Cc: netdev@vger.kernel.org,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	linux-kernel@vger.kernel.org,
+	Ziyang Huang <hzyitc@outlook.com>
+Subject: Re: [PATCH net v7] net: dsa: qca8k: preserve port state across MTU changes
+Date: Tue, 27 Oct 2026 10:27:18 +0100
+Message-ID: <20261027092718.266370-1-yongzhao.derek@gmail.com>
+X-Mailer: git-send-email 2.55.0.windows.5
+In-Reply-To: <179268501671.3290.6623232109527554630@kernel.org>
+References: <20261022155837.760-1-yongzhao.derek@gmail.com> <179268501671.3290.6623232109527554630@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,62 +108,30 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2717; i=brauner@kernel.org; h=from:subject:message-id; bh=a0tQj4zM6yRVUYT5loClZPWWa4Kil1MrBWSlYtSs7uE=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ9yL21Lirg4n7HnDqL3r2nWabsbIwt37H6e+pdlge1G Refhh+80FHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCRroOMDAfmsrsIqdlufX3l 5eG9OWfyIqJ7tBoC/z7+vbr3XLt+2jNGhiOZKmWb/bon622Ne6Cksc158o6szgbZNM2Jmzu3r+P y5QEA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-On Mon, Oct 26, 2026 at 04:31:25PM -0400, Paul Moore wrote:
-> From what I'm reading the LSM framework patches don't meet the typical
-> LSM criteria for stable/RC fixes: there is no serious bug/panic, and
-> there is no functional regression from a previous release.
-> This looks like one of those unfortunate circumstances where a new use
-> case wasn't tested thoroughly enough before the merge window, so it
-> can wait for the next one.
+On Thu, 22 Oct 2026 16:03:36 +0000 netdev-bot+sinfo@kernel.org wrote:
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
 
-My original patchset had a selftest that excercised the BPF LSM usability
-extensively. The hooks are new this cycle and broken for the main use-case I
-wrote the patchset for.
+The original problem was found during development, not in production.
+While preparing the net-next RFC v2 [1], which extended the CPU MAC
+pause in qca8k_port_change_mtu() to internal CPU ports, I asked an LLM
+agent for an adversarial review of that change. The review found that
+the existing sequence re-enables the port 0 and 6 MACs after phylink
+has taken the link down, and that phylink callbacks can run during the
+update.
 
-If we don't fix them now they need to be backported next cycle which I'm sure
-the stable developers will enjoy.
+The problems fixed in v6 and v7 were reported by Sashiko on v5 and v6.
+I reproduced them, and the original problem with the unpatched code,
+in a userspace harness that compiles the driver and DSA MTU functions
+with mocked register access. None of them has been reproduced on
+hardware, and v7 has not been tested on hardware.
 
-Curiously, your pull request told Linus "I expect that BPF LSM developers will
-also be making use of the namespace hooks, if they haven't already". So it
-seems very strange to claim this as a new use-case.
+Sashiko's review of v7 is a separate question and is still open.
 
->From my perspective the timeline looks like this - I'm sure yours differs:
+[1] https://lore.kernel.org/netdev/20260922202653.1153-1-yongzhao.derek@gmail.com/
 
-  I wrote an implementation for the BPF LSM to use a set of new hooks in a
-  subsystem I maintain months ago.
-
-  You rejected the hooks because BPF LSM programs cannot serve as justification
-  to introduce new hooks. Only in-tree LSM (selinux, apparmor, landlock, etc) can.
-
-  I cannot fulfill this requirement because I neither have the expertise nor
-  the use-case for any in-tree LSMs.
-
-  Landlock wants to make use of this by pure chance. So the maintainer offers
-  to take over the patchset. He does.
-
-End result after more than two kernel releases: The patchset that ends up
-merged into upstream doesn't work with the original motivating use-case because
-all the BPF LSM bits got dropped. So far, no problem. That may happen as long
-as we can the fix it rapidly.
-
-Then I take the time to send this series of fixes to actually restore the
-original use-case so we don't release a kernel with a new api that doesn't work
-for the main use-case I developed this for.
-
-Once again, I get told no. This time because the functionality isn't broken the
-right way to justify a merge-window follow-up. Instead, we'll release
-half-working functionality.
-
-I'm really on the fringes of this endless debacle but this seems to be another
-iteration of "BPF people don't get along with LSM people" therefore they make
-each other's lifes and that of innocent bystanders that just want to get work
-done difficult.
-
-I really don't understand why it's preferable to release a kernel where the
-original use-case that I was forced to explicitly abandon doesn't work and
-there's no reliable or cost-efficient way for userspace to detect whether the
-hook works correctly.
+Thanks,
+Yongzhao Chen
