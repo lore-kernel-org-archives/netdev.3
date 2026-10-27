@@ -1,73 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793130200;
-	b=jtpfbBLR8VbH6Gl51tietUt08vtJ/2R/gmf5hDBIpIkw+lM0iGlwCb9acXK0BnrYDIhB
-	 jFpwYh+yFu0evNP6rM1I/VC4wV0Z4tJ5joQ1XCJTcx2b6ruiruRXhHObpWAR1DDt6BUgf
-	 DFb+i9w6O84j7iCM5bQFWUsu8Vc+TxkaVfDi2iWn1TSMuSzLlTSUnDI/JvZgLf2XJfduj
-	 oeZgaMWNwJ0jBfBJRp+rhpZ0v37wWOCWKFGnrjq7BYPrOgpMG5dS1xzI/rQZbmApoetgz
-	 sGSmbIXX6wHkMJvyJU/oCCmuWOs/5j9gMS6uMO0Rvklngo+gSJYoiJrGgvrKKXRm3ZQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793130200;
-	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:
-	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
-	 MIME-Version:X-ThreadId:Date:From:To:Cc:Message-Id:In-Reply-To:
-	 References:Subject:Content-Type:Content-Transfer-Encoding;
-	bh=YUdXRkUnmyKckbiCSZwqIfvpA2XsvLBQukrw69VFn8k=;
-	b=LgXpwOd16J63TIYoYRvvf0up2d4Qvf08Ux+PQb5SoBvjJd/rm9GZJDPnaFp6FgFZGGMK
-	 7y4DwnxjbkqqWkj2ah7eewXFKN1kVWh9zFOFTeLTnX1MWnaikR6hOuisv+0nMicB2SL7S
-	 2Ux31QK+jg4WPGef0iOuyzN75X02YzX2P1ywV+SzKS2/1HUmE4pOqQVyzwn+FOJfFOrV3
-	 EsQ+aDQLiEe8uv3YvLSEtNYoV1IRna/7qMa31O6pu5zYSB9vPXXihQwkX2fog9vp21Wq5
-	 MsAeAssoOYLUTYZkL9AhTWoYO7l+kMBPMAM+aRxu3t0hXyT5vqfDiG5MPL1wD+nNMcw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G0ymoyRg;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.171
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793130343;
+	b=gggTV4p4mqxo3r2tTeCsjwbwJIPlX7YZUSW2O6eq9i0gSXRASC3yt1lj2S2Zm2H4Ixw5
+	 DEeG8GgsXJ9noaxVna6y8epjecq1Guetou4jBHgERXYT2rKKfm2GsE4BqhyYr3hax8j5K
+	 sDK5tKi4iQhP3S0hll1N+lcoH2zym5BZlFnvtmLd8QEcO8Wr+xukU6YeimjsCeGNrJen3
+	 hwY2krx3R/2BwHxvF4uRH8+aoI24Ed8oLSOwetdhrdzOED6lzWsx5Dx6ARGEaU0lyaE8K
+	 yAwGuOzilvr4kRWwisWQlt6eynVNQT3r/q6xHaU95w32wc1wcM2fCkrt2VthBdUJjNQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793130343;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=ogjdZNRhBvM3uhV1/iXpFfYGVHaekc8nB59hXwFT7Hg=;
+	b=qEKUfINFuLlHBgFoiiKChU/nlxdjADsUDAaD398w07gaSTbFbV4t8FA3jVz7YpbhkFqm
+	 bNqD028l4BpoYIRA/vAa4mQkkE8TxkJDC7Djbucp95O35VMMYexXRBWzh02rspSkyn8LB
+	 +PNMnd6iIGAwFBF7zExc6Ax0Np40AuHxsWpDliyNbZOGbC7QcPIp5s1VDrosvLvthz358
+	 +UKjiapxrovidxWV85LlentqdWP4YMRiZwSA2Fnxn5UcslO1YDjogYajD2ghz28w/IuKn
+	 ZYJXkWjcMotCOjMkpE4FoYyA+okQMUKaf1gOlVWrylIBGMypipi8X6lKxbMu+s4Abqw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=mojatatu.com;
+	spf=none smtp.mailfrom=mojatatu.com;
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=QvtLJQnH;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.171
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A90A606A31A
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 19:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F3E606A32A
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 19:45:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 16F3E606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G0ymoyRg
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1884A1F01828;
-	Tue, 27 Oct 2026 19:43:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793130200;
-	bh=YUdXRkUnmyKckbiCSZwqIfvpA2XsvLBQukrw69VFn8k=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=G0ymoyRg7/stMNyNnU+GZzhymgKJMdGj9bWQ0sPN8f5SP9QVKHcUOacd/LVUr7iT/
-	 X/dfimZRKBrY+PT4y8gF7ubriOTBOODXspZFyav8Zmt5/6Ar4nYoZ5M45+DRPxdQt8
-	 qWUZiFY0bxlEXLKAuZWnRVdMeSC9nIDJbbRLMh511q3jRiVB7SutAghd3sAehXoj3Q
-	 7QBKQxU7huLh44yTYcPXyrGfv+lf4cznJQEKG5QOTL5rh7ujzkh6C+ihLST5IViod/
-	 cZaf6Jl8jpQl3DOhQV5UUFtQ8VsJkCAbXHWU09ONVWZjWi8ojI47P0l52Vn4yPmbLf
-	 +5t5bTnSzLVlg==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 63F10F40066;
-	Tue, 27 Oct 2026 15:43:19 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Tue, 27 Oct 2026 15:43:19 -0400
-X-ME-Sender: <xms:1_7garR6_ii-3JqWAxkLfgp5COynTZHd7NgkE9vlTTdZ0Xw9BgszwA>
-    <xme:1_7gannKFijXN3WLc-ZZqIXqDfnNxdHxcistzuczVINnBEJedfTn3iADgs0lJmz_3
-    -dQF97cbBUnS911gI06Z55C9P0TsM4SqCpfzVsJg7jeLCqydIOEHAUN>
-X-ME-Proxy-Cause: dmFkZTFHp4xcxxMGOXbqjTEmsIzphxytrdzKnRuUsJ4q1xJ6tc++wD0Px1pkG595opi4L2
-    in5nosoMgjjhZ9i/1O7VORgeIhchpg2tC8i1KNVutWlZAR6WfIXTZJP7TWh+OoRRnYAqRg
-    PikNACcGZ79jBKMoYKn3ZESzcV7SDOfCGSffPtkcgLyuWbLsLlzS5neArTXHUypsRrC5kh
-    cdCFNjvb0qjKpalrMDPrB7zVZYeAksYVn0oIQoTbs/UqYnTkJPtJeyjmbi5hLHiQVlTTne
-    c/KZFYQF1LJ5ibZkZNEEK1eZ/BMW9E5f8+RoorcD2LjRzUuIIBWyh+wC+qbuA47WXBJljc
-    d12wCgK73jQWU/CEUMI+dRWFIYn8JL5eFMDQjTEUl9ue62crxyyrq3LV5sA7NMmm8HXF4s
-    78Ka2Rqsy7c7lOYOW6xRJepzD5g9U25ATjvKr1u7r+c4uEY7Z/4wHTOON+yrz4CgVzqDQD
-    vRRzhEdVGoq5UiHXNCkzOfsW0axVPB3VncqtOlJ5dn2v6MWR2bIgnLUQC3qDfwQmskZKrx
-    th7hExcwzQ6CC3IPLK153hQY/8fLQw5fx/lsq4HQi+oVaM93LPp34msqG8ykY1jhKADIrx
-    GJ3DJFT5UB9zWwJgvXumdaeMtAfSIJzVC+Ga08JmhsQt2QvmFxppVYS4mgwQ
-X-ME-Proxy: <xmx:1_7gagC4oYKjkSOGsyJVZW5Q3JBuTBQ3mtz-QETsvBmpDpF9UZJM5w>
-    <xmx:1_7gavuuY6CkskkVRsxgCjcw3GC9CJ3VrkGuZxso-h80drx3_7lSJA>
-    <xmx:1_7gaoF7wsqnDxxUAt9IodNUzHOsDdJ-g9nzHbv9ISzWU-uB2xUrnQ>
-    <xmx:1_7gai-Ded41_BKqj3Hnyc6REhnBGx_DiyNLZpjvcUO1765dt8xmng>
-    <xmx:1_7gamP6rv05RdNy_6yx8Edf4Go4Pqngd0zqvKqukN4lCQQe1gR5FSxa>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 2DCB578273B; Tue, 27 Oct 2026 15:43:19 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=QvtLJQnH
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-8a06454116eso178590b3a.1
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 12:45:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793130342; cv=none;
+        d=google.com; s=arc-20260327;
+        b=PZxQ/tuLORnWY85zrkBIHe+1pS2ybWdFF8jAxmkvlZB6xWedKsxJo4H+WQmeB4aE9R
+         IubaWt20eQdIU/ksdyl5bOJnANGJUAtwRZV7VyLzN/AAIO6lu1dcDRiOVuX3qMSfQeZG
+         t/rDMR+1J7+VYfdvCHtSwHjXKS941w7of6mUwyhdAEQPan5NYOXjd8PHzG1hfuWJR0sB
+         7YvTKyIgEfGir7fo6xGjv2xaIBZTH3eSUk4awkjXhIT12+SFLsjiXL9C3RxJrl3yzCqA
+         y6FJzozoZuaQCo18RIF/gJO0wfC0AIDcpZ46Y+cGn1NWy5Q/CTO50/f9Dw+/H9xZjYpY
+         GQgA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ogjdZNRhBvM3uhV1/iXpFfYGVHaekc8nB59hXwFT7Hg=;
+        fh=c4J9cf8MF+L15aGRB2m/8lGgMG/7DxdzRPKRsygrqC8=;
+        b=R5oXN/Fl1Cy0ph1NXlLlSJo/bvuP39LXZoNkR08gmFDNVjJ2ri8zCz/bGrhIJYLI6V
+         6MzcsTJTQCeoQeN+oIwbzcGZ8A9uhMBzklpbo/My8Z6KKWgvBHW+DFFyQacXczaidIDl
+         ABuTt6usWVVLDPwfWvmqtTHj8XiUazH1ydx/krimgtoNRpp4jpKZBzVouuj2EvdB7lgX
+         EEH0Bk+haXGlgkzhN8wGgEAWvD3UYrtYj7L7BOvRQQPmbDZ4/YdIycrd1gbCUKqUCdAo
+         1hd2Q/i12MwvkZvqySAbZoguPN7/DA14UTlWV38vVEMuYvUmn2O3+cxJttwpTQlLy6xl
+         5WMg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1793130342; x=1793735142; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ogjdZNRhBvM3uhV1/iXpFfYGVHaekc8nB59hXwFT7Hg=;
+        b=QvtLJQnHGRLSwRNPoYCSXfeF3sSHH84H1GAref5X8bRhAghX6Vz3eDiLKvQkm2UymG
+         kgHEaxULJi7GJEievjPGR2PlXtayLjVylkEeHRs7MpgmmFYAiAZKShLZZdyk49M9GXdf
+         mLSx1bDdgNW5KY2otgkeOMMEVbdOHoZTqlRgQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793130342; x=1793735142;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ogjdZNRhBvM3uhV1/iXpFfYGVHaekc8nB59hXwFT7Hg=;
+        b=umCVcqJpdqqVrggkXqmz/AvvSO8cp/L4wMZQN/o6uQVb2Zp1df+vNyCw6VYEbfzO9e
+         qrv7UuLHixSwkfDDwuJKdR/CJQuXnllh7yzzVJfeWzTswCndMQs7Y4yBR2QbD3N47hu1
+         ZC2gr8tTEmEyYos6dnIeownbwgEIEYePsPk0B8+GXpvjtQzDt1sChvvttZJ9qR99uDcP
+         De0b1csZSMbzNAx3Z0x59sLYEyA5w8H5lSWt3cpzLzeF/l0yNW8KCBa8ysmDw6enZ61U
+         ICzBrZhEfm9W/J5Mxt+7w5uQjOTN/7d4ruwLC0Ut7oGwNNPwYrH+t5VEcsHIaYNdqNbS
+         Wk3Q==
+X-Forwarded-Encrypted: i=1; AKwUvByWA6SusOLhpoNs24j4yP4PTbsBEByBisV7321KLnkyK22Dmcm0JnuUJ/cQAdlEsxyiPyZHd4w=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKF9l75iXe0eDHP6ek2zq2eN9CLwwrsID5VUa2gxqgUwb5EIuVb
+	AIg35vtQO0daYl7rabnijD6pXSaLs2awIhUFGe7oLscouy0wJnhJm+PINRziI1ILUSTKAf5VKFf
+	8wTo8P7C/i6o6yO+oFpHXtHu0Kk0Mzuc33Nub774o
+X-Gm-Gg: AYBFou0nryootWj0gR52hHrhBNxzwm4W1RE9JIUat1qbm/RQ8A3Qv7+DZs7Ptm4ecrx
+	0lKh+NqD3FkHQjNCttJs3cb6bGkxCWmL2BoMdnesjDQJHD0Fcf/TRbWlc68lbGjP7qo8TmGU04x
+	JFIsVCl+52ENuXAfBllaaPnwVuZS0boJBsfRJiyVjAkOgTDA1Aa3o+j31PKQwUzI7y712EvmlGm
+	ga5hJHfomanc+n3aiT8HxbTstdzzh1FA+VX6oJn8RpIqJbhbal3wkoMSF/psYi6VS9oXktw7lFZ
+	8Y1mkKK1OibJ440gMJKrt1HTqypsVBm6dvCGHFFLEH+Vtvz40seOf30WxerJfGdreyOcbEi4AN6
+	vVhcoc37fRHpCfX9BBOfRUk0E29NrMu5Og2mqS2ahUd2QcaFudHUuMIE7JxNDxWPiViFVrcbniD
+	ZSa3/5sqznSW2dlv8=
+X-Received: by 2002:a05:6a00:3a0d:b0:893:12e5:c07c with SMTP id
+ d2e1a72fcca58-8a6e82b2c88mr187466b3a.27.1793130342392; Tue, 27 Oct 2026
+ 12:45:42 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,70 +102,92 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-ThreadId: AGB9D7c4hmNR
-Date: Tue, 27 Oct 2026 15:42:59 -0400
-From: "Chuck Lever" <cel@kernel.org>
-To: "Jeff Layton" <jlayton@kernel.org>
-Cc: NeilBrown <neil@brown.name>, "Olga Kornievskaia" <okorniev@redhat.com>,
- "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>,
- "Trond Myklebust" <trondmy@kernel.org>, "Anna Schumaker" <anna@kernel.org>,
- "Jonathan Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>,
- "Randy Dunlap" <rdunlap@infradead.org>, "Mike Snitzer" <snitzer@kernel.org>,
- "Donald Hunter" <donald.hunter@gmail.com>,
- "Jakub Kicinski" <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
- "Simon Horman" <horms@kernel.org>, "Steve Dickson" <steved@redhat.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-nfs@vger.kernel.org, linux-doc@vger.kernel.org
-Message-Id: <7b76322b-9d67-4479-a389-f982a6f4a17a@app.fastmail.com>
-In-Reply-To: <31238159b7a4753e0a10c9f8b9fdecc4b92fb2f5.camel@kernel.org>
-References: <20261027-export-iomode-v1-0-262ed932a036@kernel.org>
- <20261027-export-iomode-v1-2-262ed932a036@kernel.org>
- <ad5ac019-34ac-4c7f-8b90-cde8a0dc0546@slotpi15m67>
- <31238159b7a4753e0a10c9f8b9fdecc4b92fb2f5.camel@kernel.org>
-Subject: Re: [PATCH 2/6] NFSD: Apply per-export I/O modes to READ and WRITE
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+References: <QDISC-6HS9.v1.r2.20261020051718-2@mojatatu.com>
+ <20261026160747.283702-1-horms@kernel.org> <CAM0EoMm9piw8gLJ=t9YYNu2-8zb=qfA3G6djchL0QaeZZvaNfA@mail.gmail.com>
+ <20261026174643.088e3f49@kernel.org> <CAM0EoMmVv5WnzpQw2d7iLZU84KPDUMf7+t5m8BL+MBXR+oy7Lw@mail.gmail.com>
+ <CAM0EoMkvbVZoG91==QWT2mfyPkWYsS=BWCBsK0iYJR9BP=aviw@mail.gmail.com>
+ <CAM0EoMkf_ewuY4bx=MFNc0ybR66pLP3F8nZSCZBMW6bbXWoFOA@mail.gmail.com> <20261027182905.GQ257209@horms.kernel.org>
+In-Reply-To: <20261027182905.GQ257209@horms.kernel.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Tue, 27 Oct 2026 15:45:31 -0400
+X-Gm-Features: AclHuK9VHmyLnFXXwTIyYI5AQH1rkT6wNTiebNqpfKQAGesdZXrNLOB5IQZpdg4
+Message-ID: <CAM0EoMkym=CiT5=ye72N4s_zat6GF-ihN-Mk3hpY4R0YgAqFGw@mail.gmail.com>
+Subject: Re: [PATCH net 2/2 repost2] net/sched: sch_teql: keep skb->dev
+ consistent on the arp-queue path
+To: Simon Horman <horms@kernel.org>
+Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, victor@mojatatu.com, 
+	jiri@resnulli.us, davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com, 
+	stable@vger.kernel.org, sashiko-bot@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-
-On Tue, Oct 27, 2026, at 1:59 PM, Jeff Layton wrote:
-> On Tue, 2026-10-27 at 13:54 -0400, Chuck Lever wrote:
->> On 10/27/26 12:45 PM, Jeff Layton wrote:
->> > Resolve each export's effective I/O mode (explicit setting, else the
->> > global io_cache_read/write knob) in nfsd_iter_read and nfsd_vfs_write,
->> > and skip splice for reads on exports whose effective read mode is not
->> > buffered. Update the debugfs knob comments to match.
->> 
->> [ ... ]
->> 
->> > -	if (file->f_op->splice_read && nfsd_read_splice_ok(rqstp))
->> > +	if (file->f_op->splice_read && nfsd_read_splice_ok(rqstp) &&
->> > +	    nfsd_read_iomode(fhp->fh_export) == NFSD_IO_BUFFERED)
->> >  		err = nfsd_splice_read(rqstp, fhp, file, offset, count, eof);
->> 
->> nfsd_io_cache_read_set() still sets nfsd_disable_splice_read whenever
->> the global knob is switched to dontcache or direct, so
->> nfsd_read_splice_ok() returns false before this per-export test is
->> reached. An export pinned to riomode=buffered on such a server never
->> gets splice; it falls through to nfsd_iter_read() and does vector
->> buffered reads. The same applies to the splice_ok decisions in
->> nfsd4_encode_read() and nfsd4_encode_read_plus_data().
->> 
->> Patch 3/6 says an explicit per-export setting pins that export's
->> IO mode "regardless of the global knob", and that isn't quite true
->> now for the buffered case.
->> 
->> I need to think carefully about the interaction between the "disable
->> splice" setting, which is global, and the per-export I/O setting.
->> 
+On Tue, Oct 27, 2026 at 2:29=E2=80=AFPM Simon Horman <horms@kernel.org> wro=
+te:
 >
-> Maybe disable_splice should be an export option of its own? It seems
-> like that should be doable.
+> On Tue, Oct 27, 2026 at 04:04:34AM -0400, Jamal Hadi Salim wrote:
+> > On Tue, Oct 27, 2026 at 3:44=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.=
+com> wrote:
+> > >
+> > > On Tue, Oct 27, 2026 at 3:25=E2=80=AFAM Jamal Hadi Salim <jhs@mojatat=
+u.com> wrote:
+> > > >
+> > > > On Mon, Oct 26, 2026 at 8:46=E2=80=AFPM Jakub Kicinski <kuba@kernel=
+.org> wrote:
+> > > > >
+> > > > > On Mon, 26 Oct 2026 19:51:33 -0400 Jamal Hadi Salim wrote:
+> > > > > > > This is an AI-generated review of your patch. The human sendi=
+ng this
+> > > > > > > email says "Hi Jamal, passing this on for your consideration =
+as it
+> > > > > > > seems to have got stuck somewhere."
+> > > > > >
+> > > > > > There was nothing wrong with the headers this time - so not sur=
+e what
+> > > > > > is going on. A bit frustrating.
+> > > > >
+> > > > > It is frustrating, you are the only one with these issues.
+> > > > > Patch 2 is posted in reply to patch 1. IDK what else is wrong.
+> > > > >
+> > > >
+> > > > Let me send a repost3 - will take the opportunity to pedantically f=
+ix
+> > > > the commit message (no code change).
+> > >
+> > > BTW, checking i see the threading was:
+> > >      0/2 cover  (root)
+> > >        1/2      (reply to 0/2)
+> > >          2/2    (reply to 1/2)
+> > >
+> > > I checked other postings that didnt have issues and it was fine. I
+> > > also found the approach
+> > >    0/2 cover  (root)
+> > >        1/2      (reply to 0/2)
+> > >         2/2    (reply to 0/2)
+> > >
+> >
+> > And for repost3:
+> > - 0/2 (root)
+> >      1/2  In-Reply-To/References: 0/2
+> >      2/2  In-Reply-To: 1/2; References: 0/2 + 1/2
+> >
+> > I am sticking to this approach going forward.
+>
+> Hi Jamal,
+>
+> It's unclear to me if the threading relates to why the NIPA-Sashiko revie=
+w
+> of this patch-set didn't propagate to the ML.  But I would suggest that
+> however b4 handles threading would be a good approach top copy.
 
-That would be easy to implement, but I wonder if it's something we want
-to carry as a permanent extension of the export options API.
+I looked at several patches that it didnt have any problems with (some
+merged already) and it doesnt seem to care which of the two approaches
+used. But i will look at what b4 format looks like for completion.
+I am begining to suspect it is not the threading, more the repost
+approach. The "repost" was not including any code or commit changes
+and it seems to be problematic even when i changed the message ids. So
+likely it is only paying attention to subject versioning i.e vX or the
+body text. I added modified commit text this time on all 3, so lets
+see if that fixes it (caveat: the Vx didnt change).
 
-
--- 
-Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
+cheers,
+jamal
