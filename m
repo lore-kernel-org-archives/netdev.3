@@ -1,54 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.105
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.153
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793098064;
-	b=rIXpupNoeILILO2fVKUXZrgPYwIEORTH1cc+B8mICRoOfzjvTebrWXxuxKiwiUv4WYje
-	 lj/ZJAEFPUTuO4m7plvkYdx1BVDo5NyMoIhd59GC10NIi1kJ3DMyliPswptIwmBJTz+ad
-	 69yJexwExpPqmnBN3qlnejb1o72Etnyjmdo/nBsPtinrN9bnX85DFyFJvABTbmHPo9bU9
-	 uUWRr57WerqIdVxdSnjjENu0QiaTA+1JJu7+LRFhWKkMFJnm/ImakTT2GCO7WUBd0BYXr
-	 QwFCXE/haPxJzBOHJshmhFVeooohzhbbIAVrAZ2fgciKjfMHf9/4xEkfbGZBEmzkByA==
+	t=1793098092;
+	b=pkjx7F4UmZMSQyFpdkzvXALLerOmlNKtR/vQGZXodTTAmXD0JlduGL+5Q3yqWsOPrBt4
+	 RCDx0kH568ZoB9crbefENgweZPHiE5rqZnqv3yUjpEWZoMFvKNhfef1JD/NRAPaqVFHqU
+	 bPfrXNYU5thRhv95LKNGti0mHjp6vszpk7euptDXIozmiDj4ag1CTqfJDlBpgJILRDB/T
+	 0rSUT0RB/wYQ1No0jg4+idITPrSe5uYYx2AESVrqDRh5C5KWMn8Z9a7iqbTrV6iqECKLw
+	 A5lKiSWwaDilHY1WUyPS55/Gzejad8nsa3vQsB+z7bPvlJ5AiRwCJx4Ik2WxFjrfNmg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793098064;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793098092;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=qwOP/ChYXyQgeHq4JGO8UPM3SSS01nblW3EU8Z0OF+I=;
-	b=MDD5gPMCV0jCXXYIKiaAjWk2Vq21VpoqjcWK2DuD3+9iKzGOCj6AWXm1vAem60mdAFi+
-	 RhJ8jEgn35neLlUAzqJfyGsvi2SaHtlimNB7oU4xUu5p/NPwr8zMUVrroxexK2+ilSKVr
-	 E7zXgLJbrGf9xvpXwWS6e5nMJWdFPfg4gPRjyC62nCEve1V3r1ograxGfkQqC8Xo9ISEx
-	 A9N+bR1Dfr16yMCp1Ueh/UzLAf+Z1nNvJdo8IWZ7h4+ytSwonZB4llAYZjzlqt0Fq8gNd
-	 Wf4rLolZh6wn+g3ZBoitctXTzik7GQBuaNaKoBFY64McWJIgxBD/V+3g7Z68RvxRrGQ==
+	 X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=cjj0MTI2kZAFipR3zmDmKsym726PEKbx/67RxPLg7vk=;
+	b=P8hCKGwXkmBmEh60EW4mQHbVPALcnhpJontm/wyE/vzk2dFSkNloYUk2LSnTa98QJljL
+	 L6Sizcl4mj1iWv4A8f5sqiAAOiQVNzWT4F+DYPHZdXlHWokHA4kSCan82wOJWi84bDEan
+	 Jrl23ONDZomWIeRq3gWrAJrHhMABqYK1lwRDjdoIWYEHLvct1orLq+6bmCloJlDeRG0AN
+	 6NqHKv9Xm/2M2RQBjXHtg/5xFm6TX8+yYujxu5+H56/lpSx/KQMOzsOCCE4WnMGBxdZeW
+	 wVZZDqukOeNXypPm1dQDpqcRvexmM6Z/pGhBGMifMDAqDtCiSLtBBfZVyQsOQYKh2qQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=qoEGlURb;
-	arc=none smtp.remote-ip=95.215.58.105
-Received: from mta1.migadu.com (out-105.mta1.migadu.com [95.215.58.105])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Q1RiCPU3;
+	arc=none smtp.remote-ip=95.215.58.153
+Received: from mta1.migadu.com (out-153.mta1.migadu.com [95.215.58.153])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEED6606A323
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 10:47:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BEED6606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591BF606A31B
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 10:48:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 591BF606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=qoEGlURb
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Q1RiCPU3
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=p/T42mWw683F+K90Gg/h7jvsPmk0ttOQkRNGpJzra0I=;
+DKIM-Signature: a=rsa-sha256; bh=/+a2zDKK/q5x5nnuEvee8a5ROc4HpzorXLln8sBAhcE=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793098061; v=1; x=1793702861;
- b=qoEGlURbgPBtgeAvcYsj0jADbzPC1Tj+xt69JAtJOkj9nfUK+lpSkzId36Ln+ZJs6d7/ZGH6
- mbELWaVN5ywpAwp6MOzO8fi5VPrF6yK/RcVjXbneNX3OvxPrYrViwXjF+6euM2slJI+IXn2VeZg
- 1Jssey2e1JUeeNhxhQ7cWL9Y=
+ t=1793098089; v=1; x=1793702889;
+ b=Q1RiCPU3hwRU2qDXPsZ0P6Ak/Slq+WOuYPfP1P/44IDnLxOpUd730Vt2Yztt/By5ATXNr7aH
+ 1LTCW/IXSzlauth2LJPKgIoXqN3oTmoKTHdUiJDUP15ksqhxnPYy8q6sHdYgsaoLcT0pKWfzpPR
+ rMzdysd5OrYxF1oEU18EcR5o=
 X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 4f2ce23dc9097964;
-	Tue, 27 Oct 2026 10:47:41 +0000
-X-Mizu-Trace-ID: 4f2ce23dc9097964
+Received: by smtp.migadu.com with ESMTPS id 4027d4be1b4e5ac7;
+	Tue, 27 Oct 2026 10:48:09 +0000
+X-Mizu-Trace-ID: 4027d4be1b4e5ac7
 X-Migadu-Flow: FLOW_OUT
 From: Jiayuan Chen <jiayuan.chen@linux.dev>
 To: netdev@vger.kernel.org
 Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
+	stable@vger.kernel.org,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -62,26 +66,27 @@ Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
 	Joel Granados <joel.granados@kernel.org>,
 	Thomas Gleixner <tglx@kernel.org>,
 	Petr Pavlu <petr.pavlu@suse.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
 	Willem de Bruijn <willemb@google.com>,
 	Maoyi Xie <maoyi.xie@ntu.edu.sg>,
-	Zhan Xusheng <zhanxusheng1024@gmail.com>,
 	Jiri Wiesner <jwiesner@suse.de>,
+	Gerd Rausch <gerd.rausch@oracle.com>,
+	Zhan Xusheng <zhanxusheng1024@gmail.com>,
 	Oleg Nesterov <oleg@redhat.com>,
 	Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
 	Yung Chih Su <yuuchihsu@gmail.com>,
 	Wyatt Feng <bronzed_45_vested@icloud.com>,
-	Flavio Leitner <fbl@redhat.com>,
 	Hannes Frederic Sowa <hannes@stressinduktion.org>,
-	Petr Mladek <pmladek@suse.com>,
+	Flavio Leitner <fbl@redhat.com>,
 	"Paul E. McKenney" <paulmck@kernel.org>,
+	Petr Mladek <pmladek@suse.com>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2 0/5] net: fix misc signed overflows caused by bad sysctl values
-Date: Tue, 27 Oct 2026 18:45:28 +0800
-Message-ID: <20261027104701.296240-1-jiayuan.chen@linux.dev>
+Subject: [PATCH net v2 1/5] ipv6: restrict gc_elasticity to 31
+Date: Tue, 27 Oct 2026 18:45:29 +0800
+Message-ID: <20261027104701.296240-2-jiayuan.chen@linux.dev>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261027104701.296240-1-jiayuan.chen@linux.dev>
+References: <20261027104701.296240-1-jiayuan.chen@linux.dev>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -93,49 +98,104 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Recently I have reviewed quite a few fixes for variable overflows caused
-by config values, i.e. a value set from sysctl, module params or netlink
-that is accepted as valid but later overflows when it is used in a
-calculation. I believe there are more of these still out there, so I
-used an LLM to dig through the code and it found the issues fixed in
-this series.
+Every counted IPv6 dst allocation runs ip6_dst_gc() once the number of
+live dst goes over gc_thresh (1024 by default). ip6_dst_gc() decays
+ip6_rt_gc_expire by gc_elasticity: the smaller gc_elasticity is, the
+smaller ip6_rt_gc_expire gets, i.e. the more aggressive the gc.
 
-All of them have been reproduced and verified in QEMU.
+ip6_dst_gc() reads ip6_rt_gc_expire into a u32, but gc_elasticity has no
+bounds at all, so writing >= 32 shifts a 32-bit value by >= 32 bits, and
+a negative value gives a negative shift count. Both are UB:
 
-v2:
- - gc_elasticity, mld_qrv, igmp_qrv: store the sysctl as u8 and use
-   proc_dou8vec_minmax(), as suggested by Kuniyuki
- - docs: add the missing "Maximum: 255" to the mld_qrv and igmp_qrv
-   entries in ip-sysctl.rst
- - message_cost: add proc_dointvec_jiffies_minmax() instead of a local
-   handler, as Joel suggested
- - redirect_load: reject negative values as well
- - kept Fernando's Reviewed-by on gc_elasticity, mld_qrv and igmp_qrv:
-   v2 narrows the storage type to u8, the fix itself is the same
-v1: https://lore.kernel.org/netdev/20261023091419.167088-1-jiayuan.chen@linux.dev/
+	val = atomic_read(&net->ipv6.ip6_rt_gc_expire);
+	atomic_set(&net->ipv6.ip6_rt_gc_expire, val - (val >> rt_elasticity));
 
-Jiayuan Chen (5):
-  ipv6: restrict gc_elasticity to 31
-  ipv4: fix shift-out-of-bounds in ip_rt_send_redirect()
-  ipv6: restrict mld_qrv to 255
-  ipv4: restrict igmp_qrv to 255
-  net: restrict message_cost and message_burst to non-negative values
+  UBSAN: shift-out-of-bounds in net/ipv6/route.c:3369:53
+  shift exponent 32 is too large for 32-bit type 'unsigned int'
+  CPU: 2 UID: 0 PID: 615 Comm: ping6 Not tainted 7.3.0-rc7+ #364 PREEMPT
+  Call Trace:
+   <IRQ>
+   dump_stack_lvl+0xc1/0xf0
+   dump_stack+0x10/0x20
+   __ubsan_handle_shift_out_of_bounds+0x1d1/0x390
+   ip6_dst_gc.cold+0x15/0x1a
+   dst_alloc+0x4e0/0x620
+   ip6_rt_cache_alloc+0x189/0x7e0
+   __ip6_rt_update_pmtu+0x68e/0x1160
+   ip6_update_pmtu+0x30c/0x3a0
+   icmpv6_err+0x1fa/0x330
+   icmpv6_notify+0x303/0x770
+   icmpv6_rcv+0xc12/0x1670
+   ip6_protocol_deliver_rcu+0xb4a/0x1520
+   ip6_input_finish+0x19c/0x400
+   ip6_input+0xd4/0x240
+   ipv6_rcv+0x1fd/0x330
+   __netif_receive_skb_one_core+0x118/0x1c0
+   __netif_receive_skb+0x21/0x150
+   process_backlog+0x37e/0x1200
+   __napi_poll.constprop.0+0xa5/0x5e0
+   net_rx_action+0x4c0/0xf70
+   handle_softirqs+0x204/0x9b0
+   __do_softirq+0x10/0x18
 
- Documentation/networking/ip-sysctl.rst        |  4 ++
- .../net_cachelines/netns_ipv4_sysctl.rst      |  2 +-
- include/linux/jiffies.h                       |  2 +
- include/net/ipv6.h                            |  2 +-
- include/net/netns/ipv4.h                      |  2 +-
- include/net/netns/ipv6.h                      |  2 +-
- kernel/time/jiffies.c                         | 40 +++++++++++++++++++
- net/core/sysctl_net_core.c                    |  6 ++-
- net/ipv4/route.c                              | 10 +++--
- net/ipv4/sysctl_net_ipv4.c                    |  4 +-
- net/ipv6/mcast.c                              |  2 +-
- net/ipv6/route.c                              |  7 +++-
- net/ipv6/sysctl_net_ipv6.c                    |  4 +-
- 13 files changed, 70 insertions(+), 17 deletions(-)
+Make it a u8 and reject writes outside 0..31 with proc_dou8vec_minmax().
 
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+---
+v2: switched to u8 and proc_dou8vec_minmax(), as suggested by Kuniyuki
+Iwashima.
+---
+ include/net/netns/ipv6.h | 2 +-
+ net/ipv6/route.c         | 7 +++++--
+ 2 files changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/include/net/netns/ipv6.h b/include/net/netns/ipv6.h
+index ffda15318be59..aefce37c04a4f 100644
+--- a/include/net/netns/ipv6.h
++++ b/include/net/netns/ipv6.h
+@@ -25,11 +25,11 @@ struct netns_sysctl_ipv6 {
+ 	int ip6_rt_gc_min_interval;
+ 	int ip6_rt_gc_timeout;
+ 	int ip6_rt_gc_interval;
+-	int ip6_rt_gc_elasticity;
+ 	int ip6_rt_mtu_expires;
+ 	int ip6_rt_min_advmss;
+ 	u32 multipath_hash_fields;
+ 	u8 multipath_hash_policy;
++	u8 ip6_rt_gc_elasticity;
+ 
+ 	__cacheline_group_begin(sysctl_ipv6_flowlabel);
+ 	u8 flowlabel_consistency;
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 94e5ef1c4f83e..abc8b811cd423 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -6579,6 +6579,8 @@ static int ipv6_sysctl_rtcache_flush(const struct ctl_table *ctl, int write,
+ 	return 0;
+ }
+ 
++static int ip6_rt_gc_elasticity_max = 31;
++
+ static const struct ctl_table ipv6_route_table_template[] = {
+ 	{
+ 		.procname	=	"max_size",
+@@ -6625,9 +6627,10 @@ static const struct ctl_table ipv6_route_table_template[] = {
+ 	{
+ 		.procname	=	"gc_elasticity",
+ 		.data		=	&init_net.ipv6.sysctl.ip6_rt_gc_elasticity,
+-		.maxlen		=	sizeof(int),
++		.maxlen		=	sizeof(u8),
+ 		.mode		=	0644,
+-		.proc_handler	=	proc_dointvec,
++		.proc_handler	=	proc_dou8vec_minmax,
++		.extra2		=	&ip6_rt_gc_elasticity_max,
+ 	},
+ 	{
+ 		.procname	=	"mtu_expires",
 -- 
 2.43.0
 
