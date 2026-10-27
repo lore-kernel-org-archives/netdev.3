@@ -1,65 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.221
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.98
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793084070;
-	b=UK/LW8XS5UWvah7D/FynYrerh3QOtctvsIw4q1ITGeg2TC+Uj3CKh8hLTQsz6DA2PcrS
-	 zbMvHM9UWo3aFUWtPzLuktJr6E7KsnMKlGaARRFTzDZDkMWcMvN9vLX6m7egdmKVrZLvJ
-	 Xh3m627H1yZV3bR9/2wkUSBPbOF4xmysdUAOhm+pyO8XL9sRuzz2GneeNRM6bJbNeT8q6
-	 gBUW/oT5hw/vNH7k+/pQPhbs51AT7HeLnU5nI9HAb1G0cQWC3lOq9umgc+n7ok8Tax/j3
-	 fiTXqGi4fos9LWELPw2vKEV2mBJu3VQvmB0UiJnaLnt/vrVOzPVIG0BG+fVy4q/opQw==
+	t=1793084127;
+	b=FH0pkxlgh5Nc+vzuoEGlvZ+XHdCItr+meIgAJRV8huPljFIQ53jkN2EcoAW7coU4Shp1
+	 86hAM6H6zUNk0q6RwLQHmiGjk+CG6RR1dV0HX+J6CABhbPaUbXv5jDIBlgiVJln+ayG7+
+	 912xpOLyNfVKYLBrUDFlPy6txCs9VDAaitLwG7BaSt1CvSKDkx0VOBLGcYtvyXvOW+EPk
+	 9NNStr7FCBZ5HYI2VR3ZUCrvtvm0b906f4v7UlUmHeQzkSOpbcEolPOd8f+TpV4vZVIbW
+	 xxlC4kp2Fsx17dH9Rpfmryu6iOtX/Zoph+j2i2rbeJwkhb+BWX7Fb4t2FTVjqruDhNg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793084070;
-	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=m+puS7JhUR3N+2LDCaTjwfHdf5tGVjr3uKk3ostEBEw=;
-	b=vtYvlRr4KYqbYYjCjzTVqIwXrppzwJ1aJ0oyLo+BiMNS535dqWJLwscq24kLj0Iv0J/1
-	 outE55bRaWB6aBrVWNkAlpJHAQm7UJiVWhAEKTK35OHXPJswx0X6zPSZw3c97r4h84/ia
-	 OzAtZmiY5lv1ZYoxNmS8+RTjMFBzSAobbb3ky40JlIl7O/YsVFe8KIDEgoufCxjvv5QRn
-	 Q1oTVmcY5bkZJ4ilcWaWiu4cpjl1brO8Q/muviE8WC6rU/XjkyVi2B29QijKurTWhje/U
-	 PLfnycWR2HkPLMgHkgXM95pJK2pPQtOXLfKdjK9MVQ61KLSE7UYmm1xqH5WAKn5i4KQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793084127;
+	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:Date:From:To:
+	 Cc:Reply-To:Message-ID:Subject:X-Mailer:MIME-Version:
+	 x-aliyun-im-through:References:x-aliyun-mail-creator:In-Reply-To:
+	 x-aliyun-mailtrack:Content-Type:Content-Transfer-Encoding;
+	bh=TUYyE2x5X4GA3HF7Xndot+b/wLGj5J9nNHL/77ySVmw=;
+	b=MIh7Dut0xbn54szI/8LOFhkLsd55mczdCcQ8byHfmCRNta0UmQ7/dOsk7qyt4GA9XtjR
+	 icNNCAkKSHWqWAlBYmCQB9ro2hIlWwJdNds1tRzw3nTqRHOwk/cKWlSNhwJEdFCJOUCZw
+	 shBqmOaZwZvjRmHx6tSxZrylBxwcBk8hdLQ3IGwlR7cW2Yh4eQaTZWj9cAm4tFeZhx8rC
+	 G9n02R3nvL6gYtuf4Wd3izI+aoLVorKs5/gFzYpTHrpVsGdLn+gwNvWBQY4YjRnldlrjW
+	 4Kj7NHBJ3QbUfIZmLb3QnxeAsVLVibgFQ0Jw3snH+DEHr/OcSUtXfdP5sMpzTqf3qzw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=yinhe.ht;
 	spf=pass smtp.mailfrom=yinhe.ht;
-	dkim=pass header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=D+jzEKdC;
-	arc=none smtp.remote-ip=115.124.28.221
-Received: from out28-221.mail.aliyun.com (out28-221.mail.aliyun.com [115.124.28.221])
+	dkim=pass header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=NoJf4wtu;
+	arc=none smtp.remote-ip=115.124.28.98
+Received: from out28-98.mail.aliyun.com (out28-98.mail.aliyun.com [115.124.28.98])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4766D606A32D;
-	Tue, 27 Oct 2026 06:54:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4766D606A32D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD78606A31A;
+	Tue, 27 Oct 2026 06:55:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1AD78606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yinhe.ht
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yinhe.ht
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=D+jzEKdC
+	dkim=pass (2048-bit key, unprotected) header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=NoJf4wtu
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=yinhe.ht; s=default;
-	t=1793084060; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=m+puS7JhUR3N+2LDCaTjwfHdf5tGVjr3uKk3ostEBEw=;
-	b=D+jzEKdCPo+6iZ8G1bh47Dxg4zfuBKsvigmpybV2fuOwCjmALG64jX9a66sSWvPkLWI0SmoWx4vF7epdYkeKCYVNyst7QMFQTBcQFdO1lJeebAoIRiXYIXeAaf1jaquMTEc5eCWyHtWgzlUcpXwWxNPduAvUsQpBLIY2t5AYlFj82ezKGSkj/v/fx6t0SdGcfb7EyxRpeNW68g4chFaXrDC+BjmzFEJV6N2n1yIOnQYOif264WnObVjJCNDOg/5f1qg9Ix26mgLnuEeLwngNoILsQcfs1GwU5/P174FM+NxZghvfib4QrkWDPyBT8WSnn96qpBVfLS7HPCwHgh2wZw==
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436264|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.00725632-0.00128444-0.991459;FP=9833308562132599439|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037034020;MF=chunyuzhiqiang@yinhe.ht;NM=1;PH=DS;RN=11;RT=11;SR=0;TI=SMTPD_---.jqWjvoz_1793084059;
-Received: from galx..(mailfrom:chunyuzhiqiang@yinhe.ht fp:SMTPD_---.jqWjvoz_1793084059 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Tue, 27 Oct 2026 14:54:19 +0800
-From: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
-To: netdev-bot+sinfo@kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-can@vger.kernel.org,
-	mkl@pengutronix.de,
-	mailhol@kernel.org,
-	kernel@pengutronix.de,
-	haibo.chen@oss.nxp.com,
-	shawnguo@kernel.org,
-	imx@lists.linux.dev,
-	stable@vger.kernel.org,
-	ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
-Subject: [PATCH v8 2/2] can: dev: can_tdc_fill_info(): don't read automatic TDCV if interface is down
-Date: Tue, 27 Oct 2026 14:50:12 +0800
-Message-ID: <20261027065012.191348-2-chunyuzhiqiang@yinhe.ht>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261027065012.191348-1-chunyuzhiqiang@yinhe.ht>
-References: <20261027065012.191348-1-chunyuzhiqiang@yinhe.ht>
+	t=1793084122; h=Date:From:To:Message-ID:Subject:MIME-Version:Content-Type;
+	bh=TUYyE2x5X4GA3HF7Xndot+b/wLGj5J9nNHL/77ySVmw=;
+	b=NoJf4wtu+a/dIi4mSesuDxxpIiW7aJeqq9ElQnX1LDckL74Ajq71kh8ciDKs6yrfTa4dWzbndRvWnt4X+5c//p7RasN4B3QEder/LIXAXXROjBJOQ3iABUVHBJuj4/HFuIwpd8cthh02Q3Y7zLcQkjhITm8jPAFCV9LtETU4t8183lJ1VD/U9LPado7f/UEJrO1DG8hvmzJ3ekSKVk3cBRGz8tJUby3sCo5K3yUodluMhv7swNX0wAG626Th+pyT+N0O8a0F3gESl3gKuft1owL1/xmEucU4b+knxnV5JWnyzMynuX6uWHYsB/0xik62C/zoBJ1nbNX3qo/IV9jpQg==
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.4037504|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_news_journal|0.45685-0.00107847-0.542072;FP=5220689412969219928|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033025068124;MF=chunyuzhiqiang@yinhe.ht;NM=1;PH=DW;RN=10;RT=10;SR=0;TI=W4_0.2.3_21251927_1793084116573_o7001c83m;
+Received: from WS-web (chunyuzhiqiang@yinhe.ht[W4_0.2.3_21251927_1793084116573_o7001c83m] cluster:ay29) at Tue, 27 Oct 2026 14:55:16 +0800
+Date: Tue, 27 Oct 2026 14:55:16 +0800
+From: "=?UTF-8?B?5rez5LqO5pm65by6?=" <chunyuzhiqiang@yinhe.ht>
+To: "Vincent Mailhol" <mailhol@kernel.org>,
+  "netdev-bot+sinfo" <netdev-bot+sinfo@kernel.org>
+Cc: "netdev" <netdev@vger.kernel.org>,
+  "linux-can" <linux-can@vger.kernel.org>,
+  "mkl" <mkl@pengutronix.de>,
+  "kernel" <kernel@pengutronix.de>,
+  "haibo.chen" <haibo.chen@oss.nxp.com>,
+  "shawnguo" <shawnguo@kernel.org>,
+  "imx" <imx@lists.linux.dev>,
+  "stable" <stable@vger.kernel.org>
+Reply-To: "=?UTF-8?B?5rez5LqO5pm65by6?=" <chunyuzhiqiang@yinhe.ht>
+Message-ID: <c1461eae-f544-435b-a046-81abb5f3af8c.chunyuzhiqiang@yinhe.ht>
+Subject: =?UTF-8?B?UkXvvJpbUEFUQ0ggdjddIGNhbjogZGV2OiBjYW5fZmlsbF9pbmZvKCk6IGRvbid0IHdha2Ug?=
+  =?UTF-8?B?dXAgY29udHJvbGxlciBpZiBpbnRlcmZhY2UgaXMgZG93bg==?=
+X-Mailer: [Alimail-Mailagent revision 74][W4_0.2.3][null][Chrome]
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,98 +67,19 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+x-aliyun-im-through: {"version":"v1.0"}
+References: <20261021145115.153107-1-chunyuzhiqiang@yinhe.ht>,<b0d3e7bf-ddd3-4eaa-8ebc-fbe5e7d8443f@kernel.org>
+x-aliyun-mail-creator: W4_0.2.3_null_QuNTW96aWxsYS81LjAgKFdpbmRvd3MgTlQgNi4xOyBXT1c2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEwOS4wLjU0MTQuMTIwIFNhZmFyaS81MzcuMzYgZGluZ3RhbGstd2luLzEuMC4wIG53KDAuMTQuNykgRGluZ1RhbGsoOC4xLjAtUmVsZWFzZS42MDIxMTAxKSBNb2pvLzEuMC4wIE5hdGl2ZSBBcHBUeXBlKHJlbGVhc2UpIENoYW5uZWwvMjAyMTAwIChMaW51eDYuMTIuMTAwK2RlYjEzLWFtZDY0OC4xLjAtUmVsZWFzZS42MDIxMTAxKQ==uM
+In-Reply-To: <b0d3e7bf-ddd3-4eaa-8ebc-fbe5e7d8443f@kernel.org>
+x-aliyun-mailtrack: {"foreign-track":"0"}
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 
-The automatic TDCV readback calls into the driver via do_get_auto_tdcv().
-Some drivers, such as xcan_get_auto_tdcv(), read controller registers
-without taking a runtime PM reference, so calling this while the
-interface is down can touch registers whose clocks are gated.
-
-Gate do_get_auto_tdcv() on netif_running() in can_tdc_fill_info() and
-adjust can_tdc_get_size() and can_data_bittiming_get_size() so that only
-the automatic TDCV size is skipped when the interface is down. The other
-TDC parameters are still reported, as they are meaningful while the
-interface is down.
-
-This is a defensive hardening based on code inspection; the automatic
-TDCV path has not been triggered on hardware.
-
-Signed-off-by: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
----
-v8:
- - Split out of the berr-counter patch so that the stable backport only
-   carries the hardware-tested change.
----
- drivers/net/can/dev/netlink.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
-index b958c04d53db..613beee9e936 100644
---- a/drivers/net/can/dev/netlink.c
-+++ b/drivers/net/can/dev/netlink.c
-@@ -720,8 +720,9 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
- 	return 0;
- }
- 
--static size_t can_tdc_get_size(struct data_bittiming_params *dbt_params,
--			       u32 tdc_flags)
-+static size_t can_tdc_get_size(const struct net_device *dev,
-+				 struct data_bittiming_params *dbt_params,
-+			     u32 tdc_flags)
- {
- 	bool tdc_manual = tdc_flags & CAN_CTRLMODE_TDC_MANUAL_MASK;
- 	size_t size;
-@@ -742,7 +743,8 @@ static size_t can_tdc_get_size(struct data_bittiming_params *dbt_params,
- 	}
- 
- 	if (tdc_flags) {
--		if (tdc_manual || dbt_params->do_get_auto_tdcv)
-+		if (tdc_manual ||
-+		    (dbt_params->do_get_auto_tdcv && netif_running(dev)))
- 			size += nla_total_size(sizeof(u32));	/* IFLA_CAN_TDCV */
- 		size += nla_total_size(sizeof(u32));		/* IFLA_CAN_TDCO */
- 		if (dbt_params->tdc_const->tdcf_max)
-@@ -752,7 +754,8 @@ static size_t can_tdc_get_size(struct data_bittiming_params *dbt_params,
- 	return size;
- }
- 
--static size_t can_data_bittiming_get_size(struct data_bittiming_params *dbt_params,
-+static size_t can_data_bittiming_get_size(const struct net_device *dev,
-+					  struct data_bittiming_params *dbt_params,
- 					  u32 tdc_flags)
- {
- 	size_t size = 0;
-@@ -764,7 +767,7 @@ static size_t can_data_bittiming_get_size(struct data_bittiming_params *dbt_para
- 	if (dbt_params->data_bitrate_const)		/* IFLA_CAN_{,XL}_DATA_BITRATE_CONST */
- 		size += nla_total_size(sizeof(*dbt_params->data_bitrate_const) *
- 				       dbt_params->data_bitrate_const_cnt);
--	size += can_tdc_get_size(dbt_params, tdc_flags);/* IFLA_CAN_{,XL}_TDC */
-+	size += can_tdc_get_size(dev, dbt_params, tdc_flags);/* IFLA_CAN_{,XL}_TDC */
- 
- 	return size;
- }
-@@ -825,10 +828,10 @@ static size_t can_get_size(const struct net_device *dev)
- 	size += sizeof(priv->bitrate_max);			/* IFLA_CAN_BITRATE_MAX */
- 	size += can_ctrlmode_ext_get_size();			/* IFLA_CAN_CTRLMODE_EXT */
- 
--	size += can_data_bittiming_get_size(&priv->fd,
-+	size += can_data_bittiming_get_size(dev, &priv->fd,
- 					    priv->ctrlmode & CAN_CTRLMODE_FD_TDC_MASK);
- 
--	size += can_data_bittiming_get_size(&priv->xl,
-+	size += can_data_bittiming_get_size(dev, &priv->xl,
- 					    priv->ctrlmode & CAN_CTRLMODE_XL_TDC_MASK);
- 	size += can_pwm_get_size(priv->xl.pwm_const,		/* IFLA_CAN_XL_PWM */
- 				 priv->ctrlmode & CAN_CTRLMODE_XL_TMS);
-@@ -910,7 +913,7 @@ static int can_tdc_fill_info(struct sk_buff *skb, const struct net_device *dev,
- 		if (tdc_manual) {
- 			tdcv = tdc->tdcv;
- 			err = 0;
--		} else if (dbt_params->do_get_auto_tdcv) {
-+		} else if (dbt_params->do_get_auto_tdcv && netif_running(dev)) {
- 			err = dbt_params->do_get_auto_tdcv(dev, &tdcv);
- 		}
- 		if (!err && nla_put_u32(skb, IFLA_CAN_TDC_TDCV, tdcv))
--- 
-2.47.3
-
+SGkgVmluY2VudCwKCj4gUHV0IHRoaXMgb24gYSBzaW5nbGUgbGluZToKPgo+ICBpZiAocHJpdi0+
+ZG9fZ2V0X2JlcnJfY291bnRlciAmJiBuZXRpZl9ydW5uaW5nKGRldikpIC8qIElGTEFfQ0FOX0JF
+UlJfQ09VTlRFUiAqLwo+Cj4gKGl0IHNsaWdodGx5IGV4Y2VlZHMgdGhlIDgwIGNvbHVtbiBsaW1p
+dCwgYnV0IHNvIGRvZXMgdGhlIHN1cnJvdW5kaW5nCj4gY29kZSkuCj4KPiBTYW1lLCB0aGlzIGZp
+dCBpbiBvbmUgbGluZToKPgo+ICAgfSBlbHNlIGlmIChkYnRfcGFyYW1zLT5kb19nZXRfYXV0b190
+ZGN2ICYmIG5ldGlmX3J1bm5pbmcoZGV2KSkgewoKQWdyZWVkLCBib3RoIHdpbGwgYmUgb24gYSBz
+aW5nbGUgbGluZSBpbiB2OCBhcyB5b3Ugc3VnZ2VzdGVkLgoKVGhhbmtzLApDaHVuWXVaaGlRaWFu
+Zw==
