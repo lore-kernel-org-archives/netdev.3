@@ -1,101 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.50
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793106393;
-	b=SA/2EZZKXeT+t9iamBA0PmWr+vjsWsdP4StnPxO22VmWIGte52+qCtj5p+Q/i4HSb4Ky
-	 4LR65vSpfTVk4woS0ZcITbaXNUHxPEwcK5VZaVe3UKFatPnpDrDPfYEe5Mfo1HtEXDDWc
-	 fFxbHGqXqkwpUP0Vu0DU2fmvlBAJD4biVpA2X+dfu7Iv2EsvR8C2SZ65/GoToabP3kUK8
-	 xyBpxQrHy8ri9+xFwd3V+x31iBOlhxtVJrlwvCsOh1bUgSq9QaRlz3M4fOThRHqUsbTHi
-	 EcL/jAt3LWq3BfF5i41d7XW8NuXpIiYeX0pVWw89Cz5xEoQ+oeU8fhEr905iAth/vFQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793106393;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.181
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793106436;
+	b=uIHzOvSfWNc73maFUSRRuz5ZTgf01uOZP7zaeVaRYoopca0tkmgFeHVCeC1q7Bdws/i+
+	 Fuh1YtOEliQk2K7urCMM9N8baeF2gQzau2lUaD+BM5uu6+g1Gi4GdHaEBO65K8CeT7PGx
+	 d473R0lRIxtjL1aA8/UwQCfTJXaTQ0AaT9ttQIj5oY+8Qpx51VKb8tdNlu7inKp9J+Fo9
+	 SGxMgZClbtgMrHDqFxk8TRT6pYgxtbN1/4WeKX2p/BZrmFgY+eCNNQoLxOBGi3u8niAhs
+	 aw3fKxWPCUqbUJmbOTfvBShh2kUM/vi0p+a+GZqdywM3RnI1UgAHARrmEK/A/wCK1uw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793106436;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=vbRBu1C63eyTt9/fvNVaFYb4y1grLI4jAq2tU4V2p2Y=;
-	b=EacSAjxRlepU5LMuoh/Gxse9scBsSxyHjxUS+Z8zkpfllMkMb+JQ4rv2ZvESD1dRO07u
-	 5NU0ybdpipqncz5/iRFhWpqJUBcZJQc8vs189orvsYayVM6S7Yrf4/ZePwSrq5gH8+YCm
-	 6XfAt2S1lM3z4M0SJ0S6ajMhMcCyZu0jiZliEgo8s9Gf+/oVJF7Qph+uPjxRnVWZcOgYc
-	 GzQGgB+8d57ttK+ei12VstHdSPsJxeBasp1Jd/rkXUK/VzSjhEnBqVAtBSRCJSUVlgfdB
-	 WPhTRKut/5Yp3qrDaAbrzOPInJSP2e2KSCEhKcu2gSZR4ROkA3vDFpicZpjCjV1txQA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=NxZEPCRJ;
-	arc=none smtp.remote-ip=74.125.82.50
-Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=ccxMWNFOhLMuGIVXFYua0P+NYVbasXoXNOavHKrftV0=;
+	b=lJQjD9qFndFWnE/7pam8y0SL564/gyHeYLez3Lcl1CSyF95hHwYq5Q8hu1YJjSrN638G
+	 gROUKWDkDr5FKXEDVCVR6uxMSwpHWXOU4RxuwYcBUtV5882KZKyQlm82Sw1qRFmisNZmY
+	 R2PHO/Q0eRNqELpYMykq20dqUDnXRb8kN9gLtm8MC20jzMDtRu7Nor4FZBbwAn/ltdbQ/
+	 WUFj4ZiQqpZvC+gUZVHxxNPUP3UezMct+6qfHX9VI8+b/1bVSrMySlV325OYyiyTNUSjJ
+	 OwFAOtA67u8XTKTuQZHnJNOa6hs8zy5z6QgO7OxQJNabTN/HKopcEu0KudvFXmpQUlA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=mojatatu.com;
+	spf=none smtp.mailfrom=mojatatu.com;
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=Gb9F5okG;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.181
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3659606A31B
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 13:06:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F3659606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3238606A31A
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 13:07:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D3238606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=NxZEPCRJ
-Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-1a2af4c8d00so2211410c88.0
-        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 06:06:32 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=Gb9F5okG
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8a05effaf8dso2746671b3a.2
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 06:07:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793106435; cv=none;
+        d=google.com; s=arc-20260327;
+        b=O3cxlslr3mSdgvsdoZarI3lDaNmbxmlJiHtiElT88vSBu1aB0FpIbrcEvWZa7C++1k
+         CsxfBiDXVY+r45fMquxim2ugyDN31DRU53jr0F4vJjZ5BrdsR8+bTreM98Ir7PZ0F4hm
+         flVboeCfeXF3yXr/G5iuI1MwpG1/DF1cG+TYuHkf7VVO/HcSilPUVyvJurpOwd651D8O
+         EOpnSVz4LkMGRDLS8IHA8jLkdvwHYbxP945CYkGOsyZ1cD6nFxiFpoDIjVuHTJkiWWFB
+         eyD+aQJP/d6YhL1w0RQhZKpUKSQ35v1qFuv89zEXRGuv3Vebatc+5ZBDNQiQFktzlak8
+         4mnQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=ccxMWNFOhLMuGIVXFYua0P+NYVbasXoXNOavHKrftV0=;
+        fh=qw64Cy9Ycm4jlulYXZIMEdxsFFX1Md7Dr4TEel47RWY=;
+        b=HtH3p0KYBlmJvx9dAQkTbxGunnNdSkJtgopExp2JzTDXwmZjVxrzGM7R/+MTpGD/Ma
+         Xv3sXNdgCGPvJ9eMZEb6lqQE9AEOGE6O3aYJs0pYddLE76HNT+RaeMMNlOsXIzunW7t5
+         +r3nKHXAA5TfQZmgXhjkuQltZ0+ArNslXsKdi3yse0ICe2G+FS2ta8Yb1qhDq9Y/x24y
+         9aIa6k4GzVp6kVy2nVoSKNjtRA2h0TklTIuU7wrBSH14TufHCOz8e06u9UvsRVxazjzz
+         Q3Cvn7kYOqIkONYjmdenANdsajRlWyQuomhsoxlLAK8+hZLZB1BD3k+FgtA/sTg9V2Np
+         PFXA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793106392; x=1793711192; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vbRBu1C63eyTt9/fvNVaFYb4y1grLI4jAq2tU4V2p2Y=;
-        b=NxZEPCRJCuWSuIjHr9sX32vY5xca8UeAp8zS02zpjxZuupKF2Wr03nNTiMnOaobgU+
-         nk/HvfNWbqchKO/ILksdwbokjN5pE7mA7Wr5XVCvyW9Qr6saAqqGl4ld81mkPl1rPGAf
-         RvBBIvApClPbwydYLGHrSjnG3C9Mgf3IzhyhBbsT0h0fsmU+zgm/Uy3y9VyCUo63IBcw
-         G87W+sq0G9giQIfQ9PM3ig7Ofyfe6g4KmmhYAcZHEsva/ibQvExv3vva+rPQ44uDJ5bU
-         xjU7COUurAvyoUDkaSyIt0TrCSm268WBPMnoqkaFC5NDZH5cHq0EqbRNFKMKpeUqGNp4
-         pOXw==
+        d=mojatatu.com; s=google; t=1793106435; x=1793711235; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ccxMWNFOhLMuGIVXFYua0P+NYVbasXoXNOavHKrftV0=;
+        b=Gb9F5okGMuM/Wz5XQZqmM518zjcsXgGMid8pZUi8fnNCn/adxUoW1OBfS1aF1i/Ml7
+         3zESV2BDoV6+0T6OZS2DkqnHER3o1VpSrv+X7rSfFPYVqxRZ+Db6BS9L8Bvzmak1ngGA
+         gi1/EV0gcgeLhC4DpU8cUSlB5pqQmTVbN1yIo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793106392; x=1793711192;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vbRBu1C63eyTt9/fvNVaFYb4y1grLI4jAq2tU4V2p2Y=;
-        b=1cuXQLYG3XxHPqZ8H35CTaLlAMBg9oa2n2TjygSs4DCgkQlxknVb1RQCeQJdHD4CSO
-         /QOrJ19imoEtZlbT6AlMiI6rnjWoMwmE3FMbUXsD7fJNxAg/vEWk+ITn/JOxGZFwOklY
-         gxBij64VZsUtJS70fjQKxV3tAUg9zxrrnrHJf5DN8hnFMOtEvZSvCbz9e1oryPa1235x
-         xLL5v2Wpz44nTDUu6iaZ7jIFH3nMLV41uAmj+CINjdg3zIPfj2FBZmXeLGPF3xXIEDRj
-         L4m68328/Xz2FCXdVD59pEsDlc8KHYY++TDx8OA3brXVRFxKE9DaZw5BDCScrPrfEwwI
-         JacQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwIY1q/qtK1S0akeskonv9Os9NLsoQBWsJFR8O9kiMmwtQbGHEpv7phtPLHJBCBpZKsf2zd3vQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL7TxnSqLcyC8tuiituxNvhBsTqmb6f/Ng3s/gj3Was1nGVMHIR
-	lBqGpFeOnBnlpbFCZHIhyryPFeAxWGTAMLv8LyUGFoJFJcrasvAnVs87O6pdgw==
-X-Gm-Gg: AYBFou2BXaU9eslZgVhR9UQQPpHJU37/IvLcoPabqIUsGRbBVrLltEGsDdR6EpYJkwN
-	Hx25xib/Hi8gq8wH/pc9xXD3Zf7SVRiW992Lw5GhJG2OzdIlXWz0SFGJZY2KVLfAvB0tljATF9x
-	oUjwjK7mO7XKV41JWqdekwBK35Xb0yUslTrEC2nrI3dQcf+cfw54DyAK6Zu8CoAJ3sAUiTF78m6
-	TdWmwAnhZORGPRlzeH1grFJ8IidBYCU4h32AECqHKCX2x0yuwwSSbt+Ku6HJB9opRkNZM3TJUZU
-	okcIhrnDV1iGUC5dp0j78qnVlGNCehIfqPJ43UljwOsKunE7O0HROgx7Yjn8HiOhwMI2dwkIUmx
-	C94Xhx36XjtMMi2REwwCeqo/TUcVDAFyaiwduqkpm6FyiIDnybAHlcWfERXsjaI4OWCnJkrpZM8
-	J8ebKF+lBj+F1gNUw+LcbThhpV3RvzTWB58J6EmSawBUv1yQglkZdnZK8Ou4vZ6vNxdVAObyD/j
-	fkZ6DDgYDOLHTy1d0WHSYNCWn2T8GT16xv+tUISaFO8Wq3hMXzWylVYgFP/12eTyhUnYwq2ex63
-	H9o5CnjuVYFZifEonITxinQi/81caUpZys1D1a4HaLadXrQaYb39Ql14ZGnV8CjMk8oGEqKW+WO
-	4hUtZ2PrvW7+FfcuoOpr2rnYe
-X-Received: by 2002:a05:701b:4544:20b0:190:f24b:9491 with SMTP id a92af1059eb24-19b5804d78amr11537959c88.12.1793106391697;
-        Tue, 27 Oct 2026 06:06:31 -0700 (PDT)
-Received: from ramen-dev-security-2.asia-south1-c.c.ramen-dev-345017.internal (90.156.200.35.bc.googleusercontent.com. [35.200.156.90])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-198a249c331sm70137612c88.17.2026.10.27.06.06.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 06:06:30 -0700 (PDT)
-From: Anil Kaushik <anilkaushikwireless@gmail.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Harald Welte <laforge@gnumonks.org>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Simon Horman <horms@kernel.org>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	osmocom-net-gprs@lists.osmocom.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Anil Kaushik <anilkaushikwireless@gmail.com>
-Subject: [PATCH net v3] gtp: Require 'CAP_NET_ADMIN' when joining the gtp multicast group
-Date: Tue, 27 Oct 2026 13:06:23 +0000
-Message-Id: <20261027130623.3136658-1-anilkaushikwireless@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        d=1e100.net; s=20260707; t=1793106435; x=1793711235;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=ccxMWNFOhLMuGIVXFYua0P+NYVbasXoXNOavHKrftV0=;
+        b=VfSGP4gg0xEr95bTL3AkWU67lcs50WodHADeCjKgmXqB0y5zIrbKcNYmNHDdNoN9up
+         uC4MOv2CA7zQHhK29amZ608evCIf5PAWLHwLEO62lRods4LtUx1MM9aMHNx+Kwv3oMz5
+         xO0e38PcLEQBpYJHgfrX9iIm1hSju5gXXrWo/i/iQbCd2xR0TI6ECi2oi4HlK/GY8Mlw
+         9Mypc+6Fway8oW7SUgEr0GUF4Cym9Fuw168d6TJEB71ix8Nr3zT72kUjDJ6OaueGv0d7
+         3dPS7icLMeE7IevkmV/MMBeKhIyrzHKGcCjboRcrHR+hJJyCrhxXdzpxaOgWEc9wRXmL
+         dwfw==
+X-Forwarded-Encrypted: i=1; AKwUvBxC/j+GQfoqcmJUC00zWUsP+Jum2J2n0sGAh3U6gNvuCjZ2jbENzfGlT+kY+CLPv6wFSpI7IFI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJHVkl/sv5iZ5RTzFnzvSGAZ4uLsjffeMgmCK1lgK+X6LEhha6h
+	IE8hGiMZUIYaHf99fWJUiVC/bpKTC71Y2Gh2jCplqQBIMmOekJfOjX+EG4ZDe0Q9bqY3STeZoEY
+	NZOcsKC5kYTvpN5JFfcjaNriYzxxv61v17P8jMCQa
+X-Gm-Gg: AYBFou2GKPNTI5bWGDF5qaFqqu0L0+c9CYrwCSjPS9nMQ83UzsHTSsV4IYTAAZ8YLUz
+	SDsqwY/OTCyaI8PhjhXgXrbpxX4+96Ms/5vigwEHyltTtOYpU3zuKhbU6OLmRncHFtQEK2VCV/C
+	5bSZJkSynCHDVdRC1Sjw5Vmi+Xag9Uceq62jqZcJWb5aDK5Omt546up7+qxpcAd56E/5iG16r8Y
+	WYuJnind7X3+YbEnDKwBYgyGm+f4qfEr/yyAtY8NdRirJ/TZV67XHy5XrdNtUrSEGVaGth5mOyJ
+	sULLzAz4q6g9nfk6tat8+jhik8T+X7jGSMJrzrLpOQZqo6JzRatBefKsm9tTrn9vCJhRNXvaMQV
+	fqON3OIHuCmH6Q20bOi1MfEFq84V5qXbQIKvLoDHsKDsc4s1tWMJrLvfL6Rxr/wsuQe4UQ68sIO
+	0ruqPrltuDT7L6W28=
+X-Received: by 2002:a05:6a00:e8a:b0:898:664:446 with SMTP id
+ d2e1a72fcca58-8a368aa1a79mr7612299b3a.54.1793106435172; Tue, 27 Oct 2026
+ 06:07:15 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,86 +101,184 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261027082604.1485903-1-edumazet@kernel.org> <CAM0EoMmmnNttUE3FWWg5Y52gCFz-JqxBUXAZEVoxzmvziyV3UA@mail.gmail.com>
+ <CAL4WiipM12m6mi07bebyCGsA8D-r6YRL1_q6+ZFF2Vx0jv7NiQ@mail.gmail.com>
+In-Reply-To: <CAL4WiipM12m6mi07bebyCGsA8D-r6YRL1_q6+ZFF2Vx0jv7NiQ@mail.gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Tue, 27 Oct 2026 09:07:03 -0400
+X-Gm-Features: AclHuK-JMPpCyc7uL8fdhV22ZTdCZAosWg_AdfAToAJtyef3UCGbQkaCudOqreo
+Message-ID: <CAM0EoMkkVK5V9dVRdr-iOSU_pmXEjf9m3Og71MEFzWZFnOGV1Q@mail.gmail.com>
+Subject: Re: [PATCH net 0/5] net: fix eth_type_trans() crashes on skbs coming
+ from the stack
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>, Simon Horman <horms@kernel.org>, 
+	netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>, 
+	Ilya Maximets <i.maximets@ovn.org>, Jiri Pirko <jiri@resnulli.us>, dev@openvswitch.org, 
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, Ren Wei <weir@nebusec.ai>
+Content-Type: multipart/mixed; boundary="0000000000001d1ce0065ed22057"
 
-The gtp generic netlink family sends notifications on its "gtp"
-multicast group when a PDP context is added or deleted, and for GTP-U
-echo responses. They carry the same attributes as a GETPDP reply: the
-MS and peer addresses, and the TEIDs, or the TID and the flow label.
+--0000000000001d1ce0065ed22057
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-GETPDP requires CAP_NET_ADMIN, but generic netlink lets any user join a
-multicast group by default, so an unprivileged user in the network
-namespace of the gtp device can read all of this. Found by code
-inspection.
+On Tue, Oct 27, 2026 at 5:52=E2=80=AFAM Eric Dumazet <edumazet@kernel.org> =
+wrote:
+>
+> Le mar. 27 oct. 2026 =C3=A0 10:17, Jamal Hadi Salim <jhs@mojatatu.com> a =
+=C3=A9crit :
+> >
+> > On Tue, Oct 27, 2026 at 4:26=E2=80=AFAM Eric Dumazet <edumazet@kernel.o=
+rg> wrote:
+> > >
+> > > eth_type_trans() assumes ETH_HLEN bytes are present in skb->head.
+> > > NIC drivers always provide this, and they should keep using the fast
+> > > version, without an extra pskb_may_pull().
+> > >
+> > > Devices looping skbs from their transmit path back to their receive
+> > > path get skbs built by the stack instead. tc actions (act_vlan pop_et=
+h,
+> > > act_ife decode), BPF helpers (bpf_skb_change_head() before a redirect=
+)
+> > > or OVS actions (pop_eth followed by pop_mpls/pop_nsh) can leave fewer
+> > > than ETH_HLEN bytes in the linear part, and eth_type_trans() then hit=
+s
+> > > the BUG() in __skb_pull().
+> > >
+> > > Instead of fixing every producer, or adding a check to all
+> > > eth_type_trans() users, fix the few consumers exposed to this:
+> > >
+> > > - Patch 1 adds eth_type_trans_careful(), which pulls the Ethernet
+> > >   header first and returns a drop reason on failure.
+> > > - Patch 2 uses it in loopback_xmit().
+> > > - Patch 3 uses it in __dev_forward_skb2(), used by BPF redirects to
+> > >   ingress and by veth, macvlan, ipvlan, netdevsim and l2tp_eth.
+> > > - Patch 4 uses it in OVS internal_dev_recv(), covering both the MPLS
+> > >   (TEB) and NSH pop cases at once (only the MPLS case was tested).
+> > > - Patch 5 (from Jamal) fixes act_ife decode on egress, which was
+> > >   consuming the inner Ethernet header. This is no longer a crash afte=
+r
+> > >   patch 2, but egress decode never delivered a correct frame.
+> > >
+> > > Other eth_type_trans() users already pull the header or never see
+> > > such skbs:
+> > > - vrf_process_v{4,6}_outbound() already pull ETH_HLEN + IP header
+> > >   before vrf_local_xmit().
+> > > - tun already uses pskb_may_pull_reason(skb, ETH_HLEN).
+> > > - XDP: bpf_xdp_adjust_head() and bpf_xdp_adjust_tail() keep at least
+> > >   ETH_HLEN bytes in the linear part, and multi-buffer tail shrinking
+> > >   only trims frags.
+> > >
+> > > Tested under virtme-ng with AF_PACKET reproducers. Without the series=
+,
+> > > all four cases crash in eth_type_trans():
+> > > - lo egress "action vlan pop_eth", eth/eth/8192 bytes frame
+> > > - lo egress "action ife decode pipe", IFE frame with 8192 bytes paylo=
+ad
+> > > - lo egress "action vlan pop_eth continue", then a BPF program doing
+> > >   bpf_skb_change_head(skb, 1, 0) + bpf_redirect(veth1, BPF_F_INGRESS)
+> > > - OVS flow "pop_eth,pop_mpls(0x6558),0" to the internal port,
+> > >   eth/mpls/eth/4096 bytes frame
+> > > With the series, no crash. An ICMP echo inside an IFE frame decoded
+> > > on lo egress is now received and answered. Normal traffic on lo,
+> > > veth (including 8000 byte pings) and vrf is unchanged.
+> > >
+> > > Link: https://lore.kernel.org/netdev/20261005052249.1914367-2-weir@ne=
+busec.ai/
+> > > Link: https://lore.kernel.org/netdev/ACT-N6N4.v3.r0.20261023200137-4@=
+mojatatu.com/
+> > >
+> >
+> > Looks interesting ;-> I dont think you are covering xdp/bpf holes but
+> > we can worry about that later.
+> > I will spend time later this morning looking closely and actually
+> > running it. Will keep you posted.
+>
+> Thanks Jamal.
+>
+> I went through the holes you listed earlier:
+>
+> 1) bpf_skb_adjust_room() + bpf_redirect():
+>    An egress redirect ends in the target ndo_start_xmit():
+>    loopback (patch 2), veth (already pulls ETH_HLEN), OVS internal
+>    port (patch 4). An ingress redirect goes through
+>    __dev_forward_skb2() (patch 3). The repro in patch 3 uses
+>    bpf_skb_change_head(), the only helper I found that leaves
+>    1 <=3D mac_len < ETH_HLEN with an almost empty head, passing the
+>    mac_header < network_header check in __bpf_redirect_common().
+>
+> 2) bpf_clone_redirect(): same __bpf_redirect() path as 1).
+>
+> 3) ingress: after tc ingress, eth_type_trans() is only called again
+>    if the packet is redirected, see 1).
+>
+> 4) XDP: bpf_xdp_adjust_head() and bpf_xdp_adjust_tail() refuse to
+>    leave less than ETH_HLEN bytes in the linear part, and multi-buffer
+>    tail shrinking only trims frags. skbs built from xdp buffers
+>    (XDP_PASS, veth XDP, generic XDP) have a full Ethernet header in
+>    skb->head.
+>
+> Let's use something that can be plugged / unplugged easily in the future.
 
-Fix by marking the group with GENL_MCAST_CAP_NET_ADMIN, like the psample
-"packets" group, and with uns-admin-perm in the gtp netlink spec. Only
-users with CAP_NET_ADMIN in the user namespace owning the network
-namespace can then join it.
+I reviewed and tested all existing issue, they are fixed - kudos ;->
+But, but.... you missed one;-> see attached patch.
 
-This is still weaker than the check on GETPDP, which needs
-CAP_NET_ADMIN in the initial user namespace: in a network namespace
-owned by another user namespace, its root can join the group, but not
-use GETPDP. Genetlink has no multicast group flag for the initial user
-namespace, and ioam6 pairs its ops and its group the same way. This fix
-blocks the unprivileged users.
+Additional questions:
+1) Would be interesting to see what performance degradation happened here.
+2) I think it is reasonable i send my original patches 1-3 to net-next
+when it opens as "hardening" patches
+3) Is it correct to put multiple Fixes: in net patches (you have i
+think 4 in one of them)? Sashiko complained once that a patch I sent
+made stable backporting hard. Either you pick one or split into
+multiple patches. I realize picking a "good" fix tag is very hard in
+this case.
 
-Tested by joining the group as root, as root without CAP_NET_ADMIN, and
-as an unprivileged user:
+cheers,
+jamal
 
-Before:
-  root: joined
-  root without CAP_NET_ADMIN: joined
-  nobody: joined
+--0000000000001d1ce0065ed22057
+Content-Type: application/octet-stream; name="bpf_redirect_neigh.patch"
+Content-Disposition: attachment; filename="bpf_redirect_neigh.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_mvqp8jkp0>
+X-Attachment-Id: f_mvqp8jkp0
 
-After:
-  root: joined
-  root without CAP_NET_ADMIN: EPERM
-  nobody: EPERM
-
-Fixes: 50aba46c234e ("gtp: add notification mechanism")
-Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Signed-off-by: Anil Kaushik <anilkaushikwireless@gmail.com>
----
-
-Notes:
-    v3:
-     - mark the group in the gtp netlink spec too (Paolo)
-     - v2: https://lore.kernel.org/netdev/20261023073738.2436362-1-anilkaushikwireless@gmail.com/
-    
-    v2:
-     - say that the group check is still weaker than the one on GETPDP
-       (Sashiko)
-     - say how it was found
-     - v1: https://lore.kernel.org/netdev/20261021065750.2069795-1-anilkaushikwireless@gmail.com/
-
- Documentation/netlink/specs/gtp.yaml | 1 +
- drivers/net/gtp.c                    | 3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/Documentation/netlink/specs/gtp.yaml b/Documentation/netlink/specs/gtp.yaml
-index 7871f5def054..b65e18ae5df2 100644
---- a/Documentation/netlink/specs/gtp.yaml
-+++ b/Documentation/netlink/specs/gtp.yaml
-@@ -194,3 +194,4 @@ mcast-groups:
-   list:
-     -
-       name: gtp
-+      flags: [uns-admin-perm]
-diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
-index 15b5d845fc3b..8b29c35d7cdb 100644
---- a/drivers/net/gtp.c
-+++ b/drivers/net/gtp.c
-@@ -118,7 +118,8 @@ enum gtp_multicast_groups {
- };
- 
- static const struct genl_multicast_group gtp_genl_mcgrps[] = {
--	[GTP_GENL_MCGRP] = { .name = GTP_GENL_MCGRP_NAME },
-+	[GTP_GENL_MCGRP] = { .name = GTP_GENL_MCGRP_NAME,
-+			     .flags = GENL_MCAST_CAP_NET_ADMIN, },
- };
- 
- static void pdp_context_delete(struct pdp_ctx *pctx);
--- 
-2.25.1
-
+RnJvbSA2MjRmZjljZTQwZjU3Zjk4MTc2YzIzYmFjNGRlZGQyOWFiNTcyNzQ1IE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBKYW1hbCBIYWRpIFNhbGltIDxqaHNAbW9qYXRhdHUuY29tPgpE
+YXRlOiBUdWUsIDI3IE9jdCAyMDI2IDA4OjA3OjU5IC0wNDAwClN1YmplY3Q6IFtQQVRDSCBuZXRd
+IGJwZjogRml4IHNrYl9wdWxsKCkgQlVHIGluIF9fYnBmX3JlZGlyZWN0X25laWdoKCkKVG86IEVy
+aWMgRHVtYXpldCA8ZWR1bWF6ZXRAa2VybmVsLm9yZz4KQ2M6IG5ldGRldkB2Z2VyLmtlcm5lbC5v
+cmcsCiAgICBicGZAdmdlci5rZXJuZWwub3JnLAogICAgc3RhYmxlQHZnZXIua2VybmVsLm9yZwoK
+X19icGZfcmVkaXJlY3RfbmVpZ2goKSBjYWxscyBza2JfcHVsbChza2IsIHNpemVvZigqZXRoaCkp
+IGFmdGVyCmNoZWNraW5nIG9ubHkgdGhhdCBtYWNfaGVhZGVyIDwgbmV0d29ya19oZWFkZXIuICBJ
+dCBkb2VzIG5vdCBjaGVjawp0aGF0IHRoZSBNQUMgaGVhZGVyIGlzIGxvbmcgZW5vdWdoIG9yIHRo
+YXQgaXQgaXMgbGluZWFyLgoKQSBTQ0hFRF9BQ1QgQlBGIHByb2dyYW0gY2FuIGRvOgoKICAgIGJw
+Zl9za2JfY2hhbmdlX2hlYWQoc2tiLCAxLCAwKTsKICAgIGJwZl9yZWRpcmVjdF9uZWlnaChsbywg
+TlVMTCwgMCwgMCk7CgphZnRlciB2bGFuIHBvcF9ldGguICBUaGUgc2tiIHRoZW4gaGFzIG1hY19s
+ZW4gPT0gMSBhbmQgb25seSBvbmUgYnl0ZQpvZiBsaW5lYXIgZGF0YTsgc2tiX3B1bGwoRVRIX0hM
+RU4pIHRyaXBzIHRoZSBza2ItPmxlbiA8IHNrYi0+ZGF0YV9sZW4KQlVHIGluIF9fc2tiX3B1bGwo
+KToKCiAgICBrZXJuZWwgQlVHIGF0IGluY2x1ZGUvbGludXgvc2tidWZmLmg6MjgzOQogICAgUklQ
+OiBza2JfcHVsbCsweGM1LzB4MTAwCiAgICBDYWxsIFRyYWNlOiBza2JfZG9fcmVkaXJlY3QgLT4g
+Li4uCgpEcm9wIHNrYnMgd2hvc2UgTUFDIGhlYWRlciBpcyBzaG9ydGVyIHRoYW4gRVRIX0hMRU4s
+IGFuZCB1c2UKcHNrYl9tYXlfcHVsbCgpIHRvIGVuc3VyZSB0aGUgRXRoZXJuZXQgaGVhZGVyIGlz
+IGxpbmVhciBiZWZvcmUgcmVhZGluZwpvciBwdWxsaW5nIGl0LiAgUmUtcmVhZCBldGhoIGFmdGVy
+IHBza2JfbWF5X3B1bGwoKSwgd2hpY2ggbWF5CnJlYWxsb2NhdGUgc2tiLT5oZWFkLgoKRml4ZXM6
+IGI0YWIzMTQxNDk3MCAoImJwZjogQWRkIHJlZGlyZWN0X25laWdoIGhlbHBlciBhcyByZWRpcmVj
+dCBkcm9wLWluIikKQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcKU2lnbmVkLW9mZi1ieTogSmFt
+YWwgSGFkaSBTYWxpbSA8amhzQG1vamF0YXR1LmNvbT4KLS0tCiBuZXQvY29yZS9maWx0ZXIuYyB8
+IDYgKysrKystCiAxIGZpbGUgY2hhbmdlZCwgNSBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0p
+CgpkaWZmIC0tZ2l0IGEvbmV0L2NvcmUvZmlsdGVyLmMgYi9uZXQvY29yZS9maWx0ZXIuYwppbmRl
+eCA3MGRjNjIxNjcyZjIuLjRkMzQ0ZWMwOTczNiAxMDA2NDQKLS0tIGEvbmV0L2NvcmUvZmlsdGVy
+LmMKKysrIGIvbmV0L2NvcmUvZmlsdGVyLmMKQEAgLTI0MzIsMTAgKzI0MzIsMTQgQEAgc3RhdGlj
+IGludCBfX2JwZl9yZWRpcmVjdF9uZWlnaF92NChzdHJ1Y3Qgc2tfYnVmZiAqc2tiLCBzdHJ1Y3Qg
+bmV0X2RldmljZSAqZGV2LAogc3RhdGljIGludCBfX2JwZl9yZWRpcmVjdF9uZWlnaChzdHJ1Y3Qg
+c2tfYnVmZiAqc2tiLCBzdHJ1Y3QgbmV0X2RldmljZSAqZGV2LAogCQkJCXN0cnVjdCBicGZfbmhf
+cGFyYW1zICpuaCkKIHsKLQlzdHJ1Y3QgZXRoaGRyICpldGhoID0gZXRoX2hkcihza2IpOworCXN0
+cnVjdCBldGhoZHIgKmV0aGg7CiAKIAlpZiAodW5saWtlbHkoc2tiLT5tYWNfaGVhZGVyID49IHNr
+Yi0+bmV0d29ya19oZWFkZXIpKQogCQlnb3RvIG91dDsKKwlpZiAodW5saWtlbHkoc2tiLT5tYWNf
+bGVuIDwgRVRIX0hMRU4gfHwKKwkJICAgICAhcHNrYl9tYXlfcHVsbChza2IsIEVUSF9ITEVOKSkp
+CisJCWdvdG8gb3V0OworCWV0aGggPSBldGhfaGRyKHNrYik7CiAJYnBmX3B1c2hfbWFjX3Jjc3Vt
+KHNrYik7CiAJaWYgKGlzX211bHRpY2FzdF9ldGhlcl9hZGRyKGV0aGgtPmhfZGVzdCkpCiAJCWdv
+dG8gb3V0OwotLSAKMi40My4wCgo=
+--0000000000001d1ce0065ed22057--
