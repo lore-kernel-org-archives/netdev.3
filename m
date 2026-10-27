@@ -1,65 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.57.87
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793099218;
-	b=BUL85ikudxKbY+apE2c9iPYbgCq3z2GsiQNnD88xrSiT+cH07bDe3x+cYffsV00KBYiA
-	 oiQ2X3XuM6AhaXQj4OSncONiYmX9hO54e1Isv0IoWImAMrZnSJpLYDgu0LXyAMn9Cy9+k
-	 F5pft8r8AhaTHPqjIGppWqTigy+UIxk+j5ibtZfrUmtkklto2iU0TA2IIjEwkTXDIKIEu
-	 1mwGdvOphGNomkwbjW0WZtASLIXsIX2lY3Ax7kN831WUTwQwvjmgFFScSOnKrlJW5qJLu
-	 noG9Kb2DFc9T3x/I6AQSc0mjpVZ3rNzUXnnDIQL/aZllCWOtIKu2kE3k6WCGCqWyBzw==
+	t=1793099239;
+	b=O/bWRcAHUsvPCr8qleBRMjefVa68xXVdIDAK5pzu+Vd/iZlkjJpjgeQaOOcm3Gp61B9C
+	 7jlZYfhct4SNDTVrRp69Y0g6wJ2OnUEDHZR7Spw9NHcWTafEsZn0DBc0Iv/7gv4pgyNj4
+	 3RWd+qrsEo0m1cbPzooju3ZDhD/bMs9aAFUfLeLcmUB0rhR28QxrHV9/uaJpI02iDV/jm
+	 qFKIDZknZUssMyjXh71gTldsjnzGr+z+DUL2vWcggCNQIVodXzBzWJ0QQth+CBN5fI0Pz
+	 YCqtpcTp07EaN93yI++BQ6+kuWkBPxluyHPTPinLV4WhIHtrlWlt+Hs0fdZv7IoTgsA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793099218;
-	h=DMARC-Filter:DKIM-Signature:X-QQ-XMRINFO:X-QQ-XMAILINFO:From:To:Cc:
-	 Subject:Mime-Version:Content-Type:Content-Transfer-Encoding:Date:
-	 X-Priority:Message-ID:X-QQ-MIME:X-Mailer:X-QQ-Mailer:References:
-	 In-Reply-To:X-QQ-mid;
-	bh=hmJvxGzuixcFNAAocvFhqKaJGcR68LALuIVt4D8IqKg=;
-	b=ZqljAiVXaJLXXFTpN/CkDfDKQfNu3z/UqvFbbCb2ZtQSObSSg8RKjg6+TmBP55XdLwLp
-	 4HWxVnGaRgP2OTvNwu6bY6oO5FY73iA9UfM7/Z2ZKepAit4xIv2Vv+8XePsjuQHnHvNxT
-	 X1y7agAfWbS604ozU3qa1xD+ZJ7JAdSzZWbHsgr9UHheM1bmC0itYyJYBvXBzMhadjGUU
-	 SHsBMNXfqdYtljSbJ8GI1L+IpHX3k51r1N83c8b7m57SlcNFqXVDdf3x+Gdfz9UvzerNq
-	 iXZ+cnsIxFIZ0FLXeQvGhCVpLT1DrXsF0TAoYhfMUt7tm7yUorWLQBM35Ixbx2f+uAw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793099239;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=8iPZIytj9HMc11Ehp7wcxqisiN/TeLpY6YQqejiCqRc=;
+	b=qwIVgVaacJRXpCkdwOX4k8rtiBkyPvcte6mx2SWZQgKO/PkUn78XRGxuYdSZIVr4j/A3
+	 RI4BKIejuuRM88PASPfpzDZw4mAEYp5Bqr9OCxoBtJ1FRoiaQ11Pc/f4eMBngaPet1U3z
+	 CLXSDTrtWccYWw9dvIwhi1ZDO+Yo3YVjj5sQnpG85j9XOtmFOcsT2MpjL1YWhtOPM1ttf
+	 d/tskmHvNbYS09WWGGRzAvxBOJ2amfp3ETOWpe1eZ6ifmjWtfuHd3HQYt7Mg+ODFxuusV
+	 9ZrWpo5S9FbNZlQNnpTe+DbEu1zpn63uqhS/WPTXoA/YnC7vbJgBgFaKRZlIQnp/vRw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=qq.com;
-	spf=pass smtp.mailfrom=qq.com;
-	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=x185AFOg;
-	arc=none smtp.remote-ip=162.62.57.87
-Received: from out162-62-57-87.mail.qq.com (out162-62-57-87.mail.qq.com [162.62.57.87])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b5KNaiTA;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92BC606A31E;
-	Tue, 27 Oct 2026 11:06:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D92BC606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D565E60A6F4C;
+	Tue, 27 Oct 2026 11:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=x185AFOg
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1793099211; bh=hmJvxGzuixcFNAAocvFhqKaJGcR68LALuIVt4D8IqKg=;
-	h=From:To:Cc:Subject:Date:References:In-Reply-To;
-	b=x185AFOgLVk4JHvZFHvy8FZwv0CQUucEB882GK+C24yqkWX+w2DQcN25mq2UEdU96
-	 YT3emcoro0o7Qm+7NFr0IRyyXFhvhqyRXh58kdF6KmJfmcbFFCriW7V6iVZg5AEwcu
-	 BzYRnyOAtqXApW6GSKc2iQRnBYC7lrW2CNAKrwyo=
-X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
-X-QQ-XMAILINFO: MOQpAxjIVJukshyDFOyjGDwxM9qZ/D5/ZWdLzyeokj2TF2nZH64jReURN66KiX
-	 GZdL6fzf4n2uKIIMES66/CQUCm/Vge6LG52O2pwGbWdi3oo9eoUfRRrYiNy9GkIyv/qBi5X9aPifv
-	 z74SDVZfNbGdcwih0OHQjYqATMgIcnZGRMPxxYZBLMspsXxp1RIBcorKaAhpNCbZ3nGce9FY3wPtl
-	 6cqBybnBDBv2WwgpVM9xClgBkZh4NIvwmKrwo08k6fKiOem5kp5HTWmmjTh5Jsv2CeX/8TaN/w4vC
-	 c4rA/3DpBQ40Qm4dQ0KokZRM8KgF8Ww1n6oRfa2m88IdQH4weycRobUiuDDrwqCELLZ4N52rNM5jS
-	 l0NxInpaHBFppvxWSxmIrzi9vr5gXWjRQIJsevhf82JTNy3H7zUwYJcG3/t/BlkflT84+N8Bi0Cop
-	 YL7DkdKomHl0wfRnbkGryLWNz5T2YvctKW6lcvirgFBIKKgASyR7uRlFvV3yQhSn33v0QL2T9KuXU
-	 FOXxQoB9fSxFUl7EdAmrXX3U3ZSF4H+RosD7p4mX4VrP/MUe+PZZh//OiLd494xt/rwYAV+hB2Lt0
-	 K8byXUdj8RmluG3nCBhuXHWgYNbdA7PI8nWjZrlZA2Xnxezdy7rNLF1jWY8rniW/SOhcEO2LZ0oIZ
-	 SlC2bha4NHHYUj4yMK7ofvx9V0UVGQi3hQS3vLM83y+EXFjtcflPa3qCTWn/V8498Olmoi8n8typ6
-	 H+q7pyyglpnFTerh40LY2P84BocW0VZXaTF6BSxtrUn3b5LtICHxs3NWJgkSMrqxDX/kZoldTSsP3
-	 0z0TReq+vr7ssmrpKAbOElw2sAi+zMVzCq5DYp1Kxzuvxm4KHFp+jt/tr+SVAE4oQQtgr0Ol8X8gO
-	 wqaw4jbIy6/TuWQenoT7XVqB5dN9ZwrpenUDrWReCpWhdexGrfLW0mzIy5Ope8Qhf8QOg83bvxRpz
-	 o4SY4dyalbGKXZjugU+n8nnU+Xho7XiHBwxVtLxRWh+qQ/NjWHOp2VqdzKnpjQCK0rqItVxdJISIO
-	 pzn2FcWTqPmz+tVybVZO0NELUQHhTW8iG8ZK7YSJMkhvyHwkX2vBgXup1jwP+iPgwZ+Db
-From: "=?utf-8?B?Q3VuaGFvIEx1?=" <1579567540@qq.com>
-To: "=?utf-8?B?SGVpa28gU3TDvGJuZXI=?=" <heiko@sntech.de>, "=?utf-8?B?S3J6eXN6dG9mIEtvemxvd3NraQ==?=" <krzk@kernel.org>
-Cc: "=?utf-8?B?U3RlcGhlbiBCb3lk?=" <sboyd@kernel.org>, "=?utf-8?B?QnJpYW4gTWFzbmV5?=" <bmasney+clk@redhat.com>, "=?utf-8?B?SmVyb21lIEJydW5ldA==?=" <jbrunet+clk@baylibre.com>, "=?utf-8?B?Um9iIEhlcnJpbmc=?=" <robh@kernel.org>, "=?utf-8?B?S3J6eXN6dG9mIEtvemxvd3NraQ==?=" <krzk+dt@kernel.org>, "=?utf-8?B?Q29ub3IgRG9vbGV5?=" <conor+dt@kernel.org>, "=?utf-8?B?UGhpbGlwcCBaYWJlbA==?=" <p.zabel@pengutronix.de>, "=?utf-8?B?RWxhaW5lIFpoYW5n?=" <zhangqing@rock-chips.com>, "=?utf-8?B?UmljaGFyZCBDb2NocmFu?=" <richardcochran@gmail.com>, "=?utf-8?B?bGludXgtY2xr?=" <linux-clk@vger.kernel.org>, "=?utf-8?B?ZGV2aWNldHJlZQ==?=" <devicetree@vger.kernel.org>, "=?utf-8?B?bGludXgtYXJtLWtlcm5lbA==?=" <linux-arm-kernel@lists.infradead.org>, "=?utf-8?B?bGludXgtcm9ja2NoaXA=?=" <linux-rockchip@lists.infradead.org>, 
-	"=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?bmV0ZGV2?=" <netdev@vger.kernel.org>
-Subject: Re: [PATCH v3 1/3] dt-bindings: clock: rockchip: Add RK3572 CRU
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b5KNaiTA
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0529A1F01280;
+	Tue, 27 Oct 2026 11:07:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793099238;
+	bh=8iPZIytj9HMc11Ehp7wcxqisiN/TeLpY6YQqejiCqRc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=b5KNaiTA8pSpdpjjF4ASEo11cbOm0BIu3qUd34KZrKFQZQce+4PdZw09kfucq6sW4
+	 HZQKd8b3TWzU0iKVhQUp1f8HpNRc4ZKIvdL20Qudo4LmrTKHTR3qqZ0B2tAFw9P5r0
+	 Xi3WOuLHm+iUVGhFXJOrwoUDDXAGqRAdJvn0PHSXY+l14PDnO45nayZT/TfGrOqyyN
+	 vuEZlpAiV4r1n/MCh8tXIN9OkhhuMTd/kERLaMMEvt5bC4kAKQnQvdqBkGrJQ4Ma8l
+	 4SoH/4Z5wm9+t18XB2gqSCujI6B1yR9jGUEQezx8y8Nuo8bb1DMh7h6gCJp8XWu6vP
+	 TGUeAk2Q+miZw==
+Message-ID: <c1fc1868-5583-420f-b945-2bf934873713@kernel.org>
+Date: Tue, 27 Oct 2026 12:07:12 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,35 +50,105 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Tue, 27 Oct 2026 19:06:49 +0800
-X-Priority: 3
-Message-ID: <tencent_C11F61130B4D904C5A82CE0849002F22B806@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/3] dt-bindings: clock: rockchip: Add RK3572 CRU
+To: =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+ Cunhao Lu <1579567540@qq.com>
+Cc: Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>,
+ Jerome Brunet <jbrunet+clk@baylibre.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>,
+ Elaine Zhang <zhangqing@rock-chips.com>,
+ Richard Cochran <richardcochran@gmail.com>, linux-clk@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org
 References: <20261026-add-board-ok3572-c-clk-v3-0-dbabfa39d692@qq.com>
  <20261026-add-board-ok3572-c-clk-v3-1-dbabfa39d692@qq.com>
- <20261027-vagabond-gabby-caracara-4edabe@quoll>
-	<3011736.yaVYbkx8dN@diego>
+ <20261027-vagabond-gabby-caracara-4edabe@quoll> <3011736.yaVYbkx8dN@diego>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGPBBMBCgA5AhsDBgsJCAcDAgYVCAIJCgsE
+ FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJp2mE8AAoJEBuTQ307QWKbeaIP
+ /ihHTkTW4KsN/DQ945JJbyu5tI0J80Wue7QyyLPglyKfhgb5cLLNPpOC8cCIJsc7+W3i2P38
+ s2c1cOH6CYGE7E9ur3Vfme8NW2S2I/Z8VC7bZnzyS23wT17LrsdS/qCpx4o8U+pt/xdXDKph
+ EGRYrIEmMpUWvyYzyYKGIe25FtaayIIKpq8eZYyFcp2f/sG5IkOW5uZzHPMPdcm87jU7fyuQ
+ rAU2vx9r+ulUfQ/q9Z2roC/ode3l7t2pN7BCBCsUDp6JCrUyZrtT1e7EbA0ZRP3aOBNk2P2E
+ DQOgJGjGdO5Yx2Y9LFtltu6JbsBJHi1syGRX3AtQYOMc4Y1WGoeZJmMlvKj2ZqqXNkcWi2DS
+ IQEWB0uW6CqFsBBIMGDa+6OzdaVO/uAVXWDWml02Men3CILdI1MbVjoh8ECqYUY7OQ+JJvNN
+ vnliuq5WM3Ghd3jg/LZZrxXjdIginRHFQCjIJYLKpLZWm1/iDFedcfzqRNYmTtqscdCNHW41
+ oT3Z7BmO9xwdjuwBS6nmS6JJwkbf5Ot2QR4pB/DRU7ZwjT1qHe+9r9gF32wXVQatHNGK/VVu
+ sfwOnkdxCWkp/qb2gdQRmZh+SedStWshigH6sNfuHBloF/q+hjMRc8b2m326OZdrbSHwY1Sz
+ vti8Hn7n8NjdHO9LKB7BIdjkA9DA5WsqOuVCzsFNBFVDXDQBEADNkrQYSREUL4D3Gws46JEo
+ Z9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLueMNsWLJBv
+ BaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6eiOMheesVS
+ 5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wAGldWsRxb
+ f3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA6z6lBZn0
+ WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9YegxWKvX
+ XHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt91pFzBSO
+ IpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gUBLHFTg2h
+ YnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/JoFzZ4B0
+ p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu4vXVFBYI
+ GmpyNPYzRm0QPwARAQABwsF2BBgBCgAgAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtBYpsFAmna
+ YUkACgkQG5NDfTtBYptX+BAApg32CkxwNucNEi8WfWA8oKkW0y8YDuY6ORMo9FWNGiT/OTy0
+ vyJrLocrpn86zwfjVp+eCrssPYh8eqJfnWqmYv6ACQtHPYzPZQ3mSo8H97Z01oUxITzCxpXm
+ ZkLgPIqtDPcC2E3dPM/fVxcyowM8XsaMA9wcsaUYrta8toOq2b9tKcjleKMfMrm0gQ9u7wUc
+ QbLkwj6TCLOwucb07GXzLTNF9PZmaDUpKAZjMjmrW+le+SFvQbhamx0rxLWPR0NWntXpbCn+
+ +ACch03p/JyTBVktxFsFyCt7pTPE1kEaeuXBTe/a2D9iQvRxRW19LvuO2e59/u1wYUiH/orz
+ wbIC2S4dBsPAPihL3ztOU1yE86GPyQtSE0kU+/7snnLt4QGi6PChf3t5gnNjAzjUUovO8rgI
+ c+5yN5heq5loYHgK6OQ9OlHzsPHO9e9MOQcKlFycs1pyijFGzDwdNUm/SchK8iWT2QApTx4A
+ K9bCVaboTA2T77QYkRcRJYSsO1alGX0ome/hMLD1daXlkrNUp1HWa3K4iytLRXjCSIorWiGs
+ n+q3krnpXu3TFkA8qtOFZMdnIiFuiq1yLT8hptsV5xh1TA2nsVvSYiaCr3q4s4BKjS/KrLDb
+ qoxzw8ISjdUp4pA85vb6YLCmb39NgidD+7PmAr65lBNveIFynTgsja1rRQ4=
 In-Reply-To: <3011736.yaVYbkx8dN@diego>
-X-QQ-mid: xmsezb41-0t1793099209tc2h45k0e
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-SGkgSGVpa28sCgo+IFdpdGjCoGNvZGXCoG9yaWdpbmF0aW5nwqBpbsKgdGhlwqB2ZW5kb3LC
-oGtlcm5lbCzCoGl0wqBpc8KgbmljZcKgdG/CoGtub3fCoHdoYXTCoGNoYW5nZWQsCj4gYnV0
-wqBJwqBndWVzc8KgdGhlcmXCoGlzwqBhwqB0cmFkZW9mZsKgYmV0d2VlbsKgYnJldml0ecKg
-YW5kwqBtb3JlwqBkZXRhaWxzLgo+Cj4gScKgZ3Vlc3PCoHRoaXPCoGNvdWxkwqBiZcKgc2hv
-cnRlZMKgdG/CoHNvbWV0aGluZ8KgbGVzc8KgdmVyYm9zZSzCoGxpa2UKPgo+ICsrKysrKysr
-KysrKysKPiBTaWduZWQtb2ZmLWJ5OsKgRWxhaW5lwqBaaGFuZ8KgPHpoYW5ncWluZ0Byb2Nr
-LWNoaXBzLmNvbT4KPiBbYWRhcHRlZMKgdG/CoG1haW5saW5lwqByb2NrY2hpcMKgY2xvY2vC
-oGFuZMKgcmVzZXTCoGhhbmRsaW5nwqAoeGluMjRtwqBpbnB1dCwKPiAgwqBkb24ndMKgaW50
-cm9kdWNlwqBDTEtfTlJfQ0xLUyzCoGV0Y8KgXQo+IFNpZ25lZC1vZmYtYnk6wqBDdW5oYW/C
-oEx1wqA8MTU3OTU2NzU0MEBxcS5jb20+Cj4gKysrKysrKysrKysrKwoKU29ycnkgYWdhaW7i
-gJRJIGp1c3QgcmVyZWFkIHlvdXIgZWFybGllciBjb3JyZWN0aW9uIGFuZCByZWFsaXplZCBJ
-J2QKc3RpbGwgbWlzc2VkIHRoZSBzcXVhcmUgYnJhY2tldHMgW10uCgpJJ2xsIGFkZCB0aGF0
-IHRvIG15IG93biBwcm9tcHQgKGZvciBteXNlbGYpIHNvIGl0IHN0YXlzIHdpdGggbWUgYWNy
-b3NzCnNlc3Npb25zIDpECgpCZXN0IHJlZ2FyZHMsCkN1bmhhbyBMdQo=
+On 27/10/2026 11:43, Heiko Stübner wrote:
+> Am Dienstag, 27. Oktober 2026, 11:17:08 Mitteleuropäische Normalzeit schrieb Krzysztof Kozlowski:
+> 
+> With code originating in the vendor kernel, it is nice to know what changed,
+> but I guess there is a tradeoff between brevity and more details.
 
+Honestly I disagree :). Vendor kernel commits and their messages are
+irrelevant per se. They are only useful as source of knowledge, but what
+was exactly written there does not matter. Quality is dubious, coding
+practices are terrible. We want to extract the knowledge, the important
+details, but not the exact commit. We do not care what changed from
+downstream to upstream, because we know that downstream sucks so much
+that we don't even want to touch it.
+
+> 
+> I guess this could be shorted to something less verbose, like
+> 
+> +++++++++++++
+> Signed-off-by: Elaine Zhang <zhangqing@rock-chips.com>
+> [adapted to mainline rockchip clock and reset handling (xin24m input,
+>   don't introduce CLK_NR_CLKS, etc ]
+> Signed-off-by: Cunhao Lu <1579567540@qq.com>
+> +++++++++++++
+
+Yes, if this brings anything useful. For example removal of CLK_NR_CLKS
+is completely pointless to mention. How does it explain the hardware or
+design choices? How does it explain why this driver was written that or
+other way?
+
+Just take the authorship of downstream commits and send them as your
+own. Both GPL and DCO allow this and if downstream did not bother to
+upstream that stuff, they do not deserve credits.
+
+
+Best regards,
+Krzysztof
