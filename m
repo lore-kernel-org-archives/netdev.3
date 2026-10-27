@@ -1,114 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793115854;
-	b=jfyT8vuG+IbfycS8XmlaIwgDOd7aVUGCdwuke2nlqa+OAGLjKMi8ryop9gzrpJwEmTFe
-	 vGV2I/Zz12tcm59r77amRphbn5ovUgYjtliruTmCvkIf/2P+aUWJ/4+Rt8poarQXPC/5j
-	 8vvEv4YCg8m7bSWRGMBBIE8Uv34LpHMo8ijXkfCpiPNJjYfMpsdsvmcBiEl743z2wRb6i
-	 oQRNLpl8v1OOqCo5w6Tx0mEe95OssmZI8VBlV5NsdwJV+zSQdenPCvio8mj/sjBL/13EZ
-	 8tJ+/hQUi8PdbEY6yAsZLPKut7qXgqoALIh5LB9jtwzUlwoh0VbOvYLxUjPr7ut/BQA==
+	t=1793116207;
+	b=LbXcHf22NT6t5vv6k1GM0qtskowLPDLwTk/3KjHXwUXgY3cVhtWSdJZfzWr60jzUotSI
+	 cwTF/YGAUSEDlNX+S0nRNna8HIlSczV3XnHRO1e+8txNL7m+fUxUZFZDZXSimZm2AiFps
+	 8hv5JxJ4wFqSbPRfnitq+8+G4F8kj239rC0vHoMU+pSKNi7SdU2/aifSm2FEug2qlZLyM
+	 LQjnkC93Rp7kaSrEewiGEywf9wFuxC0AYA+ZBbmxQjKblrjmHQW04C888Fqv9uRPqUWx6
+	 ZJGrXXJHKaV8qAoMLpkDihPT3K4DN+IXvBQgKBE/+KD4aSj57bE/M8UTated6dTuUbQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793115854;
-	h=Received:DKIM-Signature:Received:Message-ID:User-Agent:Date:From:To:
-	 Cc:Subject:References:MIME-Version:Content-Type;
-	bh=azcg7d1eP1GSCwwf6vHG33FdrWswOi+yIuOTdqpdfFI=;
-	b=wSSaJ9RlKEaj0PJkC/u3VSh3ki13fxZH5vUwagjwnshA0ftSl2885g+Bt5No7LI/bR56
-	 TPeBQmjYWO61HuvbYbFal/b+1HSnFQdN5TeqJsE23XEOjwNdK1VzDuL7kUeYy3zqywj3O
-	 X+owgdg2MuljzTpGK+fbtMuAwDP/S0dk4yPmudZPupQclahxk6FcmeesT6POKGd6//H4m
-	 S1IfUtn0JXjzwa3TCVN1jBwkJWbxgR+rafTiX0Ix386FRiiLFvomYJRYZ1oB1KweaX3E/
-	 d9hWIEZWr2MNHc+fkcINgkKtXW8GaTEKCdTXMNMvfrGjIr8SuqLP1J+JBem+d6bfcOQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793116207;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=XNXBTh+mWm8JV4gRA4uvH2PMx1FLXqKxxU1LaaqRpiE=;
+	b=trse6Q+sa75qAGGiyOGseracKE+Wps7SwvciZOiHjshzBmxwrLpUCiuTZik6pgKxQI7y
+	 MrvpRp9f7R+Ndx1e4E9YwkTEvf7fcU2BaMIpM0svjb1am7awuGA5SlAOkALK41PDXVWVY
+	 jfJjxIuMrj9QjxpNEZBwmryOLodmfGuvz6M2lTrXEFrbdCDyuPtrtEJpWnWWhbZrzrguF
+	 QWzMMDGUf8XVxN+YDTWEQJTXKCBxezv5RNj53BcrFZZH0F2Hovq729mJ9JQUqrJ/j2/rl
+	 FyRVcVoR1jpeaXGMNWJJZtRMyS1PFjalvOB/ev1crqrIPqVsVlt7owAlbdaZgx6ZBZg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RmZhbbU0;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lRfYNCiv;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52998606A329;
-	Tue, 27 Oct 2026 15:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2469606A31B
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 15:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RmZhbbU0
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 141061F031E0;
-	Tue, 27 Oct 2026 15:44:14 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lRfYNCiv
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE9E1F031EC
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 15:50:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793115854;
-	bh=azcg7d1eP1GSCwwf6vHG33FdrWswOi+yIuOTdqpdfFI=;
-	h=Date:From:To:Cc:Subject:References;
-	b=RmZhbbU0xMF39dlPMHj471aI1Pzkp+I32nSh24gjv327qpWzU7s7VV9ehmUe4iQNj
-	 UyApf1ngkRQLCUDqn0fw07Mviig7WH6AJdutP3yhV8awViS6ysm7mtyniI91Rk2xPl
-	 0lzYKQbWBN0lE6nIS5+RvElHZ8zvVI44Vc//K8/mmdtwOhU0r+MWw4nN+rwNGZvp98
-	 PsY2m+t5ouiWlVRQkOvjcZXRNE0JpbNWr/PGTCvsGbcdmRXg90j4Yn7k8UDdiHosAG
-	 3PB6HbGSniV5mzbDmZTWQpHNOCwrnukDl1Q84p5R3++bYR/RpkW4kjy6S/xZCaa1hu
-	 7G/yhwSD7Ec1A==
-Received: from rostedt by gandalf with local (Exim 4.100.1)
-	(envelope-from <rostedt@kernel.org>)
-	id 1xLjLR-000000078hO-1ium;
-	Tue, 27 Oct 2026 11:44:13 -0400
-Message-ID: <20261027154413.231874596@kernel.org>
-User-Agent: quilt/0.69
-Date: Tue, 27 Oct 2026 11:37:02 -0400
-From: Steven Rostedt <rostedt@kernel.org>
-To: linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Vineeth Pillai <vineeth@bitbyteword.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Aaron Conole <aconole@redhat.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Alexei Starovoitov <ast@kernel.org>,
- Anna-Maria Behnsen <anna-maria@linutronix.de>,
- Borislav Petkov <bp@alien8.de>,
- Chanwoo Choi <cw00.choi@samsung.com>,
- =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Danilo Krummrich <dakr@kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- David Airlie <airlied@gmail.com>,
- "David S. Miller" <davem@davemloft.net>,
- Eelco Chaudron <echaudro@redhat.com>,
- Eric Dumazet <edumazet@kernel.org>,
- Frederic Weisbecker <frederic@kernel.org>,
- Ilya Maximets <i.maximets@ovn.org>,
- Ingo Molnar <mingo@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- Jiri Pirko <jiri@resnulli.us>,
- John Fastabend <john.fastabend@gmail.com>,
- Jon Maloy <jmaloy@redhat.com>,
- Koby Elbaz <koby.elbaz@intel.com>,
- Konstantin Sinyuk <konstantin.sinyuk@intel.com>,
- Kyungmin Park <kyungmin.park@samsung.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
- "Martin K. Petersen" <mkp@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- MyungJoo Ham <myungjoo.ham@samsung.com>,
- Oded Gabbay <ogabbay@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Philipp Stanner <phasta@kernel.org>,
- Simona Vetter <simona@ffwll.ch>,
- Sumit Semwal <sumit.semwal@linaro.org>,
- Thomas Gleixner <tglx@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- tipc-discussion@lists.sourceforge.net,
- Tung Quang Nguyen <tung.quang.nguyen@est.tech>,
- Xin Long <lucien.xin@gmail.com>,
- x86@kernel.org,
- amd-gfx@lists.freedesktop.org,
- bpf@vger.kernel.org,
- dev@openvswitch.org,
- dri-devel@lists.freedesktop.org,
- linux-media@vger.kernel.org,
- linux-pm@vger.kernel.org,
- linux-scsi@vger.kernel.org,
- linux-sctp@vger.kernel.org,
- netdev@vger.kernel.org
-Subject: [PATCH 4/9] dma-buf: Use trace_call__##name() at guarded tracepoint call sites
-References: <20261027153658.703730257@kernel.org>
+	s=k20260515; t=1793116206;
+	bh=XNXBTh+mWm8JV4gRA4uvH2PMx1FLXqKxxU1LaaqRpiE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=lRfYNCiv/1q4zJo933sBpe7vhO8+KJhsMIuSqrn2ji5VEijLlemnWa23xE3wG0P9S
+	 sMMe9SwsRoDnIyLG3gNNBiP9OUVkjawrFTYsKVrFl4te07EPQwNRsQcsiQUDphuazp
+	 8y4pCCcgktY6gHKTjWZeDhJhQP4NsRUMlAkBSfmVKZfGS8egTIU3I10KXamS02DlEN
+	 Er7LHpW1v6kYwoM5nlMM4pk6GqNR/okqpB11NP6+to1WrUjcr+6Uxq6oC43zHJ4dFn
+	 yPYqG6Ep2lJiPezM/1G/JyZNWPJs1Jd5ROZ+r3VgGguVoLPf2kbBooFw3Hbw4nClo/
+	 gdLhiAVYW7jZg==
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-6df7f544919so61431eaf.1
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 08:50:06 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzuKuJxGNIBKsBiU/lTXr+jKsduMQ2ZZls9MpOGw1Vqv+IyJm9nqJlwCgvwurQeq+zNmwqfeuc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJfJAeX0BojPqFqqq6BRZqAXbW41LD3DEm4y3J2KLRQLCiZL0YK
+	shOa2znEc1rC5YzQDq/2DgdiaGq29ah1AOFsqieQu5/BaXTtOZEhjdn56dqfkQqOOTcTxkxqqfp
+	ezsXQja80jYMbz9gWr1lTpu3UNo0ehQU=
+X-Received: by 2002:a05:6820:5708:10b0:6d7:c5f2:9c0b with SMTP id
+ 006d021491bc7-70ba0f6bc3bmr3989116eaf.68.1793116205605; Tue, 27 Oct 2026
+ 08:50:05 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -118,45 +59,147 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20261027082604.1485903-1-edumazet@kernel.org> <willemdebruijn.kernel.22807e0fe104d@gmail.com>
+In-Reply-To: <willemdebruijn.kernel.22807e0fe104d@gmail.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Tue, 27 Oct 2026 16:49:53 +0100
+X-Gmail-Original-Message-ID: <CAL4WiirUmA1GnUaZq5MQgENZRo1248YSo6AOYb_OseWS8p-Cbw@mail.gmail.com>
+X-Gm-Features: AclHuK8O6qL0p46BbYPuOf5E_RfJ0wDanl3GUypcn7qSXPE0kwPay5TqkJOsS8I
+Message-ID: <CAL4WiirUmA1GnUaZq5MQgENZRo1248YSo6AOYb_OseWS8p-Cbw@mail.gmail.com>
+Subject: Re: [PATCH net 0/5] net: fix eth_type_trans() crashes on skbs coming
+ from the stack
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>, Simon Horman <horms@kernel.org>, 
+	netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>, 
+	Ilya Maximets <i.maximets@ovn.org>, Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, 
+	dev@openvswitch.org, Ren Wei <weir@nebusec.ai>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Vineeth Pillai <vineeth@bitbyteword.org>
+Le mar. 27 oct. 2026 =C3=A0 15:40, Willem de Bruijn
+<willemdebruijn.kernel@gmail.com> a =C3=A9crit :
+>
+> Eric Dumazet wrote:
+> > eth_type_trans() assumes ETH_HLEN bytes are present in skb->head.
+> > NIC drivers always provide this, and they should keep using the fast
+> > version, without an extra pskb_may_pull().
+> >
+> > Devices looping skbs from their transmit path back to their receive
+> > path get skbs built by the stack instead. tc actions (act_vlan pop_eth,
+> > act_ife decode), BPF helpers (bpf_skb_change_head() before a redirect)
+> > or OVS actions (pop_eth followed by pop_mpls/pop_nsh) can leave fewer
+> > than ETH_HLEN bytes in the linear part, and eth_type_trans() then hits
+> > the BUG() in __skb_pull().
+> >
+> > Instead of fixing every producer, or adding a check to all
+> > eth_type_trans() users, fix the few consumers exposed to this:
+>
+> Definitely a nice approach.
 
-Replace trace_foo() with the new trace_call__foo() at sites already
-guarded by trace_foo_enabled(), avoiding a redundant
-static_branch_unlikely() re-evaluation inside the tracepoint.
-trace_call__foo() calls the tracepoint callbacks directly without
-utilizing the static branch again.
+Thanks!
 
-Original v2 series:
-https://lore.kernel.org/linux-trace-kernel/20260323160052.17528-1-vineeth@bitbyteword.org/
+>
+> You previously suggested catching most of the TC modifications with a
+> single check in sch_handle_(e|in)gress. Is that no longer needed?
 
-Parts of the original v2 series have already been merged in mainline.
-This patch is being reposted as a follow-up cleanup for the remaining
-unmerged pieces.
+Not for these crashes. The sch_handle_egress() check would only cover
+tc egress. It would miss OVS and the redirect paths you mention, and it
+would add a check for every packet going through clsact. Fixing the
+consumers covers all producers, including future ones, at almost no
+cost. NIC drivers are not affected.
 
-Link: https://patch.msgid.link/20260515135927.2238823-1-vineeth@bitbyteword.org
-Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Vineeth Pillai (Google) <vineeth@bitbyteword.org>
-Assisted-by: Claude:claude-sonnet-4-6
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
----
- drivers/dma-buf/dma-fence.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+We can still add it later as hardening, if another class of bugs shows up.
 
-diff --git a/drivers/dma-buf/dma-fence.c b/drivers/dma-buf/dma-fence.c
-index bd58688b81a7..f7dee2f7c0de 100644
---- a/drivers/dma-buf/dma-fence.c
-+++ b/drivers/dma-buf/dma-fence.c
-@@ -554,7 +554,7 @@ dma_fence_wait_timeout(struct dma_fence *fence, bool intr, signed long timeout)
- 	}
- 	if (trace_dma_fence_wait_end_enabled()) {
- 		rcu_read_lock();
--		trace_dma_fence_wait_end(fence);
-+		trace_call__dma_fence_wait_end(fence);
- 		rcu_read_unlock();
- 	}
- 	return ret;
--- 
-2.53.0
+
+>
+> The few mirred/redirect cases are a bane, causing so many issues. And
+> escape any such check, as they call netif_receive_skb, netif_rx,
+> dev_queue_xmit, directly.
+>
+> If it's only act_mirred, bpf_redirect and OVS, maybe a single
+> validation helper across all three before they pass to the rx/tx
+> path, that for starters calls eth_type_trans_careful. It quite likely
+> won't be the last packet corruption they are capable of..
+
+I agree these are the problems, and Jamal just found another one in
+__bpf_redirect_neigh(), which does its own skb_pull(ETH_HLEN).
+
+A single helper is tempting, but what it must check depends on the
+target:
+- Egress to an Ethernet device: ETH_HLEN at skb_mac_header().
+- Egress to an L3 device (tun, ipip, wireguard...): no MAC header at all.
+- Ingress: data at the network header. eth_type_trans() is not
+  called again, except through __dev_forward_skb2() (patch 3).
+
+Also, the original loopback crash needs no redirect at all:
+"vlan pop_eth" on lo egress is enough.
+
+So I would keep this series as the minimal fix for net/stable, and
+look at a common helper for net-next, probably based on
+dev->min_header_len / dev->hard_header_len of the target device,
+called from tcf_mirred_forward(), skb_do_redirect() and OVS do_output().
+
+Thanks!
+
+>
+> >
+> > - Patch 1 adds eth_type_trans_careful(), which pulls the Ethernet
+> >   header first and returns a drop reason on failure.
+> > - Patch 2 uses it in loopback_xmit().
+> > - Patch 3 uses it in __dev_forward_skb2(), used by BPF redirects to
+> >   ingress and by veth, macvlan, ipvlan, netdevsim and l2tp_eth.
+> > - Patch 4 uses it in OVS internal_dev_recv(), covering both the MPLS
+> >   (TEB) and NSH pop cases at once (only the MPLS case was tested).
+> > - Patch 5 (from Jamal) fixes act_ife decode on egress, which was
+> >   consuming the inner Ethernet header. This is no longer a crash after
+> >   patch 2, but egress decode never delivered a correct frame.
+> >
+> > Other eth_type_trans() users already pull the header or never see
+> > such skbs:
+> > - vrf_process_v{4,6}_outbound() already pull ETH_HLEN + IP header
+> >   before vrf_local_xmit().
+> > - tun already uses pskb_may_pull_reason(skb, ETH_HLEN).
+> > - XDP: bpf_xdp_adjust_head() and bpf_xdp_adjust_tail() keep at least
+> >   ETH_HLEN bytes in the linear part, and multi-buffer tail shrinking
+> >   only trims frags.
+> >
+> > Tested under virtme-ng with AF_PACKET reproducers. Without the series,
+> > all four cases crash in eth_type_trans():
+> > - lo egress "action vlan pop_eth", eth/eth/8192 bytes frame
+> > - lo egress "action ife decode pipe", IFE frame with 8192 bytes payload
+> > - lo egress "action vlan pop_eth continue", then a BPF program doing
+> >   bpf_skb_change_head(skb, 1, 0) + bpf_redirect(veth1, BPF_F_INGRESS)
+> > - OVS flow "pop_eth,pop_mpls(0x6558),0" to the internal port,
+> >   eth/mpls/eth/4096 bytes frame
+> > With the series, no crash. An ICMP echo inside an IFE frame decoded
+> > on lo egress is now received and answered. Normal traffic on lo,
+> > veth (including 8000 byte pings) and vrf is unchanged.
+> >
+> > Link: https://lore.kernel.org/netdev/20261005052249.1914367-2-weir@nebu=
+sec.ai/
+> > Link: https://lore.kernel.org/netdev/ACT-N6N4.v3.r0.20261023200137-4@mo=
+jatatu.com/
+> >
+> > Eric Dumazet (4):
+> >   net: add eth_type_trans_careful()
+> >   loopback: use eth_type_trans_careful()
+> >   net: use eth_type_trans_careful() in __dev_forward_skb2()
+> >   openvswitch: use eth_type_trans_careful() in internal_dev_recv()
+> >
+> > Jamal Hadi Salim (1):
+> >   net/sched: act_ife: do not consume the inner header on egress
+> >
+> >  drivers/net/loopback.c               |  8 +++++++-
+> >  include/linux/etherdevice.h          | 28 ++++++++++++++++++++++++++++
+> >  net/core/dev.c                       | 18 +++++++++++++-----
+> >  net/openvswitch/vport-internal_dev.c |  8 +++++++-
+> >  net/sched/act_ife.c                  |  4 ++++
+> >  5 files changed, 59 insertions(+), 7 deletions(-)
+> >
+> > --
+> > 2.53.0
+> >
+>
+>
