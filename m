@@ -1,91 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.97
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793092246;
-	b=a1bfy73ykEyN1hFgz9DkS/M4klmc2bBqn2NFD/9N0nCH50l9ouVId2tEgSy2SEv5Cd/U
-	 ww2P/iK2w5NqJbwwP42rzz9rh5A6D6/QcXvecs0vdU14bcgNW5ejM5Cod30S3mdQejiW6
-	 7h30eeM8fsIbsy7sXe14bF2F4GU5EKkRgEMlxV1aqh5e3ITlhuAwRiAjfLJqJ0MkT/SLh
-	 EsMh/fJYxIzsBL+/xAybbY1++w5+CIZoyGpQiQNJEEeu3nXCYFfvZpYOoqAk7Q1nrsoBI
-	 Qhh0Bb46yvsGqpEeZFLDxlQP9C4DZPsqqt8o+Km2N9jRs99tOcLYFuXbk9pI2oiZA7w==
+	t=1793092254;
+	b=iBpnWFfbTSlTHYsSq5QkTS3Sykm4uMbW/5L+VEn8elzwDlodSJB2GokKw/GqnSg7nmJ0
+	 GAyhxJgv1GHSIb1zWQdRn0Iw/WFF99FQHRW8Gv5kFBUlV9oo3Gsx5k16TjfR4cvBQBSDu
+	 C2wIa7H7aXq4HLCS1NbOIQdxHpkcVe7+EGUXYwBY/fqShdHI6/X6w44tUxniJ9TPqaazC
+	 AzEYH0LwIwhOFjNVcLw+ZgqWSmFuyu9YCroQ7ZLzbbYCK/ZZyF60vdxOLlRCGK6I475Qr
+	 XO6tKVEbyLcK/1AK5jYQCPRS/CnB/LXVbecV7L6qb7qHEPmPJJEYhKMx3036N+sWaJQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793092246;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
-	 X-Gm-Gg:X-Received:Received:X-Relaying-Domain:X-CFilter-Loop:Received:
-	 DKIM-Signature:X-Received:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 X-DetectorID-Processed:Content-Type;
-	bh=JsA0PNA2lg5b3sx7uL2HeEkBmgUppAxcgkTuhBgbNQ8=;
-	b=DRcbLaxBr/ioohRpgQwS3pVSoPe+MPxfu+N1Q0C5SqXU1bLwNwgBS3ut9Zh7YBCUFjDT
-	 H6KuGMfj5ZaxtaH4gRTy9/MnoJx6FGLso3d69jwwI8JnSPKlgcbopjobOrxt712YGterU
-	 IlaRHG0sDBkF4vrK7r5g4P8Fru9tjZn9klz/yjHPA9eXGUaxr2rl6LM2sEqQAaJnVoyl9
-	 +G9XVwJ498z6fL0yBUD30++mPkkA5NBAk2THA+rlSyjvpe+6GQes6BCQVM5Ueg4iCmlQ5
-	 tEZXokDsqhsMRdmc3JKm18tPhgOMfQQ6H9PXV75uRSzYUa/R1+UzGTVBL8urywobCYQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793092254;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=u/flFy7ABkA1eA9YdJuR33AjqMLm+c8/F20IoDK/Kt4=;
+	b=1LI6KvD/5fcSnERovjhG3f2XLqLIFYMMdImmviIUQPBctL96CWsQv9CFd0ppTPWc7jBS
+	 U38zEtjlNv6lT8+tEz+qvq+nvOff7Xb6ztDh57kA03C5px9L7Js3S6QuJ7e9ni8eePMEW
+	 72upHyICf7yj4MpkV78hn92PrFsewD4AIkZNdbFehf5fs5EHRJHwcOHM1DJ3Vk75nQ2vL
+	 XTtBIQ7Ri0qyqI2aejprcmrgf23zL6fq5BYZQ9WWywQebQlCdryENHi+RVvTWJ+0ba1BI
+	 2QLe12qgB0+ZeSRvMH/goaIHGCwKpPvmjMojJ7hRg/Gl2tilclFmOxTukHEWOskLv4Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=broadcom.com;
-	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=bPmf2iNi;
-	arc=none smtp.remote-ip=209.85.216.97
-Received: from mail-pj1-f97.google.com (mail-pj1-f97.google.com [209.85.216.97])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gAcbwxK7;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A159606A323
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 09:10:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3A159606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED6D606A31E;
+	Tue, 27 Oct 2026 09:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=bPmf2iNi
-Received: by mail-pj1-f97.google.com with SMTP id 98e67ed59e1d1-3ac9f49b984so496279a91.1
-        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 02:10:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793092245; x=1793697045;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JsA0PNA2lg5b3sx7uL2HeEkBmgUppAxcgkTuhBgbNQ8=;
-        b=BmU1OqK+6VKio2/z4wXATZ0lXjiyTKXJb7BhK1/CEk7H8z5km9+UuJTS3BgCz16mkx
-         vZ+m1UdfZCUdrNL6SJDQ4XUHS3NfUq5LzJdcO4ENKip6MQry0eZNkVKi3N77YdizVjpv
-         jROrmAj1gTjL8UKSyYNjEsRSIikeQ/Pvp3ZGXf6KF7DPVDCxyeV/erdZBX97Z8HO9P6m
-         ERFDfDEl4+/85HIHhgD+zwied6dER2QUk6KcUhlAGrox9UPGklGnW5ZngUmycKln/PqJ
-         5iZ0sJOhi04qJTyeL+q7GWD+ExI1UY/oGxdWAzRjTgShKZ+bIzOWTPO5crJUVIsJpW9Q
-         QurA==
-X-Gm-Message-State: AFq9FYIbJQuuw3xP6HeYB+CCKUjm88X4aGU+W97t5bywAyePspQ/R3yZ
-	1RH+4nEJ0vwgisooFPI8LjYjL5m6iXKHHevY8d6LhXxEo1R7fb3/Sa/9kAzN3sj4eQafewmmGd6
-	QXUKQV4M4+1kPEFh2V1uFoEcDs9G06hkNb70F+eQa20q04S10sZNHkp8w9MH6lVrYPLBJq2KegN
-	WW3Q4VVx3smV7EavOBgCap+LSVoB7W9GgRs9hBOyJp0JYFh8uRRe9/H3F+e6ts6F1LjHSM08e8L
-	QUVk/rfdBnAVg==
-X-Gm-Gg: AYBFou1UnZQoKynlMe8fVWiSvqzIr+OXgHPJqBlX3FzQNLO2zoiE6BQYleNMbmX/Byg
-	VykrAWZEUULYxWn73ZJ0slYDZQiBaDemETU60VPBZTn7ycYsjWFrnG2hus6PoZrshhkBWC1LWZR
-	Eitb8f88c5RD74t1ViTEIdITuTlv1GwCP2WOgumgZTZzhpaKKCplopp1nglIqKFF8o5hcQlIlLC
-	4o+DzR2CiKpvSAEhzwU7y3/aeTxW6iGUoRwN5orLBxWrR3gAQLeON4BIYu6nwyx95nAVI3e0Yf3
-	5GFKtlU2gb34Cr6se9vN8P5JuIb7SJv0f/PR4MOXvF3HTwvAzq8KEbiq9NZJEDZJvZYforBb7Ya
-	am6Ztg+qeLh9PgX4y6FWLgTWGgb/pXp8DyAgVLUjVir2uBE3oKcf71xfxDFnMzjxi8l0TsjX16J
-	L0CGzDdLNHrfuLfYQ5YivaVShrzeOUTtChIFM=
-X-Received: by 2002:a17:90b:280a:b0:3ab:b764:8256 with SMTP id 98e67ed59e1d1-3ae4028447emr1118256a91.17.1793092245130;
-        Tue, 27 Oct 2026 02:10:45 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-23.dlp.protect.broadcom.com. [144.49.247.23])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ae41527924sm508545a91.4.2026.10.27.02.10.44
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 27 Oct 2026 02:10:45 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8a086ed8980so627953b3a.1
-        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 02:10:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1793092243; x=1793697043; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=JsA0PNA2lg5b3sx7uL2HeEkBmgUppAxcgkTuhBgbNQ8=;
-        b=bPmf2iNi+Gp87BjWBq6Xsa/bHZRq0wMkiscK198+Ht+B1V1o2u4pg2eC2wVhBQFIAQ
-         piXPoAw3757UoyIcte9tHjXWg/PETMYaMXvQfYyTh3/iRlGNRpOavhPktfMbXCnwK31x
-         SRa2oi3lftvEiFIoR0i0a+bM0xbLq83jYZOUQ=
-X-Received: by 2002:a05:6a00:1413:b0:89f:d449:7524 with SMTP id d2e1a72fcca58-8a5a5fc2220mr1263548b3a.4.1793092242967;
-        Tue, 27 Oct 2026 02:10:42 -0700 (PDT)
-X-Received: by 2002:a05:6a00:1413:b0:89f:d449:7524 with SMTP id
- d2e1a72fcca58-8a5a5fc2220mr1263533b3a.4.1793092242538; Tue, 27 Oct 2026
- 02:10:42 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gAcbwxK7
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE63F1F01828;
+	Tue, 27 Oct 2026 09:10:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793092253;
+	bh=u/flFy7ABkA1eA9YdJuR33AjqMLm+c8/F20IoDK/Kt4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=gAcbwxK7JAN0bXoYlG36I7L0p+Gxz/+fWu2Z5DcnwpErAYl7FZSjs6UMHUQRsBQvx
+	 fo1ookShiG+ckmXWBsp45AMJKN5p8LHWdQbWsVbOQea/fLKGruqGBgA8zEgC5NN37f
+	 GXMO4N8DapcKw0DcTZ3E/7LtPfaGPgFb5do6ypdDQ2kQZu6n2tAUVtRslFVyZNheW0
+	 1xLgvKj8+ZLW2HG7aEqpucUN2Aby3T3yN3O1q4o661u5MUQmM1DkwTAUYehfSCZGCV
+	 OvX6iJUKdGY+spIXUUcPEFK2k8yVwZBt36+yPhB0Mj7Up8b+MbLpIl+t3eaP86nEcc
+	 cJ2LxBJTosqCg==
+Subject:
+ Re: [PATCH net 2/6] net: stmmac: drop split frames on AF_XDP zero-copy RX
+From: netdev-bot+sashiko@kernel.org
+To: lorenzo.bianconi@oss.qualcomm.com
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, ast@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
+ sdf@fomichev.me, Jose.Abreu@synopsys.com, boon.leong.ong@intel.com,
+ o.rempel@pengutronix.de, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
+Date: Tue, 27 Oct 2026 09:10:52 +0000
+Message-ID: <179309225249.3134.13360572151220701495@kernel.org>
+In-Reply-To: <20261023-stmmac-xdp-fixes-v1-2-efb37e19f5bd@oss.qualcomm.com>
+References: <20261023-stmmac-xdp-fixes-v1-2-efb37e19f5bd@oss.qualcomm.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -95,170 +67,215 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261026220955.473247-1-noam.d.eliyahu@gmail.com>
-In-Reply-To: <20261026220955.473247-1-noam.d.eliyahu@gmail.com>
-From: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Date: Tue, 27 Oct 2026 14:40:30 +0530
-X-Gm-Features: AclHuK8vG272yQNksZL2XMWb2KP-04-p1tlW50fyIa3f_9NbrI38Y8wq4TVqb50
-Message-ID: <CALs4sv0=eWvwDh4mfq_OZnULn=mZY-GvmnVarrx+84mxwcnp_g@mail.gmail.com>
-Subject: Re: [PATCH net] tg3: Invert restart quirk logic to restrict SNP
- power-down bypass
-To: "Noam D. Eliyahu" <noam.d.eliyahu@gmail.com>
-Cc: netdev@vger.kernel.org, michael.chan@broadcom.com, kuba@kernel.org, 
-	edumazet@kernel.org, davem@davemloft.net, pabeni@redhat.com, 
-	andrew+netdev@lunn.ch, horms@kernel.org, stable@vger.kernel.org
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000003690ac065eced252"
 
---0000000000003690ac065eced252
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-On Tue, Oct 27, 2026 at 3:41=E2=80=AFAM Noam D. Eliyahu
-<noam.d.eliyahu@gmail.com> wrote:
->
-> Commit 9fc3bc764334 ("tg3: power down device only on SYSTEM_POWER_OFF")
-> bypassed `tg3_power_down()` on system restarts to prevent reboot hangs an=
-d
-> NMIs on servers where NICs were initialized via SNP (such as Dell PowerEd=
-ge
-> R650 and R750).
->
-> However, skipping the power-down flow globally causes the ACPI _PTS metho=
-d
-> to trigger fatal PCIe AER events and hangs on other models. Commit
-> e0efe83ed325 ("tg3: Disable tg3 PCIe AER on system reboot") attempted to
-> mitigate this by adding an AER-disable DMI quirk table. Maintaining a
-> growing list of models for a secondary symptom misses the root cause,
-> leaving systems like the PowerEdge T440 (sharing the BCM5720 NIC) exposed=
-.
->
-> Fix this by inverting the quirk logic:
-> 1. Restrict SNP power-down avoidance strictly to
->    `tg3_restart_snp_quirk_table` for the specific systems requiring it
->    (Dell PowerEdge R650 and R750).
-> 2. Restore standard power-down behavior for all other systems, eliminatin=
-g
->    the separate AER-disable quirk table.
->
-> For systems affected by the original SNP restart issue, their shutdown fl=
-ow
-> remains completely untouched.
->
-> Link: https://lore.kernel.org/netdev/20251221175050.14089-1-noam.d.eliyah=
-u@gmail.com/T/#u
-> Fixes: 9fc3bc764334 ("tg3: power down device only on SYSTEM_POWER_OFF")
-> Fixes: e0efe83ed325 ("tg3: Disable tg3 PCIe AER on system reboot")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Noam D. Eliyahu <noam.d.eliyahu@gmail.com>
-> ---
->  drivers/net/ethernet/broadcom/tg3.c | 48 +++++++----------------------
->  1 file changed, 11 insertions(+), 37 deletions(-)
->
+Critical: 0 · High: 0 (2) · Medium: 1 (2) · Low: 0
 
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
---0000000000003690ac065eced252
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+- [Medium] The commit message does not describe one behaviour change the
+  patch makes, and nothing explains the second Fixes tag.
 
-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
-/HTPxpDrr4vzZL0yoc9XefyCbdiwfyFl99oBekp+1ZxXc5bZsVhRPVyEWFtCys66nqu5cU2GPT3a
-ySQEHOtIKyGGgzMVvitOzO2suQkoMvu/swsftfgCY/PObdlBZhv0BD97+WwR6CQJh/YEuDDEHYCy
-NDeiVtF3/jwT04bHB7lR9n+AiCSLr9wlgBHGdBFIOmT/XMX3K8fuMMGLq9PpGQEMvYa9QTkE9+zc
-MddiNNh1xtCTG0+kC7KIttdXTnffisXKsX44B8ECAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
-oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
-Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
-BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
-IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
-FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
-hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
-BB0wG4EZcGF2YW4uY2hlYmJpQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
-HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUxJ6fps/yOGneJRYDWUKPuLPk
-miYwDQYJKoZIhvcNAQELBQADggIBAI2j2qBMKYV8SLK1ysjOOS54Lpm3geezjBYrWor/BAKGP7kT
-QN61VWg3QlZqiX21KLNeBWzJH7r+zWiS8ykHApTnBlTjfNGF8ihZz7GkpBTa3xDW5rT/oLfyVQ5k
-Wr2OZ268FfZPyAgHYnrfhmojupPS4c7bT9fQyep3P0sAm6TQxmhLDh/HcsloIn7w1QywGRyesbRw
-CFkRbTnhhTS9Tz3pYs5kHbphHY5oF3HNdKgFPrfpF9ei6dL4LlwvQgNlRB6PhdUBL80CJ0UlY2Oz
-jIAKPusiSluFH+NvwqsI8VuId34ug+B5VOM2dWXR/jY0as0Va5Fpjpn1G+jG2pzr1FQu2OHR5GAh
-6Uw50Yh3H77mYK67fCzQVcHrl0qdOLSZVsz/T3qjRGjAZlIDyFRjewxLNunJl/TGtu1jk1ij7Uzh
-PtF4nfZaVnWJowp/gE+Hr21BXA1nj+wBINHA0eufDHd/Y0/MLK+++i3gPTermGBIfadXUj8NGCGe
-eIj4fd2b29HwMCvfX78QR4JQM9dkDoD1ZFClV17bxRPtxhwEU8DzzcGlLfKJhj8IxkLoww9hqNul
-Md+LwA5kUTLPBBl9irP7Rn3jfftdK1MgrNyomyZUZSI1pisbv0Zn/ru3KD3QZLE17esvHAqCfXAZ
-a2vE+o+ZbomB5XkihtQpb/DYrfjAMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
-ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
-MjAyMwIMClwVCDIzIfrgd31IMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCAZHICX
-JIz8bj4oB6EDwV+KA4okEn2JAYphMQRpjK2IjzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
-CSqGSIb3DQEJBTEPFw0yNjEwMjcwOTEwNDNaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
-MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
-SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBbLyV0tZTFSpz20r6fE/SAckk6YAnTucm+NWYOcxe0
-5ZEbBMySf3j5Y+JoTVG7mYCRYU9WQDRjrR5kBnn5fcHpJ/Qa+AGKV0ubck+tu+jYiMUj6G6E9smS
-Npyt4FJn5VzcxjsnxZFfZrSv5hRbDGkbvqA9ECGURdwqsCkTnAyMCBDbglNn8wFFXB6IAE3Sw10J
-Ns1a7xvYyLl+ma2Erf/uEJzFi61NqPeE0muL/q+UdHBJwKtxkNFtaIZKL+CfShKlL+j4DVmW/qrn
-FvPVxt1+tMVCqyCmfO3Z9Q9L2jv0cKVmNOVQAw1S/kwDVNibar/70eJzankbEEvjOhPA55TY
---0000000000003690ac065eced252--
+Pre-existing issues:
+- [High] On GMAC4/XGMAC, stmmac_rx() in native (non-ZC) XDP mode still
+  handles split RX frames wrongly at this commit.
+- [High] On AF_XDP zero-copy XDP_PASS, stmmac_dispatch_skb_zc() ignores
+  the csum_none bit from the descriptor status.
+- [Medium] In stmmac_rx(), if napi_build_skb() fails on the first
+  descriptor of a multi-descriptor frame, the code does `rx_dropped++;…
+- [Medium] priv->xstats.rx_dropped and priv->xstats.rx_errors are device-
+  wide `unsigned long` counters.
+
+--
+
+net: stmmac: drop split frames on AF_XDP zero-copy RX
+
+When stmmac_rx_zc() drops a frame that spans more than one RX descriptor,
+it now sets error, so the remaining descriptors are freed and the tail is
+not handled as a new frame. The dwmac100/dwmac1000 descriptor callbacks now
+return rx_not_ls together with discard_frame for non-last descriptors. The
+discard_frame checks in stmmac_rx_zc() and stmmac_rx() change from == to &.
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index fba21599a5e15..3fa2c15222d88 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -5710,18 +5710,21 @@ static int stmmac_rx_zc(struct stmmac_priv *priv, int limit, u32 queue)
+>  		if (priv->extend_desc)
+>  			stmmac_rx_extended_status(priv, &priv->xstats,
+>  						  rx_q->dma_erx + entry);
+> -		if (unlikely(status == discard_frame)) {
+> -			xsk_buff_free(buf->xdp);
+> -			buf->xdp = NULL;
+> -			dirty++;
+> +
+> +		if (unlikely(!error && (status & discard_frame))) {
+>  			error = 1;
+>  			if (!priv->hwts_rx_en)
+>  				rx_errors++;
+>  		}
+
+[Severity: High]
+This is a pre-existing issue, but with this test, a dwmac4 frame that only
+has csum_none set still reaches the XDP program. That covers an L4 payload
+checksum error without RDES3 ERROR_SUMMARY. On XDP_PASS the frame goes to
+stmmac_dispatch_skb_zc(), and that function never receives status:
+
+stmmac_dispatch_skb_zc() {
+    ...
+	if (unlikely(!coe) || !stmmac_has_ip_ethertype(skb))
+		skb_checksum_none_assert(skb);
+	else
+		skb->ip_summed = CHECKSUM_UNNECESSARY;
+    ...
+}
+
+dwmac4_dma_rx_chan_op_mode() always sets MTL_OP_MODE_DIS_TCP_EF, so the
+hardware does not drop these frames. dwmac4_wrback_get_rx_status() reports
+them with no discard_frame:
+
+	if (rdes1 & RDES1_IP_PAYLOAD_ERROR) {
+		x->ip_payload_err++;
+		ret |= csum_none;
+	}
+
+Can a packet with a bad TCP/UDP checksum get marked CHECKSUM_UNNECESSARY
+on the AF_XDP zero-copy XDP_PASS path and be delivered to sockets?
+
+stmmac_rx() checks (status & csum_none) before it sets
+CHECKSUM_UNNECESSARY. Should stmmac_dispatch_skb_zc() do the same check?
+The gap is still there at the end of the series.
+
+[ ... ]
+
+> @@ -5730,8 +5733,9 @@ static int stmmac_rx_zc(struct stmmac_priv *priv, int limit, u32 queue)
+>  		if (likely(status & rx_not_ls)) {
+>  			xsk_buff_free(buf->xdp);
+>  			buf->xdp = NULL;
+> +			rx_dropped++;
+> +			error = 1;
+>  			dirty++;
+> -			count++;
+>  			goto read_again;
+>  		}
+
+[Severity: Medium]
+This is a pre-existing issue, but the rx_dropped count added here is added
+to the device-wide counter at the end of stmmac_rx_zc():
+
+	priv->xstats.rx_dropped += rx_dropped;
+	priv->xstats.rx_errors += rx_errors;
+
+stmmac_rx() does the same thing, and stmmac_dispatch_skb_zc() does
+priv->xstats.rx_dropped++. These are plain unsigned long read-modify-writes
+with no lock, no atomic and no per-queue split.
+
+NAPI polls for different RX queues can finish at the same time on
+different CPUs. Can they lose increments here, so that stmmac_get_stats64()
+under-reports rx_dropped and rx_errors?
+
+[ ... ]
+
+> @@ -5898,7 +5902,8 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+>  
+>  		if (priv->extend_desc)
+>  			stmmac_rx_extended_status(priv, &priv->xstats, rx_q->dma_erx + entry);
+> -		if (unlikely(status == discard_frame)) {
+> +
+> +		if (unlikely(status & discard_frame)) {
+>  			page_pool_put_page(rx_q->page_pool, buf->page, 0, true);
+>  			buf->page = NULL;
+>  			error = 1;
+
+[Severity: Medium]
+The commit message does not seem to describe this change or explain the
+second Fixes tag:
+
+    Fixes: 644b8437ccef9e ("net: stmmac: dwmac4: report Rx checksum errors in status")
+
+Is this change from == to & the actual fix for 644b8437ccef9e?
+dwmac4_wrback_get_rx_status() sets ret = discard_frame on
+RDES3_ERROR_SUMMARY. It then ORs in csum_none on RDES1_IP_HDR_ERROR or
+RDES1_IP_PAYLOAD_ERROR, so it can return discard_frame | csum_none.
+
+The old status == discard_frame test missed that value. Frames with CRC,
+overflow, watchdog or giant errors that also failed the IP checksum were
+passed to the stack in stmmac_rx(), or to XDP/XSK in stmmac_rx_zc().
+
+The fix looks correct. However, the body only covers the AF_XDP zero-copy
+1:1 drop and the dwmac100/dwmac1000 descriptor change, and this hunk
+changes the regular non-XDP RX path on every GMAC4/XGMAC system.
+
+Could the commit message describe this change and the 644b8437ccef9e
+regression it fixes?
+
+[Severity: High]
+This is a pre-existing issue, but does stmmac_rx() in native XDP mode
+still mishandle split frames on GMAC4/XGMAC? For a non-last descriptor,
+dwmac4_wrback_get_rx_status() returns rx_not_ls without discard_frame:
+
+	if (likely(!(rdes3 & RDES3_LAST_DESCRIPTOR)))
+		return rx_not_ls;
+
+So the discard_frame drain above never starts, and the XDP program sees
+the first fragment as a complete frame. On XDP_DROP:
+
+				if (xdp_res & STMMAC_XDP_CONSUMED) {
+					...
+					skb = NULL;
+
+					if (unlikely((status & rx_not_ls)))
+						goto read_again;
+
+skb is NULL and error is still 0. The tail then goes through XDP again
+and can be passed to the stack as a new packet.
+
+On XDP_TX or XDP_REDIRECT the code does goto next, which clears
+in_progress. The next iteration resets len to 0, so stmmac_rx_buf1_len()
+reports the full dma_buf_sz for the tail. Can that expose stale page_pool
+contents that DMA did not write for this frame?
+
+This is the same kind of bug the patch fixes for stmmac_rx_zc(), but here
+stmmac_rx() is only covered for dwmac100/dwmac1000. The next patch in the
+series, "net: stmmac: drop multi-buffer frames in XDP mode", appears to
+fix it. That patch sets error on rx_not_ls in XDP mode, drops frames that
+use buf2_len, and makes the XDP_CONSUMED path goto next.
+
+[Severity: Medium]
+This is a pre-existing issue, but stmmac_rx() has a similar problem when
+napi_build_skb() fails on the first descriptor of a multi-descriptor
+frame:
+
+			skb = napi_build_skb(page_address(buf->page),
+					     rx_q->napi_skb_frag_size);
+			if (!skb) {
+				page_pool_recycle_direct(rx_q->page_pool,
+							 buf->page);
+				buf->page = NULL;
+				rx_dropped++;
+				count++;
+				goto drain_data;
+			}
+
+error is not set, so drain_data jumps to read_again with skb == NULL and
+error == 0. If allocation succeeds on the next descriptor of the same
+frame, the if (!skb) branch builds a new skb from only the tail fragment.
+
+At the last descriptor, pskb_trim(skb, len) does nothing. len still
+includes the dropped first fragment, so it is larger than skb->len.
+
+Does this pass the tail to the stack as a standalone packet with its FCS
+still attached, and count the frame against the budget twice? Should this
+path set error so the rest of the frame is drained?
+
+At the end of the series this only happens in non-XDP mode, because XDP
+mode now sets error on rx_not_ls.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261023-stmmac-xdp-fixes-v1-0-efb37e19f5bd%40oss.qualcomm.com
