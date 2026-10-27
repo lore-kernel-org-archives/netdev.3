@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793140208;
-	b=hwEv/OTNppgm7FQemnx8Zo4ecWPxpWLFdpUmw+0fI4yAajB6YZJdC2EseVneMCNYMemV
-	 FA/ccb0vZmNOeB9O1NLWUb+hy78/TBV2EubA/YJiwYZENQ/Z3pGlFkD20UwWhoUsVHWVz
-	 3WPVpJXoG6x2il+tz71UNANf3SVT+LSN4DxFNeTQaCOOzDFGtsmqSZzrJSJ3RhnYFXjO9
-	 PN7grFf430KNVmYsCvCACG3V4S/MRRknzKseZlpA1b7JrQ3cDfmYK4KRug/iwCcB41CMQ
-	 QUTOSAVITR08JFDlQ0/RRyyDqjtJleLmu+ZjboaLGuT2kcAIyE9SxcaZ2HaAjjVbEkw==
+	t=1793140210;
+	b=ayLeY099qRTetXOlbY/dI1L2bhwVQP1DH114S9svbAs3775AbKIHkU3DOFInxsmDPmEi
+	 ZHxjH3c59omVPogyFI2pvh5WP8cbHr/v0kPw21pOxiGRvQ0u5z4OFCRQT3bb5Nej+aHkZ
+	 373c/QuOnKtEVExkNfuwr/F7cdQqXsffQyaR9sZCS8SBhITEwbU/MsVpBGMWpz1WXP47D
+	 aBsygD/guM6zHeF/p8hPneWo+1zpGDmXg6EbQLRJLCzQOOFCaHFF/2gP0sq+ed697dVR+
+	 wNqH6/ybpjF9CBdPEZQnzgXUGZ/Mi3pFXQLa2XexZ9+sLethrlSrGrDj4cIP0Mok8Gw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793140208;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793140210;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=Icmy+kcn+FXvIaWbc4wQxTRCPswqqvM2uKUM5JzYh9k=;
-	b=3NqyP1YTfigqfoWP8y978SDcxVVEjXVZ0Z6erYA+mWzSmKL1rnULj2M83map2hblmmLi
-	 sj8hES+kyeQrrFWbBFMf/lis0wt/+XnxzKP0+FI6UP9me1Z2jpdSxXiT/dXJl/IPvTPVy
-	 pm4AGJGkFyeeDgNYj2YKu3icmG0uH6ZL5ir2PTsOxTaky1JI75f9zrYKDsAs3JcyLhLJy
-	 txcH60iKWZsCyxsH7D/WwSxbL/3Oa23GO5DXewGQlDPOXwPihAtzw08PIAZY9uvRNFaP1
-	 X2HpzRRLozp+G375mLSkYqcX87NkuLBFAeehlSatW/YntHKYpPIxzJDhEZm56ozimbQ==
+	bh=fHlJ1wv5xEEQuy6wpLDTT9zC5ZVQRxUfazIXFu+TLHY=;
+	b=QtXQK4yg6GVa9e4k9Eu9n5jGY2LlJi+jvy+YEHn0ImSepVmfbAZlz2fAN7s9jbvOaKeU
+	 a3pJKBjZO7rHq9mURTx4gghnJlBU1LYOQZN6+9OPCT/vu0TI05RxPsjwbOs9+p65hk5ye
+	 ST1dR8nKukEYyXR/YZ2ukiF8pcRcqt7qTB0vST86dr2ycFhJc4r/ZH4Fm7JosQLNmWipF
+	 c05PzNv+lCEpFcRErGYf7/rzA02+M9BMZmnH4XVcSDkfoxfORb6kSUL5ZrruQPyRcP9Q9
+	 xsTVFF9IcS9JUieFHQ8XTJPPlua62hlj1DBpBOq9UxNF6fc+sfhclU1S84O+zMawRTg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l0MyecWY;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O9RJUtrE;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54525606A32F;
-	Tue, 27 Oct 2026 22:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3AB3606A324;
+	Tue, 27 Oct 2026 22:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l0MyecWY
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC851F01829;
-	Tue, 27 Oct 2026 22:30:08 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O9RJUtrE
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 896EA1F031E4;
+	Tue, 27 Oct 2026 22:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793140208;
-	bh=Icmy+kcn+FXvIaWbc4wQxTRCPswqqvM2uKUM5JzYh9k=;
+	s=k20260515; t=1793140210;
+	bh=fHlJ1wv5xEEQuy6wpLDTT9zC5ZVQRxUfazIXFu+TLHY=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=l0MyecWYboY/ZSxKM0kTOT6dTz9bmxA2vyPYkRxgHRaPM9LrALwkyTp5hMAO/HQgj
-	 jWMh+hzefOKF/FLB9l4xhU4u+fJuEnUwMxugNoT6HhEUJnF0zxY/CiZA/WaUC1Ll3l
-	 DD2jg1U6tAxOFDH5G52Mul6ShYib5JfCUT9tXlcfqj62c7zG+yOG3lLFKrtYJX83/S
-	 bcO1WY6Lnpr/6dGykZEsY/X61j0jaMTCAj+zRR50wxOgeGB5PgbHBqIZsE8yEV68Kt
-	 GD41CUZOGH9dgQg2W423YKlIo8BZF8I6JdbUUfrui4J4el/XqynG7HZE238V3AQAWO
-	 6dlRobN1UC5/Q==
+	b=O9RJUtrE+d6xFCi411NyiykGbFIeEIPZot8R02yz6683geXxyR4Adrb0kO+Cp/wkz
+	 CdDHZn7nfYQHQBKMuUAGsY7kgtYSHwL3OHLj4hnDohvfvVA2fK3zVhMgF1Wwul5jQd
+	 hbKufASFkBQWbHeXFGZB1ImOGuUjKHKajOTdYDpaIn4vKF094I+f/ZX0A2iyBWBU4z
+	 LiYhSWsYTTdpYa7Lb69/oJYPJ7Jwe8dc91JJwGHkWIzOBesxRqMXxlJnUmq031RS+H
+	 pobwPon/D9NBnkG9h/IdwU3gC6TW7a9W5bKcCnm6vnd6gdsEIHWpdL8bNLSDLm4tjV
+	 DPSvJtyXUr3XQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 27B673AA940C;
-	Tue, 27 Oct 2026 22:30:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 814163AA940B;
+	Tue, 27 Oct 2026 22:30:10 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,45 +54,45 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: lan966x: release the in-flight slot of a stale
- TX
- skb
+Subject: Re: [PATCH net] net: lan966x: fix the DB dataptr of frames from
+ ndo_xdp_xmit
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179314020694.360855.7049106598198872614.git-patchwork-notify@kernel.org>
-Date: Tue, 27 Oct 2026 22:30:06 +0000
+ <179314020904.360855.3604879146922588076.git-patchwork-notify@kernel.org>
+Date: Tue, 27 Oct 2026 22:30:09 +0000
 References: 
- <20261026-lan966x-ptp-stale-tx-slot-v1-1-9f7c895eb1ff@microchip.com>
+ <20261026-lan966x-xdp-xmit-dataptr-v1-1-d0dd068324de@microchip.com>
 In-Reply-To: 
- <20261026-lan966x-ptp-stale-tx-slot-v1-1-9f7c895eb1ff@microchip.com>
+ <20261026-lan966x-xdp-xmit-dataptr-v1-1-d0dd068324de@microchip.com>
 To: Daniel Machon <daniel.machon@microchip.com>
 Cc: horatiu.vultur@microchip.com, UNGLinuxDriver@microchip.com,
  andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, richardcochran@gmail.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+ kuba@kernel.org, pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net,
+ hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 26 Oct 2026 14:46:54 +0100 you wrote:
-> lan966x_ptp_txtstamp_request() counts every two step TX skb waiting for
-> its timestamp in lan966x->ptp_skbs, and refuses new ones once
-> LAN966X_MAX_PTP_ID are in flight. lan966x_ptp_txtstamp_old_release()
-> frees the skbs that have waited longer than LAN966X_PTP_TIMEOUT.
+On Mon, 26 Oct 2026 14:46:39 +0100 you wrote:
+> lan966x_fdma_xmit_xdpf() transmits both XDP_TX frames and xdp_frames
+> from ndo_xdp_xmit, and builds the DB with
+> lan966x_fdma_xdp_tx_dataptr_cb(), which adds XDP_PACKET_HEADROOM to the
+> stored DMA address.
 > 
-> Before this patch, old_release() does not decrement ptp_skbs, so every
-> skb whose timestamp never arrives, for example because the switch
-> discarded the frame, keeps its slot forever. Once LAN966X_MAX_PTP_ID
-> slots are lost, two step frames fail to transmit on every port of the
-> switch.
+> Before this patch, the headroom is also added for xdp_frames. For
+> XDP_TX the stored address is the start of the page pool page, but for an
+> xdp_frame it is the mapping of the IFH placed in front of the frame
+> data, so frames from ndo_xdp_xmit are read from XDP_PACKET_HEADROOM
+> bytes after their IFH.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: lan966x: release the in-flight slot of a stale TX skb
-    https://git.kernel.org/netdev/net/c/074caa30a627
+  - [net] net: lan966x: fix the DB dataptr of frames from ndo_xdp_xmit
+    https://git.kernel.org/netdev/net/c/ce3192e0dafa
 
 You are awesome, thank you!
 -- 
