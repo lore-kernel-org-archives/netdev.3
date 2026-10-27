@@ -1,68 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.135
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.137
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793084503;
-	b=qaPzu5F4U6iK3ze6TrC5Kp/Ao/ilEGK+kBmu4J0BBQNhHXgVgDo8GQ3QGGbhSFshyg3A
-	 O4M1Wim6snz+Sz/DOWM1drzpKxVHDyFM39yHpT0APpK47eEssLIFIbU5k/N85no5tBMXq
-	 LCC8TkulNthkG9qFU5eIwXzlAyh6IVsBj3y27S8i7/FWTciI2KeOh3sUOP8iosfswbxec
-	 Y3Rs8cYc/vkAOPr/L4DzniOxPi1oo6zDYRWuB4M7+YDMi+22nffqQiddVIbn95pl6bGTu
-	 gj5EF9Hba0pYyW/iTWWLbkIvvR5haofzHwwho/H9NjBlxYQFyyt+8HqUAsmmWd9y1dw==
+	t=1793084510;
+	b=dK0RbAnnzadL5MEy2jPnxFGi4qnZ2AtI90grwdA7yIuT6BmdBfQxHH09EiVYbS4lEY4v
+	 Z7oHqO12Z3PXQ46Psu1MziMaOx/1/ZudTVO+X+z8zZusuBxtvw2WyI/8D3Ae8bt6JDO4n
+	 dx5uKkEBuyNORhauVhMKJe5SwMadglU742Gp1kCFOlG3xlycSOKRdbN4D/LRK/Emmjyx0
+	 Jufh508+Bsy0i4gqA9DSPtYf7CH5UGmBNbO7kf1V+mfykzsbK0w7CG8kHO86uYC4+g/Bs
+	 0e6nL33SUSMUUUFk6LFvUqnnEONYdDSI0lN1Mq2TMTB1C/e+X+TaiPej4gvCvyr6MFA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793084503;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793084510;
 	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
 	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=02Uz2Vl5PMj3H0XVcfZQT2jH6lSBsH/c66JZZZkAW9I=;
-	b=WtaWxSeKlTnA7mg0jym1ZCTZVCrxYPQ0G5XMk3j163944NyieJASt6zZt+TkHMCRTD1y
-	 d5MPg1OxdRFIU8Gjoh8352fNWMnD1/fnuRaot4l5g03j+poT1ZM99Ah7GPMZb8gf3uMSe
-	 W3f2pFz8+xgKTgeCYtp992p9d2VKCsMY3bhC8oV1IEfPlWkPtz3rX+wgTZo6UiLBRwIdn
-	 gi6Z+HE4Wv+cTFhjUITsqzukflT0oCAAFJ89nVjBqT7t6ZCtGwiPCGs0N7MSV/+QZM33x
-	 rJpaIfLkfRN35K+EUgKLVgzoenkxawEOor4qnLFnsSBdwWpCDJlvlzBc5hvDtya51Vg==
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=4/uN1Zp2J/k/3SLIBOCDwzRSoBK60Gc0psw5pmXaNiM=;
+	b=LxdBYmHyirS3Dr6RWRWlPjYea+pEhaxWCyue4z767uCsDVs1lVl6IIECQrCsp1P+DqgS
+	 3umQTYLP2CAOYkZTRktEf6BJtpjPGRQuuMV7d03VK1y5G479oBZLwzE1AuVxi6dfdp9+c
+	 wL499ifToVxHm0HmsJUKc6HgIsVCQ7VblwRCd8HaMXZC9ViDlZMuL65nUFWoXySmgQmOM
+	 kHjOfXfBZ7IHqW7loN/OYTUpG3+5kR9oG0jO0TlShAOVzz/Xiw6cGOKxhmlcussfdgOuh
+	 D950TvLyrKIZD8CdUe5GR/OBgQViKrfTWAt16pUUWpuox8669ejVgApygwEw881bg/g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=cmss.chinamobile.com;
 	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=QUyR5bYW;
-	arc=none smtp.remote-ip=111.22.67.135
-Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com [111.22.67.135])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CBBA606A324;
-	Tue, 27 Oct 2026 07:01:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1CBBA606A324
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=XSZez1WK;
+	arc=none smtp.remote-ip=111.22.67.137
+Received: from cmccmta4.chinamobile.com (cmccmta4.chinamobile.com [111.22.67.137])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8931A606A32A;
+	Tue, 27 Oct 2026 07:01:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8931A606A32A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=QUyR5bYW
+	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=XSZez1WK
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=cmss.chinamobile.com; s=default; l=0;
 	h=from:subject:message-id:to:cc:mime-version;
 	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=QUyR5bYWgCnNOP98IU3IUwTAcW2T0o3LaxF7vkDZ08XxWb5Pf7iPKVMGXuWdPyQwJM87GRuaz5GKM
-	 INxMm7mSb5y+0ME0zPODLP6TEEtyCetrEvswUTlYQrM10CSGmyG+gjcuq2dfc4zS36Qvj5JmwnyChZ
-	 iJjqO0EijAcXmVw4=
+	b=XSZez1WK6xpj/BdbouJwFcPWPQkOxJKlaSkjGZaEpph50eorQGU5+6P6z26yWcVgSZgPldry777ue
+	 5hhBvQnz4SFLNwIY/Shcfl9TzHSX1Lze9wIshL2+BBlP71oZZQbcv4YGFAsmFkLppTi3l2fl10BaHh
+	 8rVEl9LdJua9J5dc=
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM-FLAG:00000000
 Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app03-12003 (RichMail) with SMTP id 2ee36ae04c536e2-21444;
-	Tue, 27 Oct 2026 15:01:39 +0800 (CST)
-X-RM-TRANSID:2ee36ae04c536e2-21444
+	by rmmx-syy-dmz-app08-12008 (RichMail) with SMTP id 2ee86ae04c52739-f4d96;
+	Tue, 27 Oct 2026 15:01:38 +0800 (CST)
+X-RM-TRANSID:2ee86ae04c52739-f4d96
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM-FLAG:00000000
-Received:from  (unknown[10.55.1.71])
-	by rmsmtp-syy-appsvr06-12006 (RichMail) with SMTP id 2ee66ae04c509fb-d0e59;
-	Tue, 27 Oct 2026 15:01:39 +0800 (CST)
-X-RM-TRANSID:2ee66ae04c509fb-d0e59
+Received:from Z04181456177947 (unknown[10.55.1.71])
+	by rmsmtp-syy-appsvr06-12006 (RichMail) with SMTP id 2ee66ae04c509fb-d0e51;
+	Tue, 27 Oct 2026 15:01:38 +0800 (CST)
+X-RM-TRANSID:2ee66ae04c509fb-d0e51
 From: Zhao Feng <zhaofeng2@cmss.chinamobile.com>
 To: netdev@vger.kernel.org
 Cc: krzysztof.kozlowski@linaro.org,
 	linux-kernel@vger.kernel.org,
 	syzbot+1c5368988052dc2d8201@syzkaller.appspotmail.com,
-	Zhao Feng <zhaofeng2@cmss.chinamobile.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/2] nfc: pn533: add timeout to USB frame send completion wait
-Date: Tue, 27 Oct 2026 15:01:35 +0800
-Message-ID: <20261027070136.1339-3-zhaofeng2@cmss.chinamobile.com>
+	Zhao Feng <zhaofeng2@cmss.chinamobile.com>
+Subject: [PATCH v2 0/2] nfc: pn533: fix hung task on stalled USB send
+Date: Tue, 27 Oct 2026 15:01:33 +0800
+Message-ID: <20261027070136.1339-1-zhaofeng2@cmss.chinamobile.com>
 X-Mailer: git-send-email 2.55.0.windows.5
-In-Reply-To: <20261027070136.1339-1-zhaofeng2@cmss.chinamobile.com>
-References: <20261027070136.1339-1-zhaofeng2@cmss.chinamobile.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -74,71 +71,29 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-pn533_usb_send_frame() waits unboundedly for the out URB to complete.
-A device that never completes the transfer makes the task sleep
-forever in TASK_UNINTERRUPTIBLE while holding the command mutex, as
-reported by syzbot (hung task in pn533_usb_send_frame).
+The out URB wait in pn533_usb_send_frame() is unbounded, so a device
+that never completes the transfer hangs the task holding the command
+lock (syzbot report).  Simply adding a timeout is not enough, because
+the error path of pn533_wq_cmd() cannot deal with a send failure: it
+drops the queued command without completing it, leaving synchronous
+callers asleep forever and the command queue frozen.
 
-Use a 1 second timeout instead.  On timeout, kill the URB and return
--ETIMEDOUT so the command in progress fails gracefully instead of
-hanging the task.
+Patch 1 fixes that pre-existing error path; patch 2 then adds the
+actual send timeout, handling the race where the transfer completes
+right between the timeout expiring and the URB being killed.
 
-The transfer may complete between the timeout expiring and
-usb_kill_urb(); in that case urb->status is 0 after the kill and the
-send proceeds normally instead of reporting a spurious failure,
-mirroring what usb_start_wait_urb() does.
+Issues pointed out by the Sashiko AI review of v1.
 
-Fixes: 9dab880d675b ("nfc: pn533: Wait for out_urb's completion in pn533_usb_send_frame()")
-Reported-by: syzbot+1c5368988052dc2d8201@syzkaller.appspotmail.com
-Closes: https://syzbot.org/bug?extid=1c5368988052dc2d8201
-Signed-off-by: Zhao Feng <zhaofeng2@cmss.chinamobile.com>
-Cc: <stable@vger.kernel.org>
----
-v2: check urb->status after killing the URB on timeout and carry on if
-    the transfer completed in the race window; add Fixes tag and Cc
-    stable; the pn533_wq_cmd() error handling fix is now patch 1/2.
-    Issues reported by the Sashiko AI review.
+Link to v1: https://lore.kernel.org/netdev/20261023025602.1746-1-zhaofeng2@cmss.chinamobile.com/
 
- drivers/nfc/pn533/usb.c | 20 ++++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
+Zhao Feng (2):
+  nfc: pn533: complete failed queued commands and keep queue moving
+  nfc: pn533: add timeout to USB frame send completion wait
 
-diff --git a/drivers/nfc/pn533/usb.c b/drivers/nfc/pn533/usb.c
-index 0b7e3b118d..265baf2213 100644
---- a/drivers/nfc/pn533/usb.c
-+++ b/drivers/nfc/pn533/usb.c
-@@ -30,6 +30,9 @@
- #define ACS_VENDOR_ID 0x072f
- #define ACR122U_PRODUCT_ID 0x2200
- 
-+/* How long to wait for the out URB to complete */
-+#define PN533_USB_SEND_TIMEOUT_MS	1000
-+
- static const struct usb_device_id pn533_usb_table[] = {
- 	{ USB_DEVICE(PN533_VENDOR_ID, PN533_PRODUCT_ID),
- 	  .driver_info = PN533_DEVICE_STD },
-@@ -184,8 +187,20 @@ static int pn533_usb_send_frame(struct pn533 *dev,
- 	if (rc)
- 		return rc;
- 
--	wait_for_completion(&arg.done);
--	phy->out_urb->context = cntx;
-+	if (!wait_for_completion_timeout(&arg.done,
-+					 msecs_to_jiffies(PN533_USB_SEND_TIMEOUT_MS))) {
-+		usb_kill_urb(phy->out_urb);
-+		phy->out_urb->context = cntx;
-+		/*
-+		 * The transfer may have completed between the timeout
-+		 * expiring and the urb being killed; if so, carry on as
-+		 * usual instead of reporting a bogus failure.
-+		 */
-+		if (phy->out_urb->status)
-+			return -ETIMEDOUT;
-+	} else {
-+		phy->out_urb->context = cntx;
-+	}
- 
- 	if (dev->protocol_type == PN533_PROTO_REQ_RESP) {
- 		/* request for response for sent packet directly */
+ drivers/nfc/pn533/pn533.c |  8 +++++++-
+ drivers/nfc/pn533/usb.c   | 20 ++++++++++++++++----
+ 2 files changed, 23 insertions(+), 5 deletions(-)
+
 -- 
 2.39.2
 
