@@ -1,49 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793059210;
-	b=azLS/am9KXJbk/ucS4bC96DwbzW3QslJoZwbW8cjtNvhnnGylW1utdaGwQRLIwi7ejAG
-	 HMpgCgYR1IBuuJIpmlS4dNxiqveXM3cj2ron8yyoESJXxyn7ZYjOJ582ORUX0ltQdBxXw
-	 IVOJ6HVpIldavnJoDz5dnLgy8nQfqfijVdOzZt0CajlsZiY0M8IkzS1IWf5TaGal5xGwE
-	 6Nj31z+PMBU8kL5L7IftrFklgJKp46FS0/6c2CuGejBoJYJlkBWv8+uLPhYKmPyl1paWD
-	 imVBBOn8jsWiMd+XzFm8HjT6drrbt5IK+cHVNWdyIIgJIAxABGN1NWuFqtCfiRwdhRA==
+	t=1793059645;
+	b=wHE3khpm7kbK1LBNu8kNovQPGnjaxK3+IKnz9fH+0RJDOd+9nAghfkQ80y8c5nLEnnAR
+	 gQLTIGOxP9X98aenkrGD250AArpVX4BATMmy1V7LNK7ojsskVJcjKQgLJAZ6Ys/8yMdiZ
+	 bbE5XrTIeuLh3BMn8tnNPa5NPCWAAdgI7J0KiVrTbxybbQGewK2K1iakl7aKPwgsINJXk
+	 Dy7wtvtRIO7UGi8BvXDx6F+cqO5v6NvsODkRhC9mEfhg7nAdL4WlQNHmX0+beqnStSWy8
+	 Ba0CWqtF2G8/vrZZWOWfZT27Dafizcrm6gRzDNdXft0f8j6t5wDuvbvNhBp8/ADPdNg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793059210;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=/+dLj3NwfDosSbNrwS0xYoMb5nud4zuqBHFjRnmRvY0=;
-	b=ARpZ9dSYEsk0hhdjFIjjYFNZgJsXhZ4vWHi10vHJ0BoMFC6fHlJI4Izfo8MdMrYA/igb
-	 rIMQf+daqcJe9vkk+8+cdsXbRPdmgreH73IMJ8SNNvpagZcAe/62WtV540iDq3bKI8tKF
-	 l3QXUT0VNlvAx4xAplpkqH2sumlRWOEuZnTSlzt3nNLh+p51QI+udYu+BTyZnIJmFyyOv
-	 HxcRrhYFyT3yEIU25ckZ13Othmd6bNIHShJeYJ9qPsZJ9bxN+lXrtY67MIBOwsZbpqTzt
-	 fMdQCmYx28JZHVVF2yC5cTtsjrKLbt/iU6RPfMIZh7KxEy+2e2Gr42ZWMrymh06JIGw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793059645;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=STw7ttmyMfYQ57hNycIgofafN4euvCy7hTw4Wf5urN4=;
+	b=nJ358Aul+aPos+ToZpQsQznNikbFI3/4zpwj4vipa7IAPu5mI/AyurCpqMW7Re/TssDQ
+	 jbze25RUA/6SQ7drHSVkM8WPX6y+op/7TcOtoc6RaSMyUkKOusky8Ewjo3HFy7Psqxg2c
+	 rLGgeZg8BVWAjggytTy0yP0esu5qmwkXodYGteCbaOqb5JzRRDIziZPYYx+U+Q2G/MArp
+	 kK/yuyeCw6i6smBx+W3+wxyLXVPP85uRwpGE55yO8/PhuXbivNLljYgmlGZPG8F8cs1F+
+	 rmjYyW9jOkIHs2Lmt9y8c2ooCtAZdTrTWnDgnY6EqqH3tr9Vq9H9/Hasgy9Eku4xDtQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TowA4J8D;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JdDu1VTz;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDBEC606A31F;
-	Tue, 27 Oct 2026 00:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3283606A31A
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 00:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TowA4J8D
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 556151F01825;
-	Tue, 27 Oct 2026 00:00:09 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JdDu1VTz
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2278D1F01825;
+	Tue, 27 Oct 2026 00:07:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793059209;
-	bh=/+dLj3NwfDosSbNrwS0xYoMb5nud4zuqBHFjRnmRvY0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=TowA4J8DHYvJcYlA8XeLH9ME0quzAgLwOxbL6RDn+3RBbiksfzR+I4UeHnOSPcMeL
-	 nIK8q21woxG3kWfEsZoVFt23I2R4s9d8PQiOZTxbPPiDhK0IrqTMPJ9wMzoPSWl8P2
-	 laexTR9WFWL8d2x+i5z+ysTNO9Cs/Qo7Dr9z0NsVuYrM1gDCoRNMoGM5R00PvYjfuZ
-	 9srw9MbAPk+1EtOE/Pb777cMQOMqgQvp7qrxx1uBtqX/UQjLB1pFaU3LVZQjtkKEeG
-	 Vaj9CADb97F5HFRnFN/X7rMpE4YILL2+r/UD/rze9OP6sRzi9OSIPEkfWh5uezh1b4
-	 Z7SZlg5zpFykw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 496633AA80F1;
-	Tue, 27 Oct 2026 00:00:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1793059644;
+	bh=STw7ttmyMfYQ57hNycIgofafN4euvCy7hTw4Wf5urN4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=JdDu1VTz15xazOuL4vAiYSyyquNkR3WqLkDNjGeNqnYSWXL6szazAuBtKrWoBSEkU
+	 ixJYESTS/SsTp12NXsfWTUuOHX4ngmm5tX9ACloEQNPxlI+9CsXJwsxUafEtcNcZok
+	 Ri2LHj8TuiwktuZNWSISD8YIMvDIDbRF3C3Dt1PedPRx08/ZLiivyCrSjEISsy+iss
+	 8/W6H50skh/YVPWTRLc3YotD0kba42/VRK6yFy2yUQYqofFMvvib3DveSRmRZO1unh
+	 ZWTluRxei5brtl6GpUG9fIEeaO0dNhZ8YaCSdoLOAegiJbs91f3ErmmJTjn8wriv9T
+	 fHVPKFVRuNPJw==
+Date: Mon, 26 Oct 2026 17:07:23 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Minxi Hou <houminxi@gmail.com>
+Cc: netdev@vger.kernel.org, Donald Hunter <donald.hunter@gmail.com>, "David
+ S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH net-next v4 0/2] netlink: specs: fill in the missing ovs
+ operations
+Message-ID: <20261026170723.612619ce@kernel.org>
+In-Reply-To: <20261025103409.3519874-1-houminxi@gmail.com>
+References: <20261025103409.3519874-1-houminxi@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,42 +60,27 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] pppoe: drop discovery frames with no MAC header
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179305920806.3470272.16839047097995389873.git-patchwork-notify@kernel.org>
-Date: Tue, 27 Oct 2026 00:00:08 +0000
-References: <20261023080002.221332-1-qingfang.deng@linux.dev>
-In-Reply-To: <20261023080002.221332-1-qingfang.deng@linux.dev>
-To: Qingfang Deng <qingfang.deng@linux.dev>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, ericwouds@gmail.com,
- nbd@nbd.name, manizada@pm.me, gnault@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Sun, 25 Oct 2026 06:34:07 -0400 Minxi Hou wrote:
+> The ovs specs describe get and new but not the set and del commands the
+> kernel has registered since the families were added. This series adds
+> them and names the attributes each handler reads. Nothing here changes
+> the kernel.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+## Form letter - net-next-closed
 
-On Fri, 23 Oct 2026 16:00:00 +0800 you wrote:
-> Commit 8540827ebac6 ("pppoe: fix reception of frames with no mac
-> header") drops PPPoE session frames with no MAC header to avoid reading
-> uninitialized memory.
-> 
-> Apply the same to PPPoE discovery frames, as both functions read
-> eth_hdr(skb)->h_source.
-> 
-> [...]
+The merge window for Linux v7.4 has begun, and the net-next
+tree is now closed for new drivers, features, code refactoring
+and optimizations. We are currently accepting bug fixes only.
 
-Here is the summary with links:
-  - [net] pppoe: drop discovery frames with no MAC header
-    https://git.kernel.org/netdev/net/c/406bf2dc8d6d
+Please repost when net-next reopens. There is some uncertainty
+about how long this merge window will last, so please check
+https://netdev.bots.linux.dev/net-next.html
+before reposting. net-next _may_ reopen on Nov 2nd.
 
-You are awesome, thank you!
+See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: defer
+pv-bot: closed
