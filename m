@@ -1,47 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=130.117.225.111
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793112874;
-	b=BpTHXn/OHtLsVpTjmdRJXqs+iNJwY3/3EVBk2F4PSbvOCCl2iFCcpQYAYqpCyY7LVJoX
-	 dXFbNt2K9NVtX3lDw1MOIwio5Fkmjr5qAz1BMfczLeviSlL/1QskGj2c3X2jmSErpRSG0
-	 xQLrn43+I9Q3igm81jcxmz+cAEYnY/gmBFz/buocHEJDOrI/DEy7cCJ0d3DuibSDbyEmD
-	 +dDaKxp4KS5RBjGtxnzmN+d5Ftk59Rj1Giub/B9AUmozsN/SkfrOBc5BXRYDXRLUkW27Y
-	 fatgSrfWRzF50iEa7JuzrKQDEzZWG0KJIW/cSBRxFCq/teCyHZPUf2fMTx5G2UxH8KA==
+	t=1793113039;
+	b=0GS4Q/1sEKDmO9yv0gtiBB8A5ZbdMZ8z1O9NevoeSxqQMwxT2iMzkvrjMK9sqcxKUbdU
+	 aj6kfv5PD+Ut+Zpb4u5cg28XOL8xcaX5A/c75B1+rIO7BRcpo2rHezqraOCmwCVENG/hH
+	 WbZrYPjO8O+4sgxpGAbXz+zy3iLbmc6H5qE7/ta+G/dr82XGuRIT09plFsSYpg5/caMgg
+	 +c8PiNcamOMkdUjQd+xckIOm+h9vk2wKn415Z6LkZsH9AC9ifxPSwNVURBZS0yvfQuW5M
+	 lC1Dk7dW2smfdayqieOhnbheXKdAumaPaKBaAjHDbo7Z7/MZSy47DYGA0ASQui2VCJA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793112874;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:Content-Language:To:Cc:References:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=VVKMTXSgZ4XOrfVnDGwcJ20pqkUPPmxf9qOMEgAGK6k=;
-	b=M3fteO29MlawA25qrMst2W+F8NFj6QbQZQFmrQqWCS6j6dpVDLFK9d+X6LaBMdyKCHr8
-	 VLnor4FyBbXAc08seE0Tn65/z9NPBz1jRn6Z6j1nSKAMevXUOVTFXPRp/LQS4+SXu0lJg
-	 4K8HHrBKxGeycgNqRP4IS62SxJy8wkfpj5KwHpBR8NNrZBBOTHAQE1GIAhRk2FBWciyTv
-	 Ok6aCR9iz6WN6qmOiI3DlTGrQBhYjzsVcNz9frF51l7IX0ucaQzYiM0+lbZvsmWXhc4t6
-	 zd8jU+QQ37phT4JH3FFpaLIajURAlEsByd1xb/XcTQLOPLKONqJH6QSNzSat0NXrcmg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793113039;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=Bvj+VEfapM0R1/crUGbkmB9nlGglctmeDzltg5vYsMA=;
+	b=RbwxOaJ/3XhDWeRCCKWo9wDKZ2z+rAQgv4YEj90g4dO5jXM5JVS3xqgauQSWS1Q36bG6
+	 uYezewISXArKFzcMEb+GMAYFiXETJZkNUSEN4gUH93mP0NaXB6nhegPcqc3fG+RDwxtB2
+	 FpoL5v0UrF3L0sN2/y+9Ay5tcMxI1lHvdL8nqAUvK0j7m5+++RhggWo9JOEaotkQWkaFX
+	 frGdiagKblKMUh5sutGb5K8dsHwLsecmHqlejVjoGhNOLr+JAwGojckZs0+aI+0X7eyoz
+	 ATMIZJNNrBf8I4dB5L386jGqjhhrr+hWYAneV9W8bOAO9OcyeHJfV4g97+8VwnVCVmg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H9yR8Dbm;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=virtuozzo.com;
+	spf=pass smtp.mailfrom=virtuozzo.com;
+	dkim=pass header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=relay header.b=tN3fofTP;
+	arc=none smtp.remote-ip=130.117.225.111
+Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACDB3606A31A
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 14:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8508F606A31A;
+	Tue, 27 Oct 2026 14:57:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8508F606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H9yR8Dbm
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BA1B1F01825;
-	Tue, 27 Oct 2026 14:54:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793112873;
-	bh=VVKMTXSgZ4XOrfVnDGwcJ20pqkUPPmxf9qOMEgAGK6k=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=H9yR8DbmfYEsSb85b8vOkwQ+0Z9tTX9PVs4RDmexLRNSOVLCRYAKsJKYQz2b8nKo1
-	 If8mj+185YOTPWEBoSm1VKSHnVgehO8VFCON1d0TuUVAyeMMQvxSOiB5PeFDWLOVCe
-	 XWsxvNyorQjR+gEB+kTk6PoZxgd2dMq7Ek+LjbzTaWWg1uKolhS2/UrPlfyGatL0Zj
-	 x//ugnX+P0Bad/H5uqGt7QPwDg8JV3MU9Ftq8b5yf8ONw3GzJpB9yUufwHMJvaxBtv
-	 VmCs9apG7epphLAcpO3z8HWv2D0VI0+uAp8Z7u0ujp1Ba7r/ZnlZCT5EU78Cvdy736
-	 MNnSM920dqbeA==
-Message-ID: <2dafbf91-43eb-4290-a84d-210e80a67b54@kernel.org>
-Date: Tue, 27 Oct 2026 08:54:32 -0600
+	dkim=pass (2048-bit key, unprotected) header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=relay header.b=tN3fofTP
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
+	Content-Type; bh=Bvj+VEfapM0R1/crUGbkmB9nlGglctmeDzltg5vYsMA=; b=tN3fofTPUpWv
+	F8Dlif9CUns04hM+TM7EQoSaI6bJcsPiSZikR2ecvNpMzU/zZRQPnJmxkaXZW55Pxt2/dBshLpoQE
+	ouZCooicxEuxwGhRRivxVyzyjXtvAQaIeiKb0/vnOjIGEX6zGWQ+MbLnEaJQkgUw4dMZ0arC/xVLG
+	uLuFkAoDJCJDL/IKueDX/KkujoKlkoFEPJwTkSA8UIhtPaI7DSSp1T2FNjZxlIQVtIlfJbfBgOsEw
+	4kfqckP9m+IQrvh5309YOhxPl8Pn25wzU8mcv40bA8WEEQGCc2eEDQFoJRWHjBXwjL5U27Fq81IZr
+	7P6BaOha4H+mbxb1yC6x6g==;
+Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=LekKit-T14)
+	by relay.virtuozzo.com with esmtp (Exim 4.96)
+	(envelope-from <eva.kurchatova@virtuozzo.com>)
+	id 1xLiXw-00FAir-2k;
+	Tue, 27 Oct 2026 15:56:47 +0100
+From: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Stanislav Fomichev <sdf@fomichev.me>
+Cc: linux-kernel@vger.kernel.org,
+	syzbot+c6c86a1c56b5131f2d97@syzkaller.appspotmail.com,
+	Eva Kurchatova <eva.kurchatova@virtuozzo.com>,
+	netdev@vger.kernel.org
+Subject: [PATCH net v2] net: fix self-deadlock when an upper disables a feature of its lower
+Date: Tue, 27 Oct 2026 16:00:49 +0200
+Message-ID: <20261027140121.1192299-1-eva.kurchatova@virtuozzo.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -51,117 +71,191 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 net] ipv6: Protect multiple routes insertion by table
- lock.
-Content-Language: en-US
-To: Kuniyuki Iwashima <kuniyu@google.com>, Ido Schimmel <idosch@nvidia.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>,
- netdev@vger.kernel.org, syzbot+751b587577d0ebca10f2@syzkaller.appspotmail.com
-References: <20261027065247.2871134-1-kuniyu@google.com>
-From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <20261027065247.2871134-1-kuniyu@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 10/27/26 12:52 AM, Kuniyuki Iwashima wrote:
-> syzbot reported the warning below. [0]
-> 
-> While call_fib6_multipath_entry_notifiers() is called locklessly,
-> fib6_siblings could be changed concurrently, leading to the
-> warning (and later null-ptr-deref).
-> 
-> Let's protect multiple routes insertion with tb6_lock.
-> 
-> Along with that, __ip6_ins_rt() and ip6_route_del() are changed
-> to fib6_add() and fib6_del().
-> 
-> Note that fib6_del() finally calls rt6_multipath_rebalance(),
-> which requires rcu_read_lock().
-> 
-> [0]:
-> i != fen6_info->nsiblings
-> WARNING: drivers/net/netdevsim/fib.c:831 at nsim_fib6_event_init drivers/net/netdevsim/fib.c:831 [inline], CPU#0: syz.0.157/6279
-> WARNING: drivers/net/netdevsim/fib.c:831 at nsim_fib6_prepare_event drivers/net/netdevsim/fib.c:947 [inline], CPU#0: syz.0.157/6279
-> WARNING: drivers/net/netdevsim/fib.c:831 at nsim_fib_event_schedule_work drivers/net/netdevsim/fib.c:1003 [inline], CPU#0: syz.0.157/6279
-> WARNING: drivers/net/netdevsim/fib.c:831 at nsim_fib_event_nb+0x1029/0x11d0 drivers/net/netdevsim/fib.c:1043, CPU#0: syz.0.157/6279
-> Modules linked in:
-> CPU: 0 UID: 0 PID: 6279 Comm: syz.0.157 Not tainted syzkaller #0 PREEMPT(full)
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-> RIP: 0010:nsim_fib6_event_init drivers/net/netdevsim/fib.c:831 [inline]
-> RIP: 0010:nsim_fib6_prepare_event drivers/net/netdevsim/fib.c:947 [inline]
-> RIP: 0010:nsim_fib_event_schedule_work drivers/net/netdevsim/fib.c:1003 [inline]
-> RIP: 0010:nsim_fib_event_nb+0x1029/0x11d0 drivers/net/netdevsim/fib.c:1043
-> Code: eb 0d 4d 89 fd e8 b7 c5 6c fa be 01 00 00 00 48 89 df e8 5a 38 85 fd 4d 89 ef 4c 8b 6c 24 20 e9 4a f3 ff ff e8 98 c5 6c fa 90 <0f> 0b 90 e9 db fa ff ff 89 e9 80 e1 07 80 c1 03 38 c1 0f 8c df f0
-> RSP: 0018:ffffc900047bef10 EFLAGS: 00010293
-> RAX: ffffffff875b59a8 RBX: 0000000000000002 RCX: ffff888079770000
-> RDX: 0000000000000000 RSI: 0000000000000002 RDI: 0000000000000001
-> RBP: ffffc900047bf0a0 R08: ffff88805c0bb02f R09: 1ffff1100b817605
-> R10: dffffc0000000000 R11: ffffed100b817606 R12: dffffc0000000000
-> R13: 0000000000000000 R14: 0000000000000001 R15: ffff88802c792000
-> FS:  00007f334ba076c0(0000) GS:ffff888123ad0000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 00007f334ba06ff8 CR3: 000000007a5b2000 CR4: 00000000003526f0
-> Call Trace:
->  <TASK>
->  notifier_call_chain+0x1a5/0x3d0 kernel/notifier.c:85
->  atomic_notifier_call_chain+0xda/0x180 kernel/notifier.c:223
->  call_fib_notifiers+0x31/0x60 net/core/fib_notifier.c:36
->  call_fib6_multipath_entry_notifiers+0xf5/0x160 net/ipv6/ip6_fib.c:428
->  ip6_route_multipath_add net/ipv6/route.c:5542 [inline]
->  inet6_rtm_newroute+0x14f5/0x1a30 net/ipv6/route.c:5664
->  rtnetlink_rcv_msg+0x802/0xc00 net/core/rtnetlink.c:7163
->  netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2572
->  netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
->  netlink_unicast+0x7bd/0x940 net/netlink/af_netlink.c:1361
->  netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1916
->  sock_sendmsg_nosec+0x14e/0x190 net/socket.c:800
->  __sock_sendmsg net/socket.c:818 [inline]
->  ____sys_sendmsg+0x54e/0x850 net/socket.c:2715
->  ___sys_sendmsg+0x2a5/0x360 net/socket.c:2769
->  __sys_sendmmsg+0x273/0x4d0 net/socket.c:2858
->  __do_sys_sendmmsg net/socket.c:2885 [inline]
->  __se_sys_sendmmsg net/socket.c:2882 [inline]
->  __x64_sys_sendmmsg+0xa0/0xc0 net/socket.c:2882
->  do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
->  do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7f334ab9e1d9
-> Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-> RSP: 002b:00007f334ba07028 EFLAGS: 00000246 ORIG_RAX: 0000000000000133
-> RAX: ffffffffffffffda RBX: 00007f334ae26090 RCX: 00007f334ab9e1d9
-> RDX: 04000000000001f2 RSI: 0000200000000000 RDI: 0000000000000004
-> RBP: 00007f334ac35888 R08: 0000000000000000 R09: 0000000000000000
-> R10: 00000000000000fc R11: 0000000000000246 R12: 0000000000000000
-> R13: 00007f334ae26128 R14: 00007f334ae26090 R15: 00007ffd96688aa8
->  </TASK>
-> 
-> Fixes: 169fd62799e8 ("ipv6: Get rid of RTNL for SIOCADDRT and RTM_NEWROUTE.")
-> Reported-by: syzbot+751b587577d0ebca10f2@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/all/6adbaed6.67317f00.38c4bc.001b.GAE@google.com/T/
-> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-> ---
-> v2: Wrap rt6_multipath_total_weight() and
->     rt6_multipath_upper_bound_set() w/ rcu_read_lock()
-> 
-> syzbot found a way to abuse 1ms sleep in netdevsim and pile up
-> 10000+ routes w/ the delay, so it might report this with this
-> fix applied:
-> 
->   unregister_netdevice: waiting for syz_tun to become free. Usage count = 10
-> 
-> I have two patches to fix it, but I think this is net-next
-> material.
-> 
->   https://syzkaller.appspot.com/text?tag=Patch&x=15923c21580000
-> ---
->  net/ipv6/ip6_fib.c |  4 ----
->  net/ipv6/route.c   | 17 +++++++++++++----
->  2 files changed, 13 insertions(+), 8 deletions(-)
-> 
+When an upper device ends up without a NETIF_F_UPPER_DISABLES feature
+(LRO) that its lower device has, netdev_sync_lower_features() disables
+it on the lower device, taking the lower's instance lock since commit
+af5f54b0ef9e ("net: Lock lower level devices when updating features").
 
-Reviewed-by: David Ahern <dsahern@kernel.org>
+Upper devices recompute their features in response to NETDEV_FEAT_CHANGE
+of the lower device, and for ops locked devices that notification is
+sent with the lower's instance lock held, e.g. from ethtool. The task
+then blocks on the lock it already holds:
 
+  dev_ethtool()                        takes lower's instance lock
+    netdev_features_change(lower)
+      <upper>_device_event()
+        netdev_update_features(upper)
+          netdev_sync_lower_features()
+            netdev_lock_ops(lower)     deadlock
+
+Triggered by enabling mlx5 LRO on a host with VM macvtaps on top of it:
+
+  INFO: task ethtool:5963 blocked for more than 122 seconds.
+  Call Trace:
+   __mutex_lock.constprop.0
+   __netdev_update_features
+   netdev_update_features
+   macvlan_device_event
+   notifier_call_chain
+   netdev_features_change
+   ethnl_set_features
+  INFO: task ethtool:5963 is blocked on a mutex likely owned by task ethtool:5963.
+
+Reproduced with these upper device configurations, and netdevsim as the
+ops-locked lower device.
+
+ - macsec with LRO in hw_features, but masked by macsec_fix_features().
+ - macvtap without LRO enabled via TUNSETOFFLOAD.
+ - macvlan, bond or team enslaved to a VRF or batman-adv device.
+
+There is no way to tell whether the current task owns the lower instance
+lock. Try to take it, and otherwise leave the job to netdev_work, which
+disables the features the uppers lack under the lower's instance lock.
+In the deadlock case above, the lock holder is the context that sent
+NETDEV_FEAT_CHANGE, so steal the pending work at the end of
+netdev_features_change() and run it inline, like netif_rx_mode_sync()
+does for rx_mode. The lower device's features are then consistent with
+its uppers when the operation returns, as before. The work only runs
+asynchronously if an unrelated task held the lock.
+
+Tested in QEMU with lockdep enabled. The stacks above hang without this
+patch, and with it the features end up disabled on the lower device
+without lockdep reports.
+
+Stacks with bridge, bond, team, ipvlan and VLAN on top of netdevsim
+behave as before: these call dev_disable_lro() on their ports.
+
+Fixes: af5f54b0ef9e ("net: Lock lower level devices when updating features")
+Reported-by: syzbot+c6c86a1c56b5131f2d97@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/6a6be82b.77639fcc.3d4fd0.0014.GAE@google.com/
+Signed-off-by: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
+---
+
+Changes in v2:
+- Send no NETDEV_FEAT_CHANGE when disabling the feature fails, the upper
+  deferred the job again and the recursion overflowed the stack.
+- Run the deferred job on a detached device too, instead of dropping it:
+  before the patch the caller waited for the lock and then disabled the
+  feature regardless of the presence.
+- Correct the kernel-doc of netdev_features_change() that it may disable
+  features, and explain its locking.
+
+Link to v1: https://lore.kernel.org/netdev/20261023000951.237641-1-eva.kurchatova@virtuozzo.com/
+
+ net/core/dev.c         | 47 ++++++++++++++++++++++++++++++++++++++++--
+ net/core/dev.h         |  3 +++
+ net/core/netdev_work.c |  4 ++++
+ 3 files changed, 52 insertions(+), 2 deletions(-)
+
+diff --git a/net/core/dev.c b/net/core/dev.c
+index e76762e29360..853e34d5765e 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -1605,11 +1605,20 @@ int dev_get_alias(const struct net_device *dev, char *name, size_t len)
+  *	netdev_features_change - device changes features
+  *	@dev: device to cause notification
+  *
+- *	Called to indicate a device has changed features.
++ *	Called to indicate a device has changed features. Also disables the
++ *	features which upper devices of @dev have off and could not disable
++ *	on @dev while its instance lock was held, so the caller must hold
++ *	RTNL and, for an ops locked @dev, its instance lock.
+  */
+ void netdev_features_change(struct net_device *dev)
+ {
+ 	call_netdevice_notifiers(NETDEV_FEAT_CHANGE, dev);
++
++	/* Uppers reacting to the notification couldn't take our instance
++	 * lock to disable features they lack, do it now.
++	 */
++	if (__netdev_work_core_cancel(dev, NETDEV_WORK_SYNC_UPPERS))
++		netif_sync_upper_disables(dev);
+ }
+ EXPORT_SYMBOL(netdev_features_change);
+ 
+@@ -10968,6 +10977,31 @@ static netdev_features_t netdev_sync_upper_features(struct net_device *lower,
+ 	return features;
+ }
+ 
++/* Disable the features of @dev which any of its upper devices has disabled,
++ * deferred from netdev_sync_lower_features().
++ */
++void netif_sync_upper_disables(struct net_device *dev)
++{
++	netdev_features_t disable = 0;
++	struct net_device *upper;
++	struct list_head *iter;
++
++	netdev_for_each_upper_dev_rcu(dev, upper, iter)
++		disable |= ~upper->features;
++	disable &= NETIF_F_UPPER_DISABLES & dev->features;
++	if (!disable)
++		return;
++
++	dev->wanted_features &= ~disable;
++	__netdev_update_features(dev);
++
++	/* Notifying a failure would make the uppers defer this again */
++	if (unlikely(dev->features & disable))
++		netdev_WARN(dev, "failed to disable %pNF!\n", &disable);
++	else
++		netdev_features_change(dev);
++}
++
+ static void netdev_sync_lower_features(struct net_device *upper,
+ 	struct net_device *lower, netdev_features_t features)
+ {
+@@ -10980,7 +11014,16 @@ static void netdev_sync_lower_features(struct net_device *upper,
+ 		if (!(features & feature) && (lower->features & feature)) {
+ 			netdev_dbg(upper, "Disabling feature %pNF on lower dev %s.\n",
+ 				   &feature, lower->name);
+-			netdev_lock_ops(lower);
++			/* The caller may hold the lower's instance lock already,
++			 * e.g. when the upper reacts to NETDEV_FEAT_CHANGE of
++			 * the lower. Don't wait for it, let netdev_work disable
++			 * the feature instead.
++			 */
++			if (netdev_need_ops_lock(lower) && !netdev_trylock(lower)) {
++				__netdev_work_core_sched(lower,
++							 NETDEV_WORK_SYNC_UPPERS);
++				continue;
++			}
+ 			lower->wanted_features &= ~feature;
+ 			__netdev_update_features(lower);
+ 
+diff --git a/net/core/dev.h b/net/core/dev.h
+index 04fb0e9a571e..c3d9d66bfb5b 100644
+--- a/net/core/dev.h
++++ b/net/core/dev.h
+@@ -174,8 +174,11 @@ void netif_rx_mode_cancel_retry(struct net_device *dev);
+ /* Events for the async netdev work, tracked in netdev->work_core_pending. */
+ enum netdev_work_core {
+ 	NETDEV_WORK_RX_MODE	= BIT(0),	/* run the rx_mode update */
++	NETDEV_WORK_SYNC_UPPERS	= BIT(1),	/* disable features uppers lack */
+ };
+ 
++void netif_sync_upper_disables(struct net_device *dev);
++
+ void __netdev_work_core_sched(struct net_device *dev, unsigned long event);
+ unsigned long
+ __netdev_work_core_cancel(struct net_device *dev, unsigned long mask);
+diff --git a/net/core/netdev_work.c b/net/core/netdev_work.c
+index e721a06d58df..097c9535845b 100644
+--- a/net/core/netdev_work.c
++++ b/net/core/netdev_work.c
+@@ -118,6 +118,10 @@ __netdev_work_core_cancel(struct net_device *dev, unsigned long mask)
+ static void netdev_work_run(struct net_device *dev, unsigned long events,
+ 			    unsigned long core)
+ {
++	/* Not gated on presence: the caller used to wait only for the lock */
++	if (core & NETDEV_WORK_SYNC_UPPERS)
++		netif_sync_upper_disables(dev);
++
+ 	if (!netif_device_present(dev))
+ 		return;
+ 
+-- 
+2.56.0
 
