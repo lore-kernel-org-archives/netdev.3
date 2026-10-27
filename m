@@ -1,65 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793060116;
-	b=473UIaWn5Kfm4qA3AcEOcj8P4NE1fZ/8Tpbzssmfz5Q1mWDnC4wwdWS1Z6oGMCb4pMmE
-	 4Q7rFoBiSZCGAURdAg2jf4+J+YyeTgXwKvw4I1wUnAsFKQ5+XGjQ9I+pJq793BN5H3gw3
-	 GTqNqqC9gQstYsQoagVkZEZf5TIuPx2f76sYVpm32eSk1OdnfgeZTDuvKoZuKAkDBReB5
-	 sFxfSmV4YjwG8kSdd6LrO//ehksD69LrM+oIkNw0murDm7SWpzxsMdReuMVxZSVNX5NXz
-	 Et6Pn8yJ1BcYVUApLqBZtB874xrDiHM2y9J5fAomkuHSbowm436ei1zX1ru5D/0jzUQ==
+	t=1793060223;
+	b=bRfVw+irBIhpP4Hf8xLxRSbWOHngz9i88EkGrfjr0A79EOqU46vWXXZmepntQUpASfzd
+	 Ejo0B6fX1KoMbjw9mWKHtzBbVzjJ4St2jeOengyawbP/Zo9Wemn6QW2/biucGKsM0Scw3
+	 YWcWh4/urqM7zM+HN503XGyt0Dwgeq2HNE61TwCzkAWsCSiV9H816Odi4PomgRqr6HuJv
+	 CPW0ieigX2dRecODuTPHu/I/8zItPG6dZ3s8msZPw24eQMApz01yPC3LR0l882dMIbyyB
+	 KRw41m7uOPH+AXiI6JQQpZOLV2Yw/YYfYm5yT4NKLL4ASwCQCHwW1Z6FwL6m+mEA7wA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793060116;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793060223;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=H/yoQOUKBrL56T5gjNQcc+KduxA/BxAhW7oXXt9IhIc=;
-	b=znr0o0+xI/4nycKKJZ/uLSzBw5+iYF5/+EIT0rzXOI+txfrMBrmNJMr28mwJ8F6AP9pY
-	 H5f8J9quAiK1mWVv7iLWtjk71HnFSwZICMeRZAn0FTUiyXX/+Joch/hnRc7aPn5T3nsWL
-	 UUoqrhkNfYcWvEEQBRiF8O84WIGcDmU2OnuCCuVzm2H5IbZIBpqdoTwNMFPNfsiISxrMt
-	 YFTa/nCYFIrvdeeeJt534zNQuU7HtT3DdXmGnswpWArLcGm5extaxKsf7G0x485FXqkuh
-	 UL+YYDPlxL6aBTPwUrE07osoLVaKg7kEuNdpQNaqcS8hP+Z9V0B8KG4w6bPsoGfaH5Q==
+	bh=X2buSjv8QkJzoYlyrpxwJTJC8kX1yUTRak0G8sS956g=;
+	b=mmpj8IrkcaDY9N76QF4zic4RK3/ZPLkhdLEc6SHdP7UGYMFYVCidTg7M8HVtdG95N3k9
+	 rmDAuyYpOF3W6Ru15xfGN4BYkZIxqN4n3IYQQystYzDq2BKu3NaJ759KhJyDQ6Pq2uJuM
+	 YMQgpGpkuHAz7LSubuxZS/bEI1EHoljOa3YyJOT/ovHWsfYYO5VyRDR7hrV7W6NroFv6z
+	 EoND5NG/0/eOcp1/G6I1gnuAo1L8GiOo9WxJVzvph7Wqx+bxHLca+p9Qn/RipcGphVInM
+	 /PoG0ZT9zTr9Vh5ZRKCxBux4aISG8djCloDWFF+cMp/gketGeskJA/iyUd6eq1Bxj0A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IPpmdMgW;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GfRHQhWF;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E28606A31B;
-	Tue, 27 Oct 2026 00:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CB4606A31A;
+	Tue, 27 Oct 2026 00:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IPpmdMgW
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14FD51F01825;
-	Tue, 27 Oct 2026 00:15:15 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GfRHQhWF
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A291F01825;
+	Tue, 27 Oct 2026 00:17:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793060115;
-	bh=H/yoQOUKBrL56T5gjNQcc+KduxA/BxAhW7oXXt9IhIc=;
+	s=k20260515; t=1793060221;
+	bh=X2buSjv8QkJzoYlyrpxwJTJC8kX1yUTRak0G8sS956g=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=IPpmdMgWBt1jeGhOyJrZLKls4yjD6kVph15b6Y6qHdKQ11b9aAxvx+Ar9n9oHuPU7
-	 ik6RmqL6C4t2DwUiKDgqqEqkJgnVb8rO3Nq3+KI0tsryhcW+xNAsi+nuLeh+JfcgP5
-	 msQ/Qwq9PY09mcCwCJu6qz1yqHlS6k9pUdU5ouCHpMArXpcK8312x3yaWTqAcrItXs
-	 Fh/5fH2zakApSy+yx7UtQ7DAfMxO5uQ9rCWnj5d2Scab6XDypcEDgWaadPOOLYnHXo
-	 0vxZcJ9sVOBJOU+5sYCx4hLwt3DAbqwljp0Q2XE5gnkSrGeQ0s+HX3UumLBTdkHG7H
-	 bpVu/SD4ErvZA==
-Date: Mon, 26 Oct 2026 17:15:14 -0700
+	b=GfRHQhWFkk40mOnqV0ZHgWI6xnJc0wKJVNuiSwLZ0/VdQptThZAm3s611gNBV2AgL
+	 Qg0ypTXikwBriNsdwH49+/ujj61JjZAwHOEgLrtCdr5Z30Gzsy6GXrKF/Tp8tDPBsN
+	 GWVOBM1YhNf+133bfEpKySml0bcj7V04HDFCh+1ZR0SpdwsypEfev58AHKJmhW/ehQ
+	 qgvazQ5nU+nOV3xttlro4pwyE6VVXWclWnK7gsd3xc8Ilnu/nQhjBrHUPTzgFQ/syt
+	 m1TGcMWksg3U3RsnCxU+DkNmAVRLCPsnl6d6SI9NEgSOezADiH62Ge38kj4UTYdIuf
+	 ZeXpBaK2gzcSg==
+Date: Mon, 26 Oct 2026 17:17:00 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Manivannan Sadhasivam via B4 Relay
- <devnull+manivannan.sadhasivam.oss.qualcomm.com@kernel.org>
-Cc: manivannan.sadhasivam@oss.qualcomm.com, Manivannan Sadhasivam
- <mani@kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
- linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
- ath11k@lists.infradead.org, ath12k@lists.infradead.org, Bjorn Andersson
- <andersson@kernel.org>, Chris Lew <christopher.lew@oss.qualcomm.com>,
- Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>, Raj Kumar Bhagat
- <raj.bhagat@oss.qualcomm.com>, Juha-Matti Tilli <juha-matti.tilli@iki.fi>,
- Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Subject: Re: [PATCH v4 0/4] net: qrtr: Add support for using identical MHI
- endpoint devices
-Message-ID: <20261026171514.35136bec@kernel.org>
-In-Reply-To: <20261022-qrtr-multi-ep-v4-0-c6fdb75fcd3e@oss.qualcomm.com>
-References: <20261022-qrtr-multi-ep-v4-0-c6fdb75fcd3e@oss.qualcomm.com>
+To: "Frank.sae" <frank.sae@motor-comm.com>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ pabeni@redhat.com, edumazet@kernel.org, davem@davemloft.net,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ lingyu.zou@motor-comm.com, xiaoyong.li@motor-comm.com,
+ jie.han@motor-comm.com
+Subject: Re: [PATCH net-next v?] [PATCH net-next] net: phy: motorcomm: add
+ YT8831 2.5G PHY support
+Message-ID: <20261026171700.06ce6543@kernel.org>
+In-Reply-To: <20261022054642.1332801-1-frank.sae@motor-comm.com>
+References: <20261022054642.1332801-1-frank.sae@motor-comm.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -72,16 +65,38 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 22 Oct 2026 19:43:06 +0200 Manivannan Sadhasivam via B4 Relay
-wrote:
-> Merge Strategy
-> ==============
-> 
-> Since both QRTR and ath drivers are falling under the networking tree, the whole
-> series can be merged through netdev tree.
+On Thu, 22 Oct 2026 05:46:42 +0000 Frank.sae wrote:
+> Add a driver for motorcomm yt8831/yt8821-vd ethernet phy.
+> Verified the driver in BPI-R3(with MTK Filogic-830 Soc)development board
+> YT8831 works in AUTO_BX2500_SGMII or FORCE_BX2500 interface,
+> supports 2.5G/1000M/100M/10M speeds, and wol(magic package)
 
-Makes sense, could you repost these after the merge window (~1 week)
-and tag as "PATCH net-next" then? Our CI is thrown by the wifi patches
-in the same series and did not ingest the series.
+## Form letter - net-next-closed
+
+The merge window for Linux v7.4 has begun, and the net-next
+tree is now closed for new drivers, features, code refactoring
+and optimizations. We are currently accepting bug fixes only.
+
+Please repost when net-next reopens. There is some uncertainty
+about how long this merge window will last, so please check
+https://netdev.bots.linux.dev/net-next.html
+before reposting. net-next _may_ reopen on Nov 2nd.
+
+See:
+https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
+
+> +/**
+> + * yt8831_set_wol() - turn wake-on-lan on or off
+> + * @phydev: a pointer to a &struct phy_device
+> + * @wol: a pointer to a &struct ethtool_wolinfo
+> + *
+> + * NOTE: YT8831_WOL_CONFIG_REG is common ext reg.
+> + */
+> +static int yt8831_set_wol(struct phy_device *phydev,
+> +			  struct ethtool_wolinfo *wol)
+
+Please run scripts/kernel-doc -Wall on this, the return
+value must be documented in newly added kdoc.
 -- 
 pw-bot: defer
+pv-bot: closed
