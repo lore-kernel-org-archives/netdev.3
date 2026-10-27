@@ -1,108 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.54
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793112029;
-	b=BVaQOHzL+H6LsnhU710R/AdsPyKB/2kjzW3G2yymz/dvHvBvWQ8CjESxvrvQ039/HGdY
-	 sVgyVnJJHiYE6RV/nyT/cSTycHPKNlCDVlKm8WGve0CFNsdgqdedOnnrd4bP8JpkVownV
-	 rFlYsDp8sLNL5YTD6eYwWI4JbyB4gXZJ5AfPNsZV7Se9Jcbs822GMJDr576Uu9L37RW6r
-	 9EqUt3kQzpElSmILuZxDb478dm+xPjuzzpIHM7QOSIpJpU9q0NK30ApnOg17BfdPNtITP
-	 A4WkdnhFPkCJsA413EmeJvnPnBKwMhhxW9MnbWPW/3BjI9c//dyy3D/v8gZz7GRB3Gg==
+	t=1793112051;
+	b=atKrqkHlL0vyNxvkaizNKsC/pOi1J9oFMruJqKW17qNg9wOu+uCD/7eyn8TrQ6jC/7hG
+	 XLN07pEeOh44MAtHjeJeu5S+lsPhJf8jcIjDrT8/Uq/VRVL3SmJYAMGdg0se17lo/Xpi+
+	 UpCRtiTr1RL55SjopMsSK+GR0RTPQLwkRmozGffEMYGDw6AFZ7yspzq8dLBDca7iU2mTD
+	 5RCP+spQMueMTb3YxGDno1+dEUVVfvExCv4/Juftnxuj3iB6tst65ApDVOzy/90cVSU3y
+	 N5DlwetfID0Yv2hoI/dIT0HQdp1PQJXm8NRnf2ltDSsmyYNWLPbe/qN+ePeUEvnnYeQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793112029;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
-	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=IK2BoLPCSCQEkRIc6Ai1YWmPmuAmq3Vm7WFWqv9pOTA=;
-	b=Y8Mctl5we2FvroTAZVC+3ASjr8kwKJRu6Yra1VrkWqArSAjaetaEZ2ofU7VwiuJXtrnX
-	 x84ctSNHb6fO6RlwSgFkwAYE4Tim5Tmoxh9fEjbMLt+DI2qQVkV3oOwJq9kimu4drPpUn
-	 7yTLXbPt2i/sWJ4SegPqFtNbhUFjlGDi6iLXHsXVTBEn9nLEvsbyhTHhQSpUQwt5Y5F0/
-	 Dri+WkP0B/Gtfuay9Q3c/Yota0u5ZURCRNVIzGj6Cj68hkddY/KyXEmupAP4Wq/gPNOsH
-	 lDvQq4b4mj4s9vIGX04c4cKeVeigNcjkGUT5JkECohOYqmGCl5PhDhUGphSWJguY1sQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793112051;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=VB7H2/azrF+1bwF5JqJO2AtcXUqBNk32tC8HASYM0KA=;
+	b=oqVSJHnWhQqsfgsWFHk+BZCwmoUZ++xHLbDRo60Ebk6kL+cwMxXlrSUYgulVNxKFksDH
+	 jNmZdRwwjEvmLd6eddKS4cCgvBg1UM4ypuX+YQlYrNFX7fWXAuU22YIGboK92RR890TQA
+	 OSl8xLSmaRbih8Ke4m/iux+MlnnIacQwUc/EZporkAxqWDmlQ2S/PzLC/4DJUjUIi1R+L
+	 a48pnW0O9fCk8+HH+lixJ1QcnF5tc5ilV3NxouNoC0gbTUiiSwAmABPMgwlPJH7AIEuo/
+	 GVBVjKFUaU44p+N6u2OQaRLk5AmEE17ZQ0befgMmvr7/I5U/NPx/dSbeWDqGBdtKTQQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LyPL3QPs;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=tH6paY4x;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hFKzeOUy;
+	arc=none smtp.remote-ip=209.85.222.54
+Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77726606A322
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 14:40:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 77726606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95E3606A320
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 14:40:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D95E3606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LyPL3QPs;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=tH6paY4x
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793112027;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IK2BoLPCSCQEkRIc6Ai1YWmPmuAmq3Vm7WFWqv9pOTA=;
-	b=LyPL3QPsFQ1Q2V1kwldpEoZWbOONsyX55ZjXizEJy82g6DZ3RVIoay3OSfWfHF4YJbBoul
-	Ko5Blz9sJVQvsItUg3g3LNDVrT2cL+Zc7dGmxMbMIoQsdy23pw9AHFJNJGMnK7jfme1DIM
-	busEdKgDn7D1gwfdij0T4JLdbDUywmA=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-245-CKBBzeU5OEWzKEOewZaPKA-1; Tue, 27 Oct 2026 10:40:25 -0400
-X-MC-Unique: CKBBzeU5OEWzKEOewZaPKA-1
-X-Mimecast-MFC-AGG-ID: CKBBzeU5OEWzKEOewZaPKA_1793112024
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4a1fdde384cso27998955e9.3
-        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 07:40:25 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hFKzeOUy
+Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-9906a5410f5so849625241.0
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 07:40:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793112024; x=1793716824; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IK2BoLPCSCQEkRIc6Ai1YWmPmuAmq3Vm7WFWqv9pOTA=;
-        b=tH6paY4xo5YQGUZhxfrKgN8eyjp1Aq0SyM44wgjeC544b/dxbKypogullLAYLc3Y6P
-         VkDg1U4IMbOiomb2nAI0pLJb49L7Guxw1zTYImcqALbe16MYAfDyefijf8FtyDsUokWi
-         G8QDKKyYABxwuWvJ0n54DTXNw9FWYkmlyG0N6U9im17vkrmfCTI1qgL5Z0OoU21mbIBz
-         r5r9cj2F981nEJ7iAtYbT6FSBtqcU46yIqdUcVcxFmRiYH5UY6q0Dl8jtjaQPi6t4je0
-         kicZclYzHdpdC/QH4YktyefLbYNxWG/zqhtMg7jur/+tGPBPMafMU3Zma5DyoJIPv2Op
-         JHmA==
+        d=gmail.com; s=20260707; t=1793112050; x=1793716850; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=VB7H2/azrF+1bwF5JqJO2AtcXUqBNk32tC8HASYM0KA=;
+        b=hFKzeOUyEXFw8asiiPMvPqAWP1hLYNbsk4v70blvOqdyjLr7bojrcwBiSA9Rk3GPvm
+         dn052xA63PNALXGZeF4okhB/qlcjvZiD7YoFLMODDMPRikAqQubJ5zo7TldO1osiAutx
+         hA6Mudiw22j4YWLDTrNZQnaId9eSZsCYscAjPrc59KTd1J4g+e3CUzVAHaM3EsPUPPzx
+         QOd4KijoXLZFGpmNGFFhoKf09/w2NJ94kbRHVBbZi+4zw7KaxDq3T/LqZ8Os1RxapTGY
+         /t6leAvAFVlFG6DPjdCvbxA0uV5K1oi1YE57iIM4YmJA6O1czUpS3NJ/Rnz9pN7XdS4l
+         fcOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793112024; x=1793716824;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=IK2BoLPCSCQEkRIc6Ai1YWmPmuAmq3Vm7WFWqv9pOTA=;
-        b=MLHKmIDgKNx9A9k34jU9o36GTp5ey7m/UWFPxghwsnccrnsc++tIfpfYpFSZZiUAHi
-         RYFkunRyK/Ve3zj8mpoVp74FosSosojm7O6wmRNVxNM6XhjxE0ZEqz9gufebtWYt/jJK
-         BkRbZ8GJOYLloXOC951V8XxTlbXAtpKXfmmPSKN+gIBr6LvP8XXa+4v295qOXksRnNca
-         rfqvAva/ZRtw2muweTP5UHXXTQa8VzXY6amaIRCmaJ2QyVkZZ0DQd+2BotxMGKfIhsEP
-         XbKOsTo+9Ye/IXg9LA4xI/prSbkvvfCMN2Q1IYLi1+pYtEBEFmS0r9r/W//ta4A64e1p
-         pn6w==
-X-Forwarded-Encrypted: i=1; AKwUvBxd01ox6H7RFxBfakBCS/Ne/77vcRwegO9GhD9OCOyayABoh2MuQm2AD7Rapmhggbq0GpVABtg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKXDiBDiSB5fHBgK6anX2QUZZPWDlBXBf0KXF/mTKDQIJdmtH3t
-	550T54KZDdHs7ZbRqkEmg4vtQ4IStMt6GABHJ5A6WK5Zc2f6TOHm36pU3FJow0BKM1QAU8O9Omx
-	QkJEGcBQRnPc9l9kJPsViTiLgNZW3MF8N52NfyoKb8QxNTOQjT5ODN4TzVw==
-X-Gm-Gg: AYBFou0HWrqPISLuHpMza7webLseDbpWjPSdFwMdcPJfzGkCuHlL4E7YcT+3y3B9MgC
-	HEszKBIt5Wp2T0wMoF0L4vkMQOk0IxeHlzKbmqACWydgAY6Hv3CZl9uMXhz3fu+9RYpnfWuVAH9
-	CXkDPn+pfAUoeiOifhZQxYPjMPj82OH/IsmE1INZcsU8E94uK5p2elb6wnKw9IyRdDHTRCOyog8
-	Q9DRvdclilAN9KmFC7Tc8fiXyFrxdFozPdXSXDE1aysP/fLj6S5SE6xdZmIEOQpWa/t0Rxj7uj8
-	ET56b6MlEq5R1MkQP8Q+7c9JXHdINCHVGYClGQFumpaqLjChRsKMw3CbptnkZFII1sJJOgnA4TV
-	DpWGQ5wNDpx7Qp4pIu8diMrlAa5p6a+RcJwffCW+7yotcxZ4fpPsWckFvQlmCMiv4QLS0k3ccVw
-	==
-X-Received: by 2002:a05:600c:474a:b0:4a1:d97e:cd60 with SMTP id 5b1f17b1804b1-4a35ac91f2amr208745395e9.16.1793112024324;
-        Tue, 27 Oct 2026 07:40:24 -0700 (PDT)
-X-Received: by 2002:a05:600c:474a:b0:4a1:d97e:cd60 with SMTP id 5b1f17b1804b1-4a35ac91f2amr208744515e9.16.1793112023755;
-        Tue, 27 Oct 2026 07:40:23 -0700 (PDT)
-Received: from [192.168.188.234] (ip174-129-192-82.pool-bba.aruba.it. [82.192.129.174])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a35a0aa097sm299551775e9.3.2026.10.27.07.40.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Oct 2026 07:40:23 -0700 (PDT)
-Message-ID: <5abb5015-eee0-41a6-a4b6-5ca9ed0a9f0f@redhat.com>
-Date: Tue, 27 Oct 2026 15:40:21 +0100
+        d=1e100.net; s=20260707; t=1793112050; x=1793716850;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VB7H2/azrF+1bwF5JqJO2AtcXUqBNk32tC8HASYM0KA=;
+        b=OG3PXvWdsKvpzmvLCChqa5nmVw1iDKsEx5+Dc4V8vz7345wVJ84m5dBJKH2VTIJZPd
+         idOK1FqFyPm4IxvN/ru0yUHiOZOoEKnTFrJCbIJXDSXMiwd7Pd2gi63dYK0CZZ6XOH4U
+         JXYw1BdPvFbpSA55MtAVmFnnq2mkJdDWemZb3JcadMzrbsbS2wHtAUdMD1qr+g45nI9C
+         dZOrJabOeP3QAxf1bgxoCXOtQxiJFfcLjBkazC6VhgOyXDkgRce1BhnYjl7V7cgm8tzR
+         lruzZRzGdEJF4TPLyLQibZOYdJAjIV67WnqYQfkXePaHM3n94E22q0tjYnN95QyT+u92
+         NZMQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwcUK+ZFHaujoUfylRwZIwJyAnu+RUYaovSN2ZDLKW5chC/f3o7xykh8B870UkGNsoMC6bvNNM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLWKde7pcd36LmK7IeKzMMg0NbPx5Py6VIlEFeYF+K+B1EyQaMK
+	HfAkO/LkwMUA26p5NLyYKraU3cO64TLkFVLgBTMf0XWbfk2kbIRyZX9jmfejLA==
+X-Gm-Gg: AYBFou1GAePvshNLn3gNjhlUTYcb7ERatsafWm+uL5ujf07YrXiHKR8FkXu0FiHFR7A
+	zFgy7p9j1XIotJxK2Dk6evqSrsrSeRmxmqk/zkRrBMjew+NNVf5KZT01yfMxWKXXT+PJpP7J+AR
+	e5bPcsbPpAVSR6qzZ8MSYWX4nRTpSrygxgDYXHomDsWLvetjDhvB6mVHi+5sDF+mtH5m9LkMKe+
+	G9AjeprGJhb3FF/oL8AlQrznoX5ykuHErcwunYNIodSdKwEDz9MAPjhixFOQFkJ/80v0jLVBAic
+	qrD/RMWApi2PxS+4uw19YgpnuSBnOUAKrKvmwpIHNpGGWibLawwbf37vrTJ6DHbNm/XY1iGJ09B
+	Fa7X7d2uS876RAK8+R62UAv/DVst/7gybi1oGYXUUYkJs1C2K3Ig1k62nUnFDC8NUAg5+J2juR1
+	0j/T8Hrx4ZTj6+0bX9t9svMvR6gZuTg/N0zmg6JGSGrOYXzB6gtBaNkYg8/1EDQnr+8Xna2sm04
+	GFFICIwyEQpgGYIQ41JfhU1Hcp7+dIGa21P2bNbmA8oOjJOaF656GZfYG0PTlfEFsJombHIuX1J
+	Had84jUWaZgqiOA5iy1iSkUppkZMKakXc7NGF49hiVujfurL5h25Btshh+H8HDKmj/YOBrJwacO
+	rsR9XI+6plJAydI0GESo=
+X-Received: by 2002:a05:6102:6e8a:b0:7cb:cfcf:3d01 with SMTP id ada2fe7eead31-7cea15c6056mr943519137.33.1793112049724;
+        Tue, 27 Oct 2026 07:40:49 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec4a5f26c7sm38302e0c.9.2026.10.27.07.40.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2026 07:40:49 -0700 (PDT)
+Date: Tue, 27 Oct 2026 10:40:48 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Eric Dumazet <edumazet@kernel.org>, 
+ "David S . Miller" <davem@davemloft.net>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Willem de Bruijn <willemb@google.com>, 
+ Simon Horman <horms@kernel.org>, 
+ netdev@vger.kernel.org, 
+ Eric Dumazet <edumazet@kernel.org>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Aaron Conole <aconole@redhat.com>, 
+ Eelco Chaudron <echaudro@redhat.com>, 
+ Ilya Maximets <i.maximets@ovn.org>, 
+ Jamal Hadi Salim <jhs@mojatatu.com>, 
+ Jiri Pirko <jiri@resnulli.us>, 
+ dev@openvswitch.org, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Ren Wei <weir@nebusec.ai>
+Message-ID: <willemdebruijn.kernel.22807e0fe104d@gmail.com>
+In-Reply-To: <20261027082604.1485903-1-edumazet@kernel.org>
+References: <20261027082604.1485903-1-edumazet@kernel.org>
+Subject: Re: [PATCH net 0/5] net: fix eth_type_trans() crashes on skbs coming
+ from the stack
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -112,153 +113,93 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v5 00/13] ice: E82x: timestamp processing logic fixes
-To: Jacob Keller <jacob.e.keller@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Petr Oros <poros@redhat.com>,
- netdev@vger.kernel.org
-Cc: Grzegorz Nitka <grzegorz.nitka@intel.com>,
- Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
- Alexander Nowlin <alexander.nowlin@intel.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>, maciej.machnikowski@intel.com,
- przemyslaw.korba@intel.com, sergey.temerkhanov@intel.com,
- arkadiusz.kubalewski@intel.com, richardcochran@gmail.com, horms@kernel.org
-References: <20261021-jk-e825c-timestamp-processing-logic-fixes-srcu-v5-0-72289a4ac8eb@intel.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20261021-jk-e825c-timestamp-processing-logic-fixes-srcu-v5-0-72289a4ac8eb@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: 7bit
 
-On 10/22/26 00:12, Jacob Keller wrote:
-> Jake Keller says:
+Eric Dumazet wrote:
+> eth_type_trans() assumes ETH_HLEN bytes are present in skb->head.
+> NIC drivers always provide this, and they should keep using the fast
+> version, without an extra pskb_may_pull().
 > 
-> This series contains several related fixes for the ice driver PTP logic
-> relating to timestamp handling and device (re)initialization.
+> Devices looping skbs from their transmit path back to their receive
+> path get skbs built by the stack instead. tc actions (act_vlan pop_eth,
+> act_ife decode), BPF helpers (bpf_skb_change_head() before a redirect)
+> or OVS actions (pop_eth followed by pop_mpls/pop_nsh) can leave fewer
+> than ETH_HLEN bytes in the linear part, and eth_type_trans() then hits
+> the BUG() in __skb_pull().
 > 
-> Of particular note is some changes around the handling of timestamps that
-> are requested near device state changes such as administrative up/down
-> cycles and link change events.
-> 
-> The E825 device logic in the PHY has an internal counter which is used as
-> part of the "threshold" logic which determines when the device will trigger
-> an interrupt signal from a given PHY port to the MAC. This internal counter
-> requires some precise handling to ensure that the internal device state
-> remains in sync with software expectations. Otherwise, the device can be
-> finagled into a state where the PHY stops producing new timestamp interrupt
-> notifications to the MAC indefinitely. This in turn degrades the timestamp
-> processing latency and results in application failures for common
-> timestamping applications such as ptp4l.
-> 
-> There are four major categories of problem resolved by this series:
-> 
->   * Timestamp requests made while the PHY_REG_TX_OFFSET_READY bit is cleared
->     will increment the internal counter, but leave their valid bit set to 0.
->     Upon read, the counter is not decremented. This leads to a desync of the
->     counter and blocks the PHY interrupt.
-> 
->   * Software logic for tracking timestamps incorrectly cleared in-use bits
->     without waiting for completion in certain cases. If the timestamp *does*
->     later complete, it leaves an "orphaned" ready bit which is not
->     tracked by software. This results in the internal counter becoming
->     desynced if that index is re-used.
-> 
->   * The PHY timestamp memory region lacks pull-down zero-initialization at
->     power on, resulting in uninitialized random data in the memory region.
->     If software reads these values, an entry with its valid bit set to 1 can
->     trigger a counter decrement and cause an underflow which results in the
->     counter becoming desynced.
-> 
->   * Timestamp request which complete near the beginning of the PHY losing
->     link can become "stuck" such that the hardware logic triggered by a
->     timestamp read does not activate. The memory status bit and the valid
->     bit in the timestamp index are not cleared. This window where this
->     may occur begins *before* the firmware notifies the driver of link loss.
->     When this occurs, the driver may accidentally re-use a stale timestamp,
->     and the IRQ re-trigger logic triggers a repeated IRQ "storm" that can
->     consume significant excess CPU time.
-> 
-> The series' primary focus is towards preventing driver flows that can
-> trigger the above sequences. It is based on work from Przemyslaw Korba which
-> was previously posted at [1]. During that series development, Petr from
-> RedHat reported the 3rd issue mentioned above. While attempting to root
-> cause that issue, several other issues were uncovered and those fixes have
-> also been included in this series.
-> 
-> First, the PTP reset flow is fixed to stop tearing down the Tx tracker
-> during a CORE or GLOBAL reset. This avoids causing Tx timestamps to break
-> permanently after such a reset. The fix also ensures that all teardown
-> paths properly release the tracker and kworker in a safe order. This issue
-> was found by Sashiko during review of a previous version of this series.
-> 
-> Next, the locking around the PTP ports list in the adapter structure is
-> converted to use RCU primitives and a spinlock, resolving a couple of
-> reports from Petr about places where the original list was accessed without
-> lock protection. Note that an older version of this fix used an xarray
-> instead of the list. The xarray has more overhead and results in an
-> increase of ~25 microseconds to the average latency for processing Tx
-> timestamps. The list is simpler and avoids this overhead.
-> 
-> Next, the PHY restart locking is fixed to avoid an issue with a concurrent
-> execution of ice_ptp_restart_all_phy() and a link change on a given port.
-> Additionally, the PHY port locks are merged into a single per-adapter lock
-> to reduce locking complexity.
-> 
-> Next, the ice_ptp_request_ts() function is updated to sequence the marking
-> of the in_use bitmap in order to work properly with the lockless reader in
-> the IRQ thread. This issue was reported by Sashiko during review of a
-> previous version of this series.
-> 
-> Next, Arkadiusz and Jake modify the driver to stop pretending that the link
-> has changed at administrative ice_down() and ice_up(). This removes
-> "virtual" PTP link changes that occurred on several flows including MTU
-> change, Eswitch setup, and others. Now, the driver only triggers a PTP PHY
-> timer reinitialization when the physical PHY link has changed instead of
-> during many other actions.
-> 
-> Next, come two fixes for E822 hardware that were originally posted as part
-> of Przemyslaw Korba's work [1]. The E822-only "vernier" offset validation
-> work task is properly canceled during device reset, and new timestamp
-> requests are kept disabled until the validation task completes.
-> 
-> Next, the driver is modified to stop clearing the PHY_REG_TX_OFFSET_READY
-> bit. This bits only purpose is to tell hardware to mark any captured
-> timestamps as invalid. Since this also disables the necessary side effects
-> on read it is problematic to have cleared. According to hardware engineers,
-> keeping it enabled should not have any other side effects. Instead, the
-> tx.calibrating field is used to disable new timestamps from software in a
-> similar manner to the older E822 devices.
-> 
-> Next, the driver is modified to clear the PHY_REG_TX_MEMORY_STATUS by
-> reading each index *prior* to the PHY soft reset. This ensures that any
-> stale or invalid data left in the memory array is cleared, followed by the
-> counter being reset via the PHY soft reset procedure.
-> 
-> Next, the E825 timer start procedure is modified to first include a soft
-> reset. This ensures that upon link up the device is reconfigured from a
-> known-good state with its internal counter reset and everything cleared.
-> 
-> Next, Petr modifies the ice_ptp_flush_tx_tracker() function to wait a little
-> bit for any outstanding timestamps before flushing.
-> 
-> Next, Petr modifies the ice_ptp_process_tx_tstamp() function to avoid
-> releasing any index from software unless either a) it is actually completed
-> by hardware or b) it is timed out waiting for a full two seconds. This
-> closes the final gap from the second issue mentioned above. Instead of
-> immediately releasing the index, the software now waits until hardware has
-> completed it or the driver has waited long enough to be sufficiently sure
-> that no such timestamp will be done.
-> 
-> Finally, the ice_ptp_process_tx_tstamp() function is modified to verify
-> that hardware actually cleared the ready bitmap. This ensures that we do
-> not report false timestamps near a link down event.
-It's not trivially clear to me if the patches 2,4,6,8,9 and 12 are
-functionally independent from the other ones. Are they? If so, we
-could apply them, keep the remaining series smaller and hopefully
-move this forward.
+> Instead of fixing every producer, or adding a check to all
+> eth_type_trans() users, fix the few consumers exposed to this:
 
-/P
+Definitely a nice approach.
+
+You previously suggested catching most of the TC modifications with a
+single check in sch_handle_(e|in)gress. Is that no longer needed?
+
+The few mirred/redirect cases are a bane, causing so many issues. And
+escape any such check, as they call netif_receive_skb, netif_rx,
+dev_queue_xmit, directly.
+
+If it's only act_mirred, bpf_redirect and OVS, maybe a single
+validation helper across all three before they pass to the rx/tx
+path, that for starters calls eth_type_trans_careful. It quite likely
+won't be the last packet corruption they are capable of..
+
+> 
+> - Patch 1 adds eth_type_trans_careful(), which pulls the Ethernet
+>   header first and returns a drop reason on failure.
+> - Patch 2 uses it in loopback_xmit().
+> - Patch 3 uses it in __dev_forward_skb2(), used by BPF redirects to
+>   ingress and by veth, macvlan, ipvlan, netdevsim and l2tp_eth.
+> - Patch 4 uses it in OVS internal_dev_recv(), covering both the MPLS
+>   (TEB) and NSH pop cases at once (only the MPLS case was tested).
+> - Patch 5 (from Jamal) fixes act_ife decode on egress, which was
+>   consuming the inner Ethernet header. This is no longer a crash after
+>   patch 2, but egress decode never delivered a correct frame.
+> 
+> Other eth_type_trans() users already pull the header or never see
+> such skbs:
+> - vrf_process_v{4,6}_outbound() already pull ETH_HLEN + IP header
+>   before vrf_local_xmit().
+> - tun already uses pskb_may_pull_reason(skb, ETH_HLEN).
+> - XDP: bpf_xdp_adjust_head() and bpf_xdp_adjust_tail() keep at least
+>   ETH_HLEN bytes in the linear part, and multi-buffer tail shrinking
+>   only trims frags.
+> 
+> Tested under virtme-ng with AF_PACKET reproducers. Without the series,
+> all four cases crash in eth_type_trans():
+> - lo egress "action vlan pop_eth", eth/eth/8192 bytes frame
+> - lo egress "action ife decode pipe", IFE frame with 8192 bytes payload
+> - lo egress "action vlan pop_eth continue", then a BPF program doing
+>   bpf_skb_change_head(skb, 1, 0) + bpf_redirect(veth1, BPF_F_INGRESS)
+> - OVS flow "pop_eth,pop_mpls(0x6558),0" to the internal port,
+>   eth/mpls/eth/4096 bytes frame
+> With the series, no crash. An ICMP echo inside an IFE frame decoded
+> on lo egress is now received and answered. Normal traffic on lo,
+> veth (including 8000 byte pings) and vrf is unchanged.
+> 
+> Link: https://lore.kernel.org/netdev/20261005052249.1914367-2-weir@nebusec.ai/
+> Link: https://lore.kernel.org/netdev/ACT-N6N4.v3.r0.20261023200137-4@mojatatu.com/
+> 
+> Eric Dumazet (4):
+>   net: add eth_type_trans_careful()
+>   loopback: use eth_type_trans_careful()
+>   net: use eth_type_trans_careful() in __dev_forward_skb2()
+>   openvswitch: use eth_type_trans_careful() in internal_dev_recv()
+> 
+> Jamal Hadi Salim (1):
+>   net/sched: act_ife: do not consume the inner header on egress
+> 
+>  drivers/net/loopback.c               |  8 +++++++-
+>  include/linux/etherdevice.h          | 28 ++++++++++++++++++++++++++++
+>  net/core/dev.c                       | 18 +++++++++++++-----
+>  net/openvswitch/vport-internal_dev.c |  8 +++++++-
+>  net/sched/act_ife.c                  |  4 ++++
+>  5 files changed, 59 insertions(+), 7 deletions(-)
+> 
+> -- 
+> 2.53.0
+> 
+
 
