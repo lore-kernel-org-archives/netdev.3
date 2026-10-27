@@ -1,44 +1,44 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.224.81.90
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.126.93.3
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793062408;
-	b=2kPa5IRq7EJvdvjtPewsBKtrzZz6W/PIc41nKPpYlKgPJER8v0sEcGFOUub9YX1e4Elb
-	 necJqfG5Azj6x8h15DxvXe92yZq0HwpiHU6dV7xhSQfpt3MHuO8XxbdFx/lem/g7WLewc
-	 3fDtLj7ddzBJaUXESgaOJbYOC0DV2k8hfBXrU6HrFxbLTcJBJpkUt/nVnAYVQ/CJni777
-	 HPhpS/uf32WjXGktqfyMrTTI5LMEybV2UQmFeB8hDd1uotBQ5IQFFYvWo84eBh1kyakXj
-	 hcKepKE0CAfEPqhNDnwdPKWutXXD+kkMjHFioIRmLympDx01CG4F383Hgog/GIc07+g==
+	t=1793062635;
+	b=4oP57G/Io9OpCA136gEMS6sngg1zHAtZw64bckSXloHDwp096gi0JJLRtYDrQtPp0Idb
+	 B/MKNSdw/mXpNxbSG+tExwM3+jqG2ft1attaPOfKBf1RzyaMZ5YjO8AmQS7bfl/nNXdp8
+	 M6XVOrR/JFV/2nYfSdPNOr0LkS3bQzqg1kWt65XDS+3kFsRSvrLh2VvC4RUwe3xPRYsqS
+	 bffBXmN/9d8R48AhR2UxkFReThO0bcwcKJ3eiGAYK8czcdE4qUlSQU2XsOQXNfmVHflLb
+	 oZ11TvEEeEJakzc1Poek6WFStZxkmhPPX5Djn3d7zPFb32k5Bd8UyRgervbYN8G8xlA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793062408;
-	h=DMARC-Filter:Received:Message-ID:Date:MIME-Version:User-Agent:Cc:
-	 Subject:To:References:From:In-Reply-To:Content-Type:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793062635;
+	h=DMARC-Filter:Received:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:X-HM-Tid:X-HM-MType:X-HM-Spam-Status:
 	 DKIM-Signature;
-	bh=wghg31XooAJPKL/XTiGnCxCN5pFUy2mBUdUxi6yrLos=;
-	b=hsqc+Gv09Vibsh4zPxQF0+f1hqGEsB+xnje/B5sxXEBwklVJZTP/NAUzYwSpCEROr+kA
-	 3iOP+u1Ar1bp/EYH7+1ts8/IgloPHXyYKxP5LmSOY+1UjRC0lv+AE0F3KHlHz+n0W4Th2
-	 UjGXDRTKoIjqsU8xzcL257v5Zc4tmsGsdDsyVE+e8ivOJp9Mucud9fRZoGvL9iS60Wuwq
-	 Pxf5tFfwgM7LXxTU3EfHNOHRRVKoZ1kLOjPhNEF69gewYqa9hHjRwm6h8wAmTCJ1SbH7o
-	 OQHAVGtkWRjuoj2k2ZjA/VClm7DxoxVV2DogKQVaMmq7dFR1JJiTh3XNzJ9fIvYWD5A==
+	bh=LTWlkC3bqSlTG2YkDHxmrbiZeaSggK5ojxGD1nHsNsI=;
+	b=fV6gu6AmjPRTl3WWKHTF6QfIwDNPuA4mkZwkCHguq1JSNh7q3k3+LVE9XfHNlK2YiHkS
+	 I6LLOquAPgTR1/LPgGO4nPXDDGnqq5p+6F/9lbxRNZbFwgBK9T3FuJ58aJNw0BEqibOlY
+	 tjol0z9fJW0+wEy2yrewXaJD7WLthEWvCl1aEhoXt394mIYwT+4tn09qppDjbJWqvidU6
+	 V/yIrUprMmrcrXcLbu9R+aEuKqYdpc2vkEVMAkIGA9+xXyerY6VKudE0CTqZkh/WeQvZc
+	 fnmQWe1znP69pXpZUYUxz27Xuy84Nikiq/jiVpSS6GlUPc1Ix6lrDSwQQTw4JLeJieQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=rock-chips.com;
 	spf=pass smtp.mailfrom=rock-chips.com;
-	dkim=pass header.d=rock-chips.com header.i=@rock-chips.com header.a=rsa-sha256 header.s=default header.b=IJsQys7w;
-	arc=none smtp.remote-ip=156.224.81.90
-Received: from mail-m8190.xmail.ntesmail.com (mail-m8190.xmail.ntesmail.com [156.224.81.90])
+	dkim=pass header.d=rock-chips.com header.i=@rock-chips.com header.a=rsa-sha256 header.s=default header.b=hV1UNJnX;
+	arc=none smtp.remote-ip=103.126.93.3
+Received: from mail-m933.xmail.ntesmail.com (mail-m933.xmail.ntesmail.com [103.126.93.3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320C1606A31A;
-	Tue, 27 Oct 2026 00:53:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 320C1606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D2C606A31A;
+	Tue, 27 Oct 2026 00:57:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 27D2C606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=rock-chips.com header.i=@rock-chips.com header.a=rsa-sha256 header.s=default header.b=IJsQys7w
-Received: from [172.16.12.48] (unknown [61.154.14.86])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 526e8ceb0;
-	Tue, 27 Oct 2026 08:53:12 +0800 (GMT+08:00)
-Message-ID: <bb38e2c8-1868-4a66-9e0d-78d9f68ab4be@rock-chips.com>
-Date: Tue, 27 Oct 2026 08:53:09 +0800
+	dkim=pass (1024-bit key, unprotected) header.d=rock-chips.com header.i=@rock-chips.com header.a=rsa-sha256 header.s=default header.b=hV1UNJnX
+Received: from [172.16.12.93] (unknown [61.154.14.86])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 526eb68c8;
+	Tue, 27 Oct 2026 08:57:04 +0800 (GMT+08:00)
+Message-ID: <9f8114fc-c4bd-4f50-8c5a-a8afc94249b8@rock-chips.com>
+Date: Tue, 27 Oct 2026 08:57:02 +0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -49,136 +49,105 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: shawn.lin@rock-chips.com, linux-clk@vger.kernel.org,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
- mfd@lists.linux.dev, linux-gpio@vger.kernel.org, netdev@vger.kernel.org,
- linux-pm@vger.kernel.org, linux-i2c@vger.kernel.org,
- linux-serial@vger.kernel.org, linux-mmc@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com, linux-phy@lists.infradead.org,
- linux-usb@vger.kernel.org
-Subject: Re: [PATCH 24/27] mmc: dw_mmc-rockchip: Keep RK3572 NVM domain
- powered
-To: 1579567540@qq.com, Stephen Boyd <sboyd@kernel.org>,
+Subject: Re: [PATCH v3 3/3] clk: rockchip: Add RK3572 clock and reset support
+To: Cunhao Lu <1579567540@qq.com>, Stephen Boyd <sboyd@kernel.org>,
  Brian Masney <bmasney+clk@redhat.com>,
  Jerome Brunet <jbrunet+clk@baylibre.com>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
  Philipp Zabel <p.zabel@pengutronix.de>,
- Elaine Zhang <zhangqing@rock-chips.com>, Lee Jones <lee@kernel.org>,
- Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
- Richard Cochran <richardcochran@gmail.com>, Ulf Hansson <ulfh@kernel.org>,
- Andi Shyti <andi.shyti@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>, Jisheng Zhang <jszhang@kernel.org>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- David Wu <david.wu@rock-chips.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Daniel Lezcano <daniel.lezcano@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
- Lukasz Luba <lukasz.luba@arm.com>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Vinod Koul <vkoul@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>,
- Manivannan Sadhasivam <mani@kernel.org>,
- Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
- Jaehoon Chung <jh80.chung@samsung.com>
-References: <20261022-add-board-ok3572-c-v1-0-0b0fd85a31ee@qq.com>
- <20261022-add-board-ok3572-c-v1-24-0b0fd85a31ee@qq.com>
-From: Shawn Lin <shawn.lin@rock-chips.com>
-In-Reply-To: <20261022-add-board-ok3572-c-v1-24-0b0fd85a31ee@qq.com>
+ Richard Cochran <richardcochran@gmail.com>
+Cc: linux-clk <linux-clk@vger.kernel.org>,
+ devicetree <devicetree@vger.kernel.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ linux-rockchip <linux-rockchip@lists.infradead.org>,
+ linux-kernel <linux-kernel@vger.kernel.org>, netdev <netdev@vger.kernel.org>
+References: <20261026-add-board-ok3572-c-clk-v3-0-dbabfa39d692@qq.com>
+ <20261026-add-board-ok3572-c-clk-v3-3-dbabfa39d692@qq.com>
+ <0d5de6fd-3150-4898-a652-7f5b64dcaf07@rock-chips.com>
+ <tencent_6876096D2306016F88487E0E4D78345B3208@qq.com>
+From: =?UTF-8?B?5byg5pm0?= <zhangqing@rock-chips.com>
+In-Reply-To: <tencent_6876096D2306016F88487E0E4D78345B3208@qq.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0aa17ad8d47003a4kunm11e232fa473cda
+X-HM-Tid: 0aa17adc5aa409d2kunmf1cad9ec130d7c4
 X-HM-MType: 1
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDTh1CVh1KTR9CSE1LQx4fGFYVFA
-	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlNSlVKTk9VSk9VQ01ZV1kWGg8SFR0UWUFZT0tIVUpLSE
-	pKQk1VSktLVUpCWQY+
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDQ0JJVkhLTU1JSB8dQ05LHlYVFA
+	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlNSlVKTk9VSk9VQ01ZV1kWGg8SFR0UWUFZT0tIVUJCSU
+	5LVUpLS1VKQktCWQY+
 DKIM-Signature: a=rsa-sha256;
-	b=IJsQys7w6ZxV+DGACFu7tp6IC2XPPwcJXSelxQSD1vTGjhE9PoZcuZz9xwdeWJyiMmawVu+MEW+G8WAm2iMk67hmhZOiMs56Iq7OGWJB2jXbZ7rtdDSqWunDi5ua9gLF9vWCsJIjLwel7Nty1TbOGwqxXT82cvpybuOOJTauLtE=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=wghg31XooAJPKL/XTiGnCxCN5pFUy2mBUdUxi6yrLos=;
+	b=hV1UNJnX6QxnjUOiSLVmQD2uma3cke/feZxFVH5S4idvDB+vzdGr/E9wgn464etOHYT4aZjOe+e90+ba5lq8wnXpsEnx+r0uShc0/GkpQM+Mdf57U1BSBg7TzTBAjAc4coCZPgYikVjqHNbeHLnvM30slTEgbXfdnZ7gyX4ZygI=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=LTWlkC3bqSlTG2YkDHxmrbiZeaSggK5ojxGD1nHsNsI=;
 	h=date:mime-version:subject:message-id:from;
 
-Hi Cunhao,
 
-在 2026/10/22 星期四 0:11, Cunhao Lu via B4 Relay 写道:
-> From: Cunhao Lu <1579567540@qq.com>
-> 
-> Power cycling the RK3572 NVM domain causes repeated SD recovery. Keep it
-> powered during runtime suspend without disabling controller runtime PM.
-> 
-
-Before your v2 about this path, I would like to ask why you need this?
-The dw_mmc-rockchip controller is always under A power domain on every
-SoC, none of the predecessors need this kind of change. If you see
-some errors during RPM, perhaps you should have a look[1] and check your
-DTS.
-
-[1] 
-https://lore.kernel.org/linux-mmc/1768524932-163929-1-git-send-email-shawn.lin@rock-chips.com/
-
-> Signed-off-by: Cunhao Lu <1579567540@qq.com>
-> ---
->   drivers/mmc/host/dw_mmc-rockchip.c | 24 ++++++++++++++++++++++++
->   1 file changed, 24 insertions(+)
-> 
-> diff --git a/drivers/mmc/host/dw_mmc-rockchip.c b/drivers/mmc/host/dw_mmc-rockchip.c
-> index 75c82ff20f177..8bc55d4b996c6 100644
-> --- a/drivers/mmc/host/dw_mmc-rockchip.c
-> +++ b/drivers/mmc/host/dw_mmc-rockchip.c
-> @@ -10,6 +10,7 @@
->   #include <linux/mmc/host.h>
->   #include <linux/of_address.h>
->   #include <linux/mmc/slot-gpio.h>
-> +#include <linux/pm_domain.h>
->   #include <linux/pm_runtime.h>
->   #include <linux/slab.h>
->   
-> @@ -528,6 +529,19 @@ static int dw_mci_rockchip_init(struct dw_mci *host)
->   	return 0;
->   }
->   
-> +static int dw_mci_rk3572_init(struct dw_mci *host)
-> +{
-> +	int ret;
-> +
-> +	/* Power cycling the NVM domain disrupts SDMMC recovery. */
-> +	ret = dev_pm_genpd_rpm_always_on(host->dev, true);
-> +	if (ret && ret != -EOPNOTSUPP)
-> +		dev_warn(host->dev, "failed to keep power domain on: %pe\n",
-> +			 ERR_PTR(ret));
-> +
-> +	return dw_mci_rockchip_init(host);
-> +}
-> +
->   static const struct dw_mci_drv_data rk2928_drv_data = {
->   	.init			= dw_mci_rockchip_init,
->   	.parse_dt		= dw_mci_rk2928_parse_dt,
-> @@ -541,6 +555,14 @@ static const struct dw_mci_drv_data rk3288_drv_data = {
->   	.init			= dw_mci_rockchip_init,
->   };
->   
-> +static const struct dw_mci_drv_data rk3572_drv_data = {
-> +	.common_caps		= MMC_CAP_CMD23,
-> +	.set_ios		= dw_mci_rk3288_set_ios,
-> +	.execute_tuning		= dw_mci_rk3288_execute_tuning,
-> +	.parse_dt		= dw_mci_rk3576_parse_dt,
-> +	.init			= dw_mci_rk3572_init,
-> +};
-> +
->   static const struct dw_mci_drv_data rk3576_drv_data = {
->   	.common_caps		= MMC_CAP_CMD23,
->   	.set_ios		= dw_mci_rk3288_set_ios,
-> @@ -554,6 +576,8 @@ static const struct of_device_id dw_mci_rockchip_match[] = {
->   		.data = &rk2928_drv_data },
->   	{ .compatible = "rockchip,rk3288-dw-mshc",
->   		.data = &rk3288_drv_data },
-> +	{ .compatible = "rockchip,rk3572-dw-mshc",
-> +		.data = &rk3572_drv_data },
->   	{ .compatible = "rockchip,rk3576-dw-mshc",
->   		.data = &rk3576_drv_data },
->   	{},
-> 
-
+在 2026/10/26 22:56, Cunhao Lu 写道:
+> Hi zhangqing,
+>
+>> This is in clk.h, please submit it separately.
+> Thanks for the review. I will move COMPOSITE_MUXTBL to clk.h and add it
+> in a separate preparatory patch.
+>
+>> This is incorrect here; there should be no negative values. Two's
+>> complement is used here, so a conversion is needed. For example,
+>> -12955 should be 52581.
+>>
+>> In clk-pll.c, cur.k & BIT(15) is used to determine the two's complement
+>> conversion.
+> I agree that the hardware expects a 16-bit two's complement encoding:
+> -12955 is encoded as 0xcd65, which is 52581 when read as unsigned. The
+> difference here is how that coefficient is represented in the rate
+> table on the kernel version this series targets.
+>
+> I found the cur.k & BIT(15) branch in Rockchip's downstream develop-6.12
+> tree. There, k is unsigned int, so the driver explicitly checks bit 15
+> and subtracts the magnitude of a negative fractional coefficient.
+>
+> This series uses the upstream implementation. Both v2 and v3 are based
+> on a804c5742bff, which already contains commit
+> 581478883477 ("clk: rockchip: Fractional PLL coefficient on RK3588/RK3576
+> is two's complement"). That commit changed the k member of
+> struct rockchip_pll_rate_table to:
+>
+>          s16 k; /* fractional part, 16 bit two's complement */
+>
+> On this base, rockchip_rk3588_pll_recalc_rate() uses signed arithmetic:
+>
+>          s64 frac_rate64 = (s64)prate * cur.k;
+>          postdiv = cur.p * 65536;
+>          rate64 += div_s64(frac_rate64, postdiv);
+>
+> The signed type represents the negative coefficient directly, so this
+> implementation does not need a separate cur.k & BIT(15) branch. For
+> example, the mainline RK3576 rate table already contains:
+>
+>          RK3588_PLL_RATE(955520000, 3, 478, 2, -15730),
+>          RK3588_PLL_RATE(785560000, 3, 393, 2, -14419),
+>
+> These are exactly the same entries as in this RK3572 patch, including
+> p, m and s. Mainline RK3588 uses the same entries as well. Since RK3572
+> uses this shared upstream PLL implementation, I will follow the
+> mainline RK3576 convention for its rate table.
+>
+> Writing 52581 directly into an s16 initializer would require an
+> out-of-range implicit conversion; a reduced compiler test reproduces
+> Clang's constant-conversion diagnostic. An explicit cast such as
+> (s16)52581 would produce the same signed coefficient, but would add a
+> conversion that the existing mainline tables avoid. Using -12955
+> directly makes the value used in the rate calculation clear and stays
+> consistent with RK3576.
+>
+> The register encoding is preserved: the write path passes k through
+> HIWORD_UPDATE() with a 0xffff mask, so -12955 still writes 0xcd65 into
+> the coefficient field. The five initializer changes from v2 to v3 only
+> make the signed values explicit; they do not change p, m, s or the
+> 16-bit coefficient encodings. In particular, no further adjustment of
+> m is needed for these representation changes.
+>
+> I will therefore retain the signed coefficients, following mainline
+> RK3576.
+OK
+>
+> Best regards,
+> Cunhao
