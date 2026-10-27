@@ -1,101 +1,139 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.217.45
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793128335;
-	b=XAYp2dExC8mAZUg/w1Njwca7HrdasBFmTxfaOhHbEoWFyjx+26KuhQN8OJ4WdRr+7Oa1
-	 us/7KuWLhPeP75DVJiHgQjYnUkOHFZSxHfUr4DALbcW9N0jBdJupPr/jet9r0LUmE2Yxb
-	 wm26ecVg5LSApT+hB8XBxPKO5bDRnhKLIPzjHSpxkn8ohUnbPkHB12WzUqHSzfaGLGeRj
-	 KmUbzlsWhMozTfohi3Dcs+OI3S3viBdKOEqF7tWGhs8RdpVQnGAZA5BuwLIGn81ZKzBEU
-	 Fyq4aMUZCkUxRhICaVD9PZg4n83X2zTHbz/k1vBgTzLPZOPJtOWY/RqIF9IC67yMrXg==
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=198.175.65.21
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1793129559;
+	b=Oydmx26ATWfawQxWGdzelZwAtC21AEBPDgmNWqdMM92B3/V4m1hO1qMctl0SqSTTbkhW
+	 nmqVaApUL9hrhoIrAc4N+raB//qPb1QBtwVKEVXnsZCZN9N0TfqPJH7r0O3Pw+9XQhv1V
+	 oG1QuAwjZoXzMBXDzWxKT4Xjptsm8fWxCHO7qgYX7rDnnIWOS3FHHTULy5QZNm6Odo0TT
+	 IwG0SCH8LM2+NoZ7VLUG5Y9etW5kNWCj+NFfJz0l0ggjbwNUGlP/yyLiT7mX9P236t/DQ
+	 GHoHieYPOgc6bSxrym+WBXu+p72wevr1WPVFD2YLlojYXPux/BXnyPKtUEihYULeQ8g==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793128335;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=03hZHxe6mWjnCPsj/94GuPeA+fkLcIr7pPP60+ktb3I=;
-	b=THeQpd4p8bblYhy76O7xet6kPgi21xwzayMm7KH9xeW98n0vj/17XrNL0e7jGYAAPsV3
-	 QA0ngtRoOVJT4U94p35dLoCCwTCf9UML+CcyJ0CDjKZtlbLc1B8rv6yY7A6/LwYRWqUkK
-	 mv16ItLg/HOWD83UTBmVKLCbINuojTInYD2nSSv/Wab9TYviqzaiHlJcRy59pAwhUmeyX
-	 NrjnlvhUgpPweSwfpXFYQCOK/AU5UnDgUMhzTf1TZEOht9p3s5aQqLUorQlUjmNHJtNKf
-	 NmZs/uD/yFLo1g7N0FZeKoNcGJLc6Cbl3GZZkRgXEKpVhEt2wnJykf9JUwe6qrlb+oA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793129559;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
+	 Received:Received:Received:Message-ID:Date:User-Agent:Subject:To:CC:
+	 References:From:Content-Language:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-LD-Processed:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+	bh=J8zaQMn72W189bTxeC9dTj6qMpCvwsJsPuV2nO5GkRA=;
+	b=DH90g2uZFl05H9sfdJnJE3Rux5aoyBKd83uZ5oY9fLSgiVISCIsJtApMiGWEWaODqiPi
+	 JAMDMQWOYyBMlGNFo92LdptlKYPYOlrQOJd0QzbZnxJY5Gkgks5SOezzIFtwFFbDjgRux
+	 Hr63Eu1nwtB/5eqCnqzLNIxa7fcd8FFS+7xo89cnTyuVc+Ngu0C1HHiyOvlkqFChMhzW+
+	 83azz8KCOYDU7T0MENL99oO7wyBxcip+fXuVYvBC0y6Xg8IBb8K7VimuvRvD+cy366VN+
+	 HNKlMzzzSdocwFyxiQn7sRPb5m6mJHBCAEizI7JrPoJfOhWlpcgJu8Hfk0iweI9TgJw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=everpuredata.com;
-	spf=pass smtp.mailfrom=purestorage.com;
-	dkim=pass header.d=everpuredata.com header.i=@everpuredata.com header.a=rsa-sha256 header.s=google header.b=DXbujnIT;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.217.45
-Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bUHPy9of;
+	arc=fail smtp.remote-ip=198.175.65.21
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7263606A31D
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 19:12:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B7263606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=everpuredata.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=purestorage.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9130606A31A
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 19:32:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C9130606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=everpuredata.com header.i=@everpuredata.com header.a=rsa-sha256 header.s=google header.b=DXbujnIT
-Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-7bec5112765so88747137.1
-        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 12:12:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793128334; cv=none;
-        d=google.com; s=arc-20260327;
-        b=XxgwW+wV/Do1cO4uzfeujSW/o+utCSeP9QYkjicmWb1/crw/JgA6S+AvF9Day5WfYv
-         ikrTMQ//Z7LQT/c7dBbGPtDzp/L06N2OVBV7Js536Y69z9R5482pACgU183VuQ7XzYOn
-         GxSwzgR/kPvcmY/VuW04Iib9juPhYRyq6rqdlYqT1/uxSORQX6N7UXRHHEDZizrtKLxz
-         d7Y2Qgzbkoa3zp9LKIhYo4EC/YQ8otGfEOxy3OnpllnbUG7tgJL0BuEs9DVGIpIUJIPL
-         dBbXbeOmuhC2i0VejxwJRc3ZiEt6gkGnMOhgH4xcIUQxTFmNZotsH+UPJMNxHDcLUWyo
-         4AuA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=03hZHxe6mWjnCPsj/94GuPeA+fkLcIr7pPP60+ktb3I=;
-        fh=8fT76YiNm8JJnTBSqdB1rZ0uDTZ14WZswsdIDWdMOQQ=;
-        b=DUvSsvHmzALwQ2AuD1x685L8ZPiSe/gDktu0PfZEcO8k8rx123mQxZK3tEaj13+2Ss
-         0v7UYp0bGsrOwCk2n6YouMLDTtv8hRLpxHVooBIqNr/N1Xw/MW6sgPuge5wfa7Eqd3Yw
-         7Cdhqa/ZcaIbbWrskjP09HazvnGS38Arm75xVQDUpp8PeqZPWAhjJgnE9EMGRQ/3fnB1
-         IlQ1UHZUaw7vOr+hDWDAZ7Nw2WfboyNuzXgZw1ZWNSLei5f72YMWOuhqTDUDCGpJS5/m
-         nn1S4t0hBODaHOkb655Pt4UE+0my7zMPd1A1v/aRaO4JgoD/vMmTqIRd0cVCMaUK5odk
-         MtxA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=everpuredata.com; s=google; t=1793128334; x=1793733134; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=03hZHxe6mWjnCPsj/94GuPeA+fkLcIr7pPP60+ktb3I=;
-        b=DXbujnITwYZxena585DfwFPWr955Hnb5T2/gODMrIh1uO0T4flnSLd/C1/sqV9y9Dr
-         Voy96Cn+gRdlw8aryQKC4NApvEhNv9YU63neqQlkbM362pOxKee8R9djuJNN9yHtLnVK
-         JVcd0J3yKxewUsLk8KGrbEOgvbr6jJKbKtvRDbJ6TbMOv8fHTJn5TXSa+cbCXEGKWIay
-         tcoUTCDNCb8oxBEDmQIcDjvx1NdgQBR0NvX5j3ipuj4MWEFfu92QblSEoVcmCb2n1Gbk
-         f1P3q9PqC2h/Q20KAf88B5LH8UXrrVIynB8FxkFnW5kp9/yIAn2jcFAHgoPL1Lkd4EJ2
-         5a7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793128334; x=1793733134;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=03hZHxe6mWjnCPsj/94GuPeA+fkLcIr7pPP60+ktb3I=;
-        b=SKTZ5mGO0d4Sq+rtJHUIpBLmV+uQWMOR9bzAYjeZshG3/Mea5NJZViQAPX0w5Tq70S
-         olAgnnkRJiv89nmdtLz09yYBSKYMLNfX7zyRV5FkteCtNNcsO6sZ9NYn68N/pSr+lF/j
-         bt4YhY2IdLNrFRBCZaIE/6vP6yjZ9dw3LXiX6aGyYkYYmegYxSfb6uCDyMOssX6oG6SW
-         RC+Nu0Df+ZqJAabAwhD4ZfmpN/zmS0E/1Wa4b69do/jPr/r4fh2/LVT+Xe5JzQMMpyNU
-         O7IxD5JK4I87ErOTM172Lw7XOspQ4QxYq/npiJnJwCTKYJyx9YfNr96jZb4WNdKwx3vV
-         wJwg==
-X-Gm-Message-State: AFq9FYJcRAm8sOPMSGMQ5ucmD8HnnQD6jnx6BNK7dnZMRp0hCfRAbbOe
-	DoC9QYb9JIOesQ60LIAs+Z+6Jx6if55H+azIMs3svSlpp2w5UmE60m2PbW5R3gnZV+9kecJZ4B0
-	hdFV+cJ9qpFDooqK3+W5wVgoEtRHleix6qlyVHjsTDw==
-X-Gm-Gg: AYBFou2a3cLJbmRvBNKqVVDdODQ39mLnrY5lAZto5kaP4/N50855/DeAhJ5XBk9zSoN
-	TDJ9h6XwqzJ9qsp5+z6gypwUFSoD5SosBcKY7j1JUHTApY2kJWoYIwUKukHztshEDwcJ7oZIkT9
-	YJVU1/baHsRDUX7xUSynkqbm+cYWi4Bn+aP9+6VGXKs6l16dExvrkVGRkwH7q61/HlYjVPVE9NX
-	EYdf1v2iJpgnNNG9l6brGadyv73YE0yZB1WPPYnXs/YOyMoX3YtWVuF52xI7DATIK160QQOJiP3
-	5IbFQSYTEckCTwfZiG0i3uAIoesZrb3oNZ8ERE0ouJngLTjDTLdvUNreKNbk5AXGrzDJ2SxLLOc
-	6mRY5FRvin/W/VENWtZtUTIwFe3mbG1cfTkzVhCYImQFj2TRLBuRKR68AjgP1cnpYcE+bSQRKuv
-	1BjWFNeqJrthl8nKmCi6WQwLQtcjbPyv0nzhtNvgYNhB9KvCaU2Ka4UdLDvsTURSlrN+e1kUgvB
-	l4aAGArSBWSgBLbAk/TOXmGCw==
-X-Received: by 2002:a05:6102:6043:b0:7cb:bc5e:7d9f with SMTP id
- ada2fe7eead31-7d03a417b55mr134881137.11.1793128333505; Tue, 27 Oct 2026
- 12:12:13 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bUHPy9of
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793129559; x=1824665559;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=G4mdUntIRJVsRkcpJCQ2jbvSQKRRRHGO+4H+MoeD0UU=;
+  b=bUHPy9ofoCRKcskasSbfM9CknyiqyEldR4y2YrD9bwUwsESoJ69yMN8s
+   u/pk4RbiyMqWII1EFm5d8BUcDk0hYGRcmuU0IA9rBvptGg2VM23hIa4aY
+   KM0ZSAboilfLmKzft1bSFwY2db00DkORE48UzKuZINBNY/jNzgAvXKOcx
+   q41dc0sZi31ys47nSGv6wCrQfZC3peh3ZVkDN0DI5rdqePwqF6z6N7RpW
+   C41/W2twp6Yza4saa2gIdY7pj8kGsee4aQb9RXjUEyGSIuvvaU8umIQDQ
+   q8Dl3twzf5OQWe+2Ow+QH775jdAc8i82VFQ95xA9nIuKKmvDqomK9khk2
+   w==;
+X-CSE-ConnectionGUID: HyeZVZCaRsKj5YWNz+fWQw==
+X-CSE-MsgGUID: QDfUgAFvQKGRVi17xq50WA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1932683"
+X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
+   d="scan'208";a="1932683"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 12:32:39 -0700
+X-CSE-ConnectionGUID: jDsPG72HQyKwWjyZhMHrWA==
+X-CSE-MsgGUID: q5hKbw4XQQa2U83opbldPQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
+   d="scan'208";a="4718499"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 12:32:39 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Tue, 27 Oct 2026 12:32:37 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Tue, 27 Oct 2026 12:32:37 -0700
+Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.15) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Tue, 27 Oct 2026 12:32:37 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KtTnflsFBa4eAgUCis4ZCRVyFBrSqGJkaDKO4+1T+uZiQ8qIzTlCTjB3Iq8YJRlrrOzpt/DHTGWHUOZ+p3v8t8ujgBHvs4GiqmL3V5lMyeHrtLU//M4eBCosTOF55ubsmcmCtsZqW/PdvwJTAq6pt/vvzRLkFPerN6wuIBWGs0Leb5sxSR90v4kEOevXQtAeWkOFHG9vtQ43+z0e1tElTzHQy3o6lU5bHIDW/hEfH3UahQYOLpyTqJB9MIMsqoDPSxbOiKGP7oHJpK16kD/G94jLyTFTLHCI78MC+oqkS9x/3KhMgveEB6xVNIXOwFvW41XYRJC09BV4IyXS1ZbNPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=J8zaQMn72W189bTxeC9dTj6qMpCvwsJsPuV2nO5GkRA=;
+ b=B4H/0kt4+tJbDQNmlr11yzPUktf1zdjJp5UUxa3G2tAfMUqmbe/y3/CcWbjxhjPuLDyoXRmXhs6zMdpNWgKbfvOdaDAkAMKqlEBC9rf3FFmlduK9etR3rO79s62xh5THcKR/7ds5rgqTTlAKPB98jS1+h9jmPQU1puR08p3EvJ8chKPS1Na83xBbq2iqxc6jDsd6djWS3k3QBuU+vRBKjGAVE2rOfeOioI/xWKtLK+i6HWGOf6ADfbZr9Oc1A8TRWN0QpHhbwaC4SQbanuOmcxu8G3YF5yJf02RiyZFZ2NG5uZfTBuYpVB6EIJLd5/GStT/WQWZH16eCieweYHB0sw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
+ by FT1PR11MB755572.namprd11.prod.outlook.com (2603:10b6:170:c::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Tue, 27 Oct
+ 2026 19:32:33 +0000
+Received: from DS0PR11MB7381.namprd11.prod.outlook.com
+ ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
+ ([fe80::4c39:dfe6:d6dc:6f58%6]) with mapi id 15.21.0546.021; Tue, 27 Oct 2026
+ 19:32:33 +0000
+Message-ID: <0f0a865a-cefd-4896-949a-2b4d72121b4a@intel.com>
+Date: Tue, 27 Oct 2026 12:32:30 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v5 00/13] ice: E82x: timestamp processing logic fixes
+To: Paolo Abeni <pabeni@redhat.com>, Przemek Kitszel
+	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, "Jakub
+ Kicinski" <kuba@kernel.org>, Petr Oros <poros@redhat.com>,
+	<netdev@vger.kernel.org>
+CC: Grzegorz Nitka <grzegorz.nitka@intel.com>, Aleksandr Loktionov
+	<aleksandr.loktionov@intel.com>, Alexander Nowlin
+	<alexander.nowlin@intel.com>, Tony Nguyen <anthony.l.nguyen@intel.com>,
+	<maciej.machnikowski@intel.com>, <przemyslaw.korba@intel.com>,
+	<sergey.temerkhanov@intel.com>, <arkadiusz.kubalewski@intel.com>,
+	<richardcochran@gmail.com>, <horms@kernel.org>
+References: <20261021-jk-e825c-timestamp-processing-logic-fixes-srcu-v5-0-72289a4ac8eb@intel.com>
+ <5abb5015-eee0-41a6-a4b6-5ca9ed0a9f0f@redhat.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
+Content-Language: en-US
+In-Reply-To: <5abb5015-eee0-41a6-a4b6-5ca9ed0a9f0f@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MW4PR04CA0276.namprd04.prod.outlook.com
+ (2603:10b6:303:89::11) To DS0PR11MB7381.namprd11.prod.outlook.com
+ (2603:10b6:8:134::14)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,205 +143,243 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261019212651.733565-1-rjethwani@purestorage.com> <179279158210.3134.17242732656375934492@kernel.org>
-In-Reply-To: <179279158210.3134.17242732656375934492@kernel.org>
-From: Rishikesh Jethwani <rjethwani@everpuredata.com>
-Date: Tue, 27 Oct 2026 12:12:02 -0700
-X-Gm-Features: AclHuK_2_ItZTrTeqhOK0PG7ZE_kdMA131f4dMrK76gCje1VE4UDWDRchgiMw1U
-Message-ID: <CAKaoeS2jxG3VLzqhpaWkJ-srvYhC_E7E+7V5M7+nZ4VKK_KNQA@mail.gmail.com>
-Subject: Re: [PATCH net] tls: device: keep tls_sw_fallback() from encrypting
- its own output
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, john.fastabend@gmail.com, kuba@kernel.org, 
-	sd@queasysnail.net, davem@davemloft.net, edumazet@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|FT1PR11MB755572:EE_
+X-MS-Office365-Filtering-Correlation-Id: 336c1754-6b2b-4786-b1ac-08df34610bf5
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|261009223027099003|261021121427099003|261022075727099003|261022105027099003|10067099003|56012099006|261026121527099003|6133799003|18002099003|22082099003|4143699003|11063799006|261026140227099003;
+X-Microsoft-Antispam-Message-Info: /bPguwM+Wzd3FAlNkfHWQ6POOmaNXsygULxJ6BLIbh0e626TpuNbF5RPa5LQO+cbjSeM93H+h49S78a8NWCvi2jTxJ1hmYDAs/qXnzLROt/lxkJkO9RppolkznaPh7VVWNQ1bltehcvp3kQaZGWdBtRsiHqRx65HfjhLeoXkmem/OPDo6xoQu1y/+xDZkSrcuP2vnNqHuEda9OCzT08+nirkXx6+J2URniYcJ3wE0eLtmawIXwnujWJtzFiRnPVegX50HuDPDFkQMr6cuEW8X580DHuygLnVOYs1OFnAFudISALoQ4zXuTP0E6ngVBl/ogEA9xdAMwuU1J3VZnnCIoGt/jJonBl27vNbzL8oLYiLsE1WrDsX9XhRsuuUdpqZJcgE1DSfAwKRK9cuMuOplcER7hqVy0kz+TVVxmcqZ34GCyI4FMWo8Jf1JZ3SzsPVBOhwV605S7VBI7jqmfgspNG47zp0Q70LzVKcSJkN4tMSacAQNpWCtfLbtnSFSizU1YeC0UxIX0zihs1rrYwsuMmgk3LHKRckxMnWJSd/3+sRe1nAG2shqkFogmHp+AvG9GLk+Bt0C6ktOvWlqrBqlmbOj9RsYJrUPoUc4foCHVLa0ldge0JZNXOL7rfFBWjaFQm1MJ7NPjI7ivQXdIn8QoD2I70VIz8+7vCJnsp10U4=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(261009223027099003)(261021121427099003)(261022075727099003)(261022105027099003)(10067099003)(56012099006)(261026121527099003)(6133799003)(18002099003)(22082099003)(4143699003)(11063799006)(261026140227099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?d0d2TEhsTHN6cllHYjdmY25JeDhTQWtCRlY2dXFYanR1Z3Z4RlhtZEY1c053?=
+ =?utf-8?B?Y2cxK05SQkgzWFVFNEZQRWRvQVQzRkR3bU93Q1VCUHYyZUdjNUR6RUlUQWhS?=
+ =?utf-8?B?WUVxd1BtUDBEbHA4b0FuaVlFTm5vVDdERXRSMmJqeWpBYm9PZ2tXbVl4ZFJC?=
+ =?utf-8?B?N0Vmb21qTUpxMnVoR0V2L2hReU5WV2dhaWJZa3FPL201S2dQWnR4RTZ4OFZX?=
+ =?utf-8?B?SW85elhwMEE2Z1ViWlFTdnRIL3BwVHdqdzFoWDdmU2Z5bGRkeXRnSWk1djBM?=
+ =?utf-8?B?QU9DRkdKcTUvN1VVM3pFMG1JMjczYUhZT0tacFkyR1E5OGxJclN6UVB4RE1V?=
+ =?utf-8?B?dTZwR1VBVEhpclZZdXBLVEhUZVlxaXRVUEphRTQ1NkV6ZExZdjFxRnk0NzZk?=
+ =?utf-8?B?OGtpQzFKWTRpWldIRi9aYU1NUlVmd20ydkFVeCsvNVBIcWYrSnlkS3RCMlJr?=
+ =?utf-8?B?OHJtbTBicWlVK1N0aW9KdG1XT1ZHaUNSQWo5OHhLQjZSYWRLUlZsWHpoQTJa?=
+ =?utf-8?B?UzJGVElLWTIwM1V0MHB4STdhckZONGI5ZXBtdlIwQzZnaXE3cU1HbGlURDJ6?=
+ =?utf-8?B?ckVJQUNJTG1aNzZFaHJmYmdJVjdCczlpaXRMV09uMDdyTGwxc2NzUzZCcXZE?=
+ =?utf-8?B?aDExZnVYL0YwdkZxdzU3V2ROeW10MlVObDFiYVlCVmc5OUpDK3BmdjdxYjBV?=
+ =?utf-8?B?VE80SzdTQ21QVFk2WVJDdmQ0bnFWM3dCNktIK3krcjRNU1I0L2RaKzNjUTFV?=
+ =?utf-8?B?VTNrUW5MOWZCY3YzQXhLL2JDVkN5VE8zOHpFVHIrR3RwVEZZeVR6R2RtYmNB?=
+ =?utf-8?B?R29FUmU0MGFRc0oyUHkyeDZxaUt6NUp4TW5JYlFEazdYTDVSYnJFNGN6OHky?=
+ =?utf-8?B?cmhLNnVjZ2N0WWR6TUxnLzBicmFlb2VibEdOTzhIZkdrOEZwVDVGd05ZMkg0?=
+ =?utf-8?B?bklxZzJ4SlJzcEovb0Jwc2R1c25wTnp5SlZOR2dHdElqdWljbHROdHlTQ01Y?=
+ =?utf-8?B?aFRId2ZjdDBLblZTYitrSEdDVTBOenlwdktjcnB2ZHdQUG1USjAyZWNkVUcy?=
+ =?utf-8?B?MWtFeE1DSjFIZ3pkMlRjMDRGV2tpYWljc00zNmEzbFJ2SkUxVjNNd3lVMS80?=
+ =?utf-8?B?bTZ4UFFEZGFpbkhnYVdxZkZlN3JOb0RiSXEwaThRUWJ0Q0hldjZYL3FyQjhJ?=
+ =?utf-8?B?VkdKZG1MNTU1ZEZ0YXkyUEFpY1VVbjUyMGlGSGEyWXhPTHdoa2lpajRad0xN?=
+ =?utf-8?B?MkZNZngwVm1iYUJlMk90b0xoOUpibkNURnh5NWFBS2l6ejkrU1Z5REk4cUJX?=
+ =?utf-8?B?QkpiUFZ6MEtaZkNoUW9GckQzTnRURU45VTJITE5tRkh1WFdaM0lOcy9CTXBF?=
+ =?utf-8?B?Z3dIWEg1NEpQZ2RBaFI2bGZLcWVTMmNSOFVGVGRMcVMvNXRIM1YvNkRId0JZ?=
+ =?utf-8?B?RmdkTHpXTWdCWEZZbEZVUVE0TWJ4aXIybzhXSWhsNXZXamRuMXVON1k4NXFJ?=
+ =?utf-8?B?ZlZzSXY1amJ2YldTRXp6VDdKenpxQ2NwMDg0NnBQTW16cDdiZGJVYzJ2eWJ5?=
+ =?utf-8?B?czNtY2xyMG5TbVhLSUVXcDB1WU93cU1EOFR0RjVPbGFwUjVmSXA5bzQvYm1w?=
+ =?utf-8?B?RTFHVC93dEUxMXQzak1FL3BFc016RkFGbk9zM1FjdnR6RGFiNVRVbkk1ZDZB?=
+ =?utf-8?B?R1czZEhsbm0wVDgvSEZ0VXdlWERDS1RzTDJJYVFIY0tCd1dtalRCM1FudXQ0?=
+ =?utf-8?B?Y2M4NDdGczNjeU5GeWZwOUNDdDA1aTlSQWVwWURJYno4RDZ5bGdZcTMvSkNH?=
+ =?utf-8?B?M2lxK0xqYVdNMFdRaTN1R3MzcFViV2cvdHRxY0hEZWpwUkFvUjgwdG1ZZUg1?=
+ =?utf-8?B?Mk5sTkVrVFJBMytxd3JNWlRDTzFDSzNWSms4S09Fdmg1dll4MU4wRUFvcU03?=
+ =?utf-8?B?YzU1S2thRE53WXdkcWpubVBxcy85R3hGUGszQUE3dFluVzdpMUZMNnRnUDZ3?=
+ =?utf-8?B?NnY1YVVOWnRIZ1FoL1h1NGlQZUh0SlhUYTgwV3JETHpFSWNOMmNySW9kSmsx?=
+ =?utf-8?B?MVJZZnNZNlhmY0V5ZDUxQXUvQkc1MXRZVWxEdFEwb0tTN0ZSSG8zYno3ZzdG?=
+ =?utf-8?B?cWoxRmQxNzJJeEl1NWRQbU1mSEFSb1ViaURIdzVXZGtaL0wranUrV0VJT3Bm?=
+ =?utf-8?B?SitMT0o3L3dyWWZBbXRYZmxKdzJTOTdabUczRkNVRmZKa3FCRkdRQSs1Q2ha?=
+ =?utf-8?B?TXNyVUpNYkpjQzgrNys2VlBIT1d5MjBwS0xPYlJYWW5wcDhKa2ZjdGF2Q1Vh?=
+ =?utf-8?B?d25BM3R4MU1GMTJ6WFhxeDEwRDRzUVlmYi9IazQzbTV2SlNOWDgxTnJ3Q1VO?=
+ =?utf-8?Q?08V1xSsZXJZsIpw4=3D?=
+X-Exchange-RoutingPolicyChecked: DO1uY+KsiVoHIa5NvfgypdfVWRPBinlfj4rS4BH+cx+I72jVGfQg9bgMr5BCCgAO6VQhjjLjKsjJ0z5l00JWOO8jkcFLF/jR3VkAc9iPea0P5ZA8g2ViNYeb3ez9bPFRnOdKTitxKtMYGEglB4FGhJ7Z1awgeVAse56Ux4olFAxDO2N5IMes/BNHPxqpkF6ph+V8lkNcy6khgXW2jkv1YgWq5/S3CGbjxQPxMcH6VKfk2K4vKBUwCe49GMvNY3yNzfV3Qsq1MFYK89dpxdBeprC/vP2sxKJhT8ukouGs+0+PvQN9B+/RkMlmuB68oOpfYjy/yqF4QD3KbW5r6rkY9A==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 336c1754-6b2b-4786-b1ac-08df34610bf5
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2026 19:32:33.4701
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EW6jmH2dRFcrBUoj878VDsgr0ndzQ522ytYDqx/E2a21hPpFM2OTqzO+N9U9NyCDX3RDpAeOMjVd1VEgs6LYUV/t3+hgjAdsj47NOrhn6Ig=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FT1PR11MB755572
+X-OriginatorOrg: intel.com
 
-On Fri, Oct 23, 2026 at 2:39=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
-te:
->
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 0
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [Medium] The patch makes complete_skb() in
->   net/tls/tls_device_fallback.c run `nskb->decrypted =3D 0;` on every skb=
-=E2=80=A6
->
-> --
->
-> tls: device: keep tls_sw_fallback() from encrypting its own output
->
-> This patch makes tls_sw_fallback() pass through any skb that lacks the
-> decrypted bit. It also makes complete_skb() clear the decrypted bit on
-> the fallback's output. Together these stop a skb from being encrypted a
-> second time when it is validated at both a bond master and its slave.
->
-> > diff --git a/net/tls/tls_device_fallback.c b/net/tls/tls_device_fallbac=
-k.c
-> > index 3b7d0ab2bcf1..24fba12febd1 100644
-> > --- a/net/tls/tls_device_fallback.c
-> > +++ b/net/tls/tls_device_fallback.c
-> > @@ -192,6 +192,14 @@ static void complete_skb(struct sk_buff *nskb, str=
-uct sk_buff *skb, int headln)
-> >       skb->destructor =3D NULL;
-> >       skb->sk =3D NULL;
-> >
-> > +     /* nskb carries ciphertext now, but skb_copy_header() inherited t=
-he
-> > +      * plaintext original's decrypted bit. Clear it so the bit keeps =
-meaning
-> > +      * "still-plaintext, needs an encryptor": a requeued nskb would o=
-therwise
-> > +      * be re-validated and encrypted a second time on any re-entry in=
-to
-> > +      * tls_sw_fallback().
-> > +      */
-> > +     nskb->decrypted =3D 0;
->
-> [Severity: Medium]
-> Can clearing skb->decrypted here strip PSP encapsulation from fallback
-> output?
->
-> PSP also uses skb->decrypted on transmit, but it means "this skb belongs
-> to a PSP TX association". The bit is set at enqueue time:
->
-> include/net/psp/functions.h:psp_enqueue_set_decrypted() {
->         ...
->         pas =3D psp_sk_assoc(sk);
->         if (pas && pas->tx.spi)
->                 skb->decrypted =3D 1;
-> }
->
-> Drivers then use it to decide on PSP TX offload:
->
-> include/net/psp/functions.h:psp_skb_get_assoc_rcu() {
->         if (!skb->decrypted || !skb->sk)
->                 return NULL;
->
->         return psp_sk_get_assoc_rcu(skb->sk);
-> }
->
-> mlx5 reaches this through mlx5e_accel_tx_begin()->mlx5e_psp_is_offload(),
-> and netdevsim through nsim_do_psp(). mlx5e_accel_tx_begin() applies kTLS
-> and then PSP to the same skb.
->
-> Nothing seems to prevent one socket from having both features.
-> psp_sock_assoc_set_tx() installs psp_validate_xmit without checking for a
-> TLS ULP. tls_set_device_offload() overwrites sk->sk_validate_xmit_skb
-> unconditionally. Documentation/networking/psp.rst also describes starting
-> with TLS and then switching to PSP.
->
-> On such a socket the TLS SW fallback can engage in two ways.
-> tls_device_down() can install tls_validate_xmit_skb_sw() after a port
-> bounce, or tls_validate_xmit_skb() can fall back after a reroute. The
-> path is then:
->
-> tls_sw_fallback()
->   tls_enc_skb()
->     complete_skb()
->       nskb->decrypted =3D 0;
-> mlx5e_accel_tx_begin()
->   mlx5e_psp_is_offload()
->     psp_skb_get_assoc_rcu() returns NULL
->
-> The result is that the segment goes out as plain TCP with no PSP header.
->
-> Before this patch, skb_copy_header() carried decrypted=3D1 over to nskb, =
-so
-> PSP encapsulation still happened. Once the fallback is active,
-> retransmits go through it as well. The peer's __psp_sk_rx_policy_check()
-> would then drop the non-PSP data segments, so the connection could stall.
-> PSP protection would also be skipped silently on the wire, although the
-> payload stays TLS-encrypted.
->
-> Could this be fixed without clearing skb->decrypted? Some options:
+On 10/27/2026 7:40 AM, Paolo Abeni wrote:
+> On 10/22/26 00:12, Jacob Keller wrote:
+>> Jake Keller says:
+>>
+>> This series contains several related fixes for the ice driver PTP logic
+>> relating to timestamp handling and device (re)initialization.
+>>
+>> Of particular note is some changes around the handling of timestamps that
+>> are requested near device state changes such as administrative up/down
+>> cycles and link change events.
+>>
+>> The E825 device logic in the PHY has an internal counter which is used as
+>> part of the "threshold" logic which determines when the device will
+>> trigger
+>> an interrupt signal from a given PHY port to the MAC. This internal
+>> counter
+>> requires some precise handling to ensure that the internal device state
+>> remains in sync with software expectations. Otherwise, the device can be
+>> finagled into a state where the PHY stops producing new timestamp
+>> interrupt
+>> notifications to the MAC indefinitely. This in turn degrades the
+>> timestamp
+>> processing latency and results in application failures for common
+>> timestamping applications such as ptp4l.
+>>
+>> There are four major categories of problem resolved by this series:
+>>
+>>   * Timestamp requests made while the PHY_REG_TX_OFFSET_READY bit is
+>> cleared
+>>     will increment the internal counter, but leave their valid bit set
+>> to 0.
+>>     Upon read, the counter is not decremented. This leads to a desync
+>> of the
+>>     counter and blocks the PHY interrupt.
+>>
+>>   * Software logic for tracking timestamps incorrectly cleared in-use
+>> bits
+>>     without waiting for completion in certain cases. If the timestamp
+>> *does*
+>>     later complete, it leaves an "orphaned" ready bit which is not
+>>     tracked by software. This results in the internal counter becoming
+>>     desynced if that index is re-used.
+>>
+>>   * The PHY timestamp memory region lacks pull-down zero-
+>> initialization at
+>>     power on, resulting in uninitialized random data in the memory
+>> region.
+>>     If software reads these values, an entry with its valid bit set to
+>> 1 can
+>>     trigger a counter decrement and cause an underflow which results
+>> in the
+>>     counter becoming desynced.
+>>
+>>   * Timestamp request which complete near the beginning of the PHY losing
+>>     link can become "stuck" such that the hardware logic triggered by a
+>>     timestamp read does not activate. The memory status bit and the valid
+>>     bit in the timestamp index are not cleared. This window where this
+>>     may occur begins *before* the firmware notifies the driver of link
+>> loss.
+>>     When this occurs, the driver may accidentally re-use a stale
+>> timestamp,
+>>     and the IRQ re-trigger logic triggers a repeated IRQ "storm" that can
+>>     consume significant excess CPU time.
+>>
+>> The series' primary focus is towards preventing driver flows that can
+>> trigger the above sequences. It is based on work from Przemyslaw Korba
+>> which
+>> was previously posted at [1]. During that series development, Petr from
+>> RedHat reported the 3rd issue mentioned above. While attempting to root
+>> cause that issue, several other issues were uncovered and those fixes
+>> have
+>> also been included in this series.
+>>
+>> First, the PTP reset flow is fixed to stop tearing down the Tx tracker
+>> during a CORE or GLOBAL reset. This avoids causing Tx timestamps to break
+>> permanently after such a reset. The fix also ensures that all teardown
+>> paths properly release the tracker and kworker in a safe order. This
+>> issue
+>> was found by Sashiko during review of a previous version of this series.
+>>
+>> Next, the locking around the PTP ports list in the adapter structure is
+>> converted to use RCU primitives and a spinlock, resolving a couple of
+>> reports from Petr about places where the original list was accessed
+>> without
+>> lock protection. Note that an older version of this fix used an xarray
+>> instead of the list. The xarray has more overhead and results in an
+>> increase of ~25 microseconds to the average latency for processing Tx
+>> timestamps. The list is simpler and avoids this overhead.
+>>
+>> Next, the PHY restart locking is fixed to avoid an issue with a
+>> concurrent
+>> execution of ice_ptp_restart_all_phy() and a link change on a given port.
+>> Additionally, the PHY port locks are merged into a single per-adapter
+>> lock
+>> to reduce locking complexity.
+>>
+>> Next, the ice_ptp_request_ts() function is updated to sequence the
+>> marking
+>> of the in_use bitmap in order to work properly with the lockless
+>> reader in
+>> the IRQ thread. This issue was reported by Sashiko during review of a
+>> previous version of this series.
+>>
+>> Next, Arkadiusz and Jake modify the driver to stop pretending that the
+>> link
+>> has changed at administrative ice_down() and ice_up(). This removes
+>> "virtual" PTP link changes that occurred on several flows including MTU
+>> change, Eswitch setup, and others. Now, the driver only triggers a PTP
+>> PHY
+>> timer reinitialization when the physical PHY link has changed instead of
+>> during many other actions.
+>>
+>> Next, come two fixes for E822 hardware that were originally posted as
+>> part
+>> of Przemyslaw Korba's work [1]. The E822-only "vernier" offset validation
+>> work task is properly canceled during device reset, and new timestamp
+>> requests are kept disabled until the validation task completes.
+>>
+>> Next, the driver is modified to stop clearing the PHY_REG_TX_OFFSET_READY
+>> bit. This bits only purpose is to tell hardware to mark any captured
+>> timestamps as invalid. Since this also disables the necessary side
+>> effects
+>> on read it is problematic to have cleared. According to hardware
+>> engineers,
+>> keeping it enabled should not have any other side effects. Instead, the
+>> tx.calibrating field is used to disable new timestamps from software in a
+>> similar manner to the older E822 devices.
+>>
+>> Next, the driver is modified to clear the PHY_REG_TX_MEMORY_STATUS by
+>> reading each index *prior* to the PHY soft reset. This ensures that any
+>> stale or invalid data left in the memory array is cleared, followed by
+>> the
+>> counter being reset via the PHY soft reset procedure.
+>>
+>> Next, the E825 timer start procedure is modified to first include a soft
+>> reset. This ensures that upon link up the device is reconfigured from a
+>> known-good state with its internal counter reset and everything cleared.
+>>
+>> Next, Petr modifies the ice_ptp_flush_tx_tracker() function to wait a
+>> little
+>> bit for any outstanding timestamps before flushing.
+>>
+>> Next, Petr modifies the ice_ptp_process_tx_tstamp() function to avoid
+>> releasing any index from software unless either a) it is actually
+>> completed
+>> by hardware or b) it is timed out waiting for a full two seconds. This
+>> closes the final gap from the second issue mentioned above. Instead of
+>> immediately releasing the index, the software now waits until hardware
+>> has
+>> completed it or the driver has waited long enough to be sufficiently sure
+>> that no such timestamp will be done.
+>>
+>> Finally, the ice_ptp_process_tx_tstamp() function is modified to verify
+>> that hardware actually cleared the ready bitmap. This ensures that we do
+>> not report false timestamps near a link down event.
+> It's not trivially clear to me if the patches 2,4,6,8,9 and 12 are
+> functionally independent from the other ones. Are they? If so, we
+> could apply them, keep the remaining series smaller and hopefully
+> move this forward.
+> 
+> /P
+> 
 
-A socket can't have both. Commit a41f24c612c3 ("net: psp: avoid conflicts
-with skb->decrypted and sk_validate_xmit_skb()") made PSP and TCP ULPs
-mutually exclusive for exactly this reason, and sk_has_decrypt_user() in
-net/core/sock.c enforces it:
+Reviewing the patches, I do believe that subset can apply safely without
+a high risk of regression. I would certainly be happier to have some of
+this work move forward and potentially open some slots for other driver
+fixes while we figure out how to fully resolve the remaining Sashiko
+reports for the link issues.
 
-        bool sk_has_decrypt_user(const struct sock *sk)
-        {
-                return psp_sk_assoc(sk) ||
-                       (sk_is_inet(sk) && inet_csk_has_ulp(sk)); /* for tls=
- */
-        }
+Would you like me to make a respin with just that subset, or can you
+apply them? I just checked and that subset successfully cherry-picked
+easily with no merge conflicts net, and appears to build fine.
 
-It is checked in both directions:
+Thanks,
+Jake
 
- - __tcp_set_ulp() returns -EINVAL if the socket already has a PSP
-   assoc, so TLS_TX can never be configured on a PSP socket.
 
- - psp_sock_assoc_set_rx() fails with "Socket has incompatible state"
-   if a ULP is attached. psp_sock_assoc_set_tx() requires an existing
-   RX assoc ("Socket has no Rx key"), so a kTLS socket can't get a PSP
-   TX assoc either.
-
-Neither the ULP nor sk->psp_assoc can be removed while the socket is
-alive: tcp_cleanup_ulp() only runs from tcp_v4_destroy_sock(), and
-psp_sk_assoc_free() only from inet_sock_destruct(). The TX check doesn't
-look for a TLS ULP because the RX step already did.
-
-The listener gap that commit mentions doesn't affect this either. PSP has
-no TCP_LISTEN check, so a listener can hold an RX assoc, but sk_clone()
-clears newsk->psp_assoc and nothing re-sets it during child creation. An
-accepted socket therefore starts with no PSP assoc, and __tcp_set_ulp()
-succeeds on it precisely because of that.
-
-So any skb that reaches tls_sw_fallback() belongs to a socket with no
-PSP assoc. Its decrypted bit only ever has the TLS meaning ("plaintext
-for offload"), and clearing it on the encrypted output can't affect
-PSP.
-
-Your mechanism is otherwise correct: decrypted is inside the headers group,
-so before this patch skb_copy_header() carried decrypted=3D1 over to nskb, =
-and
-clearing it would make psp_skb_get_assoc_rcu() return NULL and drop the PSP
-encapsulation. It just isn't reachable.
-
-I considered the bond-master skip instead, but it would make correctness
-depend on tls_validate_xmit_skb_sw() knowing every upper device that
-validates the skb before the real one. Bond is only the one that is
-special-cased today. If an offloaded socket is rerouted through a VLAN
-or macsec device, the skb is validated there and again at the lower
-device, since both re-queue with dev_queue_xmit(). Clearing decrypted
-makes the fallback idempotent by construction: its output is never
-encrypted again, whatever path the skb takes.
-
-As for Documentation/networking/psp.rst: that passage describes using TLS t=
-o
-negotiate keys for a connection, not attaching both features to one socket.
-a41f24c612c3 deliberately closed the combination ("PSP was not designed to
-be used with ULPs") and left the doc alone. I can post a separate doc patch
-if the wording is worth tightening.
-
-I'll keep the patch as is.
-
-> - Use a separate marker for fallback output.
-> - Skip the bond-master pass in tls_validate_xmit_skb_sw() the same way
->   tls_validate_xmit_skb() already does with netif_is_bond_master().
-> - Keep the bit when the socket has a PSP TX association.
->
-> > +
-> >       update_chksum(nskb, headln);
-> >
-> >       /* sock_efree means skb must gone through skb_orphan_partial() */
->
-> [ ... ]
->
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/20261019212651.733565-1-rjethwani%40purestorage.com
