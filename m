@@ -1,63 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.7
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793091174;
-	b=Ka4/PlIMloyac1mCNGVhFOFZ4Wu75FNYRD7nAQaDethSGgpdZomj/XwUQvBUuRJG378o
-	 bnQdiPONvlaygtbqblpFvTWHI7rIj3dVL2ssXd0r2YrdMzHLbQZWtddP2TY/VK3pgpm3M
-	 FqpwifeUpkHSx0pSz0vaGpciNjE/otAhneZW39YaT53lJgQCCwm5csVk4miT3825D+rkP
-	 F5XmfhsJNWNOzTV7YMQeFZ9cW2vXa8OU8oPhqmce6rvowx/Ouw1EbubnKc2ClgLwanTKh
-	 wjjfvVoYv1u/pfRMw0kxdL5IDfEYyZI1YGpj5XVnXrMyG2FXnZylL0gb4JU/YPt8qhQ==
+	t=1793091324;
+	b=wfn8cOskrc1vqb9UdkYsnSjYTnmQKxdBcppWMchK8PVhumBtgxBelGs/B+zVHONJfGuZ
+	 Y3JL8zOAjL5d0IZRtLulmCfLxxfoaa9fh+bJY3vodeW3SSiYKSB/EG6tzaOD3a2tt5S1b
+	 znCtBYSXwotU6mX2QeK1YuYqR6/JLnN7mGqjlXzQH8KjpEu8TbHm4c7ZapDzZ+JHQXUgr
+	 d1AAFxa23NoX27HugfjDLvX1sMDMQc234ZSA7PR8FcRNR6rzzMS1TX1D4riOYe3dRBcQ5
+	 jFppHKjRoUbJaPUQWF4J7pctKi+wsvU0ymizVvHg/3+7oJJZeI2rCrZiepIOCTnB3yw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793091174;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=ZvZnWihFbxw483qh4KeYM/1CzNFyVp8lIcdiBtlen3M=;
-	b=BzQosOsHoiiKpDYqtnkgG+sqsB0TNDxUlFvyafZSIRmonK13k8hJu3nrpo0SYqJJw9Bg
-	 CB5Huarjudx5+NCHjxmYRhTzKvM1Rdavo5hDrJxQmD0CHeKCbFKjp8JstK9yBKH5HYQ3q
-	 qJPxHup/3+nkShsGyZUfWcS0dARvjqLH+riM1pSziCzhYNdmIawjGHpyaqwb/r57m4fYo
-	 57V31bwW01+rZG+WmrSI+fCFtRLLS6mLN/OZFRBncNue4A8/x8h+r4obAymECHgPwxbEP
-	 SEgC4dwC3aWgVAv1vz3ENcW3O/UBiWySLNHkLLIiEBseXKkaf3bFvULsjPzK5su+Jzg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793091324;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=vFE78Mt/RT5W0a8LHAY83nSeo9T+I0JI1DQ+N1in6PI=;
+	b=EDgbZEWSHP25IT2+MdngwgvyG/FA0olzRK4w5luGOfbTmJUxpkQskN7A0YA+Zgw9OVrt
+	 bZn4ZNJesU0xFALY5vxmopbtp/45jgPb5SypJl/530Tda1DPVbnq8ygeLUFoJN8wmzGjY
+	 NnpByhHHkPRDP3giXsoujI4rfNk630FdrQEgXLF5QdQ9gaNUMuCYe/wUl4oCOObzCXOKE
+	 adSHeRXhYSsMGVDn1BqQ37FqNRLNWE8wgvgGZ6h9TLApHIJ4VUnIrG389RyfX2FSLcgti
+	 GjwM4ZuJrXe6U49147ronF9Pa8URa0CYTpWw8UlSV/Opyk729782mqdWZCKBf3/c7Kw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=126.com;
-	spf=pass smtp.mailfrom=126.com;
-	dkim=pass header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b="oFA46/Eq";
-	arc=none smtp.remote-ip=220.197.31.7
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.7])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WNGRAl9G;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4DE606A31A;
-	Tue, 27 Oct 2026 08:52:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2E4DE606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC04606A320
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 08:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=oFA46/Eq
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Zv
-	ZnWihFbxw483qh4KeYM/1CzNFyVp8lIcdiBtlen3M=; b=oFA46/Eq8QxcasNRIA
-	4jWYHtRr1xdc2ztzFZsbbdze6+3AMhxnEPBOWHa93r33KRfGyjWjkFkgGy/E2uxm
-	VGIkILhxS8B+T4whXK/Dj1ysdzBXkrCpwW2iSywhw7y7W2qCkxKXYkzsHdMucw8r
-	WRmjNh9FbCiZ6x/nLPgtTHb5k=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wD3H+UzZuBqVA77BA--.59983S2;
-	Tue, 27 Oct 2026 16:52:05 +0800 (CST)
-From: Linkui Xiao <xiaolinkui@126.com>
-To: razor@blackwall.org,
-	idosch@nvidia.com,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Cc: bridge@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Linkui Xiao <xiaolinkui@kylinos.cn>
-Subject: [PATCH net] net: bridge: netlink: do not clear the vlan info dump error
-Date: Tue, 27 Oct 2026 16:52:00 +0800
-Message-Id: <20261027085200.1501599-1-xiaolinkui@126.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WNGRAl9G
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60F91F01828;
+	Tue, 27 Oct 2026 08:55:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793091323;
+	bh=vFE78Mt/RT5W0a8LHAY83nSeo9T+I0JI1DQ+N1in6PI=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=WNGRAl9Gd0g1s15kSqpVJRpYgTPn7+MFJUq1xqRJScXXnTquyRYh+JmMb/4aRn/KO
+	 En85SvqTAJwXjGswzKlezVeHAY15G4RdXgSRPU3urQacquTurGoLI/MKdgnFqOcYJF
+	 b2MWyeU4V43Vrz4FbFcpjI1LNJzF2Zu76RXqiv0dL4Hggi/g75JfGl9GIVYURUGU9l
+	 YmC/V49GQPx5BigOyvER+WZ7qwJSIrjh4/6Nhbymq/PICAsC5OEiheBuoq122hyUiG
+	 +cLOdNQSYf2XCoCe2CYeQOSw6AcW07ia0eWaOO3kpjsTQybtO8pdgxJL5oJuHJ4ASD
+	 VLdrHtT4+esag==
+Subject: Re: [PATCH net 07/10] batman-adv: tt: only transmit local ROAM flag
+ together with DEL
+From: netdev-bot+sashiko@kernel.org
+To: sw@simonwunderlich.de
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ b.a.t.m.a.n@lists.open-mesh.org, sven@narfation.org, sashiko-bot@kernel.org
+Date: Tue, 27 Oct 2026 08:55:22 +0000
+Message-ID: <179309132249.3134.16887364336514212941@kernel.org>
+In-Reply-To: <20261026085309.1074911-8-sw@simonwunderlich.de>
+References: <20261026085309.1074911-8-sw@simonwunderlich.de>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,54 +63,108 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3H+UzZuBqVA77BA--.59983S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7tryUur45tr45GF1xCrWUtwb_yoW8Aw15pF
-	4Y9r9xJrWqqay8Kw109F4jqa43ZwnxGFW5CFn2kryIyF90gF1kZFZ5KFZ3Cw1UAF4kJFWY
-	v3ZFqr1Yyrn8uFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UlhFsUUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlBV5UGrgZjUJcQAA3J
 
-From: Linkui Xiao <xiaolinkui@kylinos.cn>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-br_fill_ifinfo() assigns the result of br_fill_vlan_tunnel_info() over
-the result of br_fill_ifvlaninfo() or br_fill_ifvlaninfo_compressed()
-instead of only running the second helper when the first one succeeded.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-When the vlan information no longer fits in the skb but the port has no
-vlan mapped to a tunnel dst, br_fill_vlan_tunnel_info() walks the vlan
-list and returns 0 without touching the skb. The -EMSGSIZE is lost,
-br_fill_ifinfo() completes a message whose IFLA_AF_SPEC is truncated,
-and the dump carries on to the next interface instead of stopping, so
-userspace silently sees an incomplete vlan list.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Only fill the tunnel information when the vlan information was filled
-successfully.
+- [Medium] The fix leaves the requester-side client drop in place even
+  though the commit message lists it as a symptom, and the message…
 
-This was flagged as a pre-existing issue in the Sashiko review of the
-net-next series, which noted that the VLAN fill result is overwritten
-before it is tested (see the Link tag below).
+--
 
-Fixes: efa5356b0d97 ("bridge: per vlan dst_metadata netlink support")
-Link: https://lore.kernel.org/bridge/ed1de95e-e112-4076-93f0-6f7668e657ad@blackwall.org/T/#u#5
-Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
----
- net/bridge/br_netlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+batman-adv: tt: only transmit local ROAM flag together with DEL
 
-diff --git a/net/bridge/br_netlink.c b/net/bridge/br_netlink.c
-index b2cd4e39326d..8ed86bf71a00 100644
---- a/net/bridge/br_netlink.c
-+++ b/net/bridge/br_netlink.c
-@@ -540,7 +540,7 @@ static int br_fill_ifinfo(struct sk_buff *skb,
- 		else
- 			err = br_fill_ifvlaninfo(skb, vg);
- 
--		if (port && test_bit(BR_VLAN_TUNNEL_BIT, &port->flags))
-+		if (!err && port && test_bit(BR_VLAN_TUNNEL_BIT, &port->flags))
- 			err = br_fill_vlan_tunnel_info(skb, vg);
- 		rcu_read_unlock();
- 		if (err)
+This patch stops local TT entries from sending BATADV_TT_CLIENT_ROAM
+unless it comes with BATADV_TT_CLIENT_DEL. The ROAM bit is now cleared
+for non-DEL events in __batadv_tt_local_event() and for full table
+responses in batadv_tt_local_valid(). The goal is to stop receivers from
+treating a plain ADD as a roaming advertisement.
+
+> diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+> index 3349376a9087d..39b61426f1680 100644
+> --- a/net/batman-adv/translation-table.c
+> +++ b/net/batman-adv/translation-table.c
+
+[ ... ]
+
+> @@ -3342,8 +3350,12 @@ static bool batadv_tt_local_valid(void *entry_ptr,
+>  	if (tt_flags & BATADV_TT_CLIENT_NEW)
+>  		return false;
+>  
+> +	/* the entry is (still) announced. A ROAM flag of an entry which is
+> +	 * pending to be removed must not be transmitted. Otherwise, the
+> +	 * receiver would handle it like a roaming advertisement
+> +	 */
+>  	if (flags)
+> -		*flags = tt_flags;
+> +		*flags = tt_flags & ~BATADV_TT_CLIENT_ROAM;
+>  
+>  	return true;
+>  }
+
+[Severity: Medium]
+
+Does this fix the requester-side symptom described in the commit
+message? The commit message says:
+
+  When the requester is the node which sent the ROAMING_ADV, it then
+  marks its own (new) local client as roamed back to the old originator
+  and drops it when it is still NEW.
+
+After this change, batadv_tt_local_valid() still reports an entry that
+batadv_tt_local_mark_removed() marked ROAM|PENDING as valid. It only
+clears the ROAM bit. So the entry still goes out as a plain ADD in the
+full table response built by batadv_send_my_tt_response().
+
+Take node B, which sent the ROAMING_ADV for client C to the old
+originator A. B gets A's full table response before A's next TT commit:
+
+batadv_tt_fill_gtable()
+  batadv_tt_global_del_orig(bat_priv, orig_node, -1, "Received full table")
+    /* removes B's ROAM-marked global entry for C if A was the only orig */
+  _batadv_tt_update_changes()
+    batadv_tt_global_add(..., flags without ROAM, ...)
+      out_remove:
+      batadv_tt_global_purge_local(bat_priv, tt_global_entry, flags)
+        batadv_tt_local_remove(..., flags & BATADV_TT_CLIENT_ROAM) /* false */
+          batadv_tt_local_mark_removed()
+              if (common->flags & BATADV_TT_CLIENT_NEW)
+                  break;
+          batadv_tt_local_remove_now()
+
+The NEW check in batadv_tt_local_mark_removed() does not depend on
+roaming. B's newly roamed-in local entry for C is therefore still
+removed right away by batadv_tt_local_remove_now(). If the entry was
+already committed, a DEL is queued instead. B's global table then
+points C at A.
+
+On A, the local entry for C is ROAM|PENDING, so batadv_is_my_client()
+returns false there as well. Would traffic for C then be disrupted
+until C sends another frame through B and batadv_tt_local_add()
+recreates the entry?
+
+The first bullet list in the commit message also has a related
+statement:
+
+  * batadv_tt_global_purge_local() removes a local entry of the receiver
+
+It is listed there as an effect of an ADD carrying ROAM. However,
+batadv_tt_global_add() reaches out_remove and calls
+batadv_tt_global_purge_local() on every successful non-multicast global
+add, whether or not ROAM is set. ROAM only selects the roaming argument
+passed to batadv_tt_local_remove().
+
+Is more needed to keep B from dropping its local client in this case?
+If not, should the commit message say that this patch only fixes the
+ROAM marking of the global entry and the resulting CRC mismatch?
+
 -- 
-2.25.1
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261026085309.1074911-2-sw%40simonwunderlich.de
