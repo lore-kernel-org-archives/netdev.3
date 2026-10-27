@@ -1,62 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.177
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793135757;
-	b=woiNLd5AZE/ucECHr9hqrgL+HDYHwxcZHxF3GZqXachjDl1ef7HvJWr58vo7hJothd2R
-	 U6ZocQ4nGGWwl4oitoV0uw83XMzFXFP8iwO9M+HmGBspneUxtKEuOMQ1iq5ARS6mf0eh0
-	 xXg1JiDZBNp7Ka4c/ltS2DsBF3/8mSoKt0MiQEXGztV0+bSdx4X3TRGnevodnT9dSAu/w
-	 18HyWYuXoclxjJF6pjiJHZ9EhKHedmgVQnjwMpGnnqT0aLA8/vuxrEO9mlvNSvGPfj+Zh
-	 XDMEN6XZbnJEdkBsjbKnxfoCiq0dR0D3jrsNkJlB2gFSFmhXv7Cq894NPqaKHWDMcsQ==
+	t=1793135843;
+	b=rLc9zZH/pqOPNlHyEDY5mESR2CSPLTXVGZkipivXxci+842zWQaN78rePLCV4eVROQPc
+	 heYFPyhqcuIlXikwXwJNe4e1ox0GnfCB65BUmK3OlAKp1yhC50ckjUq9jdXH1XNIxtCgh
+	 8/jqBEvUSBBXk3m4R7kpSFv8Rgq92qaYO2e+WHvtO70wE3kbvDe5ja0ykVMLjLL+zj8ST
+	 etVnJK5sgGH1bUqVwZV+pGFa6G9SDwpBqYSj1D+Jp20sY9j1DbqczFlhy4X9pABfe38Ke
+	 UybChA8AvvtqVJjJZ07nSbvKDZwWENdv2vt++yMtA+iT2mgVBswpf63vsYJs0xOUpHw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793135757;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=1geKdmmBe6wShVVeouzZVWU6ZgEft6JbnCNtrUokX/0=;
-	b=BwoyveiEF5IjBxPELqOEC6jaf8tp/vHgbeFCFJl/XiU5ZTjl+GpUrTpGvsnGIarIdIZ5
-	 0ZJV/kENNjiz2wRdffhAUQVbFALWOFPN9kHnQcFTEai4aAMq659pLBpTMOrSH601IoQKk
-	 DGe1Hfu3vgo3k81wQ1+PNjKF+JCwvKIkYi/qPsfpzJ8Iv6fvybdXsUVxfqNtObp3GuIba
-	 jdfJic6SyIzFMnGSrNKHW8Ne3fMCYD627NevgetoHFYuMiLr4PGifHrlcV1idZ9apwsQp
-	 IVFzzmBs3QZPaGouHTTzZ2TP/WxF4EA47E5zufiLpe+3y+fbaCE6qyJjsKTploKMi0w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793135843;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Zj22U27fdgZfpXBChZKoCg3JgtYeQCimM1Wx3cOZywk=;
+	b=MV8Dp9qIF0JcyxEindELuBZbAwXkvPiHOIMutMIqE7/SxeQlGK0+0iYU1GWJIe6DyOQV
+	 3s5rtyaRFPDpcoJ8H6jmYv/hLn2R2exuPxZDK+48zaGiarb3lXWSQOjLjBehW6DK2SHDR
+	 OtDE8orbqAWJXINcPP9c+U4dAGXD2kMGB/zl7NY+9HkPe0isCcvbVG9Ct9DVAHTUB9YtP
+	 NF1QmUjsF5vC1xOA+xOy7hDNHQIdtYmrcMNQlVgjhsXfVJIkqBM7sm7fkEBnkbA7wwIWs
+	 Rr4R3BEI0klsyUl9t7ZFq06diaTxFqomgqRDnm+Od+CXvf9EV6G+EboeoP26pHSL+Xw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iMTdTJIq;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lZeiPTlH;
+	arc=none smtp.remote-ip=209.85.221.177
+Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19636606A321;
-	Tue, 27 Oct 2026 21:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29679606A321
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 21:17:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 29679606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iMTdTJIq
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49D5D1F01825;
-	Tue, 27 Oct 2026 21:15:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793135756;
-	bh=1geKdmmBe6wShVVeouzZVWU6ZgEft6JbnCNtrUokX/0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=iMTdTJIqfd7q3bqiB4lTjK+yCSECZ8NTgHmuEaDypAVHeQ7xRNc5nxvo/gsqIUyRt
-	 Ayi7SIyk0hzgw/LkRweXI/fEVljOzlgSAtNf4I8TjksLR/0rtEw+bTJqk0ryJGGnOa
-	 +jx/q/y9UaP/zhOYMHiFBeeU1Zx6mSkec5KAhd2WTDVGLwn9T6M3geSNMAb7CI/bpm
-	 X/9Wb74ORm6qNrKKAtLrDqYy1cyfBkjpHp3EOLKo18pcilggRxSk/rhSFGId9kLgK1
-	 brEZQPImp38oLRdnwS6neMhZ/GHluWmjbkHfxqEU/+tbrH54wcJC9hfZ+an5SG3Lqs
-	 7T0NvE7WHvMZw==
-Date: Tue, 27 Oct 2026 14:15:55 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Russell King <linux@armlinux.org.uk>, Shuah Khan
- <skhan@linuxfoundation.org>, Bobby Eshleman <bobbyeshleman@meta.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Breno Leitao <leitao@debian.org>,
- thomas.petazzoni@bootlin.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net] selftests: drv-net: devmem: Skip when hugetlbfs
- isn't supported
-Message-ID: <20261027141555.47156425@kernel.org>
-In-Reply-To: <ce8f0d43-0078-41e7-a5d2-cf31c6dc97fb@bootlin.com>
-References: <20261021090852.996899-1-maxime.chevallier@bootlin.com>
-	<20261023105258.2a6349f9@kernel.org>
-	<ce8f0d43-0078-41e7-a5d2-cf31c6dc97fb@bootlin.com>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lZeiPTlH
+Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-5ebf39def3aso131338e0c.3
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 14:17:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793135842; x=1793740642; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:content-type:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Zj22U27fdgZfpXBChZKoCg3JgtYeQCimM1Wx3cOZywk=;
+        b=lZeiPTlHAEZ5czFIkYojaFeXElGvf8EcvcnY79K2MwgRCYkV+ki2DF7LmnmkZhdqdD
+         68LPGNEM4G77A5sWpApZxg/qdCt8R6RDF2nPbPZy7F45eoOPv1imvFR+V70dp28zmILX
+         20izqh722ZZHyxHTOh8dSDlKoS8sbSy7RFWsWMq2bl/ZiHMaUU34KBAQ/3Q655PL7kWd
+         BHScWxZ4AlfGSKwA2ep8SGYW1N3ax9p9xXgFjOZqf+PTIFym4FtS4Fquz473O4oJ9C1v
+         LCuZEAHkxExZJ8m2Ny5hWjTh3bTNCROWYdkp66Gr12P8fYloGxuQkpdSanxzb8fipEhz
+         FxJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793135842; x=1793740642;
+        h=mime-version:content-transfer-encoding:content-type:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Zj22U27fdgZfpXBChZKoCg3JgtYeQCimM1Wx3cOZywk=;
+        b=0BWHnYabo7T3SHs0mGTKYyJmBNNzjx6nG5EOohhmTJVFrl/LTrjzp+O4HN/1XuvF6+
+         Y15ymAwHEvbRWzFfp10+0kDPiI+BfJydpItLH707WXgpfWkLeW5rHDec6UYX+IjKhFPL
+         zDczBbBxeSOtlD0JiSa5yjcnoppuM59kLM40AHH6cZs7+SKWCWOHFM4YZk6lBDcw9sD6
+         Lji2r9+JyjKqS62VBmS0gwtwZswagfJqEuZm/2nl8Tp5CRDJO6yo5+dzCTK20aMvlHPB
+         b7CidShcQEVV5bLXEHQECopxOachNEO539+SUq4y18iebBNv03d46BBEN73w5kZS/O9y
+         P0KA==
+X-Forwarded-Encrypted: i=1; AKwUvBxWIpj5ziYGmu6YC2jTiU2zTfajtdCUYv2agasd4QV7B1lJcFyWdRrBvvIOXA1+36HExRFGfhM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJZSpOOM3eKhDzDkoGsJiTao1ZSYtDSp2bsNBr07O0vQKIte35t
+	OMY1EohUXmkTgpBNv0sa5BqJyWaVLmAn/hFjenv9cPwFxF2TwP1DxKwH
+X-Gm-Gg: AYBFou3HnAQZK+mRS7A4M8xxE/KxMuPRdJjC8JsU9GEbZtwIKQiF1KDgLAE/MaCQ3t6
+	HyzLk5e8Bf1n5/SDKApP2maIHDtaQA6MdCc9CWGPYAmjYL7QCOyRrtA8uhTpgSudaD4KdbdBHIK
+	3Dzb65r6SILsRBHcXOy01MY0EoOV8MKK3FcOZ/LqngF2FYxJmmieds9sQw4eLBVQvxH8/3yGvRO
+	RYpVblfznFssNGpz+bPGJYtj7IWQQre12tmhZ0EmyTF4CIGPQkE++zNc2uPG59/7U30svKQlHS3
+	6SNIelosDdLatTSQTBrE7WS9dT533QrSjPVo9IiHaB4CtKCHKBBpFVMgvQGZkh8GoMTd9F7L3Ft
+	Ex4z34yKuriXOJQTujQsoGIt/0M3QRF+LXeHuI7w348pi4nN5fm0tQ23DCkHdu0OHF3CVj1hQeo
+	jjqtZ9sxrJnJFXT6/Q/J9bBoR2Ysak5adFbN+kXyrEpWnB75mPEgdTEikc3ls3t3YCrVPuQ3mVI
+	+kxKBrcyu0dsqft5npzYRv7bLOPi9yJvzeJhVTlnW20ojhQQUwq+nflFoeJTfilvhjIbgM4l8Wr
+	DpUd1To05unU1VtS21Mp+XaRgTdDhs/tQlqc9YDVkk9Y1aRxL0FW4MZkbN19eoyczf+Y
+X-Received: by 2002:a05:6122:179f:b0:5d0:e3b7:334f with SMTP id 71dfb90a1353d-5ec4ccbc8b9mr239071e0c.18.1793135842062;
+        Tue, 27 Oct 2026 14:17:22 -0700 (PDT)
+Received: from 16.15.168.192.in-addr.arpa ([187.74.25.171])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec2349ebd8sm12639658e0c.14.2026.10.27.14.17.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2026 14:17:21 -0700 (PDT)
+From: Joas Antonio dos Santos <joasantonio108@gmail.com>
+To: Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
+ Leon Romanovsky <leon@kernel.org>, Mark Bloch <mbloch@nvidia.com>
+Cc: Cosmin Ratiu <cratiu@nvidia.com>, Boris Pismenny <borisp@nvidia.com>,
+ Sabrina Dubroca <sd@queasysnail.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ David S. Miller <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH net v2] net/mlx5: macsec: free struct mlx5_fs_id after an RCU
+ grace period
+Date: Tue, 27 Oct 2026 18:17:06 -0300
+Message-ID: <179313582625.87630.11382992904624255106@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,36 +102,68 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Mon, 26 Oct 2026 10:38:50 +0100 Maxime Chevallier wrote:
-> On 10/23/26 19:52, Jakub Kicinski wrote:
-> > On Wed, 21 Oct 2026 11:08:51 +0200 Maxime Chevallier wrote:  
-> >> The devmem selftest requires accessing /proc/sys/vm/nr_hugepages,
-> >> which is only available when hugetlbfs is supported. This isn't the
-> >> case on all CPU architectures, for example it isn't supported on ARM
-> >> 32-bits on cores that don't support LPAE.
-> >>
-> >> On these devices, the devmem kselftest doesn't skip gracefully  
-> > 
-> > We don't require graceful skipping. If anything IMO hiding the stack
-> > traces isn't great.
-> > 
-> > If the check is extraneous and makes us fail some tests which don't
-> > actually require huge pages please make that clear in the commit
-> > message. Otherwise the net benefit of the changes is unclear.  
-> 
-> hugetlbfs isn't required for devmem AFAICS, but the blamed commit
-> moved the access to nr_hugepages before the actual "is devmem
-> actually supported" test.
-> 
-> I don't expect the full test suite to gracefully run/skip for devmem
-> on these arm32 platforms TBH, it's likely that devmem is only something
-> that's been used on platforms that support hugetlbfs anyways, but
-> strictly speaking both features are unrelated.
+macsec_fs_id_del() removes a struct mlx5_fs_id from its rhashtable with
+rhashtable_remove_fast() and then frees it with kfree() right away.
 
-For max clarity I should have simply asked - does it make any test which
-previously failed pass on any of your platforms? (incl. some WIP
-patches that'd add devmem support) That's basically the criteria 
-I think we should use.
+The TX (SCI) table is read locklessly from the transmit path:
+mlx5e_macsec_handle_tx_skb() and mlx5e_macsec_tx_build_eseg() call
+mlx5_macsec_fs_get_fs_id_from_hashtable(), which does
+rhashtable_lookup() under rcu_read_lock() and then reads
+mlx5_fs_id->id. A transmit that looked the entry up just before it was
+removed reads freed memory.
+
+Before commit d4ece08f4b1d ("net/mlx5: Maintain fs_id xarray per MACsec
+device inside macsec steering") the SCI table held struct
+mlx5e_macsec_sa directly, and mlx5e_macsec_del_txsa() freed it with
+kfree_rcu_mightsleep(). That commit moved the table into macsec_fs.c
+with the new struct mlx5_fs_id, but frees it with a plain kfree().
+
+Add an rcu_head to struct mlx5_fs_id and free it with kfree_rcu().
+
+The same issue was flagged by the Sashiko AI review as a pre-existing
+problem while reviewing the HW-GRO for PSP series.
+
+Fixes: d4ece08f4b1d ("net/mlx5: Maintain fs_id xarray per MACsec device inside macsec steering")
+Link: https://lore.kernel.org/all/20260909065542.4B80D1F00ACA@smtp.kernel.org/
+Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
+Assisted-by: Yaga Agent HackerSec Claude:claude-opus-5-5
+---
+v2:
+- Drop the macsec.c hunk: the sc_xarray_element free was already fixed
+  by ad17ad50b8dc ("net: mlx5e: Fix use-after-free of the MACsec xarray
+  entry on RX SC deletion"). (Simon)
+- Embed an rcu_head and use kfree_rcu() instead of
+  kvfree_rcu_mightsleep(). (Simon)
+- Fixes: now points at the commit that introduced the kfree().
+- v1: https://lore.kernel.org/all/179285888829.90275.17386097105525068016@gmail.com/
+
+Testing: compile-tested only (arm64, W=1, CONFIG_MLX5_MACSEC=y, no new
+warnings). I do not have
+MACsec-capable ConnectX hardware, so this was not run on a device.
+
+ drivers/net/ethernet/mellanox/mlx5/core/lib/macsec_fs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/macsec_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/macsec_fs.c
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/macsec_fs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/macsec_fs.c
+@@ -94,6 +94,7 @@ struct mlx5_fs_id {
+ 	refcount_t refcnt;
+ 	sci_t sci;
+ 	struct rhash_head hash;
++	struct rcu_head rcu;
+ };
+
+ struct mlx5_macsec_device {
+@@ -684,7 +685,7 @@ static void macsec_fs_id_del(struct list_head *macsec_devices_list, u32 fs_id,
+
+ 	xa_erase(fs_id_xa, fs_id);
+
+-	kfree(fs_id_found);
++	kfree_rcu(fs_id_found, rcu);
+
+ 	if (macsec_fs_is_macsec_device_empty(macsec_device)) {
+ 		list_del(&macsec_device->macsec_devices_list_entry);
+--
+2.39.5
