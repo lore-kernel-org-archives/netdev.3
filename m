@@ -1,65 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.2
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793085887;
-	b=Dbf8uAeGg9TPcGb24U+AojuI5mKqqPU0DYGH/ivVaOqpePmMCsosABizDlFEF0ZCLJkb
-	 /EjFOHk8Buip3lqpF4adPFeRNOK8Ozv39luG/DOxGmkWt/DSAppTg4k/rk33eqVYHDvSg
-	 vVUXLepB5Usd+53lQXzheuroxgkYywPBm7myB6pY0IYklleywY1v/NvEBXQ9qyq2fXC+w
-	 YX/QJFLcJZSmYKQ4hh6lOXDL9zVHlLwZorPBeoR7XB022g2WOB5swlnXktBMMkVDdRsag
-	 6kZ9aHCD7I332XWje2UJdiqUPd3v0ikjAZCJ4uAnG2wZGuWgF1dDPt3het3h58aJpfQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793085887;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
-	 X-CM-SenderInfo;
-	bh=CAMDTx+A/6qjs3rCvYy7knsHqtM0dksG0ov+15rFt04=;
-	b=Z6z3EMlP3A4pPSjXNDujZrQS6wtVxdPJxWBWsbPuNfJtG7Sd7x+gZMOIxXkwwLrGfQm4
-	 V1+mvgrH83/v+j+r97IiP3UZyp/w9dp25M7uh5TDH7wmsoEWcaOGlCeQp1UOwpF8SE6g5
-	 0uArW010fcw6KNSXp3XBBkVV8/EA7eTFuVZXVigbYinSMMdeMjpAyHrbZS3j47ObcGYek
-	 i5YvnNiOlQgX4WQHNwQZilL3Qz5lFsbdEF9JUvW+gTcjGe88+zXdAv0kfqZPRSL4yUqBK
-	 11cki4sXlt+eYoM8nLpVsX798FrsN+s7CNJLM+1sSOpPUAvy9Cd6WI4BRFzIzyL+m2Q==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=163.com;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=cf9J2xJY;
-	arc=none smtp.remote-ip=117.135.210.2
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.210.170
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1793085920;
+	b=34bk8iw2CdHc5Rg00/VkfoPwl388dOfQZvzNlMsAk9TUXSN+Xn3Ir3+Wt75t8D1flWke
+	 bl+odf6M/t4xNBPKSdNYb/4UNvHdkGf8h8Gg1LyGByRqVjZ8BmoKCa9d16Hdvs+I5TIAS
+	 +h6onDnB7aXma3Br2waR+5J23IW1BT/ThrJ636uWIcquU5+vvYzBrJZsPYcKEVVDxn1tM
+	 my2xV0OUVvBANnLgFcO6mnDlVibny2z7muHWxoHrfDIb6EtskzBOI8DR4hKtEMpXZ/YsN
+	 TKdlriy2BWR3Y4oKQsl+SAC1TrYKaLnghzFnAwnf4rpB/ekOt8sjehB2wbZtFpfEQQA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793085920;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=1b3yq9bDkj4cyY1tUi5WC5LVpuov7BX3buQ90jWR19Q=;
+	b=hkxApz7WicukjV7qJ1k/Or76+PRklQCDcWy3hP0B4RHkEyvXjvk5Aaeg2ivG36BHCaWG
+	 VGivlyl/48vD0IJe7bsGlLGDYn+0vNf8d6mD6SjYWMsKSOPRMmdjQihVZPwjFzmY1f2zi
+	 JXd2bmxBaYOGe0oZDfCpKS+XkGxgkXmOA7LXmXv12/V/TpZkhRd93OfD2+Cdqaay4xnLz
+	 c6MJAssiq6qSOKn5T8KXtOLk/H/Y1n0KbXzBLZ/bba2rRPGt/saSdYKacHa3E/vjcvQoT
+	 gfoT6kPeKvKBaXALPV/NFW4hPNsONKnQDg4zDLUdlR8DzqbPUn9Is0uRmeZ6U3ZSmhw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=mojatatu.com;
+	spf=none smtp.mailfrom=mojatatu.com;
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=i4yqr7Tm;
+	arc=fail smtp.remote-ip=209.85.210.170
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D0A606A31D;
-	Tue, 27 Oct 2026 07:24:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 05D0A606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDC2606A31B
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 07:25:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1FDC2606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=cf9J2xJY
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
-	Content-Type; bh=CAMDTx+A/6qjs3rCvYy7knsHqtM0dksG0ov+15rFt04=;
-	b=cf9J2xJYyg5p3OGduQLHOgLuPBxLc34VnUmNhEwDBR5YQOQXSnWYqgyHUajErX
-	N2ExL3UphtwIfGpKrmKg+TeiQkdlPht6CWCWVJE6hSKZnzrlj3xIA+KX8N4b3/5q
-	xdc7MM4r5y7rKrSFEFaLNnZiU0vokgxaXwOwHdMcJeJ9M=
-Received: from lx2.. (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wD3f0x6UeBqyKY4DQ--.54976S2;
-	Tue, 27 Oct 2026 15:23:40 +0800 (CST)
-From: Zijin Tao <taozj888@163.com>
-To: theo.lebrun@bootlin.com
-Cc: Conor Dooley <conor.dooley@microchip.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
-	linux-kernel@vger.kernel.org (open list)
-Subject: reply to Theo's questions
-Date: Tue, 27 Oct 2026 15:23:37 +0800
-Message-Id: <20261027072338.106540-1-taozj888@163.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <63731290.3f0c.1a1198fe993.Coremail.taozj888@163.com>
-References: <63731290.3f0c.1a1198fe993.Coremail.taozj888@163.com>
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=i4yqr7Tm
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-8a06b44bd01so2046480b3a.0
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 00:25:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793085919; cv=none;
+        d=google.com; s=arc-20260327;
+        b=on+PktJ3zA++ri/Q+pyRaDp4JNw4T40xL6xq0bFCZMdHfkHXP9WhWtvmgRyq7gga4f
+         myrwNaOfCBWAjppjrCBfOCwjzuhiGcCpqROTgYbpB6xdKgZONM0072EzGTN5hEYmtCxy
+         zmi05SpprThjM6GvjnPBU5WbC6DbIhRN+ApIjLJ1+tVLz1ri+7T6dg+6XuYWv2PB3Gna
+         MivbXgnYLkRpekchQmb4wX+6fo4yTw7W2YUQdexcYSle+u9plsx7OWxyc4GX2W5Y0yLB
+         3k7JPs+fbsG/yNYsifoQ+sJCG5v9HcWSJBAaDzGHP21k2mvwnVHXyVi2kLn8lttszvZu
+         47MQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=1b3yq9bDkj4cyY1tUi5WC5LVpuov7BX3buQ90jWR19Q=;
+        fh=iAJC7kS9UjHmc+Sjy1lq7MYljLB6+FgcWry/g9bbxxY=;
+        b=LWGvIiCPz8siX/Vd7dexj/saA6hrXAFJAKyEmyP6UN/fGek8wuEnBaxNJU+7mXud0r
+         zty13DEHnWRc5AFJ5X/4q7CFNZnlrsQiqkMB/twTXyk6gu7c5A57H+29nlVaS/aXBFoI
+         3DebYj7DRxnNJOhVvHiknsdoABaRV7ferE9OCVnY4aGXjjOzTl3EhjmcHjh8kU6c/70/
+         MJVu66ppi26n0QpXFjrR2rRk6/TX7WRH1w9NvhgXll2mT+GzanTTmlZ5pKjkkJa6OxIJ
+         rNwF5gKIokDgKv97XW0898cdh3BixNeJ6DWXUCcfSn5eVi4f1X/5XXSpZ5rfjJ+uXXxZ
+         Hmiw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1793085919; x=1793690719; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=1b3yq9bDkj4cyY1tUi5WC5LVpuov7BX3buQ90jWR19Q=;
+        b=i4yqr7TmR4nmOslL8RUixlCjBdWDnhnOn8mTXO0eJbWngP2C6b/ZZD1XVhWpDnOvd8
+         C2qCLaFFSLRoLZZt/nXpQUBmikFS0ckpGKluZRI17EGPDMlY8n6iyVnwDjsgB2qwlpZh
+         tSwWOHo5j/ZLYmvp1EIi6dYs5Ugfz2oOSiUNc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793085919; x=1793690719;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1b3yq9bDkj4cyY1tUi5WC5LVpuov7BX3buQ90jWR19Q=;
+        b=gICaXjQ6CXFiguqfPUI0zmsVNzjHsqbmQZ71naKvi8odLAPCEFOkeVW+n3xSIEz5/6
+         QgOT2zmEUmryRAfIhM7EPKT/d5k1K2T5g60jQjS0SDCo0X29E+lqi79bC3ZfMxrI/jFb
+         6h0Dy+rh5/hvqvyL+xK3TJ9TI3lmpxzu8ypSW6yrJEie8eaJd/R60FHQ60qkFeCq0zVC
+         +wNPpf6CaSGF628DY63lUpQ2WUcMeeo1gK5afj4LPOcYIe8J4pJcFGr3Kbcl5FNJdjix
+         V+4Z81Zq+ekYKE6jZOpHwdZ3NILPFy0eWw6zZS6t8i0al6H9X31o7ClqYqBKKL3VX+ke
+         MKUw==
+X-Forwarded-Encrypted: i=1; AKwUvBykTBO5NebnnxwJzlRVye47mD6cYjLcIWWkXGVBexKgnTobAZuNJHMR83fsp6DX1tAAe3EUGqE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLxFLfAdDgROEPBF0ypfvaNuR+dl3HUjHyZMRyAsBBgz6IxmctJ
+	nhatrmKjwNUILpOMBHpO5xJfaJw1NJzdlEvxydVnANHpij5J/6rn6F/WEDAHNByqffTwx+mQyJM
+	+7JmIz98cYdKH1mQNLBhFNuOl9g5mP5pxs9CQVQNt
+X-Gm-Gg: AYBFou0rm3gsJKnOqZ1A51k+e5g2v9CnJRxfcM2WhyBhHpU7YNK9+PSkpalE+Ijoo1n
+	hnye4Kes5+lalMYTNUUipitKL+sc+rI3WMnoyIFwV+uAdsnNtXiYVAJDP9F7qvln0yKXCPyfo8/
+	TTy7Jr5RVjjy7t/+3Sf8dKYKWmUCm4DubJcxNmf/nTFeq83IJIjMYszKoclZ3v/alFo8wyoObj0
+	xPGXullM9h5sK1xx2kYtzcMSZw00V6T15iuFTIGr+iNjA4Ob1iSR40Yqh4MnAmcmaW5lhW32x+Y
+	Cv2dUsig44HK8efwd3Tiieq5XvrIZBSWkduIc6PG5zPLYNWqA2GoNS1NH4z1UwhselNhbxdUokq
+	23LEeuA0Uekn1lMv0AizzXPl+HVk2/wStk75UwvTxcyaLUIlD21uEx/q3iTC+h1VTs40KZAEkTS
+	2jaYRhXeGubeMI0b0=
+X-Received: by 2002:a05:6a00:9093:b0:878:3783:8a88 with SMTP id
+ d2e1a72fcca58-8a3689a9e0amr7511811b3a.52.1793085919500; Tue, 27 Oct 2026
+ 00:25:19 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,243 +102,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3f0x6UeBqyKY4DQ--.54976S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxCr4fZw1rZr48ZF1rKr13CFg_yoWrArWfpa
-	y5Gr1jvr1kJF1fKws7Cay7Z3WrXr95GF43Wr45GryIka45XFnFgrZIg3yYqFy8u34xWa40
-	vr4UZasak3yqgaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jwjjDUUUUU=
-X-CM-SenderInfo: hwdr6yqyyyqiywtou0bp/xtbC3h5GDmrgUX5djQAA39
+References: <QDISC-6HS9.v1.r2.20261020051718-2@mojatatu.com>
+ <20261026160747.283702-1-horms@kernel.org> <CAM0EoMm9piw8gLJ=t9YYNu2-8zb=qfA3G6djchL0QaeZZvaNfA@mail.gmail.com>
+ <20261026174643.088e3f49@kernel.org>
+In-Reply-To: <20261026174643.088e3f49@kernel.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Tue, 27 Oct 2026 03:25:07 -0400
+X-Gm-Features: AclHuK_uYZ49I43utjW4TiugqfGvmoGuDzSGM3UY8eQ0cCU3DR7mRFC8rpStjeI
+Message-ID: <CAM0EoMmVv5WnzpQw2d7iLZU84KPDUMf7+t5m8BL+MBXR+oy7Lw@mail.gmail.com>
+Subject: Re: [PATCH net 2/2 repost2] net/sched: sch_teql: keep skb->dev
+ consistent on the arp-queue path
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, victor@mojatatu.com, 
+	jiri@resnulli.us, davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com, 
+	stable@vger.kernel.org, sashiko-bot@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Theo:
-
-
-
-
-
-Sorry for having missed important things. 
-
-I would like to append some explanations here.
-
-
-
-Thanks,
-
-Zijin Tao
-
-
-
-
-
-At 2026-10-14 01:55:03, "Théo Lebrun" <theo.lebrun@bootlin.com> wrote:
-
->Hello Zijin,
-
+On Mon, Oct 26, 2026 at 8:46=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> On Mon, 26 Oct 2026 19:51:33 -0400 Jamal Hadi Salim wrote:
+> > > This is an AI-generated review of your patch. The human sending this
+> > > email says "Hi Jamal, passing this on for your consideration as it
+> > > seems to have got stuck somewhere."
+> >
+> > There was nothing wrong with the headers this time - so not sure what
+> > is going on. A bit frustrating.
+>
+> It is frustrating, you are the only one with these issues.
+> Patch 2 is posted in reply to patch 1. IDK what else is wrong.
 >
 
-> - I'll stop replying inline because you seem to be having issues with
-
->   your mailer. Please fix it to ease the discussion.
-
->
-
->   See here how your email looks:
-
->   https://lore.kernel.org/netdev/63731290.3f0c.1a1198fe993.Coremail.taozj888@163.com/
-
->
-
-> - Your V4 commit message says "Fixes: 89e5785fc8a6" but that is wrong
-
->   with the current patch, it shold use 4df95131ea80. I don't
-
->   understand why you are talking about the changelog at the same time,
-
->   this is unrelated.
-
->
-
-
-
-
-
-Yes, I made a mistake in V4 commit message with an oversight, it should use 4df95131ea80, so
-
-I just revised it to 4df95131ea80 in the V5 patch, and I will use it in possible later patches.
-
-
-
-
-
-
-
-
-
-> - You skipped over explaining why your dropped the start_xmit diff.
-
->
-
->I'll have to stop reviewing if you skip over parts of the messages.
-
->I gave you a TLDR and you skipped over the first bulletpoint.
-
->
-
-
-
-
-
-Sorry, I forgot to make an explanation here, maybe due to an omission.
-
-Now I would like to amend it:
-
-Actually when I started to rate limit the error messages in the data path, I saw 
-
-the netdev_err message print in both the gem_rx_refill and at91ether_start_xmit,
-
-and I knew they are also in the data path.
-
-But for the following reasons I just omitted adding rate limits for them:
-
-1. For the netdev_err in the gem_rx_refill, there is a "unlikely(!skb)" to check if
-
-the skb is NULL which is a rare case,  so I think it's not so needed to add a 
-
-rate limit here;
-
-2. For the netdev_err in the at91ether_start_xmit, I think it belongs to another vendor
-
-which I am not familiar with, and I didn't know how popular it was used, even I was not authorized to 
-
-change it with my will also.
-
-
-
-
-
-If you think it's better or needed to add a rate limit for them, I would like to do it in later possible
-
-patches. 
-
-Would you please give your opinion here?
-
-
-
-
-
-
-
-
-
->Thanks,
-
->
-
->--
-
->Théo Lebrun, Bootlin
-
->Embedded Linux and Kernel engineering
-
->https://bootlin.com
-
->
-
->text:
-
->Mime-Version: 1.0
-
->Content-Transfer-Encoding: quoted-printable
-
->Content-Type: text/plain; charset=UTF-8
-
->Date: Thu, 08 Oct 2026 14:59:55 +0200
-
->Message-Id: <DLZH4LPJ36YW.1CP7RL0J77DHN@bootlin.com>
-
->Subject: Re: [PATCH net v4] net: macb: rate limit netdev error info print in
-
-> the data path
-
->Cc: <stable@vger.kernel.org>, "Conor Dooley" <conor.dooley@microchip.com>,
-
-> "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S. Miller"
-
-> <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
-
-> Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Jeff
-
-> Garzik" <jeff@garzik.org>, "Haavard Skinnemoen" <hskinnemoen@atmel.com>,
-
-> "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>, "open list"
-
-> <linux-kernel@vger.kernel.org>
-
->To: "taozj888" <taozj888@163.com>
-
->From: =?utf-8?q?Théo_Lebrun?= <theo.lebrun@bootlin.com>
-
->X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
-
->References: <20261007053211.572073-1-taozj888@163.com>
-
-> <DLYI3O7PFN94.V7VH3HSLKEMD@bootlin.com>
-
-> <63731290.3f0c.1a1198fe993.Coremail.taozj888@163.com>
-
->In-Reply-To: <63731290.3f0c.1a1198fe993.Coremail.taozj888@163.com>
-
->X-TUID: tHkCkOndXaQQ
-
->
-
->Hello Zijin,
-
->
-
-> - I'll stop replying inline because you seem to be having issues with
-
->   your mailer. Please fix it to ease the discussion.
-
->
-
->   See here how your email looks:
-
->   https://lore.kernel.org/netdev/63731290.3f0c.1a1198fe993.Coremail.taozj888@163.com/
-
->
-
-> - Your V4 commit message says "Fixes: 89e5785fc8a6" but that is wrong
-
->   with the current patch, it shold use 4df95131ea80. I don't
-
->   understand why you are talking about the changelog at the same time,
-
->   this is unrelated.
-
->
-
-> - You skipped over explaining why your dropped the start_xmit diff.
-
->
-
->I'll have to stop reviewing if you skip over parts of the messages.
-
->I gave you a TLDR and you skipped over the first bulletpoint.
-
->
-
->Thanks,
-
->
-
->--
-
->Théo Lebrun, Bootlin
-
->Embedded Linux and Kernel engineering
-
->https://bootlin.com
-
-
+Let me send a repost3 - will take the opportunity to pedantically fix
+the commit message (no code change).
+
+cheers,
+jamal
