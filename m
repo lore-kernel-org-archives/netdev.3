@@ -1,62 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793104743;
-	b=U2ntz6poD/LEOCFLofZSsEVNiYDjIJ/x0vq9c4Mtt7GwmtsGOp3VZhsvVdr3WcE+wsCJ
-	 +empZ8hbdq/xiWxQ3snpXMeT/U0vLbL7/vPSibd3SSRj1g81N4KUmKvfKySII7H3uGKAj
-	 g4c0MpffBiVOKxz7wESV1G6N4Jk6shUcqQgfKK6S5IkbxjUHj8MYKakXHPM8KJALExZsp
-	 539OBiNrjm90JxOO3U9/CeoLzYNxmd/Z32FWrkBv86KnnRmfOO7HkGtU0M3xc2aE/ngo1
-	 km09rtCeFT9cHnzQIToU77fSGkNeX+ShceQ/exUDQZuvGtxp0/r6WdwKgwjKrdRcS4A==
+	t=1793104986;
+	b=StqtATY0ScNdsVK6ltaTEFAlSzl5n612O62oT8vczoKJvDPyDx8mDryP2q85PbTfx3EV
+	 NvcHtEhIh12UZpcEC5qU/2NInKZ/jn8SmU8VnAr6NvPdjwlBJBN/+/0iVCQO2yiKHsK67
+	 UrPPfCOTxp2uFmsiMRyFZpZNYIl/mema8umIwlVWXINRczHCvtHETCh2m+o/8Jq3RvV5f
+	 qgYOGxzbAzG1rt0GddTuOBljgG7qMx0olNRv2ngFavtjjLlY/WytxPCN1isghRv7XSzqO
+	 I/02+Q6rOcDE2zJxEz/66MC1QAHdUucGmsQDsa5nOcCRf0VQM3WKNDcBtS6tH4Velhg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793104743;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Jswp2crzQp9KqexGzBb3t1FkcdKy9t2g2KSUpLlbZf0=;
-	b=gKeZsemnhtE+ESIRG/InIukkd+ELbimYgibffOYup06hp0u6bF4yk9Hic+lQvfzhYBWh
-	 zG/TdsX7IzosETAWEimARp2mgSMdC/2P7UtWqn7crmAbkRcy64u/xvTD1ym/EyAj9c/gS
-	 w96zwMhUZtRVskPJPp9CFE8gs/2lUN/3MvgS9yXBuWe6domEOaYYlWVRzhdvSS/W/0K0D
-	 jONhKwtDLHu/THV2WD2w9KTc04OTjQJ/359Xhb9mscTIwuhjFhsw8jbU5uAmL8J+HHed2
-	 tKLUwSlTJ3lkW/+EGoXuVuFZfXf7vJKjyu7tzjmiN2R3EtxkTRikkksWAd2MPy5k+7Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793104986;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
+	 X-Proofpoint-Reinject:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
+	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=cAYZtiD4RmUsJ181IMozOX2rIgNQJYDYOnyvHJ4wzu4=;
+	b=reBPnekn+T7Y0Q/DpWR6lN4gdJp6ZwMJ39RL6Tw1C17BZ7nqHypiFu99KSnZ5faTXBvz
+	 dVAhYh38Q84pjSXm0Nn+qxv+eeuccO6JAqOpKWZ+zCKAyiR38fLhrOk0SNyJfaNYWNByc
+	 oFlXcqxLNSWneskr3rJRt66nbMmE7vFO8JtzDACtC8WeWMh4uwWTrXhVw9f7A1qW6z4ep
+	 ZO3aCEw3enA9WqmTDKYhCqoV1xStneVlspzJmzVbvGqEkZGRiFMKqIUKaY5Q3fJzWPzBi
+	 Yq2uIC7gFyYgFLk3W7WZh4T587+9ozJXmgC4XkoV8wGw6jyK8P58aIXyFj3y+uJN+Sg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="fC/kv9PZ";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KCHRdPaW;
+	arc=none smtp.remote-ip=148.163.156.1
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099E0606A31D;
-	Tue, 27 Oct 2026 12:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91CE0606A31B;
+	Tue, 27 Oct 2026 12:43:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 91CE0606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fC/kv9PZ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0CDD1F01825;
-	Tue, 27 Oct 2026 12:39:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793104742;
-	bh=Jswp2crzQp9KqexGzBb3t1FkcdKy9t2g2KSUpLlbZf0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=fC/kv9PZxxLXB6LBGvhYqCEArhYUkOlWtJrZH9VYZWQ6+7oQ/ZE3HlQayWc0Lv3d9
-	 qNWAyH1rQGwUHX1FZfsbn3Kr7vUb1gDrgng7WMNRp6O3B4VkdlBymh7Yic3rIeiTeg
-	 MWC2M3qmb7xaglhX5yi0z2N3KmzVdn1JmoHkrE/4T/mxpZNtYgfICwwIdBY/tF4dnV
-	 +NrKrLuAqIygI3gBBRZaLsCm2YzdODyNc4UvO3YX6zYvhd/HaKbQcaX1ZISOg3ad8f
-	 QJthbWvm5rCAPG3Gjc8G61uDZy/Mhkougzi8BUmAWTPHmEIFMjadvyEuZ/4nHWMP9c
-	 Mdu5M7pw+bKww==
-Subject: Re: [PATCH net] bnxt_en: Don't keep MSI-X vectors added before FW
- reserves them
-From: netdev-bot+sashiko@kernel.org
-To: vlad.wing@gmail.com
-Cc: netdev@vger.kernel.org, michael.chan@broadcom.com,
- pavan.chebbi@broadcom.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- andrew.gospodarek@broadcom.com, tglx@kernel.org, maz@kernel.org,
- yangjinqian1@huawei.com, apreece@meta.com, regressions@lists.linux.dev,
- linux-kernel@vger.kernel.org
-Date: Tue, 27 Oct 2026 12:39:01 +0000
-Message-ID: <179310474137.3134.4690740150964769309@kernel.org>
-In-Reply-To: <20261023121321.2127263-1-vlad.wing@gmail.com>
-References: <20261023121321.2127263-1-vlad.wing@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KCHRdPaW
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69R5i2181621752;
+	Tue, 27 Oct 2026 12:42:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=cAYZti
+	D4RmUsJ181IMozOX2rIgNQJYDYOnyvHJ4wzu4=; b=KCHRdPaWX5r/TF4GqtN32U
+	vB7wZ+ny+A9u1hYU4xJcmU8SqPSif4oBwjFg9BmItaYbCrNNJilf0iAeRz1y7enc
+	TMy9IQAuqkk4CVWCqfHuM6x80AdvZ0sQHlZ0Nf20Ns1+zsg9+ZVTR+oHDV5mRWBH
+	7T0NsSi4wtoiEmp73NMJj8sFL4VB/Bmrqa/hse2HmbK4yghbH8GQUFsGZ4WqBLfA
+	YbRbnEg1XDTh4y2Nwom99wgXS8uUeXkdOqMt+dzbnfqVeY/jrVIDaQEgq1raMb9p
+	VNE5B/wdB2AaD6ryrvdymW6DdPXK0IVxGMogL3k6XmTg5rqPPFPnNMfHExF6LnUQ
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hgm63yd5k-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 27 Oct 2026 12:42:53 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69RAToEG3745276;
+	Tue, 27 Oct 2026 12:42:52 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hh8gh2m9p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Oct 2026 12:42:52 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69RCgmGu7995824
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 27 Oct 2026 12:42:50 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CA8282004E;
+	Tue, 27 Oct 2026 12:42:48 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 936A320040;
+	Tue, 27 Oct 2026 12:42:48 +0000 (GMT)
+Received: from [9.68.16.159] (unknown [9.68.16.159])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 27 Oct 2026 12:42:48 +0000 (GMT)
+Message-ID: <b15a3fe4-8f32-4414-a337-a1d8db5baedd@linux.ibm.com>
+Date: Tue, 27 Oct 2026 13:42:48 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,214 +86,94 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net RESEND] net/mlx5: Use unique names for software
+ steering caches
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Jakub Kicinski <kuba@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller"
+ <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
+        Paolo Abeni <pabeni@redhat.com>, Alex Vesker <valex@nvidia.com>,
+        Gal Pressman <gal@nvidia.com>,
+        Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+        Kees Cook
+ <kees@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Yevgeny Kliteynik <kliteyn@nvidia.com>
+References: <20260730210200.2590115-1-tariqt@nvidia.com>
+ <20260803182614.23f26c91@kernel.org> <20260804080455.GB326170@unreal>
+ <20260804145756.331951b7@kernel.org> <20260806111739.GF23431@unreal>
+ <28c6b0e5-eff3-4556-802d-be6ed3f16615@linux.ibm.com>
+ <20260915111309.GJ13683@unreal>
+Content-Language: en-US
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <20260915111309.GJ13683@unreal>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI3MDA0OCBTYWx0ZWRfXxZdX0+itH4V5
+ YXUVvscWTVATBV0uASwCOaosJqk++VQQP84PEmtrETAUoWUmAwdy9d5VPgjUaa08lLxbOXylyj5
+ nENndsKCFDER/I7QJ4oKZpuCEO9Y6mA=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI3MDA0OCBTYWx0ZWRfX4ymx0a0L4W0X
+ sfVtUplPSkbYpewLiAxG/IQB6qZMciNRyxxrVgX0d2qbcIgEL9Q0mycEFGhlU/8UJJ1SApC4P0F
+ VppyZWDeFLNKKH1TbecWjogjQaIqWxCUiMVhHel/PxkHEryCo9Rl+dgRRkW03785dsLAQRfyZMK
+ mX6CAVOOv1mB7lkZvGcx1TDaeBl3EbzCwA87IphmHfoWPjuEmWP6iibm3AwCgtUIFymqOnrL4Cf
+ 6G1jCBIYbezGgLcZDtQXBaRmMdHkVe4stUOCRmzsPDrLhMyHleL1emtWc2gsaac3/gCwonNcSie
+ V/QK+yiVEcd5m/hvXz/O3ipw6RfIOud8m5ztGHV/xHdvVYj9akRbCffkTlgNKSpfTZtoAvDJs9N
+ B14GUOTY+I8hky+pS1ln2P8Q5zm8q/SGm9K+XxAMauI9eMrPKJiyawCMAJv4bIMcJeQN++30kll
+ UGap4pIpzFD6NBF2NVw==
+X-Proofpoint-ORIG-GUID: XO6domchyrXlC7BJkvI93etUB6kHbIVN
+X-Authority-Analysis: v=2.4 cv=Uu32pOwB c=1 sm=1 tr=0 ts=6ae09c4d cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
+ a=lnHWk7NgPE1agIjKWVsA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: V-hMrC93J2H9BeNXgICTpDFDw67yzzZu
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-10-27_02,2026-10-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 impostorscore=0 priorityscore=1501 spamscore=0 adultscore=0
+ lowpriorityscore=0 malwarescore=0 clxscore=1015 suspectscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610270048
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Am 15.09.26 um 13:13 schrieb Leon Romanovsky:
+> On Mon, Sep 14, 2026 at 10:58:43AM +0200, Christian Borntraeger wrote:
+>> Am 06.08.26 um 13:17 schrieb Leon Romanovsky:
+>>> On Tue, Aug 04, 2026 at 02:57:56PM -0700, Jakub Kicinski wrote:
+>>>> On Tue, 4 Aug 2026 11:04:55 +0300 Leon Romanovsky wrote:
+>>>>> On Mon, Aug 03, 2026 at 06:26:14PM -0700, Jakub Kicinski wrote:
+>>>>>> On Fri, 31 Jul 2026 00:02:00 +0300 Tariq Toukan wrote:
+>>>>>>> Prefix each cache name with the device name to make it unique.
+>>>>>>
+>>>>>> Why do we need a per-device kmem_cache?
+>>>>>> Isn't the right fix to make this driver-level state?
+>>>>>
+>>>>> This kmem_cache is required only for software managed steering mode, which is
+>>>>> configured per device by mlx5_fs_mode_set(). In general, resources
+>>>>> should be allocated only when they are actually needed.
+>>>>
+>>>> Of course you have to wrap the init in a lock and count users.
+>>>> Trivial stuff.
+>>>
+>>> I don't see why we should abandon the simple, architecturally
+>>> correct approach of allocating and managing resources where they
+>>> belong in favor of a more complex global scheme involving locking
+>>> and reference counting.
+>>>
+>> Any updates on this?
+> 
+> No, we are waiting for Jakub to explain why should we complicate simple
+> and working solution.
+Ping.
+So in the end this is something for you to sort out with Jakub.
+I can just say that we see this issue in our s390 CI without the patch
+so the patch as is is
+Tested-by: Christian Borntraeger <borntraeger@linux.ibm.com>
 
-Critical: 0 · High: 0 (1) · Medium: 2 · Low: 0
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The fix is incomplete when FW grants fewer MSI-X vectors than
-  requested.
-- [Medium] New error path leaves the state inconsistent.
-
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but the DCB IEEE
-  ETS path reaches bnxt_check_rings() and bnxt_change_msix() holding…
-
---
-
-bnxt_en: Don't keep MSI-X vectors added before FW reserves them
-
-When dynamic MSI-X is supported, bnxt_check_rings() grows the MSI-X
-vectors before FW has reserved them. On arm64 GICv3 the MSI message is
-written only once, at allocation, so the message for those entries is
-lost. This patch keeps the allocation in bnxt_check_rings() as an
-availability check. When BNXT_NEW_RM is set it frees the new vectors
-again right away, so that bnxt_reserve_rings() allocates them after
-__bnxt_reserve_rings().
-
-Closes: https://lore.kernel.org/all/20261022193620.2152038-1-vlad.wing@gmail.com/
-
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> index 0682060b048ce..2d14d991a3ead 100644
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> @@ -15093,6 +15093,7 @@ int bnxt_check_rings(struct bnxt *bp, int tx, int rx, bool sh, int tcs,
->  			hwr.cp = min_t(int, hwr.cp, bnxt_get_max_func_irqs(bp));
->  		}
->  		if (hwr.cp > bp->total_irqs) {
-> +			int old_total = bp->total_irqs;
->  			int total_msix = bnxt_change_msix(bp, hwr.cp);
->  
->  			if (total_msix < hwr.cp) {
-> @@ -15100,6 +15101,17 @@ int bnxt_check_rings(struct bnxt *bp, int tx, int rx, bool sh, int tcs,
->  					    hwr.cp, total_msix);
->  				rc = -ENOSPC;
->  			}
-> +			/* FW has not reserved the new vectors yet, and writes to
-> +			 * MSI-X table entries beyond the reserved IRQs don't
-> +			 * stick (seen on BCM57508).  Free them again;
-> +			 * bnxt_reserve_rings() allocates them after
-> +			 * __bnxt_reserve_rings().  Without the new resource
-> +			 * manager there is no IRQ reservation and
-> +			 * bnxt_reserve_rings() does not grow the vectors, so
-> +			 * keep them.
-> +			 */
-> +			if (BNXT_NEW_RM(bp))
-> +				bnxt_change_msix(bp, old_total);
-
-[Severity: Medium]
-
-The comment says bnxt_reserve_rings() allocates the vectors after
-__bnxt_reserve_rings(). Is that allocation capped at the number of
-vectors FW actually granted?
-
-In bnxt_reserve_rings(), irqs_required is computed before the
-reservation is made:
-
-	if (BNXT_NEW_RM(bp) && !bnxt_ulp_registered(edev)) {
-		...
-		irqs_required = ulp_msix + bp->cp_nr_rings;
-	}
-	...
-	rc = __bnxt_reserve_rings(bp);
-	...
-	} else if (irq_change && !rc) {
-		if (bnxt_change_msix(bp, irqs_required) != irqs_required)
-			rc = -ENOSPC;
-	}
-
-If FW grants fewer MSI-X vectors than requested, bnxt_hwrm_get_rings()
-records the smaller count:
-
-	hw_resc->resv_irqs = le16_to_cpu(resp->alloc_msix);
-
-__bnxt_reserve_rings() then handles the partial grant by trimming
-cp_nr_rings and ulp_msix:
-
-	resv_msix = hw_resc->resv_irqs - bp->cp_nr_rings;
-	ulp_msix = min_t(int, resv_msix, ulp_msix);
-
-However, bnxt_reserve_rings() still calls bnxt_change_msix() with the
-untrimmed irqs_required. Wouldn't the entries from resv_irqs up to
-irqs_required then be allocated and activated before FW backs them?
-That is the state this patch is trying to avoid.
-
-bnxt_change_msix() only programs indices at or above bp->total_irqs:
-
-	for (i = bp->total_irqs; i < total; i++) {
-
-so those entries would never be written again. FW could grant them
-later, for example on a channel increase where the new count is at or
-below total_irqs. Could the NQ rings bound to them then signal address
-0, giving the same lost completions and TX watchdog timeouts?
-
-It isn't clear how often FW returns a partial grant after
-bnxt_hwrm_check_rings() has succeeded (NPAR, multi-host or VFs may be
-cases). The driver does handle partial grants explicitly, though.
-
-Would capping the growth in bnxt_reserve_rings() at hw_resc->resv_irqs
-cover this case? Freeing and reallocating any vectors activated beyond
-the reservation would be another option.
-
-[Severity: Medium]
-
-Does freeing the vectors here change how an MSI-X allocation failure
-is handled?
-
-Before this patch, if pci_msix_alloc_irq_at() failed, bnxt_check_rings()
-caught it before any FW or ring state had changed. Now the growth
-always happens in bnxt_reserve_rings(). By that point,
-__bnxt_reserve_rings() has already committed the FW reservation and
-updated bp->hw_resc.
-
-The allocation can fail there, for example under memory pressure or if
-another device takes the vectors released here. bnxt_change_msix() then
-returns early with bp->total_irqs below irqs_required.
-bnxt_reserve_rings() returns -ENOSPC and nothing is rolled back.
-
-On the next open, bnxt_need_reserve_rings() compares only hw_resc
-against the ring config:
-
-	if ((bp->flags & BNXT_FLAG_CHIP_P5_PLUS) && BNXT_PF(bp) &&
-	    hw_resc->resv_irqs != hwr.cp)
-		return true;
-
-It returns false, so bnxt_reserve_rings() returns before growing the
-vectors:
-
-	if (!bnxt_need_reserve_rings(bp))
-		return 0;
-
-bnxt_setup_int_mode() also skips reinitialization, because bp->irq_tbl
-is non-NULL.
-
-bnxt_request_irq() then requests an IRQ for every cp ring using
-bp->irq_tbl[map_idx].vector, without checking map_idx against
-bp->total_irqs. For entries at or above total_irqs, wouldn't .vector be
-either 0 or a stale virq? The trim loop in bnxt_change_msix() frees the
-vector but leaves irq_tbl[].vector set:
-
-	for (i = bp->total_irqs; i > total; i--) {
-		map.index = i - 1;
-		map.virq = bp->irq_tbl[i - 1].vector;
-		pci_msix_free_irq(bp->pdev, map);
-		bp->total_irqs--;
-	}
-
-The open would then fail. If another device has reused the stale virq,
-could the bnxt handler end up attached to an interrupt it doesn't own?
-
-Running ethtool -L again with the same count seems to repeat the grow
-and trim in bnxt_check_rings() and the early return in
-bnxt_reserve_rings(). Is there a way to recover other than picking a
-different ring configuration or a FW reset?
-
-[Severity: High]
-
-This is a pre-existing issue, not one introduced by this patch.
-However, the new rollback adds another access to bp->irq_tbl in a
-window that doesn't appear to be protected against PCI error recovery.
-
-The DCB IEEE ETS path reaches this code holding only RTNL:
-
-dcbnl_ieee_set()
-  bnxt_dcbnl_ieee_setets()
-    bnxt_setup_mq_tc()
-      bnxt_check_rings()
-        bnxt_change_msix()
-
-net/dcb/dcbnl.c doesn't take the netdev instance lock.
-bnxt_io_error_detected(), on the other hand, takes netdev_lock() but
-not RTNL. For pci_channel_io_frozen it calls:
-
-bnxt_io_error_detected()
-  bnxt_fw_fatal_close()
-    bnxt_clear_int_mode()
-
-This frees bp->irq_tbl and sets it to NULL, but leaves bp->total_irqs
-unchanged.
-
-Suppose that runs between the grow in bnxt_check_rings() and the new
-bnxt_change_msix(bp, old_total). The trim loop would see the stale
-total_irqs, which is above old_total, and read
-bp->irq_tbl[i - 1].vector through a NULL or freed pointer. The existing
-write in the grow loop, bp->irq_tbl[i].vector = map.virq, has the same
-race.
-
-Should bnxt_dcbnl_ieee_setets() take the netdev instance lock? Taking
-it inside bnxt_check_rings() would deadlock callers that already hold
-it.
-
->  		}
->  	}
->  	return rc;
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261023121321.2127263-1-vlad.wing%40gmail.com
+I can offer to test alternative patches if any.
