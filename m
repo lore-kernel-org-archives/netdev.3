@@ -1,55 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793105040;
-	b=PCIOmWkO0fTe6YBFpSDVywWSeJFjRFEV5x+gmYocuchBHBNvAnV6nFTHwLZZXpXNOK2T
-	 Rr53Xmf71aoAteUm2FW/Bp0zM8wt6prhSKh0WrEilUtV+VWHSbOTgwo6TUFKhcHD2R1ma
-	 cW4b3uzEsbqQkv77UcUMU/RgXvbaxnDO5bkbepkN4PNGuOScUrmYjb74WZN4zqdgW7JOe
-	 bzcLeiCso9jRrf+OdGZd4gqxFD9yEj7huou4+jjXXfHI4xOZywIaDfK8U3XB5GJwHHt0o
-	 rE9W1WQm1j3QZvBGBkzxbBdQB3iWTdUnbog7yurt5+zHULvXlILN3p2jN2H+ltL9/8A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793105040;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=eb/61ru4rVEXautmCBJ79YrbItkTpxD25OGZkF+zK7I=;
-	b=oaHb0d7aOX3sXaToGdc0o4NeLwHU+5IHkKe6hnqM7kqIQrAVxQg9vrZN4riRmzfgXWZC
-	 v0IrgQoejIrpjUHcPkDTaT3XZh9WrxjJR1XgRORyJ/DatUGWPqvLvKhTuwkfyI/4vlRWv
-	 Aup4juSztctfbbMtovWPydEM7NHiVC2Gs0P7AvqJ+cTF7IMo+6YmU0m8R31NErq+KS5Ud
-	 VgYNSXFTfG4tTQp93G+JJNkQe4IBNVOeKpcGcwy0QdEFCHvfOSh3ooaWW0qiESa6gs3YW
-	 EW/gs3C7OXPdVylH7zT6/DUyCxrkU8awOdiccSVi5wafZPEmYZpghg6/l7qa56Ga78g==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hBxTbubK;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.53
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793105102;
+	b=ESldD91bq7SWFQgVwagLtsY7NgpqraroqXJfKSauofD33ZBhOASd0yBHbBZ2IMj8Jtd5
+	 d39DsD1CHS2aj9wv/nE9636qWeK2uGtGPWYDbfjnKVxBGQQbJwrj4aj5wtMY+rElyWqx4
+	 OR9brtOXXU6PByZaHFACewZJ+wRDddhRhKJ8VE3MxyHKXsADSjuxM4Lk0QoWln+RkSYSA
+	 eZPag+fS88SVCxtfqt5KkaLiF08/PwI1O9ZvuoaPsfH5urYCanhgRikZK/6kMJmGALFL5
+	 tR/C/Kla+3PcBS1TnY4K+1jd3PuuU+CcpM+pZb206b73HC0C0btNiTmbRH7bHJyz/Zw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793105102;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=s3EYuBTTmVhTSEPj6dV6TX9HIoyvSVBfIfq2lIa11uI=;
+	b=wuFRdWg/jQMYnCUWMO2waFkgK1mQ7JAPK0lzdpo3zHWW+XIFemfcVPIual/c5E1b5Kf3
+	 ZHd4sRpDyPD6B5+c2xOTvSylisoZ+hHbjMumkWgK5e9QQb/1QW2/BFZ7SrxR77prLUhUe
+	 p4ETXXjgP+h3H1Ho/8C4WdDmtBaS5aaIxriYaJAOK0TP/Gu0Loypeio6E5xBPhmUQT2YO
+	 Fn2rP7QFG20SjhwQm/yv+ONo6cdGZ+xQzDKAmmB5KO+DNo5XtjDBOZc0y/ge3XRARqrlW
+	 G+h39doP4PawAaF23kT8IRo25/4kMqebS3ikvUUy1B5V8lkC+BJ64b8b0AD97zc0QFA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="ZUOBzw/p";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.53
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4605606A31D
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 12:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8339606A31A
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 12:45:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E8339606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hBxTbubK
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 510BF1F01829
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 12:43:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793105039;
-	bh=eb/61ru4rVEXautmCBJ79YrbItkTpxD25OGZkF+zK7I=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=hBxTbubKKniiQVC4RFgkZj4xzE4r6Mz3h3zkomOGN98Ahx6zKh1GE4zeMqJvnkbwJ
-	 CE/dtXVBBw+29DOGEpGFpzpqWd4FUtCIS0BKxb4g9a8pjagTIEt+j7Svo1fnPDRrve
-	 AS9D7QBjjLGr+JLRFnru34z55WmLqhQhcrXK8OhCywTRJpnMDkThyup2ZcHnGIRuBR
-	 J/mKf6AhWFdSCeOwHJkw4bdhsPfujNSzXnxx6OF/ST3RPgL/WllojFcWfMisxUZRVD
-	 mTqHNRguPnvX9bGRVbevSuVIql0UQ2tATPRl44pcOb5n24SL1TOvin+LIE17rUAbCg
-	 Uur0KEeqi/ycg==
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-43bf9548df4so3669577fac.0
-        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 05:43:59 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzmAXm5soGQVvHzxN8OxoY6b7eGqDc8ViWZoIqMwIvSUL2t3ldHEBeYPdE2BhMfK6vwJ5xVLgQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI/HsSsdgQKU4wi+6TlZR3VRn/d/s4h9XbFQunw9UdlFCjb6GT7
-	uosRNAPOrjRubGOndN9sKHda9iSn5+/uvRP4LgPcUk+nSdmxg/vOQ+Qtzix8xAU8E5EK99EgP0p
-	xlmbHgN6GqkxwksY50Ta6k5A+tethT7Y=
-X-Received: by 2002:a05:6871:73a4:b0:499:c29b:93b7 with SMTP id
- 586e51a60fabf-4a83f57ba5amr5113061fac.53.1793105038536; Tue, 27 Oct 2026
- 05:43:58 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=ZUOBzw/p
+Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-8439fe796ebso2799706a34.3
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 05:45:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793105101; cv=none;
+        d=google.com; s=arc-20260327;
+        b=pxkd1B0ulbY5U7luSHxWQ80KzkNuDYHnmxcgJ4ACOM7UBT9kk7WcRyTXrFKituCCwG
+         dldeLZX+bCPvwsUGSwwrClBw0XzOj4yoWYdOQIa9f5IN1/SJjy0Tv0qqy+P+O5QrxLrU
+         OABV9bOrTUvobRAg1M6JEGioERmFJaLpKS+w9jsSduRrqdDCFAvEZodbxjfibwc1SwfA
+         nkDcMR740OEEyW7XoK6bXzfPatMSBDI8IQFviQZl+8JGVuUrhEqUlv2Advchmb0HNhxg
+         i5JYi9BPU3DDdz+O7aiAkEYBH9xShq6Tr5VW6v+ndZ6kR/0x4oBKNhDLdBRSofqBy3wI
+         u7xw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=s3EYuBTTmVhTSEPj6dV6TX9HIoyvSVBfIfq2lIa11uI=;
+        fh=akAjMMDLhRPyUVfY/AJ0GVkG4Nm0krDBGtl58dSHTOc=;
+        b=k86qWACUNWtxoxdaQjjjsT4/EzGqrqnQ4XfcxDE+LxsWm7Ack1qwHXF1T2nKAiUwnc
+         6Udu6ZaZpNLha2/V0rGi/k5TClmMvoEzRsr7I88lqxE763wsJGWTDOyEwAPmm0o3/1J2
+         8kEwKaodsTSjrFPG/QmlLFZvvYsEc6Xw7RGbro/VejS2pW03ODq6RJfKdmyFP8vvs81e
+         2h9q+5Wipja9yJZrAdMQKjHIOnZq4LBwpCFGU24OfF5+T/ItTlhV1kiIcdSZZBcyBznJ
+         JoM9FLMLstUlJb4MVflPH7zhPf0eG8nZZPCldeVPob7+VPxjM8OVJAesNa/qEeSqzwqN
+         odUg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1793105101; x=1793709901; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=s3EYuBTTmVhTSEPj6dV6TX9HIoyvSVBfIfq2lIa11uI=;
+        b=ZUOBzw/p7m8KeeHwXA3quTJfFdIULTmM3ehGFEBoTt0YEm9WBE///XebirB9K+GcjT
+         X8AyRearg10v9L1140F/+9XhKxaoWZbyNCgCOek7RexPA2Jl6fe4vHkeaBZLZ5fPeVdk
+         SPCF3DJCaDtrzgOE/xQQl1PEs/DwnGYx5P7km94wV5jKtF3xgEn+pkvrf+KON/rQyMgV
+         wNEfYgR9EJPvqe2vwSxUEk3ChxmJ8hUGdkiQCudrvt+u2YHLkd4TTVXtq29eNT2T9MNZ
+         U3zCLsfAioeNg4r4A5z7xASqQH4Ke6OwLCHlGPszXIXRZYpye7olhKWw6AHYQ2BqXU82
+         7nRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793105101; x=1793709901;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=s3EYuBTTmVhTSEPj6dV6TX9HIoyvSVBfIfq2lIa11uI=;
+        b=njlZLyAPV8BsruFwsbPDFUgMponNg62EvVV5tWAyWOzQ3QbNb2aFwG3EPRf58zuf6f
+         ZuaQKPT0+BaH5txeiSMvGSy5WOqR/B18bqFKY3p5H2fbVh4BFrnyq6UaMp7oX9n1TVhx
+         mUokVjqIt63BXh25GgdMQx2A8qH0jPfcsmPBP71yQEV6INj7N7JWJEdWpg5kB17AdjQd
+         XpM+0hv6Q8uoDkBasacxB/9dcAGq+O6QWafSMgdg8nwkrNeMj68hbbvXMU9WfkW6tASH
+         2RMqkZcvjOBt50yOdvSNfAsF0NAYa/GFj0+odosLTbn/OHpafpleVb7myZYbF5uU3bkO
+         PYYQ==
+X-Forwarded-Encrypted: i=1; AKwUvBz0UQVW2OnaisO+1ZS6zGAUFgvDvcQf11LAU95HgeHzzHMLWM2Xz6nlYzz3o5dYjSAYuEWnl0s=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKceS6MryJY7IPTd1pEHOWcCThHTM+6MGMfRPA/dlneDDX15scc
+	eGL3n/jnxw3XkB2yLfwymNXhbiEALjcoXhn6kZXY5pRfOdWWwWHNp594Y8Er86vhpd/7UrZj6+e
+	61oDuGNHvPLfrMMlRfw5cLrdeqLtfOyQ=
+X-Gm-Gg: AYBFou1sgOpX+oIjCtt4CUVhsAWiq1RgUHgDmBdWmF6ghEzGslfiyuRkf1Fxg6InhKr
+	0l3gkHbsN4k0zoj/VXtWcyljV7gAHQPupOFSaaokEjMk6LE9N71GRQaY26v7kIhVcQeaA4qCOwA
+	OSs4i+1peqzN8iDqUMnJZ9zbP9TzYgsA9zV63q7/E+EM0uAyoe9I9QZeBXrmauttUbaQSYZBEzC
+	P9sJhtl045mUnAqs1rRxSoF25O6/z/6aUW3qSYaT7vcZwBJ/vNGsHY8OctOO04xfBqzy+Qp+FNU
+	xgc3FBtdBv2faYaDdpUvI4ySFFcNU0xpGHqNQqsCj6q8sLH0xAkRG9ALT9LuD/o2Ezxht1Fc1cJ
+	NZcemdXhOpWiPz1n8zNFJchSwwytWoTZVn4K3K/eWScz1b5unobMj8JMQEvmCfqEF1YkvQ2nqcp
+	kZEGCOYJIgushIee2LinueCEM=
+X-Received: by 2002:a05:6808:4f07:b0:552:1042:5c35 with SMTP id
+ 5614622812f47-55c0032ba03mr6286078b6e.41.1793105100960; Tue, 27 Oct 2026
+ 05:45:00 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,66 +104,30 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261027121442.907414-1-magnus.karlsson@intel.com> <20261027121442.907414-3-magnus.karlsson@intel.com>
-In-Reply-To: <20261027121442.907414-3-magnus.karlsson@intel.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Tue, 27 Oct 2026 13:43:47 +0100
-X-Gmail-Original-Message-ID: <CAL4WiiqJ8K5wXutDRk_XR8KfpWMxhYF_K1eNUVqq7HuyahO87A@mail.gmail.com>
-X-Gm-Features: AclHuK91OW4DpBGjqcfgsApUmrjxZO4uBmfJAeEY0HoTj3dKfQfjf-9tJNng8XM
-Message-ID: <CAL4WiiqJ8K5wXutDRk_XR8KfpWMxhYF_K1eNUVqq7HuyahO87A@mail.gmail.com>
-Subject: Re: [PATCH iwl-net 2/2] iavf: fix USO for 32-bit systems
-To: Magnus Karlsson <magnus.karlsson@intel.com>
-Cc: magnus.karlsson@gmail.com, intel-wired-lan@lists.osuosl.org, 
-	anthony.l.nguyen@intel.com, netdev@vger.kernel.org, 
-	maciej.fijalkowski@intel.com, przemyslaw.kitszel@intel.com, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org, 
-	pabeni@redhat.com
+References: <20261023-netlink-dump-livelock-v1-1-478214a635d2@gmail.com> <179310175111.3134.9177648236285208856@kernel.org>
+In-Reply-To: <179310175111.3134.9177648236285208856@kernel.org>
+From: Jhonata Poma-Hansen <jhonata.poma@gmail.com>
+Date: Tue, 27 Oct 2026 13:44:50 +0100
+X-Gm-Features: AclHuK8vtyo3SzVDHFGolZX6XEU8zK_Jh7QNOxyA31mgL6WcdQ5ELfLnY30XFg8
+Message-ID: <CACgZWq4DV10PkksLhDNp+RxtTGNyuA1m1YmzTZJgkybb=MfOWQ@mail.gmail.com>
+Subject: Re: [PATCH net 1/2] netlink: retry a dump skb that does not fit with
+ the minimum size
+To: netdev-bot+sashiko@kernel.org
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, shuah@kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kuniyu@google.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Le mar. 27 oct. 2026 =C3=A0 13:15, Magnus Karlsson
-<magnus.karlsson@intel.com> a =C3=A9crit :
->
-> That USO works for 64-bit systems is just pure luck. Currently, the
-> computation of the UDP segmentation header is performed using sizeof()
-> a pointer instead of the sizeof() the UDP header that the pointer
-> points to. Since the UDP header happens to be 8 bytes long and a
-> pointer is 8 bytes long on a 64-bit system, this works on all those
-> systems. But no such luck for anyone using a 32-bit system as 8 bytes
-> !=3D 4 bytes. So fix this by using sizeof() the UDP header that the
-> pointer points to instead.
->
-> This was found by an LLM while implementing something else that used USO.
->
-> Fixes: c91a4f9feb67a199c2 ("add support for UDP Segmentation Offload")
+On Tue, 27 Oct 2026 11:49:11 +0000, netdev-bot+sashiko@kernel.org wrote:
+> - [High] The fix is incomplete: the ENOBUFS livelock it targets is still
+>   reachable whenever a minimum-size dump skb also does not fit.
 
-Missing prefix? This was really:
+Agreed. I can reproduce it with a small SO_RCVBUF, where the
+minimum size skb is rejected as well.
 
-Fixes: c91a4f9feb67 ("iavf: add support for UDP Segmentation Offload")
+v2 will rework the admission check for dump skbs instead of adding a
+second allocation size, so that a dump continued from recvmsg() always
+makes progress. It will also address the selftest comments on patch 2.
 
-Other than this,
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
-
-> Signed-off-by: Magnus Karlsson <magnus.karlsson@intel.com>
-> ---
->  drivers/net/ethernet/intel/iavf/iavf_txrx.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/net/ethernet/intel/iavf/iavf_txrx.c b/drivers/net/et=
-hernet/intel/iavf/iavf_txrx.c
-> index 8982cf75466f..2c290d7788d2 100644
-> --- a/drivers/net/ethernet/intel/iavf/iavf_txrx.c
-> +++ b/drivers/net/ethernet/intel/iavf/iavf_txrx.c
-> @@ -1807,7 +1807,7 @@ static int iavf_tso(struct iavf_tx_buffer *first, u=
-8 *hdr_len,
->                 csum_replace_by_diff(&l4.udp->check,
->                                      (__force __wsum)htonl(paylen));
->                 /* compute length of UDP segmentation header */
-> -               *hdr_len =3D (u8)sizeof(l4.udp) + l4_offset;
-> +               *hdr_len =3D sizeof(*l4.udp) + l4_offset;
->         } else {
->                 csum_replace_by_diff(&l4.tcp->check,
->                                      (__force __wsum)htonl(paylen));
-> --
-> 2.38.1
->
+pw-bot: cr
