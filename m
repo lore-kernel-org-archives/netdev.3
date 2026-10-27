@@ -1,107 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=67.231.153.30
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793119855;
-	b=WNaIr1weuM1N8C5V6giL5EjwV2FEYz9Sojvd2OHxh3bZutOJrldMnFTO8MlkAzY5yV/c
-	 6JFl0xyIy8KbCEMMFBp0XZbCe1MQUdd7rW/TuEFeKo6rEz7rWpvqP6yEbRMZR/EaIWdOG
-	 MEBBpD8JGxUgl4xC4Ybkzh1JkUdEw4xASkJt74oWECtHgIG7qU846012m6YjcdiAbES2a
-	 7ao4skwO8DGuU2S1FgceKKBNj3iwVe6h00HtHnM+Nv/lEbC9FiK3G/VizB42eABSu9419
-	 ZNDL8dMXFjXZcbL68dTuDsp59FqmoCPP4BeksyUr5xmc6TRW1UhYNSRAbluMDQi09Zw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793119855;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 X-Google-DKIM-Signature:X-Forwarded-Encrypted:X-Gm-Message-State:
-	 X-Gm-Gg:X-Received:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type:
-	 X-Authority-Analysis:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Virus-Version;
-	bh=TNVT5SIENBUHIp7NEAsmxJXryvr6yV5ijHD5gywhn5Q=;
-	b=dG9qBR6uC8omfeDpzb9J+fk1mtKGtfh0AifKrnPlZVD0l29a9AxSDT4Mxfa8RNCcvlXq
-	 G9t1Z1dIGO6lEOdLGEBY3CMvLVPaomffAsVFSAZqoPKLMjNVD7hEemHCqj3FSipB2Gssr
-	 ErcXwXlbZ9Z2G3EMNTj8p8Eeix8qeaY14QRGNu0rybFV/PuuFb7C3Dnm8CGakVKNqlS72
-	 NkDGHmFSJtmcgBwXSIZaGBRmLSjGqlbbGzoKUYOi12cTJnjQE6iOC6Ar+I9A1lzWYXRnU
-	 IPX/qduAWoCK61IPMCpb2IDB5tZifOWSQaqaBEPRy5p9KexyF4w4Wp5cbSZ7ILxuM1Q==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=meta.com;
-	spf=pass smtp.mailfrom=meta.com;
-	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=CvGazHpM;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=67.231.153.30
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793120158;
+	b=fuDnuCiNfvo9cO9SjdaDruFxXIgeUKahe/fxglk41Edq3jJNr2lzMYcKETgrw5R4h8w+
+	 50LBFyZZckDzefdIlPHY4zxJ4gP1LSjaMC1mrWING5QegFLTqS9Vsik/iXGBeU0BXEOLK
+	 jLCwhbKuMegbzx54jp4CCcfOxhXotb0lMBdLGUpVTqAi+oxwbUjnFCZzuXFKPXu31/R+3
+	 SR6y24UOWh9LunwwFN0ovOgVxxiX6hO5NHxGbCDxEhRR4Gfq8l+D/PpC/BmsU2KElmOkT
+	 EdsiiR3PmD69yD9zMDXXj7FqqJsx2lmUCcNEIfWCwBhF+sheij3yAhwRnLS12Ja8wHA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793120158;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=KZT7bgvWnTvAxMtis05hFO4y3IU5EfwoyWPG0CeLY0M=;
+	b=Dg8FButsjRTG6d85JkIlx+5EElx2JqCMei3D9vUKYeHX3NbZECpHv3o7CLhUPOaMrQRe
+	 cEasHI873vFT9qYllc1wbNNLs7xQUZW8c9YOOvcz82ZvxqGzJHoxwjcIWoxnif3q6HboV
+	 7AqlmylZKS6PohwMTK/I19w2ON9DBtofqM0AFJyfPn2wTu+cJ8tA2J5gs4surbpFEHv5v
+	 VTP6/PugeFBskpXbbWEXGg280rjC2MWw3siqdYjQcStkdbU3bzEMSI5/A0ekJ/HRzhEba
+	 KfC9dMCuOnilEidwwu9zP0MCU7QgP5c84wSjgdbdAMvUQGCE6CgGh9UbH+vT8W9CaBw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WB0JGUXv;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D46E606A31A
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 16:50:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1D46E606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E71606A31A;
+	Tue, 27 Oct 2026 16:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=CvGazHpM
-Received: from pps.filterd (m0148460.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69RFAs8N2891800
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 09:50:54 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pps82601-s2048-2026-q3; bh=TNVT5SIENBU
-	HIp7NEAsmxJXryvr6yV5ijHD5gywhn5Q=; b=CvGazHpM7r6oRX3bfZbviQcSr1N
-	4E0Myd1oOxoHpURR8O3ygO/Dpk/n1BaOz19buAwlnVLr0933AuaeEvpDCFHFgYz6
-	abeMKNuKfzjQowKx+jhyOIDNoHJxkAcx98V9472nirEz5YyvT0sbM7FfdvAjRys0
-	myg9dJmXQEXflfKncql+ipZFqVziwE147BeO3Mf+MZRkZ85jYo0DUmrHYwzFSUTJ
-	fuky37CemmmW6A5xNs+7SuYVHono0IQjLn09R2nqGqXdEjB/jtzeZIdsxjt0ZtxA
-	1donqVG410NYAK6Gju6/OsKk5vwG5hhXUeThTDdEFiP5RIa1aM+2sYN+e0Q==
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hjxcah1s1-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 09:50:53 -0700 (PDT)
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2eabb908860so95045ad.0
-        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 09:50:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793119853; cv=none;
-        d=google.com; s=arc-20260327;
-        b=QFA9CCtorkfhGqmJvSBdvIHu/tGps+748Om90znO4QZo+qD+zZ0dCBTXhq4sfahXNJ
-         Z7r/K0l1dW1JksCZrbdI9wPhZlUx8SNkndxmnN7EKS5AZU1N3qDNXflJIQNsD2QXYMbK
-         keiCOVI2Ta4umn0X+MCQct4PvP4LnlwzY5e2fcIAadaESm7F10siDXDIThP9JhLo4/08
-         B+OfWaZWcHYETdmm3DVw9jZsg63vmgf9j1Ek1sAvm0SIKrGFOWFbJOViNSo39BbSiXnS
-         Wr4xICu5snx5zHmpiimC9xwDoRk/uSLtV1zAPfKm/TJcf1C6XXOkz0/+s+z1xUw8jIKf
-         YSzQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version;
-        bh=TNVT5SIENBUHIp7NEAsmxJXryvr6yV5ijHD5gywhn5Q=;
-        fh=D6tKmYZ21eXs5E1d+N2NrW6yX6x8NTwPGZwn8rAnVCQ=;
-        b=LGxrEM8M3k3+zpMxlxh+4YltH5Ag/8KOh8gNY+My2xt9v3lPwmOTtHvSXuichQ/O7p
-         1Cz60D9U+0jaVMruc3wJ+Gr4ZOg/3q72rE30XEfOQ2okGV34lx04luZazFk/j3+NNENX
-         SUY0szDe1XeAV6sWF+AkNaHRq3x6LqHgyuP/m1l0DosubKV3WnOVW9thWdhqx4XOBYH3
-         ZR6eeIja6yYVNoWPF/yeGcQss+vhKpOiQJ8gJTR90kucHcmKp34fMPY95Qk8yE18K6Sx
-         nPM1jHZhexD6gpM1q0D0k/whpx6BR/gD+pJFGFFUol7ZLUzhM+JCtmB8/d5gO/X7IdtU
-         ByxQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793119853; x=1793724653;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=TNVT5SIENBUHIp7NEAsmxJXryvr6yV5ijHD5gywhn5Q=;
-        b=TG+PaxBTkcPyCBoxhiEEDY0hZxHy5rMKg3J81QE0dxgEeKzcvVp4POu7YgJUhBCOWF
-         gBLtyIAb5liOIRTqPSDm/j3I3S+Uw8SmjGf5knLyh1ORA9VuNkZ4k2LKm5X8hA2PVHUT
-         l2CNbRnSzQfAFzTF2JKTfFfGkIdFLDR6H0+xyEnLPzI7b+t4nUTZDiCY4PRsMFwPGEN5
-         ZVNGtmM1ugkYwUwCT73LSckigbehOVw/drbHg9OnQ3pzQgFYuPgXIvAgGqRgpSqac5AG
-         PA8fk+1A3c4oXE64HHFsdpEyhWV9MMMh43N5R2HQ7xYbJi5LT8tRZBhU99yarEuAS2ba
-         5e5A==
-X-Forwarded-Encrypted: i=1; AKwUvBzafrNTrFgJKuuus1iVSjeUqBncm1ndOdE8UCNlRZpxAJfRmVSzLhYJDQiY+Wb2UdQDAOp4HRE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI3MrXA67OmLnNCc8JGigVC+mJ9jUdlv5eIsR1ewoAAJMShkkzz
-	ehgKI0A4lJgtSIWjG0vspIMSvfm6GlKysK3pRWPbn2Iu/0HecZnF9/jkhe3M0rp6vGeHYHxlTv8
-	N+GP15zj7G+hhdV3mcIMYY2W+5wjOr6kgIythSKw42kgnFhlTDqAkg9x2rRyV7F0Q3x+0UpScR6
-	ZEpJkJBfbw3w6DBlA1dYwpnL/VG1QW00c=
-X-Gm-Gg: AYBFou27RZDSCm0HESkZPuyfaYPrKX1tCRdGtk18V+ISV9MvFm8/kxM2ol4wswed93I
-	u93DtUWi27wR/6IV+qnl+zHaK0IxoYnlCRdU0KJjIWkKUfWTg1eBOkxYsFnqRAn6JzW7Yzio2/v
-	KcM7axcXhzdq3PGfbnlzNp3d+s6ZMeld8vYAua9raV87DXaQXTCp8IEHI+8OP6KOGn4aO2KSm0w
-	BzzRCqfDBJz5u0sPzRC8nMXYb1hbdk9
-X-Received: by 2002:a17:903:2c0e:b0:2e2:c995:b00a with SMTP id d9443c01a7336-2ea9c83f0acmr97399215ad.48.1793119852787;
-        Tue, 27 Oct 2026 09:50:52 -0700 (PDT)
-X-Received: by 2002:a17:903:2c0e:b0:2e2:c995:b00a with SMTP id
- d9443c01a7336-2ea9c83f0acmr97398875ad.48.1793119852321; Tue, 27 Oct 2026
- 09:50:52 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WB0JGUXv
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A97E31F01825;
+	Tue, 27 Oct 2026 16:55:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793120157;
+	bh=KZT7bgvWnTvAxMtis05hFO4y3IU5EfwoyWPG0CeLY0M=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=WB0JGUXvnp1bVInpJqIHceUCHgEGusR8mt2sReRrejPI5x7wbwQhCrWWq0BM39EPd
+	 3wz1hz/lSGE0dY9XdOWkADQSVutoTUwTnqar1DLVQjZ5i8Yf+qW20nbrIQwKk2VfUQ
+	 nXLorH1YcTB4KW7RPZIHVmRmVzW+VJUuXOVGn8DIb3d2+gR3DYZtiRQfsAgogNetE4
+	 PB3HygZc7cqDLHTt4RrLw4hwrVJ9R0YZgn0zQHNKX99ZKG2lFPs9GpbxQeIWDLycDN
+	 XOKkkKA5FkOne1ocE/+RDKQC6u3nE003aMwz1S1KpLPa/ZNdjXERKrqq7wxVKClse9
+	 lDI6YPhQwGa9g==
+Subject: Re: [PATCH net v2 2/2] net: phy: postpone PHY interrupts during sleep
+ with MAC-managed PM
+From: netdev-bot+sashiko@kernel.org
+To: iav@iav.lv
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ lukas@wunner.de, rafael.j.wysocki@intel.com, wei.fang@nxp.com,
+ niklas.soderlund@ragnatech.se, paul@pbarker.dev,
+ florian.fainelli@broadcom.com, opendmb@gmail.com, Thangaraj.S@microchip.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Tue, 27 Oct 2026 16:55:56 +0000
+Message-ID: <179312015623.3134.7149153472845451722@kernel.org>
+In-Reply-To: <20261026045343.837889-3-iav@iav.lv>
+References: <20261026045343.837889-3-iav@iav.lv>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -111,70 +66,260 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261023234640.1459291-3-toddfreed@meta.com> <179288570143.3134.8925369868949382653@kernel.org>
- <CADh2yMyYS-PWP4912En9D6B9up6Kz-hnCthNkWot+e7N8-q7ZA@mail.gmail.com> <DMFQ63T8HLVV.3L1SY71TO7GHU@gmail.com>
-In-Reply-To: <DMFQ63T8HLVV.3L1SY71TO7GHU@gmail.com>
-From: Todd Bert Freed <toddfreed@meta.com>
-Date: Tue, 27 Oct 2026 09:50:41 -0700
-X-Gm-Features: AclHuK-jcpXRH06paBbeGResR_5OkEC2X2pBFWTmfK1GHPn1XqyQ0qM4p7DKnUE
-Message-ID: <CADh2yMyGdz8XR263w9PbMf+pM1MvNh015CUX69NdYCMfjFnv1Q@mail.gmail.com>
-Subject: Re: [PATCH net v3 2/4] psp: support ipv6 extension headers in
- psp_dev_rcv() decap
-To: Daniel Zahka <daniel.zahka@gmail.com>
-Cc: netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org, borisp@nvidia.com,
-        saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
-        mbloch@nvidia.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-        edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
-        willemdebruijn.kernel@gmail.com, horms@kernel.org, shuah@kernel.org,
-        cratiu@nvidia.com, raeds@nvidia.com, rrameshbabu@nvidia.com,
-        linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, bjorn@kernel.org, dtatulea@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-X-Authority-Analysis: v=2.4 cv=I8/w19gg c=1 sm=1 tr=0 ts=6ae0d66d cx=c_pps
- a=IZJwPbhc+fLeJZngyXXI0A==:117 a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=JnKecZnUtZousrUlYMGU:22
- a=YJpWPkmKExx_aQuJnOoA:9 a=QEXdDO2ut3YA:10 a=uG9DUKGECoFWVXl0Dc02:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI3MDA2NiBTYWx0ZWRfXywRAKMiKKP5b
- 1DannE+WBrKSuV0Vi5/j0LuTgyxH3wXwC2Yq10xps6y+oOakzjlSTnDKQ3AUrNPYgzjDwB7gmCi
- P6O8FAOHcoG7F5C5aMVz9aKbd8gUi8M=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI3MDA2NiBTYWx0ZWRfX50xWa7QiFV1d
- qvvGTSRh2G7fIrm4qOhUzdgztCv45/1QX8SJzkbugqM3S1KKuTmnQVR1eOVgxqR5NxwDApL1UG+
- 0N9Ein2WH2oUkJJjp8TYBfeKwbwneZNr8J0HYnPOhlJ4+sd+4w1jjev5ly2UxC5dFB8qC7GtAFg
- DsKqYU8rwhE+H/6uL0PXGa/b+ZczzxVDi3F7h/RqXTAZPUgGkS2RIJ+fMG4EJDjM7A5GSOsLAqT
- O9vZH5FIsLuBCoRxNT+iA5ioxs2Rd+bI3ZKA5uX0VwIpbtBxyt3pVbsAxGEYu9OtcaSEmfSFqAt
- +TSJNO09qNy/30Vu5utMfBN4Q5Fqu1PQX2oribiXbHozZLuEbOCU6VLO+6aa31O9Q1PufE/Dgse
- mutGlXejuKB2f0P6fa/i4NT/K5eTfAodJLQmH3ohf1IE0gDdMmeitNNm/orJMSJS4xKsxf9p/7r
- J43Iy5wyxz46LtnSf8g==
-X-Proofpoint-GUID: _YwOSTwV1gpt7ju3Z8cOqne2qLH6lvhj
-X-Proofpoint-ORIG-GUID: _YwOSTwV1gpt7ju3Z8cOqne2qLH6lvhj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-27_03,2026-10-21_02,2025-10-01_01
 
-> >> Before this patch, all of these packets were dropped at the is_udp check.
-> >> Forwarding the decrypted skb itself looks blocked by
-> >> sk_validate_xmit_skb() ("unencrypted skb with no associated socket -
-> >> dropping"). That leaves the ICMP error path as the open channel.
-> >
-> > Agree with this finding.
-> >
-> > Ok, this puts me back in mind of the approach in v0 of this series ; just drop
-> > packets with extension headers. Actual support for extension headers can be
-> > done separately from this fix.
-> >
-> > pw-bot: cr
-> >
-> > -Todd
->
-> Like Jakub points out, this equally could affect tls offload. We need to
-> be careful with any features that can result in device-decrypted data
-> being sent back onto the network. Another gap that exists currently is
-> xdp tx or redirect. That would also affect both PSP and TLS offload. I
-> think we should try and make these features work with crypto offload,
-> rather than building up more and more defensive checks.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-Adding the skb->decrypted check on the ICMP path makes sense to me, as
-a fix for this specific case. I am a little wary of fixing the known issues, and
-missing some unknowns though.
+Critical: 0 · High: 0 · Medium: 2 (1) · Low: 1 (1)
 
--Todd
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] For PHYs whose PM is managed by the MAC driver
+  (mac_managed_pm), mdio_bus_phy_suspend() now sets irq_suspended before…
+- [Medium] When a PHY's interrupt is a nested threaded IRQ (PHY INT
+  routed through an I2C/SPI GPIO expander or MFD irqchip that uses…
+- [Low] The new depth fixup in phy_free_interrupt() is an unsynchronized
+  check-then-act.
+
+Pre-existing issues:
+- [Medium] For a non-MAC-managed PHY, mdio_bus_phy_suspend() sets
+  irq_suspended and stops the state machine, then returns the result of…
+- [Low] Topology: a PHY on another MAC's MDIO bus, linked to its consumer
+  MAC via device_link_add() in phy_attach_direct().
+
+--
+
+net: phy: postpone PHY interrupts during sleep with MAC-managed PM
+
+This patch makes mdio_bus_phy_suspend() set irq_suspended for PHYs whose PM
+is managed by the MAC driver. It replays the postponed interrupt from
+mdio_bus_phy_resume() through a new mdio_bus_phy_resume_irq() helper. It
+also makes phy_free_interrupt() re-enable a line left disabled by a
+postponed interrupt if other handlers still share it.
+
+> diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+> index fce9bc7be3304..00aa48e807a5e 100644
+> --- a/drivers/net/phy/phy.c
+> +++ b/drivers/net/phy/phy.c
+> @@ -1508,6 +1508,15 @@ void phy_free_interrupt(struct phy_device *phydev)
+>  {
+>  	phy_disable_interrupts(phydev);
+>  	free_irq(phydev->irq, phydev);
+> +
+> +	/* Undo the disable_irq_nosync() of a postponed interrupt if the line
+> +	 * is still shared; otherwise the next irq_startup() resets the depth.
+> +	 */
+> +	if (phydev->irq_rerun) {
+> +		phydev->irq_rerun = 0;
+> +		if (irq_has_action(phydev->irq))
+> +			enable_irq(phydev->irq);
+> +	}
+
+[Severity: Low]
+Is this check-then-act safe if another driver calls request_irq() on the
+same shared line at the same time?
+
+By the time irq_has_action() runs, free_irq() has already dropped
+desc->request_mutex and desc->lock. irq_has_action() only takes
+rcu_read_lock().
+
+If the PHY's action was the last one on the line, this interleaving
+looks possible:
+
+CPU1                                 CPU2
+phy_free_interrupt()
+  free_irq()
+    __free_irq()
+      irq_shutdown()  /* depth++ */
+                                     request_threaded_irq(IRQF_SHARED)
+                                       irq_startup()
+                                         desc->depth = 0;
+  irq_has_action()    /* true */
+  enable_irq()
+    __enable_irq()    /* depth == 0 */
+      WARN(1, KERN_WARNING "Unbalanced enable for IRQ %d\n", ...)
+
+__enable_irq() does not change the depth when it is 0, so this seems
+limited to a warning. The window is also narrow: irq_rerun must still be
+set when the interface is closed during suspend, before
+mdio_bus_phy_resume() runs.
+
+The opposite order is harmless, because the depth++ in irq_shutdown()
+absorbs the enable.
+
+> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+> index 5d4508bcfbe99..e2807e08e4365 100644
+> --- a/drivers/net/phy/phy_device.c
+> +++ b/drivers/net/phy/phy_device.c
+> @@ -336,18 +336,20 @@ static __maybe_unused int mdio_bus_phy_suspend(struct device *dev)
+>  {
+>  	struct phy_device *phydev = to_phy_device(dev);
+>  
+> -	if (phydev->mac_managed_pm)
+> -		return 0;
+> -
+>  	/* Wakeup interrupts may occur during the system sleep transition when
+>  	 * the PHY is inaccessible. Set flag to postpone handling until the PHY
+>  	 * has resumed. Wait for concurrent interrupt handler to complete.
+> +	 * This holds when the MAC manages PHY PM too: an interrupt can still
+> +	 * fire while the MAC has the PHY or the MDIO bus powered down.
+>  	 */
+
+[Severity: Low]
+This isn't a regression introduced by this patch, but does this comment
+claim more than the change covers?
+
+When a PHY sits on another MAC's MDIO bus, phy_attach_direct() links it
+to its consumer MAC:
+
+	if (dev && phydev->mdio.bus->parent && dev->dev.parent != phydev->mdio.bus->parent)
+		phydev->devlink = device_link_add(dev->dev.parent, &phydev->mdio.dev,
+						  DL_FLAG_PM_RUNTIME | DL_FLAG_STATELESS);
+
+In that topology the consumer MAC suspends before the PHY and resumes
+after it. The handler can then still run, or be replayed from
+mdio_bus_phy_resume_irq(), while the consumer MAC has cut the PHY's
+regulator or reference clock (FEC, for example).
+
+The MDIO bus owner is still an ancestor of the PHY, so the bus stall case
+is covered.
+
+Reads of an unpowered PHY over a live bus were also possible before this
+patch. The pending interrupt was replayed from resume_device_irqs() in
+dpm_resume_noirq(), which is even earlier than now.
+
+Could the comment be narrowed to the MDIO bus case?
+
+>  	if (phy_interrupt_is_valid(phydev)) {
+>  		phydev->irq_suspended = 1;
+>  		synchronize_irq(phydev->irq);
+>  	}
+>  
+> +	if (phydev->mac_managed_pm)
+> +		return 0;
+> +
+
+[Severity: Medium]
+Can this abort system suspend for MAC-managed PHYs when wakeup is enabled
+on the MAC device but no ethtool WoL is configured?
+
+The PHY device suspends before its MDIO bus and the MAC, so irq_suspended
+is now set before the MAC's suspend callback runs. With stmmac and
+priv->wolopts == 0, the MAC then powers the PHY down itself:
+
+stmmac_suspend()
+  phylink_suspend(priv->phylink, false)
+    phylink_stop()
+      phy_stop()
+        phy_suspend()
+
+phy_suspend() keeps the PHY powered only when phy_may_wakeup() is true or
+netdev->ethtool->wol_enabled is set. Here the PHY powers down and raises
+the link down interrupt that the commit message describes.
+
+That interrupt now goes through the postpone branch of phy_interrupt():
+
+	else if (device_may_wakeup(&netdev->dev))
+		pm_wakeup_dev_event(&netdev->dev, 0, true);
+	else if (parent && device_may_wakeup(parent))
+		pm_wakeup_dev_event(parent, 0, true);
+
+When pmt is set, stmmac_dvr_probe() calls
+device_set_wakeup_capable(priv->device, 1). If power/wakeup is then
+enabled on that device through sysfs, this hard wakeup event makes
+pm_wakeup_pending() abort the suspend with -EBUSY. That would happen on
+every attempt made while the link is up.
+
+Core-managed PHYs avoid this, because mdio_bus_phy_may_suspend() keeps
+the PHY powered in that case:
+
+	if (netdev->dev.parent && device_may_wakeup(netdev->dev.parent))
+		return false;
+
+MAC-managed PHYs never go through that check. Before this patch, the
+interrupt was handled in place and suspend went ahead.
+
+>  	/* We must stop the state machine manually, otherwise it stops out of
+>  	 * control, possibly with the phydev->lock held. Upon resume, netdev
+>  	 * may call phy routines that try to grab the same lock, and that may
+
+[Severity: Medium]
+This is a pre-existing issue and was not introduced by this patch. For
+PHYs that are not MAC-managed, mdio_bus_phy_suspend() sets irq_suspended
+and stops the state machine. It then returns the result of phy_suspend()
+without undoing either step if that call fails:
+
+	phydev->suspended_by_mdio_bus = 1;
+
+	return phy_suspend(phydev);
+
+The PM core skips resume for a device whose suspend failed. Does that
+leave irq_suspended set? If so, phy_interrupt() would postpone every
+later interrupt and leave the line disabled.
+
+For mac_managed_pm PHYs, the ones newly affected here, this function
+always returns 0 after setting the flag. So this patch adds no new
+failure path.
+
+[ ... ]
+
+> @@ -364,13 +366,33 @@ static __maybe_unused int mdio_bus_phy_suspend(struct device *dev)
+>  	return phy_suspend(phydev);
+>  }
+>  
+> +static __maybe_unused void mdio_bus_phy_resume_irq(struct phy_device *phydev)
+> +{
+> +	if (!phy_interrupt_is_valid(phydev))
+> +		return;
+> +
+> +	phydev->irq_suspended = 0;
+> +	synchronize_irq(phydev->irq);
+> +
+> +	/* Rerun interrupts which were postponed by phy_interrupt()
+> +	 * because they occurred during the system sleep transition.
+> +	 */
+> +	if (phydev->irq_rerun) {
+> +		phydev->irq_rerun = 0;
+> +		enable_irq(phydev->irq);
+> +		irq_wake_thread(phydev->irq, phydev);
+> +	}
+> +}
+
+[Severity: Medium]
+Does this replay work when the PHY interrupt is a nested threaded IRQ?
+An example is PHY INT routed through an I2C or SPI GPIO expander that
+uses handle_nested_irq().
+
+__setup_irq() does not create a thread for nested IRQs:
+
+	if (new->thread_fn && !nested) {
+		ret = setup_irq_thread(new, irq, false);
+
+So action->thread is NULL, and irq_wake_thread() does nothing.
+
+The postpone branch in phy_interrupt() also returned without calling
+handle_interrupt(). The PHY's interrupt status was therefore never read
+or acked:
+
+	phydev->irq_rerun = 1;
+	disable_irq_nosync(irq);
+	return IRQ_HANDLED;
+
+enable_irq() only resends if IRQS_PENDING was set. Take a parent that
+accepts only edge triggers and filters masked sources, in the style of
+pca953x. The PHY INT would stay asserted with no new edge, and link
+interrupts could stay dead after resume.
+
+The replay code itself predates this patch. However, mac_managed_pm PHYs
+with a valid IRQ now go through it. The link goes down while the MAC
+suspends, as the commit message describes, so a postponed interrupt is
+likely on every suspend cycle.
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261026045343.837889-1-iav%40iav.lv
