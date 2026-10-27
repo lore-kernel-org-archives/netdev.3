@@ -1,60 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793087771;
-	b=2SHlyp3/+Pmr/mzd/h+Oi9Z8BLY/cieBHG67/Vv7PJxeSQBr8W8IkG7FDKThYoubA413
-	 xg6L12F5uOc2T6udUNk7g7HbvhZu8FFvuJInNlrxQIlm3oVJta87Q70hwwn3fsRRgRqvP
-	 15x6wjJBIEkq6GWQUPa2WJLlo4RgcPZFoHHMa409/6tBZfgwBgeuYYfhsWON9i06ZIVhs
-	 RbGSIbkd9eFUgTZhjlZAETydvF7vC0PXSITttlrLtFDSj05oz4RLmo39zjHG5k4kmkY+M
-	 ldyuKQHcmCsa/Y/BlT8H/w3vz4JjUWUtTscBohn25V8kHe99sC+dx6qei11Bm3WFqaA==
+	t=1793087814;
+	b=RUZS7yq6Xf5RgOuD1QJqFNd4cahIJ77LEhofK2V+x/ns1lcRRKP+rz1qReoX+CInp7qV
+	 9fNT3ilr4jO0th6r7XYLjuJCIst1M4foD71PHhVWU8EVnE4rH5hnJWCbJtmXeCkbGZzMe
+	 62ozTYdbSv6D/qOCTmam2qYhlk2IMAdwWWQekl5aU1gmO0NzD+K8YXI0xorjdBTudv4tc
+	 1zyMS/z5nNYMG4ogf7t8Rr/1vdEhGu1HuOj8PKlynS58tKP7FDl//IFByKJQJxQOQ/6BS
+	 tNg2dNZi2YKp+a02ew0KcANxgc/kU1uM7Quqn75qq6ZfYidiY08d8kEGeZhtNJWwNIg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793087771;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=MzNz7BwRthycj+ECJC5wKz1PbH4SrkcjTpqhd1V0uhs=;
-	b=Dgh30ArF4g9AArdeFw4Aqyi1hy4WwQ1qlHLB5tJMyBWKcpf7Cx3uAIFa2Grr+Brea13x
-	 2lfBR55t+VDCmGAYcFAiKyhlkFko4f3YZZ/WkCuRYlritUHhJSvOu7WuOL5RNGDK3A9Np
-	 p3CfuySG2S3LvxWh7emZkAtNuTRTPbqLUS0Qr6qg+fqBVv2ZoVF3mPFPkLhEUlu862ZTU
-	 jRmqyjToG74ZuFcXl+N7TrSLzkEdyxBRxb0xwB/+FKdIJmt/B8INaXJXtpXPFE5x+boBa
-	 bHaUbDUzecciGNXOeoY/wqLk8SMUAtnUfq+dwiV575ujG6G5ZHeOdzzRWLS7qoktXeA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793087814;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=1A1q98MDq9vsGC0QU9m9r9Mp0Eo1mNt5bymoPMbu+28=;
+	b=XPA3/Q6os7942rm0iw6sLrq5faYq+LKS6TMa1FmfhfhEtMXer76a44RurO8Z3HoEIr44
+	 EuTlFrRVHVaPyM7L39atVW6xCzXYZLL/OfXqtn91Nad9ewWAQET9CIn4lYCZhUq2MO77Y
+	 ovnlAYLD1zb6eb6an1H36Dy4Tftej0fpWho6zxp+pK+O1dZCZaDTRjFh8kmW+phCQOHlr
+	 qA+GEXD8+V2WbCbdFzkWV+Tsxqd4U4iR9iCNfJZlcwQU03ANRLuyJeK9de1Uy/PTaDo3Z
+	 ua1M5DbMzlSa/dVK5UK1E/NtyXMHeRgnfBGfNDrvZIi1mDlz7U+mFZPAKaKcSwGZwzw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GSUOduEr;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=none header.from=mojatatu.com;
+	spf=none smtp.mailfrom=mojatatu.com;
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=kbAktSy4;
+	arc=none smtp.remote-ip=209.85.222.172
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11919606A31A;
-	Tue, 27 Oct 2026 07:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463B5606A31B
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 07:56:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 463B5606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GSUOduEr
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 071BB1F01828;
-	Tue, 27 Oct 2026 07:56:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793087770;
-	bh=MzNz7BwRthycj+ECJC5wKz1PbH4SrkcjTpqhd1V0uhs=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=GSUOduErjL4BaN0sV5QA04755U3AOuf/n64JDh+YMKiPKMQmCQP7/vrm1E019V+cF
-	 UBDB2P7hTUwND2o6IJDB1hrjYmD46uY5mx+1v+VlVJZpyojoHttNc/eFAbYAjd/o6p
-	 FyxCKIoZmwoGw+JlE6kcdmsArsVtfZxTMJi+IxX8n1uP+267LOGH3jCZTDEL94u2UA
-	 XuiKEkRvyhKnIwank1CeqRjROFlKRW7lBRtFKON2aKOjO7QT38ssKG7iacNXtS4zfF
-	 b51QYoUm9O3DNG9RQvLiRJhqgzR+SlXLjcEfiiXQpBksRkOHakScWJb28+WKD48F6J
-	 iEOt/cquD07Yg==
-Subject:
- Re: [PATCH net] octeontx2-af: fix inner LC ltype match for RSS flowkey
-From: netdev-bot+sashiko@kernel.org
-To: kmahammadraf@marvell.com
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, sgoutham@marvell.com,
- rkannoth@marvell.com, gakula@marvell.com, sbhatta@marvell.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, kirankumark@marvell.com
-Date: Tue, 27 Oct 2026 07:56:09 +0000
-Message-ID: <179308776953.3134.4396227527945551102@kernel.org>
-In-Reply-To: <20261023071905.2922825-1-kmahammadraf@marvell.com>
-References: <20261023071905.2922825-1-kmahammadraf@marvell.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=kbAktSy4
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-93cc1ab5f6cso410227085a.0
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 00:56:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1793087812; x=1793692612; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=1A1q98MDq9vsGC0QU9m9r9Mp0Eo1mNt5bymoPMbu+28=;
+        b=kbAktSy4Y4Ph0Zz/D3olPPlFSxivFRApKf0kf2j6SoZFtbI4KELhjoUtozjkB+Kxbt
+         3Xqlf2QmdyOYYnCvIcd4EmSNjsW8oOrocOgc15LG7/tQn7ZrGzR7zwL8WQjUtpiY60ts
+         EPZdSjMl2oJ/3UbppCs52d3cK4GyPq++1r1rQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793087812; x=1793692612;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1A1q98MDq9vsGC0QU9m9r9Mp0Eo1mNt5bymoPMbu+28=;
+        b=HVA71lZcLlQoE3XZrd4iuZOptrfZ0ir3QpOxJ1j4OUkB/NnlLi0wYO4l84E2D+eQk4
+         1w9q1WCqK6FZ3B4ktcNbD6DatCr9PXUXGeYybAwgHodBrE9hIapF6P/zl3sHx4+I4kOq
+         93sv3T0OAUpcrO5K23Dc2FkrL8nuGX77iBMqVjO9cWUbWi9qYJvOIZQLZ7rm6yTV4tgx
+         2+88By+6mHR/wJgCVe4w0P2TDOBUtlApva6PDkZpquaUPB2UQ6XLOmjBXOg67hcHb3ba
+         Cbz1O0qcz/N6ZY3w75qDorF+SSq9/agHZrg3DWFQ7k8R6DgD7HtD4yt5sOeV7D4VyksR
+         2QRg==
+X-Gm-Message-State: AFq9FYJldsmYYk2PigqI22lWEnqqhWYc5E4MoSnJ9cBsP7zc5B0jSc6z
+	VhdysoEnqT9cAx1warGcivHz6dEmZmKEVXB9to0WgFity9rPDZzTMVMlVmeSOxyJrd69fLa5mlP
+	EXw8=
+X-Gm-Gg: AYBFou0Vh0+jq/dd9VUmvCjSByNmXcs4NAtPb7EWZ+yMDV73F/HLWAof6tFQV/XYJsO
+	dzgwtEMwHvDpvu7OrnUd0MHaPXJKyoh+IrSGDuUKLCgYeIasqLaJySeogNIxPc7DM0HQy4yvxdN
+	891uHx1ldj4n4ut1hfHnCfOuSseMpSLlp+QNOmhWeItsX2p4cgDZZXxd/pyKe35K71AvyxqfKkW
+	nq0z0KZwq9reZ2lYSNV8++Us4muLKPNDVCykrmoNPWEYmdJdGIiS7nwroEJhp0ZZin16izSqJgQ
+	gOwbYmWLCna09A3YIKNberLzNh175FKEyLOND2HqDlkeK0SNUlkgmkfaxZvNfBbg0Nd3FCYsQVu
+	fGCofKAQVPbg2l1xMUrpflEibrllHneqrr+UpimHQ9pNKFq0gTPOpBdvoO7GtjTouaW2rCaky8f
+	gc0xCxqt4yh/h5K2D5t7/6h24w4ormOZfRabZ8+dAOOF7HDVWUR8lAZ9sgN0ypP8VIRza+/LrKA
+	DB3bED6l/zfjJZJUtrnbLUW33IwS0QKW536FTSnLwMP44JccanULdCmx/DnVqxvYd+lMCc032z5
+	/PXeyGEUPY1847gyrRcFaY7fgj7lqty+9irPLMHSfA==
+X-Received: by 2002:a05:620a:4151:b0:93f:2ab9:72a0 with SMTP id af79cd13be357-940ef94cab0mr1365449285a.70.1793087812145;
+        Tue, 27 Oct 2026 00:56:52 -0700 (PDT)
+Received: from mbili.tail33bf8.ts.net ([64.203.83.2])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-940f066629dsm906675585a.7.2026.10.27.00.56.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2026 00:56:51 -0700 (PDT)
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+To: netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	stable@vger.kernel.org,
+	sashiko-bot@kernel.org
+Subject: [PATCH net 0/2 repost3] net/sched: sch_teql: fix header-cloned write and retry strip
+Date: Tue, 27 Oct 2026 03:56:41 -0400
+Message-Id: <QDISC-6HS9.v1.r3.20261027034729@mojatatu.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,103 +98,43 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Two pre-existing defects on the teql transmit path, both around
+teql_master_xmit() -> teql_resolve().  The first makes the slave's
+header write corrupt a header-cloned skb and strips a userspace-supplied
+link header on retry; the second leaves skb->dev pointing at the teql
+master while the skb is parked on a slave's neighbour arp_queue.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Patch 1 makes the header private before the write and pulls back only
+the header the slave added.
+Patch 2 moves skb->dev = slave ahead of teql_resolve() and restores
+skb->dev at the arp-queue reinjection point, so a parked skb names the
+device whose neighbour took it and is delivered with a link header.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Both are follow-ups to commit dc4b95b8fee9 ("net/sched: sch_teql: restore
+skb->dev on the slave failure path").
 
-- [Medium] The patch fixes an RSS regression but has no Fixes: tag.
-- [Low] The commit message gets the layer and the failure mode wrong.
+The pre-existing teql issues reported alongside this series are fixed
+separately, not here.  In particular, the lower-qdisc drop use-after-free
+(`NETDEV_TX_OK` vs `dev_xmit_complete()`) is fixed by:
+https://lore.kernel.org/netdev/QDISC-Y0BY.v2.r0.20261024060625-2@mojatatu.com/
 
---
+This is repost3 of the same two patches; there is no code change.  The
+only changes since repost2 are the commit messages: the patch 1/2
+message now says "header-cloned" instead of "shared", and the patch 2/2
+commit message now describes the reinjection behaviour change for
+bpf_redirect_neigh() and nft fwd ... neigh instead of claiming the
+restore is an identity for every parker.
 
-octeontx2-af: fix inner LC ltype match for RSS flowkey
+Jamal Hadi Salim (2):
+  net/sched: sch_teql: unshare the header before writing and fix retry
+    strip
+  net/sched: sch_teql: keep skb->dev consistent on the arp-queue path
 
-This commit changes set_flowkey_fields() in rvu_nix.c so that the inner
-IPv4 and IPv6 RSS flowkey fields use an exact ltype mask of 0xF instead
-of NPC_LT_LC_IP_MATCH_MSK and NPC_LT_LC_IP6_MATCH_MSK. The outer IPv4
-and IPv6 masks stay the same.
-
-> octeontx2-af: fix inner LC ltype match for RSS flowkey
->
-> Inner LC ltypes differ from outer LC ltypes, but RSS flowkey programming
-> was using outer LC IP/IP6 ltype masks for inner IP keys.
->
-> For inner IPv4/IPv6, match only the base IP ltype and do not include
-> extension-header matches. Keep existing outer LC masks unchanged.
-
-[Severity: Low]
-Is this description accurate? In set_flowkey_fields(), the inner IP keys
-are on layer LG, not LC:
-
-	if (key_type == NIX_FLOW_KEY_TYPE_INNR_IPV6) {
-		field->lid = NPC_LID_LG;
-		field->ltype_match = NPC_LT_LG_TU_IP6;
-
-LG also has no extension-header ltypes that could be included:
-
-drivers/net/ethernet/marvell/octeontx2/af/npc.h:
-enum npc_kpu_lg_ltype {
-	NPC_LT_LG_TU_IP = 1,
-	NPC_LT_LG_TU_IP6,
-	NPC_LT_LG_TU_ARP,
-	NPC_LT_LG_TU_ETHER_IN_NSH,
-	NPC_LT_LG_CUSTOM0 = 0xE,
-	NPC_LT_LG_CUSTOM1 = 0xF,
-};
-
-NPC_LT_LC_IP_MATCH_MSK and NPC_LT_LC_IP6_MATCH_MSK both evaluate to 0xE.
-
-With match 2 and mask 0xE, INNR_IPV6 also matches NPC_LT_LG_TU_ARP (3).
-The default KPU profile emits that ltype. As a result, tunnelled inner
-ARP packets get 32 bytes at offset 8 of the ARP header hashed as an
-IPv6 SIP/DIP.
-
-With match 1 and mask 0xE, INNR_IPV4 either aliases with LG ltype 0 (no
-inner layer) or never matches. Which one happens depends on how the
-hardware applies the mask to LTYPE_MATCH. The hash code in
-rvu_npc_hash.c compares (ltype & ltype_mask) against the match value,
-which points to the never-match case.
-
-Could the subject and body name the LG layer and describe these
-effects, so it is clear which traffic was mis-hashed?
-
-> This fixes inner-tunnel RSS key calculation and prevents mismatches in
-> inner IP flow classification.
->
-> Signed-off-by: kmahammadraf <kmahammadraf@marvell.com>
-> Signed-off-by: Kiran Kumar K <kirankumark@marvell.com>
-
-[Severity: Medium]
-Should this patch carry Fixes: tags?
-
-Before July 2024, set_flowkey_fields() set field->ltype_mask = 0xF after
-the INNR_* override. The inner keys therefore matched NPC_LT_LG_TU_IP
-and NPC_LT_LG_TU_IP6 exactly.
-
-Two commits then changed that trailing assignment:
-
-  e23ac1095b9e ("octeontx2-af: fix issue with IPv6 ext match for RSS")
-  60795bbf0476 ("octeontx2-af: fix issue with IPv4 match for RSS")
-
-They switched it to NPC_LT_LC_IP6_MATCH_MSK and NPC_LT_LC_IP_MATCH_MSK.
-The assignment runs after the INNR_* override, so the 0xE mask was also
-applied to the LG inner IP keys. This patch puts 0xF back for the inner
-keys only, which reverses that regression.
-
-Both commits carry Fixes: 41a7aa7b800d, so they are probably in stable
-trees already. Would adding the following tags let this fix reach those
-trees?
-
-Fixes: 60795bbf0476 ("octeontx2-af: fix issue with IPv4 match for RSS")
-Fixes: e23ac1095b9e ("octeontx2-af: fix issue with IPv6 ext match for RSS")
+ net/core/neighbour.c |  1 +
+ net/sched/sch_teql.c | 34 ++++++++++++++++++++++++++++------
+ 2 files changed, 29 insertions(+), 6 deletions(-)
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261023071905.2922825-1-kmahammadraf%40marvell.com
+2.43.0
