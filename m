@@ -1,60 +1,61 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793137096;
-	b=DhsqYr2VmOTurbqiabetqEeqpphQNPak+UHhIEQ3EkfgAascnivuOf4SLKxZmb72MQVm
-	 ohVxngkAtzBKrqE3PYiQv4SNXWt6HhPucRiU1R3GbAoOhcbnvdAZiXftxqDkug/D49rgA
-	 g1APP9Qe0W3hAsPm7ncieEANDuh6xxSJqCNo7ZY62bkso4Y/OT7RIwzrlvdMvsAhB1ezA
-	 iUZVkA5sd6/dh+m8Uv9uQLpnsiqsoLBrBiXMVDk82rz5kyqCDhwBd3xO//xeg+rN7g9Op
-	 Wz+3Ohk48MnfJS9jey/rj7bBgL5+ezn0OZKbRwmcJeZ3psyaUcbnr/ouU5aeooVC0BQ==
+	t=1793137714;
+	b=RLgUOJzqCe27EPGnj5sgV/zJ4nQJZSAFzTUWhuc+ij7jrRbflGC67461WFQUzjsUkElx
+	 UE1ZlnoYbdtvrNyiEflOIcPMkpoHRzzy5AzVPh2yGOPAnasf7hRl6uSohwaQEA2maDVaz
+	 AS4cXFKVCrbBDCJTxdEFO0ky/2FqCVP4c55tNUpY93kjg1C9jZXpuDLwWqPuE7D+wYd1M
+	 /AMq9IWM+0q+4LTjnaf1iPjjeZMSnlA7n9v+uEzOLjKESmMn2XAv6Myh6HGtQWacLiXhx
+	 sjTwG/w5RTBFaRxIx4sFL+qP/kgnY+wk6qL1i6EgEkVo5KTkMyzNvvVXEvkSDbLSR1A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793137096;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793137714;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=PqWOiY9VRjCy+ga6/7GbQl1u6l3t01EavkGObI2f+Ig=;
-	b=Jt9/3KZmcKu+GA3waCl4B25/XQtcsJ/gceWIOnwLZxa5VgyVs3pHkGq8s0hKOoIqR7U3
-	 SKJ8lJ2isV2G1A7B0xvAUTyBWJjN5gCeZ/jLB8vakmQ6/YqeHLuGnR6U1vLMO7zisOaTQ
-	 1074bL+/mz4g0cx+HdUSSuAwQrgcG1SrCnByOo0je8xTOSLcq0MYIS78LXJOrmQCsDk4K
-	 yRDsvBvwziS+85KupE6G7kJ+mOURDIS5yNmqb9EUtdhAyvx9xGDRf2z/JnQIeECyTGanB
-	 jR2A3SJxrgIW80FFmZ2iVE08dpG/T2jy8hXHy8gPB0YaWSTHqgvwnxAY23x3AnozfNQ==
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=iZPro0Zetz+CfLgJB9N6QxpD/1Z6TlyduqwjCEpWEDA=;
+	b=mjjbXCbKvD5lDSkeWebDn+RI7lMi0BGTph0YuDd1P199l1aEAGVqdwwoWXotFcutqEJS
+	 JcyziZiE2kNMFogJ/8niVFyggechAJ1/E2ssYGix1TtxelYkbHIesVfaWoJ6LEHWkvbER
+	 Mbalntd39J1Hhp1NOH6zze5qMBDdu2OOgiucuicUgJVnk8b7sseVcnwa4hZOu7/Pq1jeY
+	 xycEmG2uDOKf7mKW9kXyxPgfp2LrM8zVenYEgQ0+GAVUPnr17HZDmwn9uUouCiFpOPnel
+	 6W3Z9+rNvJ16jJIBPKLch8Sw4nmSSKJSm7N3UUfRe/D1r6MU8IXLStWhqnDZ/1LDSWw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZMSvuu8R;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=frurcEEY;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E06606A31A;
-	Tue, 27 Oct 2026 21:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27387606A325;
+	Tue, 27 Oct 2026 21:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZMSvuu8R
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD321F01825;
-	Tue, 27 Oct 2026 21:38:14 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=frurcEEY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F37F1F01825;
+	Tue, 27 Oct 2026 21:48:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793137095;
-	bh=PqWOiY9VRjCy+ga6/7GbQl1u6l3t01EavkGObI2f+Ig=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ZMSvuu8RHqJWTLlwmAHIawhTchfRw3MS1sXHlShygeuzsGQaRk+MN989eI4yq7umH
-	 2ZOPo6NYGU4vEz8qJ+41hTqUNkMhDkEwhnYBw2LtDwQgnZcHm42E/jf+lmChXecF6+
-	 BxDILkBYLK6Ao1VYiZB0Eowh4S8P82/nLrrMnbDxmlx89Ew9KeWulkEoPaRTK7x1o1
-	 wlKXzc1+zACJO2ncRqt9gu9mteHISBHiYDVWgBWARsFmUQxCUvrW4WT1tq6EOmtomH
-	 9dDAU5OoMnaI/z0hL38HmNwT5C+BOGbNDKPLFcQdtwosCDFKMXNXAo3V+rlLspU/TT
-	 Jre28PuVkBwug==
-Date: Tue, 27 Oct 2026 14:38:14 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Hangbin Liu <hangbin.liu@linux.dev>
-Cc: Ido Schimmel <idosch@nvidia.com>, Gabriel Goller <g.goller@proxmox.com>,
- David Ahern <dsahern@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Nicolas Dichtel <nicolas.dichtel@6wind.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] ipv6: Add NETCONFA_FORCE_FORWARDING to netconf
- messages
-Message-ID: <20261027143814.335587dd@kernel.org>
-In-Reply-To: <at7JgfsvrAUxtPzy@fedora>
-References: <20261023-ipv6_add_netconfa-v1-1-94d14b07d621@proxmox.com>
-	<20261025131102.GA184152@shredder>
-	<at7JgfsvrAUxtPzy@fedora>
+	s=k20260515; t=1793137713;
+	bh=iZPro0Zetz+CfLgJB9N6QxpD/1Z6TlyduqwjCEpWEDA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=frurcEEYXOjzDEHQAq29BDBpzxuur7lknBF06mjH2ouf6yf1jbsOG87mTDnHD9Iq9
+	 FBvEbozbz7L6dTDak0dBzX4S333EiTHlQHphpv2Y/nqS0P+m6j6tidyznWz8feoifE
+	 V6TCaEO/yhxN58AM8FtIfCVGwChnhXjJltgNlFDmyjtICbDgdGVs0Ik3U4fjlsdNRZ
+	 PqwlsEjMIcYoJIZciLGWZM+nIV8w+uKqMUHouanS/pTrSQNjFE4JFN5AEJ9RRj0tHM
+	 FGsHndDLwJXRZt67DVrhZLY4USBQs2T/dHJEZnkXlbLi4bGzDnAnt/6lkm+4EDlvM4
+	 zVp+21+x0Natw==
+Date: Tue, 27 Oct 2026 16:48:30 -0500
+From: Rob Herring <robh@kernel.org>
+To: Navid Ghahremani <ghahramani.navid@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, arnd@arndb.de,
+	stefandoesinger@gmail.com, krzk@kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 17/24] dt-bindings: net: Add ZTE ZX279128S Ethernet
+ switch
+Message-ID: <20261027214830.GA1267186-robh@kernel.org>
+References: <20261014072109.1759502-1-ghahramani.navid@gmail.com>
+ <20261014072109.1759502-18-ghahramani.navid@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,19 +65,71 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261014072109.1759502-18-ghahramani.navid@gmail.com>
 
-On Mon, 26 Oct 2026 11:31:13 +0800 Hangbin Liu wrote:
-> > This seems to fall under the "Not a regression, not critical" category
-> > [1], so can wait for net-next.  
+On Wed, Oct 14, 2026 at 08:20:57AM +0100, Navid Ghahremani wrote:
+> Describe the switch, receive interrupt and per-port PHY modes and MAC
+> addresses.
+> 
+> Signed-off-by: Navid Ghahremani <ghahramani.navid@gmail.com>
+> ---
+>  .../bindings/net/zte,zx279128s-gmac.yaml      | 125 ++++++++++++++++++
+>  1 file changed, 125 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/zte,zx279128s-gmac.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/net/zte,zx279128s-gmac.yaml b/Documentation/devicetree/bindings/net/zte,zx279128s-gmac.yaml
+> new file mode 100644
+> index 0000000000..fcbdbafa76
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/zte,zx279128s-gmac.yaml
+> @@ -0,0 +1,125 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/net/zte,zx279128s-gmac.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: ZTE zx279128s Ethernet switch
+> +
+> +maintainers:
+> +  - Navid Ghahremani <ghahramani.navid@gmail.com>
+> +
+> +description:
+> +  The ZTE zx279128s has a five-port gigabit Ethernet switch with a traffic
+> +  manager, a buffer manager and a DMA engine that connects it to the CPU.
+> +  Each port is described by a child node of ethernet-ports and becomes its
+> +  own network interface, with the MAC address given in that node.
+> +
 
-Agreed.
+Use the ethernet-switch.yaml schema here.
 
-I think this is more of a "missing functionality is not a bug", even.
+> +properties:
+> +  compatible:
+> +    const: zte,zx279128s-gmac
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +    description: The traffic manager's interrupt, which signals frames
+> +      received for the CPU.
+> +
+> +  ethernet-ports:
+> +    type: object
+> +    additionalProperties: false
+> +
+> +    properties:
+> +      '#address-cells':
+> +        const: 1
+> +      '#size-cells':
+> +        const: 0
+> +
+> +    patternProperties:
+> +      "^port@[0-4]$":
 
-> One question about this rule. For "not critical" fixes, should I make that
-> judgment myself and post to net-next? Or should I send them to net and let
-> the maintainers decide whether the fix should go into net or net-next?
+ethernet-port is preferred for new bindings.
 
-Post fixes for net, let maintainers decide.
+Rob
