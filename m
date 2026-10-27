@@ -1,104 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793114809;
-	b=23kbtM55h18FY2pO4C7smp7SOyVjq/zfqUh2O0tq+eU0y281q2AbZkoMs19mRRvyab59
-	 D9kaIzw7PSFouiQDk8lLTZXBwBa3/q859PT5hq4oetjrp3GKT8QB2tBJqk+u8KmdOEhba
-	 oEOPMCapKeunERMIjFtDeXRISgDoUS9RX8fTL3+zOp19TTECcTu/GnxSwoQV8X8SaKAxK
-	 EsxGjwimYv1t3IHnwtDfKhZN593LLvxIoqYWL0wjywqjOMz3exsWsckEkFVChvvCyR94u
-	 tLxK9YfR5m5UaD3+YcVdn2L6B4sKJVE+rX7m9mtciGavvYiTLoqx1/65KbK8895kkGA==
+	t=1793114865;
+	b=NxO1Opzz8+9SVSG+1HRCBxsE/RfFHt/LppmBmbgi2MC/g/4xGznYzsmCvRxsi78UJ1h4
+	 uftC/sxhDFJgo+TA64jZIxiFrAIbV4dktlIcsDaJiaVWRSBF7zdOtik5jNVFLLOPIw/Yx
+	 zUKkAVjtqMxpS/i6RH99YKrOJgPvMj4rF8rFttvWvXrFVe5FkmqgXXVCYh8c332dUJfhK
+	 X0VXDbEUnmhN/UpMQP9lGXL80H9pNIDHpNihQn6zmxvIcmibG5fmX9PUjjNz5+2vSx0P6
+	 a9XPV1645BIDNKYjyFOZSBd6do0XA1bAehAJ7CWCWqFuSKZnBCJpWLKIR4uRUHsnMGg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793114809;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793114865;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=1tGy4+33uO/MaMkCs8SwEG7aM07D814jeQg5PdFcUYE=;
-	b=ZGFr0CgJ4zFqs6OR4pJ2fqXfqOdkF5fZ1IMZ8nOdjK3S5ekhUIc3LG0tkILKlcFpb+e6
-	 XCQiZo+cYUrolwJD8sWJczEVg8zoP2gGil6aSiPa1m5ChcatogRZFaPdDVk+GoVoHR0Yl
-	 iiQnMJ7/7R71cLUd+pbDOC6YTTiaLyudbU1HPldACZgDou+Zmewrir0fEKB3FfNVnw9dL
-	 5Olr1TTLX7knD8I9FIdDU2RUiRZEvaAjXWZqNsVI3bwonc1gs0BkE17Xmiswtjmjz3oT+
-	 vtTm3N9hVVkXnG/i7wvNcb6XXP3AhbKhDBQ8sIDGoJBdYlcKM6VbWKoLIWZUKKiyNbg==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Mime-Version:
+	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
+	 From:To:X-Mailer:References:In-Reply-To;
+	bh=uqwtnNOMKZ62ohb4pCxSL5wBGLnxx/MLeyk7MYe67bc=;
+	b=pzAS+jrUKjULYa7lcSN4wjxuv2Yo/N5fj/GLZ1KfceDXwqsZsBwjbGYqxrOEb/nnK/hi
+	 iFnb4j130r+NEb6y9J5dh6t/gy671hpjBR34miMsGOe9gxYQwm3YwERAEpK0EgfktF4aY
+	 b/A4CJW/a7DWMzZqUuhfdsAdALU4MAGd6ecAoZZ+xyzhwxJi+/X2SBpy/1APoqhixNFyc
+	 1UGvBfxJ3s8sOZcHGRpFn1ZIaQyLfrN4H8VKf7GE53/I9MVWganwvqSllhgWZo0+iwN85
+	 Sa6yblJH3pVZa3AQBsXjykp0Z40Q6yi2Z+guXGhPqhN2/sMzfzPPZg5VmBkzBWgZXpQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=W+87aI1O;
-	arc=none smtp.remote-ip=209.85.222.45
-Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Zx1yak+H;
+	arc=none smtp.remote-ip=209.85.219.41
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B629A606A31B
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 15:26:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B629A606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF973606A31A
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 15:27:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AF973606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=W+87aI1O
-Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-9906c85122cso24189241.0
-        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 08:26:48 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Zx1yak+H
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-91c76540d0bso289276d6.0
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 08:27:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793114807; x=1793719607; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+        d=gmail.com; s=20260707; t=1793114864; x=1793719664; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=1tGy4+33uO/MaMkCs8SwEG7aM07D814jeQg5PdFcUYE=;
-        b=W+87aI1OPlrMUG0L352mZwYpSj23/GcxekBOW6oN7CHP4kmO/9+wip96I/k6tM5PFF
-         0j6yd2yYYOprqmYEgL7hWsuun3g+HftqA59gmEM1v37fqQAZb5VXPtmeASnF/XsxPivo
-         UaJ6bODgG4InVOf9RsFMji/XWAojJnsliw2BEmh/cN8V6dqpfrnvv0m5pVK2VfukrXrZ
-         9TjYhRxeyJ2fohYPyCY1PuZiQNbKxQu0UvwdbjW41/M6LrIirAVf46QpI7tosFSxrZrz
-         KZIwIFkMDZxVpHeup9iLq5Kp5+MenR4UhdUbbvWIRR8dZgR23o3zwH1tgV6WrhqURG2O
-         YCrA==
+        bh=uqwtnNOMKZ62ohb4pCxSL5wBGLnxx/MLeyk7MYe67bc=;
+        b=Zx1yak+HP4vRh1a7K2NP1uGeEoVYSv5PWBRg8nmWiinXpO6HtYk19YC0TO2GKJUQpG
+         AbHXCPy5c9GRnlxzBNGwoNDkjI8KfLr1z/1gO1G+XNPdZAw8/IG1XwI30jKNNg4ldjOy
+         sh+rPdeZbxz03X42r07RMAnnLSDscRiB92jAOrtz1RZ00JROwLooZP3BvYRFfgusczZr
+         n/Et6gNKJv8yxxssxKLyODZIDYq9IquF9P6ip0XYT9P33OlaM/utbO0z/HHvNmqt0iXa
+         wJa8DegfBACV2xpO+Lnsn7vCgEhJ6k9a4/7Beoa+fbbcHKsihGspDNfqO112CHzj8A0v
+         kZGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793114807; x=1793719607;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1793114864; x=1793719664;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=1tGy4+33uO/MaMkCs8SwEG7aM07D814jeQg5PdFcUYE=;
-        b=j8TJQZOidYHUcRxIiZQpEkis6zQs5+C5P9nhbJpjaZaOTtwbvjrhQMRb4NoulPfVHW
-         b/0oSkaExV6FP73ofuL0NzZTBrCRH3rq87zMJel6BjGcFVBtlam2zdcnHJleN08xTdjA
-         3jFZcR8wL2agwzERztVbAzCJmup0JRBLH3ANQId6uBPMZqVtHCHv0JxSwbip3QVVt0IB
-         XOLYHVRbzM7zhkDoCgQa78tn/q+67ufb+BiD4Reh92ONcxf0dpxRx/OkPvFMNDBEW9Kc
-         1BYgan4EVTXjKy0i/Fg0N/NnkketGQooQERyjy47omAyXbBKrNTipx3FvGkn/LbPBvFq
-         Snmw==
-X-Forwarded-Encrypted: i=1; AKwUvBwNSpIAEayyVQ1numQAtMzLfNiAVxFVCo5kphYfwyuncEnzbi+1NWaBa6eFyegxr42JfV8M4hc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIe1o5hbsoYY2rgHZRFwv9btigmiX3WrIX8I6LFwHhToHvj4A7T
-	3g6c3RRh9RsEWNtp9d9CrXQ86HunznkuSvDnY++YLFXlhZgqG0v+9MY6
-X-Gm-Gg: AYBFou2y0azAMj941+hIPWFM0exiGvnIqSxjkkAbt/ElliugQampZnGn3UXCTNIUVh4
-	bMgO6RrfXUgYi8I0ZjsID3nkmMLbEobAOu6GXsJ/FIc/JuEwOJJYBLM5XB3NDtv95FBe16ZgjvP
-	d5VNeQjp0UK81sX8MIU19qrifmY0yEgXcMa96mnhCR8RMu9GZyYwU6KQx9d51nlG23P9dAtPjFN
-	F1ZcJbXyTtHAThH8S9YIZkyYA9+0PGw8yNOpx+DdMSwE+URg5OFO108i+JVY8FFdXCGmMUiSkem
-	JidHvVpZemBcJq0tFnR+afWcIj70IxMu6ihYfs5e9LCKxPk/vwk15uiFQ4cfntHbWAhbmGujSO+
-	OoJcOFtR1n09Q5B9mTRBGNC5/k4Mxj5qXMLQ1gtii8O1W4avUsycyg3ojLv1wjf5QpmX0i8XK0T
-	xFXD786lhWUYbYcBStWAQ4dMaeTzRzWSxguD3NRMaJ7mafLe5u5Q0EMwDzh0ke7Lt+PypviNAj7
-	OGUvWj+WnM8sbGu3nce9YFkyfqYjQ9zUed7LEPixcGFodcwwtXi1Lny6TOjAPn8thhHTzkKrvdh
-	m1BlL05yzEUmbZdqNXp4Di5P9ylS/OQL67rEl3oUI99cwE74qzaJ3BiEj2xhvjixZwOges8n8Xb
-	GfP+GtQj3zpVMklg+VD0=
-X-Received: by 2002:a05:6102:5708:b0:7cc:26a8:e732 with SMTP id ada2fe7eead31-7ce5cd12376mr3424217137.20.1793114807291;
-        Tue, 27 Oct 2026 08:26:47 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-9912da2d9d1sm243498241.7.2026.10.27.08.26.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 08:26:46 -0700 (PDT)
-Date: Tue, 27 Oct 2026 11:26:46 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: =?UTF-8?B?dGVuY2VudG9zX3NlY3VyZShUZW5jZW50T1PlronlhajlhazlhbHpgq7nrrEp?= <tencentos_secure@tencent.com>, 
- netdev@vger.kernel.org
-Cc: David Ahern <dsahern@kernel.org>, 
- Ido Schimmel <idosch@nvidia.com>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Willem de Bruijn <willemb@google.com>, 
- Steffen Klassert <klassert@kernel.org>, 
- Eric Dumazet <edumazet@kernel.org>, 
- security@kernel.org, 
- steffen.klassert@secunet.com
-Message-ID: <willemdebruijn.kernel.754d523a3a4@gmail.com>
-In-Reply-To: <589B4474E0A78486+v2-20261026-p1@tencent.com>
-References: <v2-20261026-cover@tencent.com>
- <589B4474E0A78486+v2-20261026-p1@tencent.com>
-Subject: Re: [PATCH net 1/2] net/ipv4: reserve exthdrlen as headroom instead
- of counting it in skb->len
+        bh=uqwtnNOMKZ62ohb4pCxSL5wBGLnxx/MLeyk7MYe67bc=;
+        b=sYMf9XSq4ib+tzWE+GrxrHseabo5xg6yXQ82en5BNgodwJYqeAjKV7uNUMgjDoOead
+         8HTv8Kv7Te8tSEDSDsYm2Wx2S9EIUSSK+EKnDi039xX8wROcVrOZ6ayVo0rA85nYvoUA
+         SGry9/sLEWI4lrERw8T8NG29vDBRnva5/lozwilxUmlSBahOEPgE0PtYm7bOvvT2uUXW
+         Fz4//gv8cvXL2RqNe8m4eC91KRXnaECMhCdYKEDSvfKBlBGqjNJj9Z7K+ZAfYv2N/qTH
+         en51KIvbgXCkbCEgJTRsXxRvu7b81p5ty6Qa8nF6keb8X3N+wknye8hZcFVCeQI4/lYL
+         6SKg==
+X-Gm-Message-State: AFq9FYKQjDMmEu8Zo4tZoRRJS6ufhkiN/jN8wZxIaV0LsUhMoY2RZ2iX
+	GyUaF2f+P91SGMEuO+reRBojbGOHI1AvOH8EaVqMbNl8Kxwfer+/n5cL
+X-Gm-Gg: AYBFou0/lxnY+2/tOATK/TcWp0PvHEs058Ub3niTgk9eL5Dmkm0dB46GHv54/bPofWW
+	C20TxLOiKJuSp8kBRk95mwfViIJk6paiKITxrqeQUM/CVtGVdYyeOaWBmP7DJFE5/ppt2od6mfS
+	1RFjWjCSStxZsE0pwllvsAfS96T2NxLjL5ob6o23J3u1NEZlqHPSwHHFch/XTtBI+ELpGJoFYwh
+	j/r7i3cx+SUlEmC77jNMene4Dix8tRojemzBhOTH3qyHWH9dsotNLUlQvZqcA+hUKmv30Tvoqyh
+	nyKEDJVaL2eCuB05sfie8Rt4Fpr4bIcSpD/rsalQUH/sokM5aQUx8brRSBI6X9399JHZq8j/KRo
+	of982D+kF0y8hhUAyKQS1hPAtb47rJlxwIl5bHrzRbliZ/zczE77u+ZCfd/gX2/FAWewIYUYugM
+	GSKctJwMr/S34kOhAEP0qZkt228GaR3hsxpQ8m0UxW49Tc6AT2TZdHydv1am9iVN14EDvoSsxzI
+	H2YgIzaaTExo5vVyclPcD+1/du52TtWynxKQj45jPE=
+X-Received: by 2002:a05:6214:5093:b0:91c:7673:a417 with SMTP id 6a1803df08f44-91c7673a830mr20960306d6.50.1793114863756;
+        Tue, 27 Oct 2026 08:27:43 -0700 (PDT)
+Received: from localhost ([2620:10d:c091:500::4:1ee2])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c6e20ba4fsm27571496d6.14.2026.10.27.08.27.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Oct 2026 08:27:43 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -107,126 +85,65 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 27 Oct 2026 11:27:42 -0400
+Message-Id: <DMFQ63T8HLVV.3L1SY71TO7GHU@gmail.com>
+Cc: <netdev@vger.kernel.org>, <borisp@nvidia.com>, <saeedm@nvidia.com>,
+ <leon@kernel.org>, <tariqt@nvidia.com>, <mbloch@nvidia.com>,
+ <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@kernel.org>,
+ <kuba@kernel.org>, <pabeni@redhat.com>, <daniel.zahka@gmail.com>,
+ <willemdebruijn.kernel@gmail.com>, <horms@kernel.org>, <shuah@kernel.org>,
+ <cratiu@nvidia.com>, <raeds@nvidia.com>, <rrameshbabu@nvidia.com>,
+ <linux-rdma@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <bjorn@kernel.org>,
+ <dtatulea@nvidia.com>
+Subject: Re: [PATCH net v3 2/4] psp: support ipv6 extension headers in
+ psp_dev_rcv() decap
+From: "Daniel Zahka" <daniel.zahka@gmail.com>
+To: "Todd Bert Freed" <toddfreed@meta.com>, <netdev-bot+sashiko@kernel.org>
+X-Mailer: aerc 0.21.0-threadmapfix
+References: <20261023234640.1459291-3-toddfreed@meta.com>
+ <179288570143.3134.8925369868949382653@kernel.org>
+ <CADh2yMyYS-PWP4912En9D6B9up6Kz-hnCthNkWot+e7N8-q7ZA@mail.gmail.com>
+In-Reply-To: <CADh2yMyYS-PWP4912En9D6B9up6Kz-hnCthNkWot+e7N8-q7ZA@mail.gmail.com>
 
-tencentos_secure(TencentOS=E5=AE=89=E5=85=A8=E5=85=AC=E5=85=B1=E9=82=AE=E7=
-=AE=B1) wrote:
-> When sending through an xfrm route (rt->dst.header_len > 0),
-> __ip_append_data() counts the bundle header space ("exthdrlen")
-> into skb->len of the first fragment skb: the skb setup does
-> =
+On Mon Oct 26, 2026 at 6:05 PM EDT, Todd Bert Freed wrote:
+>> [Severity: High]
+>>
+>> The PSP ICV doesn't cover the outer IPv6 header or its extension headers=
+.
+>> An on-path attacker could take a captured PSP packet, insert one of thes=
+e
+>> headers, and set saddr to an address they control. This assumes the
+>> device authenticates such packets, which this patch's premise implies.
+>>
+>> Several of those handlers reply with an ICMPv6 error that quotes the
+>> packet. With default sysctls, this happens for an unrecognized routing
+>> header type (type 0, for example) with segments_left !=3D 0:
+>>
+>> Before this patch, all of these packets were dropped at the is_udp check=
+.
+>> Forwarding the decrypted skb itself looks blocked by
+>> sk_validate_xmit_skb() ("unencrypted skb with no associated socket -
+>> dropping"). That leaves the ICMP error path as the open channel.
+>
+> Agree with this finding.
+>
+> Ok, this puts me back in mind of the approach in v0 of this series ; just=
+ drop
+> packets with extension headers. Actual support for extension headers can =
+be
+> done separately from this fix.
+>
+> pw-bot: cr
+>
+> -Todd
 
-> 	skb_reserve(skb, hh_len);
-> 	data =3D skb_put(skb, fraglen + exthdrlen - pagedlen);
-> 	skb_set_network_header(skb, exthdrlen);
-> =
-
-> so a fully filled first skb has skb->len =3D=3D maxfraglen + exthdrlen.=
-
-> Since commit 353e5c9abd90 ("ipv4: Fix IPsec slowpath fragmentation
-> problem"), the next iteration's fraggap =3D skb_prev->len - maxfraglen
-> therefore inherits the whole bundle header length instead of the
-> intended alignment slop.
-> =
-
-> fraggap is relayed into the next skb by skb_copy_and_csum_bits(), but
-> the MSG_MORE (alloclen =3D mtu) and linear (alloclen =3D fraglen) branc=
-hes
-> account for fraggap in the allocation only for as long as datalen stays=
-
-> uncapped.  Once datalen is capped at maxfraglen - fragheaderlen, the
-> bytes copied into the fresh skb exceed the skb head allocation and run
-> past the end of the buffer, corrupting skb_shared_info.  The
-> paged-branch accounting of
-> commit eca856950f7c ("ipv4: account for fraggap on the paged
-> allocation path") relies on datalen accounting for fraggap, which
-> stops being true exactly when datalen is capped.
-> =
-
-> Fix the root cause by reserving exthdrlen as headroom, like IPv6 has
-> done since commit 1f85851e17b6 ("ipv6: fix incorrent ipv6 ipsec
-> packet fragment") in 2012:
-> =
-
-> 	skb_reserve(skb, hh_len + exthdrlen);
-> 	data =3D skb_put(skb, fraglen - pagedlen);
-> 	skb_reset_network_header(skb);
-> =
-
-> With this, every fragment skb satisfies skb->len <=3D maxfraglen, so
-> fraggap <=3D mtu - maxfraglen <=3D 7 (the alignment slop the relay was
-> designed for) and the copy destination is provably in bounds.
-> =
-
-> Allocation sizes, tail positions, tailroom and truesize are unchanged
-> (alloc_extra already carries exthdrlen), and when dst.header_len =3D=3D=
- 0
-> this is a literal no-op.
-> =
-
-> Fixes: 353e5c9abd90 ("ipv4: Fix IPsec slowpath fragmentation problem")
-> Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Anakin Zhang <tencentos_secure@tencent.com>
-
-LGTM on the general approach:
-
-The XFRM inserted headers must only be inserted once on the first
-fragment.
-
-The same approach is already taken in IPv6. Though there the variable
-is dst_exthdrlen, not to be confused with exthdrlen.
-
-My main concern is that this code is notoriously fragile, with the
-same variables used in different calculations / overlapping uses.
-
-Writing past skb head is obviously bad. Ideally we could catch that
-with a patch that is trivially reviewable for stable. Not sure that
-exists. But I'm a little hesitant to send to stable something hard
-to establish the correctness of.
-
-I can definitely stare at it for longer to increase confidence.
-Also Cc:ing the IPSec maintainer for an extra set of expert eyes.
-
-> ---
->  net/ipv4/ip_output.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> =
-
-> diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-> index eaa6fab..b84d56c 100644
-> --- a/net/ipv4/ip_output.c
-> +++ b/net/ipv4/ip_output.c
-> @@ -1150,16 +1150,16 @@ alloc_new_skb:
->  			 */
->  			skb->ip_summed =3D csummode;
->  			skb->csum =3D 0;
-> -			skb_reserve(skb, hh_len);
-> +			skb_reserve(skb, hh_len + exthdrlen);
->  =
-
->  			/*
->  			 *	Find where to start putting bytes.
->  			 */
-> -			data =3D skb_put(skb, fraglen + exthdrlen - pagedlen);
-> -			skb_set_network_header(skb, exthdrlen);
-> +			data =3D skb_put(skb, fraglen - pagedlen);
-> +			skb_reset_network_header(skb);
->  			skb->transport_header =3D (skb->network_header +
->  						 fragheaderlen);
-> -			data +=3D fragheaderlen + exthdrlen;
-> +			data +=3D fragheaderlen;
->  =
-
->  			if (fraggap) {
->  				skb->csum =3D skb_copy_and_csum_bits(
-> -- =
-
-> 2.55.0
-> =
-
-
-
+Like Jakub points out, this equally could affect tls offload. We need to
+be careful with any features that can result in device-decrypted data
+being sent back onto the network. Another gap that exists currently is
+xdp tx or redirect. That would also affect both PSP and TLS offload. I
+think we should try and make these features work with crypto offload,
+rather than building up more and more defensive checks.
