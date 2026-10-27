@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793067973;
-	b=wHoERo90KPbdOuA4Zyr8Ssc2WwnQg8XSEPkQ5FK+Z0b/O5v1pcdEuhb7mLy4G/ybvg2G
-	 eA+I0qlY+527KG2/9f9YTt6sN3j31v4ZGrfYliUiTd45lGvDH5Wwu/cCXmQoGyqtSC/4X
-	 OIXUkuWZMcfrmTMvf9Idn1iCk1lB1na1HqYVuwWnoT4Qfm70qm+BpT4ZH0Oou8rWrv7Gg
-	 1qELDUuDlxfvimo6eh+fIxEfsLPXkoVBY7e8B3gzEjYHQkkY4hBOAQOSAPqN4aVlPugrq
-	 tWJ9e44PQZBSOjF4WzUvqUqIaH9JreBO+DMMIJ/u9NhKNmhOKT+hZXOtU4qLMC1C3dw==
+	t=1793067981;
+	b=o5P/SQVLfSa1HwdXxVSCHSYZ2j6MnhLVd8UyGDvQNf8ol5wAyvBndwAdxpfrAbADii6R
+	 VdbjNB1hsLE8G6sL3wz+FPFdp3RQg1bMtXA2g2uO55xhPYnXoAphUAEs2ke4zfMXmIyoy
+	 9FZ00Jqu+azF3BRbxClYROXdSiVwF96ZXH2zv6iLB2I5/U7VTunU5bv72DL+5Inp0fdDW
+	 IHFYPu9M9Tkm9TvgVWeNV0GMVRR7BKWp2IPKhMe6O4gNqpShw58JZGvrrXfrqqpMX+vkc
+	 W8SYEOU6mw3gf2PVANLeUVjMmd7jgl+nU3inj+RGUwoWTM7hzc2ngGO+Xi+FtSYDZzQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793067973;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793067981;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=+fhQ87zw1kfozXsBG6wYTMDs1/rHV55pF74dX6fAbLw=;
-	b=wcJPKjgHJOUKqs0noNWbLWonDIz0xNtDIxQC7DvxhBGc9KT66tFcHHyvQ/1V45kaA47o
-	 mRWk4+CDIwQJZLICtKlLUyFsElyyY3N56kwm2slOUIGOpgtKmjWkQt80artyp2KRRqveT
-	 ei5fQuCblnGV8YZqg6Jv/RuneHUdEJ6akliJenYaYy9QGKETP8DbHnbeY3NQkBhzNpAcM
-	 vcGIoNZIeykk/vubRNiFvIBD9gRdHint8m2B1PlFMta+hPMuptIyoXTdBHmpZmz8FEIxa
-	 H+b/J72z7XtbQmLpji4elK2W9QrP2+apZIfZgIjwEW99rD7B+AKCOsRwcJr3qWU/rAg==
+	bh=WbuCZPg7LYGXmJwGaFCk6Kk9Ioa72ZlJTCfm3Uszomc=;
+	b=pjfcOOHK5YWWXCcu58WEGozJfGRBpcdOSmunurPAu+2EzYbsvYOiwe4G38JCPf1XWElD
+	 IC4a4ahAl56DW6r3H8HdZLw6dLeypscjzvzG9bT4ceRnIDPnWrKqiwV0puK1b67NYWO6C
+	 cyAOypN04mGSJy+etO/Ng/vv0R+kTtPVYnxah52CH85yoE9fY8vjvr7FGVjbk5E7KN2Nj
+	 sQWT+eqbmvaiaGxBSRhc9rhanopkovINio6SqkyIjIQoBV+OAHg10PNxPS1VbwTez8Arq
+	 dqjix4bEG1Ly7mXStCSd0nQ7r8kEZ2nJgYbBMh6hrDfS0TvYtoeFQizQZp7BevAYQag==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RECmm0Bf;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OWhA5QWp;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10DB606A33F;
-	Tue, 27 Oct 2026 02:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67EDF606A326;
+	Tue, 27 Oct 2026 02:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RECmm0Bf
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 661B11F01828;
-	Tue, 27 Oct 2026 02:26:12 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OWhA5QWp
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC2511F031E4;
+	Tue, 27 Oct 2026 02:26:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793067972;
-	bh=+fhQ87zw1kfozXsBG6wYTMDs1/rHV55pF74dX6fAbLw=;
+	s=k20260515; t=1793067971;
+	bh=WbuCZPg7LYGXmJwGaFCk6Kk9Ioa72ZlJTCfm3Uszomc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RECmm0BfvtLsnubDzRMS2u/UQdIeTgeBTuxaap6qQ5q+9vbeEn2nT7LRTDOGZ9CRH
-	 1NluXLnFQCdTNKY7/978t2et4Uubr39cxdkt2lNcm3lQJi3wotbdfLqUGZlylyRURd
-	 83ku6NqjZZz30Z4iwnRcRl9DIgenb/fCoPsRBWBE+s0/N25p1CuvsEyGChKgCF/fIy
-	 aq8G3uKiDPQsSKjJYsWwrOsKhBNVfqiz/gyJ77he/HEXJxdJSAPwO1MTAUS/HYSAv6
-	 +GR5HvS8K/UnNOEFeD6WRfEdgyytAUd13kjtM1wItzMeuIuVPZmo/fP3EoZTat/P1M
-	 IldTbBZuoEUIQ==
+	b=OWhA5QWp9ganmKoTTlmhmDblXUvTtXQR0HOCkUzoqo5afOZxcEw+fCnDQLY/cGd+T
+	 M1+b0kRakXkm2rT9P6EcYic9nKwxOLBRzISTYggR2VFe9BU1OQh60hOM9E18egwIfW
+	 OEivsebVI89xKlB4roxpwc9nwS6pW+0JLv2Y7AoXLQZWrjrRLPW1s2BDpO9CEz7/I9
+	 paP5w+azokBso+LyPLdZN4/TH/DkUDoMcanjiyClbT9HDv+NvrlnLNXINEACma7C1l
+	 6Q0kuGMYLX6hNOmg2km8KBnAnCWruUCLK2N98/f8k+SFUjOtqj5VkQLwH0esf9OnVH
+	 TIHa4yAlkBOag==
 From: Jakub Kicinski <kuba@kernel.org>
 To: robin.murphy@arm.com,
 	m.szyprowski@samsung.com
@@ -52,9 +52,9 @@ Cc: tglx@kernel.org,
 	iommu@lists.linux.dev,
 	netdev@vger.kernel.org,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [RFC 11/11] eth: mlx4: use dma_alloc_coherent_node()
-Date: Mon, 26 Oct 2026 19:25:28 -0700
-Message-ID: <20261027022528.633359-12-kuba@kernel.org>
+Subject: [RFC 08/11] eth: xgbe: use dma_alloc_coherent_node()
+Date: Mon, 26 Oct 2026 19:25:25 -0700
+Message-ID: <20261027022528.633359-9-kuba@kernel.org>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261027022528.633359-1-kuba@kernel.org>
 References: <20261027022528.633359-1-kuba@kernel.org>
@@ -69,163 +69,33 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-mlx4_en temporarily changes the node of the device around
-mlx4_alloc_hwq_res() to place the queue buffers on the queue's node.
-This is racy against other users of the device's node, e.g. mlx4_ib
-allocating its own buffers at the same time.
-
-Add a node argument to mlx4_alloc_hwq_res() and use
-dma_alloc_coherent_node() for the queue buffer. mlx4_buf_alloc()
-and the en_netdev page keep using the device's node.
-
-The comment about the MTT allocation was stale, the MTT ICM is not
-coherent and uses mlx4_dev->numa_node, which set_dev_node() did not
-affect.
-
-The doorbell record pages, which mlx4_db_alloc() allocates on demand
-and shares between all queues, now always come from the device's node.
-So far they ended up on the node of whichever queue happened to need
-a new page.
+Use dma_alloc_coherent_node() in xgbe_dma_alloc_node() to place
+the descriptor rings on the channel's node, instead of temporarily
+changing the node of the device.
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- include/linux/mlx4/device.h                    |  2 +-
- drivers/net/ethernet/mellanox/mlx4/alloc.c     | 12 ++++++------
- drivers/net/ethernet/mellanox/mlx4/en_cq.c     |  9 ++-------
- drivers/net/ethernet/mellanox/mlx4/en_netdev.c |  2 +-
- drivers/net/ethernet/mellanox/mlx4/en_rx.c     |  5 ++---
- drivers/net/ethernet/mellanox/mlx4/en_tx.c     |  5 ++---
- 6 files changed, 14 insertions(+), 21 deletions(-)
+ drivers/net/ethernet/amd/xgbe/xgbe-desc.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/include/linux/mlx4/device.h b/include/linux/mlx4/device.h
-index f016263e1fcf..0d34e0e18580 100644
---- a/include/linux/mlx4/device.h
-+++ b/include/linux/mlx4/device.h
-@@ -1139,7 +1139,7 @@ int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, unsigned int order);
- void mlx4_db_free(struct mlx4_dev *dev, struct mlx4_db *db);
- 
- int mlx4_alloc_hwq_res(struct mlx4_dev *dev, struct mlx4_hwq_resources *wqres,
--		       int size);
-+		       int size, int node);
- void mlx4_free_hwq_res(struct mlx4_dev *mdev, struct mlx4_hwq_resources *wqres,
- 		       int size);
- 
-diff --git a/drivers/net/ethernet/mellanox/mlx4/alloc.c b/drivers/net/ethernet/mellanox/mlx4/alloc.c
-index 7ed4452e20a9..0621347112df 100644
---- a/drivers/net/ethernet/mellanox/mlx4/alloc.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/alloc.c
-@@ -553,7 +553,7 @@ u32 mlx4_zone_free_entries_unique(struct mlx4_zone_allocator *zones, u32 obj, u3
- }
- 
- static int mlx4_buf_direct_alloc(struct mlx4_dev *dev, int size,
--				 struct mlx4_buf *buf)
-+				 struct mlx4_buf *buf, int node)
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-desc.c b/drivers/net/ethernet/amd/xgbe/xgbe-desc.c
+index 7c8a19988a52..369cd00fb426 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-desc.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-desc.c
+@@ -91,12 +91,8 @@ static void *xgbe_dma_alloc_node(struct device *dev, size_t size,
+ 				 dma_addr_t *dma, int node)
  {
- 	dma_addr_t t;
+ 	void *mem;
+-	int cur_node = dev_to_node(dev);
+-
+-	set_dev_node(dev, node);
+-	mem = dma_alloc_coherent(dev, size, dma, GFP_KERNEL);
+-	set_dev_node(dev, cur_node);
  
-@@ -561,8 +561,8 @@ static int mlx4_buf_direct_alloc(struct mlx4_dev *dev, int size,
- 	buf->npages       = 1;
- 	buf->page_shift   = get_order(size) + PAGE_SHIFT;
- 	buf->direct.buf   =
--		dma_alloc_coherent(&dev->persist->pdev->dev, size, &t,
--				   GFP_KERNEL);
-+		dma_alloc_coherent_node(&dev->persist->pdev->dev, size, &t,
-+					GFP_KERNEL, node);
- 	if (!buf->direct.buf)
- 		return -ENOMEM;
++	mem = dma_alloc_coherent_node(dev, size, dma, GFP_KERNEL, node);
+ 	if (!mem)
+ 		mem = dma_alloc_coherent(dev, size, dma, GFP_KERNEL);
  
-@@ -585,7 +585,7 @@ int mlx4_buf_alloc(struct mlx4_dev *dev, int size, int max_direct,
- 		   struct mlx4_buf *buf)
- {
- 	if (size <= max_direct) {
--		return mlx4_buf_direct_alloc(dev, size, buf);
-+		return mlx4_buf_direct_alloc(dev, size, buf, dev->numa_node);
- 	} else {
- 		dma_addr_t t;
- 		int i;
-@@ -749,7 +749,7 @@ void mlx4_db_free(struct mlx4_dev *dev, struct mlx4_db *db)
- EXPORT_SYMBOL_GPL(mlx4_db_free);
- 
- int mlx4_alloc_hwq_res(struct mlx4_dev *dev, struct mlx4_hwq_resources *wqres,
--		       int size)
-+		       int size, int node)
- {
- 	int err;
- 
-@@ -759,7 +759,7 @@ int mlx4_alloc_hwq_res(struct mlx4_dev *dev, struct mlx4_hwq_resources *wqres,
- 
- 	*wqres->db.db = 0;
- 
--	err = mlx4_buf_direct_alloc(dev, size, &wqres->buf);
-+	err = mlx4_buf_direct_alloc(dev, size, &wqres->buf, node);
- 	if (err)
- 		goto err_db;
- 
-diff --git a/drivers/net/ethernet/mellanox/mlx4/en_cq.c b/drivers/net/ethernet/mellanox/mlx4/en_cq.c
-index 0e92956e84cf..6c47509422f6 100644
---- a/drivers/net/ethernet/mellanox/mlx4/en_cq.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/en_cq.c
-@@ -65,13 +65,8 @@ int mlx4_en_create_cq(struct mlx4_en_priv *priv,
- 	cq->type = mode;
- 	cq->vector = mdev->dev->caps.num_comp_vectors;
- 
--	/* Allocate HW buffers on provided NUMA node.
--	 * dev->numa_node is used in mtt range allocation flow.
--	 */
--	set_dev_node(&mdev->dev->persist->pdev->dev, node);
--	err = mlx4_alloc_hwq_res(mdev->dev, &cq->wqres,
--				cq->buf_size);
--	set_dev_node(&mdev->dev->persist->pdev->dev, mdev->dev->numa_node);
-+	/* Allocate HW buffers on provided NUMA node */
-+	err = mlx4_alloc_hwq_res(mdev->dev, &cq->wqres, cq->buf_size, node);
- 	if (err)
- 		goto err_cq;
- 
-diff --git a/drivers/net/ethernet/mellanox/mlx4/en_netdev.c b/drivers/net/ethernet/mellanox/mlx4/en_netdev.c
-index 071564c54522..68f1eb57c32a 100644
---- a/drivers/net/ethernet/mellanox/mlx4/en_netdev.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/en_netdev.c
-@@ -3299,7 +3299,7 @@ int mlx4_en_init_netdev(struct mlx4_en_dev *mdev, int port,
- 
- 	/* Allocate page for receive rings */
- 	err = mlx4_alloc_hwq_res(mdev->dev, &priv->res,
--				MLX4_EN_PAGE_SIZE);
-+				 MLX4_EN_PAGE_SIZE, mdev->dev->numa_node);
- 	if (err) {
- 		en_err(priv, "Failed to allocate page for rx qps\n");
- 		goto out;
-diff --git a/drivers/net/ethernet/mellanox/mlx4/en_rx.c b/drivers/net/ethernet/mellanox/mlx4/en_rx.c
-index fe18606c2ab5..e2d97ecbafd2 100644
---- a/drivers/net/ethernet/mellanox/mlx4/en_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/en_rx.c
-@@ -292,9 +292,8 @@ int mlx4_en_create_rx_ring(struct mlx4_en_priv *priv,
- 		 ring->rx_info, tmp);
- 
- 	/* Allocate HW buffers on provided NUMA node */
--	set_dev_node(&mdev->dev->persist->pdev->dev, node);
--	err = mlx4_alloc_hwq_res(mdev->dev, &ring->wqres, ring->buf_size);
--	set_dev_node(&mdev->dev->persist->pdev->dev, mdev->dev->numa_node);
-+	err = mlx4_alloc_hwq_res(mdev->dev, &ring->wqres, ring->buf_size,
-+				 node);
- 	if (err)
- 		goto err_info;
- 
-diff --git a/drivers/net/ethernet/mellanox/mlx4/en_tx.c b/drivers/net/ethernet/mellanox/mlx4/en_tx.c
-index c5d564e5a581..9865ccd8d6e9 100644
---- a/drivers/net/ethernet/mellanox/mlx4/en_tx.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/en_tx.c
-@@ -91,9 +91,8 @@ int mlx4_en_create_tx_ring(struct mlx4_en_priv *priv,
- 	ring->buf_size = ALIGN(size * ring->sp_stride, MLX4_EN_PAGE_SIZE);
- 
- 	/* Allocate HW buffers on provided NUMA node */
--	set_dev_node(&mdev->dev->persist->pdev->dev, node);
--	err = mlx4_alloc_hwq_res(mdev->dev, &ring->sp_wqres, ring->buf_size);
--	set_dev_node(&mdev->dev->persist->pdev->dev, mdev->dev->numa_node);
-+	err = mlx4_alloc_hwq_res(mdev->dev, &ring->sp_wqres, ring->buf_size,
-+				 node);
- 	if (err) {
- 		en_err(priv, "Failed allocating hwq resources\n");
- 		goto err_bounce;
 -- 
 2.56.0
 
