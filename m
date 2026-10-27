@@ -1,84 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=13.77.154.182
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793119573;
-	b=rq8y11oztTOQovcTyRYxalDzMK9JYIxVgzMaQ3966unryVCu9rMtDlJdAuxHPDjuKh/u
-	 1T24qCn2xmpyhXrak/40OYF/myD7Ba7cdIMFyBeGA6iMRWn2x6EE4JB0WBS3ZIDHdLw/V
-	 g4hzvBDwapP7vBUvmm6wpS646/kzajAFAHG5dOlyEnF7SpDyj+R500/9rsw+Kn2VtKkEy
-	 Q2+fhQpUSGnszMFdqQ4OaA3x5JUVV8I3jI/stVpX8CG7TGkwDrEvLbhl9OdZ9ExZSMxfG
-	 wZWxV0TTisP9NB4LyIXyvXqPWe2ko9nMAiWgSRpjOiNO5xkMk8o5QLv1OeXpsvIc4Nw==
+	t=1793119663;
+	b=yGS2pbZ/cLf6LbYcPE972jZIovw2Kg5J6pgWeyrKXV/CUjSUEV0dmGukKjvB7R3pFrvT
+	 W9DdhY3GRnmCI445fe6y2vVuUeNmt3ScQjBv9R7bPAme7D3CVm+iUD2Cn8og2JhwUe52Z
+	 8ivqSoz7LIcAObkHlzvZj/K+yJYi6iCbCpk0lFX4ivTvJKCzfPEygur5ewLcYW7zqofuX
+	 3EUoEA7D3FOSW5ciLUMmLKb+mm6pH1R7LuXvUSZ0Mtq6MMif2DZo3n4Ej/tH120qlDIBT
+	 ukexsKgs/mIMRnCz7xxJGE65T1nzxgKXD2bmT0pn5rU2k77sb18xGDWyZLaR/r3dd7w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793119573;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
-	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
-	bh=ULD6mg2UF3aqGiRVnTtgMfjAq+CS0Bj3WcB7vl1Q6SE=;
-	b=0hiVRlltxwo9sVeoKusAS+A/Y1kp20TEBD24Pf0LDW6y6tueSyvhfnxozl+pZOJHpgYj
-	 4pFRhxWJs9bCTdK0kSADpCCFUXqWtQgbf034K5GCuU6kuK1gJh3aKXwyAG0bvOk4azkZA
-	 ao3TbHN4UMDZdDgVM37aSoRxA7RW5WKzr/AGx8uLUgluRDiuzXj6nmQq8xEX7gLbSm3Wf
-	 O+s6grsYSTjUlHIh5DJJ/abIHoI7yJhZy05cXtpfm/oBzHqEyDtd8uEYukUX+AHH1d6bJ
-	 uOZnLSBT8nQzfEfJK4MzYD4DBKSivLNhYFWORmnq8Dr/Tvaf0WF4pgCsO7S0/MU6JpA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793119663;
+	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=m/2Ts66a5u4FX+7zqnc7Voow1WkE+bXtztEL+Nbsbm8=;
+	b=L+wtcsrws4niz4LVKsQhK+mG7/XrZrVeHrutW448ysdHQDzsVucbOogo0UKw3IccaGdm
+	 VsHdb3j/a7ZRe2mYKwUq+uic16wMCeu1JO/7qVEZFyGMk0hhupP+7BrQBZruNKUb3S3fK
+	 UTwFULBrXtrKTCQgaA8B3+Zg6XERqK938lJocmZXwsS1lOSZYlrR8rwT7IRMDp+3CthlC
+	 svKhQrOaW6pgCYVbrIlVOUgiQX6DUGxokRcaKJXb/4hdMexFv+OS9BWOu1vpsZnpiKsH1
+	 lzFT+DLnI7PdMprXM0lgSJTKhQXLF6otGy+ChAH7xDuSRS/1qayxGZVRJKparwBIzAg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=d6c5qIvw;
-	arc=none smtp.remote-ip=209.85.215.179
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDE1606A339
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 16:46:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DCDE1606A339
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	dmarc=pass header.from=linux.microsoft.com;
+	spf=pass smtp.mailfrom=linux.microsoft.com;
+	dkim=pass header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=Gi4tZAQv;
+	arc=none smtp.remote-ip=13.77.154.182
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5CC8606A31A;
+	Tue, 27 Oct 2026 16:47:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D5CC8606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=d6c5qIvw
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-cd67cc518a6so99280a12.1
-        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 09:46:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793119572; x=1793724372; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=ULD6mg2UF3aqGiRVnTtgMfjAq+CS0Bj3WcB7vl1Q6SE=;
-        b=d6c5qIvwE3V/cG0JsfhmIWnhvHTGilA3d6rRGHpFtN2pDCjgYwTtiF6MKaIQEa86tr
-         nlAW0FgkGspl4soDpJ1hdbeLXGpx2T+VHmKZgqr7ehw+5rifVKJVaTDzRwDk2tW8zU55
-         /5ZjyFjP39zS6iVMQ066uQFFdViUSG3Atmp7eC/wlaCgODLvZ8eVhWTruqEVEQkEbcT6
-         jNAJc1nNY8c9uNfaSWXKEoN8ADQ3dGReijp18oPUc9W1gDySmMXRLg/CsDpA/G0YkkbA
-         GS5NBxSc9KFxAV1CilPPCWWgGzJ00QhIm5vm7EKEAmyz9lu5NQv9Z8vvPz4OKx6jKPqJ
-         lGzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793119572; x=1793724372;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ULD6mg2UF3aqGiRVnTtgMfjAq+CS0Bj3WcB7vl1Q6SE=;
-        b=PxHVA7w8VOH6Hr6Dkjgp306mMhuUNyJhadCBav+RK+kk3uZvuiHMycKJHD1scxiziZ
-         +6uxrPVWpw5jvWwiVmGXgW1odlIWYoR55ScgEYyQjeiswdl+T1Pl91V7XsKMHStMb/hX
-         ZPtmiMQczDcHWzXGnoYHRP1n/In4Wv1jbk/jHxiOTGBCSyJfO0/PoZsi3YDUZxZ9Ko+t
-         XsjdtQxDEDVdtPYAJ7OlQ/+f+AdD39WXgHg+2tWZwKRVsl76cynHCS+eQYWhMzqbfBOk
-         r4+d1FoxdiN7w7oYLu4f49wZY4I8exv1wZ7xpBBaokLc7olY9hXRb0nuxbdW0b2ipceF
-         Fo1w==
-X-Forwarded-Encrypted: i=1; AKwUvBzMXhyDQ/nKCsfpDRIATvQk/Eh/e4eg4spZAyzJT0/yeS8q0xDG1uBtNR8lA3/o4FNKsnbkCbk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKWaMV+QUw07wDECbnBe0KOseMezFDKm8xAoIPLbtybn7FE6CaG
-	kXIQRA9Blc+UJ2QiyPPIgagKRiPYxKOSAq/+TxvShcS9ybxCbdUbmjmo
-X-Gm-Gg: AYBFou2e/z+B9pdymeIzPXhN/LpSOH2gEZ1E+ovhJn0X+ZnLbDiItF/q0GguKvZAPak
-	eCIphXo6xaqqK37a2U/N75PQylBiq1CYQpYQUlHjxWH/vPZa76bxhtAdNnDDGx6Yf78W1D53Leh
-	6UGtgiAET6oBIH508t8OEQ0UaCwGO1Xq+CQtoBqzjNK3qyV7OAUx3Dh/2OdBsMheJwky4DWtzw4
-	ZeYQFgBeUtyyZl9MVUq4T5+jYn6jlnYmiW3HzanbF1LDH8mqgl+qUaRER9bN1vlE3nbbfpDg0ap
-	L30MWt6n7sIPU7fEo2oXQ4Vv5c5x5Txly6V2+nZEyTLyR+h8xFb6Wc5RH+r0ECqZalZwjWH1CDo
-	Z41ijcvD0Et+NapHM62H/B01Zf9/v5VOR80pNlit9bKJ82biOxrLT2f/abxtXy6zdZXbc6ctKuq
-	7OfmIQcccHdYLahcKMLThxDRXBd+j71q49ymCtL69n/ibPWvjAkRpSzKsfVJmcwX1quipg+iM+x
-	brXWdtHaYGjtbvloiwZW3I9qUEt4cr65gtjbwwI0ld2gDq3W+JZSgsoPuK4UpwU+JZjP5HTBuS5
-	mCmvpHtajpSja3R+isMtBwgXUDEBD4VXamlTx27uU5FAZ1d6ElMvBW1diS+n
-X-Received: by 2002:a17:90b:3e4d:b0:3ac:403d:6232 with SMTP id 98e67ed59e1d1-3adeb120167mr9427553a91.55.1793119572168;
-        Tue, 27 Oct 2026 09:46:12 -0700 (PDT)
-Received: from localhost ([153.61.198.246])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae404274b2sm4410849a91.5.2026.10.27.09.46.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Oct 2026 09:46:11 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=Gi4tZAQv
+Received: by linux.microsoft.com (Postfix, from userid 1173)
+	id 973C320B7166; Tue, 27 Oct 2026 09:47:31 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 973C320B7166
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1793119651;
+	bh=m/2Ts66a5u4FX+7zqnc7Voow1WkE+bXtztEL+Nbsbm8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Gi4tZAQvosiqU8lFHJR/9opedZiDwPQe28RMz3rx/liA/YCiaJdgd0kVh3Pv+p8WX
+	 PTd+l1u/HCDo6xAXr6UwT4bEDij6MRkqJQ8Y6dvm/J4gtwZYy8NuRaDSkfCTVUkSNM
+	 0pX/psfTi+ox78h5+wEFBpWHZkPHrp6Uq9Lv3UHs=
+From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+To: haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	lkmlabelt@gmail.com,
+	parri.andrea@gmail.com,
+	linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Wei Liu <liuwe@microsoft.com>
+Subject: [PATCH net] hv_netvsc: Stop PPI parsing on invalid metadata
+Date: Tue, 27 Oct 2026 09:47:22 -0700
+Message-ID: <20261027164722.3393397-1-ernis@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.7
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -87,42 +67,58 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 27 Oct 2026 16:46:11 +0000
-Message-Id: <DMFRU74YCDSH.1WJJT7VL3MEYE@gmail.com>
-Cc: "John Fastabend" <john.fastabend@gmail.com>, "Jiayuan Chen"
- <jiayuan.chen@linux.dev>, "Network Development" <netdev@vger.kernel.org>,
- "bpf" <bpf@vger.kernel.org>
-Subject: Re: [PATCH bpf v2] bpf, sockmap: annotate the psock teardown data
- races
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: "Jakub Sitnicki" <jakub@cloudflare.com>, "phx" <phx0fer@gmail.com>
-X-Mailer: aerc 0.20.1-349-gb940a4174a3e-dirty
-References: <20261021155629.68813-1-phx0fer@gmail.com>
- <20261022054811.35008-1-phx0fer@gmail.com>
- <DMBHB0TQOV1L.38MECMYFGUS5B@gmail.com> <871p9g6ym1.fsf@cloudflare.com>
- <CAADnVQLTe611mm0iJEf5gJi2GtW42kxNHH3sUPevD039FvzL7g@mail.gmail.com>
- <87v76o63qv.fsf@cloudflare.com>
- <CAKvCo-zf6=ABrMEn_8r7rJFFvaaXQrz8GAUQ9Uz4h0Ze9gY68w@mail.gmail.com>
- <87pkwv5cj8.fsf@cloudflare.com>
-In-Reply-To: <87pkwv5cj8.fsf@cloudflare.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue Oct 27, 2026 at 4:33 PM UTC, Jakub Sitnicki wrote:
-> On Tue, Oct 27, 2026 at 01:10 PM +08, phx wrote:
->> Sorry for the long silence =E2=80=94 my laptop died right after v2 and t=
-ook the
->> local mail and the working tree with it. Agreed that the ordering fix is
->> the right one; please go ahead with the commandeer, Jakub.
->>
->> I do still have the reproducer (a KCSAN selftest for this race, verified
->> in QEMU). Say the word and I will post it, or send it to you to fold int=
-o
->> your respin.
->
-> Feel free to iterate on the patch once you get your dev env restored.
+rndis_get_ppi() uses continue when a per-packet information entry has an
+invalid size or offset, or cannot hold the requested metadata. However,
+the remaining length and entry pointer are only updated at the bottom
+of the loop. Each error path therefore retries the same invalid entry
+indefinitely, repeatedly logging the error and preventing receive
+processing from completing.
 
-I very much prefer if you Jakub will take it over.
-'phx' is a clueless bot that sends spam across all subsystem.
+Return NULL on these validation failures instead of continuing. This
+terminates the lookup when malformed metadata is encountered while
+preserving the existing behavior for valid entries.
+
+Fixes: 44144185951a ("hv_netvsc: Add validation for untrusted Hyper-V values")
+Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+Reviewed-by: Wei Liu <liuwe@microsoft.com>
+---
+ drivers/net/hyperv/rndis_filter.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/hyperv/rndis_filter.c b/drivers/net/hyperv/rndis_filter.c
+index 9b6c44979b4e..2c30abf9faf8 100644
+--- a/drivers/net/hyperv/rndis_filter.c
++++ b/drivers/net/hyperv/rndis_filter.c
+@@ -401,12 +401,12 @@ static inline void *rndis_get_ppi(struct net_device *ndev,
+ 		/* Validate ppi_offset and ppi_size */
+ 		if (ppi->size > len) {
+ 			netdev_err(ndev, "Invalid ppi size: %u\n", ppi->size);
+-			continue;
++			return NULL;
+ 		}
+ 
+ 		if (ppi->ppi_offset >= ppi->size) {
+ 			netdev_err(ndev, "Invalid ppi_offset: %u\n", ppi->ppi_offset);
+-			continue;
++			return NULL;
+ 		}
+ 
+ 		if (ppi->type == type && ppi->internal == internal) {
+@@ -414,7 +414,7 @@ static inline void *rndis_get_ppi(struct net_device *ndev,
+ 			if (ppi->size - ppi->ppi_offset < ppi_size) {
+ 				netdev_err(ndev, "Invalid ppi: size %u ppi_offset %u\n",
+ 					   ppi->size, ppi->ppi_offset);
+-				continue;
++				return NULL;
+ 			}
+ 			return (void *)((ulong)ppi + ppi->ppi_offset);
+ 		}
+
+base-commit: f71ff7d406523748bfb8236830c7eaa6a308aaa1
+-- 
+2.34.1
 
