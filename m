@@ -1,100 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.180
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793140676;
-	b=UqQ0K4KxUQo4FqCpKb7DZEFyYbXjrQakEIjvHVTS+RHb0xAGLnmYZgGEG7+ZsK+IlC5z
-	 WPade5BNZ3C+5pxh6oTdYWe/ejtP+TAGqFmS/te5x/f2uKa8vNISQo8iLBstT7v10Yb0D
-	 dsU3FtV+ZieNbh51TheAVdEjvADH/ejrKXgxrx2oQKbdgSFK6xdf7eE+QDRUutvCY4FC/
-	 4AjJ//cP2Xak9//h0kkt3d/O06GPKw6g5y028Tlb+IxxfC/AK7rXgpyHxk/r48tHevRzU
-	 14qjQjNrnwuTMmaNVSnE/t9ly0DWdJ6N+ARYEV9fnEo98aiE8iGi8M4XKpLZ8+WXKow==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793140676;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=t5xhlGartaiIZUAGJb1P17Ap9eQ10+LChVLHP/V0nA0=;
-	b=q69fYIOsv7ZwbvCOmZl2AZUu/MlHp6sw8vPRxOQoWL6c+7H9PlEAKbxS2tklvNrOAcM5
-	 6dhi//x8prcGYaPsHQN46hxcsHyeCOiH1ar956ZJVA7/e+Dmna8ZaNRw4aCTm3csJ5Fdh
-	 qXWnY7x1dWjdcmBY/c7r6P0rNasDK9zCw+PyHWKcsOiQuyNq7kisnpBeWuQhTvPpaW2GX
-	 bv0pxREqttTkeYtLVS4qYbaJGupRx7xwXuzV0KM6CWc8kcx438tzCF0KAyUSajcBm0uDN
-	 D8sZ1/SJ+zbRl+Rflw5tHx0hnay8DWgGPeESI2QW+RZcgadi4c8qgxZMqiv7jCtO3NQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=paul-moore.com;
-	spf=pass smtp.mailfrom=paul-moore.com;
-	dkim=pass header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=CmmfcGZ7;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.180
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793140825;
+	b=m01OdbqF34fJCQ/0NFPIGYLsGudKOgpZH/EUUreLRahT8NHrwC8VDwvMvoZloltp7dVR
+	 DGPf4Vh7WEgrT3H0fgRnnTWipnzZboD/bvX7PSySY/HsRQxlTPaTwo/sYlWSthsvMREky
+	 C/7N07wyZAL6YMPq4ftjxHp7UGJRIvwsdg/KZ/3Jqj8exHtwIdk+QgJuMap0fWdfOtIm/
+	 uuuk179eZkLjhiICIEybVxEKitfvypQ6WUFjBYGWMKEQaXq8edmLx3Mstsco4Q53l2LeM
+	 7LJf2lrhheMC+gule9qvBnocPESn02spwiKLfIs5M567R4V8xvLVlr3QV6rQUqMA/wQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793140825;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=QIfX8wI4BaY3EOa8JEO41r1+x9SiDeIv5YiniQCAADQ=;
+	b=MSEjHLksn1iEXIXyRTDNLkTlzZBV1IlhalPfTxn4N0ZbRGBpB0F/yTuuK0TTYg/bff/F
+	 x/oHooHht99R2mnGVpkO72RrCkryn00I05zcKV2QJZFtFEObcaP0Y34mKga6h1cSPDN9R
+	 pBfaR+a6i7/haCWNVAPEK/edOJKeqdHJpsLr2HuYXKCtT1SiPW6uisxUpmBNA7aWEPFD2
+	 87AlykkwuU79o/wKm7MVeUDxTJ76IMt2RgSfezocGigjwueby5kHYkMvLMN227c6N44rz
+	 IbEOVEY5KcBsMoehW68ZWw04Z/dovjmuhqOXJdw15dRQaDcKxKaZdGXrP1xv/3oHXAA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ff9X5lc1;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DD5606A31A
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 22:37:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 33DD5606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BEF8606A323
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 22:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=CmmfcGZ7
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8a05effaf8dso252795b3a.2
-        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 15:37:55 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793140675; cv=none;
-        d=google.com; s=arc-20260327;
-        b=H6SOwUwO01JF4aUiBRh1im6o6YrP96nspp6Ep1vf6WGIQl0Z8L3aTyQSA/jzUVlSX6
-         mGT4V3sO9AniAnKaeSDLkO321HnxixE/fZh6dosOIhTf0AV9pLFcLBxMlOrcSn8gaXx3
-         Dpkh1QS0E3uQZaNuju0HwyJylwjcJ+j0qC9j3/V/BYMbKQZVFExH/19bLhJkRd06UYDY
-         oqfOwmDizYY5XFXHP6J87l318ccq0DOpiYP0YuOSYe6RYuk5EMUgtU3EPy5HJVdBn+NM
-         gN2WJxnCUjk5I5vyZPrG6zuMErzB7+SpxD0Scot1Ub3mN2QsOxSDpBKRxvaLPjlFwDbM
-         oSvg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=t5xhlGartaiIZUAGJb1P17Ap9eQ10+LChVLHP/V0nA0=;
-        fh=0TR+H1alsQl75RpqWIttTdeovOcsr3q4olwEAbTrEzA=;
-        b=KKrdYsGvuoL9F0m6VNmtYQzqxEWaFv0yPkW01vdPRUns7e/CaDr3CoyfbqMNw/r4IM
-         H7gw1KbIRkA1dc8cyF7nPNLs5JaSvqT8741IzEhndZR+7DozXZ71FeEVCZdTnaO4agC2
-         PCIsi5L4I8VbD6gOc/81cEQDS3q7vbFmzX+nbFqcn9lsEPA3VV2sylgWi9O75N5+MqpN
-         wqXEPVU9eagRPGCyrnsCAwSr0he+3xyK3CRV8XZPpkG5ZRPUBzr68i0f5cFXI1q7fEuy
-         xKxKVQEkr+nz/TIYaDwDxS2cF4gtSwyIZ8bU7w3tYBVUjt1Mt/8wUV2RMOaFLIND8VJh
-         QAog==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1793140675; x=1793745475; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=t5xhlGartaiIZUAGJb1P17Ap9eQ10+LChVLHP/V0nA0=;
-        b=CmmfcGZ7nENUuOJDqfOA+U+yawbLWPNguEYYehiaT86nUJPExK4LIUr0b+k1BDuc26
-         I6hx3Xfzp7YLAMCi0JlAztaJL1LJ07peoMRn4mvEVYQV9ao935CKi7xkqxxr8DV6Yock
-         rxkAlWa6dKfZUDSA/ldivMN/wB1R2F6oZJ/Z+KQbMx5hox/gtEbE+yCicUOTZpRrKE4P
-         T+53go7ZXNYLqMuC/UuR39tYwAuemgUaV9GLdZTVfA4cl0AKkhPeDhUFFxNVxK9mTwol
-         FatP7g9VML/VQBnIOClMGPtwnF6f1eMMmXa3sADMNe6RaLLPzr5XUkxKolK7HPzqhrTk
-         WZQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793140675; x=1793745475;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=t5xhlGartaiIZUAGJb1P17Ap9eQ10+LChVLHP/V0nA0=;
-        b=r9tz5jSRCCo9mKozN33Ti8LglPV3fGqkfqHOiIArMLU1/Z7zWMekXGPt79PXkMM0Jc
-         AJ+5IPwd7TlryZMEIE0oQEcNfyGjPJ3KcZK9lAm2o2ePW0RLThGgDaosoOMW3IlbJq5a
-         xaqg+Y73d1+/Zto+m+N7iSLtgDLaBUl6blUTZbme+rzMe+mSUZGRyTF+ocYApCygFrww
-         N1S8qEg2tH3w91TA34TiSBk+rjibWUNVGdXs50WKnAeTvvGyLsNk7ITNMiJcHf/pV61t
-         iPzkYYg2QJgwTdz4oxMcV1ZIgigIE1o3nzD2bixan13iYoJJMQJqAxF5JVfkTNx7nlfD
-         08lg==
-X-Forwarded-Encrypted: i=1; AKwUvBxBCAt0CseRUVvPMcM/4VI7SZN9NVixegfqgsvGDlowHz80X3a3TU4+xnaWeOul718qpAH4Hj4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJmJSewBkTnku7dmDdDJrjqmowsMZ5wn0gQiDiQbnz94+tTeAEP
-	XZ+Nla0cVU2kqbOteTMbuX3vlgjBuePcalcrQX/ymVTrFWTBKamOZxu2V8VOfD/X3dFAjUYcSFX
-	HEf2VpwNur6/ncQ1Ot5gmSZqkX7Cgzl39IGX6VRE7
-X-Gm-Gg: AYBFou06EAh1bvHv3ZA7sdAhsu+rpX78rri/JCDYA4zDndclOeeWNoHR6vC73J3fMN6
-	K5gtjCLuMaL3XIuEEO1aKuMh4cXvRie3Kr4eiJWBpaKvCc/MAYR4YOb2gjcortLAhtbpI+aWoBg
-	OiblNVWKclGft/NTdA+LLZXarX3RvWA3EtvNOOpVux0xgalQ3su0EPv1MCeXEhUiaObfKtZHWk8
-	kBcuG+jKkMjsguncuSYuK4Udkd2KkKW7JDDkh4WM/vKcMkSqDPnLKVboruG6nisRq9ydJrOmAnF
-	hn6zGjrk4jXHw1eNwj1HJSla6jDq/ljjKeC6MRmYZ3LmbxIwCBfhPBlDbpLnbD9ChdObEEtVRbz
-	XfFVCDfrpGlh+ULGKTuHfUSQ3fgfPIM1TAcEU/YR9OncuagSY5ksomJZ6O3524Q1oLW2m
-X-Received: by 2002:a05:6a00:909d:b0:8a0:3ed7:93a1 with SMTP id
- d2e1a72fcca58-8a6e7ccf00cmr440746b3a.50.1793140675521; Tue, 27 Oct 2026
- 15:37:55 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ff9X5lc1
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 139E81F01825;
+	Tue, 27 Oct 2026 22:40:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793140825;
+	bh=QIfX8wI4BaY3EOa8JEO41r1+x9SiDeIv5YiniQCAADQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=Ff9X5lc1sIcNRLzA2w4HWHYo9RX+YY8QJwVULfxSUK5J+2XH5XsM7nDem/fTIy037
+	 LyrUvh8buByQYJcmnkUGiW9fAsgp20mZgMRnTqRn9FIJDfvjhkLcELjH+o0zzCMK/2
+	 XqecQRb87E+WuzUGnPM844ScquIchABitTIRwsnmz2LW4OAoKn5qL8Nh7QRBy4qxDm
+	 6ZkZSWRnxDQIT4HhK0Zs35lth84Kf6tUAAskHlS4VPA2lAQCzJQ9n4rqlPIc8svTXQ
+	 5Zjn//2nxSFMeLP+aBAC+Tanotc6HpRMg6WN/dIeiDKfKnn9598enMjXY0UFyMiq+S
+	 wYT/3acKt7U+A==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 0738D3AA940B;
+	Tue, 27 Oct 2026 22:40:25 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,144 +53,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261026-work-security-namespace_free-v1-0-ffa3ebbf71bd@kernel.org>
- <CAHC9VhR4rMydWiD-RFv-ABiYSG_txJuyrtdaowEXPY=CHEvFXA@mail.gmail.com> <20261027-heckklappe-halbmarathon-vorsorgen-849ffdc42aac@brauner>
-In-Reply-To: <20261027-heckklappe-halbmarathon-vorsorgen-849ffdc42aac@brauner>
-From: Paul Moore <paul@paul-moore.com>
-Date: Tue, 27 Oct 2026 18:37:43 -0400
-X-Gm-Features: AclHuK_35bukQeeBWCt3UKqoCps6Vj2Zz_3Ju5zoX-GW6fl3dw3mrid-lC1zJpA
-Message-ID: <CAHC9VhSJMPOY4X78ENEkAiNeVTCpvP76PgVDqTQfwaYfwnYwAQ@mail.gmail.com>
-Subject: Re: [PATCH 0/8] ns: fixes for the namespace LSM hooks
-To: Christian Brauner <brauner@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-fsdevel@vger.kernel.org, 
-	bpf@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	=?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
-	=?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, 
-	KP Singh <kpsingh@kernel.org>, Matt Bobrowski <matt@bobrowski.net>, netdev@vger.kernel.org, 
-	stable@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net-sysfs: reject a one-entry RPS flow table
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179314082346.370091.18360710136387266095.git-patchwork-notify@kernel.org>
+Date: Tue, 27 Oct 2026 22:40:23 +0000
+References: <20261021155522.67521-1-phx0fer@gmail.com>
+In-Reply-To: <20261021155522.67521-1-phx0fer@gmail.com>
+To: phx <phx0fer@gmail.com>
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, netdev@vger.kernel.org
 
-On Tue, Oct 27, 2026 at 5:24=E2=80=AFAM Christian Brauner <brauner@kernel.o=
-rg> wrote:
-> On Mon, Oct 26, 2026 at 04:31:25PM -0400, Paul Moore wrote:
-> > From what I'm reading the LSM framework patches don't meet the typical
-> > LSM criteria for stable/RC fixes: there is no serious bug/panic, and
-> > there is no functional regression from a previous release.
-> > This looks like one of those unfortunate circumstances where a new use
-> > case wasn't tested thoroughly enough before the merge window, so it
-> > can wait for the next one.
->
-> My original patchset had a selftest that excercised the BPF LSM usability
-> extensively. The hooks are new this cycle and broken for the main use-cas=
-e I
-> wrote the patchset for.
+Hello:
 
-The hooks were merged into the LSM tree on August 31st, and due to
-timing I'm guessing they appeared in linux-next the next day,
-September 1st.  Considering the merge window opened on October
-18th/19th, that's conservatively a month and a half during which
-testing could have uncovered this issue and the behavior of the hook
-could have been changed to accommodate your use-case.  I know the
-Landlock folks were testing the hooks for their usage, but I've gone
-back through my inbox and I don't see any reports of BPF LSM failures
-using these new hooks in v7.4 until you posted this patchset during
-the merge window.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-> Curiously, your pull request told Linus "I expect that BPF LSM developers=
- will
-> also be making use of the namespace hooks, if they haven't already". So i=
-t
-> seems very strange to claim this as a new use-case.
+On Wed, 21 Oct 2026 23:55:22 +0800 you wrote:
+> store_rps_dev_flow_table_cnt() accepts rps_flow_cnt == 1.  For count == 1
+> the round-up loop leaves mask == 0, which is stored as log == 0 in the
+> tag (tag_ptr |= ilog2(mask) + 1).  get_rps_cpu() then calls
+> rfs_slot() -> hash_32(hash, rps_tag_to_log(tag_ptr)) with log == 0:
+> 
+>   include/linux/hash.h:68
+> 	return __hash_32(val) >> (32 - bits);   /* bits == 0 -> shift by 32 */
+> 
+> [...]
 
-The LSM namespace hooks are new to Linux v7.4, they did not exist in
-Linus' tree prior to this merge window which is why I consider both
-the BPF LSM and Landlock usage of these hooks to be "new".
+Here is the summary with links:
+  - [net] net-sysfs: reject a one-entry RPS flow table
+    https://git.kernel.org/netdev/net/c/24927bdf0f62
 
-> >From my perspective the timeline looks like this - I'm sure yours differ=
-s:
->
->   I wrote an implementation for the BPF LSM to use a set of new hooks in =
-a
->   subsystem I maintain months ago.
->
->   You rejected the hooks because BPF LSM programs cannot serve as justifi=
-cation
->   to introduce new hooks. Only in-tree LSM (selinux, apparmor, landlock, =
-etc) can.
->
->   I cannot fulfill this requirement because I neither have the expertise =
-nor
->   the use-case for any in-tree LSMs.
->
->   Landlock wants to make use of this by pure chance. So the maintainer of=
-fers
->   to take over the patchset. He does.
->
-> End result after more than two kernel releases: The patchset that ends up
-> merged into upstream doesn't work with the original motivating use-case b=
-ecause
-> all the BPF LSM bits got dropped. So far, no problem. That may happen as =
-long
-> as we can the fix it rapidly.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-As mentioned previously, I'm pretty consistent about what goes up to
-Linus once the merge window opens: there is the initial pull-request
-with the changes from the last development cycle and then after that
-I'm pretty strict about only serious bugs/panics and regressions.  In
-this case there is no existing LSM support for namespace controls in
-any of the tagged releases from Linus so there are no regressions, and
-by all accounts there are no panics related to these new hooks as-is.
 
-Holding this change for Linux v7.5 will give you and others a chance
-to fully test the new LSM hooks from a BPF LSM perspective, something
-that evidently didn't happen during the Linux v7.4 development cycle.
-Disabling the BPF LSM support for the new hooks in Linux v7.4 should
-be relatively easy, much simpler than this patchset, and eliminate any
-claimed harm.
-
-Also, as the ongoing friction between the LSM and BPF developers was
-brought up, I want to point out that SELinux support for the new LSM
-namespace hooks was delayed to Linux v7.5 due to issues uncovered with
-these new hooks during the Linux v7.4 development cycle (well before
-the merge window opened).
-
-> Then I take the time to send this series of fixes to actually restore the
-> original use-case so we don't release a kernel with a new api that doesn'=
-t work
-> for the main use-case I developed this for.
->
-> Once again, I get told no. This time because the functionality isn't brok=
-en the
-> right way to justify a merge-window follow-up. Instead, we'll release
-> half-working functionality.
-
-I told you "next merge window", which is far from "no".  Considering
-no one tested the BPF LSM support for these new hooks during the v7.4
-development cycle, that seems pretty reasonable to me.
-
-> I'm really on the fringes of this endless debacle but this seems to be an=
-other
-> iteration of "BPF people don't get along with LSM people" therefore they =
-make
-> each other's lifes and that of innocent bystanders that just want to get =
-work
-> done difficult.
-
-First, please read what I wrote above about SELinux being in a similar
-situation.  If a LSM which identified an issue with the hooks well
-before the merge window is being pushed to Linux v7.5, I'm not going
-to make an exception and rush a functional change for a LSM that
-didn't identify an issue until *after* the merge window opened when it
-could have been easily identified with testing during the Linux v7.4
-dev cycle.
-
-I'm not going to argue that there isn't ongoing friction between the
-BPF and LSM devs, and I'll admit to finding it odd that you seem to
-keep inserting yourself into that friction point, but my approach here
-is the same as what I would have taken with any other LSM (and have in
-this particular case).
-
---=20
-paul-moore.com
