@@ -1,49 +1,65 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793059807;
-	b=tjU4fIP7Ib+0fOJI5aRXNB8kfClkk+t30/i3aEOfGPbXYHOUvofPFFYpIx1D5MvoK72A
-	 c1+MAdA+2Vk+aTB0vv5vkW2VJrGxngqo5biFrG+s+P0gzNik04xi4zcLQViHob9TQ3rcM
-	 SYQnzwg2FWi3Fb0oIPeQsVDu5RxwQp+fX0NyO8++5HFCiA/tJGGJ41MsJ95EU7geK4w0I
-	 80gR8CO85QF3keaS3rIASXcQvo1oBvA5sVC7Vn23xX+BRj5u8hyFUumxcqPno6ODqccVC
-	 pPToYDpXsgLshPzb15OUL6a7v9AjJRh1FU7TWUTbzga/2pYJ4XsJl/HJWB7ntt3IaXg==
+	t=1793060116;
+	b=473UIaWn5Kfm4qA3AcEOcj8P4NE1fZ/8Tpbzssmfz5Q1mWDnC4wwdWS1Z6oGMCb4pMmE
+	 4Q7rFoBiSZCGAURdAg2jf4+J+YyeTgXwKvw4I1wUnAsFKQ5+XGjQ9I+pJq793BN5H3gw3
+	 GTqNqqC9gQstYsQoagVkZEZf5TIuPx2f76sYVpm32eSk1OdnfgeZTDuvKoZuKAkDBReB5
+	 sFxfSmV4YjwG8kSdd6LrO//ehksD69LrM+oIkNw0murDm7SWpzxsMdReuMVxZSVNX5NXz
+	 Et6Pn8yJ1BcYVUApLqBZtB874xrDiHM2y9J5fAomkuHSbowm436ei1zX1ru5D/0jzUQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793059807;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=6wr5OplgaTCmPsnxGn9xJWW8dX6APwERj0LVWwgQejQ=;
-	b=EoeMss0kA8ruirOTxA+3Y+jlnGLIt6PEehVTKiA2fVShaWtUnesC3Ilm0XA6tgBO+LZQ
-	 nzXkT79FcPZmhfXYLiFyMlBwla9LvaRrQE6Vyez5itBsPyEWU32J7GaqHNq7qr3msLxuh
-	 mVwXfozc6w5CUJno+rl6hUDRIzhkFxrgXUBJU47OMQ79Y+rcQ+Nxb15lCdfdJkU8IoX+u
-	 oAZLhXFEkaAb6hK7gbiTM4qqP1bKNrfJbUdgIQmB7M0YiX/B/5cWx1EZvo2olwpzT16JQ
-	 Ww+MvQw+qvZpACYeKW/J2H3JaYlD1utz8/BcJByVcAHOlUW3J8cWNLV5Qk2l7pB9lRA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793060116;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=H/yoQOUKBrL56T5gjNQcc+KduxA/BxAhW7oXXt9IhIc=;
+	b=znr0o0+xI/4nycKKJZ/uLSzBw5+iYF5/+EIT0rzXOI+txfrMBrmNJMr28mwJ8F6AP9pY
+	 H5f8J9quAiK1mWVv7iLWtjk71HnFSwZICMeRZAn0FTUiyXX/+Joch/hnRc7aPn5T3nsWL
+	 UUoqrhkNfYcWvEEQBRiF8O84WIGcDmU2OnuCCuVzm2H5IbZIBpqdoTwNMFPNfsiISxrMt
+	 YFTa/nCYFIrvdeeeJt534zNQuU7HtT3DdXmGnswpWArLcGm5extaxKsf7G0x485FXqkuh
+	 UL+YYDPlxL6aBTPwUrE07osoLVaKg7kEuNdpQNaqcS8hP+Z9V0B8KG4w6bPsoGfaH5Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HGhCuqfP;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IPpmdMgW;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3865C606A31A
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 00:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E28606A31B;
+	Tue, 27 Oct 2026 00:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HGhCuqfP
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C91201F01828;
-	Tue, 27 Oct 2026 00:10:06 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IPpmdMgW
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14FD51F01825;
+	Tue, 27 Oct 2026 00:15:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793059806;
-	bh=6wr5OplgaTCmPsnxGn9xJWW8dX6APwERj0LVWwgQejQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=HGhCuqfPoQCzDBZbZ7OZGwR1VPhlyqb7mP1gCMIBVVC3/TRrcPDyMLqdOjuDkqny5
-	 xjj6yMXfrq0lXaQNDwacdt37kBOVtgWwH62vNlBP7eSJAXkex0grm+KPkF0jz7aFon
-	 TXGJIYSmy5b9KMsVqQdn1airWBg/N7R4UndF0AaN7BdNnrWw3hMIkG+5pARs9fAt61
-	 OvNkxcfVvfmwLtu7CHHTq3NP/R8wijZnzV2w1pcWOEY2qWzkIW/zRvmkmb78GO80fP
-	 MwtXPr88dqjAaqHQnQJYpesuvCKjdXnwNjEsM1uCC+nv90HRQz5jzfxLoK/b0Dy8oR
-	 Au/EtIppGiOug==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BE6773AA80F1;
-	Tue, 27 Oct 2026 00:10:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1793060115;
+	bh=H/yoQOUKBrL56T5gjNQcc+KduxA/BxAhW7oXXt9IhIc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=IPpmdMgWBt1jeGhOyJrZLKls4yjD6kVph15b6Y6qHdKQ11b9aAxvx+Ar9n9oHuPU7
+	 ik6RmqL6C4t2DwUiKDgqqEqkJgnVb8rO3Nq3+KI0tsryhcW+xNAsi+nuLeh+JfcgP5
+	 msQ/Qwq9PY09mcCwCJu6qz1yqHlS6k9pUdU5ouCHpMArXpcK8312x3yaWTqAcrItXs
+	 Fh/5fH2zakApSy+yx7UtQ7DAfMxO5uQ9rCWnj5d2Scab6XDypcEDgWaadPOOLYnHXo
+	 0vxZcJ9sVOBJOU+5sYCx4hLwt3DAbqwljp0Q2XE5gnkSrGeQ0s+HX3UumLBTdkHG7H
+	 bpVu/SD4ErvZA==
+Date: Mon, 26 Oct 2026 17:15:14 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Manivannan Sadhasivam via B4 Relay
+ <devnull+manivannan.sadhasivam.oss.qualcomm.com@kernel.org>
+Cc: manivannan.sadhasivam@oss.qualcomm.com, Manivannan Sadhasivam
+ <mani@kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+ linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+ ath11k@lists.infradead.org, ath12k@lists.infradead.org, Bjorn Andersson
+ <andersson@kernel.org>, Chris Lew <christopher.lew@oss.qualcomm.com>,
+ Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>, Raj Kumar Bhagat
+ <raj.bhagat@oss.qualcomm.com>, Juha-Matti Tilli <juha-matti.tilli@iki.fi>,
+ Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+Subject: Re: [PATCH v4 0/4] net: qrtr: Add support for using identical MHI
+ endpoint devices
+Message-ID: <20261026171514.35136bec@kernel.org>
+In-Reply-To: <20261022-qrtr-multi-ep-v4-0-c6fdb75fcd3e@oss.qualcomm.com>
+References: <20261022-qrtr-multi-ep-v4-0-c6fdb75fcd3e@oss.qualcomm.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,44 +69,19 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] gtp: hold RCU in gtp_genl_send_echo_req()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179305980557.3474387.10359987067161813120.git-patchwork-notify@kernel.org>
-Date: Tue, 27 Oct 2026 00:10:05 +0000
-References: 
- <ed27d133fe73afd377d3fa4e553c34e7987b6dd9.1792744478.git.pabeni@redhat.com>
-In-Reply-To: 
- <ed27d133fe73afd377d3fa4e553c34e7987b6dd9.1792744478.git.pabeni@redhat.com>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, pablo@netfilter.org, laforge@gnumonks.org,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, wojciech.drewek@intel.com, anthony.l.nguyen@intel.com,
- osmocom-net-gprs@lists.osmocom.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Fri, 23 Oct 2026 10:44:09 +0200 you wrote:
-> Such function is invoked in process context, performs an RCU device
-> lookup and dereference the found device with no additional protection.
+On Thu, 22 Oct 2026 19:43:06 +0200 Manivannan Sadhasivam via B4 Relay
+wrote:
+> Merge Strategy
+> ==============
 > 
->   =============================
->   WARNING: suspicious RCU usage
->   7.3.0-virtme #7 Not tainted
-> 
-> [...]
+> Since both QRTR and ath drivers are falling under the networking tree, the whole
+> series can be merged through netdev tree.
 
-Here is the summary with links:
-  - [net] gtp: hold RCU in gtp_genl_send_echo_req()
-    https://git.kernel.org/netdev/net/c/a204e9c001df
-
-You are awesome, thank you!
+Makes sense, could you repost these after the merge window (~1 week)
+and tag as "PATCH net-next" then? Our CI is thrown by the wifi patches
+in the same series and did not ingest the series.
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: defer
