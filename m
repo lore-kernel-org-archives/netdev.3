@@ -1,59 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793143388;
-	b=yGDIFZK6ynq/OpaoZ4rOovyERsjvA6SDXIq30qirR7TvbNnhil7rjP/RFECzutH4UnbP
-	 D/98JdU0SFTf7UEFCe/4Uk+G6zvTkE/PnLXc0uKjYgI0qr8lcx18BRuGnmeBgt1GJZ0IF
-	 f6OXL3SOzE7D0XsZCQO7n4rFQ+GfMZlPx75DlUtj3t8m/Q/VIoWANPAN85uC/hqgn5yXj
-	 D78D5Fj/kb5XvZokV7MgtSMcYARpwGoso164xhOSLZeq0aVDlKLzd3ceVEA31mNc1bed7
-	 S0PMXBcwVgDBxCwaAVBK9DhzYT7ryKAfKj7VriWZSsRvo3GQozpXb49cX4FIYNMPJhg==
+	t=1793143632;
+	b=SOQw208Hft5KbM4G/YvlKSHzjy6wsCucMEsnOeXvAlXZdLkWOl3FaoUN+5oQl3oePBsD
+	 3bOsCPFm6KEtk+i3a6njQpVwwVozP085B/3Lb10vvCUqmF+crVoTNfC8HEFA5HG14K3NS
+	 xDg4piy76guTHc4LfA22sCBIV2byTCL0CncUr2b5soo+iRtptswc0mh6gmi10ENPKoikR
+	 0bTVhV5We6OqaVPTC2bugMWA75B3gFMutEA2g6vVYKwtMjENoB9wEjX9nHRXLYsltooy1
+	 KOeffsK1tM4oOMjbawozNpuBNediL/XLQU0ZKsHa3NIWB1ulk52C819w/m+brX144tw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793143388;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=afws3t8gUsUgdQ8PYku6SmpBffHNAMIiHuve0kA7xT0=;
-	b=4zZ0H8yd+Y4YWTdjT5sNF/sbPxkgatdYK3RQwSlCu8OWgudhWCkRhCLcrMRrFMuslvV7
-	 N/AkfoVcGINcRgXJghD64cK9B0CX217ZTMNW+wu6JyaFVI7rs6ckkMROpWxwi9pECZ73O
-	 SPUeBKI5f0O83xQDRuueaiabh/OaIulqfFYZX0n5AloD6qZrV+QutrZP/mRuycmLwadSX
-	 Ki+w7qjG/7wHnmTyUzEK89lX/I6mKZHMr3kFdl2HtIhuhq+ohrihaGuBCBKf+enRnAe2j
-	 ptQaFD9R8AWUHj89r3H1zFMoQDv8GCIFAZdd66VKAmsRg0JL6bC7IlaKFp64O1LwYTw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793143632;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=6PiYxlEEX0HQs1enBKQ/4zeLAPHx1PfbUOEoP+WBVLo=;
+	b=cd1zlw8gt+kS9x7qPo3yXkh/Q47HeTaVyWgrFiySTyho0hamKBrEg5FeItkYoxuDqKh0
+	 35y3preCguL6Inu7Ad2/6KAdE4Kl8nYHKg1gQQaHe+cGBeTR3ZHmFGM6ILv4HciyfinKB
+	 c7I5KVdfD5G7eL0a2D9+/8/MIqY2n1kffkMcQN36JdF4N2g/TyjsU3OVUxeQWnpdbePuG
+	 qtOWCsB7W8VZtWrUtE0pD7D+l/Oy7G2wRyX1fQ1dsxrV6f7AMiYobye1DKiIQ8zsBzK3d
+	 9W2FeXIKPWFi96Us9IYz6VtWiMW336LqNXalhw9+5RWhBwV1KeJ00rJq2hEv3R4VFKw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FvL1kI8d;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QWMkrCgA;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53EA5606A31A;
-	Tue, 27 Oct 2026 23:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7319D606A31A;
+	Tue, 27 Oct 2026 23:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FvL1kI8d
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B9B61F01825;
-	Tue, 27 Oct 2026 23:23:07 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QWMkrCgA
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B60D31F01825;
+	Tue, 27 Oct 2026 23:27:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793143387;
-	bh=afws3t8gUsUgdQ8PYku6SmpBffHNAMIiHuve0kA7xT0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=FvL1kI8d9Va0rpyhFdoDX3ZHvw4FQgrgGuqARNouPlMP1sVgLW0Pdv1IQZ91ok4Yq
-	 CNvAZcnW5zqjkQOmZGEGhxJBzgb0Qti5CY2iCE0bYa7tfcgWtvgkvlD+eHbLjDAPOq
-	 PKdwhqRKjHQjEdL5aO8Wguo7cM0abRiBoone+g2SLtL1uDhi9D6QQ59y8mTFdXGzn/
-	 gGpbrgpY+wL5sUIVvi5/JeHQythrDS1/l/ToaCCm4XqzWdPVtQLlfGJF5sjedHJNA8
-	 lXjlwUKat6O8kyQGIotk7syTlnZwH7PaRe1qZzB01g65SBtOVQCYQ620bFQf3F4oA4
-	 bxZfuOtzLj84g==
-Subject: Re: [PATCH net] ipv6: bound temporary address regeneration advance
-From: netdev-bot+sashiko@kernel.org
-To: 1075151112@qq.com
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
- idosch@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org,
- rdunlap@infradead.org, linux-doc@vger.kernel.org, alexhenrie24@gmail.com
-Date: Tue, 27 Oct 2026 23:23:06 +0000
-Message-ID: <179314338680.3134.12884407597513324652@kernel.org>
-In-Reply-To: <tencent_F6E8C7CAC6D390C8E912EEE4FD9FE4333505@qq.com>
-References: <tencent_F6E8C7CAC6D390C8E912EEE4FD9FE4333505@qq.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1793143632;
+	bh=6PiYxlEEX0HQs1enBKQ/4zeLAPHx1PfbUOEoP+WBVLo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=QWMkrCgAZV0PjW43souxOJIGFHjjAKD6FO1vIC2Uhw2W6YQJaCgcdJ/cUqogWd/8g
+	 NylE37jKgsHEFuq2D7pxCrPKzt5NsqVTaxrI9UARVAt8lUBEQqk0ir2kOad/Xpv7Ft
+	 TsbGd8MvFlaMK349wO2PB+0LPa0nDhNL3XDQR3pVXZ0ku9Bm6b7U//GsNpeqoaVnWE
+	 S4hpJcMpULzC1NxSJTmv3FCrN1j8C+CwLWKOGOU1l4lg76wXxmMJB0tdYaB3hHfgaN
+	 tNJ+Mulsbv6gcNCv7nNP5GbgSRpRQ3FbjHFE5oM/4wgjGOJDFw2Ga0q3YgMWMuMOv+
+	 vEiklsRVlCYmA==
+Date: Tue, 27 Oct 2026 16:27:10 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Cosmin Ratiu <cratiu@nvidia.com>
+Cc: <linux-wireless@vger.kernel.org>, Johannes Berg
+ <johannes@sipsolutions.net>, Tariq Toukan <tariqt@nvidia.com>, Carolina
+ Jubran <cjubran@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>,
+ <netdev@vger.kernel.org>
+Subject: Re: [PATCH wireless v2] wifi: wext: Limit notifier event flushes to
+ the device's netns
+Message-ID: <20261027162710.34e0e17c@kernel.org>
+In-Reply-To: <20261023081044.728500-1-cratiu@nvidia.com>
+References: <20261023081044.728500-1-cratiu@nvidia.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,134 +61,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Fri, 23 Oct 2026 11:10:44 +0300 Cosmin Ratiu wrote:
+> With mlx5 netdev instance locking enabled, registering an IPoIB netdev
+> calls the WEXT notifier while holding the instance mutex. Its call to
+> wireless_nlevent_flush() takes net_rwsem to walk every namespace,
+> completing the following lockdep dependency cycle:
+> 
+>   netdev instance mutex -> net_rwsem (read) -> GID table mutex
+>     -> event_handler_rwsem (read) -> netdev instance mutex  
+> 
+> RoCE GID enumeration takes the GID table mutex under net_rwsem. GID
+> updates dispatch events under the table mutex, taking event_handler_rwsem.
+> The IPoIB event handler takes the netdev instance mutex in
+> ipoib_queue_work() to traverse child interfaces.
+> 
+> The all-namespace walk originated in the single global worker servicing
+> per-namespace WEXT queues. The ordering fixes later reused that routine
+> in netdevice notifiers to prevent delayed WEXT RTM_NEWLINK messages from
+> following RTM_DELLINK or reporting stale interface flags. A notifier only
+> needs to drain the affected device's namespace; there is no reason for it
+> to walk and flush all namespaces.
+> 
+> Pass dev_net(dev) from both notifier callers and make the flush helper
+> operate on that namespace. Keep the all-namespace walk and net_rwsem in
+> the existing worker. This removes the instance-mutex -> net_rwsem
+> dependency while retaining synchronous flushing from the notifiers.
+> 
+> It may seem strange that the fix for a lock cycle across multiple
+> subsystems lies in a completely unrelated part of the code, but this
+> seemed the most justified lock cycle edge to break.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0 (1)
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The commit message names only regen_min_advance,
-  regen_max_retry and dad_transmits as inputs to the overflowing int…
-
-Pre-existing issues:
-- [Low] In addrconf_verify_rtnl(), the deadline expressions `ifp->tstamp
-  + ifp->prefered_lft * HZ` (lines 4727, 4744, 4783) multiply a __u32 by…
-
---
-
-ipv6: bound temporary address regeneration advance
-
-The commit makes the regen_min_advance, regen_max_retry and dad_transmits
-sysctls reject negative values. It also reworks ipv6_get_regen_advance()
-to use checked u64 arithmetic capped at U32_MAX. In ipv6_create_tempaddr()
-the minimum preferred lifetime is now computed in u64 before narrowing,
-and max_desync_factor is computed without an unsigned wrap.
-
-> ipv6_get_regen_advance() combines regen_min_advance, regen_max_retry
-> and dad_transmits. All three are signed sysctls, and the latter two
-> are multiplied as int. Negative values or overflow of large positive
-> inputs can make the unsigned long result much larger than intended.
-
-[Severity: Medium]
-Is this description complete? The old expression also multiplied by
-NEIGH_VAR(idev->nd_parms, RETRANS_TIME). That value can come from an
-on-link Router Advertisement, not only from a sysctl.
-
-ndisc_router_discovery() in net/ipv6/ndisc.c stores the RA Retrans Timer
-in the int RETRANS_TIME slot:
-
-	if (in6_dev->nd_parms) {
-		unsigned long rtime = ntohl(ra_msg->retrans_timer);
-
-		if (rtime && rtime/1000 < MAX_SCHEDULE_TIMEOUT/HZ) {
-			rtime = (rtime*HZ)/1000;
-			if (rtime < HZ/100)
-				rtime = HZ/100;
-			NEIGH_VAR_SET(in6_dev->nd_parms, RETRANS_TIME, rtime);
-
-On 64-bit, the rtime/1000 < MAX_SCHEDULE_TIMEOUT/HZ check always passes
-for a u32. The only gate is ipv6_accept_ra(), which is on by default for
-hosts.
-
-Take the default sysctls (2/5/1), HZ=1000 and an RA Retrans Timer of
-858992859 ms. The old int expression becomes:
-
-    2 + (5 * 1 * 858992859) / 1000
-  = 2 + (-3001) / 1000
-  = 2 + (-3)
-  = -1
-
-So the old ipv6_get_regen_advance() returned ULONG_MAX. That is the same
-state as the dad_transmits=-1 reproducer.
-
-With age 0, the old ipv6_create_tempaddr() then set cfg.preferred_lft to
-(u32)(ULONG_MAX + 1) = 0. Temporary addresses were therefore created
-already deprecated.
-
-Sometimes the new address does not stay tentative (accept_dad=0, or
-IFF_NOARP devices). Then addrconf_verify_rtnl() sees
-age + ULONG_MAX >= 0 and restarts its scan. This gives the same
-address-creation loop under RTNL, and any RA that refreshes the public
-address tstamp can start it again.
-
-The new check_mul_overflow() in ipv6_get_regen_advance() does close this
-path, because retrans_time now goes through the checked u64 multiply.
-
-Could the commit message mention the RA-supplied Retrans Timer as an
-unprivileged on-link trigger, next to the privileged sysctl reproducers?
-That would matter for stable and security triage.
-
-> diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-> index c8c0dd04982d9..39ecb2c25055b 100644
-> --- a/net/ipv6/addrconf.c
-> +++ b/net/ipv6/addrconf.c
-
-[ ... ]
-
-> @@ -4705,7 +4722,7 @@ static void addrconf_verify_rtnl(struct net *net)
->  
->  				unsigned long regen_advance = ipv6_get_regen_advance(ifp->idev);
->  
-> -				if (age + regen_advance >= ifp->prefered_lft) {
-> +				if ((u64)age + regen_advance >= ifp->prefered_lft) {
->  					struct inet6_ifaddr *ifpub = ifp->ifpub;
->  					if (time_before(ifp->tstamp + ifp->prefered_lft * HZ, next))
->  						next = ifp->tstamp + ifp->prefered_lft * HZ;
-
-[Severity: Low]
-This isn't a bug introduced by this patch, but can these deadline
-calculations in addrconf_verify_rtnl() wrap by themselves?
-
-ifp->prefered_lft is __u32 and HZ is an int constant, so
-ifp->prefered_lft * HZ is computed in 32-bit unsigned arithmetic. At
-HZ=1000 it wraps for preferred lifetimes above about 4294967 seconds.
-
-The same pattern shows up further down in this function:
-
-				} else if (time_before(ifp->tstamp + ifp->prefered_lft * HZ - regen_advance * HZ, next))
-					next = ifp->tstamp + ifp->prefered_lft * HZ - regen_advance * HZ;
-    ...
-				/* ifp->prefered_lft <= ifp->valid_lft */
-				if (time_before(ifp->tstamp + ifp->prefered_lft * HZ, next))
-					next = ifp->tstamp + ifp->prefered_lft * HZ;
-
-If next ends up in the past, the clamp at the end of the function
-applies:
-
-	if (time_before(next_sched, jiffies + ADDRCONF_TIMER_FUZZ_MAX))
-		next_sched = jiffies + ADDRCONF_TIMER_FUZZ_MAX;
-
-Would addr_chk_work then be rescheduled every ADDRCONF_TIMER_FUZZ_MAX
-until the real deadline? Each run would do a needless full scan of the
-address table under RTNL.
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/tencent_F6E8C7CAC6D390C8E912EEE4FD9FE4333505%40qq.com
+If Johannes thinks this scoping is good for other reasons - SGTM.
+But my knee jerk fix would be to skip all the wifi processing
+for ops-locked devices since no wifi device is ops locked.
