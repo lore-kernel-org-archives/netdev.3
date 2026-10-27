@@ -1,98 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.174
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793130343;
-	b=gggTV4p4mqxo3r2tTeCsjwbwJIPlX7YZUSW2O6eq9i0gSXRASC3yt1lj2S2Zm2H4Ixw5
-	 DEeG8GgsXJ9noaxVna6y8epjecq1Guetou4jBHgERXYT2rKKfm2GsE4BqhyYr3hax8j5K
-	 sDK5tKi4iQhP3S0hll1N+lcoH2zym5BZlFnvtmLd8QEcO8Wr+xukU6YeimjsCeGNrJen3
-	 hwY2krx3R/2BwHxvF4uRH8+aoI24Ed8oLSOwetdhrdzOED6lzWsx5Dx6ARGEaU0lyaE8K
-	 yAwGuOzilvr4kRWwisWQlt6eynVNQT3r/q6xHaU95w32wc1wcM2fCkrt2VthBdUJjNQ==
+	t=1793130498;
+	b=s66XvTZuPfyU3K5UaTqu7YqF9juxLenllAPg27oj5olAWB/ZbZBq2dp4eWJKD6YIl721
+	 5gyUn0LyIOMYE7dju0l6InM2bNNdF6WIazPKB5tDX+XoVwS7PoX4ygXVE5p2dCpcGvIE3
+	 ZL6bMJjXpzFjHurC7nEJU2/lMvqLy2oElV119QNnUuOrprheppjAblnvhRmCSLXWZd+UX
+	 LKQVvy2Erh9LxuwmSxN9RaB15YS4YGYYNfSNR7CBaC30e+8FeJjHREXJ5zj0x1d03EWtx
+	 DfKJYz1+7Ucr0WQw2aKbKaSJPKphuOVQ9ZQUnByfTWEX1a4QSUbEkvzMyFfxDexcMkA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793130343;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793130498;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
 	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=ogjdZNRhBvM3uhV1/iXpFfYGVHaekc8nB59hXwFT7Hg=;
-	b=qEKUfINFuLlHBgFoiiKChU/nlxdjADsUDAaD398w07gaSTbFbV4t8FA3jVz7YpbhkFqm
-	 bNqD028l4BpoYIRA/vAa4mQkkE8TxkJDC7Djbucp95O35VMMYexXRBWzh02rspSkyn8LB
-	 +PNMnd6iIGAwFBF7zExc6Ax0Np40AuHxsWpDliyNbZOGbC7QcPIp5s1VDrosvLvthz358
-	 +UKjiapxrovidxWV85LlentqdWP4YMRiZwSA2Fnxn5UcslO1YDjogYajD2ghz28w/IuKn
-	 ZYJXkWjcMotCOjMkpE4FoYyA+okQMUKaf1gOlVWrylIBGMypipi8X6lKxbMu+s4Abqw==
+	bh=02Ht3mxXBA7UdIIlaZIzhVPlgGBGHpRmxcIbzrCl1Q4=;
+	b=piz+67ygikBfB2cchbNh9PKHD5/q8ejHBUd5KIhcPNhVKp9n6cbcrt/PYQfS60GiWlQ+
+	 kfLA9e1O3tU10INNjbs+bY1/hC12RA8Bt4nYFvVbz4ENfRPL7grbzGvrtVK7SmPVxwVbp
+	 E1KRUFrbKcUANDZ6ZblDCKPdpIePBhBe+CerCyE0j+t2LM4+t6+DWAY6BIEztsRzruGWA
+	 yrYxXtz+RnJV4x0F1X6SzoYtK5yr53U9f0U5WYmOVA6amIBz+eP8n4ZPwqwK3ZxV3d2l7
+	 cpuHd6o7lEGXLScfPwU0otskZvsnlBQvwHyVviXz4dGIxJ3WkLGOag0NgyR3q1I7eug==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=none header.from=mojatatu.com;
 	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=QvtLJQnH;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.171
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=LDgvF8rV;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.174
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F3E606A32A
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 19:45:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 16F3E606A32A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2422A606A31A
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 19:48:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2422A606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=QvtLJQnH
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-8a06454116eso178590b3a.1
-        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 12:45:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793130342; cv=none;
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=LDgvF8rV
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8a05effaf8dso173237b3a.2
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 12:48:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793130497; cv=none;
         d=google.com; s=arc-20260327;
-        b=PZxQ/tuLORnWY85zrkBIHe+1pS2ybWdFF8jAxmkvlZB6xWedKsxJo4H+WQmeB4aE9R
-         IubaWt20eQdIU/ksdyl5bOJnANGJUAtwRZV7VyLzN/AAIO6lu1dcDRiOVuX3qMSfQeZG
-         t/rDMR+1J7+VYfdvCHtSwHjXKS941w7of6mUwyhdAEQPan5NYOXjd8PHzG1hfuWJR0sB
-         7YvTKyIgEfGir7fo6xGjv2xaIBZTH3eSUk4awkjXhIT12+SFLsjiXL9C3RxJrl3yzCqA
-         y6FJzozoZuaQCo18RIF/gJO0wfC0AIDcpZ46Y+cGn1NWy5Q/CTO50/f9Dw+/H9xZjYpY
-         GQgA==
+        b=NtkUXAzgJ6HZCJhoYif2PL99N+fh9qWXa72kOAyou8f9OAtYVzWzCqISIo538eiQmV
+         DVmNdJptMM9tM7O3KAaTWzcllg+BELRov83Rs/XgbQ9aaupJqZGqjzd1Xjc7tedyg3Wl
+         mpPONPBQywZoXU0uDw4sBsdX3T1MNYMUnQiAfvL7kOKI4WkHbFAXfwgwJ1u4IREWW8dT
+         eLFKU2DvGNWZpkQgU8Dd7WYuMN5xIUCWgQ2g1Tho/BQKEMOeY7AFgRDOaRF92XHRZUFU
+         X6vcdXjwbQUw8OTxTJZnEJBKhYBHiJ1NCsft1imXALALckQbrvz54rfafsRczbyfJwl3
+         HqDQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=ogjdZNRhBvM3uhV1/iXpFfYGVHaekc8nB59hXwFT7Hg=;
-        fh=c4J9cf8MF+L15aGRB2m/8lGgMG/7DxdzRPKRsygrqC8=;
-        b=R5oXN/Fl1Cy0ph1NXlLlSJo/bvuP39LXZoNkR08gmFDNVjJ2ri8zCz/bGrhIJYLI6V
-         6MzcsTJTQCeoQeN+oIwbzcGZ8A9uhMBzklpbo/My8Z6KKWgvBHW+DFFyQacXczaidIDl
-         ABuTt6usWVVLDPwfWvmqtTHj8XiUazH1ydx/krimgtoNRpp4jpKZBzVouuj2EvdB7lgX
-         EEH0Bk+haXGlgkzhN8wGgEAWvD3UYrtYj7L7BOvRQQPmbDZ4/YdIycrd1gbCUKqUCdAo
-         1hd2Q/i12MwvkZvqySAbZoguPN7/DA14UTlWV38vVEMuYvUmn2O3+cxJttwpTQlLy6xl
-         5WMg==;
+        bh=02Ht3mxXBA7UdIIlaZIzhVPlgGBGHpRmxcIbzrCl1Q4=;
+        fh=shsYV0BKtOggs5cs8p7JIek/nWDXqETGd83LxSdj18Q=;
+        b=lAHDyVuGXRsHEcMeBVoNmSFsEB6TCEcWJmCmMd+B2nHqvAgPSo3uz2vCZycob95eJ0
+         PfgK3VyqR0dKhj+VU6lFa1uFDT1AsLPpQzADbFCFMIelVQ0u0M9W0jr9wGzGq7UEXpi2
+         +5jhyMklD6mBIgljimx6i6Z2bCWT2LBpoCw0BfOU4fF0SnpS8O8AX8o2mjmywE4Trstl
+         jcXwzl5r6OjWscBw5gGwZc4rJA9jnvSZjKst8+IwQifrx64KKrPN9zRSnU/4rJeSbE4h
+         oeB36ZVtc4a36QVl2l9WN/kbLUra5B2gOgwOKgm9KsFQq5ljU/IZEVWok9GT/naO7tOl
+         5iiQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1793130342; x=1793735142; darn=vger.kernel.org;
+        d=mojatatu.com; s=google; t=1793130497; x=1793735297; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ogjdZNRhBvM3uhV1/iXpFfYGVHaekc8nB59hXwFT7Hg=;
-        b=QvtLJQnHGRLSwRNPoYCSXfeF3sSHH84H1GAref5X8bRhAghX6Vz3eDiLKvQkm2UymG
-         kgHEaxULJi7GJEievjPGR2PlXtayLjVylkEeHRs7MpgmmFYAiAZKShLZZdyk49M9GXdf
-         mLSx1bDdgNW5KY2otgkeOMMEVbdOHoZTqlRgQ=
+        bh=02Ht3mxXBA7UdIIlaZIzhVPlgGBGHpRmxcIbzrCl1Q4=;
+        b=LDgvF8rVl8B6iqexGtDVMIHzvKgjU9Q1DYrdMTPEcRI0dsKcblTS/w2aKBAnwndeX4
+         EJrwWzC+ezWe8gqvzzUAcjJYbiTRqq/NOepuGTRBXFAnMCZ+ScZEGkcUw9/dsMcgcp2A
+         84iKJy5OkBaH/UxwdVvdq6ZY42FJC/wyWq76Q=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793130342; x=1793735142;
+        d=1e100.net; s=20260707; t=1793130497; x=1793735297;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ogjdZNRhBvM3uhV1/iXpFfYGVHaekc8nB59hXwFT7Hg=;
-        b=umCVcqJpdqqVrggkXqmz/AvvSO8cp/L4wMZQN/o6uQVb2Zp1df+vNyCw6VYEbfzO9e
-         qrv7UuLHixSwkfDDwuJKdR/CJQuXnllh7yzzVJfeWzTswCndMQs7Y4yBR2QbD3N47hu1
-         ZC2gr8tTEmEyYos6dnIeownbwgEIEYePsPk0B8+GXpvjtQzDt1sChvvttZJ9qR99uDcP
-         De0b1csZSMbzNAx3Z0x59sLYEyA5w8H5lSWt3cpzLzeF/l0yNW8KCBa8ysmDw6enZ61U
-         ICzBrZhEfm9W/J5Mxt+7w5uQjOTN/7d4ruwLC0Ut7oGwNNPwYrH+t5VEcsHIaYNdqNbS
-         Wk3Q==
-X-Forwarded-Encrypted: i=1; AKwUvByWA6SusOLhpoNs24j4yP4PTbsBEByBisV7321KLnkyK22Dmcm0JnuUJ/cQAdlEsxyiPyZHd4w=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKF9l75iXe0eDHP6ek2zq2eN9CLwwrsID5VUa2gxqgUwb5EIuVb
-	AIg35vtQO0daYl7rabnijD6pXSaLs2awIhUFGe7oLscouy0wJnhJm+PINRziI1ILUSTKAf5VKFf
-	8wTo8P7C/i6o6yO+oFpHXtHu0Kk0Mzuc33Nub774o
-X-Gm-Gg: AYBFou0nryootWj0gR52hHrhBNxzwm4W1RE9JIUat1qbm/RQ8A3Qv7+DZs7Ptm4ecrx
-	0lKh+NqD3FkHQjNCttJs3cb6bGkxCWmL2BoMdnesjDQJHD0Fcf/TRbWlc68lbGjP7qo8TmGU04x
-	JFIsVCl+52ENuXAfBllaaPnwVuZS0boJBsfRJiyVjAkOgTDA1Aa3o+j31PKQwUzI7y712EvmlGm
-	ga5hJHfomanc+n3aiT8HxbTstdzzh1FA+VX6oJn8RpIqJbhbal3wkoMSF/psYi6VS9oXktw7lFZ
-	8Y1mkKK1OibJ440gMJKrt1HTqypsVBm6dvCGHFFLEH+Vtvz40seOf30WxerJfGdreyOcbEi4AN6
-	vVhcoc37fRHpCfX9BBOfRUk0E29NrMu5Og2mqS2ahUd2QcaFudHUuMIE7JxNDxWPiViFVrcbniD
-	ZSa3/5sqznSW2dlv8=
-X-Received: by 2002:a05:6a00:3a0d:b0:893:12e5:c07c with SMTP id
- d2e1a72fcca58-8a6e82b2c88mr187466b3a.27.1793130342392; Tue, 27 Oct 2026
- 12:45:42 -0700 (PDT)
+        bh=02Ht3mxXBA7UdIIlaZIzhVPlgGBGHpRmxcIbzrCl1Q4=;
+        b=DXR9jTC0cLbTKAk3DOQAqDxg0sdnGY5Rv+NSoPu88X8YDpURWCMT7QBvQVB9a74YhN
+         cdKR06N+gb8FFTpxJxnTB+JmRH3woU5eA65/gA6+8eTuk1mcZfjY5wTgITjXIRgwVxCm
+         Bm9KnDZgYw91rsMbFt22+N+K4O14uYl10xAFkkz6oap4PjpG3wG3xjb5VwZOsm0vRdZ/
+         QCtPEb059et068Lz4tlScLaZRnZv2L/hQ66LSlCcxeTgLJO84Ob1MVg7TFyuYYxyYO9u
+         ZrVcxO90LejaN7AAxeehFecwzco6rN7/lc6mLAl0s6U+ay56VJZzFUI6bBzLsCMXrP+Z
+         mvQA==
+X-Forwarded-Encrypted: i=1; AKwUvBzch2Zu74tNA1fJVWcfPeahOvoxlm2LkCxH1XPHpKQX3JZKjpMRqTPCx5KvNtiH5h7xTWbI1VA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ3BA78fJRJTQR4AcmVvFOIEfsr8ZEFFSAoz66LhLRNIPj3rP1a
+	ol1ZllZxtObcXBa0tNHRxZhYhfnjbGi2UuIAj2B4i0ltM4mRu3P88jxUeBtOBo+sTlKaUiK7x+/
+	VWI7srBlMzliASfMqasowkwj90fIfU5KIcOOKx2YV
+X-Gm-Gg: AYBFou1Mf0ci4N1UYbP4zEUrwGPAqAZKx2qdErndiDZLfGymeg/ztOuNQkyHYEJ9bAK
+	ejJohOYZdUbb/SHRpnjVhYak8YfezOZ0KzM4Kvc/NleUyCSKeVjXGPLI9pds+1fcdBy1RfRejR7
+	T3dMCPAQOGwMtzTYACoUJK8IxgpaoonOb3rgcwskAFWi5+GKuajSQmff/HBpmojHYeDK0PZRccT
+	FNsIRx7YF6rVyhfFe5KSEgaDMqfeZDk+eB3NXkJDCGjjLDoRudwV24NsW8CrpJOcpmzCskLop/r
+	zSDmEJ/sV96+hs5h7oTPcscJWSFIHk4OpwbUZQ9sIXGXvkFLCDevTrviVMIhTJEDgUUFYdiQPC8
+	FNoGT2jappraXl7LWLRw2LMH1vvDzszPjOD7GULp9pGsunASJhspJ1tfdq9mPfUvqH5Asnhsv3J
+	NOCT7kxnATpxUmERM=
+X-Received: by 2002:a05:6a00:ab05:b0:881:8b53:f66 with SMTP id
+ d2e1a72fcca58-8a6e6a17a15mr234459b3a.24.1793130497474; Tue, 27 Oct 2026
+ 12:48:17 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,92 +102,164 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <QDISC-6HS9.v1.r2.20261020051718-2@mojatatu.com>
- <20261026160747.283702-1-horms@kernel.org> <CAM0EoMm9piw8gLJ=t9YYNu2-8zb=qfA3G6djchL0QaeZZvaNfA@mail.gmail.com>
- <20261026174643.088e3f49@kernel.org> <CAM0EoMmVv5WnzpQw2d7iLZU84KPDUMf7+t5m8BL+MBXR+oy7Lw@mail.gmail.com>
- <CAM0EoMkvbVZoG91==QWT2mfyPkWYsS=BWCBsK0iYJR9BP=aviw@mail.gmail.com>
- <CAM0EoMkf_ewuY4bx=MFNc0ybR66pLP3F8nZSCZBMW6bbXWoFOA@mail.gmail.com> <20261027182905.GQ257209@horms.kernel.org>
-In-Reply-To: <20261027182905.GQ257209@horms.kernel.org>
+References: <20261027082604.1485903-1-edumazet@kernel.org> <willemdebruijn.kernel.22807e0fe104d@gmail.com>
+ <CAL4WiirUmA1GnUaZq5MQgENZRo1248YSo6AOYb_OseWS8p-Cbw@mail.gmail.com>
+In-Reply-To: <CAL4WiirUmA1GnUaZq5MQgENZRo1248YSo6AOYb_OseWS8p-Cbw@mail.gmail.com>
 From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Tue, 27 Oct 2026 15:45:31 -0400
-X-Gm-Features: AclHuK9VHmyLnFXXwTIyYI5AQH1rkT6wNTiebNqpfKQAGesdZXrNLOB5IQZpdg4
-Message-ID: <CAM0EoMkym=CiT5=ye72N4s_zat6GF-ihN-Mk3hpY4R0YgAqFGw@mail.gmail.com>
-Subject: Re: [PATCH net 2/2 repost2] net/sched: sch_teql: keep skb->dev
- consistent on the arp-queue path
-To: Simon Horman <horms@kernel.org>
-Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, victor@mojatatu.com, 
-	jiri@resnulli.us, davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com, 
-	stable@vger.kernel.org, sashiko-bot@kernel.org
+Date: Tue, 27 Oct 2026 15:48:04 -0400
+X-Gm-Features: AclHuK-FF5sNZQAKK9UQMayklgKAkZVtQOswWiBymadY4veINyjvFnP44UXAJwg
+Message-ID: <CAM0EoMkTUK1cvNbeSvyOGLQ9yxQfR9-TsmQXXZbosbX+pz_2WQ@mail.gmail.com>
+Subject: Re: [PATCH net 0/5] net: fix eth_type_trans() crashes on skbs coming
+ from the stack
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, Aaron Conole <aconole@redhat.com>, 
+	Eelco Chaudron <echaudro@redhat.com>, Ilya Maximets <i.maximets@ovn.org>, Jiri Pirko <jiri@resnulli.us>, 
+	dev@openvswitch.org, Ren Wei <weir@nebusec.ai>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 27, 2026 at 2:29=E2=80=AFPM Simon Horman <horms@kernel.org> wro=
-te:
+On Tue, Oct 27, 2026 at 11:50=E2=80=AFAM Eric Dumazet <edumazet@kernel.org>=
+ wrote:
 >
-> On Tue, Oct 27, 2026 at 04:04:34AM -0400, Jamal Hadi Salim wrote:
-> > On Tue, Oct 27, 2026 at 3:44=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.=
-com> wrote:
-> > >
-> > > On Tue, Oct 27, 2026 at 3:25=E2=80=AFAM Jamal Hadi Salim <jhs@mojatat=
-u.com> wrote:
-> > > >
-> > > > On Mon, Oct 26, 2026 at 8:46=E2=80=AFPM Jakub Kicinski <kuba@kernel=
-.org> wrote:
-> > > > >
-> > > > > On Mon, 26 Oct 2026 19:51:33 -0400 Jamal Hadi Salim wrote:
-> > > > > > > This is an AI-generated review of your patch. The human sendi=
-ng this
-> > > > > > > email says "Hi Jamal, passing this on for your consideration =
-as it
-> > > > > > > seems to have got stuck somewhere."
-> > > > > >
-> > > > > > There was nothing wrong with the headers this time - so not sur=
-e what
-> > > > > > is going on. A bit frustrating.
-> > > > >
-> > > > > It is frustrating, you are the only one with these issues.
-> > > > > Patch 2 is posted in reply to patch 1. IDK what else is wrong.
-> > > > >
-> > > >
-> > > > Let me send a repost3 - will take the opportunity to pedantically f=
-ix
-> > > > the commit message (no code change).
-> > >
-> > > BTW, checking i see the threading was:
-> > >      0/2 cover  (root)
-> > >        1/2      (reply to 0/2)
-> > >          2/2    (reply to 1/2)
-> > >
-> > > I checked other postings that didnt have issues and it was fine. I
-> > > also found the approach
-> > >    0/2 cover  (root)
-> > >        1/2      (reply to 0/2)
-> > >         2/2    (reply to 0/2)
-> > >
+> Le mar. 27 oct. 2026 =C3=A0 15:40, Willem de Bruijn
+> <willemdebruijn.kernel@gmail.com> a =C3=A9crit :
 > >
-> > And for repost3:
-> > - 0/2 (root)
-> >      1/2  In-Reply-To/References: 0/2
-> >      2/2  In-Reply-To: 1/2; References: 0/2 + 1/2
+> > Eric Dumazet wrote:
+> > > eth_type_trans() assumes ETH_HLEN bytes are present in skb->head.
+> > > NIC drivers always provide this, and they should keep using the fast
+> > > version, without an extra pskb_may_pull().
+> > >
+> > > Devices looping skbs from their transmit path back to their receive
+> > > path get skbs built by the stack instead. tc actions (act_vlan pop_et=
+h,
+> > > act_ife decode), BPF helpers (bpf_skb_change_head() before a redirect=
+)
+> > > or OVS actions (pop_eth followed by pop_mpls/pop_nsh) can leave fewer
+> > > than ETH_HLEN bytes in the linear part, and eth_type_trans() then hit=
+s
+> > > the BUG() in __skb_pull().
+> > >
+> > > Instead of fixing every producer, or adding a check to all
+> > > eth_type_trans() users, fix the few consumers exposed to this:
 > >
-> > I am sticking to this approach going forward.
+> > Definitely a nice approach.
 >
-> Hi Jamal,
+> Thanks!
 >
-> It's unclear to me if the threading relates to why the NIPA-Sashiko revie=
-w
-> of this patch-set didn't propagate to the ML.  But I would suggest that
-> however b4 handles threading would be a good approach top copy.
+> >
+> > You previously suggested catching most of the TC modifications with a
+> > single check in sch_handle_(e|in)gress. Is that no longer needed?
+>
+> Not for these crashes. The sch_handle_egress() check would only cover
+> tc egress. It would miss OVS and the redirect paths you mention, and it
+> would add a check for every packet going through clsact. Fixing the
+> consumers covers all producers, including future ones, at almost no
+> cost. NIC drivers are not affected.
+>
+> We can still add it later as hardening, if another class of bugs shows up=
+.
+>
+>
+> >
+> > The few mirred/redirect cases are a bane, causing so many issues. And
+> > escape any such check, as they call netif_receive_skb, netif_rx,
+> > dev_queue_xmit, directly.
+> >
+> > If it's only act_mirred, bpf_redirect and OVS, maybe a single
+> > validation helper across all three before they pass to the rx/tx
+> > path, that for starters calls eth_type_trans_careful. It quite likely
+> > won't be the last packet corruption they are capable of..
+>
+> I agree these are the problems, and Jamal just found another one in
+> __bpf_redirect_neigh(), which does its own skb_pull(ETH_HLEN).
 
-I looked at several patches that it didnt have any problems with (some
-merged already) and it doesnt seem to care which of the two approaches
-used. But i will look at what b4 format looks like for completion.
-I am begining to suspect it is not the threading, more the repost
-approach. The "repost" was not including any code or commit changes
-and it seems to be problematic even when i changed the message ids. So
-likely it is only paying attention to subject versioning i.e vX or the
-body text. I added modified commit text this time on all 3, so lets
-see if that fixes it (caveat: the Vx didnt change).
+I didnt add my reviewed-by or tested-by because i wasnt sure  if you
+are going to resend and include the patch i sent?
 
 cheers,
 jamal
+
+> A single helper is tempting, but what it must check depends on the
+> target:
+> - Egress to an Ethernet device: ETH_HLEN at skb_mac_header().
+> - Egress to an L3 device (tun, ipip, wireguard...): no MAC header at all.
+> - Ingress: data at the network header. eth_type_trans() is not
+>   called again, except through __dev_forward_skb2() (patch 3).
+>
+> Also, the original loopback crash needs no redirect at all:
+> "vlan pop_eth" on lo egress is enough.
+>
+> So I would keep this series as the minimal fix for net/stable, and
+> look at a common helper for net-next, probably based on
+> dev->min_header_len / dev->hard_header_len of the target device,
+> called from tcf_mirred_forward(), skb_do_redirect() and OVS do_output().
+>
+> Thanks!
+>
+> >
+> > >
+> > > - Patch 1 adds eth_type_trans_careful(), which pulls the Ethernet
+> > >   header first and returns a drop reason on failure.
+> > > - Patch 2 uses it in loopback_xmit().
+> > > - Patch 3 uses it in __dev_forward_skb2(), used by BPF redirects to
+> > >   ingress and by veth, macvlan, ipvlan, netdevsim and l2tp_eth.
+> > > - Patch 4 uses it in OVS internal_dev_recv(), covering both the MPLS
+> > >   (TEB) and NSH pop cases at once (only the MPLS case was tested).
+> > > - Patch 5 (from Jamal) fixes act_ife decode on egress, which was
+> > >   consuming the inner Ethernet header. This is no longer a crash afte=
+r
+> > >   patch 2, but egress decode never delivered a correct frame.
+> > >
+> > > Other eth_type_trans() users already pull the header or never see
+> > > such skbs:
+> > > - vrf_process_v{4,6}_outbound() already pull ETH_HLEN + IP header
+> > >   before vrf_local_xmit().
+> > > - tun already uses pskb_may_pull_reason(skb, ETH_HLEN).
+> > > - XDP: bpf_xdp_adjust_head() and bpf_xdp_adjust_tail() keep at least
+> > >   ETH_HLEN bytes in the linear part, and multi-buffer tail shrinking
+> > >   only trims frags.
+> > >
+> > > Tested under virtme-ng with AF_PACKET reproducers. Without the series=
+,
+> > > all four cases crash in eth_type_trans():
+> > > - lo egress "action vlan pop_eth", eth/eth/8192 bytes frame
+> > > - lo egress "action ife decode pipe", IFE frame with 8192 bytes paylo=
+ad
+> > > - lo egress "action vlan pop_eth continue", then a BPF program doing
+> > >   bpf_skb_change_head(skb, 1, 0) + bpf_redirect(veth1, BPF_F_INGRESS)
+> > > - OVS flow "pop_eth,pop_mpls(0x6558),0" to the internal port,
+> > >   eth/mpls/eth/4096 bytes frame
+> > > With the series, no crash. An ICMP echo inside an IFE frame decoded
+> > > on lo egress is now received and answered. Normal traffic on lo,
+> > > veth (including 8000 byte pings) and vrf is unchanged.
+> > >
+> > > Link: https://lore.kernel.org/netdev/20261005052249.1914367-2-weir@ne=
+busec.ai/
+> > > Link: https://lore.kernel.org/netdev/ACT-N6N4.v3.r0.20261023200137-4@=
+mojatatu.com/
+> > >
+> > > Eric Dumazet (4):
+> > >   net: add eth_type_trans_careful()
+> > >   loopback: use eth_type_trans_careful()
+> > >   net: use eth_type_trans_careful() in __dev_forward_skb2()
+> > >   openvswitch: use eth_type_trans_careful() in internal_dev_recv()
+> > >
+> > > Jamal Hadi Salim (1):
+> > >   net/sched: act_ife: do not consume the inner header on egress
+> > >
+> > >  drivers/net/loopback.c               |  8 +++++++-
+> > >  include/linux/etherdevice.h          | 28 ++++++++++++++++++++++++++=
+++
+> > >  net/core/dev.c                       | 18 +++++++++++++-----
+> > >  net/openvswitch/vport-internal_dev.c |  8 +++++++-
+> > >  net/sched/act_ife.c                  |  4 ++++
+> > >  5 files changed, 59 insertions(+), 7 deletions(-)
+> > >
+> > > --
+> > > 2.53.0
+> > >
+> >
+> >
