@@ -1,111 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.198.23
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793110533;
-	b=PfFouVfSYJA2C4NSYveuFHpVHtirpAGYzQIIT/spzTMQl8Y3YDEkCnohb/XxQHbJp6u9
-	 gYhKLylmV43YPi5HYfUEvYXySup/iYebtSqZUeotmVWuYg/ZNNG4bjQweMWgzMeHmuiij
-	 if9+cyByVFHDP+XLc1I3xqjfEzklgu2DgmzghOKq1YmbmjiTS7ZaoNiUg9C5tCxzqsOdV
-	 06fFgrsv0haZIHJML39BUjabHwWpzSo/Ag+tdiWeJHQweNgX/VcAAHppnuGE81910GPYM
-	 CqJVNeGCT//ESrrJnVUwogeGQ1c+yDxBUrb76WocpNHV21cxzWyVKxYtmC+kTIG6DeQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793110533;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:Content-Type:
-	 X-Originating-IP:X-ClientProxiedBy:X-EOPAttributedMessage:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=zAF4yjppsEcksE0S0vumadZQ7wNIJkTVNwAk4krC2EY=;
-	b=WwARFkFpSQq28ZCxUbHVw4eBLIwLnDLZV92DyjIZwYSfHbTsJB8EDktIeg9uO/vXq1wi
-	 CvUoZLw/vPAsFDi20snKInifvKld/oBW8EVDGY8E/98YiofSSqTTs3Qc1Ko32P2dx+GZu
-	 1cg0uKq+g6NJcZ3XRv9bDWjWIOoAMzAZaoP3uoHUAhdYkH+xCqm8UZDmuDHGVln1Azrey
-	 UhsYLc5OyMUHw5YkFwtF5jFZtTz9wDt420PfMJfE31GmLPVNXCdM7Cco2SpxIc7Hgt/n+
-	 EXdDWUSxw42/AuvjetkSbe8Bp1iTEnDCnxOsO82dulj0OAv8xc3Ede+plf9QSjHlZnQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Zm6MGQUP;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.198.23
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010023.outbound.protection.outlook.com [40.93.198.23])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793111167;
+	b=5tx28PMCcNlFtNzUoMuRMxhh0HEX/4tR6DzMvdtqhUz/2ohxZqw72EzS597hDmlQGvY1
+	 LczUIkt1aLV/Q9SY3Jbz9Fuaz7+h8hBXRg6xsHbLoTb+o1xp9U8PiFwypL3WSha87MgsB
+	 sQ2AvR+vIRq/pHQdOT8FwlfP0G9HLvdHouH8hpgzf+FGJ8q79OpS5Zg55TWH3AwQCAWWi
+	 FPozWxgGkPvVjSUYzOZbGx6Y+1OWM3wcOLrm3o0p+1dk/R3b/B6hoxnmGw9NRBPqcm0M8
+	 dHkMtALumX5alSmE2IqeOlPdGNxP6yDPKMXirmRti33vkngjf2sY61la0dt44dsxTLg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793111167;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=z27crQTjHzX0wxvWS41zGiz/0QWCCGhHzWTW1/KXN7I=;
+	b=cR3uCIzqy2uC5DbgbDnMT4x/SwQnPH6ngM3BVoDofTTcY5mNgNoriCfCxQtj9BAOxHSf
+	 7D+HRft9aSZgHQ5ViUlOmtrte/WVuwjElNkPt5N9D6E3V6lfIYs6u5CJcZ6fYVI8kbLBs
+	 NkL6Q4+SBe2uR12R7HNMlJuscG+XB20NKPhjH2Mh8F+jqtUQjWhKSVUSJLXggLsPzO4sD
+	 XRQTtRsKbKsr39nSjRJI2GTy7+ooBXECid1qkzI/gjSKOtmsT7UOkRzgCu89AoRtWAA7M
+	 xWZda/o/0UroVvMKl9bqWw2WBc0l7adH222gZWiFLkiZoC1Sv8WKYADC1xzTkaVfDJA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JMtpTDrF;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98C4606A31A;
-	Tue, 27 Oct 2026 14:15:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D98C4606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51BD3606A31A;
+	Tue, 27 Oct 2026 14:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Zm6MGQUP
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CuHDWWiMS44me4ukWWgfI6UFT3oS5pKt7nK3vImPMwiSh3KSeZj6MRVZgcjeZKB2jy4zByFwfMIVVAsF+iOgoksv6YpyByd7eopyv3UC4j78V1LG92bLkJiHUe2LieIDUK7r/64oUZVls1/sY5tld/5/HDvxELlW8JlBqPB5DM1PhcYVEd9fekRyngF/R7zPMgrhRW8QBLgwwtZvDRhrmwIXxmxnGVHt79w2vkGrfV9HQcp3fpCXRtoUv+k7dM8mkkUkeiI6bWJDshjrG4vS8lAqAcgowXZOUP4xpAuSOMrArHlTEm1RCy2STSRQJXT028H6Qrfpq+CK3R7ZEdWWlw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zAF4yjppsEcksE0S0vumadZQ7wNIJkTVNwAk4krC2EY=;
- b=lJsQnwVN8DCgJ+aqfgs0W6jEmWfQirE8+1uznrxppSBjHSn5X+CELJLKP+uiHZJDcGrT07yt9ko4Wvyw0IgWBWEAjA3Xku6AGcAzFAcuzrflK0+rYUm7IuYlAf5YHiTwXIpU/RdBYKtRuzCLPCb26tb0lzQoqnDz9dEX8WbjSTAsyo/ARH9/p4+PrB1ZUmqUPTUDv+EvwN5o5/aO1l6UL01syJ+5imzM8+3nuNjn2V8i6H5wkEOSy/OfJZRTTSGEp8hMkQiFE0lMObhyS1iP4Exst0stj7e7HipabAQD/kktcE/BcZADVr0myoVHk+eF9JCEbfmFRIXqj30REUrJRA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=microchip.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zAF4yjppsEcksE0S0vumadZQ7wNIJkTVNwAk4krC2EY=;
- b=Zm6MGQUP7JHgeuClTuySsz+rpCHtccqbyYYATGD6xcEf0s7SyyKKebLQ+fnXCflnmKuY1CjtXFWGeDN31ySQzaxuEAAG8DbnOuFsN95DKITWEt7y7NXuVB7Xc9br3iEEa5Ep0zqzH3iEzFi93WrIrNNZ+efRYsyo7Z92T7BZ4pIPRd+ODnhQtIW9kScYg+Ci1G5RUBISPBit1R35CkanwcLBAdFC2jfoekIdGu8fJ09y0K+0Qrdc48vnffwuqe5PbbWgdiZ2zo2smmjN42YWyB6e+VaBra23ZoM/YWFt9shK7/E60h9Of51XvIQTxqyncqjOROVnv8kAdVHoA164Fw==
-Received: from CY5PR19CA0017.namprd19.prod.outlook.com (2603:10b6:930:15::10)
- by PH8PR12MB7375.namprd12.prod.outlook.com (2603:10b6:510:215::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.21; Tue, 27 Oct
- 2026 14:15:24 +0000
-Received: from EA8PEPF00000006.namprd05.prod.outlook.com
- (2603:10b6:930:15:cafe::68) by CY5PR19CA0017.outlook.office365.com
- (2603:10b6:930:15::10) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.546.22 via Frontend Transport; Tue,
- 27 Oct 2026 14:15:23 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- EA8PEPF00000006.mail.protection.outlook.com (10.167.249.229) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.569.4 via Frontend Transport; Tue, 27 Oct 2026 14:15:23 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Tue, 27 Oct
- 2026 07:15:07 -0700
-Received: from vdi.nvidia.com (10.126.231.37) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Tue, 27 Oct
- 2026 07:15:05 -0700
-From: Chris Babroski <cbabroski@nvidia.com>
-To: <woojung.huh@microchip.com>
-CC: <Bryan.Whitehead@microchip.com>, <UNGLinuxDriver@microchip.com>,
-	<andrew+netdev@lunn.ch>, <cbabroski@nvidia.com>, <davem@davemloft.net>,
-	<davthompson@nvidia.com>, <edumazet@kernel.org>, <kuba@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux@armlinux.org.uk>,
-	<maxime.chevallier@bootlin.com>, <nb@tipi-net.de>, <netdev@vger.kernel.org>,
-	<pabeni@redhat.com>, <richardcochran@gmail.com>
-Subject: RE: [PATCH net-next v1 1/5] net: lan743x: reset DMA channels that fail to stop
-Date: Tue, 27 Oct 2026 10:14:54 -0400
-Message-ID: <20261027141454.561978-1-cbabroski@nvidia.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <BN7PR11MB2836B99696C08DFEA516C8F6E7652@BN7PR11MB2836.namprd11.prod.outlook.com>
-References: <BN7PR11MB2836B99696C08DFEA516C8F6E7652@BN7PR11MB2836.namprd11.prod.outlook.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JMtpTDrF
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5896A1F01825;
+	Tue, 27 Oct 2026 14:26:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793111166;
+	bh=z27crQTjHzX0wxvWS41zGiz/0QWCCGhHzWTW1/KXN7I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=JMtpTDrF7fiu7lDnMsUp94Cm+JN1Fy3FyhF04TMzNSoaY3KCMum3ks0k+Z8LNcD1+
+	 LytnrXmA0L6MKn1657mK5HoWy+CeAHoIuVcict2nwF+WSUNB/1hEwuz1BwtTU6EOo9
+	 U4b5LoIsFZBBtrGpFMo/8dYLjeMEbcY2DGWANS34JtaU9hhXNbXHXhliMU6ghaGFtx
+	 fRwNuUm1l508qzA3qxRkfekH6d5IHKKdfrVapJg8ZQ/Jt4HQcsX8Z0n/qXJENzBPnR
+	 Qbky46Y0NvH+kZTCVozpfldbogvBRwhkDkCA9Zw8NJeHhOqh95K1BxP1teF8yHore6
+	 Aq5IpExvqeVFQ==
+Date: Tue, 27 Oct 2026 14:26:01 +0000
+From: Simon Horman <horms@kernel.org>
+To: Joas Antonio dos Santos <joasantonio108@gmail.com>
+Cc: Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>, Mark Bloch <mbloch@nvidia.com>,
+	Boris Pismenny <borisp@nvidia.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net/mlx5e: macsec: free SC lookup entries after an
+ RCU grace period
+Message-ID: <20261027142601.GM257209@horms.kernel.org>
+References: <179285888829.90275.17386097105525068016@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -115,75 +65,104 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: EA8PEPF00000006:EE_|PH8PR12MB7375:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6b8ad6a5-23b9-479c-1177-08df3434bdd7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|7416014|36860700016|82310400026|23010399003|11063799006|56012099006|261009223027099003|261022105027099003|261021135927099003|261021121427099003|261026140227099003|10067099003|18002099003|22082099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	To9K1z77D+LM/QCoEVymPAxaZd+Tc/koeOpiq3c7WcNxKzZ1UaELhLQNvaXTHK5EeKfCPwgtXKJYGqTrSAfTgvLC5am0PGHPMd6AqLHUJLqTIA0N9ArqBA62PoWsR0JQWXL8pyrvOOhc4jmLWa7KAqTXJmmbcDkbOO4h9f7iS3LB+aTE2kCSp3baO4brk52XL5VXxm/xZdVxhZx7FyiiiWYz2ru5W0tzs77WZuHvi/oVFvqB/UylwmpTKNruHlp4mrwl1wneNnWujQAtw5PgK52/SYj930cn/ibrnOVNns0hztg/CmsUyDg5dxHoNlgzR+cg3wdq3CpRKuBGlqap5XHm6eDUXwiAyv6ftS+t4NetfvaFuXDTRWdSzPiD5GdnmNE3En+Bhj3Mag/loYZGpAxX8VPVxIv/42BN0fEck9vj/lpBDy35gzUPW67FjY93GcDgZjt89nbvMft9XrTtRck0FU05c3urbs4v8zBbGAZ+Y08mPHRy9hN6+96xC4xAC8473vcfJnJUUd5dA680eur4CbhcQWc2gdoCClHRCVur2tWbqkg6zTDrJCiH7khrdZh2wvCp3SQ111+SrDVouzYQnOnjcbxRqvit3kGIJ39lGjMjyo3LWErGfItndfab2zrcnud+0slDsepIEnsj5NXk3vM/2UcMenwRPvSsW1gh7S7yGch5XWBXN3WuVZUDxkANnfF1Rk6LX4TZIX2m8Q==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(36860700016)(82310400026)(23010399003)(11063799006)(56012099006)(261009223027099003)(261022105027099003)(261021135927099003)(261021121427099003)(261026140227099003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	GCZZrRi/gzh40SkNr+cW0028lcRXr3UOCc4KvJNzg38kVDPQUQ6Dma+LMqdbpBP1Hx7vqcqiYvhVNw6Hro/LY925pyhxWH+gV4CXy1BHgrMVyXicLVt98AT3n88v7LchKI+LGwlFkR+ipTfw6VVh5ViUrF1Ppm9DlpIRq4/36HNuB8F2zVijPU+eZ5SKgl1DJrjRDVW+xaskcBzOxGg9TINnP8uw+Wz+K6EvuakylHeuI3QbtEyjmCZChtE7glfrkcMtEJwfpwvtzvO7JxtQjPtJW7cT1rvoiLNTLSkQALxtnE7jpWh92AbkJDM3cOJAvXPuVyemOlhweRYv1nIFZlLQ/ieTER6ZoDICqOAM2yA8kff0//mGRMt7vHuWHX/3xThBU8ZpoDqG14HMpykZ3grIvtnykKm7tfnEQHkfvOEdK6diS75gjUjc19/dtpyF
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2026 14:15:23.6736
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6b8ad6a5-23b9-479c-1177-08df3434bdd7
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	EA8PEPF00000006.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7375
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <179285888829.90275.17386097105525068016@gmail.com>
 
-Hi Woojung and Nicolai,
+On Sat, Oct 24, 2026 at 01:21:28PM -0300, Joas Antonio dos Santos wrote:
+> macsec_del_rxsc_ctx() removes rx_sc->sc_xarray_element from
+> macsec->sc_xarray with xa_erase() and frees it with kfree() right away.
+> mlx5e_macsec_offload_handle_rx_skb() looks the element up with
+> xa_load() under rcu_read_lock() and then dereferences ->rx_sc, so an RX
+> completion that loaded the element just before xa_erase() reads freed
+> memory. rx_sc itself is already freed with kfree_rcu_mightsleep(); only
+> the element pointing to it was missed.
+> 
+> macsec_fs_id_del() has the same problem on the TX side: it removes
+> fs_id_found from the SCI rhashtable and frees it with kfree(), while
+> mlx5e_macsec_handle_tx_skb() and mlx5e_macsec_tx_build_eseg() read it
+> through mlx5_macsec_fs_get_fs_id_from_hashtable(), which uses
+> rhashtable_lookup() under rcu_read_lock().
+> 
+> Free both with kvfree_rcu_mightsleep(). Both run in process context
+> from the macsec offload ops, outside any spinlock, so sleeping is fine.
+> 
+> The sc_xarray_element issue was pointed out during review of
+> "net/mlx5e: macsec: fix use-after-free of metadata_dst on RX SC delete"
+> and left for a follow-up; this is that follow-up.
+> 
+> Fixes: b7c9400cbc48 ("net/mlx5e: Implement MACsec Rx data path using MACsec skb_metadata_dst")
+> Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
+> Assisted-by: Yaga Agent HackerSec Claude:claude-opus-5-5
+> ---
+> Testing: compile-tested only (arm64, W=1, CONFIG_MLX5_MACSEC=y, no new
+> warnings). I do not have MACsec-capable ConnectX hardware, so this was
+> not run on a real device and I have no reproducer against the driver
+> itself. The free-while-reader-holds-RCU pattern was reproduced with a
+> standalone test module under KASAN (slab-use-after-free on kmalloc-16),
+> and the same module showed no reports after switching to
+> kvfree_rcu_mightsleep().
+> 
+>  drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c | 2 +-
+>  drivers/net/ethernet/mellanox/mlx5/core/lib/macsec_fs.c   | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
+> index 38a3415ac..fb9126f6b 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
+> @@ -839,7 +839,7 @@ static void macsec_del_rxsc_ctx(struct mlx5e_macsec *macsec, struct mlx5e_macsec
+>  	list_del_rcu(&rx_sc->rx_sc_list_element);
+>  	xa_erase(&macsec->sc_xarray, rx_sc->sc_xarray_element->fs_id);
+>  	dst_release(&rx_sc->md_dst->dst);
+> -	kfree(rx_sc->sc_xarray_element);
+> +	kvfree_rcu_mightsleep(rx_sc->sc_xarray_element);
+>  	kfree_rcu_mightsleep(rx_sc);
+>  }
+>  
 
-> > > @@ -2271,11 +2300,11 @@ static int lan743x_tx_open(struct lan743x_tx
-> > > *tx)
-> > >                         FCT_TX_CTL_EN_(tx->channel_number));
-> > >
-> > >       /* reset tx channel */
-> > > -     lan743x_csr_write(adapter, DMAC_CMD,
-> > > -                       DMAC_CMD_TX_SWR_(tx->channel_number));
-> > > -     lan743x_csr_wait_for_bit(adapter, DMAC_CMD,
-> > > -                              DMAC_CMD_TX_SWR_(tx->channel_number),
-> > > -                              0, 1000, 20000, 100);
-> > > +     ret = lan743x_dmac_tx_reset(adapter, tx->channel_number);
-> > > +     if (ret)
-> > > +             netdev_err(adapter->netdev,
-> > > +                        "TX channel %d reset timed out\n",
-> > > +                        tx->channel_number);
-> > 
-> > Not a bug, but what's the benefit of keeping going here?
-> > 
-> > If the channel never came out of reset, lan743x_tx_open() and
-> > lan743x_rx_open() could return the error instead of starting it anyway.
-> > 
-> > With the reset work from 4/5 a failed reopen then ends in dev_close(),
-> > which seems like the better place to end up. It would also settle the
-> > open question from the cover letter.
-> > 
-> Agree with Nicolai's comment that returning error at lan743x_tx/rx_open() to
-> make lan743x_netdev_open() returns with error.
+Hi Joas,
 
-Sounds good. I'll update V2 to handle the timeout error by cleaning up
-previously initialized steps and then return the error.
+This patch does not apply because the problem in macsec_del_rxsc_ctx() has
+already been addressed by ad17ad50b8dc ("net: mlx5e: Fix use-after-free of
+the MACsec xarray entry on RX SC deletion") using kfree_rcu.
 
-One thing worth noting is that every call to lan743x_csr_wait_for_bit()
-could technically time out and most cases are unhandled by the driver
-today. My goal was to avoid making too many unrelated changes as part of
-this patch series, but more error handling could potentially be added as
-part of a future series.
+I would suggest taking that approach in macsec_fs_id_del() too
+unless there is a reason to use mightsleep.
 
-Thanks,
-Chris
+Quoting the documentation of kfree_rcu_mightsleep():
+
+/**
+ * kfree_rcu_mightsleep() - kfree an object after a grace period.
+ * @ptr: pointer to kfree for single-argument invocations.
+ *
+ * When it comes to head-less variant, only one argument
+ * is passed and that is just a pointer which has to be
+ * freed after a grace period. Therefore the semantic is
+ *
+ *     kfree_rcu_mightsleep(ptr);
+ *
+ * where @ptr is the pointer to be freed by kvfree().
+ *
+ * Please note, head-less way of freeing is permitted to
+ * use from a context that has to follow might_sleep()
+ * annotation. Otherwise, please switch and embed the
+ * rcu_head structure within the type of @ptr.
+ */
+
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/macsec_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/macsec_fs.c
+> index efc516749..910fafe40 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/lib/macsec_fs.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/macsec_fs.c
+> @@ -684,7 +684,7 @@ static void macsec_fs_id_del(struct list_head *macsec_devices_list, u32 fs_id,
+>  
+>  	xa_erase(fs_id_xa, fs_id);
+>  
+> -	kfree(fs_id_found);
+> +	kvfree_rcu_mightsleep(fs_id_found);
+>  
+>  	if (macsec_fs_is_macsec_device_empty(macsec_device)) {
+>  		list_del(&macsec_device->macsec_devices_list_entry);
+
+-- 
+pw-bot: changes-requested
