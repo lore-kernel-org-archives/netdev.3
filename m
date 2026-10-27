@@ -1,108 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793108853;
-	b=yBBwA/49BD5gSKsdzQ5aEuOIAVPIoLtqs+P4ToPSJjz1xsxJCSaE8XX/JjTGgLCe1Gqx
-	 Fjr4o5Vn92KXRNMTHMyUfDd+r84ECX+ELf+5i9zKCnNuHbTl2P1j+57EX8vvFbA24iIMz
-	 WWHK/QOI1sVZHqjPAx09hy9s8QEpWH6bYWNbQipudA2fesG6emrCOzeTPo5IXJBnNEkhx
-	 ZwQKJJTimjiqsdHD5nXJ6DSxdVX+D1zBE3WNZkx73wFz6qEK5bC4BeOHjpRzJEN737VkJ
-	 NJWGDOkBBDoC51cxRwlZdZpO2SxG7QTu3ViSWBi91oZILkqHfabUyeHxAQ3Ylw5THqw==
+	t=1793108893;
+	b=E4QNvQibMZuaO9MlZXRV5k+8kwyh2YSRU1moSYESwXf+XyDaHcaNMAg0fYPm+A+WNKJ1
+	 Nc7B4SZbZcmJHQSKODjpkPvcmrBdx6l2ITpNYzE7hCQ3NX6zcj/YNGpFOVLGY6gNs/Aig
+	 Zd6gTDysyGD/MYdhZQxkS5PK1YOkHH7yJPgEmrarwxkU82+EgC030zvi4/VtOgYUx8i8C
+	 w40JNIpW7sazLJgQ44E+d0Aspozg4zu0Q07Hi/25VOKIkgaDMSUkPBCJoXly4/lnASaEo
+	 MuTJ/9/JhOW5KYOYm5S5FJuFfxyjCktVdcAQ/2hYJa9zjASS5TqukbaykM3jRGgVdcQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793108853;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=Vi2VyxWb8hUzIvesy3TGk19mK9cZ4B2w+p8Em2DTRI4=;
-	b=RLMBxHiEZIzCc4Gpe0uhnrrZoIJGY7yaT6n3E5BuCIYk4i0PIb4UGSkEYk94cxj7DG4v
-	 SkedHuGHSZiC+3ycQutXH3WsuFTpivABlrsk8H/hgCIKwVCQoPahST/FgEK7BKR4gA582
-	 tQYzhFz19J2gPDnviRRKztE/B6PgnpLT0bO5Hajy2fCrSG1cSN1GkPOSU/L1ZjeErfagB
-	 BwhftvttzfDa2wMd/3jGZv5RKl39a85m/tmk0aGZXaf5zQTrqaeTekBODC3dlMJDWfIdk
-	 yfED7CUQrtE3GTu/1w6csnaphvS99K9iHKIr+lc2NC7IFrm2M1dv7yFBkYX+qRz439A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793108893;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=hcQ+vYLRd2pip651xzN/kPD2VR93IrBSI11gaTgf2Jk=;
+	b=h05V8EhsnR0+9DRkTRQM0PzEQFq3WCaI0jp++3P8OMCof8E4QdGASw2FH0ayxFaeo+lT
+	 ADzF4FLThkj3M2DLpRiiV1HNrmeFhVcil0NmfiGFkhX8Efzt/cwfbEU+8IjjkOnqVG2+o
+	 71Jj7rkqXXJ++nCpHJ8tF0HupS+v51db9OU3tQ0Pky+mHYe316Rq5KCP4VdsOGe5XW14S
+	 T3ADMDZQDNTfso5Jlp5BGuuKqp9qfMnjvRoMyToBcCa0DRgmjKgv18H2ppyjrU/xWBOft
+	 SgdWxtScatELqA7IJhs9TvPFmVS6GwiIOyJwua9lF1emo8rFocNymQDO7vRoVDqExCQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=suse.com;
-	spf=pass smtp.mailfrom=suse.com;
-	arc=none smtp.remote-ip=209.85.208.54
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nMQMgD0M;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A54606A31D
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 13:47:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B2A54606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6b429f71dbeso4283243a12.1
-        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 06:47:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1793108846; x=1793713646; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Vi2VyxWb8hUzIvesy3TGk19mK9cZ4B2w+p8Em2DTRI4=;
-        b=B52Xihmri68zEQvOwl0tik89nRtTdSvySUKtMLXC2dQa/2PIgZ+TqYVkwSGWfj6CLl
-         fmUxnQLmnJTCCasfhumf/8XYsj1jH9CNWubsIqmQo37PVxYt/Lfl0aDxbI+Gvl0wgZTV
-         vHjLMOphw3xRMpdsdwPxgavAmAb8/neFssd1A1L8ci+yspEuWJtchXTVqEmlLO8XgcQx
-         xoCVYSNUqrJMnbEhrgdfdGpf7Y4xJVvf7RX1KVEBrmtM06CSZud3KU4Cq6mJA/aJFF+O
-         H/O2V7URqxLCi73ulwpwCjk3aXhqOib2v/f2/2yB8tuRo8IYv9MCuxgh+SrcAofSghCa
-         d/jA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793108846; x=1793713646;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Vi2VyxWb8hUzIvesy3TGk19mK9cZ4B2w+p8Em2DTRI4=;
-        b=Cgvrybaqqd4KeoEDLfrY1AdGRLkaAHuAEcRoXUL69ReahSOh6AMovGHl4ZH9IbFukL
-         bHi3pZANhl1xoRElsDofkTTl83zhUc35+x7p85yqFd23NfYSPd/cjSO8XybrzNR+p5xO
-         PBWVVK/n4VFgh5firofNbGi+eYkWF61HTu/svA3Vb9xbiRdiB6oEjsc+akO7stTtBqi4
-         2JyaVtJE89H1UVU1YDB/aau17M0S45iPJeTIk80Zjg9kREGG44OIP3tOrTlsRjtdBXxZ
-         Z+/UPKr4VH/Ut1nRSP4aejOezdYUMYO3B59NoX3D+HLpZ4vHq9tHNM1lPkuJVkKhC/uC
-         8ViA==
-X-Forwarded-Encrypted: i=1; AKwUvByWcFa6WBMhEB3p7FHQB6aUHTDkDEiEYlCvQEJnkyt5nw1CLY7N74RnJGi1hVhQ0TaMamtITFE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKvt+IGH3QRB4BZuJ4ifZ978fMj0hpNWqawLoz7efKULCWwxRbr
-	cOlM7mjCCORHuC0mfi7NPZ1EQFpjyVVE4IPQ28hbRvnI39RDxF67Wluk6/0UzjJcFrc=
-X-Gm-Gg: AYBFou0rSq+WNVjIxacUaujExI6BG12QyemcoWedeP0iD/rCa3pYcld60qlyGnCHtkh
-	wJcqOIYRCAEeCxHPk3aasQQj3xgtzzsb88BvLshc3g57Ov2AeLqthl5K1nj1WWg0DUOpBwhuvwU
-	S+Ae60SCPjL6mWnFhz6iNfo58/LFv+A/3T3ZQ3HlScaKk4xxB4n5YdEjLQ+rPhw1u4TEl3Wr2UO
-	fJzuSZEzcXLAe78aEF3op9qeDB6egb3b0R/ig6NtlMMl1S2ivLU2+l12OIdCVIVStT48exGuRqz
-	jMMIUVBmjei/L/BWq5EZFzocv+YNIfunIYfiyJEEL1A5sII03VGyRZBFSF0qTIku2NPpouhQ/UB
-	uClFi+3YyJMTAUwnJCrURqqYnED6zOuUKnedHRHR97Xrp+wCvxukNiMKNgdxA6yeroC/JlUxFwY
-	rdwoUGxRLJvY6V0NiKnVjM0Z6WAOQpXyAg9Ktij/AS6R7fE+Y+E2g3XY/nnaaeiUithnj1jMjBy
-	pMa0tkvamzmvOexG1EZ4yWNG0NeT6yH3NLBNE4cvM7rEyZDiQb8+S+LKL/5kdynVgqYsPnHsxgl
-	h4BE9K7i8aJrqSc6nwVgqFIA6zJrDKQxvH/typY26vOI6YQdBIgs
-X-Received: by 2002:a17:907:d649:b0:c36:7579:fe6d with SMTP id a640c23a62f3a-c46bddce8edmr1009655366b.11.1793108845951;
-        Tue, 27 Oct 2026 06:47:25 -0700 (PDT)
-Received: from pathway.suse.cz ([176.114.240.130])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c46bd5206dasm460325266b.33.2026.10.27.06.47.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 06:47:25 -0700 (PDT)
-Date: Tue, 27 Oct 2026 14:47:22 +0100
-From: Petr Mladek <pmladek@suse.com>
-To: Breno Leitao <leitao@debian.org>
-Cc: John Ogness <john.ogness@linutronix.de>, chris@chrisdown.name,
-	Sam Crossley <samuelcrossley@gmail.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Simon Horman <horms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH RFC 0/2] netconsole: allow replaying the printk buffer on
- demand
-Message-ID: <auCraiuMZApQHiNA@pathway.suse.cz>
-References: <20261024-netcons-replay-upstream-v1-0-9613f38496e5@gmail.com>
- <87fqxskdpl.fsf@jogness.linutronix.de>
- <at84qygscue8crQi@gmail.com>
- <87a4o0k3qa.fsf@jogness.linutronix.de>
- <at9qgBucVm-QHnye@pathway.suse.cz>
- <87zew0ifpp.fsf@jogness.linutronix.de>
- <at-Ppa86sBw7mO8W@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DA5606A321;
+	Tue, 27 Oct 2026 13:48:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nMQMgD0M
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 679C11F01828;
+	Tue, 27 Oct 2026 13:48:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793108893;
+	bh=hcQ+vYLRd2pip651xzN/kPD2VR93IrBSI11gaTgf2Jk=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=nMQMgD0Mb7IOFzFwZrkUbyR949GoEndaNEora6D2lfTzkzjLVkSiWB7PVXaqKy0ke
+	 FJfp3HPFaWr1VaZr/PQuVFwgtgL1VNHSBPL59u/XPxA/+ovXiGv44NUcd2kLfS9VkS
+	 wDc+PmlT6r+NAPMLdBxBNTC9s5PkAzgnx0ZjQggI6/TWFAuUKPwA9GoCNIH/5vihel
+	 mQ2OiLKPwrHL5K22pMTjgKc9+6Hn28wkWm7R4pbAGiFb/sMYKO8s8ouWizeTBqJz7y
+	 Jq1LY6Zbk63EA2YOBOs7jIbP8mGVLsIKp3SmRbtR9NdOh64xNNhshYZPzEhNsr/S/w
+	 u1AuwTqgYGOHA==
+Subject:
+ Re: [PATCH net] net: lan966x: release the in-flight slot of a stale TX skb
+From: netdev-bot+sashiko@kernel.org
+To: daniel.machon@microchip.com
+Cc: horatiu.vultur@microchip.com, UNGLinuxDriver@microchip.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, richardcochran@gmail.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Tue, 27 Oct 2026 13:48:11 +0000
+Message-ID: <179310889194.3134.8592438113134956885@kernel.org>
+In-Reply-To:
+ <20261026-lan966x-ptp-stale-tx-slot-v1-1-9f7c895eb1ff@microchip.com>
+References:
+ <20261026-lan966x-ptp-stale-tx-slot-v1-1-9f7c895eb1ff@microchip.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -112,54 +66,318 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <at-Ppa86sBw7mO8W@gmail.com>
 
-On Mon 2026-10-26 10:49:32, Breno Leitao wrote:
-> A bit of context on the use case from our side.
-> 
-> In an ideal world netconsole is enabled from early boot through the
-> kernel command line, but in some case this is impossible
-> (linux as bootloaders - ipxe/sd-stubs/etc).
-> 
-> The other way to setup netconsole is to create a new target at runtime
-> through configfs. Netconsole then only sends messages from the time the
-> target is enabled.
-> 
-> For this second case, I would like to replay the whole kernel log on
-> netconsole, such as previous messages. Something might have happened
-> before the target was enabled, and we want visibility into that.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Just to be sure that I understand it correctly. 
+Critical: 0 (1) · High: 0 (5) · Medium: 1 (1) · Low: 0
 
-Is the netconsole registered before it gets functional, please?
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Is it possible to detect that the netconsole is not yet functional
-and when it could start working?
+- [Medium] After this patch, slots are reclaimed only by
+  lan966x_ptp_txtstamp_old_release(), which ages only the queue of the…
 
-I ask because there is the flag CON_PRINTBUFFER which should cause
-re-playing all messages on the console during registration.
+Pre-existing issues:
+- [Critical] This problem wasn't introduced by this patch, but when the
+  shared 512-entry FDMA TX ring is full, lan966x_fdma_xmit() returns…
+- [High] This problem wasn't introduced by this patch, but the
+  sparx5/lan969x driver has the same leak this patch fixes for lan966x.
+- [High] This problem wasn't introduced by this patch, but
+  lan966x_ptp_txtstamp_request() makes the skb visible on port->tx_skbs…
+- [High] This problem wasn't introduced by this patch, but when
+  lan966x_ptp_txtstamp_request() returns -EBUSY, lan966x_port_xmit()…
+- [High] This problem wasn't introduced by this patch, but in FDMA mode
+  lan966x_fdma_xmit() leaves a two-step skb DMA-mapped and referenced by…
+- [High] This problem wasn't introduced by this patch, but
+  lan966x_fdma_xmit() can free a two-step skb that is still on…
+- [Medium] This problem wasn't introduced by this patch, but
+  lan966x_ptp_txtstamp_old_release() frees two-step skbs after…
 
-A solution might be to delay the console registration until
-the netwok target is really working.
+--
 
-Another solution might be to temporary block/disable the console
-until it gets operational. We already have console_suspend()/resume()
-API. But we might need something new to distinguish it from
-the system suspend/resume handling.
+net: lan966x: release the in-flight slot of a stale TX skb
 
-> That said, the "per-console counter" might work as well, since it would
-> start as 0, thus, we know that netconsole target would be behind, and
-> try to replay? (not sure how yet)
+lan966x_ptp_txtstamp_old_release() now returns how many stale two-step TX
+skbs it freed. lan966x_ptp_txtstamp_request() subtracts that count from
+lan966x->ptp_skbs under ptp_ts_id_lock. Before this, a slot whose
+timestamp never arrived was never released, so two-step TX eventually
+failed on every port.
 
-This is what the console_try_replay_all() does. The only difference
-is that it resets the counter to the oldest available message,
-see __console_rewind_all(). It is just a small optimization
-when the ring buffer is already full and the oldest messages
-are gone.
+> diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c b/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
+> index 8c40db90ee8f..9be2cfe6feeb 100644
+> --- a/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
+> +++ b/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
 
-> That said, one way or another might work for our purposes ?!
+[ ... ]
 
-Best Regards,
-Petr
+> @@ -389,14 +390,18 @@ static void lan966x_ptp_txtstamp_old_release(struct lan966x_port *port)
+>  
+>  		__skb_unlink(skb, &port->tx_skbs);
+>  		dev_kfree_skb_any(skb);
+> +		purged++;
+>  	}
+
+[Severity: High]
+This isn't a bug introduced by this patch, but can this free a two-step
+skb that the FDMA engine is still reading?
+
+In FDMA mode, lan966x_fdma_xmit() leaves the skb DMA-mapped and
+referenced by the shared TX ring, and hands its lifetime to the PTP code:
+
+drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c:lan966x_fdma_xmit() {
+    ...
+	next_dcb_buf->data.skb = skb;
+    ...
+	if (skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP &&
+	    LAN966X_SKB_CB(skb)->rew_op == IFH_REW_OP_TWO_STEP_PTP)
+		next_dcb_buf->ptp = true;
+    ...
+}
+
+On completion, lan966x_fdma_tx_clear_buf() only unmaps it:
+
+			if (!dcb_buf->ptp)
+				napi_consume_skb(dcb_buf->data.skb, weight);
+
+lan966x_ptp_txtstamp_old_release() frees by age alone.
+LAN966X_PTP_TIMEOUT is msecs_to_jiffies(10), which is a single jiffy at
+HZ=100. Nothing checks whether the FDMA descriptor has completed.
+
+The PTP frame can sit behind other frames in the 512-entry ring that all
+ports share, or egress can be slow (10/100 link, PAUSE, shapers). In
+either case, the next two-step request on the same port can hand the skb
+data back to the allocator while the device can still DMA-read it.
+
+Could the device then send freed or reused memory onto the wire? And
+would the late stamp then hit WARN_ON(!skb_match)?
+
+[Severity: Medium]
+This is also a pre-existing issue, but because aging here is based only
+on time, what happens to a stamp that arrives after its skb has been
+aged out?
+
+lan966x_ptp_irq_handler() matches FIFO entries only by the per-port
+0..511 id:
+
+		skb_queue_walk_safe(&port->tx_skbs, skb, skb_tmp) {
+			if (LAN966X_SKB_CB(skb)->ts_id != id)
+				continue;
+		...
+		if (WARN_ON(!skb_match))
+			continue;
+
+A late stamp either hits the WARN_ON(), or it gets attributed to a newer
+skb that reused the id, if the port's ts_id has wrapped in the meantime.
+
+Can userspace then receive a wrong TX hardware timestamp, with the newer
+skb's own stamp tripping the WARN later? Frames held in egress past the
+timeout would trigger this, for example with taprio/tbf/cbs offload,
+PAUSE or a slow link.
+
+ptp_skbs never prevented id reuse, so this patch does not change the
+behaviour.
+
+>  	spin_unlock_irqrestore(&port->tx_skbs.lock, flags);
+> +
+> +	return purged;
+>  }
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does sparx5/lan969x need
+the same fix? sparx5_ptp_txtstamp_old_release() in
+drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c matches the pre-patch
+lan966x version, and it never decrements sparx5->ptp_skbs:
+
+	skb_queue_walk_safe(&port->tx_skbs, skb, skb_tmp) {
+		if time_after(SPARX5_SKB_CB(skb)->jiffies + SPARX5_PTP_TIMEOUT,
+			      jiffies)
+			break;
+
+		__skb_unlink(skb, &port->tx_skbs);
+		dev_kfree_skb_any(skb);
+	}
+
+There are only two other decrements. The IRQ handlers in sparx5_ptp.c
+and lan969x.c decrement it for a matched skb, and
+sparx5_ptp_txtstamp_release() does so on the xmit busy path.
+
+After SPARX5_MAX_PTP_ID (512) lost stamps,
+sparx5_ptp_txtstamp_request() rejects every two-step request:
+
+	if (sparx5->ptp_skbs == SPARX5_MAX_PTP_ID) {
+		spin_unlock_irqrestore(&sparx5->ptp_ts_id_lock, flags);
+		return -EBUSY;
+	}
+
+sparx5_port_xmit_impl() then returns NETDEV_TX_BUSY without stopping the
+queue:
+
+		if (sparx5_ptp_txtstamp_request(port, skb) < 0)
+			return NETDEV_TX_BUSY;
+
+Wouldn't the qdisc then requeue and retry the same PTP skb forever, and
+block all traffic behind it on that TX queue?
+
+A companion patch for sparx5 seems needed. It would return the purged
+count and subtract it under ptp_ts_id_lock.
+
+[ ... ]
+
+> @@ -408,9 +413,10 @@ int lan966x_ptp_txtstamp_request(struct lan966x_port *port,
+>  	if (rew_op != IFH_REW_OP_TWO_STEP_PTP)
+>  		return 0;
+>  
+> -	lan966x_ptp_txtstamp_old_release(port);
+> +	purged = lan966x_ptp_txtstamp_old_release(port);
+>  
+>  	spin_lock_irqsave(&lan966x->ptp_ts_id_lock, flags);
+> +	lan966x->ptp_skbs -= purged;
+>  	if (lan966x->ptp_skbs == LAN966X_MAX_PTP_ID) {
+
+[Severity: Medium]
+The ptp_skbs limit is switch-wide. Slots are only reclaimed by aging the
+transmitting port's queue, and only when that port sends a two-step
+frame. Can stale skbs on one port still use up the limit for every other
+port?
+
+The commit message says idle ports keep their stale skbs. Nothing else
+releases them either. lan966x_port_stop() does not purge port->tx_skbs,
+and HWTSTAMP_TX_OFF in lan966x_ptp_hwtstamp_set() only does:
+
+	case HWTSTAMP_TX_OFF:
+		port->ptp_tx_cmd = IFH_REW_OP_NOOP;
+		break;
+
+After that the port can never send a two-step frame again, so its stale
+skbs are never aged. Only lan966x_ptp_deinit() purges tx_skbs.
+
+Lost stamps can pile up on a port that then goes quiet: ifdown, TX
+timestamping turned off, ptp4l stopped, or a boundary clock port in
+passive state. Two-step TX on the other ports is then throttled, and
+returns -EBUSY once the total reaches LAN966X_MAX_PTP_ID. That is the
+failure this patch sets out to fix.
+
+Would any of these close the gap: aging all ports before rejecting,
+aging from a timer or worker, or purging and uncounting on ndo_stop and
+HWTSTAMP_TX_OFF?
+
+>  		spin_unlock_irqrestore(&lan966x->ptp_ts_id_lock, flags);
+>  		return -EBUSY;
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does this -EBUSY path
+leak the skb? lan966x_port_xmit() returns the errno directly as its
+netdev_tx_t:
+
+		err = lan966x_ptp_txtstamp_request(port, skb);
+		if (err)
+			return err;
+
+dev_xmit_complete() treats any rc < NET_XMIT_MASK, negative values
+included, as meaning the driver consumed the skb. The core therefore
+neither requeues nor frees it. The skb is not on port->tx_skbs either,
+because this return happens before skb_queue_tail().
+
+So every two-step frame sent while the slot table is full would leak an
+skb, and its sk_wmem_alloc charge would keep the sending socket pinned.
+
+Once an admin has enabled HW TX timestamping on a port, could an
+unprivileged user fill the table and keep leaking memory? Sending UDP to
+port 319 with SOF_TIMESTAMPING_TX_HARDWARE would be enough.
+
+[Severity: High]
+This is a pre-existing issue, but further down in
+lan966x_ptp_txtstamp_request() the skb is published on port->tx_skbs
+before its control block is filled in:
+
+	skb_queue_tail(&port->tx_skbs, skb);
+	LAN966X_SKB_CB(skb)->ts_id = port->ts_id;
+	LAN966X_SKB_CB(skb)->jiffies = jiffies;
+
+Only ptp_ts_id_lock covers these writes. lan966x_ptp_irq_handler() walks
+the list holding only tx_skbs.lock and matches on
+LAN966X_SKB_CB(skb)->ts_id.
+
+On PREEMPT_RT, ptp_ts_id_lock is a sleeping lock and the PTP handler is
+a threaded IRQ (devm_request_threaded_irq() in lan966x_probe()). The
+handler can therefore preempt the sender right after skb_queue_tail().
+
+Suppose the FIFO holds an unmatched stamp, for example a late one for an
+aged-out skb, whose id equals the leftover ts_id bytes in the cb. The
+handler then unlinks the new skb, and once request() drops the lock it
+timestamps and frees it.
+
+Wouldn't lan966x_port_xmit() then keep reading the cb and transmit the
+freed skb? Setting ts_id and jiffies before skb_queue_tail() would avoid
+this.
+
+[Severity: High]
+This is another pre-existing issue. After request() has queued and
+counted the skb, lan966x_fdma_xmit() can free it without unlinking it
+from port->tx_skbs:
+
+drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c:lan966x_fdma_xmit() {
+    ...
+	if (skb_put_padto(skb, ETH_ZLEN)) {
+		dev->stats.tx_dropped++;
+		return NETDEV_TX_OK;
+	}
+    ...
+}
+
+skb_put_padto() passes free_on_error=true, so __skb_pad() frees the skb
+when pskb_expand_head(GFP_ATOMIC) or skb_linearize() fails. This return
+also skips the lan966x_ptp_txtstamp_release() call that the release:
+label makes.
+
+L2 PTP event messages are 58 bytes, which is below ETH_ZLEN. They are
+cloned when an AF_PACKET tap is active, and that forces
+pskb_expand_head().
+
+Under memory pressure, could a later old_release() or IRQ handler walk
+read the freed skb, __skb_unlink() it, and call dev_kfree_skb_any() on
+it a second time?
+
+[Severity: Critical]
+This isn't introduced by this patch either, but the ring-full path in
+lan966x_fdma_xmit() also returns without undoing the reservation made
+here:
+
+	next_to_use = lan966x_fdma_get_next_dcb(tx);
+	if (next_to_use < 0) {
+		netif_stop_queue(dev);
+		return NETDEV_TX_BUSY;
+	}
+
+The register injection path does undo it, in lan966x_port_ifh_xmit():
+
+err:
+	if (skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP &&
+	    LAN966X_SKB_CB(skb)->rew_op == IFH_REW_OP_TWO_STEP_PTP)
+		lan966x_ptp_txtstamp_release(port, skb);
+
+	return NETDEV_TX_BUSY;
+
+On NETDEV_TX_BUSY, dev_hard_start_xmit() overwrites skb->next, and
+dev_requeue_skb() links the skb into q->gso_skb. At that point the skb
+is still linked on port->tx_skbs and still counted in ptp_skbs.
+
+Can this corrupt port->tx_skbs? A later old_release() or IRQ walk could
+follow the overwritten pointers, or free an skb the stack still owns.
+
+When the qdisc retries, request() calls skb_queue_tail() on the same skb
+again. If that skb was the tail, skb->next ends up pointing to itself,
+and skb_queue_walk_safe() in lan966x_ptp_irq_handler() would loop
+forever with tx_skbs.lock held.
+
+The 512-entry ring is shared by all ports, and netif_stop_queue() only
+stops TX queue 0 of the current netdev. Ordinary TX congestion plus
+two-step traffic on another port or queue looks like enough to reach
+this.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261026-lan966x-ptp-stale-tx-slot-v1-1-9f7c895eb1ff%40microchip.com
