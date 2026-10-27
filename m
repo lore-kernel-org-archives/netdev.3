@@ -1,46 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793092256;
-	b=hvGvzIHwI1iijyPV81jlX2CYpxkPDjlJZP/MQdqp4Q4Du1Az3uq4+6BFccyo7cFO59AF
-	 UrJxCfaNobLU1LryVhpMwX66VzfMi71bVbn7kLMTrcsH2JyJhwlXDEVpp00Xt8kTyoTwR
-	 WbAdGrKE/6nXHO+Lp2DQSfAQmPIquxpaJrgT6uW+agxxFPXorkw8fraF6hnRC4uCQTVU3
-	 QpRcN1WkjK4spOpRRZOyACkVT/M6hNNzPCKFbr+uyEBamDhIWWHZoVs10Bl6/hZ4Sc+m+
-	 6o6S3mQzsQP2SKkcGnKpbABytrW7vZgVE/MvCFARhrNccPEMci7y+u7G/T2S3FwoOeg==
+	t=1793092253;
+	b=tbDNNQSL/cIJWAUUYgjoJJsqMQ50EUmaCj0NGQDVcr/D+5wRF2QiQJiO5W+sdavMVUbs
+	 cKNZvqzu6VpV8U1RDKRb4nImuhRXiRF7222093Rj7qWmNgY4IOS/vWsrHQ6OdI0yvLAlV
+	 o1WmuTWaJyB/7y/YerldyWHtez5fBT71I29GOuskJJNU11K2CsKnnqTpyAEFQpRmXCqCF
+	 mHZyumTiu5a9u71WGVP9/E/zBeub7Wm0Pv92Re/RmLhxPwcy6nrvBl4sVFWcTPQN57pwc
+	 TFHLnbAPSzc842TkpgVcj9HOL/ud3IKrbH0dbshsnojbwA7jYxFtPNejXuqjHxWNsPQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793092256;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793092253;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=uGJBMOzeGvE2Nb+TZ2KRWS5LM8HfN0Oo/8rnIRB4zSs=;
-	b=foF+ChvYyOb5lTCOUfccQ9xd3jGo7MNdHfwuFC3j/RFqVZzSIWyJjonF1kXTup+Z9fn1
-	 xTu/nj3ro6JHu1LmgwlPHJdEcuwpss5DUNn5bH0twNwiBY2AD1A6SrneuwaCfA8xzZBRy
-	 kpO+iwoXJPdB+RfwVlXagdnNfLqV+62WfroAyp37RoSdAFLaEnB+9C5W/WAhPXdQ8qJ5i
-	 XWHKinIztZLqOTOTycvSYmqAw/ZfiJ6sXTGGmOhfRI82Su3QyUNsmcVPOmOfJl1pfsQiT
-	 gmtKf/XTWS1LHEVH1WqSyJMt6xrGTeptMXs9lWz8FabTPnvjDqwWAwk+iYn1fOLqiSA==
+	bh=wy7JHxQwUZNHWq+XEZMf1oDxplyRZe0up+B5GG9yIXw=;
+	b=ArqHPE0gPTz4p7u3r/UETckVOKS4XBuiaVMyqKIc+sMZ+4/TcbspLXNleagq8wnT3kNe
+	 84aczJfRMi4fbeZ68QQZOPoqsY6TEZWRy87SoftgyY1X4ECBqu9snIkSdE6M7a69BtC7i
+	 pB7Cu66cobmidA6s4bs0X9yMPLtyA7Bh8jsbOqFET8QqKtWjz/Jlkzd/10ycqGBDuTc0P
+	 9GGjm7EszfeNkIFYTu4LNW2SOaBaZNnXJFN6WXSM/sPzg3vxard45jWhsDGlF6b8PBCM3
+	 OiEH7GDoKqum6TQxgoUzfVxEL0+IDb09P5ulTCki8EXz9vlfnwdykD/rqxYIjwGQ5vg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KbNMM3s5;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KzWgtNHV;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8334606A32A;
-	Tue, 27 Oct 2026 09:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F94606A31A;
+	Tue, 27 Oct 2026 09:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KbNMM3s5
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70AEC1F031E1;
-	Tue, 27 Oct 2026 09:10:54 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KzWgtNHV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 410261F01825;
+	Tue, 27 Oct 2026 09:10:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793092255;
-	bh=uGJBMOzeGvE2Nb+TZ2KRWS5LM8HfN0Oo/8rnIRB4zSs=;
+	s=k20260515; t=1793092252;
+	bh=wy7JHxQwUZNHWq+XEZMf1oDxplyRZe0up+B5GG9yIXw=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=KbNMM3s58kunelRF3V/7PEtxaciElEGQUR4fCSgo9Uzw7Qvj/y7mze/HfbTb7dAWL
-	 9tSY5hNQGCNDR3QfNL5KiCdD7Wj/Q1VZN/bHjwufVZO9K2he3lpcs3gmSGxiQ4JpV7
-	 n1d0IkKPps2yxzyOv8MVhiNhdfWF1rE94IuXfSs9WLvU5Ts0PLUgbrtSffMwYsUa9N
-	 If2VqsBU31BRRuhKZ8AQGqPw0laFcOU54J2hObG6eMpzKNHJs0bs1Z2qsYxMUJHoC+
-	 ffzBeUlXTXFep45t5iY7mpE/pWbxYWRhmZvSbaElcO79TpDccbJ0IGJeLxrhtELnfo
-	 rcXv2e8NiTSNA==
-Subject: Re: [PATCH net 3/6] net: stmmac: drop multi-buffer frames in XDP mode
+	b=KzWgtNHVe49QUMir0cIGD8U+6iphp40+xr4a81O50teAKy8Z/+FEXIwEmB16qhjye
+	 6IVcDsFlwEipT6ASUk7D8Zs3n1XCQKoPxs3BNL9xQT9f1WxHeHynFHMyOQvstJZljk
+	 QzHXZhagO7IBOanIjfXuNG5eD35KN2xcJUIOczUifLFpRIRDotqP4EDKAnaT9CGNu2
+	 voaDjT/wCL8OEwu7LeYvw7xFFWjzZ1ll5uqRWNULc9ZAMTv7BAFD6/G2xD/5end9zo
+	 UKwIoozQ3M/S7uMP/VJqm6GQdI5BTrwtRCBtV1LzMgRrjpFnpHucD8sIwUP3BJ3Mqc
+	 CP/x5TdEfVEiQ==
+Subject: Re: [PATCH net 1/6] net: stmmac: take ownership of saved RX state at
+ poll entry
 From: netdev-bot+sashiko@kernel.org
 To: lorenzo.bianconi@oss.qualcomm.com
 Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
@@ -50,11 +51,11 @@ Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
  sdf@fomichev.me, Jose.Abreu@synopsys.com, boon.leong.ong@intel.com,
  o.rempel@pengutronix.de, netdev@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
-Date: Tue, 27 Oct 2026 09:10:54 +0000
-Message-ID: <179309225404.3134.13890305235467768199@kernel.org>
-In-Reply-To: <20261023-stmmac-xdp-fixes-v1-3-efb37e19f5bd@oss.qualcomm.com>
-References: <20261023-stmmac-xdp-fixes-v1-3-efb37e19f5bd@oss.qualcomm.com>
-X-sashiko-severity: Low
+Date: Tue, 27 Oct 2026 09:10:50 +0000
+Message-ID: <179309225078.3134.4254254722485703329@kernel.org>
+In-Reply-To: <20261023-stmmac-xdp-fixes-v1-1-efb37e19f5bd@oss.qualcomm.com>
+References: <20261023-stmmac-xdp-fixes-v1-1-efb37e19f5bd@oss.qualcomm.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -67,104 +68,57 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 1 · Medium: 0 (1) · Low: 0
 
-- [Low] The patch cites only `Fixes: 5fabb01207a2` ("net: stmmac: Add
-  initial XDP support").
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] The commit message says that on resume a saved partial frame
+  would be resumed "with descriptors from the freshly initialized ring",…
 
 Pre-existing issues:
-- [High] Without an XDP program, stmmac_rx() still re-parses the rest of
-  a frame as a new frame when napi_build_skb() fails on a non-last…
-- [Medium] stmmac_rx() adds its per-poll local counters to the device-
-  wide `priv->xstats.rx_dropped` and `priv->xstats.rx_errors` (plain…
+- [Medium] In stmmac_rx()
+  (drivers/net/ethernet/stmicro/stmmac/stmmac_main.c), the…
 
 --
 
-net: stmmac: drop multi-buffer frames in XDP mode
+net: stmmac: take ownership of saved RX state at poll entry
 
-This patch makes stmmac_rx() drop frames that span more than one
-descriptor, or that use the second buffer of a descriptor, while an XDP
-program is attached. Discarded buffers are no longer returned to the page
-pool, so stmmac_rx_refill() can reuse them in place. The re-parse of the
-remaining descriptors after an XDP_CONSUMED verdict is also removed.
-
-> Fixes: 5fabb01207a2 ("net: stmmac: Add initial XDP support")
-
-[Severity: Low]
-Should this also carry a Fixes tag for 88095728511e ("net: stmmac: fix rx
-Scatter-Gather support")? Two of the failures described in the commit
-message seem to come from that commit, not from the initial XDP support.
-
-First, the buf1_len underflow. Before 88095728511e, stmmac_rx_buf1_len()
-returned min_t(unsigned int, dma_buf_sz, plen) for the last descriptor. A
-tail re-parsed after XDP_CONSUMED therefore got dma_buf_sz bytes.
-
-88095728511e changed the return to:
-
-	return min_t(unsigned int, priv->dma_conf.dma_buf_sz, plen - len);
-
-It also moved the XDP-mode FCS strip into the if (!skb) block:
-
-	if (stmmac_xdp_is_enabled(priv) && !buf2_len) {
-		buf1_len -= ETH_FCS_LEN;
-
-Together, these two changes let a 0-3 byte buf1_len underflow.
-
-Second, the second-buffer case. Before 88095728511e, stmmac_rx_buf2_len()
-started with:
-
-	if (!priv->sph_active)
-		return 0;
-
-stmmac_xdp_set_prog() clears sph_active while XDP is enabled, so buf2_len
-was always 0 in XDP mode. That check is now:
-
-	if (!stmmac_rx_check_buf2_cap(priv))
-		return 0;
-
-So "GMAC4/XGMAC always provide a second data buffer per descriptor" has
-only been true since 88095728511e. The new buf2_len drop fixes a condition
-that commit introduced.
-
-The last patch in this series ("net: stmmac: fix XDP RX buffer DMA sync
-length") already carries Fixes: 88095728511e.
+The saved partial-frame RX state is now taken and cleared at the start of
+stmmac_rx() and stmmac_rx_zc(). It is saved again only if the frame is
+still incomplete when the poll ends. The saved skb is also dropped in
+stmmac_reset_rx_queue() and __free_dma_rx_desc_resources().
 
 > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 3fa2c15222d88..30a2774d722b7 100644
+> index b20e5038eeadd..fba21599a5e15 100644
 > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
 > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -5903,18 +5903,23 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
 
 [ ... ]
 
-> -		if (unlikely(error && (status & rx_not_ls)))
-> -			goto read_again;
-> +		/* We do not support SG in XDP mode */
-> +		if (unlikely(!error && (status & rx_not_ls) &&
-> +			     stmmac_xdp_is_enabled(priv))) {
-> +			rx_dropped++;
-> +			error = 1;
-> +		}
->  
->  		if (unlikely(error)) {
-> +			if (status & rx_not_ls)
-> +				goto read_again;
-> +
->  			dev_kfree_skb(skb);
->  			goto next;
+> @@ -6032,10 +6042,8 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+>  		/* Remove FCS if needed */
+>  		if (!fcs_stripped && pskb_trim(skb, len)) {
+>  			dev_kfree_skb_any(skb);
+> -			skb = NULL;
+>  			rx_dropped++;
+> -			count++;
+> -			continue;
+> +			goto next;
 >  		}
 
-[Severity: High]
-This is a pre-existing issue, and this patch did not introduce it. The new
-error-and-drain handling only runs when stmmac_xdp_is_enabled() is true.
-Without an XDP program, can the same re-parse still happen when
-napi_build_skb() fails on a non-last descriptor?
+[Severity: Medium]
+This isn't a bug introduced by this patch, but can a multi-descriptor
+frame reach the stack as a truncated fragment when napi_build_skb() fails
+on a descriptor that is not the last one?
 
-The failure branch in stmmac_rx() leaves skb == NULL and error == 0:
+The allocation failure path in stmmac_rx() does not set error:
 
 	skb = napi_build_skb(page_address(buf->page),
 			     rx_q->napi_skb_frag_size);
@@ -176,78 +130,106 @@ The failure branch in stmmac_rx() leaves skb == NULL and error == 0:
 		count++;
 		goto drain_data;
 	}
-	...
-drain_data:
-	if (likely(status & rx_not_ls))
-		goto read_again;
 
-The next descriptor of the same hardware frame then passes the error check
-and is handled as the start of a new frame.
+When status & rx_not_ls is set, drain_data jumps back to read_again. At
+that point skb == NULL and error == 0, and len still holds the bytes of
+the dropped prefix.
 
-SPH is active by default on SPH-capable GMAC4/XGMAC when no XDP program is
-attached. In that case stmmac_rx_buf1_len() returns 0 for this descriptor:
+With no XDP program attached, stmmac_xdp_run_prog() returns NULL. The next
+descriptor of the same frame then builds a new skb from a mid-frame
+buffer.
 
-	if (priv->sph_active && len)
-		return 0;
+On the last descriptor, len still includes the dropped prefix. So
+pskb_trim() does nothing, because len is not smaller than skb->len:
 
-napi_build_skb() then builds an skb with an empty linear area, and the
-payload is only in a buf2 frag. pskb_trim(skb, len) does nothing, because
-the stale len is larger than skb->len.
+	return (len < skb->len) ? __pskb_trim(skb, len) : 0;
 
-With the default hw_vlan_en, nothing pulls the header into the linear area
-before this call chain:
+Wouldn't that pass a mid-payload fragment, with its FCS still attached,
+to napi_gro_receive()? Its ip_summed would come from the status of the
+whole frame, and rx_bytes would be counted with the full-frame len.
 
-	eth_type_trans()
-	  eth_skb_pull_mac()
-	    skb_pull_inline(skb, ETH_HLEN)
-	      __skb_pull()
-	        BUG()
+The same thing seems to happen across a poll boundary. In that case
+in_progress saves skb == NULL, error == 0 and len.
 
-Under memory pressure, could an on-link peer panic the machine this way by
-sending a frame larger than one buffer? GMAC_CONFIG_JE is set in
-GMAC_CORE_INIT, so such frames are accepted even at MTU 1500.
-
-Without SPH, the stack instead gets a frame whose Ethernet header comes
-from the middle of the peer's payload.
-
-This path is still unchanged at the end of the series. The VLAN rework in
-"net: stmmac: fix VLAN tag stripping on short and non-linear RX frames"
-adds pskb_may_pull() only to the software stmmac_rx_vlan() path.
-
-Would it drain the frame correctly to set error = 1 in the
-napi_build_skb() failure branch, as this patch does for XDP mode?
-
-> @@ -5926,6 +5931,14 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
->  		buf2_len = stmmac_rx_buf2_len(priv, p, status, len);
->  		len += buf2_len;
->  
-> +		/* Drop the packet if it is split over buf1 and buf2 on a
-> +		 * single descriptor if the interface is running in XDP mode.
-> +		 */
-> +		if (unlikely(stmmac_xdp_is_enabled(priv) && buf2_len)) {
-> +			rx_dropped++;
-> +			goto next;
-> +		}
-
-[Severity: Medium]
-This isn't a bug introduced by this patch. The new drop paths add to
-rx_dropped, which stmmac_rx() folds into a device-wide counter at the end:
-
-	priv->xstats.rx_dropped += rx_dropped;
-	priv->xstats.rx_errors += rx_errors;
-
-These are plain unsigned long fields in struct stmmac_extra_stats. They
-are updated with a non-atomic read-modify-write, and no shared lock is
-held.
-
-Each RX queue has its own NAPI instance. Can two queues polled on
-different CPUs lose each other's increments here? The napi_syncp section
-just before this only protects the per-queue rxq_stats.
-
-The race goes back to 133466c3bbe171 ("net: stmmac: use per-queue 64 bit
-statistics where necessary").
+The old status & rx_not_ls save condition behaved the same way. Later in
+the series, "net: stmmac: drop multi-buffer frames in XDP mode" sets
+error for rx_not_ls when XDP is enabled. The non-XDP path is unchanged.
 
 [ ... ]
+
+> @@ -8412,6 +8421,9 @@ static void stmmac_reset_rx_queue(struct stmmac_priv *priv, u32 queue)
+>  {
+>  	struct stmmac_rx_queue *rx_q = &priv->dma_conf.rx_queue[queue];
+>  
+> +	dev_kfree_skb_any(rx_q->state.skb);
+> +	rx_q->state.skb = NULL;
+> +	rx_q->state_saved = false;
+>  	rx_q->cur_rx = 0;
+>  	rx_q->dirty_rx = 0;
+>  }
+
+[Severity: High]
+The commit message says that without this drain, a partial frame saved
+before suspend would be resumed "with descriptors from the freshly
+initialized ring". Is the ring actually freshly initialized on the
+stmmac_resume() path?
+
+stmmac_resume() does:
+
+	stmmac_reset_queues_param(priv);
+
+	stmmac_free_tx_skbufs(priv);
+	stmmac_clear_descriptors(priv, &priv->dma_conf);
+
+	ret = stmmac_hw_setup(ndev);
+
+stmmac_clear_rx_descriptors() calls stmmac_init_rx_desc() on every RX
+descriptor, and that only sets ownership bits:
+
+- dwmac4_rd_init_rx_desc() and dwxgmac2_init_rx_desc() OR OWN|BUF1V into
+  des3.
+- enh_desc_init_rx_desc() and ndesc_init_rx_desc() OR RDES0_OWN into
+  des0.
+
+Buffer addresses are never reprogrammed and empty slots are not refilled.
+stmmac_init_dma_engine() then sets the RX tail pointer to buf_alloc_num,
+which gives every descriptor back to the DMA.
+
+Suppose page_pool_alloc_pages() failed in stmmac_rx_refill() for the
+slots used by the saved partial frame. The loop then breaks before
+stmmac_set_desc_addr():
+
+	if (!buf->page) {
+		buf->page = page_pool_alloc_pages(rx_q->page_pool, gfp);
+		if (!buf->page)
+			break;
+	}
+
+Those descriptors keep the DMA addresses of pages that state.skb now
+owns, and buf->page == NULL.
+
+With this change, stmmac_reset_rx_queue() returns those pages to the
+page_pool through dev_kfree_skb_any(). The same descriptors are then
+re-armed and the DMA is restarted.
+
+Can the device then DMA into pages that have already been recycled or
+freed?
+
+There is a separate problem on dwmac4 and xgmac. A descriptor that was
+written back but not refilled before suspend still holds write-back data
+in des0/des1. For example, dwmac4_wrback_get_rx_vlan_tci() reads the VLAN
+tag from des0. Re-arming that descriptor would make the DMA treat the
+write-back data as a buffer address.
+
+The re-arm-without-refill behaviour predates this patch: an earlier
+upstream re-init on resume was reverted. Before this patch, the stale skb
+would also have been completed and freed on the first poll after resume,
+while those descriptors were still armed. So this change frees the pages
+earlier rather than creating the problem.
+
+Since the resume handling depends on the ring being freshly initialized,
+should the commit message be corrected? And should the resume path refill
+and reprogram the RX descriptors before the DMA is restarted?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261023-stmmac-xdp-fixes-v1-0-efb37e19f5bd%40oss.qualcomm.com
