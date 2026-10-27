@@ -1,97 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793085349;
-	b=qwT80hIadZOMSolJPE+MTXbE1jhlqifLZazJB7IDcH6a+Yy6ZPmgV7FwGM2d9eS7CV6h
-	 /hdV45mZj4dTTIn5MBlbaENdpA+KrWPTuBvBAJDUp4JsuelqsiMCewJwGJQ9ZRhcUESfd
-	 cfIdmETF/zobbHX12pUaM0fpD+rDY5qz7hrAsIU5uQPKKsduMjIkqcK3cyuaNFb1MTHc0
-	 1y8n4DPRKOW+gMmzDpSEeHlpdNyU3/NjufD4ajK5J4Nsk046Y3lR/4bjfa9Zvl/qyNR3f
-	 EgsAfFDC7+sqjfSZTXa8JwxPq1w24/SMn1SxkZkCpAYxcBsjywTOTEQNgnOyUT9ilZA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793085349;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=R+oWYu6/QfEBhFYUPjNxhFKQR9WYE+mlse/QW0U2HJ8=;
-	b=G5ddEKp7m/GwRS9WEbdWavWntuveAi7lqJfj72zD/FMlg14q9pasWkSCERPRU7pa3rXF
-	 RbJHFvWhcGT6xbtH0zW1GW0d+NrXTX3V5eCghTfJTNyEKDPgMoqIf7iQvD5kyJQhq0sWy
-	 4hwX/7nV9qiktydr0/zcMAXHTLvI3Oxh71WmLOe1zGemkh6Xe79gYRuFnSo68r83p4a8G
-	 me+R+0SL6+OipjGY7cie4GP1UtzPzGzrnQO2XLaUGGl/UnVAC7gJa1bDtSYW/JJ89LuS6
-	 ohreMlT3QrP8io63vtGvjd4owPU9c/ebGH7JJdYOg9+fb6OBPYhHYVQ6SN9vLHtEk1A==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=BbK3uUll;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.2
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793085887;
+	b=Dbf8uAeGg9TPcGb24U+AojuI5mKqqPU0DYGH/ivVaOqpePmMCsosABizDlFEF0ZCLJkb
+	 /EjFOHk8Buip3lqpF4adPFeRNOK8Ozv39luG/DOxGmkWt/DSAppTg4k/rk33eqVYHDvSg
+	 vVUXLepB5Usd+53lQXzheuroxgkYywPBm7myB6pY0IYklleywY1v/NvEBXQ9qyq2fXC+w
+	 YX/QJFLcJZSmYKQ4hh6lOXDL9zVHlLwZorPBeoR7XB022g2WOB5swlnXktBMMkVDdRsag
+	 6kZ9aHCD7I332XWje2UJdiqUPd3v0ikjAZCJ4uAnG2wZGuWgF1dDPt3het3h58aJpfQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793085887;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
+	 X-CM-SenderInfo;
+	bh=CAMDTx+A/6qjs3rCvYy7knsHqtM0dksG0ov+15rFt04=;
+	b=Z6z3EMlP3A4pPSjXNDujZrQS6wtVxdPJxWBWsbPuNfJtG7Sd7x+gZMOIxXkwwLrGfQm4
+	 V1+mvgrH83/v+j+r97IiP3UZyp/w9dp25M7uh5TDH7wmsoEWcaOGlCeQp1UOwpF8SE6g5
+	 0uArW010fcw6KNSXp3XBBkVV8/EA7eTFuVZXVigbYinSMMdeMjpAyHrbZS3j47ObcGYek
+	 i5YvnNiOlQgX4WQHNwQZilL3Qz5lFsbdEF9JUvW+gTcjGe88+zXdAv0kfqZPRSL4yUqBK
+	 11cki4sXlt+eYoM8nLpVsX798FrsN+s7CNJLM+1sSOpPUAvy9Cd6WI4BRFzIzyL+m2Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=cf9J2xJY;
+	arc=none smtp.remote-ip=117.135.210.2
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3045D606A31A;
-	Tue, 27 Oct 2026 07:15:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3045D606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D0A606A31D;
+	Tue, 27 Oct 2026 07:24:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 05D0A606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=BbK3uUll
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id E934B20155D;
-	Tue, 27 Oct 2026 08:15:44 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793085344;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=R+oWYu6/QfEBhFYUPjNxhFKQR9WYE+mlse/QW0U2HJ8=;
-	b=BbK3uUllsCAxO+pmnHKOyBY2CIdCbsiL4S7SaR4Y0s+M8lB3VUluZ7SH/NaBQc6bMBssrZ
-	GjiMcymmleV0kowClq+iZiUyyB7E/vWO8A1OR63zPgv0VmV1G3PIz55bcor2j0xRTyFIVe
-	ztGcjxEO4DR22s8Yux1xs7ZUtSSbiNfeTNZfdZNY33OVa/kc7jITzojwzvBGliy22+D1Ml
-	pCWSJsQGc0cvau672Go6b0xCb9cSdTemturVhsZKc4m0TKNnEG18d8pTtYpBS8jNT3KEHO
-	v7XITcY9VhnY2N+YNuMAgaqg7ApX34SbOE5spHtLdMCAmIdvcRj9g6J9QH7HcQ==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793085344; a=rsa-sha256;
-	cv=none;
-	b=a6MnpAQpRxddvep7N8jqcgc21uO+NmcGQM6SXfM4MWsWmElThzbXYTC8G3NzuWh6SFDbKB
-	NMs6A354j6vVsaKkll4UyEK9b/GAh4cH+2f3Si9g12pImxCPWsoJ6TPpAYjXPwNUZdO2Dp
-	2gQ4NfdUnUJnFhTDnpshTBlKXN5JkFy0x6l+lQ4w3AiJ+qMxaMZ9XC+EPDlnF5nHRTBZ7h
-	ytvAbWCZce3qW5Jn7uFyVOlrSB+z5WTlRXNqkzyGRQsRcVMvNSVC3Nq6kdxgixPmOLiHN1
-	v97etZ4uf2oYYeLdO7ZZtjLlmMcYKtRhrF3uCiGGOyLkG5TyyQNhgANG6x2U4Q==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793085344;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=R+oWYu6/QfEBhFYUPjNxhFKQR9WYE+mlse/QW0U2HJ8=;
-	b=g9P7NoRI5NLPlzTCz1h8c6WsjZFdj60m24gQWQghj+zAGHvNQVnsMFqSQclWPPcoX59XMp
-	P9KcCLk16P6/rvHN7Y82pHvPPSKNDKJJCmu5POIbk/zGvmjmi6cVqGciZdweVKvGeIwPC7
-	VSJhxidHqJk0GAJrTpeQ1RtZIrPAbvViTJH6mMqT6hr2FHZPk/zmwVFn6pn7saMfsth7ja
-	OPAQY5McDqGfpICZS2HVuJAQSNp9MG2gL1fd7dv8gDYO22JJwlqkE2yl5oN37rcRo7ADPD
-	4zVTbRddUFPlkeRrD9Zv+8dvUE57e2h+UY/W+IwDiENz7Gnub6QamI/2LgVfLg==
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1xLbPM-001Ocq-2g;
-	Tue, 27 Oct 2026 08:15:44 +0100
-Received: from pengutronix.de (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 8791A5D78DA;
-	Tue, 27 Oct 2026 07:15:44 +0000 (UTC)
-Date: Tue, 27 Oct 2026 08:15:43 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Fan Wu <fanwu01@zju.edu.cn>
-Cc: Vincent Mailhol <mailhol@kernel.org>, linux-can@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Song Li <songl@zju.edu.cn>
-Subject: Re: [PATCH] can: gs_usb: kill RX URBs before destroying the netdevs
-Message-ID: <20261027-artichoke-stork-of-cleaning-01979c-mkl@pengutronix.de>
-References: <20260923070352.487595-1-fanwu01@zju.edu.cn>
- <20261026-armadillo-of-uplifting-excitement-9bcdba-mkl@pengutronix.de>
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=cf9J2xJY
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
+	Content-Type; bh=CAMDTx+A/6qjs3rCvYy7knsHqtM0dksG0ov+15rFt04=;
+	b=cf9J2xJYyg5p3OGduQLHOgLuPBxLc34VnUmNhEwDBR5YQOQXSnWYqgyHUajErX
+	N2ExL3UphtwIfGpKrmKg+TeiQkdlPht6CWCWVJE6hSKZnzrlj3xIA+KX8N4b3/5q
+	xdc7MM4r5y7rKrSFEFaLNnZiU0vokgxaXwOwHdMcJeJ9M=
+Received: from lx2.. (unknown [])
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wD3f0x6UeBqyKY4DQ--.54976S2;
+	Tue, 27 Oct 2026 15:23:40 +0800 (CST)
+From: Zijin Tao <taozj888@163.com>
+To: theo.lebrun@bootlin.com
+Cc: Conor Dooley <conor.dooley@microchip.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+	linux-kernel@vger.kernel.org (open list)
+Subject: reply to Theo's questions
+Date: Tue, 27 Oct 2026 15:23:37 +0800
+Message-Id: <20261027072338.106540-1-taozj888@163.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <63731290.3f0c.1a1198fe993.Coremail.taozj888@163.com>
+References: <63731290.3f0c.1a1198fe993.Coremail.taozj888@163.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,81 +69,243 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ekwsdgna56i73eu4"
-Content-Disposition: inline
-In-Reply-To: <20261026-armadillo-of-uplifting-excitement-9bcdba-mkl@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3f0x6UeBqyKY4DQ--.54976S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCr4fZw1rZr48ZF1rKr13CFg_yoWrArWfpa
+	y5Gr1jvr1kJF1fKws7Cay7Z3WrXr95GF43Wr45GryIka45XFnFgrZIg3yYqFy8u34xWa40
+	vr4UZasak3yqgaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jwjjDUUUUU=
+X-CM-SenderInfo: hwdr6yqyyyqiywtou0bp/xtbC3h5GDmrgUX5djQAA39
+
+Hi Theo:
 
 
---ekwsdgna56i73eu4
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] can: gs_usb: kill RX URBs before destroying the netdevs
-MIME-Version: 1.0
 
-On 26.10.2026 22:09:08, Marc Kleine-Budde wrote:
-> > diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-> > index ec9a7cb..663746d 100644
-> > --- a/drivers/net/can/usb/gs_usb.c
-> > +++ b/drivers/net/can/usb/gs_usb.c
-> > @@ -1595,10 +1595,10 @@ static int gs_usb_probe(struct usb_interface *i=
-ntf,
-> >
-> >  			/* on failure destroy previously created candevs */
-> >  			icount =3D i;
-> > +			usb_kill_anchored_urbs(&parent->rx_submitted);
->
-> I've fixed the root cause of this problem. Do not register an interface,
-> before all interfaces are setup:
->
-> https://lore.kernel.org/all/20261026-gs_usb-fixes-v4-2-59e3b6360053@pengu=
-tronix.de/
->
-> >  			for (i =3D 0; i < icount; i++)
-> >  				gs_destroy_candev(parent->canch[i]);
-> >
-> > -			usb_kill_anchored_urbs(&parent->rx_submitted);
-> >  			kfree(parent);
-> >  			return rc;
-> >  		}
-> > @@ -1636,6 +1636,8 @@ static void gs_usb_disconnect(struct usb_interfac=
-e *intf)
-> >  		return;
-> >  	}
-> >
-> > +	usb_kill_anchored_urbs(&parent->rx_submitted);
-> > +
->
-> The USB core disables all endpoints before calling gs_usb_disconnect(),
-> so this isn't needed.
 
-This is not 100% correct. There is a small race window, that the
-URB's callbacks have not completed. I'll fix this by first un-registering
-the netdev and then freeing the ressources.
+
+Sorry for having missed important things. 
+
+I would like to append some explanations here.
+
+
+
+Thanks,
+
+Zijin Tao
+
+
+
+
+
+At 2026-10-14 01:55:03, "Théo Lebrun" <theo.lebrun@bootlin.com> wrote:
+
+>Hello Zijin,
 
 >
-> >  	for (i =3D 0; i < parent->channel_cnt; i++)
-> >  		if (parent->canch[i])
-> >  			gs_destroy_candev(parent->canch[i]);
 
-Marc
+> - I'll stop replying inline because you seem to be having issues with
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+>   your mailer. Please fix it to ease the discussion.
 
---ekwsdgna56i73eu4
-Content-Type: application/pgp-signature; name="signature.asc"
+>
 
------BEGIN PGP SIGNATURE-----
+>   See here how your email looks:
 
-iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCauBPnAAKCRDMOmT6rpmt
-0mWfAPsFl1MLE7QpUizLHq2sq/5RnZkerQrNKXXjmgZuNMvCggEAi+gLEGr1gfS1
-1YPQfzYKsEGvejWC//ZP3U2LjMPRzQQ=
-=sMYZ
------END PGP SIGNATURE-----
+>   https://lore.kernel.org/netdev/63731290.3f0c.1a1198fe993.Coremail.taozj888@163.com/
 
---ekwsdgna56i73eu4--
+>
+
+> - Your V4 commit message says "Fixes: 89e5785fc8a6" but that is wrong
+
+>   with the current patch, it shold use 4df95131ea80. I don't
+
+>   understand why you are talking about the changelog at the same time,
+
+>   this is unrelated.
+
+>
+
+
+
+
+
+Yes, I made a mistake in V4 commit message with an oversight, it should use 4df95131ea80, so
+
+I just revised it to 4df95131ea80 in the V5 patch, and I will use it in possible later patches.
+
+
+
+
+
+
+
+
+
+> - You skipped over explaining why your dropped the start_xmit diff.
+
+>
+
+>I'll have to stop reviewing if you skip over parts of the messages.
+
+>I gave you a TLDR and you skipped over the first bulletpoint.
+
+>
+
+
+
+
+
+Sorry, I forgot to make an explanation here, maybe due to an omission.
+
+Now I would like to amend it:
+
+Actually when I started to rate limit the error messages in the data path, I saw 
+
+the netdev_err message print in both the gem_rx_refill and at91ether_start_xmit,
+
+and I knew they are also in the data path.
+
+But for the following reasons I just omitted adding rate limits for them:
+
+1. For the netdev_err in the gem_rx_refill, there is a "unlikely(!skb)" to check if
+
+the skb is NULL which is a rare case,  so I think it's not so needed to add a 
+
+rate limit here;
+
+2. For the netdev_err in the at91ether_start_xmit, I think it belongs to another vendor
+
+which I am not familiar with, and I didn't know how popular it was used, even I was not authorized to 
+
+change it with my will also.
+
+
+
+
+
+If you think it's better or needed to add a rate limit for them, I would like to do it in later possible
+
+patches. 
+
+Would you please give your opinion here?
+
+
+
+
+
+
+
+
+
+>Thanks,
+
+>
+
+>--
+
+>Théo Lebrun, Bootlin
+
+>Embedded Linux and Kernel engineering
+
+>https://bootlin.com
+
+>
+
+>text:
+
+>Mime-Version: 1.0
+
+>Content-Transfer-Encoding: quoted-printable
+
+>Content-Type: text/plain; charset=UTF-8
+
+>Date: Thu, 08 Oct 2026 14:59:55 +0200
+
+>Message-Id: <DLZH4LPJ36YW.1CP7RL0J77DHN@bootlin.com>
+
+>Subject: Re: [PATCH net v4] net: macb: rate limit netdev error info print in
+
+> the data path
+
+>Cc: <stable@vger.kernel.org>, "Conor Dooley" <conor.dooley@microchip.com>,
+
+> "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S. Miller"
+
+> <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
+
+> Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Jeff
+
+> Garzik" <jeff@garzik.org>, "Haavard Skinnemoen" <hskinnemoen@atmel.com>,
+
+> "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>, "open list"
+
+> <linux-kernel@vger.kernel.org>
+
+>To: "taozj888" <taozj888@163.com>
+
+>From: =?utf-8?q?Théo_Lebrun?= <theo.lebrun@bootlin.com>
+
+>X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
+
+>References: <20261007053211.572073-1-taozj888@163.com>
+
+> <DLYI3O7PFN94.V7VH3HSLKEMD@bootlin.com>
+
+> <63731290.3f0c.1a1198fe993.Coremail.taozj888@163.com>
+
+>In-Reply-To: <63731290.3f0c.1a1198fe993.Coremail.taozj888@163.com>
+
+>X-TUID: tHkCkOndXaQQ
+
+>
+
+>Hello Zijin,
+
+>
+
+> - I'll stop replying inline because you seem to be having issues with
+
+>   your mailer. Please fix it to ease the discussion.
+
+>
+
+>   See here how your email looks:
+
+>   https://lore.kernel.org/netdev/63731290.3f0c.1a1198fe993.Coremail.taozj888@163.com/
+
+>
+
+> - Your V4 commit message says "Fixes: 89e5785fc8a6" but that is wrong
+
+>   with the current patch, it shold use 4df95131ea80. I don't
+
+>   understand why you are talking about the changelog at the same time,
+
+>   this is unrelated.
+
+>
+
+> - You skipped over explaining why your dropped the start_xmit diff.
+
+>
+
+>I'll have to stop reviewing if you skip over parts of the messages.
+
+>I gave you a TLDR and you skipped over the first bulletpoint.
+
+>
+
+>Thanks,
+
+>
+
+>--
+
+>Théo Lebrun, Bootlin
+
+>Embedded Linux and Kernel engineering
+
+>https://bootlin.com
+
+
