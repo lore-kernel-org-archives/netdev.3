@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793098208;
-	b=M/ACXcLaIQXNB/Jw344gB1z2TYSUCvLzCF19OR9YaWqRho/Fa5/4fXkXs4xz45gnduNb
-	 kiAob21pkbqMvi6fhAoqN9Lj09+e4qyXwoKE+wXQUmA8CiRdq2dVOjZtbZaCHv9nvsUX+
-	 e097vj+8sHHHOUMpOPfD56ODDkxFJICgLqs6skEs5jYvvgsM4EnQIhrvk0Kg7t+C4rxXF
-	 GPDYEzBLr3fSoIJXREE2j4DAeL7eJ7OKMxFa3IcKOMZaaBDnL1fhpFMBaCQb+FxVXwQge
-	 oPr5z/sTYXkai0hwNnVfeTAqaiUfbi8mTOsk34kZlFsKnIhMC1bmhcTTh6F+12dOcFg==
+	t=1793098209;
+	b=DxBrvZgDb3GoYJFqY1WMIG5Gm4gqPyn4fQbFwaQS0FPddc/VVp1hgsiFGlENLWq46Z7S
+	 k8jPi+fBa1Awh+0OmKGrQpAiaYxEGeHYJJUL/IN9JZC/WOHtRWtrHvQdkx9Te9b6UJjvm
+	 xMDqwMgCTzdXpGU7cI2PPMo0n5+lNPpWiQ4Mil1S00eXmrqPeRkj33q0QxCTGZsSIuxn7
+	 X+bIDNsYp9pfTbGjdQhsnp1kXezvlBnFox7pUtL9vYwrsWU+CHk/UATPFKTjzJfyMHC36
+	 q/jAxkFmZy7Tna6rIWNn5L7axq6QLRhmlGSncPoFsjusdWVEgA4rEI6hKzXtMrs82SA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793098208;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793098209;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=GLGLTdg4EouiLoSbpJxeE4wAdsu+lGHS2NhfYc2W3NA=;
-	b=vcKC1VJlMtk9yF4w08TxlNvpoCgpMpUEmjJEWz0mBui8+xTwN9VX1o0/BlVC556ll7rJ
-	 XZdIJiuDLzp2dNOJs6S269yFpr51pp997btXxNQAHhuezCTe067WKXWCWILOiRsfsmAxD
-	 Lvxg3DfgGVTFW/qrfKI3KsneD62QtL0BeRUXwws2LgnwYUBKjThJ2HgV3ENZpLUr9rpL2
-	 G1BQexzuBgDoRUCQJ0gTTb6QuwURTd/TvzLjGPM/iKibFs3Bi71JbEWagmzzEu2yOD97v
-	 sPg8c/jBYeMzLkOuTqFBOwksdqMlxJwHvrap/9anA60Rt41ZF/8YoRI6o6nap1qOefw==
+	bh=HzCuJNCWnQ9dMh722JD/KfRwZB3FHJUExkLlOiQ1KaE=;
+	b=lzbx6qalCtty3BVwsltkpQxnZ7yAZ5oqWYSQGAmU8njNeI97K0m2aVoSKaQrpgPPq7ZB
+	 KuOnGRv0FD4g46az9WqgMNkCS/xQu0PP9A27CqhfJ/i/j94B02EiM1rcEuRAzOdsdkHRL
+	 Amy6b/VmGRg7TgQdLGoteU3G+JVsgiR8Jvd6B66R+Em26ehvlbsE24zTMAaWpwSquJ8zR
+	 3OBRZ90A0/OEzvMrtD9/0Zy0vmM14mfefau941kCFJTHwyO2c59C2CX+RoJM7W1wON6VM
+	 86vNnh/lQmmgtN/oxbxPylpcS0E9xAl7qRvwweFCjhxw1ZA2Dwo6J+ggS1WGIdp1bLA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="c2q/G1WX";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="bu7dbeu/";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0AD606A31A;
-	Tue, 27 Oct 2026 10:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00187606A322;
+	Tue, 27 Oct 2026 10:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c2q/G1WX
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B7F1F01828;
-	Tue, 27 Oct 2026 10:50:07 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bu7dbeu/
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA1431F01828;
+	Tue, 27 Oct 2026 10:50:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793098207;
-	bh=GLGLTdg4EouiLoSbpJxeE4wAdsu+lGHS2NhfYc2W3NA=;
+	s=k20260515; t=1793098208;
+	bh=HzCuJNCWnQ9dMh722JD/KfRwZB3FHJUExkLlOiQ1KaE=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=c2q/G1WXzvwVRBHK0osYz/2pmFEa3qGmAvfUjxd7AGJAmQ7LlJPCEGUanHcAz33Hg
-	 cKeg1Xs5xwvwPpVchDyadQud9khehPb0wND5mk24QMAJNvcr+wGWuRA+wvx0KC+7OD
-	 ZlBec2MPd19JbXNh6ixtqo6PcfTsqTUbIzkUyb11LL8/KevKvfYfS1Y3cKjFuHMxqK
-	 j/SOPjb+mUpVWj6UKIien16d9FoNmS3JrrqxngkbXHbH9A4KY2rtEVnFtHNrN8bXto
-	 gshuBPGwijHEjpPh1i5Wl/w/piOD08jO7vTaS6KKjjLmWEX9MeyKVVhNI3+Uw7MFp1
-	 6XGQ43xBZt8jA==
+	b=bu7dbeu/JC9qlixqO9Fjptsc4bPYlao2vCybIDDFCzUPSCrDUci4kGR9MusfU/qyS
+	 6LASXGu3FWuzrbtlXgim2YQHkwMLUBPsL2G12qNsGa+UtGTyIwhr/+LErDAc5CPz87
+	 OqY9CibCfkqpVnf6yGWjftKqHBoknurpTlfYuLFqC85jrb5/0dDGYrxsxFEDKPP94T
+	 14LtImEjdB080WECdZ4HtPCgKedSbN8VdE4Ox3xSDOIwltah/1QdQvZJLWjL7wEW3f
+	 UFLRJv4DKpwIPdvSlNqpzN9yxep83ibUFTctbjL/x8F+cysUgZ+GvmjyEOxZ5yiD3h
+	 FPBR53dwY4CGQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 8151C3AA9380;
-	Tue, 27 Oct 2026 10:50:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BE6E03AA9380;
+	Tue, 27 Oct 2026 10:50:08 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,57 +54,40 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v6] net: ipv4: add zero check for snd_cwnd_clamp
+Subject: Re: [PATCH net 0/2] vxlan: keep reserved_bits on changelink
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179309820631.3724916.7962338860107889277.git-patchwork-notify@kernel.org>
-Date: Tue, 27 Oct 2026 10:50:06 +0000
-References: <20261021235732.1313305-2-kj2864@nyu.edu>
-In-Reply-To: <20261021235732.1313305-2-kj2864@nyu.edu>
-To: Jerry Jiang <kj2864@nyu.edu>
-Cc: ncardwell@google.com, kuniyu@google.com, davem@davemloft.net,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, edumazet@google.com,
+ <179309820756.3724916.12938875629554652467.git-patchwork-notify@kernel.org>
+Date: Tue, 27 Oct 2026 10:50:07 +0000
+References: <20261023-b4-vxlan-changelink-gbp-v1-0-f0d13951c09b@proxmox.com>
+In-Reply-To: <20261023-b4-vxlan-changelink-gbp-v1-0-f0d13951c09b@proxmox.com>
+To: Hannes Laimer <h.laimer@proxmox.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, razor@blackwall.org, idosch@nvidia.com,
+ petrm@nvidia.com, dsahern@kernel.org, horms@kernel.org, shuah@kernel.org,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- co+71b6509cb791e531@bugs.sh, stable@vger.kernel.org, edumazet@kernel.org
+ linux-kselftest@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Wed, 21 Oct 2026 19:57:33 -0400 you wrote:
-> When RTAX_CWND is locked, user is able to pass 0 into it.
-> This could lead to writing 0 to tp->snd_cwnd, leading to a
-> division by zero error.
+On Fri, 23 Oct 2026 13:14:26 +0200 you wrote:
+> Currently reserved_bits are reset on every changelink. This leads to
+> packets using extensions that were enabled on creation being dropped
+> after a changelink. The first commit describes the problem and
+> solution in more detail and the second just adds a selftest for this.
 > 
-> Oops: divide error: 0000 [#1] SMP KASAN NOPTI
-> Call Trace:
->  <IRQ>
->  tcp_reno_cong_avoid (net/ipv4/tcp_cong.c:510 (discriminator 1))
->  tcp_ack (net/ipv4/tcp_input.c:3517 net/ipv4/tcp_input.c:3873 net/ipv4/tcp_input.c:4440)
->  tcp_rcv_established (net/ipv4/tcp_input.c:6685)
->  tcp_v4_do_rcv (net/ipv4/tcp_ipv4.c:1854)
->  tcp_v4_rcv (net/ipv4/tcp_ipv4.c:2248)
->  ip_protocol_deliver_rcu (net/ipv4/ip_input.c:207 (discriminator 1))
->  ip_local_deliver_finish (net/ipv4/ip_input.c:241 (discriminator 1))
->  ip_local_deliver (./include/linux/netfilter.h:325 ./include/linux/netfilter.h:319 net/ipv4/ip_input.c:262)
->  ip_rcv (./include/net/dst.h:481 (discriminator 6) net/ipv4/ip_input.c:492 (discriminator 6) ./include/linux/netfilter.h:325 (discriminator 6) ./include/li)
->  __netif_receive_skb_one_core (net/core/dev.c:6297 (discriminator 4))
->  __netif_receive_skb (net/core/dev.c:6410)
->  process_backlog (net/core/dev.c:6761)
->  __napi_poll.constprop.0 (net/core/dev.c:7830)
->  net_rx_action (net/core/dev.c:7893 net/core/dev.c:8050)
->  handle_softirqs (kernel/softirq.c:645)
->  __irq_exit_rcu (kernel/softirq.c:679 kernel/softirq.c:519 kernel/softirq.c:758)
->  irq_exit_rcu (kernel/softirq.c:775)
->  sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1062 (discriminator 35) arch/x86/kernel/apic/apic.c:1062 (discriminator 35))
-> RIP: 0010:tcp_cong_avoid_ai (net/ipv4/tcp_cong.c:482)
+> Signed-off-by: Hannes Laimer <h.laimer@proxmox.com>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v6] net: ipv4: add zero check for snd_cwnd_clamp
-    https://git.kernel.org/netdev/net/c/363c8c79220d
+  - [net,1/2] vxlan: keep reserved_bits across changelink
+    https://git.kernel.org/netdev/net/c/e3a629477d52
+  - [net,2/2] selftests: forwarding: vxlan_reserved: add gbp changelink test
+    https://git.kernel.org/netdev/net/c/e7cb2f638f7e
 
 You are awesome, thank you!
 -- 
