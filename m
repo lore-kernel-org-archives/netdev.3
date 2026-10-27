@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793144987;
-	b=EERfOPHmfFjK1Kfmi2QC7W2vak+gtoZvuWHCNYvZIhZevNEz8quxrbrg5oWWrMQd2XBF
-	 eSg3dmQYeE4WiPf8hhJ/ybCmKiwuc6DXycH1/XO1mTzQKwfQBBXb6XH6hyflO51Hdnlg2
-	 mRHD/GDaLiyH5x5zLd/FZPTuL58DWCLplKQVgGGIkBLLiyqTXj1lOpF4kKd+gW6vfLY2T
-	 RYBml2cRegd6M1wQBf9nosWLCanQboEfu6QO9a1+p9EOQ1+zFKwzK4etRgpI7UkL7S1XV
-	 azn230XnaaBqzokDwNe3jzFdvSgeutbv3viP67Wj/4Cs49WzKQftTElr60mfyHFIa6w==
+	t=1793144990;
+	b=U/aigL75L7KSWi9svQPS8AsMyMBFdrZzW91n8IrvkfsKfhREF0MM6sxAXeRdi/LWwCFT
+	 JEth1KzsvkkaGCeujC/Q1I3/EDKuIRPx7A/PVAa2l/tFCDgKI1TV+lcqQ3G/a9gtQa59v
+	 nWjz1ZEgFw9EXKBSED8rFe9tJ3So3aEtgbHLS/uu4RtOp9r4+ZHOy4DjNUUZodN6GB+hs
+	 209/s5eGkPSCUgvFvR90hdO0pd/50udzZVBS7odtU8L6/tGocW8U9E1XDg+HUR1UZoWIP
+	 DW7pvEzYu6x50wDEj0vBmBrixTTkR1LrAEt5snpgfTZKXQ8OKsyf+FBRbWynKcgWThQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793144987;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793144990;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=5UfrvjmPQqfo+IBDkK9qNrzC/Bn49zrz+L3WmDPaiYE=;
-	b=nDakAojj6kmr0hhj12X/gXLeybB1Nmn5epkFS76fyFUk1zir438snRKDbMD2Swx/ik5X
-	 FYM6BvDB+HPIJSWGcqGPRjoy3MXidsi70p6y1Gb+QA41PGDRrFNvAvQa6Al5dVbr6ISYe
-	 oDlTkG4W1wTddryirpooXq/6cHS70wImRV/Ev2rxuLoSYRtt2+Dz38USVhZdD7bHqPJy3
-	 cGEpkaq4dxutRQaQYf+X0ArbpSMLZtLpjRcxhwmyltBXE9RpeIG4NJhI2sdfQc/je0X3e
-	 uMFTR7i44YPQ8Kg354K55B9g3fh15lzeotvmFB6u9r6N1LMnFEmkESlRcddm+LuyXuA==
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=ZiN1Jcj+ktTvoPoRBYi951JEE+IUEKCrPjtVRKMqDd0=;
+	b=TFd0bRBw/DcKRvFm0nqCBevZtlrgusyonZ+U9nhpGBMxPKEcaK/nBpfzQ6f1fxjXDCML
+	 ZrDR2nevupv5y1B2teUJ0nzQhTM6pZWdJuDsL2VqdnxaBuU3SPT4TQBwvp0of4JME5B3r
+	 7dH7ZWqkCsun/kmXyirZWK01OPcCCfoIZNCyS+5YYYN+lwxa8xrz+F1kZ02WEoGwGRluS
+	 vF28+ijuG9bBPH+hJJ9KwIMcTpTHgYtd7H6KSNqnKfyPVxg1ROcU1g5cLYYWzauP0UItD
+	 5ah6xQGwoh6ViUfThLsnC0evsE7gFTFHt7BEe6/lH5KSlWNLRi/0HPM8L2ZRDog/gAw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XTSgYPVs;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k3W5GY0v;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71EC5606A31A
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 23:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2E0606A325
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 23:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XTSgYPVs
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 819DF1F01825;
-	Tue, 27 Oct 2026 23:49:46 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k3W5GY0v
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02A021F01829;
+	Tue, 27 Oct 2026 23:49:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793144987;
-	bh=5UfrvjmPQqfo+IBDkK9qNrzC/Bn49zrz+L3WmDPaiYE=;
-	h=From:To:Cc:Subject:Date;
-	b=XTSgYPVsxihpb+0lZrgGRmf6bHIrt7CxNG1yuf16W/3N27v19BHZFIc12HKggmTI6
-	 vw3FGrLqsXeG3w+cjoD6KCBU4ivMdmNeY1ZjyV6LdflG523FcPAXpS+B/5fRuBUeX4
-	 pclxcO+0HPTYXzBfnUn2CZmFiKplcZ0/YuYbiNZ5kQZwGNyFWtn7PpwyM0nCnbE+8J
-	 Dc7uJIOhq4+FOcYVJbSomb+Cv8A7flXDFKVQGYdgCTR6F2Zh8mHP26dssHC2X7IBO8
-	 FuHyzTQ9gPqW7q64W4Dd6NFWk0isvfGM/At+EWoXHsPnRkb7pzFoLu3SCvu4KelTSh
-	 P8rWMJ4QKIxPw==
+	s=k20260515; t=1793144989;
+	bh=ZiN1Jcj+ktTvoPoRBYi951JEE+IUEKCrPjtVRKMqDd0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=k3W5GY0voABaKWsMr6B/0d6LGM2c5IKPrFGR1vSQVK2Tjwa8YoeE2UKj2aUDYVcRS
+	 3d6cKt2bbO4DKF/s9jbrFKig2dtR/LuvF5y31/ssN632C5VXCcmAedim21oNlg+BdJ
+	 q+BD+gb3SbARNUYWjKBCrUTRcRNs/fp3OOzMCgbeZik0xRCot2IsFVeA1AuMfPqJW8
+	 eG3gfslG0yTelATgiNPT3p19bXBfX9zrokmuqFDJBkXQG2+o5dIALe7as+6SZ90hKJ
+	 FjPlv15XfVunWHvMvwWeN8uLNp7gef8L7bETDoVWzp526kBxaBLemb+g4qiHnbzYtD
+	 EDp8JGT2di1OQ==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -59,10 +59,12 @@ Cc: netdev@vger.kernel.org,
 	ap420073@gmail.com,
 	joe@dama.to,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net 0/5] eth: bnxt: fix Rx buffer leaks under OOM
-Date: Tue, 27 Oct 2026 16:49:35 -0700
-Message-ID: <20261027234940.1267225-1-kuba@kernel.org>
+Subject: [PATCH net 4/5] eth: bnxt: free XDP frags when xdp_do_redirect() fails
+Date: Tue, 27 Oct 2026 16:49:39 -0700
+Message-ID: <20261027234940.1267225-5-kuba@kernel.org>
 X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261027234940.1267225-1-kuba@kernel.org>
+References: <20261027234940.1267225-1-kuba@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -74,30 +76,41 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Commit bd3beb5c8691 ("eth: bnxt: disable rx-copybreak by default")
-changed the defaults putting users on buggy(ier) driver paths.
+When xdp_do_redirect() fails bnxt_rx_xdp() recycles the head page but
+not the frags of a multi-buffer frame. Their agg ring slots have
+already been refilled, so the pages leak, and the page pool can't be
+destroyed until they are returned, which will never happen. Redirect
+to an AF_XDP socket in copy mode fails this way with -ENOMEM whenever
+the socket's fill ring runs out of buffers.
+A socket bound without XDP_USE_SG also fails with -ENOSPC for every
+frame that doesn't fit in a single chunk.
 
-Fix various ways bnxt may leak buffers under OOM. The first patch
-fixes the real bug that was hit in production. Second patch fixes
-an issue I hit while testing the first one. The next 3 patches
-fix other Rx buffer leaks pointed out by an LLM during review.
+All the other drop paths in this function free the frags.
 
-I have a few more fixes for issues surfaced during review
-(misplaced DMA syncs and bad event handling). I'll post those
-separately.
+Pointed out in LLM review of the first patch of the series.
+Tested on a BCM57504 at MTU 9000 by redirecting 60k 8000B ICMPv6
+echo requests (a head and two agg buffers each) to lo, which can't
+transmit XDP frames. The page pools' inflight count stayed flat
+rather than growing by two pages per frame.
 
-Jakub Kicinski (5):
-  eth: bnxt: recycle agg buffers when Rx head buffer allocation fails
-  eth: bnxt: resize Rx head buffers when rx-copybreak changes
-  eth: bnxt: don't leak buffers when XDP agg buffer allocation fails
-  eth: bnxt: free XDP frags when xdp_do_redirect() fails
-  eth: bnxt: hand XDP frags over to the copybreak skb
+Fixes: a7559bc8c17c ("bnxt: support transmit and free of aggregation buffers")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+ drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 58 +++++++++++++------
- .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c |  1 +
- drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c |  1 +
- 3 files changed, 41 insertions(+), 19 deletions(-)
-
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
+index 96845c8646e0..161e0dd62be6 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
+@@ -307,6 +307,7 @@ bool bnxt_rx_xdp(struct bnxt *bp, struct bnxt_rx_ring_info *rxr, u16 cons,
+ 
+ 		if (xdp_do_redirect(bp->dev, xdp, xdp_prog)) {
+ 			trace_xdp_exception(bp->dev, xdp_prog, act);
++			bnxt_xdp_buff_frags_free(rxr, xdp);
+ 			page_pool_recycle_direct(rxr->page_pool, page);
+ 			return true;
+ 		}
 -- 
 2.56.0
 
