@@ -1,110 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.159
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=82.195.75.108
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793116482;
-	b=E6ZxjvT0XrHiV1/S9F8zjO4sE32yjrSvEDe/Zuxc+QD1BNJR5IFHAteZkG/zU79noTMD
-	 tY8bdOxntbX8wHNtKLbS1ODlwdromaBl1SejhiqruyclEKClvsarAHysb7WeWbCw36Wbw
-	 i4e6wtrg0RFTKtbkJ0noqRIityWTXQAWq2ZHBKkyY2Mg01aJ8YPc3L17Ba/ibrh/OY2k1
-	 RnAkHLr2dfmFIJE6HgIPiQJ+AYyz27y+4h9X7virOsPqHyhXWc0Dq6FAhc/eqVeRsZuiu
-	 XNz0MuQb32xzGCaQs5Q+qmfCoFhVEj85OwaZrW2w9wP1uO+qi5xwWjepztzXV+WW7zg==
+	t=1793116485;
+	b=AyOsv7aeOTG2gpKtnzS1UHyd4xsDDyTOrAoAVaMkL7+QrQfYwfWAGI/g0bkIyxmFdXhe
+	 LZbS+BcS2b241g+t5x4vdQGZBCQ1+BOoovsHS6uKeNjWlCa9gZlZtfCFIu5CJuFOrQgE9
+	 /nqpqXPvqZ3Du86Hm25RBx1JkuyTjXQtmK+0j70mMjlGmxOACDSJ1sYD6FDsGxAvRtw1b
+	 bUkdyKPb2LCqF7dR3Nc9olt8sdzRIipPnQteEUux6zEuJdxwwMK+mf1s1OZ2ysNG//aon
+	 A67FIFrc3IIvfdv3tLFhpXo+UBYfbqHNbOztRhEITYjkhxzLceSYhZouJZmu4BMdCVQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793116482;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
-	 MIME-Version:X-ThreadId:Date:From:To:Cc:Message-Id:In-Reply-To:
-	 References:Subject:Content-Type:Content-Transfer-Encoding;
-	bh=zc2Y0aB+Bo5/T9cHNhSV0KeCxq1DKGPEpfI2FnZKVqU=;
-	b=MWpHL5ZJ9A1p9L3zn+dirwO3nxN1RiLV+hhHnDxi1i9udJIWk9fV7rrwr329AZoGeHxN
-	 TLLBGp8FmQwQ7TFfUI5cdHlPrT28k7p7TXWPnYTGM/7I3JpoX6TivoHcqy7zJ3/itssnv
-	 6SWEFMgkRaNyKVAbxG65UC++lK+V6vdxSLrnSIpHsC7SKUTGjIbW2hZZnfBPTiIqNbuB/
-	 j/EvDC+OyoCDrr/TvFRRcwIim99P/JaHsTMC7WAMvly5pBo6TZvOr8yeJyupxYC3i1Rz/
-	 N2VOs+5rOR7D5UWVszEBAqot+TQedFuwupS9KegKg5D74XZF9AnCE+L8gNT7s5w0xUw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793116485;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-Debian-User;
+	bh=9d7CkpNkhFpT/p+mmFEwEMDe8MN5hlU8W6VraSeQEx0=;
+	b=JpfPJp6CR+pZNykqGFp+fZyBtrDBEbiIcMxNwDoWTDLQ0Et5hOGx5FM2tCckSH+CNrTg
+	 CqXetq0bGv7Huy1Dt8zUCavUgWulb5LMLedrnCFFWjgH27hZJbOK451KT2FAQB0EbN3+s
+	 9Qx8JEm6/Ykx8n8uke1Z5Chsms9Mkhv14+ziEWgi/Lx6EMYUL0cgn3qqMy4MpUZQw2A7z
+	 QFCdeP+rdGWScC1MCQU1RXrIDQIxGhVmxhHWBSfx/833AeHdJRGPKvp7dm7RFsGckQgm+
+	 2TC30w4Wi7OPvk6dFAfHycGlR8hVivzOs329mRqtQHQyhOhI/knStO2tNYZTdVUgEOg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arndb.de;
-	spf=pass smtp.mailfrom=arndb.de;
-	dkim=pass header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=dHD3+mxH;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=PZl2WY4q;
-	arc=none smtp.remote-ip=202.12.124.159
-Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
+	dmarc=pass header.from=debian.org;
+	spf=pass smtp.mailfrom=debian.org;
+	dkim=pass header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=hsgL9t6N;
+	arc=none smtp.remote-ip=82.195.75.108
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72420606A31D
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 15:54:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 72420606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7AD60A2607;
+	Tue, 27 Oct 2026 15:54:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7A7AD60A2607
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=dHD3+mxH;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=PZl2WY4q
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id A9DD37A0197
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 11:54:41 -0400 (EDT)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Tue, 27 Oct 2026 11:54:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1793116471;
-	 x=1793202871; bh=zc2Y0aB+Bo5/T9cHNhSV0KeCxq1DKGPEpfI2FnZKVqU=; b=
-	dHD3+mxHPAiH2NrGJ1l24aUW5rBT5AbeiLU4fXDZeZn1DyMrg3uSfIRjA7wk/Kbn
-	LfAMSKMNohMwyds0v0tiRRMd8rlTWiRDuiCgSogczys/yi6tJQKmT3NEdaHYwF6c
-	c6pxa3Qcf2qEG4h+8mVJCgfZnr6dAu3gQxNADpI70BxsS/3wq9MVTEUh+cfrpblF
-	fA6ko1SqdDGZVzJ1KCGa3mOi6MbM8vs+bBkQwxlXYZPSjvnhKCYdCo1kBMxysOBl
-	oEjxbjjnh3Hb/U6s2NMj3jBUivQI6dT7bVY8mVez4sCv84B2ajUGpO7UdcyoLUo9
-	xz/fA5SnbPPUQJ/r79Ur4Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1793116471; x=
-	1793202871; bh=zc2Y0aB+Bo5/T9cHNhSV0KeCxq1DKGPEpfI2FnZKVqU=; b=P
-	Zl2WY4qdul5MbY/MisBNFOfu3VMz/mjp3CXNnvCEjuWFgEgZeL5Q0iPvW/Q0rL6Q
-	afUh8qbq7cWqnM6eKLcQj3TNfMW8ycb3QwPmdeEXpYEDX8iF0R0fKu0yufP6aEZq
-	wSQGsXmf793Ipv/23SbrStnjGosuVFXJ2Vkm+d3DzFjj9zbbBef5j8blC7yMrGVM
-	sBr6FxqOkilPQ77JbGOkr67+6ewD0G8cfeIHv8lmwJoGkzbXWk1Y2EGUIRNAw2EC
-	cWtpCIF0wCfBcDJWK50+20iZR7k9nKupY8yV4LH6kUI4QlVdTxFR5fcSwjrYWX1s
-	izf8aH59T4FRhiOmrg7zQ==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=sign d=arndb.de a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793116471; d=arndb.de;
-	mf=PGFybmRAYXJuZGIuZGU+; rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:INfkO/PdiPuKHrl3yf8FKpl/z9yqkJdRqB4PKdhFOrpX2jA
-	nE9Dfmmk9Vny1VdIleWkI/CPR5QjmmBghMUK7z0ZE2uQ8fC6n3iQ5RLrebfbmZ1+
-	1sEq7eoUbsUOnaG4nSmL7lk0dcXDH5uKBQiSgHa/ZHDpvuS24r+7oOX1BvVtBr2y
-	1m6MwrsoNCFE/z1K5xiq+AT4uQ4tklFuOiWHYvtGTM3OZrI/WINK2Qm5joL4so4a
-	P4XFg/ecbt19emyrCJu0muP2+RhY6FlG2fgQfuTbIqBbRdRd4bJpYCqchqxgk3Vu
-	UqSsmB6m1OKQZ3BY8gzJkKuqgq+2AqR+MT4fFlA==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:AgM4FqiH11BV9fQVUL9u3/eO+kN98/FniGgujr6RY2E=:f47dZaDggYMdFPbuQgE+SBbi6CmcsJqnv88mG+bUX5c=;
-X-ME-Sender: <xms:MMngag_Ei5n6TwahEowzN6PDZ_HqnwqoG0VwvUOL7lDkFP2BIRGIMg>
-    <xme:MMngajjICo4Sajzls514FG684I7gft-Xdq1lo6n_gCrJNywKYzDBvWiAHGL8_QIoK
-    diyLiU0rKFIWyKvNiIs81OgKcNAPqpwiOMWHFZRR2WHIA5uJDcD2-fW>
-X-ME-Proxy-Cause: dmFkZTF76KCNUTCOmAW/xHffWwQ0Ytqe9sOua9J0OVKp0CRZBwnZeqyGeHF8d7ILayayFe
-    s3xj1eXI6jlIvCs30e+tKKvgs61QuX/JKrfFbPKt6XDozyiFgkz38/P38Rg2fZ64HFIat1
-    cLlDDY/0+u9E6cf+j9R1QG9A6zfvvgT/StzBp8266YJ3eodYMW+w9nKnaD3leriCAuF0vg
-    FwspQnczEk24L6FYxVZgHOQswpBtyQpLIeaF7mM0Ol7i4HqGzSgHcFKWLF60ZGQXIAWPvQ
-    I0zgJ+c2sXZ2KNIdysh9LEJp8L83DBI9ctG8moKjLbaJd3b/4wLmT8voNF5imKxEHxJ+eJ
-    awGr2pyNx80U7VPgr2TiscyO8hB+sK7oRYnjlJCZyJTeEvU2z2e5QObmTonXBBA8qlK6PP
-    GxHxpIF39ox9vQjAotjQRg6U/XNRieZcgQYTx29uFZh2jpd++QqeW78Zd06GUOQkvhj3CH
-    8N2V/toLcxQG9RAuJ7L495dls7p7a+ejU/ykaGyMbWLWrO0VDq02iE8fwjlRNEMidC6LcS
-    2KRiKHD+wtSQH9NWxE7dIjFWYrLb87r/kiE8f2BJuzJSeEg2pdIIiwcBAfbHZO3nbv040I
-    NOkVmgwHb+3E2b/9Cf2l0ffX+qjBNWFr1rwT8LWOgyFechZ11hKOXN6CThLQ
-X-ME-Proxy: <xmx:M8ngarjWJBpZXTaIkT0SmHZYVCTShQRmf5dLrYXl0Ilu5VpeCAasgA>
-    <xmx:M8ngatkb7G8jLXaaT6SO9Vt1FxdM6did3zgu9aH0OMFhW6_4mKiOmw>
-    <xmx:M8ngakpZ6rY3m5-yIMjgYDiJjZOHItpLLh95XOcS9l_UdT392h9F-g>
-    <xmx:M8ngapK-vsnW_r1Q3TEOvM85zcHpWTT6J4ytXs_Aqlv9aM4UXxSOIg>
-    <xmx:N8ngagU7_QKwC3gX_DrQxWK1K3jVpZTn8M5CloNgRFo5i3I6sKYlbCNy>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 9283C32A0093; Tue, 27 Oct 2026 11:54:24 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=hsgL9t6N
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=9d7CkpNkhFpT/p+mmFEwEMDe8MN5hlU8W6VraSeQEx0=; b=hsgL9t6N4NhDBmPcr0pHNiHWGU
+	rugR3grg+segcnbDlY8Ttg8+hOmVAXacTi3pd5BTJITtyGaz7mCCRMdmzQey5cRAmNO+oRSWZGMqV
+	1MknRS/jVF8Q9ae8fUviHfvlXwPGwE0XBlGyqKSEp5Gb+9Vm4nNAvDLlZ8alDJzv1q/7gWgUynb16
+	QESxLhOjLy4P1tQ0gEOGrR4zqfXR7pk42lYXSP+Tqei90/L4T1GAenv9nVFJvqnCbrZiIWlmmAW/x
+	cvYBjgdjZMWRxjff8541P7q/s1vUVNA+AATftGnzcwkXFjSz5w935VtO4/E3ZAWoNy1b2OO1cnOFX
+	hLD+ZF6A==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1xLjVC-001ZUC-1F;
+	Tue, 27 Oct 2026 15:54:18 +0000
+Date: Tue, 27 Oct 2026 08:54:12 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Petr Mladek <pmladek@suse.com>
+Cc: John Ogness <john.ogness@linutronix.de>, chris@chrisdown.name, 
+	Sam Crossley <samuelcrossley@gmail.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Paolo Abeni <pabeni@redhat.com>, 
+	Randy Dunlap <rdunlap@infradead.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Simon Horman <horms@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH RFC 0/2] netconsole: allow replaying the printk buffer on
+ demand
+Message-ID: <auDETo3ot3enCEv_@gmail.com>
+References: <20261024-netcons-replay-upstream-v1-0-9613f38496e5@gmail.com>
+ <87fqxskdpl.fsf@jogness.linutronix.de>
+ <at84qygscue8crQi@gmail.com>
+ <87a4o0k3qa.fsf@jogness.linutronix.de>
+ <at9qgBucVm-QHnye@pathway.suse.cz>
+ <87zew0ifpp.fsf@jogness.linutronix.de>
+ <at-Ppa86sBw7mO8W@gmail.com>
+ <auCraiuMZApQHiNA@pathway.suse.cz>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -114,42 +81,72 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-ThreadId: AT4aMw9TC0YB
-Date: Tue, 27 Oct 2026 16:54:03 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Arnd Bergmann" <arnd@kernel.org>, "Sunil Goutham" <sgoutham@marvell.com>,
- "Ratheesh Kannoth" <rkannoth@marvell.com>,
- "Geetha sowjanya" <gakula@marvell.com>,
- "Subbaraya Sundeep Bhatta" <sbhatta@marvell.com>,
- "Andrew Lunn" <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>
-Cc: "Suman Ghosh" <sumang@marvell.com>,
- "Nitin Shetty J" <nshettyj@marvell.com>, hariprasad <hkelam@marvell.com>,
- "Jiangshan Yi" <yijiangshan@kylinos.cn>, Netdev <netdev@vger.kernel.org>,
- linux-kernel@vger.kernel.org
-Message-Id: <cfd64161-a4e7-429f-b9dd-09b27e22deda@app.fastmail.com>
-In-Reply-To: <20261027151737.386155-1-arnd@kernel.org>
-References: <20261027151737.386155-1-arnd@kernel.org>
-Subject: Re: [PATCH] net: octeontx2: fix building without DEBUGFS
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <auCraiuMZApQHiNA@pathway.suse.cz>
+X-Debian-User: leitao
 
-On Tue, Oct 27, 2026, at 16:17, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> This error came up on my randconfig tests this week:
->
-> drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.c: In function 
-> 'npc_cn20k_debugfs_init':
-> drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.c:392:55: 
-> error: 'struct rvu' has no member named 'rvu_dbg'; did you mean 
-> 'rvu_dl'?
->   392 |         debugfs_create_file("mcam_layout", 0444, 
-> rvu->rvu_dbg.npc,
->
+On Tue, Oct 27, 2026 at 02:47:22PM +0100, Petr Mladek wrote:
+> On Mon 2026-10-26 10:49:32, Breno Leitao wrote:
+> > A bit of context on the use case from our side.
+> > 
+> > In an ideal world netconsole is enabled from early boot through the
+> > kernel command line, but in some case this is impossible
+> > (linux as bootloaders - ipxe/sd-stubs/etc).
+> > 
+> > The other way to setup netconsole is to create a new target at runtime
+> > through configfs. Netconsole then only sends messages from the time the
+> > target is enabled.
+> > 
+> > For this second case, I would like to replay the whole kernel log on
+> > netconsole, such as previous messages. Something might have happened
+> > before the target was enabled, and we want visibility into that.
+> 
+> Just to be sure that I understand it correctly. 
+> 
+> Is the netconsole registered before it gets functional, please?
 
-Please ignore this patch, it was not the correct version. I'll send v2.
+Correct. The console is registered at module load time, in
+init_netconsole(), before any target is created.
 
-      Arnd
+In other words, a single console is registered at module load, and the
+netconsole targets are then handled under that same console.
+
+> Is it possible to detect that the netconsole is not yet functional
+> and when it could start working?
+>
+> I ask because there is the flag CON_PRINTBUFFER which should cause
+> re-playing all messages on the console during registration.
+> 
+> A solution might be to delay the console registration until
+> the netwok target is really working.
+
+Yes, we can register the console when the target is enabled. However, I
+think the user will need to choose whether the console is registered
+with CON_PRINTBUFFER or not, since in some cases they only want messages
+from the moment the target is enabled.
+
+So we would probably need one console per netconsole target?
+
+> Another solution might be to temporary block/disable the console
+> until it gets operational. We already have console_suspend()/resume()
+> API. But we might need something new to distinguish it from
+> the system suspend/resume handling.
+
+In that case, what happens to the console while it is suspended?
+
+> > That said, the "per-console counter" might work as well, since it would
+> > start as 0, thus, we know that netconsole target would be behind, and
+> > try to replay? (not sure how yet)
+> 
+> This is what the console_try_replay_all() does. The only difference
+> is that it resets the counter to the oldest available message,
+> see __console_rewind_all(). It is just a small optimization
+> when the ring buffer is already full and the oldest messages
+> are gone.
+
+Right, but that would apply to all consoles, while in our case we only
+want to replay the log on a specific console (netconsole).
+
+Thanks for the suggestions,
+--breno
