@@ -1,54 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.170
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793101509;
-	b=mEY8/8KL8Al/gunLEaOblsgGMetX9mzx2f91KnLQbhHHWID82Pfgmc8eJTDZ9gHYLT1I
-	 tjyJSuk2DxlLDx3nGOYzLvQXWKU5EFVNXw1dG/Qg8uxeyFk4WLmLC5E2h8/VEGAI+DfKI
-	 XubJNpe6/XnyCdafE27CvQEnKj+hdTiy6ZrxyqTfQjZqXgKbkaMzFeZ31QWzz11OOXS+K
-	 pUppWUweuRXCkdSnIBYXUPzi6hCcYoxuJak0oDQzxrnxIDwXm/0JNPPy5Q0P1rNd83w4J
-	 LwTsjvqehCElF0Z0hy6Z0b8DJj+IhkK7K3qiFulSsQx9jOn1UDPyO/5e8YHaG8sOF0w==
+	t=1793101754;
+	b=e02ieup7aNpR5Uo9LrihPYknFEGGrzWEIFLIKmJA/YYrckEH49Sfhf/m5RlP4VYYzL4V
+	 5uHvZfsr0N4xlKEsb/WuhSQaKraxiYXI2KUSOyybi7bLFmsQAUFJg8tSpYuvvf2/gMNqu
+	 wkxSoC7LoSEpcOQyjMJxDOfkXRGrFgtDR3E/FMI76+kc3EVNzCfAQDQhmNvDne26bP6Up
+	 7ePPpUi145w8HJNeiH8wdfPopitYjNhBFj0UcukRKX4iOwv/JbfDIJm8cvA8rLA6nvhgm
+	 Z/drIJKcoWMrk+9adXsux7LjDZqxi8LkNG35oZ+TeenVx6Ds+RGGHQsSAQy/9kFimTw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793101509;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=w+micUHMJCLc/lb75lysczApibjwbQk5zFEVurbT23g=;
-	b=ojndJIsGsAvw0kh/Yg1pZazNP+0iD0kAUyLo8rWD2IQ09q6j1OWZo8eYuyy014cG1vOA
-	 7Ra4byzKdEqvV0kvI/cOBxtEzN1n29Jmd06zbzmvfmvB2k1+K49Gp3yhuXWw+Ti8/+TWi
-	 Ri90l9qjHJEAjYiQY4UcCcpmAWPQsqyzS7uiUhvqlzLANdWFU1vwny8nwKuDmq5ZBkhXd
-	 lry52A1dTfMaQUEwx3BZV3hpihxQEQbQtDja/bRqS9N5NKa4ywxtmjUPyxTA8tigSBhex
-	 kf1xLPGgXv0b9ewBRb0vBPUXOoq8BNui64GIodhNTr4HvDw8Cxi3AsaAfxBr82FF+0A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793101754;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=TTJmA88cQwl8RM34llTru5b4J/+2xPkGiT4W3SD2CjI=;
+	b=uRtJK/j+3LGsGZxmpN5qT2mjqfPxSfNBoLo4IKjBGA1EFHqVVhn79wiQQX1+ibT1wuHY
+	 r7xzOeuxcyohUxTz6lbxhklK22qRnDO8EX4eeqzCFkwRK0q4m6X/zT0Capa0WTwFHUrC5
+	 9jG295JMzed5v1/KPSMk+xQkKgkzJqyaF8yj1ETiZSnjeihG8rHq+87h5iZtxwYqo6uA/
+	 i44lvPvTJmqKEDi3erbjY9EYo0MofHpjoSN8IqFoIA8gx3xkm6BX7LSN7yBOYRP3RRo6U
+	 MJD6j0gr4mJDHImN67FqdYxdngWJUC4lFucAYsFQRjlY6J2YI45vHrAIA/4oeFda+6g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b="kDd/f3Sa";
-	arc=none smtp.remote-ip=91.218.175.170
-Received: from mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dKQrZ86V;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96918606B5CA
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 11:45:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 96918606B5CA
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3393606A336;
+	Tue, 27 Oct 2026 11:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=kDd/f3Sa
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=OYRd2GGQ+I0qeQXyHrVJjv4+JLHcc0nyipskIeZzEDk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793101506; v=1; x=1793706306;
- b=kDd/f3Sa9M4LRLUIMD89ocnQHIyYeFk/UaovhR70+TRb9QOcGc8iTeQl2Bt6XT6GP5tjSzci
- SyORvpiJ1tdhGHTqZlPO5mvvY5RGpzKJkSodgGqhFXnf7Ib6ox8yZQa+NTeEKBePMTFA16h+CHg
- nkuPJ7g88VscE+BiDm+AvBro=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 452bcd924be0fdff;
-	Tue, 27 Oct 2026 11:45:06 +0000
-X-Mizu-Trace-ID: 452bcd924be0fdff
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <bf5f8ecd-f2bc-4ceb-bafc-100bf7d7f697@linux.dev>
-Date: Tue, 27 Oct 2026 19:44:59 +0800
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dKQrZ86V
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7C61F031E2;
+	Tue, 27 Oct 2026 11:49:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793101753;
+	bh=TTJmA88cQwl8RM34llTru5b4J/+2xPkGiT4W3SD2CjI=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=dKQrZ86V/MgtlDd9erFpBEbDINUFDYKxpaJ0c9GzZddPcL5izD/JvS3GMduWQRsw+
+	 +uX2yxVaBqp4gpGP4/GlC23UHC8FEMb7v8Mre72s/egjMKM3o/iDfoRo68XUPG9KZL
+	 xCU/38JGHWavOHWo12+O3L41eRPHH+UX8KpcuoP9xDu/ERlIYCUzmP++Ujuw7qYPsf
+	 FurDh2Uvz1kHhbZZxIs0wBf53AGC2kk6HqyXEtnxsXFn15jvnfE+C1nCbLt9e1/tKZ
+	 PweYLnUIRKvaa3CuJXTpPmlrHfZtzS7KBSEkoyHx8GpEDlPf0di9KENeUIUU9nm/2C
+	 n34EB43LaI+SA==
+Subject: Re: [PATCH net 2/2] selftests: net: netlink-dumps: start a dump with
+ a notification queued
+From: netdev-bot+sashiko@kernel.org
+To: jhonata.poma@gmail.com
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, shuah@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ kuniyu@google.com
+Date: Tue, 27 Oct 2026 11:49:12 +0000
+Message-ID: <179310175236.3134.7064612436495160668@kernel.org>
+In-Reply-To: <20261023-netlink-dump-livelock-v1-2-478214a635d2@gmail.com>
+References: <20261023-netlink-dump-livelock-v1-2-478214a635d2@gmail.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,191 +64,127 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 1/2] Revert "selftests: net: packetdrill: add tests
- for advertised MSS with PMTU exceptions"
-To: echoowall@gmail.com, netdev@vger.kernel.org
-Cc: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- "David S. Miller" <davem@davemloft.net>, Simon Horman <horms@kernel.org>,
- David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
- Shuah Khan <shuah@kernel.org>, Thorsten Leemhuis
- <regressions@leemhuis.info>, regressions@lists.linux.dev,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Eric Dumazet <edumazet@kernel.org>
-References: <20261026-advmss-revert-v1-0-272fa4b7ecb6@gmail.com>
- <20261026-advmss-revert-v1-1-272fa4b7ecb6@gmail.com>
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <20261026-advmss-revert-v1-1-272fa4b7ecb6@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-On 10/26/26 3:23 PM, Esko Mobius via B4 Relay wrote:
-> From: Esko Mobius <echoowall@gmail.com>
->
-> This reverts commit e5c8e301b497 ("selftests: net: packetdrill: add
-> tests for advertised MSS with PMTU exceptions").
->
-> These tests assert the behaviour introduced by commit 2640e6419594
-> ("net: advertise TCP MSS from the configured MTU, not the learned
-> PMTU"), which is reverted in the next patch because it causes a
-> regression. Remove them first so the series stays bisectable.
->
-> Signed-off-by: Esko Mobius <echoowall@gmail.com>
+Low priority / nit picks for your consideration:
 
+- [Low] The new test dump_with_queued_ntf in
+  tools/testing/selftests/net/netlink-dumps.c needs privileges that the…
+- [Low] dump_with_queued_ntf sets done = true as soon as it sees any
+  NLMSG_DONE with nlmsg_seq == 1.
 
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+--
 
+selftests: net: netlink-dumps: start a dump with a notification queued
 
-> ---
->   .../net/packetdrill/tcp_advmss_pmtu_ipv4.pkt       | 67 ----------------------
->   .../net/packetdrill/tcp_advmss_pmtu_ipv6.pkt       | 67 ----------------------
->   2 files changed, 134 deletions(-)
->
-> diff --git a/tools/testing/selftests/net/packetdrill/tcp_advmss_pmtu_ipv4.pkt b/tools/testing/selftests/net/packetdrill/tcp_advmss_pmtu_ipv4.pkt
-> deleted file mode 100644
-> index f2ef931b7..000000000
-> --- a/tools/testing/selftests/net/packetdrill/tcp_advmss_pmtu_ipv4.pkt
-> +++ /dev/null
-> @@ -1,67 +0,0 @@
-> -// SPDX-License-Identifier: GPL-2.0
-> -//
-> -// Test that IPv4 advertised MSS in SYN-ACK is derived from the configured
-> -// interface MTU (1500 -> MSS 1460), not the ICMP-learned Path MTU.
-> -
-> ---ip_version=ipv4
-> -
-> -`./defaults.sh
-> -ethtool -K tun0 tso off
-> -`
-> -
-> -//
-> -// Connection 1: Learn PMTU exception (MTU 1200 -> MSS 1160)
-> -//
-> -    0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-> -   +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-> -   +0 bind(3, ..., ...) = 0
-> -   +0 listen(3, 1) = 0
-> -
-> -   +0 < S 0:0(0) win 65535 <mss 1460,sackOK,nop,nop,nop,wscale 8>
-> -   +0 > S. 0:0(0) ack 1 <mss 1460,nop,nop,sackOK,nop,wscale 8>
-> -  +.1 < . 1:1(0) ack 1 win 257
-> -   +0 accept(3, ..., ...) = 4
-> -
-> -// Send a full 1460-byte segment
-> -   +0 write(4, ..., 1460) = 1460
-> -   +0 > P. 1:1461(1460) ack 1
-> -
-> -// ICMP Fragmentation Needed arrives indicating next-hop MTU 1200
-> -   +0 < icmp unreachable frag_needed mtu 1200 [1:1461(1460)]
-> -
-> -// Local host retransmits using the learned MTU 1200 (MSS = 1200 - 40 = 1160)
-> -   +0 > . 1:1161(1160) ack 1
-> -   +0 > P. 1161:1461(300) ack 1
-> -   +0 < R 1:1(0) ack 1461 win 0
-> -
-> -// Close connection 1 and listener
-> -   +0 close(4) = 0
-> -   +0 close(3) = 0
-> -
-> -//
-> -// Connection 2: New connection from the same peer
-> -//
-> -   +0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-> -   +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-> -   +0 bind(3, ..., ...) = 0
-> -   +0 listen(3, 1) = 0
-> -
-> -   +0 < S 0:0(0) win 65535 <mss 1460,sackOK,nop,nop,nop,wscale 8>
-> -
-> -// Verify: SYN-ACK MUST advertise configured MSS 1460, NOT the learned PMTU MSS 1160
-> -   +0 > S. 0:0(0) ack 1 <mss 1460,nop,nop,sackOK,nop,wscale 8>
-> -   +0 < . 1:1(0) ack 1 win 257
-> -   +0 accept(3, ..., ...) = 4
-> -
-> -// Verify: Outgoing transmit MSS is still constrained by the learned PMTU 1200
-> -   +0 write(4, ..., 1460) = 1460
-> -   +0 > . 1:1161(1160) ack 1
-> -   +0 > P. 1161:1461(300) ack 1
-> -   +0 < . 1:1(0) ack 1461 win 257
-> -
-> -// Clean up
-> -   +0 close(4) = 0
-> -   +0 > F. 1461:1461(0) ack 1
-> -   +0 < F. 1:1(0) ack 1462 win 257
-> -   +0 > . 1462:1462(0) ack 2
-> -   +0 close(3) = 0
-> diff --git a/tools/testing/selftests/net/packetdrill/tcp_advmss_pmtu_ipv6.pkt b/tools/testing/selftests/net/packetdrill/tcp_advmss_pmtu_ipv6.pkt
-> deleted file mode 100644
-> index c7638b11a..000000000
-> --- a/tools/testing/selftests/net/packetdrill/tcp_advmss_pmtu_ipv6.pkt
-> +++ /dev/null
-> @@ -1,67 +0,0 @@
-> -// SPDX-License-Identifier: GPL-2.0
-> -//
-> -// Test that IPv6 advertised MSS in SYN-ACK is derived from the configured
-> -// interface MTU (1520 -> MSS 1460), not the ICMPv6-learned Path MTU.
-> -
-> ---ip_version=ipv6
-> -
-> -`./defaults.sh
-> -ethtool -K tun0 tso off
-> -`
-> -
-> -//
-> -// Connection 1: Learn PMTU exception (MTU 1280 -> MSS 1220)
-> -//
-> -    0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-> -   +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-> -   +0 bind(3, ..., ...) = 0
-> -   +0 listen(3, 1) = 0
-> -
-> -   +0 < S 0:0(0) win 65535 <mss 1460,sackOK,nop,nop,nop,wscale 8>
-> -   +0 > S. 0:0(0) ack 1 <mss 1460,nop,nop,sackOK,nop,wscale 8>
-> -  +.1 < . 1:1(0) ack 1 win 257
-> -   +0 accept(3, ..., ...) = 4
-> -
-> -// Send a full 1460-byte segment
-> -   +0 write(4, ..., 1460) = 1460
-> -   +0 > P. 1:1461(1460) ack 1
-> -
-> -// ICMPv6 Packet Too Big arrives indicating next-hop MTU 1280
-> -   +0 < icmp packet_too_big mtu 1280 [1:1461(1460)]
-> -
-> -// Local host retransmits using the learned MTU 1280 (MSS = 1280 - 40 - 20 = 1220)
-> -   +0 > . 1:1221(1220) ack 1
-> -   +0 > P. 1221:1461(240) ack 1
-> -   +0 < R 1:1(0) ack 1461 win 0
-> -
-> -// Close connection 1 and listener
-> -   +0 close(4) = 0
-> -   +0 close(3) = 0
-> -
-> -//
-> -// Connection 2: New connection from the same peer
-> -//
-> -   +0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-> -   +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-> -   +0 bind(3, ..., ...) = 0
-> -   +0 listen(3, 1) = 0
-> -
-> -   +0 < S 0:0(0) win 65535 <mss 1460,sackOK,nop,nop,nop,wscale 8>
-> -
-> -// Verify: SYN-ACK MUST advertise configured MSS 1460, NOT the learned PMTU MSS 1220
-> -   +0 > S. 0:0(0) ack 1 <mss 1460,nop,nop,sackOK,nop,wscale 8>
-> -   +0 < . 1:1(0) ack 1 win 257
-> -   +0 accept(3, ..., ...) = 4
-> -
-> -// Verify: Outgoing transmit MSS is still constrained by the learned PMTU 1280
-> -   +0 write(4, ..., 1460) = 1460
-> -   +0 > . 1:1221(1220) ack 1
-> -   +0 > P. 1221:1461(240) ack 1
-> -   +0 < . 1:1(0) ack 1461 win 257
-> -
-> -// Clean up
-> -   +0 close(4) = 0
-> -   +0 > F. 1461:1461(0) ack 1
-> -   +0 < F. 1:1(0) ack 1462 win 257
-> -   +0 > . 1462:1462(0) ack 2
-> -   +0 close(3) = 0
->
+This adds a test, dump_with_queued_ntf, to netlink-dumps.c. It starts an
+RTM_GETLINK dump on a socket with a small receive buffer while a link
+notification is still queued. The reader peeks before each read, the way
+libnl does, and the test expects the dump to complete.
+
+> diff --git a/tools/testing/selftests/net/netlink-dumps.c b/tools/testing/selftests/net/netlink-dumps.c
+> index 51129c564d0a6..6f66a478d72f3 100644
+> --- a/tools/testing/selftests/net/netlink-dumps.c
+> +++ b/tools/testing/selftests/net/netlink-dumps.c
+
+[ ... ]
+
+> +// A dump started while a notification is still queued must make progress
+> +// for a reader which peeks before reading, like libnl does
+> +TEST(dump_with_queued_ntf)
+> +{
+> +	struct sockaddr_nl addr = {
+> +		.nl_family	= AF_NETLINK,
+> +		.nl_groups	= RTMGRP_LINK,
+> +	};
+> +	int netlink_sock, inet_sock, i;
+> +	int rcvbuf = 8192;
+> +	bool done = false;
+> +	char buf[32768];
+> +	ssize_t n;
+> +
+> +	ASSERT_EQ(unshare(CLONE_NEWNET), 0);
+
+[Severity: Low]
+Should this skip instead of fail when the test lacks privileges?
+
+unshare(CLONE_NEWNET) needs CAP_SYS_ADMIN. lo_set_up() calls
+ioctl(SIOCSIFFLAGS), which needs CAP_NET_ADMIN. Both results go through
+ASSERT_EQ, so an unprivileged run reports FAIL rather than SKIP.
+
+The other tests in this binary (dump_extack, test_sanity,
+close_in_progress, close_with_ref) only open netlink sockets, send dump
+requests and use mq_open/mq_notify. They already run as a normal user, so
+this is the first test that makes the binary need privileges.
+
+Would checking for errno == EPERM and calling SKIP() be enough here?
+
+> +
+> +	inet_sock = socket(AF_INET, SOCK_DGRAM, 0);
+> +	ASSERT_GE(inet_sock, 0);
+
+[ ... ]
+
+> +		for (nlh = (struct nlmsghdr *)buf; NLMSG_OK(nlh, n);
+> +		     nlh = NLMSG_NEXT(nlh, n)) {
+> +			if (nlh->nlmsg_seq != dump_links.nlhdr.nlmsg_seq)
+> +				continue;
+> +			if (nlh->nlmsg_type == NLMSG_ERROR)
+> +				EXPECT_EQ(*(int *)NLMSG_DATA(nlh), 0);
+> +			if (nlh->nlmsg_type == NLMSG_DONE)
+> +				done = true;
+
+[Severity: Low]
+Can this pass when the dump ends with an error?
+
+netlink_dump_done() writes the final dump status into the NLMSG_DONE
+payload:
+
+net/netlink/af_netlink.c:netlink_dump_done() {
+    ...
+	memcpy(nlmsg_data(nlh), &nlk->dump_done_errno, sizeof(nlk->dump_done_errno));
+    ...
+}
+
+If cb->dump() returns -EMSGSIZE with an empty skb, netlink_dump() keeps
+the negative value:
+
+net/netlink/af_netlink.c:netlink_dump() {
+    ...
+		if (nlk->dump_done_errno == -EMSGSIZE && skb->len)
+			nlk->dump_done_errno = skb->len;
+    ...
+}
+
+The dump then ends with an NLMSG_DONE that carries -EMSGSIZE. Other
+negative dump errors end the same way.
+
+A dump that starts successfully sends no separate NLMSG_ERROR ack. That
+makes the NLMSG_DONE payload the only place the result is reported. This
+loop checks the errno only for NLMSG_ERROR, so EXPECT_TRUE(done) still
+passes. The test also never checks that an RTM_NEWLINK reply for lo
+arrived.
+
+The no-progress case this test targets is still caught, because no DONE
+arrives there. The gap is a future regression in skb sizing that ends the
+dump early with an error.
+
+The existing nl_get_extack() helper in this file decodes the errno from
+NLMSG_DONE as well:
+
+	ea->err = -*(int *)NLMSG_DATA(nlh);
+
+Could the new test check the NLMSG_DONE payload in the same way, and also
+check that at least one RTM_NEWLINK message was received?
+
+> +		}
+> +	}
+> +	EXPECT_TRUE(done);
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261023-netlink-dump-livelock-v1-0-478214a635d2%40gmail.com
