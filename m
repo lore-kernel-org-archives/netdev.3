@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1793059208;
-	b=HJO+0uGQNbRuE/mNINHcrncVUX+o3p6TecDKrzqHYyxX/T9V3hG+CTB4lRv1Dbr5d5Fa
-	 3MnlG5/CxwbjyuNOAxJPuRaax6AJ2Y7tM1FAXpYob8bVYM/aZ//bfwhfHuYY73mjZZY6P
-	 xK4NK62leYdx2ci8IIm5pvC4Z3cW6Ks3M/IMTKObbUVCLBCrconpGubBFtPM+jzCDHSmA
-	 hCjEa8OA67ShhWuDu0xtblQJHY2hihDw2wnDIfMXh+mT+6OXeA+eQH362YFBOBLpEikVn
-	 XcRid+yxkyFka7MS94d4sTbxM92JiftrA2qRLlSnkDSx35tmpDTql7/nwsWFhr7rXiA==
+	b=4eO8Y+lSQ/CE+V+fW7SpWXauYEJHDUV5i2Yw+CkxdgcXBaQr3yXdTK9MKe8sr5cxXd1Q
+	 OKdrM25jm8jiKvPjiL6Th4Stvh9kcaU1syTj00zzbDKug4sZ8EQ/RPinHCe66rcBv3A0l
+	 DwRpcqZBTOY0qZQ5EHvt23TxXlY4QI+B8gvEKh78GiGAFGGs5WLMN+n2PZhwr+0Bi9daK
+	 J8pNrwiKiHLAWKKMkeRJSjeS1+6AJKbG+D1Zow42lbk8BRa+kbWC6x2w61hMsXlL78EmU
+	 yIR5Vj0kINXPF1tQIF26IYT11XrVpwZPuzbuza7nU+trWnulCXZ9IOWnwDXuztWPi4w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793059208;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=zm8ylpdcLafJblvCWohl/7MgbUg4kZBMF3/uRyXqqV0=;
-	b=FnH2Ezy0Or8LsdUQN7uu/M8VEd7wIpVLP3gU8Lz3moeVCJ7c84mq6HB6aLqa76DREooU
-	 bom+RjMZ8gjUZfIUmS9yke8UMxgJa4XJHP5hUw4ddoB0N8UwYZfzZelQ7TkMNjmV/YkYM
-	 JBsGeWYIKosljlnYkdvxz5SKE/QnKLN+3qVCFuWyYandGOkjgKMofjwKK+Y6eGk7GyJsX
-	 C4hStNYHL4xMVCmK4O8i6MgG4P5NQrHgyX1TqQ9BZACg/X9smURAiGII2fK9n+jN2qde2
-	 h0nmG8MCn7dYwhHJ6PkeklqNpefUoFSnTT7iMFqIU1P3TUMXJE4H2eV3bGfgeomPHdg==
+	bh=sRBxls+fDXcYabNmDkORIlMaTl0ADNtGzRxkQN+pXR0=;
+	b=ua8+b6b2lqaZyQdi/8sxXz8+ttAcp6PNMQv5rmLM/hWZrRdeJh6VukyqgEllbY+W8Qxl
+	 M6cIJzk40wsHYmokxQwLSTYFF19TQRlRivFdxSo4EjIPVDgnxZy6CZRdmejkemIcqxRVL
+	 Wp4ceCy6ogcSeN/9wMPxnMmwBbcdDS/E50emoPkN4JejnIq3TOnVvnddBksl5dixQGZ1/
+	 s4dL3sEtj59Vz2pMaAHIluC7aVJysFcfx5Yip7sVvUuxHMKo+JnarGTty4c6CRa/VBeT7
+	 uSJuqjj4UFWZ8NfCE0BVRiE97ygwxJQFL587c1qWV0/opfdHKDRAxtbyp2hgAXEm00g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DCoQ9BOL;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lVfFljSR;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23B8606A31A
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 00:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE6E606A320;
+	Tue, 27 Oct 2026 00:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DCoQ9BOL
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62131F01828;
-	Tue, 27 Oct 2026 00:00:06 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lVfFljSR
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133171F01825;
+	Tue, 27 Oct 2026 00:00:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793059206;
-	bh=zm8ylpdcLafJblvCWohl/7MgbUg4kZBMF3/uRyXqqV0=;
+	s=k20260515; t=1793059208;
+	bh=sRBxls+fDXcYabNmDkORIlMaTl0ADNtGzRxkQN+pXR0=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=DCoQ9BOLv4ET6bWSw9KXdOTDjAAhZVdGjsbLQptaDcZeazyXxcXz7B+mEUN05vqEr
-	 cg3C17gfOdiNHh8BlYawX6UwG5/JenRNEh3KoujViOqSLp2ztDez/wwd6ttzmrusz8
-	 bj+luGdcOfryVpvP7IBmYB1r0Mvl82NwRsDWfPmjhTA6xX8MbAO7vDBIu1F25hg6tL
-	 6BRsHylMwpNi7tlnMp36RnG3cxmaasvm5LWKcQmMzdZd8yagGUL8SjfvcB38dKiKV7
-	 PK653QV21TKiMgBAnV8618yEbJ3tKGG9y2jv64gH2t+SeH0cAvZwxdW9pMTPUjMguP
-	 XAkTIyX6au5QQ==
+	b=lVfFljSRPcMn+FDAEFbvFCyrsfvBlZtNff4+EsYFi6Ovb/1CgJ9S761Es5oQhtzKV
+	 5tWh1gpLEXYa6Ut0c5gEkPs4GHCJtVNRH58UMN7yP7jsNuA3C66kFWvN4OyEAQUKtG
+	 jCpnmAxQg8Gsl7196nd9QHIHKqkeDci3e7U20RuH9qf7W2mD3lReN1+QZwHUACtKe6
+	 x584byggWLdcO6sINU5U7umgr6FD0mTwwTUctG3TmoYRIctWqLPw6V2q9KPjWoG6l5
+	 TH7Y6ILlPg2fME7y4VyxD2m9Wfetj1pX86ozKxdrtga7hAYIJiGqQOBjkMJPiAxUDR
+	 AVHY4xgdquP+w==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BE4B63AA80F1;
-	Tue, 27 Oct 2026 00:00:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 073753AA80F1;
+	Tue, 27 Oct 2026 00:00:08 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,47 +54,40 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v4] tipc: fix refcount panic in tipc_rcv() when
- receiving
- shared skb
+Subject: Re: [PATCH net v2] tcp: limit tcp_tso_rtt_log to a valid shift count
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179305920532.3470272.8792419448364439414.git-patchwork-notify@kernel.org>
-Date: Tue, 27 Oct 2026 00:00:05 +0000
-References: <20261023052921.54220-1-tung.quang.nguyen@est.tech>
-In-Reply-To: <20261023052921.54220-1-tung.quang.nguyen@est.tech>
-To: Tung Nguyen <tung.quang.nguyen@est.tech>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- edumazet@kernel.org, pabeni@redhat.com, jmaloy@redhat.com, horms@kernel.org,
- tipc-discussion@lists.sourceforge.net,
- syzbot+0017742620a9d06f06ef@syzkaller.appspotmail.com,
- ngocthang2710.1999@gmail.com
+ <179305920681.3470272.11485380440248270643.git-patchwork-notify@kernel.org>
+Date: Tue, 27 Oct 2026 00:00:06 +0000
+References: <tencent_31D2FFCCE76C50A695A1270151F825E90906@qq.com>
+In-Reply-To: <tencent_31D2FFCCE76C50A695A1270151F825E90906@qq.com>
+To: Yingjie Wang <1075151112@qq.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, jiayuan.chen@linux.dev,
+ ncardwell@google.com, kuniyu@google.com, corbet@lwn.net,
+ skhan@linuxfoundation.org, rdunlap@infradead.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 23 Oct 2026 12:28:18 +0700 you wrote:
-> TIPC assumes that the received skb is not shared with other users.
-> However, syzbot reports a bug triggered by receiving a shared skb:
+On Fri, 23 Oct 2026 22:40:36 +0800 you wrote:
+> tcp_tso_autosize() right-shifts the u32 returned by tcp_min_rtt() by
+> sysctl_tcp_tso_rtt_log. The sysctl uses proc_dou8vec_minmax() without
+> an upper bound, so it accepts values through 255. Values above 31 make
+> the shift undefined.
 > 
-> ...
-> RIP: 0010:pskb_expand_head+0x135a/0x13a0 net/core/skbuff.c:2308
-> __pskb_pull_tail+0x111/0x1870 net/core/skbuff.c:2890
-> skb_cow_data+0x2ed/0xc50 net/core/skbuff.c:5398
-> tipc_aead_decrypt net/tipc/crypto.c:892 [inline]
-> tipc_crypto_rcv+0x346/0x23d0 net/tipc/crypto.c:1843
-> tipc_rcv+0x4b7/0x1040 net/tipc/node.c:2119
-> tipc_l2_rcv_msg+0x2d9/0x470 net/tipc/bearer.c:669
-> deliver_ptype_list_skb net/core/dev.c:2533 [inline]
-> ...
+> A process with CAP_NET_ADMIN in the target network namespace can set the
+> per-netns sysctl. With CONFIG_UBSAN_SHIFT=y, setting it to 32 and sending
+> TCP data over loopback triggers:
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v4] tipc: fix refcount panic in tipc_rcv() when receiving shared skb
-    https://git.kernel.org/netdev/net/c/5308a2049b76
+  - [net,v2] tcp: limit tcp_tso_rtt_log to a valid shift count
+    https://git.kernel.org/netdev/net/c/850a7225bc61
 
 You are awesome, thank you!
 -- 
