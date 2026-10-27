@@ -1,91 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=37.230.196.243
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793097060;
-	b=F42lYZhjYlAKUB7sSInf8H2T3Hxia0yPryzO7rEJPH+7lnUXLWFKoleRgQjkOTvCplJG
-	 /NgISJt3paxEUwYioQxrbDs/QWFr5l0ryO30mYKgoHDATJoIqrfgt4JseL9OQYyZKwBew
-	 fKWi4HBB8pvpL4aRif/uKi+1XZgbrozFKidpPvvSfxzqfM30JvP1HD2N+cC0yH70U+cTL
-	 NAnu5zT2SshYSXl8VxYOAEutclLS8t4SMTrWOLEUrxmi8GdM36GVB/DaRB3FBJwWFLmKS
-	 l2CRnJJ23+tUVe+z648dpFEEhLdSZ4darYxQT7NvQfm6xUmHTX9JGzrA/ViWlKKibWQ==
+	t=1793097608;
+	b=4Re2ZMPCzDKpXJvWPi0hAencezj8Tk2U+oa09/fmDzr0nmNjpqlkn5PD+zbSG16BU8XU
+	 PbmcQ1vGNqvRTqY0E15KwsGa+RRu9+b6RC2V3gtgHgiuVPMmJaMGRKKufKMBroNq1M9TT
+	 P7BtHvi5RRxLfIyZrVzdRj8jgGgFCBivL/SQXXbI36do5ItMmjPE2fWjS9NK7rua7IW04
+	 dWasnTDj/sz6GT5Yo5VL8dYwfyHCaCDQgm3ZhPQFDqTcbotba8HawAqCAptnyfJIDNHMA
+	 SDM/5S6zw2LtDXUIGWWhoM3eTzljJEUYWF+XRr2mnPKOYHWRXuiFX64GKcKGdD2KQ/g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793097060;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding:X-KSMG-AntiPhishing:X-KSMG-AntiSpam-Auth:
-	 X-KSMG-AntiSpam-Envelope-From:X-KSMG-AntiSpam-Info:
-	 X-KSMG-AntiSpam-Interceptor-Info:X-KSMG-AntiSpam-Lua-Profiles:
-	 X-KSMG-AntiSpam-Method:X-KSMG-AntiSpam-Rate:X-KSMG-AntiSpam-Status:
-	 X-KSMG-AntiSpam-Version:X-KSMG-AntiVirus:X-KSMG-AntiVirus-Status:
-	 X-KSMG-LinksScanning:X-KSMG-Message-Action:X-KSMG-Rule-ID;
-	bh=4JPfY/UHj4f7eqHiyhZ2femezXDsVyGV3rTvSzt5bQQ=;
-	b=ojviQ35qhB0Eac96CDSCulG9p4SyPfSzGMDg45lMgW9VooMj9OGAsDMy2t6962zES3dS
-	 sMWmyvU0bssjuBqectLKD2B2KSg70PJYHZohbm8UafeFR/B2n9k8OHSpx7MpHuzxAgNjB
-	 /0951gXzRY3ooMPjp6Y8saLeKZThVtz7N5hO14BqlOdLi/BURNkB5QBebIyHMsCzhmR0w
-	 JPE+zqEoKQ0qADydEmULNHMEXH+etd5QbmnWR2QF/kB7dv3lOY8WX78Loo4+Xn3reTYG+
-	 oXSx7dptlCudd7cjjerk/VqR6Qk+WRN0pWEBcyAaYWY02t/ryBaKmxbc9/IUqcv9iqg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793097608;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=GuGgE8OKtJwoAitwY4DD0ELaMDg6PGFPllXF4+JMIEM=;
+	b=q3MnP4JL8WhIf3xArVHvIYSc8uYDlfbXGcYzgFGjkEI1InE1yZ4tH297XBqnawPHvFEF
+	 ywKnt0EVxL7O8DPLSIrwuGi1p5v/MRFD4L2HolvCgyP4PEKmRc1cEh9dR8aSavHAZJejq
+	 AQww7h6/ywzrw2S2wXxunfR204fpfwbCqTsNVTxqW2FnTz5rofojXVqLYhi/sQRhEhnHa
+	 iPsQffPsPesfqcuXwjdS5nUQnVgukknf2F8hS+nWQihoOSB8yUNAf2vM/UrrPdTtDXPT0
+	 Qf7JPyebiLSzwpQ87fOesqtBcxu3WsGsHAgoN00VB8K6xsEW9aG8qD5eMHYqaVgigrQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=astralinux.ru;
-	spf=pass smtp.mailfrom=astralinux.ru;
-	dkim=pass header.d=astralinux.ru header.i=@astralinux.ru header.a=rsa-sha256 header.s=mail header.b=btDDOzo2;
-	arc=none smtp.remote-ip=37.230.196.243
-Received: from mail-gw01.astralinux.ru (mail-gw01.astralinux.ru [37.230.196.243])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IcaPz4Zv;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A732606A332;
-	Tue, 27 Oct 2026 10:30:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8A732606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE58D606A31A;
+	Tue, 27 Oct 2026 10:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=astralinux.ru header.i=@astralinux.ru header.a=rsa-sha256 header.s=mail header.b=btDDOzo2
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
-	s=mail; t=1793097043;
-	bh=d2djsUKdNLT3oLKi/a02O9ek2q7+gLB5GxB22bqd9+g=;
-	h=From:To:Cc:Subject:Date:From;
-	b=btDDOzo23Z9qNSiz5hBdQsiyq0sT8yzfdLmN8t1kYHXFn+s2dEOH8ME3rlrWzkCkh
-	 5yTquoZaE/xVsWtXErCei3iAOoV7hnXqglB8CVntPK+UdsowXg3LGoyZC2x7fzNPSW
-	 J0cNQzEPZYxFWrHddwPUgbrcJueWVHhmU3mDBrxdInkJH8eY2WQBhlGludtyMnKjDg
-	 UV9wwqHy9x0NmjpbJEV508lC8WLpbmIWlLhDZ7v0HeoeHfboQdSLYJ3v4MeHYRhPf1
-	 puxxuWthmJ3OfHNUO/XZqUWzwF1fdYmSnzKlJhc9ZRbyciVATpuQWjqOoEjmeRTk2/
-	 CiiRKB1jvw5cQ==
-Received: from gca-sc-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
-	by mail-gw01.astralinux.ru (Postfix) with ESMTP id D0CB725591;
-	Tue, 27 Oct 2026 13:30:43 +0300 (MSK)
-Received: from new-mail.astralinux.ru (unknown [10.205.207.10])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail-gw01.astralinux.ru (Postfix) with ESMTPS;
-	Tue, 27 Oct 2026 13:30:37 +0300 (MSK)
-Received: from DESKTOP-D46TNHI (unknown [10.198.50.125])
-	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4jDRbJ5GCBz2vDt;
-	Tue, 27 Oct 2026 13:30:36 +0300 (MSK)
-From: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>,
-	Sasha Levin <sashal@kernel.org>,
-	Chenguang Zhao <zhaochenguang@kylinos.cn>,
-	Felix Fietkau <nbd@nbd.name>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Mark Lee <Mark-MC.Lee@mediatek.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: [PATCH 5.10/5.15] net: ethernet: mtk_eth_soc: pass eth to mtk_handle_irq_rx in poll_controller
-Date: Tue, 27 Oct 2026 13:30:16 +0300
-Message-ID: <20261027103017.471-1-mdmitrichenko@astralinux.ru>
-X-Mailer: git-send-email 2.54.0.windows.1
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IcaPz4Zv
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E44B1F01825;
+	Tue, 27 Oct 2026 10:40:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793097607;
+	bh=GuGgE8OKtJwoAitwY4DD0ELaMDg6PGFPllXF4+JMIEM=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=IcaPz4ZvjFKpqFzQXEKc+RJvHPcrk4QFFmYHigqPle8EU3LugD8/nQwNhnZ8uCmGI
+	 GOgLtG7lxV9v4y9SDE1dJiEp9fZ5lJAHpsDiDN1YJ9jMC47PDPbQ9mB1f/o13q7Cl3
+	 oJt6orM4CuDRotWB2p0HIYv3bH9Re0/ys/wF8sYVG7coTLT7qSCbxqndYsys3BGzMo
+	 ElDnOf/K/tsWPx+riRNxuhxSjYyAjg5+FlBlQddRCzVQPBeSDmjH3MvlMo7BAP9f4H
+	 coEmjWatB/F0Rz17bW+Wrggy8joatN1SAwK/0IHw2mL2ZeD7D9cjfl4s2mfBXqtMr0
+	 rs7dee0iubtoA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 445853AA8FFF;
+	Tue, 27 Oct 2026 10:40:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -96,57 +54,45 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-KSMG-AntiPhishing: NotDetected, bases: 2026/10/27 07:39:00
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Envelope-From: mdmitrichenko@astralinux.ru
-X-KSMG-AntiSpam-Info: LuaCore: 132 0.3.132 b92628ca234da971a1a6d61b32804bb3075f0fd2, {diag_burst_silent}, {Tracking_one_susp_tld}, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, new-mail.astralinux.ru:7.1.1;astralinux.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;patch.msgid.link:7.1.1;127.0.0.199:7.1.2, FromAlignment: s
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 207021 [Oct 27 2026]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.27
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2026/10/26 18:21:00 #28745978
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected, bases: 2026/10/27 07:39:00
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 1
+Subject: Re: [PATCH net 0/2] net/rds: fix init failures leaving built-in
+ transports on a dead core
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179309760607.3719222.9152357183301590944.git-patchwork-notify@kernel.org>
+Date: Tue, 27 Oct 2026 10:40:06 +0000
+References: <20261021195837.142802-1-achender@kernel.org>
+In-Reply-To: <20261021195837.142802-1-achender@kernel.org>
+To: Allison Henderson <achender@kernel.org>
+Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, pabeni@redhat.com,
+ edumazet@google.com, kuba@kernel.org, horms@kernel.org, oleg@redhat.com,
+ joel.granados@kernel.org
 
-From: Chenguang Zhao <zhaochenguang@kylinos.cn>
+Hello:
 
-commit e095f249e2209674f6366f6db0383a2b96e19239 upstream.
+This series was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-mtk_handle_irq_rx expects a struct mtk_eth * (matching the request_irq
-cookie), but mtk_poll_controller incorrectly passed the net_device *.
-Calling ndo_poll_controller with CONFIG_NET_POLL_CONTROLLER enabled
-would then crash.
+On Wed, 21 Oct 2026 12:58:35 -0700 you wrote:
+> The kernel test robot hit a slab-use-after-free on rds_wq at boot with
+> CONFIG_SYSCTL=n and RDS, RDS_RDMA and RDS_TCP built in [1].  Two
+> separate bugs are involved.
+> 
+> With CONFIG_SYSCTL=n, register_net_sysctl() is a stub that returns
+> NULL, and RDS treats that as -ENOMEM, so rds_init() fails even though
+> every tunable has a usable default.  Patch 1 only treats NULL as a
+> failure when sysctl support is built in.
+> 
+> [...]
 
-Fixes: 8186f6e382d8 ("net-next: mediatek: fix compile error inside mtk_poll_controller()")
-Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
-Link: https://patch.msgid.link/20260723055735.885112-1-chenguang.zhao@linux.dev
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ mdmitrichenko: 5.10 and 5.15 still index the RX IRQ as eth->irq[2],
-  the MTK_FE_IRQ_RX constant only came with commit 498190100992
-  ("net: ethernet: mtk_eth_soc: add consts for irq index"). ]
-Signed-off-by: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>
----
-Backport fix for CVE-2026-80694
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Here is the summary with links:
+  - [net,1/2] net/rds: do not fail init when CONFIG_SYSCTL=n
+    https://git.kernel.org/netdev/net/c/fbea154a8664
+  - [net,2/2] net/rds: do not initialize transports after rds_init() failed
+    https://git.kernel.org/netdev/net/c/ffbbc315b8b8
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index dc29403e4b73..f1f0e1f59323 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -2230,7 +2230,7 @@ static void mtk_poll_controller(struct net_device *dev)
- 
- 	mtk_tx_irq_disable(eth, MTK_TX_DONE_INT);
- 	mtk_rx_irq_disable(eth, MTK_RX_DONE_INT);
--	mtk_handle_irq_rx(eth->irq[2], dev);
-+	mtk_handle_irq_rx(eth->irq[2], eth);
- 	mtk_tx_irq_enable(eth, MTK_TX_DONE_INT);
- 	mtk_rx_irq_enable(eth, MTK_RX_DONE_INT);
- }
+You are awesome, thank you!
 -- 
-2.43.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
