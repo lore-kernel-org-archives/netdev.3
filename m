@@ -1,61 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793136312;
-	b=xU9cGF/LkFN5SHZQGLjI592QgB/kMSBqS4LD9fBaOurPqFWdSBiaI06UmdK6dLp1klHY
-	 sTNyyfXJ+Q5THSPDNu9Z1eusDn8o/keN2WPHbqU24BpnWeKdnV8p8evKBAiUhVF/Hk6RK
-	 uyJ9jxBc65YZmIbBA5ZjBPdaMk2mgsXBdv6DEI+eZY+QVbeK3maoPSwsocgeRcdM0oeFB
-	 vKmD8Ucf8iYpYBtFRt0x0UYx92IiGCw6bnCxnAM0YY6esQRjhUn/VzTHOz7aG2rXVb3GD
-	 sjvplxI4/GNz4JX/M6QgDwpfSu1nP97LzxbTbPNStuw1UrauLhEW9WXjYR5YePq+6NQ==
+	t=1793136434;
+	b=O6a1OhWjatX+/5O7ummpFkdViP4lR8zZPa8RyfCW0SJzeJ9VupfQTk1glvkQRRNs4Hr6
+	 LJeAG+WbOpYQ+S0e425RY0vbe/eDjUIpLzpMfu+iIjlvVUq+LLHm4lhjlo2X2exHpwyat
+	 YspnkBkhll+QjgiebVWYAspQ+VtJkUwYvjfjO8SzH23HQlpfqhpR1DDlrhBKCmIu1fUDs
+	 bBrkWapaYGsC2WEhy4owT/XS5vg9rnLvLRGDLnSd9nVzkXt+/PLILFD0f/5R0Q3l7uxrm
+	 jHA4Gr1Z91GAoWhcvA2Ed0Y9J3xpF35lE2kmGFny//B2JefGXR1aPw+KAtGaSfqKXOg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793136312;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793136434;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=3vFEN7PFwFFQ6/hRJhhbKH2RiV/zoV2ai61tKhc4PRc=;
-	b=eI0g2gTUCPoFJmi/ForL3liCagzNvoLt7wl24H+93Na2L4Z6jaG7VvOTu1HuUTJnstfL
-	 KLgG+KPDKgLko0SHmNPb5bmennPsbzYOo0TmM2xt2xXzyKvDfIkaMf2Xz7poCrcF3C9jP
-	 SOMT5B3PIXKP41zdn8WHZ2DsUIGpMj0zFSyN/U6yUQ7dQvlhlgZ+pvGTSyFeZq0aauftI
-	 p5zlQw66p59x87viko4j0g2x20xornZVZPQVRBKT1NhR8sEv598uq5pr3Jws/2piun0Lx
-	 6FNDGEOD5ziRIMWANrRnTerQB61bOK7XU7OHu6QaeoxW9KYobFJvjVOpfaKyGS+gIqg==
+	bh=kESwSTGC/FOWEdvQippRMdRenOboGaWNTRd7jgw6cOg=;
+	b=3m3HNKiG2f8KPgCMQCK6QxNciby2R6IMk7FZ19mS6CHPUPMjgJRingtGprDr0dXSOrOQ
+	 t0AB1y5mxekmmyHpOF01Sm/shJ8FOVynLA6UxdYkOsdOEnbTtjBw6UsXUEikB275TgVXD
+	 BNScYwPfytOh5RxgzM/QtcigedQt665ogg7lueCXfn8Z7t7QaXnO8hslrL5TKO0Pd12Fg
+	 vgSIZWrtgJPlp/eMdeBTbU31/Vx4Ldlly3TzvofuX6fpeF6JPHrOzl7t9i2dIRIWSJNDA
+	 bPRFenotWVmgqQKrR35Vt7tcDiW0feXrreZBu4X0HzJGpgIt8uen2PwIP77tXRSsSSA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Nerv6PK2;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NFfoSiky;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5188D606A320
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 21:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91759606A31A;
+	Tue, 27 Oct 2026 21:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Nerv6PK2
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C8F1F01825;
-	Tue, 27 Oct 2026 21:25:11 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NFfoSiky
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C41E11F01825;
+	Tue, 27 Oct 2026 21:27:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793136312;
-	bh=3vFEN7PFwFFQ6/hRJhhbKH2RiV/zoV2ai61tKhc4PRc=;
+	s=k20260515; t=1793136434;
+	bh=kESwSTGC/FOWEdvQippRMdRenOboGaWNTRd7jgw6cOg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Nerv6PK2dzlkxdF7onOndkaTWQEaIxqFXN8XZ0z72Cg95/nlfgJtA8/QV30zPSFup
-	 r06PBT05gv0Ji5bdxaYOoXBxtTUQwJzgPehQO6gbmolqX4MO7rDQ12Noo6+ngcLSj1
-	 WvAe6IkEHj+z+Cis/8WTqW0YP4ObxJmL9jOpPmiFsosRWQrK6CjLER9Lc+ONErcIJ5
-	 9rHd21FTZBunfU8Epk4t1V64cleh9Q6cD1iRHO3RjShAP9fPeAsUqftY2c5T5Nu9L6
-	 +Alkgzn7XHdJAInB1FKIQRS06Uj2RTdi/a+VXXrj8D/M1fX8DMREXPjZF9MrQ9yZFp
-	 KeVqV+j9EFXCA==
-Date: Tue, 27 Oct 2026 14:25:11 -0700
+	b=NFfoSiky1ZEnDDq3KMO0a3U7/6jgcMEXup4NtpE6hfOL+ubUr+0YF5aMw7KafAtQN
+	 54Prid+YQ421EjJolvdBnjf+GoMrBIGQxShkeppwF+gf9+UrX8pGdJ1eC5e4vxIl3U
+	 S+lODW6WsFAhlNmuseE9eaFQ5SSWl1h/c6erQ6cX+iDRgUqUUF2UEWU0C0ENVR5/x0
+	 WSwrp1171WirTr+BD5LNvM5jIc2VDl6Yh/tl0wTvrNjsovAVcM6sJKq0bDktUes7x1
+	 1aVLrznR5atMwv+dplpwhOJVCLQ6ejLrSANjorFZbm8H0DFbc2cXoMielkE8FxAe+v
+	 HtzgslMrCGLig==
+Date: Tue, 27 Oct 2026 14:27:13 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: "David S . Miller" <davem@davemloft.net>, Paolo Abeni
- <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>, Simon Horman
- <horms@kernel.org>, netdev@vger.kernel.org, Andrew Lunn
- <andrew+netdev@lunn.ch>, Aaron Conole <aconole@redhat.com>, Eelco Chaudron
- <echaudro@redhat.com>, Ilya Maximets <i.maximets@ovn.org>, Jamal Hadi Salim
- <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, dev@openvswitch.org,
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, Ren Wei
- <weir@nebusec.ai>
-Subject: Re: [PATCH net 0/5] net: fix eth_type_trans() crashes on skbs
- coming from the stack
-Message-ID: <20261027142511.5b00207b@kernel.org>
-In-Reply-To: <20261027082604.1485903-1-edumazet@kernel.org>
-References: <20261027082604.1485903-1-edumazet@kernel.org>
+To: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
+Cc: netdev-bot+sinfo@kernel.org, netdev@vger.kernel.org,
+ linux-can@vger.kernel.org, mkl@pengutronix.de, mailhol@kernel.org,
+ kernel@pengutronix.de, haibo.chen@oss.nxp.com, shawnguo@kernel.org,
+ imx@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH v8 1/2] can: dev: can_fill_info(): don't wake up
+ controller if interface is down
+Message-ID: <20261027142713.5fdd318b@kernel.org>
+In-Reply-To: <20261027065012.191348-1-chunyuzhiqiang@yinhe.ht>
+References: <20261027065012.191348-1-chunyuzhiqiang@yinhe.ht>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,45 +64,10 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 27 Oct 2026 09:25:59 +0100 Eric Dumazet wrote:
-> eth_type_trans() assumes ETH_HLEN bytes are present in skb->head.
-> NIC drivers always provide this, and they should keep using the fast
-> version, without an extra pskb_may_pull().
-> 
-> Devices looping skbs from their transmit path back to their receive
-> path get skbs built by the stack instead. tc actions (act_vlan pop_eth,
-> act_ife decode), BPF helpers (bpf_skb_change_head() before a redirect)
-> or OVS actions (pop_eth followed by pop_mpls/pop_nsh) can leave fewer
-> than ETH_HLEN bytes in the linear part, and eth_type_trans() then hits
-> the BUG() in __skb_pull().
-> 
-> Instead of fixing every producer, or adding a check to all
-> eth_type_trans() users, fix the few consumers exposed to this:
+On Tue, 27 Oct 2026 14:50:11 +0800 ChunYuZhiQiang wrote:
+> If the interface is down, the CAN controller might be powered down and
+> its clocks gated. Don't call do_get_berr_counter() to read the bus error
+> counters if the interface is down, and adjust can_get_size() to match.
 
-Bot says:
-
-BPF CI (bpf-ci) is reporting a consistent regression with this patch
-applied: every single job variant (x86-64/aarch64/s390x, gcc/llvm,
-no-alu32/cpuv4/ASAN) fails the exact same selftest subtest:
-
-  #135 empty_skb
-
-Specifically, the "veth ETH_HLEN+1 packet ingress [redirect_ingress]"
-case in tools/testing/selftests/bpf/prog_tests/empty_skb.c now fails:
-
-  test_empty_skb:FAIL:ret: veth ETH_HLEN+1 packet ingress [redirect_ingress]
-  unexpected ret: actual 1 != expected 0
-
-That test redirects a minimal (ETH_HLEN+1-byte) skb to a veth's RX path
-via bpf_clone_redirect(..., BPF_F_INGRESS), which goes through
-dev_forward_skb() -> __dev_forward_skb2(). Before this change the skb
-was forwarded successfully (ret == 0); after switching to
-eth_type_trans_careful() it is now dropped (actual == 1, i.e.
-NET_RX_DROP).
-
-Could you take a look at whether the new drop-on-failure behavior in
-__dev_forward_skb2() is intentional for this previously-accepted
-ETH_HLEN+1 packet, and if so, update the empty_skb selftest's expected
-return value alongside this change? Right now the selftest and the new
-kernel behavior disagree, and it's failing 100% of the time in CI on
-every arch/toolchain/config combination we run.
+Please don't CC netdev@ on run-of-the-mill CAN patches.
+Follow to MAINTAINERS / get_maintainers.pl
