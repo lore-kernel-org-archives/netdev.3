@@ -1,62 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.11
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793103295;
-	b=FWOfe4HNScrTiWS3MJLbynRsi0dqLRJKKnF/IOm3xXE1887+lZK8ctvemhd/lDAy2vUs
-	 yN+nJskRf2el/TFqh3JVfAyTjLpBGbGU51XmA3oHxHRg1tM4Jc5xcYu5fs1qFDshI6Doz
-	 mnLYo+b4/ZiAHWU3dfM0QV3MOjgRwAcBfpmNdnA7p1yh3+69/fuOPircPCE8iZH/J+uR2
-	 ++L83MpscCHfiSvOL3kTTRabZ1K0K1/BzTO94PVX8grFCPuw0Zo5LN2NlQFCVFDJFkhXR
-	 /dzFvzxoteTgG+S0nb500jpBDu2grqHc9RiyLRGNrnXkh8+JuFr4LtAhxEwtGl+MLLA==
+	t=1793103301;
+	b=sDNAkMUwah3sP2IuUu6ueU5nw4P9TLwC7un1+CS2q39rPLGPOnwu/PTk7rYJtVmB1auU
+	 j5fCAzW42JgeLDJRr2blfVYg9nMpeHEFrdhAkatR5AocdD8C3/tjQ3RoeIQDMXTyACQ3B
+	 gWkIyZbsY0s2IJBmL0l/uZvYd20usCZdetsOIu+EgTUGEHAdJ+KDPOoHVfm34TI9R5wZ8
+	 pb5FHqdeJvTPawYULB5Ib3WDUhCPC9V1iMTaBtgY6hcZxt/x9WHmfZEBcKrd4yO2lIIm6
+	 4YqZltbb+QrRuHBi223D/fxpyTJSfMMWYZbY2EoYTYTAs3btqkn56TXbp8LkEQjFlcw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793103295;
-	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:CC:Subject:
-	 User-Agent:In-Reply-To:References:Message-ID:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=W9eRxKylZ2IDdUCQv0zvUbAtiUFib8STcgRGkP/FDkc=;
-	b=QkO7g8q5aHcYAkB8CVSmSLCJ4draL3H/tfH0sQHer62Wk61uFw6MXKKplsrVfXAyui0z
-	 piWVa+VxRrwvpLPobXozOUu2cOuQSbVT2EVB5snigyeezhQreopJ0DeI2DxfDSKKiUpxh
-	 f8tlvt7Yn5iO3ODb3EzTD8usiw8Afhc6nJ13wV70EZm6aacWmlIVBjftApqWWttPTu4Xw
-	 tgOo8AU73gX1hDkThgTCCERUiEtG32csrCAuDyFAO3UVVtVy8zO/9ahlxYA4EhxQhEitL
-	 TsmoOEX2bCngIpXTwSGfWmqxypA3Axf2FpaJIibfBr3am4KnQWHQcSUV0UoxiaGbt3A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793103301;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=BViwE3dfXKqpkwdZwEdcio9cXmtdv8ApzP+/cAcGPKw=;
+	b=UQL5S3fk/ARBqp5P7vD6HGsZOM14tvS0Yus8ra1gUrQbvUD5D/zPcVPhVa4vS9VCYYFh
+	 X6AEcODGNBc05CRYx6k1yD9t+EcxtrglXSYTZucVkUb8eVGROnZ6M2+bTGWrvWMJS4goY
+	 GEhG4W9TkGAYBeCFCB7OZ+K4fWZoChV5u28mEzlY3+C9nY5rEBDk3A884op2yEobO6Rk8
+	 E2vP6ThAwX7wT3n2y1I0ZkDvwXuDiVRUFVdmu5df4Ta9mIaxTAmRoxTIzY2oep42ftDO0
+	 s8mklISDJ7YUoxsA70CQZZqCbSfo4/pRlNACMuAM17njNC/dU+zkaYHXuzNK/kWFM5Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=tipi-net.de;
-	spf=pass smtp.mailfrom=tipi-net.de;
-	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=N6cm7en5;
-	arc=none smtp.remote-ip=194.13.80.246
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=d2eK9i3s;
+	arc=none smtp.remote-ip=192.198.163.11
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CE7606A324;
-	Tue, 27 Oct 2026 12:14:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 02CE7606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F54560A383F
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 12:14:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8F54560A383F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=N6cm7en5
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1FF1DA160B;
-	Tue, 27 Oct 2026 13:14:42 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1793103285; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=W9eRxKylZ2IDdUCQv0zvUbAtiUFib8STcgRGkP/FDkc=;
-	b=N6cm7en5vAwGPTMoOJJMiJaZktzohdMuhQKcSNF6WD3kWBR4h6+3JD/J/35unxOjjViP9Q
-	Uab90tDWUedy/X9JzhUqkeY1tXWG5Ns4bRPCNMmN8zJYQknHkSZ9D4mKooIOeEttmJcbz0
-	kon5sDIw+L1jp4lema2EV9oEiDX1HjHZP7twOZh6AeAnVTR2Na5M51KplGZeIMCfXlTelC
-	Qa16taAtTRPPCbDnkXMRrRDz3hfjdF441PltqpyiEXN/cryjIREkvMIoNT04mDIdhjL1bU
-	Rb+Q8fpOKYALM7ZRZXlic1Noxka0k9Btph+vq9S2mnWjeBhB8WWygyJyqMuxfg==
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=d2eK9i3s
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793103299; x=1824639299;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=YyLWB1wW4GQLOCVklLn2VyX6mM9SGN+V9to/Vkzquwk=;
+  b=d2eK9i3s01LxRuz5f+deLXwWVarnWOOJCqwaNwcl8lFEJK2fCWAxTSyM
+   MJ2KXDpWU70obQQC5sz01mFU23qOpb9TyOTSr2f+8SuF6fqWLGWE21kWT
+   sqRgEEpnfDrVRFF091GO1aHj9D1ZXrQ7fi9zKC2rP6jWIkIEB2XhXmWlj
+   e2I9AKIBTpYuND2WIPcKd6HhgxiJCZ7vV1Nt4dfjz0psFg11fR2o+ogNL
+   ejQ8cSovfmM6nycSavb26UOamS2bcN9XA7ZgtZLWTnASCfz3q9d3TYaaU
+   LL85udnMpvefo/3GnDfgRpy1BTuPdBXKuGBdKXyGS41pen6hWRUVp8w7H
+   Q==;
+X-CSE-ConnectionGUID: Yci9TRwJQhO/a/iVO+3jOg==
+X-CSE-MsgGUID: z6PP3Dj9SKiax2OM5WDNqA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11947"; a="1709355"
+X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
+   d="scan'208";a="1709355"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 05:14:59 -0700
+X-CSE-ConnectionGUID: 81Nx+QqnR5y1NH4EymS6tw==
+X-CSE-MsgGUID: 3scPnqK2Smil7T5i4hYtsg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
+   d="scan'208";a="4529800"
+Received: from boxer.igk.intel.com ([10.102.20.173])
+  by orviesa002.jf.intel.com with ESMTP; 27 Oct 2026 05:14:57 -0700
+From: Magnus Karlsson <magnus.karlsson@intel.com>
+To: magnus.karlsson@gmail.com,
+	intel-wired-lan@lists.osuosl.org,
+	anthony.l.nguyen@intel.com,
+	netdev@vger.kernel.org,
+	maciej.fijalkowski@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: Magnus Karlsson <magnus.karlsson@intel.com>
+Subject: [PATCH iwl-net 1/2] ice: fix USO for 32-bit systems
 Date: Tue, 27 Oct 2026 13:14:41 +0100
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Paolo Abeni <pabeni@redhat.com>, netdev-bot+sashiko@kernel.org
-CC: sgoutham@marvell.com, gakula@marvell.com, rkannoth@marvell.com,
- sbhatta@marvell.com, bbhushan2@marvell.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_net_v2=5D_octeontx2-pf=3A_fix_skb?=
- =?US-ASCII?Q?_use-after-free_with_ipsec_crypto_offload?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <cf0a87b7-1039-4688-85eb-9efc8a25dfe5@redhat.com>
-References: <20261022-nb-otx2-xfrm-unshare-net-v2-1-5590c9325bcd@tipi-net.de> <179296218017.3134.5170259489302207876@kernel.org> <cf0a87b7-1039-4688-85eb-9efc8a25dfe5@redhat.com>
-Message-ID: <3703F128-A6A9-426D-A177-2E804C67E2F2@tipi-net.de>
+Message-Id: <20261027121442.907414-2-magnus.karlsson@intel.com>
+X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20261027121442.907414-1-magnus.karlsson@intel.com>
+References: <20261027121442.907414-1-magnus.karlsson@intel.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,28 +89,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-Hi Paolo
+That USO works for 64-bit systems is just pure luck. Currently, the
+computation of the UDP segmentation header is performed using sizeof()
+a pointer instead of the sizeof() the UDP header that the pointer
+points to. Since the UDP header happens to be 8 bytes long and a
+pointer is 8 bytes long on a 64-bit system, this works on all those
+systems. But no such luck for anyone using a 32-bit system as 8 bytes
+!= 4 bytes. So fix this by using sizeof() the UDP header that the
+pointer points to instead.
 
-On October 27, 2026 12:49:44 PM GMT+01:00, Paolo Abeni <pabeni@redhat=2Eco=
-m> wrote:
->On 10/25/26 22:03, netdev-bot+sashiko@kernel=2Eorg wrote:
->> - [High] The fix only partly covers its target=2E
->
->I've mixed feeling WRT the above points; it's (borderline) pre-existing,
->but it's IMHO bad enought that should be addressed in the same fix=2E
->Thoughts?
+This was found by an LLM while implementing something else that used USO.
 
-Let's make it a proper fix, instead of adding another patch soon after=2E =
-I will send a v3 within the next days=2E
+Fixes: a54e3b8cffd6 ("Support UDP segmentation offload")
+Signed-off-by: Magnus Karlsson <magnus.karlsson@intel.com>
+---
+ drivers/net/ethernet/intel/ice/ice_txrx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
->
->/P
->
+diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
+index a2c7c4962882..d9ea812c5c4e 100644
+--- a/drivers/net/ethernet/intel/ice/ice_txrx.c
++++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
+@@ -1925,7 +1925,7 @@ int ice_tso(struct ice_tx_buf *first, struct ice_tx_offload_params *off)
+ 		csum_replace_by_diff(&l4.udp->check,
+ 				     (__force __wsum)htonl(paylen));
+ 		/* compute length of UDP segmentation header */
+-		off->header_len = (u8)sizeof(l4.udp) + l4_start;
++		off->header_len = sizeof(*l4.udp) + l4_start;
+ 	} else {
+ 		csum_replace_by_diff(&l4.tcp->check,
+ 				     (__force __wsum)htonl(paylen));
+-- 
+2.38.1
 
-Regards,
-Nicolai
