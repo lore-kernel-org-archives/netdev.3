@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1793067968;
-	b=PnK9yOLEXrpJAtUNDaqNytc8aFo9B2X0ehNhhX1ozCffCB/TYw+NNmL1zO/XAgWa+9f1
-	 OkTObJWfjyF0iGlqJP0Ydkcsmm9B/uhYgmrbBgSmgygBxwanzOeS2WUvLiJYTOXnjXLUe
-	 hendakQUaCaW5tKomZqhMil8DnJTKijwLgY0wGJjrFMAR5PNWemrNbhty6GWsnvuYuh7t
-	 nMVZPHcKdNe3wMMAyxpvpFHokMx9B/ipzI/EVZTBsLf43PXORUhSwqv9C65BQXD/1R/P2
-	 CUiNN6Y9fH+Qsbgt7z3DExTIwM4/hE+NPwAvcvj2JArV+Uo8inIb27Lfdh7TI5tX82Q==
+	b=wicmuyAvFcdsFWKpKdnj3l3nBGKQGPb9EILnLDhOIxcyAroTvQJTF54sG+TjLSfq1Hc+
+	 YJQseC/n6PcqQXHn6xbDNNqwLPdps4r7s93W/dPNfiWFTs7yffDANr2/rctpKX6JaXH/B
+	 Vl4o8VB7L1qOoTwJdxtSKumW8mngqreaIc7m9JojZExsNebzaP3LTW3cRhn0Ku3ijRZhA
+	 txc/5jt1xtsRQeuc5tRYaC4auf+HBJ8WC3FcqlULBZmibjizqYWRoPwxoSJtBVwcZZSUs
+	 NXcsgBBrbn3ItIImh+QPda3KLKSsZ9eNzK/uB4TyFl/6kg0KEx5+u83AZQ4no3IHMIw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793067968;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=S4aYRbE302LQbqAQ+93TGzqSd2oH27nCsfs3eL4pUl8=;
-	b=4irkUw8qM1844rKWqlMP+daDg6BoLYvoP6jNK4ifT5Icv2k9qRzeZ2cg/e+tPjHWY887
-	 1Zm9TWY5lKrv3GTC5rvZMtRoB/pjpcNFkFTS/1uFJBQ6lRWjElXf86zJOFVu9woGatQh6
-	 hR6lMWHVkZ+WvBMQlZIQtqFADCBSkX5Y9k7v4ZS1kMk19E8i5GfKelG5fjnookjs2Oq5B
-	 GIbQcW2sbNwWsdFnv46u25MWSdXxCBFE3d7HZCqjy4AL62fE1o8+XEy0pDYTkp31OmLk9
-	 dgDnjBA3uYyvJncF+sFEqDAFv0c7LOXr7Gn3qO3zHWjKEFU3/LNa9oBH0CE9rkrJ3jA==
+	bh=T4eFAtsnAZqo6Mn8XRMqQdKmDgUTGfrTns9FScnFl/w=;
+	b=bacx7kvUlg5L67xdsWuDmVe6+8hRM3U0AaJiOMy4chKWnFrvS2+9T1b0GmPbAZCWD/ge
+	 +tn4CnQ4lgMWkhBacWi7ArBeBByo6sRq9kv87SuN+SUzTLdmu94vlUm3AgPbUbTRjJeDV
+	 Qq7XkVUqYgLUuqv9syb87cnez2s6HB+jWTpq3u7IOYY44tE/ADqj9qqR/iJMiVtN2y/D5
+	 ptG94ZbmsPN5t4rm1VjaompP36QBzqGhVHiw8IOwHcWuJiAcjrNwADX/zxf3jITsdcP1t
+	 juM54ZPO7f2amnvpxi6RK8KVlVwgMYODFeHGEsMLXCsTJugQreWp/SCSrfgQDcr8Yqg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fcJbUB8O;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E1pquA4w;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB0E606A328;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B4B606A32C;
 	Tue, 27 Oct 2026 02:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fcJbUB8O
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4EB51F031E4;
-	Tue, 27 Oct 2026 02:26:07 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E1pquA4w
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29B671F01825;
+	Tue, 27 Oct 2026 02:26:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1793067968;
-	bh=S4aYRbE302LQbqAQ+93TGzqSd2oH27nCsfs3eL4pUl8=;
+	bh=T4eFAtsnAZqo6Mn8XRMqQdKmDgUTGfrTns9FScnFl/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fcJbUB8OCHpwDQfJFBQp9zF5POdJVsJzBilRJWWXoobMSSnK78HpcIK7+8sKFbxB+
-	 8iiztDmXjEFkZhZMacNnNkSFY3wKfXw3ZtMJUwlcfw9esB67qLBOBlL30nA24LRthm
-	 J20/a0RYaFoaJXFBIH3PqPCCag0BL6aOiBnB8E1a5Aveau0v1j92n/QlwjpsxYvitz
-	 tXzD6nScf5OgHCitD15+/5YA0mWybvWYiJKkq+D8K7r9jV6PmquqwxppUDITInLz6T
-	 8Wq50WWdTlRmiXPOh4ZGm4AkP1GdZpINP1L+hF/XUby3axwDjdbJ6Vyx/Eaf9wsZe3
-	 mIMuEfymzww/w==
+	b=E1pquA4w+C+TzWv/psoom5gvtEB5Ky382OH71atQdhGu9xCPGS30jQkWcwroXNHOM
+	 Y48lw6iSMMp+BScfklut/wQ+uTntjf24Bl35PdOTBglDqdpi9JoZKIlYnjnNPMpfFt
+	 zFuvLC+xikWaTVnHOz4TIpXJTBpkjYHetFewHT9rvafd0EtCao+BGbyh7Z00LwBe2k
+	 bg1VSeC9XKosVPLWKd6tcZG206qm7ZbPDGjjPWYfLSet5rzjBIj2VOr2ehSchzolJA
+	 tkqejmaSCAXG3zzcO142+ibGDJ/BGvPVYBUMN1lGGzqpUUYnCnBmR+LtkqiH0U2L1G
+	 3MYrf/a7RT9qg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: robin.murphy@arm.com,
 	m.szyprowski@samsung.com
@@ -52,9 +52,9 @@ Cc: tglx@kernel.org,
 	iommu@lists.linux.dev,
 	netdev@vger.kernel.org,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [RFC 02/11] dma-direct: pass the NUMA node to dma_direct_alloc()
-Date: Mon, 26 Oct 2026 19:25:19 -0700
-Message-ID: <20261027022528.633359-3-kuba@kernel.org>
+Subject: [RFC 03/11] iommu/dma: pass the NUMA node to iommu_dma_alloc()
+Date: Mon, 26 Oct 2026 19:25:20 -0700
+Message-ID: <20261027022528.633359-4-kuba@kernel.org>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261027022528.633359-1-kuba@kernel.org>
 References: <20261027022528.633359-1-kuba@kernel.org>
@@ -69,133 +69,155 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-dma_direct_alloc() allocates the pages on the node of the device.
+iommu_dma_alloc() allocates the pages on the node of the device.
 Pass the node in explicitly, so that a node-aware coherent allocation
 API can be layered on top.
 
-Memory from the atomic pools, the global coherent pool, restricted
-swiotlb pools and arch_dma_alloc() is not node-aware, the node is only
-used for the page allocator and the per-numa CMA areas.
+Memory from the atomic pools is not node-aware.
+iommu_dma_alloc_noncontiguous() keeps using the device's node.
 
 Callers pass dev_to_node() for now, no functional change.
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- include/linux/dma-direct.h    |  2 +-
- arch/x86/kernel/amd_gart_64.c |  3 ++-
- kernel/dma/direct.c           | 18 ++++++++++--------
- kernel/dma/mapping.c          |  3 ++-
- 4 files changed, 15 insertions(+), 11 deletions(-)
+ include/linux/iommu-dma.h |  2 +-
+ drivers/iommu/dma-iommu.c | 28 ++++++++++++++++------------
+ kernel/dma/mapping.c      |  3 ++-
+ 3 files changed, 19 insertions(+), 14 deletions(-)
 
-diff --git a/include/linux/dma-direct.h b/include/linux/dma-direct.h
-index daa31a1adf7b..7e864b75be6b 100644
---- a/include/linux/dma-direct.h
-+++ b/include/linux/dma-direct.h
-@@ -158,7 +158,7 @@ static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t size,
- 
- u64 dma_direct_get_required_mask(struct device *dev);
- void *dma_direct_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
+diff --git a/include/linux/iommu-dma.h b/include/linux/iommu-dma.h
+index 060f6e23ab3c..067872f14629 100644
+--- a/include/linux/iommu-dma.h
++++ b/include/linux/iommu-dma.h
+@@ -31,7 +31,7 @@ int iommu_dma_map_sg(struct device *dev, struct scatterlist *sg, int nents,
+ void iommu_dma_unmap_sg(struct device *dev, struct scatterlist *sg, int nents,
+ 		enum dma_data_direction dir, unsigned long attrs);
+ void *iommu_dma_alloc(struct device *dev, size_t size, dma_addr_t *handle,
 -		gfp_t gfp, unsigned long attrs);
 +		gfp_t gfp, unsigned long attrs, int node);
- void dma_direct_free(struct device *dev, size_t size, void *cpu_addr,
- 		dma_addr_t dma_addr, unsigned long attrs);
- struct page *dma_direct_alloc_pages(struct device *dev, size_t size,
-diff --git a/arch/x86/kernel/amd_gart_64.c b/arch/x86/kernel/amd_gart_64.c
-index b5f1f031d45b..05f3d7da6df8 100644
---- a/arch/x86/kernel/amd_gart_64.c
-+++ b/arch/x86/kernel/amd_gart_64.c
-@@ -468,7 +468,8 @@ gart_alloc_coherent(struct device *dev, size_t size, dma_addr_t *dma_addr,
- {
- 	void *vaddr;
- 
--	vaddr = dma_direct_alloc(dev, size, dma_addr, flag, attrs);
-+	vaddr = dma_direct_alloc(dev, size, dma_addr, flag, attrs,
-+				 dev_to_node(dev));
- 	if (!vaddr ||
- 	    !force_iommu || dev->coherent_dma_mask <= DMA_BIT_MASK(24))
- 		return vaddr;
-diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-index 9787a45f46f1..81953adf872c 100644
---- a/kernel/dma/direct.c
-+++ b/kernel/dma/direct.c
-@@ -115,9 +115,8 @@ static struct page *dma_direct_alloc_swiotlb(struct device *dev, size_t size,
+ int iommu_dma_mmap(struct device *dev, struct vm_area_struct *vma,
+ 		void *cpu_addr, dma_addr_t dma_addr, size_t size,
+ 		unsigned long attrs);
+diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+index bb82ba3be440..1dc2e235380a 100644
+--- a/drivers/iommu/dma-iommu.c
++++ b/drivers/iommu/dma-iommu.c
+@@ -882,10 +882,10 @@ static void __iommu_dma_free_pages(struct page **pages, int count)
  }
  
- static struct page *__dma_direct_alloc_pages(struct device *dev, size_t size,
--		gfp_t gfp, bool allow_highmem)
-+		gfp_t gfp, bool allow_highmem, int node)
+ static struct page **__iommu_dma_alloc_pages(struct device *dev,
+-		unsigned int count, unsigned long order_mask, gfp_t gfp)
++		unsigned int count, unsigned long order_mask, gfp_t gfp, int nid)
  {
--	int node = dev_to_node(dev);
- 	struct page *page;
- 	u64 phys_limit;
+ 	struct page **pages;
+-	unsigned int i = 0, nid = dev_to_node(dev);
++	unsigned int i = 0;
  
-@@ -180,11 +179,12 @@ static struct page *dma_direct_alloc_from_pool(struct device *dev, size_t size,
- }
- 
- static void *dma_direct_alloc_no_mapping(struct device *dev, size_t size,
--		dma_addr_t *dma_handle, gfp_t gfp)
-+		dma_addr_t *dma_handle, gfp_t gfp, int node)
+ 	order_mask &= GENMASK(MAX_PAGE_ORDER, 0);
+ 	if (!order_mask)
+@@ -938,7 +938,8 @@ static struct page **__iommu_dma_alloc_pages(struct device *dev,
+  * but an IOMMU which supports smaller pages might not map the whole thing.
+  */
+ static struct page **__iommu_dma_alloc_noncontiguous(struct device *dev,
+-		size_t size, struct sg_table *sgt, gfp_t gfp, unsigned long attrs)
++		size_t size, struct sg_table *sgt, gfp_t gfp, unsigned long attrs,
++		int node)
  {
- 	struct page *page;
+ 	struct iommu_domain *domain = iommu_get_dma_domain(dev);
+ 	struct iommu_dma_cookie *cookie = domain->iova_cookie;
+@@ -966,7 +967,7 @@ static struct page **__iommu_dma_alloc_noncontiguous(struct device *dev,
  
--	page = __dma_direct_alloc_pages(dev, size, gfp & ~__GFP_ZERO, true);
-+	page = __dma_direct_alloc_pages(dev, size, gfp & ~__GFP_ZERO, true,
-+					node);
- 	if (!page)
+ 	count = PAGE_ALIGN(size) >> PAGE_SHIFT;
+ 	pages = __iommu_dma_alloc_pages(dev, count, alloc_sizes >> PAGE_SHIFT,
+-					gfp);
++					gfp, node);
+ 	if (!pages)
  		return NULL;
  
-@@ -200,7 +200,7 @@ static void *dma_direct_alloc_no_mapping(struct device *dev, size_t size,
+@@ -1012,14 +1013,15 @@ static struct page **__iommu_dma_alloc_noncontiguous(struct device *dev,
  }
  
- void *dma_direct_alloc(struct device *dev, size_t size,
+ static void *iommu_dma_alloc_remap(struct device *dev, size_t size,
 -		dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
 +		dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs, int node)
  {
- 	bool remap = false, set_uncached = false;
- 	bool mark_mem_decrypt = false;
-@@ -228,7 +228,8 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+ 	struct page **pages;
+ 	struct sg_table sgt;
+ 	void *vaddr;
+ 	pgprot_t prot = dma_pgprot(dev, PAGE_KERNEL, attrs);
  
- 	if (((attrs & (DMA_ATTR_NO_KERNEL_MAPPING | __DMA_ATTR_ALLOC_CC_SHARED)) ==
- 	     DMA_ATTR_NO_KERNEL_MAPPING) && !is_swiotlb_for_alloc(dev))
--		return dma_direct_alloc_no_mapping(dev, size, dma_handle, gfp);
-+		return dma_direct_alloc_no_mapping(dev, size, dma_handle, gfp,
-+						   node);
- 
- 	if (!dev_is_dma_coherent(dev)) {
- 		if (IS_ENABLED(CONFIG_ARCH_HAS_DMA_ALLOC) &&
-@@ -286,7 +287,8 @@ void *dma_direct_alloc(struct device *dev, size_t size,
- 	}
- 
- 	/* we always manually zero the memory once we are done */
--	page = __dma_direct_alloc_pages(dev, size, gfp & ~__GFP_ZERO, allow_highmem);
-+	page = __dma_direct_alloc_pages(dev, size, gfp & ~__GFP_ZERO, allow_highmem,
-+					node);
- 	if (!page)
+-	pages = __iommu_dma_alloc_noncontiguous(dev, size, &sgt, gfp, attrs);
++	pages = __iommu_dma_alloc_noncontiguous(dev, size, &sgt, gfp, attrs,
++						node);
+ 	if (!pages)
+ 		return NULL;
+ 	*dma_handle = sgt.sgl->dma_address;
+@@ -1060,7 +1062,8 @@ struct sg_table *iommu_dma_alloc_noncontiguous(struct device *dev, size_t size,
+ 	if (!sh)
  		return NULL;
  
-@@ -452,7 +454,7 @@ struct page *dma_direct_alloc_pages(struct device *dev, size_t size,
- 		goto setup_page;
+-	sh->pages = __iommu_dma_alloc_noncontiguous(dev, size, &sh->sgt, gfp, attrs);
++	sh->pages = __iommu_dma_alloc_noncontiguous(dev, size, &sh->sgt, gfp,
++						    attrs, dev_to_node(dev));
+ 	if (!sh->pages) {
+ 		kfree(sh);
+ 		return NULL;
+@@ -1619,11 +1622,10 @@ void iommu_dma_free(struct device *dev, size_t size, void *cpu_addr,
+ }
+ 
+ static void *iommu_dma_alloc_pages(struct device *dev, size_t size,
+-		struct page **pagep, gfp_t gfp, unsigned long attrs)
++		struct page **pagep, gfp_t gfp, unsigned long attrs, int node)
+ {
+ 	bool coherent = dev_is_dma_coherent(dev);
+ 	size_t alloc_size = PAGE_ALIGN(size);
+-	int node = dev_to_node(dev);
+ 	struct page *page = NULL;
+ 	void *cpu_addr;
+ 
+@@ -1656,7 +1658,7 @@ static void *iommu_dma_alloc_pages(struct device *dev, size_t size,
+ }
+ 
+ void *iommu_dma_alloc(struct device *dev, size_t size, dma_addr_t *handle,
+-		gfp_t gfp, unsigned long attrs)
++		gfp_t gfp, unsigned long attrs, int node)
+ {
+ 	bool coherent = dev_is_dma_coherent(dev);
+ 	int ioprot = dma_info_to_prot(DMA_BIDIRECTIONAL, coherent, attrs);
+@@ -1672,7 +1674,8 @@ void *iommu_dma_alloc(struct device *dev, size_t size, dma_addr_t *handle,
+ 
+ 	if (gfpflags_allow_blocking(gfp) &&
+ 	    !(attrs & DMA_ATTR_FORCE_CONTIGUOUS)) {
+-		return iommu_dma_alloc_remap(dev, size, handle, gfp, attrs);
++		return iommu_dma_alloc_remap(dev, size, handle, gfp, attrs,
++					     node);
  	}
  
--	page = __dma_direct_alloc_pages(dev, size, gfp, false);
-+	page = __dma_direct_alloc_pages(dev, size, gfp, false, dev_to_node(dev));
- 	if (!page)
- 		return NULL;
- 
+ 	if (IS_ENABLED(CONFIG_DMA_DIRECT_REMAP) &&
+@@ -1682,7 +1685,8 @@ void *iommu_dma_alloc(struct device *dev, size_t size, dma_addr_t *handle,
+ 		if (!page)
+ 			return NULL;
+ 	} else {
+-		cpu_addr = iommu_dma_alloc_pages(dev, size, &page, gfp, attrs);
++		cpu_addr = iommu_dma_alloc_pages(dev, size, &page, gfp, attrs,
++						 node);
+ 		if (!cpu_addr)
+ 			return NULL;
+ 	}
 diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index bf2651a70b7c..1c3a70025195 100644
+index 1c3a70025195..4ace4b68c9c2 100644
 --- a/kernel/dma/mapping.c
 +++ b/kernel/dma/mapping.c
-@@ -665,7 +665,8 @@ void *dma_alloc_attrs(struct device *dev, size_t size, dma_addr_t *dma_handle,
- 	flag &= ~(__GFP_DMA | __GFP_DMA32 | __GFP_HIGHMEM);
- 
- 	if (dma_alloc_direct(dev, ops) || arch_dma_alloc_direct(dev)) {
--		cpu_addr = dma_direct_alloc(dev, size, dma_handle, flag, attrs);
-+		cpu_addr = dma_direct_alloc(dev, size, dma_handle, flag, attrs,
-+					    dev_to_node(dev));
+@@ -668,7 +668,8 @@ void *dma_alloc_attrs(struct device *dev, size_t size, dma_addr_t *dma_handle,
+ 		cpu_addr = dma_direct_alloc(dev, size, dma_handle, flag, attrs,
+ 					    dev_to_node(dev));
  	} else if (use_dma_iommu(dev)) {
- 		cpu_addr = iommu_dma_alloc(dev, size, dma_handle, flag, attrs);
+-		cpu_addr = iommu_dma_alloc(dev, size, dma_handle, flag, attrs);
++		cpu_addr = iommu_dma_alloc(dev, size, dma_handle, flag, attrs,
++					   dev_to_node(dev));
  	} else if (ops->alloc) {
+ 		cpu_addr = ops->alloc(dev, size, dma_handle, flag, attrs);
+ 	} else {
 -- 
 2.56.0
 
