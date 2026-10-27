@@ -1,65 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793139358;
-	b=oGsFwgGAW4muhnCaoCW4oCWKhjgMHwWNA8rmL+ePiOmOF0+nu2Qxyb+peqCt/IMRutM0
-	 Eo2rq/4bEYF9UGgIiQuPhQrWZn9j8BeGLi+gwEW6V5ontv19cjBR2zGNY7hO9BbkzwBod
-	 8OK2HQLD15MK3qABpuvH8i1YKZYEEmbcJGUb/BmMJlqqBiOvHgjrHrlfwOyvtI7LEwOPU
-	 WJBonTXymVtjpypBAcOiTRASJDIAu43Y8Q/sDWRE4G/eu40ids1luG8khi32sgIklwyuo
-	 7sLDipB1V/bOA6Z70IjEy5hEicjSCgUjEwY5D8IhQQnfi9szznKweO0sUYCqtejCNFQ==
+	t=1793140207;
+	b=29VkV8Hu5wRnk+Vf3J3Y4j9laNZV8jqGNQ7WJvoVq51NUJuF3qHFHOmwq0NIpESAqvo0
+	 s1xOK0jdXvgp65turkV4vLtfKU+2RvG4VBdb4P+/DsdzFCeDdWBKNJhkazpYyLai7h6z9
+	 JRZcgvdbEW/nIS7FjculQ+dwbtxZhLLthxlbQ7jE0jVAIMPeBES3lylsT28GMIug0uAh0
+	 sRxRZxh5Uqc5FDjjElZqQmgxhbtre2u1yPwSJzBemKgIRe55NeWTBZ5dJ6kYilVPlG13P
+	 t+6h7f3OAGig8/sc4ryi2Fp4HQOqYQavPbVolhWidxxgyZYzhzpMUNZyn52HMcF861Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793139358;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=y3nxSYf+nGkg2nxC5jubGB9hyg1F7JfBoH2ZNuefTn4=;
-	b=xM86+GvR/agxngVN6Cj33Wka5NrYd/TBVog3VdDutxC4AHPFAYusgWPGbYsomBMM5IhX
-	 NODH8isqZFvEe6V2U7WiTNaA7heClfd2g5rYcA3oCXOl72N9nm0ghkAvbuOtV/urZhLE/
-	 REOLg+JK4JBtOKS1ActiwHdkAKIDmM7Uqb0gJ647HgV+Qj7gFyI6YDOfaaJ2DAJwZPqkR
-	 JGhIMq9V3YREIEWKaEeqzajEvGTmxzLA+rMz7HENDkuSerSZvl5tjxG+IhLrZHt0OnT5W
-	 rmgLKRWxCc2CyZusUs+UmM4DgvxjF+l2aeeamOiVMnA4C9cjJ1wm+UwjOkY2rG93B7g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793140207;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=xuq66sDnBhsAplEkzYm7QcixWPor8L5zRdirUDF98Vs=;
+	b=OBe8pbelmCuzZG8PSYQ7+yfR5iqYDOvZVLGkr3W6Qnn8xhi7tTuqg5I2B3h9Ytg/CED6
+	 zQELUwq6pI0NOW/RkTBfNu+YozKzunNL8RghwScJ3NrpmQKRJFBFl1ELfd3zszSgCwcl9
+	 0HAojI0xdpNJiB7IE01D1qfsGTm4xYJqkmFPMVGcN6QxvHvIhz+/WSZe8AQGNv3SJqmhM
+	 SZyC3cnmdesINxnH2aNWkQOkRrvvoYDLsg+yrTWY9M9oD4BX5iwFym3QeYzakf88Px7iC
+	 lsAM/J06wxEbtXwJOMrcJH4nuDfvcSy4o3ru2k/dvn3o9TFfB6r10ixjZ6NmAXz5Ssg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F1+H9NJ8;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N2xcgAJs;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6AA606A31A
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 22:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A095606A31E;
+	Tue, 27 Oct 2026 22:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F1+H9NJ8
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A161F01825;
-	Tue, 27 Oct 2026 22:15:57 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N2xcgAJs
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8F321F01829;
+	Tue, 27 Oct 2026 22:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793139358;
-	bh=y3nxSYf+nGkg2nxC5jubGB9hyg1F7JfBoH2ZNuefTn4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=F1+H9NJ8LPsdTHvbYrCVZOqu0iZSdxaLLERyvf52XuQN2xvx+ie6VRhiUUi17XT/L
-	 WNlY56Kc/CRn6sbpcrtVUA4bUl1JUo4rNtCKS15isEW8bQVFc8xHalJ/40U0OmM9yt
-	 v+FtBl2/3ksrxXN4VwagnJY9u+g5HItaGazxFxQfSgbDDDKfK6njblNW7ADLB9Ewtj
-	 +1hje9lQLb+RM5YyJuH1nTRgy1Tz81r+C00wj20mAkA9Iex2cnAUBRXX8L4MH0T/Gm
-	 QjBpq6hYHBaknG+GqqTkw4snxurubvouQDgxOQuO/eE1BbJ5tADxNF2xjCuy50JwVi
-	 N8jOMH8ZI8rGQ==
-Date: Tue, 27 Oct 2026 15:15:57 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Jacob Keller <jacob.e.keller@intel.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, Przemek Kitszel
- <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Petr
- Oros <poros@redhat.com>, <netdev@vger.kernel.org>, Grzegorz Nitka
- <grzegorz.nitka@intel.com>, Aleksandr Loktionov
- <aleksandr.loktionov@intel.com>, Alexander Nowlin
- <alexander.nowlin@intel.com>, Tony Nguyen <anthony.l.nguyen@intel.com>,
- <maciej.machnikowski@intel.com>, <przemyslaw.korba@intel.com>,
- <sergey.temerkhanov@intel.com>, <arkadiusz.kubalewski@intel.com>,
- <richardcochran@gmail.com>, <horms@kernel.org>
-Subject: Re: [PATCH net v5 00/13] ice: E82x: timestamp processing logic
- fixes
-Message-ID: <20261027151557.6365ef68@kernel.org>
-In-Reply-To: <0f0a865a-cefd-4896-949a-2b4d72121b4a@intel.com>
-References: <20261021-jk-e825c-timestamp-processing-logic-fixes-srcu-v5-0-72289a4ac8eb@intel.com>
-	<5abb5015-eee0-41a6-a4b6-5ca9ed0a9f0f@redhat.com>
-	<0f0a865a-cefd-4896-949a-2b4d72121b4a@intel.com>
+	s=k20260515; t=1793140207;
+	bh=xuq66sDnBhsAplEkzYm7QcixWPor8L5zRdirUDF98Vs=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=N2xcgAJsVvjA2GHoiyQcvdzZae2VtjCmB4UvxqHSPhnRgRBOwbvmrlS8vSBjyimZN
+	 K7ObJX/nInju5WgC+Ku08Ga/uyeu5S4ODHA5/PWHUrfU/tb5TECyrzIC6GTPiv2Nx0
+	 0tnRq4OXP0DP2V2ULVsqAinECK5qDmannYVKExh8nFCI9OsvKOS260KSt4pUIAZvMH
+	 kP0dsojOAXad0PIdPBtwa6oif4UdvTnq52MtwFxvxmnslByR4qEFo/s1w2K4BcFffk
+	 Q/+cziWsGEY9LAPRYrpgD+meGk5FbFF6QabkkTsc5VajyhrUkOsxHBGpQeN/zCfX7A
+	 uqC7yFlb7UVGA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id DC5943AA940C;
+	Tue, 27 Oct 2026 22:30:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,13 +53,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: microchip: fdma: fix DCB corruption under
+ sustained load
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179314020569.360855.3209955034452568131.git-patchwork-notify@kernel.org>
+Date: Tue, 27 Oct 2026 22:30:05 +0000
+References: 
+ <20261026-microchip-fdma-dcb-corruption-v1-1-36dab6caca07@microchip.com>
+In-Reply-To: 
+ <20261026-microchip-fdma-dcb-corruption-v1-1-36dab6caca07@microchip.com>
+To: Daniel Machon <daniel.machon@microchip.com>
+Cc: Steen.Hegelund@microchip.com, UNGLinuxDriver@microchip.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horatiu.vultur@microchip.com,
+ jensemil.schulzostergaard@microchip.com,
+ linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
-On Tue, 27 Oct 2026 12:32:30 -0700 Jacob Keller wrote:
-> Would you like me to make a respin with just that subset, or can you
-> apply them? I just checked and that subset successfully cherry-picked
-> easily with no merge conflicts net, and appears to build fine.
+Hello:
 
-That's too much of a cherry-pick for me TBH.
-Could you please respin what you think is ready to go in?
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Mon, 26 Oct 2026 14:47:05 +0100 you wrote:
+> __fdma_dcb_add() prepares a DCB and links it into a channel's chain by
+> writing its address to the NEXT_PTR of the current last DCB. The FDMA
+> may be processing the chain while this happens.
+> 
+> Before this patch, the link is written before the new DCB's own nextptr
+> and info fields, so the FDMA can follow it to a DCB that hasn't been fully
+> prepared yet. Under sustained load this stalls the FDMA.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net] net: microchip: fdma: fix DCB corruption under sustained load
+    https://git.kernel.org/netdev/net/c/573a6d4c7a21
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
