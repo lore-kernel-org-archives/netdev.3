@@ -1,101 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.172
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793112722;
-	b=WXNQcA7N3KvbZD3L3+cDbqZrmIPw4qnC4Pw+7rSSnhxY0OTAeSGRrXuZafGwOoHMXiE9
-	 8g84aqv9cQ+Y4wjlecaigOHl8qoYmeqmMyjKcjT9PeltjcKWFHmsrKSUajcUqnmotmmhD
-	 Ep/hJPn1VqK/UmFPZhA2QvUlKQvZbEEwO40i3fOPVKKo8vORk6tkhDZcwktyGPmLziFFV
-	 X9fhCyCrQ815od7JFVcjb+TPiFKJ9XZkHDlJb39bNjFSCijEhiE12XF9cYZaO3CUhpAVG
-	 f2HpT9UfRgEpGWJxQJWInoW0NRAb7OkdR2kcsWxZnJP0S5WwuNZN1619cUHeiV6LlVQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793112722;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=FU7pIPRd0mpxW1uPh7JiRsMpomfdTBJ1PVqebYQBX/w=;
-	b=SBAdWJYOmEOyD/udpj88pIR3nZoIRMgNH8tXdbUozXZs4g7jV3p8mknB/fT/vT0IvbZb
-	 ZpGUFuMafJDDwETUypCgwrBB0BGqROcXtLMQSpc2gU3ZKCDHUJ95tKtUFvXLR/iYEcswG
-	 JFsTeuO0grDr0swGeoM5kD5P8AVCDKBRhyRFfAw3ndQbnvhbn5y3ogn6lG5cYvdVymTc2
-	 Id8kKOT+rVvKiC1ZRmlmP16trFwc5cnLLeLaJZUhiQmgRiphWXKpu1zaFF+R1M8OPXsqO
-	 1Z2JomqWTO4Y70QHNkY7hcJHt2x7GNTJM/l009KEXOuKETET9wv2tezN24SvwvPurXg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=DqjPCs4d;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.172
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793112874;
+	b=BpTHXn/OHtLsVpTjmdRJXqs+iNJwY3/3EVBk2F4PSbvOCCl2iFCcpQYAYqpCyY7LVJoX
+	 dXFbNt2K9NVtX3lDw1MOIwio5Fkmjr5qAz1BMfczLeviSlL/1QskGj2c3X2jmSErpRSG0
+	 xQLrn43+I9Q3igm81jcxmz+cAEYnY/gmBFz/buocHEJDOrI/DEy7cCJ0d3DuibSDbyEmD
+	 +dDaKxp4KS5RBjGtxnzmN+d5Ftk59Rj1Giub/B9AUmozsN/SkfrOBc5BXRYDXRLUkW27Y
+	 fatgSrfWRzF50iEa7JuzrKQDEzZWG0KJIW/cSBRxFCq/teCyHZPUf2fMTx5G2UxH8KA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793112874;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:Content-Language:To:Cc:References:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=VVKMTXSgZ4XOrfVnDGwcJ20pqkUPPmxf9qOMEgAGK6k=;
+	b=M3fteO29MlawA25qrMst2W+F8NFj6QbQZQFmrQqWCS6j6dpVDLFK9d+X6LaBMdyKCHr8
+	 VLnor4FyBbXAc08seE0Tn65/z9NPBz1jRn6Z6j1nSKAMevXUOVTFXPRp/LQS4+SXu0lJg
+	 4K8HHrBKxGeycgNqRP4IS62SxJy8wkfpj5KwHpBR8NNrZBBOTHAQE1GIAhRk2FBWciyTv
+	 Ok6aCR9iz6WN6qmOiI3DlTGrQBhYjzsVcNz9frF51l7IX0ucaQzYiM0+lbZvsmWXhc4t6
+	 zd8jU+QQ37phT4JH3FFpaLIajURAlEsByd1xb/XcTQLOPLKONqJH6QSNzSat0NXrcmg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H9yR8Dbm;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0732C60A2609
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 14:52:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0732C60A2609
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACDB3606A31A
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 14:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=DqjPCs4d
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ea94541adbso14545915ad.2
-        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 07:52:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793112721; cv=none;
-        d=google.com; s=arc-20260327;
-        b=E/lMXVhVKx7eyWTjEfsuHDOKdeQ2MhfyGcveUeyAxVqHKUjJ+HfJ0TamDHCvWcJzi6
-         j3CJ35Mx8BYPxxUAlBISVDrLemhNWerW37u9M5n7owEjHPpYogce0BbqO2FuULCMjHSx
-         5fHsRY3rN+Bwhy3rb1d4WANC1D28vj/cR5GtHMBvVj4ACUF+bU2eYO6O01s+DfBBpbkt
-         r5aLF8qwnDhB/qqa1G0uYBoDq8OMsPSNmccoARef2iLqXJm9S5VfQzj6sjpiWEcl0lie
-         P8ceOKtEwstaFNb0Smqf1TcT+ezWECsCKuTk2PlV7Z+zIcBATPsGvsqI3NTS1EJFFMit
-         MaFQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=FU7pIPRd0mpxW1uPh7JiRsMpomfdTBJ1PVqebYQBX/w=;
-        fh=gE7Gm33YqLWfyFVYX+XCEINRPpjzybZ7N39/QGDfXxw=;
-        b=ATgSFCDqHvUV5rXipxFOdLBO4Cj3hesXH89qn9GZTOcxIbX+Pkg5L1ivPG3jdJXAUW
-         ycIF6bs++h0qb7UGd1YQyQIylo3/8VlezoOzh59KYMjhLfMLWri02OntS0XY00XKdHYt
-         ifZZytoK0YlmymyAdLhSGnGgi/ZFccuXvk14fhN8SCq5Tauz4whi7Pd+umBAcSJCReyy
-         Uasts+tG923t+wmrZK1CahhFpVTE76MeJtECWyVcE0dZZaOdAHBgCowX/sLjF9jkNDCm
-         ZCSTLOJ0DBQv07PU4WLtgTF09flQe+LiSS1WXKx8OLnRAOG5dhls2aM58I5oC5ka2+pV
-         3WeQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793112721; x=1793717521; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=FU7pIPRd0mpxW1uPh7JiRsMpomfdTBJ1PVqebYQBX/w=;
-        b=DqjPCs4dJ32bm7zSatdTMph8eLbrIiZizD/FLI1JoVoFvAmjQIOJhUuqKpg99V5b+s
-         LLS+kBx6KBM8bc6Ni0PwXyd+NTKfacgRn/deaixv/tVlbXPDlA/Ca2On1e1TR1EFh+Br
-         c1UUutur0IRU2qhpeDblRoVuCg/hmdOs/bxqb0UzpgRT9X+fREQJOsdQzhUQJTS12DBb
-         KXfYFt3x79maA41r7KXzXiAL5gTDPnBnp2veRyQWM9pdLidDAhrilD2g8v685KXVIbPe
-         6JwcjYXy7pWwc4D3RfOYB9ronLD89y6YutbPrktosT1/XrYkEpAmBnzk9gZ1f2PkR+gI
-         zRtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793112721; x=1793717521;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FU7pIPRd0mpxW1uPh7JiRsMpomfdTBJ1PVqebYQBX/w=;
-        b=QW4WzU0WiRZRwxfcBLHkp35wWAX4Z24H+YE9fP9TOcoLo2GOvLRORvGaIgDjmlyhwD
-         cBKlUiOFKMe3w01q/klaVxDXer8IjuQ84FQQ9uj3irObaiw/9rov3YBMlpWzOQF70ARI
-         W+O++9j9wARPe0shiJNo1f9N3Jx3rcMQJAIvFZ3/XJcWfgglJRBOeM88BUtjGl1sm/qV
-         5HIFHS0DVj0h8jOciTOLjQhqQukXYLM2cf1HahtMv4Z8O13wEZwPPZwv6QSvEDwrK5HP
-         aoCT5XNByb4l6B3PbSJfDI5nUz7ftcrZp1UR5IU1sWM5QCLVoUfkLmhqknO7W25mcPXJ
-         m+8A==
-X-Forwarded-Encrypted: i=1; AKwUvBxkQUdE78wBUS2upBk3spbbc0150l6pvvQtRd/R3CAtc/RoYdY+r0NyB+Q8b6kNb6Qg/KD27yk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJhDn1t6VDFs2nNexJBOcT3ESij6HdmgTXIcMwRubrrHRtVKKnP
-	/R4iU+4rULKyNWsb3Nzl14O9w/C6dltLMUetDs72E3OUJbQrYSJa1mRiiW7d/duRIAWmQj+qwta
-	upjsJQd2lku0iIvgfFVZLk9K7cxh/bmY4yq+iyNyj
-X-Gm-Gg: AYBFou2LIzgGPQHyRRykchH7Af2rgurrTKnF0OUVH0BRTKcoAXDorbKfuvlMQXEcx50
-	vJXAHdiPZGbZ97u4NQTIhyd0dQLeEo9HlRtLP2+up35RU9Iit19JEcvi3ZAjzrmpQ3jrPI8P7On
-	6fqWb3cozUVp8kKViDiV+TYHogvSpsJAJC0m1/4oupq8AGrRnp/GRaYytHPGxll2nSQMS97v0UX
-	sNI8OitDdypyKBNWLMfiRFp4e5ExF6Kxena53K/NASr5b2HIrndB9bzaro8L+50Qu9Q2q1a0Vgd
-	XQynHyqmXei7E7BzPXFLKVDVfke//HCGZGzU6uYey84UgNfF/Mlt2A/pP4LoUEDRYbw0eOtIkOS
-	F05mAlC0XYFja1+ygdDw+qlS6/iXqpjmnT8iB1psx91rPEQsyMaUFVjUjSWOfxXw9vHBcoDJuj9
-	6H9ikj9YtZ7uwOP3g2
-X-Received: by 2002:a17:903:1a30:b0:2e5:467a:7a6b with SMTP id
- d9443c01a7336-2ea9c69aa27mr88146155ad.10.1793112720805; Tue, 27 Oct 2026
- 07:52:00 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H9yR8Dbm
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BA1B1F01825;
+	Tue, 27 Oct 2026 14:54:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793112873;
+	bh=VVKMTXSgZ4XOrfVnDGwcJ20pqkUPPmxf9qOMEgAGK6k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=H9yR8DbmfYEsSb85b8vOkwQ+0Z9tTX9PVs4RDmexLRNSOVLCRYAKsJKYQz2b8nKo1
+	 If8mj+185YOTPWEBoSm1VKSHnVgehO8VFCON1d0TuUVAyeMMQvxSOiB5PeFDWLOVCe
+	 XWsxvNyorQjR+gEB+kTk6PoZxgd2dMq7Ek+LjbzTaWWg1uKolhS2/UrPlfyGatL0Zj
+	 x//ugnX+P0Bad/H5uqGt7QPwDg8JV3MU9Ftq8b5yf8ONw3GzJpB9yUufwHMJvaxBtv
+	 VmCs9apG7epphLAcpO3z8HWv2D0VI0+uAp8Z7u0ujp1Ba7r/ZnlZCT5EU78Cvdy736
+	 MNnSM920dqbeA==
+Message-ID: <2dafbf91-43eb-4290-a84d-210e80a67b54@kernel.org>
+Date: Tue, 27 Oct 2026 08:54:32 -0600
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,155 +51,117 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261023204706.3112215-5-hramamurthy@google.com> <179306532917.3134.3709041101906222542@kernel.org>
-In-Reply-To: <179306532917.3134.3709041101906222542@kernel.org>
-From: Pin-yen Lin <treapking@google.com>
-Date: Tue, 27 Oct 2026 22:51:48 +0800
-X-Gm-Features: AclHuK_CgLe0wYbEvzhKP5oLFw9n_XNsuU2Vaq53lhDlTw36CwDa4KLyFY57Fxk
-Message-ID: <CAHwYsip9e1H4+g2FS-t_TBGkG+f4E0w+kc4r0Ni6ODnA57cpCQ@mail.gmail.com>
-Subject: Re: [PATCH net v3 4/4] gve: Fix link flap after ethtool ops
-To: netdev-bot+sashiko@kernel.org
-Cc: hramamurthy@google.com, netdev@vger.kernel.org, joshwash@google.com, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org, 
-	kuba@kernel.org, pabeni@redhat.com, jordanrhee@google.com, willemb@google.com, 
-	przemyslaw.kitszel@intel.com, nktgrg@google.com, maolson@google.com, 
-	jacob.e.keller@intel.com, pkaligineedi@google.com, yangchun@google.com, 
-	patricion@google.com, awogbemila@google.com, stable@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 net] ipv6: Protect multiple routes insertion by table
+ lock.
+Content-Language: en-US
+To: Kuniyuki Iwashima <kuniyu@google.com>, Ido Schimmel <idosch@nvidia.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>,
+ netdev@vger.kernel.org, syzbot+751b587577d0ebca10f2@syzkaller.appspotmail.com
+References: <20261027065247.2871134-1-kuniyu@google.com>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <20261027065247.2871134-1-kuniyu@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 27, 2026 at 9:42=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wro=
-te:
->
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 0
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [Medium] Synchronous link-status update in gve_queues_start() races
->   with gve_service_task(); the carrier can be left in the wrong state.
->
-> --
->
-> gve: Fix link flap after ethtool ops
->
-> gve_queues_start() now calls gve_turnup_and_check_status() directly
-> instead of queueing the service task, so the carrier state is updated
-> before the call returns to userspace. This avoids the transient carrier
-> drop after ethtool reconfiguration that was breaking the
-> drivers/net/ping.py selftest.
->
-> > diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/e=
-thernet/google/gve/gve_main.c
-> > index 52c152a986eb7..e2a016f4430a8 100644
-> > --- a/drivers/net/ethernet/google/gve/gve_main.c
-> > +++ b/drivers/net/ethernet/google/gve/gve_main.c
->
-> [ ... ]
->
-> > @@ -1486,8 +1515,7 @@ static int gve_queues_start(struct gve_priv *priv=
-,
-> >                         round_jiffies(jiffies +
-> >                               msecs_to_jiffies(priv->stats_report_timer=
-_period)));
-> >
-> > -     gve_turnup(priv);
-> > -     queue_work(priv->gve_wq, &priv->service_task);
-> > +     gve_turnup_and_check_status(priv);
->
-> [Severity: Medium]
-> Can this race with gve_service_task() and leave the carrier in the wrong
-> state?
->
-> Before this change, gve_queues_start() sent its link update through
-> service_task. A work item never runs concurrently with itself, so these
-> updates were serialized.
->
-> gve_queues_start() is reached from ndo_open, from gve_adjust_config(),
-> and from gve_reset()->gve_recover()->gve_open(). It holds rtnl and the
-> netdev instance lock, and it now runs the same sequence as
-> gve_service_task().
->
-> gve_service_task() is queued from gve_mgmnt_intr() and holds neither
-> lock:
->
-> gve_service_task() {
->     ...
->         gve_handle_reset(priv);
->         ops->report_link_status(priv);
->         gve_handle_link_status(priv);
-> }
->
-> gve_adminq_report_link_status() reads the register and writes the
-> cached value in two separate steps:
->
->         status =3D ioread32be(&priv->reg_bar0->device_status);
->         WRITE_ONCE(priv->link_up,
->                    !!(GVE_DEVICE_STATUS_LINK_STATUS_MASK & status));
->
-> Here is one possible interleaving:
->
-> gve_queues_start()                  gve_service_task()
->   ioread32be() -> link down
->                                     (device link up, mgmt irq)
->                                     ioread32be() -> link up
->                                     WRITE_ONCE(link_up, true)
->                                     netif_carrier_on()
->   WRITE_ONCE(link_up, false)
->   netif_carrier_off()
->
-> At the end the carrier is off while the device link is up. The service
-> task run triggered by the interrupt has already finished, so nothing
-> checks the link again until the device raises another status interrupt.
->
-> gve_handle_link_status() has a similar window, because its check and
-> its action are not done under a lock:
->
->         link_up =3D READ_ONCE(priv->link_up);
->         if (link_up =3D=3D netif_carrier_ok(priv->dev))
->                 return;
->
->         if (link_up) {
->                 netdev_info(priv->dev, "Device link is up.\n");
->                 netif_carrier_on(priv->dev);
->
-> Suppose gve_queues_start() reads link_up =3D=3D true with the carrier off=
-,
-> and is then delayed in netdev_info(). In that time gve_service_task()
-> can write link_up =3D false, see that it matches netif_carrier_ok(), and
-> return. gve_queues_start() then calls netif_carrier_on() while the link
-> is down.
->
-> gve_set_xdp() and the per-queue start path already use the same
-> pattern without a lock. This patch also brings it to the common
-> gve_queues_start() path, which used to be serialized through the
-> service task.
->
-> Should gve_turnup_and_check_status() and gve_service_task() be
-> serialized against each other here?
+On 10/27/26 12:52 AM, Kuniyuki Iwashima wrote:
+> syzbot reported the warning below. [0]
+> 
+> While call_fib6_multipath_entry_notifiers() is called locklessly,
+> fib6_siblings could be changed concurrently, leading to the
+> warning (and later null-ptr-deref).
+> 
+> Let's protect multiple routes insertion with tb6_lock.
+> 
+> Along with that, __ip6_ins_rt() and ip6_route_del() are changed
+> to fib6_add() and fib6_del().
+> 
+> Note that fib6_del() finally calls rt6_multipath_rebalance(),
+> which requires rcu_read_lock().
+> 
+> [0]:
+> i != fen6_info->nsiblings
+> WARNING: drivers/net/netdevsim/fib.c:831 at nsim_fib6_event_init drivers/net/netdevsim/fib.c:831 [inline], CPU#0: syz.0.157/6279
+> WARNING: drivers/net/netdevsim/fib.c:831 at nsim_fib6_prepare_event drivers/net/netdevsim/fib.c:947 [inline], CPU#0: syz.0.157/6279
+> WARNING: drivers/net/netdevsim/fib.c:831 at nsim_fib_event_schedule_work drivers/net/netdevsim/fib.c:1003 [inline], CPU#0: syz.0.157/6279
+> WARNING: drivers/net/netdevsim/fib.c:831 at nsim_fib_event_nb+0x1029/0x11d0 drivers/net/netdevsim/fib.c:1043, CPU#0: syz.0.157/6279
+> Modules linked in:
+> CPU: 0 UID: 0 PID: 6279 Comm: syz.0.157 Not tainted syzkaller #0 PREEMPT(full)
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
+> RIP: 0010:nsim_fib6_event_init drivers/net/netdevsim/fib.c:831 [inline]
+> RIP: 0010:nsim_fib6_prepare_event drivers/net/netdevsim/fib.c:947 [inline]
+> RIP: 0010:nsim_fib_event_schedule_work drivers/net/netdevsim/fib.c:1003 [inline]
+> RIP: 0010:nsim_fib_event_nb+0x1029/0x11d0 drivers/net/netdevsim/fib.c:1043
+> Code: eb 0d 4d 89 fd e8 b7 c5 6c fa be 01 00 00 00 48 89 df e8 5a 38 85 fd 4d 89 ef 4c 8b 6c 24 20 e9 4a f3 ff ff e8 98 c5 6c fa 90 <0f> 0b 90 e9 db fa ff ff 89 e9 80 e1 07 80 c1 03 38 c1 0f 8c df f0
+> RSP: 0018:ffffc900047bef10 EFLAGS: 00010293
+> RAX: ffffffff875b59a8 RBX: 0000000000000002 RCX: ffff888079770000
+> RDX: 0000000000000000 RSI: 0000000000000002 RDI: 0000000000000001
+> RBP: ffffc900047bf0a0 R08: ffff88805c0bb02f R09: 1ffff1100b817605
+> R10: dffffc0000000000 R11: ffffed100b817606 R12: dffffc0000000000
+> R13: 0000000000000000 R14: 0000000000000001 R15: ffff88802c792000
+> FS:  00007f334ba076c0(0000) GS:ffff888123ad0000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00007f334ba06ff8 CR3: 000000007a5b2000 CR4: 00000000003526f0
+> Call Trace:
+>  <TASK>
+>  notifier_call_chain+0x1a5/0x3d0 kernel/notifier.c:85
+>  atomic_notifier_call_chain+0xda/0x180 kernel/notifier.c:223
+>  call_fib_notifiers+0x31/0x60 net/core/fib_notifier.c:36
+>  call_fib6_multipath_entry_notifiers+0xf5/0x160 net/ipv6/ip6_fib.c:428
+>  ip6_route_multipath_add net/ipv6/route.c:5542 [inline]
+>  inet6_rtm_newroute+0x14f5/0x1a30 net/ipv6/route.c:5664
+>  rtnetlink_rcv_msg+0x802/0xc00 net/core/rtnetlink.c:7163
+>  netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2572
+>  netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
+>  netlink_unicast+0x7bd/0x940 net/netlink/af_netlink.c:1361
+>  netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1916
+>  sock_sendmsg_nosec+0x14e/0x190 net/socket.c:800
+>  __sock_sendmsg net/socket.c:818 [inline]
+>  ____sys_sendmsg+0x54e/0x850 net/socket.c:2715
+>  ___sys_sendmsg+0x2a5/0x360 net/socket.c:2769
+>  __sys_sendmmsg+0x273/0x4d0 net/socket.c:2858
+>  __do_sys_sendmmsg net/socket.c:2885 [inline]
+>  __se_sys_sendmmsg net/socket.c:2882 [inline]
+>  __x64_sys_sendmmsg+0xa0/0xc0 net/socket.c:2882
+>  do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+>  do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> RIP: 0033:0x7f334ab9e1d9
+> Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+> RSP: 002b:00007f334ba07028 EFLAGS: 00000246 ORIG_RAX: 0000000000000133
+> RAX: ffffffffffffffda RBX: 00007f334ae26090 RCX: 00007f334ab9e1d9
+> RDX: 04000000000001f2 RSI: 0000200000000000 RDI: 0000000000000004
+> RBP: 00007f334ac35888 R08: 0000000000000000 R09: 0000000000000000
+> R10: 00000000000000fc R11: 0000000000000246 R12: 0000000000000000
+> R13: 00007f334ae26128 R14: 00007f334ae26090 R15: 00007ffd96688aa8
+>  </TASK>
+> 
+> Fixes: 169fd62799e8 ("ipv6: Get rid of RTNL for SIOCADDRT and RTM_NEWROUTE.")
+> Reported-by: syzbot+751b587577d0ebca10f2@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/6adbaed6.67317f00.38c4bc.001b.GAE@google.com/T/
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> ---
+> v2: Wrap rt6_multipath_total_weight() and
+>     rt6_multipath_upper_bound_set() w/ rcu_read_lock()
+> 
+> syzbot found a way to abuse 1ms sleep in netdevsim and pile up
+> 10000+ routes w/ the delay, so it might report this with this
+> fix applied:
+> 
+>   unregister_netdevice: waiting for syz_tun to become free. Usage count = 10
+> 
+> I have two patches to fix it, but I think this is net-next
+> material.
+> 
+>   https://syzkaller.appspot.com/text?tag=Patch&x=15923c21580000
+> ---
+>  net/ipv6/ip6_fib.c |  4 ----
+>  net/ipv6/route.c   | 17 +++++++++++++----
+>  2 files changed, 13 insertions(+), 8 deletions(-)
+> 
 
-Yes, this needs to be serialized. All other callers of
-gve_handle_link_status() already run under the netdev instance lock,
-so in v4 we will take netdev_lock() around the link status update in
-gve_service_task() as well.
->
-> >       priv->interface_up_cnt++;
-> >       return 0;
->
-> [ ... ]
->
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/20261023204706.3112215-1-hramamurthy%40google.com
+Reviewed-by: David Ahern <dsahern@kernel.org>
 
-Regards,
-Pin-yen
+
