@@ -1,82 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793140333;
-	b=mujdtToeCEtmPzYviZ0Za2tnWLnGmOFvSRg3JHHI4XFI+yfD6KIY+9hnM/9TUiDrXrgS
-	 PlwU6bMegZgxhPgdc2Vi4r0wSeOVh8H4EK0Jj2wxmtDZt+w1n5l1OFO25nMX4NsTrrztg
-	 4FHJSgS0kkRklLAsTNRwm4tNjrOJ87bXXCstIYNIBUlOTFTp2uv7IfJtVzho5pP3eS7FO
-	 RyggbrQS6DPfaWTVd2PKcJ9pg6NEru7srTaWFWQYD6j1IiIDmd+7bj/1NvRdtC0WgQFZv
-	 F90pSjNhPbuxADse34dKY3Wfs6kZHixK46K1V0Bd/YOaomyHazF1ieGz3rAQMr2OFkQ==
+	t=1793140335;
+	b=J8fDdMWJ/aC4IVAcNLDA4M0vneNfGg2cIAsJ4O+YEEa+9q7Sevg0/FzMYPZ0trVVchMv
+	 2LBN+wWb6XaRt6hv6S4tOSvcX853Y0nUeG9/nPK9HjOFC4nAxTr+/ZyOg6Ai1ZansTNiS
+	 IfTP8M9/TXBO7B6FnJRqV1Vid6xliXRM2tr2neBHEX5yjxV72vFmzSm6RDWBaQU8OyjsV
+	 RMsFuhVCvpdSDYqHpQ7USprxQ2pHR35dXi5VT2nWjkZNIzytv3OZTN9wYSsmIn5cmv8/r
+	 Uu/gfuhImAU0DW/w8xvmMUPSjgd+1IGYd2LZQ8uRM0lAr3GUsgsXnAMTELIbz3XbA0A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793140333;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793140335;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=vFxoxFWBOlhshfxwALIfxaK+Lb04zfCNYo+3DVPtQOA=;
-	b=Klf+WvzUf1DpQGZGFrTojDBzBbvW6xKgqt3FYucUfvZSqcS5aJQ4149p8BtYdqB16Sz2
-	 l8r6erRFu/ddnNGTOQ+EpdOleL0FldmynjJ4bRX0FSJu4Zccslouti/1kuA86LIESzJwo
-	 VCjQ68ytL2hlSYdvLShxalreybMquFrlF0jqhNlrfmBG33+kDtAISmuCAtWaIHTRt4lcX
-	 ZOZDZsVos2MNir1lS5Gt44x6dnjN1p1NqmQY9PXFDlTu40Irloia1jFuOpfbCRlS5G/sP
-	 U5JotDy4NJm2PHVXgmhIudiifjBWyAJVSTm6HvHSkEvWeuTgOOqEl0/d45wkQcpX1ow==
+	bh=HZPyG3s7DWLnksXjw7x8gzIGPWb9n7MYHVZSQ0mRqaw=;
+	b=pYUNdt96QzC2dEFmD16x5RnOPRzHZgnVx2Xs3q0QTL4DjvpJRhIely/nxxdtQ8S9gA/5
+	 wowfHjIbwArRqshJBqTrOAQPOVBYejb+Ke+gr2oqIBbWYLqIn3ZjoRczVC/2AYydaZToz
+	 ctOPd17pGLRi6WZwM2aey8Om3Lf7ZLuDaCT1QKJ/9TCewgu8adrm+nAI8fvgw7GlD0msu
+	 ApL2qyF3hrB19bhrCXOwv88SFk+KcMEVVFArZEZ7N1qPT9CzAX2TjiYPSBVoEM4p5PRzg
+	 nOJA1Ib5FsOLzgHjQrJKATcKKR65VfDITkXeN2ddpTi/9R/vHmqQc4XGScOcfgAsuaQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0pS5BrSH;
-	arc=none smtp.remote-ip=74.125.82.44
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qAVhB1Mz;
+	arc=none smtp.remote-ip=74.125.82.42
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89696606A325
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 22:32:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 89696606A325
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14EDE60A382F
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 22:32:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 14EDE60A382F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0pS5BrSH
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-14394530ec6so404855c88.1
-        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 15:32:13 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qAVhB1Mz
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-14394530ec6so404885c88.1
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 15:32:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793140333; x=1793745133; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793140334; x=1793745134; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=vFxoxFWBOlhshfxwALIfxaK+Lb04zfCNYo+3DVPtQOA=;
-        b=0pS5BrSHWg6OtG5b8mJ3ZzcWHFBUygIBnHkcF+py+PlavFQ+NNeaJx28AS0ig0jf8s
-         iLs4SAUhObBEEEVRkbPMdnJRomFqb4ds5au43SOpoMh55KMRuD8L1xtg7sFuRI20JG/m
-         zgZnf2fDEhq734UOYTl5Lq+HPkXIBLUbD3kGw+AObHJ/s2evtZb91+trHl0bMPZ47oso
-         4jzuLg/GQ4XT7F+8iSZdclha93GExR4b+iyCGeFLh/uRSsuoNMZPq6CRwa5FeGEAhjUv
-         wr2ZbBPAlTuqEoJXtz3PxHtU2L5nCFADmkKDN1ym8uU/e8OuS4adrbneGLmEBqPrX4Dm
-         8ztw==
+        bh=HZPyG3s7DWLnksXjw7x8gzIGPWb9n7MYHVZSQ0mRqaw=;
+        b=qAVhB1MzvHea3AWoyYZcyCmQVJyz7UeIExsB/xBQwQlkQ9UVMFArnoqF39ubNHR3yE
+         yf1W58qP8T4lPxx4NlU946vJ7T9C0UJ051quCX5hE7oJ7fxtO8c0QacTIfDsk3TCy2bi
+         jBApGV/866kvZK4ErtSAs5Tz8XI+3fr5DsviLTZ7NE6cEcafOAWKmQ8rt+iYUGRFuAtr
+         MLN+G9rF4QGIGiNhxd7ge+bYOGRgRbiVF8uH4W5oxdgxIhC4lbadjAz1tYpUkBRle+Ra
+         J8WNoSEH+DyiG32LLksgIzxVrgZ9bfdE3Vj29U40J9fBXEklqtiSG72znIAOl1mZ/CCE
+         ojIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793140333; x=1793745133;
+        d=1e100.net; s=20260707; t=1793140334; x=1793745134;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vFxoxFWBOlhshfxwALIfxaK+Lb04zfCNYo+3DVPtQOA=;
-        b=Ts7dFpY5fBbdtuKWgTAM/ZiN28SLmfsvcA5VUJGwYvbAUAaMCQiMpxT4HKS1CvO0/B
-         ZnmjhXZvQwWosLYjCmMUEThQ19FWh41zcec3IRPxnUiPLyBdwmw4m5PzIjr9//qwxpIP
-         hIhMqOiFyvyo+oehoP5vg+uoqpXASQx7n0DQmLJkzxp1CD1dAuW8g0OvjSKK6TWACaNB
-         iUz2m58HuwBKvqhEaqKoNtqZy5RKxS53Y8RipVmawQJqncG3Sufxa3KiijC0JR/t9eQO
-         cXibErfHEYwCM1nOaitvEWVa8jt0SSYj49558pdM78PQg6Rlr2mFRrilcDvv27zLkOAv
-         Ys/w==
-X-Gm-Message-State: AFq9FYIFUa5z2XoOoPvO86+HodhO56vFZal3K9ZD7DRCFb/Z6e8254rT
-	WTNu1yBnxkXlWWyfh4t2f+I67CTSpFBKjSne/4NLmLF66P2Dira3IoVCkxYXKLVC
-X-Gm-Gg: AYBFou1E0r22OmapC2VDrTt+fXUYoq1GIyz/0MCDTg8FkytR4HV7ImHNDxOX6La6UT1
-	FvWu+LxnI66CVSPCPfnlhXvdAphWdlqYUBjdjBgM3S7zV6OxMVS1VuvBbzq3d/vqY75/Jphtd9o
-	uO20OsGopQXaD85+QKCL+0j8BbEXoqc+29aHfrHP3u0s8JyvtAtHJ6T5iBBkcA5dKUt+psEjyr6
-	LGiYnnL+fYKGmUzyKA1/d8YkF9ebkDmQzd7ERrYdKNzycYRJvpcFvAwFvJGFOmovvDkrK5osCnw
-	7hu73+07j6E8oz9B7aKoU3+1LipTJX0vYOqofA6hOV5a0LC/cPzZ2Xa38W6PmmV6xc9f/42XZeA
-	QC/S/a5XazWYRmF9tS5n6C53ysjCvDYeMsv8+KlaP/KYtTdu/Vs/6083/IyfJDuXY7usox8MHsD
-	TcDGfSMU4NXvwX3I4A80PpFw/bAX6s8nmTcwVO/VPAAICsZ8q+oZmSWOYBZCmCImPzpbaF9wzrw
-	cKZ9Qxqj7Rdq9k8/1aOO4Lb6R0bXx1MHDqTcAJOep+kS7OuqKFMKKQAu/KV3lf3zEOB6aFD1NcI
-	TU2Gog==
-X-Received: by 2002:a05:701b:4212:20b0:156:6676:d0e2 with SMTP id a92af1059eb24-1a6ced913fbmr775607c88.10.1793140332370;
-        Tue, 27 Oct 2026 15:32:12 -0700 (PDT)
+        bh=HZPyG3s7DWLnksXjw7x8gzIGPWb9n7MYHVZSQ0mRqaw=;
+        b=Ld7Uj04rYfiZNi+D8c1RvF5RKwJNNLJRIWkWI55cf1zlULZG2n++fmPDnOwqfrkc5M
+         fKi77HpXFqdLH/YcFRKtw0zdIk4Wry6T4r9USmRbDSU1NQHwwQLAji947KH3I8Scia0P
+         W/26F0Fi9Usx9ekjG2p7Mg5fLoWe2/S90ao5uT7erc/mrQgb1+fXY/v9FBbZ2GjgS3pm
+         O2mnLKzxEMjMYE6AwYsODL4lUN//mSy6niBzjiZv6s9WKb1HLyTOu90ZudN4SvunCq3s
+         0sF3I3e0PF3llwXrCCprLwlvEw3hSkJZNcAGeMyxyDgTFr6sZEp6lcpBYc/G1gqisKq1
+         XtVQ==
+X-Gm-Message-State: AFq9FYLtk8as5Mx7Ls2+zSWexerWR5cqA3+gczxV/CI5S1BXeGZFexKI
+	pzc4EH8qYH4Vq1zr4M7CVtkBFwj0+oVMpGWpSaJ4ptuZGm7IWZEbtG3AdKqZFXH1
+X-Gm-Gg: AYBFou3Z3j2RCD6c9psVZnHif3n5ET6jqUU5X51EiLsaps25Uni82075hzbqOlD1KAJ
+	16DfoEVp1abnqUTm4ih3smQwpu5gWZpsJlesACod4MEeE2XEDrSRwGN4bHbmUp7gE4Y8q7YDxLY
+	qO/rwCshgNwskM9v2xJ+0/A0JuTvV/EUjGxjs5JRR+1/9QpUIHrNkvtXqWtW21PBgl0o/5UiR5l
+	6zlHAei2NL8mEZaKJehZsphTJwh60BZpTgdyDFPmBAkPlw0sulryx/pL1dQ0vDDGpdBv+bF6ASQ
+	M69FDiT4Dl+wkt8XO0LMWSYbD1BIRbTjItxTPoF5OGUJ/iR2R7EvykySWu2mjwmR35ShHav3RWq
+	R/SzLZPhtP1Se0jRE+wOxfyO6CjgXS7gdLnM2oceskWcH2rXlWrO369ojHVA00H6UxWpErgieeW
+	rc5i8r7W7g9cAA4ChlQwA0ESMYWR3G2aRhb0DtHqsyOPEnlMsHmJTxVueezKhg1s/ZJAsra4ZIn
+	TrQxhByUBLT/TYCErgSVVcwzG34E8x7PQKn0gzy9zgEmbr+RRqdrLx7rOEQd+5L1N00eLfT+9/1
+	k3daLM+tL5Xkxb4649vQRASoR2iDH+ldWA83bVxYrYfGP/XmHs3gAO0W
+X-Received: by 2002:a05:701b:4288:10b0:14e:d0ba:7569 with SMTP id a92af1059eb24-1a6c9cdae05mr791294c88.6.1793140334001;
+        Tue, 27 Oct 2026 15:32:14 -0700 (PDT)
 Received: from eldorado (ip70-187-214-22.oc.oc.cox.net. [70.187.214.22])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1a6d98c93d7sm1130735c88.13.2026.10.27.15.32.10
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1a6d98c93d7sm1130735c88.13.2026.10.27.15.32.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 15:32:10 -0700 (PDT)
+        Tue, 27 Oct 2026 15:32:13 -0700 (PDT)
 From: Florian Fainelli <f.fainelli@gmail.com>
 To: netdev@vger.kernel.org
 Cc: Florian Fainelli <f.fainelli@gmail.com>,
@@ -98,9 +98,9 @@ Cc: Florian Fainelli <f.fainelli@gmail.com>,
 	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
 	linux-kernel@vger.kernel.org (open list),
 	Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH net 09/11] net: au1000: restore RX buffer addresses when restarting the MAC
-Date: Tue, 27 Oct 2026 15:31:38 -0700
-Message-ID: <20261027223140.3774570-10-f.fainelli@gmail.com>
+Subject: [PATCH net 10/11] net: au1000: keep the MAC stopped until the PHY link is ready
+Date: Tue, 27 Oct 2026 15:31:39 -0700
+Message-ID: <20261027223140.3774570-11-f.fainelli@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261027223140.3774570-1-f.fainelli@gmail.com>
 References: <20261027223140.3774570-1-f.fainelli@gmail.com>
@@ -115,38 +115,78 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The MAC DMA engine updates each receive descriptor's address as it
-transfers data. Clearing the descriptor control bits during reset does
-not restore the buffer's starting address.
+phy_stop() powers down the PHY when the interface is closed. The driver
+leaves MAC receive/transmit enabled on link-down and enables them again
+during initialization before resuming the PHY. The MTX-1 can hang when
+the MAC runs while its MII clocks are absent or still recovering.
 
-au1000_init() only set RX_DMA_ENABLE on the address left in the
-descriptor. After closing and reopening the interface, a receive could
-therefore start partway through its buffer and overwrite memory beyond
-the allocation.
+Start the PHY before initializing the MAC, but leave receive/transmit
+stopped while the PHY reports no link. The duplex update enables them
+when the link comes up. Stop the MAC in the link-down callback before
+phylib suspends the PHY, and stop the PHY if MAC initialization fails.
 
-Reload each RX descriptor from rx_db_inuse before enabling it, as the
-receive completion path already does.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: be9dad1f9f26 ("net: phy: suspend phydev when going to HALTED")
 Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 ---
- drivers/net/ethernet/amd/au1000_eth.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/amd/au1000_eth.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/net/ethernet/amd/au1000_eth.c b/drivers/net/ethernet/amd/au1000_eth.c
-index 6b817d18329b..8c2dbf72652e 100644
+index 8c2dbf72652e..c616ce616541 100644
 --- a/drivers/net/ethernet/amd/au1000_eth.c
 +++ b/drivers/net/ethernet/amd/au1000_eth.c
-@@ -722,7 +722,8 @@ static int au1000_init(struct net_device *dev)
+@@ -458,7 +458,8 @@ au1000_adjust_link(struct net_device *dev)
+ 		/* link state changed */
  
- 
- 	for (i = 0; i < NUM_RX_DMA; i++)
--		aup->rx_dma_ring[i]->buff_stat |= RX_DMA_ENABLE;
-+		writel(lower_32_bits(aup->rx_db_inuse[i]->dma_addr) |
-+		       RX_DMA_ENABLE, &aup->rx_dma_ring[i]->buff_stat);
+ 		if (!phydev->link) {
+-			/* link went down */
++			/* Stop the MAC before the PHY can remove its clocks. */
++			au1000_hard_stop(dev);
+ 			aup->old_speed = 0;
+ 			aup->old_duplex = -1;
+ 		}
+@@ -727,7 +728,7 @@ static int au1000_init(struct net_device *dev)
  
  	wmb(); /* drain writebuffer */
  
+-	control = MAC_RX_ENABLE | MAC_TX_ENABLE;
++	control = 0;
+ #ifndef CONFIG_CPU_LITTLE_ENDIAN
+ 	control |= MAC_BIG_ENDIAN;
+ #endif
+@@ -740,6 +741,10 @@ static int au1000_init(struct net_device *dev)
+ 		control |= MAC_FULL_DUPLEX;
+ 	}
+ 
++	/* The PHY may still be restoring its MII clocks after resume. */
++	if (!dev->phydev || dev->phydev->link)
++		control |= MAC_RX_ENABLE | MAC_TX_ENABLE;
++
+ 	writel(control, &aup->mac->control);
+ 	writel(0x8100, &aup->mac->vlan1_tag); /* activate vlan support */
+ 	wmb(); /* drain writebuffer */
+@@ -928,16 +933,18 @@ static int au1000_open(struct net_device *dev)
+ 		return retval;
+ 	}
+ 
++	if (dev->phydev)
++		phy_start(dev->phydev);
++
+ 	retval = au1000_init(dev);
+ 	if (retval) {
+ 		netdev_err(dev, "error in au1000_init\n");
++		if (dev->phydev)
++			phy_stop(dev->phydev);
+ 		free_irq(dev->irq, dev);
+ 		return retval;
+ 	}
+ 
+-	if (dev->phydev)
+-		phy_start(dev->phydev);
+-
+ 	netif_start_queue(dev);
+ 
+ 	netif_dbg(aup, drv, dev, "open: Initialization done.\n");
 -- 
 2.53.0
 
