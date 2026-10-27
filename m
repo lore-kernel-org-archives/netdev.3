@@ -1,76 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.176
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793068135;
-	b=3ABVpzoPvCbzYxXrGqx8lNPC7cTZjNebgfFluTRLH+fulN6FK2CK0Fp1JRE3zReoJ3Ga
-	 zeR58rs6bBCgM3ukuikVU99lZeiniRBHBQzTWxUAmiboW4n9jRSUXtGma2fXP594NpBaa
-	 Q5lIAOqwyzFRt/drLaZJGYZJ2wbWDPUc8cwzyXfSQkB2tvuxi0+W5XMylNTspHSwwqz4y
-	 B6VeQwrZTRYzUz+5f+Tyf6eHC1NIgYcOJo3tp6jy4RbWP0buHqGcNthzymf4wYk5tgH4d
-	 R6LrBSAK4ukoCXD9xDfe317UQiTDAFq9Y6mavcuFF05bPrE1TJjfG/Sd0SJhAztt2dQ==
+	t=1793069211;
+	b=vANNF3+fU1Q23Ay9OGRQp4TsCtcLL3oXBNhnE3M9LtiCoy6lPc43lE7tNYY2JdIxNZr0
+	 UzedCM0/rnOcxxD1yiTVAR7JaLxqa8dcBigS/Vy8DMYxa/qXXibeVYcWR1uPcnx7UGSuj
+	 7BRgu/Hn4CO2fsXPDzD+vH5osF2hun9ESSJsIVUs7Jh+SewU8bQ/oIb7BbP3CV9lcSp+0
+	 utXsiWya2pVzzPgoQHKph4Ke5UN+WD6QkAkhvwNApxxn5ZNN8Wqbahp4JCKSN21ROPvXM
+	 iV/2Sbe96koZe/hnI7uSVmqgJZaJB8EwskFMGyWT6eaSG2LqAjS/H+p9Hv/duKUw3KQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793068135;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793069211;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=0DKYkKim1zCQPtEbSstx8AMdlP0KYJRU77N3GxfZjCQ=;
-	b=bYn3fdtreeHEfVyd40VnV9ANjP/XoE5s5jo9KQ+A83iik+fiDVNnCe19e8WdeULHCEn9
-	 3KtlAgqW9+J8+4OyiMuulHR93D06I2PBo+2s3NnELUFy3vScOZ/T94zhH9Nb/vFsO/z9I
-	 Z1cboVE7pQb1lrkEY4+PNCdNA5e4UIRfOJGqzK/22CZIMgHkbkrrKsDfEadJfetd82svA
-	 J3FsgOeDUft5mYENtuwH8YFpyifpSCOp4qqcE7+Kc73MX1FGd+vB/p+GK+mtdvOuDPPUI
-	 ZQ+vPprmisRtDB6I+MrYqbKONsTyXRO72rAS84SYBt3jXpX1/qZOtBQWycpqETLqQ7w==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=coxZgKrnJnZEH72/LrsRIXDbgDxnkuCnDoogWLb7pp8=;
+	b=ttf9PKsg2/aQIBf6DaeJ7OIEBL/OVcWaevAI3GXEdJq67zGKUlmBNRga02oNuG5r/tel
+	 5CWZpKsyrE7FRTAuw1zNQ3VVFRx7669VOlcoKQJjZrNMJc7HY0JfXR4qXwCfg7cx3KZPI
+	 av01j0IrnrEMoiIhW3bnXug2P39Wce5KqteBqbF4AhpE4CjVCPVNVZLW3iWTBo4Ulbk7z
+	 iTGtpccP+lhlKGoBs4bW/A7dmXDEcsQd3o/u9cfRnMb5SBXQ1V3N26QRaXPoN2t4E5Xe5
+	 cNHYjdCKYKnlXa2UOWL7oUPVBVuvKS9CVL+i1XVV6Sx1Th9XX1ee08Jdu/6cLMMSBKQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Qh9HjegA;
-	arc=none smtp.remote-ip=209.85.210.197
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	dmarc=pass header.from=arista.com;
+	spf=pass smtp.mailfrom=arista.com;
+	dkim=pass header.d=arista.com header.i=@arista.com header.a=rsa-sha256 header.s=google header.b=PoGEn+ZS;
+	arc=none smtp.remote-ip=74.125.82.176
+Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52CA606A31A
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 02:28:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A52CA606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D7A606A320
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 02:46:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E7D7A606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=arista.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arista.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Qh9HjegA
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-88c768885b4so6439549b3a.0
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 19:28:54 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=arista.com header.i=@arista.com header.a=rsa-sha256 header.s=google header.b=PoGEn+ZS
+Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-36661f953e4so6782821eec.1
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 19:46:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1793068134; x=1793672934; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=0DKYkKim1zCQPtEbSstx8AMdlP0KYJRU77N3GxfZjCQ=;
-        b=Qh9HjegAyEtpn6PG1OPFrqSgqRSnAT+UgBbUz6YO/svCJETYoLjJh3Xbyh6i3MFnHo
-         0mT1hXeXE6AoQERRJDjzqP6egkXGq+qGL/pjaQpKzcjYf71ePPRxVT4Agph23mcdKRMe
-         hGwSatkqZjIz8eypALgUtTYx6MTXjWuJ6kNks3g+hL2FODNfeVDDDsChdJm47LfTVP7X
-         BE6C7QiHgucjS8AF3PCPSnkfeLnKR9A5a5oKMxfAD09nTrinGvadnqVPN7wD80lzAyJk
-         cdccKhOiORVJG4FjBCfmhllHamFSCPzAQoMJZVdRjkoPT+nqIdyV3D4Nv5LNNbL7XJ3/
-         c6Sg==
+        d=arista.com; s=google; t=1793069210; x=1793674010; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=coxZgKrnJnZEH72/LrsRIXDbgDxnkuCnDoogWLb7pp8=;
+        b=PoGEn+ZSZSHDcDU74OOAemtouk8b4YJ9w2+w1DghVB1lN/xfW4sEfZhlHJXZJWBraK
+         VA1IN5HWxRLkwkoy+HKDS5QhtB4txJqBv38G+pSv5t4WWR1TdrjGxDSG0RlJHI6vvxvi
+         DJmUWCYMYTIkrgNCaZFXgNigmDIgxagI6n8ruIP5k5qoLyp6tEPqKUXnJPr64E7cY6aF
+         QlEgLmadeZLMq2DceW3moY/ZWuJk/TVxUfEK5dbSvwoqLtUba/DSoEm+wFCVDM3CPJ90
+         0V48qIdp/en3GSZVyKTmjzgb4PFDLIGrc5r8mPET2kkFxGOwj2qRQ6ZW96Tj3UK5mTa2
+         bQsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793068134; x=1793672934;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0DKYkKim1zCQPtEbSstx8AMdlP0KYJRU77N3GxfZjCQ=;
-        b=lGLQzr4UbPt26I1NdbHrezmlGB2fwjBAajXjfspBNoMdjcmPSENQ7/WN9ZBM+8KIvU
-         HuYrjHXYL14tOwgbyYaOsJytuNULYlIzzVMiM4oqoUUe856u6obZU/JPQizDowwwY7NZ
-         e/yIshbmMBlfOk2ANNdnPoUPR+Z9oQoM5SDTOp0sE4Q6T8UHXWME6vzSjeMwc4w2Q5XU
-         dxiyCfikHkpP8lYycvFD2YybM5C4A6eoUyZEXPK/YpnsC5lxldjLcMBF7ISi4e9pA84s
-         Z/msD+umcEtob+SfE5UJ6fW2/oHk6v/KFsORzGfAGLD46u81otRjkVCX05iSYMLmEuy8
-         N80Q==
-X-Forwarded-Encrypted: i=1; AKwUvBxzCERRlCE1iGTwQyWTOYpNt92/Fh7ra0a47hfBX6A2+KAlC+W3aWkMsDaX/ebuRrMHbXcg6Mg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLy4kRE0tAXQAIWStLdpYXdI/1RwEuSDZ7CO3T2GdquR6Jz9Y78
-	dNsC3edR0lJoWCD1l+wExFj0gyJcADvr66h+y+iudKqpanpRGShZWnoeeouaX1HLqCcgZtIkd6K
-	2im5h3g==
-X-Received: from pfak4.prod.google.com ([2002:aa7:92c4:0:b0:887:8dda:c9e4])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3f90:b0:3e2:8ca9:5c6c
- with SMTP id adf61e73a8af0-3e7bfbd65f6mr5850646637.20.1793068133781; Mon, 26
- Oct 2026 19:28:53 -0700 (PDT)
-Date: Tue, 27 Oct 2026 02:28:53 +0000
-In-Reply-To: <CAL4WiiqQ3cychvCccpNW+WOU2SYCfNt6L=wgPkNmfTLHLy605Q@mail.gmail.com>
+        d=1e100.net; s=20260707; t=1793069210; x=1793674010;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=coxZgKrnJnZEH72/LrsRIXDbgDxnkuCnDoogWLb7pp8=;
+        b=vG0Y+SghVTOiZJyrsu7jUu8NQ+k8AfPJcy17cH6NjnfgVsyfqOE8caNs2NLgi09QTR
+         WxmIE7/FMdJ4QhWwPO1h5e6cxsvcZcjH0X1Krnj4tMGmnbrQmPVrPcCpikgFniuSjCAZ
+         XP1KSu8rd8DM2azYM5JLtr7IP7pDsU+jQBLnrhZabnvwpNMGVdmH5BIHOQPWdAehZzpY
+         N+L83MGUbx8wAOaRwu4NAzD9rBbUuVcsrjgvaFvzK3egYlCJ88RYj1AzVQl60WVYxDqB
+         CzYnrJS6XHv7QVjRn4T/kynM3r2JaWOsC1AX/b9ZmiSlPZYEsL43FCN8eLofI/bifxs+
+         D2Gg==
+X-Gm-Message-State: AFq9FYIErC/ljiWfO/7gY2ySnOtcLSzmclbzOBrb+ykY12MneIIq7k5k
+	50zMLM/Ylj2tnb5M9n6VgOjA8eji2KWPmAHNdq1JdjSjqYQIhKnsTUAWetEjN6VR4jMpyTc3Hez
+	kkInGww==
+X-Gm-Gg: AYBFou1yFxf+qSJZSMQcBNdHeYDvOC4vnGvs/WK+8owLb/HurKOvJfXaToHAqNZb0+C
+	P0Kc6AnemUz6HK5L2d6lqSV+rDBR/MXGMggXIJTwb+HnYK5rt5tec9Q8hsTwsqdV8Q2sJQSxxZu
+	9PU4hrZJjkqTjqnpK/E6zEL5k7k6FB4uX0M7CHLKvxavQMAPj7LKM1kFD6mZ3fLekrHz/DgM8dt
+	ImCkFATNRGX5qDHsSeCyMhSgGn9XscAgNeIvpjCSYH0qA76UatJ8sa1auI8dbkVdzWjqmiXEXKU
+	gbPKjheMLU6yjXOVG/H+SwKawy66eh3sj4XXeC9zJeLTxDy2Z8PTFmWJ63YnQ8/ABqd3DHp0Rkf
+	8lCRfNu2HKAfSoqub9D3aKXhIF757GnjS10obmup753wkeDQXwc3lV8jfi8AnYaOIR1sn2mTXTo
+	eg7rhEepOXqjxbA7Fh8xIMWXbL9swgqscddgFjMoDj8ybMmsSexMjtEv0KN9p7GbbvaF/g4OpyS
+	0gyk8v0WyADCzKfiDcMudYZRKUNA94HNZQ2eDuFdi2K5lQuoeESZgxhxObCrH00g9JXcNEpqUqC
+	nP9SbMYjVqKvmQ1PYMAgm0lpPCyb/hI=
+X-Received: by 2002:a05:7301:1694:b0:368:da6c:4fb6 with SMTP id 5a478bee46e88-369e84ba936mr17506180eec.18.1793069209838;
+        Mon, 26 Oct 2026 19:46:49 -0700 (PDT)
+Received: from prasad-b546768-0.sjc.aristanetworks.com ([74.123.28.12])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-369e8d8a690sm28967702eec.12.2026.10.26.19.46.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2026 19:46:49 -0700 (PDT)
+From: Prasad Koya <prasad@arista.com>
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	prasad@arista.com
+Subject: [PATCH net] macvlan: fix allmulti reference counting in passthru mode
+Date: Mon, 26 Oct 2026 19:46:35 -0700
+Message-ID: <20261027024635.366900-1-prasad@arista.com>
+X-Mailer: git-send-email 2.51.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -79,131 +98,87 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261026032216.1145201-1-tavip@google.com> <20261026032216.1145201-2-tavip@google.com>
- <CAL4WiiqQ3cychvCccpNW+WOU2SYCfNt6L=wgPkNmfTLHLy605Q@mail.gmail.com>
-Message-ID: <auALgSUuoYmfKSz3@google.com>
-Subject: Re: [PATCH net v4 1/2] tcp: clamp return value of tcp_wmem_schedule()
- to non-negative
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: Octavian Purdila <tavip@google.com>, Eric Dumazet <edumazet@google.com>, 
-	Neal Cardwell <ncardwell@google.com>, "David S . Miller" <davem@davemloft.net>, 
-	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>, 
-	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon, 26 Oct 2026 13:06:56 +0100, Eric Dumazet wrote:
-> Le lun. 26 oct. 2026 =C3=A0 04:22, Octavian Purdila <tavip@google.com> a =
-=C3=A9crit :
-> >
-> > When sk_wmem_schedule(sk, copy) fails under TCP memory pressure and
-> > sk->sk_wmem_queued already reaches or exceeds sysctl_tcp_wmem[0],
-> > tcp_wmem_schedule() returns min(copy, sk->sk_forward_alloc).
-> >
-> > However, sk->sk_forward_alloc is a signed int that can transiently
-> > become negative when tcp_collapse() re-packs partially read or high
-> > payload-to-truesize SKBs in the receive queue and charges newly
-> > allocated SKBs via sk_mem_charge() before freeing the original SKB.
-> >
-> > If tcp_wmem_schedule() returns a negative value, tcp_sendmsg_locked()
-> > passes that negative copy length to skb_copy_to_page_nocache() ->
-> > copy_from_iter_full() -> check_copy_size(), where it is converted to an
-> > unsigned size_t > INT_MAX, triggering a WARN_ON_ONCE(bytes > INT_MAX)
-> > in production and returning -EFAULT instead of waiting for memory or
-> > returning -EAGAIN:
-> >
-> >   WARNING: CPU: 1 PID: 939331 at include/linux/thread_info.h:249 tcp_se=
-ndmsg+0x10c1/0x1530
-> >   Call Trace:
-> >    <TASK>
-> >    __sys_sendmsg+0x292/0x490
-> >    do_syscall_64+0x88/0x340
-> >    entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> >
-> > Clamp the return value of tcp_wmem_schedule() to [0, copy] so callers
-> > treat negative sk_forward_alloc as 0 available bytes.
-> >
-> > Fixes: 849b425cd091 ("tcp: fix possible freeze in tx path under memory =
-pressure")
-> > Assisted-by: LLM
-> > Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-> > Reviewed-by: Eric Dumazet <edumazet@kernel.org>
-> > Signed-off-by: Octavian Purdila <tavip@google.com>
-> > ---
-> >  net/ipv4/tcp.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-> > index 87ef6d5cbfeba..0e062fcd94a6c 100644
-> > --- a/net/ipv4/tcp.c
-> > +++ b/net/ipv4/tcp.c
-> > @@ -1037,7 +1037,7 @@ int tcp_wmem_schedule(struct sock *sk, int copy)
-> >         left =3D READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_wmem[0]) - sk-=
->sk_wmem_queued;
-> >         if (left > 0)
-> >                 sk_forced_mem_schedule(sk, min(left, copy));
-> > -       return min(copy, sk->sk_forward_alloc);
-> > +       return clamp(sk->sk_forward_alloc, 0, copy);
-> >  }
-> >
-> >  void tcp_free_fastopen_req(struct tcp_sock *tp)
->=20
-> I do wonder if the following fix could be better (no change in the fast p=
-ath)
+Enabling allmulticast on a down passthru macvlan, bringing it up,
+then toggling allmulticast off and on can underflow the lower device's
+allmulti reference count.
 
-Exactly, this looks better too, we can avoid negative
-sk_forward_alloc and clamp().
+macvlan_change_rx_flags() only propagates IFF_ALLMULTI changes while
+the macvlan is up. However, the passthru path in macvlan_open() skips
+taking an allmulti reference when IFF_ALLMULTI is already set.
+Clearing allmulticast after opening the device therefore decrements
+a reference that was never taken. With no other allmulti users, the
+unsigned counter wraps from zero to UINT_MAX. The next increment
+fails with -EOVERFLOW and reports "allmulti touches roof".
 
-The packetdrill will need to be adjusted as it triggers cgroup
-OOM with this approach, or we could defer the test to net-next too.
+Signed-off-by: Prasad Koya <prasad@arista.com>
+---
+Reproducer:
 
+  #!/bin/bash
+  set -euo pipefail
 
->=20
-> Before a complete fix in tcp_collapse() (in net-next)
->=20
->     tcp: do not let tcp_collapse() drive sk_forward_alloc negative
->=20
->     tcp_collapse() charges each newly allocated skb with skb_set_owner_r(=
-)
->     before the skbs it replaces are freed, without scheduling memory firs=
-t.
->=20
->     Since sk_mem_uncharge() reclaims eagerly, sk->sk_forward_alloc has no
->     cushion and can become negative. This can be durable when the collaps=
-ed
->     skbs had a high payload/truesize ratio or were partially read, becaus=
-e
->     the new skbs can have a bigger total truesize than the old ones.
->=20
->     A negative sk_forward_alloc then confuses tcp_wmem_schedule(), which
->     can return a negative length to tcp_sendmsg_locked(), triggering
->     a WARN_ON_ONCE(bytes > INT_MAX) in check_copy_size().
->=20
->     Call sk_forced_mem_schedule() before charging nskb.
->=20
->     Fixes: 4890b686f408 ("net: keep sk->sk_forward_alloc as small as poss=
-ible")
->=20
-> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-> index 1ddce9c4b7e8cf91bfd4f5361abec3925fe25046..e879bdfddf1abe2ced80b12ea=
-8a40c1f7c958708
-> 100644
-> --- a/net/ipv4/tcp_input.c
-> +++ b/net/ipv4/tcp_input.c
-> @@ -5847,6 +5847,10 @@ tcp_collapse(struct sock *sk, struct
-> sk_buff_head *list, struct rb_root *root,
->                         __skb_queue_before(list, skb, nskb);
->                 else
->                         __skb_queue_tail(&tmp, nskb); /* defer rbtree
-> insertion */
-> +               /* nskb is charged before the skbs it replaces are freed.
-> +                * Make sure sk->sk_forward_alloc can not become negative=
-.
-> +                */
-> +               sk_forced_mem_schedule(sk, nskb->truesize);
->                 skb_set_owner_r(nskb, sk);
->                 mptcp_skb_ext_move(nskb, skb);
+  ns=allmulti-test
+  host=am-veth0
+  peer=am-veth1
+  mv=am-mv0
+
+  cleanup()
+  {
+      ip netns del "$ns" 2>/dev/null || true
+  }
+  trap cleanup EXIT
+
+  ip netns add "$ns"
+  ip link add "$host" type veth peer name "$peer"
+  ip link set "$peer" netns "$ns"
+
+  ip link set "$host" up
+  ip -n "$ns" link set lo up
+  ip -n "$ns" link set "$peer" up
+
+  ip -n "$ns" link add link "$peer" name "$mv" type macvlan mode passthru
+
+  ip -n "$ns" link set dev "$mv" allmulticast on
+  ip -n "$ns" link set dev "$mv" up
+  ip -n "$ns" link set dev "$mv" allmulticast off
+  ip -n "$ns" link set dev "$mv" allmulticast on
+
+ drivers/net/macvlan.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
+index afad90b9222a..e20d587453d1 100644
+--- a/drivers/net/macvlan.c
++++ b/drivers/net/macvlan.c
+@@ -643,6 +643,14 @@ static int macvlan_open(struct net_device *dev)
+ 			if (err < 0)
+ 				goto out;
+ 		}
++		if (dev->flags & IFF_ALLMULTI) {
++			err = dev_set_allmulti(lowerdev, 1);
++			if (err < 0) {
++				if (!(vlan->flags & MACVLAN_FLAG_NOPROMISC))
++					dev_set_promiscuity(lowerdev, -1);
++				goto out;
++			}
++		}
+ 		goto hash_add;
+ 	}
+ 
+@@ -713,6 +721,8 @@ static int macvlan_stop(struct net_device *dev)
+ 	dev_mc_unsync(lowerdev, dev);
+ 
+ 	if (macvlan_passthru(vlan->port)) {
++		if (dev->flags & IFF_ALLMULTI)
++			dev_set_allmulti(lowerdev, -1);
+ 		if (!(vlan->flags & MACVLAN_FLAG_NOPROMISC))
+ 			dev_set_promiscuity(lowerdev, -1);
+ 		goto hash_del;
+
+base-commit: 7076f684d5132e6a6145e1da2fa74771ecd052e5
+-- 
+2.43.0
+
