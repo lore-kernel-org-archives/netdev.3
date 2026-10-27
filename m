@@ -1,61 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=213.160.73.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793107330;
-	b=ct+LW6BBkaiQRNNaHhCB0VkKYUpBGYEHBm3iPe6rkEu7qr+pQ9gtmDVFSo9c3ZltahFV
-	 iCsGukudNWTM6vxdZZf5HnXTVQlCHu64i0DrUf9lhv4nEjukIDSH4CRy1hFICKBLGK8E3
-	 QQtdkWyP6L++Ny1+ELjCnXvNvfn34XZbxem1YqPd7EPwEB+iGJN2WPHskUKFu3+cfzonr
-	 eBCRLm0rcJ87B2BxpT722Y0n2kiLe+GIMWjo1PiZingV8jj9z4E8Jjrtpx3V5YxmA4oRp
-	 S1dqdvQ5yYUGk3B7AsjauS6WyEpFFa6vRWDIL8PmCVZfGi6UgUWXrZRJxQhQxDWhaVg==
+	t=1793107890;
+	b=KaKc7OZ89xdDWZgVgrsue4PlSG0lGM/eodE4ILmLSAmH4QBcICfx9RN0m6SHGkh91WOt
+	 L9RuRHkZBm5qoB2z1cOEJL73Ge5lYJt1x86YjGnCjTiciYUoGF2cK1yW09j/6c9O7I1x/
+	 2i51LFWjwaYYaxdPRWwQiSqNsLaKdHYsH0o8Of6C5zabjHNm74cLQ8kO+wjhhEfLEffa8
+	 Rd0k8hIFUmeX8DHmfJdi2lqmtATUrynpM2EjdCANXv1MvtgFK24D1/uRTOVPMQshExZ7C
+	 oVx78EuXgIzk8acCoTZxGis6pkcd/mQCKNWXQuTxa7BrvWc1m8DybCiRaAOnPGShzGw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793107330;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=LPA6Inh2wBCKqBtP/pIYKJnpKzD87TCTJsmoxrtXeEE=;
-	b=gmx34mrj9vRY2xj+MbHSF7EGyplCSGdY3jG5rquAjsx50XppYjnSC4+qRWBjDOm9R0f8
-	 HxKa7L2Bv6yz8UrZjsPinQ1cU39uWucKHXFCWvCn9VWCMQFdCDLOM7ObjQVN7HXwL67Us
-	 pZFYO6tJfu+U6D2ZBYURCt4/+DZp45J0+MBMciWipa/JG0QxKMoQDO9cs2dP970luGboj
-	 ftcA5sFUOLlRzWOZNEda4wRXUGHoGCTZxobsb9rJ9Hk0PXyT2T+OCXXYFK3HezmZFl2FZ
-	 nUcszjmsTTsfBQ2DyKS9P3xiGNH9pVpuHlD0ufy8mUJq+twcMur59Z6ctMA/mCcpJkA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793107890;
+	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
+	 Message-ID:In-Reply-To:References:MIME-Version:Content-Type;
+	bh=CtmBFZqy7yb/5wYHUpcMRHp04sS85G1RGMRlAVhNk2A=;
+	b=Q4sI30Gxl7CS0Enafg6Zi+e/Woh39U/ED7aK1Cb7jtgSXdF9uPUkLSjJLI0b+58jtkCh
+	 HTA5iSVh95rlJOFfOMvwo7I5XaVEMHxJbig/4CNFthbocfYJQb+WEGHHLFg1oEAhhbfqi
+	 6J18AXr1LDK2bAPKRrGWxLULB32/8fVRjnQf9rurwcM0Qrxnwnn/DSOIkDlLKLKRnDbJp
+	 6OEF6EudTGgpZ6iFO6eXsrN0snOQ8lpFzuyzDu4upKqNDMK8ge/Jc9+AvAbvoWOPrxiFb
+	 tLAZNBalKGxkCLaUpsUYaJGvBKWbkjQ+NUYoSPfCiXV4uxLoMioOJLHHVeB6QqeffuQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FvYtp0N5;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=narfation.org;
+	spf=pass smtp.mailfrom=narfation.org;
+	dkim=pass header.d=narfation.org header.i=@narfation.org header.a=rsa-sha256 header.s=20121 header.b="cXezh2H/";
+	arc=none smtp.remote-ip=213.160.73.56
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE670606A31A;
-	Tue, 27 Oct 2026 13:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22919606A321
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 13:31:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 22919606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FvYtp0N5
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69AF71F01825;
-	Tue, 27 Oct 2026 13:22:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793107329;
-	bh=LPA6Inh2wBCKqBtP/pIYKJnpKzD87TCTJsmoxrtXeEE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FvYtp0N5JHXgaDWI+G+zdVt/oggEZWpBYPUXKXGOhjpQSzp0YUuHTDhDDu5pgDVHe
-	 2UB3qU1XthAtPNf6Sh7SYD5Nzgv5tXH0iOPO4nVOj1KjKbuFtyZ29m35/diwzlH2UT
-	 6NurtcmD8qVEh+VJfXoLGODJR7y0f9iAgYXRZfKgYYYc2tSQXVCgdUtLWsaE4kzsXd
-	 URTCr39/xmvMVAteEcZRJHt+e+tYRqvk/nYkntgINZJrHzFk+Ryf4zaXlukMuT2bum
-	 gBsg/cUx7Lp3XqxdxW/h8qQ9Bo7mk1mi2/iixnlg1ziDV0Gf4mbaY0IkXdQV/7lOQ6
-	 UUIm/bJU1oQVA==
-From: netdev-bot+sinfo@kernel.org
-To: Meghana Malladi <m-malladi@ti.com>
-Cc: haokexin@gmail.com, jacob.e.keller@intel.com, pabeni@redhat.com,
- kuba@kernel.org, edumazet@kernel.org, davem@davemloft.net,
- andrew+netdev@lunn.ch, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, srk@ti.com,
- Vignesh Raghavendra <vigneshr@ti.com>, danishanwar@ti.com
-Subject: 
- Re: [PATCH net v2 0/2] Fix switch mode for offload and non-offload cases
-Date: Tue, 27 Oct 2026 13:22:07 +0000
-Message-ID: <179310732792.3327.10198783590651043272@kernel.org>
-In-Reply-To: <20261027131732.3411403-1-m-malladi@ti.com>
-References: <20261027131732.3411403-1-m-malladi@ti.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key, unprotected) header.d=narfation.org header.i=@narfation.org header.a=rsa-sha256 header.s=20121 header.b=cXezh2H/
+Received: by dvalin.narfation.org (Postfix) id 0D7801FF1F;
+	Tue, 27 Oct 2026 13:31:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1793107888;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CtmBFZqy7yb/5wYHUpcMRHp04sS85G1RGMRlAVhNk2A=;
+	b=cXezh2H/E7GewGqyaKqbpKa1w11CeXbx9IMUt3T/mRS60BwkE7jF4zMa2QIXe5S02UgcA7
+	bqPEq2xhWCnJRcSD1RsrGGVzcezhxXyrKOhs2PXsElBtybJx0aU+sKTsnJyO1IfIFuBSZy
+	oA4wBBQ08Jt0Fj+K+8GMH+TBx3BnaTk=
+From: Sven Eckelmann <sven@narfation.org>
+To: sw@simonwunderlich.de, netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ b.a.t.m.a.n@lists.open-mesh.org, sashiko-bot@kernel.org
+Subject:
+ Re: [PATCH net 09/10] batman-adv: tt: don't drop local events queued during
+ TVLV update
+Date: Tue, 27 Oct 2026 14:31:25 +0100
+Message-ID: <3709090.V25eIC5XRa@ripper>
+In-Reply-To: <179309132364.3134.18203109296409373363@kernel.org>
+References:
+ <20261026085309.1074911-10-sw@simonwunderlich.de>
+ <179309132364.3134.18203109296409373363@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,25 +66,171 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="nextPart3771355.LM0AJKV5NW";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
 
-Hi!
+--nextPart3771355.LM0AJKV5NW
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+To: sw@simonwunderlich.de, netdev-bot+sashiko@kernel.org
+Date: Tue, 27 Oct 2026 14:31:25 +0100
+Message-ID: <3709090.V25eIC5XRa@ripper>
+In-Reply-To: <179309132364.3134.18203109296409373363@kernel.org>
+MIME-Version: 1.0
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+On Tuesday, 27 October 2026 09:55:23 CET netdev-bot+sashiko@kernel.org wrote:
+[...]
+> > diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+> > index 24054077cf3db..6774484f1c573 100644
+> > --- a/net/batman-adv/translation-table.c
+> > +++ b/net/batman-adv/translation-table.c
+> > @@ -1327,11 +1327,18 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
+> >  	int tt_diff_entries_num = 0;
+> >  	bool drop_changes = false;
+> >  	size_t tt_extra_len = 0;
+> > +	LIST_HEAD(changes_list);
+> >  	int tt_change_len = 0;
+> >  	int tt_diff_len;
+> >  	u16 tvlv_len;
+> >
+> > +	/* atomically get the list of changes */
+> > +	spin_lock_bh(&bat_priv->tt.changes_list_lock);
+> > +	list_splice_init(&bat_priv->tt.changes_list, &changes_list);
+> >  	tt_diff_entries_num = READ_ONCE(bat_priv->tt.local_changes);
+> > +	WRITE_ONCE(bat_priv->tt.local_changes, 0);
+> > +	spin_unlock_bh(&bat_priv->tt.changes_list_lock);
+> 
+> [Severity: Medium]
+> This isn't a bug introduced by this patch, but the window left open at the
+> end of the commit message seems to have a worse effect than described. An
+> event in that window can be lost, not just announced under the wrong TTVN
+> or CRC.
+> 
+> batadv_tt_local_commit_changes_nolock() makes its decisions from a lockless
+> read, before this splice happens:
+[...]
+> Would either of these close the window: taking the snapshot in
+> batadv_tt_local_commit_changes_nolock() before the local_changes check and
+> passing the list down, or not consuming the list in the non-committing
+> branch?
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+Out-of-scope for this patch and handled in another pending patch
 
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
+https://patchwork.open-mesh.org/project/b.a.t.m.a.n./patch/20261025-tt-tvlv-changes-check-v1-1-c12b246c0956@narfation.org/
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+> [ ... ]
+> 
+> > @@ -1349,19 +1356,23 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
+> >
+> >  	tvlv_len = batadv_tt_prepare_tvlv_local_data(bat_priv, &tt_data,
+> >  						     &tt_change, &tt_diff_len);
+> > -	if (!tvlv_len)
+> > +	if (!tvlv_len) {
+> > +		/* the TTVN of the changes is lost and the other nodes will
+> > +		 * have to request the full table anyway
+> > +		 */
+> > +		list_for_each_entry_safe(entry, safe, &changes_list, list) {
+> > +			list_del(&entry->list);
+> > +			kmem_cache_free(batadv_tt_change_cache, entry);
+> > +		}
+> >  		return;
+> > +	}
+> 
+> [Severity: Low]
+> Does this statement in the commit message hold when the node is idle?
+> 
+>   "The changes can no longer be kept for the next round when the TVLV
+>   buffer allocation fails. But they would be sent with a skipped TTVN
+>   anyway, so the other nodes have to request the full table in this case
+>   either way."
+> 
+> When batadv_tt_prepare_tvlv_local_data() fails here, the caller
+> batadv_tt_local_commit_changes_nolock() has already bumped tt.vn to N,
+> updated the CRCs and reset ogm_append_cnt to BATADV_TT_OGM_APPEND_MAX. No
+> new container is registered, so OGMs keep carrying the old container (ttvn
+> N-1 with the old CRCs).
+[...]
+> Before this patch, the !tvlv_len return left the list and counter in place.
+> The next interval then bumped the TTVN to N+1, and peers saw the skipped
+> TTVN immediately.
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Why would the first round fail and the second round not? Please don't start 
+with kmalloc-failures - this would open a completely different can of worms 
+related to containers and OGMs.
+
+> With this change, can peers learn about the committed local changes several
+> OGM intervals later, with no TTVN skipped at all? Re-queueing the changes
+> isn't simple because __batadv_tt_local_event() expects at most one queued
+> change per (addr, vid). Would it be enough to force a TTVN bump or commit in
+> the next round instead?
+
+What is proposed here?
+
+        if (!tvlv_len) {
+                /* the changes are lost and the other nodes have to request the
+                 * full table. Announce the new TTVN in the next OGM interval
+                 * and don't answer TT requests for it with the stale changeset
+                 * of the previous TTVN
+                 */
+                list_for_each_entry_safe(entry, safe, &changes_list, list) {
+                        list_del(&entry->list);
+                        kmem_cache_free(batadv_tt_change_cache, entry);
+                }
+
+                spin_lock_bh(&bat_priv->tt.last_changeset_lock);
+                kfree(bat_priv->tt.last_changeset);
+                bat_priv->tt.last_changeset = NULL;
+                bat_priv->tt.last_changeset_len = 0;
+                spin_unlock_bh(&bat_priv->tt.last_changeset_lock);
+
+                /* announce the already committed TTVN in the next OGM interval
+                 * instead of waiting for BATADV_TT_OGM_APPEND_MAX idle rounds
+                 */
+                atomic_set(&bat_priv->tt.ogm_append_cnt, 0);
+                return;
+        }
+
+https://www.open-mesh.org/issues/485
+https://patchwork.open-mesh.org/project/b.a.t.m.a.n./patch/20261027-tt-tvlv-alloc-fail-v1-1-02058bcc4595@narfation.org/
+
+> 
+> [Severity: Medium]
+> Can this error path leave a stale bat_priv->tt.last_changeset that is later
+> served under the new TTVN?
+
+Which it did even before the patch
+
+[...]
+> The new comment says "the other nodes will have to request the full table
+> anyway", but here the first request is a diff request.
+
+Which makes the statements untrue because of "first request"? Which is not
+even mentioned in the comment.
+
+> Should this path
+> free last_changeset and set it to NULL under last_changeset_lock, or force
+> the next round to bump the TTVN?
+
+https://www.open-mesh.org/issues/485
+
+Regards,
+	Sven
+
+--nextPart3771355.LM0AJKV5NW
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCauCnrQAKCRBND3cr0xT1
+y950AQDuGG0HAjKHF4ix691UqCNIHbtVk+Us9my7NayEmeo/2QD+NrUQvy8K/xI8
+lvqkE8wvR7H+r9c4YCn9u+oNkcR8cwQ=
+=Se1b
+-----END PGP SIGNATURE-----
+
+--nextPart3771355.LM0AJKV5NW--
+
+
+
