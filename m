@@ -1,133 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.144
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793111618;
-	b=Uh0vj/ajp6e+z4+CphgqsT4YJRafOtfav77KZvDVWujpQmEkPWrDLy9NSOwBVbvkZDJy
-	 8PHGv4afWdrWcpYEYv/VbjdG8/qfgD9muv/wH5Qire4JqBnHf5/T96HyyXjAU89NirgDK
-	 OpeMjTdJYkzI7Zsl/LivSBocnDODRO4TrVdcR3i2S2PeXzCenqpvd6fK0O+NJhLaaJLCX
-	 QrtDe+/hx058itNZNCJhBL4Pamgk+hvq8XLkQ4M86ItA0JA9/+/7z6mAZxdLowe44iNjt
-	 aSL48em9Mo9J0jXOuBkjLGxFdGX33CtSCQqG6AzfNFOEV9fCbO9ec75hstKyf5mKCtA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793111618;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Received:Received:From:To:cc:Subject:In-reply-to:References:
-	 Comments:X-Mailer:MIME-Version:Content-Type:Content-ID:
-	 Content-Transfer-Encoding:Date:Message-ID;
-	bh=jdM4qcBkP3IM/VUJ/lLqwtGE0kuScpYqXF0GCIsfZJ8=;
-	b=ovBKfZVaEVRqdp8dBZvWGwUykbADMd83hA31XeCj7jvIeYKaEi+jNpe1sSd4e/hAfqiy
-	 +gf94X9/db8bZZklqAIiTyDB5y+nqFZe4gx+jYXa4ObPw3IA4eMA/3o8i47AaLvTs9lxL
-	 5Kmy71aFKdfjv0kJoIX0uuR9Eqlv+Vi+yYT5k0FFhx+/Rw5dBfMBMYGZf/6Hw+dEwh81d
-	 rAKyM6a+eB0Hn0wQ2efIK5qTJIuGYnCqT2sJhI8TEy1aoe+OQFeML0h3PluHZnqjJPOKg
-	 G2OhdZjHx5TUfCGt8VicoQ4Ll/L5BuEFSkJsC5Xw9IiIcp5ykDb9Aq9pyyskDyQr1XA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=jvosburgh.net;
-	spf=pass smtp.mailfrom=jvosburgh.net;
-	dkim=pass header.d=jvosburgh.net header.i=@jvosburgh.net header.a=rsa-sha256 header.s=fm1 header.b=HQkMeeud;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=pO0MwPvO;
-	arc=none smtp.remote-ip=202.12.124.144
-Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.50
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793111751;
+	b=FnWk9/aG5T84a1Yw8Grri/WLMXvvhDd+pDV2kN2RL3+3osViSn108ShP903Ug09NvMZY
+	 skHV83FBsrGHoy9gMXTmpp42bu7/V68rlSlBGLkzF1yDgdMjX99Ob7csdNgDIdGD98e2R
+	 slFZ/IUeVLIi+pHRgRpk80aJLuoVFYFN4oUGBwsWOvweN9w4L5O1jCQd52ymks0+vkJoW
+	 qwGYUSTNMmcw9E94d2HmiKm44qeaFTARRxEIqgQYzQ8XYqCssT3o75M3jbCTRj3FUEXZf
+	 bvuO6qOHjaZ0BBcN8K5LoSywbOmavwoBh7/0AxJP/uPXhhoefHONteMj66ymshOtOpw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793111751;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=8ntivL3sfq13MqlxFs7OFXeUXQKCco09Bn0M/NaUypI=;
+	b=A5u/f+puuylNnV/A6/gUXTR6PL+pPtLHnCGHa4IiNou6z04xlFyaq3Zj1k3Ov/DB3qFX
+	 0iM167sIS60mmNBScbfmL81hqMadl20JaGlLrwb587rYNEsg99mGIFo0aMmm1TKUjbS50
+	 A79XVKvEK1SkrqluLM1TMJgotTzl/yj3ZeR8O9ROV0lRN6/MAkH4XvAOL3h0q842p6JZT
+	 BCHvmZ/zxS8Ry+gce+ePMvooy87kKEitiStx+IuzIRXCxnKq9kyIYc2uK/XUuWv8s/J6V
+	 3OTNwrOPPwWfZ+MltSYwIW+VnOPIOs5IvDN8sMm0+wJfVnOXaYw0I6LJkM7TR/Vleyw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="BPHrw/GM";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.50
+Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 294EE606A31E
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 14:33:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 294EE606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jvosburgh.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93EDD606A31B
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 14:35:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 93EDD606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=jvosburgh.net header.i=@jvosburgh.net header.a=rsa-sha256 header.s=fm1 header.b=HQkMeeud;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=pO0MwPvO
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.stl.internal (Postfix) with ESMTP id A20171D00156
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 10:33:37 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Tue, 27 Oct 2026 10:33:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jvosburgh.net;
-	 h=cc:cc:content-id:content-transfer-encoding:content-type
-	:content-type:date:date:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to; s=fm1; t=1793111616; x=1793198016; bh=jdM4qcBkP3IM/VUJ/lLqw
-	tGE0kuScpYqXF0GCIsfZJ8=; b=HQkMeeuds0blzhA+A/qnDXULpHFQa6Om1dqqA
-	PNb72f63zZVb6nT9oP3o5OWAeE7xvl1XtRDemzw6eJHNou1K5tdTI5oCwBCwd/LN
-	9YaSHtLh3w1mq8BrolJ3Nckd4mxFE//F0DFwloru1Mofjfs/y10NWsCl/w5JlpU0
-	Kv1dma805Y2e7g60woB29jNdVxnIQ+ti6aAloozQCzsKoNYVo5tQJgPWfNjPscVG
-	ldFSBlNA3GUI0Ke4ntL7WPWLjkYvPHu/b98NgPUWG62Nb0CblKti1YFqYpempkY6
-	a02AL1HSU/SZV9T8BtsXTFEKTZowf7MM/OCpaO1bd2+NRNOWg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-id
-	:content-transfer-encoding:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1793111616; x=1793198016; bh=jdM4qcBkP3IM/VUJ/lLqwtGE0kuScpYqXF0
-	GCIsfZJ8=; b=pO0MwPvOsUI3LVkdnziLGI6syc6WGNwLpxBCyAcOyezpCaaxUez
-	R2WffuE3lRp9Mz0qqXDHqTlKz5fnnRWXk6+2ibXRSiLrOrfHynJrpvZUO902UiOK
-	DzrLkm0Q4+3jVJrsx2NEYIlonCOk2K2+P3AnBGyVtgohRioMVcthn3c6l4laNFIX
-	6hOnBiHnDQTpHu9mlnLQ6GXpcw6vfWVJu9fYwQMbtPFYLOpX+KI3Y5ZwzAJSABgW
-	Vhe1a9BC/gaXYXNY3hgM5qAG9O7J1pPU/b551PymVAuoSqx7U7D5B7oGnCCtE0Mc
-	6YcUjDboBZFgapJeYXHkZNnEyugeKoFihfw==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=sign d=jvosburgh.net a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793111616; d=jvosburgh.net;
-	mf=PGp2QGp2b3NidXJnaC5uZXQ+;
-	rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm1:rsa-sha256:FtPbJqQcxtuHxLSo70fvTub8XSLOuAX7GcPBe7swq+NiBbJ
-	fXpUUBEotk8gsNFRUzR7Xn5nCFteDI2tmV4Utk4Mkhi+DJPjWce6sfN43ymkkoWy
-	ZO1/YN8OwxEYZk015Gax6ORRLsi14pYbbPgBIr8rFr8U5jlk2GTaEXJmrCLjOBBy
-	rCCcEEbZVBoS71DBJVl4+xLO5a5Mt/kSCqGqU7VLZ/ec0URqsrH0qeobVmmYysht
-	uO30hk3jRYswCmncOO7jpXde9obkHzqMa7qu66tuRSoj7SelFi4MtwCn9gv+Ecfe
-	S4YZndIopsSxlgNIbvJgebPAF5b9a8xM8Z90nyA==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=mi-m=1; hc=14;
-	hn=cc,comments,content-id,content-transfer-encoding,
-	content-type,date,feedback-id,from,in-reply-to,message-id,
-	mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:zdK+Mf8diUOjj8SMr4Shh3pnY0Rw7TAJlTMN6WzwWh8=:yeVHK8VMzd6RNxvLvncI2QW2CGJv8E7TgGv6nRb+Etg=;
-X-ME-Sender: <xms:P7bgah47vVh_vtLckqsvYB7ug621i24WR0H-g3nYkrasoe9RN3HL2w>
-    <xme:P7bgatKlz7FjCs61FwttQX8b_nqLh33gno1AI8bLbJRZp2Z_R0nnc38sTvLOgx0jZ
-    PUPT5EJkts-5sdxvI8cbKuKoGWbA2aj_4oDaaRnqA3WWQZ94ZaSTvUW>
-X-ME-Received: <xmr:P7bgahyKSjXSfN-g3klZw1N3e7gB2e36bYOMSMg2rSXqJy_-4ijPRYNOlzr4PfQjMbWYLGI>
-X-ME-Proxy-Cause: dmFkZTEo3giUd1iRoB5M8ubjAJnUph9QOqszYRsamVpVSMDt4/tIH/8DTzCOvv+4rxCWSo
-    s4IM/o9fDJbPv6umbK8ZYC4TpT1mCIN81NaOw2WlJlzkgR5fg6DETUCmhbSagmOy3rfVE7
-    fhYHBwTt45jHucSM/1+UC/FMyi6hEbTQq8ELQzZtJNN2F5QyfsgkIHyEBcERAFlBSQTtI/
-    DoZ9tXn5vrtTyp/heYgny+Vnj9oog2WbMDWR5mKyhil9EhXIH9PRz5cXC0MlaFLa112QbK
-    CPkimVTeMsPoV8VB2iBDM5JCNIliA4Rxryug8NdPTp19zve4mQhnvLGJ0xMlYrviIsihhx
-    BlCiT8WnT82vJ9QbsiHOa2U/TpVnPXThmnP4mdn4bhM58FUoErbu2aIP6nHx7ce/UoLrPK
-    U/ncJpuu0s1w9oKIl6M2XOF3ycyIutX7uMX9XDq7dVtXt/hTOeLqVxy4D+gdm7RabBJ6/L
-    a/LYzN951+/msKvngPEwWh4euT2mtaVhtLUSjP24b+m2g5VpJkf+JtTu0JBoqUxeEa3saX
-    IZoBasPVfOTx0lTbD5L2t5R9oS/RVuATmkwmOmRdwX3hF8xFzwRUGc4Qz+I1sNh84VT+xX
-    3wGWhS+qskggoB1a4Hw07a+vvEbhGNuVlXi13s4iEtHlpWfau2n/rCMmvHcg
-X-ME-Proxy: <xmx:P7bgatLIhjka4EIvrvQSz6sNg0E-JrJHkKiUSsLD-ZnrdAF59ybb2g>
-    <xmx:P7bgaoVIM6QabC0JTJ8rFbQTZ-7GDDk_vHUjkBLvUUWefS2mudDAoA>
-    <xmx:P7bgaobJyuqR7Oi8foOrZpjvLnQc4EeBMuXBnTQXc14QFq95hCQIHA>
-    <xmx:P7bganxrP-32bq-Rzu4nyxOo9r6dz3T2EVUqN0p0pXApXM9jAbYUHw>
-    <xmx:QLbgarYK1P-ovsO6HCo0ahcR2pEkFw0Kk87VMw-UdM2ZH4sQ3BQ6WPmh>
-Feedback-ID: i53714940:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 27 Oct 2026 10:33:35 -0400 (EDT)
-Received: by vermin.localdomain (Postfix, from userid 1000)
-	id 66DE71C0432; Tue, 27 Oct 2026 07:33:33 -0700 (PDT)
-Received: from vermin (localhost [127.0.0.1])
-	by vermin.localdomain (Postfix) with ESMTP id 662131C024E;
-	Tue, 27 Oct 2026 09:33:33 -0500 (EST)
-From: Jay Vosburgh <jv@jvosburgh.net>
-To: ramses@well-founded.dev
-cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-    "David S. Miller" <davem@davemloft.net>,
-    Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-    Jiri Bohac <jbohac@suse.cz>, Eric Dumazet <edumazet@kernel.org>,
-    netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-    Nikolay Aleksandrov <razor@blackwall.org>,
-    Hangbin Liu <liuhangbin@kylinos.cn>
-Subject: Re: [PATCH net v3] bonding: fix initial last_rx vs ARP-monitor slack window
-In-reply-to: <20261027-bonding-last-rx-v3-1-54907f1fb042@well-founded.dev>
-References: <20261027-bonding-last-rx-v3-1-54907f1fb042@well-founded.dev>
-Comments: In-reply-to Ramses de Norre via B4 Relay <devnull+ramses.well-founded.dev@kernel.org>
-   message dated "Tue, 27 Oct 2026 13:23:29 +0100."
-X-Mailer: MH-E 8.6+git; nmh 1.7+dev; Emacs 29.0.50
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BPHrw/GM
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-4a75171af39so1144620fac.2
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 07:35:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793111750; cv=none;
+        d=google.com; s=arc-20260327;
+        b=bua4Fmi2csH05Jye7nFBj+PpWW869SzeBIVlMUI6nG8mjk3+wBgIwb5nnEE8+1JUgB
+         aXF/ky4eri7i8DXBvirDchP7G8ZoKz8SQ2LIXMk3br7+Eyfac6rtL2ehOQuM/+mlLD0v
+         axoP0ycYyOxeLbX/QEYcMI2c6eiKc6PwgquEsiTYc3w8s8lICQjeu6IdulNlH7Kjcezf
+         FuUoy2kuc8m7xtRIuJKwRXx31WLjwKn9aihXYM/f1HqwZKuZPXoKLnbA4Rt0CJcgFZi2
+         v9laGsSM1teUp51QHLsmlv8ASUcGaFrkQct50u82xXzk4i4bGOuPlwlIH/+Qlsbn54YB
+         0Kww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8ntivL3sfq13MqlxFs7OFXeUXQKCco09Bn0M/NaUypI=;
+        fh=DbEKU51LDX5XNgkGRZBsS0S/LVyyyGlUPDdxT7Ubhng=;
+        b=KkYsxrSdWbXhBMN1u3erYemU5lFDtTMp3lLQSlXMAqkFTYvAlQsoDrB0xfxwMZ6H4S
+         Z3pev+6h9zOKrxz6xJ+gaj3UXPCRn9WVapZb7HwXLnX6Yp8nzu1t4RkpRy9YMyy/MjyL
+         iPoixMI4CbmZUYsNz+n/kdO6cfCOBtumuPUOELdjlWUXhQhJgrwoP2VZSXm/yFxGCgXj
+         xC9+NlAldYY9GeoyYJHhT7vrPLMKPCrLgnR6UO9J7FuwFw/ycDMIAt065rHPmL6horEQ
+         FnYTDLxDGOA+InTlVsUN2pWF/8PgxVbMweiolSy8njFn3/R+mrkczbdSvkTtOs8gK7kq
+         rU0A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793111750; x=1793716550; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=8ntivL3sfq13MqlxFs7OFXeUXQKCco09Bn0M/NaUypI=;
+        b=BPHrw/GM11uvEr89aRC5HWLHrjkqGaOlu72HZu20IRNW12CbqeqCrUCf9XjVaO8BdD
+         Tm8BiiEkYjWF0IWDeKpX2/TO106vYj0TEZYlvPNycwaNkFJ4w7/aWhfXp9YRH+HERKRx
+         D73zV2v0PFjqkX+1jrsqekj6gkctsf1ZHTYzfhrQXEsRMxP5J1+IkurjxaHjIz+3PUwS
+         W2fF3Itr3kRg4YOPfQ5ZamB5CrmSIzJZEEd7XCc/Qx2awoLw67BeMJMwsILLq2Pjmaej
+         tYXdVRezlI4XL4vNDCmp31+c0oScTJVaeljRSMVdvMVe0N6YtdKl7ws9yj7/XN6uFh9C
+         JcQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793111750; x=1793716550;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8ntivL3sfq13MqlxFs7OFXeUXQKCco09Bn0M/NaUypI=;
+        b=Namzgh7A0B3DL1Hjd5Eg48IC9Ty/asg0oTBs+TQqpuyw0H+UrPnN/yyE2aKqkZoYFd
+         ptJ9f8ji7MsczR5h8mtF5oD3x+fwzXDu7qvBHDwTKeAnMexp0sumaJpOSjCv4+p+VH/3
+         y1JK7Txvt9TiR3wx5smuCM61/a7nshaiZksOw690KFWJ352HdIQwPhT7OjIhiU42rcq5
+         VtK5N5UnqWW7Fn8c2GJO0/YXGrJL9jniuOQAI5bAHq6VcTB82l/ZA3kRmrYEKLC8sNgH
+         vei5g9et4fo/VGb7UggzqTpIpBcGdDPDxIDYKHe8GAbLEoyNdlWfSDvlgBEGY7ND4P8U
+         5MHw==
+X-Gm-Message-State: AFq9FYLU/Gr3lCreh06e5V2gKz63v5o+Z57GCrN6Ktk/r9G3BxIG4Emq
+	EOkfLhiL1nNvKjSLxcdgIPBqW4shYJ+t9Fyh57TQ5iPs8sLgkT92C6o8eNr9K8awL4m+OLR4OM4
+	gOGQbItS6jtVsbDD7Jui3/CFshHLDYF0=
+X-Gm-Gg: AYBFou2hH9PARLNqqavzZFO9lI3OOfFgjdjSPC21xVufKGSvVptJMt0KIYRXSA1Imbg
+	2zYttwPTygsiIpuxd2GncwD5qARYYLpktKzRdNygIWJO82tMZUfyVlfBGKzCt24YOfq66fDLm09
+	/GjpLrTVyovlXZHbVg5CuiBOSTJr75MvjbVNdaUKRqeArK9kVMDgLFCKeHtGJ6AKcmfSjCEy8qS
+	od8+a5WP61POH14l/O7CCERuJ9Cj9Bor8ZJ1KBshtYIivwto9z6NvYnaSv0i8xYp7oGs9P+QHOW
+	PHrnktIZOSJjtHpk5rdRJvud8qKO74inhUSXIrUMwfTq44Rxf0xuVUfviMJ9EaQGMIorE1WCkI3
+	h7Ug/DVhN5zdqF/ZN+1zr0WghXzJddoToMAOO7PWprjyjYlzrago+yq24JGOjiCGZyfQf
+X-Received: by 2002:a05:6808:3023:b0:4f4:e1d3:b295 with SMTP id
+ 5614622812f47-55c0035e550mr5910025b6e.63.1793111750418; Tue, 27 Oct 2026
+ 07:35:50 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -137,117 +103,43 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <74902.1793111613.1@vermin>
+References: <20261026083252.12684-1-mmyangfl@gmail.com> <179300378438.3327.666635400432470005@kernel.org>
+ <cde7570c-50bb-4813-a461-04154d4cfa65@redhat.com>
+In-Reply-To: <cde7570c-50bb-4813-a461-04154d4cfa65@redhat.com>
+From: David Yang <mmyangfl@gmail.com>
+Date: Tue, 27 Oct 2026 22:35:14 +0800
+X-Gm-Features: AclHuK-AndTJtYxew75qcWywswF0KFWtkUg6fXVQy29AG-fqIS6AS7eX9kjSkck
+Message-ID: <CAAXyoMPTMtSbbq4FeTJPDD-gfcawEOE6HAucEhG7R+MXdjUDGg@mail.gmail.com>
+Subject: Re: [PATCH net] net: dsa: motorcomm: Fix function parameter types
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>, 
+	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org, 
+	netdev-bot+sinfo@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 27 Oct 2026 09:33:33 -0500
-Message-ID: <74903.1793111613@vermin>
 
-Ramses de Norre via B4 Relay <devnull+ramses.well-founded.dev@kernel.org> =
-wrote:
-
->From: Ramses de Norre <ramses@well-founded.dev>
+On Tue, Oct 27, 2026 at 8:18=E2=80=AFPM Paolo Abeni <pabeni@redhat.com> wro=
+te:
 >
->bond_enslave() seeds a new slave's last_rx with a timestamp old enough
->that the ARP monitor does not consider the slave up until a real ARP
->reply arrives. That is the purpose of the seed, see commit f31c7937c254
->("bonding: start slaves with link down for ARP monitor").
->
->The seed is one arp_interval (plus a tick) in the past, which was just
->old enough when the test was "jiffies <=3D last_rx + arp_interval".
->Commit da210f559019 ("bonding: add some slack to arp monitoring time
->limits") added arp_interval/2 of slack to every such comparison without
->adjusting the seed, so the seed now sits inside the window instead of
->outside it. For the first half ARP interval after enslavement,
->bond_ab_arp_inspect() therefore sees "received recently" for a slave
->that has not received anything and proposes it UP. This happens for any
->freshly enslaved slave, independent of primary_reselect.
->
->When the slave is the configured primary, the still-armed force_primary
->then makes it the active slave. ARP validation fails it shortly after,
->since the link has not received anything (on SFP+ ports the PHY is
->often still negotiating), and the bond falls back to the backup. With
->primary_reselect=3Dalways the bond recovers once the port really comes
->up, but drops traffic until then. With primary_reselect=3Dfailure,
->force_primary has been spent and the bond stays on the backup.
->
->Reproducer:
->
->  ip link add bond0 type bond mode active-backup arp_interval 1000 \
->      arp_validate all arp_ip_target 192.0.2.1 \
->      primary eth0 primary_reselect failure
->  # eth0: SFP+ (slow link-up), eth1: RJ45 (fast link-up)
->  ip link set eth0 master bond0
->  ip link set eth1 master bond0
->  ip link set bond0 up
->  # bond0 lands on eth0 via force_primary, ARP-fails it before the
->  # SFP+ has carrier, falls to eth1, and stays there.
->
->Seed last_rx (and with it the per-target array and last_tx) two
->intervals in the past, so it is outside the slack window from the
->start. The initial link state is unchanged, it still comes from
->netif_carrier_ok().
-
-	If the missed_max bonding parameter is set larger or smaller
-than the default of 2, is your seed of two intervals still sufficient to
-resolve the problem?
-
-	-J
-
->Fixes: da210f559019 ("bonding: add some slack to arp monitoring time limi=
-ts")
->Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
->Signed-off-by: Ramses de Norre <ramses@well-founded.dev>
->---
->Changes in v3:
->- No code changes. Rebase on current net.
->- Reword the commit message along the lines of the v2 discussion: lead
->  with what the last_rx seed is for, state that the false UP happens
->  independent of primary_reselect, and that the initial link state is
->  unchanged.
->- Pick up Reviewed-by from Hangbin.
->- Cc Nikolay. Hangbin asked for a second review, Jay or Nikolay, would
->  you have a look?
->- Link to v2: https://patch.msgid.link/20260827-bonding-last-rx-v2-1-7c38=
-33822c23@well-founded.dev
->
->Changes in v2:
->- No code changes. Resend with my personal name in the From and
->  Signed-off-by lines instead of my handle, as requested for the DCO.
->- Link to v1: https://patch.msgid.link/20260817-bonding-last-rx-v1-1-9da6=
-f7fdf812@well-founded.dev
->---
-> drivers/net/bonding/bond_main.c | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
->
->diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_m=
-ain.c
->index 7019e5d8fdc8e..269384fadfa6f 100644
->--- a/drivers/net/bonding/bond_main.c
->+++ b/drivers/net/bonding/bond_main.c
->@@ -2123,7 +2123,7 @@ int bond_enslave(struct net_device *bond_dev, struc=
-t net_device *slave_dev,
-> 		new_slave->link =3D BOND_LINK_DOWN;
-> =
-
-> 	new_slave->last_rx =3D jiffies -
->-		(msecs_to_jiffies(bond->params.arp_interval) + 1);
->+		(2 * msecs_to_jiffies(bond->params.arp_interval) + 1);
-> 	for (i =3D 0; i < BOND_MAX_ARP_TARGETS; i++)
-> 		new_slave->target_last_arp_rx[i] =3D new_slave->last_rx;
-> =
-
->
->---
->base-commit: f75062536e2d45ee182828f0e47e0124be2fdc8d
->change-id: 20260817-bonding-last-rx-0303fa048f9d
->
->Best regards,
->--  =
-
->Ramses de Norre <ramses@well-founded.dev>
->
+> On 10/26/26 09:36, netdev-bot+sinfo@kernel.org wrote:
+> > This is an automated message. This series looks like a fix, but its
+> > commit messages seem to be missing some information:
+> >
+> >   - How the issue was discovered, e.g. hit in production, hit during
+> >     development, syzbot report, manual code inspection, LLM or static
+> >     analysis tool scan.
+> >
+> >   - Whether the issue was actually triggered, or is only theoretical
+> >     (e.g. found by code inspection). If it was triggered please include
+> >     the symptoms, like the stack trace or error messages.
+> >
+> > Please do not repost the series just to address the above. Instead,
+> > reply to this email with the missing information, so that reviewers
+> > can take it into account. If the series needs another revision for
+> > other reasons, please include the information in the commit messages
+> > then.
+> You should reply to the above questions here.
 >
 
----
-	-Jay Vosburgh, jv@jvosburgh.net
+Reported by sashiko
