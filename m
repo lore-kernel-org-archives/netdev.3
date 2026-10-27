@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793060410;
-	b=hjkvru9WI0IRClZN5tco+2pq9Yco815z4KFoURrpXESLAIjfm8qiSfKVlI5dPmuN3ZQR
-	 +EVMNv1emcKrbwlm0Zx1dJdkpoS3AeOf++VQdh/SBhmihhWGsxd37MtkbT+SIY+zBMKei
-	 rlGVLM2gvUjVmOnqVu35209vuAoghRMfdkl4jlxU2X6nLo3/1YvG0yQ32XuDdYfVxHUvU
-	 yMKZ7vRyFOJCOEABBEydhlq/ZUnxuEB4JgfjVVM40V0xh8SZXLNxLstiEEJYEr1zRpH/S
-	 crOI6jA4gRviCn3fWhPyx0YtDKs3WP5+MHPPVIGXsZNABBReHKzND44gEHrd+ZEuAFw==
+	t=1793060411;
+	b=s16SlSAkvH/aMP7JKe9BoKf7Z5JFy1CCS9qoXnRi1tMvbEwLXBDUQvy3qOYs40m56zjg
+	 x71U76yOZsROpEvzV0ONx2JR9f8ApXg/HAPgQlVxstMwsIRyegn5MEOnJ+JkKVSmeFc1g
+	 JJ2/d/aVbI0MONYJFOmmQskzc9ubnsiZD4vPD65FwNNZbZiQavwP7NTMk/dLK1fECY6uU
+	 c81hMg6QL3uWy4pw8s2bsE5rjVHbOMPt9KBJqfFc0VZIZCvxCJfZ86DBCGF+2n4YrJCjG
+	 Q84cmlpWqF7GPdr7kKmabCe+QKYZ8QyfYQfcwvAt/JCLlAoT4p+4U17n+JE+QBMC7PA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793060410;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793060411;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=z5yMdEX85VOBZEN2Z6tgJfp6LGnMgULilyZVIwVl1ps=;
-	b=bDRWfAzaY/NIUmNS11zwobZ29aJKYA6ffLxlKz5TZOu90QmCghMWlhypMj5fKGXA8B6m
-	 XnGQdl//RsxEyI4OEC2CxIaFdrrhn17+CPiPXpkhz6i+iSHYHmzRcoyzA2UMM8pgiqwUd
-	 fXr51d4SmGytbLHs5ysSuL9YC/c57vVTZ+rHmPWwuPkNaOOI9vUirUnjPQOvejzTphnkE
-	 EH1P5FM4q5LlzBHbuoCAbPIcYfEZYyNwr0nGyerNJ1raGZS3xKNWb0Qp6HKOerQhgl7bn
-	 P7suUUWZ4yuwi6yDTZLAGFSARB21FZXZ2RkGrWFEgkSKvH+yqqGEwszOB4USEPI1Yxg==
+	bh=fnFK9si7GCQQ1LNZF3afXP0EKD127WuNV6E27ntNrtI=;
+	b=sWZoIrl3ARohgjBCbbMFkKUk5xcEmuAwjvb2/3XG6Sf6CsPYNndMjeIikIh/p6lG4muq
+	 EGRxm8ucIIBCTdmgUQr52U6Hq79FevH8M/6r4kfhV1WJGdRT3wPgaMhyNwmwvYXKlXrba
+	 VA9+r/9pzk+JM6E0lefgEf135NzzhHx51SY7U4+wW7YriMxPhaTH2m30sMCJ79LFZEkhc
+	 Szfmzj1Wcb83SdsaVIjG5nQn6K/tAZTChpXjV8GDW9uEaMa74yaA+jwXro/8krhYKS0Ja
+	 +ZL/9v8fgFoMjxD3qPC2EgLXhdjJ0N5DjDJaJKojLjB73c75aw59q05+wWo3Dfz/Vew==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gI6aX7NU;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZCE9sb19;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC02606A31A;
-	Tue, 27 Oct 2026 00:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60AA1606A323;
+	Tue, 27 Oct 2026 00:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gI6aX7NU
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE821F01825;
-	Tue, 27 Oct 2026 00:20:09 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZCE9sb19
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11DA01F01825;
+	Tue, 27 Oct 2026 00:20:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793060409;
-	bh=z5yMdEX85VOBZEN2Z6tgJfp6LGnMgULilyZVIwVl1ps=;
+	s=k20260515; t=1793060411;
+	bh=fnFK9si7GCQQ1LNZF3afXP0EKD127WuNV6E27ntNrtI=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=gI6aX7NUaZHB+nstPtBlGxdyGST/Fue/U8Mp6RO4Dd1fMA2gSMqtvqOrvdM5TJXbE
-	 G88WdQF3e0CXUbC7GHJ94AzQ8BFhKHamUM3zUPR0ZRNW8dDhbtHKrkeWRKfnQI48C4
-	 pOjI2x4rJEnhuDO3P/eHqE8FqXPnddTjnkQPq+GUnz4CL4PEzDkDSzl67n+Mqw5mHt
-	 o3uu96vYRqT1UXgqzQ0EEIs99zV8twbhWnpxlK08JPniMCvgiv0UBMXRuA/m8AsU5d
-	 fVGop3ehJcpvz9naVKMhedmNvomEjuJO3yPqnKmFrJ/7MlRC+7ZhotU70hL1y8TH2R
-	 KeAsp9U9N6ylA==
+	b=ZCE9sb193IITckGJMy4UDYALM9IYBoaAVAbgZByCz2ebt5phbW38y7XF2KWvVKzox
+	 Rju2onQRKztTKeYsn42izwJGJZVsox6cBukQIoV/7K+stbAQRf4uEquer/Oek0FtXa
+	 BV+oU67TDoZ3tspwY2t4qUTU/qsO7Fqlx+FrylhipaVwQDlLHVKsgXAODmCRMoEEp3
+	 ZaJYXhO0/oTHNkngHEI8CWJv9UY0vhpAyGaKuR5F2NHtHViRRGzn3m3E6hRXhn0cKx
+	 Ad611shbxDcVGGNBkkq8OJuMGnCHc0ay1SlrSnIUwfB914CI5oJlM957lgTM/K27zh
+	 Dzx6TVrKWskIg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 815023AA80F1;
-	Tue, 27 Oct 2026 00:20:09 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 0736F3AA80F1;
+	Tue, 27 Oct 2026 00:20:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,36 +54,42 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v1] net: atlantic: Unregister before clearing RXNFC rules
+Subject: Re: [PATCH net] xsk: restore UMEM flags after failed pool assignment
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179306040832.3479540.17384661649261436191.git-patchwork-notify@kernel.org>
-Date: Tue, 27 Oct 2026 00:20:08 +0000
-References: <20261020022630.515209-1-18983559317@163.com>
-In-Reply-To: <20261020022630.515209-1-18983559317@163.com>
-To: Binbin Deng <18983559317@163.com>
-Cc: sukhdeeps@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+ <179306040962.3479540.779090181651847653.git-patchwork-notify@kernel.org>
+Date: Tue, 27 Oct 2026 00:20:09 +0000
+References: <20261021224705.2078753-1-p@1g4.org>
+In-Reply-To: <20261021224705.2078753-1-p@1g4.org>
+To: Paul Moses <p@1g4.org>
+Cc: netdev@vger.kernel.org, magnus.karlsson@intel.com,
+ maciej.fijalkowski@intel.com, sdf@fomichev.me, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ bpf@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 20 Oct 2026 10:26:30 +0800 you wrote:
-> aq_pci_remove() clears the driver's RXNFC rule list before unregistering
-> the netdevice.  Until unregister_netdev() returns, ethtool operations can
-> still call aq_get_rxnfc_rule(), aq_get_rxnfc_all_rules(),
-> aq_add_rxnfc_rule(), or aq_del_rxnfc_rule().  Those paths traverse the
-> same unlocked hlist that aq_clear_rxnfc_all_rules() is mutating and
-> freeing.
+On Wed, 21 Oct 2026 22:47:33 +0000 you wrote:
+> xp_assign_dev() sets XDP_UMEM_SG_FLAG before checking whether the
+> device supports multibuffer zero-copy. If assignment fails, xsk_bind()
+> destroys the pool but retains the registered UMEM. A subsequent bind
+> without XDP_USE_SG inherits the stale flag.
+> 
+> The flag also changes RX buffer sizing after DMA mapping. On igc, a
+> failed SG bind followed by a non-SG retry with 4096-byte chunks and
+> 1792 bytes of headroom passes admission with 2048 bytes, but programs
+> a 1024-byte RX buffer. On I225-V hardware, an ordinary 1514-byte frame
+> is truncated to 1024 bytes or 1008 with RX timestamps enabled.
+> Restoring the original flags eliminates the truncation in both cases.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v1] net: atlantic: Unregister before clearing RXNFC rules
-    https://git.kernel.org/netdev/net/c/13b364c765e6
+  - [net] xsk: restore UMEM flags after failed pool assignment
+    https://git.kernel.org/netdev/net/c/b88b826ec54a
 
 You are awesome, thank you!
 -- 
