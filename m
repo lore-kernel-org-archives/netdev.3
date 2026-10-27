@@ -1,54 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=45.145.95.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793094915;
-	b=c9v0KUa52RrZmxERioxZKo4HEdJm1wexopHSqM17LJCV8MORqc798WqgTeHPP8LKMfWO
-	 HeKY5dBX5XzHL5t+CMm4E+G0Vj392vdZF8JZa2WuqzqtlbE8ZCDLfdDu+SuNw21o+NElR
-	 n8+cyrZEWRNg8Wu7ShCUTznYT6myOLuH9haoCqBg5ZEYhr3XS50WVj+LyMttvfNP+y8Xl
-	 RVE4S30KomjLYvGMHYitlDfVWGCdVpIjwKC1xd+OOAyyJ2GdtX2HPmHpUCNjbbtT8dcA6
-	 CLjQrQ8yuYrTeq/raltFrXm3YWIhx5TCC1AYRen9en2KFB7K/nW7+tPYJqDrNIwkPhg==
+	t=1793094999;
+	b=hfiLMvT0jriduSceaBaoRYKF7YoBpOMHsPXPR7KwdKBMkh7IbuXtN8DuPbUgmWQ4g2/0
+	 dQc/2cGRGrs+A5ySNsYj0tRb4a2wNR5Zy9Zxs/qLyURywgXD46dCuIcQ2n5hFJsPI5WTk
+	 FikPoUR3dh9t/koJdaiCUEHDKtsGiMKnGDSNEHC23UwKD8z1bEiPalV0poUj0EfFRqCkA
+	 DyhAXrxPrHjKtPXwI8FktagwD8wSMOJolSrEF3UtIgnV0KO2cWTDwb/hSxnm4SBPbNGb3
+	 tg1wzEZgJvpqKwOxX1g/yrZO328XJcAXgAA7ZE2xJ8fyBhs1Undk1tX6q7siei3j6rQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793094915;
-	h=DMARC-Filter:From:To:Cc:Subject:In-Reply-To:References:Date:
-	 X-Clacks-Overhead:Message-ID:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=7XFJ7wvqPCgNFFCKH1RgMpmXMwr2z/TBkHELQDADOQg=;
-	b=mEOu2m7n3aArdMF14kyDaxvS7vCbOGC+QbZrmCsCeowdKifbT6/pG0PynvMlHlWD/3jL
-	 R7dx2QW5Pxrh6SJAr10rmtNpb436cJnJMZvfhaCdQyViSyWjO3L4FUREuyV3iN/Ym6tk4
-	 7yvoEV+UAkgYM8aRFe46Y81AGtU2ysihvpDiFzyTEW0xl/q3HY3ml/tD4n32t0VO+weBr
-	 +j7NqsRzBZNMN/l6eNBR8Fu2aly9Wj1la7HGuGDOIkhiw/+IeJ24U7211+QnkLllVLQub
-	 EDMmkbfhEB5HtXaUKPnJLLDNiK0tcRrOMmBMtLpgR3QelU/0ki+aa1UWcrmZ4XKTZoA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793094999;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=l7hc7TWwK3jRjuIXe52LR92uVwu6NesbUFRYeKYWe/w=;
+	b=T8pR/JJBeNSeSRjNMAuKwi78leOTNyQGlbEBMswOJHXQvlr1WBy7EysP+4UdCvpH3223
+	 V2CTeFAkPl9JhCNBD/lmgeRSyremqfoDFVUIBbt7/wreiFWo8h3txKhonfQ2fTq69Gkby
+	 S7e8xMqZtCsvhbp1GmR/I1RMHLgQJVDw7W+Pdc5PfFJeZx0MNHP/kuKyJrrHANa1DOa+t
+	 j/yHJidxFBsIH/gnJ1jPytT7gNSM4+JSuvyPiDNW8v4gS4ntPRXgSFuE4fxaCrPjR1ClM
+	 mbw8wFxKtD6HxrOG9WMfCjFaT8o3lgR3abAhMT7oNWu9NXKIX8ZPA/usQSzWIZAUWJA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=toke.dk;
-	spf=pass smtp.mailfrom=toke.dk;
-	arc=none smtp.remote-ip=45.145.95.4
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nj5pKLYw;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B3B606A31B;
-	Tue, 27 Oct 2026 09:55:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 31B3B606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=toke.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
-Authentication-Results: mail.toke.dk; dkim=none
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-To: "Shubhang Kaushik (Ampere)" <sh@gentwo.org>, Jamal Hadi Salim
- <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Jonas =?utf-8?Q?K=C3=B6ppeler?=
- <j.koeppeler@tu-berlin.de>, Shubhang
- Kaushik <shubhang@os.amperecomputing.com>, "Christoph Lameter (Ampere)"
- <cl@gentwo.org>
-Cc: cake@lists.bufferbloat.net, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, "Shubhang Kaushik (Ampere)" <sh@gentwo.org>
-Subject: Re: [PATCH v2] net/sched: sch_cake: skip redundant cake_mq rate
- updates
-In-Reply-To: <20261026-net_sched_sch_cake-v2-1-cb1d4e6ed990@gentwo.org>
-References: <20261026-net_sched_sch_cake-v2-1-cb1d4e6ed990@gentwo.org>
-Date: Tue, 27 Oct 2026 10:55:03 +0100
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <8733trpix4.fsf@toke.dk>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B6B606A31B
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 09:56:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nj5pKLYw
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8267A1F031E2
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 09:56:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793094998;
+	bh=l7hc7TWwK3jRjuIXe52LR92uVwu6NesbUFRYeKYWe/w=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=nj5pKLYwoFKhDqJJY/b2NrEED86qyE3EpkT30IPOha0L+e3iVZvIYoLVBhDEpWi/z
+	 PD2vPwv/tvbZIGNnnKJlTVeUl1kDj2MYfdhi+bLsNCpGuD89sXCezHXSB0Sn1vmMWk
+	 F5wakaJoAqkBy3Th87X7KvtaikJg8fPSYCiGTLLApvenR6SQZuRTHgaGU3R3y7458B
+	 kNsr09wSajBOiMRstFL2nRaKmNyCo/EJfNZUrqSWoDCDqiIbic1r3dl9ssE5YgvK8Y
+	 BD4cSf086YXPKVbTKDKpo8Kbty1t7RTqGuY9jwirenUVhr1oHSAZzxL1L+ONubPCTL
+	 rWC+EmNwPUO5Q==
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-3ab4c608a6dso30653331fa.1
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 02:56:38 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwvoEVVPRU47TOZB3xqOA+vsMgFbn+f6xs2jQ+gm+vy0UK7Nr0/l1YAhptgqHSBn7xsmQJ0w8Q=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJWVa5gIYcyDsz6oy+t6AVdnqq4cruXs8u+4tudZYPC5dcYehn7
+	JmVB6JanYLM6yLt/yWk9Jp7ZoaTxnNvph8vlHWwcLcGqYFJ5O55DBS+re1GrurQEY9M9f0Ewsm7
+	rvCWAE5M+aa+ySSQmjrU6Hj9wNZGA0l4=
+X-Received: by 2002:a2e:bd02:0:b0:3ab:690f:82a8 with SMTP id
+ 38308e7fff4ca-3ac6fd4319fmr23447541fa.23.1793094997317; Tue, 27 Oct 2026
+ 02:56:37 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,57 +59,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20261027065247.2871134-1-kuniyu@google.com>
+In-Reply-To: <20261027065247.2871134-1-kuniyu@google.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Tue, 27 Oct 2026 10:56:24 +0100
+X-Gmail-Original-Message-ID: <CAL4WiioO81d9x7QJ==qCZChAK-7Eq=QvoRQcPwXncKwHbPcQkw@mail.gmail.com>
+X-Gm-Features: AclHuK-NyGWZiMxi-BvaDceFVRSt3yEs3j7qkA7RJTEhtK79OAGS58wq4haPUuE
+Message-ID: <CAL4WiioO81d9x7QJ==qCZChAK-7Eq=QvoRQcPwXncKwHbPcQkw@mail.gmail.com>
+Subject: Re: [PATCH v2 net] ipv6: Protect multiple routes insertion by table lock.
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
+	syzbot+751b587577d0ebca10f2@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-"Shubhang Kaushik (Ampere)" <sh@gentwo.org> writes:
+Le mar. 27 oct. 2026 =C3=A0 07:52, Kuniyuki Iwashima <kuniyu@google.com> a =
+=C3=A9crit :
+>
+> syzbot reported the warning below. [0]
+>
+> While call_fib6_multipath_entry_notifiers() is called locklessly,
+> fib6_siblings could be changed concurrently, leading to the
+> warning (and later null-ptr-deref).
+>
+> Let's protect multiple routes insertion with tb6_lock.
+>
+> Along with that, __ip6_ins_rt() and ip6_route_del() are changed
+> to fib6_add() and fib6_del().
+>
+> Note that fib6_del() finally calls rt6_multipath_rebalance(),
+> which requires rcu_read_lock().
+>
+>
+> Fixes: 169fd62799e8 ("ipv6: Get rid of RTNL for SIOCADDRT and RTM_NEWROUT=
+E.")
+> Reported-by: syzbot+751b587577d0ebca10f2@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/6adbaed6.67317f00.38c4bc.001b.GAE@goo=
+gle.com/T/
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 
-> cake_mq periodically counts active child qdiscs in cake_dequeue() and
-> derives an effective per-child shaper rate. cake_dequeue() currently
-> reconfigures every tin after each scan, even when that effective rate
-> is unchanged.
->
-> The dequeue-time call chain is:
->
->   cake_dequeue()
->     -> cake_configure_rates(..., true)
->       -> cake_config_*()
->         -> cake_set_rate()
->
-> With rate_adjust=3Dtrue, cake_set_rate() only refreshes rate-derived
-> state. Tin 0 records the unscaled rate argument in every supported
-> CAKE tin mode, so its installed rate identifies whether this call chain
-> would change any state.
->
-> Skip the reconfiguration when the effective rate is already installed,
-> while continuing to update the activity-sampling timestamp and
-> active-queue statistic.
->
-> Fixes: 1bddd758bac2 ("net/sched: sch_cake: share shaper state across sub-=
-instances of cake_mq")
-> Signed-off-by: Shubhang Kaushik (Ampere) <sh@gentwo.org>
-> ---
-> Tested on an 80-core SMP, non-SMT Ampere Altra system (aarch64)
-> The test used a 32-TX-queue veth pair, with cake_mq
-> bandwidth 2gbit on the transmit side and the peer in a network
-> namespace. The workload was:
->
->   iperf3 -c 198.18.0.2 -P 32 -t 30
->
-> Validation against mainline commit a32e63a613aa80, the patched kernel
-> reduced cake_configure_rates() calls by 99.99% (2,477,627 to 206) and
-> aggregate helper time by 99.986% (3.477 s to 0.498 ms), while retaining
-> approximately 1.91 Gbit/s aggregate throughput (baseline:
-> 1.91-1.92 Gbit/s). A separate per-child trace observed no
-> same-effective-rate calls on the patched kernel (@unchanged: 0).
-> Changing cake_mq bandwidth from 2Gbit to 1Gbit and back invoked
-> cake_configure_rates() 64 times, matching all 32 child CAKE qdiscs
-> updated for each of the two control-plane changes.
->
-> Changes in v2:
->   - Drop READ_ONCE() as suggested by Jonas K=C3=B6ppeler.
->
-> Link to v1: https://lore.kernel.org/r/20261025-net_sched_sch_cake-v1-1-51=
-65c924a590@gentwo.org
-
-Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
+Reviewed-by: Eric Dumazet <edumazet@kernel.org>
