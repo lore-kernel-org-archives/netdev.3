@@ -1,98 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.236
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793076423;
-	b=lDQwunUN9DKv2tQ1ZLmtCppzoqIe9XB5S+bt5DXjz7bJhXR8KTYuNPzbJRkGCivaU9T6
-	 WxGj5tPVQWdwUOmDDgziQBY9GZyVRYRiLEwqdOt+QGimzbTIQs8LmqeDCla29IUqo+jDR
-	 VjVwzF1PioeNvDdlauBgOXuOasF2sTDXdfKnjbxLE3GAxe6nvp5gzsy/1Se/obDNkIIku
-	 hHrCtCh2gqC6vzvndCdCBDtvC+T58iN3LzsxYpl6oEiklCkOzF07CVUJSbcXWoJ4+rYSz
-	 l9tbqGiyD5j2sjSBVmEheaBMnTaBEpxTrGoKEqQUP4TEZOHGxeyL7k23Pk68qv9Y8LQ==
+	t=1793076672;
+	b=YBk/05BE/lWsP/E73kM4LdIDSd/MlSy+w37+LgymueSoF77Fty4uf2iHSu9TWNIZi1hL
+	 iae3G+Q0J9JNIT9YCkv55CjRgT4/vXQt4JHp5ARHDyNlhiS4qZT9NeEte8Lspn1JGcMLB
+	 9ZGbJpIapMb4fcb9U7DGzmX6j+hubYifHjOav1HXyFzrl8yfOIRjGNoRfJYLx9v1yg5tZ
+	 tzC+mg65whfjYGJ1lDOJippPI87aKthCf/pwRpCkGUWLlsOA2ODFlnZdHxgZJhqsKGotE
+	 w9ihmHu0GbZ9eLOfvda0xLdxY3++zpt8SLFsKP1QSVsQW+hueiRNNxSwAUA5Rxt4qPw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793076423;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793076672;
+	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
+	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
+	 X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=WURMcEEiv9km0HuI6txsDrElGgFNRy2mTCX0NtkHLm4=;
-	b=N7s+M1xngrkzYPDT7swBEX3KDKRmCUFRWW/lQTMGMf8y/6IRKHFEG4VBKRcIfNrUJh0J
-	 pSZK14KDeslXRDlim70uVluQM+L1hUfYze7B/uxsn6+W9VeAE9gNl7yrJbyrQPPL4rAfu
-	 F120gIeF8VIZ/lLL2Qjq8+GaOguiNt3FYboonQCDKcG4XpFp83MqD9PtYM/RHKDzTfUyQ
-	 bkL9ZUdsHo1C2LedvYM4/fx2pfiCHsYmYz3OfvCtn4sXtGVJrNTx0n2CSSJdMnjYs8Pl8
-	 YvtXUmF08A4udt3qOhd7QBPgNFEmCYr1H0o2JYYo++uVmyygjmjCtEUD9JXkHun8oJA==
+	bh=UorkZN7XGO6iTpvoLvTmemMJ2RzNdn72w5oN6AlbaTc=;
+	b=tJAkVEUCGa/bXCsGxdVBIUPCbXBGyp1uZmfcIR482NS0Iy4wZH5TFVljsg1ZsrKVvwig
+	 giDtCAorBGhW9syA+1OLMByJyJY/Jvzx8q6UNu+poJZVAUTYR9tgVsN7pzQcmA4TSv8mW
+	 Sky7RqkbPdDDdnjTSAPPn3SWhlXtOhLUkdOSqnXcWndUhMqi0x9tuSVegrV4uFmcK3oCT
+	 DbEpukiQVg6eAGn1regC6JoIfPGy2RlscBhCHb6ak6okntcbp2lAEQRFlPkouC+r8tw+n
+	 aj0YuJIERhUZx+53JvkRv2ATuiqZeey/KGEL4Hcjy4NEWLzkolK/z2ODwt4ruaVWpBQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nebusec.ai;
-	spf=pass smtp.mailfrom=nebusec.ai;
-	dkim=pass header.d=nebusec.ai header.i=@nebusec.ai header.a=rsa-sha256 header.s=google header.b=m6bBvmSW;
-	arc=none smtp.remote-ip=74.125.82.46
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=qq.com;
+	spf=pass smtp.mailfrom=qq.com;
+	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=LYM5HoMj;
+	arc=none smtp.remote-ip=203.205.221.236
+Received: from out203-205-221-236.mail.qq.com (out203-205-221-236.mail.qq.com [203.205.221.236])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41628606A31B
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 04:47:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 41628606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5382F606A31A;
+	Tue, 27 Oct 2026 04:51:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5382F606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=nebusec.ai header.i=@nebusec.ai header.a=rsa-sha256 header.s=google header.b=m6bBvmSW
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-156cbe59622so3073172c88.0
-        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 21:47:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1793076421; x=1793681221; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=WURMcEEiv9km0HuI6txsDrElGgFNRy2mTCX0NtkHLm4=;
-        b=m6bBvmSWGHaosFaUuodvNtqp3GmNS1tz0C5ZGlflVDcZ7YcZiKwBrG8N7/58QywOrP
-         nGo7Yeek8LM4Ma338xJnPpxzBdoLYWDiucejDkX5D2uOa6sG03WeW4JT7OnCxU6xVf7y
-         2dG06cKm+PIISj2kww+AwE7IazcUUQVEBOzazPPoltwZ+K/0j/g+Sh2WJ8MRxKnCVFiS
-         qQEJ9GlFgIIyx25iw1VzwoqfOE6Rr2spBipHeoXmiiaT3yAjMa69VJyfh6oFG4kCgXMA
-         VWudhOa3qykkzrUObW5XGPe/bPMS98tSM4C6z9jjn6V4bseCwB1tS3XFYJ+YpdxtmlHY
-         DrXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793076421; x=1793681221;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=WURMcEEiv9km0HuI6txsDrElGgFNRy2mTCX0NtkHLm4=;
-        b=ZFq9NfrvwZsBGUjOdydXi/bqyzmXlddjsDJb+rr7Hbx4odg3iF13aykFqPi2OQqs2U
-         EXdZXk+OlFuBJGx0igdctrIpT0VACyM0jJTxEJ8SkYaHnaJovOYDNs+Wg9e4Pbm84vRF
-         xePIonDPzUhBvAC3sb5gtjHbDTjpwV0KEyxGSUPBTPifjvOq1228bypcnwPyobcOxzdS
-         21DYfdgMxSN85T29K2S8PHeeNeh4L8jQ7GK63f3p2VEAFDcQdGn2eRk3EjtmVhOacB4b
-         Y5Vb4QNuGkNSdPmJY0OO/mFm+/MCvPUs1djS72+GW3egaGguAsahDABrsnaTJIlzAhl4
-         fpnA==
-X-Forwarded-Encrypted: i=1; AKwUvBzDeOVqpim8HHhcNfkdQcUxItUUGNvyfp4bggSVn936PjAhdwBMdwe+7mSv0+1k+SRNIPmc5rM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKxkPhg3kZqUG6eJwdeTND5M7GDnI9hpTLRynvAHAzHQMN7r3qv
-	NwYV1DVHew824svetrZ8L0YHAuHhVTme/0HJoi4vPNspMcpd01xQdauNyCmqj/5YJjSf
-X-Gm-Gg: AYBFou3kEKWDA8h6aJngWrR/+ij/2mGmut1W5S4chTrMtNThnYTGw0N/6ghHHZjTodW
-	gloGlwwJIE8Z359t3XbrVM68vrzlnx47z4VDNMSIB7oKd/DtdbCPyTL5K15XxfxP6TurhT1lfyK
-	BPkZn4c4SJwqtmPYsluDwzglexBWCByh5dky2e1zKpbb9zeiiurLtp0iRMJwDT2iBOzHgc7OyMv
-	hOeUrWZyG1h8fLgaMcJifHWAPO+Cd3jmcd/Vn1Idc/reS6D3Hwx24TaqLQ+KCMSX0Lg9cjmTFPS
-	P4QUWjjIBA6dhtctTQlQK/taO0WlkxixEfXaq2sSM1sYKOYRt3ApZxl7VaQmGWZpQPUzJPSYXXZ
-	EWVK3Tzh8ghMGoDu20mLnpxmEfRsBXFhtyLxlVT+Yikhn9OUWDYAZZ3XXFTxZAUYLua3uXzSxZz
-	aJjWzn1aL4OnfbMQv+WfbAH/fOiSdwrn6F/G15EG2oZUgpYhWM1EEnNLQgEiVCAI8PIiVRdgWV0
-	X7zzlYmOcd57IF1qcEFKBhSFNHCKoP15gsV39MNMAaVoL/yVxnktW0rb7EeSbNWs9g7bO6TfyyD
-	ypcE58AKxET/LJ3dAox812Stsykxa1WD/Eujf4u3Dg==
-X-Received: by 2002:a05:701a:c941:b0:144:fa58:95d8 with SMTP id a92af1059eb24-19935fcbb52mr8965104c88.27.1793076420958;
-        Mon, 26 Oct 2026 21:47:00 -0700 (PDT)
-Received: from Roxy.sysu.edu.cn ([2001:49f0:d0db:fffe:97d4:c0de:15a1:9c01])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-198a32ff780sm28781261c88.22.2026.10.26.21.46.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 21:47:00 -0700 (PDT)
-From: Zhiling Zou <zhilinz@nebusec.ai>
-To: edumazet@kernel.org,
+	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=LYM5HoMj
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1793076666; bh=UorkZN7XGO6iTpvoLvTmemMJ2RzNdn72w5oN6AlbaTc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=LYM5HoMjLp2fnyYyMLHmEEsZ6Pc6H4J80F/wJZ+8Zfsct8nxjkVpubi7Z2pJPm6zq
+	 2MK5IpQaYAZIZNm1/5xq/w/X/HEwxG2tEn7y8/r6Gva+t84Pnb2tY6NI0f4XdrNxL6
+	 +C5cHLn4VFjiBtEiRhvJFOSBlQ6CcAZtKu56nxcs=
+Received: from kernel-lab.tail5e91bb.ts.net ([2409:8950:57d:63:ad3c:addd:6586:2a94])
+	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
+	id CC41E4C1; Tue, 27 Oct 2026 12:51:04 +0800
+X-QQ-mid: xmsmtpt1793076664t4f3k1b4q
+Message-ID: <tencent_604E28FF9F3ED582CCAC563D0788102E8109@qq.com>
+X-QQ-XMAILINFO: OEUhVsHQax4MacOqvanj1DwW9XK6UfrtiZ7MhPCNLdhXV5VcJwJw/9pM8kYm8X
+	 Y4Bt8XvuziYr3chxXzmw/aznxt6hWwlICeMR7O74mgCgeCxqCfniujwxPAe4yq/E160FqjWQvVUX
+	 ZP7Fwq0WxPwMl9VZWhB+GzdsEN5rboOSH/i+ob8A/SXrNog52jtHq/JoZsULLsJfmtr4W+9cTHph
+	 XPfOXiZ2KZ+JoI2alMIRq76G3CzAbxcpHtGX+L7wegJocSBbNWe0thzhjS1eldqvWjNSiGI1B6zk
+	 UtwlLdzeC8s6FdpKf+ooHgdGcq92So11e1zq/vPbQS8JbbicUtSlT/FZ5Sb7ByWW17V2KOFciSEi
+	 Rc8CcWIo6/yz5XfNnqmRhqKe0qD/dEr10RlV3UyKtHD5rrnc28sBwnBDKVTRGAOnmqrUQ6lvOjsz
+	 TkkKMhgIbn55P2Ah2/FeHl7qem/0Dz+LiKGgC2rXT7GRIHxS7AOHsk3PWfHNgxy3bNr7g+M+hKRM
+	 tcxQKyqz3LFF77FRMWTtQSbKZoA3haJuOfaYFm3Tpk0DyFf7mwLlVQWzBemnTRkTn//z6IuATbKS
+	 PcbHAJh2ICsAQ7koErnN1MJiZBrwmS1Wy7RLqH/yFewM5nue2kKoRBiFqr8gx2XRJFkR7zQfv5i9
+	 bIfzBCoYuwTnVlE34jAuMCLkDP4sfHhx1cQsNIHKxsna0P0qBFIGW2/PSaWL2OuMTUpSu/8OTNTI
+	 37chlhLiKnSAKhBYx8JFQc+XQCbm6ijM+YCdrTl1WJOy+j5d1QiKrlSeFQ2LiCydlKDlcuDkeD4k
+	 /uk//zEWeF+UUBHmM+szYPlaMsmJJLMzWsovhp4gYb74Wm4TIvSQc+BQMOUzIa+FHsCroLxhBE7m
+	 Frg0mDXRT4k08GuXKb9VpQM5gBrokGyMmpPU7fch2J0QI1Ig4qmCqMx6VvbHVFkV0uNP6UpuuEoK
+	 MOOP/VudDiJX56mBQ4qle/hId1jD7wmN0e1OYQN236WFs1dFKT186Bx1/O9jgoVXhvBgaV23dX0M
+	 Q1go2u3CL2+vv+MI2U9376EusoAXya5OLN4/j8yri8EcsuYOEsRI/7BfZrw9Y=
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
+From: Yingjie Wang <1075151112@qq.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org,
-	bpf@vger.kernel.org
-Cc: ncardwell@google.com,
-	kuniyu@google.com,
-	davem@davemloft.net,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	jonathon.reinhart@gmail.com,
-	vega@nebusec.ai,
-	zhilinz@nebusec.ai
-Subject: [PATCH net v2 1/1] tcp: check congestion control restriction first
-Date: Tue, 27 Oct 2026 12:46:49 +0800
-Message-ID: <71c142b2d45af6a2fe7fc6cd4a5ca52c53afbe23.1793075984.git.zhilinz@nebusec.ai>
-X-Mailer: git-send-email 2.55.0
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] af_unix: order MSG_PEEK references against garbage collection
+Date: Tue, 27 Oct 2026 12:51:03 +0800
+X-OQ-MSGID: <20261027123817.af-unix-thread-pointer.0d699734-c1fe-4ef3-ae49-db494da51216@qq.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <auABC6uMYxXmPqtb@google.com>
+References: <tencent_287A56749EA8448A970F2715FFF29F334108@qq.com> <auABC6uMYxXmPqtb@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,57 +85,14 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-tcp_set_default_congestion_control() takes a reference to an algorithm
-before checking whether a non-init network namespace may select it. A
-rejected request returns -EPERM without dropping the reference.
+On Tue, Oct 27, 2026 at 01:42:05AM +0000, Kuniyuki Iwashima wrote:
+> Actually there is another thread going on for this issue and
+> I suggested another aproach, so ...
 
-This affects module-backed algorithms too; BPF is not required. For
-example, after root loads tcp_bbr, a user with CAP_NET_ADMIN in a
-non-init network namespace can repeatedly request it as the default
-although it is not in tcp_allowed_congestion_control. Each rejected
-write leaks a module reference. Since module->refcnt is an atomic_t,
-2^31 such writes can make it negative; later module_put() calls warn,
-and rmmod can hit the BUG_ON() in try_release_module_ref().
-
-Check the namespace restriction before acquiring the reference, as
-tcp_set_congestion_control() already does.
-
-Fixes: 8d432592f30f ("net: Only allow init netns to set default tcp cong to a restricted algo")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Suggested-by: Eric Dumazet <edumazet@kernel.org>
-Assisted-by: LLM
-Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
----
-changes in v2:
-  - Check the namespace restriction before bpf_try_module_get(), following
-    tcp_set_congestion_control().
-  - Describe the module-backed reference leak and module refcount overflow.
-
- net/ipv4/tcp_cong.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/net/ipv4/tcp_cong.c b/net/ipv4/tcp_cong.c
-index 8e83ef81fc187..e3f462f161dd6 100644
---- a/net/ipv4/tcp_cong.c
-+++ b/net/ipv4/tcp_cong.c
-@@ -288,12 +288,12 @@ int tcp_set_default_congestion_control(struct net *net, const char *name)
- 	ca = tcp_ca_find_autoload(name);
- 	if (!ca) {
- 		ret = -ENOENT;
--	} else if (!bpf_try_module_get(ca, ca->owner)) {
--		ret = -EBUSY;
- 	} else if (!net_eq(net, &init_net) &&
- 			!(ca->flags & TCP_CONG_NON_RESTRICTED)) {
- 		/* Only init netns can set default to a restricted algorithm */
- 		ret = -EPERM;
-+	} else if (!bpf_try_module_get(ca, ca->owner)) {
-+		ret = -EBUSY;
- 	} else {
- 		prev = xchg(&net->ipv4.tcp_congestion_control, ca);
- 		if (prev)
--- 
-2.55.0
+Could you please point me to that thread?  I could not find it in the
+recent netdev or Patchwork archives.  If it is not public, should I wait
+for that approach before revising this patch?
 
