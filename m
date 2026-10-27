@@ -1,61 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793114146;
-	b=Eay1jgSQ0/m0PWQF/5xNGQ8bcHqv6b+3nKRFbhj9wvdRzPqmlZR64lSgJOeM+qs4nRne
-	 H8GhtTPt5Qm3A9g49TQ5UI4Q7nvT0DN7ZGl+XEkUOY5qLH1hZeHP0HFyCdslNQ+D9UdMG
-	 pRI6b+JdzDQxqrUFkePnRu9s3z7vfXmXlX2X6QDFLj2ZNQuBKN0TGnHSpS69GEmXySbvI
-	 pKD6DqxwHPYX2SOTz2DfZQmtp9c783MlOYl9fTfzm947YUI896g3o21bcrOXoH7B+wlrM
-	 Vwj/s/qPMp/zi44Q19oS+zRHt7we4VMWEhCpb9AiSeSc8eXuW4RU8rlrQZdTbo/n4oQ==
+	t=1793114213;
+	b=q3gtmnNOYPI9kUJZDy5wK1yrzjRMjdKKVCiNFoeQyHg9ykfgOFf22EgSFu+hwe4XzHny
+	 1dzNLS/yO0YLbS6c/2V7/KF5Sd6IPgEdAziZ7d1yM1tVJoOlwDaUUKjrXYpghHn793hd2
+	 q2PAbeK5UnVF3KOOjPwR4OOC76sSuv7+654atd/1ASnVF+U1q491Zc1Jz0WZVL3z7Vki6
+	 EyfSxIoiq9tJxbNdk2srI19SXQM2tmqPupWWVoi26H5UVvqVYolmA4Mn4Wwk1gSJIqeXZ
+	 OJI6uEF/a5S5ltXe7S3rYwx31KKMz4KNtBXR2rirjJwh6bdEGP4mOYzITgNVCEblbmQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793114146;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=IvZFZXIpdj4sFPxJ4kZaPc0Pvo8gnHI83xUdJmroOIw=;
-	b=UDDHMOn3sM+bWKEn1QjSFSXbOprRxs8/RUs6NIW/qai6NBpJ7vT4sqp7sLxxz/J00jG7
-	 GDKK1vrLtNd4R/+fvLBDNqptGpChnj2+jdkBbdMLGlhxRk5WE2JfOwoXGuKEWw1QdPwuq
-	 96FPStUvOE1g3ulLCh4GH6f8lJZ9QhZsSK4TumPcxzu/68EHEqu4pWAzYHC+9ggjQq7Sm
-	 4AHcLJiT0gjylvsqjNMQVtEN1u306xCG4t4xfgyZ0lLSso51jCDg3q0kiagDoxaGSX0mh
-	 hWYp8AyVdEBngBWs9JfLbfRk5DFrnjEwJG2RmI1SiExQL7IjWSooGcaeQWGDu99ZDWA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793114213;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
+	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
+	bh=pV7/FMjkL7wdPpM8Y5++u8mrK5b9ri0r/zd+YSKLnSY=;
+	b=dLOXos6FxLzjrQDvSDSiPdF1qYM0hjmLxoJ8BXn1ftlKTLr3R/xRr3nPxTynudrKKddd
+	 oi5FGmF9RoO+OKYnOfvrQ6DSJ7bZea83/+3YtTCTWdzuXJC1sK+M+Q/Lf6Ns8n1GwPmAj
+	 WRuM31fm8JUwCYv2T/op0vSsTQUJ10CwMe4h+gE22nVseKGthhJqU8yjhdVywlqvfGyJn
+	 f5NfJfyFlKdB99eBIv7sRMYf+INNNmZvw4nxXLg4eaqcVh+UehigTvWEtf0//2bfN3I8q
+	 ZlIxMg3PBgCFGENPycQGEsotqj2VBrlBU6IsgxrAvsoGoQPQvMgRpCMEesCthwZNydg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="oqP/TSLl";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=bJcrFyod;
+	arc=none smtp.remote-ip=209.85.128.169
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4243E606A31E;
-	Tue, 27 Oct 2026 15:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3210F606A320
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 15:16:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3210F606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oqP/TSLl
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC9A1F01829;
-	Tue, 27 Oct 2026 15:15:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793114146;
-	bh=IvZFZXIpdj4sFPxJ4kZaPc0Pvo8gnHI83xUdJmroOIw=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=oqP/TSLl7GUDp1RRDJr64m0QXWHfFn4SS0GytZtETmTR1XkBYuPqdqeD5DxgLQ4q2
-	 bVhY5zA6w5vSErcJuqfrwZMSIXmP5f3pPgwFdI6KvMJPGf+oPe2Q2uMKXsF60WVo8A
-	 jGpZBJseB9W3QK3yvvKEhJ9WI/ewhwtuJVVJTEoBL5PCzTLf7iEmymloEXd9N808bU
-	 DWg9t6WNcrlraYwmmvUCGTrm61BIrEUgG6BerZ5gS3PHwFRffjqivK08MwgDXXq1Lw
-	 p9DV8k9r26TneeqBLpHSxovmgONKTn/FEj7N7C5BVtAizwwJ3Ni48/N2DMLOJPYpI4
-	 1esRJffeVcQ0A==
-Subject: Re: [PATCH net v13] net/smc: fix lgr/lnk lifetime vs diag reader race
-From: netdev-bot+sashiko@kernel.org
-To: mjambigi@linux.ibm.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
- dust.li@linux.alibaba.com, sidraya@linux.ibm.com, hidayath@linux.ibm.com,
- pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
- guwen@linux.alibaba.com, stable@vger.kernel.org, netdev@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
-Date: Tue, 27 Oct 2026 15:15:44 +0000
-Message-ID: <179311414480.3134.15723255171112798704@kernel.org>
-In-Reply-To: <20261023150317.1163397-1-mjambigi@linux.ibm.com>
-References: <20261023150317.1163397-1-mjambigi@linux.ibm.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=bJcrFyod
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-8565d77c277so36057817b3.0
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 08:16:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793114212; x=1793719012; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=pV7/FMjkL7wdPpM8Y5++u8mrK5b9ri0r/zd+YSKLnSY=;
+        b=bJcrFyoddKPNBUKMCWSaSLNvZDtVwvQ1Ps1hJYAyLKLDONqD/aDvfhTq3zgSTdBwlN
+         jBjU+4/LHNvJx9CTIEQ1Vg6/GMOm5ZHWSeSEcUn1cglxfM/QokKoFF2DgNFEgxf6mdfB
+         qRu+o2ma+8jTA6il9dY0Sx+/uVtjMTims0fyGaPPwj4sLUh30Ql24gM0/0Rn60UcJYtt
+         TJdmauEA1AQ5PkKzhYzcZpDgFk2vteUH2BIdeSbjf/KJ+zb4MD5ISpp8zLc8eLfQmlEX
+         dalfnQzkkYc4bqYoPXZIMrAV7Qu2oK0u/UZzPJ8jIkks16MV1M8bEzik3Miq6yR3uEya
+         q4aQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793114212; x=1793719012;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pV7/FMjkL7wdPpM8Y5++u8mrK5b9ri0r/zd+YSKLnSY=;
+        b=swIVG+b8kamTOG7YirH/2XFxGmEiOxn07DP7EAIiBBYJS6Twy/njXZs/qIk7w11M+T
+         3QHaNMzy8X/s104F4OnsXLayMKo9nVpaFrE1TheEsDl6mJgKX8/N7TCROySkTZcBlju4
+         27L6LX67YgxHrTn6oWJK7ZMFGz2n8/hIMNxi+KFswcIYvN7PF/DWE9IXKz1ceqA5LFL/
+         mUtI0qaZ+Syf+3hEC45kdjLtc5wC9ipFgPXofGGSW1SZMr9FyOtR4fIvtwPcRa7GzN0H
+         PLUAZivaZHIHxDuear2FqpAxs8CPSNUsQWdwtYg4rMonluQmaJLvT4G6uyEV/oXzZXUg
+         3z3Q==
+X-Forwarded-Encrypted: i=1; AKwUvBy36khFH6qW/2ZDXR+vNIUTl9Bmui7P7WmnejePkAssOZ27SST2ON+Hm/XVvA386QYhtaluZ8k=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJiJxA86VKlDHZcMTNHoaBzSHoz9wqX/SeL/79RQf/mwqzG9YyL
+	sSUZIksqda+n7M8wLLO5VkbHWSG/v8wSV0GGWe28OpWuTFisboR3Sqrk
+X-Gm-Gg: AYBFou3dfmA3oV/7S9EcXM+qTZkm2pxFYEFpNskgoiyUazrD7DJ0P8EBfC/qoBGFNlG
+	0p9W6hR2+PWt+opp5sioj27cti6U40jCBw1h7Fb8dixpcabiwfgC4JncBsQv2/4s2ALPumcowqC
+	/0laH1jp5Hfr6cNMmMwi/worzMav3dHvVGnZsds8w9INhBc3RVejHF8rPII9bOnR/O465BykFyG
+	XetURP22tAQ7DsHmWMtBHSm5Lop66fVisfAW5fmLNYtyCFYobrGMiqugO9r4taNiV0HCJQwwa42
+	WUvWD8pJeglJ75eMKEeGHgeihEkSTEdljuYbNWq9cbuRnbjrYeKmFH/TXGA7G6AvxuGsfBbS3Jc
+	evwdmV9Evfo2jFIr2gC2W1UklxDrbu3b6y0RMzaJWBGf3McNE9pSW2833WM1wHXqpyGiXBNruYa
+	VHY7PErOCFg2keuqSPDY7NBiMhborGNTDOAVikB5jkHT0SzmGNHEvEs2KEK+EFPNXiAvUsgBReX
+	jbvafkdKmT14F8bdsEMJcJ/f3L/jqynM7JBETnsO30Clkra+J7TcaI8Ktj3475j
+X-Received: by 2002:a05:690c:dd4:b0:8b1:4446:8534 with SMTP id 00721157ae682-8b166b77c23mr74464917b3.15.1793114212162;
+        Tue, 27 Oct 2026 08:16:52 -0700 (PDT)
+Received: from localhost ([2620:10d:c091:500::4:1ee2])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b19e539e34sm13895667b3.9.2026.10.27.08.16.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Oct 2026 08:16:51 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,197 +86,97 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 27 Oct 2026 11:16:50 -0400
+Message-Id: <DMFPXSDO64VR.2AYG2NTUEYFRF@gmail.com>
+Cc: "Boris Pismenny" <borisp@nvidia.com>, "Saeed Mahameed"
+ <saeedm@nvidia.com>, "Leon Romanovsky" <leon@kernel.org>, "Tariq Toukan"
+ <tariqt@nvidia.com>, "Mark Bloch" <mbloch@nvidia.com>, "Andrew Lunn"
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, "Daniel Zahka" <daniel.zahka@gmail.com>,
+ "Willem de Bruijn" <willemdebruijn.kernel@gmail.com>, "Simon Horman"
+ <horms@kernel.org>, "Shuah Khan" <shuah@kernel.org>, "Cosmin Ratiu"
+ <cratiu@nvidia.com>, "Raed Salem" <raeds@nvidia.com>, "Rahul Rameshbabu"
+ <rrameshbabu@nvidia.com>, <linux-rdma@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+ =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn@kernel.org>, "Dragos Tatulea"
+ <dtatulea@nvidia.com>
+Subject: Re: [PATCH net v3 1/4] net/mlx5e: psp: tso: replace only the length
+ in checksum seed
+From: "Daniel Zahka" <daniel.zahka@gmail.com>
+To: "Todd Freed" <toddfreed@meta.com>, <netdev@vger.kernel.org>
+X-Mailer: aerc 0.21.0-threadmapfix
+References: <20261023234640.1459291-1-toddfreed@meta.com>
+ <20261023234640.1459291-2-toddfreed@meta.com>
+In-Reply-To: <20261023234640.1459291-2-toddfreed@meta.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
-
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] Use-after-free read of the link group in __smc_diag_dump()
-  (net/smc/smc_diag.c, lines 93-94) for hashed SMC_CLOSED sockets that…
-- [Medium] The new state-based guard in __smc_diag_dump() (smc_diag.c:93
-  and 107-109) can be bypassed by a stale-registration socket that…
-
---
-
-net/smc: fix lgr/lnk lifetime vs diag reader race
-
-This patch tries to close several windows where the SMC sock_diag dump
-can dereference a freed or partially freed conn/lgr/lnk on a socket that
-is still hashed. It adds an SMC_INIT/SMC_CLOSED/fallback guard in
-__smc_diag_dump(), pairs it with acquire/release on sk_state, and unhashes
-sockets before smc_conn_free() and smcd_buf_detach() in the teardown
-paths. It also uses the cached link->ibname for the LGRINFO attribute.
-
-[ ... ]
-
-> diff --git a/net/smc/smc_diag.c b/net/smc/smc_diag.c
-> index bf0beaa23bdb6..84c45aabc196c 100644
-> --- a/net/smc/smc_diag.c
-> +++ b/net/smc/smc_diag.c
-> @@ -87,10 +87,11 @@ static int __smc_diag_dump(struct sock *sk, struct sk_buff *skb,
->  
->  	r = nlmsg_data(nlh);
->  	smc_diag_msg_common_fill(r, sk);
-> -	r->diag_state = sk->sk_state;
-> +	r->diag_state = smp_load_acquire(&sk->sk_state);
->  	if (smc->use_fallback)
->  		r->diag_mode = SMC_DIAG_MODE_FALLBACK_TCP;
-> -	else if (smc_conn_lgr_valid(&smc->conn) && smc->conn.lgr->is_smcd)
-> +	else if (r->diag_state != SMC_INIT &&
-> +		 smc_conn_lgr_valid(&smc->conn) && smc->conn.lgr->is_smcd)
-
-[Severity: High]
-Can this still dereference a freed link group for a hashed socket in
-SMC_CLOSED?
-
-The diag_mode check here only excludes SMC_INIT. The new SMC_INIT /
-SMC_CLOSED / use_fallback guard comes later, after
-smc->conn.lgr->is_smcd has already been loaded.
-
-The v13 changelog describes how a stale alert_token_local can survive.
-Once smc_lgr_terminate_sched() has emptied lgr->list, smc_conn_free()
-skips the unregister but still drops the references:
-
-net/smc/smc_core.c:smc_conn_free() {
-    ...
-	if (!list_empty(&lgr->list)) {
-		smc_buf_unuse(conn, lgr); /* allow buffer reuse */
-		smc_lgr_unregister_conn(conn);
-	}
-    ...
-lgr_put:
-	if (!lgr->is_smcd)
-		smcr_link_put(conn->lnk); /* link_hold in smc_conn_create() */
-	smc_lgr_put(lgr); /* lgr_hold in smc_conn_create() */
-}
-
-On the server side this looks reachable as:
-
-smc_listen_work()
-  smc_conn_create()          <- joins existing SMC-R lgr L
-                             <- smc_lgr_terminate_sched(L) empties L->list
-  smc_clc_wait_msg()         <- peer resets, rc < 0 (-ECONNRESET/-EPROTO)
-  smc_listen_decline()
-    smc_conn_abort()
-      smc_conn_free()        <- unregister skipped, token stays set
-    smc_listen_out_err()     <- SMC_CLOSED, use_fallback false, hashed
-
-Since rc < 0 there is no fallback. The socket stays hashed in the accept
-queue or until smc_close_non_accepted() takes the sock lock. Later,
-terminate_work runs:
-
-__smc_lgr_terminate()
-  smc_conn_kill()            <- clears token under conns_lock
-    smc_close_active_abort() <- SMC_CLOSED case just breaks, no unhash
-  smc_lgr_cleanup()
-  smc_lgr_free()
-    smc_lgr_put()
-      __smc_lgr_free()       <- kfree(lgr)
-
-Nothing in that sequence synchronizes with the hash read_lock that the
-diag reader holds. A reader could see the non-zero token in
-smc_conn_lgr_valid() and then load smc->conn.lgr->is_smcd after the
-kfree. That would read freed memory.
-
-The "Fourth" paragraph of the commit message says this case must not
-happen: observing SMC_CLOSED and dereferencing an lgr whose reference was
-already dropped. The smp_store_release() added in smc_listen_out_err()
-only helps when the token was actually cleared, and here it was not.
-
-The client close() path (SMC_INIT -> SMC_CLOSED in smc_close_active())
-doesn't seem to be exploitable this way. The reader's read_lock blocks
-the unhash in __smc_release() while the sock lock is held. The server
-path above has no such protection.
-
-Could the SMC_INIT / SMC_CLOSED / use_fallback check move ahead of the
-diag_mode computation? Adding r->diag_state != SMC_CLOSED to this
-condition would also work.
-
->  		r->diag_mode = SMC_DIAG_MODE_SMCD;
->  	else
->  		r->diag_mode = SMC_DIAG_MODE_SMCR;
-> @@ -103,6 +104,10 @@ static int __smc_diag_dump(struct sock *sk, struct sk_buff *skb,
->  	if (nla_put(skb, SMC_DIAG_FALLBACK, sizeof(fallback), &fallback) < 0)
->  		goto errout;
->  
-> +	if (r->diag_state == SMC_INIT || r->diag_state == SMC_CLOSED ||
-> +	    smc->use_fallback)
-> +		goto out;
+On Fri Oct 23, 2026 at 7:46 PM EDT, Todd Freed wrote:
+> for psp tcp with tso,
+>
+>  - __tcp_transmit_skb() -> tcp_v6_send_check() or tcp_v4_send_check()
+>    computes the checksum seed using the addresses on the socket and the
+>    total length, then
+>
+>  - mlx5e_psp_handle_tx_skb() recomputes the checksum seed using
+>    addresses from the packet's l3 header, and the length of one segment
+>
+> the length difference is expected by the device. however, the
+> difference in addresses is incorrect in cases where the l3 header daddr
+> is an intermediate hop (e.g. IPV6_RTHDR). this causes every segment of
+> the tso packet to go out with a bad tcp checksum, in this case.
+>
+> the fix is to replace only the length in the seed which tcp had already
+> computed. this is also what tcp_gso_segment() does.
+>
+> tested on connectx-7 with the rest of this series applied, with a psp
+> tcp socket whose segment routing header's first hop isn't the final
+> destination, and the peer checking tcp checksums in software.
+>
+> Fixes: e5a1861a298e ("net/mlx5e: Implement PSP Tx data path")
+> Signed-off-by: Todd Freed <toddfreed@meta.com>
+> ---
+>  .../mellanox/mlx5/core/en_accel/psp_rxtx.c    | 21 ++++++++-----------
+>  1 file changed, 9 insertions(+), 12 deletions(-)
+>
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.c =
+b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.c
+> index 348fd7a96261..d9c2742b3c24 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.c
+> @@ -177,18 +177,15 @@ bool mlx5e_psp_handle_tx_skb(struct net_device *net=
+dev,
+>  		return false;
+>  	}
+>  	if (skb_is_gso(skb)) {
+> -		int len =3D skb_shinfo(skb)->gso_size + inner_tcp_hdrlen(skb);
+> -		struct tcphdr *th =3D inner_tcp_hdr(skb);
+> -
+> -		if (skb->protocol =3D=3D htons(ETH_P_IP)) {
+> -			const struct iphdr *ip =3D ip_hdr(skb);
+> -
+> -			th->check =3D ~tcp_v4_check(len, ip->saddr, ip->daddr, 0);
+> -		} else {
+> -			const struct ipv6hdr *ip6 =3D ipv6_hdr(skb);
+> -
+> -			th->check =3D ~tcp_v6_check(len, &ip6->saddr, &ip6->daddr, 0);
+> -		}
+> +		u32 seg_len =3D skb_shinfo(skb)->gso_size + inner_tcp_hdrlen(skb);
+> +		u32 len =3D skb->len - skb_inner_transport_offset(skb);
 > +
+> +		/* update just the length component of the checksum seed
+> +		 * tcp computed the seed with the total length, but mlx5
+> +		 * devices are expecting the segment length
+> +		 */
+> +		inet_proto_csum_replace4(&inner_tcp_hdr(skb)->check, skb,
+> +					 htonl(len), htonl(seg_len), true);
+>  	}
+> =20
+>  	return true;
 
-[Severity: Medium]
-Can a stale-registration socket get past this guard if it leaves
-SMC_INIT through passive close instead of fallback?
+Thanks. Makes sense to me. The bot has a mega nit about the commit
+message that may be worth addressing next version, but otherwise:
 
-Here is a scenario on an SMC-R client:
-
-smc_connect_rdma()
-  smc_conn_create()             <- registers conn in existing lgr L
-                                <- smc_lgr_terminate_sched(L) empties
-                                   L->list
-  smc_clc_send_confirm() fails  <- rc < 0
-  smc_conn_abort()
-    smc_conn_free()             <- unregister skipped, lgr/lnk refs
-                                   dropped
-smc_connect_decline_fallback()  <- rc < 0, returns without fallback
-
-A positive decline code followed by a failing smc_clc_send_decline()
-ends up in the same place.
-
-The socket stays hashed in SMC_INIT with use_fallback false. The conn is
-still in L->conns_all with its alert_token_local set, so
-smc_cdc_rx_handler() -> smc_lgr_find_conn() still finds it. The peer has
-the token from the confirm, or can guess it from the sequential counter.
-
-A CDC with close or abort flags then queues close_work, which moves the
-socket out of SMC_INIT:
-
-smc_close_passive_work():
-	case SMC_INIT:
-		sk->sk_state = SMC_APPCLOSEWAIT1;
-
-smc_close_passive_abort_received():
-	case SMC_INIT:
-	case SMC_ACTIVE:
-	case SMC_APPCLOSEWAIT1:
-		sk->sk_state = SMC_PROCESSABORT;
-
-At that point the state is neither SMC_INIT nor SMC_CLOSED, use_fallback
-is false, and smc_conn_lgr_valid() is true because of the stale token.
-The reader then dereferences:
-
-- smc->conn.lgr->is_smcd
-- conn->sndbuf_desc->len and conn->rmb_desc->len (still on L's lists,
-  since smc_buf_unuse() was skipped)
-- lgr->list and lgr->role
-- the conn->lnk fields
-
-Meanwhile __smc_lgr_terminate() -> smc_conn_kill() clears the token and
-calls smc_close_active_abort():
-
-- The ACTIVE/APPCLOSEWAIT branch never unhashes.
-- The PROCESSABORT branch now unhashes, but smc_conn_free() returns early
-  because conn->freed is already set.
-
-smc_lgr_free() -> __smc_lgr_free() then frees the buffers and kfree()s L.
-
-What makes that free wait for a diag reader that has already passed the
-token check? The v13 changelog names this stale-registration case, but it
-seems to handle only the variant where the socket falls back.
-
->  	if ((req->diag_ext & (1 << (SMC_DIAG_CONNINFO - 1))) &&
->  	    smc->conn.alert_token_local) {
->  		struct smc_connection *conn = &smc->conn;
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261023150317.1163397-1-mjambigi%40linux.ibm.com
+Acked-by: Daniel Zahka <daniel.zahka@gmail.com>
