@@ -1,56 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.246
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.225
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793098118;
-	b=gBBePp+Uv5VZUURRbQpUDTc6mYH00iY4yU+i9S6UBVHUPFEjrjywmrbf8Qqs2cAp7kT8
-	 P742S1zTWv0p+3aStKrhBr8G1DzTqRGhoczYT2ORJinqLfSnw45m8w74usIyHl4oUBcs5
-	 ehRn9W6z29aXdSf+D+28RdHwsBKitgxx+lolvXnuPckxTRRL3sBIZAiwn7spRZCzclHSa
-	 acg+EGBMl7pw4MWD05Zm6U/UWMXbU8TrUr/U3FiXfgzlNTSq3ZE/0BHtDns5/PmKZf5uo
-	 mREcA0IR0cx5zTmoEgBTk6ub4izgKlHMhYCYHUhTJluVJh7s4FnPVLwamjVcWNeiyeg==
+	t=1793098143;
+	b=joVz7S+YF6+GhLGjWoquYcQMTnvCWhCqaM9W0zHm2JGkrr06oLEzaabES/nBVmeMNQSt
+	 o6I0xBvizwR708+UJES0OdSSH3R1/tbgwweIoOPdjIsuK/XkuBaH/rGFAKEw764UhOfXk
+	 7LOs8vfx9foDBRBsEcLDZ0JNveQvmjSJmfQ3/lsaQIkOWgLct16ciBo7OkCUtq/6sd6qp
+	 jYtQIXJlfwSgeVcP2ZUzGidBOAe1xwFfj83+X2ztDUMmU8ylWnzk3+ZoYDFJlweVXqA6d
+	 CvyV7d9fcJbrmOfPIQAIuEb3PO72VVAjBzYi5buXtLiy6cPGsaIKlczrgHo8EpBPvyg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793098118;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793098143;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=Mt3Mq9SNW050+eWeZNF7XPUNXgUiqiP1/haRS99oyLQ=;
-	b=t5NXzdCBIw3/rNNoSBMYQli5ck6hbFFw0mTsZQE/3zUtKqk+cs4yRyzuXYZ+WN4WF6vZ
-	 Qt22AkBlZIRenccEY8R+ACdGeEekRIsr8hdNUg64wN8JTeuX61BnI2X830TBSZrCqxCz/
-	 vDKwOj2y0Y0zCNqm7nSTBYtg4sydu4UFJEN2KH+tdiXrmWvnVE3V363+Mra+R36pvvHrG
-	 jkhcF0f3JJPWr7o03kXrpLqjtVuqc3kiYK5RO5w8zDG7RH/aXz2QB5kbmcGYRQKTxks85
-	 9j60ODf9yRpvPX9FgLSjVLgV8Go8WDGTkO+p2e1n/E1cfXFcRznpDbxUdq991SwJIRg==
+	bh=t4C7HkVmyF3VstFpXEMO2Csxpy9lt4FE4rI/GMJEZI0=;
+	b=VnjaujK3WTdZpDHn4n7J+OSqPFuzsm2zyZwXUSZu26MWrL0GWohd0YjQKx/vuTLfZ26i
+	 5ITMA20zYXCHioFPFrmxJJx5EdyLTTKTI0JYrnE6mWLguaIH9rBpSI0gjaJZG/9oApigD
+	 RRz/bsXHI1mGuYcV2FGmnM0sF7ou0HjRnjbH4GMHR6W091ypq+2EC6He49pI2LlOc4PmI
+	 +Kc9QsQjFlz5hCcrBf0jKbLxdx1kaO695Ej/JHLg3INs54iBLwerWswqW9o9IakJXBiw+
+	 PJp1e+Nu2R47LsSI2jfcJy154HkEEcCTV0VT6vYEBzf0BnN7OjAyF81ZWng43aY0lsQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=fiQvg4Oo;
-	arc=none smtp.remote-ip=91.218.175.246
-Received: from mta0.migadu.com (out-246.mta0.migadu.com [91.218.175.246])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=czlLS6Yk;
+	arc=none smtp.remote-ip=95.215.58.225
+Received: from mta1.migadu.com (out-225.mta1.migadu.com [95.215.58.225])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37CCF606A31A
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 10:48:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 37CCF606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045E7606A32C
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 10:49:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 045E7606A32C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=fiQvg4Oo
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=czlLS6Yk
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=BlCR7qyhz1RBwYmpMqZM4257yNl/7pbJi2t5We+ivQE=;
+DKIM-Signature: a=rsa-sha256; bh=aTzZn39yLc8ANQsnG72JTwABv6ymkycLsHqQ3hVkQSU=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793098115; v=1; x=1793702915;
- b=fiQvg4Ooic/RPRsTW3Tfh0uKJmnZuZqp69gN3cvhQ3DDi1b8gcXIkFyW+By7MLk9ADAKwvBi
- 9J40xxh7KAGn1EfjVXZehjZVlMyfzx/9c39I5avVGDRbhdFmitjNmgOi0mq9oybZ4jrYjU+s73Q
- wqRVuHALuN4f9FmjysKrtmcA=
+ t=1793098141; v=1; x=1793702941;
+ b=czlLS6YkD+2Sys3GrZwHcPrrhDVUxMvo7rFlnMVUclxXhY5n0ZXAGDz7uX2Ns9sIdgEgDgZ/
+ A+oUjN2yYovFOqx1GkIy6lVT+QF6pI4HyIJg3Wds5CwOcYzxhoFY78SD4EbLiPoOBdtPtRmMQPl
+ q8+dFqkUoyRYnCOp4UpX+Sqw=
 X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 65688ab5fc1ffcf3;
-	Tue, 27 Oct 2026 10:48:35 +0000
-X-Mizu-Trace-ID: 65688ab5fc1ffcf3
+Received: by smtp.migadu.com with ESMTPS id 9080687e9d9c70e9;
+	Tue, 27 Oct 2026 10:49:01 +0000
+X-Mizu-Trace-ID: 9080687e9d9c70e9
 X-Migadu-Flow: FLOW_OUT
 From: Jiayuan Chen <jiayuan.chen@linux.dev>
 To: netdev@vger.kernel.org
 Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
 	stable@vger.kernel.org,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -61,29 +62,26 @@ Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
 	Randy Dunlap <rdunlap@infradead.org>,
 	David Ahern <dsahern@kernel.org>,
 	Ido Schimmel <idosch@nvidia.com>,
-	Thomas Gleixner <tglx@kernel.org>,
 	Joel Granados <joel.granados@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
 	Petr Pavlu <petr.pavlu@suse.com>,
 	Kuniyuki Iwashima <kuniyu@google.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
 	Willem de Bruijn <willemb@google.com>,
 	Maoyi Xie <maoyi.xie@ntu.edu.sg>,
 	Daniel J Blueman <daniel@quora.org>,
-	Jiri Wiesner <jwiesner@suse.de>,
-	Gerd Rausch <gerd.rausch@oracle.com>,
 	Oleg Nesterov <oleg@redhat.com>,
 	Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
-	Wyatt Feng <bronzed_45_vested@icloud.com>,
 	Yung Chih Su <yuuchihsu@gmail.com>,
+	Wyatt Feng <bronzed_45_vested@icloud.com>,
 	Hannes Frederic Sowa <hannes@stressinduktion.org>,
 	Flavio Leitner <fbl@redhat.com>,
-	Petr Mladek <pmladek@suse.com>,
 	"Paul E. McKenney" <paulmck@kernel.org>,
+	Petr Mladek <pmladek@suse.com>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2 2/5] ipv4: fix shift-out-of-bounds in ip_rt_send_redirect()
-Date: Tue, 27 Oct 2026 18:45:30 +0800
-Message-ID: <20261027104701.296240-3-jiayuan.chen@linux.dev>
+Subject: [PATCH net v2 3/5] ipv6: restrict mld_qrv to 255
+Date: Tue, 27 Oct 2026 18:45:31 +0800
+Message-ID: <20261027104701.296240-4-jiayuan.chen@linux.dev>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261027104701.296240-1-jiayuan.chen@linux.dev>
 References: <20261027104701.296240-1-jiayuan.chen@linux.dev>
@@ -98,94 +96,96 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ip_rt_redirect_number is the max number of ICMP Redirects we send to one
-endpoint; once we hit it we stop. Before that, ip_rt_redirect_load gives
-the redirects an exponential backoff:
+net.ipv6.mld_qrv only has a lower bound, but ipv6_mc_reset() stores it
+into the u8 inet6_dev::mc_qrv, so 256 wraps to 0 and the first MLDv2
+Query received on the interface trips the WARN_ON() in mld_update_qrv():
 
-	if (peer->n_redirects == 0 ||
-	    time_after(jiffies,
-		       (peer->rate_last +
-			(ip_rt_redirect_load << peer->n_redirects)))) {
+	WARN_ON(idev->mc_qrv == 0);
 
-n_redirects grows until it reaches ip_rt_redirect_number, and both
-redirect_number and redirect_load are plain proc_dointvec sysctls with
-no upper bound. Set redirect_number past 32 and n_redirects climbs past
-31, so "ip_rt_redirect_load << peer->n_redirects" shifts a 32-bit int by
->= 32 bits, which is UB:
-
-  UBSAN: shift-out-of-bounds in net/ipv4/route.c:949:6
-  shift exponent 32 is too large for 32-bit type 'int'
-  CPU: 1 UID: 0 PID: 1845 Comm: ping Not tainted 7.3.0-rc7+ #364 PREEMPT
+  WARNING: net/ipv6/mcast.c:1327 at mld_query_work+0x1fd2/0x2cb0, CPU#3: kworker/3:1/2688
+  Workqueue: mld mld_query_work
+  RIP: 0010:mld_query_work+0x1fd2/0x2cb0
   Call Trace:
-   <IRQ>
-   dump_stack_lvl+0xc1/0xf0
-   dump_stack+0x10/0x20
-   __ubsan_handle_shift_out_of_bounds+0x1d1/0x390
-   ip_rt_send_redirect.cold+0x2c/0x146
-   ip_forward+0x1ddc/0x2430
-   ip_rcv+0x2b1/0x320
-   __netif_receive_skb_one_core+0x16b/0x1c0
-   __netif_receive_skb+0x21/0x150
-   process_backlog+0x37e/0x1200
-   __napi_poll.constprop.0+0xa5/0x5e0
-   net_rx_action+0x4c0/0xf70
+   <TASK>
+   process_one_work+0x93a/0x1b20
+   worker_thread+0x6d0/0x11d0
+   kthread+0x358/0x470
+   ret_from_fork+0x5b3/0x820
+   ret_from_fork_asm+0x1a/0x30
+   </TASK>
 
-Bounding redirect_number instead is not an option: 0 disables redirects
-and -1 removes the cap. Compute the backoff in u64 with the shift count
-capped at 31, which cannot overflow once ip_rt_redirect_load is
-non-negative, and clamp the result to MAX_JIFFY_OFFSET: on 32-bit a
-backoff of 2^31 or more is read by time_after() as already expired. This
-keeps redirect_number as the limit on how many ICMP redirects are sent,
-and the shift can no longer go out of bounds.
+Make the sysctl a u8 like mc_qrv and switch to proc_dou8vec_minmax(),
+which rejects anything above 255, and document it.
 
-redirect_load on the other hand gets a lower bound of 0. A negative
-backoff never meant anything, the old code only happened to treat it as
-no backoff, and once converted to u64 it would turn into the maximum
-backoff instead.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 2f711939d2ea ("ipv6: add sysctl_mld_qrv to configure query robustness variable")
 Cc: stable@vger.kernel.org
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
 Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 ---
- net/ipv4/route.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+v2: switched to u8 and proc_dou8vec_minmax(), as suggested by Kuniyuki
+Iwashima.
+---
+ Documentation/networking/ip-sysctl.rst | 2 ++
+ include/net/ipv6.h                     | 2 +-
+ net/ipv6/mcast.c                       | 2 +-
+ net/ipv6/sysctl_net_ipv6.c             | 4 ++--
+ 4 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 595a3b7f17830..f2c899f4cf8ca 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -907,6 +907,7 @@ void ip_rt_send_redirect(struct sk_buff *skb)
- 	struct inet_peer *peer;
- 	int log_martians;
- 	struct net *net;
-+	u64 backoff;
- 	int vif;
+diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
+index 4b19c8d3efda7..71f334f27004e 100644
+--- a/Documentation/networking/ip-sysctl.rst
++++ b/Documentation/networking/ip-sysctl.rst
+@@ -2515,6 +2515,8 @@ mld_qrv - INTEGER
  
- 	rcu_read_lock();
-@@ -945,10 +946,10 @@ void ip_rt_send_redirect(struct sk_buff *skb)
- 	/* Check for load limit; set rate_last to the latest sent
- 	 * redirect.
- 	 */
-+	backoff = (u64)ip_rt_redirect_load << min(peer->n_redirects, 31U);
-+	backoff = min_t(u64, backoff, MAX_JIFFY_OFFSET);
- 	if (peer->n_redirects == 0 ||
--	    time_after(jiffies,
--		       (peer->rate_last +
--			(ip_rt_redirect_load << peer->n_redirects)))) {
-+	    time_after(jiffies, peer->rate_last + (unsigned long)backoff)) {
- 		__be32 gw = rt_nexthop(rt, ip_hdr(skb)->daddr);
+ 	Minimum: 1 (as specified by RFC6636 4.5)
  
- 		icmp_send(skb, ICMP_REDIRECT, ICMP_REDIR_HOST, gw);
-@@ -3573,7 +3574,8 @@ static struct ctl_table ipv4_route_table[] = {
- 		.data		= &ip_rt_redirect_load,
- 		.maxlen		= sizeof(int),
- 		.mode		= 0644,
--		.proc_handler	= proc_dointvec,
-+		.proc_handler	= proc_dointvec_minmax,
-+		.extra1		= SYSCTL_ZERO,
- 	},
++	Maximum: 255
++
+ max_dst_opts_number - INTEGER
+ 	Maximum number of non-padding TLVs allowed in a Destination
+ 	options extension header. If this value is less than zero
+diff --git a/include/net/ipv6.h b/include/net/ipv6.h
+index 3de07e738538f..4901a92066e61 100644
+--- a/include/net/ipv6.h
++++ b/include/net/ipv6.h
+@@ -205,7 +205,7 @@ struct sk_buff *ip6_frag_next(struct sk_buff *skb,
+ 
+ /* sysctls */
+ extern int sysctl_mld_max_msf;
+-extern int sysctl_mld_qrv;
++extern u8 sysctl_mld_qrv;
+ 
+ #define _DEVINC(net, statname, mod, idev, field)			\
+ ({									\
+diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
+index ecef55f261890..13f31132e0f97 100644
+--- a/net/ipv6/mcast.c
++++ b/net/ipv6/mcast.c
+@@ -106,7 +106,7 @@ static int __ipv6_dev_mc_inc(struct net_device *dev,
+ #define IPV6_MLD_MAX_MSF	64
+ 
+ int sysctl_mld_max_msf __read_mostly = IPV6_MLD_MAX_MSF;
+-int sysctl_mld_qrv __read_mostly = MLD_QRV_DEFAULT;
++u8 sysctl_mld_qrv __read_mostly = MLD_QRV_DEFAULT;
+ 
+ #define mc_assert_locked(idev)			\
+ 	lockdep_assert_held(&(idev)->mc_lock)
+diff --git a/net/ipv6/sysctl_net_ipv6.c b/net/ipv6/sysctl_net_ipv6.c
+index 1a0a36dcdabc1..f3ac04dbc71d0 100644
+--- a/net/ipv6/sysctl_net_ipv6.c
++++ b/net/ipv6/sysctl_net_ipv6.c
+@@ -226,9 +226,9 @@ static struct ctl_table ipv6_rotable[] = {
  	{
- 		.procname	= "redirect_number",
+ 		.procname	= "mld_qrv",
+ 		.data		= &sysctl_mld_qrv,
+-		.maxlen		= sizeof(int),
++		.maxlen		= sizeof(u8),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec_minmax,
++		.proc_handler	= proc_dou8vec_minmax,
+ 		.extra1		= SYSCTL_ONE
+ 	},
+ #ifdef CONFIG_NETLABEL
 -- 
 2.43.0
 
