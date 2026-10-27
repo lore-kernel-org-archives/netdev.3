@@ -1,60 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793069426;
-	b=I+C4ET7KkpH7yVxhGRlm8xGsfwDDL2xeMUZJHWYOyUGv7OhOWhLpPCTMFYXG2xtHyDrp
-	 QnNlg5LqkBywJEZjxnkjC9yi7iLPv614n/O1ijf2kyt5d/dXqHZZBTVBRr7QulZ1feuYo
-	 B9lL7HfPhcYFSKBI0ayh6BvsB8WMN5qgjARpodDzxlboM6x60Yb6ebcF4YgNjb0mkaU68
-	 OQ7tY5JBtyCxLfPt+mff6lZHMUGqwKXCaDd7BPCEHY69ECmqGlboKDd+wrGxFLgAZgsZh
-	 dW9z8x3o9JCH0SaGPF75eL9sv0Hui/tcoGeomUfjRt4g3GjZJB187Nbvj9L7xO5/UTw==
+	t=1793069449;
+	b=tk5s4Rm9kI4ptbzzOpguiJrGEnRMKmSHy+r1QvrnlPaKs82WFYSaOPVxJ8DCubF0XIn4
+	 nOFvSBF3Pr+k568VBPJv4pLLZrNdm75/HvZh9Vft261WiYj+OngFshr6lq4E9msZ9qXd2
+	 jDdeqAfsdYtaBgnc4C9zbLjwR3YNvUdltMcFTabg4Gq8zUxioe/giDY3/lV1ml+D9tqry
+	 tZ1JDB6jXPB+yXCmbQoW8LgWcc+jYFghO/AH/7Kw+bEaZZBIpCnafSyv2mZ6ED0XPF9BX
+	 yAuS1GukCprB8vP+gLSWxRaiB/SijFx1TGFn/ok+v8PjHj1XSaVG+3MJLY2PgVCKK+w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793069426;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=IyyCULW8SkmvNw1xg0vXA/Ay8zzqUNH3Bx42peKvByI=;
-	b=SDZ3MtLXhG4IFcvPUIMUoTGyFQn6nmsisZXtpAB+DwL18jYi0zot4KPTn0DBfSkbxg5x
-	 iGu2mHN0/HFSYmHH+c2ilhW88XWueOYtQ8YcdrDfGF3Ds847KmVnV2bVfgdRf+47TqapX
-	 qA8RE0WsR9o0FCVO6L6RqFRaVMJAw4yBOFBa7c3YkrbzzNgoXVVY6OruTB4IptQzEDisu
-	 OJdtroY2UTLT1ONPZrM3wqzlegeWJ6dorljIWiRSUMLZ/fhwFo+pAIVmtuqFcTY32DzqV
-	 DuMsYJeZ+o7pC42y2K28/mFBF62s6ovnZW0lHseaEVLMlBYocCtwzevOZ9BkrwsjUvA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793069449;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:To:Cc:Message-ID:From:
+	 Date:Subject;
+	bh=nwvxhmnXB6t4sgo6hu9V2Jlf4bT2M5vvxO5O0RwI+MM=;
+	b=noJpaLk081nvNWr6cBPIq4l0t+HwBFqx+M4VrjZO7551LqhC9fkh9KodNecAESyJcTjM
+	 GO4wPzWweSMlWvTkcBaPV2lBMI6zEEY/pE3kju6iaa8zUridqkpWpBdDZBDTpDRQ1CtNJ
+	 9313W3C5Ws8ueslJj1Vw3373Qa7EDdELYQtJPjovpRU2t7JV4cuPLSwZ5AFW8eR76oLg2
+	 dzjUaafvocrBaZepT1BkDhlM3HMy05d1HF+Vph24dj3bSWyN3SMkWccV3iR3WL93wpoXb
+	 h0xM3FaIV0bg33DD4jUHmo9YULZlwA1hEgHILUdYPHr1HC+QVMwLgMU260JJDCRIKZg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WmVIItqG;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=bfTRANj6;
+	arc=none smtp.remote-ip=209.85.214.169
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB73606A324;
-	Tue, 27 Oct 2026 02:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391E8606A31D
+	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 02:50:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 391E8606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WmVIItqG
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 843C71F01828;
-	Tue, 27 Oct 2026 02:50:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793069426;
-	bh=IyyCULW8SkmvNw1xg0vXA/Ay8zzqUNH3Bx42peKvByI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=WmVIItqGCc5A4Ch6+AJmWJ3GM99Atb2ADWthQMCYMPbKENNZvMV84BgCXqvo6wAJ2
-	 AuvTP9dURmQ71BFq4o51cXwzIX3/MZF/qK93w447xvcQf0LS+xuaFg+5DdnWqvaiuL
-	 gGg1HtMwAfrCoh1IFrU7HnufVlCWtHHARYellARFN18LEX6UU6MN/huDHyIUO5OiNA
-	 HJ/ymwXyZzhFVcE83+qy9wsaBMrtCwPR0T1Bt/poWPZ3jofhqhklzXdUPxSQMp+lke
-	 zBTNrjU2AU2vUACQmz7Wb/fKyMlYLeGWmN2iyRHKXSUkmHGqU1eNTNg+68/c9HpaZe
-	 s+bmVoY6Wt+Mg==
-Subject: Re: [PATCH net 2/2] net/iucv: do not count the SHT frame against the
- receive window
-From: netdev-bot+sashiko@kernel.org
-To: hexlabsecurity@proton.me
-Cc: edumazet@kernel.org, kuba@kernel.org, davem@davemloft.net,
- pabeni@redhat.com, wintera@linux.ibm.com, twinkler@linux.ibm.com,
- nagamani@linux.ibm.com, netdev@vger.kernel.org, hidayath@linux.ibm.com,
- linux-s390@vger.kernel.org, horms@kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 27 Oct 2026 02:50:25 +0000
-Message-ID: <179306942509.3134.1109951482403010755@kernel.org>
-In-Reply-To: <20261022-b4-disp-b35a9153-v1-2-d74645876195@proton.me>
-References: <20261022-b4-disp-b35a9153-v1-2-d74645876195@proton.me>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=bfTRANj6
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2e83d2cc8a2so5308155ad.0
+        for <netdev@vger.kernel.org>; Mon, 26 Oct 2026 19:50:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1793069449; x=1793674249; darn=vger.kernel.org;
+        h=subject:date:from:message-id:cc:to:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=nwvxhmnXB6t4sgo6hu9V2Jlf4bT2M5vvxO5O0RwI+MM=;
+        b=bfTRANj6MbwQULdQ/ELfwUljfXfPF8SOj74o0/ikT58ngSyLiWLJCgpz36j17otTIb
+         puw0wo5N/YLuHpBEMG4a9tq2+25ZSfzf4FapWuKNLJyYT3HUIVzZN1p986Fy+psduqwE
+         GcX0KN7Se2+tqr6iK+Zv5VV1eUpVz1nCEmHYGA8wtCxN6GROdZIp9a6oL7kv6ZePjBIj
+         j5eCeiDKAx2+15qcwGZjOjQEjRNYLy8IEKEJAAX9nrDG7UT/HhQfm/zQJSNPYUBsH1LJ
+         HJ4n1uZ+9yedKykBVShDiJlJTr9e76nj9SanFVKQiY4BWfIk1MEW/13/545aNRJH95Kc
+         zSiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793069449; x=1793674249;
+        h=subject:date:from:message-id:cc:to:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=nwvxhmnXB6t4sgo6hu9V2Jlf4bT2M5vvxO5O0RwI+MM=;
+        b=AlnaVCV40IHHijyCFmZUO5dYm6opsQ4saWi0wwkT1TTwGoKQozVyL8irsiDB0F2L0A
+         lt8ql79a95TPtjskDhcpEgqIsucAa0hsHW0QJd/GXb580H57CE3lIXUifA3boJuDnBf/
+         W/fBJji2MHYWDeEUu/kdkofQsezdeDKDa6fHHIm+shM8QqkhU37mSBSXDL+eP4zZIiP5
+         qcZhmq+3t8xzuJBxLuZmh5WVKPU9SkVlTccxYFRIH4ZPkxh8ylj/bCOPXZ0a3IinEFCF
+         QorqyL/ctyEwdADGTfEEfp8G/MV9IJY1o29HaF3Fb6SqWFdufoNgubvhfRCdcc0CWMGh
+         1XiA==
+X-Gm-Message-State: AFq9FYLdbocMcEneSu0tu9SdypvB8sU6YIgshLzDSUnlNmrn0JLQ3mZ3
+	lS2HQA3oGrCkBLKkikZlA38DjbBQcY08gC14z4Ht/ORYuLkca2xVKHKv
+X-Gm-Gg: AYBFou1BXs/rucMEE/xoLIdclEYTkI/C+ldJl4mDRHPWlapDUJCNQDjiv+kk11oOFfU
+	Q+PmDEFAuMnoi+MzIHh45yAmXR8SI+kJc1+ocHWC6+YysB/ix4pugIZSFo7mG520AHjyEuuUZ0v
+	o9ENvLCdpfGseUCj0bRdVzCxDOUnVL7djmBZhdk11yxwtjVxhrcNfzQbm9iOovCyDiYhqKtx8bi
+	LOaiznkg/BTZJy08Zywr7M/0/b/3QT67XJkMuQRDenoSDCg0Zfkp+9YxqpD930LZWLsDdwk9W/v
+	AxwyjdI8wHsTENQzH1c2xEVMVoZVNJZLoMXHHqE7JChfwPCejCG/oeVEGuSnwY7KPHnbxGmozME
+	5sbaeLY7q297YnlEjgRVgDA0uYZpKgMDn9oRtVTwI+DHHH7fI5MWXrOhrVi/g3yvi1khUciJgIz
+	d3R6keFsa57hwI7X9OXBW6i7pOW+AqoSkgq4FoJ/DPZfZB1xdZWrKLqa7RVaE+AefDeDri/jbhy
+	s7JEA3g99d5lMMDxI2LPuVe4gWQXx+LAyvoy40Qlgeu1XDSfm3WcT3onAC8rqQzzxA0cG9vT5hl
+	HEgDV++JW7YEc5D4ukPWges=
+X-Received: by 2002:a17:903:3248:b0:2e9:5714:607a with SMTP id d9443c01a7336-2ea9c59c232mr115870105ad.2.1793069448537;
+        Mon, 26 Oct 2026 19:50:48 -0700 (PDT)
+Received: from msg ([188.253.120.77])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eae6ca09casm2243615ad.67.2026.10.26.19.50.42
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 26 Oct 2026 19:50:47 -0700 (PDT)
+To: netdev@vger.kernel.org
+Cc: steffen.klassert@secunet.com,
+	chopps@labn.net,
+	herbert@gondor.apana.org.au,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	dsahern@kernel.org,
+	idosch@nvidia.com,
+	linux-kernel@vger.kernel.org
+Message-ID: <20261027105031.19928-1-q.h.hack.winter@gmail.com>
+From: Qihang <q.h.hack.winter@gmail.com>
+Date: Tue, 27 Oct 2026 10:08:47 +0800
+Subject: [PATCH net v7 0/3] xfrm: fix vti tunnel device use-after-free across async crypto resumption
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,278 +98,111 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
-
-Critical: 0 · High: 1 (1) · Medium: 0 (3) · Low: 0 (1)
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The patch adds `&& rlen` to the counting branch in
-  iucv_sock_recvmsg() (net/iucv/af_iucv.c:1324).
-
-Pre-existing issues:
-- [High] A peer can grow iucv->backlog_skb_q without limit.
-- [Medium] A conforming HiperSockets peer can still end up in the
-  `msg_recv > msglimit` close in iucv_sock_recvmsg().
-- [Medium] On HiperSockets, a zero-length sendmsg() leaks one slot of the
-  peer's window when a receive credit is piggybacked on it.
-- [Medium] The classic IUCV transport still has a WARN that a peer can
-  trigger.
-- [Low] Two unsynchronized writes to sk->sk_shutdown can lose
-  RCV_SHUTDOWN.
-
---
-
-net/iucv: do not count the SHT frame against the receive window
-
-This patch changes iucv_sock_recvmsg() so that zero-length HiperSockets
-frames, such as the SHT frame sent by shutdown(SHUT_WR), no longer count
-against msg_recv. It also removes the WARN_ON(1) from the over-window
-path, which still closes the socket and returns -EFAULT.
-
-Closes: https://lore.kernel.org/netdev/179183431327.434549.446348148837850426@kernel.org/
-
-> A zero-length data frame sets RCV_SHUTDOWN, after which
-> afiucv_hs_callback_rx() drops every later data frame uncounted; the one
-> slot this patch no longer credits for it is lost like the slots of the
-> frames dropped after it.
-
-[Severity: Medium]
-This is a pre-existing issue, but does a zero-length data frame always
-arrive at the receiver as an empty data frame?
-
-iucv_sock_sendmsg() has no zero-length guard, and it counts the send
-before the frame goes out:
-
-    atomic_inc(&iucv->msg_sent);
-    err = afiucv_hs_send(&txmsg, sk, skb, 0);
-
-With flags == 0, afiucv_hs_send() piggybacks any pending credit:
-
-    if (flags == AF_IUCV_FLAG_WIN || !flags) {
-            confirm_recv = atomic_xchg(&iucv->msg_recv, 0);
-            phs_hdr->window = confirm_recv;
-            if (confirm_recv)
-                    phs_hdr->flags = phs_hdr->flags | AF_IUCV_FLAG_WIN;
-
-On the receiving side, afiucv_hs_rcv() then handles it as a pure window
-update:
-
-    case (AF_IUCV_FLAG_WIN):
-            err = afiucv_hs_callback_win(sk, skb);
-            if (skb->len == sizeof(struct af_iucv_trans_hdr)) {
-                    consume_skb(skb);
-                    break;
-            }
-
-The frame never reaches afiucv_hs_callback_rx() or recvmsg(). It does not
-set RCV_SHUTDOWN, the receiver never credits it back, and the sender's
-msg_sent stays one too high.
-
-If zero-length sends repeat while msg_recv is non-zero, they use up
-msglimit_peer. Eventually sendmsg() blocks in iucv_sock_wait() or returns
--EAGAIN.
-
-This patch does not touch that path. The sentence quoted above, though,
-does not hold when a credit is piggybacked.
-
-> diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
-> index 501e758c5e68a..a5142081bb6a6 100644
-> --- a/net/iucv/af_iucv.c
-> +++ b/net/iucv/af_iucv.c
-> @@ -1317,10 +1317,13 @@ static int iucv_sock_recvmsg(struct socket *sock, struct msghdr *msg,
->  		}
->  
->  		consume_skb(skb);
-> -		if (iucv->transport == AF_IUCV_TRANS_HIPER) {
-> +		/* The peer counts only the data it sends against its window;
-> +		 * the SHT's empty frame is not among them. Over the window,
-> +		 * close without a WARN: a peer reaches this from the network.
-> +		 */
-> +		if (iucv->transport == AF_IUCV_TRANS_HIPER && rlen) {
-
-[Severity: High]
-Can an empty frame read after the over-window close reach
-iucv_send_ctrl() while iucv->hs_dev is NULL?
-
-When a data frame pushes msg_recv over msglimit, iucv_sock_close() runs
-and clears hs_dev:
-
-iucv_sock_close()
-    ...
-    skb_queue_purge(&iucv->send_skb_q);
-    skb_queue_purge(&iucv->backlog_skb_q);
-    ...
-    WRITE_ONCE(iucv->hs_dev, NULL);
-
-It does not purge sk_receive_queue, and it does not reset msg_recv.
-
-The next recvmsg() returns -ECONNRESET through sock_error() in
-__skb_try_recv_datagram(), and that call also clears sk_err. The
-recvmsg() after it dequeues whatever is still in sk_receive_queue, even
-though the socket is IUCV_CLOSED.
-
-If that frame is empty (an SHT, for example), rlen == 0 and the new gate
-skips the over-window return. backlog_skb_q is empty because close
-purged it, and msg_recv is still above msglimit, so this code runs:
-
-    if (iucv->transport == AF_IUCV_TRANS_HIPER &&
-        atomic_read(&iucv->msg_recv) >=
-                    iucv->msglimit / 2)
-            send_win = true;
-    ...
-    if (send_win) {
-            err = iucv_send_ctrl(sk, AF_IUCV_FLAG_WIN);
-
-iucv_send_ctrl() then computes:
-
-    blen = sizeof(struct af_iucv_trans_hdr) +
-           LL_RESERVED_SPACE(iucv->hs_dev);
-
-This reads hard_header_len and needed_headroom through a NULL pointer,
-before afiucv_hs_send() gets a chance to check the device.
-
-For example, say the receiver has msglimit 2 and a small SO_RCVBUF, and
-the peer sends d1, d2, d3 and then SHTs:
-
-1. Reading d1 and d2 moves d3 and S1 into sk_receive_queue.
-2. Reading d3 closes the socket.
-3. The next read returns -ECONNRESET.
-4. The read after that consumes S1.
-
-Before this patch, every frame read after the close went through the
-msg_recv > msglimit branch again and returned -EFAULT. send_win could not
-be reached on this path.
-
-On s390 with relocate_lowcore this would oops. On a default boot, blen
-would be computed from lowcore bytes and afiucv_hs_send() would fail with
--ENODEV. recvmsg() would then move the IUCV_CLOSED socket back to
-IUCV_DISCONN.
-
-Could this return early once the socket is closed, or skip the window
-update after a close?
-
->  			atomic_inc(&iucv->msg_recv);
->  			if (atomic_read(&iucv->msg_recv) > iucv->msglimit) {
-> -				WARN_ON(1);
-
-[Severity: Medium]
-This is a pre-existing issue, but the classic IUCV transport still has a
-WARN that a peer can trigger, of the same kind as the one removed here.
-
-alloc_iucv_recv_skb() does:
-
-    WARN_ONCE(!skb,
-              "alloc of recv iucv skb len=%lu failed with errcode=%d\n",
-              len, err);
-
-len comes from the peer's message via iucv_msg_length(), called from
-iucv_callback_rx() or iucv_process_message_q(). iucv_callback_rx() checks
-it only against sk_rcvbuf, and iucv_process_message_q() does not check it
-at all.
-
-A message larger than MAX_SKB_FRAGS * PAGE_SIZE plus the linear part
-makes alloc_skb_with_frags() fail with -EMSGSIZE. A GFP_ATOMIC | GFP_DMA
-allocation failure under memory pressure has the same effect.
-
-With panic_on_warn, a peer can turn this into a panic. Should this
-WARN_ONCE() be removed as well?
-
->  				iucv_sock_close(sk);
->  				return -EFAULT;
-
-[Severity: High]
-This isn't a bug introduced by this patch, but this read-time check is
-the only window enforcement on the receive side. Can a peer that ignores
-its window grow iucv->backlog_skb_q without limit?
-
-afiucv_hs_callback_rx() queues frames like this:
-
-    if (skb_queue_empty(&iucv->backlog_skb_q)) {
-            if (__sock_queue_rcv_skb(sk, skb))
-                    /* handle rcv queue full */
-                    skb_queue_tail(&iucv->backlog_skb_q, skb);
-    } else
-            skb_queue_tail(&iucv_sk(sk)->backlog_skb_q, skb);
-
-Once sk_rcvbuf is full, or once the backlog holds any frames, every later
-data, SHT or WIN-with-payload frame goes onto backlog_skb_q. That queue
-has no length or memory limit, and these skbs are not charged to
-sk_rmem_alloc.
-
-msg_recv is only incremented in iucv_sock_recvmsg(). If the reader is
-idle or slow, kernel memory keeps growing until the reader runs or the
-system runs out of memory.
-
-[Severity: Medium]
-This is a pre-existing issue, but can a conforming peer still reach this
-close?
-
-The new comment says "a peer reaches this from the network". However,
-the check compares against the current iucv->msglimit, while the peer is
-bound by the window advertised in the SYN. afiucv_hs_send() fills that
-window in as:
-
-    phs_hdr->window = iucv->msglimit;
-
-iucv_sock_connect() sends the SYN and then waits in IUCV_BOUND. A
-blocking connect drops the socket lock inside iucv_sock_wait(), and a
-non-blocking connect returns -EAGAIN. In either case
-iucv_sock_setsockopt() still accepts SO_MSGLIMIT in that state:
-
-    case IUCV_BOUND:
-            if (val < 1 || val > U16_MAX)
-                    rc = -EINVAL;
-            else
-                    iucv->msglimit = val;
-
-So msglimit can be lowered below the window that was already advertised.
-
-While frames wait in backlog_skb_q, recvmsg() sends no WIN, so msg_recv
-climbs past the lowered limit. A peer that stayed inside its window then
-gets closed: the reader sees -EFAULT and the consumed frame is lost.
-
-The notes below the cut line mention this case and defer it to a rework
-that stores the advertised window separately. Could the commit message
-and the new comment also say that a conforming peer can still reach this
-path?
-
->  			}
-
-[Severity: Low]
-This is a pre-existing issue, but can the RCV_SHUTDOWN set by the
-empty-frame read be lost?
-
-iucv_sock_recvmsg() runs without lock_sock() and does a plain
-read-modify-write:
-
-    if (!rlen)
-            sk->sk_shutdown = sk->sk_shutdown | RCV_SHUTDOWN;
-
-iucv_send_ctrl() saves and restores the whole mask. It can be called from
-a repeated shutdown(SHUT_WR) under lock_sock(), or from a concurrent
-recvmsg() sending WIN:
-
-    if (sk->sk_shutdown & SEND_SHUTDOWN) {
-            /* controlling flags should be sent anyway */
-            shutdown = sk->sk_shutdown;
-            sk->sk_shutdown &= RCV_SHUTDOWN;
-    }
-    ...
-    if (shutdown)
-            sk->sk_shutdown = shutdown;
-
-If the SHT read sets RCV_SHUTDOWN between the save and the restore, the
-restore clears it again. The current read still returns 0, but later
-reads may block or return -EAGAIN instead of EOF. afiucv_hs_callback_rx()
-would also start accepting data frames again.
+This replaces the earlier vti/vti6 series and the reference-transfer
+rework.
+
+vti_input() and vti6_input_proto() cache the tunnel pointer in the skb
+control buffer without taking a reference. With async crypto, the
+receive callback runs from crypto completion and may run after the
+tunnel device has been torn down, causing a use-after-free when the
+callback dereferences the cached tunnel.
+
+The input hook takes a reference on the tunnel device when caching the
+tunnel. A successful receive callback leaves the cached tunnel in place;
+xfrm_input() releases the reference on every exit, including after
+delivery and on drop paths. The error callback only updates the error
+counters, so the common drop path releases the tunnel reference after
+the skb has been freed. IPTFS, which can free or consume the outer skb
+itself, releases the reference through xfrm_input_drop() or
+xfrm_input_consume().
+
+Patch 3 relies on the first two patches: the receive callback must run
+before the async skb->dev reference is dropped, and the address family
+must be available on the early invalid-state drop path.
+
+The issue was found by source audit of the VTI input path (LLM-assisted
+review): the tunnel pointer cached in the skb control buffer is
+dereferenced by the receive callback, which with async crypto can run
+after the device has been torn down, and nothing keeps the device alive
+across that window.  It was confirmed with a KASAN reproducer on arm64
+(async ESP; deleting the VTI device inside the crypto window gives
+"slab-use-after-free in vti_rcv_cb").
+
+Changes since v6:
+- patch 1 also drops the skb->dev reference that is held across an async
+  resumption only after gro_cells_receive() in the decaps success exit;
+  that exit still used skb->dev after the reference was dropped (found
+  by the netdev AI review).
+- patch 3 now carries a Fixes: tag for the pre-existing IPTFS leak that
+  the queued-skb drop also fixes, and the description mentions it.
+
+Changes since v5:
+- cover letter only: record how the issue was found.
+
+Changes since v4:
+- IPTFS: when an inner packet fails validation, __input_process_payload()
+  can reach the drop path before the inner packets queued for delivery
+  are sent. Drop those queued packets as well so the outer skb's tunnel
+  device reference is not leaked (found by the Sashiko review of v4 3/3).
+
+Changes since v3:
+- the cached pointer is always a tunnel; the address family selects its
+  type, and a non-NULL tunnel slot denotes one held device reference
+- xfrm_input() takes the tunnel device out of the skb before
+  gro_cells_receive()/transport_finish(), which may consume the skb
+- the device reference is dropped only after the skb has been freed,
+  including on error paths
+- IPTFS passes the state's address family explicitly instead of
+  inferring it from the secpath; consumed skbs keep consume_skb()
+  semantics and drop paths keep their skb drop reason
+- drop the xfrmi changes: it re-looks up the interface and does not
+  participate in the reference transfer
+- merge the reference and IPTFS changes into one patch so the series
+  remains bisectable
+- the gro_cells NAPI window is pre-existing and is documented, not
+  changed
+
+Runtime testing (aarch64 QEMU; KASAN for UAF detection):
+- VTI async success and error: RTM_DELLINK completes without a KASAN
+  report; the unfixed tree reports slab-use-after-free in vti_rcv_cb.
+- Async resume with the SA deleted during the crypto window: the
+  reference is released and the device is removed; with patch 2
+  reverted, xfrm_input_take_tunnel_dev() warns and
+  unregister_netdevice() waits for vti0.
+- IPTFS outer-skb free: RTM_DELLINK completes; with the
+  !first_skb xfrm_input_drop() reverted to kfree_skb(), the reference
+  leaks and unregister_netdevice() waits for vti0.
+- IPTFS aggregated payload with a valid first inner packet followed by
+  an inner packet with an invalid IPv4 header length: RTM_DELLINK
+  completes; without the sublist drain, the tunnel device reference
+  leaks and unregister_netdevice() waits for vti0 (Usage count = 2).
+
+The IPTFS timer/reorder/state-teardown paths are covered by code audit,
+not by dedicated runtime triggers.
+
+Previous versions:
+  https://lore.kernel.org/netdev/20261022032129.16118-1-q.h.hack.winter@gmail.com/ (v6)
+  https://lore.kernel.org/netdev/20261019153247.89957-1-q.h.hack.winter@gmail.com/ (v5)
+  https://lore.kernel.org/netdev/20261018090638.55686-1-q.h.hack.winter@gmail.com/ (v4)
+  https://lore.kernel.org/netdev/20261013074610.17808-1-q.h.hack.winter@gmail.com/ (v2)
+  https://lore.kernel.org/netdev/20260930090813.73901-1-q.h.hack.winter@gmail.com/ (v1)
+
+
+Qihang (3):
+  xfrm: use skb->dev before dropping the reference held across async
+  xfrm: set the address family before the early invalid-state drop
+  xfrm: hold the tunnel device reference across the input path
+
+ net/ipv4/ip_vti.c      |  3 ++
+ net/ipv6/ip6_vti.c     |  2 ++
+ net/ipv6/xfrm6_input.c |  3 ++
+ net/xfrm/xfrm_inout.h  |  4 +++
+ net/xfrm/xfrm_input.c  | 72 +++++++++++++++++++++++++++++++++++++++----
+ net/xfrm/xfrm_iptfs.c  | 42 ++++++++++++++++++++++--------
+ 6 files changed, 106 insertions(+), 20 deletions(-)
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261022-b4-disp-b35a9153-v1-0-d74645876195%40proton.me
+2.54.0 (Apple Git-157)
+
+
