@@ -1,62 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793163372;
-	b=Df6XKoFvhtATip3Mzi+5EIhD9GiC7QMquCSIrX/0lGwFuk7jD3O+DiigiqsjDk5NhFUz
-	 Hj7qByFomMgmYicQBrZhqXtCCEBytuXAs1fBk6tsrWQLU0wiZVMZ6235MkCJ9Ay+iDbRB
-	 8QLmbrPRlufrlPB+/EVgfR9lEf1VhZJO44hr1ifGYMvNZfj76NUb7qaT5Puq+EeRyLSPB
-	 6A/fAM711fHtMphfLcuqi5XGBgLxtR/Z9vQeuRpaZ0trp0dtr/5l6eZDGOD3CJzKrgz8b
-	 etpL6mb77xR5+r7JbBf92jPEMAkNIv0TT5YnSRTr3H63M8+Cgct3oHasSf9UXmlJedA==
+	t=1793163656;
+	b=E7lKW/47WqaJ1iTjRhPEmFjPDjBclepCY9bWe5Ry41CPxQXEgm7mLGvb/rnN11DU4Flu
+	 g+QsNEn+FvEY4ANgeZozizXqq+odNMjawEDlpun93w4HDRB9bytfq4R6CkaHdRsmEFfVO
+	 711HOnC1GZ/i4k3qG4TwM/GpB0nMlARbr1nm4FgnXETXUsOUEVzQS+nvXeRmvt2WHLTxv
+	 PlMMixJOHxarGiH6celAoMIf/RERgdgCYdUYnIdDU3ueLWOwC0N1vEGrjGiT4OkH3uJOf
+	 MEIo7jmkfkttlWsJlELrvGxRJEX5OuTmXKItrnIHcOWhQxiQ+fQzuREGwvbCG6D7uQg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793163372;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=Rr+qulPkRBwRXBTuvViw2Y1eDQVUou2yE76Q8cgnSGw=;
-	b=bgHrL07tVweygGhkFALmtTcWsscaNiLvDvzRxQcWY/cN6QlYYSu5foQ67YZhMX/CtMB1
-	 DfGYecZgvHdS9BtO3bvMvhoLY4yCf7AG9/FDnUT7q1TVcqRR5KvYWQ03DtbNRq8i29NiT
-	 lBIzTihPeKB9RGAjS+G658leKc12x5Y4jxK4lkwV06OmjvSGIUvLfIKuN8UiQha4W980h
-	 OFTxCMj75ipzvqHBFE/EhDotg5o891eOR8/cfuTqp0scZLYkpgwP5TyTbCk1mNNJprlgO
-	 FGifW3u34jkVwD/v34rhO1fLh8jZMGYyamnJwKLdu+n74oTrC0aZqJMK1dniIbkB2eg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793163656;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
+	b=hJYiQXyp1lH/y/qQMz2Wkw6ewVNI7oDPXq7rWrmR2YAfjzqysLIGZHqoeiKyxTXIRdN2
+	 8UgrWFTU01LMYvKlPO1Q8RQZ0/mmja72IHcLaG7YtBiQYOIcBGFtd+Luh2JpzCoQKnVF9
+	 nKWbIvwkdPQFDpOMEUYT4idLWpA96P8ibMg07sBMohhnPdC1CSV41X3FNXVP4ySWebnTO
+	 bjGskhZHqSX30jVqko+jGQPxZ58Gba2sWDxeh2QCjY0EQvbl+tRXBG/Jh7a6XULn/1imW
+	 mB5ECXMj3LDa5gyl8au31BgI0fzr/K8oNDYlIQXL0pZ+Vp1Y293WfCTsNmF6LZcwcsQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=163.com;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=lHPHtfZU;
-	arc=none smtp.remote-ip=117.135.210.4
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="EI/kQeMy";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 552B8606A320;
-	Wed, 28 Oct 2026 04:56:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 552B8606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D44606A31A;
+	Wed, 28 Oct 2026 05:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=lHPHtfZU
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Rr
-	+qulPkRBwRXBTuvViw2Y1eDQVUou2yE76Q8cgnSGw=; b=lHPHtfZUhPuTHUYNen
-	ILBSWiVgAaplTgtelF0+kcSM3d/CIJzRazPHwGp6uvsG14cQcO/WXXSI1N1Zqdl2
-	Bl3rARbF8KIuT0Hwr0anCDn5fBgVCN27g47tr9/F9q0eFSFI3ZG54we2vwFw/ZwD
-	zKnJ4WEfREhV8XLvkZ/eN8Z68=
-Received: from pc.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3v7lHgOFqeBlWDA--.52132S2;
-	Wed, 28 Oct 2026 12:55:36 +0800 (CST)
-From: Jiale Yao <yaojiale02@163.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Ariel Elior <Ariel.Elior@qlogic.com>,
-	Yuval Mintz <Yuval.Mintz@qlogic.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] qed: drain slowpath tasklets during teardown
-Date: Wed, 28 Oct 2026 12:55:35 +0800
-Message-Id: <20261028045535.110688-1-yaojiale02@163.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EI/kQeMy
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E7A51F031E0;
+	Wed, 28 Oct 2026 05:00:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793163655;
+	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=EI/kQeMy+yW2553ckcoHDO5Ae5sOsjhBImzDjBOSJAJnORY2l47kbQg+FFpw8FvpP
+	 RVaWRuybHaCluvs6cvVAdnOU4pV9hfOfLchAbz2pMSo/L+iksBjPM6uh/bDhIWAiG9
+	 Nh+LZnnwuCxrsCZt3V6fxpefRnBikPjJCytQlvigxDpGDBSx/L+iY8+xzUZPIuMBRX
+	 mErd9142ZE9HzvjXGUao1W9qfkev6/NsmVccRSk/b0hnvgyFbWSk7hT4wbwecCDhf/
+	 eyClPANXZhuf34GDCuNe54LMJ5JBewVF61pyvx/HscCmmZBhNnwRW0K2ADE+o7bAyX
+	 WnAw3sdPO6WkA==
+From: netdev-bot+sinfo@kernel.org
+To: Jiale Yao <yaojiale02@163.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Ariel Elior <Ariel.Elior@qlogic.com>, Yuval Mintz <Yuval.Mintz@qlogic.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] qed: drain slowpath tasklets during teardown
+Date: Wed, 28 Oct 2026 05:00:54 +0000
+Message-ID: <179316365462.3327.8032613341391656021@kernel.org>
+In-Reply-To: <20261028045535.110688-1-yaojiale02@163.com>
+References: <20261028045535.110688-1-yaojiale02@163.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,47 +64,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3v7lHgOFqeBlWDA--.52132S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7tryrZrWxtFWxKr4DJw1UJrb_yoW8GF43pr
-	srGayv9rW8Xr40qanrAa1jqFyrW39rtFWDKrWkJa4rWasYvF10qr1kAryruFy8tr4DWF13
-	tFy7Ar1rC3Z8GaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jUzV8UUUUU=
-X-CM-SenderInfo: x1dryxhdohiji6rwjhhfrp/xtbC7whFf2rhgEiv1wAA3m
 
-qed_nic_stop() disables each slowpath tasklet before freeing the
-interrupt and status block resources.  Disabling waits for a running
-tasklet, but it does not remove a pending tasklet from the tasklet
-queue.  A pending tasklet can therefore retain a pointer to the freed
-qed_hwfn and its status blocks.
+Hi!
 
-Kill the tasklet during the final slowpath teardown so pending work is
-removed before the resources it accesses are released.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Fixes: fe56b9e6a8d9 ("qed: Add module with basic common support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiale Yao <yaojiale02@163.com>
----
- drivers/net/ethernet/qlogic/qed/qed_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-diff --git a/drivers/net/ethernet/qlogic/qed/qed_main.c b/drivers/net/ethernet/qlogic/qed/qed_main.c
-index 28a8a2b9d501..abe8a841b277 100644
---- a/drivers/net/ethernet/qlogic/qed/qed_main.c
-+++ b/drivers/net/ethernet/qlogic/qed/qed_main.c
-@@ -833,10 +833,10 @@ static int qed_nic_stop(struct qed_dev *cdev)
- 		struct qed_hwfn *p_hwfn = &cdev->hwfns[i];
- 
- 		if (p_hwfn->b_sp_dpc_enabled) {
--			tasklet_disable(&p_hwfn->sp_dpc);
-+			tasklet_kill(&p_hwfn->sp_dpc);
- 			p_hwfn->b_sp_dpc_enabled = false;
- 			DP_VERBOSE(cdev, NETIF_MSG_IFDOWN,
--				   "Disabled sp tasklet [hwfn %d] at %p\n",
-+				   "Killed sp tasklet [hwfn %d] at %p\n",
- 				   i, &p_hwfn->sp_dpc);
- 		}
- 	}
--- 
-2.34.1
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
+ - What hardware the change was tested on. For driver fixes please
+   mention the device (and if relevant firmware version) used for
+   testing, or say that the change was not tested on real hardware.
+
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
