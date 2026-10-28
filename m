@@ -1,73 +1,146 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.71
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793220228;
-	b=TZj1juI6SqQC3n0UmJI3U/EF3XGsPEdizJ3udQe8+MZVsqmQBw/hvqJk5kdgeFZ6mpgr
-	 6M2YdiIgXS1/8z16vgqkZVqHWFffZF2hGdkCbz1iYiTTcOgnxTmnkVQcrQe7Jn27uZCHj
-	 555JaWhac5O/f+1o9Mk6NcT9PFu77WH03f0pLexfg4+vb5b5S8NAih822iPmwe1hPDzbv
-	 aLK0YwSMrmBBYyZuCbhtl8xczWyUnU3IUChp3RDuTeEOWVhgjX6IqdnmZT3qT9qaEYWXL
-	 Wl4+IMH0SAaLFOqNlamQFA6imPu5p2wah7zdjp+/Ej0PEAbEXx8E+yO+51deJ9NLHCw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793220228;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
-	 References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=sYFizRDYH2l5PRAThPlhmp5H+wdA+bi9uDiPY3FNe8A=;
-	b=Y+EBhfYjbAdJwKb/vlSBbwAs2BJy4Oh6z3hkarGE1EQl/Rh5y/KfLjy4lmbcdNYZ2W6L
-	 BZMbswCeo7TmFl/iIBNV8JSQ558VGvZPFWKUUWws+IdklHcMJ9vM1vDpI7rBhMaTY3KQN
-	 DnQ163LjRF/8e3kA30B5u/zyDi93naU4Xf+d0bA8x9pyzxOnHa9aHv33DafkyDRKyb6iK
-	 WCEAkaqy/HJK4bngYzhbhuYaZ1bEhlAErmdWaqRCSuf3D88eVbP1F/tXF4UXm62cIh2+j
-	 Mla9wfmWfeb8BD8SnANSwxznipiCqqddcIbLJcfY8H9kkJjJTAOqCIO3h6wndD0DPwQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=EP5zDEZu;
-	arc=none smtp.remote-ip=209.85.216.71
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.208.42
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793220953;
+	b=haHQBtL5Q6wIYEcZNIelbzoHHktdA/cY1SFnisJNgd14OSzaGaP9BgNVVeSbm+QAvnSA
+	 HNyD4j9ivUWBjFhQqosSvv52tNi3+lyYEo3DfNtelgvIGEAIvxFOEz9V0ZcDrG41SmIT3
+	 QCgvB37Y2Uplfq7dKJmv1T2ePZ3Ez77Ed2TQFFeVl769uC+n1R6kjLwpE3M5+oi83YpQS
+	 Iz1D67rlIHtIR+1rstcdiYXG6MZHVImGkJaKr/6VSeUzHYgNyb87FjpDPx23gEE5q/iVS
+	 9ZGcuFP2Kje3osaoNdFas0Th9z4P+UFtSq/lWTqKlsk0nPEDR6SgEYinmIe7SEp/lPQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793220953;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:CC:Subject:
+	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
+	 Accept-Language:Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
+	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
+	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
+	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
+	 X-MS-Exchange-CrossTenant-userprincipalname:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=aGh9b+HIQur+XApSvn0UliwEBiny/gXyXyYbARqPglA=;
+	b=SDE+Px25uP4b6JKYvHcQbgbjljWKLrwMX16eAcDNOoC1k+VZgO4AyzP1O61bKfOycBEz
+	 JSqUJGy6ZcpTInB89+arogK32SyEMnI2eqJ8PJRHkXVrZSxsZbfZ/JNCZypH14gCX7UH+
+	 wws4FmBvf23kA8GBAY725KPphozHKQVq7rQ0Y1tfJqAerN3IZYUafNp2CkiPx4V9PedFY
+	 t115nDW8b+OUIDkCazR+WKlmxijmscKS4ZVaOiZamcT9vunY4dwQSGZc454R0vuXNZIWS
+	 XkMdZYcIumqCVt9f0XxBlaXBxXIBsuZyU1JgS431UDdWp2D+taRWr91pBwdwMoR8NIQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=microchip.com;
+	spf=pass smtp.mailfrom=microchip.com;
+	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=selector1 header.b="tlh/9Pa5";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.208.42
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011042.outbound.protection.outlook.com [40.107.208.42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8977A606A31E
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 20:43:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8977A606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA32606A31D;
+	Wed, 28 Oct 2026 20:55:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6BA32606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=EP5zDEZu
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3ae6fda7a00so135967a91.2
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 13:43:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793220228; x=1793825028; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=sYFizRDYH2l5PRAThPlhmp5H+wdA+bi9uDiPY3FNe8A=;
-        b=EP5zDEZuhAKrdNdd28vLWL8Jqs/tGjkjFdj3ctBUEeZ2mIX6dffOxQnztyE7kVnNj0
-         Gkv1c0etxKo0qvupD9Tpjx1PNrBQHGAdP8pd9eiyKpLTdMp90F3Fk1xYRQ8VummfNVeC
-         cAZlLQmYrM0qxuWI/8zD2eJBMXMak6iLXHKYDmLJMtAoRKasfxC0lquFxbwDu5KMKXSv
-         qQEodINp0LedvjR4TUo2wecaxPnVT0YoC8yISFAjd/+CcQLznmplY9bKWq6kz4EECww1
-         yPNgelTjXpeOR7jUlvM1nmhNBv0NLrK+6mP7oWXOZYDzbunVwoVah68dy4cn3Jt3t4iK
-         LWlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793220228; x=1793825028;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=sYFizRDYH2l5PRAThPlhmp5H+wdA+bi9uDiPY3FNe8A=;
-        b=X9tdeNe5/p4sYR3mhDsgI9DWSiw2PI3+4y32tcrOYN5xT7Qn122p1HYF8EFUahpcXS
-         Vt/EWjcOyvmCfbTePSZXl971p+ECo9JR9eXwO5tPFQkaXOlNSqeavtQP3lun4Rjiy4bE
-         qmLEAYp5IojgrZOxgKb5rH/GYN7tpZ5/qYZIhLxwg7X8dFx5Eph/y9gYpwdfIvRe6kNL
-         Druw/voCI0AZpQ1EUYyZXfuNmBidW/4bHOLJB7/Y/s5HEwcBa/l3jeHB0/RClWver7z9
-         MMi70V3fWhx0MWLBQfPcOFsDO8FjyCpOCiu2FuGyuRdvtQQ4fdmT2Ph6kgsk+Xs9JLY6
-         I2pQ==
-X-Gm-Message-State: AFq9FYKtc+S9GSEw7qDJIpMHIM4FtSTkyUQDUMnjNmvJs7aZyTxLiWtq
-	U1ujZiUwb53qZ94fARv+6RD8nsh5tzFF5QQ25SSRh7VJ7yd3jjiCrlpMzYfMHD74vc6KtLn9w6C
-	d+le81A==
-X-Received: from pjro24.prod.google.com ([2002:a17:90a:b898:b0:3ac:c43b:e322])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:548f:b0:3ad:3e8:12
- with SMTP id 98e67ed59e1d1-3ae581ba9acmr2022196a91.48.1793220227735; Wed, 28
- Oct 2026 13:43:47 -0700 (PDT)
-Date: Wed, 28 Oct 2026 20:43:47 +0000
-In-Reply-To: <20261028173533.2658096-3-rjethwani@purestorage.com>
+	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=selector1 header.b=tlh/9Pa5
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=EF4rp4Zk2VzHiOXRFKQJfY/TKcXkhTPeTChGX5wyg4SXDiY2lcqTVbyqbpajgxr4kDLboQ/PWr6taKJCd6mWEworZ5m4ucXmAaDlZNBYWFlug2hryFpFBcqCJlHBjTAoSraxUvnGd567Zg04OuO2//x11C4LsbVPTUeXAP+q0GlrlkHFhOzeuoIqSCODCldkHP6aNGMEIhxI/PsMIKugHDW92fSjFWxcPfpZzLMjnNihp6NDE7kIl+QHu6mF6TugW8SyZL63/ip2ovJfpO1w7WbmW+Borwy7OnGtQR3jcqXPQtMeBH7PDaNybhcAI9DjrEQps1Zt7Mf5DZwLQpnRBg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aGh9b+HIQur+XApSvn0UliwEBiny/gXyXyYbARqPglA=;
+ b=lppuZsyloXPJxBXtaOjjvgNbbQdJQqDV8ST3LaKxWiTs2oZf0Skb4iSJ5UcR3J/YW7xNIUOjPPDjhWcIWgThX1kp6mI2vzcln/P2ep9kHbp+MN6SDnejhGyV6ThScGI+i8mrZ6QqKUpSaVC1q6ykNhOfR3tuBziPY+n9KfxFNR9udFiGrWCcHqwShIuUrx3quuhaH7pp9YIxOXl4K4Kx8dAACu6932rl7fCj0gB5zIkj83RMPy8PWgULwUl1rcCyxxOvRExykk2r8RtDjH5VIkP+ABs4TFjjbtdNjz20Io2ZqEK3mDAkV2tUJlyzKLWlW2suMM9wjeNnOV97pSTi6w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microchip.com; dmarc=pass action=none
+ header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microchip.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aGh9b+HIQur+XApSvn0UliwEBiny/gXyXyYbARqPglA=;
+ b=tlh/9Pa5nCmkjom8kdndz6/7l50j2KUKSwnh6hFiZJ2vbRDLZF4pWBYW/piJGn5Wr47mrOeA7hKyimMA0lMZ2vOeQss7iJxDiadhicrpZlNWG+lBech82T2+xpL2Dt8fh0skmjCfQZXUEsOiXkb0RuHck4wSEhBs/nYBo9gq7aVPUSWnjU8bm4MQV8WiQhFeNlVP2PFER/wBR/i41PTLaYiySF+cuEDob10zaFuwk+aOtj0K9b03CX4NtLP4Levs2/qaeHsW2Qe58Q0X9V5sJjaHPmc75y6R6+hSe8G2HKC/LqQhDy5IPiwJAjateQReg7oxOd1ToQMM/Lr63JE+IQ==
+Received: from BN7PR11MB2836.namprd11.prod.outlook.com (2603:10b6:406:ad::26)
+ by IA1PR11MB7386.namprd11.prod.outlook.com (2603:10b6:208:422::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.8; Wed, 28 Oct
+ 2026 20:55:47 +0000
+Received: from BN7PR11MB2836.namprd11.prod.outlook.com
+ ([fe80::ac36:7540:4e6f:8d3b]) by BN7PR11MB2836.namprd11.prod.outlook.com
+ ([fe80::ac36:7540:4e6f:8d3b%4]) with mapi id 15.21.0569.007; Wed, 28 Oct 2026
+ 20:55:47 +0000
+From: <Woojung.Huh@microchip.com>
+To: <cbabroski@nvidia.com>, <nb@tipi-net.de>
+CC: <UNGLinuxDriver@microchip.com>, <andrew+netdev@lunn.ch>,
+	<Bryan.Whitehead@microchip.com>, <davem@davemloft.net>,
+	<davthompson@nvidia.com>, <edumazet@kernel.org>, <kuba@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux@armlinux.org.uk>,
+	<maxime.chevallier@bootlin.com>, <netdev@vger.kernel.org>,
+	<pabeni@redhat.com>, <richardcochran@gmail.com>
+Subject: RE: [PATCH net-next v1 4/5] net: lan743x: reset the device on TX
+ timeout
+Thread-Topic: [PATCH net-next v1 4/5] net: lan743x: reset the device on TX
+ timeout
+Thread-Index: AQHdXLZHA83iMUWnwkGwSyu5/xJC4rcErkuAgA03wICAAZozIA==
+Date: Wed, 28 Oct 2026 20:55:47 +0000
+Message-ID:
+ <BN7PR11MB2836D0C348528CFBC6738C7AE76F2@BN7PR11MB2836.namprd11.prod.outlook.com>
+References: <5cabe797885011ea204a793557d8639a@tipi-net.de>
+ <20261027201413.589706-1-cbabroski@nvidia.com>
+In-Reply-To: <20261027201413.589706-1-cbabroski@nvidia.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microchip.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BN7PR11MB2836:EE_|IA1PR11MB7386:EE_
+x-ms-office365-filtering-correlation-id: 33822570-f182-4a9e-fc92-08df3535d777
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|7416014|1800799024|366016|23010399003|22082099003|18002099003|56012099006|11063799006|4143699003|261022105027099003|261022075727099003|261026140227099003|261021135927099003|10067099003|38070700021|261028144727099003;
+x-microsoft-antispam-message-info:
+ nTNzzsVH6ABogaa9ekkNcKs8M6Jp0GPOM6/MoaKvBsnigpzB3e/5SoVECvDlh/+PRZn02KceTTsBHlm9HUIdspZU6WZHuQAPnfzZVtBPO1axfNrKy6zoFKRoGuwA8E5NwpWhHQnd8XfiJmRByhmsMxSKyzqHP6swI0d/48i8GXHPRpEZl5FwlABFLKg4xViJ3Qbyr/CNayG5/JT3QZ3GF8kJo/aS7N6M5C4MEj3W+XdpHiNB2M8s+6NWTX8TLyUppSqSw5qZP2er54h/fCk6wKl4Lbd6z7aW85JUtgViiJN6tyhGP9IhX8Fgm2Mq4s7IwnNfGprIyOs3ESC7Knph+tv/Q62vQ3Npfo0ICEYLbfl3XiqsXXb4i5OZ28hvg0z/by1zp/SKDZeusBmGAGQ3l197ynZeh63MYNSCpXy1Z0+DsZvn5+H/lUkkqSC0jL0Per6Aah6Oa6N6pY9WEbMVBOi/jVYuqWoyFEPfhNUrhijegy+Tdvfdf3Deryt1gwvZjpgNuxDaGpoLiVjoqh1Er2uFCfUL+4kxiaMSdqsvLhKgmNXmSQsHqNCsEjACPO9H1sNK6NsCsy0QD1lcOKQ2IG4bUq5n/KST+tVUdQtURO1/ZZQs5R+aCW9e7ROQEBMnfpdoDRrDsZqRRfjGlHi4wzRRH6Ws861Thjs+7RvOhQLr7beMXPAjsfTp5eOjom/Oc0GQ9rzVFUNCIYCKfNj3uw==
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN7PR11MB2836.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(23010399003)(22082099003)(18002099003)(56012099006)(11063799006)(4143699003)(261022105027099003)(261022075727099003)(261026140227099003)(261021135927099003)(10067099003)(38070700021)(261028144727099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?JqjmBNJ78xP6P2YCBMvKmI91qDsT0Xcfck4lHUdt5VMP0HmwFQ4as7hd8UNx?=
+ =?us-ascii?Q?Jo6Y8ZigMz6jpYsGgly4C+ml0eMqx/NE78LWnWwkmhtBHVZoyaC5Ap0wxpU5?=
+ =?us-ascii?Q?uyNKpYHLOwWE+2HmEx0HBlwrc9li+x5OnRdK82XPnPS7v71OfgFhGdm+k1hp?=
+ =?us-ascii?Q?Vf8gst2RTk6wiCHYeD6aTM6yait0s0zubMaU7oO669cWklJHcULVOx3mNveO?=
+ =?us-ascii?Q?PxXPuEIFuDkwMdhKaZYP61TY72HUtmcR50Piore/FHZ1AqxP1xK3japa1Yuk?=
+ =?us-ascii?Q?4GmWVLS96tQe/vRSeFL4K1LzFeQCHxp417NmD/18YsNveBKQJT5r+xSJN9ci?=
+ =?us-ascii?Q?Xs1KpWi9PWN/OeSqCVs6Rzf3ZLKBKouYL+7EJfG373GlOq73ujX1AFFsCHI0?=
+ =?us-ascii?Q?50IWq8+qujv5McfhpOsUGWqwN3wgMZcTWRMpoGP5Cih4Mm5SkPghv5BmU7c5?=
+ =?us-ascii?Q?rAEe/Zqp3ifLRT0hvKtHE8v+nfv7e/syDV74OQuTnG8kp4BibwhTaM4D1JRA?=
+ =?us-ascii?Q?b39wtOhioastA2iyox73OuFXTMMvywBsC8Di/j3o6JOd+AhRKahk9xK2ApPO?=
+ =?us-ascii?Q?sOjXh5jegFyjKSKHKs5gj1xFWv1igjhCO6EONDUiRnyyYzqDC5wD0MzUuBpe?=
+ =?us-ascii?Q?91cCUJasjVihLo0jxtwlgFr5JjX4WuBBstVdmdszrsBxsJE0a/nv8UamJPCN?=
+ =?us-ascii?Q?Q0yYuQ5hbR3cwsGQMmU8MxmBdK70aWfZkmcu1ABacFc9tKOktg0UdFHnkdiK?=
+ =?us-ascii?Q?Z/Tzv5K2moPioelaUbDLbeUgO4gdOA71BR9c7Cn4y4YzB4xjVR9w6SNuXRMj?=
+ =?us-ascii?Q?geV9HT5lOFst7MlQlOiYH2DUdmXAINj+/jbmB4wgqr+G7ZL2CUihOzqPa7xU?=
+ =?us-ascii?Q?1zIre83Q06bG+7mJILOwu79zZ5QFOVsHPZAM6bWI9P1RpbRtNWL324/NnSOQ?=
+ =?us-ascii?Q?Dts4iFjZHSs2jaUpAk6EFnVNIW3K7CW+kEyTNsU1fDII6szNI26OVWbPCUoI?=
+ =?us-ascii?Q?YWmzG/U2WgK8c/FOiQzXL1qAv7N/hkNDWcyA7tFFqjovLtcd7orjwsvtMQ76?=
+ =?us-ascii?Q?v3AF4oApOR49y/LyFBGD5tRIRiTMH1WFWY4mViOgdK7daqZ7KSJiwY0LMh9S?=
+ =?us-ascii?Q?vPfu6zrdepoB5FufUSBzI/3xVMNnKZQFitnp+bFCk4X7tERtRvwU3P3SgeW1?=
+ =?us-ascii?Q?PnXZRvymT3BpO3+bpNrzvVgq4kFviYTiJQ7wavy1WdVaBdrA/V7JFdWkEB+G?=
+ =?us-ascii?Q?zbKCQj1yvkXzjinIp2qWraQwvAHFJ00v/6DoyojygptmJbhGhAO/w/tbQfcI?=
+ =?us-ascii?Q?aQwKKH7BRZ6yviqrCJxxZXiX0UabAov0bF1E7L4fQ0r+mhor887H81vLJPxm?=
+ =?us-ascii?Q?9Gw6X/daomjqyoVHQzMyF52FhuOIN+cpHIotbox4wWADa+Dx4ahjOEGyaDwF?=
+ =?us-ascii?Q?STqHexnbS3yvBHiSxUHPfWJud0KXNZJJCFuUMgkSwhqZ6LULbryyeVzJ6ywQ?=
+ =?us-ascii?Q?vahvNuFfGiS+mZO2noZNki/c+yLljqNFmT8z/wMtMDqQ9aexTt3OU4XwvbmD?=
+ =?us-ascii?Q?RLMqAKHhX6/TPNCM3ABoIBbiV0OowUlzjbLcslfuXNjgvIF0k01vritcZS3b?=
+ =?us-ascii?Q?EIUJeoKbZbVb2oNKIxoISHuxtPXMR5ZebDcvFDDwWMtqBcKLKuPhYIFySFs7?=
+ =?us-ascii?Q?d+XKGl68ywe/dR0tRdyfm9kA7OZNZCstfp06FK/xbvPrDkBOGBtfzkT8SWU+?=
+ =?us-ascii?Q?OWPiy08yIA=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -76,228 +149,53 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261028173533.2658096-1-rjethwani@purestorage.com> <20261028173533.2658096-3-rjethwani@purestorage.com>
-Message-ID: <auJd9BMr16dafOhE@google.com>
-Subject: Re: [PATCH net v3 2/2] selftests: tls: test that TLS and KCM are
- mutually exclusive
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Rishikesh Jethwani <rjethwani@purestorage.com>
-Cc: netdev@vger.kernel.org, Jiayuan Chen <jiayuan.chen@linux.dev>, 
-	Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, "David S . Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, Sabrina Dubroca <sd@queasysnail.net>, 
-	Shuah Khan <shuah@kernel.org>, Hannes Reinecke <hare@suse.de>, Sagi Grimberg <sagi@grimberg.me>, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+X-OriginatorOrg: microchip.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BN7PR11MB2836.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 33822570-f182-4a9e-fc92-08df3535d777
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Oct 2026 20:55:47.3785
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: JmharqyVdhDnfOpyrVVzx9KY3s98eDa3txbJsl0NZIm3Xza16ohWUuuL878A8Mcr+ln0vD0YLJuh7HpBY7GtZxWw8D9WAeUjd7B8ptNpc8Y=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7386
 
-On Wed, 28 Oct 2026 11:35:33 -0600, Rishikesh Jethwani wrote:
-> Cover both orders, with TLS RX and TLS TX on the attach side, and check
-> that a socket detached from KCM with SIOCKCMUNATTACH can still be
-> upgraded to TLS.
+Hi Chris & Nicolai,
 
-I don't think we want a test.
+> > Is it ok to re-register the PTP clock on a reset the driver starts by
+> > itself?
+> >
+> > ptp_clock_unregister() makes the open /dev/ptpN return -ENODEV, and
+> > since the old index stays taken while ptp4l holds it, the reopen comes
+> > back as a different /dev/ptpN. So ptp4l has to be restarted, which is
+> > more than "set up timestamping again"...
+> >
+> > How about moving clock registration to probe instead, so it survives
+> > the reset? Then only the hw timestamping config would need to be put
+> > back.
+>=20
+> It may be best to get Microchip's opinion about how this should be
+> handled. Woojung, can you answer this?
+>=20
+> Makes sense that moving clock registration to probe and remove would
+> keep the PTP device valid across TX hang reset, but I'm not sure if
+> there are other consequences to PTP still being disabled and re-enabled
+> during reset.
+>=20
+> I'll update the commit message to be more clear about ptp4l needing to
+> be restarted and try to run some tests to see what the effect is of
+> moving clock registration.
+>=20
 
-This will just waste testing budgets unless someone tries
-to restore the combination, which is unlikely to happen.
+Because TX path is already lockup, I would say that impacted PTP traffic
+even though timestamp function still alive.
+It could look ok at workaround point of view, my opinion is keeping
+ptp_clock reg/unreg at *_open() and *_close().
 
+Also, if moving out to *_probe(), PTP clock is not initialized at *_open()
+time, module unload/load is required to reinit PTP clock.
 
-> 
-> KCM needs a BPF parser program, so the tests are skipped without
-> AF_KCM or when the program can't be loaded. Add CONFIG_AF_KCM to the
-> net selftest config.
-> 
-> Signed-off-by: Rishikesh Jethwani <rjethwani@purestorage.com>
-> ---
->  tools/testing/selftests/net/config |   1 +
->  tools/testing/selftests/net/tls.c  | 144 +++++++++++++++++++++++++++++
->  2 files changed, 145 insertions(+)
-> 
-> diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
-> index cb8cb4696df7..1619478fffc4 100644
-> --- a/tools/testing/selftests/net/config
-> +++ b/tools/testing/selftests/net/config
-> @@ -1,3 +1,4 @@
-> +CONFIG_AF_KCM=m
->  CONFIG_AMT=m
->  CONFIG_BAREUDP=m
->  CONFIG_BONDING=m
-> diff --git a/tools/testing/selftests/net/tls.c b/tools/testing/selftests/net/tls.c
-> index 9d3cd4fff062..2e4128e0676a 100644
-> --- a/tools/testing/selftests/net/tls.c
-> +++ b/tools/testing/selftests/net/tls.c
-> @@ -7,19 +7,24 @@
->  #include <error.h>
->  #include <fcntl.h>
->  #include <poll.h>
-> +#include <stddef.h>
->  #include <stdio.h>
->  #include <stdlib.h>
->  #include <unistd.h>
->  
-> +#include <linux/bpf.h>
-> +#include <linux/kcm.h>
->  #include <linux/tls.h>
->  #include <linux/tcp.h>
->  #include <linux/socket.h>
->  
->  #include <sys/epoll.h>
-> +#include <sys/ioctl.h>
->  #include <sys/types.h>
->  #include <sys/sendfile.h>
->  #include <sys/socket.h>
->  #include <sys/stat.h>
-> +#include <sys/syscall.h>
->  
->  #include "kselftest_harness.h"
->  
-> @@ -3492,6 +3497,145 @@ TEST(data_steal) {
->  	close(cfd);
->  }
->  
-> +#ifndef AF_KCM
-> +#define AF_KCM 41
-> +#endif
-> +
-> +/* KCM and TLS are mutually exclusive, in either order. */
-> +FIXTURE(kcm)
-> +{
-> +	int fd, cfd, kcm, bpf;
-> +};
-> +
-> +FIXTURE_SETUP(kcm)
-> +{
-> +	/* KCM parser: each message is everything queued (skb->len) */
-> +	struct bpf_insn insns[] = {
-> +		{ .code = BPF_LDX | BPF_MEM | BPF_W, .dst_reg = BPF_REG_0,
-> +		  .src_reg = BPF_REG_1,
-> +		  .off = offsetof(struct __sk_buff, len) },
-> +		{ .code = BPF_JMP | BPF_EXIT },
-> +	};
-> +	union bpf_attr attr = {};
-> +	struct sockaddr_in addr;
-> +	socklen_t len;
-> +	int sfd, ret;
-> +
-> +	self->fd = -1;
-> +	self->cfd = -1;
-> +	self->bpf = -1;
-> +
-> +	self->kcm = socket(AF_KCM, SOCK_DGRAM, KCMPROTO_CONNECTED);
-> +	if (self->kcm < 0)
-> +		SKIP(return, "no KCM support");
-> +
-> +	attr.prog_type = BPF_PROG_TYPE_SOCKET_FILTER;
-> +	attr.insns = (unsigned long)insns;
-> +	attr.insn_cnt = ARRAY_SIZE(insns);
-> +	attr.license = (unsigned long)"GPL";
-> +	self->bpf = syscall(__NR_bpf, BPF_PROG_LOAD, &attr, sizeof(attr));
-> +	if (self->bpf < 0)
-> +		SKIP(return, "can't load KCM parser BPF program");
-> +
-> +	len = sizeof(addr);
-> +	addr.sin_family = AF_INET;
-> +	addr.sin_addr.s_addr = htonl(INADDR_ANY);
-> +	addr.sin_port = 0;
-> +
-> +	self->fd = socket(AF_INET, SOCK_STREAM, 0);
-> +	sfd = socket(AF_INET, SOCK_STREAM, 0);
-> +
-> +	ret = bind(sfd, &addr, sizeof(addr));
-> +	ASSERT_EQ(ret, 0);
-> +	ret = listen(sfd, 10);
-> +	ASSERT_EQ(ret, 0);
-> +	ret = getsockname(sfd, &addr, &len);
-> +	ASSERT_EQ(ret, 0);
-> +	ret = connect(self->fd, &addr, sizeof(addr));
-> +	ASSERT_EQ(ret, 0);
-> +	self->cfd = accept(sfd, &addr, &len);
-> +	ASSERT_GE(self->cfd, 0);
-> +
-> +	close(sfd);
-> +}
-> +
-> +FIXTURE_TEARDOWN(kcm)
-> +{
-> +	close(self->kcm);
-> +	close(self->bpf);
-> +	close(self->fd);
-> +	close(self->cfd);
-> +}
-> +
-> +static int kcm_attach(struct _test_data_kcm *self)
-> +{
-> +	struct kcm_attach attach = { .fd = self->cfd, .bpf_fd = self->bpf };
-> +
-> +	return ioctl(self->kcm, SIOCKCMATTACH, &attach);
-> +}
-> +
-> +static int kcm_unattach(struct _test_data_kcm *self)
-> +{
-> +	struct kcm_unattach unattach = { .fd = self->cfd };
-> +
-> +	return ioctl(self->kcm, SIOCKCMUNATTACH, &unattach);
-> +}
-> +
-> +static void kcm_tls_then_attach(struct __test_metadata *_metadata,
-> +				struct _test_data_kcm *self, int optname)
-> +{
-> +	struct tls_crypto_info_keys tls;
-> +	int ret;
-> +
-> +	ret = setsockopt(self->cfd, IPPROTO_TCP, TCP_ULP, "tls", sizeof("tls"));
-> +	if (ret && errno == ENOENT)
-> +		SKIP(return, "no TLS support");
-> +	ASSERT_EQ(ret, 0);
-> +
-> +	tls_crypto_info_init(TLS_1_2_VERSION, TLS_CIPHER_AES_GCM_128, &tls, 0);
-> +	ret = setsockopt(self->cfd, SOL_TLS, optname, &tls, tls.len);
-> +	ASSERT_EQ(ret, 0);
-> +
-> +	EXPECT_EQ(kcm_attach(self), -1);
-> +	EXPECT_EQ(errno, EOPNOTSUPP);
-> +}
-> +
-> +TEST_F(kcm, tls_rx_then_attach)
-> +{
-> +	kcm_tls_then_attach(_metadata, self, TLS_RX);
-> +}
-> +
-> +TEST_F(kcm, tls_tx_then_attach)
-> +{
-> +	kcm_tls_then_attach(_metadata, self, TLS_TX);
-> +}
-> +
-> +TEST_F(kcm, attach_then_tls)
-> +{
-> +	int ret;
-> +
-> +	ASSERT_EQ(kcm_attach(self), 0);
-> +
-> +	ret = setsockopt(self->cfd, IPPROTO_TCP, TCP_ULP, "tls", sizeof("tls"));
-> +	if (ret && errno == ENOENT)
-> +		SKIP(return, "no TLS support");
-> +	EXPECT_EQ(ret, -1);
-> +	EXPECT_EQ(errno, EINVAL);
-> +}
-> +
-> +TEST_F(kcm, tls_after_unattach)
-> +{
-> +	int ret;
-> +
-> +	ASSERT_EQ(kcm_attach(self), 0);
-> +	ASSERT_EQ(kcm_unattach(self), 0);
-> +
-> +	ret = setsockopt(self->cfd, IPPROTO_TCP, TCP_ULP, "tls", sizeof("tls"));
-> +	if (ret && errno == ENOENT)
-> +		SKIP(return, "no TLS support");
-> +	EXPECT_EQ(ret, 0);
-> +}
-> +
->  static void __attribute__((constructor)) fips_check(void) {
->  	int res;
->  	FILE *f;
-> -- 
-> 2.50.1
-> 
+Thanks
+Woojung
