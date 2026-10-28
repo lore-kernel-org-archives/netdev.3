@@ -1,108 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.99
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793208334;
-	b=3GhQcgdLREI1cV5zbVQAxGoYH04KqB7gYJqg6rZl4RhZujkTsGba3N4Yzv34jc5PgRL1
-	 Ffok/FhYOzHTYif2AnWxlHMZyLEI0FPCL/TI/I+BRMN5Ii2LGFvOpjPL8+W54NF0VS+2j
-	 fUuZO/goCSrAOnaDYok2cCBcfWGZis4h+sFqXcrbD7APPJhG/9tToPBHX3unEfsUcSJl/
-	 0tMLiibYWQj4jThrS7HGuH+RQxT/zPNfshoH1tpV9YsiWuEAYssiboLIN7LxCdxBTF+im
-	 L0SS67RoYvCJO7IGt0FiT6cWUOfSBTgOP/7mMs7DID/Jy5RQwNHp7X2ZeOCaIDvXKQw==
+	t=1793208351;
+	b=NR+ZTnM5zPraEvY9zbTNS8ivS/q9kpMnTULfPlzmIe0wx4FGyb4HSR47CryoFwnAL+hc
+	 qIO2vtXUSh3UhD0NNfA7hbjNuSBgwvNyHXr7T+So6JeAncqGZpThpXFq09jw6D9UCTyDb
+	 Mb+o+75K1AUs1llivh4bP6oGZftkaAz0qG1tSpsP+JUngG5qLrjJ7E6qgDsNRe8lukNId
+	 dPNWkdgU2pTMcpR+56lPv4UwzL7Zw72sGpuBcCzydTdit9vxSdqg4xN5fpXL/zVdNtPml
+	 X0j/VcmyWB67QDbTNG5XvGw2DPgifrgQuU+TXVpXNFLHFOiuYyTJDpmMqyJu1CmJICA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793208334;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Content-Type:Date:Message-Id:Subject:From:To:Cc:In-Reply-To:
-	 References:Content-Transfer-Encoding:MIME-Version;
-	bh=XLYiEepDtnyQ6wJ1rlYe5RaJc/i8ARvs/UjwaNMVQRE=;
-	b=mgD6STMIOpRdiw+xr6YaAv7A7RYjwDGxStXUm3UIja0jB4kmSLpQpunEDHQ4KB99eseF
-	 jxSTaMBcgYFkJIXfeOUcJtztjVnipurL8bZ8ekhHTDKJttcOuT8Au2xgwmq9elArZbJ+0
-	 cSLNT8IXVi8jJ2gmr6xiHjwLHrOvU5dxWQt66AnF8eeIGKcBR5BXKdXWIhYiD44GeBCha
-	 SATymiIec+uJIdzJaFBt+DZ3NbPhRy9+powrnABZJS8mvm8mFFgbl7rCfXzP4Uzen6wBX
-	 M0ILNCeoR04JRlzKVeyCV3eti3/7Aoh6//H35m6IGP8mDbMRLSaKi5tqk7Vx6L8TOzA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793208351;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
+	 X-CFilter-Loop:Received:DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Received:X-Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:Autocrypt:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-DetectorID-Processed;
+	bh=96REoSpqeOFESJkk5pNQFSDJAOzVBOi/GV9/PTsQSbc=;
+	b=dmiZUxESjboS0FXyWqCSrFPQbeOX2rIXJWmmFs4EBjq0RFjpTBqR7kmLsvPCaGGjJJof
+	 3Q+kdUnJV0pk23zykyzv9xMR270CQyZzyYz2krhHvTexmx09S3dnJEOvtleE8z1WPZnur
+	 BihYbxfZTr7JcHcgP4vqwI4baeF0ThyylI2VIPva9COC4snBhSKKU/sSPawiKE8B1Pmwb
+	 DqLXsjX2gx2msPSKu0bsqHbiPOCi5ZD44xeyDNcDTCJosPyx4RNrg0Xjb2ylg+/mfHZc+
+	 ZXT3Ej7kCL3g0QGD4OKWhtM43xlSXH5NrSqBn5BwGCpoDWVBe9LS3kdGRM2fK9pM/2g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Af7y52Ro;
-	arc=none smtp.remote-ip=209.85.216.54
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	dmarc=pass header.from=broadcom.com;
+	spf=fail smtp.mailfrom=broadcom.com;
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=BEqxhsK5;
+	arc=none smtp.remote-ip=209.85.216.99
+Received: from mail-pj1-f99.google.com (mail-pj1-f99.google.com [209.85.216.99])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB76606A31C
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 17:25:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DEB76606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68FD9606A325
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 17:25:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 68FD9606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Af7y52Ro
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3ab60ff4273so1114654a91.0
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 10:25:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793208333; x=1793813133; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:cc:to
-         :from:subject:message-id:date:content-type:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XLYiEepDtnyQ6wJ1rlYe5RaJc/i8ARvs/UjwaNMVQRE=;
-        b=Af7y52RoNQXZRESfNzlA5nWU7zYO0dfLPezS+5rNH3Tx4+4DsnOMyhABRaQvfQPhli
-         WGDEJ6zWLk88idrS1IRmCJxUBASFuuPGGngNzQZZ7LzmANcSte3aAEFKuC2VjHtOK2z7
-         yjKMj+n+y7innZ39T/IQMUNxUrOFGpd7ZgkibuW592Y5ybQz3HYIMsH9Gk9Vo/7F25Aa
-         q36OaknOzdG878FRgHSj5M2t3J2VawgIYj7j4isik5KORWNcsNhJEboFyrcCLGCCUvS1
-         gSvujDxwZjfi6G+bKCVFt8XzBT2Fk2cA1mp2Ztj8lzO/DQBvE/UHm9uoMPtJq1mQY/nw
-         HIEg==
+	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=BEqxhsK5
+Received: by mail-pj1-f99.google.com with SMTP id 98e67ed59e1d1-3ae57dc1ea9so562807a91.2
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 10:25:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793208333; x=1793813133;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:cc:to
-         :from:subject:message-id:date:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=1e100.net; s=20260707; t=1793208351; x=1793813151;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=96REoSpqeOFESJkk5pNQFSDJAOzVBOi/GV9/PTsQSbc=;
+        b=oRBuD/MKIeUwcLA4T1VkJgQC0TGnHvDaUCkYpJGWkU2h3xfIpNLDaWQvAsJEtHVtLo
+         U1lAXOEs0ZUY+2YpCYrIUUuEBWJqwPlZUqLDplQ6d45MF03SNtPFrR8IU0VW1mdLwxas
+         osKDU1BqEEAL2shlFa3t3Cp4/pFn2Iry85QrWYB/hkdnN8vDiTeOV2kcV5eNik2IL+8v
+         3wzK2U1IW1mVmo1p03Lt9jGFVxCeSOhc3/PrBG68sm00pYaoUznT2t905EGf2jrc+/xl
+         TF/8sI/rngNeJ6MBlhY2CJcdVQu94lWkFOKFzKmI1CFY4GgUI9ikmjRLZjLf3VFCl6IK
+         YTGA==
+X-Forwarded-Encrypted: i=1; AKwUvBzXQtUcVTQyQyzQlJFfHZy/FAX4ElhNGc3vb+Jzs6DEVbKtvlciJ+tnluEsRurmrjB1EtUJ/dI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJW32jDDGAdHR0ps/t1b/wOk21oCRkc7zekOdTjJ3cw55YMhRBi
+	GnIbx6/jKE7MTX1NdYdgQ1rLcaplK9zG3QPQZwTSwh/7g98BX78r8+9CJXYyAtoUyexh1f/fYGE
+	vIp6ccqSHh3yA0RdUA2F5ujN02gaszB1y0bkHrbnS262j8tzg9vP83fIj7qTtZZbmKJRiWjhhrJ
+	/FKP0vstaiJhUqYrLeYnPN5NA4vPCH9T9Spa8aBeU3LhO+qmREV8TEcCzBck5pRR8Ei53muRYj+
+	cJMiAogjRlf9rpA
+X-Gm-Gg: AYBFou16A82I9TCXBapH708dfxnN748LdXCqkeiDPI2ADjZcPe5BZMPQeztq7RW5BzV
+	BWEgbNlXvO7WdxWD6hwaCgti59L6Jb7GuOUT0TyhZMDKTvM2+BY7kBGUBUie1AwXik6bF55F8hv
+	wWgdYGa0T/DGwgLlvN4EdoLnnE6D6WOMa3RfQbzu5iAwVGLnKjXueIUWdKgRyo3a6IE1Kgv2m2f
+	rPGk2qvJAQsRSMdIthUTuw0e4sV68OsHvm69XDMtix/hHAoKASN9qUvSM1evn5SYodyImn9QzRb
+	1bXX+JJ/TSBCyakEJaLfgc9wUPL3AUHdYUZI/v68iudM1Vg9ZUAjGjRq1XTMAYmT9mGn5oE7xMl
+	3Zxtf6WosMwx8GTB2kW5B6/unn2gdQ7FLNI4u2YvtUUpvG5RYnJ16VBdA8CSxGNtfu2rA+P3rKW
+	w2UiTnvm9HjHIUyPIALYZ1cXNv4sLBdNFhnIThfXmA
+X-Received: by 2002:a17:90b:2891:b0:3ab:413:49b6 with SMTP id 98e67ed59e1d1-3ae58249fe0mr2199964a91.41.1793208350639;
+        Wed, 28 Oct 2026 10:25:50 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-28.dlp.protect.broadcom.com. [144.49.247.28])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ae57b98875sm999939a91.4.2026.10.28.10.25.50
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 28 Oct 2026 10:25:50 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-91c861b562eso13740446d6.0
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 10:25:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1793208349; x=1793813149; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=XLYiEepDtnyQ6wJ1rlYe5RaJc/i8ARvs/UjwaNMVQRE=;
-        b=oI5h2SjF+8C7WSKjzsgGWaNTN4i90DcSWOjS2AGUWT8jQKnzl+qVc/3u51FwlDyAHA
-         n3bU7EP3mWCw+wzFSxOi+nfcBjMlQZseaPrnYeApCd9SmDcif5H1r1b3sfCFZSbPauji
-         UkGIT4g/i1hnXP9t5yygXHm/KzCPkFIOFi6b28mHGrzBLyP1RPCdYPHWch0lyR/FQdf1
-         siq7MpBc16LO8e0U4K34vZ9I8D/ZW5HqD+ysBTjigmAPMcKDsdlg14C0aycdVB/yZ8KS
-         Wz4z8blZnUskpQQWldKmXP7mlGasQT39kYWB308VcSYLEBQMNDq2WnlGJWcvK7nG3gd3
-         QdeA==
-X-Forwarded-Encrypted: i=1; AKwUvBxXS26fI/LVBRR7LGzXzNe557RtkihboeUFZUchoGYCfjw7RqFLXtNk7zF9SXDHlf+WABspyKA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK7jtpKHKKX2wml0f9j9kAy5HxSJzqwa0rsZfmwxqEFoPQdesRr
-	Ib1fylYlbeZyVuMe1Fe46iRAK4GvyH3ZW85aZbTyY+b8zim1EXbvYEIa
-X-Gm-Gg: AYBFou3WOeNMBm2/yVaRZh6p7t/suoNBW0rJYQPfZkUxcopKkzCQsdvveYvUxlVKSbU
-	dWF3i6raYu/PTrK1s1h7nCV85UzRHmELBusgLEOchShjmusG5tfjDXlIgtZzdm1iEbuXrV7Y4DR
-	lnw4NqVNSB5e3KKRU2dX33zbF2U66lqwcVA4ffRBg2zIEmon0AmeX/4HJNYvyFOH7VTxGB0+D0G
-	RSP9TNPNTZniZXGYdi3NNb1CttCNLQyGkKvho5V6su+kmkCbYQ1xafmY/i4YN6kzwby5Yv4XkXH
-	ewCJKDiEHspM+cznNPgjUA/1mCB3yKzjmLVQIXgtPs8xufx0fKKoYtdMxYXrgXvQRh6408ncyTO
-	fao3+XrZDHfWiKG8AmJLalRDubOgWWKOaevGurt06/J4l+mdGkJhzvUJhkcvgboyLDiYKodQ2Hj
-	qZes2NV8WakEJdY5/RWHLMS48+cUJxptAX9aD66XcipJ4GYTIPLP1Ko1DtBRZteeVHXEJTowYfW
-	am1uNtPPG7d7bp9XCsnv/1lFm59BmH5IVkOYS1Rm0QrOqmAP9vrBTzzmJcRKaQFVLvmzaa2GDo9
-	jEYqfalJ5uSphTIklr4bmryeKem+OP/RvblrJEJu3yA9sQ9ncqdUXdzhDW1Xn6PXZUZd1slU0B8
-	J3u3KQ1wwd0HOLBk3Tnveqgg2D0sVgY2AJQ==
-X-Received: by 2002:a17:90b:3a46:b0:3aa:fdad:7d6e with SMTP id 98e67ed59e1d1-3ae581b7b3fmr2290113a91.10.1793208333116;
-        Wed, 28 Oct 2026 10:25:33 -0700 (PDT)
-Received: from localhost ([153.61.198.248])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae6e9583c1sm397200a91.10.2026.10.28.10.25.32
+        bh=96REoSpqeOFESJkk5pNQFSDJAOzVBOi/GV9/PTsQSbc=;
+        b=BEqxhsK59jMeZ/P+vbogXmNyK1TQYJ+V6OPYr4knROJEUV/HUo+dCwUbfPFtke0PMb
+         NTlHEpsAKTULD6ZGvNrkaGP7xPgCqggrsbRb5Kor6R0gkRNIbEi+RwrdgwFVYwqgwzsa
+         Ce1EZQpGNyszstAkAZw5/TiAvlXgVn/1w23/w=
+X-Forwarded-Encrypted: i=1; AKwUvBy6ElDmBnD8jcMvoy5TOFDN9X8cNT8x81qHiOjL+EpCZIG0Zq/Rzb2ZOmxFISFQ124Kmyz6IEY=@vger.kernel.org
+X-Received: by 2002:ad4:5cad:0:b0:91c:7c57:728d with SMTP id 6a1803df08f44-91c7d1c01c7mr50546446d6.37.1793208348832;
+        Wed, 28 Oct 2026 10:25:48 -0700 (PDT)
+X-Received: by 2002:ad4:5cad:0:b0:91c:7c57:728d with SMTP id 6a1803df08f44-91c7d1c01c7mr50546116d6.37.1793208348296;
+        Wed, 28 Oct 2026 10:25:48 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c69e721eesm71446646d6.11.2026.10.28.10.25.46
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Oct 2026 10:25:32 -0700 (PDT)
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 28 Oct 2026 17:25:31 +0000
-Message-Id: <DMGNAV67LK3F.2FNLTD5NVHDEA@gmail.com>
-Subject: Re: [PATCH RFC 0/8] vsock: add datagram support to virtio and vhost
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: "Sergio Lopez" <slp@redhat.com>, "Stefano Garzarella"
- <sgarzare@redhat.com>, "Bobby Eshleman" <bobbyeshleman@meta.com>, "David S.
- Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@kernel.org>, "Jakub
- Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Simon
- Horman" <horms@kernel.org>, "Bryan Tan" <bryan-bt.tan@broadcom.com>,
- "Vishnu Dasa" <vishnu.dasa@broadcom.com>, "Broadcom internal kernel review
- list" <bcm-kernel-feedback-list@broadcom.com>, "Stefan Hajnoczi"
- <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, "Jason Wang"
- <jasowangio@gmail.com>, =?utf-8?q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, "Xuan Zhuo" <xuanzhuo@linux.alibaba.com>, "Haiyang
- Zhang" <haiyangz@microsoft.com>, "Wei Liu" <wei.liu@kernel.org>, "Dexuan
- Cui" <decui@microsoft.com>
-Cc: <virtualization@lists.linux.dev>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
- <bpf@vger.kernel.org>, <linux-hyperv@vger.kernel.org>
-In-Reply-To: <20261028-vsock-dgram-support-v1-0-e457cf7cee78@sinrega.org>
-References: <20261028-vsock-dgram-support-v1-0-e457cf7cee78@sinrega.org>
-Content-Transfer-Encoding: 8bit
+        Wed, 28 Oct 2026 10:25:47 -0700 (PDT)
+Message-ID: <2f230d17-88ab-4456-89fc-b567c9147d6d@broadcom.com>
+Date: Wed, 28 Oct 2026 10:25:45 -0700
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -112,62 +106,71 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3 2/2] net: bcmgenet: restore the Tx coalescing
+ setting when the rings are rebuilt
+To: Nicolai Buchwitz <nb@tipi-net.de>, Doug Berger <opendmb@gmail.com>,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Justin Chen <justin.chen@broadcom.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20261022-nb-genet-fini-dma-net-v3-0-6e9fc89c0156@tipi-net.de>
+ <20261022-nb-genet-fini-dma-net-v3-2-6e9fc89c0156@tipi-net.de>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
+ xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
+ M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
+ JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
+ PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
+ KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
+ AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
+ IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
+ ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
+ bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
+ Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
+ tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
+ TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
+ zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
+ WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
+ IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
+ U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
+ 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
+ pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
+ MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
+ IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
+ gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
+ obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
+ N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
+ CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
+ C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
+ wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
+ EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
+ fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
+ MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
+ 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
+ 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
+In-Reply-To: <20261022-nb-genet-fini-dma-net-v3-2-6e9fc89c0156@tipi-net.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-On Wed, Oct 28, 2026 at 09:04 AM Sergio Lopez <slp@redhat.com> wrote:
-> This series implements SOCK_DGRAM support for virtio-vsock and
-> vhost-vsock, allowing applications to exchange connectionless messages
-> through the existing AF_VSOCK datagram API.
+On 10/22/26 01:54, Nicolai Buchwitz wrote:
+> bcmgenet_set_coalesce() writes tx_max_coalesced_frames straight into
+> DMA_MBUF_DONE_THRESH and keeps no copy of it, while
+> bcmgenet_init_tx_ring() programs a fixed 1. An ifdown and ifup or a resume
+> then puts the Tx coalescing back to one frame per interrupt.
+> 
+> Rx keeps its value per ring and reapplies it on init. Do the same for Tx.
+> 
+> Fixes: 2f9130709d2c ("net: bcmgenet: Implement TX coalescing control knobs")
+> Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
 
-The cover doesn't say who needs it.
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
-Bobby and Amery took the same feature to v6:
-https://lore.kernel.org/all/20240710212555.1617795-1-amery.hung@bytedance.com/
-Stefano said there that it can work well and that the virtio spec change
-is the next step. The last mails of the thread have Amery's v7 WIP and a
-short list of what is left.
-The cover doesn't mention it. The spec change is still missing.
-
-Why not finish v7 instead ?
-
-This RFC goes the other way in these places:
-
-  what               v6                        this RFC
-  -----------------  ------------------------  ----------------------------
-  (cid, port) space  own bind table for dgram  shared with stream. The 2nd
-                                               bind() gets EADDRINUSE
-  vsk->transport     empty until connect(),    g2h or h2g, picked in
-                     lookup per packet         socket(). -ENODEV with
-                                               vsock_loopback only
-  routing            one helper for stream     2nd copy of the chain in
-                     and dgram                 vsock_assign_transport()
-  recvmsg()          in af_vsock.c,            dgram_dequeue() stays,
-                     no dgram_dequeue()        dgram_payload_len() is new
-  VMCI               fallback                  first. No virtio dgram when
-                                               its module is loaded
-  dgram > RX buffer  drop, EHOSTUNREACH in     every RX buffer is 64K
-                     the error queue
-
-> Datagrams use destination-based routing across guest-to-host,
-> host-to-guest and loopback transports while retaining the socket's
-> transport state. VMCI keeps priority as the dedicated datagram
-
-A dgram socket uses two members of struct virtio_vsock_sock: tx_lock and
-bytes_unsent. They serve SIOCOUTQ only.
-virtio_transport_alloc_skb() does skb_set_owner_w() already.
-udp_ioctl() returns sk_wmem_alloc_get() for SIOCOUTQ.
-
-Without them a dgram socket has no transport state, like in v6.
-Then no need for the owner transport, dgram_transport_match(),
-fallback_transport, tx_accounted, the skb destructor, etc.
-
-> transport.  Guest RX buffers accommodate complete messages when
-> datagrams are negotiated, preserving message boundaries.
-
-That's 64K per RX buffer instead of 4K, for stream and seqpacket too.
-It undoes commit 03a92f036a04 ("vsock/virtio: Resize receive buffers so
-that each SKB fits in a 4K page").
-
-pskb_trim_unique() doesn't reduce skb->truesize. So a datagram of 1 byte
-charges more than 64K to sk_rmem_alloc of the guest socket.
-The default sk_rcvbuf is about 208K on x86-64. The 5th datagram in the
-queue is dropped.
