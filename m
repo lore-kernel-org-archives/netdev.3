@@ -1,59 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793187320;
-	b=CY3MN3HzKKRCkTuQuzw5TV6yckcpVs3X5tmPN4s0420Sdv4IrewzxHvIjCtYkbSk/cGW
-	 7jqUTOe5vggu1cfVTFZPcAf36wt7cxnyzrvIVjWOdOTLld6BYu0kj/sQ+JYNSvLQjSHTq
-	 KNxyvVqUELuZ6bugdCFg0p4+oSnUS3KNp6tVHkHb9X51n4vVj2sC4tYb/isIr9LCom2Wv
-	 oDFeuylJ98VOco/6rZ1vPeBfsRXsZoiUZAgageJPCNqwXfm7TEEVSYKjZoInG0XfSMhK7
-	 ZUtSykYbQYYMjOIH4gNYmngLgwQIrVrBonMMHol2lTTMP2pKdrZrSrhr1RXBZUZE3/g==
+	t=1793187636;
+	b=ssxcbPbe7qqXv4BG0GEaQoDAU7E2+PfBzSSogdriNLHba0vA++yeNRcNUPnayCA1ZVgX
+	 HbUknUsFCRVb4omGxwMBkjSHClqgP0SD9U7eSdRq7oBkmQi3gUtPFuFo5C+I4cCurq4xo
+	 TCz0cVM3py5Avax8tY7iJP51E2rP/PCQkDvaORU0ya7glL18DAPb/G7jq49cMPANJpG4n
+	 GFmYf8UVNd3s57mh6jNV383i5Y/Ne0dbV5zdqpqIROPtOtJsl4RVmvPdrJV/K5+I1kM5R
+	 ELssuwNYrESMvq38SCAw5m9180TUCwl/JI6zgXIm1kd4KJlh3ZjhVlNCDroG7NzrOsA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793187320;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	b=B8vJFfofHUzZYZ/GbKfSFUlRIzxbI853xLgZK6SUVxEYJnmoP6pOSc0s/o3p4a996jzn
-	 9dCpaUiNoWflC15gWk0kQFtZ9tLcoDgyQYBR12lIUrFIl2elg4NCzrxJtJ5xhiFSRyRrR
-	 kt4MWAr68nQFynI2j52CaNw0TRrW3xmvpi9+JLPG9v5jMK5VbSz9x8HPym4JE7thsxgQe
-	 0Cv/7IT2NJbPiTx2qWJX0NhbDBJUzbjdibFOeWk0aeesYKn5Cj1WngCyFyxac5HMC8r+U
-	 4w5iAPHmuGWd0RKwOpojuhrE3G9Nv81/WXlP2p5js327PWRPB91ExHRTSDeeW7uK4hg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793187636;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=obR2UEdD7Tns0Z10i+23V+1SlPg/ENB2qI48XfeG2/k=;
+	b=HzaPoFw9MyNDiGnjkml68IsWddYDhADefCd3dHaQO3arWhPq8Yzy30aH/qZqifotkbpS
+	 Gg+kxB/S3XRYxcNdmWnzkG/rQQEnTrmhqVH0PPUxnQJGf1zmpgRWwT9mRmG7kKH8pVNYn
+	 xraiyqaMhyaQb+nF0UtQQuD6nJWSgJi7P9a/M3WS4Th2mMfVkxzl6uPPLfMZAK9Dt6YGw
+	 Q9JuJqyleeDOLiePdg0F/z5bnDw+djbUbSizKkE+UyMaF+fuqG1gW+9b/pCmKyr38EzMb
+	 wvWIRHf0HnVQBJFntPlCuHHVJNE7zZbBOUpBJZK1IekSfb1pAEtmNQbzSQxakeFhs5w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ENLrp3x4;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ezr0klfN;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF65606A31D;
-	Wed, 28 Oct 2026 11:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E586606A31D
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 11:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ENLrp3x4
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19CA81F01829;
-	Wed, 28 Oct 2026 11:35:19 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ezr0klfN
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF55D1F031E2
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 11:40:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793187319;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ENLrp3x4fVCj2fd8PUkdXs7htbYd0m0ytAAujsddQ9q3EjQ1ctCRP6aUYX4rmHVum
-	 0zTVn+CR1ukkvg0yt+cwOA19es186qwKxG+tp162zBuJurM4Ls89sIn5/HkKFePXsi
-	 5KdjLtvlZsrsBMPu9wqtSd65AIRHfE87A7B65zcCsYCWfQBvE20sTGtobch3RPDRKH
-	 jRB0ZMBftRPl/0qXpCkxLnNBFmudKVqE6xcWNIfzxzXMjuMlu8efMHdkJ8nt8yqjeC
-	 s/bIUKA/5D4fruMpvMZusPJOkyiPeTAX3Wsr7SWFkyKrpjwNwIwvhO72upWi8mtfrz
-	 mu9LLFOapM9kQ==
-From: netdev-bot+sinfo@kernel.org
-To: Tang Bin <tangbin@cmss.chinamobile.com>
-Cc: andrea.mayer@uniroma2.it, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: 
- Re: [PATCH] seg6: fix OOB read in advance_nextseg when segments_left is 0
-Date: Wed, 28 Oct 2026 11:35:18 +0000
-Message-ID: <179318731865.3327.13254506298277087120@kernel.org>
-In-Reply-To: <20261028113141.2111-1-tangbin@cmss.chinamobile.com>
-References: <20261028113141.2111-1-tangbin@cmss.chinamobile.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=k20260515; t=1793187636;
+	bh=obR2UEdD7Tns0Z10i+23V+1SlPg/ENB2qI48XfeG2/k=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=ezr0klfNxF7Ey0XZOvc/mzvkQZTo8mbVM9GBw1OHHOFyL2e70AIJTb1T6vgvOtVTa
+	 GxQT+GsALQQnX5/tfT1DVyUZErOP0YGFdvnLDVCXPpkvo8VFAwkDwACxtHgMF6PCQ2
+	 0j3ws7DbySoBOQjnHXodMtEJ0svIkuvaxO5KBUjmArZO5+W4qaWEO9W42EnA5utcQL
+	 YJugRcZ+2ed1hBls5s+ieT9dQu6Wqsd6WiRAnlWcmPaZ4SxtOwvx5Ftyzx57Jf1r3O
+	 RbXQ4hCYL2HuWud5IcdSYaFUaXAhtqpbND0lgMHH9JGMGsheW/OyiiNVOSf8gPrAMd
+	 nPslxBQGs9FoQ==
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-703be215729so474145eaf.1
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 04:40:35 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxORasYwr5c/N1H2fKG0tslwyQ4kT8PihCNsLze628ZZLRFYJZ3hshkg5wf1/zdukRRWkPxoPg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIsOYV9JdMSHiYbgB+HplOCclhaeSGboMWqaIkiG4cUUP8Jm7Sj
+	DirmJEG0elz/NddUeBLmlkZCo9rLdRjBTHVNKnjYDKPnky6Rb628ysF3Ly6eEQfZ5gGc3G+ExV4
+	oviEuk/KERpYA0pZ1+Fhj4Ex/CIW+4kc=
+X-Received: by 2002:a05:6820:151a:b0:70b:9806:c916 with SMTP id
+ 006d021491bc7-713eeb541c3mr1075160eaf.51.1793187635194; Wed, 28 Oct 2026
+ 04:40:35 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,25 +59,161 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+References: <bpf_redirect_neigh_short_linear.v1.r0.20261028033717-1@mojatatu.com>
+ <2a0f5ff1d8db81b07fc4b344b8e68e3505fcbf36f72a471d1678b2f1cecd881b@mail.kernel.org>
+In-Reply-To: <2a0f5ff1d8db81b07fc4b344b8e68e3505fcbf36f72a471d1678b2f1cecd881b@mail.kernel.org>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Wed, 28 Oct 2026 12:40:23 +0100
+X-Gmail-Original-Message-ID: <CAL4WiioEQsckFKbLz8mnZdK9vG93qEj40Ft8fEfqaNDHyB7DTg@mail.gmail.com>
+X-Gm-Features: AclHuK_CEP5bgRzGigT6P04fyHtIPSbz6OTbsbeDJkrmOaj61eVvdu3lBePlTmM
+Message-ID: <CAL4WiioEQsckFKbLz8mnZdK9vG93qEj40Ft8fEfqaNDHyB7DTg@mail.gmail.com>
+Subject: Re: [PATCH net] bpf: Fix skb_pull() BUG in __bpf_redirect_neigh()
+To: bot+bpf-ci@kernel.org
+Cc: jhs@mojatatu.com, netdev@vger.kernel.org, bpf@vger.kernel.org, 
+	stable@vger.kernel.org, daniel@iogearbox.net, ast@kernel.org, 
+	dsahern@gmail.com, kafai@fb.com, martin.lau@linux.dev, 
+	john.fastabend@gmail.com, sdf@fomichev.me, andrii@kernel.org, 
+	eddyz87@gmail.com, memxor@gmail.com, song@kernel.org, yonghong.song@linux.dev, 
+	jolsa@kernel.org, emil@etsalapatis.com, ihor.solodrai@linux.dev, 
+	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	jiri@resnulli.us, victor@mojatatu.com, martin.lau@kernel.org, 
+	mason@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi!
+Le mer. 28 oct. 2026 =C3=A0 11:19, <bot+bpf-ci@kernel.org> a =C3=A9crit :
+>
+> > bpf: Fix skb_pull() BUG in __bpf_redirect_neigh()
+>
+> TL;DR: The new skb->mac_len < ETH_HLEN check in __bpf_redirect_neigh() ma=
+y
+> wrongly drop valid packets on tc egress and netkit, where mac_len is ofte=
+n 0;
+> a regression that would reach stable.
+>
+> > diff --git a/net/core/filter.c b/net/core/filter.c
+> > index b7ac145b68b1..95a8a728a71d 100644
+> > --- a/net/core/filter.c
+> > +++ b/net/core/filter.c
+>
+> [ ... ]
+>
+> > @@ -2451,10 +2451,14 @@ static int __bpf_redirect_neigh_v4(struct sk_bu=
+ff *skb, struct net_device *dev,
+> >  static int __bpf_redirect_neigh(struct sk_buff *skb, struct net_device=
+ *dev,
+> >                               struct bpf_nh_params *nh)
+> >  {
+> > -     struct ethhdr *ethh =3D eth_hdr(skb);
+> > +     struct ethhdr *ethh;
+> >
+> >       if (unlikely(skb->mac_header >=3D skb->network_header))
+> >               goto out;
+> > +     if (unlikely(skb->mac_len < ETH_HLEN ||
+> > +                  !pskb_may_pull(skb, ETH_HLEN)))
+> > +             goto out;
+>
+> Does the new skb->mac_len < ETH_HLEN test drop valid packets on tc egress
+> and netkit?
+>
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+The bot is right, sorry Jamal, I missed this when looking at your
+first version.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+skb->mac_len is only set on the receive path. On tc egress (and netkit),
+it is usually 0 for locally generated packets, so this would drop all
+bpf_redirect_neigh() traffic from egress programs.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+In both cases skb->data is at the MAC header when __bpf_redirect_neigh()
+runs (sch_handle_ingress() pushes skb->mac_len before skb_do_redirect()),
+so you can use skb_network_offset() instead:
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+if (unlikely(skb_network_offset(skb) < ETH_HLEN ||
+     !pskb_may_pull(skb, ETH_HLEN)))
+        goto out;
+
+This still rejects the 1-byte header from bpf_skb_change_head(skb, 1, 0),
+and also covers the existing mac_header >=3D network_header test.
+
+
+> skb->mac_len is only set on the receive path, where
+> __netif_receive_skb_core() calls skb_reset_mac_len().  The transmit path
+> only calls skb_reset_mac_header() in __dev_queue_xmit(), and nothing in
+> ip_finish_output2(), neigh_output(), eth_header(), sch_handle_egress(),
+> tcx_run(), cls_bpf_classify() (egress branch), netkit_xmit() or
+> netkit_prep_forward() writes mac_len.
+>
+> A packet built by a local socket starts with mac_len =3D=3D 0, because
+> skbuff_clear() zeroes everything before 'tail', and skb_clone() (used by =
+TCP
+> transmit) copies that 0.
+>
+> For example, with tc egress and a locally generated IPv4/IPv6 packet:
+>
+> ip_finish_output2()
+>   neigh_output()
+>     dev_queue_xmit()
+>       __dev_queue_xmit()          <- skb_reset_mac_header() only
+>         sch_handle_egress()
+>           tc_run() / tcx_run()
+>             prog returns bpf_redirect_neigh() =3D TC_ACT_REDIRECT
+>               skb_do_redirect()
+>                 __bpf_redirect_neigh()
+>
+> Here mac_header < network_header passes, because an Ethernet header was
+> pushed, but mac_len =3D=3D 0 < ETH_HLEN, so the skb goes to 'out', gets
+> kfree_skb() and -ENOTSUPP is returned.
+>
+> The same happens with netkit:
+>
+> netkit_xmit()
+>   netkit_run()
+>     NETKIT_REDIRECT
+>       skb_do_redirect()
+>         __bpf_redirect_neigh()
+>
+> with mac_len still 0.  Netkit programs are BPF_PROG_TYPE_SCHED_CLS, and
+> tc_cls_act_func_proto() allows BPF_FUNC_redirect_neigh.  Forwarded traffi=
+c
+> that arrived on a layer 3 device (mac_len 0 on receive) and leaves throug=
+h
+> an Ethernet device's tc egress would be dropped as well.
+>
+> Before this patch these paths worked, since the Ethernet header is linear
+> (dev_hard_header() pushes it into the head) and skb_pull(skb, ETH_HLEN) w=
+as
+> fine.  bpf_out_neigh_v4/v6() calling sock_confirm_neigh(skb, neigh) also
+> suggests the helper is meant to handle locally generated skbs.
+>
+> Elsewhere the kernel already treats mac_len as unreliable at egress.
+> act_mirred uses:
+>
+>     mac_len =3D at_ingress ? skb->mac_len : skb_network_offset(skb);
+>
+> and act_mpls uses skb_network_offset(skb) when not at ingress.
+>
+> The bpf_redirect_neigh selftests (test_tc_neigh, test_tc_neigh_fib,
+> test_tc_dtime) all attach at tc ingress, where mac_len is valid, so they
+> would not catch this.
+>
+> Would testing the real MAC header length work instead, for example
+> skb_mac_header_len(skb) < ETH_HLEN (network_header - mac_header), or
+> skb_network_offset(skb) < ETH_HLEN with skb->data at the MAC header here?
+>
+> That would still reject the 1-byte header from the commit message (pop_et=
+h
+> followed by bpf_skb_change_head(skb, 1, 0)) without dropping egress and
+> netkit traffic.  Since the patch carries Cc: stable, this regression woul=
+d
+> also reach stable kernels.
+>
+>
+> ---
+> AI reviewed your patch. Please fix the bug or email reply why it's not a =
+bug.
+> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/READM=
+E.md
+>
+> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/406663=
+97744
