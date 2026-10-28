@@ -1,112 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.1
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793199967;
-	b=ZVLcJ5xIBvu7AshH2y9jERMpcH5r76IRm1ml655CGJ0p/HjhN4I2AA7Gepofcn18d8M/
-	 dQKfn9xmxfct10ui5KDHX2OqCcPgaP9aojWwLm8b7NgFeUHDigEKxU9Rhz/VWaSRx73Id
-	 cz4QURUr6m734xX5Dwp0hn9m9m8DWhb2/dzO0nMhtZzUmiNLJbTa4nADXBkehvfv1MghH
-	 i2dMwGPNN8/jOFM2PyVRJ4m7kOpC0kvhICffEto9NG+dSsHMAbDRQ9K9mshpRYJ8EkP4W
-	 TPXpk7R0ZpXSa/+lgWJuSaLJPiy5Yu/1y0/v8Szyenv3R5uKOQwJsr6pNov/6FGQdgQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793199967;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:Content-Type:
-	 X-Originating-IP:X-ClientProxiedBy:X-EOPAttributedMessage:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=zsCqrh1dihTp0DSpLhKP3InuAvtlGZvxQMdJ5rHB++8=;
-	b=tI/pU53Fzq17gqnpVdeEMe5QDEdQu5Iq9pB9iNtwal1lMYzkc3uz2e5yeI9AKvk74o20
-	 bWbEi6MtOP3sW6TEoUVE6mgH/2WxUehKj3jURtjCRhCzrLOggvS8qnk0X9rc60aNJenTB
-	 OHAv6D7FiBBDs7/OVT5zqEIfDsLPyTWl3tUGu6uez6RkHjC7mkosD/8HdtwsS0LoJ5+jH
-	 u+g6+xeMfNU1vHsP03HtJppTUm4ZdiO/Kg0RWiJw1cY9EGuh6pr4fRrk1QRwrMOWeDR20
-	 9mHLwFKA3oRe2r74nvkHOVR881QkKSnpjsZbeMQ7A4pS5DO4Kp1wTz81oZ4CdJphZAA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=hFNRT9eP;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.1
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012001.outbound.protection.outlook.com [52.101.48.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC343606A31C;
-	Wed, 28 Oct 2026 15:06:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AC343606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.80.4.37
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793200084;
+	b=ydf3gVE8VYPP5mXUCwkFQ3bC9ypBO0x/a4ECwuXlgyoE6GnG/mX99LkbwVPl8dwhB2zo
+	 x1seJ3WcU+UCbzlboEuVrwWTdcHeisLLu0TYLLMQFQwg8XeNY/NFN0uDyMXz0gVxiGG9B
+	 kUe1OGMeUA1FFk6UzrURiPuf7KUkpGwCEV0K6VXLdZY/XZQyZRbIeX1I+svh0nbkCLZT8
+	 V2klcnopbxxrujIZWpSlKCduK2Bp3RnEdEPRqjIOra9cgNBzOe/x7vh0hWLXf76eNo8l2
+	 NM6bR0GM3FzjwWPOEIX4Q212vquMmfGStZGgP4I4b9eJRCVvzYllPDhITwHla0znMZQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793200084;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:Date:
+	 From:To:Cc:Subject:Message-Id:In-Reply-To:References:X-Mailer:
+	 Mime-Version:Content-Type:Content-Transfer-Encoding:X-Virus-Scanned:
+	 X-Virus-Status;
+	bh=44l5EMiVsY/tDoRrmll9AZ7FjK4IkjzJb1T2mR7SHCA=;
+	b=Mw1pcBxp7Yh1KTplU0y8AQZZHiNQQvyYDze2MnR3y7XKIkpypAVFR+boGMy39Od9nF0I
+	 rjDmMkPET+K/NL36Ws4HOcU3O7dkVHDxxiu3sOt277zV/yijFMkYj4jdB4n+QVlE7HGon
+	 ctsWk2brLedh2HNUxD/U98bxkxp9n6QQR/mySFiMy0CFHPu8uXWHG2yQaFdWBSINf2Nky
+	 AsNnFXVCloBXT06X1TCU09d1RZCDNLY5uPdrnA1vaW+R1gpsMtWVo7ebQBlXyqwF8+y3Z
+	 /eKsZvU8adrctZog7o+igt5vNQyWVH75+hoXuH5BbRsTQd2Z0gIjFpG/lipfLZPOOEQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=uniroma2.it;
+	spf=pass smtp.mailfrom=uniroma2.it;
+	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=9EDRZRtN;
+	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b="O/MbzMa0";
+	arc=none smtp.remote-ip=160.80.4.37
+Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C84606A31E;
+	Wed, 28 Oct 2026 15:07:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 37C84606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=hFNRT9eP
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=u7qLHbbLkt7jTpRECDidybEDqxwiTjSPrb/+YchZTW6ViXAcm/Ovm9Mdp4PB/tK9bYYOI+q8RWZaffDyT0Fb8TNMGIkoH722zEeISAmSdy2VOqszJnv1tU8dOwgqSg9Zpa44RobHrR6Z86DllIxiG4fgvR6l8Fz67Kza0izczLPQxmWLUJmsXNpLZlphlkrs6xG7aoyWZqG6jOcM8TjHAVQAYwBIiWclVBBxy2/bOYDc1Xoz0nQ6QowUqPl/T/Chg4c4BqFHdW2awkeZCAlvTrxssSw1aSvZwFyHwkAlUsDaGObtAkTbURaI+4sy+yUvMOY6AK0p8lng9DBOfTqzsA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zsCqrh1dihTp0DSpLhKP3InuAvtlGZvxQMdJ5rHB++8=;
- b=xnjQBtESFvggxnoojTs5qsWMH7mhiWfeqR4kxG2pFrnUVkgP5SxIky25Z9xluBe0D82S4RjCUCaNKJdYbPETV4KXXX842QLhbLotHLGjvbXHYwfQJZfH7WoUNuII6Wcrw4/mOstedfCLhrkt8ngU7UbnLOJEotNMx11jWdwOa42lj4BRnHi5eeJU8W5Fwe1MxEtjVcN27TSeB3yOGmRY4uAE3BDq+qvNyKj8VZJie/k1M3OHfkdl76yVlVK01KWgsD1hQfA+5K0r8SiLEeImYAurlCBIh1/OpuWPyBQIdTdXuN0frPRBFP8EKCXddWUdXiklJgfrUQRvQk4ZZxZ13w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zsCqrh1dihTp0DSpLhKP3InuAvtlGZvxQMdJ5rHB++8=;
- b=hFNRT9ePdrSWfMYGgjG6Bzzc9sc3zGtdlYB9mFbjOWgq7kHoe9ruei/YGAiJiNDU8RZndTqUIKFbhBHpQsgrmrgM7XBkTZGe2m0RBwEdw6SrrzxQCW3pU945G/AH8WRmKQHMXpLf1fj3wnOoH+FOYDTXpQezDtvSKy2MHoe2j4PMGErFwqb6HKsrUL742nq9YBMdeRI1QXKQeVD0RlG/RVcXP5gclUOnls8g8w95Bm5x5E7c7DqNtO0VqmU2c+S7CUPN1L+vn/xDaQOfJBbYhFHwXEp5+S/zKsqQXR/DvYtBqSPYi+ptIBBlac+X9hRdduF+yBbWHpXuoKV8sYO+Og==
-Received: from PH7PR02CA0020.namprd02.prod.outlook.com (2603:10b6:510:33d::28)
- by CH2PR12MB4262.namprd12.prod.outlook.com (2603:10b6:610:af::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.8; Wed, 28 Oct
- 2026 15:06:02 +0000
-Received: from PH5PEPF0000002D.namprd04.prod.outlook.com
- (2603:10b6:510:33d:cafe::53) by PH7PR02CA0020.outlook.office365.com
- (2603:10b6:510:33d::28) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.546.22 via Frontend Transport; Wed,
- 28 Oct 2026 15:06:02 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- PH5PEPF0000002D.mail.protection.outlook.com (10.167.243.7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.569.4 via Frontend Transport; Wed, 28 Oct 2026 15:06:01 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Wed, 28 Oct
- 2026 08:03:37 -0700
-Received: from vdi.nvidia.com (10.126.231.37) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Wed, 28 Oct
- 2026 08:03:34 -0700
-From: Chris Babroski <cbabroski@nvidia.com>
-To: <netdev-bot+sashiko@kernel.org>
-CC: <nb@tipi-net.de>, <Raju.Lakkaraju@microchip.com>,
-	<UNGLinuxDriver@microchip.com>, <andrew+netdev@lunn.ch>,
-	<bryan.whitehead@microchip.com>, <cbabroski@nvidia.com>,
-	<davem@davemloft.net>, <davthompson@nvidia.com>, <edumazet@kernel.org>,
-	<kuba@kernel.org>, <linux-kernel@vger.kernel.org>, <linux@armlinux.org.uk>,
-	<maxime.chevallier@bootlin.com>, <netdev@vger.kernel.org>,
-	<pabeni@redhat.com>, <richardcochran@gmail.com>
-Subject: Re: [PATCH net-next v1 4/5] net: lan743x: reset the device on TX timeout
-Date: Wed, 28 Oct 2026 11:03:24 -0400
-Message-ID: <20261028150324.9007-1-cbabroski@nvidia.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <179242764729.3135.6473581413465367257@kernel.org>
-References: <179242764729.3135.6473581413465367257@kernel.org>
+	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=9EDRZRtN;
+	dkim=pass (2048-bit key, unprotected) header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b=O/MbzMa0
+Received: from smtpauth-2019-1.uniroma2.it (smtpauth-2019-1.uniroma2.it [160.80.5.46])
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 69SF7AJl016772;
+	Wed, 28 Oct 2026 16:07:16 +0100
+Received: from lubuntu-18.04 (unknown [160.80.103.126])
+	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 8C3A8122954;
+	Wed, 28 Oct 2026 16:07:04 +0100 (CET)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
+	s=ed201904; t=1793200025; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=44l5EMiVsY/tDoRrmll9AZ7FjK4IkjzJb1T2mR7SHCA=;
+	b=9EDRZRtNWbjr9yybTkw0MUZLg3twCV3daEIHWNRj+XkqvA0vLw5JWQXyVAaPuzTRooKF8P
+	JXKbfQ30TkaLGNBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
+	t=1793200025; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=44l5EMiVsY/tDoRrmll9AZ7FjK4IkjzJb1T2mR7SHCA=;
+	b=O/MbzMa0a1lNebygFgsWSkocmAmxjCD8C32WY8Oqp4+exAW8yHATcbbNk4ed5PFfMngerA
+	5G3NWUBK+uxOUDa1fGU3mvQMvSGDsJSqSjl+//SJxa/QNir605AuLKh/5QTmmvkW1BNPC4
+	PVzOQzMf/gHWHtTDQp9UrqV8kQdo+j7tpwG5vdqesoOe9RRJ87wEd2yml2wsIKAHzOG63i
+	NfTx87uKMeY5ANZ+q3Sz+Pv44uNebNO9ge/C57B3NHkdEc5L/UMulEbF9ZRJG9ROUlHjEK
+	rXvdORXAdYdtOF+ZJ4so7F40cEa21+VAw8OIbpkg+xuhvr5olrhawcWYm3/vmQ==
+Date: Wed, 28 Oct 2026 16:07:04 +0100
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Hangbin Liu <hangbin.liu@linux.dev>,
+        "David S. Miller"
+ <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
+ <kuba@kernel.org>,
+        Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, David Lebrun <david.lebrun@uclouvain.be>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
+        Herbert Xu
+ <herbert@gondor.apana.org.au>,
+        David Ahern <dsahern@kernel.org>,
+        Hazley
+ Samsudin <hazleycryilis@gmail.com>,
+        Stefano Salsano
+ <stefano.salsano@uniroma2.it>,
+        Andrea Mayer <andrea.mayer@uniroma2.it>
+Subject: Re: [PATCH net] seg6: fix transport header for inner IPv4 with IP
+ options
+Message-Id: <20261028160704.5dd02501bad62a6dfd46139f@uniroma2.it>
+In-Reply-To: <944e6740-d91d-4251-be31-aab730a49d43@redhat.com>
+References: <20261020023336.34-1-andrea.mayer@uniroma2.it>
+	<atgWEBZ5J9LQyULx@fedora>
+	<944e6740-d91d-4251-be31-aab730a49d43@redhat.com>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -115,294 +95,178 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH5PEPF0000002D:EE_|CH2PR12MB4262:EE_
-X-MS-Office365-Filtering-Correlation-Id: 98369b99-46f0-40e9-704b-08df3504fb27
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|376014|7416014|82310400026|36860700016|5023799004|11063799006|56012099006|261009223027099003|261022105027099003|261026121527099003|261026140227099003|261021121427099003|261022075727099003|10067099003|18002099003|22082099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	Mmtk/X/CAAioSIcHwZOE8jC+L55atSJ2YX/5H11RNTDdm1gIgeVHM44HMjpvx6heGU6RvMWbEs7r31S0xYJFC6buMEwfKi5m/WbMnRFIN4OgtKgDWTy6oavER2c2RPACaIBIXcmjf+55w+Ht5y0/JI7OWVf3dyIcGlyWxRKRT7GniwfUvb/VzJkuw50VkILPNuScy6s7pWjL8qoaKVJXBH1/LlW1Q53pUgASrdVPYjLVzmJPe6K1uBch2fYzRSwZr97zq7o/bI44gsMivBDoF0n2C5L4S03woUVizJbiGv7KK8/bY4W9G4qlMdZYP5uafnzS/Hn0s/mftprMuafFIUbWXcoAYS+71fOKwbGKWynuWyVmKRItCST0zWDC+hPKAi9os2dY10jqVGXq5UUao5edNoFdKPzgvsasahQvcbGOMVviCru4+93maRygvzIQGpKvox86oS8ViQoPtfEmDpwDOWlI1wkOx6n1LKh+n1RZVWyCu5l6oBGvdRGuMaue4sbQcxtFo33pny1hnnPWpGijh0uJWG9wDkrI3uJgpQpHSpaWJUFrbKu0eYdIUwDYqJPGBzFwAVBFdq4XhWFg7RYnwzpCWkagM3lsdzDnjQzuMQRs1jVYva0fTld1dytS/gGkFjIQ1tx8z9VbenJeOxVsKlCqR1TjmkhDWcIFdAcfUQk1WUtC9HyLnjK8gCo4ocftNxQ8kKo72MeAY5Z8mw==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(7416014)(82310400026)(36860700016)(5023799004)(11063799006)(56012099006)(261009223027099003)(261022105027099003)(261026121527099003)(261026140227099003)(261021121427099003)(261022075727099003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	uc07KmWBC/MQnDUL2GMbW8mzK8th+hzxFeDYaVn3QNHIKP2EndB5VYZQtkwnSW+7SwZyU514+UbmmImgCcBHKH7xjHeFwHeqw7GJgXjHB0rq4EPtYFQp2BRnLY+UcGulsBmu5cDS7OYrmJg8ZD5eQlqq4poDi9kTv+8jYwhWyyMOlERty47rKzT9mXKfnXDqbHGASNE/uxTGhZMY+wXfdcDlrOBjDlCllwaKhnQFUtCjLV7fz61khHQWJwYqkjI21989s1YywY9GMFyKbgVVhf+ymMEcV5SLcvm9B930lBr45GmK6szMyto2Fuq6ybHAtGeRysKP+f3A8d1c3HSKe0kwnyNWUiTLPgfMtgTX4qOi3Ded1my05VUjEAiCTNCx9ADb9SSAQNUSTBWSQ2msTew1dkGkjtHjEDNkMCb/4Tchrc8htnAVfkiufsyQ4te8
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2026 15:06:01.8365
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 98369b99-46f0-40e9-704b-08df3504fb27
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	PH5PEPF0000002D.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4262
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
+X-Virus-Status: Clean
 
-> >  static int lan743x_dmac_init(struct lan743x_adapter *adapter)
-> >  {
-> >  	u32 data = 0;
-> > +	int ret;
-> >  
-> >  	lan743x_csr_write(adapter, DMAC_CMD, DMAC_CMD_SWR_);
-> > -	lan743x_csr_wait_for_bit(adapter, DMAC_CMD, DMAC_CMD_SWR_,
-> > -				 0, 1000, 20000, 100);
-> > +	ret = lan743x_csr_wait_for_bit(adapter, DMAC_CMD, DMAC_CMD_SWR_,
-> > +				       0, 1000, 20000, 100);
-> > +	if (ret)
-> > +		return ret;
-> 
-> [Severity: Medium]
-> The commit message only talks about probe here. However,
-> lan743x_hardware_init() is also called from lan743x_pm_resume().
-> 
-> Before this change lan743x_hardware_init() could not fail in practice,
-> so the resume error branch was dead code. Does this new return make that
-> branch reachable?
-> 
-> lan743x_pm_resume() {
->     ...
-> 	ret = lan743x_hardware_init(adapter, pdev);
-> 	if (ret) {
-> 		netif_err(adapter, probe, adapter->netdev,
-> 			  "lan743x_hardware_init returned %d\n", ret);
-> 		lan743x_pci_cleanup(adapter);
-> 		return ret;
-> 	}
->     ...
-> }
-> 
-> If that branch runs, the netdev stays registered and detached. A later
-> unbind then runs:
-> 
-> lan743x_pcidev_remove()
->   lan743x_full_cleanup()
->     lan743x_hardware_cleanup()   <- INT_EN_CLR write to a disabled device
->     lan743x_pci_cleanup()        <- second region release and disable
-> 
-> Would that release the PCI regions twice and trigger the "disabling
-> already-disabled device" warning?
+On Wed, 21 Oct 2026 12:40:30 +0200
+Paolo Abeni <pabeni@redhat.com> wrote:
 
-Yes, and this issue can be resolved by removing the call to
-lan743x_pci_cleanup() on lan743x_hardware_init() error and continuing to
-return early from resume, leaving the device in a detached state.
-lan743x_pci_cleanup() would then only be called in remove which matches
-how lan743x_pci_init() is called in probe and not resume.
+> On 10/21/26 03:32, Hangbin Liu wrote:
+> > On Tue, Oct 20, 2026 at 04:33:36AM +0200, Andrea Mayer wrote:
+> >> The End.DT4, End.DT46 (its IPv4 path only) and End.DX4 behaviors set the
+> >> transport header of the decapsulated IPv4 packet at a fixed 20 bytes, the
+> >> size of an IPv4 header without options. They do not validate the header
+> >> length either. With options, the transport header points at the first
+> >> option byte. The effects include:
+> >> - ping -R sends an echo request with a 60-byte IPv4 header to a local
+> >>    address through an End.DT4 or an End.DX4 SID. Since icmp_rcv()
+> >>    computes the ICMP checksum from the first option byte, the request
+> >>    fails the check and is counted in IcmpInCsumErrors.
+> >> - A UDP datagram can reach a port that an iptables rule drops. The rule
+> >>    checks the UDP header after the full IPv4 header, while the socket
+> >>    lookup reads it at the fixed 20-byte offset.
+> >> - With an inbound AH state, ah_input() reads the AH header at the fixed
+> >>    20-byte offset, but copies the IPv4 header over it with the length in
+> >>    the IHL field. A packet shorter than that length can make ah_input()
+> >>    write past the end of the data, into skb_shared_info when the skb has
+> >>    no tailroom.
+> >>
+> >> Validate the inner IPv4 header length with the new helper
+> >> seg6_validate_iphdr_len() and set the transport header at that length. A
+> >> packet that is not IPv4, whose header length field is below 5, or whose
+> >> header is truncated, is dropped with a drop reason. The fix is limited to
+> >> the header length, which the transport header relies on. Other checks done
+> >> on IPv4 input, such as the header checksum, the total length and the IP
+> >> options, are not addressed here.
+> >>
+> >> Found by code inspection while reviewing commit 44930446dde4 ("ipv6: seg6:
+> >> clear IPv4 control block on IPIP decapsulation"), as a pre-existing issue
+> >> that Sashiko also reported on v2 of that patch. Without this patch, a
+> >> bpftrace probe on ah_input() shows the reporter's reproducer packet
+> >> written into skb_shared_info. With it, that packet is dropped before
+> >> ah_input(), ping -R no longer fails the ICMP checksum, the UDP datagram
+> >> reaches its real port, and the SRv6 selftests still pass. These effects
+> >> reproduce on an unmodified kernel, without error injection.
+> >>
+> >> Fixes: 891ef8dd2a8d ("ipv6: sr: implement additional seg6local actions")
+> >> Fixes: 664d6f86868b ("seg6: add support for the SRv6 End.DT4 behavior")
+> >> Reported-by: Hazley Samsudin <hazleycryilis@gmail.com>
+> >> Closes: https://lore.kernel.org/netdev/20260809221915.2ffc1ecd0f445fcb70270e31@uniroma2.it/
+> >> Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+> >> ---
+> >>   net/ipv6/seg6_local.c | 56 ++++++++++++++++++++++++++++++++++++-------
+> >>   1 file changed, 48 insertions(+), 8 deletions(-)
+> >>
+> >> diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+> >> index 53f7b2452575..c249f7751d41 100644
+> >> --- a/net/ipv6/seg6_local.c
+> >> +++ b/net/ipv6/seg6_local.c
+> >> @@ -1056,6 +1056,40 @@ static int input_action_end_dx6(struct sk_buff *skb,
+> >>   	return -EINVAL;
+> >>   }
+> >>   
+> >> +/* Validate the length of the IPv4 header at skb->data (which must point to
+> >> + * the network header) and report that length, options included.
+> >> + * Only the version, the header length and the presence of the whole header
+> >> + * are checked.
+> >> + * The length is written only when SKB_NOT_DROPPED_YET is returned.
+> >> + *
+> >> + * skb pointers may change: after this call, the caller must evaluate again
+> >> + * any pointer into the packet data.
+> >> + */
+> >> +static enum skb_drop_reason
+> >> +seg6_validate_iphdr_len(struct sk_buff *skb, int *hdrlen)
+> >> +{
+> >> +	enum skb_drop_reason reason;
+> >> +	const struct iphdr *iph;
+> >> +	int len;
+> >> +
+> >> +	reason = pskb_may_pull_reason(skb, sizeof(struct iphdr));
+> >> +	if (reason)
+> >> +		return reason;
+> >> +
+> >> +	iph = ip_hdr(skb);
+> >> +	if (iph->version != 4 || iph->ihl < 5)
+> >> +		return SKB_DROP_REASON_IP_INHDR;
+> >> +
+> >> +	len = ip_hdrlen(skb);
+> >> +
+> >> +	reason = pskb_may_pull_reason(skb, len);
+> >> +	if (reason)
+> >> +		return reason;
+> >> +
+> >> +	*hdrlen = len;
+> >> +	return SKB_NOT_DROPPED_YET;
+> >> +}
+> >> +
+> >>   static int input_action_end_dx4_finish(struct net *net, struct sock *sk,
+> >>   				       struct sk_buff *skb)
+> >>   {
+> >> @@ -1085,14 +1119,18 @@ static int input_action_end_dx4_finish(struct net *net, struct sock *sk,
+> >>   static int input_action_end_dx4(struct sk_buff *skb,
+> >>   				struct seg6_local_lwt *slwt)
+> >>   {
+> >> +	enum skb_drop_reason reason = SKB_DROP_REASON_NOT_SPECIFIED;
+> >> +	int hdrlen;
+> >> +
+> >>   	if (!decap_and_validate(skb, IPPROTO_IPIP))
+> >>   		goto drop;
+> >>   
+> >> -	if (!pskb_may_pull(skb, sizeof(struct iphdr)))
+> >> +	reason = seg6_validate_iphdr_len(skb, &hdrlen);
+> >> +	if (reason)
+> >>   		goto drop;
+> >>   
+> >>   	skb->protocol = htons(ETH_P_IP);
+> >> -	skb_set_transport_header(skb, sizeof(struct iphdr));
+> >> +	skb_set_transport_header(skb, hdrlen);
+> >>   	nf_reset_ct(skb);
+> >>   
+> >>   	if (static_branch_unlikely(&nf_hooks_lwtunnel_enabled))
+> >> @@ -1102,7 +1140,7 @@ static int input_action_end_dx4(struct sk_buff *skb,
+> >>   
+> >>   	return input_action_end_dx4_finish(dev_net(skb->dev), NULL, skb);
+> >>   drop:
+> >> -	kfree_skb(skb);
+> >> +	kfree_skb_reason(skb, reason);
+> >>   	return -EINVAL;
+> >>   }
+> >>   
+> >> @@ -1234,6 +1272,7 @@ static struct net_device *end_dt_get_vrf_rcu(struct sk_buff *skb,
+> >>   static struct sk_buff *end_dt_vrf_core(struct sk_buff *skb,
+> >>   				       struct seg6_local_lwt *slwt, u16 family)
+> >>   {
+> >> +	enum skb_drop_reason reason = SKB_DROP_REASON_NOT_SPECIFIED;
+> > 
+> > Nit: We can use SKB_DR(reason) without the long definition.
+> > 
+> >>   	struct seg6_end_dt_info *info = &slwt->dt_info;
+> >>   	struct net_device *vrf;
+> >>   	__be16 protocol;
+> >> @@ -1246,7 +1285,9 @@ static struct sk_buff *end_dt_vrf_core(struct sk_buff *skb,
+> >>   	switch (family) {
+> >>   	case AF_INET:
+> >>   		protocol = htons(ETH_P_IP);
+> >> -		hdrlen = sizeof(struct iphdr);
+> >> +		reason = seg6_validate_iphdr_len(skb, &hdrlen);
+> >> +		if (unlikely(reason))
+> >> +			goto drop;
+> >>   		break;
+> >>   	case AF_INET6:
+> >>   		protocol = htons(ETH_P_IPV6);
+> >> @@ -1260,6 +1301,7 @@ static struct sk_buff *end_dt_vrf_core(struct sk_buff *skb,
+> >>   
+> >>   	if (unlikely(info->family != AF_UNSPEC && info->family != family)) {
+> >>   		pr_warn_once("seg6local: SRv6 End.DT* family mismatch");
+> >> +		reason = SKB_DROP_REASON_NOT_SPECIFIED;
+> >>   		goto drop;
+> >>   	}
+> > 
+> > And maybe move this checking upper before switch(), then we don't need
+> > to reset reason.
+> I think both suggestions make sense, please send a v2.
 
-Will fix this as part of v2.
+Sure, I will send a v2 with both changes. Thanks Paolo, and thanks
+David and Hangbin for the reviews.
 
-> > +static void lan743x_reset_work(struct work_struct *work)
-> > +{
-> > +	struct lan743x_adapter *adapter =
-> > +		container_of(work, struct lan743x_adapter, reset_work);
-> > +	struct net_device *netdev = adapter->netdev;
-> > +	int ret;
-> > +
-> > +	rtnl_lock();
-> > +
-> > +	if (!netif_running(netdev) || !netif_device_present(netdev))
-> > +		goto unlock;
-> > +
-> > +	netdev_warn(netdev, "resetting after TX timeout\n");
-> > +
-> > +	netif_device_detach(netdev);
-> > +	lan743x_netdev_close(netdev);
-> 
-> [Severity: Medium]
-> Here lan743x_netdev_close() runs on a controller that is already assumed
-> to be wedged. The controller-wide DMAC_CMD_SWR_ reset only happens later,
-> in lan743x_dmac_init().
-> 
-> In lan743x_tx_close(), suppose the channel does not stop and the
-> per-channel reset also times out. The error is only logged, and the ring
-> is freed anyway:
-> 
-> lan743x_tx_close() {
->     ...
-> 		ret = lan743x_dmac_tx_reset(adapter, tx->channel_number);
-> 		if (ret)
-> 			netdev_err(adapter->netdev,
-> 				   "TX channel %d reset timed out\n",
-> 				   tx->channel_number);
->     ...
-> 	lan743x_tx_release_all_descriptors(tx);
->     ...
-> 	lan743x_tx_ring_cleanup(tx);
-> }
-> 
-> lan743x_rx_close() does the same for the RX ring, the head write-back
-> buffer and the RX skbs.
+The Sashiko review [1] also asks about the inner IPv4 options on the
+decap paths. That point is pre-existing, is not addressed by this
+patch, and can be handled separately.
 
-In another thread we discussed removing the call to
-lan743x_dmac_tx_reset() inside lan743x_tx_close() as part of v2 because
-recovery happens in the following lan743x_tx_open(), but this still does
-not solve the issue flagged here that the descriptor ring is freed while
-the DMAC is still started.
+[1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261020023336.34-1-andrea.mayer@uniroma2.it
 
-Woojung already clarified that TX reset should occur after FIFO disable,
-so we could fix this by adding a conditional "stop_failed" flag that is
-used to determine if lan743x_dmac_tx_reset() should be called after
-lan743x_tx_fifo_disable().
-
-The conditional would make it so that we don't have to re-order the
-lan743x_tx_close() flow (which has higher change to introduce
-regressions on a common code path).
-
-I can add as part of v2.
-
-> [Severity: Medium]
-> This is a pre-existing issue, not one introduced by this patch. The same
-> close/open sequence leaves the TX one-step state inconsistent, and with
-> this patch the watchdog can trigger that sequence automatically.
-> 
-> lan743x_ptp_open() calls lan743x_ptp_reset() and sets the RX filter back
-> to HWTSTAMP_FILTER_NONE. However, tx->ts_flags still has
-> TX_TS_FLAG_ONE_STEP_SYNC, and nothing turns one-step Sync insertion back
-> on in the hardware.
-> 
-> After the reset, lan743x_ptp_hwtstamp_get() still reports:
-> 
-> 	if (tx->ts_flags & TX_TS_FLAG_ONE_STEP_SYNC)
-> 		config->tx_type = HWTSTAMP_TX_ONESTEP_SYNC;
-> 
-> and lan743x_tx_xmit_frame() still sets ignore_sync for Sync frames:
-> 
-> 		if (tx->ts_flags & TX_TS_FLAG_ONE_STEP_SYNC)
-> 			ignore_sync = true;
-> 
-> Can Sync frames go out without a hardware-inserted origin timestamp until
-> the application sets up timestamping again?
-> 
-> Admin down/up and suspend/resume already have the same mismatch. The
-> commit message also documents it ("one-step sync insertion is disabled,
-> while the driver keeps its TX timestamping flags"). The PHC is
-> unregistered and registered again, so applications have to reconfigure.
-> Reconfiguring applies one-step mode again through
-> lan743x_ptp_hwtstamp_set().
-
-As mentioned by Sashiko, this is a pre-existing issue and already the
-behavior that happens with admin down/up and suspend/resume. I was not
-planning to change this behavior as part of this patch series.
-
-We have a discussion going in a separate thread for this patch about how
-PTP recovery should be handled across reset (if at all as part of this
-series).
-
-This is an issue that could get worse if we register the PHC at probe,
-as discussed in the other thread, so ptp4l is no longer forced to
-restart. It would then require restoring the hwtstamp config in the
-driver after reset.
-
-> > +
-> > +	ret = lan743x_dmac_init(adapter);
-> > +	if (ret) {
-> > +		netdev_err(netdev, "DMA controller reset failed: %d\n", ret);
-> > +		goto close;
-> > +	}
-> 
-> [Severity: Medium]
-> According to the commit message, lan743x_dmac_init() now returns the poll
-> error so the work does not reopen a controller whose reset timed out. It
-> also says the interface is taken down "so it can be brought back up
-> later".
-> 
-> lan743x_netdev_open() never calls lan743x_dmac_init(). That function is
-> only called from lan743x_hardware_init() (probe and resume) and from this
-> work.
-> 
-> So if the user runs "ip link set up" after this failure, does
-> lan743x_netdev_open() reopen the same controller that never came out of
-> reset?
-> 
-> The early return in lan743x_dmac_init() also skips the DMAC_CFG,
-> DMAC_COAL_CFG and DMAC_OBFF_CFG writes. Nothing on the open path writes
-> them again.
-> 
-> Should the open path retry the DMAC reset, or should the device be kept
-> from coming back up in this case?
-
-I think adding DMAC reset to the open path increases regression risk on
-a common code path, but the alternative of keeping the device detached
-after lan743x_dmac_init() failure would work to prevent future "ip link
-set up" from opening the device after a failed reset.
-
-In v2 instead of "goto close" which includes device attach we could call
-dev_close() without netif_device_attach() in this error case and leave
-the device detached.
-
-> > +
-> > +	ret = lan743x_netdev_open(netdev);
-> > +	if (ret) {
-> > +		netdev_err(netdev, "failed to reopen after reset: %d\n", ret);
-> > +		goto close;
-> > +	}
-> 
-> [Severity: Medium]
-> Some boards use the fixed-link fallback in lan743x_phylink_connect():
-> LAN7431 or PCI11x1x with no DT node and no PHY on the MDIO bus. Can this
-> reopen ever succeed on those boards?
-> ... 
-> The fixed-link handling is existing code. On these boards, though, the
-> new recovery turns a stalled TX queue into an interface that cannot come
-> back up until the driver is probed again.
-
-This same issue was flagged in another thread as well and I wasn't
-planning to make changes because they seemed out of scope.
-
-It sounds like the fix would not be complicated though. I can attempt to
-fix this as part of v2 and then may need some help testing on HW that
-uses fixed-link mode.
-
-> > +
-> > +	goto attach;
-> > +
-> > +close:
-> > +	dev_close(netdev);
-> > +attach:
-> > +	netif_device_attach(netdev);
-> 
-> [Severity: Medium]
-> While the device is detached under rtnl here, multicast list writers that
-> do not take rtnl can still change dev->mc. The IPv6 socket join path is
-> one example:
-> 
-> ipv6_sock_mc_join()
->   igmp6_group_added()
->     dev_mc_add()
->       __dev_set_rx_mode()
-> 	if (!netif_device_present(dev))
-> 		return;
-> 
-> These changes never reach the hardware. After netif_device_attach(),
-> nothing reprograms the filter. lan743x_rfe_open() only programs RSS, and
-> lan743x_rfe_set_multicast() is only called from ndo_set_rx_mode.
-> 
-> The normal open path resyncs because __dev_open() calls dev_set_rx_mode()
-> after ndo_open. This path has nothing equivalent.
-> 
-> Can the RFE filter get out of sync with dev->mc? Groups joined during the
-> reset would not be received, and groups left would stay in the filter,
-> until the next rx_mode change. Would a call to dev_set_rx_mode() after
-> the reopen fix this?
-
-It sounds like this issue can also already happen in resume when
-lan743x_netdev_open() and netif_device_attach() are called.
-
-If I understand correctly, it could potentially be fixed by calling
-lan743x_rfe_set_multicast() after netif_device_attach() in the reset
-and resume paths, but dev_set_rx_mode() cannot be called directly.
-
-I can add this to v2 and keep or remove based on review feedback.
-
-Thanks,
-Chris
-
-pw-bot: cr
+Ciao,
+Andrea
