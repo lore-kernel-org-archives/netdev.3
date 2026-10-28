@@ -1,50 +1,50 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793153778;
-	b=sK8mK9o36Cc5I0SsHXIPqu+RRQY1gGknRczJtDLR/UVTpvTUtd10evuuZ1QSM4WY53bd
-	 WVqiqF9jixNNFxe3qPHNRcz1qp9Y39LAA6LJfPAdKs5iN5821cdcuvcl/3pSSenLdYIBm
-	 nsAF91thc9heQhgRFeuCuXRPaa4Sagq4s8RqGrsxi/7ydKvSFsze+PjqmYsTXo9UDg6YL
-	 7mDGLSnRrOiYq32UFKwNYYQI9y0FmH9WZPZxt3kpjU4M/6o7TJDQYSP85Y9hNmWwd4Xc2
-	 SVgxs2/mVyhaQEn+6bSUtrwT08sefvbazZXagXNmC/ZCd7zrz2pDQIjrCOmG8MQ+W8Q==
+	t=1793154053;
+	b=Q5YIqUYY5JRivdAI51h/iHdw/4IGe3ZGT2H8gabbOCeEgiHDSEG+KGY6pcYrc3X1uZVv
+	 mxDRr2ILUxsPYF2r8FO4rdiZZKnOxq99FKWJPz2LLDT4mrQLbLcNYGwrd6hGE7Rtjm+GP
+	 Hniw8gkiyFErdqtKGCJ6cZx9YG/z23jV/1IA9uXKMN+VQVNim5T3hbG7waiS2X1sa1B9x
+	 YNqyYK3Z9hEexVjRMdx5hAHlNT5M/bWJIt5vBebFp7DKkGlsY0Atsb0IFeDyIUeQZcX/S
+	 3zFIy4HqiLFWdE9Oy+W2lGB4hL9mUmGtF5MEsTM+vtfD//Qj/z0jlQGhwI4d4RzllDA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793153778;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793154053;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To;
-	bh=S0yM+Za6i75m67uWOOTgt8atqe/7TENA3+sFmUmADnw=;
-	b=JWCuBntVaQ5oFeC1BzQR3Y5MwdC5rVz8CPRzWuIB+gwX1zlMwIXkO3Fqg9LTiA2pVvkd
-	 q9nKQsBdLJP9YaONRzpaTRwTpwocjjp6WlxmD7qAYa1QnCqnXre6IfSmy7rOKxwDk2M+l
-	 /Vu5QEj5LCQx4+tEc98+/JkSrDqXEJsYVwH/ZoJfhHuIq+XVNs3UqCOIkIIKbc5TVS2Kq
-	 RoWPXJiy7HUdUF9a+Ghh2xihxWMrHMsxKQNJPd1l2CeqKuVLgi99+UdEaSWpYWgQDox9p
-	 fuO/bZlB2cFY7+kUuo/6VOCaYi5kbY+64Uw9hMun8utZjDfZYKAm3ElFL25YiLVrDcw==
+	bh=fR07HzCYiHUWXoygEK4KE/KCkYYrHs4rlMJZsk/rRdk=;
+	b=Uja//Kn1J4b7Yq1N0dkGYqteJE3DR2eZlBkMR3KDrE7wNMPhCpo0kuahVjOy+ddlIyzr
+	 oE5HynzJzAa+EMNt6SYBaCPsoBMfpxXKgaWaRAIvAc9xcoQUPmZDhYTRKyapLqJr8ZsCi
+	 VHgWSUi5tahAI6ruzgsIdFKZZoA02Qy11477RCmfxxndqCzVLmUOsrSto4ym45voCtiWb
+	 GBquI/R7cSn60kufG9LZD0hTZiY5dc0vyNzjgsSbz6cjkqfIXoiSDTjO4sgXnVEU5CeBS
+	 dRP04WA3TwQyYNLbWORNACDB8dC158+8IhUrID5gKW6/qPZ9XnRyBW0iX5m/Gt/eWwQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=lunn.ch;
 	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=E3j3F7Y+;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=Q4dEGGKV;
 	arc=none smtp.remote-ip=156.67.10.101
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19C4606A31A;
-	Wed, 28 Oct 2026 02:16:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D19C4606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3845606A31A;
+	Wed, 28 Oct 2026 02:20:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F3845606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=E3j3F7Y+
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=Q4dEGGKV
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=S0yM+Za6i75m67uWOOTgt8atqe/7TENA3+sFmUmADnw=; b=E3j3F7Y+u/kGXbJaO3M9WgbuEH
-	w8vTnDWs03s3uQEcnY6GlWG6WNhfro/6yV0Ngud7HTlLGWFvp9FYHTF6Hp0IFmB/28PDpPdSB4NQs
-	1HezBmIZWGKMi9mCnPMzSIuS6M0GllBwq36s+ZIMF+kcOGhlMwlURjT/ufM5LMDRuF64=;
+	bh=fR07HzCYiHUWXoygEK4KE/KCkYYrHs4rlMJZsk/rRdk=; b=Q4dEGGKVey53CbOf9pJ4D+Qgeu
+	+LuZKwfaRnJ/Mnxr3h9OLDa1i9BLVJvt1ZYkxMn4nXsO66nFT0/3fxs9bITdm4hIg2Dj2haphPyBx
+	0PvrEXVIKaXT1C0Up8iWyweRQ9dbZ5v9QVACNXM05HfQreaS5mLiWv4esqheyvYDgqqQ=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1xLtCp-00D2nO-NZ; Wed, 28 Oct 2026 03:15:59 +0100
-Date: Wed, 28 Oct 2026 03:15:59 +0100
+	id 1xLtHG-00D2pX-Ip; Wed, 28 Oct 2026 03:20:34 +0100
+Date: Wed, 28 Oct 2026 03:20:34 +0100
 From: Andrew Lunn <andrew@lunn.ch>
 To: Caleb James DeLisle <cjd@cjdns.fr>
 Cc: netdev@vger.kernel.org, olteanv@gmail.com, davem@davemloft.net,
@@ -58,11 +58,11 @@ Cc: netdev@vger.kernel.org, olteanv@gmail.com, davem@davemloft.net,
 	linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org, naseefkm@gmail.com,
 	b.larsson@gmx.com
-Subject: Re: [PATCH v3 3/7] net: dsa: mediatek: add support for passthrough
- mode
-Message-ID: <734d4f06-26af-4bea-9c83-eb92c1b3b894@lunn.ch>
+Subject: Re: [PATCH v3 5/7] net: dsa: mediatek: support MDIO switch
+ downstream of MMIO switch
+Message-ID: <f6fe9c7a-5617-475b-babe-da24cda815cc@lunn.ch>
 References: <20261028011317.1557238-1-cjd@cjdns.fr>
- <20261028011317.1557238-4-cjd@cjdns.fr>
+ <20261028011317.1557238-6-cjd@cjdns.fr>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -74,39 +74,26 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261028011317.1557238-4-cjd@cjdns.fr>
+In-Reply-To: <20261028011317.1557238-6-cjd@cjdns.fr>
 
-> @@ -199,6 +199,9 @@ static void mt7530_port_fast_age(struct dsa_switch *ds, int port)
->  	u32 val;
->  	int ret;
->  
-> +	if (priv->is_passthrough)
-> +		return;
-> +
->  	mutex_lock(&priv->reg_mutex);
->  
->  	/* Flush all non-static MAC address entries */
-> @@ -970,6 +973,9 @@ mt7530_set_ageing_time(struct dsa_switch *ds, unsigned int msecs)
->  	unsigned int age_count;
->  	unsigned int age_unit;
->  
-> +	if (priv->is_passthrough)
-> +		return 0;
-> +
-> @@ -1386,11 +1446,14 @@ mt7530_port_change_mtu(struct dsa_switch *ds, int port, int new_mtu)
->  	int length;
->  	u32 val;
->  
-> +	if (priv->is_passthrough)
-> +		return 0;
-> +
+On Wed, Oct 28, 2026 at 01:13:15AM +0000, Caleb James DeLisle wrote:
+> The MT7530 / MT7531 can connect via either MDIO or MMIO. In MMIO mode
+> the switch provides its own MDIO bus which connects to its integrated
+> PHYs, but also can be connected to other things, such as another
+> switch.
+> 
+> If the MDIO bus contains another switch, then the upstream switch
+> will register but it will not setup the DSA tree because the
+> downstream switch is missing. Without the complete DSA tree,
+> mt753x_setup() will not be called on the switch and therefore
+> mt7530_setup_mdio() is never called so the downstream switch never
+> registers.
+> 
+> Update mt7530_setup_mdio() so that it can be called multiple times,
+> export the symbol, and call it again after dsa_register_switch()
+> from mt7988_probe().
 
-What is actually left?
+I would suggest just moving it to probe. Don't also have it in setup.
+KISS.
 
-Is there sufficient code reuse that this makes sense?
-
-Would it be simpler to have a much simpler DSA driver just for pass
-through? Or the mt7530 driver has a second dsa_switch_ops instance
-with all these functions set to NULL?
-
-     Andrew
+	Andrew
