@@ -1,72 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793214503;
-	b=umMPIzB27v/fgmK/Z4lUBLfBJUjZ6kDO3OxMQxwfHdYkDIkZEHrlC/IyzMZAeclrsX8d
-	 BUyLiu39v5toqdijNKrU3crky/RE4EyIWH0KC0j4hYkXvpgIdd0Rp+wRtewgKHdiA/B8S
-	 AcaRcpT7u1jABX6jAF8jOhedEJQEEsOcZelDgEtADrdisaR5MWtijKyewsosJ0FYrEubb
-	 RleZKnYKOe4kJrSiyt7YtBSUifAi18mf4Fgsg1N/NZZPVH3msgXZ2UV3iEAwNLUNd5ydI
-	 HQHbfzKcUenH31fO36lo4V7y8mKugNOHHXG8Rn6FpTwvdhquCdJJnqqmHtmcfzP+hpw==
+	t=1793214505;
+	b=rqRAH2nc/QL/St8Vv37a4Hkf9pBDLMqKjPkNLDP8GVm6xM3duuVARepbb2ahKj8wHN1z
+	 RmHVNjxE3uMaN7LXGGCUcY83plsJM0/2LLRtXtWAV0sFG98WnlZSUTlm1xjnKG6Xce7fx
+	 NMjOLCJPUCxRPDPZakTYZikJyg/tP4UhGZfeSqVJjDJhfgmbvZMj1eAXwf85Mb2njqH5f
+	 bSrh7Eqm6+2zUfUVBLP/6G8Cqx2KUqTjQPErxZvR02Kyb7a4tojPk04s85QCTJLkkAslv
+	 ztmzSYVesrDVE2prSn/1oULZMxSEkXdCjYDgisxbyYDk5EAYy+WrKJDvW3Vk4JMidSA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793214503;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
-	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=jzDOXq8MR2vkQ4lcGklcbbk5AhXVULHhAAztX3EIiQ8=;
-	b=4RDl84LOYuzWR9c6uenUUWs88+q5LzpBvKz/Js2Q2LyFxccHShyiN06glP4q4oY/C9vr
-	 hF+D4zHvuZAI5nor+28UjB5LO3feC4YFTfWbRu8K+oy69Ogc5utFC7g8c+GvABPQDi1mW
-	 dlFO2GImQtsY8lqZaAsIl5JYllkOlzFZ8RKfrvDg+lrwfotA3yU2nQDk/mBXb8gcX1lMG
-	 eVsyKQdkARBygClJ+z72EKRR7QlE7cioS2S7ZD2OC5YZZY7wl3uAAOmCJyy7ABqXfAl6Y
-	 dJMp838brjfa71EjfCowADfjINBHujhl7YVzWz0yqnjGpZBV61FA39tcNg0t3s3tEAA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793214505;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=ay42DW5gDi19b0/kytVI8QPTW6jidQRZcuUkzRDznx4=;
+	b=HQOOs2ZCSRjAI/0DBJHgRF73hL1e7gSZGERIa6pJGqcKJJ6FxaK2qcd1oyBejUvOUs4L
+	 Eh8Kex/zSJLnJP8kBKbdbFUO1yFcqhvsfToQnRpaFXb9oW4/7ZVJ/n8S811PQiMuvpSD/
+	 /z1M00JdY7c2Dm6Si3wqptHSz9CxcSIy0JWwbaouICzMrf0wDSaV0qCNKyYGkhao7cxrS
+	 jTDVt9dhoTfSKpmFVhq3hBLBTS658tTKnY80H42LY/yv9SbJtliBdftnuQfSUbi4iu6v3
+	 bg+w9hRA4yvoycsibf0nsnxF1L2CCtmWmWghe9Y681JLwMCzssigJU97SAfGyr9XeRg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--tavip.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=jOhYMfNI;
-	arc=none smtp.remote-ip=209.85.215.199
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QqRqTf+s;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB67606A32A
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 19:08:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7CB67606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tavip.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD08A606BFA7
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 19:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=jOhYMfNI
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cbb92868263so694692a12.2
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 12:08:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793214503; x=1793819303; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jzDOXq8MR2vkQ4lcGklcbbk5AhXVULHhAAztX3EIiQ8=;
-        b=jOhYMfNIba6AMwBP6kSXlc8ZY9X7Ii1oYRAJDmn6g7UM4LubFr0oDXIP+z90wIHj0N
-         krDYYVUPxriZXdC91jjYHhZwfqWYH6fyCMSEElwQPgaUpf5hoCxocsWsgDRHkrT6HTfI
-         x28/yiR8yuG43R0zcNzj+XSuvdL7iCsWgBTudSgfegwLxSlj1EVLmymtymeXn3xC0E2g
-         C4+OQZAnwWB8fU22RmUzwbqSIC6vrERVZKkJabYEEsFP3NXqTZeqU8ik9R0BV/F/3BdT
-         QlJ/mg+DvRMDP9jTesf0UmYIRqP6B+CZTspWNXuckUMYn4UUPDyUWdfjW9Dc+1dBkmlQ
-         f8JA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793214503; x=1793819303;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jzDOXq8MR2vkQ4lcGklcbbk5AhXVULHhAAztX3EIiQ8=;
-        b=gQYHzRiBU1yN54A/67nbRivvW6vqEJnHM+Ldh43L2jEzspi1ZOMWvJF/mhn3w3Wjx2
-         gIfIWo8BCQwR6iwxpI22BWOd5HjLfE13OPGcPoV1NCPwaAUNGZJKHYn0g8toKuAnIs/f
-         uJ/zAH2YLDM+oYCKPOgHQs7Be2aax7LgZMpU45dn+wZ8K/6g9NVv1QWksvDoFMPV1KxE
-         2qxaqFvbWlfcsF45qXIiooPmxZz+oqUkIcnvXWyeD0MtjDeFCyyEsPG01XBpPi7MQ795
-         WNGweaVg2pe+4T+lE5L7lL0XWia8t5P2nYhbbgE3IqQqUPfze8ZC2t2GB6YJ07xr49FG
-         C7Yg==
-X-Forwarded-Encrypted: i=1; AKwUvBw+BYKHc7UzT1/zabjFiHY+R5xAVwbp49ftODhhdauwzPvCvBNcfNWLFMb0JrYf8kn4COtKXX8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLCbSnn0RSNR7LEXyRXplIYGPdiIftQQM5EmmLlja3rw9irBjWv
-	py6IybaF5pUOuSQ/jFOIAncqREfe6ftEmum6mvQQPZQIiMqa5SnrZfK9d2TF5gCKcs7nntbRxGe
-	9Vg==
-X-Received: from pjzc18.prod.google.com ([2002:a17:90a:e112:b0:3ac:4c80:15de])
- (user=tavip job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4b85:b0:3ac:80dc:f409
- with SMTP id 98e67ed59e1d1-3ae5823c699mr2202916a91.61.1793214502613; Wed, 28
- Oct 2026 12:08:22 -0700 (PDT)
-Date: Wed, 28 Oct 2026 19:08:20 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QqRqTf+s
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE3561F031E6;
+	Wed, 28 Oct 2026 19:08:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793214504;
+	bh=ay42DW5gDi19b0/kytVI8QPTW6jidQRZcuUkzRDznx4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=QqRqTf+sYEsWJArpEMEMr6WZSSdaHQnuDle98ZgRUdK+jDbls/ngH9HAf1n1j59wM
+	 PbZwCnKepWsoOgSF/vFhDtkqSuJaoLLGpKhchJorDpN/wE1tNtiSu8V6TTcyzg4Cm+
+	 mGybpIWFGGHE7zFmpR7NfT+tX7lea2mnl/+7WsXZVpb3viGO8EyeY9nmaIRV1DNhAm
+	 WRwhvtXpGhLR1GI1D8uEJmQqyVV94Wh8Ek7PG1haB4/+N0z6jakoM7AE16rLT2g+gH
+	 U6sgDeYy1dP46nbS0xxWc+zo+i+BLu3Ef56yKHUrXj80+N15fokzBc9h7QAhd3ezUw
+	 l2/u9iq6qT7NA==
+Subject: Re: [PATCH net] tcp: bound snd_cwnd_clamp to TCP_MAX_SND_CWND
+From: netdev-bot+sashiko@kernel.org
+To: edumazet@kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ ncardwell@google.com, kuniyu@google.com, horms@kernel.org,
+ netdev@vger.kernel.org, mason@kernel.org
+Date: Wed, 28 Oct 2026 19:08:23 +0000
+Message-ID: <179321450338.3134.9348301510643981873@kernel.org>
+In-Reply-To: <20261027130617.1550253-1-edumazet@kernel.org>
+References: <20261027130617.1550253-1-edumazet@kernel.org>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -75,67 +61,124 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.313.g2479322e68-goog
-Message-ID: <20261028190820.2917252-1-tavip@google.com>
-Subject: [PATCH net v5] tcp: do not let tcp_collapse() drive sk_forward_alloc negative
-From: Octavian Purdila <tavip@google.com>
-To: Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, "David S . Miller" <davem@davemloft.net>, 
-	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Octavian Purdila <tavip@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
 
-From: Eric Dumazet <edumazet@kernel.org>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-tcp_collapse() charges each newly allocated skb with skb_set_owner_r()
-before the skbs it replaces are freed, without scheduling memory first.
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-Since sk_mem_uncharge() reclaims eagerly, sk->sk_forward_alloc has no
-cushion and can become negative. This can be durable when the collapsed
-skbs had a high payload/truesize ratio or were partially read, because
-the new skbs can have a bigger total truesize than the old ones.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-A negative sk_forward_alloc then confuses tcp_wmem_schedule(), which
-can return a negative length to tcp_sendmsg_locked(), triggering
-a WARN_ON_ONCE(bytes > INT_MAX) in check_copy_size().
+- [High] The patch sets TCP_MAX_SND_CWND to 1U << 24 (16,777,216).
 
-Call sk_forced_mem_schedule() before charging nskb.
+--
 
-Fixes: 4890b686f408 ("net: keep sk->sk_forward_alloc as small as possible")
-Signed-off-by: Eric Dumazet <edumazet@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Signed-off-by: Octavian Purdila <tavip@google.com>
----
-Changes in v5:
-- Replace clamping in tcp_wmem_schedule() with Eric's patch calling
-  sk_forced_mem_schedule(sk, nskb->truesize) in tcp_collapse() so
-  sk_forward_alloc cannot become negative in the first place and the TX
-  fast path is untouched.
-- Defer the packetdrill selftest to net-next alongside the upcoming
-  broader tcp_collapse() improvements.
-- Link to v4: https://lore.kernel.org/netdev/20261026032216.1145201-1-tavip@google.com/
+tcp: bound snd_cwnd_clamp to TCP_MAX_SND_CWND
 
- net/ipv4/tcp_input.c | 4 ++++
- 1 file changed, 4 insertions(+)
+This patch changes the default snd_cwnd_clamp from ~0 to a finite
+TCP_MAX_SND_CWND of 2^24 packets. It also caps the locked RTAX_CWND
+metric, TCP_BPF_SNDCWND_CLAMP and TCP_BPF_IW at that value. The stated
+goal is to stop congestion control u32 arithmetic from misbehaving when
+cwnd gets very large.
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 99baf14afdfd8..24d5f016a4eb6 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -5846,6 +5846,10 @@ tcp_collapse(struct sock *sk, struct sk_buff_head *list, struct rb_root *root,
- 			__skb_queue_before(list, skb, nskb);
- 		else
- 			__skb_queue_tail(&tmp, nskb); /* defer rbtree insertion */
-+		/* nskb is charged before the skbs it replaces are freed.
-+		 * Make sure sk->sk_forward_alloc can not become negative.
-+		 */
-+		sk_forced_mem_schedule(sk, nskb->truesize);
- 		skb_set_owner_r(nskb, sk);
- 		mptcp_skb_ext_move(nskb, skb);
- 
+> diff --git a/include/net/tcp.h b/include/net/tcp.h
+> index 0265c27a5fd77..be1609cd78840 100644
+> --- a/include/net/tcp.h
+> +++ b/include/net/tcp.h
+> @@ -1553,6 +1553,12 @@ static inline unsigned int tcp_packets_in_flight(const struct tcp_sock *tp)
+>  
+>  #define TCP_INFINITE_SSTHRESH	0x7fffffff
+>  
+> +/* Default and maximum snd_cwnd_clamp, in packets.
+> + * Far above any usable BDP, but low enough that congestion control
+> + * arithmetic such as 100 * cwnd in CUBIC cannot overflow a u32.
+> + */
+> +#define TCP_MAX_SND_CWND	(1U << 24)
+
+[Severity: High]
+Is 2^24 small enough for the claim in this comment? 100 * cwnd fits, but
+CUBIC has larger u32 products on cwnd:
+
+net/ipv4/tcp_cubic.c:cubictcp_recalc_ssthresh() {
+    ...
+	if (tcp_snd_cwnd(tp) < ca->last_max_cwnd && fast_convergence)
+		ca->last_max_cwnd = (tcp_snd_cwnd(tp) * (BICTCP_BETA_SCALE + beta))
+			/ (2 * BICTCP_BETA_SCALE);
+    ...
+	return max((tcp_snd_cwnd(tp) * beta) / BICTCP_BETA_SCALE, 2U);
+}
+
+With beta = 717:
+
+  cwnd * 1741 wraps once cwnd is above about 2.47M.
+  cwnd * 717 wraps once cwnd is above about 5.99M.
+
+Both points are below 2^24.
+
+At cwnd = 2^24, ssthresh comes out as 3,358,720 instead of 11,747,328.
+last_max_cwnd comes out as 1,679,360 instead of about 14.3M.
+
+Just above each wrap point the product is close to zero, so ssthresh
+would drop to a few thousand or to the 2U floor. The wrong Wmax then
+reaches bictcp_update(), and the comment there says that code is only
+overflow-free for cwnd below 1 million packets.
+
+Other in-tree modules have the same pattern:
+
+  dctcp_ssthresh():          cwnd * dctcp_alpha (up to 1024, also the
+                             default), wraps at 2^22
+  bictcp_recalc_ssthresh():  cwnd * 1843 and cwnd * 819
+  tcp_cdg_ssthresh():        cwnd * min(1024U, backoff_beta)
+  tcpnv_recalc_ssthresh():   cwnd * nv_loss_dec_factor (default 819)
+  tcp_roccet.c:              cwnd * beta and cwnd * (1024 + beta)
+
+DCTCP at cwnd = 2^24 is the clearest case:
+
+	return max(tcp_snd_cwnd(tp) - ((tcp_snd_cwnd(tp) * ca->dctcp_alpha) >> 11U), 2U);
+
+Here 2^24 * 1024 wraps to 0. ssthresh then equals cwnd, so the ECN
+window reduction never happens.
+
+The inputs named in the commit message can still put cwnd at the clamp
+directly. That skips any real growth in flight:
+
+  tcp_init_cwnd() returns min_t(__u32, cwnd, tp->snd_cwnd_clamp)
+  for RTAX_INITCWND
+  TCP_BPF_IW now sets min_t(u32, val, tp->snd_cwnd_clamp)
+
+Either path can set cwnd to 2^24. The next RTO or recovery then calls
+the CC ssthresh callback with that cwnd:
+
+  tcp_enter_loss()->icsk_ca_ops->ssthresh()
+  tcp_init_cwnd_reduction()->icsk_ca_ops->ssthresh()
+
+The sk_sndbuf argument in the commit message limits packets_out. These
+callbacks read snd_cwnd, not packets_out.
+
+The generic stack has a similar product as well:
+
+net/ipv4/tcp_output.c:tcp_tso_should_defer() {
+    ...
+	u32 chunk = min(tp->snd_wnd, tcp_snd_cwnd(tp) * tp->mss_cache);
+    ...
+}
+
+With a 1448 byte MSS, this wraps above about 2.97M packets.
+
+Would a lower bound work here, around 2^21 or less to cover multipliers
+up to 2048? The other option is widening these products to u64.
+
+> +
+>  static inline u32 tcp_snd_cwnd(const struct tcp_sock *tp)
+>  {
+>  	return tp->snd_cwnd;
+
+[ ... ]
+
 -- 
-2.56.0.313.g2479322e68-goog
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261027130617.1550253-1-edumazet%40kernel.org
