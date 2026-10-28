@@ -1,99 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.98
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793206700;
-	b=y5OmGgjZhROkJf/XAXdm7Lda87FueK4bErFi80MvzW0NC9dmuxak66cGUA9Yf3zBI9Dy
-	 wUBQOCiSx0HSe1EVRu15eDL+JMdY/oun3H1Uiup9l+AbZWI+ofZ2yR+XOXjDFhvajdwxB
-	 aP3E1CH68nuv43mOhW9GuiySyPKN4jbfmtI2ZdkyIno8FkT5Qk624kYOv7rn4emyS3s4i
-	 8BuKkk3EcG3IWR+M/2qysf7eXdIQnBz2bqALd2PW3Rc/hRtgs8LIg2YrV0PKyZW1fCtv7
-	 qHK5JiBhClwkX3V9VBFemwQwdYiuZwlulNgB+e8QsL4En9jr2/U3nO7ED9vzfGG1jYQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793206700;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
-	 X-Gm-Gg:X-Received:Received:X-Relaying-Domain:X-CFilter-Loop:Received:
-	 DKIM-Signature:X-Received:X-Received:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:Autocrypt:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-DetectorID-Processed;
-	bh=/fQIsnXR3qpPiAPZg7Jk/FIpBsbfkQ7V9JvvLYl+Aqw=;
-	b=wsHP+u1E3IdwXGJwb26T38V3WJIjyHCVNrVF1+EeYwAMAKWXEpUZuHmUbKHXNcFLV/yb
-	 38WuEk+u+A66cnsubHb27js1QfAfRmAbqy8PJc8FYe6eDyF4l+e6RY2qrH0Ezk7MGuJaA
-	 tYWVZhIvRALQi3VchStxz2VouiR+M03I1u/EeXIxNRMGixVo4Ucp2gZGitMTyfBs8NpTu
-	 JCgkVirFyAPTrwMLX+oj9nZGZCNbUsOb24KWxF0ipvoR+JWJ+55uzqnNtM+R3p9hHosDW
-	 ArL1OXIvsJqJE7niZV/xhT1sdCPg3zTfBqLiGOtBLo8ClGkU6ArrWJuCUQ5uv/3QvHg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=broadcom.com;
-	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=MUdiEcIO;
-	arc=none smtp.remote-ip=209.85.216.98
-Received: from mail-pj1-f98.google.com (mail-pj1-f98.google.com [209.85.216.98])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.54
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793206717;
+	b=mcYnU3bep25MqPBMDoACRCnY44aGfi8Fsg58p4qdxenydZs/h3J/CM4UEyoyepkJrX/o
+	 QQWyOpbPhJISpcxrJrCM53D5I3uuP3c87+foBOLfaTw98Zl7dIt7j5mCwTw3QzDfzEu9/
+	 YCWWVJacXcv3H+OKY2HS37P7/sV5gTLdpWCsXwINeO2o+300SzJ5jjl1u5XNRCZvcIpLR
+	 F2OpTG1jjEr5EIW/sGoWKaQDwrlcSQu4wWw8lsMJSg1le01UmuJIOKbeZ11BEEq5JuIXw
+	 2XKfkQc/uAGGTJSWnjXsohDwpdP1fPAIVlg3gGJQuqAilyOw8v01Yz6xAKZ2LEZpQDw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793206717;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=ofD1f6oQnTuXn5+ZWN9fgQFsKj7OpffaK+7o/04+4t4=;
+	b=PHPhTTFShS/WVChpXruLev0TXTxo2nvObcG7p3j6BmZJwW9T3WgX3cDZsoWyDtJIXLkL
+	 IjhMwe2zxMhZITeo9hosEFlKuUVIEXyA/aGYAbMiAugAUr3F6n1E1N2HyPk1mt8TMTsLx
+	 k2UsfzxBwciccE0u66Xq0QMOBsYmSW/Y6a6nKxXaTtSvVSWVQs1Nk4dqZKUNqdSG5JNNe
+	 w+v2Eq2uFQ/EUmCGxq54I1ewfcQfUop41B9S83oDwBk9+F0wkJDW3xOHr+EDQ1bz+wsQk
+	 rC+Zyma2GOC30egSqhuMm2+ggpY9T5mx5OSi99HXER2h2g8XAiOiZPa+P+2mvs8UBew==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=octane.security;
+	spf=pass smtp.mailfrom=octane.security;
+	dkim=pass header.d=octane.security header.i=@octane.security header.a=rsa-sha256 header.s=google header.b=fZvoaGfs;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.54
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24947606A31A
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 16:58:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 24947606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A5B606A31E
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 16:58:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D1A5B606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=octane.security
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=octane.security
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=MUdiEcIO
-Received: by mail-pj1-f98.google.com with SMTP id 98e67ed59e1d1-3ae6b4c669fso271540a91.0
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 09:58:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793206698; x=1793811498;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=/fQIsnXR3qpPiAPZg7Jk/FIpBsbfkQ7V9JvvLYl+Aqw=;
-        b=glEmZM9M23jrdFYhxc4wTL7huEcAXm00DLen6d7w0f2j6ZtQ/FwAK8GdqP8G6PGabR
-         0BfMO15tREQDbOz9/wWG/P9H5kqN/kO/dZvRmuuJYIVZl5tXyB29f8kBIuiilld6/Zyl
-         CyAOazccZoqe+018J4JBxF8AG30yt+ZhNdIF2NXEmvIVsodvpdRNzZyNknYJKgHQW6Kd
-         JWwK2Gob2linASKts/HdRPUhm0Hb02YUeP3ZHX8iWbn0Xjp4Si2p400f89V9BAuRJCIg
-         6bKZxANe5d3xnOhz6Blc9GPb5k7mw2wMLMBHzZZawqyDgMtHOZa0YAp/YWvIZ7qA5xuI
-         PIPg==
-X-Gm-Message-State: AFq9FYJmt1V8MyC4HMWsUAALGjYrO74CIIiVKib9Ufk8JAcQfy0NENhB
-	iQWDOIgZuFqDJJY6Ce6zG2Bo8UUZHWz7cA+ml5ExzlCn4ohb0bYbJXrT1Zmi5kvKpMPTTofmHhv
-	QvrjO5RCvJjvUVpv39dN2Vk6pXMFJZOOKbKC+m0lFOW9jswUQh07ooTf2UkYHs7kczesmHvhxOJ
-	LH52COi16AHXoKm11OjinqZYLJiAvM+wqnutK6H2KKMotaOu65yiSqaULQeK2Mvp8trs8oDsApj
-	bUxT2ZUVG5Efmq8
-X-Gm-Gg: AYBFou2wKgeg0FP4Qq/3vKNAxJ1vdH38lFP9y6bgJ0QwIF8aCPd7qLKinjYOTZOG9Us
-	xCxDngrYyDr/DIDqPjmqTpfQyaOnWpiLKoqn2N3TF2r8RPNxISLXJyspIGmD9rmjdmEyhJb0YA8
-	TlowPhGE05n7B71JEMFax3YyEuFamhc4taCaVKLK7zNK5PzPQNHUXIiOqLfrbnaNKBxuGvPdc0h
-	NSRCMjTQ/yXT+FDaLw7lTgaLEuEBCF7S3FO3X7HHke/3gC3PoYrVZYp0UU+I76ckPluAExBES9p
-	cxujHNU3D16tGZDE4ts/aj2poAw1eKpyYdxEpRZ+M15DPEe+YXmucoz2IupNYzcFjh/pV5/vZ4a
-	hPCENh7HojI7frPcG9KWfPA5puqPZWTi6hEjYBhR552/QSLIAV04neN5GDgqGHhOYcZ/bFF8HGb
-	MZJPBqH3jThEY691eQyET3QgbsysnItuiEtH7hmLGw06s=
-X-Received: by 2002:a17:90a:d60c:b0:3a6:d850:bf16 with SMTP id 98e67ed59e1d1-3ae6ed455damr49229a91.23.1793206698414;
-        Wed, 28 Oct 2026 09:58:18 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-120.dlp.protect.broadcom.com. [144.49.247.120])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ae6e84adc9sm118606a91.5.2026.10.28.09.58.16
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 28 Oct 2026 09:58:18 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-93f5844cb60so241041985a.0
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 09:58:16 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=octane.security header.i=@octane.security header.a=rsa-sha256 header.s=google header.b=fZvoaGfs
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4a549cd7fd2so11773945e9.0
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 09:58:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793206710; cv=none;
+        d=google.com; s=arc-20260327;
+        b=K8P5QLXB6xqjwG4sznA0ExFtCXCkkf01y6WUcXO4L51qR3eN6sjjEBmizbvhM5QtCU
+         Oh2TWrROez7hxa7zPIiAN1NVSrJYHWUOltg30NBXAcCHVOARe8IaviDcgT2tHZmxwv3k
+         6eCT7yvxTb0dThlQFzyuAxl7Fg4gWzKbu+OiUZP0mQQbRrJZza3WcF/BxgeOzf8pnHw/
+         PoeyioshuuivSi7YsApH0bX511HAbKn0vYAx21VVDGL1aEzNx7wJETdaHNsDYc6gbsHP
+         Hydw3QZL6LhslwEX+dNwtiLjCLbga5VRdR88fZIT66cWZz8iJqBhAYuQOAInoiBgk57u
+         whpw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ofD1f6oQnTuXn5+ZWN9fgQFsKj7OpffaK+7o/04+4t4=;
+        fh=pbweQBlHfjI7rSLnx3wiROfmuBn6m/Xqb4rD6To9iQ0=;
+        b=F/cyA+keHmZk06+appv+1kV2wZUNp/xLcjXwgGvUKpbmMmy/r+AbZEzOoBEYgbl5CJ
+         3XQLYXcEo2Yw5vVlEVTDFYAP5AHQmWfVTqJIYzigN2xhxG2+CiWrsRuOVB2IZgH0SuRO
+         U3u+JGtnFIRJCB15+vghIR7tT3HsODP26yVbn0Ukkqg0Xx9v5DezncpxHf0+fuHpbQH9
+         e3FjCCNq+qNVbIR+5/tRRXSUeOC5jJK4IE9qAwK+KJACfpJ+qkR4D89dZI05GH415fT7
+         N0/RzL+22HuqKzV/OfZfGPeYQBaoIgALby2wzeR8Ccyvwz2Dd+NFFfacSx9Gf8aG+oae
+         yFgQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1793206696; x=1793811496; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+        d=octane.security; s=google; t=1793206710; x=1793811510; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ofD1f6oQnTuXn5+ZWN9fgQFsKj7OpffaK+7o/04+4t4=;
+        b=fZvoaGfst6ORdRvAXEl6UJOkgc+9JvviynvCVVu/XF3BDJg3hzeWOZGaWUWgEmv6ql
+         kJvYmnb+wzZaLWgaXotDJ7M3Okfv8MuER0P4BLUeyutUCTXG0Y2H42G9AkT3S+xQNLs4
+         KkOUHVA4dXY5OXy0YyiyFsgq/mFXkACYV4vXRkyLnN4za0ODXIatIi/0Yo4vw9+3Ydeu
+         8sxwR6/PF1FMbOQJyw8M9hp1GDN/JvmW0EBr3svYt7Pr0LRnFDBkUQ+lK8Og7+4U5Oex
+         C5scxx8MHV1T060uR79AwebwXajsa24r9e95x80McgDfwf0OV1X3DJOUeEZqZNB1d9OO
+         ngCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793206710; x=1793811510;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/fQIsnXR3qpPiAPZg7Jk/FIpBsbfkQ7V9JvvLYl+Aqw=;
-        b=MUdiEcIOvKQz0F+pTXiifrXrWAT2jiTavUa3R5hAo6uq0v6ZfR0uw78TRh8spXQ3sw
-         F5OKLu+0ja4uZzgDWQyHt5G+DsHhZGIKfeFBYnNyQUZmDZYOrAbjsSK8f185nAxthWg9
-         QPc0eJNswSnvv0fArK90IvKXlNs4QoiUIh8FM=
-X-Received: by 2002:a05:620a:3185:b0:943:e872:f521 with SMTP id af79cd13be357-94413358c99mr22449785a.9.1793206696088;
-        Wed, 28 Oct 2026 09:58:16 -0700 (PDT)
-X-Received: by 2002:a05:620a:3185:b0:943:e872:f521 with SMTP id af79cd13be357-94413358c99mr22447085a.9.1793206695624;
-        Wed, 28 Oct 2026 09:58:15 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-940f067c2e2sm1300362085a.18.2026.10.28.09.58.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Oct 2026 09:58:14 -0700 (PDT)
-Message-ID: <839ca732-c2a5-451b-bc9b-58afaaa01121@broadcom.com>
-Date: Wed, 28 Oct 2026 09:58:12 -0700
+        bh=ofD1f6oQnTuXn5+ZWN9fgQFsKj7OpffaK+7o/04+4t4=;
+        b=WvesTl14+8vZEmG7ThUltpDx/BotJ7shKHt1nOAsE5qm/5DKmddE9QNsNsQ9/O9O0v
+         2F2dZVR7ufde50MleBESb/KL8ZaT2tTgfDqIzG7EJppMpMB17exOJ9QNHl3fGY3z6gpi
+         +BZ7RY/aPQAwLeH0VwjqxQGFghEXirKC1yZI6tOHJ5IcuPpEjFqXEodApdXUWvOM7hNF
+         pcj/52ij5AnLub54eK+PCH6vU42+AsnM/7EML127S5G0C9mn9p5imHa4prLyHYSyOr99
+         ibVZszEcdskO/SVSjwWZrwm4N0n2VJU1tU9ymHBm/MBcOb2XZZJurwNjyIgOcJNenGrj
+         /qBQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwMkHERn3LHOJlW8azmEmUqM3SN0lD2BN36to3Qu1VSmTdwwOA2FZ7nHSpf9rWR0NSu8hceLhc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI6+oTmJTUjCJhrA9e9zVvY1y0Ho2B8X0iuI3za/ouiQA3gQ9Nl
+	UBcPn7tRws4Fmr3ct0cMyv9YIu5Lj18T6t7TDQt2mFg48ihce+XFcoTjp4I5i8kFKCCiymDLqsS
+	JL+B0/Y+or+6/ZxmPvmZXQpOZdWpLku4zr0+1ecqXIg==
+X-Gm-Gg: AYBFou3niQVLQd3nsTNk+vB3EJTaqVlArV3LH/Z2n1G0jr8zGMpRIjjXE2JEQjZHI5D
+	wWbhjV4POBYVEWC5xDMDxfltM+LbZk/ScSpwvTSsESoO+/RnH65+u2EFGlaxlI2UZo5iTRGGDR1
+	wDd+b58sprNQpUME85kzJpUNAzwmpI2bGEusFXN4pE9CqvH0AkaUT8srvIZs34MWnioh0TObL2/
+	AYBM5Q6esiOmQno+Ms8kMv0wLrLz+ks6h66UDiI8Mb6uncZLazL17h4ksbxsVJq3mNlxLL99uDK
+	kflZ4vNVzmEktwukQc/O2TYdMzlK6g7XPstkY7dKSjRjDnJjUgExu7JNf5/0awpGFXKzjTu8TVp
+	hQO8eNZ9gN7nFRvdspEYlFgaL51F3Fng8nd3qEBscyABRfLzmixfrkP33iDlyy1lODZ8pLXsLpe
+	EQbQ2xSN/8aJcr62yVLoUuTaR6gw9vU6zrsC3ue7qBo1KRcQ==
+X-Received: by 2002:a05:600c:4445:b0:4a2:526b:d40f with SMTP id
+ 5b1f17b1804b1-4aa83e0adefmr4884485e9.0.1793206710235; Wed, 28 Oct 2026
+ 09:58:30 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,119 +105,72 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 3/5] net: dsa: b53: clear stale state when creating an
- ARL entry
-To: Jonas Gorski <jonas.gorski@gmail.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
- Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Russell King <linux@armlinux.org.uk>,
- "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
- open list <linux-kernel@vger.kernel.org>
-References: <20261027202230.3539646-1-florian.fainelli@broadcom.com>
- <20261027202230.3539646-4-florian.fainelli@broadcom.com>
- <CAOiHx=kFqW3AgzQ3_zJBxkdXcokg8j3-Ry1meV6h-RKb5mcTgA@mail.gmail.com>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
- xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
- M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
- JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
- PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
- KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
- AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
- IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
- ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
- bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
- Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
- tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
- TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
- zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
- WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
- IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
- U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
- 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
- pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
- MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
- IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
- gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
- obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
- N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
- CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
- C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
- wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
- EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
- fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
- MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
- 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
- 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <CAOiHx=kFqW3AgzQ3_zJBxkdXcokg8j3-Ry1meV6h-RKb5mcTgA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+References: <20261021032443.44412-4-shubham@octane.security>
+ <179290103732.3134.18298634182061634234@kernel.org> <20261028164349.GA257209@horms.kernel.org>
+In-Reply-To: <20261028164349.GA257209@horms.kernel.org>
+From: Shubham Antil <shubham@octane.security>
+Date: Wed, 28 Oct 2026 22:28:19 +0530
+X-Gm-Features: AclHuK8HPth5FoQdhYFleU3o7yVQURAnBdI4t3AFjYlVmMJjxx-cf02cRxHSgng
+Message-ID: <CAEBzjKGrrBhOJM01D18AURz=0m6uOe+G6fpXZzc11h4ui_MqwQ@mail.gmail.com>
+Subject: Re: [PATCH net v6 3/6] nfc: nci: uart: quiesce callbacks during teardown
+To: Simon Horman <horms@kernel.org>
+Cc: netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org, david@ixit.cz, 
+	oe-linux-nfc@lists.linux.dev, gio@octane.security, stable@vger.kernel.org, 
+	kuba@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/28/26 02:52, Jonas Gorski wrote:
-> On Tue, Oct 27, 2026 at 9:22 PM Florian Fainelli
-> <florian.fainelli@broadcom.com> wrote:
->>
->> When an ARL lookup does not find the requested MAC and VID, b53_arl_read()
->> returns the first free bin index but leaves the entry populated with the
->> last bin examined. The multicast add path then ORs the requested port into
->> that unrelated entry's forwarding bitmap, potentially forwarding packets
->> to ports which are not members of the multicast group.
->>
->> Clear the entry before creating a new one. Also return without writing
->> anything when deleting an entry which is not present, instead of making
->> a new entry from stale bin contents.
->>
->> Fixes: 5d65b64a3d97 ("net: dsa: b53: Add support for MDB")
->> Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
->> ---
->>   drivers/net/dsa/b53/b53_common.c | 4 ++++
->>   1 file changed, 4 insertions(+)
->>
->> diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
->> index 559d4b360c82..0871a10d8cbc 100644
->> --- a/drivers/net/dsa/b53/b53_common.c
->> +++ b/drivers/net/dsa/b53/b53_common.c
->> @@ -1992,6 +1992,10 @@ static int b53_arl_op(struct b53_device *dev, int op, int port,
->>                          addr, vid);
->>                  return is_valid ? ret : 0;
->>          case -ENOENT:
->> +               if (!is_valid)
->> +                       return 0;
-> 
-> Should we return 0, or should we pass on the -ENOENT? We failed to
-> remove the entry, so implies there was a desync between hardware state
-> and software state.
-> 
-> If we don't, we should at least report the issue. If we do, we don't
-> need to, as dsa will do that. Though we then should also report
-> -ENOSPC && !is_valid as -ENOENT.
-> 
-> Likewise when trying to add an entry that already exists.
+Hi Simon,
 
-Agreed, returning -ENOENT seems preferable so the missing hardware entry 
-is visible to the caller. I'll propagate it for the -ENOENT case and 
-translate -ENOSPC to -ENOENT when deleting.
+I am still looking into these issues and will keep you updated.
 
-For additions, finding an existing MAC/VID is not necessarily a 
-desynchronization: an FDB add may move an entry or make a dynamically 
-learned entry static, and an MDB add may extend the port bitmap. So I 
-think we should retain the existing update behavior rather than return 
--EEXIST on a lookup match.
+Regards,
+Shubham Antil
 
-> 
->> +
->> +               memset(&ent, 0, sizeof(ent));
-> 
-> Just bikeshedding, but semantically it feels the memset should be
-> below the comment/dev_dbg().
-
-Yes, I took that change.
-
-Thanks!
--- 
-Florian
+On Wed, Oct 28, 2026 at 10:13=E2=80=AFPM Simon Horman <horms@kernel.org> wr=
+ote:
+>
+> On Sun, Oct 25, 2026 at 04:03:57AM +0000, netdev-bot+sashiko@kernel.org w=
+rote:
+> > Thank you for your contribution! Sashiko AI review found 3 potential
+> > issue(s) to consider.
+> >
+> > Critical: 0 =C2=B7 High: 0 (3) =C2=B7 Medium: 2 =C2=B7 Low: 1
+> >
+> > If you believe none of the issues are legitimate, please reply to each
+> > issue of Medium severity or higher and explain why the AI is wrong.
+> > If any of them are legitimate and you plan to respin, please let patchw=
+ork
+> > know by including "pw-bot: cr" as a separate line at the end of your re=
+ply
+> > (one such reply per series is enough).
+>
+> Hi Shubham,
+>
+> The text above requests a response to this email, and similar ones sent
+> for other patches of this patch-set. And I would appreciate it if you cou=
+ld
+> provide such responses.
+>
+> FWIIW, the Medium issue immediately below is of most concern to me.
+>
+> >
+> > - [Medium] When nci_uart_tty_close() tears down an NCI UART whose NCI
+> >   device is up, the NFC controller (NFCC) is left running in whatever R=
+F=E2=80=A6
+> > - [Medium] Baseline decision: fixed later in the series.
+> > - [Low] Baseline decision: not a bug in practice.
+> >
+> > Pre-existing issues:
+> > - [High] Pre-existing problem, not introduced by this patch: during a
+> >   Marvell firmware download, the UART peer (NFCC) controls a 16-bit=E2=
+=80=A6
+> > - [High] Pre-existing problem, not introduced by this patch: the Marvel=
+l
+> >   firmware download copies from the firmware image at a peer-advanced=
+=E2=80=A6
+> > - [High] Baseline decision: pre-existing and fixed later in the series.
+> >
+> > --
+>
+> ...
