@@ -1,63 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793227981;
-	b=4Fg7/x/zoRO172AuenHHgtdHEMCaoKakDsFH9PTEfAKwmnK3SYoqFf0rJARTGT3EOP12
-	 R/wWhNqwBzLI91cGeoOF9t0/zlowetjE5l+pYW0HX3ggUpMunH4qO/i8SWbInW6R7jaIU
-	 58xNT6dKQswygEj60TKUa0ARbLE6JfH4kG0UWgRl3hrf5S0DuWL7ypNqoIYMjhjXsA7Q2
-	 tlC4MK7JjffLGqLXHS7hRE2aHp/VfTiDZcFHD2/vKwjo6dW7i3EoKHF0tCKub788dUo6O
-	 erCpaUOQbwYIn/PlOHDh/8vgcu9lqEUuyz3xg3brMPNqnrIhRo3hoh0wQDh88UShKEQ==
+	t=1793228049;
+	b=ONVTBvGKfCHRhz0sXNbhuTSTHi/4qyxAIN+YLRHKVKBjNQwM3qo6YzDTtO85UxVFcjeD
+	 VzIAAtmWAqjF4oCdSGIhwbaT9b8XRvIhvn0YXPuGyCWcSCWrzXP9KUPIg+mTYQmdg8VBq
+	 28jZyCQ54qpPM78cT44aVfXivXwm9/8jwMTTq0I6TUNHUO1xidtt1ROafiZQm5CA5hORg
+	 uCduoKNHsGlruTn7XGwjAwH6R54etAdRT6P3Ko2ItoqDWScHDpy8pqsM4qeALF8dM4zgs
+	 M83pod2uuQPtqT6gVmbSNWjNLaxJpx/D9nc1WehRJ6kGrptyRg2Ri0Ez854CiHuwAUg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793227981;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793228049;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=7YC5j2ssFWEjwqFWHWsXZEzhpYxoMIwo3twbK6FLCoQ=;
-	b=YQ9I89ylNIJ8tjbUqE8Vuu5XSlRNMbLGKexzu7Zb6fQ/I/ntlVSutjbgSJy5HDBaBhd1
-	 fPt7Vj5zxCLT2Sv6YNKEhLxFPmNdGtSv4MEF44clmZ6UHax24dtEXoZVczEDeNcaK9HGJ
-	 kUe1AUz9MjTXBfVoq51XuCM+FU0OfET7Y4Bdu7RWNW61hCKPyJiH8M0wGIJY0h0roWNPp
-	 K2IZpVqdqp8uGftZtjHNTorwxWDP9yl1Q9rp57niA+lXrfQ2PqP8K+SkMZFAfFyANvJn8
-	 DTXeQepi44YNuKMFcfaPoOKsfDpAEtMWRz++pBUHBFF3h0Yq4JyXcKXZmm2LBHaL8+A==
+	bh=J2JFmHQKnXzvuthRFeIJu+fw+iA/XAbaNbguxe2zCS4=;
+	b=lL3GbMlV3dCRNOlGg7nYNQWlbQFceFtRKCn8t5CbGWdDXS5tr1eloRd82MtKK1YLrFx3
+	 UPmqFD5M3LtLkfXOsEXMENwNj0uQ7pd9vI3hd1BJ9fauo/fZFSVzhTEfqb0mkZMi+OOcp
+	 jjD6Jmoi6SltOZS5gpmYzzTILBNwThlhWpP/s+vg/naeakUcQNweQXyXGL9CK1tLFDyE+
+	 dm+z14eDf71+Adt34KHWjtN/vX8AfFQY83rbli3yBhlm7L/nIqb1CmO08T3roTeh7GTNb
+	 KvmnZglZrr4C/VLOUbJ3a2npogixLASV4YQvtCTsSLds7aE4mA1rbi/jtcGXnUCJ9og==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Fs2PlsKO;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WhGFUVTE;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE1C606A31E;
-	Wed, 28 Oct 2026 22:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EEFE606A31C;
+	Wed, 28 Oct 2026 22:54:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Fs2PlsKO
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79C021F01825;
-	Wed, 28 Oct 2026 22:53:00 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WhGFUVTE
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E130C1F01825;
+	Wed, 28 Oct 2026 22:54:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793227981;
-	bh=7YC5j2ssFWEjwqFWHWsXZEzhpYxoMIwo3twbK6FLCoQ=;
+	s=k20260515; t=1793228048;
+	bh=J2JFmHQKnXzvuthRFeIJu+fw+iA/XAbaNbguxe2zCS4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Fs2PlsKOunPf4mKdtCRP70bP22ox7atM6qZeeuBZrh4TgWPd2m/vEFH1Encq1t75q
-	 8gXBNBQKYKLusuNIe1IODcpPTbkK6f8LcKqrUa0UGLaJ/kpQHDBo3vB/CqB23EkXls
-	 ccz34BWzeZplGNlqgjC285El/IckQ1YdUXc0ZfbXFLcv8vDsqafcBRMV4axVrhwHGr
-	 TyIDOFUJgKt8BvRZJMAF6HoTlk4oAFXtzUQz/N/TKGYu773x1oGY9ywymC30hsXFP5
-	 VczkO4jcIq5vSx51Z0pwNRWHeFrqsQYFsMcxoBHTsYMF/okMlEjaGqODPZ4jIGEY4A
-	 kzBJLJT4+Tp9g==
-Date: Wed, 28 Oct 2026 15:52:59 -0700
+	b=WhGFUVTEM6tytriTUoc6gHMhGzY16YKQFA5sMaTPmS8x6Qjv9xcTYiggRDUVBEtCQ
+	 WOHt6dPjyCpicCM9a1vkFygQ4EzIcthg2pfyGa4fTmt7rG8TNVLn7nXN5zPtfaA2OV
+	 sW+emRvJuNBcD086YSsJEjwyMM2AWdmDwBvXb2Xe8qXJqc2Kq8VPvcu0gHdNn/rDYl
+	 HNNRzuw07POf3puuhnybvm+VSoNYHmGNx8YvNK9s3Ka2MSSpieaiGz1pR1iwsv8S7B
+	 TDp34QmCu8uXmf5tO7ImeHkail5h9uO2Hx0S2zhFREOtVBsYfcI69Rt8GkmcKDfmQA
+	 jTQNbad13i6cA==
+Date: Wed, 28 Oct 2026 15:53:58 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Esko Mobius <echoowall@gmail.com>
-Cc: netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, "David S.
- Miller" <davem@davemloft.net>, Simon Horman <horms@kernel.org>, David Ahern
- <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, Jiayuan Chen
- <jiayuan.chen@linux.dev>, Shuah Khan <shuah@kernel.org>, Thorsten Leemhuis
- <regressions@leemhuis.info>, regressions@lists.linux.dev,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Eric Dumazet <edumazet@kernel.org>
-Subject: Re: [PATCH net 2/2] Revert "net: advertise TCP MSS from the
- configured MTU, not the learned PMTU"
-Message-ID: <20261028155259.280feac5@kernel.org>
-In-Reply-To: <D0F0DCA1-9CAB-4BB3-92CF-223C9ECA9BF5@gmail.com>
-References: <20261026-advmss-revert-v1-0-272fa4b7ecb6@gmail.com>
-	<20261026-advmss-revert-v1-2-272fa4b7ecb6@gmail.com>
-	<20261027161813.3092f32c@kernel.org>
-	<D0F0DCA1-9CAB-4BB3-92CF-223C9ECA9BF5@gmail.com>
+To: Zhewei Yuan <yzwlhm@gmail.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Eric Dumazet
+ <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>, Kuniyuki
+ Iwashima <kuniyu@google.com>, "David S. Miller" <davem@davemloft.net>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH net v2] tcp: Fix fastreuse cache initialization on first
+ bind
+Message-ID: <20261028155358.10d03bae@kernel.org>
+In-Reply-To: <20261026095208.58504-1-yzwlhm@gmail.com>
+References: <20261026095208.58504-1-yzwlhm@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,17 +64,12 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 28 Oct 2026 11:38:24 +0800 Esko Mobius wrote:
-> On Wed, 28 Oct 2026, Jakub Kicinski wrote:
-> > Is this your real name? We need a real names for code contributions.  
-> 
-> Sorry, it is not. My real name is Yongjian Wang. If you can fix it up
-> when applying, please use this identity as the author and sign-off on
-> both patches (and in the Reported-by of patch 2):
-> 
-> Signed-off-by: Yongjian Wang <echoowall@gmail.com>
-> 
-> Otherwise I am happy to resend a v2 with the corrected identity.
+On Mon, 26 Oct 2026 09:52:07 +0000 Zhewei Yuan wrote:
+> inet_csk_update_fastreuse() initializes the reuse caches only when
+> tb->bhash2 is empty, but both inet_csk_get_port() and
+> __inet_inherit_port() link tb2 before calling it, so the first-bind
+> branch is never taken.
 
-Thanks! Switched up when applying, hopefully it doesn't confuse our
-bots.
+Applied, thanks!
+-- 
+pw-bot: accept
