@@ -1,83 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793172648;
-	b=nsJBQ6Topdt970G4laxLRulhYhrsM2bVjniCc9a7tZa8Z3wsLoXKKwwh9BDi3CrZLHGx
-	 hqLxoFQsNr/KjZTYyzSw27w7r/5EtVUJszz+Ix/k7K9aOcUGg2AkZUmEWcO5HFI90vRCO
-	 oa83EISIGrgE896HkKDZTUh6PIgjSqxC8HRayYqDWMZwC3fa30inhBIUKcclEjgoQO1ld
-	 K5sFNDwEZJL1nLfO9FKVAYIUZXvZUKfqM+oNUGBytLUqOvInPEgUhorsSgeQ+A0UZG4NT
-	 5iYg4oJjZOHfm0XO6lFqECBfo2Yf+fSdAoEq8UMevtLDJ40Z7zZBpuRWE/rcnj5eqRw==
+	t=1793172650;
+	b=S5ToWIe6BR8D+bkly1nHa0F8m03/rwnMtsBVA6kltr3kX8dE8EnKQuf1potWGuHfqHMx
+	 JD0TWjEwkcN2BUjyEmaEQR2G67diMgESleM399NBysq0hbGSuwu6Hkckpk7B3/PZKaUCF
+	 cM56Ounvb6AHSDqtbciECpDmmDDEvZmePssV0mdL1DVinE9o/+SRbhtyS8fwJ2DDba+Th
+	 8QgernJzRcI0AtD4sTPsvRgk1SXUNzpVY+cP3FLB4m8Z/KpaLlaJFjyz7BOWJsQcu8t0h
+	 dV/oEdiGPFD7HdhwqCcb9Gn4EkgvdGZEYYnNt4aqYa2RoH8OYh4gA7sezVdnVR96VAg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793172648;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793172650;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=BxvbLiLB44gG/WoazELJQFuN0Xy0A4FvSD5C1wEHAm0=;
-	b=zINglrwlWfMBWpwlscEzb4PCB+6RaBP728hmM29/Jq5EZn2lic93f55OCUBYjgzoKsjV
-	 auWiM9LdfPQNGD68SmQgQJdAyk61fp4bNl3pNkyaJxyMCRydxvbj+fxGnSx/G+xIUFLJr
-	 ttPYsUNKzXuao88LbXznuQsCAY5zlIe/b+5CKWu4xKVdTmfz0f7oRexViB1rI5/HRaTaW
-	 oVTZ5XN+LHlKMphJeiq+jnzT/sALVwkOLuF+4M65wXGtFY4xg/hOqQ9kJeZSB8ii7X90y
-	 s6rvhPk+LJolJU6c91c06FkbwIKgSg8aECEdBzpvwU4bR1yq2z5o0B+XQfK1akpEIpQ==
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=xlOBsO8kcdP1J080HWu9hmTEce9Xj0OyKuwceuvj+bE=;
+	b=4EoTHII0c5u92gLYD5O8qFLXfoIQRzaT9FFwsT/6/VgSFzurPcgmbXidIptuEyoG4Qny
+	 3DmGPfgUTOysesnxWximCdVrqxJJWHNDT9vELezCZedh9mca7gFD/saF/M0bmvZfFPAiJ
+	 DRIdPug3OcXiMbouyi46MBW+9wgqEov5GDlCrH3AoLzWHa/qmTJzaXQ6GXoybBMwrLknr
+	 Gc9IEnupku/P73jK3YLaTm3ffM2EAE/j5ImpkouLciLuulTqnLiuohVm00yWGMw/pGCQq
+	 kZi0FOFh5BtV3ZZq/Qo/dMSIxtN9b8fmCC17sEDWnfcxUWlrgLzTC1ncHQo4bGielaw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mRLRWAGe;
-	arc=none smtp.remote-ip=209.85.221.51
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wgXzwn8Y;
+	arc=none smtp.remote-ip=209.85.221.53
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70744606A31E
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 07:30:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 70744606A31E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB28606A31A
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 07:30:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DCB28606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mRLRWAGe
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-48e1d0e5dafso1137318f8f.1
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 00:30:48 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wgXzwn8Y
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-48e4831c028so515937f8f.0
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 00:30:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793172647; x=1793777447; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=BxvbLiLB44gG/WoazELJQFuN0Xy0A4FvSD5C1wEHAm0=;
-        b=mRLRWAGeA7H3IjzneNLFO9sbSmrbIQlbKaZtyErWv88mhO9sN6uLpVULpwazRH+dzS
-         Jyk9hRegs7Yg8WYupnu5k67TNdXbdnITqZKk4ntICHBWqMuYji9MyBMANJU5KEg/ohb1
-         eiMjy0uF/zXdM41aGKmg/dCn8uDLKBT91hHuy59LG7SD/Eir1YivjuMA57XBZ64iDKLJ
-         OINJmKrzc1KzPb5S0BA5caIOC1oQOJ9LVDQNESXHUkVfkqwnhXy+/oejsbs9TDeWOyMG
-         EBLtcymiTiUE14f1U0/pUWX05hk3ny4VkJDb91cyeU4D0nNJK3U94VmYU3adVmua7y1g
-         BudQ==
+        d=gmail.com; s=20260707; t=1793172648; x=1793777448; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xlOBsO8kcdP1J080HWu9hmTEce9Xj0OyKuwceuvj+bE=;
+        b=wgXzwn8YYCaVXZt94hQEpCLocthVD4zuyhV2Ar9yRtzJs4rSE6tTLyYZM4rfec707z
+         sEWkYcS0h5K3irfZlYEOpkJCoFB+vmvPMkVmJ9fc7uSB29xzO7RhvBGjxqEEc50uvYmH
+         5SCLr4ua3jsAZZIWkeZVI8U64Jh4yeBy5QyIkFdztWnQ86ZqCuB1mVO8Jen05Il1UV4o
+         W8KSvvTaW/rWh36v7VJMDyRXFb7DdsZqes6gqd/OlKercU0J1jDo85NuFZO+GF+EGMJL
+         Axye+VNPeuh+/m64N0iQvZH7+as50d4SP//Gy+bbAPVdfQIL/l0eOmCoWtPr74IMPU6m
+         gjKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793172647; x=1793777447;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=BxvbLiLB44gG/WoazELJQFuN0Xy0A4FvSD5C1wEHAm0=;
-        b=tdynkN9zMOJa5VI9DSWUBV+U0f8/iy7cmjSb4/XFSEOVVPuBqSuTRC+2puYk/C0Lzi
-         H/TvzWXWeWvDP2OGxt3auqlMwuxbTWPVfk8G/Lsi7oyEdc6KwfLU1hYvE7PX7WQ4i6Ph
-         spPtTQDLkU237zQpNZWcqyl4QwJfb/tnLEeOhfA4qH46g3GCqQL7qF7aAFwnfl1nhTHD
-         fHsYJhVjeRqLaHs+pmR52hYVgqwqgrPqSxJF11aU/qzgJCXYG2I3QHISzDB9c6oz5cMI
-         E2bc8vjqRIyB99vb4Z+qZxrgVOxaFmUA+9OJB43CEfZHL3wh3I5ID/Qicg4+O4o7K+m8
-         uPlA==
-X-Forwarded-Encrypted: i=1; AKwUvBwqeumHnPfQM2nBZjwu9NZXdA9UJzs0/dRHYaQNyusRXeJGbvW3ExuRCmP18ucEMS7in9NVlaU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJt2eSIGXnpDkkih0OZHUrta+FDftD8+LthRHoSEME98cYuRjyT
-	ED0GmgVVjKwFG5qNBbhimzpRCdO2vHBlmyXAOVSN/QDvNy0P1q0bvvsA
-X-Gm-Gg: AYBFou0wM5ZK0ckZ8C10xAhDeIluHLvQ5TlKEMBrib8vmuUMkhEhpdFBxB0wcAjGKeJ
-	2Pj3t49jPzyghB1pLPrHkoiqN8COqtHNtrvpsosss+/2HGgMJT4PYGPn8GwHOmJZDTE8wbA7S6l
-	7HFr6aHcQRfayf0exhy8C2gSxl3CeBFBcpotAG2uS46Hucbb8z1ScM1Y8QRJX2M515KCg5BSLHn
-	b9LiMJjRU23STF9WdlfhBWy0gGWQFHI5MM/gn/G8Rms1jCPpARB+iKfbh1jo7suGQfmpuQk23ET
-	icmJeY81BJV1QQ0z8K/vU+AafP7yCXqJMg9JhMIxsGqZuyF1KtdeJlO3f6giMbOt7Wr1Sc5KUzk
-	ECUpQ1GefhZzNZjn8vZoSnR+Zaev9deD1aAnCbQ6HbF+5BnbD7lWZEvY5aUTe8g8K985mWOBWI2
-	eWmBS7iOa5cXA480MYfiQ01S4Qt1vd4+JbV3V1GHhn0G++k/kPN1g4QRiqpcZZ94FtaA+ZAoz+K
-	sG1iskdfnpwNjMRKkoO9r5cyQKuv95ZPoBPpjRf0Zaegp1xuDjXHt+A+CKhavJ6wiVtfmF6wrn9
-	TzTKCmAu/1R5QbpAPri09N4yRPS4jqVntSozDgATjcMRNtrvHiWPO2Ft9td5aYldXTlqV/AF5pT
-	jCd+4ai/RR2K4DKxACDCqfq4cWX+QP1p9Pg==
-X-Received: by 2002:a05:6000:50a:b0:48d:ed95:3823 with SMTP id ffacd0b85a97d-48e60209cfcmr1021843f8f.11.1793172646645;
-        Wed, 28 Oct 2026 00:30:46 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1793172648; x=1793777448;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xlOBsO8kcdP1J080HWu9hmTEce9Xj0OyKuwceuvj+bE=;
+        b=Mg09VJm9yErh7B8WlJrjHl0wfO9POi7yMVJPzDL43TmcyvwOhPBiS0RhxrqQmH/6Gd
+         hlgxWywt8nEyXJnpxJZwdWXz5MQNNtsCFXl5Ui/I38iZgEeAsoCnPiyApJJOCuYWtFim
+         BWHCcdsa/hHzudW5+m3ukAlDLVj9xSkKDAiUbprGwKTV7dGdXC/YJYUNyOrEgHJAhrNQ
+         RthWeJCBknAX3HLn2Ehrt72Owq7UO/9Care3lwqcuwcTMy8RZeUQtWC5/T434dEf6Grs
+         ZDb9cQSSC+BzHW3CpSnGzNAYTFVoykp+oB98kpT8585Q/PwmOp3c9WusOCZmynsNro8f
+         kuag==
+X-Forwarded-Encrypted: i=1; AKwUvBy1JTD1PhPjYBgtqyQLMHnmtxKAgdHZRr1KAk3fy/TTqPEO6gBdA9nDnnI9ik5wuXn4vU7OK7c=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLwh3QRjh3ZiiyqByrSa8ggv1q+hXN2+cxnPc8geRa+iMdGbPBa
+	dY0dQSxocImuI+A0IHkyH90OVcPq4clgBgcNZzihHNjni5twr8LodzNk6q8uKg==
+X-Gm-Gg: AYBFou2gxQkbD5rZFy1hwddx6COoJUrqWCKaTXIx81PPJhX2tkhgHuV5OqTUf/qHsoo
+	nuVvBoTG8dgRNS91r/0J16a06EAg1QeR0msJ3hh5rryUfNRnsbSLqQKGZ2+GVOd6LldUF/Dpy8b
+	cPYyZc6jV1PthgwWnW4BR11iaEqk3uTDqZH1b2am22tHasbgwB8eFS/SiZFtF5hiSMn3BKe+a7s
+	n+PGNsg/ZQev6ZQyTpkSQh8YdPYsSGhRtA6NJD+3AxZ1u3EANEEwSpYmhDIO/909bLiGxqTCqyR
+	ys/qsjBr+h+s89/9RGAoQFrhscdWvSuYDK8ByJT+66/4Vja2tYlLyMX4lfmUtPI6vodZw18lX98
+	L9wl4rOoLkaOY0F9Tb1Whpn/8ttTwTxH9O0Y5+9I65Nv+EQgv8Y1fbXSgSuwvF4ajTzNKcUdHGw
+	ggi4+jYfc7AhKJasQFE721NirPDIkRGj2gX+uIMraZ2sMQ2BkMARioBrnVFx3W7cJ1eDq43bjFa
+	tVTwWqyRMm83oidZNx1Lyzxkpoi+e6QkFuViuEuG1u/h+jDphVJdSf3yZ1BZO4QLUqUkQIpKog3
+	C7mibK4OoYBvGv2/nrP9YRG9DfLi2L5OTmmRkfSnpZRd/To8e6jxV4Y7ztwWGTv+zkoir0yL06N
+	pNLcCUf1wDRvN0yuUHSn8Q6RNrGYhQaZSHPuFStQZErEtZGctD87pZuc=
+X-Received: by 2002:a05:6000:240f:b0:48e:60bf:4177 with SMTP id ffacd0b85a97d-48e60bf43demr854284f8f.9.1793172648194;
+        Wed, 28 Oct 2026 00:30:48 -0700 (PDT)
 Received: from Ansuel-XPS24.localdomain (93-34-92-187.ip49.fastwebnet.it. [93.34.92.187])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-48e542ed998sm12083088f8f.13.2026.10.28.00.30.45
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-48e542ed998sm12083088f8f.13.2026.10.28.00.30.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 00:30:46 -0700 (PDT)
+        Wed, 28 Oct 2026 00:30:47 -0700 (PDT)
 From: Christian Marangi <ansuelsmth@gmail.com>
 To: Christian Marangi <ansuelsmth@gmail.com>,
 	Andrew Lunn <andrew@lunn.ch>,
@@ -89,10 +90,13 @@ To: Christian Marangi <ansuelsmth@gmail.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v3 0/4] net: phy: as21xxx: simple series for trivial fixes
-Date: Wed, 28 Oct 2026 08:30:18 +0100
-Message-ID: <20261028073024.25175-1-ansuelsmth@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Subject: [PATCH net v3 1/4] net: phy: as21xxx: handle stale link status during autoneg
+Date: Wed, 28 Oct 2026 08:30:19 +0100
+Message-ID: <20261028073024.25175-2-ansuelsmth@gmail.com>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261028073024.25175-1-ansuelsmth@gmail.com>
+References: <20261028073024.25175-1-ansuelsmth@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,24 +108,40 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is a simple series to account some fixes for some corner
-case for as21xxx
+When autonegotiation is restarted, MDIO_STAT1_ANEGCOMPLETE may be
+cleared before MDIO_STAT1_LSTATUS. In this case, the link status bit
+may still indicate link up even though autonegotiation has not
+completed.
 
-Changes v3:
-- Rework to address some comments from sashiko
+Force the link down when autonegotiation is enabled but has not
+completed, preventing as21xxx_read_status() from reporting a link up
+with an unknown or stale speed.
 
-Changes v2:
-- Add review tag
+Fixes: 830877d89edc ("net: phy: Add support for Aeonsemi AS21xxx PHYs")
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+---
+ drivers/net/phy/as21xxx.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Christian Marangi (4):
-  net: phy: as21xxx: handle stale link status during autoneg
-  net: phy: as21xxx: fix read_status speed handling
-  net: phy: as21xxx: force C45 OPs for AUTONEG
-  net: phy: as21xxx: handle odd firmware on loading
-
- drivers/net/phy/as21xxx.c | 180 ++++++++++++++++++++++++++++----------
- 1 file changed, 136 insertions(+), 44 deletions(-)
-
+diff --git a/drivers/net/phy/as21xxx.c b/drivers/net/phy/as21xxx.c
+index d5738117eca6..0db82da8dbdf 100644
+--- a/drivers/net/phy/as21xxx.c
++++ b/drivers/net/phy/as21xxx.c
+@@ -658,6 +658,13 @@ static int as21xxx_read_link(struct phy_device *phydev, int *bmcr)
+ 		return status;
+ 
+ 	phydev->link = !!(status & MDIO_STAT1_LSTATUS);
++	phydev->autoneg_complete = !!(status & MDIO_AN_STAT1_COMPLETE);
++
++	/* Consider the case that autoneg was started and "aneg complete"
++	 * bit has been reset, but "link up" bit not yet.
++	 */
++	if (phydev->autoneg == AUTONEG_ENABLE && !phydev->autoneg_complete)
++		phydev->link = 0;
+ 
+ 	return 0;
+ }
 -- 
 2.55.0
 
