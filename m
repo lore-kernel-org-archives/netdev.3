@@ -1,74 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793221133;
-	b=FtJaqLdYPWBcDv3GwqwMx1QJhguxavZDWY2jHibGwFa3oWfqFWg8gxwEPiYj9NCCNmTI
-	 D7ARq4qrOZDrG1n8jZKB5XGtSSqZGbKYlMijfWE0pFZHpnQlk0Jvba8/hjatxKoHM5vQ/
-	 cK3i3EP7pfO8IXh1ZCuaBgB2xZ6smvEOIJ4I6FbBiah3dAgtmBiV0LG7ROzONjEAiX18P
-	 cwzALVIWBeXbRDs9+OYaZDaodd+snSaa8EA45BcBGry229pONGmux88FCrFcb79Z/u3eq
-	 MQpF4imwhkg/qxxx1tzh4oJt9joyZNQ4tnN65e6hYgo6u+jSQdlbMXZfvoanvUujJ5A==
+	t=1793221182;
+	b=T6UCbbmLM3/cL9MBjTrN4e/PgjcDe1V689Wacl/aywPOAP+Dd6kVR6t6GKBBETEWP9m6
+	 EyfbLmgK47BqZvya9JNJ6rcBmkAhD52bxy5xwYwgcTU9X3/HXOrYhwfnQKcbptt/xH8bF
+	 G/7dGB50wKKPFs9fd5dj2pqQ1kJM8UVSw5IeHS+2cHJr4quoTROd1Yr+gI+ysaLXI9ePb
+	 zOFxvaMYPjGBoLEzHCVPhQ6rapCxnageNwLgxqIpmoGc94xyH4vTA26dJZVQhZnjXNUOa
+	 ES2jJsIF1r3ZiuUZU0MdccfP9CNfzG6UTfrKFl1yllZ0wFW0ru8gL7FaUm4Sc3gcwmw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793221133;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793221182;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=EMvfX+w/imGbeoue0PMLqqC2Q+H4NEqIgtrLB+LMmtc=;
-	b=jzBEWtCHbVWcF8nLmtJCKCvZ7CFbaIg5CFl4Y6ABUSjzW7AqM+t9/t/qsnHvGDTJPs9j
-	 J8lNZqlABn2nXdBu4dtT2fsjs3tAEazaNcv3hPlhZqpFjwc250VOJhIkIogNOs9YWfPT5
-	 SqkdbIj0CUutYTaSZ6T7mTmNw/ZyA5eAECrDrnx0tF87zCkBzMg6lBRfbh+TZggZOBBpz
-	 nL9bDusOoYanqHpoxRlr9RnUGua6hVn89Zm4fW6d7jtzqr9YTJ91GnibiL5XsAMjjg+X5
-	 gIy3TZOk+2EGFC8ubnsip6kT9jjCVn5ZaA/WhK/4UuO6iEDNKwBf1j8B6rSiHn5+hSg==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=qaQSYGMYJjRHdqv1JNYADQndewpgit/Om11IjQW+ZUk=;
+	b=U6HMGEk5dK9VIYi92cOZsSE617vMfa0YsuPmT+3C0/snDf61Vj/OiK+ikLD9ij6QbjRH
+	 XNeZCuFYKnW+t3PV3MvQdIQei1ugAC2mkLoorzAHKsTBKlHi4ef+UX5bnQf1lRSdQdwLf
+	 K8apac53KEO4W0pToLeo/wL29tJZnNgNjHFFZ0SU0slWaoz+FowjvzRpgRaDOiQrBI2Qp
+	 3bMPaGoPLc+EtnlwOTzKknVhUC/WQS4P+g62xdM1yZZduDc2YquGpOc2pfnbpP4GU0rb+
+	 KaEDvODo7OyGp9ubmarzlemydgR7abv9v1GxPEmpON1I2nrOmMkvSdl4KC9wp5ZZmZQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=irCKny6R;
-	arc=none smtp.remote-ip=209.85.210.199
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=u5QKoSGG;
+	arc=none smtp.remote-ip=74.125.82.172
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD51606A31E
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 20:58:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ECD51606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464B5606A31A
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 20:59:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 464B5606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=irCKny6R
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8a01ea9e318so1870435b3a.2
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 13:58:51 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=u5QKoSGG
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-3514b90bb89so2724671eec.1
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 13:59:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793221131; x=1793825931; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EMvfX+w/imGbeoue0PMLqqC2Q+H4NEqIgtrLB+LMmtc=;
-        b=irCKny6RSSpBYJiJlE0CN4zyNxU/pHyKH+Qk7JZqL+zDEl4n/TRua+NuZEGNQ4VjkY
-         8Iwpw6gGG/qOa/AT2SmLQS1yOdrtHRSytuabu7733svZyDGKEw33lBs5OcxjvwiD5jfI
-         Erel6sbloJpWvQICUZdo2g4U9pXcZVXOjXa16QEvg9XRDVvyCVy26A2KGveDP83vCF/r
-         wlKJ9A3V4l9TgW/kCLCtPPNvu8qW/kFzjv45wTG07wA4QzSxcFeY0JJF3dt22kLlhLn8
-         HSWy0G0CVi5CCOueusrhx5svOEjfFPzjy7Ljm1Vt5QZxCzq6d+Gv2tSh/8SyrY3QAWsV
-         qzzg==
+        d=gmail.com; s=20260707; t=1793221181; x=1793825981; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=qaQSYGMYJjRHdqv1JNYADQndewpgit/Om11IjQW+ZUk=;
+        b=u5QKoSGGKa5FcFqgzz2UgIWYWG2ytJgfO8emLPx2PdBSUJgRSZ5N50PG1CpEZfhRQx
+         6nui0Ola6WQcunlDZLYRaLZ/2f/KoyJCo04OokKdxpFPaDvjBbC14iTopLpDIygIS4uL
+         QSoGW/1kajxzKQrjTwe/04JOgas7wR/ROxlYVOt+upOmoaLrALsDZxElpL/v2pmsjfNX
+         jAcEH9dZEairz3P9fCbq36OxGAt+bWhWv7OSP2V+/rIyV0TahtJsQMBleeuHQJKnmAf4
+         OHSKPWcs9nfzUp7REDuP53RbFPkfDFZw3ywxQydWfMM8NElPvdtcaPC43iMqbq3GbiJY
+         zD+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793221131; x=1793825931;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1793221181; x=1793825981;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=EMvfX+w/imGbeoue0PMLqqC2Q+H4NEqIgtrLB+LMmtc=;
-        b=O4v0sidobLS5w5y3GnVhnmDCdp1zavBT6xcmT4XLHhOBuEJ2S2+Nm1sUHXIlajaKt8
-         dWrWF/mfQr1iM/L7Df4HyJ6Smb38sOQ7/AcN+VHBnIh2HZIYds4tqROQqhqZUhHULrLy
-         CQc5dgyCTZJFRcTde2CnZvF5c0RyFgjiX4/+qIrybOZWtC3oisK9XdNUM5IIO7FykKF2
-         5lcIkwtnvduMwaC9ok3q/J4DusyBYCLKZVLUA3izVNRUtBeCFqd6BGWSV1vCi+VuQ7UZ
-         iHKeinQxC2yVvdDEYvDloE3+hgXrBju2gSovla3fzzefOanfB11Be/nUqVRKZ+SeDBC5
-         rjPQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz6i2x+K71W1fx1sK2+TSV+C5Qohs5sLwn1TCA6TEm7idOauiqtllyC3okzFkOz/Icx2QYKn54=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLa/IETDRxbuAI60pc4ACLd+bEPO6VWLZ1IJ1psSWL9BKA6/b0p
-	rM3x8c+Js57EtKjgPUGxLKYFkzIsy5XnrtvJqDVKx9YD0KkgWUwCsqEftIr4+8KivDcNe4EmfFA
-	TAupKeg==
-X-Received: from pfux11.prod.google.com ([2002:a05:6a00:bcb:b0:891:240a:3bb3])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:189e:b0:8a5:a8a2:95a0
- with SMTP id d2e1a72fcca58-8a6e8d7bc89mr3013096b3a.52.1793221130992; Wed, 28
- Oct 2026 13:58:50 -0700 (PDT)
-Date: Wed, 28 Oct 2026 20:58:50 +0000
-In-Reply-To: <auFsBkQInOabvUEd@v4bel>
+        bh=qaQSYGMYJjRHdqv1JNYADQndewpgit/Om11IjQW+ZUk=;
+        b=0LEORROiXCPMoeNpfZoVKLRW/XQGPtt9YmrF2dpaqLg69VYo661P3Ul+GRLdYbPUDg
+         734KNQ+Af5NR/Q64SEONTBLzpMIAUF+Vbm6jouZVKauumnxcmwWjUj7LVdEyZvpHMLGi
+         RxJjocKCJaWaJykM3EqGch3LSEpSFsN2x2xixCDWuGJiPKPNVAbsrqqO7z3xR4D7U6hj
+         rEenY67emDI2kIg/lQBrfWifrSdlI8GM2LIOBKM+cZIWeAXkQm9PJ+usNWVS7rBhWPJB
+         oLg6hoJgcQmRDcjW87c5VZyKSiM2djnPr8zQ18gkJzNbaYo8ydp1a5ZrMw2OD3AYyJCl
+         rPpQ==
+X-Forwarded-Encrypted: i=1; AKwUvByISILvgQxUfi0rMz3KxAoaj/f5KoZbNjjN6eoZdeDQWUOBXMYpAKX94LI+beMqpteVb2xkPLc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYL+fwb2QnoiJLM7tnU0W/3iF/0gnnkSvGADdOPn01eAQv0dGC5O
+	ZityYaj2w5puMz2pV4s08i3jnaKg6ls9ZT1abZHnPI0JhCDLshix2bN5
+X-Gm-Gg: AYBFou0ILUULn7ExsGF++lkTLOQQhL5HvRn4N+L68XZPeHCJBibdoAlP14y4HIOQ/6+
+	ohDbeOnfTHoXh48fKPd6oHkNktbLGecV/WeAaU8ZsGNLCtC/DVNN6iescmRTcjj3RRdIOftJhJc
+	Py0yhIgbEruKCtoCSC4mkBZyXFxWHl+m0jgmHUnO1bi6xzum6UD3NUvonNXmzA/VoONQqWLqvC7
+	0iExn/wxX8u85lblSSGIBzl8nOrpU65fHHvQ0eiOLovz79cs0y5dedF1WCFG2jSDG0UpRakBFTX
+	0l0R0tnfotqQbYs809Q5BGyfYTtJaBHgjzaZD2eFIWPHz+00K1bhbJ2R6I/TUzYtY8cVhaT9Qpz
+	orqSSIMb0r6RN/GPUwWrUdIktVtX3F7BW1OrWEoZQtY9uMaNL6ZCuoXBhEIUd6I+kgQ0POTRDki
+	vzm6SeFoBl03ZIRcBO+kIugdtnlqAxdjOdM6ZMAlUCSAVzSY/hssV+m84uhLf7VkOEOBLhYGpFh
+	mNtUKZa/LlI0kUkpIk5EJEPoDrr30wbnsv47+L1VK3r2k/PDaCU9tgdRx7LyCKT/mHaYsHxR+iL
+	7n3vLlBjkZOb8K2ncAJpBRDxU08x08NDte3r/l0FXezbYHpD6nBfmPYToVs4UdapI2vSb16pcUo
+	R
+X-Received: by 2002:a05:701b:4583:20b0:185:b157:f271 with SMTP id a92af1059eb24-1a6ce113ee5mr4231317c88.23.1793221181020;
+        Wed, 28 Oct 2026 13:59:41 -0700 (PDT)
+Received: from samniyama.tailbcd61.ts.net ([76.20.4.3])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1a75d76814bsm7954568c88.10.2026.10.28.13.59.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Oct 2026 13:59:40 -0700 (PDT)
+From: Koral Ilgun <koralilgun@gmail.com>
+To: netfilter-devel@vger.kernel.org
+Cc: pablo@netfilter.org,
+	fw@strlen.de,
+	phil@nwl.cc,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Koral Ilgun <koral.ilgun@adtran.com>
+Subject: [PATCH nf] netfilter: nft_flow_offload: do not offload multicast
+Date: Wed, 28 Oct 2026 13:59:38 -0700
+Message-ID: <20261028205938.662312-1-koralilgun@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,175 +99,72 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261026003804.61923-1-imv4bel@gmail.com> <20261026003804.61923-3-imv4bel@gmail.com>
- <auFUvRnF2uDgZix8@google.com> <auFsBkQInOabvUEd@v4bel>
-Message-ID: <auJhzo-hCUxII1ce@google.com>
-Subject: Re: [PATCH net v4 2/2] inet: restore refcount ordering for lockless
- ehash walks
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Hyunwoo Kim <imv4bel@gmail.com>
-Cc: edumazet@kernel.org, ncardwell@google.com, davem@davemloft.net, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, martin.lau@linux.dev, 
-	john.fastabend@gmail.com, weiwan@google.com, sd@queasysnail.net, 
-	jiayuan.chen@linux.dev, netdev@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Wed, 28 Oct 2026 12:29:10 +0900, Hyunwoo Kim wrote:
-> On Wed, Oct 28, 2026 at 02:13:15AM +0000, Kuniyuki Iwashima wrote:
-> > On Mon, 26 Oct 2026 09:37:45 +0900, Hyunwoo Kim wrote:
-> > > Before commit fb041bb7c0a9 ("locking/refcount: Consolidate implementations
-> > > of refcount_t"), default builds implemented refcount_inc_not_zero() using
-> > > atomic_add_unless(), which provided full memory ordering on success. The
-> > > commit removed that ordering on weakly ordered architectures, allowing
-> > > validation after a successful reference acquisition in lockless ehash
-> > > walks to be reordered before it.
-> > > 
-> > > Use refcount_inc_not_zero_acquire() in the IPv4 and IPv6 established
-> > 
-> > Does bpf_sk_assign() need it too ?
-> > 
-> > If the socket is taken from lookup helper, it's safe, but what
-> > happens if the pointer is taken from BTF (27e5203bd9c5), e.g.
-> > tp->inet_conn.icsk_accept_queue.rskq_accept_head ?
-> 
-> Yeah the same ordering issue remains when the pointer is obtained from 
-> BTF without a reference. Fixes: 27e5203bd9c5.
-> 
-> However, I think this is better handled in a separate follow-up patch. 
-> What do you think?
+From: Koral Ilgun <koral.ilgun@adtran.com>
 
-I think it can be just squashed given 27e5203bd9c5 exist
-in the oldest LTS 5.10.
+A flow holds one output per direction, which it resolves when it is
+added. The outputs of a multicast route change when listeners join
+or leave. So a multicast flow in the flowtable continues to send to
+the output that it resolved, also after the last listener left, and
+the counters of the multicast routing stop.
 
+IPv4 multicast stays out of the flowtable only because the reverse
+route lookup in nft_flow_route() refuses a multicast source address.
+The IPv6 route lookup has no such check, so IPv6 multicast that
+ip6mr forwards goes into the flowtable.
 
-> 
-> > 
-> > 
-> > > lookups and in inet_twsk_purge(), where the network namespace is validated
-> > > again after taking a reference. Use refcount_set_release() when setting
-> > > refcounts in the SYN cookie, TCP Fast Open, request migration, and
-> > > TIME_WAIT paths. Keep the existing TIME_WAIT smp_wmb(), which separately
-> > > orders the refcount store before ehash publication.
-> > > 
-> > > Fixes: fb041bb7c0a9 ("locking/refcount: Consolidate implementations of refcount_t")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-> > > ---
-> > >  net/ipv4/inet_connection_sock.c | 6 +++---
-> > >  net/ipv4/inet_hashtables.c      | 2 +-
-> > >  net/ipv4/inet_timewait_sock.c   | 4 ++--
-> > >  net/ipv4/syncookies.c           | 2 +-
-> > >  net/ipv4/tcp_fastopen.c         | 2 +-
-> > >  net/ipv6/inet6_hashtables.c     | 2 +-
-> > >  6 files changed, 9 insertions(+), 9 deletions(-)
-> > > 
-> > > diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-> > > index bd0bad96c93c3..837cb91e5b173 100644
-> > > --- a/net/ipv4/inet_connection_sock.c
-> > > +++ b/net/ipv4/inet_connection_sock.c
-> > > @@ -1056,8 +1056,8 @@ static void reqsk_timer_handler(struct timer_list *t)
-> > >  		 * hold another count to prevent use-after-free and
-> > >  		 * call reqsk_put() just before return.
-> > >  		 */
-> > > -		refcount_set(&nreq->rsk_refcnt, 2 + 1);
-> > >  		timer_setup(&nreq->rsk_timer, reqsk_timer_handler, TIMER_PINNED);
-> > > +		refcount_set_release(&nreq->rsk_refcnt, 2 + 1);
-> > >  		reqsk_queue_migrated(&inet_csk(nsk)->icsk_accept_queue, req);
-> > >  
-> > >  		req = nreq;
-> > > @@ -1441,7 +1441,7 @@ struct sock *inet_csk_complete_hashdance(struct sock *sk, struct sock *child,
-> > >  				goto child_put;
-> > >  			}
-> > >  
-> > > -			refcount_set(&nreq->rsk_refcnt, 1);
-> > > +			refcount_set_release(&nreq->rsk_refcnt, 1);
-> > >  			if (inet_csk_reqsk_queue_add(sk, nreq, child)) {
-> > >  				__NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPMIGRATEREQSUCCESS);
-> > >  				reqsk_migrate_reset(req);
-> > > @@ -1494,7 +1494,7 @@ void inet_csk_listen_stop(struct sock *sk)
-> > >  		if (nsk) {
-> > >  			nreq = inet_reqsk_clone(req, nsk);
-> > >  			if (nreq) {
-> > > -				refcount_set(&nreq->rsk_refcnt, 1);
-> > > +				refcount_set_release(&nreq->rsk_refcnt, 1);
-> > >  
-> > >  				rcu_read_lock();
-> > >  				if (inet_csk_reqsk_queue_add(nsk, nreq, child)) {
-> > > diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
-> > > index 58d54965036a2..7ffa9171d6de1 100644
-> > > --- a/net/ipv4/inet_hashtables.c
-> > > +++ b/net/ipv4/inet_hashtables.c
-> > > @@ -550,7 +550,7 @@ struct sock *__inet_lookup_established(const struct net *net,
-> > >  		if (sk->sk_hash != hash)
-> > >  			continue;
-> > >  		if (likely(inet_match(net, sk, acookie, ports, dif, sdif))) {
-> > > -			if (unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
-> > > +			if (unlikely(!refcount_inc_not_zero_acquire(&sk->sk_refcnt)))
-> > >  				goto out;
-> > >  			if (unlikely(hlist_nulls_unhashed_lockless(&sk->sk_nulls_node) ||
-> > >  				     !inet_match(net, sk, acookie, ports, dif,
-> > > diff --git a/net/ipv4/inet_timewait_sock.c b/net/ipv4/inet_timewait_sock.c
-> > > index d4c781a0667fe..74ff40d42e56b 100644
-> > > --- a/net/ipv4/inet_timewait_sock.c
-> > > +++ b/net/ipv4/inet_timewait_sock.c
-> > > @@ -141,7 +141,7 @@ void inet_twsk_hashdance_schedule(struct inet_timewait_sock *tw,
-> > >  	 * Also note that after this point, we lost our implicit reference
-> > >  	 * so we are not allowed to use tw anymore.
-> > >  	 */
-> > > -	refcount_set(&tw->tw_refcnt, 3);
-> > > +	refcount_set_release(&tw->tw_refcnt, 3);
-> > >  
-> > >  	/* Ensure tw_refcnt has been set before tw is published.
-> > >  	 * smp_wmb() provides the necessary memory barrier to enforce this
-> > > @@ -328,7 +328,7 @@ void inet_twsk_purge(struct inet_hashinfo *hashinfo)
-> > >  			if (check_net(sock_net(sk)))
-> > >  				continue;
-> > >  
-> > > -			if (unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
-> > > +			if (unlikely(!refcount_inc_not_zero_acquire(&sk->sk_refcnt)))
-> > >  				continue;
-> > >  
-> > >  			if (check_net(sock_net(sk))) {
-> > > diff --git a/net/ipv4/syncookies.c b/net/ipv4/syncookies.c
-> > > index 6440305615378..4b2d2713653b7 100644
-> > > --- a/net/ipv4/syncookies.c
-> > > +++ b/net/ipv4/syncookies.c
-> > > @@ -205,7 +205,7 @@ struct sock *tcp_get_cookie_sock(struct sock *sk, struct sk_buff *skb,
-> > >  	child = icsk->icsk_af_ops->syn_recv_sock(sk, skb, req, dst,
-> > >  						 NULL, &own_req, NULL);
-> > >  	if (child) {
-> > > -		refcount_set(&req->rsk_refcnt, 1);
-> > > +		refcount_set_release(&req->rsk_refcnt, 1);
-> > >  		sock_rps_save_rxhash(child, skb);
-> > >  
-> > >  		if (rsk_drop_req(req)) {
-> > > diff --git a/net/ipv4/tcp_fastopen.c b/net/ipv4/tcp_fastopen.c
-> > > index 471c78be55137..e40477b6b5549 100644
-> > > --- a/net/ipv4/tcp_fastopen.c
-> > > +++ b/net/ipv4/tcp_fastopen.c
-> > > @@ -364,7 +364,7 @@ static struct sock *tcp_fastopen_create_child(struct sock *sk,
-> > >  	tcp_reset_xmit_timer(child, ICSK_TIME_RETRANS,
-> > >  			     req->timeout, false);
-> > >  
-> > > -	refcount_set(&req->rsk_refcnt, 2);
-> > > +	refcount_set_release(&req->rsk_refcnt, 2);
-> > >  
-> > >  	sk_mark_napi_id_set(child, skb);
-> > >  
-> > > diff --git a/net/ipv6/inet6_hashtables.c b/net/ipv6/inet6_hashtables.c
-> > > index aa5fa1dd062f7..1eea584d80df8 100644
-> > > --- a/net/ipv6/inet6_hashtables.c
-> > > +++ b/net/ipv6/inet6_hashtables.c
-> > > @@ -105,7 +105,7 @@ struct sock *__inet6_lookup_established(const struct net *net,
-> > >  			continue;
-> > >  		if (!inet6_match(net, sk, saddr, daddr, ports, dif, sdif))
-> > >  			continue;
-> > > -		if (unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
-> > > +		if (unlikely(!refcount_inc_not_zero_acquire(&sk->sk_refcnt)))
-> > >  			goto out;
-> > >  
-> > >  		if (unlikely(hlist_nulls_unhashed_lockless(&sk->sk_nulls_node) ||
-> > > -- 
-> > > 2.43.0
-> > > 
+Skip a multicast destination for both families, so that the result
+no longer depends on the route lookup.
+
+Fixes: a3c90f7a2323 ("netfilter: nf_tables: flow offload expression")
+Signed-off-by: Koral Ilgun <koral.ilgun@adtran.com>
+---
+Tested on an arm64 router with Linux 6.18.54, with an inet flowtable
+that offloads forwarded flows, and IPv4 and IPv6 multicast routed from
+the WAN to one VLAN. Without this change, the IPv6 flow went into the
+flowtable after its first packets: the ip6mr vif counters showed 25 of
+1,500 packets, and the receiver still got all 400 packets after its
+leave. With it, the vif counters showed 1,500 of 1,500, the flow stayed
+out of the flowtable, and the stream stopped about 2.5 s after the
+leave. IPv4 multicast stayed out of the flowtable before and after.
+Unicast IPv4 and IPv6 flows still went into the flowtable.
+
+ net/netfilter/nft_flow_offload.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/net/netfilter/nft_flow_offload.c b/net/netfilter/nft_flow_offload.c
+index d3c5651dd699..1fc755e594b0 100644
+--- a/net/netfilter/nft_flow_offload.c
++++ b/net/netfilter/nft_flow_offload.c
+@@ -10,6 +10,7 @@
+ #include <linux/netfilter/nf_conntrack_common.h>
+ #include <linux/netfilter/nf_tables.h>
+ #include <net/ip.h>
++#include <net/ipv6.h>
+ #include <net/flow.h>
+ #include <net/netfilter/nf_tables.h>
+ #include <net/netfilter/nf_tables_core.h>
+@@ -35,6 +36,16 @@ static bool nft_flow_offload_skip(struct sk_buff *skb, int family)
+ 			return true;
+ 	}
+ 
++	/* A flow keeps the output it resolved at offload time, but the
++	 * outputs of a multicast route change when listeners join or leave.
++	 */
++	switch (family) {
++	case NFPROTO_IPV4:
++		return ipv4_is_multicast(ip_hdr(skb)->daddr);
++	case NFPROTO_IPV6:
++		return ipv6_addr_is_multicast(&ipv6_hdr(skb)->daddr);
++	}
++
+ 	return false;
+ }
+ 
+
+base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
+-- 
+2.43.0
+
