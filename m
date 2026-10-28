@@ -1,49 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.70.43.20
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793177406;
-	b=SjqIcqsGbMfYya6/uP7cWGlESE8CxBEbJ754vRvEJHivDlZhZ1Ss2cEJj3oH/vTIjV9V
-	 r3XVZYbSvLMzbwwTPirjGfURTbyUr+MaBdYuEHqg/Oq0owH0jf+qtwWLvFnqMYkXrSzp7
-	 lR4qxLljKjuxCP1J6t+pjg1+1ZcbZa6NtCQCx8zZwZUIlGRktBbka6OzAB8WskyheOXwv
-	 7l/HcYN6ztrqp+QqEIFOq2cCjUEaqHbRWgVVLF2s6M1lqX0G7j6LKSZ2sgMFYnubYotzF
-	 z4HxvTKTeVyvdseqQ/FIvix9j+QRA1a44RW6tyroRXyfe3GGsV93fZw0nAez4jKnZpw==
+	t=1793177429;
+	b=mgFZ7BGkGRFiO6Beh3+wt6vsVI93NBGYVrdsZieAkZcVo2K2i2pUVAhs7SssLpNMKi9y
+	 /4oyNQp06/4NNSTTUKt7ZxGjGgh9NFZbcnS63H/uyBlpcsWY3hVJQ5PWDLW04OYb2Bmta
+	 eZbRMm8fy39OfLVdPgkNLx5VB7oh9idgrOTUYonnIoVdQM3OG8BPQ4qOtGilt/QJJqmgh
+	 QgCRD9aHxBQnZ5kzZeLFChSBCHbs/Rg9doo+c+pYLvMUrL7I1zGIERDr32cSZc4a43yIj
+	 +XyVJZ8nELSIfxZe8eG6ysDPxIgtGfaW2xCj9sIfF8IgAQAj6lVoH0zNrV/j0dZwMMQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793177406;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=TnCmFNN61rfZljZyq8oIidethrdD8OTEnQRhzssrqzg=;
-	b=EQkfxWAhH810ezFco7vfaxf+I2UYoNyRO/ItjxVXOdHaimI0a1JqcSW0UB9Mp9uxeuUP
-	 Kh0cmVZglgKyztYVj6ElA/i08+oH5iZSYDI55CAq9+UwtDdHX/4ggpqGzUNVjENi97/aO
-	 ndeGkVoRz366fOJ/py406AOWB7pFUPlfQkXN36GPv3laVKWvhq8fwTCeN7YX7CMu48CDI
-	 Y6zbPpPUsf31SlVn5urQ2/fu5UIWCoG4Z5MT4nBJKX3PJtXpwRgzpNiXKxxFFWEjBgr3Z
-	 G+Se8m2KDFlS0l/pd2rcCv1+OyODrYgz6YasxZpW4Sks4m6Mz5t+if1on2Aj1pg3j6Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793177429;
+	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
+	 Feedback-ID:X-Pm-Message-ID:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=ZzkyzMXwhe6xNno6EsFST7VZQ034OlMe3wk9yXIAjBE=;
+	b=0/k2HJk9DgYw2RjXwhD4lwYeQ3Xl2g5uCrCo74v2KZWfK85d/5YIedmEvTBKo+6gPsGE
+	 GZm7zK+D/u2FFFVm3nhm3vvvYCvjR0AHcRDtF6gFz+nX7R1O/CpDaJYgu3ndk8Tgo+gkY
+	 szjFyGw5AuaLFYn2GxM5tCYX574XR0Jikb19X2T2reFLjK1y2JnHRLl3oxzDrWQFHjxMr
+	 wC7/63ANLgYoustwewBu/di+R74i76Qs0kULa3kFMFrXEmsPxxnHaavgEoCHpWG755oJ1
+	 44pFfhhjJiDPtM4abdcicoC7grkqPRLQdGHTdvLgS1wIN7I9ud1yYBVrfJFR1IaFa3A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iEqVgown;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=1g4.org;
+	spf=pass smtp.mailfrom=1g4.org;
+	arc=none smtp.remote-ip=185.70.43.20
+Received: from mail-4320.protonmail.ch (mail-4320.protonmail.ch [185.70.43.20])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28693606A325;
-	Wed, 28 Oct 2026 08:50:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iEqVgown
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C689D1F031EF;
-	Wed, 28 Oct 2026 08:50:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793177405;
-	bh=TnCmFNN61rfZljZyq8oIidethrdD8OTEnQRhzssrqzg=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=iEqVgownJdHBb5bp9aNUipa5HALvAg9sgMnZoQt0xTfLYE/bLVKfjRkgT15aEGSd2
-	 LJ7EYq5CivJqiWmN1csszprORDYeD2L3Bu6TgGsMbR4poJ+A0JxmAWrwktK54VrDP/
-	 5L3wpXma6FCLtWNxURnpTuiYuWVycYnhkypZEoSsUt9yzz0LpEW0P+LE5uOWeK40ff
-	 JSbc93MJU6ZWAP7DizzQO1HAC6oPL3/TDJLXmWwmeCYFHWmt+sKfqPrcuY0i8HrjRl
-	 wGkwjmAkl7QnjFSWyfqPNt3a4XbKBYKvlLvCmyYX84njVsYDniZXgDW9w9Tw+VCS7N
-	 o3mq7+BCCVn9w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BE7643AA9F7B;
-	Wed, 28 Oct 2026 08:50:05 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B211606A31A;
+	Wed, 28 Oct 2026 08:50:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2B211606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
+	s=protonmail; t=1793177422; x=1793436622;
+	bh=ZzkyzMXwhe6xNno6EsFST7VZQ034OlMe3wk9yXIAjBE=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=Aiv/oyALvt2n3RZQkF31lOr2djiawuA5c9HAMMHEy4LA6yEqY6v3kowkl/zJKev5K
+	 DpHG2UX0a2okCA3gHxrzt6frWe4oZhNA8m4mbeSSmvxiNDKKzGENE7Jm+oMMO4J5Lw
+	 9dUOxcjWPEUjRYW3E78JqSbO0jXBlX1OIutdf9u5flB2JxfNcmFo/JskbET/K//T+b
+	 HF7asdf3zAEPr0iob4qOo/M8Wq91Z8zWdrfA/FzD3oGhbnm3zHhAfDHm9KGjDhBmy/
+	 fXMrg2jIKbNqyniUQMAc7avD0jwf/uEPPlWkrA3n+Io0BE+qU3x21/BRhTi3LnVAoi
+	 Dgazhxj00nXvg==
+Date: Wed, 28 Oct 2026 08:50:17 +0000
+To: intel-wired-lan@lists.osuosl.org
+From: Paul Moses <p@1g4.org>
+Cc: netdev@vger.kernel.org, anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me, maciej.fijalkowski@intel.com, andre.guedes@intel.com, jithu.joseph@intel.com, vedang.patel@intel.com, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, stable@vger.kernel.org
+Subject: [PATCH net v2] igc: return XSK frame copies on XDP_TX failure
+Message-ID: <20261028084919.3059158-1-p@1g4.org>
+Feedback-ID: 8253658:user:proton
+X-Pm-Message-ID: 3c834f9f3c809d2e7ba6cca99f25171716b11d0b
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,46 +58,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] tls: keep TX and RX hardware offload on the same
- device
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179317740457.586826.13676893511407745921.git-patchwork-notify@kernel.org>
-Date: Wed, 28 Oct 2026 08:50:04 +0000
-References: <20261020214500.972308-1-rjethwani@purestorage.com>
-In-Reply-To: <20261020214500.972308-1-rjethwani@purestorage.com>
-To: Rishikesh Jethwani <rjethwani@purestorage.com>
-Cc: netdev@vger.kernel.org, john.fastabend@gmail.com, kuba@kernel.org,
- sd@queasysnail.net, davem@davemloft.net, edumazet@kernel.org,
- pabeni@redhat.com, horms@kernel.org, corbet@lwn.net,
- skhan@linuxfoundation.org, rdunlap@infradead.org, borisp@mellanox.com,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+Converting an XSK buffer to an XDP frame allocates a page and returns
+the original buffer to its pool. If the TX ring is full or DMA mapping
+fails, igc_xdp_xmit_back() returns an error without freeing the copy.
+The RX cleaner cannot release it, so the page leaks.
 
-This patch was applied to netdev/net.git (main)
-by Dave Miller <davem@davem-thinkpadp1gen8.ibmlond.csb>:
+Return the copied frame on TX failure. Use the RX memory type so native
+frames remain RX-owned on failure.
 
-On Tue, 20 Oct 2026 15:44:59 -0600 you wrote:
-> After TX is offloaded on device A, a route change, or a change in the
-> usable-slave set of an 802.3ad or balance-xor (layer3+4) bond, can make
-> RX setup program device B. tls_device_attach() sees the existing TLS
-> destructor and keeps ctx->netdev pointing at A. The RX driver state on B
-> is then untracked: tls_dev_resync() and tls_dev_del() are invoked on A
-> for a context it never created, and neither socket close nor
-> NETDEV_DOWN on B calls tls_dev_del() for B, so the driver context leaks.
-> The reverse setup order has the same problem.
-> 
-> [...]
+Fixes: fc9df2a0b520 ("igc: Enable RX via AF_XDP zero-copy")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paul Moses <p@1g4.org>
+Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+---
+v1..v2
+- Sort declarations
+- Update the description to match the initialization order
 
-Here is the summary with links:
-  - [net,v2] tls: keep TX and RX hardware offload on the same device
-    https://git.kernel.org/netdev/net/c/1c8a70075235
+v1: https://lore.kernel.org/all/20261023141317.3904442-1-p@1g4.org/
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+v1 testing:
+Tested on Intel I225-V with baseline and patched kernels. Physical
+pause-frame backpressure caused 46 leaked copies on the baseline.
+With the fix, all 72 rejected copies were returned once and freed,
+and all 192 copies were accounted for.
+
+ drivers/net/ethernet/intel/igc/igc_main.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethern=
+et/intel/igc/igc_main.c
+index 1fb5f3cbe..d10dfbdb1 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -2488,6 +2488,7 @@ struct igc_ring *igc_get_tx_ring(struct igc_adapter *=
+adapter, int cpu)
+ static int igc_xdp_xmit_back(struct igc_adapter *adapter, struct xdp_buff =
+*xdp)
+ {
+ =09struct xdp_frame *xdpf =3D xdp_convert_buff_to_frame(xdp);
++=09enum xdp_mem_type mem_type =3D xdp->rxq->mem.type;
+ =09int cpu =3D smp_processor_id();
+ =09struct netdev_queue *nq;
+ =09struct igc_ring *ring;
+@@ -2504,6 +2505,10 @@ static int igc_xdp_xmit_back(struct igc_adapter *ada=
+pter, struct xdp_buff *xdp)
+ =09txq_trans_cond_update(nq);
+ =09res =3D igc_xdp_init_tx_descriptor(ring, xdpf);
+ =09__netif_tx_unlock(nq);
++
++=09if (res && mem_type =3D=3D MEM_TYPE_XSK_BUFF_POOL)
++=09=09xdp_return_frame(xdpf);
++
+ =09return res;
+ }
+=20
+--=20
+2.56.GIT
 
 
