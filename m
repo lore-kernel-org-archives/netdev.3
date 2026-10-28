@@ -1,74 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793152080;
-	b=Zw/UdMs0AKA61a/7J7l9e0uw3hA/ohV2V9lZOK5qoJXxIiza/h5nc5+F9+E9BIqoU5n1
-	 mppKpfeADtfPww2mu/GINX4FBZh1Pl2YmWXNUmNIDLjfApW+O9iy/VTiiQOi9JE4OQylZ
-	 e80SKy1iA8shWBzNxhPZ9Er7e04Z7IYOlBaFICPZB0Cqno9fJwsoRq0MdzBT2NMJwSDmo
-	 d7osymP4RVhTQRn/yqIJ902+lbYzOja0ah4OxVJkpJxycuPHFoKWNAKHOqeOkKS04IwMX
-	 8UnqunbWqoPs6+VEqDYwcDMSSdWKIA0Y4Kk/Lpf6vw57NCINhozCC3GQ/9y49qCjzUQ==
+	t=1793153093;
+	b=114KwsedMP3vhWZaCQH7szn6JWVYEiJHQ1rQkGjBrzn7+9belYtg7PGNf4tuNOqJlJdm
+	 lGvdrF2q9dNduwgHF8VXOIWWnLZ0EibXPmbfO4H5UKMRSBC9avhPqbAYC+oevIY4xvdm9
+	 tswyImjvzdtfyg2IOTDcX6GRH5irC9xN39EUvAktmsV2lnQgBuBYxzDe3Ry/mN7pS9R6T
+	 CrA7rjKHXYcUepAE2QjQ1zsvqAN3/02A7iEBcRJaFlKYdsKYUuQ+BoLRMaE+gxmzQtfy1
+	 J2fzhPgj9KOqR90B3RoQHta3kK6gYE0gdzTuSZKNMD2TzEZ6UvJ6y3wD0yU+WsSBZhg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793152080;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=UrWtpTOaprLxw1pdrbzZEPDlusg55RRNNxdXSa9SbLw=;
-	b=NCOFw4o+MMvXuRE92rqjk35FRmA7cdKFrlNxHWpQ7wDtE+kyooK87aWr3ufB+/2CZ1gl
-	 I9FFOYqh5mZk93AbkTtofoja9wPRyoxpq1+8vkYaZOvBnVvVuXoho/BwQTUaZ2MQGzEeF
-	 8Us8+egmstWUQCTZRhLGcDWJ41ICSSd98ItEFFbHQkEuEn5OrflRynr1or9IFUCPKBtgb
-	 oCmD1M8PtwMTjNDtBc7Q50RAa93ae94/IEUqDSjONoifq7hdrwMnk4GtUWczac3eNTSu2
-	 7mforK5ipXPfEueimqzyzHznZioblN0jeirAXyGrky17llYAycEXitdK/C0gTgJ+qog==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793153093;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=B2dbDPohrwxKAwssPy3BtXvVXxGswtl67OL+peXJlOw=;
+	b=NcGQWp5jYj5Ruh+JN5cDXeJKavyAgoqSZ73Aw8gh0fQTd9kAJ+b1RJjRrANGN2M33eha
+	 kCmiPhPfQodvH73VUXunLPQ6bAGywa3Orvg6x2p9gFVgTgL4Ma2yriItga+9jb/V+remf
+	 sTc8/atlwsmUJCNLLZzVGkRNWCETOfftjVbPHT48BsvgPv5uQ0FKNa1lYQOKdzBvLZDGy
+	 LASDMEpuwb1dllxSaTt+voHyUZmi/FAUMIROEh4VO0QR93wfZwppSW7L+Fc5T/zpH611U
+	 qT7k//b0iT+GP0iFQSV5aBYddM2vH19sYHADov02qsLWHHh+HyRtRXwZiS0ePKCM4Hg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hTgtj1yv;
-	arc=none smtp.remote-ip=209.85.216.72
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=5x8cAJ7L;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FAB606A31A
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 01:47:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C7FAB606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD8B606A31A;
+	Wed, 28 Oct 2026 02:04:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2FD8B606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hTgtj1yv
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3ad53f538d2so398714a91.3
-        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 18:47:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793152079; x=1793756879; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UrWtpTOaprLxw1pdrbzZEPDlusg55RRNNxdXSa9SbLw=;
-        b=hTgtj1yvC4cnaEZyDZLNmULuJLMpTdudv4MNafpl8PEdI0dtDP6Yvcuv95HqUodmoz
-         0/v07TzgLkBpHujQnqXe73FzhMFE+m5M2oOdgCi42FQRT3vTvTk6V1wY4mq7aylhoOL2
-         l2Hvh1WnGKS28Uad3h7Zolt5yeqarBv70gQ4vRzFbDMkac+R8O8mF402osj51PMoNwyF
-         SGOTBKZWAOVCC5ONPFRvEq4GxgE1ycJ+v+1lvpYJf/WmwEJtM9clCd7Y7QwadmsQWjUj
-         3ynluaSmAKiibe+kxq56ozzWwNLis+Wn+9Er8qVYa1YubgmP7tpOEzE7GH1sxnujEJ/i
-         Bi7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793152079; x=1793756879;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=UrWtpTOaprLxw1pdrbzZEPDlusg55RRNNxdXSa9SbLw=;
-        b=zfnD1O19CfM08l6CuiFPIHKQn/5Xjm/n+vxUESUNSUay9943wl7e/VkhqTChKz3YKj
-         fewvO37rxIBJlqLWwP72gMaN65Jl3nuiQfWVHgp/vai6zXXeqoVYMq8MmXfojrVmZFoG
-         vNFmarV9PjYec+bzJLuVHH2n11HPgOMZAwfdt91VUva87wxh5N25Ba/S0VnFHuaPUg7v
-         q7uNttl+qHEDKvUJPJJhjbeMxtkrKknaTYbkdkaCwo5IEaAYsDpkyNTQKomOcL8prty9
-         yalBBxAcNLFcXsO4l+3wavJstOhxKjiesqaMtkFMkYH05UmhSeV6vVHduxwwcNIygRB6
-         IqKQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwP/FoW3u1f6+OqbLR+v8jCgOdrQQOIpDWIT3hMMzoPImF9PoMsUR+fKQJMeTbtnqbGQKqd7Uo=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIfzALJnDlXgWaJzc0vUG4d4CNpLyktizSHdLZKtwCJ8uKKK0lh
-	RYag6XHXGb1yU5QsJwkcSRLEY8LXy9PkwfDQkRhx61xR19dz7ZqhesJiJn8mQ0scTEKlFJtaYFk
-	3Jqj1Ng==
-X-Received: from plhx12.prod.google.com ([2002:a17:903:2c0c:b0:2ea:829f:27a8])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5348:b0:3ad:25f6:1dd0
- with SMTP id 98e67ed59e1d1-3ae5817100cmr630595a91.11.1793152078926; Tue, 27
- Oct 2026 18:47:58 -0700 (PDT)
-Date: Wed, 28 Oct 2026 01:47:58 +0000
-In-Reply-To: <20261026003804.61923-2-imv4bel@gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=5x8cAJ7L
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=B2dbDPohrwxKAwssPy3BtXvVXxGswtl67OL+peXJlOw=; b=5x8cAJ7LZHUnDKePmgwZ20M/j7
+	hn+Nb0k8uUqZHRbyWaRzScZ3ohhWxC40WHQ+04V/gsEzMtmnWa2VZeNku0lHlB0L/rppedXTKNBHe
+	gxR1um6VYW1zj/Ok1qxCZnxpDkzJRSb7sbdHcqPKrvjfM/P/cXQIxpWSjzlSvujBo6DQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xLt1b-00D2jJ-0N; Wed, 28 Oct 2026 03:04:23 +0100
+Date: Wed, 28 Oct 2026 03:04:22 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Caleb James DeLisle <cjd@cjdns.fr>
+Cc: netdev@vger.kernel.org, olteanv@gmail.com, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+	chester.a.unal@arinc9.com, daniel@makrotopia.org,
+	linux@armlinux.org.uk, arinc.unal@arinc9.com,
+	Landen.Chao@mediatek.com, dqfext@gmail.com, sean.wang@mediatek.com,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, naseefkm@gmail.com,
+	b.larsson@gmx.com
+Subject: Re: [PATCH v3 2/7] dt-bindings: net: dsa: mediatek,mt7530: add
+ passthrough mode
+Message-ID: <a031f089-0b96-4fc0-b878-6af13414524f@lunn.ch>
+References: <20261028011317.1557238-1-cjd@cjdns.fr>
+ <20261028011317.1557238-3-cjd@cjdns.fr>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,91 +71,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261026003804.61923-1-imv4bel@gmail.com> <20261026003804.61923-2-imv4bel@gmail.com>
-Message-ID: <auFUNX-pPwb9p8zG@google.com>
-Subject: Re: [PATCH net v4 1/2] inet: reject unhashed sockets during
- established lookups
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Hyunwoo Kim <imv4bel@gmail.com>
-Cc: edumazet@kernel.org, ncardwell@google.com, davem@davemloft.net, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, martin.lau@linux.dev, 
-	john.fastabend@gmail.com, weiwan@google.com, sd@queasysnail.net, 
-	jiayuan.chen@linux.dev, netdev@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261028011317.1557238-3-cjd@cjdns.fr>
 
-On Mon, 26 Oct 2026 09:37:44 +0900, Hyunwoo Kim wrote:
-> TCP established ehash lookups are lockless. The socket caches involved
-> use SLAB_TYPESAFE_BY_RCU, so memory can be reused before an RCU reader
-> that retained its old address has finished.
+On Wed, Oct 28, 2026 at 01:13:12AM +0000, Caleb James DeLisle wrote:
+> MT7530 switches can be configured to blindly pass packets between their
+> CPU/upstream port and a downstream DSA port, in particular, without
+> altering the MediaTek DSA Tag on the packets. This mode is used in some
+> integrations where an SoC integrated switch exists, but a more capable
+> MCM switch is added to effectively replace it.
 > 
-> After a tuple match, __inet_lookup_established() and
-> __inet6_lookup_established() acquire a reference and repeat the tuple
-> check. They do not check whether the new object is hashed. If the
-> address is reused for a socket with the same tuple, the lookup can
-> acquire a reference to the new object and return it while its nulls node
-> is unhashed.
+> Signed-off-by: Caleb James DeLisle <cjd@cjdns.fr>
+> Acked-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
+>  .../devicetree/bindings/net/dsa/mediatek,mt7530.yaml       | 7 +++++++
+>  1 file changed, 7 insertions(+)
 > 
-> A PoC that drives reuse with a SYN cookie request socket reproduced the
-> crash. The new request socket is unhashed and has a NULL rsk_listener.
-> A lookup that had loaded the address of the old request socket acquired
-> the reference published by tcp_get_cookie_sock() and returned the new
-> object. tcp_v4_rcv() then read sk_state through the NULL listener.
-> 
-> The resulting crash was:
-> 
->   BUG: kernel NULL pointer dereference, address: 0000000000000012
->   #PF: supervisor read access in kernel mode
->   #PF: error_code(0x0000) - not-present page
->   ...
->   Oops: Oops: 0000 [#1] SMP NOPTI
->   CPU: 4 UID: 0 PID: 0 Comm: swapper/4 Not tainted 7.3.0-00591-g0e135910deec #1 PREEMPT(lazy)
->   ...
->   RIP: 0010:tcp_v4_rcv+0x44e/0x1280
->   ...
->   R10: 0000000000000001 R11: 00000000024ca8c0 R12: 0000000000000000
->   ...
->   CR2: 0000000000000012 CR3: 0000000103d50004 CR4: 0000000000770ef0
->   ...
->   Call Trace:
->    <IRQ>
->    ? raw_local_deliver+0xae/0x240
->    ip_protocol_deliver_rcu+0x2d/0x180
->    ip_local_deliver_finish+0x84/0x100
->    ip_sublist_rcv_finish+0x5f/0x70
->    ip_sublist_rcv+0x12a/0x1d0
->    ip_list_rcv+0xfd/0x130
->    __netif_receive_skb_list_core+0x223/0x250
->    netif_receive_skb_list_internal+0x1d2/0x2c0
->    ? try_fill_recv+0x39/0x7b0
->    napi_complete_done+0x74/0x170
->    virtnet_poll+0x445/0x600
->    __napi_poll+0x27/0x1e0
->    net_rx_action+0x2fe/0x3b0
->    handle_softirqs+0xc2/0x2c0
->    __irq_exit_rcu+0x74/0xd0
->    common_interrupt+0x7f/0x90
->    </IRQ>
->   ...
->   Kernel panic - not syncing: Fatal exception in interrupt
-> 
-> After taking a reference, check whether the nulls node is unhashed in
-> both IPv4 and IPv6 established lookups. If it is unhashed or the tuple
-> no longer matches, drop the reference and restart the lookup.
-> 
-> Lookups racing with the TIME_WAIT hashdance, or with a request being
-> replaced by its child, now restart and find the new socket instead of
-> returning the old one.
-> 
-> Request sockets that were never inserted into ehash can have a nonzero
-> refcount, and a stale lookup can hold a transient reference. Therefore,
-> when SYN cookie, Fast Open, and request migration paths fail after
-> setting a nonzero refcount, release the references held by those paths
-> with reqsk_put() instead of freeing the request directly.
-> 
-> Fixes: 079096f103fa ("tcp/dccp: install syn_recv requests into ehash table")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-> Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+> diff --git a/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml b/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml
+> index 90b3582b7619..e29fb8693498 100644
+> --- a/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml
+> +++ b/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml
+> @@ -73,6 +73,13 @@ description: |
+>  
+>        Check out example 7.
+>  
+> +  The MT7530 and MT7531 switches are capable of being operated in "passthrough"
+> +  mode. In this mode, traffic is unconditionally passed between the CPU port
+> +  and the DSA port which links to a second switch. To use passthrough mode, the
+> +  upstream switch is configured with a DSA link to the downstream switch. In
+> +  passthrough mode the upstream switch is restricted, with no other ports or
+> +  switch configuration allowed.
+> +
+>  properties:
+>    compatible:
+>      oneOf:
 
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Looking at just what is here, all i see is a comment. There is no new
+property? Yet the subject is "add passthrough mode"?
+
+	Andrew
