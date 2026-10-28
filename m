@@ -1,73 +1,51 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.151
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=5.135.140.105
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793188649;
-	b=BLopQbroO85SFP2TwN1b+kWqKd+zhxV9O0Wx/GeXShQ+0P6UHUYf+v/mMI9QUuWd94HM
-	 oFDgzjhS7wLJe4j55W4wji1m52jkI+97+ovq25HfgtqQKMfRAwtXpIE/HR3U0gzbMmipu
-	 XcwPFMFR0cpHfCtE7J4BHj6/6rwX9DS6UwnRQmfVGp9v8oc/pdLqUGwkqWrHsUA75e4Xn
-	 zy5w4HtEo6ZnyTro5ojOSa+HZ53OIx0zIyodSxASEWv6SBBXWCnfMle9zP15x0mVVLPwC
-	 FuI1aBd4ZwacZZlSJqyTKIawx2x/ib+0+8HuiY/DpbTowQQFMzSquHliJ2rqLnO2Ibw==
+	t=1793188778;
+	b=kSc9KQEGnpKDeK1o/Sp/rsyTdTqUHlMLnIezULlg4tQlsKrq8UO9W4ZpEoAc3pIIhP7i
+	 KuYyeWhVLEX9yORpGxQXVoIDQMYUueDiJzK6z+F43I+y6iEZw0y2AU5J/fnAr50xrf5NR
+	 BhvP9UCQ7lMpwPVApcc6Ipdgm+7HMzY4xRA9NfCoiMiylVwH7GXFauhYtHjbXkwLfg544
+	 zYsUP4XPv0GwEYUj0aP4s4D1RaTFu10Wgaju030BWxd/7MbKWUlbNDDKby5ikjVEb3eE2
+	 /fbso1C3PDhcBf0mJ++6nnQrN3TrWE2L1Vf4vMJAXB2BYmJ+14C+Y+5Wz09DtkSeifQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793188649;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=dE3bjK6V6q7+0Kp3at70qUH5wNVpLQIy6nIGWt4NgU4=;
-	b=2i4MvmvLGZqKRYL5DFXeFrwRbZXKGK/sgnIPOuQnCZEHa4HTGWYAG0V8SBwYXA+AvWTu
-	 MlVwFhgjTqHVaJCNW58SsQYo429kPdCVyMW7WYzzG8lrG20MZJyFgkKienAaTH+sHRNBI
-	 XudsbrW1YzGNoduxK+GbGTogQp31HchrNSbbXkVpf2JXOpOGl7slvEZOGdyZPWh5NUbKb
-	 zH3+KmfnjpV6nKg26ll7UdyjnUYiQAZbRrjrKn3mzqZ4UQJ6YiCGdM455/Qf7l3ExDEt9
-	 rzf+egtsS33QQ4AkcCZEjtlPVdY9WW+6chrud/LOie9yuPyf+ohqXvw69P01fFLAAyA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793188778;
+	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=f5NboUzo78TSvbEnVlTQueU5GwrKHZYmgsrDTsu8dJU=;
+	b=eVC5Bt2hJZXgD7SZoYQ45x8al4SFdgmeG3uZUYzpZROEZEDqo9HdCDPUipl8GXHvOl5V
+	 lLlJJZXsEOjUZEdyIc/+HYQiIdw016s5S5+ybxFGf+AZ3/JhK79BRNL0/L30x3nYk7rPL
+	 frB4xs2P19UFpiQxFMmX/c9GH7J7GvSv4UTaP9rS9Z64W1bpY9+h/TdKxGl49K/J9sp7a
+	 5YQKeRSj17wYdmS2uDt65hmT69EhZNYKKMPxDSfOoiiv3VVfWAnexzRitYIWStOM2VFaM
+	 efukY7LKfSXvw1lQ4ZRF8Z9EcrZkQi+WArYqBi0MbmC61P161zqJrZS53JQLFka/gmg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=WqLjdv2z;
-	arc=none smtp.remote-ip=111.22.67.151
-Received: from cmccmta8.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD00E606A31A;
-	Wed, 28 Oct 2026 11:57:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AD00E606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dmarc=pass header.from=cjdns.fr;
+	spf=pass smtp.mailfrom=cjdns.fr;
+	dkim=pass header.d=cjdns.fr header.i=@cjdns.fr header.a=rsa-sha256 header.s=dkim header.b=P4N3rUJS;
+	arc=none smtp.remote-ip=5.135.140.105
+Received: from mail.cjdns.fr (mail.cjdns.fr [5.135.140.105])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6740B606A31A;
+	Wed, 28 Oct 2026 11:59:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6740B606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cjdns.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=WqLjdv2z
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=WqLjdv2zompj8IeLPNY5GQXZVtfO7iHJdcfU3VXaMtFA9w6GYUDqhOIoCs84LU+14+Q0gKEU7sDEc
-	 +krNQJ1Ud97ZlWRr5xNb8ER4vT1WBaTdPD60DYJ3mBkRifDLu6wi3YF4atGTD9QQp77JT1Au+CbGQG
-	 kE2BBfoITL5X+sSw=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app06-12006 (RichMail) with SMTP id 2ee66ae1e31fee2-2e1b7;
-	Wed, 28 Oct 2026 19:57:25 +0800 (CST)
-X-RM-TRANSID:2ee66ae1e31fee2-2e1b7
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from localhost.localdomain (unknown[112.23.104.16])
-	by rmsmtp-syy-appsvr04-12004 (RichMail) with SMTP id 2ee46ae1e3230cc-3de32;
-	Wed, 28 Oct 2026 19:57:25 +0800 (CST)
-X-RM-TRANSID:2ee46ae1e3230cc-3de32
-From: Xia Yan <yanxia@cmss.chinamobile.com>
-To: netdev@vger.kernel.org
-Cc: dsahern@kernel.org,
-	idosch@nvidia.com,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	kuniyu@google.com,
-	xeb@mail.ru,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	yana06070@163.com
-Subject: [PATCH net] ip6_gre: fix changelink conflict checks for L2 tunnels
-Date: Wed, 28 Oct 2026 19:57:10 +0800
-Message-ID: <20261028115710.27806-1-yanxia@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key, unprotected) header.d=cjdns.fr header.i=@cjdns.fr header.a=rsa-sha256 header.s=dkim header.b=P4N3rUJS
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1914B15A2B6;
+	Wed, 28 Oct 2026 12:59:23 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjdns.fr; s=dkim;
+	t=1793188773; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=f5NboUzo78TSvbEnVlTQueU5GwrKHZYmgsrDTsu8dJU=;
+	b=P4N3rUJSUM89fo9E2InG1shZOpy0XpXcOvgzNy28wcBa2dk4P+TiyEQhdoOKC2iZpyCfPD
+	3ki45bzf6FsuR4HE9CJkmwVihB614DfRgS/1XQ+uPFi+9AMFDG1fWWwXOt2dzfQQ40M3iM
+	yuGpbv53MOJ6vmorSa04cXulx/u/LT0azavSqBwvFsvyydeLefaE2bibPSsF3BgI2YyWkt
+	nM5O2J2kEHb7kt0fXTbIUXYuG0QbnJCJlBx0jM6KzRffivz4eEXivXbeeDL5mrVjpWuf0l
+	/kOdX6Q1O+75jHkfq5kQJjBmHJF9/NsjcJkyR2P/LWH3a4zE//wRaFyRRmisiQ==
+Message-ID: <acf55987-e96d-407f-a4a7-1c78178a0c7a@cjdns.fr>
+Date: Wed, 28 Oct 2026 12:59:23 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,71 +55,89 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-ip6gre_changelink_common() calls ip6gre_tunnel_locate(), which only
-looks for ARPHRD_IP6GRE devices. The same changelink helper also handles
-ip6gretap and ip6erspan devices.
-
-This lets an L2 tunnel change its parameters to match another L2 tunnel,
-since the duplicate check looks for an L3 device instead. Incoming
-packets can then be delivered to the wrong interface. An L3 tunnel with
-matching parameters can also make a valid L2 update fail with EEXIST.
-
-Use ip6gre_tunnel_find() with dev->type, as the newlink paths do.
-
-Found while comparing the duplicate checks in newlink and changelink.
-Confirmed with ip link commands. For example, with an IPv6 underlay
-named under already configured:
-
-  ip link add tap1 type ip6gretap local fd26:106::1 \
-      remote fd26:106::2 key 100 dev under
-  ip link add tap2 type ip6gretap local fd26:106::1 \
-      remote fd26:106::2 key 200 dev under
-  ip link set tap1 up
-  ip link set tap2 up
-  ip link set tap2 type ip6gretap key 100
-
-Before the fix, the last command succeeds and received frames move from
-tap1 to tap2. After the fix, it fails with EEXIST and tap2 is unchanged.
-
-Tested with standalone namespace tests in UML, with three runs each for
-ip6gretap and ip6erspan, and with L3 GRE IPv4/IPv6 traffic and normal
-tunnel updates. Full x86_64 W=1 builds with adjusted configurations
-completed before and after with no new diagnostics.
-
-Fixes: c12b395a4664 ("gre: Support GRE over IPv6")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xia Yan <yanxia@cmss.chinamobile.com>
----
-Runtime and build tests used net 7076f684d513. The target file is
-identical at the current base.
-
-Kernel selftests were not run.
-
-The allmodconfig- and allyesconfig-derived builds had WERROR,
-KASAN and KCSAN off. The allyesconfig-derived build also had
-KUNIT_ALL_TESTS, MCTP_TEST and MCTP_TRANSPORT_USBLIB_TEST off
-to avoid an existing MCTP test assertion. olddefconfig dropped
-IWLWIFI_KUNIT_TESTS when KUNIT_ALL_TESTS was disabled.
-
- net/ipv6/ip6_gre.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-index b5d6ed8f0c369..df490798355de 100644
---- a/net/ipv6/ip6_gre.c
-+++ b/net/ipv6/ip6_gre.c
-@@ -2055,7 +2055,7 @@ ip6gre_changelink_common(struct net_device *dev, struct nlattr *tb[],
- 
- 	ip6gre_netlink_parms(data, p_p);
- 
--	t = ip6gre_tunnel_locate(net, p_p, 0);
-+	t = ip6gre_tunnel_find(net, p_p, dev->type);
- 
- 	if (t) {
- 		if (t->dev != dev)
-
-base-commit: 5d7f3375cd574fc83f0cd30839b21455c0e79ae2
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v3 5/7] net: dsa: mediatek: support MDIO switch downstream
+ of MMIO switch
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: netdev@vger.kernel.org, olteanv@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, chester.a.unal@arinc9.com,
+ daniel@makrotopia.org, linux@armlinux.org.uk, arinc.unal@arinc9.com,
+ Landen.Chao@mediatek.com, dqfext@gmail.com, sean.wang@mediatek.com,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ naseefkm@gmail.com, b.larsson@gmx.com
+References: <20261028011317.1557238-1-cjd@cjdns.fr>
+ <20261028011317.1557238-6-cjd@cjdns.fr>
+ <f6fe9c7a-5617-475b-babe-da24cda815cc@lunn.ch>
+Content-Language: en-US
+From: Caleb James DeLisle <cjd@cjdns.fr>
+In-Reply-To: <f6fe9c7a-5617-475b-babe-da24cda815cc@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
 
+On 28/10/2026 03:20, Andrew Lunn wrote:
+> On Wed, Oct 28, 2026 at 01:13:15AM +0000, Caleb James DeLisle wrote:
+>> The MT7530 / MT7531 can connect via either MDIO or MMIO. In MMIO mode
+>> the switch provides its own MDIO bus which connects to its integrated
+>> PHYs, but also can be connected to other things, such as another
+>> switch.
+>>
+>> If the MDIO bus contains another switch, then the upstream switch
+>> will register but it will not setup the DSA tree because the
+>> downstream switch is missing. Without the complete DSA tree,
+>> mt753x_setup() will not be called on the switch and therefore
+>> mt7530_setup_mdio() is never called so the downstream switch never
+>> registers.
+>>
+>> Update mt7530_setup_mdio() so that it can be called multiple times,
+>> export the symbol, and call it again after dsa_register_switch()
+>> from mt7988_probe().
+> I would suggest just moving it to probe. Don't also have it in setup.
+> KISS.
+
+
+I don't think there's a way to do that which will work. And I guess I 
+need to add a few comments to explain why. Basically 
+when dsa_register_switch() is called, one of three things can happen:
+
+1. return error (often without calling mt753x_setup), typically this is 
+EPROBE_DEFER because the ethernet driver is not there yet.
+
+2. return 0 without calling mt753x_setup (because not all switches in 
+the tree are yet probed)
+
+3. call mt753x_setup, complete setup, and return 0
+
+
+In case 1, mt7530_setup_mdio must not be called, because it would be 
+setting up an MDIO on a driver that's about to get deleted.
+
+In case 2, we have to call mt7530_setup_mdio because otherwise we may 
+not discover downstream switches (this is the patch)
+
+In case 3, mt7530_setup_mdio must be called before mt753x_setup returns 
+because after it returns, the DSA core synchronously enables ports and 
+it will expect PHYs to be operational.
+
+
+Only the DSA core really knows what it's going to do, so I think the 
+only way to solve this without going inside of it is this patch where 
+calls are made from two sites.
+
+
+That said, I think it's pretty clear that I should put a couple lines of 
+comment in there so that nobody is tempted to "streamline" this code 
+into one of the things that doesn't work.
+
+
+Thanks,
+
+Caleb
+
+
+>
+> 	Andrew
