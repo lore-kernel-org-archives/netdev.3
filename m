@@ -1,61 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793175938;
-	b=uZhftD0T1ONrc+0pcK2UGs34FkLkd3rl283qvYsTlgNXwS0FbVYF2G+w7wmetnz9rdwf
-	 tViWWMV3M4gh6bqM0nGmDk5z2dPlWEcGAWTDS9ZjEL/Nli6Ov1WI93/aIi52zdIpCWif0
-	 sFtXeW+rpHraSH3Gen96azCqyF7qaT9fJQw5lK44rTQCGk1k7bdlRt9ylfjFXWwRepA6F
-	 CUSPOT690aO0I3XUnENj1SbrHi7Vkrj97f+VwdxbV1DAXJM1qAV6aePUEF5GonXA04Ild
-	 fF9Eeb9dfRZsPySmhjLUvjQzU5ou6SpGgVZy+CTfm+u/Crq3V5qROomG5EzrA3DXSIQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793175938;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:Received:Received:From:In-Reply-To:
-	 MIME-Version:References:Date:X-Gmail-Original-Message-ID:
-	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type;
-	bh=05l+8JW812QvmCS5ASRMEsto/MViEuxLP3EanVEdMuk=;
-	b=gvUgCY+5UNZKbEhjoIx8Dv8odOCjT54IYl7Wk/exv0B/+7hJBSgIGGuUKzDPhwU7HUc2
-	 YGToN9593v1kesP/NjmTbouYkc7gApoBduZkH0IA9TIVw2JNEitKmNWnA0I6ayy5RTKNk
-	 lm8wlI9oE9foGS83HAVvk65j1akjymBpcZJmOr7zIkVnoXboXPkeYvRmKWDZqLls8Jvr0
-	 GeJTXdmm/4VgZ2DRWRnC8kHPe1gY4SUBFdtb0LWFyHwj5APjlNbLP0SIe0lh4Hy1BQraV
-	 wvniJ1sZYsk0arfSkDWDwUor2nFz9GZFzsOjD0nrpv5xm+KpWAlhrtwTpiHrEa/rhiQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jh5UxeZ1;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.54
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793176079;
+	b=M2c/tvLb8gOZqJdxmlMYuBhkZIyba3kkuaVEsklARy4Wij6q/eFZrdiAEO/qNuyTSAwd
+	 C3LlxLm5MQiWRGAYodJ9WeJVty7wwBOEo/db7btQBBPUULjTFK45uzIed9JodJEEwBiaX
+	 IedAfb5Dcj4BdwKX5taA+QU6gldC9UxBjC+edSv0CvPRVCsw1MExs/DHbrEfkaTYnBu63
+	 WOGJgZF8zbWn57TmXJRhKldSdcarMg1wpKhvSFUMPTa5ipmd89xzb8ItDGAkbmYPpnOc2
+	 Z3Sp9hISAek4D/AM1VwcExl86k3fm1ulp0OpHFL9/ozszYDdfhEHNhac6iiWrdSDlVw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793176079;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-ZohoMailClient;
+	bh=myM/NwutGCZOyeD1H4WToSGlYN7DqWtaA9tPjs0fpP0=;
+	b=Gp/2ByVphWbde343g46TBLF/DWt0NiEaHauCUJ7ZO/gorZ08E7WBi5ZvG7bTBGVxWcaL
+	 RLpEpo6zZFzf+aWXKCaE0oXVFGnOI8rqI/HICoT1+y/d7kv/h/tVPbutC/2rddQ15KtDF
+	 EezezrsxJyq8ZF705zJ6ZPH0DFloJvtQv98BRaI1F6xRwR7CUxPsTBOMHy5rC0L+LchIO
+	 GakxXv5QMm4J6dtVZp6s5wVqlRtlQti7zm/7VWh+80yCJ1ddDEnVYYccVWi4tpezSGxmT
+	 fz/AE/FnwxdJSlueeNkr2+07YadiNtLAKaX9c6lWXBt1dTDFkGzalrsmMKpI67IgoWA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=mpiricsoftware.com;
+	spf=pass smtp.mailfrom=mpiricsoftware.com;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.54
+Received: from sender6-of-o54.zoho.com (sender6-of-o54.zoho.com [165.173.180.54])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C64606A31D
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 08:25:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jh5UxeZ1
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 165131F01829
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 08:25:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793175937;
-	bh=05l+8JW812QvmCS5ASRMEsto/MViEuxLP3EanVEdMuk=;
-	h=From:In-Reply-To:References:Date:Subject:To:Cc;
-	b=jh5UxeZ1SiyWyhZKrGsTkAzISKGPgJzuHiQjD/CYuFRgCLjIUR4rvYsQlagvkehTX
-	 AoImjCrz/jrmRZWqqkwlkiTTmHGQcA13o66ATdXUXGMGVTNEfHbPfINtsYDQIreQv7
-	 8Hg//W1tQYaDp+WuBPFrbVuUdiajFX0zCTQBAxXIdK5fWL36Sxc4vn51ZYmUEmUPRK
-	 fdosq++7MQwEk6lAW4ydudWaxq6flnmDG9jGJNoEDLgqtAKlvcMb2ZfRpFNzUCMu/u
-	 o5zPzTmtXIj+LwG9ANVDcNHYa7166zyzBo6CBh34bjNehhTv2d8OyDxO5ObEJmrUxp
-	 19bkzFKFiwQvg==
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-3a9841363b5so5675591fa.2
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 01:25:37 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBy+fxYpgopGQ2zjzhFuok1tV/ZTLzbfEYqwNRBvdZlvPEMFuxX4CeuupCXDwAqEEStDrqR97Kk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJbrSq2+BpHndg3GJvBoT15o+CrBNjVhvdJO8/AYPiNxXjNuuuz
-	rmST6j33QoyyUWFOi6h5HPAAf9DnMlllvKKxqRDaPFa9s1o+PyF4VX1LIctgZAixBqnWzDSdgoN
-	Ad7GBN9EYDQfg1W2gTORoUSmwWEshfKRFI0cjENt1Mw==
-X-Received: by 2002:a05:651c:198e:b0:3a9:87c0:7737 with SMTP id
- 38308e7fff4ca-3ac9cf81e73mr3153621fa.21.1793175935670; Wed, 28 Oct 2026
- 01:25:35 -0700 (PDT)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 28 Oct 2026 01:25:34 -0700
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 28 Oct 2026 01:25:34 -0700
-From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <at8Q9umfE2AP24lI@QCOM-aGQu4IUr3Y>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C01F606A31A;
+	Wed, 28 Oct 2026 08:27:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9C01F606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mpiricsoftware.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mpiricsoftware.com
+ARC-Seal: i=1; a=rsa-sha256; t=1793176057; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=ExSEXI2BEp3D/p4wP7Oy3FrT8GVNHD2UPFhot8vC1ZRHnE79aRf4AXEYryVbY+6t9KGE/1d1hCEyK3H1+2mm43tt5Xy3MKdH2ViOG500gjLDPTe3CbUUonJy3yBJe0nzvwZkJPCRK/H6n8BmBCAq7KlBw347hlgrpxgtI3Wz/hE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1793176057; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=myM/NwutGCZOyeD1H4WToSGlYN7DqWtaA9tPjs0fpP0=; 
+	b=KgC6mU7tCzVhs0xr3tQq6hU0UF735YlXnQAQF1VsEIIOAyP+QtGqaAe8PTCpU8R3HwfU3V5oXTni+G1GIXhKlu3/Vuu0IM/Q9XSW8/VdgGPPjc++f05rweV1v/FW/lH1cxRi1KlpENihMROzBTO/hoehjdYYVUqDdBX9KClRaaU=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=mpiricsoftware.com;
+	spf=pass  smtp.mailfrom=kalpan.jani@mpiricsoftware.com;
+	dmarc=pass header.from=<kalpan.jani@mpiricsoftware.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1793176057;
+	s=mpiric; d=mpiricsoftware.com; i=kalpan.jani@mpiricsoftware.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=myM/NwutGCZOyeD1H4WToSGlYN7DqWtaA9tPjs0fpP0=;
+	b=m9h+e0jC7f+h7Cb6o43k/Xo0qb4nBhudcwHqzxSZdKR09/izEAZ4pElGUjMuQumr
+	0a5jibu2lemUn73Nl/E5L5Fpj6tbBVvn44isBNE9LNhLopMCJKDGFyPKvicgLNptG2t
+	hah10mmOGTFECuTc9FrrY87lwMpq0PLHtlG3kqow=
+Received: by smtp.zohomail.com with SMTPS id 1793176054284430.2233145702239;
+	Wed, 28 Oct 2026 01:27:34 -0700 (PDT)
+From: Kalpan Jani <kalpan.jani@mpiricsoftware.com>
+To: mptcp@lists.linux.dev
+Cc: matttbe@kernel.org,
+	Kalpan Jani <kalpan.jani@mpiricsoftware.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Kees Cook <kees@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	Willem de Bruijn <willemb@google.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-sctp@vger.kernel.org
+Subject: [RFC net-next v11 1/2] inet_diag: pass net_admin to get_info
+Date: Wed, 28 Oct 2026 13:57:00 +0530
+Message-ID: <20261028082704.1609493-2-kalpan.jani@mpiricsoftware.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261028082704.1609493-1-kalpan.jani@mpiricsoftware.com>
+References: <1ec0c2b5-a0fa-44e8-9ae8-dca9b7f90ec6@kernel.org>
+ <20261028082704.1609493-1-kalpan.jani@mpiricsoftware.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,38 +87,155 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261023-sa8255p-emac-dts-v1-0-a34d778ce9ac@oss.qualcomm.com>
- <20261023-sa8255p-emac-dts-v1-2-a34d778ce9ac@oss.qualcomm.com> <at8Q9umfE2AP24lI@QCOM-aGQu4IUr3Y>
-Date: Wed, 28 Oct 2026 01:25:34 -0700
-X-Gmail-Original-Message-ID: <CAMRc=McYTWmV6iAbm97C-xs1vh9Atvy-LivQBW10iHQh5+rPzQ@mail.gmail.com>
-X-Gm-Features: AclHuK_avRcSyuEchrSyhnDYEBcfCksI2Ibe_hZLUqTV6ryNiIHPJk3TgyKxUG0
-Message-ID: <CAMRc=McYTWmV6iAbm97C-xs1vh9Atvy-LivQBW10iHQh5+rPzQ@mail.gmail.com>
-Subject: Re: [PATCH 2/3] arm64: dts: qcom: lemans: make the emac compatible
- specific to the embedded variant
-To: Shawn Guo <shengchao.guo@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Abel Vesa <abelvesa@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bartosz Golaszewski <brgl@kernel.org>, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-On Mon, 26 Oct 2026 09:36:06 +0100, Shawn Guo
-<shengchao.guo@oss.qualcomm.com> said:
-> On Fri, Oct 23, 2026 at 11:02:23AM +0200, Bartosz Golaszewski wrote:
->> The embedded and gearvm variants of the ethernet MAC use different
->> compatibles so move the one for sa8775p into lemans-embedded.dtsi and
->> make place for the gearvm variant to be placed in lemans-gearvm.dtsi.
->>
->> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
->
-> Do we run into any problem if lemans-gearvm.dtsi simply overwrites
-> the compatible without this patch?
->
+Pass the request's CAP_NET_ADMIN status to idiag_get_info()
+so protocol-specific diagnostic handlers can restrict privileged
+information.
 
-Technically no, but then lemans.dtsi is incorrect as the MAC compatible depends
-on the firmware variant. I'd move it if you're already touching the files
-anyway.
+Socket-destruction notifications have no individual requesting user,
+so the callback receives net_admin set to false for that path.
 
-Bart
+Signed-off-by: Kalpan Jani <kalpan.jani@mpiricsoftware.com>
+---
+ include/linux/inet_diag.h | 3 ++-
+ net/ipv4/inet_diag.c      | 6 +++---
+ net/ipv4/raw_diag.c       | 2 +-
+ net/ipv4/tcp_diag.c       | 2 +-
+ net/ipv4/udp_diag.c       | 2 +-
+ net/mptcp/mptcp_diag.c    | 2 +-
+ net/sctp/diag.c           | 6 +++---
+ 7 files changed, 12 insertions(+), 11 deletions(-)
+
+diff --git a/include/linux/inet_diag.h b/include/linux/inet_diag.h
+index 704fd415c2b49..8db96bfd3e67f 100644
+--- a/include/linux/inet_diag.h
++++ b/include/linux/inet_diag.h
+@@ -18,7 +18,8 @@ struct inet_diag_handler {
+ 
+ 	void		(*idiag_get_info)(struct sock *sk,
+ 					  struct inet_diag_msg *r,
+-					  void *info);
++					  void *info,
++					  bool net_admin);
+ 
+ 	int		(*idiag_get_aux)(struct sock *sk,
+ 					 bool net_admin,
+diff --git a/net/ipv4/inet_diag.c b/net/ipv4/inet_diag.c
+index 34b77aa87d0a4..362161bf39fe3 100644
+--- a/net/ipv4/inet_diag.c
++++ b/net/ipv4/inet_diag.c
+@@ -276,7 +276,7 @@ int inet_sk_diag_fill(struct sock *sk, struct inet_connection_sock *icsk,
+ 	}
+ 
+ 	if (!icsk) {
+-		handler->idiag_get_info(sk, r, NULL);
++		handler->idiag_get_info(sk, r, NULL, net_admin);
+ 		goto out;
+ 	}
+ 
+@@ -327,7 +327,7 @@ int inet_sk_diag_fill(struct sock *sk, struct inet_connection_sock *icsk,
+ 			goto errout;
+ 	}
+ 
+-	handler->idiag_get_info(sk, r, info);
++	handler->idiag_get_info(sk, r, info, net_admin);
+ 
+ 	if (ext & (1 << (INET_DIAG_INFO - 1)) && handler->idiag_get_aux)
+ 		if (handler->idiag_get_aux(sk, net_admin, skb) < 0)
+@@ -1027,7 +1027,7 @@ int inet_diag_handler_get_info(struct sk_buff *skb, struct sock *sk)
+ 	if (attr)
+ 		info = nla_data(attr);
+ 
+-	handler->idiag_get_info(sk, r, info);
++	handler->idiag_get_info(sk, r, info, false);
+ 	inet_diag_unlock_handler(handler);
+ 
+ 	nlmsg_end(skb, nlh);
+diff --git a/net/ipv4/raw_diag.c b/net/ipv4/raw_diag.c
+index 943e5998e0ad5..264912d0cb9fc 100644
+--- a/net/ipv4/raw_diag.c
++++ b/net/ipv4/raw_diag.c
+@@ -185,7 +185,7 @@ static void raw_diag_dump(struct sk_buff *skb, struct netlink_callback *cb,
+ }
+ 
+ static void raw_diag_get_info(struct sock *sk, struct inet_diag_msg *r,
+-			      void *info)
++			      void *info, bool net_admin)
+ {
+ 	r->idiag_rqueue = sk_rmem_alloc_get(sk);
+ 	r->idiag_wqueue = sk_wmem_alloc_get(sk);
+diff --git a/net/ipv4/tcp_diag.c b/net/ipv4/tcp_diag.c
+index ba1fdbe9807fd..cac32575282e3 100644
+--- a/net/ipv4/tcp_diag.c
++++ b/net/ipv4/tcp_diag.c
+@@ -19,7 +19,7 @@
+ #include <net/tcp.h>
+ 
+ static void tcp_diag_get_info(struct sock *sk, struct inet_diag_msg *r,
+-			      void *_info)
++			      void *_info, bool net_admin)
+ {
+ 	struct tcp_info *info = _info;
+ 
+diff --git a/net/ipv4/udp_diag.c b/net/ipv4/udp_diag.c
+index f4b24e628cf8d..5a1fa627cbee8 100644
+--- a/net/ipv4/udp_diag.c
++++ b/net/ipv4/udp_diag.c
+@@ -142,7 +142,7 @@ static void udp_diag_dump(struct sk_buff *skb, struct netlink_callback *cb,
+ }
+ 
+ static void udp_diag_get_info(struct sock *sk, struct inet_diag_msg *r,
+-		void *info)
++		void *info, bool net_admin)
+ {
+ 	r->idiag_rqueue = udp_rqueue_get(sk);
+ 	r->idiag_wqueue = sk_wmem_alloc_get(sk);
+diff --git a/net/mptcp/mptcp_diag.c b/net/mptcp/mptcp_diag.c
+index 136c2d05c0eeb..9ed7a6be1e628 100644
+--- a/net/mptcp/mptcp_diag.c
++++ b/net/mptcp/mptcp_diag.c
+@@ -190,7 +190,7 @@ static void mptcp_diag_dump(struct sk_buff *skb, struct netlink_callback *cb,
+ }
+ 
+ static void mptcp_diag_get_info(struct sock *sk, struct inet_diag_msg *r,
+-				void *_info)
++				void *_info, bool net_admin)
+ {
+ 	struct mptcp_sock *msk = mptcp_sk(sk);
+ 	struct mptcp_info *info = _info;
+diff --git a/net/sctp/diag.c b/net/sctp/diag.c
+index c2a0de2adf6fd..ab6c560fde053 100644
+--- a/net/sctp/diag.c
++++ b/net/sctp/diag.c
+@@ -20,7 +20,7 @@
+ #include <net/sctp/sctp.h>
+ 
+ static void sctp_diag_get_info(struct sock *sk, struct inet_diag_msg *r,
+-			       void *info);
++			       void *info, bool net_admin);
+ 
+ /* define some functions to make asoc/ep fill look clean */
+ static void inet_diag_msg_sctpasoc_fill(struct inet_diag_msg *r,
+@@ -200,7 +200,7 @@ static int inet_sctp_diag_fill(struct sock *sk, struct sctp_association *asoc,
+ 	}
+ 	infox.sctpinfo = (struct sctp_info *)info;
+ 	infox.asoc = asoc;
+-	sctp_diag_get_info(sk, r, &infox);
++	sctp_diag_get_info(sk, r, &infox, net_admin);
+ 
+ 	addr_list = asoc ? &asoc->base.bind_addr.address_list
+ 			 : &ep->base.bind_addr.address_list;
+@@ -412,7 +412,7 @@ static int sctp_ep_dump(struct sctp_endpoint *ep, void *p)
+ 
+ /* define the functions for sctp_diag_handler*/
+ static void sctp_diag_get_info(struct sock *sk, struct inet_diag_msg *r,
+-			       void *info)
++			       void *info, bool net_admin)
+ {
+ 	struct sctp_infox *infox = (struct sctp_infox *)info;
+ 
+-- 
+2.43.0
+
