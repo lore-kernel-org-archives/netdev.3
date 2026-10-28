@@ -1,72 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.245
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=43.163.128.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793156743;
-	b=pncqFkwh+2/8OZAEG83V6DeSIp6my3WyFxUpboWoUkfFZ/ByBJEtATbY1r8184rHtQgO
-	 vfg4iUUxOy0KRzvcN3GKE+cjm98YcMcT8T8G6FDLbW/eL1snIEJVrpxn+RF9AP4TLyM2S
-	 bUlQlpQbqp+85DHaNqx5AJu7q0nBzmXYD5gK9Ch8NWBwxbHg6H5vnq+dTuQSwxO3I6yXq
-	 YWGThbs8M0ZojYRVvHuF29VJFLgMxsT/LUIga+fMvQn2o6EKI+TRv/k1Rbljb7g2/sH3G
-	 RBw1hw9ABGe9+W6F1Jvs1JMpCqkORxvV5Bym1RMCG7Yya43WiGcQjnvk8L/VygEaBbg==
+	t=1793157667;
+	b=K9j4iMDnQXp22ZbpPz3A1re5BQrtoodaoNaDCg226rnLOI0gk5dR3g0T5xYU6zmg04nh
+	 1faHfuujF8vxISoILlZSS3WUSqttDem4UOCMJhaQsnrFg4PJ42VKqXnOgfVOqm30m7Vic
+	 8bKSHC72ZawpOKczi+qZOgeQlYWYXRKh0NVO0qLzasVdVgs4ppxInmyGiZUyUVSS+oZAK
+	 +5+acHS/h0CLyG62XzYZVAOpJXheKTrTgKX5gfXrsHY+QLnqZJTZXtLsVcsfM+bOWoc/1
+	 kFo5RsEA1QypVUus2RcXV+dishm1b02HQRb7PIU1U4+PwVGbItd2nPCN59xK6Yi0YBw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793156743;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=GwkhSOyqaJ8SS9nC0FHxqRC5Vnzg20eV2SoYs0/aXik=;
-	b=qvYajOZa19TvyFlROJ3qlmk8q2btZurDuqeVpv8xAvXCxWqxxx/hmd4atFiwfAH4POVS
-	 KUhqwyIzIBjBOvs+5xozC4T37Yn/mpnrZUdvoth9uFRdc+txCW5JWyyMfNOvQpjDRP0We
-	 mDVKsO+mUAsCJWudyI3ZekMP+w9dDmFBeogJYIpsJd7IYnwyMB3StKFlfiHkO5Z29Mkep
-	 QPsqr1HX5m4JFdda9LVp7gwMkd15Aeja1YQvwP3YPcPf6h1I+VqRbRuYy6uuE3N3k5A3v
-	 OLjt/Wtu4aqh5SLEgdHWo/pwW6S50EC6aldOdnGd1tDVU1m6BsAPGXocfFgr8/IGddw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793157667;
+	h=DMARC-Filter:DKIM-Signature:X-QQ-XMRINFO:X-QQ-XMAILINFO:From:To:Cc:
+	 Subject:Mime-Version:Content-Type:Content-Transfer-Encoding:Date:
+	 X-Priority:Message-ID:X-QQ-MIME:X-Mailer:X-QQ-Mailer:X-QQ-mid;
+	bh=Yqe/4+vLvbZf9N+sWvHypPauZwTxV02rLsiLx9/QJCs=;
+	b=cUuo3fDc+rbsRW8ghd88kacmYR/KYZ4fibX6t8bsIwyyFViKPsw/pkzlpNkCaXarr2uD
+	 vWpUMJzui4sXiDGhhrsga+bcke5TD305BEkkR3pb/KO2ymJRMhKZbpnRj3kzVODuVP8ka
+	 eX8ZU2FHuY1YeA5eFT/kyIKh1oS7Lth9IueSk6+PD5XOpV35DZf0RavKzpGUgjX8rOCvA
+	 37jLxP7Ft09Kr2+bp1Gj8oGpzDEhCm/B5KRmfhfa6OpKHLhb9NGchs11XL+KSKgV2YDUh
+	 l1yrjFRXwlWrGAhTPcpN+ndhySZWyp1GCfpUWjug0+W3d+NNBlXtWhG7fYdv4/Z3Euw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=vVIBvulo;
-	arc=none smtp.remote-ip=95.215.58.245
-Received: from mta1.migadu.com (out-245.mta1.migadu.com [95.215.58.245])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=foxmail.com;
+	spf=pass smtp.mailfrom=foxmail.com;
+	dkim=pass header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=FZTKPWY5;
+	arc=none smtp.remote-ip=43.163.128.53
+Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.53])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CBC606A320
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 03:05:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 61CBC606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECFA9606A31A
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 03:21:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ECFA9606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=vVIBvulo
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=2YRjNupIoI6u2MoQU53howwAJK6kPPfYlENuwKn4bUI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793156740; v=1; x=1793761540;
- b=vVIBvuloWMVrhI5hoPlpsoc9hIAEB7lYi0pkk8N4gE8dKU3eH6ulimC0AD5FkIkOFPNU6aMa
- 8PTmisDCa/E0YaPcFNFLXCXJsKQnfrDNzjz/y5f5gLMo0d7dvYVJCYVMMICf1RUpNlXktzRIIKD
- F5tiTeHoRLHbaPojPYVcvCI8=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 9fb1fcb3a52b1262;
-	Wed, 28 Oct 2026 03:05:25 +0000
-X-Mizu-Trace-ID: 9fb1fcb3a52b1262
-X-Migadu-Flow: FLOW_OUT
-From: Qingfang Deng <qingfang.deng@linux.dev>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Qingfang Deng <qingfang.deng@linux.dev>,
-	Simon Horman <horms@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
-	Asim Viladi Oglu Manizada <manizada@pm.me>,
-	Eric Woudstra <ericwouds@gmail.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Julius Bairaktaris <julius@bairaktaris.de>
-Subject: [RFC net-next v2 2/2] pppoe: queue unbound packets directly
-Date: Wed, 28 Oct 2026 11:05:06 +0800
-Message-ID: <20261028030509.23294-2-qingfang.deng@linux.dev>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261028030509.23294-1-qingfang.deng@linux.dev>
-References: <20261028030509.23294-1-qingfang.deng@linux.dev>
+	dkim=pass (1024-bit key, unprotected) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=FZTKPWY5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1793157657;
+	bh=Yqe/4+vLvbZf9N+sWvHypPauZwTxV02rLsiLx9/QJCs=;
+	h=From:To:Cc:Subject:Date;
+	b=FZTKPWY5slGR+SVH2dDzy+YFaFKvMv3Jdyj9aHZMwVDAwq0+veOJ6I90jqdSUjQQQ
+	 fzqG/XvIHv3x8cCs+Rd25cDP9MOFz4U2wMe+MdL63/ZzA/h2T/ioS5+QXKif4dCqYk
+	 frFGokbbiV0zGSPgJXY9/vBQ2yNAH8C0KeTdCqo0=
+X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
+X-QQ-XMAILINFO: N2zgDHximsrq2dyqV1gwoLueFBgC/if2/rG5OGTbTHfHmA2YwOcMD8VVrzTYi5
+	 nF78Khlt7VY2ZM/es4S726MxxGImB4/FevKL34+s8zciefaFkaTCkwIfnvXzT00mhbA1o0LV20qH3
+	 SAKVdzN7eHJiSAVxu3psSaKHW1eOTw2sNgG9Ylhgv7gWx4bxsuQXHuzBDkuh/BarT+faPpuCAvoy1
+	 LDp8sB5wrClCBsYGZaIAxSiEvDWthDU9+eWzjYjOk2Kg9qW5gz6uGPf+Aww7TVxVEvb/F+gF2TEse
+	 XUM7UpW8YHhQDjn8SkurCPp009sSyrt6wQnClUpP03S4tC2VcSbCovnV11pRpcZZlP/+dzRlefVil
+	 wjunifAqBNA7JLJXVMi2sW181vqr7RRvtCl2yASXgRM2LDgL751Zl41D8k+psZbW0326fZGjhUVmz
+	 uqC1aYP6sNPf9GWOK5bCPF20qnooZsldYuYVwh0ccW1en+8ddWXz0KzlrplbEs46dVk5HXE0q4gkj
+	 C9M9wVPn/MlxhUj3WRMy/OevoY6nQb02U/HJu3ykNOog+pI+H43nzIztgHYUxv6pP7RkQs/aqx/Kf
+	 dhV7ancE5LIZfrstwTobzCPrQSakiiaLUoxrhCPmTFiRbE6jECXb4O+sToRJcuHhvonItGFmb8jla
+	 DW2WsPnTzoLiasLUf7rP8MDy7YRHEATv2HX3IMKxb+6i+sxJYpkNTr/wTgsuOakjKZG4dOEOzeh4O
+	 amdTbarw3G2YcQqkJmfw2BGfoe6VefrbANG/xCejyRlH9KtlYZOmH//51HHW1MM66lV9w169GD+BR
+	 BvrcxWvgZ9I0l7y6Rp4mTKzqI7wysN3XafnynASTL5lRqrJmJbjzTouDemJPYZwmpXdTbMpYSg1+1
+	 wMqa5LlHpKJ8XLIhmOR9gX6ABzzbCuMSJbHuDee/cEGSOglM8dFCmmlh/He3HQap847UXWyeBUKbc
+	 PCH6omzSHaAvZGPuzDEDip+MIutiw+VoIZS2JsF8vBeTtuvgWGtU2Lph+uqV8w+aEAQ2pPhWRf2UZ
+	 jSXN0wHU9G5uo7vWKjOC/4PGc4E1BzQePmyUUJMvkX+kXMLY=
+From: "=?utf-8?B?Ym8gY2Fv?=" <treebacker@foxmail.com>
+To: "=?utf-8?B?bmV0ZGV2?=" <netdev@vger.kernel.org>
+Cc: "=?utf-8?B?ZGF2ZW0=?=" <davem@davemloft.net>, "=?utf-8?B?ZWR1bWF6ZXQ=?=" <edumazet@kernel.org>, "=?utf-8?B?a3ViYQ==?=" <kuba@kernel.org>, "=?utf-8?B?cGFiZW5p?=" <pabeni@redhat.com>, "=?utf-8?B?ZHNhaGVybg==?=" <dsahern@kernel.org>, "=?utf-8?B?aG9ybXM=?=" <horms@kernel.org>, "=?utf-8?B?aWRvc2No?=" <idosch@nvidia.com>
+Subject: Subject: [PATCH net] ip_tunnel: reload inner IP header after ip_tunnel_encap()
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -75,97 +67,100 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
+Date: Wed, 28 Oct 2026 11:20:54 +0800
+X-Priority: 3
+Message-ID: <tencent_8E712A089353754DE5DB35DD0BAAB0AB9606@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+X-QQ-mid: xmseua11-1t1793157654ta00yxbr2
 
-Queue unbound packets directly with sock_queue_rcv_skb() and remove
-the unused backlog callback.
-
-Previously, __sk_receive_skb() serialized receive processing with
-PPPIOCGCHAN through the socket lock. Receivers either finished before
-the ioctl acquired ownership or ran from the backlog after PPPOX_BOUND
-was set.
-
-The new lockless path relies on synchronize_net() from commit
-92c1bf630abf ("pppox: drain queued packets on channel handoff").
-After setting PPPOX_BOUND, PPPIOCGCHAN waits for receivers that saw
-the old state to finish queueing before draining sk_receive_queue
-into PPP. This prevents packets from being stranded after handoff.
-SOCK_RCU_FREE protects the socket lifetime during teardown.
-
-Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
----
-v2: new patch
----
- drivers/net/ppp/pppoe.c | 40 ++++++----------------------------------
- 1 file changed, 6 insertions(+), 34 deletions(-)
-
-diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
-index fbd04e7252b2..ae4184dae8dd 100644
---- a/drivers/net/ppp/pppoe.c
-+++ b/drivers/net/ppp/pppoe.c
-@@ -340,35 +340,7 @@ static struct notifier_block pppoe_notifier = {
- 
- /************************************************************************
-  *
-- * Do the real work of receiving a PPPoE Session frame.
-- *
-- ***********************************************************************/
--static int pppoe_rcv_core(struct sock *sk, struct sk_buff *skb)
--{
--	struct pppox_sock *po = pppox_sk(sk);
--
--	/* Backlog receive. Semantics of backlog rcv preclude any code from
--	 * executing in lock_sock()/release_sock() bounds; meaning sk->sk_state
--	 * can't change.
--	 */
--
--	if (sk->sk_state & PPPOX_BOUND) {
--		ppp_input(&po->chan, skb);
--	} else {
--		if (sock_queue_rcv_skb(sk, skb))
--			goto abort_kfree;
--	}
--
--	return NET_RX_SUCCESS;
--
--abort_kfree:
--	kfree_skb(skb);
--	return NET_RX_DROP;
--}
--
--/************************************************************************
-- *
-- * Receive wrapper called in BH context.
-+ * Receive a PPPoE Session frame.
-  *
-  ***********************************************************************/
- static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
-@@ -415,11 +387,12 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
- 	if (!po)
- 		goto drop;
- 
--	if (likely(po->sk.sk_state & PPPOX_BOUND)) {
-+	if (likely(po->sk.sk_state & PPPOX_BOUND))
- 		ppp_input(&po->chan, skb);
--		return NET_RX_SUCCESS;
--	}
--	return __sk_receive_skb(&po->sk, skb, 0, 1, false);
-+	else if (sock_queue_rcv_skb(&po->sk, skb))
-+		goto drop;
-+
-+	return NET_RX_SUCCESS;
- 
- drop:
- 	kfree_skb(skb);
-@@ -526,7 +499,6 @@ static int pppoe_create(struct net *net, struct socket *sock, int kern)
- 	sock->state	= SS_UNCONNECTED;
- 	sock->ops	= &pppoe_ops;
- 
--	sk->sk_backlog_rcv	= pppoe_rcv_core;
- 	sk->sk_destruct		= pppoe_destruct;
- 	sk->sk_state		= PPPOX_NONE;
- 	sk->sk_type		= SOCK_STREAM;
--- 
-2.43.0
+aXBfdHVubmVsX3htaXQoKSBhbmQgaXBfbWRfdHVubmVsX3htaXQoKSBjYWNoZSB0aGUgaW5u
+ZXIgSVAgaGVhZGVyCnBvaW50ZXIgYXQgZnVuY3Rpb24gZW50cnkgYW5kIGNvbnRpbnVlIHVz
+aW5nIGl0IGFmdGVyCmlwX3R1bm5lbF9lbmNhcCgpLgoKRm9yIEdTTyBza2JzIG92ZXIgYSBG
+T1Ugb3IgR1VFIGVuY2FwLCBpcF90dW5uZWxfZW5jYXAoKSBjYWxscwppcHR1bm5lbF9oYW5k
+bGVfb2ZmbG9hZHMoKSwgd2hpY2ggY2FsbHMgc2tiX2hlYWRlcl91bmNsb25lKCk7IHdoZW4K
+dGhlIHNrYiBoZWFkZXIgaXMgY2xvbmVkLCB0aGF0IGNhbGxzIHBza2JfZXhwYW5kX2hlYWQo
+KSBhbmQgbW92ZXMKdGhlIHNrYiBoZWFkLiAgVGhlIHBza2JfZXhwYW5kX2hlYWQoKSBjb250
+cmFjdCByZXF1aXJlcyBwb2ludGVycwppbnRvIHRoZSBza2IgaGVhZCB0byBiZSByZWxvYWRl
+ZCBhZnRlciB0aGUgY2FsbCwgc28gdGhlIGNhY2hlZAppbm5lcl9pcGggaXMgc3RhbGU6IGJv
+dGggZnVuY3Rpb25zIGtlZXAgcmVhZGluZyBmcmFnX29mZiwgdG9zIGFuZAp0dGwgdGhyb3Vn
+aCBpdCAoZGlyZWN0bHkgYW5kIHRocm91Z2ggdG5sX3VwZGF0ZV9wbXR1KCkpLCB3aGljaCBj
+YW4KcmVhZCBmcm9tIGEgZnJlZWQgc2tiIGhlYWQgb25jZSB0aGUgb2xkIGhlYWQncyByZW1h
+aW5pbmcgY2xvbmUgaXMKcmVsZWFzZWQuCgpUaGlzIGlzIHRoZSBzYW1lIHBhdHRlcm4gdGhh
+dCBmMGU0MmYwYzQzMzcgKCJpcHY2OiBzaXQ6IHJlbG9hZAppbm5lciBJUHY2IGhlYWRlciBh
+ZnRlciBHU08gb2ZmbG9hZHMiKSBmaXhlZCBmb3IgU0lUOyB0aGUgdHdvCmlwX3R1bm5lbC5j
+IHNpdGVzIHdlcmUgbGVmdCBvdXQuCgpSZWxvYWQgaW5uZXJfaXBoIHJpZ2h0IGFmdGVyIGlw
+X3R1bm5lbF9lbmNhcCgpIGluIGJvdGggZnVuY3Rpb25zLgpUaGUgcmVsb2FkIGlzIHNlbWFu
+dGljYWxseSBhIG5vLW9wIHdoZW4gbm8gcmVhbGxvY2F0aW9uIGhhcHBlbmVkOgpwc2tiX2V4
+cGFuZF9oZWFkKCkgcHJlc2VydmVzIHRoZSBoZWFkZXIgb2Zmc2V0cwooc2tiX2hlYWRlcnNf
+b2Zmc2V0X3VwZGF0ZSgpLCBuaGVhZCA9PSAwKSBhbmQgY29waWVzIHRoZSBvbGQgaGVhZApp
+biBmdWxsLgoKRml4ZXM6IGFjOTMxZDRjZGVjMyAoImlwaXAsaXBfdHVubmVsLHNpdDogQWRk
+IEZPVSBzdXBwb3J0IGZvciBleHRlcm5hbGx5IGNvbnRyb2xsZWQgaXBpcCBkZXZpY2VzIikK
+Q2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcKU2lnbmVkLW9mZi1ieTogYm8gY2FvIDx0cmVl
+YmFja2VyQGZveG1haWwuY29tPgotLS0KSG93IHRoaXMgd2FzIGZvdW5kOiBtYW51YWwgYXVk
+aXQgb2YgdGhlIHNpYmxpbmcgY2FsbCBzaXRlcyBvZgpmMGU0MmYwYzQzMzcgKHRoZSBTSVQg
+Zml4IGZvciBDVkUtMjAyNi01MzIyOCkuICBUaGF0IGNvbW1pdCBmaXhlZCB0aGUKImlubmVy
+IGhlYWRlciBjYWNoZWQgYXQgeG1pdCBlbnRyeSArIEdTTyBvZmZsb2FkIHJlYWxsb2NhdGlu
+ZyB0aGUgc2tiCmhlYWQgaW5zaWRlIGlwX3R1bm5lbF9lbmNhcCgpIiBwYXR0ZXJuIGZvciBz
+aXQuYyBvbmx5OyB0aGUgaWRlbnRpY2FsCnBhdHRlcm4gd2FzIGludHJvZHVjZWQgaW50byBp
+cF90dW5uZWwuYyBieSB0aGUgc2FtZSBvcmlnaW5hbCBGT1UKY29tbWl0IChhYzkzMWQ0Y2Rl
+YzMpIGFuZCB3YXMgbGVmdCBvdXQgb2YgdGhlIFNJVCBmaXguICBUaGUgc291cmNlCmF1ZGl0
+IHdhcyBMTE0tYXNzaXN0ZWQ7IHRoZSBydW50aW1lIHZlcmlmaWNhdGlvbiBkZXNjcmliZWQg
+YmVsb3cgd2FzCnBlcmZvcm1lZCBtYW51YWxseSBvbiBhIHN0b2NrIFVidW50dSBrZXJuZWwu
+CgpSZXByb2R1Y3Rpb24gbm90ZXMgKHZlcmlmaWVkIG9uIFVidW50dSA3LjMuMC05LWdlbmVy
+aWMsIGFybTY0LCAyMDI2LTEwLTI3KToKClNldHVwOiB0d28gbmV0bnMgam9pbmVkIGJ5IGEg
+dmV0aCBwYWlyLCBhbiBpcGlwIHR1bm5lbCB3aXRoIEZPVSBlbmNhcApvbiB0b3AgKGlwIGZv
+dSArIGVuY2FwLXNwb3J0L2Rwb3J0KS4gIFRyYWZmaWMgc291cmNlOiBhIFVEUCBzb2NrZXQK
+d2l0aCBVRFBfU0VHTUVOVD0xMjAwIHNlbmRpbmcgNjAwMDAtYnl0ZSBkYXRhZ3JhbXMgKHBy
+b2R1Y2VzIEdTTwpza2JzKSwgcGx1cyBhbiBBRl9QQUNLRVQgdGFwIGJvdW5kIHRvIHRoZSB0
+dW5uZWwgZGV2aWNlLCB3aGljaApza2JfY2xvbmUoKXMgZWFjaCBza2IgaW4gX19kZXZfcXVl
+dWVfeG1pdF9uaXQoKSByaWdodCBiZWZvcmUKbmRvX3N0YXJ0X3htaXQoKSAtLSB0aGF0IGNs
+b25lIHByb3ZpZGVzIHRoZSBzaGFyZWQgaGVhZGVyIHRoYXQKc2tiX2hlYWRlcl91bmNsb25l
+KCkgbmVlZHMuICBQbGFpbiBUQ1AgdHJhZmZpYyBkb2VzIG5vdCByZXByb2R1Y2U6CndoZW4g
+dGhlIHdyaXRlLXF1ZXVlIHNrYiBpcyBhbHJlYWR5IGNsb25lZCwgdGNwX3RyYW5zbWl0X3Nr
+YigpIGZhbGxzCmJhY2sgdG8gcHNrYl9jb3B5KCksIGFuZCB0aGUgdHJhbnNtaXR0ZWQgc2ti
+IGhhcyBhbiB1bnNoYXJlZCBoZWFkLgoKQSBrcHJvYmUgb24gcHNrYl9leHBhbmRfaGVhZCgp
+IHdpdGggc3RhY2sgdHJhY2VzIHJlY29yZGVkIDc0MDE5IGhpdHMKaW4gOCBzZWNvbmRzIG9m
+IGZsb29kaW5nLCBldmVyeSBvbmUgd2l0aCB0aGUgdHVubmVsIHhtaXQgcGF0aCBpbiB0aGUK
+c3RhY2sgKGZyYW1lczogcHNrYl9leHBhbmRfaGVhZCA8LSBpcGlwX3R1bm5lbF94bWl0IDwt
+CmRldl9oYXJkX3N0YXJ0X3htaXQgPC0gX19kZXZfcXVldWVfeG1pdCA8LSBpcF9maW5pc2hf
+b3V0cHV0MiA8LSAuLi4KPC0gdWRwX3NlbmRtc2cpLiAgVGhlIHBlci1za2Igc2VxdWVuY2Ug
+aXM6CgogIFQwOiBpcF90dW5uZWxfeG1pdCgpIGVudHJ5IGNhY2hlcwogICAgICBpbm5lcl9p
+cGggPSBza2JfaW5uZXJfbmV0d29ya19oZWFkZXIoc2tiKSAgICAgICAgICBbaGVhZCBBXQog
+IFQxOiBpcF90dW5uZWxfZW5jYXAoKSAtPiBmb3VfYnVpbGRfaGVhZGVyKCkgLT4KICAgICAg
+aXB0dW5uZWxfaGFuZGxlX29mZmxvYWRzKCkgLT4gc2tiX2hlYWRlcl91bmNsb25lKCkgLT4K
+ICAgICAgcHNrYl9leHBhbmRfaGVhZCgpIGluc3RhbGxzIGEgbmV3IGhlYWQgQgogIFQyOiBp
+cF90dW5uZWxfeG1pdCgpIGtlZXBzIHJlYWRpbmcgdGhyb3VnaCB0aGUgY2FjaGVkIHBvaW50
+ZXIKICAgICAgKGZyYWdfb2ZmLCB0bmxfdXBkYXRlX3BtdHUoKSwgRUNOIGVuY2FwLCB0dGwp
+IC0tIGFsbCBzdGlsbAogICAgICByZWFkIGhlYWQgQSwgd2hpY2ggdGhlIHNrYiBubyBsb25n
+ZXIgb3ducy4KCkluIHRoZSByZXByb2R1Y2VyIHRoZSBUMiByZWFkcyBub3JtYWxseSBsYW5k
+IG9uIGhlYWQgQSB3aGlsZSB0aGUgdGFwCmNsb25lIHN0aWxsIGhvbGRzIGEgcmVmZXJlbmNl
+LCBzbyBub3RoaW5nIGlzIHZpc2libGU7IHRoZQp1c2UtYWZ0ZXItZnJlZSBiZWNvbWVzIG9i
+c2VydmFibGUgb25seSB3aGVuIHRoYXQgbGFzdCByZWZlcmVuY2UgaXMKZHJvcHBlZCBpbnNp
+ZGUgdGhlIFQxLi5UMiB3aW5kb3cgLS0gdGhlIHNhbWUgcmFjZSBhcyBkZXNjcmliZWQgaW4K
+ZjBlNDJmMGM0MzM3IGZvciBTSVQuICBUaGUgcmVsb2FkIGFkZGVkIGJ5IHRoaXMgcGF0Y2gg
+cmVtb3ZlcyB0aGUKc3RhbGUgcmVhZHMgZW50aXJlbHkuCgogbmV0L2lwdjQvaXBfdHVubmVs
+LmMgfCA0ICsrKysKIDEgZmlsZSBjaGFuZ2VkLCA0IGluc2VydGlvbnMoKykKCmRpZmYgLS1n
+aXQgYS9uZXQvaXB2NC9pcF90dW5uZWwuYyBiL25ldC9pcHY0L2lwX3R1bm5lbC5jCmluZGV4
+IDA4NzU0NzRhNTc4YS4uMjIwNDM2N2RiNzU3IDEwMDY0NAotLS0gYS9uZXQvaXB2NC9pcF90
+dW5uZWwuYworKysgYi9uZXQvaXB2NC9pcF90dW5uZWwuYwpAQCAtNjExLDYgKzYxMSw4IEBA
+IHZvaWQgaXBfbWRfdHVubmVsX3htaXQoc3RydWN0IHNrX2J1ZmYgKnNrYiwgc3RydWN0IG5l
+dF9kZXZpY2UgKmRldiwKIAlpZiAoaXBfdHVubmVsX2VuY2FwKHNrYiwgJnR1bl9pbmZvLT5l
+bmNhcCwgJnByb3RvLCAmZmw0KSA8IDApCiAJCWdvdG8gdHhfZXJyb3I7CiAKKwlpbm5lcl9p
+cGggPSAoY29uc3Qgc3RydWN0IGlwaGRyICopc2tiX2lubmVyX25ldHdvcmtfaGVhZGVyKHNr
+Yik7CisKIAl1c2VfY2FjaGUgPSBpcF90dW5uZWxfZHN0X2NhY2hlX3VzYWJsZShza2IsIHR1
+bl9pbmZvKTsKIAlpZiAodXNlX2NhY2hlKQogCQlydCA9IGRzdF9jYWNoZV9nZXRfaXA0KCZ0
+dW5faW5mby0+ZHN0X2NhY2hlLCAmZmw0LnNhZGRyKTsKQEAgLTc3Miw2ICs3NzQsOCBAQCB2
+b2lkIGlwX3R1bm5lbF94bWl0KHN0cnVjdCBza19idWZmICpza2IsIHN0cnVjdCBuZXRfZGV2
+aWNlICpkZXYsCiAJaWYgKGlwX3R1bm5lbF9lbmNhcChza2IsICZ0dW5uZWwtPmVuY2FwLCAm
+cHJvdG9jb2wsICZmbDQpIDwgMCkKIAkJZ290byB0eF9lcnJvcjsKIAorCWlubmVyX2lwaCA9
+IChjb25zdCBzdHJ1Y3QgaXBoZHIgKilza2JfaW5uZXJfbmV0d29ya19oZWFkZXIoc2tiKTsK
+KwogCWlmIChjb25uZWN0ZWQgJiYgbWQpIHsKIAkJdXNlX2NhY2hlID0gaXBfdHVubmVsX2Rz
+dF9jYWNoZV91c2FibGUoc2tiLCB0dW5faW5mbyk7CiAJCWlmICh1c2VfY2FjaGUpCi0tIAoy
+LjM5LjUgKEFwcGxlIEdpdC0xNTQpCgo=
 
