@@ -1,91 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793223359;
-	b=1hQyqunYTMzTBOaUzupjq4ctVzTLdySyftfNXc0fSIrRk1JKQKlMfndalLiDEe6gtHpY
-	 dqNWi9nHVflnFYsK744z1u8kRjDcMlTdnmt9LJg24ChcvGR2NQwvVORNA1gTRR8ZK/JG1
-	 /G+hPmIgK0fGdwWPKqZB/8feFfF6kS0f9DtBv4HttYcl/wpyomrrSe46KrR+vdYpZVVrE
-	 u7ymlw3k2rIvnQeF5wZkbQizJiMRpgYalnqir6eCTRoPFvyLQirrLfv1/YU1PwwndlJaO
-	 GyhVzfm5OwPlykuOjiqjyQXSo0DriAH9zZk2dIZ/IUjGJ892mV2T3Fumot2RY+uUmow==
+	t=1793223367;
+	b=AQzVSzJmoROrqNILBFDExfEErtz2B7nkDazpuBvp25+OG71dSByKNwitYx+/GQBitGYI
+	 vcCR+HebjHdVoxIhvyHzNDKTHvGKXgQRYnL8+Xy/RESqmEpoI2002SJkpt6Hh6AOBvccG
+	 f6VHXLbZTzbaxtC/mXmPhCP1Evn7Idi5gH01JSzaQSYYY8XOhOML9omU4X++8P0ELSM+8
+	 hjZfYZkNWRDJ9cK1X5Uqw7agM0IyWyCWm4DgUbEHDvryXgliy/2pi8M90fC/Z7e23nDIS
+	 Y4+4T0NQHOSkuIjzkMSxX26tldKXElS3daZhXjWF3pvLhoKxctRbMYTOiG4lph1q26Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793223359;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793223367;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Subject:From:To:Cc:
-	 Date:Message-ID:User-Agent:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=C4z0s5i6m6Cm9i1YXIjTnLWI0y9WJTId6/68tOJJcxc=;
-	b=k8Rq3RBaMU1k7To2Z0rU/9CdZ45jcnSO0is2i4MgKLfChuQyoXClB2XZpaXA349TAOcW
-	 eMwD7Du3NBlkUvkWxnARcBYffI/9YI2KHwd25AWDlJGsVm4pis67cb8tHd3jmFcU0wvlQ
-	 XSNl0tkAFPiu2ucuRFoGsaWK5dFUjAmaHZ7iHLD9PBUkCcR0j89UJmYAdge0mqi4QhcMn
-	 PVCW1Y1rxWZwAio0bNIfqZRv9Fwx2Z17/8vrKxh/yZywGJzqJMkNSjT5HbHsHJVY67t5c
-	 P1UnZaIvsZw+OJtmYEsyL5dFgEE3F5lqy12Peuf1b9FPMeSKErETVKh7jxKBrgWvGWQ==
+	 Date:Message-ID:In-Reply-To:References:User-Agent:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=iuRE5e4D91PVpa56+W16RmW8bTwn0KvmGTt79ShEut0=;
+	b=nmT1Ez561xCeXpnkFOiqu0fDPH3iyIzNg1rUDICTDPJ/AeHdHyYr5SuB5XvSmvZuRqXa
+	 nmNVNV/FCUQlG7AHXCQuHH7OaMkPZMqedQcrTSIhCDJu5sX7U6EtivyQjl+dJWUvUZv27
+	 lVnxq9hsBVoTpEcoeLFtB/h7ZQw2o6bWu+ZWGZRQdel5MVWZJeOfRDJBjY+5Hee0ATyxy
+	 A1rbmklj79Pf8GFPNPAgwEbYpKKnttcz6gwKC9gwICLLszHBxMZ7W6Fj0g0cq0XXJO8yi
+	 9IXj9b3zOVzw8Pq6Uhf+VZlU7mbOVzfuQld2R7XAyiwhTqYrc23dkvDX8TpPHOW//OA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=pwtLorr4;
-	arc=none smtp.remote-ip=209.85.216.49
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ZLqZgG7Z;
+	arc=none smtp.remote-ip=209.85.215.172
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED292606A31A
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 21:35:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ED292606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2F7606A31A
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 21:36:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2C2F7606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=pwtLorr4
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3a4b3ac8fb7so892099a91.0
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 14:35:58 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ZLqZgG7Z
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-cc1bc88a20eso938283a12.3
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 14:36:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793223358; x=1793828158; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793223366; x=1793828166; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:user-agent
-         :message-id:date:cc:to:from:subject:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=C4z0s5i6m6Cm9i1YXIjTnLWI0y9WJTId6/68tOJJcxc=;
-        b=pwtLorr4ZSTYEkgsBfp7+V13FyLjQTm3LA6tohObPwEli7b7vmLyn2NuNESi++sSe2
-         Av9ACPBpq01hF08Q3O+4qTnY3S0Z7voggBlqQTqjhWiamknyT9QpMsuLisb3X2eQJ63/
-         wDKYo9TrUexiA/x0FXeuIEPQhDJaiCOlDlb6U8mJjHkAL4d4YN/7lUcidHl7JytvnUj6
-         ATjIQ5JTYYzNW1d4R75O9wJOZXyy95u6gSDeF/iOdwdU8fDmvl+2giXbWcdeq1K04+zs
-         OSabpfd41PyHT+UMavMxX5dS5GBT12aMV9B0TR3kr8ZTee2v4VZYDgrsVyhRQXJtyrY0
-         6+tQ==
+         :references:in-reply-to:message-id:date:cc:to:from:subject:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=iuRE5e4D91PVpa56+W16RmW8bTwn0KvmGTt79ShEut0=;
+        b=ZLqZgG7ZUDGG+0TVvAUaNNzGlZHJcEmMZXXLlX9U1QXqoXxp+G5wRZkp/ahUiMJhGA
+         Fegh83hWOVeLzbeo753Rh2Bqo1BwQczoI9qAk1yR+ZkOAHujhPECtIQGGhBojKTorRSO
+         junP5sgVSfKoEQ5b/Hn+UVjygZf3tz3ADlKamuCAzWzqeQLnN4Ubhz66DBFM+/jzoitt
+         lKrJ1lXpPjB1t68khMF8Joieyyw378rwnBvLgQm4gRqChmB2EQQoeyyVZrtqUv/WrISW
+         owoNR4T1PmxgYz1hmuuzS5vv2VCIZ+SPV3jXYy913/eZgTmI341r2bCnlUTGGrOOnJxa
+         2FmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793223358; x=1793828158;
+        d=1e100.net; s=20260707; t=1793223366; x=1793828166;
         h=content-transfer-encoding:content-type:mime-version:user-agent
-         :message-id:date:cc:to:from:subject:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=C4z0s5i6m6Cm9i1YXIjTnLWI0y9WJTId6/68tOJJcxc=;
-        b=fxIQ/3fl7Vvnoh7PkGlQI18Fcv6qub2K8sONFv7WdtvVq6KF4xkzhnY7fBBuGMQxrc
-         fmZ3V22I5DaArCjRy3UIXl+mupyFt3YcaURd8QIbgcfqKxqIWjfnssrtg2NcHfJcJdSC
-         i/rb2wXkDzyK+zVqvnvAVv3LU4gVbw5zKMkndXDzTKhlsE3hVAYFdR/cq4TKmCYjUWJi
-         u53xhu+wTCVc4SzL3/2xGdzaAIg05cq1oZg/cEH1RsEk7q69hRELH1d750hKHGK3Ok/O
-         dviqTa7AOSG0/XpmKJtaoqkKSdkAtlwwiw6FkwYnQyTOkWjgl5HTF3wVuOvMfltxs6ks
-         hI9w==
-X-Gm-Message-State: AFq9FYKCIIgz39umRAcoZnIce6QdyiU68BLad//3tvaKzOIf2AjRnbTL
-	/eW9ysEFi99ROgjGOxA8F7xE5F2y5WErtRvI/xhoxIp7tNdpXSmsN8sT
-X-Gm-Gg: AYBFou2vDN6OejP1meD1CEsfDseCFGrxXFf6Orl7aMs+6aP7qFJyn8ssPsLq7yRZlHb
-	M+F6V2LoW6WwAK3PS1U7YNy0/kmpT2aD6cwGUiQE9/FfeHtaUD3q4OUcrHdIjCT+iV2AsTyrMAw
-	cZmc1W9b1ax3HKivp9+o8gtmpucR/6mq5T1WQBF+8XiYMVrdb4Bd1TTlyOVBvpXtbeLcy06Fc7/
-	NBo1D3EAT1nnl24OIqwTQZIXm+5pyuEkrI+0p9WvmUAgDwoyzs9UtBRZA079FCMkUH2waKJkSy9
-	U7M/f5ugZ0ULw5GmLQiUj4zVa/R0Kk2XT/dhfMdA2ibIibzqfs2SpwRK2zUAxbFQa2eI/I58FSJ
-	2PYqfqHdOJHSHEuq0PNDlyY8OtmHCdLeHeQWSjf2ZbsPRf0CUZMLmFcsruJ3wPYjobsLv6WIYvl
-	noP6wh06M+cb0A+PjgjTJxqilITls2V/ciLWrzlAmb2eXHR1zwYHlNNLmwWSXBVCYDRjuDHgU+3
-	xyqKLT81sQVb1iHOWaMfnDiBAZbbtIKax2n8+J3Vfq5I3/1JizPGqmfjNlNW5L3qAVWo+vLmO97
-	79d7dJwJcGrnqzOP2wCfPdH8qqDqHBJuws0S0yaR59AdlNQLpw+F/lW6Px6rGP9GBT55IluZ0gC
-	pRBuY/Zlp0CPDHHi4xFb6PuXN5SUBj+JDa0WaxAaM2gAEzuE=
-X-Received: by 2002:a17:90b:4a82:b0:3a7:e126:4980 with SMTP id 98e67ed59e1d1-3ae5824d38bmr2824046a91.43.1793223358073;
-        Wed, 28 Oct 2026 14:35:58 -0700 (PDT)
+         :references:in-reply-to:message-id:date:cc:to:from:subject:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=iuRE5e4D91PVpa56+W16RmW8bTwn0KvmGTt79ShEut0=;
+        b=Bxn1OtFz4MCvu2DVR4yHPaszPEkc+RRgiJkMg0VKiRSACWyXUK/EEc0I+SDOcslqe9
+         ZoQqhnsO47rgP+WtZpxX8+n1mwtv8Tts8nm6PcQkMw13YGa/GNkHd7K5WIfRNdyPv+oS
+         K1swE+8y3q/B1Y6io1XN97FCtgPrMfnSEcHsa5mtgKhS3emO5AovjbNp9hWE0GYaUQGB
+         t5zfGpQeZWN48hxQaF67GDrP5sqJLxN05uRHHztEgLR9KJa8vLiB/1s6RBOH08bCuYZw
+         2hW+7QndgzWOeFQFCrKTekLAoePmtedj+LGCyogJ3G4QQRd0kedUiNo8afg+AgjN/z+k
+         pTiQ==
+X-Gm-Message-State: AFq9FYI4xW2NQg/pm0Ho6rHCcLANTAG4JdVWBBoa2LsVVepVAbZXEgJe
+	XGGNQoxAQlDlEQTVMyGEHJ1QSZGHXbB/KiTrwlk/A/+X6oarWj1Ui0vh
+X-Gm-Gg: AYBFou0IbFvbC0docLLNZr/XJlhriupgYHHbhl03Iy7a15my8o3w098h8v027LQPhHV
+	nJNqEFHYynqaF7GT2a5u363ZpccUzqiB2BRXntwBCZCulVKgWWerOoiiZq6kHTd364/8V0/t4Bt
+	Bs5NDTsGpwffMAtVTd9pplzRASMyBwMV04wn/enDYJN8AkdbD1msFzesQGtGeCWjuq1dqEo2sDC
+	YdKhd4lYJynNk2vIGnY2wRBtGami/ztRJPy5S7epA0LJ6bN1XOdesGdvPY669SYBlmnQuVPv0dW
+	Imvoh/TrahtjR4m/NyUfUjQ8pNOLdKRWHeUJtiRBdVkB02vE5DDpg3f9qiiWHtPkdeGi1EvSApC
+	pDXCbZiwMNr5fdTsADW5IwbAtVTHl5QO2M2SmZytCeywxuz83CYcYnoweU+1EnZeSTq+Ka1gk4L
+	noAK6A6Yj7mf1XdjZKzt+zULY4EpnYm0o2taXWO8KUKnQpipAV48CHimyBysNRKQvVYEI1WYOkX
+	3dwD1432w0krxX8JAHTFvtXIDFf4NiE7qO430BWrRvandFSrhiTmfguVF51fP1tEtwfG3a9+88s
+	mwFQcWU1+qtaFN6abe3J16/xtwb7o1+nhP1YATTK/4GL1p3ps18qodZZvGmig/R/cUL4wOVA/oc
+	JHjgJM/6HXx43q5oe8IiB10TX326vU4f4DZCGcfWDqf1cStGUNfs1lXPMQnUfy71sM0Q=
+X-Received: by 2002:a05:6a20:9185:b0:3e2:a9cc:3ece with SMTP id adf61e73a8af0-3e90226cd92mr3430097637.23.1793223366451;
+        Wed, 28 Oct 2026 14:36:06 -0700 (PDT)
 Received: from ahduyck-xeon-server.home.arpa ([2605:59c1:38c:400:22f5:2de:b9c3:f27c])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae6e8fb1ddsm1079873a91.5.2026.10.28.14.35.56
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a6a6c03c09sm1567067b3a.35.2026.10.28.14.36.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 14:35:57 -0700 (PDT)
-Subject: [net PATCH 00/13] fbnic: Fix BMC filter, FW crash restore,
- teardown and Tx flush bugs    
+        Wed, 28 Oct 2026 14:36:05 -0700 (PDT)
+Subject: [net PATCH 01/13] fbnic: Reject a short MAC address attribute from
+ firmware
 From: Alexander Duyck <alexander.duyck@gmail.com>
 To: netdev@vger.kernel.org
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  horms@kernel.org, kernel-team@meta.com, kuba@kernel.org, pabeni@redhat.com
-Date: Wed, 28 Oct 2026 14:35:55 -0700
+Date: Wed, 28 Oct 2026 14:36:03 -0700
 Message-ID: 
+ <179322336327.40667.6639719339988113582.stgit@ahduyck-xeon-server.home.arpa>
+In-Reply-To: 
+ <179322311834.40667.5383039334126572422.stgit@ahduyck-xeon-server.home.arpa>
+References: 
  <179322311834.40667.5383039334126572422.stgit@ahduyck-xeon-server.home.arpa>
 User-Agent: StGit/1.5
 X-Mailing-List: netdev@vger.kernel.org
@@ -100,77 +105,110 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-Review of the "Rework the BMC state pulled from the capabilities
-message" and "Remove BMC routing rules when the BMC channel is disabled"
-pair, d261a371e3b7 and db99b6fae21c, turned up a number of bugs in the
-surrounding code that the pair did not introduce. This series fixes
-them, along with the order of the ndo_stop path, the mailbox teardown
-and the Tx force-flush.
+From: Alexander Duyck <alexanderduyck@fb.com>
 
-Patch 1 rejects a MAC address attribute shorter than ETH_ALEN from
-firmware, which was read past the end of the attribute.
+The TLV validator accepts an FBNIC_TLV_BINARY attribute of any length
+from 1 up to the size in its index entry, so a MAC address attribute
+shorter than ETH_ALEN passes it. The fbnic_tlv_attr_addr_copy function
+then copies ETH_ALEN bytes regardless, reading past the end of the
+attribute and, for the last attribute in a message, past the end of the
+message.
 
-Patches 2-3 and 7 fix MACDA allocation: a missing break in the
-fbnic_sift_macda function, the all-multi wildcard entry being handed out
-to the unicast and multicast lists, and the multicast sync ignoring
-entries waiting for deletion.
+Check the length in the fbnic_tlv_attr_addr_copy function and have it
+return an error. The fbnic_fw_parse_bmc_addrs function stages the
+addresses locally and only copies them out once all of them have parsed,
+so a bad address leaves the previous set in place instead of half of a
+new one.
 
-Patch 4 retries a failed MACDA sync to firmware instead of dropping it.
-
-Patches 5-6 close the races between the service task and ndo_stop and
-the rx mode work: a service task pass that runs after ndo_stop no longer
-restores host filters for a FW crash or a BMC update, and the crash
-restore takes the instance lock.
-
-Patch 8 rebuilds the BMC rules from scratch on every reinit so a changed
-BMC MAC set, or a BMC that left while the interface was down, does not
-leave stale rules behind.
-
-Patch 9 drops the write-only active_slot field from the FW capabilities.
-
-Patch 10 puts the BMC MAC address array under a seqcount so the service
-task does not program a torn set while the mailbox replaces it.
-
-Patch 11 suspends phylink after the datapath is taken down in ndo_stop
-rather than before, so the Tx path drains with the link still up and the
-stop path mirrors the open path.
-
-Patch 12 waits for the outbound read and write flush armed on mailbox
-teardown to complete before returning.
-
-Patch 13 disables PTP completions along with the packet drop during the
-Tx force-flush, so a dropped timestamped frame does not leave its
-completion to be reported to the host without a matching packet.
-
+Fixes: 20d2e88cc746 ("eth: fbnic: Add initial messaging to notify FW of our presence")
+Signed-off-by: Alexander Duyck <alexanderduyck@fb.com>
 ---
+ drivers/net/ethernet/meta/fbnic/fbnic_fw.c  |   16 ++++++++++------
+ drivers/net/ethernet/meta/fbnic/fbnic_tlv.c |   21 +++++++++++++++++----
+ drivers/net/ethernet/meta/fbnic/fbnic_tlv.h |    2 +-
+ 3 files changed, 28 insertions(+), 11 deletions(-)
 
-Alexander Duyck (13):
-      fbnic: Reject a short MAC address attribute from firmware
-      fbnic: Stop sifting into a BMC slot once it has been filled
-      fbnic: Keep the all-multi MACDA entry out of the address lists
-      fbnic: Retry the MACDA sync to firmware if it fails
-      fbnic: Don't touch host filters from a service task pass after ndo_stop
-      fbnic: Take the instance lock to restore filters after a FW crash
-      fbnic: Let the multicast sync reuse an entry waiting for deletion
-      fbnic: Rebuild the BMC rules from scratch on every reinit
-      fbnic: Drop the unused active_slot field from the FW capabilities
-      fbnic: Keep the BMC MAC address set whole across a capabilities update
-      fbnic: Suspend phylink after taking the datapath down in ndo_stop
-      fbnic: Wait for the outbound flush to complete on mailbox teardown
-      fbnic: Disable PTP completions during the Tx force-flush
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+index 49b8813a3564..bcbeb0814b82 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+@@ -596,6 +596,7 @@ static int fbnic_fw_parse_bmc_addrs(u8 bmc_mac_addr[][ETH_ALEN],
+ {
+ 	int attr_len = le16_to_cpu(attr->hdr.len) / sizeof(u32) - 1;
+ 	struct fbnic_tlv_msg *mac_results[8];
++	u8 mac_addr[8][ETH_ALEN] = {};
+ 	int err, i = 0;
+ 
+ 	/* Make sure we have enough room to process all the MAC addresses */
+@@ -609,13 +610,16 @@ static int fbnic_fw_parse_bmc_addrs(u8 bmc_mac_addr[][ETH_ALEN],
+ 	if (err)
+ 		return err;
+ 
+-	/* Copy results into MAC addr array */
+-	for (i = 0; i < len && mac_results[i]; i++)
+-		fbnic_tlv_attr_addr_copy(bmc_mac_addr[i], mac_results[i]);
++	/* Stage the addresses so a bad one leaves the old set untouched.
++	 * Unused entries stay zeroed.
++	 */
++	for (i = 0; i < len && mac_results[i]; i++) {
++		err = fbnic_tlv_attr_addr_copy(mac_addr[i], mac_results[i]);
++		if (err)
++			return err;
++	}
+ 
+-	/* Zero remaining unused addresses */
+-	while (i < len)
+-		eth_zero_addr(bmc_mac_addr[i++]);
++	memcpy(bmc_mac_addr, mac_addr, len * ETH_ALEN);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_tlv.c b/drivers/net/ethernet/meta/fbnic/fbnic_tlv.c
+index 3ef3935c0419..e1ef134ddb94 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_tlv.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_tlv.c
+@@ -724,12 +724,25 @@ struct fbnic_tlv_msg *fbnic_tlv_test_create(struct fbnic_dev *fbd)
+ 	return NULL;
+ }
+ 
+-void fbnic_tlv_attr_addr_copy(u8 *dest, struct fbnic_tlv_msg *src)
++/**
++ * fbnic_tlv_attr_addr_copy - Copy a MAC address out of an attribute
++ * @dest: Buffer of ETH_ALEN bytes to copy the address into
++ * @src: Attribute holding the address
++ *
++ * The validator accepts a binary attribute of any length up to the size in
++ * its index entry, so a short MAC address gets through it. Check the length
++ * here rather than read past the end of the attribute.
++ *
++ * Return: zero on success, or -EINVAL if the attribute is not ETH_ALEN long.
++ **/
++int fbnic_tlv_attr_addr_copy(u8 *dest, struct fbnic_tlv_msg *src)
+ {
+-	u8 *mac_addr;
++	if (le16_to_cpu(src->hdr.len) != sizeof(*src) + ETH_ALEN)
++		return -EINVAL;
++
++	memcpy(dest, fbnic_tlv_attr_get_value_ptr(src), ETH_ALEN);
+ 
+-	mac_addr = fbnic_tlv_attr_get_value_ptr(src);
+-	memcpy(dest, mac_addr, ETH_ALEN);
++	return 0;
+ }
+ 
+ /**
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_tlv.h b/drivers/net/ethernet/meta/fbnic/fbnic_tlv.h
+index 9c4e4759394a..baf8e8b40b90 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_tlv.h
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_tlv.h
+@@ -136,7 +136,7 @@ int fbnic_tlv_attr_put_string(struct fbnic_tlv_msg *msg, u16 attr_id,
+ struct fbnic_tlv_msg *fbnic_tlv_attr_nest_start(struct fbnic_tlv_msg *msg,
+ 						u16 attr_id);
+ void fbnic_tlv_attr_nest_stop(struct fbnic_tlv_msg *msg);
+-void fbnic_tlv_attr_addr_copy(u8 *dest, struct fbnic_tlv_msg *src);
++int fbnic_tlv_attr_addr_copy(u8 *dest, struct fbnic_tlv_msg *src);
+ int fbnic_tlv_attr_parse_array(struct fbnic_tlv_msg *attr, int len,
+ 			       struct fbnic_tlv_msg **results,
+ 			       const struct fbnic_tlv_index *tlv_index,
 
-
- drivers/net/ethernet/meta/fbnic/fbnic_csr.h   |   5 +
- drivers/net/ethernet/meta/fbnic/fbnic_fw.c    |  53 +++--
- drivers/net/ethernet/meta/fbnic/fbnic_fw.h    |   4 +-
- .../net/ethernet/meta/fbnic/fbnic_netdev.c    |   6 +-
- drivers/net/ethernet/meta/fbnic/fbnic_pci.c   |  20 +-
- drivers/net/ethernet/meta/fbnic/fbnic_rpc.c   | 218 +++++++++++-------
- drivers/net/ethernet/meta/fbnic/fbnic_rpc.h   |   6 +-
- drivers/net/ethernet/meta/fbnic/fbnic_tlv.c   |  21 +-
- drivers/net/ethernet/meta/fbnic/fbnic_tlv.h   |   2 +-
- drivers/net/ethernet/meta/fbnic/fbnic_txrx.c  |  10 +-
- 10 files changed, 225 insertions(+), 120 deletions(-)
-
---
 
