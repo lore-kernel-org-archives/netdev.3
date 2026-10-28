@@ -1,49 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=210.118.77.12
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793178007;
-	b=4km9ff3P9xqZVtjael9PpANtcMuv6N/9AyoItknFhZ4ZCkyEtam8wdV52sZS2g24zfjA
-	 WjnHhU15djjuKcBrfOzt+Za94SWLClzZrf/PxeRTO8avlDTdooqYFW61ptYXgiBsXyFA2
-	 cMKpT3O3i2sLJZ4mIPYh19PfPuJsCZH5i811ibiZiJ2NePD18FHgu66jLldPdhJTVSARe
-	 nshmh7B61PNo7AqkLdHpQAhQ2dq6T7te9U4N4zwf6JPv/rxr4dzSfmfnb7Ao51lmhiDXQ
-	 vcBOP6tyGmLZcOLqLTizCHrybNFmPFQSLy/VWJRKYFAMFejN8K07ZRHQZpxVpQrYySg==
+	t=1793178026;
+	b=V0Ipp430XDwNnvWpm6sbpp+nMyCu/a+XLOzSltoJgYmdaDttJ5t4R6puCOXBo4Nbf0XG
+	 dAMpgXrAhII6O3wuiRIFWH9lSIOlCzsDiu9qw1NFEfQ7n8YFO+j1KvbgEAOLQMaa+KgA8
+	 CNhwKeizGivCLUhd+KQxX8qnL1NHiHRFNXMV8V3P0z39mRfB32hCPG9mBvw6o16UDv1nA
+	 jnXHuKITqAP9PM8HLjVYkkG7cD1Mm3qDrobW7VC9dsDA+dElB+sU7Gk9QGVgqW5nPQOCs
+	 t83mSElbbXtVgjeFcP2+GwLK6kp3alW7fXuuUmhYURq19aAyC5hfL6KvTDP/QXi9IXA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793178007;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=+1ahtmf8jmaZDIEYKrZgwgYWi6qTcrWehZnEqe+27/k=;
-	b=XZzRUUjw6xmxURD99zLx4Bt6nBGeoGTtd94qJY8EUpHJKVhiKmbT9NyX/jp5vkge2XYF
-	 jgEwI4a6JzN4bXx0neiHCveacn0U8j/+f0op3Foopwf/X2Lk9/JQrzqb8+gVGTxzQPoz6
-	 xYoSjs0mbWXsyq1VNMGXRp6O98vekYdkM5ULfnHHzUptmejz6lNZd2Cx2bXyw/fGpHxP+
-	 XauLjMG9PFZpILIMdcucjgg0e0NqoXjUJbDTLABh+1CN9ZuOoQozpOH75pKzQEq+ic9Y9
-	 oVHJ/N7JanqSXIkOiPzzyuxWOpcvJ0JJUub3rZXLIvrSEtqEhZiLO1PDIsnBp4sQVqQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793178026;
+	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:
+	 Content-Language:From:In-Reply-To:Content-Transfer-Encoding:
+	 X-CMS-MailID:X-Msg-Generator:Content-Type:X-RootMTR:X-EPHeader:
+	 X-CMS-RootMailID:References;
+	bh=xUBEanmvLsCZxxqUO2LYzZZsXYxTAXtc6G9d2RVDe+U=;
+	b=R7hPUCGTK/iAneVTAf+vAJ5rINYPm1n6bNALzDC+3Oq6U2ZGohSKVF+izvQa8MJtXADg
+	 Es126FkyK6h4PWYKZAJ9xMqxPRONs49wL+UovnzZyIe036U6I3dpPUdBl0jNw46umf0Yp
+	 nFsMcR/GYUcYzBWa1s9xTpwk0J/vi4YYDbHwsjmCXNyiaM2OznUloO7CseSUaw5qM8paN
+	 L2Efkj+f8T1vMSLeqz+GXjo7oFZS85BQ0UzKKK/heVdxgIkxgL96PkcWdPo10woFNyPtb
+	 pcrfykwdz40X0Lcb30RG1jyvDnpLblBNlKrrDqh6UE54b9QbaPtpPSFJPFLyupOpbng==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oymvPZ39;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=samsung.com;
+	spf=pass smtp.mailfrom=samsung.com;
+	arc=none smtp.remote-ip=210.118.77.12
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D48EB606A31A;
-	Wed, 28 Oct 2026 09:00:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oymvPZ39
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D941F01825;
-	Wed, 28 Oct 2026 09:00:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793178006;
-	bh=+1ahtmf8jmaZDIEYKrZgwgYWi6qTcrWehZnEqe+27/k=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=oymvPZ39oxczXOo1blhDgMv33rzBIhAqTfW+g1b1++OsnfCFUTicXJFcIqo0lKQfG
-	 jdpbkoyIrQg4U4p0nGUwY7FHdpqL7nY7nASOi/ZzTfNlQbVzcF2H5060sNpr2o41A3
-	 XQxd6E181aoGn3GaWpMj7NOoaAvbpSXfW+xFsHYFePlVSkofeG04VCsYje9WZrbeAV
-	 8UcEZwVgtvNY/pMPrcd6vcyqIx2gm+/tl72M6exEM7mVt9Ttmh9rD36EK2sYiGsKfe
-	 4DGjp3ffarnm12BUiH8S+yzt4KJff5j4iGGpxhRopvfRE8L+llGOURJdXVsoN5dQUF
-	 rdxZjL/q8xFuQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 443FE3AA9F7B;
-	Wed, 28 Oct 2026 09:00:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F70606A31F
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 09:00:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B8F70606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20261028090018euoutp0272dc604d52ea4b37282b684518f81a55~ipehUF3MG0568105681euoutp02F
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 09:00:18 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20261028090018euoutp0272dc604d52ea4b37282b684518f81a55~ipehUF3MG0568105681euoutp02F
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1793178018;
+	bh=xUBEanmvLsCZxxqUO2LYzZZsXYxTAXtc6G9d2RVDe+U=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=mzpaW7yGaRCdXqKaTA1qvXLqu4Xw8BKIQDLVrdhAhFz8ReuZou/P5pdaoQF3TL9yu
+	 KN3u+EPM+QtO9tMn0AgYP6pv7Rta/Y+nN2UcLy4qa4JZGZktt1loKIEuIitgsDTTBL
+	 TmqyWOMiaTpynzc42sP/gJjwK6XEtQ2I4fovLT68=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20261028090018eucas1p16fdcb990968a1f4c11cbe93025e277cb~ipegsB_XM0067300673eucas1p1M;
+	Wed, 28 Oct 2026 09:00:18 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20261028090017eusmtip2383ec7d9f2b2324bf327f2384e5b0c6c~ipefzOang2938429384eusmtip2E;
+	Wed, 28 Oct 2026 09:00:17 +0000 (GMT)
+Message-ID: <de164c18-a80f-4081-a91c-c5d9e358e1f1@samsung.com>
+Date: Wed, 28 Oct 2026 10:00:16 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,45 +61,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [RFC 04/11] dma-mapping: add dma_alloc_attrs_node() and
+ dma_alloc_coherent_node()
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: robin.murphy@arm.com, tglx@kernel.org, dave.hansen@linux.intel.com,
+	x86@kernel.org, joro@8bytes.org, will@kernel.org, leon@kernel.org,
+	mbloch@nvidia.com, iommu@lists.linux.dev, netdev@vger.kernel.org
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <20261027105253.2c3d58a9@kernel.org>
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] octeontx2-af: fix inner LC ltype match for RSS
- flowkey
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179317800484.591477.12027096474618287869.git-patchwork-notify@kernel.org>
-Date: Wed, 28 Oct 2026 09:00:04 +0000
-References: <20261023071905.2922825-1-kmahammadraf@marvell.com>
-In-Reply-To: <20261023071905.2922825-1-kmahammadraf@marvell.com>
-To: kmahammadraf <kmahammadraf@marvell.com>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- sgoutham@marvell.com, rkannoth@marvell.com, gakula@marvell.com,
- sbhatta@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- kirankumark@marvell.com
+X-CMS-MailID: 20261028090018eucas1p16fdcb990968a1f4c11cbe93025e277cb
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20261027022613eucas1p2ac05630160507ff3a887186416e98c30
+X-EPHeader: CA
+X-CMS-RootMailID: 20261027022613eucas1p2ac05630160507ff3a887186416e98c30
+References: <20261027022528.633359-1-kuba@kernel.org>
+	<CGME20261027022613eucas1p2ac05630160507ff3a887186416e98c30@eucas1p2.samsung.com>
+	<20261027022528.633359-5-kuba@kernel.org>
+	<008d1317-223e-4265-a5a4-4d2a602a2661@samsung.com>
+	<20261027105253.2c3d58a9@kernel.org>
 
-Hello:
+On 27.10.2026 18:52, Jakub Kicinski wrote:
+> On Tue, 27 Oct 2026 16:24:44 +0100 Marek Szyprowski wrote:
+>>> +EXPORT_SYMBOL_GPL(dma_alloc_attrs_node);
+>>> +
+>>> +void *dma_alloc_attrs(struct device *dev, size_t size, dma_addr_t *dma_handle,
+>>> +		gfp_t flag, unsigned long attrs)
+>>> +{
+>>> +	return dma_alloc_attrs_node(dev, size, dma_handle, flag, attrs,
+>>> +				    dev_to_node(dev));
+>>> +}
+>>>  EXPORT_SYMBOL(dma_alloc_attrs);  
+>> Do we really need two exported symbols for dma_alloc_attrs()? I would prefer
+>> to make dma_alloc_attrs() a static inline calling dma_alloc_attrs_node().
+>>
+>> Did I missed something obvious against that?
+> License, I associate DMA API with hch so I thought we'd want to make
+> the new symbol GPL-only? LMK if I'm overthinking this.
 
-This patch was applied to netdev/net.git (main)
-by Dave Miller <davem@davem-thinkpadp1gen8.ibmlond.csb>:
+Right, I missed that GPL suffix in the new API.
 
-On Fri, 23 Oct 2026 07:19:05 +0000 you wrote:
-> From: Kiran Kumar K <kirankumark@marvell.com>
-> 
-> Inner LC ltypes differ from outer LC ltypes, but RSS flowkey programming
-> was using outer LC IP/IP6 ltype masks for inner IP keys.
-> 
-> For inner IPv4/IPv6, match only the base IP ltype and do not include
-> extension-header matches. Keep existing outer LC masks unchanged.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net] octeontx2-af: fix inner LC ltype match for RSS flowkey
-    https://git.kernel.org/netdev/net/c/22dd6bb2bafd
-
-You are awesome, thank you!
+Best regards
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
