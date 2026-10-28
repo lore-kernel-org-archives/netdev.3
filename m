@@ -1,79 +1,80 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
 	t=1793188092;
-	b=UCh7K/mGbg4OzLeg628Z9Mri4gkVc5HqEbdIcKM3WOoR8ko/9aaWPP03gDgqnDvX44OR
-	 5uT8aPJvmudfBteQ4AN10O6wvpOETY2lti6O+EWNB7dnkoxB/YMzueMqtb4wdWlrUZcPW
-	 JBC9H6TiohUwUkxiUTMy/GBLUv3tYAeMwPhUu2k2a9lRi4YhIo+l/vTAwBQZ5JsfTgtAt
-	 O0aX0aXxu1FGKtu2BBTJZfEpRKHFiWKqwNg3RxNjvdhpgPd9tdeD/dTSi6WKb5HGF0hXq
-	 ByOjqA8HgWZmD7zCN76nBnFzEEwjDkcHGjftANnmZOVrQ7AzjM9j2ACrkjB+DRiJ98A==
+	b=gS9K2OeE6DunnpBB7bAtOYmJ+mf6qjhy8QjV2TSzy9uEVPXEsQL68kMYn7zVT0i/5AKf
+	 /ETSfFMJE86WwlYRhh0OYeFRGsze4q4j17bT8I+axS5HJAsneSSQ/0jopJ1f9tczNlTtb
+	 RY0VkXaP2/5XplFQ/wnkMBk68Sn5TDWkkwODVmZ3RI7rs/i7jc5H3DQUbSlg6omOR/3Xq
+	 8BsbSGehHLpj+jLW5+msa97l3FYfG4JfiM/HayKTkxQA6wcVeJrTLDC27/D9pbmJ6b1y7
+	 98rySEIVvMZG0QzFZDEhDFxM3b6ytUMbFJ9ji5jq/VuxLFl0187iPmWdG0dsnrwjfHQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793188092;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=XhC2imG05+2RFrqn7oAIJ8gmety7mulQdSdn3ejKh9I=;
-	b=1GsCA3l2z22JNVTtUjEVwM55+DDcjtaFgR3kt6dBBC0VM/Rh2cYxupb54Tm+TVciPcEW
-	 +LrGMKF13Ibk8hy9Smf+Lidwk0xu9n0JLQZMMn2sfc/7e4UA9UAppjC49jtDarsbjgh9K
-	 xr1WSw9OHEdwDQ8EqFKIWfEwnm3fPAtQpjDEMk3x6fIrRlIKx4kvnK14VmGFGaJFfQJFL
-	 /CyASXS/GSfzLi8W25RSPcZdCuz4ckr06mmNYrdYBwOSC2LIturqPhPoCKL205THMrplf
-	 whG89TsjaMrX3XQjPobGgT1BRN6a2USTix0reM08H/X+Z99V3VNU91TGDQagCWT1CZQ==
+	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Endpoint-Received:X-Original-From:Reply-To;
+	bh=uat8pe08mkQcc9xp6GiqZoeJlBhecCIrIQkqGR0KJo4=;
+	b=PE3PNbe3CwXMyl2NMPMiApImpWJVl72xQgNjJ+TkvmODBS+nrEO+BRMWgnB2insxm6F8
+	 XXw7a+AjueqrzFDNO6ds0F8iBB9ztLK0aDLoOaXY7vgbizBAdsKGGQ1W9E2H5/VFUnYmV
+	 Is22BXY/9wdKhUGS2jOxVsflaNjlNuwmEfzx92J9iapmPllDU6Gg4fTrJdEAwkrUnCGMQ
+	 LYCKSMv9VMdkVIB69K6szMuFk+X6zyCYH2R7v7SI8T4NihhNachXWkkYWP8PpDxLqsjR8
+	 qT61Cda2/FOHv4EcYOdsH3Lg+CbWcd3JBKfMVqFH0QUx5U6NmoQc9YYNyJvjfhN7LtQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TKwyW3Y8;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JBtoulQJ;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B92606A321;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BEFE606A326;
 	Wed, 28 Oct 2026 11:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TKwyW3Y8
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JBtoulQJ
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793188091;
-	b=SRYxB0vOjFmzgz39kk2T5pw99sRt9jg58YR88Tw8BT2+dEebx+YJhuciYvIUcUCkaj86
-	 bADHdqOXGYe1eGBMlMnCAq4+ii4a4UNuPIpzafHqg8S5zaVaY4g4rbk4lNygsRk/JHkt8
-	 MyU7GCWqMrAcaWDYytYtaxtZ6y8xjU3i5323X+GSBBdlUk2eQXgQK8/AUf3DJQm0afMP3
-	 N/cR1jo4V91nWPZYah1EmZJQTiWtEGNZcgcR3g5txlH8ur1Wq3GX9W6uJhwNHU0/7acvo
-	 bRc+j4Q4WvbgMuUGX/y5gvNMQD64Wrz683gQLYPN74mTWEbL+jkOsPl4/tudoymd9mw==
+	t=1793188092;
+	b=0p3xMFlbmmkCs7LcFTBc0kt+V5XaaPmb7+Hix+lZaBMJmDAeloVNu0AKnflAOgRtkMGa
+	 am0lMk12AkgP2qOYyHSNAjq1dYHHxZebg4yPoEx78CHbT+q2EVZYmdFPTVnnMMTPXkqm6
+	 6r3oO3AhcGCpw4mg+nATxfmAKty2NVih0dxZXZKEHQ7f65sb2rYlOkAcT/Cq/9bkexyqb
+	 3+vAVa3dnzXMAP4KAa81mT9itKwz7RZGJeGJ7zoquXPWtiGrk/F2BEznYS4GOfzcJ9KVo
+	 8aDDGyDXlomVf2+MViWBYSdXGUbttXvCyLzmUsWjPQB4ayOnqAqeoDwOVypuX8RRhPQ==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793188091;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=XhC2imG05+2RFrqn7oAIJ8gmety7mulQdSdn3ejKh9I=;
-	b=cn11PiEc9KcaCG55RvXnhdJm1g3W8TYELDw+GZciTxV3JiEMlwrAijcv/opymHboK1S7
-	 Y370ig/ZUO68gvjgn3d6i5VxP8urQK+mQPGJ+iKZQ8S3Zr6B9ns/qqO+URHp8cqMtp8QP
-	 RbT6mdx2J9WXnzhP6XHdNTJ5mG4rpvLCC50TGqlimuK0cwu8tC2TDXG9ZE1CsZhJ3ewL5
-	 JzGgoUmY01GELrvXSI7B+Ib6Xb3PjYT6zOXUxKOgfEQajO/BJiOGc4b+7CJAu50Pph0WO
-	 /KtqjBVjXD2B66/6NSBObDRoFgeeEeos/ilrYZmBfMcveaGSsagt80+TV1w6/NdDvKw==
+	c=relaxed/relaxed; t=1793188092;
+	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=uat8pe08mkQcc9xp6GiqZoeJlBhecCIrIQkqGR0KJo4=;
+	b=yhg/ZGzfC5wc71QtTUuSeBLkTS/OHClj7uHO/wOw62r0QnKwt9loRB7U8zNJ7erlvjQm
+	 2iyTxSqyuUUCE9JmgPG/TRyHMYOYZQiS24SgP46RV7GVTagBp8zlsDqTxs5G78wg9ReDa
+	 oCpX2/l/975zSAZQFXXnK3X7mZeth92OSrdxJii0+6sVxs7LRVj5EVv5NQylMvgqDxCvS
+	 qI2drWPDHvyKQNMoQ3RGM+oX4qY5hLLyIbaBh5lDTaaTBznXbfX48DM2O8YbMusQDiNsG
+	 HMqeyjk4NY3vH2ZbrCCeYMXKi0m/Y1Q/FS5QxIvr8AhuvcblZx1F+4ssVqdsTKkWE2w==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id E049F1F031E4;
+	by smtp.kernel.org (Postfix) with ESMTPS id E090E1F031E7;
 	Wed, 28 Oct 2026 11:48:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793188091;
-	bh=XhC2imG05+2RFrqn7oAIJ8gmety7mulQdSdn3ejKh9I=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=TKwyW3Y8w8pCwTlBKKR9kWwjSQXsUjFBjeyKGEi7i+flP9peILQE+ugqGDaXzUj0H
-	 MShANFhLjeYm8Ymn0vALrA/M3p8dq7UPrhqJdXNUoXr5oHcY6QunFTps7IcVGAiQyu
-	 lV4a/4eMrHUfwA0JvRjGEOhdWP2S0Id+Vmsp/Zrz+u+4uWAIHtffS9tc8XIxthA7G7
-	 rAxXtKbqCikOAcGD+LSgg9bgcBz82l4QIPTaq75j7pT6NNiOjaAJYZDOOpJ+oM7Fs5
-	 QKOKB9gsf15U2AN47VcU4nVXSl8n/zb+so/+SSzgWpzBn76oMyM/Q3G+fsPdeIiiBu
-	 cGsERz/oXodbA==
+	s=k20260515; t=1793188092;
+	bh=uat8pe08mkQcc9xp6GiqZoeJlBhecCIrIQkqGR0KJo4=;
+	h=From:Subject:Date:To:Cc:Reply-To;
+	b=JBtoulQJgr9VNnQW6lqXiu6RYd9Z+XUR7cZYcTGib5fJj5nSoEIjmG6PLRJCWLjgh
+	 3XIkc199lImRPmj/JfoVjzD686SHkKFgsWDAmwAitvkA/3PCuhjomwu3DLdw1UKEMD
+	 d6bmIlAK/XBolmRJPulYjcfQMgnZATsDgjk6SzbnFF+6CWTYhUBO/x+waQ1T1W9vLV
+	 oAjoJuStzKDIvn+jLjHjVtH1frjKvAcxSwu0GJNLWiWMzk9RwulOARy996yr71jgck
+	 z/AsLescOFf67F8toAKzq3UUiFWpwBiaUPelACjdQTiUf0YmyPha6K5A40pUrqvqRF
+	 Fd0cT2RxU85fg==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 4A0D745437;
+	by lkml.kernel.org (Postfix) with ESMTP id 3C9654544A;
 	Wed, 28 Oct 2026 11:48:10 +0000 (UTC)
 From: Ramses de Norre via B4 Relay <devnull+ramses.well-founded.dev@kernel.org>
-Date: Wed, 28 Oct 2026 12:48:07 +0100
-Subject: [PATCH net v4 1/2] bonding: fix initial last_rx vs ARP-monitor
- slack window
+Subject: [PATCH net v4 0/2] bonding: fix the initial last_rx seed for the
+ ARP monitor
+Date: Wed, 28 Oct 2026 12:48:06 +0100
+Message-Id: <20261028-bonding-last-rx-v4-0-4d8e4cd47467@well-founded.dev>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,9 +85,13 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261028-bonding-last-rx-v4-1-4d8e4cd47467@well-founded.dev>
-References: <20261028-bonding-last-rx-v4-0-4d8e4cd47467@well-founded.dev>
-In-Reply-To: <20261028-bonding-last-rx-v4-0-4d8e4cd47467@well-founded.dev>
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XOwQ6CMAwG4FcxOzuzdSjDk+9hPABrYYYMs8HEG
+ N7diYnxgMc2f7+/TxbQWwzsuHkyj9EG27s0ZNsNq9vSNcitSTMDAQehZc6r3hnrGt6VYeB+4kI
+ JRaXINBWGpaubR7LTIp6Zw4FdPsswVlesh7f1jrU2DL1/LL1RLuG/FVFyyQtTHignQ1rC6Y5dx
+ 6kfnUGzMxiXkgg/DKwwkJi8VlopDVCD+sOoLyPFGqMSs88KkZOkSmRr38zz/AJmn4Z3WgEAAA=
+ =
+X-Change-ID: 20260817-bonding-last-rx-0303fa048f9d
 To: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
  Paolo Abeni <pabeni@redhat.com>, Jiri Bohac <jbohac@suse.cz>, 
@@ -96,109 +101,81 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  Hangbin Liu <hangbin.liu@linux.dev>, 
  Ramses de Norre <ramses@well-founded.dev>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793188089; l=3973;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793188089; l=2944;
  i=ramses@well-founded.dev; s=20260817; h=from:subject:message-id;
- bh=0sZ4MeprU+UjQ+ei1h7UCE9FsfSS+q+//+ci1EBUfME=;
- b=8F2HTzxYqJFk3Ptbk2N9b9sC/FBn7L4AXqh8iCDVeoENvkJ+dgtW8pOMShlqvSMzszFjUYJXl
- 8do8yaV4Nn5ABEkgAFPwR37QtSApv9pqhSvV4H2mPClexXSuZFyM6pH
+ bh=xLrmUFjRPWtdn4U5H1DplHJw2hv8F/w6hsEGx/wnJJM=;
+ b=maMuKqZ2KVJYu9NHY79eSLYdrP1uPboyHXpYrRa8EZ9CsrJCfNbx9lvi6hBvD6aDlGRZW100f
+ aM2RK/fwgSPAjJ7si5phVJWUHKh+w017k8QUM+Utkm0hQHR6XwCc361
 X-Developer-Key: i=ramses@well-founded.dev; a=ed25519;
  pk=1vBXHBVeJBMaC+2Zuonl0QQhEgGIQHERyF5RZNnrCmw=
 X-Endpoint-Received: by B4 Relay for ramses@well-founded.dev/20260817 with
  auth_id=957
 X-Original-From: Ramses de Norre <ramses@well-founded.dev>
 Reply-To: ramses@well-founded.dev
-Content-Transfer-Encoding: 7bit
 
-From: Ramses de Norre <ramses@well-founded.dev>
+bond_enslave() seeds a new slave's last_rx before it has received
+anything. The ARP monitor checks that seed with an up test for a slave
+that starts DOWN, and with a down test for a slave that starts UP. The
+seed is wrong for both.
 
-bond_enslave() seeds a new slave's last_rx so that the ARP monitor does
-not report it UP before a real ARP reply arrives, see commit
-f31c7937c254 ("bonding: start slaves with link down for ARP monitor").
+Patch 1 fixes a slave that starts DOWN. Since the up test gained
+arp_interval/2 of slack, the seed falls inside the up window, so the
+slave is reported UP for half an interval without having received
+anything.
 
-The seed is one arp_interval (plus a tick) in the past. That was old
-enough when the up test was "jiffies <= last_rx + arp_interval". Commit
-da210f559019 ("bonding: add some slack to arp monitoring time limits")
-added arp_interval/2 of slack to that test without moving the seed, so
-the seed now falls inside the up window. For the first half interval
-after enslavement, bond_ab_arp_inspect() proposes a slave that starts
-DOWN as UP although it has received nothing. The up test always uses a
-single interval, so this does not depend on primary_reselect or
-arp_missed_max.
+Patch 2 fixes a slave that starts UP. The seed brings its down deadline
+forward by one interval compared to what arp_missed_max implies. In
+load-balance mode, which has no grace period after enslavement, a
+healthy slave can flap DOWN with arp_missed_max=1.
 
-If that slave is the configured primary, force_primary makes it the
-active slave. ARP validation fails it shortly after (on SFP+ ports the
-PHY is often still negotiating) and the bond falls back to the backup.
-With primary_reselect=always the bond recovers once the port really
-comes up, but drops traffic until then. With primary_reselect=failure,
-force_primary is spent and the bond stays on the backup.
+Jay, on your v3 question: the up test always uses a single interval, so
+the fix for a slave that starts DOWN holds for any arp_missed_max. But
+v3 also changed the seed of a slave that starts UP, which made the
+load-balance flap happen with the default arp_missed_max=2 too. v4 only
+uses the older seed for a slave that starts DOWN, and patch 2 gives a
+slave that starts UP a full arp_missed_max window.
 
-Reproducer:
-
-  ip link add bond0 type bond mode active-backup arp_interval 1000 \
-      arp_validate all arp_ip_target 192.0.2.1 \
-      primary eth0 primary_reselect failure
-  # eth0: SFP+ (slow link-up), eth1: RJ45 (fast link-up)
-  ip link set eth0 master bond0
-  ip link set eth1 master bond0
-  ip link set bond0 up
-  # bond0 lands on eth0 via force_primary, ARP-fails it before the
-  # SFP+ has carrier, falls to eth1, and stays there.
-
-Move the seed below the initial link state and seed a slave that starts
-DOWN two intervals in the past, outside the up window. A slave that
-starts UP keeps its current seed: the up test does not apply to it, and
-an older seed would only bring its down deadline forward by one
-interval. The initial link state is unchanged.
-
-Fixes: da210f559019 ("bonding: add some slack to arp monitoring time limits")
 Signed-off-by: Ramses de Norre <ramses@well-founded.dev>
 ---
- drivers/net/bonding/bond_main.c | 23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+Changes in v4:
+- Patch 1: only use the older seed for a slave that starts DOWN. v3
+  also applied it to a slave that starts UP, which brought its down
+  deadline forward by one interval (Jay).
+- New patch 2: seed a slave that starts UP with last_link_up, giving it
+  a full arp_missed_max window. Fixes an existing flap in load-balance
+  mode with arp_missed_max=1.
+- Drop Hangbin's Reviewed-by, patch 1 changed.
+- Link to v3: https://patch.msgid.link/20261027-bonding-last-rx-v3-1-54907f1fb042@well-founded.dev
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 7019e5d8fdc8e..bfa4cb97e647c 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2122,13 +2122,6 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
- 	if (res && bond_needs_speed_duplex(bond))
- 		new_slave->link = BOND_LINK_DOWN;
- 
--	new_slave->last_rx = jiffies -
--		(msecs_to_jiffies(bond->params.arp_interval) + 1);
--	for (i = 0; i < BOND_MAX_ARP_TARGETS; i++)
--		new_slave->target_last_arp_rx[i] = new_slave->last_rx;
--
--	new_slave->last_tx = new_slave->last_rx;
--
- 	/* check for initial state */
- 	new_slave->link = BOND_LINK_NOCHANGE;
- 	if (bond->params.miimon) {
-@@ -2159,6 +2152,22 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
- 
- 	if (new_slave->link != BOND_LINK_DOWN)
- 		new_slave->last_link_up = jiffies;
-+
-+	/* The ARP monitor's up test includes arp_interval/2 of slack, see
-+	 * bond_time_in_interval(). Seed a slave that starts DOWN outside
-+	 * that window, so it stays DOWN until a real reply arrives.
-+	 */
-+	if (new_slave->link == BOND_LINK_DOWN)
-+		new_slave->last_rx = jiffies -
-+			(2 * msecs_to_jiffies(bond->params.arp_interval) + 1);
-+	else
-+		new_slave->last_rx = jiffies -
-+			(msecs_to_jiffies(bond->params.arp_interval) + 1);
-+	for (i = 0; i < BOND_MAX_ARP_TARGETS; i++)
-+		new_slave->target_last_arp_rx[i] = new_slave->last_rx;
-+
-+	new_slave->last_tx = new_slave->last_rx;
-+
- 	slave_dbg(bond_dev, slave_dev, "Initial state of slave is BOND_LINK_%s\n",
- 		  new_slave->link == BOND_LINK_DOWN ? "DOWN" :
- 		  (new_slave->link == BOND_LINK_UP ? "UP" : "BACK"));
+Changes in v3:
+- No code changes. Rebase on current net.
+- Reword the commit message along the lines of the v2 discussion: lead
+  with what the last_rx seed is for, state that the false UP happens
+  independent of primary_reselect, and that the initial link state is
+  unchanged.
+- Pick up Reviewed-by from Hangbin.
+- Cc Nikolay. Hangbin asked for a second review, Jay or Nikolay, would
+  you have a look?
+- Link to v2: https://patch.msgid.link/20260827-bonding-last-rx-v2-1-7c3833822c23@well-founded.dev
 
--- 
-2.56.0
+Changes in v2:
+- No code changes. Resend with my personal name in the From and
+  Signed-off-by lines instead of my handle, as requested for the DCO.
+- Link to v1: https://patch.msgid.link/20260817-bonding-last-rx-v1-1-9da6f7fdf812@well-founded.dev
+
+---
+Ramses de Norre (2):
+      bonding: fix initial last_rx vs ARP-monitor slack window
+      bonding: give a slave that starts UP a full arp_missed_max window
+
+ drivers/net/bonding/bond_main.c | 26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
+---
+base-commit: f75062536e2d45ee182828f0e47e0124be2fdc8d
+change-id: 20260817-bonding-last-rx-0303fa048f9d
+
+Best regards,
+--  
+Ramses de Norre <ramses@well-founded.dev>
 
 
