@@ -1,59 +1,64 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793213753;
-	b=jQQ2Aqya19jO8yKV15PjVhRtN15AtOksNf+vWKKRl4HTcISgUwqRizE/ahC+FUln+29B
-	 lOuaNqLV98j4i2kP2yLVslaKZZ46OjxZ7+pvqFkELTzj7qQH5oVoFBBedGMbJrhLRdaw0
-	 xg9Mr1Uts2Ic95mIF3zlqUQxj4EVVla1WpWQyEyfisC0UimXI3NT5lpT401LquzmPH74Z
-	 R+lcNDVKEXbFasneOJVOBnRBaL0DMLUEJtYRxA0dnG7wRiYJZkn7Or0zAgXeYRG9kxter
-	 Tjtkr1/gdZkPBQqHV1oFFECbSXd40m2Ro6r1IGaCtWpOLHqbTkEQ+WbC6BK4p5F9pmw==
+	t=1793213781;
+	b=CBM9ZRM0mhzCDFxhL03L0jkSvQTS4t2y9ntFcH/w6So08pB9UhDjhYyA/NZ5rvzEC9Pd
+	 2OKsmy9sHLd1OJSlC3JRT24nNNQFXVLFq/YTFVC66xAUa8V+e3WFzPZmmumsG2Z/kBNW1
+	 KemrGDt3Fb32RWpozni0KunKrjRp88M49c6jVG3efxeD6ZzB6x9Eonq3IWdcvLH6qeDKy
+	 E3Zf0bRJWSa75ZmQ2ZaCEpB9KbhoCyzGtvOKSO5DcE/wHmC+qQNLmWinrB2bR0ouKN9fl
+	 VNoNm3FwTeJW8UraYrPyNQq5mcMUChUMERepIRxejzbXE/FThTicSloOmoDGoCbv7+g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793213753;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=0oDMEFhu/JmPLudE7M83PqlDBn/SvgKbYi6IfCMq3dI=;
-	b=B7tmahi7ZJ6OIyKqO899Ch/GnT61PKxcwIZPHnQ8ZIix7RCHP/DVG5nEacKFqOwFAsPs
-	 CRwuJ153lM1J88Nz6qWrDh0zPUAIrAIZkp1bQmpZlwwCRZ/zHMmd2IihG3MH8Q9jM7At2
-	 4YSsaXGtO4AvN+LD8LHLGN1KJEKbAcJAAUndv82Pn64RAUUqFwPukWWefNDHAgAMsWJLk
-	 4HcvJg1aMWiUojzZ6PFzTaZjfgO6YWT7ox7ugEMU7NURymU9CoV5BInlkG9MjwQcInJN2
-	 JRzv6pC1IuIDa4/OBikcinYCCDJXgWqALoQ4ljydoDRCNvdS+fz4wSEQTzoCB4sEngw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793213781;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:User-Agent:X-stable:X-Patchwork-Hint:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=sN/1VqpmIRV+k+o+zTvuS4B5DUr3sOBaiE55xVc4t/M=;
+	b=LKOwGtBT0i1m2lBD0Z282WGjTzVL5vqUlJ3/TBjJ7S0LwSznZFMiZxMIkYS7TrlZkrD4
+	 AIjUi8HoiL0vcKiGSNppD41oOy/9KBuYWWZ95UzOtuixYXxFxSos/T6QTDzyHDvZrjfj+
+	 UvGknhy2opIMbTUBgJTYSIOLCDS8xUbg+IhxczYJl/sMNg2qieHLxOdMwUsTJM3fiaP3G
+	 G7MHRBm/ZVNMxC50Ff0EGTY4xawXB+5aGUR0mScPc5yJGlmlBxqpQhTdxTTkarulhkGf3
+	 C+JpFEmoh7Uudr42DD/+inaowl9mJCu5w6SHVXgrupy1yURCDaZmZIcQ2Tk9lcvdwjg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G8YVW2ek;
+	dkim=pass header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=ZdanG+Ol;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B4B606A31A;
-	Wed, 28 Oct 2026 18:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE88606A327;
+	Wed, 28 Oct 2026 18:56:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G8YVW2ek
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12CB11F01825;
-	Wed, 28 Oct 2026 18:55:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793213752;
-	bh=0oDMEFhu/JmPLudE7M83PqlDBn/SvgKbYi6IfCMq3dI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=G8YVW2ek8N6dHWAFzKmkiVUC7dFQkO050z8QF6JgC2UEEw49pP/G2Pvh6dUDPzU3j
-	 hpA86kZagPl/Ugp6K8892s2n1u3Bz3UExzClmLinG0SO9JVT+aeZKHypJMETvhB1SY
-	 zAImpcxt7mCFZwMiL5/eHt817cPp2auWoqMGyYr0+nwQLSFgRaQHf/b7UtPOceKGDW
-	 F9wFdNdow5MxFUIDS7b+FDAccH96u3vSSciDRCt56yNUV9+UnSV1CAEEIlwYZyffKz
-	 1gWFqrG3wleW5Bud0QhkbH9ai+BuXLCK8aP0rOx/CLnl8x8WCxXhRwRc2trbqJjvWv
-	 EGlgDVgmBl0ug==
-Subject:
- Re: [PATCH net] ipv6: fix dead half of the MTU guard in __ip6_append_data()
-From: netdev-bot+sashiko@kernel.org
-To: treebacker@foxmail.com
-Cc: greg@kroah.com, netdev@vger.kernel.org, davem@davemloft.net,
- yoshfuji@linux-ipv6.org, dsahern@kernel.org, stable@vger.kernel.org,
- kuba@kernel.org
-Date: Wed, 28 Oct 2026 18:55:51 +0000
-Message-ID: <179321375161.3134.12690504630171635307@kernel.org>
-In-Reply-To: <tencent_E14C00D5FE957DD7E12FFDC2E75A4FA9EE08@qq.com>
-References: <tencent_E14C00D5FE957DD7E12FFDC2E75A4FA9EE08@qq.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=ZdanG+Ol
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 017991F01825;
+	Wed, 28 Oct 2026 18:56:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1793213781;
+	bh=sN/1VqpmIRV+k+o+zTvuS4B5DUr3sOBaiE55xVc4t/M=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ZdanG+Ol9WcSIJg0ZF10x+KKRtZzYPjL7MZeqqd+bAC/eQIl2edn7fUt2DB+9HQZ1
+	 aduV1zuxj52+kMT9VKOThX0QPkmKQMVKUdWIDsXBAkToPR5RwJTWoxs62OomMnK+E7
+	 25mb6Sy1gST36pKYw+o8Y3pZAqr9NYofFgXpw9eI=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-afs@lists.infradead.org,
+	netdev@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 0583/1887] rxrpc: Fix delayed ACKs to not set the reference serial number
+Date: Wed, 28 Oct 2026 17:44:39 +0100
+Message-ID: <20261028170512.689425732@linuxfoundation.org>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261028170459.200466217@linuxfoundation.org>
+References: <20261028170459.200466217@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,160 +68,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 1
+------------------
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+From: David Howells <dhowells@redhat.com>
 
-- [High] The fix is incomplete.
-- [Medium] The commit message calls the new expression `mtu -
-  fragheaderlen <= sizeof(struct frag_hdr)` "a direct check of the…
-- [Low] The From: and Signed-off-by: names do not match.
+[ Upstream commit e7870cf13d20f56bfc19f9c3e89707c69cf104ef ]
 
---
+Fix the construction of delayed ACKs to not set the reference serial number
+as they can't be used as an RTT reference.
 
-ipv6: fix dead half of the MTU guard in __ip6_append_data()
+Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: "David S. Miller" <davem@davemloft.net>
+cc: Eric Dumazet <edumazet@google.com>
+cc: Jakub Kicinski <kuba@kernel.org>
+cc: Paolo Abeni <pabeni@redhat.com>
+cc: linux-afs@lists.infradead.org
+cc: netdev@vger.kernel.org
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/rxrpc/output.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This patch replaces the always-false second half of the MTU guard in
-__ip6_append_data() with a direct comparison of mtu - fragheaderlen
-against sizeof(struct frag_hdr). The goal is to reject MTUs that make
-maxfraglen underflow below fragheaderlen, which defeats the datalen clamp
-and leads to skb_over_panic() from skb_put().
-
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: bo cao <treebacker@foxmail.com>
-
-[Severity: Low]
-This isn't a bug, but the From: name and the Signed-off-by: name don't
-match. The author is "平之 <treebacker@foxmail.com>" and the sign-off is
-"bo cao <treebacker@foxmail.com>". checkpatch.pl reports this as a
-FROM_SIGN_OFF_MISMATCH warning.
-
-Could a resend use the same name in both places?
-
-> diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-> index 25fe0ba98b1a6..7d4d4d45e2074 100644
-> --- a/net/ipv6/ip6_output.c
-> +++ b/net/ipv6/ip6_output.c
-> @@ -1500,7 +1500,7 @@ static int __ip6_append_data(struct sock *sk,
->  		     rt->rt6i_nfheader_len;
->  
->  	if (mtu <= fragheaderlen ||
-> -	    ((mtu - fragheaderlen) & ~7) + fragheaderlen <= sizeof(struct frag_hdr))
-> +	    mtu - fragheaderlen <= sizeof(struct frag_hdr))
->  		goto emsgsize;
-
-[Severity: High]
-Is this guard enough to close the skb_over_panic() when the route is an
-xfrm transport mode bundle?
-
-This check only sees orig_mtu, which comes from cork->fragsize. When
-DST_XFRM_TUNNEL is not set, ip6_setup_cork() does not subtract
-dst.header_len from fragsize. The first fragment then lowers mtu again
-in ip6_append_data_mtu():
-
-net/ipv6/ip6_output.c:ip6_append_data_mtu() {
-	if (!(rt->dst.flags & DST_XFRM_TUNNEL)) {
-		if (!skb) {
-			/* first fragment, reserve header_len */
-			*mtu = orig_mtu - rt->dst.header_len;
-    ...
-		*maxfraglen = ((*mtu - fragheaderlen) & ~7)
-			      + fragheaderlen - sizeof(struct frag_hdr);
-	}
-}
-
-Nothing checks a lower bound after this recompute.
-
-For ESP, xfrm_bundle_create() adds the header length to dst.header_len.
-It only adds it to nfheader_len for XFRM_TYPE_NON_FRAGMENT types:
-
-	header_len += xfrm[i]->props.header_len;
-	if (xfrm[i]->type->flags & XFRM_TYPE_NON_FRAGMENT)
-		nfheader_len += xfrm[i]->props.header_len;
-
-Also, xfrm_lookup_with_ifid() sets DST_XFRM_TUNNEL only for
-XFRM_MODE_TUNNEL and XFRM_MODE_IPTFS. So for transport mode ESP, the ESP
-header is counted in dst.header_len but not in fragheaderlen.
-
-When orig_mtu - fragheaderlen is in [9, header_len + 7], the new check
-passes. After ip6_append_data_mtu(), mtu - fragheaderlen is then 7 or
-less, or it wraps, and maxfraglen falls below fragheaderlen again.
-
-For example, take fragheaderlen = 1280 (a 1240 byte HOPOPTS cmsg),
-IPV6_MTU = 1289, and an ESP transport SA using AES-CBC (header_len = 24,
-trailer_len = 29):
-
-  orig_mtu - fragheaderlen = 9, so the new guard passes
-  mtu = 1289 - 24 = 1265
-  maxfraglen = ((1265 - 1280) & ~7) + 1280 - 8 = 1256
-
-The clamp in __ip6_append_data() then compares against a wrapped
-bound:
-
-	if (datalen > (cork->length <= mtu ? mtu : maxfraglen) - fragheaderlen)
-		datalen = maxfraglen - fragheaderlen - rt->dst.trailer_len;
-
-It never fires, so datalen stays equal to length. With MSG_MORE on a
-device without NETIF_F_SG, alloclen = mtu. The later
-skb_put(skb, fraglen - pagedlen) then goes past the tailroom and hits
-skb_over_panic().
-
-Every capability involved (CAP_NET_RAW for the raw socket and HOPOPTS,
-CAP_NET_ADMIN for the SA) is namespace scoped.
-
-Would it be better to check the effective first fragment mtu and
-maxfraglen after the header_len reduction? One option is to reject
-maxfraglen <= fragheaderlen after each recompute in
-ip6_append_data_mtu(). Another is to include dst.header_len in this
-guard when DST_XFRM_TUNNEL is clear.
-
->  
->  	maxfraglen = ((mtu - fragheaderlen) & ~7) + fragheaderlen -
-
-[Severity: Medium]
-The commit message calls the new expression "a direct check of the
-payload space available in a fragment, which rejects mtu - fragheaderlen
-in [1,8]". Does that account for the & ~7 rounding used here for
-maxfraglen?
-
-For mtu - fragheaderlen in [9,15], the new check passes, but this
-computation:
-
-	maxfraglen = ((mtu - fragheaderlen) & ~7) + fragheaderlen -
-		     sizeof(struct frag_hdr);
-
-gives maxfraglen == fragheaderlen. That leaves zero payload space in
-each non-final fragment.
-
-When the message needs fragmentation, the datalen clamp in
-__ip6_append_data() sets datalen to 0, or 0 - trailer_len with IPsec.
-For a raw socket, transhdrlen is 0, copy is 0, and this line never
-shrinks length:
-
-	length -= copy + transhdrlen;
-
-The loop keeps allocating header-only skbs until
-sk_wmem_alloc + wmem_alloc_delta exceeds 2 * sk_sndbuf. sendmsg() then
-fails with -ENOBUFS instead of -EMSGSIZE. For UDP, transhdrlen is 8,
-copy becomes -8, and the call returns -EINVAL instead.
-
-ip6_fragment() uses a stricter bound:
-
-	if (mtu < hlen + sizeof(struct frag_hdr) + 8)
-		goto fail_toobig;
-
-Would checking ((mtu - fragheaderlen) & ~7) <= sizeof(struct frag_hdr),
-or equivalently maxfraglen <= fragheaderlen, match both the commit
-message and ip6_fragment() by rejecting [1,15]?
-
+diff --git a/net/rxrpc/output.c b/net/rxrpc/output.c
+index 08c117bc083ec..3d9032fae9d91 100644
+--- a/net/rxrpc/output.c
++++ b/net/rxrpc/output.c
+@@ -87,7 +87,7 @@ static size_t rxrpc_fill_out_ack(struct rxrpc_connection *conn,
+ 		return 0;
+ 
+ 	/* Barrier against rxrpc_input_data(). */
+-	serial = call->ackr_serial;
++	serial = reason == RXRPC_ACK_DELAY ? 0 : call->ackr_serial;
+ 	hard_ack = READ_ONCE(call->rx_hard_ack);
+ 	top = smp_load_acquire(&call->rx_top);
+ 	*_hard_ack = hard_ack;
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/tencent_E14C00D5FE957DD7E12FFDC2E75A4FA9EE08%40qq.com
+2.53.0
+
+
+
