@@ -1,93 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.177
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793223437;
-	b=vcsl8x+gPEwJkywWYfBtZ3rc3LIgcxDueDBcLoe9Pt0EtFRQ6JuWQBo/ZWkxxqlG4pxT
-	 0VM6LwYI0A5+vz3tNwSgckOGD2w77dLMNKt9p7TLOG9zUHu2AcLVVVNiuvMTAR/kwBnz4
-	 lnVcdJlJkBT/5auyCD0oFyJlNlQlpITKd1XvVDdNoYnmKq5JXiTWaa7p9cSurGY0O8wIA
-	 DHgtgbUHLv+vjNIXhE86jn/5UqSez6yG866Ng55nmFpciSiNRN/Nm7vl7rtDdsX5hTeEz
-	 sOyaV8sCiEvGlx29BE8b3afUOZwvdir0nR95Ko6MCvWp17/0+uv/PeSjckA6b7wW/AA==
+	t=1793223444;
+	b=gdPyad4sVYBlAvbboQr0b9bahVidsYFf4k3aEb44Bx7WzJGsemRm1Khnc3AvW+fYpbPe
+	 H1a9VIIz04bHblcyn/4toB65IZNS7aAsuLQNLnuwbCOKf8vOSqH0xQZBka2SIEERIHaAJ
+	 07ANb0cKsCtrHlYxl8c0VqVAU+VHmH/fRU7U1W6hbwPFimuFJUDoLis9xLJoUIaCMxiC9
+	 fwWkYtld8xuehEo+XIt1dKn/rgUJnDdKVdgOt9GOLR8XSimy3P2ns2Q+0w1A+UoCNM4SQ
+	 sZXFEFj6TIa64OCQcAiAArBljICkmC7/asmEU2WoM2MqauFuRkDCu6pjbnl4PjIB6pg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793223437;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793223444;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Subject:From:To:Cc:
 	 Date:Message-ID:In-Reply-To:References:User-Agent:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=Vhzy7noByEX126HX+/ebxpMnW9uenIyJSMtJYZvM94Q=;
-	b=kwr02WiGSqOpjUkz5nWxlAA+L/G+/dKBvJe1gI7fDXuFvSw4GZlKIM0IOGm3umAi+WXi
-	 Bn+fU0vzBguViz/E3+XlvkV39YzEw8NENBAVmGGLsSRvTSLfzC39AbEqQXBqzk9nBj7ri
-	 0Mt6Zl5nUb1D9xBJmyqQ/yXkGALkjXV/TFdNL1nb3lJwHAC1UcC3++4FumahIt6p+36C+
-	 7O/EYuXm7m9qqpCxf1Qx8nmQ55wYvcRuN1NYkmLKlQbj8gFmv+tub3DgESUwDeLLzlcpq
-	 mwzhaUSqX+hNIWNWJdwjzIhzn+a6ovl9oXJ+cCdFqOaJhwtIx7RhJPXjmOSRSZTbZWw==
+	bh=ZqeYW4br0ttDJgg3XwsnzUv13cVg+FEhbEsEAlcoSXs=;
+	b=VNO3ABSZw7ylvfBjYt9SbHCeBBIKp3JeO0zvA6ZMha7smOpilA5VIls1Fv8FGiUEU9kG
+	 XKbEhwPwhccLrYErMq/47YeTAWgaMZwSbW9QsKoQV5W7uyHyZpjS1g/oJL08kXSa63Hcc
+	 f3QzG3iWEdJjhQz2UZc+wOf9igdIFn6I+HgQYJyxRXHYIOeEvmxbe+S+ifdD4O1rdkv92
+	 ak5fKRdqRDwGehRYEhycDFziFP9wMEp2QCKf0h6UsZ8+F4DaHh9JYSNw3LGkUhmYrU7/R
+	 g05bOLrJAzMM7U+mC/eeIXXmLvdvmeMgfav2PRgPjnQYLQRWu/hMTgGqKWH5QBp3hVg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=nRX4DFYi;
-	arc=none smtp.remote-ip=209.85.215.182
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=E9OdgUUf;
+	arc=none smtp.remote-ip=209.85.214.177
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83CC606A31D
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 21:37:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D83CC606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B35606A31D
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 21:37:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 72B35606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=nRX4DFYi
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-cc1bc88a20eso938671a12.3
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 14:37:16 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=E9OdgUUf
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2e812e2b31bso8641545ad.3
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 14:37:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793223436; x=1793828236; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793223444; x=1793828244; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:user-agent
          :references:in-reply-to:message-id:date:cc:to:from:subject:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=Vhzy7noByEX126HX+/ebxpMnW9uenIyJSMtJYZvM94Q=;
-        b=nRX4DFYiR+6tfiN7dIuOqkqvOt3tyy98/MgwUm/foR2rWhqL3EwJPKLdWIcrnBvsTI
-         rtZ4NlXkczP7B2dnOOO0bTUqab0r5eF8LhBhd4kplLb/Vu0rywrGl4RMIzeClgsa+ACN
-         qw9Sgv5EU+B2zg3waj6oUGeAh1egFgO/kys91Wbaw4O5EGGdaeBbRcPHlftgQ42IxYiQ
-         j5o7sIRt2/6fW4A61Lf1WdTHf66jyAhbGtvjEAAnyKveWMW6ouW2XTeJVkOryDSjRWLB
-         uykHkrmNIHOfw83pSBhmF04ftbiv+q2XCOgv3/h6WE5uDpIhhSkbcQDIkeoBpDgvKg4n
-         I54g==
+        bh=ZqeYW4br0ttDJgg3XwsnzUv13cVg+FEhbEsEAlcoSXs=;
+        b=E9OdgUUfLX1kV7LneuejEibeemG9j7pnHU1EANxvEYLLJNMjlfqTJnGyg13qrl5OnH
+         e2XFbcrdqGPyQidTT+AK9ZvkhbcS4d8Xu+ybxusb5gdU+nG/I5qlRcMvAF1GKmdrqqga
+         4ff/UT8Fkknntl+yFl/vv1v2BHMXipVUV7kgMSLZWDvY6iUVyZd1DLUSwwjDRTy3DXsz
+         Ilt0LdelF0BojmgU9kyTkjRaB6G1bldxl+588FYNusXNvlTYhFd45nlAcC/evIKwncEz
+         LAv/QcaB5ACXq/Ige2zKkiMO45Yey70UDd4KYocODOwu+hfFddiKG7xUsi7oexfr6sFp
+         /D/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793223436; x=1793828236;
+        d=1e100.net; s=20260707; t=1793223444; x=1793828244;
         h=content-transfer-encoding:content-type:mime-version:user-agent
          :references:in-reply-to:message-id:date:cc:to:from:subject:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Vhzy7noByEX126HX+/ebxpMnW9uenIyJSMtJYZvM94Q=;
-        b=adRtQ7HcptLWP9+Gz1hSUwi7QbRt9vk3yrJOnJ6/agH0vWQ1VnE0oGNVn1eo5jDTNd
-         NKyLkos7sqGDrfaTpJseig3hrPcqEHiqLr3uaW00lML+zF7dg7lWQS+hCMAh+VUmuoT/
-         U7ssqct+yh0N1VYo1mKknotNtK74BeeIu3HSlH212rmNkJ/IEgz+TOVyrWI1hVqOeYt3
-         ZG5T1+ZOCaAdZYnaPfLkuUMDMA7XXZYbS8jRSpSmmtmbOdP/fK6t2Y5zt6PnziCZ8h3k
-         Dd6qqyTt8mJRAWAjHNmDYtA5dnkIshKdP/Qo/Gvpg1c0cf1AAR3LHqKjhmLTY/kyGvrT
-         LzOg==
-X-Gm-Message-State: AFq9FYJDK1N35io1nYAiyInaapCMvTroCB6zzuNGtjNUCeoOON99fDOh
-	R6BKXKeyDU7hL+BoRKnZLLQ1wF7rViBApa5+kTlTiLurds+MG0TkpcRAIZUqxQ==
-X-Gm-Gg: AYBFou1kn0O4fQMsDXumTZrwM/0oRAU9RZVmlF4D2es+1TEtvPJ3Nlrh+ysgzTKhUEV
-	J0zGpKioMzwbytA9tVTGqjfarcZRGTPVNPFpGRbxxvkpJEF9i+O84jFBS7PJftnX91CCckPaU3G
-	tRCtjfOa0JvoMztLFAjql4lTDhhgDef+rhQPiHlLwdL4YD/onUegKDPak75Hhx+/2D9swPqqqeA
-	S/BG0g8jzCrrobmlASBHc7OoRq7XuO0WpkiPywrZ9K94Sb6385Gf9Mj/XqkDp+gxal+/9TPRly+
-	Z+7iVZPVfUrz5XfVmctPl5bQCkC1Ry7F0KA0wJODA86Sjo4Hq8w1Grtv+TpPu0I/0uFQ3TLECvO
-	X8zswM9Fl28izwg3H/Vs/Kd2P39goeoQE/287OEV/LghEEsSJE9D7kH/K54j5Iek9pArqBf5awu
-	sKeQknERhUtI6VL7ErMjt7QNjVh4TrH2WUQaCweSV8RzaIsXgT2q3jNZMerpOTWRXEJpd42k86a
-	fYvyX03fw2WJ4eEXQc10sehuo2MgBOx1aIYlEgiNSHod4oKgUqufBfha+6s/1+enWVl9kNrHD+j
-	F4BSwRVuvI83Atf+TZeuXFYjkD/yHQ0FYhICcYEnNrw2mfi+GnPlqBBeYPG6hn0DoH/7wjdi3kE
-	YKOw2dm5YnouNtaa+mHkv/+2muCeC/X/myudUvLdgqd0dtA==
-X-Received: by 2002:a17:90a:e18e:b0:3aa:ff19:42b8 with SMTP id 98e67ed59e1d1-3ae580a023emr2738424a91.27.1793223436163;
-        Wed, 28 Oct 2026 14:37:16 -0700 (PDT)
+        bh=ZqeYW4br0ttDJgg3XwsnzUv13cVg+FEhbEsEAlcoSXs=;
+        b=hjsKZ1kSOC0W64wcX0bFHRKPNKdM7euJ5lAqkSBdk6VbV+JPWxdjUxpBfF8dLKlKG3
+         t8G0Zpvw0p/Li+rcajRjx+LKo8E/tovczIjRZFdb7OQ6NVr2WlGIzKhpPqdJrQl9oh4q
+         8Ou/IVo7pB4hQXdaF8vjYw5cI1BETImjn/plSleC7/oLl4d6Jyv0SQ6OxdLSFKTgEwb5
+         zzOId8PSN76Q6SgCbo/Xvsd00pyjrY2mQWfRrN2Gk6w9B1Ey/vAQnyPUqmwOkawXVgrF
+         yMgVbbYkkGDuMPzt6P9OeRYLAiokxT7ZMydUKoJYKxSAa21SgWMUh90r6cqVtB4zk7k5
+         TY0A==
+X-Gm-Message-State: AFq9FYJWT0ibPuCUHSML3xRSv5XftZhGWiz0+Amyf160uky1u76OkbtG
+	BPVGoVWW7evUiTxUk0YZuSdJ0UjQb/7v1rXocKQqrPrimLRzs10sIlas
+X-Gm-Gg: AYBFou3j76XQ/7qh++ELbevzNTSH3tzBgAr2T853kaubJcmfdtaZCCYvY50Rn647Zi2
+	VvcH+a4pm6NZ0y5XOvohcgVjasgcUR0FZRiWXAL/D0PrPTj0NEyi3c9vlZUDhtYQcHuW2aOJ/Os
+	BE/fSSJDqBBTlNs3+/4R4O5ztGmFWyLqRmSFcqqoDGpfhYJQKjsk+EFv8gGQmcQmFx4zZeqt+08
+	iD32RxMhUVxLn5vB2FhcHnxuF1qJK0g1wmGSvlwAT8/wW42ZLRl0bsfo3FKFRkYJOEeGVkN6WsJ
+	ZTn3jBEcYW3DITy2ohKS/+aOxJFiY4tzXRrrwPUhr2ZIdLt6kXbTMZGQJPBb2OPdEL8mdbUnNvr
+	M4QRD7DivFsKhFFCpoxL8OcIflrgwGvRsbsbnRzd701lRAjVT6dFchCgMb/FLUOca1EmDN7HgmZ
+	zLcs5c/UiCs6ZGA8WdLPlABAn+iY4C0HHEIkFRwnkv7fj6FXhkQjD1/apVxz5Anb/R3MQ8sehoz
+	Jl+T+EGlRBB6q75m1cJHzzmw5eK3l3vmGF6T/Q15GFfNK9vT1APkV/zCU8OYk9K59SLFg+/sTeF
+	gUTT3GoQ+OAah8eZI8FTUtQ1BSbkNXwNjsWkgnIjYTSyo8OJoJY+R/lS5Zqy7gyXxHpH6kY9+i+
+	NlgQ4MBZh7y94jGY3QG8hPdgrVhCSGBQwYJLFh1g5k9GLrg==
+X-Received: by 2002:a17:90b:1805:b0:39e:59a0:46b5 with SMTP id 98e67ed59e1d1-3ae57fa94bcmr2473720a91.24.1793223443866;
+        Wed, 28 Oct 2026 14:37:23 -0700 (PDT)
 Received: from ahduyck-xeon-server.home.arpa ([2605:59c1:38c:400:22f5:2de:b9c3:f27c])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae6e8401casm1077253a91.11.2026.10.28.14.37.14
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae6e89f7d8sm1077980a91.17.2026.10.28.14.37.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 14:37:15 -0700 (PDT)
-Subject: [net PATCH 10/13] fbnic: Keep the BMC MAC address set whole across a
- capabilities update
+        Wed, 28 Oct 2026 14:37:22 -0700 (PDT)
+Subject: [net PATCH 11/13] fbnic: Suspend phylink after taking the datapath
+ down in ndo_stop
 From: Alexander Duyck <alexander.duyck@gmail.com>
 To: netdev@vger.kernel.org
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  horms@kernel.org, kernel-team@meta.com, kuba@kernel.org, pabeni@redhat.com
-Date: Wed, 28 Oct 2026 14:37:13 -0700
+Date: Wed, 28 Oct 2026 14:37:21 -0700
 Message-ID: 
- <179322343381.40667.1127592669876224055.stgit@ahduyck-xeon-server.home.arpa>
+ <179322344127.40667.2505190570032252359.stgit@ahduyck-xeon-server.home.arpa>
 In-Reply-To: 
  <179322311834.40667.5383039334126572422.stgit@ahduyck-xeon-server.home.arpa>
 References: 
@@ -107,142 +107,52 @@ Content-Transfer-Encoding: 7bit
 
 From: Alexander Duyck <alexanderduyck@fb.com>
 
-The firmware can send a capabilities message at any time, and the
-mailbox handler writes the BMC MAC addresses into fw_cap.bmc_mac_addr
-from the mailbox interrupt thread. The fbnic_bmc_rpc_init function reads
-the same array from the service task and from ndo_open with no lock in
-common. A read that overlaps the update can see part of the old set and
-part of the new one, or a single address with bytes from both, and
-program it into the MACDA TCAM as a BMC address, steering that address's
-Rx traffic to the BMC and looping host Tx for it.
+The fbnic_stop function calls the phylink_suspend function before the
+fbnic_down function. With no BMC present that stops phylink, and the
+fbnic_phylink_mac_link_down function disables the MAC and holds its Tx
+and Rx clocks and FIFOs in reset. Only then does the fbnic_down function
+stop the queues and wait for the Tx path to go idle, so anything still in
+flight has to drain into a MAC that is no longer passing traffic, and the
+fbnic_wait_all_queues_idle function can be left to time out and force a
+flush. With a BMC present phylink leaves the link up but turns the carrier
+off, which the phylink_suspend function notes assumes all packets have
+already been sent.
 
-The update always raises FBNIC_FW_CAP_F_BMC_TCAM_REINIT after it writes
-the array, so the next service task pass rebuilds from the full set.
-Until then, up to a second later, the torn entry stays in hardware and
-has been pushed to firmware with the MACDA sync.
+It is also the reverse of how the interface comes up: the __fbnic_open
+function resumes phylink last, and the fbnic_up function then enables the
+queues and installs the host Rx filters.
 
-Guard the array with a seqcount in struct fbnic_fw_cap. The mailbox
-parses the new set into a local copy and swaps it in inside a write
-section, and the fbnic_bmc_rpc_init function takes a snapshot, retrying
-if an update overlapped it, and works from that. Updates are rare and
-the mailbox Rx path is the only writer, so a seqcount is enough and the
-readers never wait on a lock. The write section runs with preemption
-disabled so a reader cannot spin on a preempted update.
+Call the fbnic_down function first. The Tx path then drains with the link
+still up, and Rx is still stopped first, as the fbnic_clear_rx_mode and
+fbnic_clear_rules functions remove the host as a destination for its MAC
+addresses in the RPC before the queues are disabled. The MAC IRQ is still
+freed before phylink is suspended, so no link interrupt runs while the
+link is taken down. The PM suspend path goes through ndo_stop and picks
+up the same order.
 
-Fixes: 04a230b27d8f ("fbnic: Add logic to repopulate RPC TCAM if BMC enables channel")
+Fixes: 6ede14a2c636 ("fbnic: Move phylink resume out of service_task and into open/close")
 Signed-off-by: Alexander Duyck <alexanderduyck@fb.com>
 ---
- drivers/net/ethernet/meta/fbnic/fbnic_fw.c  |   19 ++++++++++++++-----
- drivers/net/ethernet/meta/fbnic/fbnic_fw.h  |    3 +++
- drivers/net/ethernet/meta/fbnic/fbnic_rpc.c |   14 +++++++++++++-
- 3 files changed, 30 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/meta/fbnic/fbnic_netdev.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
-index 7964ce814b8e..09d03274be08 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
-@@ -104,6 +104,7 @@ void fbnic_mbx_init(struct fbnic_dev *fbd)
- 
- 	/* Reset FW Capabilities */
- 	memset(&fbd->fw_cap, 0, sizeof(fbd->fw_cap));
-+	seqcount_init(&fbd->fw_cap.bmc_mac_seq);
- 
- 	/* Reinitialize mailbox memory */
- 	for (i = 0; i < FBNIC_IPC_MBX_INDICES; i++)
-@@ -627,6 +628,7 @@ static int fbnic_fw_parse_bmc_addrs(u8 bmc_mac_addr[][ETH_ALEN],
- static int fbnic_fw_parse_bmc_cap(struct fbnic_dev *fbd,
- 				  struct fbnic_tlv_msg **results)
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
+index a40566029a86..36ef17dec0f4 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
+@@ -86,11 +86,11 @@ static int fbnic_stop(struct net_device *netdev)
  {
-+	u8 bmc_mac_addr[4][ETH_ALEN] = {};
- 	struct fbnic_tlv_msg *attr;
- 	bool bmc_present = false;
- 	u32 all_multi = 0;
-@@ -639,19 +641,26 @@ static int fbnic_fw_parse_bmc_cap(struct fbnic_dev *fbd,
- 	attr = results[FBNIC_FW_CAP_RESP_BMC_PRESENT] ?
- 	       results[FBNIC_FW_CAP_RESP_BMC_MAC_ARRAY] : NULL;
- 	if (attr) {
--		err = fbnic_fw_parse_bmc_addrs(fbd->fw_cap.bmc_mac_addr,
--					       attr, 4);
-+		err = fbnic_fw_parse_bmc_addrs(bmc_mac_addr, attr, 4);
- 		if (err)
- 			return err;
+ 	struct fbnic_net *fbn = netdev_priv(netdev);
  
- 		all_multi = fta_get_uint(results,
- 					 FBNIC_FW_CAP_RESP_BMC_ALL_MULTI);
- 		bmc_present = true;
--	} else {
--		memset(fbd->fw_cap.bmc_mac_addr, 0,
--		       sizeof(fbd->fw_cap.bmc_mac_addr));
- 	}
- 
-+	/* The service task can be reading the set in fbnic_bmc_rpc_init(),
-+	 * so replace it whole. The mailbox Rx path is the only writer, so a
-+	 * seqcount is enough; keep preemption off so a reader cannot spin on
-+	 * a preempted update.
-+	 */
-+	preempt_disable();
-+	write_seqcount_begin(&fbd->fw_cap.bmc_mac_seq);
-+	memcpy(fbd->fw_cap.bmc_mac_addr, bmc_mac_addr, sizeof(bmc_mac_addr));
-+	write_seqcount_end(&fbd->fw_cap.bmc_mac_seq);
-+	preempt_enable();
++	fbnic_down(fbn);
 +
- 	/* all_multi is only read out of the message when a BMC is present, so
- 	 * it is never set on its own and callers can test it without pairing
- 	 * it with the presence check.
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw.h b/drivers/net/ethernet/meta/fbnic/fbnic_fw.h
-index 7790ea0badea..f380291a5ad6 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_fw.h
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw.h
-@@ -6,6 +6,7 @@
+ 	fbnic_mac_free_irq(fbn->fbd);
+ 	phylink_suspend(fbn->phylink, fbnic_bmc_present(fbn->fbd));
  
- #include <linux/completion.h>
- #include <linux/if_ether.h>
-+#include <linux/seqlock.h>
- #include <linux/types.h>
+-	fbnic_down(fbn);
+-
+ 	fbnic_time_stop(fbn);
+ 	fbnic_fw_xmit_ownership_msg(fbn->fbd, false);
  
- struct fbnic_dev;
-@@ -67,6 +68,8 @@ struct fbnic_fw_cap {
- 	struct {
- 		struct fbnic_fw_ver mgmt, bootloader, undi;
- 	} stored;
-+	/* Keeps bmc_mac_addr whole for readers, the mailbox is the writer */
-+	seqcount_t bmc_mac_seq;
- 	u8	bmc_mac_addr[4][ETH_ALEN];
- 	u8	link_speed;
- 	u8	link_fec;
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_rpc.c b/drivers/net/ethernet/meta/fbnic/fbnic_rpc.c
-index e6b9b9d6511f..d64bd622e4a3 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_rpc.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_rpc.c
-@@ -251,6 +251,8 @@ void fbnic_bmc_rpc_init(struct fbnic_dev *fbd)
- 	int i = FBNIC_RPC_TCAM_MACDA_BMC_ADDR_IDX;
- 	struct fbnic_act_tcam *act_tcam;
- 	struct fbnic_mac_addr *mac_addr;
-+	u8 bmc_mac_addr[4][ETH_ALEN];
-+	unsigned int seq;
- 	int j;
- 
- 	/* Start from nothing so a MAC the BMC no longer reports does not
-@@ -262,9 +264,19 @@ void fbnic_bmc_rpc_init(struct fbnic_dev *fbd)
- 	if (!fbnic_bmc_present(fbd))
- 		return;
- 
-+	/* Snapshot the set, the mailbox can replace it under us. A message
-+	 * that lands after this raises FBNIC_FW_CAP_F_BMC_TCAM_REINIT again,
-+	 * so the next pass rebuilds from it.
-+	 */
-+	do {
-+		seq = read_seqcount_begin(&fbd->fw_cap.bmc_mac_seq);
-+		memcpy(bmc_mac_addr, fbd->fw_cap.bmc_mac_addr,
-+		       sizeof(bmc_mac_addr));
-+	} while (read_seqcount_retry(&fbd->fw_cap.bmc_mac_seq, seq));
-+
- 	/* Fetch BMC MAC addresses from firmware capabilities */
- 	for (j = 0; j < 4; j++) {
--		u8 *bmc_mac = fbd->fw_cap.bmc_mac_addr[j];
-+		u8 *bmc_mac = bmc_mac_addr[j];
- 
- 		/* Validate BMC MAC addresses */
- 		if (is_zero_ether_addr(bmc_mac))
 
 
