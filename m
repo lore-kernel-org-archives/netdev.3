@@ -1,60 +1,52 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.47
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793183116;
-	b=2r50/g6cZCPxEVlKDiA42k2b3qYoAbQqxxQ1YUB/6H8KJxqT1O+8EDX66bnnaAjc11sz
-	 +6PMDCOrxqBxT1fBFPJMurhnTC3FlwCc+a+0R5FKNRN8thLI3o7w74urcMv8fZ02ZRIAw
-	 wt5mgPodWjdQdL2cYIXuEstNjHLxAJeh/vKdv4jENIT5Heldvbb+PcUvpSwu4sO/AGj7y
-	 9qJIJYUBGE6YvGSkM5B4NyE63vQ83mQCYIJFrlEiUiIJxk1FUdsJLIzw1uIlL0Ho7C7N1
-	 gve4oN+qHcp08zjViuYu9aSxzIOLZ+foKizI8JuFvaMXcMzhjf0h9fpFJttqk26K5Bg==
+	t=1793183258;
+	b=Q7srUxKY7GZI41M3gKUzEGqTiUIXhFZhal/MMcB+UpkM9iPJ3ZFA6bbImW0g5nuxynOs
+	 m4OVm4xwNVs9aYr5frXjshf0g3CGW0UzsUBSKlvFN0OajDTw03G3ZeTJGx9pDEnT8nNR7
+	 PO8mKvRyKWC3RxEuuve0qIWai2/kJ1fS6VWaUDbcBgtIR/t9G1JXd9Xvd4t4eZ0YP7/5k
+	 QxoGaYpseEaPfiQBnlV852UCb1tW/hkyQlVbg+G1I3PMXAUZgy1fVaMzfM69p5I8DCzRr
+	 hlEVJ9S5f4ylou5t/Yi0MLeD3bxFguD3mPjAzSH8OpTpHoTuGfmntTY+OjVZ3I42EEw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793183116;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	b=TGh0Xk9YEQItGiDKc5Y7fxCdxmOovuxcBUNkmB6HYPaT1OFXfUTNNtpX1+9QWXqWN9On
-	 WZMtkIpkMKwskApCThlRy1qvgwTWGO40N7znPkD4GC/PHYKw0eFQB/iRFgyR47DyD5FnI
-	 WC/e2EX62PVbwzKVwJ8XAQSn4SoDOtYSpymuiASU53496fKcP3wPGKvU/EL2OTg1jSxcw
-	 j/FZsw6IncgfmlQ6qYpgkRKUt49Ucy9doYJlsOdfetE8yYs1T1kxuxrmkrkGaGgHSflWO
-	 ij6r7DCd0LRLmD5ptbeZnM8+pPA9/I1G92ozSnN49YcpnQv/aPZ2rUWDxKb4g+bA7yw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793183258;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:MIME-Version:Date:Content-Type:
+	 Content-Transfer-Encoding:From:Message-ID:TLS-Required:Subject:To:Cc:
+	 In-Reply-To:References;
+	bh=CAsQNlvEQewVVFce1WqlpSDwej6JOKTiJP6Vd2oTTAg=;
+	b=zJOUiioc91yy8k8VT45+SHf1AIORJrL3Jc3Vi7WNtiYW5HLfrW/IwICJXYL5hLpVZAGr
+	 lDlmk7j61ycwG2P1p+GVr+h6Zs7nQrE92sSkw+m+Ne8fNsZP7WTw9kmbNIJzNLjRLwsdS
+	 lUKZmsFhNMD2QdgpwwUc3MC2akygvADJcH56Y+N16oj95VOpnKeDP/58wky6TdY0CSPdi
+	 g8KnMZ7cJ/BThac3dEObr9PqxrmCWCv22qowEgi4IkfyBibvvgK9dHrrOmEbwbj15IRMp
+	 ovxzN1WxVdLtb7wrZNOb4+2OMkdW+H01yRI90mrwcDAAwL5EQsow2H8VVvxzSeq771Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Yfw0j5P1;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b="Jmwex/kK";
+	arc=none smtp.remote-ip=95.215.58.47
+Received: from mta1.migadu.com (out-47.mta1.migadu.com [95.215.58.47])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E73A606A31A;
-	Wed, 28 Oct 2026 10:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BDF9606A31D
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 10:27:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8BDF9606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Yfw0j5P1
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4B5E1F01825;
-	Wed, 28 Oct 2026 10:25:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793183116;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Yfw0j5P1u81H93gf0ytvjdCqrOo5trvtcPWZg+crJLHUHwuROw5DmEPgL/RbcZkUl
-	 E+aQMKUzPSnswLDKABwcyYAL5hUXjnlxa7f4pbyB4D39GGIwbnou7b3QluTqnZtU1A
-	 qUI3zhI3pHLUeZF5hvm/iPK9+y+ySfvc1/og+WOPZyRjeLNZdgqnfKMh1epLjFvaBO
-	 DiOx2WzSYNrjvVKrLEhYQ8UNNlvIVhWMIYdfnDm20JaLy+e+0y/UNqYn6DQs/6oOY2
-	 egoVzSJxfooo1QL5WCB5Q8IrRtbHHB8TbvAXN+bF+upF/uSvWkbICD7ADLwPtsOkQK
-	 7+KHF1duM+U5g==
-From: netdev-bot+sinfo@kernel.org
-To: Thomas Fourier <fourier.thomas@gmail.com>
-Cc: Alex Elder <elder@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: ipa: Fix double free of the interrupt structure on
- config error
-Date: Wed, 28 Oct 2026 10:25:15 +0000
-Message-ID: <179318311520.3327.14794092372073592903@kernel.org>
-In-Reply-To: <20261028102327.28263-2-fourier.thomas@gmail.com>
-References: <20261028102327.28263-2-fourier.thomas@gmail.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Jmwex/kK
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=OSNgAFP+VgQv9q7o9VlptAb+MUtYzG3jKiN7D8DtKj8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793183254; v=1; x=1793788054;
+ b=Jmwex/kK7FpuCV4bqSsS5FCwcMt+EqZgDLePJZ4dvcrpEr4L/YHoyx7QKjmO1CIocO5OCbGr
+ tkZmoFbOPWPIzOshnL3/DpTiXzlghHbrudm38WhVc3KkL5yD0mKtIroNlIaYfbth6p94x+Qcx/Q
+ vj7/M3C4X89z4qZWGeENzS/M=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id ee56cd7c32368443;
+	Wed, 28 Oct 2026 10:27:33 +0000
+X-Mizu-Trace-ID: ee56cd7c32368443
+X-Migadu-Flow: FLOW_OUT
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,25 +56,138 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Date: Wed, 28 Oct 2026 10:27:33 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+From: "Hui Zhu" <hui.zhu@linux.dev>
+Message-ID: <c652f3e6198b143fcf29f5540a769228f3d8470c@linux.dev>
+TLS-Required: No
+Subject: Re: [RFC PATCH 0/2] memcg_ext: dynamic memory.low and memory.min
+ protection
+To: "Tejun Heo" <tj@kernel.org>
+Cc: "Alexei Starovoitov" <ast@kernel.org>, "Daniel Borkmann"
+ <daniel@iogearbox.net>, "John Fastabend" <john.fastabend@gmail.com>,
+ "Andrii Nakryiko" <andrii@kernel.org>, "Martin KaFai Lau"
+ <martin.lau@linux.dev>, "Eduard Zingerman" <eddyz87@gmail.com>, "Kumar
+ Kartikeya Dwivedi" <memxor@gmail.com>, "Song Liu" <song@kernel.org>,
+ "Yonghong Song" <yonghong.song@linux.dev>, "Jiri Olsa"
+ <jolsa@kernel.org>, "Johannes Weiner" <hannes@cmpxchg.org>, "Michal
+ Hocko" <mhocko@kernel.org>, "Roman Gushchin" <roman.gushchin@linux.dev>,
+ "Shakeel Butt" <shakeel.butt@linux.dev>, "Muchun Song"
+ <muchun.song@linux.dev>, "JP Kobryn" <jp.kobryn@linux.dev>, "Andrew
+ Morton" <akpm@linux-foundation.org>, "Shuah Khan" <shuah@kernel.org>,
+ davem@davemloft.net, "Jakub Kicinski" <kuba@kernel.org>, "Jesper Dangaard
+ Brouer" <hawk@kernel.org>, "Stanislav Fomichev" <sdf@fomichev.me>, "KP
+ Singh" <kpsingh@kernel.org>, "Tao Chen" <chen.dylane@linux.dev>, "Mykyta
+ Yatsenko" <yatsenko@meta.com>, "Leon Hwang" <leon.hwang@linux.dev>,
+ "Anton Protopopov" <a.s.protopopov@gmail.com>, "Amery Hung"
+ <ameryhung@gmail.com>, "Tobias Klauser" <tklauser@distanz.ch>, "Eyal
+ Birger" <eyal.birger@gmail.com>, "Rong Tao" <rongtao@cestc.cn>, "Hao Luo"
+ <haoluo@google.com>, "Peter Zijlstra" <peterz@infradead.org>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Nathan Chancellor" <nathan@kernel.org>, "Kees
+ Cook" <kees@kernel.org>, "Jeff Xu" <jeffxu@chromium.org>,
+ mkoutny@suse.com, "Jan Hendrik Farr" <kernel@jfarr.cc>, "Christian
+ Brauner" <brauner@kernel.org>, "Randy Dunlap" <rdunlap@infradead.org>,
+ "Brian Gerst" <brgerst@gmail.com>, "Masahiro Yamada"
+ <masahiroy@kernel.org>, "Willem de Bruijn" <willemb@google.com>, "Jason
+ Xing" <kerneljasonxing@gmail.com>, "Paul Chaignon"
+ <paul.chaignon@gmail.com>, "Lance Yang" <lance.yang@linux.dev>, "Jiayuan
+ Chen" <jiayuan.chen@linux.dev>, "Emil Tsalapatis" <emil@etsalapatis.com>,
+ "Ihor Solodrai" <ihor.solodrai@linux.dev>, "Barry Song"
+ <baohua@kernel.org>, "Geliang Tang" <geliang@kernel.org>,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ cgroups@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, "Hui Zhu" <zhuhui@kylinos.cn>
+In-Reply-To: <769e80ffa618327ac03c13c4657e7229@kernel.org>
+References: <cover.1793086858.git.zhuhui@kylinos.cn>
+ <769e80ffa618327ac03c13c4657e7229@kernel.org>
 
-Hi!
+"Tejun Heo" <tj@kernel.org mailto:tj@kernel.org?to=3D%22Tejun%20Heo%22%20=
+%3Ctj%40kernel.org%3E > :
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+>=20
+>=20Hello, Hui.
+>=20
+>=20On Tue, Oct 27, 2026 at 05:11:58PM +0800, Hui Zhu wrote:
+>=20
+>=20>=20
+>=20> Why it matters: memory.low and memory.min protect a cgroup by a fix=
+ed
+> >  threshold and have no idea whether it is using the memory. A
+> >  high-priority cgroup that holds a large working set and then goes id=
+le
+> >  keeps suppressing reclaim on its siblings, and that memory is wasted=
+.
+> >  A policy program sees the real activity - page faults, charges - and
+> >  can grant or withdraw protection as it changes.
+> >=20
+>=20This doesn't justify the changes. Why can't the same be achieved by
+> adjusting memory.low and memory.min from userspace? The arguments made
+> so far are neither convincing nor proven.
+>=20
+>=20Thanks.
+>=20
+>=20--
+> tejun
+>
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+Hi Tejun,
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+Thanks for taking a look.
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+You are right about that paragraph.  It describes what dynamic
+protection does rather than saying why it has to happen in the kernel,
+and at the timescale I described a userspace agent writing memory.low
+would keep up fine.  I will drop it.
+
+Let me try to say what I was reaching for, from the code rather than
+from a benchmark - a comparison between BPF and a userspace agent would
+say at least as much about how well I wrote the agent as about the
+interface, so I am not sure it would settle much.
+
+memory.low is a request, and what reclaim honors is elow, which
+page_counter_calculate_protection() derives on each pass from the
+parent's elow, the siblings' requests and the tree's usage.  At the
+first level below the reclaim root that comes out equal to what was
+written, and there the knob is enough.  Deeper down it is capped by the
+parent's budget and shared out between siblings according to what they
+claimed and what they use, so what a cgroup wrote and what it ends up
+with can differ.  As far as I can tell none of that is visible from
+userspace: memory.low reads back the declared value, and I could not
+find anything that exports elow.
+
+Exporting elow would not help, because elow is not a property of the
+cgroup alone.  It depends on the reclaim root as well, which is why
+page_counter_calculate_protection() warns that it is not stateless and
+is only valid as part of a top-down tree iteration, and why
+mem_cgroup_protection() carries the example of a concurrent global and
+targeted reclaim driving a child's elow to zero.  A file would show
+whichever value the last reclaim happened to leave there.
+
+So the derived value seems to be usable only where it is derived,
+inside the check, and that is where low_policy() sits: it is evaluated
+per pass and is handed that pass's own inputs - the memcg, the reclaim
+target, the elow just computed, the usage - instead of being state that
+is read at the check.
+
+The other half is what a policy can key on.  memory.low has one
+dimension, bytes.  A policy program is not limited to the ctx it is
+handed; it can also use state that other BPF programs keep, so
+protection can be a function of activity rather than of size - a
+workingset refault rate, for instance.  [1] reads those counters from
+BPF and acts on them; it drives reclaim rather than answering a
+protection hook, but the signal it reads is the one such a policy would
+want.  The limit is on the output rather than the input: the hook
+returns a boolean, so it cannot grant anything memory.low cannot.
+
+I would be interested in how you see this - in particular whether the
+nested case is worth supporting at all, and if it is, whether this is
+the right shape for it.  I am happy to rework the patches, and to add a
+demonstration of one concrete policy if that would make it easier to
+judge.
+
+[1] https://github.com/teawater/memcg-async-reclaim/tree/memcg_ext_plus
+
+Thanks,
+Hui
