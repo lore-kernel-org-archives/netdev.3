@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793216738;
-	b=fg5NhkP/loQrlurNG20p4C9AZTyZvyH69li2gmDNZV+URO8uQYnjLFes1DxZ25/oa7F1
-	 eekvPoJEQoPD/NP0dECzPrZ7IwbtimOhtFqq8hoPNPgXTHQFi0w/VPvWyyjLthKFgTVAy
-	 P0quuRAYDyG9O9366rmjxdYSyFITaMTljU0jU5TMBDbxw/fRH+O9TlcwG3RDrHyQX32BP
-	 xYSFLTKX8hZ6aGFyNEPb5cTDtPhQ2ELYrD7MQrh6h75ym7nv41lP48BX7gAKtwb9aI+zQ
-	 Ma0L9YEJsnN3qPKS1ZVrZgGfjPdFgle0RmnrfYHdGqpndTg9euRynUS5/l0PTPStC+Q==
+	t=1793217288;
+	b=zgO4ABKWl8wsBjsfzmQikBiOnBCDo0NN8T9mzoQmHsCzdKsmmSfKPaaZrQZrcUgPhoU2
+	 hNQTjepILmLp94deXD/EvKnJLHq7pcBbMJ4itaOsqz8hq9xSaXSXne8s2EIyPIvqIWBqo
+	 7uE8LKNABeIM6LO8dcg4GjlZdcOhyH4zybpEKXWOtw/aIp2C4YENaDfkjbne7xzIf/Cq8
+	 2TWZNDwc7WkT5jqd+ttmfZx3ie5V1evnb4b73ZKnnRS3NKgvr+k9zBwy4byuXX3NEYJVW
+	 LYP0bkqwPQt3juehbMAzsJTiwxWzF3Zj2tE4P/uPwUBX3Wb1zW887gG3/pH2x3tuOkg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793216738;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793217288;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=p7pe2s+MVZswiJuATY2vq7wM8pD0KsopxwWou2VSc+E=;
-	b=h8HDC7QvBi4Gxhjr8fnp0LZNzZHb0i0NXUzVM5qnPyCk0bvKhDI3holHFWn3tugVu4h/
-	 1ewZJS9ksgikzfiDLzJ+RTwlwnLPCne9SVMge1KYQPCaD9CnEmEHvV7eQmE+OJ9+ewq3C
-	 4bg3HAVX8KMF3et1icIhZ6T2C31GFJBkhNDGD/AqX77q5Xuuula37xAWXj5gGN32lLxkG
-	 aF3pkMC0LT+GGcN5C5KaPeuaK6WDIobklJkLVFFYgiJGCkBj9hSPpj2iiN+1FwFVJBuiU
-	 VtiNpSKpXUT9eKKKrIH/MTJfW99o1RYaaGGuIr5qXt3GI6qei/BxqD5glVu7T+ortGg==
+	bh=NGjoYFG6eOfx5VbAgTCvrbSx4Jf+Le3xUIdD1KpfQNc=;
+	b=jTsbZL6+9JueGzmYFFiwNSgOm6tqEzF5ABon+XbW3kBXeXYHCQJmCebzwWTJXciYHWOT
+	 W/42l+KAIuTjzrOaiNMgYs0U2EqNCN6vTOgqs99dtP9EE2gQRkCEtxX2w/4bllRnnr8zj
+	 TI2CD3zA2fYBxfkZ8zm9oeuymAbFjmVWsKY4LY/b3AiGZSBrYZmSMfY5o7yC81qkGGR/t
+	 afiZgkqrHPrV0k6grmK0VCZEFo2s3b2/X55yMvN/VAJRsxykwttdZt1FPNl4RSSRNNbKB
+	 MrBlrOCrxD6gvC52uzad9kVbIGepo6v3B1ERNqhC7cmnDnNK8Rw1qS3sxgEIV91Ifjg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="px+z80/K";
-	arc=none smtp.remote-ip=209.85.214.199
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ly8jznwf;
+	arc=none smtp.remote-ip=209.85.216.70
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CE7606A31D
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 19:45:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 61CE7606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8AA0606A31D
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 19:54:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C8AA0606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=px+z80/K
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2eaf8ea208bso11466725ad.1
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 12:45:38 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ly8jznwf
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3ae1d132d52so1283700a91.0
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 12:54:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793216738; x=1793821538; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793217287; x=1793822087; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=p7pe2s+MVZswiJuATY2vq7wM8pD0KsopxwWou2VSc+E=;
-        b=px+z80/K+krp6N/39N5HW5UrjlthpSYEmw6RfQaoAJAeKyRB/eTitvuY1TcvpatxId
-         m3NYQglv5YOxyQ6XTSKvUtYBpl/z/eRSqBXMetwEsoPoksCsNPkwmPj9xpeQ8wtP0Tul
-         yBF5KEAp7dWVScMwwj+AQL5gVpF0/KMEIhiHuyErYI8AILM75P7C7Oha6E3FMAM1nRiR
-         zyqbTNU4l9iaj0EG6JNVrHst8PKgHqx/sqiAzJnjJSUsOGgAhJWKbjHC4beTp4iLq8/A
-         UcB3HgzRjMAv4ye768PFyUJOrwIFkWEdSPhrqs3yhOzIlcr2M0sEsdoZgNn3SBlIBjcu
-         47gQ==
+        bh=NGjoYFG6eOfx5VbAgTCvrbSx4Jf+Le3xUIdD1KpfQNc=;
+        b=ly8jznwf+AS9GiIc7xELzlcxT5WJa85Udj0UjXWZVSxaxerbfbMrocuTT4tmNbu+8O
+         pvog2zxY9bRu3OXu16eVw0YUTMUet49HqbwTBkChPOeFaw2rRm85KvYFvj8AhH8GKvIB
+         59O5CTy/XXxErZn/sx1fkNa36kx7CC4cUW4BptfSOLjqeCf542tpHRZoyXD/3I2Qfrty
+         4FkzkvRi8BBsWN1H+RIeIEOMUuR9FF1DHxlFTTFxhogTQRoWujl/gfgU8XGN7amnk05f
+         jjAqPPHqoXs8RtJtdmo9A9ziUiic2tA2W09xGUnE0daCoo2ziQ+NmLfnitH7ziJNNnwm
+         opow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793216738; x=1793821538;
+        d=1e100.net; s=20260707; t=1793217287; x=1793822087;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=p7pe2s+MVZswiJuATY2vq7wM8pD0KsopxwWou2VSc+E=;
-        b=h8eLfixDU+IGHE9LsreGXoqTleQgiiya+k7uRlrt/J+7yShBQcHZLq2KWXy5uP6Um6
-         lxoMtl8yDRGh0b0vLW9Zwut47yzf3Ch4r4zr+E8KpAsjxcqKVz3oYQUbqwCekuunmfAQ
-         0cRwczIkOH6siUP/+y5zmYFHJz9QNV0cQ1CK/VOAV+Ou2WVN2bF01xq30ckaUncgb5nw
-         K2MbIUAkNzflg/fcebEdN26iLTZsRScOHIr2cJYCpj658jgaiNB8njQ4xgkMrSUMBInW
-         1LzBVad5SFMolZNBfdPyaMgc9JreqRzB+9GyOBgGMGryBqEzgu8pKpAa6V1hcFShAgh6
-         5KDA==
-X-Forwarded-Encrypted: i=1; AKwUvBxYc1ayDIzRKT/nDCmZxFpZN2GozykQX6RpGE6ZPsGpHV9DwPetq21sYZlYejKScP3EsJwkDNI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJt1WEmlrDLCrRsrBiiS2nZztH2ml6NNYbff05SDWap54jdV9du
-	HDfkEJxnrbRIYYs8J4gMM3t4VuB6IFc1u31+Q6ctU8YMiJ8IXP2DqSdRf4ikb1c6yZEAeLaL2bn
-	6yDC3eQ==
-X-Received: from plbjf12.prod.google.com ([2002:a17:903:268c:b0:2e8:21ee:f199])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2304:b0:2e9:5eee:e078
- with SMTP id d9443c01a7336-2eb001433a5mr28660565ad.3.1793216737503; Wed, 28
- Oct 2026 12:45:37 -0700 (PDT)
-Date: Wed, 28 Oct 2026 19:45:37 +0000
-In-Reply-To: <20261028162510.2180528-1-edumazet@kernel.org>
+        bh=NGjoYFG6eOfx5VbAgTCvrbSx4Jf+Le3xUIdD1KpfQNc=;
+        b=IZ0P/sIWXCIahzhWDUUqtEqGLjyQSnWyAURfdh3GX86MsbcYEJXuvkjYa4TKPzubCj
+         yR+SJ/HVshA+cdkNPxz08MIIKVkIsQC/AplEGawpe06O4Miz3P1eewF5oC9a8mqjSg0n
+         7Bewja/uktYeqhhRR1qqOHHSKdr+OA0ibXqGA2bW2YSwapFa/JRX0GJ3rR0egztZ4X4V
+         OxuGxdZiCsIJ9It7VDHj6rz/5rBJc2PsHjMWx5CvTeIKuGxwZevWG2S0Ok2AdEfFqtk3
+         1g7C5x7Hw26/KEzWE4D2tOnJvCu2Up+ysw5vwN7fxE9lgSednTMAnN16Kjw5sog1NeXJ
+         aK+A==
+X-Forwarded-Encrypted: i=1; AKwUvBy3qEKXGD9eiBCIokOwBGw5oYdyv2eQh+83HW0I+Um7m3zd42dv9ClBiFvkQIsH7L4gqIBuPcw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJUpy1IFy5i+MGYpRkhWC5m6IW+bePkRwpyjFDSM25By4KWSuXq
+	N3mMoqSBIHaZeJXcLjSupptzWDOZ1E55jcqYy69rpLbXQT0g8wldPLjImsC2HUs8z/4wNcjtOcW
+	j+B2UAg==
+X-Received: from pjboj14.prod.google.com ([2002:a17:90b:4d8e:b0:3a2:ae7b:1cbe])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2681:b0:3ad:8963:344a
+ with SMTP id 98e67ed59e1d1-3ae58329beamr2498110a91.66.1793217286989; Wed, 28
+ Oct 2026 12:54:46 -0700 (PDT)
+Date: Wed, 28 Oct 2026 19:54:46 +0000
+In-Reply-To: <20261028160847.2170959-1-edumazet@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -78,10 +78,10 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261028162510.2180528-1-edumazet@kernel.org>
-Message-ID: <auJQz9OCWPqJimv6@google.com>
-Subject: Re: [PATCH net] tcp: wait for TIME_WAIT teardown before freeing
- per-netns ehash
+References: <20261028160847.2170959-1-edumazet@kernel.org>
+Message-ID: <auJS_SXcIln-iJxd@google.com>
+Subject: Re: [PATCH net] tcp: avoid double destroy in tcp_abort() of an
+ unaccepted child
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: Eric Dumazet <edumazet@kernel.org>
 Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
@@ -89,31 +89,31 @@ Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
 	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, Kyle Zeng <kylebot@openai.com>
 Content-Type: text/plain; charset="us-ascii"
 
-On Wed, 28 Oct 2026 17:25:10 +0100, Eric Dumazet wrote:
+On Wed, 28 Oct 2026 17:08:47 +0100, Eric Dumazet wrote:
 > From: Kyle Zeng <kylebot@openai.com>
 > 
-> inet_twsk_kill() removes a TIME_WAIT socket from the established hash
-> before it finishes using the ehash lock, hashinfo and bind tables, and
-> before it drops the death-row reference. A running timer can therefore
-> unhash its socket before inet_twsk_purge() reaches it. The purge cannot
-> synchronize with that timer, and tcp_sk_exit_batch() can free the
-> private ehash and hashinfo while inet_twsk_kill() is still using them.
+> tcp_abort() checks for TCP_CLOSE while only owning the socket lock,
+> then grabs the BH lock before calling tcp_done_with_error().
 > 
-> An unprivileged reproducer using user and network namespaces, a private
-> TCP ehash and a FIN_WAIT2 timer triggers a KASAN slab-use-after-free in
-> inet_twsk_kill(). The allocation and free stacks point to
-> inet_pernet_hashinfo_alloc() and inet_pernet_hashinfo_free().
+> For a child still sitting in a listener accept queue (which can be
+> reached via SOCK_DESTROY or bpf_sock_destroy()), inet_csk_listen_stop()
+> can run in this window: it only holds the child BH lock, and calls
+> inet_child_forget(), which disconnects, orphans and destroys the child.
 > 
-> Wait for an RCU grace period after purging the whole batch.
-> TIME_WAIT removal runs with bottom halves disabled, so this also waits
-> for removers that were already invisible to the purge. Keep the wait
-> under tcp_exit_batch_mutex, before freeing any private hashinfo.
+> tcp_abort() then calls tcp_done_with_error() -> tcp_done(), which sees
+> SOCK_DEAD and calls inet_csk_destroy_sock() a second time, leading to
+> a double sock_put() and a use-after-free.
 > 
-> Fixes: d1e5e6408b30 ("tcp: Introduce optional per-netns ehash.")
+> Recheck TCP_CLOSE after acquiring the BH lock, unless we just closed
+> a listener ourselves, in which case tcp_done_with_error() must still
+> run to report the error.
+> 
+> Note that the WARN_ON(sock_owned_by_user(child)) in
+> inet_csk_listen_stop() can still trigger in this window.
+> 
+> Fixes: bac76cf89816 ("tcp: fix forever orphan socket caused by tcp_abort")
 > Signed-off-by: Kyle Zeng <kylebot@openai.com>
-> [edumazet: only call synchronize_net() if one netns in the batch uses a private ehash]
+> [edumazet: recheck TCP_CLOSE under the BH lock instead of moving the test, smaller diff]
 > Signed-off-by: Eric Dumazet <edumazet@kernel.org>
 
 Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-
-Thanks !
