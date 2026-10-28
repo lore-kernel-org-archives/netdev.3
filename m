@@ -1,95 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.228
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.97
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793222606;
-	b=Cw+BkLIBcCAyRcaM7xoHZiu6rBG+jz4JhgZ3+1eDUr7FofVNPV00CMckjYNe2YGWVqHv
-	 gDDaDin0V045w/RMywqo6eAMAKz41Gvwb4anP11CoSe2xjpISMQea9W+mvTrglWI/bwnC
-	 zPx4VzQElU7+7LIlwPoVFdnihotPqR2jM2CbkArS70G3n9W/ZYnieYYFy4YoTj2czzVn9
-	 POItYEwj+e/15mYDiZKpvTQ/zM/oqWeIwWbAxC3EhdBPrHfLcBqIRH6tZwxnybL1oBC/8
-	 sMCBDV/qUj4Z/P2Z6fT+rIds5jQT1qPNyGyCwy5QmyFPBUTsXBaL1Y5SnxnTl0NbYRg==
+	t=1793222599;
+	b=oAji01AVDsskgh2yvgkiyUtXDp6izqW+HpWzH47r7/D7Xe4ACGiW2ovAkhTaJGXPkSKG
+	 PHvn23EfN0j5sTME9g3sEJ72BFFaEynQJ4sPEEC8ZfLACnuGLABKoQkHksdHhW8fM6lGY
+	 Jpi0MPaUHj9lELOhVB5JL0liHWzShF9c20FMGvJ3fuWbUeLaT+mOEan+AGmleGV0kVvz6
+	 eFqLf1nxg1B3beuwxeUbWwcXrBQnsgtoxKaOSNvAn21A4EFCcJJPD6GOHi/1qmF7Ti2NY
+	 tCoIiuLpB1lr3GNF2mkB3q0ar5XAEIIKJBD8e3QQ/xni84qGbe5w0whNEEQyq1dhm5A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793222606;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793222599;
 	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
 	 X-Gm-Gg:X-Received:Received:X-Relaying-Domain:X-CFilter-Loop:Received:
 	 DKIM-Signature:X-Received:X-Received:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-DetectorID-Processed;
-	bh=zKHpOqN7el/iBi24fQQZSjZZJgwztQp4IyGIqG/dArc=;
-	b=YKHTVaq+9hprb4wACQo4LSvC+GQO90QRHwZI3aNJu6j9EqPI8RS+55itn3581XoEsJpz
-	 Cmc/YplVLmzNRblda/vCQKl60GXmojT08YAlv9vVuYqxzI5VDY06RwxMlRF2M4sV3fS18
-	 k51MIuWWtKXoPOXSRgE5mSZRnuLpZSTKh/NOYN+pmpJoGL1bLZdbANEDlECi2RuL5PwVD
-	 68spwp6/bpD11ut3XH194Q5LsHr4oaiaqlhUeodlhfqZ+WRg/UqGfnuQUAxM4b+qIi4w8
-	 7i4qLJ5ywS5+nx3+MaNZvZJ2bU5GpaW0cuXTrSu68vYwfOI2oqIluveBDD7nA2535sg==
+	bh=r7/S1yrh0Xh4BzOz3EN4N+JMRy3rpsmCaRVhbCsIs9Y=;
+	b=fior+6409C5ybkN6yCmnIyjccRLLZ6iwH2MCMO6GN/3hg4S77xxnj0zSpy2JT5M0M3w6
+	 U7Ypng5xr8mwa1c2glTbFwjWztA+5QFxiYEdS0IG7L6GdoDVg0QeocfvqXKyh++bBwhCB
+	 +v1yy7DG3VeZJEFC54oNaLidQP96b+r9LuCbuVdVbISSal5+H/kIvMDkxP50ZHcux2wOa
+	 a+hpYJWjMjp7E9qPd7AE0Z0sDUnRkT0hEdjb7cWcBLulHE4W5jMh6imI1qwRzdfo+OEKI
+	 b4J+xQPy6Dg4OiF0W5GCty2Fx+JBWXP5mJKappht0RoQ9M0i61hhVZ5td5dq4WNdvPg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=broadcom.com;
 	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b="RQ2AXx/A";
-	arc=none smtp.remote-ip=209.85.215.228
-Received: from mail-pg1-f228.google.com (mail-pg1-f228.google.com [209.85.215.228])
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b="dSfw/E3h";
+	arc=none smtp.remote-ip=209.85.216.97
+Received: from mail-pj1-f97.google.com (mail-pj1-f97.google.com [209.85.216.97])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A7760A2620
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 21:23:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 70A7760A2620
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E998E606A332
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 21:23:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E998E606A332
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=RQ2AXx/A
-Received: by mail-pg1-f228.google.com with SMTP id 41be03b00d2f7-cdab6ae1ee9so774173a12.1
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 14:23:26 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=dSfw/E3h
+Received: by mail-pj1-f97.google.com with SMTP id 98e67ed59e1d1-3ac91ac8924so936399a91.1
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 14:23:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793222606; x=1793827406;
+        d=1e100.net; s=20260707; t=1793222598; x=1793827398;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=zKHpOqN7el/iBi24fQQZSjZZJgwztQp4IyGIqG/dArc=;
-        b=Ay20fh08Svn7lC6YhPMmxw4ZC/mPTPIrjIGLBb7zU0Y8kejRKLQZtoPsz9tXIAloLD
-         7JKzMy3is7IKLNit8aC9d4miPqmjsHSvmg8sbx30i1WTH2xeKl4713Ljr3bCHDBrcoUB
-         SBpkrhTVJ2YPkzM+PdeLueEpjeb+pJ6/WdfGKwT8SiZCoHnnaf79UPcYhK5QJJerS1x6
-         FCSC+Ly0R8euV049CxjtkxfVE1wfqrUAefelBHUoDwg1ERtQ6peL8rNdX/AT58gCTduc
-         nGuuoYQrOUUpljzcoT6DsWKmU67ur79R1ykIkB4qbFzsCKsrw/LQ4Cfh7ZSwQbDkQXVB
-         w4OA==
-X-Gm-Message-State: AFq9FYLljNkoN+oSzoCbdamKdL60b3kkYeM4hZviNGDHgPe9LCE3/7UP
-	vCBQBoVydf4mP0nbBOkOOmkcEAUEGUShs+kEatSkKUn6zt2lFx6JCIYOU8Z56XP+KlUETQPNUIR
-	0T854b2X3ge2JSrSBeG20HFB1HYnGlLtrxugzMVa/yrPGxtHc8kRYlNtDojKzDoOg6bAUw3Xugb
-	cQkRxlh3Mc0xmw2z8rvDgcmDXC9hGTdGrxxNgVhCdlPXS+AmZyNhoHB/Ac8DsqVZyYK3xN/zEuo
-	f1qL7fbb4ynD3KY
-X-Gm-Gg: AYBFou2K1cc6a0mxNI9DDGEM82PIFqaMwqpbWKQ3lcBMJXV4WO6UX2rnGaKkDEN9WmK
-	WLEOd3OBwU/QvnFNBbTkgOkHI6WWvesI4KkKEIv7EyJJowCSOuwsMkSkA+OJ2+po8flH8XqCFTP
-	F6f4Eo4ichUUDvMdEHH3V9tfyWjUHLn1nS++lGN9d9bX7sCHic/rip33z42Ld40M+3FwwX+dTJi
-	jCvnskBBWMauEoPkPFDHn5QisN2HhlqZYTYFI5a9TMlxFUwuqEnX5N1F4wF9itFBTOfUXWsZh4P
-	VZqryab8bvefDWu6j8E9Y6XYWS3wKLv5c6TGyZ0W0wSB3AkYVe7wKyIVYZtKlGzlw8gmWMPMqQI
-	e7BaA1YIxDIGa2S74wKkHtg3BvFLrmrxN20KZORNDm3TPNoEzQBrqmrUbiM+EJFhygA9Ro9zXqQ
-	OVnZZwKAT9p1FuGvdyG+mmbi8cKrmlTIgezjZEprXH
-X-Received: by 2002:a17:90b:4f49:b0:3ab:b39f:41da with SMTP id 98e67ed59e1d1-3ae580ae572mr2498440a91.11.1793222605707;
-        Wed, 28 Oct 2026 14:23:25 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-28.dlp.protect.broadcom.com. [144.49.247.28])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ae6e5e4c54sm558415a91.2.2026.10.28.14.23.25
+        bh=r7/S1yrh0Xh4BzOz3EN4N+JMRy3rpsmCaRVhbCsIs9Y=;
+        b=y/ycKOsfFed2+AUzsuxbfhReay+nztXQnm8WZhInmVPg0b1Du6TTP0nS4E8LcY/TAS
+         9HmxQq0iRiCin5rWOxueFosKuDEPLrydqIjAfS1viXTErttYC1OOrNho1ePA1w8gzY7n
+         o8CweRfNCEzs55OiW4wZOY20lLuoPkvVhphP9LSq6aoZd/xzimQTDW/VHoSBCvg4hKH5
+         LR2FrgME2pI9f7v6+d6pNkFvfw9ZMKFpDzigNUUmsS4oOCqkOAuBMwhpYAYZFF5lKS/c
+         kelpL4Sk/+pxe8S5IduBFDxU2RjVsErCGEALENvmRwqQVbChBJUS+LCXR7D1/2dhWgzu
+         z4zA==
+X-Gm-Message-State: AFq9FYLEro4Us5v5qszJtUMff2fBx2h5q8ZtbJum46DOokwGuENAYrBX
+	nWeB1Ospp8kSQWkqhlBOTRSZtcg29oq+LD8a05hk/OOLR/BcPdms8VLP6y/+HFZ2aGpg6vRsNJo
+	z/RNCpeeRdT9U2l7ajXE60EIY5dYSs4Kuv6FD7E4O566NM4rAI2VmsnyFlGZHITf5EmIuv8hIO3
+	lNHZ6Ouy3bPsSKOSDHA5HNCRFVMf8G9hxTmzjN8xNpOtUyutfvPbYWndVLMVGsEtWCg5CYJ1T9I
+	SVRevUxZ92WEaF8
+X-Gm-Gg: AYBFou0/S+VfGNBH/GeLZOM5q4ER/Va3G/FbYNHpVGQ678p4f5qK7ekKi6nvL1tj8yy
+	8Y4BaPf7/4mvMjYDx7S+58kSuQqpwcEkJXAPxl4GMWL7IHKRG+3hb6akf2wklxtBnldiabYtmZo
+	H8r9w2PltZZ81AYcSqYeaHOAqUF2cR6LPH1pnyIpq6aft9CKuErWmA3r0bZctttF0q66MNU21qP
+	2z0vYcgMEytUiS2YpaIsM9+ijUCgcMyn32VyUFSRGO/bT6C0VJecgGiypqOG4rILiE++N5IJpE5
+	jYE/pkQc8aVLMDbq+W18vETpfe425QN1HXy/RYJYrNXv6z19a/wZQ7r6Ib1fHnLjGEHy2adB5EE
+	qel5/xqfixsskGLH4rAE0Toj3FTPJK425gA7IUKgzJ2ghWhWl/pv8CHBu3WeZAXrmxZLLrAeEEN
+	n5pS7muqXRnShfegVVDUsJUlBmmmASRg8ZC6TAngw3
+X-Received: by 2002:a17:90b:46:b0:3aa:548f:eb77 with SMTP id 98e67ed59e1d1-3ae5823c672mr2774234a91.56.1793222598279;
+        Wed, 28 Oct 2026 14:23:18 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-13.dlp.protect.broadcom.com. [144.49.247.13])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ae57a6ece8sm1027875a91.4.2026.10.28.14.23.17
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 28 Oct 2026 14:23:25 -0700 (PDT)
+        Wed, 28 Oct 2026 14:23:18 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-93f2005ce21so204744685a.3
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 14:23:25 -0700 (PDT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93cbf2fd504so234903585a.2
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 14:23:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1793222604; x=1793827404; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1793222596; x=1793827396; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=zKHpOqN7el/iBi24fQQZSjZZJgwztQp4IyGIqG/dArc=;
-        b=RQ2AXx/AEmTOkGwCqivWPHmGfr9SaJGSn4nXt+rK0bL+z0JLNs/4IGcB+mmAK2hzUl
-         Unctm3jfJ29kHpI5oeI+V3UcHVVkmgdpz5klDu7+2Suf0EHn0SciRCU4dP1KUQJbtt+J
-         uovbUAZn8qclmyPIrAtA6IGi9YV5rXB0ymyts=
-X-Received: by 2002:a05:620a:400e:b0:939:6de6:9518 with SMTP id af79cd13be357-94408a9275dmr560955185a.47.1793222604653;
-        Wed, 28 Oct 2026 14:23:24 -0700 (PDT)
-X-Received: by 2002:a05:620a:400e:b0:939:6de6:9518 with SMTP id af79cd13be357-94408a9275dmr560952285a.47.1793222604237;
-        Wed, 28 Oct 2026 14:23:24 -0700 (PDT)
+        bh=r7/S1yrh0Xh4BzOz3EN4N+JMRy3rpsmCaRVhbCsIs9Y=;
+        b=dSfw/E3hAq6aXElazM9z2ErlpBFRtIhBYszqqDWBvGgmc/ltuipTXWVAHfYKP4U5aL
+         6R25qFumJqNuVjAvjg8wRACR165qCuiUaz65asN/cBXiPLF0yIxQb+P8DT40BHdhT2Aq
+         l5ZsBqjFNEWafjP+2jX1jeS41MNSxst0oDH5I=
+X-Received: by 2002:a05:620a:2906:b0:93b:d7a3:45cc with SMTP id af79cd13be357-94408d03ea8mr517636885a.53.1793222596389;
+        Wed, 28 Oct 2026 14:23:16 -0700 (PDT)
+X-Received: by 2002:a05:620a:2906:b0:93b:d7a3:45cc with SMTP id af79cd13be357-94408d03ea8mr517633285a.53.1793222595965;
+        Wed, 28 Oct 2026 14:23:15 -0700 (PDT)
 Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-940f0669112sm1368755185a.10.2026.10.28.14.23.22
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-940f0669112sm1368755185a.10.2026.10.28.14.23.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 14:23:23 -0700 (PDT)
+        Wed, 28 Oct 2026 14:23:15 -0700 (PDT)
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 To: netdev@vger.kernel.org
 Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
@@ -103,9 +103,9 @@ Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
 	Russell King <linux@armlinux.org.uk>,
 	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
 	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net v2 5/5] net: dsa: b53: use the correct override register 2 Gbps bit
-Date: Wed, 28 Oct 2026 14:23:10 -0700
-Message-ID: <20261028212310.3847553-6-florian.fainelli@broadcom.com>
+Subject: [PATCH net v2 1/5] net: dsa: b53: initialize the jumbo frame size register offset
+Date: Wed, 28 Oct 2026 14:23:06 -0700
+Message-ID: <20261028212310.3847553-2-florian.fainelli@broadcom.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261028212310.3847553-1-florian.fainelli@broadcom.com>
 References: <20261028212310.3847553-1-florian.fainelli@broadcom.com>
@@ -121,58 +121,34 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-The IMP and per-port GMII override registers swap the override-enable and 2
-Gbps speed bits. Using the IMP speed bit on a GMII port clears its override
-enable and leaves any previous 2 Gbps selection intact. Select the speed
-bit alongside the register and enable bit so lower speeds clear the correct
-bit and 2 Gbps sets it.
+The chip data specifies both the jumbo port mask and frame size register
+offsets, but b53_switch_init() only copies the former into the device.
+Since the device is zero-initialized, b53_set_jumbo() writes the frame
+size to offset zero instead of the chip-specific size register at 0x05
+or 0x08.
 
-Fixes: b6a8a5477fe9 ("net: dsa: b53: fix resetting speed and pause on forced link")
+Copy jumbo_size_reg from the chip data along with jumbo_pm_reg so frame
+size updates reach the intended register.
+
+Fixes: 967dd82ffc52 ("net: dsa: b53: Add support for Broadcom RoboSwitch")
 Reviewed-by: Jonas Gorski <jonas.gorski@gmail.com>
 Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 ---
- drivers/net/dsa/b53/b53_common.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 378f47e7250c..75033b28100e 100644
+index 0880310c9ce3..559d4b360c82 100644
 --- a/drivers/net/dsa/b53/b53_common.c
 +++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1370,17 +1370,19 @@ static void b53_force_port_config(struct b53_device *dev, int port,
- 				  int speed, int duplex,
- 				  bool tx_pause, bool rx_pause)
- {
--	u8 reg, val, off;
-+	u8 reg, val, off, speed2000;
- 
- 	/* Override the port settings */
- 	if (port == dev->imp_port) {
- 		off = B53_PORT_OVERRIDE_CTRL;
- 		val = PORT_OVERRIDE_EN;
-+		speed2000 = PORT_OVERRIDE_SPEED_2000M;
- 	} else if (is5325(dev)) {
- 		return;
- 	} else {
- 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
- 		val = GMII_PO_EN;
-+		speed2000 = GMII_PO_SPEED_2000M;
- 	}
- 
- 	b53_read8(dev, B53_CTRL_PAGE, off, &reg);
-@@ -1392,11 +1394,11 @@ static void b53_force_port_config(struct b53_device *dev, int port,
- 
- 	reg &= ~(0x3 << GMII_PO_SPEED_S);
- 	if (is5301x(dev) || is58xx(dev))
--		reg &= ~PORT_OVERRIDE_SPEED_2000M;
-+		reg &= ~speed2000;
- 
- 	switch (speed) {
- 	case 2000:
--		reg |= PORT_OVERRIDE_SPEED_2000M;
-+		reg |= speed2000;
- 		fallthrough;
- 	case SPEED_1000:
- 		reg |= PORT_OVERRIDE_SPEED_1000M;
+@@ -3109,6 +3109,7 @@ static int b53_switch_init(struct b53_device *dev)
+ 			dev->vta_regs[1] = chip->vta_regs[1];
+ 			dev->vta_regs[2] = chip->vta_regs[2];
+ 			dev->jumbo_pm_reg = chip->jumbo_pm_reg;
++			dev->jumbo_size_reg = chip->jumbo_size_reg;
+ 			dev->imp_port = chip->imp_port;
+ 			dev->num_vlans = chip->vlans;
+ 			dev->num_arl_bins = chip->arl_bins;
 -- 
 2.53.0
 
