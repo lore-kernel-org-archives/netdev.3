@@ -1,86 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.29.241.158
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793146329;
-	b=eJ8q+beOPa9RNxFPnAH8tGzEgxTSoJ5YY1xUzRsRFtJkioLhCLMxpX83HlXfqdubQon1
-	 gOvUDVPQh25a6hULTwNMT1cBWg+EQyFsbl5ezPY43JyTrKkDW0mq/9SfsfihBJGW63P/p
-	 yRs8w04kMuioaQ4gD1SEO7pf6pS1O/whGJp2dV3wiOHqeiInL7j253Tchnp9DPNrLfTXk
-	 BVEfxY+s5bioOcJpY9jGYwI9F8nHC6yMzgz7P9sUAv0jKdX0Sw8SkUwZDTu2zfIQk4M9m
-	 T9q+tmuqv4wJGvpFAPW76UKGsUEG74UNpy8znhbuBqEoS8WuXqCPP4KOvoks9EyMniA==
+	t=1793147152;
+	b=WHRW2mm9mnX8smhhE3qEbZ+owyKL3RSxICRYdDkl97oDhDh/TIQ8XOIYrlnJW6G00ERa
+	 XPjFBlmsxnUAIh1RcxN67anhW6gk5VrCfh3nucUWeya5tBj0UpqjhF3s3n1mP0iFyQfak
+	 XtfP/rHoJyurhxIuudYRLedH2k0EFGl+Bje6sJv7TGRzIe2tvHMvmsFkNlZzhgGsaHqdi
+	 2IjpzjWYnw89Vo4iVdbDYwAqi/Kmuni4m+wCT0bU7G066RN1fhNv9juJ/yXLJ5l8iEcDF
+	 Rn6IAqwqSIjQ4wtHFwTqBxWJUdPs8lEw4AW9TLpcQvURYa2LRHKiv+ORjqD/vapYxzA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793146329;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=X7/TY3AgukGfoieSJDQxLpG5Fggby8BROw4KBBUkUhI=;
-	b=leooeYyotzJ2BeFXRFiO2JLJ/3KovbSn9PQTbTl4rjGtt3Y7KHFj3L6MXR7aPJ5iUz86
-	 xJetj1ryM3ObWjKgSece/JDqdD4YNXlbL0suvrAeMwCNwraHSLs0H2X8aEz23ejP4GMHk
-	 ZW7AGM7860Ex3ekhEhgu4QuJHVlWVZG3iIR26833enBmpJasfDRSIqswKnItWH1Iob+kQ
-	 QrqkKL9OfkeuY62vrR08Q5DyC8HNgDDFusAf9S98QrDrpZpY1z2ZRjML3LhiQxUe2sRTF
-	 1u7gJHnoks84vQYdOSg7JglxRF87wGVpuIyoivK3nCD36I7fr4arvoSPsRqEqWeCfzw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793147152;
+	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
+	 Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
+	 User-Agent:MIME-Version;
+	bh=DSUDuleFtEdjXo6DVz2LKAGdoX0A00zbIPJT/D7AoE0=;
+	b=jQWLIM4iYxGzzTXvKgTI9uKtXT4CDpyHF0v3EWmpoDz3VV99OBPvGEZwJKE3dFfNqgv4
+	 WwsDkfYk8mouHAC2fLZBrm868CCq45tCAxLJbo2oLk6sYCvmNwkYHyDMszK6+vYDFkWQo
+	 c3Xsz53b5oIQZhWw9UC2bZ3r58lH1d8YzMaGsKbebdm98M+xkD067V8k6xaomkzgro1Ge
+	 yd9lZMwArgpe6/AvhhIKkQCu+kUsk4Elq1xnHN3k2Y7qGzdl344DQmmFuASyMVSz7jNNf
+	 6/B0TWNnSvxqwJV06IgjvAw97qC9P/cXWaqBIo7t3JfMoLXmovFxhGjZNUl/Tdm7lPA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=J3vjEIj4;
-	arc=none smtp.remote-ip=74.125.82.172
-Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=codeconstruct.com.au;
+	spf=pass smtp.mailfrom=codeconstruct.com.au;
+	dkim=pass header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.a=rsa-sha256 header.s=2022a header.b=dfie2cWD;
+	arc=none smtp.remote-ip=203.29.241.158
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9CF606A31D
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 00:12:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4C9CF606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE39606A31A;
+	Wed, 28 Oct 2026 00:25:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7BE39606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=J3vjEIj4
-Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-3535bf8b3e0so606785eec.0
-        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 17:12:09 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.a=rsa-sha256 header.s=2022a header.b=dfie2cWD
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793146328; x=1793751128; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=X7/TY3AgukGfoieSJDQxLpG5Fggby8BROw4KBBUkUhI=;
-        b=J3vjEIj4VNTW9zJPu6xP8J//CiufUtoWOvE2tqsVUE6wmkKpeo6OPGbfMBQ21xIXYk
-         a0o+zY8whCEOuDIWAzWsRfxM8Tzo8JJI0YEUk6AEbpSz0VV+hASUzkQDRDXUtmEzSPeF
-         j4/0GVA4WpsUTwbOOKzHZnXWqFh64GOC/7zDm06IikH3H+3C9Gd0KalrW9eJC+W3ttnu
-         iE2ZbLVM06+utlh41bE8CSU5VZBcvmMrkgdxm2BAxXyLw91M+IImGl6dnRmWDgxRbuJ8
-         ZD+TJ55TaEQK7i7ibP7XRHac/XCKmce9WMcN6evVVir63HsDDzT40kgjVGYxcQj1jWu6
-         KGag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793146328; x=1793751128;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=X7/TY3AgukGfoieSJDQxLpG5Fggby8BROw4KBBUkUhI=;
-        b=BNg3aIGJtC3m3y9Pi3YmI0g5hZ5qiaTDxl3CQjIWT1dMBhJDTpgqZqPBzuStAzlFSQ
-         QCH6sIHlm1d9y+BxTnM4m8NP5Apior0B9xm+e9iumj+8F0YjXeWyenwiRwiRPpdYeNCx
-         Rp1xYUov/fUHPd5exEGCHdLNh+jdd7ocsquq+wRVq4uLyADzE6eZWi2Xitc5kbPGZY8T
-         wyZjuMKOw1nhtAyk+xtbll0YkQqyvbh45Kxsz4Xqm6oNIRbLpc+dxP2hE/cadKn2HBMm
-         g8FR4zxJKMk+rNjrve9Tt8zQZ9uGim/6ehjLwu3ycTF2mwHTR/gQXcJ7UYlrEc+Ni+NE
-         2K5Q==
-X-Gm-Message-State: AFq9FYLPkamapNQs1EJRIUOLk3y6iTf0fq/SNBPwmVMpmWk7NvkZb4fJ
-	29z1lJ5bp587rMr+qYeyH3jUjF9MLOn6ObAY+6Wd9y1dkUBl3/RfKgvu
-X-Gm-Gg: AYBFou1ionOfHPcwgUcEtVndS8bGzmq1W+TcIEpNqFPg0prdTBg4XMDbKHmGIWc0VVf
-	5n3nObM4C0tZ5oON2tDGFTcepq5Aq6SQ6/FcW4Vc4VAwAgDi/8w40NOjjmmeWqmob+ElIzSUBwJ
-	bPAR5qpntG8Ra53EHXmWYn6kPuV4pg2XGqBPAG8X+5oNDOsjUW5szRYE+m6RQkHHGSEz/IW1Doo
-	7wAGiT9Fj8S1X9DvGr/y0Ei2SJVM8CU5ITEezrRHIccbscyr+u+fo7dJRY4u1qWXSpoL4axJV9H
-	taetziuLBr23wLLeYi5yPJW4THaT43wYbptbdZawk5i1fUxkgte0Awa2IC9Tu3NVLDzE8r1oXhm
-	zBdl2zmSPh0M4xrl3nF9RXcp5qCgifP7Sc9smpEn4VBr/cwFQ3J1t4jPOuHIcqm9p/EduZ/iAQu
-	cElWFcUy4jNvHjpaEYC6qtp0eVszuy3GL+267zTGlkzj+/ZIL1Jvk8BGz8PjiPM20dpvep++yKO
-	OOZN9LI9bc09hhpAr49t2NuLpnOsjbfWCVF0IObMX8XHrcprzdXn6Hf2wuAgJkZkLGoKoRnwsTK
-	AsvLmLurcbATkcBsecEOd6UxUH6R+bxSuQ==
-X-Received: by 2002:a05:693c:87d0:20b0:35d:eb9c:fce with SMTP id 5a478bee46e88-36a2009314fmr1308536eec.25.1793146328218;
-        Tue, 27 Oct 2026 17:12:08 -0700 (PDT)
-Received: from [192.168.2.21] (wsip-184-189-202-35.oc.oc.cox.net. [184.189.202.35])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a238da3e1sm461059eec.8.2026.10.27.17.12.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Oct 2026 17:12:06 -0700 (PDT)
-Message-ID: <49ae504c-b22e-435f-b727-91db5ca7c0b5@gmail.com>
-Date: Tue, 27 Oct 2026 17:12:03 -0700
+	d=codeconstruct.com.au; s=2022a; t=1793147148;
+	bh=DSUDuleFtEdjXo6DVz2LKAGdoX0A00zbIPJT/D7AoE0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=dfie2cWDnjq5LPPx0ZMunW0tKvlZTFYktNe1S+UPBJn6zvmVjsuU4EPLLpwwLcTL5
+	 quSXOONbSHNKZkBArYmF1wQgK6+f3ZZ0QGTki2LK3HtS14BqGQKP40hDnimQ/SL+lY
+	 pBzXomcQYIjct5t+gQfyQa+EJWAgjq98lGhqjZUF8JaN9nHQEPxsyTrNNvDYNP1A2+
+	 B8erZZWtVSdXlmzVIEeMfKS2jVt5rwjBJYN4TerAleBJBkBrGsTOc3DZBe4FveH3Yz
+	 wWD7YNQgCzYiBi0BH/fSMIal53Rf1bXvi6iaOlo+3H3od4XyN+Q2sV15rJsd/rqXSh
+	 hPd7H0JffRKWA==
+Received: from pecola.lan (unknown [159.196.93.152])
+	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 7724164C75;
+	Wed, 28 Oct 2026 08:25:47 +0800 (AWST)
+Message-ID: <8610ff0f3852f68c935f5234ea0236f89f7c0131.camel@codeconstruct.com.au>
+Subject: Re: [PATCH net] net: mctp: free reassembly head skb when key_add
+ fails on SOM
+From: Jeremy Kerr <jk@codeconstruct.com.au>
+To: Joas Antonio dos Santos <joasantonio108@gmail.com>
+Cc: Matt Johnston <matt@codeconstruct.com.au>, Guikun Yang
+ <yangguikun19@qq.com>,  "David S.Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,  Paolo
+ Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Wed, 28 Oct 2026 08:25:47 +0800
+In-Reply-To: <179301733329.91976.14585535037608378942@gmail.com>
+References: <179287946888.17431.11219154409333681184@gmail.com>
+	 <426ef7428413b8d05b6cc3ac22e24b1927ab5aca.camel@codeconstruct.com.au>
+	 <179301733329.91976.14585535037608378942@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-0+deb13u1 
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -90,41 +73,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 00/11] net: au1000: Bug fixes
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Heiner Kallweit <hkallweit1@gmail.com>,
- Russell King <linux@armlinux.org.uk>, Jijie Shao <shaojijie@huawei.com>,
- Simon Horman <horms@kernel.org>, Runyu Xiao <runyu.xiao@seu.edu.cn>,
- David Yang <mmyangfl@gmail.com>, Herbert Valerio Riedel <hvr@gnu.org>,
- Jeff Garzik <jeff@garzik.org>, Danny Kukawka <danny.kukawka@bisect.de>,
- Mugunthan V N <mugunthanvnm@ti.com>,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
- open list <linux-kernel@vger.kernel.org>,
- Manuel Lauss <manuel.lauss@gmail.com>
-References: <20261027223140.3774570-1-f.fainelli@gmail.com>
- <20261027162136.301932d4@kernel.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20261027162136.301932d4@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+
+Hi Joas,
+
+> > We could just defer setting skb to NULL until the mctp_key_add() has
+> > succeeded; there's already the common error path that cleans up any
+> > remaining skb.
+>=20
+> I think that one needs care. For the first fragment, mctp_frag_queue()
+> stores skb_unclone_full(skb) in key->reasm_head, and if skb is a clone,
+> skb_unclone_full() frees it and returns a copy. The kfree_skb(skb) at
+> out: would then free the original a second time, and the copy in
+> reasm_head would still leak. Taking skb back from key->reasm_head on
+> failure would work, but the explicit free looked simpler to me.
+
+OK, yep, that makes sense!
+
+Acked-by: Jeremy Kerr <jk@codeconstruct.com.au>
+
+Cheers,
 
 
-
-On 10/27/2026 4:21 PM, Jakub Kicinski wrote:
-> On Tue, 27 Oct 2026 15:31:29 -0700 Florian Fainelli wrote:
->> This patch series contains bug fixes that were found during code
->> inspection and also during fixing the open/close/open issue that was met
->> on the MTX-1 platform.
-> 
-> Are you trying to bypass the 15 patch limit by using 2 email addrs? 🤔️
-
-That would be clever, would not it, not at all. There's what happens at 
-work and then in my "spare" time. Things should slow down once patches 
-get accepted.
--- 
-Florian
-
+Jeremy
