@@ -1,78 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=193.238.174.39
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793200967;
-	b=tuiH7OKwDuwKCzDg5n12bKnEGDBkJ/eHfx7UYDozN+PmpU125pegmD0h9+nH8ZKQLHSy
-	 Jes4KnPMqv1woa697ZNlSDPegrK5nESP9rnB6IqEx0nubOnfIszz4363Zlee2kxVviA/J
-	 kTFbkGN+ENFags5AFmV/7qEXFdxRWXcSLpSOEXUX8HO0lQHKNJRN3ATz12CFS3rixCyNi
-	 ESrO4RRkVVG5/uzrqFiluqjRdWizM88av2MsGcThVS2LCA7kJM7hrKoLWxfL9wTNuJb6C
-	 zYZxBsR4NWLzU+WhJG3Xsw7pXLWQe+1Bv7kzditzvIf0FnomuNIjGrID5zxGAnDs7Mw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793200967;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:Date:
-	 From:To:cc:Subject:In-Reply-To:Message-ID:References:MIME-Version:
-	 Content-Type;
-	bh=qGRmNggSaPp8mWkkEQlD8kxUR423ZcG9+LSn2ibB6HM=;
-	b=vjhuXmolRG92NC61EB/7vQDBdp3CZixEZDm2qYZAJEHOoieIC4kBO8zAiTq7jQMxEa/i
-	 IiJY74DoMlgO96PxVO5W4txuIi4BCbwHq0JxH4nbDTYDoIL1hHqyRBUcT7euAbUV6loeZ
-	 tk9fgCTS8zoUy/xPiwPb5yU1hNaG9oq3n2yurdHkHmkIcLizslqneTkwgMy/gr8crAovj
-	 /jzOEyizmFLVUmUHNEbUGp5ZuPDmhJ6ziu6Ig5Y2JYHPg7bQ5vGLm31WK6KX13funF4Cn
-	 wf1Vnc5lT16q83xyDceDGoLidRrNqyR/JQdUC9M6jxJovSPHtLYXU9m5rLZmYOnWSHg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=ssi.bg;
-	spf=pass smtp.mailfrom=ssi.bg;
-	dkim=pass header.d=ssi.bg header.i=@ssi.bg header.a=rsa-sha256 header.s=ssi header.b=EJ5WAzHG;
-	arc=none smtp.remote-ip=193.238.174.39
-Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.161.53
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793201498;
+	b=G4iuYzzpEWb3/gLW3zu9SIkxTD0wWm+HR6byp2CLu8qnuIYxz8kQTyxu3Fw+dD2ane+I
+	 EgVI+LPoX4w55Wvd39iEL/0AGMZTnCFvtlItvjGMyqxluX1P2OAb8oBv7SpqXZuoCWLld
+	 Bl/FtlqTYIIss/Uktiue0MrIJb66qrFQNhQZRnhpueLufI9Gp8NTBx7DV9b8RAJOJfis+
+	 XtXnOIQpQ0Wysk/W/sCKSs7yxmAaqsNdSnJCr8sIJkwdhkY+11mb94XmWWjYm1Os2RH7m
+	 6utD+2NrbnoNsSRMc5rmZxyaiS11U5BNCF4foixWjRr5zBYsd1LIABKdfp5rSP7dhMw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793201498;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:From:Date:
+	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type;
+	bh=rrR5tguq/NvSlADBqoxK8L/OZP4UosuurE+5SxRCUqU=;
+	b=T5RExWR1fdlaKScoOt40BJgeElxy1aiacxI8L/yNQpFVwtYb7SG7RRe74QTjUFPY9Iyt
+	 TIXY+kanYjANPR/3ZlfEkSu+/Q44rfu34C4c6lnb57AmSHKAtd90hwoVNzoXUzxz/N0G+
+	 6hiiSMlCkgO7RUPHzZswpvlUosptgtYDYYZjOfI4fVeoHbKNz9+YjRwJQ3PpYUjyRelpz
+	 f6XoFBPnicnxa/q9bqYIoQjzNPP6l0eV3WZnSA6pqPekB9Y3Hz0rqy5CKHdyEIxzfoAeb
+	 OmbvJnO8BqePFq182+Ib9dL8rcVibb1iWewEUV+Dvov8KgnR5a9/O+Gfa02c5xp0IuQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=sxf8rSp+;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.161.53
+Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FF4606AB2B;
-	Wed, 28 Oct 2026 15:22:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 27FF4606AB2B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C10606A323
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 15:31:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 99C10606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key, unprotected) header.d=ssi.bg header.i=@ssi.bg header.a=rsa-sha256 header.s=ssi header.b=EJ5WAzHG
-Received: from mx.ssi.bg (localhost [127.0.0.1])
-	by mx.ssi.bg (Potsfix) with ESMTP id 846BB21F6D;
-	Wed, 28 Oct 2026 17:22:36 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
-	:content-type:content-type:date:from:from:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
-	 bh=qGRmNggSaPp8mWkkEQlD8kxUR423ZcG9+LSn2ibB6HM=; b=EJ5WAzHGKKQF
-	gIHozt7WR3TkigkU74+wh7TyKYh8lgsjr8a4caRnGha6k4D+KWs95IpfwHVwjzf0
-	Fv4i6rRUvjKwLRHdALBEVQG0s2ErjTggT8jLq/MHa46RWxZJPEA/9KDx0Pszg3ne
-	K4328bA1zS4xh/vXZSTK9uecgY1kErQp0D3PhvKW24Q2fHIMBUG2831AJI1cGKuL
-	TeOOL0c8XzwspPgGn66JG/4E9ADKg6vU4RVFFW2IuOmRQprEjv47z6kqsC9Y9BTo
-	yqno9kyznagqWymfPgqmESem7iAV5/QQ0enURfoJW7xcoZd+pDoahtqgwn/6s6x6
-	qv8hssZ1Pkrt0hUZAYY/a5+DptkvVmuW7uxBcNFx/pGnnhYxxuDYqt/tvmjVL5vW
-	NavyUnatxCL/FimsX3UVeqH0poitzDUqkzVYjgUT+mNS4lXhM9OOUHZImeYKAwbr
-	HnJ/ab8FiW3R4p8vYQTYmDGBdkrB1v+YZyoqMsxfazcE6HKdSx54qnpE+ZbKCeZa
-	PlDLN091P9+9YcJQffkXG4+8DeLavvE0Oh/ck/upBor2KPaFKuFl7nN+o66uuc5l
-	OoGGkCRVZ1RqTubxf2kaGLEw4SKQ7b4rI6+JEZkmvPJ4sh+BMF70k63KwoKqrzXr
-	KRenrAzaXEtxozalhGZUrH9ogaR+znY=
-Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
-	by mx.ssi.bg (Potsfix) with ESMTPS;
-	Wed, 28 Oct 2026 17:22:36 +0200 (EET)
-Received: from ja.ssi.bg (unknown [213.16.62.126])
-	by box.ssi.bg (Potsfix) with ESMTPSA id CA8B9608C6;
-	Wed, 28 Oct 2026 17:22:35 +0200 (EET)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 69SFMRhY035032;
-	Wed, 28 Oct 2026 17:22:27 +0200
-Date: Wed, 28 Oct 2026 17:22:27 +0200 (EET)
-From: Julian Anastasov <ja@ssi.bg>
-To: Star Chang <starchang@google.com>
-cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, horms@kernel.org, johannes@sipsolutions.net,
-        johannes.berg@intel.com, linux-kernel@vger.kernel.org,
-        wangroger@google.com
-Subject: Re: [PATCH net v4] net: Fix Hole-196 vulnerability by dropping
- unicast ARP/IP in L2 BMC
-In-Reply-To: <20261028061644.2997812-1-starchang@google.com>
-Message-ID: <f631e178-d9ec-f335-9163-c44a9e6c58af@ssi.bg>
-References: <20261026150539.1357037-1-starchang@google.com> <20261027015619.1745984-1-starchang@google.com> <5c1fe870-39ff-e83e-e479-0e1f0fed6a83@ssi.bg> <20261028061644.2997812-1-starchang@google.com>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=sxf8rSp+
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-70059e4dab6so768053eaf.3
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 08:31:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793201496; cv=none;
+        d=google.com; s=arc-20260327;
+        b=JLyA91Hgr0IEG/IEE7GuHC1bEg+qCYksQuv+cNQDq04PzGL6fGXBhDhi3/7tMWIF1e
+         ccl1FrImI22/Fp4MSfT8ZDVRCTpc+JafBqZQuKSuKQU4cft78bZkDvDUw0DF0HpSTXT0
+         btLN2Vmf94qxbn3ug+rFkPQjU3rql6LgIcG1LHFIadSAHE9daudRqasVbRHBH9aIQ5QP
+         NFV8f2I1IpQ0Xtlg+Q+hXdh1rirNQ6UDboC/60sGCB5gGbdVHeYQkUwN981gnEayZTSK
+         APZxhHhmr8AW/0H1cpA9uneODWB4nwjxM6KzZrGf8Fy2/dHNF9gxq2v93tqUu6UwCD1a
+         vxsw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=rrR5tguq/NvSlADBqoxK8L/OZP4UosuurE+5SxRCUqU=;
+        fh=OBbQkacgZ7cYtP0T1vawJYVUlwTF+SB5luilsO0YceA=;
+        b=Ccml/bMVmkBWtdD2d7pIHx5HGnraNPK28xvheBmye5bia+XJQhIbLeIb7WvxmFNp21
+         KU73RVcGPE61S4UJDVwKX+pCpgHxAyhW0h3Sw2Ol5fcmDta53ZsYlzZuFhwYlyRdoFho
+         MfhHfbyQnfN0sRtSwWL4CFfkHQBJGWDyn5/zDOWQvUKqCmpvsnjf5eF9ZhjX97LmEESu
+         9iTyS0ljn63fnwyIMTBoqvB6fkH/Fy63+WdPxoWKNUETnuI2dhao8zKec8+LaTwqWp/O
+         0wF83yU0o0c3OU0CSXywBwmV/PSwZhKMzJ6d7jF27IpIZ/Gh++9rW4gS1wwPYLEeHV+c
+         +L0g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793201496; x=1793806296; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=rrR5tguq/NvSlADBqoxK8L/OZP4UosuurE+5SxRCUqU=;
+        b=sxf8rSp+WVeGNtc6ZPLLInx/cWqJLs/0HE2OXjEcq9N9e+/QxmPk85WHsykOaoBQ4D
+         2SyyRr/AK6aSUT4nQuS6R8ivZKMoaejx2gHUWAbSFcpRnukaV9Zx3aFBOQVGjIl9/A78
+         3k9Sm+61uH6dJZy/kHNCft3cJ/wBXXXSvOr7i5oneuSUD4/yJP7RuS6hcEOmh1Ypvgaq
+         UYFXAJi2X/Akh3c3wRRxSx0lvci9rCm8gLWNGYDwMq5Ilykxfqh2DgGqjgB1ogVTWIGW
+         lRkceM4WlYbRDOFxDTxslZhUzgAY32g8DFnz8oij4INaXpemPJtOJKgFeMRNbd+f6Tzi
+         2Bew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793201496; x=1793806296;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=rrR5tguq/NvSlADBqoxK8L/OZP4UosuurE+5SxRCUqU=;
+        b=tedRxg2PjPZyZ5SaNt4ALiTbhjRzdNctvuNmOX+f5/s9Y5VvDMdg4xl8MJatVN94+X
+         MdtUKTdqFw554hiVH3UdaLfUFahnZYZddVFqay/bcdS8CwLzQjuSHrDA7s9hF7hWlOwM
+         cvnaiH7ePGESuwnXpb6Ys3RAxrAmFWIDRL8PnW4iSZs4lvFVFCQ1pw2IPdi7Gs87o0f/
+         nPMpN68s0SYosAQgdPke60pvNxWx0kfI9/PfWBG1lM7xQQCX4bBRLVXvhJ/DWH/JpQoS
+         wx5MnikFK31eSWxwsxk0r+adc+4hJqdP/CuYHgEfXkdNYuJaqS1ag+lsn42KOMN/4wzR
+         A7hg==
+X-Gm-Message-State: AFq9FYLWAUzIyLgnzOh9i7c6KHD3cZJA5MawC3k2PxzdTSA+NDhhcw2k
+	d7Ko4ZIMiLHNyJzRJBgcv2lUD/9D95U8csHB1br8VFv5N4h+N3GtQ2mm8z6h8V3vw/lh1iCK+XZ
+	arcbpkDq6fRYxmylZKao+UB5+SCG3Dt8g7wxX2p9TRBsu
+X-Gm-Gg: AYBFou2OuNK+CBUfBumguUfoTLf3TmZPg+W9q0R1iVWeZ1Dq5p8BIHGLIyIA/1w0T1A
+	/Swrjo7WH7VKOc9nVTzx4779PaaPjBii41jfiJSh9DXOavkppiXkaJ4st5UlQb9Lhz7JShU+jOZ
+	Y/fKokCIap/Es8cCpanp7ggW1yz++vVvdbJNTmEyLBx2Hf89NDJ5vJ+lntqwevkf1d0N9g1Y/JX
+	zhWW6zWi8wLew1ImmWmhQplTPHM8FGI8Wx946bRqJve5umT749abdmTg9ASvHNCFXzZ19Z+/21z
+	OjJ9RdtRsLNQphA6dI8V4PNHhFDppoYIWtL81nuukjDBo/FXLXXJtia6YA6HWdxGEkoQoKErpxy
+	MzbULPxUmMG3XU54PUQMzS0o3F2iHouQa2OLH
+X-Received: by 2002:a05:6820:351c:10b0:708:ec28:6fd1 with SMTP id
+ 006d021491bc7-713f213ef01mr994177eaf.66.1793201496013; Wed, 28 Oct 2026
+ 08:31:36 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -82,110 +99,82 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+From: Zhiyu Zhang <zhiyuzhang999@gmail.com>
+Date: Wed, 28 Oct 2026 23:31:24 +0800
+X-Gm-Features: AclHuK8PkpktUmhP09tfw9w0U0d0kSDJPluECqdPibL4nEqwoy4aGFpA88sGgwQ
+Message-ID: <CALf2hKvp0NPVLwr=a3+jUHtPohxbra8gox+aYAfWathJnn-J+Q@mail.gmail.com>
+Subject: [BUG] tcp: cross-family IPv4 option echo stack overwrite
+To: netdev@vger.kernel.org, edumazet@kernel.org, ncardwell@google.com, 
+	kuniyu@google.com, dsahern@kernel.org, idosch@nvidia.com, brauner@kernel.org, 
+	dhowells@redhat.com, security@kernel.org
+Cc: lyutoon@gmail.com, tpluszz77@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 
+Hello Linux Kernel Developers and Maintainers,
 
-	Hello,
+We found a TCP address-family mismatch that lets an IPv6 packet reach an IPv4
+reply path. The IPv4 path interprets IPv6 skb control-block fields as IPv4
+options and copies a packet-controlled length into a 40-byte stack buffer. We
+used it as the write primitive in a demonstrated unprivileged uid-to-root
+chain.
 
-On Wed, 28 Oct 2026, Star Chang wrote:
+The complete path is present in v7.3
+(c03c1a14507dfaf8b856c2608f9ac216021fc222), where we reproduced the
+privilege escalation with KASLR, STACKPROTECTOR_STRONG, PTI and IBT enabled.
+It is also present by inspection in v6.12.95. CONFIG_IPV6 is required.
 
-> Hi Julian,
-> 
-> Thank you very much for the insightful review and for pointing out the RFC 826 and RFC 2002 references.
-> 
-> You are completely right on both points:
-> 1. Per RFC 826, the Target Hardware Address (tha) in an ARP Request has no protocol meaning, and Linux updates neighbor entries using (sip, sha), never tha. Inspecting tha on ARP Requests was a fundamental mistake and would break legitimate devices that leave arbitrary/unicast addresses in tha.
-> 2. In RFC 2002 (section 4.6), many real-world GARP reply implementations legitimately set tha to the broadcast address (ff:ff:ff:ff:ff:ff) since the announcement is broadcast to all hosts. Requiring tha == sha in our check was overly restrictive and would cause false-positive drops for legitimate GARP replies.
-> 
-> Regarding your question about arp_accept:
-> In our testing, arp_accept = 0 successfully prevents creating *new* neighbor entries from unsolicited broadcasts. However, in typical client scenarios, the victim station almost always already has an existing neighbor entry for its default gateway (i.e. n is not NULL in arp_process).
-> 
-> When n already exists, arp_accept is bypassed, and once the 1-second LOCKTIME window has passed, arp_process() calls:
->     neigh_update(n, sha, state, NEIGH_UPDATE_F_OVERRIDE, 0);
-> which executes memcpy(&neigh->ha, lladdr, dev->addr_len) in __neigh_update(), overwriting the gateway's cached MAC address with the attacker's MAC.
-> 
-> In a Wi-Fi (Hole-196) scenario where clients share the GTK, an attacker cannot forge unicast frames directly to the victim, so they broadcast an unsolicited unicast ARP Reply (sip = gateway_ip, sha = attacker_mac, tip = victim_ip) over L2 broadcast (PACKET_BROADCAST).
-> 
-> Under standard networking behavior, a non-GARP ARP Reply is strictly meant to be delivered as an L2 unicast frame (PACKET_HOST) to the requester. The only legitimate reason an ARP Reply is ever sent over L2 broadcast is for Gratuitous ARP (sip == tip).
-> 
-> Based on your feedback, we plan to completely drop all checks on tha, leave ARP Requests entirely untouched, and strictly narrow the ARP defense to drop ARP Replies received over L2 BMC *only* if they are not Gratuitous ARP (sip != tip):
+Current mainline d135ab453a7400a34930bdda1ef4bdc8acfac80e contains
+8cc3aef0cb19 ("tcp: Do not allow buggy transitions between ehash and
+lhash2."), which rejects the exact socket transition used by our reproducer.
+We therefore do not claim that the complete chain works at that mainline
+revision. The unsafe cross-family option handling and unbounded option echo
+remain relevant to maintained trees without that transition restriction.
 
-	Sashiko gives also example with RFC 3927 Section 2.5 and 4
-where ARP packets (especially replies) with sip in 169.254.0.0/16
-MUST be sent as broadcasts, so that boxes can detect that
-their address is configured also on another host. So, may be
-we should not drop sip in 169.254.0.0/16. But it is another open door.
+Root cause:
 
-	As for the received broadcast requests, it is still possible
-to send replies where needed but to skip the step where we use sha
-to update the cache for sip. We can set some flag 'cacheupd' early
-and later to check it. The result will be:
+tcp_v6_connect() changes icsk_af_ops and sk_backlog_rcv to the mapped-IPv4
+implementations after a successful v4-mapped connect. On affected kernels,
+connect(AF_UNSPEC) returns the socket to TCP_CLOSE without restoring those
+pointers, and listen() reuses it. A pure-IPv6 accepted child can consequently
+have IPv6 lookup state but tcp_v4_do_rcv as its backlog callback.
 
-- ARP Probes: replied as usually (there is no cache update for sip 0)
-- n = neigh_event_ns(): avoided but replies are sent if !dont_send
-- do not lookup for n, jump before the lookup
-- ARP Announce (GARP): ignored, sorry, the attacker announces
-new sha for GWIP
+For an [IPv6][DSTOPTS][TCP] packet, tcp_v6_fill_cb() stores inet6_skb_parm in
+TCP_SKB_CB(skb)->header.h6. If the packet is drained through tcp_v4_do_rcv(),
+tcp_v4_send_reset() passes the same union bytes as header.h4.opt. The aliased
+metadata directs __ip_options_echo() to read a packet-controlled option length
+and copy it into the 40-byte dopt->__data buffer. Our trigger produces a
+254-byte overwrite across the canary and return address in
+ip_send_unicast_reply().
 
-> 
-> --- a/net/ipv4/arp.c
-> +++ b/net/ipv4/arp.c
-> @@ -791,32 +791,18 @@ static int arp_process(struct net *net, struct sock *sk, struct sk_buff *skb)
->  	    (!IN_DEV_ROUTE_LOCALNET(in_dev) && ipv4_is_loopback(tip)))
->  		goto out_free_skb;
->  
->  	if ((skb->pkt_type == PACKET_BROADCAST ||
->  	     skb->pkt_type == PACKET_MULTICAST) &&
->  	    IN_DEV_ORCONF(in_dev, DROP_UNICAST_IN_L2_MULTICAST)) {
-> -		bool is_valid_garp = (sip == tip) && tha &&
-> -				     !memcmp(tha, sha, dev->addr_len);
-> -
-> -		if (arp->ar_op == htons(ARPOP_REPLY) && !is_valid_garp) {
-> -			net_warn_ratelimited("Drop ARP Reply in L2 BMC on %s\n",
-> +		/*
-> +		 * Standard ARP Replies are strictly unicast (PACKET_HOST).
-> +		 * An ARP Reply in an L2 broadcast frame with (sip != tip)
-> +		 * is an injected unicast reply. Legitimate GARP (sip == tip)
-> +		 * is preserved and defers to DROP_GRATUITOUS_ARP.
-> +		 * ARP Requests are left untouched per RFC 826.
-> +		 */
-> +		if (arp->ar_op == htons(ARPOP_REPLY) && sip != tip) {
-> +			net_warn_ratelimited("Drop non-GARP ARP Reply in L2 BMC on %s\n",
->  					     dev->name);
->  			goto out_free_skb;
->  		}
-> -		if (dev->addr_len == ETH_ALEN && tha &&
-> -		    is_valid_ether_addr(tha) && !is_valid_garp) {
-> -			net_warn_ratelimited("Drop unicast THA ARP Req in L2 BMC on %s\n",
-> -					     dev->name);
-> -			goto out_free_skb;
-> -		}
->  	}
-> 
-> With this approach:
-> 1. ARP Requests are completely untouched (fully adhering to RFC 826).
+The receiving process runs as uid 65534 without capabilities or a user
+namespace. A root helper is used only to inject the crafted IPv6 packet with
+a raw socket inside our single-VM test; the packet may instead arrive from an
+IPv6 peer.
 
-	See above
+This is the memory-corruption half of the demonstrated privilege-escalation
+chain. A separately reported watch_queue disclosure supplies the same task's
+stack canary and KASLR slide. We will reply with that report's Message-ID as
+soon as it has been posted.
 
-> 2. Legitimate GARP announcements (sip == tip) for VRRP/HSRP router failovers are preserved regardless of what value they put in tha (respecting RFC 2002).
+Reproduction and fix:
 
-	Drop them. Or leave it to DROP_GRATUITOUS_ARP to decide,
-it is per iface too. There should be no chance to update cache
-from broadcasts.
+We have a source reproducer, exact config, QEMU instructions and a full-chain
+exploit. In accordance with the kernel policy, we are not posting them publicly.
+We can provide the source-only reproducer privately if a maintainer requests it.
 
-> 3. Injected unicast ARP Replies in L2 BMC (sip != tip) that poison existing gateway entries are dropped.
-> 
-> Does this sound like the right direction to you for v5?
+Our build- and QEMU-tested fix has two layers: the IPv4 TCP reset and ACK paths
+only pass IPv4 option state for ETH_P_IP skbs, and __ip_options_echo() validates
+each option against the declared source area, the actual skb header area and
+the remaining destination space. We will post it separately as a mergeable
+[PATCH net] email and link that thread here.
 
-	Yep. But not sure for the IP part...
+AI-agent tooling assisted in identifying and analyzing the issue, developing
+the reproducer, and preparing the initial fix. The reporters reviewed the
+affected paths and reproduced the issue and the fixed result in QEMU.
 
-> Thanks again for your time, guidance, and expertise!
-> 
-> Best regards,
-> Star Chang
+Reported-by: Tong Liu <lyutoon@gmail.com>
+Reported-by: Qi Tang <tpluszz77@gmail.com>
+Reported-by: Zhiyu Zhang <zhiyuzhang999@gmail.com>
 
-Regards
-
---
-Julian Anastasov <ja@ssi.bg>
-
+Best regards,
+Zhiyu Zhang
