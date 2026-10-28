@@ -1,64 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793215895;
-	b=GEZB9WRymhDlSHEoIeoGeA5xI2TIwUyTz+A7yt3QHCmun2lWP4zEgMmnhXANik1ajJWT
-	 2eH+HOPU1rw8BlCBU2UggV80/7ddopJHP3A1gnI0UdwlJVf0yXrAbYUHb+LeB1nC0vvQt
-	 QmzP6YdwE1q5SxgqqN3+GheGpYG3M3XpJ4Za/Rf3u6tkaM2JrAcJtbW3/aA5EdvH0ite7
-	 8k0aJ8Ry9U8EB4O/mUiLwbVoeHeDE8TVmU7nNq6b5LwhvOtLQoESGLpCEQY6iWdahy+rw
-	 EWQa/XqiksNNzhb3ADGdbnTMgKUzcvGWstKMgUjrtrtjpgKy/mVue8dpVKxFZRhzinA==
+	t=1793216738;
+	b=fg5NhkP/loQrlurNG20p4C9AZTyZvyH69li2gmDNZV+URO8uQYnjLFes1DxZ25/oa7F1
+	 eekvPoJEQoPD/NP0dECzPrZ7IwbtimOhtFqq8hoPNPgXTHQFi0w/VPvWyyjLthKFgTVAy
+	 P0quuRAYDyG9O9366rmjxdYSyFITaMTljU0jU5TMBDbxw/fRH+O9TlcwG3RDrHyQX32BP
+	 xYSFLTKX8hZ6aGFyNEPb5cTDtPhQ2ELYrD7MQrh6h75ym7nv41lP48BX7gAKtwb9aI+zQ
+	 Ma0L9YEJsnN3qPKS1ZVrZgGfjPdFgle0RmnrfYHdGqpndTg9euRynUS5/l0PTPStC+Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793215895;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-Virus-Scanned;
-	bh=/wBsxz8SxXMwHBU3491QiAIfiIdjYFkiipB0X+a5k7Q=;
-	b=I6XOUSjUD1tsYAlsDI/+K38uvrIanhKDIXJmdrvr/pleUFuNfq6Qi2yVFoJhDxYFbDvX
-	 VD8GcbJZ3M5JKeDI3VgsT0zScia1c6ypLQLKhJhyjZ5RqavqhKmlT0R0mYuYNofY1d7M1
-	 bvraOrpB+7z0wwDlHnHTwAy7Q5HJAVNCLT4tHL8cuvTDkx7CAyGdImpQqKRnXccno6yN0
-	 Tu+B2OtgAWKB2lPwGvNrcw/XAb/G2jpkHvx8Icyh1s+ma33RMTSuUTVrSj//UIwuicIPz
-	 hM5hXvRoEJlo0XWDwb1OUw7Qf9iQH0nFizFiomKIYyVjlRTZ/djyDkXTPZl5OauNGTA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793216738;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=p7pe2s+MVZswiJuATY2vq7wM8pD0KsopxwWou2VSc+E=;
+	b=h8HDC7QvBi4Gxhjr8fnp0LZNzZHb0i0NXUzVM5qnPyCk0bvKhDI3holHFWn3tugVu4h/
+	 1ewZJS9ksgikzfiDLzJ+RTwlwnLPCne9SVMge1KYQPCaD9CnEmEHvV7eQmE+OJ9+ewq3C
+	 4bg3HAVX8KMF3et1icIhZ6T2C31GFJBkhNDGD/AqX77q5Xuuula37xAWXj5gGN32lLxkG
+	 aF3pkMC0LT+GGcN5C5KaPeuaK6WDIobklJkLVFFYgiJGCkBj9hSPpj2iiN+1FwFVJBuiU
+	 VtiNpSKpXUT9eKKKrIH/MTJfW99o1RYaaGGuIr5qXt3GI6qei/BxqD5glVu7T+ortGg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=iogearbox.net;
-	spf=pass smtp.mailfrom=iogearbox.net;
-	dkim=pass header.d=iogearbox.net header.i=@iogearbox.net header.a=rsa-sha256 header.s=default2302 header.b=GqbjajKM;
-	arc=none smtp.remote-ip=213.133.104.62
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="px+z80/K";
+	arc=none smtp.remote-ip=209.85.214.199
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700BE606A31E;
-	Wed, 28 Oct 2026 19:31:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 700BE606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CE7606A31D
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 19:45:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 61CE7606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=iogearbox.net header.i=@iogearbox.net header.a=rsa-sha256 header.s=default2302 header.b=GqbjajKM
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=/wBsxz8SxXMwHBU3491QiAIfiIdjYFkiipB0X+a5k7Q=; b=GqbjajKMv+4LLOpcusssK1VyTq
-	4GFh0T7xERdRA2FngOc22DhR/5MlQapDWlGQrJIFTsHss0cGj4xTeyYEOjNgJ+nep2m+RlrNAc8dv
-	Nhn4A1F9ndRGPYy+mAGg2/KDrzPEoycho5P9zLxluBNXe66AqiqPDdYGNXPK2mv2yVjSMOQ7LKpy1
-	oO/ZW78HHUdKokCnZ2mqwfQdFypEqRbvZSvSYhg7NpG4TLzqiLWo3XGw+G1cjCNf/1sQXIiQeJBSg
-	gxUgPOlT96zxh+lP1T8PvdRO903/I1Dh3GbDhxmsNR8+lbXfaas9M4bwvxuuLSsoaakC4C/buMl8I
-	hx1TZngA==;
-Received: from sslproxy03.your-server.de ([88.198.220.132])
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1xM9MY-000MPs-0O;
-	Wed, 28 Oct 2026 20:31:06 +0100
-Received: from localhost ([127.0.0.1])
-	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1xM9MW-0007F2-0R;
-	Wed, 28 Oct 2026 20:31:04 +0100
-Message-ID: <8a17da81-59cc-4e59-a306-9cd233e7cf3d@iogearbox.net>
-Date: Wed, 28 Oct 2026 20:31:03 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=px+z80/K
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2eaf8ea208bso11466725ad.1
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 12:45:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793216738; x=1793821538; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=p7pe2s+MVZswiJuATY2vq7wM8pD0KsopxwWou2VSc+E=;
+        b=px+z80/K+krp6N/39N5HW5UrjlthpSYEmw6RfQaoAJAeKyRB/eTitvuY1TcvpatxId
+         m3NYQglv5YOxyQ6XTSKvUtYBpl/z/eRSqBXMetwEsoPoksCsNPkwmPj9xpeQ8wtP0Tul
+         yBF5KEAp7dWVScMwwj+AQL5gVpF0/KMEIhiHuyErYI8AILM75P7C7Oha6E3FMAM1nRiR
+         zyqbTNU4l9iaj0EG6JNVrHst8PKgHqx/sqiAzJnjJSUsOGgAhJWKbjHC4beTp4iLq8/A
+         UcB3HgzRjMAv4ye768PFyUJOrwIFkWEdSPhrqs3yhOzIlcr2M0sEsdoZgNn3SBlIBjcu
+         47gQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793216738; x=1793821538;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=p7pe2s+MVZswiJuATY2vq7wM8pD0KsopxwWou2VSc+E=;
+        b=h8eLfixDU+IGHE9LsreGXoqTleQgiiya+k7uRlrt/J+7yShBQcHZLq2KWXy5uP6Um6
+         lxoMtl8yDRGh0b0vLW9Zwut47yzf3Ch4r4zr+E8KpAsjxcqKVz3oYQUbqwCekuunmfAQ
+         0cRwczIkOH6siUP/+y5zmYFHJz9QNV0cQ1CK/VOAV+Ou2WVN2bF01xq30ckaUncgb5nw
+         K2MbIUAkNzflg/fcebEdN26iLTZsRScOHIr2cJYCpj658jgaiNB8njQ4xgkMrSUMBInW
+         1LzBVad5SFMolZNBfdPyaMgc9JreqRzB+9GyOBgGMGryBqEzgu8pKpAa6V1hcFShAgh6
+         5KDA==
+X-Forwarded-Encrypted: i=1; AKwUvBxYc1ayDIzRKT/nDCmZxFpZN2GozykQX6RpGE6ZPsGpHV9DwPetq21sYZlYejKScP3EsJwkDNI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJt1WEmlrDLCrRsrBiiS2nZztH2ml6NNYbff05SDWap54jdV9du
+	HDfkEJxnrbRIYYs8J4gMM3t4VuB6IFc1u31+Q6ctU8YMiJ8IXP2DqSdRf4ikb1c6yZEAeLaL2bn
+	6yDC3eQ==
+X-Received: from plbjf12.prod.google.com ([2002:a17:903:268c:b0:2e8:21ee:f199])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2304:b0:2e9:5eee:e078
+ with SMTP id d9443c01a7336-2eb001433a5mr28660565ad.3.1793216737503; Wed, 28
+ Oct 2026 12:45:37 -0700 (PDT)
+Date: Wed, 28 Oct 2026 19:45:37 +0000
+In-Reply-To: <20261028162510.2180528-1-edumazet@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,72 +77,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 0/5] net: fix eth_type_trans() crashes on skbs
- coming from the stack
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Eric Dumazet <edumazet@kernel.org>, "David S . Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: Willem de Bruijn <willemb@google.com>, Simon Horman <horms@kernel.org>,
- netdev@vger.kernel.org, bpf@vger.kernel.org,
- Andrew Lunn <andrew+netdev@lunn.ch>, Aaron Conole <aconole@redhat.com>,
- Eelco Chaudron <echaudro@redhat.com>, Ilya Maximets <i.maximets@ovn.org>,
- Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
- dev@openvswitch.org, Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- Ren Wei <weir@nebusec.ai>
-References: <20261028122703.2093730-1-edumazet@kernel.org>
- <DMGNHWT5M153.3C6CZBKTPNBAY@gmail.com>
-Content-Language: en-US
-From: Daniel Borkmann <daniel@iogearbox.net>
-In-Reply-To: <DMGNHWT5M153.3C6CZBKTPNBAY@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: Clear (ClamAV 1.4.6/28167/Wed Oct 28 07:24:17 2026)
+Mime-Version: 1.0
+References: <20261028162510.2180528-1-edumazet@kernel.org>
+Message-ID: <auJQz9OCWPqJimv6@google.com>
+Subject: Re: [PATCH net] tcp: wait for TIME_WAIT teardown before freeing
+ per-netns ehash
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Neal Cardwell <ncardwell@google.com>, 
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, Kyle Zeng <kylebot@openai.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On 10/28/26 6:34 PM, Alexei Starovoitov wrote:
-> On Wed, Oct 28, 2026 at 05:26 AM Eric Dumazet <edumazet@kernel.org> wrote:
->> Other eth_type_trans() users already pull the header or never see
->> such skbs:
+On Wed, 28 Oct 2026 17:25:10 +0100, Eric Dumazet wrote:
+> From: Kyle Zeng <kylebot@openai.com>
 > 
-> netkit_xmit() has the same problem, I think.
-> It calls eth_skb_pull_mac() directly, not eth_type_trans().
-> It pulls ETH_HLEN before netkit_run(). The prog can shrink the linear
-> part after that:
+> inet_twsk_kill() removes a TIME_WAIT socket from the established hash
+> before it finishes using the ehash lock, hashinfo and bind tables, and
+> before it drops the death-row reference. A running timer can therefore
+> unhash its socket before inet_twsk_purge() reaches it. The purge cannot
+> synchronize with that timer, and tcp_sk_exit_batch() can free the
+> private ehash and hashinfo while inet_twsk_kill() is still using them.
 > 
->    AF_PACKET SOCK_RAW on nk0          eth (ETH_P_IP) / eth / 8192 bytes
->    tc egress on nk0
->      vlan pop_eth                     skb_headlen() == 0
->                                       skb_mac_header_len() == 0
->    netkit_xmit()
->      pskb_may_pull(skb, ETH_HLEN)     skb_headlen() == 14
->      netkit_run()
->        bpf_skb_adjust_room(skb, -1, BPF_ADJ_ROOM_MAC, 0)
->          bpf_skb_generic_pop()        off == 0, skb_headlen() == 13
->      eth_skb_pull_mac()               BUG() in __skb_pull()
+> An unprivileged reproducer using user and network namespaces, a private
+> TCP ehash and a FIN_WAIT2 timer triggers a KASAN slab-use-after-free in
+> inet_twsk_kill(). The allocation and free stacks point to
+> inet_pernet_hashinfo_alloc() and inet_pernet_hashinfo_free().
 > 
-> It's an old bug and it doesn't block this series.
-> It can be a follow up.
+> Wait for an RCU grace period after purging the whole batch.
+> TIME_WAIT removal runs with bottom halves disabled, so this also waits
+> for removers that were already invisible to the purge. Keep the wait
+> under tcp_exit_batch_mutex, before freeing any private hashinfo.
 > 
-> Something like this (compile tested only):
-> 
-> diff --git a/drivers/net/netkit.c b/drivers/net/netkit.c
-> index 82e608e..f093103 100644
-> --- a/drivers/net/netkit.c
-> +++ b/drivers/net/netkit.c
-> @@ -116,6 +116,9 @@ static netdev_tx_t netkit_xmit(struct sk_buff *skb, struct net_device *dev)
->   	switch (ret) {
->   	case NETKIT_NEXT:
->   	case NETKIT_PASS:
-> +		/* The prog may have shrunk the linear part */
-> +		if (unlikely(!pskb_may_pull(skb, ETH_HLEN)))
-> +			goto drop;
->   		eth_skb_pull_mac(skb);
->   		skb_postpull_rcsum(skb, eth_hdr(skb), ETH_HLEN);
->   		if (likely(__netif_rx(skb) == NET_RX_SUCCESS)) {
-Reproduced locally with a BPF selftest, and that fixes it. Feel free to
-add my Acked-by.
+> Fixes: d1e5e6408b30 ("tcp: Introduce optional per-netns ehash.")
+> Signed-off-by: Kyle Zeng <kylebot@openai.com>
+> [edumazet: only call synchronize_net() if one netns in the batch uses a private ehash]
+> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
 
-Thanks,
-Daniel
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+
+Thanks !
