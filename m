@@ -1,60 +1,68 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793190318;
-	b=Bk7jligkVJGjN78Rrg4L4bGDqB8d32RESIa3DQCjrHRR4EiHI7girbB4IN/OgOUfirrz
-	 KviClwF3+qowMIpxBGAH8buqqL9cV2V5BozqVWj7WNqNFzKgzrMpHS4b58GB2A0F4gt6L
-	 evNy6SjdGpTecLCRpnf72XyX6nRH9CiLzDJC5gGsTdfo7RakjnFtBaqk30+dsODaDOhvt
-	 ThZ9ytU9ipSMrCIs5tk2VOgj1J8LrpKUdAwoKvmLEAnZh6B81RD5cAa1vuRFzxZOYYuNO
-	 XsFg48vTc2iT0OKuTL9quGoAmFJDDdsXnnmzbHtzW4zwErlyY5NIFsWaa8bvRkj22yw==
+	t=1793190441;
+	b=BktV0yuBUlZFhJ47Miugp9E9066KzGRnyOI0VavCQdeFyKrp8iD53s7Uc5kepvcl0wu+
+	 KHh+4WKVUDns8QD3cP/oNQcKUI6U1aeuyh388B6G6lvUcsEDDRjx5JRgTJvQa+xVww5Md
+	 DpX4Lqc+/YEyXVUHl+t1B84e7APnncRi/eojHhxKC34l7zIpV9UeBpIk6d1NyvrDTcjRx
+	 R3MLQcZaDz5+8Xs2/0j5B5LTOwq7EhgtVmrA6A/D5efPYaOAM1/UR+jbdJtYJgo0t+5bh
+	 B/9ErEL/3T2ea/JRYDW7CpXwMq1vJLF8p1l23lkwfj4rdCnOgNu0TZ5llcBllvyHtBA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793190318;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=s4OWMi3a8s2wA4xLjiaf+j11RhfHAHM82llxPPU2rPM=;
-	b=1WfBFBWn4zmMe1uW34h0rlIFlTS7lYo4vgBMWIjEFDEBZeqBqvJ5a+hFmFFsvbti+FYk
-	 nzojK7sojjLFfjC7hFHPoC3X12ewjK4mBkSDpJvAhGPHtA3PCOzsOEDOolwARJMzuVRuI
-	 cw3aGwIpW+A6PWL2oz6GZUNGyoNElx+UoYD/IeKXW0m7p95SufOVyc3uUzQMLrmUDP6GV
-	 pdzUFWWBnK5sKC3B/j30Tp2CaKIubN8c6EJ8KznKuJOQ7Rw/Zz20cgfwtyAofs7asx7Gs
-	 CUstDPbGs+rkkdT1WtOpIrzgNzVdzLh5o6WIAMMf8t6HzBpgjChIDcdGaYvrd6VjsNg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793190441;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=Yf78rh5q+20vX0febYbjJJD8StxdQXb0hlS+4Zu1s4o=;
+	b=i4rzx96eyvSE+C1jIY5+csoQjheJD7dSya4dJx1w8GHz0/u1f8ddvoKIB2k79miTSZPq
+	 gUPYs/LFF4O6SMOz5SVqsEqG/IU7mNrRNawBY/kggnpyBO9cbsGrflrNC2girzDvUh+Az
+	 0tgv2ZEdRR81FT6R02i7sJ46bbogkRwVnU9lnwOHSnHfUqpKr2wmHqVqcLSAamZCejRn3
+	 J/XSY+0S5v2devpKioOLpqRd3SANie6PHxGe+2OGoQWQpkMJH/A2Ez/+LsDVQcmMCYrN4
+	 PcRwursrR09lowX3x/fXkoLKv5iN0iumS7aah6Yuw0Jdts58J5U/gizUUq7++XsPodw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D9Y6eDhf;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="F6/cjXa4";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 193D9606A31A;
-	Wed, 28 Oct 2026 12:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5E0606A31E;
+	Wed, 28 Oct 2026 12:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D9Y6eDhf
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22DA11F01825;
-	Wed, 28 Oct 2026 12:25:17 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F6/cjXa4
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB7E1F01828;
+	Wed, 28 Oct 2026 12:27:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793190317;
-	bh=s4OWMi3a8s2wA4xLjiaf+j11RhfHAHM82llxPPU2rPM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=D9Y6eDhfcdUsVH6F3wKJudaPj7jPaGHuZORFmOjXXcbSKHAU1uhVxVXLARYT5V5al
-	 jpEOTV4dygvds5SG4gyqbHvCAGElNhUnGxxZREz+e+5RFHLOoO16yzI3lpLH/s3EZH
-	 /XY6Y/OR2A43RpPdgt09SJ51P5Aigg9cYK9l4T2KwNFCLw0iV0dM8ioE4OE1P2o09d
-	 3LRajvFZXdPywZmCrxTzUmNmgQhJERuRG3Mq2dZVny5q1i5ZCknxZIFPaKjcE3NtW3
-	 GGwi1wUe82jPFo5v+xzBx+tMFvBV0gdnYhMtxmb6xsikTUj2fphiNcpMs+w9j1sn6S
-	 iebHacYGO7Mfw==
-Subject:
- Re: [PATCH net v3] bonding: fix initial last_rx vs ARP-monitor slack window
-From: netdev-bot+sashiko@kernel.org
-To: ramses@well-founded.dev
-Cc: jv@jvosburgh.net, andrew+netdev@lunn.ch, davem@davemloft.net,
- kuba@kernel.org, pabeni@redhat.com, jbohac@suse.cz, edumazet@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, razor@blackwall.org,
- liuhangbin@kylinos.cn
-Date: Wed, 28 Oct 2026 12:25:16 +0000
-Message-ID: <179319031668.3134.15966773474485635933@kernel.org>
-In-Reply-To: <20261027-bonding-last-rx-v3-1-54907f1fb042@well-founded.dev>
-References: <20261027-bonding-last-rx-v3-1-54907f1fb042@well-founded.dev>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1793190441;
+	bh=Yf78rh5q+20vX0febYbjJJD8StxdQXb0hlS+4Zu1s4o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=F6/cjXa48b01wruAS/mHlC9o6NbTPeBcdm5TS6NJOx9iTib1qlQkkqJkxVPwLQVh4
+	 sORVFOiJMxcgPdvQUbXzQkKGVj+w2zEKq67ftZgoXb098HDdxvliGlwRkvDDvLiJVT
+	 QnByzBmxh5Foj79UppncWUFnnN1IEx2r42H7rn3f0h0fxh8vCo0NkKyd9axjjRVy7K
+	 qx4KitwHMIfQEcPHseMqXTZkmeXkK4LaeRs44W1PtBV1EZYUgeJkA/ZWDeUmpPYArR
+	 egBTsFX2vJcotnxBaG/PiV3PrkjBwYSJs8oiqPxUoLzrOiTGBRJgD8w77Bz/btDz2c
+	 c/e2Xv3HA4kJw==
+From: Eric Dumazet <edumazet@kernel.org>
+To: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Willem de Bruijn <willemb@google.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	Eric Dumazet <edumazet@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	dev@openvswitch.org,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Ren Wei <weir@nebusec.ai>
+Subject: [PATCH net v2 1/5] net: add eth_type_trans_careful()
+Date: Wed, 28 Oct 2026 13:26:59 +0100
+Message-ID: <20261028122703.2093730-2-edumazet@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261028122703.2093730-1-edumazet@kernel.org>
+References: <20261028122703.2093730-1-edumazet@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,109 +72,71 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+eth_type_trans() assumes ETH_HLEN bytes are present in skb->head.
+NIC drivers always provide this, and they should keep using the fast
+version.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Devices looping skbs from their transmit path back to their receive
+path get skbs built by the stack instead. Their link-layer header
+might have been popped by tc actions (act_vlan pop_eth, act_ife decode)
+or OVS actions (pop_eth + pop_mpls / pop_nsh), leaving fewer than
+ETH_HLEN bytes in the linear part. eth_type_trans() then hits
+the BUG() in __skb_pull().
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Add eth_type_trans_careful(), which first pulls the Ethernet header,
+and returns a drop reason on failure, so that the few devices exposed
+to this can drop such packets.
 
-- [Medium] The patch ages last_tx along with last_rx (new_slave->last_tx
-  = new_slave->last_rx), so last_tx is now two intervals old instead of…
+Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+Reviewed-by: Aaron Conole <aconole@redhat.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Tested-by: Jamal Hadi Salim <jhs@mojatatu.com>
+---
+ include/linux/etherdevice.h | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
---
-
-bonding: fix initial last_rx vs ARP-monitor slack window
-
-This commit moves the initial last_rx seed in bond_enslave() from one
-arp_interval in the past to two. The goal is to keep the seed outside the
-arp_interval/2 slack window that commit da210f559019 added. The
-per-target array and last_tx get the same seed, because they are copied
-from last_rx.
-
-> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-> index 7019e5d8fdc8e..269384fadfa6f 100644
-> --- a/drivers/net/bonding/bond_main.c
-> +++ b/drivers/net/bonding/bond_main.c
-> @@ -2123,7 +2123,7 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
->  		new_slave->link = BOND_LINK_DOWN;
->  
->  	new_slave->last_rx = jiffies -
-> -		(msecs_to_jiffies(bond->params.arp_interval) + 1);
-> +		(2 * msecs_to_jiffies(bond->params.arp_interval) + 1);
->  	for (i = 0; i < BOND_MAX_ARP_TARGETS; i++)
->  		new_slave->target_last_arp_rx[i] = new_slave->last_rx;
->  
-
-[Severity: Medium]
-Just after this hunk, bond_enslave() copies the same value into last_tx:
-
-	new_slave->last_tx = new_slave->last_rx;
-
-So last_tx now also starts two intervals old. Could that cause a spurious
-UP->DOWN transition in bond_loadbalance_arp_mon(), used by balance-rr,
-balance-xor and broadcast with arp_interval set?
-
-A slave enslaved with carrier OK starts as BOND_LINK_UP. On the first
-arp_work pass, the UP branch checks last_tx before this slave's first
-bond_send_validate() call in the same loop:
-
-	if (!bond_time_in_interval(bond, last_tx,
-				   bond->params.missed_max) ||
-	    !bond_time_in_interval(bond, READ_ONCE(slave->last_rx),
-				   bond->params.missed_max)) {
-
-		bond_propose_link_state(slave, BOND_LINK_DOWN);
-	...
-	if (bond_slave_is_up(slave))
-		bond_send_validate(bond, slave);
-
-Unlike bond_ab_arp_inspect(), this path has no last_link_up grace. The
-comment there says each slave is given "as long as it needs to get the
-tx/rx within the delta".
-
-bond_time_in_interval() accepts jiffies up to:
-
-	last_act + mod * delta_in_ticks + delta_in_ticks/2
-
-With d = arp_interval in jiffies, J0 = enslave time and the new seed
-J0 - 2d - 1, the upper bound is:
-
-  missed_max = 2 (default): J0 + d/2 - 1
-  missed_max = 1:           J0 - d/2 - 1
-
-With the old seed and missed_max = 2 the bound was J0 + 1.5d - 1, which a
-first tick at or before J0 + d never crossed.
-
-The arp_work tick phase does not depend on when the slave is enslaved.
-With default settings, does that mean roughly half of enslavements into a
-running load-balance bond see the slave marked down on the first tick,
-before any probe has gone out? With missed_max = 1, would every carrier-up
-slave be marked down on its first tick?
-
-When that happens, link_failure_count is incremented, "interface is now
-down" is logged, and do_failover is set if this is curr_active_slave. The
-link only comes back on the next tick, after the first ARP has been sent.
-
-Documentation/networking/bonding.rst describes arp_missed_max as:
-
-	Specifies the number of arp_interval monitor checks that must
-	fail in order for an interface to be marked down by the ARP monitor.
-
-The commit message says:
-
-  Seed last_rx (and with it the per-target array and last_tx) two
-  intervals in the past, so it is outside the slack window from the
-  start.
-
-It does not mention the effect on the UP->DOWN checks in
-bond_loadbalance_arp_mon(). Would it make sense to keep last_tx at its
-previous seed, or to describe this behaviour change in the commit message?
-
+diff --git a/include/linux/etherdevice.h b/include/linux/etherdevice.h
+index df8f88f63a7063fbd1df5248d2fc02c859a7bc74..1f833ebd71ed917d138ec1e64c29689ae7dd0dd5 100644
+--- a/include/linux/etherdevice.h
++++ b/include/linux/etherdevice.h
+@@ -38,6 +38,34 @@ int fwnode_get_mac_address(struct fwnode_handle *fwnode, char *addr);
+ 
+ u32 eth_get_headlen(const struct net_device *dev, const void *data, u32 len);
+ __be16 eth_type_trans(struct sk_buff *skb, struct net_device *dev);
++
++/**
++ * eth_type_trans_careful - eth_type_trans() for skbs coming from the stack
++ * @skb: buffer, possibly with less than ETH_HLEN bytes in its linear area
++ * @dev: receiving network device
++ *
++ * eth_type_trans() expects ETH_HLEN bytes in skb->head, which NIC drivers
++ * provide. Devices looping skbs from their transmit path back to the
++ * receive path (loopback, OVS internal ports) get skbs built by the stack,
++ * whose link-layer header might have been popped by tc or OVS actions.
++ *
++ * Sets skb->protocol on success.
++ *
++ * Return: SKB_NOT_DROPPED_YET on success, or a drop reason. In the latter
++ * case, the caller must free @skb.
++ */
++static inline enum skb_drop_reason
++eth_type_trans_careful(struct sk_buff *skb, struct net_device *dev)
++{
++	enum skb_drop_reason reason = pskb_may_pull_reason(skb, ETH_HLEN);
++
++	if (unlikely(reason))
++		return reason;
++
++	skb->protocol = eth_type_trans(skb, dev);
++	return SKB_NOT_DROPPED_YET;
++}
++
+ extern const struct header_ops eth_header_ops;
+ 
+ int eth_header(struct sk_buff *skb, struct net_device *dev, unsigned short type,
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261027-bonding-last-rx-v3-1-54907f1fb042%40well-founded.dev
+2.53.0
+
