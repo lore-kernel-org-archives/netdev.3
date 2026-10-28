@@ -1,64 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793163848;
-	b=TMZywJVKElOg+WX5E3C7Xx/0/wsxtxwNW1JiK2kUtfkur/msDn/VnbSBPVgzjk4UL/TJ
-	 RSCx8pUB/rfOjkp5/waDA5QcT2Yg1TZNRXueqH55hVLTe4kehdnr9vVbCdjdkzrsHZS3P
-	 G8a7a1sRlQzLOK1gwf4w2qMkRiSxPgx+IVGMBEb3Zm/2XTfFs++IFed+Fiuq4enLeKEko
-	 RrkoLfNzfkMQRfSO8imBWfQzstx/yeH8V7z4tU6EPytK3sriNkzLE5Ucb9LlxLnCgUI/S
-	 z34XGwvAXq+aLCA82hEDHKpXjkWwTZduiYMlUMz/gFKtK/kGmz4+Jb/r/XfFTumtF4Q==
+	t=1793164016;
+	b=l7Z8DHzm3rDG3yOElGsyjmR22abjISaA07R7XV+NxA4MjuMnESKh4F9wK9niJzOouiuY
+	 pNoq6dOZePvtfuBDBaNUNQFR44Kd59uUlFcdOrhsQHTq41xi2r1Ji4MjrNC9NvZ6FrrXU
+	 KBa1+FImm4sHTygDe3KL10DCIxO2cJpNHbTQ5bzzbc4h6xZUEjiC5vshyckntRyLimvJG
+	 tBGUTf1JJP2SJBzgsLsLWqTBfnNpWw6/XbSGrx7pyYiKfq9yQA5xYde5H1sF943s4XDNP
+	 ir5NLMBXuOiCVwc5wc3fpkMr8Xkkp25sDT674Tl/q4JOU81MSdLMqvZg6AC1yqeCo1w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793163848;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=FlFLV+LrMOBGmpATjG3z5jE42aeiJSCz2DhkhKzdZJY=;
-	b=JQZch//HGEr0ROXLbY0l57Z2n0IDECC5HXzx2dE8lEvbwb5/gb1CqQa3+S1sOFnlvbFK
-	 azsglvi+BiZUKdVrDx4ztifbxvUaKnCo+Nnlu49mLC9lEQ/HGl9j4Af5Q0IIpz0q1Atko
-	 Ywjop25dzfos6L/Wl1LrYi8vBMXwqQoVPOuqL6MsoCgUqVOTkCPv77HVpaWy5aphMoMQs
-	 eW5hNo6omfXUDdAJ0+GyIunUKsf2jDhpIdnuQY5afKn+ois+8Q7e3JJT6kZ1UBV9PA1nT
-	 Z6rdynJkuQcmd3vpzpc4252OTMg+qFPD9Tq3QFtCQ4/507xB4yhFAgK2wdJPPRt+bww==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793164016;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	b=LiRW6iv3MuIhsNXzrZMEbUs0Az8htm2AbgWP6IOUqWqYaL/HlTZCOXuaTArq7LFUUWLd
+	 wwK4bFy2WZSQ7hb118QNIYNcinTL/p1aiirqijq6MdFJCchCeKFFjBrvCduoqduOhRQho
+	 stD8SIKcVQj/wqINux3YLdX0HZLC1LqouUbIPPv00B+CVwkr/jp/wVmh217qnokIfe1Te
+	 YzFL64D3TQ//mmlfDZmw1AtPEPlVSOZ370C68+ajpYxVcvsH4Z61Bhv+cDBN6tNOfy8Q9
+	 +K805DG28A/TR9JZT8hVx2JKWUf1goY/pGrEm9ogTitd9QFj1r3hLk+Vzk5NWPAr43g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=163.com;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=aELgK7ws;
-	arc=none smtp.remote-ip=220.197.31.5
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gCk9zlCq;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA018606A31D;
-	Wed, 28 Oct 2026 05:04:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CA018606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE9D606A31A;
+	Wed, 28 Oct 2026 05:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=aELgK7ws
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Fl
-	FLV+LrMOBGmpATjG3z5jE42aeiJSCz2DhkhKzdZJY=; b=aELgK7wseZzANP5nSx
-	6kWzED6BXAEgxjXhIPQZI5+oaNu3QTi/tGDDPd92HW8HE10Uqv66IFz0gL+CWWmT
-	eVSGnPcISzVVCTQSOyVmP1A8Y9zxZzUmUXS8H6VA0+J2ytL4UejSSNMqQjxI3YnU
-	pri/7nsh8JgdMIfm6GuXlX9is=
-Received: from pc.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wDXXx0QguFq4jaQDQ--.52556S2;
-	Wed, 28 Oct 2026 13:03:13 +0800 (CST)
-From: Jiale Yao <yaojiale02@163.com>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] net: phy: only remove owned topology entries
-Date: Wed, 28 Oct 2026 13:03:12 +0800
-Message-Id: <20261028050312.126508-1-yaojiale02@163.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gCk9zlCq
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A121F01825;
+	Wed, 28 Oct 2026 05:06:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793164016;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=gCk9zlCqKFQoDnvknNh8Tt6vir7RWgbV37t2cnL2jsrQUYkBvM8d5bGBfrChWIjSK
+	 60GrI0ZSICji6yKrK472dVdDZYyuz+Qcxj7bQAo8c0pgCa4jbe+5fCPyg0F8uN8HN7
+	 JSOkNerSzIostPvLAjc7g8jnDqgqb/hJWHYrQn+kDtLVzp9WsILAOd870e6nouG7lI
+	 85qyw6uOAEN6mSUa40vSKLcZMrQylSt7QpVoCyeHHi3BlyWLO3C4FmIZsis5MbHgPJ
+	 e4tSA10jXnkPnrch9o//a6mPaGiXPeNyAH/prNPnYOVy13UJTD0CM5XsRz4oErAP+p
+	 +Zo0cCXS98lvQ==
+From: netdev-bot+sinfo@kernel.org
+To: Jiale Yao <yaojiale02@163.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Christophe Leroy <chleroy@kernel.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] net: phy: only remove owned topology entries
+Date: Wed, 28 Oct 2026 05:06:55 +0000
+Message-ID: <179316401520.3327.16652152694923638855@kernel.org>
+In-Reply-To: <20261028050312.126508-1-yaojiale02@163.com>
+References: <20261028050312.126508-1-yaojiale02@163.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,45 +65,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDXXx0QguFq4jaQDQ--.52556S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWruw1UAr47Jw45JFyxXFWfAFb_yoWkKFX_C3
-	9rZrW3Zws5Jan0yryfWr4fArySk3Z3J3Wv9r1vg3y5Xa15Gr15Crn5Xrn8Jr9ru3WaqFWD
-	Gw1UCFyxAa45ujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU847K3UUUUU==
-X-CM-SenderInfo: x1dryxhdohiji6rwjhhfrp/xtbCzhG38WrhghHgUAAA3x
 
-phy_link_topo_add_phy() can fail to insert a PHY when its saved index is
-already occupied.  Its caller may subsequently run the normal detach
-path.  phy_link_topo_del_phy() then unconditionally removes the entry at
-that index, including its ports, even though the entry belongs to a
-different PHY.
+Hi!
 
-Look up the topology entry first and only remove the PHY and its ports
-when the entry belongs to the PHY being detached.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Fixes: 384968786909 ("net: phy: Introduce ethernet link topology representation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiale Yao <yaojiale02@163.com>
----
- drivers/net/phy/phy_link_topology.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-diff --git a/drivers/net/phy/phy_link_topology.c b/drivers/net/phy/phy_link_topology.c
-index 214ccce23cf6..175eef44cf54 100644
---- a/drivers/net/phy/phy_link_topology.c
-+++ b/drivers/net/phy/phy_link_topology.c
-@@ -185,6 +185,10 @@ void phy_link_topo_del_phy(struct net_device *dev,
- 	if (!topo)
- 		return;
- 
-+	pdn = xa_load(&topo->phys, phy->phyindex);
-+	if (!pdn || pdn->phy != phy)
-+		return;
-+
- 	list_for_each_entry(port, &phy->ports, head)
- 		phy_link_topo_del_port(dev, port);
- 
--- 
-2.34.1
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
