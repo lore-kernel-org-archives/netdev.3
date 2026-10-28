@@ -1,82 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793207946;
-	b=JHZLRY7YH4ZqzCf2fBBPbAB6eLqfmZ1q7YdHjoCa9awR2twpPBBVH/Mpme6XUbK927O3
-	 T97K3NjSjRWCgPpj/REys7yxSxcGXjXRWpPb48hnVh50myZv7GImiwViR0qH9YaA4wX8h
-	 ty74nM9P4xRLkt/u+PmTfXkKMWFLYvXbrKUMxKVYWns89Bt8Jlfh1HQPR8L/oewyFqCAg
-	 //gsGOwkac0N7sGHF1w9t5qXvc4zMANwV+e3MvMyOmWSH8ty9pi8q0VkV6BBxHeTAlUwS
-	 kZJd7kzdQni2W5WNNmjoPDCmUJ5R7yQUTsYJGV9RBHbWI1j20Cg3xnEoQxDEKmz0ykw==
+	t=1793208190;
+	b=tYseKAeXvHdTAiVljiNB6493LTyDqrvXkqDCxaIbfhg9+eCTZgV4NGIXpzko5XHK/uqG
+	 ujqd4Ari4bearL004YHQz87vEdcvWVcxVXwl3xREW73Sz6Y1whVCDyTYEN/DH0yRBCIKD
+	 TjdTao1FmM8h2j4Y1ZiTV7pVlOFfvnUzXIa2eajuDHmVKJk+EssZ85xOfgbsICp7ccvMT
+	 XOC3w7q7gFvY8NcOkFQdibQ+krOnikWthcqgYzELLbT/REdJC0pKsODsLWcNb3/XOecWF
+	 cr7nWqk7BR9zOjvpigmoeLEMuTP1nwUaNb9sdwH28dPYkUJDfpPJWOiQSYFG4ZQmgQg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793207946;
-	h=Received:DKIM-Signature:Date:Message-ID:From:To:Cc:Subject:
-	 In-Reply-To:References;
-	bh=iA59H/LDNhkaV57ivIpVgCN8zVjfYFqLt84NAT8Jikg=;
-	b=l99B9pCp2t5aVP94SJ+EqpgXtoZoyygLgIKlzF6sSM6um80cZq90yyN0HRET+Yu5Z1+g
-	 lvZIvBe5ZXCQEwCyULtliqzZpGqzXg4Gx4GYUVu1tXociRkIykcJaBtOsn5ECMueJFppH
-	 PPVSuOffBvr16aeEJ2a4UF/EmBpo1eH6HPW8j1OXH+Wc0n6J1zmX6ucO5MBWUEPwGf1V7
-	 bRtecm3rQ36aAdy937ygJoQDhylIsxVu3WHO1/f5oAtWcEO62jQARiDHT2graA6dC1fls
-	 Ef9wZ/PvTZGj1FtNMEsV1jxVreQomHgxnD0XSgPAAxP32Sc8sBW9ZPfF0z7XIZtisSg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793208190;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=ZggAsEZzDz8Xs5cq1SmLTCdVdYwUDmu3WpWyKwp22Pk=;
+	b=VD1mNy4pH0xSlYBYkNZnEcTIxht7VflnCmqNjEt2j51M7vXEjYvhA8bi1ZPE/M+512y+
+	 YB3uNbI+XOc+9R8+MibytIIUkIgZ+4iKUYndjx5YHaEbjdUv8JYv6Ir50vxiFghvKarL5
+	 iKCcn53It/ZTxPd3P7XYs4Bu00+pmU20v05XXznT8lt8D/2yma9DLYBIxByrOJAOQ2cIu
+	 QgYo9Pylf+6MJvofOLb/1BJXC6xZZAB8uNl5QL66lsifa+oMvfjfzuOHmFJLDwbVge0s5
+	 9X1LSkRPTTdE8yPi/lHFD+suyW//uxwEDM7xi93XylnX4ZN2cWLFgOoLDsw0n/IEuhQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MeiUkkTx;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kAxceFAm;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A11C0606A31C;
-	Wed, 28 Oct 2026 17:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834F6606A31F;
+	Wed, 28 Oct 2026 17:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MeiUkkTx
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BCFE1F01825;
-	Wed, 28 Oct 2026 17:19:05 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kAxceFAm
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE59C1F01828;
+	Wed, 28 Oct 2026 17:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793207945;
-	bh=iA59H/LDNhkaV57ivIpVgCN8zVjfYFqLt84NAT8Jikg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=MeiUkkTxcl/ZYalrXsKfZK5vIOlQrmac2J0jzKLvwfTSVkHW/EqJju3D2t5LraDBO
-	 HFBWcUhcKn1N9O9rwcgt7ycPunBlHdJaWWUmKIi5Obw31rPdeq3wBL2J4pJ0nVXidE
-	 JqByT/tUR5FPDpjikQrL4ioCo1Wm45zMK8adF6UPkLnSHnXG0Df4ZvmeRfQWJm7JT/
-	 v6Cf33DnRjATzw74NYdsy5RY49irRJk+HTAvPxntr1fG3+RRLiOPcAkl/iNMPw1Nh8
-	 S+PflWOLZEOebmXde98cg5hbdX57G7CmBYnXk5vhP+A0kOxw6ai7w29GpWVoPhRJFE
-	 dOLHhWgZtzAMQ==
-Date: Wed, 28 Oct 2026 07:19:04 -1000
-Message-ID: <5572f45165fa3ec7d16e1d17eb2c3fb6@kernel.org>
-From: Tejun Heo <tj@kernel.org>
-To: Hui Zhu <hui.zhu@linux.dev>
-Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
- Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, JP Kobryn <jp.kobryn@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
- davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>,
- Jesper Dangaard Brouer <hawk@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
- KP Singh <kpsingh@kernel.org>, Tao Chen <chen.dylane@linux.dev>,
- Mykyta Yatsenko <yatsenko@meta.com>, Leon Hwang <leon.hwang@linux.dev>,
- Anton Protopopov <a.s.protopopov@gmail.com>, Amery Hung <ameryhung@gmail.com>,
- Tobias Klauser <tklauser@distanz.ch>, Eyal Birger <eyal.birger@gmail.com>,
- Rong Tao <rongtao@cestc.cn>, Hao Luo <haoluo@google.com>,
- Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>,
- Nathan Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>,
- Jeff Xu <jeffxu@chromium.org>, mkoutny@suse.com, Jan Hendrik Farr <kernel@jfarr.cc>,
- Christian Brauner <brauner@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
- Brian Gerst <brgerst@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>,
- Willem de Bruijn <willemb@google.com>, Jason Xing <kerneljasonxing@gmail.com>,
- Paul Chaignon <paul.chaignon@gmail.com>, Lance Yang <lance.yang@linux.dev>,
- Jiayuan Chen <jiayuan.chen@linux.dev>, Emil Tsalapatis <emil@etsalapatis.com>,
- Ihor Solodrai <ihor.solodrai@linux.dev>, Barry Song <baohua@kernel.org>,
- Geliang Tang <geliang@kernel.org>, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- Hui Zhu <zhuhui@kylinos.cn>
-Subject: Re: [RFC PATCH 0/2] memcg_ext: dynamic memory.low and memory.min protection
-In-Reply-To: <c652f3e6198b143fcf29f5540a769228f3d8470c@linux.dev>
-References: <cover.1793086858.git.zhuhui@kylinos.cn>
- <769e80ffa618327ac03c13c4657e7229@kernel.org>
- <c652f3e6198b143fcf29f5540a769228f3d8470c@linux.dev>
+	s=k20260515; t=1793208190;
+	bh=ZggAsEZzDz8Xs5cq1SmLTCdVdYwUDmu3WpWyKwp22Pk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=kAxceFAmMtDu1Cg6KSXuYu5ewjTR6OwhSYEjVAJrHB6YYXBBNKLxBnJEuDPe8cJ5c
+	 q8uq2384HUh9A/dBqNZM+wv2lVwCofDY5V+cICPoKOtMWfiZSvQI9AEve/AA5SGT6T
+	 N0daUJse1XImpoGfJR3VK1nMCY0KZXmDchDDSPwX+yKm7BqrvrgQM2dibaVpStBUGK
+	 DAfWmPgOw1mUBgyJSmP1rOIpcCSqq6A8dcLj3icOPgGM74vHBN6lng3IO6VLEDpySR
+	 +UQhoBx7kCWt2D9n65f7e4yhSYfFx/261ZaWPm3On097THfojvgGWQrrKSJThLV4rH
+	 P75KZ8fAwB1Dg==
+Date: Wed, 28 Oct 2026 17:23:05 +0000
+From: Simon Horman <horms@kernel.org>
+To: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: netdev-bot+sashiko@kernel.org, opendmb@gmail.com,
+	florian.fainelli@broadcom.com,
+	bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+	pabeni@redhat.com, justin.chen@broadcom.com, f.fainelli@gmail.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v3 1/2] net: bcmgenet: recover from a failed resume
+Message-ID: <20261028172305.GB257209@horms.kernel.org>
+References: <20261022-nb-genet-fini-dma-net-v3-1-6e9fc89c0156@tipi-net.de>
+ <179275652332.3134.3420351260504788140@kernel.org>
+ <7a86dc120223465e88cc265a6f597657@tipi-net.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -85,74 +61,74 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7a86dc120223465e88cc265a6f597657@tipi-net.de>
 
-Hello, Hui.
+On Fri, Oct 23, 2026 at 02:04:34PM +0200, Nicolai Buchwitz wrote:
+> On 23.10.2026 13:55, netdev-bot+sashiko@kernel.org wrote:
+> > [...]
+> 
+> > [Severity: Medium]
+> > 
+> > After a failed non-WoL resume, can the next non-WoL suspend leave an
+> > external PHY powered up with its link active?
+> > 
+> > On the normal non-WoL path, bcmgenet_suspend() halts and suspends the
+> > PHY:
+> > 
+> > bcmgenet_netif_stop(dev, true)
+> >   phy_stop()
+> >     PHY_HALTED -> phy_suspend()   (BMCR power-down)
+> > 
+> > The failed resume has already done this before bcmgenet_init_dma()
+> > fails:
+> > 
+> > bcmgenet_resume()
+> >   phy_init_hw()          drv->soft_reset() clears BMCR_PDOWN and sets
+> >                          phydev->suspended = 0
+> >   genphy_config_aneg()   restarts autoneg
+> >   bcmgenet_init_dma()    fails -> return ret
+> >                          (phy_resume() is never reached)
+> > 
+> > This new early return then skips any PHY power-down. Calling phy_stop()
+> > here would not work either, because the PHY is still in PHY_HALTED.
+> > 
+> > Nothing else seems to power the PHY down. bcmgenet_mii_probe() sets
+> > mac_managed_pm = true, so mdio_bus_phy_suspend() returns early, and
+> > bcmgenet_suspend_noirq() only powers down an internal GPHY via
+> > GENET_POWER_PASSIVE.
+> > 
+> > So an external PHY whose driver has both .soft_reset and .suspend (for
+> > example genphy_soft_reset with genphy_suspend) would stay powered with
+> > its link up through system sleep.
+> > 
+> > This would not show up with the bcm54xx PHY on CM4, which has no
+> > .soft_reset, or with the Generic PHY driver.
+> > 
+> > Does the !priv->tx_cbs path need a phy_suspend() call (or similar) when
+> > WoL is not in use?
+> > 
+> > > 
+> > >  	netif_device_detach(dev);
+> > > 
+> > >  	if (device_may_wakeup(d) && priv->wolopts) {
+> > 
+> > [ ... ]
+> 
+> Same as in v2: pre-existing, phy_init_hw() powers it up in the failed
+> resume and nothing starts it again. Fair that it's reachable now, before
+> this series that suspend just hung. Nobody seems to have hit it either, it
+> needs a failed resume plus a PHY with soft_reset, so pretty much an edge
+> case, don't you think?
+> 
+> I'd rather not add a phy_suspend() I can't test ... the CM4's bcm54xx has
+> no soft_reset, so the PHY never gets powered up there anyway. The proper
+> fix is to stop leaving the half state behind, that's on my list after the
+> MTU series.
 
-On Wed, Oct 28, 2026 at 10:27:33AM +0000, Hui Zhu wrote:
-> memory.low is a request, and what reclaim honors is elow, which
-> page_counter_calculate_protection() derives on each pass from the
-> parent's elow, the siblings' requests and the tree's usage.  At the
-> first level below the reclaim root that comes out equal to what was
-> written, and there the knob is enough.  Deeper down it is capped by the
-> parent's budget and shared out between siblings according to what they
-> claimed and what they use, so what a cgroup wrote and what it ends up
-> with can differ.  As far as I can tell none of that is visible from
-> userspace: memory.low reads back the declared value, and I could not
-> find anything that exports elow.
-...
-> So the derived value seems to be usable only where it is derived,
-> inside the check, and that is where low_policy() sits: it is evaluated
-> per pass and is handed that pass's own inputs - the memcg, the reclaim
-> target, the elow just computed, the usage - instead of being state that
-> is read at the check.
+FWIIW, I agree that is an appropriate approach here.
 
-The visibility of effective values is a problem of wider scope, not an
-argument for implementing bpf struct_ops. There were discussions in the
-past on whether we could expose some meaningful effective value. They
-didn't lead to anything conclusive, and we may yet find a way to expose
-something more useful.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-Also, the hook doesn't use elow to decide anything. mem_cgroup_below_low()
-and below_min() return true as long as elow or emin covers the usage.
-They ask the policies only once the usage exceeds it, and the only
-answer a policy can give is BELOW, which makes reclaim skip the cgroup.
-So, what the hook buys in the nested case isn't access to the per-pass
-elow. It lets a cgroup escape the ceiling that its parent's protection
-imposes on the subtree.
-
-Some of that may be innate to nested protection semantics. One
-shortcoming may be that there's no way for a parent to "passthrough" in
-terms of protection, because there's no way for a parent to be neutral.
-If its memory.low is too low, that's the ceiling for the whole
-subhierarchy. If it's set high, the subtree gets the total protection
-one way or another. There may be arguments for a different semantics
-which changes the shape of the protection.
-
-However, it doesn't make sense to let a BPF program escape the parent's
-policy, and, again, none of this is an argument for adding bpf
-struct_ops.
-
-> The other half is what a policy can key on.  memory.low has one
-> dimension, bytes.  A policy program is not limited to the ctx it is
-> handed; it can also use state that other BPF programs keep, so
-> protection can be a function of activity rather than of size - a
-> workingset refault rate, for instance.  [1] reads those counters from
-> BPF and acts on them; it drives reclaim rather than answering a
-> protection hook, but the signal it reads is the one such a policy would
-> want.  The limit is on the output rather than the input: the hook
-> returns a boolean, so it cannot grant anything memory.low cannot.
-
-These signals are all available to userspace. The workingset refault
-counters are in memory.stat, PSI is in memory.pressure, and whatever
-state other BPF programs keep sits in BPF maps which userspace can read.
-So, the inputs aren't the difference. What's left is how quickly and how
-often the protection gets adjusted.
-
-That may be an argument, but nothing so far shows that struct_ops is
-needed for it. Can you demonstrate a realistic and useful scenario which
-can't be achieved from userspace but can be with struct_ops?
-
-Thanks.
-
---
-tejun
