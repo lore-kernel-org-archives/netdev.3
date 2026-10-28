@@ -1,70 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793144988;
-	b=pHXtV5ww0HHYRb4X2NXv7iHhW1gI+4oplbkjaubPtkaBoY+IGEVPV1iy8LNxsesYT5qE
-	 kAIve4M+ANViItYBbAbD51HewUm+ii7CQCW2x4nw4rYoSqIleEY5yWR1/BXAfswBxyM2H
-	 aSsSnJTwKxUF7YxJ6npaleUABhLJZ3jHn3I7eKtvVjy5G8qJarJ8gENQpjTT202SH5tT+
-	 JBIFd8wv+rktjpHq1tOgiM9iZH+VRgELGYKxnatWz/ydpCbbNIjyBKFtoHgCBkbpCf2ZV
-	 /kcgle7zBUiyKSjEcGrrM3PilAnNJoXlIwAmkN6ekqYfmC8EZsY1TeTEOv6nK+1GS2w==
+	t=1793145606;
+	b=Nqs0/iZZIckhvFMJb3GsoUktITGWDlmR6e21cj/Mpcvt049FCPAps0qEUpiwvWFZPeig
+	 BrKmAwbmz1cxxq+9KCF0KK49XClRM9yYPjVvcJuW9JdofCTxCIn/ImBgqEa61+C6oDlM0
+	 DVK/aHwCsFFBT2X01k4YxRxWj18TwIXIb/A7O9FuDj9XT7Vbv1sNSs0na/CAq5zBfETZz
+	 +gVx0QDZvdUcKmEysw0eXha4XPFds3oEgMKYsavJF3BtYEbB1HbHmokzNJ1NCoSmYvHY8
+	 DHaCw3I1sr+Zxd7FLT0W01ryKTDajnUL2OAA8VZC33QifOuaJ/t+83/QO2xpiRmrsbg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793144988;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=OsGKoIGB8oJgiLBZispb/gUIEGCVQxTtM4o9rSDXfhw=;
-	b=tc7rgqEJcqD+hjnhGAJiTtzo52eDzRfgq2fSqSvRR4HzLvNrjwUxHllESiTt2h6nOGM7
-	 Xr0wEzmPFqcLaXYMPF6SyOs6g/5J4pV1omGGpNeOp91Dez+IHV4KH3+UV2p57UTE1koPx
-	 LI0zcQ+vF/NgN3C96OVNKNd2ZDc3p4NE3GOebdxowL3xmaUwPm/8RIrQyFdw3KIjuOaTh
-	 BOXZ4lW8beOnpxNFCni+cE7Gu4sX3eGhNcxuix+OXSsfTCfeg1BxmibGI21z9puUti5Um
-	 7U5EWceNFdIoTh73qtakAUJtev03gcnbNxydiNQ58kse+6YrQZFimrwwC3o6GRoAnSQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793145606;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=AjoTn9YrgrNbhfUddAfHwwkSlUQsdqaQqz5hqdt5ikU=;
+	b=tYaftOnZIsoM5UYLaoPFjIHBxZEklDMP1PYSAM2McqmlLBWMMbo1iiKZAQKWvx6oesXV
+	 rLIKAo1SKdSkciMqhz30kgPk53+IH3iVhRdUZgQLsMNCWBjuXyyUv7CYRu0hjdZcR6F0G
+	 EerNk+TaIRxKNaTfbUDt7VsRoIVCWJoEJne2OFF5S/DhpDEyaaED7u0WcxjFLhljuPLdb
+	 H3a/Ra5iYLYzd23jbzIuANNvADShIeW8X5Cjm4mh+TSnVM4ugvqFzF5KayzggJMqGLSJZ
+	 3v8tvLmJ77ukb13/NepuhyJJ17iCbjCRqMAwTi0S+oxdyEFv2yAco9Lf7B3pOvmR35Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="MTfEj/DO";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U05wL2rJ;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2A6606A326
-	for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 23:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F140B606A31A;
+	Wed, 28 Oct 2026 00:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MTfEj/DO
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD5041F031E3;
-	Tue, 27 Oct 2026 23:49:47 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U05wL2rJ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB2231F01825;
+	Wed, 28 Oct 2026 00:00:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793144988;
-	bh=OsGKoIGB8oJgiLBZispb/gUIEGCVQxTtM4o9rSDXfhw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MTfEj/DOaBV7UYVHeUcCXXbeOORi8rcuarCC7lAfzfkNg9g545SEA7YTD6k8Ia01y
-	 qHYk1Ou7bWBQAYbexg9LykKfmicFsawznISakqXhLqM2eQjA+S7fNXxNZF0dmFDYCe
-	 QNLry+IJZ6nOFmBCI4twxjvHJAoW2ioQSWYykebmRqMDr6RctHDr3r4tw95UycBzkw
-	 v426Tld9CcRlrVdymC7KOk3dbg04ObeoK9cScagjqmVJQkNbdyoQmfqf1vxYX9Seok
-	 Dcb/iB1fEBDV/LLJpt6R934Z75Ol3RyHqBwmTXGMBsOD1FAho+YBkw4zkIolFR31Ip
-	 A+f0bmhEP5F8Q==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	michael.chan@broadcom.com,
-	pavan.chebbi@broadcom.com,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	sdf@fomichev.me,
-	eddie.wai@broadcom.com,
-	prashant@broadcom.com,
-	huangjw@broadcom.com,
-	gospo@broadcom.com,
-	brett.creeley@amd.com,
-	ap420073@gmail.com,
-	joe@dama.to,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net 2/5] eth: bnxt: resize Rx head buffers when rx-copybreak changes
-Date: Tue, 27 Oct 2026 16:49:37 -0700
-Message-ID: <20261027234940.1267225-3-kuba@kernel.org>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261027234940.1267225-1-kuba@kernel.org>
-References: <20261027234940.1267225-1-kuba@kernel.org>
+	s=k20260515; t=1793145605;
+	bh=AjoTn9YrgrNbhfUddAfHwwkSlUQsdqaQqz5hqdt5ikU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=U05wL2rJO0B5QI6UGr9iHOGgHSOVPDywQ31BATkOuyhyLsmoyhXqfHS4HIWdobico
+	 tryMsTiBMpejMe6we37E5Lfx8rt8TJyUVNNb7jWkVMDz37Qamt2/Bldv98xAdg5Idh
+	 Na2wjI7jID6laY0sXTgQKVz55bfmbR6MNRS8W388T4gPYsGi2QWU8saK9z6KzP9oCA
+	 HWFJpK7vPmvi2e0pPZh/c8Ifrz7oRsLbi5OkYHhbUSPfwyIvuUWvBxH3bgaF0WntQB
+	 d6bNbz6eHlzyVLuUPRJrPYC+SU/9mzoMN5gZa30U5guRf7Yxm/JziJc9UTmMPpVclo
+	 WQiSHNI/LbfeA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BE4F73AA9413;
+	Wed, 28 Oct 2026 00:00:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -75,57 +54,40 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: dsa: motorcomm: Fix function parameter types
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179314560462.400918.4214891622069081090.git-patchwork-notify@kernel.org>
+Date: Wed, 28 Oct 2026 00:00:04 +0000
+References: <20261026083252.12684-1-mmyangfl@gmail.com>
+In-Reply-To: <20261026083252.12684-1-mmyangfl@gmail.com>
+To: David Yang <mmyangfl@gmail.com>
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org
 
-Since rx-copybreak became configurable, bnxt_set_ring_params() sizes
-the head buffers to fit at least rx_copybreak bytes, and the copybreak
-path in bnxt_copy_data() syncs rx_copybreak bytes of the head buffer.
-bnxt_set_tunable() however only updates bp->rx_copybreak, and nothing
-on the open path recalculates the ring parameters. After raising
-rx-copybreak the head buffers keep their old size until some other
-setting changes, and bnxt_copy_data() syncs past their end, into the
-next buffer in the page or past the end of the page:
+Hello:
 
-  DMA-API: bnxt_en 0000:01:00.0: device driver tries to sync DMA memory it has not allocated [device address=0x00000002aa210c40] [size=1024 bytes]
-  WARNING: kernel/dma/debug.c:1162 at check_sync+0x577/0x1eb0, CPU#22: swapper/22/0
-  Call Trace:
-   <IRQ>
-   debug_dma_sync_single_for_cpu+0x66/0x90
-   bnxt_copy_data+0x12f/0x290
-   bnxt_rx_pkt+0x24ea/0x50f0
-   __bnxt_poll_work+0x42c/0xc00
-   bnxt_poll_p5+0x579/0x17a0
-   __napi_poll+0x8b/0x2c0
-   net_rx_action+0x58f/0xbb0
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Here the head buffers were still sized for the 640B HDS threshold,
-four 1kB buffers per page, while rx-copybreak was raised to 1024.
-Without coherent DMA or with swiotlb the oversized sync can corrupt
-a neighboring buffer owned by the device or by an skb.
+On Mon, 26 Oct 2026 16:32:48 +0800 you wrote:
+> yt921x_fdb_add_index_in12() mistakenly takes the two register images
+> as u16, while all registers are 32-bit wide, silently losing the upper
+> half. Widen the parameters to u32.
+> 
+> Fixes: 186623f4aa72 ("net: dsa: yt921x: Add support for Motorcomm YT921x")
+> Signed-off-by: David Yang <mmyangfl@gmail.com>
+> 
+> [...]
 
-The device must be down for rx-copybreak to change, so recalculate the
-ring parameters right away, like bnxt_set_ringparam() does.
+Here is the summary with links:
+  - [net] net: dsa: motorcomm: Fix function parameter types
+    https://git.kernel.org/netdev/net/c/5d7f3375cd57
 
-Hit while testing patch 1, tested on BCM57504 - boot; set rx-copybreak
-to 1024 with the link down (CONFIG_DMA_API_DEBUG); ifup.
-
-Fixes: 152f4da05aee ("bnxt_en: add support for rx-copybreak ethtool command")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
- drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-index 622e89587e5d..ef4bea4a0f8c 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-@@ -4601,6 +4601,7 @@ static int bnxt_set_tunable(struct net_device *dev,
- 			if (netif_running(dev))
- 				return -EBUSY;
- 			bp->rx_copybreak = rx_copybreak;
-+			bnxt_set_ring_params(bp);
- 		}
- 		return 0;
- 	case ETHTOOL_PFC_PREVENTION_TOUT:
+You are awesome, thank you!
 -- 
-2.56.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
