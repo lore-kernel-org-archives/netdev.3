@@ -1,60 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=176.119.200.161
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793211128;
-	b=dt6hM4ttfXV1y5K9lDYdCgZ30BuKY91/KR30mdgpLs8IyUcWqxLo1aNR7EClIaRkW75I
-	 mQv9P/yqbh1E/Ie/bgK/x57JM3v8JusGIr6GGskEihuBj8NjEkpNhD/056GdfZOPd138t
-	 jOjFsc2w5sqnKpvurkerqT/0rKToROhvMUBytqQ8dMoumTkgOHVihTboC7LeNQlK/vVxL
-	 p2uI1DJLaB2TcjH4V+xKfx41lueHhYoijYjFrfNo4g+Vpg3BC1LbE1XovmLg0Pdr3a1v7
-	 GSUgqQoMRH4dyp5SUzAgdTMQkCj30tv4kNfo8KH8+3SrFmv4KfIA4TO1wVG+POxhb/A==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793211128;
-	h=DMARC-Filter:DKIM-Signature:Date:Subject:In-Reply-To:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:From:To:Cc:Message-ID:
-	 References:X-SimpleLogin-Type:X-SimpleLogin-EmailLog-ID:
-	 X-SimpleLogin-Want-Signing;
-	bh=gcTBoDoZodNeEIG1NJv/Cf9hQ2tDZQXR8IELFFZ5LJg=;
-	b=vRSZiyCKWk7hZCPdzrF+DsS4dkdLojbCCtQBazFE+efrxc297cGXc8NxaYkaLoYnE28H
-	 NA4I23IFTkpfRE3u/DRQr/yyqWEVmpnLo6tfvZTvr8QGiWlJjQ5o970OCVzrz2EDv8FeY
-	 l28PZVIUh8cEGjzmuPgQlJAwiQ14WdBMN5pNcmwDgvmjpGG3WT3bkCzeK5BEMF1R2qZwC
-	 i+WpucVAdeUN4ZrbyLEwRaEp+A/T2DrfIJki9PA5pL6kYuS2XbwchDL6mCUsCvSBOXbNc
-	 bEWV89nql+hTm+WzgUU8LF5QnRNGuLQKsHDTqSgKWI5PgFh+I/iKHLYjgtPG+u1X/xA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=eldare.de;
-	spf=pass smtp.mailfrom=eldare.de;
-	dkim=pass header.d=eldare.de header.i=@eldare.de header.a=rsa-sha256 header.s=dkim header.b=nMYwWowe;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=176.119.200.161
-Received: from mail-200161.simplelogin.co (mail-200161.simplelogin.co [176.119.200.161])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793211298;
+	b=snhADt2RhF12Wjn1IAWGpF1MeBLS1QQIXErdQyDkeN0teoCsctcFVKImW4kdROy1KC5S
+	 9hhbnnTuFubQPLfo4cm3MW2SxjvjtP+xaqsKFtyj2wa27TJAnxjfvuAk5ZbpoNTcIZ3dl
+	 bmZGo/p6LZuCqyZt28GKf6MOc80sxLTzIfwGloefbyE0uW98taTMjs8Ah7Sf+9hMWwcWm
+	 sgS8aGF0gZItXKGm6E1IfPuq8QwQDfVuwNWDXZMWk6EEMs7UBT3YXBskvomoi2cJDQLwo
+	 4ISQ+QRzWpz8KR0sAC5Q7HMftzIAL8IUAbkjSUeJQHiTNyCf2u053QbkF97j5Etznlw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793211298;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=ORByZDQUFgn0JJEnKfTmOTXNubEmxRahmOuQvTF/0L0=;
+	b=q5ZlgIw3lIfzKFfdAlw1Ik00LuBSmLJzvXC7X9UcJs0fg2RDhovdyA7IJY7Y4SxR5rrp
+	 b80QVnWZqUeZgXE2jq+OTjHb43ZMKb++t6/paD4X2bcGfTPq7fd3t95JJviDwNAHoHo3/
+	 OtruKyplJkHQs1Xe5rbxHoM78K9zDUd45ciyZEu1odCnxGUgpBTr9B3Z2zyJ9AXl7OMxl
+	 3mpzROhcmC2fzC+C8ZvKn3xChqpQfO12mvQOvBbkVvwCBtwJ1AqCav3cqD70jNAP/8M9b
+	 Vu+YY41h6EtS/E1UYS+u4eAjjOMaiS7UWofwK+qHvo+Ym0rEXs8VXPDSk3UzCBTcPoA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e6jEoKv5;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52463606B442
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 18:12:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 52463606B442
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=eldare.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=eldare.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10A760A5BDE;
+	Wed, 28 Oct 2026 18:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=eldare.de header.i=@eldare.de header.a=rsa-sha256 header.s=dkim header.b=nMYwWowe
-ARC-Seal: i=1; a=rsa-sha256; d=simplelogin.co; s=arc-20230626; t=1793211121;
-	cv=none; b=BzG0lB8P4zva5dAFDcBP+oC74Bj5FI4S0vz8Exbm9fognNCIp0i44ovzsAMrbyegfCjprDKnWYcG2OgEYb+ipD8ITje4d+lktTWXMZJGozgnXfIV6HBtBg2/DA35FDyz5c8ZQDpgirojpgtGlvWtZzG15JD6fYO6cpYILhsL+96CpfaJUpSyQhM10ZNx+Fg4paMchKrTh2c5GVuH14Y4xpWZHI5p/vww7xuG0l9Pw8DSPeMkFpZLwCOnucTM3S+EPlFsbuO0vxVMWCUc3lXgJCH7zWe46539gN0ym8BWgqBgxm9isE6i/OqWbOaWaC0VgQImbSqIzFHnqsbwY2AnDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=simplelogin.co; s=arc-20230626;
-	t=1793211121; c=relaxed/simple;
-	bh=gcTBoDoZodNeEIG1NJv/Cf9hQ2tDZQXR8IELFFZ5LJg=;
-	h=Date:Subject:In-Reply-To:From:To:Cc:References; b=2EiSOJHJF7wPWN19/b2/NO73fwlhIlaarJDH7BZKyCThGF92u+rV6qjDWW69mgiU8FMMUy7xR4QpMDBe0rI66getPwTvVHhe5MBO0qGrSUgWlQCrX5ci9u18mDBPM3p5ejBqMDsbT9uIwNvChoCtIdeIK/Tw1B+sEHQqY+Zgd1Pf6LV2af9A7UQW/aFub2HfoNpdwmc/McDm7YoRnErHm6vzVZucvRCl9ArqPkBpa7LQTuvycQgNtrTonghocu0FJJAvyCAXi5fzamvvDB80+8f2XNxUp1KD2YCMBIB+1agnTcBdE0FQs5VCkkbhopUNNRLiIvAR18/VYicvsJ/RaA==
-ARC-Authentication-Results: i=1; mail.protonmail.ch
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=eldare.de; s=dkim;
-	t=1793211121;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gcTBoDoZodNeEIG1NJv/Cf9hQ2tDZQXR8IELFFZ5LJg=;
-	b=nMYwWoweV5C8iF5Ujdap//+3tlKAtTL3Ld/Aor3RClh5/JuBn9vLAlyJvlRwRakfL8F7lu
-	Gjal9LiExFhPSVT3KwMngG5iyA1JXh9tt+5OuQq10b+0wzV9sVMcJuzWdpw7f62Jsw6sgl
-	goPdLFeotMzo+1OkshnM8VriX+aYAxw=
-Date: Wed, 28 Oct 2026 18:11:53 +0000
-Subject: Re: [PATCH net] vsock/virtio: clear vqs[] to avoid a UAF on a failed
- PM restore
-In-Reply-To: <179122121054.434549.15763347362425052652@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e6jEoKv5
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B6871F01828;
+	Wed, 28 Oct 2026 18:14:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793211297;
+	bh=ORByZDQUFgn0JJEnKfTmOTXNubEmxRahmOuQvTF/0L0=;
+	h=From:To:Cc:Subject:Date;
+	b=e6jEoKv5aihwlkTjfD/G9eavbW9A8L1euwv8Uc0zriHawl8aZ+coOF9wVDkyD8liK
+	 YdRCERmtCBeu1U40bs604IkmoGzeG/ex3tDTSFkOubog3PzY5PIwKb+B6sR/v657dN
+	 nFy2+WhGWxk8yqDe+7RDKrm1mHppJZUpn2B7GWMLeHop4+pFvp9yf0Evz5aP84o+ya
+	 8SOBQMfXLFJivNwccIHZY5UFpUZkyKLIqqAldiUbb1+5Fs0odqFpspL7xYxbkyWmnJ
+	 Un59KKuAdwHL/sJtvyvJOjjK75VPwMGGoeekEa50p1oFYwsYCyRhQR4x7SkgNXreRO
+	 G7j7iLZfX5Dfg==
+From: Eric Dumazet <edumazet@kernel.org>
+To: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	Willem de Bruijn <willemb@google.com>,
+	netdev@vger.kernel.org,
+	edumazet@kernel.org,
+	Kyle Zeng <kylebot@openai.com>,
+	stable@vger.kernel.org,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Subject: [PATCH net] net/packet: check TX_RING fragments before memory accounting
+Date: Wed, 28 Oct 2026 19:14:50 +0100
+Message-ID: <20261028181450.2221013-1-edumazet@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,43 +63,67 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: jrmmhm.kernel@eldare.de
-To: netdev-bot+sashiko@kernel.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,Jason Wang
- <jasowangio@gmail.com>,=?utf-8?q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>,Xuan Zhuo <xuanzhuo@linux.alibaba.com>,Stefan Hajnoczi
- <stefanha@redhat.com>,Stefano Garzarella <sgarzare@redhat.com>,"David S.
- Miller" <davem@davemloft.net>,Eric Dumazet <edumazet@kernel.org>,Jakub
- Kicinski <kuba@kernel.org>,Paolo Abeni <pabeni@redhat.com>,Simon Horman
- <horms@kernel.org>,kvm@vger.kernel.org,virtualization@lists.linux.dev,netdev@vger.kernel.org,linux-kernel@vger.kernel.org,stable@vger.kernel.org
-Message-ID: <179321112009.7.11441275993569600318.1728181970@eldare.de>
-References: <20261001-vsock-restore-uaf-send-v1-1-5da60f707506@eldare.de>
- <179122121054.434549.15763347362425052652@kernel.org>
-X-SimpleLogin-Type: Reply
-X-SimpleLogin-EmailLog-ID: 1728182024
-X-SimpleLogin-Want-Signing: yes
+Content-Transfer-Encoding: 8bit
 
-On Mon, 05 Oct 2026 17:26:50 +0000, netdev-bot+sashiko@kernel.org wrote:
-> The detach loops now handle NULL vqs, but del_vqs() still runs
-> unconditionally. Is a second del_vqs() safe on every transport?
-[...]
-> Won't __free_irq() hit WARN(1, "Trying to free already-free IRQ %d") here=
-?
+From: Kyle Zeng <kylebot@openai.com>
 
-Yes. I reproduced it with a virtio-mmio vsock device (QEMU microvm): after
-the failed restore, both an unbind and a second freeze warn "Trying to free
-already-free IRQ" from vm_del_vqs(). v2 treats an empty vqs[] as "no
-virtqueues are live" and then skips the detach loops and del_vqs(), while
-still resetting the device.
+tpacket_fill_skb() adds the full non-linear payload length to
+skb->truesize and sk_wmem_alloc before checking MAX_SKB_FRAGS. With
+PACKET_VNET_HDR, userspace can submit a ring-sized frame even when it
+greatly exceeds the device MTU.
 
-> Are the virtio_rtc and virtio_console references accurate?
+A near-INT_MAX frame can saturate sk_wmem_alloc before the fragment
+loop rejects it. A subsequent refcount_add(0x40000001) can temporarily
+turn REFCOUNT_SATURATED into 1. A concurrent TX completion can then
+drop that apparent last reference and free the still-live packet
+socket before refcount_warn_saturate() restores the counter.
 
-They are not, thanks. v2 cites only the virtio_blk commit and keeps the
-commit ID out of the code comment.
+Check that the remaining payload fits in MAX_SKB_FRAGS pages before
+accounting it. Include the initial page offset in the calculation,
+and move the existing -EFAULT handling out of the fragment loop.
+This preserves the accepted packet sizes and error code while
+preventing an invalid frame from injecting an oversized byte charge.
 
-I'll send v2 as a new thread.
+Fixes: 69e3c75f4d54 ("net: TX_RING and packet mmap")
+Cc: stable@vger.kernel.org
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
+[edumazet: use net_warn_ratelimited() instead of pr_err(), add a Fixes: tag]
+Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+---
+ net/packet/af_packet.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-pw-bot: cr
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 823e0911c910fa95d85bdf187eddef802cf65726..cf6429f09477263534b631199aae85c30de2fffe 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -2655,6 +2655,12 @@ static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
+ 	}
+ 
+ 	offset = offset_in_page(data);
++	if (unlikely(to_write > MAX_SKB_FRAGS * PAGE_SIZE - offset)) {
++		net_warn_ratelimited("Packet exceed the number of skb frags(%u)\n",
++				     (unsigned int)MAX_SKB_FRAGS);
++		return -EFAULT;
++	}
++
+ 	len_max = PAGE_SIZE - offset;
+ 	len = ((to_write > len_max) ? len_max : to_write);
+ 
+@@ -2666,12 +2672,6 @@ static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
+ 	while (likely(to_write)) {
+ 		nr_frags = skb_shinfo(skb)->nr_frags;
+ 
+-		if (unlikely(nr_frags >= MAX_SKB_FRAGS)) {
+-			pr_err("Packet exceed the number of skb frags(%u)\n",
+-			       (unsigned int)MAX_SKB_FRAGS);
+-			return -EFAULT;
+-		}
+-
+ 		page = pgv_to_page(data);
+ 		data += len;
+ 		flush_dcache_page(page);
+-- 
+2.53.0
 
