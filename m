@@ -1,61 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793215509;
-	b=f4JL9fmCnGiZp/8FByhV375Q9uaYc5YrqwN+UFbtQiOWxx6sxu/MdQNP5z2frAaSBwwZ
-	 VzncSx/58ajFuhIuSNB5iKzAAsJZhEHbJamzzBjjAtjFNe3vVE0A3lUIMN4qS6TGNTDa3
-	 Il+qbYBqigk9aXk+mLSceYkz/0g4/Q6h7Muyo9U/+qJRk7ZOBJpVLoGShVf6Bexnx43LX
-	 yqFh4Kl8MWHJJ9EA8BQLkTMvYvLYFoodLqFMeFg+qUvUzaBS46omHZaWsjQl5Kf/1r0yk
-	 41yDYwrlTdnAblgZPeuHHrF9QNGh9bfntZHHYm17l1DSaVaxk/uWcNV7qYujCPVUYtg==
+	t=1793215772;
+	b=5YH98PsHA450z1/lfum1iqNHzvsiCAVRIOm7l4tw2B/uBhmFkBbRTGVvu8gGRM1iVq0g
+	 D56PGWoWz12tpFBgQQFXBxAZYG8WYBrcgnmbw3KQ+ShjXiCwc1BHVqokPGEulZr6AYNhm
+	 sHYheg64kkxTtwsVDniMTQv26mQKkIHj8RENa2ns+zTizFz1+LI1qYJlVQNDPeSYgXAPJ
+	 8d3SI3g3TalqncErD2elfeWlOPhRlpAv0+yLOQKBB8BE6jUccjyUKuJkcSiSK8vvNRnIm
+	 xeLkibQ32H2KGI9ZuvaQb8EGQpPsb60bJTTZ4GNtqKba1U108oWJQ/cDGPlL82kli4w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793215509;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=VWovsz25VQacJNQe16TtvfA1PaAlLh1xywDVn8vnffg=;
-	b=CYNjNiz701hWAEnlnqOucLTrpOtSCEeGvEIls3nF12/0DE1vWxsDz8ilV7I4yXkIWKLj
-	 ikYxaShNXT1Udn1kWpigEn2WtUdAkg7h6xM2P7qgVf+jEsgvRiwW5BEC09wl5PBDuNH4f
-	 McNy5z/ds6Pk2/eNmoT7BVdRmriqb2n5mdw654FmnhLi3pbq07QJjsvDjFquOw3iezbEQ
-	 ZvPTV5xlFlrQy5CIsdACxvyq+DH34c7Md9Wp6T3gBDrSu3D9tP1Ibc/nEWiknt6moh66k
-	 UnnEJSkMkEzWdWePTUtSvxmueMFxHO/JDYCWrID9swRtDZ0usUO9FJ9hlVaMMI3L/NQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793215772;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=fhIxlpuFJcBXrphNeNwx+YcRvaFe0jopB+8JEZHNr+M=;
+	b=0rONM9e5K/ujELriaxgsizKGN0+3NreOmQLOGjaYYjPeT4qRHwSGn6AEKh4pVUPiJZhm
+	 z7kXGO1uqeGuEXhUpUalHWZHGrb4p1tEHCzXT7JteimasdZbtMSigVK8Z/YK1XZJCEJNU
+	 wIGLDpxSP85hnKZVPbmvRpJKRcXSVm9fBZxYfftttxoLWCCmwrKZvpIj5Pn+ku6oO/rFC
+	 uZca2Dh+3FElsrvUIrAD9RX+BFXl4fQv/BBKrMeiH0tsRbp7kgr2E16jt93uJPR98WYkQ
+	 5GSmopaBVl5kSIpJf0HNA6wh2vlg73UxN1p8ie9iaWByy2TQfWvUblV6a3OkmjCohZQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V9hlITfa;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nDyVVPpZ;
+	arc=none smtp.remote-ip=209.85.214.199
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B603606A31C;
-	Wed, 28 Oct 2026 19:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F06606A31F
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 19:29:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 93F06606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V9hlITfa
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9392D1F031E0;
-	Wed, 28 Oct 2026 19:25:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793215509;
-	bh=VWovsz25VQacJNQe16TtvfA1PaAlLh1xywDVn8vnffg=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=V9hlITfawAG8Bwa7m5mAF7v0k8OX8N/+O8Og3osnROdQ6j8I97EIwuS48nFZSx25c
-	 yhjhpU5rh0C0Z/DmJyYnWUO0OiO+mlZs9UEiAiUufMDwbykBy3yNmAL/4iGtdDvF/W
-	 12UiTWCN8GhYbsHUF0OGDev7Rk/28MjyQAyCSwi/2W9Q4jV9Nd/Ggu3RFEKAAK267f
-	 0ZPiKxER/1KpQIE2ftg09ys652VqX/Qkv1CemWQz9LhiJH6k8wO+RcD6vf6AKkltlh
-	 J6yf92mCFlduzbG9qX5z/yysqABc09dLkUUwSmZkufyv9bcgtiMj8SV+p+MiV5WR6N
-	 W6r9p5MOwLZ0g==
-Subject: Re: [PATCH net] net: ethernet: ti: cpts: drop stale events before the
- misc IRQ can fire
-From: netdev-bot+sashiko@kernel.org
-To: alan.tseng.cs@gmail.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, s-vadapalli@ti.com, rogerq@kernel.org,
- richardcochran@gmail.com, grygorii.strashko@ti.com,
- linux-omap@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Wed, 28 Oct 2026 19:25:08 +0000
-Message-ID: <179321550813.3134.2116221670679603156@kernel.org>
-In-Reply-To: <20261026072314.663980-1-alan.tseng.cs@gmail.com>
-References: <20261026072314.663980-1-alan.tseng.cs@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nDyVVPpZ
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2e8ba4757baso11211175ad.0
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 12:29:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793215771; x=1793820571; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fhIxlpuFJcBXrphNeNwx+YcRvaFe0jopB+8JEZHNr+M=;
+        b=nDyVVPpZ2XLMVcMcMfu3Ju2+6ZjLyfZ3SxeUgOM8o0tSDQfHLG1jgqSLCFvlis7uOZ
+         wo1/C87w0qBPcfvh051AN4U/I9OnnvEZhF0Jwep420UsCNWlevoCr154K8dmYSBfTmmx
+         XHhcoFj9eBHEsvE3CefF/Vyiuyo/+XOpSi1R0OFeX19g2CroLgDWu11IZUyTN6kqH7Om
+         G+EXIQfNuZHLnlDEiLVdX/4+GIiZoT1r4ndYW0cMi7NcGxiajgEZbMOlxbacOCTAWEbp
+         J6ZtvDRUsYzYQb/jJaoSuC7KS8zTLk8JspOkALI1Y1kUkqwoTwLL3QLe7Xkyu14EXDz4
+         eULg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793215771; x=1793820571;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fhIxlpuFJcBXrphNeNwx+YcRvaFe0jopB+8JEZHNr+M=;
+        b=0CtXcbZlCJzjqYQZKKtcGIYGwjbNgComRzEYq/7FcW9rgwjLgRW3eyTcHCtC4JZ/LD
+         0OdC6SVS6Hb/J3fznzNkt0QIcHJExC+cA4LwgpCOobAt4ZDG081AQc15DFinJc8jqQ1c
+         0f8VK3VVVZcx+qLee5AkUaMMawkHfFzLi3Rav1fnEgLnJ1pdvet7mEhFuPNnWbzeBN5C
+         wsN8hbZ3dFGGFHTiMbzf1BN72kEWnoR+YOtNfVNl5/Sv6blUcFZo73aNB2bgRe+Q73GM
+         k7L6MxjCr/eJLmXWKn8pxL698o7m8Dm0odEmpvMTeAvoMP3qNHQx9qL50BipROBBj9t2
+         gw+A==
+X-Forwarded-Encrypted: i=1; AKwUvBwS3dj3dzMieYJypbc9diHWiV1vd2PI0vxB+LhOXmTZGlHWocUUQPIdw+PPbMWMiEqC9+4LcHI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ6DYaRi2Ug3AIULfSj6ek9vFXnUbNdW44H+/T0kryuQkBDbVFx
+	BzGVdxrQufFnqvGAKbEZX/cGPiy2tvxvEq9mMTftrKweNxpzbiAHT2f5JCnKl3mKKKW3JO9FjBS
+	qIMBRdg==
+X-Received: from plic6.prod.google.com ([2002:a17:903:3706:b0:2e8:7c6f:de6a])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1cb:b0:2e9:5714:608e
+ with SMTP id d9443c01a7336-2eb00487c87mr32243115ad.49.1793215770650; Wed, 28
+ Oct 2026 12:29:30 -0700 (PDT)
+Date: Wed, 28 Oct 2026 19:29:30 +0000
+In-Reply-To: <20261028160226.2170244-1-edumazet@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,119 +77,46 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <20261028160226.2170244-1-edumazet@kernel.org>
+Message-ID: <auJNDPw54Ojurqqq@google.com>
+Subject: Re: [PATCH net] tcp: fix reordering addition overflow in MTU probing
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Neal Cardwell <ncardwell@google.com>, 
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, Kyle Zeng <kylebot@openai.com>, 
+	stable@vger.kernel.org, Wyatt Feng <bronzed_45_vested@icloud.com>, 
+	Ren Wei <n05ec@lzu.edu.cn>
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Wed, 28 Oct 2026 17:02:26 +0100, Eric Dumazet wrote:
+> From: Kyle Zeng <kylebot@openai.com>
+> 
+> Commit efb8763d7bbb ("net: ipv4: bound TCP reordering sysctl writes and
+> MTU probe sizes") widened size_needed and the MSS multiplication, but
+> tp->reordering + 1 is still evaluated as u32. RTAX_REORDERING accepts
+> an unrestricted u32, and tcp_init_metrics() can install U32_MAX.
+> 
+> In that case the extra-data requirement becomes zero. A write queue
+> with probe_size - 1 data bytes and a FIN satisfies the sequence-space
+> check. The coalescing walk can pass the queue head to
+> tcp_skb_can_collapse(), and tcp_clone_payload() can produce an skb
+> whose advertised payload exceeds the data in its fragments. Local
+> delivery followed by TCP_ZEROCOPY_RECEIVE can then walk beyond the
+> fragment array. KASAN reports a slab-out-of-bounds read in
+> can_map_frag().
+> 
+> Cast reordering before incrementing it so the arithmetic handles the
+> entire u32 metric range. For U32_MAX, the required size exceeds the
+> 32-bit queue and window limits, so the existing checks skip the probe.
+> The calculation is unchanged for all other reordering values.
+> 
+> Fixes: efb8763d7bbb ("net: ipv4: bound TCP reordering sysctl writes and MTU probe sizes")
+> Cc: stable@vger.kernel.org
+> Cc: Wyatt Feng <bronzed_45_vested@icloud.com>
+> Cc: Ren Wei <n05ec@lzu.edu.cn>
+> Signed-off-by: Kyle Zeng <kylebot@openai.com>
+> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The fix narrows the window but leaves the NULL-pointer write in
-  cpts_fifo_read() reachable.
-
---
-
-net: ethernet: ti: cpts: drop stale events before the misc IRQ can fire
-
-After a kexec, the previous kernel can leave a misc IRQ pending. That IRQ
-can run cpts_fifo_read() before cpts_register() has set up the event
-pool. This patch masks the CPTS interrupt and drains the CPTS event FIFO
-in cpts_create() to avoid that. CPTS_EN is deliberately left set.
-
-> diff --git a/drivers/net/ethernet/ti/cpts.c b/drivers/net/ethernet/ti/cpts.c
-> index 2ba4c8795d605..3cc908ac90e2b 100644
-> --- a/drivers/net/ethernet/ti/cpts.c
-> +++ b/drivers/net/ethernet/ti/cpts.c
-
-[ ... ]
-
-> @@ -779,6 +780,17 @@ struct cpts *cpts_create(struct device *dev, void __iomem *regs,
->  	if (ret)
->  		return ERR_PTR(ret);
->  
-> +	/* After a kexec the CPTS may still be running from the previous
-> +	 * kernel, with its interrupt enabled and events in the FIFO. The misc
-> +	 * IRQ is requested before cpts_register() sets up the event pool, so
-> +	 * mask the interrupt and drop the stale events now.
-> +	 */
-> +	cpts_write32(cpts, 0, int_enable);
-> +	for (i = 0; i < CPTS_FIFO_DEPTH; i++) {
-> +		if (cpts_fifo_pop(cpts, &high, &low))
-> +			break;
-> +	}
-
-[Severity: High]
-Does this close the window completely, or only make it smaller?
-
-CPTS_EN stays set, so the CPTS can keep queueing events after this loop
-finishes. cpts->pool and cpts->events are still zeroed from devm_kzalloc().
-Only cpts_register() initializes them, and it runs later from ndo_open.
-
-A fair amount of work happens between cpts_create() and the misc IRQ
-request. In cpsw_new.c:cpsw_probe():
-
-    cpsw_init_common()        <- calls cpts_create()
-    ...
-    cpsw_create_ports()
-    ...
-    devm_request_irq(dev, cpsw->misc_irq, cpsw_misc_interrupt, ...)
-
-In cpsw.c:cpsw_probe() the same window also covers register_netdev() and
-cpsw_probe_dual_emac().
-
-Several things could add new events to the FIFO in that window:
-
- - half-rollover and rollover events from the free-running counter
-   (CPTS_EV_HALF / CPTS_EV_ROLL)
- - HW_TS_PUSH events, if the previous kernel left HWx_TS_PUSH_EN set
- - RX/TX timestamp events, if the previous kernel left port timestamping
-   enabled
-
-Port timestamping is only cleared by cpsw_soft_reset() in ndo_open, and
-cpsw has no .shutdown handler. So after a kexec, a peer that sends PTP
-event frames would keep generating RX events.
-
-The commit message notes that the interrupt may already be latched. If
-it is delivered when devm_request_irq() runs, the handler does:
-
-cpsw_misc_interrupt()
-  cpts_misc_interrupt()
-    cpts_fifo_read()
-      cpts_fifo_pop()
-
-cpts_fifo_pop() tests intstat_raw & TS_PEND_RAW, so writing 0 to
-int_enable does not stop the pop. Then in cpts_fifo_read():
-
-		if (list_empty(&cpts->pool) && cpts_purge_events(cpts)) {
-			dev_warn(cpts->dev, "cpts: event pool empty\n");
-			break;
-		}
-
-		event = list_first_entry(&cpts->pool, struct cpts_event, list);
-		event->high = hi;
-
-On a zeroed list_head, list_empty() returns false, because NULL is not
-equal to &cpts->pool. list_first_entry() then gives
-container_of(NULL, struct cpts_event, list), so the write to event->high
-lands near address 0 in hardirq context.
-
-Isn't that the same oops the commit message describes?
-
-Would it be more robust to make the handler safe to run before
-cpts_register()? One option is to move INIT_LIST_HEAD(&cpts->events) and
-INIT_LIST_HEAD(&cpts->pool) into cpts_create(). Another is to have
-cpts_misc_interrupt() return early until registration has happened.
-Either would replace the drain approach rather than extend it.
-
->  	cpts->cc.read = cpts_systim_read;
->  	cpts->cc.mask = CLOCKSOURCE_MASK(32);
->  	cpts->info = cpts_info;
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261026072314.663980-1-alan.tseng.cs%40gmail.com
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
