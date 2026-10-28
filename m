@@ -1,58 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793202066;
-	b=nG22ly0nrkJwv+8vT3gJlPavPJCgMfuGyZJQN7g3//hdT8b+1cLwNFDEeZTxRebLou7p
-	 epWShCIv1Xe1Gs+texTuuZe0H9AUJRJuJDOPLylgSfKUYPgVXszkeCZ270/kcP44o82mp
-	 LBPBq8ft7CC2VTD3pzUH83ReKG4U/WRW6in9/g5BFfOBHCIlAO87p7YZrVuYgHrYBYuNh
-	 iArVCgXUoZWRAj7NaWPg+4xGkxJp6vLNt4GaKwishlZlxCKs4prGnFb3zBwHjqMMBo0hu
-	 KJbAJk3XrzJ8othG1s3Y4HohO7E61xbNuFwQO6qJfcI+NMdnoo4rUWdEOWOFcaq2x8g==
+	t=1793202063;
+	b=fTfmsHzv65/76nRdAp8pSp0wXsS71reO0SfYbfkvEVhZPMLdZCRZLDwlStmF4nXoRFuT
+	 HOCePY40QfzNczUU4H3f6iV++psYQQSOjLqc6z0MvFJ3tYTSoHMqW+7UfrfqvlwwjW4xX
+	 DsmFp2oItyT/pt2Ip8nnS3mDCnx+/HKFky1IPoKepaMAmmNFog+QFxie7WRjkid8Gq+6e
+	 cuAwX4LLDeOuLS1rp8SVboH+lBSmCrZTE5NHuQvtqUw8e62/VxKeGj7pTwNz8hOYxVIMY
+	 xIJs8iV8Z4R/NxSDGDA6UhrOXDC3Yyo3A79z5z0VyvIZY4aUmuyjdbkVIClD9lozOGw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793202066;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=qGK54/khDS71RJ+S7yEpMvJaMCtlyphXEed3NJBhAuA=;
-	b=HTV2l2UvxHQ8LF0M81FIe05FilEwVTB8fMpNpm7vUzw8/ECOeiBj4Ls1TWjQ5NEWZ3rp
-	 GZQJxZ+hWJI2erTNLOlE2goOofXROdjB/GlJe2RyNX4YAF1lIN3OZxeGV4xJkVROVNf/2
-	 UbREmmnOIGj1OQwPC1qzgpf75vL3iBHFzePNxEh0/FSsRTfl7QoqgGB1CsBjEKO/jUasr
-	 inNWc6LN6p6/+Ho34f8+HBFBnyxwf0uMsl5PMi1v8PJ/PWwYuxPy8yppr1jdb1g0j6ZpC
-	 11bIxALV2f+fsU0X8kSFDXLCsE62osarhqI5Iqz+HDp7zdLNo2HSZUjmmAHSFZzLeJw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793202063;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=m7g1ib8E/0JVseSD1L6xPryKDxZDRg0LxTuFEcloAFU=;
+	b=RCu2jeI4N9UHRUupIRJuB1hJMOhYQApaU8h+uKENmTuTFp1oW6fwQqVOceKq4iB3MJwx
+	 WEtObG47yAR3QNYUncmCD2BtCLOZSBbIytIZH103QG5JpDJhybj/WHEeMPAEbQMP6WGgN
+	 7Dpw/rtN70cBKPKZoDhm/6FBd9muq1ghXn3EsLg0Mg8DrlmaoHawEyCo3gGYcO/r81Rcd
+	 rRC0mCSDBLIflXfs6Tj8r5WDPGzQT7SAwbTmilQGh3G+JnrPlX9Chk/ebW6mBccZt6PEN
+	 fYXV1Vuxk+QfScfIV6ZXZ+TzxZA9MYvWCh1B+mDgkCipdGR2eIqlxTe3tE3VRff8+Bg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dHSXFJy+;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=csmUhEkJ;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4E260A2606
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 15:41:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dHSXFJy+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99D621F031E0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720E7606A323;
 	Wed, 28 Oct 2026 15:41:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=csmUhEkJ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 086FF1F01825;
+	Wed, 28 Oct 2026 15:41:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793202065;
-	bh=qGK54/khDS71RJ+S7yEpMvJaMCtlyphXEed3NJBhAuA=;
-	h=From:To:Cc:Subject:Date;
-	b=dHSXFJy+WDUy1i4xq7CNbctNg3536YWbz7UE/Nc+KzRt+xJYBFe5EGku0v1Wlhwqu
-	 SQsLl7OJt1okzBz7HNH8Zn5dnNlcl2dvPxo0shCTg0OiY3rhMfl4JeJE0YJEDEUif1
-	 4ySV7BUrfSZROYl1bydMn+w10zqotX31UsJ/dDlyaNKJJswwypRpPCoADmplveRTTt
-	 /TMJmoLu9JafxVsNs/2+zj2rtOoyXCjFmbudZ+6GsWrx32uuZWe2qSYtH5TkahKAaF
-	 yekFLF5PBbkoGTNpIbvxnjCK7R0TqGBggRQvElw+oU/XpYQ4uOoCor6r4V1dvqYkNl
-	 8ClMKTdKiIbjA==
-From: Eric Dumazet <edumazet@kernel.org>
-To: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Neal Cardwell <ncardwell@google.com>
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	Kyle Zeng <kylebot@openai.com>,
-	Eric Dumazet <edumazet@kernel.org>
-Subject: [PATCH net] tcp: initialize mapped children before route lookup
-Date: Wed, 28 Oct 2026 16:41:01 +0100
-Message-ID: <20261028154101.2153360-1-edumazet@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	s=k20260515; t=1793202063;
+	bh=m7g1ib8E/0JVseSD1L6xPryKDxZDRg0LxTuFEcloAFU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=csmUhEkJnOdNn/F3SJNE/vQF/2r05kOdPKLukpIjUL+uJqKSlacid2wqXK2EgQRgW
+	 umGY4mJiPafLEOZigxHGyrEiso9zHLQAf5sO36M1jyFtFpYkiAYkldS/ROtVZD4yY9
+	 pDUBvAO0BjRHZ2cB/5YmAZJAvFXWVURd8KUK6Y/Nm6rLo3LnKqggzcQeKl6feB6kXD
+	 s05RTvv7HpmJflR4Ty5pcgIichklw1V86Y03dMH3R0EdJrWr9PWfAHL2sig2qvPp7t
+	 aXbo7gEdx3SZO83Y4QHtAkL9mF5244qxDScJMOjiCG4Xc26aJBhOkQfa67Inu9WBcU
+	 vVVxBQXaKbCKw==
+Date: Wed, 28 Oct 2026 15:40:59 +0000
+From: Simon Horman <horms@kernel.org>
+To: Zhao Feng <zhaofeng2@cmss.chinamobile.com>
+Cc: netdev@vger.kernel.org, krzysztof.kozlowski@linaro.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+1c5368988052dc2d8201@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] nfc: pn533: add timeout to USB frame send
+ completion wait
+Message-ID: <20261028154059.GZ257209@horms.kernel.org>
+References: <20261027070136.1339-1-zhaofeng2@cmss.chinamobile.com>
+ <20261027070136.1339-3-zhaofeng2@cmss.chinamobile.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,63 +60,35 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261027070136.1339-3-zhaofeng2@cmss.chinamobile.com>
 
-From: Kyle Zeng <kylebot@openai.com>
+On Tue, Oct 27, 2026 at 03:01:35PM +0800, Zhao Feng wrote:
+> pn533_usb_send_frame() waits unboundedly for the out URB to complete.
+> A device that never completes the transfer makes the task sleep
+> forever in TASK_UNINTERRUPTIBLE while holding the command mutex, as
+> reported by syzbot (hung task in pn533_usb_send_frame).
+> 
+> Use a 1 second timeout instead.  On timeout, kill the URB and return
+> -ETIMEDOUT so the command in progress fails gracefully instead of
+> hanging the task.
+> 
+> The transfer may complete between the timeout expiring and
+> usb_kill_urb(); in that case urb->status is 0 after the kill and the
+> send proceeds normally instead of reporting a spurious failure,
+> mirroring what usb_start_wait_urb() does.
+> 
+> Fixes: 9dab880d675b ("nfc: pn533: Wait for out_urb's completion in pn533_usb_send_frame()")
+> Reported-by: syzbot+1c5368988052dc2d8201@syzkaller.appspotmail.com
+> Closes: https://syzbot.org/bug?extid=1c5368988052dc2d8201
+> Signed-off-by: Zhao Feng <zhaofeng2@cmss.chinamobile.com>
+> Cc: <stable@vger.kernel.org>
+> ---
+> v2: check urb->status after killing the URB on timeout and carry on if
+>     the transfer completed in the race window; add Fixes tag and Cc
+>     stable; the pn533_wq_cmd() error handling fix is now patch 1/2.
+>     Issues reported by the Sashiko AI review.
 
-IPv4 passive opens on a dual-stack listener go through
-tcp_v4_syn_recv_sock() with tcp_v6_mapped_child_init() as the optional
-initializer. The callback currently runs after the output route lookup.
-If that lookup fails, tcp_done() destroys a clone whose pinet6 and
-ipv6_fl_list still refer to the listener's state.
-
-With the flowlabel list head in inet_sock, fl6_free_socklist() walks
-the clone's list and RCU-frees its nodes without unlinking them from the
-live listener. Subsequent flowlabel operations can use or free the nodes
-again. Commit 858d2a4f67ff ("tcp: fix potential race in
-tcp_v6_syn_recv_sock()") moved the initializer before ehash insertion,
-but did not cover this error path.
-
-Invoke the existing initializer after the IPv4 fields it consumes have
-been set, but before route lookup can fail. It needs neither the
-destination nor sk_setup_caps(), and all later disposal paths remain
-covered.
-
-Fixes: 1c17f4373d4d ("ipv6: Move ipv6_fl_list from ipv6_pinfo to inet_sock.")
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
-Signed-off-by: Eric Dumazet <edumazet@kernel.org>
----
- net/ipv4/tcp_ipv4.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index 3f8563a36db1e9ea853699ecb547af7ee9491b11..c08de825fa448cfcd42c9a8b407200b0dc5b7b1d 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -1723,6 +1723,12 @@ struct sock *tcp_v4_syn_recv_sock(const struct sock *sk, struct sk_buff *skb,
- 	if (READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_reflect_tos))
- 		newinet->tos = tcp_rsk(req)->syn_tos & ~INET_ECN_MASK;
- 
-+#if IS_ENABLED(CONFIG_IPV6)
-+	/* Detach IPv6 state before a route lookup can fail. */
-+	if (opt_child_init)
-+		opt_child_init(newsk, sk);
-+#endif
-+
- 	if (!dst) {
- 		dst = inet_csk_route_child_sock(sk, newsk, req);
- 		if (!dst)
-@@ -1732,10 +1738,6 @@ struct sock *tcp_v4_syn_recv_sock(const struct sock *sk, struct sk_buff *skb,
- 	}
- 	sk_setup_caps(newsk, dst);
- 
--#if IS_ENABLED(CONFIG_IPV6)
--	if (opt_child_init)
--		opt_child_init(newsk, sk);
--#endif
- 	tcp_ca_openreq_child(newsk, dst);
- 
- 	tcp_sync_mss(newsk, dst4_mtu(dst));
--- 
-2.53.0
+Reviewed-by: Simon Horman <horms@kernel.org>
 
