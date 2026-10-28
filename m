@@ -1,104 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1793199705;
-	b=WF2NXf+mFtgS/Deh1u6JcaXR8DRx7B04o2qm7E/IjHTrs5lZHxwcjhP3V+s/XvWYTOJm
-	 FpAR3sLNBTJw2y5konBgGBUJ9khvnog3YwKoRVFxZosK5W0MOW4t8kOuN11VxRunZs2QJ
-	 gRvGr/KJEXn2qgJj1J/Vk9DlNUdV7Moo28tVDAskaphzmO7f0tfW/Iy5SwxhdkVX6WxM6
-	 A5hI05eOEwTpgKkwsNTyImZK9zWvJqIgMo8LbDhbDAHmrJc4kzfR1hrGb54mOPpVbcZsC
-	 Hs3W+f8rX/BsLrbePGafAsH9R6yBLYVmGT5kLt/Q71Ldghle4175GhWtjdqXESdISuw==
+	b=rh/6bPcmqUdAWM/bzNsOdwB4sGMecxdceReT6n6QOD6LgBK7zwOV8B0gHQX2BOEi3jBi
+	 BjhXfRD79hvXWfNhgMFlvaqR7V0hEUsDS55WP/jnYLy59kGIyS3iPls0a4T7Nm8bF5J3Y
+	 OM1CJM8qNtJnvAOXFOWfeNEYGcMgrWy9+IgiBaenMgECWTfQSvFKc4+PdM96YGwCEsHz+
+	 PnsGm1BRMBCGoaZcEvCvmvKn7rZcKNrIwpK97y7qw9YyMBDOk1Zhe+0D77rppBvwiPtHh
+	 kWtMi+GCNTCxvgB6JWCV+o30fda5JjuiBi4v7fqnRdd3auWqGdlEcoxgmmIQOEkbnYA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793199705;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=31f6k6Qk+dLIN5aIDYfqU1+fJxCFB196QGT96yn9g4U=;
-	b=aoQxZmX4sRfhX/IVj2zdf1IS2BQn6KPupyF64qC+0vmUvn5tcadG8o59ru2QAAFwm4tr
-	 +hngRhcZefNk8euR46KQp7snU0MtQRogGuz6K2LHL6htjLlPznxb8Ysyh4vUhIz2pQZaY
-	 p/+r8hNIjcz8qLCfyCXFrqPUqCwWDu+7GXkHQiQl3rRMz4Pr/dYmsStYsfEcHFDm5pn5+
-	 HLTgxm6sCKOkT2MmEHjHfKVJ1BxoAKIWiEdEPx8v8bWbmOdrjV7EN6mpLwCUZKJ1css7Q
-	 Aqhx/BNuUOmkRFWFUGX3/kmJ7MenQCXz69mQ0xB2tUrHjJIDx69KkFkZfQoBYimxBFA==
+	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:
+	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
+	 MIME-Version:X-ThreadId:Date:From:To:Cc:Message-Id:In-Reply-To:
+	 References:Subject:Content-Type:Content-Transfer-Encoding;
+	bh=iv8Bt4PNiniH/Ck/gotMmnbuIcouH8T5AQxjqoDvLHY=;
+	b=5XXczjpDzUrJGoJhwJeS5rK/V6//byoWIbzNBJw5UECuGsTcttDC/F4eXlBdfB3HueQX
+	 sYjQNDQBOdKOmh5rWCZ1z27biv/hjFGAuB2z+iq5BQET2RHcNFBpF/BwlO8+3JlSes+AS
+	 NXuFsFQO7f3ACqylx5Sl4g8aNZeq9aDRO5k6qUWydfSuHmUmEXRyqw7uDxqb93ozdzUx1
+	 UlIDC+icGGRwPw0jWkl1JKbcDLb+nJ4asraD3TjsiCPqJMLczmzct6QLtXWmG7GMwz/8j
+	 ZUEYayxlJ52Nn6DUqweB8ccGjGjSGEBEqNfM9hfgPFaxMXLcKFtwgulF6dAAky1hj0Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=r3sNAAXt;
-	arc=none smtp.remote-ip=209.85.221.42
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I9NMENC4;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A099D606A325
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 15:01:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A099D606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E21D606A32E;
+	Wed, 28 Oct 2026 15:01:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=r3sNAAXt
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48c5b7d5865so140895f8f.2
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 08:01:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793199703; x=1793804503; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=31f6k6Qk+dLIN5aIDYfqU1+fJxCFB196QGT96yn9g4U=;
-        b=r3sNAAXtYs2FC/jtFhBxipQFUpM3FslY8spcfNfWA01UUVWzD4GMailvz4SifQgLun
-         UL3i8TTTAPERxcZFH76u9T0+NR6kZvfr3FiyZk+MnlGSm0Vy+0Cec5oV8UoIvIjnwNnr
-         lBB/Z3n8RQua4T+hRhIotsduSdFQP50yFF2JUnTNMPWz+B+mVzKXGkm0FM/veDc6MMMw
-         qPjz0pzYx4OXlKUfucUgj6eNHDHneT7BrQk/0xME3zo7vZZbucRFlHwweMmoYrB3Pb0u
-         fT44eTdA1Jved3FeIKDE5uZkNasdxhW2M9Cpd9EPlbQgDKCtPWXKvNDL4/vkCiHpY1k4
-         Lx8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793199703; x=1793804503;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=31f6k6Qk+dLIN5aIDYfqU1+fJxCFB196QGT96yn9g4U=;
-        b=wm7V9bTm9GIwDBiROWl4HObaDHu9i3rrAUcPs4e1PLLS7mEiedpPVNAz+aHpxOvnq5
-         gHRvaQmde7gwSVXTo23TfDdefhzZhMfWLqGq6mA3bVy/d+tfiYaF9aVkGZC+0PZyc1Be
-         dxDTloWg5x7wA4f7ITxIhxJVg1Ydx6qgq3iEP+kea5UtFH0Vn2evPNg/CTr7StCprN8X
-         +LmC7mpO1FdwqbpV5RBU2tq2nf3NjfHD/8LBR2B5GSXx88QTFQ7xDHza6plCZgGy35NS
-         r0C2owYt/7McLPq/c2um/2MmUK6ciTTcadiOgYMoH2gFzKg9cCkcyouIQUSPmNqFPZqU
-         7/1Q==
-X-Forwarded-Encrypted: i=1; AKwUvByy26rUpxTdRuEx3jkpCteDPNk9Ow8c859HSnJLyUpXeJ9a3WSN+25pLcHmvDSGdQrGaJGde1I=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI69/+QlBu0WIqlOp5I5TzraCbhn7CoXZQQWotZwWoTRVfi9MDU
-	AfA6P8fkOujRG8hkndCh567dmog2rJgsQ7M5y4okHrWY7O9Ghn4noX88
-X-Gm-Gg: AYBFou3nAiPtdnY7YH1+CM+ZyS/dWHMWVgY8xJW3GXswVFIvdd8RmWtieZsf+XHPLqh
-	kfz0+JOmF9maC+Cbpvlf83SFJTs4Lzzb88TmkRyxifTnQYMEOvoC/H4trXrET246WgC/uRfGd7a
-	9Wb37UvZ+ICwq09MNdA3nAGGEuUZFONVFHdCT2LrZ4BGLPByjZKVqsT1MazZYEeoo5xG2AmWXtB
-	S+JbhQOZ/MZNm0mt5ndurpdDH0czC6EXUxfAebYydQHJa+rfp1czOgPr5mF6xWf+J1x+fiPunx5
-	TjYzG37Mhqm9BPc4EpdE7L48KOCZ/oPjDHF8eDr6LVLyJCs9WlQEJNdcdIf9w0hKEyZaWS2uiJ7
-	DJHYHrGDxtWmBBwxKsJj5WdZR9w/MJqsfgodZv4nvGOQxn/EMsIHRGINA7z2CcxAz5uBLEROgzb
-	5oQq5K7INc1lesoF+ru6nccReeft5GHolX7ZdP/bEfljuvjZbfi7DGXUMqsQ89XM/4xN+/lCASl
-	ErgQ4X2yOUR8kA1VjVcA7qjLsinLiaNxENGEw7kqR/WhzdRi22EEMYJQYNDWq3ZzKlTAcjMXc4O
-	cflrP+Nh95PycP8vNxZhZHAFsWjNxUks4B6yWRJAJLmWiSDboidtXOMqZpi3NYvJVlPa6cG1A5K
-	hkGhgliYDPHxD6nE7S2RqSS/KEMDdTr+dHmOtEMwuohg=
-X-Received: by 2002:a5d:4584:0:b0:48a:f41d:83c with SMTP id ffacd0b85a97d-48e5d2cfc69mr4811478f8f.0.1793199702768;
-        Wed, 28 Oct 2026 08:01:42 -0700 (PDT)
-Received: from thomas-precision3591.paris.inria.fr (wifi-pro-83-149.paris.inria.fr. [128.93.83.149])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-48e3ebd4bc5sm28951293f8f.34.2026.10.28.08.01.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 08:01:42 -0700 (PDT)
-From: Thomas Fourier <fourier.thomas@gmail.com>
-To: 
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Oz Shlomo <ozsh@nvidia.com>,
-	Roi Dayan <roid@nvidia.com>,
-	netdev@vger.kernel.org (open list:MELLANOX ETHERNET DRIVER (mlx5e)),
-	linux-rdma@vger.kernel.org (open list:MELLANOX MLX5 core VPI driver),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net] net/mlx5e: TC, Fix double free of branch in failure
-Date: Wed, 28 Oct 2026 15:57:02 +0100
-Message-ID: <20261028145805.54595-3-fourier.thomas@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I9NMENC4
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2C681F031E2;
+	Wed, 28 Oct 2026 15:01:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793199705;
+	bh=iv8Bt4PNiniH/Ck/gotMmnbuIcouH8T5AQxjqoDvLHY=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=I9NMENC4QHj8Hp/zxXWZEW7S1Q5B6307GpE9jC1kyvbTMXZBBqjZvnEuhg9nhQF7F
+	 oTrPuJht8MfUSWTLPQMZhXhRqsq8PyEJxJtFL6UKvLJiOeCzQH3xIO+zPlGj98swzN
+	 tX9w7QF5eupBbCbfMZvR3U68DETFDMs0y3L60OiTLJLdA6dIKzH/t8J6SmnnqtRT/m
+	 TxzFXdw1ZdmQlpXPDwnLdAIcskv+qkc++BPQny+nm15Pe/79q5PzXRRlLBdQd1jndP
+	 2FS6U/B7LsRtKm64b1r1HQmXyv6CYe3jLam1XjBAVJ0Ax8peboKxG5q/bQR/maOEP+
+	 omhCOr7gbyrHw==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id E00F1F40066;
+	Wed, 28 Oct 2026 11:01:43 -0400 (EDT)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Wed, 28 Oct 2026 11:01:43 -0400
+X-ME-Sender: <xms:Vw7iao-ppO7ONFM2Y-RXQOhFAx1gmiBWlpZgjLE16S3av8SiR1tFJw>
+    <xme:Vw7iarh_1blI6OIc057K-pzkHR9IWNjd95871_Ld0x6Gflln5bvQ_S0GOKeq-2WBA
+    Zq38uXtUkc3XPcEHVpHkxS8b5CXl536d7_Lyoyna-3LaV5WztLovCvthw>
+X-ME-Proxy-Cause: dmFkZTFHW0LzfJAQ3PuYMAMPTg1dBdg1MgkjCAkuUubpJCx1P7JA5mGeAT1UOP7m9/8b0f
+    N7XX+x9Mf3qUMsnP0qr1YSyVQPZ4CvSbzvC7ZS0ZKXkjlISC7JKc2LN5yxfmw3EEM5euhL
+    gEkMXX8rZWMCyg8wCTsAlIED2fdqjVPEnwWndbg49r2MPb/peyMV76jMNVSME3kHrfU4Xo
+    nGpABU7pgLMbFuEqhzAY6VYTCRtjg+OzUy6nSqfFLlrDMrPw+yJDDbfKsVHE5beUKu8vfc
+    7lVKq//Ffe9uYjpyVvzoZp0RPg/iYchl88Psk3UD3Fxafkn847VcXTJwhVhdOw0te9O5r2
+    6K2jC1UJk+7znKK1aoE8ILp/sV6KC/a8nruZpLphWh0yXGxcIWCuOmZgLhTdHYgj/DAajY
+    Nyr0USnC3AWYAst2VpEiG//3oe0Vlunl1aHqm+GCw1xz5cARHLKhDOvocAIJTiHTlNRKFf
+    iUSHF6py6PmXuv7tOOw2eDA8sfGE7EOhpn92guNJrvMvR55g3WXStl3pzj0WoZ6R5vsZHo
+    0cMhRdpK1QSGauQkNNL6iur+yxgFZlg0zheUu02ulufm5G4OGd0h2A6wVOwk3kauSxWYbU
+    mI7it/zmv4wrwfq+4QZtl0/oEuStJJGliFGncQeXoUW2jxd1i0LAQzIOsmxQ
+X-ME-Proxy: <xmx:Vw7iavZwFa1tsNuRCG5loTb5yE7wZExXr-9lHTIWkiKXam83GiT3zw>
+    <xmx:Vw7iap_DdzKvvC8g-vwv7mxx4RyiRRYl4irJOHTPZI8KaISaFANKbg>
+    <xmx:Vw7iah_BTR2lu4ILjMpsb3GgvAx960218_bMW2wf7wdnBwoiQlMwqA>
+    <xmx:Vw7iaqkHgkKAJTyEtU_V3-U4haJWynBi3QmNPuGdqIduOGDDehBiHA>
+    <xmx:Vw7iaskpNxrOSzVIXPrllUnbUOI_acFdZLXF-7VDXSUcMfwdGRHgVj8Q>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id B2E51782738; Wed, 28 Oct 2026 11:01:43 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -108,36 +77,106 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-ThreadId: Ae7b_N49t5D-
+Date: Wed, 28 Oct 2026 11:01:23 -0400
+From: "Chuck Lever" <cel@kernel.org>
+To: "Martin Belanger" <martin.nvme.dev@gmail.com>,
+ "Hannes Reinecke" <hare@suse.de>
+Cc: "John Fastabend" <john.fastabend@gmail.com>,
+ "Jakub Kicinski" <kuba@kernel.org>, "Sabrina Dubroca" <sd@queasysnail.net>,
+ "David S. Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
+ "Simon Horman" <horms@kernel.org>, "Jonathan Corbet" <corbet@lwn.net>,
+ "Shuah Khan" <skhan@linuxfoundation.org>,
+ "Randy Dunlap" <rdunlap@infradead.org>, "Shuah Khan" <shuah@kernel.org>,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ "Hannes Reinecke" <hare@kernel.org>, kernel-tls-handshake@lists.linux.dev,
+ linux-nvme@lists.infradead.org,
+ "Alistair Francis" <alistair.francis@wdc.com>,
+ "Martin Belanger" <martin.belanger@dell.com>
+Message-Id: <097a2d7a-af80-47b0-b800-238396e6e662@app.fastmail.com>
+In-Reply-To: 
+ <CAPG1HMsnUDa=Q5O4fwZOU=Pd+m7ahzu574Cs+mWoB_9KUT5ASA@mail.gmail.com>
+References: <20261028-keyupdate-rfc-v2-0-eb5143b4c487@gmail.com>
+ <76ccd502-f1d1-4135-b92e-d783f259a687@app.fastmail.com>
+ <3544cb56-e43b-49ec-aa94-beafe061879b@suse.de>
+ <CAPG1HMsnUDa=Q5O4fwZOU=Pd+m7ahzu574Cs+mWoB_9KUT5ASA@mail.gmail.com>
+Subject: Re: [PATCH RFC net-next v2 0/5] tls: perform TLS 1.3 KeyUpdate in the kernel
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-When allocating the false branch fails in parse_branch_ctrl(), the
-already allocated true branch is freed but attr->branch_true is left
-pointing to it. The caller parse_tc_actions() fails the flow, and
-free_flow_post_acts(), mlx5_free_flow_attr_actions() which calls again
-free_branch_attr() on attr->branch_true.
 
-Clear the pointer after freeing it.
 
-This bug is theoretical and was compile tested only.
+On Wed, Oct 28, 2026, at 10:49 AM, Martin Belanger wrote:
+> On Wed, Oct 28, 2026 at 10:42=E2=80=AFAM Hannes Reinecke <hare@suse.de=
+> wrote:
+>
+> Thanks, Hannes. Two points to add.
+>
+> On 10/28/26 3:21 PM, Chuck Lever wrote:
 
-Fixes: f86488cb4685 ("net/mlx5e: TC, initialize branch flow attributes")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
----
- drivers/net/ethernet/mellanox/mlx5/core/en_tc.c | 1 +
- 1 file changed, 1 insertion(+)
+>> >> This applies to TLS libraries in user space as well as kernel user=
+s such
+>> >> as NVMe/TCP or sunrpc:
+>> >>
+>> >> - GnuTLS sends a KeyUpdate after 2^24 records when it runs its own
+>> >>    record layer. With kTLS, the record layer is handled in the ker=
+nel
+>> and
+>> >>    GnuTLS therefore never runs the check. OpenSSL never sends a
+>> KeyUpdate
+>> >>    on its own.
+>> >> - NVMe/TCP and sunrpc don't have a mechanism to install a new key.=
+ A
+>> >>    conforming peer that sends a KeyUpdate stalls their connection.
+>> >
+>
+>
+>> > The design intention of these consumers is that they are supposed to
+>> break
+>> > the connection and create a new session, rather than stall. If that=
+ is
+>> not
+>> > happening, that's a bug. KeyUpdate is complicated enough that backp=
+orting
+>> > to LTS is not really an option, so that bug needs to be addressed f=
+irst,
+>> > IMHO.
+>> >
+>
+>
+> A reconnect is also a valid answer to the record limit: RFC 9846 secti=
+on
+> 5.5 allows
+> closing the connection. The cost is the problem. Depending on the load=
+ and
+> link
+> speed, the 2^24 limit can be reached in less than 10 minutes in many c=
+ases.
+> Each
+> reconnect stops the I/O of the queue and needs a new handshake upcall,=
+ for
+> every
+> queue of every controller. A peer that sends KeyUpdate on its own caus=
+es
+> the same
+> reconnects. With this series, the connection stays up.
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-index b290beb4369a..c40c7b55a54d 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-@@ -4005,6 +4005,7 @@ parse_branch_ctrl(struct flow_action_entry *act, struct mlx5e_tc_act *tc_act,
- 
- err_branch_false:
- 	free_branch_attr(flow, attr->branch_true);
-+	attr->branch_true = NULL;
- out_err:
- 	return err;
- }
--- 
-2.53.0
+I get that dropping the connection is bad; the current weak-ass
+implementation is meant to handle KeyUpdate until we have a proper
+spec-conformant implementation.
 
+My concern here is if the current design is malfunctioning in LTS
+kernels, the only mechanism we have is to fix it upstream and backport
+the fix. I don't believe stable@ would be happy absorbing this full
+series.
+
+Your commit message claims the connection stalls rather than getting
+replaced. If that's true, that needs to be fixed before this series
+gets merged. Can you confirm? I don't expect such a fix would be large,
+but the ordering matters.
+
+
+--=20
+Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
