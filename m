@@ -1,101 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.170
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793183470;
-	b=y5Yp38iZvtst2lqwHLbKlvnKzkC8RcOF0TCKfE2fvpKHkO1bb4zrCTur5xh1nFaSrcOd
-	 ZFXp3x0K1+lL1Ibnkmpd/yv5XzlHpGqLV8DEgAgW/xjUML5pJ2K6kZrD99PQ/xCwYVJ2f
-	 V1zivkKIvfSYIYt44QBVhP65RryjWXLCmP/nYZpMFuPRrsNV4chq4o8fw9CyMmqEeRIrH
-	 RO0clKLw3ntFwV3N6BT+1WKnxsdv3zzErCJ2OXUXHyZyjuQvlkGCSQWHa3NPZxU2fY8eN
-	 dtYZuBWMCIgnmDLU7uJKhE2JLNe32Q5p9/XBt8Et07kLErt346Pl8yT32n0ss8W5eKg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793183470;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=imedKiikY/nJ9ieNEErDb82QaTr2XE4LPwGTpWh9iBQ=;
-	b=kCn5TUMZ9nzMAjAkzHnZCoDTD3phhYt17ncRLUDOzsoZJAY3vYRNgoG2ggLON5AO13fQ
-	 t/kFsHx4JmUEo59QuDjZ4jfnAqa0umpag7TjDMpMs/CsIjznX6GD3CcNk9fFy4vtr5tOK
-	 pTmpxLFcLWvz+4pxfZgKnby7ks6nUatVdb14n+p/MaJmI2TU3KkJoSeUPLzhQ9U7p+86S
-	 VUg8ksRN2hBu7CAKmSq17ATI0CLuXYseqQZ3uJpPfTvmxlMhsGiK7hIVq8hgKyMIv9qXl
-	 JgqdQML0UAB4vqBMa/dQg4RUzDVh2JMi4pxDQQBrGeUPSc50BgV7EJlS/QF8QL+kkTQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="acd/2w7M";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.170
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793184330;
+	b=CQoeZOeFNxQaECTQQGk982rXbLA4DKBVEd2544ruGPSaufkI+NgpqjlBQAfAVuVzMea7
+	 u5B1TpVyx5XadBM9Qaa7fX81VreXMGtI8Tv13pJ5u9CBn7UTZSFm80Y4hGVL7FkTL7EBM
+	 OG0o0vTkKZ9S88J/l6JAhCuN3r1t3I6UPjlSDPoQz02jIEblJaWAhO99Lj1Q+ayhsYQiS
+	 9uYaDpjnxF9+6immWGdt5UEevaVKivm3bLJD9xQPgCp/+EwWaeggOLV9nRcfmyf9rNF4g
+	 8McudqqjlGhS1bugcNA1wVsY8E6S6eZPHe5SU1BvxhfQLhW+rNZLiE6eiTNzvKW9gTQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793184330;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:X-Developer-Signature:
+	 X-Developer-Key:Content-Transfer-Encoding;
+	bh=yH/WNpYHTTuubiG6CEAhex75AWsJRqZOBqYD8LjwIkI=;
+	b=RI+8Huko752rs4FzSka4xujuYHhGwFUOqDQUGdJf4bOnPsng17AiM8vHNvc1cRibPcEO
+	 QNLOPdMfCu06oreY62nvZfG5MXpOrVQMZrb/rzpW3Wu3ElztsCg92bZNpf0dUFGzpEHBF
+	 MYO1tCHvcP+/cPPPvu8kiwCYNXb8qN4WUWul5OL/uIp7pLEujg3paoOfzUeLY6FOMN0fy
+	 Y71Y3oo+YggHd1tDMjXrOsMsPtnIzrRDt70i7icn8O4MZrujhwpLedlfn9+Ogu7VXaX4H
+	 rdsYrQK44ckVCR1F5F7OVE/ygxI8Ach8IDPhBYAv6TTAJ23v3eweQHG9dnZA9ojM9Lg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LjD1scvA;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD6D606A31E
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 10:31:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EFD6D606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10824606A31E;
+	Wed, 28 Oct 2026 10:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=acd/2w7M
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-8ae8607e8afso5456517b3.3
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 03:31:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793183469; cv=none;
-        d=google.com; s=arc-20260327;
-        b=GOolkpk2KdMfnz0GoYYFYr7BZf7fdBKwg4/npkHvJG+xmxXu5rQHOmml7Zgt6TwbcY
-         7HBxBWq4nrTgGF2UaYJRYCuljQjXprgDoyuXojJoEtfaClpOZJlBwCPp1iAGNZv6uFkN
-         ZdMbchHxIokpElDzgb5a0wCY1mAjsEm77w5M6mU237JKF0D7X0bMRoKxUAQs8DEf5A8L
-         Bp85vuRCMTsCFhcB/R/CqMARGl7pYnZCU7rfwOgPx/9bnX1u5G0a98/lThSF/6wpbou1
-         tfB3YmOsjPkPrgm9rotBpd/o7IiQnQLu2EcBC/PHQfm5I74M6cPbdh+Cjrk9uEW+qYXw
-         bIKQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=imedKiikY/nJ9ieNEErDb82QaTr2XE4LPwGTpWh9iBQ=;
-        fh=7JXwbiQQJthWkTyuE7R4n+AMSNL2MA1PMzOsoj4FE7Y=;
-        b=RXUJPHM3zHfkT03l6CMTxDH2yaONidvT2wB1oOfg5il+5gzJFXOq48DeBqkaRl9h9n
-         N7Hs3kEyOwMtWp+hChqt0f70EgXVneOcW1LM/nZXMBvPUO906c3UI92kisskApMbWO2l
-         Yg3vAEvzUpDNWdYE0Bk49q2G88lkcvhTPXOmEGMcNosF5om1J9NO5Hxf93pUQo5pmnvA
-         MIxh1gcbmocIJzpzBS6FnoOzRppqt0ncm2gcY8PeT3bDf7R6kVreVQ0GyeE2kRJmW3kt
-         VL4bNT+e6aY2SNJSKXAXnMr7A0EeKWB5Rvd3A36RMA6RzDksFyfxNYXCCrimi+Aet5hx
-         D53A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793183469; x=1793788269; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=imedKiikY/nJ9ieNEErDb82QaTr2XE4LPwGTpWh9iBQ=;
-        b=acd/2w7MTsRZz2fFWnc39WSDc2rQa1UN77+0V71vGBIvU1BtdTJxa4P/P7EZr2AcY7
-         Nwv7xwu0bGsj7QtSi5UsT8dbx5Wue8cf4bxRWlypcKhjIYbFwp46OBkIOBbwE9TWOaJO
-         WYnQJ0snsSlcoyioYnXSIK+CdCtLMbq6jHCzWYUuLO9TzTkTDEHIFZ7lVeW6RfyJEaH1
-         bPTI01p8rtEzyTmI81cFhoA7TM6Yppegg99Lsod3LSXmBgaItToTEJTZB8Ov35iECfKA
-         eaTQXWObo9yF2TtcrzLzhMh4JFdL22+KcUWsK8amtIcyVf8B8fR6wUfsvGq1yj/w43/b
-         JJTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793183469; x=1793788269;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=imedKiikY/nJ9ieNEErDb82QaTr2XE4LPwGTpWh9iBQ=;
-        b=KpZtvXVFFwouC+YJKQ+2yPjDgXPuPQBUcfdX8jRRPRhKT2hsbTXlr7QvDI+Jk473lC
-         IRAdPyBzYZL8EXYr9u2Y2TWZTp+P4m6gEkyBteShruC7vMtTASAs+h77vnoy6qW6fGgW
-         UH+vawdgiu6d8tky8yzMWxK85n0bD869mOWRs/m9j6fw3AuWd3ZTHkH81f2I4axAlg30
-         qnEMijoNc43fwPHdCuF4vtEhDgsAvpaOJqdjt4XfRXoAWm527NKcfre71Yj28/jmFyEx
-         UtN27+pITXiDf2/sepl1WtlWk9e7/3dOg4w0iyCggT9fuKNVtTCBNMuEYa/6pPkzMrLD
-         nx8Q==
-X-Gm-Message-State: AFq9FYIFshGP080Y8vUx+hMXHyzfJB9VOSAD1OwnhAAUnUdRrncTCWay
-	2bEVfiC5+xRzGvaoQtlZxnbDx+bU1zYCZUW8mBPFRiJQigf38ZOa8d3TefX+/1X+1i2aff++3q1
-	BBu5/1E08OC+QzyimdPnrRIg+FWJpePU=
-X-Gm-Gg: AYBFou1dgzGHdB32e3mCD2Dyb4ofwj2Q1l8vslRYr9kTk3p9hTEqKcRvjiX6zrHJmbt
-	8FljmyuRMehsTjajuviD4uek2h/ecR0KlVdPD+gkdIUzFHNQ6dKqgAl5DGqVDzOKhn2Szv5Na1X
-	CAJVY9WiMDi/5lMUkfRfYap4VIyFPJhYdvPRoyXgaBAZjO9rsFPSOn3AW/x+NCcgDZAnt1GE2gr
-	qYi74+Z/uCye0xl6j75fF0vpCsI2dlr7ionH6kHakvcSyH+1vteA7vV+mpnVJ8mFbPZks4FpZY1
-	8tx1XkEGKmd5QL3etAbgFETXNfV2bzIKYqEtODqE19oDA3aBv2BDTlprklEbVZPbgotgMyfna6Z
-	vCJw0mQ2SycyNYIPqGRSzXKotYhO3YTcSU0hUySLM0dWivSxP8tFKx4+3LMUycBlY9Bs4YuItzr
-	mZBMqpzwu6ZsAHY7kJHK2V/cBkTUgz3wINSXC6eAKbTUau0/ATNGA4i9wzw51swGymG3+Kbc9x8
-	o3w
-X-Received: by 2002:a05:690c:6605:b0:8b0:c5bc:e87c with SMTP id
- 00721157ae682-8b1b5a56bf7mr12401287b3.6.1793183468970; Wed, 28 Oct 2026
- 03:31:08 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LjD1scvA
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 486C81F01825;
+	Wed, 28 Oct 2026 10:45:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793184329;
+	bh=yH/WNpYHTTuubiG6CEAhex75AWsJRqZOBqYD8LjwIkI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=LjD1scvAa8fO2U+A2QBBR5ZEe/rqVEBw9RziPliZF2O0uR5lI8qScekDLXMjQzOSH
+	 yaXl1PRv26/xXyND+IQ7w8Qw/E2Hw7j5NOQPXbUk17H9aBnv6JU1E2tpo/PYUzkraX
+	 KOwTTlIDuc63RRal+eN3Zc9bvQhWDDAOQ5P7vR7YNH/kIDXInENHh+XfyNYSzkNWjl
+	 R81XHpY9iERA+P9YRo00zWLvKYDrZJdOwfk1br7DKgbrtXarvoyGUSRWNfpDmMB89g
+	 bmsltBAAOQK/2QQyW8uileIJhE5yLi5gSef/Wl86+7ZZc/6s1VraI4N7AdnFZ61E3Q
+	 38ytge51EGzfw==
+From: Christian Brauner <brauner@kernel.org>
+To: Paul Moore <paul@paul-moore.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	linux-fsdevel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	KP Singh <kpsingh@kernel.org>,
+	Matt Bobrowski <matt@bobrowski.net>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	netdev@vger.kernel.org,
+	stable@kernel.org
+Subject: Re: [PATCH 0/8] ns: fixes for the namespace LSM hooks
+Date: Wed, 28 Oct 2026 11:42:19 +0100
+Message-ID: <20261028-treiben-probanden-nachkam-e986afed3902@brauner>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <CAHC9VhSJMPOY4X78ENEkAiNeVTCpvP76PgVDqTQfwaYfwnYwAQ@mail.gmail.com>
+References: <20261026-work-security-namespace_free-v1-0-ffa3ebbf71bd@kernel.org> <CAHC9VhR4rMydWiD-RFv-ABiYSG_txJuyrtdaowEXPY=CHEvFXA@mail.gmail.com> <20261027-heckklappe-halbmarathon-vorsorgen-849ffdc42aac@brauner> <CAHC9VhSJMPOY4X78ENEkAiNeVTCpvP76PgVDqTQfwaYfwnYwAQ@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,157 +71,125 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261028000912.2081659-1-florian.fainelli@broadcom.com>
-In-Reply-To: <20261028000912.2081659-1-florian.fainelli@broadcom.com>
-From: Jonas Gorski <jonas.gorski@gmail.com>
-Date: Wed, 28 Oct 2026 11:30:57 +0100
-X-Gm-Features: AclHuK_B_4dhiY1uBiy_8fsXbNuV7k79HWgTMcm0LExCnPUWVLwnCuYV7EcZt78
-Message-ID: <CAOiHx=kKX0YWEkyp-HBahae_krDCXLAjO6kLPi1gJzpf7EOfMw@mail.gmail.com>
-Subject: Re: [PATCH net v2] net: dsa: b53: Enable IGMP and MLD control packet
- CPU copies
-To: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>, 
-	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Vivien Didelot <vivien.didelot@gmail.com>, open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5627; i=brauner@kernel.org; h=from:subject:message-id; bh=vrGvHxpaFCd2RewEHLR6KXyONZGdNyVnBgFZ5XUewzY=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ9vNiX9L//hs+Lfwu5Y7g1qj+/OD3Rb2l3qr7Lo8oLW Vf1WO8Zd5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzEfTsjw9bI6Ae23876c3Mp nJiqWjOr6PP24APzpx0PmP5r17e4eZcYGSYZW0Vev3+ka9Pf00+DomL5Fwh9Y+hjXnrK/FsJ49n 1x7kB
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 28, 2026 at 1:10=E2=80=AFAM Florian Fainelli
-<florian.fainelli@broadcom.com> wrote:
->
-> IGMPv2 reports and MLDv1 reports are addressed to the multicast group
-> itself. Once the first listener is installed in the ARL table, subsequent
-> reports can follow that entry without reaching the CPU. The bridge then
-> fails to learn additional listeners, although static MDB forwarding works=
-.
->
-> Enable the high-level protocol classifiers so that IGMP and MLD control
-> packets are copied to the CPU independently of the multicast ARL lookup.
-> Retain normal L2 forwarding by clearing the CPU-only forwarding modes,
-> and preserve unrelated protocol-control fields.
->
-> Handle the BCM5395's 16-bit register and different classifier fields
-> separately from the 32-bit layout on the BCM531xx, BCM5301x and newer
-> integrated RoboSwitch families, including BCM7445, BCM7278 and BCM4908.
-> Export the helper and call it from bcm_sf2_sw_setup() as well, since SF2
-> uses its own setup operation instead of b53_setup(). This also restores
-> the classifiers after the switch reset on resume. Leave older devices
-> with different IGMP controls untouched, and propagate register access
-> failures during setup.
->
-> The SF2 setup integration and BCM4908 chip gate were updated with
-> assistance from OpenAI Codex in response to review feedback.
->
-> Fixes: 5d65b64a3d97 ("net: dsa: b53: Add support for MDB")
-> Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-> ---
-> Changes in v2:
->
-> - export the helper and call it from bcm_sf2.c as well as spotted by
->   Sashiko
->
->  drivers/net/dsa/b53/b53_common.c | 52 ++++++++++++++++++++++++++++++++
->  drivers/net/dsa/b53/b53_priv.h   |  1 +
->  drivers/net/dsa/b53/b53_regs.h   | 17 +++++++++++
->  drivers/net/dsa/bcm_sf2.c        |  5 +++
->  4 files changed, 75 insertions(+)
->
-> diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_c=
-ommon.c
-> index 0880310c9ce3..51784432d266 100644
-> --- a/drivers/net/dsa/b53/b53_common.c
-> +++ b/drivers/net/dsa/b53/b53_common.c
-> @@ -836,6 +836,54 @@ void b53_brcm_hdr_setup(struct dsa_switch *ds, int p=
-ort)
->  }
->  EXPORT_SYMBOL(b53_brcm_hdr_setup);
->
-> +int b53_enable_mcast_snooping(struct b53_device *dev)
-> +{
-> +       u32 val;
-> +       u16 val16;
-> +       int ret;
+On Tue, Oct 27, 2026 at 06:37:43PM -0400, Paul Moore wrote:
+> The hooks were merged into the LSM tree on August 31st, and due to
+> timing I'm guessing they appeared in linux-next the next day,
+> September 1st.  Considering the merge window opened on October
+> 18th/19th, that's conservatively a month and a half during which
+> testing could have uncovered this issue and the behavior of the hook
+> could have been changed to accommodate your use-case.
 
-I'm surprised to be the first to say that, but ... reverse christmas
-tree? Or is this not a thing anymore?
+That's what the rc cycle is for. I'm not asking for changes to behavior
+of the hooks to accommodate anything. I'm requesting to make them do
+what they were written to do while I was wiring up a consumer.
 
-> +
-> +       /* BCM5395 has a narrower register and a single IGMP classifier.
-> +        * Its ICMPv6 classifier also covers MLD.
-> +        */
-> +       if (dev->chip_id =3D=3D BCM5395_DEVICE_ID) {
-> +               ret =3D b53_read16(dev, B53_MGMT_PAGE, B53_HL_PRTC_CTRL, =
-&val16);
-> +               if (ret)
-> +                       return ret;
-> +
-> +               val16 |=3D HL_PRTC_IGMP_IP_EN_5395 | HL_PRTC_ICMPV6_EN;
-> +               val16 &=3D ~(HL_PRTC_IGMP_FWD_MODE_5395 |
-> +                          HL_PRTC_ICMPV6_FWD_MODE);
-> +
-> +               return b53_write16(dev, B53_MGMT_PAGE, B53_HL_PRTC_CTRL,
-> +                                  val16);
-> +       }
-> +
-> +       /* Older switches use different IGMP controls, not HL_PRTC_CTRL. =
-*/
-> +       if (!is531x5(dev) && !is5301x(dev) && !is58xx(dev) &&
-> +           dev->chip_id !=3D BCM4908_DEVICE_ID)
-> +               return 0;
+> I know the
+> Landlock folks were testing the hooks for their usage, but I've gone
+> back through my inbox and I don't see any reports of BPF LSM failures
+> using these new hooks in v7.4 until you posted this patchset during
+> the merge window.
 
-I would move this to top, and probably check for those that don't have
-it. Basically go from oldest to newest generation code wise.
+Because I sent fixes instead of a bug report. With Fixes: tags, with
+reproducers in the commit messages and with tests, before rc1 even
+exists. If that's too late to fix a hook that is new this cycle then
+nothing can ever be fixed before it's released. Which makes no sense. We
+do this all the time.
 
-> +
-> +       ret =3D b53_read32(dev, B53_MGMT_PAGE, B53_HL_PRTC_CTRL, &val);
-> +       if (ret)
-> +               return ret;
-> +
-> +       /* IGMPv2 and MLDv1 reports use the group's destination MAC. Once
-> +        * the first listener is offloaded, ordinary multicast forwarding
-> +        * can keep subsequent reports from reaching the bridge CPU.
-> +        * Copy control traffic to the CPU independently of the ARL looku=
-p,
-> +        * retaining L2 forwarding rather than selecting CPU-only traps.
-> +        */
+> The LSM namespace hooks are new to Linux v7.4, they did not exist in
+> Linus' tree prior to this merge window which is why I consider both
+> the BPF LSM and Landlock usage of these hooks to be "new".
 
-Should this comment be also in the 5395 case? Feels like it would apply to =
-both.
+Yes, they're new. That's the argument for fixing them now. Not against
+it. No released kernel has these hooks. Once v7.4 is out every one of
+these fixes is a behavior change in a released kernel, needs a stable
+backport that by your own rules doesn't qualify.
 
-> +       val |=3D HL_PRTC_IGMP_RPTLVE_EN | HL_PRTC_IGMP_QRY_EN |
-> +              HL_PRTC_IGMP_UKN_EN | HL_PRTC_MLD_RPTDONE_EN |
-> +              HL_PRTC_MLD_QRY_EN;
+And on top of that nonsense, userspace has to probe for it forever.
 
-I would also break out the "Copy control" part and move it here, to
-make it more obvious that these bits control this, and clearer that 0
-means copy to CPU instead of trap to CPU.
+> As mentioned previously, I'm pretty consistent about what goes up to
+> Linus once the merge window opens: there is the initial pull-request
+> with the changes from the last development cycle and then after that
+> I'm pretty strict about only serious bugs/panics and regressions.
 
-> +       val &=3D ~(HL_PRTC_IGMP_RPTLVE_FWD_MODE | HL_PRTC_IGMP_QRY_FWD_MO=
-DE |
-> +                HL_PRTC_IGMP_UKN_FWD_MODE | HL_PRTC_MLD_RPTDONE_FWD_MODE=
- |
-> +                HL_PRTC_MLD_QRY_FWD_MODE);
-> +
-> +       return b53_write32(dev, B53_MGMT_PAGE, B53_HL_PRTC_CTRL, val);
-> +}
-> +EXPORT_SYMBOL(b53_enable_mcast_snooping);
-> +
->  static void b53_enable_cpu_port(struct b53_device *dev, int port)
->  {
->         u8 port_ctrl;
-> @@ -1334,6 +1382,10 @@ static int b53_setup(struct dsa_switch *ds)
->                         b53_disable_port(ds, port);
->         }
->
-> +       ret =3D b53_enable_mcast_snooping(dev);
-> +       if (ret)
-> +               return ret;
-> +
->         return b53_setup_devlink_resources(ds);
->  }
+Your README says "serious problems", not panics. A hook that is
+exported to bpf as an attach point and never called is a serious
+problem for an API.
 
-(snip)
+And it's not how you've handled this before: lsm_get_self_attr() was new
+in v6.8 and got fixed for apparmor and selinux at v6.8-rc7 (cf. [2]).
+v7.1-rc5 took Stephen's cred_guard_mutex change for lsm_set_self_attr()
+without a crash see (cf. [3]).
 
-Best regards,
-Jonas
+> Holding this change for Linux v7.5 will give you and others a chance
+> to fully test the new LSM hooks from a BPF LSM perspective, something
+> that evidently didn't happen during the Linux v7.4 development cycle.
+
+The series comes with a verifier test and a lifecycle test for exactly
+that. Daniel ran it and needs it too. Alexei acked it and asked for the
+whole series. There's nothing left that waiting for v7.5 would test.
+
+Nothing in it changes anything for Landlock either.
+
+> Disabling the BPF LSM support for the new hooks in Linux v7.4 should
+> be relatively easy, much simpler than this patchset, and eliminate any
+> claimed harm.
+
+No. That's a change to kernel/bpf/bpf_lsm.c which you don't maintain
+and the people who do have acked the fixes and asked for the whole
+series in v7.4.
+
+You're proposing to rip working functionality out of someone else's code
+so you don't have to take a three line deletion. namespace_init and
+namespace_install work fine for bpf.
+
+It's also not simpler. The LSM part of this series is deleting three
+lines I wrote in security.c. The rest is my code and bpf's code with
+acks. Your version needs a revert in v7.5 so it's two cross-tree changes
+instead of one.
+
+> Also, as the ongoing friction between the LSM and BPF developers was
+> brought up, I want to point out that SELinux support for the new LSM
+> namespace hooks was delayed to Linux v7.5 due to issues uncovered with
+> these new hooks during the Linux v7.4 development cycle (well before
+> the merge window opened).
+
+That's not what happened. Stephen posted the fix on September 16, v3 on
+September 18. I reviewed it on September 25 and offered to carry it in
+the namespace tree for v7.4.
+
+On September 29 you said you'd rather take it through lsm/dev. It's not
+in lsm/dev. It's not in v7.4. A reviewed fix that was ready three weeks
+before the merge window didn't get applied. That's the same decision
+you're making now and it's not a precedent for it.
+
+> I told you "next merge window", which is far from "no".
+
+For v7.4 it is "no". That's the release these hooks go out in. It means
+v7.4 ships with a namespace_free hook that never fires and v7.4.y stays
+that way because by your own rules the fix doesn't qualify for stable.
+
+> I'll admit to finding it odd that you seem to keep inserting yourself
+> into that friction point
+
+A large portion of code where new security functionality is added or
+modified all of the time is maintained by me and others. There's
+multiple series each cycle that somehow are related to either bpf or the
+security layer. What do you expect to happen? That people sit on the
+sidelines and write encouraging haikus from time to time while this
+friction is grinding any progress to a halt?
+
+Given that I have Acks from both Alexei and Daniel and there's literally
+a trivial deletion in kernel/security.c and everything else is in
+namespace code, I will send this as part of the first round of vfs fixes
+if I have to.
+
+You're objection is noted and I'll mention it to Linus and then he can
+decide.
+
+[1]: https://patch.msgid.link/20260220-work-bpf-namespace-v1-0-866207db7b83@kernel.org
+[2]: https://git.kernel.org/torvalds/c/cf1182944c7c
+[3]: https://git.kernel.org/torvalds/c/4a9b16541ad3
