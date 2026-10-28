@@ -1,100 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.41
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793204291;
-	b=yD9e73iAyLUZbjFSVAug7cOg63fw1t68WRPAJJQMlWAwmdO9EPETMovj9q/YfvDHzxuy
-	 2wV6WDISkwCdGfVZa7l236d8Nug1E9M6nYd3HxHUzhah8E26oOoSoAWPSApAk+9FYEiAP
-	 e58pnLcib3n6eQDc/HLuM3EJ3OR+BG4ophDg+YZoAQyZz5uDhLQNwcjLNX2Ajue9U/Xtm
-	 v/Kf2PRDqwDA+6d2OmXd+dSn82d7fhMqbytf1vxLbLiz9ysDPDptbv+S9l6JvutkL6JjP
-	 Db7Vk+GIXg52gZnvhgoPuxQmVW7FkWxIpiVwnTe6wzxkUHfuu/y9SVrX/gjFK8G2kBA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793204291;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=L5ogW7JhfAT5yK3R6hLg7JFkiEpuNvjKHA8xCwY8O74=;
-	b=bH0kElaYk3i6PifMh7DQnCGsphpbrD7nD9Eh6+lNQIDPWa1+XZu94HuMhKOgYmklOD6g
-	 A/tZDU19Ge6Hw8UcF5vpBHY8q0GsPfYgca7M7OXtJAuqSHXYDZfDbwu3xG+mqORnAK0YR
-	 8u/LUMoTsuRH8pexYk8FphatWxByf4FetR6zYOmDVr42lLwRq3An83AxCiacFjYJm+obL
-	 k2d9uGw1U2QPQOES1/cRZ/ih687jqrnLmuLgb7KM7OOYu5P8JUMQcY8o3ndO2j7erGzBJ
-	 Ig9OwTs5KxG14cWWmSCx0YhYKZjEY6e9aY7G/0wRRM9CVjs5+BMpQPmTaDlhjhndgcw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nhcyRhRU;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.41
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793204560;
+	b=dBSS2ZFXB4WTz/JT+gN5Jn1rr37qpsQmQdWSVUanSWZHLpwegHJLaHRlXetMSznxXoxh
+	 L+2AqMVEcwR9sgDptQdRaL/4vtSgNTmG+pBABHxF6ZXpAEDNMalZzXkROSBM1WSifibRA
+	 awYCxUEhDag32U/OO/OlQnODAL5Kpl1nkMZjBA2DNNxWCwZa8wAqpyX8kBgFgNuh8/QBU
+	 wCu3LEdRZLViPK6crtfu39EX0D6IViO8I8XXN+cYDGR5StdE4cC3oLAQfECbuiLbwpFVE
+	 0ACWzh73nZzfoq3zzKSr0smXw4U+YwZhvMk3hqLQzPP3crRItHuWxOXXbdf+XOWL6RQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793204560;
+	h=Received:DKIM-Signature:Received:X-Gm-Message-State:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=LPnEsZ87SQg7JuBssg3knDigJumxWAPQLrNmp7RbkGU=;
+	b=iyYyPjY02CeNyr/GsJDL7iC9Qmit5d2ovXl4toScDDn+u+uat4gy+otpfFL+ImPzvuMc
+	 lDafti96KZgVcN4217mFP8Y1mzsRRv/SrUXELmuvlCXjbLPXL0S0YAjE+TUQ/XbDt+4J7
+	 T/OiE3l3EdLztJZ2cr4/jvk1mvAVJtb/mzCZDDIQp1QmnEGqIDQ5loE9HZiHf1eo+sb+h
+	 ZpneQLN2VUJmqNtGsUqZigxWQv3KnpEHcJFDDjNpdc0RBT9EW7SHs5I48mJMptPLbEOOr
+	 8hd6kgKseHdgcs+uMeaeQ7Ow4PugLBEBkbKByB9z139swpk1BJISrpFClZZgkmZX6pA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Q3XCKkFg;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1BD4606A31C
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 16:18:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C1BD4606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B257606A31D
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 16:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nhcyRhRU
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6b1aa36fc0eso16105a12.0
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 09:18:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793204289; cv=none;
-        d=google.com; s=arc-20260327;
-        b=PlBE99vu1zZhD8eO4A2FJXqU8Sxq4AoOlM+0S7ypO8VM4wAppHMwQ6zLkUsqkcD6q6
-         1OoLynvPE+sorel7oc7VEvtRFbd0GVaYn9fTuLHX3UAsUVAvzlPd8FR/Mr4b/QrX0HHl
-         kLuAa7lcEqZgW+FVCv6vhOyZbJnSeMFBjZycTqiwwsCVyEZTuV+UJ8QQQmYIm6Eh2swD
-         fWd8zsfS78b4vNi4SHlu3ul869Y1DF5COX5A3Br3PVpt0/9+iI2uRQRh0RfO4B6fXa3y
-         E9C7sLFU69pfEpnAdmuYmBWa7DU/0S12wsz3Kvv6H3htukdJp3nTY4A4GDSMYgIvUBgm
-         /4CQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=L5ogW7JhfAT5yK3R6hLg7JFkiEpuNvjKHA8xCwY8O74=;
-        fh=HnRhjkazeMfsmfsA0i0VoS1OpoSxfKw1iDbv+cUFM8k=;
-        b=hdVGh7Dq9Ee1Fah8h84f9RjTOLsutMZHWWrGJTvpQ1KMSX1cd9W6GX5lAanJzxnPAC
-         tY7gHLzpomgMvrFkVK3Pg3DUJ9RTs3capuk5aqOBXPu7iWJGy/6bD66CU/v7RELSGSMo
-         jII26GlFGg6Gifg9jxoPN1LfwEIKp2v4UfuimxaAZ73EzwmdE5P2MjRnOEa7Y5fM3Wmp
-         Tr6j9qi6p7Ul88/0+UhoHu0fDlZcvvDARHZLTDKogZxwnr3NeihnzRxdWDMcmFJlgG4M
-         najH9FC1XrdWFVXZ5K3cEXC2MnrRePOKM6aEoJW5jMwS3CqBsLqN74/MWAM7L6FoFN9s
-         qqzQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793204289; x=1793809089; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=L5ogW7JhfAT5yK3R6hLg7JFkiEpuNvjKHA8xCwY8O74=;
-        b=nhcyRhRU/4RNzSMLzZT8e3LWTesK3fZyuVFJL1mpIE6Nw3t+DdqE3iRINLZRiiRe17
-         2Y87u3lO3aIl39AqO+3cbBfoYWF7xbM1p/9jrzEk1iFcDqZSjzCh6v4BtWI+MQpjt8/n
-         a9N2CnZOXZMDYD6cCzKQBiK1LbdmvghCVwzWoRzbQqCrVFDQU8njfQ5WSoSKKPDnlcH+
-         pAnE7Nb8qgHILbh74wXmrh4vXUn+V97thRbE3NV4OIzAWlf/QxUpl8W2CuYKwlBvhcVQ
-         5hjiEXtyz7U/vn+m24FpYbQVKesS+Holi3yILWVMKD4ia2PpNuHSgq03eFGpRgsR0hGb
-         EhcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793204289; x=1793809089;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=L5ogW7JhfAT5yK3R6hLg7JFkiEpuNvjKHA8xCwY8O74=;
-        b=AR30PjfLPfg2PBoCQMKnXXrqto0GUz8vK8M3kL/4NxefgHZOo6WmShYznUUQYzW6Fp
-         tre7dlz19CP79DZMWzBU/C+v/jWAm0uq3RMk9Pk8DITa1dcVKk3Lgozmn7xzdXuqeUqL
-         bRu8VgwRm6lZ6w22BkB4Xia1zixFKXo9EBm2ZSkKP8yb6o7ta6I3pXwp49Q57vZjPnAG
-         UBmA8FezISkWHubo1SV39H4H7wVvkVQ24G5Kq6ILROJMyzcfrRkanyNB+/aPrhG9Jy4m
-         09EPYeIiTvqBiuUOa5Nhnf2a4786qsCDiHdmv9BEyaluH1mAv/hMBIDlWJ5w7+lePxgT
-         mH1w==
-X-Forwarded-Encrypted: i=1; AKwUvByhGSmnPg7S20xFe0bi607Bf9xHzoyiO/00uKPUlZ4IYVYSfCUN5u/Wxwq2l5Jl0Z498bT1xBM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIVZUIiTSYueIxGJ45Spg2xzU0DVu8gPa4nVpWydYTfe0I5gLLR
-	qm7uDpUMXWEmL5CoOrtsilkCdgmAx6/c+wA6rWaLxm7JBBqI31F3NKw58hx60eG9JqM9vEXi4bF
-	JeVPynqqgkzvdkzQRC1Ho5mPkMAQAicNW2ONU0Xuj
-X-Gm-Gg: AYBFou3EWNsgElAs/p988HgZsO26roWLrlihk+a0iPW3W8Lk9ADo4HcorsB2g5C+8Hi
-	12uOdoPQMcMlmb1qlGytMC+gVcJ0FfORFwYD4XzS92G3v430cyrLmmw+VYPOvSMLENzAb1nRbNO
-	abqmo5hwcmbE67OenLl38p33wUAzNnmJnwuxHa0tzxZgLVelg2xkWT12JHv6WGZBJlBSWyeBAml
-	ng6KJLjPcdS/80BlQ/orb1y/vaTfCz6j0zS1JTAcOUGHn0lqm/gm/GdQz+IQbr5Y5emq4ZYRxIQ
-	GlMLb7zKx/uuhyzFAT7jhtr2dpnz63CD5kH8HV9Q7r4AH9eUZH5vnKg9VCDcrPr/MWNzTzYrXGf
-	uVRIZY5gWdwsOdgxOFwaWRGK4vqzLc1ili7nPQabTX8LolYZzjlm9Cj1TpHUrbtQIpmGtJaY=
-X-Received: by 2002:aa7:d516:0:b0:6ae:1503:5a27 with SMTP id
- 4fb4d7f45d1cf-6b49b872a5fmr89061a12.8.1793204288568; Wed, 28 Oct 2026
- 09:18:08 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Q3XCKkFg
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA4CE1F01825
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 16:22:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793204558;
+	bh=LPnEsZ87SQg7JuBssg3knDigJumxWAPQLrNmp7RbkGU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Q3XCKkFgPHPKp6gqmQKsJwRqQJuSfwVNKgMJw929jSWeA3EeDHYgisCRIepBEMPXt
+	 z/wAJH9jCTH6WxqPx3Z5G/pdCB5Cz5i2ma8z9R/EpRUHtsuUWAFWbJozYHoSixDAmu
+	 IsTVUvNO5gQgHsVzET0rEW0c+dgdoDZ8NmMbdGFcRwyM0FguLQkhYO9/OaE+M8RXuH
+	 YPqpfgszyqeDJ6vOFNwydL2edVQ6+xF/dCncrhGFqv/fMS24Csz7YMiwzRsC83vdtb
+	 mGRn0T7Wp25MKwSS7rpDV4qYIIxExX0WrOuTmJbSu8y6BjGMiZ4w3v/DEYFufMW06M
+	 AYl9JNASNYKLg==
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-4a6f2825dd6so347185fac.2
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 09:22:38 -0700 (PDT)
+X-Gm-Message-State: AFq9FYIBee+CzIaq5i83XhWfxZhbk5FCQ4QJsmtcGicJntbNO2UhCNdM
+	5YlP+nNDrT0hvu89ta4qekMxBWTeQRloiMA8oKeWfgUymNq3Z75iKYRPHWw1pc+6Mj3LOPpapsW
+	VLZvMI5MqKGZvaofDlqi6HLQof7HOEaA=
+X-Received: by 2002:a05:6870:1410:b0:48f:e21e:1e7b with SMTP id
+ 586e51a60fabf-4a8bb5cd6bbmr1938619fac.59.1793204558218; Wed, 28 Oct 2026
+ 09:22:38 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,108 +58,237 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261026032216.1145201-1-tavip@google.com> <20261026032216.1145201-2-tavip@google.com>
- <CAL4WiiqQ3cychvCccpNW+WOU2SYCfNt6L=wgPkNmfTLHLy605Q@mail.gmail.com>
- <auALgSUuoYmfKSz3@google.com> <CAL4Wiirpss0inrC7gKhsNfwUO-KGZ-nnF5h7N8jXS9qziiSW4A@mail.gmail.com>
-In-Reply-To: <CAL4Wiirpss0inrC7gKhsNfwUO-KGZ-nnF5h7N8jXS9qziiSW4A@mail.gmail.com>
-From: Octavian Purdila <tavip@google.com>
-Date: Wed, 28 Oct 2026 09:17:55 -0700
-X-Gm-Features: AclHuK8w5lO8If8x36ZOhT6j7gK1cagODxrbPfh_JsvNFfuijHGsG2Hl4-fDuR4
-Message-ID: <CAGWr4cSmbe7nuobWAZ9A2yV3BT0OT3CKhaBS5o++b+10srvjHA@mail.gmail.com>
-Subject: Re: [PATCH net v4 1/2] tcp: clamp return value of tcp_wmem_schedule()
- to non-negative
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>, Eric Dumazet <edumazet@google.com>, 
-	Neal Cardwell <ncardwell@google.com>, "David S . Miller" <davem@davemloft.net>, 
-	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>, 
-	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <CALf2hKvp0NPVLwr=a3+jUHtPohxbra8gox+aYAfWathJnn-J+Q@mail.gmail.com>
+In-Reply-To: <CALf2hKvp0NPVLwr=a3+jUHtPohxbra8gox+aYAfWathJnn-J+Q@mail.gmail.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Wed, 28 Oct 2026 17:22:26 +0100
+X-Gmail-Original-Message-ID: <CAL4WiiqFJpmcV4=TWRpukCq6q=-729658FwGvieNcPXe97kLvQ@mail.gmail.com>
+X-Gm-Features: AclHuK9Ib5neXJt_tER1R8PJmj4tWIK_9yLZR_Pwu3If9gy_DONTRjPsPWsSK5s
+Message-ID: <CAL4WiiqFJpmcV4=TWRpukCq6q=-729658FwGvieNcPXe97kLvQ@mail.gmail.com>
+Subject: Re: [BUG] tcp: cross-family IPv4 option echo stack overwrite
+To: Zhiyu Zhang <zhiyuzhang999@gmail.com>
+Cc: netdev@vger.kernel.org, ncardwell@google.com, kuniyu@google.com, 
+	dsahern@kernel.org, idosch@nvidia.com, brauner@kernel.org, 
+	dhowells@redhat.com, security@kernel.org, lyutoon@gmail.com, 
+	tpluszz77@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 28, 2026 at 8:20=E2=80=AFAM Eric Dumazet <edumazet@kernel.org> =
-wrote:
+Le mer. 28 oct. 2026 =C3=A0 16:31, Zhiyu Zhang <zhiyuzhang999@gmail.com> a =
+=C3=A9crit :
 >
-> Le mar. 27 oct. 2026 =C3=A0 03:28, Kuniyuki Iwashima <kuniyu@google.com> =
-a =C3=A9crit :
-> >
-> > On Mon, 26 Oct 2026 13:06:56 +0100, Eric Dumazet wrote:
-> > > Le lun. 26 oct. 2026 =C3=A0 04:22, Octavian Purdila <tavip@google.com=
-> a =C3=A9crit :
-> > > >
-> > > > When sk_wmem_schedule(sk, copy) fails under TCP memory pressure and
-> > > > sk->sk_wmem_queued already reaches or exceeds sysctl_tcp_wmem[0],
-> > > > tcp_wmem_schedule() returns min(copy, sk->sk_forward_alloc).
-> > > >
-> > > > However, sk->sk_forward_alloc is a signed int that can transiently
-> > > > become negative when tcp_collapse() re-packs partially read or high
-> > > > payload-to-truesize SKBs in the receive queue and charges newly
-> > > > allocated SKBs via sk_mem_charge() before freeing the original SKB.
-> > > >
-> > > > If tcp_wmem_schedule() returns a negative value, tcp_sendmsg_locked=
-()
-> > > > passes that negative copy length to skb_copy_to_page_nocache() ->
-> > > > copy_from_iter_full() -> check_copy_size(), where it is converted t=
-o an
-> > > > unsigned size_t > INT_MAX, triggering a WARN_ON_ONCE(bytes > INT_MA=
-X)
-> > > > in production and returning -EFAULT instead of waiting for memory o=
-r
-> > > > returning -EAGAIN:
-> > > >
-> > > >   WARNING: CPU: 1 PID: 939331 at include/linux/thread_info.h:249 tc=
-p_sendmsg+0x10c1/0x1530
-> > > >   Call Trace:
-> > > >    <TASK>
-> > > >    __sys_sendmsg+0x292/0x490
-> > > >    do_syscall_64+0x88/0x340
-> > > >    entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> > > >
-> > > > Clamp the return value of tcp_wmem_schedule() to [0, copy] so calle=
-rs
-> > > > treat negative sk_forward_alloc as 0 available bytes.
-> > > >
-> > > > Fixes: 849b425cd091 ("tcp: fix possible freeze in tx path under mem=
-ory pressure")
-> > > > Assisted-by: LLM
-> > > > Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-> > > > Reviewed-by: Eric Dumazet <edumazet@kernel.org>
-> > > > Signed-off-by: Octavian Purdila <tavip@google.com>
-> > > > ---
-> > > >  net/ipv4/tcp.c | 2 +-
-> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-> > > > index 87ef6d5cbfeba..0e062fcd94a6c 100644
-> > > > --- a/net/ipv4/tcp.c
-> > > > +++ b/net/ipv4/tcp.c
-> > > > @@ -1037,7 +1037,7 @@ int tcp_wmem_schedule(struct sock *sk, int co=
-py)
-> > > >         left =3D READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_wmem[0]) -=
- sk->sk_wmem_queued;
-> > > >         if (left > 0)
-> > > >                 sk_forced_mem_schedule(sk, min(left, copy));
-> > > > -       return min(copy, sk->sk_forward_alloc);
-> > > > +       return clamp(sk->sk_forward_alloc, 0, copy);
-> > > >  }
-> > > >
-> > > >  void tcp_free_fastopen_req(struct tcp_sock *tp)
-> > >
-> > > I do wonder if the following fix could be better (no change in the fa=
-st path)
-> >
-> > Exactly, this looks better too, we can avoid negative
-> > sk_forward_alloc and clamp().
-> >
-> > The packetdrill will need to be adjusted as it triggers cgroup
-> > OOM with this approach, or we could defer the test to net-next too.
-> >
+> Hello Linux Kernel Developers and Maintainers,
 >
-> Let's defer the test. We also have an upcoming fix for tcp_collapse() any=
-way.
+> We found a TCP address-family mismatch that lets an IPv6 packet reach an =
+IPv4
+> reply path. The IPv4 path interprets IPv6 skb control-block fields as IPv=
+4
+> options and copies a packet-controlled length into a 40-byte stack buffer=
+. We
+> used it as the write primitive in a demonstrated unprivileged uid-to-root
+> chain.
 >
-> Octavian, could you resend a v5 (sorry for that) ?
+> The complete path is present in v7.3
+> (c03c1a14507dfaf8b856c2608f9ac216021fc222), where we reproduced the
+> privilege escalation with KASLR, STACKPROTECTOR_STRONG, PTI and IBT enabl=
+ed.
+> It is also present by inspection in v6.12.95. CONFIG_IPV6 is required.
 >
+> Current mainline d135ab453a7400a34930bdda1ef4bdc8acfac80e contains
+> 8cc3aef0cb19 ("tcp: Do not allow buggy transitions between ehash and
+> lhash2."), which rejects the exact socket transition used by our reproduc=
+er.
+> We therefore do not claim that the complete chain works at that mainline
+> revision. The unsafe cross-family option handling and unbounded option ec=
+ho
+> remain relevant to maintained trees without that transition restriction.
+>
+> Root cause:
+>
+> tcp_v6_connect() changes icsk_af_ops and sk_backlog_rcv to the mapped-IPv=
+4
+> implementations after a successful v4-mapped connect. On affected kernels=
+,
+> connect(AF_UNSPEC) returns the socket to TCP_CLOSE without restoring thos=
+e
+> pointers, and listen() reuses it. A pure-IPv6 accepted child can conseque=
+ntly
+> have IPv6 lookup state but tcp_v4_do_rcv as its backlog callback.
+>
+> For an [IPv6][DSTOPTS][TCP] packet, tcp_v6_fill_cb() stores inet6_skb_par=
+m in
+> TCP_SKB_CB(skb)->header.h6. If the packet is drained through tcp_v4_do_rc=
+v(),
+> tcp_v4_send_reset() passes the same union bytes as header.h4.opt. The ali=
+ased
+> metadata directs __ip_options_echo() to read a packet-controlled option l=
+ength
+> and copy it into the 40-byte dopt->__data buffer. Our trigger produces a
+> 254-byte overwrite across the canary and return address in
+> ip_send_unicast_reply().
+>
+> The receiving process runs as uid 65534 without capabilities or a user
+> namespace. A root helper is used only to inject the crafted IPv6 packet w=
+ith
+> a raw socket inside our single-VM test; the packet may instead arrive fro=
+m an
+> IPv6 peer.
+>
+> This is the memory-corruption half of the demonstrated privilege-escalati=
+on
+> chain. A separately reported watch_queue disclosure supplies the same tas=
+k's
+> stack canary and KASLR slide. We will reply with that report's Message-ID=
+ as
+> soon as it has been posted.
+>
+> Reproduction and fix:
+>
+> We have a source reproducer, exact config, QEMU instructions and a full-c=
+hain
+> exploit. In accordance with the kernel policy, we are not posting them pu=
+blicly.
+> We can provide the source-only reproducer privately if a maintainer reque=
+sts it.
+>
+> Our build- and QEMU-tested fix has two layers: the IPv4 TCP reset and ACK=
+ paths
+> only pass IPv4 option state for ETH_P_IP skbs, and __ip_options_echo() va=
+lidates
+> each option against the declared source area, the actual skb header area =
+and
+> the remaining destination space. We will post it separately as a mergeabl=
+e
+> [PATCH net] email and link that thread here.
+>
+> AI-agent tooling assisted in identifying and analyzing the issue, develop=
+ing
+> the reproducer, and preparing the initial fix. The reporters reviewed the
+> affected paths and reproduced the issue and the fixed result in QEMU.
+>
+> Reported-by: Tong Liu <lyutoon@gmail.com>
+> Reported-by: Qi Tang <tpluszz77@gmail.com>
+> Reported-by: Zhiyu Zhang <zhiyuzhang999@gmail.com>
+>
+> Best regards,
+> Zhiyu Zhang
 
-OK, no worries. I'll post your version as v5.
+Worst report I got this week, and trust me I got many security reports
+in the last 3 days
+
+Why don't you ask your LLM to prepare a patch ?
+
+Why CCing security@ at all, since you made this report public ?
+
+Have you read Documentation/process/security-bugs.rst ?
+
+MPTCP is not yet covered in this untested WIP:
+
+Kuniyuki, can you take over, thanks.
+
+commit 5108a64604b6f2fad06383386d8d5bc44f0cf35b (HEAD -> net-4)
+Author: Eric Dumazet <edumazet@kernel.org>
+Date:   Wed Oct 28 17:14:04 2026 +0100
+
+    tcp: restore IPv6 af_ops on disconnect of a v4-mapped socket
+
+    A successful connect() of an IPv6 socket to a v4-mapped address
+    switches icsk_af_ops, sk_backlog_rcv and af_specific to their
+    IPv4-mapped variants. These are only restored if the connect() fails.
+
+    After connect(AF_UNSPEC), the socket can be reused for listen() or
+    for a native IPv6 connect(), while still using the mapped handlers.
+    IPv6 packets processed from the socket backlog are then handled by
+    tcp_v4_do_rcv(). tcp_v4_send_reset() and tcp_v4_send_ack() interpret
+    TCP_SKB_CB(skb)->header.h6 as IPv4 options, and __ip_options_echo()
+    can overflow its 40-byte destination buffer.
+
+    Commit 8cc3aef0cb19 ("tcp: Do not allow buggy transitions between
+    ehash and lhash2.") prevents listen() after connect(AF_UNSPEC), but
+    a native IPv6 connect() is still allowed.
+
+    Add tcp_v6_disconnect() to restore the IPv6 handlers when a v4-mapped
+    socket is disconnected, and use the same helper in the connect()
+    error path.
+
+    Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+    Reported-by: Tong Liu <lyutoon@gmail.com>
+    Reported-by: Qi Tang <tpluszz77@gmail.com>
+    Reported-by: Zhiyu Zhang <zhiyuzhang999@gmail.com>
+    Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index e006a30360eae1b43a4d53173b46b931ae668825..a93410aab66e6f441d70cf70c67=
+e6d92fbb5fb26
+100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -130,6 +130,19 @@ static int tcp_v6_pre_connect(struct sock *sk,
+struct sockaddr_unsized *uaddr,
+        return BPF_CGROUP_RUN_PROG_INET6_CONNECT(sk, uaddr, &addr_len);
+ }
+
++/* Undo the v4-mapped setup done by tcp_v6_connect(). */
++static void tcp_v6_restore_af_ops(struct sock *sk)
++{
++       /* Paired with READ_ONCE() in tcp_(get|set)sockopt() */
++       WRITE_ONCE(inet_csk(sk)->icsk_af_ops, &ipv6_specific);
++       if (sk_is_mptcp(sk))
++               mptcpv6_handle_mapped(sk, false);
++       sk->sk_backlog_rcv =3D tcp_v6_do_rcv;
++#if defined(CONFIG_TCP_MD5SIG) || defined(CONFIG_TCP_AO)
++       tcp_sk(sk)->af_specific =3D &tcp_sock_ipv6_specific;
++#endif
++}
++
+ static int tcp_v6_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
+                          int addr_len)
+ {
+@@ -243,14 +256,7 @@ static int tcp_v6_connect(struct sock *sk, struct
+sockaddr_unsized *uaddr,
+
+                if (err) {
+                        icsk->icsk_ext_hdr_len =3D exthdrlen;
+-                       /* Paired with READ_ONCE() in tcp_(get|set)sockopt(=
+) */
+-                       WRITE_ONCE(icsk->icsk_af_ops, &ipv6_specific);
+-                       if (sk_is_mptcp(sk))
+-                               mptcpv6_handle_mapped(sk, false);
+-                       sk->sk_backlog_rcv =3D tcp_v6_do_rcv;
+-#if defined(CONFIG_TCP_MD5SIG) || defined(CONFIG_TCP_AO)
+-                       tp->af_specific =3D &tcp_sock_ipv6_specific;
+-#endif
++                       tcp_v6_restore_af_ops(sk);
+                        goto failure;
+                }
+                np->saddr =3D sk->sk_v6_rcv_saddr;
+@@ -2093,6 +2099,19 @@ static int tcp_v6_init_sock(struct sock *sk)
+        return 0;
+ }
+
++static int tcp_v6_disconnect(struct sock *sk, int flags)
++{
++       int ret =3D tcp_disconnect(sk, flags);
++
++       /* A socket used for a v4-mapped connection must not keep IPv4
++        * handlers when it is reused for listen() or a native IPv6 connect=
+().
++        */
++       if (sk->sk_backlog_rcv =3D=3D tcp_v4_do_rcv)
++               tcp_v6_restore_af_ops(sk);
++
++       return ret;
++}
++
+ #ifdef CONFIG_PROC_FS
+ /* Proc filesystem TCPv6 sock list dumping. */
+ static void get_openreq6(struct seq_file *seq,
+@@ -2283,7 +2302,7 @@ struct proto tcpv6_prot =3D {
+        .close                  =3D tcp_close,
+        .pre_connect            =3D tcp_v6_pre_connect,
+        .connect                =3D tcp_v6_connect,
+-       .disconnect             =3D tcp_disconnect,
++       .disconnect             =3D tcp_v6_disconnect,
+        .accept                 =3D inet_csk_accept,
+        .ioctl                  =3D tcp_ioctl,
+        .init                   =3D tcp_v6_init_sock,
