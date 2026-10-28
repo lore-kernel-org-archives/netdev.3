@@ -1,41 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=129.70.137.15
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793197788;
-	b=H6fIjTOhnJjwW+ImtVIKN2hAbdwU3xqb95jTuW6cPmNPWWRw01HKgK9GM1SI8CyF0GwD
-	 p0eL3VG6h4upUszqAZsuG++WkQHk7X/0/r08T+wEnWAq6PVTsPu4GyJhaqQzqvlmZz/fg
-	 kHTmO7atTHEeiX9NkISo1ogoZRfEyoqfSU7m4bjq6Ti3kJS0cW92YEO1Dbp7Fd6skzWEZ
-	 UopHGwLKmxP/LBqg7Yk8Q8MebpHh8Ad6jqOdbkeO/Gl/tceqCAs1ktCOEUyGEOL/g1ZQa
-	 A21QFpLY3kP13navQFHdd1S+HzMmDt1wrbK9Qec7xKiNFgTDpJ3YKFaIgb0zN2fJdvA==
+	t=1793198150;
+	b=UWWdfSVlSUmY5+/QmOdedRxF/rXv+gqmSada7SRzUlUbqcSs74rpTpxBiNxdYRBNxwDo
+	 03azLF4DxVlWTygNXfZLav4qLkUsrcwMNy1M+b0lGdGB58HO8reybkZHSlAMIKmitJBwC
+	 Nr9ixZ1WWMYMI2A2toLX3G+y/na28dg8Fzf3G9ul5vGOGohak9YFMLSvDfeG6LzlGLhLa
+	 RDF0QI2T2nv4lG1X2BQRSgOzwo/2iyUq9xHyv6Aq1XU4vXQRpD6LMgUX3DThVdNcghZiE
+	 ByPNsa9/OFDxYoTHdJiDWe8qZYS+VU8jwD5pfu2lVvddVtwOMevAN/5EJCXosSqHS+A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793197788;
-	h=DMARC-Filter:Date:From:To:Cc:Subject:Message-ID:MIME-Version:
-	 Content-Type:Content-Disposition;
-	bh=zsOlgHBs9Mth5zl+FODhlUHS2OrDrKvCGaKDR/F8sWE=;
-	b=u7kjvTVhEIGDwN6z6jhrPbeN/54EWu00M8faoBH9Kd89La9dSGNnSNYe9HUiBcCGFtjQ
-	 bTgdjRNYFv2If5YOiMyRbcTnpwCidQQKaaATGJJxQbvJ0fwWVIYMoYNpLXc99HL9c1NLV
-	 9GDf+M9DeX10QA34PiQb2jdCUadqyaQaDiDODvck3soTxkEGThw7kN7Whzm+X8EgPaWKE
-	 ol8g1tikuqyEmP9QdqNFYsIe18ZdojZW3bR+rZiGgdesuWuuYQ3glWKNcopmM0CxO9XRU
-	 KzVDxD8n2oTsOytZ0tKOeZ7wMZYz9eAEYrq7Fhyt8Rsrnye6n5ehfxQ4PCpQXUdO/4g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793198150;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:Content-Language:To:Cc:References:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=sTv72HXLS642hKtRKZu2ty/aYX7p7GlGK+o3A+/U4nU=;
+	b=eeDkbPdftrlTOPT1a6t+pm8g3vQtMGGL0BiCFvLd8wCmznA6WMUAnOvK/amtQeeUNToT
+	 MjDfvsvg9PuCaL8JgLAMV8+NT8g1tdihfLA1sAzuIWeZOR2JEUGsHmNIuFIx0hnjo2dcK
+	 alU7KHsUEAYlSQ0p5PIGsdS2avb+70wmso6Sp7exNfA8LDpuoCGzxr2MW4gx4Ua12UAjW
+	 VlgRnG1dZHdMXtOW1guzx+lpt6B65yuhpIFBONpXW5eFj3VTX/QlSuILdt2HK/lNHsYMy
+	 lGSAeaTZCQkENZbp09hYGO9EMvGYoubzrKGtsk1jlFtdbPV18T89A3WB5nn/6Og2Hfw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=techfak.net;
-	spf=pass smtp.mailfrom=techfak.net;
-	arc=none smtp.remote-ip=129.70.137.15
-Received: from smtp.techfak.de (mailout3.TechFak.NET [129.70.137.15])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qs6OO7h2;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75240606A31A
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 14:29:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 75240606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=techfak.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=techfak.net
-Date: Wed, 28 Oct 2026 15:29:28 +0100
-From: Sascha Frey <sf@techfak.net>
-To: netdev@vger.kernel.org
-Cc: qotmddnjs@ajou.ac.kr, davem@davemloft.net, kuba@kernel.org,
-	edumazet@google.com, idosch@nvidia.com
-Subject: [REGRESSION] vxlan: duplicate ICMP replies with nexthop FDB entries
- after 3fa64d86fc64
-Message-ID: <20261028142928.GA8406@techfak.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3106A606A32D
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 14:35:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qs6OO7h2
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE80A1F01829;
+	Wed, 28 Oct 2026 14:35:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793198150;
+	bh=sTv72HXLS642hKtRKZu2ty/aYX7p7GlGK+o3A+/U4nU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Qs6OO7h2KpnuMZniQ3yYLQSDSUI74XKlKqCQm8mCF5K1mYmnyr/jHuNW/GSuIMdmo
+	 sulhdIvrz5xZanU496QWJWXh2KWYp78oPrDA9GxjCbBmvDor1+/bXiUP3+DhlaR4aj
+	 YDBAN7zlhD8PkjDeU75dBKZkAYiSPhiejMEZE5S60Beg21IiYIzZOCi7zVJEtBjOXR
+	 bQbCajAziWl/rtKZsRpBEekCmCu0lK4WTvZOr7yLlQXOebB0/GyYoA/rEGxNCksvfR
+	 Ojg3WzIv488v27LYs1AITaMCFbeZPmPe5MRA0nCJlSQ8oAyWINKlk6OvrStxV6HMvx
+	 mWJzyBfmJraxQ==
+Message-ID: <a3e50c6f-0da2-4e77-80b5-2ae371676280@kernel.org>
+Date: Wed, 28 Oct 2026 08:35:48 -0600
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -45,81 +51,109 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: vrf: Set L3MDEV OIF flag for outbound lookups
+Content-Language: en-US
+To: Gabriel Goller <g.goller@proxmox.com>, Haon KIM <akrn112@naver.com>,
+ Ido Schimmel <idosch@nvidia.com>
+Cc: netdev@vger.kernel.org
+References: <20261026164702.1415-1-akrn112@naver.com>
+ <auH8PdGEPaf2GI73@luna.proxmox.com>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <auH8PdGEPaf2GI73@luna.proxmox.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi,
+[ cc author of referenced Fixes commit ]
 
-I am seeing a VXLAN forwarding regression with Linux 7.2.7 and later,
-apparently related to commit 3fa64d86fc64 ("vxlan: reject dynamic fdb
-entries that reference a nexthop id").
+On 10/28/26 7:57 AM, Gabriel Goller wrote:
+> On 27.10.2026 01:47, Haon KIM wrote:
+>> The IPv4 and IPv6 outbound processing paths in the VRF driver
+>> set the L3 master device index in the flow structure before
+>> performing route lookups, but do not set
+>> FLOWI_FLAG_L3MDEV_OIF.
+>>
+>> Both the IPv4 and IPv6 outbound processing paths contain
+>> the comment "needed to match OIF rule", indicating that
+>> the L3 master device index is needed to match OIF rules.
+>> However, FIB rule matching requires both
+>> FLOWI_FLAG_L3MDEV_OIF and a matching flowi_l3mdev index
+>> to match a rule specifying the VRF master as the output
+>> interface.
+>>
+>> The matching logic introduced by commit 2d300ce0b783
+>> ("net: fib_rules: Fix iif / oif matching on L3 master device")
+>> requires FLOWI_FLAG_L3MDEV_OIF to be set for OIF rules to
+>> match the VRF master. The existing outbound processing paths
+>> set the L3 master device index directly, so
+>> l3mdev_update_flow() does not set this flag.
+>>
+>> Consequently, OIF rules specifying the VRF master may fail
+>> to match these flows.
+>>
+>> Set FLOWI_FLAG_L3MDEV_OIF in both outbound processing paths
+>> so that FIB rules can correctly match the VRF master as the
+>> output interface.
+>>
+>> The issue was identified by code inspection. Runtime testing
+>> has not been performed.
 
+Please do not do that; do some testing before sending patches.
 
-Environment
+>>
+>> Fixes: 2d300ce0b783 ("net: fib_rules: Fix iif / oif matching on L3 master device")
+> 
+> I think this should be:
+> 
+> Fixes: 40867d74c374 ("net: Add l3mdev index to flow struct and avoid oif reset for port devices")
 
-Linux kernel: 7.2.7, tested from the upstream source tree
-Also affected: Debian backports 7.2.9 and 7.2.11
-Known good: Linux 7.1.8 and 7.2.6
+No, the Fixes above is correct if there is a bug; the
+FLOWI_FLAG_L3MDEV_OIF flag was introduced by 2d300ce0b783 and was not
+present for 40867d74c374.
 
-The affected systems are Debian-based KVM virtualization hosts. Each
-host uses Linux bridges with VxLAN devices attached as bridge ports,
-acting as VTEPs.
+That said, unless I am misremembering something the flag does not need
+to be set in this outbound path.
 
-The overall network uses EVPN. Some VTEPs run on the Debian 
-virtualization hosts, while other VTEPs are implemented on Mellanox
-switches running Cumulus Linux 5.18 with EVPN multihoming (EVPN-MH).
+> 
+>> Signed-off-by: Haon KIM <akrn112@naver.com>
+>> ---
+>>  drivers/net/vrf.c | 3 ++-
+>>  1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
+>> index 79d433f49f80..f22ac91fefd4 100644
+>> --- a/drivers/net/vrf.c
+>> +++ b/drivers/net/vrf.c
+>> @@ -432,6 +432,7 @@ static netdev_tx_t vrf_process_v6_outbound(struct sk_buff *skb,
+>>  	fl6.flowlabel = ip6_flowinfo(iph);
+>>  	fl6.flowi6_mark = skb->mark;
+>>  	fl6.flowi6_proto = iph->nexthdr;
+>> +	fl6.flowi6_flags = FLOWI_FLAG_L3MDEV_OIF;
+>>  
+>>  	dst = ip6_dst_lookup_flow(net, NULL, &fl6, NULL);
+>>  	if (IS_ERR(dst) || dst == dst_null)
+>> @@ -506,7 +507,7 @@ static netdev_tx_t vrf_process_v4_outbound(struct sk_buff *skb,
+>>  	fl4.flowi4_l3mdev = vrf_dev->ifindex;
+>>  	fl4.flowi4_iif = LOOPBACK_IFINDEX;
+>>  	fl4.flowi4_dscp = ip4h_dscp(ip4h);
+>> -	fl4.flowi4_flags = FLOWI_FLAG_ANYSRC;
+>> +	fl4.flowi4_flags = FLOWI_FLAG_ANYSRC | FLOWI_FLAG_L3MDEV_OIF;
+>>  	fl4.flowi4_proto = ip4h->protocol;
+>>  	fl4.daddr = ip4h->daddr;
+>>  	fl4.saddr = ip4h->saddr;
+> 
+> Also this is a breaking change, before the patch, this rule matched:
+> 
+>    ip rule add iif vrf0 table 100
+> 
+> After the patch, this one matches (and the iif rule above no longer does):
+> 
+>    ip rule add oif vrf0 table 100
+> 
+> A selftest would also be nice.
 
-FRR/Zebra installs nexthop groups and VxLAN FDB entries on the Linux
-hosts.
+See commit message in cited Fixes commit. Have you checked
+fib_rule_tests.sh? If not, try the commands in 2d300ce0b783 and if they
+are broken, there is a problem. If not, let's get them added to the
+selftest.
 
-
-Symptoms
-
-ICMP replies are duplicated. A packet capture on the source host's
-physical interface carrying the outer VXLAN UDP traffic shows the same
-ICMP reply encapsulated towards all remote VTEP addresses.
-
-On a remote VTEP, a capture on the vxlan interface shows only one
-request and one reply per sequence number.
-
-Disabling GRO did not help, and the problem is independent of the ICMP
-packet size.
-
-
-Relevant FDB state
-
-With the unmodified 7.2.7 kernel, the following entry was missing:
-
-90:e2:ba:33:3b:04 nhid 536870949 self extern_learn
-
-The corresponding nexthop group existed:
-
-id 536870949 group 268435494/268435495 scope global proto zebra fdb
-id 268435494 via 10.224.90.1 scope link proto zebra fdb
-id 268435495 via 10.224.90.2 scope link proto zebra fdb
-
-
-Revert test
-
-I reverted commit 3fa64d86fc64 on top of Linux 7.2.7, without other
-source changes.
-
-With this kernel:
-
-The missing VXLAN FDB entry reappears.
-The duplicate ICMP replies disappear.
-
-The revert removes the checks in vxlan_fdb_add() and
-vxlan_fdb_update_existing() that reject dynamic FDB entries referencing
-a nexthop ID.
-
-This strongly suggests that the commit is involved, although I have not
-yet established the exact mechanism by which the FDB entry goes missing.
-
-Could someone help investigate whether the new checks can interfere with
-EVPN/FRR-installed nexthop FDB entries, or whether this exposes another
-issue in the VXLAN FDB handling?
-
-
-Best regards,
-Sascha
