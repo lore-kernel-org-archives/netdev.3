@@ -1,80 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.80.4.37
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.156.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793154457;
-	b=o6UfQI799U10R2BZ6ghjvMWBSqnSx90DugjjCGmg6vN6Ke9wCo+7HGqKh8IHfFqRl1Xh
-	 DYcjh+wgP7J8FjFO8xK0k8ai9kWYim2GyYFbi3wBz+mRKA8EYbPColJ7scv4YlVo0LmMx
-	 o9CvNnc7y4nnXJM3xYTh28Ro2NoVtaYXRElcGR7ByEq5hUGWuhXazCDhQ3/jmUct1ocph
-	 mVTG4OQjpdNSeqsYZA02KTVMXxCooeUxQgLF3BGFKu98FPEh3ssfGWMkgqdhvW9YWC0+Z
-	 an5O+dJMrvemEjvzqoiidagvUcHEcVA/IbR+JvoSy5rnKaZoUx2ZWrtZHsgk7yXNukQ==
+	t=1793155101;
+	b=0Z/SMBZphDmS5YkbvuDWttFVtlHLJt6gBwFxU+wwb8Z0D555PCBZWnAZS5E56yMDX5YT
+	 4X+E6PUOrK5wLX9l2P06qESlfmxyJEiMkrHN2xf4U898KX7hkLWhiBYfUG10TWgdAqYe5
+	 gQfVdNE0dxEX22iiwD2rBneDORRpXanIlcj8g4yDOF8kI9+dCMDtFecfYQfX3vXfbSdqA
+	 0/Kj9zQhDu7zFV/NYzGPRM63Zj2RYxKpp1ayZrI8V7npymLIUquvKm7B3pvLr2nhndfD3
+	 aLjnJt/f2IgNrEHPutAXscxnXR3s11RbCGAq1X81cxlt+8tBNrsIDw1dNJlWlBIeSCA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793154457;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:Date:
-	 From:To:Cc:Subject:Message-Id:In-Reply-To:References:X-Mailer:
-	 Mime-Version:Content-Type:Content-Transfer-Encoding:X-Virus-Scanned:
-	 X-Virus-Status;
-	bh=34MEbCK2dZfz1OeFw4rZYBVHQDkLVXHqDfjhJIGlAaE=;
-	b=IbPPl0lIS8JUHM9QFbmklyn8CGbADlyvcyCgTDrEsBOJR5IJLe4prRL/BlvpxGY1zdNB
-	 RXpEnE33gd0P5ge7PTc22bHDaNHkawt8fQCFBQI+GfYx0uhpAAvJMbXFOctjwLtFMi1PV
-	 VnxykyrDq1Iaa1Oh6kefA5c0OVxKYjx2dTohoxwttTIumnbtlTgCZnyzVYbyFBFngnGpa
-	 ezavFmGhbbcwF01/A4SuTJk/uqFKuakip1GJFHlzfrj6oGZ0rpGc1ySRvNjt7FFTNzSzk
-	 WEAySrlVv7rrrcnLp2gPNkqcfN+ET1YWEtcEhhrcGHSyeGkl1fnOHQs539HZsTHsv3A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793155101;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To:X-Authority-Analysis:
+	 X-Proofpoint-GUID:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Virus-Version;
+	bh=0RkIbvE5bVns9Dq3iZQPM9pC/n5nH6FuvYmj/Tc5+Jo=;
+	b=zJs6keOVQ9U8XfEwu3pTx2QYXAmbTEr1jSX2wDSa66L4+KG4UvHhUQH4hnIG1jyKh4e2
+	 WMscfcrcDXG6eCBaRWfl1teQc7JfDlOgVeua0pv5QOf2nO3u/dTyei239J2ipe9NFmB0a
+	 2GaRS/QmEkevtWgCTbqK4uegcNbGcMAZo5WgQtcI/yb8SiwDWUYheiwjWQ3cjWhRh/hb8
+	 LhjoLP9b+I7l30N/XpkolbGngfcnCJpXCy8YWIglb4tz9gj4ZzehRbtgenlOikYIdsYzT
+	 jWSjlEVVyssK2iScE1rCuMHNicaK+VhLQuBp59yMMwRq6rk4bK4zo09En94kJB/LByQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=uniroma2.it;
-	spf=pass smtp.mailfrom=uniroma2.it;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=GPh0y22A;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b="KDRN+1/x";
-	arc=none smtp.remote-ip=160.80.4.37
-Received: from smtp.uniroma2.it (smtp-2015.uniroma2.it [160.80.4.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63714606A31A
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 02:27:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 63714606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+	dmarc=pass header.from=marvell.com;
+	spf=pass smtp.mailfrom=marvell.com;
+	dkim=pass header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=pfpt0220 header.b=G6Ue8S84;
+	arc=none smtp.remote-ip=67.231.156.173
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D700606A31A;
+	Wed, 28 Oct 2026 02:38:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2D700606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=GPh0y22A;
-	dkim=pass (2048-bit key, unprotected) header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b=KDRN+1/x
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth-2019-1.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 69S2QX6m024901;
-	Wed, 28 Oct 2026 03:26:39 +0100
-Received: from lubuntu-18.04 (unknown [160.80.103.126])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 7B564120F34;
-	Wed, 28 Oct 2026 03:26:28 +0100 (CET)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1793154388; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=34MEbCK2dZfz1OeFw4rZYBVHQDkLVXHqDfjhJIGlAaE=;
-	b=GPh0y22At6mVsERDow/gFvzwfXlfUYGty8KPBIyLFfKkycJ5S9C2ao5aGOwvdWvspV94KB
-	P1sGjEjrFjkqBCCA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1793154388; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=34MEbCK2dZfz1OeFw4rZYBVHQDkLVXHqDfjhJIGlAaE=;
-	b=KDRN+1/xnVsBaGMZsTf7NSz+4l0uI4ECkbBWRfhvYWJFJjJuCEDFASQrZlOiWORl5otUm6
-	V6XVcc7ldFZTcdl2o09OrMbSI/EO3ra5MOp3RwTN+Sakdj/hGzUzhtHQqXtOp2f8AVVpKV
-	1VAfY7av9uAWlhCJ+xBQ+kB4yAPHijdxoDfUHoiw9FYPKpniCerLHfbVvK7DGWGblh4UTi
-	CdW1CEu4trjpjdBUNjo9f6sgCXSud6L02/x+dYTs8KSa8MdpkRUX3VARp57llSxJwXLr+S
-	XcdPHblpXCNr0PphG6D/0Z5Y2AV7CqsQAD+HEevFyO6YlEsAw0qHgJ5qwTn09A==
-Date: Wed, 28 Oct 2026 03:26:28 +0100
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: Ren Wei <weir@nebusec.ai>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
-        kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-        contact@proelbtn.com, pablo@netfilter.org, vega@nebusec.ai,
-        sashiko-bot@kernel.org, petalzu987@gmail.com, liuhangbin@kylinos.cn,
-        stefano.salsano@uniroma2.it, Andrea Mayer <andrea.mayer@uniroma2.it>
-Subject: Re: [PATCH net v3 1/1] seg6: validate state in netfilter
- continuations
-Message-Id: <20261028032628.93fa08eb5018c417f47bdba8@uniroma2.it>
-In-Reply-To: <6edcb09db8ec3dda9e26ab5c5be45769907011d5.1792660496.git.petalzu987@gmail.com>
-References: <cover.1792660496.git.petalzu987@gmail.com>
-	<6edcb09db8ec3dda9e26ab5c5be45769907011d5.1792660496.git.petalzu987@gmail.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key, unprotected) header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=pfpt0220 header.b=G6Ue8S84
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69S0hRxd3340378;
+	Tue, 27 Oct 2026 19:38:10 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=0RkIbvE5bVns9Dq3iZQPM9pC/
+	n5nH6FuvYmj/Tc5+Jo=; b=G6Ue8S84uG+dYnJRS+2bIthWcS0eZFNvaqoFX2pWn
+	cK7x3AvrDyehEEiOXhrufF/SH7R7t0Rb67DkssQzuxRd8teO6k6IYG8biSwfsurD
+	qv9p0vqfv7HReMiMzFQ6cP2gSaYgab5C4wVMSs2Dm64TL8IdVRtR4uw8oqBx1U7m
+	l0vHT84DOpJo6hmnRpVxiVbIoqWCjYvJlmz1lRoFz1NdYeaF2zAQIyYzb4Ukn0bx
+	/FsddmcLFLib8lu2d9LHXpcYwdstOOHiM3e76Ii40kH8wXHP2bV4V4Gg9763ZuQh
+	9YM1HV0kgVogH9JG1Kf+sbXWex36+us10cg4+sM6yHUfQ==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4hk1a3sxr8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Oct 2026 19:38:10 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Tue, 27 Oct 2026 19:38:09 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Tue, 27 Oct 2026 19:38:09 -0700
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with SMTP id 31AFF3F70CF;
+	Tue, 27 Oct 2026 19:38:04 -0700 (PDT)
+Date: Wed, 28 Oct 2026 08:08:04 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: Nicolai Buchwitz <nb@tipi-net.de>
+CC: Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya
+	<gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        Bharat Bhushan
+	<bbhushan2@marvell.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S.
+ Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>,
+        "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net 2/2] octeontx2-pf: pass the skb to
+ otx2_dma_unmap_skb_frags()
+Message-ID: <auFgDIyangziDH4V@rkannoth-OptiPlex-7090>
+References: <20261027-nb-otx2-ipsec-tx-fixes-net-v1-0-2114c4f10c36@tipi-net.de>
+ <20261027-nb-otx2-ipsec-tx-fixes-net-v1-2-2114c4f10c36@tipi-net.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,117 +91,76 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261027-nb-otx2-ipsec-tx-fixes-net-v1-2-2114c4f10c36@tipi-net.de>
+X-Authority-Analysis: v=2.4 cv=cLh1IVeN c=1 sm=1 tr=0 ts=6ae16012 cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=kj9zAlcOel0A:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=QXcCYyLzdtTjyudCfB6f:22 a=M5GUcnROAAAA:8
+ a=Ha73tMEPztgjm5QTfB4A:9 a=CjuIK1q_8ugA:10 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-GUID: -Zi98IZkC548Tm_8DZ9cusYWHHdV1CHc
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI4MDAxMCBTYWx0ZWRfX7T8tP8iqyCh5
+ VEvWet3ukM4CSRs/BS7y3dpqmRJe0EXz2xAcO+SpQ2WprqgPpxyODD5TsDpkghhsBIiFc5/0wr+
+ 8lh6bDefGBKWfzGKu77L9r90iDiWet0=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI4MDAxMCBTYWx0ZWRfX8Vs9Lbf5shjP
+ OOoLSQIyQZHxWhOUB8bsudfI7WJ9Xrk+jORbSKxvObo/CczfWcT8dzTWSheDcHm1TWW333wSBOP
+ 54+oUt6ARW87/6ZL9Vnn7n+kRVW6hodfw8V+OffLL2PgGTT/o1vwM9gsh/uh+QTX97Ued2GuQDv
+ 78kB0MM4KA3vjbjSoFuGeNuc0J0QKcM0PUbY0A1dlKW6xC4jW4kwDiwnxXQI8e4xhTweVhjtPtV
+ 2KDok6Oi3W8aZ2tjz3BWGJHy8aY+3nSKmpBa/h3qLb8Jc9i5bhKH+kqZE7IY1tuLN4k9pHKYXDY
+ jmKv5M+Wq3Wdd9P0fn7AiBp4R6sxM7i5O/jU92mc5wKQ0z+2JITdk3HIXFmrVIX48UhaTMLTZKV
+ a8dI/FrtiKl4ADyNbuasf3drcKI/8Ac6fvW58jaWzFfwc432LVcGTW9ED16iLHzXOftSq4xItWv
+ jJBESPbfWUFzWSoUeLw==
+X-Proofpoint-ORIG-GUID: -Zi98IZkC548Tm_8DZ9cusYWHHdV1CHc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-10-28_01,2026-10-21_02,2025-10-01_01
 
-On Sat, 24 Oct 2026 15:23:04 +0800
-Ren Wei <weir@nebusec.ai> wrote:
-
-> Netfilter hooks can replace or drop skb_dst() before an SRv6 continuation
-> resumes. The continuation callbacks then assume that the current dst still
-> contains the expected lwtstate, which can lead to invalid state access.
+On 2026-10-28 at 01:24:07, Nicolai Buchwitz (nb@tipi-net.de) wrote:
+> After a DMA mapping error, the unmap reads an skb pointer that is not
+> set yet. It can be NULL or left over from an earlier packet.
 >
-> Validate the current dst and lwtstate in each NF_HOOK() okfn wrapper.
-> Drop the skb when the state is missing or has the wrong type. Keep the
-> direct core calls unchanged when nf_hooks_lwtunnel is off.
+> Fixes: 195c3d463181 ("octeontx2-pf: map skb data as device writeable")
+> Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+> ---
+>  drivers/net/ethernet/marvell/octeontx2/nic/cn10k_ipsec.c |  2 +-
+>  drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c |  5 ++---
+>  drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h |  3 ++-
+>  drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c   | 10 +++++-----
+>  4 files changed, 10 insertions(+), 10 deletions(-)
 >
-> Fixes: 7a3f5b0de364 ("netfilter: add netfilter hooks to SRv6 data plane")
-> Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://sashiko.dev/#/patchset/20260720204430.1886091-1-xmei5@asu.edu
-> Assisted-by: LLM
-> Signed-off-by: Zixuan Chai <petalzu987@gmail.com>
-> Signed-off-by: Ren Wei <weir@nebusec.ai>
-> Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
-> Acked-by: Pablo Neira Ayuso <pablo@netfilter.org>
-
-Hi,
-
-Thanks for the v3.
-
-On top of what Paolo wrote, it would be good if the commit message also
-said how the crash is triggered, what it causes, and how the fix was
-tested.
-
-> [snip]
-
-> @@ -60,6 +61,21 @@ static inline struct seg6_lwt *seg6_lwt_lwtunnel(struct lwtunnel_state *lwt)
->  	return (struct seg6_lwt *)lwt->data;
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_ipsec.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_ipsec.c
+> index 3920cd0985831..4434356087814 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_ipsec.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_ipsec.c
+> @@ -1037,7 +1037,7 @@ bool cn10k_ipsec_transmit(struct otx2_nic *pf, struct netdev_queue *txq,
+>  	cn10k_cpt_inst_flush(pf, &inst, sizeof(struct cpt_inst_s));
+>  	return true;
+>  drop:
+> -	otx2_dma_unmap_skb_frags(pf, &sq->sg[sq->head]);
+> +	otx2_dma_unmap_skb_frags(pf, &sq->sg[sq->head], skb);
+>  	sq->sg[sq->head].skb = (u64)NULL;
+>  	atomic_long_inc(&pf->hw.dev_stats.tx_discards);
+>  	dev_kfree_skb_any(skb);
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+> index c441c0161dbf4..c85436457286e 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+> @@ -2132,13 +2132,12 @@ dma_addr_t otx2_dma_map_skb_frag(struct otx2_nic *pfvf,
+>  	return otx2_dma_map_page(pfvf, page, offset, *len, dir);
 >  }
->  
-> +static struct lwtunnel_state *seg6_lwt_state_from_skb(struct sk_buff *skb)
-> +{
-> +	struct dst_entry *dst;
-> +
-> +	if (unlikely(!skb_valid_dst(skb)))
-> +		return NULL;
-> +
-> +	dst = skb_dst(skb);
-> +	if (unlikely(!dst->lwtstate ||
-> +		     dst->lwtstate->type != LWTUNNEL_ENCAP_SEG6))
-> +		return NULL;
-> +
-> +	return dst->lwtstate;
-> +}
-
-seg6_lwt_state_from_skb() and seg6_local_lwt_from_skb() return a pointer,
-but the callers only test it against NULL. IMHO they could return bool,
-with a name that says what they check, like skb_valid_dst() does. For
-example seg6_skb_has_lwtstate() and seg6_local_skb_has_lwtstate().
-
-> [snip]
-
-> @@ -557,18 +573,15 @@ static int seg6_input_finish(struct net *net, struct sock *sk,
->  static int seg6_input_core(struct net *net, struct sock *sk,
->  			   struct sk_buff *skb)
+>
+> -void otx2_dma_unmap_skb_frags(struct otx2_nic *pfvf, struct sg_list *sg)
+> +void otx2_dma_unmap_skb_frags(struct otx2_nic *pfvf, struct sg_list *sg,
+> +			      struct sk_buff *skb)
 >  {
-> -	struct dst_entry *orig_dst = skb_dst(skb);
->  	struct dst_entry *dst = NULL;
->  	struct lwtunnel_state *lwtst;
->  	struct seg6_lwt *slwt;
->  	int err;
->  
-> -	/* We cannot dereference "orig_dst" once ip6_route_input() or
-> -	 * skb_dst_drop() is called. However, in order to detect a dst loop, we
-> -	 * need the address of its lwtstate. So, save the address of lwtstate
-> -	 * now and use it later as a comparison.
-> +	/* Save the lwtstate address before replacing the dst to detect a
-> +	 * dst reference loop.
->  	 */
-> -	lwtst = orig_dst->lwtstate;
-> +	lwtst = skb_dst(skb)->lwtstate;
->  
->  	slwt = seg6_lwt_lwtunnel(lwtst);
-
-With the check in seg6_input_core_nf(), seg6_input_core() does not need to
-change, so it can keep orig_dst and the original comment.
-
-> [snip]
-
-> @@ -667,12 +691,13 @@ static struct dst_entry *seg6_output_dst_lookup(struct net *net,
->  static int seg6_output_core(struct net *net, struct sock *sk,
->  			    struct sk_buff *skb)
->  {
-> -	struct dst_entry *orig_dst = skb_dst(skb);
->  	struct dst_entry *dst = NULL;
-> +	struct lwtunnel_state *lwtst;
->  	struct seg6_lwt *slwt;
->  	int err;
->  
-> -	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
-> +	lwtst = skb_dst(skb)->lwtstate;
-> +	slwt = seg6_lwt_lwtunnel(lwtst);
->  
-
-Same as seg6_input_core(): seg6_output_core() does not need to change
-either.
-
-> [snip]
-
-Ciao,
-Andrea
-
+>  	enum dma_data_direction dir = DMA_TO_DEVICE;
+> -	struct sk_buff *skb = NULL;
+>  	int seg;
+>
+> -	skb = (struct sk_buff *)sg->skb;
+>  	if (unlikely(xfrm_offload(skb)))
+>  		dir = DMA_BIDIRECTIONAL;
+>
+Acked-by: Ratheesh Kannoth <rkannoth@marvell.com>
