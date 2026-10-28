@@ -1,55 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793187636;
-	b=ssxcbPbe7qqXv4BG0GEaQoDAU7E2+PfBzSSogdriNLHba0vA++yeNRcNUPnayCA1ZVgX
-	 HbUknUsFCRVb4omGxwMBkjSHClqgP0SD9U7eSdRq7oBkmQi3gUtPFuFo5C+I4cCurq4xo
-	 TCz0cVM3py5Avax8tY7iJP51E2rP/PCQkDvaORU0ya7glL18DAPb/G7jq49cMPANJpG4n
-	 GFmYf8UVNd3s57mh6jNV383i5Y/Ne0dbV5zdqpqIROPtOtJsl4RVmvPdrJV/K5+I1kM5R
-	 ELssuwNYrESMvq38SCAw5m9180TUCwl/JI6zgXIm1kd4KJlh3ZjhVlNCDroG7NzrOsA==
+	t=1793187898;
+	b=cT62zJWbKlohCSJ57fOJ0KJqGldRGyUDu7+pYEA82CRTGAkM/KJKONMX2AeeSEJoihTt
+	 FVMDxY5wgQrPC4lwc/b1VVHDS3aLZ+3RJO4NojXkIZ7m6J2NUdZf9GurqoxTRG9kIqLOB
+	 Lj504IL50fZegXy8Cyb2hj6g++chW29N77gRqjwkLshITwQuNOGBAPW0ApTHfytt3fqzu
+	 JBhzFqnlR1MAG3h/ZsOn7/Z/kDLKYwusrKNYm40hET4YM8AUyKZYnTjrN7VG639OECRP2
+	 a2RFyCUmAFb9Cp0GUxrdgRfHD6MyOuM25qwMyCecqY53+HOXaivYyO/cbin/tXQDOoQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793187636;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=obR2UEdD7Tns0Z10i+23V+1SlPg/ENB2qI48XfeG2/k=;
-	b=HzaPoFw9MyNDiGnjkml68IsWddYDhADefCd3dHaQO3arWhPq8Yzy30aH/qZqifotkbpS
-	 Gg+kxB/S3XRYxcNdmWnzkG/rQQEnTrmhqVH0PPUxnQJGf1zmpgRWwT9mRmG7kKH8pVNYn
-	 xraiyqaMhyaQb+nF0UtQQuD6nJWSgJi7P9a/M3WS4Th2mMfVkxzl6uPPLfMZAK9Dt6YGw
-	 Q9JuJqyleeDOLiePdg0F/z5bnDw+djbUbSizKkE+UyMaF+fuqG1gW+9b/pCmKyr38EzMb
-	 wvWIRHf0HnVQBJFntPlCuHHVJNE7zZbBOUpBJZK1IekSfb1pAEtmNQbzSQxakeFhs5w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793187898;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=guTerj6OblcyJMPzDZY4qQ3gSTVMiXqm+ois6E1+oSo=;
+	b=oWLTOTepsM/uNB7DjkzfhUC0zqp1g1KPUavVlu2cpAJdPWTlT6EWYF7crTKUjCRu0lDL
+	 3MCrkPsIkSL6oNSqK0b4y2hwQWdWjOuyu6kKm+Be7bUomcfmU74GQwqnu1v+xg3u8ic31
+	 ec6cYZvKZh+AACUqj23VOU5fvI89yNSaLEw9qEg5/JTbtsp/FPHYNNP8rG2AXHWFClI74
+	 6z8vqVC/KPEG5vThUFlyIFhhAYD1hOnnW2a6tQL/QWJrz1u2elT6oZkcc2B7yth/9/ota
+	 dXIW6EjYheXDEz2UY9Piqxw5bENPTebuldjHWhR/I9eEsDzGtod9c72gRTeSguC0mcA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ezr0klfN;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=VaAF0lA8;
+	arc=none smtp.remote-ip=209.85.218.53
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E586606A31D
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 11:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925CA606A31C
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 11:44:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 925CA606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ezr0klfN
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF55D1F031E2
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 11:40:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793187636;
-	bh=obR2UEdD7Tns0Z10i+23V+1SlPg/ENB2qI48XfeG2/k=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=ezr0klfNxF7Ey0XZOvc/mzvkQZTo8mbVM9GBw1OHHOFyL2e70AIJTb1T6vgvOtVTa
-	 GxQT+GsALQQnX5/tfT1DVyUZErOP0YGFdvnLDVCXPpkvo8VFAwkDwACxtHgMF6PCQ2
-	 0j3ws7DbySoBOQjnHXodMtEJ0svIkuvaxO5KBUjmArZO5+W4qaWEO9W42EnA5utcQL
-	 YJugRcZ+2ed1hBls5s+ieT9dQu6Wqsd6WiRAnlWcmPaZ4SxtOwvx5Ftyzx57Jf1r3O
-	 RbXQ4hCYL2HuWud5IcdSYaFUaXAhtqpbND0lgMHH9JGMGsheW/OyiiNVOSf8gPrAMd
-	 nPslxBQGs9FoQ==
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-703be215729so474145eaf.1
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 04:40:35 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxORasYwr5c/N1H2fKG0tslwyQ4kT8PihCNsLze628ZZLRFYJZ3hshkg5wf1/zdukRRWkPxoPg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIsOYV9JdMSHiYbgB+HplOCclhaeSGboMWqaIkiG4cUUP8Jm7Sj
-	DirmJEG0elz/NddUeBLmlkZCo9rLdRjBTHVNKnjYDKPnky6Rb628ysF3Ly6eEQfZ5gGc3G+ExV4
-	oviEuk/KERpYA0pZ1+Fhj4Ex/CIW+4kc=
-X-Received: by 2002:a05:6820:151a:b0:70b:9806:c916 with SMTP id
- 006d021491bc7-713eeb541c3mr1075160eaf.51.1793187635194; Wed, 28 Oct 2026
- 04:40:35 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=VaAF0lA8
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c4550d8ab15so108627666b.2
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 04:44:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793187897; x=1793792697; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=guTerj6OblcyJMPzDZY4qQ3gSTVMiXqm+ois6E1+oSo=;
+        b=VaAF0lA8vg3UVEx7CzAR7lXapZiYbDhEMvH5YaLKlpkw4/CzUtNlQ/rQgWjE81yYSJ
+         qlTsxO+pbGZheBNG7qb+QQ/fnoxeL9f+dtPWdssr/07pZbEa3XzF/0oibK9xMm4Siurn
+         DYFHq/8NXPT4ax0qAZii0Ar8/TpfP5ykww4/dCwDaMbBjJPm2Qg0TQy5vuKn3JPOqC7Z
+         PS2gESYZdHA2s1Qi2oGsLWtsQYzEOAINQJme85SFYcGflqNfQs29vvRLqkIAIpkVEz0G
+         re02cQYMuyvHc4JMLrtW0WWxWPBCBM7rum0ECTD4kZM2ww/TD+DrFNXSyI2cPDJf0bUD
+         6CNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793187897; x=1793792697;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=guTerj6OblcyJMPzDZY4qQ3gSTVMiXqm+ois6E1+oSo=;
+        b=EvVbywlN70gW9y+bNcHhIhfK0kWKi1I6AVHJ+KwJmGqfHMzGp1yJK1f53z/uFeEwAY
+         dUgQa9LV5FMwOQT8AmkT3JtXjg/g/EnUKPodtGYjUzW/ApGBZ14jL/PRr8yUODLdegsO
+         2Jk+WOj46I2BDe92rztyW9xU+z1/quHrCQSiVUSYXTgbG8Vn0U2vlUSKw7zfwjark8P7
+         VYWNGj1W38Z5bsJ2Wulq5Kv4ZxVzqqYogi6VN6nRtao6XyTsIXS8v0qazlY/2+D1z9e4
+         WPcpH8tJYT90aSVzdnnUswwxdYjwGjV1QY9A868u4ougMowtYm6xhTRO0eQKIBYiR2pU
+         cbYA==
+X-Forwarded-Encrypted: i=1; AKwUvBxbN7SYsGVNruoDkPsuICQf3R8wijVzQ4t9BhxEW4UUHbqkIha8rxD2pIS58FgigmpR9rLQ4ig=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKkeUVKs6Lh5ELlR2OoFBid/rfaxzE5XEexpChKp2C1LgS0tINA
+	YGQLc4aTeX34XtFVRufruf+UpUDZZ9JsuSngDX8Nlkr5YlDxvq5boYax
+X-Gm-Gg: AYBFou0CaHTTshAsJXDrLNEaB9ZpEFNNMupGwLOWoK+eTm3zs1bN3bXr8g+n+vdlrY2
+	n98IWpOZEqAcDV3fY0G+J2Kv1b0wROl+yU/1hiSiOXp3iPrUnvXuHXpzbHWrQuIsfYka2EVsdBe
+	WJsSnWLqw+Bc2C+eRI+xNI26IeKw2GcPvOdY7sx+GxIyT+TjwU35M5IOh5FvGo9tE9K5Q6rv0gu
+	rdPnE8AdfokG7eFUs7mYrjxFU3JbQoo8qeIfflCLxC2aPbYWCLAFB24rpwgGW2gXuaKivkmi6+d
+	eP5j1YeQI1ry/1fLrjlLHTnASnOxMKr45kGq7pIdiK7vcNBtC+Fozqarivk0KsRoemj4BEyWw1M
+	VmXbyZJ1QH4ZPKJgBb9drV4NuvMSO/Xb2gDKbtp4Bio6UbGL0d4AkGOf2Hy4f2hwfl30t4T2O2k
+	lOQKfX3zfroDUombiRkM/L7eDtbnssoaXItOGc0rqOH9g1VWIcS3KjzxNwCgrR3xFfYgX4q7XJH
+	U+N0tI9s4WHz6RRtL2zSDb/Y/jxv9p1DbuI3V6AkwlOK+yh634bXdp8HUNiSfNPmUqshk2/1PEV
+	PD2T5bD7Qgg3IS7HRaY7Cg==
+X-Received: by 2002:a17:906:dc89:b0:c2d:d019:d414 with SMTP id a640c23a62f3a-c49bdf1a26fmr190348566b.29.1793187896594;
+        Wed, 28 Oct 2026 04:44:56 -0700 (PDT)
+Received: from localhost ([2a03:2880:32ff:3::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c46bd4eabadsm602548766b.14.2026.10.28.04.44.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Oct 2026 04:44:56 -0700 (PDT)
+From: Vlad Poenaru <vlad.wing@gmail.com>
+To: Boqun Feng <boqun@kernel.org>
+Cc: Bart Van Assche <bvanassche@acm.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Davide Caratti <dcaratti@redhat.com>,
+	Breno Leitao <leitao@debian.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH] lockdep: Keep dynamic key hash nodes in lockdep-owned storage
+Date: Wed, 28 Oct 2026 04:44:49 -0700
+Message-ID: <20261028114449.161185-1-vlad.wing@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <at9eq_3YUIL1ACEK@tardis.local>
+References: <at9eq_3YUIL1ACEK@tardis.local>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,161 +106,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <bpf_redirect_neigh_short_linear.v1.r0.20261028033717-1@mojatatu.com>
- <2a0f5ff1d8db81b07fc4b344b8e68e3505fcbf36f72a471d1678b2f1cecd881b@mail.kernel.org>
-In-Reply-To: <2a0f5ff1d8db81b07fc4b344b8e68e3505fcbf36f72a471d1678b2f1cecd881b@mail.kernel.org>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Wed, 28 Oct 2026 12:40:23 +0100
-X-Gmail-Original-Message-ID: <CAL4WiioEQsckFKbLz8mnZdK9vG93qEj40Ft8fEfqaNDHyB7DTg@mail.gmail.com>
-X-Gm-Features: AclHuK_CEP5bgRzGigT6P04fyHtIPSbz6OTbsbeDJkrmOaj61eVvdu3lBePlTmM
-Message-ID: <CAL4WiioEQsckFKbLz8mnZdK9vG93qEj40Ft8fEfqaNDHyB7DTg@mail.gmail.com>
-Subject: Re: [PATCH net] bpf: Fix skb_pull() BUG in __bpf_redirect_neigh()
-To: bot+bpf-ci@kernel.org
-Cc: jhs@mojatatu.com, netdev@vger.kernel.org, bpf@vger.kernel.org, 
-	stable@vger.kernel.org, daniel@iogearbox.net, ast@kernel.org, 
-	dsahern@gmail.com, kafai@fb.com, martin.lau@linux.dev, 
-	john.fastabend@gmail.com, sdf@fomichev.me, andrii@kernel.org, 
-	eddyz87@gmail.com, memxor@gmail.com, song@kernel.org, yonghong.song@linux.dev, 
-	jolsa@kernel.org, emil@etsalapatis.com, ihor.solodrai@linux.dev, 
-	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	jiri@resnulli.us, victor@mojatatu.com, martin.lau@kernel.org, 
-	mason@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Le mer. 28 oct. 2026 =C3=A0 11:19, <bot+bpf-ci@kernel.org> a =C3=A9crit :
->
-> > bpf: Fix skb_pull() BUG in __bpf_redirect_neigh()
->
-> TL;DR: The new skb->mac_len < ETH_HLEN check in __bpf_redirect_neigh() ma=
-y
-> wrongly drop valid packets on tc egress and netkit, where mac_len is ofte=
-n 0;
-> a regression that would reach stable.
->
-> > diff --git a/net/core/filter.c b/net/core/filter.c
-> > index b7ac145b68b1..95a8a728a71d 100644
-> > --- a/net/core/filter.c
-> > +++ b/net/core/filter.c
->
-> [ ... ]
->
-> > @@ -2451,10 +2451,14 @@ static int __bpf_redirect_neigh_v4(struct sk_bu=
-ff *skb, struct net_device *dev,
-> >  static int __bpf_redirect_neigh(struct sk_buff *skb, struct net_device=
- *dev,
-> >                               struct bpf_nh_params *nh)
-> >  {
-> > -     struct ethhdr *ethh =3D eth_hdr(skb);
-> > +     struct ethhdr *ethh;
-> >
-> >       if (unlikely(skb->mac_header >=3D skb->network_header))
-> >               goto out;
-> > +     if (unlikely(skb->mac_len < ETH_HLEN ||
-> > +                  !pskb_may_pull(skb, ETH_HLEN)))
-> > +             goto out;
->
-> Does the new skb->mac_len < ETH_HLEN test drop valid packets on tc egress
-> and netkit?
->
+On Mon, Oct 26, 2026 at 07:07:39AM -0700, Boqun Feng wrote: > Yeah, I
+think if everyone call lockdep_init_map_type() right after >
+lockdep_register_key(), MAX_LOCKDEP_KEYS will be reached to the limit >
+before MAX_LOCKDEP_DYNAMIC_KEYS. So technically it's not a new >
+limitation. Honestly you can just make MAX_LOCKDEP_DYNAMIC_KEYS = 2 * >
+MAX_LOCKDEP_KEYS (i.e. without introducing a Kconfig), "2 *" is needed >
+because a key can be in-between lockdep_register_key() and >
+lockdep_init_map_type() and pending_free can be delayed, so "2 *" >
+provides a buffer for when active key numbers > class numbers. > > It
+might be worth checking whether a lockdep_register_key() is always >
+followed by a some sort of lockdep_init_map_type() in the kernel code >
+base.
 
+I went through all the callers (36 call sites). Mostly yes, with a few
+exceptions: ath11k/ath12k register a key for every SRNG ring id (170-210
+per device) but only initialize the rings they set up, hugetlb_cgroup
+initializes when the cgroup file is created, and omap_hwmod, ucsi and
+jbd2 skip the init on error paths. (omap_hwmod also frees a registered
+key without unregistering it on one allocation failure; I'll send a
+separate fix.)
 
-The bot is right, sorry Jamal, I missed this when looking at your
-first version.
+The init itself doesn't take a class: every caller uses subclass 0, so
+the class only appears on the first acquire. That matters for qdiscs. mq
+creates a child for every TX queue, up to 4096 per device, each with its
+own key, and a child's q.lock isn't taken until the device is
+deactivated (or, for qdisc kinds that take it on transmit, until there
+is traffic). In a VM with this RFC, four dummy devices with numtxqueues
+4096 and an mq root, left down, went from 214 to 16384 dynamic keys
+while the classes stayed under 900, and the pool ran out.
 
-skb->mac_len is only set on the receive path. On tc egress (and netkit),
-it is usually 0 for locally generated packets, so this would drop all
-bpf_redirect_neigh() traffic from egress programs.
+The class table is already exposed the same way, though. Deactivating a
+device takes the q.lock of every TX queue's qdisc in
+some_qdisc_is_busy(), so on current tip two such devices taken up and
+down went from 852 to 8192 classes and hit "BUG: MAX_LOCKDEP_KEYS too
+low!". (I ran both as root; from the code, the same commands should only
+need CAP_NET_ADMIN in a user namespace.) So the cap adds another way to
+reach a limit the same user can already reach. Agreed on dropping (1),
+and I'll go with your suggestion:
+MAX_LOCKDEP_DYNAMIC_KEYS = 2 * MAX_LOCKDEP_KEYS, no Kconfig. That is
+16K, the same as the RFC's current default. Should LOCKDEP_SMALL keep a
+smaller value? 16K nodes are ~384KB of bss on sparc64.
 
-In both cases skb->data is at the MAC header when __bpf_redirect_neigh()
-runs (sch_handle_ingress() pushes skb->mac_len before skb_do_redirect()),
-so you can use skb_network_offset() instead:
+If the qdisc case should be narrowed anyway, net/sched could skip the
+key for pfifo_fast, the only qdisc with TCQ_F_NOLOCK in its
+static_flags, as it already does for ingress, clsact and noqueue. It
+takes q.lock only around its requeue lists (gso_skb, skb_bad_txq) and in
+control paths, never across a nested transmit, so I don't think that
+brings back the mirred false positive from af0cb3fa3f9e, but netdev
+would have to agree. It wouldn't bound the count either, since the user
+picks the qdisc kind.
 
-if (unlikely(skb_network_offset(skb) < ETH_HLEN ||
-     !pskb_may_pull(skb, ETH_HLEN)))
-        goto out;
+Does that work for you?
 
-This still rejects the 1-byte header from bpf_skb_change_head(skb, 1, 0),
-and also covers the existing mac_header >=3D network_header test.
+Thanks,
+Vlad
 
 
-> skb->mac_len is only set on the receive path, where
-> __netif_receive_skb_core() calls skb_reset_mac_len().  The transmit path
-> only calls skb_reset_mac_header() in __dev_queue_xmit(), and nothing in
-> ip_finish_output2(), neigh_output(), eth_header(), sch_handle_egress(),
-> tcx_run(), cls_bpf_classify() (egress branch), netkit_xmit() or
-> netkit_prep_forward() writes mac_len.
->
-> A packet built by a local socket starts with mac_len =3D=3D 0, because
-> skbuff_clear() zeroes everything before 'tail', and skb_clone() (used by =
-TCP
-> transmit) copies that 0.
->
-> For example, with tc egress and a locally generated IPv4/IPv6 packet:
->
-> ip_finish_output2()
->   neigh_output()
->     dev_queue_xmit()
->       __dev_queue_xmit()          <- skb_reset_mac_header() only
->         sch_handle_egress()
->           tc_run() / tcx_run()
->             prog returns bpf_redirect_neigh() =3D TC_ACT_REDIRECT
->               skb_do_redirect()
->                 __bpf_redirect_neigh()
->
-> Here mac_header < network_header passes, because an Ethernet header was
-> pushed, but mac_len =3D=3D 0 < ETH_HLEN, so the skb goes to 'out', gets
-> kfree_skb() and -ENOTSUPP is returned.
->
-> The same happens with netkit:
->
-> netkit_xmit()
->   netkit_run()
->     NETKIT_REDIRECT
->       skb_do_redirect()
->         __bpf_redirect_neigh()
->
-> with mac_len still 0.  Netkit programs are BPF_PROG_TYPE_SCHED_CLS, and
-> tc_cls_act_func_proto() allows BPF_FUNC_redirect_neigh.  Forwarded traffi=
-c
-> that arrived on a layer 3 device (mac_len 0 on receive) and leaves throug=
-h
-> an Ethernet device's tc egress would be dropped as well.
->
-> Before this patch these paths worked, since the Ethernet header is linear
-> (dev_hard_header() pushes it into the head) and skb_pull(skb, ETH_HLEN) w=
-as
-> fine.  bpf_out_neigh_v4/v6() calling sock_confirm_neigh(skb, neigh) also
-> suggests the helper is meant to handle locally generated skbs.
->
-> Elsewhere the kernel already treats mac_len as unreliable at egress.
-> act_mirred uses:
->
->     mac_len =3D at_ingress ? skb->mac_len : skb_network_offset(skb);
->
-> and act_mpls uses skb_network_offset(skb) when not at ingress.
->
-> The bpf_redirect_neigh selftests (test_tc_neigh, test_tc_neigh_fib,
-> test_tc_dtime) all attach at tc ingress, where mac_len is valid, so they
-> would not catch this.
->
-> Would testing the real MAC header length work instead, for example
-> skb_mac_header_len(skb) < ETH_HLEN (network_header - mac_header), or
-> skb_network_offset(skb) < ETH_HLEN with skb->data at the MAC header here?
->
-> That would still reject the 1-byte header from the commit message (pop_et=
-h
-> followed by bpf_skb_change_head(skb, 1, 0)) without dropping egress and
-> netkit traffic.  Since the patch carries Cc: stable, this regression woul=
-d
-> also reach stable kernels.
->
->
-> ---
-> AI reviewed your patch. Please fix the bug or email reply why it's not a =
-bug.
-> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/READM=
-E.md
->
-> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/406663=
-97744
