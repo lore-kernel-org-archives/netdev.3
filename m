@@ -1,96 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.228.9
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793203069;
-	b=Edm0qntEmKMcKUWCfzV3SEKmqZj+tbL0LDkX0qDdQwA39s8W71FixtajHVPuB0TDO7A+
-	 FVYOuA/Qxo+foYrzsh84VThq6h0yJSXuVpn0+K3xVlSB1w+xuN0jfmo5Zkhnmk08VzQ90
-	 gR538AQktOIKl/WxYc7ef7+tviHTbZA8K3B6gEBhENcbQgjersIaNdC2em8rAE4poeaeE
-	 76B0lXMiJAgJCHb0vWaNEsY5UXBpQkSGSGVRHKEnn4oB3tadxLT2Mx15KnovZgrKB4DNo
-	 l/3bGI22zrDvt1KKMtiZ1MsLgG4QG87nEGgbVjyN3PenPYjjLS1TtMbzJI495KP84Hg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793203069;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.182
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793203172;
+	b=3lCmgKfn9ZYsF+zzCenvbTDtQAlWwa0r+apqjuuFm23gJRRxedGvtUksXPD7xcqsZ2NP
+	 +ZX83WorPMYccyvy0UHK5fDgp3bQAk2fPaIwSj7eV6QdEZaOb5oTpndeqIvs72iZ6L2UY
+	 FiB2MqtU2BFefteYHQG3fN//rb/Hdspj3C0HbbF2sD7WRJzHSzlfRdCPUXv42/C6xlCsc
+	 2U8BeCGfZSXuvy/waBJsMw3FSccgfyUxDDC07ii91cXswTa36PEmvCYZgP3KOqs7PnqgE
+	 zRtEiQnfCjhz5utj7UFPfv0SibafoWwe5Z22K/Kb6ET9iXHh3v03RfzwwbF9moN1Ahg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793203172;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=bIUJn5v0noI0Ozp78hAN6qBHnECEjw+ZHdq5PwPXe6o=;
-	b=rKvsApGiMcZiCIcPyDjgAPoW8SljJltBMZNGeiXC4DVI+j5q73N2h47DrPJzYIaW6I6B
-	 GsbaQNBYg5Wgfa34g7DMSXFBJY9DI1UiHpbW0kMSz5OOsQJXtdG22ACrS1/Rj37sD8Oh4
-	 QrQLb8V2K//B1xPH9HSThXCvUPQzkXeVL+zOYV2h65K01WL3GWsevPwN/J0gBDBodnm5D
-	 eTAlFiYiMc4NuvKomLrM6LhVAPv9dwYTc+CP0Y3wzQnyew1XQBEsQlJ1KCyp7+4q2GUWR
-	 B+oNPGBFCTrHtKxB9l4lEg/17ZI4rvy0wopDtAT7udYDhCSF2sal27ckP1+8e8fHZaA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ljK0kzZc;
-	arc=none smtp.remote-ip=74.125.228.9
-Received: from mail-pz2-f9.google.com (mail-pz2-f9.google.com [74.125.228.9])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=Dc4rW2+COMGPVHylYkAJkFpZ/yamBpz19LqtcOFzV+Y=;
+	b=lEjIqTJtcItyISBeCKtcO+t5DlHW0oYO2uJvM8mHWhKa1eT+jbtnzSt30opU114z+rul
+	 kVIP5gSNDVAa5Emu/vtTZtsTXYrI1g0vIJseJNC60+yZPKe3t88FLZ2cYS0rZH0r50JcQ
+	 ywTsD6hBFkRgC2iDp4dATEtz4F3sm30TZmXWOrYMbP1sWag9rp+ViRO2NAqUn0ZFoFEBP
+	 Fvnu+d0c6+NvHgFqF02Jm/xTEFgldfXE5nfMcP/ysMV13dIrWzfUy2a4vOMCEtNVbtFjw
+	 2u8sqU3Mow4KuEiaPZR+nnVBQVyLlkIpVeIUWqTIQesjubMKv9A+OYJAeXadc0L6dJg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=paul-moore.com;
+	spf=pass smtp.mailfrom=paul-moore.com;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.182
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA4F7606A31A
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 15:57:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CA4F7606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ljK0kzZc
-Received: by mail-pz2-f9.google.com with SMTP id 41be03b00d2f7-cd65a511e43so613727a12.1
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 08:57:48 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC54F60A2618
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 15:59:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BC54F60A2618
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8a60f90a924so544976b3a.3
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 08:59:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793203164; cv=none;
+        d=google.com; s=arc-20260327;
+        b=EkSB6JX80Gk/2RlAHkA9RD9kDixgJwTy4QbyzoxWtgyPF393DIdrJO4EC3zdu8bHgb
+         +0HoRnHinWYLY5VQBOo96mtOa6ri50WrFBKxsGwgGUe7fXdpIZ0YA1E9/hGfd//e2QFR
+         jyAAhAlRtPOKjsAS3p3/Xbq4KEDCRw3F36ydjF5t89CJPU2g3QqNDnkd5xHcxKAxvyCx
+         WxV0vL4q8v/S3NIZvFsB2oh069IAnHmw1R5CiLmmGQNS29h0OITF0Cu8vKVzWjWkEsin
+         0eknTkYK6ZM4YpoqqT6QAIKw48DaGsKmcdZAIIe3tztclMSrjHoAUpuoN7N1YR7VeK+R
+         KQVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Dc4rW2+COMGPVHylYkAJkFpZ/yamBpz19LqtcOFzV+Y=;
+        fh=jXI5CMIARK2nE11/wKgJ+mk1iPom6HCLZ/1PO9WYxNY=;
+        b=QsbiLIP6Piuq394nNG/4KBGSG3rFkR3cvE5o22o9J/CGahyXoyHS0RJkG8ft9mvkw4
+         VgbfGcN2/n8isG1Au9fLjwWk79LpXYUpCcHjtAILwBF9+d8ewRD3iF9d9MkMukcpBdW1
+         WQxxywkZSpAIIR5PZ1wtQj4T0PQAwjpliuvn4BXLwkWZjuOgGHPNStF5o97ynUNIwdry
+         dW7tvS9Ue+dL75lxUkY4jL0SAaP/sp57+Nd4mi+r/DgU4VWVs55J0mtXC4R1L8avsrXt
+         yrQ/sxK+V8Z0kmLo+Gm4je/7j82HVpQysUDeqnxhVZIYvtWfKk3It3+Z6StiKkkDT7ao
+         OLaw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793203068; x=1793807868; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=paul-moore.com; s=google; t=1793203164; x=1793807964; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=bIUJn5v0noI0Ozp78hAN6qBHnECEjw+ZHdq5PwPXe6o=;
-        b=ljK0kzZc7OIyosJ7wtQFMgv9t4jBsM6ffPauulC3pXY1M7Uo3sQTlPAIuHZE7gbyFf
-         bun0E+OttUZck8IKPE01oLJeHGP3SE8CLliMRa6yeodozKQT7iCBpdvryQnmRj02EJg3
-         fd3PT3KSgpTCNaQLcTHP0p1S5CaUrDkmepEOB0R5PgcoebLDwOibI/e+A4t3fgi+7BBX
-         I67SoJI+UC4wqpLQUVgGqiTHXvwUbDA8yckRpISy54uZHbl//QLdfgtU4HDqnK8Po73b
-         ylXpIfIj5ezA1aObz8m3IFxxn7n5AJ6pJd8UgGKsizsN7jApUGTCiGNqk18t0eUD8GkP
-         LnCQ==
+        bh=Dc4rW2+COMGPVHylYkAJkFpZ/yamBpz19LqtcOFzV+Y=;
+        b=Xde8kH+cqlVOr/NMR7Wf2JCxAomM8iaA+yOKnEWQdervZ/w503T0qYZZ6aOIBygAsC
+         qij7djXE5tgEJO6Fg3dvN+llLaU0wfp5K3TXaIKEKfXug0iTHDU8r1pyoHvQ8B8Z6qgt
+         UeXRTBxIPcUoikJFSeVCrlsd1QdQ1PIEIALNNtqalm4GbfnAzTbkILoS8EoRXI+ENlGT
+         pCWcFvtvfNhYIGcmjkVaouZPomu9dr/9De7n53N+UKBzQxVuhbAHnVl9cFD2L8k5xutY
+         S8PhqXCysvqF5qkcIRiApTxBmbXvToeiuo/7lzQYkr6Titoid+3/IYz90R+gzsrC9Oe+
+         jeFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793203068; x=1793807868;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1793203164; x=1793807964;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=bIUJn5v0noI0Ozp78hAN6qBHnECEjw+ZHdq5PwPXe6o=;
-        b=djqdUwVTc5IU1Jt4xZ9uPrVI4ciFAa2LUCC302hTAnozo/jyhp+DNv1xVIEGyny/pU
-         8kTkWLQNdAAr8WTG1gHE0eOGz2rT21d/XlCjqpKJYCSmeVRsb4MjHoS+fgjzRY9xxTpJ
-         gxgWCxy6PHC2YRtjslEGgFx3UeHwLFSj/72cMY8Q7X6CyP6k21wO59fS1q4Gur2Xyesq
-         ilFEbNve/BfxxTFdh0EyX370SvASzrzVTVd/KNGWk5tFN44J6wFeX5FAsbInHlCHwdyP
-         V640IskmjPPA2SYoOm/T90Khw7sbT1O19XjKwodtpJsXefQSbMZ773Yzw/Uf9dnDFLMh
-         2gfQ==
-X-Gm-Message-State: AFq9FYIb8oO1LtLH7oe4J8y2DwEiJQC3N/fDvvggN89hEVrM6pVycp5l
-	MeL329MLkU+kUPXjcMjQfBjXUj176Dd0G5fyKAZtrFGe58UGFVZH40EsFQ5tchxCfDE=
-X-Gm-Gg: AYBFou2aaj/4v5iiBRcTwgb/NWLh41mcsVNzJF5YHwhVKW2UUTcj7CeZ+SaEavxzcIl
-	BdJmeZi2RQU9ExgJWdGIIK4Ak3I1thN0V6bEFWs9R4Cl/gGWlAVix4DqDYdZJKzfIcCee4AB/Ie
-	rwqrLyF0uDR8sZgxw9lE3mPvV7kFt4TNZsi4HmakGkOD94VQzKVgrIgbRWgOp5Iv9alyftMv6GY
-	SkhBFZIfLPm1BXzN8IwjKc0zOk5i1hnKboZSAzE/BCW1kWzED6nd1uBRaIS5VftbmpFLzUjeqHa
-	OdR8xc0DLMkj22wufn6c9s2fyKy4GYe0orMes6nSRtf+r+DxMSvyq0GztN9sAkz1cy8jnJMQIEa
-	UxJ5LqxdFps7yhsIxNHDXt7Lg96ub4sSyQM9gO26KxMcty9SKf62Fxxqw6aTvKcq0mBNf60+SBV
-	xKOKdA2Hn9uFIe/kJU4RQkC5N7BL+rkmzKvlB2/QRJsE8vnUM7zE+pE/TDVO/hgFRKDwx/dMQ3a
-	Jt+qW7S6TJoiC9FgGBc2jlqUqS9TPVZrETPMM/sYziWX/oyFKi/TyFg25rzw35MSFsxby8Vty5E
-	4MN/jIV4YW7es/uI3+N6B1I=
-X-Received: by 2002:a05:6a00:181e:b0:89d:e6e2:b2a6 with SMTP id d2e1a72fcca58-8a6e7bc7a49mr2518493b3a.45.1793203068030;
-        Wed, 28 Oct 2026 08:57:48 -0700 (PDT)
-Received: from localhost ([2a03:2880:9ff:69::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a6a5f66bcesm1390538b3a.15.2026.10.28.08.57.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 08:57:47 -0700 (PDT)
-Date: Wed, 28 Oct 2026 08:57:42 -0700
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: Rongzheng Wang <testwrzwrz@gmail.com>
-Cc: netdev@vger.kernel.org, 
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Magnus Karlsson <magnus.karlsson@intel.com>, 
-	Jason Xing <kerneljasonxing@gmail.com>, Stanislav Fomichev <sdf@google.com>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, stable@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v3 1/2] xsk: defer software checksum until the skb is
- complete
-Message-ID: <auIbb0qeWoJ_eKw0@devvm16445.scu0.facebook.com>
-References: <20261028025026.11401-1-testwrzwrz@gmail.com>
- <20261028025026.11401-2-testwrzwrz@gmail.com>
+        bh=Dc4rW2+COMGPVHylYkAJkFpZ/yamBpz19LqtcOFzV+Y=;
+        b=c4XPRaz9xy6rCTzJijHsPR79U582gKZJLStQVICm44dt6615M9zHXb5YsDyuAYaMmX
+         MngrCjZZYaRKA1mVAkcpfv+TfB/PUju8hI0PSCmxpVgmoc5qixJIlD5cjA6kXJfh31kW
+         3moCMjqZdKs0cuJ0S/JdPj47SqlBIW9S+qhAlYrS2lHS0OoTXeRP2WEuFfH1Bl2mtTKB
+         KjjHqpmKtv0mYP7TL9D+RDxQBp2vV7oH77zssQocE2vubN1q+9ILQ4SKLclSxeExyWp7
+         iAbrxbmB2tM6EBZ0IZ7diLPei2DGtkTyp5QaCLMUnaTpV2VaMlDvGB4XUdKzmVBwUwkI
+         Kt/w==
+X-Forwarded-Encrypted: i=1; AKwUvBwDQuZ3n+X0gnGexQy2CPOeKqb+hxR9OaphKJsZZwh1Ap1LoNGpPFQVkhQaqowjVRfa8v5ysD4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJXjPnBDl+qMcbha39Ll/0bNzzXyUwudfIMe5OkusCFAYPed3IM
+	h2NEut/jH/7Ble8Fu73mm793RzZ4ZpjXkk0thqGet+fqo5kvV0d3GF3JN/XprJY3B/gncS4hwth
+	UrIq60c5ewJ8aiEAcOqP0Cw/9+aJCFUJqseen4xgLrRweZNr7yBOvFKX8
+X-Gm-Gg: AYBFou1d1zw3aKObyfTferTqqKCccX4Lm8rUb+QPzsAfiYgh7ZEASCZFpDNvD74hkIF
+	hMpSLzN9Ysjd0k8vYIII6DVM8iHzQ4QRrCg5J5ojRzok4oexAlXshX82t001PBo337C0aTl+a40
+	v5kLo3gqJ5Y5A0PcbAbMnQ88v3ZeBGlYOxdWmKysYQ3FYMIQvzpNmh+3gmlP54MReFwaWlQDBZu
+	1Y+sTXWRHazQp7pxJVdAVcFu+kR37lKcyCZbZMnTiGEGcNaAY5TIYragLARgCfLZymlMozzg3oI
+	2x4y+l4DaxllcrKnfoh8FmFGMB48RkSxLuGlFHQ6km4LkhO5Wpdipydr3StxpMMkljc2/QaUXEX
+	uxampoP00Ls5r/DIff+oX1+Dmr3G7KgHvH0g+sdHvYsTskrhr5impYp0M7JYg+jowLcQsUhLi9o
+	p3i0mCx1yo0zzX1Q==
+X-Received: by 2002:a05:6a21:6f16:b0:3e2:1823:2b4a with SMTP id
+ adf61e73a8af0-3e901e829e8mr2186510637.0.1793203163924; Wed, 28 Oct 2026
+ 08:59:23 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,26 +102,212 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261028025026.11401-2-testwrzwrz@gmail.com>
+References: <20261026-work-security-namespace_free-v1-0-ffa3ebbf71bd@kernel.org>
+ <CAHC9VhR4rMydWiD-RFv-ABiYSG_txJuyrtdaowEXPY=CHEvFXA@mail.gmail.com>
+ <20261027-heckklappe-halbmarathon-vorsorgen-849ffdc42aac@brauner>
+ <CAHC9VhSJMPOY4X78ENEkAiNeVTCpvP76PgVDqTQfwaYfwnYwAQ@mail.gmail.com> <20261028-treiben-probanden-nachkam-e986afed3902@brauner>
+In-Reply-To: <20261028-treiben-probanden-nachkam-e986afed3902@brauner>
+From: Paul Moore <paul@paul-moore.com>
+Date: Wed, 28 Oct 2026 11:59:12 -0400
+X-Gm-Features: AclHuK-yJIwoCb3oIYP-IBqXnljTJgelOwPOEoH9t42fOb1qZ8AgXGe1E7dzuKE
+Message-ID: <CAHC9VhQm+swDGvP31aNefwx6qCCy2mk-CjD4i=4kE74eA+e2zQ@mail.gmail.com>
+Subject: Re: [PATCH 0/8] ns: fixes for the namespace LSM hooks
+To: Christian Brauner <brauner@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-fsdevel@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	=?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
+	=?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, 
+	KP Singh <kpsingh@kernel.org>, Matt Bobrowski <matt@bobrowski.net>, 
+	Stephen Smalley <stephen.smalley.work@gmail.com>, netdev@vger.kernel.org, stable@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/28, Rongzheng Wang wrote:
-> When XDP_UMEM_TX_SW_CSUM is used with multi-buffer TX, xsk_skb_metadata()
-> calls skb_checksum_help() while only the first descriptor has been added to
-> the skb. The checksum therefore covers just the first fragment, and
-> skb_checksum_help() sets ip_summed to CHECKSUM_NONE, so the remaining
-> fragments are never included in the checksum.
-> 
-> Move the software checksum calculation to the point where the last
-> descriptor has been added to the skb.
-> 
-> On a checksum failure the packet is now dropped instead of being returned
-> to the application for a retry. This path is not reachable with the
-> existing metadata validation, but the behavior change is intentional.
-> 
-> Fixes: 11614723af26 ("xsk: Add option to calculate TX checksum in SW")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Rongzheng Wang <testwrzwrz@gmail.com>
+On Wed, Oct 28, 2026 at 6:45=E2=80=AFAM Christian Brauner <brauner@kernel.o=
+rg> wrote:
+> On Tue, Oct 27, 2026 at 06:37:43PM -0400, Paul Moore wrote:
+> > The hooks were merged into the LSM tree on August 31st, and due to
+> > timing I'm guessing they appeared in linux-next the next day,
+> > September 1st.  Considering the merge window opened on October
+> > 18th/19th, that's conservatively a month and a half during which
+> > testing could have uncovered this issue and the behavior of the hook
+> > could have been changed to accommodate your use-case.
+>
+> That's what the rc cycle is for.
 
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+I believe the understanding is that basic functional testing occurs
+before the RC cycle.  Considering the NULL check causing problems for
+your use case was present in your first RFC posting back in February,
+it's unlikely that you, or anyone in the BPF LSM space, tested this
+prior to the merge window.
+
+> I'm not asking for changes to behavior
+> of the hooks to accommodate anything.
+
+The LSM changes in this patchset do change the behavior, that's the
+point.  The security_namespace_free() hook does not call into the
+individual LSM callbacks if no LSM blobs have been requested; what you
+are proposing now is that we change the hook so that the callback is
+always called, regardless of the LSM blob state.
+
+> > I know the
+> > Landlock folks were testing the hooks for their usage, but I've gone
+> > back through my inbox and I don't see any reports of BPF LSM failures
+> > using these new hooks in v7.4 until you posted this patchset during
+> > the merge window.
+>
+> Because I sent fixes instead of a bug report.
+
+... which you sent *after* the merge window opened.  Once again, I see
+no indication that the use case you are concerned about was ever
+tested prior to the merge window.
+
+> > The LSM namespace hooks are new to Linux v7.4, they did not exist in
+> > Linus' tree prior to this merge window which is why I consider both
+> > the BPF LSM and Landlock usage of these hooks to be "new".
+>
+> Yes, they're new. That's the argument for fixing them now. Not against
+> it. No released kernel has these hooks. Once v7.4 is out every one of
+> these fixes is a behavior change in a released kernel, needs a stable
+> backport that by your own rules doesn't qualify.
+>
+> And on top of that nonsense, userspace has to probe for it forever.
+
+It's a one line change in kernel/bpf/bpf_lsm.c to add the
+security_namespace_free() to the existing list of disabled BPF LSM
+callbacks.  No need for a patchset spanning 16 files and over 350
+lines of changes; the BPF LSM callback can be enabled in Linux v7.5
+after it has been properly tested.
+
+It is probably also worth mentioning again to casual observers that
+the LSM hooks, and their associated callbacks, are intentionally not a
+stable API.  LSMs are advised to implement abstractions before
+exposing the hook/callback API directly to user-visible interfaces
+such as configuration policy, policy as code, etc.
+
+> > As mentioned previously, I'm pretty consistent about what goes up to
+> > Linus once the merge window opens: there is the initial pull-request
+> > with the changes from the last development cycle and then after that
+> > I'm pretty strict about only serious bugs/panics and regressions.
+>
+> Your README says "serious problems", not panics.
+
+Are we really going to argue about how one defines "serious problems"
+and "panics"?  You'll notice that I've used "serious problems" and
+"panic" somewhat loosely in this email thread because the distinction
+doesn't really apply to our discussion.  The issue you've brought up
+is that a use case that was never tested prior to the merge window
+doesn't work like you want it to work.  There is no kernel panic nor
+any functional regression from previous kernel releases (user visible
+or otherwise).  We'll change how the security_namespace_free() LSM
+hook works for the next release which should give you plenty of time
+to test that it works properly.
+
+> A hook that is
+> exported to bpf as an attach point and never called is a serious
+> problem for an API.
+
+I'll repeat myself again, a little louder for those in the back: the
+LSM hooks and callbacks are not a stable API, if an individual LSM
+needs a stable API to expose to userspace it needs to provide its own
+abstraction layer.
+
+> And it's not how you've handled this before: lsm_get_self_attr() was new
+> in v6.8 and got fixed for apparmor and selinux at v6.8-rc7 (cf. [2]).
+> v7.1-rc5 took Stephen's cred_guard_mutex change for lsm_set_self_attr()
+> without a crash see (cf. [3]).
+
+There is an important difference between those issues and the one
+you've identified with this patchset: lsm_get_self_attr() and
+lsm_set_self_attr() are syscalls while security_namespace_free() is a
+LSM hook.  Linux syscalls are subject to the Linux kernel stable API,
+LSM hooks are not.  Linux syscalls are directly accessible from
+userspace, LSM hooks are not.  We could dive into other minutiae about
+the differences between those issues, but the distinction between
+syscalls and LSM hooks is really the only one that should matter here.
+
+> > Disabling the BPF LSM support for the new hooks in Linux v7.4 should
+> > be relatively easy, much simpler than this patchset, and eliminate any
+> > claimed harm.
+>
+> No. That's a change to kernel/bpf/bpf_lsm.c which you don't maintain
+> and the people who do have acked the fixes and asked for the whole
+> series in v7.4.
+
+ :D
+
+Instead you're asking someone else to accept your changes in a
+subsystem you don't maintain and when they push back due to lack of
+testing and existing conventions you decide the proper approach is to
+bully them and force the issue with Linus?  I'm used to dealing with
+hypocrisy but this is truly something else ...
+
+> You're proposing to rip working functionality out of someone else's code
+> so you don't have to take a three line deletion. namespace_init and
+> namespace_install work fine for bpf.
+>
+> It's also not simpler. The LSM part of this series is deleting three
+> lines I wrote in security.c. The rest is my code and bpf's code with
+> acks. Your version needs a revert in v7.5 so it's two cross-tree changes
+> instead of one.
+
+Adding security_namespace_free() the the disabled BPF LSM hook list
+should be a one line change in Linux v7.4 (maybe three if you need a
+Kconfig conditional for something) and then a one (maybe three) line
+change in Linux v7.5 to allow it again.  Two patches, each at most
+three lines, all contained within the BPF subsystem.
+
+> > Also, as the ongoing friction between the LSM and BPF developers was
+> > brought up, I want to point out that SELinux support for the new LSM
+> > namespace hooks was delayed to Linux v7.5 due to issues uncovered with
+> > these new hooks during the Linux v7.4 development cycle (well before
+> > the merge window opened).
+>
+> That's not what happened. Stephen posted the fix on September 16, v3 on
+> September 18. I reviewed it on September 25 and offered to carry it in
+> the namespace tree for v7.4.
+>
+> On September 29 you said you'd rather take it through lsm/dev. It's not
+> in lsm/dev. It's not in v7.4. A reviewed fix that was ready three weeks
+> before the merge window didn't get applied. That's the same decision
+> you're making now and it's not a precedent for it.
+
+If you look at that thread, you'll notice I ended my last mail with a
+"Are we all okay with that for this patch?" because I wanted to make
+sure everyone was okay with the patch, and the process before merging
+it.  Stephen answered that he was okay with the approach and you never
+responded; I held the patch back exactly because you never explicitly
+okay'd the approach.  I suspect one could make a lot of interesting
+observations both about how that patch was handled, and how that
+handling is now viewed from different perspectives.
+
+> > I told you "next merge window", which is far from "no".
+>
+> For v7.4 it is "no". That's the release these hooks go out in. It means
+> v7.4 ships with a namespace_free hook that never fires and v7.4.y stays
+> that way because by your own rules the fix doesn't qualify for stable.
+>
+> > I'll admit to finding it odd that you seem to keep inserting yourself
+> > into that friction point
+>
+> A large portion of code where new security functionality is added or
+> modified all of the time is maintained by me and others.
+
+... and when it suits you, or the BPF developers, you override or
+otherwise steal ownership from the LSM space.  We obviously see things
+different here, but if you're trying to convince me that you are doing
+the Right Thing by inserting yourself into some of these discussions,
+e.g. the recent LSM kfunc discussion, you are wasting your time.  To
+borrow a phrase from Alexei's last email on that subject, "I don't
+feel we will converge here".
+
+> You're objection is noted and I'll mention it to Linus and then he can
+> decide.
+
+Please CC the LSM list and me.  I would also encourage you to disclose
+the lack of testing you have done prior to the merge window as well as
+your insistence that the LSM hooks become a stable API; if Linus is
+going to change any of these policies it would be good to know.
+
+--
+paul-moore.com
