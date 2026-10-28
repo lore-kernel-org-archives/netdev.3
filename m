@@ -1,47 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.4
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793170150;
-	b=aBCx/3Ul42ORT8aubALhQUzH755MB+N/b0ahnGuzMUP3pzz/4SaKOX7baufdUE25zT2b
-	 Aq5L+qa8uPWeeeAxkULwRmInQ4qVrHxnCvJmVe8TOOoE/jmLJic7IkRCbtXX0DA+ZsW5b
-	 oUogoTUQuIjR9/lyKTEE9BEhtw3sebJKcyrYlO15GaCDaVfVXuGgnssHURoqalFnEdPji
-	 31Eqte2bjMWoBmM5IcSCIRz6n5Zp9KZzdydkbMtbXbDWSBxYljM3igJqPvgg6LihBhtUs
-	 h3EbX0DFCo1lhcqmhE8cWQW2KOgaavlkruwaGN/sJjNQGWSpcIxaT5HvrtRqDk0i1lA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793170150;
-	h=DMARC-Filter:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-CM-TRANSID:
-	 X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=LLbPG2usd0qbwQ4hO+AgmOgJRcy+RI4oQWi93X1+FLE=;
-	b=5HJ0qdSn4TvIwBqeNZAXHZqZNdw330NXlLKFoOVkb/+6YcFIarLaaPBt4dk9gjRV4zI9
-	 xMpeILwIWYb0HeCPnAXXBR+2SJI3qzQFRGVo5GCWg46KBh0nWcjITt7KisP+Eca77drbI
-	 4/ziQ6VnARuRorExpgdbtvLEvLiFMBaCMeUycC/YQb+Af23gZLwS2wZQYkQP7YxYGTdVy
-	 17TdLqMFFe2oaD8Zu07uzFyoRV2Qcy/7qnUIivcmaj4FprhWhfl/lKSOf6kcOTk5TiSf6
-	 T5vFfPNNbeW/Pac5vZWjT0T/LIgR8RaJfWNpMMS9WMCmMxxpCJcdQM/r5srOA9lCn+Q==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=163.com;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=a3YPGqOw;
-	arc=none smtp.remote-ip=117.135.210.4
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.15
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793170366;
+	b=MPB4YcMbK4fY67QQvb3BalxGAGymeCNFe7xgnDBtzaIR08RkKp2+q9zx2lAAmqoucLUF
+	 EM5Wr4CyduQY4kFFke+P7BvdhX6NgbnA6/noKRzv5YzafpN9VPrJlQmWAZWTxxKhyW65I
+	 XweY3qu16+VgqkorYPHJSS2BWNqBbR4mogNA3hPxmelMCK5I+tmVeNvhWhqAfxI3wDu/V
+	 NzuatWvrWxrDBhLMswUS0HNHfYq4fi6lkh02W3MviLgKKqAWUBNPX0DrY3k2Kn6th5Hcb
+	 95CmbWkM+2GQVrheNIlCmJRdCDPZ29XH3PnqXh/FeAaZ5Cwq3N1d2VxFNRoXLk3Y85w==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793170366;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=Lzr9r/kB9PGsjX+/QhWa77JRthkHZLmh08VLPaFIXyw=;
+	b=QilHpAe6cNNBWd/+68+nmTICuNauMYCCQniAJYEd8OveQyaEs6RytIX35Kms6PmzMOdA
+	 BIVFU/z+xUBsQ6Dx0cDD98BBRbLr864nINUNVhBcr01TTVHT3TBR5TZV55EoFRmH957rF
+	 Zy7K03FEByg20+mvdkmSG3bRiOpEXjPVHqHysgp8kug9jURzoIVMCaiqpZsO5j9IR305n
+	 3jqXPTK8h7vIpVIUcT5s6adoI8Q7rzz8XNf+Y28qM6+AXWj9y+oYrW6xfPtRPP4id3ekc
+	 4VvrpRx5jjP89RrCETouhZ9VOAGDcWFwQewxO3TuFWvu8af5qmSbdvZeE/EHMcY/5uw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=ikuyo.dev;
+	spf=pass smtp.mailfrom=ikuyo.dev;
+	dkim=pass header.d=ikuyo.dev header.i=eritque-arcus@ikuyo.dev header.a=rsa-sha256 header.s=zmail header.b=VXlWZuyn;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.15
+Received: from sender6-op-o15.zoho.com (sender6-op-o15.zoho.com [165.173.180.15])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C98606A31A
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 06:49:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06C98606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B45606A31A;
+	Wed, 28 Oct 2026 06:52:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 25B45606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ikuyo.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ikuyo.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=a3YPGqOw
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=LLbPG2usd0qbwQ4hO+AgmOgJRcy+RI4oQWi93X1+FLE=;
-	b=a3YPGqOwr+umV+b6QAXPr7c0PbfoYooCI76ZH/DQ+tufl04FT5ooyw+wus7O5R
-	Oep5C1at267coBCdLSlaF+HRpKCxfCpdxVCTIBARc/8d7LKoACgv+pqHRpnLrvfo
-	DdVOxKr0Rz23aSK4QVfK3BFHD/q3gc39GrdjJ0E0IpgYo=
-Message-ID: <9708bebe-2e54-46bc-b9a8-97ad59b37793@163.com>
-Date: Wed, 28 Oct 2026 14:48:37 +0800
+	dkim=pass (1024-bit key, unprotected) header.d=ikuyo.dev header.i=eritque-arcus@ikuyo.dev header.a=rsa-sha256 header.s=zmail header.b=VXlWZuyn
+ARC-Seal: i=1; a=rsa-sha256; t=1793170355; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=HT1Xz+ofkMStnXESpgd/h0Uo2sePaeKv9eWHFat0YifYx+Qhb3A7jwcyfZo9DCXbDid2LoUoe7DVEaJUlDPaPZAds8nj2I8quTMHikCOVbAdj8Lwn048z2ewgg6IlSPo4g7aB1cru21w1IrT+/cw+8v6CgAyq3b8zRJQfd+yVAk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1793170355; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=Lzr9r/kB9PGsjX+/QhWa77JRthkHZLmh08VLPaFIXyw=; 
+	b=Sw1lLQ0dAkpUN4R3uHTrsZ2K1OnmsKIQOyPqWD3GxCAlVu85s0EfrTVmCY4u1cxOow9cOcatBLpjPvGlNi+AkXudIgWXqpPGHJFrOGQJ41vuDtVJdcW5eQKyNFlmLlqCQBUCWfC14irTprcJl4P017TZqtrLD/HBjuIZT5TxuaE=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=ikuyo.dev;
+	spf=pass  smtp.mailfrom=eritque-arcus@ikuyo.dev;
+	dmarc=pass header.from=<eritque-arcus@ikuyo.dev>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1793170355;
+	s=zmail; d=ikuyo.dev; i=eritque-arcus@ikuyo.dev;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=Lzr9r/kB9PGsjX+/QhWa77JRthkHZLmh08VLPaFIXyw=;
+	b=VXlWZuynhRqZ9ap4ImqLVuWEMW+kDdyouUFeDEmZ3D+qwOxLVkAvFMtoDZ1m1Oi2
+	Jq9oVzyMNKnLzunyCQD1e/TjbcWyrFGY1lzExXOeQlkdBhHs7NgyZXLraLmn07o/Bye
+	FbtsAJU3Nhd8Rj4t5ZckKK1PWff53tVxnVO+3b8A=
+Received: by smtp.zohomail.com with SMTPS id 1793170353223347.53982264335957;
+	Tue, 27 Oct 2026 23:52:33 -0700 (PDT)
+From: Yiran Qiu <eritque-arcus@ikuyo.dev>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Bobby Eshleman <bobbyeshleman@meta.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH RFC net] vsock: make local-transport CIDs conflict on the same port
+Date: Wed, 28 Oct 2026 02:52:31 -0400
+Message-ID: <20261028065231.655701-1-eritque-arcus@ikuyo.dev>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -51,165 +77,187 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v7 1/2] tun: keep a kernel copy of the socket filter
- program
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, jasowangio@gmail.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, kuba@kernel.org, weirongguang@kylinos.cn
-References: <20261023092239.186665-2-clementwei90@163.com>
- <179309578401.3134.11519975030981154705@kernel.org>
- <willemdebruijn.kernel.39836b1948cab@gmail.com>
-Content-Language: en-US
-From: Rongguang Wei <clementwei90@163.com>
-In-Reply-To: <willemdebruijn.kernel.39836b1948cab@gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PygvCgBXWG_FmuFqNe8yCg--.56742S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxtFyfJw1kCrW7Jw1fArykGrg_yoW7trWxpF
-	WfWa4jvr1DWr40qwn2yryUZFyftwsrWF47Xrn8J348uFsIgryxu3y3Ca909asxArWrGw1F
-	qa1jvasFgwn8ZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UsvttUUUUU=
-X-CM-SenderInfo: 5fohzv5qwzvxizq6il2tof0z/xtbC4gnrV2rhmsktowAA3B
 
-on 2026/10/27 22:05, Willem de Bruijn wrote:
-> netdev-bot+sashiko@ wrote:
->> Thank you for your contribution! Sashiko AI review found 2 potential
->> issue(s) to consider.
->>
->> Critical: 0 · High: 1 · Medium: 0 (2) · Low: 1
->>
->> If you believe none of the issues are legitimate, please reply to each
->> issue of Medium severity or higher and explain why the AI is wrong.
->> If any of them are legitimate and you plan to respin, please let patchwork
->> know by including "pw-bot: cr" as a separate line at the end of your reply
->> (one such reply per series is enough).
->>
->> - [High] bpf_prog_validate_classic() does not run "the same checks that
->>   bpf_prog_create() performs", although its kernel-doc and the commit…
->> - [Low] The kernel-doc for the new exported helper
->>   bpf_prog_validate_classic() (net/core/filter.c) says it returns "0 if…
->>
->> Pre-existing issues:
->> - [Medium] This problem wasn't introduced by this patch, but a filter
->>   replacement that passes tun_copy_filter() and then fails on some queue…
->> - [Medium] This problem wasn't introduced by this patch, but
->>   TUNDETACHFILTER leaves disabled queues with their old socket filter,…
->>
->> --
->>
->> tun: keep a kernel copy of the socket filter program
->>
->> This commit keeps a kernel copy of the classic BPF program passed to
->> TUNATTACHFILTER in tun->fprog_kern. Each queue's filter is now built from
->> that copy with a new sk_attach_filter_kern() helper. It also fixes the
->> inverted error check in tun_attach(), and it validates the program up
->> front in tun_copy_filter() with a new bpf_prog_validate_classic() helper.
->>
->> Link: https://lore.kernel.org/netdev/179027275318.2160803.4185895144088175048@kernel.org/
->>
->>> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
->>> index 242899f7fd071..e7d9f4480a89f 100644
->>> --- a/drivers/net/tun.c
->>> +++ b/drivers/net/tun.c
->>
->> [ ... ]
->>
->>> +	/* The instructions are only verified when a program is built from
->>> +	 * them, which tun_attach_filter() does once per attached queue.
->>> +	 * Check them here as well: with no queue attached that would not
->>> +	 * happen at all, and, now that tun_attach() treats that error as
->>> +	 * fatal, every later attach would fail with -EINVAL instead of
->>> +	 * rejecting the program now.
->>> +	 */
->>> +	err = bpf_prog_validate_classic(insns, fprog.len);
->>> +	if (err) {
->>> +		kfree(insns);
->>> +		return err;
->>> +	}
->>
->> [Severity: High]
->> Does bpf_prog_validate_classic() really reject everything that
->> bpf_prog_create() rejects? Its kernel-doc and the commit message both say
->> it does:
->>
->>   "The instructions are verified with the new bpf_prog_validate_classic(),
->>   which runs the same checks as bpf_prog_create() on the copied program."
->>
->> The helper only runs bpf_check_basics_ok() and bpf_check_classic().
->> bpf_prog_create() also goes through this path:
->>
->> bpf_prog_create()
->>   bpf_prepare_filter()
->>     bpf_migrate_filter()
->>       bpf_convert_filter()
->>     bpf_prog_select_runtime()
->>       __bpf_prog_select_runtime()
->>
->> bpf_convert_filter() rejects any jump whose converted offset does not fit
->> in s16:
->>
->> 	if (off < off_min || off > off_max)
->> 		goto err;
->>
->> __bpf_prog_select_runtime() can also return -ENOTSUPP when a JIT is
->> required but did not run.
->>
->> Take a 4096 instruction program: BPF_JMP|BPF_JA with k=4094 at pc 0, then
->> 4094 BPF_LD|BPF_B|BPF_ABS loads of offset 0, then BPF_RET|BPF_K.
->> bpf_check_classic() accepts it. convert_bpf_ld_abs() expands each load
->> into 12 eBPF instructions, so the JA offset grows to about 49128, and
->> bpf_convert_filter() fails with -EINVAL.
->>
->> Suppose every queue on a multiqueue TAP has been disabled with
->> IFF_DETACH_QUEUE. tun_copy_filter() stores this program, and
->> tun_attach_filter() loops over zero queues and then does:
->>
->> 	tun->filter_attached = true;
->>
->> >From then on, every IFF_ATTACH_QUEUE, and every TUNSETIFF without
->> IFF_NOFILTER, calls sk_attach_filter_kern() in tun_attach() and gets
->> -EINVAL. With the corrected check, tun_attach() then takes the goto out
->> path and the queue is never published.
->>
->> Isn't this the "every later attach would fail with -EINVAL" case that the
->> comment above says is avoided?
->>
->> When queues are active, the same program fails at queue 0, and
->> tun_attach_filter() calls tun_detach_filter(tun, 0). That frees fprog_kern
->> and clears filter_attached, which doesn't seem to match this part of the
->> commit message:
->>
->>   "a TUNATTACHFILTER that no verifier would accept now fails early and
->>   leaves the previously attached filter in place."
->>
->> The sk_attach_filter_kern() kernel-doc in this same patch lists -EINVAL
->> from bpf_prog_create() and -ENOTSUPP as possible results. That also
->> suggests the two checks are not equivalent.
->>
->> Would it be more reliable for tun_copy_filter() to build the program once
->> with bpf_prog_create() and then destroy it, instead of calling
->> bpf_prog_validate_classic()?
-> 
-> This sounds to me as the perfect being the enemy of the good.
-> 
-> Even the addition of calling bpf_prog_validate_classic is a nice to have.
-> This series fixes a real issue.
-> 
-> Yes, some issues are still only discovered later when the BPF program is
-> built. But as long that late discovery is also handled well, that is
-> acceptable.
-Thanks Willem.
+The local transport serves VMADDR_CID_LOCAL and the guest->host
+transport's CID (VMADDR_CID_HOST if there is none), and sends every
+packet with source CID VMADDR_CID_LOCAL.  A port bound on either CID is
+therefore one port on the wire, but the bind conflict check compares
+full addresses, so (guest_cid, P) and (VMADDR_CID_LOCAL, P) can both be
+bound.  Because __vsock_find_connected_socket_net() compares only the
+destination port (deliberately, since 990454b5a48b), a child accepted
+on one CID then matches packets addressed to the other.
+vsock_check_source() already treats these CIDs as aliases
+(dee44f41f206); bind() does not.
 
-Rather than building the program twice, v8 keeps the cheap check and
-commits the copy only after every queue accepted it. A late failure
-drops the copies already installed and leaves tun->fprog, fprog_kern and
-filter_attached alone. With numqueues == 0 the program is stored and the
-first attach fails with -EINVAL.
-In selftest, attach_filter_bad_prog_keeps_program() now also checks 
-IFF_NOFILTER and a newly attached queue.
+An unprivileged process can use this to reset another process's
+connect() when that client is bound to a specific local CID.  Comparing
+the destination CID in the lookup instead turns the reset into data
+injection, as vsock_check_source() accepts the rewritten source CID.
 
+Reject a bind whose port is already held on another local-transport
+CID.  User-visible change: a guest can no longer serve the host on
+(guest_cid, P) and local clients on (VMADDR_CID_LOCAL, P) at once; the
+second bind fails with EADDRINUSE.
 
-pw-bot: cr
+Found with afb-afl, an LLM-driven kernel audit/repro pipeline; the fix
+and this changelog were also drafted with LLM assistance.
+
+Fixes: 408624af4c89 ("vsock: use local transport when it is loaded")
+Signed-off-by: Yiran Qiu <eritque-arcus@ikuyo.dev>
+---
+Tested on net/main 4dca97647a3e (vsock unchanged through net/main
+5d7f3375cd57 and mainline 65ba8f34ec88) in a QEMU/KVM guest with
+vhost-vsock (guest CID 3) and vsock_loopback; 3 runs per case:
+
+  case                                  before      after
+  peer on (LOCAL, P), attacker listener ECONNRESET  attacker bind fails,
+                                                    victim connects
+  same, attacker at another uid         ECONNRESET  victim connects
+  peer on (ANY, P), no attacker listen. ECONNRESET  victim connects
+  no attacker                           connects    connects
+
+With only a destination-CID compare instead: no reset, but the victim
+read 18 attacker bytes (3/3).  vsock_test 44/44 with --peer-cid=1 and 3,
+before and after; no WARN/BUG (KASAN off).  Not tested: VMCI, the
+host-side alias.  RFC: bind time vs. lookup is your call.  Reproducer
+available on request.
+
+ net/vmw_vsock/af_vsock.c | 63 +++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 57 insertions(+), 6 deletions(-)
+
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index d0508887a2fb..47fd00fdac6d 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -294,8 +294,31 @@ static void __vsock_remove_connected(struct vsock_sock *vsk)
+ 	sock_put(&vsk->sk);
+ }
+ 
++/*
++ * CIDs served by the local transport are aliases of one another on the wire:
++ * an outgoing packet uses transport->get_local_cid() as its source CID, no
++ * matter which of those CIDs the socket was bound to.  Two binds of the same
++ * port on different local CIDs therefore reach the same peer and must
++ * conflict, just like a VMADDR_CID_ANY bind conflicts with any CID.
++ *
++ * @local_cid is the second local CID (the guest->host transport's own CID, or
++ * VMADDR_CID_HOST when there is no guest->host transport), or
++ * VMADDR_CID_ANY when the local transport is not loaded.
++ */
++static bool vsock_addr_aliases_local(const struct sockaddr_vm *a,
++				     const struct sockaddr_vm *b,
++				     u32 local_cid)
++{
++	return local_cid != VMADDR_CID_ANY &&
++	       a->svm_port == b->svm_port &&
++	       a->svm_cid != b->svm_cid &&
++	       (a->svm_cid == VMADDR_CID_LOCAL || a->svm_cid == local_cid) &&
++	       (b->svm_cid == VMADDR_CID_LOCAL || b->svm_cid == local_cid);
++}
++
+ static struct sock *__vsock_find_bound_socket_net(struct sockaddr_vm *addr,
+-						  struct net *net)
++						  struct net *net,
++						  u32 local_cid)
+ {
+ 	struct vsock_sock *vsk;
+ 
+@@ -311,6 +334,10 @@ static struct sock *__vsock_find_bound_socket_net(struct sockaddr_vm *addr,
+ 		     addr->svm_cid == VMADDR_CID_ANY) &&
+ 		     vsock_net_check_mode(sock_net(sk), net))
+ 			return sk;
++
++		if (vsock_addr_aliases_local(addr, &vsk->local_addr, local_cid) &&
++		    vsock_net_check_mode(sock_net(sk), net))
++			return sk;
+ 	}
+ 
+ 	return NULL;
+@@ -383,7 +410,7 @@ struct sock *vsock_find_bound_socket_net(struct sockaddr_vm *addr,
+ 	struct sock *sk;
+ 
+ 	spin_lock_bh(&vsock_table_lock);
+-	sk = __vsock_find_bound_socket_net(addr, net);
++	sk = __vsock_find_bound_socket_net(addr, net, VMADDR_CID_ANY);
+ 	if (sk)
+ 		sock_hold(sk);
+ 
+@@ -727,6 +754,27 @@ static u32 vsock_registered_transport_cid(const struct vsock_transport **transpo
+ 	return cid;
+ }
+ 
++/*
++ * Return the CID that the local transport aliases with VMADDR_CID_LOCAL, or
++ * VMADDR_CID_ANY when the local transport is not loaded or has no second CID.
++ * Must be called before taking vsock_table_lock.
++ */
++static u32 vsock_local_alias_cid(void)
++{
++	u32 cid = VMADDR_CID_ANY;
++
++	mutex_lock(&vsock_register_mutex);
++	if (transport_local) {
++		if (transport_g2h)
++			cid = transport_g2h->get_local_cid();
++		else
++			cid = VMADDR_CID_HOST;
++	}
++	mutex_unlock(&vsock_register_mutex);
++
++	return cid;
++}
++
+ bool vsock_find_cid(unsigned int cid)
+ {
+ 	if (cid == vsock_registered_transport_cid(&transport_g2h))
+@@ -833,7 +881,8 @@ static void vsock_pending_work(struct work_struct *work)
+ /**** SOCKET OPERATIONS ****/
+ 
+ static int __vsock_bind_connectible(struct vsock_sock *vsk,
+-				    struct sockaddr_vm *addr)
++				    struct sockaddr_vm *addr,
++				    u32 local_cid)
+ {
+ 	struct net *net = sock_net(sk_vsock(vsk));
+ 	struct sockaddr_vm new_addr;
+@@ -854,7 +903,7 @@ static int __vsock_bind_connectible(struct vsock_sock *vsk,
+ 
+ 			new_addr.svm_port = net->vsock.port++;
+ 
+-			if (!__vsock_find_bound_socket_net(&new_addr, net)) {
++			if (!__vsock_find_bound_socket_net(&new_addr, net, local_cid)) {
+ 				found = true;
+ 				break;
+ 			}
+@@ -871,7 +920,7 @@ static int __vsock_bind_connectible(struct vsock_sock *vsk,
+ 			return -EACCES;
+ 		}
+ 
+-		if (__vsock_find_bound_socket_net(&new_addr, net))
++		if (__vsock_find_bound_socket_net(&new_addr, net, local_cid))
+ 			return -EADDRINUSE;
+ 	}
+ 
+@@ -897,6 +946,7 @@ static int __vsock_bind_dgram(struct vsock_sock *vsk,
+ static int __vsock_bind(struct sock *sk, struct sockaddr_vm *addr)
+ {
+ 	struct vsock_sock *vsk = vsock_sk(sk);
++	u32 local_cid;
+ 	int retval;
+ 
+ 	/* First ensure this socket isn't already bound. */
+@@ -914,8 +964,9 @@ static int __vsock_bind(struct sock *sk, struct sockaddr_vm *addr)
+ 	switch (sk->sk_socket->type) {
+ 	case SOCK_STREAM:
+ 	case SOCK_SEQPACKET:
++		local_cid = vsock_local_alias_cid();
+ 		spin_lock_bh(&vsock_table_lock);
+-		retval = __vsock_bind_connectible(vsk, addr);
++		retval = __vsock_bind_connectible(vsk, addr, local_cid);
+ 		spin_unlock_bh(&vsock_table_lock);
+ 		break;
+ 
+-- 
+2.56.0
 
