@@ -1,111 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.198
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793219562;
-	b=tKYNEGNZfkOdZ31Qjhu6DyzITYdmOANlaXK80R2o7Dhy3hsZDiwJp9jpmHrGNLGx+rmo
-	 rB5l7TRqBmgc/Aen2MS2FAw3tQTE7lvZqwlDPsplfGZEmXYpPqT0TKlmwiHvxp7Un8Q6H
-	 Asi1LNhl6dWjD/G0mVwlOb4huGgJ9q80e2RXw3ns7n5NnLX7/GSCk0Tqb3tpd+/PeA6GM
-	 C4wXkd/0Wn/G9w/5Th8xUp0hilBkpn8+lwU6hkxH6k7ihXgRCpmzOoZuyB05+f4n3XMej
-	 NQ3s82niH35+IKib1iKY6X6vBxXhGpsBwq4IAWfTfyyeZUH4RdijJcY92qbSc1AaYvA==
+	t=1793220071;
+	b=GZEBwz2B5goHaeqDWmpQj0MAIJts6Apg0EQWyY1M0SaZtzJKWjXySPoJuTtEnM7c0Ju2
+	 d1OwRKYGOMefjOu3hkcAXcllWvpLMoScR/S3AhRbl6yFz1DDy+VToGXZlMEHOmBtoHaYF
+	 ncthBmlKGVB+80KMc8MF73rIBSIG64MmUl/UOUFp0wjLziZn890As7u+Opx4lSSWWnaWi
+	 Im33lfVaeGnjctQvMtkwqUFYPy8xBTImOdaoRo1ukITYthX33SgJkvD43ioliPxEBgXrh
+	 gMRLiLCMIwN525RAoZMz6W6ctSMZ7B2T9YxESpneK8IGh2OnvZrusBmRamM3JG1OnyA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793219562;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Date:From:
-	 To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition;
-	bh=1/IJkARZ+jkwU3nmNNgce1ZnNSxTNp4A2AYmF4Q7YPU=;
-	b=nc4fI+u5o7qA0xx4HYo5SBB6KCdJpl6MHcacK1j6krRQlU0QOJlWfPCqHtnf+LsvPyb3
-	 +dspn08Q7C2ZeMKar59vIZcSzdQhPQdnamaoXwYeI0NASTNYNyRqmyCdiG16pHdWisftI
-	 IdwEd2r1/OWB2JaBcLQba3xrzvb2AnrZOHpdFDWZvscvA2o3pESdU0H4oK1RWvgJd0INh
-	 eRCjp8/4gbYIIV+TmuvGiaQIwAvo2IOkD3pcI56PxyuSM2oajrNwzfK9C5JbPs7Lu8Wnd
-	 MljOfFIfivnPFIZH0WK584O0HN1kL0fwS9FccDoK4iCgHZff4QA3rQf5zJIIJ865GuQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793220071;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
+	 References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=QQbnberAPvhpqCGxCiSNoM/4Q0uvQCUHKyLHQU+7Pq4=;
+	b=Ypyk5/KlTmi3IuUAPQ6nzDcGvigUq7O9ibod2r/3uaizZD4gCQK7f+VctrIR2yNjUcUs
+	 VqQxpmanvVGcuiF+EsG9UkyXFYecNyZtxtg9oSR6NP+89mWUHCPxPe5A0STn2YcaFcrGY
+	 LDPw0+V7lMhh8vzpHBbz0V+GkXVi5ZsBVnIQkVwQbihNawJH5sH0I/I9/SPZbtj0zXHjo
+	 kArrPzePMEa5USEDAnJ83zuP1az7zRfznABjCw4FX9PATL9AsO6jDxTUhGLAXAkIhn3GY
+	 c0CcY+Qch79XBQG3CsmKDYH3rVzjrXFqmHvFP++kjIV0idTSTJg/31Ah4Rb+AoZdlYw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cSxHyBOe;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=KtxwfD+6;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=k71fndNz;
+	arc=none smtp.remote-ip=209.85.214.198
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C42E606A31A
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 20:32:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4C42E606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A77D6606A31E
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 20:41:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A77D6606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cSxHyBOe;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=KtxwfD+6
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793219561;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=1/IJkARZ+jkwU3nmNNgce1ZnNSxTNp4A2AYmF4Q7YPU=;
-	b=cSxHyBOefU4Op24p7ki02yY6G9RTbX1diuDy9hk3JuC+SuRUn/MJLTSPGshtgM50iSEiUo
-	hEakk4a7XrE/FyXz8F/kjNwD9m9mRpYIGFM99TCBZf5CMYf75ARnDBNBpkEXBVVVD22p9/
-	fLKvftKESYjvTEpBIUsodHsN/VMpE9s=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-259-jFO5YtEnP6y-Enp-8VOU5g-1; Wed, 28 Oct 2026 16:32:39 -0400
-X-MC-Unique: jFO5YtEnP6y-Enp-8VOU5g-1
-X-Mimecast-MFC-AGG-ID: jFO5YtEnP6y-Enp-8VOU5g_1793219558
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a204ac318aso8422185e9.2
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 13:32:39 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=k71fndNz
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2ea785a4decso870505ad.1
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 13:41:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793219558; x=1793824358; darn=vger.kernel.org;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20260707; t=1793220070; x=1793824870; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=1/IJkARZ+jkwU3nmNNgce1ZnNSxTNp4A2AYmF4Q7YPU=;
-        b=KtxwfD+6PsKCmumYIdE0JNjHgGwIeF0oioiCo5WJtzCDG5Vbpyi2KTjSwjjZakwu4b
-         c2YV1NfWTpGBZEr9vNkUgdYcd+IEvIO25wvIR72FxBzWHTeYjQj5r0W/3POvcDXmpaue
-         dhYq8J1l4Bv2Gpo0qSgTAkjetkb2405nh3NKL7PBxrKQys8abGXR1Xl7yBlD9ecQwYL5
-         Kf7ZRDo7k49bxFYMF6YpDGsmDUWQJIoUSBTNA3WesZlTv4gZHKPbDlLObIuqXQATvgwF
-         +X64PBaVElktUqyW49HsaWszAlhui78xz04Ih/Sku4FGaxXyzsqHnB/r9bBZNw4T5lF0
-         YLlA==
+        bh=QQbnberAPvhpqCGxCiSNoM/4Q0uvQCUHKyLHQU+7Pq4=;
+        b=k71fndNzImv15347i3hHJi/2OkPcsYc9oFYlTg8lZAZCJQ8BWnwbVFniv68Ajk2r/4
+         kRZp6dst/PKTGzkkq+gbUk+5FzcJUrT0VB/Zo3b5AD/dpbHWRk/5IxJnyOMG176l59sD
+         4IPHHmH5kR/F2LyCWEG9tDLDsHfgzQKGQa9ITHZWtGketwh9th8ECLwisaDFyv75FwgD
+         1QU1zgiSgh+XAScIlIe8CdX9DVJN1B2pGB0z76rGazNYa22h4hJExYluhurhcypBWiu0
+         uxYpZ7bOGUF12z0bEJ0I/6nxXQtMkLDIZ5L4tcrQ+z6Hzgsc5qkX/6fVflzs1v+/ucEe
+         yH6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793219558; x=1793824358;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1793220070; x=1793824870;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=1/IJkARZ+jkwU3nmNNgce1ZnNSxTNp4A2AYmF4Q7YPU=;
-        b=UVGzBFBmiOYxT33sjWiItqMjUNecRuXO3O6cn4BbpnnbjZcWdL0THrkr+Xxc2qfkxZ
-         4Ly9r6AyAZY+CH1UstnwXDBPbZuHy683ntKaRpEU+7/3QA7jpU5275DjlfRM46BdDNUw
-         5D9MeQ8ZwapDxywQIa2FEyxMCKlk1aznI3fPOJi7tn7grsgW6hW5emiXTJ3mpGjHXUT4
-         0Ea+tbN1S/cCeIex6LEPBBEFsNbmf9H8b3h/GjuHSAONg/1JT21rFiQcdQ9ynMmjk0Zj
-         TEHzSnZ9w3nV7d7eUSkLmBMVJspMejc+/ay40Z66ahAEMl9cwQZCVyWNdgt5mmTcDX6A
-         MF9A==
-X-Gm-Message-State: AFq9FYKLEeb6m7N/6LuQgJwJGoeZJK4LwL637CHbGpLmGSAg5f2HpNbX
-	Pn4YHVChn6eITOVJ2cDDAemZR8pFeKhcnOcB5pnI6b6g3WvCdZCN4GaOAQY0FMTWLyTY1EPQUt9
-	gGk32D7AhqbT0EYMDEJs+3JQwBEDXVKrV/yml6fT2fY5n9eSaRBDCSWDUsA==
-X-Gm-Gg: AYBFou287Z+bLPAS6ebjubNEeY397UVzdesRqX6/MvxUKifRIzVbQx9hdIVjfiV8Xdl
-	kSPDZbnYLlSVLTypF1rMaAiyIJq/KvTUlrHj6ZUkwJGYd1FF070wrsSdiws511w8SnuKViGhS+R
-	cObI5O7PnW2kbyHgPChUzNtBxxFbUngN14jgpKy6Qk0HzllhQ/+l2dS0BiyEYhXUFbnQzSoPsgx
-	BXfQKGEBG43zF1V74dBNyCYWDuAdjTFH5dFzFbtCbwLKw9ojCy16E+HjaYkAwu7CPotc6SbgJNb
-	sQe9cjghXjX1UvYz5hYYk7A4XF/sm5J0pQRnjNP6HBDRKEO5nSrT3WdKf0zPJQ3VfvmKvyWJ4xI
-	gNJMumWhJyZnL1M/RzsIVmthSCLiz4fr3QMNYG6nuXEF9Ascbl9Q6IhEiKGMmKgMJMPIZGDITYE
-	sIj7enWsSkJcX4plnjWjQ8ZGHq
-X-Received: by 2002:a05:600c:4593:b0:4a7:76fa:87e9 with SMTP id 5b1f17b1804b1-4a966d361dcmr78589555e9.21.1793219558396;
-        Wed, 28 Oct 2026 13:32:38 -0700 (PDT)
-X-Received: by 2002:a05:600c:4593:b0:4a7:76fa:87e9 with SMTP id 5b1f17b1804b1-4a966d361dcmr78589155e9.21.1793219557912;
-        Wed, 28 Oct 2026 13:32:37 -0700 (PDT)
-Received: from debian (2a01cb05923c9a00005ce1bcb3793264.ipv6.abo.wanadoo.fr. [2a01:cb05:923c:9a00:5c:e1bc:b379:3264])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a94fce50a8sm55512765e9.4.2026.10.28.13.32.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 13:32:37 -0700 (PDT)
-Date: Wed, 28 Oct 2026 21:32:35 +0100
-From: Guillaume Nault <gnault@redhat.com>
-To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@kernel.org>
-Cc: netdev@vger.kernel.org, Simon Horman <horms@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Tom Williams <Tom.D.Williams@morganstanley.com>
-Subject: [PATCH net v2] tcp: Fix dup-ack detection on non-SACK bidirectional
- data transfer.
-Message-ID: <6426d558e45fc6ab724c40af62e4a8793215dd8a.1793219189.git.gnault@redhat.com>
+        bh=QQbnberAPvhpqCGxCiSNoM/4Q0uvQCUHKyLHQU+7Pq4=;
+        b=znhyKWIPcyhpXo8MIMDKa6dx57fnPlTWhJY6waFns/jI/WTTxRZVH28y2huVCqmyJ+
+         vXdRmcUWE5cPjpMO2/aDMTEsy+m9LFRJgSK5ZiovV8JXeOIXJNCnfKD4ycHCfycnO/0S
+         8I9xdr6akx8ePbtOIPHJO63PcRx4mgvNB+NCy8dWa8Aymu0ejkF92uBP4TdFXEzCNUyl
+         M4qy511cclozmXWa5gMy/66x70l58kxj0fu0+24O08tNPfuml2x+PrTHawWjhXchCgbR
+         ZqaIgVgCNFFJlYhv75zkGLKZnfwzTVzpGwYMVFsYb/q5ZXOtjyGSEegsFIfE4VojmJSc
+         2+2Q==
+X-Gm-Message-State: AFq9FYIEAyWj55S1WJJ+aJ+q1xD5/gfGul46QriudKTipZEJrsD4MElQ
+	kdZf7DWwaEj99RQFA1iuJMPfqboI146jLjXEeuz8fFr853YILg4LFEbctDpC2REl/cH6meN0ync
+	vhqKWaQ==
+X-Received: from plri15.prod.google.com ([2002:a17:903:32cf:b0:2e8:44b9:5c18])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:fc4e:b0:2ea:1b5d:9efc
+ with SMTP id d9443c01a7336-2eb1ac94a4cmr3362155ad.34.1793220069849; Wed, 28
+ Oct 2026 13:41:09 -0700 (PDT)
+Date: Wed, 28 Oct 2026 20:41:09 +0000
+In-Reply-To: <20261028173533.2658096-2-rjethwani@purestorage.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -114,169 +76,190 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Mime-Version: 1.0
+References: <20261028173533.2658096-1-rjethwani@purestorage.com> <20261028173533.2658096-2-rjethwani@purestorage.com>
+Message-ID: <auJcgy0IIfavE37T@google.com>
+Subject: Re: [PATCH net v3 1/2] kcm: reject attaching sockets with a ULP, and
+ TLS on KCM sockets
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Rishikesh Jethwani <rjethwani@purestorage.com>
+Cc: netdev@vger.kernel.org, Jiayuan Chen <jiayuan.chen@linux.dev>, 
+	Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, "David S . Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, Sabrina Dubroca <sd@queasysnail.net>, 
+	Shuah Khan <shuah@kernel.org>, Hannes Reinecke <hare@suse.de>, Sagi Grimberg <sagi@grimberg.me>, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-When receiving a pure ack from a peer that also sends data, we can
-have SEG.SEQ > SND.WL1, even though the segment contains no data. This
-makes tcp_may_update_window() return true (because of the
-"after(ack_seq, tp->snd_wl1)" condition), and tcp_ack_update_window()
-then adds FLAG_WIN_UPDATE to the segment set of flags, even when
-there's no window update.
+On Wed, 28 Oct 2026 11:35:32 -0600, Rishikesh Jethwani wrote:
+> KCM and kTLS RX do not work together, in either order.
+> 
+> KCM's psock_data_ready() is the lower socket's data_ready callback. It
+> can run in softirq context under read_lock_bh(&sk->sk_callback_lock),
+> and calls strp_data_ready(), which invokes sock->ops->read_sock()
+> inline. With kTLS RX, that is tls_sw_read_sock(), which can sleep: it
+> allocates with sk->sk_allocation, waits for async crypto, flushes the
+> socket backlog, and may wait in tls_rx_reader_acquire().
+> 
+> Found by code review. On an unmodified kernel with
+> CONFIG_DEBUG_ATOMIC_SLEEP, sending TLS records over loopback to a socket
+> with software kTLS RX attached to a KCM mux reports:
+> 
+>   BUG: sleeping function called from invalid context at include/linux/sched/mm.h:321
+>   in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 189, name: ksoftirqd/34
+>   Call Trace:
+>    __might_resched
+>    kmem_cache_alloc_node_noprof
+>    __alloc_skb
+>    alloc_skb_with_frags
+>    tls_rx_one_record
+>    tls_sw_read_sock
+>    strp_read_sock
+>    strp_data_ready
+>    psock_data_ready [kcm]
+> 
+> Before commit 662fbcec32f4 ("net/tls: implement ->read_sock()"), TLS
+> inherited tcp_read_sock(), so KCM parsed the ciphertext in the TCP
+> receive queue as messages. HW TLS RX uses the same proto_ops as SW
+> RX, so it is affected the same way.
+> 
+> The two also stack socket callbacks and neither restores the other's:
+> with TLS RX configured after the attach, kcm_unattach() overwrites
+> tls_data_ready(), and releasing TLS RX later reinstalls
+> psock_data_ready() on a socket no longer attached to KCM. On TX,
+> kcm_unattach() restores its saved sk_write_space, dropping
+> tls_write_space().
+> 
+> There is no known user of this combination, so reject it, as was done
+> for sockmap in commit 460e6486617c ("tls: reject the combination of TLS
+> and sockmap"):
+> 
+>  - kcm_attach() refuses sockets that already have any ULP, not only
+>    TLS, as sk_psock_init() does for sockmap, with -EOPNOTSUPP like its
+>    other refusals;
+>  - tls_init() refuses sockets attached to KCM with -EINVAL, like
+>    __tcp_set_ulp() and the sockmap check, tracked by a new SOCK_KCM
+>    flag set on attach and cleared on unattach.
+> 
+> sk_user_data cannot serve as the marker: sunrpc and nvme-tcp set it on
+> sockets that tlshd later upgrades to TLS, so it is already set when
+> tls_init() runs. Unlike sockmap, both sides run under the lower
+> socket's lock (tcp_set_ulp() asserts this), so the check is made at ULP
+> install rather than at key configuration.
+> 
+> This is a user-visible change that will also reach stable kernels:
+> attaching a socket with a ULP now fails with -EOPNOTSUPP, and installing
+> TLS on an attached socket fails with -EINVAL. Every refused setup was
+> already broken as described above, except one where only kTLS TX is
+> configured. Such a socket still passes data, because read_sock() stays
+> tcp_read_sock() until kTLS RX is configured, and KCM transmits with
+> sock_sendmsg(), so records reach tls_sw_sendmsg(). It is still wrong: if
+> TLS was armed before the attach, psock_write_space() shadows
+> tls_write_space() and does not chain to it, so a record deferred on a
+> full send buffer waits for the next send; if TLS was armed after the
+> attach, the chain works until kcm_unattach() drops tls_write_space(), as
+> above. The direction is not known at ULP install, so refusing it keeps
+> one rule for both orders and matches sk_psock_init().
+> 
+> Tested with CONFIG_DEBUG_ATOMIC_SLEEP: both orders are now rejected,
+> plain KCM still delivers messages, and the TLS ULP can be installed
+> after SIOCKCMUNATTACH.
+> 
+> Fixes: 662fbcec32f4 ("net/tls: implement ->read_sock()")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+> Link: https://lore.kernel.org/netdev/3108e934-ec00-458b-8720-450554b35b55@linux.dev/
+> Signed-off-by: Rishikesh Jethwani <rjethwani@purestorage.com>
+> ---
+>  include/net/sock.h |  1 +
+>  net/kcm/kcmsock.c  | 12 ++++++++++++
+>  net/tls/tls_main.c |  6 ++++++
+>  3 files changed, 19 insertions(+)
+> 
+> diff --git a/include/net/sock.h b/include/net/sock.h
+> index 173b37b2b8bb..e579a4a96c8e 100644
+> --- a/include/net/sock.h
+> +++ b/include/net/sock.h
+> @@ -1024,6 +1024,7 @@ enum sock_flags {
+>  	SOCK_RCVMARK, /* Receive SO_MARK  ancillary data with packet */
+>  	SOCK_RCVPRIORITY, /* Receive SO_PRIORITY ancillary data with packet */
+>  	SOCK_TIMESTAMPING_ANY, /* Copy of sk_tsflags & TSFLAGS_ANY */
+> +	SOCK_KCM, /* Attached to a KCM mux as a lower socket */
 
-Since FLAG_WIN_UPDATE prevents the segment from being considered as
-dup-ack (as it's part of FLAG_NOT_DUP), this can inhibit fast
-retransmit on non-SACK connections, making recovery very slow as it
-now entirely relies on RTO.
+I guess this does not compile for 32-bit ?
 
-The "DUPLICATE ACKNOWLEDGMENT" definition of RFC 5681, section 2,
-says that lack of window update is a necessary condition for a dup ack:
-"(e) the advertised window in the incoming acknowledgment equals the
-advertised window in the last incoming acknowledgment.". Spurious
-window updates can thus prevent dup ack detection and, in the end, fast
-retransmit.
 
-Avoid this scenario by setting FLAG_WIN_UPDATE only when a window
-update actually occurs. Pure acks with SEG.SEQ > SND.WL1 can now
-be detected as dup-ack and trigger fast retransmission.
+>  };
+>  
+>  #define SK_FLAGS_TIMESTAMP ((1UL << SOCK_TIMESTAMP) | (1UL << SOCK_TIMESTAMPING_RX_SOFTWARE))
+> diff --git a/net/kcm/kcmsock.c b/net/kcm/kcmsock.c
+> index a7f94d42036f..546d5b563382 100644
+> --- a/net/kcm/kcmsock.c
+> +++ b/net/kcm/kcmsock.c
+> @@ -27,6 +27,7 @@
+>  #include <linux/sched/signal.h>
+>  #include <linux/uio.h>
+>  
+> +#include <net/inet_connection_sock.h>
+>  #include <net/kcm.h>
+>  #include <net/netns/generic.h>
+>  #include <net/sock.h>
+> @@ -1272,6 +1273,15 @@ static int kcm_attach(struct socket *sock, struct socket *csock,
+>  		goto out;
+>  	}
+>  
+> +	/* KCM and ULPs are mutually exclusive. A ULP such as kTLS replaces
+> +	 * read_sock() and stacks its own socket callbacks with ours. tls_init()
+> +	 * rejects sockets already attached to KCM, see SOCK_KCM.
+> +	 */
+> +	if (inet_csk_has_ulp(csk)) {
+> +		err = -EOPNOTSUPP;
+> +		goto out;
+> +	}
+> +
+>  	psock = kmem_cache_zalloc(kcm_psockp, GFP_KERNEL);
+>  	if (!psock) {
+>  		err = -ENOMEM;
+> @@ -1305,6 +1315,7 @@ static int kcm_attach(struct socket *sock, struct socket *csock,
+>  	psock->save_write_space = csk->sk_write_space;
+>  	psock->save_state_change = csk->sk_state_change;
+>  	csk->sk_user_data = psock;
+> +	sock_set_flag(csk, SOCK_KCM);
+>  	WRITE_ONCE(csk->sk_data_ready, psock_data_ready);
+>  	WRITE_ONCE(csk->sk_write_space, psock_write_space);
+>  	csk->sk_state_change = psock_state_change;
+> @@ -1382,6 +1393,7 @@ static void kcm_unattach(struct kcm_psock *psock)
+>  	 */
+>  	write_lock_bh(&csk->sk_callback_lock);
+>  	csk->sk_user_data = NULL;
+> +	sock_reset_flag(csk, SOCK_KCM);
+>  	WRITE_ONCE(csk->sk_data_ready, psock->save_data_ready);
+>  	WRITE_ONCE(csk->sk_write_space, psock->save_write_space);
+>  	csk->sk_state_change = psock->save_state_change;
+> diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
+> index b8d5a843f761..e45062841950 100644
+> --- a/net/tls/tls_main.c
+> +++ b/net/tls/tls_main.c
+> @@ -1067,6 +1067,12 @@ static int tls_init(struct sock *sk)
+>  	if (sk->sk_state != TCP_ESTABLISHED)
+>  		return -ENOTCONN;
+>  
+> +	/* TLS and KCM are mutually exclusive. kcm_attach() rejects sockets
+> +	 * with a ULP; both run under the socket lock, so this cannot race.
+> +	 */
+> +	if (sock_flag(sk, SOCK_KCM))
+> +		return -EINVAL;
+> +
+>  	/* allocate tls context */
+>  	write_lock_bh(&sk->sk_callback_lock);
 
-Also, stop setting FLAG_WIN_UPDATE in tcp_ack()'s header prediction
-path. One of the conditions for header prediction to happen is that
-received segments don't trigger a window update. This flag update was
-thus wrong to begin with. Now that tcp_ack_update_window() sets
-FLAG_WIN_UPDATE only if a window update actually occurred, we need the
-header prediction path to stop reporting spurious window updates too.
-Otherwise BPF programs would get inconsistent window update information
-(CA_ACK_WIN_UPDATE) between fast an slow paths.
+Perhaps move sk_psock() check in do_tls_setsockopt_conf() here.
 
-Finally, add FLAG_SND_UNA_ADVANCED to the definition of FLAG_NOT_DUP.
-This is necessary for the case where an incoming segment acknowledges
-less than a full segment of the retransmit queue. Such segments were
-not considered dubious by tcp_ack_is_dubious() because of the spurious
-FLAG_WIN_UPDATE flag, which prevented the segment from being seen as a
-duplicate ack. Now that FLAG_WIN_UPDATE doesn't cover this scenario
-anymore, we need another way to mark these acks as non-duplicate.
-Adding FLAG_SND_UNA_ADVANCED to FLAG_NOT_DUP is the natural way of
-doing this, since, by definition, a segment advancing SND.UNA, even by
-a small amount, cannot be a duplicate ack.
 
-A side effect of this patch is that repeated zero window acks received
-from peer can now be considered duplicate acks (because of the the
-"|| !win" condition in tcp_may_update_window()). Therefore, they can
-now trigger fast retransmission and fast recovery, including congestion
-window reduction, when the peer is stalled. This is RFC compliant and
-shouldn't have any negative effect.
 
-Add packetdrill selftest. Before this patch, the 1001:2001 segment was
-retransmitted upon RTO, now it's sent right after reception of the
-third duplicate ack.
-
-Thanks to Tom Williams for the investigation help and initial
-reproducer.
-
-Reported-by: Tom Williams <Tom.D.Williams@MorganStanley.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Guillaume Nault <gnault@redhat.com>
----
-v2:
-  - Quote RFC 5681 about dup ack definition (Eric Dumazet).
-  - Remove FLAG_WIN_UPDATE from tcp_ack() header prediction (Eric
-    Dumazet).
-  - Describe behaviour change for the repeated zero window ack case
-    (Eric Dumazet).
-  - Add FLAG_SND_UNA_ADVANCED to the definition of FLAG_NOT_DUP (Neal
-    Cardwell)
-v1: https://lore.kernel.org/netdev/2ab9dc5f5b5e9f50d7a4aa02a6b6759fc86314c7.1792658454.git.gnault@redhat.com/
-
- net/ipv4/tcp_input.c                          |  6 +--
- .../tcp_bidir_fast_retransmit_nosack.pkt      | 42 +++++++++++++++++++
- 2 files changed, 45 insertions(+), 3 deletions(-)
- create mode 100644 tools/testing/selftests/net/packetdrill/tcp_bidir_fast_retransmit_nosack.pkt
-
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 1ddce9c4b7e8..050f2a26f834 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -107,7 +107,8 @@ int sysctl_tcp_max_orphans __read_mostly = NR_FILE;
- #define FLAG_TS_PROGRESS	0x40000 /* Positive timestamp delta */
- 
- #define FLAG_ACKED		(FLAG_DATA_ACKED|FLAG_SYN_ACKED)
--#define FLAG_NOT_DUP		(FLAG_DATA|FLAG_WIN_UPDATE|FLAG_ACKED)
-+#define FLAG_NOT_DUP		(FLAG_DATA|FLAG_WIN_UPDATE|FLAG_ACKED|	\
-+				 FLAG_SND_UNA_ADVANCED)
- #define FLAG_CA_ALERT		(FLAG_DATA_SACKED|FLAG_ECE|FLAG_DSACKING_ACK)
- #define FLAG_FORWARD_PROGRESS	(FLAG_ACKED|FLAG_DATA_SACKED)
- 
-@@ -3959,11 +3960,11 @@ static int tcp_ack_update_window(struct sock *sk, const struct sk_buff *skb, u32
- 		nwin <<= tp->rx_opt.snd_wscale;
- 
- 	if (tcp_may_update_window(tp, ack, ack_seq, nwin)) {
--		flag |= FLAG_WIN_UPDATE;
- 		tcp_update_wl(tp, ack_seq);
- 
- 		if (tp->snd_wnd != nwin) {
- 			tp->snd_wnd = nwin;
-+			flag |= FLAG_WIN_UPDATE;
- 
- 			/* Note, it is the only place, where
- 			 * fast path is recovered for sending TCP.
-@@ -4354,7 +4355,6 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
- 		 */
- 		tcp_update_wl(tp, ack_seq);
- 		tcp_snd_una_update(tp, ack);
--		flag |= FLAG_WIN_UPDATE;
- 
- 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPHPACKS);
- 	} else {
-diff --git a/tools/testing/selftests/net/packetdrill/tcp_bidir_fast_retransmit_nosack.pkt b/tools/testing/selftests/net/packetdrill/tcp_bidir_fast_retransmit_nosack.pkt
-new file mode 100644
-index 000000000000..5c66b7171d22
---- /dev/null
-+++ b/tools/testing/selftests/net/packetdrill/tcp_bidir_fast_retransmit_nosack.pkt
-@@ -0,0 +1,42 @@
-+// SPDX-License-Identifier: GPL-2.0
-+//
-+// Verify that non-SACK connections properly detect duplicate acks when mixed
-+// with other data segments from peer.
-+
-+`./defaults.sh`
-+
-+    0     socket(..., SOCK_STREAM, IPPROTO_TCP) = 4
-+   +0...0 connect(4, ..., ...) = 0
-+
-+   // Three-way handshake, SACK not supported by peer
-+   +0 > S  0:0(0) <mss 1460,sackOK,TS val 0 ecr 0,nop,wscale 8>
-+   +0 < S. 0:0(0) ack 1 win 65535 <mss 1000>
-+   +0 > .  1:1(0) ack 1
-+
-+   // Send 1000 bytes, peer acks everything
-+   +0 send(4, ..., 1000, 0) = 1000
-+   +0 > P. 1:1001(1000) ack 1
-+   +0 < .  1:1(0) ack 1001 win 65535
-+
-+   // Send 4000 more bytes
-+   +0 send(4, ..., 4000, 0) = 4000
-+   +0 > P. 1001:5001(4000) ack 1
-+
-+   // Receive first dup-ack (considering segment 1001-2001 was lost)
-+   +0 < .  1:1(0) ack 1001 win 65535
-+
-+   // Receive unrelated data segment from peer and ack it
-+   +0 < P. 1:11(10) ack 1001 win 65535
-+   +0 > .  5001:5001(0) ack 11
-+
-+   // Receive second dup-ack
-+   +0 < .  11:11(0) ack 1001 win 65535
-+
-+   // Receive another data segment from peer and ack it
-+   +0 < P. 11:21(10) ack 1001 win 65535
-+   +0 > .  5001:5001(0) ack 21
-+
-+   // Receive third dup-ack, which should trigger fast retransmit (without
-+   // waiting for RTO)
-+   +0 < .  21:21(0) ack 1001 win 65535
-+   +0 > .  1001:2001(1000) ack 21
--- 
-2.47.3
-
+>  	ctx = tls_ctx_create(sk);
+> -- 
+> 2.50.1
+> 
