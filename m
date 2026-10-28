@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793231566;
-	b=l1AUhy/0sNWCGPwmr8J7t6GHL4IWIXZljRAhNzW0kHxqAwY2nRDw1RAU/kh1av2QzxF5
-	 p6uFlY7OyphocR+OgpsbflKcZ8qmyNEeC5D37t1WtN55WpsLQ7SVFoEST9jcwZT7bhyN5
-	 6yK8vOTTfYeCucRfqhBUIr/nD17y0K2x0WLzbpLLv0k5mPFfdITdA9QSDSbXy6SmPy81/
-	 GIcp72itwt0SqKFYfCuS8NatBZFii+GxYiI8pvscsRHD4EgBBbx6g3LOsHM+5C8hKiZJX
-	 owr2tONyUES+z7QOGV6xUBudiKZ2hukWe5aZbhT5H04gWU3cbQ7r0s7TZOvB4YAdO7A==
+	t=1793231567;
+	b=OSs5pvUbm9+EZqAxIXzsuD+SHSykk15gwp50+pq1A8yG2enOoT3kOhL29iPE6mav90R4
+	 hiN2sTSLyRkY+kkOk2Vr9oB4R4u2eZippXyRprydDjN/MJLck6A3piIOqnFvMDccef5dP
+	 67V0gUlW/RijRjDJHVow/Hb6FzHaTlUpsx07Iu1F8/1F2XKGkQduZZMw+YGJ45HzY0lGW
+	 JmQ3sJKmdE46zWmunCwZIYbDaZm5nFPe0q3AhOM/Sh/UE9EBfQFSXCXaxMwzjNv3S0sTc
+	 L8o1lalg7nihQ6rV8E4nBRoBNYK/rySQbc9xSUsLEGpa6tASlB8J38/53lYQ0qPRtbg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793231566;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793231567;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=vokIoT9Bk/PARKkrkH9H82xz2Z57SKCL3DuI9iJhxDg=;
-	b=L5Wk92Nkv0Ocwi+i8ddznpEcGlFnfIuns2UyGX9zWNKi9sZpjTFm0AEqxFjRzNS/uPyB
-	 vgKoDJt/gjTP8JEri/kB/g8D7QHwP1qhVM6dAlPiGkGYUuPs4PWQVJA+EZ8a7OypGbPR1
-	 KKZIGKq4Y/8M7X/31UHqqfz8m3SuoVXzHz2fm5gsvMjBn/5g7Lk642ALpH6vUMSuPPXmB
-	 BISRo/zkx1wnfNvtV0efGMsPhBx0+SJ7J+cpP3MRtjbl8hQrfIfEgoQlezGkHLw7DS8O8
-	 vh9feqbPVqajV3ULYhnx/LoCK/WLd4GFMeyUoGX3uUirBiMOv5NcUj3pH1bunMRhDlQ==
+	bh=n+XZFDnWaWCh7AANBxuS0C+FqovJyNGIftTEuPUSsjc=;
+	b=MavLp6bljF/4IbBMJNEh07W0GLFP2UlD4VyPpj1eZ2mhXUK7wYRDrcyeDqSflcBFUfUi
+	 neJ8aN9w5AXTPJRUPJpRRNiY3RFJHuWNMiLZtLAJERYMi8xUN9uhwBgjOBW5sb13esza0
+	 HpAToLgy5TwMZ7Dj5VRGoK93l7/94WjoLKZ5s1c3xtee0lKWSlSLi1a1XU4a6iusOrPDy
+	 ZdnM4DfZ4FwrChv6EPhopxSX6htjT5RHTPYWRCjKJDyVeymEvq8v8sujocQRT0szG08iT
+	 a7JcFrHPf5iXol/C2PUd2GSodM1Kx63MFPeRyHRYVVNJN3IOYQQEV33R9kJEh1R7AHw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CfYJRKEM;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ap9ZEKmN;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBED606A31D
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 23:52:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4227A606A31C
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 23:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CfYJRKEM
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D2EB1F01825;
-	Wed, 28 Oct 2026 23:52:44 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ap9ZEKmN
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E952C1F01828;
+	Wed, 28 Oct 2026 23:52:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793231565;
-	bh=vokIoT9Bk/PARKkrkH9H82xz2Z57SKCL3DuI9iJhxDg=;
+	s=k20260515; t=1793231566;
+	bh=n+XZFDnWaWCh7AANBxuS0C+FqovJyNGIftTEuPUSsjc=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=CfYJRKEMVmkIvkzvfjX5be6XgLqx69gKDFsNBI3M++NLJUDSLD2i5jZxoS3PvdBW0
-	 Dk/52bLq5cd+KWio6Fk8mN0LVsQMa5FGbVZt+HXk42oCtJSu6FaWzP0r4I60hC1t4c
-	 7+E77ufx9oOOsplW0cHQZGud7hSggHOLSUc8nvADUxHm0cadNqUwJ+qaQu7mOuAHrM
-	 ba3484i34ztPcXoszQ4u9hwxJpHGfqgUXSgy59B6ON7xUKRiNFLyLjHsrgU3XlK8ww
-	 kPYNoK0SEt+YeZM58sKbKtdzOVJs5yG7Xq+c0PXLCYbN3s9+EUndctUtF2q15gZkMd
-	 FfNNlFpQYYTww==
-Subject: Re: [PATCH net 1/5] eth: bnxt: recycle agg buffers when Rx head
- buffer allocation fails
+	b=ap9ZEKmNeearLiVHoqgIxYme9zNDsLO/M1b8fYzL0pPdSyuGEJ701VG9k4Ilvw2v4
+	 zzFT5CgGNa1BCY61MKNid4pe3VnC4NGdPw9MNuZNHAGjxDDBr8wyzW5eBgjjXeaGlD
+	 xWBYegrzGOnMdCTfgc+BXZtCaqP/2pGT3CSvDWo+KjEA+nMYLwpqLkq2e6bS0LAhdt
+	 PReieaJ2ed0deLkjKTFO5LBNivmeo232rLyJC+0t+O8GP3YxY70vDVizI5A5CPjz+K
+	 zHRRsuTbU14y1OwKsPdIVf8krFnFsiXg6wxhDmmESyjqlZclwz3X2UMpMGbKgMYDJ4
+	 Kizl8CipaCV5A==
+Subject: Re: [PATCH net 2/5] eth: bnxt: resize Rx head buffers when
+ rx-copybreak changes
 From: netdev-bot+sashiko@kernel.org
 To: kuba@kernel.org
 Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
@@ -50,11 +50,11 @@ Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
  john.fastabend@gmail.com, sdf@fomichev.me, eddie.wai@broadcom.com,
  prashant@broadcom.com, huangjw@broadcom.com, gospo@broadcom.com,
  brett.creeley@amd.com, ap420073@gmail.com, joe@dama.to
-Date: Wed, 28 Oct 2026 23:52:43 +0000
-Message-ID: <179323156398.3134.2862221492750758183@kernel.org>
-In-Reply-To: <20261027234940.1267225-2-kuba@kernel.org>
-References: <20261027234940.1267225-2-kuba@kernel.org>
-X-sashiko-severity: Low
+Date: Wed, 28 Oct 2026 23:52:45 +0000
+Message-ID: <179323156552.3134.8258354110964306785@kernel.org>
+In-Reply-To: <20261027234940.1267225-3-kuba@kernel.org>
+References: <20261027234940.1267225-3-kuba@kernel.org>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -67,186 +67,147 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 1 · Medium: 0 (1) · Low: 0
 
-- [Low] bnxt_rx_multi_page_skb() now re-posts the head page to the device
-  without dma_sync_single_for_device() when napi_build_skb() fails.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] The fix is incomplete.
 
 Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but the patch adds
-  a new consumer of it.
-- [Medium] At this commit, the XDP multi-buffer path in bnxt_rx_pkt()
-  still leaks buffers when bnxt_rx_agg_netmems_xdp() fails partway.
+- [Medium] This problem wasn't introduced by this patch, but
+  bnxt_copy_data() (drivers/net/ethernet/broadcom/bnxt/bnxt.c) syncs…
 
 --
 
-eth: bnxt: recycle agg buffers when Rx head buffer allocation fails
+eth: bnxt: resize Rx head buffers when rx-copybreak changes
 
-This commit adds an oom_next_rx_agg label to bnxt_rx_pkt(). When the
-rx_skb_func() head buffer allocation fails, the label returns the
-aggregation buffers to the agg ring, or frees the XDP frags, the same way
-the copybreak failure path already does. In bnxt_rx_multi_page_skb(), a
-napi_build_skb() failure now releases the newly allocated replacement
-buffer and puts the original head page back on the ring, so the XDP frags
-in its shinfo are still there for the caller's cleanup.
+This patch makes bnxt_set_tunable() call bnxt_set_ring_params() after it
+changes bp->rx_copybreak, so the Rx head buffers are resized before the
+next open. The goal is to stop bnxt_copy_data() from syncing rx_copybreak
+bytes past the end of head buffers that are too small.
 
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> index 0682060b048ce..2e7276801fddc 100644
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> @@ -1215,7 +1215,15 @@ static struct sk_buff *bnxt_rx_multi_page_skb(struct bnxt *bp,
->  				bp->rx_dir);
->  	skb = napi_build_skb(frag_start, rxr->rx_page_size);
->  	if (!skb) {
-> -		page_pool_recycle_direct(rxr->page_pool, page);
-> +		struct page *new_page;
-> +
-> +		new_page = rxr->rx_buf_ring[RING_RX(bp, prod)].data;
-> +		/* The caller may still need the XDP frags from shinfo at the
-> +		 * end of the head page. Release the new buffer instead and
-> +		 * put the head back on the ring.
-> +		 */
+> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+> index 622e89587e5db..ef4bea4a0f8cc 100644
+> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+> @@ -4601,6 +4601,7 @@ static int bnxt_set_tunable(struct net_device *dev,
+>  			if (netif_running(dev))
+>  				return -EBUSY;
+>  			bp->rx_copybreak = rx_copybreak;
+> +			bnxt_set_ring_params(bp);
 
 [Severity: High]
-This is a pre-existing issue, not one this patch introduced. It goes back
-to 4c6c123c9af9, but this comment relies on it: can the frags in shinfo
-still be trusted at this point when DMA goes through swiotlb, or on
-non-coherent systems?
 
-In XDP multi-buffer mode, bnxt_xdp_buff_init() syncs only the packet
-payload for the CPU:
+Does this cover the case where no aggregation ring is in use?
 
-bnxt_xdp_buff_init()
-    dma_sync_single_for_cpu(&pdev->dev, mapping + offset, len, bp->rx_dir);
+The commit message says bnxt_set_ring_params() sizes the head buffers to
+fit at least rx_copybreak bytes. The rx_copybreak floor only exists inside
+the agg_factor branch, though:
 
-bnxt_rx_agg_netmems_xdp()->__bnxt_rx_agg_netmems() then writes
-shinfo->frags[] and nr_frags at the end of the head page, while that
-region is still owned by the device.
+drivers/net/ethernet/broadcom/bnxt/bnxt.c:bnxt_set_ring_params() {
+    ...
+	if (agg_factor) {
+		...
+		if (BNXT_RX_PAGE_MODE(bp)) {
+			...
+		} else {
+			rx_size = max3(BNXT_MIN_RX_HDR_BUF,
+				       bp->rx_copybreak,
+				       bp->dev->cfg_pending->hds_thresh);
+			...
+		}
+	}
 
-Afterwards, bnxt_rx_multi_page_skb() syncs the whole buffer, including
-the shinfo:
+	bp->rx_buf_use_size = rx_size;
+	bp->rx_buf_size = rx_space;
+    ...
+}
 
-    dma_addr -= bp->rx_dma_offset;
-    dma_sync_single_for_cpu(&bp->pdev->dev, dma_addr, rxr->rx_page_size,
-                            bp->rx_dir);
+agg_factor is 0 when TPA is off, HDS is off and rx_space <= PAGE_SIZE.
+That happens after ethtool -K gro-hw/lro off, in a kdump kernel, or with
+BNXT_FLAG_NO_AGG_RINGS. In that case the sizes come only from the MTU:
 
-rx_dir is DMA_BIDIRECTIONAL here, so __swiotlb_sync_single_for_cpu()
-copies the bounce buffer back over the original page. In page mode the
-device never writes the shinfo area of the bounce buffer. The frags the
-CPU just wrote could therefore be overwritten with stale frags from an
-earlier packet. On non-coherent systems, a cache invalidate could drop
-them in the same way.
+	rx_size = SKB_DATA_ALIGN(bp->dev->mtu + ETH_HLEN + NET_IP_ALIGN + 8);
 
-With this patch, the napi_build_skb() failure path continues to
-oom_next_rx_agg->bnxt_xdp_buff_frags_free(), which calls
-page_pool_recycle_direct() on every page listed in that shinfo. Could
-that recycle pages still owned by earlier skbs, while the frags that were
-actually received leak?
+	rx_space = rx_size + ALIGN(max(NET_SKB_PAD, XDP_PACKET_HEADROOM), 8) +
+		SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
 
-The success path reads the same data through
-bnxt_xdp_build_skb()->xdp_update_skb_frags_info().
+bnxt_set_tunable() still accepts any rx_copybreak up to
+BNXT_MAX_RX_HDR_BUF. bnxt_copy_data() still syncs a fixed
+bp->rx_copybreak bytes:
 
-Would it work to sync only the range the device wrote, or to do the
-full-page sync before the frags are written into shinfo?
+	dma_sync_single_for_cpu(&pdev->dev, mapping, bp->rx_copybreak,
+				bp->rx_dir);
+	...
+	dma_sync_single_for_device(&pdev->dev, mapping, bp->rx_copybreak,
+				   bp->rx_dir);
 
-> +		page_pool_recycle_direct(rxr->page_pool, new_page);
-> +		bnxt_reuse_rx_data(rxr, cons, data);
+__bnxt_alloc_rx_frag() packs rx_buf_size fragments into one head_pool
+page, and each mapping starts NET_SKB_PAD bytes into its fragment. Two
+examples on x86-64 with rx-copybreak set to 1024:
 
-[Severity: Low]
-Does the head page need a dma_sync_single_for_device() before it goes
-back on the ring?
+- MTU 60: rx_buf_size is 704, so each sync runs 384 bytes into the next
+  fragment.
+- MTU 400: rx_buf_size is 1024, with four fragments per page. The sync
+  for the last fragment ends 64 bytes past the page and outside its DMA
+  mapping.
 
-The whole buffer was synced for the CPU just above. The old
-page_pool_recycle_direct() call synced the page for the device, because
-the pool is created with PP_FLAG_DMA_SYNC_DEV. bnxt_reuse_rx_data() only
-copies the old DMA address into the producer BD, so that sync no longer
-happens.
+The BD length here is rx_buf_use_size, which is <= rx_copybreak, so every
+received packet goes through bnxt_rx_pkt()->bnxt_copy_skb()->
+bnxt_copy_data().
 
-The CPU also keeps writing to the head page after it has been re-posted.
-On the oom_next_rx_agg path, bnxt_xdp_buff_frags_free() sets
-shinfo->nr_frags = 0.
+Isn't the oversized sync from the commit message still reachable on this
+path? With swiotlb or non-coherent DMA it could still corrupt neighbouring
+buffers. The later patches in the series don't seem to touch
+bnxt_set_ring_params() or the sync length in bnxt_copy_data().
 
-For comparison, bnxt_copy_data() pairs both syncs before bnxt_rx_pkt()
-reuses the head:
+Would any of these be a more complete fix?
 
-    dma_sync_single_for_cpu(&pdev->dev, mapping, bp->rx_copybreak,
-                            bp->rx_dir);
-
-    memcpy(skb->data - NET_IP_ALIGN, data - NET_IP_ALIGN,
-           len + NET_IP_ALIGN);
-
-    dma_sync_single_for_device(&pdev->dev, mapping, bp->rx_copybreak,
-                               bp->rx_dir);
-
-The XDP_DROP and XDP_TX ring-full branches in bnxt_rx_xdp() already reuse
-the head without a sync for the device, so the new code matches them. It
-does drop a sync that the old path did, though.
-
->  		return NULL;
->  	}
->  	skb_mark_for_recycle(skb);
-
-[ ... ]
-
-> @@ -2424,6 +2423,14 @@ static int bnxt_rx_pkt(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
->  
->  	return rc;
->  
-> +oom_next_rx_agg:
-> +	if (agg_bufs) {
-> +		if (!xdp_active)
-> +			bnxt_reuse_rx_agg_bufs(cpr, cp_cons, 0, agg_bufs,
-> +					       false);
-> +		else
-> +			bnxt_xdp_buff_frags_free(rxr, &bnxt_xdp.xdp);
-> +	}
+- bound the sync to len + NET_IP_ALIGN
+- apply the rx_copybreak floor on the non-agg path as well
+- reject rx_copybreak values larger than the current head buffer
 
 [Severity: Medium]
-This isn't a bug introduced by this patch, but the new label doesn't
-cover a partial failure inside bnxt_rx_agg_netmems_xdp(). Are frags
-0..i-1 leaked in that case?
 
-If bnxt_alloc_rx_netmem() fails at index i > 0, __bnxt_rx_agg_netmems()
-has already put frags 0..i-1 into the head page's shinfo and refilled
-their agg ring slots. It then reposts only entries i..agg_bufs-1 and
-returns 0:
+This is a pre-existing issue, not introduced by this patch. In
+bnxt_copy_data() the CPU sync looks shorter than the memcpy that follows
+it:
 
-    --shinfo->nr_frags;
-    cons_rx_buf->netmem = netmem;
-    ...
-    rxr->rx_agg_prod = prod;
-    bnxt_reuse_rx_agg_bufs(cpr, idx, i, agg_bufs - i, tpa);
-    return 0;
+	dma_sync_single_for_cpu(&pdev->dev, mapping, bp->rx_copybreak,
+				bp->rx_dir);
 
-bnxt_rx_agg_netmems_xdp() sets the frags flag only when total_frag_len
-is non-zero:
+	memcpy(skb->data - NET_IP_ALIGN, data - NET_IP_ALIGN,
+	       len + NET_IP_ALIGN);
 
-    if (total_frag_len) {
-        xdp_buff_set_frags_flag(xdp);
-        shinfo->nr_frags = agg_bufs;
-        shinfo->xdp_frags_size = total_frag_len;
-    }
+bp->rx_offset - bp->rx_dma_offset == NET_IP_ALIGN, so data - NET_IP_ALIGN
+is rx_buf->mapping. When NET_IP_ALIGN == 2, bnxt_init_one_rx_ring_rxbd()
+sets RX_BD_FLAGS_SOP, and the hardware places the packet at mapping + 2.
 
-So bnxt_xdp_buff_frags_free() would skip these frags even if it were
-called. At this revision, bnxt_rx_pkt() also doesn't put the head buffer
-back on the ring:
+Take a copybreak packet whose len is rx_copybreak or rx_copybreak - 1. The
+memcpy reads up to rx_copybreak + 2 bytes from the mapping, so the last 1-2
+bytes of the packet were never synced.
 
-    if (!frag_len)
-        goto oom_next_rx;
+Could those bytes come from the stale original buffer with swiotlb, or from
+a stale cache line with non-coherent DMA? bnxt reports
+CHECKSUM_UNNECESSARY for these packets, so the stack would not catch the
+corrupted tail.
 
-A later commit in this series, "eth: bnxt: don't leak buffers when XDP
-agg buffer allocation fails", appears to fix this. It sets the frags
-flag before the loop, frees the frags when total_frag_len is 0, and adds
-bnxt_reuse_rx_data() before goto oom_next_rx. With that commit applied,
-the end state of the series no longer has this problem.
+This only affects architectures that keep NET_IP_ALIGN at 2. x86, arm64 and
+powerpc define it as 0.
 
->  oom_next_rx:
->  	cpr->sw_stats->rx.rx_oom_discards += 1;
->  	rc = -ENOMEM;
+A sync length of len + NET_IP_ALIGN would fix this and would also bound the
+overrun described above.
+
+>  		}
+>  		return 0;
+>  	case ETHTOOL_PFC_PREVENTION_TOUT:
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261027234940.1267225-1-kuba%40kernel.org
