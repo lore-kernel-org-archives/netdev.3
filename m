@@ -1,98 +1,117 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793223459;
-	b=ezDkaDbn4xKBJ1CBIeJTc3q8fcCNxQBApvUl0yI4Kwx4A5vSoc60PXzt80D2T3iyJg22
-	 qBMvLhqUJPq4ALuOOWsHqC4wfeJBcVpg+8rPkTxfWbQjakqB3nICyeToAO/AW6YZeYmFL
-	 oOMLZ1SZeMnycMhGHyRjNnVdGuB7/oanPpFdgTd6DQ8ysYUe0rTCirBDau/u2KbD7//pS
-	 XCn+OVwFzXjjhxKU3Cmw9dajWSLyxQtzAV/ePdbuZ/6vvwf3e+7MBnUKfXCmDHtk/Rr3d
-	 //cmj9B1P8IerbS1NSi9KCqbWDUgWCvnySpVNgimOo4owHc/pV8NUDE/rig80t5k87w==
+	t=1793223660;
+	b=yladYY36LmSyBSho49/4xyBC1qWo/LzAZKrwyq5JUXl8uRc0fxxWiWRytG4uzLC0ymAZ
+	 tqCZthSdH2sc+d/F/6NhHpQYu1scazJKRbm7T0/4PwwwCH7YV8L82FTpeCs/DBJ17BIAz
+	 AFfgFuOfnLB9U/Czv1lAmZ2JWIZiSX1Ly9Nlit12wQ8cIvfXa4eYj38agdDKE7w43aELR
+	 +i7HCTee5DipQnD7BN3Yw9DuPbBtxBXOFojuUvPt+Zi0i7VHKgDNabVxjGvi8Zq3PZMnP
+	 LUULYCWiclveYIq2CmB+a51H5sgmk4eNHk7lWTcRtJzC/jCfJBezujTHZUvsSuXyN8g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793223459;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Subject:From:To:Cc:
-	 Date:Message-ID:In-Reply-To:References:User-Agent:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=ua/WcoI63VeesHShyFwdbeqpekJg43ZdDLH5fSyDw3g=;
-	b=QjczIDlI9+1il/MU4YPUXaEnpMvHU5gwwQY+3yUSvcYeQoSDKPK8//PKoRAzZc2ckO7p
-	 GLTK0t+oMH1Ql59e+RGPbRXdd8jB6hRyADZzmx6z3ttQSzB/Sd3RsGnRkTZQco0akCSa9
-	 48a924QEzxVtupA14FPOK2T/fiXij7oK72WRTpsPRy84WkFCQX0EN7xAZf5uQtCi5xIOF
-	 WfEhwC/niEjAy+GoLg4Kq1hd3iGgJp9N3xnu0sMnYcjXC9fkL7J2VeyDuEPx7dctFG1Lb
-	 kFHaDFm+uZ+ODjNkPw360lcCux5ayhsJYxStBVEmcRbNQBH3sTB74nbbvoNTNo3pv8w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793223660;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=umBzuMBmol8a4492mtiSqpBu+wYhWnyyfG/+WDRtoO0=;
+	b=BRW1mS0HfWwkpdxGKGoST4GhLlv5YcPBAa7gWcFHXenbqcA/gcDT3rI5LOmef5z3Ndu3
+	 cOHOxy/WmqaFf2U36v8dombVfrDw6PzZ0g8sDrLq6w2wQTnf1NSZqmL1uT9WZvqb9JbtZ
+	 rovDLk0S/ZQOF2f+tfXbsCxusvJ7y2GZA/bvyVt7ulBcqEqQMfWpESFkfOL9w1S09hJNI
+	 Jsru2siNfPudcEM5KANdVDEH4FCQuXnTWbnf6zAqifhXUW4KP8NE9mkC+IGxlB5b2fDOG
+	 TRANemU/QkV7603YCsKQQH70yn/1Ybu94XPxEXAklSnplZAwjdICX8zB+M0JODQSAUA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=aHpD4RKE;
-	arc=none smtp.remote-ip=209.85.214.180
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aMqJuCbR;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=pYjhUbT1;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86621606A31D
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 21:37:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 86621606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C95606A31A
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 21:40:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 98C95606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=aHpD4RKE
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2e95bd1c14cso11720635ad.2
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 14:37:39 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aMqJuCbR;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=pYjhUbT1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793223658;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=umBzuMBmol8a4492mtiSqpBu+wYhWnyyfG/+WDRtoO0=;
+	b=aMqJuCbRoNljs+gHplfsC4cknrWT0iE6is3gpa57KX8SX0m2tBOaSL6jxVcLyIySByyYkU
+	uxxN9ifwAYt4CkWY4Vni31F8WzlOnjJP1YwO8v1V1QT7GY+o1s775EKkhqyDtPSj4RtRIu
+	rFGkDKlhd5pPE9CTjDXMWu3KoF5fWx4=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-463-GqpgTJ-6Og-gTO1FX2F2rQ-1; Wed, 28 Oct 2026 17:40:57 -0400
+X-MC-Unique: GqpgTJ-6Og-gTO1FX2F2rQ-1
+X-Mimecast-MFC-AGG-ID: GqpgTJ-6Og-gTO1FX2F2rQ_1793223656
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a1e489f97fso14591895e9.0
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 14:40:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793223459; x=1793828259; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from:subject:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=ua/WcoI63VeesHShyFwdbeqpekJg43ZdDLH5fSyDw3g=;
-        b=aHpD4RKE3UkTz/QNZT++24bfWRUzf75hguxqFbGeT+xQvsDLn9MufbrUbiKeHzf+DH
-         EJzRWLCx7Du8hUIVMhO6Pbf0gN8NsUlpSKcHEAjcZqKwQLaX61Rd3Jj82cnsuRDqPfrN
-         3ufznNRcUTLeJuSKB3N79Jaf1xU04k1kBLVZG9SlTztnQJexx4n+k5EKruaS1iHuXvt3
-         EJ6fBX0xXTePFclhQPulIay5QLhCrQSlhNjvGalbsDg/ADNqNjONT5O1qBUTU5ksRvQy
-         5HxegeTqaszvRG1aPAaDuQb5EWBohmI7IoMUd1x+Z/nhYGLCDS+rjd3nE1gf364AaLRc
-         gDEA==
+        d=redhat.com; s=google; t=1793223656; x=1793828456; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=umBzuMBmol8a4492mtiSqpBu+wYhWnyyfG/+WDRtoO0=;
+        b=pYjhUbT19dFwzDe35ZffbXjBS7jlCGTl+MGU5IhKkhmSpyru0/bCR9aQGuo1JqcLdf
+         EhuwYL8qmdhrjsu7Sgg7D/MiMYeU8oBrQmqXhfrwCweFCoodhgulqPf5qJmPnDETIFQY
+         1CDR7xqYhur2XCMP6ONFU9NpPz38bhMT92uPSS7KwsVBUob6e0SB1igI2OCgs3Z3S7sG
+         t6wCDQT2VRgDAs5X3HzP5gOSi3CIUttboEEFCgB1NzRJZVIVR35wyNWIXeRT9Eh71L6r
+         hvOrH6GHKRjKnhR2TcsEcp2RRmr9qOfmzRbIJghgkYvVbNL0Z/Z9spoSQATot7HTJ7d6
+         f/bA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793223459; x=1793828259;
-        h=content-transfer-encoding:content-type:mime-version:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from:subject:x-gm-gg
+        d=1e100.net; s=20260707; t=1793223656; x=1793828456;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ua/WcoI63VeesHShyFwdbeqpekJg43ZdDLH5fSyDw3g=;
-        b=nc79tvsrGGu4vci6zd07vIZXmLknHy75MlM/XCqqv6gOPNqUGSCD+MCvdwWLeB8daj
-         Yu6SziTDcUU5cNiAoHBI9ceFEtQhAoZrAT6wxgy24TTIujxq8FEk2g0mlNG0dFOh5xFk
-         PsSrwftc5gfKIMFLT6oSQ3UgwFQEGY+kgFZHi6su5AncJg5LIxipDs5l0atMa5JcCP5L
-         gc3eZhDx0eILe6PFW3gCkDSksEVWKdVjxJmTnKO4pEL9bXfoPiYvIfb/nOov1nOeuiuc
-         kH8MfZpi2CfC+hqlC1gRKB/re5ukbs7CRhE99FK/bKK6640pygOitJWgTeS3TR7S769b
-         Rotg==
-X-Gm-Message-State: AFq9FYLIbW20AgWOMaVWQ436ZzvLhW9bQzTr+XE9FDaY9VntkOLusLmI
-	p+C6BSsdeg2//8fDPCH8QBEeFvcCtFgwPTqT8mxcjCPBdOMsOWtRUnnk
-X-Gm-Gg: AYBFou3jzvTbPtTNvTmG8rgVP15plYuWBgQu5Jsw2SH7332gihtKaPl1YAiU4gbn/fx
-	OG2XEb0/57u8mtzhdiaXmJ6FL2g/xIzDYu88BUz/yAeLq0eQBi0ob2DlPgGQXyNObf37C5SXX04
-	ZUX+7gKCEjKZ7yJQhRgj/7b0ZrCeJV8JoSjVvqeOGVmPSbBhUfYBUMyAMFn92nfnL+buxgu+FDF
-	MqZ1vxYeTCvs3FEyqdLYMONOT0jUWI+PmLnqNKkKZ1HL9xNUMN0Hjnunbk/feglO+Xzltxm7LNc
-	hOzYY3aQflCRAaGMJVTJJmlEdin6EwkCwKlDpjA8dkLVNeXbI9nxZ6JTshT5dopj+VLk8MG0nZQ
-	MfQzJXmPyyhCmGSCReQqm+vVWI6slPtHBBbyzBukda/I31Rr4qGyoYH299MBHuliXtJ3YwS4paX
-	l0DQVm3YvSaBc5KaO3/Cg15g7M4kLOQa5ieB03H+l6tJ9a8VnCZwTPSWDvDpT4Ynn8yGJb9+VHH
-	hw9ftbmxckOtrfIzj5PQs7Kz16dtknHhsTXxt3ZDRnVNdnaKM69WX0q8nu1MHtrYp6ZbaMmdlCF
-	YwETcCH/UJdkMm4NjmgDj12TlUz+eRgNML84eiwgkxHqNVcBXMQrAmpQe5+lKh7kzgE/rxmwxmw
-	/k3U6M/RpoiaIq3ZbBKFnZL8mrCPwYzMqlk8GMfQsGygO6A==
-X-Received: by 2002:a17:903:24e:b0:2e9:6788:9379 with SMTP id d9443c01a7336-2eb0056060emr30831785ad.32.1793223458917;
-        Wed, 28 Oct 2026 14:37:38 -0700 (PDT)
-Received: from ahduyck-xeon-server.home.arpa ([2605:59c1:38c:400:22f5:2de:b9c3:f27c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eae6b774acsm25903635ad.22.2026.10.28.14.37.36
+        bh=umBzuMBmol8a4492mtiSqpBu+wYhWnyyfG/+WDRtoO0=;
+        b=b5xdNJVgfmPhexSVgd1qzri9H48GOAUnVxGhddVL+A+UJolWdRZAgFrW3P/mmUpmCF
+         GCU53KPmGDGd8XXWZhmxJq/DZ+xSAtqruPOznw8Sm+7AADA5fx1Hb/r1Az38Jnw4xMfh
+         fBWfTwIl3J2aeMArcIIPZ76yEEXqjig4Np5pvC7DqK8lHt+Gj8rSCwy21W9R1vnrtVOV
+         tGes8altxwmNC2QQeGYmmXwHtxyjLTQaG1Rp1Ieq24dEnaz91hw65zd3xOWoM4lfhGea
+         cZ74rezxgDGmEHpZ/3UlFPtErItJlX5pRdiwJMOlzej6/sKffempK6u/XyarMJVnKFMP
+         NHcg==
+X-Forwarded-Encrypted: i=1; AKwUvBwB48Fdwzl0RkdGJ6WVBcGggW3xefcaQofaqAgLHc9jYvSXK84lQetnlMy3YHUTzyZfQmGLlnU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJTDZeFZqnvnNtoT+6Pba3o6W0g8euoQ0UawEKGdCm6PLuqoGZW
+	tT2Q5BxwdmNtG84i89XFhjkJrKCNAODHdb1jDrV/qRGBoMcwEHQ9CRi3mGRwSEVWaZWQFUr07uu
+	X+ht3qRwZgyEEkFZ1lMi/SIk6A6AqtF1htAed7RDMwGIavu9lxWdazWooXA==
+X-Gm-Gg: AYBFou3kY+2+l1RcZltnMEMvoyOEz8qDM6Z7HPFIa1mAgZxf7Tu86aoWpJY3i5RVUN1
+	JRgsJA01zE2zyFezyQVPDsh8tdvvDYh2a0nO0s/ifSg/C3XY2yfvm1WtpsvBuHfE3/JZSyNUuov
+	IuRpiYWpS5mNgqq+pK+brrsA+ms4m3zJiA/BAt8zssGjALh0ZpcjXTYlfdKgHsInnDhPJwgxiXg
+	lFcojX6LfGnjPA9iaVNTKOU88V2wI+QVu9PCOWTdWW87eqS6iu+Km5x/h9yQH0M5wNN8oQ0XRkR
+	aROSnMZyHOvEXk5W483+tj1Iffjd3agrmntQMpIeLzQfJEhY1QhKEvUTBd+x7sedhyYsjDWTCVa
+	i/riYqtR3K2QJUxNXri7xtlcmsHdY0FA3ja5wPQwy5Xt5Rw1L4yDOIg6tNbXap2O3HbYqgFYbt/
+	gXaudxaFXzhQPuSnHhKz4QWupw
+X-Received: by 2002:a05:600c:8715:b0:4a1:7ec7:a479 with SMTP id 5b1f17b1804b1-4a967ab1ce3mr81842095e9.33.1793223656066;
+        Wed, 28 Oct 2026 14:40:56 -0700 (PDT)
+X-Received: by 2002:a05:600c:8715:b0:4a1:7ec7:a479 with SMTP id 5b1f17b1804b1-4a967ab1ce3mr81841875e9.33.1793223655725;
+        Wed, 28 Oct 2026 14:40:55 -0700 (PDT)
+Received: from debian (2a01cb05923c9a00005ce1bcb3793264.ipv6.abo.wanadoo.fr. [2a01:cb05:923c:9a00:5c:e1bc:b379:3264])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4aa7f41895fsm16607085e9.5.2026.10.28.14.40.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 14:37:37 -0700 (PDT)
-Subject: [net PATCH 13/13] fbnic: Disable PTP completions during the Tx
- force-flush
-From: Alexander Duyck <alexander.duyck@gmail.com>
-To: netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- horms@kernel.org, kernel-team@meta.com, kuba@kernel.org, pabeni@redhat.com
-Date: Wed, 28 Oct 2026 14:37:36 -0700
-Message-ID: 
- <179322345631.40667.15699365218498548850.stgit@ahduyck-xeon-server.home.arpa>
-In-Reply-To: 
- <179322311834.40667.5383039334126572422.stgit@ahduyck-xeon-server.home.arpa>
-References: 
- <179322311834.40667.5383039334126572422.stgit@ahduyck-xeon-server.home.arpa>
-User-Agent: StGit/1.5
+        Wed, 28 Oct 2026 14:40:55 -0700 (PDT)
+Date: Wed, 28 Oct 2026 22:40:52 +0100
+From: Guillaume Nault <gnault@redhat.com>
+To: Neal Cardwell <ncardwell@google.com>
+Cc: Neal Cardwell <ncardwell.sw@gmail.com>,
+	Tom.D.Williams@morganstanley.com, davem@davemloft.net,
+	edumazet@kernel.org, horms@kernel.org, kuba@kernel.org,
+	kuniyu@google.com, netdev@vger.kernel.org, pabeni@redhat.com,
+	ycheng@google.com
+Subject: Re: [PATCH net] tcp: Fix dup-ack detection on non-SACK bidirectional
+ data transfer.
+Message-ID: <auJr5JXS-zGjylHD@debian>
+References: <2ab9dc5f5b5e9f50d7a4aa02a6b6759fc86314c7.1792658454.git.gnault@redhat.com>
+ <20261023161013.3079347-1-ncardwell.sw@gmail.com>
+ <CADVnQymSV+Z9T_XSELAeoE46CNVAK2XveHb4s6ntLvSn8fw_Pg@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,72 +121,52 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CADVnQymSV+Z9T_XSELAeoE46CNVAK2XveHb4s6ntLvSn8fw_Pg@mail.gmail.com>
 
-From: Alexander Duyck <alexanderduyck@fb.com>
-
-When the Tx queues fail to go idle, fbnic_wait_all_queues_idle() falls
-back to fbnic_tx_flush(), which sets FBNIC_TMI_DROP_CTRL_EN. That bit
-only drops packets at the Tx MAC Interface start of packet protection FIFO.
-
-The PTP completion path is governed by a separate bit in the same
-register. With only the drop enable set, a timestamped frame has its
-packet discarded while the matching completion is still forwarded to
-the host. fbnic_clean_tsq() then walks the ring with no packet left to
-match it against and reports "Tx timestamp without matching packet".
-The drop does not retire the completion either, as the completion FIFO
-is only drained when the completion disable is set.
-
-Set FBNIC_TMI_DROP_CTRL_CMPL_DIS together with the drop enable so the
-completions are drained rather than leaked to the host, and clear both
-bits again when the flush is turned off.
-
-Fixes: 40bf06a160a1 ("eth: fbnic: Implement Tx queue alloc/start/stop/free")
-Signed-off-by: Alexander Duyck <alexanderduyck@fb.com>
----
- drivers/net/ethernet/meta/fbnic/fbnic_csr.h  |    1 +
- drivers/net/ethernet/meta/fbnic/fbnic_txrx.c |   10 +++++++---
- 2 files changed, 8 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_csr.h b/drivers/net/ethernet/meta/fbnic/fbnic_csr.h
-index d7583243e5cd..c371ac9f78c1 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_csr.h
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_csr.h
-@@ -441,6 +441,7 @@ enum {
- #define FBNIC_TMI_SOP_PROT_CTRL		0x04400		/* 0x11000 */
- #define FBNIC_TMI_DROP_CTRL		0x04401		/* 0x11004 */
- #define FBNIC_TMI_DROP_CTRL_EN			CSR_BIT(0)
-+#define FBNIC_TMI_DROP_CTRL_CMPL_DIS		CSR_BIT(1)
- #define FBNIC_TMI_DROP_PKTS		0x04402		/* 0x11008 */
- #define FBNIC_TMI_DROP_BYTE_L		0x04403		/* 0x1100c */
- #define FBNIC_TMI_ILLEGAL_PTP_REQS	0x04409		/* 0x11024 */
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-index c572a0062e77..9bc934c6771d 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-@@ -2349,15 +2349,19 @@ void fbnic_disable(struct fbnic_net *fbn)
- 
- static void fbnic_tx_flush(struct fbnic_dev *fbd)
- {
-+	u32 drop_ctrl = FBNIC_TMI_DROP_CTRL_EN | FBNIC_TMI_DROP_CTRL_CMPL_DIS;
-+
- 	netdev_warn(fbd->netdev, "triggering Tx flush\n");
- 
--	fbnic_rmw32(fbd, FBNIC_TMI_DROP_CTRL, FBNIC_TMI_DROP_CTRL_EN,
--		    FBNIC_TMI_DROP_CTRL_EN);
-+	/* Drop packets and retire their PTP completions */
-+	fbnic_rmw32(fbd, FBNIC_TMI_DROP_CTRL, drop_ctrl, drop_ctrl);
- }
- 
- static void fbnic_tx_flush_off(struct fbnic_dev *fbd)
- {
--	fbnic_rmw32(fbd, FBNIC_TMI_DROP_CTRL, FBNIC_TMI_DROP_CTRL_EN, 0);
-+	u32 drop_ctrl = FBNIC_TMI_DROP_CTRL_EN | FBNIC_TMI_DROP_CTRL_CMPL_DIS;
-+
-+	fbnic_rmw32(fbd, FBNIC_TMI_DROP_CTRL, drop_ctrl, 0);
- }
- 
- struct fbnic_idle_regs {
-
+On Fri, Oct 23, 2026 at 01:04:48PM -0400, Neal Cardwell wrote:
+> > diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+> > index 99baf14afdfd..1feb370804b1 100644
+> > --- a/net/ipv4/tcp_input.c
+> > +++ b/net/ipv4/tcp_input.c
+> > @@ -107,7 +107,8 @@ int sysctl_tcp_max_orphans __read_mostly = NR_FILE;
+> >  #define FLAG_TS_PROGRESS       0x40000 /* Positive timestamp delta */
+> >
+> >  #define FLAG_ACKED             (FLAG_DATA_ACKED|FLAG_SYN_ACKED)
+> > -#define FLAG_NOT_DUP           (FLAG_DATA|FLAG_WIN_UPDATE|FLAG_ACKED)
+> > +#define FLAG_NOT_DUP           (FLAG_DATA|FLAG_WIN_UPDATE|FLAG_ACKED|\
+> > +                                FLAG_SND_UNA_ADVANCED)
+> >  #define FLAG_CA_ALERT          (FLAG_DATA_SACKED|FLAG_ECE|FLAG_DSACKING_ACK)
+> >  #define FLAG_FORWARD_PROGRESS  (FLAG_ACKED|FLAG_DATA_SACKED)
+> >
+> > @@ -3959,10 +3960,10 @@ static int tcp_ack_update_window(struct sock *sk, const struct sk_buff *skb, u32
+> >                 nwin <<= tp->rx_opt.snd_wscale;
+> >
+> >         if (tcp_may_update_window(tp, ack, ack_seq, nwin)) {
+> > -               flag |= FLAG_WIN_UPDATE;
+> >                 tcp_update_wl(tp, ack_seq);
+> >
+> >                 if (tp->snd_wnd != nwin) {
+> > +                       flag |= FLAG_WIN_UPDATE;
+> >                         tp->snd_wnd = nwin;
+> >
+> >                         /* Note, it is the only place, where
+> > @@ -4354,7 +4355,6 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
+> >                  */
+> >                 tcp_update_wl(tp, ack_seq);
+> >                 tcp_snd_una_update(tp, ack);
+> > -               flag |= FLAG_WIN_UPDATE;
+> >
+> >                 NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPHPACKS);
+> >         } else {
+> > --
+> > 2.47.3
+> 
+> This patch passes all of our internal tests, as well as the new
+> tools/testing/selftests/net/packetdrill/tcp_bidir_fast_retransmit_nosack.pkt
+> test that Guillaume Nault posted in this thread.
+> 
+Thanks a lot for the tests. I wasn't sure if I should put your Tested-by tag
+to my v2. Feel free to add it :).
 
