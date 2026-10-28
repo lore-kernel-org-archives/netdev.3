@@ -1,52 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.47
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793183258;
-	b=Q7srUxKY7GZI41M3gKUzEGqTiUIXhFZhal/MMcB+UpkM9iPJ3ZFA6bbImW0g5nuxynOs
-	 m4OVm4xwNVs9aYr5frXjshf0g3CGW0UzsUBSKlvFN0OajDTw03G3ZeTJGx9pDEnT8nNR7
-	 PO8mKvRyKWC3RxEuuve0qIWai2/kJ1fS6VWaUDbcBgtIR/t9G1JXd9Xvd4t4eZ0YP7/5k
-	 QxoGaYpseEaPfiQBnlV852UCb1tW/hkyQlVbg+G1I3PMXAUZgy1fVaMzfM69p5I8DCzRr
-	 hlEVJ9S5f4ylou5t/Yi0MLeD3bxFguD3mPjAzSH8OpTpHoTuGfmntTY+OjVZ3I42EEw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793183258;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:MIME-Version:Date:Content-Type:
-	 Content-Transfer-Encoding:From:Message-ID:TLS-Required:Subject:To:Cc:
-	 In-Reply-To:References;
-	bh=CAsQNlvEQewVVFce1WqlpSDwej6JOKTiJP6Vd2oTTAg=;
-	b=zJOUiioc91yy8k8VT45+SHf1AIORJrL3Jc3Vi7WNtiYW5HLfrW/IwICJXYL5hLpVZAGr
-	 lDlmk7j61ycwG2P1p+GVr+h6Zs7nQrE92sSkw+m+Ne8fNsZP7WTw9kmbNIJzNLjRLwsdS
-	 lUKZmsFhNMD2QdgpwwUc3MC2akygvADJcH56Y+N16oj95VOpnKeDP/58wky6TdY0CSPdi
-	 g8KnMZ7cJ/BThac3dEObr9PqxrmCWCv22qowEgi4IkfyBibvvgK9dHrrOmEbwbj15IRMp
-	 ovxzN1WxVdLtb7wrZNOb4+2OMkdW+H01yRI90mrwcDAAwL5EQsow2H8VVvxzSeq771Q==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b="Jmwex/kK";
-	arc=none smtp.remote-ip=95.215.58.47
-Received: from mta1.migadu.com (out-47.mta1.migadu.com [95.215.58.47])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.170
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793183470;
+	b=y5Yp38iZvtst2lqwHLbKlvnKzkC8RcOF0TCKfE2fvpKHkO1bb4zrCTur5xh1nFaSrcOd
+	 ZFXp3x0K1+lL1Ibnkmpd/yv5XzlHpGqLV8DEgAgW/xjUML5pJ2K6kZrD99PQ/xCwYVJ2f
+	 V1zivkKIvfSYIYt44QBVhP65RryjWXLCmP/nYZpMFuPRrsNV4chq4o8fw9CyMmqEeRIrH
+	 RO0clKLw3ntFwV3N6BT+1WKnxsdv3zzErCJ2OXUXHyZyjuQvlkGCSQWHa3NPZxU2fY8eN
+	 dtYZuBWMCIgnmDLU7uJKhE2JLNe32Q5p9/XBt8Et07kLErt346Pl8yT32n0ss8W5eKg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793183470;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=imedKiikY/nJ9ieNEErDb82QaTr2XE4LPwGTpWh9iBQ=;
+	b=kCn5TUMZ9nzMAjAkzHnZCoDTD3phhYt17ncRLUDOzsoZJAY3vYRNgoG2ggLON5AO13fQ
+	 t/kFsHx4JmUEo59QuDjZ4jfnAqa0umpag7TjDMpMs/CsIjznX6GD3CcNk9fFy4vtr5tOK
+	 pTmpxLFcLWvz+4pxfZgKnby7ks6nUatVdb14n+p/MaJmI2TU3KkJoSeUPLzhQ9U7p+86S
+	 VUg8ksRN2hBu7CAKmSq17ATI0CLuXYseqQZ3uJpPfTvmxlMhsGiK7hIVq8hgKyMIv9qXl
+	 JgqdQML0UAB4vqBMa/dQg4RUzDVh2JMi4pxDQQBrGeUPSc50BgV7EJlS/QF8QL+kkTQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="acd/2w7M";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.170
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BDF9606A31D
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 10:27:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8BDF9606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD6D606A31E
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 10:31:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EFD6D606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Jmwex/kK
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=OSNgAFP+VgQv9q7o9VlptAb+MUtYzG3jKiN7D8DtKj8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793183254; v=1; x=1793788054;
- b=Jmwex/kK7FpuCV4bqSsS5FCwcMt+EqZgDLePJZ4dvcrpEr4L/YHoyx7QKjmO1CIocO5OCbGr
- tkZmoFbOPWPIzOshnL3/DpTiXzlghHbrudm38WhVc3KkL5yD0mKtIroNlIaYfbth6p94x+Qcx/Q
- vj7/M3C4X89z4qZWGeENzS/M=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id ee56cd7c32368443;
-	Wed, 28 Oct 2026 10:27:33 +0000
-X-Mizu-Trace-ID: ee56cd7c32368443
-X-Migadu-Flow: FLOW_OUT
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=acd/2w7M
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-8ae8607e8afso5456517b3.3
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 03:31:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793183469; cv=none;
+        d=google.com; s=arc-20260327;
+        b=GOolkpk2KdMfnz0GoYYFYr7BZf7fdBKwg4/npkHvJG+xmxXu5rQHOmml7Zgt6TwbcY
+         7HBxBWq4nrTgGF2UaYJRYCuljQjXprgDoyuXojJoEtfaClpOZJlBwCPp1iAGNZv6uFkN
+         ZdMbchHxIokpElDzgb5a0wCY1mAjsEm77w5M6mU237JKF0D7X0bMRoKxUAQs8DEf5A8L
+         Bp85vuRCMTsCFhcB/R/CqMARGl7pYnZCU7rfwOgPx/9bnX1u5G0a98/lThSF/6wpbou1
+         tfB3YmOsjPkPrgm9rotBpd/o7IiQnQLu2EcBC/PHQfm5I74M6cPbdh+Cjrk9uEW+qYXw
+         bIKQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=imedKiikY/nJ9ieNEErDb82QaTr2XE4LPwGTpWh9iBQ=;
+        fh=7JXwbiQQJthWkTyuE7R4n+AMSNL2MA1PMzOsoj4FE7Y=;
+        b=RXUJPHM3zHfkT03l6CMTxDH2yaONidvT2wB1oOfg5il+5gzJFXOq48DeBqkaRl9h9n
+         N7Hs3kEyOwMtWp+hChqt0f70EgXVneOcW1LM/nZXMBvPUO906c3UI92kisskApMbWO2l
+         Yg3vAEvzUpDNWdYE0Bk49q2G88lkcvhTPXOmEGMcNosF5om1J9NO5Hxf93pUQo5pmnvA
+         MIxh1gcbmocIJzpzBS6FnoOzRppqt0ncm2gcY8PeT3bDf7R6kVreVQ0GyeE2kRJmW3kt
+         VL4bNT+e6aY2SNJSKXAXnMr7A0EeKWB5Rvd3A36RMA6RzDksFyfxNYXCCrimi+Aet5hx
+         D53A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793183469; x=1793788269; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=imedKiikY/nJ9ieNEErDb82QaTr2XE4LPwGTpWh9iBQ=;
+        b=acd/2w7MTsRZz2fFWnc39WSDc2rQa1UN77+0V71vGBIvU1BtdTJxa4P/P7EZr2AcY7
+         Nwv7xwu0bGsj7QtSi5UsT8dbx5Wue8cf4bxRWlypcKhjIYbFwp46OBkIOBbwE9TWOaJO
+         WYnQJ0snsSlcoyioYnXSIK+CdCtLMbq6jHCzWYUuLO9TzTkTDEHIFZ7lVeW6RfyJEaH1
+         bPTI01p8rtEzyTmI81cFhoA7TM6Yppegg99Lsod3LSXmBgaItToTEJTZB8Ov35iECfKA
+         eaTQXWObo9yF2TtcrzLzhMh4JFdL22+KcUWsK8amtIcyVf8B8fR6wUfsvGq1yj/w43/b
+         JJTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793183469; x=1793788269;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=imedKiikY/nJ9ieNEErDb82QaTr2XE4LPwGTpWh9iBQ=;
+        b=KpZtvXVFFwouC+YJKQ+2yPjDgXPuPQBUcfdX8jRRPRhKT2hsbTXlr7QvDI+Jk473lC
+         IRAdPyBzYZL8EXYr9u2Y2TWZTp+P4m6gEkyBteShruC7vMtTASAs+h77vnoy6qW6fGgW
+         UH+vawdgiu6d8tky8yzMWxK85n0bD869mOWRs/m9j6fw3AuWd3ZTHkH81f2I4axAlg30
+         qnEMijoNc43fwPHdCuF4vtEhDgsAvpaOJqdjt4XfRXoAWm527NKcfre71Yj28/jmFyEx
+         UtN27+pITXiDf2/sepl1WtlWk9e7/3dOg4w0iyCggT9fuKNVtTCBNMuEYa/6pPkzMrLD
+         nx8Q==
+X-Gm-Message-State: AFq9FYIFshGP080Y8vUx+hMXHyzfJB9VOSAD1OwnhAAUnUdRrncTCWay
+	2bEVfiC5+xRzGvaoQtlZxnbDx+bU1zYCZUW8mBPFRiJQigf38ZOa8d3TefX+/1X+1i2aff++3q1
+	BBu5/1E08OC+QzyimdPnrRIg+FWJpePU=
+X-Gm-Gg: AYBFou1dgzGHdB32e3mCD2Dyb4ofwj2Q1l8vslRYr9kTk3p9hTEqKcRvjiX6zrHJmbt
+	8FljmyuRMehsTjajuviD4uek2h/ecR0KlVdPD+gkdIUzFHNQ6dKqgAl5DGqVDzOKhn2Szv5Na1X
+	CAJVY9WiMDi/5lMUkfRfYap4VIyFPJhYdvPRoyXgaBAZjO9rsFPSOn3AW/x+NCcgDZAnt1GE2gr
+	qYi74+Z/uCye0xl6j75fF0vpCsI2dlr7ionH6kHakvcSyH+1vteA7vV+mpnVJ8mFbPZks4FpZY1
+	8tx1XkEGKmd5QL3etAbgFETXNfV2bzIKYqEtODqE19oDA3aBv2BDTlprklEbVZPbgotgMyfna6Z
+	vCJw0mQ2SycyNYIPqGRSzXKotYhO3YTcSU0hUySLM0dWivSxP8tFKx4+3LMUycBlY9Bs4YuItzr
+	mZBMqpzwu6ZsAHY7kJHK2V/cBkTUgz3wINSXC6eAKbTUau0/ATNGA4i9wzw51swGymG3+Kbc9x8
+	o3w
+X-Received: by 2002:a05:690c:6605:b0:8b0:c5bc:e87c with SMTP id
+ 00721157ae682-8b1b5a56bf7mr12401287b3.6.1793183468970; Wed, 28 Oct 2026
+ 03:31:08 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -56,138 +105,157 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Wed, 28 Oct 2026 10:27:33 +0000
-Content-Type: text/plain; charset="utf-8"
+References: <20261028000912.2081659-1-florian.fainelli@broadcom.com>
+In-Reply-To: <20261028000912.2081659-1-florian.fainelli@broadcom.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
+Date: Wed, 28 Oct 2026 11:30:57 +0100
+X-Gm-Features: AclHuK_B_4dhiY1uBiy_8fsXbNuV7k79HWgTMcm0LExCnPUWVLwnCuYV7EcZt78
+Message-ID: <CAOiHx=kKX0YWEkyp-HBahae_krDCXLAjO6kLPi1gJzpf7EOfMw@mail.gmail.com>
+Subject: Re: [PATCH net v2] net: dsa: b53: Enable IGMP and MLD control packet
+ CPU copies
+To: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>, 
+	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Vivien Didelot <vivien.didelot@gmail.com>, open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-From: "Hui Zhu" <hui.zhu@linux.dev>
-Message-ID: <c652f3e6198b143fcf29f5540a769228f3d8470c@linux.dev>
-TLS-Required: No
-Subject: Re: [RFC PATCH 0/2] memcg_ext: dynamic memory.low and memory.min
- protection
-To: "Tejun Heo" <tj@kernel.org>
-Cc: "Alexei Starovoitov" <ast@kernel.org>, "Daniel Borkmann"
- <daniel@iogearbox.net>, "John Fastabend" <john.fastabend@gmail.com>,
- "Andrii Nakryiko" <andrii@kernel.org>, "Martin KaFai Lau"
- <martin.lau@linux.dev>, "Eduard Zingerman" <eddyz87@gmail.com>, "Kumar
- Kartikeya Dwivedi" <memxor@gmail.com>, "Song Liu" <song@kernel.org>,
- "Yonghong Song" <yonghong.song@linux.dev>, "Jiri Olsa"
- <jolsa@kernel.org>, "Johannes Weiner" <hannes@cmpxchg.org>, "Michal
- Hocko" <mhocko@kernel.org>, "Roman Gushchin" <roman.gushchin@linux.dev>,
- "Shakeel Butt" <shakeel.butt@linux.dev>, "Muchun Song"
- <muchun.song@linux.dev>, "JP Kobryn" <jp.kobryn@linux.dev>, "Andrew
- Morton" <akpm@linux-foundation.org>, "Shuah Khan" <shuah@kernel.org>,
- davem@davemloft.net, "Jakub Kicinski" <kuba@kernel.org>, "Jesper Dangaard
- Brouer" <hawk@kernel.org>, "Stanislav Fomichev" <sdf@fomichev.me>, "KP
- Singh" <kpsingh@kernel.org>, "Tao Chen" <chen.dylane@linux.dev>, "Mykyta
- Yatsenko" <yatsenko@meta.com>, "Leon Hwang" <leon.hwang@linux.dev>,
- "Anton Protopopov" <a.s.protopopov@gmail.com>, "Amery Hung"
- <ameryhung@gmail.com>, "Tobias Klauser" <tklauser@distanz.ch>, "Eyal
- Birger" <eyal.birger@gmail.com>, "Rong Tao" <rongtao@cestc.cn>, "Hao Luo"
- <haoluo@google.com>, "Peter Zijlstra" <peterz@infradead.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Nathan Chancellor" <nathan@kernel.org>, "Kees
- Cook" <kees@kernel.org>, "Jeff Xu" <jeffxu@chromium.org>,
- mkoutny@suse.com, "Jan Hendrik Farr" <kernel@jfarr.cc>, "Christian
- Brauner" <brauner@kernel.org>, "Randy Dunlap" <rdunlap@infradead.org>,
- "Brian Gerst" <brgerst@gmail.com>, "Masahiro Yamada"
- <masahiroy@kernel.org>, "Willem de Bruijn" <willemb@google.com>, "Jason
- Xing" <kerneljasonxing@gmail.com>, "Paul Chaignon"
- <paul.chaignon@gmail.com>, "Lance Yang" <lance.yang@linux.dev>, "Jiayuan
- Chen" <jiayuan.chen@linux.dev>, "Emil Tsalapatis" <emil@etsalapatis.com>,
- "Ihor Solodrai" <ihor.solodrai@linux.dev>, "Barry Song"
- <baohua@kernel.org>, "Geliang Tang" <geliang@kernel.org>,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- cgroups@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org, "Hui Zhu" <zhuhui@kylinos.cn>
-In-Reply-To: <769e80ffa618327ac03c13c4657e7229@kernel.org>
-References: <cover.1793086858.git.zhuhui@kylinos.cn>
- <769e80ffa618327ac03c13c4657e7229@kernel.org>
 
-"Tejun Heo" <tj@kernel.org mailto:tj@kernel.org?to=3D%22Tejun%20Heo%22%20=
-%3Ctj%40kernel.org%3E > :
-
-
->=20
->=20Hello, Hui.
->=20
->=20On Tue, Oct 27, 2026 at 05:11:58PM +0800, Hui Zhu wrote:
->=20
->=20>=20
->=20> Why it matters: memory.low and memory.min protect a cgroup by a fix=
-ed
-> >  threshold and have no idea whether it is using the memory. A
-> >  high-priority cgroup that holds a large working set and then goes id=
-le
-> >  keeps suppressing reclaim on its siblings, and that memory is wasted=
-.
-> >  A policy program sees the real activity - page faults, charges - and
-> >  can grant or withdraw protection as it changes.
-> >=20
->=20This doesn't justify the changes. Why can't the same be achieved by
-> adjusting memory.low and memory.min from userspace? The arguments made
-> so far are neither convincing nor proven.
->=20
->=20Thanks.
->=20
->=20--
-> tejun
+On Wed, Oct 28, 2026 at 1:10=E2=80=AFAM Florian Fainelli
+<florian.fainelli@broadcom.com> wrote:
 >
+> IGMPv2 reports and MLDv1 reports are addressed to the multicast group
+> itself. Once the first listener is installed in the ARL table, subsequent
+> reports can follow that entry without reaching the CPU. The bridge then
+> fails to learn additional listeners, although static MDB forwarding works=
+.
+>
+> Enable the high-level protocol classifiers so that IGMP and MLD control
+> packets are copied to the CPU independently of the multicast ARL lookup.
+> Retain normal L2 forwarding by clearing the CPU-only forwarding modes,
+> and preserve unrelated protocol-control fields.
+>
+> Handle the BCM5395's 16-bit register and different classifier fields
+> separately from the 32-bit layout on the BCM531xx, BCM5301x and newer
+> integrated RoboSwitch families, including BCM7445, BCM7278 and BCM4908.
+> Export the helper and call it from bcm_sf2_sw_setup() as well, since SF2
+> uses its own setup operation instead of b53_setup(). This also restores
+> the classifiers after the switch reset on resume. Leave older devices
+> with different IGMP controls untouched, and propagate register access
+> failures during setup.
+>
+> The SF2 setup integration and BCM4908 chip gate were updated with
+> assistance from OpenAI Codex in response to review feedback.
+>
+> Fixes: 5d65b64a3d97 ("net: dsa: b53: Add support for MDB")
+> Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+> ---
+> Changes in v2:
+>
+> - export the helper and call it from bcm_sf2.c as well as spotted by
+>   Sashiko
+>
+>  drivers/net/dsa/b53/b53_common.c | 52 ++++++++++++++++++++++++++++++++
+>  drivers/net/dsa/b53/b53_priv.h   |  1 +
+>  drivers/net/dsa/b53/b53_regs.h   | 17 +++++++++++
+>  drivers/net/dsa/bcm_sf2.c        |  5 +++
+>  4 files changed, 75 insertions(+)
+>
+> diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_c=
+ommon.c
+> index 0880310c9ce3..51784432d266 100644
+> --- a/drivers/net/dsa/b53/b53_common.c
+> +++ b/drivers/net/dsa/b53/b53_common.c
+> @@ -836,6 +836,54 @@ void b53_brcm_hdr_setup(struct dsa_switch *ds, int p=
+ort)
+>  }
+>  EXPORT_SYMBOL(b53_brcm_hdr_setup);
+>
+> +int b53_enable_mcast_snooping(struct b53_device *dev)
+> +{
+> +       u32 val;
+> +       u16 val16;
+> +       int ret;
 
-Hi Tejun,
+I'm surprised to be the first to say that, but ... reverse christmas
+tree? Or is this not a thing anymore?
 
-Thanks for taking a look.
+> +
+> +       /* BCM5395 has a narrower register and a single IGMP classifier.
+> +        * Its ICMPv6 classifier also covers MLD.
+> +        */
+> +       if (dev->chip_id =3D=3D BCM5395_DEVICE_ID) {
+> +               ret =3D b53_read16(dev, B53_MGMT_PAGE, B53_HL_PRTC_CTRL, =
+&val16);
+> +               if (ret)
+> +                       return ret;
+> +
+> +               val16 |=3D HL_PRTC_IGMP_IP_EN_5395 | HL_PRTC_ICMPV6_EN;
+> +               val16 &=3D ~(HL_PRTC_IGMP_FWD_MODE_5395 |
+> +                          HL_PRTC_ICMPV6_FWD_MODE);
+> +
+> +               return b53_write16(dev, B53_MGMT_PAGE, B53_HL_PRTC_CTRL,
+> +                                  val16);
+> +       }
+> +
+> +       /* Older switches use different IGMP controls, not HL_PRTC_CTRL. =
+*/
+> +       if (!is531x5(dev) && !is5301x(dev) && !is58xx(dev) &&
+> +           dev->chip_id !=3D BCM4908_DEVICE_ID)
+> +               return 0;
 
-You are right about that paragraph.  It describes what dynamic
-protection does rather than saying why it has to happen in the kernel,
-and at the timescale I described a userspace agent writing memory.low
-would keep up fine.  I will drop it.
+I would move this to top, and probably check for those that don't have
+it. Basically go from oldest to newest generation code wise.
 
-Let me try to say what I was reaching for, from the code rather than
-from a benchmark - a comparison between BPF and a userspace agent would
-say at least as much about how well I wrote the agent as about the
-interface, so I am not sure it would settle much.
+> +
+> +       ret =3D b53_read32(dev, B53_MGMT_PAGE, B53_HL_PRTC_CTRL, &val);
+> +       if (ret)
+> +               return ret;
+> +
+> +       /* IGMPv2 and MLDv1 reports use the group's destination MAC. Once
+> +        * the first listener is offloaded, ordinary multicast forwarding
+> +        * can keep subsequent reports from reaching the bridge CPU.
+> +        * Copy control traffic to the CPU independently of the ARL looku=
+p,
+> +        * retaining L2 forwarding rather than selecting CPU-only traps.
+> +        */
 
-memory.low is a request, and what reclaim honors is elow, which
-page_counter_calculate_protection() derives on each pass from the
-parent's elow, the siblings' requests and the tree's usage.  At the
-first level below the reclaim root that comes out equal to what was
-written, and there the knob is enough.  Deeper down it is capped by the
-parent's budget and shared out between siblings according to what they
-claimed and what they use, so what a cgroup wrote and what it ends up
-with can differ.  As far as I can tell none of that is visible from
-userspace: memory.low reads back the declared value, and I could not
-find anything that exports elow.
+Should this comment be also in the 5395 case? Feels like it would apply to =
+both.
 
-Exporting elow would not help, because elow is not a property of the
-cgroup alone.  It depends on the reclaim root as well, which is why
-page_counter_calculate_protection() warns that it is not stateless and
-is only valid as part of a top-down tree iteration, and why
-mem_cgroup_protection() carries the example of a concurrent global and
-targeted reclaim driving a child's elow to zero.  A file would show
-whichever value the last reclaim happened to leave there.
+> +       val |=3D HL_PRTC_IGMP_RPTLVE_EN | HL_PRTC_IGMP_QRY_EN |
+> +              HL_PRTC_IGMP_UKN_EN | HL_PRTC_MLD_RPTDONE_EN |
+> +              HL_PRTC_MLD_QRY_EN;
 
-So the derived value seems to be usable only where it is derived,
-inside the check, and that is where low_policy() sits: it is evaluated
-per pass and is handed that pass's own inputs - the memcg, the reclaim
-target, the elow just computed, the usage - instead of being state that
-is read at the check.
+I would also break out the "Copy control" part and move it here, to
+make it more obvious that these bits control this, and clearer that 0
+means copy to CPU instead of trap to CPU.
 
-The other half is what a policy can key on.  memory.low has one
-dimension, bytes.  A policy program is not limited to the ctx it is
-handed; it can also use state that other BPF programs keep, so
-protection can be a function of activity rather than of size - a
-workingset refault rate, for instance.  [1] reads those counters from
-BPF and acts on them; it drives reclaim rather than answering a
-protection hook, but the signal it reads is the one such a policy would
-want.  The limit is on the output rather than the input: the hook
-returns a boolean, so it cannot grant anything memory.low cannot.
+> +       val &=3D ~(HL_PRTC_IGMP_RPTLVE_FWD_MODE | HL_PRTC_IGMP_QRY_FWD_MO=
+DE |
+> +                HL_PRTC_IGMP_UKN_FWD_MODE | HL_PRTC_MLD_RPTDONE_FWD_MODE=
+ |
+> +                HL_PRTC_MLD_QRY_FWD_MODE);
+> +
+> +       return b53_write32(dev, B53_MGMT_PAGE, B53_HL_PRTC_CTRL, val);
+> +}
+> +EXPORT_SYMBOL(b53_enable_mcast_snooping);
+> +
+>  static void b53_enable_cpu_port(struct b53_device *dev, int port)
+>  {
+>         u8 port_ctrl;
+> @@ -1334,6 +1382,10 @@ static int b53_setup(struct dsa_switch *ds)
+>                         b53_disable_port(ds, port);
+>         }
+>
+> +       ret =3D b53_enable_mcast_snooping(dev);
+> +       if (ret)
+> +               return ret;
+> +
+>         return b53_setup_devlink_resources(ds);
+>  }
 
-I would be interested in how you see this - in particular whether the
-nested case is worth supporting at all, and if it is, whether this is
-the right shape for it.  I am happy to rework the patches, and to add a
-demonstration of one concrete policy if that would make it easier to
-judge.
+(snip)
 
-[1] https://github.com/teawater/memcg-async-reclaim/tree/memcg_ext_plus
-
-Thanks,
-Hui
+Best regards,
+Jonas
