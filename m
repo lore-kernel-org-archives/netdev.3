@@ -1,60 +1,61 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793211460;
-	b=Dc9IbsJ67eJzpd8v7JKMA5c6HAblr4WvPuw3tAr1zBhe2q343Xj3BBF6Rck3mioEAx32
-	 Ax7SFD7YZfgDH7RqCykvd7uATQrqs/E+HYyIP4tE4iL44gAjIq5Qi8K+qA5wfoU8VccI/
-	 jpu1vxZA+PT7ceOztiBgeHu+D4n93pznFHkGlHvwdQa6GSVa75QbgzBXQGPmTauzJEG7o
-	 YLf/lMMw5QF2/Ru4FUSSdrFU3caQNRRPvi7Rf5krYxOvYqH+Suss/N0RBjsg7VzdSjOsq
-	 XLaUi2BXkoAKhr3fVsoo28TNfryrJzoXST69tI47KKE0uJ61u1anD/a8CHm8+0Ld/4g==
+	t=1793211704;
+	b=jausZfJ+fmJcZF1L07jIVhZrS54e1b3EYrLO37E93wdGVAXAZRJMH6AWY0RKTCxyqeiQ
+	 OYSGBtdUx9NQ8g1vx0ei5g2VAdtUBZcK3kw2XcfpxLiA6YHjZzSHQSmfIzIyxNtP5mZKW
+	 Fk2U+Myd0AxrBcfTmtDyCRPe6U+UnXBDIjL8cRetNXuShqUZeCFxrOpnFwb7ZgxiZphOW
+	 oPdhskayRL2pntCekMoWgaynlxIEj+UeGdNgdOEoy3uF4R8+rn9JSUNFL0CsYxbxvneha
+	 kOvULMK9vdOYFNizRyIWjbMqE4eGHpDiYuWJ9OxXshs/kLsE/Tr4R8r5RAjJzkRm0zg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793211460;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793211704;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=aTB+qmr+k6hrfExn8YMUYkBKlFM/bzuSQoxuiUonvFM=;
-	b=d4UGSi3+S+92CSbMGqBHKiHnpx74GGRTeIMm/CPslhvdwQR3SHEYMnG2Rn2CCMQKJfPN
-	 Kkw55QUXcXHWjrMKeqiKBCaGi0aMV/J0+npB+an9h+9B35PC/8PUMFt2Rx30u1w3kxwDq
-	 kctI21UUY6ZldquB/q98zQUS1+4S9fT2tbY5WEj3WB9q/l/DqbdUcJmRQlNDjQtUq9Lvu
-	 Y+xuz93mgbNq3riq10eC+XwxQK3yTIcD1WLONW/vQfjeg6rBCae0BAVcn+pXFotFJb7cm
-	 97vL8VPbX+vfS1T5pBkIl60VEQxPqWijFWIABWRv0PmPpU1W/VVloFrLTwes7L1qOAw==
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	b=Hz/vQ0cC8LIImozfyrkYFQ6JF2W44qIv/cdNsX24dDIEQdEnryqEQ8APS3+exD2WTkcl
+	 00qz3+pCVQ6RE2LKR6XOMicwSedJ+OLz/f/SxRgiHAwFwrQNyDQZA0SI+BV3sVVROksLz
+	 J2RQ81WJGEAyyxmxGjjAhDF8ZCsdlBvjFpGLRcIsEKdqGm/HGAk4sgFlIpstzEkjSFdyC
+	 2eh7tLZNuZnGBDHm9nnsFxmSB3X0vA1NgtLdbmw8OZ/7MR27HDmWEMdHn+E9xSdak9jA3
+	 JA18fCi/NQhs1kZDjyEYlmTRIIyY5ij3b3Zp8hOSE6EwspScFGRXXyUIUgaDgmhziTw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DYt2jHLb;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NrIisKZS;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787E0606A31D;
-	Wed, 28 Oct 2026 18:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6181D606A338;
+	Wed, 28 Oct 2026 18:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DYt2jHLb
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7926B1F01825;
-	Wed, 28 Oct 2026 18:17:39 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NrIisKZS
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54F711F01828;
+	Wed, 28 Oct 2026 18:21:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793211460;
-	bh=aTB+qmr+k6hrfExn8YMUYkBKlFM/bzuSQoxuiUonvFM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=DYt2jHLb8pZDWRnfkToccjW+vE2T0iI7ivXTNIJNgxs91DqMaLoDImSYTgVI+Gh4H
-	 wfRxWEHJe8UhpBiHByk44xOf39qW2vXEdFfr8YWZKeFEEkcze9xa12vHdKSh0aMWoa
-	 eopEMcnFcqKxVmCjWLsM8CPcwdc3uplOAL1jYqyCeHfzCm8YjOeXS2cY8rvKkayZ9c
-	 rMJUZ1boofElRx/0CKi+tU1iuHl8suzd+pIVB7/T+vHN0SDQo+uwiz9sAJjYN/jkVK
-	 lOTNLWE7tvr+S4BkYCmRn28yYZoayVqTS26GACt+Lthd6v3KfbSgGdXNdJg46+43Eu
-	 1Y4T4jX4gnvVg==
-Subject: Re: [PATCH] net: octeontx2: fix building without DEBUGFS
-From: netdev-bot+sashiko@kernel.org
-To: arnd@kernel.org
-Cc: sgoutham@marvell.com, rkannoth@marvell.com, gakula@marvell.com,
- sbhatta@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, arnd@arndb.de,
- sumang@marvell.com, nshettyj@marvell.com, hkelam@marvell.com,
- yijiangshan@kylinos.cn, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Wed, 28 Oct 2026 18:17:39 +0000
-Message-ID: <179321145903.3134.9602070499142320900@kernel.org>
-In-Reply-To: <20261027151737.386155-1-arnd@kernel.org>
-References: <20261027151737.386155-1-arnd@kernel.org>
-X-sashiko-severity: High
+	s=k20260515; t=1793211703;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=NrIisKZSkCxre/Saa4vsqf5NrdgTF8pggl0HDph9mu6/2GtRud/GJZHSFj4aLoN4V
+	 fzHq0waUuoqI+CGHwgMXN06ldKfjzeEOSk7lGB1rvsmJ1VYr0YMzR5faX+p+KzqTz+
+	 yUxmYmCGthKntmFBCT2l+Yd+pXAO/VAYB0GRDTfdCp71WmRFR/5tX7MUEbfaCC3T8c
+	 HB3tU3y4xsBqWRyRo2aM/XuPd/N+DErphei7UKXj/paL3rH8US5e06842cfyf+QwW9
+	 fH3jkVcCEIaSdlTwcS0IcQZVOc8N+HoFZK5Y+ZmG1JM2rrA9U1NRYGFDmAaV539cQr
+	 JbfFhSSpG/VLQ==
+From: netdev-bot+sinfo@kernel.org
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org,
+ Kyle Zeng <kylebot@openai.com>, stable@vger.kernel.org,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Subject: 
+ Re: [PATCH net] net/packet: check TX_RING fragments before memory accounting
+Date: Wed, 28 Oct 2026 18:21:42 +0000
+Message-ID: <179321170283.3327.5134425472965295524@kernel.org>
+In-Reply-To: <20261028181450.2221013-1-edumazet@kernel.org>
+References: <20261028181450.2221013-1-edumazet@kernel.org>
+Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,129 +66,24 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+Hi!
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 2
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-- [High] The patch does not fix the CONFIG_DEBUG_FS=n build.
-- [Low] The Fixes tag points to the wrong commit.
-- [Low] The commit message says making the member unconditional will
-  "waste the 8 bytes in the structure in this config".
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
---
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-net: octeontx2: fix building without DEBUGFS
-
-This commit removes the CONFIG_DEBUG_FS guard around the rvu_dbg member
-of struct rvu. The goal is to let the rvu->rvu_dbg.npc references in
-cn20k/debugfs.c build when debugfs is disabled.
-
-> Remove the #ifdef and waste the 8 bytes in the structure in this
-> config.
-
-[Severity: Low]
-Is the 8 byte figure accurate? rvu_dbg is embedded in struct rvu by
-value, not as a pointer.
-
-struct rvu_debugfs contains 12 struct dentry pointers, 6 struct dump_ctx,
-a cpt_ctx[MAX_CPT_BLKS] array (MAX_CPT_BLKS is 2) and two ints:
-
-struct rvu_debugfs {
-	struct dentry *root;
-	...
-	struct dump_ctx nix_tm_ctx;
-	struct cpt_ctx cpt_ctx[MAX_CPT_BLKS];
-	int npa_qsize_id;
-	int nix_qsize_id;
-};
-
-That comes to about 208 bytes on 64-bit.
-
-> Fixes: 45229e9a9ab5 ("octeontx2-af: Extend debugfs support for cn20k NIX")
-
-[Severity: Low]
-Is this the right commit for the Fixes tag?
-
-At 45229e9a9ab5, rvu_debugfs.c holds the only references to rvu_dbg, and
-that file is fully wrapped in #ifdef CONFIG_DEBUG_FS. At that point
-cn20k/debugfs.c contained only seq_file print helpers.
-
-The always-built cn20k/debugfs.c seems to have first referenced
-rvu->rvu_dbg in 1396771b0b7741 ("octeontx2-af: npc: cn20k: Index
-management"), which added:
-
-void npc_cn20k_debugfs_deinit(struct rvu *rvu)
-{
-	debugfs_remove_recursive(rvu->rvu_dbg.npc);
-}
-
-The debugfs_create_file() call quoted in the error message came later,
-in 1100af13fd14b5. That may also explain why the error only showed up
-recently.
-
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-> index fb4870cd18e9e..3b647e7b4bc20 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-> @@ -649,9 +649,7 @@ struct rvu {
->  	int			mcs_blk_cnt;
->  	int			cpt_pf_num;
->  
-> -#ifdef CONFIG_DEBUG_FS
->  	struct rvu_debugfs	rvu_dbg;
-> -#endif
-
-[Severity: High]
-Does this build with CONFIG_DEBUG_FS=n?
-
-The definition of struct rvu_debugfs is still inside an
-#ifdef CONFIG_DEBUG_FS block earlier in rvu.h, with no #else. So are the
-struct dump_ctx and struct cpt_ctx types it embeds:
-
-#ifdef CONFIG_DEBUG_FS
-
-struct dump_ctx {
-...
-struct rvu_debugfs {
-	struct dentry *root;
-	...
-	int nix_qsize_id;
-};
-#endif
-
-With OCTEONTX2_AF enabled and DEBUG_FS disabled, struct rvu now has a
-by-value member of incomplete type. The compiler would reject that with
-"field 'rvu_dbg' has incomplete type".
-
-Every rvu_af object includes rvu.h (rvu.o, rvu_nix.o, rvu_npc.o,
-cn20k/*.o, ...). Wouldn't this turn the one error in cn20k/debugfs.c into
-a failure in every rvu_af translation unit?
-
-OCTEONTX2_AF does not depend on DEBUG_FS in octeontx2/Kconfig, so this
-config can be selected.
-
-Would either of these work instead?
-
-- Move the #ifdef CONFIG_DEBUG_FS so that dump_ctx, cpt_ctx and
-  rvu_debugfs are always defined.
-- Build cn20k/debugfs.o only when CONFIG_DEBUG_FS is set.
-
-The Makefile currently builds cn20k/debugfs.o unconditionally:
-
-rvu_af-y := cgx.o rvu.o rvu_cgx.o rvu_npa.o rvu_nix.o \
-	...
-		  rvu_rep.o cn20k/mbox_init.o cn20k/nix.o cn20k/debugfs.o \
-
->  	struct rvu_devlink	*rvu_dl;
->  
->  	/* RVU switch implementation over NPC with DMAC rules */
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261027151737.386155-1-arnd%40kernel.org
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
