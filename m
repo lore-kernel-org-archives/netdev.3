@@ -1,69 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.169
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.72
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793150891;
-	b=LZ5a6jAxjhdwnGfyjLoWriLudnXrF2wP5WAZG4laAeyRLamGgOk7p31P11M6CgJUnWuX
-	 qBsr4iWQdtL8a/3N2/r9YUEXctKL4yiZg4Bwp+DprjnDSPYN9V4wTmLW/XZPqNr6H6MnR
-	 vikmdqokyXfZkay10ChMltI9dggxoVJ8v9eMUqsLZkR5arNvD6WLrrJcQqyV5VTGr884A
-	 Mn6cK3eyH0cN6Clfn+1gv+Nhry9XPzz04RCnKLyHOMGVNmS2TvCiTpeP/nMIz/8hjQqtm
-	 REgPJ+8VeHQNk4lnRrXaiYPEVJgC4tR8pqWbl92Awdk9tKiHUbkeaEHS7kxntkvVGHg==
+	t=1793152080;
+	b=Zw/UdMs0AKA61a/7J7l9e0uw3hA/ohV2V9lZOK5qoJXxIiza/h5nc5+F9+E9BIqoU5n1
+	 mppKpfeADtfPww2mu/GINX4FBZh1Pl2YmWXNUmNIDLjfApW+O9iy/VTiiQOi9JE4OQylZ
+	 e80SKy1iA8shWBzNxhPZ9Er7e04Z7IYOlBaFICPZB0Cqno9fJwsoRq0MdzBT2NMJwSDmo
+	 d7osymP4RVhTQRn/yqIJ902+lbYzOja0ah4OxVJkpJxycuPHFoKWNAKHOqeOkKS04IwMX
+	 8UnqunbWqoPs6+VEqDYwcDMSSdWKIA0Y4Kk/Lpf6vw57NCINhozCC3GQ/9y49qCjzUQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793150891;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=OoEszvGm7Jt8r2Hgps9BAadui447M2pxW0SiVZm0x7s=;
-	b=DQ/DafmLPZV/wt624mG9uuV1yulpIYO0K+BzV/hgskg9/Cvs7luu82Z4bilmAbQqjAgZ
-	 sEoHnc5z9dH4XTInIvSky1g4eON9HF7EkITzbizb9Sz/xB2WXVxbpFYQN1Ti5zE3BCAf8
-	 4P2arIpjrhpbyfebVFXUBL1vXtaWGXXvL7mxhGtEbdWWzkHykMzBNZPKeFeGtMY/k/WwJ
-	 GvhchCRljamG/Ypj2aSnvt40DE4vthW1Qb6gKXsLGsz5UbAWjDieX1uzQMjf02uZOYDsY
-	 Q22cM3x+fdXuKp0VmJrWhsamW/MrAivrWf/dfw113H03YBG7T1LrTzEZ/rRBNhTtY7A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793152080;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=UrWtpTOaprLxw1pdrbzZEPDlusg55RRNNxdXSa9SbLw=;
+	b=NCOFw4o+MMvXuRE92rqjk35FRmA7cdKFrlNxHWpQ7wDtE+kyooK87aWr3ufB+/2CZ1gl
+	 I9FFOYqh5mZk93AbkTtofoja9wPRyoxpq1+8vkYaZOvBnVvVuXoho/BwQTUaZ2MQGzEeF
+	 8Us8+egmstWUQCTZRhLGcDWJ41ICSSd98ItEFFbHQkEuEn5OrflRynr1or9IFUCPKBtgb
+	 oCmD1M8PtwMTjNDtBc7Q50RAa93ae94/IEUqDSjONoifq7hdrwMnk4GtUWczac3eNTSu2
+	 7mforK5ipXPfEueimqzyzHznZioblN0jeirAXyGrky17llYAycEXitdK/C0gTgJ+qog==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=rkp7nNL0;
-	arc=none smtp.remote-ip=95.215.58.169
-Received: from mta1.migadu.com (out-169.mta1.migadu.com [95.215.58.169])
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hTgtj1yv;
+	arc=none smtp.remote-ip=209.85.216.72
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DCF0606A31D
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 01:28:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1DCF0606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FAB606A31A
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 01:47:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C7FAB606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=rkp7nNL0
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=sbvDgc3joPyy/j914OEP6tCwRBpNWUQikTAlXej1Uq4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793150886; v=1; x=1793755686;
- b=rkp7nNL0OLdSYcb59MXeFHASOBTGrfoVXSeiDOAzcm6l2NlZvGUgzPFj1S+1o86f7XPYvI3/
- 6bb/0LcC7zO+bwkuQX2rgJIdUS3cr0StXRACoH///yv4lMgTmRbdiNo4WddWx4oIaVa3w7WWiNw
- qraOAe9NEp20TCritt5BRty8=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id 47897f4e5ab642e4;
-	Wed, 28 Oct 2026 01:28:06 +0000
-X-Mizu-Trace-ID: 47897f4e5ab642e4
-X-Migadu-Flow: FLOW_OUT
-Date: Wed, 28 Oct 2026 09:27:49 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Antoine Tenart <atenart@kernel.org>, David Ahern <dsahern@kernel.org>
-Cc: Zhou Qiuyue <n0ps1edzz@gmail.com>, netdev@vger.kernel.org,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v2] ipv6: raw: fix use-after-free in
- rawv6_send_hdrinc()
-Message-ID: <auFPlcB4VfQ76NYC@fedora>
-References: <20261026044808.613-1-n0ps1edzz@gmail.com>
- <at7uk8gXtzNufuQF@fedora>
- <at9sKRSEJLVGj9OK@kwain>
- <auAAmqXcxmC6BDrR@fedora>
- <auBs0Xn5yVJ1NtdK@kwain>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hTgtj1yv
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3ad53f538d2so398714a91.3
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 18:47:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793152079; x=1793756879; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=UrWtpTOaprLxw1pdrbzZEPDlusg55RRNNxdXSa9SbLw=;
+        b=hTgtj1yvC4cnaEZyDZLNmULuJLMpTdudv4MNafpl8PEdI0dtDP6Yvcuv95HqUodmoz
+         0/v07TzgLkBpHujQnqXe73FzhMFE+m5M2oOdgCi42FQRT3vTvTk6V1wY4mq7aylhoOL2
+         l2Hvh1WnGKS28Uad3h7Zolt5yeqarBv70gQ4vRzFbDMkac+R8O8mF402osj51PMoNwyF
+         SGOTBKZWAOVCC5ONPFRvEq4GxgE1ycJ+v+1lvpYJf/WmwEJtM9clCd7Y7QwadmsQWjUj
+         3ynluaSmAKiibe+kxq56ozzWwNLis+Wn+9Er8qVYa1YubgmP7tpOEzE7GH1sxnujEJ/i
+         Bi7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793152079; x=1793756879;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=UrWtpTOaprLxw1pdrbzZEPDlusg55RRNNxdXSa9SbLw=;
+        b=zfnD1O19CfM08l6CuiFPIHKQn/5Xjm/n+vxUESUNSUay9943wl7e/VkhqTChKz3YKj
+         fewvO37rxIBJlqLWwP72gMaN65Jl3nuiQfWVHgp/vai6zXXeqoVYMq8MmXfojrVmZFoG
+         vNFmarV9PjYec+bzJLuVHH2n11HPgOMZAwfdt91VUva87wxh5N25Ba/S0VnFHuaPUg7v
+         q7uNttl+qHEDKvUJPJJhjbeMxtkrKknaTYbkdkaCwo5IEaAYsDpkyNTQKomOcL8prty9
+         yalBBxAcNLFcXsO4l+3wavJstOhxKjiesqaMtkFMkYH05UmhSeV6vVHduxwwcNIygRB6
+         IqKQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwP/FoW3u1f6+OqbLR+v8jCgOdrQQOIpDWIT3hMMzoPImF9PoMsUR+fKQJMeTbtnqbGQKqd7Uo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIfzALJnDlXgWaJzc0vUG4d4CNpLyktizSHdLZKtwCJ8uKKK0lh
+	RYag6XHXGb1yU5QsJwkcSRLEY8LXy9PkwfDQkRhx61xR19dz7ZqhesJiJn8mQ0scTEKlFJtaYFk
+	3Jqj1Ng==
+X-Received: from plhx12.prod.google.com ([2002:a17:903:2c0c:b0:2ea:829f:27a8])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5348:b0:3ad:25f6:1dd0
+ with SMTP id 98e67ed59e1d1-3ae5817100cmr630595a91.11.1793152078926; Tue, 27
+ Oct 2026 18:47:58 -0700 (PDT)
+Date: Wed, 28 Oct 2026 01:47:58 +0000
+In-Reply-To: <20261026003804.61923-2-imv4bel@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -72,48 +77,91 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <auBs0Xn5yVJ1NtdK@kwain>
+Mime-Version: 1.0
+References: <20261026003804.61923-1-imv4bel@gmail.com> <20261026003804.61923-2-imv4bel@gmail.com>
+Message-ID: <auFUNX-pPwb9p8zG@google.com>
+Subject: Re: [PATCH net v4 1/2] inet: reject unhashed sockets during
+ established lookups
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Hyunwoo Kim <imv4bel@gmail.com>
+Cc: edumazet@kernel.org, ncardwell@google.com, davem@davemloft.net, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, martin.lau@linux.dev, 
+	john.fastabend@gmail.com, weiwan@google.com, sd@queasysnail.net, 
+	jiayuan.chen@linux.dev, netdev@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Oct 27, 2026 at 10:43:48AM +0100, Antoine Tenart wrote:
-> On Tue, Oct 27, 2026 at 09:38:34AM +0800, Hangbin Liu wrote:
-> > On Mon, Oct 26, 2026 at 04:07:40PM +0100, Antoine Tenart wrote:
-> > > On Mon, Oct 26, 2026 at 02:09:23PM +0800, Hangbin Liu wrote:
-> > > > On Mon, Oct 26, 2026 at 12:48:08PM +0800, Zhou Qiuyue wrote:
-> > > > > diff --git a/net/ipv6/raw.c b/net/ipv6/raw.c
-> > > > > index b965258cf..bdea82543 100644
-> > > > > --- a/net/ipv6/raw.c
-> > > > > +++ b/net/ipv6/raw.c
-> > > > > @@ -654,6 +654,9 @@ static int rawv6_send_hdrinc(struct sock *sk, struct msghdr *msg, int length,
-> > > > >  	if (unlikely(!skb))
-> > > > >  		return 0;
-> > > > >  
-> > > > > +	/* l3mdev_ip6_out() may have replaced the skb dst. */
-> > > > > +	rt = dst_rt6_info(skb_dst(skb));
-> > > > > +
-> > > > >  	/* Acquire rcu_read_lock() in case we need to use rt->rt6i_idev
-> > > > >  	 * in the error path. Since skb has been freed, the dst could
-> > > > >  	 * have been queued for deletion.
-> > > > 
-> > > > Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
-> > > 
-> > > Doesn't this change the device seen by the nf hook / used for the stats?
-> > 
-> > Should we still use the old/released rt->dst.dev after the VRF output
-> > path replace skb->dst? vrf_ip6_out_redirect() said it allows the nf hook
-> > use vrf device.
+On Mon, 26 Oct 2026 09:37:44 +0900, Hyunwoo Kim wrote:
+> TCP established ehash lookups are lockless. The socket caches involved
+> use SLAB_TYPESAFE_BY_RCU, so memory can be reused before an RCU reader
+> that retained its old address has finished.
 > 
-> Right, but then in the direct path the NF_INET_LOCAL_OUT hook would be
-> run twice with the same dev. Looking at other call sites for
-> l3mdev_ip6_out, it's not clear either,  __ip6_local_out reloads the dev
-> while ip6_xmit does not. I'm not sure what is the expected behavior.
-
-Hmm, me neither. David might know.
-
-Thanks
-Hangbin
+> After a tuple match, __inet_lookup_established() and
+> __inet6_lookup_established() acquire a reference and repeat the tuple
+> check. They do not check whether the new object is hashed. If the
+> address is reused for a socket with the same tuple, the lookup can
+> acquire a reference to the new object and return it while its nulls node
+> is unhashed.
 > 
-> Regardless of that, the change in behavior (if right) would be worth
-> mentioning in the commit log.
+> A PoC that drives reuse with a SYN cookie request socket reproduced the
+> crash. The new request socket is unhashed and has a NULL rsk_listener.
+> A lookup that had loaded the address of the old request socket acquired
+> the reference published by tcp_get_cookie_sock() and returned the new
+> object. tcp_v4_rcv() then read sk_state through the NULL listener.
+> 
+> The resulting crash was:
+> 
+>   BUG: kernel NULL pointer dereference, address: 0000000000000012
+>   #PF: supervisor read access in kernel mode
+>   #PF: error_code(0x0000) - not-present page
+>   ...
+>   Oops: Oops: 0000 [#1] SMP NOPTI
+>   CPU: 4 UID: 0 PID: 0 Comm: swapper/4 Not tainted 7.3.0-00591-g0e135910deec #1 PREEMPT(lazy)
+>   ...
+>   RIP: 0010:tcp_v4_rcv+0x44e/0x1280
+>   ...
+>   R10: 0000000000000001 R11: 00000000024ca8c0 R12: 0000000000000000
+>   ...
+>   CR2: 0000000000000012 CR3: 0000000103d50004 CR4: 0000000000770ef0
+>   ...
+>   Call Trace:
+>    <IRQ>
+>    ? raw_local_deliver+0xae/0x240
+>    ip_protocol_deliver_rcu+0x2d/0x180
+>    ip_local_deliver_finish+0x84/0x100
+>    ip_sublist_rcv_finish+0x5f/0x70
+>    ip_sublist_rcv+0x12a/0x1d0
+>    ip_list_rcv+0xfd/0x130
+>    __netif_receive_skb_list_core+0x223/0x250
+>    netif_receive_skb_list_internal+0x1d2/0x2c0
+>    ? try_fill_recv+0x39/0x7b0
+>    napi_complete_done+0x74/0x170
+>    virtnet_poll+0x445/0x600
+>    __napi_poll+0x27/0x1e0
+>    net_rx_action+0x2fe/0x3b0
+>    handle_softirqs+0xc2/0x2c0
+>    __irq_exit_rcu+0x74/0xd0
+>    common_interrupt+0x7f/0x90
+>    </IRQ>
+>   ...
+>   Kernel panic - not syncing: Fatal exception in interrupt
+> 
+> After taking a reference, check whether the nulls node is unhashed in
+> both IPv4 and IPv6 established lookups. If it is unhashed or the tuple
+> no longer matches, drop the reference and restart the lookup.
+> 
+> Lookups racing with the TIME_WAIT hashdance, or with a request being
+> replaced by its child, now restart and find the new socket instead of
+> returning the old one.
+> 
+> Request sockets that were never inserted into ehash can have a nonzero
+> refcount, and a stale lookup can hold a transient reference. Therefore,
+> when SYN cookie, Fast Open, and request migration paths fail after
+> setting a nonzero refcount, release the references held by those paths
+> with reqsk_put() instead of freeing the request directly.
+> 
+> Fixes: 079096f103fa ("tcp/dccp: install syn_recv requests into ehash table")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+> Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
