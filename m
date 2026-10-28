@@ -1,114 +1,115 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.226
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793222605;
-	b=izSWJnMDhczEWFCNiaY4sgm3va29UVcQgo9mJodVcuUPvIeaa+S1yNaFrgYspZ83IAbI
-	 cZkcJa8LA9NukU5fhnpf5mUtgOsG2AMyYsYtIO2y9HHir5iPwL07pp2j6xqwkw6hCezX/
-	 7X89SFWrKupdhMP6BGESWpvPwd9E/rzu0VIgFwXuPbXqwlWdWhtwDXx/wZ4VRhj3Mfie1
-	 oa38x++G9Xch02KilGhvPJ4woaMUe9YTtUwQYY8k2jDVFpIjiendRgW5Pyo9/1vd1glQ0
-	 AguY+a5w4WzjjzRxT356A3KQlcg2EmEZVcfuf7UeDOZGi90petuhPqZgDAd0Xu9uRrA==
+	t=1793222986;
+	b=DEtIt9R5QxVwrBXZem424lWxCfuGU5TXFJrFSxfys0oow8V1zWAHJnXefjJqAFNMBPAF
+	 EGzw8ez7Yj/+hHw3+naeMBM1xXst//VSThCJePrXPI3S06uIBB/zjMLinDiaQ6wyxBZrQ
+	 0kgI7OxTeyNl0Gk44iCP7ngQGpYYtEhA0QTRIjJ2FHLsDqybZ5lDyzl9pb2J0HPj7KP5j
+	 Da96GnyouFHezJu+5OMaQT62HLrdSfdn1yyOv+VG6dUdtkgEXKdq5UqVsNoWTcRDIq9bC
+	 DTAT1olYaCcPGAFpmqDYJXEPDogATNmrYqYfnwhKD7c0Zth+0Bb1ufnNb8sSatjaeDw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793222605;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
-	 X-Gm-Gg:X-Received:Received:X-Relaying-Domain:X-CFilter-Loop:Received:
-	 DKIM-Signature:X-Received:X-Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-DetectorID-Processed;
-	bh=pQ9JV51aLYDpacaXcbipq7EgeCvVh7+04CD76p86tPc=;
-	b=01KZrb+RtLgJ6/AW4Dg/EUnQO5suQYk2nGMbkU+a/eDk9qlrqONqvtioGFvRWX7j1AK0
-	 ixo9uhGUP66Ul1yF23nowmk63xZn+GC/n3zRLmKTS2cZbDwb7pKmzp2EUShcs6qUkvNJI
-	 Gg58fnAm02faqnTxK4rrWgc4Huloqy4a+ewuDgBo+bZ5/lWM1DbWa13IlnJuo1lNQlhuB
-	 7n65G70EBVUy73xIfRbXxi2yXKyG5y6ZpWLzfJJzhSyQ7licQ11m3tetWJ/FIlh3cWdUU
-	 Vu3LQcKUW1g3ax4EcFxZM7MyZuzLRIQq6dSOK3GbULjrVOEeTKeKk0yuLhaaLd5pP6w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793222986;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=ASKLLKFwu2pGOgKZA+t+mijx3nltyW6H3vc5AHkEheA=;
+	b=meCAXlQPQRiDEuAx+BAUytdd9E+QVGSpjTLBeR8EgpJJgnhVRLMwmsK+sfz4sPxgZMxk
+	 IG4Iy0a28+sPO17k8i5fWYVHqCEBicWRj6IicIIWRcl+8d/SMQSJq1fG0uUhkPnyAAIZz
+	 t66dpbIT46J+AiLgm8MIvIhExHAl1CmGBFmwEAtzJbDAWEWzSVd8+M1/J+B+auWPb4lNs
+	 uxVPKWVUjzM61t8Fl504xP5Z2Po1nqJKYEIVBsdv+bQnGzmFsn6oPXl6gGCzH7MJ1Ou3a
+	 bBOWwSTER5kWnp/VypTfnRMaVyYLn65tNTYsgKR2OlQJb49t8udLLc+0OJjNDC8aOoA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=broadcom.com;
-	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b="MwGvlQ/C";
-	arc=none smtp.remote-ip=209.85.215.226
-Received: from mail-pg1-f226.google.com (mail-pg1-f226.google.com [209.85.215.226])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=a2FzBUug;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=E8xc7SD5;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2540C606A32E
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 21:23:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2540C606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02585606A31A
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 21:29:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 02585606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=MwGvlQ/C
-Received: by mail-pg1-f226.google.com with SMTP id 41be03b00d2f7-cdaefe02d5dso220989a12.1
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 14:23:25 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=a2FzBUug;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=E8xc7SD5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793222984;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ASKLLKFwu2pGOgKZA+t+mijx3nltyW6H3vc5AHkEheA=;
+	b=a2FzBUugBCB16IxMPpBkwIiP1OKCNmbJ4hehK8TSqb6heWptrIKC2vJslZzzS81FSoKVMV
+	cEHbSqt+AlUm1lSwMbbDi7vKclcEZgVW2nnCjpb7WtiIEL/kim1H+aH8rhH2lZpLk8+kYE
+	rHy6FvfJVxtPLScjY3qDtYeNRTDWePM=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-196-D4Q_QRa0OFSgXYiQ2mmKew-1; Wed, 28 Oct 2026 17:29:37 -0400
+X-MC-Unique: D4Q_QRa0OFSgXYiQ2mmKew-1
+X-Mimecast-MFC-AGG-ID: D4Q_QRa0OFSgXYiQ2mmKew_1793222976
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48af4046a3bso1206035f8f.2
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 14:29:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1793222976; x=1793827776; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ASKLLKFwu2pGOgKZA+t+mijx3nltyW6H3vc5AHkEheA=;
+        b=E8xc7SD5zFdbKp6a8Pv4boR5xd6Y6JBYrgFI0JpQeFShiukmiGn5nBTdWYeYABeGi+
+         /RnF/mSHD79zgYbdeTKfSqzgbFI4RznUXfGbat0e7G7B+F5iE8r3fyjIkYFD/Rf/tFpS
+         KlGfyH2RKlu1r1cBQ2TIPy2wheuUJrUD8gJqw0TW4dM+9RETDo/2gADGQNFllLv91Nvn
+         AgmyrtlfLEq3nvRm0xApiSVL/5dwoskh5OqAUFEICyvflFS+PAFF2bpKarSczlE6skCl
+         DeIaNo/tYxuc9rGAC90c3s6SDLqheoYy7LLvCf1KMnj0DWyqGVKYQYZC0HVbtje4LtAf
+         qKcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793222604; x=1793827404;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
+        d=1e100.net; s=20260707; t=1793222976; x=1793827776;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=pQ9JV51aLYDpacaXcbipq7EgeCvVh7+04CD76p86tPc=;
-        b=GHCuXzUhqs7pM4OnPQrx8b6fo/4SDhU8ZTF0xblj+PIOnWEo5dwDG095cuXxMOsgsR
-         aY6npN9a9MJVCHrYNjVSadv54L7pd8pOGO+TYZ0QECqMmQugRfJc0QvWczQiZv7UqpPo
-         srg3Jv/GMX4+pAhboQ3t4+9aEejTyicnJ74v0SPkfOPPlKyDzPda6I5btJ0I+fcxRKqC
-         2ocxAlgB48Woj5EzkHpKcIPBo90vhveMQ8jeMhjVo2cYhfvbHKVfZSWvbF48YTfChWzM
-         JuklYhd5YwqnpcsKeCCnHWyxGdYJ9kLgwqlxMvPw+zDaJywLuRFGsmnTelsXY/1Mr2Kj
-         LYlw==
-X-Gm-Message-State: AFq9FYIXHRZFC3FIt0T6RPHYo+tiuTirpo/1GKpCMsVJwReRyQPZR1Ic
-	GehkFuVLhSFoW7KITE36d4a63GVMRlFojhvCVxQDoW4+IoArkIhmY1ByBCISbYiuk+hozQNwxhj
-	tMTF3h8xlP06A9RHouqAD7GjaI2Q51z75cmjKFbYp3aC96Y4oJvj1I/8ikHfJX59t1s+vbC71V9
-	DjaSUFT5JPpkAdtLRHEY/+YA/Ew2hvVzDrYlhorsg+qRW3Fd/3NCPjtH/K1Xlytpto3M/HguTkT
-	zSnZt9uTWA5xQ3v
-X-Gm-Gg: AYBFou3T1n6nyrwxTBHxkJEaqSLLjaHFpVL0HgtVWBeDPxc9A6pdj9Iab1RWrxS+wUK
-	3cCjzIuwDiCiVAjv8CCe68V97FiWFevxkIGP/Ou73L0ic9YizCfPCPVp3MXAbW/g47yJNvo9T+l
-	ZfcizwrtIn6IrM2LAKwdWInJuVXDmp/yCgiuqTD9zKb56fnq3M4r5bjYY8ewTbt5apEX/unLc1w
-	eRw+WHLJ/s2GxJcKoYWVu6vtGRorbncchoIKakqFgvYg3SmGWFPsNg9TlyKDTypsk2r013VQNDV
-	3mbSfUakMTsXlp0EDRCkoSXsI/4KsqtYZ6jBVxIUUNWw5cAdETPF+p2nSwlRVaSCd0PmKKiJ0fz
-	yxJBZO2ryICPl0PYKhK81pBKHgHVRMLRaoroin0RJFbYyOVblhyxghQ9cUlLy/VV3gxtguKWKDE
-	yXtnKL2TsE2GQ0i1yLAoDvsPoCT1UFpx+iMwhn1V/S
-X-Received: by 2002:a17:90b:2805:b0:3ac:9f00:3bc7 with SMTP id 98e67ed59e1d1-3ae580a02bcmr2299559a91.33.1793222604553;
-        Wed, 28 Oct 2026 14:23:24 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-13.dlp.protect.broadcom.com. [144.49.247.13])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ae55d4f7e0sm867919a91.1.2026.10.28.14.23.23
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 28 Oct 2026 14:23:24 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-91c70349f65so32383806d6.3
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 14:23:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1793222603; x=1793827403; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=pQ9JV51aLYDpacaXcbipq7EgeCvVh7+04CD76p86tPc=;
-        b=MwGvlQ/CvngOXCOn171X3inuHNzmp25wpOYQxDRITZwH/DkfjriWZFaCj7BWk/AwP5
-         8kW8WgQT6oBrWR9d3FMAIYBEtEAplzFmYbh5GusQYtCgWDljeSQzQAlkf/6aT54nw3yd
-         5QL9/3zJu1XhmFZ8nZq2GRQiofHAWqHRj4YsA=
-X-Received: by 2002:a05:620a:6016:b0:943:f301:49b9 with SMTP id af79cd13be357-94408ce490fmr511482885a.53.1793222602836;
-        Wed, 28 Oct 2026 14:23:22 -0700 (PDT)
-X-Received: by 2002:a05:620a:6016:b0:943:f301:49b9 with SMTP id af79cd13be357-94408ce490fmr511478285a.53.1793222602293;
-        Wed, 28 Oct 2026 14:23:22 -0700 (PDT)
-Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-940f0669112sm1368755185a.10.2026.10.28.14.23.20
+        bh=ASKLLKFwu2pGOgKZA+t+mijx3nltyW6H3vc5AHkEheA=;
+        b=y2OoaWW8cRv2MvxRw/Q3oocwuR7ntxHjDddc5Cwq7OHyRQqiVRAV5b/ST5QeI6PHlM
+         S1/i/zne6NyjMAumvoV+kIgRg913dbekv8IGlblDfjaIsr3vU8fR6FMK/z+iNXwVePxh
+         qzX4ozoNUcHJXuogQ9Zqs+fjTBKQxSPna5QCd4jIowEQHxhkNP8MsC+nZKFEiIIY9yy/
+         A9qDIW8VUuVN4q1KEPtsTj2Ue4+r1dFuwT9izM44sPl9wVarkT36RlaAZogcZeS962SW
+         8VW/5NpfWkUeTDCivNJbOYCvUJi5N44KSRTzvbgePEPQAs5p9FKhTRaZN4MoyVOkpJnX
+         JY/w==
+X-Forwarded-Encrypted: i=1; AKwUvBzbTRAMsvJgsdYS3vDgLcCyacw7DtygTJ1V5rBMhuuTd3CqGeDbhXZrI4jQeh74xxxb+VOeEPc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIdEAFBhFXdpMqq66h+dq4dNYPNB+BUqZ8u/WWZ+v9fLu1nHx89
+	i4hd4PJms9XLe4fWkwcIs3MwvYyL2D+IE8Imx32h0qMpmmZlnXgh1qeqmWNzDgzEWLCU2ijwdg4
+	T3Cr6fh7oodJMeugiIv72o7ePbAzQ4MvCxKtteMtFPDp3e986+mxXGvR5vQ==
+X-Gm-Gg: AYBFou3vmRAJ8urKzHis1YSApmSr6WVLm66ZiIYonAZ4DGxVjdlzg4eioP/oUK78QkF
+	TY5eYuDBGBgkUaY6PTqyIjSaOnURtN/qMleVxoCon4ODRd7c83m8f8SvCEMtJK3NbVmPBiSPgql
+	krgyGBDOSxsutR95t3Ak08KlYxnHggy55dQtOakZkulxWPxgtrWmq0HbBSKbpu2dUrb6pd4B5dN
+	asMLVvjIScfsiAc6xnoqBZe0CYKInUF105NcANZV4Muj4CV7rGgIhxtTzWthjwVmHTluuDD4SC6
+	UpFp/lIbHVclJEjTkn6oXGdv2P9KwdKTlJAnqbWWgQ2qymZJKJVtQHOoIFVNXqvN5hG25fjj6Sk
+	hT0AkRXk56X+8/E2x3kliQmMRYmC6lBRPJfQGRRVkLsJOfoeV4v4EjIAI5UKBF1pJxulqvm5aqP
+	6+qNXeb7820P9zwzfygtIvq7pu
+X-Received: by 2002:a05:6000:260b:b0:48d:e696:8a65 with SMTP id ffacd0b85a97d-48e5d30e253mr8827390f8f.46.1793222976248;
+        Wed, 28 Oct 2026 14:29:36 -0700 (PDT)
+X-Received: by 2002:a05:6000:260b:b0:48d:e696:8a65 with SMTP id ffacd0b85a97d-48e5d30e253mr8827363f8f.46.1793222975881;
+        Wed, 28 Oct 2026 14:29:35 -0700 (PDT)
+Received: from debian (2a01cb05923c9a00005ce1bcb3793264.ipv6.abo.wanadoo.fr. [2a01:cb05:923c:9a00:5c:e1bc:b379:3264])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ebd4bc5sm30412532f8f.34.2026.10.28.14.29.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 14:23:21 -0700 (PDT)
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-To: netdev@vger.kernel.org
-Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net v2 4/5] net: dsa: b53: reject conflicting mirror destinations
-Date: Wed, 28 Oct 2026 14:23:09 -0700
-Message-ID: <20261028212310.3847553-5-florian.fainelli@broadcom.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261028212310.3847553-1-florian.fainelli@broadcom.com>
-References: <20261028212310.3847553-1-florian.fainelli@broadcom.com>
+        Wed, 28 Oct 2026 14:29:34 -0700 (PDT)
+Date: Wed, 28 Oct 2026 22:29:31 +0100
+From: Guillaume Nault <gnault@redhat.com>
+To: Neal Cardwell <ncardwell.sw@gmail.com>
+Cc: Tom.D.Williams@morganstanley.com, davem@davemloft.net,
+	edumazet@kernel.org, horms@kernel.org, kuba@kernel.org,
+	kuniyu@google.com, ncardwell@google.com, netdev@vger.kernel.org,
+	pabeni@redhat.com, ycheng@google.com
+Subject: Re: [PATCH net] tcp: Fix dup-ack detection on non-SACK bidirectional
+ data transfer.
+Message-ID: <auJpO3m_rmyToV0w@debian>
+References: <2ab9dc5f5b5e9f50d7a4aa02a6b6759fc86314c7.1792658454.git.gnault@redhat.com>
+ <20261023161013.3079347-1-ncardwell.sw@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -118,83 +119,31 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261023161013.3079347-1-ncardwell.sw@gmail.com>
 
-The mirror capture control register selects one destination for all
-ingress and egress mirror sources. Adding a rule for a different capture
-port currently overwrites that field and silently redirects all existing
-mirror rules.
-
-Read the capture control before changing any source masks and reject a
-different destination while mirroring is enabled. Return an extack which
-describes the hardware limitation, and propagate a failed capture-control
-read rather than making the decision from uninitialized data.
-
-Clear the capture-port field when the final source is removed so a later
-rule can select a new destination.
-
-Fixes: ed3af5fd08eb ("net: dsa: b53: Add support for port mirroring")
-Reviewed-by: Jonas Gorski <jonas.gorski@gmail.com>
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
----
- drivers/net/dsa/b53/b53_common.c | 29 +++++++++++++++++++----------
- 1 file changed, 19 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index c38e8c5838bd..378f47e7250c 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -2543,7 +2543,19 @@ int b53_mirror_add(struct dsa_switch *ds, int port,
- 		   struct netlink_ext_ack *extack)
- {
- 	struct b53_device *dev = ds->priv;
--	u16 reg, loc;
-+	u16 reg, loc, cap_ctl;
-+	int ret;
-+
-+	ret = b53_read16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, &cap_ctl);
-+	if (ret)
-+		return ret;
-+
-+	if ((cap_ctl & MIRROR_EN) &&
-+	    (cap_ctl & CAP_PORT_MASK) != mirror->to_local_port) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Only one mirroring destination is supported");
-+		return -EOPNOTSUPP;
-+	}
- 
- 	if (ingress)
- 		loc = B53_IG_MIR_CTL;
-@@ -2554,11 +2566,10 @@ int b53_mirror_add(struct dsa_switch *ds, int port,
- 	reg |= BIT(port);
- 	b53_write16(dev, B53_MGMT_PAGE, loc, reg);
- 
--	b53_read16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, &reg);
--	reg &= ~CAP_PORT_MASK;
--	reg |= mirror->to_local_port;
--	reg |= MIRROR_EN;
--	b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, reg);
-+	cap_ctl &= ~CAP_PORT_MASK;
-+	cap_ctl |= mirror->to_local_port;
-+	cap_ctl |= MIRROR_EN;
-+	b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, cap_ctl);
- 
- 	return 0;
- }
-@@ -2595,10 +2606,8 @@ void b53_mirror_del(struct dsa_switch *ds, int port,
- 
- 	b53_read16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, &reg);
- 	/* Both no longer have ports, let's disable mirroring */
--	if (loc_disable && other_loc_disable) {
--		reg &= ~MIRROR_EN;
--		reg &= ~mirror->to_local_port;
--	}
-+	if (loc_disable && other_loc_disable)
-+		reg &= ~(MIRROR_EN | CAP_PORT_MASK);
- 	b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, reg);
- }
- EXPORT_SYMBOL(b53_mirror_del);
--- 
-2.53.0
+On Fri, Oct 23, 2026 at 09:10:13AM -0700, Neal Cardwell wrote:
+> From: Neal Cardwell <ncardwell@google.com>
+> 
+> I asked two different frontier LLMs to take a look at this thread, and they
+> both pointed out an intertwined issue we haven't noted yet, which is that when
+> an ACK advances tp->snd_una by less than 1 whole segment of the head skb in the
+> retransmit queue, tcp_clean_rtx_queue() breaks out early without setting
+> FLAG_ACKED. Previously, such a pure ACK relied on FLAG_WIN_UPDATE being set in
+> order to have FLAG_NOT_DUP set and avoid being treated as dubious by
+> tcp_ack_is_dubious() in TCP_CA_Open, and thus avoid calling
+> tcp_fastretrans_alert(). If we fix the FLAG_WIN_UPDATE code in this way, then
+> FLAG_WIN_UPDATE does not get set on sub-MSS ACKs, and such cases will make
+> tcp_ack_is_dubious() true and we'll call tcp_fastretrans_alert().  AFAICT
+> nothing serious should happen, since FLAG_SND_UNA_ADVANCED should be true and
+> so num_dupack should be 0 and nothing should happen to the connection state,
+> and nothing spurious should be sent. But it's performance overhead, and a
+> confusing dynamic that might lead to bugs down the road.
+> 
+> Below is a proposed patch, cooked by a frontier LLM and lightly edited by me,
+> that should factor in all these considerations. This is compiled but not yet
+> tested. I will kick off some tests for it.
+> 
+Thanks, I've integrated this in v2.
 
