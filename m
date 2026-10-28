@@ -1,80 +1,107 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793188092;
-	b=gS9K2OeE6DunnpBB7bAtOYmJ+mf6qjhy8QjV2TSzy9uEVPXEsQL68kMYn7zVT0i/5AKf
-	 /ETSfFMJE86WwlYRhh0OYeFRGsze4q4j17bT8I+axS5HJAsneSSQ/0jopJ1f9tczNlTtb
-	 RY0VkXaP2/5XplFQ/wnkMBk68Sn5TDWkkwODVmZ3RI7rs/i7jc5H3DQUbSlg6omOR/3Xq
-	 8BsbSGehHLpj+jLW5+msa97l3FYfG4JfiM/HayKTkxQA6wcVeJrTLDC27/D9pbmJ6b1y7
-	 98rySEIVvMZG0QzFZDEhDFxM3b6ytUMbFJ9ji5jq/VuxLFl0187iPmWdG0dsnrwjfHQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793188092;
-	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
-	 X-Endpoint-Received:X-Original-From:Reply-To;
-	bh=uat8pe08mkQcc9xp6GiqZoeJlBhecCIrIQkqGR0KJo4=;
-	b=PE3PNbe3CwXMyl2NMPMiApImpWJVl72xQgNjJ+TkvmODBS+nrEO+BRMWgnB2insxm6F8
-	 XXw7a+AjueqrzFDNO6ds0F8iBB9ztLK0aDLoOaXY7vgbizBAdsKGGQ1W9E2H5/VFUnYmV
-	 Is22BXY/9wdKhUGS2jOxVsflaNjlNuwmEfzx92J9iapmPllDU6Gg4fTrJdEAwkrUnCGMQ
-	 LYCKSMv9VMdkVIB69K6szMuFk+X6zyCYH2R7v7SI8T4NihhNachXWkkYWP8PpDxLqsjR8
-	 qT61Cda2/FOHv4EcYOdsH3Lg+CbWcd3JBKfMVqFH0QUx5U6NmoQc9YYNyJvjfhN7LtQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JBtoulQJ;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BEFE606A326;
-	Wed, 28 Oct 2026 11:48:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JBtoulQJ
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793188092;
-	b=0p3xMFlbmmkCs7LcFTBc0kt+V5XaaPmb7+Hix+lZaBMJmDAeloVNu0AKnflAOgRtkMGa
-	 am0lMk12AkgP2qOYyHSNAjq1dYHHxZebg4yPoEx78CHbT+q2EVZYmdFPTVnnMMTPXkqm6
-	 6r3oO3AhcGCpw4mg+nATxfmAKty2NVih0dxZXZKEHQ7f65sb2rYlOkAcT/Cq/9bkexyqb
-	 3+vAVa3dnzXMAP4KAa81mT9itKwz7RZGJeGJ7zoquXPWtiGrk/F2BEznYS4GOfzcJ9KVo
-	 8aDDGyDXlomVf2+MViWBYSdXGUbttXvCyLzmUsWjPQB4ayOnqAqeoDwOVypuX8RRhPQ==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793188092;
-	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
-	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To;
-	bh=uat8pe08mkQcc9xp6GiqZoeJlBhecCIrIQkqGR0KJo4=;
-	b=yhg/ZGzfC5wc71QtTUuSeBLkTS/OHClj7uHO/wOw62r0QnKwt9loRB7U8zNJ7erlvjQm
-	 2iyTxSqyuUUCE9JmgPG/TRyHMYOYZQiS24SgP46RV7GVTagBp8zlsDqTxs5G78wg9ReDa
-	 oCpX2/l/975zSAZQFXXnK3X7mZeth92OSrdxJii0+6sVxs7LRVj5EVv5NQylMvgqDxCvS
-	 qI2drWPDHvyKQNMoQ3RGM+oX4qY5hLLyIbaBh5lDTaaTBznXbfX48DM2O8YbMusQDiNsG
-	 HMqeyjk4NY3vH2ZbrCCeYMXKi0m/Y1Q/FS5QxIvr8AhuvcblZx1F+4ssVqdsTKkWE2w==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.46
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793188120;
+	b=4q+KA0kQr/CaaFQsVGYvKWIOoP3R1JznXmIAo/bU4igVX0wVDWJjBSH+4zeXLkPBA1X4
+	 1CIjTJp3IjvvEAU6H4XJq/FMcUMTzph1mPagd2EERowm/xWD7wTbmRe8zWQCqvr/MwrKw
+	 xhYsgjBpTryAnAw4atuy9LIbkQRuGyAGb9s85TzeBGlZ3shX7V3tba7kCyQ47cTzEu/nX
+	 K3jg/tttD9OCAW3VbPmsJuStpuKcRo7DzgSV6XKK9V2X/ru7genwqrI5kjPEz9O+EKFGI
+	 VUfjwyyCfAMBnhUMvU2rSTtagp9UHJjpp+h2F+nORF9igAUa41JD+MPC2pajGZRcVcw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793188120;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=rz4LcTuIBFgFlzGCEXc77TsZGPHM5RG2DLR5yTjpqhU=;
+	b=mxuTdvQHVvOzSAJIFIT4XEOM86BAGBlQZt1/jQSnUnloMnDwpAXUnxz5lUMKfF+v9m85
+	 NY2V/80imjw3WdFMLwtisOLP18H7PHRqcfpGk48pgYA3Vp/oUwN9R8g3adOuYrghyPIvG
+	 zxGtV76xzrU9iFBjzpmeCrYMMwA2P6G4cNN7PLvWH1PNEaw2bMDyaCREN1PdsonZXlbfQ
+	 5kE+DC+hhF1f3p4x1Qx8PTsd68tpfGjLXAJLWTTbG9VJBxzzbrRnKZxUfcaGZGoMwJ5Ax
+	 vJbVrSMBtxHkE6XOL+v1tbsPFIhQsnt8jyQhunlE76kF7KWnboFssNDWajVOgPt9bVg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=t2gJuUjT;
+	arc=none smtp.remote-ip=209.85.218.46
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id E090E1F031E7;
-	Wed, 28 Oct 2026 11:48:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793188092;
-	bh=uat8pe08mkQcc9xp6GiqZoeJlBhecCIrIQkqGR0KJo4=;
-	h=From:Subject:Date:To:Cc:Reply-To;
-	b=JBtoulQJgr9VNnQW6lqXiu6RYd9Z+XUR7cZYcTGib5fJj5nSoEIjmG6PLRJCWLjgh
-	 3XIkc199lImRPmj/JfoVjzD686SHkKFgsWDAmwAitvkA/3PCuhjomwu3DLdw1UKEMD
-	 d6bmIlAK/XBolmRJPulYjcfQMgnZATsDgjk6SzbnFF+6CWTYhUBO/x+waQ1T1W9vLV
-	 oAjoJuStzKDIvn+jLjHjVtH1frjKvAcxSwu0GJNLWiWMzk9RwulOARy996yr71jgck
-	 z/AsLescOFf67F8toAKzq3UUiFWpwBiaUPelACjdQTiUf0YmyPha6K5A40pUrqvqRF
-	 Fd0cT2RxU85fg==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 3C9654544A;
-	Wed, 28 Oct 2026 11:48:10 +0000 (UTC)
-From: Ramses de Norre via B4 Relay <devnull+ramses.well-founded.dev@kernel.org>
-Subject: [PATCH net v4 0/2] bonding: fix the initial last_rx seed for the
- ARP monitor
-Date: Wed, 28 Oct 2026 12:48:06 +0100
-Message-Id: <20261028-bonding-last-rx-v4-0-4d8e4cd47467@well-founded.dev>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1F8606A323
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 11:48:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9A1F8606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=t2gJuUjT
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c46d41f6af3so117800866b.1
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 04:48:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793188118; x=1793792918; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rz4LcTuIBFgFlzGCEXc77TsZGPHM5RG2DLR5yTjpqhU=;
+        b=t2gJuUjTUxdmJHYfEwyOU8B9odZv+OBtRYQtfaOaEhdxugMehZJIRfZBR0+pT9Wrvx
+         xJBKLZDCnCOzMPmLPeHeHjPe3cmNxwgHhYPUlFmG5LUkGvrF0BJf+S7zWD7s+vUwyYsO
+         jVbvuwPg9mI/7ARATnaEOjZoxG3a6ET6UiocRkz6y+RGu80rQDoSDD7I3jio7s+69cWq
+         GObddatvItFxd8KzhHGNeNdVQky8pl8nZlDbPkWIRtmnBO7FAUCCSiDG4M1N+sbmUQr/
+         A0R/ECCrvbKz5OZwPKeIdc9/m5LezrS3Ahmg918cEPu4XQgwadVCHdsAjq0y7AcYTaKu
+         QxiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793188118; x=1793792918;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=rz4LcTuIBFgFlzGCEXc77TsZGPHM5RG2DLR5yTjpqhU=;
+        b=Gn7sEhz3XoNGPCC+YFS9CjwINSKC4VdH/R0IMAOO58H9X4PZKfOSq2Il5+qaN1gAOu
+         NzluNF6BTPZV7MStDuI1WqzPiXrKAFVSSJHCRRoWeC0DkKtsTLN3P/l250Ts4k7Qcron
+         B62ZZRTluPbfdRWq811XjhR3jBKrgo81EaelsL/TdLrqXT1J4fF4KhkmfLgHy7udj8Cj
+         4HNzQDG4mDs9c1tN643rsQFNzvHQJr3tIPgBKSVdA4k/ts1cQkhsqBrFnrQRNNH4QFtj
+         MHUZkYXYDMj7zCBLUJkfleR2j4YVJy6iL+pFoMgw/ZNm4epBUX1MRPcRMdFs4e1vnGUX
+         c+Ow==
+X-Forwarded-Encrypted: i=1; AKwUvBx4b8FK1zKdPizAfhsXlSa5g5iKotxgRmFBdldvGogGKqyxRbUgbb7lbLDtHmzBJii+LQXP8vw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLT//6X8nXCrn5m95Zk1UOntzuKaa1Fdf2qbsKJtymy6nWZcwRp
+	9+BL9HkeEQcdisbohmp/kZXOQCCoBDTW419azkzs55s/bd/oaAm+CzXA
+X-Gm-Gg: AYBFou3uvYIhlDQOHOtzGQVw4uDlogz1xfhlxTugO1IVznhO7wRd7/LjPuurxoyu9GD
+	qjU3nO1Y6HaoI6HV7vJdYs8kUPl36y3wbgLJjPn2bDnHtocLlRA7McENyQAwY25uihbIeAyU44+
+	lKwJEoHgK80u3vigfLrPSYgY8Bbe/zSHPMM82l/WJoVGgKVc+TDhZHZsZoi1jptD5o7ktF0WJ6d
+	ZHX3fs14ZgOp4knHQ39uTVFQfTN/IH9KDAfHY4m2hA4nAipYLxO1zalkGQYYzqvG4IS0YWS8i6F
+	Z3wUD20AnmLePyK/BSRfVT+iV0q8aP/JgCqQI7W262psS4P+Nt305OFF3KaCL2PoBeGUCfhk4B/
+	d/i/2qsL14oStRSpL80eQqtvaMbRUanQC4JQZR0tQ2TLVD4HvvF22aAri3o+sF/k5/V+85syoKa
+	ZsEa/3OHYOH5j1js4OXuGx1WG/0yknnFUkVUOiy6RuqoMrluBewZZRN5M7EWIEfM5NNDlXdVehT
+	LgGXIhMadUchsTF1hufhAv8NeLgAcR+EBkBoCTOA7VDrSLfvIC3QrdbhG+WZO0CcuromOZXdKiv
+	8NldZ+0C5tUZDPnzfOI/uxE=
+X-Received: by 2002:a17:907:94c9:b0:c3e:34fa:611d with SMTP id a640c23a62f3a-c49be00bf6fmr159888566b.35.1793188117832;
+        Wed, 28 Oct 2026 04:48:37 -0700 (PDT)
+Received: from localhost ([2a03:2880:32ff:43::])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b496459f10sm1375962a12.36.2026.10.28.04.48.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Oct 2026 04:48:36 -0700 (PDT)
+From: Vlad Poenaru <vlad.wing@gmail.com>
+To: netdev-bot+sashiko@kernel.org,
+	netdev@vger.kernel.org
+Cc: Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Jinqian Yang <yangjinqian1@huawei.com>,
+	Andrew Preece <apreece@meta.com>,
+	regressions@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] bnxt_en: Don't keep MSI-X vectors added before FW reserves them
+Date: Wed, 28 Oct 2026 04:48:33 -0700
+Message-ID: <20261028114833.239086-1-vlad.wing@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <179310474137.3134.4690740150964769309@kernel.org>
+References: <179310474137.3134.4690740150964769309@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,98 +111,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XOwQ6CMAwG4FcxOzuzdSjDk+9hPABrYYYMs8HEG
- N7diYnxgMc2f7+/TxbQWwzsuHkyj9EG27s0ZNsNq9vSNcitSTMDAQehZc6r3hnrGt6VYeB+4kI
- JRaXINBWGpaubR7LTIp6Zw4FdPsswVlesh7f1jrU2DL1/LL1RLuG/FVFyyQtTHignQ1rC6Y5dx
- 6kfnUGzMxiXkgg/DKwwkJi8VlopDVCD+sOoLyPFGqMSs88KkZOkSmRr38zz/AJmn4Z3WgEAAA=
- =
-X-Change-ID: 20260817-bonding-last-rx-0303fa048f9d
-To: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Jiri Bohac <jbohac@suse.cz>, 
- Eric Dumazet <edumazet@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Nikolay Aleksandrov <razor@blackwall.org>, 
- Hangbin Liu <hangbin.liu@linux.dev>, 
- Ramses de Norre <ramses@well-founded.dev>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793188089; l=2944;
- i=ramses@well-founded.dev; s=20260817; h=from:subject:message-id;
- bh=xLrmUFjRPWtdn4U5H1DplHJw2hv8F/w6hsEGx/wnJJM=;
- b=maMuKqZ2KVJYu9NHY79eSLYdrP1uPboyHXpYrRa8EZ9CsrJCfNbx9lvi6hBvD6aDlGRZW100f
- aM2RK/fwgSPAjJ7si5phVJWUHKh+w017k8QUM+Utkm0hQHR6XwCc361
-X-Developer-Key: i=ramses@well-founded.dev; a=ed25519;
- pk=1vBXHBVeJBMaC+2Zuonl0QQhEgGIQHERyF5RZNnrCmw=
-X-Endpoint-Received: by B4 Relay for ramses@well-founded.dev/20260817 with
- auth_id=957
-X-Original-From: Ramses de Norre <ramses@well-founded.dev>
-Reply-To: ramses@well-founded.dev
+Content-Transfer-Encoding: 8bit
 
-bond_enslave() seeds a new slave's last_rx before it has received
-anything. The ARP monitor checks that seed with an up test for a slave
-that starts DOWN, and with a down test for a slave that starts UP. The
-seed is wrong for both.
+On Tue, Oct 27, 2026 at 12:39:01PM +0000, netdev-bot+sashiko@kernel.org wrote:
+> - [Medium] The fix is incomplete when FW grants fewer MSI-X vectors than
+>   requested.
 
-Patch 1 fixes a slave that starts DOWN. Since the up test gained
-arp_interval/2 of slack, the seed falls inside the up window, so the
-slave is reported UP for half an interval without having received
-anything.
+Agreed. bnxt_reserve_rings() grows to the irqs_required it computed
+before the reservation, so a partial grant would still activate
+entries that FW has not reserved. In v2 the allocation is sized from
+bnxt_get_num_msix() after __bnxt_reserve_rings(), i.e. from the rings
+actually kept. With no RoCE driver registered, that fits within what
+FW granted, and it is never more than the old pre-reservation count.
+With RoCE registered, __bnxt_reserve_rings() can still keep more L2
+rings than a partial grant covers, because the ULP share isn't taken
+out of resv_irqs. That accounting predates this patch and belongs with
+the ring accounting work on net-next, so I've left it out of this fix.
 
-Patch 2 fixes a slave that starts UP. The seed brings its down deadline
-forward by one interval compared to what arp_missed_max implies. In
-load-balance mode, which has no grace period after enslavement, a
-healthy slave can flap DOWN with arp_missed_max=1.
+> - [Medium] New error path leaves the state inconsistent.
 
-Jay, on your v3 question: the up test always uses a single interval, so
-the fix for a slave that starts DOWN holds for any arp_missed_max. But
-v3 also changed the seed of a slave that starts UP, which made the
-load-balance flap happen with the default arp_missed_max=2 too. v4 only
-uses the older seed for a slave that starts DOWN, and patch 2 gives a
-slave that starts UP a full arp_missed_max window.
+Agreed. This path existed before for the bnxt_reserve_rings() grow,
+but the patch makes it the main one. In v2, bnxt_reserve_rings() also
+grows the vectors when no reservation is needed but bp->total_irqs is
+below what the reserved rings need, so the next open recovers instead
+of returning early. bnxt_change_msix() also clears irq_tbl[].vector
+when it trims, so a stale virq can't be requested again.
 
-Signed-off-by: Ramses de Norre <ramses@well-founded.dev>
----
-Changes in v4:
-- Patch 1: only use the older seed for a slave that starts DOWN. v3
-  also applied it to a slave that starts UP, which brought its down
-  deadline forward by one interval (Jay).
-- New patch 2: seed a slave that starts UP with last_link_up, giving it
-  a full arp_missed_max window. Fixes an existing flap in load-balance
-  mode with arp_missed_max=1.
-- Drop Hangbin's Reviewed-by, patch 1 changed.
-- Link to v3: https://patch.msgid.link/20261027-bonding-last-rx-v3-1-54907f1fb042@well-founded.dev
+> Pre-existing issues:
+> - [High] This problem wasn't introduced by this patch, but the DCB IEEE
+>   ETS path reaches bnxt_check_rings() and bnxt_change_msix() holding...
 
-Changes in v3:
-- No code changes. Rebase on current net.
-- Reword the commit message along the lines of the v2 discussion: lead
-  with what the last_rx seed is for, state that the false UP happens
-  independent of primary_reselect, and that the initial link state is
-  unchanged.
-- Pick up Reviewed-by from Hangbin.
-- Cc Nikolay. Hangbin asked for a second review, Jay or Nikolay, would
-  you have a look?
-- Link to v2: https://patch.msgid.link/20260827-bonding-last-rx-v2-1-7c3833822c23@well-founded.dev
+This race between the DCB path (RTNL only) and PCI error recovery
+(netdev lock only) is real as far as I can tell. It predates this
+patch, and the grow loop already has it. I'll leave the locking in
+bnxt_dcbnl_ieee_setets() to Michael and Pavan rather than mix it into
+this regression fix.
 
-Changes in v2:
-- No code changes. Resend with my personal name in the From and
-  Signed-off-by lines instead of my handle, as requested for the DCO.
-- Link to v1: https://patch.msgid.link/20260817-bonding-last-rx-v1-1-9da6f7fdf812@well-founded.dev
+v2 follows.
 
----
-Ramses de Norre (2):
-      bonding: fix initial last_rx vs ARP-monitor slack window
-      bonding: give a slave that starts UP a full arp_missed_max window
-
- drivers/net/bonding/bond_main.c | 26 +++++++++++++++++++-------
- 1 file changed, 19 insertions(+), 7 deletions(-)
----
-base-commit: f75062536e2d45ee182828f0e47e0124be2fdc8d
-change-id: 20260817-bonding-last-rx-0303fa048f9d
-
-Best regards,
---  
-Ramses de Norre <ramses@well-founded.dev>
-
-
+pw-bot: cr
