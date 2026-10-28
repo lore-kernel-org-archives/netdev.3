@@ -1,64 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.6
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793178358;
-	b=2KbS6hiKuazBeObZCX2JHi2qI6bzHwap3M0ndBLe9uV+PkozreTXBzJY7thVYGKMGDhn
-	 FeH63jNXu+T8xxJsxj23Ir5pysWG5v9TU8u5ztiqpkVzlNE3346iYu477MpBUF7aciedo
-	 yQHLjYtOx5ckEWANCsuUzqzrvM/I+58WHSdUX75QCxkvlEPzq9HqJooRUD2zZriGOXp++
-	 y/gFyLn8q08Gq8ga6wO/Xd05qNRljCDEWm9SODrw628H1bUiiRb6PvSDtdb1Ubs+wjIGD
-	 Sz4dDJyNgI+3949i24WV8bSgFwar38/8SWy5mmX//WzahntbnevSBxX634mWkK1U6RQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793178358;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=GP87V0isCS9npBsUJzfzavKuNiOHWjoeDoQLqqwgJds=;
-	b=Bc4aLblZIYCPtHxYQeyVoT/pxrvKgQlhws+oeRBQhfitttgvueA/+Y2R7J9htPWMWJWV
-	 YSnnosXJcw2Qj3TW99qh3HaYJ8kKxG9z09xeLakB/MKyRTpCRcg0sPS0bWdUCnfKOOvn0
-	 mK/JObTpPzKisA0M+esuL2QYdv1xb4uIjsJ26iS6E1SkCToKTwcZo35+5G1lxXS+psYgi
-	 8ptTJpmmdu3DTb1pQaVLY5kHEZmIkynfUo9FbWYe51eSu1xUtHkHISuKCD7F1DqdcTRcd
-	 eVju9PzPT6ov1rQcoqhSnnhlNXKjYSocJPItfXTgr/PsrSs26FRmNK+qkBxgnXHS2Rw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=126.com;
-	spf=pass smtp.mailfrom=126.com;
-	dkim=pass header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=pDof7GBD;
-	arc=none smtp.remote-ip=117.135.210.6
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.6])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.174
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793178577;
+	b=VXrnAZPtP4EWxaPYQ7DmrZzC4UTrA8Z2jzQcJm8++owqC1DdkvxK/kTqkDmi1Fkw9Gqp
+	 HwcL49YKfPs8yJ8xQGhWCyx2FWwDvPkMc1HA6RR6YDu4QvPGFx0GQqijkInKyXoVYGz26
+	 l7qzWxjems0OUsM65HFjwz1vyrXdSQnLTAsb4KEAxrIVZLg4RlIs5+HUrGYUfHhjKk7/P
+	 dCGO2oKWb20CzS8Yrq2Q8P1bgPj674mKujSUm7YE3Op/2p5uDN2TGX2MYUn6y0jHhugfz
+	 4RDA7bOGLaf6gV2mKJR4qY9Rj2PIzwSuXZ9aejfBPZ1MNFyeo9AORFIdlWrB+x2HLVQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793178577;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=8V3vKlQqADekuYChxRGPaw/nmB5SOwI58nVZf4lvwQY=;
+	b=JJQzcYwUJi8Kpb+NRVfg0mXcdH4aGuwF9zzuYRgQOBl0HpjL5mglaPMQPVTEfXr8zsVl
+	 7vrdbsmjbZdf0ADw5Y28d3aNlwGG3JysypIUl0XoK2ZsdWSWGdNpP8iUMU8M6x7Y4Ui/h
+	 JdcL6wAfc8FWywB6XQySFDFvrrW3/r+6r1ituBkwD6TfZjerZNLEJho5n7qirqbgVy7wt
+	 Fzozo0VJ241dmuxi+qSCwdBy1g8psZ1jkxQ7wTw+ph0UZTm6PtRNcksi9I1eZBln9aSp9
+	 B+4TmwlN4fBSwvD5OAPvrX2D6+mE4DI6vBfmqdQxW4FBhHVfuPCyYzVfDFhhJjWhbPQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="y0Y7Bj/r";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.174
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76053606A31C;
-	Wed, 28 Oct 2026 09:05:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 76053606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAD3606A31A
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 09:09:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7CAD3606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=pDof7GBD
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=GP
-	87V0isCS9npBsUJzfzavKuNiOHWjoeDoQLqqwgJds=; b=pDof7GBDaWXL3uDptu
-	p7woJJuDQ930CWjRgR0+CEeJFipKk43uTZkpglPzlkjsoIyoYpCi26fCgrq4jhg2
-	BXRnZBEi8+rhl924WKU5xUz+PVN3j63IAll1b7TDIj7wRVfbvhBfEzpXEGFy8wPd
-	fk1R6gcgqbm8v6jDX9uylDEIM=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3ZyS4uuFqDbDtCA--.6527S2;
-	Wed, 28 Oct 2026 17:04:58 +0800 (CST)
-From: Linkui Xiao <xiaolinkui@126.com>
-To: anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Linkui Xiao <xiaolinkui@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH net 2/5] e1000e: do not cache the hwtstamp config before it is applied
-Date: Wed, 28 Oct 2026 17:04:55 +0800
-Message-Id: <20261028090455.2291659-1-xiaolinkui@126.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=y0Y7Bj/r
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-8b0ca1ebc8bso5655347b3.2
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 02:09:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793178575; cv=none;
+        d=google.com; s=arc-20260327;
+        b=XRLWMERkBPnSii6iOFs+Qs6NhdFbN+WFv5JL0pQbyo1YNQisoZdpJL4pnZOJPOiXih
+         KEiTZlZ8wnua85teESM4US95EPy00lKgH06ZMyWz7djU6J31y8STk8/QJ8+TxqIjfx7/
+         Kmc+/Y0AaZDTN1KfuHqyh3OSRg0YDn1y5PAtNizxth89Jyq/eXFbyLA9/BOcjmWbI56v
+         keH5rIhFf5tQx+YoKO/qT8/1kMeDXxeEnkPzik5loSxxejAHlCevkF1lQCTucJG2nMj6
+         mpRVuyEAIGAisi+enW9rBzd1/joguyWmqp1ykcjTR7Ku/o92IullNFXLouBLA8wirF0G
+         2hCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8V3vKlQqADekuYChxRGPaw/nmB5SOwI58nVZf4lvwQY=;
+        fh=3rM+mk4x3Nd7dZrGPPzl8nXyUwXhAg6S1dYaTlDEkdw=;
+        b=H4gWP616yNMlPcxy8cx+N4Um1ep56Tul4kJm+Qd1LD9mi36SmGo+/gJN0ON5/UbTKQ
+         GLE1ctvxE36803tNBEF8J4gSaMkKCcK9JptLHhBrV69nzZGXDdaNwN9PnYrMa2SoEe+7
+         JCRMOIrNothLmj3aWgMoI6JcYghLzjEzrO3WKs591WyPOSg1leDk8TRF+R1nIixvf1PO
+         ICe4RqbSGbkLqRRrDitquwbTsC5YFM/yNCIbAsr2EPNeS+IagY7dzsz4fNwJa8OEPWhe
+         RU8cho+7UPPMuST23W59UolJ7MbaCsipYXrVVnjWjR3lghE2SnCMJQILJ1P8saAPO0rT
+         sdow==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793178575; x=1793783375; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=8V3vKlQqADekuYChxRGPaw/nmB5SOwI58nVZf4lvwQY=;
+        b=y0Y7Bj/rx+OCyXMC8sGtJV2TyS3aw/sNv3z6PQrCncJUU1o7y1ypCV6gVCiDPhuTxW
+         X+5XmXkUjiA67QznRmy+C3ilCr4GRwT0khv0oiGXjAM67mcGTUtrtpGRiPZsJ6glj6Hn
+         qzAUKXSChy6V57mVAkSYAsZVFghsFObVMtrfsz8VXyKEwvucowIT+1SWDdH5IiXggPDD
+         9fQgWHQWHcIfALC2NSfgcPf6pKYhNwxnKdLzgP5IDNczmG9Hyd5Qcuwvw7c6yt9rKwYu
+         PAoK+lKqDi5JBoFq3zZl4/kP0v46Fe7/PYeS2MlDAcPQOv+6GkPwAaEG6G1lP9J2al6P
+         ZThA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793178575; x=1793783375;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8V3vKlQqADekuYChxRGPaw/nmB5SOwI58nVZf4lvwQY=;
+        b=OA+2cz9S2+aMibvpgzp2fSdMUxfXIK+etBq11FNHgHYCSWV9R0Shfeoc28HmPLmAHG
+         K8Xx5+Mk/qJym1dKt6m8Lqvw/mnub5W0RpLY0g7pcIUhVviw7ppn0fYBeDEsXmh+7h3L
+         tnCpivU8q64YaTRDVmSEfeST3w0QBy84cIHKTSd1rGzTYI0d/ukfQWSyZtlf5wNiElnU
+         wfXowmRJHYi3WJxWVLuS7viQ298tsPLNQCwXdJzJlsEsTzzSO70Kqw7Ix78UkxYXl0PC
+         KOnQ8TVpidM2f0Vc5PY1nLpR2Ics4CvwVNlO80hCTZ7oiWi1fid9xjrtEBUdJ0yKgf+3
+         OYVg==
+X-Gm-Message-State: AFq9FYJBVznwsAmU9J2HRkl4wO5tCJqyiRNW4Y04tWCtQ3PJs8e0Oj6C
+	CNMGsmJICpE3jUdBWHBfzN1W5kKK5sGKCgCuuguNpkn75Py9N6AwzFhFkJ6Yw9kHx5/G2LY4z9+
+	O8/wYPg7th1nQn5bOh4br0ps7jGF8H0A=
+X-Gm-Gg: AYBFou3k0QvDIjEtClldvO+yaMT6DAjkXyG0dne4m6bAAGPKKbGMRN/XcSrpsC2va8s
+	M7M80fMQCiUzVOAL//NtIspcLIbzG6fFQfiPwVr6uGhsiHbGT2l5tz65GEvrSd2uMPr/7D0Gi0C
+	Vkc1pJcZN/0YJEo8a0Km72V7wTBXSoTO8x8y4Bwz7fbKy3ICecvOHuS5JSMxBhEabZL9bs9T7xv
+	RoTw1VwvMhfS11tPgUC91bTgHRijh2wkUWMmQx/qpb/smvrOA5011nJgzaw97tl8SbiH9AW684A
+	OHx/8slK52W7uBgssYWg0ds5EkzK4/e16Mj2yAjnl/+nTM9MAk1SYZKmsP6RsvLaaqyJc/vjkpN
+	EWsm7fVEulhAb0FSfOzYmUvD8Po/DhDfXHLAbbCdMCOnjr77QkkTl5ebIvRQwFsmTOjWUsXlzzj
+	zswRFkN7JKX8Xi+tQNO7u4l2oF6VKRB+Zn6S3WYcfibMRvNFJf9NBFTpG+CoWogTPMF6w54HF8z
+	ynU
+X-Received: by 2002:a05:690c:e3cc:b0:8b0:d4bb:c9e7 with SMTP id
+ 00721157ae682-8b1b5ce052fmr11702967b3.46.1793178575340; Wed, 28 Oct 2026
+ 02:09:35 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,70 +105,70 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3ZyS4uuFqDbDtCA--.6527S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ZF17Cr47CrW8WF4rKFW8Xrb_yoW8try7pa
-	17CF90krn8tF1aga97JFy8Cr98Wan7tayY9Fyayw1Y93s8Cry8Cry8KFWUurWjyrWkJ34q
-	qrn5Zw12grs8ZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UlhFsUUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqRrvxmrhurr6ZQAA3O
+References: <20261027202230.3539646-1-florian.fainelli@broadcom.com> <20261027202230.3539646-2-florian.fainelli@broadcom.com>
+In-Reply-To: <20261027202230.3539646-2-florian.fainelli@broadcom.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
+Date: Wed, 28 Oct 2026 10:09:24 +0100
+X-Gm-Features: AclHuK-ovVXCbI-zwn7qh1kikdJ9e3riBKCGOQhvdBZS9sM1LitUGyq7XdqjpQM
+Message-ID: <CAOiHx==vXaMg2aBtnnO8F0hB=kvTr6R=Bq=CdqMX-uOjL_DzWg@mail.gmail.com>
+Subject: Re: [PATCH net 1/5] net: dsa: b53: initialize the jumbo frame size
+ register offset
+To: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>, 
+	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Russell King <linux@armlinux.org.uk>, 
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Linkui Xiao <xiaolinkui@kylinos.cn>
+On Tue, Oct 27, 2026 at 9:22=E2=80=AFPM Florian Fainelli
+<florian.fainelli@broadcom.com> wrote:
+>
+> The chip data specifies both the jumbo port mask and frame size register
+> offsets, but b53_switch_init() only copies the former into the device.
+> Since the device is zero-initialized, b53_set_jumbo() writes the frame
+> size to offset zero instead of the chip-specific size register at 0x05
+> or 0x08.
 
-e1000e_config_hwtstamp() stores the requested configuration in
-adapter->hwtstamp_config right after the rx filter has been
-translated, but the two register writes that follow are verified by
-reading the registers back and each of them can fail with -EAGAIN.
+That offset is reserved, so (hopefully) was effectively just a NOP.
 
-When one of them does, the driver is left holding a configuration the
-hardware never accepted:
+Which reminds me that I still don't really know what this register is
+good for. The (bcm53115) datasheet says it's used when jumbo support
+is disabled(?) to determine max good frame size for MIBs, but also
+that it controls up to which lengths frames are admitted, then dropped
+(and only allows the values 1518 and 2000).
 
- - e1000e_hwtstamp_get() hands it back to user space, so an
-   application that reads the configuration back is told that
-   hardware time stamping is in effect while it is not;
+I tried writing various values to it, and never managed to make it do
+anything; neither did the switch start dropping frames longer than
+that, nor did I see any effect on the MIB counters ... .
 
- - e1000e_systim_reset() re-applies it after every reset, including
-   the ones the watchdog triggers, and keeps failing;
+> Copy jumbo_size_reg from the chip data along with jumbo_pm_reg so frame
+> size updates reach the intended register.
+>
+> Fixes: 967dd82ffc52 ("net: dsa: b53: Add support for Broadcom RoboSwitch"=
+)
+> Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 
- - e1000_watchdog() starts polling TSYNCRXCTL_VALID for the cached rx
-   filter, and e1000_xmit_frame() still parks skbs that ask for a Tx
-   time stamp because it only looks at FLAG_HAS_HW_TIMESTAMP, so they
-   are eventually dropped by e1000e_tx_hwtstamp_work() with a
-   "clearing Tx timestamp hang" warning.
+Reviewed-by: Jonas Gorski <jonas.gorski@gmail.com>
 
-Cache the configuration only once both registers have been verified,
-so that adapter->hwtstamp_config always describes what the hardware
-is programmed with.
-
-Fixes: 62d7e3a2d006 ("e1000e: Validate hwtstamp_config completely before applying it")
-Cc: stable@vger.kernel.org
-Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
----
- drivers/net/ethernet/intel/e1000e/netdev.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index 35f5590228eb..7ae33273734f 100644
---- a/drivers/net/ethernet/intel/e1000e/netdev.c
-+++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -3715,8 +3715,6 @@ static int e1000e_config_hwtstamp(struct e1000_adapter *adapter,
- 		return -ERANGE;
- 	}
- 
--	adapter->hwtstamp_config = *config;
--
- 	/* enable/disable Tx h/w time stamping */
- 	regval = er32(TSYNCTXCTL);
- 	regval &= ~E1000_TSYNCTXCTL_ENABLED;
-@@ -3763,6 +3761,8 @@ static int e1000e_config_hwtstamp(struct e1000_adapter *adapter,
- 	er32(RXSTMPH);
- 	er32(TXSTMPH);
- 
-+	adapter->hwtstamp_config = *config;
-+
- 	return 0;
- }
- 
--- 
-2.25.1
-
+> ---
+>  drivers/net/dsa/b53/b53_common.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_c=
+ommon.c
+> index 0880310c9ce3..559d4b360c82 100644
+> --- a/drivers/net/dsa/b53/b53_common.c
+> +++ b/drivers/net/dsa/b53/b53_common.c
+> @@ -3109,6 +3109,7 @@ static int b53_switch_init(struct b53_device *dev)
+>                         dev->vta_regs[1] =3D chip->vta_regs[1];
+>                         dev->vta_regs[2] =3D chip->vta_regs[2];
+>                         dev->jumbo_pm_reg =3D chip->jumbo_pm_reg;
+> +                       dev->jumbo_size_reg =3D chip->jumbo_size_reg;
+>                         dev->imp_port =3D chip->imp_port;
+>                         dev->num_vlans =3D chip->vlans;
+>                         dev->num_arl_bins =3D chip->arl_bins;
+> --
+> 2.53.0
+>
