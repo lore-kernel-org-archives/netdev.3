@@ -1,63 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.161
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.245
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793165477;
-	b=QR6P8NW4SX8tB98k7r/qeGZLQvp0kbb+ByeBgoAeqPRhO2gvc5y8y1M3Zr/L/8/gLYS1
-	 asIkmzs5rQ0QjGCWUypZmKeOsp0dCrQvtIzpNF/zugGnjlhUQk5IXc5uBmcIclXNrEhVq
-	 1xd1fXuLqyWPBNj2TpM2w7fDt4K9ARrY1/kgfXjKW97SOI5KpttTK3wj4PfoMzeOcExmT
-	 Tc1r3u48AG1MHdJcIg+0smKniIdBI0GPPtU1k+YAdZU6Wsk1ZdoT871hDj7jeLeDvKAgO
-	 7+NcmQ8kt3CUjo8XVKETRBjieyQBXysc8LAYdZldm08WS6b0BS97/nPLcGSNDMcEA7A==
+	t=1793166345;
+	b=F95f5Hd8pL+OTz//cpeOLaqlijOR3U5RzvVJdNZvZcwe6aUW6580LedJTGLcxmniD1nm
+	 8YjnS+9N245ykd2q3vfjMrhFFQqEN3iQBAm65Wm3uzP/qbafQc6PWC//I2hojzsshhZZj
+	 D6/rzUt82Pbp0K06vdYdsDL/yVUEUFlrxkid5iCtX+AOOp2954whmV4IWft+mcmsgLsIX
+	 zXXIML6oUim8LNDPBmmmVGrahRqsTBTvfz8yvmI+L9OnTWrlJJfOaQZ457+GkXsaROzke
+	 j+qsMMOp5SvOf/0929K7PdgsRGUpHGae9Dpy1eEDQyo15G60EviMFI8tHF7Lx5JNQmA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793165477;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793166345;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=QV6pMFl0zTgQMpH2r3tNqJTPiinMZ5x7f45iM8R0mz0=;
-	b=GKzDistWJRrdy3z1v2IK0dWLqRFDYeWQjezDBblUrfHbGTUA2QVP1Ajh92t8WYRxhfDs
-	 igF4ZT/1yJU+arfxZDIjpF4FnwnXpHJ+l4g0ylgkqGQGqdo9kpWzC7zkwoy+GjON4yQnO
-	 d5BGVuMnfdWtP7hSHg4XnTgBtAd8w3n1ped5g9lydRZHziawgWZgdJ4/jZOpqArbluUSr
-	 9P7T6IqQ/bZ6zPQsYhc6OBZQseXTlGAipbpx5hMDlDAtIhjG31ZnyHyrzqkZroCvLakxv
-	 InoMS7IgYGmS7v4ipbgdSVRxh6/pKlqFg3O1oClvz9wyk0a7gkeTMAgXc0T8vvTaZ7w==
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer;
+	bh=SXeoHFfJ08+SsvxwU622/ejUUw9pYEAmzWxZavzjU8E=;
+	b=oGuRUYXlJOp1kgxQaNxQGZ03jJXjWThMM9A7YTf8rSeBqfzGsKhvsME31XuSWMnPghhT
+	 soTBNQsvCJUNkqy8dMDmZi64Eb5/rnx4hEEpL5R4P0cMIyvFovuCIVzuMebpH7l0s4nMv
+	 ySFKsqvVOHhwwQhMBXV7Mis2HtGGu8H/P35k0xpq14wTXAtNtiT0w9McyGMLbIAN3IcnJ
+	 Gi0kH0yoJQ++lEmaWQ/JssbLRxhQlUetcFd9hHicKjrueNbfOV5A3R/qDV4DEk/9ppz35
+	 LHuAYs99vv/MRMdwmHCs89LWrFHAc12vn2y/SRiABHjo9v1GBf+QAtOLxyCMJ3um2pg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=u4quU7V+;
-	arc=none smtp.remote-ip=95.215.58.161
-Received: from mta1.migadu.com (out-161.mta1.migadu.com [95.215.58.161])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=rpLfxKaa;
+	arc=none smtp.remote-ip=95.215.58.245
+Received: from mta1.migadu.com (out-245.mta1.migadu.com [95.215.58.245])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9934606A31D
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 05:31:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C9934606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68189606A31E
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 05:45:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 68189606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=u4quU7V+
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=rpLfxKaa
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=2mQVqzf4Zlx0HzGDppIEZ0GDsAqfCA7ew5bAmcp8+5Y=;
+DKIM-Signature: a=rsa-sha256; bh=k6iHfgslbmnn3n9zufZFJ+9aHyYW9KHntgxnXO67GF4=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793165473; v=1; x=1793770273;
- b=u4quU7V+e0lAk42zYCjWzgo/K7g+u/uA0C/z9CydaChW0Io3Q6xo2gUFqf6V86L6lI42NqtB
- xPwD3z2Jm34x9ysPdlWlM7/384DRdckZfjPAfhjXUrPiFcgNK3TklgK3PEap9DH4wGVnbwAOM3s
- NKfD5LVQnSibQaD6fYelmldY=
+ t=1793166341; v=1; x=1793771141;
+ b=rpLfxKaazQEQ5pYCtSp7o/gcCRODjGm5J1Zb/HzD2+AM0PqqsWHQGbFojkvhJ3EJQIkfswpc
+ 0jz6mJuvoM38SCzyF365yxgUH9+6H6c0pqrmqC/icEodeyfP96obdARy2RQOb3kbF9i5p/CrrE4
+ dw3rVmYRHywi6d7u8QzqyHYA=
 X-Envelope-To: netdev@vger.kernel.org
-Received: by mta12.migadu.com with ESMTPS id b55fb0c8a3f5edd5;
-	Wed, 28 Oct 2026 05:31:13 +0000
-X-Mizu-Trace-ID: b55fb0c8a3f5edd5
+Received: by mta11.migadu.com with ESMTPS id fbf67270c8f6aec8;
+	Wed, 28 Oct 2026 05:45:40 +0000
+X-Mizu-Trace-ID: fbf67270c8f6aec8
 X-Migadu-Flow: FLOW_OUT
-Date: Wed, 28 Oct 2026 13:30:55 +0800
 From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Jamie Nguyen <jamien@nvidia.com>
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	netdev@vger.kernel.org, kerneljasonxing@gmail.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] selftests: net: txtimestamp: fix out-of-bounds read
- in raw UDP checksum
-Message-ID: <auGIVnxH_9ggCDFi@fedora>
-References: <20261027162945.2122306-1-jamien@nvidia.com>
+Subject: [PATCH 0/3] net: ioam6: makes IOAM insertion transparent to IPv6
+ ECMP
+Date: Wed, 28 Oct 2026 13:45:28 +0800
+Message-Id: <20261028-ipv6_ioam_ecmp-v1-0-9b6715b6f4c0@kylinos.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,87 +61,78 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261027162945.2122306-1-jamien@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQpAQBRG4VfRXZsakyy8iqRr/LgK0wxS8u4Gy
+ 29xzkUBXhCoTC7yOCTIukRkaUJ25GWAki6ajDZFpo1W4o6ikZXnBnZ2ipGj15y3HYNi5Dx6Ob9
+ hVf8OezvBbu+F7vsBnCaRTnIAAAA=
+X-Change-ID: 20261020-ipv6_ioam_ecmp-ae4ef0a4bdae
+To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Justin Iurman <justin.iurman@gmail.com>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: Hangbin Liu <hangbin.liu@linux.dev>, linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ Hangbin Liu <liuhangbin@kylinos.cn>
+X-Mailer: b4 0.16.0
 
-On Tue, Oct 27, 2026 at 09:29:45AM -0700, Jamie Nguyen wrote:
-> With -r (SOCK_RAW, IPPROTO_UDP) the test writes only the UDP header and
-> payload, and the kernel adds the IP header. get_udp_csum() still expects
-> the IP source and destination addresses to directly precede the UDP
-> header, and reads 2 * alen bytes before the start of the buffer: 8 bytes
-> for IPv4, 32 bytes for IPv6.
-> 
-> ASan reports a heap-buffer-overflow for both -4 -r and -6 -r. Without
-> ASan the read usually goes unnoticed, but it faults when the buffer is
-> the first chunk in the heap. That happens on Ubuntu 26.04, where the
-> kselftest runner wraps the test in uutils stdbuf, and txtimestamp.sh
-> fails with SIGSEGV on every run.
-> 
-> Even without a crash, -r packets were sent with a checksum computed
-> over unrelated heap memory, so their UDP checksum was invalid.
-> 
-> Build the pseudo-header from the destination address and checksum only
-> the UDP header and payload. -R and -P already write daddr as both the
-> source and destination address, so their checksums are unchanged. With
-> -r the kernel selects the source address, which equals daddr for the
-> loopback addresses used by txtimestamp.sh.
-> 
-> Fixes: b52354aa068e ("selftests: expand txtimestamp with ipv6 dgram + raw and pf_packet")
-> Signed-off-by: Jamie Nguyen <jamien@nvidia.com>
-> ---
->  tools/testing/selftests/net/txtimestamp.c | 23 ++++++++++++++---------
->  1 file changed, 14 insertions(+), 9 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/net/txtimestamp.c b/tools/testing/selftests/net/txtimestamp.c
-> index 170be19..f7bdf30 100644
-> --- a/tools/testing/selftests/net/txtimestamp.c
-> +++ b/tools/testing/selftests/net/txtimestamp.c
-> @@ -418,19 +418,25 @@ static uint16_t get_ip_csum(const uint16_t *start, int num_words,
->  	return ~sum;
->  }
->  
-> -static uint16_t get_udp_csum(const struct udphdr *udph, int alen)
-> +static uint16_t get_udp_csum(const struct udphdr *udph, bool is_ipv4)
->  {
-> -	unsigned long pseudo_sum, csum_len;
-> -	const void *csum_start = udph;
-> +	const void *addr = is_ipv4 ? (void *)&daddr.sin_addr : &daddr6.sin6_addr;
-> +	int alen = is_ipv4 ? sizeof(struct in_addr) : sizeof(struct in6_addr);
-> +	uint16_t addr16[sizeof(struct in6_addr) / sizeof(uint16_t)];
-> +	unsigned long pseudo_sum;
-> +	int i;
->  
->  	pseudo_sum = htons(IPPROTO_UDP);
->  	pseudo_sum += udph->len;
->  
-> -	/* checksum ip(v6) addresses + udp header + payload */
-> -	csum_start -= alen * 2;
-> -	csum_len = ntohs(udph->len) + alen * 2;
-> +	/* pseudo-header source and destination: both are daddr */
-> +	memcpy(addr16, addr, alen);
-> +	for (i = 0; i < alen / 2; i++)
-> +		pseudo_sum += 2 * addr16[i];
->  
-> -	return get_ip_csum(csum_start, csum_len >> 1, pseudo_sum);
-> +	/* checksum udp header + payload */
-> +	return get_ip_csum((const uint16_t *)udph, ntohs(udph->len) >> 1,
-> +			   pseudo_sum);
->  }
->  
->  static int fill_header_ipv4(void *p)
-> @@ -479,8 +485,7 @@ static void fill_header_udp(void *p, bool is_ipv4)
->  	udph->len    = ntohs(sizeof(*udph) + cfg_payload_len);
->  	udph->check  = 0;
->  
-> -	udph->check  = get_udp_csum(udph, is_ipv4 ? sizeof(struct in_addr) :
-> -						    sizeof(struct in6_addr));
-> +	udph->check  = get_udp_csum(udph, is_ipv4);
->  }
->  
->  static void do_test(int family, unsigned int report_opt)
-> -- 
-> 2.43.0
-> 
+This series makes IOAM insertion transparent to IPv6 ECMP, as required
+by RFC 9486 (C2): a packet carrying IOAM options must be forwarded
+along the same path as the identical packet without them.
 
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+Patch 1 fixes the transit side: hash policy 0 hashed the raw IPv6
+nexthdr, which becomes NEXTHDR_HOP once an IOAM Hop-by-Hop header is
+inserted. The policy-0 key (and the ICMPv6-error flow selection) now
+uses the nexthdr the packet would have had if the Hop-by-Hop header
+carried only IOAM options and padding.
+
+Patch 2 fixes the injecting node: the ioam6 output re-lookup on a
+destination-cache miss hashed the transformed packet's NEXTHDR_HOP
+instead of the original nexthdr (inline) or IPPROTO_IPV6 (encap), and
+rebuilt the flow keys from the outer header only.
+
+Patch 3 adds selftests/net/ioam6_ecmp.sh, covering both places: a
+transit forwarder with a multipath route, and an encapsulating node
+compared against a plain ip6ip6 baseline.
+
+The issue was found while reviewing RFC9486. It can be reproduced and
+verified by the newly added ioam6_ecmp.sh test.
+
+Tested with:
+ecmp_rehash.sh
+fib_nexthops.sh
+ioam6_ecmp.sh
+tcp_ecmp_failover.sh
+forwarding/gre_inner_v4_multipath.sh
+forwarding/gre_inner_v6_multipath.sh
+forwarding/gre_multipath_nh_res.sh
+forwarding/gre_multipath_nh.sh
+forwarding/gre_multipath.sh
+forwarding/ip6gre_inner_v4_multipath.sh
+forwarding/ip6gre_inner_v6_multipath.sh
+forwarding/router_mpath_nh_res.sh
+forwarding/router_mpath_nh.sh
+forwarding/router_multipath.sh
+
+Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+---
+Hangbin Liu (3):
+      ipv6: route: consider IOAM options in ECMP hash policy 0
+      ipv6: ioam6: use transformed packet nexthdr for ECMP re-lookup
+      selftests: net: add ioam6 ECMP test (RFC 9486 C2)
+
+ include/uapi/linux/in6.h                  |   1 +
+ net/ipv6/ioam6_iptunnel.c                 |   4 +-
+ net/ipv6/route.c                          |  67 +++++-
+ tools/testing/selftests/net/Makefile      |   1 +
+ tools/testing/selftests/net/ioam6_ecmp.sh | 349 ++++++++++++++++++++++++++++++
+ 5 files changed, 419 insertions(+), 3 deletions(-)
+---
+base-commit: 5d7f3375cd574fc83f0cd30839b21455c0e79ae2
+change-id: 20261020-ipv6_ioam_ecmp-ae4ef0a4bdae
+
+Best regards,
+--  
+Hangbin Liu <liuhangbin@kylinos.cn>
+
