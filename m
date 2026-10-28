@@ -1,88 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.139
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793200365;
-	b=YNqXbXZBTGNEQYeGDxyprz/z/onx98f9cOSa3TF+wsSGUZrOuqpa/UQwj14G8baWaXcL
-	 8QTWHIPPe4smUW8kHvl2Bon2pvYEPGRxwpzmjJLBIuLbEOVZ40ft90yuMSUAIDhVUZbXJ
-	 +Ct/WsURbhLW8V2ZxwtbeREHKSRB8bXgwarKFf9HI//Sivbzs3K2qy6hwFb6lWj+Afxar
-	 F9enpM4iyMNNqClvfjNFMmsyfMPmrKkhOyIeg0QGN0Lo2PMG9ARx8ev/P2omqLhH4wYPg
-	 sbr9VXrU+X5c65+Cym02fnJt6IwpvDOUhNIDy57ZN5J1GSjheHsYIhtHmt7Qf1Jl0Aw==
+	t=1793200843;
+	b=ZKx4jP9vxMx8cCXx5dqKMEEZgwW5VgvnPRDf/mmb+Va2J1aNSgFpE6c7Kw6bNLt4FCAP
+	 ZLcUw/aeCJEPdFMi4RQEj7I9Fp2OttjAVGBI/tJzcoSuB+nefqZu8H+kg8+69i1vR3rZi
+	 DFJIE+v9urQ1oBYV8LDZG6XZcl876ZSiDtilBHq8clJm4qlZpyNI9VSB3ln6GPcpPYnI9
+	 2KdHp45/BiBgzxLCHvwGjq40z7Xv4clBCikNTl45KWGqTuxcPAoUyOQG8lkcpIKzTPZtS
+	 3ApUO9ky08kFtTqtxK0dsq2HQ4T3GM+vpG0dOqbwHsz2U80uZIggRYwjnarKv78tQtg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793200365;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=C5xQd1xIwUtBJyycWD3+XcISdDlmOWmJGD2rjg0it4c=;
-	b=AdTaPnVMpngI0rQxzc8Wki72ciEAG0zVJoXPwlL30skaGCu5rCZZVYl3Cdm57IHkO1Ii
-	 6BLWcdghMqPnt6PJyZPCxVxZ0hQcu1Hd9hIoE/nX3bSOn16acKaZ+sBWMsXncgU5aRGy3
-	 BJqKxD3Q6riUZyOWVrGY1PmZqwoZB2VOtJWZ3TW065mHqyVnlY7AczaS1xY0XFEXflciJ
-	 iqN9TeYSEUGy4PPnNBwBNMprK1rQZrBnyJP1z6qRyO7wI6uaUwZT+DElg55VkaPueSmIs
-	 16JcWN3/ySygd9YZaWYmN0g78DIngY2xHZBJtbNcL7nl1bbuY3DdjQ5D6rT7JNSukFA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793200843;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=M9H03uw9rwsnXe1/kt8jL1QHRA9wURlXY3aLRAghr50=;
+	b=fU+RMJXbr21xoN5FwKdHM5RL73jFOUmIOB2Ih31jZgo4Io141tYXS//iqYTuwPuVRNyp
+	 a6M9rMJmV+QDr7zKNKxg/4ZprBmUXXupKZoz6K2GsLS6x1hIPddR8z2f7o3S4ocSYknnB
+	 6oJK0jnZZJETbDHR8y/sbKDo4NaAzoM0UoH3NpfOOSCdl8Q1jIbCKoNJ+pDtBVN08kOcq
+	 p3LqgIkxiePI9LI/nJ7A5rv3SYN4Hr0wqCWMQh2hQHO6BNgaa4heFF12GJJIciC6CG/k6
+	 rB8n5BAp3WceYkLanCM+fLJ8GkbQKZ0SJuPDhcioYseHEntul1DspZp7a+Uq51oz+KQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="m03FeW/k";
-	arc=none smtp.remote-ip=74.125.224.139
-Received: from mail-yx2-f11.google.com (mail-yx2-f11.google.com [74.125.224.139])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ntkb2XS1;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E22606A320
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 15:12:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 49E22606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18F9606A31E
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 15:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=m03FeW/k
-Received: by mail-yx2-f11.google.com with SMTP id 00721157ae682-8b170e27cbfso1533497b3.0
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 08:12:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793200364; x=1793805164; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=C5xQd1xIwUtBJyycWD3+XcISdDlmOWmJGD2rjg0it4c=;
-        b=m03FeW/kbbVO+stnbit8ASYFjId3lG4TSvHhfOXq3a6uw8L9jO13zltFNWD7EK966I
-         Aa9AxJf62YvyAd/5ADLndNx4MXyVvZQzIFdmyN3U2wtCIwWcSq8dx8Wfi7gpnaweyjQ0
-         vSY5dxW2nQq6/dyCYl42nl3ut8l3w88C8sgtFCmD5PB1dSOG16NvtzU8Hjq1/pRlWWhe
-         33+GBGQhf3CRVe4PaPwAgpMvbiSyMSbRG/JG7NtZHq8eCRlvlNK59njb3AjJ5gre6YE+
-         4JIj28Y+tRI045M9MHlUIMVL7d8A/2xSb1IcfrGmyUGrXynTSR3ENyGZcRKSYMopBxOf
-         E+HQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793200364; x=1793805164;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=C5xQd1xIwUtBJyycWD3+XcISdDlmOWmJGD2rjg0it4c=;
-        b=R0ja8nSNaY/nb1bcxqNgSCkpT6rbodfqK8R4wdRe3UMqdR8p0cCI//E5YST0Ea1J3v
-         90TD9zgphektMZmYNtfkAVGBjhj3Yj76/K1fvbWirCykYecAmzM+25XiqU2KFkT7AMgw
-         cc5T4ycqTRL4gJfsuyQfkXi4T2Zaeom/VIwOw4Dao1TAVNLXwadVX1SgGovRFkdkNsTb
-         MPFlmT4yKRGomDj8TGso2Gyw/Nq145mILgX/V5I+Ohfts2rvtwvCnSvXZxEiq6/0YNkl
-         jn9vz7bQ/dORyKLYg+zs4f50A2kFlG6ktyrSYGaKpPWjjCzne3twve4p7dixHLxGRInn
-         fqSQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxgYpeCqjTZW7YKwtuWL/TuOfjC5431LK4zE2KvVliivv/WxTpB54fFq536SaPvKAY8kCMhBRQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJIoO88F/qmjThMcksFcq6Ml6WWynfnNtxWifszvKimLRCNqzgJ
-	HzjerqJn3B629CRf67CeDX3DFyZLMqOAnl5LBHaoX3eyR9RGijZHzzl/
-X-Gm-Gg: AYBFou29FKi+upUj2hmJDrbQsV/XgG0IWPk63LNL7WeGu1WGrx5pFNk19If52s9/kTj
-	dTwMyiS+qWkPVviARnPXod+ooXcDaR3ptqb/DcDJEqi4RSPijOzUTs/v2rZEEg6QGJYecsJV+qA
-	3mtMuwg2dMV0mVqu4H9cMiHfRNr0UCfBT4cAh5Xr76utKMCHewzJgMvSNiAxAHaTyhFuFHOst0f
-	s5cY7IZR9lXSJLEu9i4EllWhggVVc/37A1NrmxJixPN5AJ0dn8FTR8i9vlFSow0/pLNVWygsxiI
-	GkX0r237L+SfZdWOwhVXAcxdaynOiAXG25cuH/58UYofpRCCgbzb9Vd5NSF3lb6zeZNe5iDEePh
-	76qegxyRKfzgIDVk8nI9/qKQWDsaKaajkzeIzoM7lX0+LjSjv8dEgCvx5eu7VjNHgF1oOarV/qi
-	oQCJFJDLqjEvs4LVVnNUgAe5wOqpwV2fjS7ajQOrV6rFsN7voTIlZghJItIXr20aEsGFokoLXNQ
-	KBSlZk2sLrKptrnlrD0h1vTkfAu2Ljf3a6HPzBfRdORnnrJMC87sOijEITkZ9g/jNITQpbBfQ4p
-	KgS6tI8H/q/SylOaKqIRMRUMb8QYot5nNKs=
-X-Received: by 2002:a05:690c:386:b0:8ae:dfee:cd30 with SMTP id 00721157ae682-8b1b5b457ffmr18430047b3.56.1793200364364;
-        Wed, 28 Oct 2026 08:12:44 -0700 (PDT)
-Received: from [10.0.0.48] ([71.69.222.122])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b19e539e34sm29934517b3.9.2026.10.28.08.12.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Oct 2026 08:12:44 -0700 (PDT)
-Message-ID: <e674379f-819f-4334-99b2-7b8dfc89d1a0@gmail.com>
-Date: Wed, 28 Oct 2026 11:12:43 -0400
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ntkb2XS1
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B1201F031E7
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 15:20:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793200842;
+	bh=M9H03uw9rwsnXe1/kt8jL1QHRA9wURlXY3aLRAghr50=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=ntkb2XS1JA72z7HgBKdwki9QR3bY/bNslQQXySnA5JcaHe7l8pQ0GIwuo0R8w7lbv
+	 i5m3v6/wdmACZuK+CzKnmhANtPleEPF3mPwPrxEQZXHzB83LnpNJlrw0pSx9ywl3ym
+	 jdzC9i74kAk16bRw78cZw3MJFeQ2/NeoyBkSI1QJSOCLh9Pr1Q5TojCNhjCbZVtlB0
+	 u/r3/jrk4bLJPs8FbTB/ue/3cdiNiJ7isp4jGbWK1j/EuzaOViwEGD1leT5UcDsYUz
+	 4d1jD2T9IwpCxxQBCCOuei5TednUmQohi0spuSTU37MILrMp8JHdOAgvDJEplcWRDp
+	 zTi+Fxl/o0+gA==
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-483d290f398so624607fac.2
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 08:20:42 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzwKDmV8u1bBygD/X4kktW7ji5QqiTOIKLkx7wx8A8Xo8RmgnuoKalZwl3dJASAIWBvU3sLnrw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIM76G9+qVkeA03xhJ+OF+2gVQJSm2MbYNejWHf3lqjxXS6fRW8
+	3pY6tfVLOcKiCoyhT4OvCiZBHsxhnnOb3DJ+rtTMy1eD2UqFqqOyG9Nxy7MwuQhOeL7LwL4UXjE
+	Ln+CI7nwccbmw/ztMdKIH2CVktexfLKY=
+X-Received: by 2002:a05:6871:3324:b0:485:d31b:7767 with SMTP id
+ 586e51a60fabf-4a8bb549eacmr2121417fac.37.1793200841827; Wed, 28 Oct 2026
+ 08:20:41 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -92,67 +59,102 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC net-next v2 0/5] tls: perform TLS 1.3 KeyUpdate in the
- kernel
-To: Chuck Lever <cel@kernel.org>, Hannes Reinecke <hare@suse.de>
-Cc: John Fastabend <john.fastabend@gmail.com>,
- Jakub Kicinski <kuba@kernel.org>, Sabrina Dubroca <sd@queasysnail.net>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, Shuah Khan <shuah@kernel.org>,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- Hannes Reinecke <hare@kernel.org>, kernel-tls-handshake@lists.linux.dev,
- linux-nvme@lists.infradead.org, Alistair Francis <alistair.francis@wdc.com>,
- Martin Belanger <martin.belanger@dell.com>
-References: <20261028-keyupdate-rfc-v2-0-eb5143b4c487@gmail.com>
- <76ccd502-f1d1-4135-b92e-d783f259a687@app.fastmail.com>
- <3544cb56-e43b-49ec-aa94-beafe061879b@suse.de>
- <CAPG1HMsnUDa=Q5O4fwZOU=Pd+m7ahzu574Cs+mWoB_9KUT5ASA@mail.gmail.com>
- <097a2d7a-af80-47b0-b800-238396e6e662@app.fastmail.com>
-Content-Language: en-US
-From: Martin Belanger <martin.nvme.dev@gmail.com>
-In-Reply-To: <097a2d7a-af80-47b0-b800-238396e6e662@app.fastmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20261026032216.1145201-1-tavip@google.com> <20261026032216.1145201-2-tavip@google.com>
+ <CAL4WiiqQ3cychvCccpNW+WOU2SYCfNt6L=wgPkNmfTLHLy605Q@mail.gmail.com> <auALgSUuoYmfKSz3@google.com>
+In-Reply-To: <auALgSUuoYmfKSz3@google.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Wed, 28 Oct 2026 16:20:30 +0100
+X-Gmail-Original-Message-ID: <CAL4Wiirpss0inrC7gKhsNfwUO-KGZ-nnF5h7N8jXS9qziiSW4A@mail.gmail.com>
+X-Gm-Features: AclHuK8qub-e-4irsY79-0gVFC2QdUE5nzCC7FcYSl-R8IvezAwIoZ7r3NmeCSQ
+Message-ID: <CAL4Wiirpss0inrC7gKhsNfwUO-KGZ-nnF5h7N8jXS9qziiSW4A@mail.gmail.com>
+Subject: Re: [PATCH net v4 1/2] tcp: clamp return value of tcp_wmem_schedule()
+ to non-negative
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Octavian Purdila <tavip@google.com>, Eric Dumazet <edumazet@google.com>, 
+	Neal Cardwell <ncardwell@google.com>, "David S . Miller" <davem@davemloft.net>, 
+	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>, 
+	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Le mar. 27 oct. 2026 =C3=A0 03:28, Kuniyuki Iwashima <kuniyu@google.com> a =
+=C3=A9crit :
+>
+> On Mon, 26 Oct 2026 13:06:56 +0100, Eric Dumazet wrote:
+> > Le lun. 26 oct. 2026 =C3=A0 04:22, Octavian Purdila <tavip@google.com> =
+a =C3=A9crit :
+> > >
+> > > When sk_wmem_schedule(sk, copy) fails under TCP memory pressure and
+> > > sk->sk_wmem_queued already reaches or exceeds sysctl_tcp_wmem[0],
+> > > tcp_wmem_schedule() returns min(copy, sk->sk_forward_alloc).
+> > >
+> > > However, sk->sk_forward_alloc is a signed int that can transiently
+> > > become negative when tcp_collapse() re-packs partially read or high
+> > > payload-to-truesize SKBs in the receive queue and charges newly
+> > > allocated SKBs via sk_mem_charge() before freeing the original SKB.
+> > >
+> > > If tcp_wmem_schedule() returns a negative value, tcp_sendmsg_locked()
+> > > passes that negative copy length to skb_copy_to_page_nocache() ->
+> > > copy_from_iter_full() -> check_copy_size(), where it is converted to =
+an
+> > > unsigned size_t > INT_MAX, triggering a WARN_ON_ONCE(bytes > INT_MAX)
+> > > in production and returning -EFAULT instead of waiting for memory or
+> > > returning -EAGAIN:
+> > >
+> > >   WARNING: CPU: 1 PID: 939331 at include/linux/thread_info.h:249 tcp_=
+sendmsg+0x10c1/0x1530
+> > >   Call Trace:
+> > >    <TASK>
+> > >    __sys_sendmsg+0x292/0x490
+> > >    do_syscall_64+0x88/0x340
+> > >    entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> > >
+> > > Clamp the return value of tcp_wmem_schedule() to [0, copy] so callers
+> > > treat negative sk_forward_alloc as 0 available bytes.
+> > >
+> > > Fixes: 849b425cd091 ("tcp: fix possible freeze in tx path under memor=
+y pressure")
+> > > Assisted-by: LLM
+> > > Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+> > > Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+> > > Signed-off-by: Octavian Purdila <tavip@google.com>
+> > > ---
+> > >  net/ipv4/tcp.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+> > > index 87ef6d5cbfeba..0e062fcd94a6c 100644
+> > > --- a/net/ipv4/tcp.c
+> > > +++ b/net/ipv4/tcp.c
+> > > @@ -1037,7 +1037,7 @@ int tcp_wmem_schedule(struct sock *sk, int copy=
+)
+> > >         left =3D READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_wmem[0]) - s=
+k->sk_wmem_queued;
+> > >         if (left > 0)
+> > >                 sk_forced_mem_schedule(sk, min(left, copy));
+> > > -       return min(copy, sk->sk_forward_alloc);
+> > > +       return clamp(sk->sk_forward_alloc, 0, copy);
+> > >  }
+> > >
+> > >  void tcp_free_fastopen_req(struct tcp_sock *tp)
+> >
+> > I do wonder if the following fix could be better (no change in the fast=
+ path)
+>
+> Exactly, this looks better too, we can avoid negative
+> sk_forward_alloc and clamp().
+>
+> The packetdrill will need to be adjusted as it triggers cgroup
+> OOM with this approach, or we could defer the test to net-next too.
+>
 
+Let's defer the test. We also have an upcoming fix for tcp_collapse() anywa=
+y.
 
-On 10/28/26 11:01, Chuck Lever wrote:
+Octavian, could you resend a v5 (sorry for that) ?
 
-> 
-> I get that dropping the connection is bad; the current weak-ass
-> implementation is meant to handle KeyUpdate until we have a proper
-> spec-conformant implementation.
-> 
-> My concern here is if the current design is malfunctioning in LTS
-> kernels, the only mechanism we have is to fix it upstream and backport
-> the fix. I don't believe stable@ would be happy absorbing this full
-> series.
-> 
-> Your commit message claims the connection stalls rather than getting
-> replaced. If that's true, that needs to be fixed before this series
-> gets merged. Can you confirm? I don't expect such a fix would be large,
-> but the ordering matters.
-> 
+Thanks!
 
-Yes, for nvme-tcp. Since 6.7, tls_sw_read_sock() returns -EINVAL for a 
-KeyUpdate record. nvme_tcp_io_work() then stops without error recovery, 
-and the queue stalls until a command times out. Only the timeout handler 
-replaces the connection.
-
-The fix is small: "nvme-tcp: start error recovery when read_sock fails". 
-I posted it on Monday, and Keith applied v2 to nvme-7.4 yesterday:
-https://lists.infradead.org/pipermail/linux-nvme/2026-October/066937.html
-
-The queue now starts error recovery at once and reconnects. It has no 
-Fixes: tag. I will ask Keith to add Fixes: be8e82caa685 ("nvme-tcp: 
-enable TLS handshake upcall") and Cc: stable, so it reaches the LTS 
-kernels before this series.
-
-I have not checked sunrpc. Does xprtsock replace the connection when 
-tls_sw_read_sock() fails, or does it stall too?
-
-Martin
+pw-bot: cr
