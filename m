@@ -1,68 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.193
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793154053;
-	b=Q5YIqUYY5JRivdAI51h/iHdw/4IGe3ZGT2H8gabbOCeEgiHDSEG+KGY6pcYrc3X1uZVv
-	 mxDRr2ILUxsPYF2r8FO4rdiZZKnOxq99FKWJPz2LLDT4mrQLbLcNYGwrd6hGE7Rtjm+GP
-	 Hniw8gkiyFErdqtKGCJ6cZx9YG/z23jV/1IA9uXKMN+VQVNim5T3hbG7waiS2X1sa1B9x
-	 YNqyYK3Z9hEexVjRMdx5hAHlNT5M/bWJIt5vBebFp7DKkGlsY0Atsb0IFeDyIUeQZcX/S
-	 3zFIy4HqiLFWdE9Oy+W2lGB4hL9mUmGtF5MEsTM+vtfD//Qj/z0jlQGhwI4d4RzllDA==
+	t=1793154106;
+	b=PsddnHWs+M5+u27cfSDyO7h58ucAZMvL0BKPj7mpnolmRV6Q9pUtqNNqvCaQm75aE8Xc
+	 ZrZzoOme6ruRZ6LYuke5sIc3blUo9fzO8PSseEL/XmBHyOyOQplV8Q6mGH1BcyePtFlif
+	 wj2v/zmMhT4MP5WrhheQd2UFkTPTMRgppBgi5Xt/jjQTdZc82ql9OtKgP+NY0imf1y5lz
+	 9uy3tJ0xjQhRjsu7PvuRzMlq1KjmN/sFbJ8n47NaKGUPBinqGKH2BXZrQLWLAN11wiRgn
+	 dmf2WFEhh2lCHeOxbqpe9h/t59E+kLXJYATnCW9Fw5duDi0LDLu8PvGyb8b8YsUXNYQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793154053;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=fR07HzCYiHUWXoygEK4KE/KCkYYrHs4rlMJZsk/rRdk=;
-	b=Uja//Kn1J4b7Yq1N0dkGYqteJE3DR2eZlBkMR3KDrE7wNMPhCpo0kuahVjOy+ddlIyzr
-	 oE5HynzJzAa+EMNt6SYBaCPsoBMfpxXKgaWaRAIvAc9xcoQUPmZDhYTRKyapLqJr8ZsCi
-	 VHgWSUi5tahAI6ruzgsIdFKZZoA02Qy11477RCmfxxndqCzVLmUOsrSto4ym45voCtiWb
-	 GBquI/R7cSn60kufG9LZD0hTZiY5dc0vyNzjgsSbz6cjkqfIXoiSDTjO4sgXnVEU5CeBS
-	 dRP04WA3TwQyYNLbWORNACDB8dC158+8IhUrID5gKW6/qPZ9XnRyBW0iX5m/Gt/eWwQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793154106;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=yvbnuswRAXkLlEZEOKJhfn9CgxvlmHuarpSPqS5Km4I=;
+	b=wAjVGFc1ddkdkqS7FsGPh5IhwxDMIoZRBc0Bxku1TVIW739J3AyKiFu9hOgHTzfrKUGT
+	 zfQzjAbN4PUYa+50H0O5Dn/wKehZ8bzC9J/uyKNjBzUJhGE4AtGC2NrXLxI19YAChqOcI
+	 PjCgjv4TCBmBii39Ot3EzMU427SuHAOz5Qs6kvBY14Tf77zQC2xRn2EXzGsQNKTGup3co
+	 VwUWns3j1+dhL0dXQGoArq9oAZjIxW2tis8IX1RCDgWk3FmbR8zv0wm0W3ek2hxR9mPfw
+	 2s2cJo2r68jg6WwnJovnIiQcUlAQLOw472fdJbuLLxprH62g+a9PZTOT9bsB3EhGHCg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=Q4dEGGKV;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZjYVER9W;
+	arc=none smtp.remote-ip=95.215.58.193
+Received: from mta1.migadu.com (out-193.mta1.migadu.com [95.215.58.193])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3845606A31A;
-	Wed, 28 Oct 2026 02:20:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F3845606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13A8606A31D
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 02:21:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B13A8606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=Q4dEGGKV
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=fR07HzCYiHUWXoygEK4KE/KCkYYrHs4rlMJZsk/rRdk=; b=Q4dEGGKVey53CbOf9pJ4D+Qgeu
-	+LuZKwfaRnJ/Mnxr3h9OLDa1i9BLVJvt1ZYkxMn4nXsO66nFT0/3fxs9bITdm4hIg2Dj2haphPyBx
-	0PvrEXVIKaXT1C0Up8iWyweRQ9dbZ5v9QVACNXM05HfQreaS5mLiWv4esqheyvYDgqqQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xLtHG-00D2pX-Ip; Wed, 28 Oct 2026 03:20:34 +0100
-Date: Wed, 28 Oct 2026 03:20:34 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Caleb James DeLisle <cjd@cjdns.fr>
-Cc: netdev@vger.kernel.org, olteanv@gmail.com, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
-	chester.a.unal@arinc9.com, daniel@makrotopia.org,
-	linux@armlinux.org.uk, arinc.unal@arinc9.com,
-	Landen.Chao@mediatek.com, dqfext@gmail.com, sean.wang@mediatek.com,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, naseefkm@gmail.com,
-	b.larsson@gmx.com
-Subject: Re: [PATCH v3 5/7] net: dsa: mediatek: support MDIO switch
- downstream of MMIO switch
-Message-ID: <f6fe9c7a-5617-475b-babe-da24cda815cc@lunn.ch>
-References: <20261028011317.1557238-1-cjd@cjdns.fr>
- <20261028011317.1557238-6-cjd@cjdns.fr>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZjYVER9W
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=T274q3t0zByFtrwkspOzoZhgms0KPFQlU3UuTQZ4/T0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793154103; v=1; x=1793758903;
+ b=ZjYVER9WwVXTxAu/l2BZSI0F8uE2tdUvxUPyrE/DAQNe3gq4dQcf53zxs3JIsSn7eiF3xjam
+ w5UHFd0Xg75T/XIaRHiQ8GGbucBXDu9/MLraPB9t+iUq/zDo+ojR4FnnpjD8K4I9+QZG+O3OsdJ
+ o/iTtN8RHz0/tPQ0gI5G95Ac=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 935717971550bebf;
+	Wed, 28 Oct 2026 02:21:43 +0000
+X-Mizu-Trace-ID: 935717971550bebf
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 28 Oct 2026 10:22:24 +0800
+From: Chenguang Zhao <chenguang.zhao@linux.dev>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: netdev@vger.kernel.org,
+	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Felix Fietkau <nbd@openwrt.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net v2] net: bgmac: fix oversized RX frame check
+Message-ID: <20261028022128.GA201431@pc>
+References: <20261028011035.49201-1-rosenp@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -72,28 +71,57 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261028011317.1557238-6-cjd@cjdns.fr>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261028011035.49201-1-rosenp@gmail.com>
 
-On Wed, Oct 28, 2026 at 01:13:15AM +0000, Caleb James DeLisle wrote:
-> The MT7530 / MT7531 can connect via either MDIO or MMIO. In MMIO mode
-> the switch provides its own MDIO bus which connects to its integrated
-> PHYs, but also can be connected to other things, such as another
-> switch.
+On Tue, Oct 27, 2026 at 06:10:35PM -0700, Rosen Penev wrote:
+> While reviewing commit 77dac783f11
+> ("net: bgmac: rate limit RX error messages") , Florian spotted that the RX
+> length sanity check compares the length reported in the RX header against
+> BGMAC_RX_ALLOC_SIZE. That is the size of the whole fragment, including the
+> space reserved for struct skb_shared_info. The data area handed to the
+> hardware is only BGMAC_RX_BUF_SIZE bytes, and the frame starts
+> BGMAC_RX_FRAME_OFFSET bytes into it, so a valid frame is at most
+> BGMAC_RX_MAX_FRAME_SIZE bytes long.
 > 
-> If the MDIO bus contains another switch, then the upstream switch
-> will register but it will not setup the DSA tree because the
-> downstream switch is missing. Without the complete DSA tree,
-> mt753x_setup() will not be called on the switch and therefore
-> mt7530_setup_mdio() is never called so the downstream switch never
-> registers.
+> A corrupted length between those two limits passes the check, and the
+> following skb_put() runs past the skb tailroom and calls
+> skb_over_panic() instead of dropping the frame.
 > 
-> Update mt7530_setup_mdio() so that it can be called multiple times,
-> export the symbol, and call it again after dsa_register_switch()
-> from mt7988_probe().
+> Compare against BGMAC_RX_MAX_FRAME_SIZE instead.
+> 
+> Only compile tested. Not tested on hardware.
+> 
+> Fixes: 6a6c708469c9 ("bgmac: add check for oversized packets")
+> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> ---
+>  v2: replace Suggested-by with description.
+>  drivers/net/ethernet/broadcom/bgmac.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/broadcom/bgmac.c b/drivers/net/ethernet/broadcom/bgmac.c
+> index b3a92ae95de3..6873c7bb7a14 100644
+> --- a/drivers/net/ethernet/broadcom/bgmac.c
+> +++ b/drivers/net/ethernet/broadcom/bgmac.c
+> @@ -455,7 +455,7 @@ static int bgmac_dma_rx_read(struct bgmac *bgmac, struct bgmac_dma_ring *ring,
+>  				break;
+>  			}
+>  
+> -			if (len > BGMAC_RX_ALLOC_SIZE) {
+> +			if (len > BGMAC_RX_MAX_FRAME_SIZE) {
+>  				if (net_ratelimit())
+>  					netdev_err(bgmac->net_dev, "Found oversized packet at slot %d, DMA issue!\n",
+>  						   ring->start);
+> -- 
+> 2.56.0
+> 
 
-I would suggest just moving it to probe. Don't also have it in setup.
-KISS.
+Hi Rosen
 
-	Andrew
+FWIW, it’s helpful for reviewers to have a link to the
+prior patch with the new revision for easy reference. :)
+
+Thanks
+Chenguang
