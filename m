@@ -1,58 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793198653;
-	b=VvNkHu0gBK1lBjAgC418Q6H6/kVqfKGKNMx6+g7vamN2HSoDc/YTA+JUc3pAX884E9Z3
-	 yJz4M2bVzHDemXKaDjwO44YrHlqG+t9T0pOwe2nFJ2IrIpxv10sioCfQT8V82KyDPHcZR
-	 +e1rWB7qeAET0yBlpuKaKj4Z0WbE2BjTE0lUFr1uRlnzfpuuadP7A0HyfeNku/hXNcobr
-	 OlAO4UGFCqBonoUvJLT8+YWCOuZzw4z6RhYn07B0LIyyoySupuLJaNkY8JP3BezL8ae5z
-	 INvWrXsVuFCYuNsm7tRYmYPkeGM0WQedCkUZ3wVL9Vm/+6w7A3jKtSRqQjMnTdpm8cQ==
+	t=1793199030;
+	b=JIJple5MKEFuTMt1Pxk5O533RzQaEjoS43X7dfS6+2yTsCJnwIX+jjeNrmt58BY2NtIe
+	 Kwk7nHw9hDHWDv0kpiUBbaIEo2pxLQ2Ebhp+e3XsEiYPEGTT5C/ZHlH/GtM0c6hOXTMB4
+	 l73mgDouU3N7Et4U8hgcyyapXSJ9NaSZHag/EVFntgFOHkNqcz2KEn2lfHC84AqQlzeA0
+	 U7CbQUSCWNW0okc5UKva0VA7HfTrpRAQ+KDtKdt9rVdOC+HqRjwRVvFLwzjZvmjeUO+Om
+	 AdYBoBW8SfKxbd5l7RwXNOAeGlek2+4UoG9Jm+DrE5bL6t11cIN3/SkMx81NbaXzwjw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793198653;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=1Q63vKXI7sX2+wwKEnsnoKjs6AlzUnkR62wP2YbR8PI=;
-	b=3FQfvlYE0sKSoLCkQFx+SsW3VpsmJirUJvb4f7SKHrmPHmInxnAL7iDKSKvH0DeuwBl1
-	 vax4SKono0hJ42Llm+jx+8Sh362fIoNd4w2GJJ/I3EC916LVxrawwgoAFiAlkOhOJ1jy5
-	 BWh6t6wms26VyUFfp/jTA/1NNvm/MuRpAgucxZRHuYCwLkuED6NL1yFlWf5w3yVbUcpSv
-	 43kfm+kt9221uXp5bfqO3cn1XriA1oVIplEKBdlaB1iwepkL4KbkuJ8W8Rd3u+wkZ7/X/
-	 8UdqkPN7a0DCuwGOvDHei4A6FnPjKAfozH9y7/gSqEeDF2gzJysts14Dq9kqI5iLWsQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793199030;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:Content-Language:To:Cc:References:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=znXIT2Q+xpYTpHdwKPmA4jz6YR4BPArNsNj4UZeCH/4=;
+	b=4jyh8kLBcIZ7Kqgamh34LIWScYjMfLH1Jz1Na0J/qgA1v3DC/3LzmF8HnWpmsxtWxAjs
+	 II0SZJ7igPXX1Rz77jYbEPDI2Ayz6ekdAuvSHtaXIOYBOYWNhQd1ZszarzxwQtE/+EzMC
+	 4QT71xhlyybpJCPd1iaV2Jy1CjfpRTxvsTmGIghY5mNWjrdjwG1NK7hEvAKtASPerXUE0
+	 p4t/zd6gh7vmYnLy6rLQrvq5XXgI408s6JBKnNk84RaOEnaqYNFvZ7+eF1VcXC7kII3qE
+	 PGo5Zn58EweyVKPKVFvla2HLAWZHwXy7isajIBFpBHxx+CvkZYSC4b7lm0Nqvi+ukaw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NGb5aMol;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mOJyYo1f;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B705606A31E;
-	Wed, 28 Oct 2026 14:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74847606A31D
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 14:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NGb5aMol
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F50F1F01825;
-	Wed, 28 Oct 2026 14:44:10 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mOJyYo1f
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED1C81F01825;
+	Wed, 28 Oct 2026 14:50:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793198652;
-	bh=1Q63vKXI7sX2+wwKEnsnoKjs6AlzUnkR62wP2YbR8PI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NGb5aMoljz5/21SSjR4odbTS26vwx/CGKuiRCOIeiUV4PASm6HyPxqlwerkkE1MH3
-	 Y5YRwMYHUWqExx45xZAZYQZcxpfUDr0IHHIWhUE1yEHd5wfl0yao4lvoXpJZt0SV9s
-	 xUewWoh/TQAG/AgtMd4kkX5J7jOi4DkmW9KM4t0PLUzuHOCK47gYnep3+m7uLTxU0B
-	 rM+zptalztzrW4Tqxbc6LOXQ2zW2JusZZu657UZtlWQzUW+0Gh3KEz5FNrlxq3w2a3
-	 zDlLs7AT1D5WC+kYIjdjEFKRwHtmzHXbAAybbva4ZoS+8P1mb5L6YFDJmBnuCggSsY
-	 mj/zlUAgUgJdQ==
-Date: Wed, 28 Oct 2026 14:44:08 +0000
-From: Simon Horman <horms@kernel.org>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, Willem de Bruijn <willemb@google.com>,
-	linux-ppp@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>,
-	Qingfang Deng <qingfang.deng@linux.dev>,
-	Felix Fietkau <nbd@nbd.name>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: Re: [PATCH v2 net] ppp: linearize and segment bridged packets when
- required
-Message-ID: <20261028144408.GX257209@horms.kernel.org>
-References: <20261026155927.707655-1-edumazet@kernel.org>
+	s=k20260515; t=1793199030;
+	bh=znXIT2Q+xpYTpHdwKPmA4jz6YR4BPArNsNj4UZeCH/4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=mOJyYo1f8wkSapvZVbAeFZLtOqhjB/Bddw54csGuAMLZ17nBvtLQJA1dvU/0g1Drd
+	 B14EAH7t/n4nPTwusfBT4z1Y9e5skT0sXWGh76sfwv47zXRTsYDwzFEHXsvg3LbEsW
+	 tqlBzXv9Vp6ZE125Yl0+jxuDRAmS0xJtlyf/rXF1uZLDRHH569YPWMJqU7KtdYsD3x
+	 8JV7RuSr8gC9qLEY4le2MofZficENCzgrXHKRKgPI4BfAzqA3UAQx/FEj7WIAlmQRU
+	 qGlvUrJ7qoIK5NNoH6ZOcSpQM2l0CXmp5NqPQqsZlrFXlyxxgp1rjNETRbLW75KEry
+	 W8l4DmYcMkCeg==
+Message-ID: <b0e685c9-ad2e-4414-b59d-9dff7b0bfaa3@kernel.org>
+Date: Wed, 28 Oct 2026 08:50:29 -0600
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,65 +51,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261026155927.707655-1-edumazet@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: l3mdev: Set OIF flag only when an L3 master exists
+Content-Language: en-US
+To: Daniel Machon <daniel.machon@microchip.com>, Haon KIM <akrn112@naver.com>
+Cc: netdev@vger.kernel.org
+References: <20261024175746.2341-1-akrn112@naver.com>
+ <20261026083005.edngrb7gs52ouhm6@DEN-DL-M70577>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <20261026083005.edngrb7gs52ouhm6@DEN-DL-M70577>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 26, 2026 at 04:59:27PM +0100, Eric Dumazet wrote:
-> PPP channel bridging hands packets received on one channel directly to
-> the start_xmit() of another. Packets received by PPPoE can be
-> non-linear, GSO since commit 55a5d8fca836 ("net: pppoe: implement
-> GRO/GSO support"), or CHECKSUM_PARTIAL when injected with a
-> virtio_net_hdr. The regular transmit path never sees such packets, and
-> only PPPoE, which uses dev_queue_xmit(), handles them:
+On 10/26/26 2:30 AM, Daniel Machon wrote:
+> Hi Haon,
 > 
-> - PPP Async reads the whole packet through skb->data, transmitting
->   unrelated memory for non-linear packets.
-> - PPP Async and Sync send GSO packets as single frames of up to 64KB,
->   and CHECKSUM_PARTIAL packets with a bad L4 checksum.
-> - PPTP and L2TP cannot segment a TCP GSO packet once their GRE or UDP
->   header is pushed, and do not finish pending checksums.
+>> l3mdev_master_ifindex_rcu() may return 0 when the device is not
+>> associated with an L3 master. In that case, l3mdev_update_flow()
+>> currently sets FLOWI_FLAG_L3MDEV_OIF even though flowi_l3mdev
+>> remains 0.
+>>
+>> Set FLOWI_FLAG_L3MDEV_OIF only when a non-zero L3 master ifindex
+>> is returned, keeping the flag consistent with flowi_l3mdev.
+>>
+>> Signed-off-by: Haon KIM <akrn112@naver.com>
+>> ---
+>>  net/l3mdev/l3mdev.c | 3 ++-
+>>  1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/net/l3mdev/l3mdev.c b/net/l3mdev/l3mdev.c
+>> index 5432a5f2dfc8..92b48d6a4301 100644
+>> --- a/net/l3mdev/l3mdev.c
+>> +++ b/net/l3mdev/l3mdev.c
+>> @@ -279,7 +279,8 @@ void l3mdev_update_flow(struct net *net, struct flowi *fl)
+>>  		if (dev) {
+>>  			if (!fl->flowi_l3mdev) {
+>>  				fl->flowi_l3mdev = l3mdev_master_ifindex_rcu(dev);
+>> -				fl->flowi_flags |= FLOWI_FLAG_L3MDEV_OIF;
+>> +				if (fl->flowi_l3mdev)
+>> +					fl->flowi_flags |= FLOWI_FLAG_L3MDEV_OIF;
 > 
-> Add a xmit_offload flag to struct ppp_channel, set for PPPoE. For other
-> channels, segment GSO packets in software, using the PPP protocol field
-> as the L2 header, finish CHECKSUM_PARTIAL checksums (including SCTP
-> CRC32c), and linearize packets for channels without direct_xmit, as
-> ppp_push() does. Packets are dropped if any step fails, or if the
-> channel is busy, as before.
+> Looking at the readers of this flag, it does not look like this does much, so if
+> anything this is a no-functional clean-up for net-next, I guess. The commit
+> description could be more specific about this. Also, the target tree is missing.
 > 
-> skb->dev is NULL at this point for PPPoE (cleared by __sk_receive_skb()),
-> and tunnel and IPv6 UFO GSO handlers dereference it: only TCP, UDP L4
-> and fraglist GSO packets without encapsulation are segmented, others
-> are dropped.
-> 
-> Receive paths like L2TP pull headers without updating the checksum
-> state, possibly leaving a CHECKSUM_PARTIAL state with csum_start before
-> skb->data. Reset it to CHECKSUM_NONE, as skb_postpull_rcsum() does, so
-> that skb_checksum_help() does not warn, and so that PPPoE does not
-> offload a checksum at a wrong offset.
-> 
-> Tested in a VM by bridging PPPoE (on a TAP with IFF_NAPI_FRAGS, or on
-> veth) to PPP Async on a PTY, PPPoL2TP and PPPoE: non-linear packets no
-> longer leak garbage, GSO packets (including fraglist GRO) are sent as
-> valid segments for IPv4 and IPv6, CHECKSUM_PARTIAL packets get a valid
-> checksum, and PPPoE still receives GSO packets unchanged.
-> 
-> Fixes: 4cf476ced45d ("ppp: add PPPIOCBRIDGECHAN and PPPIOCUNBRIDGECHAN ioctls")
-> Fixes: 55a5d8fca836 ("net: pppoe: implement GRO/GSO support")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://sashiko.dev/#/patchset/20260908072135.877364-1-qingfang.deng@linux.dev
-> Co-developed-by: Qingfang Deng <qingfang.deng@linux.dev>
-> Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
-> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
-> Cc: Felix Fietkau <nbd@nbd.name>
-> Cc: Pablo Neira Ayuso <pablo@netfilter.org>
-> ---
-> v2: addressed Sashiko feedback
->  - Only segment TCP, UDP_L4 and fraglist GSO skbs without encapsulation,
->    skb->dev is NULL here.
->  - Reset stale CHECKSUM_PARTIAL state with csum_start before skb->data.
->  - Use skb_csum_hwoffload_help(skb, 0) to handle SCTP CRC32c.
-> v1: https://lore.kernel.org/netdev/20261022111039.85112-1-edumazet@kernel.org/
 
-Reviewed-by: Simon Horman <horms@kernel.org>
-
+Example of a failing use case?
