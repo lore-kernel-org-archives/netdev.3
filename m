@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.69
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.71
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793225896;
-	b=UNHMKBwZsT0AoVqoKnsbmzmsRwei1NHOvGsLxi5I68oW/CjmUGLdB1DXgCgoe1FZmFGf
-	 0Uy9/IonuvluRTDgUStthSzJHXhLqD9+PC933HhDCvyL7KWrRWl6WGxa88mMCmOVQxTC5
-	 O8HFLyNsK4+D4qxYA56SbDj+AnMLD55r2eU2dgfqIM49tO0piEQAEPYIA7YAG96drhk2N
-	 wlZReWBJbYrR4gZQ3Y5JMNb48QaQcGikO5hrvsBE0jO8HcSFXbbVgMZxjAUe7Kg6WG6ty
-	 XfrUtmWM8MXAHS9NGEu4Vja56ijV/fJhuMl3esmk6sPGlDaj7UPPvlFlogd0jWvl3+g==
+	t=1793225897;
+	b=zlaSuzXHuKt7tCInzp0Y8WZ+weuzgIq6AJFX8SdXJeetc96Z8wXExHpv8A+xgonYsIO+
+	 N3la4YImfFWBK+Is+nHAjBqPCghtCK5jvTCbJNv1I3OW0bfaIFGd9zJYx0Vc1TeJRwc7c
+	 /GhVxrpwRWyDyvxI4fFda0nahmYkqr4Ot4f4o/Dh/cLQK79j/Mz9dEDWtllFj7VYvv7kg
+	 TTecH7xiDyJ3ThPWtwmoK3d55lX0dvOAirZIzgxUy7sPiG9Gr32a0UxAxJCgHcBGJDOzZ
+	 CmGsQvsyTh1u5/81FLFXY3i1u9SDkUNqVuWZm7UD4jIbrTe18TRq0XGZPJDHH8UyGGA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793225896;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793225897;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=IliLvxEFhtUoKzlsMTRJTupCYDKTYP3W6Uvf0vlrqBM=;
-	b=yvreDV3mVn12xssyxceWDBLfPLu2J7UvovJL/zogm+L1i2zNJ9tXXeEb5zn/tfFySOvu
-	 d9Kby+Li30uF0wfKYw7NIViLMXM+0mQCvSp9JdZ+0+P2acJgEZIS6b/9oZO9LTKZ7H5Z0
-	 /6Zr1PzDjsPKEt7q9Eug31KdiQNH7hseaJkbB8RF5DaqfFKihLTt13kgviVoeqMBSta8Q
-	 7hZRfsKerMJyhJlW0syNwcwCn3jc4l0MFT/+44qcAymxbS4xGA9c43I0v4gF1jBJikSWE
-	 KdDpF4eiZySFuOIgTIEAvHBxMu7EIQxIbGzupzn5lgE/K/HKvSo6tJpOT9gG1vEqZCA==
+	bh=LuXjD7L3OcsNkkaeGIp4Cs+2/jEhkIJjHJvLaqO3j5k=;
+	b=k69u2Fd38MUP0OM5wc+xQWWFZaA4wwlffkpniDvzRFbYd9w0pXBigdcDv+9TXrtRyqhl
+	 lh3DjHBFf1vDvqnaJ/GYEARRuuT8255Lb5LMvPtnlFlfexCYvUvQMz+4pEPMfJJQwAWRZ
+	 xLGWPCu4liGjYet80M1yaxog/uxsy1328EL/i6v4lsh1NYQk8YSl43rnw4/tAyvzlG4Eg
+	 g/F4jvfv5cPAC+u9LazhRQu9CGXk8yaf3VFKg9W7xohWw7I0zxuOxPt505QTieJFoVD/K
+	 qiiWxqvx+UHQYqCtE2/BrZRfea2Btl2vCLcv5EGqiFZiDJJofvruMOurBNdjITiDobA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--halg.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=gYALcxqy;
-	arc=none smtp.remote-ip=209.85.218.69
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=cG9MXphV;
+	arc=none smtp.remote-ip=209.85.218.71
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com [209.85.218.71])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C4960A2620
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 22:18:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 95C4960A2620
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9841F60A2631
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 22:18:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9841F60A2631
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--halg.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=gYALcxqy
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c29c391bd2fso129524366b.2
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 15:18:16 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=cG9MXphV
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c293e604f0eso154962966b.3
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 15:18:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793225895; x=1793830695; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793225896; x=1793830696; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=IliLvxEFhtUoKzlsMTRJTupCYDKTYP3W6Uvf0vlrqBM=;
-        b=gYALcxqyt70MQ79J9EPFtsq/ZeSTxirIEH01aK2bomk/GvpfcsAjBJqb4Y09rzuNLt
-         mO44k7f46rtJ9wunMGpfQFt9lPWqgkNaiFl0SALdNHuEVLvyiq5kt/KV0iSWPCT3tP1c
-         zWS2yVnyhtdinRcEUS5DF+dd6ZPtqU4//4OhOvSQSXIQEeSpBlOhVgl5N3HoKZ8HyqgM
-         0mOlVcGpmjZAg21fMo5VhSqBp3oUNBCE57ekigI3J8RJl6Rr/QajW+JDtCDvJeRQt3ph
-         p+hNl2pv82gkoFDKvZA/guZs8SZ56A95NQsHaEdHFIKKnIsIwK+zXnT381OZUxwV0rNz
-         Rg8Q==
+        bh=LuXjD7L3OcsNkkaeGIp4Cs+2/jEhkIJjHJvLaqO3j5k=;
+        b=cG9MXphVliGfueSx2Z0NoNbYsnSXHOGHkWt5dQAGZ8EsOMi4HeS3qSTjFLd5X4KDzN
+         08MKv/iUjqxQdb3ioitFUylTCyNYvndTExu9ZkmqFsRzBm7wEb3IZEO4xL1pFDB3ImtK
+         bjLsaohZ8mCteV0cvwxrH6GRnOyss5cZ0+p1j0gBk3m+rSFw7K1Ac/tXCxXFwPrdqD6R
+         QQRGpEQ9oOEFX4JQzcl8eO1/yaGbuzVPrg6TvUD2Q5QrbaB1gfUzlpHpj9FeVjOu0/PI
+         GmsDP24gl5/0EwYUvv6Kf4qYid+2zDPhTQzM9gs+aVHSfDV3rLlvMp8Dl4Hu7ng56jjm
+         XyXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793225895; x=1793830695;
+        d=1e100.net; s=20260707; t=1793225896; x=1793830696;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=IliLvxEFhtUoKzlsMTRJTupCYDKTYP3W6Uvf0vlrqBM=;
-        b=te015oHdAWigKzmYXViLu7CF16C8xxUQip7rr2DCCCxuTTaNIz3c4CiRkQ747tUUtm
-         UJuxdCwvNs5dGvEu2YGB8kdkwoYuls/kLM9S9L5e5LGjMq/woDl2+SRny8bEmR/iDk2K
-         3kfhIJicfGrhhTnmkkOP+0tD42rED+MI7OB/drZ/bxAwF3h1U4aDqc3zi2vFrkhDcTnh
-         icuQQSXOs4cRDmqWlJ03smxd94Ul65N2xRyq9CyodSy7pcztV0PnFoYXRowRWgE9Vlw9
-         ZGhQc7PERraOdJqI5vIeVFWgCmtmFbNC2l3Tm8wStWNqHw7L0nczHEoOnZoLdV7LNVEu
-         lxww==
-X-Forwarded-Encrypted: i=1; AKwUvBz+9hX8MbBBdom0wKFdt1MXO4CW/JytK0I51sx0Szac+SuA5/yl1vFH+ioxno5vUNoe4tsoy8Q=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKKNoq9ahxM2u3VpeP326PRiaaUheSV1g+2qo5rGB6STqCDEzCp
-	2DDBMkgbgOIsi+7PGuYtfM+H95D+mBS6xRwhcCTA/T2wfI7pGrGHTHKw6YxVr6poi51lNaPrrA=
+        bh=LuXjD7L3OcsNkkaeGIp4Cs+2/jEhkIJjHJvLaqO3j5k=;
+        b=XAuceN/zdilIL2qNpJZ5Hpbh970TKeALmNAXD3m3XsMUSb2+u1+Ux/8vX8nqPmRzap
+         gWryLSolVbshKMEIF0Pd7g6j2W8HvfuoZTPkZGwHdOrc57a05Pg8oRGcsw5MayxmrYP1
+         oMZ+yv9F+pReUPK/LKSyruXx7WBulUxvSJrUHbGHTna1DuwP9ppUrLZAd5t9OgKh1TeO
+         2ZvoViC+hsbqqrrnbbV3xmkvPuLfQqxHxgq7y9NepBeYrSgFv5xgEn9+/Ri7rP7y8TJL
+         MiXfwKa1WUEXaxRxF9SzEcpxDzfir9EbQfoBwcNqKG0wEf+D1x2lZ1B5axzNsDRZF6d8
+         osUg==
+X-Forwarded-Encrypted: i=1; AKwUvBzqqKkv3U13hFFMf9FmAT/e+KNz0h0VFTXXHytajpcDfmj0DmDPLLwJduEzqQs5lxy8we7+pI8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJr61xfN3FuWnO6OAQ0yZWAyV0WjasV+jdUJuWEGnyeK3XLICc7
+	T6n0hF+G0Ah96hkAZZ8SUNNKRQ2zWuKNDzoCC7O2375JqmDkJ6jMK82LGJIBTjEGSDnMKS9uoA=
 	=
-X-Received: from ejad9.prod.google.com ([2002:a17:906:409:b0:c32:473d:4a4b])
- (user=halg job=prod-delivery.src-stubby-dispatcher) by 2002:a17:907:3f88:b0:c40:80eb:c54e
- with SMTP id a640c23a62f3a-c49bddac533mr311667066b.4.1793225894675; Wed, 28
- Oct 2026 15:18:14 -0700 (PDT)
-Date: Wed, 28 Oct 2026 22:17:01 +0000
+X-Received: from ejblw4.prod.google.com ([2002:a17:906:bcc4:b0:c46:48a5:ea8c])
+ (user=halg job=prod-delivery.src-stubby-dispatcher) by 2002:a17:906:e2cf:b0:c49:c76f:dad4
+ with SMTP id a640c23a62f3a-c49c76fdf58mr174243066b.31.1793225895629; Wed, 28
+ Oct 2026 15:18:15 -0700 (PDT)
+Date: Wed, 28 Oct 2026 22:17:02 +0000
 In-Reply-To: <20261028221705.3915340-1-halg@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,9 +81,8 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261028221705.3915340-1-halg@google.com>
 X-Mailer: git-send-email 2.56.0.313.g2479322e68-goog
-Message-ID: <20261028221705.3915340-5-halg@google.com>
-Subject: [PATCH 4/8] nsfs: add NS_USER_GET_INFO ioctl to inspect user
- namespace capabilities
+Message-ID: <20261028221705.3915340-6-halg@google.com>
+Subject: [PATCH 5/8] selftests/net: add test suite for CLONE_NEWNET_LOOPBACK
 From: "Hallgrimur H. Gunnarsson" <halg@google.com>
 To: Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
 	Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, Kees Cook <kees@kernel.org>, 
@@ -100,102 +99,150 @@ Cc: Jan Kara <jack@suse.cz>, James Morris <jmorris@namei.org>, Simon Horman <hor
 	linux-kernel@vger.kernel.org, "Hallgrimur H. Gunnarsson" <halg@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-With the introduction of a capability bounding set for user namespaces,
-userspace needs a way to inspect the capability ceiling enforced on a
-given user namespace.
-
-Introduce the NS_USER_GET_INFO ioctl on nsfs file descriptors to query
-user namespace metadata, mirroring the extensible structure pattern
-used by NS_MNT_GET_INFO.
+Add tests in tools/testing/selftests/net to validate
+CLONE_NEWNET_LOOPBACK and UNSHARE_NEWNET_LOOPBACK behavior.
 
 Signed-off-by: Hallgrimur H. Gunnarsson <halg@google.com>
 ---
- fs/nsfs.c                 | 29 +++++++++++++++++++++++++++++
- include/uapi/linux/nsfs.h | 17 +++++++++++++++++
- 2 files changed, 46 insertions(+)
+ tools/testing/selftests/net/.gitignore       |   1 +
+ tools/testing/selftests/net/Makefile         |   1 +
+ tools/testing/selftests/net/loopback_netns.c | 103 +++++++++++++++++++
+ 3 files changed, 105 insertions(+)
+ create mode 100644 tools/testing/selftests/net/loopback_netns.c
 
-diff --git a/fs/nsfs.c b/fs/nsfs.c
-index c3b6ae76594a..50711362d792 100644
---- a/fs/nsfs.c
-+++ b/fs/nsfs.c
-@@ -170,6 +170,17 @@ static int copy_ns_info_to_user(const struct mnt_namespace *mnt_ns,
- 	return 0;
- }
- 
-+static int copy_user_ns_info_to_user(const struct user_namespace *user_ns,
-+				     struct user_ns_info __user *uinfo,
-+				     size_t usize, struct user_ns_info *kinfo)
-+{
-+	kinfo->size = min(usize, sizeof(*kinfo));
-+	kinfo->spare = 0;
-+	kinfo->cap_bset = user_ns->cap_bset.val;
+diff --git a/tools/testing/selftests/net/.gitignore b/tools/testing/selftests/net/.gitignore
+index c9f46031ac73..54919a8b3682 100644
+--- a/tools/testing/selftests/net/.gitignore
++++ b/tools/testing/selftests/net/.gitignore
+@@ -18,6 +18,7 @@ ipv6_flowlabel
+ ipv6_flowlabel_mgr
+ ipv6_fragmentation
+ log.txt
++loopback_netns
+ msg_zerocopy
+ netlink-dumps
+ nettest
+diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
+index 0f5c178bc224..7d7e88e6676f 100644
+--- a/tools/testing/selftests/net/Makefile
++++ b/tools/testing/selftests/net/Makefile
+@@ -184,6 +184,7 @@ TEST_GEN_PROGS := \
+ 	icmp_rfc4884 \
+ 	ipv6_flowlabel_mgr \
+ 	ipv6_fragmentation \
++	loopback_netns \
+ 	proc_net_pktgen \
+ 	reuseaddr_conflict \
+ 	reuseport_bpf \
+diff --git a/tools/testing/selftests/net/loopback_netns.c b/tools/testing/selftests/net/loopback_netns.c
+new file mode 100644
+index 000000000000..03cc665fb502
+--- /dev/null
++++ b/tools/testing/selftests/net/loopback_netns.c
+@@ -0,0 +1,103 @@
++// SPDX-License-Identifier: GPL-2.0
++#define _GNU_SOURCE
 +
-+	return copy_struct_to_user(uinfo, usize, kinfo, sizeof(*kinfo), NULL);
++#include <errno.h>
++#include <sched.h>
++#include <string.h>
++#include <sys/ioctl.h>
++#include <sys/socket.h>
++#include <sys/stat.h>
++#include <sys/types.h>
++#include <sys/wait.h>
++#include <unistd.h>
++
++#include <linux/sched.h>
++#include <linux/types.h>
++#include <net/if.h>
++
++#include "../clone3/clone3_selftests.h"
++#include "../kselftest_harness.h"
++
++static int get_lo_flags(void)
++{
++	struct ifreq ifr;
++	int fd, ret;
++
++	memset(&ifr, 0, sizeof(ifr));
++	strncpy(ifr.ifr_name, "lo", IFNAMSIZ - 1);
++
++	fd = socket(AF_INET, SOCK_DGRAM, 0);
++	if (fd < 0)
++		return -errno;
++
++	ret = ioctl(fd, SIOCGIFFLAGS, &ifr);
++	close(fd);
++
++	if (ret < 0)
++		return -errno;
++
++	return ifr.ifr_flags;
 +}
 +
- static bool nsfs_ioctl_valid(unsigned int cmd)
- {
- 	switch (cmd) {
-@@ -194,6 +205,8 @@ static bool nsfs_ioctl_valid(unsigned int cmd)
- 		return extensible_ioctl_valid(cmd, NS_MNT_GET_NEXT, MNT_NS_INFO_SIZE_VER0);
- 	case _IOC_NR(NS_MNT_GET_PREV):
- 		return extensible_ioctl_valid(cmd, NS_MNT_GET_PREV, MNT_NS_INFO_SIZE_VER0);
-+	case _IOC_NR(NS_USER_GET_INFO):
-+		return extensible_ioctl_valid(cmd, NS_USER_GET_INFO, USER_NS_INFO_SIZE_VER0);
- 	}
- 
- 	return false;
-@@ -360,6 +373,22 @@ static long ns_ioctl(struct file *filp, unsigned int ioctl,
- 		ret = fd_publish(fdf);
- 		break;
- 	}
-+	case _IOC_NR(NS_USER_GET_INFO): {
-+		struct user_ns_info __user *uinfo = (struct user_ns_info __user *)arg;
-+		struct user_ns_info kinfo = {};
-+		size_t usize = _IOC_SIZE(ioctl);
++TEST(baseline_lo_down)
++{
++	int flags;
 +
-+		if (ns->ns_type != CLONE_NEWUSER)
-+			return -EINVAL;
++	ASSERT_EQ(0, unshare(CLONE_NEWUSER | CLONE_NEWNET));
 +
-+		if (!uinfo)
-+			return -EINVAL;
++	flags = get_lo_flags();
++	ASSERT_GE(flags, 0);
++	EXPECT_EQ(0, flags & IFF_UP);
++}
 +
-+		if (usize < USER_NS_INFO_SIZE_VER0)
-+			return -EINVAL;
++TEST(unshare_loopback)
++{
++	struct stat st_before, st_after;
++	int flags;
 +
-+		return copy_user_ns_info_to_user(to_user_ns(ns), uinfo, usize, &kinfo);
++	ASSERT_EQ(0, stat("/proc/self/ns/net", &st_before));
++	ASSERT_EQ(0, unshare(CLONE_NEWUSER | UNSHARE_NEWNET_LOOPBACK));
++	ASSERT_EQ(0, stat("/proc/self/ns/net", &st_after));
++	EXPECT_NE(st_before.st_ino, st_after.st_ino);
++
++	flags = get_lo_flags();
++	ASSERT_GE(flags, 0);
++	EXPECT_NE(0, flags & IFF_UP);
++	EXPECT_NE(0, flags & IFF_RUNNING);
++}
++
++TEST(clone3_loopback)
++{
++	struct __clone_args args = {
++		.flags = CLONE_NEWUSER | CLONE_NEWNET_LOOPBACK,
++		.exit_signal = SIGCHLD,
++	};
++	struct stat st_parent, st_child;
++	int status;
++	pid_t pid;
++
++	ASSERT_EQ(0, stat("/proc/self/ns/net", &st_parent));
++
++	pid = sys_clone3(&args, sizeof(args));
++	ASSERT_GE(pid, 0);
++
++	if (pid == 0) {
++		int flags;
++
++		if (stat("/proc/self/ns/net", &st_child) != 0 ||
++		    st_parent.st_ino == st_child.st_ino)
++			_exit(1);
++
++		flags = get_lo_flags();
++		if (flags < 0 || !(flags & IFF_UP) || !(flags & IFF_RUNNING))
++			_exit(2);
++
++		_exit(0);
 +	}
- 	default:
- 		ret = -ENOTTY;
- 	}
-diff --git a/include/uapi/linux/nsfs.h b/include/uapi/linux/nsfs.h
-index 007fed5971b4..d2996d47c857 100644
---- a/include/uapi/linux/nsfs.h
-+++ b/include/uapi/linux/nsfs.h
-@@ -44,6 +44,23 @@ struct mnt_ns_info {
- #define NS_GET_MNTNS_ID		_IOR(NSIO, 5,  __u64)
- #define NS_GET_ID		_IOR(NSIO, 13, __u64)
- 
-+/**
-+ * struct user_ns_info - information about a user namespace
-+ * @size: size of this structure
-+ * @spare: reserved for future use
-+ * @cap_bset: capability bounding set of the user namespace
-+ */
-+struct user_ns_info {
-+	__u32 size;
-+	__u32 spare;
-+	__u64 cap_bset;
-+};
 +
-+#define USER_NS_INFO_SIZE_VER0 16 /* sizeof first published struct */
++	ASSERT_EQ(pid, waitpid(pid, &status, 0));
++	ASSERT_TRUE(WIFEXITED(status));
++	EXPECT_EQ(0, WEXITSTATUS(status));
++}
 +
-+/* Get information about user namespace. */
-+#define NS_USER_GET_INFO	_IOR(NSIO, 14, struct user_ns_info)
-+
- enum init_ns_ino {
- 	IPC_NS_INIT_INO		= 0xEFFFFFFFU,
- 	UTS_NS_INIT_INO		= 0xEFFFFFFEU,
++TEST_HARNESS_MAIN
 -- 
 2.56.0.313.g2479322e68-goog
 
