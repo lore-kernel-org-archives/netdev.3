@@ -1,61 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.161
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793164016;
-	b=l7Z8DHzm3rDG3yOElGsyjmR22abjISaA07R7XV+NxA4MjuMnESKh4F9wK9niJzOouiuY
-	 pNoq6dOZePvtfuBDBaNUNQFR44Kd59uUlFcdOrhsQHTq41xi2r1Ji4MjrNC9NvZ6FrrXU
-	 KBa1+FImm4sHTygDe3KL10DCIxO2cJpNHbTQ5bzzbc4h6xZUEjiC5vshyckntRyLimvJG
-	 tBGUTf1JJP2SJBzgsLsLWqTBfnNpWw6/XbSGrx7pyYiKfq9yQA5xYde5H1sF943s4XDNP
-	 ir5NLMBXuOiCVwc5wc3fpkMr8Xkkp25sDT674Tl/q4JOU81MSdLMqvZg6AC1yqeCo1w==
+	t=1793165477;
+	b=QR6P8NW4SX8tB98k7r/qeGZLQvp0kbb+ByeBgoAeqPRhO2gvc5y8y1M3Zr/L/8/gLYS1
+	 asIkmzs5rQ0QjGCWUypZmKeOsp0dCrQvtIzpNF/zugGnjlhUQk5IXc5uBmcIclXNrEhVq
+	 1xd1fXuLqyWPBNj2TpM2w7fDt4K9ARrY1/kgfXjKW97SOI5KpttTK3wj4PfoMzeOcExmT
+	 Tc1r3u48AG1MHdJcIg+0smKniIdBI0GPPtU1k+YAdZU6Wsk1ZdoT871hDj7jeLeDvKAgO
+	 7+NcmQ8kt3CUjo8XVKETRBjieyQBXysc8LAYdZldm08WS6b0BS97/nPLcGSNDMcEA7A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793164016;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	b=LiRW6iv3MuIhsNXzrZMEbUs0Az8htm2AbgWP6IOUqWqYaL/HlTZCOXuaTArq7LFUUWLd
-	 wwK4bFy2WZSQ7hb118QNIYNcinTL/p1aiirqijq6MdFJCchCeKFFjBrvCduoqduOhRQho
-	 stD8SIKcVQj/wqINux3YLdX0HZLC1LqouUbIPPv00B+CVwkr/jp/wVmh217qnokIfe1Te
-	 YzFL64D3TQ//mmlfDZmw1AtPEPlVSOZ370C68+ajpYxVcvsH4Z61Bhv+cDBN6tNOfy8Q9
-	 +K805DG28A/TR9JZT8hVx2JKWUf1goY/pGrEm9ogTitd9QFj1r3hLk+Vzk5NWPAr43g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793165477;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=QV6pMFl0zTgQMpH2r3tNqJTPiinMZ5x7f45iM8R0mz0=;
+	b=GKzDistWJRrdy3z1v2IK0dWLqRFDYeWQjezDBblUrfHbGTUA2QVP1Ajh92t8WYRxhfDs
+	 igF4ZT/1yJU+arfxZDIjpF4FnwnXpHJ+l4g0ylgkqGQGqdo9kpWzC7zkwoy+GjON4yQnO
+	 d5BGVuMnfdWtP7hSHg4XnTgBtAd8w3n1ped5g9lydRZHziawgWZgdJ4/jZOpqArbluUSr
+	 9P7T6IqQ/bZ6zPQsYhc6OBZQseXTlGAipbpx5hMDlDAtIhjG31ZnyHyrzqkZroCvLakxv
+	 InoMS7IgYGmS7v4ipbgdSVRxh6/pKlqFg3O1oClvz9wyk0a7gkeTMAgXc0T8vvTaZ7w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gCk9zlCq;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=u4quU7V+;
+	arc=none smtp.remote-ip=95.215.58.161
+Received: from mta1.migadu.com (out-161.mta1.migadu.com [95.215.58.161])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE9D606A31A;
-	Wed, 28 Oct 2026 05:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9934606A31D
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 05:31:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C9934606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gCk9zlCq
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A121F01825;
-	Wed, 28 Oct 2026 05:06:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793164016;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gCk9zlCqKFQoDnvknNh8Tt6vir7RWgbV37t2cnL2jsrQUYkBvM8d5bGBfrChWIjSK
-	 60GrI0ZSICji6yKrK472dVdDZYyuz+Qcxj7bQAo8c0pgCa4jbe+5fCPyg0F8uN8HN7
-	 JSOkNerSzIostPvLAjc7g8jnDqgqb/hJWHYrQn+kDtLVzp9WsILAOd870e6nouG7lI
-	 85qyw6uOAEN6mSUa40vSKLcZMrQylSt7QpVoCyeHHi3BlyWLO3C4FmIZsis5MbHgPJ
-	 e4tSA10jXnkPnrch9o//a6mPaGiXPeNyAH/prNPnYOVy13UJTD0CM5XsRz4oErAP+p
-	 +Zo0cCXS98lvQ==
-From: netdev-bot+sinfo@kernel.org
-To: Jiale Yao <yaojiale02@163.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
- Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Christophe Leroy <chleroy@kernel.org>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] net: phy: only remove owned topology entries
-Date: Wed, 28 Oct 2026 05:06:55 +0000
-Message-ID: <179316401520.3327.16652152694923638855@kernel.org>
-In-Reply-To: <20261028050312.126508-1-yaojiale02@163.com>
-References: <20261028050312.126508-1-yaojiale02@163.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=u4quU7V+
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=2mQVqzf4Zlx0HzGDppIEZ0GDsAqfCA7ew5bAmcp8+5Y=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793165473; v=1; x=1793770273;
+ b=u4quU7V+e0lAk42zYCjWzgo/K7g+u/uA0C/z9CydaChW0Io3Q6xo2gUFqf6V86L6lI42NqtB
+ xPwD3z2Jm34x9ysPdlWlM7/384DRdckZfjPAfhjXUrPiFcgNK3TklgK3PEap9DH4wGVnbwAOM3s
+ NKfD5LVQnSibQaD6fYelmldY=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta12.migadu.com with ESMTPS id b55fb0c8a3f5edd5;
+	Wed, 28 Oct 2026 05:31:13 +0000
+X-Mizu-Trace-ID: b55fb0c8a3f5edd5
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 28 Oct 2026 13:30:55 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Jamie Nguyen <jamien@nvidia.com>
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	netdev@vger.kernel.org, kerneljasonxing@gmail.com,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] selftests: net: txtimestamp: fix out-of-bounds read
+ in raw UDP checksum
+Message-ID: <auGIVnxH_9ggCDFi@fedora>
+References: <20261027162945.2122306-1-jamien@nvidia.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,25 +67,87 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261027162945.2122306-1-jamien@nvidia.com>
 
-Hi!
+On Tue, Oct 27, 2026 at 09:29:45AM -0700, Jamie Nguyen wrote:
+> With -r (SOCK_RAW, IPPROTO_UDP) the test writes only the UDP header and
+> payload, and the kernel adds the IP header. get_udp_csum() still expects
+> the IP source and destination addresses to directly precede the UDP
+> header, and reads 2 * alen bytes before the start of the buffer: 8 bytes
+> for IPv4, 32 bytes for IPv6.
+> 
+> ASan reports a heap-buffer-overflow for both -4 -r and -6 -r. Without
+> ASan the read usually goes unnoticed, but it faults when the buffer is
+> the first chunk in the heap. That happens on Ubuntu 26.04, where the
+> kselftest runner wraps the test in uutils stdbuf, and txtimestamp.sh
+> fails with SIGSEGV on every run.
+> 
+> Even without a crash, -r packets were sent with a checksum computed
+> over unrelated heap memory, so their UDP checksum was invalid.
+> 
+> Build the pseudo-header from the destination address and checksum only
+> the UDP header and payload. -R and -P already write daddr as both the
+> source and destination address, so their checksums are unchanged. With
+> -r the kernel selects the source address, which equals daddr for the
+> loopback addresses used by txtimestamp.sh.
+> 
+> Fixes: b52354aa068e ("selftests: expand txtimestamp with ipv6 dgram + raw and pf_packet")
+> Signed-off-by: Jamie Nguyen <jamien@nvidia.com>
+> ---
+>  tools/testing/selftests/net/txtimestamp.c | 23 ++++++++++++++---------
+>  1 file changed, 14 insertions(+), 9 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/net/txtimestamp.c b/tools/testing/selftests/net/txtimestamp.c
+> index 170be19..f7bdf30 100644
+> --- a/tools/testing/selftests/net/txtimestamp.c
+> +++ b/tools/testing/selftests/net/txtimestamp.c
+> @@ -418,19 +418,25 @@ static uint16_t get_ip_csum(const uint16_t *start, int num_words,
+>  	return ~sum;
+>  }
+>  
+> -static uint16_t get_udp_csum(const struct udphdr *udph, int alen)
+> +static uint16_t get_udp_csum(const struct udphdr *udph, bool is_ipv4)
+>  {
+> -	unsigned long pseudo_sum, csum_len;
+> -	const void *csum_start = udph;
+> +	const void *addr = is_ipv4 ? (void *)&daddr.sin_addr : &daddr6.sin6_addr;
+> +	int alen = is_ipv4 ? sizeof(struct in_addr) : sizeof(struct in6_addr);
+> +	uint16_t addr16[sizeof(struct in6_addr) / sizeof(uint16_t)];
+> +	unsigned long pseudo_sum;
+> +	int i;
+>  
+>  	pseudo_sum = htons(IPPROTO_UDP);
+>  	pseudo_sum += udph->len;
+>  
+> -	/* checksum ip(v6) addresses + udp header + payload */
+> -	csum_start -= alen * 2;
+> -	csum_len = ntohs(udph->len) + alen * 2;
+> +	/* pseudo-header source and destination: both are daddr */
+> +	memcpy(addr16, addr, alen);
+> +	for (i = 0; i < alen / 2; i++)
+> +		pseudo_sum += 2 * addr16[i];
+>  
+> -	return get_ip_csum(csum_start, csum_len >> 1, pseudo_sum);
+> +	/* checksum udp header + payload */
+> +	return get_ip_csum((const uint16_t *)udph, ntohs(udph->len) >> 1,
+> +			   pseudo_sum);
+>  }
+>  
+>  static int fill_header_ipv4(void *p)
+> @@ -479,8 +485,7 @@ static void fill_header_udp(void *p, bool is_ipv4)
+>  	udph->len    = ntohs(sizeof(*udph) + cfg_payload_len);
+>  	udph->check  = 0;
+>  
+> -	udph->check  = get_udp_csum(udph, is_ipv4 ? sizeof(struct in_addr) :
+> -						    sizeof(struct in6_addr));
+> +	udph->check  = get_udp_csum(udph, is_ipv4);
+>  }
+>  
+>  static void do_test(int family, unsigned int report_opt)
+> -- 
+> 2.43.0
+> 
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
-
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
-
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
