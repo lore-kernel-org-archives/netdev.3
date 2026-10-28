@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793198150;
-	b=UWWdfSVlSUmY5+/QmOdedRxF/rXv+gqmSada7SRzUlUbqcSs74rpTpxBiNxdYRBNxwDo
-	 03azLF4DxVlWTygNXfZLav4qLkUsrcwMNy1M+b0lGdGB58HO8reybkZHSlAMIKmitJBwC
-	 Nr9ixZ1WWMYMI2A2toLX3G+y/na28dg8Fzf3G9ul5vGOGohak9YFMLSvDfeG6LzlGLhLa
-	 RDF0QI2T2nv4lG1X2BQRSgOzwo/2iyUq9xHyv6Aq1XU4vXQRpD6LMgUX3DThVdNcghZiE
-	 ByPNsa9/OFDxYoTHdJiDWe8qZYS+VU8jwD5pfu2lVvddVtwOMevAN/5EJCXosSqHS+A==
+	t=1793198242;
+	b=BVMCON45xJvIjK5jPF/U5Yhq5b9tVVqq7NHBj8jXD554lob/Ai72IJ21kSiuGnoEJj0C
+	 OhrHdj58IQuHlyf54iPX0RZqu5EL0Utqu7RXrEXbWk/4P2J2QCC1CkPCr75F2+BhVLsLp
+	 /LbU0O0j+ML1QDVGpYd6NBBlO3J3dyaW+ihxGGEDYSxTQhrNFpCUXO1KIcIzPyQdQa3GF
+	 6Yit+uqpNeAlraqyVX+mRc3IA3xhCiWQmB2VmWblk2IT1k02WqwQk8wdz3yawGaW942Zf
+	 0YgE127jxRyEucVHEarBYK6NSQe8TkI5VdKwpJ8XTRKVV8h1PGr7omxozWgLNdEC5dg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793198150;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793198242;
 	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
 	 Subject:Content-Language:To:Cc:References:From:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=sTv72HXLS642hKtRKZu2ty/aYX7p7GlGK+o3A+/U4nU=;
-	b=eeDkbPdftrlTOPT1a6t+pm8g3vQtMGGL0BiCFvLd8wCmznA6WMUAnOvK/amtQeeUNToT
-	 MjDfvsvg9PuCaL8JgLAMV8+NT8g1tdihfLA1sAzuIWeZOR2JEUGsHmNIuFIx0hnjo2dcK
-	 alU7KHsUEAYlSQ0p5PIGsdS2avb+70wmso6Sp7exNfA8LDpuoCGzxr2MW4gx4Ua12UAjW
-	 VlgRnG1dZHdMXtOW1guzx+lpt6B65yuhpIFBONpXW5eFj3VTX/QlSuILdt2HK/lNHsYMy
-	 lGSAeaTZCQkENZbp09hYGO9EMvGYoubzrKGtsk1jlFtdbPV18T89A3WB5nn/6Og2Hfw==
+	bh=pPQxkHJYfqZk37WDAM2FHcljmku7bcSuOn2JFLL4Fyg=;
+	b=1BUVzkzHrKcRpxpIj8qYB2XsVGkv6As7FpnVbnO/8r5P3cjMPyWwxsZ0tq7u8nrqx4Z2
+	 Fk7x0j4AeW26R/JH9WI/12xLOEbG2/thYS8iTRZTQxDTerbKzFIK3hpJYDmq0lZ2tvWaR
+	 Ky7s4IcWH9B/V1YVdqU/Kn7XAAq16HXtWw5qQ0t8wO0+/G3oXjIMGI4UEh6Vz02DU1QSy
+	 rCbsYBnj40hfgjYwBvawPYNxFRooS0jPuQGxKeMJ+OlaVY1Ia8sUKgUZs0uMx3gdxJ1m5
+	 Lh1XsFulZChwxGotmXztVN/G6tfLYYjpPdgHtI6yrL6SWdMhmy8FKMrLUyyADaorS0g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qs6OO7h2;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lcWp7mA5;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3106A606A32D
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 14:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC318606A31A;
+	Wed, 28 Oct 2026 14:37:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qs6OO7h2
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE80A1F01829;
-	Wed, 28 Oct 2026 14:35:49 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lcWp7mA5
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDC401F01825;
+	Wed, 28 Oct 2026 14:37:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793198150;
-	bh=sTv72HXLS642hKtRKZu2ty/aYX7p7GlGK+o3A+/U4nU=;
+	s=k20260515; t=1793198241;
+	bh=pPQxkHJYfqZk37WDAM2FHcljmku7bcSuOn2JFLL4Fyg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Qs6OO7h2KpnuMZniQ3yYLQSDSUI74XKlKqCQm8mCF5K1mYmnyr/jHuNW/GSuIMdmo
-	 sulhdIvrz5xZanU496QWJWXh2KWYp78oPrDA9GxjCbBmvDor1+/bXiUP3+DhlaR4aj
-	 YDBAN7zlhD8PkjDeU75dBKZkAYiSPhiejMEZE5S60Beg21IiYIzZOCi7zVJEtBjOXR
-	 bQbCajAziWl/rtKZsRpBEekCmCu0lK4WTvZOr7yLlQXOebB0/GyYoA/rEGxNCksvfR
-	 Ojg3WzIv488v27LYs1AITaMCFbeZPmPe5MRA0nCJlSQ8oAyWINKlk6OvrStxV6HMvx
-	 mWJzyBfmJraxQ==
-Message-ID: <a3e50c6f-0da2-4e77-80b5-2ae371676280@kernel.org>
-Date: Wed, 28 Oct 2026 08:35:48 -0600
+	b=lcWp7mA5XJFge5P7O7vqY2e/Ljb3SfS35Bzk61em8A05dZJFv76+x1DDJarDWRYZi
+	 eTzpoMZBE6L6GJvGsuwkul42005ckd4ieU8kcgMIzgf6CUc6ZXIJLibLh6P0dhuXI2
+	 QhGGUGM7eSjq/ucZPJfGZmwwT2TfyTQv1GTcQGoTm7Qh2zG7dUaFHCTknW/ISa896R
+	 mzLka157H5tLaLS0/YPHKAUsXWGEAh6bRj6XC/jn23eDObvHgIG81zg2g7IwgCEh+v
+	 Xfxjh0chl8Fhld0zY6BwgpwSmF3C92JNdGJ5/eeQf1lZUHPt6dPpGXzBKXV19+dYYC
+	 9eI/IeMow8kGg==
+Message-ID: <15556a7f-c9e4-4ada-9810-9bf64d67164a@kernel.org>
+Date: Wed, 28 Oct 2026 08:37:20 -0600
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -52,108 +52,59 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: vrf: Set L3MDEV OIF flag for outbound lookups
+Subject: Re: [PATCH net v2] ipv6: raw: fix use-after-free in
+ rawv6_send_hdrinc()
 Content-Language: en-US
-To: Gabriel Goller <g.goller@proxmox.com>, Haon KIM <akrn112@naver.com>,
- Ido Schimmel <idosch@nvidia.com>
-Cc: netdev@vger.kernel.org
-References: <20261026164702.1415-1-akrn112@naver.com>
- <auH8PdGEPaf2GI73@luna.proxmox.com>
+To: Hangbin Liu <hangbin.liu@linux.dev>, Antoine Tenart <atenart@kernel.org>
+Cc: Zhou Qiuyue <n0ps1edzz@gmail.com>, netdev@vger.kernel.org,
+ Ido Schimmel <idosch@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261026044808.613-1-n0ps1edzz@gmail.com>
+ <at7uk8gXtzNufuQF@fedora> <at9sKRSEJLVGj9OK@kwain> <auAAmqXcxmC6BDrR@fedora>
+ <auBs0Xn5yVJ1NtdK@kwain> <auFPlcB4VfQ76NYC@fedora>
 From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <auH8PdGEPaf2GI73@luna.proxmox.com>
+In-Reply-To: <auFPlcB4VfQ76NYC@fedora>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-[ cc author of referenced Fixes commit ]
-
-On 10/28/26 7:57 AM, Gabriel Goller wrote:
-> On 27.10.2026 01:47, Haon KIM wrote:
->> The IPv4 and IPv6 outbound processing paths in the VRF driver
->> set the L3 master device index in the flow structure before
->> performing route lookups, but do not set
->> FLOWI_FLAG_L3MDEV_OIF.
+On 10/27/26 7:27 PM, Hangbin Liu wrote:
+> On Tue, Oct 27, 2026 at 10:43:48AM +0100, Antoine Tenart wrote:
+>> On Tue, Oct 27, 2026 at 09:38:34AM +0800, Hangbin Liu wrote:
+>>> On Mon, Oct 26, 2026 at 04:07:40PM +0100, Antoine Tenart wrote:
+>>>> On Mon, Oct 26, 2026 at 02:09:23PM +0800, Hangbin Liu wrote:
+>>>>> On Mon, Oct 26, 2026 at 12:48:08PM +0800, Zhou Qiuyue wrote:
+>>>>>> diff --git a/net/ipv6/raw.c b/net/ipv6/raw.c
+>>>>>> index b965258cf..bdea82543 100644
+>>>>>> --- a/net/ipv6/raw.c
+>>>>>> +++ b/net/ipv6/raw.c
+>>>>>> @@ -654,6 +654,9 @@ static int rawv6_send_hdrinc(struct sock *sk, struct msghdr *msg, int length,
+>>>>>>  	if (unlikely(!skb))
+>>>>>>  		return 0;
+>>>>>>  
+>>>>>> +	/* l3mdev_ip6_out() may have replaced the skb dst. */
+>>>>>> +	rt = dst_rt6_info(skb_dst(skb));
+>>>>>> +
+>>>>>>  	/* Acquire rcu_read_lock() in case we need to use rt->rt6i_idev
+>>>>>>  	 * in the error path. Since skb has been freed, the dst could
+>>>>>>  	 * have been queued for deletion.
+>>>>>
+>>>>> Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+>>>>
+>>>> Doesn't this change the device seen by the nf hook / used for the stats?
+>>>
+>>> Should we still use the old/released rt->dst.dev after the VRF output
+>>> path replace skb->dst? vrf_ip6_out_redirect() said it allows the nf hook
+>>> use vrf device.
 >>
->> Both the IPv4 and IPv6 outbound processing paths contain
->> the comment "needed to match OIF rule", indicating that
->> the L3 master device index is needed to match OIF rules.
->> However, FIB rule matching requires both
->> FLOWI_FLAG_L3MDEV_OIF and a matching flowi_l3mdev index
->> to match a rule specifying the VRF master as the output
->> interface.
->>
->> The matching logic introduced by commit 2d300ce0b783
->> ("net: fib_rules: Fix iif / oif matching on L3 master device")
->> requires FLOWI_FLAG_L3MDEV_OIF to be set for OIF rules to
->> match the VRF master. The existing outbound processing paths
->> set the L3 master device index directly, so
->> l3mdev_update_flow() does not set this flag.
->>
->> Consequently, OIF rules specifying the VRF master may fail
->> to match these flows.
->>
->> Set FLOWI_FLAG_L3MDEV_OIF in both outbound processing paths
->> so that FIB rules can correctly match the VRF master as the
->> output interface.
->>
->> The issue was identified by code inspection. Runtime testing
->> has not been performed.
+>> Right, but then in the direct path the NF_INET_LOCAL_OUT hook would be
+>> run twice with the same dev. Looking at other call sites for
+>> l3mdev_ip6_out, it's not clear either,  __ip6_local_out reloads the dev
+>> while ip6_xmit does not. I'm not sure what is the expected behavior.
+> 
+> Hmm, me neither. David might know.
+> 
 
-Please do not do that; do some testing before sending patches.
-
->>
->> Fixes: 2d300ce0b783 ("net: fib_rules: Fix iif / oif matching on L3 master device")
-> 
-> I think this should be:
-> 
-> Fixes: 40867d74c374 ("net: Add l3mdev index to flow struct and avoid oif reset for port devices")
-
-No, the Fixes above is correct if there is a bug; the
-FLOWI_FLAG_L3MDEV_OIF flag was introduced by 2d300ce0b783 and was not
-present for 40867d74c374.
-
-That said, unless I am misremembering something the flag does not need
-to be set in this outbound path.
-
-> 
->> Signed-off-by: Haon KIM <akrn112@naver.com>
->> ---
->>  drivers/net/vrf.c | 3 ++-
->>  1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
->> index 79d433f49f80..f22ac91fefd4 100644
->> --- a/drivers/net/vrf.c
->> +++ b/drivers/net/vrf.c
->> @@ -432,6 +432,7 @@ static netdev_tx_t vrf_process_v6_outbound(struct sk_buff *skb,
->>  	fl6.flowlabel = ip6_flowinfo(iph);
->>  	fl6.flowi6_mark = skb->mark;
->>  	fl6.flowi6_proto = iph->nexthdr;
->> +	fl6.flowi6_flags = FLOWI_FLAG_L3MDEV_OIF;
->>  
->>  	dst = ip6_dst_lookup_flow(net, NULL, &fl6, NULL);
->>  	if (IS_ERR(dst) || dst == dst_null)
->> @@ -506,7 +507,7 @@ static netdev_tx_t vrf_process_v4_outbound(struct sk_buff *skb,
->>  	fl4.flowi4_l3mdev = vrf_dev->ifindex;
->>  	fl4.flowi4_iif = LOOPBACK_IFINDEX;
->>  	fl4.flowi4_dscp = ip4h_dscp(ip4h);
->> -	fl4.flowi4_flags = FLOWI_FLAG_ANYSRC;
->> +	fl4.flowi4_flags = FLOWI_FLAG_ANYSRC | FLOWI_FLAG_L3MDEV_OIF;
->>  	fl4.flowi4_proto = ip4h->protocol;
->>  	fl4.daddr = ip4h->daddr;
->>  	fl4.saddr = ip4h->saddr;
-> 
-> Also this is a breaking change, before the patch, this rule matched:
-> 
->    ip rule add iif vrf0 table 100
-> 
-> After the patch, this one matches (and the iif rule above no longer does):
-> 
->    ip rule add oif vrf0 table 100
-> 
-> A selftest would also be nice.
-
-See commit message in cited Fixes commit. Have you checked
-fib_rule_tests.sh? If not, try the commands in 2d300ce0b783 and if they
-are broken, there is a problem. If not, let's get them added to the
-selftest.
+I do not recall the original behavior; that was many years ago.
 
