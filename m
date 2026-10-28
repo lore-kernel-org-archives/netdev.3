@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.71
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793225897;
-	b=zlaSuzXHuKt7tCInzp0Y8WZ+weuzgIq6AJFX8SdXJeetc96Z8wXExHpv8A+xgonYsIO+
-	 N3la4YImfFWBK+Is+nHAjBqPCghtCK5jvTCbJNv1I3OW0bfaIFGd9zJYx0Vc1TeJRwc7c
-	 /GhVxrpwRWyDyvxI4fFda0nahmYkqr4Ot4f4o/Dh/cLQK79j/Mz9dEDWtllFj7VYvv7kg
-	 TTecH7xiDyJ3ThPWtwmoK3d55lX0dvOAirZIzgxUy7sPiG9Gr32a0UxAxJCgHcBGJDOzZ
-	 CmGsQvsyTh1u5/81FLFXY3i1u9SDkUNqVuWZm7UD4jIbrTe18TRq0XGZPJDHH8UyGGA==
+	t=1793225893;
+	b=nGsN7Rutn/LcPxRSWen3PDNkF3nLjpNGsoMEjRQrCn6bXfpOdJyDDpgFT9Dxl+L8/Qrr
+	 UByHucyT7BtagdpqIkDIZtFG4s9g2PBVQEFBoLSAko6SshjkoG2nR/hhzBEZzX8jcNlin
+	 fpSoBsTjIhdXiGEgVaxXTbDQ8A7jrAvFqGEJ3e9lauH3v+ydE6JFeyYK4tC/3h1Q6qjfh
+	 fHjl48/ITJjG49BeDDf6hyNRlm3W0npheX6MbVlasA/R5lL1/qgU6HpFzyNcxhZhPTQdh
+	 +bj32aXpzzfdM+cjEQ82CLEF10/SaO7xIG3AsfR4Ejm2oSsbrJuOKbb3zFDSF5/g/Iw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793225897;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793225893;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=LuXjD7L3OcsNkkaeGIp4Cs+2/jEhkIJjHJvLaqO3j5k=;
-	b=k69u2Fd38MUP0OM5wc+xQWWFZaA4wwlffkpniDvzRFbYd9w0pXBigdcDv+9TXrtRyqhl
-	 lh3DjHBFf1vDvqnaJ/GYEARRuuT8255Lb5LMvPtnlFlfexCYvUvQMz+4pEPMfJJQwAWRZ
-	 xLGWPCu4liGjYet80M1yaxog/uxsy1328EL/i6v4lsh1NYQk8YSl43rnw4/tAyvzlG4Eg
-	 g/F4jvfv5cPAC+u9LazhRQu9CGXk8yaf3VFKg9W7xohWw7I0zxuOxPt505QTieJFoVD/K
-	 qiiWxqvx+UHQYqCtE2/BrZRfea2Btl2vCLcv5EGqiFZiDJJofvruMOurBNdjITiDobA==
+	bh=9FCa9rxR0w5Su0OT2TXTOp3Qrhv4gyecy+qhdi4ZgS0=;
+	b=4WBeEIR/5Fl3kNcbYFaSJkg2gSR8Axko9hjMNb9QSX0JHfhVUYqUIokLBdpodjv5UNIQ
+	 bwIBhSW3IXcPSX8mWcsBAwT0mdx5zQAgauAVzEE7QW2N2P4Py5eOXH21iTUgs1cniEk4g
+	 JC0gQty9oTHQrh6kMoz2fcf7c9MWJDjI4mdzOXBY1kRwCriIjeewTKLSKN8tCqfKS8VW2
+	 1cqc4q030d8krFqXlsRrmqbeV0xSYVvqYB69PcWbj9edSo+Aqw7VfC1yUvM85P71DXkN9
+	 c96cIXrISgdqbNJq5DpcSDZLxQMsA/aXOLHLfkDRpFYmX/0Xon9NGNCmbXX9oIfx1QA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--halg.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=cG9MXphV;
-	arc=none smtp.remote-ip=209.85.218.71
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com [209.85.218.71])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=qDCHVDvA;
+	arc=none smtp.remote-ip=209.85.208.70
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9841F60A2631
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 22:18:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9841F60A2631
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D01606A329
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 22:18:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 49D01606A329
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--halg.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=cG9MXphV
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c293e604f0eso154962966b.3
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 15:18:17 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=qDCHVDvA
+Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-6b498035c41so1377925a12.0
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 15:18:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793225896; x=1793830696; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793225892; x=1793830692; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=LuXjD7L3OcsNkkaeGIp4Cs+2/jEhkIJjHJvLaqO3j5k=;
-        b=cG9MXphVliGfueSx2Z0NoNbYsnSXHOGHkWt5dQAGZ8EsOMi4HeS3qSTjFLd5X4KDzN
-         08MKv/iUjqxQdb3ioitFUylTCyNYvndTExu9ZkmqFsRzBm7wEb3IZEO4xL1pFDB3ImtK
-         bjLsaohZ8mCteV0cvwxrH6GRnOyss5cZ0+p1j0gBk3m+rSFw7K1Ac/tXCxXFwPrdqD6R
-         QQRGpEQ9oOEFX4JQzcl8eO1/yaGbuzVPrg6TvUD2Q5QrbaB1gfUzlpHpj9FeVjOu0/PI
-         GmsDP24gl5/0EwYUvv6Kf4qYid+2zDPhTQzM9gs+aVHSfDV3rLlvMp8Dl4Hu7ng56jjm
-         XyXw==
+        bh=9FCa9rxR0w5Su0OT2TXTOp3Qrhv4gyecy+qhdi4ZgS0=;
+        b=qDCHVDvAeZE6nbJqwRWR2O44xWY+Cp4tlC8bvUrtxDRAWy7MMFL83SYTkz8TNqKsYX
+         gw1vBYGaeYTemXnD8a0lBWoYo28oKE7vPnRudgDUssXwZw1ea/Deh1fJc0mhuqa8rur+
+         ialRmLMoxbR0y1BZDysn0LDoBy0CGo8zQvFvT4e+PLyKzs9aD36pn6eDh3rQ5dmnKbJM
+         /03mF44Ezy6bO32TeK9dJcml4xAYiygRoQDgF2vsi/FTxTi6cOf9+5ACwfOv4IK5MYct
+         0+WvSEOHYhr41BaVAZcR7Z7Juw1D6xHfuNadDPF4b0QOkXCrApVxpNLQWAFKUms3aWjd
+         4goQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793225896; x=1793830696;
+        d=1e100.net; s=20260707; t=1793225892; x=1793830692;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=LuXjD7L3OcsNkkaeGIp4Cs+2/jEhkIJjHJvLaqO3j5k=;
-        b=XAuceN/zdilIL2qNpJZ5Hpbh970TKeALmNAXD3m3XsMUSb2+u1+Ux/8vX8nqPmRzap
-         gWryLSolVbshKMEIF0Pd7g6j2W8HvfuoZTPkZGwHdOrc57a05Pg8oRGcsw5MayxmrYP1
-         oMZ+yv9F+pReUPK/LKSyruXx7WBulUxvSJrUHbGHTna1DuwP9ppUrLZAd5t9OgKh1TeO
-         2ZvoViC+hsbqqrrnbbV3xmkvPuLfQqxHxgq7y9NepBeYrSgFv5xgEn9+/Ri7rP7y8TJL
-         MiXfwKa1WUEXaxRxF9SzEcpxDzfir9EbQfoBwcNqKG0wEf+D1x2lZ1B5axzNsDRZF6d8
-         osUg==
-X-Forwarded-Encrypted: i=1; AKwUvBzqqKkv3U13hFFMf9FmAT/e+KNz0h0VFTXXHytajpcDfmj0DmDPLLwJduEzqQs5lxy8we7+pI8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJr61xfN3FuWnO6OAQ0yZWAyV0WjasV+jdUJuWEGnyeK3XLICc7
-	T6n0hF+G0Ah96hkAZZ8SUNNKRQ2zWuKNDzoCC7O2375JqmDkJ6jMK82LGJIBTjEGSDnMKS9uoA=
+        bh=9FCa9rxR0w5Su0OT2TXTOp3Qrhv4gyecy+qhdi4ZgS0=;
+        b=VwMmHVlIfwD3qHD+DTV1/y+MrhnALRaKPjU+yLk2dmV1cBU8uZ7OVovgqUQmaNZviw
+         XZha8Pqi9TbK+bNMF0X4sn8ZHVJRz5frCBRW200gXm+XKUBT+tr2tsRC9DKz9ob3RqO1
+         s1/OHQkBKYXgEHPl3JjZlvLKKhobXDa1uwvXXNMSKFhh3cvzzc2R3ptT+10Zk2oxcuSt
+         qhSfvsTlGUXQ5yhF4driM3zfNrRzxWCVzQvmAc5Mloa4ITqm/AIIBsO+8l/e25KmAy63
+         gYvHu4sASePgb+uJgaKWuFrVV7mWwQsE3TeTGq6BpnYhGtKtg/voKte7d7felUAx6SSn
+         cM8Q==
+X-Forwarded-Encrypted: i=1; AKwUvBwpwBDioK35P8wn14sJ0J1ElHzbUxf4uvZtekqyT/6zK30H/UrH0RupOXWBy1qZfzjI+c0prPg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKhb63UjuRazxpSo1NPsISNLG04n7hf76IUoikXRanxLksjMjau
+	7H7pUEW8piNpIq2AE8lD4vzYpQkLHHbbN6rGcVDuKyKeAqsSkqx5dRG/utJ8VlTTteBgeL5zYQ=
 	=
-X-Received: from ejblw4.prod.google.com ([2002:a17:906:bcc4:b0:c46:48a5:ea8c])
- (user=halg job=prod-delivery.src-stubby-dispatcher) by 2002:a17:906:e2cf:b0:c49:c76f:dad4
- with SMTP id a640c23a62f3a-c49c76fdf58mr174243066b.31.1793225895629; Wed, 28
- Oct 2026 15:18:15 -0700 (PDT)
-Date: Wed, 28 Oct 2026 22:17:02 +0000
+X-Received: from edt14.prod.google.com ([2002:a05:6402:454e:b0:6b1:c2b6:cf0a])
+ (user=halg job=prod-delivery.src-stubby-dispatcher) by 2002:aa7:cfd3:0:b0:6b4:2aa6:2c07
+ with SMTP id 4fb4d7f45d1cf-6b49cbd8fa6mr2184624a12.14.1793225891454; Wed, 28
+ Oct 2026 15:18:11 -0700 (PDT)
+Date: Wed, 28 Oct 2026 22:16:58 +0000
 In-Reply-To: <20261028221705.3915340-1-halg@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,8 +81,8 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261028221705.3915340-1-halg@google.com>
 X-Mailer: git-send-email 2.56.0.313.g2479322e68-goog
-Message-ID: <20261028221705.3915340-6-halg@google.com>
-Subject: [PATCH 5/8] selftests/net: add test suite for CLONE_NEWNET_LOOPBACK
+Message-ID: <20261028221705.3915340-2-halg@google.com>
+Subject: [PATCH 1/8] net: introduce CLONE_NEWNET_LOOPBACK to auto-enable loopback
 From: "Hallgrimur H. Gunnarsson" <halg@google.com>
 To: Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
 	Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, Kees Cook <kees@kernel.org>, 
@@ -99,150 +99,167 @@ Cc: Jan Kara <jack@suse.cz>, James Morris <jmorris@namei.org>, Simon Horman <hor
 	linux-kernel@vger.kernel.org, "Hallgrimur H. Gunnarsson" <halg@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Add tests in tools/testing/selftests/net to validate
-CLONE_NEWNET_LOOPBACK and UNSHARE_NEWNET_LOOPBACK behavior.
+New network namespaces start with the loopback interface DOWN by
+default, requiring CAP_NET_ADMIN over the owning user namespace to
+bring it up.
+
+To block external network access while preserving the localhost
+networking that many applications expect, sandboxes (such as bwrap,
+nsjail and minijail) commonly create an isolated network namespace
+with only the loopback interface enabled.
+
+However, requiring a sandbox to hold CAP_NET_ADMIN in a new user
+namespace solely to bring loopback up conflicts with reducing the
+CAP_NET_ADMIN attack surface.
+
+Today, an unprivileged sandbox or sandbox manager must start with
+CAP_NET_ADMIN in its user namespace to be able to bring up loopback,
+drop it, and then take precautions to block CAP_NET_ADMIN from being
+regained in nested user namespaces (e.g. via seccomp or
+max_user_namespaces limits). This adds considerable complexity just
+to bring up loopback.
+
+Conversely, if CAP_NET_ADMIN is restricted at user namespace creation
+time, tasks inside the new namespace never acquire CAP_NET_ADMIN.
+While this removes the CAP_NET_ADMIN attack surface down the
+namespace hierarchy, it also prevents userspace from bringing loopback
+up, breaking localhost networking for unprivileged sandboxes.
+
+Introduce the CLONE_NEWNET_LOOPBACK flag for clone3() and the
+corresponding UNSHARE_NEWNET_LOOPBACK flag for unshare(). When
+specified, each flag implies CLONE_NEWNET and automatically brings the
+loopback device up in copy_net_ns() before returning the new network
+namespace.
+
+Making this an explicit opt-in preserves default network namespace
+semantics while allowing unprivileged sandboxes to create an isolated
+network namespace with functional localhost networking without ever
+holding CAP_NET_ADMIN.
 
 Signed-off-by: Hallgrimur H. Gunnarsson <halg@google.com>
 ---
- tools/testing/selftests/net/.gitignore       |   1 +
- tools/testing/selftests/net/Makefile         |   1 +
- tools/testing/selftests/net/loopback_netns.c | 103 +++++++++++++++++++
- 3 files changed, 105 insertions(+)
- create mode 100644 tools/testing/selftests/net/loopback_netns.c
+ include/uapi/linux/sched.h |  2 ++
+ kernel/fork.c              | 22 ++++++++++++++++++----
+ kernel/nsproxy.c           |  9 +++++++++
+ net/core/net_namespace.c   | 11 +++++++++++
+ 4 files changed, 40 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/net/.gitignore b/tools/testing/selftests/net/.gitignore
-index c9f46031ac73..54919a8b3682 100644
---- a/tools/testing/selftests/net/.gitignore
-+++ b/tools/testing/selftests/net/.gitignore
-@@ -18,6 +18,7 @@ ipv6_flowlabel
- ipv6_flowlabel_mgr
- ipv6_fragmentation
- log.txt
-+loopback_netns
- msg_zerocopy
- netlink-dumps
- nettest
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index 0f5c178bc224..7d7e88e6676f 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -184,6 +184,7 @@ TEST_GEN_PROGS := \
- 	icmp_rfc4884 \
- 	ipv6_flowlabel_mgr \
- 	ipv6_fragmentation \
-+	loopback_netns \
- 	proc_net_pktgen \
- 	reuseaddr_conflict \
- 	reuseport_bpf \
-diff --git a/tools/testing/selftests/net/loopback_netns.c b/tools/testing/selftests/net/loopback_netns.c
-new file mode 100644
-index 000000000000..03cc665fb502
---- /dev/null
-+++ b/tools/testing/selftests/net/loopback_netns.c
-@@ -0,0 +1,103 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#define _GNU_SOURCE
-+
-+#include <errno.h>
-+#include <sched.h>
-+#include <string.h>
-+#include <sys/ioctl.h>
-+#include <sys/socket.h>
-+#include <sys/stat.h>
-+#include <sys/types.h>
-+#include <sys/wait.h>
-+#include <unistd.h>
-+
-+#include <linux/sched.h>
-+#include <linux/types.h>
-+#include <net/if.h>
-+
-+#include "../clone3/clone3_selftests.h"
-+#include "../kselftest_harness.h"
-+
-+static int get_lo_flags(void)
-+{
-+	struct ifreq ifr;
-+	int fd, ret;
-+
-+	memset(&ifr, 0, sizeof(ifr));
-+	strncpy(ifr.ifr_name, "lo", IFNAMSIZ - 1);
-+
-+	fd = socket(AF_INET, SOCK_DGRAM, 0);
-+	if (fd < 0)
-+		return -errno;
-+
-+	ret = ioctl(fd, SIOCGIFFLAGS, &ifr);
-+	close(fd);
-+
-+	if (ret < 0)
-+		return -errno;
-+
-+	return ifr.ifr_flags;
-+}
-+
-+TEST(baseline_lo_down)
-+{
-+	int flags;
-+
-+	ASSERT_EQ(0, unshare(CLONE_NEWUSER | CLONE_NEWNET));
-+
-+	flags = get_lo_flags();
-+	ASSERT_GE(flags, 0);
-+	EXPECT_EQ(0, flags & IFF_UP);
-+}
-+
-+TEST(unshare_loopback)
-+{
-+	struct stat st_before, st_after;
-+	int flags;
-+
-+	ASSERT_EQ(0, stat("/proc/self/ns/net", &st_before));
-+	ASSERT_EQ(0, unshare(CLONE_NEWUSER | UNSHARE_NEWNET_LOOPBACK));
-+	ASSERT_EQ(0, stat("/proc/self/ns/net", &st_after));
-+	EXPECT_NE(st_before.st_ino, st_after.st_ino);
-+
-+	flags = get_lo_flags();
-+	ASSERT_GE(flags, 0);
-+	EXPECT_NE(0, flags & IFF_UP);
-+	EXPECT_NE(0, flags & IFF_RUNNING);
-+}
-+
-+TEST(clone3_loopback)
-+{
-+	struct __clone_args args = {
-+		.flags = CLONE_NEWUSER | CLONE_NEWNET_LOOPBACK,
-+		.exit_signal = SIGCHLD,
-+	};
-+	struct stat st_parent, st_child;
-+	int status;
-+	pid_t pid;
-+
-+	ASSERT_EQ(0, stat("/proc/self/ns/net", &st_parent));
-+
-+	pid = sys_clone3(&args, sizeof(args));
-+	ASSERT_GE(pid, 0);
-+
-+	if (pid == 0) {
-+		int flags;
-+
-+		if (stat("/proc/self/ns/net", &st_child) != 0 ||
-+		    st_parent.st_ino == st_child.st_ino)
-+			_exit(1);
-+
-+		flags = get_lo_flags();
-+		if (flags < 0 || !(flags & IFF_UP) || !(flags & IFF_RUNNING))
-+			_exit(2);
-+
-+		_exit(0);
+diff --git a/include/uapi/linux/sched.h b/include/uapi/linux/sched.h
+index 33a4624285cd..efd00d9f8bd3 100644
+--- a/include/uapi/linux/sched.h
++++ b/include/uapi/linux/sched.h
+@@ -40,6 +40,7 @@
+ #define CLONE_NNP		(1ULL << 35) /* Set no_new_privs on child. */
+ #define CLONE_PIDFD_AUTOKILL	(1ULL << 36) /* Kill child when clone pidfd closes. */
+ #define CLONE_EMPTY_MNTNS	(1ULL << 37) /* Create an empty mount namespace. */
++#define CLONE_NEWNET_LOOPBACK	(1ULL << 38) /* Create network namespace with loopback UP. */
+ 
+ /*
+  * cloning flags intersect with CSIGNAL so can be used with unshare and clone3
+@@ -52,6 +53,7 @@
+  * unshare syscall:
+  */
+ #define UNSHARE_EMPTY_MNTNS 0x00100000 /* Unshare an empty mount namespace. */
++#define UNSHARE_NEWNET_LOOPBACK 0x00200000 /* Unshare network namespace with loopback UP. */
+ 
+ #ifndef __ASSEMBLY__
+ /**
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 416758c8a3d4..c0f7520e754a 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -2728,6 +2728,15 @@ pid_t kernel_clone(struct kernel_clone_args *args)
+ 		args->flags = clone_flags;
+ 	}
+ 
++	/*
++	 * Set implied CLONE_NEWNET before copy_process() so that
++	 * security_task_alloc() and other clone_flags checks see it.
++	 */
++	if (clone_flags & CLONE_NEWNET_LOOPBACK) {
++		clone_flags |= CLONE_NEWNET;
++		args->flags = clone_flags;
 +	}
 +
-+	ASSERT_EQ(pid, waitpid(pid, &status, 0));
-+	ASSERT_TRUE(WIFEXITED(status));
-+	EXPECT_EQ(0, WEXITSTATUS(status));
-+}
+ 	/*
+ 	 * For legacy clone() calls, CLONE_PIDFD uses the parent_tid argument
+ 	 * to return the pidfd. Hence, CLONE_PIDFD and CLONE_PARENT_SETTID are
+@@ -3010,7 +3019,8 @@ static bool clone3_args_valid(struct kernel_clone_args *kargs)
+ 	if (kargs->flags &
+ 	    ~(CLONE_LEGACY_FLAGS | CLONE_CLEAR_SIGHAND |
+ 	      CLONE_INTO_CGROUP | CLONE_AUTOREAP | CLONE_NNP |
+-	      CLONE_PIDFD_AUTOKILL | CLONE_EMPTY_MNTNS))
++	      CLONE_PIDFD_AUTOKILL | CLONE_EMPTY_MNTNS |
++	      CLONE_NEWNET_LOOPBACK))
+ 		return false;
+ 
+ 	/*
+@@ -3160,9 +3170,10 @@ void __init proc_caches_init(void)
+  */
+ static int check_unshare_flags(unsigned long unshare_flags)
+ {
+-	if (unshare_flags & ~(CLONE_THREAD|CLONE_FS|CLONE_SIGHAND|
+-				CLONE_VM|CLONE_FILES|CLONE_SYSVSEM|
+-				CLONE_NS_ALL | UNSHARE_EMPTY_MNTNS))
++	if (unshare_flags & ~(CLONE_THREAD | CLONE_FS | CLONE_SIGHAND |
++				CLONE_VM | CLONE_FILES | CLONE_SYSVSEM |
++				CLONE_NS_ALL | UNSHARE_EMPTY_MNTNS |
++				UNSHARE_NEWNET_LOOPBACK))
+ 		return -EINVAL;
+ 	/*
+ 	 * Not implemented, but pretend it works if there is nothing
+@@ -3266,6 +3277,9 @@ int ksys_unshare(unsigned long unshare_flags)
+ 	if (unshare_flags & CLONE_NEWNS)
+ 		unshare_flags |= CLONE_FS;
+ 
++	if (unshare_flags & UNSHARE_NEWNET_LOOPBACK)
++		unshare_flags |= CLONE_NEWNET;
 +
-+TEST_HARNESS_MAIN
+ 	/* No unsharing with overriden fs state */
+ 	VFS_WARN_ON_ONCE(unshare_flags & (CLONE_NEWNS | CLONE_FS) &&
+ 			 current->fs != current->real_fs);
+diff --git a/kernel/nsproxy.c b/kernel/nsproxy.c
+index d9d3d5973bf5..4e30c6a9f8ed 100644
+--- a/kernel/nsproxy.c
++++ b/kernel/nsproxy.c
+@@ -231,6 +231,15 @@ int unshare_nsproxy_namespaces(unsigned long unshare_flags,
+ 		flags |= CLONE_EMPTY_MNTNS;
+ 	}
+ 
++	/*
++	 * Convert the 32-bit UNSHARE_NEWNET_LOOPBACK (which aliases
++	 * CLONE_CHILD_CLEARTID) to the unique 64-bit CLONE_NEWNET_LOOPBACK.
++	 */
++	if (flags & UNSHARE_NEWNET_LOOPBACK) {
++		flags &= ~(u64)UNSHARE_NEWNET_LOOPBACK;
++		flags |= CLONE_NEWNET_LOOPBACK;
++	}
++
+ 	*new_nsp = create_new_namespaces(flags, current, user_ns,
+ 					 new_fs ? new_fs : current->fs);
+ 	if (IS_ERR(*new_nsp)) {
+diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
+index da5f881fbd3b..70972639932a 100644
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -596,6 +596,17 @@ struct net *copy_net_ns(u64 flags,
+ 		dec_net_namespaces(ucounts);
+ 		return ERR_PTR(rv);
+ 	}
++
++	if (flags & CLONE_NEWNET_LOOPBACK) {
++		rtnl_net_lock(net);
++		rv = dev_open(net->loopback_dev, NULL);
++		rtnl_net_unlock(net);
++		if (rv < 0) {
++			put_net(net);
++			return ERR_PTR(rv);
++		}
++	}
++
+ 	return net;
+ }
+ 
 -- 
 2.56.0.313.g2479322e68-goog
 
