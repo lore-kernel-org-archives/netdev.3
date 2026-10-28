@@ -1,56 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793202063;
-	b=fTfmsHzv65/76nRdAp8pSp0wXsS71reO0SfYbfkvEVhZPMLdZCRZLDwlStmF4nXoRFuT
-	 HOCePY40QfzNczUU4H3f6iV++psYQQSOjLqc6z0MvFJ3tYTSoHMqW+7UfrfqvlwwjW4xX
-	 DsmFp2oItyT/pt2Ip8nnS3mDCnx+/HKFky1IPoKepaMAmmNFog+QFxie7WRjkid8Gq+6e
-	 cuAwX4LLDeOuLS1rp8SVboH+lBSmCrZTE5NHuQvtqUw8e62/VxKeGj7pTwNz8hOYxVIMY
-	 xIJs8iV8Z4R/NxSDGDA6UhrOXDC3Yyo3A79z5z0VyvIZY4aUmuyjdbkVIClD9lozOGw==
+	t=1793202333;
+	b=qmwBs7ljI7aEVbw4SL20wtyGgx7gcwrdR7ruMMAyT6Stn6eGeXXe1CJHO9C5fmYhPCw2
+	 x6QgKYV7xPqru9JM0QhcNHHlgEdHZ8A/MdJ/2OoQhZwbcSkKA7kqP3w0c4afiglbF9BEq
+	 M631Z67MZLNMkXj6RlDpEgUlZWmtp5ubrDRD64YKQTJmp4ynwr3OLvxhc6dZN+BtZGKsU
+	 DUdccr4tWK8XX/Q3t0IsLJcaMQWBiNzpHjHX3krRqWRaJjgcJzvGlQe5raGitxkYkukII
+	 aFlku/Yn3e8fuR2GACJJqLxSYYolBZakquKkiG0/XfhMpPM3Z5hY8nbBp4yGui5I3Zg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793202063;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=m7g1ib8E/0JVseSD1L6xPryKDxZDRg0LxTuFEcloAFU=;
-	b=RCu2jeI4N9UHRUupIRJuB1hJMOhYQApaU8h+uKENmTuTFp1oW6fwQqVOceKq4iB3MJwx
-	 WEtObG47yAR3QNYUncmCD2BtCLOZSBbIytIZH103QG5JpDJhybj/WHEeMPAEbQMP6WGgN
-	 7Dpw/rtN70cBKPKZoDhm/6FBd9muq1ghXn3EsLg0Mg8DrlmaoHawEyCo3gGYcO/r81Rcd
-	 rRC0mCSDBLIflXfs6Tj8r5WDPGzQT7SAwbTmilQGh3G+JnrPlX9Chk/ebW6mBccZt6PEN
-	 fYXV1Vuxk+QfScfIV6ZXZ+TzxZA9MYvWCh1B+mDgkCipdGR2eIqlxTe3tE3VRff8+Bg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793202333;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	b=PtGkhC9S2RHHMUbx5O5RbAyWJWry3iPzZBG9iG5gv2qRyqTqA7Zmr+i4N/iP/23OtXhl
+	 3/vJBDXq01M9dXr2gJvrKoM4rdag72DN3jfV2Zv+sji38qL8sdPJmghM6TJeMgKGR7WBs
+	 WjZIaIcEfiR5AOVzlev03yzUVyIMPGqDGClrAnRyVJpVufo2YU4DtTSFSArSbYG9WrdJE
+	 oM9MDrTKIBIZVffCpyX3WOIue4hT7Hc0VCKANP8FJ4MreHgpt2UCxxJHutvXV0MnWaJa6
+	 L7dzsh36xhXro5gDj6LfFub1HZxGOD21IMX27DEMpr3PZF74+P/Wb/ofFE1xBD8Qe3Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=csmUhEkJ;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NYL7Eb8s;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720E7606A323;
-	Wed, 28 Oct 2026 15:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA4160A5BCA
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 15:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=csmUhEkJ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 086FF1F01825;
-	Wed, 28 Oct 2026 15:41:01 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NYL7Eb8s
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A88961F01828;
+	Wed, 28 Oct 2026 15:45:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793202063;
-	bh=m7g1ib8E/0JVseSD1L6xPryKDxZDRg0LxTuFEcloAFU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=csmUhEkJnOdNn/F3SJNE/vQF/2r05kOdPKLukpIjUL+uJqKSlacid2wqXK2EgQRgW
-	 umGY4mJiPafLEOZigxHGyrEiso9zHLQAf5sO36M1jyFtFpYkiAYkldS/ROtVZD4yY9
-	 pDUBvAO0BjRHZ2cB/5YmAZJAvFXWVURd8KUK6Y/Nm6rLo3LnKqggzcQeKl6feB6kXD
-	 s05RTvv7HpmJflR4Ty5pcgIichklw1V86Y03dMH3R0EdJrWr9PWfAHL2sig2qvPp7t
-	 aXbo7gEdx3SZO83Y4QHtAkL9mF5244qxDScJMOjiCG4Xc26aJBhOkQfa67Inu9WBcU
-	 vVVxBQXaKbCKw==
-Date: Wed, 28 Oct 2026 15:40:59 +0000
-From: Simon Horman <horms@kernel.org>
-To: Zhao Feng <zhaofeng2@cmss.chinamobile.com>
-Cc: netdev@vger.kernel.org, krzysztof.kozlowski@linaro.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+1c5368988052dc2d8201@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] nfc: pn533: add timeout to USB frame send
- completion wait
-Message-ID: <20261028154059.GZ257209@horms.kernel.org>
-References: <20261027070136.1339-1-zhaofeng2@cmss.chinamobile.com>
- <20261027070136.1339-3-zhaofeng2@cmss.chinamobile.com>
+	s=k20260515; t=1793202333;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=NYL7Eb8shob92X50j9n5hBWDDfgx3KgaUM+hSonTJV2Isamss0v1N9SK3paeHGxfr
+	 q3fEhrsursFyLZCA4qQtU0VW+6Va3AXiyDamLTp8qpeAeCdTavUC3LB5bDoqbcKPDl
+	 KCkxYy5vqM1IolZCA3UxORw8+RCriie0oSqCD7C+bkbxrhQwjUUbXGmyqS6vBIZqQN
+	 eeWaUi44LhJ1xIXBTmUXLG9/8wy2jAMsLSw33VjFd3AAimIgbUnm8QGW/viWtXH2Ny
+	 hqsCgVJGvLguLHcM7bh8PriB7ob3OtvEIoAqIqZNRt1ll/Z86/zNvnOF+8wyN87gFb
+	 s3U3jbLOFSDRw==
+From: netdev-bot+sinfo@kernel.org
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ Neal Cardwell <ncardwell@google.com>, Simon Horman <horms@kernel.org>,
+ netdev@vger.kernel.org, Kyle Zeng <kylebot@openai.com>
+Subject: Re: [PATCH net] tcp: initialize mapped children before route lookup
+Date: Wed, 28 Oct 2026 15:45:32 +0000
+Message-ID: <179320233222.3327.8369584186078811720@kernel.org>
+In-Reply-To: <20261028154101.2153360-1-edumazet@kernel.org>
+References: <20261028154101.2153360-1-edumazet@kernel.org>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -60,35 +63,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261027070136.1339-3-zhaofeng2@cmss.chinamobile.com>
 
-On Tue, Oct 27, 2026 at 03:01:35PM +0800, Zhao Feng wrote:
-> pn533_usb_send_frame() waits unboundedly for the out URB to complete.
-> A device that never completes the transfer makes the task sleep
-> forever in TASK_UNINTERRUPTIBLE while holding the command mutex, as
-> reported by syzbot (hung task in pn533_usb_send_frame).
-> 
-> Use a 1 second timeout instead.  On timeout, kill the URB and return
-> -ETIMEDOUT so the command in progress fails gracefully instead of
-> hanging the task.
-> 
-> The transfer may complete between the timeout expiring and
-> usb_kill_urb(); in that case urb->status is 0 after the kill and the
-> send proceeds normally instead of reporting a spurious failure,
-> mirroring what usb_start_wait_urb() does.
-> 
-> Fixes: 9dab880d675b ("nfc: pn533: Wait for out_urb's completion in pn533_usb_send_frame()")
-> Reported-by: syzbot+1c5368988052dc2d8201@syzkaller.appspotmail.com
-> Closes: https://syzbot.org/bug?extid=1c5368988052dc2d8201
-> Signed-off-by: Zhao Feng <zhaofeng2@cmss.chinamobile.com>
-> Cc: <stable@vger.kernel.org>
-> ---
-> v2: check urb->status after killing the URB on timeout and carry on if
->     the transfer completed in the race window; add Fixes tag and Cc
->     stable; the pn533_wq_cmd() error handling fix is now patch 1/2.
->     Issues reported by the Sashiko AI review.
+Hi!
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
+
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
+
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
