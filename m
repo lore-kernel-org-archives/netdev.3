@@ -1,114 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.100
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793231480;
-	b=fAMd0XAsWC10b+bS2878F9YgH+bJASV4YWla57/FQWhiI7GW8wdBDyOKcZiIJV3lMvRs
-	 4Fjp79ctMtm+rJoaZXP+5wz0LTz52FgClhedGgCIU7IObP3OGKrlQXzXP4v6KqrpEExL+
-	 GCOD7kzhtDv/v1umPFhjFqcmBLyf/etIkLPcHxkUXjWsq3Bnj9T6vc6YdPE0Y6I0tjhdh
-	 PIrNzVega7dUU/gToQT5ISCZ0omkxjDMVB89HGAVrKFX2ErPGz1EAOgdUHmrbwJpTwZBQ
-	 yXws9TeBEBcltHxZ7K1iOZnfQ7UaApsR8gc6n5m8kseOqRdRtFbAHRFlv8Sbkun460Q==
+	t=1793231566;
+	b=l1AUhy/0sNWCGPwmr8J7t6GHL4IWIXZljRAhNzW0kHxqAwY2nRDw1RAU/kh1av2QzxF5
+	 p6uFlY7OyphocR+OgpsbflKcZ8qmyNEeC5D37t1WtN55WpsLQ7SVFoEST9jcwZT7bhyN5
+	 6yK8vOTTfYeCucRfqhBUIr/nD17y0K2x0WLzbpLLv0k5mPFfdITdA9QSDSbXy6SmPy81/
+	 GIcp72itwt0SqKFYfCuS8NatBZFii+GxYiI8pvscsRHD4EgBBbx6g3LOsHM+5C8hKiZJX
+	 owr2tONyUES+z7QOGV6xUBudiKZ2hukWe5aZbhT5H04gWU3cbQ7r0s7TZOvB4YAdO7A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793231480;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
-	 X-Gm-Gg:X-Received:Received:X-Relaying-Domain:X-CFilter-Loop:Received:
-	 DKIM-Signature:X-Received:X-Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-DetectorID-Processed;
-	bh=VXSAHnvRrdjdq7C11KhgAqObZZKQ4MrHs0PWN7JbC5o=;
-	b=P2ZuUxU24atAl+AxsbCfRyOyvstYGshsCTSFdFoGUMZn8ZknA8lwNXkbps8dgudIBj2n
-	 frQ8p/VF/2if86iZKVJvJ9axqb9VbYe2N98AXV1IfpKGqQo3Rx/xjoJSHAl6QQ9JfrF9R
-	 OwYCwEHxJz9xU2pXoY5gfzq32171D+EsR9J3CITkdkV/4GPTlY4ZZDVr20aLg/Wh1LDR5
-	 ng3vaNR9JSj/l1QiVPKaH+op4u07sBfF+cXfBZQQ3Wcjzb4SHpMtBNxvq8OoksVlN/xVP
-	 vTtwcPb/UlQkAerYUFfc1fY+nwpvh2KqQdCVxzMOG/Hxv11Fe9xUrhCrBrkCtfJoDBw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793231566;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=vokIoT9Bk/PARKkrkH9H82xz2Z57SKCL3DuI9iJhxDg=;
+	b=L5Wk92Nkv0Ocwi+i8ddznpEcGlFnfIuns2UyGX9zWNKi9sZpjTFm0AEqxFjRzNS/uPyB
+	 vgKoDJt/gjTP8JEri/kB/g8D7QHwP1qhVM6dAlPiGkGYUuPs4PWQVJA+EZ8a7OypGbPR1
+	 KKZIGKq4Y/8M7X/31UHqqfz8m3SuoVXzHz2fm5gsvMjBn/5g7Lk642ALpH6vUMSuPPXmB
+	 BISRo/zkx1wnfNvtV0efGMsPhBx0+SJ7J+cpP3MRtjbl8hQrfIfEgoQlezGkHLw7DS8O8
+	 vh9feqbPVqajV3ULYhnx/LoCK/WLd4GFMeyUoGX3uUirBiMOv5NcUj3pH1bunMRhDlQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=broadcom.com;
-	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b="R3MFy/yF";
-	arc=none smtp.remote-ip=209.85.216.100
-Received: from mail-pj1-f100.google.com (mail-pj1-f100.google.com [209.85.216.100])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CfYJRKEM;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05250606A33A
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 23:51:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 05250606A33A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBED606A31D
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 23:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=R3MFy/yF
-Received: by mail-pj1-f100.google.com with SMTP id 98e67ed59e1d1-3ae1b34e0d2so88011a91.1
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 16:51:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793231479; x=1793836279;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VXSAHnvRrdjdq7C11KhgAqObZZKQ4MrHs0PWN7JbC5o=;
-        b=tmx+ZERi1ViUPEfGCf5awxb81YAWLFVBC4R1yrz3LcxDtQ+ZScTXO1ISodaqtxQKHl
-         u9ULq8XEydVBPdk9eawb8kv4WbkMuPjV8U1mVnNB/uJDgnWBcqrHM+72ADe4lDkKiejb
-         o51A9LTkZiNdz+ydSAuy20E7/gfBfSBvP1YE4/X+3POASjp+OMfFi9AtSbgBVb1oNlst
-         3fCsgEMhI/aYiCi8Dq4BRvdLTBSR2qWBvnQW+6pUfocQGQPuRCW4KxLowREKtLrqCXh2
-         pSBZNFWIoMzjXKCnBAw45w1Vs1rLnAPEtJAJGyBZzxEUv/iI+uCEsj6GMV7ZTscLlRmy
-         bPVA==
-X-Gm-Message-State: AFq9FYIxGO49mIHhOA/BJHMb/8ReofGfrQzGruqBMfJ1iXuh2AZvqeOv
-	CTMWgALQ+Jtz0xitvWAInDFLNvn1xyyNR5ZPoJ13DH8VvhGfFUy/5VdpZoWwdluIo5qxpTRIt1+
-	VyOPOXI/Ogq7mTVtA6btYHPLAejGHT2rOBtXwMtgAjFSyGeVwJ917FP6/D+3YNsTiDHp18nNHi0
-	b7XNbdt8UefI1pO7DFHPaQR/Z9lbFTC5er156iFJnjJzsO/eXDze/su9VtdNDsd1ZUDM/+WME47
-	jWgTQB2hgToMhVT
-X-Gm-Gg: AYBFou39Jt7zPeG5PHjSE4MA2IlG18rQTh9n/q0G39jEvN19k76KE83WNi6Ri3wn21i
-	K7KW4dTNxbzKEJTMuj4pT+QhF5jFTBdDUTCHs0YNHf5WyUWN8EW7UcgAbge1LZ0vwFAYmOydObw
-	TwMV0/8OBdLOlN2svjTvakZ1T2q/6CbUy2p7j/Wtkki7E0lhZWIWU0M9HGyAS7l7H6QWNeq2Ea+
-	IMDCxhmglOo1wi679wUpRatH5tbCf9ZzAreYZVR9Osgtu57JVtD5qw9j8hgGpfvy+SnnsQwvbHt
-	uEH0ncLM0YfMwbsVQqKY2F67vvciectjQOC7voLYMA99HX6LIvoKBqWiIj4sN2c8OPA9ZRVIKoD
-	Fseav8jieRWUsUHbN2Jv1qlIMXj/tb75FPVLSyEf7Uzu3W1OnHIQKelVoxOI0IT/AK0Lx6mbHoI
-	oa5wbh6/hWBUTkQdcUwFzzYUnNtYD8051ktLNlYJex
-X-Received: by 2002:a17:90b:2e8e:b0:3ae:3b3d:c617 with SMTP id 98e67ed59e1d1-3ae6ed69b65mr561839a91.29.1793231479220;
-        Wed, 28 Oct 2026 16:51:19 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-13.dlp.protect.broadcom.com. [144.49.247.13])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ae55a6cfdfsm1242706a91.0.2026.10.28.16.51.17
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 28 Oct 2026 16:51:19 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-91c938148eeso4190046d6.0
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 16:51:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1793231477; x=1793836277; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=VXSAHnvRrdjdq7C11KhgAqObZZKQ4MrHs0PWN7JbC5o=;
-        b=R3MFy/yFotiuXHlmGGYlxVcG6yZIJKAIjI+3GTkGsFvN1JSks6Xnw/VjGuM90A8sju
-         2j+3stqvWFvJRRa+iPD/CJGbrOsE5BrrtHr/rwgwJO6VyMhi/mYZ84HMElfAk5XCgU/X
-         n/EpgQn4gXwG0dHd8Wy3mZ7YC3VyBxGwUYoqQ=
-X-Received: by 2002:ad4:596c:0:b0:91b:b26a:9793 with SMTP id 6a1803df08f44-91c9089912dmr18287116d6.35.1793231477068;
-        Wed, 28 Oct 2026 16:51:17 -0700 (PDT)
-X-Received: by 2002:ad4:596c:0:b0:91b:b26a:9793 with SMTP id 6a1803df08f44-91c9089912dmr18286786d6.35.1793231476540;
-        Wed, 28 Oct 2026 16:51:16 -0700 (PDT)
-Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c84ca44e3sm23074216d6.10.2026.10.28.16.51.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 16:51:12 -0700 (PDT)
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-To: netdev@vger.kernel.org
-Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net v3 2/2] net: dsa: b53: Enable legacy IGMP snooping controls
-Date: Wed, 28 Oct 2026 16:51:00 -0700
-Message-ID: <20261028235100.3892374-3-florian.fainelli@broadcom.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261028235100.3892374-1-florian.fainelli@broadcom.com>
-References: <20261028235100.3892374-1-florian.fainelli@broadcom.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CfYJRKEM
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D2EB1F01825;
+	Wed, 28 Oct 2026 23:52:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793231565;
+	bh=vokIoT9Bk/PARKkrkH9H82xz2Z57SKCL3DuI9iJhxDg=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=CfYJRKEMVmkIvkzvfjX5be6XgLqx69gKDFsNBI3M++NLJUDSLD2i5jZxoS3PvdBW0
+	 Dk/52bLq5cd+KWio6Fk8mN0LVsQMa5FGbVZt+HXk42oCtJSu6FaWzP0r4I60hC1t4c
+	 7+E77ufx9oOOsplW0cHQZGud7hSggHOLSUc8nvADUxHm0cadNqUwJ+qaQu7mOuAHrM
+	 ba3484i34ztPcXoszQ4u9hwxJpHGfqgUXSgy59B6ON7xUKRiNFLyLjHsrgU3XlK8ww
+	 kPYNoK0SEt+YeZM58sKbKtdzOVJs5yG7Xq+c0PXLCYbN3s9+EUndctUtF2q15gZkMd
+	 FfNNlFpQYYTww==
+Subject: Re: [PATCH net 1/5] eth: bnxt: recycle agg buffers when Rx head
+ buffer allocation fails
+From: netdev-bot+sashiko@kernel.org
+To: kuba@kernel.org
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ michael.chan@broadcom.com, pavan.chebbi@broadcom.com, hawk@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, eddie.wai@broadcom.com,
+ prashant@broadcom.com, huangjw@broadcom.com, gospo@broadcom.com,
+ brett.creeley@amd.com, ap420073@gmail.com, joe@dama.to
+Date: Wed, 28 Oct 2026 23:52:43 +0000
+Message-ID: <179323156398.3134.2862221492750758183@kernel.org>
+In-Reply-To: <20261027234940.1267225-2-kuba@kernel.org>
+References: <20261027234940.1267225-2-kuba@kernel.org>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -118,88 +66,187 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-The older switches do not implement the high-level protocol control
-register used by newer devices, so they are currently skipped when
-setting up multicast control packet delivery to the CPU.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Enable the IP-layer IGMP classifier in the 8-bit global management
-configuration register on BCM5325E, BCM5365, BCM5389, BCM5397/5398 and
-BCM63xx. Their manuals place this control at bit 3 of page 0x02, offset
-0x00. Preserve the other management fields and propagate access errors.
-Clear the separate IGMP redirection enable on BCM6318 and BCM63268 to
-use snooping mode, as documented in 6318-PR100-R and 63X68-PR201-R.
+Low priority / nit picks for your consideration:
 
-These legacy classifiers have fixed forwarding behavior, including
-query flooding which excludes the IMP on BCM5397/5398 and BCM63xx.
-They do not provide the newer per-message IGMP/MLD controls. This change
-only enables the documented legacy IGMP handling; it does not add MLD
-classification.
+- [Low] bnxt_rx_multi_page_skb() now re-posts the head page to the device
+  without dma_sync_single_for_device() when napi_build_skb() fails.
 
-Keep BCM5325M and unidentified BCM5325 variants excluded. The BCM5325M
-manual reserves the global management IGMP bit and instead describes
-snooping through the shared mirroring engine, requiring a different
-implementation and coordination with port mirroring.
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but the patch adds
+  a new consumer of it.
+- [Medium] At this commit, the XDP multi-buffer path in bnxt_rx_pkt()
+  still leaks buffers when bnxt_rx_agg_netmems_xdp() fails partway.
 
-Fixes: 5d65b64a3d97 ("net: dsa: b53: Add support for MDB")
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
----
- drivers/net/dsa/b53/b53_common.c | 23 ++++++++++++++++++++---
- drivers/net/dsa/b53/b53_regs.h   |  2 ++
- 2 files changed, 22 insertions(+), 3 deletions(-)
+--
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index e54f6d4d1f7b..957a1501d3f4 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -841,12 +841,29 @@ int b53_enable_mcast_snooping(struct b53_device *dev)
- 	u16 val16;
- 	u32 val;
- 	int ret;
-+	u8 val8;
- 
--	/* Older switches use different IGMP controls, not HL_PRTC_CTRL. */
--	if (is5325(dev) || is5365(dev) || dev->chip_id == BCM5389_DEVICE_ID ||
--	    is5397_98(dev) || is63xx(dev))
-+	/* BCM5325M snooping uses the mirroring engine instead. */
-+	if (is5325(dev) && !is5325e(dev))
- 		return 0;
- 
-+	/* Older switches classify IGMP in the global management register.
-+	 * They do not provide the separate MLD controls of newer switches.
-+	 */
-+	if (is5325e(dev) || is5365(dev) ||
-+	    dev->chip_id == BCM5389_DEVICE_ID || is5397_98(dev) || is63xx(dev)) {
-+		ret = b53_read8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, &val8);
-+		if (ret)
-+			return ret;
-+
-+		val8 |= GC_IGMP_IP_EN;
-+		/* Disable the separate IGMP redirection mode on BCM6318/63268. */
-+		if (is6318_268(dev))
-+			val8 &= ~GC_IGMP_RED_EN_6318_268;
-+
-+		return b53_write8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, val8);
-+	}
-+
- 	/* IGMPv2 and MLDv1 reports use the group's destination MAC. Once
- 	 * the first listener is offloaded, ordinary multicast forwarding
- 	 * can keep subsequent reports from reaching the bridge CPU.
-diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
-index cfdb5ed38326..e994d3a188c7 100644
---- a/drivers/net/dsa/b53/b53_regs.h
-+++ b/drivers/net/dsa/b53/b53_regs.h
-@@ -217,6 +217,8 @@
- #define B53_GLOBAL_CONFIG		0x00
- #define   GC_RESET_MIB			0x01
- #define   GC_RX_BPDU_EN			0x02
-+#define   GC_IGMP_IP_EN			BIT(3)
-+#define   GC_IGMP_RED_EN_6318_268		BIT(4)
- #define   GC_MIB_AC_HDR_EN		0x10
- #define   GC_MIB_AC_EN			0x20
- #define   GC_FRM_MGMT_PORT_M		0xC0
+eth: bnxt: recycle agg buffers when Rx head buffer allocation fails
+
+This commit adds an oom_next_rx_agg label to bnxt_rx_pkt(). When the
+rx_skb_func() head buffer allocation fails, the label returns the
+aggregation buffers to the agg ring, or frees the XDP frags, the same way
+the copybreak failure path already does. In bnxt_rx_multi_page_skb(), a
+napi_build_skb() failure now releases the newly allocated replacement
+buffer and puts the original head page back on the ring, so the XDP frags
+in its shinfo are still there for the caller's cleanup.
+
+> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> index 0682060b048ce..2e7276801fddc 100644
+> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> @@ -1215,7 +1215,15 @@ static struct sk_buff *bnxt_rx_multi_page_skb(struct bnxt *bp,
+>  				bp->rx_dir);
+>  	skb = napi_build_skb(frag_start, rxr->rx_page_size);
+>  	if (!skb) {
+> -		page_pool_recycle_direct(rxr->page_pool, page);
+> +		struct page *new_page;
+> +
+> +		new_page = rxr->rx_buf_ring[RING_RX(bp, prod)].data;
+> +		/* The caller may still need the XDP frags from shinfo at the
+> +		 * end of the head page. Release the new buffer instead and
+> +		 * put the head back on the ring.
+> +		 */
+
+[Severity: High]
+This is a pre-existing issue, not one this patch introduced. It goes back
+to 4c6c123c9af9, but this comment relies on it: can the frags in shinfo
+still be trusted at this point when DMA goes through swiotlb, or on
+non-coherent systems?
+
+In XDP multi-buffer mode, bnxt_xdp_buff_init() syncs only the packet
+payload for the CPU:
+
+bnxt_xdp_buff_init()
+    dma_sync_single_for_cpu(&pdev->dev, mapping + offset, len, bp->rx_dir);
+
+bnxt_rx_agg_netmems_xdp()->__bnxt_rx_agg_netmems() then writes
+shinfo->frags[] and nr_frags at the end of the head page, while that
+region is still owned by the device.
+
+Afterwards, bnxt_rx_multi_page_skb() syncs the whole buffer, including
+the shinfo:
+
+    dma_addr -= bp->rx_dma_offset;
+    dma_sync_single_for_cpu(&bp->pdev->dev, dma_addr, rxr->rx_page_size,
+                            bp->rx_dir);
+
+rx_dir is DMA_BIDIRECTIONAL here, so __swiotlb_sync_single_for_cpu()
+copies the bounce buffer back over the original page. In page mode the
+device never writes the shinfo area of the bounce buffer. The frags the
+CPU just wrote could therefore be overwritten with stale frags from an
+earlier packet. On non-coherent systems, a cache invalidate could drop
+them in the same way.
+
+With this patch, the napi_build_skb() failure path continues to
+oom_next_rx_agg->bnxt_xdp_buff_frags_free(), which calls
+page_pool_recycle_direct() on every page listed in that shinfo. Could
+that recycle pages still owned by earlier skbs, while the frags that were
+actually received leak?
+
+The success path reads the same data through
+bnxt_xdp_build_skb()->xdp_update_skb_frags_info().
+
+Would it work to sync only the range the device wrote, or to do the
+full-page sync before the frags are written into shinfo?
+
+> +		page_pool_recycle_direct(rxr->page_pool, new_page);
+> +		bnxt_reuse_rx_data(rxr, cons, data);
+
+[Severity: Low]
+Does the head page need a dma_sync_single_for_device() before it goes
+back on the ring?
+
+The whole buffer was synced for the CPU just above. The old
+page_pool_recycle_direct() call synced the page for the device, because
+the pool is created with PP_FLAG_DMA_SYNC_DEV. bnxt_reuse_rx_data() only
+copies the old DMA address into the producer BD, so that sync no longer
+happens.
+
+The CPU also keeps writing to the head page after it has been re-posted.
+On the oom_next_rx_agg path, bnxt_xdp_buff_frags_free() sets
+shinfo->nr_frags = 0.
+
+For comparison, bnxt_copy_data() pairs both syncs before bnxt_rx_pkt()
+reuses the head:
+
+    dma_sync_single_for_cpu(&pdev->dev, mapping, bp->rx_copybreak,
+                            bp->rx_dir);
+
+    memcpy(skb->data - NET_IP_ALIGN, data - NET_IP_ALIGN,
+           len + NET_IP_ALIGN);
+
+    dma_sync_single_for_device(&pdev->dev, mapping, bp->rx_copybreak,
+                               bp->rx_dir);
+
+The XDP_DROP and XDP_TX ring-full branches in bnxt_rx_xdp() already reuse
+the head without a sync for the device, so the new code matches them. It
+does drop a sync that the old path did, though.
+
+>  		return NULL;
+>  	}
+>  	skb_mark_for_recycle(skb);
+
+[ ... ]
+
+> @@ -2424,6 +2423,14 @@ static int bnxt_rx_pkt(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
+>  
+>  	return rc;
+>  
+> +oom_next_rx_agg:
+> +	if (agg_bufs) {
+> +		if (!xdp_active)
+> +			bnxt_reuse_rx_agg_bufs(cpr, cp_cons, 0, agg_bufs,
+> +					       false);
+> +		else
+> +			bnxt_xdp_buff_frags_free(rxr, &bnxt_xdp.xdp);
+> +	}
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but the new label doesn't
+cover a partial failure inside bnxt_rx_agg_netmems_xdp(). Are frags
+0..i-1 leaked in that case?
+
+If bnxt_alloc_rx_netmem() fails at index i > 0, __bnxt_rx_agg_netmems()
+has already put frags 0..i-1 into the head page's shinfo and refilled
+their agg ring slots. It then reposts only entries i..agg_bufs-1 and
+returns 0:
+
+    --shinfo->nr_frags;
+    cons_rx_buf->netmem = netmem;
+    ...
+    rxr->rx_agg_prod = prod;
+    bnxt_reuse_rx_agg_bufs(cpr, idx, i, agg_bufs - i, tpa);
+    return 0;
+
+bnxt_rx_agg_netmems_xdp() sets the frags flag only when total_frag_len
+is non-zero:
+
+    if (total_frag_len) {
+        xdp_buff_set_frags_flag(xdp);
+        shinfo->nr_frags = agg_bufs;
+        shinfo->xdp_frags_size = total_frag_len;
+    }
+
+So bnxt_xdp_buff_frags_free() would skip these frags even if it were
+called. At this revision, bnxt_rx_pkt() also doesn't put the head buffer
+back on the ring:
+
+    if (!frag_len)
+        goto oom_next_rx;
+
+A later commit in this series, "eth: bnxt: don't leak buffers when XDP
+agg buffer allocation fails", appears to fix this. It sets the frags
+flag before the loop, frees the frags when total_frag_len is 0, and adds
+bnxt_reuse_rx_data() before goto oom_next_rx. With that commit applied,
+the end state of the series no longer has this problem.
+
+>  oom_next_rx:
+>  	cpr->sw_stats->rx.rx_oom_discards += 1;
+>  	rc = -ENOMEM;
+
 -- 
-2.53.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261027234940.1267225-1-kuba%40kernel.org
