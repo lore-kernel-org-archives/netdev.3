@@ -1,116 +1,107 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793203449;
-	b=sJi3BJ2d5yG1a4xD353je6NMGapEgBhMaOAelYwjec3d4X9GyeZ0ofv/587lUBeTE5jP
-	 SGT/FGQAg8DeRPnebt7FAK93mP/NZ0hWAT6U7Lop0JNi/9EKEXBLvb4Vb/aNaapWuXjl9
-	 CP6yvamG8f/ozhOxP6604qrdliIGeHWajOCUWHUEiiJ5UuK3XBSmB5IxLeI5vJxlLiJxi
-	 Z/Tya9ji8skGEUgZEpRSC10T64cx+XLqygco0MZyWjWLmXX0Pl3VqdjeYkVUP9atluEzK
-	 6J04CUtff9Hogdq44xc++0yfAgxCC7rE1TWwVc00m8Omp0V7MZWXDJet/WRpCANrMdQ==
+	t=1793203498;
+	b=jBj6SJ09JihXGtddi/id1pnknQ+d6CQBnqvkkzP9NQFpAsvjNHrZPoJ/+T5H/I0xcO+B
+	 L5X9dQlRw2eEBZt4D9boCewO7S+7msXAG3cT+hiBgHaQJ6Z7MrrkppeFtTAXz/fCGuwzB
+	 HLlat/AkqiJJGZ/reZhtdQhxdm+6eef51q69PhMsHC18WcpXSU/asuNGmRLFNTnVAbWLo
+	 QYihw/JciSytqHPC/CqH+Lfih5qNz1/7xPkCfHBUE3V7xUI93DbcUJPc7MmkbLA8CowvY
+	 7z04xlf++abAsIUCCI1dhJNoU8aGBSKfXti1/r8KN0+JRGGWUjOizl6XMxOqmB3PRpg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793203449;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=wW+/Xd8Krv/fKYtWcQLYyD+KltWSe3OXoRZLQJCTD0I=;
-	b=fkt9e33KUDX7N724FthTmjIOAEnRQBFcdOYupKKZFNWVUFPPc9ai1XR0OP8Ihs+z8kAn
-	 6U3f1Yu3h0Dyrswl6hSeMHCNFI0l873VPUOrJ/zJT6ccIYGx+2lI8Tl/nM8l6nhuFP0Do
-	 JBQMd0CpVufBHKqORevrV8YvlWhe0HHWUpzg4CkEVNPBSTz3DDpzvCwSZRKjUuYp8HuAL
-	 KJos1Vd2c7HUdNtLTCLIrOnPRWKM1QGKXwYvnMDy0gzarxGAuYMTift+Tf+nO3kGLZd9/
-	 sqMQHl1lu9jAKA5kvsai7fhtgHmSbyCthOfv3ZEBatckjwqFd/OOPCk9e7HUl/1pVGQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793203498;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=2ZmH3Ff94m552shkLKSjdWayOpfJ56slpt73alq9sl8=;
+	b=kcguLHVkLigCsOIe+p8ShbwLFN7SsC33amtWIIaCpBbsF62uS/VWPb2eh6wlqynPMgOw
+	 P4tTswa6kylHVTaJWCs/z9EazMGAN/4IWnmQcOcmxHS2bJF0s14PQTQCJzmTreJCUuPfX
+	 fb539oqs5CsNecPxOAKIsO4/+qSCuRwT+s7g9RzD+7Yur6icHd9zoNssvUVfz9zqEn1D6
+	 uPQxEeWgkpY1Y5Y56Z3pEUq08wkBwaCzZkwx6RfQO3gxTtQ+jncnlfJykbwaXLaoDqPNH
+	 DkCQidFT/yGGHq+Edx6b6lAIqMWO1Q0FFxjbfEgkMWGU1L3oCM9WiQLuGlcFxbuz5Cw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="h7w/6mjk";
-	arc=none smtp.remote-ip=209.85.222.41
-Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CFDQtIph;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=FQm719pg;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B8F606A31E
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 16:04:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C1B8F606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F314606A31D
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 16:04:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6F314606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=h7w/6mjk
-Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-9909e82513fso852081241.0
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 09:04:08 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CFDQtIph;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=FQm719pg
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793203496;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=2ZmH3Ff94m552shkLKSjdWayOpfJ56slpt73alq9sl8=;
+	b=CFDQtIphP5shKMswdqNBhqjaLSznuJmmSkblgr+3ZQ8ay65tfzQX861avvQiH+s1hCVzu0
+	OQLkFNgKvEz6KKd3RmJAdnCGhFch4aQGEfgTfQxEeHUzCLSTy1vWx07hHG74FcH+9dFyrl
+	N80XnpmWKAEeAM3EFn/LFJAUSSPiRRU=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-258-FGUmsNgWMaWz1pX1LtBS0g-1; Wed, 28 Oct 2026 12:04:55 -0400
+X-MC-Unique: FGUmsNgWMaWz1pX1LtBS0g-1
+X-Mimecast-MFC-AGG-ID: FGUmsNgWMaWz1pX1LtBS0g_1793203494
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c40d92085ceso107691566b.0
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 09:04:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793203448; x=1793808248; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=wW+/Xd8Krv/fKYtWcQLYyD+KltWSe3OXoRZLQJCTD0I=;
-        b=h7w/6mjk6+6kpdKforROPrJX+UDA63yf6nVts44aIrSXJJDyONSXYHDrGBuI1KOZ3h
-         0GakPDtGQJ9AX5Yms9cJyOljn/cP6nLUH/BmSGtMjmj9Hnu7FJ6nSdn6V59f5/OuWqYs
-         TGq/8hmQ0Hoqoo+pLKrhtcng01yYB+b7azWGX4l7IoRFQFewVB6GQBDGGOarGsrR1qQb
-         DlcV7TFre0T6I6/A0qDwyCVc89uhVesfZjRVenTMQfNAufO6WUEdgQWnfborHpREF/SL
-         znFx4+xOEhqvA5Qmz9AuntimIS0MGiMsgWK5uZJWFUNTWwMfS81dSK+TBz8jLyrfPwa3
-         obMg==
+        d=redhat.com; s=google; t=1793203494; x=1793808294; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=2ZmH3Ff94m552shkLKSjdWayOpfJ56slpt73alq9sl8=;
+        b=FQm719pgpZJsJPVOMbeCVPOFeqVtgdSaQLW5q4G1+LouBGH1LcY7GWMtSHET8KPc25
+         Y+sb5/01dGAOR1x7QVxz2PcMbyEwhf58dTE1WstxW7n7/lQsNFXP2rM0KQuBuXewsCDp
+         Qfs5nrWFKsM7mDh7N/QkijSplTTMXuOyOXfGzCNgQ4imR1o6B/JzpySRainwLccUD7Wv
+         TbIFuiRDUep1SmmI+EmeTcwniOM8xSeLhWnHSp4WnttalMp22x90G5cO1Fx5csdh2bOW
+         JY3W2Q+zKsxXqVSoZZ3ryIc3/YPDF8tcErp3rH5++QE7SX1gGzf5VjuQFDsiycSNkCn0
+         qzcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793203448; x=1793808248;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wW+/Xd8Krv/fKYtWcQLYyD+KltWSe3OXoRZLQJCTD0I=;
-        b=VeKVs7kO93lAyitu1/FYRzXumBGmMAAzL5q969x+8BwX+2v7vn20/YSLzEzy7fGGlp
-         HAtx6IzLCQZCSYTY+hHTn9IlEJJhzJWxnaEVzrP7BvelwamzPA6oJfTa++UmccJ0tFDL
-         EirA+l+N+j/V981Twh9OGZp+2Pi5jJ1MD+Adb9aoInwh+vMx3Ns9WY96bbo6YD0bovZs
-         jh+ZOu39xtvBY/SliCRaGGtlKt/gKuApO/RPDN1CmsH3284pWJhtleaSUr1hkZ/grKgv
-         g+JnzAwa81mOHrjKMpdvs7bWn7qFY4lyL0580qqatnYZ2xDEhmkrin6hYIj1vTf6B51U
-         /YMA==
-X-Gm-Message-State: AFq9FYLJHwGcEiQ74X19eRoUNSrn5ulWW/tIQTXA8a28qWhOTX7HfucQ
-	ebBgB6QZqjKDm49IlV/cIvFHtI00h5rMGOlurEbaUd0MNLqvZS7O4iOP
-X-Gm-Gg: AYBFou0iUK7rI5NbXCaIkPEerqS8PTjm+wORfBm79RjeFgmk6zSSA/+j2s8lIDiF8gw
-	kqyYaRCHtzVFoZjYMP57m0lMX2rVQ0bo5nAYgk91sy8zG3oki/ZJp5u8Fo102E7w8QydXH5NVhN
-	HdJTyCQ98w+xMI6SB9x6W56ViDFlXaSIgayD6Sq+UMU8Aaj9oCN5dy/0ky1ilDZZJ62uKyp3LeD
-	oFfn5AyM6xjBdOtSsdCQq8f5BlqyZahTvZaif3sbLhrJ9+DDv4EUhqtikk7b8B7EPW8cg/a/JbB
-	c4K0NBa+gA+gcXiPrWxA+FJ3pbi7KneX9MRlQ6b2Htof4EP8YDv5WMORGZ1JDX53iWlr0ImqKto
-	8uLPT8uLdRFzIrWWezxgSyTVh4dF4ty2cIkiQYRtadK1oLXEmgq23NL8q8xY79OmJ/y/b94ybnH
-	hGlgihI4Gunu8Vgmjp+1ZqeY0k/IXH7auZ4JtuIeignOBOFu+CQL1ONU6RTTqMZ2fbfBok3wOc3
-	W66599+b37S7oMALqgxPkqlvnpSBfwJQyS7H3ukds6W0FMhkgI2HhaJxFwEH1uky6BhToDUxNPh
-	uP2oYQlrm1YqHL69AO6eCs6LAABVfyTeAmILKltWBhSc15nMfx4iABS1o+opQGkqmUUibsHCJBG
-	loQ==
-X-Received: by 2002:ac5:cd4f:0:b0:5cd:4fdc:4c30 with SMTP id 71dfb90a1353d-5ec3ea67966mr1617819e0c.8.1793203447486;
-        Wed, 28 Oct 2026 09:04:07 -0700 (PDT)
-Received: from localhost.localdomain ([190.177.146.128])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-991259db2d3sm6354565241.6.2026.10.28.09.04.00
+        d=1e100.net; s=20260707; t=1793203494; x=1793808294;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=2ZmH3Ff94m552shkLKSjdWayOpfJ56slpt73alq9sl8=;
+        b=hxJpq6wWhC/yr2KkjkyZId5Q7J+lA9G1cH2Wo5qqXPetxug89sfFno/HcsUUEGCN2T
+         1bl0TeUojvJrVk7I7euOt/j2is9jXpN5FA91Slr6V5I5356B5d54DRoJnkVZrMAAT2Dk
+         6QFFkQO+khlk8YU+oFKix8AIrBiowPCu+shWAG/fPpRSntO6xCx/raE0BryDP+qoFzfj
+         /pG/E7NMDYgyTTznX/JV2Q4DvPjBr48igHRUZuyPQKUZeBcEd4BQlXHfW2WvoQWP8nnx
+         TdFVjvVzVdjRNjw2on02aBK6PUfyrpSog5WJR6iPGPxPAH5Fz9Xk40ystRJVThsKiJow
+         L0iA==
+X-Forwarded-Encrypted: i=1; AKwUvByfo5Ro4i/QjME0DRGCYKP5dc7qJ3871Bce+GAcO/+/1SE2ylziZjh+wl99Fpei+auyUwzWBpE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ+YTquQGcrSSaqtEGx36iES8Yx+2MIzTAnnO5r+IkoJhxXtuva
+	c7zQi9LE5Miv4XaR/FBx5TnCh8G6cjsVuGbcq2Serr45ApJCqwpjKPsWBaXLYOf1OZNgOfZ3M4T
+	MQ+vnG4HK58bwl2PibXItvT3h5WDkl398h6zAu/R32amakn5zEx1DQlv44Q==
+X-Gm-Gg: AYBFou2MT1GDDcQ51DkWFLjpeHl/rsCAqwC8mAD6iUsJCeK/M3AhTxQj89MkwvMpB/y
+	sLNoAbSGdRCsJNHsHwrfOkiBg8ioWvWz+ln9ytUIdOIOqfs/AnQvJ27G4FLntn4cgbZlyRqWPwW
+	Cu5b18eCAWSD7mnWyvrpKFZk3yEUiUi6JwuAUOQ5JfjDzWypW2F8ZNYIwFSxqbKMaj5ds6AFCAD
+	htAxZ4kgdXCBEYTDtBoTXvAoV7G6T6+fywyXBxoaV+GaUCntUBrwEeylSEhRIk49QKNsMfRs7n9
+	EQGFGYpGITYnELpO5Rp7ZEPAQq1wjNfWgyDhZQbnJfur1h//zbWQPg+GNZRJDSUTSSMlRMiExlQ
+	+MriV2iO34Z4rwN8JozTtwP4RqBbqbnTfNWxwMooN54n0TkswqvJvciX2N6M3MvlV2uMnCxrN19
+	xVWsSqJXGy/c8=
+X-Received: by 2002:a17:907:3faa:b0:c2a:ac35:95fb with SMTP id a640c23a62f3a-c49a742b50cmr551012866b.24.1793203493675;
+        Wed, 28 Oct 2026 09:04:53 -0700 (PDT)
+X-Received: by 2002:a17:907:3faa:b0:c2a:ac35:95fb with SMTP id a640c23a62f3a-c49a742b50cmr551001466b.24.1793203492607;
+        Wed, 28 Oct 2026 09:04:52 -0700 (PDT)
+Received: from [192.168.0.19] (217.red-88-4-146.dynamicip.rima-tde.net. [88.4.146.217])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ebd47basm31898410f8f.32.2026.10.28.09.04.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 09:04:06 -0700 (PDT)
-From: Cristian Papa <pcristian292@gmail.com>
-To: cjd@cjdns.fr
-Cc: netdev@vger.kernel.org,
-	andrew@lunn.ch,
-	olteanv@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	chester.a.unal@arinc9.com,
-	daniel@makrotopia.org,
-	linux@armlinux.org.uk,
-	arinc.unal@arinc9.com,
-	Landen.Chao@mediatek.com,
-	dqfext@gmail.com,
-	sean.wang@mediatek.com,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	naseefkm@gmail.com,
-	b.larsson@gmx.com
-Subject: Re: [PATCH v3 0/7] net: dsa: mt7530: support EcoNet EN751221
-Date: Wed, 28 Oct 2026 13:03:53 -0300
-Message-ID: <20261028160353.4239-1-pcristian292@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261028011317.1557238-1-cjd@cjdns.fr>
-References: <20261028011317.1557238-1-cjd@cjdns.fr>
+        Wed, 28 Oct 2026 09:04:51 -0700 (PDT)
+From: Sergio Lopez <slp@redhat.com>
+Subject: [PATCH RFC 0/8] vsock: add datagram support to virtio and vhost
+Date: Wed, 28 Oct 2026 17:04:29 +0100
+Message-Id: <20261028-vsock-dgram-support-v1-0-e457cf7cee78@sinrega.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -120,48 +111,113 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzNDAyNz3bLi/ORs3ZT0osRc3eLSgoL8ohJdMwvjRJNUg8TUpFRzJaDOgqL
+ UtMwKsKnRSkFuzkqxtbUAP47zmGoAAAA=
+X-Change-ID: 20261027-vsock-dgram-support-683a4e0aebe7
+To: Stefano Garzarella <sgarzare@redhat.com>, 
+ Bobby Eshleman <bobbyeshleman@meta.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Bryan Tan <bryan-bt.tan@broadcom.com>, 
+ Vishnu Dasa <vishnu.dasa@broadcom.com>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Stefan Hajnoczi <stefanha@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+ Dexuan Cui <decui@microsoft.com>
+Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, bpf@vger.kernel.org, 
+ linux-hyperv@vger.kernel.org, Sergio Lopez <slp@redhat.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3196; i=slp@sinrega.org;
+ h=from:subject:message-id; bh=IAsDh8eAGF2GwPL8C87LSOoOWcUAY+hEvje7pI2yfrQ=;
+ b=owEBbQKS/ZANAwAKAfRpJ40vDAI1AcsmYgBq4h0ayuzqJP9Rcnuf3cdPX7iTWVlDw8ysZGp8Z
+ wGNuM7AzKqJAjMEAAEKAB0WIQS+1fz3US2GgJFC6KL0aSeNLwwCNQUCauIdGgAKCRD0aSeNLwwC
+ NZFHD/99IaYlGVSilyovjaYh2x2j+28+Keg9pElFi2ecT8gYqUy06MR1kFmZOrZsoqHy7pYwssH
+ V4esQeAgESGZQtmvBNjEYuJ+SvP+jxLEqWzkQ7r0RzpIRxnGb+YjcYrTZu4HDNzFxBwL64Wmn02
+ 8ajh2a9t7wNNH/rvCNCpGt0V3zBKlQTB76xmObSCX5LfXENqL+fkV40PShUObL9gFOh6lwDQbkm
+ qaHV0S7DGuhCDKFx+bOHBcI1WPuv+TVqoambXNF/El5GBreBkVoRFTzO4RaSLa2YK4yYsXjGdoN
+ T4z1quggOJHvkITVGN/GItwaAFEOf6Bq8jQZ7QjAixm96Pi5OTxx/GeCmlV78mrHFPJe2gvOy/g
+ WO+59N02oABNlSNaS8u+RQGwPigjgXYNDrITmaZePAtwTHi19KyDSVtI1RUhuTpM0kax/tdgUaV
+ +HtPuC0HnrBXjNsU8UMvsi3soX4qOp3udDj312ClRvwBLneCo83BNxkTIImVlxCYfVCefkaaI22
+ pNdV/ATqALFUZ54VVwWAVjzTvFx+1P/2plUbjAvLPEVGAWqFJGfvWF62xj2IsgkQ5AIMMZX8XBR
+ /jnziV7xCe4LIWvGgd17vYzux4WMnxHqSRgiv/xLo+Ur85IEENwWIklCMJecGG/MYbEJZzl6omK
+ 7+lvOZABr5ugX2g==
+X-Developer-Key: i=slp@sinrega.org; a=openpgp;
+ fpr=BED5FCF7512D86809142E8A2F469278D2F0C0235
 
-Hi Caleb,
+This series implements SOCK_DGRAM support for virtio-vsock and
+vhost-vsock, allowing applications to exchange connectionless messages
+through the existing AF_VSOCK datagram API.
 
-I tested v3 on a TP-Link Archer XR500v v1 (EN7526G: on-die switch plus the
-MCM gigabit switch).
+Support is negotiated through VIRTIO_VSOCK_F_DGRAM. Each datagram uses
+a single VIRTIO_VSOCK_TYPE_DGRAM packet, supporting payloads from zero
+bytes through 64 KiB. Pending sends are bounded by the socket send
+buffer rather than peer credits, with queue accounting and poll
+readiness reflecting pending output.
 
-Setup: OpenWrt with kernel 6.18.44. I took the four mt7530 files from
-econet_eth at 3a8bcd2e6398 (they contain every line added by 1/7, 3/7,
-4/7, 5/7 and 7/7 of v3) and booted from RAM over TFTP, nothing written to
-flash.
+Datagrams use destination-based routing across guest-to-host,
+host-to-guest and loopback transports while retaining the socket's
+transport state. VMCI keeps priority as the dedicated datagram
+transport.  Guest RX buffers accommodate complete messages when
+datagrams are negotiated, preserving message boundaries.
 
-With the DT from en751221g.dtsi in openwrt#25330 (MCM "econet,en751221",
-no "mediatek,mcm", dsa,member <0 1> on the on-die switch and <0 0> on the
-MCM):
+The patches first expose the core port allocator and add datagram
+queue reporting, then implement the common data path, guest and host
+feature negotiation, directional routing and RX buffer handling. The
+final patch extends vsock_test with local and host/guest datagram
+coverage, including peer filtering, route changes, message boundaries
+and queue ioctls.  Unsupported cases skip automatically.
 
-- 18/18 boots: all 10 TRGMII lanes found a window, no "calibration
-  failed", "TRGMII inter-switch link initialized", DSA tree set up, ping
-  over lan4.
-- The chosen taps were stable across boots (+/-1): SoC->MCM 15-22,
-  MCM->SoC 27-29. In the SoC->MCM direction the window always starts at
-  tap 0.
-- 6 of those boots ran iperf3 for 6 s each way through lan4: 0 RX CRC
-  errors on on-die port 5 (~1.05M frames) and on MCM port 6 (~1.29M
-  frames). In 4 of 10 boots MCM port 6 already had 1 CRC error before any
-  traffic, probably from the calibration; it did not grow.
+Tested using QEMU with a patch that exposed the VIRTIO_VSOCK_F_DGRAM
+feature:
 
-Following the binding in 6/7, the MCM does not come up on this board:
+https://lists.gnu.org/archive/html/qemu-devel/2026-10/msg08074.html
 
-- "econet,en751221-gswitch": mt7530-mdio.c in 7/7 still matches
-  "econet,en751221", so nothing probes the MCM and there are no LAN
-  ports.
-- "mediatek,mcm", which the binding requires for -gswitch: the probe
-  fails with "Couldn't get our reset line", since nothing provides an
-  "mcm" reset yet (the TODO in en751221g.dtsi).
+Code was written and reviewed both manually and assisted by Codex
+(GPT-6.1-Sol) and Claude (Opus 4.6).
 
-So I think 7/7 should match the new compatible, and the binding should not
-require "mediatek,mcm" while there is no "mcm" reset for the EN751221.
+Signed-off-by: Sergio Lopez <slp@redhat.com>
+---
+Sergio Lopez (8):
+      vsock: expose the core port allocator to transports
+      vsock: report datagram receive and send queue state
+      vsock/virtio: implement the datagram data path
+      vsock/virtio: negotiate datagram support on the guest
+      vhost/vsock: negotiate datagram support with guests
+      vsock: allow datagrams to use directional transports
+      vsock: preserve host-to-guest datagram boundaries
+      vsock: add datagram tests to vsock_test
 
-Not covered yet: cold boots, and the other LAN ports beyond link-up on
-lan3/lan4. I'm happy to give a Tested-by once the compatible strings line
-up, and to rerun anything you'd like; the full boot logs are available.
+ drivers/vhost/vsock.c                   |  37 +-
+ include/linux/virtio_vsock.h            |   6 +
+ include/net/af_vsock.h                  |  14 +-
+ include/uapi/linux/virtio_vsock.h       |   2 +
+ net/vmw_vsock/af_vsock.c                | 206 ++++++--
+ net/vmw_vsock/hyperv_transport.c        |   4 +
+ net/vmw_vsock/virtio_transport.c        |  71 ++-
+ net/vmw_vsock/virtio_transport_common.c | 197 +++++++-
+ net/vmw_vsock/vmci_transport.c          |  10 +
+ net/vmw_vsock/vsock_bpf.c               |   3 +-
+ net/vmw_vsock/vsock_loopback.c          |   1 +
+ tools/testing/vsock/Makefile            |   3 +-
+ tools/testing/vsock/README              |  23 +-
+ tools/testing/vsock/util.c              |  62 +--
+ tools/testing/vsock/util.h              |  10 +
+ tools/testing/vsock/vsock_test.c        | 154 +++++-
+ tools/testing/vsock/vsock_test_dgram.c  | 809 ++++++++++++++++++++++++++++++++
+ tools/testing/vsock/vsock_test_dgram.h  |  26 +
+ 18 files changed, 1545 insertions(+), 93 deletions(-)
+---
+base-commit: 65ba8f34ec886ec72b2c07ddc8cf3d815c32869d
+change-id: 20261027-vsock-dgram-support-683a4e0aebe7
 
-Thanks,
-Cristian
+Best regards,
+-- 
+Sergio Lopez <slp@sinrega.org>
+
