@@ -1,11 +1,11 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.7
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1793145965;
-	b=fOcbR6iShlz0tYyrn5WoJsavfUhKCFbcYwu2rmdU4NbR7j+o6FOC0adRo/YjXb/aGfP+
-	 K/Qc/KrduoE1i3hhryqvOnqDBnvjbtZj7HZsGKDbu/y/D7jMI3bWtflEixlSvkWU2HtnR
-	 7+UENss6JP/t4kAcean5ppHs7A7klzh3/V8e6SdF2s4bDE0hpc9M7A7K57kcSyfNPd5uN
-	 fsRXwm7JxEDUl+0vjnIn/5K/IWUrecGJuJnmFwIkJCdYaPHpVhDv7zEez1HbFWTJ9oATC
-	 ElDmd2l0LATcm1uRztcYsKZuR+ygmnDN/HnlFqeJxQ+0QcRXLazaNUxxmKk7mD9DInA==
+	b=WF7qldjIvaDoem52DnqaDpNaXynWAwx2mC1e5WktKxdqlApPBHlCGsCynjoUWJN1JKE8
+	 Badit3110h2voVeYL/1VtWXPl3g19zEnuTe1/+GiQ2g32ZC1iGUna463jTORMuHK008bs
+	 xHRYBUNdh4skifShgyau/SGNQVVdIEAmlLmAb/V+v3u4X8wqJrbGlzor2o/HcjEL3gPJ2
+	 3Bw7FryobsoJAd3/KmIdePxyliOnBlBMekng1T1i5sS+VdwaIi/ZgfgtZT318sqqZBtIu
+	 GIalQIvZMhqQJJvW72vB50HHAHXqSk+rVLI+0VwsAZoLSPTbxeD8tzO6cW1R0BNwMYw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793145965;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
@@ -14,58 +14,57 @@ ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
 	 References:In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:
 	 X-Developer-Key;
-	bh=YxnvFpuQ1KnuZ8BL+6SNkTYfaaxRTWi3inGN9s/26yc=;
-	b=FQhi3q0tnajoqHoyBYuWPN+4NFjoROa0fQYrIG4rJHvMdGaWF+ZX2QQuRxiULuo2eBxq
-	 q1juzcSvN/hwInrQG2C8U7mmPPcjfztAXHDF3Kyo9q3XN05A35J8FfskT4QfDqzvnXZH6
-	 MmKo+LKchA01VTqy6vS8z4cV30R30cUKoUWgppHkdFxX8ZbKPMT9J6447dZwZJe6AjWxi
-	 Li9zC4QrGl9ech4pW7zvo+i0HuG2dK4MShl/mqs317KzoPO5sntaeOkK24t0pkM5ehFsx
-	 hbaUC9fzEvWl5Sj703eKV0g3uBp29lMh0e8Gm+tSdbK43H+9RR0PlGdrvNHghichCjw==
+	bh=Np4Dg2TCmqCtRFhn8gXrCBEouTxU5nTZeCQZIK5iHiY=;
+	b=Uba/wMPUgBBullnitBHQ4FdYrhVhnbKSfMHo0k374/2Kp+P9gYX8XWeKkENx0ogbcYFE
+	 nL5T0Z7Sg6sgBIw2dbyllRoOCAOu86XUlbjZxsgWla+zftR2bZkA87+bViro/y1fllnF1
+	 WcgpsEKnMeJQjHff3rjGgl69t2rjgJ3FnY9CHqRQxIatjBIubiuC7UmKZN/Vhdsj/uOYB
+	 zNZIP5nePLDkviADHIo1zCRCTvF3CiJGNba7+Q9d9/TRn0v9SQrL71uPkN8FFgfqLF2cg
+	 2Ha4cQR56YnSapHmTA3kaQz8FlmNFIJK6P2KQ8xRy2bf/lE3zFeV0wNGAzA64HBPQ7Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ldzPZfX1;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=M3T8BBGr;
 	arc=none smtp.remote-ip=192.198.163.7
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8677606A31F
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 00:06:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E8677606A31F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63CD0606A325
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 00:06:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 63CD0606A325
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ldzPZfX1
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=M3T8BBGr
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793145964; x=1824681964;
+  t=1793145965; x=1824681965;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=uW66Cj51iEAf/zLSuOoIOt7IMBr2dfZsVbPy/NWG4Nc=;
-  b=ldzPZfX1FgV0uPga7/l0vrC5UeRuvj2BHelx7XEB7/FvRF94dhj05CVG
-   YZ/0BkQrLNFLxGWxkvl4hMibsA/DAonALGdjV92QUosOrTevOavMjxN28
-   4/s3FHsr/6HG0FEIlIQ+Id/b0oGEpjTMVa17jTzQzUCH5fWHkDiav+2fa
-   vuUqjeejKx+9Ry3FroX/sWj+GsrHgnDYbDJ0177lAD0lF2rcXan1LUmI2
-   RQHJK+dALIQA3Zj1wXqb0gjdwLhzqQJnk86/jvBZ8zWTDUPH5lHQR1X42
-   QbB25tUpHowKEYuR2G6fu6GTf80hFTeoT/1a/H/aIHwUmyfql/yCuGxvi
-   Q==;
-X-CSE-ConnectionGUID: 6DGFIL0DROKYV2dYPOTFOg==
-X-CSE-MsgGUID: jimeoNScTLSFaZ/Ix5tI5w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1747213"
+  bh=UM5PDX2IZO8m8PipuKnUC6AlfP4HD4BAc1aXVD585QU=;
+  b=M3T8BBGrocTZ60sAECS5n+RNxrkp0rL/YE+hrbFY++CmNsQfZ9njnPEY
+   0OSQ/iBtdtDv8VKkqFPCqftETgrmEb7Gh7kHIe/u6QqauEk860YhHgFo7
+   YZCPZWF4EYnrVCONrJsOlU/cR6y9W1kOmtJDYHszuNv+ZQmlmR3erxmhZ
+   Q8GcBYpVQAIGVfWDWP9VXIvHuC39C8yRP0j2i09pWXiVEE0EDH+mapEJn
+   g+nLghazkIsrEulTOJDzg/bbYAMYNYOu/cZhL079teUTlvP6nLsy0aNWG
+   3RXlEk5BOalCcrljUZUn8wnshjYaNNspIEC3kS8ryxcsbZ9DVxCVFTYO6
+   g==;
+X-CSE-ConnectionGUID: OqzQ9eh9TYGH6z48OYe2HQ==
+X-CSE-MsgGUID: HHNVDA+LQ++lGUDJcc+xAA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1747219"
 X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
-   d="scan'208";a="1747213"
+   d="scan'208";a="1747219"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 17:06:02 -0700
-X-CSE-ConnectionGUID: hnQbn3VAS363grErH5ALwQ==
-X-CSE-MsgGUID: kt58F1x/TBm8Nlm+pgUEqQ==
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 17:06:03 -0700
+X-CSE-ConnectionGUID: bT3XE+GYR4CGoXeudAMapw==
+X-CSE-MsgGUID: jl3pUDgyRkW/UNPKOlHa5A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
-   d="scan'208";a="4776655"
+   d="scan'208";a="4776658"
 Received: from orcnseosdtjek.amr.corp.intel.com ([10.166.28.128])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 17:06:01 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 17:06:02 -0700
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Tue, 27 Oct 2026 17:05:39 -0700
-Subject: [PATCH net 3/6] ice: E822: keep Tx timestamps disabled during
- offset calibration
+Date: Tue, 27 Oct 2026 17:05:40 -0700
+Subject: [PATCH net 4/6] ice: E825: stop clearing PHY_REG_TX_OFFSET_READY
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,7 +76,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261027-reduction-v1-3-81237c67a361@intel.com>
+Message-Id: <20261027-reduction-v1-4-81237c67a361@intel.com>
 References: <20261027-reduction-v1-0-81237c67a361@intel.com>
 In-Reply-To: <20261027-reduction-v1-0-81237c67a361@intel.com>
 To: Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
@@ -93,177 +92,271 @@ Cc: Grzegorz Nitka <grzegorz.nitka@intel.com>,
  sergey.temerkhanov@intel.com, arkadiusz.kubalewski@intel.com, 
  richardcochran@gmail.com, horms@kernel.org
 X-Mailer: b4 0.17-dev-67df5
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7370;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=11731;
  i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=XOynfBy1kpUP6v2ZuaVZHgaVnFq4BuW5dar6JR6oy1s=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhqyHNsm1mvKLayfJSKXxcq55o/kvZGt86rxNSUnfT11ef
- rxz27EHHaUsDGJcDLJiiiwKDiErrxtPCNN64ywHM4eVCWQIAxenAEzkqivD/zy+5ff+LgjVzN1+
- qPWI5ModzDNz7PZY9Of2Jupr7k++wMDwV8pm17W4SlvVlee84726js33mBKneZCVoS3nlc+vN3u
- kWAE=
+ bh=UM5PDX2IZO8m8PipuKnUC6AlfP4HD4BAc1aXVD585QU=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhqyHNsk8VtbhmkwMNwX/yR5iXBil6BnW4KX6eIbnvATZQ
+ zG+ibs6SlkYxLgYZMUUWRQcQlZeN54QpvXGWQ5mDisTyBAGLk4BmIiQJMN/hx1T6yZXGNQe0yiL
+ u3d3y6vcLSK+J3lljDab3lp9hOfuTUaG60EHnOeu3S/h+5K1qGdnlpLJ/5e3DNLUaq0sJAWe/GB
+ hAwA=
 X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
  fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-From: Karol Kolacinski <karol.kolacinski@intel.com>
+The ice_stop_phy_timer_eth56g() function is called by the driver for E825
+devices to ensure that the PHY timer has been stopped. The equivalent
+function for older E822 devices performed many steps. However, on E825 it
+only clears the PHY_REG_TX_OFFSET_READY and PHY_REG_RX_OFFSET_READY bits to
+indicate to HW that it should no longer treat the PHY offset as valid.
 
-Do not clear the tx.calibrating flag immediately after starting the PHY
-timer in ice_ptp_port_phy_restart(). Instead, keep Tx timestamps
-disabled until the offset verification work (ice_ptp_wait_for_offsets)
-has confirmed that the Tx PHY offset is properly configured.
+When PHY_REG_TX_OFFSET_READY is cleared, the hardware still captures Tx
+timestamps, but it no longer sets the valid bit for these timestamps. This
+sounds reasonable at first glance. However, this results in the internal
+outstanding timestamp counter becoming out of sync.
 
-Previously, tx.calibrating was set to true, then immediately back to
-false right after ice_start_phy_timer_e82x() returned. This allowed Tx
-timestamp requests to be served during the window where offset
-verification was still pending. Timestamps produced during this window
-should have their valid bit cleared, but it is better to prevent requests
-until the driver has confirmed calibration is complete.
+When capturing a timestamp, hardware increments its internal counter and
+sets the associated "ready" bit in the timestamp memory status. Then it
+compares the timestamp count to the threshold to determine if it should
+trigger an interrupt to the MAC.
 
-Rename the tx.calibrating field to tx.disabled, and change where it is
-cleared. Only clear it in ice_ptp_wait_for_offsets(), and only after Tx
-offset configuration has completed successfully. This ensures that new Tx
-timestamp requests are only accepted after the PHY has properly calibrated
-the Tx offset.
+Upon reading the timestamp hardware is supposed to decrement the counter,
+clear the valid bit, and clear the associated bit from the memory status
+register. However, it only performs these steps *if* the valid bit is set.
 
-If ice_start_phy_timer_e82x() fails, do not restore disabled to false.
-The device is in a state where timestamps cannot succeed properly anyways.
-A dev_err message is already logged on failure to start the timer at the
-end of the function.
+Since the valid bit is not set while PHY_REG_TX_OFFSET_READY is clear, the
+timestamp counter is not decremented and the memory status is not cleared.
+This leaves the counter out-of-sync until a PHY soft reset.
 
-Renaming the field improves clarity and will better reflect the nature of
-the flag in a future change that also applies disabling Tx timestamps in
-software in a following commit.
+According to the hardware engineers, the PHY_REG_TX_OFFSET_READY bit has no
+other effects. It only controls whether hardware captures timestamps with
+the valid bit set or not. Since capturing timestamps with the valid bit
+clear is problematic, they recommend simply not clearing
+PHY_REG_TX_OFFSET_READY.
 
-Log a debug message while offset calibration is still pending, including
-the specific Tx/Rx error codes to aid debugging stalled calibration.
-This path is expected on every routine link-up: ov_work is first queued
-with no delay and the vernier offset cannot be computed until at least
-one packet has been transmitted, so the first several invocations
-normally land here. Use dev_dbg() rather than a rate-limited warning to
-avoid emitting KERN_WARNING on every link-up during normal operation.
-Log a debug message when calibration completes successfully.
+Note that the PHY_REG_RX_OFFSET_READY performs a similar task. However,
+clearing it is fine as there is no associated timestamp counter on the Rx
+side. Receive timestamps are simply inserted into the descriptor. Clearing
+this register clears the valid bit for timestamps until we complete
+calibration and re-enable the register.
 
-Note that sashiko review has previously complained that leaving the
-disabled flag set "permanently" disables Tx timestamps if vernier
-calibration never completes. This is true, but its important to realize
-that timestamps would still fail regardless of whether the flag is set.
-Until vernier calibration completes the device will not report valid
-timestamps regardless. Thus, keeping the calibrating flag set simply
-prevents new timestamp requests from software while it is known that the
-hardware will not complete them.
+Notice that the soft_reset parameter of ice_stop_phy_timer_eth56g() is
+totally unused. It is a relic from a copy-paste of
+ice_stop_phy_timer_e82x() that is unnecessary, so remove it.
 
-Fixes: 3a7496234d17 ("ice: implement basic E822 PTP support")
-Signed-off-by: Karol Kolacinski <karol.kolacinski@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
+Now that we do not clear the PHY_REG_TX_OFFSET_READY, new timestamp
+requests could happen while the PHY is calibrating. To avoid this, set the
+tx.disabled field of the Tx timestamp tracker when stopping the timer
+and clear it when finishing the restart. This ensures that any new requests
+will be rejected until the PHY timer calibration has completed. Also call
+ice_ptp_mark_tx_tracker_stale() to prevent reporting any previous
+outstanding timestamps to the stack. Fix ice_ptp_mark_tx_tracker_stale() to
+properly check if the tracker is initialized, to prevent a possible
+use-after-free on the bitmap.
+
+Unlike E822 devices, set the disabled flag when "stopping" the PHY and
+clear it immediately after the start procedure. The E825 device does not
+perform vernier calibration and thus does not need to wait for hardware to
+mark the offsets as valid.
+
+In the event that the PHY timer start procedure fails, the device is in an
+unknown state and timestamps will not behave properly. As such, and similar
+to E822 devices, the disabled field is not cleared on failure. This
+leaves timestamp requests disabled until the next link restart.
+
+Failure in the start flow is unexpected and it is unclear precisely what
+state the hardware is left in. Attempting to add a complex retry mechanism
+for a rare event is not worthwhile. The port restart procedure can already
+be re-initiated by triggering a link reset (i.e. via ethtool).
+
+Instead update the dev_err message at the end of ice_ptp_port_phy_restart.
+Clearly indicate that timestamping is not functional, and add a note that a
+link toggle might recover the device. For the invalid MAC type path
+returning -ENODEV, skip this message and log a dev_dbg that we failed with
+an unknown MAC type instead.
+
+Fixes: 7cab44f1c35f ("ice: Introduce ETH56G PHY model for E825C products")
+Suggested-by: Maciej Machnikowski <maciej.machnikowski@intel.com>
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_ptp.h |  6 +++---
- drivers/net/ethernet/intel/ice/ice_ptp.c | 37 ++++++++++++++++++++++----------
- 2 files changed, 29 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ptp.h    |  5 ++--
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.h |  2 +-
+ drivers/net/ethernet/intel/ice/ice_ptp.c    | 42 +++++++++++++++++++++++------
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 25 ++++++++---------
+ 4 files changed, 51 insertions(+), 23 deletions(-)
 
 diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.h b/drivers/net/ethernet/intel/ice/ice_ptp.h
-index da2003ba3bb0..8d46e57368ca 100644
+index 8d46e57368ca..0bc9d77478a9 100644
 --- a/drivers/net/ethernet/intel/ice/ice_ptp.h
 +++ b/drivers/net/ethernet/intel/ice/ice_ptp.h
-@@ -106,8 +106,8 @@ enum ice_tx_tstamp_work {
+@@ -106,8 +106,9 @@ enum ice_tx_tstamp_work {
   * @offset: offset into timestamp block to get the real index
   * @len: length of the tstamps and in_use fields.
   * @init: if true, the tracker is initialized;
-- * @calibrating: if true, the PHY is calibrating the Tx offset. During this
-- *               window, timestamps are temporarily disabled.
-+ * @disabled: set to true when new Tx timestamp requests are disabled, such as
-+ *            while the PHY Tx offset configuration has not yet completed.
+- * @disabled: set to true when new Tx timestamp requests are disabled, such as
+- *            while the PHY Tx offset configuration has not yet completed.
++ * @disabled: set to true when new Tx timestamp requests are disabled. This
++ *            includes during E82X Vernier calibration, and for as long as the
++ *            PHY is considered stopped on E825.
   * @has_ready_bitmap: if true, the hardware has a valid Tx timestamp ready
   *                    bitmap register. If false, fall back to verifying new
   *                    timestamp values against previously cached copy.
-@@ -122,7 +122,7 @@ struct ice_ptp_tx {
- 	u8 offset;
- 	u8 len;
- 	u8 init : 1;
--	u8 calibrating : 1;
-+	u8 disabled : 1;
- 	u8 has_ready_bitmap : 1;
- 	s8 last_ll_ts_idx_read;
- };
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
+index 16b1988e993d..17000df77ce9 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
++++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
+@@ -378,7 +378,7 @@ int ice_cgu_get_output_pin_state_caps(struct ice_hw *hw, u8 pin_id,
+ 
+ /* ETH56G family functions */
+ int ice_ptp_read_tx_hwtstamp_status_eth56g(struct ice_hw *hw, u32 *ts_status);
+-int ice_stop_phy_timer_eth56g(struct ice_hw *hw, u8 port, bool soft_reset);
++int ice_stop_phy_timer_eth56g(struct ice_hw *hw, u8 port);
+ int ice_start_phy_timer_eth56g(struct ice_hw *hw, u8 port);
+ int ice_phy_cfg_intr_eth56g(struct ice_hw *hw, u8 port, bool ena, u8 threshold);
+ int ice_phy_cfg_ptp_1step_eth56g(struct ice_hw *hw, u8 port);
 diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-index 48fde5561668..2f8563eb6fb1 100644
+index 2f8563eb6fb1..3ba6632bb196 100644
 --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
 +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-@@ -367,7 +367,7 @@ ice_ptp_is_tx_tracker_up(struct ice_ptp_tx *tx)
- {
- 	lockdep_assert_held(&tx->lock);
+@@ -808,9 +808,6 @@ ice_ptp_flush_tx_tracker(struct ice_pf *pf, struct ice_ptp_tx *tx)
+  * Mark currently outstanding Tx timestamps as stale. This prevents sending
+  * their timestamp value to the stack. This is required to prevent extending
+  * the 40bit hardware timestamp incorrectly.
+- *
+- * This should be called when the PTP clock is modified such as after a set
+- * time request.
+  */
+ static void
+ ice_ptp_mark_tx_tracker_stale(struct ice_ptp_tx *tx)
+@@ -818,7 +815,8 @@ ice_ptp_mark_tx_tracker_stale(struct ice_ptp_tx *tx)
+ 	unsigned long flags;
  
--	return tx->init && !tx->calibrating;
-+	return tx->init && !tx->disabled;
+ 	spin_lock_irqsave(&tx->lock, flags);
+-	bitmap_or(tx->stale, tx->stale, tx->in_use, tx->len);
++	if (tx->init)
++		bitmap_or(tx->stale, tx->stale, tx->in_use, tx->len);
+ 	spin_unlock_irqrestore(&tx->lock, flags);
+ }
+ 
+@@ -1226,6 +1224,7 @@ ice_ptp_port_phy_stop(struct ice_ptp_port *ptp_port)
+ 	struct ice_pf *pf = ptp_port_to_pf(ptp_port);
+ 	u8 port = ptp_port->port_num;
+ 	struct ice_hw *hw = &pf->hw;
++	unsigned long flags;
+ 	int err;
+ 
+ 	mutex_lock(&ptp_port->ps_lock);
+@@ -1241,7 +1240,14 @@ ice_ptp_port_phy_stop(struct ice_ptp_port *ptp_port)
+ 		err = ice_stop_phy_timer_e82x(hw, port, true);
+ 		break;
+ 	case ICE_MAC_GENERIC_3K_E825:
+-		err = ice_stop_phy_timer_eth56g(hw, port, true);
++		/* Disable new Tx timestamp requests */
++		spin_lock_irqsave(&ptp_port->tx.lock, flags);
++		ptp_port->tx.disabled = true;
++		spin_unlock_irqrestore(&ptp_port->tx.lock, flags);
++
++		ice_ptp_mark_tx_tracker_stale(&ptp_port->tx);
++
++		err = ice_stop_phy_timer_eth56g(hw, port);
+ 		break;
+ 	default:
+ 		err = -ENODEV;
+@@ -1305,15 +1311,35 @@ ice_ptp_port_phy_restart(struct ice_ptp_port *ptp_port)
+ 					   0);
+ 		break;
+ 	case ICE_MAC_GENERIC_3K_E825:
++		/* ice_ptp_port_phy_stop() may have already disabled
++		 * timestamps, but some restarts occur without first stopping
++		 * the timer, so we ensure that new requests are disabled
++		 * here.
++		 */
++		spin_lock_irqsave(&ptp_port->tx.lock, flags);
++		ptp_port->tx.disabled = true;
++		spin_unlock_irqrestore(&ptp_port->tx.lock, flags);
++
++		ice_ptp_mark_tx_tracker_stale(&ptp_port->tx);
++
+ 		err = ice_start_phy_timer_eth56g(hw, port);
++		if (err)
++			break;
++
++		spin_lock_irqsave(&ptp_port->tx.lock, flags);
++		ptp_port->tx.disabled = false;
++		spin_unlock_irqrestore(&ptp_port->tx.lock, flags);
++
+ 		break;
+ 	default:
+-		err = -ENODEV;
++		dev_dbg(ice_pf_to_dev(pf), "PTP failed to restart PHY port %u with unknown MAC type %d\n",
++			port, hw->mac_type);
++		return -ENODEV;
+ 	}
+ 
+ 	if (err)
+-		dev_err(ice_pf_to_dev(pf), "PTP failed to set PHY port %d up, err %d\n",
+-			port, err);
++		dev_err(ice_pf_to_dev(pf), "PTP failed to restart PHY port %u with err %pe; Timestamping not enabled; A link-toggle may recover.\n",
++			port, ERR_PTR(err));
+ 
+ 	mutex_unlock(&ptp_port->ps_lock);
+ 
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+index 3a41c711e751..07b55fbb88dd 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+@@ -2098,32 +2098,33 @@ static int ice_sync_phy_timer_eth56g(struct ice_hw *hw, u8 port)
  }
  
  /**
-@@ -1168,6 +1168,7 @@ static int ice_ptp_check_tx_fifo(struct ice_ptp_port *port)
- static void ice_ptp_wait_for_offsets(struct kthread_work *work)
+- * ice_stop_phy_timer_eth56g - Stop the PHY clock timer
++ * ice_stop_phy_timer_eth56g - Clear PHY Rx offset ready flag
+  * @hw: pointer to the HW struct
+  * @port: the PHY port to stop
+- * @soft_reset: if true, hold the SOFT_RESET bit of PHY_REG_PS
+  *
+- * Stop the clock of a PHY port. This must be done as part of the flow to
+- * re-calibrate Tx and Rx timestamping offsets whenever the clock time is
+- * initialized or when link speed changes.
++ * Disable Rx timestamping by clearing the PHY_REG_RX_OFFSET_READY. This
++ * causes Rx timestamps to be captured with their valid bit clear, ensuring we
++ * discard any timestamp captured while the PHY is being recalibrated.
++ *
++ * Note this does *not* clear PHY_REG_TX_OFFSET_READY. Clearing it would
++ * cause the Tx timestamps to be captured with their valid bit clear.
++ * Unfortunately the captured timestamps still increment the internal counter
++ * and result in off-by-one accounting. Instead, Tx timestamp requests should
++ * be disabled by other means.
+  *
+  * Return:
+  * * %0     - success
+  * * %other - failed to write to PHY
+  */
+-int ice_stop_phy_timer_eth56g(struct ice_hw *hw, u8 port, bool soft_reset)
++int ice_stop_phy_timer_eth56g(struct ice_hw *hw, u8 port)
  {
- 	struct ice_ptp_port *port;
-+	unsigned long flags;
- 	struct ice_pf *pf;
- 	struct ice_hw *hw;
- 	int tx_err;
-@@ -1188,9 +1189,26 @@ static void ice_ptp_wait_for_offsets(struct kthread_work *work)
- 	tx_err = ice_ptp_check_tx_fifo(port);
- 	if (!tx_err)
- 		tx_err = ice_phy_cfg_tx_offset_e82x(hw, port->port_num);
-+	if (!tx_err) {
-+		/* Tx offset has been configured, re-enable Tx timestamps */
-+		spin_lock_irqsave(&port->tx.lock, flags);
-+		if (port->tx.disabled) {
-+			port->tx.disabled = false;
-+			dev_dbg(ice_pf_to_dev(pf), "PTP Tx offset valid for port %u, Tx timestamps enabled\n",
-+				port->port_num);
-+		}
-+		spin_unlock_irqrestore(&port->tx.lock, flags);
-+	}
-+
- 	rx_err = ice_phy_cfg_rx_offset_e82x(hw, port->port_num);
- 	if (tx_err || rx_err) {
--		/* Tx and/or Rx offset not yet configured, try again later */
-+		/* Tx and/or Rx offset not yet configured, try again later.
-+		 * This is expected during normal link-up: the vernier offset
-+		 * calibration cannot complete until at least one packet has
-+		 * been transmitted, so the first retries routinely land here.
-+		 */
-+		dev_dbg(ice_pf_to_dev(pf), "PTP offset not yet valid for port %u (tx_err=%d rx_err=%d)\n",
-+			port->port_num, tx_err, rx_err);
- 		kthread_queue_delayed_work(pf->ptp.kworker,
- 					   &port->ov_work,
- 					   msecs_to_jiffies(100));
-@@ -1268,11 +1286,9 @@ ice_ptp_port_phy_restart(struct ice_ptp_port *ptp_port)
- 		/* Start the PHY timer in Vernier mode */
- 		kthread_cancel_delayed_work_sync(&ptp_port->ov_work);
+ 	int err;
  
--		/* temporarily disable Tx timestamps while calibrating
--		 * PHY offset
--		 */
-+		/* Disable Tx timestamps until PHY calibration completes */
- 		spin_lock_irqsave(&ptp_port->tx.lock, flags);
--		ptp_port->tx.calibrating = true;
-+		ptp_port->tx.disabled = true;
- 		spin_unlock_irqrestore(&ptp_port->tx.lock, flags);
- 		ptp_port->tx_fifo_busy_cnt = 0;
- 
-@@ -1281,11 +1297,10 @@ ice_ptp_port_phy_restart(struct ice_ptp_port *ptp_port)
- 		if (err)
- 			break;
- 
--		/* Enable Tx timestamps right away */
--		spin_lock_irqsave(&ptp_port->tx.lock, flags);
--		ptp_port->tx.calibrating = false;
--		spin_unlock_irqrestore(&ptp_port->tx.lock, flags);
+-	err = ice_write_ptp_reg_eth56g(hw, port, PHY_REG_TX_OFFSET_READY, 0);
+-	if (err)
+-		return err;
 -
-+		/* Do not clear disabled flag here. Tx timestamp requests
-+		 * remain disabled until ice_ptp_wait_for_offsets() has
-+		 * verified that the Tx offset calibration has completed.
-+		 */
- 		kthread_queue_delayed_work(pf->ptp.kworker, &ptp_port->ov_work,
- 					   0);
- 		break;
+ 	err = ice_write_ptp_reg_eth56g(hw, port, PHY_REG_RX_OFFSET_READY, 0);
+ 	if (err)
+ 		return err;
+ 
+-	ice_debug(hw, ICE_DBG_PTP, "Disabled clock on PHY port %u\n", port);
++	ice_debug(hw, ICE_DBG_PTP, "Disabled Rx timestamps on PHY port %u\n", port);
+ 
+ 	return 0;
+ }
+@@ -2151,7 +2152,7 @@ int ice_start_phy_timer_eth56g(struct ice_hw *hw, u8 port)
+ 
+ 	tmr_idx = ice_get_ptp_src_clock_index(hw);
+ 
+-	err = ice_stop_phy_timer_eth56g(hw, port, false);
++	err = ice_stop_phy_timer_eth56g(hw, port);
+ 	if (err)
+ 		return err;
+ 
 
 -- 
 2.56.0.215.g47fdf2208c5b
