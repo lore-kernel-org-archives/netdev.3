@@ -1,103 +1,111 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.54
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.178
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793213267;
-	b=SE+pJsYCH8PWex7QDAxQCH3h9NdVvTGR3GjfojhwMdWOnF5S10TPMECJMsDpm8QmHN8G
-	 w0lTV5jQHFRwW+K3dGYlaNIgNn444CyJY3ko+SEctuzF+91WHF275s0/ghpop5nwRbvho
-	 3Yli39Wv6Qg8Ax+TbSmiTQ6VPycF6rs+RF9K6tnQaVlYm5D7fb2V5OLFLzzH45EejWfja
-	 6GYnNf/NYWsnUwuQOCFSvuNhCTD3wkJZoqrnuZYVd6XPSfqOXQQbY6NLWN0j3YsoJ3F2g
-	 3UE8DcirwKUUee4cCh74qQ9cqKxcqtpyZafeShaAn7k8bPvy8QjhhUGW9Vj+qsY1Quw==
+	t=1793213315;
+	b=roXOZf5Y6TOdmkncuYUMCiM80PbpDh59y4qJrD4XMK6IdjzPFiLMWYH2ig8lKKvFLJ4U
+	 r1K2T4Uh2o1nJkpHU5/fS9BX7OGz07/ztztwT2yuWZr9xOtKbow3+HvlBElH/VZAN//qL
+	 v/TIEjpeHYcr+X/+m8MBUPQVLe9zKNsq/2uR2wLdS591iVPYf2wZLsjJaLk+IWTYePfWc
+	 RuKLFHQbtMVpdJqOZ74WjZ7puS4N6IkEhSWMpiyE6AhWm5TPse6RvpyaXJyKGV5XQ1loM
+	 y831H9c0NqUAu7ZCjS/ty0n6aR+QlajDydPuGn9H62ZWC1QjHP0Rw6cE9q/HJeYoLvg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793213267;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793213315;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=0VJjp0Yd9E1hslhB48A2qpjBkuVbx4yz5XzIE+9Cd0A=;
-	b=zZac6BXGrBcY6msy4d6lMbH/lTRM4GDYJ9MEeDpitIuvcdQo8tcgEindooTRLDoxAyjA
-	 bMlQfYdl2s9TkeVV/GolT9NEk4VmMUAnCfOCJQ7ntrJ974RMjw10RYuCxFctxtz+aXFPk
-	 g2aQ5YQMwwKeeY9aBmBT9IsHuZJDiFPDI9lXF08bT40DslWPZcR9wKV2qh8cSJKQ+prCH
-	 +p7PuMmnSCHm8MqiaCY7Tcm/nvt157dkYB5JH4XKQ1fWgYIFPgxsBHEXKDTvoIr0sATFU
-	 VOklY5C7KaoF0rv/aGE8VbkAGhiWOYv2HFD8+Zcbc0O0N+emHwRMky+Xx8KLmhfqxwA==
+	bh=FoM3jrwU9mnONLYaNhWTsxjkZz6IQHFf2kOZKAb2OVw=;
+	b=pttCi9tUKbq1yMqrYXrImMkY02qYHomkDccYlX28aeBlD9JX+drdVQRzD6jecndzU7pF
+	 G6uVEjAR/D0Ab5aKMtfS+qIkWdhKPjKzvnAYlmvBpUgtSrCbKMPOl7o06/f0qvRbRd1jH
+	 JXmH3AFzBuZtAV4RLzXHqsM0l1ogK+rU4IteViOFvaHzIGT6H8xNlTuQNxeNt2Buu713G
+	 gNNmv6YFSr29hBJyk2LsGhaXvVDevQG753UVUHi6vvRUXvi/dm61T5Mc0VVCZiazZfBoT
+	 t3BNOKOoAU0BFL9vZF8GXpJp4qy/5Q0JymsTU5t0EzyNDKy3bJYECrmfnGrzs2qIRqg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XxASVbqK;
-	arc=none smtp.remote-ip=74.125.224.54
-Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HrG6VXhJ;
+	arc=none smtp.remote-ip=209.85.128.178
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E84606A31A
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 18:47:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 14E84606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30EF606A31E
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 18:48:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F30EF606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XxASVbqK
-Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-679a2297c55so1599309d50.1
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 11:47:46 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HrG6VXhJ
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-8b10d24345dso12999147b3.3
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 11:48:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793213266; x=1793818066; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793213314; x=1793818114; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:subject
          :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=0VJjp0Yd9E1hslhB48A2qpjBkuVbx4yz5XzIE+9Cd0A=;
-        b=XxASVbqKrfkGzLbOIsdd5WJ7B4uFlWZIN3QwO7ecCrTSK8F8HfC3Ct+49DU2Ldzeb2
-         zZGAZvpELJtGhPnlkukpFSJmZrjQMvffaA6dI3ZrOgl5z+eUBb2vIi+A8s6tgiptqoEv
-         NUNzSBpGerZn6aXtY88hgUXfca7H1MNPPjWQYrfKc6zkUqnRNw/Jsbciyn/qg+VMJpH/
-         2CtWvQimfVfsQlyWBpxYwkOzl/LWgSIExJKmEvQFe4EzYg/pUZmX+BzadlLjpwSOW9aP
-         A0t3blPnotgtT9O8R5dG3xd4HDF+0/2LO7ibR1QKDZSqUeqe7WSwHqXdu8WeyvjYYXKg
-         YMtQ==
+        bh=FoM3jrwU9mnONLYaNhWTsxjkZz6IQHFf2kOZKAb2OVw=;
+        b=HrG6VXhJZUpYGzsQlGM7mXpO7NaSEsyM5NgP2QNvXh/XDogGvTnyfAuehx353+xEBh
+         IVg4hKvcedg3x50xIyIFetXyyqFOZNUjb4RJkJeTg+o+oY4W0UCbJYdG/vsl6w0xa7WH
+         7bYgThfyccr7ydpX8XLkugAF3tj2x8ZLlw5EWSMrAt7UyNEpj9Avnve3KQbMbvEMUocC
+         6WOwqa4k5KM9BkQFKycLJB+3ywP/x2YoXanyFnKl3Hr6zSG+GLuTGr1MYj+HgKGr6oaj
+         6L37rkJc9y44GssbLEJHjgdqI0aXKwSlytASZGQAV5vDjK2raS3573lKyafTFFR2KdN7
+         OPWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793213266; x=1793818066;
+        d=1e100.net; s=20260707; t=1793213314; x=1793818114;
         h=content-transfer-encoding:content-type:mime-version:subject
          :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=0VJjp0Yd9E1hslhB48A2qpjBkuVbx4yz5XzIE+9Cd0A=;
-        b=vwDcC+frm/6/T/LDL5sE1EjTt4N+WzciP8HoeUgHwmwsIEkwP1Ib/ahA3yodaRV/w4
-         Njh7PYvOqybx4smlYpQ8qOemAsensBO2ZqpqZKk9HPllz+7xD/6hLUJjy7Dv80bTGZxY
-         vlSvZ8RJNqDu1B2xZU2rjJ2qYvFKah/Hnr6fWfupDJk5c0LyYBZK2zyZ6eJC7M0/v3/I
-         44D7Rf2ZERqAQ83F67xrbU4t3xV1kEnTHs9IXsJCB9fsYslvxaUrZ1akN08mEsuO1XiT
-         UBQKTKmMWn9cXv7OwwrqeiZSmyaK0BdpWO735t9573/T++vEM1mQ10mnABeCaS8051yI
-         DxCQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzI2yBnHS7S0I6qJM0OIk1/KNXX/0pXywB1o6TYTfoREHW2AObiCq6thmIVeWr7nhzMuVsH36w=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJvVLY1u4w+NPoXwVxqR3P9Ir+lzMOjkYvoM+jSYew5uNbW6xuM
-	AWHR8rD4EMsDUQJvX11ISeV4ZTOdNpOo+4Buh1OQmCw0j8CaLoEjEDlb
-X-Gm-Gg: AYBFou0C5OncgygoqEh4C/qBGcrOEPOmvq6t28fDOjp4ld2LVq9YAbX3DHx2oaxHbt7
-	m9Rcrt1SaOkovvgMpbuzWkv8KAtE9KIOHegyVwttl0Ch1MfyygTwp8minMOr4hBMvr3Byh+IVxg
-	xsw3a5BSeUhoB2n24CTin3UuH4ESyyqzhLtPqywS5hmT/+3+uHBTdq69O2scFk14qEpUE800kBy
-	+Axy/uc7fmroPssaXt5BMylFNSxwFDtefqb1Iwrjt+QXrYlo5KNXh+iccclRpaP82y16furGkHs
-	J7+tVJbq1Snxg0RpvULmYPHGngq6X1qisKT4EJS0Wbc2PqySN4oaAp1vU1YfLjTEPJIigac/L10
-	hPTlKFnfkf1kARdeuE/wmHLGhUc9o1p7KmeEYxCwIfDz4PnnJ7ndwiS2IiRo2twbycQu5BHvUK9
-	nNoKJa/8PcXlGBHRCFibSG2+NKuVtvWMi3I6PNawIuIf3jH+W1q7qiufZn+YM7BaEKo5isjqZz5
-	kFjjOF6TKz0Cji4f+7MP1l4en58SEF127nnJsePWv6aNOnJ96MCSAMN1Ykv1T3WerZvF6z6PSVf
-	hxe+XSyUlcG8NXu7O9TU1nXJGzo6PSaqCBp3VbzRMkBs+427KCs5ibiRJvcT8MasduBtEp9JHkt
-	hvIV5eEcL4kHz1mvGgsuYm8RLmESusdQPoYUmH19/Tzk7qFjX8riDbJ8Kci3tpkFzN7uW
-X-Received: by 2002:a05:690e:13ce:b0:679:8c43:a140 with SMTP id 956f58d0204a3-67a7bbf9a0cmr2723125d50.31.1793213265901;
-        Wed, 28 Oct 2026 11:47:45 -0700 (PDT)
+        bh=FoM3jrwU9mnONLYaNhWTsxjkZz6IQHFf2kOZKAb2OVw=;
+        b=votflKqFid9zMJurppOsbrF2WR/3w8ymkQoHMOBMQ8I8ShYHR/fi//VJU+ZcNqAOKO
+         Pcg8WyPuy+2PzDfX4ScRhqxu+bv6eK7kIx/TgwrxsTLcqeKmUYvKGD7wwKNLhO5gPPur
+         QbOeUQI1M73MBNw7FX3iL2PK/SBc2UpTElG0oMgKroSQXJWGlVO60NUaG/s9eEyebsA0
+         +zvrpkbMCD+gtTIy3kG7+fJjTXzJbfF/mhTdniSyqM5/kwbh2kW/egw6i6PIgEZHfdGQ
+         076hSSVno/6yRgBDslgkDp5ycEaEb2D++pE2cxu+dh3wXFHYqxQupyhGPnVQkbMneTrO
+         jaHQ==
+X-Forwarded-Encrypted: i=1; AKwUvBznZjovvv4D0ppp7GsjeahfS7EeSdGvV878Uju3vjtk+37AAml5PB5e3hpvV7WcdkMn9GIQ+Vk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLattQ9hWlyy24TPVufLyYfExc9rn1qGApWRVuhlamTFJzIXgMv
+	wIodVm+HE93v9k8RY4PWN7H8bahc7zAf/MPpGHoWexaKt4Q9CcffYajT
+X-Gm-Gg: AYBFou2quW+IjXZKjtUcJ5CeoEbSSlC0oR4V6kSfYxE8Xlk8q+TpptNrgK7PeGAQX19
+	6EWBRH0SKcz75SDg4EYEFY9V6U+xD7nv5qp1J5+yhltN0CYwjmoqaRWXrdCrrswzpMCxVmmZPeu
+	fVBNGSYypxoMDfD3iw69vvfcHazW2UKiUA6P2rccIn3uh3xYcynbR5GOWs+bvwp0X1jkotJn94/
+	sfvzhUwKfufSvD0fht9Z9G4QLRMzmMv+1FPOpI57PUlxDFdaKIDEZ9CNrdX27UFGiUqP3ZU4o7u
+	eSOfU0OSYCiLWx5jMVMhkDO0nf12+A83Ifhnygn6ml5PTKAbVvkMGIaZOJOWDHWxHi2uQfpHtQ3
+	j8+1g1NFQSfNuiElsaOnsgoOBFwATdaGDRriG38TRxVRPTzdqQOMBpwU6Imd7Vnp0QqS3MgzQfi
+	Z3ZnvHr7ms9KKhs75X6aKNVjnsPDofa9wApg+V8UPYg6yWpy6HN5Jxlo7tfNuwa0Wbeog37ZNkk
+	/NXSxos/9K3YX9Abbc4On1ZDPvw93CDrJJvTUEW/O3oDm3F55tGEyif9pTJN2Cg3HVaA2hXXWOh
+	yMTPSlt9yVfAmguo6a8thEBZg90O+yvA9/9jUu2riVcPjOxaFOpNbl0iNVxhgCo6kcHA9PN/GK4
+	iLCYwSLnw1fPWhC3x6T3mJm96u2A6NPZZ9DEGShfViyJlGx6ARS8Y2u96fQNx5EfK5rwx
+X-Received: by 2002:a05:690c:38b:b0:8ab:37e5:6678 with SMTP id 00721157ae682-8b1b5d394a6mr23556237b3.44.1793213314099;
+        Wed, 28 Oct 2026 11:48:34 -0700 (PDT)
 Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67a7a19b1d8sm2196764d50.22.2026.10.28.11.47.44
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b19e5c7d50sm33374577b3.30.2026.10.28.11.48.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 11:47:44 -0700 (PDT)
-Date: Wed, 28 Oct 2026 14:47:44 -0400
+        Wed, 28 Oct 2026 11:48:33 -0700 (PDT)
+Date: Wed, 28 Oct 2026 14:48:32 -0400
 From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
 To: Eric Dumazet <edumazet@kernel.org>, 
  "David S . Miller" <davem@davemloft.net>, 
  Jakub Kicinski <kuba@kernel.org>, 
  Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, 
- Willem de Bruijn <willemb@google.com>, 
+Cc: Willem de Bruijn <willemb@google.com>, 
+ Simon Horman <horms@kernel.org>, 
  netdev@vger.kernel.org, 
- edumazet@kernel.org, 
- Kyle Zeng <kylebot@openai.com>, 
- stable@vger.kernel.org, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Message-ID: <willemdebruijn.kernel.139c2c63190ce@gmail.com>
-In-Reply-To: <20261028181450.2221013-1-edumazet@kernel.org>
-References: <20261028181450.2221013-1-edumazet@kernel.org>
-Subject: Re: [PATCH net] net/packet: check TX_RING fragments before memory
- accounting
+ bpf@vger.kernel.org, 
+ Eric Dumazet <edumazet@kernel.org>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Aaron Conole <aconole@redhat.com>, 
+ Eelco Chaudron <echaudro@redhat.com>, 
+ Ilya Maximets <i.maximets@ovn.org>, 
+ Jamal Hadi Salim <jhs@mojatatu.com>, 
+ Jiri Pirko <jiri@resnulli.us>, 
+ dev@openvswitch.org, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Ren Wei <weir@nebusec.ai>, 
+ Vega <vega@nebusec.ai>
+Message-ID: <willemdebruijn.kernel.1010e42464cde@gmail.com>
+In-Reply-To: <20261028122703.2093730-3-edumazet@kernel.org>
+References: <20261028122703.2093730-1-edumazet@kernel.org>
+ <20261028122703.2093730-3-edumazet@kernel.org>
+Subject: Re: [PATCH net v2 2/5] loopback: use eth_type_trans_careful()
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -112,30 +120,31 @@ Content-Type: text/plain;
 Content-Transfer-Encoding: 7bit
 
 Eric Dumazet wrote:
-> From: Kyle Zeng <kylebot@openai.com>
+> tc egress actions can leave an skb with fewer than ETH_HLEN bytes in
+> its linear part. loopback_xmit() then crashes in eth_type_trans():
 > 
-> tpacket_fill_skb() adds the full non-linear payload length to
-> skb->truesize and sk_wmem_alloc before checking MAX_SKB_FRAGS. With
-> PACKET_VNET_HDR, userspace can submit a ring-sized frame even when it
-> greatly exceeds the device MTU.
+>   tc qdisc add dev lo clsact
+>   tc filter add dev lo egress matchall action vlan pop_eth
+>   # AF_PACKET SOCK_RAW: eth / eth / 8192 bytes of payload
 > 
-> A near-INT_MAX frame can saturate sk_wmem_alloc before the fragment
-> loop rejects it. A subsequent refcount_add(0x40000001) can temporarily
-> turn REFCOUNT_SATURATED into 1. A concurrent TX completion can then
-> drop that apparent last reference and free the still-live packet
-> socket before refcount_warn_saturate() restores the counter.
+>   kernel BUG at include/linux/skbuff.h:2839!
+>   RIP: 0010:eth_type_trans (include/linux/etherdevice.h:635 net/ethernet/eth.c:163)
+>   Call Trace:
+>    loopback_xmit (drivers/net/loopback.c:87)
+>    dev_hard_start_xmit (include/linux/netdevice.h:5455 include/linux/netdevice.h:5464 net/core/dev.c:4057 net/core/dev.c:4073)
+>    __dev_queue_xmit (net/core/dev.c:5066)
+>    packet_sendmsg (net/packet/af_packet.c:3157 net/packet/af_packet.c:3189)
 > 
-> Check that the remaining payload fits in MAX_SKB_FRAGS pages before
-> accounting it. Include the initial page offset in the calculation,
-> and move the existing -EFAULT handling out of the fragment loop.
-> This preserves the accepted packet sizes and error code while
-> preventing an invalid frame from injecting an oversized byte charge.
+> The same happens with "action ife decode" on lo egress.
 > 
-> Fixes: 69e3c75f4d54 ("net: TX_RING and packet mmap")
-> Cc: stable@vger.kernel.org
-> Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-> Signed-off-by: Kyle Zeng <kylebot@openai.com>
-> [edumazet: use net_warn_ratelimited() instead of pr_err(), add a Fixes: tag]
+> Use eth_type_trans_careful(), and drop the packet if the Ethernet
+> header can not be pulled.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Reported-by: Vega <vega@nebusec.ai>
+> Link: https://lore.kernel.org/netdev/20261005052249.1914367-2-weir@nebusec.ai/
 > Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+> Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> Tested-by: Jamal Hadi Salim <jhs@mojatatu.com>
 
 Reviewed-by: Willem de Bruijn <willemb@google.com>
