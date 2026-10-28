@@ -1,51 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=5.135.140.105
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793195578;
-	b=k9EFhSertI3Qe/eW4GpZqu8iYn2BXWlQ/557CJg8Y2gjP/kadbv+WhMSOdmv/LYOkMvs
-	 dIl907ay6X9PuaUGLP1Uk+twOobln18R+ifoXFxwxwutSSWnHwxqPtd7q/jA2THm1emSv
-	 I9WTXQYsJKlM9vjinZ09Q1Oo6+3jzNi3S88WnLEiYBYaWGMuAuAZZd+jKI0Zu2OlVCsQh
-	 Zpr1gea1eEAMo0eHm6pKM1XRSgq7zQSHW0kW29I9cW6diMQJHug0eSQaIPnoAipXwZ2Jg
-	 6LCPKf0XtAI834Zecs1DtCbKv2hmvZRYmdi4C7wquP2EHpv9RROvU1wpq+dR1wVPFOQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793195578;
-	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=sXikcPN/2u2jcqxK0ic3WXRLLLyeXrwW2xb+LwiQxXY=;
-	b=kPskJJ2cUXBE6Mn+/Km0Zxbxr9rsxs7kiW1QRwFIGQw3k+PNRq4ELRDfJ1buPWdvEsbS
-	 i9tHakRKLB7cbPUiyaTaq/Qall1XkxrTCDXcZTSiCUNT3vAHB4kC0SJX2mekvIrz63EGL
-	 +ngxcobcMipVUve16XoMs7F15RnHcteIJm8DPGUWKoTvU8acCihiLw+8CH+r1wFrG6NUA
-	 F9EsUWJj3F3JFrhIWzWXMhI9rXhxlOzATZf4Te4Sfpka2KeLesAtCB6GBExN5lvlAhgp6
-	 OtcoDRQk+2ELr95RIsHM5KBFzYDkfMfIaIALp0O7WoE5+CQ/3o/sdsUSh44uaDhoKeA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cjdns.fr;
-	spf=pass smtp.mailfrom=cjdns.fr;
-	dkim=pass header.d=cjdns.fr header.i=@cjdns.fr header.a=rsa-sha256 header.s=dkim header.b=SAvQBHOm;
-	arc=none smtp.remote-ip=5.135.140.105
-Received: from mail.cjdns.fr (mail.cjdns.fr [5.135.140.105])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793195575;
+	b=1cECK7NRxgdNW5ftRT5oh0rbx8n0KbYl6X+vvnjIYfw6W2VOaWUMxyF5SLiVs3biE9oi
+	 WAjoAQYuejIqT/U7zayKH6GUBteNp1c4F6eXPzFECf6+bEBodlOwGfYlLS8R0oHG5ybzZ
+	 tiyon7o3cEkFwDdcBI/qvta2MHszf9rBMeP4ker2Tua7tsPUjqbauAQtNrFZF56XWalEQ
+	 sCI3vfhL5jsLRcWHNHcAasE9+1reHxsKNkN/R/3cN86FibYPf/oPZkkqfRcjJYUzOi0ya
+	 OZ2xHCD0+1ezv7P1viBLhXibqq9fh+v3hmYHWX/SZ+DVlD8LFcJ1muY7mXSJlieqr0A==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793195575;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
+	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Endpoint-Received:X-Original-From:Reply-To;
+	bh=nxU8CqL/iqw7kwMdu6L4kq5D9aP2xJcgUmx5XsluDKc=;
+	b=1mRV8cP9x0sA3mJPdJ7LWWUjxH/H321djkhSlA0haYoVley89mm26dVn7aQBFSktNDic
+	 4u+hlKXNp9DB3NRiFMaojHAqvRhuyRM2yGQLIw26Gf2W5G8SjeuTP7vSBM+OvozkMZCAR
+	 NtGHpjFwV+0EbxgT3lm5kqmyqVbeP4YiJhvWte/tQWeHl3eqvEubmwFLt1ISMoLN6Vrbq
+	 PV9MqjWUOos6u034jHI56FBmsupFmXsw+JeXssCVzVVyzVwy5VMZhu3oGCz4RBEqOxX3P
+	 ffze6RXC72aWRp0D9XtKSqbdbpovELVll5+Gp3zARRNK1ubf73rKO2X3t+Ij2vJt+Mw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N4vQ8ZW6;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D522606A31D;
+	Wed, 28 Oct 2026 13:52:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N4vQ8ZW6
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1793195575;
+	b=OYwLnA7AdpyTBjM62xxV7M7ClmEiAr2XYrSIiKbhXSoZFLlfg+XA9gi7jNHJSho5sQ0T
+	 vqC2MoZzNExYoluFGKfWoPcmkIFJFk6+rBKl0lCwqXYQegfV8B3CFfMGWMWM3IsvPLKlN
+	 rSOknSOeR1T2Nd1VIQ2DNTqwDOiGeYdiO61WGwlkqNUsE4ap4BVyOYvhb01b/dVyrVwPF
+	 SKwaCphmIdDBnkBKUZAqdf367XtVNc/DtuvCgYN7fcn1FoXDgKCIpwZCPtvswJEyOmQQk
+	 V6WK8lVI3MB5iI2WajVzDTW59Mgr8mrmFUbndBAhdXjAgbvAXpYb74IdvDBuvboOTcA==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1793195575;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=nxU8CqL/iqw7kwMdu6L4kq5D9aP2xJcgUmx5XsluDKc=;
+	b=P16fXyeohcAWzqBLnQKujkkGijMXtgfrfncMdPZASH6MhA7KG38HRwqbeMWgGMyvaQdp
+	 IN3Evfmc010RCm/1+hmXYgoqUjqHaDzDwmVhMbceIWAsZDRt0fHjW/L0KtoTPjQ95MI64
+	 FFep2RJp7b6YG2J9tRHKUxttUOrlcl5i6VRQepFnf7BxJHdT0RHd8XAMMSJ5kq8gtxP19
+	 Wx0PIZ8x9PNaX+Zyo4q1GTy5zr1RrT75NwdQtsLyG7lONupGsl+ynVfktCHTU0e9TZgGA
+	 BxUOsZ5yI1998myqcbfeA48DSTjfwARnJcnEtvqwCTs2RWunqh+nvUrhxG0eWppHTYQ==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3167606A33A;
-	Wed, 28 Oct 2026 13:52:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B3167606A33A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cjdns.fr
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cjdns.fr header.i=@cjdns.fr header.a=rsa-sha256 header.s=dkim header.b=SAvQBHOm
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D80E215FD22;
-	Wed, 28 Oct 2026 14:52:45 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjdns.fr; s=dkim;
-	t=1793195573; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=sXikcPN/2u2jcqxK0ic3WXRLLLyeXrwW2xb+LwiQxXY=;
-	b=SAvQBHOmhiuyKvlXtM1AIKAj6CRqI92p5TarTfEUggze30z+GnbG565ZljxAgt9yHEC2dM
-	uD5iBoqtnOoZOkDKm2IGdLODqoyp/e0jfOhfmpnSaikTs7D6Lenc1O1BbWgh87s/ma/Nyv
-	vXgTMgY1W84l8PsDxj4I+9z1ztQDiCRxWVVACm3kSa6NgsrRAOPZ/Vhus041nsaRWalF1C
-	DoCc3UPTBDy+cs4xKDWnbbmOkb4G/zZCOhvIYOmx+6EyMWoAV+2XadysA9Wdy/uPflREyO
-	0119GI7xKpC5Bf/FgQbIOizvjAHIjyaiWdtPRb7F8nPbA73yEHVZi50bJKd6Xg==
-Message-ID: <c6154519-98f4-46a7-ac30-076ebf588bab@cjdns.fr>
-Date: Wed, 28 Oct 2026 14:52:44 +0100
+	by smtp.kernel.org (Postfix) with ESMTPS id 5368C1F01825;
+	Wed, 28 Oct 2026 13:52:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793195575;
+	bh=nxU8CqL/iqw7kwMdu6L4kq5D9aP2xJcgUmx5XsluDKc=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=N4vQ8ZW65/yMFO3OLg77ZbwRiMmeLzhcYfg3M/gEUxJ+4JhLawVI2xCbQUIQcFfV4
+	 ixil/CLWSFBoDYlRqtJXWvZ2FuuDqI/yvyCjf4SP0Ed2K/IuE5FAu53X/cVlhF2go1
+	 wQnTars0DuofT089ZHdLbjYxWbI9I7YtZlvfLlZ5X5XDEzxx4D9PaEZ3Z0atjOAEGC
+	 4EdbryF1x0/omEakDdBDc+e+iFc9AsuTKGcmkgPP43BboKgRjWNsEXwiPxNcPI1QDQ
+	 U+9VMDDteetmHY7v14IqLiPJHllNQpBAvkBSLu+5dKPkx7ggHZZAwnAHLVJzCWtHyC
+	 zGXidOLiK5sZQ==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id C0F594548C;
+	Wed, 28 Oct 2026 13:52:53 +0000 (UTC)
+From: Martin Belanger via B4 Relay <devnull+martin.nvme.dev.gmail.com@kernel.org>
+Date: Wed, 28 Oct 2026 09:52:52 -0400
+Subject: [PATCH RFC net-next v2 2/5] tls: add socket options to register
+ the traffic secrets
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -55,139 +83,338 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH v3 2/7] dt-bindings: net: dsa: mediatek,mt7530: add
- passthrough mode
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: netdev@vger.kernel.org, olteanv@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, matthias.bgg@gmail.com,
- angelogioacchino.delregno@collabora.com, chester.a.unal@arinc9.com,
- daniel@makrotopia.org, linux@armlinux.org.uk, arinc.unal@arinc9.com,
- Landen.Chao@mediatek.com, dqfext@gmail.com, sean.wang@mediatek.com,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- naseefkm@gmail.com, b.larsson@gmx.com
-References: <20261028011317.1557238-1-cjd@cjdns.fr>
- <20261028011317.1557238-3-cjd@cjdns.fr>
- <a031f089-0b96-4fc0-b878-6af13414524f@lunn.ch>
- <521b930f-0bf9-4373-bfbf-3e2570661ec9@cjdns.fr>
- <a566aad7-754c-4960-b018-4471a0068344@lunn.ch>
-Content-Language: en-US
-From: Caleb James DeLisle <cjd@cjdns.fr>
-In-Reply-To: <a566aad7-754c-4960-b018-4471a0068344@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Message-Id: <20261028-keyupdate-rfc-v2-2-eb5143b4c487@gmail.com>
+References: <20261028-keyupdate-rfc-v2-0-eb5143b4c487@gmail.com>
+In-Reply-To: <20261028-keyupdate-rfc-v2-0-eb5143b4c487@gmail.com>
+To: John Fastabend <john.fastabend@gmail.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Sabrina Dubroca <sd@queasysnail.net>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>, Shuah Khan <shuah@kernel.org>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ Hannes Reinecke <hare@kernel.org>, Chuck Lever <cel@kernel.org>, 
+ kernel-tls-handshake@lists.linux.dev, linux-nvme@lists.infradead.org, 
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Martin Belanger <martin.belanger@dell.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793195573; l=9945;
+ i=martin.nvme.dev@gmail.com; s=20261014; h=from:subject:message-id;
+ bh=hvoBqvDeZyJWvEXq8KBpjuo3Newp8nwShxn3FNiStMI=;
+ b=Xu1Opm8Y9jRP5Ysn9QK//ANFqfjYyAVZM8UNI7Mn3ClIULsrqRK7FdNBoiDJTPUoIPauhZvup
+ ee3pB94CIpgAho/krXe5TaB78DNrZhu181VImpGII0mfg5iHd64mIri
+X-Developer-Key: i=martin.nvme.dev@gmail.com; a=ed25519;
+ pk=4K+XXetGK35w2LzRRddd/bbHawZU222BN+YZRuSpN+k=
+X-Endpoint-Received: by B4 Relay for martin.nvme.dev@gmail.com/20261014
+ with auth_id=1176
+X-Original-From: Martin Belanger <martin.nvme.dev@gmail.com>
+Reply-To: martin.nvme.dev@gmail.com
+
+From: Martin Belanger <martin.belanger@dell.com>
+
+kTLS holds the key and IV of each direction, but not the traffic secret
+they were derived from. The derivation is one-way, so the kernel cannot
+compute the next generation for a KeyUpdate on its own.
+
+Add TLS_TX_TRAFFIC_SECRET and TLS_RX_TRAFFIC_SECRET. The owner of the
+socket passes the TLS 1.3 application traffic secret of a direction after
+installing its key. The cipher of the installed key selects the hash, so
+the option takes only the secret. A socket without a registered secret
+behaves as before.
+
+The secret must give the installed key and IV, or the option fails with
+-EINVAL. A wrong secret would otherwise fail only at the first
+KeyUpdate.
+
+The TX secret can be registered alone. The RX secret needs the TX secret
+first: a received KeyUpdate can ask for one in reply, and since the
+kernel consumes the record, only the kernel can send that reply.
+
+Installing a new key with TLS_TX or TLS_RX removes the secrets that no
+longer apply. The secrets are cleared when the context is freed and
+cannot be read back.
+
+Assisted-by: LLM
+Signed-off-by: Martin Belanger <martin.belanger@dell.com>
+---
+ Documentation/networking/tls.rst |  26 ++++++++
+ include/net/tls.h                |  13 ++++
+ include/uapi/linux/tls.h         |   2 +
+ net/tls/tls_main.c               | 139 ++++++++++++++++++++++++++++++++++++++-
+ 4 files changed, 179 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/networking/tls.rst b/Documentation/networking/tls.rst
+index 980c442d7161..2e011bd1ce4a 100644
+--- a/Documentation/networking/tls.rst
++++ b/Documentation/networking/tls.rst
+@@ -300,6 +300,32 @@ extra byte used by the ContentType field.
+ 
+ [1] https://datatracker.ietf.org/doc/html/rfc8449
+ 
++TLS_TX_TRAFFIC_SECRET and TLS_RX_TRAFFIC_SECRET
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++``TLS_TX_TRAFFIC_SECRET`` registers the TLS 1.3 application traffic secret
++of the transmit direction, ``TLS_RX_TRAFFIC_SECRET`` that of the receive
++direction. With a registered secret, the kernel performs KeyUpdate for that
++direction itself (RFC 9846, section 4.7.3). The value is the secret itself.
++TLS 1.3 only, software path only.
++
++Install the key of the direction first, with the ``TLS_TX`` or ``TLS_RX``
++socket option described above. The cipher of that key selects the hash, and
++the secret must have the length of that hash: 32 bytes for SHA-256
++(AES-128-GCM, AES-128-CCM, ChaCha20-Poly1305) or 48 bytes for SHA-384
++(AES-256-GCM). Other ciphers return ``EOPNOTSUPP``.
++
++Each secret can be registered once. ``TLS_RX_TRAFFIC_SECRET`` needs
++``TLS_TX_TRAFFIC_SECRET`` first: a received KeyUpdate can ask for one in
++reply, and only the kernel sees it. ``TLS_TX_TRAFFIC_SECRET`` alone is
++allowed.
++
++If the application installs a new key itself with ``TLS_TX``, both secrets
++are removed. With ``TLS_RX``, the RX secret is removed. KeyUpdate for that
++direction is then left to the application again.
++
++The secrets cannot be read back.
++
+ Statistics
+ ==========
+ 
+diff --git a/include/net/tls.h b/include/net/tls.h
+index e57bef58851e..aacc6d12226e 100644
+--- a/include/net/tls.h
++++ b/include/net/tls.h
+@@ -65,6 +65,9 @@ struct tls_rec;
+ 
+ #define TLS_AAD_SPACE_SIZE		13
+ 
++/* SHA-384, the longest hash of a TLS 1.3 cipher suite kTLS supports */
++#define TLS_MAX_TRAFFIC_SECRET_SIZE	48
++
+ #define TLS_MAX_IV_SIZE			16
+ #define TLS_MAX_SALT_SIZE		4
+ #define TLS_TAG_SIZE			16
+@@ -224,6 +227,12 @@ struct tls_prot_info {
+ 	u16 tail_size;
+ };
+ 
++/* A TLS 1.3 application traffic secret. len is 0 if none is registered. */
++struct tls_traffic_secret {
++	u8 data[TLS_MAX_TRAFFIC_SECRET_SIZE];
++	u8 len;
++};
++
+ struct tls_context {
+ 	/* read-only cache line */
+ 	struct tls_prot_info prot_info;
+@@ -266,6 +275,10 @@ struct tls_context {
+ 	union tls_crypto_context crypto_send;
+ 	union tls_crypto_context crypto_recv;
+ 
++	/* Registered for KeyUpdate, protected by the socket lock */
++	struct tls_traffic_secret tx_secret;
++	struct tls_traffic_secret rx_secret;
++
+ 	struct list_head list;
+ 	refcount_t refcount;
+ 	struct rcu_head rcu;
+diff --git a/include/uapi/linux/tls.h b/include/uapi/linux/tls.h
+index 1245ab38afc1..d1b136ecea96 100644
+--- a/include/uapi/linux/tls.h
++++ b/include/uapi/linux/tls.h
+@@ -42,6 +42,8 @@
+ #define TLS_TX_ZEROCOPY_RO	3	/* TX zerocopy (only sendfile now) */
+ #define TLS_RX_EXPECT_NO_PAD	4	/* Attempt opportunistic zero-copy */
+ #define TLS_TX_MAX_PAYLOAD_LEN	5	/* Maximum plaintext size */
++#define TLS_TX_TRAFFIC_SECRET	6	/* TLS 1.3 TX traffic secret */
++#define TLS_RX_TRAFFIC_SECRET	7	/* TLS 1.3 RX traffic secret */
+ 
+ /* Supported versions */
+ #define TLS_VERSION_MINOR(ver)	((ver) & 0xFF)
+diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
+index 8bdb78718a8d..8bb1b2773f3f 100644
+--- a/net/tls/tls_main.c
++++ b/net/tls/tls_main.c
+@@ -31,6 +31,8 @@
+  * SOFTWARE.
+  */
+ 
++#include <crypto/sha2.h>
++#include <crypto/utils.h>
+ #include <linux/module.h>
+ 
+ #include <net/tcp.h>
+@@ -325,6 +327,8 @@ void tls_ctx_free(struct sock *sk, struct tls_context *ctx)
+ 
+ 	memzero_explicit(&ctx->crypto_send, sizeof(ctx->crypto_send));
+ 	memzero_explicit(&ctx->crypto_recv, sizeof(ctx->crypto_recv));
++	memzero_explicit(&ctx->tx_secret, sizeof(ctx->tx_secret));
++	memzero_explicit(&ctx->rx_secret, sizeof(ctx->rx_secret));
+ 	mutex_destroy(&ctx->tx_lock);
+ 
+ 	if (sk)
+@@ -757,8 +761,16 @@ static int do_tls_setsockopt_conf(struct sock *sk, sockptr_t optval,
+ 		ctx->rx_conf = conf;
+ 	update_sk_prot(sk, ctx);
+ 
+-	if (update)
++	if (update) {
++		/* The registered secret no longer matches the key. The RX
++		 * secret also needs the TX one, see do_tls_setsockopt_secret().
++		 */
++		if (tx)
++			memzero_explicit(&ctx->tx_secret,
++					 sizeof(ctx->tx_secret));
++		memzero_explicit(&ctx->rx_secret, sizeof(ctx->rx_secret));
+ 		return 0;
++	}
+ 
+ 	if (tx) {
+ 		ctx->sk_write_space = sk->sk_write_space;
+@@ -857,6 +869,124 @@ static int do_tls_setsockopt_tx_payload_len(struct sock *sk, sockptr_t optval,
+ 	return 0;
+ }
+ 
++/* Length of the TLS 1.3 traffic secret for @cipher_type, the size of
++ * its hash. 0 if KeyUpdate is not supported for the cipher.
++ */
++static int tls_traffic_secret_len(u16 cipher_type)
++{
++	switch (cipher_type) {
++	case TLS_CIPHER_AES_GCM_128:
++	case TLS_CIPHER_AES_CCM_128:
++	case TLS_CIPHER_CHACHA20_POLY1305:
++		return SHA256_DIGEST_SIZE;
++	case TLS_CIPHER_AES_GCM_256:
++		return SHA384_DIGEST_SIZE;
++	default:
++		return 0;
++	}
++}
++
++/* The installed key and IV must be the ones that @secret gives. Each
++ * KeyUpdate derives the next key from the secret, so a wrong secret
++ * fails only at the first KeyUpdate, with no clear cause.
++ */
++static int tls_check_traffic_secret(struct tls_crypto_info *crypto_info,
++				    const u8 *secret, int len)
++{
++	const struct tls_cipher_desc *cipher_desc;
++	u8 iv[TLS_MAX_SALT_SIZE + TLS_MAX_IV_SIZE];
++	u8 key[TLS_CIPHER_AES_GCM_256_KEY_SIZE];
++	int rc;
++
++	cipher_desc = get_cipher_desc(crypto_info->cipher_type);
++	if (!cipher_desc || cipher_desc->key > sizeof(key) ||
++	    cipher_desc->salt + cipher_desc->iv > sizeof(iv))
++		return -EINVAL;
++
++	rc = tls_hkdf_expand_label(secret, len, "key", key, cipher_desc->key);
++	if (rc)
++		goto out;
++
++	rc = tls_hkdf_expand_label(secret, len, "iv", iv,
++				   cipher_desc->salt + cipher_desc->iv);
++	if (rc)
++		goto out;
++
++	if (crypto_memneq(key, crypto_info_key(crypto_info, cipher_desc),
++			  cipher_desc->key) ||
++	    crypto_memneq(iv, crypto_info_salt(crypto_info, cipher_desc),
++			  cipher_desc->salt) ||
++	    crypto_memneq(iv + cipher_desc->salt,
++			  crypto_info_iv(crypto_info, cipher_desc),
++			  cipher_desc->iv))
++		rc = -EINVAL;
++
++out:
++	memzero_explicit(key, sizeof(key));
++	memzero_explicit(iv, sizeof(iv));
++
++	return rc;
++}
++
++static int do_tls_setsockopt_secret(struct sock *sk, sockptr_t optval,
++				    unsigned int optlen, int tx)
++{
++	struct tls_context *ctx = tls_get_ctx(sk);
++	struct tls_crypto_info *crypto_info;
++	struct tls_traffic_secret *secret;
++	u8 data[TLS_MAX_TRAFFIC_SECRET_SIZE];
++	int len, rc;
++
++	if (tx) {
++		crypto_info = &ctx->crypto_send.info;
++		secret = &ctx->tx_secret;
++	} else {
++		crypto_info = &ctx->crypto_recv.info;
++		secret = &ctx->rx_secret;
++	}
++
++	/* The key must be installed first: its cipher selects the hash */
++	if (!TLS_CRYPTO_INFO_READY(crypto_info) ||
++	    crypto_info->version != TLS_1_3_VERSION)
++		return -EINVAL;
++
++	if ((tx ? ctx->tx_conf : ctx->rx_conf) != TLS_SW)
++		return -EOPNOTSUPP;
++
++	len = tls_traffic_secret_len(crypto_info->cipher_type);
++	if (!len)
++		return -EOPNOTSUPP;
++
++	if (sockptr_is_null(optval) || optlen != len)
++		return -EINVAL;
++
++	/* A received KeyUpdate may ask for one in reply. The kernel
++	 * consumes the record, so only the kernel can send the reply.
++	 */
++	if (!tx && !ctx->tx_secret.len)
++		return -EINVAL;
++
++	if (secret->len)
++		return -EBUSY;
++
++	if (copy_from_sockptr(data, optval, len)) {
++		rc = -EFAULT;
++		goto out;
++	}
++
++	rc = tls_check_traffic_secret(crypto_info, data, len);
++	if (rc)
++		goto out;
++
++	memcpy(secret->data, data, len);
++	secret->len = len;
++
++out:
++	memzero_explicit(data, sizeof(data));
++
++	return rc;
++}
++
+ static int do_tls_setsockopt(struct sock *sk, int optname, sockptr_t optval,
+ 			     unsigned int optlen)
+ {
+@@ -883,6 +1013,13 @@ static int do_tls_setsockopt(struct sock *sk, int optname, sockptr_t optval,
+ 		rc = do_tls_setsockopt_tx_payload_len(sk, optval, optlen);
+ 		release_sock(sk);
+ 		break;
++	case TLS_TX_TRAFFIC_SECRET:
++	case TLS_RX_TRAFFIC_SECRET:
++		lock_sock(sk);
++		rc = do_tls_setsockopt_secret(sk, optval, optlen,
++					      optname == TLS_TX_TRAFFIC_SECRET);
++		release_sock(sk);
++		break;
+ 	default:
+ 		rc = -ENOPROTOOPT;
+ 		break;
+
+-- 
+2.53.0
 
 
-On 28/10/2026 13:28, Andrew Lunn wrote:
-> On Wed, Oct 28, 2026 at 12:27:18PM +0100, Caleb James DeLisle wrote:
->> On 28/10/2026 03:04, Andrew Lunn wrote:
->>> On Wed, Oct 28, 2026 at 01:13:12AM +0000, Caleb James DeLisle wrote:
->>>> MT7530 switches can be configured to blindly pass packets between their
->>>> CPU/upstream port and a downstream DSA port, in particular, without
->>>> altering the MediaTek DSA Tag on the packets. This mode is used in some
->>>> integrations where an SoC integrated switch exists, but a more capable
->>>> MCM switch is added to effectively replace it.
->>>>
->>>> Signed-off-by: Caleb James DeLisle <cjd@cjdns.fr>
->>>> Acked-by: Rob Herring (Arm) <robh@kernel.org>
->>>> ---
->>>>    .../devicetree/bindings/net/dsa/mediatek,mt7530.yaml       | 7 +++++++
->>>>    1 file changed, 7 insertions(+)
->>>>
->>>> diff --git a/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml b/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml
->>>> index 90b3582b7619..e29fb8693498 100644
->>>> --- a/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml
->>>> +++ b/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml
->>>> @@ -73,6 +73,13 @@ description: |
->>>>          Check out example 7.
->>>> +  The MT7530 and MT7531 switches are capable of being operated in "passthrough"
->>>> +  mode. In this mode, traffic is unconditionally passed between the CPU port
->>>> +  and the DSA port which links to a second switch. To use passthrough mode, the
->>>> +  upstream switch is configured with a DSA link to the downstream switch. In
->>>> +  passthrough mode the upstream switch is restricted, with no other ports or
->>>> +  switch configuration allowed.
->>>> +
->>>>    properties:
->>>>      compatible:
->>>>        oneOf:
->>> Looking at just what is here, all i see is a comment. There is no new
->>> property? Yet the subject is "add passthrough mode"?
->>
->> Indeed, I used "add" to mean "add documentation of". Per my reply on patch
->> 3, I think we really prefer to avoid special properties and let this
->> constitute (very) limited support for a switch hierarchy.
->>
->> If there's another verb you think makes a better commit line, I'd be happy
->> to adjust.
-> [Goes and looks at mediatek,mt7530.yaml]
->
-> So pass through is not an existing property. You are also not adding a
-> new property 'passthrough'.
->
-> What you appear to be saying is that the MT7530 and MT7531 are hard
-> coded by the driver into pass through mode? So it is in effect a
-> property of the compatible? So maybe put this comment next to the
-> compatible? And make the subject/commit message talk about the
-> compatible being hard coded for pass through?
-
-
-Perhaps I should rephrase as follows:
-
-
-"""
-
-The MT7530 and MT7531 switches do not support switch hierarchies except in
-the case that a switch is configured with only one CPU port and one DSA port
-that links to a downstream switch. In this configuration, the upstream switch
-acts as a blind pass-through to the downstream switch.
-"""
-
-
-> Looking forward, what happens when somebody wants to use the switch as
-> a switch? Or you figure out how to do proper D in DSA? It becomes
-> messy because you need to add a property indicating the compatible
-> should actually be a switch?
-
-
-Full hierarchy (using DSA tag) is impossible because of what seems to be 
-a hardware bug where switches don't distinguish themselves in the tag. 
-However it is possible (albeit ugly) to enable ports on both switches 
-providing the same numbered port isn't enabled on both switches.
-
-
-If somebody ever implements that, even if they remove this passthrough 
-support, users of the current passthrough capability will not notice a 
-difference because that will do the same as this.
-
-
->
-> So maybe you really do need a property?
->
-> But DT describes hardware, and pass through is configuration. So maybe
-> it should not be in DT at all, Maybe the driver needs to look at the
-> DT tree, figure out a port is used as a DSA port, and put the switch
-> into pass through all on its own? Once D in DSA is supported, the
-> addition ports become available, but no other changes are needed in
-> the DT blob?
-
-
-Previously there was no documentation regarding hierarchies, and any 
-hierarchy would fail at runtime. I think a brief note that this one case 
-of hierarchy is allowed is nice for the users, though it does bend the 
-definition of "describing the hardware" so it could also be excluded. I 
-may be persuaded either way.
-
-
-Thanks,
-
-Caleb
-
-
->
-> Sorry, going around in circles, but hopefully it helps you think about
-> the big picture.
->
-> 	   Andrew
