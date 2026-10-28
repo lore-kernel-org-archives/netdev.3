@@ -1,13 +1,13 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=139.219.17.91
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793171193;
-	b=Wjwm2ts/MnmSnYjNeJZOr4cose+VUPZMeTl3rI2QAKKQ94X4d4lv9wehsM5YHNqBm1Tt
-	 HkDSdXte4OTagKzLIcExetxNH0KJGdjINQXU5YCpY+vpStUeCM4mkIQ1rOVGv3eUqxr+s
-	 GCkkt0gbUBewiSAPVoYh+cIq4FYdis+/Vm4IBfExZC41Jc+ICJBSYTXWZPX1o3y57OUY1
-	 8IvtiVXCJ+KQaBS/3FnJQwHU091lnoRYv/Tsva8kqwCHOzJN2X9bQqkdsrbiE0ajFvcaO
-	 t65jeAzlTIMzH8K9qXG8n6LHOPwIKoibo56rPHoHtGrgA489+XQBKCgkCCB+Sqp28Xw==
+	t=1793171194;
+	b=urRkAbii7RD0yI9sNPe762Peb8NZH33G/aGF4OT7/gUOj5ea1JJfX8sxcpgf/yB+okDh
+	 bpLzqmIMyEh02FS2fybcTCi7IOEQwFGt0DqoBaRP9Gi+VItzXNZ28afaowcJdiWQxGBNx
+	 m7GlpiQ2nzgNaalpLlRmDhTpC5h+J5QhjQ4ChNfEZchMR+Zp1wgcklmZgrGmj62YsOM+e
+	 cYsGMdxKW5mM30B9NN0mZjQh7iSKFmVuyk1HqELQMAKQmiMQRekb99G3kt0kyrjQHtt+s
+	 ecF2YfvxmGlG4nfrcmnjYqaWtTH9AjUMUThY5KxEgGu7p1VkbCmrj8U13YT3t011UMA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793171193;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793171194;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 Content-Transfer-Encoding:Content-Type:X-ClientProxiedBy:MIME-Version:
@@ -24,53 +24,53 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=PbqoNm/CdftemidL5B7YluKkmlzfKe/EDpLGDEcar44=;
-	b=NeBPbZKQxeR4YW4JCT/JQa7RqAiLPasrBX5KJ7d4UJ9XlDHBSgMVJDUl4klP671MycaA
-	 RTTGTo/HiehLrgMDfhJ4hyR4pMjz7V/NyOvrA6TcdlXPCAMCBDQ0elpWJsP1pG+gSijhF
-	 PBYKXKyoX4jnrYD8A5ZSMKb7huCJUl/hnLKgGAGvaay221JWauOIXLIZOl87tLeZXRqMB
-	 HiURXejz+aXMeMkaSTnGE7Yjq1azQgO/ZHlqE05Exs34ebcX3lhDY2aFDZ5HLvgT8oTC6
-	 dSuuOrfDtzAu/zOitIDFvr2XRUuKNgMl5aY7OqBMhZjuTytzjEIBo/nT6yZYbY6nbmA==
+	bh=VCBN3EbwLuwAZlRMOsUGZ9k68UbbwHp7W/Oe6Es+zLQ=;
+	b=fwnG5tz8JsvXqdllHNM0Jt3Fl0UXY+os4KA7Bs3SuGwPNKZ3/OBYqoYuSpm5LUXQs93u
+	 MjX23HHEGw65n7az6aYC/4ilPCKW9MGezjuR7QBpxAKyPN5xVTAG37sY8rSHJoXKerYZw
+	 EmxqlhDKRHE7mpmkQv5uAcHafrfYSOetxpmGswxKRnSl9dK5jb9CFwzU1wVJYoI/4QNY4
+	 M83b9aMgahUq4tgyR0wNvh+VYe5QExxTaFzSdCBpRlgOA+n6OjgQe57jVp4L5pgJM4V+l
+	 bWvFte1U6bpwK8d4f7BhMKKO0wZOk2VrV7WLEopM1hw/TbI8bzbWA8CwrAEJOEZM+Gg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=deeproute.ai;
 	spf=pass smtp.mailfrom=deeproute.ai;
-	dkim=pass header.d=deeproute.ai header.i=@deeproute.ai header.a=rsa-sha256 header.s=selector1 header.b=om6hGhcY;
+	dkim=pass header.d=deeproute.ai header.i=@deeproute.ai header.a=rsa-sha256 header.s=selector1 header.b=ja3b1bKN;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=139.219.17.91
 Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2091.outbound.protection.partner.outlook.cn [139.219.17.91])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C100606A31F
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 07:06:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1C100606A31F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2F1606A31E
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 07:06:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9A2F1606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=deeproute.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=deeproute.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=deeproute.ai header.i=@deeproute.ai header.a=rsa-sha256 header.s=selector1 header.b=om6hGhcY
+	dkim=pass (1024-bit key, unprotected) header.d=deeproute.ai header.i=@deeproute.ai header.a=rsa-sha256 header.s=selector1 header.b=ja3b1bKN
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=L6DopKSZFuhsgkHS+/oA0oPwEvKi7/i+JtotSUQGjnZhZRIvlxl8NUmEHgZasT6RuRdULku2dVFQlPmHYbLBy0VNawGVO9XLPbP228p3eBC1Zsujw2diH/vjwLZcFapXMo1nLuNjdMt/Td/gLNmda0nj2ZKubZL7DaNeqvaozUK1G2pM8Ehe7qmdosSMZPknMh4U82ljxHJmJHLaQmhK4w/hMe9uI+pXcbCGOXvdhYoh46I55wSX3H/p2BeAn5yImXzAvFBFg8wqhH4cqCWMbsfWD0MXz9VvEYmHZ1oUYulAQLySY0d8IPT4Now7xCP+FbV2bS/2KSwwkYjUdTGqNw==
+ b=C5ru9ZCe92DTWu9YsUyb8dT43+Sy2Q4lZf6hII9Ed9okzIGIybMfBNiCQfPAja8x5NUOMIEXUpWmcCwtKctkMH9bv9YNHXCHf0RzsEq8QW4LTv1KyBt6rRs7slhuv5o57siqOMGq096CZ5KBaoP1Bq5M1tfboQOezw7oswXWxzTQQLJw5+SUnA2Xh2hHtcqX2kUz/B/txo2oGhI8w9QK49OAwttbT2KU8/fb6Qw2I3jG4mzmmJecmxBuq2Za/ZI+wW0utuHXxmcIDpHnZAwF3YCUeTrd8bBNbrSMNe5z6rkH46ziwayTydqEAdoJeInG2UY+37jFz4vCtixJ4qsB1A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PbqoNm/CdftemidL5B7YluKkmlzfKe/EDpLGDEcar44=;
- b=U0gEuovKUOtMAfcI+QwRxnytKMh2QJj8CzuTmfmPIBAKRwEkolm0ylWjHQNkkgxmCREXOc3a/flGLwukCkB8rfHwGU76Jp2822Y0Aq44t1moG7acVIR8cc+wsSeps+TficH2usdG1z+GA6jcJpBwoX+/jIcpy5jUhqxJHv+y3+VXN/dhsdzMtEs5vPTUg2pAjL/FbVFsouHRIW8R3iaEV0b/HUkpNr6vT0QwWZkdsagHXQEvBkKgoSkxugJm+89uXz7CuvXaxNqHbNEptItciqlPAobqOHoLuuLsS3Cd9gUNvIQGTMxAO8iGcLd8FHHav43WnYtcJ+paVZdhUr8ziQ==
+ bh=VCBN3EbwLuwAZlRMOsUGZ9k68UbbwHp7W/Oe6Es+zLQ=;
+ b=PKayLgTPsIeKt3LrYIl8mIpIwV4zM8MTNZYEZ0FgdFxj7W48jdZhrTZNRcZ5Cw5MBmVeORvOLHgtxfScZra578GUshQZeHVf5/sYIVGwNTSLy0Bz4G8PHVOa196YcgHr/26BhFWwZu9cU4YgTkIJkQfJZ+ZXhwyEj1NXm9cpARDcva0m3eE1R+S6BBVtz7w2u4ypLmZCI+gc6BIuHFNNb4Zb9ViWpH3rkxPFMe+YlSjwGBASIkYvjRL/YsblbsoNBQYxD7XaWjdby/yMgRQ9nvwtASBKZXLJPKz+Jn7vvzNfOBufoPf/t6XujGppOI9dlGHtug58Ft6q3lpiHSohtQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=deeproute.ai; dmarc=pass action=none header.from=deeproute.ai;
  dkim=pass header.d=deeproute.ai; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=deeproute.ai;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PbqoNm/CdftemidL5B7YluKkmlzfKe/EDpLGDEcar44=;
- b=om6hGhcYjbkeUnr6gOZQpetT6vcG16ojHEAjCwt/2Edd62ziaY6ANg211JyOg9yrS4ZsPpTESDJLlPw3kO31WCjaDU0zEcMAuusetFPiAoLkah35OV6OVtdufmCVwLInvcrRR2pQtHkzSQt1ffF46KV+wKhh1BWVxZB9MgMaow0=
+ bh=VCBN3EbwLuwAZlRMOsUGZ9k68UbbwHp7W/Oe6Es+zLQ=;
+ b=ja3b1bKN4n6/VIOlj/tHfGjWp/7+5MfRdy5+/SJwDqoKGKKbab0BawMtt7KoVGChm4sy/vNSw+LNsNciVlPIfjI381w/l2LUWRKiB4o+IALRAleCp1VIHdWBB5Q77PCtrNgrTwGPNN3aTjVx/h22dJZzdK52QfIUosLi612c4Fw=
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=deeproute.ai;
 Received: from ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn
  (2406:e500:c550:a::9) by ZQZPR01MB1042.CHNPR01.prod.partner.outlook.cn
  (2406:e500:c550:8::9) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Wed, 28 Oct
- 2026 07:06:21 +0000
+ 2026 07:06:25 +0000
 Received: from ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn
  ([fe80::2dda:e54d:5a3c:d686]) by
  ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn ([fe80::2dda:e54d:5a3c:d686%3])
- with mapi id 15.21.0569.006; Wed, 28 Oct 2026 07:06:21 +0000
+ with mapi id 15.21.0569.006; Wed, 28 Oct 2026 07:06:25 +0000
 From: Jingxuan Xie <jingxuanxie@deeproute.ai>
 To: netdev@vger.kernel.org
 Cc: willemdebruijn.kernel@gmail.com,
@@ -79,9 +79,9 @@ Cc: willemdebruijn.kernel@gmail.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
 	horms@kernel.org
-Subject: [RFC net 1/2] af_packet: retire TPACKET_V3 blocks without waiting for copiers
-Date: Wed, 28 Oct 2026 07:05:27 +0000
-Message-ID: <20261028070528.139531-2-jingxuanxie@deeproute.ai>
+Subject: [RFC net 2/2] af_packet: add KUnit coverage for asynchronous V3 retirement
+Date: Wed, 28 Oct 2026 07:05:28 +0000
+Message-ID: <20261028070528.139531-3-jingxuanxie@deeproute.ai>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261028070528.139531-1-jingxuanxie@deeproute.ai>
 References: <20261028070528.139531-1-jingxuanxie@deeproute.ai>
@@ -101,817 +101,843 @@ Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: ZQZPR01MB0980:EE_|ZQZPR01MB1042:EE_
-X-MS-Office365-Filtering-Correlation-Id: f26f83d7-08b0-4412-5f3d-08df34c1f891
+X-MS-Office365-Filtering-Correlation-Id: ef2eb59e-5e42-4206-8c6e-08df34c1fb2a
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|376014|23010399003|366016|1800799024|261026135527099003|261026140227099003|261026130827099003|38350700014|5023799004|56012099006|261026121527099003|261021123027099003|261021121427099003|261021135927099003|261022113327099003|261022075727099003|261022115727099003|261021133027099003|261009223027099003|261022105027099003|10067099003|261021130227099003|22082099003|18002099003|3023799007|6133799003;
+	BCL:0;ARA:13230040|52116014|376014|23010399003|366016|1800799024|261026140227099003|38350700014|56012099006|261026121527099003|261021123027099003|261021121427099003|261022075727099003|261022115727099003|261009223027099003|261022105027099003|10067099003|22082099003|18002099003|3023799007;
 X-Microsoft-Antispam-Message-Info:
-	ZSbG1PJ19H3hpVkBbVDJu5egueLPJznWNEu1RALkIXe7VoVr5xNDGtPSSuCZpoIOuXrYv5n13EeCHxKnyXBsJlpkBiIBkipNEqhTfMLGKSFe19zcqrGd9SJ+acIi5TsnDnDOluuvBt3ICmtqXOvUJmsaBdKxyDeF5pp7Jtf6/IRN1ULlM7Hpt0fPfy2ld4AM/KMYLH7PSHyzfXzQTm2YOEpfui7b/AItDTM45ges0QbbE6mxvjexCDJisld04/mbGqdX5zmSRs7hRRs4tCzpIi5lvwTNz4k8yLTM9KZobJgTXdRm36TXtmf384lqNKQ4qmMsV/0uIYsl9dyf+KenyyHtb7h3AxrIMVwd1sbeXdSWlB9IyZZiK10mhf/kwmuZQpN2n6JWPb4PpYmJmuscVWwQHz7XGdA/oHggQJfsHPB46tIZE0jY1JQqOzRP6NPK2wfWMw+eJgsm13f4j4D5/HnI7DOV8Ms4PNuSPw5gUfxy5+eLjGuuQqROd+0KRdwp2EBECvjNQK6dcM32Xg5a7Lt1vfbhNiTxew9YbIkF45fZ9IHzE0Wa6Ok4X/Icqyf1
+	fVathF7Mv81xkMNG5+9LeiEuf+DOn10soWR8O9HLVWfh4dQoKL9QLALo8oy6pFkMwpufpFy2Y/nyoBCgNnyGtIfJTCoM7qdWxUpwKLNQM0ZC/BqfqO+Hg2GuS4+IKFnlnCC9HQuJVssTt5JugDdUvegOaAjM/Id0VjM/Xor92Nl3rEGg7QwmHYuX2YMUh3frSiZ/LBzV7jckCxbBgPBVeAXO5OW4yNRNcmbgklgThLRB/vJMBzBo/+eGRVQ8FFekWaGc7fE2MRhVNCK8S1YZkpehiJcJEj80H6aIRZjMa5ltWlgeqa2KaWWi7d+uEpfRbXB81GM8hs0S+4n/UsUAVIFE1x73CV9q/uVkJGcgMynx0luoQJff/RFB9lXJvmbbboYF4V0cpRsAGTWeu/Ec4JMfDGZrCn8fPTVUynekQuDvIluU0poZQiaFhYDVJ5xKb9COk4rmGFpM0tnbLYkgoseXtxmU0ppahkNNpuFQ40FDJf54AtzL7zhBwwW350gH2gbitj3oxqWiNi18DjCaHwcnlVxcqxmZHbayAs21cu8DzKWIDxlQEd46pCfz4DGB
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(23010399003)(366016)(1800799024)(261026135527099003)(261026140227099003)(261026130827099003)(38350700014)(5023799004)(56012099006)(261026121527099003)(261021123027099003)(261021121427099003)(261021135927099003)(261022113327099003)(261022075727099003)(261022115727099003)(261021133027099003)(261009223027099003)(261022105027099003)(10067099003)(261021130227099003)(22082099003)(18002099003)(3023799007)(6133799003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(23010399003)(366016)(1800799024)(261026140227099003)(38350700014)(56012099006)(261026121527099003)(261021123027099003)(261021121427099003)(261022075727099003)(261022115727099003)(261009223027099003)(261022105027099003)(10067099003)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?jPU4ZhvfKaRIkrKvQ/gqOZpDK8tRUKC+Vst/e3NYbgPbDEBQUxAJYlS9pd2N?=
- =?us-ascii?Q?f7eAGAAJFUEboeJ2dcaWy+pLX7WRUH3MgcANYcOMiQjkjLdtAosy0AQTwfwE?=
- =?us-ascii?Q?peJGaon+X4criXm0tj54sRHKm9rLTejtEiNqSXbfyhd8quhuWU2W9g7djbyZ?=
- =?us-ascii?Q?L6FYV124mHEenw0sqyXsA0330wfQ7/by2e3d/4zNCpMc61GQq/ktGMmPiBTJ?=
- =?us-ascii?Q?bnHRLhgSNWFk4NuhYUHedem7mLYQHCZMZwOqBXgRsLLweb3Uf4ENQntM0BIh?=
- =?us-ascii?Q?XUuUtzSLBBOd2aW/au7sBPdxeXJ/kpvYXnE4iE0xxvM/HApcqVODqiL2K+ng?=
- =?us-ascii?Q?icHYDiCN8J9oBCeLf+jvxdmvx6GBWfGluNaJ4ekfPd1vdULXaeXX7vNItzUY?=
- =?us-ascii?Q?VJinEZDd6NwF2FR3D7XpwqrL4VKUg5389Z5stTRPFFafzF5GuEvHi1IYhZO0?=
- =?us-ascii?Q?DZso/drcwfIS8ylY3Koy/C8HpMNN89M6Ou+yxBlzFiUol4gs+eoM6XC0HlWM?=
- =?us-ascii?Q?aoSvXTx8y4GgBnvwmxOeMux0ntBpBeFES9EvnCmpY0+MjzoElF31EBg+JPsV?=
- =?us-ascii?Q?2kSzAq3JMMp39azW2dhx89uOXocpUipTidjatGAEd+Bt76cx/EHSVcmH4WE/?=
- =?us-ascii?Q?tacrq8UcgbRsWp2vXt+4hXtwSEQflzeSucRVDNFnISJwFVqISpUg/I51IFh+?=
- =?us-ascii?Q?ybdoWOH5UCQ6eP4WTo4KQLHJkTLCW9yh+1hKcHmxK8Y/U7zTS/yvIhfKhdyl?=
- =?us-ascii?Q?IXfLiMbyXCGaHDBIFu+GJEQsroaHrZRaYKVI+nQ4pfGBgqsCqkZH/U9oKyX+?=
- =?us-ascii?Q?OuBglpmPU4kp0KYyhpcYo3wL1lQLUpAODXhenbN8lvli9bo5m6JbrC+3TQ3t?=
- =?us-ascii?Q?G2RKg/j2BjhsG5+IpV2Xqd/I3mG4XFYS4W+t9RhWUJwjsMiCCpVPFVLqkfur?=
- =?us-ascii?Q?3HjNz9XFoo5oq+/cCEXDDBTBH9ftccSNUXDJBWNCRM6BOiasDOt0ZaADTj1U?=
- =?us-ascii?Q?/H6HZHrEoozsFXKJL/9d6XAH/9hyDujsPxgO0DHp7PYbjIW07zkPjb+akpQs?=
- =?us-ascii?Q?GFpPrDTowteo8Fhi5k752jJCJk/urKTwHlHbPcbjaAzhMOexdx/LDk/wSUJx?=
- =?us-ascii?Q?3AxTbz+yo8Zw4wCOMGxhkMHBUUKI3y+fA1o8TTSqgd2RxPeM0QHQG7TttxgD?=
- =?us-ascii?Q?kPdwb3FLCIirT8Ttqd35/anAmyf7QRziavm5rrvP78Dv3zX8wo6W8gBRfr6n?=
- =?us-ascii?Q?Eszqpy/1x/xSv9Sn/lPlC1ESfLc49r71pDS2fDtOB8+8a4eZJFHAXA3MinK/?=
- =?us-ascii?Q?aCmvbWSQM7b8XU2CkMcEuPixwzVzhzRXxe+c5g/86/Hk5QG8PouTJ+7F6HGz?=
- =?us-ascii?Q?z3mxlSQ+vMPQzPv3gRjySXd9xztpsunGduLWM0GMeMjC8FxnfofGhaPumja5?=
- =?us-ascii?Q?IoDqX6nEfcARjOOKtVShXkQz0hiBj6iLsupL0jF31toOPquj3EXElxI2MhCX?=
- =?us-ascii?Q?Ah0AoyPDZm3nhtENPh/ISZSlZw14NOcE7YfH0HZXHyJ1XxKEGvjrgp0p0Yei?=
- =?us-ascii?Q?nvMdozKwQvHdZkZm4UlLFZeSbYyRBAhHX2Kw9EuI1nsUHCxQaFN3Y65D0tM9?=
- =?us-ascii?Q?GzzphRwK1tychSldVpYJwX9AlnAb8r7gG2bEuMf3UAvKcmeKyyCzuQEjVCIv?=
- =?us-ascii?Q?S6T2PWud928wfVL1JHYnew5v3J32o+/c+LeSqXHjaI2ajkD2m0Ga9NYdBaT8?=
- =?us-ascii?Q?JcdYgDpcRw=3D=3D?=
+	=?us-ascii?Q?ofgrp8TgMAHPd/PR5PjIEBezTdttD4HmaahnlAA+jA/e8P60Tvzxrs9aOIsd?=
+ =?us-ascii?Q?CtkD45lJNOwg5fRgeDg+gJJfAgtfFoq1nV8iXcoUQEQs3BXsshmEFLjZiF3Z?=
+ =?us-ascii?Q?ybHHGP9d2ZB4SqLgxQCj0lRFlG7xGtYTBsF69vnNmjJVa/mEByYHwm0f3yfL?=
+ =?us-ascii?Q?7bxXHpJlYgpfUTrH/skcJZx3eky2uJ0jNNMlwzwze1F8EGfWHYKCSZF2es7K?=
+ =?us-ascii?Q?qtSX5rmR5h5THX5JR1XMVWGVdSeyX5CPC8PdEQT8URQmnZHRh8y+cTa5qDZY?=
+ =?us-ascii?Q?fY/2NyrrOsZa6K7yZ5N7L/X7XisOuOhSMdxjgTGVe4f4Tdh8hU4jYRFcNqzE?=
+ =?us-ascii?Q?Kwvfy5fXjlKCMBGPmUyvAjOKGnGzn0t0FmkL6jJF7Hk8TNripi9rmsv/0r5E?=
+ =?us-ascii?Q?eDQCl06L5XvFpJIIHwjSFnzqvTEA29Zn8KbuQhawHgkLzeae0NChxPYCfR5G?=
+ =?us-ascii?Q?lqJHa/Sefm5uzackPvqsYqFa/nnDaOV5k1FqWZmLcVHkbVLQj5ZaEJi98jVr?=
+ =?us-ascii?Q?3my5iAW//MOSj8FBOzAvypjqWrgPV0c+0fRZtC6Il1o3u0l5TH3qVjdO9ori?=
+ =?us-ascii?Q?abq+u/wPwRikqqghhstf8WFYXygqS5hEUUdXHqmjCxKj7Wz8rHbRz2S21ISk?=
+ =?us-ascii?Q?GESX6HH576pSG8gFleR5HZ+YCh1b98/5oOmKBrodYAEI98NjwrBQcbJD80aP?=
+ =?us-ascii?Q?HbxlMgdYfupMpScwMK3zVnntqnWdX6CioFPOIIU6tZyydVgpHAuIsDA68tdG?=
+ =?us-ascii?Q?d8/r8KtboUgGJGlt3lObDl8ighS17AoMvmFJtXSKaKSE8mJYkQDsaDFyks98?=
+ =?us-ascii?Q?U0GaDrBpgId1JIqeZfLXa9QvTH22Eo7fsJaw2jPATT8+J44RCauVWFpdpXy0?=
+ =?us-ascii?Q?qsps8Vl6C3ra/+OSLZX83mizDq/c7IovBk9opC2CeJ64tM9VbKYf6yf3ogOR?=
+ =?us-ascii?Q?v+Kgxw9rFzWZvlihOPwG1bxes+dkCozqXhwSw6eh4pnKeLPWOymTp89o6CaI?=
+ =?us-ascii?Q?CvayAdS0Bb5hhDs/MYgKWFuc6PhUuSEWVcwc0LIscZ+oO6VelQfbDCknqV7N?=
+ =?us-ascii?Q?eW8SBF3d2S6DP1eyZel9WL4n6gdP6gbNeeN3Gpvgdhr1Jp1uzpqnxuOCkY/A?=
+ =?us-ascii?Q?YxPTMckr3OnZH2AkQNLZP6vJRO3Lf0QiEGWd4gGtXwjEw/tMMCSHzEpcjzjf?=
+ =?us-ascii?Q?BC4kj6Pi0KNYp7lduwpW6gHjJfDecJIQFVAyEptPXekmUD80s9GtX1Edsmri?=
+ =?us-ascii?Q?LwMMJGiP7G26+ZBu9HygKymLrhKVnl4MEIszItDk6+j6YQhFuzkEXXWd81bM?=
+ =?us-ascii?Q?k4+/SLtMsewNgFOuSsUAEioYGRz53wUGFGDmskbLnPCzLlF5fiMyDT5ZAnTD?=
+ =?us-ascii?Q?qAfv1BjzEeva6YfXZO4FPZDUX7HO3PHQnVWnpmSmJdimaJOj2waAMDGJI5zU?=
+ =?us-ascii?Q?wDkoYzZFkxg4uh4/X+6KJ9bg3GtE4gSQjShkico0oypkRNJFE1TQtVtD9peg?=
+ =?us-ascii?Q?O7bFvNHdvpxMPXli+mFpBEk2ww3aYCw+EnwikltQY9I1L7seTs+cHbvlqaCS?=
+ =?us-ascii?Q?r2vK30wLbgjq6S00hnzlsj54FwAuhDOpIXVQ0tBBfUjoXZ4JjNe9cito3HM/?=
+ =?us-ascii?Q?p++kXtvzERpi+ugUx7+jDPh0iRedX8m51MpX2s+rl6/ceyjLetVmzqRJ68bi?=
+ =?us-ascii?Q?oYIBZ5Z92ByVsbf7SbT5mhXB+AmMY0whj5FyJrRsEQiCNKXsg2KR56J09Ljp?=
+ =?us-ascii?Q?VzOm/FM32w=3D=3D?=
 X-OriginatorOrg: deeproute.ai
-X-MS-Exchange-CrossTenant-Network-Message-Id: f26f83d7-08b0-4412-5f3d-08df34c1f891
+X-MS-Exchange-CrossTenant-Network-Message-Id: ef2eb59e-5e42-4206-8c6e-08df34c1fb2a
 X-MS-Exchange-CrossTenant-AuthSource: ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2026 07:06:21.5166
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2026 07:06:25.7994
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: df535b4a-68e6-4339-a092-afa4f2c24fcc
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CHMzszfik2JDkuTxzOVu7el7RCacP0QWhUU5eP+mEeeW9sM2oOF81zrAQ+48I92Dt9+M+zbWmsUCCgUvxiabDrUPVvhuUeWwwvElBUYA75I=
+X-MS-Exchange-CrossTenant-UserPrincipalName: pt3sTnsxO/r7XL3Xh6S4PXk8o2mQFcrefnpNpXQv92siV0CxhATh6LF7f7IntE8Hg2Br5vLlTiQJICB5VztRGTHdpD0ixF1WyGXVLLhLrQ0=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQZPR01MB1042
 
 From: jingxuanxie <jingxuanxie@deeproute.ai>
 
-TPACKET_V3 waits for a ring-wide read lock before retiring a block,
-while holding sk_receive_queue.lock. A copier keeps the read lock
-after reserving a frame and dropping the queue lock. On PREEMPT_RT,
-preempting that copier can therefore delay another packet path or
-the retirement timer until the copier runs again.
+Exercise the actual private reservation, completion, retirement,
+timer, poll and ring lifecycle helpers from af_packet.c. Tests are
+built only with PACKET_KUNIT_TEST and do not export production test
+interfaces or require external packet traffic.
 
-This was investigated after an approximately 355 ms block-retirement
-wait in a real PREEMPT_RT deployment. A QEMU ARM64 SMP PREEMPT_RT
-reproducer uses test-only instrumentation to delay one outgoing
-copier after reservation, with a second sender forcing retirement.
-The unmodified retirement logic blocks the second sender. The
-instrumentation is not part of this series.
+Cover unfinished A with writable B, ordered publication after B
+finishes first, completion without subsequent traffic, both seal/copy
+orderings, multiple copiers, empty timeouts, single/two-block rings,
+exact fits, frozen USER/SEALED blocks, reuse after userspace returns
+a block, bounded publication and worker shutdown. Also cover invalid
+and valid virtio headers, V2 fallback skb cleanup, concurrent polling
+during ring creation/teardown and 65536/65537-block cursor wraparound.
 
-Track FREE, ACTIVE, SEALED and USER state per block in private
-metadata. Reserve and complete copies under the receive queue lock,
-retaining the original block reference across the unlocked copy.
-Seal a full or expired block and try the immediately following block
-without waiting. Publish sealed blocks in reservation order once
-their copies have completed. Do not reuse a sealed block merely
-because its mmap status still reads TP_STATUS_KERNEL.
-
-Limit each locked publication batch to eight blocks and continue
-ready backlogs on an unbound worker. Stop the timer and worker before
-freeing metadata. Check readiness using the last published block,
-and validate virtio headers before reserving a frame so an invalid
-header cannot strand an unfinished reservation.
-
-Tested against that reproducer with both full-block and timer
-retirement: B completes while A remains delayed, blocks are not
-published early, and sequence numbers, lengths and payload match.
-An uninstrumented QEMU guest also passes psock_tpacket and
-psock_fanout. The accompanying KUnit suite covers the state helpers.
-
-Keep the mmap layout and userspace status protocol unchanged. Ring
-exhaustion can still drop capture copies; a stalled copier no longer
-has to block retirement or copying into another available block.
-
-The block producer index must cover the full unsigned block count,
-matching the independent publication index across large rings.
+The packet-prb suite passes all 17 cases on QEMU ARM64 with four CPUs,
+PREEMPT_RT and lockdep. The same guest passes psock_tpacket and
+psock_fanout.
 
 Assisted-by: LLM
-Fixes: 632ca50f2cbd ("af_packet: TPACKET_V3: replace busy-wait loop")
 Signed-off-by: Jingxuan Xie <jingxuanxie@deeproute.ai>
 ---
- net/packet/af_packet.c | 319 +++++++++++++++++++++++++----------------
- net/packet/internal.h  |  27 +++-
- 2 files changed, 221 insertions(+), 125 deletions(-)
+ net/packet/.kunitconfig     |  10 +
+ net/packet/Kconfig          |   9 +
+ net/packet/af_packet.c      |   4 +
+ net/packet/af_packet_test.c | 649 ++++++++++++++++++++++++++++++++++++
+ 4 files changed, 672 insertions(+)
+ create mode 100644 net/packet/.kunitconfig
+ create mode 100644 net/packet/af_packet_test.c
 
+diff --git a/net/packet/.kunitconfig b/net/packet/.kunitconfig
+new file mode 100644
+index 000000000000..baed7c14b1d7
+--- /dev/null
++++ b/net/packet/.kunitconfig
+@@ -0,0 +1,10 @@
++CONFIG_KUNIT=3Dy
++CONFIG_KUNIT_AUTORUN_ENABLED=3Dy
++CONFIG_NET=3Dy
++CONFIG_INET=3Dy
++CONFIG_PACKET=3Dy
++CONFIG_PACKET_KUNIT_TEST=3Dy
++CONFIG_DEBUG_KERNEL=3Dy
++CONFIG_DEBUG_SPINLOCK=3Dy
++CONFIG_DEBUG_LOCK_ALLOC=3Dy
++CONFIG_PROVE_LOCKING=3Dy
+diff --git a/net/packet/Kconfig b/net/packet/Kconfig
+index 2997382d597c..9f7190ff31df 100644
+--- a/net/packet/Kconfig
++++ b/net/packet/Kconfig
+@@ -23,3 +23,12 @@ config PACKET_DIAG
+        help
+          Support for PF_PACKET sockets monitoring interface used by the ss=
+ tool.
+          If unsure, say Y.
++
++config PACKET_KUNIT_TEST
++       bool "KUnit tests for TPACKET_V3 block retirement" if !KUNIT_ALL_TE=
+STS
++       depends on KUNIT=3Dy && PACKET=3Dy
++       default KUNIT_ALL_TESTS
++       help
++         Test packet ring reservation, block retirement and ordered public=
+ation.
++         These tests do not register a network device or require external =
+traffic.
++         If unsure, say N.
 diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 823e0911c910..b48982059a76 100644
+index b48982059a76..b8cb477eb754 100644
 --- a/net/packet/af_packet.c
 +++ b/net/packet/af_packet.c
-@@ -197,7 +197,6 @@ static void *packet_previous_frame(struct packet_sock *=
-po,
-                struct packet_ring_buffer *rb,
-                int status);
- static void packet_increment_head(struct packet_ring_buffer *buff);
--static int prb_curr_blk_in_use(struct tpacket_block_desc *);
- static void *prb_dispatch_next_block(struct tpacket_kbdq_core *,
-                        struct packet_sock *);
- static void prb_retire_current_block(struct tpacket_kbdq_core *,
-@@ -205,6 +204,8 @@ static void prb_retire_current_block(struct tpacket_kbd=
-q_core *,
- static int prb_queue_frozen(struct tpacket_kbdq_core *);
- static void prb_open_block(struct tpacket_kbdq_core *,
-                struct tpacket_block_desc *);
-+static void prb_publish_ready(struct tpacket_kbdq_core *, struct packet_so=
-ck *);
-+static void prb_retire_work(struct work_struct *);
- static enum hrtimer_restart prb_retire_rx_blk_timer_expired(struct hrtimer=
- *);
- static void prb_fill_rxhash(struct tpacket_kbdq_core *, struct tpacket3_hd=
-r *);
- static void prb_clear_rxhash(struct tpacket_kbdq_core *,
-@@ -241,6 +242,26 @@ struct packet_skb_cb {
-        (((x)->kactive_blk_num < ((x)->knum_blocks-1)) ? \
-        ((x)->kactive_blk_num+1) : 0)
+@@ -5037,6 +5037,10 @@ static int __init packet_init(void)
 
-+#define PRB_PUBLISH_BUDGET 8
+ module_init(packet_init);
+ module_exit(packet_exit);
 +
-+static unsigned int prb_next_block(const struct tpacket_kbdq_core *pkc,
-+                                  unsigned int index)
++#if IS_ENABLED(CONFIG_PACKET_KUNIT_TEST)
++#include "af_packet_test.c"
++#endif
+ MODULE_DESCRIPTION("Packet socket support (AF_PACKET)");
+ MODULE_LICENSE("GPL");
+ MODULE_ALIAS_NETPROTO(PF_PACKET);
+diff --git a/net/packet/af_packet_test.c b/net/packet/af_packet_test.c
+new file mode 100644
+index 000000000000..ecb758e11ff6
+--- /dev/null
++++ b/net/packet/af_packet_test.c
+@@ -0,0 +1,649 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Included by af_packet.c so tests exercise the actual private helpers. *=
+/
++#include <kunit/test.h>
++#include <linux/etherdevice.h>
++#include <linux/kthread.h>
++
++struct prb_test_context {
++       struct packet_sock *po;
++       struct socket socket;
++       struct net_device *dev;
++       struct pgv *blocks;
++       unsigned int notifications;
++};
++
++static void prb_test_data_ready(struct sock *sk)
 +{
-+       return index + 1 =3D=3D pkc->knum_blocks ? 0 : index + 1;
++       struct prb_test_context *ctx =3D sk->sk_user_data;
++
++       ctx->notifications++;
 +}
 +
-+static bool prb_block_reusable(const struct tpacket_kbdq_core *pkc,
-+                              unsigned int index)
++static int prb_test_init(struct kunit *test)
 +{
-+       const struct prb_block_state *block =3D &pkc->blocks[index];
-+       struct tpacket_block_desc *pbd =3D GET_PBLOCK_DESC(pkc, index);
-+       enum prb_block_phase phase =3D READ_ONCE(block->phase);
++       struct prb_test_context *ctx;
++       union tpacket_req_u req =3D {};
++       unsigned int i;
++       int err;
 +
-+       return phase =3D=3D PRB_BLOCK_FREE ||
-+              (phase =3D=3D PRB_BLOCK_USER &&
-+               !(READ_ONCE(BLOCK_STATUS(pbd)) & TP_STATUS_USER));
-+}
-+
- static void __fanout_unlink(struct sock *sk, struct packet_sock *po);
- static void __fanout_link(struct sock *sk, struct packet_sock *po);
-
-@@ -595,7 +616,11 @@ static void prb_shutdown_retire_blk_timer(struct packe=
-t_sock *po,
-        struct tpacket_kbdq_core *pkc;
-
-        pkc =3D GET_PBDQC_FROM_RB(&po->rx_ring);
-+       spin_lock_bh(&rb_queue->lock);
-+       pkc->retire_shutdown =3D true;
-+       spin_unlock_bh(&rb_queue->lock);
-        hrtimer_cancel(&pkc->retire_blk_timer);
-+       cancel_work_sync(&pkc->retire_work);
- }
-
- static int prb_calc_retire_blk_tmo(struct packet_sock *po,
-@@ -641,15 +666,22 @@ static void prb_init_ft_ops(struct tpacket_kbdq_core =
-*p1,
-        p1->feature_req_word =3D req_u->req3.tp_feature_req_word;
- }
-
--static void init_prb_bdqc(struct packet_sock *po,
--                       struct packet_ring_buffer *rb,
--                       struct pgv *pg_vec,
--                       union tpacket_req_u *req_u)
-+static int init_prb_bdqc(struct packet_sock *po,
-+                        struct packet_ring_buffer *rb,
-+                        struct pgv *pg_vec,
-+                        union tpacket_req_u *req_u)
- {
-        struct tpacket_kbdq_core *p1 =3D GET_PBDQC_FROM_RB(rb);
-        struct tpacket_block_desc *pbd;
-+       struct prb_block_state *blocks;
-+
-+       blocks =3D kvcalloc(req_u->req3.tp_block_nr, sizeof(*blocks), GFP_K=
-ERNEL);
-+       if (!blocks)
++       ctx =3D kunit_kzalloc(test, sizeof(*ctx), GFP_KERNEL);
++       if (!ctx)
 +               return -ENOMEM;
-
-        memset(p1, 0x0, sizeof(*p1));
-+       p1->blocks =3D blocks;
-+       INIT_WORK(&p1->retire_work, prb_retire_work);
-
-        p1->knxt_seq_num =3D 1;
-        p1->pkbdq =3D pg_vec;
-@@ -666,15 +698,15 @@ static void init_prb_bdqc(struct packet_sock *po,
-                p1->interval_ktime =3D ms_to_ktime(prb_calc_retire_blk_tmo(=
-po,
-                                                 req_u->req3.tp_block_size)=
++       test->priv =3D ctx;
++       ctx->po =3D kunit_kzalloc(test, sizeof(*ctx->po), GFP_KERNEL);
++       ctx->blocks =3D kunit_kcalloc(test, 16, sizeof(*ctx->blocks), GFP_K=
+ERNEL);
++       if (!ctx->po || !ctx->blocks)
++               return -ENOMEM;
++       for (i =3D 0; i < 16; i++) {
++               ctx->blocks[i].buffer =3D kunit_kzalloc(test, PAGE_SIZE, GF=
+P_KERNEL);
++               if (!ctx->blocks[i].buffer)
++                       return -ENOMEM;
++       }
++       ctx->dev =3D alloc_netdev(0, "prb%d", NET_NAME_UNKNOWN, ether_setup=
 );
-        p1->blk_sizeof_priv =3D req_u->req3.tp_sizeof_priv;
--       rwlock_init(&p1->blk_fill_in_prog_lock);
-
-        p1->max_frame_len =3D p1->kblk_size - BLK_PLUS_PRIV(p1->blk_sizeof_=
-priv);
-        prb_init_ft_ops(p1, req_u);
-        hrtimer_setup(&p1->retire_blk_timer, prb_retire_rx_blk_timer_expire=
-d,
-                      CLOCK_MONOTONIC, HRTIMER_MODE_REL_SOFT);
-+       prb_open_block(p1, pbd);
-        hrtimer_start(&p1->retire_blk_timer, p1->interval_ktime,
-                      HRTIMER_MODE_REL_SOFT);
--       prb_open_block(p1, pbd);
++       if (!ctx->dev)
++               return -ENOMEM;
++       dev_net_set(ctx->dev, &init_net);
++       sock_net_set(&ctx->po->sk, &init_net);
++       ctx->socket.type =3D SOCK_RAW;
++       init_waitqueue_head(&ctx->socket.wq.wait);
++       sock_init_data_uid(&ctx->socket, &ctx->po->sk, GLOBAL_ROOT_UID);
++       ctx->po->sk.sk_type =3D SOCK_RAW;
++       ctx->po->sk.sk_user_data =3D ctx;
++       ctx->po->sk.sk_data_ready =3D prb_test_data_ready;
++       ctx->po->prot_hook.func =3D tpacket_rcv;
++       ctx->po->prot_hook.af_packet_priv =3D &ctx->po->sk;
++       ctx->po->tp_version =3D TPACKET_V3;
++       ctx->po->tp_hdrlen =3D TPACKET3_HDRLEN;
++       ctx->po->rx_ring.pg_vec =3D ctx->blocks;
++       req.req3.tp_block_size =3D PAGE_SIZE;
++       req.req3.tp_block_nr =3D 16;
++       req.req3.tp_retire_blk_tov =3D 60000;
++       err =3D init_prb_bdqc(ctx->po, &ctx->po->rx_ring, ctx->blocks, &req=
+);
++       if (err) {
++               free_netdev(ctx->dev);
++               return err;
++       }
++       hrtimer_cancel(&ctx->po->rx_ring.prb_bdqc.retire_blk_timer);
 +       return 0;
- }
-
- /*
-@@ -697,36 +729,24 @@ static enum hrtimer_restart prb_retire_rx_blk_timer_e=
-xpired(struct hrtimer *t)
-        struct tpacket_block_desc *pbd;
-
-        spin_lock(&po->sk.sk_receive_queue.lock);
-+       if (pkc->retire_shutdown) {
-+               spin_unlock(&po->sk.sk_receive_queue.lock);
-+               return HRTIMER_NORESTART;
-+       }
-
-        frozen =3D prb_queue_frozen(pkc);
-        pbd =3D GET_CURR_PBLOCK_DESC_FROM_CORE(pkc);
-
--       /* We only need to plug the race when the block is partially filled=
-.
--        * tpacket_rcv:
--        *              lock(); increment BLOCK_NUM_PKTS; unlock()
--        *              copy_bits() is in progress ...
--        *              timer fires on other cpu:
--        *              we can't retire the current block because copy_bits
--        *              is in progress.
--        *
--        */
--       if (BLOCK_NUM_PKTS(pbd)) {
--               /* Waiting for skb_copy_bits to finish... */
--               write_lock(&pkc->blk_fill_in_prog_lock);
--               write_unlock(&pkc->blk_fill_in_prog_lock);
--       }
--
-        if (!frozen) {
--               if (BLOCK_NUM_PKTS(pbd)) {
-+               if (pkc->blocks[pkc->kactive_blk_num].phase =3D=3D PRB_BLOC=
-K_ACTIVE &&
-+                   BLOCK_NUM_PKTS(pbd)) {
-                        /* Not an empty block. Need retire the block. */
-                        prb_retire_current_block(pkc, po, TP_STATUS_BLK_TMO=
-);
-                        prb_dispatch_next_block(pkc, po);
-                }
-        } else {
--               /* Case 1. Queue was frozen because user-space was
--                * lagging behind.
--                */
--               if (!prb_curr_blk_in_use(pbd)) {
-+               /* A USER or SEALED block can block the write cursor. */
-+               if (prb_block_reusable(pkc, pkc->kactive_blk_num)) {
-                        /* Case 2. queue was frozen,user-space caught up,
-                         * now the link went idle && the timer fired.
-                         * We don't have a block to close.So we open this
-@@ -756,7 +776,7 @@ static void prb_flush_block(struct tpacket_kbdq_core *p=
-kc1,
-        /* Skip the block header(we know header WILL fit in 4K) */
-        start +=3D PAGE_SIZE;
-
--       end =3D (u8 *)PAGE_ALIGN((unsigned long)pkc1->pkblk_end);
-+       end =3D (u8 *)PAGE_ALIGN((unsigned long)pbd1 + pkc1->kblk_size);
-        for (; start < end; start +=3D PAGE_SIZE)
-                flush_dcache_page(pgv_to_page(start));
-
-@@ -777,15 +797,7 @@ static void prb_flush_block(struct tpacket_kbdq_core *=
-pkc1,
- #endif
- }
-
--/*
-- * Side effect:
-- *
-- * 1) flush the block
-- * 2) Increment active_blk_num
-- *
-- * Note:We DONT refresh the timer on purpose.
-- *     Because almost always the next block will be opened.
-- */
-+/* The write cursor has moved on; publish using this block's saved metadat=
-a. */
- static void prb_close_block(struct tpacket_kbdq_core *pkc1,
-                struct tpacket_block_desc *pbd1,
-                struct packet_sock *po, unsigned int stat)
-@@ -799,7 +811,7 @@ static void prb_close_block(struct tpacket_kbdq_core *p=
-kc1,
-        if (atomic_read(&po->tp_drops))
-                status |=3D TP_STATUS_LOSING;
-
--       last_pkt =3D (struct tpacket3_hdr *)pkc1->prev;
-+       last_pkt =3D pkc1->blocks[pkc1->publish_blk_num].last_pkt;
-        last_pkt->tp_next_offset =3D 0;
-
-        /* Get the ts of the last pkt */
-@@ -824,8 +836,61 @@ static void prb_close_block(struct tpacket_kbdq_core *=
-pkc1,
-        prb_flush_block(pkc1, pbd1, status);
-
-        sk->sk_data_ready(sk);
 +}
 +
-+static bool prb_publishable(const struct tpacket_kbdq_core *pkc)
++static void prb_test_exit(struct kunit *test)
 +{
-+       const struct prb_block_state *block;
++       struct prb_test_context *ctx =3D test->priv;
 +
-+       if (!pkc->sealed_blocks || pkc->retire_shutdown)
-+               return false;
-+       block =3D &pkc->blocks[pkc->publish_blk_num];
-+       return block->phase =3D=3D PRB_BLOCK_SEALED && !block->in_flight;
-+}
-
--       pkc1->kactive_blk_num =3D GET_NEXT_PRB_BLK_NUM(pkc1);
-+/* Caller holds the receive-queue lock; never wait for an unfinished copy.=
- */
-+static bool prb_publish_batch(struct tpacket_kbdq_core *pkc,
-+                             struct packet_sock *po)
-+{
-+       unsigned int budget =3D PRB_PUBLISH_BUDGET;
-+
-+       lockdep_assert_held(&po->sk.sk_receive_queue.lock);
-+       while (budget-- && prb_publishable(pkc)) {
-+               unsigned int index =3D pkc->publish_blk_num;
-+               struct prb_block_state *block =3D &pkc->blocks[index];
-+               struct tpacket_block_desc *pbd =3D GET_PBLOCK_DESC(pkc, ind=
-ex);
-+
-+               prb_close_block(pkc, pbd, po, block->retire_status);
-+               WRITE_ONCE(block->phase, PRB_BLOCK_USER);
-+               pkc->last_published =3D index;
-+               pkc->has_published =3D true;
-+               pkc->publish_blk_num =3D prb_next_block(pkc, index);
-+               pkc->sealed_blocks--;
-+       }
-+       return prb_publishable(pkc);
++       prb_shutdown_retire_blk_timer(ctx->po, &ctx->po->sk.sk_receive_queu=
+e);
++       kvfree(ctx->po->rx_ring.prb_bdqc.blocks);
++       free_netdev(ctx->dev);
 +}
 +
-+static void prb_publish_ready(struct tpacket_kbdq_core *pkc,
-+                             struct packet_sock *po)
++static void prb_test_invalid_vnet_does_not_reserve(struct kunit *test)
 +{
-+       if (prb_publish_batch(pkc, po))
-+               queue_work(system_dfl_wq, &pkc->retire_work);
++       struct prb_test_context *ctx =3D test->priv;
++       struct tpacket_block_desc *pbd =3D (void *)ctx->blocks[0].buffer;
++       struct sk_buff *skb =3D alloc_skb(128, GFP_KERNEL);
++
++       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, skb);
++       skb_put_zero(skb, 64);
++       skb_reset_mac_header(skb);
++       skb_reset_network_header(skb);
++       skb->dev =3D ctx->dev;
++       skb->protocol =3D htons(ETH_P_IP);
++       skb_shinfo(skb)->gso_size =3D 32;
++       skb_shinfo(skb)->gso_type =3D SKB_GSO_DODGY;
++       ctx->po->vnet_hdr_sz =3D sizeof(struct virtio_net_hdr);
++       tpacket_rcv(skb, ctx->dev, &ctx->po->prot_hook, ctx->dev);
++       KUNIT_EXPECT_EQ(test, BLOCK_NUM_PKTS(pbd), 0U);
++       KUNIT_EXPECT_EQ(test, BLOCK_LEN(pbd), (u32)BLK_PLUS_PRIV(0));
++       KUNIT_EXPECT_EQ(test, atomic_read(&ctx->po->tp_drops), 1);
 +}
 +
-+static void prb_retire_work(struct work_struct *work)
++struct prb_test_copy {
++       struct prb_block_state *block;
++       struct tpacket3_hdr *hdr;
++};
++
++static struct prb_test_copy prb_test_reserve(struct prb_test_context *ctx,
++                                            unsigned int length)
 +{
-+       struct tpacket_kbdq_core *pkc =3D
-+               container_of(work, struct tpacket_kbdq_core, retire_work);
-+       struct packet_sock *po =3D
-+               container_of(pkc, struct packet_sock, rx_ring.prb_bdqc);
-+       bool more;
++       struct tpacket_kbdq_core *pkc =3D &ctx->po->rx_ring.prb_bdqc;
++       struct prb_test_copy copy =3D {};
++       struct sk_buff skb =3D {};
 +
-+       do {
-+               spin_lock_bh(&po->sk.sk_receive_queue.lock);
-+               more =3D prb_publish_batch(pkc, po);
-+               spin_unlock_bh(&po->sk.sk_receive_queue.lock);
-+               cond_resched();
-+       } while (more);
- }
-
- static void prb_thaw_queue(struct tpacket_kbdq_core *pkc)
-@@ -852,6 +917,7 @@ static void prb_open_block(struct tpacket_kbdq_core *pk=
-c1,
- {
-        struct timespec64 ts;
-        struct tpacket_hdr_v1 *h1 =3D &pbd1->hdr.bh1;
-+       struct prb_block_state *block =3D &pkc1->blocks[pkc1->kactive_blk_n=
-um];
-
-        smp_rmb();
-
-@@ -877,6 +943,10 @@ static void prb_open_block(struct tpacket_kbdq_core *p=
-kc1,
-        pbd1->version =3D pkc1->version;
-        pkc1->prev =3D pkc1->nxt_offset;
-        pkc1->pkblk_end =3D pkc1->pkblk_start + pkc1->kblk_size;
-+       block->in_flight =3D 0;
-+       block->last_pkt =3D NULL;
-+       block->retire_status =3D 0;
-+       WRITE_ONCE(block->phase, PRB_BLOCK_ACTIVE);
-
-        prb_thaw_queue(pkc1);
-
-@@ -932,7 +1002,7 @@ static void *prb_dispatch_next_block(struct tpacket_kb=
-dq_core *pkc,
-        pbd =3D GET_CURR_PBLOCK_DESC_FROM_CORE(pkc);
-
-        /* 2. If this block is currently in_use then freeze the queue */
--       if (TP_STATUS_USER & BLOCK_STATUS(pbd)) {
-+       if (!prb_block_reusable(pkc, pkc->kactive_blk_num)) {
-                prb_freeze_queue(pkc, po);
-                return NULL;
-        }
-@@ -950,31 +1020,19 @@ static void prb_retire_current_block(struct tpacket_=
-kbdq_core *pkc,
-                struct packet_sock *po, unsigned int status)
- {
-        struct tpacket_block_desc *pbd =3D GET_CURR_PBLOCK_DESC_FROM_CORE(p=
-kc);
-+       struct prb_block_state *block =3D &pkc->blocks[pkc->kactive_blk_num=
-];
-
--       /* retire/close the current block */
--       if (likely(TP_STATUS_KERNEL =3D=3D BLOCK_STATUS(pbd))) {
--               /*
--                * Plug the case where copy_bits() is in progress on
--                * cpu-0 and tpacket_rcv() got invoked on cpu-1, didn't
--                * have space to copy the pkt in the current block and
--                * called prb_retire_current_block()
--                *
--                * We don't need to worry about the TMO case because
--                * the timer-handler already handled this case.
--                */
--               if (!(status & TP_STATUS_BLK_TMO)) {
--                       /* Waiting for skb_copy_bits to finish... */
--                       write_lock(&pkc->blk_fill_in_prog_lock);
--                       write_unlock(&pkc->blk_fill_in_prog_lock);
--               }
--               prb_close_block(pkc, pbd, po, status);
-+       lockdep_assert_held(&po->sk.sk_receive_queue.lock);
-+       if (block->phase !=3D PRB_BLOCK_ACTIVE || !BLOCK_NUM_PKTS(pbd))
-                return;
--       }
--}
--
--static int prb_curr_blk_in_use(struct tpacket_block_desc *pbd)
--{
--       return TP_STATUS_USER & BLOCK_STATUS(pbd);
-+       block->last_pkt =3D (struct tpacket3_hdr *)pkc->prev;
-+       block->retire_status =3D status;
-+       WRITE_ONCE(block->phase, PRB_BLOCK_SEALED);
-+       if (!pkc->sealed_blocks)
-+               pkc->publish_blk_num =3D pkc->kactive_blk_num;
-+       pkc->sealed_blocks++;
-+       pkc->kactive_blk_num =3D GET_NEXT_PRB_BLK_NUM(pkc);
-+       prb_publish_ready(pkc, po);
- }
-
- static int prb_queue_frozen(struct tpacket_kbdq_core *pkc)
-@@ -982,12 +1040,17 @@ static int prb_queue_frozen(struct tpacket_kbdq_core=
- *pkc)
-        return pkc->reset_pending_on_curr_blk;
- }
-
--static void prb_clear_blk_fill_status(struct packet_ring_buffer *rb)
--       __releases(&pkc->blk_fill_in_prog_lock)
-+static void prb_complete_copy(struct packet_sock *po,
-+                             struct prb_block_state *block)
- {
--       struct tpacket_kbdq_core *pkc  =3D GET_PBDQC_FROM_RB(rb);
-+       struct tpacket_kbdq_core *pkc =3D GET_PBDQC_FROM_RB(&po->rx_ring);
-
--       read_unlock(&pkc->blk_fill_in_prog_lock);
-+       lockdep_assert_held(&po->sk.sk_receive_queue.lock);
-+       if (WARN_ON_ONCE(!block->in_flight))
-+               return;
-+       block->in_flight--;
-+       if (!block->in_flight)
-+               prb_publish_ready(pkc, po);
- }
-
- static void prb_fill_rxhash(struct tpacket_kbdq_core *pkc,
-@@ -1038,7 +1101,6 @@ static void prb_fill_curr_block(char *curr,
-                                struct tpacket_kbdq_core *pkc,
-                                struct tpacket_block_desc *pbd,
-                                unsigned int len)
--       __acquires(&pkc->blk_fill_in_prog_lock)
- {
-        struct tpacket3_hdr *ppd;
-
-@@ -1048,7 +1110,7 @@ static void prb_fill_curr_block(char *curr,
-        pkc->nxt_offset +=3D TOTAL_PKT_LEN_INCL_ALIGN(len);
-        BLOCK_LEN(pbd) +=3D TOTAL_PKT_LEN_INCL_ALIGN(len);
-        BLOCK_NUM_PKTS(pbd) +=3D 1;
--       read_lock(&pkc->blk_fill_in_prog_lock);
-+       pkc->blocks[pkc->kactive_blk_num].in_flight++;
-        prb_run_all_ft_ops(pkc, ppd);
- }
-
-@@ -1065,13 +1127,13 @@ static void *__packet_lookup_frame_in_block(struct =
-packet_sock *po,
-        pkc =3D GET_PBDQC_FROM_RB(&po->rx_ring);
-        pbd =3D GET_CURR_PBLOCK_DESC_FROM_CORE(pkc);
-
--       /* Queue is frozen when user space is lagging behind */
-+       /* The next block may belong to userspace or an unfinished copier. =
-*/
-        if (prb_queue_frozen(pkc)) {
-                /*
-                 * Check if that last block which caused the queue to freez=
-e,
--                * is still in_use by user-space.
-+                * is still owned by userspace or has pending publication.
-                 */
--               if (prb_curr_blk_in_use(pbd)) {
-+               if (!prb_block_reusable(pkc, pkc->kactive_blk_num)) {
-                        /* Can't record this packet */
-                        return NULL;
-                } else {
-@@ -1091,7 +1153,7 @@ static void *__packet_lookup_frame_in_block(struct pa=
-cket_sock *po,
-        end =3D (char *)pbd + pkc->kblk_size;
-
-        /* first try the current block */
--       if (curr+TOTAL_PKT_LEN_INCL_ALIGN(len) < end) {
-+       if (curr + TOTAL_PKT_LEN_INCL_ALIGN(len) <=3D end) {
-                prb_fill_curr_block(curr, pkc, pbd, len);
-                return (void *)curr;
-        }
-@@ -1134,36 +1196,20 @@ static void *packet_current_rx_frame(struct packet_=
-sock *po,
-        }
- }
-
--static void *prb_lookup_block(const struct packet_sock *po,
--                             const struct packet_ring_buffer *rb,
--                             unsigned int idx,
--                             int status)
--{
--       struct tpacket_kbdq_core *pkc  =3D GET_PBDQC_FROM_RB(rb);
--       struct tpacket_block_desc *pbd =3D GET_PBLOCK_DESC(pkc, idx);
--
--       if (status !=3D BLOCK_STATUS(pbd))
--               return NULL;
--       return pbd;
--}
--
--static int prb_previous_blk_num(struct packet_ring_buffer *rb)
--{
--       unsigned int prev;
--       if (rb->prb_bdqc.kactive_blk_num)
--               prev =3D rb->prb_bdqc.kactive_blk_num-1;
--       else
--               prev =3D rb->prb_bdqc.knum_blocks-1;
--       return prev;
--}
--
- /* Assumes caller has held the rx_queue.lock */
- static void *__prb_previous_block(struct packet_sock *po,
-                                         struct packet_ring_buffer *rb,
-                                         int status)
- {
--       unsigned int previous =3D prb_previous_blk_num(rb);
--       return prb_lookup_block(po, rb, previous, status);
-+       struct tpacket_kbdq_core *pkc =3D &rb->prb_bdqc;
-+       struct tpacket_block_desc *pbd;
++       spin_lock_bh(&ctx->po->sk.sk_receive_queue.lock);
++       copy.hdr =3D __packet_lookup_frame_in_block(ctx->po, &skb, length);
++       if (copy.hdr)
++               copy.block =3D &pkc->blocks[pkc->kactive_blk_num];
++       spin_unlock_bh(&ctx->po->sk.sk_receive_queue.lock);
++       return copy;
++}
 +
-+       if (!pkc->has_published)
-+               return NULL;
-+       pbd =3D GET_PBLOCK_DESC(pkc, pkc->last_published);
-+       if ((READ_ONCE(BLOCK_STATUS(pbd)) & TP_STATUS_USER) !=3D status)
-+               return NULL;
-+       return pbd;
- }
-
- static void *packet_previous_rx_frame(struct packet_sock *po,
-@@ -1265,15 +1311,20 @@ static bool __tpacket_has_room(const struct packet_=
-sock *po, int pow_off)
-
- static bool __tpacket_v3_has_room(const struct packet_sock *po, int pow_of=
-f)
- {
-+       const struct tpacket_kbdq_core *pkc =3D &po->rx_ring.prb_bdqc;
-        int idx, len;
-
--       len =3D READ_ONCE(po->rx_ring.prb_bdqc.knum_blocks);
--       idx =3D READ_ONCE(po->rx_ring.prb_bdqc.kactive_blk_num);
-+       len =3D READ_ONCE(pkc->knum_blocks);
-+       idx =3D READ_ONCE(pkc->kactive_blk_num);
-+       if (READ_ONCE(pkc->blocks[idx].phase) !=3D PRB_BLOCK_ACTIVE &&
-+           !prb_block_reusable(pkc, idx))
-+               return false;
-        if (pow_off)
-                idx +=3D len >> pow_off;
-        if (idx >=3D len)
-                idx -=3D len;
--       return prb_lookup_block(po, &po->rx_ring, idx, TP_STATUS_KERNEL);
-+       return READ_ONCE(pkc->blocks[idx].phase) =3D=3D PRB_BLOCK_ACTIVE ||
-+              prb_block_reusable(pkc, idx);
- }
-
- static int __packet_rcv_has_room(const struct packet_sock *po,
-@@ -2262,6 +2313,8 @@ static int tpacket_rcv(struct sk_buff *skb, struct ne=
-t_device *dev,
-        struct packet_sock *po;
-        struct sockaddr_ll *sll;
-        union tpacket_uhdr h;
-+       struct prb_block_state *copy_block =3D NULL;
-+       struct virtio_net_hdr vnet_hdr;
-        u8 *skb_head =3D skb->data;
-        int skb_len =3D skb->len;
-        unsigned int snaplen, res;
-@@ -2375,11 +2428,23 @@ static int tpacket_rcv(struct sk_buff *skb, struct =
-net_device *dev,
-                        vnet_hdr_sz =3D 0;
-                }
-        }
-+       if (vnet_hdr_sz &&
-+           virtio_net_hdr_from_skb(skb, &vnet_hdr, vio_le(), true, 0)) {
-+               atomic_inc(&po->tp_drops);
-+               drop_reason =3D SKB_DROP_REASON_PACKET_SOCK_ERROR;
-+               sk_skb_reason_drop(sk, copy_skb, drop_reason);
-+               goto drop_n_restore;
-+       }
-        spin_lock(&sk->sk_receive_queue.lock);
-        h.raw =3D packet_current_rx_frame(po, skb,
-                                        TP_STATUS_KERNEL, (macoff+snaplen))=
++static void prb_test_complete(struct prb_test_context *ctx,
++                             struct prb_test_copy copy, unsigned int stamp=
+)
++{
++       copy.hdr->tp_len =3D 64;
++       copy.hdr->tp_snaplen =3D 64;
++       copy.hdr->tp_sec =3D stamp;
++       copy.hdr->tp_nsec =3D stamp;
++       spin_lock_bh(&ctx->po->sk.sk_receive_queue.lock);
++       prb_complete_copy(ctx->po, copy.block);
++       spin_unlock_bh(&ctx->po->sk.sk_receive_queue.lock);
++}
++
++static void prb_test_seal(struct prb_test_context *ctx, unsigned int statu=
+s)
++{
++       struct tpacket_kbdq_core *pkc =3D &ctx->po->rx_ring.prb_bdqc;
++
++       spin_lock_bh(&ctx->po->sk.sk_receive_queue.lock);
++       prb_retire_current_block(pkc, ctx->po, status);
++       prb_dispatch_next_block(pkc, ctx->po);
++       spin_unlock_bh(&ctx->po->sk.sk_receive_queue.lock);
++}
++
++static struct tpacket_block_desc *prb_test_block(struct prb_test_context *=
+ctx,
++                                                unsigned int index)
++{
++       return (void *)ctx->blocks[index].buffer;
++}
++
++static void prb_test_busy_a_allows_b(struct kunit *test)
++{
++       struct prb_test_context *ctx =3D test->priv;
++       struct tpacket_kbdq_core *pkc =3D &ctx->po->rx_ring.prb_bdqc;
++       unsigned int length =3D pkc->max_frame_len - V3_ALIGNMENT;
++       struct prb_test_copy a =3D prb_test_reserve(ctx, length);
++       struct prb_test_copy b;
++
++       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, a.hdr);
++       b =3D prb_test_reserve(ctx, length);
++       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, b.hdr);
++       KUNIT_EXPECT_EQ(test, pkc->kactive_blk_num, 1U);
++       KUNIT_EXPECT_EQ(test, a.block->phase, PRB_BLOCK_SEALED);
++       KUNIT_EXPECT_EQ(test, b.block->phase, PRB_BLOCK_ACTIVE);
++       KUNIT_EXPECT_EQ(test, a.block->in_flight, 1U);
++       KUNIT_EXPECT_EQ(test, BLOCK_STATUS(prb_test_block(ctx, 0)), 0U);
++       KUNIT_EXPECT_FALSE(test, !!(packet_poll(NULL, &ctx->socket, NULL) &=
+ EPOLLIN));
++       prb_test_complete(ctx, b, 22);
++       prb_test_seal(ctx, 0);
++       KUNIT_EXPECT_EQ(test, ctx->notifications, 0U);
++       KUNIT_EXPECT_EQ(test, BLOCK_STATUS(prb_test_block(ctx, 1)), 0U);
++       prb_test_complete(ctx, a, 11);
++       KUNIT_EXPECT_EQ(test, ctx->notifications, 2U);
++       KUNIT_EXPECT_EQ(test, pkc->sealed_blocks, 0U);
++       KUNIT_EXPECT_EQ(test, BLOCK_STATUS(prb_test_block(ctx, 0)), TP_STAT=
+US_USER);
++       KUNIT_EXPECT_EQ(test, BLOCK_STATUS(prb_test_block(ctx, 1)), TP_STAT=
+US_USER);
++       KUNIT_EXPECT_EQ(test, prb_test_block(ctx, 0)->hdr.bh1.ts_last_pkt.t=
+s_sec, 11U);
++       KUNIT_EXPECT_EQ(test, prb_test_block(ctx, 1)->hdr.bh1.ts_last_pkt.t=
+s_sec, 22U);
++       KUNIT_EXPECT_EQ(test, BLOCK_SNUM(prb_test_block(ctx, 0)), 1ULL);
++       KUNIT_EXPECT_EQ(test, BLOCK_SNUM(prb_test_block(ctx, 1)), 2ULL);
++       KUNIT_EXPECT_EQ(test, a.hdr->tp_next_offset, 0U);
++       KUNIT_EXPECT_EQ(test, b.hdr->tp_next_offset, 0U);
++       KUNIT_EXPECT_TRUE(test, !!(packet_poll(NULL, &ctx->socket, NULL) & =
+EPOLLIN));
++}
++
++static void prb_test_complete_before_seal(struct kunit *test)
++{
++       struct prb_test_context *ctx =3D test->priv;
++       struct prb_test_copy copy =3D prb_test_reserve(ctx, 128);
++
++       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, copy.hdr);
++       prb_test_complete(ctx, copy, 7);
++       KUNIT_EXPECT_EQ(test, ctx->notifications, 0U);
++       prb_test_seal(ctx, 0);
++       KUNIT_EXPECT_EQ(test, ctx->notifications, 1U);
++       KUNIT_EXPECT_EQ(test, BLOCK_STATUS(prb_test_block(ctx, 0)), TP_STAT=
+US_USER);
++}
++
++static void prb_test_multiple_copiers(struct kunit *test)
++{
++       struct prb_test_context *ctx =3D test->priv;
++       struct prb_test_copy first =3D prb_test_reserve(ctx, 128);
++       struct prb_test_copy last =3D prb_test_reserve(ctx, 128);
++
++       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, first.hdr);
++       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, last.hdr);
++       KUNIT_EXPECT_PTR_EQ(test, first.block, last.block);
++       prb_test_seal(ctx, 0);
++       prb_test_complete(ctx, last, 20);
++       KUNIT_EXPECT_EQ(test, ctx->notifications, 0U);
++       prb_test_complete(ctx, first, 10);
++       KUNIT_EXPECT_EQ(test, ctx->notifications, 1U);
++       KUNIT_EXPECT_EQ(test, prb_test_block(ctx, 0)->hdr.bh1.ts_last_pkt.t=
+s_sec, 20U);
++}
++
++static void prb_test_timeout_busy_and_empty(struct kunit *test)
++{
++       struct prb_test_context *ctx =3D test->priv;
++       struct tpacket_kbdq_core *pkc =3D &ctx->po->rx_ring.prb_bdqc;
++       struct prb_test_copy copy;
++
++       prb_retire_rx_blk_timer_expired(&pkc->retire_blk_timer);
++       KUNIT_EXPECT_EQ(test, pkc->kactive_blk_num, 0U);
++       KUNIT_EXPECT_EQ(test, ctx->notifications, 0U);
++       copy =3D prb_test_reserve(ctx, 128);
++       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, copy.hdr);
++       prb_retire_rx_blk_timer_expired(&pkc->retire_blk_timer);
++       KUNIT_EXPECT_EQ(test, pkc->kactive_blk_num, 1U);
++       KUNIT_EXPECT_EQ(test, ctx->notifications, 0U);
++       prb_test_complete(ctx, copy, 9);
++       KUNIT_EXPECT_EQ(test, BLOCK_STATUS(prb_test_block(ctx, 0)),
++                       (u32)(TP_STATUS_USER | TP_STATUS_BLK_TMO));
++       KUNIT_EXPECT_TRUE(test, !!(packet_poll(NULL, &ctx->socket, NULL) & =
+EPOLLIN));
++}
++
++static void prb_test_single_block_wrap(struct kunit *test)
++{
++       struct prb_test_context *ctx =3D test->priv;
++       struct tpacket_kbdq_core *pkc =3D &ctx->po->rx_ring.prb_bdqc;
++       struct prb_test_copy copy, next;
++
++       pkc->knum_blocks =3D 1;
++       copy =3D prb_test_reserve(ctx, pkc->max_frame_len - V3_ALIGNMENT);
++       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, copy.hdr);
++       next =3D prb_test_reserve(ctx, 128);
++       KUNIT_EXPECT_PTR_EQ(test, next.hdr, NULL);
++       KUNIT_EXPECT_EQ(test, pkc->sealed_blocks, 1U);
++       KUNIT_EXPECT_EQ(test, __packet_rcv_has_room(ctx->po, NULL), ROOM_NO=
+NE);
++       prb_test_complete(ctx, copy, 3);
++       next =3D prb_test_reserve(ctx, 128);
++       KUNIT_EXPECT_PTR_EQ(test, next.hdr, NULL);
++       WRITE_ONCE(BLOCK_STATUS(prb_test_block(ctx, 0)), TP_STATUS_KERNEL);
++       next =3D prb_test_reserve(ctx, 128);
++       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, next.hdr);
++       KUNIT_EXPECT_EQ(test, BLOCK_SNUM(prb_test_block(ctx, 0)), 2ULL);
++       KUNIT_EXPECT_EQ(test, next.block->in_flight, 1U);
++       prb_test_complete(ctx, next, 4);
++       prb_test_seal(ctx, 0);
++       KUNIT_EXPECT_EQ(test, ctx->notifications, 2U);
++}
++
++static void prb_test_exact_fit(struct kunit *test)
++{
++       struct prb_test_context *ctx =3D test->priv;
++       struct tpacket_kbdq_core *pkc =3D &ctx->po->rx_ring.prb_bdqc;
++       struct prb_test_copy copy =3D prb_test_reserve(ctx, pkc->max_frame_=
+len);
++       struct prb_test_copy next;
++
++       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, copy.hdr);
++       KUNIT_EXPECT_EQ(test, BLOCK_LEN(prb_test_block(ctx, 0)), pkc->kblk_=
+size);
++       next =3D prb_test_reserve(ctx, 128);
++       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, next.hdr);
++       KUNIT_EXPECT_PTR_EQ(test, next.block, &pkc->blocks[1]);
++       prb_test_complete(ctx, next, 2);
++       prb_test_seal(ctx, 0);
++       prb_test_complete(ctx, copy, 1);
++       KUNIT_EXPECT_EQ(test, ctx->notifications, 2U);
++}
++
++static void prb_test_no_scan_past_user(struct kunit *test)
++{
++       struct prb_test_context *ctx =3D test->priv;
++       struct tpacket_kbdq_core *pkc =3D &ctx->po->rx_ring.prb_bdqc;
++       struct prb_test_copy copy =3D prb_test_reserve(ctx, 128);
++       struct prb_test_copy next;
++
++       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, copy.hdr);
++       pkc->blocks[1].phase =3D PRB_BLOCK_USER;
++       BLOCK_STATUS(prb_test_block(ctx, 1)) =3D TP_STATUS_USER;
++       prb_test_seal(ctx, 0);
++       next =3D prb_test_reserve(ctx, 128);
++       KUNIT_EXPECT_PTR_EQ(test, next.hdr, NULL);
++       KUNIT_EXPECT_EQ(test, pkc->blocks[2].phase, PRB_BLOCK_FREE);
++       prb_test_complete(ctx, copy, 1);
++       WRITE_ONCE(BLOCK_STATUS(prb_test_block(ctx, 1)), TP_STATUS_KERNEL);
++       next =3D prb_test_reserve(ctx, 128);
++       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, next.hdr);
++       KUNIT_EXPECT_PTR_EQ(test, next.block, &pkc->blocks[1]);
++       prb_test_complete(ctx, next, 2);
++}
++
++static void prb_test_no_reuse_of_sealed(struct kunit *test)
++{
++       struct prb_test_context *ctx =3D test->priv;
++       struct tpacket_kbdq_core *pkc =3D &ctx->po->rx_ring.prb_bdqc;
++       struct prb_test_copy a, b, next;
++       unsigned int length =3D pkc->max_frame_len - V3_ALIGNMENT;
++
++       pkc->knum_blocks =3D 2;
++       a =3D prb_test_reserve(ctx, length);
++       b =3D prb_test_reserve(ctx, length);
++       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, a.hdr);
++       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, b.hdr);
++       next =3D prb_test_reserve(ctx, 128);
++       KUNIT_EXPECT_PTR_EQ(test, next.hdr, NULL);
++       KUNIT_EXPECT_EQ(test, pkc->sealed_blocks, 2U);
++       KUNIT_EXPECT_EQ(test, a.block->in_flight, 1U);
++       KUNIT_EXPECT_EQ(test, __packet_rcv_has_room(ctx->po, NULL), ROOM_NO=
+NE);
++       prb_test_complete(ctx, b, 2);
++       KUNIT_EXPECT_EQ(test, ctx->notifications, 0U);
++       prb_test_complete(ctx, a, 1);
++       KUNIT_EXPECT_EQ(test, ctx->notifications, 2U);
++       WRITE_ONCE(BLOCK_STATUS(prb_test_block(ctx, 0)), TP_STATUS_KERNEL);
++       next =3D prb_test_reserve(ctx, 128);
++       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, next.hdr);
++       prb_test_complete(ctx, next, 3);
++}
++
++static void prb_test_large_ring_wrap(struct kunit *test, unsigned int coun=
+t)
++{
++       struct prb_test_context *ctx =3D test->priv;
++       struct tpacket_kbdq_core *pkc =3D &ctx->po->rx_ring.prb_bdqc;
++       struct prb_block_state *states;
++       struct prb_test_copy copies[4];
++       struct pgv *pages;
++       unsigned int start =3D 65534, i;
++
++       pages =3D kunit_kcalloc(test, count, sizeof(*pages), GFP_KERNEL);
++       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, pages);
++       states =3D kvcalloc(count, sizeof(*states), GFP_KERNEL);
++       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, states);
++       /* Only blocks around the wrap point need backing storage. */
++       for (i =3D 0; i <=3D ARRAY_SIZE(copies); i++)
++               pages[(start + i) % count].buffer =3D ctx->blocks[i].buffer=
 ;
-        if (!h.raw)
-                goto drop_n_account;
-+       if (po->tp_version =3D=3D TPACKET_V3) {
-+               struct tpacket_kbdq_core *pkc =3D &po->rx_ring.prb_bdqc;
-+
-+               copy_block =3D &pkc->blocks[pkc->kactive_blk_num];
++       kvfree(pkc->blocks);
++       ctx->blocks =3D pages;
++       ctx->po->rx_ring.pg_vec =3D pages;
++       pkc->pkbdq =3D pages;
++       pkc->blocks =3D states;
++       pkc->knum_blocks =3D count;
++       pkc->kactive_blk_num =3D start;
++       prb_open_block(pkc, prb_test_block(ctx, start));
++       for (i =3D 0; i < ARRAY_SIZE(copies); i++) {
++               copies[i] =3D prb_test_reserve(ctx, pkc->max_frame_len);
++               KUNIT_ASSERT_NOT_ERR_OR_NULL(test, copies[i].hdr);
++               KUNIT_EXPECT_EQ(test, pkc->kactive_blk_num, (start + i) % c=
+ount);
 +       }
-
-        if (po->tp_version <=3D TPACKET_V2) {
-                slot_id =3D po->rx_ring.head;
-@@ -2388,16 +2453,9 @@ static int tpacket_rcv(struct sk_buff *skb, struct n=
-et_device *dev,
-                __set_bit(slot_id, po->rx_ring.rx_owner_map);
-        }
-
--       if (vnet_hdr_sz &&
--           virtio_net_hdr_from_skb(skb, h.raw + macoff -
--                                   sizeof(struct virtio_net_hdr),
--                                   vio_le(), true, 0)) {
--               if (po->tp_version <=3D TPACKET_V2)
--                       __clear_bit(slot_id, po->rx_ring.rx_owner_map);
--               else
--                       prb_clear_blk_fill_status(&po->rx_ring);
--               goto drop_n_account;
--       }
-+       if (vnet_hdr_sz)
-+               memcpy(h.raw + macoff - sizeof(vnet_hdr), &vnet_hdr,
-+                      sizeof(vnet_hdr));
-
-        if (po->tp_version <=3D TPACKET_V2) {
-                packet_increment_rx_head(po, &po->rx_ring);
-@@ -2516,7 +2574,9 @@ static int tpacket_rcv(struct sk_buff *skb, struct ne=
-t_device *dev,
-                spin_unlock(&sk->sk_receive_queue.lock);
-                sk->sk_data_ready(sk);
-        } else if (po->tp_version =3D=3D TPACKET_V3) {
--               prb_clear_blk_fill_status(&po->rx_ring);
-+               spin_lock(&sk->sk_receive_queue.lock);
-+               prb_complete_copy(po, copy_block);
-+               spin_unlock(&sk->sk_receive_queue.lock);
-        }
-
- drop_n_restore:
-@@ -4374,8 +4434,9 @@ static __poll_t packet_poll(struct file *file, struct=
- socket *sock,
-
-        spin_lock_bh(&sk->sk_receive_queue.lock);
-        if (po->rx_ring.pg_vec) {
--               if (!packet_previous_rx_frame(po, &po->rx_ring,
--                       TP_STATUS_KERNEL))
-+               if (po->tp_version =3D=3D TPACKET_V3 ?
-+                   !!packet_previous_rx_frame(po, &po->rx_ring, TP_STATUS_=
-USER) :
-+                   !packet_previous_rx_frame(po, &po->rx_ring, TP_STATUS_K=
-ERNEL))
-                        mask |=3D EPOLLIN | EPOLLRDNORM;
-        }
-        __packet_rcv_try_clear_pressure(po);
-@@ -4564,6 +4625,8 @@ static int packet_set_ring(struct sock *sk, union tpa=
-cket_req_u *req_u,
-        int was_running, order =3D 0;
-        struct packet_ring_buffer *rb;
-        struct sk_buff_head *rb_queue;
-+       struct prb_block_state *old_blocks =3D NULL;
-+       bool prb_created =3D false;
-        __be16 num;
-        int err;
-        /* Added to avoid minimal code churn */
-@@ -4633,7 +4696,10 @@ static int packet_set_ring(struct sock *sk, union tp=
-acket_req_u *req_u,
-                case TPACKET_V3:
-                        /* Block transmit is not supported yet */
-                        if (!tx_ring) {
--                               init_prb_bdqc(po, rb, pg_vec, req_u);
-+                               err =3D init_prb_bdqc(po, rb, pg_vec, req_u=
++       prb_test_seal(ctx, 0);
++       for (i =3D 1; i < ARRAY_SIZE(copies); i++)
++               prb_test_complete(ctx, copies[i], i + 1);
++       KUNIT_EXPECT_EQ(test, ctx->notifications, 0U);
++       prb_test_complete(ctx, copies[0], 1);
++       KUNIT_EXPECT_EQ(test, ctx->notifications, 4U);
++       KUNIT_EXPECT_EQ(test, pkc->sealed_blocks, 0U);
++       KUNIT_EXPECT_EQ(test, pkc->publish_blk_num, (start + 4) % count);
++       for (i =3D 0; i < ARRAY_SIZE(copies); i++) {
++               struct tpacket_block_desc *pbd =3D prb_test_block(ctx, (sta=
+rt + i) % count);
++
++               KUNIT_EXPECT_EQ(test, BLOCK_STATUS(pbd), TP_STATUS_USER);
++               KUNIT_EXPECT_EQ(test, BLOCK_SNUM(pbd), (u64)i + 2);
++       }
++}
++
++static void prb_test_65536_blocks(struct kunit *test)
++{
++       prb_test_large_ring_wrap(test, 65536);
++}
++
++static void prb_test_65537_blocks(struct kunit *test)
++{
++       prb_test_large_ring_wrap(test, 65537);
++}
++
++static void prb_test_bounded_publish_and_worker(struct kunit *test)
++{
++       struct prb_test_context *ctx =3D test->priv;
++       struct tpacket_kbdq_core *pkc =3D &ctx->po->rx_ring.prb_bdqc;
++       struct prb_test_copy copies[12];
++       unsigned int i, notifications, pending;
++
++       for (i =3D 0; i < ARRAY_SIZE(copies); i++) {
++               copies[i] =3D prb_test_reserve(ctx, pkc->max_frame_len - V3=
+_ALIGNMENT);
++               KUNIT_ASSERT_NOT_ERR_OR_NULL(test, copies[i].hdr);
++       }
++       prb_test_seal(ctx, 0);
++       for (i =3D 1; i < ARRAY_SIZE(copies); i++)
++               prb_test_complete(ctx, copies[i], i + 1);
++       copies[0].hdr->tp_sec =3D 1;
++       spin_lock_bh(&ctx->po->sk.sk_receive_queue.lock);
++       prb_complete_copy(ctx->po, copies[0].block);
++       notifications =3D ctx->notifications;
++       pending =3D pkc->sealed_blocks;
++       spin_unlock_bh(&ctx->po->sk.sk_receive_queue.lock);
++       KUNIT_EXPECT_EQ(test, notifications, (unsigned int)PRB_PUBLISH_BUDG=
+ET);
++       KUNIT_EXPECT_EQ(test, pending, 4U);
++       flush_work(&pkc->retire_work);
++       KUNIT_EXPECT_EQ(test, ctx->notifications, 12U);
++       KUNIT_EXPECT_EQ(test, pkc->sealed_blocks, 0U);
++       for (i =3D 0; i < ARRAY_SIZE(copies); i++) {
++               KUNIT_EXPECT_EQ(test, BLOCK_STATUS(prb_test_block(ctx, i)),=
+ TP_STATUS_USER);
++               KUNIT_EXPECT_EQ(test, BLOCK_SNUM(prb_test_block(ctx, i)), (=
+u64)i + 1);
++       }
++}
++
++static void prb_test_shutdown_stops_publication(struct kunit *test)
++{
++       struct prb_test_context *ctx =3D test->priv;
++       struct tpacket_kbdq_core *pkc =3D &ctx->po->rx_ring.prb_bdqc;
++       struct prb_test_copy copy =3D prb_test_reserve(ctx, 128);
++
++       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, copy.hdr);
++       prb_test_seal(ctx, 0);
++       spin_lock_bh(&ctx->po->sk.sk_receive_queue.lock);
++       queue_work(system_dfl_wq, &pkc->retire_work);
++       pkc->retire_shutdown =3D true;
++       spin_unlock_bh(&ctx->po->sk.sk_receive_queue.lock);
++       prb_shutdown_retire_blk_timer(ctx->po, &ctx->po->sk.sk_receive_queu=
+e);
++       prb_test_complete(ctx, copy, 1);
++       KUNIT_EXPECT_EQ(test, ctx->notifications, 0U);
++       KUNIT_EXPECT_FALSE(test, work_pending(&pkc->retire_work));
++       KUNIT_EXPECT_FALSE(test, hrtimer_active(&pkc->retire_blk_timer));
++}
++
++static void prb_test_payload_and_full_ring_drop(struct kunit *test)
++{
++       struct prb_test_context *ctx =3D test->priv;
++       struct tpacket_kbdq_core *pkc =3D &ctx->po->rx_ring.prb_bdqc;
++       struct tpacket_block_desc *pbd =3D prb_test_block(ctx, 0);
++       struct tpacket3_hdr *hdr;
++       struct sk_buff *skb;
++       unsigned int i;
++
++       pkc->knum_blocks =3D 1;
++       for (i =3D 0; i < 2; i++) {
++               skb =3D alloc_skb(128, GFP_KERNEL);
++               KUNIT_ASSERT_NOT_ERR_OR_NULL(test, skb);
++               memset(skb_put(skb, 64), 0x5a + i, 64);
++               skb_reset_mac_header(skb);
++               skb_reset_network_header(skb);
++               skb->dev =3D ctx->dev;
++               skb->protocol =3D htons(ETH_P_IP);
++               local_bh_disable();
++               tpacket_rcv(skb, ctx->dev, &ctx->po->prot_hook, ctx->dev);
++               local_bh_enable();
++               if (!i)
++                       prb_test_seal(ctx, 0);
++       }
++       KUNIT_EXPECT_EQ(test, atomic_read(&ctx->po->tp_drops), 1);
++       KUNIT_EXPECT_EQ(test, pkc->blocks[0].in_flight, 0U);
++       KUNIT_EXPECT_EQ(test, BLOCK_NUM_PKTS(pbd), 1U);
++       hdr =3D (void *)((char *)pbd + pbd->hdr.bh1.offset_to_first_pkt);
++       KUNIT_EXPECT_EQ(test, hdr->tp_len, 64U);
++       KUNIT_EXPECT_EQ(test, hdr->tp_snaplen, 64U);
++       KUNIT_EXPECT_EQ(test, hdr->tp_next_offset, 0U);
++       for (i =3D 0; i < 64; i++)
++               KUNIT_EXPECT_EQ(test, *((u8 *)hdr + hdr->tp_mac + i), (u8)0=
+x5a);
++}
++
++static void prb_test_valid_vnet_header(struct kunit *test)
++{
++       struct prb_test_context *ctx =3D test->priv;
++       struct tpacket_block_desc *pbd =3D prb_test_block(ctx, 0);
++       struct tpacket3_hdr *hdr;
++       struct virtio_net_hdr *vnet;
++       struct sk_buff *skb =3D alloc_skb(128, GFP_KERNEL);
++       unsigned int i;
++
++       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, skb);
++       memset(skb_put(skb, 64), 0x5a, 64);
++       skb_reset_mac_header(skb);
++       skb_reset_network_header(skb);
++       skb->dev =3D ctx->dev;
++       skb->protocol =3D htons(ETH_P_IP);
++       skb_shinfo(skb)->gso_size =3D 32;
++       skb_shinfo(skb)->gso_type =3D SKB_GSO_TCPV4 | SKB_GSO_TCP_ECN;
++       skb->ip_summed =3D CHECKSUM_PARTIAL;
++       skb->csum_start =3D skb_headroom(skb) + 20;
++       skb->csum_offset =3D 16;
++       ctx->po->vnet_hdr_sz =3D sizeof(struct virtio_net_hdr);
++       local_bh_disable();
++       tpacket_rcv(skb, ctx->dev, &ctx->po->prot_hook, ctx->dev);
++       local_bh_enable();
++       prb_test_seal(ctx, 0);
++       KUNIT_EXPECT_EQ(test, atomic_read(&ctx->po->tp_drops), 0);
++       KUNIT_EXPECT_EQ(test, BLOCK_NUM_PKTS(pbd), 1U);
++       hdr =3D (void *)((char *)pbd + pbd->hdr.bh1.offset_to_first_pkt);
++       vnet =3D (void *)((char *)hdr + hdr->tp_mac - sizeof(*vnet));
++       KUNIT_EXPECT_EQ(test, vnet->gso_type,
++                       (u8)(VIRTIO_NET_HDR_GSO_TCPV4 | VIRTIO_NET_HDR_GSO_=
+ECN));
++       KUNIT_EXPECT_EQ(test, vnet->flags, (u8)VIRTIO_NET_HDR_F_NEEDS_CSUM)=
+;
++       KUNIT_EXPECT_EQ(test, __virtio16_to_cpu(vio_le(), vnet->hdr_len), (=
+u16)64);
++       KUNIT_EXPECT_EQ(test, __virtio16_to_cpu(vio_le(), vnet->gso_size), =
+(u16)32);
++       KUNIT_EXPECT_EQ(test, __virtio16_to_cpu(vio_le(), vnet->csum_start)=
+, (u16)20);
++       KUNIT_EXPECT_EQ(test, __virtio16_to_cpu(vio_le(), vnet->csum_offset=
+), (u16)16);
++       KUNIT_EXPECT_EQ(test, hdr->tp_snaplen, 64U);
++       for (i =3D 0; i < 64; i++)
++               KUNIT_EXPECT_EQ(test, *((u8 *)hdr + hdr->tp_mac + i), (u8)0=
+x5a);
++}
++
++static void prb_test_invalid_vnet_releases_copy(struct kunit *test)
++{
++       struct prb_test_context *ctx =3D test->priv;
++       struct sk_buff *skb =3D alloc_skb(512, GFP_KERNEL);
++       struct packet_sock *po =3D ctx->po;
++
++       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, skb);
++       skb_put_zero(skb, 256);
++       skb_reset_mac_header(skb);
++       skb_reset_network_header(skb);
++       skb->dev =3D ctx->dev;
++       skb->protocol =3D htons(ETH_P_IP);
++       skb_shinfo(skb)->gso_size =3D 32;
++       skb_shinfo(skb)->gso_type =3D SKB_GSO_DODGY;
++       po->tp_version =3D TPACKET_V2;
++       po->sk.sk_prot =3D &packet_proto;
++       po->tp_hdrlen =3D TPACKET2_HDRLEN;
++       po->rx_ring.frame_size =3D 128;
++       po->rx_ring.frames_per_block =3D PAGE_SIZE / 128;
++       WRITE_ONCE(((struct tpacket2_hdr *)ctx->blocks[0].buffer)->tp_statu=
+s,
++                  TP_STATUS_KERNEL);
++       po->vnet_hdr_sz =3D sizeof(struct virtio_net_hdr);
++       po->copy_thresh =3D 1;
++       local_bh_disable();
++       tpacket_rcv(skb, ctx->dev, &po->prot_hook, ctx->dev);
++       local_bh_enable();
++       KUNIT_EXPECT_EQ(test, atomic_read(&po->sk.sk_rmem_alloc), 0);
++       KUNIT_EXPECT_EQ(test, atomic_read(&po->tp_drops), 1);
++       KUNIT_EXPECT_TRUE(test, skb_queue_empty(&po->sk.sk_receive_queue));
++}
++
++struct prb_test_poller {
++       struct socket socket;
++       atomic_t polls;
++       struct completion started;
++};
++
++static int prb_test_poll_thread(void *data)
++{
++       struct prb_test_poller *poller =3D data;
++       struct packet_sock *po =3D pkt_sk(poller->socket.sk);
++
++       while (!kthread_should_stop()) {
++               packet_sock_flag_set(po, PACKET_SOCK_PRESSURE, true);
++               packet_poll(NULL, &poller->socket, NULL);
++               if (atomic_inc_return(&poller->polls) =3D=3D 1)
++                       complete(&poller->started);
++               cond_resched();
++       }
++       return 0;
++}
++
++static void prb_test_ring_lifecycle(struct kunit *test)
++{
++       struct packet_sock *po;
++       struct prb_test_poller *poller;
++       struct task_struct *task;
++       union tpacket_req_u req =3D {}, empty =3D {};
++       unsigned int i;
++       int result;
++
++       po =3D kunit_kzalloc(test, sizeof(*po), GFP_KERNEL);
++       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, po);
++       poller =3D kunit_kzalloc(test, sizeof(*poller), GFP_KERNEL);
++       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, poller);
++       sock_net_set(&po->sk, &init_net);
++       init_waitqueue_head(&poller->socket.wq.wait);
++       sock_init_data_uid(&poller->socket, &po->sk, GLOBAL_ROOT_UID);
++       mutex_init(&po->pg_vec_lock);
++       spin_lock_init(&po->bind_lock);
++       po->tp_version =3D TPACKET_V3;
++       po->sk.sk_type =3D SOCK_RAW;
++       po->prot_hook.func =3D packet_rcv;
++       init_completion(&poller->started);
++       task =3D kthread_run(prb_test_poll_thread, poller, "prb-poll-test")=
+;
++       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, task);
++       KUNIT_EXPECT_NE(test, wait_for_completion_timeout(&poller->started,=
+ HZ), 0UL);
++       for (i =3D 0; i < 16; i++) {
++               memset(&req, 0, sizeof(req));
++               memset(&empty, 0, sizeof(empty));
++               req.req3.tp_block_size =3D PAGE_SIZE;
++               req.req3.tp_block_nr =3D 2;
++               req.req3.tp_frame_size =3D 256;
++               req.req3.tp_frame_nr =3D 2 * PAGE_SIZE / 256;
++               req.req3.tp_retire_blk_tov =3D 1000;
++               result =3D packet_set_ring(&po->sk, &req, 0, 0);
++               KUNIT_EXPECT_EQ(test, result, 0);
++               if (result)
++                       break;
++               KUNIT_EXPECT_NOT_ERR_OR_NULL(test, po->rx_ring.pg_vec);
++               KUNIT_EXPECT_NOT_ERR_OR_NULL(test, po->rx_ring.prb_bdqc.blo=
+cks);
++               queue_work(system_dfl_wq, &po->rx_ring.prb_bdqc.retire_work=
 );
-+                               if (err)
-+                                       goto out_free_pg_vec;
-+                               prb_created =3D true;
-                        } else {
-                                struct tpacket_req3 *req3 =3D &req_u->req3;
-
-@@ -4682,16 +4748,23 @@ static int packet_set_ring(struct sock *sk, union t=
-packet_req_u *req_u,
-                        goto out_unlock;
-
-                err =3D 0;
-+               if (!tx_ring && po->tp_version =3D=3D TPACKET_V3 && rb->pg_=
-vec) {
-+                       prb_shutdown_retire_blk_timer(po, rb_queue);
-+                       old_blocks =3D rb->prb_bdqc.blocks;
-+               }
-                spin_lock_bh(&rb_queue->lock);
-                swap(rb->pg_vec, pg_vec);
-+               if (old_blocks)
-+                       rb->prb_bdqc.blocks =3D NULL;
-                if (po->tp_version <=3D TPACKET_V2)
-                        swap(rb->rx_owner_map, rx_owner_map);
-                rb->frame_max =3D (req->tp_frame_nr - 1);
-                rb->head =3D 0;
-                rb->frame_size =3D req->tp_frame_size;
--               po->prot_hook.func =3D (po->rx_ring.pg_vec) ?
--                                               tpacket_rcv : packet_rcv;
-+               if (!tx_ring)
-+                       po->prot_hook.func =3D rb->pg_vec ? tpacket_rcv : p=
-acket_rcv;
-                spin_unlock_bh(&rb_queue->lock);
-+               prb_created =3D false;
-
-                swap(rb->pg_vec_order, order);
-                swap(rb->pg_vec_len, req->tp_block_nr);
-@@ -4715,13 +4788,13 @@ static int packet_set_ring(struct sock *sk, union t=
-packet_req_u *req_u,
-                register_prot_hook(sk);
-
-        spin_unlock(&po->bind_lock);
--       if (pg_vec && (po->tp_version > TPACKET_V2)) {
--               /* Because we don't support block-based V3 on tx-ring */
--               if (!tx_ring)
--                       prb_shutdown_retire_blk_timer(po, rb_queue);
--       }
--
- out_free_pg_vec:
-+       if (prb_created) {
-+               prb_shutdown_retire_blk_timer(po, rb_queue);
-+               kvfree(rb->prb_bdqc.blocks);
-+               rb->prb_bdqc.blocks =3D NULL;
++               atomic_long_set(&po->mapped, 1);
++               KUNIT_EXPECT_EQ(test, packet_set_ring(&po->sk, &empty, 0, 0=
+), -EBUSY);
++               KUNIT_EXPECT_NOT_ERR_OR_NULL(test, po->rx_ring.pg_vec);
++               atomic_long_set(&po->mapped, 0);
++               result =3D packet_set_ring(&po->sk, &empty, 1, 0);
++               KUNIT_EXPECT_EQ(test, result, 0);
++               if (result)
++                       break;
++               KUNIT_EXPECT_PTR_EQ(test, po->rx_ring.pg_vec, NULL);
++               KUNIT_EXPECT_PTR_EQ(test, po->rx_ring.prb_bdqc.blocks, NULL=
+);
++               KUNIT_EXPECT_FALSE(test, hrtimer_active(&po->rx_ring.prb_bd=
+qc.retire_blk_timer));
++               KUNIT_EXPECT_FALSE(test, work_pending(&po->rx_ring.prb_bdqc=
+.retire_work));
++               schedule_timeout_uninterruptible(1);
 +       }
-+       kvfree(old_blocks);
-        if (pg_vec) {
-                bitmap_free(rx_owner_map);
-                if (tx_ring && closing)
-diff --git a/net/packet/internal.h b/net/packet/internal.h
-index f5c8cd0eed2c..0761cf6de6d4 100644
---- a/net/packet/internal.h
-+++ b/net/packet/internal.h
-@@ -3,6 +3,7 @@
- #define __PACKET_INTERNAL_H__
-
- #include <linux/refcount.h>
-+#include <linux/workqueue.h>
-
- struct packet_mclist {
-        struct packet_mclist    *next;
-@@ -14,13 +15,28 @@ struct packet_mclist {
-        struct list_head        remove_list;
- };
-
-+enum prb_block_phase {
-+       PRB_BLOCK_FREE,
-+       PRB_BLOCK_ACTIVE,
-+       PRB_BLOCK_SEALED,
-+       PRB_BLOCK_USER,
++       kthread_stop(task);
++       KUNIT_EXPECT_GT(test, atomic_read(&poller->polls), 0);
++       if (po->rx_ring.pg_vec) {
++               memset(&empty, 0, sizeof(empty));
++               packet_set_ring(&po->sk, &empty, 1, 0);
++       }
++}
++
++static struct kunit_case prb_test_cases[] =3D {
++       KUNIT_CASE(prb_test_invalid_vnet_does_not_reserve),
++       KUNIT_CASE(prb_test_busy_a_allows_b),
++       KUNIT_CASE(prb_test_complete_before_seal),
++       KUNIT_CASE(prb_test_multiple_copiers),
++       KUNIT_CASE(prb_test_timeout_busy_and_empty),
++       KUNIT_CASE(prb_test_single_block_wrap),
++       KUNIT_CASE(prb_test_exact_fit),
++       KUNIT_CASE(prb_test_no_scan_past_user),
++       KUNIT_CASE(prb_test_no_reuse_of_sealed),
++       KUNIT_CASE(prb_test_65536_blocks),
++       KUNIT_CASE(prb_test_65537_blocks),
++       KUNIT_CASE(prb_test_bounded_publish_and_worker),
++       KUNIT_CASE(prb_test_shutdown_stops_publication),
++       KUNIT_CASE(prb_test_payload_and_full_ring_drop),
++       KUNIT_CASE(prb_test_valid_vnet_header),
++       KUNIT_CASE(prb_test_invalid_vnet_releases_copy),
++       KUNIT_CASE(prb_test_ring_lifecycle),
++       {}
 +};
 +
-+/* Private metadata; never exposed through the packet mmap mapping. */
-+struct prb_block_state {
-+       enum prb_block_phase phase;
-+       unsigned int in_flight;
-+       struct tpacket3_hdr *last_pkt;
-+       unsigned int retire_status;
++static struct kunit_suite prb_test_suite =3D {
++       .name =3D "packet-prb",
++       .init =3D prb_test_init,
++       .exit =3D prb_test_exit,
++       .test_cases =3D prb_test_cases,
 +};
 +
- /* kbdq - kernel block descriptor queue */
- struct tpacket_kbdq_core {
-        struct pgv      *pkbdq;
-        unsigned int    feature_req_word;
-        unsigned int    hdrlen;
-        unsigned char   reset_pending_on_curr_blk;
--       unsigned short  kactive_blk_num;
-+       unsigned int    kactive_blk_num;
-        unsigned int    blk_sizeof_priv;
-
-        unsigned short  version;
-@@ -36,7 +52,14 @@ struct tpacket_kbdq_core {
-
-        struct sk_buff  *skb;
-
--       rwlock_t        blk_fill_in_prog_lock;
-+       /* State changes require sk_receive_queue.lock; copy payload outsid=
-e it. */
-+       struct prb_block_state *blocks;
-+       unsigned int    publish_blk_num;
-+       unsigned int    sealed_blocks;
-+       unsigned int    last_published;
-+       bool            has_published;
-+       bool            retire_shutdown;
-+       struct work_struct retire_work;
-
-        /* Default is set to 8ms */
- #define DEFAULT_PRB_RETIRE_TOV (8)
++kunit_test_suite(prb_test_suite);
 --
 2.25.1
 
