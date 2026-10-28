@@ -1,86 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793192247;
-	b=OgyGkhAe75Xo+igngFhsZUuHAmDbbWmlL2h0rE+Mu2zhPIjUI2KeDqupaUjfne1cT4FU
-	 qJFl8gFoPDyd56c4BqYGiX6YhfmRAsY/U9dbKDA8wvIkxSc2ZGXdArhoEojmrCwrLhzxE
-	 ZmzcZN+KNzk06WU+YkIobfFhFr4dwC53UiPxZY8p7kOYRUMpxWfz5jk1wNTjkiWYngA78
-	 u88516KN+tMmvyo9lHbR18wFoDfxKtEhvkT3WTv2LcJAgbc1mHXRVHNH4AdQbEbJRX+nV
-	 MS4gBrDo3OhTRREhl2+sHZbd1AGAs7rFYX2vc5vU11LojjlalbsqYxpO4/p3oYmFQNg==
+	t=1793192433;
+	b=2w9vaeWjUDqCrRxS+2L7lieYUXABH26Q1geGOhp1aTZBel1HOiDJ6/Q52WXzxE/TVd3K
+	 UVyexuMMF4WvmkBgADBu15/1xogoK/0WoIlfax7oK0OMtRUaPjyUAFaHDBJpeBzP5sy1Y
+	 fQimJMAkj1TA7L2PWNjed1dbF9N+z8chNgXcYE6lc08pyRZnNUJRgUpdS5PTST44PHKzk
+	 1wph2/jdEnYElmyCQxp7ye4r0ZKNO2VCTccR080Ubt+xSCOwyaG6vFzrhHWrk/yufOpSG
+	 yNOKDGI5kAcHTCVj9ggW7K/xyr+UAvyCplnxPWd+t2eDAyWO3sN3nldofP34qktynJA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793192247;
-	h=DMARC-Filter:X-UUID:X-CTIC-Tags:X-CID-P-RULE:X-CID-O-INFO:X-CID-INFO:
-	 X-CID-META:X-CID-BVR:X-CID-BAS:X-CID-FACTOR:X-CID-RHF:X-UUID:X-User:
-	 Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding;
-	bh=dhmDoHpcow4oeCOO/XWFtP3Gjs2nFgISQ/7ifIeA4nQ=;
-	b=dTB8xcPOKJif+33B+HTtKtrMabpxm2fWJO6aoFe/Yc+XKehhUcPGzxK0jWck6i63nSMY
-	 4UoB4hY45/C5aIVWs7wjv+DEaYOcKQUHbzJYhLwfsJCoMUEhfNY6O9RRatrafZbjwXkPa
-	 EzXg+alxRbgra56ivP297w4FAEICiS5+t8TkVH33dwOvzm92AJyfwr3BJRm5TxeoxHsam
-	 H2ly3pHyFY6WTF+Ecrd43ZvYpCH/mXpO4YXOyg45YkoBqKnLQIDe5Z2xY+Mv7QhiN4eWH
-	 LbnnSlQNSRssizhzhvKgSa9s6ThYvip965TjG00uAhIrKKRfeULIouV7+AqXbr33MrA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793192433;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=6wai+x2L+5SnuO9q4A5CskJjGDIdDDddoXL7xcVNtkM=;
+	b=ynNIrDIAzvw3HUvVIWvaeNpYmh8HPHUVUI0OA3DvZkFBG4pF+L8ww8RxQlkHb3wYSYwr
+	 8krnJLCRX3ZAH5UB35/8CdUW+ZDkrQtFPevx0KjssaLWrwNzR/tcH7rxuwFmvU1PjSc7k
+	 QnqWX5j9cSn/Ugt7Stnhnya0T51mVjTDONjXz3w348ZgwGS/LfPaFyIkq2FBkJpi7y1go
+	 Lt7negMFQDBzR0zcnrM4VZnSPC4AicoQdgKMOwK22GTTOyYinc77deobK0oW9ffMQ0wwj
+	 16XUMQMFWmdWLAFF06pGR3u6UmbiiRiz7NIYO6zolFhF+C+alpDPE0b63FXWwGOFqlg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=kylinos.cn;
-	spf=pass smtp.mailfrom=kylinos.cn;
-	arc=none smtp.remote-ip=124.126.103.232
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=u5rn83tC;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99766606A321;
-	Wed, 28 Oct 2026 12:57:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 99766606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 1b95b216d2cf11f19a56ed5b684f684d-20261028
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_MISS
-	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_DIGIT_LEN
-	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
-	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
-	IP_TRUSTED, SRC_TRUSTED, SA_EXISTED, SN_UNTRUSTED, SN_LOWREP
-	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_BAD
-	CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU
-	AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:77d455e2-fe91-49b7-894d-0a60d85a2dc3,IP:10,
-	URL:0,TC:0,Content:-5,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:30
-X-CID-INFO: VERSION:1.3.19,REQID:77d455e2-fe91-49b7-894d-0a60d85a2dc3,IP:10,UR
-	L:0,TC:0,Content:-5,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:30
-X-CID-META: VersionHash:7db8b62,CLOUDID:c88026eb543dcb49def62787c24d0014,BulkI
-	D:2610282057219KWK44G1,BulkQuantity:0,SF:17|19|66|78|81|82|102|127|850|865
-	|898,TC:nil,Content:0|15|50|99,EDM:5,IP:-2|1,URL:0,File:nil,RT:nil,Bulk:ni
-	l,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE
-	:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_IBB,TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 1b95b216d2cf11f19a56ed5b684f684d-20261028
-X-User: kuangkai@kylinos.cn
-Received: from localhost.localdomain [(116.128.244.169)] by mailgw.kylinos.cn
-	(envelope-from <kuangkai@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 1840816433; Wed, 28 Oct 2026 20:57:18 +0800
-From: Kai Kuang <kuangkai@kylinos.cn>
-To: netdev@vger.kernel.org
-Cc: andrew@lunn.ch,
-	olteanv@gmail.com,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	kuangkai@kylinos.cn,
-	kk47yx@gmail.com
-Subject: [PATCH net-next 1/2] net: dsa: user: use kernel types in ethtool callbacks
-Date: Wed, 28 Oct 2026 20:56:15 +0800
-Message-Id: <20261028125616.460636-2-kuangkai@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20261028125616.460636-1-kuangkai@kylinos.cn>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A297D606A31C;
+	Wed, 28 Oct 2026 13:00:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A297D606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=u5rn83tC
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=6wai+x2L+5SnuO9q4A5CskJjGDIdDDddoXL7xcVNtkM=; b=u5rn83tCiwrPbuIGKaRvcrUtEk
+	EEN+7IZX5ISUcYiAn6noK/65ioRQ6a4gBJAyxWhIfPdNKGHqZi1UH8uKuTqk6XKWWuM+90SUy1hZm
+	a+XCfgySnofgjnpLgsMFsLoTASTKOeif2wBodtIDONgZ9i849QSR1ePh2iIeqFb3ifT4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xM3GP-00D6ud-Bm; Wed, 28 Oct 2026 14:00:21 +0100
+Date: Wed, 28 Oct 2026 14:00:21 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Kai Kuang <kuangkai@kylinos.cn>
+Cc: netdev@vger.kernel.org, olteanv@gmail.com, davem@davemloft.net,
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, linux-kernel@vger.kernel.org, kk47yx@gmail.com
+Subject: Re: [PATCH net-next 1/2] net: dsa: user: use kernel types in ethtool
+ callbacks
+Message-ID: <f69cabe3-d835-4fb6-b654-d0e172bde743@lunn.ch>
 References: <20261028125616.460636-1-kuangkai@kylinos.cn>
+ <20261028125616.460636-2-kuangkai@kylinos.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -90,43 +64,20 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261028125616.460636-2-kuangkai@kylinos.cn>
 
-Use u32/u8/u64 in the ->get_strings() and ->get_ethtool_stats()
-callbacks to match the ethtool_ops method prototypes.
+On Wed, Oct 28, 2026 at 08:56:15PM +0800, Kai Kuang wrote:
+> Use u32/u8/u64 in the ->get_strings() and ->get_ethtool_stats()
+> callbacks to match the ethtool_ops method prototypes.
+> 
+> No functional change.
 
-No functional change.
+net-next is closed at the moment:
 
-Signed-off-by: Kai Kuang <kuangkai@kylinos.cn>
----
- net/dsa/user.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
 
-diff --git a/net/dsa/user.c b/net/dsa/user.c
-index 041f9060c8ef..cfad269be75c 100644
---- a/net/dsa/user.c
-+++ b/net/dsa/user.c
-@@ -1023,7 +1023,7 @@ static int dsa_user_set_eeprom(struct net_device *dev,
- }
- 
- static void dsa_user_get_strings(struct net_device *dev,
--				 uint32_t stringset, uint8_t *data)
-+				 u32 stringset, u8 *data)
- {
- 	struct dsa_port *dp = dsa_user_to_port(dev);
- 	struct dsa_switch *ds = dp->ds;
-@@ -1043,7 +1043,7 @@ static void dsa_user_get_strings(struct net_device *dev,
- 
- static void dsa_user_get_ethtool_stats(struct net_device *dev,
- 				       struct ethtool_stats *stats,
--				       uint64_t *data)
-+				       u64 *data)
- {
- 	struct dsa_port *dp = dsa_user_to_port(dev);
- 	struct dsa_switch *ds = dp->ds;
--- 
-2.25.1
+The patch itself looks O.K, please repost when net-next re-opens.
 
-
-No virus found
-		Checked by Hillstone Network AntiVirus
+    Andrew
