@@ -1,101 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793172654;
-	b=npHpwQ8jab5X0wGVDSnwgXdWlAC3AIVhnaYlK/Lh3O32/C3XD31mncgFQWhW0acGoWFU
-	 vkBM1ksf/CfF3Za32MEKLjb0gkJNl3vIbHwSuS1XA/1gwaoy5KJSJ4RT85Avdrdg3M+0C
-	 1ceBHci2US+vZe8qaGCrtHKASPSxKdEVFa8tXwBzcyH7sQwP28bvCHdXvOkMSlMnZs8fG
-	 VPWW17kb5e5MAKxtnOcJGIN3LRvKcHAymVKLC9J4gBy5noHYkyfdUxFAHnNE0f22T16UC
-	 4tL6eGdd8holVu2EreweosggQo6JdoiksqZMRdUTv1Oy0fCnSeanaj7ehXoYT6Bo0Ag==
+	t=1793173846;
+	b=UBQYh/k2egla4oHG9619TZElmEKWHjhSdWP/3aFrzEDcF0TEvNfaMIv7H0gctCMn/7Q5
+	 dYyA0ohWoP3QTDAoEV930Jw4BuH852OrvBC5vTlD6WT36MRT0l2o4xLjSRmPAZx+92pzR
+	 dnD3lc1623wUElOgJJMmQZWPCChg4ORrEFTjycM4mI6O3IyZytPDxIEV9CPDGFqS/blGl
+	 E1hpQuDm8f918CM9lhw/bJqGWfsQYNxp/POTDEiN4zYbmecQz9v9PTsVXaGk5fgwFY9sn
+	 k/pJhI2RhvP2ZHOd/onwKXVMtog4A0bOZvS5d6UFCJ66DePgSkRWUDdBK9oSH/kd2kg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793172654;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=94kzz6GGJdMjFdi0mDx2nMqMBoR4dk5VY7WfJdM579Q=;
-	b=qwf+Q5XiJubjNLCv63oz+lWDrNnYxLjF0QYOvpQeNfZzsfDUXWg+h50wnsXWZTlZyZyi
-	 FlCs2nnoj1QBAZ6E7KM1NlfgRK+NsOAjwY1kn+Q8TJjk+9b3GPs9IjP917qS+xc2Km0gx
-	 QCs2CUUbEFO1Ojh2jDdFTKbc5htUA9bkqVro3KRraA3VDQ1yn934g2gUaJGADgBJj2WD1
-	 Z89gLjDAEhzudhwbJSmdv+zBNOeJAsQ7QoypGkZa8fc8X6+Bk9Hawg2GEp4jcahvWV05t
-	 Yfte9+mDENRvablplF0nSCMrSql+ZRP8dS/Woxrcrl7YsYmg754bZAuBgPLbhOW6ttA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793173846;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=ZRNxV+ctHGQkJGUcTRrGxGBFcfBRjwGvBSmUNqUGh4s=;
+	b=0Mx+vz88ZnNoUdbkN/ft8ugOFrm+pc1gQSeIqgh0TByLbN5fiPBkBYC2n3e0x8XZnWLJ
+	 0hnU50LL4ZTYShVIDwL3wsua0pfWV2wwsLEiEPqlJBj2hlhQQ/7lILVZo+U2YafxBC16p
+	 fB3lijTlGdSaQ7kbxYFY28nSoB1kRcyCAelkKso5oAzmHPsO5cvb6yNwhG2aV7K9AIGoY
+	 Uufq7N52fc6UaQVBYhizRMxOlN62fa78ejwgod73N8eGfryDuSsQLoJcjutdhnMg3pIWd
+	 NLS2d3lEN9sVCNn7vaZ2a5Q+MaYrTI3N35YJ5Et7E6b+ZCDARZ2CRcwhZjs3pe1aWIQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=WZ+z9Wo4;
-	arc=none smtp.remote-ip=209.85.221.44
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mgLqA7LE;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD0660A2630
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 07:30:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CAD0660A2630
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CED3606A31A;
+	Wed, 28 Oct 2026 07:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=WZ+z9Wo4
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-48e0d1da913so495581f8f.1
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 00:30:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793172652; x=1793777452; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=94kzz6GGJdMjFdi0mDx2nMqMBoR4dk5VY7WfJdM579Q=;
-        b=WZ+z9Wo4PRZTAGCy4/qGkMlH8XOdWPx9Xrv6zXEpt5KnGpDgkYcu+uMAjerL1vkGII
-         VHnG0MVP4H/rTJ/X/OdQsKRtUu8VODHK1q64n9Pi58WUZNItaTJxNfMqxWhmEJRNGtRL
-         ADwW1Gw0IOj4bGPB6ZVOoqfIy3BKLZyYHe17ZRGhpvAI/mvwxYGLZUrNwJWM0lmTJv4B
-         Rk6oTqozF14YkxhK9Ilw1ErvZdih4ZL1DYnqX0hn7dIfTH4Cid1nWM9goMONKyIOTn6P
-         LjoTfwHsl+ONKpDbjVl742eKS37dHsaz/ZqZk42Zjv4hKwe9ZoDEIA3krMdJOe2HXT03
-         Xtvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793172652; x=1793777452;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=94kzz6GGJdMjFdi0mDx2nMqMBoR4dk5VY7WfJdM579Q=;
-        b=RhjXk3ihCSNnNrc1RVP8ipUf48kqzed7VAeDFyrO7p8bUqH5N4Mq6JI8CeMmc5c8Qy
-         bCNObsuvDucE+9eWRdC5E4UACSwIVugje3vHQRzWz+PM9yd6Emoc1E/utI7v1RbvVvxc
-         bChFBY7W1cbpYxTwkJRKZgfubAbmCc8mz1N+xBPnFh+I5L17ko0XJvjqib0CnRytQTqE
-         sCbMqlX2af3XwUguQuULgvta3YdZxQfg0l4N+XpwMZwRo3QWyjEUW5iwO2LiKabvMFrY
-         WDzCFWnXVcLC73Fw6yIWla6c1fJfKcQbKBrwX9ndiDOSMa1KocnOJGpjTAGAKIAb5E9J
-         KtdQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy3N8JtDR5zSxcpG3czurrAraVhJdKLCRVcbi99XYierIJoBBPkSqk6gmsOQHRsh162durrpG0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJeEYIBRJ9CdmjhSWSP5NACg2EKUki0pZFs98nLVgzSBkiGJyl7
-	+W/j0Uj8s5kJSWtzYG2roYX8PFONiJs9XbP47awkR8+lhsjgPcxSJbxZ
-X-Gm-Gg: AYBFou3law6LgSSkrjhL+aFEUHsz5PgJvtktLBDv+a3BFEqlt+SBr3uZ9jp55XlKemv
-	rL3hlS6xZmtSuEyZ4J7pjIZS497DhRmnanC3zdYLp0U8gLNADKLn7/bx2bWSUd7yeV4+KrfzNmx
-	yBR80JyEqyc21qXyy7xdcb+frP88qpP3dmOIVZW82A9elR5hrHQTlxUR6FFjIyaWuQ4KqJtK7Ss
-	t0wuitAAU3JTz5hTLMRwTmT3UB2Pdc9x6Duu7LFuVLEEyBm8iswCaWo911U7lQkWJl/557g+t+q
-	nXTnVpUF1KzVGAs7iFNtTXXYuP1Pp9I+/kD8Thblh6FeqtbYXI5+4vQSgXqSJ6g3aEqjsu8F6dE
-	b2Xl57KPDjqIFv4PUdna6nV95FoTW8Pvu5QbX+AuM0tD3j1by6/Qmwk0h2pWcgm2sF8qQqN+y0K
-	3yl3KSh6zYBGhhGmhSRbnHZAZODYYk5aMtMzkRftYE+xc/BCSJVhT6eNygq75OVcYWh1LQXtWrX
-	qVVNc8hcYR7InZSLqgr7g6zDJiaUYHI0bQWnfGH0W2aorJot2dH/FL9cxpW65XVDOpSotlfnR9Y
-	gBmRIiqqnn0Tx0oKo8UyBpAuMDfY97Jl71gKoZsH9P99Ua2n7nYWYzGZUeXsd+rE4oHrsG/7Zz1
-	Jf/1Bq8BeqVHtuuaqoGY89QekLvF57RZIIA==
-X-Received: by 2002:a05:6000:1081:b0:48d:f5c1:dc24 with SMTP id ffacd0b85a97d-48e55a377d4mr9182155f8f.6.1793172652133;
-        Wed, 28 Oct 2026 00:30:52 -0700 (PDT)
-Received: from Ansuel-XPS24.localdomain (93-34-92-187.ip49.fastwebnet.it. [93.34.92.187])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-48e542ed998sm12083088f8f.13.2026.10.28.00.30.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 00:30:51 -0700 (PDT)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Christian Marangi <ansuelsmth@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v3 4/4] net: phy: as21xxx: handle odd firmware on loading
-Date: Wed, 28 Oct 2026 08:30:22 +0100
-Message-ID: <20261028073024.25175-5-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261028073024.25175-1-ansuelsmth@gmail.com>
-References: <20261028073024.25175-1-ansuelsmth@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mgLqA7LE
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4300C1F01825;
+	Wed, 28 Oct 2026 07:50:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793173845;
+	bh=ZRNxV+ctHGQkJGUcTRrGxGBFcfBRjwGvBSmUNqUGh4s=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=mgLqA7LE1hT8ifeFCdgKjxs07zUMgblZj0t3wZSKxr2lqKSEgLV6wZpDGHMDmH8vg
+	 dizIhqzKwtrjbGBS2t8dWYyN5k7a/3AwdNQAmKvMf8GnNoIlL3bvmm78wfgE41zb/d
+	 O3XjszQs6Y3Rb+xAN+uwfp2Hl5sl9aqdL+NkdrVEzug0sF6FhlQBQZo4KGbaswucSN
+	 T0BsZhXDXAW4365g1b5/MOxv9rKdnYn6zsMP6rXlIHlYIjtC39CX5tA6WdeN1jt4Fr
+	 4kNtOTJ2ITRIj7n4tQLBvvNOQWTLBjWdFQrPj/+Q3IqIcTHZI900ho1+JWqe5sZQTA
+	 qg7BHBvw5Lunw==
+Subject:
+ Re: [PATCH net v2] ipv6: raw: fix use-after-free in rawv6_send_hdrinc()
+From: netdev-bot+sashiko@kernel.org
+To: n0ps1edzz@gmail.com
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, hangbin.liu@linux.dev, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Date: Wed, 28 Oct 2026 07:50:44 +0000
+Message-ID: <179317384479.3134.10802512477499125760@kernel.org>
+In-Reply-To: <20261026044808.613-1-n0ps1edzz@gmail.com>
+References: <20261026044808.613-1-n0ps1edzz@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,38 +64,92 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Even if firmware for AS21xxx should be always u16 aligned, we can't assume
-this will be the same forever. Better address this by simply validate the
-index before reading out of bound from the data buffer.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-A zero padded buffer will be passed to the AS21xxx mailbox in such case.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-Fixes: 830877d89edc ("net: phy: Add support for Aeonsemi AS21xxx PHYs")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
- drivers/net/phy/as21xxx.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-diff --git a/drivers/net/phy/as21xxx.c b/drivers/net/phy/as21xxx.c
-index 81e9827873bf..655127a656c4 100644
---- a/drivers/net/phy/as21xxx.c
-+++ b/drivers/net/phy/as21xxx.c
-@@ -323,9 +323,11 @@ static int aeon_firmware_boot(struct phy_device *phydev, const u8 *data,
- 		return -EINVAL;
- 	}
- 
--	/* Firmware is always aligned to u16 */
-+	/* Firmware should be u16 aligned, zero-pad a trailing odd byte */
- 	for (i = 0; i < size; i += 2) {
--		val = data[i + 1] << 8 | data[i];
-+		val = data[i];
-+		if (i + 1 < size)
-+			val |= data[i + 1] << 8;
- 
- 		ret = phy_write_mmd(phydev, MDIO_MMD_VEND1,
- 				    VEND1_GLB_REG_MDIO_INDIRECT_LOAD, val);
+- [Medium] In VRF redirect mode, rawv6_send_hdrinc() (net/ipv6/raw.c) no
+  longer charges per-interface IPv6 SNMP counters to the slave interface.
+
+--
+
+ipv6: raw: fix use-after-free in rawv6_send_hdrinc()
+
+This patch reloads rt from skb_dst(skb) after l3mdev_ip6_out() returns in
+rawv6_send_hdrinc(). The VRF output path can replace the skb dst and
+release the original route, which leaves the cached pointer stale. It fixes
+a KASAN slab-use-after-free reported in rawv6_sendmsg().
+
+> diff --git a/net/ipv6/raw.c b/net/ipv6/raw.c
+> index b965258cf9e5f..bdea825434ea7 100644
+> --- a/net/ipv6/raw.c
+> +++ b/net/ipv6/raw.c
+> @@ -654,6 +654,9 @@ static int rawv6_send_hdrinc(struct sock *sk, struct msghdr *msg, int length,
+>  	if (unlikely(!skb))
+>  		return 0;
+>  
+> +	/* l3mdev_ip6_out() may have replaced the skb dst. */
+> +	rt = dst_rt6_info(skb_dst(skb));
+> +
+
+[Severity: Medium]
+Does this reload move the per-interface IPv6 counters off the slave device
+in VRF redirect mode?
+
+When the VRF device has a non-default qdisc and the packet is not
+xfrm-transformed, vrf_ip6_out() calls vrf_ip6_out_redirect(), which swaps
+in the VRF's private route:
+
+drivers/net/vrf.c:vrf_ip6_out_redirect() {
+    ...
+	skb_dst_drop(skb);
+	skb_dst_set(skb, &rt6->dst);
+    ...
+}
+
+That vrf->rt6 comes from ip6_dst_alloc() in vrf_rt6_create().
+rt6_info_init() zeroes everything after dst, and rt6i_idev is never set
+afterwards. So after this reload, rt->rt6i_idev is NULL when the function
+gets here:
+
+	IP6_INC_STATS(net, rt->rt6i_idev, IPSTATS_MIB_OUTREQUESTS);
+	...
+		IP6_INC_STATS(net, rt->rt6i_idev, IPSTATS_MIB_OUTDISCARDS);
+
+_DEVINC handles a NULL idev by skipping the per-device counter, so this
+does not crash. Only the netns-wide counter gets bumped. The second
+LOCAL_OUT pass in vrf_process_v6_outbound()->vrf_ip6_local_out() does no
+OUTREQUESTS accounting either.
+
+As a result, raw IPV6_HDRINCL packets sent on a VRF slave in this mode
+would not show up in /proc/net/dev_snmp6/<slave> Ip6OutRequests or
+Ip6OutDiscards, and no other device counts them.
+
+The other IPv6 senders count OUTREQUESTS against the original route's idev
+before the l3mdev diversion. ip6_xmit() does it before l3mdev_ip6_out().
+__ip6_make_skb() does it before ip6_local_out(), and that covers raw
+sockets without HDRINCL too.
+
+Would it work to follow the ip6_xmit() pattern instead? That means taking
+rcu_read_lock() before l3mdev_ip6_out() and counting OUTREQUESTS while the
+skb still holds its reference on the original rt.
+
+dst_release() frees through call_rcu_hurry(dst_destroy_rcu), and that
+callback is also where rt6i_idev is dropped. So the original rt and its
+idev should stay valid inside the read-side section. This would fix the
+use-after-free without changing which device gets the stats.
+
+>  	/* Acquire rcu_read_lock() in case we need to use rt->rt6i_idev
+>  	 * in the error path. Since skb has been freed, the dst could
+>  	 * have been queued for deletion.
+
 -- 
-2.55.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261026044808.613-1-n0ps1edzz%40gmail.com
