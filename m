@@ -1,41 +1,51 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=94.136.29.106
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=5.135.140.105
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793189465;
-	b=EOSUWfQMNDoL4ihTMNtXX0jHXWiNa+1vUQ0zj77POIpguQ3faDUB58BGXIG50U7RIkXD
-	 E9zLXR+7LrwsunhOSXrj2M+Go0TzzMkiqeQq7vXGH9lMpI1XUQNeA7Vzz84v47Tiv58EG
-	 g8Nk84wOZyic/IoCrmTrniNX958fiPZZ4301zO5WiFQXujRdvXnEe3l0KePkVmkgeHYEO
-	 RzTNFoJJc1x4nPwfmPh1oXFffZHThSaJBKT85xT29T/7Xxpdi6FRc0B06AJDbzSqtY80P
-	 mqV5mkuQCbUwnS75G9EuLHopqAoIEwZ05ItgsxgbgqAO5SZOP7pBpj6j/HxchXtPeMg==
+	t=1793189518;
+	b=XjggpM5nweutRXLPQxQoOixvU7TT1HXX7sxrHbOrNbZyp4PjDK6uIQN5Fm2v5/ByQO/4
+	 PbZVZMwBp7dixolSQuJ4Tc2iwyitrDNLBbY9mPUNTZhktGUVsU2imQIJWt83qA260UxqG
+	 SnlzKA26Reqzcu+NKfYxowwaTJ5AyfYEeaV9vb9ikBayJinxjLIPAEdyqmFeeOSahM/If
+	 ndr+MmUPe8NMTAwu4qRdK0M1ErPn5viYeQQC/W59+00UVZJbh67YbGUWEq/dU1dSsCVYB
+	 lPltt2cY8JEhyS75o2h4jds73tyzcRibCvrKxdqO5aHt57R2wwjKEY2EhehL7cIoZ7g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793189465;
-	h=DMARC-Filter:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:
-	 X-Mailer:X-Bm-Milter-Handled:X-Bm-Transport-Timestamp;
-	bh=sm1BiODDX+3Q42f0BoXQJdYDF4JI4ZR4FmWTuNbj7uE=;
-	b=NY6QOENr7H8tkC+HgIDwHO5RA+uBeYzRxc+PBCsbKyPwUFL1DM8M8npbNiu+3z4NAW3+
-	 4lIo7tFmStC/5Pz9AKJEI65j4bafXRmfe9S9izRrcbRroj981FdHuAYv61eBILBBIdCph
-	 aQe6AICebWJK0J9Pw3/381bNFev7bYwWCVxWGc4OIxl7yL1m2XcrU/B3tS6xCb/mejHkV
-	 gOQBC2V1116k1GsASfuO7l3XfDOeSxyjABnuU6eWptvU2vAAruDHYnAxPRoVX88kM3KFJ
-	 o+I+rOeZoIgqaXzFZHhJmV2Vd3UkCrSVKRJ42C4bya7/dxfdrQk9x24imNnMT7AWwNA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793189518;
+	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=Yzm5KfrMMhSQL0Yf78me4QaQ2CKP9r2dKDG+lFJrjjw=;
+	b=pyhmXXqVer/2P58k/5bMXKTSpoXKmS4bTQYSdJ9r2WvlfvDGTCt50Sb2EOApmlTrpLqY
+	 hEKB46M+YPvCWzcRr2ZDxmLp+wZg6X1Wv4ufwsnjdnmMzJM/FbjCUH6wYWE9HGA/OPVNf
+	 x0dRmhe8BxSD1a3vkGutc3+XOcghQNlNWdxd0FfU9oadcnaYaY+tzgBbOPAqd+3ZCaBE2
+	 o0apqndf8x31MInmLgVXKWZVzimMRhI8Hkr4TILjL5it8KjdVKM/cAh7fnqF04/UaFjEk
+	 auxTkKZeDqWA/HDLwGxZp1+GJ06M1QvKU5+wkScWRvzl9YK11jYFdWvn0Zul8jwtlBg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=proxmox.com;
-	spf=pass smtp.mailfrom=proxmox.com;
-	arc=none smtp.remote-ip=94.136.29.106
-Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
+	dmarc=pass header.from=cjdns.fr;
+	spf=pass smtp.mailfrom=cjdns.fr;
+	dkim=pass header.d=cjdns.fr header.i=@cjdns.fr header.a=rsa-sha256 header.s=dkim header.b=JVGkergG;
+	arc=none smtp.remote-ip=5.135.140.105
+Received: from mail.cjdns.fr (mail.cjdns.fr [5.135.140.105])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF40606A323
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 12:11:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6CF40606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
-	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 5205B43210;
-	Wed, 28 Oct 2026 13:11:01 +0100 (CET)
-From: Gabriel Goller <g.goller@proxmox.com>
-Date: Wed, 28 Oct 2026 13:10:44 +0100
-Subject: [PATCH iproute2-next] ip: netconf: show IPv6 force_forwarding
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E62606A31C;
+	Wed, 28 Oct 2026 12:11:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 58E62606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cjdns.fr
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=cjdns.fr header.i=@cjdns.fr header.a=rsa-sha256 header.s=dkim header.b=JVGkergG
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EB6FF15B5FF;
+	Wed, 28 Oct 2026 13:11:48 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjdns.fr; s=dkim;
+	t=1793189515; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=Yzm5KfrMMhSQL0Yf78me4QaQ2CKP9r2dKDG+lFJrjjw=;
+	b=JVGkergGGn/tJs4X7LkEAPKkZk34QvlpZPHWX5xQEsoouO7CwrWUR9a4q93k4ERlhvZPve
+	GcV5paJAhqfBt/coxtS486lXuJEkhbUOfMXmGgegDtgi5QbIPgyXAdFEuUkTcbW1dANozs
+	IETk7PUFxBsNvIodov/HwD9NfX4JiBWnrCJnh4xpnSi7pXEwafabe62NRFC3rxsXDWSxzh
+	WPOWj7H2YfFPfz01suNcwdD6YuvmY91NDlKLGdTWWjVmL3GddiHH0mKAnnM9ny6Y0BCvaV
+	zoDpfObWYO7RqJE3woFv7a6tIOD0mvnIDpuS2JiQ1f104r6yWQthKEyLsNgKLw==
+Message-ID: <64c2291a-f9c8-49cd-965f-5bc735f1b4fc@cjdns.fr>
+Date: Wed, 28 Oct 2026 13:11:48 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -45,69 +55,43 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v3 3/7] net: dsa: mediatek: add support for passthrough
+ mode
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: netdev@vger.kernel.org, olteanv@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, chester.a.unal@arinc9.com,
+ daniel@makrotopia.org, linux@armlinux.org.uk, arinc.unal@arinc9.com,
+ Landen.Chao@mediatek.com, dqfext@gmail.com, sean.wang@mediatek.com,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ naseefkm@gmail.com, b.larsson@gmx.com
+References: <20261028011317.1557238-1-cjd@cjdns.fr>
+ <20261028011317.1557238-4-cjd@cjdns.fr>
+ <d4564675-fa56-42df-8c5c-cff14f7884f9@lunn.ch>
+Content-Language: en-US
+From: Caleb James DeLisle <cjd@cjdns.fr>
+In-Reply-To: <d4564675-fa56-42df-8c5c-cff14f7884f9@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261028-ip_netconf_show-v1-1-a20fc6b20025@proxmox.com>
-X-B4-Tracking: v=1; b=H4sIAEPm4WoC/yWMQQ6CMBAAv0L2bBO6qKF+xRAiZZH1sG26RUkIf
- 6fqcTKZ2UApMSncqg0SvVk5SAF7qsDPD3mS4bEwYI1XW2NrOPZC2QeZep3Dx5wvLbnBugYbB6W
- KiSZef8c7cExhyYRGaM3Q/bUuw4t8/l5h3w9bK1+vggAAAA==
-X-Change-ID: 20261028-ip_netconf_show-458e9b193239
-To: netdev@vger.kernel.org
-Cc: dsahern@kernel.org, Gabriel Goller <g.goller@proxmox.com>
-X-Mailer: b4 0.17-dev
-X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
-X-Bm-Transport-Timestamp: 1793189460681
-
-Allow users to inspect and monitor force_forwarding, which enables
-per-interface IPv6 forwarding independently of the global forwarding
-setting.
-
-The sysctl was introduced with kernel commit
-f24987ef6959 ("ipv6: add `force_forwarding` sysctl to enable per-interface forwarding").
-
-Signed-off-by: Gabriel Goller <g.goller@proxmox.com>
----
- ip/ipnetconf.c        | 4 ++++
- man/man8/ip-netconf.8 | 4 ++--
- 2 files changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/ip/ipnetconf.c b/ip/ipnetconf.c
-index 57bb99d1f061..915d84ffa403 100644
---- a/ip/ipnetconf.c
-+++ b/ip/ipnetconf.c
-@@ -109,6 +109,10 @@ int print_netconf(struct rtnl_ctrl_data *ctrl, struct nlmsghdr *n, void *arg)
- 		print_on_off(PRINT_ANY, "forwarding", "forwarding %s ",
- 			     rta_getattr_u32(tb[NETCONFA_FORWARDING]));
- 
-+	if (tb[NETCONFA_FORCE_FORWARDING])
-+		print_on_off(PRINT_ANY, "force_forwarding", "force_forwarding %s ",
-+			     rta_getattr_u32(tb[NETCONFA_FORCE_FORWARDING]));
-+
- 	if (tb[NETCONFA_RP_FILTER]) {
- 		__u32 rp_filter = rta_getattr_u32(tb[NETCONFA_RP_FILTER]);
- 
-diff --git a/man/man8/ip-netconf.8 b/man/man8/ip-netconf.8
-index 7fe3e5f35803..558c14eb0a45 100644
---- a/man/man8/ip-netconf.8
-+++ b/man/man8/ip-netconf.8
-@@ -15,8 +15,8 @@ The
- .B ip netconf
- utility can monitor IPv4 and IPv6 parameters (see
- .BR "/proc/sys/net/ipv[4|6]/conf/[all|DEV]/" ")"
--like forwarding, rp_filter, proxy_neigh, ignore_routes_with_linkdown
--or mc_forwarding status.
-+like forwarding, force_forwarding (IPv6 only), rp_filter, proxy_neigh,
-+ignore_routes_with_linkdown or mc_forwarding status.
- 
- If no interface is specified, the entry
- .B all
-
----
-base-commit: 204a721033556114c81c47d00375f2d52e98e463
-change-id: 20261028-ip_netconf_show-458e9b193239
-
-Best regards,
---  
-Gabriel Goller <g.goller@proxmox.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
 
+On 28/10/2026 03:07, Andrew Lunn wrote:
+>> +static int
+>> +mt7530_port_change_mtu(struct dsa_switch *ds, int port, int new_mtu);
+> Please don't add forward declaration, move the code around.
+
+
+Sure thing.
+
+
+Thanks,
+
+Caleb
+
+
+>
+>         Andrew
