@@ -1,97 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.8
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.227.139
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793205445;
-	b=lsE7DXMa+sAarw7WBkWz8d1WTtmF58KF1Gy8aWCVsapcy0X8rRk6uy1NRdUTZH+UzqsD
-	 +2F99yaKLIIRAkqBP9lCD477I6p93K7396N5mq5ZsPPldBfP7nqctzWRmizi4zK+zzArf
-	 i4iPLgMUeWFYXOij05P6jiI/RpFyonMA1I4R+qV/raCHxk3tA4i3LHROfYi5qjhpuVrOm
-	 IRqbF0l2iJtax3oFBGSpSFzHlbF6iDLmRmRgWQ9BoB1vB9lvT+ui9PfpNEMcALFgU+3xb
-	 QO8X1xzXG5hXFReLGmBVkhhhDom6nNkyVhPgZsazTIy4OepLXo8avbdWR548PU2u2tw==
+	t=1793205530;
+	b=zy2CYhyKJlYEyN/x6WeXRlqFnItEOt3l3lXgjWGfRUlup5MT637d4QtNqZMJAvwQdL0a
+	 CIewV9uuRi7FmdiwwZW2O3eNzGWbneCM/7tcaCvY6eS3FhzI+10QBD08QDyXXd/jutgqV
+	 8aOl+iiznmCjLEiivRbnHvumVamHHCSrESRd8Ygl/RwFlZkPZ8BCkUW+Cdiu4R+Yy+PY9
+	 dpSrjaHhVjyvvGLZFrG3UUrs9+0Lo8TQ1Zls1ds6OFUYgHjnPSmwgp6wRe65e9NpJbKl5
+	 8MoetIjJ14ZlbRIiQ5B80rEKFyI4ASMI/8MU4xtNf6Do+m6VhcgCWBeMvCfs1wvacfA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793205445;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793205530;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=l+8ehmPAo6inV+YH732cihXHH/Y9Bk9COvdt/G9UfJY=;
-	b=lVU03OX7r4WKhafNpLt1aai32J/eyelIBBnoGaeunMDf38WbcFo4VC+r8hEUw14pXHwE
-	 xA4ra8mPlHE4uz/pdqDO8K1WLKTi5Ca3VdkArH+VvXmkXYNeCFSE/UFPV6Rye53W3H0vD
-	 wFi8/6vUw2slhbfwTxaYYS38T4hfk688+LWQY931EVSJfzC1ZpUFVp4a2IjlyFUFNC+de
-	 5e8klf/qXPylBUew2LAMAVsPjyynrHIECrrPfXXHFj5RGvjqAzHQvwIqu7LpIsw7wB+4Y
-	 vdnqiq14osqCEUeuFjKEPo6aiQykX6EwlDDrz/nG/rpuKNE2Q1DRDh79ovkEW9I8yRg==
+	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=YYg+bgTYV9ji+xIuiu7GqnBDXQOUfklC31rXpMn4A4Y=;
+	b=Q4iI2Ua02zMOAwV5XuuPlc3cMD1mq5vjU05V/b9V7WhID+jCByJg3PtqLyj6KYlHGV9O
+	 /JJWv1sc/OhV/jauG1WSX9MJDiDnMcMwCorGRl0cKUqL9H4NG0kAKGWjjou5Tlv/MQRJ4
+	 uDmZSDYG1hSDErWsF0K0OqJyp5mB3WIpS8NBEgjqXI+4WqbH+rG4TCEPOFt/HmuxCaqrt
+	 uKaVaBClZNLj9ulEIAx3lZrOq436P31COPCTzHnRjaN17dF/S/s7SOCRpsRFp3TH0xuiV
+	 ZK3hzuoIQaQdzWPpv1e1f0QUPjKM4HsIc6KsgPzyp4C9eM8HlNytHm5XPzXiecQVLVw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yjieG5eT;
-	arc=none smtp.remote-ip=74.125.229.8
-Received: from mail-dy2-f8.google.com (mail-dy2-f8.google.com [74.125.229.8])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OPXilkf5;
+	arc=none smtp.remote-ip=74.125.227.139
+Received: from mail-pj2-f11.google.com (mail-pj2-f11.google.com [74.125.227.139])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72E060A261E
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 16:37:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B72E060A261E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDAA606B2A0
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 16:38:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6EDAA606B2A0
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yjieG5eT
-Received: by mail-dy2-f8.google.com with SMTP id 5a478bee46e88-36a24f47293so479743eec.0
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 09:37:24 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OPXilkf5
+Received: by mail-pj2-f11.google.com with SMTP id d9443c01a7336-2eafd4b09b8so169815ad.1
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 09:38:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793205444; x=1793810244; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=gmail.com; s=20260707; t=1793205530; x=1793810330; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=l+8ehmPAo6inV+YH732cihXHH/Y9Bk9COvdt/G9UfJY=;
-        b=yjieG5eTsxf2hNickEyx4oaFBkQeyXAr7t4GUk0Bq82KubByGt9kiMmNFKBzZRPnNA
-         Oac51001wrooxkjqnfUmFoxmXb7gISVTvCnIoAgJkqixiqChuXzIWN6I//CsSEHkfn+G
-         31MhqGnd4YivrCKyPeP8gdDF2KOz4sU4uMbqRVT7nja94oTEij+1Lu08slxLLAbv63AT
-         WhVn1YDBR2MaCr46SnsB5DuKIegKMmrWlHT0WkFq1Nchnn8seRO6pn5+Q8wIu38knrp1
-         ZvQ9sZqBhmD3WdB7452IkMLC4N1Lf++dPL6Fe9hoQVxGCekD0iijf6y5Xc59I8wzB1kM
-         1KXw==
+        bh=YYg+bgTYV9ji+xIuiu7GqnBDXQOUfklC31rXpMn4A4Y=;
+        b=OPXilkf5W2mSrES/eYAou3I3925xBOmvAKuFXCfpSrnxPLnj4kUMLpI+jLbIXRhBp0
+         Tt0n9dCUTuUw8+ZO0sS3kJucb4xltTp5nfTz+RJDWmJduzVdHYqQOd18bWatWyjnNovE
+         YlZCPG3PGfuoMn/nqpAYtqGfP03M+3OSETEe8SNAH7VY91zPeU6BdgPCaw7u3EZmO7vY
+         RUkAZYxo8g0xeRYpPdlRVmnVn5D7sjsWuZkGbk9BiCb0oSCZaraD8+H9mZKKzy9GcRFI
+         A2ug5sAisBx6jr7IUqNsAwR0TnA6JRYhH+UizrU2Unehh9dbkTbDZdHmIia2jek02aWn
+         t5yA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793205444; x=1793810244;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1793205530; x=1793810330;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=l+8ehmPAo6inV+YH732cihXHH/Y9Bk9COvdt/G9UfJY=;
-        b=P/RjSrKA4EmlyjlaqjgW1McXQvNX4qGO7jTaXynGgBexIFovJVJ1C88AxMapL0xXxk
-         Bck99/7VnBBOFRbmL5L+izvRHThx6oveOg7YYUFjn1p+mPqpQZqaVTS3R3QDCJiQLdy1
-         Py8fcVVuBJ++2Kj6xHXnsqE413t32NckpOVDYs/6hP6OFQi4Q1N7Jzi3+1zuxqYvUnhG
-         xxcocW/nxd12TNrGZxH5LEqzADpF8Vh0kC2eIH55ScXQAbop2/MhI3voMBjIktjKYmK2
-         bIgS+H4myKFQOw9NZCNRDVCmXbVPElxILCYsE12PjqosL9lLlNRPDjWytTS5vrGBLrOo
-         /D5Q==
-X-Forwarded-Encrypted: i=1; AKwUvBxihurf+uYUJ8ad2VGKzt0NQQoC3oAeetdtRzNBidTSGt2FvX5kzsdXMZS7JmzqQel9KvYmPPw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ3R/2gGW3+KqAXmxYLmWgN4gJhwumCkStqbM+x93yMoFuFusQI
-	tMrUlRAYeWFmPYgS/PxmkOUo2JBxJcPP5pCR5IvHYIQsXebGt31t/Se5
-X-Gm-Gg: AYBFou1gze870Q20e+56CoAvLC7mSQrVng0zX33ABTWQTy3itKO6ZeqQtd8tiEqKGce
-	etpCyaZrgdWWAyipp7dmwWXD/Bro7CpTnr7KAjVgnmGpbf71bYjJlMIMpRQm6IxFXWX5g7MRl9Y
-	Oh7lIGLy7AVYuIDj8bJvQWeRnnRXnbWUyqET77cAfYm0umm5H3nk3xyoTFupq2zT/goLPXC3hAu
-	f/oIASNx+O1vYv0E47takHouz6If7pO6uyohvcl67miKcKAz+hS9x1P704kTXGjBbPFaW8tKYkA
-	yrz6hjW7mdJwTLLLvQe1NA/48Bj+4JuQ1atJYegGfkjSHNZYyksMydOxkenCyK0Pipfwb2j3ch6
-	mogbHXCgCbYZAtvlng6RwDY7jUq+4fF0paxlrK9apINVUzp1NDvssejJ2zVJ9qlKPL49RET/HgV
-	aqQX9Ewl1gsOHNeBcyb2Wx3i5ckJ1vVCMw5Tj2T13L5faxtfe6SAF1EfEfNvuas+466FS43UvFX
-	VfschDsvvtnQ/SLe2Wx4XKtnoQh9mvtT6wbm+HqWwbLq0HbNi+6sP+TtbfKTihQEXPb8YqdPWOe
-	XQDHyQXvM0FzRfsS8faQeMc=
-X-Received: by 2002:a05:693c:88c7:20b0:35a:22a4:12a with SMTP id 5a478bee46e88-36a203af6e9mr4489164eec.18.1793205443455;
-        Wed, 28 Oct 2026 09:37:23 -0700 (PDT)
-Received: from localhost ([2a03:2880:9ff:61::])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a2390929asm9638344eec.12.2026.10.28.09.37.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 09:37:22 -0700 (PDT)
-Date: Wed, 28 Oct 2026 09:37:17 -0700
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Naman Gulati <namangulati@google.com>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	syzbot+1269fe6cc2016008124e@syzkaller.appspotmail.com
-Subject: Re: [PATCH net] netdev-genl: ignore NETDEV_UNREGISTER rebroadcasts
-Message-ID: <auIiFnAf-mlGkfDc@devvm16445.scu0.facebook.com>
-References: <20261026221306.3151025-1-namangulati@google.com>
- <at_TlVBS-5KVZAkg@devvm16445.scu0.facebook.com>
- <auABpyzeuUl2S3_W@google.com>
+        bh=YYg+bgTYV9ji+xIuiu7GqnBDXQOUfklC31rXpMn4A4Y=;
+        b=PWIOJjJx0NsMB7lbTYO3N4SjLNQMk5vOFmJ7TXopSUlJFbaMoqs2kVJMIqgQR+Ej4z
+         xYnKsDK6P9mpRBsuXFgYTLXAFaxJPDaqiwyYNn6V1pIhLFdXrps2bLv5DAat19uKLv2V
+         gQ7VNTevZP3DGJ6/mCVcRrcYjIny9E9qpyD4xXbijPi+YZiiXNoffPLRLW6rtyir9AVR
+         OZjtQ6N+CV2h8tH+DSjkkmn9bxKA+zFiOJo1gFuoecY/D38YZeRmQI7UEKIvdlIJwSDV
+         2Cc38aj7oG+iFL7SBrhwK1y/py3NrijOYsEgxCQ64jEoxfhQJ/+yvfE3Xma9MWxAtq+9
+         gYTg==
+X-Forwarded-Encrypted: i=1; AKwUvBw+qMjKfq1W7MUa26/UxpRyaK4HVoNAi4DXX4C2u98bW0DrxvH7eg/tJAj6dJ/b2Mo5gsY0ASU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJMnbKNturROhWmF21tonsFISvCLup6da6cv7NhZwDN56MsVXul
+	yoI8Khbfozy7JiYfGYa9FhKWintnnhNi3TSp/Q/m+xXvbDDHB/fyk8AmxLQqSaxLmB80RA==
+X-Gm-Gg: AYBFou3fNpIYhIYRtF+6WYg+xa8LA1IB424zIGhUgRkCcP7kvjdLrmebIX30GUEZyo5
+	u9kxs5QFmcfYGhMB6dHdqvSFoy1Xnsz1m4HC9yzz+HQDYTNxTRrfqPl3vCXasUtm/RUAi45xpls
+	Khj8Je2y+dYXUIIOdABNkxS7cdXn+zT0IlSbRXwsUAswB0XnHP1VuT5rp362MZ/lFJoB0uDgKp9
+	xMIQqcRX/pVKYfantPJ8e7on8zIxx01dExQy5I4M6LgBofLoXlZcX+tTCu/pJCxZry5X0+5igln
+	EqEWBe6+w7edIQdJQXsnRahE46KTbt/3aiHAJ6sRjNRy8g/j4MLHa1m2XfoUcVS7uUXHKmQTX4M
+	ZE1i8SQDiYPAsy7SfgoXSbYZ09Xw4Ejrc16uwcdhSC64VXOBUgT91waL8VQSc+Hmr3UKs+A+IDU
+	WHrBQs4EejANwbg01NZfQ/TaYjzxOYV+wQvZvvxf2vZTYAFCeoqsJ88kdzyTW7djo00IJsupiak
+	P7GIUs7Ot196xGlmdrhPdlNAOtzFkCma3mDks4fqrXR+viqdNRrUm5gxwFeiZzNUUefVXR6QYs3
+	HBPaKdC08qRGn2NvtQ6FxcXKhNJdFI/ZSL4Ky9246E1iHSG7T5zN
+X-Received: by 2002:a05:6a21:496:b0:3e1:9071:acb2 with SMTP id adf61e73a8af0-3e913a7ca80mr44385637.33.1793205529784;
+        Wed, 28 Oct 2026 09:38:49 -0700 (PDT)
+Received: from 192.168.1.7 ([2409:8a1e:2330:4ef0:1490:f0fa:6df7:f234])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd8cc9b25a3sm4395321a12.2.2026.10.28.09.38.46
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 28 Oct 2026 09:38:49 -0700 (PDT)
+From: Rongzheng Wang <testwrzwrz@gmail.com>
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: Magnus Karlsson <magnus.karlsson@intel.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Stanislav Fomichev <sdf@google.com>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	stable@vger.kernel.org,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v3 2/2] selftests/bpf: cover AF_XDP multi-buffer TX software checksum
+Date: Thu, 29 Oct 2026 00:38:39 +0800
+Message-Id: <20261028163839.82573-1-testwrzwrz@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <auH2iJ9oXEQRVG26@boxer>
+References: <20261028025026.11401-1-testwrzwrz@gmail.com> <20261028025026.11401-3-testwrzwrz@gmail.com> <auH2iJ9oXEQRVG26@boxer>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,130 +104,12 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <auABpyzeuUl2S3_W@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 10/27, Kuniyuki Iwashima wrote:
-> On Mon, 26 Oct 2026 15:28:44 -0700, Stanislav Fomichev wrote:
-> > On 10/26, Naman Gulati wrote:
-> > > netdev_wait_allrefs_any() re-sends NETDEV_UNREGISTER every second while
-> > > it waits for the last references on a device to be dropped. By then
-> > > netdev_run_todo() has already marked the device NETREG_UNREGISTERED and
-> > > RTNL has been dropped at least once since the initial notification sent
-> > > by unregister_netdevice_many_notify().
-> > > 
-> > > netdev_genl_netdevice_event() does not tell these rebroadcasts apart
-> > > from the initial notification and sends a NETDEV_CMD_DEV_DEL_NTF
-> > > multicast for each of them. At best this spams NETDEV_NLGRP_MGMT
-> > > listeners with duplicate notifications; at worst the pernet state of
-> > > the netns the device belongs to is already gone and the handler
-> > > dereferences a NULL pointer.
-> > > 
-> > > default_device_exit_batch() only unregisters the devices still listed
-> > > in the exiting netns; it does not wait for in-flight unregistrations of
-> > > devices that were already unlisted (the barrier doing that was removed
-> > > by commit 8a4fc54b07d7 ("net: get rid of rtnl_lock_unregistering()")).
-> > > So when a device is unregistered by something other than the
-> > > cleanup_net() of its own netns while references on it are still held,
-> > > e.g. a veth whose peer in another netns gets deleted, and that netns
-> > > exits while the device is stuck in netdev_wait_allrefs_any(), the
-> > > remaining pernet exit handlers run and genl_pernet_exit() sets
-> > > net->genl_sock to NULL. The next rebroadcast then crashes in
-> > > genl_has_listeners():
-> > > 
-> > >   BUG: KASAN: null-ptr-deref in netlink_has_listeners+0x3d/0x3f0 net/netlink/af_netlink.c:1388
-> > >   Read of size 8 at addr 0000000000000578 by task syz.0.0/5325
-> > >   Call Trace:
-> > >    <TASK>
-> > >    netlink_has_listeners+0x3d/0x3f0 net/netlink/af_netlink.c:1388
-> > >    genl_has_listeners include/net/genetlink.h:644 [inline]
-> > >    netdev_genl_dev_notify+0x161/0x450 net/core/netdev-genl.c:93
-> > >    netdev_genl_netdevice_event+0x98/0x3c0 net/core/netdev-genl.c:1491
-> > >    notifier_call_chain+0x1a5/0x3d0 kernel/notifier.c:85
-> > >    netdev_wait_allrefs_any net/core/dev.c:11690 [inline]
-> > >    netdev_run_todo+0x731/0x1060 net/core/dev.c:11808
-> > >    rtnl_unlock net/core/rtnetlink.c:157 [inline]
-> > >    rtnl_dellink+0x68f/0x810 net/core/rtnetlink.c:3707
-> > > 
-> > > syzbot hit this by moving one end of a veth pair into a short-lived
-> > > netns while netdevsim's deferred FIB event processing still held a
-> > > reference on it, and then deleting the other end (repro [1]). While the
-> > > source of this bug is netdevsim deferring FIB processing for and holding
-> > > onto the device reference for O(seconds) which is being fixed
-> > > separately [2], any driver may introduce such a delay and trigger the
-> > > null-ptr-deref.
-> > > 
-> > > Skip the rebroadcasts, which are the only NETDEV_UNREGISTER events
-> > > delivered with reg_state == NETREG_UNREGISTERED. The notifications sent
-> > > by unregister_netdevice_many_notify() and, for a device leaving a netns,
-> > > by __dev_change_net_namespace() are issued under RTNL in the same
-> > > critical section that unlists the device, before its netns can be torn
-> > > down, and keep being handled. This mirrors what ip6_route_dev_notify()
-> > > already does to cope with the rebroadcasts.
-> > > 
-> > > This change should not break the UAPI spec as it defines dev-del-ntf as
-> > > a "Notification about device disappearing." which is a single event. The
-> > > rebroadcast in netdev_wait_allrefs_any() exists to re-kick in-kernel
-> > > subsystems holding references; netdev-genl happens to be on the notifier
-> > > chain and forwards it.
-> > > 
-> > > [1] https://gist.github.com/NamanGulati/2d1b49b8757f9a88b0bd6e55018c02ae
-> > > [2] https://lore.kernel.org/r/20261023191517.607834-1-kuniyu@google.com
-> > > 
-> > > Fixes: d3d854fd6a1d ("netdev-genl: create a simple family for netdev stuff")
-> > > Reported-by: syzbot+1269fe6cc2016008124e@syzkaller.appspotmail.com
-> > > Closes: https://lore.kernel.org/netdev/6adf9f64.6200f071.51519.0ed1.GAE@google.com/
-> > > Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-> > > Signed-off-by: Naman Gulati <namangulati@google.com>
-> > > ---
-> > > Note that the reproducer attached to the syzbot bug targets a different
-> > > bug (via devlink_port_notify() on netns teardown) that happens to share
-> > > the same crash title, not the one in the original reported crash report.
-> > > ---
-> > >  net/core/netdev-genl.c | 6 ++++++
-> > >  1 file changed, 6 insertions(+)
-> > > 
-> > > diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
-> > > index 33b9f4eb9565a..2032ab9a864c2 100644
-> > > --- a/net/core/netdev-genl.c
-> > > +++ b/net/core/netdev-genl.c
-> > > @@ -1487,6 +1487,12 @@ static int netdev_genl_netdevice_event(struct notifier_block *nb,
-> > >  		netdev_unlock_full_to_ops(netdev);
-> > >  		break;
-> > >  	case NETDEV_UNREGISTER:
-> > > +		/* netdev_wait_allrefs_any() rebroadcasts NETDEV_UNREGISTER
-> > > +		 * while waiting for the last references to be dropped; the
-> > > +		 * netns may already be torn down by then. Notify only once.
-> > > +		 */
-> > 
-> > [..]
-> > 
-> > > +		if (READ_ONCE(netdev->reg_state) == NETREG_UNREGISTERED)
-> > > +			break;
-> > 
-> > Same as
-> > https://lore.kernel.org/netdev/20261026063743.1797-1-lege.wang@jaguarmicro.com/
-> > ?
-> > 
-> > reg_state is protected by netdev, why not do this under netdev_lock?
-> > Also seems like we are fixing a symptom, not the problem?
-> 
-> fwiw, I suggested not to take the lock since we are only interested
-> in NETREG_UNREGISTERED here and there is a clear ordering in the case.
->
-> The root cause is netdevsim this time, and I have a fix,
-> 
-> https://syzkaller.appspot.com/text?tag=Patch&x=15923c21580000
-> 
-> but rebroadcast itself is not-ideal-but-valid behaviour, so each
-> NETDEV_UNREGISTER must be idempotent unless we can completley remove
-> the rebroadcast mechanism itself in the future.
+Following up: I extended the selftest to run every descriptor count from
+1 through MAX_SKB_FRAGS + 1, not just 1, 2, and the maximum. This also
+covers uneven fragment splits. All cases pass.
 
-(to both you and Naman)
-
-Idk, I haven't looked deep into that, it just reads a bit weird that we
-call the notifiers only then to filter (some of?) them out later. While
-this patch might fix a narrow race I wonder if we are missing a bigger
-picture (for example, why not get back to pre commit 8a4fc54b07d7
-state?).
+Thanks,
+Rongzheng
