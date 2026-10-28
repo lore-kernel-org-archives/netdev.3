@@ -1,20 +1,20 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.22
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.201.6
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793210244;
-	b=EGs6j+N7P87iL8JaNvhTeIGCEXJRZrAcCWlzPtFGzugiEQjG6j2FaSUEchVI3U28n7EU
-	 g/26YhsgIgGNSdxen/X2DfRbYh4E3yFPUkU7IAqQWWwSrKby56D5NP/sZXGjx9vsne/HB
-	 4V8DSOOW804yotJp/wBl8WQawDxWL3UeuveoWgYa9b+IZoBxoBPqzVMYr55BC2yMhNqSw
-	 hx/wysL6byGkbiGeFUquFjtOTHM+nVFJOTbgb4nLwUBEEPNk8SB9lyun+O2KWRRt++n/v
-	 7tEJyTT6eYCd/O6rJ44ge9avKfFM3SotdkjmbA76baLpI5IbaOKlfqZ01IaYRikxTSA==
+	t=1793210832;
+	b=4qkLHsWDOByB+ZThFnM4Dh8rPMWVXE8E7z1S0Te2NtYZ1ciKg8wSYRh4B1cdHGo1O4P5
+	 Ku7BrQ4hOk4C2kq9pY6xld1+m6c0Vr5hKCA9OOFYIvLScabmj4ej1wZ9UtojOmMAcww5+
+	 gEfHgYxBdgSwRMXj7ye5G8Vn13Q0Qjx2YcmAQalVXsAPz/KPgaHJv/Z89W743UHNkZ8qK
+	 V24VNDRvRxl/g7WZpB8JUs+P49KIO0tFkXR2BYplJB5+SRRzIqRNWEHVdo3gwoqN5HoCs
+	 uV31oIslDOvXgefZqc3j5VflAP48yWhvKCefblce5cn+6f3z5gVHxasEzoXcl6XjwWg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793210244;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793210832;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
 	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
 	 X-MS-Exchange-CrossTenant-Network-Message-Id:
@@ -24,70 +24,76 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=NLi3/BG0Bs9B56hArwXkfCuLuGaxIXRi5A1vTeIzvQs=;
-	b=ONwh/kMEthGFtKggq+C8EywuS9tBK8l9CHy7AKhWqSmr/HzezI8s3w095djDPQ0/x0iz
-	 drkPRLW3SfsT+E7A8Gkw9pRZfT1uGbTTbBIBp46wWxIczgs7d2qy6vECfQWgTwKWamQ33
-	 axd4V4yy0u1AsFCQ0p1RSDy3x3eRlHR4dEhc7clFyVd5qtmcOf2FpcE+fPMLgszghp61Q
-	 5oIcSwjggWt2VDH2LAgwju5wHPXC8MLhsiHsJ08MF7fmJ6TTjHmg6HdAOCYvg8uGrhoHi
-	 D/Uy+cpMLtfTTdP8g0A1WFHuP5u5I3iBylpyL6jP6W6GamL8FSydlfH9g9+TVrfC6hg==
+	bh=o7CuThGxbb+3RZ8eNOb1+Y++d/2EmQhnfLv2xJpTdSs=;
+	b=WarggEhSCdTWYR/ftqaoN8nvMBoT/XHLMHeR8Gqr5NZixb7th1EdGwpb4GvkuryBefzM
+	 XGKwvv38P5MC8AlpRva4gAUF3kdtVpm4s+oSFMa8+37PslheMjR56EKzsHnvz3yymuJy/
+	 h2Ra2z17t6uZqPbJF0EgwXTwP1rfSUFWhvdNxaoe//Nz/lz/FPcmOw4XRXs6pOWDxDlVY
+	 OKUkjU+H5VwBNXSWsR3th0G84rdzs57Qc60vbVsNPSbxsX9gAq3rER24PywB6fykFxb1N
+	 uLbzNQO1eYqTUi1G08ud8rnykRIcvgYBsX5I+JrrajZ509fp+N7L/HzXY9TLU619nSw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=nvidia.com;
 	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=WcC6GsGU;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.22
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012022.outbound.protection.outlook.com [40.93.195.22])
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Djb6svpc;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.201.6
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013006.outbound.protection.outlook.com [40.107.201.6])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73CF7606A31F
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 17:57:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 73CF7606A31F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE13606A31E;
+	Wed, 28 Oct 2026 18:07:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7CE13606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=WcC6GsGU
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Djb6svpc
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NGyiFVAonEcEBInE+kGO48OS7VSfW5rbLNXPnovaZ9PV0aGA0/4xa9hC16XGQBrvfDcx14fwFb1558dNhKw9e6gOWnheBA7AozGUEmBmNp8qO4JIYDuAOg1ddbqHYGnLQBh5bngWOkVhELOAhO0Y+0q8grtNLCGq8+BneFEwK3A1PIQSVUKL9IIhggIETU9BU4f4u/3/QK7ljLK1brrqnXDUKcE6hBdmAa8y/MB1qsqeQmTVHODNVaIYKgldBIafaREwha2fNb5/NhA11iBn6Hmv7oaONnxBjeM6cu3rpn3hooDSuPJIIQ5TUT+w2NG4j9KvPgAEc93xtK4enX+i4g==
+ b=UvXTfYMZiCyuVEc6dLVaoDZl7VDr2gSYcZGzrc2vBH/Q/i/Fhmgn0+EWUITDVmp7rgq8srqcAyW0Ts36m8JSvVBABKrr9pNA7IyPT0xsoLyQ7SUZ0YR0b27rwr2fHX0Oz7ntIISKKOv4mDruiSCyVW2k42Zb6zln6AhZucfpCFZP6476rsva/iK0gNK7p3H1QB4W068m6fztcTJLmVeccuA9FReD8E/VU8YJUgvCwH59DEb2wfD8lCowsvvlLBW/1RPb/aOCM+bho2fNhqB0hnon9MfT9rq/sNV7nDQn/vt8daVGjfGiDpkz3uJ9ktFKZVx8eXG60OoVLGV2X8WoGw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NLi3/BG0Bs9B56hArwXkfCuLuGaxIXRi5A1vTeIzvQs=;
- b=UzOUzygyKr1/zCE+lHtNQZ+Bm2TH16cY5mKaZ4zeuBbDlseqs26jwQ2oxcpfk2YzxhzTZqWS0mcBdVeC6enZOqtxcsg01/ilg7Q2RVXNZWMw9Tarl1bWoJZfe6CC4hQITV8WHvErHgmR/qqHQyMK2gU5ilWGK7Vwdqum/BOr94VOAZCD/1e6rIZspPx6VBe6Nyt/VCTVGCBkMRlc2kqFkFhrdrxvqKwUF9nZ4XaAWjOiMPV83bC43ynpI+qFoQLltiCbdaN64Iqows2C9Yn65wKDL+4FBMEi8HrRz+OPD5WpCTr1jJwicjAknA0LaTb4j41lc0iKn0Blsv1u5tFr2A==
+ bh=o7CuThGxbb+3RZ8eNOb1+Y++d/2EmQhnfLv2xJpTdSs=;
+ b=dZl16xE/nHCvfv1RYTR5Dupo0E0dJswhoETyU1pYU+yc0JhmoLYb6h9XX51EcCpihG9eXtNJWbU7jJ9/A4SRsDuxdBRvNDave64k3E79Xr4vcm1R0I+Fxytwb9Y+mVSh1xnuQI2keA2mvTaWId+FIThy+odEUdJEGtCDGLKuNCI/Bf5R7C9h2bYjH45MCcYzYYx6BqYZqqXRUyDuJchWv8ln30lAWZ3US8L80jnLHLmSHZnTVu7QwIJcfv9vTgn7T1dtH/M7oO8czjrNuEVA7dW3LEr8ipLoEUttpDKVnHiViOjrq0/Br8IPjOQtW5KnCsY49npEBsgBGndez0QJHA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NLi3/BG0Bs9B56hArwXkfCuLuGaxIXRi5A1vTeIzvQs=;
- b=WcC6GsGUDyVPSWDt4TwDGu56ccxpJnlu3Lx0k82ot/fZj2vezXZQmytSRdmYftkrFqnOr48bAzUKdssxkaH8kY/baCtWZCyN+esq4cPXAI8A/4oOiC3gq1NvKkhvZCdsXPMWYp0HsXwvgZpdt0DJqDHEfVkg/rKe+aVJMJc1o/C8V1FjRVXGUgEkokzN0+48hcRi04xYOXyvw0bOvqd2mzc09xm/cFigzTj9TnV8a9le9598MEkKJQ623gh+2Z491n9NOCW1jlImedSMZXCCdJb7KwCA6d5HE9n1QG48YHaF9NTh0BzYEl1GdILv1cISmWbTPtb+CKsQ493SOincfA==
+ bh=o7CuThGxbb+3RZ8eNOb1+Y++d/2EmQhnfLv2xJpTdSs=;
+ b=Djb6svpc7AxreSvA/wNp8ZBnPcA2L7IZnDBtNonnGNVBjYA/e1/plGngbish+0CP0+P+kbJfPRLPXfY0t5yput+4jJZ5z2dM19NwA4lX0rBsQqZSzPl/iRU6Dl5/f4PgqRdW4fIND1d800xKV7dQXGS+LFYMmz/ALJ/9/zantnrsGLjD5AAaa0eD7fJTCuCZzFZ2Jp48E2S/YeDwFBH5oiqBVpgoxf90UECG4+Ri/rQm10Gl1Fecp1ByeCxb9gExPWhtPxnlzH6BBf3UmLeSLIgaAMvj1oqkfZE1AyNIzaATnCKEk3hMMYhpfIlhJa6YosZUdBQxUOJ9CrsLi+ZucA==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by IA1PR12MB7493.namprd12.prod.outlook.com (2603:10b6:208:41b::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.8; Wed, 28 Oct
- 2026 17:57:20 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0546.021; Wed, 28 Oct 2026
- 17:57:20 +0000
-Date: Wed, 28 Oct 2026 19:57:10 +0200
-From: Ido Schimmel <idosch@nvidia.com>
-To: Sascha Frey <sf@techfak.net>
-Cc: netdev@vger.kernel.org, qotmddnjs@ajou.ac.kr, davem@davemloft.net,
-	kuba@kernel.org, edumazet@google.com
-Subject: Re: [REGRESSION] vxlan: duplicate ICMP replies with nexthop FDB
- entries after 3fa64d86fc64
-Message-ID: <20261028175710.GA1116088@shredder>
-References: <20261028142928.GA8406@techfak.de>
- <20261028150824.GA992905@shredder>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261028150824.GA992905@shredder>
-X-ClientProxiedBy: FR2P281CA0124.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:9d::18) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+Received: from SA3PR12MB239779.namprd12.prod.outlook.com
+ (2603:10b6:806:5a5::7) by LV1PR12MB999327.namprd12.prod.outlook.com
+ (2603:10b6:408:3f8::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Wed, 28 Oct
+ 2026 18:07:05 +0000
+Received: from SA3PR12MB239779.namprd12.prod.outlook.com
+ ([fe80::2ac4:299a:52e3:5d9c]) by SA3PR12MB239779.namprd12.prod.outlook.com
+ ([fe80::2ac4:299a:52e3:5d9c%6]) with mapi id 15.21.0546.021; Wed, 28 Oct 2026
+ 18:07:05 +0000
+Message-ID: <a3d02f70-c141-4561-a053-b408e94c6047@nvidia.com>
+Date: Wed, 28 Oct 2026 20:06:56 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net V2 1/4] {RDMA,net}/mlx5: cache and use TX-enabled
+ aggregate speed for vports
+To: netdev-bot+sashiko@kernel.org, tariqt@nvidia.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+ bhelgaas@google.com, cjubran@nvidia.com, cratiu@nvidia.com,
+ edwards@nvidia.com, gal@nvidia.com, jgg@ziepe.ca, kees@kernel.org,
+ leon@kernel.org, linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-rdma@vger.kernel.org, msanalla@nvidia.com, mbloch@nvidia.com,
+ saeedm@nvidia.com, shayd@nvidia.com
+References: <20261022193053.3815866-2-tariqt@nvidia.com>
+ <179304672765.3134.1208806064407803696@kernel.org>
+Content-Language: en-US
+From: Or Har-Toov <ohartoov@nvidia.com>
+In-Reply-To: <179304672765.3134.1208806064407803696@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: TL0P290CA0009.ISRP290.PROD.OUTLOOK.COM (2603:1096:950:5::6)
+ To SA3PR12MB239779.namprd12.prod.outlook.com (2603:10b6:806:5a5::7)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -98,73 +104,283 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|IA1PR12MB7493:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2c7a04e2-328b-454e-ed55-08df351ce940
+X-MS-TrafficTypeDiagnostic: SA3PR12MB239779:EE_|LV1PR12MB999327:EE_
+X-MS-Office365-Filtering-Correlation-Id: de0b46b8-f4cc-4590-a84e-08df351e4609
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|366016|23010399003|6133799003|18002099003|22082099003|56012099006|4143699003|11063799006|261026121527099003|10067099003|261021121427099003|261009223027099003;
+	BCL:0;ARA:13230040|7416014|1800799024|366016|376014|23010399003|261028144727099003|261026140227099003|11063799006|5023799004|4143699003|56012099006|261021121427099003|261022075727099003|261009223027099003|261022105027099003|10067099003|261026121527099003|22082099003|18002099003|6133799003;
 X-Microsoft-Antispam-Message-Info:
-	Jvv54JauEKOdCypYWJFITAD3yDFl13q6iTXB9f7VYHt0LkKUoo4SiE3UvH0+0aN7voz7DY9Dybbs3cEp9n4fbECqzph440R0iaXvWc4ttJWqinve5lCnTftynzJNgc9WLAqzL4Qz/uZOeRQ9EyLwCn1hYHFH0xJlxbnd/KikguvJCaYTRIWuBAe7jZKaIDl0uvCwMLhnopveLHYnlH7AkV/ZBhUe7fZdbYYMcAFzQKY0K37LrDI03YNZgMO3M/jY8QlBEn+/7NppWc5LTZj3w48FWAWzf5UrOxTUMKHSuRa00lMSsibnqVsFXTj1b07icL0V91GBRS8MGkYV3FtLvBcwkSsCRLyQLvrSYH+a0DZfsIKJ/dnVO4iUZeKjpvlk6kCNU8dpvD0rVhF0bVP/mM5T9gSruQKWob6xQViI6N33yO0+Vxo/pkB6xU/N/gg/JLReZF98IafugNcBUhrFTD7cuOMFdYTcVFzY3zSgjL/69KNitJMPq1qy5RIah8J0V4axmKfdnIeMiiEKLljmgTB2U+eCkXBpeMPdCaU0lIOLFfkXj2XfkFUUyvNrpczbfTYxR+S7BDSOd5GfuRsswEQhGBB69GvbDaZpzXOueb6lB7FYRLQKlkFftUnL/MfZHCgDbzRCzxH8OKYhoNYHVTVuCTgMVrii4Lip+6SS0SE=
+	qOi0l6/tZ+Ey1Qy1FKptFC4LZxGgeqgAM4aablc2+dOMmY0HIHpheveip7HXI5Hxmj380hwVSEzWOsI5lWA7BBLUA4UkMWTTpljBv/QnECZQcPLxBKx5Pc/iJhAm/2JJW1jwxm4BpkddrgfhkAI0uFujRWkXe9QvJdYUuGgXrRajvdt32a2Kv2lvwbrms4P3XRwLrSMp+0P3LncTLGGpwQWzOLT8aXJih6WOVvkMw7STNPiF3aEFazIZFtogm07FOzSF6DN8s3Kh263wHrIyRYKOe8ouHxtUQ/7PTaxjOtfo29awJBP1urqvIWTWvlDyjfBxOQ6vbsY59HHyuXkfFADv+tnoOkwTe9dVEqk9qZN+QSlc7JW0y4bVUv80yYCIIj1eBsSE/Q/THm1v9d/EFbVfgNmmvtVfDJyhzye7ek9RcUMaXR2wrrZLKSbIUt2RT7gYFHKV/MeZWHRga9kAmjJ92K6ub6yTeh45N/SZfKvIicQBIn/lWAUFjO3dYG91s1hPUVZGW2fXJK5WV6c0Mq+SpkicXtA5pQ0iLwuDG9uohvxVoiD8Hd5lJ4Zl/atFoMHt+VX1ILHEq8GmUhEyg7BNPzJc9H9h7Z22MooVFtXOyapTtaffPuTSPDnD2l938+DyGpYPJad18stJuhFKDhd4hzMcqK36uk1iT3aMy6Y=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(23010399003)(6133799003)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006)(261026121527099003)(10067099003)(261021121427099003)(261009223027099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB239779.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(366016)(376014)(23010399003)(261028144727099003)(261026140227099003)(11063799006)(5023799004)(4143699003)(56012099006)(261021121427099003)(261022075727099003)(261009223027099003)(261022105027099003)(10067099003)(261026121527099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?EYTay/ke39Rzm13pGH0Y7odAT3BbSO/SXOKxBSkZUPNRhdPeRO3Nj8qm5+VM?=
- =?us-ascii?Q?WYlW73O3w/tB32azbavtegZzlUPtjT//fDO3giNNJWwmNW479zA7CwcCNncp?=
- =?us-ascii?Q?TwVqpPlwSGD5sSa73NfRqSbF76yce6aS8OjKEVpQD/zx6nrNoxpR2BuvggdB?=
- =?us-ascii?Q?Jiz61DUt2rMKJZhgtEkHKJoW6nf2Q4Jwg29Y5bFGArie76u86JFeJ+EHee3W?=
- =?us-ascii?Q?unLPFyZzgNc31A/NeRywt6yc/GwH43sZVR6n6CFrQvQkzHiCEr9nJTPfF/IG?=
- =?us-ascii?Q?EOFvWgVHt40oR4BKhdy33l1LHyyM9F+WHh6PKZeIphcQGPppQz8tRGhmCvQ8?=
- =?us-ascii?Q?/J/b9FL96FUUMZyMqG7QBDs+F+kijDIyrfW3uEcrol9xAdz+e9TeYLLdFAeA?=
- =?us-ascii?Q?W+FwWTtL6CFsq/L5B1Rmy6IGzUhE8VqspV2lXhbHbz248/4EzRz3Kt3L8LFf?=
- =?us-ascii?Q?4XxDjzh7JvZuC3vtVYoVF1b7gYB9NnH40kWWrvDUWE3pInXqeMoCFANSCevp?=
- =?us-ascii?Q?NSTrvCx1BZi56u5J+NoS1NWINPPmWaG6QRlDYM3S370fNlpeS1T8emw05Slm?=
- =?us-ascii?Q?W6Sec8rCGDUJQI7/gs6AoQ4YaAEkIYBgSONSsA4acnk7Qn/nLrQgOHrEYLnc?=
- =?us-ascii?Q?BWscaCqpHIbN0wDVXUIGGy2tM0IxYc05HT4/fuAxKW0x9wMtvxHEqIGRH4V1?=
- =?us-ascii?Q?KtDmCCHfBr9iWeFS5bhO9aWgBpZOZZ/QtUdRjGl57l08Dm6e5XmIWlu8Id/0?=
- =?us-ascii?Q?ZVNyy3Rk06zmw5a/8JL0qqzcMaDxFS6v85Dewa4SPA4UlpfCQZx4+ikGRWhN?=
- =?us-ascii?Q?Ck0a50v6XGH1emI8MwKe0ept+nf+se32d4KEUXaR9ELeq8cvvFnjYKmeOLsJ?=
- =?us-ascii?Q?X5v7XdWHHI6RHKRDFsho8QoWqNR9yXVv5xrR2ybv8a56SuJJ+j1dU2eucqJV?=
- =?us-ascii?Q?JPc6wzYiyrxIhVPMWxP8WrnWpornsVTkSzKZCsFKx8f3blz9XSvsz4j48N7j?=
- =?us-ascii?Q?b0AXydwLA21/ZZ2b7G6+/bknJBzqm4YpMluX5rv1v6Ikfl0F9UWbhgdZrcwJ?=
- =?us-ascii?Q?OXrKcRigTpABbzD5KAOfxTQqRRi8tJfptoPVMixDHafbUjlUwtkp2mXlDYXU?=
- =?us-ascii?Q?qmU/zT4sAzduF3sY25Yfmp9jdpWISBXYAECshY7lssl2Cw7/wPlRVd9N+0hD?=
- =?us-ascii?Q?esPczG2sqT6X1JdHlpXIzwbhs013mozoZpWv8YcckFB2LZJjInxlyA07JKhE?=
- =?us-ascii?Q?bwwkRTxWCMjJMI0CyNSWiWqJb2CRXLYNLxgPMbYMvOdvqKea8meWCqps53XP?=
- =?us-ascii?Q?+38r4D3PkS5b5HpoMym3hjmXU3jSf6whH26YQFgjnrtZwqDadVBmuja7mwU8?=
- =?us-ascii?Q?+hQgQP8PdTA39h2NHlIw0QYTFqhQYUL8ml8Ih+zIuCwJ+6WCvulTGKaWuQWf?=
- =?us-ascii?Q?eQN+XmZYVEk5Y1TxmR77A/eQ8L4G2H/eQkwsrGaicNLDNYNLnwh3kUG7mEwF?=
- =?us-ascii?Q?280CH2N0PkLi2BzMPsbN3V2FvgBGn3dgqef6vUYDCbNPnMQ42bnvYj6DLFE4?=
- =?us-ascii?Q?zYLnBjBXjbTRed7jfi1pdtrf63BZLTwRODQIfM8UphOGa0SKLVPRBWY8E0Ss?=
- =?us-ascii?Q?udbV9WV4mxkAThG8E1VOCKsqa0yrtS4LfbMIZqqSp8x8BsDVuCu0/t2F1aQZ?=
- =?us-ascii?Q?S1xjPBl+ZX3kx3Lwf7Me6hkeR4xv+T2MejH933H6PNQF1+LJ?=
+	=?utf-8?B?RlRORSttLytqWkhISVZxZWN1QjdQaHBvcEx5N3BWMFAvQ21pWjNtRkU3akYv?=
+ =?utf-8?B?YTltNWdwQS9pbUgyWjNDc2FXWDhFYnRJVkFMTG54d3dWQktsSjJoVUQ4bGQv?=
+ =?utf-8?B?b2U5djlmVWZyYllESUtNc2hYRDd4a2VZQVRlZWVpNVpjb1MvT0RkVFk2S2F1?=
+ =?utf-8?B?dVA2K3Evck5IRE9TemY5Yk1WVytBaEhucVEvano1YWlyTERaT0NYMFB4VENQ?=
+ =?utf-8?B?VkUzTlFFS3FaT0JVdkhoeStXUlNrS1B6N2tCMnlVbTY2RmEzSi9DazF3NnJH?=
+ =?utf-8?B?YUsxVUVqWEtKYmlxcDU5OG9YNTBCbTJsUWJTenRMSU8vL0RUdjd5ZDRzNFd3?=
+ =?utf-8?B?NHVsbmxOaFdjZk43VXEvY1BjSnNjclEyZTZOYXRMTktlYWI4ZDhSM25ZSFlQ?=
+ =?utf-8?B?SlhoZ1NaWXIvT091ZmVsRVdrNG8wT3k4aEN6em4xQXUrbzhiZHRTTnNreDBh?=
+ =?utf-8?B?TExHK1IvUHp3TnhicG8veWpnR045K05WQVduc1hlcEZFTEpoaWg2SXJXVWtT?=
+ =?utf-8?B?TG1wRUdIV2d3ZXJDRFFNNHkrRXVJbDkrSHVUVkVlOVF1Vkp6bjI2enNsMnBr?=
+ =?utf-8?B?ckpwMjIzMHR2dHk0WmpQeXBQVjZXN0R1RVZoYVRobG5xZDhiOEczYlVwQXJ6?=
+ =?utf-8?B?ZGpOanZTTS9VRVRLeTVFcUZFd2xqQnhWV2tVUGlKZGR5YTZlSFh1WVMrbFUr?=
+ =?utf-8?B?WldXeTJKeXo1NE1SYUdOMm81MXpFR1FDUkNjMXZFdUN2WXU2ay9jRHlGMHFC?=
+ =?utf-8?B?MkZoT1BHTndFRGNxc2d4U1Z1RHNQd09ocUd2TGMrVkNTaGxkMmkwUzJPaUpt?=
+ =?utf-8?B?VVR3T1NpL2VjZGhkVUVzQU9PaWpZSzBTeHZFZXlYbWRsSmhWUkpRQkVPRXVF?=
+ =?utf-8?B?U2VBc1pRVUpnRDhaaEVnRUt6czIreno1WTUwNUh1TlhsbHVPNzBDTEp6OXVz?=
+ =?utf-8?B?RkZpM2FFZmN1eGdGTzA1bU8zWWJEWjVySkYzM3Jsd0JheHFCcnN1NmYzY1hR?=
+ =?utf-8?B?SlQ1MnJ1OCtUc2U0RmVkcWhZVWJnY0xmN0VBbWxsU3lQN29VZ2E1SnJKRXJh?=
+ =?utf-8?B?NUx0bmRlM01TZVhiV3dUUXI4cWRmTktYQ1FSOUE0S1FmSDZKY1BuWE1IWlJy?=
+ =?utf-8?B?Ni95Qk5MK3Y1a0g0VnpnWEZucUQxY1V6Sjl0K3BTNHhkUlNYbmVId2xaa3lO?=
+ =?utf-8?B?OENTdG0vKzdaZS9IZG1qTi9qNWFORFlnVVFsZUgrdU9wR3JQRlowSjRLWEdB?=
+ =?utf-8?B?OEVUUWxwRzhLU0ZERWEwbUNHVG9ORStxbDk5SlgvQ0IyOFVNM1FLQ2lNamZw?=
+ =?utf-8?B?dmxXNVNLYmMxM1o4L3lnZ2RFVUFEb2dCWU43eHN5MXJSRFN0dVJGYU1pWW5G?=
+ =?utf-8?B?bC9WaThIQ2NBYjh4NU84dkxOWkw5NFVBTFNxZ0krS3dzSDRuSzVvSzYvSGIx?=
+ =?utf-8?B?TjFnTzRMbjJGeDhLR1FkcGRhSXNYVTExcTNIcjJZcXFSVm4yWnZDVUVSUndJ?=
+ =?utf-8?B?bHJIa0Z6M2t5MjFPM1dhZ21NZlZJMEcyYWRIRlc3T1RnUjljYmdLUnl3ZFow?=
+ =?utf-8?B?ZlJEaDNJa1FHNlAxQTNzb25HL1Q4aEplSXFhTEJoTHBjWC9LOERDZDhXWFZi?=
+ =?utf-8?B?QnMyUklSdG5IVVBHK05ibXkrbDFaNEUxTk43dUhjOGxmRCs4OE1uZjVMNjZT?=
+ =?utf-8?B?a1c4OEh6RVViWW14SUZuS0grckl3WDhRT25GaURVSjNwUm42MzNabzdBdmVY?=
+ =?utf-8?B?OWs3Z3E1ZVBpNm0xYXhId3pvNTlsMVJDV2pVaVJ0STJNUHc4eXB3dDN3ZXBt?=
+ =?utf-8?B?cUdzMWc2QXJjaElTN3JGTnIvR2lkUFZBT2dxdkdWcmc0ZHFYcUMvSHgreHZW?=
+ =?utf-8?B?VXVpc3ArK0NndlA1K2djMkNsQWlSNmNWUWpGUTRDMURzNU9pL1dYSnR0UmM1?=
+ =?utf-8?B?LzF0bjZDYVp2dWtyZCticFgrSkMrQXRHc3VuNjJrRURmc0N3WmQ0bHBmVkw4?=
+ =?utf-8?B?MFEveElmY0o5TEtvZFJURHFMQW9oaDA3L0lRZlAvdjYyN25PV01PVW9QbnBX?=
+ =?utf-8?B?R0Z5czBQNjlJVGNzRWtibWZFdDdEVnRHZVBrcXNEMTl3UUY0a0k1OWpyNkhS?=
+ =?utf-8?B?UWdQTnBFbWhZWitFc3gxSDNuRlhRR2JLdCtTM1lnUDl0MkNqM2FMeXVWK2Ux?=
+ =?utf-8?B?VDZibW43VHV6QXdRT2JHeFVwNFJpYUkwTSsyU3BrU3Q4c1NYOEdwWTFOTVdh?=
+ =?utf-8?B?d2ZlcFcreWdBaGxBN09jSk5HQXNBT2RUSW1IUkRNTVlIc1JtRVBDK2QxTjNY?=
+ =?utf-8?B?K01IbE1waVVwQ2pIT1hZbDdGaHRGK2lUSWNEQUxYNFlTQmxpNDNSdz09?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2c7a04e2-328b-454e-ed55-08df351ce940
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: de0b46b8-f4cc-4590-a84e-08df351e4609
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB239779.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2026 17:57:20.1118
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2026 18:07:05.1320
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JSA1K8XmCoZdvauGcs1JpNy+6mmj0Qw496n8Zyu2cEKtHQfC9ylaNhwIGyuzhCWi2CVbpqssCvrov3jUkJhquA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7493
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4ngGhMSPq3e8/YWG3J3+B1yLGSiMn5Pj8WaywjN7+mCzL1f74C5+xI+9HLo0EB2lD2nrHml0OKBGgBymo8yQ9g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV1PR12MB999327
 
-On Wed, Oct 28, 2026 at 05:08:24PM +0200, Ido Schimmel wrote:
-> On Wed, Oct 28, 2026 at 03:29:28PM +0100, Sascha Frey wrote:
-> > Could someone help investigate whether the new checks can interfere with
-> > EVPN/FRR-installed nexthop FDB entries, or whether this exposes another
-> > issue in the VXLAN FDB handling?
+
+
+On 26/10/2026 22:32, netdev-bot+sashiko@kernel.org wrote:
 > 
-> I believe we need to relax the checks to allow "extern_learn" entries.
-> They are not subject to ageing (vxlan_cleanup() skips them), so they
-> cannot trigger the bug that commit 98fc57d16744 ("vxlan: reject dynamic
-> fdb entries that reference a nexthop id") fixed. Let me do some testing.
+> 
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 0 · Medium: 2 · Low: 1
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] The new ldev->agg_speed_mbps cache is invalidated on only one
+>    teardown path, and it is filled only after the IB device is exposed.
+> - [Medium] For regular (non-MPESW) RoCE/SRIOV LAG, the patch replaces the
+>    bond's ethtool-derived speed (tracker.bond_speed_mbps) with a sum of…
+> - [Low] In non-MPESW mode, mlx5_lag_get_devices_oper_speed() now reads
+>    the live ldev->tracker.netdev_state[pf_idx].tx_enabled/link_up for…
+> 
+> --
+> 
+> {RDMA,net}/mlx5: cache and use TX-enabled aggregate speed for vports
+> 
+> This patch caches the aggregate operational speed of the TX-enabled LAG
+> ports in ldev->agg_speed_mbps. VF/SF vport max_tx_speed is now programmed
+> from that cache instead of from the bond speed. The exported
+> mlx5_lag_query_bond_speed() is replaced by
+> mlx5_lag_query_aggregated_speed(), which the mlx5 IB driver uses for port
+> speed queries and which returns -ENODATA until a measurement succeeds.
+> 
+>> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+>> index 4e173b08cb37a..57755ceab8a75 100644
+>> --- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+>> +++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+> 
+> [ ... ]
+> 
+>> @@ -1452,15 +1453,21 @@ static int mlx5_lag_get_devices_oper_speed(struct mlx5_lag *ldev,
+>>                pf_mdev = pf->dev;
+>>                if (!pf_mdev)
+>>                        continue;
+>> -             ret = mlx5_query_vport_max_tx_speed(pf_mdev, opmod, 0, 0,
+>> -                                                 &speed, &state);
+>> -             if (ret) {
+>> -                     mlx5_core_dbg(pf_mdev, "State query failed (err=%d)\n",
+>> -                                   ret);
+>> -                     return ret;
+>> -             }
+>> -             if (state != VPORT_STATE_UP)
+>> +             if (mpesw) {
+>> +                     ret = mlx5_query_vport_max_tx_speed(pf_mdev, opmod, 0,
+>> +                                                         0, &speed, &state);
+>> +                     if (ret) {
+>> +                             mlx5_core_dbg(pf_mdev,
+>> +                                           "State query failed (err=%d)\n",
+>> +                                           ret);
+>> +                             return ret;
+>> +                     }
+>> +                     if (state != VPORT_STATE_UP)
+>> +                             continue;
+>> +             } else if (!ldev->tracker.netdev_state[pf_idx].tx_enabled ||
+>> +                        !ldev->tracker.netdev_state[pf_idx].link_up) {
+>>                        continue;
+>> +             }
+> 
+> [Severity: Low]
+> 
+> Can these live reads of ldev->tracker race with mlx5_lag_netdev_event()?
+> The notifier publishes the whole tracker while holding only RTNL:
+> 
+>          ldev->tracker = tracker;
+> 
+> This code runs from mlx5_do_bond_work() under ldev->lock and the devcom
+> lock, but without RTNL. The lockdep_assert_held(&ldev->lock) in
+> mlx5_lag_update_agg_speed() therefore does not exclude the writer.
+> 
+> Between the tx_enabled/link_up reads for different ports,
+> mlx5_port_oper_linkspeed() issues a PTYS command that sleeps. During an
+> active-backup failover:
+> 
+> bond work                              netdev notifier (RTNL)
+> port 0: tx_enabled, count it
+> mlx5_port_oper_linkspeed() sleeps
+>                                         ldev->tracker = tracker
+>                                         (port 0 off, port 1 on)
+> port 1: tx_enabled, count it
+> 
+> Would the aggregate then cover both ports, even though only one of them
+> was TX-enabled at any given moment? That value goes to RDMA and into the
+> VF/SF vport max_tx_speed, and it stays there until the requeued bond work
+> recomputes it.
+> 
+> mlx5_do_bond() already takes a snapshot with tracker = ldev->tracker for
+> activate/modify. Could the speed calculation use that same snapshot?
+> 
+>>
+>>                ret = mlx5_port_oper_linkspeed(pf_mdev, &speed);
+> 
+> [Severity: Medium]
+> 
+> For non-MPESW RoCE/SRIOV LAG, this replaces tracker.bond_speed_mbps,
+> which came from the netdevs' ethtool link speed, with a sum of
+> mlx5_port_oper_linkspeed() results. Does that lose the fallbacks the old
+> source had?
+> 
+> mlx5_port_oper_linkspeed() picks the PTYS encoding only from
+> mlx5_ptys_ext_supported(). When no known bit is set, it returns success
+> with a speed of 0:
+> 
+>          ext = mlx5_ptys_ext_supported(mdev);
+>          err = mlx5_port_query_eth_proto(mdev, 1, ext, &eproto);
+>          ...
+>          for (i = 0; i < max_size; ++i)
+>                  if (eproto.oper & MLX5E_PROT_MASK(i))
+>                          oper_speed = max(oper_speed, table[i].speed);
+> 
+>          *speed = oper_speed;
+>          return 0;
+> 
+> The old source had two fallbacks:
+> 
+> - mlx5e_ethtool_get_link_ksettings() falls back to the legacy
+>    eth_proto_admin/eth_proto_oper when the extended admin field is zero.
+> - get_link_properties() falls back to 100 * data_rate_oper when the
+>    bitmap cannot be decoded.
+> 
+> The legacy admin case looks reachable through
+> mlx5e_ethtool_set_link_ksettings(). On ext-capable hardware with autoneg
+> enabled, advertising only legacy modes writes the legacy admin field.
+> 
+> In that configuration, would an up, TX-enabled member contribute 0 Mbps,
+> with the result cached as a successful measurement? RDMA would then
+> under-report the port speed. If the whole aggregate is 0, the VF/SF
+> vports would get the max-capability fallback instead of the operational
+> speed.
+> 
+> This assumes firmware reports oper only in the legacy field in that
+> configuration. That assumption comes from the ethtool code's handling,
+> not from a firmware specification.
+> 
 
-Please test the following fix:
+will fix in V3
+>>                if (ret) {
+> 
+> [ ... ]
+> 
+>> @@ -1594,6 +1625,7 @@ void mlx5_lag_reset_vports_speed(struct mlx5_lag *ldev)
+>>        int pf_idx;
+>>        int ret;
+>>
+>> +     mlx5_lag_reset_agg_speed(ldev);
+> 
+> [Severity: Medium]
+> 
+> Is this the only teardown path that invalidates agg_speed_mbps?
+> mlx5_lag_reset_vports_speed() is only called from the disable branch of
+> mlx5_do_bond():
+> 
+>          } else if (mlx5_lag_should_disable_lag(ldev, do_bond)) {
+>                  mlx5_lag_reset_vports_speed(ldev);
+>                  mlx5_disable_lag(ldev);
+>          }
+> 
+> Other teardown paths do not appear to reset the cache. One example is
+> mlx5_lag_disable_change(), reached on eswitch disable or mode change:
+> 
+>          if (__mlx5_lag_is_active(ldev)) {
+>                  if (ldev->mode == MLX5_LAG_MODE_MPESW)
+>                          mlx5_lag_disable_mpesw(ldev);
+>                  else
+>                          mlx5_disable_lag(ldev);
+>          }
+> 
+> The MPESW disable work also calls mlx5_lag_disable_mpesw(), and the
+> shared FDB path goes through
+> mlx5_lag_shared_fdb_destroy()->mlx5_deactivate_lag(). Neither path
+> touches agg_speed_mbps.
+> 
+> On activation, mlx5_do_bond() calls mlx5_activate_lag() and then
+> mlx5_lag_rescan_dev_locked(ldev, dev0, true) before
+> mlx5_lag_set_vports_agg_speed() fills the cache.
+> mlx5_lag_shared_fdb_create() also rescans and reloads the IB reps before
+> it refreshes the speed.
+> 
+> mlx5_lag_query_aggregated_speed() reads agg_speed_mbps without a lock,
+> and its IB caller only checks the LAG mode. Could a uverbs
+> QUERY_PORT_SPEED in that window return the previous LAG instance's
+> aggregate as valid data? On a first activation, it would get -ENODATA
+> instead.
+> 
+> This seems to contradict the commit message:
+> 
+>    "Until the aggregate has been measured, or after a failed measurement,
+>    mlx5_lag_query_aggregated_speed() returns -ENODATA."
+> 
+> It also contradicts the v2 changelog note about resetting the cache to
+> SPEED_UNKNOWN on teardown.
+> 
+> Later patches in the series do not appear to change this.
+> mlx5_lag_reset_agg_speed() is still reachable only through the disable
+> branch of mlx5_do_bond(). In "notify IB uplink on LAG aggregate speed
+> change", the stale value also feeds the speed != old_speed check.
+> 
 
-https://github.com/idosch/linux/commit/8d98fad34ed4ec2b5e0253a68ead7e436ceae6d6.patch
+already replied in another mail
 
-It's on top of current net.git. It won't apply cleanly to 7.2.y, but the
-conflict resolution is trivial.
+>>        mlx5_ldev_for_each(pf_idx, 0, ldev) {
+> 
+> [ ... ]
+> 
+> --
+> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261022193053.3815866-1-tariqt%40nvidia.com
+
