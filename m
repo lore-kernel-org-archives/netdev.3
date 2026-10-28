@@ -1,49 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793229607;
-	b=4LD6WTEcCLPr1JyW4OUhcvda5rgjYvE74Rl6ejOevG0NUepFVLjhSlj/a4uNkypElp0j
-	 iCxEB8htmK+vVEjIwR8KaNd31KsqLnHvGoo1r9k0vSqd5X55QC+1BYDedpz/hxwmEppDb
-	 oiq9v0ItYfmSwxhFORs9+4YG2+ueV+Rl8MWk/LCS9pomm2+7hq/eY8KNe0ZDCEqscRQ64
-	 4Gg1eI+c/pIZldMl5r5ptynvvKYL/Or/l0Rb0cDf/+N1aj5V96RhXmK1vA3ImtzgOmhV8
-	 K6+XwmU+rV4mVea47/f2nna8rkkam0/SPY/9NHFvqKFnVRsJDWjLFVXCzvaD5dwCftg==
+	t=1793229788;
+	b=LEvw6FTubVr+bvEahj1B6MCNs83q+2YZwQHK9X2vH4HH6XYkweghb9AVKBMJcAlLxVhm
+	 GeT0N2lXt8EgjEZifT0Rk0OtR5i4j95lhZX611zX5RFWEsLIEr8v2PbWdTPdm9w0PP3su
+	 8WtYisRQS6faadajcu680T4K/1GIEc7L9zqTAU4Gfkw05ZLV9nDKpRcQMv2+lZtkAlGIo
+	 cJf+caDrpf8gfV9OxNayxSCpKf6HmUQR2ysGpTtV3bzHFUYkpf3JOZ76qQjMsmXstFhRg
+	 BC9VJcEsGNWHjkzxSl4dBqi3GqrPif4/K0EZ2jMcChMzkDxT/d+m/wzPXoH5H6FzI1w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793229607;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=TjmQtvnN43zZUDJG/7xJ9SFIGrsJ4RvePX25KDOKzQs=;
-	b=PRagjZD6Zttiw5u0xKMnwKrpvDQ0bS8vRMkNoWwhjqLa719J82z/dpKZUKp8A1+t7d6G
-	 lOecIUNhQBhjTETgoVWHPn4krv+jtonsCcQRithn5j6t5dsmTxxkou36pukZeSNup5Gpe
-	 GM4LGqW9J1xA8I2PNdcBER0QH5b4rm6xO3h9fChalFF/uOncJoO7I6b6V3HZnHaz1HvK2
-	 e5dJpCujlZfyHgU56vR9/PA7N05NcxPhKPJLEvwP5p+B54GpQYL+1rLSzXCL7EvhpjCqO
-	 65fb9imlndkuaQeEVVl1fgWoLScuKwgAgK2Bn9WZ3lmqBePHTmXDkKh7NKvNIznPFZA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793229788;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=siS9tKJrzzyUZocyxRqmx7YU4OiiuwHiHfyCYQ99NZI=;
+	b=jbSRX65EcdKfhRoUxsiYnh4sxLXhYc5g+/YCkcNbqdyS/IQmi8gtZuksz47jgjcYBjFw
+	 Th6IrfhaxKVRkO/yay+VFnVaIbQYYtg5nSN7QvQ3n3svGsPSEKvFUffLzLl7joHR5GGZ4
+	 UK7QO+ovg6Yv0wjatJ3/jgGfsWAMmSFZl5SVhfoVGnpkY54YvNMt2q0BUFP9XI+YGDeV6
+	 AAj4ydbgCCSfDHMFDuDRvilaJjrjZNtzECJg3s0tdNT1hKavJMJBClqeFBJ/GLoBU1nDQ
+	 glMl2dfBmpcXuXgK8yDYBTJc3Ly+yL8mwxke+9dDGHipf+K/Pjp+dVv0jSpMfa567Og==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gDaBfe0G;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OngGMp1s;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED144606A31A;
-	Wed, 28 Oct 2026 23:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DBD0606A31A;
+	Wed, 28 Oct 2026 23:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gDaBfe0G
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C65841F01825;
-	Wed, 28 Oct 2026 23:20:06 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OngGMp1s
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E031F01825;
+	Wed, 28 Oct 2026 23:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793229606;
-	bh=TjmQtvnN43zZUDJG/7xJ9SFIGrsJ4RvePX25KDOKzQs=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=gDaBfe0GFalv5ZrHmRzJP3doiYt4nX+OW5efjTCjDa9E+SZxMxNHny9vdofSYKhId
-	 sgHJ/aygXYNzsXbqVQBHTseQHexaAHvkrUSJ6aIT3he4RPvHJE+3jYVmngbiLCFwHY
-	 WB77JsPs9Y9kjmKP0enSpCKs62l9jJpwdTax09qObG07ZMGUHJ1w6UVMOFQYI1yCub
-	 VZN44QeujanPVzgXh+w566zbj5BbigNFk4gwCylkpNGrGegQCejEwDK5TBLFnQviwU
-	 YIVPoLU1j1DySzzviupd+V/eY3bMCbhGSVDa4XlFhBkCR89/OdfislNpV3nL89MoY5
-	 A/Lz4wJluLV4Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BE5FA3AAFC4A;
-	Wed, 28 Oct 2026 23:20:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1793229787;
+	bh=siS9tKJrzzyUZocyxRqmx7YU4OiiuwHiHfyCYQ99NZI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=OngGMp1syV4MyuQfzYiRvEL+Z9vkJbHzykEVyJdKqq1L+QaQqUxZsRFDKJvj3bH8f
+	 C7BIZBnO15XcJvEa1hQMLyK3uXjVUyvsmzGeWlEWu/GPVwlJ2U133p93Df/CP1qfXw
+	 nUyQNEeMJxO5K9nE/wcAK5pNFRpJ0sQuInXp+bLotSVNFnQfdEbZDGsYbLjSBFIXic
+	 +ZiMlWhMhy0isOq7HrFIpmawxeS2Q5tkKCvmkomw6RaPtoaDA4KeSM09XfTi0ceOq0
+	 67UVv5KY6pLwiVtvbeNR+6lVk7Y5mhAfSQIFkwGvuZiyQjDNHTbjlFBpirxvD4+kOb
+	 los8PE9hdRM4g==
+Date: Wed, 28 Oct 2026 16:23:06 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: David Yang <mmyangfl@gmail.com>
+Cc: netdev-bot+sinfo@kernel.org, netdev@vger.kernel.org, Andrew Lunn
+ <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v3] net: dsa: motorcomm: Isolate all ports during
+ chip setup
+Message-ID: <20261028162306.60befefa@kernel.org>
+In-Reply-To: <CAAXyoMPaA3UH=pWaDN0OHKaHDqdFXhnm67GN1b7m295=pqwrTA@mail.gmail.com>
+References: <20261026230300.1108190-1-mmyangfl@gmail.com>
+	<179305591469.3327.15926756079213213876@kernel.org>
+	<CAAXyoMPaA3UH=pWaDN0OHKaHDqdFXhnm67GN1b7m295=pqwrTA@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,49 +63,36 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3 0/2] net: bcmgenet: fixes for a failed resume and
- the ring rebuild
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179322960556.1474710.2129340443455558093.git-patchwork-notify@kernel.org>
-Date: Wed, 28 Oct 2026 23:20:05 +0000
-References: <20261022-nb-genet-fini-dma-net-v3-0-6e9fc89c0156@tipi-net.de>
-In-Reply-To: <20261022-nb-genet-fini-dma-net-v3-0-6e9fc89c0156@tipi-net.de>
-To: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: opendmb@gmail.com, florian.fainelli@broadcom.com,
- bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- justin.chen@broadcom.com, f.fainelli@gmail.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+On Wed, 28 Oct 2026 15:58:39 +0800 David Yang wrote:
+> On Tue, Oct 27, 2026 at 7:05=E2=80=AFAM <netdev-bot+sinfo@kernel.org> wro=
+te:
+> > This is an automated message. This series looks like a fix, but its
+> > commit messages seem to be missing some information:
+> >
+> >  - How the issue was discovered, e.g. hit in production, hit during
+> >    development, syzbot report, manual code inspection, LLM or static
+> >    analysis tool scan.
+> >
+> >  - Whether the issue was actually triggered, or is only theoretical
+> >    (e.g. found by code inspection). If it was triggered please include
+> >    the symptoms, like the stack trace or error messages.
+> >
+> > Please do not repost the series just to address the above. Instead,
+> > reply to this email with the missing information, so that reviewers
+> > can take it into account. If the series needs another revision for
+> > other reasons, please include the information in the commit messages
+> > then.
+> >
+> > The evaluation is done by an LLM so it may be wrong, if you think
+> > that is the case please reply and explain. =20
+>=20
+> HW Tested.
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Thu, 22 Oct 2026 10:54:05 +0200 you wrote:
-> This is v3 of my resume and ring fixes for genet.
-> 
-> Mostly findings sashiko raised during my recent review sessions.
-> 
-> Patch 1 is a resume that fails in bcmgenet_init_dma(), which leaves the
-> interface up with no datapath and the next ifdown hanging in
-> napi_disable() with RTNL held. It is one patch because nothing that
-> resume leaves behind is reachable on its own, the second suspend never
-> returns until the hang is fixed.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net,v3,1/2] net: bcmgenet: recover from a failed resume
-    https://git.kernel.org/netdev/net/c/1c1f51c3ee9c
-  - [net,v3,2/2] net: bcmgenet: restore the Tx coalescing setting when the rings are rebuilt
-    https://git.kernel.org/netdev/net/c/ff8a7c0c0676
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Whether it was tested is the only one of the 3 questions which the bot
+did not ask you about. And if it did ask you you should name the
+platform.
+--=20
+pw-bot: cr
