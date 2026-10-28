@@ -1,61 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793180675;
-	b=fCQGC+XXocIOIWvuJ2ZV5M4k1OnY/OluwRvSSjaU2PSCP7O5W5n7cjDT1eVQ1rvj2bQY
-	 KNVTJnt0zUQL7RcRKok6f/X2ZBJQen1//mNvt/W+OiFubfmWXoV68LKwMHxhM/26PEBnc
-	 gbXnyPco4X5c56vbP1Hr/bbHk8LRJZbO9plJBQv7m6Q2oa4BkGTh0cp0f8JJmxHWUPIZ5
-	 CAZqbkd2jSoxvUdH6iSQM0zgJN9i1ISohxhtwJ4Iqbi4SUteja/epJYSIq1aMF7OVSpoo
-	 UJm8H2wjhGO659QLxoTWn95QLVyu84XAOkHzDp4ygPltsPfHN5heZzWZFVfDSE3QX0g==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793180675;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:Received:Received:From:In-Reply-To:
-	 MIME-Version:References:Date:X-Gmail-Original-Message-ID:
-	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type;
-	bh=LrdgbXUa6z0Y+LQlvYe3uBNAKemA2wKtujkxyMRCSf4=;
-	b=3dUXcNQr1czBF3b7/8/KDkbx1i7O2bH27rlbZ+6cPc9WwHBIxGz8wn5HMtc1gZYpc8AK
-	 HOX4Qnwt2ExPT6EThWs33V2LdDU/KBELkwNfdXJtKNEYiDThmCCmV86O27cVPoXJzxl5h
-	 tRFGjHzr7m+P2hW5xqy1iJ6BMD64lbiOxp+4kLq2jCrE/Y9xtsOhR2QKpF3EMythCr9SA
-	 1bKVrNWT8x89+i7EsPG7cRRzmx3XaGsSjReCv7BKA5e55Rp3yec/ZHLEAA2QoDWJurERJ
-	 fMY5845COZkRS9X4uzXXEVztqyiGvOVzTnWaDTy21v2rkh8mURB6vEwoYU3mITmesSg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g9Zptmwz;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.172
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793181177;
+	b=rPzN6a9LMFaX68dUME5J5JVkrajRRXBcp3f9Qr4P395jk5xT5pER0/jJlTRJpGqqt/Q4
+	 rUMvMSFTSffAL4GBA+FOgY7Eaci5IshoBENnUQSVeOK9+LiiAt/51SpQCRsfhBAQWsaL0
+	 SzjYEr5xaA1NOJy5RAZE7bv3AhLroTz25L+7vP2NEh5GYJR/C90A3LcGVTJj4i1miQ1Iv
+	 OB+P/LhS1rPi9Fa9vhpggO7XEF4dcdjIEPMee8r++s6KrhGz2l4nuM5ziRNhmmurwzSh8
+	 Gpov8ji47MHavXyLUGPltqmQC0MmRjgr8EhGk+y1pzUDpygVrSTsOr6Oq3frPkYAXJg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793181177;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=D3lktQzRjBCMxnd67QjaXopfijutifhL58W+FUrFYB8=;
+	b=L7xzXsVkh0jjy0iEz0hQFeUxB1F8zRtOMspk7em/m7cjWCA4B8sR60FA2W5mIPsYVidT
+	 kVwaotXrRkRW7TeXmR3ZFjxU0OFA4jxrT96aeIA9RPE/pm0F7AjyzN8Op/b/7wuuoSY3Y
+	 iG7uRdSiWdUXo92Vo0oVgp0e3XWmGzYxpk8VwelgArqkX3Myf8EbcauSJ1dmLof8C7KQ3
+	 dTWxPwdcLzxUlKUC17NTHVD6aeXpjnfbtIYJFNksK+HB6H6z7O5RW2WR9xY6q/lp446PY
+	 GDYxtIDOYsbcH+Vco73S+LyibUF1ZP60i9LgGueTA70ZB7wNJXDKWS0ao3tm0pMiy5g==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=pFZb2XAt;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.172
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 237A2606A31C
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 09:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E07606A31C
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 09:52:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 15E07606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g9Zptmwz
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C33A31F031E6
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 09:44:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793180674;
-	bh=LrdgbXUa6z0Y+LQlvYe3uBNAKemA2wKtujkxyMRCSf4=;
-	h=From:In-Reply-To:References:Date:Subject:To:Cc;
-	b=g9ZptmwzRLs6hFP0ri5PGG/VdS21dkgEUq8MSMOGFMv+llZiFjwZy03nLL6K3RGAE
-	 gFWRcjZRVQrIH+G9u41eBqWdRVDsLz+tHZ8K9AfxrletJ8ME5ty0y8BWzJXxAzSmN6
-	 C4JY9zJGxt6RKUbQdVqcazolhOePgXfyANE3znaARC6qT8qZY79qpHmGkgDcoLqkaZ
-	 CTuEXRS1euNXuQXCCI6N80PByHWzSWR/r/LzzuZIYNb8PXb9G9CU28p0lT/ZFj7ro8
-	 eURUyetIdDg4KR+dOp9FLDVxWtZdwCubP6YXIIxy8yUqrS9NIjfpYGjgABhwoKxWLN
-	 VHpQp6IoCIbjQ==
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-3a98f260f85so6094311fa.0
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 02:44:34 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwv6ozRR9cbWXmv82pDafU0mhThpIhPjYqEqfrsxJoEpFtmDAYI6cuNwDubzyW7IrSWedXE5S0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIuMULdtN4TcrixHJHSf9C1gk3LWGcFGAtTQRb9XRzg42BmrxHn
-	WYKW1qp4BuPRZCLcFrweBb0y3od2xLTBZ6K8AJZNp5I4V87phb5Rv8Dkr2mvSz395va508X+u8D
-	Rdp4SIBnjqtYwc82ROq+wipChccmwmpm8pSfF3A4phQ==
-X-Received: by 2002:a2e:a986:0:b0:3a9:7711:1cd7 with SMTP id
- 38308e7fff4ca-3ac9cfae41fmr4295071fa.23.1793180673415; Wed, 28 Oct 2026
- 02:44:33 -0700 (PDT)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 28 Oct 2026 02:44:31 -0700
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 28 Oct 2026 02:44:31 -0700
-From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <20261026-b4-pdm_clk_gp_mnd_v2-v2-0-ff8e4bc8d567@oss.qualcomm.com>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=pFZb2XAt
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-8b0ca1ebc8bso5935677b3.2
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 02:52:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793181176; cv=none;
+        d=google.com; s=arc-20260327;
+        b=sZOEM1z4DtptAinLu76quiRZw7umNHeh9T33gPqj1NjxxCqwVkMjM5+ocSfwPRFnJj
+         /Z60+0C/t6WWOpTUmk2NmlEeabgUNU1X4V50iPLaPWc1A8yXP2SFc7kQjCuz1EIDLelb
+         9YHVM5xpDJrIQJklL59RedHJg+/iv6grvEvcWfeUjoZSFHknb94w2q7pccniZ763FDFc
+         YvXju8TxJLE4C2y/agxRJ8YkQh6aftAde6zryjYbV7h0CeH6IraclDL6/tqYGkvtSZF1
+         ZM7HUcMGL62IEru/vgdPcR5GQRI60bIrmxFvDUWDCmaVMNOBgsk/zdx1jKRm/dK9oyVT
+         jQ2A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=D3lktQzRjBCMxnd67QjaXopfijutifhL58W+FUrFYB8=;
+        fh=3rM+mk4x3Nd7dZrGPPzl8nXyUwXhAg6S1dYaTlDEkdw=;
+        b=cHfv6368TokXfWVST8l5VQVy/Z4ty3XrXDeh0ncKODuIojEMGaVYQLgiIG0Zmh099w
+         mb5wnYz3QTfNlcNTd/K4fgG7WwK8fjEam4cPVvQFOEwS2/ML4ZBHTgnM5SY5MvLSpuIl
+         oKyoDwp6imrL8OoJUJKIvpWgvzCsEQ+f4ceQSNa1P1FGo4ImUlgdIVaH3wI4zcNE0WJi
+         MDkXkoEPPAstztfrNG+xVcGVz3XlVZOTEJJvmh6UqewOYL6NaFKinwUkGVumY9C/1kq8
+         /IvhQidh0MuV5kNTK1JLETR9jYdODLa++LdrfUvpihE7GaA2KpbmMtDjoerae5v5MisW
+         qsDg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793181176; x=1793785976; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=D3lktQzRjBCMxnd67QjaXopfijutifhL58W+FUrFYB8=;
+        b=pFZb2XAtZnGYD6N28VqS+GH/SCVM33TI2Ri9LSwpn3jK1NJwl1MrWcvCjh2GUsVre+
+         lHca5O9E6gteBL2ej6PgJCq01YsOcKo/Eq6d+WLd566yk70k9zmQeTF2PDxieWRdfruS
+         BgylkzSxGO2HYLQ96Qwp+2EKUnxqx+mR5gUy+t27G+IcbB9UZkzSClcIP4zgw1kUdldt
+         4XklihCX9AjdEJy/W7K3rWBw+JDQzET3qmaQjnYM76Y8S9591ZfMPJ1lorViW3ds74OH
+         sjyY/VJmRgG3iSHs+Zjb+vDNPWHqlPl++HHLW/ev/xaeuC2FcHd9S4n5WZe0xJs9ic4x
+         mPlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793181176; x=1793785976;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=D3lktQzRjBCMxnd67QjaXopfijutifhL58W+FUrFYB8=;
+        b=iPC+gpjF+svbiXSpRyVNqLmPgMnMTx/cVRfInu49taWhP37uaKs2FmNUEbi6SvSsTT
+         kq8BmXQDlALc/6Rhk2IJaDNVJbHSnyTkfaCOJg9gyfOxl+3l188jSAAhWhlqtaZKNpZm
+         BFiTy0dI5dXLTK7WEmpBHkq8la95TPqwLsteMCfJwPeEl/FwbmfmMuk3aAMCiMDvHnP6
+         gdUkZxSb8UQAeVMohkUT6Vy16E/mDmIjg+X0R2j0D8kGL0xAjZ6L5UP5G0dLw4iuUP2x
+         cZSVyDwi8BStukYHccSiMrLxt1FTyBZynZ/Q3P4VAmbSltF+Uy23cvNRdO3K3nSNT01/
+         7DUg==
+X-Gm-Message-State: AFq9FYLTq/jyRlYGmtlLyI+hgGd7GQtIg1IW0ARidnEAa+czUbJz7Q19
+	K5YRdwwgUfbAnSosQ/fOzs4ys81V0FN5Atued9rKbyQfKZH012O6M0tFeJu0V0+LqHVs226DN7Z
+	iuFrSBHxmTFYV9GoAeJwfKqXVRwuOeYo=
+X-Gm-Gg: AYBFou3G2isCt3JAM8DbIurYH6DSRQwbnqFi5tHyn6zI0sYMeeA2qwapeAIzM0FOg9Z
+	XrMs7Jcig9D+TKLrzDzxh5hxYrTQC2vbRfs96e5YN10G5WQHf7VTSovco3Q5gEgdOjS8EztD4qb
+	zjFWJxYf3f5LlpiGatdGO3Ryc2Gz2kreQJ3OU3CWriXVWQQurCnTWW/QygMVJtfrsImy12QfSyo
+	VMKwO4onseDdXMR48ewf5bvL+I/w/ORQPOKpOTlmhB58m4K+I4tjRGJ4CudAAfOxzZTLqvZDhS+
+	2e48qaJdUKLYOXzBfF3SgclhRcuC+ZmCYc2aouqpdr/eih0M4IfJjCLvE4Mv5A2lkPNurOt/fdl
+	KRKqzl4ol5Yel2ePeY/iFOhT8BgnCt83KHN5sOswjuu25G93BO07NPkgY7E0GW3Se3iKANJFcXh
+	WvqEEsWn2hOQmH/tXtCah99jpOnLEK7+645kBEGdrAXqtin1kEtpCVrS+Grfd+Pt11ZxEWUXfSt
+	mXt
+X-Received: by 2002:a05:690c:e3ee:b0:8b1:f47:9c07 with SMTP id
+ 00721157ae682-8b1b5c5c918mr12989257b3.25.1793181176092; Wed, 28 Oct 2026
+ 02:52:56 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,70 +105,81 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261026-b4-pdm_clk_gp_mnd_v2-v2-0-ff8e4bc8d567@oss.qualcomm.com>
-Date: Wed, 28 Oct 2026 02:44:31 -0700
-X-Gmail-Original-Message-ID: <CAMRc=MeK=BV6WEQNVC5wXo8giAgnrjtdROswXF8Py3BMDLZa2A@mail.gmail.com>
-X-Gm-Features: AclHuK-TgPLK5QfzM7dwlPZli1UwVXLAoH6m3aWG7qnH8A2NWOyXFwaC5rx4nH0
-Message-ID: <CAMRc=MeK=BV6WEQNVC5wXo8giAgnrjtdROswXF8Py3BMDLZa2A@mail.gmail.com>
-Subject: Re: [PATCH v2 00/12] clk: qcom: Add PDM GP_MN fractional clock
- divider driver and DT support
-To: Taniya Das <taniya.das@oss.qualcomm.com>
-Cc: Ajit Pandey <ajit.pandey@oss.qualcomm.com>, 
-	Imran Shaik <imran.shaik@oss.qualcomm.com>, 
-	Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>, linux-arm-msm@vger.kernel.org, 
-	linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	netdev@vger.kernel.org, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
-	Bjorn Andersson <andersson@kernel.org>, Abel Vesa <abelvesa@kernel.org>, 
-	Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
-	Jerome Brunet <jbrunet+clk@baylibre.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bartosz Golaszewski <brgl@kernel.org>, Linus Walleij <linusw@kernel.org>, 
-	Richard Cochran <richardcochran@gmail.com>, Konrad Dybcio <konradybcio@kernel.org>
+References: <20261027202230.3539646-1-florian.fainelli@broadcom.com> <20261027202230.3539646-4-florian.fainelli@broadcom.com>
+In-Reply-To: <20261027202230.3539646-4-florian.fainelli@broadcom.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
+Date: Wed, 28 Oct 2026 10:52:45 +0100
+X-Gm-Features: AclHuK_FWUZgUvSrF0mCFDYzLoIVENtjKxoJUiX7kBb8nyaeRUKlIMuLAikj1Qs
+Message-ID: <CAOiHx=kFqW3AgzQ3_zJBxkdXcokg8j3-Ry1meV6h-RKb5mcTgA@mail.gmail.com>
+Subject: Re: [PATCH net 3/5] net: dsa: b53: clear stale state when creating an
+ ARL entry
+To: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>, 
+	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Russell King <linux@armlinux.org.uk>, 
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, open list <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 26 Oct 2026 12:29:26 +0100, Taniya Das
-<taniya.das@oss.qualcomm.com> said:
-> The Peripheral Web PDM block on several Qualcomm SoCs contains a GP_MN
-> fractional divider that generates a clock output from the PDM XO4 clock.
-> The output can be routed to a dedicated GPIO pin for use as an external
-> reference clock.
+On Tue, Oct 27, 2026 at 9:22=E2=80=AFPM Florian Fainelli
+<florian.fainelli@broadcom.com> wrote:
 >
-> This series adds the binding, a runtime PM-aware GP_MN divider driver,
-> and the GCC, pinctrl, and DT support needed on QCS615, QCS8300, SA8775P,
-> and SC7280. GP_MN controller nodes are disabled by default so boards must
-> explicitly opt in before the output pin is muxed.
+> When an ARL lookup does not find the requested MAC and VID, b53_arl_read(=
+)
+> returns the first free bin index but leaves the entry populated with the
+> last bin examined. The multicast add path then ORs the requested port int=
+o
+> that unrelated entry's forwarding bitmap, potentially forwarding packets
+> to ports which are not members of the multicast group.
 >
-> Changes in v2:
-> - Add SoC-specific compatible strings with a qcom,sc7280-gp-mnd
->   fallback, map the 0x1000-byte register region, and document the PDM
->   source rates. [#Konrad Dybcio]
-> - Use runtime PM and pm_clk for AHB register-access clock management,
->   rely on the pinctrl core's default-state selection, and generate the
->   output-clock name. [#Dmitry Baryshkov]
-> - Enforce valid GP_MN duty-cycle constraints and report high-phase duty
->   cycles through the common clock framework.
-> - Add and register configurable PDM XO4 divider clocks and their public
->   IDs for all supported SoCs, allowing the source rate to be configured.
-> - Split the pinctrl changes by SoC, retain Reviewed-by tags, and combine
->   each SoC's pin state and controller node into one DTS patch.
->   [#Konrad Dybcio]
-> - Correct the SC7280 output to gpio60 and disable every GP_MN controller
->   node by default. Add QCS615 support as well. [#Luca Weiss]
-> - Link[v1]: https://lore.kernel.org/lkml/20260602-pdm_clk_gp_mnd_v1-v1-0-1522662b6c53@oss.qualcomm.com/
+> Clear the entry before creating a new one. Also return without writing
+> anything when deleting an entry which is not present, instead of making
+> a new entry from stale bin contents.
 >
-> The series is organized as follows:
->
->   1. DT binding for the PDM GP_MN divider
->   2. GCC PDM XO4 divider clock IDs
->   3. PDM GP_MN divider driver
->   4. GCC PDM XO4 divider clocks
->   5-8. GP_MN pin mux support for QCS8300, SA8775P, SC7280, and QCS615
->   9-12. GP_MN DT support for QCS8300, SA8775P, SC7280, and QCS615
->
-> Signed-off-by: Taniya Das <taniya.das@oss.qualcomm.com>
+> Fixes: 5d65b64a3d97 ("net: dsa: b53: Add support for MDB")
+> Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 > ---
+>  drivers/net/dsa/b53/b53_common.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_c=
+ommon.c
+> index 559d4b360c82..0871a10d8cbc 100644
+> --- a/drivers/net/dsa/b53/b53_common.c
+> +++ b/drivers/net/dsa/b53/b53_common.c
+> @@ -1992,6 +1992,10 @@ static int b53_arl_op(struct b53_device *dev, int =
+op, int port,
+>                         addr, vid);
+>                 return is_valid ? ret : 0;
+>         case -ENOENT:
+> +               if (!is_valid)
+> +                       return 0;
 
-What is the merging strategy?
+Should we return 0, or should we pass on the -ENOENT? We failed to
+remove the entry, so implies there was a desync between hardware state
+and software state.
 
-Bart
+If we don't, we should at least report the issue. If we do, we don't
+need to, as dsa will do that. Though we then should also report
+-ENOSPC && !is_valid as -ENOENT.
+
+Likewise when trying to add an entry that already exists.
+
+> +
+> +               memset(&ent, 0, sizeof(ent));
+
+Just bikeshedding, but semantically it feels the memset should be
+below the comment/dev_dbg().
+
+>                 /* We could not find a matching MAC, so reset to a new en=
+try */
+>                 dev_dbg(dev->dev, "{%pM,%.4d} not found, using idx: %d\n"=
+,
+>                         addr, vid, idx);
+> --
+> 2.53.0
+>
+
+Best regards,
+Jonas
