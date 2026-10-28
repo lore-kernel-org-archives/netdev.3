@@ -1,61 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793223723;
-	b=wlCP8sl90aoL770P+5+5Zz6rMorl8Wr66PKUG7F7aQEHeKIZLpjJAMMx+5ho+kIrxAHW
-	 t6h82zwzHmuAMRlUZbLrCNhIYWyKGUZehWN4+s70XAQW1J81U/B/v/AK3nhJXgWjb/GZC
-	 5/eGEH8venHP/qoUPYHQOHuiaN5+5pbKGI2NUtpD+vYkD+9Go/setx6p4L99Iu6HvCPfJ
-	 xiPSRIQrKMV4EH/uAj5axIRP5O/gKwMLD/sw6MiYRjOaIZchsOiVlQytm33vwkHcAiNB+
-	 min2/WAcXXuYv42OWiWKYMBFOiCOFT8hymFP4fRc9Dc9hrsVwjYqcBr92EXh1+S0NOA==
+	t=1793223736;
+	b=jkfK1N3Ptgb1K6TMmPa08NCkUbAfSNJljizIXdobRnMuh9/QvJzKVie/QWnhu+n5ACDb
+	 +Oc+cWrJRSGFwhR7JCZRsk5SM6OPyooqztTb9v02zOzPjQf3TPEu/AoBr5jTUhDibs3ch
+	 1+AkJHamkg7Bf4FPpXZKZ9QYWu9+vVu+qxaAWmMbyvo9U/fOnqJfxs/ieuKARPcnPzn95
+	 VqHY1fzdokW2s69cFEcFAU24btbk+noZgzv2OLoZ/jd3z+5cPpJ5D1NeE4UqZQ3CSkdZc
+	 u9XH+QrNBqCOyY6oLrjdMp6CQ8Caded/R0KyBHh/E19TvdGS42fvAZZ6on2nY2D2pAg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793223723;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=R4WIaVmgxMJzlsaERAlBqwLuDwVcuzfSzsQMDWtKV3E=;
-	b=W7So/lRdTVrLn/Sl1zbOO6fdoCoXYaKM0y8v7NQC3LX08yTsKNN+GTeYiWuxtJ28PQNn
-	 o9yI0/77z0fjJ8uRwxpjMZv+xtnk91xOdfcVRXIT0kmn+Uk+wu7gfETsp6WhQEg6k9du5
-	 wx8SbRv0pPLz0Qo8OMSMpxiG3sGBKeMoLEiJg04sFDNDhJyHS4+fu3MHn58icJWx6S9fx
-	 qBZVC7PJD5C1DDKd1NTiItxx7S6HLACYpzhvxelPq3PSE4QOOLENwQu1ejJ+l2nlZxYaZ
-	 9ydSzbemv2ZXqnVxvRGWx2vwR+8Xpk2A1rTYZ7uJllwB91TWBFdmwaGzFNBlv3plHag==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793223736;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=97MNXpQUpTND+mmD0eYg+NTUf+Ug+pSsdYCeQhUXxgU=;
+	b=gHe/zSsIH3WsMEf4OXxqJplPlLQb1mzyCtAlU+CwdQ1CfDSKqqoT03DUxbYbRqUyl//Z
+	 /I8GnGSM5u3Y2VLHUzEd1awn4rKw4Ppxh95ckl19Wjntwcg7viTZRjSZNflx4Y28N3F1M
+	 gYSlln2hmlhNx67jEAMkMaMAe0MpgBf0V0GH4tOJJeLIWz5F8LoIK7vkHaqGZQW6i92jw
+	 P0qKHj7MhnbRVLr7k1OJWFxpKUbu4oN4hc0X73/supBrNt8sltC2B+nwDExC5QoLzceeD
+	 NO2KovQvqOZqI3MqyhJGEEgMbzhXW10IUVTfM2y91B04CDhyJIQBXDlLvQguMtXhgpg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZUyADnVr;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EJ084YdX;
+	arc=none smtp.remote-ip=209.85.221.172
+Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE726606A31A
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 21:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B9B606A31E
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 21:42:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 64B9B606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZUyADnVr
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E0481F01825;
-	Wed, 28 Oct 2026 21:42:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793223722;
-	bh=R4WIaVmgxMJzlsaERAlBqwLuDwVcuzfSzsQMDWtKV3E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZUyADnVrOv9ljhfQJnBaj1uWF2jH3xkXGkcYxnFASh2sqBVJF9u78mT8CzmAA/JCm
-	 dF4Ss7tz7XzcGZzrDloxSC8nShJiZzQ2eTmKcr9Iv7culSQ6kVuoXET4f+Au+19Q2q
-	 1e6jxcnJZB4z5W9piYtjARsty3TI1sq3n/ioUQaQGKdGb2pC9SkwoVr8eSvpBqj9nN
-	 bPZ4FSseXIyTxKLKqheQ3Pr6XW82WPtHgX63aRmLgxs5iXJ3X5kRLPAJrkcpPngXDW
-	 aobtfdsjCzjTGCxUMgfQzSMJ0NahQt/jD7SvCL0JeqX+SNeGrla11RneWS93PvQf8K
-	 /m+9Zll/3ozWg==
-From: netdev-bot+sinfo@kernel.org
-To: Alexander Duyck <alexander.duyck@gmail.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, horms@kernel.org, kernel-team@meta.com, kuba@kernel.org,
- pabeni@redhat.com
-Subject: Re: [net PATCH 00/13] fbnic: Fix BMC filter, FW crash restore,
- teardown and Tx flush bugs
-Date: Wed, 28 Oct 2026 21:42:01 +0000
-Message-ID: <179322372169.3327.17262999729300923799@kernel.org>
-In-Reply-To: 
- <179322311834.40667.5383039334126572422.stgit@ahduyck-xeon-server.home.arpa>
-References: 
- <179322311834.40667.5383039334126572422.stgit@ahduyck-xeon-server.home.arpa>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EJ084YdX
+Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-5e9528732b4so1213888e0c.0
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 14:42:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793223735; x=1793828535; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=97MNXpQUpTND+mmD0eYg+NTUf+Ug+pSsdYCeQhUXxgU=;
+        b=EJ084YdXc2eiS3ZS+k8TSpmIQcLIf9JfhMiwssAV8dPSeFYAeOjGUHYN56I9QjgZ/K
+         OWFgeZP0q5kSQwwQUaF2MZeR3/X7m58czhqSFPm/O7fmhF0tR9fXsfoBCU6Ovzlx15i4
+         9IW5mtY20o4p7Gd5vv9OiL8SyX2Ve2MgKsp4P6mnYAWQFC/bEdLrjmG+vS/5Rpvrt8yF
+         HzKtuCZYpI2UYB+jE3tUbyS5VVcsL82gI7CsfoPsIfXlhnC77CAcVu5KajAU+JZ4+dVY
+         wIKIMlZtbsOktiBSbwbNuYJ3Tlr5dK/k47aGzIOypKqd+mI1nYUdz3tsdiRP42HaouQ8
+         3nnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793223735; x=1793828535;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=97MNXpQUpTND+mmD0eYg+NTUf+Ug+pSsdYCeQhUXxgU=;
+        b=OfuqEsj0MqVUbN6ukcWl9QDcx8PZU9Z6gVIDJ9UkM1HvjD8ufxxwqFG48IWm5hhbnY
+         57GZckDhM+RuBZe2rmYmXOayEYn1EuTgSrjAn3ZkqN/czKLsU9Yii8hHeqKvD9P4U+Bs
+         t8FZ30WRnlsRDAcxXRxsLVG1eI11Cpri3Ceu10BPFSYKqzpQp3ozUgqGWiyMLusAGGC5
+         cUWzaEC/DG5XM+FtI0d93IJBK6rXutocDQ3nhmZ0xc6075ZIwzDOIDqVu3ITRLaBU6YU
+         6ZvUylnchpVRWJy7ZmYwfNpU2hyrIK8vVPDzOylCR4X2v9kSnVTU98gumxRFE+20gYSO
+         oO7Q==
+X-Forwarded-Encrypted: i=1; AKwUvByY4qxW4cTRLdBB51AhadqinYLFAEphXt20xiZtVSeYKAOSRutqhEQW991H5fBiKz0kzT/tQ14=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJd0iylal8D2O4ys7djhIIOKLTpnTVNDqFe6DB4zjOS1nEI7rXD
+	MzaPc1MHBjk/ivn1PNWw7X20dlTCLh0F70Q9jhvk9AGeXC+3pO97gchl
+X-Gm-Gg: AYBFou2/OlC/n7qVW5tA5/A1X0hpZlffqtCXNJlKlLXeSbgYlfJgFEhbkRsvsW0Axc+
+	8xdtBpdLJ8phT91eVo9lJdpadlt8lEeT3z2hqM3OSsyZSzU11Kg2YVNTsTGZc0q4Fb4s7uyJBZF
+	dYn7GBBlTlDYh+KdFVROXDMWww5S0k4RztSpWKq4iAB+KSsy4J1gRIoh8QlkIFcC27ONr4KXcal
+	DMgKFcga/1JBJ28nUvMxZqH3W6lCnDbd9ffwjEe/m4/psoDH33hQa/aEvyw1VCFrvLQWIP2DPMX
+	Kx5AYnl3INJsly4qlnn+s5ZRXi0nKoZWvYIrwTEOa8hDIQISeQ5UataxC9oRTXVduWJNjRNB1Po
+	DYE4I7zrWP+PAUQuhmrgjiIsLtat9/6DWpJgaDUIEH54KrGKOdBooUsKnXOXrcmppT4qJi5D8Su
+	+Dw5xLNOdkyU9rQ7jXD6MlEOuO25PV7HMH6UxBShFiADgodM6de+NILMmszLVKfjgzvhrOCQ1bR
+	fyg3s0khPqCEI6zeS5WWQF64yAanraF44/qVRdpgY0jKII0c5Tlca8codduP/4ChmJk2s6rEHs2
+	OVZ9nRI1lfEyP0GnEO1yjuqiJRTNPcaF+0US1Fn9oAkKRA1rguVx9DnP/uHFdYR7cxWCFBnBQKe
+	sq29YbMw/SV3PffJXOO4EpkAIsNh3MtogBeb8FP8B6BB7bE0uxini2DWQKxyiwRFhMIVE
+X-Received: by 2002:a05:6102:2c81:b0:7c2:7a0:ae28 with SMTP id ada2fe7eead31-7d03a55fdaemr1975911137.30.1793223735408;
+        Wed, 28 Oct 2026 14:42:15 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99125932041sm7264854241.1.2026.10.28.14.42.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Oct 2026 14:42:14 -0700 (PDT)
+Date: Wed, 28 Oct 2026 17:42:14 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Jingxuan Xie <jingxuanxie@deeproute.ai>, 
+ netdev@vger.kernel.org
+Cc: willemdebruijn.kernel@gmail.com, 
+ davem@davemloft.net, 
+ edumazet@kernel.org, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ horms@kernel.org
+Message-ID: <willemdebruijn.kernel.31ae9fde05c@gmail.com>
+In-Reply-To: <20261028070528.139531-2-jingxuanxie@deeproute.ai>
+References: <20261028070528.139531-1-jingxuanxie@deeproute.ai>
+ <20261028070528.139531-2-jingxuanxie@deeproute.ai>
+Subject: Re: [RFC net 1/2] af_packet: retire TPACKET_V3 blocks without waiting
+ for copiers
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,25 +105,70 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Hi!
+Jingxuan Xie wrote:
+> From: jingxuanxie <jingxuanxie@deeproute.ai>
+> 
+> TPACKET_V3 waits for a ring-wide read lock before retiring a block,
+> while holding sk_receive_queue.lock. A copier keeps the read lock
+> after reserving a frame and dropping the queue lock. On PREEMPT_RT,
+> preempting that copier can therefore delay another packet path or
+> the retirement timer until the copier runs again.
+> 
+> This was investigated after an approximately 355 ms block-retirement
+> wait in a real PREEMPT_RT deployment. A QEMU ARM64 SMP PREEMPT_RT
+> reproducer uses test-only instrumentation to delay one outgoing
+> copier after reservation, with a second sender forcing retirement.
+> The unmodified retirement logic blocks the second sender. The
+> instrumentation is not part of this series.
+> 
+> Track FREE, ACTIVE, SEALED and USER state per block in private
+> metadata. Reserve and complete copies under the receive queue lock,
+> retaining the original block reference across the unlocked copy.
+> Seal a full or expired block and try the immediately following block
+> without waiting. Publish sealed blocks in reservation order once
+> their copies have completed. Do not reuse a sealed block merely
+> because its mmap status still reads TP_STATUS_KERNEL.
+> 
+> Limit each locked publication batch to eight blocks and continue
+> ready backlogs on an unbound worker. Stop the timer and worker before
+> freeing metadata. Check readiness using the last published block,
+> and validate virtio headers before reserving a frame so an invalid
+> header cannot strand an unfinished reservation.
+> 
+> Tested against that reproducer with both full-block and timer
+> retirement: B completes while A remains delayed, blocks are not
+> published early, and sequence numbers, lengths and payload match.
+> An uninstrumented QEMU guest also passes psock_tpacket and
+> psock_fanout. The accompanying KUnit suite covers the state helpers.
+> 
+> Keep the mmap layout and userspace status protocol unchanged. Ring
+> exhaustion can still drop capture copies; a stalled copier no longer
+> has to block retirement or copying into another available block.
+> 
+> The block producer index must cover the full unsigned block count,
+> matching the independent publication index across large rings.
+> 
+> Assisted-by: LLM
+> Fixes: 632ca50f2cbd ("af_packet: TPACKET_V3: replace busy-wait loop")
+> Signed-off-by: Jingxuan Xie <jingxuanxie@deeproute.ai>
+> ---
+>  net/packet/af_packet.c | 319 +++++++++++++++++++++++++----------------
+>  net/packet/internal.h  |  27 +++-
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+This is a huge change. Try to solve the problem with a minimal fix.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+The patch is doing more in one patch than needed. Such as moving when
+virtio_net_hdr_to_skb is called. Probably for good reason but then that is
+a separate change.
 
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
+The main purpose can hopefully be achieved with less code churn too.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+Try to avoid re-acquiring sk_receive_queue.lock, a regression. Batching
+adds complexity and is probably not needed. system_dfl_wq runs as
+SCHED_NORMAL, so this may introduce a new priority inversion.
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Also: whitespace corruption, a confidential ("top secret") footer.
