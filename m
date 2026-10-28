@@ -1,55 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.28
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793166375;
-	b=2h8wvCzyGsQsnoZz5v1pt8WQUEH/jlAkiF3b1IQOreIHlfJBpv4RzxzgrIvKoPO38dZU
-	 /J+WAhZJ4CxAztGmlg2ZOo8Q6MMLAETPE9Au/bm/X4g1VNnADsqvwy7fAh8nPmwUIzhGB
-	 gfvhn0J6iCDM6rbvOksi4aTh7xe3EnYqJU/ADZzx8nkNEeil76UGW8DU/ChRvZHv4LwD0
-	 il7n03dof0eKTHgoUZSDyQ4H+4jn5BMbcH+IODe9jhlH6Dj3eF0x/GL9m8gEIZ5eMs9TR
-	 Wbt6FIyFuRdGQ0vxm9K/kXF3v67sMwSrII5BLvMCGzH97ax/Ft/qg04Kwc1E+H7zghg==
+	t=1793168207;
+	b=WjOPR/69G7OskoPR6J1IIcXFmSv+rFUAKyTrRWm+PESyTxw8kv1hZA68kZuP4/xUTtcZ
+	 U6NEYx51ZAj6aN9YpJy+8JPfNUd4D7XQOTXQvBfxSP4y2tjhlooGTivZ7EDnOY/PijV6O
+	 atObBCjU30f1/v++010K32r3haX6YMvtrGNVSu+lOGGfwLkr982UVpCF5vNpOhyerjOvF
+	 RsWadEXSoWgBcmzMzcZxJwVXhix67yapD4Q6B5uWyFqxgxA5PL40ENzVxu+2xYfWKYl1u
+	 5Z/fIqlIih1gzqIpxDVvSWoQzdAHlwAkt+CIypXrwpZbdCAc/rwQR4hLaolFOxIzQDQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793166375;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:Cc:X-Mailer;
-	bh=XZRHvRYMyZ0MXnMeI7De2qWfpVAINbF2/A5TNVTOlwI=;
-	b=M3rCAu12af/elyMhuJR82KsgOBfyzZzTUAKfDBCVE9AhPDPNQGvep5QpghnZBUL7unuw
-	 v0VzGodcg2Ov0Me8nhEs5bd/xHnzzUivD8MEj9nvPR5cnBYgT1F4ri6YRxw5ZdF62LbxY
-	 ycTR6aoKTXebxCbztFCM4UHbCxzAET8EoFHIa2/bwaR483SMmloWjHyaubATvd7yeI3AA
-	 dgPXOPT0wnWcSlq8zPw5RpQqmj6szTKvwvICFLJ4epxeoYRlf5wReG3VvK3i4ojdgV+d/
-	 W0RPB5S/6uHdZs0KsKWQVr+Zanv1PqhJum1+OchYyWaOEQYuiJTcD1KFtf5WAas2XwA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793168207;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
+	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=acUYVG0DRJMibOObg2mQC73a9/WqeX3fCrgMIEZ8lJg=;
+	b=dm9LAa+YSHt0RK1mx1M3t5ytE6Y2O8qe5pO7nAbL1+iNNVCb/mUbD+WzYvv6pynyjLs2
+	 Z1DKtlyFsjLYOYmpnVbu0dR28g1C+tmtDnSPJAKfuBJrc8IIfsKAPJFrCN9jBlARqoR1m
+	 o+id8NuyOGQ7LEII2ZZrzDW6/NHfgRK+pu7cGfHZCw0ajEi3Zl/6SqB66Jz+DAk65v3XS
+	 tyoKLJV6zFedm2BqIDhaOFCXsCOdYbGLA+JUJUsvciHrxgKgmiMTsKLWQz5RVWI180ygN
+	 uwFjOndil0QxeBnvJmoXH8ptVy1cmFuBinJ/7N1K2mGBqgFo/yDCtE1P+1EomuKUQ4g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=eocikKj9;
-	arc=none smtp.remote-ip=95.215.58.28
-Received: from mta1.migadu.com (out-28.mta1.migadu.com [95.215.58.28])
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--starchang.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=cp+bV1ll;
+	arc=none smtp.remote-ip=209.85.210.197
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899F5606A31F
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 05:46:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 899F5606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC793606A31F
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 06:16:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EC793606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--starchang.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=eocikKj9
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=51HH0sC1VsoXjXRR5mBabSBHSG4g5i07L+EtauiNOrk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793166372; v=1; x=1793771172;
- b=eocikKj950uXnXl0IVVHyHCHY2OQ6uSjY3ADjPeQ0vtO9Le9L5wCjGcaj1Gb6WZ2ULCrW8vn
- 7a4MXoE1G1zXMHAex3y9asVLC/WZDkqeKNh8dWQFhoJ2jbAlEkSaYqZHv23FVp8eZX7N8nL/8VE
- 55ApxqyA5H6jt1oMsns3DKps=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta11.migadu.com with ESMTPS id 44ae0fe89d4468cb;
-	Wed, 28 Oct 2026 05:46:12 +0000
-X-Mizu-Trace-ID: 44ae0fe89d4468cb
-X-Migadu-Flow: FLOW_OUT
-From: Hangbin Liu <hangbin.liu@linux.dev>
-Date: Wed, 28 Oct 2026 13:45:31 +0800
-Subject: [PATCH 3/3] selftests: net: add ioam6 ECMP test (RFC 9486 C2)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=cp+bV1ll
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8a03834d8ffso940780b3a.3
+        for <netdev@vger.kernel.org>; Tue, 27 Oct 2026 23:16:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793168206; x=1793773006; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=acUYVG0DRJMibOObg2mQC73a9/WqeX3fCrgMIEZ8lJg=;
+        b=cp+bV1llTdNS8j7xG5g/rFZGbuMifnkWqGiBGuNuDK/SURDQB9+EMMaR4yKpgkb0BQ
+         qMljNVvDu0ega716P5NYIwc7oaCtnjFQzmB96Q6/cFGeqGCrfKqEQjc/dHxFD75GemlZ
+         bSFrPVvKm969uSua77lDzJ4I74KIswEs/Z/amM9AJh+OI/VANRTvD3eUzxazRoHp/ORH
+         HC3AWwLE5GlQlQq/tjLV4p7M0r9CSeaZQv2JfEDRA/xPSlD25AtTBcN/G86dhCVeCkvE
+         WEi7whhSl0r04QZR4hOIV7VYCTbEXof+/oOOJqG25c7UNmIVxPjRWZi7pbbcSuRZ7Zda
+         cbwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793168206; x=1793773006;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=acUYVG0DRJMibOObg2mQC73a9/WqeX3fCrgMIEZ8lJg=;
+        b=gvVHWZHxcfKeOztH6HZ3GfMjHaLTLGRdeNKLxeFLmTR4uVsEvH6K4Bf7GYGDXKgTAG
+         z41xhdRynnlrI1jNTOItnJz4lxDIrOfGQ+2Xn7yMHDggQUurR02nidVi7DtP33NN2Esh
+         qYkN7+rbr1c8YhGtSsOzKiJrO9NmMYZ/b5ZgRm7+WZ3Rk4nhik8/cKzrSviYUMEFXuKo
+         41Z6JGIh09DqiUiW7e8TxocOSZwipRzROdikULml/UFAF+/iyCOuUw5X7r773je74XhC
+         Sv/L6cShHVivm5Gru2VWZCLuu7Xe299nLTKJ5Kl5JKfXi82yishUIenujhabO+5hEOEO
+         HQfA==
+X-Gm-Message-State: AFq9FYKP1t+VMl24X4fhGzJUoM3wawArx/gA6eyi0XR0FN9e61wqD6BD
+	Ac6ZIH04yP1uu8esfsxUKlUch1HueYw/NpjO/+Db3xSg+mG8tMZxhiScLoOHce/E7BjkBcoGXr8
+	6/47CcnsPscYeymL7/w==
+X-Received: from pfdn12.prod.google.com ([2002:a05:6a00:a66c:b0:88e:c0e0:7ea6])
+ (user=starchang job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:bd04:b0:89f:6989:cb9b with SMTP id d2e1a72fcca58-8a6e74da8f5mr1084767b3a.27.1793168205950;
+ Tue, 27 Oct 2026 23:16:45 -0700 (PDT)
+Date: Wed, 28 Oct 2026 06:16:44 +0000
+In-Reply-To: <5c1fe870-39ff-e83e-e479-0e1f0fed6a83@ssi.bg>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,409 +78,111 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <20261026150539.1357037-1-starchang@google.com>
+ <20261027015619.1745984-1-starchang@google.com> <5c1fe870-39ff-e83e-e479-0e1f0fed6a83@ssi.bg>
+X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
+Message-ID: <20261028061644.2997812-1-starchang@google.com>
+Subject: Re: [PATCH net v4] net: Fix Hole-196 vulnerability by dropping
+ unicast ARP/IP in L2 BMC
+From: Star Chang <starchang@google.com>
+To: ja@ssi.bg
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	horms@kernel.org, johannes@sipsolutions.net, johannes.berg@intel.com, 
+	linux-kernel@vger.kernel.org, wangroger@google.com, starchang@google.com
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261028-ipv6_ioam_ecmp-v1-3-9b6715b6f4c0@kylinos.cn>
-References: <20261028-ipv6_ioam_ecmp-v1-0-9b6715b6f4c0@kylinos.cn>
-In-Reply-To: <20261028-ipv6_ioam_ecmp-v1-0-9b6715b6f4c0@kylinos.cn>
-To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Justin Iurman <justin.iurman@gmail.com>, 
- Shuah Khan <shuah@kernel.org>
-Cc: Hangbin Liu <hangbin.liu@linux.dev>, linux-kernel@vger.kernel.org, 
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- Hangbin Liu <liuhangbin@kylinos.cn>
-X-Mailer: b4 0.16.0
+Content-Transfer-Encoding: quoted-printable
 
-From: Hangbin Liu <liuhangbin@kylinos.cn>
+Hi Julian,
 
-Add new test ioam6_ecmp.sh, verifying that the ECMP path taken with
-IOAM options is identical to the path of the same packet without them
-under the default hash policy 0, as required by RFC 9486 (C2).
+Thank you very much for the insightful review and for pointing out the RFC =
+826 and RFC 2002 references.
 
-  - transit input hashing: the sender inserts an IOAM Hop-by-Hop option
-    (inline mode), the forwarder has a multipath route;
-  - encapsulating node re-lookup: the forwarder itself encapsulates
-    (ioam6 encap mode, tunnel dst equal to the original dst) over a
-    multipath route, with a plain ip6ip6 tunnel as the
-    identical-packet-without-IOAM baseline.
+You are completely right on both points:
+1. Per RFC 826, the Target Hardware Address (tha) in an ARP Request has no =
+protocol meaning, and Linux updates neighbor entries using (sip, sha), neve=
+r tha. Inspecting tha on ARP Requests was a fundamental mistake and would b=
+reak legitimate devices that leave arbitrary/unicast addresses in tha.
+2. In RFC 2002 (section 4.6), many real-world GARP reply implementations le=
+gitimately set tha to the broadcast address (ff:ff:ff:ff:ff:ff) since the a=
+nnouncement is broadcast to all hosts. Requiring tha =3D=3D sha in our chec=
+k was overly restrictive and would cause false-positive drops for legitimat=
+e GARP replies.
 
-Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
----
- tools/testing/selftests/net/Makefile      |   1 +
- tools/testing/selftests/net/ioam6_ecmp.sh | 349 ++++++++++++++++++++++++++++++
- 2 files changed, 350 insertions(+)
+Regarding your question about arp_accept:
+In our testing, arp_accept =3D 0 successfully prevents creating *new* neigh=
+bor entries from unsolicited broadcasts. However, in typical client scenari=
+os, the victim station almost always already has an existing neighbor entry=
+ for its default gateway (i.e. n is not NULL in arp_process).
 
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index df215e1a6262..397b19799cc9 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -52,6 +52,7 @@ TEST_PROGS := \
- 	icmp_redirect.sh \
- 	io_uring_zerocopy_tx.sh \
- 	ioam6.sh \
-+	ioam6_ecmp.sh \
- 	ip6_gre_headroom.sh \
- 	ip6_tunnel.sh \
- 	ip_defrag.sh \
-diff --git a/tools/testing/selftests/net/ioam6_ecmp.sh b/tools/testing/selftests/net/ioam6_ecmp.sh
-new file mode 100755
-index 000000000000..c5c82884c757
---- /dev/null
-+++ b/tools/testing/selftests/net/ioam6_ecmp.sh
-@@ -0,0 +1,349 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0+
-+#
-+# Verify RFC 9486 C2 for ECMP: with hash policy 0 (the default), the ECMP
-+# nexthop chosen for a packet carrying IOAM options must be the same as for
-+# the identical packet without them.
-+#
-+# Two scenarios, matching the two places where IOAM changed the hashed
-+# IPv6 nexthdr:
-+#
-+# 1) transit node: alpha inserts an IOAM Hop-by-Hop option (inline mode);
-+#    beta forwards with a multipath route. Policy 0 hashed the raw
-+#    nexthdr (NEXTHDR_HOP vs IPPROTO_ICMPV6), so beta could pick a
-+#    different ECMP sibling than for the same packet without IOAM.
-+#
-+# 2) encapsulating node: beta itself encapsulates (ioam6 encap mode,
-+#    tunnel dst = original dst, tunnel src pinned) over a multipath
-+#    route. The ioam6 re-lookup hashed NEXTHDR_HOP instead of the
-+#    transformed packet's real nexthdr (IPPROTO_IPV6). The baseline is
-+#    the same encapsulation without the IOAM option: a plain ip6ip6
-+#    tunnel over the same multipath route, with the same outer
-+#    addresses.
-+#
-+# Hash policy 0 hashes addresses, the flow label and the nexthdr (not L4
-+# ports), so whether both variants land on the same ECMP sibling depends
-+# on the per-netns hash seed. Each test therefore repeats with several
-+# seeds and fails on the first divergence: pre-fix kernels fail with
-+# high probability, fixed kernels always pass.
-+#
-+# Topology:
-+#
-+#   alpha                   beta                      gamma
-+#   veth0 2001:db8:1::2 <-> veth0 2001:db8:1::1
-+#                           veth1 2001:db8:2:1::1 <-> veth0 2001:db8:2:1::2
-+#                           veth2 2001:db8:2:2::1 <-> veth1 2001:db8:2:2::2
-+#
-+# beta's ECMP route: 2001:db8:2:1::2/128
-+#   nexthop via 2001:db8:2:1::2 dev veth1
-+#   nexthop via 2001:db8:2:2::2 dev veth2
-+#
-+# Scenario 1 sends to 2001:db8:2:1::2 (gamma). Scenario 2 sends to
-+# 2001:db8:3::2, which beta encapsulates towards 2001:db8:2:1::2. The
-+# link gamma received the packets on is detected from tc flower
-+# counters (read via jq) on the ingress of gamma's veth0/veth1. The
-+# filters match the exact measurement packets: ICMPv6 echo requests
-+# for scenario 1, and the outer addresses of the ip6ip6 packets for
-+# scenario 2 (flower classifies outer headers only).
-+
-+# shellcheck disable=SC2154,SC2329
-+source lib.sh
-+
-+readonly PKTS=3
-+readonly SEEDS="1 2 3 4 5 6 7 8 9 10 11 12"
-+
-+ip6tnl_loaded=0
-+
-+cleanup()
-+{
-+	cleanup_all_ns
-+
-+	if [ "$ip6tnl_loaded" != 0 ]; then
-+		modprobe -r ip6_tunnel &>/dev/null
-+	fi
-+}
-+
-+# Replace the tc measurement filters on gamma's ECMP links. $1 is the
-+# flower match list, e.g. "ip_proto icmpv6 type 128 src_ip <sender>"
-+# for plain IPv6 echo requests, or the outer addresses for ip6ip6
-+# packets (flower classifies the outer header only, see
-+# FLOW_DISSECTOR_F_STOP_BEFORE_ENCAP in cls_flower).
-+set_measure_filters()
-+{
-+	local match=$1
-+	local dev
-+
-+	for dev in veth0 veth1; do
-+		tc -n "$ns_gamma" qdisc del dev "$dev" clsact &>/dev/null
-+		tc -n "$ns_gamma" qdisc add dev "$dev" clsact || return 1
-+		# shellcheck disable=SC2086
-+		tc -n "$ns_gamma" filter add dev "$dev" ingress pref 1 \
-+			protocol ipv6 flower skip_hw $match action pass || return 1
-+	done
-+}
-+
-+# Number of packets counted by the measurement filter on gamma's $1.
-+icmp_packets()
-+{
-+	tc -n "$ns_gamma" -s -j filter show dev "$1" ingress |
-+		jq '[.[] | .options.actions[]?.stats |
-+		    (.packets // .basic.packets // 0)] | add // 0'
-+}
-+
-+# Send PKTS pings from alpha to $1 and report which of gamma's links
-+# received them: "A" (veth0), "B" (veth1), "TIE" or "LOST:<a>:<b>".
-+measure_link()
-+{
-+	local dst=$1
-+	local a0 b0 da db
-+
-+	a0=$(icmp_packets veth0)
-+	b0=$(icmp_packets veth1)
-+
-+	ip netns exec "$ns_alpha" \
-+		ping -6 -q -c "$PKTS" -i 0.2 -W 1 -w 2 "$dst" &>/dev/null || true
-+
-+	da=$(($(icmp_packets veth0) - a0))
-+	db=$(($(icmp_packets veth1) - b0))
-+
-+	if [ $((da + db)) -lt "$PKTS" ]; then
-+		echo "LOST:$da:$db"
-+		return
-+	fi
-+
-+	if [ "$da" -gt "$db" ]; then
-+		echo "A"
-+	elif [ "$db" -gt "$da" ]; then
-+		echo "B"
-+	else
-+		echo "TIE"
-+	fi
-+}
-+
-+set_alpha_plain()
-+{
-+	ip -netns "$ns_alpha" -6 route replace 2001:db8:2:1::/64 \
-+		via 2001:db8:1::1 dev veth0
-+}
-+
-+set_alpha_ioam()
-+{
-+	ip -netns "$ns_alpha" -6 route replace 2001:db8:2:1::/64 \
-+		encap ioam6 mode inline trace prealloc \
-+		type 0x800000 ns 0 size 12 \
-+		via 2001:db8:1::1 dev veth0
-+}
-+
-+set_beta_tnl()
-+{
-+	# Recreate the tunnel: ip6_tnl caches the outer dst per CPU for a
-+	# few seconds, and neither the route change below nor the
-+	# fib_multipath_hash_seed write resets it. A stale cache would
-+	# resolve the outer sibling under a previous seed (or on another
-+	# CPU), making the baseline flip between attempts of one seed.
-+	ip -netns "$ns_beta" link del ioamcmp &>/dev/null
-+	ip -netns "$ns_beta" link add name ioamcmp type ip6tnl \
-+		mode ip6ip6 local 2001:db8:2:1::1 remote 2001:db8:2:1::2
-+	ip -netns "$ns_beta" link set ioamcmp up
-+	ip -netns "$ns_beta" -6 route replace 2001:db8:3::2/128 dev ioamcmp
-+}
-+
-+set_beta_ioam_encap()
-+{
-+	ip -netns "$ns_beta" -6 route replace 2001:db8:3::2/128 \
-+		encap ioam6 mode encap tunsrc 2001:db8:2:1::1 tundst 2001:db8:2:1::2 \
-+		trace prealloc type 0x800000 ns 0 size 12 dev veth1
-+}
-+
-+# $1: description; $2: function installing the without-IOAM variant;
-+# $3: function installing the with-IOAM variant; $4: destination.
-+run_scenario()
-+{
-+	local desc=$1
-+	local plain=$2
-+	local ioam=$3
-+	local dst=$4
-+	local seed pl il
-+
-+	log_info "$desc"
-+
-+	for seed in $SEEDS; do
-+		RET=0
-+		ip netns exec "$ns_beta" \
-+			sysctl -wq net.ipv4.fib_multipath_hash_seed="$seed"
-+
-+		if ! $plain; then
-+			RET=$ksft_fail
-+			log_test "$desc (plain route setup failed, seed $seed)"
-+			continue
-+		fi
-+		pl=$(measure_link "$dst")
-+		if ! $ioam; then
-+			RET=$ksft_fail
-+			log_test "$desc (ioam route setup failed, seed $seed)"
-+			continue
-+		fi
-+		il=$(measure_link "$dst")
-+
-+		case "$pl$il" in
-+		*LOST*)
-+			RET=$ksft_fail
-+			log_test "$desc (lost packets, seed $seed: without=$pl with=$il)"
-+			continue
-+			;;
-+		*TIE*)
-+			RET=$ksft_fail
-+			log_test "$desc (no clear link, seed $seed)"
-+			continue
-+			;;
-+		esac
-+
-+		if [ "$pl" = "$il" ]; then
-+			log_test "$desc (seed $seed: same link $pl)"
-+		else
-+			RET=$ksft_fail
-+			log_test "$desc (diverged on seed $seed: without IOAM via link $pl, with IOAM via link $il)"
-+		fi
-+	done
-+}
-+
-+setup_topology()
-+{
-+	local dev
-+
-+	setup_ns ns_alpha ns_beta ns_gamma || return 1
-+
-+	ip link add veth0 netns "$ns_alpha" type veth \
-+		peer name veth0 netns "$ns_beta" || return 1
-+	ip link add veth1 netns "$ns_beta" type veth \
-+		peer name veth0 netns "$ns_gamma" || return 1
-+	ip link add veth2 netns "$ns_beta" type veth \
-+		peer name veth1 netns "$ns_gamma" || return 1
-+
-+	ip -n "$ns_alpha" addr add 2001:db8:1::2/64 dev veth0 nodad
-+	ip -n "$ns_beta" addr add 2001:db8:1::1/64 dev veth0 nodad
-+	ip -n "$ns_beta" addr add 2001:db8:2:1::1/64 dev veth1 nodad
-+	ip -n "$ns_beta" addr add 2001:db8:2:2::1/64 dev veth2 nodad
-+	ip -n "$ns_gamma" addr add 2001:db8:2:1::2/64 dev veth0 nodad
-+	ip -n "$ns_gamma" addr add 2001:db8:2:2::2/64 dev veth1 nodad
-+
-+	ip -n "$ns_alpha" link set veth0 up
-+	ip -n "$ns_beta" link set veth0 up
-+	ip -n "$ns_beta" link set veth1 up
-+	ip -n "$ns_beta" link set veth2 up
-+	ip -n "$ns_gamma" link set veth0 up
-+	ip -n "$ns_gamma" link set veth1 up
-+
-+	ip netns exec "$ns_alpha" sysctl -wq net.ipv6.auto_flowlabels=0
-+	ip netns exec "$ns_alpha" \
-+		sysctl -wq net.ipv6.conf.veth0.accept_ra=0
-+	ip netns exec "$ns_beta" sysctl -wq net.ipv6.conf.all.forwarding=1
-+	ip netns exec "$ns_beta" \
-+		sysctl -wq net.ipv6.fib_multipath_hash_policy=0
-+	ip netns exec "$ns_gamma" sysctl -wq net.ipv6.conf.veth0.accept_ra=0
-+	ip netns exec "$ns_gamma" sysctl -wq net.ipv6.conf.veth1.accept_ra=0
-+
-+	for dev in veth0 veth1 veth2
-+	do
-+		ip netns exec "$ns_beta" \
-+			sysctl -wq net.ipv6.conf.$dev.accept_ra=0
-+		ip netns exec "$ns_beta" \
-+			sysctl -wq net.ipv6.conf.$dev.ioam6_enabled=1
-+	done
-+
-+	# The ECMP route under test (scenario 1 hashes its selection at
-+	# beta's input; scenario 2 at the encapsulating re-lookup).
-+	ip -netns "$ns_beta" -6 route add 2001:db8:2:1::2/128 \
-+		nexthop via 2001:db8:2:1::2 dev veth1 \
-+		nexthop via 2001:db8:2:2::2 dev veth2
-+
-+	ip -netns "$ns_alpha" -6 route add 2001:db8:2:1::/64 \
-+		via 2001:db8:1::1 dev veth0
-+	ip -netns "$ns_alpha" -6 route add 2001:db8:3::/64 \
-+		via 2001:db8:1::1 dev veth0
-+	ip -netns "$ns_gamma" -6 route add 2001:db8:1::/64 \
-+		via 2001:db8:2:1::1 dev veth0
-+
-+	# drop unreachable message when ping 2001:db8:3::2
-+	tc -n "$ns_alpha" qdisc add dev veth0 clsact
-+	tc -n "$ns_alpha" filter add dev veth0 ingress pref 1 \
-+                protocol ipv6 flower skip_hw ip_proto icmpv6 type 1 action drop
-+
-+}
-+
-+setup_tunnel()
-+{
-+	if ! lsmod 2>/dev/null | grep -q "ip6_tunnel"; then
-+		modprobe ip6_tunnel &>/dev/null
-+		lsmod 2>/dev/null | grep -q "ip6_tunnel" || \
-+			ip a 2>/dev/null | grep -q "ip6tnl0" || return 1
-+		ip6tnl_loaded=1
-+	fi
-+
-+	ip -netns "$ns_beta" link add name ioamcmp type ip6tnl \
-+		mode ip6ip6 local 2001:db8:2:1::1 remote 2001:db8:2:1::2 \
-+		2>/dev/null || return 1
-+	ip -netns "$ns_beta" link set ioamcmp up
-+}
-+
-+################################################################################
-+#                                                                              #
-+#                                     MAIN                                     #
-+#                                                                              #
-+################################################################################
-+
-+require_command ip
-+require_command jq
-+require_command ping
-+require_command tc
-+
-+if [ ! -e /proc/sys/net/ipv4/fib_multipath_hash_seed ]; then
-+	log_test_skip "Kernel without CONFIG_IP_ROUTE_MULTIPATH."
-+	exit "${EXIT_STATUS}"
-+fi
-+
-+setup_topology || { log_test_skip "Setup failed."; exit "${EXIT_STATUS}"; }
-+trap cleanup EXIT
-+
-+# Compat check: can this kernel insert an IOAM trace into a route?
-+if ! ip -netns "$ns_alpha" -6 route replace 2001:db8:2:1::/64 \
-+	encap ioam6 mode inline trace prealloc type 0x800000 ns 0 size 12 \
-+	via 2001:db8:1::1 dev veth0 &>/dev/null
-+then
-+	log_test_skip "Cannot attach an IOAM trace to a route"
-+	exit "${EXIT_STATUS}"
-+fi
-+
-+log_info "IOAM + ECMP (RFC 9486 C2, hash policy 0)"
-+
-+# Warm up both ECMP links (first-packet neighbor/RA activity) and check
-+# basic connectivity before measuring.
-+set_alpha_plain
-+measure_link 2001:db8:2:1::2 >/dev/null
-+
-+# Scenario 1 counts the ICMPv6 echo requests sent by alpha.
-+if ! set_measure_filters "ip_proto icmpv6 type 128 src_ip 2001:db8:1::2"; then
-+	log_test_skip "Cannot install tc flower measurement filters"
-+	exit "${EXIT_STATUS}"
-+fi
-+run_scenario \
-+	"Transit input ECMP with/without IOAM" \
-+	set_alpha_plain set_alpha_ioam 2001:db8:2:1::2
-+
-+if setup_tunnel; then
-+	# Scenario 2 counts the outer ip6ip6 packets: the echo request is
-+	# not visible to flower (outer headers only), so match the pinned
-+	# tunnel addresses instead. No need to check return value again as
-+	# we have done it at scenario 1
-+	set_measure_filters "src_ip 2001:db8:2:1::1 dst_ip 2001:db8:2:1::2"
-+	set_beta_tnl
-+	measure_link 2001:db8:3::2 >/dev/null
-+
-+	run_scenario \
-+		"Encapsulating node re-lookup ECMP with/without IOAM" \
-+		set_beta_tnl set_beta_ioam_encap 2001:db8:3::2
-+else
-+	log_test_skip "Encapsulating node re-lookup ECMP with/without IOAM (no ip6_tunnel)"
-+fi
-+
-+exit "${EXIT_STATUS}"
+When n already exists, arp_accept is bypassed, and once the 1-second LOCKTI=
+ME window has passed, arp_process() calls:
+    neigh_update(n, sha, state, NEIGH_UPDATE_F_OVERRIDE, 0);
+which executes memcpy(&neigh->ha, lladdr, dev->addr_len) in __neigh_update(=
+), overwriting the gateway's cached MAC address with the attacker's MAC.
 
--- 
-2.56.0
+In a Wi-Fi (Hole-196) scenario where clients share the GTK, an attacker can=
+not forge unicast frames directly to the victim, so they broadcast an unsol=
+icited unicast ARP Reply (sip =3D gateway_ip, sha =3D attacker_mac, tip =3D=
+ victim_ip) over L2 broadcast (PACKET_BROADCAST).
 
+Under standard networking behavior, a non-GARP ARP Reply is strictly meant =
+to be delivered as an L2 unicast frame (PACKET_HOST) to the requester. The =
+only legitimate reason an ARP Reply is ever sent over L2 broadcast is for G=
+ratuitous ARP (sip =3D=3D tip).
+
+Based on your feedback, we plan to completely drop all checks on tha, leave=
+ ARP Requests entirely untouched, and strictly narrow the ARP defense to dr=
+op ARP Replies received over L2 BMC *only* if they are not Gratuitous ARP (=
+sip !=3D tip):
+
+--- a/net/ipv4/arp.c
++++ b/net/ipv4/arp.c
+@@ -791,32 +791,18 @@ static int arp_process(struct net *net, struct sock *=
+sk, struct sk_buff *skb)
+ 	    (!IN_DEV_ROUTE_LOCALNET(in_dev) && ipv4_is_loopback(tip)))
+ 		goto out_free_skb;
+=20
+ 	if ((skb->pkt_type =3D=3D PACKET_BROADCAST ||
+ 	     skb->pkt_type =3D=3D PACKET_MULTICAST) &&
+ 	    IN_DEV_ORCONF(in_dev, DROP_UNICAST_IN_L2_MULTICAST)) {
+-		bool is_valid_garp =3D (sip =3D=3D tip) && tha &&
+-				     !memcmp(tha, sha, dev->addr_len);
+-
+-		if (arp->ar_op =3D=3D htons(ARPOP_REPLY) && !is_valid_garp) {
+-			net_warn_ratelimited("Drop ARP Reply in L2 BMC on %s\n",
++		/*
++		 * Standard ARP Replies are strictly unicast (PACKET_HOST).
++		 * An ARP Reply in an L2 broadcast frame with (sip !=3D tip)
++		 * is an injected unicast reply. Legitimate GARP (sip =3D=3D tip)
++		 * is preserved and defers to DROP_GRATUITOUS_ARP.
++		 * ARP Requests are left untouched per RFC 826.
++		 */
++		if (arp->ar_op =3D=3D htons(ARPOP_REPLY) && sip !=3D tip) {
++			net_warn_ratelimited("Drop non-GARP ARP Reply in L2 BMC on %s\n",
+ 					     dev->name);
+ 			goto out_free_skb;
+ 		}
+-		if (dev->addr_len =3D=3D ETH_ALEN && tha &&
+-		    is_valid_ether_addr(tha) && !is_valid_garp) {
+-			net_warn_ratelimited("Drop unicast THA ARP Req in L2 BMC on %s\n",
+-					     dev->name);
+-			goto out_free_skb;
+-		}
+ 	}
+
+With this approach:
+1. ARP Requests are completely untouched (fully adhering to RFC 826).
+2. Legitimate GARP announcements (sip =3D=3D tip) for VRRP/HSRP router fail=
+overs are preserved regardless of what value they put in tha (respecting RF=
+C 2002).
+3. Injected unicast ARP Replies in L2 BMC (sip !=3D tip) that poison existi=
+ng gateway entries are dropped.
+
+Does this sound like the right direction to you for v5?
+
+Thanks again for your time, guidance, and expertise!
+
+Best regards,
+Star Chang
