@@ -1,69 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793190461;
-	b=EKAup93L1IUnscaoOE/SflqeLkP19/HDEdc/mQ6R7PN4raaALqWqvUxxrdF4IlI8wM5Z
-	 X+E3zaLVy8e0XiaIc/ysctX6b2Fr2gFems7XI1QszP+rVN63YzKrqz8odK948Ut7mfvmx
-	 pPQshwTY43deAJCMAdKrlCnviltBcAEeq7X6yljwzU51mRndOSucbPr+76X1arkAcoE1e
-	 9MN2rtCfmiiryHHdh4TCSCJzv2y+Si9VHk6kySkNiTbv8ZP63m4yybU7RAvH/Gh0n2Ztu
-	 R75NXA3UxPtfwXR/JXznudX0q93VfbALmr4N4dchZq5QH7ugaS+KX3pllvBMKyAkdhA==
+	t=1793190558;
+	b=V9Ijy1qMkTozQfbUmTsV0Rm/+3j9YHd+NBNQEjoqcdLY/6PEYTRV5aD0dF1/oMXGNghH
+	 OQ0Tj2iV6ZpouKg7o+8U16BlM/Wgf9p6k/pyCfMs7x5Art+CPWQpIsEffhioS633Voibp
+	 asjKfTg2e7o3i+1glBptc/PFzST72et1lAUKq80KzIn+RCWizJwIZH/R7/UdQjVhM5IMB
+	 c3kebRNkdGrERvSPg/LOzl/bX8zWVgMCRErmrnPpa0O78l9iWUVnEGrXCql/PZ2EKjmdf
+	 fqmdSRoKaBPPFs0aavQlxkrHvtN7EDQ1YIpASQhUUrv7gEQv8HJwb/62/ug+Kh53VSw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793190461;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=2mAQAxNJCmgorWtFYC1x4ukB0tp8HVcxnxU1mYBs9GQ=;
-	b=HGSGaACXNumUDuwZLLVjqUh/Bxd1KMipoY/BbpRVbH1YOZg+vkALFqhF9RmYQ3SSNDyP
-	 Tt/ARUX6F69vQ9/4VhbBKnogL8MrwHPAyyBN92uimuTYnmCfmKSEHYrGvZQH8kCh7MWHE
-	 Fo/51HrqRqt627K3k+Roffzr6Q8CREVDNjBwN9eOSiVv2lM6xZEhWch9od3hShQ+4VScs
-	 1Rd3etiLe4em50PAk3thhaCMVQ4Ih6o8HECE8VJNcDqGHgK0MbM7MQvL+039PfQz85Ld4
-	 +oz/sIyxopXMpRSllZ8C8iws1rByOrDkr7f126HhKF40F5Jn5kh0RxAihKsi44MlZ9g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793190558;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=sum+6SOo6fPr4wojZMJ/HsdG/QxP8iiWGofKkRuMS1M=;
+	b=M6S0nHD5SxmWh5ipx/Q2ksDTGKqxoGJ3auH06HA5lTy3eFECPcKisT8IdUslqbtMT/Gz
+	 zhK+z3uUETbYKHjuKNOed5kTUafl0PG5Vw0JYjz0r08MwIq/NT3kTmu+DE1ff/D7WtwQp
+	 BIZZCPiC67LIj/o87QRKgKLajivlwExrfYrDNFx9DEtySIEryIkfj75SUuj2sR8ApQtYU
+	 uaWZBNf8OPYrqG0fv9/aBGCcJOg8LKYvC7epPv8Q2/sn0DjBF4AW1jHgonWcDeI/y1gJj
+	 ofXQ6tvxDod5dVvRtpHjEuslqFHybdsLTQYeV+gLScxTwRz92BB/dB7j1EDb0cosQOA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ds59fc6M;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=OIeTSxkE;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A04606A33B;
-	Wed, 28 Oct 2026 12:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B91606A31A;
+	Wed, 28 Oct 2026 12:29:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E4B91606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ds59fc6M
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D91D31F01825;
-	Wed, 28 Oct 2026 12:27:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793190460;
-	bh=2mAQAxNJCmgorWtFYC1x4ukB0tp8HVcxnxU1mYBs9GQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ds59fc6MMWMglh7fRHbOyulLCFSPawR9uXMzqF1bcvtJFAwG4FWblMy8HZbAa+pNU
-	 W7J71hBfoR6quXsArwfh67ZURocLjUl9qVsT11Ob+6xmASSXwI3hhWuzepN3qiHETT
-	 fYvqkWxCLLE9OM49er6vfM13uzJBzGyiczmeS7I4510DI5EUcAvoG9q1zPwBIc1qBe
-	 NmO0gOBVmsE6v2L6UBeNndulSGmS4BAHkSsbRpR7GjvsgeL0n0woMwO5blewQiFZtR
-	 VQp/2h7ghB27H87LiKQb7s1xSriLV98KQtwnh+C5Wb6eB6mbX1iS3igSaUab8x49fz
-	 nRPc+MSV8xPHw==
-From: Eric Dumazet <edumazet@kernel.org>
-To: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Willem de Bruijn <willemb@google.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Aaron Conole <aconole@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Jiri Pirko <jiri@resnulli.us>,
-	dev@openvswitch.org,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Ren Wei <weir@nebusec.ai>,
-	stable@vger.kernel.org,
-	Eric Dumazet <edumazet@kernel.org>
-Subject: [PATCH net v2 5/5] net/sched: act_ife: do not consume the inner header on egress
-Date: Wed, 28 Oct 2026 13:27:03 +0100
-Message-ID: <20261028122703.2093730-6-edumazet@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261028122703.2093730-1-edumazet@kernel.org>
-References: <20261028122703.2093730-1-edumazet@kernel.org>
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=OIeTSxkE
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=sum+6SOo6fPr4wojZMJ/HsdG/QxP8iiWGofKkRuMS1M=; b=OIeTSxkEVEyNnKkle53WGtuvkZ
+	4QPsQXrPuG3ysSTXNKb1A9KeiGyBKadA1zp93MsEorhYJ12wPx7/9ZK7/WAHrYWRF+gV/pYRWsCC5
+	YGvVChI+oL7M5/9vB/XnbuhBGquvyooySQ/6nwz/2UKrj9OU6DG9a/TRn2xVJ3KAVzl0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xM2lx-00D6fN-W5; Wed, 28 Oct 2026 13:28:53 +0100
+Date: Wed, 28 Oct 2026 13:28:53 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Caleb James DeLisle <cjd@cjdns.fr>
+Cc: netdev@vger.kernel.org, olteanv@gmail.com, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+	chester.a.unal@arinc9.com, daniel@makrotopia.org,
+	linux@armlinux.org.uk, arinc.unal@arinc9.com,
+	Landen.Chao@mediatek.com, dqfext@gmail.com, sean.wang@mediatek.com,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, naseefkm@gmail.com,
+	b.larsson@gmx.com
+Subject: Re: [PATCH v3 2/7] dt-bindings: net: dsa: mediatek,mt7530: add
+ passthrough mode
+Message-ID: <a566aad7-754c-4960-b018-4471a0068344@lunn.ch>
+References: <20261028011317.1557238-1-cjd@cjdns.fr>
+ <20261028011317.1557238-3-cjd@cjdns.fr>
+ <a031f089-0b96-4fc0-b878-6af13414524f@lunn.ch>
+ <521b930f-0bf9-4373-bfbf-3e2570661ec9@cjdns.fr>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -73,62 +74,79 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <521b930f-0bf9-4373-bfbf-3e2570661ec9@cjdns.fr>
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+On Wed, Oct 28, 2026 at 12:27:18PM +0100, Caleb James DeLisle wrote:
+> 
+> On 28/10/2026 03:04, Andrew Lunn wrote:
+> > On Wed, Oct 28, 2026 at 01:13:12AM +0000, Caleb James DeLisle wrote:
+> > > MT7530 switches can be configured to blindly pass packets between their
+> > > CPU/upstream port and a downstream DSA port, in particular, without
+> > > altering the MediaTek DSA Tag on the packets. This mode is used in some
+> > > integrations where an SoC integrated switch exists, but a more capable
+> > > MCM switch is added to effectively replace it.
+> > > 
+> > > Signed-off-by: Caleb James DeLisle <cjd@cjdns.fr>
+> > > Acked-by: Rob Herring (Arm) <robh@kernel.org>
+> > > ---
+> > >   .../devicetree/bindings/net/dsa/mediatek,mt7530.yaml       | 7 +++++++
+> > >   1 file changed, 7 insertions(+)
+> > > 
+> > > diff --git a/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml b/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml
+> > > index 90b3582b7619..e29fb8693498 100644
+> > > --- a/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml
+> > > +++ b/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml
+> > > @@ -73,6 +73,13 @@ description: |
+> > >         Check out example 7.
+> > > +  The MT7530 and MT7531 switches are capable of being operated in "passthrough"
+> > > +  mode. In this mode, traffic is unconditionally passed between the CPU port
+> > > +  and the DSA port which links to a second switch. To use passthrough mode, the
+> > > +  upstream switch is configured with a DSA link to the downstream switch. In
+> > > +  passthrough mode the upstream switch is restricted, with no other ports or
+> > > +  switch configuration allowed.
+> > > +
+> > >   properties:
+> > >     compatible:
+> > >       oneOf:
+> > Looking at just what is here, all i see is a comment. There is no new
+> > property? Yet the subject is "add passthrough mode"?
+> 
+> 
+> Indeed, I used "add" to mean "add documentation of". Per my reply on patch
+> 3, I think we really prefer to avoid special properties and let this
+> constitute (very) limited support for a switch hierarchy.
+> 
+> If there's another verb you think makes a better commit line, I'd be happy
+> to adjust.
 
-The issue:
-tcf_ife_decode() unconditionally calls eth_type_trans(), which pulls
-ETH_HLEN.  On egress this consumes the inner Ethernet header, and the
-device receives an skb whose data points to the L3 header:
+[Goes and looks at mediatek,mt7530.yaml]
 
-- loopback_xmit() parses L3 data as Ethernet: the "ethertype" comes
-  from the inner IPv4 source address, and the decapsulated packet is
-  dropped or misparsed.
-- a real NIC transmits the frame without its Ethernet header.
+So pass through is not an existing property. You are also not adding a
+new property 'passthrough'.
 
-(The __skb_pull() BUG this used to trigger in loopback_xmit() when the
-remaining linear area was short is handled by "loopback: use
-eth_type_trans_careful()".)
+What you appear to be saying is that the MT7530 and MT7531 are hard
+coded by the driver into pass through mode? So it is in effect a
+property of the compatible? So maybe put this comment next to the
+compatible? And make the subject/commit message talk about the
+compatible being hard coded for pass through?
 
-The Fix:
-Parse the inner Ethernet header with eth_type_trans() in both directions,
-then restore the egress data position and MAC length.  On ingress the
-existing behavior is unchanged.  On egress, push the inner Ethernet header
-back after parsing so the xmit path sees the original frame and later
-actions see a consistent network header.
+Looking forward, what happens when somebody wants to use the switch as
+a switch? Or you figure out how to do proper D in DSA? It becomes
+messy because you need to add a property indicating the compatible
+should actually be a switch?
 
-Conditions to recreate the bug:
-- egress tc filter on lo: action ife decode pipe;
-- AF_PACKET SOCK_RAW frame: outer Ethernet with ETH_P_IFE, IFE metadata,
-  inner Ethernet + a valid IPv4 ICMP echo request to a local address;
-- before this patch, no echo is received; after it, the echo is
-  delivered and answered.
+So maybe you really do need a property?
 
-Fixes: ef6980b6becb ("introduce IFE action")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-[edumazet: reworded changelog, the crash is now handled in loopback]
-Signed-off-by: Eric Dumazet <edumazet@kernel.org>
----
- net/sched/act_ife.c | 4 ++++
- 1 file changed, 4 insertions(+)
+But DT describes hardware, and pass through is configuration. So maybe
+it should not be in DT at all, Maybe the driver needs to look at the
+DT tree, figure out a port is used as a DSA port, and put the switch
+into pass through all on its own? Once D in DSA is supported, the
+addition ports become available, but no other changes are needed in
+the DT blob?
 
-diff --git a/net/sched/act_ife.c b/net/sched/act_ife.c
-index 2afd68983ece40d8cae6c96af86e2ea65be476bc..3946a9589bb8fcd296e6f1f9234c00238df4d954 100644
---- a/net/sched/act_ife.c
-+++ b/net/sched/act_ife.c
-@@ -769,6 +769,10 @@ static int tcf_ife_decode(struct sk_buff *skb, const struct tc_action *a,
- 
- 	skb->protocol = eth_type_trans(skb, skb->dev);
- 	skb_reset_network_header(skb);
-+	if (!skb_at_tc_ingress(skb)) {
-+		skb_push(skb, ETH_HLEN);
-+		skb_reset_mac_len(skb);
-+	}
- 
- 	return action;
- }
--- 
-2.53.0
+Sorry, going around in circles, but hopefully it helps you think about
+the big picture.
 
+	   Andrew
