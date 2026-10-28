@@ -1,93 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793223444;
-	b=gdPyad4sVYBlAvbboQr0b9bahVidsYFf4k3aEb44Bx7WzJGsemRm1Khnc3AvW+fYpbPe
-	 H1a9VIIz04bHblcyn/4toB65IZNS7aAsuLQNLnuwbCOKf8vOSqH0xQZBka2SIEERIHaAJ
-	 07ANb0cKsCtrHlYxl8c0VqVAU+VHmH/fRU7U1W6hbwPFimuFJUDoLis9xLJoUIaCMxiC9
-	 fwWkYtld8xuehEo+XIt1dKn/rgUJnDdKVdgOt9GOLR8XSimy3P2ns2Q+0w1A+UoCNM4SQ
-	 sZXFEFj6TIa64OCQcAiAArBljICkmC7/asmEU2WoM2MqauFuRkDCu6pjbnl4PjIB6pg==
+	t=1793223452;
+	b=nNvr51HyUT+9l3SoiwMprodVIjeYFR8tINEVh9iM0Qbt5C3omxOcylEzDf92QBIaNbII
+	 6mufl3/j6bX81tYFgWGfRk1bMAAsx9ePTL5VsiN1MGBBy7X4jvp7mFyiOlSMQhpqGSTcW
+	 zkHVFWqq86N65XhMQH0PEtIY34l6EnGQB20fX5fzjVy5ASMyKIFIqW2Z5dYS/FT4fKWyw
+	 whjKHSiIlkSE7oooSKpu3U67Ex9PgFBWl2etq0bi46cxnFUlcfvjotOFTxMJhfk40Ddxq
+	 nuIDIGGYzdVaI/fZjPhBRwTZcUB8ow9GWMsAid/21Sw5VLUqT1cDXn+/Hw7MOeZ5VsQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793223444;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793223452;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Subject:From:To:Cc:
 	 Date:Message-ID:In-Reply-To:References:User-Agent:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=ZqeYW4br0ttDJgg3XwsnzUv13cVg+FEhbEsEAlcoSXs=;
-	b=VNO3ABSZw7ylvfBjYt9SbHCeBBIKp3JeO0zvA6ZMha7smOpilA5VIls1Fv8FGiUEU9kG
-	 XKbEhwPwhccLrYErMq/47YeTAWgaMZwSbW9QsKoQV5W7uyHyZpjS1g/oJL08kXSa63Hcc
-	 f3QzG3iWEdJjhQz2UZc+wOf9igdIFn6I+HgQYJyxRXHYIOeEvmxbe+S+ifdD4O1rdkv92
-	 ak5fKRdqRDwGehRYEhycDFziFP9wMEp2QCKf0h6UsZ8+F4DaHh9JYSNw3LGkUhmYrU7/R
-	 g05bOLrJAzMM7U+mC/eeIXXmLvdvmeMgfav2PRgPjnQYLQRWu/hMTgGqKWH5QBp3hVg==
+	bh=+SO6JKjC4hDBNLlADRNP3/4AQmkpmDLlT2I1AwNn/OM=;
+	b=j0yeLOm6KgOtYw/doR6B+SiY/DpDeN05cyfbY6x+zFYjjX33fsSU28a10xh5tNTtIyYV
+	 To5MOwo42FBuejA1W6A82nKQvnsw+EfBjY5lc6vnvxG5skh1V3MjGxVlbp5D2I68x3Obc
+	 BKkriHHrk8VnIqTG6c5u+nj8M8BBdYqylUGW1jFwxkpWb1z6rbE/0G6i4sTCh7CoNRBG/
+	 Fm3O373lJWSKTlcQHheqjg5RKD0i5M6GXeluOnyrwLScYPFNb689Shhpo4wpmzv1jq+4z
+	 eL2Ad+qQNWusAxX+Tl/oDAgThJN3zy/yjDGBXjlgHxjWBY6y9cKUP8vTTf6ZthCuuhg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=E9OdgUUf;
-	arc=none smtp.remote-ip=209.85.214.177
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=nqQxnUUb;
+	arc=none smtp.remote-ip=209.85.214.174
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B35606A31D
-	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 21:37:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 72B35606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74CA606A31D
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 21:37:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C74CA606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=E9OdgUUf
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2e812e2b31bso8641545ad.3
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 14:37:24 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=nqQxnUUb
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2e9f6a16aedso9610445ad.2
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 14:37:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793223444; x=1793828244; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793223451; x=1793828251; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:user-agent
          :references:in-reply-to:message-id:date:cc:to:from:subject:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=ZqeYW4br0ttDJgg3XwsnzUv13cVg+FEhbEsEAlcoSXs=;
-        b=E9OdgUUfLX1kV7LneuejEibeemG9j7pnHU1EANxvEYLLJNMjlfqTJnGyg13qrl5OnH
-         e2XFbcrdqGPyQidTT+AK9ZvkhbcS4d8Xu+ybxusb5gdU+nG/I5qlRcMvAF1GKmdrqqga
-         4ff/UT8Fkknntl+yFl/vv1v2BHMXipVUV7kgMSLZWDvY6iUVyZd1DLUSwwjDRTy3DXsz
-         Ilt0LdelF0BojmgU9kyTkjRaB6G1bldxl+588FYNusXNvlTYhFd45nlAcC/evIKwncEz
-         LAv/QcaB5ACXq/Ige2zKkiMO45Yey70UDd4KYocODOwu+hfFddiKG7xUsi7oexfr6sFp
-         /D/g==
+        bh=+SO6JKjC4hDBNLlADRNP3/4AQmkpmDLlT2I1AwNn/OM=;
+        b=nqQxnUUbn9ueIhjiiVJKDmBhm6WGRZa9pJ7S/ji26unoe9n9H3IHFIMyzc6jviDvLD
+         CARNxPHV2RBrYD+l4UiGPIRGfVuLB0qnZ9sQmh/oyEf7Ns8zCkpCY3NzR5cJGag+K9C/
+         7ciNF7uD1N11JL9Q9jeKrgA7IAvkoTn4pUCIxrkFrS1eng5ZSsmJaGdhizYQKH/s7+Mk
+         Czb67BVzDy7sh2EgbRHbNGIidEufzvesSoTQcJCZkflyDzvDHaYi2c55iPpcKjDXgsvl
+         J6pqyLsLLwNNzZTc0+xlpKExtOmCd9uG3j1BDdHd+3C/y0wQYvy0P0xjG0tKKfFM5GDM
+         lq7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793223444; x=1793828244;
+        d=1e100.net; s=20260707; t=1793223451; x=1793828251;
         h=content-transfer-encoding:content-type:mime-version:user-agent
          :references:in-reply-to:message-id:date:cc:to:from:subject:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ZqeYW4br0ttDJgg3XwsnzUv13cVg+FEhbEsEAlcoSXs=;
-        b=hjsKZ1kSOC0W64wcX0bFHRKPNKdM7euJ5lAqkSBdk6VbV+JPWxdjUxpBfF8dLKlKG3
-         t8G0Zpvw0p/Li+rcajRjx+LKo8E/tovczIjRZFdb7OQ6NVr2WlGIzKhpPqdJrQl9oh4q
-         8Ou/IVo7pB4hQXdaF8vjYw5cI1BETImjn/plSleC7/oLl4d6Jyv0SQ6OxdLSFKTgEwb5
-         zzOId8PSN76Q6SgCbo/Xvsd00pyjrY2mQWfRrN2Gk6w9B1Ey/vAQnyPUqmwOkawXVgrF
-         yMgVbbYkkGDuMPzt6P9OeRYLAiokxT7ZMydUKoJYKxSAa21SgWMUh90r6cqVtB4zk7k5
-         TY0A==
-X-Gm-Message-State: AFq9FYJWT0ibPuCUHSML3xRSv5XftZhGWiz0+Amyf160uky1u76OkbtG
-	BPVGoVWW7evUiTxUk0YZuSdJ0UjQb/7v1rXocKQqrPrimLRzs10sIlas
-X-Gm-Gg: AYBFou3j76XQ/7qh++ELbevzNTSH3tzBgAr2T853kaubJcmfdtaZCCYvY50Rn647Zi2
-	VvcH+a4pm6NZ0y5XOvohcgVjasgcUR0FZRiWXAL/D0PrPTj0NEyi3c9vlZUDhtYQcHuW2aOJ/Os
-	BE/fSSJDqBBTlNs3+/4R4O5ztGmFWyLqRmSFcqqoDGpfhYJQKjsk+EFv8gGQmcQmFx4zZeqt+08
-	iD32RxMhUVxLn5vB2FhcHnxuF1qJK0g1wmGSvlwAT8/wW42ZLRl0bsfo3FKFRkYJOEeGVkN6WsJ
-	ZTn3jBEcYW3DITy2ohKS/+aOxJFiY4tzXRrrwPUhr2ZIdLt6kXbTMZGQJPBb2OPdEL8mdbUnNvr
-	M4QRD7DivFsKhFFCpoxL8OcIflrgwGvRsbsbnRzd701lRAjVT6dFchCgMb/FLUOca1EmDN7HgmZ
-	zLcs5c/UiCs6ZGA8WdLPlABAn+iY4C0HHEIkFRwnkv7fj6FXhkQjD1/apVxz5Anb/R3MQ8sehoz
-	Jl+T+EGlRBB6q75m1cJHzzmw5eK3l3vmGF6T/Q15GFfNK9vT1APkV/zCU8OYk9K59SLFg+/sTeF
-	gUTT3GoQ+OAah8eZI8FTUtQ1BSbkNXwNjsWkgnIjYTSyo8OJoJY+R/lS5Zqy7gyXxHpH6kY9+i+
-	NlgQ4MBZh7y94jGY3QG8hPdgrVhCSGBQwYJLFh1g5k9GLrg==
-X-Received: by 2002:a17:90b:1805:b0:39e:59a0:46b5 with SMTP id 98e67ed59e1d1-3ae57fa94bcmr2473720a91.24.1793223443866;
-        Wed, 28 Oct 2026 14:37:23 -0700 (PDT)
+        bh=+SO6JKjC4hDBNLlADRNP3/4AQmkpmDLlT2I1AwNn/OM=;
+        b=CRKoA9VLxAO+nXza1ed2yY79ckmGD6lbEVsLvrJgsfJeVmIo1mJepg1WFV6FxpyD1n
+         qgl6hOqzy6CGPdCCrKycw+u38d7ot4F3JQrY+pzD7wYS+VKiS4znwBHUOLmUJeRjyoiF
+         5UzqpMFCmATvnOUoAzFSR/3JG1hWRfvS1bqdYIkJCjqbrHnLnkB+0pFLEaM/zJYHRxWI
+         6fze4oxXXzVElWaRM5psiyp+MVL8miIr+z0JyXxgaWVXlpCc6fyzK4DZxYhWDBqbJNhj
+         NCrlTvtKfRGJEWZ05XJwIjnVRkOmaUS9dsinC4wa4d16EqzoUSdc0H6EbdMvGDovS83q
+         DWxg==
+X-Gm-Message-State: AFq9FYL/NILrHWAZuYN4WxWBoYHloeb0wq8454faBMZpagiJYnHFliSm
+	cE6iktu1jOqXIdy0FQ/VOV23jR6LUFAzj2DITBABKBiqAN9JkrhnK7N0
+X-Gm-Gg: AYBFou3P7BuXIcpuhuR5nkAsgGdicXyMcLxlAJMX+YUIcXaEheX5Y3Mi3A6qLoXpcxA
+	x/CePQp2gbH7ZbN5aX1KFC8PfpewymzqTY2nhvc+QKrHJMFLHKBOWcYy7WdIL3VOsd3y0pSpnnW
+	RvZyRvcRq9PPdeY2BMr0dNtRfKyvLwsChzPiOHiugA+JC3V8xanwuM5g4/APsoGlyhX0mydrb+J
+	kxST/NZcbnd5y0MHwSaQe9vjBPev2TTf+SJPbf0YFWf9SdtJroiC1wlo7SPWlXpK57TFubnimzY
+	eGsCGim/foY/dwEHS1mjEezdl9a5MoFN1oCiJG+e5t/Hx86bc7dF6qduZzL95FC08gXuPBcISYD
+	10k4rdwn1a672oBw5JgrtkX+FjGNpUWm9eeqbRNtVKlzdPmrOhqnrdsH7KON25Y6BKdudI5Zgkn
+	fI+HWwhgf/IWC2xetW166paY/vUCcaE4xQ5WgnnFdBYVJcbjtiricMNuxGo4nT/CvL96NLV4cwD
+	YQ+FGS5FTMQPiwJLtMKUykqwBaHDIj80nnki6AgbaTPJqguVBAuVIFsXxMR4s3cHSasYenkW97Z
+	cccSMe9htTsrtfnuA8DPc9RruS7LAnYxVub2mO9ZAtHS0Q1jQ9VG+z74wdMS9RZk89K0NGduanR
+	fzB74ek9GMX8hGSTM7YQ89hLtHIyMwU21twQm52XCjsHZMw==
+X-Received: by 2002:a17:90b:3e86:b0:3ad:eb29:3383 with SMTP id 98e67ed59e1d1-3ae57f9b10bmr2579752a91.22.1793223451126;
+        Wed, 28 Oct 2026 14:37:31 -0700 (PDT)
 Received: from ahduyck-xeon-server.home.arpa ([2605:59c1:38c:400:22f5:2de:b9c3:f27c])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae6e89f7d8sm1077980a91.17.2026.10.28.14.37.21
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae6e944ba9sm1038659a91.8.2026.10.28.14.37.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 14:37:22 -0700 (PDT)
-Subject: [net PATCH 11/13] fbnic: Suspend phylink after taking the datapath
- down in ndo_stop
+        Wed, 28 Oct 2026 14:37:30 -0700 (PDT)
+Subject: [net PATCH 12/13] fbnic: Wait for the outbound flush to complete on
+ mailbox teardown
 From: Alexander Duyck <alexander.duyck@gmail.com>
 To: netdev@vger.kernel.org
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  horms@kernel.org, kernel-team@meta.com, kuba@kernel.org, pabeni@redhat.com
-Date: Wed, 28 Oct 2026 14:37:21 -0700
+Date: Wed, 28 Oct 2026 14:37:29 -0700
 Message-ID: 
- <179322344127.40667.2505190570032252359.stgit@ahduyck-xeon-server.home.arpa>
+ <179322344904.40667.15350816992837956463.stgit@ahduyck-xeon-server.home.arpa>
 In-Reply-To: 
  <179322311834.40667.5383039334126572422.stgit@ahduyck-xeon-server.home.arpa>
 References: 
@@ -107,52 +107,84 @@ Content-Transfer-Encoding: 7bit
 
 From: Alexander Duyck <alexanderduyck@fb.com>
 
-The fbnic_stop function calls the phylink_suspend function before the
-fbnic_down function. With no BMC present that stops phylink, and the
-fbnic_phylink_mac_link_down function disables the MAC and holds its Tx
-and Rx clocks and FIFOs in reset. Only then does the fbnic_down function
-stop the queues and wait for the Tx path to go idle, so anything still in
-flight has to drain into a MAC that is no longer passing traffic, and the
-fbnic_wait_all_queues_idle function can be left to time out and force a
-flush. With a BMC present phylink leaves the link up but turns the carrier
-off, which the phylink_suspend function notes assumes all packets have
-already been sent.
+The fbnic_mbx_reset_desc_ring function drops bus mastering and arms the
+outbound read and write flush in a single register write, but nothing
+waits for that flush to finish. The fbnic_mbx_clean function returns as
+soon as the rings are torn down, so the caller is free to let the device
+reset while the outbound path still owns read requests it has not
+retired. A completion landing after that point, or a tag handed back out
+while the old one is still live, has nowhere valid to go.
 
-It is also the reverse of how the interface comes up: the __fbnic_open
-function resumes phylink last, and the fbnic_up function then enables the
-queues and installs the host Rx filters.
+The PUL link reset status register reports when the flush has drained in
+both directions, so poll it before returning. The flush only has to
+retire what is already in flight, so it settles well inside a
+microsecond; the 1ms cap is there so a wedged device cannot spin.
 
-Call the fbnic_down function first. The Tx path then drains with the link
-still up, and Rx is still stopped first, as the fbnic_clear_rx_mode and
-fbnic_clear_rules functions remove the host as a destination for its MAC
-addresses in the RPC before the queues are disabled. The MAC IRQ is still
-freed before phylink is suspended, so no link interrupt runs while the
-link is taken down. The PM suspend path goes through ndo_stop and picks
-up the same order.
+Every caller of the fbnic_mbx_clean function runs with the datapath
+already down, which matters because the flush covers all outstanding
+reads, not just the mailbox ones. A device that has lost its link reads
+back as all ones, so both done bits appear set and the poll ends on the
+first pass.
 
-Fixes: 6ede14a2c636 ("fbnic: Move phylink resume out of service_task and into open/close")
+Fixes: 3b12f00ddd08 ("fbnic: Gate AXI read/write enabling on FW mailbox")
 Signed-off-by: Alexander Duyck <alexanderduyck@fb.com>
 ---
- drivers/net/ethernet/meta/fbnic/fbnic_netdev.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/meta/fbnic/fbnic_csr.h |    4 ++++
+ drivers/net/ethernet/meta/fbnic/fbnic_fw.c  |   16 ++++++++++++++++
+ 2 files changed, 20 insertions(+)
 
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
-index a40566029a86..36ef17dec0f4 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
-@@ -86,11 +86,11 @@ static int fbnic_stop(struct net_device *netdev)
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_csr.h b/drivers/net/ethernet/meta/fbnic/fbnic_csr.h
+index cbb25d11638c..d7583243e5cd 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_csr.h
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_csr.h
+@@ -955,6 +955,10 @@ enum {
+ 
+ /* PUL User Registers */
+ #define FBNIC_CSR_START_PUL_USER	0x31000	/* CSR section delimiter */
++#define FBNIC_PUL_USER_IP_LINK_RST_STATUS \
++					0x31030		/* 0xc40c0 */
++#define FBNIC_PUL_USER_IP_LINK_RST_STATUS_AW_FLUSH_DONE	CSR_BIT(7)
++#define FBNIC_PUL_USER_IP_LINK_RST_STATUS_AR_FLUSH_DONE	CSR_BIT(8)
+ #define FBNIC_PUL_OB_TLP_HDR_AW_CFG	0x3103d		/* 0xc40f4 */
+ #define FBNIC_PUL_OB_TLP_HDR_AW_CFG_FLUSH_MODE	CSR_BIT(20)
+ #define FBNIC_PUL_OB_TLP_HDR_AW_CFG_FLUSH	CSR_BIT(19)
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+index 09d03274be08..32a18cb8990c 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+@@ -7,6 +7,7 @@
+ #include <linux/dev_printk.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/gfp.h>
++#include <linux/iopoll.h>
+ #include <linux/types.h>
+ 
+ #include "fbnic.h"
+@@ -187,10 +188,25 @@ static void fbnic_mbx_clean_desc_ring(struct fbnic_dev *fbd, int mbx_idx)
+ 
+ void fbnic_mbx_clean(struct fbnic_dev *fbd)
  {
- 	struct fbnic_net *fbn = netdev_priv(netdev);
++	u32 flush_done = FBNIC_PUL_USER_IP_LINK_RST_STATUS_AR_FLUSH_DONE |
++			 FBNIC_PUL_USER_IP_LINK_RST_STATUS_AW_FLUSH_DONE;
++	u32 val;
+ 	int i;
  
-+	fbnic_down(fbn);
+ 	for (i = 0; i < FBNIC_IPC_MBX_INDICES; i++)
+ 		fbnic_mbx_clean_desc_ring(fbd, i);
 +
- 	fbnic_mac_free_irq(fbn->fbd);
- 	phylink_suspend(fbn->phylink, fbnic_bmc_present(fbn->fbd));
++	/* Arming the flush above only starts it. Wait for the outbound path
++	 * to retire the requests it still owns so none of them can complete
++	 * after the reset that follows. A lost link reads back as all ones,
++	 * which ends the poll on the first pass.
++	 */
++	if (read_poll_timeout_atomic(fbnic_rd32, val,
++				     (val & flush_done) == flush_done, 2, 1000,
++				     false, fbd,
++				     FBNIC_PUL_USER_IP_LINK_RST_STATUS))
++		dev_warn(fbd->dev, "Outbound flush did not complete: %08x\n",
++			 val);
+ }
  
--	fbnic_down(fbn);
--
- 	fbnic_time_stop(fbn);
- 	fbnic_fw_xmit_ownership_msg(fbn->fbd, false);
- 
+ #define FBNIC_MBX_MAX_PAGE_SIZE	FIELD_MAX(FBNIC_IPC_MBX_DESC_LEN_MASK)
 
 
