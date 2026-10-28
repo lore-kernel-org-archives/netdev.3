@@ -1,68 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.70.43.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793176272;
-	b=ZUKbBMo2mLJYJXoLMJqOBkVy/ykGsqW8GHEV47EkbOVDrZEYUS9YgjwHJgvRQ07+t0ek
-	 Icao5f19QWFnI7nldcCxXd/ZB7SFgyWcdMhfQtLQUMbHj4rDrc1PiBoj2McPGrkcCVLsi
-	 aLAjD2KvWJ9pcrmz8YshWcjbZ+pLZO9hNbHZYZ7n1seW9XzBoWlK1nnTiBh3tZnQD8MU7
-	 MM4/sXDP8ekf7Qt8E4Im7rKdlOHJLeBVIBUzK1qyIQEHCAXlTr6fPLwYzt7WeeCcFgMXq
-	 AJylqrsu1A1h81aMm0Ceg3yhdDiqcsl0c1tF/RGN0VbC53S8Y9kP6iPwOhziWZUQ6PA==
+	t=1793176513;
+	b=SlhsA4tfzZasP/UMHInRWbNkfgsoaYg2mD/7n5tLSL+hZcNqR6pNJiq5X/1jgQbrkolV
+	 8AgnHAMEVopq/LhpsaOGsk4piXsyoW9qhdwjAeZ+4U1U+0I/6ivE8I319uwnMjGYbHwKP
+	 mTa6lqmim5bIhF+BNdo/RLFod348oR9JkMt0BXjYF4RoRTxA41qZ+4CQpahUr1gEaFw4z
+	 HiuTZq0qbYKhw4a6aEOpFeM2fQqLv0u1jSjeu8O0U9I/97XFRnU7/HUt/pDMux40M/qQ5
+	 yBQjxSHy6Ou01x7a/3UOsvIOHCxHE3ZMoLVwuQdCOLHWt4Pur4jYv+5VZZ99qKhjv+A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793176272;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	b=eAHQl3zIgzKTPq2clVDEXlT2Vz1gLyDuGtHlHT/emVMtuT85k2ofNpi+fc6A0rehBM45
-	 aUPdDCLKd7KuwaXC+1pfp88PBxIgEUrAWVUI5FPxUND0CeFIi9PC8ejJkS3N3IDEbKTbR
-	 2zgeqU4GgUG13NHM9rwwePklz4M/To22hmILEHjtgkk94VMl/jrze4yYFLM7j8hIaWqHD
-	 AX/XppMC8jKrjsz1zHV2XVTqiQTHaxb0xgiNUb9uDElmfJUjRl8ufbAmS1ocu6Nqxyo+P
-	 jwyPnI2qNUqYEfyQnYG8yU4ysJitGnQOCps55rIKxNVfJHrEfpfqF+p6q4rbV+t399w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793176513;
+	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
+	 In-Reply-To:References:Feedback-ID:X-Pm-Message-ID:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=UNo+eXzNSh5rOTf/o8mUpVqFkAJK/Jk6AobgGaSvO9Q=;
+	b=Qzqpv6WQljlNrwqXXvDp2QpI2/zt5kgewWaalrOTahsuVVZrbVJ6l8fLdwvUHgLBkYqm
+	 nevRY+p1RtLCJDraRBOcZlt4SpRihUrs7z/T1fy2Oo7XLPCgR/2ecPHgQVKL9L2lsLaXb
+	 rLVtqKypcx/3RsyYj0ENteAJpMlU+OwOJ21kI1U9if9TxzDC/iqCuYA8JqTB90tK4jj4u
+	 BUEx6YI9IwEWd1TUStNCjKe/VB9YtXOvEfsyIC44PdGLw9CgsCzbTM7QWx7mlmJzcRRfq
+	 kvtmSQidLZg1Sexawou9Di/cKi8yOmh0dfrf7mr6kHthUwBkmE2xY/6E9DJ0qXOnQEg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="VQBi/bFR";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=1g4.org;
+	spf=pass smtp.mailfrom=1g4.org;
+	dkim=pass header.d=1g4.org header.i=@1g4.org header.a=rsa-sha256 header.s=protonmail header.b=bdhdNk62;
+	arc=none smtp.remote-ip=185.70.43.18
+Received: from mail-4318.protonmail.ch (mail-4318.protonmail.ch [185.70.43.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8162A606A32A;
-	Wed, 28 Oct 2026 08:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B06606A329
+	for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 08:35:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06B06606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VQBi/bFR
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3551F031E0;
-	Wed, 28 Oct 2026 08:31:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793176272;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VQBi/bFRTAByL9q3LEyBOxQNgqiMH7V7fgMvCtdQT1wnnPS37pFD7VpbEPlrNkuX/
-	 MldPdysWqbjzzYIIS6K4YddlFBfEP+AYbXxVRFF5R/eis9kdgXI0xf6gixKGH6GDJ7
-	 8l96QwiJFS/H/hCHMjslIpfWXXTX4LnKZN97OrthsMmGyCWdTHSV5cKZPgoVLTq7DP
-	 VlS3Fmjryq5sv/0yaQ2UckK1ZKJbl18MXdLxYSF/jmYJrVmCF6Yu/zkELJ4LH7xB95
-	 JKOVGlXz4SWBMzKKZy9nn9kztY5BiNSozBPbxRKPce0WBRdMpSNPQGiF8h7+ZqBX3H
-	 WKPKdnmlZ7mdg==
-From: netdev-bot+sinfo@kernel.org
-To: Kalpan Jani <kalpan.jani@mpiricsoftware.com>
-Cc: mptcp@lists.linux.dev, matttbe@kernel.org,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>,
- Kuniyuki Iwashima <kuniyu@google.com>, Mat Martineau <martineau@kernel.org>,
- Geliang Tang <geliang@kernel.org>,
- Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
- Xin Long <lucien.xin@gmail.com>, Kees Cook <kees@kernel.org>,
- David Ahern <dsahern@kernel.org>, Willem de Bruijn <willemb@google.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-sctp@vger.kernel.org
-Subject: Re: [RFC net-next v11 1/2] inet_diag: pass net_admin to get_info
-Date: Wed, 28 Oct 2026 08:31:10 +0000
-Message-ID: <179317627056.3327.10816635120441836463@kernel.org>
-In-Reply-To: <20261028082704.1609493-2-kalpan.jani@mpiricsoftware.com>
-References: <1ec0c2b5-a0fa-44e8-9ae8-dca9b7f90ec6@kernel.org>
- <20261028082704.1609493-1-kalpan.jani@mpiricsoftware.com>
- <20261028082704.1609493-2-kalpan.jani@mpiricsoftware.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key, unprotected) header.d=1g4.org header.i=@1g4.org header.a=rsa-sha256 header.s=protonmail header.b=bdhdNk62
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
+	s=protonmail; t=1793176510; x=1793435710;
+	bh=UNo+eXzNSh5rOTf/o8mUpVqFkAJK/Jk6AobgGaSvO9Q=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=bdhdNk62ShXcE4vfNoNpelK+ePMQ7CaeyV9eENrdPR7raYWPe7iazd3Di02s/Rwck
+	 b8oDPiduOF1fk9apXdjblHLtfefgMij3/LKYqykyjUACePLRyxlkQ7ZczxskF91HZf
+	 /aigJxFx2xq9tpG6Htrh//zd156buw1eDgjWJQ1GqPTjJN4YL9nhImvKp0u92X3Zm6
+	 nf2y4XlehouLCG2BoFtBJIY3Zhsaxjk5iQMxHogCQihKd0KlQ9Rzy7kTtSg8BhrnXV
+	 X7N/xuO19JCHKFjzxSShghF0PweHvCwYW+03Ma2/k9fuqVKQJxROpC8crnZ+PH/h3g
+	 Vn7mt6xE5zOxA==
+Date: Wed, 28 Oct 2026 08:35:03 +0000
+To: intel-wired-lan@lists.osuosl.org
+From: Paul Moses <p@1g4.org>
+Cc: netdev@vger.kernel.org, anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me, vedang.patel@intel.com, jithu.joseph@intel.com, maciej.fijalkowski@intel.com, andre.guedes@intel.com, aleksandr.loktionov@intel.com, avigailx.dahan@intel.com, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, stable@vger.kernel.org
+Subject: [PATCH net v3 1/2] igc: only strip RX timestamp header from first buffer
+Message-ID: <20261028083344.3047350-2-p@1g4.org>
+In-Reply-To: <20261028083344.3047350-1-p@1g4.org>
+References: <20261028083344.3047350-1-p@1g4.org>
+Feedback-ID: 8253658:user:proton
+X-Pm-Message-ID: 751edead275447b3dfb11a0c783ab0a93eaecd8f
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -72,25 +64,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi!
+igc_clean_rx_irq() strips IGC_TS_HDR_LEN whenever a descriptor reports
+IGC_RXDADV_STAT_TSIP. For multi-buffer packets, continuation descriptors
+retain TSIP even though the inline timestamp is present only in the first
+RX buffer.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Subtracting the header length from each continuation buffer truncates
+jumbo packets by 16 bytes per continuation and leaves the packet length
+larger than the received data.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+Only consume the timestamp header when skb is NULL, which identifies the
+first buffer of a new packet. An skb carried in rx_ring->skb remains
+non-NULL when packet assembly resumes in a later NAPI poll.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+Link: https://lore.kernel.org/all/20260625-igb-rx-ts-fix-v3-1-99b3efa08dca@=
+aweta.nl/
+Fixes: e1ed4f92a625 ("igc: Refactor Rx timestamp handling")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paul Moses <p@1g4.org>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
+---
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+ drivers/net/ethernet/intel/igc/igc_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethern=
+et/intel/igc/igc_main.c
+index 1fb5f3cbe..41b293dc1 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -2639,7 +2639,8 @@ static int igc_clean_rx_irq(struct igc_q_vector *q_ve=
+ctor, const int budget)
+=20
+ =09=09pktbuf =3D page_address(rx_buffer->page) + rx_buffer->page_offset;
+=20
+-=09=09if (igc_test_staterr(rx_desc, IGC_RXDADV_STAT_TSIP)) {
++=09=09if (!skb &&
++=09=09    igc_test_staterr(rx_desc, IGC_RXDADV_STAT_TSIP)) {
+ =09=09=09ctx.rx_ts =3D pktbuf;
+ =09=09=09pkt_offset =3D IGC_TS_HDR_LEN;
+ =09=09=09size -=3D IGC_TS_HDR_LEN;
+--=20
+2.56.GIT
+
