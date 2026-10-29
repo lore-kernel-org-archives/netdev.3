@@ -1,60 +1,120 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793255235;
-	b=32SdZhDgwwxWcwOF8iuIiP/5qy4LYC7+RorswT3odkJQyR2x2nxsMcoOdDBtM/Zml0QG
-	 qpRbGiORmCB34uHYmPOV7H5h8kf8eoOuFTy+9/w7ntbArkZaRsSyMB4GCH9YMzBKZc2Ty
-	 DtA91xWuurBgfXx0B6OyfwajANz2yfGC0UORhcFm/SPAEjmZEuXLUafaxGa62H/EStwTI
-	 8rV6GJ6MCcF94SwEmwoypJCozmyt8T7QhINDg1oQoHJC/kWiFbPgE/5N7PLRz2PWhAMLP
-	 fhck0TSqgFsspWf2f1YQqPDGI4E/XBfygZTlhorddVJUpxaWBLXfKOfgt0g9FFvy0bQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793255235;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=T+WOPL7ugio0CnPiiFKjTzuWTb6RYIj2i6lSZt0jIqU=;
-	b=SY1rLS2fzIIluqfM2b9LZmqvk0jE1zAAAwEQyincscaZcwIfdjQUGKjC/LfCvAknt8nq
-	 JJTmkSZQn/xxVQC5M4CuI90zUqrosNVH+FwRsDgyMbwEgb557THuTbjun0yGTsy3zz8/G
-	 9qypuotdDNapygXMkbg72FsrCKv3lrscYejWQXfmnJ6ph/KpvUT6ERFb9wnrrSEfm0Fao
-	 WSFUbCYLzFdu6GywBPJyU+dnfQL23DORak25FFwO9WmiBYZBNbXaexTkTv0lZYV//BIFt
-	 rwHP50nWtWkzBcLIbNJPAnq9JbpV+OYL/84lI0twn+TK47QkTB9AzOR1jddIdy0Zy8g==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DEqBwpEO;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.129.124
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793255317;
+	b=T22UtH9o1c5C8PoMa2Sn+dTsORwv7EFnThEYfBUaihkFhyzslpwGkwFV1riI08A9tb3q
+	 3lOd82c9oLWhzIDE8Gh2POKl9PzPQ1udQeBz5fpwC/MgNTXaWBD4D0n7rdWic3nH6gZSB
+	 1UK9c2eC7sU8hEfwbEWls/1O/xIyCumI+2SeXojnhnYYshp30UklxP229zMXnkZCOkkls
+	 ZJQAE9a/a61D3s3yVZ7clmkL9QK0hcEo6V+ZdVcIPCUAwVD/oYdYb8wwG7nDyfEKAfa+M
+	 xCJxHwxCCLs5e7+TSASOxVtpCEJ9+tp2p/tqllGcixcnSAKoj/yUplKHB3R2JCQ2ZUg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793255317;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=1iJxU2srr5LwVZydpcZZOyNys/GEnKfXjQqJD4/acz4=;
+	b=1Xorqq7GZPIE07aj7FwZWMJN1SNrOJqb5GEy1GUQ1NMZALNDPcvbmZLiG7zsAH8WSBw2
+	 QHnovFUullPuEGjq6suQrOneE2bGVHxgttqIhyEklvNl4MM09eoEWI3syQ9nWQ/9fTF1j
+	 pO1TKGEyuOjlAi/0z1rZzwA8EvLqwYtVmNvSQirXrZeu3wJRMMzdFHFMd1m65yv9tJ75B
+	 YlBKaZ+IC5GTPdiMj6K9r3K5wkGiXZEt2RiJJkMocnei6w/thqoVHAFlBpoSm47ULSQdy
+	 YbqLxi38xaI/S0BeF7I1A0Y2SlmjIQ9BA3jDANbtHkfAdu114FAle1uyRaBwWdHE8+A==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dXGQZ8gE;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=XExwyMTA;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE62606A31A;
-	Thu, 29 Oct 2026 06:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325B8606A31C
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 06:28:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 325B8606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DEqBwpEO
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F29351F01825;
-	Thu, 29 Oct 2026 06:27:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793255234;
-	bh=T+WOPL7ugio0CnPiiFKjTzuWTb6RYIj2i6lSZt0jIqU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=DEqBwpEODspcghlxET5oXpH9XdezJOUt9k3ZQ6Ue1VoCoKs1NJm3AjX4vOLlvHNXs
-	 Y0/2u+DPS2XeY6S1PF18LxrzOKaztykJXR8eQ/+GaNgf0qulM36YtsOks7IawVDDUc
-	 +uPn61uzBw4qFIyQSRX54D2FNOiwAht9BFU3LWfjfurYZOxFdw/lAlpP3KlZrcgulP
-	 7M61xLhA6KUcb8N7wn7tvO8etpAf8hbk5dpl4sfoYuHgPBrWE1jtv8H9Av1MTq8w9X
-	 2dOm+m1ROVirYw6z2a7rPAced/8Qd/sdPw84/5V1ZxubZIA5o2HiSaLQKmdTELGvMb
-	 u/4C0f5QCxsww==
-Subject: Re: [PATCH] selftests: net: veth: check UDP GRO forwarding on
- forwarded traffic
-From: netdev-bot+sashiko@kernel.org
-To: eva.kurchatova@virtuozzo.com
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
- linux-kernel@vger.kernel.org, willemdebruijn.kernel@gmail.com,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
-Date: Thu, 29 Oct 2026 06:27:13 +0000
-Message-ID: <179325523350.3134.7153020683562744025@kernel.org>
-In-Reply-To: <20261026122440.603302-1-eva.kurchatova@virtuozzo.com>
-References: <20261026122440.603302-1-eva.kurchatova@virtuozzo.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dXGQZ8gE;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=XExwyMTA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793255316;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1iJxU2srr5LwVZydpcZZOyNys/GEnKfXjQqJD4/acz4=;
+	b=dXGQZ8gEyOQ5oh3QEezH5FCP2bIHc+ugtLtAan7KtKRVi4GrAdNesMpbYLg0xJ7Sco7hyN
+	eXscDYWjLUAH5lbnXYY7RCRZqOSKHPVF4m7LCON460vnEwvp+TTNqkQxIJHTLQxMpr3anR
+	V+faZnOCEZqbpJjoYyfyfUibw7lFWKs=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-617-2caYmKaxPX-H4C_zGMtj8w-1; Thu, 29 Oct 2026 02:28:34 -0400
+X-MC-Unique: 2caYmKaxPX-H4C_zGMtj8w-1
+X-Mimecast-MFC-AGG-ID: 2caYmKaxPX-H4C_zGMtj8w_1793255313
+Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-3a9e7d65fe4so9621571fa.2
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 23:28:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793255313; cv=none;
+        d=google.com; s=arc-20260327;
+        b=isRowGH6yjHJS0XQNjuXo57HXI57q/B/hrsS7FjZaUn9yJRnaJLbF8QNFwk921t8Yo
+         RDjfKbrKM8fEISqgSFrtSc6lY9lgDouDNSgqjT5I7bo9hndnYOwN7TKNzynfXjO9EiwY
+         oAp8lQmBcPWxZ+QWLOPgDAtAKWGwDEvZ854CyTvlCWTQsTZwge/e/+MUeEvuz9uYuRNX
+         iUyk65XIrugoQDe6l6DQ3n2bYVI+JIiIHMjmHW1XGnN8iC5IIwp9pl/MqlULLAfk9gNV
+         Vhcm5FgjkOlk9apFz8w//kmG4qg1AX3SFM6J6CtVoow1PB7PckMX7ORzi+E7WIEnCWUf
+         oJOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=1iJxU2srr5LwVZydpcZZOyNys/GEnKfXjQqJD4/acz4=;
+        fh=5egDsH/bkwv+I6DOd29CxOY0+7DiRx5QV5c2Qan+RPY=;
+        b=BhbmrUuWnwObbZzuJCxPufRmZx2xb9v21d5YDo7ENfiDKIdwv++qHvyJR+xUEf0bJK
+         DbTkwk4hdoTrL75XDmFesMIAVdrMzRDTI7lW7kvNAKsLMu9EytDIQ+o71Vcucxx2vcHY
+         6bxF5nQzZ6q/y5i4AsKenPhhsoUs+PrwZvRT8kq3QBOhHzyik8tpP0oyJTqsR2QGcBPG
+         hsksv8Q5xH/KRBDfbtl4bgaJRFsxQl51GduJ9sR4o1NtwUa5TwXcycjn+v3BiokYdXOW
+         90gHSXbkN6lSANk6sjPAlAubOkHoyIfMxouJlDaIu5VOANm+ldVyGgn3M/x6XFHpvrOy
+         hotQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1793255313; x=1793860113; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=1iJxU2srr5LwVZydpcZZOyNys/GEnKfXjQqJD4/acz4=;
+        b=XExwyMTA8DYbGGxcBAgigzAVW0ncFH8daEbWVof1HBicSweDQIU9RlX7anvY7lmysf
+         m0XqJHSVZKGmAnYYXH4iR2dDd5VWahEwXyZr+VUM+Ou2Nogratli96r3ctrjc9z5FHZ0
+         NHOXhaUs0n2MzhoySUyTY/s64ZpNAPg1v5rIIefRgTxgMk/efdoYlJGN7Qar9S4/fqaJ
+         5wno6MaPs3c4ncrTtY/0er52+/EQsiseLH2ydHp+GzJ9Lt6OVSuLhaTjz7VntlrXXtdg
+         +7YalFMtHTlECAURj7OwLv/Ht9+9YPk/rSEorxTWmpfO5OIF1ddX8PTUOpgq6I2ebCe7
+         oznw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793255313; x=1793860113;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1iJxU2srr5LwVZydpcZZOyNys/GEnKfXjQqJD4/acz4=;
+        b=Hz5pqBztSm0hyQxVSpiJzbaNesidCcrLrVKwIUbCBaR1LpRfWfWqox8FlyTZ5UGsGC
+         zzigZu4W2EUWxToIrga/ET9ygjfSzIJDLZi4mL71SmSZ92lGNHz5Fgq5un0HErWQFzo8
+         DmvsTLOK6AptuMnAeZ6DQ4UM4ox2Mw6BrZXlaoCF9oMtkCt7PKqErTNxJvN3hQN671Db
+         IW83o4haIcC0H8aiwDtvpCxMJh5QayC6AGnzeTLmSNDweitnL7sRI6ziXAADsoxbxcPu
+         LCrnV/dAOqABNbJQQ1bqY2EeZB1y/I/t8hP0OS4hFBo9GzR553T1h6TqX0fkprs1THRn
+         75Fg==
+X-Forwarded-Encrypted: i=1; AKwUvBzQ6yFUsufBTrw2usULZaU2EZvYZsFS1YShW4NQrurXnnFzopNHOL3FyHrnH+d7J3LJ7bSgMGI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKUgPoa/Lk04gI7wncO0uEZOui5jYVdgf0P1Qh6TZAQGemsGorm
+	ZY7ePWX+QIm+iENKQS9tDxMo7UB+6SIeE9WISUXM/1DLmdX2bCFLm0jfcZM7kqExxX5h8Hyy7DO
+	AY+I7Qx/1v+IjJ96pPMsmvfIdgP6TUMWe+ijp1auyBeJ44jBhY1F0dMXLbVCIj9ViJ1Z3vfW3AS
+	HZceSGVrzkmiD2YoINrezd6c+LQoPsg+0b
+X-Gm-Gg: AYBFou2S8E8b/wqENjDguSWs88AOnzjsF5VwS7btemxcKRyYN4Hk+6bfcaebEnNxJUM
+	It6cWfzg9k5+XbjrTpuHs/y/fdf/5uInzuYyabdjPwmOuQFHaYqu8dpfIem0RC7R56PpJVsezGr
+	wvnsrn5/OQY3RnKVBD901IqUFdH/t1GlEk8RWHDWhEGZvYbKpxJEFfqiYR
+X-Received: by 2002:a05:6512:1318:b0:5b8:f8f9:e080 with SMTP id 2adb3069b0e04-5bfcad432cdmr1771593e87.26.1793255312927;
+        Wed, 28 Oct 2026 23:28:32 -0700 (PDT)
+X-Received: by 2002:a05:6512:1318:b0:5b8:f8f9:e080 with SMTP id
+ 2adb3069b0e04-5bfcad432cdmr1771542e87.26.1793255312465; Wed, 28 Oct 2026
+ 23:28:32 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,163 +124,52 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+References: <20261028191103.623156-1-ihuguet@riseup.net> <20261028191103.623156-3-ihuguet@riseup.net>
+ <CAAVpQUC7hezdMEQkzAX4oqFdO_uzBmtRwn85_5_iWf4ExPqpTA@mail.gmail.com>
+In-Reply-To: <CAAVpQUC7hezdMEQkzAX4oqFdO_uzBmtRwn85_5_iWf4ExPqpTA@mail.gmail.com>
+From: =?UTF-8?B?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@redhat.com>
+Date: Thu, 29 Oct 2026 07:28:21 +0100
+X-Gm-Features: AclHuK-x6fsuiHpokXnJ3Qx6-V8BzmKKkHRK86q2oMBiEy9ie31bHyN-v0SCuv4
+Message-ID: <CACT4oueJgvE=CKSY2T2jkpD0cjT4bwU+ME4bb=j-cno2q57Kxw@mail.gmail.com>
+Subject: Re: [PATCH net v3 2/3] net/ipv6: don't route packets with unknown
+ source address
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: =?UTF-8?B?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@riseup.net>, 
+	Alexei Starovoitov <ast@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Andrii Nakryiko <andrii@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	David Ahern <dsahern@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Eric Dumazet <edumazet@kernel.org>, Florian Westphal <fw@strlen.de>, 
+	Ido Schimmel <idosch@nvidia.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Neal Cardwell <ncardwell@google.com>, 
+	Pablo Neira Ayuso <pablo@netfilter.org>, Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, bpf@vger.kernel.org, 
+	Breno Leitao <leitao@debian.org>, coreteam@netfilter.org, 
+	Emil Tsalapatis <emil@etsalapatis.com>, Fernando Fernandez Mancera <fmancera@suse.de>, 
+	Ihor Solodrai <ihor.solodrai@linux.dev>, Jeff Layton <jlayton@kernel.org>, 
+	Jiri Olsa <jolsa@kernel.org>, Joe Damato <joe@dama.to>, 
+	John Fastabend <john.fastabend@gmail.com>, Junseo Lim <zirajs7@gmail.com>, 
+	Kees Cook <kees@kernel.org>, Leon Hwang <leon.hwang@linux.dev>, 
+	Li RongQing <lirongqing@baidu.com>, linux-kselftest@vger.kernel.org, 
+	Martin KaFai Lau <martin.lau@linux.dev>, netdev@vger.kernel.org, 
+	netfilter-devel@vger.kernel.org, Phil Sutter <phil@nwl.cc>, 
+	Qi Tang <tpluszz77@gmail.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Simon Horman <horms@kernel.org>, Song Liu <song@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Willem de Bruijn <willemb@google.com>, Xuanqiang Luo <luoxuanqiang@kylinos.cn>, 
+	Yonghong Song <yonghong.song@linux.dev>, Davide Caratti <dcaratti@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Thu, Oct 29, 2026 at 1:02=E2=80=AFAM Kuniyuki Iwashima <kuniyu@google.co=
+m> wrote:
+> This changes longstanding user-visible behaviour,
+> so the series should target net-next.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1 (1)
+You're absolutely right and I already agreed on sending it to
+net-next, but sent to net by mistake.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Please review here and I'll send v4 to net-next.
 
-- [Medium] chk_gro() in tools/testing/selftests/net/veth.sh reads
-  IpInReceives for the whole NS_DST namespace.
-- [Low] create_ns() in tools/testing/selftests/net/veth.sh creates the
-  new veth pair in the invoking (host) netns under the fixed names…
 
-Pre-existing issues:
-- [Low] In tools/testing/selftests/net/veth.sh, chk_gro() now sends the
-  GRO check traffic NS_SRC -> NS_DST -> NS_RCV.
+--=20
+=C3=8D=C3=B1igo Huguet
 
---
-
-selftests: net: veth: check UDP GRO forwarding on forwarded traffic
-
-The rx-udp-gro-forwarding checks in veth.sh fail when the host has a UDP
-tunnel socket. In that case GRO does a socket lookup and finds the local
-receiver. This patch adds a third namespace behind the destination, so
-the datagrams are forwarded instead of delivered locally, and keeps
-counting IpInReceives in the destination namespace.
-
-Link: https://lore.kernel.org/netdev/CAF=yD-LZSec9g_0bBgrcQvq2OO1BrxMSRHH=uU7eamCmWcTO_A@mail.gmail.com/
-
-> diff --git a/tools/testing/selftests/net/veth.sh b/tools/testing/selftests/net/veth.sh
-> index 17cfe412a2667..fef4ab587c91a 100755
-> --- a/tools/testing/selftests/net/veth.sh
-> +++ b/tools/testing/selftests/net/veth.sh
-
-[ ... ]
-
-> @@ -48,6 +53,17 @@ create_ns() {
->  		ip -n $BASE$ns addr add dev veth$ns $BM_NET_V4$ns/24
->  		ip -n $BASE$ns addr add dev veth$ns $BM_NET_V6$ns/64 nodad
->  	done
-> +
-> +	# Forwarded, the datagrams find no local socket, whatever tunnel the host has
-> +	ip netns add $NS_RCV
-> +	ip -n $NS_RCV link set dev lo up
-> +	ip link add name fwd$DST type veth peer name fwd$RCV
-> +	ip link set dev fwd$DST netns $NS_DST up
-> +	ip link set dev fwd$RCV netns $NS_RCV up
-
-[Severity: Low]
-This pair is created in the namespace the script runs in, under the fixed
-names fwd1 and fwd3, and none of these commands are checked. What happens
-if the host already has an interface named fwd1 or fwd3?
-
-In that case ip link add fails with EEXIST. The following "ip link set dev
-fwd$DST netns $NS_DST up" then looks the name up in the host netns and
-moves the host's own device into the test namespace.
-
-cleanup() later runs ip netns del on that namespace. A virtual device is
-destroyed, and a physical one goes back to init_net without its
-configuration.
-
-Also, if ip netns add $NS_RCV fails but the link creation succeeds, the
-moves fail and the pair stays in the host netns. cleanup() only deletes
-namespaces, so the pair would leak.
-
-The existing veth$SRC/veth$DST setup above uses the same pattern. Could the
-new pair be created directly inside the namespaces instead, for example:
-
-    ip -n $NS_DST link add fwd$DST type veth peer name fwd$RCV netns $NS_RCV
-
-> +	ip -n $NS_DST addr add dev fwd$DST $RCV_NET_V4$DST/24
-> +	ip -n $NS_RCV addr add dev fwd$RCV $RCV_NET_V4$RCV/24
-> +	ip netns exec $NS_DST sysctl -wq net.ipv4.ip_forward=1
-> +	ip -n $NS_RCV route add default via $RCV_NET_V4$DST
->  }
->  
->  __chk_flag() {
-> @@ -134,15 +150,17 @@ chk_gro() {
->  	local msg="$1"
->  	local expected=$2
->  
-> -	ip netns exec $BASE$SRC ping -qc 1 $BM_NET_V4$DST >/dev/null
-> +	# Taking veth$SRC down drops the route, so set it for every check
-> +	ip -n $NS_SRC route replace ${RCV_NET_V4}0/24 via $BM_NET_V4$DST
-> +	ip netns exec $BASE$SRC ping -qc 1 $RCV_NET_V4$RCV >/dev/null
->  	NSTAT_HISTORY=$STATS ip netns exec $NS_DST nstat -n
->  
->  	printf "%-60s" "$msg"
-> -	ip netns exec $BASE$DST ./udpgso_bench_rx -C 1000 -R 10 &
-> +	ip netns exec $NS_RCV ./udpgso_bench_rx -C 1000 -R 10 &
-
-[Severity: Low]
-This isn't a bug introduced by this patch, but the receiver is still
-started without -n, so cfg_expected_pkt_nr stays 0. do_recv() in
-udpgso_bench_rx.c only checks the count when that is set:
-
-    if (cfg_expected_pkt_nr && (packets != cfg_expected_pkt_nr))
-
-On timeout the receiver just exits 0, even if nothing arrived.
-
-The only count chk_gro() compares is IpInReceives in NS_DST. ip_rcv_core()
-increments it before any routing decision:
-
-    __IP_UPD_PO_STATS(net, IPSTATS_MIB_IN, skb->len);
-
-With the new forwarding hop, nothing confirms that NS_DST actually
-forwarded the aggregated skb, or that NS_RCV received the 10 datagrams. If
-the GRO skb were dropped in ip_forward() or during egress segmentation, the
-aggregation checks would still pass.
-
-Would adding -n 10 to the receiver, or also checking IpForwDatagrams, close
-this gap?
-
->  	local spid=$!
->  	sleep 0.1
-
-[Severity: Medium]
-Can this sleep now cause a spurious GRO failure?
-
-Only sleep 0.1 makes the receiver bind() before the sender transmits. If
-udpgso_bench_rx in NS_RCV has not bound its port by the time the forwarded
-datagram arrives, the path would be:
-
-NS_RCV:
-  __udp4_lib_rcv()
-    icmp_send(skb, ICMP_DEST_UNREACH, ICMP_PORT_UNREACH, 0);
-
-The ICMP then follows the default route added in create_ns() back into
-NS_DST on fwd1:
-
-NS_DST:
-  ip_rcv_core()
-    __IP_UPD_PO_STATS(net, IPSTATS_MIB_IN, skb->len);
-
-nstat reads IpInReceives for the whole NS_DST namespace, so this ICMP is
-counted along with the forward-direction datagrams on veth1.
-
-Neither helper turns this into a non-zero exit. udpgso_bench_tx -M 1 sends
-one message and exits 0. udpgso_bench_rx without -n times out and exits 0.
-chk_gro() would then report "got 2 packets, expected 1" (or 11 vs 10).
-
-Before this patch the receiver was in NS_DST, so the same race only produced
-an outgoing ICMP that IpInReceives does not count.
-
-Would it be more robust to wait for the receiver socket to be bound, or to
-count only ingress on veth$DST?
-
->  
-> -	ip netns exec $NS_SRC ./udpgso_bench_tx -4 -s 13000 -S 1300 -M 1 -D $BM_NET_V4$DST
-> +	ip netns exec $NS_SRC ./udpgso_bench_tx -4 -s 13000 -S 1300 -M 1 -D $RCV_NET_V4$RCV
->  	local retc=$?
->  	wait $spid
->  	local rets=$?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261026122440.603302-1-eva.kurchatova%40virtuozzo.com
