@@ -1,63 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793291335;
-	b=TWQyD4N0/3EyIYDHvJXdfAK+2PND5/9TUvL2AYluCjg2z4ZqAZ+IbFJQv5Y93mkMY0LU
-	 SRvGsmMYqWruG0OKB4K8xR3C9EsqqNfF0c+X2sB6BVX/DYCRZJ5vPY6fKX42zl4n1a8Wr
-	 NvtIsd5Er6GhohzeEy4R2nXZ2ug6nDgj8FCHSLmUGcVtbj6lBXsQJddwZtmJ2pkloE9cS
-	 uGQapBVO9fltcLqXICRDzoNqbjrQBs9RQPufBR6H/Gp1ujXhMVr8DYD2mhLp/NyRSYbT5
-	 kPkhu09cHiIwdizKY3L5uVbXtnBPVH5xhOXlxGTVgsKwGE79G//iL+lZrPFUnOZkbUQ==
+	t=1793291409;
+	b=Vy3TAmseMnY3GhUkcDgXqUsIBMjoepTvRnsJM+5Aer1jtZIdKxVD3MxGbWv1JJ2Lv31O
+	 7XXNFHlAzv5ogJbL3LhKWdpMezfMn8Idq2oyl4aGo5gLBAhEa55ABFQUEmB3ksYzM/+ei
+	 O7hwmW4njCvN8ul7/tgSIjaCip3RphQJjxjaW2cSyjPvvoPRZIr7zFBUMoUuoDTQw2h1J
+	 hLiPvPws5HcFFIahj+ZJtT8POElLMvmgtbLjbNj7XiYmGE8iNuRwznMZTeyZXXNvdxduB
+	 jYRK6A6FR39HywdIGcJrdIWrB8aszIepQAa/pCqH2WxZJMvN+3UT6CJ2GdEWkt/Ghmg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793291335;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	b=Wojo0YNX1wY1A4OzGrPZV8zhtoYpqEDUjtkVxu2R0Zkg3aldsUClYuGD9rabqhNGVMeV
-	 nI6FTo5QNPnQQIyjrZZyuORaM8ivq7CDaFf/DDkHepgvRt5O6dmaXYt7x4uEcNmNCfH8X
-	 t6pTQFiY2eVSMopOKW/o93l4KTlkCKmBEBz4nssEYO/kvXXWekcvaeqpnjiF3LGQURBzQ
-	 8WATP3U7sd+ywGjA2htjyPXuAXLWjotXZQAapbvwgiArYsiszCnzD/ycUzBqabqQeFF3X
-	 CFL38VOfvE18TPTU/M1ugLUaShKQOKJOKVmVG2Q8iGebV3usVN8bnpXvmQlM6QGHKhA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793291409;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=9sdoxOsij3ml0E4hBz0Uk1W+O3KE/Jevu63peRDA6+g=;
+	b=nibnCAR6UztfyS6rKyDcyVp89ARhbh3Ig9XmAycy79mk0X4WTEptqCDpdXCzBkN0K94h
+	 EJaSimUo1OjZKqPBDE5HGtHGLnzWBg5M1OgZNHq3h4+jUSlSwCeWqAdF29dfLeMOjs67j
+	 P93HQzlEBZFbP/ajVQcnzkZBLEdLOLRfPS+rgjs7Aku+NoDTYfuC+1s+eVD9mjLF7gyEd
+	 3sBBKXyonVDZ5wG1UWReaFGK9Nd/1aypv97Fa7J9rAGjJ2+Jlrg/4e+lGoamGxBZPEHXb
+	 eVftrbIq2nDPhW+if/cQp7MbRz32uwWGXTJLDGjMEohYHAKV1IXQuovOMRu72NUOU4A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MSujorYc;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LuYpXVpz;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC36606A31A;
-	Thu, 29 Oct 2026 16:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D3F606A320;
+	Thu, 29 Oct 2026 16:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MSujorYc
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6132A1F01824;
-	Thu, 29 Oct 2026 16:28:54 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LuYpXVpz
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C63D21F01816;
+	Thu, 29 Oct 2026 16:30:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793291335;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MSujorYcfiRBzaSTB+a/diC5IVR4RRII+P7sqj3KbJ9GNrgeueVyUYkZ9925aPCFI
-	 dnmqq9BIS63cRAtlJGtLFymI3o11xUIQiyhlKzUcsBZ5oRuQYNAqsYQhrZEIq8Ydmz
-	 MdEFZMF1b/iK2auJfHXo5B68ZV53ZgizDPez98cud4miPShqOHO8fGyfYqoyMgZXZm
-	 9d82lhu1rJsOoLFLWiw+7bLlEGwbexYQuxdvVL1dFOIml3XIRuu85Z+4r/PcIR+WYp
-	 T/Y3ccaW9fftGU8GEeKkfCHZ1ub0Sll2CoNqzVyxghhFP8QB39g66HZkY/gsEeseUh
-	 pvyZHtDTjuWdg==
-From: netdev-bot+sinfo@kernel.org
-To: Tristan Madani <tristmd@gmail.com>
-Cc: David Heidelberg <david@ixit.cz>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- "John W . Linville" <linville@tuxdriver.com>,
- Samuel Ortiz <sameo@linux.intel.com>, oe-linux-nfc@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Tristan Madani <tristan@talencesecurity.com>
-Subject: Re: [PATCH v2 net] nfc: llcp: use disable_work_sync and
- timer_shutdown_sync in local_cleanup
-Date: Thu, 29 Oct 2026 16:28:53 +0000
-Message-ID: <179329133392.3327.1911358623600296609@kernel.org>
-In-Reply-To: <20261029162419.2420980-1-tristmd@gmail.com>
-References: <20261029162419.2420980-1-tristmd@gmail.com>
-Auto-Submitted: auto-generated
+	s=k20260515; t=1793291407;
+	bh=9sdoxOsij3ml0E4hBz0Uk1W+O3KE/Jevu63peRDA6+g=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=LuYpXVpzcgZf5I4egFlI4i+W1uV5kDaqKb6zxyn667htazDz/UY5voP6+zzEpXm80
+	 ioWwC0HW+4d/gANJuXS4MTqacHCbrVpK4gMBKRJdj+XgtgjC+Mx/+CO5DeCaVYL/J1
+	 Cf4iWG8Fd0kJDrHQrsfQ17eNGej57KeXNRkpKsVYksC98LjBXhLPUIPSqFEbcPjwp1
+	 SQPUBku2b8m6YljgP62sQ7XYU2ijiMmgXifT2DwJbYSusl6tjT35PPSv9RnOr+81tJ
+	 lxRDpXr7kcht53KRFVmgOLFvu3AwOqQHK9LfqfzdQW1d5kRmrEZ7lMXfXK8fY0PeUy
+	 GLpEJSB1STrjQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA3963808223;
+	Thu, 29 Oct 2026 16:30:07 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,25 +53,63 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH bpf-next v5 0/6] bpf: Add syscall common attrs support for
+ xdp
+ link_create
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179329140655.559085.2587539582409074788.git-patchwork-notify@kernel.org>
+Date: Thu, 29 Oct 2026 16:30:06 +0000
+References: <20261026154948.99408-1-leon.hwang@linux.dev>
+In-Reply-To: <20261026154948.99408-1-leon.hwang@linux.dev>
+To: Leon Hwang <leon.hwang@linux.dev>
+Cc: bpf@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com,
+ memxor@gmail.com, martin.lau@linux.dev, song@kernel.org,
+ yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com,
+ ihor.solodrai@linux.dev, hawk@kernel.org, john.fastabend@gmail.com,
+ sdf@fomichev.me, rostedt@goodmis.org, mhiramat@kernel.org,
+ mathieu.desnoyers@efficios.com, shuah@kernel.org, kuniyu@google.com,
+ liuhangbin@gmail.com, mkarsten@uwaterloo.ca, masashi.honma@gmail.com,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
 
-Hi!
+Hello:
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+This series was applied to bpf/bpf-next.git (master)
+by Andrii Nakryiko <andrii@kernel.org>:
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+On Mon, 26 Oct 2026 23:49:41 +0800 you wrote:
+> I'm planning to add syscall common attrs support for LINK_CREATE cmd.
+> 
+> This is the first series for the plan, that adds syscall common attrs
+> support for xdp LINK_CREATE.
+> 
+> Thereafter, retire the tracepoint bpf_xdp_link_attach_failed, because
+> the underlying driver's error can be back-propagated to user space via
+> the syscall common attrs.
+> 
+> [...]
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+Here is the summary with links:
+  - [bpf-next,v5,1/6] bpf: Add syscall common attrs support for link_create
+    https://git.kernel.org/bpf/bpf-next/c/b891bce3fe4d
+  - [bpf-next,v5,2/6] bpf: Add syscall common attrs support for xdp link_create
+    https://git.kernel.org/bpf/bpf-next/c/cbb143cc97b6
+  - [bpf-next,v5,3/6] bpf: Retire tracepoint bpf_xdp_link_attach_failed
+    https://git.kernel.org/bpf/bpf-next/c/d33d3ec8f730
+  - [bpf-next,v5,4/6] libbpf: Factor out __sys_bpf_fd helper
+    https://git.kernel.org/bpf/bpf-next/c/d6ef68efcece
+  - [bpf-next,v5,5/6] libbpf: Add log_opts support for bpf_link_create
+    https://git.kernel.org/bpf/bpf-next/c/0be729f9f030
+  - [bpf-next,v5,6/6] selftests/bpf: Add tests to verify link_create logs
+    https://git.kernel.org/bpf/bpf-next/c/a1a714b7e947
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+
