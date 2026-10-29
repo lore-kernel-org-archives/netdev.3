@@ -1,49 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793292069;
-	b=IS8UvaWfwtMbBZq+QEQbkxNy5SFIG7vo5LxQ2oUMafBLZTkvj+qHOXa7OawptOpULC8Y
-	 aOcL2f2Jzb0neBdKI63Uxk/Wdhv0FXermPbpnFLxV0OM3wXbzaXmSZ92STuMzL8GxHEfq
-	 wjWRLaQae3z87mp04JGK+kOQhz7ntjRoie1D0ZmiL+7XNluS/Z0+eRZ2Yf26O2XVh3xxh
-	 jgwucUGlpGtWDnr7kntWy5jlkxAG8++VwCh/DkTg59FiEkoZOr0HVNCD09stdQPTJNbxz
-	 KAuH8eyph/ABBglsxLIlQVuYAt0twpsPXd4yCYHAAIKKGhNg/3HEC2vmVGc69QeU/HA==
+	t=1793292082;
+	b=e6blD2IM0LKdUuEZZ50E8WzTTifHBi1+djBrrtuWTBFFOV6JRVrR5IWPCE1SKwDHss+M
+	 doEYvGRwBoKg2ZHbiPm9DJ12cZ41YzIBMS8tMzhwkP6bVZ6mauJQO5NL/IDU9vb3pV1Fa
+	 2t8bXQMvQX+4CsZX7J3f20jvkvzRCl9Sp8PH0j3Mqg9Xvpydwes3kMGFPM8J5xm6wC0Qe
+	 uHUdvE9lLGafR54tL0NFopkWFQOoFJg1oki14knq4ML9vQnzE6ac/B0KlfGV+65woVddW
+	 yKnvk9WwDlo5NcfN06KyrlQfyU9PzYOgbANpIelCzXImKgPVBNicyk9KDU22p/9j92A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793292069;
-	h=Received:DKIM-Signature:From:Subject:Date:Message-Id:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
-	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=xIaVelgG3iKr0vUc0CeNr3kvoJjxr3r74nvfKNYTmzg=;
-	b=BaLoob0uy41b5ikWZA7UUvRNVApnw8dxIOAezVySGGhVtVdsYB484FmysM1pZqqbKRvX
-	 tQ8JGyEbl+BGK/NbBn3jbDIrUBCxH99yS6NFzRJC6QtUNr3jnHt489qbBD9wZD5x7jmXT
-	 0yHICUg3RgCkAe/90rRIPZdnNkFiewYgi+PkbpB4JyGH/SRlaeFb3Dc61dJY96GIErYhr
-	 XjeIo+W0DacXd17amofiutTC7a2IZoVWOt/OpIdQfA0aq+DwzGiYsHAdKVqhpEqEBGmFy
-	 NjuttFTNtiyb0I/3G1RxVoGia0hFCOdZkMTwtQsDQR3iLSak/mqVcEhtEZCZ9MKA3qg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793292082;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=7Iq8GmvsP83miesExRhF0MVSUGMSngUM8Yu28sJuMzw=;
+	b=4ysBgnHMMkwZZujAOk5lPs7BVwzURFjC1i4Hlc6S5HuPNn6/N2GBc5DUpIcFcNQsNiDf
+	 7uDjQUL95Qf9cMurXb9SwG+iKzLKPq8taCWYcunheqq0ZO50BnFJBDablRSlL4DEcEIuA
+	 /YA+WEsinN0+jRueXeKZn6qOVS+f37MVhEn81yCV6XPZBPY0lfH7uJSg8pezZZBaUWFao
+	 rXkAz3QMm3C7+Vf/GghdBeQwYBWVVMBMZCSajWdVrwd3duR5cTv38C9eOw5oFUmPk5nUe
+	 t7XZgii7tDEtfpQbVIWZlz4jlVuCcgwfovDRMtIo5OR69JkSPG6T7ZU1uPUbEzpHdaQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G10Qf0Io;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nhehmZlP;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA23606A31C;
-	Thu, 29 Oct 2026 16:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26CD2606A329;
+	Thu, 29 Oct 2026 16:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G10Qf0Io
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 454381F01816;
-	Thu, 29 Oct 2026 16:41:06 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nhehmZlP
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E80C91F01816;
+	Thu, 29 Oct 2026 16:41:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793292069;
-	bh=xIaVelgG3iKr0vUc0CeNr3kvoJjxr3r74nvfKNYTmzg=;
-	h=From:Subject:Date:To:Cc;
-	b=G10Qf0IoKNknYxn2cWpn9WtJX1M7rQZoSA4hZrHteyTf3p7K46rIcXRZ1i0uGpps+
-	 C0B2FvFf2jjraySVM9xRk6K28+Xtmq5K69PHpLKzMvQp4VXGhMVO9GsCIS4AAsx/FE
-	 n9QtotPIp3+0HrDREHFu4L8ngjg1NLBgh546cmzS0GYxbisniEi+AO02jqpAAWp2ud
-	 wMzYWGdptDa07W4uRM1XQ/qCzYLSD8x7a9jGD8grbeMF9tauB0sNGHyixbX4EFfkCs
-	 D1zY6hO5phHPAsje+V+ItnX4IWQX3KOZ5ORrDeDHHn54LBVRJF8Ac1rYbscXTD549H
-	 crP4WPecN3iCw==
+	s=k20260515; t=1793292081;
+	bh=7Iq8GmvsP83miesExRhF0MVSUGMSngUM8Yu28sJuMzw=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=nhehmZlPmBl2i/ZSRdSd4RptwD4JlsOBuyFYjmxI1Hb79rq0LxoOCcfhcY7oq8xnI
+	 QWq0ZHdi0WxuVU/rrKrYK3s/fxYIYgGeTYv5Orbq9o7KCNrkO/eG7+Zuu0WKHzHq/a
+	 nAb6s8JUvFS7IZFzRO5cz4dYCARgoFWG+aL7Je/uN3qWryBK1ubZGLlKJ0PmQmrssy
+	 PyxIitR9jRyRxyG8LjotKejPRGINouT/UooodfyX5uBVfQrRsRBHwH7jGmCm8z0BLJ
+	 QM2cNBYfTWWAW6Ia6UHPi4DKKHc2ssbLMoWAKMQRSH83kvrjtM+W1Hxq7Q5D1ANYp9
+	 Boz8KkECxdkeA==
 From: Christian Brauner <brauner@kernel.org>
-Subject: [PATCH v2 0/7] ns: fixes for the namespace LSM hooks
-Date: Thu, 29 Oct 2026 17:40:55 +0100
-Message-Id: <20261029-work-security-namespace_free-v2-0-65591dbba7b3@kernel.org>
+Date: Thu, 29 Oct 2026 17:40:59 +0100
+Subject: [PATCH v2 4/7] ns: allocate the namespace id before the
+ namespace_init hook
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -54,12 +54,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/42OQQ6CMBBFr0K6tgYwirryHoaYafmFihYzA6gx3
- F2KF3DxF+/P5OV/lIA9RB2Tj2KMXnwXZshXibINhRraVzOrPM132Rz97LjVAjuw79860B3yIIu
- LY0AXRG5/MFuTplCz4sFw/rXoz+WPZTBX2D4644chgTZMwTaxupP04HhovPQdv5dhYxYFf24YM
- 51q52gDY1yRmerUggNu645rVU7T9AVsFTJE9AAAAA==
-X-Change-ID: 20261026-work-security-namespace_free-7aaf89b5b00e
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261029-work-security-namespace_free-v2-4-65591dbba7b3@kernel.org>
+References: <20261029-work-security-namespace_free-v2-0-65591dbba7b3@kernel.org>
+In-Reply-To: <20261029-work-security-namespace_free-v2-0-65591dbba7b3@kernel.org>
 To: linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org
 Cc: linux-security-module@vger.kernel.org, 
  Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
@@ -69,99 +67,314 @@ Cc: linux-security-module@vger.kernel.org,
  Linus Torvalds <torvalds@linux-foundation.org>, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@kernel.org
 X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4703; i=brauner@kernel.org;
- h=from:subject:message-id; bh=aibw0ecUu/mSCbaP2VJxKpwSnHUs0UEmrzP6RFE9law=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ9LpfnyCzWKeh//enb4okv9Q84NjMEvJKzu86e9+vBs
- WPiiZo+HaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABMxYGf4K+91yeqJXLIW+9dH
- /S47FZ1XBz9eIv8i95zDD7XDftsC5zL8d92kxbjsv6qU0b35IZfzGO+cakxqyZwQ6lKoKbyyeYE
- rBwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=13208; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=AhZa7Mwzf0t0RDNWjCFCmD+tzbn+O4LtavTzDfv4hQk=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ9Lpc/dyLwzAIWjqx1pZu3h9lEVAb9mZx0/sOjKS0Nr
+ 7kXNX3c31HKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCRSxkM/7M27RJXvnFgZfTC
+ w3Ms1cKOnF8Xvah8rdT5yzoXLLp7HqoyMlw03Ze2X7x2U7VGd5FY9qpntz+GPP/wVizg5marT1o
+ 2TXwA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-I tried to switch systemd-nsresourced over to the namespace_free LSM
-hook that went in this cycle. I explicitly developed it to work nicely
-with that. But the version that is merged is broken for that case.
+Currently the namespace id is allocated only after __ns_common_init()
+has called the namespace_init LSM hook. Most namespace types allocate it
+in ns_tree_add() right before the namespace is added to the namespace
+trees. So the namespace_init hook always sees an id of zero.
 
-The namespace_free hook is never called. security_namespace_free() bails
-if ns->ns_security is NULL and that's only allocated if an LSM requests
-a namespace blob. Nobody does. Landlock doesn't care as it only uses
-namespace_init and namespace_install but a bpf program attached to
-namespace_free never runs. And it can't work around that either. We
-could make the bpf LSM request a blob but that would just be a way to
-make the hook fire. So call it unconditionally like we do for
-superblocks, files and bpf maps.
+The namespace id is the only identifier of a namespace that is never
+recycled. A bpf LSM wants to use it to track a namespace from
+namespace_init until namespace_free, e.g., by using it as the key into a
+map that associates data with the namespace. The inode number doesn't
+work for that as it is quickly recycled.
 
-The bpf LSM also marks the arguments of namespace_init and
-namespace_free as trusted. Curiously that patch was also dropped.
+So allocate the id in __ns_common_init() before calling the
+namespace_init hook. Every namespace then has its id by the time it is
+added to the namespace trees. The initial namespaces still get their
+fixed ids, either statically from NS_COMMON_INIT() or for init_net from
+ns_common_init(). So ns_tree_add() doesn't need to allocate an id
+anymore. Ids are still handed out in creation order so mnt_ns_loop()
+keeps working. Mount and ipc namespaces already allocated their id right
+after ns_common_init() anyway.
 
-namespace_init is called before the namespace is set up and if anything
-fails afterwards the namespace is freed without looking at its reference
-count. namespace_free is called on the way out. There's no kfunc that
-takes a namespace yet but once there is one a program could take a
-reference to a namespace that's about to be freed. So add both hooks to
-untrusted_lsm_hooks.
+If creating the namespace fails after the id has been allocated the id
+is simply never used.
 
-The namespace_init hook also always sees a namespace id of zero because
-the id is only allocated after the hook has run. The id is the only
-identifier of a namespace that is never recycled. So it's what a bpf LSM
-wants to use to track a namespace from namespace_init until
-namespace_free.
+Landlock logs the namespace id when it denies the use of a namespace.
+For a denied namespace creation that used to be zero. Now it's the id
+that was allocated for the new namespace. That namespace never becomes
+visible to userspace but it's the same id that other LSMs see in
+namespace_init. Update the Landlock documentation and selftests
+accordingly. The selftests can't know the id of a namespace whose
+creation was denied so they only check that it isn't zero.
 
-The inode number is recycled way too quickly for that. So allocate the
-id in __ns_common_init() before the hook is called. Then ns_tree_add()
-doesn't need to allocate ids anymore and ns_tree_add_raw() can go.
-Landlock now logs that id instead of zero when it denies the creation of
-a namespace.
+While at it, drop ns_tree_gen_id() as it has no users left.
 
-I'd want to get the whole series into v7.4 since the hooks are new this
-cycle. Otherwise v7.4 is the only release where namespace_init sees a
-zero id and where Landlock logs zero for a denied namespace creation.
-The systemd change I have for this uses the namespace_free hook whenever
-the kernel has it. On a kernel with the hook but without the first fix
-it would never learn about dead user namespaces.
+Reproducer, 100 user and uts namespaces:
 
+  bpftrace -e 'fentry:bpf_lsm_namespace_init {
+      @[args.ns->ns_id ? "set" : "zero"] = count(); }' &
+  for i in $(seq 100); do unshare -Uu true; done
+
+  before: @[zero]: 200
+  after:  @[set]: 200
+
+Fixes: f675d2e95569 ("lsm: add LSM blob and hooks for namespaces")
+Cc: <stable@kernel.org> # mainline only
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
-Changes in v2:
-- Drop "landlock: pass the namespace id to log to check_ns_type()".
-  Landlock now logs the real namespace id for denied namespace creation
-  and its documentation and selftests are updated in "ns: allocate the
-  namespace id before the namespace_init hook" (Mickaël):
-  https://patch.msgid.link/20261028.oonaisai0Doh@digikod.net
-- Link to v1: https://patch.msgid.link/20261026-work-security-namespace_free-v1-0-ffa3ebbf71bd@kernel.org
+ Documentation/admin-guide/LSM/landlock.rst |  5 +++--
+ Documentation/trace/events-landlock.rst    |  5 +++--
+ fs/namespace.c                             |  2 --
+ include/linux/ns_common.h                  | 16 +++++++++-------
+ include/linux/nstree.h                     | 18 +++---------------
+ include/trace/events/landlock.h            |  3 ++-
+ ipc/namespace.c                            |  1 -
+ kernel/nscommon.c                          |  7 +++++--
+ net/core/net_namespace.c                   |  2 +-
+ security/landlock/ns.c                     |  3 ++-
+ tools/testing/selftests/landlock/ns_test.c |  7 +++++--
+ 11 files changed, 33 insertions(+), 36 deletions(-)
 
----
-Christian Brauner (7):
-      lsm: always call the namespace_free hook
-      bpf: don't mark namespace_init and namespace_free arguments as trusted
-      selftests/bpf: add verifier tests for the namespace LSM hooks
-      ns: allocate the namespace id before the namespace_init hook
-      nstree: drop ns_tree_add_raw()
-      lsm: fix the security_namespace_init() kernel-doc
-      selftests/bpf: add a lifecycle test for the namespace LSM hooks
+diff --git a/Documentation/admin-guide/LSM/landlock.rst b/Documentation/admin-guide/LSM/landlock.rst
+index 718e0d23ffb5..946f3bf89650 100644
+--- a/Documentation/admin-guide/LSM/landlock.rst
++++ b/Documentation/admin-guide/LSM/landlock.rst
+@@ -73,8 +73,9 @@ AUDIT_LANDLOCK_ACCESS
+           :manpage:`open_tree(2)`, or :manpage:`fsmount(2)`, or joining via
+           :manpage:`setns(2)`);
+           ``namespace_type`` indicates the type (hex ``CLONE_NEW*`` bitmask),
+-          and ``namespace_id`` identifies the target namespace for
+-          :manpage:`setns(2)` operations (zero for creation)
++          and ``namespace_id`` identifies the target namespace (for a denied
++          creation, the namespace never becomes reachable so its ID is not
++          directly visible from user space)
+ 
+     **capability.*** - Capability restrictions (ABI 12+):
+         - capability.use - Capability use was denied;
+diff --git a/Documentation/trace/events-landlock.rst b/Documentation/trace/events-landlock.rst
+index 9ccf2769a2d5..dc5f05a17c2c 100644
+--- a/Documentation/trace/events-landlock.rst
++++ b/Documentation/trace/events-landlock.rst
+@@ -187,8 +187,9 @@ therefore appears as zero while still advancing the ruleset version, and adding
+ a member already present still emits an event.
+ 
+ ``landlock_deny_permission_namespace`` reports the denied raw
+-``CLONE_NEW*`` value.  ``namespace_id`` is zero for namespace creation and is
+-the exact target namespace ID for :manpage:`setns(2)`.
++``CLONE_NEW*`` value.  ``namespace_id`` is the exact target namespace ID.  For
++a denied namespace creation, the namespace never becomes reachable so its ID
++is not directly visible from user space.
+ ``landlock_deny_permission_capability`` reports the denied ``CAP_*`` number.
+ Like every denial event, both include the denying domain, ``same_exec``, and
+ ``logged``.
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 9f6ec35c7b9c..f81d6a4bc3fe 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -4394,8 +4394,6 @@ static struct mnt_namespace *alloc_mnt_ns(struct user_namespace *user_ns, bool a
+ 		dec_mnt_namespaces(ucounts);
+ 		return ERR_PTR(ret);
+ 	}
+-	ns_tree_gen_id(new_ns);
+-
+ 	new_ns->is_anon = anon;
+ 	refcount_set(&new_ns->passive, 1);
+ 	new_ns->mounts = RB_ROOT;
+diff --git a/include/linux/ns_common.h b/include/linux/ns_common.h
+index c8e227a3f9e2..e8b2bf0da5ed 100644
+--- a/include/linux/ns_common.h
++++ b/include/linux/ns_common.h
+@@ -9,7 +9,8 @@
+ #include <uapi/linux/nsfs.h>
+ 
+ bool is_current_namespace(struct ns_common *ns);
+-int __ns_common_init(struct ns_common *ns, u32 ns_type, const struct proc_ns_operations *ops, int inum);
++int __ns_common_init(struct ns_common *ns, u32 ns_type, const struct proc_ns_operations *ops,
++		     int inum, u64 ns_id);
+ void __ns_common_free(struct ns_common *ns);
+ struct ns_common *__must_check ns_owner(struct ns_common *ns);
+ 
+@@ -41,17 +42,18 @@ static __always_inline bool is_ns_init_id(const struct ns_common *ns)
+ 	.ns_owner_root.ns_list_head	= LIST_HEAD_INIT(nsname.ns.ns_owner_root.ns_list_head),		\
+ }
+ 
+-#define ns_common_init(__ns)                     \
+-	__ns_common_init(to_ns_common(__ns),     \
+-			 ns_common_type(__ns),   \
+-			 to_ns_operations(__ns), \
+-			 (((__ns) == ns_init_ns(__ns)) ? ns_init_inum(__ns) : 0))
++#define ns_common_init(__ns)						\
++	__ns_common_init(to_ns_common(__ns),				\
++			 ns_common_type(__ns),				\
++			 to_ns_operations(__ns),			\
++			 (((__ns) == ns_init_ns(__ns)) ? ns_init_inum(__ns) : 0), \
++			 (((__ns) == ns_init_ns(__ns)) ? ns_init_id(__ns) : 0))
+ 
+ #define ns_common_init_inum(__ns, __inum)        \
+ 	__ns_common_init(to_ns_common(__ns),     \
+ 			 ns_common_type(__ns),   \
+ 			 to_ns_operations(__ns), \
+-			 __inum)
++			 __inum, 0)
+ 
+ #define ns_common_free(__ns) __ns_common_free(to_ns_common((__ns)))
+ 
+diff --git a/include/linux/nstree.h b/include/linux/nstree.h
+index 5b64d4572881..3293df17397d 100644
+--- a/include/linux/nstree.h
++++ b/include/linux/nstree.h
+@@ -41,10 +41,6 @@ void ns_tree_node_del(struct ns_tree_node *node, struct ns_tree_root *root);
+ 		struct user_namespace *:   &(user_ns_tree),	\
+ 		struct uts_namespace *:    &(uts_ns_tree))
+ 
+-#define ns_tree_gen_id(__ns)                 \
+-	__ns_tree_gen_id(to_ns_common(__ns), \
+-			 (((__ns) == ns_init_ns(__ns)) ? ns_init_id(__ns) : 0))
+-
+ u64 __ns_tree_gen_id(struct ns_common *ns, u64 id);
+ void __ns_tree_add_raw(struct ns_common *ns, struct ns_tree_root *ns_tree);
+ void __ns_tree_remove(struct ns_common *ns, struct ns_tree_root *ns_tree);
+@@ -53,12 +49,6 @@ struct ns_common *__ns_tree_adjoined_rcu(struct ns_common *ns,
+ 					 struct ns_tree_root *ns_tree,
+ 					 bool previous);
+ 
+-static inline void __ns_tree_add(struct ns_common *ns, struct ns_tree_root *ns_tree, u64 id)
+-{
+-	__ns_tree_gen_id(ns, id);
+-	__ns_tree_add_raw(ns, ns_tree);
+-}
+-
+ /**
+  * ns_tree_add_raw - Add a namespace to a namespace
+  * @__ns: Namespace to add
+@@ -72,12 +62,10 @@ static inline void __ns_tree_add(struct ns_common *ns, struct ns_tree_root *ns_t
+  * ns_tree_add - Add a namespace to a namespace tree
+  * @__ns: Namespace to add
+  *
+- * This function assigns a new id to the namespace and adds it to the
+- * appropriate namespace tree and list.
++ * This function adds a namespace to the appropriate namespace tree and
++ * list. The namespace must already have been assigned an id.
+  */
+-#define ns_tree_add(__ns)                                   \
+-	__ns_tree_add(to_ns_common(__ns), to_ns_tree(__ns), \
+-		      (((__ns) == ns_init_ns(__ns)) ? ns_init_id(__ns) : 0))
++#define ns_tree_add(__ns) __ns_tree_add_raw(to_ns_common(__ns), to_ns_tree(__ns))
+ 
+ /**
+  * ns_tree_remove - Remove a namespace from a namespace tree
+diff --git a/include/trace/events/landlock.h b/include/trace/events/landlock.h
+index 6d9d9e7c7ca2..b6fdc6e2eef8 100644
+--- a/include/trace/events/landlock.h
++++ b/include/trace/events/landlock.h
+@@ -987,7 +987,8 @@ TRACE_EVENT(landlock_deny_access_net,
+  * @logged: Whether this denial was selected for audit logging.
+  * @blockers: Request type and final missing permission subset (never NULL).
+  * @namespace_type: CLONE_NEW* namespace type that was denied.
+- * @namespace_id: Namespace ID, or 0 when creation was denied.
++ * @namespace_id: Namespace ID, not directly visible from user space when
++ *                creation was denied.
+  *
+  * Emitted when a Landlock domain denies namespace use.
+  */
+diff --git a/ipc/namespace.c b/ipc/namespace.c
+index 75aa7b469348..9084e0643017 100644
+--- a/ipc/namespace.c
++++ b/ipc/namespace.c
+@@ -66,7 +66,6 @@ static struct ipc_namespace *create_ipc_ns(struct user_namespace *user_ns,
+ 	if (err)
+ 		goto fail_free;
+ 
+-	ns_tree_gen_id(ns);
+ 	ns->user_ns = get_user_ns(user_ns);
+ 	ns->ucounts = ucounts;
+ 
+diff --git a/kernel/nscommon.c b/kernel/nscommon.c
+index e72426bba29a..4438c6b663f9 100644
+--- a/kernel/nscommon.c
++++ b/kernel/nscommon.c
+@@ -54,7 +54,8 @@ static void ns_debug(struct ns_common *ns, const struct proc_ns_operations *ops)
+ }
+ #endif
+ 
+-int __ns_common_init(struct ns_common *ns, u32 ns_type, const struct proc_ns_operations *ops, int inum)
++int __ns_common_init(struct ns_common *ns, u32 ns_type, const struct proc_ns_operations *ops,
++		     int inum, u64 ns_id)
+ {
+ 	int ret = 0;
+ 
+@@ -64,7 +65,6 @@ int __ns_common_init(struct ns_common *ns, u32 ns_type, const struct proc_ns_ope
+ 	ns->ns_security = NULL;
+ #endif
+ 	ns->ops = ops;
+-	ns->ns_id = 0;
+ 	ns->ns_type = ns_type;
+ 	ns_tree_node_init(&ns->ns_tree_node);
+ 	ns_tree_node_init(&ns->ns_unified_node);
+@@ -82,6 +82,9 @@ int __ns_common_init(struct ns_common *ns, u32 ns_type, const struct proc_ns_ope
+ 	if (ret)
+ 		return ret;
+ 
++	/* Allocate the id before the LSM hook so it can track the namespace by it. */
++	__ns_tree_gen_id(ns, ns_id);
++
+ 	ret = security_namespace_init(ns);
+ 	if (ret) {
+ 		if (!inum)
+diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
+index da5f881fbd3b..ec4077b81389 100644
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -437,7 +437,7 @@ static __net_init int setup_net(struct net *net)
+ 	LIST_HEAD(net_exit_list);
+ 	int error = 0;
+ 
+-	net->net_cookie = ns_tree_gen_id(net);
++	net->net_cookie = to_ns_common(net)->ns_id;
+ 
+ 	list_for_each_entry(ops, &pernet_list, list) {
+ 		error = ops_init(ops, net);
+diff --git a/security/landlock/ns.c b/security/landlock/ns.c
+index cd44c927f83a..06d9784746fe 100644
+--- a/security/landlock/ns.c
++++ b/security/landlock/ns.c
+@@ -94,7 +94,8 @@ static const struct access_masks ns_permission = {
+  * Shared check for namespace_init (creation via clone(2), unshare(2),
+  * open_tree(2), or fsmount(2)) and namespace_install (use via setns(2)): denies
+  * when the namespace type is not in the domain's allowed set.  At allocation
+- * time @ns->ns_id is still zero and is logged as such.
++ * time @ns->ns_id is already set even though the namespace is not reachable
++ * from user space yet.
+  *
+  * Return: 0 if allowed, -EPERM if denied.
+  */
+diff --git a/tools/testing/selftests/landlock/ns_test.c b/tools/testing/selftests/landlock/ns_test.c
+index f5d4b86edd30..8f387fc47e21 100644
+--- a/tools/testing/selftests/landlock/ns_test.c
++++ b/tools/testing/selftests/landlock/ns_test.c
+@@ -1899,8 +1899,9 @@ TEST(setns_inherited_fd)
+ 
+ static int matches_log_ns_create(int audit_fd, __u64 ns_type)
+ {
++	/* A denied creation logs the ID allocated for the new namespace. */
+ 	static const char log_template[] = REGEX_LANDLOCK_PREFIX
+-		" blockers=namespace\\.use namespace_type=0x%x namespace_id=0$";
++		" blockers=namespace\\.use namespace_type=0x%x namespace_id=[1-9][0-9]*$";
+ 	char log_match[sizeof(log_template) + 10];
+ 	int log_match_len;
+ 
+@@ -2538,7 +2539,9 @@ static void test_ns_trace_denial(struct __test_metadata *const _metadata,
+ 	ASSERT_EQ(0, tracefs_extract_field(
+ 			     buf, REGEX_DENY_PERMISSION_NAMESPACE(TRACE_TASK),
+ 			     "namespace_id", field, sizeof(field)));
+-	EXPECT_EQ(use_setns ? expected_ns_id : 0, strtoull(field, NULL, 10));
++	EXPECT_STRNE("0", field);
++	if (use_setns)
++		EXPECT_EQ(expected_ns_id, strtoull(field, NULL, 10));
+ 
+ 	free(buf);
+ }
 
- Documentation/admin-guide/LSM/landlock.rst         |   5 +-
- Documentation/trace/events-landlock.rst            |   5 +-
- fs/namespace.c                                     |   6 +-
- include/linux/ns_common.h                          |  16 ++-
- include/linux/nstree.h                             |  29 +----
- include/trace/events/landlock.h                    |   3 +-
- ipc/namespace.c                                    |   3 +-
- kernel/bpf/bpf_lsm.c                               |   2 +
- kernel/nscommon.c                                  |   7 +-
- kernel/nstree.c                                    |   2 +-
- net/core/net_namespace.c                           |   4 +-
- security/landlock/ns.c                             |   3 +-
- security/security.c                                |   9 +-
- .../selftests/bpf/prog_tests/ns_lifecycle.c        | 145 +++++++++++++++++++++
- tools/testing/selftests/bpf/prog_tests/verifier.c  |   2 +
- .../selftests/bpf/progs/test_ns_lifecycle.c        |  88 +++++++++++++
- .../selftests/bpf/progs/verifier_lsm_namespace.c   |  38 ++++++
- .../testing/selftests/bpf/test_kmods/bpf_testmod.c |   5 +
- .../selftests/bpf/test_kmods/bpf_testmod_kfunc.h   |   1 +
- tools/testing/selftests/landlock/ns_test.c         |   7 +-
- 20 files changed, 323 insertions(+), 57 deletions(-)
----
-base-commit: 21a7f44fd0765fcc5194130b28767786eba1d1e7
-change-id: 20261026-work-security-namespace_free-7aaf89b5b00e
+-- 
+2.53.0
 
