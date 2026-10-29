@@ -1,97 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.173
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.52
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793308928;
-	b=aeN4PFf1ECQNneOl8AfJG1hN2GhcUxqsTOWXuQN+1vjarxw0u8z0wWBbIG28i4k1Jit6
-	 CLGRmYQb4de61XYAJZFghjUPLF9/cM2dhuNr9eOjjkbwFaaATrbfLYbFKDPYLWIJatTvM
-	 r/iLDYLcPQ01/JhOvm5xVkIfCuVALVcQIPwHe39GgwtqOBj8OqEkyB0f+/vO2PktrWJvL
-	 b0ove++XS7Nx4wBuMkLOCc13ib2swLc2omsRv3T/CK9lKh6tugG80XV3K4vWFxR9mAeyg
-	 Nq1NtDn0zGT53VMrxYMDSonrZpuRXjO7dpXxvILvIvWHvTzB4cFNAv+Qs0QOdySp74A==
+	t=1793309465;
+	b=n2Q4H3RgDvjttc9cDR38JTF1vLbQOSHQ6Dw1xY1hH32i4xH94bIxQEvg5X9yeIkkaePE
+	 ZbHJM+/q70a/IR+VXgqCskH6kIvKljDK+0rljt1yavOykqN09wkh2TdVUBsdDq1m1NVIV
+	 L/JSkr8cjIRJbLKzgcCCiPy76yJix8xthiihmFG/Tsg29kuRYhM5U3OwabdhRoMfl3bXN
+	 9i3ClJOwWeuN4wWJc+A6PIt5VlNbpoPy+Hi9sazB01BaHxfjAtFeWNk0kYmxiRybQTmmm
+	 fnS8E50hO5TPvVf2t3FQxSMXZAaoaqX6qAwTRIVaVt4rMD5EwMhIegXmQgdiIw2tg7A==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793308928;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793309465;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
 	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=LoPnVLFU2grju3RATLnVH/Dnn7cdm50tVx8bnt7Z2pc=;
-	b=Y5vy4UxKmoGzH14QXzb1M3iudYjsvqqrUPJNu4r5cV7lwgiX3EimZ24Fj/fdpeJZMiO9
-	 KKB35LU9V4TYR18MUoYM6SwN3hmR1v37cjRqe0NWPyOuJF6xJ9sm/Bd8GsDb0emHEGhpf
-	 LDxjcfxz4UzCdFDYFkXDRsS1576IKUefFHLWGEQx06LL+Nhb/iDHYVjU9K72dKnuAU9cr
-	 5c8vj3a48BWZMqPSbTPa4w4wv9D6DCAcaoxVnYufUDQ9cWW4HhNY500Tz11f6g4s82xIa
-	 96WkBImzGEO9nNU03Meqhy8vCSAMh2u4GxIC8AItG9t6EtqqSOartNVImf4PxlPdHwg==
+	bh=kreUdF0uNoXIPwkvrEWSR7P/OzeK9mmS/iNz6Eo8YyY=;
+	b=nuhE76eW4G9+8HeeYHXfp/WAuixo1zjMU1BpYnHPonKuQcThqLoRl9umX6ccvo8v6g97
+	 fWv5r+47WjdrgI2PpTvPJJBO3pVph4PD7uOzM9MXTHKOBp26zchJ+VKBMNPttWS5EBi53
+	 4vScKTqDxfNGnsdeBF5Po5Bo7o88oNNuhjTB7sdtJUXjsAD7HeStjahlJPftWhsxVfnYf
+	 gNEMdxra4PS6Lyb3pTU/bnB8GDZjM8COa4gFicRiY/osSuDsctOpS5nXUEQOL5ZwmpQF2
+	 2qPI1Jt/za0MTWESB1Zc3jkKCkMs9sjvs/89/5KG3vgKcBjpHTuKUv6uDCzQEMxMCFw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nuro.ai;
-	spf=pass smtp.mailfrom=nuro.ai;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.173
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=JjvhkShp;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.52
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8941606A31A
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 21:22:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E8941606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nuro.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nuro.ai
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-36a18fc7a38so215922eec.1
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 14:22:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793308922; cv=none;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E166606A31D
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 21:31:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3E166606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=JjvhkShp
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6b1aa36fc0eso4615a12.0
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 14:31:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793309463; cv=none;
         d=google.com; s=arc-20260327;
-        b=PlDNxmKMYGx71kkkAPtYk0FyXvo7QRHotvCMCHDFc5p79sbgHKjpJBGocvBcN+QsiY
-         jFMYpdWPtU1qiaxCNu1I87GVNFqfpj+xm1Fs4RsRhfjg34obG8HJ+b1ZATwcBRzcsllR
-         wjA7fU4xKiSangodPqaocrN0uklHXQA93/makTVTeWneYlEu5qbdTWSYhV74W2sMBZNg
-         hvymJLmgyLteWJemWs5lDq8C82hF5fWkE2DcFGLqRTFuMrlBxvpzHNxcCP+4q6Mp3odB
-         QfM7VyIEOeaPcH2D0kyTpwwgbly6SVXmr5+ZAO4OITbq4Wngrnv/WGSoRavXrlIvkdHb
-         EBAA==
+        b=CDcXJ7I3/SUSP4FFKswAdccqCIwvLbid2D+F0yZszSTHFqkDCKjPDXrk+h5oAlEuTj
+         ZvNwnWrRMT8+nMdW5vpoTR+8/5Ib2dr1VZblfxWIFhjX1Zh59wLIUKp0c/eCplgYtw1C
+         TiBfDxCf9CYzARXTmaV3vY4DjL5F5l58ANTB0s94sp9ZuFlqbNkyW3YOoF8U1lv+pfzr
+         FTTFkhYEvU+dqDxg92w/gFX+EAD/jy6ay+bczEYXL3s9imDwCVvTRaKX6Knst7BVyIjD
+         zFgh7H21NEdKvIHcEKRCjTi7cnzJCqE6BX6qo/pnOd7KYKFm8MK7iDYPFw0DrUl76XUL
+         vEJw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=LoPnVLFU2grju3RATLnVH/Dnn7cdm50tVx8bnt7Z2pc=;
-        fh=yCSJ9rjq6+qaHvIKdTmGwfQHTQkjj7gnS4vzhN7zWQ8=;
-        b=YziPFnr6QpQ0hec+ZXWya+wYYIUtplDBqqLd4wqlT2Rj02q91MJM0tICYdR8EiIr3t
-         kztUZt4YGZZtpnjHSEV2C23zEeiO00R0sfYGx5b86tGeqtIjlHslkHAHT4GCakgl69T5
-         wvS+bUfojSDLPZjuCiN5WkU+IquKwzOEedgde81cbSmqjR3Yp1S0uhiWLgsUPJWecktT
-         DC+SOC/3mcVvQoPEVRWn0UcoyWzkzgolM5U6zyjU1cwKl2/r8cMsLFD44LYzQV0DKJiv
-         L0HOg2Wsp1q2FCDLri8Nj6H6s85Cl3Y6X+b/bOWAtx0gKKdL88ja/5bo20HT5AnM8zj7
-         LOyQ==;
+        bh=kreUdF0uNoXIPwkvrEWSR7P/OzeK9mmS/iNz6Eo8YyY=;
+        fh=F/cyUJX3CqS7eYQyseBiBLIZR6Mx+tlSGyn9q2rwzv0=;
+        b=L+iXZ2nllHHxy2jekFNKOBhN3aaUyF76kzfsNGjQdlAZGqIClB5Lz3iRKcHi5Vo3K8
+         4EsZ+cJym+wB+f1H2kWPVT5m2obPk9HPjkj660oRGXgiBR7o8MqyzXOl6gXQVPrDzeOO
+         lESIY+jKu1uHBQ56U4d6Pz4aGQgenDemBvBf3imQrOPU5NzTBnF8+f+JeBaILXlxueZC
+         40RUBbZgPTwdriLTzQXfirNIseuWoW0UKCmGqCHAYXWvnWZtO2KnmE7GVI91zlbgid9+
+         udvE8OYHqbtfPwOuyz7SWivKTrlwagTq+BzCeNbqw8QLJeLb/vWjIfLURummpGqjoqFs
+         RpCw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nuro.ai; s=google; t=1793308922; x=1793913722; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793309463; x=1793914263; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=LoPnVLFU2grju3RATLnVH/Dnn7cdm50tVx8bnt7Z2pc=;
-        b=Re6vMFfK0sToGoINjVob2ahiCOouBs1MFolZogLftA8wIO4kshs+Vy0hn7J/oMf/+/
-         TQvx8AmolIvg08Hx+XsiIwrr0zOKFFCiohx27qaot8re73AwfHaWdb/5pvp0gUoIWdaW
-         ikiIjlhwEn5eoa6hW0oF8m84scPmznyjN0B+e9POn3vjj5YP2N+T+o6Yll0A6nidEdzM
-         hS3KhrbxSIu+8ofoZxFERoP57pIDR5fLK/VmmbtnUbzdfNK2yHpw+uGiv78s6KvTJVse
-         qeoSJkJyo7Rl70OUM4f/wZ3k0nrzOiH6nBNxvwRFw1U10f8qWu12BDP5sF2syXCf9jMn
-         6vYg==
+        bh=kreUdF0uNoXIPwkvrEWSR7P/OzeK9mmS/iNz6Eo8YyY=;
+        b=JjvhkShpcb3GpCFXbSH1IAJrf0j/UpNbINjWXDFCd4+FHeIG9pHB5F9SJglCN8x/Gf
+         QCmnkBqxmErXD8b5BTZm02C/YC3WcMEmUFB+ZuLM1vlNSaoMwjIo6LlOGfKQ9XqAyKII
+         cXSAcDBsyoL8wcF/++DQes0WkYNOCq45G0Hsr8GwV7+p9MqXqRBOAZPfGDz9koKjqyx4
+         LveDl48qfQjqa9ExOTMvwOFDJFSGQyqmQu0nmWaBAEJIF6UmvwwfTyphePxwMl+o3wyw
+         rNG/evM9ekrlSZ+PidqGoLTG67P7IyrY69fNce5W1gG4a+aYZ5xCtXqeImniTOiinS8y
+         4n0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793308922; x=1793913722;
+        d=1e100.net; s=20260707; t=1793309463; x=1793914263;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=LoPnVLFU2grju3RATLnVH/Dnn7cdm50tVx8bnt7Z2pc=;
-        b=xxCzdf+e0FnheGJV7ccF3aul4tvhj3ci4qMwODIxdZCZt9ORAPEmuToWp1YN74ZgmZ
-         z07x/Kkquxmvni4+7BwdHu/eqf4Pc+Hkt0zDEkXOrDh07E05s9cmlXanoj8zDKl1PEn6
-         VshKxszed7YDH650pad4VS8jAk4yQZ1ZvuzbKEB8tqMTnFg7AT7J/CI/rdflFso6tSmZ
-         JN5F/1XH8czcqjQyR/qIVkCb+0Troao7sY4I5lvvq+WPYir7leCVBxG5wuloG0YvgBXH
-         1Md0RGchoRYDsH8ac2yGOPnmRkYkp3lkuyXsvI+GqmBFkzsSpQyCBMW2aRYCBQAGeSZq
-         4Z5Q==
-X-Forwarded-Encrypted: i=1; AKwUvByZ452SvTyvm6pWHK7n0rmKP1Xb/RwzDNyztk4mag8y/eFmxC+J4iN67RP9LcdM06lt8ricAp4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIsMD2ED0p3H33cV2w1F3SQX5Ykp/7y14Y0vUd2CdYiqot/YdkL
-	UqdTMOmsQBg4DhSkeENm1Je0hUSsbJy1DASRRw7CeXz9fi93NM3w6Q9APSjnJjRVrOW3RHQl1FK
-	p/mUHQ595CiYHGcRg4na1cGgox23ScRtBCao7LjSkXw==
-X-Gm-Gg: AYBFou2EvnA4cXVUT+zK5j1e1yKNWzrZpk708qwoYxVv8FobgFTtg0ownamPGEEVrGm
-	pcgD/MthZjEPU81Ywl0buwt+7iLLa2mNlbgcLv56/to33JNOv9PMXIXxLpn0RpFEmlO4UdUbcPx
-	xivhgdjuzHqnes6MwponOX11PFapzDP36eYIEJnQ1p2hCoVVzli6JNOaTUeXa+NuW8V7+uc0UzM
-	eGl1koGN0csoraearqXqB20IEPrNiATYsTC5LaytiC7SXxVJslY4uIRC6PFdnBFkBSyLwmpwNTA
-	TevAgE60ecq+bQIJ/AhiUUFnjIKy814hPkI5SLihodqvd0A7/G2svO6gMExk4cP/0lrmtCpOFAL
-	NFbecS8OaZaY+SOP4WPRg/+15a49UPorvTxRX
-X-Received: by 2002:a05:693c:65d1:b0:366:bcf9:1807 with SMTP id
- 5a478bee46e88-36a424410f9mr764924eec.36.1793308921974; Thu, 29 Oct 2026
- 14:22:01 -0700 (PDT)
+        bh=kreUdF0uNoXIPwkvrEWSR7P/OzeK9mmS/iNz6Eo8YyY=;
+        b=W258xtrBxAifzR/bARdmXEbAZ6Yr/4YAEJ3fe9540tA5T+Gr8rSOV+QPK7vLL48yTT
+         PDDXB7AwNCkb2NPxG918XSWXwY7Uz2OcqVgdXPWh8COQ3iSPg4JXRQc8MCRF9RLsaqWB
+         lmn5tt4s1nqX/aNmKECjjbSamDXrmkqY5mB/XnLWkF/wbyzLRj7WRdLBLoTRffhYe3v/
+         ha2pJJ7wg996cQpRI01j9z1ZSJ81GO8VYBnpfJB4a16y9dLOQzRDz4pXSWAxVA7rqiBj
+         NPcKykEqslYvRJW2NgJ+lszshdQBb3ZEjXmfiUveWzQD4Qrv23+FUnKBCJRTUuCQw3ih
+         W5nA==
+X-Forwarded-Encrypted: i=1; AKwUvByBc5C+cAjfRG5ILlvhEj4uxeWlRUh4aUL3AkqqZzeKB6qHYDoxjMO4voBLberyjutb/opX9XM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKcaHNrn6KVcIUDfMke2bJx5oPkqf7//BAalBXdDa5fWxc8ts/A
+	4Lue5gEmaOdKC3zxv2qr1YblRk1D1+RAcM3dNqRFmtN6/kuoFtxBfagGEVdcahc+hirAaf7yj4K
+	GbOU1lYMKtQGD92IEL/iJC6pCbztBujndVgUZ45f+
+X-Gm-Gg: AYBFou1TCCvShc3roxmJVgz5999L1CBrpLzwTu6wOttVeXm5F6kv4NIFlABO81oCLJn
+	zE0acHpHLp4O2qf1mdGjLk34pUppv/YvcjMno/srO9siwjuhK/fGeK6Bfi26hPWs1qrC9Iaz3F7
+	OOmUdrnbRk1GTDsjl6fyyWhFnuhAKXotsCroJXQBg6DrX5ax9navLZcl1KXuxXxYUuzZkgXh0FA
+	PNoeTk8f4KSBI+Hhd4sxbUzrG2+KhSK5HKq+mgh7Fgk8Wt7B4GZ1MY7WUa8eI2sJHTlXi3aKLYS
+	qMMPgyU4KGyeVWA2ZuZA/SBvQVrkw+vpaiaCiilsbJfeeEzHOMvYJiCpDM9v6zLieXTGry/URaO
+	T8dqQQdLMP93U7XqLHGxO53WpeOzKW6fJ8fU+6SKJe8AE6tJBCqQnYIQZVBylY8IONgg=
+X-Received: by 2002:aa7:dd17:0:b0:6b1:d80d:396b with SMTP id
+ 4fb4d7f45d1cf-6b4b40b8186mr104372a12.14.1793309463143; Thu, 29 Oct 2026
+ 14:31:03 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,68 +104,84 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261029211101.2089535-1-jkain@nuro.ai> <179330839362.3327.16138152744448390378@kernel.org>
-In-Reply-To: <179330839362.3327.16138152744448390378@kernel.org>
-From: Joseph Kain <jkain@nuro.ai>
-Date: Thu, 29 Oct 2026 14:21:49 -0700
-X-Gm-Features: AclHuK9aYM6-5o4K0Rc9q8lcWnkux26Xrz1XQhSv4oBKVRCqRI0MctPRzTanSlY
-Message-ID: <CA+Y90PhTQ8E9eXrXCNX79sGOu+wczDWA8T1xAmkG7bRMQahjqw@mail.gmail.com>
-Subject: Re: [PATCH net v7] net: stop defer_count outliving the deferred-free list
-To: netdev-bot+sinfo@kernel.org
-Cc: Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org, 
-	Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Stanislav Fomichev <sdf.kernel@gmail.com>, Jason Xing <kerneljasonxing@gmail.com>, 
-	Willem de Bruijn <willemb@google.com>, Mina Almasry <almasrymina@google.com>, 
-	Martin Karsten <mkarsten@uwaterloo.ca>, Jiayuan Chen <jiayuan.chen@linux.dev>, 
-	linux-kernel@vger.kernel.org
+References: <20261029145844.231018-1-omermetekaya0@gmail.com>
+In-Reply-To: <20261029145844.231018-1-omermetekaya0@gmail.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Thu, 29 Oct 2026 14:30:51 -0700
+X-Gm-Features: AclHuK9vwMToW08OTMztQpW3bR5sve3bLoPc_H7WIharriRZuH5COTSWDbQX4kE
+Message-ID: <CAHS8izORg8OR8TyWBHmZsgFBtM3+qh7gXCJxifk1QGs13Q=ygw@mail.gmail.com>
+Subject: Re: [PATCH net] netdevsim: reject port addition and clean up ports
+ after a failed reload
+To: =?UTF-8?Q?=C3=96mer_Mete_Kaya?= <omermetekaya0@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abini <pabeni@redhat.com>, Jiri Pirko <jiri@resnulli.us>, 
+	syzbot+88435e204734072bf39a@syzkaller.appspotmail.com, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 29, 2026 at 2:13=E2=80=AFPM <netdev-bot+sinfo@kernel.org> wrote=
-:
+On Thu, Oct 29, 2026 at 8:02=E2=80=AFAM =C3=96mer Mete Kaya <omermetekaya0@=
+gmail.com> wrote:
 >
-> Hi!
+> nsim_drv_port_add() does not check devlink_is_reload_failed(), so ports
+> can be added via new_port after a failed reload.  nsim_dev_reload_destroy=
+()
+> returns early in that state, leaving them behind.  nsim_drv_remove() then
+> hits WARN_ON in bpf_offload_dev_destroy() and a subsequent use-after-free=
+.
 >
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
+> Block port creation with -EIO when reload has failed, and delete any
+> leftover ports on the early-return path as a safety net.
 >
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
+> Fixes: 75ba029f3c07 ("netdevsim: implement proper devlink reload")
+> Reported-by: syzbot+88435e204734072bf39a@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3D88435e204734072bf39a
+> Cc: stable@vger.kernel.org
+> Signed-off-by: =C3=96mer Mete Kaya <omermetekaya0@gmail.com>
+> ---
+> Tested with syzbot C reproducer.
+>  drivers/net/netdevsim/dev.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
 >
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
+> diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
+> index feb88ccbbced..61f0824ce4d3 100644
+> --- a/drivers/net/netdevsim/dev.c
+> +++ b/drivers/net/netdevsim/dev.c
+> @@ -1697,8 +1697,10 @@ static void nsim_dev_reload_destroy(struct nsim_de=
+v *nsim_dev)
+>  {
+>         struct devlink *devlink =3D priv_to_devlink(nsim_dev);
 >
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
+> -       if (devlink_is_reload_failed(devlink))
+> +       if (devlink_is_reload_failed(devlink)) {
+> +               nsim_dev_port_del_all(nsim_dev);
+>                 return;
+> +       }
+>         debugfs_remove(nsim_dev->take_snapshot);
 >
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+>         if (nsim_dev_get_vfs(nsim_dev)) {
+> @@ -1758,7 +1760,9 @@ int nsim_drv_port_add(struct nsim_bus_dev *nsim_bus=
+_dev, enum nsim_dev_port_type
+>         int err;
+>
+>         devl_lock(priv_to_devlink(nsim_dev));
+> -       if (__nsim_dev_port_lookup(nsim_dev, type, port_index))
+> +       if (devlink_is_reload_failed(priv_to_devlink(nsim_dev)))
+> +               err =3D -EIO;
+> +       else if (__nsim_dev_port_lookup(nsim_dev, type, port_index))
+>                 err =3D -EEXIST;
+>         else
+>                 err =3D __nsim_dev_port_add(nsim_dev, type, port_index, p=
+erm_addr);
+> --
+> 2.56.0
+>
+>
 
+net and CC stable for a netdev sim bug is extremely overkill. move to
+net-next with the AI-review comments fixed, if any. Thanks!
 
-Thanks, both are fair, and I should have carried this over from v6.
-
-Found by manual code inspection, LLM-assisted, while backporting
-844c9db7f7f5 ("net: use llist for sd->defer_list") to a 6.1 vendor
-kernel.
-
-Not triggered in production. The absorbing state is reachable with no
-race at all, and was reproduced deterministically in a VM: set
-net.core.skb_defer_max=3D1, drive cross-CPU receive traffic until
-defer_count climbs past the old limit, then restore it.
-
-There is no crash or splat =E2=80=94 the failure is silent. On an unpatched
-7.3-rc6 kernel defer_count reached 2036497 at the lowered limit and
-3995713 after restoring 128, still climbing, and zero skbs were queued
-over the following 794847 skb_attempt_defer_free() calls: deferred
-freeing was off for that (cpu, node) and cross-CPU frees fell back to
-the page allocator. With this patch the counter peaks at 1, returns to
-0, and 4282 purges were requested over 797687 calls.
-
-If another revision is needed for other reasons I will fold this into
-the commit message.
+--=20
+Thanks,
+Mina
