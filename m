@@ -1,59 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793268000;
-	b=vvlOe9DrM55kOTYsFB4XysIgPh5L6vi2ybp938vV+QITbXdSOTJfJtWaQabzEGsm7znE
-	 9+WhF2aXzaX+0+KwKiwjpk+xwuE3taoj1VpsG86pQYJO6QnZvjOkvIwv9fgEn7PoGSiYy
-	 IsY6u8yJHuCGKdhajWTSslCiudLTdDbE6OSMIfU472ZSkCr1KDU1EDbwPJ4pzfEDXX34i
-	 5a2nqSLMsb2+EEZzYTigd8lBDIkIO6+5gzrZJxLteIR+uWcuYzSqF7dZ1sxkHhkGZv3O3
-	 zBYOUFKEI138lmnFFdc9uuiCU1mxYhYMai0L3a8R+ujE0Jx0P/hMuf8Fr6h4/vTzTQw==
+	t=1793268592;
+	b=qaKoxIle8jk3eez4qPqnMFGRy91cGPv8MnA/K1krwZZGikzEfb7FVbogOsD9/ZVDBPip
+	 mRBZMNCgsyBmiBKmHUTacbCu+Cp3uk+hX9PRS3hVe1JrDz1ypFjduukVSb+kAJanyVUgf
+	 lRSgODI2nJcRkxaMrl7lScM7T0nwvyctz4CdTrRqf3nxq7v6zLaDAcPnWgaEm4Fl9Rf/b
+	 KpGof147ct1hYBKmGdMR1Z6PHYqdmMD3tnuHYpisxThnftY2bvOsClOKjxwIjbSc04L8X
+	 ZC0YBc/nGQrhyB/wE49gNMhPzukueBQsjrfSXgx8E6xXS267SnIKMWF1s+1VTQKrgBw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793268000;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793268592;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=R5j+yiYhCHq58JPEG4iD9M+YB5PgArKotbfDfonHirY=;
-	b=uqHTxytS89YsiKifpsCXBt5EDfqCbgPdbCnmSYb0gt5ikjwMZA1gKoClp6Wn+7pyzXOy
-	 l0cH0CDCV3BeY3LzqxGq/MJIvstHgV4GmrbtCWUFcCoGl8+Rq7XRiGa6+Z9/0IDhe/vQ9
-	 tSp5v75AhKx4LI0yQ7NvhgxhO4AyEDP8Q/M9gSc+N8+1lqDoCzLrQ8JGYvfxn0d+o4oSI
-	 qStvWW6HEzAX2ohZnAiEFA/St0r5UQ5yugxZJQm3y2PaumO5+uuzoo1Cik7d50xK6a4O/
-	 sfcK2d9kdf26OyW600QBq/OjMGO6ud+EAZPRXl7jdRj+urcp4BxyZTql/zL3Y99NaOA==
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=nxNqgHP3UUpuLSiMHFFX/1xCgm70UtF7AKQcrmX1fpY=;
+	b=fYQJOV33VX3ex4gWJVhyzr3p+DWOAPou8KatYCIMZvTm8nlTUnPMvfBFKPb7htcVal+I
+	 /w+kuQiVgEb2jnC9TrWAXX8a7PuqGOz+RTye9CC21WNrk5KBW8DbfDUMxml0CPje1Y8+p
+	 jaP35RPnab5FJGMunaLkbXs73K1N3dno/Bmsl8T/uvj32CIflKYx5p0954eyPsYlVx3Bk
+	 yxQzdcWOfHts3HNDLmttQknAl2Ehs0SirORozNb1EILR0NB+K1Mm8yHo+rBTGOump9kch
+	 etJ6llEu3hk/onsP0su9rrlyRdrV51995Qvb9h3KnvESEg0Up7VoprfObtgeMDQ8KCg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O73oQffq;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iYL6nkR2;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24794606A31F;
-	Thu, 29 Oct 2026 10:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4145B606A31D;
+	Thu, 29 Oct 2026 10:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O73oQffq
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27DE31F01825;
-	Thu, 29 Oct 2026 09:59:57 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iYL6nkR2
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC9FE1F01825;
+	Thu, 29 Oct 2026 10:09:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793267999;
-	bh=R5j+yiYhCHq58JPEG4iD9M+YB5PgArKotbfDfonHirY=;
+	s=k20260515; t=1793268591;
+	bh=nxNqgHP3UUpuLSiMHFFX/1xCgm70UtF7AKQcrmX1fpY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=O73oQffqeqikGDOuGDIY+NW2h/CpmNU5TKIWGZcmDMP/nIgRRBHUlxQ/rByvmxysZ
-	 2DibCtTty4S0qQ9JYLUNQ2dkoJIfYb8Wg3hbow/0qw3zC5PBMT7ZxMHVn7cTHo7P2Q
-	 eHigrpfHtmmgho+MFCgSY57Bf3fA0P7yUHFhFVvfcWiY3qyFqifrEJNJT3kb10q7fr
-	 glHPWTJcD+Lxk+9D43PGxMBgpyc1vLVzeGu/TPAkP2mu3xRvW6L77MXJ9JtBs+0ddf
-	 BwJsHcek9yBt2zul90gA9wabFYrnGM5WS2elzRf2uumNpf+KWH+n9eTsTQmHKx/8s9
-	 GLzP+X0yXxHbg==
-Date: Thu, 29 Oct 2026 09:59:54 +0000
+	b=iYL6nkR2kGVEIZgKxnVxk5ATyNVQ/EsyrGT/YLsuiPCj7ieJ1g6uwzlIw9w6h0MtQ
+	 AA9uYCTe55u5TNH0BxeybB+g65eDECrfucb0yJPxrCk47aBvU8lg/J7ZVtmVonG5MT
+	 U8nQrXMxKhHKkYOYc30igEtNrBd/A2jeaDt4BWMPs7jkeFVSw1RHESPzlPpZZQYzJa
+	 h9bl49LXKAmWEPMp54/0qG93a8AYxSXvG3Al7oRW85NUwqo2SBsvhfL1OWdheHt95Q
+	 L5GQWys/h1iSPHd9BxZXkHgc4S7KvXUkaBzC05lcpI27nk7/zJ6Ty4OxTlAUnJESav
+	 ia2qGR0SZ3GLA==
+Date: Thu, 29 Oct 2026 10:09:47 +0000
 From: Simon Horman <horms@kernel.org>
-To: netdev-bot+sashiko@kernel.org
-Cc: alex@goodkind.io, nbd@nbd.name, lorenzo@kernel.org,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
-	kuba@kernel.org, pabeni@redhat.com, matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, tarick@bedeir.com
-Subject: Re: [PATCH net] net: ethernet: mediatek: preserve sibling PPE
- bindings
-Message-ID: <20261029095954.GD257209@horms.kernel.org>
-References: <20261023012529.5994-1-alex@goodkind.io>
- <179306513862.3134.14236907013127690482@kernel.org>
+To: Yuqi Xu <xuyuqiabc@gmail.com>
+Cc: netdev@vger.kernel.org, oe-linux-nfc@lists.linux.dev,
+	David Heidelberg <david@ixit.cz>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	stable@vger.kernel.org, Vega <vega@nebusec.ai>,
+	Ren Wei <weir@nebusec.ai>, xuyq21@lenovo.com
+Subject: Re: [PATCH net 1/1] nfc: llcp: fix use-after-free when purging local
+Message-ID: <20261029100947.GE257209@horms.kernel.org>
+References: <cover.1791171477.git.xuyuqiabc@gmail.com>
+ <1792999447.107874-1-xuyuqiabc@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,38 +62,27 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <179306513862.3134.14236907013127690482@kernel.org>
+In-Reply-To: <1792999447.107874-1-xuyuqiabc@gmail.com>
 
-On Tue, Oct 27, 2026 at 01:38:58AM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
+On Mon, Oct 26, 2026 at 03:24:07PM +0800, Yuqi Xu wrote:
+> nfc_llcp_socket_purge() walks local->tx_queue with
+> skb_queue_walk_safe() and unlinks matching skbs. The walk does not
+> hold local->tx_queue.lock. tx_work, the LLCP send path, and other
+> purge or dequeue sites mutate that queue under the lock, so the
+> walker can follow an skb that another CPU has already freed. That
+> is a use-after-free and can corrupt the list.
 > 
-> Critical: 0 · High: 1 · Medium: 0 (3) · Low: 0
+> Hold the queue lock across the walk, unlink with __skb_unlink(), and
+> free the detached skbs only after the lock is dropped.
 > 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [High] The fix is incomplete: the L2_SUBFLOW branch of
->   __mtk_ppe_check_skb()…
+> Fixes: f31652a58bee ("NFC: Purge LLCP socket Tx queues when being disconnected")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vega <vega@nebusec.ai>
+> Assisted-by: LLM
+> Signed-off-by: Yuqi Xu <xuyuqiabc@gmail.com>
+> Reviewed-by: Ren Wei <weir@nebusec.ai>
 
-Hi Alexander,
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-The issue above does seem to be of concern.
-Could you please respond to it?
-
-> 
-> Pre-existing issues:
-> - [Medium] This problem wasn't introduced by this patch, but L2 (bridge)
->   flows never get the 0xffff 'unbound' sentinel in entry->hash.
-> - [Medium] This problem wasn't introduced by this patch, but
->   mtk_flow_offload_stats() reads entry->hash without ppe_lock: once for…
-> - [Medium] This problem wasn't introduced by this patch, but the MIB read
->   sequence in mtk_mib_entry_read() is not serialized.
-
-...
