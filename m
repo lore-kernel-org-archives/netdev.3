@@ -1,62 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.125.25.13
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793273284;
-	b=pehw9vG3OV6tm0qUW517NB73eSO8IMDE2upUHtqdKR5+T2lQR1FcXKbwtnN7qde8P9xM
-	 MJNQutxV2PQSIwW5vbCLYPt5mKFRMLXKX69P+cxYH24/lUQ4YgP+cb/A2ZqiVxPgSvnz7
-	 /MvUcxZowveslbdNJ8Pig2ZFEc7/mh84OhVl/mid1AthRcQk4NiLZAQHMrgXxA1a20/wC
-	 7NoNe5JY5i6BKJsUoi3U7d0fntylbL8dcF23JKqbZrPS5TbxSkBTT0W/KWEoRDHrDCPFd
-	 aZkDnpVlEWsZoeiEHLobUKy6Dd2HE8Jxio1AcLpY2kYxEUrNxsJn9rVSMtjijsDziew==
+	t=1793273406;
+	b=u05WD+oPCd35jqIZeRYAVVWiBiaDmpa4sNcQ5bD4ZCBCeXuj2W4aVKtrOUG7IFK1i39j
+	 UaIgjljROoqPR/2ubnQl+WQ+aobCus2wARqX+VMuci0yekIS7UoXje8YdDS3BKFIt/niX
+	 J8v3eMfDKYzN3b1Ew7pWeolfVBEN3Qwg+HSW7oWml9b1ZKyX6s9tHLlSZlr2Tt5sjgyWL
+	 EQXSyU3cieKnFTw2xExPkh67MDyzgvmeHpOV48t7S3V3SEz+o4ckd8s9aXSQocmGLH0t1
+	 rJmuMSbzg526IvSqdzHLkM+BxnZzYslOSrrwceGKJ++8uSPcOqY8lhzaInZVB8/040Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793273284;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Infomaniak-Routing;
-	bh=LaD9WrR+AACReb/Fw3idhuufgElFfvZMlx/OJIXbArA=;
-	b=agp4Z5rxkKVovLeqbnu5kvJOvI16tMI7mBxabSuJkRMcUSjG2IPSCoKHXDXSKBw8FMnW
-	 JTbclpHb+egyTi+VS0K+W3eHMP7mpLXi4DuV9Jy/4+QhH+f3yBIKxzatjcJ2X9vVCy444
-	 EtA4dSYIaXRgKqfHsGJTmzV65HJ32TplB8+H+KmR47kb1PRlWHl2MADtxsvTvM4wtu1t4
-	 WR7ZEypNkGwoN6BB6BHxNxgLO6cW9w7VUxfgtzVkDmMk9uNLmbiJNijKizAxhamyoDSzQ
-	 nLILsO264sG1bx8WjyZobxhZkGIroxTcQVNfnl73WBIhgpatxPkwvInVSEZHtl1lxsQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793273406;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=FOe+g0fqEqQIql0dXLsp8MI6mg1qaNRIyPGvU5jn5SA=;
+	b=p/dnZD+MDNpPerhd8garkZQ+WRAL0qAInOHjx/S7G4pPK2TxInA8RrWADUhcfjbp/yil
+	 swYAp4tkhEXhjBvXnW6RRkwpe0Cg/OlFKRFX/VrD4BKxKdTX2vk7c7Jer+IMFSeZSN10v
+	 O3csBTRAFn13xl4zV5srMDYjziA/bf0oasUGdEjgcwo8Tzw02jvw8aW98cnGpr2L8F2gJ
+	 KqKsTB6Yqoc2q1bH/qNMZ2A1n4JyD6NYfoM64VSZSztT2fS7b78256tFqHln2/qTJmf+i
+	 bdasL29Khp+f2rD1TtmRVwpYhWRh5CrBVRQWgapW1h+QVK9+26ySI5C0DhcM0Ffy/MQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=digikod.net;
-	spf=pass smtp.mailfrom=digikod.net;
-	dkim=pass header.d=digikod.net header.i=@digikod.net header.a=rsa-sha256 header.s=20191114 header.b=GzCpnY9w;
-	arc=none smtp.remote-ip=185.125.25.13
-Received: from smtp-190d.mail.infomaniak.ch (smtp-190d.mail.infomaniak.ch [185.125.25.13])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JTo0Mo5T;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99A0606A31C
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 11:28:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B99A0606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CFB606A33A;
+	Thu, 29 Oct 2026 11:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=digikod.net header.i=@digikod.net header.a=rsa-sha256 header.s=20191114 header.b=GzCpnY9w
-Received: from smtp-3-0000.mail.infomaniak.ch (smtp-3-0000.mail.infomaniak.ch [10.4.36.107])
-	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4jFhmS6Y9lzn3b;
-	Thu, 29 Oct 2026 12:27:52 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
-	s=20191114; t=1793273272;
-	bh=LaD9WrR+AACReb/Fw3idhuufgElFfvZMlx/OJIXbArA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GzCpnY9wpDf60mcnYuroXbFa9YCakGFBrOjfurb2f7UxJM3jUmzmm71A+H/ex0U95
-	 Ezw0UDC5/DXLdfO9xfh2E7NHLu4mmTw+EV8TXVuVR5Zv2qJiAyasin7EDuqpetc/yo
-	 QmYhNWapgWaCBAEkibByaPzDgOQutFwZnHYo9qng=
-Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4jFhmR4mH2z8lf;
-	Thu, 29 Oct 2026 12:27:51 +0100 (CET)
-Date: Thu, 29 Oct 2026 12:27:47 +0100
-From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Paul Moore <paul@paul-moore.com>, netdev@vger.kernel.org, 
-	stable@kernel.org
-Subject: Re: [PATCH 4/8] landlock: pass the namespace id to log to
- check_ns_type()
-Message-ID: <20261028.oonaisai0Doh@digikod.net>
-References: <20261026-work-security-namespace_free-v1-0-ffa3ebbf71bd@kernel.org>
- <20261026-work-security-namespace_free-v1-4-ffa3ebbf71bd@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JTo0Mo5T
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B1BF1F031E8;
+	Thu, 29 Oct 2026 11:30:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793273405;
+	bh=FOe+g0fqEqQIql0dXLsp8MI6mg1qaNRIyPGvU5jn5SA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=JTo0Mo5TeWODDKi6nGU5xrCt7y2ny5m+vBcPLut2aDT8xsIjDhfbj+AkQWb1CKlxK
+	 sihZiEUaKTqLNi0tjDh9e1876q0EtQ8fj4eJcMDG67OwnuxZXquicNj1B3YFqAP6wT
+	 /TE5GnmskuJt7D/F96mIATJuRX9jlxJnWi5xyB3jt9UZ3CUJpbR9karQEJs+AdVGJP
+	 HXrFFnM4CiN7UPegR2q/YkYytarWJUeENexIR4qXYVEbIjrKcsp8t356D2Rz/RhXcg
+	 0FwCAZ+XrOJXglWhKPVF2wB5Q0UqvH+MqxO79D9WAh70Do55noFPVKCkTcXWsERqcD
+	 9v+Ckhznx0htw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 814B13ABD290;
+	Thu, 29 Oct 2026 11:30:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,101 +53,44 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261026-work-security-namespace_free-v1-4-ffa3ebbf71bd@kernel.org>
-X-Infomaniak-Routing: alpha
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: rnpgbe: Accept link-down events without speed
+ magic
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179327340432.1769177.12829102670928563036.git-patchwork-notify@kernel.org>
+Date: Thu, 29 Oct 2026 11:30:04 +0000
+References: <C2DFBBF04F1DCFD2+20261026075445.920572-1-dong100@mucse.com>
+In-Reply-To: <C2DFBBF04F1DCFD2+20261026075445.920572-1-dong100@mucse.com>
+To: Yibo Dong <dong100@mucse.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, vadim.fedorenko@linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, yaojun@mucse.com
 
-On Mon, Oct 26, 2026 at 10:57:12AM +0100, Christian Brauner wrote:
-> Landlock logs the namespace id when it denies the use of a namespace.
-> check_ns_type() takes it from the namespace itself. When it is called
-> from the namespace_init hook the id is always zero as it is only
-> allocated after the hook has run.
-> 
-> A follow-up patch will allocate the id before the namespace_init hook is
-> called. But a namespace whose creation is denied never becomes visible
-> and the Landlock documentation says that namespace_id is zero for
-> namespace creation (cf. Documentation/admin-guide/LSM/landlock.rst and
-> Documentation/trace/events-landlock.rst). So pass the id to log to
-> check_ns_type() and keep passing zero from hook_namespace_init().
-> 
-> No functional changes.
-> 
-> Fixes: f675d2e95569 ("lsm: add LSM blob and hooks for namespaces")
-> Cc: <stable@kernel.org> # mainline only
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-> ---
->  security/landlock/ns.c | 11 ++++++-----
->  1 file changed, 6 insertions(+), 5 deletions(-)
-> 
-> diff --git a/security/landlock/ns.c b/security/landlock/ns.c
-> index cd44c927f83a..39795c4e1404 100644
-> --- a/security/landlock/ns.c
-> +++ b/security/landlock/ns.c
-> @@ -90,15 +90,16 @@ static const struct access_masks ns_permission = {
->   * check_ns_type - Check namespace use permission
->   *
->   * @ns: The namespace being allocated or installed.
-> + * @ns_id: The namespace id to log.
->   *
->   * Shared check for namespace_init (creation via clone(2), unshare(2),
->   * open_tree(2), or fsmount(2)) and namespace_install (use via setns(2)): denies
->   * when the namespace type is not in the domain's allowed set.  At allocation
-> - * time @ns->ns_id is still zero and is logged as such.
-> + * time the namespace isn't visible yet so @ns_id is zero.
->   *
->   * Return: 0 if allowed, -EPERM if denied.
->   */
-> -static int check_ns_type(struct ns_common *const ns)
-> +static int check_ns_type(struct ns_common *const ns, const u64 ns_id)
->  {
->  	const struct landlock_cred_security *subject;
->  	size_t denied_layer;
-> @@ -121,7 +122,7 @@ static int check_ns_type(struct ns_common *const ns)
->  				    .permission =
->  					    LANDLOCK_PERMISSION_NAMESPACE_USE,
->  				    .audit.u.ns.ns_type = ns->ns_type,
-> -				    .audit.u.ns.ns_id = ns->ns_id,
-> +				    .audit.u.ns.ns_id = ns_id,
->  				    .layer_plus_one = denied_layer,
->  			    });
->  	return -EPERM;
-> @@ -129,13 +130,13 @@ static int check_ns_type(struct ns_common *const ns)
->  
->  static int hook_namespace_init(struct ns_common *const ns)
->  {
-> -	return check_ns_type(ns);
-> +	return check_ns_type(ns, 0);
+Hello:
 
-The use of 0 as a namespace ID in logs was mainly a consequence of the
-hook implementation and the fact that no ID were visible to user space.
-This changes with this series: the kernel allocates a new ID and other
-LSMs see this newly created ID.  Landlock's logs should follow this
-change consistently and always reflect the real namespace ID instead of
-faking it with 0 for namespace creation.
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Could you please update the doc and tests instead?  The doc should still
-warn that when blocking a namespace creation, the logged namespace ID is
-still not *directly* visible from user space.
+On Mon, 26 Oct 2026 15:54:45 +0800 you wrote:
+> The interface can continue reporting carrier up after the link goes
+> down because the driver ignores the firmware's link-down notification.
+> 
+> Firmware reports link-down events with a zero port_magic and no
+> valid speed or duplex information. The driver requires ST_VALID_MAGIC
+> for every link event and returns before updating the cached link state
+> when this check fails. It also writes an invalid driver snapshot to
+> firmware instead of acknowledging the link-down state.
+> 
+> [...]
 
-Being able to differentiate namespace creation (i.e. when a namespace is
-not yet reachable by user space) from a namespace enter operation is
-important for Landlock from an observability point of view.  We then
-need at least the Landlock tracepoints to make this possible.  I'm
-working alongside what you're doing and I'll send patches next week.
+Here is the summary with links:
+  - [net] net: rnpgbe: Accept link-down events without speed magic
+    https://git.kernel.org/netdev/net/c/6815a2513eff
 
->  }
->  
->  static int hook_namespace_install(const struct nsset *const nsset,
->  				  struct ns_common *const ns)
->  {
-> -	return check_ns_type(ns);
-> +	return check_ns_type(ns, ns->ns_id);
->  }
->  
->  static struct security_hook_list landlock_hooks[] __ro_after_init = {
-> 
-> -- 
-> 2.53.0
-> 
-> 
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
