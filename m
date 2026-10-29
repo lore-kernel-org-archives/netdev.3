@@ -1,97 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.33
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793306155;
-	b=EPvom2Y4PhOTb7pdYBl5BnvASDzIefFtvltraAcLTifO/qE8AW/0WNtobBoU0mTd3nty
-	 yRtgArtcqJnGfgH1GHoHZ1FDjzps8YbBzvuUmzbptYMfcN1E8qUi9H5vixZCuHxC/Mukk
-	 dpnBtZlZYoTWb///ebOKfxCRQPuu7IQQUxRvo3rt+LWKVVMX64oxLdLlVSgp5meYRmfL1
-	 iRYO0TbaoHaIntwUIzVqdA1JlwZ9TKgZNqcvfOilJ8v3uBQMTHtTbSchFS2kAIQZnAqxg
-	 DrtL/d1xRcveNf0qb18qkG7ckXRiA8GuyrCKsqZddPRC2hao7vj1IXK13Ord2Gbxx7w==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793306155;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=2w2+p+euHadjOeBv8tu30cQmuUgo+VoZqfhQqNpwOQk=;
-	b=Fa+CRl1xfNqm7MOdvLxqvrUETvWoibMk5qgHZV79OuAlPI9jWkNvo+pLcGa/pnkJ1hen
-	 HBYPHwWa82Tsyj76M5RaeCC5FKfxBLItunPNL3XPAxLgn9z4k7JIFhcEeoA147faRDUEF
-	 sk5GKGYTZ8RBLd3xchaJX6Rp5lKj1/Z/QdUftvJT1lPQawpUSvXWQhJ64fJmP9dzoOQd9
-	 SaWw+hviukijeG3uBkB77nSANuL7BZGv/Yh4qsdjw4/XVsRWCLeeJU7/X1n5jk3mIwvdH
-	 RlleuU9Esl7krmo9/Ya10OUbyvnJIHY9ZkF6gexsZv9IDw62lhS5JWtIbca6wxL4FXA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=kHVPRWyu;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.33
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013033.outbound.protection.outlook.com [40.93.201.33])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.182
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793306197;
+	b=2b8r/y4kY7R82MpbrMPFrDW/FPHOiFqTxdWNn2kJxQ5cqSHcEbxKL/3jLcfa2x8nybWx
+	 upWP7L/U+Eb8DNpeQ26Yga8oq0RRW5fWtqF/KrKizc3wYn4NcQcyLosSV+3uM17M7itdz
+	 QwMCm5RaSPl+yjHzQ5kXRmmUV8bQDPLQvpR6vYK81w1ScEJBIWP7TIvT1IROoYKUCw60z
+	 lC1ifzDuoubMgai3vfmlLRb1Y16kb/9QhTIem4mZJ/50MHbEWTmX/AV6SCz8qTtWc97NH
+	 mvSXvesbBOZkpaOiy0lgF1DMP9zhnqVD+Fs8UR3fSIEfDDwT4VvYm5POzDLdFwW1bSg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793306197;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=AuIb6GGgaOQAFc0N/8ej5YAVB0d0El1YMXuRgdGto0M=;
+	b=M+thk6uRqF7ITOOJQuLoctXvkoZ8p2Gt11GFCHZ3bgJrfJUNA2GRw0Q85K0ghHxA7PXn
+	 TBDy5MKbWiBzroQhPX/w255Kq3olhsXR+WjJq/ZZhU9z9RFeNkFqzo1j8dVS/u2lY7SHe
+	 nvVmTq1zwcI2P0NMUJ5n9jaP9/IgSx5aOLuJVRyKy2lDt6nXJzrjpt4/ohuBs3zBWR+Zm
+	 vE3Bz/+bLMNcuJAEAFOo4ygwgJu6KgIvb6KM7mba8DURJL+AruPzeDkzXUhFYRzhBtzVL
+	 azr/9R3nrEZ0DqCxozfY5XMKNR3rKOZs0LE9hF4zYlYOewJh2jHGRNeqNsMgo2Noj0g==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=mojatatu.com;
+	spf=none smtp.mailfrom=mojatatu.com;
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b="EN/712Yl";
+	arc=none smtp.remote-ip=209.85.222.182
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2A2606A31D;
-	Thu, 29 Oct 2026 20:35:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CE2A2606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310E2606A32D
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 20:36:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 310E2606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=kHVPRWyu
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g0e/d1FRiIPEHXVjfirok75MMFDgKjgMUf0UbZA6+LQJ4ib8W9lv8ejNjtf+dhKnFOmBfU2wxoaI4h23eXYlClS8me5KLV6N/I75vHBCo4scYe7dh9v7H3M9HL1Ndb9+Kvr3APBwyEEPcWXV4WVc/fy+QTYfkYzmz2tAbtje93lu+87QNKNzxL5rx6jDKMzO6Ppyuvg0uxregKAeoqm45HmZViUQ0ptdBquyPUhdd7wlmmLN3vaE9bzS/KZYfz2BycuAIvUBttHzIGzYx2s8X0ZuunOb6YjrJVX+cnnTc9Y2x1LCJ0GWj7/kG476uQLbdHDVwYGeYpfdeqA6wQ9qDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2w2+p+euHadjOeBv8tu30cQmuUgo+VoZqfhQqNpwOQk=;
- b=BPL8xnykgYZCdm9tolaLf80z9UusBxYqMVY//nOujXK/tw66xQv1ikx5Tox+7pkevgc9o9HCd09hiwNs/b7xAg3QSguLm4dsZ602GcfcIJMCVMI5ORJ0RoX3NklBiFXubBsgLPHvMv9bzUVzoW0rCEOs3oLNwtsKgKundnZR0RCDSJSgmRw+xgdmsp0LyN9cLO0Emxf6iUrtZMSCF7JA5/64eN+MAGdHob0BZFsN5H+L/CDJEN5p2udK90d6eG8ghnm9Awrfr/pw4CkPtpi0LCRI4P69WW+s+ur8GehVSskVloiMK1oB4NsJTyJC70+qjiRFp0CX5b7MM+nbcBysxw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2w2+p+euHadjOeBv8tu30cQmuUgo+VoZqfhQqNpwOQk=;
- b=kHVPRWyumpKKWiYldHBhSXMAGqRP4Wvd+5+P/w48/AG0YSmmV90BnCcziZ516W4NX+v5Z0Zpd5dwpSGIkCI/yK9k4wxcfX2IYF9/Ix0yRgqilub8zI/zNYj3MG4JzYVXg0abJtGb/kiQHAFdiwfdEIP0mKojjPTd/64ot5PuNinaBAzjeJFS0cMuoTzr56yw7uJDfqg8HDcJhgHM52fhrbhywB759xQ9jncbtzIZFE6aLRPVDXMetYvzDJGSMtYw6rqb+hSBqnsSGFRynIwFx8jm1my+EEINgnJY5FKsEMHoRuWzAuQdxDY1qn5gG8bNWNUYh+8aql1NrTfhznxbRA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by MW4PR12MB6924.namprd12.prod.outlook.com (2603:10b6:303:207::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.8; Thu, 29 Oct
- 2026 20:35:49 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0569.008; Thu, 29 Oct 2026
- 20:35:49 +0000
-Date: Thu, 29 Oct 2026 22:35:40 +0200
-From: Ido Schimmel <idosch@nvidia.com>
-To: Anil Kaushik <anilkaushikwireless@gmail.com>
-Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=EN/712Yl
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-9440304604aso5954885a.0
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 13:36:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1793306195; x=1793910995; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=AuIb6GGgaOQAFc0N/8ej5YAVB0d0El1YMXuRgdGto0M=;
+        b=EN/712YlYzEuqQTvmZJ4l04bhee3YnJGuwjWPYDUw6xPXyJS3SRBSqG4V6suH3+ovD
+         ld293FIamD2CdgivfhfmZOd52DIF2cJ/v7uP+4zYkiHOc83qFopwzfEgg79kDZdHVHFi
+         P1Y+sct78IU+zQH+kyOhZLfiYTY4rZnMC8uwY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793306195; x=1793910995;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=AuIb6GGgaOQAFc0N/8ej5YAVB0d0El1YMXuRgdGto0M=;
+        b=o4J2dvirgXfWZQPvB26HwwJ7ZX05nxkXlysuh413F90w/721vaqlmPmkfK7HQhbqj2
+         PqYRK/xQVvvX93Roz38EF6WtpkF5u7MoyfM+jPRASr2oxanMosnCB7w2SYqE+hxtdeJF
+         dM7WqcjafbxG2CcwHimgfhhB4PgX3fJWEkLM7Pe/2vxEi1xN4yUn9Yl2c+CfCupAkA4w
+         AuG9jWrVqB5Fj7U5+mGZxeF0MlUaE+iJ858SWFDtU5r7EEqiFbyfQ4eD7fc+LIS7YasB
+         j+lvQE9ayk6mQQYsUIS3x6y1RIJGZAGS2V4OgZwfWw4S0Cd2kNbccawDNimXIUd3gA7T
+         IM/Q==
+X-Gm-Message-State: AFq9FYIJNeqtzvCIlPRs3mdaHGyV3Dw9FqINHDB8Bdo5Y76wPAnpzi0n
+	UzmqaqdyUQ675DpZUnZvIn7z+HQ2TJWUTHkFcVQxqSYqMUXqk5j/d1tX2U20D1wntCv3vLpBn/5
+	FvqQ=
+X-Gm-Gg: AYBFou1G9DPU5ZX/xS4oW28MKX9Sbo1ptjTkzN0bkVKCfxkKyrcAFC4CIznwHZIRgmf
+	Z1RsWCdbQjSPj9eoy+ijfxvsIuqO22bbrGw4d0h9W5nxaeWXnGDzI8Yq2MO6lXoTNEWEaTI96Vc
+	zGwB7WXiRFTRhF+cHlal+2nkRFv1zOFctWsn6OucZZT6EgwnkQZI9yx6+Ip8J75i63H+TCFRA66
+	QZaEz/0sIl1AruOOMZBaXt/LMxmQgglOsjzWmqJ6jHszslk3s2H/ljrUljUxvQ7bO4xt/V3ew1/
+	7mb+Hmfl2l8XDuX1ZpVOvRGp7pGdZejBHNrp+w8hZZkdy1FkzPb7ACWe4nlSZ+NqkpEXB4p7OUz
+	EHBCRExlzeQ055YMrE90lF095R48J4oWG0FqR0KMHsc2yEYbDpBM0RY8lD30VxzLWlI03vtPXFg
+	7jq0Bt5ZLR+hgLQd20Me5Q5Onx1MGbz6zLlZvQtNOCC8H+aDuA2fEYqplvIJ+UByj3GYpyjkLyx
+	DmnlMOEHv7/30BUzI0SzTpgW6ubj38AXWdvts3og8jpDXFMKdXnxpYouL53uVfqwmWJp0uCh4DT
+	hSo+VhTa61KXV33uGxOQzZo/FImXAFuKtP03h/O+DtUwLalsG6HaqruU3y+LwzMdX2413SAY674
+	=
+X-Received: by 2002:a05:620a:46a8:b0:943:7e61:fd9f with SMTP id af79cd13be357-94413267f0amr567415385a.1.1793306194969;
+        Thu, 29 Oct 2026 13:36:34 -0700 (PDT)
+Received: from mbili.waya ([64.203.83.2])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-944211e2b4asm34696885a.12.2026.10.29.13.36.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 13:36:34 -0700 (PDT)
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+To: netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
 	Simon Horman <horms@kernel.org>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	XingWang Xiang <v3rdant.xiang@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] genetlink: Reject joining multicast groups no family
- owns
-Message-ID: <20261029203540.GA1485981@shredder>
-References: <20261029062214.3407223-1-anilkaushikwireless@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261029062214.3407223-1-anilkaushikwireless@gmail.com>
-X-ClientProxiedBy: FR2P281CA0035.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:14::22) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Sashiko <sashiko-bot@kernel.org>,
+	bpf@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net v6] net/sched: clamp skb->queue_mapping before indexing the tx queue
+Date: Thu, 29 Oct 2026 16:36:31 -0400
+Message-Id: <QDISC-MD1X.v6.r0.20261029162633-1@mojatatu.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,100 +103,257 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|MW4PR12MB6924:EE_
-X-MS-Office365-Filtering-Correlation-Id: bde7e850-e94b-4840-17f4-08df35fc37a0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|366016|7416014|376014|11063799006|5023799004|56012099006|261022075727099003|261022105027099003|261009223027099003|10067099003|261026121527099003|261021121427099003|261026140227099003|22082099003|18002099003|261028144727099003;
-X-Microsoft-Antispam-Message-Info:
-	RFYJpjzFhYj889DuGztb2RjUInOd3dAUE0EYVi9mOZM+xtooU+o4vqGZWPWc1SQxJN4hgMguxcgeNPIktjnhnlJnurZjGPmjFPzZj/y0KqFAvuFRLA2pe/Ba69BBx82u8GGMH7q7mH8Lq7JCV4KYZKjDJhaGVLx3cUfawdEFuhXtbus13m/sN1ltHtEIPUx0bImZhq8WwV6JZwVlRJtoY/9xJ++odEarnZu9Ps0aaMWAIDwhWj1aVJnQDGlld9J3XgMaMWBC8cRQko9L5JG6CgIfBqAA1/puuQSYyWRm0sUYvxBO37tEJz7b2xCeb4EXsKehF9POwcUbKnLWdWJCLvxVxDvf3z4J//WyT3TVIA7VVhWraB4faTQXigrzJhr8+bmea2ix0Yc0rQje0zLjHztzSbfkBa/b4IAGnXLOJwN5hSMA1sEXkFdKmnbJlmBEZJXRiNf+K6pVPVrObFzpLH3/3Vzslrjey7L3elsfcHKnSbEx3FAuSNPltKCZsT06HC1KVJkkTweHn4Q9XtQnQeKnUWGOdiloUB6zLwhRLWJxjOTDYEoV8PMjyP773AEWKDl8xqcJuEMZoTh450U/bgC2gI80GY5QphH0ROzgnPmIlzjTu+g1gBrlicGLvYmYupMjMFvYaDKwkObqoELpWoK1P+OIebSONDHTtORbzYk=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(7416014)(376014)(11063799006)(5023799004)(56012099006)(261022075727099003)(261022105027099003)(261009223027099003)(10067099003)(261026121527099003)(261021121427099003)(261026140227099003)(22082099003)(18002099003)(261028144727099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?z/QHRj6A+BIi9FQAl7vjtBsl1covq43z1spqj1ZxkRXnwPNScC5iKEHEhrjz?=
- =?us-ascii?Q?j+ujtNXgsREAhNMLFp+JgrY++QxDoehLgB0uj1ElaWe05/UdsafxLZHFLNPO?=
- =?us-ascii?Q?FJgWjUhxFRrVbSJIzs/kq5cDRyfhGo1tIS8Ed5z3ARSZV/Z4xz8QLPkVv0gH?=
- =?us-ascii?Q?aIR8O/HxCMXjRfaQdg8YwLG2lxYlgBfU0RJaB183DiOrDregwvr22BGr4S38?=
- =?us-ascii?Q?yhe2zP5/Eb7j1Jk1sdYJMT7fyrtkZ49aQ9CwE5WEE2VCe6txTqJzH5o2HfrT?=
- =?us-ascii?Q?hmxWQuHyi/wcP5CKYoZY+uOIb8yMZ18xWejYiVwDYaDnclL0V/K1OO9+xrCB?=
- =?us-ascii?Q?NOZjBPoIJE74L5PWtyg3JHcCXRCLTB9LVtPi7jccs7jIA5NzFYy1tZpdOzw+?=
- =?us-ascii?Q?Hzc1Z8JWKwzrw37tR8jlVL95cBvUCBk/s42wAh3hd1h1tMTrdYf1tEWsOBWz?=
- =?us-ascii?Q?YNiHWJ00B93uJMWozYGOYQ7R79Kdp7T05P3wIVp0C6baOY0IJRBFjgCW3OnU?=
- =?us-ascii?Q?u68MU7JwqmcrrFPHGsXPP2O7s1VrwPTvL4maVF39m8tph837vDeuDcvVSwY6?=
- =?us-ascii?Q?JJyvryFo+TMgt37pw1V5hROJQIKJR17KcOiPTNAAD2ctsC6MNZ7GvMR68AIb?=
- =?us-ascii?Q?Z9pv3PDRqjSWK9Ly9dkfaiTLpLBRU+chOrRHbvFrPjF5yDtQzT/+lbwpb2Z1?=
- =?us-ascii?Q?D5Ws6z35Et4ulpy0TZPoVBmRUVOOU53t1FPEiwU+z0jbJQCa0T03wbXXsU7G?=
- =?us-ascii?Q?0Hr/NlsCs9qmdKnEQOzTw3mCCkxDucJD8mMzvQxGl38n035zOrjUBXOEjsPp?=
- =?us-ascii?Q?xeRGvJzWAsYhd7bS+1DJBCZFasDouYo5gFnlP+cf4pjh7GF67SzEElx9JNrQ?=
- =?us-ascii?Q?QyBfyuW2/G63sm+MdIZKlinc5UUYb7Ovfo4P0bUIDdeL2DiCyTTjb4XL9rur?=
- =?us-ascii?Q?02H+EH42yGT7BRTn+a2Cj+CdpGEPV4LtONijbbxccZlefW/tNpDl7bHZ+VUi?=
- =?us-ascii?Q?5H/IMp2Iv8JRPlhv7tgLUvM+A0VCyuIWg1VZmGHezt66hm/U1pyzTj7YdY/V?=
- =?us-ascii?Q?YeAAj1OqQh2bwc1QucYyBEcYycOlIy/wU7n8uWlS75Oe7QgjgokShH0cp3gk?=
- =?us-ascii?Q?Z84okaJmJNNgsWYvGHWnmFUdYu69F89nQ5WGoGJzt2HKCJcmwUjgRZlDEUV+?=
- =?us-ascii?Q?/wOZDKueMO4GI6R/egDdcI3ZRe7R1YjSsE+Kjkvj8q3hEiFYUjGys2lEPnHY?=
- =?us-ascii?Q?tCuJznSBwu/vvFbruj810gLonQrWZQVIyNJ9vtwOBX3AEQy0OGRXZARumDQv?=
- =?us-ascii?Q?fEIo/Qpq1nFIFRHHg2AH54hpYpteemiovtkFPryQw8P4uiVbxVcmwTKV1IyV?=
- =?us-ascii?Q?yo+umbGAuA5xLapRBCgAft3atZzY+02GPEExOO3wY+dcjIFuJ9JxmrVylMMe?=
- =?us-ascii?Q?zQxN5iBY3wpAGBCgudEjEUWz9aOJgMVZx14p3CxBAg5rt/12yadvEMWm1zbx?=
- =?us-ascii?Q?ZnM1KB224UEAqs0DWRonWoGllNQaGwWObkUSOaZP0FNcTd5di8jq1HQcUXzd?=
- =?us-ascii?Q?eJBseO/z5ZSVetVgjspNtLbZJgaiXwSDsC9+Do5w3OsGnBQrvsogQoRTqwiH?=
- =?us-ascii?Q?jhRSihaBOSqW79cjL9rdG8gZJNDBAj+/AkP84cILgsULu92fonQT1S/rg/ry?=
- =?us-ascii?Q?m96shoxuNysJQVNdHTnOzgQ2XVw6Ie8WaLb5cojXd4nHwO4u?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bde7e850-e94b-4840-17f4-08df35fc37a0
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2026 20:35:49.3252
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ncWNNYOQtFKW1U3fVADgGObDqMZAmPghZwmBNJUPTeM7tYqqCfOzp+szAk1T1R3xvlGv0MRTSLSlIdAkb5NJaQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6924
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 29, 2026 at 06:22:14AM +0000, Anil Kaushik wrote:
-> genl_bind() checks the GENL_MCAST_CAP_* flags of a group only when a
-> family owns it. For a group ID that no family owns, it returns 0, so any
-> user can join it.
-> 
-> A family registered later can get that ID, and the socket stays a member:
-> nothing checks it again. An unprivileged user can join the free IDs, load
-> a family module with CTRL_CMD_GETFAMILY, which calls request_module(),
-> and then receive the notifications of a group with
-> GENL_MCAST_CAP_NET_ADMIN or GENL_MCAST_CAP_SYS_ADMIN. For example the
-> drop_monitor "events" group always gets ID 1, and is free until the
-> drop_monitor module is loaded.
-> 
-> Fix by returning -ENOENT from genl_bind() when no family owns the group.
-> Nothing is ever sent to such a group, so joining it has no use.
-> 
-> Found by the Sashiko review of the gtp multicast group fix. Tested as an
-> unprivileged user who joins all free IDs, then loads gtp and
-> drop_monitor:
-> 
-> Before:
->   joins: ok=62 EPERM=2
->   gtp/gtp (ID 15): member
->   NET_DM/events (ID 1): member
-> 
-> After:
->   joins: ok=19 ENOENT=43 EPERM=2
->   gtp/gtp (ID 15): not member
->   NET_DM/events (ID 1): not member
-> 
-> Link: https://lore.kernel.org/netdev/179324692107.3134.14443689892607921337@kernel.org/
-> Fixes: e03781879a0d ("drop_monitor: Require 'CAP_SYS_ADMIN' when joining "events" group")
-> Signed-off-by: Anil Kaushik <anilkaushikwireless@gmail.com>
+This issue was caught by Sashiko (nipa). A producer-side path cap is
+already merged (ea4d4b5dddb5); this patch adds the matching consumer-side
+caps.
 
-FWIW, this restores the behavior of commit 5ad6300524c0 ("genetlink:
-disallow subscribing to unknown mcast groups"). The entire function was
-later removed by commit 1e82a62fec61 ("genetlink: remove genl_bind") for
-unrelated reasons.
+The issue:
+The tx queue is picked and capped in netdev_core_pick_tx() before the
+__dev_xmit_skb() qdisc enqueue path. A tc BPF program running inside an
+egress qdisc (not clsact) can then change __sk_buff->queue_mapping; that
+store is never re-checked. bpf_convert_ctx_access() bounds it only by
+NO_QUEUE_MAPPING, not by the device's queue count.
 
-So, given that the kernel already rejected such bindings between v3.19
-and v5.7, I think that the potential for regressions is low.
+Two consumers read the stale value:
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+  - On dequeue, qdisc_restart() calls netdev_get_tx_queue(), which
+    indexes dev->_tx[]. netdev_get_tx_queue() guards it with just a
+    DEBUG_NET_WARN_ON_ONCE, so sch_direct_xmit() takes the out-of-bounds
+    txq->_xmit_lock and writes txq->xmit_lock_owner past the end of the
+    allocation on non-lltx devices such as ifb. Drivers that index their
+    rings from skb_get_queue_mapping() (ex: ifb) go out of range the same
+    way.
+
+  - On enqueue, taprio_enqueue() indexes q->qdiscs[] with the same value;
+    the array is sized dev->num_tx_queues. A duplicating netem on a child
+    qdisc clones the skb and re-enqueues the clone at the taprio root
+    (qdisc_root_bh()) through a direct rootq->enqueue() call, so the value
+    reaches taprio_enqueue() before any dequeue cap runs.
+
+The Fix:
+Cap the mapping at the consumers and write the capped value back, so the
+qdisc's _tx[] lookup, the taprio q->qdiscs[] lookup and any later driver
+read stay in range.
+
+On the dequeue side the cap folds into the dequeue path instead of a
+separate walk over the returned list: dequeue_skb() caps the head, and
+each bulk helper caps the element it appends. For a qdisc that is not
+TCQ_F_ONETXQUEUE, netdev_cap_txqueue() logs a ratelimited notice and
+selects queue 0.
+
+A TCQ_F_ONETXQUEUE qdisc is bound to a single tx queue: dequeue_skb() uses
+q->dev_queue for the frozen check, the BQL limit and the trace point, while
+qdisc_restart() transmits on the skb's queue. Capping an out-of-range
+mapping to queue 0 would therefore send a per-queue child's skb through a
+different queue than the one it was dequeued for. On mq, mqprio, taprio and
+htb offload children, a stopped queue 0 could then park the list in
+q->gso_skb, and the later wake would schedule queue 0's own child instead
+of this qdisc. Pin a TCQ_F_ONETXQUEUE mapping to the qdisc's own queue to
+keep the documented invariant.
+
+The pin covers every mapping, not only an out-of-range one: an in-range
+mapping that a filter sets on one of those per-queue children is rewritten
+to the child's own queue, and this path does not call netdev_cap_txqueue(),
+so it logs no notice. On a single-queue device qdisc_create() sets
+TCQ_F_ONETXQUEUE, so the one-queue trigger described below also takes this
+branch and is corrected without a notice.
+
+That also keeps a bulk list on one queue by construction: every element of
+a TCQ_F_ONETXQUEUE qdisc, including a follower changed by a filter, is
+pinned to q->dev_queue before it is appended. The fast bulk helper
+therefore needs no head comparison and no skb_bad_txq requeue; the slow
+helper, used only by non-ONETXQUEUE qdiscs, still compares and requeues a
+mismatched follower, where a wake on any queue reschedules q.
+
+On the enqueue side taprio_enqueue() caps the mapping against
+real_num_tx_queues and writes it back before selecting q->qdiscs[queue], so
+a duplicating child cannot steer the clone out of the array.
+
+Conditions to recreate the bug:
+The dequeue path: load a SCHED_CLS or SCHED_ACT program that stores
+__sk_buff->queue_mapping (a tc BPF action is enough), attach it to a
+transmit qdisc (for example a matchall filter on a prio root), and send a
+packet. With a 1-queue device a store of 1 indexes one past dev->_tx[].
+Under KASAN with panic_on_warn=1 the unfixed kernel faults with "BUG:
+KASAN: slab-out-of-bounds in sch_direct_xmit". Loading the program needs
+CAP_BPF/CAP_SYS_ADMIN, so the trigger is root.
+
+The enqueue path: on a multi-queue device, install a software taprio root,
+graft a prio child with a duplicating netem on every class, and store an
+out-of-range queue_mapping from a matchall+bpf filter on the prio. The
+duplicate is re-enqueued at the taprio root and indexes q->qdiscs[] past
+dev->num_tx_queues; the unfixed kernel faults in taprio_enqueue_one().
+Same CAP_BPF/CAP_SYS_ADMIN requirement.
+
+Fixes: 74e31ca850c1 ("bpf: add skb->queue_mapping write access from tc clsact")
+Reported-by: Sashiko (nipa) <sashiko-bot@kernel.org>
+Closes: https://lore.kernel.org/netdev/179033713973.2160803.4914570693994398206@kernel.org/
+Link: https://lore.kernel.org/netdev/179329777513.3134.12135506558709584471@kernel.org/
+Link: https://lore.kernel.org/netdev/179293123940.3134.1149128679923234677@kernel.org/
+Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-MD1X.v4.r0.20261021042722-1%40mojatatu.com
+Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-MD1X.v3.r0.20261015165943-1%40mojatatu.com
+Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-MD1X.v1.20261005193231%40mojatatu.com
+Link: https://lore.kernel.org/netdev/20261015125822.GH83879@horms.kernel.org/
+Cc: stable@vger.kernel.org
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+---
+v5 -> v6:
+- Describe the TCQ_F_ONETXQUEUE pin for stable readers: it rewrites every
+  mapping, including an in-range mapping set by a filter on a per-queue
+  child, and that path does not call netdev_cap_txqueue() and logs no
+  notice. Scope the ratelimited-notice sentence to the other qdiscs.
+  Reported by Sashiko (nipa).
+
+v4 -> v5:
+- Fold in the enqueue-side consumer: taprio_enqueue() indexes q->qdiscs[]
+  with skb_get_queue_mapping(), and a duplicating netem re-enqueues the
+  clone at the taprio root before any dequeue cap can run. Cap the mapping
+  against real_num_tx_queues before the lookup. Reported by Sashiko (nipa).
+- Call out the TCQ_F_ONETXQUEUE steering change for stable users: an
+  in-range mapping set by a filter on a per-queue child is pinned to the
+  child's own queue, restoring the documented invariant. Reported by
+  Sashiko (nipa).
+
+v3 -> v4:
+- Cap a TCQ_F_ONETXQUEUE mapping to the qdisc's own tx queue instead of
+  queue 0, so a per-queue child of mq, mqprio, taprio or htb offload keeps
+  the documented invariant between q->dev_queue and the transmitted queue.
+  Reported by Sashiko (nipa).
+- With every element pinned to q->dev_queue, the fast bulk helper no longer
+  needs a head comparison or a skb_bad_txq requeue; a mismatched follower
+  there could otherwise be stranded behind a stopped queue that cannot
+  reschedule this qdisc. Reported by Sashiko (nipa).
+
+v2 -> v3:
+- Considered Comments from Simon Horman (hunk counts did not match the
+  diff content; patch did not apply):
+  https://lore.kernel.org/netdev/20261015125822.GH83879@horms.kernel.org/
+
+v1 -> v2:
+- try_bulk_dequeue_skb(): the fast bulk helper (TCQ_F_ONETXQUEUE) capped
+  each follower but appended it without comparing it against the head, so
+  a mismatched follower was still sent under the head's txq lock. Compare
+  the capped follower with the head and requeue a mismatch to skb_bad_txq,
+  matching try_bulk_dequeue_skb_slow(). Reported by Sashiko (nipa).
+---
+ net/sched/sch_generic.c | 41 ++++++++++++++++++++++++++++++++++++-----
+ net/sched/sch_taprio.c  |  5 +++++
+ 2 files changed, 41 insertions(+), 5 deletions(-)
+
+diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
+index 6f6a6f0d5eb0..5dc1d47f811a 100644
+--- a/net/sched/sch_generic.c
++++ b/net/sched/sch_generic.c
+@@ -96,9 +96,34 @@ static void qdisc_maybe_clear_missed(struct Qdisc *q,
+ 
+ #define SKB_XOFF_MAGIC ((struct sk_buff *)1UL)
+ 
++/* Re-cap a stale queue_mapping; an ONETXQUEUE qdisc pins q->dev_queue. */
++static u16 qdisc_cap_skb_tx_queue(struct Qdisc *q, struct sk_buff *skb)
++{
++	u16 queue = skb_get_queue_mapping(skb);
++	struct net_device *dev = qdisc_dev(q);
++	u16 capped;
++
++	if (q->flags & TCQ_F_ONETXQUEUE)
++		capped = q->dev_queue - netdev_get_tx_queue(dev, 0);
++	else
++		capped = netdev_cap_txqueue(dev, queue);
++
++	if (unlikely(capped != queue))
++		skb_set_queue_mapping(skb, capped);
++
++	return capped;
++}
++
++static struct netdev_queue *skb_cap_tx_queue(struct Qdisc *q,
++					     struct sk_buff *skb)
++{
++	return netdev_get_tx_queue(qdisc_dev(q),
++				   qdisc_cap_skb_tx_queue(q, skb));
++}
++
+ static inline struct sk_buff *__skb_dequeue_bad_txq(struct Qdisc *q)
+ {
+-	const struct netdev_queue *txq = q->dev_queue;
++	const struct netdev_queue *txq;
+ 	spinlock_t *lock = NULL;
+ 	struct sk_buff *skb;
+ 
+@@ -110,7 +135,8 @@ static inline struct sk_buff *__skb_dequeue_bad_txq(struct Qdisc *q)
+ 	skb = skb_peek(&q->skb_bad_txq);
+ 	if (skb) {
+ 		/* check the reason of requeuing without tx lock first */
+-		txq = skb_get_tx_queue(txq->dev, skb);
++		/* re-cap: real_num_tx_queues may have shrunk */
++		txq = skb_cap_tx_queue(q, skb);
+ 		if (!netif_xmit_frozen_or_stopped(txq)) {
+ 			skb = __skb_dequeue(&q->skb_bad_txq);
+ 			if (qdisc_is_percpu_stats(q)) {
+@@ -216,6 +242,8 @@ static void try_bulk_dequeue_skb(struct Qdisc *q,
+ 		if (!nskb)
+ 			break;
+ 
++		/* Every element of an ONETXQUEUE qdisc is pinned to q->dev_queue. */
++		qdisc_cap_skb_tx_queue(q, nskb);
+ 		bytelimit -= nskb->len; /* covers GSO len */
+ 		skb->next = nskb;
+ 		skb = nskb;
+@@ -233,7 +261,6 @@ static void try_bulk_dequeue_skb_slow(struct Qdisc *q,
+ 				      struct sk_buff *skb,
+ 				      int *packets)
+ {
+-	int mapping = skb_get_queue_mapping(skb);
+ 	struct sk_buff *nskb;
+ 	int cnt = 0;
+ 
+@@ -241,7 +268,9 @@ static void try_bulk_dequeue_skb_slow(struct Qdisc *q,
+ 		nskb = q->dequeue(q);
+ 		if (!nskb)
+ 			break;
+-		if (unlikely(skb_get_queue_mapping(nskb) != mapping)) {
++		/* A tc BPF store may have changed the mapping; cap it. */
++		if (unlikely(qdisc_cap_skb_tx_queue(q, nskb) !=
++			     skb_get_queue_mapping(skb))) {
+ 			qdisc_enqueue_skb_bad_txq(q, nskb);
+ 			break;
+ 		}
+@@ -286,7 +315,7 @@ static struct sk_buff *dequeue_skb(struct Qdisc *q, bool *validate,
+ 		if (xfrm_offload(skb))
+ 			*validate = true;
+ 		/* check the reason of requeuing without tx lock first */
+-		txq = skb_get_tx_queue(txq->dev, skb);
++		txq = skb_cap_tx_queue(q, skb);
+ 		if (!netif_xmit_frozen_or_stopped(txq)) {
+ 			skb = __skb_dequeue(&q->gso_skb);
+ 			if (qdisc_is_percpu_stats(q)) {
+@@ -322,6 +351,8 @@ static struct sk_buff *dequeue_skb(struct Qdisc *q, bool *validate,
+ 	skb = q->dequeue(q);
+ 	if (skb) {
+ bulk:
++		/* cap the head; the bulk helpers cap every appended element */
++		qdisc_cap_skb_tx_queue(q, skb);
+ 		if (qdisc_may_bulk(q))
+ 			try_bulk_dequeue_skb(q, skb, txq, packets, budget);
+ 		else
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index 39ac5b97aa3a..0eb0803047a1 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -632,6 +632,11 @@ static int taprio_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	int queue;
+ 
+ 	queue = skb_get_queue_mapping(skb);
++	if (unlikely(queue >= qdisc_dev(sch)->real_num_tx_queues)) {
++		/* A tc BPF program may have stored an out-of-range mapping. */
++		queue = netdev_cap_txqueue(qdisc_dev(sch), queue);
++		skb_set_queue_mapping(skb, queue);
++	}
+ 
+ 	child = q->qdiscs[queue];
+ 	if (unlikely(child == &noop_qdisc))
+-- 
+2.43.0
+
