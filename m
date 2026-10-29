@@ -1,101 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.14
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793308009;
-	b=NdN0sKMAEwyE1Ef56aqwIeLvNjrjmZTW8UtJ4j6ZJf23NWlQZzbVrhVJmNxfM5ZL9s83
-	 FOHFH1ivSKFxxeEX8SOFmdcRZ9pBQvTv7R0nOa/BYsX4lDmufVjaCvucbslycmlR5VcqA
-	 mBzU+NSuuEFuplKNPX2DnphKQ0PeZAzBWatt/46NiYFQFj1bZKMruAAgsHpkYt4r9e3Yz
-	 7ZpAkKlbi8+5t5E9cM+11EWs76rr5BnY+HklAqLpojXVDywRJdwaDaCwvGM4o1OOuYQzk
-	 XJSz7g/6Oe9jTjllcpOESgom+MvlMudMbS9fxxeDnOzRkmlmoXHR2RiPe1F91MSDVbg==
+	t=1793308024;
+	b=Wclb0sjtoAxJlki52QE5Sm29JVZrJMZm2kzLjRcOLg5phQzhg6FexHVtvnkUcuLlu64c
+	 msk2Wb+mz0jK/io3NLdj9ZdXLcByrBjAJkdXTy5Oc9zPFH4C5Rp6RenjphS4u2K6Ca+Dy
+	 xSA8oBHLO4HY0IkQ1SscMm+C0z5NdGIUAQXTVRJCI1B1q7kE8h5i0RhkrYHjs5usuqnF9
+	 VEarK+UQsCFf+AFXhy3RpVWU2Ot6frDYEsXUu9W8p6Ud2G1bqkFs465EkYx9K7RYTTT8o
+	 KggqxdtS5Op0vTaR4ISRmKdM4bk2UFg6+OHN31/new9hWNEdy+NVdDg2MVuMREFepvw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793308009;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=RvNRAljflILBTk2xcHt7L4MtTrvHvbzoZJJKtwFYnHk=;
-	b=B5wGGrQ4kZqS5mQ8I9bAavuHgMdzMmOVrJl/LZmobWx0CuXbXrLDHdEsdKExOjflWavi
-	 k2Pki+yK/2FShjiHMB2dbRa54SYYeOdQQ9CCp3uCNoNUEyuuL50CBam4X5XgRtY3NSWav
-	 4Fsps4IfJhiyTgTxoKQs4k8ptVDfPuYFcFrvwC8KoZr46R3TTym0tNVM18cVWOjyDxmm/
-	 w2EgsACea7/R1nTUlhFU2SZ5V1vcaEkWm6ToabE0dZWC5XA7otx3fKri8BGZGd6u+DzKe
-	 YWNXn8coY1EOgZIqhG6bh0/dbgLg7it04K3iaxrZ900j1Zbf+25JeerDBSvw1jm4qbQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793308024;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=BA19MkknKHlwmK/pkrg+bh9QKov5Bs/Vn/UrvuF8BS0=;
+	b=N0z0/XWTRQ7+rT9RLb3wyqK9xjNLaoWkhbByq1nhI4RS89Q52ioxsHHodBcJlmHV6BhQ
+	 DcgmdCW6QxGsa7cRMavrPCPzSJuwcqTeukbg3emseetjDKcPPyje0s/r7WXI9xpo2XZnN
+	 cCIwVyUA4PBeKdFm900Q8bTtXFneS3bkDpGg4HIkRsAozmxQVqa888F1wMOGwoU3ZyLkO
+	 sKruYhr4Nyiq6NtLvzfge1frhuEA/3DmMpR0RSvHwh+zPNWfzhA4KfFMct8RWjcnt/DUz
+	 z89A+FcPMiaNrO1hzl8GCgmPLCpIhkTl6JPR0slwyyIXef6an6i/Q0ela9nubUYaMRw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=paul-moore.com;
-	spf=pass smtp.mailfrom=paul-moore.com;
-	dkim=pass header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=SUMWHyeo;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.178
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b="PhbvR/Gw";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.14
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013014.outbound.protection.outlook.com [40.93.201.14])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972F5606A31D
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 21:06:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 972F5606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349DD606A31C;
+	Thu, 29 Oct 2026 21:07:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 349DD606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=SUMWHyeo
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8a06b44bd01so1498341b3a.0
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 14:06:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793308003; cv=none;
-        d=google.com; s=arc-20260327;
-        b=EPbe+CK+m9DvBZWYHWeN+l7YpZ4xtj+GtDx6nmgMKbhCAwvHxdSX5rkBdypF0MaBlF
-         A5TPnRe3dWQzVUBexVEN+bLzpzIyEmLslHlEPORGlN6JA3N+Hjz8CdrGPyvsiIqjG7pS
-         cj+9yZ1UQOgOiVigjwyBpU3+VojA9CDh4ASxA8IdJygroRWzoPen1tqEdcHtrMdvWOW3
-         IKI2XMx0VPXybUILmlR6JavrYB5f3Sbo1axU9lI79fk7baKasb9R46tgLcXFq6ekKijM
-         mHCvylC+OJKpyt5bCC2PuiN4MyGhoZdQCOMHfZjO1NQVPw+wbuOE9ijS5v/KpmQpzkTT
-         I5Ew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RvNRAljflILBTk2xcHt7L4MtTrvHvbzoZJJKtwFYnHk=;
-        fh=Rm0MI9QIEuGkDHR4PO1iAf5k062FKhuiSdhnaBKStkg=;
-        b=SHUewt24Ny8QYkA5scUPdHehVDRo+dXVwFEEPOalHYGpTtGtV6XALRkScV/SZY/dmk
-         l2LOwfHyaBBu6K3goVsPHlMHY22febesba1Di/dSbbTn1STQahJHdVtoo4mnCNcY9JId
-         I3wKK/UVl4BJp/YE2jNQkPhTvF+YptRAdlNMZwCkJ/I3JtmwSVKwvuAmIzw09ToEmhXU
-         XqWGmDy3oh5X3pbo7QurvVqmOMklBzLrvAKejt3pcWL1nb3UzR4ChCiPgyjixQhI9RRy
-         4ip+m+NvE/OqbBOGOrMgK5YP2MmOsFm7N++HqkCnDOe7UQv6YvJk6WwevJHS5sxLFPyG
-         rFvQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1793308003; x=1793912803; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=RvNRAljflILBTk2xcHt7L4MtTrvHvbzoZJJKtwFYnHk=;
-        b=SUMWHyeoy05LlaPkkQo68Lctqx8jCJMBTP5h1s5JBg1inkctrhBizK7c4vICrVd4ST
-         tFgaTBblbt25voa4mPfQrBUwVI2YrctmrtYJ63fqjqiCjZArQrKO4OKXUqCQLnZIerKB
-         9+pJORukUAKGMBg8JR8BdJgf1joFHY09BQARFm1AoO9N4jDb/hxCp5cBEDF6KEs4eZLA
-         s5zDXJAWJfqzLNKMabhR+qdErWq+anDkdWSt4GGzkvx7RJRsY7B9xG6OwOuuiyrfA07o
-         SZGBXLg0jYjyyW/ttddurHjHLMVw89R1WFqxnex86aQjNutVESFg8w7ztk95DE/2a0uq
-         MykA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793308003; x=1793912803;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RvNRAljflILBTk2xcHt7L4MtTrvHvbzoZJJKtwFYnHk=;
-        b=DoHpiPbOG2x6eRR6DEwgfmnXDJNSvX20mfq9Vx0Avybo8HrgHA9Ps6EMU7ovGsQusM
-         HTgtdMDoAmpJPXTo/qlUc2Ok8ovEL8F0fg/8bioQvKQHkeZBlCDh87TyJKaqlR0BVulh
-         iD3yT370O7ZWXOJgPsErkuLU99SWe4e/bSKyjW58HwrtrgkJXCj+nfvQYa4aQI2pimds
-         OZ3DxSkOhpG+FvDxYdpuUCh89AwpGfQMQCkNYZiC54AqP0fxdr/r95s9Su4Mrg4bgV59
-         Eblk2OZ8YBGqCe9Olv2vNDVDz7aCQBN/YDeK2MFbSoZohHo1YrptG1D3kXpYf6FxKBGe
-         lgNQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzx7tD4FhEwlOOxugvR2aQu7KWS0fJND5jlKUZWTSD4U3MR7wbYAnURTy+3zds8frbnwKO0vvs=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL9PmZJbRy/zVYjj4yAUPQUoGInDMPbQt7xfdd6YH2phMlYsGJ3
-	YLMIzwBwm9m4wsxhMDDbP2tf3D8hnN9HK2J+Wy8ooUHoX8hgjNYsJlHEmU7/5u3X/aEv0y+Txty
-	SXkuzxTDEtH60rshzew16P38ZcHz7qxndDbxm/ulZ5U7V4vMGwFJ8pDoX
-X-Gm-Gg: AYBFou2fp9LFz5mmkmZrKICXaM9/N0kCl9TenlNNovfrBUBnVBSU+bDsRiocxSyTpPH
-	0120Gqqq9YktRStFDeFMVVpNmCakP1yoMHAX9qA9HrkF6XOvae8YkzlrlgRcDeKqgk4PHokZ5VJ
-	OLmnt78S3c8VumsU9xHpsFbohdYR2g0mX3km7vLgBz2j1pwAr7oSAQi7H+n4I/FS7Atbdy2dQJx
-	WAPidY5gdSBwRcEn2v+Sg0H4rsUmBlFcNc2GcDdqqst9WEI6snWlNU+y0rPBQgPtuL6iJU7IVmp
-	KFpPNxUVif1VLNZpZkYXYyJcQ8JTcBaTzmNc84HS6Df7502jVKREVvLANs39Tbh2ZiRsXPtM5oz
-	7PoDQFwJVxrPCGYxbbhIXKnbXmpiz5wthlU6btusX5nWHivfkhgIgzoL0ioTgQEEGOui/gs6GYX
-	PyD99/bNSIQDZktw==
-X-Received: by 2002:a05:6a00:1491:b0:8a0:5d6f:8a9d with SMTP id
- d2e1a72fcca58-8a9bcc0e982mr298168b3a.35.1793308002978; Thu, 29 Oct 2026
- 14:06:42 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=PhbvR/Gw
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TWcYCsWnEJ3gcCBMCWgS1pwArUKJ7cPZtyTIzL2NvnhaDuAKD1P/Jo5re2d6qgt/99tqFtdg1ck+xwybSesakpgq6vIWhA6yGyL8LsitN7+6QDLjQ8iGqbYHDK3xlsKDOlOSzXlI+YliQZgPVh81yfdctehMj4vQ+Jw24D4WVDyOmpxebTPuxURetq32+Il7bNz6F5kmjNWmYqiDDPf+2zBYe2j0prNh9WYx3gnVjLFXYXlD/d/xDyYFzXHkmaxTv/pF143+VKgdobYq/rTRrVRWkMvkcYRM60SxZCR2un+a44Pavmv20IJAHUuXfaCdaDvKdtnhdkrVgNS5m9SvdA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BA19MkknKHlwmK/pkrg+bh9QKov5Bs/Vn/UrvuF8BS0=;
+ b=VZW9bNnwDoKYSS+3ldaDAgyVafJFr6K6ALGOmfhNDxyNmuVqCaDpJTRUxxzgL+l/EsZFCTr3JQffl+a+K2HQfLeGv38LeiBZuEkIhPE7e/jL96UGVoSAK0n7kcM4RS4uyLhNn0TnxdbjP4Gp9/gCKK1aUMXm/TuX2o19jN7u5YHDdILfLKPTKjcc+2Ip57+0VftUvHQcRhVCuhUIpwd1LCQncy+HeNPDg+TimAfoI93p4fQyIhr3I7vvmLeMdkEnwEh8sdM2/oD9mWvtqgHZFj0O953CxfmTjevlheqXhjN6i2qnVqLZRr6KB0MuPaRfShrd/W4z3+TNXAUSSV4g7g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BA19MkknKHlwmK/pkrg+bh9QKov5Bs/Vn/UrvuF8BS0=;
+ b=PhbvR/GwNc2GkhIzpNqhqL34udgwZtJJIXa6BRWhRKEnxC0hCHWMNRpn3eLQrYlnW1EO2j8IXUQ8arZUUM0tBtZgLmghBnxsUIoHN3ynGJ7tr2dgbPGsKaAoLJlLZD8P5urfBZr3/9ilhtXuBx20Spih7JVVYGpNkK7Px/cEv7NoL61hKzPazCx/WSUTEGMzJ7pZbfg9lflT/VNoWt+VYRJj7DS10CFbkcrwDCD6Ue/+1y8Rc/nd87TPJ4E/k0H54F3doS8OE/pkQE7ZzqJi5dl2vYd5SeU3PEy/dBSB7QitabhBO+7UE2kIJZxAEoYQUJ4ppG0oJqGXIkBp/7CIrQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by DS0PR12MB8574.namprd12.prod.outlook.com (2603:10b6:8:166::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.8; Thu, 29 Oct
+ 2026 21:06:57 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0569.008; Thu, 29 Oct 2026
+ 21:06:56 +0000
+Date: Thu, 29 Oct 2026 23:06:48 +0200
+From: Ido Schimmel <idosch@nvidia.com>
+To: Cheng Yongkang <teel4res@gmail.com>
+Cc: Nikolay Aleksandrov <razor@blackwall.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, bridge@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: bridge: mcast: validate the source limit before
+ replace
+Message-ID: <20261029210648.GA1492006@shredder>
+References: <179328314075.648427.9644307795980106759@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <179328314075.648427.9644307795980106759@gmail.com>
+X-ClientProxiedBy: FR2P281CA0177.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:9f::13) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,89 +100,99 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261029-work-security-namespace_free-v2-0-65591dbba7b3@kernel.org>
-In-Reply-To: <20261029-work-security-namespace_free-v2-0-65591dbba7b3@kernel.org>
-From: Paul Moore <paul@paul-moore.com>
-Date: Thu, 29 Oct 2026 17:06:30 -0400
-X-Gm-Features: AclHuK_BZX5V0V1r5inK-ll44mPJ2Gl9ZXGK3V5AGh6lbgKe2qd3dfFfw4B3CLM
-Message-ID: <CAHC9VhRwD1c1qKK4=Uc8cbMy27iF722C0DZeXy4WGtH-kOBOcQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/7] ns: fixes for the namespace LSM hooks
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
-	=?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, netdev@vger.kernel.org, 
-	Linus Torvalds <torvalds@linux-foundation.org>, stable@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|DS0PR12MB8574:EE_
+X-MS-Office365-Filtering-Correlation-Id: b9ee638b-cd5b-4cfa-5953-08df360090c4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|7416014|376014|366016|11063799006|261009223027099003|56012099006|261026121527099003|261021123027099003|261026140227099003|261022105027099003|261021121427099003|261028144727099003|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	N9RirD+kEz+9PD6ueVmVF3FQdu5jvT1/Cz1rAnyqIyozX3gj1Qllztf9Y8xrmZnMe8vUmw9j20EzUwVcrI3AYnIBYF5pef396eHQz7W8eJPWoVrG0TPrGypDJ+Z4BMqzmnyqs2pij21CwOpA96JFQWJcY87hKi8xNFVBMjMW4EE5CZkIGx3YRl04XJEkcdf1r2P4892oZ7T98GkDLfyqUCUgZodCakuNZTMZXjJAa1krbKT2ijlYRmwla/TROEKcZYDY31Urctv6pnJAv3NXVxFmDusl22LXbjy0yYv5YE2bixG9VVanR5U17RaLeA0LTAzd5P9s/tDZFpH/XxIBqwyvfTjBD54w2tMMGPFmB9dt8b15YRvnVT9MC49/9MxbrJ72bbArjMytnjxnuFi0f8VUDXCPLAP9QA2Com9CR0ju6Aw/ThzkIrIvsVtAe7x3g6fdfgsmRUkazVmwOdVsPU1kTIZkgCiiOFMzfh8Safl95NybZ4hh87qC/PnBERheHCI94Sny6EpPRaP8t/5KX078wQLoxRiR0Lbv0MFI/MDBGJzRIq4VCkaK+p4kom1Yr0x/wNP4kUvdKz1FjyjZSRYMU7Fz0GiK9XJL56nwcfGEkrqSTvWd9UocLwROFlpuKCg1CZhlAJYnP+LlwX6B5FZ69nsfFtliMFWv/N/k92U=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(7416014)(376014)(366016)(11063799006)(261009223027099003)(56012099006)(261026121527099003)(261021123027099003)(261026140227099003)(261022105027099003)(261021121427099003)(261028144727099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?d1SWfHLvpYycC2ZKLaUtaHSLu7ZO/g5j8avKB/REzqD0gXTgemcY6vfpkoeS?=
+ =?us-ascii?Q?WWI4O6A7/uLGvnBBrkkqdK9t1fJY2UF8Wttys+NX0JPzZAmMsIjiz2P7Rd1y?=
+ =?us-ascii?Q?mmGTHem/HDFeChnqoCOqD6gDTYQ2GqEf5WLemUAw30zSWXhqZ80q2+X+zSLD?=
+ =?us-ascii?Q?YkzjacN4SZprRHV81RGOznpoPUZF9nIJmuaxSBBnGL9fFdBP9CJWvsKjBuku?=
+ =?us-ascii?Q?GKS+UjQiLUdlmtusZkKb8WSP2Z5t2yIvO1SBYMYgMpNSS7YBrZixkg3Tkmwc?=
+ =?us-ascii?Q?TkPmbsdMjuBzTQ/zRtDDLOx9pUcCPYodgjcmVr4NVs/IhVhUsa+Pg1/fMxdE?=
+ =?us-ascii?Q?zHi13b+d2nAeJXtcfQmDghF7mvY15STBbg//tyoNApIKRCIA5xgM3l5qEKCy?=
+ =?us-ascii?Q?g4ZtDpnplDlh0iV9jCwxRY6ymzo1Z2wOCvdq80120iKdwIBFnhX1FwzTSPf6?=
+ =?us-ascii?Q?vhgiGnjxc4GudasKtf0Yv7j7KCzTI5KvQemq5cuPeiX8oDIheM1AYIEFdC13?=
+ =?us-ascii?Q?OqJZRM+OisciRZcCBasHlyUz1N4QbXfxy4ddFQQdUTUlIC9j+HTYbi+0yV9N?=
+ =?us-ascii?Q?4fKzq3UuW93zTXxCWo7dQD3w39prwWTiZjDDgNTL+9WDJNlTWFjBkLTxzGV1?=
+ =?us-ascii?Q?dIQgYUW4slCZgpz3g7jZK5Z2f59AYrIbBZUr1VjM4H84g+U28y+z6IT+V8mf?=
+ =?us-ascii?Q?Rrz8j4umKQDCXDhTznx8GYOdhiM/VIobcTfeO6kCR0vcnftG6LPjXu8m9uWl?=
+ =?us-ascii?Q?4WpDmc4W3OeLt4RTHfZkSKFOAW57k+8nh0km5mxi/8wrULKOEKoFWsE17j5Q?=
+ =?us-ascii?Q?bAXFTBGbTXpeSNBlizscmR9N8Mpvq9K4MExfvx3jtSViRVv/l5EYU+8g7Gd0?=
+ =?us-ascii?Q?nmUcPxes5G3gjKKpeFb8oou9YFpf2aU/4RygbZXDC+fl2eoXGuT1cuukH+Ko?=
+ =?us-ascii?Q?kRqVdBG0045T8sLL9nGfWoGOZPwFtP84UpVhxHj5+FdAmMUwuTLINqdHc0Da?=
+ =?us-ascii?Q?AZ3PKcFU6sgk2ywUjx2gtDJ/a4cYf59NkI2xpLPSV9AW2oJ4zFd+y9NVmWu9?=
+ =?us-ascii?Q?jYtN7NG90X/i2TrMa36jRBt2cluQ8IUsPP2cA3k2iGZIy2dpgVkdIecSlqhe?=
+ =?us-ascii?Q?6Pm4hM0XyKs7FSVt/UMCcA6A5+PTW9DZDQW7M9k0x6DeCtoyhVkN7vxSBDzd?=
+ =?us-ascii?Q?yXGiDE+F67oYgk807+ZCZobqTio8W9xgYb7QLZDyhN/kBHgJjl8q00dVmgip?=
+ =?us-ascii?Q?vTQD6JHbe9Fsr8QVRpcw1X+ONlbybO2wdlCRe76PWTenmZJK/IDTrXahv5Fy?=
+ =?us-ascii?Q?bGjv0ohCa65A88yi2AB53LGKBHG1m0m4Gyj1YQcXOlFdyMeB80Whoe/8TNx8?=
+ =?us-ascii?Q?Q1PTn53LvxVnSIT1Ags/oJvXFeJO3gNQAEW1Y5arTj4GBzcSjEGWcnwGMUah?=
+ =?us-ascii?Q?S7kYucAIgnd5FP7q7+2EQaTA2wFo+r+UYnC6mB4hMs9B8KjMr2mYZb2QRCAe?=
+ =?us-ascii?Q?Ogfk5LsS6+NgRKqy1yMRA4Hp/O1w+aNcsPiAxAUs3jjFE8P4cuNrUlk8qOvY?=
+ =?us-ascii?Q?4efmW+rCmb52SYem50lN0AtE0UZ/pXV6OFpj1ckctmu5bm+6l6QjCrkWySri?=
+ =?us-ascii?Q?sPl9JxuWFiFtW4TLBD6ti4e838smgK45NHPmAaSZ6UzZ7nKo1Nn2vHjHscrJ?=
+ =?us-ascii?Q?FKwDRn0ALYVNw6Nv2p9qAi7z2G1zRNd6CAM7ei+O8CNCKLz5?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b9ee638b-cd5b-4cfa-5953-08df360090c4
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2026 21:06:56.9125
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: D8l9RpSkC35eIoZ4jDXAIHZ3W7wbwjyv43CganrcrNj2UoElu+tTDgxahqUC2mkZyi/XEaYaKyPjX2hgBfi/Jw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8574
 
-On Thu, Oct 29, 2026 at 12:41=E2=80=AFPM Christian Brauner <brauner@kernel.=
-org> wrote:
->
-> I tried to switch systemd-nsresourced over to the namespace_free LSM
-> hook that went in this cycle. I explicitly developed it to work nicely
-> with that. But the version that is merged is broken for that case.
->
-> The namespace_free hook is never called. security_namespace_free() bails
-> if ns->ns_security is NULL and that's only allocated if an LSM requests
-> a namespace blob. Nobody does. Landlock doesn't care as it only uses
-> namespace_init and namespace_install but a bpf program attached to
-> namespace_free never runs. And it can't work around that either. We
-> could make the bpf LSM request a blob but that would just be a way to
-> make the hook fire. So call it unconditionally like we do for
-> superblocks, files and bpf maps.
->
-> The bpf LSM also marks the arguments of namespace_init and
-> namespace_free as trusted. Curiously that patch was also dropped.
->
-> namespace_init is called before the namespace is set up and if anything
-> fails afterwards the namespace is freed without looking at its reference
-> count. namespace_free is called on the way out. There's no kfunc that
-> takes a namespace yet but once there is one a program could take a
-> reference to a namespace that's about to be freed. So add both hooks to
-> untrusted_lsm_hooks.
->
-> The namespace_init hook also always sees a namespace id of zero because
-> the id is only allocated after the hook has run. The id is the only
-> identifier of a namespace that is never recycled. So it's what a bpf LSM
-> wants to use to track a namespace from namespace_init until
-> namespace_free.
->
-> The inode number is recycled way too quickly for that. So allocate the
-> id in __ns_common_init() before the hook is called. Then ns_tree_add()
-> doesn't need to allocate ids anymore and ns_tree_add_raw() can go.
-> Landlock now logs that id instead of zero when it denies the creation of
-> a namespace.
->
-> I'd want to get the whole series into v7.4 since the hooks are new this
-> cycle. Otherwise v7.4 is the only release where namespace_init sees a
-> zero id and where Landlock logs zero for a denied namespace creation.
-> The systemd change I have for this uses the namespace_free hook whenever
-> the kernel has it. On a kernel with the hook but without the first fix
-> it would never learn about dead user namespaces.
+On Thu, Oct 29, 2026 at 07:12:20AM -0700, Cheng Yongkang wrote:
+> br_mdb_replace_group_srcs() marks every existing source for deletion and
+> then re-adds the sources named by the NLM_F_REPLACE request.  The add loop
+> checks PG_SRC_ENT_LIMIT before allocating each new source; if the
+> transient source count reaches the limit, br_mdb_add_group_srcs() unwinds
+> by deleting every source it processed, including the pre-existing sources
+> it just refreshed.  The error path only clears BR_SGRP_F_DELETE and
+> cannot restore those sources or their (S,G) entries.
+> 
+> A replace with E existing sources and N distinct request sources not
+> already in the group fails at the limit if and only if E + N exceeds
+> PG_SRC_ENT_LIMIT.  The rejected request currently leaves the group with
+> one fewer source and removes that source's (S,G) entry:
+> 
+>   before: (*,G) star_srcs=31, S present, (S,G) present
+>   after rejected replace: star_srcs=30, S and (S,G) removed
+> 
+> Count those new sources and reject the request with -ENOSPC before any
+> source is marked deleted or added, so a rejected replace changes no
+> state.  Valid replaces, including ones that transiently reach the limit,
+> keep the same behavior.  Other add-loop failure paths are unchanged.
+> 
+> Fixes: 61f2183512a7 ("bridge: mcast: Support replacement of MDB port group entries")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Cheng Yongkang <teel4res@gmail.com>
+> ---
+>  net/bridge/br_mdb.c | 51 ++++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 50 insertions(+), 1 deletion(-)
 
-I'm renewing my comments from the v1 patchset (see the link Christian
-provided below) about the LSM framework changes being appropriate for
-Linux v7.5, not Linux v7.4.  It is clear that the BPF LSM use case was
-not tested prior to the merge window so BPF LSM support for these new
-LSM hooks should be deferred to Linux v7.5, allowing for proper
-testing.
+I'm not going to review this. You already sent a bridge patch [1], which
+I reviewed, asked for changes and you didn't follow up. I can only
+assume that the same will happen here. I'm reacting this way because
+this pattern is not unique to you (see my reply in [1], for example) and
+I'm tired of it. Get a patch merged, then continue to the next one.
 
-Disabling the BPF LSM support for these new hooks can easily be done
-by adding them to the bpf_lsm_disabled_hooks list in the BPF LSM for
-Linux v7.4, and removed in Linux v7.5 when the LSM hooks have been
-changed in a way that is deemed suitable for all LSMs.  The
-bpf_lsm_disabled_hooks change would be substantially smaller than this
-patchset and would be fully contained within the BPF LSM.
+Also, AFAICT, this patch doesn't fix a regression (never worked) or a
+security issue, so should be targeted at net-next which is currently
+closed [2].
 
-As a reminder, the LSM hooks and their callbacks are not part of the
-kernel's stable API and are subject to change between kernel releases.
-LSMs that wish to provide a stable API need to provide an abstraction
-between the LSM hooks/callbacks and their API; the LSM framework is
-not responsible for ensuring individual LSM API stability.
-
-> - Link to v1: https://patch.msgid.link/20261026-work-security-namespace_f=
-ree-v1-0-ffa3ebbf71bd@kernel.org
-
---=20
-paul-moore.com
+[1] https://lore.kernel.org/netdev/179268538303.70821.8213834342995341232@gmail.com/
+[2] https://netdev.bots.linux.dev/net-next.html
