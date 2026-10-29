@@ -1,60 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793292984;
-	b=yaQdIweRccaQkYwnRnW38IRXT7SIrWEm2FM8GDZaVVU6CKjlqX3423qerOYCOVfp3lcy
-	 9RjTegQsI+pD3SHpBjOF7+FxCv/Pjx7uz3NMMcB+IinTRGlgPqJq0bFxtajMMyU6U3hRR
-	 Z2hqrwd9I7WTQThSUkfGoa/z98behtVw3j4rXUwjK6/VNfBHhFfFMvMTNk5SoT21bCdC7
-	 NVU+6Sy/bUplRp8toRdsPaPkV7UEOS4w7webGlTlsqRdMyiNKUapHPMAzF15FYQEq9dik
-	 X2JsexD/0LQaxNtS9cKmjr/uuW8QuWNfm0w95xdnIvz2mnGtsd3cwLk0LQids8Qq88g==
+	t=1793293170;
+	b=d93NIBw96xVt4h07TmYsTRXweQ3yw7C0MrqmFGY5qPXU0wojPS07qiRQLlCaDlFARr/i
+	 a+mc8WR9fYG7PdwGUvx3yIy9zCnlMg5Ts2BVenyn0SEkLwRaHrRAuIharXHNQ8T3dnGWB
+	 voumMo4PUEfGIO4Ts7QEpKNGn0u9MFQrEyoI6KtcMPiw0lFoCceWvj9rUgyUHc/cZV+do
+	 7a9lXbnGgTNlWaJDAm7LS9F+BqCoYYfuCF1Cz1RaJ2euzDxiOxnbRJWHevJrQscImcx5L
+	 P95FUVfln+7epQv4CmcesTHcmybRW7NepCcCkcwpGwFG8skN6oR36VvxJrAw6bgZ/6Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793292984;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=zAfT8B4pTMhBnh03jvJKnth5Lkg6XbG+venp0/K8n5o=;
-	b=2KWQ5jexUT3kq3S9h+MiFBDD5M/lk9OgIAp37LAFyC4kjz0GjUv2XtcVdEPCuU+ZVPfi
-	 FvqgKPf5V+CMp4aLx5WBoRcyH9Zai7pbQTk+pqR9m1Ndf1p63c00n29gWY6KfF2/xc5BG
-	 RZw4VjxAGZnbBOVyYdyGS3plr1p8gf1lPlnFChDH5c2iWhrtV2NCWEcbDU3MXJnxZL+kT
-	 V4rDFt0xKs9QckXAlVTzfxmnazO+u76NX3QNFzWBS3F1uY417hiQ4J/2dWo5KXUKcg+WF
-	 2HGrzKymctDdPHcWZu5ioArdRcyrlEjAV1RIQbq5xkF3dPyIrDw04OXrA8JbFTKtYDw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793293170;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=ExDthG7GX5iobRnoo1yTcF17aQF/47k2yLGWN7hAE7w=;
+	b=Oe4PtSuM6fNKaQ2OKTwB9E/by8nK0BDPyuRsESU0RfCNNAplY36ahHCFl8XVSa0Hxwij
+	 8PUb/tQrcswUqL3IYaZcdPHXV6WRcHuLp1UdqqLQP3y4gugjqohoykGD3uwNwOL7G+EFH
+	 +JoacClLo+qHE5Bq+ML5ouVeiAlOeax1XTU6mnz8VU8hmVNzw8GAp6YqYB+HXKp6Y39yd
+	 v4G0j29hq97WHzjvP2KcJ/WQzX4219WrwJXl1Q0PRoQdizlHJ83ON7WoFOL7IQXsgua60
+	 ClOzg7zVhebMXt44gGrzhy3yHBKUsr3z4dFRCGIWDYGlnrdmD98eiQqJ3/IhlQ0E57w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=boEbotou;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X8mtWech;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3BD606A31A;
-	Thu, 29 Oct 2026 16:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5D5606A31A;
+	Thu, 29 Oct 2026 16:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=boEbotou
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B5DB1F01826;
-	Thu, 29 Oct 2026 16:56:22 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X8mtWech
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE85E1F01816;
+	Thu, 29 Oct 2026 16:59:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793292983;
-	bh=zAfT8B4pTMhBnh03jvJKnth5Lkg6XbG+venp0/K8n5o=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=boEbotouGERozQqDHYCiEv3UnSJfnBtxJtz0uMGLDAo5CGMrsjS/GRydBIXhjzg37
-	 bRhdlpqHzM7EEMM44LQirEVMe0yulsU4N9iuBuwdaNFCXu2A4ZMH2j4Yb2lnYdjCoR
-	 EWbLTsgViLB1bx6Fvzfm1b91rAFys7WK4ZZADBeANIYnPJrVgD3j9/uTu2xV4LiwaH
-	 mMGwNawornRNK9LcpH9lVnDMg4oi/nF0r0L5wN+/piKycQYr+AZYF26jqq4ZV8P2dl
-	 QYrMrWr1HHC42rlO6GENlVRmWLI/0EAHSONv7JS+soWKhWqB6LnYqXxFnbjfT2BbW1
-	 vjmC7oJOXDAaA==
-Subject: Re: [PATCH net v4] net: Fix Hole-196 vulnerability by dropping
- unicast ARP/IP in L2 BMC
-From: netdev-bot+sashiko@kernel.org
-To: starchang@google.com
-Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, ja@ssi.bg, johannes@sipsolutions.net,
- johannes.berg@intel.com, linux-kernel@vger.kernel.org
-Date: Thu, 29 Oct 2026 16:56:22 +0000
-Message-ID: <179329298204.3134.8449668897281901896@kernel.org>
-In-Reply-To: <20261027015619.1745984-1-starchang@google.com>
-References: <20261027015619.1745984-1-starchang@google.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1793293169;
+	bh=ExDthG7GX5iobRnoo1yTcF17aQF/47k2yLGWN7hAE7w=;
+	h=From:To:Cc:Subject:Date;
+	b=X8mtWechd0jk8IdQxioAQSXB3gFoNA4XFBjo/Z7PQx49HqLK6XqxRf1VoBGI7Gm06
+	 ZK+JBzgt9rB397v8dE6XwK3zlLB4LZYQUD/E+qd9C2I5elhq2U39BjsdrrYKmC7jgI
+	 duGKsTGqBsEOb0+tbZEFmKe0XXWkPIEbvpW9giItKGVRHscNBoxzQ2jZ5ace9RCE5l
+	 /QtOvJ8r+Ls0w8r1mmoHPXG6+E+roFJc1Ci0i5eFlEeMieh9dSs99YcmAy9XVB65Wc
+	 pHudAeCJCzrKCkPd4m7q/r2NNwRphw0bXi7DRxZOPCU8t8JYdjG8O0ntVQocBXnYLZ
+	 zQJ2DPs3Oau0A==
+From: Jakub Kicinski <kuba@kernel.org>
+To: torvalds@linux-foundation.org
+Cc: kuba@kernel.org,
+	davem@davemloft.net,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	pabeni@redhat.com
+Subject: [GIT PULL] Networking for v7.4-rc1
+Date: Thu, 29 Oct 2026 09:59:28 -0700
+Message-ID: <20261029165928.3587812-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,396 +59,516 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 10 potential
-issue(s) to consider.
-
-Critical: 0 · High: 2 · Medium: 2 · Low: 6
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The ARP side of the Hole-196 fix can be bypassed by changing one
-  field.
-- [High] Use-after-free read in ip_rcv_finish_core()
-  (net/ipv4/ip_input.c:467-484).
-- [Medium] The new DHCP exemption in ip_rcv_finish_core()
-  (net/ipv4/ip_input.c:463-490) weakens the existing Hole-196 drop, and…
-- [Medium] Turning on drop_unicast_in_l2_multicast now drops every ARP
-  Reply that arrives in an L2 broadcast/multicast frame unless it…
-- [Low] The patch changes the behaviour of the per-interface IPv4 sysctl
-  drop_unicast_in_l2_multicast without updating…
-- [Low] The commit message misstates the existing behaviour, and the IPv6
-  hunk tagged as a fix only adds a printk.
-- [Low] The new comment and the `is_valid_garp` predicate in
-  arp_process() define GARP differently from the GARP helper already in…
-- [Low] The three places that enforce drop_unicast_in_l2_multicast report
-  drops differently.
-- [Low] The IPv4 and IPv6 sysctls named drop_unicast_in_l2_multicast now
-  behave differently, while their documentation (ip-sysctl.rst:2303 and…
-- [Low] The patch adds net_warn_ratelimited() on four drop paths, and any
-  L2 peer can trigger all of them at line rate with crafted frames:…
-
---
-
-net: Fix Hole-196 vulnerability by dropping unicast ARP/IP in L2 BMC
-
-This patch extends the drop_unicast_in_l2_multicast sysctl so that it also
-drops ARP replies and unicast-THA ARP requests that arrive in L2
-broadcast/multicast frames, with an exemption for gratuitous ARP. It also
-exempts non-fragmented UDP traffic to port 68 from the IPv4 drop. It adds
-rate-limited warnings and an IPv4 MIB counter on the drop paths.
-
-> diff --git a/net/ipv4/arp.c b/net/ipv4/arp.c
-> index 1ca4ced280aef..9f6715a5b5475 100644
-> --- a/net/ipv4/arp.c
-> +++ b/net/ipv4/arp.c
-> @@ -794,6 +794,35 @@ static int arp_process(struct net *net, struct sock *sk, struct sk_buff *skb)
->  	    (!IN_DEV_ROUTE_LOCALNET(in_dev) && ipv4_is_loopback(tip)))
->  		goto out_free_skb;
->  
-> +/*
-> + * Hole-196 defense for ARP:
-> + * If drop_unicast_in_l2_multicast sysctl is enabled on this interface,
-> + * drop ARP Replies in L2 BMC frames, and ARP Requests in L2 BMC frames
-> + * that specify a non-zero unicast Target Hardware Address (tha).
-> + *
-> + * Legitimate Gratuitous ARP (GARP) and RFC 5227 Address Announcements
-> + * require (sip == tip) and tha matching sha (tha == sha). Only valid
-> + * GARP frames are exempted so they defer to DROP_GRATUITOUS_ARP below.
-> + */
-> +	if ((skb->pkt_type == PACKET_BROADCAST ||
-> +	     skb->pkt_type == PACKET_MULTICAST) &&
-> +	    IN_DEV_ORCONF(in_dev, DROP_UNICAST_IN_L2_MULTICAST)) {
-
-[Severity: Low]
-Should Documentation/networking/ip-sysctl.rst be updated as well? The IPv4
-entry still says:
-
-    drop_unicast_in_l2_multicast - BOOLEAN
-	Drop any unicast IP packets that are received in link-layer
-	multicast (or broadcast) frames.
-
-After this patch the same knob also filters ARP in arp_process(). It also
-no longer drops every unicast IP packet in ip_rcv_finish_core(), because
-UDP datagrams to port 68 are now let through.
-
-> +		bool is_valid_garp = (sip == tip) && tha &&
-> +				     !memcmp(tha, sha, dev->addr_len);
-
-[Severity: Low]
-Does this GARP definition match arp_is_garp() in the same file? The
-existing helper only requires tha == sha for replies:
-
-net/ipv4/arp.c:arp_is_garp() {
-	bool is_garp = tip == sip;
-
-	/* Gratuitous ARP _replies_ also require target hwaddr to be
-	 * the same as source.
-	 */
-	if (is_garp && ar_op == htons(ARPOP_REPLY))
-		is_garp =
-			...
-			tha &&
-			!memcmp(tha, sha, dev->addr_len);
-    ...
-}
-
-The new is_valid_garp applies the tha == sha test to requests too.
-
-The comment above says RFC 5227 Address Announcements require
-tha == sha. RFC 5227 announcements are actually requests with THA zeroed.
-They only get past this block because is_valid_ether_addr() is false for
-an all-zero THA.
-
-Everywhere else in arp.c, a sip == tip request with a unicast THA that
-differs from sha counts as GARP. Here it is dropped as a "unicast THA ARP
-Req" instead of deferring to DROP_GRATUITOUS_ARP, as the comment
-describes. Is that intended?
-
-> +
-> +		if (arp->ar_op == htons(ARPOP_REPLY) && !is_valid_garp) {
-> +			net_warn_ratelimited("Drop ARP Reply in L2 BMC on %s\n",
-> +					     dev->name);
-> +			goto out_free_skb;
-> +		}
-
-[Severity: Medium]
-Does this drop legitimate solicited ARP replies that are sent as
-link-layer broadcast?
-
-Nothing here checks for an outstanding INCOMPLETE neighbour entry for
-sip, so every non-GARP reply in a broadcast/multicast frame is discarded.
-RFC 3927 requires IPv4 link-local (169.254/16) hosts to send all ARP
-packets, replies included, as link-layer broadcast. A host with the sysctl
-set may then fail to resolve those neighbours.
-
-Further down, arp_process() handles broadcast replies on purpose:
-
-	/* Broadcast replies and request packets
-	   do not assert neighbour reachability.
-	 */
-	if (arp->ar_op != htons(ARPOP_REPLY) ||
-	    skb->pkt_type != PACKET_HOST)
-		state = NUD_STALE;
-
-Once the sysctl is enabled, broadcast replies can no longer reach that
-path. GARP replies whose THA is zero or broadcast instead of sha are
-dropped too.
-
-Before this patch the sysctl only affected IP packets, so existing users
-will see their ARP behaviour change.
-
-[Severity: Low]
-The commit message says MIB counters are incremented for dropped frames.
-Both new ARP drops end up here, though:
-
-out_free_skb:
-	kfree_skb(skb);
-	return NET_RX_DROP;
-
-That reports SKB_DROP_REASON_NOT_SPECIFIED and increments no counter. The
-IPv4 and IPv6 paths use SKB_DROP_REASON_UNICAST_IN_L2_MULTICAST. Could
-these drops use kfree_skb_reason() with that reason for consistency?
-
-> +		if (dev->addr_len == ETH_ALEN && tha &&
-> +		    is_valid_ether_addr(tha) && !is_valid_garp) {
-> +			net_warn_ratelimited("Drop unicast THA ARP Req in L2 BMC on %s\n",
-> +					     dev->name);
-> +			goto out_free_skb;
-> +		}
-> +	}
-
-[Severity: High]
-Can the ARP poisoning described in the commit message still happen with
-the sysctl enabled?
-
-For requests, THA plays no part in neighbour learning. Take a forged L2
-broadcast ARP request with:
-
-  - sip = the gateway
-  - sha = the attacker's MAC
-  - tip = a local address
-  - THA = 00:00:00:00:00:00 (normal for real requests) or
-    ff:ff:ff:ff:ff:ff
-
-is_valid_ether_addr() is false for both THA values, so the frame gets
-past this block and reaches:
-
-		if (addr_type == RTN_LOCAL) {
-			...
-			if (!dont_send) {
-				n = neigh_event_ns(tbl, sha, &sip, dev);
-
-neigh_event_ns() then creates or updates the gateway's entry with the
-attacker's MAC, using NEIGH_UPDATE_F_OVERRIDE.
-
-Replies have a similar bypass. Take a reply with sip == tip == the gateway
-and sha == tha == the attacker's MAC:
-
-  - It satisfies is_valid_garp, so it skips both new checks.
-  - With DROP_GRATUITOUS_ARP at its default of 0, it reaches arp_is_garp().
-  - arp_is_garp() returns true for a unicast sip.
-
-The result is:
-
-		override = time_after(jiffies,
-				      n->updated +
-				      NEIGH_VAR(n->parms, LOCKTIME)) ||
-			   is_garp;
-
-and neigh_update() overwrites the existing gateway entry.
-
-Gating on THA doesn't change what is learned from sha and sip. Does this
-approach need rethinking, rather than more THA cases?
-
-[ ... ]
-
-> diff --git a/net/ipv4/ip_input.c b/net/ipv4/ip_input.c
-> index 9860178752b8c..7d6d3e72e557b 100644
-> --- a/net/ipv4/ip_input.c
-> +++ b/net/ipv4/ip_input.c
-> @@ -456,10 +456,37 @@ static int ip_rcv_finish_core(struct net *net,
-
-[ ... ]
-
->  		if (in_dev &&
->  		    IN_DEV_ORCONF(in_dev, DROP_UNICAST_IN_L2_MULTICAST)) {
-> -			drop_reason = SKB_DROP_REASON_UNICAST_IN_L2_MULTICAST;
-> -			goto drop;
-> +			bool is_dhcp_resp = false;
-> +
-> +			iph = ip_hdr(skb);
-> +			if (iph->protocol == IPPROTO_UDP &&
-> +			    !ip_is_fragment(iph) &&
-> +			    pskb_may_pull(skb, iph->ihl * 4 +
-> +					       sizeof(struct udphdr))) {
-> +				const struct udphdr *uh;
-> +
-> +				iph = ip_hdr(skb);
-> +				uh = (const struct udphdr *)
-> +					(skb_network_header(skb) +
-> +					 iph->ihl * 4);
-> +				if (uh->dest == htons(68))
-> +					is_dhcp_resp = true;
-> +			}
-
-[Severity: Medium]
-Does this exemption weaken the protection the sysctl is meant to provide?
-
-Before this patch, every unicast IP packet in an L2 broadcast/multicast
-frame was dropped when the sysctl was set. Now any non-fragmented UDP
-datagram with destination port 68 is accepted. Source port, addresses and
-payload are not checked.
-
-So a forged DHCPACK, DHCPNAK or FORCERENEW, or anything else sent to port
-68, injected in a GTK-encrypted broadcast, would reach a client that uses
-a UDP socket bound to its leased address.
-
-The commit message says this preserves DHCPOFFER/DHCPACK delivery. Is that
-case actually reachable here?
-
-Per RFC 2131 section 4.1, servers do one of two things:
-
-  - IP-broadcast to 255.255.255.255, which routes as RTN_BROADCAST and
-    never reaches this branch.
-  - L2-unicast to chaddr/yiaddr, which arrives as PACKET_HOST.
-
-In INIT/SELECTING the client doesn't own yiaddr yet, so
-ip_route_input_slow() takes:
-
-	if (!IN_DEV_FORWARD(in_dev)) {
-		err = -EHOSTUNREACH;
-		goto no_route;
-	}
-
-The OFFER then ends up in ip_error() rather than at a port 68 socket.
-
-Clients that use AF_PACKET see the frame before IP input, so this drop
-never affected them.
-
-[Severity: Low]
-ip6_rcv_core() gets no matching DHCPv6 (UDP port 546) exemption. The IPv4
-and IPv6 drop_unicast_in_l2_multicast sysctls now behave differently,
-while their ip-sysctl.rst entries are still worded the same.
-
-If the IPv4 rationale holds, doesn't IPv6 need the same exemption? If it
-doesn't hold, is the IPv4 exemption needed at all?
-
-> +
-> +			if (!is_dhcp_resp) {
-> +				net_warn_ratelimited("Drop unicast IP %pI4 in L2 BMC on %s\n",
-> +						     &iph->daddr, dev->name);
-
-[Severity: High]
-Can iph be stale here when pskb_may_pull() fails?
-
-iph is only reloaded in the success branch. pskb_may_pull() can
-reallocate skb->head and still return false:
-
-include/linux/skbuff.h:pskb_may_pull_reason() {
-	...
-	skb_might_realloc(skb);
-
-	if (likely(len <= skb_headlen(skb)))
-		return SKB_NOT_DROPPED_YET;
-
-	if (unlikely(len > skb->len))
-		return SKB_DROP_REASON_PKT_TOO_SMALL;
-
-	if (unlikely(!__pskb_pull_tail(skb, len - skb_headlen(skb))))
-		return SKB_DROP_REASON_NOMEM;
-	...
-}
-
-There are two ways to get there:
-
-  - With CONFIG_FAIL_SKB_REALLOC, skb_might_realloc() calls
-    pskb_expand_head(), which frees the old head of a non-cloned skb. A
-    UDP packet whose tot_len equals the IP header length then returns
-    PKT_TOO_SMALL.
-  - Without fault injection, __pskb_pull_tail() can call
-    pskb_expand_head() when eat > 0 or the skb is cloned. It can then
-    still return NULL on the frag_list path, if skb_clone() or pskb_pull()
-    fails.
-
-Either way, is_dhcp_resp stays false and &iph->daddr is read through the
-freed head for the %pI4 print.
-
-The commit message says ip_hdr(skb) is reloaded after pskb_may_pull() to
-prevent dangling pointer access, but that only covers the success path.
-Would it work to reload iph unconditionally after the call, or to save
-daddr before it?
-
-[Severity: Low]
-Are these new net_warn_ratelimited() calls needed? That means this one,
-the one in ip6_rcv_core(), and the two in arp_process(). Any L2 peer can
-trigger them at line rate with crafted frames.
-
-net_ratelimit() uses a single global state shared by every
-net_*_ratelimited() caller:
-
-net/core/utils.c:
-DEFINE_RATELIMIT_STATE(net_ratelimit_state, 5 * HZ, 10);
-
-A steady flood would keep unrelated networking warnings suppressed, and
-it would fill the log with attacker-chosen addresses.
-
-The RFC 1122 text quoted just above this code says to silently discard.
-These drops are also already visible through
-SKB_DROP_REASON_UNICAST_IN_L2_MULTICAST.
-
-> +				__IP_INC_STATS(net, IPSTATS_MIB_INHDRERRORS);
-> +				drop_reason =
-> +					SKB_DROP_REASON_UNICAST_IN_L2_MULTICAST;
-> +				goto drop;
-> +			}
->  		}
->  	}
->  
-> diff --git a/net/ipv6/ip6_input.c b/net/ipv6/ip6_input.c
-> index d332ec60f9150..816ee7874076b 100644
-> --- a/net/ipv6/ip6_input.c
-> +++ b/net/ipv6/ip6_input.c
-> @@ -278,6 +278,8 @@ static struct sk_buff *ip6_rcv_core(struct sk_buff *skb, struct net_device *dev,
->  	    (skb->pkt_type == PACKET_BROADCAST ||
->  	     skb->pkt_type == PACKET_MULTICAST) &&
->  	    READ_ONCE(idev->cnf.drop_unicast_in_l2_multicast)) {
-> +		net_warn_ratelimited("IPv6: Drop unicast IP %pI6c in L2 BMC on %s\n",
-> +				     &hdr->daddr, dev->name);
->  		SKB_DR_SET(reason, UNICAST_IN_L2_MULTICAST);
->  		goto err;
->  	}
-
-[Severity: Low]
-The commit message says:
-
-    3. Dropped packets were silently discarded without warnings or MIB stats.
-
-For IPv6 that doesn't look accurate. This drop already goes through the
-err label:
-
-err:
-	__IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
-	SKB_DR_OR(reason, IP_INHDR);
-
-Both IPv4 and IPv6 also already reported
-SKB_DROP_REASON_UNICAST_IN_L2_MULTICAST.
-
-So the only IPv6 change is this printk, and it carries
-Fixes: abbc30436d39, which makes it a stable candidate. Is that tag
-appropriate for this hunk?
-
-Two other points don't match the description either:
-
-  - The new ARP drops get no counter at all.
-  - The new IPv4 counter records a policy drop as
-    IPSTATS_MIB_INHDRERRORS, even though the header is well-formed.
-
-Could the commit message be updated to describe what actually changed?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261027015619.1745984-1-starchang%40google.com
+Hi Linus!
+
+The following changes since commit 734bef548a96e8774d6eef5dfa2026c6edc4e80b:
+
+  Merge tag 'net-next-7.4' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next (2026-10-22 15:58:00 -1000)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git tags/net-7.4-rc1
+
+for you to fetch changes up to 8f44631ba02afe9fff2f0a0fb66560ab19df87fd:
+
+  tun: drop batched packets while the device is down (2026-10-29 09:25:58 -0700)
+
+----------------------------------------------------------------
+Current release - new code bugs:
+
+ - mctp: usblib: fix assertion breaking esoteric builds
+
+Previous releases - regressions:
+
+ - eth: ti: am65-cpts: fix support for PTP_EXTTS_REQUEST2 ioctl
+
+ - eth: mlx4: always create the eth and ib auxiliary devices
+
+ - Revert advertising the TCP MSS from the configured MTU
+
+ - eth: tg3: invert restart quirk logic to restrict SNP power-down bypass
+
+ - eth: bnxt: recycle agg buffers when Rx head buffer allocation fails
+
+- netlink: check sk_rcvbuf before charging the dump skb
+
+Previous releases - always broken:
+
+ - net: fix frag_list leak in skb_segment_list() error path
+
+ - sctp: reject forged cookie peer_addr with unknown address family
+
+ - vxlan: keep reserved_bits across changelink
+
+ - net: limit priority VLAN untag depth
+
+ - inet: frags: prevent acceptance of partially authenticated reassembly
+
+ - gro: do not GRO GSO packets with inconsistent payload
+
+ - tcp: avoid double destroy in tcp_abort() of an unaccepted child
+
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+----------------------------------------------------------------
+Aamir Ahmed (1):
+      gve: fix out-of-bounds read in gve_get_flow_rule_entry()
+
+Alexandre Cassen (2):
+      net/sched: act_api: inherit filter offload flags only on new actions
+      selftests: tc-testing: test offload flags of reused matchall actions
+
+Allison Henderson (4):
+      net/rds: include the scope id in the sendmsg connection cache check
+      net/rds: keep the connected peer's scope id apart from the bound one
+      net/rds: do not fail init when CONFIG_SYSCTL=n
+      net/rds: do not initialize transports after rds_init() failed
+
+Anil Kaushik (1):
+      gtp: Require 'CAP_NET_ADMIN' when joining the gtp multicast group
+
+Antonio Quartulli (1):
+      net/sched: fix packet reordering on requeue
+
+Binbin Deng (1):
+      net: atlantic: Unregister before clearing RXNFC rules
+
+Cheng Yongkang (1):
+      net: tun: hold napi_mutex when deleting NAPI in tun_detach_all()
+
+Chuck Lever (2):
+      tls: Honor O_NONBLOCK in tls_sw_splice_read()
+      selftests: tls: Cover splice on a nonblocking socket
+
+Coia Prant (4):
+      net: pcs: xpcs-plat: fix runtime PM initialization
+      net: pcs: xpcs-plat: fix clock lifecycle for !CONFIG_PM builds
+      net: pcs: xpcs-rk: fix cleanup action error message
+      MAINTAINERS: list DW XPCS platform driver and binding under XPCS entry
+
+Cosmin Ratiu (2):
+      net/mlx5e: SHAMPO: Do not merge PSP packets
+      net/mlx5: Only set num_doorbells on a fully initialized SF
+
+Daniel Machon (8):
+      net: sparx5/lan969x: do not read past skb->len when injecting a frame
+      net: sparx5: fix tx DCB index drift in fdma xmit
+      net: lan966x: do not inject uninitialised bytes past skb->len
+      net: lan966x: do not warn on MAC entries that are not port destined
+      net: lan966x: fix the DB dataptr of frames from ndo_xdp_xmit
+      net: lan966x: release the in-flight slot of a stale TX skb
+      net: microchip: fdma: fix DCB corruption under sustained load
+      net: lan966x: don't disable hardirqs in fdma tx clear path
+
+Daniel Palmer (1):
+      net: i825xx: 82596: use MMIO accessors for the MVME16x PORT/CA registers
+
+David Yang (2):
+      net: hisilicon: hisi_femac: Stop the receiver before releasing the RX ring
+      net: dsa: motorcomm: Fix function parameter types
+
+Dharmender Garg (2):
+      bnge: cap RSS contexts and RX rings to the RSS table size
+      bnge: fix RSS table sizing for large RX ring counts
+
+Dimitri Daskalakis (1):
+      eth: fbnic: Correct packet header prefetch
+
+Divyanshu Jha (1):
+      net: usb: cdc_ncm: add Apple Silicon MacBook Air (05ac:1903) device ID
+
+Dong Yibo (1):
+      net: rnpgbe: Accept link-down events without speed magic
+
+Dudu Lu (5):
+      net/sched: etf: initialise the sock_exterr_skb before filling it
+      net/sched: gred: keep the qdisc lock while updating the table
+      net/sched: taprio: unwind the netdevice notifier if register_qdisc() fails
+      net: xps: bound the cleanup loop by the old map's num_tc
+      net-sysfs: reject a one-entry RPS flow table
+
+Eric Dumazet (9):
+      net: fix frag_list leak in skb_segment_list() error path
+      net: harden qdisc_pkt_len_segs_init() against malicious GSO packets
+      ipmr: clear skb->cb[] in reg_vif_xmit()
+      ixgbe: reserve TX timestamp after skb preparation
+      ppp: linearize and segment bridged packets when required
+      net: add eth_type_trans_careful()
+      loopback: use eth_type_trans_careful()
+      net: use eth_type_trans_careful() in __dev_forward_skb2()
+      openvswitch: use eth_type_trans_careful() in internal_dev_recv()
+
+Fang Xieyan (1):
+      net: sched: em_ipt: validate hook value from netlink
+
+Fernando Fernandez Mancera (1):
+      devlink: region: fix snapshot id leak on kernel-allocated ids
+
+Florian Fainelli (2):
+      net: dsa: mv88e6xxx: fix 6351 family statistics snapshot
+      net: dsa: mv88e6xxx: fix 88E6171 statistics type
+
+Gal Pressman (1):
+      net/mlx5e: IPsec, Fix out-of-bounds comparison of neighbour keys
+
+Greg Thelen (1):
+      selftests/net: tcp_mmap: remove unused -k option and keepflag
+
+Hangbin Liu (1):
+      selftests: gro: remove unused variable total_data
+
+Hannes Laimer (2):
+      vxlan: keep reserved_bits across changelink
+      selftests: forwarding: vxlan_reserved: add gbp changelink test
+
+Hanson Wang (1):
+      net: usb: aqc111: fix set_mac_address return value
+
+Henry Martin (1):
+      netlink: fix out-of-bounds bitmap access clearing stale mc groups
+
+Ido Schimmel (2):
+      ipmr: fully initialize the synthetic IP header in ipmr_get_route()
+      ipmr, ip6mr: validate packets injected into the register vif on xmit
+
+Jacob Keller (2):
+      ice: use reference counting and SRCU for PTP port access
+      ice: set in_use only after preparing Tx timestamp index
+
+Jakub Kicinski (21):
+      Merge branch 'net-pse-pd-si3474-two-driver-fixes'
+      Merge branch 'net-rds-scope-aware-sendmsg-connection-cache'
+      Merge branch 'net-usb-pegasus-fix-receive-length-handling'
+      Merge branch 'net-sched-act_api-keep-the-offload-flags-of-shared-actions'
+      Merge branch 'ipmr-ip6mr-fix-several-info-leaks'
+      Merge branch 'net-usb-cdc_ncm-cdc_mbim-fix-netpoll-lockup-in-tx_fixup'
+      Merge branch 'net-dsa-mv88e6xxx-88e6171-stats-fixes'
+      Merge branch 'revert-advertising-the-tcp-mss-from-the-configured-mtu'
+      Merge branch 'net-bcmgenet-fixes-for-a-failed-resume-and-the-ring-rebuild'
+      Merge branch 'tls-honor-o_nonblock-in-tls_sw_splice_read'
+      Merge branch 'net-pcs-xpcs-fix-runtime-pm-and-clock-lifecycle'
+      Merge branch 'bnge-fixes'
+      Merge branch 'ice-e82x-reduced-timestamp-processing-logic-fixes'
+      eth: bnxt: recycle agg buffers when Rx head buffer allocation fails
+      eth: bnxt: resize Rx head buffers when rx-copybreak changes
+      eth: bnxt: don't leak buffers when XDP agg buffer allocation fails
+      eth: bnxt: free XDP frags when xdp_do_redirect() fails
+      eth: bnxt: hand XDP frags over to the copybreak skb
+      Merge branch 'eth-bnxt-fix-rx-buffer-leaks-under-oom'
+      Merge branch 'net-fix-eth_type_trans-crashes-on-skbs-coming-from-the-stack'
+      Merge branch 'netlink-fix-a-dump-livelock-with-a-notification-queued'
+
+Jamal Hadi Salim (2):
+      net/sched: sch_teql: fix slaves_lock IRQ deadlock
+      net/sched: act_ife: do not consume the inner header on egress
+
+James Clark (1):
+      net: ethernet: ti: am65-cpts: fix support for PTP_EXTTS_REQUEST2 ioctl
+
+James Lee (1):
+      net: mctp: usblib: Fix broken assertion
+
+Jamie Nguyen (1):
+      selftests: net: txtimestamp: fix out-of-bounds read in raw UDP checksum
+
+Jhonata Poma-Hansen (2):
+      netlink: check sk_rcvbuf before charging the dump skb
+      selftests: net: netlink-dumps: start a dump with a notification queued
+
+Jiayuan Chen (2):
+      tls: fix the open record check in the max payload size setsockopt
+      bonding: fix out-of-bounds read of arp_ip_target
+
+Jin Li (1):
+      selftests: net: forwarding: bridge_vlan_mcast: Allow default startup query interval to vary by HZ
+
+Joas Antonio dos Santos (2):
+      net: dcb: initialize PFC value before calling getpfccfg
+      net: mctp: free reassembly head skb when key_add fails on SOM
+
+Jérémy Jean (1):
+      inet: frags: prevent acceptance of partially authenticated reassembly
+
+Kaho Jiang (1):
+      net: ipv4: add zero check for snd_cwnd_clamp
+
+Kaifeng Wang (1):
+      tcp: reject devmem tx with fastopen and repair
+
+Kamil Sawicki (1):
+      net: limit priority VLAN untag depth
+
+Karol Kolacinski (1):
+      ice: E822: keep Tx timestamps disabled during offset calibration
+
+Kiran Kumar K (1):
+      octeontx2-af: fix inner LC ltype match for RSS flowkey
+
+Kuniyuki Iwashima (1):
+      ipv6: Protect multiple routes insertion by table lock.
+
+Kyle Zeng (6):
+      net: sched: prevent scheduling deactivated qdiscs
+      net/packet: check TX_RING fragments before memory accounting
+      gro: do not GRO GSO packets with inconsistent payload
+      tcp: avoid double destroy in tcp_abort() of an unaccepted child
+      tcp: fix reordering addition overflow in MTU probing
+      tcp: initialize mapped children before route lookup
+
+Linkui Xiao (1):
+      net: bridge: netlink: do not clear the vlan info dump error
+
+Linmao Li (1):
+      r8152: Use BMSR to detect the link state
+
+Naman Gulati (1):
+      netdev-genl: ignore NETDEV_UNREGISTER rebroadcasts
+
+Nandor Kracser (1):
+      tls: avoid field-spanning write when copying crypto info
+
+Nicolai Buchwitz (7):
+      net: usb: cdc_ncm: don't enable BHs in tx_fixup under netpoll
+      net: usb: cdc_mbim: don't enable BHs in tx_fixup under netpoll
+      net: bcmgenet: recover from a failed resume
+      net: bcmgenet: restore the Tx coalescing setting when the rings are rebuilt
+      octeontx2-pf: fix skb use-after-free on ipsec transmit drop
+      octeontx2-pf: pass the skb to otx2_dma_unmap_skb_frags()
+      octeontx2-pf: fix skb use-after-free with ipsec crypto offload
+
+Noam D. Eliyahu (1):
+      tg3: Invert restart quirk logic to restrict SNP power-down bypass
+
+Paolo Abeni (5):
+      gtp: hold RCU in gtp_genl_send_echo_req()
+      Merge branch 'net-rds-fix-init-failures-leaving-built-in-transports-on-a-dead-core'
+      Merge branch 'vxlan-keep-reserved_bits-on-changelink'
+      Merge branch 'net-sched-sch_teql-fix-transmit-path-regressions'
+      Merge branch 'octeontx2-pf-fix-ipsec-transmit-error-paths'
+
+Paul Moses (1):
+      xsk: restore UMEM flags after failed pool assignment
+
+Peter Morrow (1):
+      net/mlx4: always create the eth and ib auxiliary devices
+
+Piotr Kubik (2):
+      net: pse-pd: si3474: keep detection enabled on the other PIs
+      net: pse-pd: si3474: validate the channels of a PI
+
+Prashant Sengar (1):
+      net: usb: lan78xx: avoid NULL PHY dereference in WoL setup
+
+Qingfang Deng (2):
+      pppoe: drop discovery frames with no MAC header
+      pppoe: wait for RCU readers before reusing a socket
+
+Rishikesh Jethwani (1):
+      tls: keep TX and RX hardware offload on the same device
+
+Rosen Penev (1):
+      net: bgmac: fix TX DMA unmapping and slot cleanup
+
+Sicong Huang (1):
+      nfp: flower: fix use-after-free in neighbour update work
+
+Tao Gong (1):
+      net: dsa: mt7530: trap frames to conduit in MFC on EN7581 and AN7583
+
+Tristan Madani (1):
+      ppp: fix stale pointer access after pskb_may_pull in ppp_ccp_peek
+
+Tung Nguyen (1):
+      tipc: fix refcount panic in tipc_rcv() when receiving shared skb
+
+Wei Jie Law (2):
+      net: usb: pegasus: do not advance rx_skb->data on dropped frames
+      net: usb: pegasus: check rx pkt_len against the received length
+
+Xia Yan (1):
+      macvlan: fix passthru promiscuity accounting while down
+
+Xiao Liang (1):
+      tun: drop batched packets while the device is down
+
+Xingyuan Mo (1):
+      sctp: reject forged cookie peer_addr with unknown address family
+
+Yingjie Wang (1):
+      tcp: limit tcp_tso_rtt_log to a valid shift count
+
+Yongjian Wang (2):
+      Revert "selftests: net: packetdrill: add tests for advertised MSS with PMTU exceptions"
+      Revert "net: advertise TCP MSS from the configured MTU, not the learned PMTU"
+
+Zhewei Yuan (1):
+      tcp: Fix fastreuse cache initialization on first bind
+
+Zhiling Zou (3):
+      ipmr: only copy pktinfo to cache reports
+      ipmr: drop packets with unknown ingress VIF
+      tcp: check congestion control restriction first
+
+Zizhen Liu (1):
+      net: skbuff: propagate shared-frag marker in skb_zerocopy()
+
+alex todadze (1):
+      net: stmmac: fix rx checksum offload with extended descriptors
+
+owen kwan (1):
+      net/sched: sch_teql: fix use-after-free on lower qdisc drop
+
+yanxia (1):
+      veth: fix stale peer max_mtu on XDP program replacement
+
+Ömer Mete Kaya (1):
+      usbnet: fix EVENT_RX_PAUSED race in usbnet_skb_return()
+
+ Documentation/netlink/specs/gtp.yaml               |   1 +
+ Documentation/networking/ip-sysctl.rst             |   2 +
+ Documentation/networking/tls-offload.rst           |  16 +-
+ MAINTAINERS                                        |   2 +
+ drivers/net/bonding/bond_main.c                    |   2 +-
+ drivers/net/dsa/motorcomm/chip.c                   |   4 +-
+ drivers/net/dsa/mt7530.c                           |   7 +-
+ drivers/net/dsa/mv88e6xxx/chip.c                   |  10 +-
+ .../net/ethernet/aquantia/atlantic/aq_pci_func.c   |   2 +-
+ drivers/net/ethernet/broadcom/bgmac.c              |  51 +++---
+ drivers/net/ethernet/broadcom/bnge/bnge_resc.c     |   6 +-
+ drivers/net/ethernet/broadcom/bnge/bnge_resc.h     |   9 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c          |  58 ++++---
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c  |   1 +
+ drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c      |   1 +
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c     | 102 ++++++++----
+ drivers/net/ethernet/broadcom/genet/bcmgenet.h     |   1 +
+ drivers/net/ethernet/broadcom/tg3.c                |  48 ++----
+ drivers/net/ethernet/google/gve/gve_flow_rule.c    |   1 +
+ drivers/net/ethernet/hisilicon/hisi_femac.c        |   1 +
+ drivers/net/ethernet/i825xx/82596.c                |  25 +--
+ drivers/net/ethernet/intel/ice/ice_adapter.c       |  17 +-
+ drivers/net/ethernet/intel/ice/ice_adapter.h       |  17 +-
+ drivers/net/ethernet/intel/ice/ice_ptp.c           | 174 +++++++++++++++------
+ drivers/net/ethernet/intel/ice/ice_ptp.h           |  10 +-
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c      |  40 +++--
+ .../net/ethernet/marvell/octeontx2/af/rvu_nix.c    |   8 +-
+ .../ethernet/marvell/octeontx2/nic/cn10k_ipsec.c   |   5 +-
+ .../ethernet/marvell/octeontx2/nic/otx2_common.c   |   9 +-
+ .../ethernet/marvell/octeontx2/nic/otx2_common.h   |   3 +-
+ .../net/ethernet/marvell/octeontx2/nic/otx2_txrx.c |  19 ++-
+ drivers/net/ethernet/mellanox/mlx4/intf.c          |  15 +-
+ drivers/net/ethernet/mellanox/mlx5/core/devlink.c  |   6 +
+ .../mellanox/mlx5/core/en_accel/en_accel.h         |   6 +
+ .../ethernet/mellanox/mlx5/core/en_accel/ipsec.c   |   3 +
+ .../mellanox/mlx5/core/en_accel/psp_rxtx.h         |  13 ++
+ drivers/net/ethernet/mellanox/mlx5/core/en_rx.c    |   6 +-
+ drivers/net/ethernet/meta/fbnic/fbnic_txrx.c       |   2 +-
+ drivers/net/ethernet/microchip/fdma/fdma_api.c     |  30 +++-
+ .../net/ethernet/microchip/lan966x/lan966x_fdma.c  |   8 +-
+ .../net/ethernet/microchip/lan966x/lan966x_mac.c   |   4 +-
+ .../net/ethernet/microchip/lan966x/lan966x_main.c  |  19 ++-
+ .../net/ethernet/microchip/lan966x/lan966x_ptp.c   |  10 +-
+ .../net/ethernet/microchip/sparx5/sparx5_fdma.c    |   3 +-
+ .../net/ethernet/microchip/sparx5/sparx5_packet.c  |  15 +-
+ drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c  |   7 +-
+ drivers/net/ethernet/netronome/nfp/flower/main.h   |   2 +
+ .../ethernet/netronome/nfp/flower/tunnel_conf.c    |  24 ++-
+ drivers/net/ethernet/stmicro/stmmac/descs.h        |   6 +-
+ drivers/net/ethernet/stmicro/stmmac/enh_desc.c     |  25 ++-
+ drivers/net/ethernet/stmicro/stmmac/hwif.h         |   6 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  |  19 ++-
+ drivers/net/ethernet/ti/am65-cpts.c                |   1 +
+ drivers/net/gtp.c                                  |  47 ++++--
+ drivers/net/loopback.c                             |   8 +-
+ drivers/net/macvlan.c                              |   3 +-
+ drivers/net/mctp/mctp-usblib-test.c                |   4 +-
+ drivers/net/pcs/pcs-xpcs-plat.c                    |  62 ++++++--
+ drivers/net/pcs/pcs-xpcs-rk.c                      |   2 +-
+ drivers/net/ppp/ppp_generic.c                      |  96 +++++++++++-
+ drivers/net/ppp/pppoe.c                            |   8 +
+ drivers/net/pse-pd/si3474.c                        |  23 ++-
+ drivers/net/tun.c                                  |  10 ++
+ drivers/net/usb/aqc111.c                           |   8 +-
+ drivers/net/usb/cdc_mbim.c                         |   5 +-
+ drivers/net/usb/cdc_ncm.c                          |  13 +-
+ drivers/net/usb/lan78xx.c                          |   9 ++
+ drivers/net/usb/pegasus.c                          |  16 +-
+ drivers/net/usb/r8152.c                            |  10 +-
+ drivers/net/usb/usbnet.c                           |  24 ++-
+ drivers/net/veth.c                                 |   5 +-
+ drivers/net/vxlan/vxlan_core.c                     |   2 +-
+ include/linux/etherdevice.h                        |  28 ++++
+ include/linux/ppp_channel.h                        |   1 +
+ include/net/inet_frag.h                            |   1 +
+ include/net/ip.h                                   |  25 ---
+ include/net/ip6_route.h                            |  37 -----
+ include/net/xfrm.h                                 |  17 ++
+ net/bridge/br_netlink.c                            |   2 +-
+ net/core/dev.c                                     |  42 ++++-
+ net/core/gro.c                                     |   5 +-
+ net/core/net-sysfs.c                               |   7 +
+ net/core/netdev-genl.c                             |   6 +
+ net/core/skbuff.c                                  |  11 +-
+ net/dcb/dcbnl.c                                    |   2 +
+ net/devlink/region.c                               |   5 +
+ net/ipv4/inet_connection_sock.c                    |   3 +-
+ net/ipv4/inet_fragment.c                           |   5 +
+ net/ipv4/ip_fragment.c                             |   3 +-
+ net/ipv4/ipmr.c                                    |  27 +++-
+ net/ipv4/metrics.c                                 |   5 +
+ net/ipv4/route.c                                   |   4 +-
+ net/ipv4/sysctl_net_ipv4.c                         |   2 +
+ net/ipv4/tcp.c                                     |  26 ++-
+ net/ipv4/tcp_cong.c                                |   4 +-
+ net/ipv4/tcp_ipv4.c                                |  10 +-
+ net/ipv4/tcp_offload.c                             |  12 +-
+ net/ipv4/tcp_output.c                              |   2 +-
+ net/ipv6/ip6_fib.c                                 |   4 -
+ net/ipv6/ip6mr.c                                   |   5 +-
+ net/ipv6/reassembly.c                              |   3 +-
+ net/ipv6/route.c                                   |  19 ++-
+ net/mctp/route.c                                   |  10 +-
+ net/netlink/af_netlink.c                           |  12 +-
+ net/openvswitch/vport-internal_dev.c               |   8 +-
+ net/packet/af_packet.c                             |  12 +-
+ net/rds/af_rds.c                                   |  29 +++-
+ net/rds/bind.c                                     |   4 +-
+ net/rds/ib_sysctl.c                                |   2 +-
+ net/rds/rdma_transport.c                           |   3 +
+ net/rds/rds.h                                      |   3 +
+ net/rds/recv.c                                     |  11 +-
+ net/rds/send.c                                     |   9 +-
+ net/rds/sysctl.c                                   |   2 +-
+ net/rds/tcp.c                                      |   5 +-
+ net/sched/act_api.c                                |   3 +
+ net/sched/act_ife.c                                |   4 +
+ net/sched/em_ipt.c                                 |   3 +
+ net/sched/sch_etf.c                                |   1 +
+ net/sched/sch_generic.c                            |  14 +-
+ net/sched/sch_gred.c                               |  16 +-
+ net/sched/sch_taprio.c                             |   6 +-
+ net/sched/sch_teql.c                               |  60 ++++---
+ net/sctp/ipv6.c                                    |   6 +-
+ net/sctp/sm_make_chunk.c                           |  24 +--
+ net/sctp/sm_statefuns.c                            |   2 +-
+ net/tipc/bearer.c                                  |   4 +
+ net/tls/tls_device.c                               |  24 +++
+ net/tls/tls_main.c                                 |  26 ++-
+ net/tls/tls_sw.c                                   |   9 +-
+ net/xdp/xsk_buff_pool.c                            |   2 +
+ tools/testing/selftests/bpf/prog_tests/empty_skb.c |  19 ++-
+ .../selftests/net/forwarding/bridge_vlan_mcast.sh  |   3 +-
+ .../selftests/net/forwarding/vxlan_reserved.sh     |  15 ++
+ tools/testing/selftests/net/lib/gro.c              |   2 -
+ tools/testing/selftests/net/netlink-dumps.c        | 102 ++++++++++++
+ .../net/packetdrill/tcp_advmss_pmtu_ipv4.pkt       |  67 --------
+ .../net/packetdrill/tcp_advmss_pmtu_ipv6.pkt       |  67 --------
+ tools/testing/selftests/net/tcp_mmap.c             |   6 +-
+ tools/testing/selftests/net/tls.c                  |  31 ++++
+ tools/testing/selftests/net/txtimestamp.c          |  23 +--
+ .../tc-testing/tc-tests/filters/matchall.json      |  71 +++++++++
+ 142 files changed, 1596 insertions(+), 684 deletions(-)
+ delete mode 100644 tools/testing/selftests/net/packetdrill/tcp_advmss_pmtu_ipv4.pkt
+ delete mode 100644 tools/testing/selftests/net/packetdrill/tcp_advmss_pmtu_ipv6.pkt
