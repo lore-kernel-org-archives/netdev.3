@@ -1,102 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.49
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793311764;
-	b=hKCfeTIrZN5yZUGVCl4RKCEwLg/k74WvzI21r0fPM877CKYQU8SK0kO489AM7V5iI0pL
-	 VzVO9R863haQdkLKIBKzkpXJ7Jb+OOLZeI4eCG9/sdLSHFXf/RHpakh3UOTQc4qZN9uES
-	 mYnkRlP8nBXzJWs8YBBYkXIoxpSSNfRLe70FtRZg68QO4SXKgGTt+VBAQv/c5ZjmmVwBg
-	 Vq3N3M26yl9+OvJ79qnsdrwapD0+SumtYLkrDYNwfXX8I0HFIMfa+RefuJ4w1x5lh+ADF
-	 Ui7NTpnTN2IwJp/uPrSbZB3pmrsQTsRrSq8zO3jeh8R3t0N+gSXWN4oHh7yBu3RoEnA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793311764;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=wN1QZuqk50CoSPDgAsnyPn7ZMz6ZPRvw9NxirNW+1eU=;
-	b=ekpTF/HOoTbfhkA5bdMW/oj9+1+Frwva5b2sLop9nFCpbSOi2n/t8cYdmhrRngD1aUEU
-	 yU1is6smAuOxnkqShejqhM6MKXDXwhZt/MD9ozU+2mXzT+Rc3CDplF5NKcLEqHhYvm554
-	 igcQctYgFkt5Z/gKowZVdW/uwlhs/g9h4QrtU1teKECvqjy4beil9nEKZ54xH0c7036AW
-	 Uf/1/NOqzQObnsYMMAC4EjQDRtVbNmSbfQqYEO6nbRfgI9fWNy2VRPGxYApinGNM+AHmc
-	 I4qeTeCrHv7rPPAYdgSpaYkUvCu0WuL4eQBwc9deotu9d+WgtpgkMDmeRvTsn/h4sfg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hlaLD3sz;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.49
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=45.157.188.14
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793312026;
+	b=vkAuQf9x7/39+5xottNm4GNr9Qn+OY5Q7P/OeUoVwNU82X8QT7nnXTDpJf25NGBcz7sB
+	 WD/++SOH51fnHvK/p6+8CInyueZLk2g3FNbVvf85SCR619MQ5F0pEme2gWAlklMV7KzbE
+	 OTRTRvLO6iWy9usbjYYKXxCxMYuDeVPibUTV/Y/I7GZjoQ2b0Tt3wckpNhvAGcMNXzmcW
+	 6AOWuKBsHWyLn2c7hIm8AC39XIVhhL5ng21rUgD5GXvxh+f6gJqQyaLjor0kJToXBAsjD
+	 i9yoMM0/ZTXqugAadmu3jkqFKsIZGiEqEeZfKk77g9oInCxYL4D47r0HihS4mjUbVpg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793312026;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To:
+	 X-Infomaniak-Routing;
+	bh=Nt4+TvJfMkuxRVj2D8iwH96sQf7kpj74Ylf9aC9EzbY=;
+	b=aIMaTtaB55AHwYsi/4izvaYO6WsRirx/e+rrM/QsSvfGXNK1942t9HFzebUukqPqK/y4
+	 O/HjZN5yfobi2QP9OJDLpCKZMXxIfd7C4Hh3UcQbAp443+BmDNbH4brl6WiFJ5NIA6MEl
+	 +28mXRrD4tMrtdUWkV4WIbqJq1tNNX00w4jFnsPhDidcqGzw2wXCTxgeYADQvF/fblYL6
+	 cqN+onV+TlT5ecZ9DKP9ARBVlKo5x5m8OEkMtGuEWgKTiuSCpHf862kYPHqy8y7kFk/Ao
+	 OWjc/VHqKgA1v1UYWjKlVVyGmtRHcybH3Rcd/JsetOq5mJoo0OYeLzTWuXVhucQNeSA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=digikod.net;
+	spf=pass smtp.mailfrom=digikod.net;
+	dkim=pass header.d=digikod.net header.i=@digikod.net header.a=rsa-sha256 header.s=20191114 header.b=aeYC+OSf;
+	arc=none smtp.remote-ip=45.157.188.14
+Received: from smtp-bc0e.mail.infomaniak.ch (smtp-bc0e.mail.infomaniak.ch [45.157.188.14])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6A4606A31A
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 22:09:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8B6A4606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2786A606A31A
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 22:13:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2786A606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hlaLD3sz
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6b2237b596cso101869a12.0
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 15:09:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793311762; cv=none;
-        d=google.com; s=arc-20260327;
-        b=dM2U+qApvXDOXsbSKRnOpdN4k3OA7UtTLEQkvAYyYhms95ndXnhmC73arGTExTh7Le
-         mIT101GH62Vrziszv5X4Cr0zGTtcTa6rPYyWrol+KiC+5MIeD5pvHoYa7csyYRjpPvfX
-         vWOzHDvdVnNOq4HGFkJ5oDF5nUpt+hU3xmWC5WFyjCWpprlKTazC9uLJWqmAzaQ1KNp3
-         ZAjYW8CsfPkg1QkRWeL9Dl69lPUwEkiu+8g1+j36OyrjDnjKbjp8nq4Ty3AMFc8gJ1EO
-         XnuTdJhEdw5Kjl3vJmSV9lic3+Goc18UGrRcMTY7Gfe5cwJnaVKnH2cqCa1kZbJat9J9
-         mTVA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=wN1QZuqk50CoSPDgAsnyPn7ZMz6ZPRvw9NxirNW+1eU=;
-        fh=j4TCEVeXtP+kUrXOguLHVcsXPXRw8s7SAW3Wkcq0PgM=;
-        b=S829E448KjSDD17rGbRaxOrCZLeEzXrQ7uQ93ZxhyGOW6kpI/gr/niT0pWc8XdUCKg
-         eIp4ugUjSYH3q4JbZ68aIOCD61rE98ieqKvIP41D2eSAe3TMEs3cgzgd04njWB7LvUKe
-         /Su4w7FCnB90m26rNKxEOSvzJRnJt6wrHjStePlpsc32QnExo16xKkihIiXObR/xKAMT
-         0+roOJNnj/71sSSxdaUSW50Eea3yjngaGkwdsVRk2+wU6yuBgtObt+a2vPoutjQchzNI
-         TG129j1Cl8w67Zgxs1muXuvZCdGTIaYIrd5aqZ8y4N4k/R9pG4Nui2Ayci9rkKtsrMPI
-         TUXw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793311762; x=1793916562; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=wN1QZuqk50CoSPDgAsnyPn7ZMz6ZPRvw9NxirNW+1eU=;
-        b=hlaLD3szJf1k72AAVSjwghaL8/MJqDKT6+xr9yFj1bsgVm+nsEKuiVt7W4t+7cJ6Ly
-         9QExBgVTyI5jgCx6OXLcw93fpygWg6rt2ugWN+kiw7C9+2JHX7UVlikFfnujyfz4F7Jb
-         XggPOLQ/B2X+BXXGVrFykZmKL5KS8afiHES7qC+SOr4CViHTQx4WXXTPwrmTehza5YSQ
-         D8gzXpXDnAVZloLiGowhMfzeVHOvgnm+40GiubRVKG6QYEtUwofvmytug688dvaMdXO6
-         JVyRopErAQRxLDP4YzCfx1OAYrUuApOs+R4qV6CZZqvlYi3aralADjuTQgl0q8o1ZhqT
-         FMlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793311762; x=1793916562;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wN1QZuqk50CoSPDgAsnyPn7ZMz6ZPRvw9NxirNW+1eU=;
-        b=FrgWtcdeMt4jy8kZE0jlZk0DX2e8XNH7Oumg1SnOR3lT27EOjrjByG2ZMECaiuQpS3
-         NnySj2T4iX4BPr0SB8HE2TZHPWc9yGiGsRiKt7l6WyGBsApUYunLiocLrkEaIu7hvtG2
-         T0a0LX8Wi3plwghWp1h2Nt/gAN/7+zxP2uQDD8tbioyUk3xjgoOpdXTdm5jPvH0z0Rlt
-         SBbLjwHsUmvp9qxAFtpf3ANKzUkRFh4oflEN9VGE5XlbGN+QuBZWwm7C8AunKySFi6rV
-         goxPNMLYRR8hh9xX3ncKURZMfMEnASYYNJakBSr+iqF76ek+Ec4e3ehGK+LAJxam9PK+
-         7iKQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwx3IQEptYV/g/DgBeZlFRJBgs9jWrk4sVelj7LSFkzYVB76kmEzGX8SA0LXjDqBTE2mIAruQU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLFMwg5aVocC0uD/DRAvI+N5KcakpgpnvYtc0yzjdjtQ6AQ1q5D
-	oOhiCOP48B+8G0pW07R44W/gjv009YXwa5w/NkHDsOWfZnLuXJqHuBXfQ7Ssw07DPeMKs/pjqog
-	ctySaU5wcpIe0LXsaj2tw32O+xdrknCiK7OBmb0r8
-X-Gm-Gg: AYBFou1jHsH7gCBVtyMfS8clcW4O/73kToBlAW4NA6SiVqv2qtgocbqYwhR5a+grA2I
-	SIroa+AGmecFGunzX5g7OT4a1bOi9yWBqXoX+1CT8aLreA9KdCm9cBhc7gn/Tftk9y9kWcmxj2z
-	aOmMglACQn5DNcWEa+7LqfWxs2gHHXjC+hYOQ0LAe4i7N36ie3m4o7dU4ioRboTK43Na03jtt2q
-	zhsrXaSeNspgKV2qY3wDx12p9abMDQhCA/evOIy+8salpxFbKltd69kdoHLbEl9wKIlhO0EKgk1
-	+8JHOD1tilLHdmxIrLm7Gy8RziV0dEuCWBW6mqVZW89/8WXhXdnJ9+MtAuT225Cqlvk46mgwYhu
-	5OAopHMSaHUg5vjWlOKz3h56BkbS4Lc4PtCbtoy6oeWpbrFKgzkw8vhCDsZHHX+3r4MRmIybYGV
-	KQUqiBzy+e0XYvq380RnvbSJI2X6Ql/B11L2qPtCte4WybC+uUn9+S0Y6wB1gGqKSYLSkFInXXr
-	F9NTzZEQw==
-X-Received: by 2002:a05:6402:501c:b0:6ac:afa3:6f72 with SMTP id
- 4fb4d7f45d1cf-6b4d3372a2amr288181a12.5.1793311761310; Thu, 29 Oct 2026
- 15:09:21 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=digikod.net header.i=@digikod.net header.a=rsa-sha256 header.s=20191114 header.b=aeYC+OSf
+Received: from smtp-4-0000.mail.infomaniak.ch (unknown [IPv6:2001:1600:7:10::a6b])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4jFz5d6c2hz1bx8;
+	Thu, 29 Oct 2026 23:13:41 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
+	s=20191114; t=1793312021;
+	bh=Nt4+TvJfMkuxRVj2D8iwH96sQf7kpj74Ylf9aC9EzbY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aeYC+OSf3U2IgiM6ZOPN26zhpBzS79NEBDypkumWca2aXb/wVB9if8RgW/XLQrGAy
+	 lqTTqk1MxNR2qsZ4qRPM8fD1/LQPyl0wvAf0SlciqZD3+/d9hOEtGbEMbygwftYB76
+	 M3zhtal5wL5t+MlH9RkyzWJnuhtTWVfWzWBKowA8=
+Received: from unknown by smtp-4-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4jFz5c5dGFzdbK;
+	Thu, 29 Oct 2026 23:13:40 +0100 (CET)
+Date: Thu, 29 Oct 2026 23:13:37 +0100
+From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Paul Moore <paul@paul-moore.com>, 
+	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, netdev@vger.kernel.org, 
+	Linus Torvalds <torvalds@linux-foundation.org>, stable@kernel.org
+Subject: Re: [PATCH v2 4/7] ns: allocate the namespace id before the
+ namespace_init hook
+Message-ID: <20261029.Eu4Ohquaixoh@digikod.net>
+References: <20261029-work-security-namespace_free-v2-0-65591dbba7b3@kernel.org>
+ <20261029-work-security-namespace_free-v2-4-65591dbba7b3@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,453 +68,315 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <CALf2hKvp0NPVLwr=a3+jUHtPohxbra8gox+aYAfWathJnn-J+Q@mail.gmail.com>
- <CAL4WiiqFJpmcV4=TWRpukCq6q=-729658FwGvieNcPXe97kLvQ@mail.gmail.com> <CALf2hKtiCaiabDQGpm+jzy7VKgMr78eQTKGsN10aXp0JfaOhLA@mail.gmail.com>
-In-Reply-To: <CALf2hKtiCaiabDQGpm+jzy7VKgMr78eQTKGsN10aXp0JfaOhLA@mail.gmail.com>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Thu, 29 Oct 2026 15:09:05 -0700
-X-Gm-Features: AclHuK8UuBiGBCuoGNxdg2iHLMTZpWhIDzpQqa17etVcIPrvfaNwmI8YeGEMccI
-Message-ID: <CAAVpQUA3meY_3XbXsj_OG_Gqg=b5+QA6DLuMZVOmTVWHudcjqQ@mail.gmail.com>
-Subject: Re: [BUG] tcp: cross-family IPv4 option echo stack overwrite
-To: Zhiyu Zhang <zhiyuzhang999@gmail.com>
-Cc: Eric Dumazet <edumazet@kernel.org>, netdev@vger.kernel.org, ncardwell@google.com, 
-	dsahern@kernel.org, idosch@nvidia.com, brauner@kernel.org, 
-	dhowells@redhat.com, lyutoon@gmail.com, tpluszz77@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261029-work-security-namespace_free-v2-4-65591dbba7b3@kernel.org>
+X-Infomaniak-Routing: alpha
 
-dropped security@
+On Thu, Oct 29, 2026 at 05:40:59PM +0100, Christian Brauner wrote:
+> Currently the namespace id is allocated only after __ns_common_init()
+> has called the namespace_init LSM hook. Most namespace types allocate it
+> in ns_tree_add() right before the namespace is added to the namespace
+> trees. So the namespace_init hook always sees an id of zero.
+> 
+> The namespace id is the only identifier of a namespace that is never
+> recycled. A bpf LSM wants to use it to track a namespace from
+> namespace_init until namespace_free, e.g., by using it as the key into a
+> map that associates data with the namespace. The inode number doesn't
+> work for that as it is quickly recycled.
+> 
+> So allocate the id in __ns_common_init() before calling the
+> namespace_init hook. Every namespace then has its id by the time it is
+> added to the namespace trees. The initial namespaces still get their
+> fixed ids, either statically from NS_COMMON_INIT() or for init_net from
+> ns_common_init(). So ns_tree_add() doesn't need to allocate an id
+> anymore. Ids are still handed out in creation order so mnt_ns_loop()
+> keeps working. Mount and ipc namespaces already allocated their id right
+> after ns_common_init() anyway.
+> 
+> If creating the namespace fails after the id has been allocated the id
+> is simply never used.
+> 
+> Landlock logs the namespace id when it denies the use of a namespace.
+> For a denied namespace creation that used to be zero. Now it's the id
+> that was allocated for the new namespace. That namespace never becomes
+> visible to userspace but it's the same id that other LSMs see in
+> namespace_init. Update the Landlock documentation and selftests
+> accordingly. The selftests can't know the id of a namespace whose
+> creation was denied so they only check that it isn't zero.
+> 
+> While at it, drop ns_tree_gen_id() as it has no users left.
+> 
+> Reproducer, 100 user and uts namespaces:
+> 
+>   bpftrace -e 'fentry:bpf_lsm_namespace_init {
+>       @[args.ns->ns_id ? "set" : "zero"] = count(); }' &
+>   for i in $(seq 100); do unshare -Uu true; done
+> 
+>   before: @[zero]: 200
+>   after:  @[set]: 200
+> 
+> Fixes: f675d2e95569 ("lsm: add LSM blob and hooks for namespaces")
+> Cc: <stable@kernel.org> # mainline only
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
-On Wed, Oct 28, 2026 at 11:15=E2=80=AFPM Zhiyu Zhang <zhiyuzhang999@gmail.c=
-om> wrote:
->
-> Hi Eric, Kuniyuki,
->
-> I kept Eric's tcp_ipv6.c change unchanged and added the missing MPTCP
-> coverage. Two MPTCP paths called tcp_disconnect() directly, bypassing the
-> protocol-specific disconnect callback. The changes below route them throu=
-gh
-> ssk->sk_prot->disconnect(), so IPv6 subflows run tcp_v6_disconnect() as
-> well.
->
-> I tested the combined change on net.git at 94cea342e891 with both TCP and
-> MPTCP by reconnecting an AF_INET6 socket from a v4-mapped peer to a nativ=
-e
-> IPv6 peer after connect(AF_UNSPEC).
->
-> The related watch_queue report and patch are:
->
-> Report: https://lore.kernel.org/lkml/CALf2hKveij_sHgANY9Aktm1dPa4wfKjKNkH=
-yp9yPbjORWFXagA@mail.gmail.com/
-> Patch: https://lore.kernel.org/lkml/20261029054136.1174216-1-zhiyuzhang99=
-9@gmail.com/
->
-> I have not posted a standalone [PATCH net] to avoid duplicating Kuniyuki'=
-s
-> work. If you would like me to submit this completed version, I can send i=
-t
-> right away:
+Reviewed-by: Mickaël Salaün <mic@digikod.net> # Landlock changes
 
-Please do so.  I'm not sure why you were wondering so even
-though you said you'd post a patch asap, but one thing...
-
-
->
-> From ffa42bc88b0221619f6eadb3a7f5c38328a258cb Mon Sep 17 00:00:00 2001
-> From: Zhiyu Zhang <zhiyuzhang999@gmail.com>
-
-I'd keep the original author as Eric.
-
-Thanks.
-
-P.S. do not top-post on lkml.
-
-
-> Date: Thu, 29 Oct 2026 01:58:37 -0400
-> Subject: [PATCH] tcp: restore IPv6 af_ops on disconnect of a v4-mapped so=
-cket
->
-> A successful connect() of an IPv6 socket to a v4-mapped address switches
-> icsk_af_ops, sk_backlog_rcv and af_specific to their IPv4-mapped variants=
-.
-> These are only restored if the connect() fails.
->
-> After connect(AF_UNSPEC), the socket can be reused for listen() or for a
-> native IPv6 connect while still using the mapped handlers. IPv6 packets
-> processed from the socket backlog are then handled by tcp_v4_do_rcv().
-> tcp_v4_send_reset() and tcp_v4_send_ack() interpret
-> TCP_SKB_CB(skb)->header.h6 as IPv4 options, and __ip_options_echo() can
-> overflow its 40-byte destination buffer.
->
-> Commit 8cc3aef0cb19 ("tcp: Do not allow buggy transitions between ehash
-> and lhash2.") prevents listen() after connect(AF_UNSPEC), but a native IP=
-v6
-> connect is still allowed.
->
-> Add tcp_v6_disconnect() to restore the IPv6 handlers when a v4-mapped
-> socket is disconnected, and use the same helper in the connect error path=
-.
->
-> MPTCP subflows override sk_prot, and two teardown paths call
-> tcp_disconnect() directly. Route those calls through the protocol-specifi=
-c
-> disconnect operation so IPv6 MPTCP subflows receive the same restoration.
->
-> Tested with TCP and MPTCP by reconnecting an AF_INET6 socket from a
-> v4-mapped peer to a native IPv6 peer after connect(AF_UNSPEC).
->
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Reported-by: Tong Liu <lyutoon@gmail.com>
-> Reported-by: Qi Tang <tpluszz77@gmail.com>
-> Reported-by: Zhiyu Zhang <zhiyuzhang999@gmail.com>
-> Closes: https://lore.kernel.org/netdev/CALf2hKvp0NPVLwr=3Da3+jUHtPohxbra8=
-gox+aYAfWathJnn-J+Q@mail.gmail.com/
-> Link: https://lore.kernel.org/netdev/CAL4WiiqFJpmcV4=3DTWRpukCq6q=3D-7296=
-58FwGvieNcPXe97kLvQ@mail.gmail.com/
-> Link: https://lore.kernel.org/lkml/20261029054136.1174216-1-zhiyuzhang999=
-@gmail.com/
-> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
-> Co-developed-by: Zhiyu Zhang <zhiyuzhang999@gmail.com>
-> Signed-off-by: Zhiyu Zhang <zhiyuzhang999@gmail.com>
 > ---
->  net/ipv6/tcp_ipv6.c  | 37 ++++++++++++++++++++++++++++---------
->  net/mptcp/protocol.c |  4 ++--
->  2 files changed, 30 insertions(+), 11 deletions(-)
->
-> diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-> index e006a30360ea..a93410aab66e 100644
-> --- a/net/ipv6/tcp_ipv6.c
-> +++ b/net/ipv6/tcp_ipv6.c
-> @@ -130,6 +130,19 @@ static int tcp_v6_pre_connect(struct sock *sk,
-> struct sockaddr_unsized *uaddr,
->         return BPF_CGROUP_RUN_PROG_INET6_CONNECT(sk, uaddr, &addr_len);
+>  Documentation/admin-guide/LSM/landlock.rst |  5 +++--
+>  Documentation/trace/events-landlock.rst    |  5 +++--
+>  fs/namespace.c                             |  2 --
+>  include/linux/ns_common.h                  | 16 +++++++++-------
+>  include/linux/nstree.h                     | 18 +++---------------
+>  include/trace/events/landlock.h            |  3 ++-
+>  ipc/namespace.c                            |  1 -
+>  kernel/nscommon.c                          |  7 +++++--
+>  net/core/net_namespace.c                   |  2 +-
+>  security/landlock/ns.c                     |  3 ++-
+>  tools/testing/selftests/landlock/ns_test.c |  7 +++++--
+>  11 files changed, 33 insertions(+), 36 deletions(-)
+> 
+> diff --git a/Documentation/admin-guide/LSM/landlock.rst b/Documentation/admin-guide/LSM/landlock.rst
+> index 718e0d23ffb5..946f3bf89650 100644
+> --- a/Documentation/admin-guide/LSM/landlock.rst
+> +++ b/Documentation/admin-guide/LSM/landlock.rst
+> @@ -73,8 +73,9 @@ AUDIT_LANDLOCK_ACCESS
+>            :manpage:`open_tree(2)`, or :manpage:`fsmount(2)`, or joining via
+>            :manpage:`setns(2)`);
+>            ``namespace_type`` indicates the type (hex ``CLONE_NEW*`` bitmask),
+> -          and ``namespace_id`` identifies the target namespace for
+> -          :manpage:`setns(2)` operations (zero for creation)
+> +          and ``namespace_id`` identifies the target namespace (for a denied
+> +          creation, the namespace never becomes reachable so its ID is not
+> +          directly visible from user space)
+>  
+>      **capability.*** - Capability restrictions (ABI 12+):
+>          - capability.use - Capability use was denied;
+> diff --git a/Documentation/trace/events-landlock.rst b/Documentation/trace/events-landlock.rst
+> index 9ccf2769a2d5..dc5f05a17c2c 100644
+> --- a/Documentation/trace/events-landlock.rst
+> +++ b/Documentation/trace/events-landlock.rst
+> @@ -187,8 +187,9 @@ therefore appears as zero while still advancing the ruleset version, and adding
+>  a member already present still emits an event.
+>  
+>  ``landlock_deny_permission_namespace`` reports the denied raw
+> -``CLONE_NEW*`` value.  ``namespace_id`` is zero for namespace creation and is
+> -the exact target namespace ID for :manpage:`setns(2)`.
+> +``CLONE_NEW*`` value.  ``namespace_id`` is the exact target namespace ID.  For
+> +a denied namespace creation, the namespace never becomes reachable so its ID
+> +is not directly visible from user space.
+>  ``landlock_deny_permission_capability`` reports the denied ``CAP_*`` number.
+>  Like every denial event, both include the denying domain, ``same_exec``, and
+>  ``logged``.
+> diff --git a/fs/namespace.c b/fs/namespace.c
+> index 9f6ec35c7b9c..f81d6a4bc3fe 100644
+> --- a/fs/namespace.c
+> +++ b/fs/namespace.c
+> @@ -4394,8 +4394,6 @@ static struct mnt_namespace *alloc_mnt_ns(struct user_namespace *user_ns, bool a
+>  		dec_mnt_namespaces(ucounts);
+>  		return ERR_PTR(ret);
+>  	}
+> -	ns_tree_gen_id(new_ns);
+> -
+>  	new_ns->is_anon = anon;
+>  	refcount_set(&new_ns->passive, 1);
+>  	new_ns->mounts = RB_ROOT;
+> diff --git a/include/linux/ns_common.h b/include/linux/ns_common.h
+> index c8e227a3f9e2..e8b2bf0da5ed 100644
+> --- a/include/linux/ns_common.h
+> +++ b/include/linux/ns_common.h
+> @@ -9,7 +9,8 @@
+>  #include <uapi/linux/nsfs.h>
+>  
+>  bool is_current_namespace(struct ns_common *ns);
+> -int __ns_common_init(struct ns_common *ns, u32 ns_type, const struct proc_ns_operations *ops, int inum);
+> +int __ns_common_init(struct ns_common *ns, u32 ns_type, const struct proc_ns_operations *ops,
+> +		     int inum, u64 ns_id);
+>  void __ns_common_free(struct ns_common *ns);
+>  struct ns_common *__must_check ns_owner(struct ns_common *ns);
+>  
+> @@ -41,17 +42,18 @@ static __always_inline bool is_ns_init_id(const struct ns_common *ns)
+>  	.ns_owner_root.ns_list_head	= LIST_HEAD_INIT(nsname.ns.ns_owner_root.ns_list_head),		\
 >  }
->
-> +/* Undo the v4-mapped setup done by tcp_v6_connect(). */
-> +static void tcp_v6_restore_af_ops(struct sock *sk)
-> +{
-> +       /* Paired with READ_ONCE() in tcp_(get|set)sockopt() */
-> +       WRITE_ONCE(inet_csk(sk)->icsk_af_ops, &ipv6_specific);
-> +       if (sk_is_mptcp(sk))
-> +               mptcpv6_handle_mapped(sk, false);
-> +       sk->sk_backlog_rcv =3D tcp_v6_do_rcv;
-> +#if defined(CONFIG_TCP_MD5SIG) || defined(CONFIG_TCP_AO)
-> +       tcp_sk(sk)->af_specific =3D &tcp_sock_ipv6_specific;
-> +#endif
-> +}
-> +
->  static int tcp_v6_connect(struct sock *sk, struct sockaddr_unsized *uadd=
-r,
->                           int addr_len)
+>  
+> -#define ns_common_init(__ns)                     \
+> -	__ns_common_init(to_ns_common(__ns),     \
+> -			 ns_common_type(__ns),   \
+> -			 to_ns_operations(__ns), \
+> -			 (((__ns) == ns_init_ns(__ns)) ? ns_init_inum(__ns) : 0))
+> +#define ns_common_init(__ns)						\
+> +	__ns_common_init(to_ns_common(__ns),				\
+> +			 ns_common_type(__ns),				\
+> +			 to_ns_operations(__ns),			\
+> +			 (((__ns) == ns_init_ns(__ns)) ? ns_init_inum(__ns) : 0), \
+> +			 (((__ns) == ns_init_ns(__ns)) ? ns_init_id(__ns) : 0))
+>  
+>  #define ns_common_init_inum(__ns, __inum)        \
+>  	__ns_common_init(to_ns_common(__ns),     \
+>  			 ns_common_type(__ns),   \
+>  			 to_ns_operations(__ns), \
+> -			 __inum)
+> +			 __inum, 0)
+>  
+>  #define ns_common_free(__ns) __ns_common_free(to_ns_common((__ns)))
+>  
+> diff --git a/include/linux/nstree.h b/include/linux/nstree.h
+> index 5b64d4572881..3293df17397d 100644
+> --- a/include/linux/nstree.h
+> +++ b/include/linux/nstree.h
+> @@ -41,10 +41,6 @@ void ns_tree_node_del(struct ns_tree_node *node, struct ns_tree_root *root);
+>  		struct user_namespace *:   &(user_ns_tree),	\
+>  		struct uts_namespace *:    &(uts_ns_tree))
+>  
+> -#define ns_tree_gen_id(__ns)                 \
+> -	__ns_tree_gen_id(to_ns_common(__ns), \
+> -			 (((__ns) == ns_init_ns(__ns)) ? ns_init_id(__ns) : 0))
+> -
+>  u64 __ns_tree_gen_id(struct ns_common *ns, u64 id);
+>  void __ns_tree_add_raw(struct ns_common *ns, struct ns_tree_root *ns_tree);
+>  void __ns_tree_remove(struct ns_common *ns, struct ns_tree_root *ns_tree);
+> @@ -53,12 +49,6 @@ struct ns_common *__ns_tree_adjoined_rcu(struct ns_common *ns,
+>  					 struct ns_tree_root *ns_tree,
+>  					 bool previous);
+>  
+> -static inline void __ns_tree_add(struct ns_common *ns, struct ns_tree_root *ns_tree, u64 id)
+> -{
+> -	__ns_tree_gen_id(ns, id);
+> -	__ns_tree_add_raw(ns, ns_tree);
+> -}
+> -
+>  /**
+>   * ns_tree_add_raw - Add a namespace to a namespace
+>   * @__ns: Namespace to add
+> @@ -72,12 +62,10 @@ static inline void __ns_tree_add(struct ns_common *ns, struct ns_tree_root *ns_t
+>   * ns_tree_add - Add a namespace to a namespace tree
+>   * @__ns: Namespace to add
+>   *
+> - * This function assigns a new id to the namespace and adds it to the
+> - * appropriate namespace tree and list.
+> + * This function adds a namespace to the appropriate namespace tree and
+> + * list. The namespace must already have been assigned an id.
+>   */
+> -#define ns_tree_add(__ns)                                   \
+> -	__ns_tree_add(to_ns_common(__ns), to_ns_tree(__ns), \
+> -		      (((__ns) == ns_init_ns(__ns)) ? ns_init_id(__ns) : 0))
+> +#define ns_tree_add(__ns) __ns_tree_add_raw(to_ns_common(__ns), to_ns_tree(__ns))
+>  
+>  /**
+>   * ns_tree_remove - Remove a namespace from a namespace tree
+> diff --git a/include/trace/events/landlock.h b/include/trace/events/landlock.h
+> index 6d9d9e7c7ca2..b6fdc6e2eef8 100644
+> --- a/include/trace/events/landlock.h
+> +++ b/include/trace/events/landlock.h
+> @@ -987,7 +987,8 @@ TRACE_EVENT(landlock_deny_access_net,
+>   * @logged: Whether this denial was selected for audit logging.
+>   * @blockers: Request type and final missing permission subset (never NULL).
+>   * @namespace_type: CLONE_NEW* namespace type that was denied.
+> - * @namespace_id: Namespace ID, or 0 when creation was denied.
+> + * @namespace_id: Namespace ID, not directly visible from user space when
+> + *                creation was denied.
+>   *
+>   * Emitted when a Landlock domain denies namespace use.
+>   */
+> diff --git a/ipc/namespace.c b/ipc/namespace.c
+> index 75aa7b469348..9084e0643017 100644
+> --- a/ipc/namespace.c
+> +++ b/ipc/namespace.c
+> @@ -66,7 +66,6 @@ static struct ipc_namespace *create_ipc_ns(struct user_namespace *user_ns,
+>  	if (err)
+>  		goto fail_free;
+>  
+> -	ns_tree_gen_id(ns);
+>  	ns->user_ns = get_user_ns(user_ns);
+>  	ns->ucounts = ucounts;
+>  
+> diff --git a/kernel/nscommon.c b/kernel/nscommon.c
+> index e72426bba29a..4438c6b663f9 100644
+> --- a/kernel/nscommon.c
+> +++ b/kernel/nscommon.c
+> @@ -54,7 +54,8 @@ static void ns_debug(struct ns_common *ns, const struct proc_ns_operations *ops)
+>  }
+>  #endif
+>  
+> -int __ns_common_init(struct ns_common *ns, u32 ns_type, const struct proc_ns_operations *ops, int inum)
+> +int __ns_common_init(struct ns_common *ns, u32 ns_type, const struct proc_ns_operations *ops,
+> +		     int inum, u64 ns_id)
 >  {
-> @@ -243,14 +256,7 @@ static int tcp_v6_connect(struct sock *sk, struct
-> sockaddr_unsized *uaddr,
->
->                 if (err) {
->                         icsk->icsk_ext_hdr_len =3D exthdrlen;
-> -                       /* Paired with READ_ONCE() in tcp_(get|set)sockop=
-t() */
-> -                       WRITE_ONCE(icsk->icsk_af_ops, &ipv6_specific);
-> -                       if (sk_is_mptcp(sk))
-> -                               mptcpv6_handle_mapped(sk, false);
-> -                       sk->sk_backlog_rcv =3D tcp_v6_do_rcv;
-> -#if defined(CONFIG_TCP_MD5SIG) || defined(CONFIG_TCP_AO)
-> -                       tp->af_specific =3D &tcp_sock_ipv6_specific;
-> -#endif
-> +                       tcp_v6_restore_af_ops(sk);
->                         goto failure;
->                 }
->                 np->saddr =3D sk->sk_v6_rcv_saddr;
-> @@ -2093,6 +2099,19 @@ static int tcp_v6_init_sock(struct sock *sk)
->         return 0;
+>  	int ret = 0;
+>  
+> @@ -64,7 +65,6 @@ int __ns_common_init(struct ns_common *ns, u32 ns_type, const struct proc_ns_ope
+>  	ns->ns_security = NULL;
+>  #endif
+>  	ns->ops = ops;
+> -	ns->ns_id = 0;
+>  	ns->ns_type = ns_type;
+>  	ns_tree_node_init(&ns->ns_tree_node);
+>  	ns_tree_node_init(&ns->ns_unified_node);
+> @@ -82,6 +82,9 @@ int __ns_common_init(struct ns_common *ns, u32 ns_type, const struct proc_ns_ope
+>  	if (ret)
+>  		return ret;
+>  
+> +	/* Allocate the id before the LSM hook so it can track the namespace by it. */
+> +	__ns_tree_gen_id(ns, ns_id);
+> +
+>  	ret = security_namespace_init(ns);
+>  	if (ret) {
+>  		if (!inum)
+> diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
+> index da5f881fbd3b..ec4077b81389 100644
+> --- a/net/core/net_namespace.c
+> +++ b/net/core/net_namespace.c
+> @@ -437,7 +437,7 @@ static __net_init int setup_net(struct net *net)
+>  	LIST_HEAD(net_exit_list);
+>  	int error = 0;
+>  
+> -	net->net_cookie = ns_tree_gen_id(net);
+> +	net->net_cookie = to_ns_common(net)->ns_id;
+>  
+>  	list_for_each_entry(ops, &pernet_list, list) {
+>  		error = ops_init(ops, net);
+> diff --git a/security/landlock/ns.c b/security/landlock/ns.c
+> index cd44c927f83a..06d9784746fe 100644
+> --- a/security/landlock/ns.c
+> +++ b/security/landlock/ns.c
+> @@ -94,7 +94,8 @@ static const struct access_masks ns_permission = {
+>   * Shared check for namespace_init (creation via clone(2), unshare(2),
+>   * open_tree(2), or fsmount(2)) and namespace_install (use via setns(2)): denies
+>   * when the namespace type is not in the domain's allowed set.  At allocation
+> - * time @ns->ns_id is still zero and is logged as such.
+> + * time @ns->ns_id is already set even though the namespace is not reachable
+> + * from user space yet.
+>   *
+>   * Return: 0 if allowed, -EPERM if denied.
+>   */
+> diff --git a/tools/testing/selftests/landlock/ns_test.c b/tools/testing/selftests/landlock/ns_test.c
+> index f5d4b86edd30..8f387fc47e21 100644
+> --- a/tools/testing/selftests/landlock/ns_test.c
+> +++ b/tools/testing/selftests/landlock/ns_test.c
+> @@ -1899,8 +1899,9 @@ TEST(setns_inherited_fd)
+>  
+>  static int matches_log_ns_create(int audit_fd, __u64 ns_type)
+>  {
+> +	/* A denied creation logs the ID allocated for the new namespace. */
+>  	static const char log_template[] = REGEX_LANDLOCK_PREFIX
+> -		" blockers=namespace\\.use namespace_type=0x%x namespace_id=0$";
+> +		" blockers=namespace\\.use namespace_type=0x%x namespace_id=[1-9][0-9]*$";
+>  	char log_match[sizeof(log_template) + 10];
+>  	int log_match_len;
+>  
+> @@ -2538,7 +2539,9 @@ static void test_ns_trace_denial(struct __test_metadata *const _metadata,
+>  	ASSERT_EQ(0, tracefs_extract_field(
+>  			     buf, REGEX_DENY_PERMISSION_NAMESPACE(TRACE_TASK),
+>  			     "namespace_id", field, sizeof(field)));
+> -	EXPECT_EQ(use_setns ? expected_ns_id : 0, strtoull(field, NULL, 10));
+> +	EXPECT_STRNE("0", field);
+> +	if (use_setns)
+> +		EXPECT_EQ(expected_ns_id, strtoull(field, NULL, 10));
+>  
+>  	free(buf);
 >  }
->
-> +static int tcp_v6_disconnect(struct sock *sk, int flags)
-> +{
-> +       int ret =3D tcp_disconnect(sk, flags);
-> +
-> +       /* A socket used for a v4-mapped connection must not keep IPv4
-> +        * handlers when it is reused for listen() or a native IPv6 conne=
-ct().
-> +        */
-> +       if (sk->sk_backlog_rcv =3D=3D tcp_v4_do_rcv)
-> +               tcp_v6_restore_af_ops(sk);
-> +
-> +       return ret;
-> +}
-> +
->  #ifdef CONFIG_PROC_FS
->  /* Proc filesystem TCPv6 sock list dumping. */
->  static void get_openreq6(struct seq_file *seq,
-> @@ -2283,7 +2302,7 @@ struct proto tcpv6_prot =3D {
->         .close                  =3D tcp_close,
->         .pre_connect            =3D tcp_v6_pre_connect,
->         .connect                =3D tcp_v6_connect,
-> -       .disconnect             =3D tcp_disconnect,
-> +       .disconnect             =3D tcp_v6_disconnect,
->         .accept                 =3D inet_csk_accept,
->         .ioctl                  =3D tcp_ioctl,
->         .init                   =3D tcp_v6_init_sock,
-> diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-> index 7a22e9388e0e..fdfbc7de2ec0 100644
-> --- a/net/mptcp/protocol.c
-> +++ b/net/mptcp/protocol.c
-> @@ -2608,7 +2608,7 @@ static void __mptcp_subflow_disconnect(struct sock =
-*ssk,
->                 /* The MPTCP code never wait on the subflow sockets, TCP-=
-level
->                  * disconnect should never fail
->                  */
-> -               WARN_ON_ONCE(tcp_disconnect(ssk, 0));
-> +               WARN_ON_ONCE(ssk->sk_prot->disconnect(ssk, 0));
->                 mptcp_subflow_ctx_reset(subflow);
->         } else {
->                 tcp_shutdown(ssk, SEND_SHUTDOWN);
-> @@ -3287,7 +3287,7 @@ void mptcp_subflow_shutdown(struct sock *sk,
-> struct sock *ssk, int how)
->                         break;
->                 fallthrough;
->         case TCP_SYN_SENT:
-> -               WARN_ON_ONCE(tcp_disconnect(ssk, O_NONBLOCK));
-> +               WARN_ON_ONCE(ssk->sk_prot->disconnect(ssk, O_NONBLOCK));
->                 break;
->         default:
->                 if (__mptcp_check_fallback(mptcp_sk(sk))) {
-> --
-> 2.34.1
->
-> Thanks,
-> Zhiyu
->
-> Eric Dumazet <edumazet@kernel.org> =E4=BA=8E2026=E5=B9=B410=E6=9C=8829=E6=
-=97=A5=E5=91=A8=E5=9B=9B 00:22=E5=86=99=E9=81=93=EF=BC=9A
-> >
-> > Le mer. 28 oct. 2026 =C3=A0 16:31, Zhiyu Zhang <zhiyuzhang999@gmail.com=
-> a =C3=A9crit :
-> > >
-> > > Hello Linux Kernel Developers and Maintainers,
-> > >
-> > > We found a TCP address-family mismatch that lets an IPv6 packet reach=
- an IPv4
-> > > reply path. The IPv4 path interprets IPv6 skb control-block fields as=
- IPv4
-> > > options and copies a packet-controlled length into a 40-byte stack bu=
-ffer. We
-> > > used it as the write primitive in a demonstrated unprivileged uid-to-=
-root
-> > > chain.
-> > >
-> > > The complete path is present in v7.3
-> > > (c03c1a14507dfaf8b856c2608f9ac216021fc222), where we reproduced the
-> > > privilege escalation with KASLR, STACKPROTECTOR_STRONG, PTI and IBT e=
-nabled.
-> > > It is also present by inspection in v6.12.95. CONFIG_IPV6 is required=
-.
-> > >
-> > > Current mainline d135ab453a7400a34930bdda1ef4bdc8acfac80e contains
-> > > 8cc3aef0cb19 ("tcp: Do not allow buggy transitions between ehash and
-> > > lhash2."), which rejects the exact socket transition used by our repr=
-oducer.
-> > > We therefore do not claim that the complete chain works at that mainl=
-ine
-> > > revision. The unsafe cross-family option handling and unbounded optio=
-n echo
-> > > remain relevant to maintained trees without that transition restricti=
-on.
-> > >
-> > > Root cause:
-> > >
-> > > tcp_v6_connect() changes icsk_af_ops and sk_backlog_rcv to the mapped=
--IPv4
-> > > implementations after a successful v4-mapped connect. On affected ker=
-nels,
-> > > connect(AF_UNSPEC) returns the socket to TCP_CLOSE without restoring =
-those
-> > > pointers, and listen() reuses it. A pure-IPv6 accepted child can cons=
-equently
-> > > have IPv6 lookup state but tcp_v4_do_rcv as its backlog callback.
-> > >
-> > > For an [IPv6][DSTOPTS][TCP] packet, tcp_v6_fill_cb() stores inet6_skb=
-_parm in
-> > > TCP_SKB_CB(skb)->header.h6. If the packet is drained through tcp_v4_d=
-o_rcv(),
-> > > tcp_v4_send_reset() passes the same union bytes as header.h4.opt. The=
- aliased
-> > > metadata directs __ip_options_echo() to read a packet-controlled opti=
-on length
-> > > and copy it into the 40-byte dopt->__data buffer. Our trigger produce=
-s a
-> > > 254-byte overwrite across the canary and return address in
-> > > ip_send_unicast_reply().
-> > >
-> > > The receiving process runs as uid 65534 without capabilities or a use=
-r
-> > > namespace. A root helper is used only to inject the crafted IPv6 pack=
-et with
-> > > a raw socket inside our single-VM test; the packet may instead arrive=
- from an
-> > > IPv6 peer.
-> > >
-> > > This is the memory-corruption half of the demonstrated privilege-esca=
-lation
-> > > chain. A separately reported watch_queue disclosure supplies the same=
- task's
-> > > stack canary and KASLR slide. We will reply with that report's Messag=
-e-ID as
-> > > soon as it has been posted.
-> > >
-> > > Reproduction and fix:
-> > >
-> > > We have a source reproducer, exact config, QEMU instructions and a fu=
-ll-chain
-> > > exploit. In accordance with the kernel policy, we are not posting the=
-m publicly.
-> > > We can provide the source-only reproducer privately if a maintainer r=
-equests it.
-> > >
-> > > Our build- and QEMU-tested fix has two layers: the IPv4 TCP reset and=
- ACK paths
-> > > only pass IPv4 option state for ETH_P_IP skbs, and __ip_options_echo(=
-) validates
-> > > each option against the declared source area, the actual skb header a=
-rea and
-> > > the remaining destination space. We will post it separately as a merg=
-eable
-> > > [PATCH net] email and link that thread here.
-> > >
-> > > AI-agent tooling assisted in identifying and analyzing the issue, dev=
-eloping
-> > > the reproducer, and preparing the initial fix. The reporters reviewed=
- the
-> > > affected paths and reproduced the issue and the fixed result in QEMU.
-> > >
-> > > Reported-by: Tong Liu <lyutoon@gmail.com>
-> > > Reported-by: Qi Tang <tpluszz77@gmail.com>
-> > > Reported-by: Zhiyu Zhang <zhiyuzhang999@gmail.com>
-> > >
-> > > Best regards,
-> > > Zhiyu Zhang
-> >
-> > Worst report I got this week, and trust me I got many security reports
-> > in the last 3 days
-> >
-> > Why don't you ask your LLM to prepare a patch ?
-> >
-> > Why CCing security@ at all, since you made this report public ?
-> >
-> > Have you read Documentation/process/security-bugs.rst ?
-> >
-> > MPTCP is not yet covered in this untested WIP:
-> >
-> > Kuniyuki, can you take over, thanks.
-> >
-> > commit 5108a64604b6f2fad06383386d8d5bc44f0cf35b (HEAD -> net-4)
-> > Author: Eric Dumazet <edumazet@kernel.org>
-> > Date:   Wed Oct 28 17:14:04 2026 +0100
-> >
-> >     tcp: restore IPv6 af_ops on disconnect of a v4-mapped socket
-> >
-> >     A successful connect() of an IPv6 socket to a v4-mapped address
-> >     switches icsk_af_ops, sk_backlog_rcv and af_specific to their
-> >     IPv4-mapped variants. These are only restored if the connect() fail=
-s.
-> >
-> >     After connect(AF_UNSPEC), the socket can be reused for listen() or
-> >     for a native IPv6 connect(), while still using the mapped handlers.
-> >     IPv6 packets processed from the socket backlog are then handled by
-> >     tcp_v4_do_rcv(). tcp_v4_send_reset() and tcp_v4_send_ack() interpre=
-t
-> >     TCP_SKB_CB(skb)->header.h6 as IPv4 options, and __ip_options_echo()
-> >     can overflow its 40-byte destination buffer.
-> >
-> >     Commit 8cc3aef0cb19 ("tcp: Do not allow buggy transitions between
-> >     ehash and lhash2.") prevents listen() after connect(AF_UNSPEC), but
-> >     a native IPv6 connect() is still allowed.
-> >
-> >     Add tcp_v6_disconnect() to restore the IPv6 handlers when a v4-mapp=
-ed
-> >     socket is disconnected, and use the same helper in the connect()
-> >     error path.
-> >
-> >     Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> >     Reported-by: Tong Liu <lyutoon@gmail.com>
-> >     Reported-by: Qi Tang <tpluszz77@gmail.com>
-> >     Reported-by: Zhiyu Zhang <zhiyuzhang999@gmail.com>
-> >     Signed-off-by: Eric Dumazet <edumazet@kernel.org>
-> >
-> > diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-> > index e006a30360eae1b43a4d53173b46b931ae668825..a93410aab66e6f441d70cf7=
-0c67e6d92fbb5fb26
-> > 100644
-> > --- a/net/ipv6/tcp_ipv6.c
-> > +++ b/net/ipv6/tcp_ipv6.c
-> > @@ -130,6 +130,19 @@ static int tcp_v6_pre_connect(struct sock *sk,
-> > struct sockaddr_unsized *uaddr,
-> >         return BPF_CGROUP_RUN_PROG_INET6_CONNECT(sk, uaddr, &addr_len);
-> >  }
-> >
-> > +/* Undo the v4-mapped setup done by tcp_v6_connect(). */
-> > +static void tcp_v6_restore_af_ops(struct sock *sk)
-> > +{
-> > +       /* Paired with READ_ONCE() in tcp_(get|set)sockopt() */
-> > +       WRITE_ONCE(inet_csk(sk)->icsk_af_ops, &ipv6_specific);
-> > +       if (sk_is_mptcp(sk))
-> > +               mptcpv6_handle_mapped(sk, false);
-> > +       sk->sk_backlog_rcv =3D tcp_v6_do_rcv;
-> > +#if defined(CONFIG_TCP_MD5SIG) || defined(CONFIG_TCP_AO)
-> > +       tcp_sk(sk)->af_specific =3D &tcp_sock_ipv6_specific;
-> > +#endif
-> > +}
-> > +
-> >  static int tcp_v6_connect(struct sock *sk, struct sockaddr_unsized *ua=
-ddr,
-> >                           int addr_len)
-> >  {
-> > @@ -243,14 +256,7 @@ static int tcp_v6_connect(struct sock *sk, struct
-> > sockaddr_unsized *uaddr,
-> >
-> >                 if (err) {
-> >                         icsk->icsk_ext_hdr_len =3D exthdrlen;
-> > -                       /* Paired with READ_ONCE() in tcp_(get|set)sock=
-opt() */
-> > -                       WRITE_ONCE(icsk->icsk_af_ops, &ipv6_specific);
-> > -                       if (sk_is_mptcp(sk))
-> > -                               mptcpv6_handle_mapped(sk, false);
-> > -                       sk->sk_backlog_rcv =3D tcp_v6_do_rcv;
-> > -#if defined(CONFIG_TCP_MD5SIG) || defined(CONFIG_TCP_AO)
-> > -                       tp->af_specific =3D &tcp_sock_ipv6_specific;
-> > -#endif
-> > +                       tcp_v6_restore_af_ops(sk);
-> >                         goto failure;
-> >                 }
-> >                 np->saddr =3D sk->sk_v6_rcv_saddr;
-> > @@ -2093,6 +2099,19 @@ static int tcp_v6_init_sock(struct sock *sk)
-> >         return 0;
-> >  }
-> >
-> > +static int tcp_v6_disconnect(struct sock *sk, int flags)
-> > +{
-> > +       int ret =3D tcp_disconnect(sk, flags);
-> > +
-> > +       /* A socket used for a v4-mapped connection must not keep IPv4
-> > +        * handlers when it is reused for listen() or a native IPv6 con=
-nect().
-> > +        */
-> > +       if (sk->sk_backlog_rcv =3D=3D tcp_v4_do_rcv)
-> > +               tcp_v6_restore_af_ops(sk);
-> > +
-> > +       return ret;
-> > +}
-> > +
-> >  #ifdef CONFIG_PROC_FS
-> >  /* Proc filesystem TCPv6 sock list dumping. */
-> >  static void get_openreq6(struct seq_file *seq,
-> > @@ -2283,7 +2302,7 @@ struct proto tcpv6_prot =3D {
-> >         .close                  =3D tcp_close,
-> >         .pre_connect            =3D tcp_v6_pre_connect,
-> >         .connect                =3D tcp_v6_connect,
-> > -       .disconnect             =3D tcp_disconnect,
-> > +       .disconnect             =3D tcp_v6_disconnect,
-> >         .accept                 =3D inet_csk_accept,
-> >         .ioctl                  =3D tcp_ioctl,
-> >         .init                   =3D tcp_v6_init_sock,
+> 
+> -- 
+> 2.53.0
+> 
