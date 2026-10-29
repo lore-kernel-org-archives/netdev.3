@@ -1,85 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.47
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793296538;
-	b=GCWqBzAAUJ/6HMo/zdVUWlt0Xbi1Tu3WleUFSF5xhDpkTqLeiiV6wBbOAjY3K8h8CBFG
-	 VxnehNBmH2f5CfzQZ7ke7fah8HcyaJUHCL+/34CNS2KWorA8nxvaca0NyLCQjGR+N/bXv
-	 Rf064iPV26Syx3N+2td0PDDJAsOCpAvua/Lw1rhWUWR+xvk7UXPo4emS2p5QzAfXgG/dV
-	 yPL/SKDg7StZk1tcapnrMzsRRXCScgidx3urOVugmcYZymaKTEmqA6H5D8v56CfdYKEuQ
-	 YSaJc6C3odBXt77zp2hfcLF5mbXOE6Fji5Tzyz45r+EYx3ekcTR9bSSxPuZ53beMOiA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793296538;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=W3HdUc2svh2jzPREwBXmGjOMOZkB12N8HCTpy3OSw+g=;
-	b=SeNeOla3AgWxgVaFEtqHMUX6x/wtCP9mXZCespdMd/Ss2axyUNM1yRf1ViZBPvXHMJY4
-	 Gch5kSYIO6PzeYCw/y2OyD1YiWlLbj8DVFbA+IVVuPRF4noFhZH2EWdXwUW6eFc2bRVuQ
-	 cdHlckENj9szuLJsjduxwzDhZXHgsJ9t2LhpOFdwzovJrCvv0zVIQHWH081Pcu/WcM1CU
-	 Xwr/SBROCtJDSv0y45y/1IibMhatuCrDD2hZR3BtJo7nkw6gYbg15CWJpEKNQmP8yzN0V
-	 Vhg0y8zEWTUfCm5lA169HQXWtBNw1z1cex5sH0yth6NRobGuGcc9NNbLlYjxsTSwGtw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=ieee.org;
-	spf=pass smtp.mailfrom=ieee.org;
-	dkim=pass header.d=ieee.org header.i=@ieee.org header.a=rsa-sha256 header.s=google header.b=Y3L2EI6X;
-	arc=none smtp.remote-ip=209.85.210.47
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.209.39
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793296723;
+	b=UnH4tBvzRRegO77HQkyo1zQklMjYMxRVTGN9u1Ws6+kbLe06M2MwDrP1YgWwaAF0qzVJ
+	 K5c1QLgRUyPtjRgySa3RnRaaVM9tHzia96VDe2ZNfozqGMve0AQWxFEbCUZBogqxv61KO
+	 CozbCc+CBmoCUahOOh09wqrk0a6QJqYkMEz5r/4+GiYxX8PCay1uHIQ1N75Xt7f8k9JFz
+	 0X332O/nqsIECPsV2+jfA00L7a9MgvsivOXjkYr+nxu/K59Unf4Q8GJW9hKmmvbx6fd/D
+	 5zwls+g11nvbs2XuEVo6uUceaPbCinfAFPF4Wdt1Q9GmZyJv7wgJ38vJTr7uQa7kICg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793296723;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=wuTjnffAK95byuq01VNYJx9Z5oknlYBKZlX7NWH7svE=;
+	b=W10CVA9icX5J5wYgZBPJXFIx+sQ/LZR+rLlOAKMNX9nd0AEdHcNhCN0Miuy0b/rWeJcf
+	 fNkP8rdeAcn5+ZSHAKIE2IVgyQhOL4FyF7Sr5cO5qw6fayRzO1N8h6sRK5hZXn7QiYTac
+	 JWWOHReJXMqQIGbOlPozvs8qCoolCyt0faGHXbdhhmngzlY1PH9ball02f2jKJsibSfJT
+	 KDVL5CAqBWz5nSyIKSZf9/Vz9QCpaz6V5E5XZUmB9dRpZDom/VRvVYIRFXdr8T1Idf8a/
+	 KxdMDLHzUQd0AsSSkLn27L/tALBo4/jxhnWjU/B+cxS/vIbOTZrUT88p7SJ2JN4Hvow==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=t38AY86+;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.209.39
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012039.outbound.protection.outlook.com [40.107.209.39])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BAC4606A31A
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 17:55:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4BAC4606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ieee.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ieee.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF881606A31A;
+	Thu, 29 Oct 2026 17:58:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CF881606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=ieee.org header.i=@ieee.org header.a=rsa-sha256 header.s=google header.b=Y3L2EI6X
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-844a8bf7e25so1657886a34.1
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 10:55:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ieee.org; s=google; t=1793296536; x=1793901336; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=W3HdUc2svh2jzPREwBXmGjOMOZkB12N8HCTpy3OSw+g=;
-        b=Y3L2EI6XCTJlfv6Um30k1lylo5s5ob0sd1SCNIKTegObqMf0wEvS4A9IGz4HNMAkb8
-         FXjRUmOvEYTY5V9fgH75wQ+nqsG6VdEY+XNmbN0/79f1QSutJa9rAqLEnxGfYUSZkWnx
-         uHO0/wi0l48alNRz5c7BkH5cB2k1cNbPvsuI4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793296536; x=1793901336;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=W3HdUc2svh2jzPREwBXmGjOMOZkB12N8HCTpy3OSw+g=;
-        b=OS45IEPthctURpCh3yqrsSyomylZmH1R6r4W453Eo10aL+O8eK2hhcYxI825zUAraK
-         Oqk/boj17XqEKlNGzcAvyMKH4ZScrZbRIOBUkGAiBsiz8AyJ0QLnTaTGlo9zImS7452M
-         wJGiXG8ybPP/IAVue4TwLcgh9FTgQhubgLuzHMI3dGmM6R5abwD99aVmcvmlKf2C31VT
-         YZWqYoDA4cfb7QMJGUd9PSKG/suJbeBZxcB9Qzkv+nh35fUTMPbJK9yNqysh/1ilyLAV
-         qN+sOWxrWF7xlqYHJNaR7xTmWAIn6aHxhioulJnih8zqe+sGMknOp026ASoe99QsYHFE
-         GCMQ==
-X-Forwarded-Encrypted: i=1; AKwUvBx5jmPCs6bZFm6QLLZwCQOk4GUaAw+aFzhHpprtSJIqercESwzXTB2yRKIXbr1xwkWdRCN+N7I=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI9ynWSUckkQksAWjLgb+/KYref+8yrKTlszZNaEHWj+nnCLz4M
-	k3T7yWfj+yFvc/XcfbgMotCQbJxeITfgmpc386I75RfkPkg6zfvxVrW4x5Erj5UcCA==
-X-Gm-Gg: AYBFou0+U8zSPQO69G/wwvfgnDsXbRABddtWLPxe3pvEdgrxcv+KFnfJD1EyYh+omCw
-	AMale2YNCKUn6iQdgR9Huf17i8fs5N1/qhO0EnAoBDLd4WptJhq2F8JUU6R2TX3n8GePnaHKlqN
-	/7GUOIDMelPMN0jbKcgw7aA0MQggfhy5XUr7YeWanE7sgJ0L51r21PnJkuhUMT4+lAMAPvQG/MT
-	dlN925GDPpNfJd8qWOFmu2/B+K7RkBghE8ISJyxl+praC9Yn0JPsiUJWWt6maXc5uAn4i4U1G0u
-	vp1e8KbZ+FDhsIkArp0gfcWG8b1sVvRsYmJnwwOLS0i6VXPDULh3Eygm+Gh/V6R2PPKX+wemVgs
-	/tHSaQK7DmrEp9AqNOb7a6syLqiCVzZjw/BxEeyVUwL862lL9L+A5zF7pyEd0WGz8WJsUXQmk7V
-	z6PSllYlx1eI2E1AlT1bIN3boAGegksoziXG4wGsh25W6T5eDhXUEntOFR18wPhhlxaCqz6XboS
-	57SY6HzlG3qPy2YTQb+pvmO+pDi8nH/FF8R2xIeZpWvZ4eaFRQBMRV6bQuM2ZdjzdhGMZ5qG+Vx
-	b3UO62DHUfOkn261/6DA7Edo
-X-Received: by 2002:a05:6808:1694:b0:4f4:3790:6615 with SMTP id 5614622812f47-563a205d732mr3898135b6e.11.1793296536211;
-        Thu, 29 Oct 2026 10:55:36 -0700 (PDT)
-Received: from [172.22.22.28] ([73.62.185.64])
-        by smtp.googlemail.com with ESMTPSA id 5614622812f47-563c5437a58sm4414879b6e.5.2026.10.29.10.55.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Oct 2026 10:55:35 -0700 (PDT)
-Message-ID: <9879e94a-6fbe-4158-a21e-64b147a580bc@ieee.org>
-Date: Thu, 29 Oct 2026 12:55:33 -0500
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=t38AY86+
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JfZ5zEvZEo9nS6nj48KusHfmBVmPKowa5HhnRezGAPjAJYh4qXLtyyTDllrYY2gaTZDzBwKRkZRNVCEqjAyUFY0i3/SiGghA3KjeOM+2qBQKUANu/WO2vwnJRipwQ1XMxzeMAmPqjC2IB8/P8t0ctqIEXu0+935deNyoUyzS3B6R+VHKCSsAIr9H9hrwE2tiHIz7U3rDh9P/KZ//yuWpbeC/QQSTu+R01HbzEU+DyIqzGHeAXn4496tUj/MOUTgzVVEYIPQHTaDI7c8sLzZDQNIkZrpn6ZYukWB5aYOrbJ1VTHZHjsBhjoRR2OfstN5i1W3q4/MXfc8N3AMGVH3Nkw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wuTjnffAK95byuq01VNYJx9Z5oknlYBKZlX7NWH7svE=;
+ b=uq0IfI1ASSiYoTjewhMI7lw3rwrMKNK4ma6ybrquxrLheBtZ6RmQB+rKNDAk1rmtIlPoD430m2BK50UBbUKL+p6GGmNlfh8cTQ7DuA7ZpWjmAQHk5VIP+jwFyqZRIVnh8CbyL+BaC8q/k5usUXLhUpLE59Mw117n3yF13D9iurqzPsuJKNnhAS/y/I9VX7NCJG5Hayd7sFZRe1XIRRKqLE4SbgS+KHl+UvX2/R5eD10Xz+Fp96twyLTahI4n8eAVidWzCxxkT8hy/pHkfckWh5M+0OvploxT6cniwzT3Rn6HYXoeN1RNncGaWbedwC7u8DktW0xQKkCugrm5opsVOg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wuTjnffAK95byuq01VNYJx9Z5oknlYBKZlX7NWH7svE=;
+ b=t38AY86+IPTxQ3UnrphdSzo98q8tB5p4+wz9O0RKqcsIUeGtGTPZdAg8uL4rKDSp2W1Tsp+IEpNm00kalkmhlOwaoEWJIrJc/hOLtKZC9sBFlyiQXkVtI5ZMgyC4oIXglgfTmtb4OEjpKMcS2HWhee8xUYkSUJx81N2Vz2ppC2cfQ9jGOUTq5cOTi5bn1yvlhDSpzsO9tnB7XA/ld033LthG8G9zKnll5q+JEs4sL1U75Sp2MNRZSaLStMyRAxgZK80aCYKd7Mt1nMhBGUzaxPsFagDjpXoeDbDknKhbMURsoICgdrU5vEIDOOdVpJ/gzaijVM8EbkM8XiiCWmtv5Q==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by DM4PR12MB9072.namprd12.prod.outlook.com (2603:10b6:8:be::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.546.22; Thu, 29 Oct 2026 17:58:37 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0569.008; Thu, 29 Oct 2026
+ 17:58:37 +0000
+Date: Thu, 29 Oct 2026 19:58:27 +0200
+From: Ido Schimmel <idosch@nvidia.com>
+To: Yingjie Wang <1075151112@qq.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	dsahern@kernel.org, corbet@lwn.net, skhan@linuxfoundation.org,
+	rdunlap@infradead.org, linux-doc@vger.kernel.org,
+	alexhenrie24@gmail.com
+Subject: Re: [PATCH net v2] ipv6: bound temporary address regeneration advance
+Message-ID: <20261029175827.GA1411453@shredder>
+References: <tencent_F6E8C7CAC6D390C8E912EEE4FD9FE4333505@qq.com>
+ <tencent_C2E4FE9B7C0A05615861782611715EAA9C0A@qq.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <tencent_C2E4FE9B7C0A05615861782611715EAA9C0A@qq.com>
+X-ClientProxiedBy: FR4P281CA0172.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:b7::19) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -89,95 +98,154 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net,v2] net: ipa: Fix double free of the interrupt
- structure on config error
-To: Thomas Fourier <fourier.thomas@gmail.com>
-Cc: Alex Elder <elder@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- "open list:QCOM IPA DRIVER" <netdev@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>
-References: <20261029082100.17722-2-fourier.thomas@gmail.com>
-Content-Language: en-US
-From: Alex Elder <elder@ieee.org>
-In-Reply-To: <20261029082100.17722-2-fourier.thomas@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|DM4PR12MB9072:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6284c4c0-a5c1-44ca-9722-08df35e641dd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|366016|23010399003|376014|1800799024|6133799003|22082099003|18002099003|261026140227099003|261028144727099003|10067099003|4143699003|261022105027099003|261022075727099003|11063799006|261009223027099003|261021123027099003|56012099006|261021121427099003|261026121527099003|260925021311599003|260925022911599003|260925021911599003;
+X-Microsoft-Antispam-Message-Info:
+	cYUg2KJRqTMDmCCxHy784v7f44iW7K8zAfVSDo50wEJNzVb6M05ZqAedx/X+Q23lpSE4BZ0MHez9nodVnInEBrutme6siWsjG/0x3iWDOVdW7Vxn5mpxV2UtCL1fFTqHAtbkDlDhdEGOxwFVYymPKvTyHnLKwIX1t2/KGQHQIH5fFqyMOMLAurpJk6S4ZC1s/s1lRjLZWgg84+IBGnfVkd4UGWMJv1oN+iYFsoVVrCvakhD/gU3inKqhRLOGSn+PyHSqcyP15kdtHluUdg1F4qLfxYZz0WeFVpqZFaw3cYCZh52afl7NqABsMDvR84ToHweO9nhDJ08HpORA/kqGYenlJMjse3qZZe9DV2BqY8/oyssmn+lz0Yk2gWn09erX9b2tLsiTyhEMFBviNtJYj9lvVKEHDYacKMqCzfgZiXyzNeryskd38CjqRknaas7sLPdp2/4knLew+pvGAGjV/dL6DFczVsvN/sVESCfG+zBvx8WHf57fW8s4xqJkzoqrM6z1JIhItWGucqKGej5CMjSD6afZrbK2cNwUzHcKZn00KLjfvTU7fck7lD7PCwQGembP+FA2e5idZ+fet3LgbTLRAdh1L7er5utssRintBzIBUoUov7U7nh0SSe24RhYseJEYTOAViaS/w1uwRoq9XzI6KCpX5LfqIHiUElY4cY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(23010399003)(376014)(1800799024)(6133799003)(22082099003)(18002099003)(261026140227099003)(261028144727099003)(10067099003)(4143699003)(261022105027099003)(261022075727099003)(11063799006)(261009223027099003)(261021123027099003)(56012099006)(261021121427099003)(261026121527099003)(260925021311599003)(260925022911599003)(260925021911599003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?q8VqOxcO3vePJ41Vxs5HCz0BfiPQpmtEmBpUAgHy4ipf2+EKTFZY6J+IJaeZ?=
+ =?us-ascii?Q?U639LyalutEss1FscarAaajtVOj6rfe1RuqMkw2EB8ur9pfDQWIPyGgCVa2o?=
+ =?us-ascii?Q?V2o5y31lrQ7k9+pslAKtQyLy21HbQw6JxE96DwFDlDfeHPNjxgyO15Pq6lsu?=
+ =?us-ascii?Q?bjwntQhG7kvj4e1p2XHNBqYHtYGZlf09q0uSnUh1/Rji5aOdwTQE8zwcZwrL?=
+ =?us-ascii?Q?tAEcbzhkemkCYF84gB3vgOikxYUmYyMzOx1BtJkj24qNZR5Bby3B6veo0vO9?=
+ =?us-ascii?Q?HHTaE3Vo+jXtfXSojdqb3Vfw16e1j4CbZkgQ5ZBpfDQSdqR3ig7Gxjcsq3EG?=
+ =?us-ascii?Q?OleJThuP9tdgqq9e56FZmHYy0IPR3oII/wS5C8HDovCIt7B5r9lCPhBPG1SL?=
+ =?us-ascii?Q?HtIpVI8vwkOJpFef+8hOdYVbuQJ7PB01+r1ghqd8YbiCopUiQ+C3s5jYFGK1?=
+ =?us-ascii?Q?M+krILgkQe+GdNDhjDs7yP//f5+u7rECCuktwaHBa+PUqL1mIPuxmMeqGfYI?=
+ =?us-ascii?Q?iDuZQ2ig6gd4MTrtbcdTcjc3IiByJ6Lo7yqaELZBpiTj5Gdoaoh4eS5fX++n?=
+ =?us-ascii?Q?RGWvbe17p7C8bNbp0jxlfGfrMUceMBFohZxY1pwpIeKppLgLPzilMpscnCpF?=
+ =?us-ascii?Q?GtbNIfNMQxWO6J+img9/1WLhhekN50O0GkAVdM/FncO0ALu0QnAf5JTEpdNl?=
+ =?us-ascii?Q?BeEQWg6edGHyQ+ihVPTLWeh22QdNfeOUT4LTCf57lJ6RDoWYk+XOWlKc/A89?=
+ =?us-ascii?Q?z8ZPzb8QhkhmhHGgqJSWYmm+yp9dmCZBkbn5oeb+Su4Nq+aZDKXF+vz8UMfZ?=
+ =?us-ascii?Q?4jc+kGYhAzfVqqXCff0Rqy1b/2ooaRMhFLVwlCQYdSgITBPed0ym909SWpk/?=
+ =?us-ascii?Q?Osxs0vgsTXtYA+/8pTW0KpWKWDF1s3QhhKPfhUN4qlDAO7LO4XHU5YF0x7dw?=
+ =?us-ascii?Q?gA0yjVIiLoVbRyt8ZJbFxyholHoLhVCTXOlpxks/ECVwZgzgAaircglXX/jV?=
+ =?us-ascii?Q?PUpLR9kv8kxvU2BuAweQoFX5W29pm6idovYiqD6BU+Qf2Lp98htFNzI+OPGa?=
+ =?us-ascii?Q?IonIitNLvmykEkkK6bKXtIwd1wPzS1FJzI+iWO7yh3E07R9v180Ye1/MGy1s?=
+ =?us-ascii?Q?Z9palqhjkoJku4GTkgMIvdpCzEtraoKXKYwlLiUeWV2GK4BCaddjVmC9kCr1?=
+ =?us-ascii?Q?mATSrwOZiUUvYh5GRGZnzsbEjDKDfc59lROhnEvEyLKjQxrPf++rrOhlv/Ed?=
+ =?us-ascii?Q?fE9lUIsBItlk1783+B8QJBOiuWmRzH3dWQjKtvnTwPGCgwON2Ko6M+2iKBJN?=
+ =?us-ascii?Q?7Tdjxmwzgc1FfO1VbL0Jka2cSUGcKZpXaiepe9Db064MQvWp39/zzX4Fw1Ln?=
+ =?us-ascii?Q?UK+IJhpO7fNX5JJVF1qbcoED+IiyR7d1SWDsdk8GibpB/2dxk/LO+FZaVSkQ?=
+ =?us-ascii?Q?C/HoRd2JbKRnNZ0+QnKe+/UbpS8o5ZmJURXV8L5jioi+Gz8tIor9rgHd7hVH?=
+ =?us-ascii?Q?l7c5a5qO+ZUQcXoeMMmqkKJ6OLnz9HQ0K+makqCGrAumfH2kyOOE3pg2MM9s?=
+ =?us-ascii?Q?svDCObz9kGGqXQfbBq5II0ROZGeaufCBFTu+/tn8eKxIO+DK28ZxohI+kBcm?=
+ =?us-ascii?Q?9DGIQaGlGkuf+RVN8VSnEUCNXJMsGB+/BVCIL7+/hYaTADZcFL6sY49VVtB4?=
+ =?us-ascii?Q?wEtbY4gWhShjxGQi/Uayt/fqYoI++0xKxapC/Yj+VozH9fFp?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6284c4c0-a5c1-44ca-9722-08df35e641dd
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2026 17:58:37.4804
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GnADlDOCIFCnh7/+SsyiAXs0hyxT82eEKvG7NHGnaugkn9QJzyMU7WHIUo2ZbVf1+ut/ycvncwhv7BuH0TIjrw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB9072
 
-On 10/29/26 3:20 AM, Thomas Fourier wrote:
-> Since ipa_interrupt_init() allocates struct ipa_interrupt in ipa_probe(),
-> the structure is owned by ipa_probe() and released with
-> ipa_interrupt_exit() on its error paths and in ipa_remove().  The error
-> path of ipa_interrupt_config() still frees it with kfree().  If
-> ipa_interrupt_config() fails (called from ipa_config() via ipa_setup()),
-> ipa_probe() unwinds through err_interrupt_exit, which frees the same
-> structure again.
+On Thu, Oct 29, 2026 at 11:26:27PM +0800, Yingjie Wang wrote:
+> ipv6_get_regen_advance() combines regen_min_advance, regen_max_retry,
+> dad_transmits and the neighbor retransmission time. The first three are
+> signed sysctls, and the product is evaluated as int. Negative values or
+> signed overflow can make the unsigned long result much larger than
+> intended.
 > 
-> Drop the kfree() from ipa_interrupt_config(); it should only undo what it
-> set up itself. Drop the leftover initialization and cleanup of
-> ipa->interrupt now managed in ipa_proble() and ipa_remove() of ipa_main.c.
+> The retransmission time can also be supplied by an on-link Router
+> Advertisement. On an x86-64 HZ=1000 host with regen_min_advance=2,
+> regen_max_retry=3 and dad_transmits=1, an RA Retrans Timer of
+> 1431654765 ms makes the old int product wrap to -3001. Division by HZ
+> and addition of regen_min_advance then produce -1, which is returned as
+> ULONG_MAX. This gives an on-link trigger on hosts that accept RAs and
+> use temporary addresses without requiring a sysctl write.
 > 
-> Fixes: ad1be80d7582 ("net: ipa: introduce ipa_interrupt_init()")
-> Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-
-You should respond to the netdev-bot message asking for a better
-explanation of how this was found and whether it was observed or
-just found by inspection.
-
-However I think this version does look good.
-
-Reviewed-by: Alex Elder <elder@riscstar.com>
-
+> When ipv6_create_tempaddr() clamps the preferred lifetime, it adds age
+> and one to this advance and stores it in a u32. The sum can wrap or be
+> truncated to a short preferred lifetime. addrconf_verify_rtnl() then
+> finds the new address due for regeneration and restarts its scan after
+> creating another one. The temporary-address path has had no
+> max_addresses check since commit 4b08a8f1bd8c ("ipv6: remove
+> max_addresses check from ipv6_create_tempaddr"). In a baseline namespace
+> test, setting dad_transmits=-1 and adding a temporary-address template
+> with mngtmpaddr produced 2859 loopback addresses in two seconds.
+> 
+> Reject negative values for all three sysctls with -EINVAL. Writes that
+> used to succeed now fail validation; negative values have no useful
+> meaning (negative regen_max_retry already disables temporary addresses
+> on the first attempt). Keep zero valid. Use checked u64 arithmetic and
+> div_u64() to calculate the advance, including values supplied by an RA,
+> and cap it at U32_MAX. Compare the required preferred lifetime in u64
+> before narrowing it to u32. Calculate the desync margin without an
+> unsigned subtraction wrap on 32-bit builds. Clamp the effective maximum
+> to that non-negative margin so a negative max_desync_factor cannot make
+> the u32 comparison architecture-dependent.
+> 
+> Tested on x86-64 KASAN:
+> - negative writes to the three sysctls were rejected without changing
+>   their values, and zero remained valid;
+> - normal temporary-address setup and a case with writable
+>   max_desync_factor=-1 each produced three IPv6 addresses;
+> - with HZ=1000 and a one-second retransmission time,
+>   regen_min_advance=0, regen_max_retry=2147483647 and dad_transmits=1
+>   caused the baseline kernel to reach 2847 loopback addresses after
+>   two seconds; the fixed kernel left two.
+> 
+> Kernel selftests were not run.
+> 
+> An i386 defconfig with CONFIG_IPV6=y and HZ=1000 built addrconf.o with
+> W=1; nm -u showed no __udivdi3 reference.
+> 
+> Fixes: f4bcbf360ac8 ("net: ipv6/addrconf: clamp preferred_lft to the minimum required")
+> Signed-off-by: Yingjie Wang <1075151112@qq.com>
 > ---
-> v1->v2:
->    - Drop ipa->interrupt initialization and cleanup.
+> Changes in v2:
+> - Reorder the declarations for the netdev reverse-Christmas-tree convention.
+> - Use an intermediate variable to make the max_desync_factor calculation
+>   easier to read, as requested by Paolo Abeni.
+> - Clamp the effective max_desync_factor to a non-negative range so the u32
+>   comparison has the same result on 32-bit and 64-bit builds.
+> - Document the RA-supplied Retrans Timer trigger raised in review.
 > 
->   drivers/net/ipa/ipa_interrupt.c | 12 ++----------
->   1 file changed, 2 insertions(+), 10 deletions(-)
+> Link: https://patchwork.kernel.org/project/netdevbpf/patch/tencent_F6E8C7CAC6D390C8E912EEE4FD9FE4333505@qq.com/
 > 
-> diff --git a/drivers/net/ipa/ipa_interrupt.c b/drivers/net/ipa/ipa_interrupt.c
-> index 131b9cc94201..766b094eb069 100644
-> --- a/drivers/net/ipa/ipa_interrupt.c
-> +++ b/drivers/net/ipa/ipa_interrupt.c
-> @@ -260,10 +260,8 @@ int ipa_interrupt_config(struct ipa *ipa)
->   	interrupt->enabled = 0;
->   	interrupt->suspend_enabled = bitmap_zalloc(ipa->endpoint_count,
->   						   GFP_KERNEL);
-> -	if (!interrupt->suspend_enabled) {
-> -		ret = -ENOMEM;
-> -		goto err_kfree;
-> -	}
-> +	if (!interrupt->suspend_enabled)
-> +		return -ENOMEM;
->   
->   	/* Disable IPA interrupt types */
->   	reg = ipa_reg(ipa, IPA_IRQ_EN);
-> @@ -289,8 +287,6 @@ int ipa_interrupt_config(struct ipa *ipa)
->   		goto err_disable_wakeup;
->   	}
->   
-> -	ipa->interrupt = interrupt;
-> -
->   	return 0;
->   
->   err_disable_wakeup:
-> @@ -299,8 +295,6 @@ int ipa_interrupt_config(struct ipa *ipa)
->   	free_irq(interrupt->irq, interrupt);
->   err_free_bitmap:
->   	bitmap_free(interrupt->suspend_enabled);
-> -err_kfree:
-> -	kfree(interrupt);
->   
->   	return ret;
->   }
-> @@ -311,8 +305,6 @@ void ipa_interrupt_deconfig(struct ipa *ipa)
->   	struct ipa_interrupt *interrupt = ipa->interrupt;
->   	struct device *dev = ipa->dev;
->   
-> -	ipa->interrupt = NULL;
-> -
->   	dev_pm_clear_wake_irq(dev);
->   	(void)device_init_wakeup(dev, false);
->   	free_irq(interrupt->irq, interrupt);
+>  Documentation/networking/ip-sysctl.rst |  3 ++
+>  net/ipv6/addrconf.c                    | 53 ++++++++++++++++++--------
+>  2 files changed, 41 insertions(+), 15 deletions(-)
+
+This patch is very hard to understand.
+
+My understanding is that ipv6_create_tempaddr() makes sure that it's not
+creating a temporary address that requires immediate regeneration. It's
+doing that by setting the preferred lifetime of such an address to
+'regen_advance + age + 1', so that at least one second will pass before
+a new temporary address needs to be generated.
+
+The problem is that this expression can overflow to 0 or be truncated when
+assigned to 'preferred_lft' if it's larger than U32_MAX, resulting in a
+preferred lifetime that requires immediate regeneration.
+
+Can't we solve it with the following diff?
+
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index c8c0dd04982d..d9d13e78bf13 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -1487,7 +1487,8 @@ static int ipv6_create_tempaddr(struct inet6_ifaddr *ifp, bool block)
+ 	age = (now - tmp_tstamp + ADDRCONF_TIMER_FUZZ_MINUS) / HZ;
+ 	if (cfg.preferred_lft <= regen_advance + age) {
+ 		cfg.preferred_lft = regen_advance + age + 1;
+-		if (cfg.preferred_lft > cfg.valid_lft ||
++		if (cfg.preferred_lft <= regen_advance + age ||
++		    cfg.preferred_lft > cfg.valid_lft ||
+ 		    cfg.preferred_lft > if_public_preferred_lft) {
+ 			in6_ifa_put(ifp);
+ 			in6_dev_put(idev);
 
