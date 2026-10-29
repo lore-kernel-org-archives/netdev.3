@@ -1,62 +1,178 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793260673;
-	b=lGP0xUj3nm7hlqnlLDIAqNoTIyKQoZ1e1zz4k+UWjrc3nJBTpGXx9fqcPwA9Fvi2lFXQ
-	 KApaOydiG+NgZZhvPGzCYdoLSQSyUUW7stu3IwHVOdLRV1TGXyCHrQp+bzIzg+dnXOKvF
-	 fdHQQ2QsST7nNpHyky2/3A02qSeVEanruVGh5dM+pXZ/Rrvmd4w6WNAkhDBYh/DOFTopY
-	 u9ih7JTZCRUBJRBSZwGPucgXcmjko69RI7+dHFsx8J/iaeoMdSoim77I/jPJTyS8XmrJ1
-	 x2Aj9C7Jd19Un2lihoHxuhiSbTkUj6CWUXLVOK2/4DTMYlmHBQD0zHcrs4WPjDPYz7Q==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793260673;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=289kZZ1/nkDhGKXIhpS5F5P0X4MaBgwQ5nuxC8dw4d0=;
-	b=nT2fdqowOEVZsJYxjAuvpLVU980herHO2J8rL4JcEClaPoRaHksC8DoOemH0+XYurvlA
-	 c2o1M8UEFUNDGpAurDVEg1PSWta3CaITcjl2zW2ry9Yrh1uWArxnHAN4tppv7HkMHHXoU
-	 jOGs+QgKbh3bDO2PviY1A6ljDdrcTu7fR4ReKGwkWViWYdw7Zd/LBjkiaMy9+C5FmEqBE
-	 ZAUBV64z9dqQWACArZ3pWCMHmXrOmO2yFT1pJA6QnHuIKI2l3LA+Ph+9kgxz05CeUmSvY
-	 BOvyDznPF+PH/BehVHuig5zt45D1ndVZ5GRHpFnyLxqXFD3CEnNhWWXJEQp7OEr9gJA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hi+mzQl3;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=192.198.163.17
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793260920;
+	b=zO6F9/+cs6OiwONt6kRSmLMedUuVSppTB2uZxVMhjAs05kbOQ9Ft6S1aF+hmAFVMq2DF
+	 kLXWRI9Pl/hZxXYtor1Tp7VLk6swpqzQVI2eET+LdZAbaJ27i8dRXuuHr16FXoqaGYui4
+	 MztjQWxsXaohV9ztIWjuahBnMMiRENyioYJHXSVEYwC1B2eKtEuWVRJCRB+SNmjBzweFR
+	 j0st9dCTNvIPoUvQ7NKJFmdz8d8it3YiTYK0rKga6gLzjPKsnRNTXywszwjExMD1Q5Zm+
+	 fIFIG4WU+qugoChZmH40Bn0fynDZoCv4kbTmgc+rVxOhOmZOMxTLkpPf2U5eY4/7p8w==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793260920;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
+	 Received:Received:Received:From:To:CC:Subject:Thread-Topic:
+	 Thread-Index:Date:Message-ID:References:In-Reply-To:Accept-Language:
+	 Content-Language:X-Mentions:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
+	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
+	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
+	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:
+	 X-Exchange-RoutingPolicyChecked:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
+	 X-MS-Exchange-CrossTenant-userprincipalname:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+	bh=yuV4a2yPj/rv4YHjVT7b7EzUCa6aIpJLH5jokwCzn9g=;
+	b=W36gKYEBqKBQ6MQAC4N5yppE6ZKWJdHk3eCFe/ZH2UflqJGAkskbIFyPi9OPJ3REO2gF
+	 Zsw6THHwK1YDLCkEILCSTgC7FS6StDLZ7ZpxrpYF1RheePSB8IydtFu0cFiGbCKujYRJe
+	 7eYFeG0FJZBj8jG9AovneE7TyHOxjkmz7uQO9/rs9GhibGYUPJ6IiExuEsSFOg7BVq0EV
+	 ScJcpeunHiL6C3ZwXU31juh+8su+cwPr3+QGkYF1CX2tguG0gUM974tqH1PDevSpKSKfW
+	 tpEo8uiR5RJrAgfIvVmxwEdcDSRtUIHtcsYvCBD4EAm42COl1KGgLYi4H5oqk8H5tIw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HwZdXoLR;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=192.198.163.17
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8E4606A31C
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 07:57:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D04606A31C;
+	Thu, 29 Oct 2026 08:01:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 24D04606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hi+mzQl3
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D4491F01828;
-	Thu, 29 Oct 2026 07:57:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793260672;
-	bh=289kZZ1/nkDhGKXIhpS5F5P0X4MaBgwQ5nuxC8dw4d0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Hi+mzQl38D9qlo9q7fBAIiD5OmatwQ0Q3AFJ+Sp7akN37lYfcsJ7NeIMLZYwmzl50
-	 3eM/u2d9W98hlqDkS68N0RcHIULqdg86yqtBvPmszVfTDj0avflGSUZhb38D6aN3ds
-	 8poizS666U844EJ/xunsambKRqFeO80qhGg6iJDdKIVZnkbDxKlgb3V0UG96eCLO4n
-	 V7WruGu4bUtM15fLcDNfasdWHaEZcbl+uDd8CEb/GvPrsjcl0eC2BTx0F7wXLVQ7zJ
-	 4UdRWTW3tMF9//pxNOZSdoHHBw/D/yDXXP3cUNB/0uJ121LasSh/fcdt02tuPQkRnn
-	 h5w3wMtIFa5NA==
-Subject: Re: [PATCH net v4 3/3] net: stmmac: re-apply taprio offload in
- __stmmac_open() and stmmac_resume()
-From: netdev-bot+sashiko@kernel.org
-To: lorenzo.bianconi@oss.qualcomm.com
-Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- richardcochran@gmail.com, linux@armlinux.org.uk, Jose.Abreu@synopsys.com,
- james.hilliard1@gmail.com, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, rayagond@vayavyalabs.com
-Date: Thu, 29 Oct 2026 07:57:50 +0000
-Message-ID: <179326067100.3134.15863707026342807337@kernel.org>
-In-Reply-To: <20261026-stmmac-est-fixes-v4-3-999dac4de44f@oss.qualcomm.com>
-References: <20261026-stmmac-est-fixes-v4-3-999dac4de44f@oss.qualcomm.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HwZdXoLR
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793260919; x=1824796919;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=NsDY0SZIn72zd30zZOxHUlUYx/2TEbHEJDfGEoBtGlU=;
+  b=HwZdXoLREJgrcWPESi0ibMLwSgiYShw//rS4Q46EDUkq7sfDDaXFDnKS
+   OpJDW3tP7koZHXTurFPZuYNmtVQUbsxEWoeihq0sZoNbkcrZYJdFoyb8Q
+   EXP3FYST+/5UF9zST0TywI7AMMaqOsbN4nLyzu+70IK3wtYOgPPZ53VLy
+   z7+K3lUEilWWx77Qd2OwEFJJ3Z0l3vyo3/I4YuJoEKa+olRmLXGmK57F1
+   eemPOoS07S7PYZwBNS5MSGzfkW/P1GgtgSFmQ405uc2/7s0CpOiFS2jyz
+   eMfH65rYB8mSwuxPuD/RGUrhMkw4rJBYq+4r+QthWkdc6+pxr7ZDjt1M/
+   A==;
+X-CSE-ConnectionGUID: 160rvjmwT+GUdTlSTVDjdA==
+X-CSE-MsgGUID: s4Xco/pySbe5ix7YR89DiQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="2011878"
+X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
+   d="scan'208";a="2011878"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 01:01:57 -0700
+X-CSE-ConnectionGUID: JP736SuFTUqt+4W2rGrLsA==
+X-CSE-MsgGUID: lB7UwNz1SGGwUBtjgGH1bQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
+   d="scan'208";a="5407191"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 01:01:57 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Thu, 29 Oct 2026 01:01:56 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56 via Frontend Transport; Thu, 29 Oct 2026 01:01:56 -0700
+Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.1) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Thu, 29 Oct 2026 01:01:54 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BZoakxi/ZpQldu5HwHq0wWa/UJE+eT7RM2SvSaiUhpODTwSWzBYTU0zo1Z8Lpr/MaiOb4G3Gkvwi+DCtRCSWXzQwYt5f4sbNcUgv04iDQXx8UzI6kuQlzC/E5SgkKdHr4fRHyRbt7dtV4xmfuQGz+sVIdjozuASUZDx/zpuEhYtrH0SA2TisSPbY+i/3Wlw/RTaMLLhtbwKdLeFM1BUalInA/nu3qN4H7pyy58kaJ5xgh8IWTiZWeT6/9MnD4iFvE0AZVTOTGtZDbpsul/h7tGL2xU0w4nODNyEism5QBWYxyabdh0q3SCAs6EhtaL1WiAW569uU+dLMn9mFnQE4Ng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yuV4a2yPj/rv4YHjVT7b7EzUCa6aIpJLH5jokwCzn9g=;
+ b=fGPiNyLku3CYFF7HaiXrKTG3j90TrPGbJC8KrRZt4mPuPro6RllfM5uHYNXwrBAWJwR8GFIkvgAJzEZAP5RYw/OAbhZiWi43hGNkgGYGFpbofUdZZzwbbx+eWFWqcrc2Yvc4RzjstAlESDnuUEpOkOp8YyRHu3rbuhYETwgvJ0D2SlHHtK74HAGAvNxC6E+vIjl4n0GbksAIT6IapKDRLHj+nBtLFHPdWjVMzea9jNe+Ay4YPHtHx6un2e8+UVakShQp3rGWlLJh5oxPHOAjmCqw20Wt8C41YDvInm/zSx6ggfu+IRlGqudKHTm5aqoMM6K81ZJRuNNnCod+mQNGsA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from CH3PR11MB566895.namprd11.prod.outlook.com
+ (2603:10b6:610:34d::22) by LV2PR11MB391849.namprd11.prod.outlook.com
+ (2603:10b6:408:410::7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Thu, 29 Oct
+ 2026 08:01:53 +0000
+Received: from CH3PR11MB566895.namprd11.prod.outlook.com
+ ([fe80::87f5:c8cf:d52:e584]) by CH3PR11MB566895.namprd11.prod.outlook.com
+ ([fe80::87f5:c8cf:d52:e584%7]) with mapi id 15.21.0569.007; Thu, 29 Oct 2026
+ 08:01:53 +0000
+From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
+To: Binbin Deng <18983559317@163.com>, "Nguyen, Anthony L"
+	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
+CC: "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v1] i40e: Lock VF cloud filter list operations
+Thread-Topic: [PATCH v1] i40e: Lock VF cloud filter list operations
+Thread-Index: AQHdYD7yRpCiZYHOJ0WCs+VUR1KK1LcUNpZw
+Date: Thu, 29 Oct 2026 08:01:53 +0000
+Message-ID: <CH3PR11MB566895DDC2FD235E47AB496E9DE56E2@CH3PR11MB566895.namprd11.prod.outlook.com>
+References: <20261020025856.519623-1-18983559317@163.com>
+In-Reply-To: <20261020025856.519623-1-18983559317@163.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-Mentions: kuba@kernel.org
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CH3PR11MB566895:EE_|LV2PR11MB391849:EE_
+x-ms-office365-filtering-correlation-id: a0615f8f-0b17-44f0-a28a-08df3592e4dc
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|366016|376014|1800799024|261009220027099003|261009221227099003|261021123027099003|261021135927099003|261021121427099003|261022075727099003|261022105027099003|261009221727099003|261009223327099003|261009223027099003|260925021311599003|260925022911599003|260925021911599003|10067099003|261026140227099003|261028144727099003|56012099006|18002099003|22082099003|921020|261026121527099003|11063799006|38070700021;
+x-microsoft-antispam-message-info: chTcnK31w9NyEPas0Sd0I5lByypDkkgMuQMfm/MkB5C6iPoVLur5H2mBtS22jkJSqUAlRbG6+TVv4Ev+mN0rlSg/2VaGOd1o/dB4Qhl84YWYVksq4D+VQ0zmajaFmgKqv/gHcw4yOTdH9t1nT5Tb+z5W+Y09AIgSKdjtX9/RJWp30ktoOIRAXEpVaj1S4OuP0BSloN47qaUzzxpB8HMPW5BEQJoJ4wHVnDTX2mTD1cjveDw2xLMx52EiBbU8j6VUlJwUP14qPY3k9u/RgdIdp2aQbRJ/1F+V8ynsRfUoa4gXAFg/UTmjZ6PVEt2vdWAENhkwlcPKsTisvu5cfVYvo2QvFXOezPYFm0cUr1ajtCVTSulz4qd6jl+7i81luOWw30FkmEE6psOsaVOntzMFwSKJqDkmZ225eKgHv2paW9WWUx+yrjROyjijzsYWedlWdoRK9vCdImKtdi/GDlnfCMSwuGXwvY9VnzyeH2609I4XqO1OxGkoJpcabIQn9qJpTgAtfLhDXwAmWGu6iJEyAXs6kLNBMUktXXKf5EavcbmlGnsYvYCdwMVYh3IkGrYKXY7cSvNBPO7mx5kG+OcfhY7V7rOu6tjSA/eemzoacAZVJD1FDEI8+NI04prKXdav5rqIsVo7d94tWq+55C7zyT5axziwTJBdOoWQuXtcmcI+uSO7TKRMbxlkZdRrMj3IDMz48ercpEEFEsTdBP9JiUBUb9x/UNOENjIBWHJG0YxTpKpzTuqHCtLQu6oaNs7W
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB566895.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(1800799024)(261009220027099003)(261009221227099003)(261021123027099003)(261021135927099003)(261021121427099003)(261022075727099003)(261022105027099003)(261009221727099003)(261009223327099003)(261009223027099003)(260925021311599003)(260925022911599003)(260925021911599003)(10067099003)(261026140227099003)(261028144727099003)(56012099006)(18002099003)(22082099003)(921020)(261026121527099003)(11063799006)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?cuanBOJ6HkegXp4NfPz36upgqoJFc96u+f+8R7ck53sVLwkHijtGYHLmcwGL?=
+ =?us-ascii?Q?kEdUj+bQtl/0TBgiE6J+kIQhI58MLfz5Efsv0f60tFZ0N+RcMG3sX6opTlat?=
+ =?us-ascii?Q?zMc5M1IzK1vfpdyIU9djazXa0rg5IEZsFFYk7wODCl4GsVnRKjMqCymIWGXq?=
+ =?us-ascii?Q?RZr3wOxQfNqcib9llW2aj9HaSYBQD4fxkVWE2YW7paF/SpY46qjhGy8UlhcI?=
+ =?us-ascii?Q?+IC+J3U5Hz7wJ3jhDRX4Gmo0aQyInyorDnZaKEeDdTL2gWFXay+uTKMzy6vk?=
+ =?us-ascii?Q?tE9Pb7Ab18QvGuu3P3+dz+Ni/2Tr9ZfRZ06Xky2bstHPBvSPuxMvLaYZ/DMn?=
+ =?us-ascii?Q?YI1My/ATZ3hqI/zt4JVTdyDPdoBeepcor7vHsKph9Z09hcmphLJql9xmAVpQ?=
+ =?us-ascii?Q?2LFxI5UAgBXZzd4FHf7YQSyTsPkySndvO2tVKNR1tMy+CNKnc5YmVtitDH7p?=
+ =?us-ascii?Q?pdkSpFYWFSv9ix+Cu//07rOTfCkSiWIpx7PsdvTx9TZwMr5dtaT+mm6UWUip?=
+ =?us-ascii?Q?vt/Fbdu/ShKOQqqT+fjFb2PtnBJCQDToocwettURFsNzj/43af/PTnj/hZbq?=
+ =?us-ascii?Q?N3BRD4rv9fAxMMNgbA50ZvjQ9jcVzgapMPu1jNCX+tXMH0zjXhBurpSs8F1v?=
+ =?us-ascii?Q?Rzw9J2b4xWleRLj7ackWpIHFFqlvqzvVwhqNX6A0Ra5Fk9p0PZL6C02WHP15?=
+ =?us-ascii?Q?tAjuCxFa2Fw8/UOAu7aTnrX6SQOLLWprLqNTSxA2ntfMgdx0CDDWnv8eGOGa?=
+ =?us-ascii?Q?zJ1RMDq4ZYGYfOSGZrgjGD2g0FpZaE6zici37JPx+vpmH0qUD8mZX5M/inIa?=
+ =?us-ascii?Q?SEYa69QXvJkDBxXtyEXcUIm2VgALcSzHCAj9M60lhEQkfhfmMnHDkRauabt+?=
+ =?us-ascii?Q?sTD15byEsJt5Rrb3zdsto9LO7WIf3QmA5TTs9AcKshfKZensN1aGa2xkKc+x?=
+ =?us-ascii?Q?/geHiK7GoQVhDqHOjmWyLqCK4zWGt3UPv9IjGS7vXA6w+ApU+gi6SXBbke7k?=
+ =?us-ascii?Q?/mgNUQjXRFHXPsoRrc04T7seiXTXsEVPaFqquUoxmLp1ZohVlISAk9yBytdm?=
+ =?us-ascii?Q?u4dsDHEfRje4uNHhpDg/7sNdy2AnbDSi6nPekohdmJWY1L7OU7yi3zSbfVZ2?=
+ =?us-ascii?Q?fW0HQfgdSaNplcyTt80WnlCGxGYE1FoYZxoJ8E7B51e+mElFhW3NC3yIasmo?=
+ =?us-ascii?Q?J4KX7nA504Ds+jLCcb8rfomn02Z4kOgoABqNV5PqwBqNBgu90E5W1EWzplLN?=
+ =?us-ascii?Q?SwjDVKbtKxWU1WIPc6a/u2UeIKzovDGlYq0rMaIYMLXtypVdLgsHOJ3uDHY3?=
+ =?us-ascii?Q?A6gjXf7A68fShU/ROLC9ybxc2WwMwszQU3f9GhZ49oPHkQ/XDvnN1hprrGzk?=
+ =?us-ascii?Q?4VdBYKn03FAT7F7d6WwS5R3oniY/6eSjj0de8GZ+V6G4KBa6AFaSP9tumLLq?=
+ =?us-ascii?Q?jwMAPHSpe5zzGckWJ9mo/iCfK68ZHLsL/wFynx455P767JXFF5H85dypsdMw?=
+ =?us-ascii?Q?JupNdM3I7elV4HehTD7ZwcMF2tZwWNrxcIaHoeVBr+ACz7bsKOQsJyFhjFwo?=
+ =?us-ascii?Q?bctRDbUlhYiRIamfJc7myQE39TiQMqmCKWSQvGJhWaR7PZYxd3x3rDydZ1bS?=
+ =?us-ascii?Q?vvafyZ9IKowMxDWfyJKyNr8JeBSK+AvAWbSnExUl3UD2wKl8dNa6FlgbDOrF?=
+ =?us-ascii?Q?x+Kik3/8IfIBPRkqIVOFPqufulFB1JtOJE7C3N6uZ6/FPz76To4R26omFuNY?=
+ =?us-ascii?Q?ngQxyl8vkjJknITDBnby+ZyJznAeqc0=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,391 +182,157 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+X-Exchange-RoutingPolicyChecked: goP8K48gxLA3J+lQ86r6VGcsGWY324vlVfImp0fd8quuu3b81X+JTkNGTU/YWRcds+cI/dGnlFX0501gaFWVQiCSoQ5Pv5t/rzVlnTmaUu+OzxqYscsJ0KCbfLHvR36igtj1pmlDCH5ojz45UDfqBxKkHwwCOJHHRQIdexVesF7kq1K4uUfxPO5TrHmJnR3gkg5rjsbDsvh0t9Xn+GIupSkPOrFX1YrMTsKnEheiT4IubL3qyBHxndUce5wUQ3xYpKwnai71uRBoc3KXB9x7Z9wLcJOR++FNPRjzpXCkFG4l8qyFbnqEjRTYvYg/ZxjIEKNCBEqXTokkOIc22k23Vg==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB566895.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a0615f8f-0b17-44f0-a28a-08df3592e4dc
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Oct 2026 08:01:53.0438
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 09CGrsYcGudIC69BS8gZCu+a/sy2aezTnFu2+r16/KlTbvdb605krG+69AUuRZWLkz8hd+yMEI4baFYTBLq1VzSSCCcQip5Lpl3hcvhcHGk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR11MB391849
+X-OriginatorOrg: intel.com
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 4 · Low: 0 (1)
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The patch says it re-applies "the taprio offload" after the
-  core soft reset, but it only replays the EST block.
-- [Medium] The patch handles a failed EST re-apply inconsistently between
-  open and resume.
-- [Medium] A taprio REPLACE that is rejected only by the software checks
-  in dwmac5_fpe_map_preemption_class() still tears down the installed…
-- [Medium] stmmac_adjust_time() checks and clears priv->est->enable in
-  one est_lock section (stmmac_ptp.c:72-79), drops the lock while it…
-
-Pre-existing issues:
-- [Low] The TX hot paths (stmmac_xmit around stmmac_main.c:4861,
-  stmmac_tso_xmit, the XSK zero-copy path around 2753, and…
-
---
-
-net: stmmac: re-apply taprio offload in __stmmac_open() and stmmac_resume()
-
-The core soft reset in stmmac_hw_setup() clears the MTL_EST registers. This
-patch re-programs EST from __stmmac_open() and stmmac_resume(), recomputing
-the base time from the reserved base time and the current PTP time, and
-reuses the same helper in stmmac_adjust_time(). It also reworks
-tc_taprio_configure() to hold est_lock across validation and programming,
-and to set priv->est->enable only after hardware programming succeeds.
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.h
-> index f70221c9c84af..0f0f162794c84 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.h
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.h
-
-[ ... ]
-
-> @@ -65,3 +68,18 @@
->  #define EST_GCL_DATA			0x00000034
->  
->  extern const struct stmmac_est_ops dwmac510_est_ops;
+> -----Original Message-----
+> From: Binbin Deng <18983559317@163.com>
+> Sent: Tuesday, October 20, 2026 4:59 AM
+> To: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw
+> <przemyslaw.kitszel@intel.com>; andrew+netdev@lunn.ch;
+> davem@davemloft.net; edumazet@google.com; kuba@kernel.org;
+> pabeni@redhat.com
+> Cc: intel-wired-lan@lists.osuosl.org; netdev@vger.kernel.org; linux-
+> kernel@vger.kernel.org; Binbin Deng <18983559317@163.com>
+> Subject: [PATCH v1] i40e: Lock VF cloud filter list operations
+>=20
+> A VF's cloud-filter hlist is modified by the virtchnl add and delete
+> handlers and by i40e_del_all_cloud_filters(), which runs when ADq is
+> disabled or when the VF loses trusted status.  These paths do not share
+> a lock.  In particular, the PF's async VF-message handler can process
+> VIRTCHNL_OP_DEL_CLOUD_FILTER while host-side ndo_set_vf_trust() removes
+> every cloud filter for that VF.
+>=20
+> The race is reachable from a guest by issuing cloud-filter virtchnl
+> requests while the host revokes VF trust or disables ADq.  The VF-
+> message handler can traverse nodes that the bulk-delete path has already
+> freed, or both paths can remove the same node.  The result can be a
+> KASAN use-after-free, hlist corruption, incorrect filter accounting, or
+> a panic.
+> The virtchnl operation-pending bit does not serialize this host-side
+> trust path.
+>=20
+> Serialize cloud-filter control operations with a mutex.  Hold it across
+> the firmware add or delete, hlist update, and free, so bulk deletion and
+> individual add/delete operations cannot observe a partially removed
+> list.
+> The lock is file-local and slow-path only.
+>=20
+> Found during a static-analysis-assisted audit: candidate sites were
+> surfaced by a Coccinelle rule, and the reader/writer paths were
+> confirmed by LLM-assisted (GLM-5.3) code inspection. Due to a lack of
+> hardware infrastructureThe issue was not observed at runtime.
+> It is identified by code inspection only.
+>=20
+> Fixes: e284fc280473 ("i40e: Add and delete cloud filter")
+> Assisted-by: GLM-5.3 coccinelle
+> Signed-off-by: Binbin Deng <18983559317@163.com>
+> ---
+>  drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+>=20
+> diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+> b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+> index a26c3d47ec15..f73a710f42f1 100644
+> --- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+> +++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+> @@ -3740,6 +3740,8 @@ static struct i40e_vsi
+> *i40e_find_vsi_from_seid(struct i40e_vf *vf, u16 seid)
+>   *
+>   * This function deletes all cloud filters
+>   **/
+> +static DEFINE_MUTEX(i40e_vf_cloud_filter_lock);
 > +
-> +int __stmmac_setup_est(struct stmmac_priv *priv);
-> +static inline int stmmac_setup_est(struct stmmac_priv *priv)
-> +{
-> +	int ret = 0;
-> +
-> +	mutex_lock(&priv->est_lock);
-> +	if (priv->est && priv->est->enable)
-> +		ret = __stmmac_setup_est(priv);
-
-[Severity: Medium]
-
-The commit message says this re-applies "the taprio offload" after the core
-soft reset. Does stmmac_setup_est() restore everything that taprio
-programmed, or only the EST block?
-
-On a successful TAPRIO_CMD_REPLACE, tc_taprio_configure() also calls:
-
-	ret = stmmac_fpe_map_preemption_class(priv, priv->dev, extack,
-					      qopt->mqprio.preemptible_tcs);
-
-On GMAC5, dwmac5_fpe_map_preemption_class() writes FPE_MTL_PREEMPTION_CLASS
-in GMAC5_MTL_FPE_CTRL_STS. On XGMAC, dwxgmac3_fpe_map_preemption_class()
-also writes the per-queue XGMAC_Q2TCMAP field and XGMAC_MTL_FPE_CTRL_STS,
-even when pclass is 0. During stmmac_hw_setup(), dwxgmac2_dma_tx_mode() then
-rewrites Q2TCMAP back to the channel index:
-
-	value |= FIELD_PREP(XGMAC_Q2TCMAP, channel);
-
-preemptible_tcs is not saved in priv, and stmmac_fpe_map_preemption_class()
-is only called from stmmac_tc.c. That means neither __stmmac_open() nor
-stmmac_resume() can replay it.
-
-So what happens after ifdown/ifup, an MTU or ring size change, or
-suspend/resume? On GMAC5, would the preemptible TCs silently turn into
-express TCs? On XGMAC, would the queues go back to the default queue == TC
-mapping, so the EST gate masks no longer cover the intended queues?
-
-Meanwhile __stmmac_setup_est() sets priv->est->enable = true, so taprio
-would keep reporting the full offload as installed.
-
-> +	mutex_unlock(&priv->est_lock);
-> +
-> +	return ret;
-> +}
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 9e09e11cc35e5..a13a3790207d5 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-
-[ ... ]
-
-> @@ -4201,6 +4202,10 @@ static int __stmmac_open(struct net_device *dev,
->  	if (ret)
->  		goto ptp_error;
->  
-> +	ret = stmmac_setup_est(priv);
-> +	if (ret)
-> +		goto est_error;
-> +
->  	stmmac_init_coalesce(priv);
->  
->  	phylink_start(priv->phylink);
-
-[ ... ]
-
-> @@ -8518,6 +8523,10 @@ int stmmac_resume(struct device *dev)
->  		ret = stmmac_init_timestamping(priv);
->  		if (ret)
->  			goto error_stop_dma;
-> +
-> +		ret = stmmac_setup_est(priv);
-> +		if (ret)
-> +			goto error_stop_dma;
+>  static void i40e_del_all_cloud_filters(struct i40e_vf *vf)  {
+>  	struct i40e_cloud_filter *cfilter =3D NULL; @@ -3748,6 +3750,7 @@
+> static void i40e_del_all_cloud_filters(struct i40e_vf *vf)
+>  	struct hlist_node *node;
+>  	int ret;
+>=20
+> +	mutex_lock(&i40e_vf_cloud_filter_lock);
+>  	hlist_for_each_entry_safe(cfilter, node,
+>  				  &vf->cloud_filter_list, cloud_node) {
+>  		vsi =3D i40e_find_vsi_from_seid(vf, cfilter->seid); @@ -
+> 3773,6 +3776,7 @@ static void i40e_del_all_cloud_filters(struct i40e_vf
+> *vf)
+>  		kfree(cfilter);
+>  		vf->num_cloud_filters--;
 >  	}
->  
->  init_coalesce:
-
-[Severity: Medium]
-
-The callers seem to handle a failed EST re-apply in different ways. There
-are a few cases.
-
-In __stmmac_open(), stmmac_setup_ptp() can return 0 without enabling PTP:
-
-stmmac_setup_ptp() {
-    ...
-	if (stmmac_init_ptp_clk_freq(priv)) {
-		clk_disable_unprepare(priv->plat->clk_ptp_ref);
-		return 0;
-	}
-    ...
-}
-
-This can happen when clk_ptp_rate is 0. For example, qcom-ethqos re-reads
-clk_get_rate() in ethqos_ptp_clk_freq_config() on every open, so the rate
-can become 0 after an earlier successful taprio REPLACE.
-
-stmmac_setup_est() still runs in that case. __stmmac_setup_est() reads the
-time through gettimex64 with the timestamp counter never initialised, and
-est_configure() returns -EINVAL for a zero ptp_rate. Wouldn't ndo_open then
-fail, where it succeeded before this patch?
-
-In stmmac_resume(), any EST programming error (for example -ETIMEDOUT from
-est_write()) now goes to error_stop_dma. That path stops DMA, disables the
-MAC, powers down the serdes and returns without calling
-netif_device_attach(), while netif_running() is still true. Is it intended
-that losing EST now leaves the interface dead after resume?
-
-Also in stmmac_resume(), when stmmac_init_ptp_clk_freq() fails, the code
-jumps to init_coalesce and skips stmmac_setup_est(). Resume then returns
-success with priv->est->enable still true, even though the soft reset has
-cleared MTL_EST. Isn't that the stale state the commit message says it
-removes?
-
-When __stmmac_setup_est() fails, it returns without clearing
-priv->est->enable:
-
-	if (err) {
-		netdev_err(priv->dev, "failed to re-configure EST\n");
-		return err;
-	}
-
-For the open and resume callers the flag was already true on entry. It
-stays true while EEST is off or only partly programmed. The commit message
-says the helper "only marks the offload enabled once the hardware
-programming succeeds". Does that hold for these callers?
-
-Finally, stmmac_adjust_time() ignores the return value of the same helper.
-Should the three callers share one failure policy?
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-> index 9a32af00d7d2d..81ee896698653 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-
-[ ... ]
-
-> @@ -69,14 +69,14 @@ static int stmmac_adjust_time(struct ptp_clock_info *ptp, s64 delta)
->  	nsec = reminder;
->  
->  	/* If EST is enabled, disabled it before adjust ptp time. */
-> +	mutex_lock(&priv->est_lock);
->  	if (priv->est && priv->est->enable) {
->  		est_rst = true;
-> -		mutex_lock(&priv->est_lock);
->  		priv->est->enable = false;
->  		stmmac_est_configure(priv, priv, priv->est,
->  				     priv->plat->clk_ptp_rate, false);
-> -		mutex_unlock(&priv->est_lock);
+> +	mutex_unlock(&i40e_vf_cloud_filter_lock);
+>  }
+>=20
+>  /**
+> @@ -3856,6 +3860,7 @@ static int i40e_vc_del_cloud_filter(struct i40e_vf
+> *vf, u8 *msg)
 >  	}
-> +	mutex_unlock(&priv->est_lock);
->  
->  	write_lock_irqsave(&priv->ptp_lock, flags);
->  	stmmac_adjust_systime(priv, priv->ptpaddr, sec, nsec, neg_adj, xmac);
-> @@ -84,31 +84,9 @@ static int stmmac_adjust_time(struct ptp_clock_info *ptp, s64 delta)
->  
->  	/* Calculate new basetime and re-configured EST after PTP time adjust. */
->  	if (est_rst) {
-> -		struct timespec64 current_time, time;
-> -		ktime_t current_time_ns, basetime;
-> -		u64 cycle_time;
-> -
->  		mutex_lock(&priv->est_lock);
-
-[ ... ]
-
-> -		ret = stmmac_est_configure(priv, priv, priv->est,
-> -					   priv->plat->clk_ptp_rate, true);
-> +		__stmmac_setup_est(priv);
->  		mutex_unlock(&priv->est_lock);
-> -		if (ret)
-> -			netdev_err(priv->dev, "failed to configure EST\n");
+>=20
+>  	/* get the vsi to which the tc belongs to */
+> +	mutex_lock(&i40e_vf_cloud_filter_lock);
+>  	vsi =3D pf->vsi[vf->ch[vcf->action_meta].vsi_idx];
+>  	cfilter.seid =3D vsi->seid;
+>  	cfilter.flags =3D vcf->field_flags;
+> @@ -3870,6 +3875,7 @@ static int i40e_vc_del_cloud_filter(struct i40e_vf
+> *vf, u8 *msg)
+>  			"VF %d: Failed to delete cloud filter, err %pe
+> aq_err %s\n",
+>  			vf->vf_id, ERR_PTR(ret),
+>  			libie_aq_str(pf->hw.aq.asq_last_status));
+> +		mutex_unlock(&i40e_vf_cloud_filter_lock);
+>  		goto err;
 >  	}
-
-[Severity: Medium]
-
-est_lock is dropped between clearing priv->est->enable and calling
-__stmmac_setup_est() here. est_rst is not re-checked once the lock is taken
-again. Can a taprio operation that runs inside that window get overridden?
-
-ptp_clock_adjtime() does not take RTNL, so this ordering looks possible:
-
-CPU1 (stmmac_adjust_time)
-  mutex_lock(&priv->est_lock);
-  est_rst = true;
-  priv->est->enable = false;
-  mutex_unlock(&priv->est_lock);
-  stmmac_adjust_systime();
-
-CPU2 (tc_taprio_configure, TAPRIO_CMD_DESTROY)
-  mutex_lock(&priv->est_lock);
-  priv->est->enable = false;
-  stmmac_est_configure(..., false);
-  stmmac_fpe_map_preemption_class(..., 0);
-  mutex_unlock(&priv->est_lock);
-
-CPU1
-  mutex_lock(&priv->est_lock);
-  __stmmac_setup_est(priv);
-    stmmac_est_configure(..., true);
-    priv->est->enable = true;
-
-A REPLACE that fails and goes to disable: would race the same way.
-
-The disable: path leaves gcl, ctr, btr_reserve and max_sdu[] in priv->est.
-Would the old schedule, or the rejected one, then be programmed back into
-hardware with enable set to true after the qdisc offload is gone? If so, the
-TX/XDP paths would keep dropping frames larger than the stale max_sdu[].
-
-__stmmac_open() and stmmac_resume() now trust that flag, so the schedule
-would also be re-armed on every ifup and resume. taprio would not send
-another DESTROY because q->offloaded is already false.
-
-Should the decision to re-enable be re-validated under est_lock before
-__stmmac_setup_est() is called?
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-> index ac926c60f9f9a..95c5f6100c66a 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-
-[ ... ]
-
-> @@ -1060,13 +1065,26 @@ static int tc_taprio_configure(struct stmmac_priv *priv,
-
-[ ... ]
-
-> -		priv->est->gcl[i] = delta_ns | (gates << wid);
-> +		gcl[i] = delta_ns | (gates << wid);
+>=20
+> @@ -3901,6 +3907,7 @@ static int i40e_vc_del_cloud_filter(struct i40e_vf
+> *vf, u8 *msg)
+>  		kfree(cf);
+>  		vf->num_cloud_filters--;
 >  	}
->  
-> -	mutex_lock(&priv->est_lock);
-> +	if (!priv->est) {
-> +		priv->est = devm_kzalloc(priv->device, sizeof(*priv->est),
-> +					 GFP_KERNEL);
-> +		if (!priv->est) {
-> +			ret = -ENOMEM;
-> +			goto error_unlock;
-> +		}
-> +	} else {
-> +		memset(priv->est, 0, sizeof(*priv->est));
-> +	}
+> +	mutex_unlock(&i40e_vf_cloud_filter_lock);
+>=20
+>  err:
+>  	return i40e_vc_send_resp_to_vf(vf, VIRTCHNL_OP_DEL_CLOUD_FILTER,
+> @@ -4002,6 +4009,7 @@ static int i40e_vc_add_cloud_filter(struct i40e_vf
+> *vf, u8 *msg)
+>  	}
+>=20
+>  	/* get the VSI to which the TC belongs to */
+> +	mutex_lock(&i40e_vf_cloud_filter_lock);
+>  	vsi =3D pf->vsi[vf->ch[vcf->action_meta].vsi_idx];
+>  	cfilter->seid =3D vsi->seid;
+>  	cfilter->flags =3D vcf->field_flags;
+> @@ -4016,6 +4024,7 @@ static int i40e_vc_add_cloud_filter(struct i40e_vf
+> *vf, u8 *msg)
+>  			"VF %d: Failed to add cloud filter, err %pe aq_err
+> %s\n",
+>  			vf->vf_id, ERR_PTR(aq_ret),
+>  			libie_aq_str(pf->hw.aq.asq_last_status));
+> +		mutex_unlock(&i40e_vf_cloud_filter_lock);
+>  		goto err_free;
+>  	}
+>=20
+> @@ -4024,6 +4033,7 @@ static int i40e_vc_add_cloud_filter(struct i40e_vf
+> *vf, u8 *msg)
+>  	/* release the pointer passing it to the collection */
+>  	cfilter =3D NULL;
+>  	vf->num_cloud_filters++;
+> +	mutex_unlock(&i40e_vf_cloud_filter_lock);
+>  err_free:
+>  	kfree(cfilter);
+>  err_out:
+> --
+> 2.43.0
 
-[Severity: Low]
-
-This is a pre-existing issue and was not introduced by this patch. The TX
-hot paths read priv->est, priv->est->enable and priv->est->max_sdu[] with
-plain loads and without est_lock. For example, in stmmac_xmit():
-
-	if (priv->est && priv->est->enable &&
-	    priv->est->max_sdu[queue]) {
-
-stmmac_tso_xmit(), stmmac_xdp_xmit_zc() and stmmac_xdp_xmit_xdpf() do the
-same.
-
-The writers hold only est_lock. They use plain stores, a memset() of the
-live struct, and a devm_kzalloc() pointer publish with no release ordering.
-
-Could a REPLACE that runs concurrently with transmit briefly let oversize
-frames through, or drop them? Two ways this could happen: the memset
-temporarily zeroes max_sdu[], or a weakly ordered CPU sees the new pointer
-before its zeroing is visible.
-
-This patch does improve the ordering somewhat, since enable is now set only
-after max_sdu[] is populated. The effect is limited to transient per-packet
-filtering decisions.
-
-> +	memcpy(priv->est->gcl, gcl, sizeof(*gcl) * qopt->num_entries);
-> +	priv->est->gcl_size = qopt->num_entries;
-> +
->  	/* Adjust for real system time */
->  	priv->ptp_clock_ops.gettimex64(&priv->ptp_clock_ops, &current_time,
->  				       NULL);
-
-[ ... ]
-
-> @@ -1102,11 +1119,15 @@ static int tc_taprio_configure(struct stmmac_priv *priv,
->  	if (ret)
->  		goto disable;
-
-[Severity: Medium]
-
-The commit message says "A rejected REPLACE then leaves the currently
-installed schedule intact in both software and hardware". However,
-stmmac_fpe_map_preemption_class() can still reject the request after
-priv->est has been memset, overwritten with the new schedule and programmed
-into hardware.
-
-dwmac5_fpe_map_preemption_class() returns -EINVAL with an extack message
-based only on configuration checks, before it writes any register:
-
-		if (priv->xmit_qdisc.algo == MTL_TX_ALGORITHM_SP) {
-			NL_SET_ERR_MSG_MOD(extack, ALG_ERR_MSG);
-			return -EINVAL;
-		}
-
-It does the same for unequal queue weights within a TC. That error goes to
-disable:, which clears priv->est->enable, disables EST in hardware and
-resets the preemption class to 0.
-
-On the taprio side, taprio_enable_offload() returns the error before it
-touches q->offloaded, which stays true from the previous schedule.
-taprio_change() then goes to free_sched without installing the new admin
-schedule. Doesn't this leave the qdisc reporting the old schedule as
-offloaded while hardware EST is off?
-
-enable is now false, so stmmac_setup_est() will not restore the schedule on
-a later open or resume either.
-
-One way to hit this:
-
-1. Install an express-only schedule with a TC mapped to two queues. This is
-   accepted, because pclass == 0 skips the checks.
-2. Run tc qdisc change to mark that TC preemptible.
-
-Should the FPE mapping checks run before the installed configuration is
-replaced?
-
-> +
-> +	priv->est->enable = true;
-> +
-> +	mutex_unlock(&priv->est_lock);
-> +	kfree(gcl);
-> +
->  	return 0;
->  
->  disable:
->  	if (priv->est) {
-> -		mutex_lock(&priv->est_lock);
->  		priv->est->enable = false;
->  		stmmac_est_configure(priv, priv, priv->est,
->  				     priv->plat->clk_ptp_rate, false);
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261026-stmmac-est-fixes-v4-0-999dac4de44f%40oss.qualcomm.com
+I'm afraid one more global lock shared among all cards on server will make =
+things worse.
+@Jakub Kicinski can you comment?
