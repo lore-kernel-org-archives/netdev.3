@@ -1,102 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793273487;
-	b=xAARLbtxuTqI5DfeXZaiLPoAHLAeFGsjYWTXThKeIhyJYeeXEXP99e8h1g6rpgRzmBWL
-	 oEgFDc1DfRL643EBZW6xM/OVKwzS4J4WcAor1GB8Dbo8IVlLRYSk18oFBkox3FP0iOgvg
-	 Hs3nK5HPCAHzB6LEysyC2TSIXxZi+FI8Y828MD8/0W3cbkNeDRUiaZy+BJsDLAF5pjwWH
-	 rgw+P+WmM7kGsticXAT+b08zJ/0recFk3TMTAZm5a7M9eqqSU2cAchlcDfxnDQJX8LKY/
-	 zh/bWPiPUFqA69kkVV7aSz94iIyDwqbZspwkwzuK/WrWaso64auymuniEa+2Rm820bg==
+	t=1793273894;
+	b=xyV3eRSuHvG+WMHpRq5Zwuq2berKpCJ6m2gaTYcdAcrQndlfhfWNqi4rc3veWO3O67Hn
+	 3srhdi9JJmRCjnp/ise7eUTIdZgOOqoN9LKQa5PT+Pb/aWbW+tyaXBD22+wToA0eyTF8U
+	 j64Q/mK20hJTyEkQJE95N+kTAorIgZSqymAQs0kMnODGKlPalyluh2YjghmM1T/Tl7fuB
+	 doEtnPWdAk1N4nM1s93HxWwpRlXX8aLKnyuDrQVyrWcia4m2Z3ZlDFW7BMOSugFjrb9nI
+	 EeRwQQIXqvkaywh5UsTaNSwaIX9MFws8miku2GEJdPaSPhDrUULBvgi016AQTmd61Sw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793273487;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-Spam-Flag:X-Spam-Level:
-	 X-Spamd-Result:X-Spam-Score;
-	bh=tjVTZSn+XDaK4kzFzUCDE27OhwqyotiavTeXKJ2X2ow=;
-	b=s/zspuMclqqYdGFQzWUmSJuO2pkVa5nTKH0TieuNzM5K1kSBwF6rZMonvSGoTwE5EQun
-	 DJLoHDrkWU+GcD1nWjhQa+Myc36t7M29msnI30HKyIgd0thTWAYIANiPMlm1yHXxSvhup
-	 X3uvvLZYaao5r6JLqiVWD6Q/gjK5nZE4W7BLzNPcDX40415DfJuZzF4anwuEom5UaZQSV
-	 gnUcp22mH0QKUI8qm+bq3sYgrrngH2zJeFc/Wtb9VIixxU1ZjaFJDbdcXft9TNQjBTCoM
-	 XEvDXMwBiXLr/YOEWdyPCGrbd7j9nDVyD5Nt4ekR41w7H1Uwe8AFzoo4d9H9jPaTsMA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793273894;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-Spam-Status:X-Spam-Checker-Version;
+	bh=cabK4srU/G66Ei8Wu76IfA6Yj6V4c/V/svODtFbiw4E=;
+	b=ZiOFSTCOGqkHvqHiRTmArxQDQNGGDriCCwK7t/9sKCcE2J0jK7WlFLi6iZ8w506JDTJX
+	 Jmh2We5jjVQ0BEDrgZo85BEe1a3zVt8JXuS5ODVt37am9UHXzskAWPLVPzeBQX1YwGeA0
+	 SkTaYoLaQ8marVpYeqSgamRHseeiikDQumny9qQHTe9pcDm/iC6nAmpTFKQBU6VCIbI53
+	 sqFOGBgFzc8m4jcM4euHKVFyO3bJ5q+BX2LiuHIrXKNhnodtAdCACxfVu0RHSshT35tMN
+	 zr6JP7yweKs7Nb9WBMDgcwlPWqJQy/HZNidxljHrH3YKpua874TTogV4afQjmPFyb/A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=suse.de;
-	spf=pass smtp.mailfrom=suse.de;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=wka+4KDh;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=SGqzxJt1;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=wka+4KDh;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=SGqzxJt1;
-	arc=none smtp.remote-ip=195.135.223.130
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	dmarc=none header.from=netfilter.org;
+	spf=pass smtp.mailfrom=netfilter.org;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=Fv3G7Lam;
+	arc=none smtp.remote-ip=217.70.190.124
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9B6606A31A;
-	Thu, 29 Oct 2026 11:31:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AA9B6606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id B74D8606A31A;
+	Thu, 29 Oct 2026 11:38:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B74D8606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=wka+4KDh;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=SGqzxJt1;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=wka+4KDh;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=SGqzxJt1
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B421A21F41;
-	Thu, 29 Oct 2026 11:31:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793273484; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tjVTZSn+XDaK4kzFzUCDE27OhwqyotiavTeXKJ2X2ow=;
-	b=wka+4KDhldbLQT6m+X5KOCx2dB+6sSZtfaFc0xpw+DGa3gfmu/Uuzx/HATxfUTtaZbRUGz
-	leEVoDAq34yufGiUlGnY7d3/BvPqn/M5GY6X3nbOrbzYbFkcVlYZ4970DFEaNNQoldvC7C
-	sqPHFJc4KAYgVE4eDZQvm3A7QKhq2YM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793273484;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tjVTZSn+XDaK4kzFzUCDE27OhwqyotiavTeXKJ2X2ow=;
-	b=SGqzxJt19DPz0ZsY9k6f4n6gtWdOJhqzZYrdl9tKY+LnfnYp2hNjL195plPP8xcFd+f1TR
-	QyvKTyVPMqPbsaCQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793273484; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tjVTZSn+XDaK4kzFzUCDE27OhwqyotiavTeXKJ2X2ow=;
-	b=wka+4KDhldbLQT6m+X5KOCx2dB+6sSZtfaFc0xpw+DGa3gfmu/Uuzx/HATxfUTtaZbRUGz
-	leEVoDAq34yufGiUlGnY7d3/BvPqn/M5GY6X3nbOrbzYbFkcVlYZ4970DFEaNNQoldvC7C
-	sqPHFJc4KAYgVE4eDZQvm3A7QKhq2YM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793273484;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tjVTZSn+XDaK4kzFzUCDE27OhwqyotiavTeXKJ2X2ow=;
-	b=SGqzxJt19DPz0ZsY9k6f4n6gtWdOJhqzZYrdl9tKY+LnfnYp2hNjL195plPP8xcFd+f1TR
-	QyvKTyVPMqPbsaCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1F08513419;
-	Thu, 29 Oct 2026 11:31:24 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id UydtOIsu42qIBQAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Thu, 29 Oct 2026 11:31:24 +0000
-Message-ID: <cec680c8-7eb1-4a90-ba9a-e6723781cb79@suse.de>
-Date: Thu, 29 Oct 2026 12:30:08 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=Fv3G7Lam
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1793273891;
+	bh=cabK4srU/G66Ei8Wu76IfA6Yj6V4c/V/svODtFbiw4E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Fv3G7Lam7o3OKJHPSDWdNyHvoNQeVpwMhyXaEdBYSlshEJjbWPkM9YfYJ3XZK3DmL
+	 Io2dhZcdeKhBSBG8tIeLRAEhfSZW2kHPNVtEiOWo5fhvMFVXMGcmwzfahfs3zh6Ybe
+	 27d7Kada/Vxs0eSyYXjX7LUM2quGpdSjNhCZkpxslgIIzKPPccPKjDkdAVaZy+Gizj
+	 5oFTdEEKuoeVMQ+0wyTCl+3rBMITcqRqeqse/XVT2JRgpP9RabqrIpm+6hHbztNEe+
+	 2hgNDwQTt7kQyUfnxDO78DL9457Uma50AwIfPpKM0ionPyBEmTZfEhs+Foh3jtcVa8
+	 SI3VH0AUuaXug==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 3679D60077;
+	Thu, 29 Oct 2026 12:38:11 +0100 (CET)
+Date: Thu, 29 Oct 2026 12:38:08 +0100
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Koral Ilgun <koralilgun@gmail.com>
+Cc: netfilter-devel@vger.kernel.org, fw@strlen.de, phil@nwl.cc,
+	coreteam@netfilter.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Koral Ilgun <koral.ilgun@adtran.com>
+Subject: Re: [PATCH nf] netfilter: nft_flow_offload: do not offload multicast
+Message-ID: <auMwIMerV-LQ-aNL@chamomile>
+References: <20261028205938.662312-1-koralilgun@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,45 +64,11 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH nf] netfilter: nft_flow_offload: do not offload multicast
-To: Koral Ilgun <koralilgun@gmail.com>, netfilter-devel@vger.kernel.org
-Cc: pablo@netfilter.org, fw@strlen.de, phil@nwl.cc, coreteam@netfilter.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Koral Ilgun <koral.ilgun@adtran.com>
-References: <20261028205938.662312-1-koralilgun@gmail.com>
-Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 In-Reply-To: <20261028205938.662312-1-koralilgun@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Spamd-Result: default: False [-13.29 / 50.00];
-	SUSE_INTERNAL_BYPASS(-9.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -13.29
 
-On 10/28/26 9:59 PM, Koral Ilgun wrote:
+On Wed, Oct 28, 2026 at 01:59:38PM -0700, Koral Ilgun wrote:
 > From: Koral Ilgun <koral.ilgun@adtran.com>
 > 
 > A flow holds one output per direction, which it resolves when it is
@@ -160,7 +84,12 @@ On 10/28/26 9:59 PM, Koral Ilgun wrote:
 > 
 > Skip a multicast destination for both families, so that the result
 > no longer depends on the route lookup.
-> 
+
+Please, target nf-next for this patch.
+
+I agree this is convenient, but you can still restrict to unicast
+traffic via ruleset, so I don't think this qualify as a fix.
+
 > Fixes: a3c90f7a2323 ("netfilter: nf_tables: flow offload expression")
 > Signed-off-by: Koral Ilgun <koral.ilgun@adtran.com>
 > ---
@@ -174,25 +103,25 @@ On 10/28/26 9:59 PM, Koral Ilgun wrote:
 > leave. IPv4 multicast stayed out of the flowtable before and after.
 > Unicast IPv4 and IPv6 flows still went into the flowtable.
 > 
->   net/netfilter/nft_flow_offload.c | 11 +++++++++++
->   1 file changed, 11 insertions(+)
+>  net/netfilter/nft_flow_offload.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
 > 
 > diff --git a/net/netfilter/nft_flow_offload.c b/net/netfilter/nft_flow_offload.c
 > index d3c5651dd699..1fc755e594b0 100644
 > --- a/net/netfilter/nft_flow_offload.c
 > +++ b/net/netfilter/nft_flow_offload.c
 > @@ -10,6 +10,7 @@
->   #include <linux/netfilter/nf_conntrack_common.h>
->   #include <linux/netfilter/nf_tables.h>
->   #include <net/ip.h>
+>  #include <linux/netfilter/nf_conntrack_common.h>
+>  #include <linux/netfilter/nf_tables.h>
+>  #include <net/ip.h>
 > +#include <net/ipv6.h>
->   #include <net/flow.h>
->   #include <net/netfilter/nf_tables.h>
->   #include <net/netfilter/nf_tables_core.h>
+>  #include <net/flow.h>
+>  #include <net/netfilter/nf_tables.h>
+>  #include <net/netfilter/nf_tables_core.h>
 > @@ -35,6 +36,16 @@ static bool nft_flow_offload_skip(struct sk_buff *skb, int family)
->   			return true;
->   	}
->   
+>  			return true;
+>  	}
+>  
 > +	/* A flow keeps the output it resolved at offload time, but the
 > +	 * outputs of a multicast route change when listeners join or leave.
 > +	 */
@@ -203,37 +132,11 @@ On 10/28/26 9:59 PM, Koral Ilgun wrote:
 > +		return ipv6_addr_is_multicast(&ipv6_hdr(skb)->daddr);
 > +	}
 > +
->   	return false;
->   }
-
-The patch is sound and I think it is better skip the flow earlier here. 
-I believe there is a bigger problem with IPv6 route engine not rejecting 
-a routing request for a saddr that is multicast, I am already looking 
-into that. In any case, couldn't we simplify this code as:
-
-diff --git a/net/netfilter/nft_flow_offload.c 
-b/net/netfilter/nft_flow_offload.c
-index d3c5651dd699..7d0b87a1bca1 100644
---- a/net/netfilter/nft_flow_offload.c
-+++ b/net/netfilter/nft_flow_offload.c
-@@ -33,6 +33,10 @@ static bool nft_flow_offload_skip(struct sk_buff 
-*skb, int family)
-
-                 if (unlikely(opt->optlen))
-                         return true;
-+
-+               return ipv4_is_multicast(ip_hdr(skb)->daddr);
-+       } else if (family == NFPROTO_IPV6) {
-+               return ipv6_addr_is_multicast(&ipv6_hdr(skb)->daddr);
-         }
-
-         return false;
-
-
-Thanks,
-Fernando.
-
->   
+>  	return false;
+>  }
+>  
 > 
 > base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
-
+> -- 
+> 2.43.0
+> 
