@@ -1,60 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793297778;
-	b=A2qCc6jE6erLIt5NICy8giD4vKdkPlvWA7yMdbw2sXS7/JRiLJRcrEb8HMxDwlVGIMbg
-	 fqEaK2U68sRZ8T2HI7D1y5V21Vh99A3ZSGwR0//W3zLGAzhlCQYTCeMM3D9abYrcHMEOy
-	 W1OR/26QrKu0NkdwcZJqz81IAGXOgR4ZiCi6he9cCsxZuG5jabbvhHbTd97UDfGINr9Sy
-	 j2+JNo7AAs6a/PiTFmfv0ahopW768T42hHso+X0BcfnNj8U9IptrDPvT9O8AImWRpmYwn
-	 Q5YM/4u9+Pfp3MsFdbp3bvyNcBuu0DD13n7wP0fGSz4JAr6MmjC/+9atm00H1ZG+M2w==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793297778;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=/4gAgQ/v/3Bqijm1D2LCxgkMVVLMB4tDzBQLcSYjwMI=;
-	b=JQH6nWAI8CObHlu8/1GJ3YHiN06pezjt/eV3YeQM0sBiGxQYp0xYiuwTV/xnfhsjKTgP
-	 h4kM8MtrF6clDsCHb11Kr2XWqr7Kxi5vCeQpukT35oZagSN9v3zxYiyu/hCT+qI9jCLQc
-	 VMEi1+OuWYV1fr7B7HRmIb/fZ0DWBuOAfk6NTmt0ZVZGZP5NuTw/4KRpaHuz1mpN4i1qo
-	 2fEGmTOsIA6q4wXinHy2ktfJ7ZNc2e44nv8aBJ2vclU5v43daVBoX2Adfuq57g+LsYL1l
-	 kSkvNv1WY/iL153I67NrJ++eKxU+HBXh5c828Be9VaAEWbSHmoFUPc4twiO0BzVRRKQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ikpslf4Y;
-	arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793298085;
+	b=30Rl85G3CeXvTSe9yLlS+RcU3layEB81svN5vaQjDNqJ9NiM0X6EjQlS3/L3o3YFhOn+
+	 LNPKIN30KnL2YGreheKpJKnNGwGvGkb0AzIqY3rx2qWTGPz9bjZGk+FR6/AjN4BxmVFZH
+	 ExLOTC6cu27uo8v5Btvn5jNrTi1pYcg51s+WugK9YUBA9dnKeiWZcgZ2Ug42RueDLlqfh
+	 EWjt9yCeoSxnQcgUgBCEsWcbNbu1HNcCoyhEAT8bVvoZZvoplSzcPxoR5LlxWWHj+0q/j
+	 uYLhXj4XnnqzWZe2QzaGVt22axm6JPLR5oHgHrOSFeysEABZxpSlHWOY//AQZQJEsuA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793298085;
+	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Endpoint-Received:X-Original-From:Reply-To;
+	bh=VmrWfQwrKBbqkOKGbF7WS+2+qDiGlV8+uhk6EmUPEkE=;
+	b=5HTHcczNX6SKMpO1Ud7G0ihCGEVFPZKgRkIOh1NWi3WZpfKbGMO8oTbOuyUVGnxzXiI6
+	 wiJKcP2TT9n+jzzIFKuVWL4jW0YP081N6QTKhvVlBNEmkg6RCp9va9qgCTYs/6MFDQ8ws
+	 HFrzmsDPOe9vPhDFzXktgSYZ4inNOvcecHa/M21Krh/UoxO4i2+iDuqF6nKvXdvX3HsFR
+	 Sh/FqMs5Dxdbvl4JDHY0jSu1uS80umzoNumzmB8Kd9XWXkQ90TEtuwzszSNxoJF5AJA/m
+	 IuZtzZb6Y/vCxYZzqAZPpIh773+HLbvA9rLu7khZF0ry3FCpZzJ4oOb9UVqsH31c0TA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Jzb8IH/O";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45909606A323;
-	Thu, 29 Oct 2026 18:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F97F606A329;
+	Thu, 29 Oct 2026 18:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ikpslf4Y
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E2D61F01824;
-	Thu, 29 Oct 2026 18:16:17 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jzb8IH/O
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1793298085;
+	b=YwQOsPRASzXcP40DRygZxli7AhW0EYa8HVTxva+O5X+FU2awAElAGJFntykEnIbE20Zt
+	 VAcVqdJdoWqdgp//lF/yBahFrCi2WjsnvWnT7ccvmPBaN1qzaHZEGuY7CqlWZLoBBN6Q2
+	 /QzwlaqggHDGjPyqyZ/28tP0hqAbfYTcfANkf5wAf26KTlZmON/YwCn+RZV+H34Ovca/j
+	 rK92DgQuNy+qxl4z0jagygpygaRjlr6lDCEhF1rhu/SKwxkeKH0+4fo1H3RHbCbKP4BpO
+	 JOb83KkMjitU9VPZQ56fn9vZYp+q2gZvCYJK0jZdVdnKFe7Orurukn20lrtf7z+w5Qg==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1793298085;
+	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=VmrWfQwrKBbqkOKGbF7WS+2+qDiGlV8+uhk6EmUPEkE=;
+	b=bSmZey2Wlk/+NcPic0dj+q8zKJQ35mR9LIzp/888zqTNcpgn4umpSuq2ZpBjcnmo9Lq6
+	 Sjbq57C19n06jM6ujkGKeBBpOhE36quxAMhJ8L+uIWxFYkhRx+HsrKoWv0xKwaCF+i5f/
+	 2Ljs9l+XptRwOfTU1sVE7lZoKs0t11WKQhD0gqfsAA2dqiu2izPDeUgF/FVzVmFPwbXFF
+	 vAOXSleS57rGT4ZIefXk7Hy4B2fTXPsazI3rOKm0V6h3ZhzExYtmxfzRIJLCRD+3UcEIt
+	 9oPyau+2EkEL7CSb9ab3XaZOmC3RcSqbe49ytLVklW87VBHhS+gdU3XRtNn8SL3s9Sg==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id 4F8361F01826;
+	Thu, 29 Oct 2026 18:21:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793297778;
-	bh=/4gAgQ/v/3Bqijm1D2LCxgkMVVLMB4tDzBQLcSYjwMI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Ikpslf4YPUkOg5LrHDzFgpYpKlX9FjGI+vmKTVrkbTykNdR7VwZu7cuqgx8Yyyf5u
-	 VxZ2apLVqTOJZmkvDA6luWYsH7hWhs45Ws60v8fHW8UN+rdMJn/VBdRw0kDXaw3Jc2
-	 qd1jSc34CrKjp7nDXowZxk3Vp5ciTuDwiLLOQYUPlbiChTCMtKCqVtOkxwHT6ZuaqQ
-	 IGOfQ2Tl1TYNJfzIm56KyHVSrp4E5A/OL9DqlVLuHSQe9r8Al3F4EioOnW4avwZm61
-	 CtL3L3vpbIMk0jI66u/nTOSXxcL/J+3W9yuuoa5JIKprYgm+2NMd4uw61yfTnI8rNf
-	 z683LYB2t5TLA==
-Subject:
- Re: [PATCH] xen-netback: wait for RCU readers before freeing queues on error
-From: netdev-bot+sashiko@kernel.org
-To: yhlee@isslab.korea.ac.kr
-Cc: wei.liu@kernel.org, paul@xen.org, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- xen-devel@lists.xenproject.org, netdev@vger.kernel.org,
- stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Thu, 29 Oct 2026 18:16:16 +0000
-Message-ID: <179329777698.3134.1942941250754899235@kernel.org>
-In-Reply-To: <20261027121438.1266207-1-yhlee@isslab.korea.ac.kr>
-References: <20261027121438.1266207-1-yhlee@isslab.korea.ac.kr>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1793298085;
+	bh=VmrWfQwrKBbqkOKGbF7WS+2+qDiGlV8+uhk6EmUPEkE=;
+	h=From:Subject:Date:To:Cc:Reply-To;
+	b=Jzb8IH/OPOyfQXTsbH9Aljt7zoQqg2iGc61GDxud0cRD7mIZgmvwbt+vt0CsaaGW/
+	 JQEw+9qp3ncskrHSjljT7zBWUFiIy5ICQzTo5bbzTMeDluo3y1Sal0UB55o0Y6/DRr
+	 gt0NUS8dbXEXr8CEzFVL3/bFnwJWSiM062N1jpcUUNKWySZjdyZkOD/qOmCQhPYOzm
+	 /sOOzW7SnO4gSV1xZe1oo8aJbzXSFpiTxuKFSsTLBmDmf+VHStbXSQtk3HjMlHmFEq
+	 i+2A7ttDtx0rNKp+jFxVrhwC7EUZK6LoUUpv3zDZFdcO2Qzc+yG/NhLIPc0tOCyz1w
+	 MyApyqPs+Oe4w==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 9F43C45943;
+	Thu, 29 Oct 2026 18:21:22 +0000 (UTC)
+From: Bryam Vargas via B4 Relay <devnull+hexlabsecurity.proton.me@kernel.org>
+Subject: [PATCH net v8 0/4] net/smc: bound wire-controlled CDC cursors
+ against the local buffers
+Date: Thu, 29 Oct 2026 13:21:21 -0500
+Message-Id: <20261029-b4-disp-33001ace-v8-0-f9bb96e17827@proton.me>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,126 +84,186 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMywqDMBAAf0X23IU1kWD6K6WHPLa6HlLJ2lIQ/
+ 72xPc7AzA7KVVjh2u1Q+S0qz9JgvHSQ5lAmRsmNwZBxPRmPccAsuqK1RH1IjDn6aJmc88FBy9b
+ KD/n8ljcovMH9L/UVF07bOYPj+AKtQL0reQAAAA==
+X-Change-ID: 20261029-b4-disp-33001ace-db9b3e0669a6
+To: Sidraya Jayagond <sidraya@linux.ibm.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Mahanta Jambigi <mjambigi@linux.ibm.com>, 
+ Paolo Abeni <pabeni@redhat.com>, "D. Wythe" <alibuda@linux.alibaba.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Dust Li <dust.li@linux.alibaba.com>, Eric Dumazet <edumazet@kernel.org>
+Cc: Guangguan Wang <guangguan.wang@linux.alibaba.com>, 
+ Ursula Braun <ubraun@linux.ibm.com>, Stefan Raspl <raspl@linux.ibm.com>, 
+ linux-s390@vger.kernel.org, Wen Gu <guwen@linux.alibaba.com>, 
+ linux-kernel@vger.kernel.org, Hidayath Khan <hidayath@linux.ibm.com>, 
+ Simon Horman <horms@kernel.org>, Wenjia Zhang <wenjia@linux.ibm.com>, 
+ Tony Lu <tonylu@linux.alibaba.com>, linux-rdma@vger.kernel.org, 
+ netdev@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793298082; l=8472;
+ i=hexlabsecurity@proton.me; s=default; h=from:subject:message-id;
+ bh=u/99RoUoNcJZJnsnTFSb0JSFUqXVf7eY9kz05z465d0=;
+ b=rk2ESdaZR8Ds2sQ/AkNKZJlg/T6xeEAJss6zez2BnUZyzIfJ0caOOEK2ApeGGpDi3XiwLiTOg
+ Bw6DHYupc1QAqkC9BcNVHZZ8jpeN4GLzqMCwNwtbHQotaHOZiPX9mdI
+X-Developer-Key: i=hexlabsecurity@proton.me; a=ed25519;
+ pk=xw1AhCtQdvuoQc+bOQIYy9o8G++cp4/VniI2G/tc3G8=
+X-Endpoint-Received: by B4 Relay for hexlabsecurity@proton.me/default with
+ auth_id=893
+X-Original-From: Bryam Vargas <hexlabsecurity@proton.me>
+Reply-To: hexlabsecurity@proton.me
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+A peer's CDC cursors come off the wire and are used, with no bound
+against the local buffers, as a raw index into the RMB on the urgent
+path (1/4), as the rx length (2/4), as the tx write space (3/4), and as
+the cursor advance at SMC-R link failover (4/4). Any peer that completes
+the SMC handshake controls them. With a forged cursor each use runs past
+its buffer: an OOB read of kernel memory returned to the reader, send()
+data written past the send buffer, or, at failover, an RDMA write whose
+source lies past the send buffer. Two of these also happen with a
+conforming peer: a MSG_PEEK|MSG_WAITALL reader racing another recv()
+(2/4), and late completions on the old link after a failover (3/4).
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 1
+With a second link in the group, the peer can force the failover: a
+DELETE LINK request, or failing one of our RDMA writes, takes the link
+down and switches the connections. Late completions need only ACKs on
+the old link that arrive after the switch, from a degrading link or a
+peer that delays them.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Bounding each cursor on arrival is not enough. A peer that only bumps
+prod.wrap with count 0 hits the differing-wrap branch of
+smc_curs_diff(), which returns the full buffer length on every CDC, so
+bytes_to_rcv grows past the RMB while every cursor looks in range. IOW
+the overflow is in the accumulator, not the cursor. 1/4 can clamp on
+arrival because the urgent path indexes with the count itself; 2/4-4/4
+bound the value where it is used. Hidayath Khan's "net/smc: abort the
+connection when the peer overruns the RMB" [1] (net-next) drops the
+connection at CDC receive; this series does not depend on it.
 
-- [High] The fix leaves the use-after-free open when the very first queue
-  fails, which is every failure for a single-queue frontend.
-- [Low] The commit message names xenvif_get_stats64() as one of the RCU
-  readers, but xen-netback has no such function.
+Found by inspection of the cursor handling in net/smc; each case was
+then confirmed on a KASAN rig with one end patched to forge its
+cursors.
 
---
+Tested on v7.3-rc6 with KASAN, over SMC-D loopback and over SMC-R on
+rxe with two links, one end patched to forge its CDC cursors:
+  - unpatched: recv(), MSG_PEEK|MSG_WAITALL, SO_RCVLOWAT and splice()
+    read past the RMB, as does recv() once bytes_to_rcv wraps
+    negative; the urgent byte comes from past the RMB; send() writes
+    past the send buffer; after a failover with a forged consumer
+    cursor the next RDMA write takes its source past the send buffer
+    (rxe refuses that WR).
+  - conforming peers, unpatched: the peek race reads past the RMB; a
+    completion held back past the failover (a test hook makes the
+    timing deterministic) leaves sndbuf_space at 3x the buffer, and
+    send() writes past the send buffer.
+  - v6 still reads past the RMB on a peek longer than two ring lengths
+    and on repeated undrained splices.
+  - v7: each case above stays inside its buffer, with no KASAN report,
+    and no KMSAN report on the loopback runs.
+  - dropping any one patch, or any one part of 2/4, makes a test fail
+    again.
+  - conforming traffic is unchanged: streams compared byte for byte,
+    peek then recv, SO_RCVLOWAT, splice drained and undrained, urgent
+    data inline and out-of-band, deferred accept, SIOCINQ and poll,
+    nonblocking reads, close with unread data, failover mid-stream, a
+    reader waiting while the link group is torn down.
 
-xen-netback: wait for RCU readers before freeing queues on error
+v8 re-run on v7.3 with KASAN over SMC-D loopback (unpatched, v7, v8):
+the SMC-D cases above give the same results (v8 as v7), plus the
+poll(), SIOCINQ and deferred accept cases under 2/4 below, each with a
+mutant that keeps its one site raw and fails. Not re-run over SMC-R: v8
+changes only af_smc.c's code, the rest are comment lines; smc_rx.o,
+smc_tx.o and smc_core.o built from v8 are byte-identical to v7's on the
+same tree. Logs on request.
 
-This patch changes the connect() error path in xen-netback. It now
-publishes num_queues = 0 and calls synchronize_net() before it deinits
-and frees vif->queues, which is what backend_disconnect() already does.
-The goal is to stop RCU stats readers from dereferencing the freed
-vmalloc array.
+Changes in v8:
+  - 2/4: smc_poll(), SIOCINQ and the deferred accept read bytes_to_rcv
+    through the bounded helper too (Sashiko's review of v7 [8]). With
+    the count driven negative (wrap bumps past INT_MAX), v7's poll()
+    said POLLIN while recv() gave -EAGAIN, so a level-triggered reader
+    spun (1,887,464 wakeups and 1000 ms of CPU in 1 s; v8: 0 wakeups),
+    SIOCINQ returned the negative count (v8: 0), and a deferred accept
+    returned at once with nothing to read (v8 waits out its timeout).
+    With the count at 6x the RMB, SIOCINQ said 6x (v8: the RMB).
+    Conforming traffic sees no change. The two comments that claimed
+    0 <= bytes_to_rcv <= len say "can be out of range" now.
+  - 3/4: code unchanged; the comment that claimed 0 <= sndbuf_space <=
+    len points at the clamp instead [9]. R-b kept.
+  - 4/4: code unchanged; the catch-up comment now says why it is bounded
+    (a peer past the bound stalls). The message no longer claims the
+    destination side: smc_write_space() still sizes the window from the
+    peer's cursor, so a forged one can take the next write past the
+    peer's own RMB, where its HCA refuses it [10].
+  - Rebased on net after the net-next merge (fcc00b15cb21).
+  v7: https://lore.kernel.org/all/20261013-b4-disp-f345196c-v7-0-ef3dddfbfa68@proton.me/
 
-> The net device is registered in xenvif_alloc() during probe, so it is
-> already live when connect() runs. xenvif_get_stats64() and
-> xenvif_get_ethtool_stats() read it through the usual stats paths, taking
+Changes in v7:
+  - 2/4 (was v6 2/3): per Sashiko's reviews of v6 [2][3][5], MSG_PEEK
+    and splice() offsets could start the copy outside the RMB, a local
+    peek race [3] could leave the available length negative, and wrap
+    bumps grow bytes_to_rcv (the accumulator case above). The bound
+    moves into smc_rx_data_available(), counts peeked and spliced
+    bytes, maps a negative length to 0, not a full ring, and covers
+    the wait predicates too. The RMB length is cached in conn->rmb_len
+    for the unlocked wait, and splice_pending now drops before the
+    consumer cursor moves. New Fixes:, Reported-by: and Closes: tags;
+    R-b dropped.
+  - 4/4 is new: the failover cursor advance, which 3/4 does not cover.
+  - 3/4: code unchanged. [4] noted that DMB merge runs only on the
+    loopback device, so its peer is the local kernel; the message now
+    leads with the over-credit after a failover, which needs no forged
+    cursor, and says it bounds the copy. New Fixes:, R-b kept.
+  - 1/4: code unchanged, comment and message reworded. R-b kept.
+  - [6] (rmb_desc NULL before smc_buf_create()) is pre-existing; my
+    fix for it, [7], is marked changes requested in patchwork and
+    touches the same lines of __smc_buf_create() as 2/4.
+  v6: https://lore.kernel.org/all/20261008-b4-disp-f7cd3d96-v6-0-fba616c0920c@proton.me/
 
-[Severity: Low]
-This isn't a bug, but xen-netback has no xenvif_get_stats64(). The driver
-only implements the legacy callback:
+Changes in v6: repost on net; 2/3 message corrected (the over-read goes
+to the reader, not the peer); Sidraya Jayagond's R-b.
+  v5: https://lore.kernel.org/all/20260723-b4-disp-0d07164f-v5-0-6a9e235dbc4e@proton.me/
 
-drivers/net/xen-netback/interface.c:
-	.ndo_get_stats	= xenvif_get_stats,
+Changes in v5: repost of v4.
+  v4: https://lore.kernel.org/all/20260705-b4-disp-28a1bbca-v4-0-be089b98acc6@proton.me/
 
-The KASAN trace also shows that function (xenvif_get_stats+0x28f). Should
-the commit message say xenvif_get_stats() instead?
+Changes in v4: split off the validate/abort change, per Dust Li.
+  v3: https://lore.kernel.org/all/20260614-b4-disp-edd64be9-v3-0-551fa514257e@proton.me/
 
-> diff --git a/drivers/net/xen-netback/xenbus.c b/drivers/net/xen-netback/xenbus.c
-> index e020f44ac2c71..d1c9e38cfb8ef 100644
-> --- a/drivers/net/xen-netback/xenbus.c
-> +++ b/drivers/net/xen-netback/xenbus.c
-> @@ -835,10 +835,21 @@ static void connect(struct backend_info *be)
->  	return;
->  
->  err:
-> -	if (be->vif->num_queues > 0)
-> +	if (be->vif->num_queues > 0) {
-> +		unsigned int num_queues = be->vif->num_queues;
-> +
->  		xenvif_disconnect_data(be->vif); /* Clean up existing queues */
-> -	for (queue_index = 0; queue_index < be->vif->num_queues; ++queue_index)
-> -		xenvif_deinit_queue(&be->vif->queues[queue_index]);
-> +
-> +		/*
-> +		 * Mirror backend_disconnect(): publish num_queues == 0 and
-> +		 * synchronize_net() so RCU stats readers finish before the free.
-> +		 */
-> +		be->vif->num_queues = 0;
-> +		synchronize_net();
-> +
-> +		for (queue_index = 0; queue_index < num_queues; ++queue_index)
-> +			xenvif_deinit_queue(&be->vif->queues[queue_index]);
-> +	}
->  	vfree(be->vif->queues);
+[1] https://lore.kernel.org/all/20260804141109.542202-1-hidayath@linux.ibm.com/
+[2] https://lore.kernel.org/all/sashiko-outbox-164918@kernel.org/
+[3] https://lore.kernel.org/all/179152807838.434549.2207466107170796457@kernel.org/
+[4] https://lore.kernel.org/all/179152807992.434549.3295281690534839972@kernel.org/
+[5] https://lore.kernel.org/all/179152807674.434549.14168488606722848951@kernel.org/
+[6] https://lore.kernel.org/all/sashiko-outbox-164917@kernel.org/
+[7] https://lore.kernel.org/all/20260728-b4-disp-52ee4e7d-v4-1-0dda94b0f397@proton.me/
+[8] https://lore.kernel.org/all/179209532096.434549.4189685148052558990@kernel.org/
+[9] https://lore.kernel.org/all/179209532279.434549.3831566859438447501@kernel.org/
+[10] https://lore.kernel.org/all/179209532452.434549.6588379141939967966@kernel.org/
 
-[Severity: High]
-Is the use-after-free still open when the very first queue fails?
+---
+Bryam Vargas (4):
+      net/smc: bound the wire-controlled producer cursor to the RMB
+      net/smc: bound the receive length to the RMB
+      net/smc: bound the send length to the send buffer in smc_tx_sendmsg()
+      net/smc: bound the link failover cursor advance to the send buffer
 
-Earlier in connect(), num_queues is published before any queue is set up:
+ net/smc/af_smc.c   |  6 +++---
+ net/smc/smc.h      |  3 +++
+ net/smc/smc_cdc.c  |  2 +-
+ net/smc/smc_cdc.h  | 17 ++++++++++++++---
+ net/smc/smc_core.c | 19 +++++++++++++------
+ net/smc/smc_rx.c   |  9 +++++++--
+ net/smc/smc_rx.h   | 11 ++++++++++-
+ net/smc/smc_tx.c   | 10 +++++++++-
+ 8 files changed, 60 insertions(+), 17 deletions(-)
+---
+base-commit: fcc00b15cb21a6de76826e5012b2c758505f5e65
+change-id: 20261029-b4-disp-33001ace-db9b3e0669a6
 
-	be->vif->num_queues = requested_num_queues;
-	be->vif->stalled_queues = requested_num_queues;
+Best regards,
+--  
+Bryam Vargas <hexlabsecurity@proton.me>
 
-If xenvif_init_queue() or connect_data_rings() then fails for
-queue_index 0, the failure branch resets the count. For example, when
-connect_data_rings() fails:
 
-	xenvif_deinit_queue(queue);
-	be->vif->num_queues = queue_index;
-	goto err;
-
-This sets num_queues to 0, so the new if (be->vif->num_queues > 0) block
-is skipped. synchronize_net() never runs, and vfree(be->vif->queues)
-happens with no grace period.
-
-A reader that sampled a non-zero num_queues during the
-connect_data_rings() window could still be inside rcu_read_lock():
-
-xenvif_get_stats() {
-	rcu_read_lock();
-	num_queues = READ_ONCE(vif->num_queues);
-	for (index = 0; index < num_queues; ++index) {
-		queue = &vif->queues[index];
-	...
-}
-
-xenvif_get_ethtool_stats() follows the same pattern.
-
-multi-queue-num-queues defaults to 1, and with one queue every failure
-happens at queue_index 0. So for a default single-queue frontend, a guest
-that supplies a bad ring reference or event channel would still reach
-this vfree() without a grace period.
-
-The new comment says this mirrors backend_disconnect(). However,
-backend_disconnect() calls synchronize_net() before vfree(vif->queues)
-whatever the queue count is.
-
-The commit message says connect() jumps to err: "with num_queues still
-counting the queues already set up". That doesn't hold in the queue 0
-case.
-
-Should the grace period run whenever vif->queues was allocated and
-num_queues was published, and not only when num_queues > 0 at the err
-label?
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261027121438.1266207-1-yhlee%40isslab.korea.ac.kr
