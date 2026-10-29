@@ -1,89 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793288691;
-	b=rQIQqaZ+8GtTR4qYyTwkxzWCO8Yt3ukvoS34i5W6WGJDW/ZFKY9Dm2jQnOk0Ok8AbuHB
-	 f00BSeoWvmWOrshpH+kF6Ma2SVMdJ6jiMIk30neyauqKoY+lsxmui+QfSw9h9iChH2CuC
-	 KIb3kKteTf4+qBUBd8B9gpVWHVuE2SJAHvfgZlEO4OxHRKI2yWSWuw+X3nw9KZ3fHhqu9
-	 LudRlZ5tiob+Ss27Yn/NC0wvo1qh4qnAG4oKTsyUf7/03Gauop9LhW448L8XT9OjFT415
-	 lIEcj6PiQTQYDF4i8cQWWlahIlWEKvBFZmNA5NU5zGd8Vx7Ob29gzOp+OcDyxf3ucxg==
+	t=1793288805;
+	b=cJaOO900qkB9hi+WS+22+7dzpKhp4ty5q4CvoG84Mfhv3JI4mCE/7k23p84kUkSQzVJL
+	 nNz+LTuMp3C04hOVvBAIVMjWvWR407FEWQH2Vf4tjJ8c0P3mDiq9WEK+V5R4rY45dlYRv
+	 sck2X+mTHa5I0usii+jec1bJI9aWQTZRNafo9xaT2nwXbr27E9fCyxDb/3Vrwem/d4IYV
+	 CzqwQxLepYbWyeGvJzKI4JZa1cJioYkDoStDHGkzuwmpreXgrzGGGeb4yTtUMc8PsDXc0
+	 HfOTJmeW2u7sxYPityIkWs0mriKN+YZtuYsnnCxDw1EWGp5jEDRDBQ0KAsSmQbGYXSg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793288691;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Reply-To:Subject:To:Cc:
-	 References:From:Content-Language:Organization:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=ER2y3dWOiovf6F9A0olmy29Jmgyf+6P1MJIOyxbksLA=;
-	b=KVBxahwnujYtDQJfwHt/tcxpByg0UrQZ+9Y50N/KfT9Mr7WtTl0HQMYLL1qNkT/9nRlv
-	 sw85tlIWTrBWQNMXePo8daAYH8eApcWDLZmGTxv6F8J9KU29V1Zl+ZeS2I6Xcm6cbgNfj
-	 x+KLx3VLRk2pBVHFmNL0Aa8pF+5Oj1TOxSmMpIpHDorb4l2H/201ZJtMQv+kkLkOdSDuf
-	 s2Sr0l+t+sds4eAMYRBCBYUZR+Ka5K0UN65jd1USfEOWkI3ZpDawjpJMt40AUi6APF0ZS
-	 asT95f05cvEIi8tYsuYwU/hBBlo6YsJFcG8Fs3vp7MpCFbEEZnJ3pHax6UIu1AcFw+g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793288805;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=H5ui1SwYsBqG5dQjlH/tXv7W7g93TWtSjdulTpaHSwA=;
+	b=vknnGn3mY7j0XbPMe/iFYhPS8XjgCFlPhJTFQh7Ca17tzsMPhESrZ6U6gELnC1uYUQ0P
+	 6f47yYwmIN6Fiy9DcF/PaZToPa07p0kt6q/m/Ax0ams50mKqjZ1lesOCH3BvazpM4Meft
+	 lO1JmoHclUYU93KPxJ12mBvir1t8CdhcoEs8dPICTsuLQ5lvZb3mMAV/1OO3k90MtBh6m
+	 c4DLEVsjoiwglgqTIJtLVFPBo6H383kmaopx32RWC3RwaGtKbjiZ/5npfQieie2TAkPWx
+	 ywac2LVkY7V5fdy/S84I+t8D03Ygt6/UKiVNxM2e4DvKQyBmdR4lgdsSwQbxxIXqC5A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=6wind.com;
-	spf=pass smtp.mailfrom=6wind.com;
-	dkim=pass header.d=6wind.com header.i=@6wind.com header.a=rsa-sha256 header.s=google header.b=AAAbxfPh;
-	arc=none smtp.remote-ip=209.85.208.49
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VRaOye5D;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537C7606A31A
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 15:44:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 537C7606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85477606A31A;
+	Thu, 29 Oct 2026 15:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=6wind.com header.i=@6wind.com header.a=rsa-sha256 header.s=google header.b=AAAbxfPh
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6aa046a99c6so472689a12.2
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 08:44:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1793288689; x=1793893489; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :content-language:from:references:cc:to:subject:reply-to:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=ER2y3dWOiovf6F9A0olmy29Jmgyf+6P1MJIOyxbksLA=;
-        b=AAAbxfPhwUsSIjVYyAQzQSjlJ7yc1F3sIQgkiBFKAsay2Tcm9cwzgM3Ny8yfdbgk9M
-         xzlbNBpCU2dDDYGzdNmuEyG+Ek8Y5S2kwTx8KutOTRPVS86HQJ3sjdUEOVtL4oerk7+x
-         aK6gMgohcgc9N3Fgli/cu3wRNdy3JZl5Na9hah/kCJgtTp8UB79m47q0ghWGrBekgwia
-         EWIA0XAdSxJEHNtAt8AlpfSNBApmAwh2/85CP6Z8WR+c7n+iyPawHnk9/T1RtPi/Ef30
-         7t9qg5UdYWne77oM5GenAUaIXi+w/6/fcsVIkycsZPFoomGif76NlMRD5P8gxEGzZ7lz
-         JEWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793288689; x=1793893489;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :content-language:from:references:cc:to:subject:reply-to:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=ER2y3dWOiovf6F9A0olmy29Jmgyf+6P1MJIOyxbksLA=;
-        b=roIivFnWrfNrwgf5FoN+9AaRnKG+xM1xsGstrHFDyZBD/uLFQ3H8rnk82N5Ss4zAyK
-         CsPQRppZ5fEwzfyC0ziMAbxiAgFwBUt/8gpCXgSCOi37ni3LpOOxLEQTjtPa909UlpiW
-         aO5SPhFzRZ36zWO4x9hzS8f22oJdlyTZDra2o9RdeNavu47Q9hTvqSWXRsIhDN4Els8P
-         XkW4aL9+ursLYnwrXOoNB6A1MygwBcS6gHUmDKCDYGpmdDRlGXgjyBdrVG9dySIPtV2V
-         oMOKU/858kWQF4u5PTkJfLe9I9WR8Zq93PT0Do7LKrfiWO7rVrqmzXseyT0bJ6EBImmd
-         MZYA==
-X-Forwarded-Encrypted: i=1; AKwUvBycwBISUXmJko8gmPaqNK/Km7i1PPRjmOq9p4wygQHAgJTxXqxkIfG0kzmFJ0BYghgylkbtXBw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIQoAkPQWS6scZcjfpR9GE2Z65RAFUHDF1kfqG6n4WIX9YGGBZx
-	M/bRmtUZSdTNU7DQ+H/RiFg4vdl7v+uhDGnMRzMtCzzspTYe81qAqXntRs8RsCB8vt8=
-X-Gm-Gg: AYBFou1+JkZooc+yu2UJKOLLiIi034jzf4xZKKed2TviJZ8Crc+E0i9GKFOtRzXzuoV
-	GO58Z+X9p2gfE2oJdo13qX9gxHbtLv/KRTveb0ktIzx1qougo+Lp2QXo9peI96hJvS0tfa5Uadr
-	/WOCjaARlzN/YpkENZHU8Q/whTZqql29xDPIM6XyFdj/vGN7zASdJmG3T60xwK108iTo4l1mB8o
-	iv+EPPRx/TYfBXvwLnUQkzq4mjTGy82wtlQ/Ib3sN3cp+vuaNnFNbLBvGTWWF06kZvt3RlCRvcP
-	//IOJb6j62kXCzi2idxATDNB0aJ9TJCmRIKZx5LDFPhNGIBw5QdR3rIolFl6DH9EraknR/tvPbu
-	GOimKZ5nzs5mYIiuLwOakPVB9Ve6lomhjLcn+1zG2JRmcy2Z23KVvmptW6+N71SWWTN1nrSraq/
-	bag7CG9sbqQLskskmjbWV002ccBcbh4yrnCadT18yY/13wn62qVHL8RtY46Aimarwthh2Flzasl
-	V1p6UNz+k8HUE3PFE+ti7lmIK+a5CiF5R1m311Pj5lGpWx5wlHC/CmqVFH7m9gB2GtrZKAnuneB
-	iJbTIb4cjf116b3QwNaLg0NGU9T3iWSMRpnBKeLH7G/9fBJ15InFrT2VhSyWXWVYpu4x9bEkjik
-	6j1Jr9w==
-X-Received: by 2002:a05:6402:a2c7:10b0:6b1:bc2e:5d52 with SMTP id 4fb4d7f45d1cf-6b49cbea455mr5233462a12.3.1793288688626;
-        Thu, 29 Oct 2026 08:44:48 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:ab7:2110:6a1d:efff:fe52:1959? ([2a01:e0a:ab7:2110:6a1d:efff:fe52:1959])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b497cfd6ffsm2575185a12.24.2026.10.29.08.44.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Oct 2026 08:44:47 -0700 (PDT)
-Message-ID: <7fc6fa79-af42-49e8-8b41-00ad4a4d9b74@6wind.com>
-Date: Thu, 29 Oct 2026 16:44:46 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VRaOye5D
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD93B1F01816;
+	Thu, 29 Oct 2026 15:46:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793288805;
+	bh=H5ui1SwYsBqG5dQjlH/tXv7W7g93TWtSjdulTpaHSwA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VRaOye5DnDQ0N8qvBPQwcec4nB/GlcHez5mdDdAXYiDvmc/6eo/K9KcI3vpmLMCG9
+	 n9PryeIhNCHtpJYp+E2JEEcbyqB+Z04HX1dVSbSgroJ8WBlMbzSue3W/+KC2JnkGj5
+	 CYQUl1nVbc3KFdJsrx4hK1heNmGGE8cgEHmRLGgVBaGV0dMonh3r/K0jDC/W4rhZuV
+	 I2pO7dQK0MzPsFBmdNUQpvbMC8eXz/2kRLsZHMalQN3KefslBG9/Lc/qifLpjmomYb
+	 utpWFhwU4xHuXreKRdNekfEBUm6IN0E/+S7wXr8Gw5iW6lzNCb9vTmvtmIcFXJXlgh
+	 xCl/kchQy9CPw==
+Date: Thu, 29 Oct 2026 15:46:40 +0000
+From: Simon Horman <horms@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: tristmd@gmail.com, david@ixit.cz, davem@davemloft.net,
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+	linville@tuxdriver.com, sameo@linux.intel.com,
+	oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	tristan@talencesecurity.com
+Subject: Re: [PATCH net] nfc: llcp: use timer_shutdown_sync to prevent timer
+ rearm
+Message-ID: <20261029154640.GJ257209@horms.kernel.org>
+References: <20261023195409.3532540-1-tristmd@gmail.com>
+ <179308777133.3134.14547624262445573198@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -93,59 +63,119 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: nicolas.dichtel@6wind.com
-Subject: Re: [PATCH net] genetlink: Reject joining multicast groups no family
- owns
-To: Anil Kaushik <anilkaushikwireless@gmail.com>, netdev@vger.kernel.org
-Cc: "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Ido Schimmel <idosch@nvidia.com>, XingWang Xiang <v3rdant.xiang@gmail.com>,
- Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org
-References: <20261029062214.3407223-1-anilkaushikwireless@gmail.com>
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Content-Language: en-US
-Organization: 6WIND
-In-Reply-To: <20261029062214.3407223-1-anilkaushikwireless@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <179308777133.3134.14547624262445573198@kernel.org>
 
-Le 29/10/2026 à 07:22, Anil Kaushik a écrit :
-> genl_bind() checks the GENL_MCAST_CAP_* flags of a group only when a
-> family owns it. For a group ID that no family owns, it returns 0, so any
-> user can join it.
+On Tue, Oct 27, 2026 at 07:56:11AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
 > 
-> A family registered later can get that ID, and the socket stays a member:
-> nothing checks it again. An unprivileged user can join the free IDs, load
-> a family module with CTRL_CMD_GETFAMILY, which calls request_module(),
-> and then receive the notifications of a group with
-> GENL_MCAST_CAP_NET_ADMIN or GENL_MCAST_CAP_SYS_ADMIN. For example the
-> drop_monitor "events" group always gets ID 1, and is free until the
-> drop_monitor module is loaded.
+> Critical: 0 · High: 1 · Medium: 0 · Low: 0
 > 
-> Fix by returning -ENOENT from genl_bind() when no family owns the group.
-> Nothing is ever sent to such a group, so joining it has no use.
-Moreover, a user should retrieve the group index before joining it. It seems
-weird to join it without this step.
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [High] The fix is incomplete.
+> 
+> --
+> 
+> nfc: llcp: use timer_shutdown_sync to prevent timer rearm
+> 
+> This commit switches link_timer and sdreq_timer in local_cleanup() from
+> timer_delete_sync() to timer_shutdown_sync(). The goal is to stop the
+> associated work items from re-arming the timers while cancel_work_sync()
+> runs, so that no deferred work runs after kfree(local).
+> 
+> > diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
+> > index 74bf817007cf2..a098d72a15ba8 100644
+> > --- a/net/nfc/llcp_core.c
+> > +++ b/net/nfc/llcp_core.c
+> > @@ -173,14 +173,14 @@ static struct nfc_llcp_local *nfc_llcp_local_get(struct nfc_llcp_local *local)
+> >  static void local_cleanup(struct nfc_llcp_local *local)
+> >  {
+> >  	nfc_llcp_socket_release(local, false, ENXIO);
+> > -	timer_delete_sync(&local->link_timer);
+> > +	timer_shutdown_sync(&local->link_timer);
+> >  	skb_queue_purge(&local->tx_queue);
+> >  	cancel_work_sync(&local->tx_work);
+> >  	cancel_work_sync(&local->rx_work);
+> 
+> [Severity: High]
+> Does this fully close the use-after-free described in the commit message?
+> The timers can no longer be re-armed. But tx_work, rx_work, timeout_work
+> and sdreq_timeout_work still use cancel_work_sync(), and that does not
+> stop them from being queued again afterwards.
+> 
+> tx_work is cancelled before rx_work, and nfc_llcp_rx_work() always queues
+> tx_work:
+> 
+> net/nfc/llcp_core.c:nfc_llcp_rx_work() {
+>     ...
+> 	nfc_llcp_rx_skb(local, skb);
+> 
+> 	schedule_work(&local->tx_work);
+>     ...
+> }
+> 
+> Suppose rx_work is running when local_cleanup() reaches
+> cancel_work_sync(&local->rx_work). That cancel waits for it, and in the
+> meantime rx_work queues tx_work again. local_cleanup() then returns and
+> local_release_work() does:
+> 
+> 	local_cleanup(local);
+> 	kfree(local);
+> 
+> Can nfc_llcp_tx_work() then run on the freed local? It would touch
+> local->tx_queue, call nfc_data_exchange(local->dev, ...) and call
+> mod_timer(&local->link_timer). The pending tx_work work_struct inside the
+> freed object would also still be linked on system_wq.
+> 
+> Here is one way rx_work can be running during the final cleanup:
+> 
+> nfc_llcp_data_received()
+>     nfc_llcp_find_local()             /* takes a reference */
+>                                       nfc_llcp_unregister_device()
+>                                           nfc_llcp_remove_local()
+>                                           local_cleanup()
+>                                           nfc_llcp_local_put()
+>     __nfc_llcp_recv()
+>         schedule_work(&local->rx_work)    /* system_wq */
+>     nfc_llcp_local_put()  /* last ref, queues release_work on llcp_wq */
+> 
+> After this, rx_work and release_work run at the same time on different
+> workqueues.
+> 
+> Digital drivers can reach this. nfc_digital_unregister_device() calls
+> nfc_unregister_device() before cancel_work_sync(&ddev->cmd_complete_work).
+> That lets
+> digital_tg_recv_dep_req()->nfc_tm_data_received()->nfc_llcp_data_received()
+> overlap with LLCP teardown. nfc_tm_data_received() checks dep_link_up but
+> not shutting_down.
+> 
+> There is a related path. nfc_llcp_tx_work() passes the raw local pointer
+> to nfc_data_exchange() as the context for nfc_llcp_recv(), and it takes no
+> reference:
+> 
+> 	ret = nfc_data_exchange(local->dev, local->target_idx,
+> 				skb, nfc_llcp_recv, local);
+> 
+> For digital devices, this completion runs from cmd_complete_work, which is
+> only cancelled after nfc_unregister_device(). A late completion goes
+> through nfc_llcp_recv()->__nfc_llcp_recv(), which writes local->rx_pending
+> and calls schedule_work(&local->rx_work). The local it touches may already
+> have been through local_cleanup(), or may already be freed.
+> 
+> Would disable_work_sync() work for the LLCP work items, or at least
+> disabling rx_work before tx_work? That would match what
+> timer_shutdown_sync() does for the timers.
 
-> 
-> Found by the Sashiko review of the gtp multicast group fix. Tested as an
-> unprivileged user who joins all free IDs, then loads gtp and
-> drop_monitor:
-> 
-> Before:
->   joins: ok=62 EPERM=2
->   gtp/gtp (ID 15): member
->   NET_DM/events (ID 1): member
-> 
-> After:
->   joins: ok=19 ENOENT=43 EPERM=2
->   gtp/gtp (ID 15): not member
->   NET_DM/events (ID 1): not member
-> 
-> Link: https://lore.kernel.org/netdev/179324692107.3134.14443689892607921337@kernel.org/
-> Fixes: e03781879a0d ("drop_monitor: Require 'CAP_SYS_ADMIN' when joining "events" group")
-> Signed-off-by: Anil Kaushik <anilkaushikwireless@gmail.com>
+This does seem to be a legitimate concern.
 
-Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+-- 
+pw-bot: changes-requested
+
