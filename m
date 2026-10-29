@@ -1,98 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.51
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793278192;
-	b=w3F07uPAFQOrdiZI6aQUtU9o2jiuVf0rwtHUWUIe8O5tSFQANF9HNOxJrhXhsT3UGODq
-	 XUsBi4Vn0LhvjlZodus6kGjAlkwpHEJaW9nem33sQjDNH934fckD3sNIjE+Gx5LhnhPUX
-	 bud+wSKTdwuTlOQAFcLVdoIlskcIeVhPIQYMG5pNQo7vs1CE0tfUzJH5jFXuOosBx2i95
-	 8iCFeaW3EOLFqQu79mY7dfoCN55C2JoI9HEb/JyG5uaD0/00F/Hdhd1ieEKo7oW+tOeJ5
-	 +0/GpmBUjEFk+6q9lMhp0dQt1qm0f59V7BP19dIU1eGp+sdX9pqmCDOh+a1dcI5lm+Q==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793278192;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=ROp3jZYajDVDh8nm32pw5xyIgzSFtN3IpqGpjVrWuQc=;
-	b=v+ci4mV3etlqLBZvwFF4P+istSMV5xp81+FjEGHmZzodBk1sVdiDQgsHyDgh961Y1eqO
-	 WchoKMqw/rkeFj5yUN2RQ1xp79etSAJOnolQXx8ymQccK8VeI0VhT3QqzVlVX4IsEsf46
-	 yXnxJX96xQaQPv2GjOB6rvnWS15E8fWp3MqtJWjOpFDTOAUfzmj6L9cnQsBi7UPfDoy+g
-	 VBFWdafGpJfcRWvPEsV71e9wson0kEqzWO1tpR+OaADeiPIazP4QPrMUA5uQ8cR+ZC6qF
-	 IziyT4J7cjI9Papsl/80YiNpf/wm8nW9nP1Cd9ZfvylgCvmERoe8n/LKNSv19xGjwnQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=SyStkEZm;
-	arc=none smtp.remote-ip=209.85.217.51
-Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.26
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793278334;
+	b=P44rH5KQBhkfCeaknltPpvwQtemLrepzyUzqoXVF52l6UdpIPnxh3s/WfEglpGGg68Ds
+	 XTV+9r30otI7odANT7MWLMi0Ue65AooJNxdSjNmXGIa5WZPIRHrvfpDJTNyD8h7QTuqij
+	 9AhIAKQA+05pNyul/kbTpH9q+syCcU8pCspSqtWcUuZ8Z0rgSH8M++kkuVwPePSe6kqQX
+	 0cPiIyoLiBZ+HNGq6ZXfLab5k09nWmeq3OWNZ1iwgs9EwkuU1VBqzJ/idYMG3yvXBLBSX
+	 7jBgL9SAZvaPTWqK1BC6KxhUkBGlarjw2woP/Ty7S8/Meew3xZ1VXME9uoJxGmleeXg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793278334;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:From:To:Cc:References:Content-Language:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=Z4bPCiVHaDq5LGf017MyoLCoqj2e0B7lCXHI5kLxMjE=;
+	b=YcHcbNqVWfxuGafkmvP16sP5Z8MO7joZZ2XEkbQfCDpWHl41AxMYhF+MkWCkNQbkjcwo
+	 zv5R3HHU05pmiERbz6/wZjgwinm6hwo7qS/ohuFD3AGhdWlrvC2mYl8lTy7iR/ENnNyrz
+	 JIgTZngKFbnYr8c9zjPJIjSLf3dB8b0mCzjd7thKT7YeaszOos2PbUO6IsRtDc1i+EkzA
+	 ubtGh+Tv1x8SXR+idoxUKcpC1Zw0GOHq4ATL/+GUbnPCx7LDaNp8SrjDD1V64uGgSEmuD
+	 pYFO0HZ+KtbBI4tPuhKg48R3vuasPpO4iSQxsJawh4mWKm4gt050EcLG6qhN86W8ehg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=DHe7m8gN;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.26
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012026.outbound.protection.outlook.com [40.93.195.26])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BBF4606A32D
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 12:49:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1BBF4606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B798606A31C;
+	Thu, 29 Oct 2026 12:52:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4B798606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=SyStkEZm
-Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-7c322cbc998so442307137.3
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 05:49:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793278191; x=1793882991; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:content-type:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ROp3jZYajDVDh8nm32pw5xyIgzSFtN3IpqGpjVrWuQc=;
-        b=SyStkEZmAKI1EJX06M5T1xEgkXiYvK0jB/EsIJc74PsoZLVPeLOliWrXZGuSkUX2uJ
-         09xrz2uFk5twc2iZjQWB9gE38cAAwiBu4eFYUA1OUtXnTpLY7gWfu/867+BZELjIY1oy
-         p9k+7TcpJu2uH8Wz3ryGNRtYN0uheqhky09LY1EK8EahyvrLefRdB8BLNbFGB9FMpmaK
-         2JYsjUQ6qoKsF5k8rEgBPqOJ/wBYC3CcSG/ILg2UU5B8g7FuoGVD/J/ryykK4Mx31feT
-         TNihCZdRwlj5+QFhtk+isJuZUTbnis0ctp3pkO6KhqnNP4Joqd2/TtEVt/6SOZv5nrnM
-         QSzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793278191; x=1793882991;
-        h=mime-version:content-transfer-encoding:content-type:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ROp3jZYajDVDh8nm32pw5xyIgzSFtN3IpqGpjVrWuQc=;
-        b=0njFoMTfEkGdV/4bwDb8NgQKR2liN7HZYQYoNUnwFgteEGZtIaVtFHbxchMqPkrj7S
-         08U9Ih9VEc/Dn6EXf2VEdwdgE2JfEv1tX0IwAntn47VGWZRONwsXuoMHfoCpXmd16/Dk
-         h/CWo7nPcSEpHgOmkqclXOUs6TouqkQP5YrNw/30CO4UBTMMVSFohY0hDKNoISpMcse2
-         VxuMT7JpfAcSzwV/rxgmF3JI+ex/qI9syz/iwU09hxM2UQL+90zdeo9zVbqB0Sc1x9tc
-         GXiI4lg6KIq4OvYlllT4jmcqL4XiYrfkVZy5HNTXGrsF7lYKWXDHrLnxYLwLBUAaljD3
-         cXew==
-X-Forwarded-Encrypted: i=1; AKwUvBwH4MgwRPdUV2Fpb/wyClOdfMTkeWJ6nH5kLLT96K4U8t/nj1eMJvQ0teBN3g52NYk0pMlOuJ4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJljFCxLPkoYp6+YwpHH9fEbC92XFwHMxCzttip5iFZdzAQmf5h
-	l2Bk91s3TWkqaslnBrLbqSPX3ZQqM+P5VUTGbYv12Me1g7FvhNAE2DbX
-X-Gm-Gg: AYBFou3m6tuLhjevdlFe5+l1bB3O2r7utJIA8cQCUSghoxdZAwoPVG3QNn85y9hkTB4
-	NAcaTJVauMxNb96nZzJMpx2wRMV+btKAQ1KzX2WL3Wkiy977A7SY/VCZ8SMD1NRNHMUQ6zjYOnO
-	qfg+Hz+11EeTeiVMhPi0l3tfdqhWPNWA7jV2JfVf9u/jugTDZZDcX9LV7JZEN3xlvZrW0hx2ukE
-	0LG08zl0u2qteYaRjQx/RCArsDsILF776fTaaGj7gM+D+Y5AFUBoWOEkkWAFv4b/tdA8Dh8mThr
-	c7w03ckjO8ykjudKJjdcYJRrlDDNKQ1dYeoVnSCfjuZNjMpIKFPzOxJAit19+hdRo6A+GOoQIiC
-	d7s01EofAU2x0fyXWhbyuLhJVt2rWPnTqvxArMe8Q8UrOdEhT0RI+a/Afw3bmbhI2Kpo5VBuP8m
-	hedQ6zP9LckIegQbCR+VBl+eD2UpEvxU6ZHEbVveeiccybSjOr1sIMZvY9NzroZVDQ0UR++MFUz
-	rjwrn0IsupAnDRMfO4cQ3/W7fjnNdLJX+AQmLEyh54XqoBGIOjs2cUeQi53lcoa0BpFEaoqXJlB
-	U7ZBwcq7nwE2UeZO2orP/2tnjZL+oIPQ3MvPfw08g+IfPZ6LUUeCAXiSCB6H4KrnJEAwgouIIoY
-	9dh1sMxnRX+tj
-X-Received: by 2002:a05:6102:442b:b0:7cc:2712:caf2 with SMTP id ada2fe7eead31-7d03a58ef68mr2795290137.23.1793278190871;
-        Thu, 29 Oct 2026 05:49:50 -0700 (PDT)
-Received: from [192.168.15.16] ([2804:1b3:a2c1:77a1:5cd:8fee:f3c:4da7])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-9913af7aa6esm3225638241.4.2026.10.29.05.49.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 05:49:50 -0700 (PDT)
-From: Joas Antonio dos Santos <joasantonio108@gmail.com>
-To: Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>
-Cc: Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>,
- NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>,
- Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
- syzbot+2e3c70a51d4ac0f6bdd9@syzkaller.appspotmail.com,
- linux-nfs@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: [PATCH] SUNRPC: serialize pipedir removal on the
- rpc_client_register() error path
-Date: Thu, 29 Oct 2026 09:49:40 -0300
-Message-ID: <179327818020.63233.759139320736692367@gmail.com>
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=DHe7m8gN
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=womfWGAEUofwfiDU6cAZsKi5HcisdKSQnXmuwhS4ClQPHFwDKyccYopdrKoXv+gqP3vUSFYEwBv+RdhOppjqSXIk1oqZcn37xEblnitdossSQWg7CXEpuTXLfrOLBwQjcBWgQIgYUhFlpaAB9y2T9Si3NjJXP5BtFQxkH/xmxnqbNIpsLRgjMYu273TsbdPFElNVjBpw12aaYN4zW/u54WfhE3v++zSUNj2Cp5uH5ad3BQC5at6EfXAeuPyYGGEsWD2J0vaOhS5CvT1IFOsJeWjcZEh79wzh856IS8qU2LlEdur5VWVbM1NS03LiOHoHDxc0jqjjvVV21Pg8uLHkkA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Z4bPCiVHaDq5LGf017MyoLCoqj2e0B7lCXHI5kLxMjE=;
+ b=eN5gU7O8NXB8JUu9pMIQS0IRjjNwpTcwhfPAwdATn/34Kg65anT2Wdg6ijfnc8+qC/jr5V3Eovw0xbnxML57ok/KrDTqPkydoJzSh9k3MkuhfAyfeJTCB43DZwT4wuwckiz1dEjeKpHGLYWFegkMYCgVLSTnZYmoZ07RrnRsLwqQ71Lp1MWF8NB0T4eOoauPsn7VuROfb1XTNxDupXIN2pARze9+YZYBgKbOlxZzrhN8vYfDVUMFf7BiTjYaVgLeAcwyGnFPynQ/CoWSnyacQrewIhhV6VrlTfEygC+PHDNBemBSk8HOh2kQi52/qzaGBMFh97MHlj/gKAo6D+j5sg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Z4bPCiVHaDq5LGf017MyoLCoqj2e0B7lCXHI5kLxMjE=;
+ b=DHe7m8gN0iOc+clbKwYwJh+jarfTJu43nAcN+mqXl5TQmd4jm7mJJKyMTgcwrAA3WX7UcyzNfz0QX6BC141g/jMts8EhnQEf5qzPyEWg2Qmv0/4pmbMa874IW2yH7F4DxF4CHuq08E862Yo5hHX3jtFw5HV/6jltZ50G0G1biCJ33P5g16GXP05naVRju+wz5lvd51xA1rgEEP5p8y7xglSk49jgd3jDk/WaHe1Ywn7tPv6SSuP+3qnV4IFd+4cgkE3OuIz7HbJo9BFbONzN2QCrvNeN+YW6RKxf9khQGi0xQNDKRzW6uungp9ueVMNraQUnhVerGq/veZEDbGwasA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from IA4PR12MB932075.namprd12.prod.outlook.com
+ (2603:10b6:207:12d::15) by BN7PPFABD533732.namprd12.prod.outlook.com
+ (2603:10b6:40f:fc02::6df) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.8; Thu, 29 Oct
+ 2026 12:52:11 +0000
+Received: from IA4PR12MB932075.namprd12.prod.outlook.com
+ ([fe80::5a6f:1f74:6ccb:cf2f]) by IA4PR12MB932075.namprd12.prod.outlook.com
+ ([fe80::5a6f:1f74:6ccb:cf2f%5]) with mapi id 15.21.0569.007; Thu, 29 Oct 2026
+ 12:52:10 +0000
+Message-ID: <1a26c186-bba5-40f9-8cd9-3967b2b268bf@nvidia.com>
+Date: Thu, 29 Oct 2026 14:52:06 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net/mlx5e: Fix stalled channels with threaded NAPI
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Josef Bacik <josef@toxicpanda.com>
+Cc: Saeed Mahameed <saeedm@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
+ Leon Romanovsky <leon@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Jakub Kicinski <kuba@kernel.org>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@kernel.org>, netdev@vger.kernel.org, linux-rdma@vger.kernel.org
+References: <20261021-b4-mlx5e-threaded-napi-stall-v1-1-d719c17b3ec4@toxicpanda.com>
+ <cd140948-317a-49d8-885e-0ded451195c6@nvidia.com>
+ <17926738093796.1.mlx5e-threaded-napi-stall@toxicpanda.com>
+ <bf7ecec5-8bf4-47b0-bbf5-6dc8fa4e64d4@nvidia.com>
+Content-Language: en-US
+In-Reply-To: <bf7ecec5-8bf4-47b0-bbf5-6dc8fa4e64d4@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: TL2P290CA0004.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:2::13) To IA4PR12MB932075.namprd12.prod.outlook.com
+ (2603:10b6:207:12d::15)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,108 +102,145 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA4PR12MB932075:EE_|BN7PPFABD533732:EE_
+X-MS-Office365-Filtering-Correlation-Id: 694ea2c5-4476-4186-f9b1-08df35bb7265
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|261028144727099003|4143699003|5023799004|56012099006|11063799006|261022075727099003|261022105027099003|261021123027099003|261021121427099003|261026140227099003|261026121527099003|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	VhPbHnrwfUcM5wuEguVlLGFgbnoi5BA/meGc2TNsCc2MchqAxJk2PL1SOGgtWnsTcz8BkUb5Cmv/7ikZPd6je5n8H9RgHbJ8Z2eE4Sy3YRmHY6fk9cdOajIuxeSSx/i0JU5e/AhkoIBT4cXDRN9JavmuQMBDvAfxPBpqscxAomRdw5TLxguIkcP191CHWU+8y90cPLZrlQbhHhzZ2WXspQYf+tJFWy4ahspshx/3PwtslOvdHi9l0o7HCRVPcz/m1COn+UEqhgyYq0YGcQ2va0qjK8o8B5TSnCzXPgELSwIbHBJoUB1hvVA7fJMjS079vcA/GMfoFwTg1q1x2Znuyt8E7TKyHjsqBqkXJ6zLmtb075eglF5wzU0ql7M+9n4DQk9dbNcnCQHeO0Vyux+hsIXwTREnppdkc17Wx24569Q1V/Iotykfl6V3gMy+qMR4eCrSwSh/cq1qw1Zgcm4uxmBL4CG+yCsMHaMHayM4bl9HE5JRk9zhBqip04D8bdFFi3duwnk62okL300Z5o0lYxxtkiBL8KyJSr4GRhI9kjVas0bjJpnDwMSovMwzLwFqMFV9g2uRyL3KTcrxQXhtINkowQWOhRZ6tGZtRoYWsx88eYbJe3MSC4W4mzLwtu3tx7bwrTiIjA5z/WzDZ1IoJIisWtguxiQH04HUj4LuL00=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA4PR12MB932075.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(261028144727099003)(4143699003)(5023799004)(56012099006)(11063799006)(261022075727099003)(261022105027099003)(261021123027099003)(261021121427099003)(261026140227099003)(261026121527099003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VXNvWU1jNEpHcVE3aC9vRDljRWQwLzZKTnFFaHhRWnlkWSt2TmVvNUhGNU9w?=
+ =?utf-8?B?dFU1aGhGYnhIWGdZc3NNQ2s1WXFKYkw5bHRZdGdWUVAxNjdLcVJ1YVQ4Mmwr?=
+ =?utf-8?B?UUxCL280ZGhZK0VVL0h5SURra3ZmM1BaczhOeHFMemh3K3RheVdhcE1FR0Jy?=
+ =?utf-8?B?bGtzaVkwdDg4NDFBbCtCYWRHWUxBRHBuZjdjOXlTbmI1TUdVVlQ1ZmhuRnda?=
+ =?utf-8?B?V2JRUFJYR2VWdmdZQk5GZzlQWUR1N01qSFA4eEFMRVQrUUNKWmMzcUV1WGJX?=
+ =?utf-8?B?TDBVcnZiSG9pNENWNnpqdFFNcldKQmdaUmVMYVFXSG9hNERvcTZTOXlIRW1s?=
+ =?utf-8?B?VytyclhSdXMvQ205RWd6MmI4LzBpU05nU0FERE5YbXRMeVR4RGVacFRYNHB1?=
+ =?utf-8?B?cGxLcjFtZVJ6dElCcTNkRFJ3R2tqUHVSNm5lRHRSMW5PRVdlelR3Qzg1b0pD?=
+ =?utf-8?B?S1Jkd2NXVkZySFZSbU1LK1E0QUg5NHd2alp0cUxEb1YxZVJjRXhHRWs0TUcx?=
+ =?utf-8?B?UFBTNmhWMjV2RytncTY1djJpSFk3Z2ErNS9pV1Y0RVZkQ1ZQWkNRUkNReHhW?=
+ =?utf-8?B?c3kvYmllUU96TXFMdDgySGcxbnJ1NXZ5Q2V0SGlZZThxQTNKaCtCOTBEUFNt?=
+ =?utf-8?B?U2hKZ2FSbHVCc2dCREdrYi81eXloM3A0ck1pRlhxTDR0Tm0ySzgvLzZTd21E?=
+ =?utf-8?B?SklDeFhzZlJEWmVHWitWTEhRUVkyN3BxQTA0a3pSOFp1OEtmRnFFa2RJdmNm?=
+ =?utf-8?B?NnEzTDhES2orN2doRHJIQnlwTVhWamo0dXpPbm5JcFpWQzBkSEtYRDRkeVQz?=
+ =?utf-8?B?eVBnLzN6dlM0Y3Qwem9NUVJYNTNYN0lsNVV0N09TRmZrZTBSNDluTU1YaFJm?=
+ =?utf-8?B?R3FmVjgveVNzT29xRXBJT1pDS3U0L3g3NGE5NmRSUEZuV1hLalJ4eC9ycHVK?=
+ =?utf-8?B?S1RqcytvUUxpT2N4Q1BwVklXaDd4dFZzeWNWZ2pvSEZ3VEVLV3NqR0F4cHRG?=
+ =?utf-8?B?RmZXRWdUcDhnV0pTdE1kamltUDdRNWU4SFZWNk9iMUVYbDdaT2ZFUVBsQTJ6?=
+ =?utf-8?B?MXVkSncrTGE5ZllWaWQvNmlZbDRKYVNVd2hpaUkrMlgrcWppNUJNOUNmaGk3?=
+ =?utf-8?B?bjRHQk5EOFkzWGsvN0NiVUxCNXVIRDlGc3AyZDUwU3paQjZCOWFycC9xeU9D?=
+ =?utf-8?B?Sm5FTHgvZkZjWWJ6S2VmR0FMMVIyVUwzemtkZC9lU3I0TFhyUC9RZnhJVnZH?=
+ =?utf-8?B?MVJ1KzI5N05tdHJjV0Y1aEwzOGJZYWJhOFlVQzIxTUNubDdZaGpXMEsxb1dx?=
+ =?utf-8?B?TmZaZWxKY1RJaFpBbmRTTmNKdjkyaTEzekZTU3RSVzdvVE44NkZHd1NEYld3?=
+ =?utf-8?B?dlpiZnJyekxQWk5tL3BIWVg5Y2Q1cnBzem5LbXJZQ1NoamxDaTg2UHlPNzRN?=
+ =?utf-8?B?YXA4emdYYjNtOTVnSlR3VWZjSHFkbkhpalpyYm1iOTNaV0NRVGpQRG1uQm44?=
+ =?utf-8?B?ZG5JMElsZGh4ajMvUTJTZnMrQXZydlk3eThTb2g1UTF0RFdrV1RndjlNVXJT?=
+ =?utf-8?B?MUdBOEtNZ3ZRL2NRdnNnT3dpaDJrNTJCWWNMV0NpQVhLUVU3TFFvazZDYmMy?=
+ =?utf-8?B?aXNndE1rTGlJeEVNdFFjVHE2QUNtamg4cDAvUnpxM2R3bVBRNnBPb1lNeEdV?=
+ =?utf-8?B?S3Y0WnlRaDhIV2hNNTh4a2ZBakZCWXFJNHA4T3NPdlZNZ3pwMVl0SHBRN2I2?=
+ =?utf-8?B?Y1RsMEQxRXd5RWZqa1A0bjlZQzdJT25SeFp3eXZ1Yk5DMGxtMEZyZnpBd0Rm?=
+ =?utf-8?B?RGpuekJwT2N2VzN2OTN5T2hqL1Y5d1dSOE9PSVZJT2htbUpRUXI4Z3VvZlQ4?=
+ =?utf-8?B?UlBER2xBN0VPZ0NveW9ORll4WEltUGtZYTk4aHpXUml0dlRwdVJpUFRWYmd0?=
+ =?utf-8?B?VkRYeVFQMkN5aGFVR2g0M1hha1JZWDI2czVMM3pFSlRHOUd3QldWY1ZTSXhU?=
+ =?utf-8?B?d0NjUVZiTy9Dd2syNFd4YzFnK3p4VS9DOHV3YmJOeURJQllUK1RuOVQ1bEsx?=
+ =?utf-8?B?b0s2Y2xtSmIrR3B6SWNaeHg1UkkrQjdoU2Z4TDlGTmdZRGw5ZzUrckRsK3BI?=
+ =?utf-8?B?aW91RzYzL3lVSlcrR0xIVE0zdW81U1AvS0ptajhRTTdGc1VXcVczV3R1Y2Zi?=
+ =?utf-8?B?VTdZMWNmUCtTZlZsb1BLOFVMNVBIWk5UNkpjakJ5RlUxV2NwbWY4MjE5eXpR?=
+ =?utf-8?B?eXo0L0FvbjlTNEY3VkVlaklVZ2FEN3NrN2hTckJ1S1BxWWd0NHVtYlBKUm5m?=
+ =?utf-8?B?V1FpbDIzME9rVzBzRFQ1eG5rdkJPZ0krVk5PZ0hMeURyOFk4VWVuUT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 694ea2c5-4476-4186-f9b1-08df35bb7265
+X-MS-Exchange-CrossTenant-AuthSource: IA4PR12MB932075.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2026 12:52:10.5665
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oBtau9g1I1kWijdAGyWVD7FvUG+GgytqgZlkcrCvfCUbVj7DRQxxvjFI+Jk9EjNzI/BYiQd5/tUeJIf23hbL2Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPFABD533732
 
-When rpcauth_create() fails, rpc_client_register() calls
-rpc_get_sb_net() and then __rpc_clnt_remove_pipedir() whether or not a
-pipefs superblock was found.  If rpc_get_sb_net() returns NULL, the
-removal runs without sn->pipefs_sb_lock, and the client is still on
-sn->all_clients until rpc_unregister_client() a line later.  Pipefs
-mount/umount notifications run under pipefs_sb_lock and walk that list,
-so they can race with it:
 
- - a pipefs mount between rpc_get_sb_net() and rpc_unregister_client()
-   gives the client a new directory, which the unlocked
-   rpc_remove_client_dir() then removes while a concurrent umount of
-   that superblock drops the same dentries in select_collect_umount();
 
- - a umount notification that picked the client up before it was
-   unregistered keeps using it after rpc_new_client() has freed it.
+On 22/10/2026 16:51, Tariq Toukan wrote:
+> 
+> 
+> On 22/10/2026 15:56, Josef Bacik wrote:
+>> On Thu, Oct 22, 2026 at 02:38:41PM +0300, Tariq Toukan wrote:
+>>> The arm doorbell carries the consumer counter, and the device tracks the
+>>> last index it reported an event for. Arming while CQEs posted after the
+>>> last event are still unconsumed generates an event right away.
+>>>
+>>> The affinity path depends on exactly that, since commit a8c2eb15797a
+>>> ("net/mlx5e: Stop NAPI when irq balancer changes affinity").
+>>>
+>>> Event moderation can delay that event, but not drop it.
+>>>
+>>> So the root analysis doesn't match the mlx5 device behavior.
+>>
+>> The CQ has a backlog much deeper than one poll, about 6900 CQEs in the
+>> run in the changelog.  The thread polls 64, is off the IRQ's CPU,
+>> completes and arms.  There are CQEs posted after the last event, so the
+>> event comes right away, and the device now remembers the current
+>> producer index.  The thread polls another 64, completes and arms again.
+>> If nothing has arrived in between there is no CQE posted after the last
+>> event, only older ones that are still unconsumed, so there is no event.
+>> The rest of the backlog waits for the next arrival.
+>>
+>> That matches the counters of the stalled channel.  It had 0 polls and 0
+>> events for 150 seconds.  New connections then gave it 16 events, 16
+>> polls and 1018 packets, so one poll of 64 per event.  It was armed the
+>> whole time, it just took a new completion to get an event.  Then nothing
+>> for 14 seconds, then 93 polls and 5917 packets, and it was empty.
+>>
+>> Is that how the device behaves, no event on arm when everything that is
+>> unconsumed was posted before the last event?  That part is my reading of
+>> your description, I haven't got a way to check it.
+>>
+> 
+> I have to soften my previous reply: the immediate-event guarantee I 
+> quoted covers CQEs posted after the last event, so it does not rule out 
+> your scenario, where the leftover backlog was all reported by that 
+> event. Your reading is consistent with the documentation and with your 
+> counters.
+> 
+> I'm checking the exact behavior with our HW architects and will update 
+> here, hopefully within a few days.
+> 
 
-syzbot hit the first one when racing rpc_pipefs mount/umount with
-NFSv4 mounts (the krb5i rpcauth_create() fails without the gss mech):
+Hi,
 
-  WARNING: fs/dcache.c:1063 at d_make_discardable+0x28e/0x2f0 fs/dcache.c:1063
-   __simple_recursive_removal+0x276/0x5c0 fs/libfs.c:625
-   rpc_remove_client_dir+0xf0/0x140 net/sunrpc/rpc_pipe.c:898
-   __rpc_clnt_remove_pipedir net/sunrpc/clnt.c:100 [inline]
-   rpc_client_register+0x605/0x6f0 net/sunrpc/clnt.c:333
-   rpc_new_client+0x977/0x1300 net/sunrpc/clnt.c:437
+We confirmed it on the device, on ConnectX-6 Dx (the generation in your 
+report) and on ConnectX-7: an arm raises an immediate event only when 
+the CQ holds a CQE newer than the last reported event. A backlog the 
+last event already reported raises nothing. Your reading and your 
+changelog stand.
 
-With a test-only msleep() after rpc_get_sb_net() returns NULL, the
-syzbot reproducer also triggers the second one:
+We are preparing patches on our side (WIP): a fix that forces a real 
+completion event when NAPI completes off the affinity mask, so the path 
+is safe wherever it is taken, and a debugfs extension exposing the CQ 
+arming state, to make a stalled CQ visible on a live system.
 
-  BUG: KASAN: slab-use-after-free in rpc_pipefs_event+0x568/0x57c
-  Write of size 8 at addr fff000000ec53240 by task rpc_repro/107
-   rpc_pipefs_event+0x568/0x57c
-   notifier_call_chain+0xfc/0x384
-   blocking_notifier_call_chain+0x68/0x9c
-   rpc_kill_sb+0xbc/0x1a8
-   deactivate_locked_super+0x98/0x11c
-  Allocated by task 111:
-   rpc_new_client+0x144/0xf04
-  Freed by task 111:
-   kfree+0x1dc/0x5c8
-   rpc_new_client+0x9f8/0xf04
+Please hold your v2 until these are out, and rebase on top: your patch 
+then stands as what it is, saving a complete-and-rearm cycle per budget 
+with threaded NAPI.
 
-Do what rpc_free_client() does instead: unregister the client first, so
-no later notification can find it, then remove the directory with
-rpc_clnt_remove_pipedir(), which takes pipefs_sb_lock (waiting for a
-notification that is still running) and only removes it if the client's
-superblock is the current one.
+One request for the code comment when you reword it: today it reads as 
+if arming never raises an event for pending CQEs, "only for a new 
+completion". It does raise one immediately when a pending CQE is newer 
+than the last reported event; it stays silent only when the last event 
+already reported everything that is pending. Something like "arming 
+raises no event for CQEs the last event already reported" keeps that 
+distinction.
 
-Fixes: eeee245268c9 ("SUNRPC: Fix a deadlock in rpc_client_register()")
-Reported-by: syzbot+2e3c70a51d4ac0f6bdd9@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=2e3c70a51d4ac0f6bdd9
-Cc: stable@vger.kernel.org
-Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
-Assisted-by: Yaga Agent HackerSec Claude:claude-opus-5-5
----
-Tested on Linus' master c339f4010dea (arm64, QEMU, generic KASAN,
-PROVE_LOCKING, NFSv4 without RPCSEC_GSS_KRB5) with the syzbot C
-reproducer.  The race window is narrow: the plain reproducer did not
-hit it here in 6 runs, with or without this patch.  To widen it, a
-test-only msleep(20) was added on the err_auth path (after
-rpc_get_sb_net() returns NULL in the unpatched code, and between
-rpc_unregister_client() and the removal with this patch):
+Thanks again for your report!
 
-  unpatched + delay:  2 of 2 boots, 16-22 WARNINGs each (mostly
-                      d_make_discardable, plus fast_dput, and umount_check /
-                      generic_shutdown_super once) and one KASAN
-                      slab-use-after-free each (rpc_pipefs_event in one boot,
-                      rpc_create_client_dir in the other)
-  patched + delay:    3 of 3 boots (9 runs), no WARNING, KASAN or lockdep
-                      report
-  patched, no delay:  2 of 2 boots clean
+Thanks,
+Tariq
 
-net/sunrpc/clnt.o builds cleanly with W=1.
-
- net/sunrpc/clnt.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
-index 6cedc82..16aff2a 100644
---- a/net/sunrpc/clnt.c
-+++ b/net/sunrpc/clnt.c
-@@ -328,12 +328,18 @@ static int rpc_client_register(struct rpc_clnt *clnt,
- 	}
- 	return 0;
- err_auth:
--	pipefs_sb = rpc_get_sb_net(net);
-+	/*
-+	 * Unregister first so that a concurrent pipefs mount cannot give the
-+	 * client a new directory, then remove the directory under
-+	 * pipefs_sb_lock like rpc_free_client() does.
-+	 */
- 	rpc_unregister_client(clnt);
--	__rpc_clnt_remove_pipedir(clnt);
-+	rpc_clnt_remove_pipedir(clnt);
-+	goto out_destroy;
- out:
- 	if (pipefs_sb)
- 		rpc_put_sb_net(net);
-+out_destroy:
- 	rpc_sysfs_client_destroy(clnt);
- 	rpc_clnt_debugfs_unregister(clnt);
- 	return err;
--- 
-2.39.5
