@@ -1,71 +1,120 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793300134;
-	b=BmZ9H07yBQdBjmkSM+zd3eIxxQFSQXWvjQqi3C8Cxbt7IQnYrnBxVjejZG54cLExMsvf
-	 s+8xI3yTOOKBjWQCNN2LZDRdmy3rR4hHjUDFGmAE4NG+YKP4WEYzaNEr2LUU4ddCz6E+4
-	 oTa5iu6e3JMpW7Q1zZ7kIbulaFUzRqyhDGQH/O3xQ5ky6PT2b1LjKqpqBYyYmRI0GGwSJ
-	 P0Xd3UpTwJffoAto8xrMgiof3du6/HN52xmcQnD7+63chr3KYyZNt9CCsoUzZclUf94Mo
-	 8FcUuassdzofXKD/IWC7wkQlhoTanLxZuHNBo/SvPeaIltDbgvBbhWr+B3E8Y8oE3BA==
+	t=1793300351;
+	b=D8cVg6rl6EQzq4bJrPyxKqXVnboTBb6R4LcLqhU2re3Be3bg7O860ghXhuU4Jk34xd63
+	 iLMw4kx0BrV3biz/kwYy975SJcQCg0LK0Nu5PzoWmV8v5JEQqydo7mfQ/XqRoqTMyU4G4
+	 bR3GelSaRKKGR39vsUMHkuJU+PTh70eSb631Lm6sJYtADlmac+NAOYMB58f4ulEUCoSGc
+	 x3lmOF52ej37rWeqfBAwWOFaL2I++6sfWOeOfmcMI8YMGnK76YPtp3vTONBvYtlKZKRU5
+	 81bQ7rAC6yfXbDZaILJ5UaZWZioARvInA7jsWNA2UXvQe/4PnvqIFtmFJvQs8MU70Bg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793300134;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:Date:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
-	 References:In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:
-	 X-Developer-Key;
-	bh=vWtZtNIPdyaxOz5cjCSWVS2Oku7PGJweBsmiA5n1zv0=;
-	b=I1Mg9vj4HasI6IrOOgFVsTOcvsm0MgxFfmtIgVJwMdyMSN1tr6WGhuxTHFpTnZeaHhZ3
-	 x8P+MVP/1cgizFlRxhfab81MiWdzsgxyHq06fA9VHIg/nyP7ZI0xiSDTU/qnFiKzUCtQf
-	 XpL08Jc7mID5Y8hcXSVFMGumnobL+DDBk44hy0srZRuT233zKf1Zk1ViB/wJ4LlgfG2pU
-	 HsoJ4n/GZKMVntJoKQJttRdSk5GUL8kn70Ojc10XAibp6r4M0fXmgrdpWmUfWnDQZiLL7
-	 wBKOIA+1yruTF7PNaO010tcYQS+jiEozPi9TPPb+risodLdmp5v0gWdwzPFXT1HFpNg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793300351;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=K0Ytmrnk1GXIgM1fqIrHZ5HsCVM2IH42icX0Nl0p4uM=;
+	b=oUvAT4S5cIR675oHPgICV4YK3+KlS4udE9AiLxEbE0r/ZSddlJWWxzoh2uU9NbgE0g2y
+	 USgHTofnnDg6B1rP9DjU5Lazn+W2ZJ9nZm54zXLVPLOrpngHFqvlUowSmGj/eg3ukasjo
+	 aiCnVs8yuMyLkM6NSGXGvhhIgK+1QZJKbHcSXIb8iwTHoN1mtKXgFprLoEzg+ANJA1Q/Y
+	 ZbIMbayVZg8FeMnVUMnE2XZ54cC5TJdgKJnOmgC52X3xU1l5psuCdxJnnLgjj//xzfWtH
+	 pZQkOij5EgdBrH0l36pzZ0auqzYmtJfp5KVDWi1dLUxyZey9r+cdDs9cmHXUMu4YZjA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=AfJLWIWF;
-	arc=none smtp.remote-ip=198.175.65.21
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wKHfFSVm;
+	arc=none smtp.remote-ip=209.85.128.46
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A88ED606A31F
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 18:55:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A88ED606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE600606A32E
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 18:59:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EE600606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=AfJLWIWF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793300131; x=1824836131;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=gc8zOrN30uAgIxfWXaJzUPZpKIHm6J8mdk+kcjywQ1o=;
-  b=AfJLWIWFGxAaJ12KtjfXTK77R4vH/BO85V6Rl7AmGpYSGktqbBJMC6i0
-   fX7n5c5VdHioxbqaj07LynLx11ayIT1VqYpEvAPrb2rZv1PnuZHA8wB9y
-   PRobSF8kZ7jpFVXBuHdj8+ZQY21Y05TRxDkDjWKU9Il+JIyrcsWRE52O/
-   079WFsLPhuSL1zmJR3QSf1ErBZ1foG9kDhH2dcFRgMcflpPA+XsyIQLrW
-   KZeRK4KC/9ovKeVRKTDg1C9yF/lQArlwN8yQBXhtYEypum7kfCyMZFTKo
-   FFtQT3pOE38avhwhlwp+fFCA2/ClJlkFZxTAEuliHOpUmw/Z2se/rfhbv
-   g==;
-X-CSE-ConnectionGUID: pQ164NS/Tnm9WDsXZ1T7Eg==
-X-CSE-MsgGUID: +zxt9fTmQ6GhEEeGoAp2jg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11950"; a="2147533"
-X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
-   d="scan'208";a="2147533"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 11:55:29 -0700
-X-CSE-ConnectionGUID: 95p5ymizRDGqo7khGtB+4g==
-X-CSE-MsgGUID: 0l3K759KRZ2KuWJxTEK54w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
-   d="scan'208";a="5348472"
-Received: from orcnseosdtjek.amr.corp.intel.com ([10.166.28.128])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 11:55:29 -0700
-From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Thu, 29 Oct 2026 11:55:02 -0700
-Subject: [PATCH net 2/3] ice: E825: clear PHY_TSTAMP memory prior to soft
- reset
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wKHfFSVm
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4a4d7ae1ae9so25127365e9.1
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 11:59:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793300349; x=1793905149; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=K0Ytmrnk1GXIgM1fqIrHZ5HsCVM2IH42icX0Nl0p4uM=;
+        b=wKHfFSVmSHenG0U1iwKgtGSi1UOPPzW6SwGJPjDKQxqwGUCxJEvCn1DjSm7x+7dlBI
+         tUKS5X1HwuZkVolpmPhJFNwbLcWP4O2Ey+tlKOMSKe5uAIMYifWViWBMbQNK0ytgnkU5
+         TxpYpjDnhF0RjngKcgEl1OEsxC/rdKP63x/HzurTG3ZCmbKYurx/pMsgnAebRGdPVULt
+         X6kw74+yrE1gmuUM1siaydpKy5zusToKzYM/zlLOoKSiOrcEwuwMelyy8U+A1MF4630N
+         +VRIg7uYp5Eams5/R4YrzMxIRDiBSFhS3P/ldIwkkN9aFhmNkbr/qpcLWvL6VVYZuboa
+         npsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793300349; x=1793905149;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=K0Ytmrnk1GXIgM1fqIrHZ5HsCVM2IH42icX0Nl0p4uM=;
+        b=YI8xbS+fkpE0XUsGQCibNdmpX1xMO7kCJ8jeJFr+mhVLDgySizTjBmD8s8KeLhz/FG
+         HO8cdym6Yssr97Y2AzGutmazcdiPSxVGbVTMMso1NTjZvHegjZf4L3BVpTRYiig2HzOT
+         rFjpCnw6NTZaOnV9tE8F+yUeKkQPmoaNd1RBYjuylADIcXU3RbwzqSVH1StpisDh9y0p
+         mnCYqaKGoW0InfSq1/PEzl8rBQSXnz8MhZY+LNdNDJzeI4LI0nzn6DXuh0W8tDQrYZ/A
+         VqqycF7HGy1cBiWCSCS2ht1jX5JgALbkiAE+JjrNmQFl8kDLlgtv8xzX8J6nYF7eExZP
+         siNg==
+X-Forwarded-Encrypted: i=1; AKwUvBxedEb292k/xoE0V0t3cmFmV+38ptxqzlm3S9pjqBqeEoSw0wwQ+LRWdQcRAUhQWr49haqS9fs=@vger.kernel.org
+X-Gm-Message-State: AFq9FYL6bw3Aq2HhCsB350AvsPlYXr2oeU7UFGIrr7Zq+g2xw1NY/mtF
+	9/mGPtHDsKlxkPnx9NBbNXbHNXJjBnd3y8tbHYOM88ZEDNvH4Q/RkzfL
+X-Gm-Gg: AYBFou0Olvn+uGerYD6S6jhRDas7h98rQ8P/Ay7tZiXKrNpsAiltC1FQFPZdnt9e/9+
+	n2krTGj6U3JpU1QpWZeTHMt6zpcAzoJMkFb270XuFbAvIb7OQDR6u+gT6YEItRwCmMr+X6DuXXv
+	6Y6VKVS0BxsP9GCKh+PWnMnA1KzfplTTQNiOfk8FAv37By/AvyqJeqJqnPVLCjbcWP84c71qYKT
+	UzWbrb7OdX6udzPIwrukgajicOkjuntyExJRnvkUfUnjihBQFP0fFTC3BhvlEedNUO8sQ9GlUoy
+	G66OjmsYI60R5reYfNvAj93eH1OD/lzodPV1JOJ1sKr2Umht7tX6L/1ryKqh1p6vVKt2efu1aYE
+	DGLN3yIWwnJBUwX+8iPnG/BsQV7nVzh3LtOvt+ZoCDUMpZOre22YR4LvRf6llRc3zPjc28oX5D8
+	YYUsNtanBMwA4VY64/KxVX3zukeIqrLLFWZWBwQbtsqwNB7TpdXqlWYB7kBKGtHFgG4k4V523GG
+	6hq/Wlef/Hl20UWcF0pop+mPqMjmT3AV4IKMZiXm9cPykUH/PVBJSiE1VwKvzKHv/J9KSW5rxUH
+	FnZdEPey59KxzFVHM7oWkkOQOfa+LcGiSd1duGUvmsUoshwWkHaOhf3rNkavHh28z5aUjpU5cca
+	l7qY1+lHzEBudAPOsyC3mQnDUrmlMLzHy4mPwFReOeMQslnt/QBAe37MKXn18vy6a2VdLm9Xpw+
+	Yq4wm1YQfaaY6e
+X-Received: by 2002:a05:600d:4121:b0:4a3:59c9:a758 with SMTP id 5b1f17b1804b1-4a96836988amr152798385e9.32.1793300349381;
+        Thu, 29 Oct 2026 11:59:09 -0700 (PDT)
+Received: from localhost ([2c0f:3d00:6be:8900:ce5e:9212:ea4b:f30])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4abf6c76507sm4933955e9.10.2026.10.29.11.59.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 11:59:08 -0700 (PDT)
+Date: Thu, 29 Oct 2026 21:59:04 +0300
+From: Dan Carpenter <error27@gmail.com>
+To: Frank.Li@oss.nxp.com
+Cc: Frank Li <Frank.Li@nxp.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>,
+	Karol Wachowski <karol.wachowski@linux.intel.com>,
+	Oded Gabbay <ogabbay@kernel.org>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Alex Elder <elder@kernel.org>, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Guan-Yu Lin <guanyulin@google.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org, linux-hwmon@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-staging@lists.linux.dev, netdev@vger.kernel.org,
+	imx@lists.linux.dev, Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH 1/1] PM: runtime: change stub pm_runtime_get_if_active()
+ return 1 when !CONFIG_PM
+Message-ID: <auOXeGVQG0UHeoQb@stanley.mountain>
+References: <20261029163044.3062958-1-Frank.Li@oss.nxp.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -75,307 +124,34 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-jk-e825c-critical-timestamping-fixes-v1-2-72128d1dd928@intel.com>
-References: <20261029-jk-e825c-critical-timestamping-fixes-v1-0-72128d1dd928@intel.com>
-In-Reply-To: <20261029-jk-e825c-critical-timestamping-fixes-v1-0-72128d1dd928@intel.com>
-To: Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Petr Oros <poros@redhat.com>, netdev@vger.kernel.org
-Cc: Grzegorz Nitka <grzegorz.nitka@intel.com>, 
- Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
- Alexander Nowlin <alexander.nowlin@intel.com>, 
- Tony Nguyen <anthony.l.nguyen@intel.com>, jacob.e.keller@intel.com, 
- maciej.machnikowski@intel.com, przemyslaw.korba@intel.com, 
- sergey.temerkhanov@intel.com, arkadiusz.kubalewski@intel.com, 
- richardcochran@gmail.com, horms@kernel.org
-X-Mailer: b4 0.17-dev-67df5
-X-Developer-Signature: v=1; a=openpgp-sha256; l=12494;
- i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=gc8zOrN30uAgIxfWXaJzUPZpKIHm6J8mdk+kcjywQ1o=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhqzH0+ao/9Cs/etyQNP7aFhl4S5Wpc1bpeVzvT8l7VyQt
- /b1O/vIjlIWBjEuBlkxRRYFh5CV140nhGm9cZaDmcPKBDKEgYtTACYy7TTDX/mkR0tbjlz4uFWM
- 5d/8h9tvSVyNftovJ/upqX1HbfX59ARGhm8XRO+v7t9/et7adK248CfLbIW+uKkftnjW8YgpbLL
- KXQYA
-X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
- fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261029163044.3062958-1-Frank.Li@oss.nxp.com>
 
-The current implementation of ice_ptp_reset_ts_memory_eth56g() is flawed.
-It tries to clear the timestamp memory by writing to the
-PHY_REG_TX_MEMORY_STATUS region. This does not work properly, as it does
-not trigger appropriate PHY actions.
+On Thu, Oct 29, 2026 at 12:30:37PM -0400, Frank.Li@oss.nxp.com wrote:
 
-To clear outstanding timestamp memory, the driver must read the timestamps.
-However, naively doing this as part of ice_ptp_reset_ts_memory() is
-problematic. When reading the timestamp index, hardware kicks off a chain
-of actions including clearing the ready bitmap index, and decrementing an
-internal counter if the timestamp index was marked as valid.
+> Pattern C: ret > 0 / ret <= 0 / ret != 1 checks -- FIXED
+>   drivers/usb/core/offload.c: checks (!= 1), old -EINVAL caused
+>     -EBUSY even with !CONFIG_PM. Fixed: now returns 1, proceeds.
+>   drivers/accel/ivpu/ivpu_job.c: drm_WARN_ON(<= 0), old -EINVAL
+>     spuriously triggered WARN. Fixed: 1 > 0, no warn.
+>   drivers/gpu/drm/i915/intel_runtime_pm.c: checks (<= 0), old
+>     -EINVAL triggered error path. Fixed: 1 > 0, correct path.
+>   drivers/accel/ivpu/ivpu_sysfs.c: (> 0), old skipped freq read.
+>     Fixed: proceeds correctly without CONFIG_PM.
+>   drivers/gpu/drm/xe/xe_pm.c: wraps (> 0), all xe callers
+>     (xe_bo.c, xe_shrinker.c, xe_vsec.c, xe_ggtt.c, xe_guc_ct.c,
+>     xe_pxp.c) now correctly treat !CONFIG_PM as active.
+>   drivers/net/ipa/ipa_smp2p.c: power_on = (> 0), now correctly true.
+>   drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c: (> 0), now correctly
+>     executes stall register update.
+>   drivers/staging/media/ipu7/ipu7-buttress.c: active (<= 0) early
+>     return now skipped, correctly proceeds.
 
-This can potentially leave the internal hardware counter out of sync with
-the actual number of timestamps. This occurs because the
-PHY_TSTAMP memory region containing the timestamp data is not
-zero-initialized when the devices boots up. Instead, it is filled with
-garbage. On a cold power on, attempts to read the stale data result in the
-hardware triggering a counter decrement for a timestamp that never
-happened. This underflows the counter, and prevents new timestamp
-interrupts from being triggered for real timestamp requests.
+Pattern C is mostly bugs so this patch should have a Fixes tag since
+it fixes bugs.
 
-In normal operation this is "fine" because the driver should never read
-from the PHY_TSTAMP region without first checking if the
-PHY_REG_TX_MEMORY_STATUS bit for a given index is set. However, driver bugs
-or programmer error could result in accidentally reading this data.
+regards,
+dan carpenter
 
-Attempting to write to the PHY_TSTAMP region is also ineffective as the
-registers are read only. Instead, reading a register triggers PHY action to
-clear its valid bit. However, the PHY also performs other actions such as
-clearing the bit in the PHY_REG_TX_MEMORY_STATUS and decrementing the
-internal counter.
-
-We must read the PHY_TSTAMP memory in order to clear stale timestamps. But
-doing so may cause a desync with the counter. To prevent issues, perform
-this clearing always and only right before initiating a PHY soft reset.
-
-The soft reset will clear and reset the internal counter and the
-PHY_REG_TX_MEMORY_STATUS ready bitmap. The reads to PHY_TSTAMP reagion will
-reset the region valid bits ensuring that no stale data is left behind.
-This combination ensures that we always have a clean slate with no stale
-data and with the counter properly reset to zero.
-
-If a read fails during the sweep (i.e. due to a transient sideband queue
-failure) it is not treated as a fatal error. There is already a dynamic
-debug message for each read failure. Keep track of the total number of
-timestamp registers that fail for a given port and log a warning message
-indicating the total number of failures. Continuing is acceptable as
-clearing the memory is a precaution against faulty software. Correct
-software access won't read the index twice and won't read it at all except
-when it has already confirmed that the index is valid by reading
-ice_get_phy_tx_tstamp_ready(), at which point the hardware will have
-overwritten any stale data.
-
-Expand the kernel documentation for ice_ptp_phy_soft_reset_eth56g(), to
-clarify that it performs the timestamp memory sweep. Also clarify the
-expected caller behavior should the soft reset procedure fail. For example,
-if the driver loses PHY access part-way through a reset it might have swept
-the timestamp memory but not perform a PHY reset. The caller must treat
-failure returns from ice_ptp_phy_soft_reset_eth56g() as if the PHY is in an
-inconsistent and non-functional state.
-
-Since ice_ptp_reset_ts_memory now only works for E82X hardware, update its
-kdoc comment to clarify what hardware is skipped and note specifically why
-E825 is skipped.
-
-Fixes: 3ec46e157c7f ("ice: perform PHY soft reset for E825C ports at initialization")
-Reviewed-by: Maciek Machnikowski <maciej.machnikowski@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
----
- drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 118 +++++++++++++++-------------
- 1 file changed, 65 insertions(+), 53 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-index 07b55fbb88dd..ef59b34ba52d 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-@@ -737,24 +737,6 @@ static int ice_read_port_mem_eth56g(struct ice_hw *hw, u8 port, u16 offset,
- 	return ice_read_port_eth56g(hw, port, offset, val, ETH56G_PHY_MEM_PTP);
- }
- 
--/**
-- * ice_write_port_mem_eth56g - Write a PHY port memory location
-- * @hw: pointer to the HW struct
-- * @port: Port number to be read
-- * @offset: Offset from PHY port register base
-- * @val: Pointer to the value to read (out param)
-- *
-- * Return:
-- * * %0      - success
-- * * %EINVAL - invalid port number or resource type
-- * * %other  - failed to write to PHY
-- */
--static int ice_write_port_mem_eth56g(struct ice_hw *hw, u8 port, u16 offset,
--				     u32 val)
--{
--	return ice_write_port_eth56g(hw, port, offset, val, ETH56G_PHY_MEM_PTP);
--}
--
- /**
-  * ice_write_quad_ptp_reg_eth56g - Write a PHY quad register
-  * @hw: pointer to the HW struct
-@@ -1129,47 +1111,35 @@ static int ice_read_ptp_tstamp_eth56g(struct ice_hw *hw, u8 port, u8 idx,
- }
- 
- /**
-- * ice_clear_ptp_tstamp_eth56g - Clear a timestamp from the quad block
-+ * ice_clear_ptp_tstamp_eth56g - Clear a timestamp from PHY memory
-  * @hw: pointer to the HW struct
-- * @port: the quad to read from
-+ * @port: the port to read from
-  * @idx: the timestamp index to reset
-  *
-- * Read and then forcibly clear the timestamp index to ensure the valid bit is
-- * cleared and the timestamp status bit is reset in the PHY port memory of
-- * internal PHYs of the 56G devices.
-+ * Read the timestamp index to ensure that the valid bit is cleared and the
-+ * timestamp status bit is reset in the PHY port memory.
-  *
-- * To directly clear the contents of the timestamp block entirely, discarding
-- * all timestamp data at once, software should instead use
-- * ice_ptp_reset_ts_memory_quad_eth56g().
-- *
-- * This function should only be called on an idx whose bit is set according to
-- * ice_get_phy_tx_tstamp_ready().
-+ * This function should only be called on an index whose bit is set according
-+ * to ice_get_phy_tx_tstamp_ready(), or as part of a full sweep when paired
-+ * with a PHY soft reset via ice_ptp_phy_soft_reset_eth56g().
-  *
-  * Return:
-  * * %0     - success
-- * * %other - failed to write to PHY
-+ * * %other - failed to read from PHY
-  */
- static int ice_clear_ptp_tstamp_eth56g(struct ice_hw *hw, u8 port, u8 idx)
- {
- 	u64 unused_tstamp;
--	u16 lo_addr;
- 	int err;
- 
--	/* Read the timestamp register to ensure the timestamp status bit is
--	 * cleared.
-+	/* Per the PHY spec, reading the timestamp memory location is what
-+	 * clears the entry's valid bit and its corresponding (read-only)
-+	 * ts_memory_status bit.
- 	 */
- 	err = ice_read_ptp_tstamp_eth56g(hw, port, idx, &unused_tstamp);
- 	if (err) {
- 		ice_debug(hw, ICE_DBG_PTP, "Failed to read the PHY timestamp register for port %u, idx %u, err %d\n",
- 			  port, idx, err);
--	}
--
--	lo_addr = (u16)PHY_TSTAMP_L(idx);
--
--	err = ice_write_port_mem_eth56g(hw, port, lo_addr, 0);
--	if (err) {
--		ice_debug(hw, ICE_DBG_PTP, "Failed to clear low PTP timestamp register for port %u, idx %u, err %d\n",
--			  port, idx, err);
- 		return err;
- 	}
- 
-@@ -1177,19 +1147,43 @@ static int ice_clear_ptp_tstamp_eth56g(struct ice_hw *hw, u8 port, u8 idx)
- }
- 
- /**
-- * ice_ptp_reset_ts_memory_eth56g - Clear all timestamps from the port block
-+ * ice_ptp_clear_tx_memory_status_eth56g - Reset one port's Tx timestamp memory
-  * @hw: pointer to the HW struct
-+ * @port: port number to clear
-+ *
-+ * Fully reset a single PHY port's Tx timestamp memory. Per the PHY spec, the
-+ * only way to clear a timestamp valid bit (and its read-only ts_memory_status
-+ * bit) is to read the timestamp memory location, so read every entry for the
-+ * port (two 32-bit reads each). This discards all timestamp data on the port,
-+ * so it must only be used for a full reset; callers that must preserve
-+ * in-flight timestamps clear individual indices via ice_clear_phy_tstamp().
-+ *
-+ * Due to interactions with an internal HW counter for the number of
-+ * outstanding Tx timestamps, this *must* not be called outside of the
-+ * ice_ptp_phy_soft_reset_eth56g() procedure. Otherwise, the internal counter
-+ * may become out of sync and prevent new timestamp interrupts.
-+ *
-+ * Failure to read a given index (i.e. due to a transient sideband queue
-+ * failure) is not considered fatal as the PHY port is about to be soft reset.
-+ * While the soft reset does not clear the timestamp memory, software
-+ * shouldn't be reading the timestamp memory without already knowing it is
-+ * valid via ice_get_phy_tx_tstamp_ready(), and this sweep is just
-+ * a precaution to ensure the memory is in a known state.
-  */
--static void ice_ptp_reset_ts_memory_eth56g(struct ice_hw *hw)
-+static void ice_ptp_clear_tx_memory_status_eth56g(struct ice_hw *hw, u8 port)
- {
--	unsigned int port;
-+	int err, failed = 0;
-+	u8 idx;
- 
--	for (port = 0; port < hw->ptp.num_lports; port++) {
--		ice_write_ptp_reg_eth56g(hw, port, PHY_REG_TX_MEMORY_STATUS_L,
--					 0);
--		ice_write_ptp_reg_eth56g(hw, port, PHY_REG_TX_MEMORY_STATUS_U,
--					 0);
-+	for (idx = 0; idx < INDEX_PER_PORT; idx++) {
-+		err = ice_clear_ptp_tstamp_eth56g(hw, port, idx);
-+		if (err)
-+			failed++;
- 	}
-+
-+	if (failed)
-+		dev_warn(ice_hw_to_dev(hw), "Failed to clear %d PHY timestamp registers for port %u\n",
-+			 failed, port);
- }
- 
- /**
-@@ -2295,6 +2289,7 @@ int ice_ptp_read_tx_hwtstamp_status_eth56g(struct ice_hw *hw, u32 *ts_status)
-  *
-  * Trigger a soft reset of the ETH56G PHY by toggling the soft reset
-  * bit in the PHY global register. The reset sequence consists of:
-+ *   0. Reading every timestamp memory register to clear its valid bit
-  *   1. Clearing the soft reset bit
-  *   2. Asserting the soft reset bit
-  *   3. Clearing the soft reset bit again
-@@ -2303,6 +2298,20 @@ int ice_ptp_read_tx_hwtstamp_status_eth56g(struct ice_hw *hw, u32 *ts_status)
-  * to settle. This provides a controlled way to reinitialize the PHY
-  * without requiring a full device reset.
-  *
-+ * To ensure that the internal counter matches the contents of the
-+ * PHY_TSTAMP memory region, read every timestamp index prior to performing
-+ * the soft reset. The read side effects ensure that the timestamp memory is
-+ * cleared while the soft reset ensures that the PHY_REG_TX_MEMORY_STATUS and
-+ * internal counter are reset to zero.
-+ *
-+ * In the event that the driver fails to access the PHY during the completion
-+ * of the soft reset, (e.g. due to sideband queue message failures), the
-+ * device may be left in an inconsistent state. Such failures are expected to
-+ * be rare. Callers are responsible for checking the return of this function
-+ * and treating errors as indicating that the timestamping block of the PHY is
-+ * non-functional. Recovery may be possible by issuing another soft reset
-+ * after any transient access errors have abated.
-+ *
-  * Return: 0 on success, or a negative error code on failure when
-  *         reading or writing the PHY register.
-  */
-@@ -2311,6 +2320,8 @@ int ice_ptp_phy_soft_reset_eth56g(struct ice_hw *hw, u8 port)
- 	u32 global_val;
- 	int err;
- 
-+	ice_ptp_clear_tx_memory_status_eth56g(hw, port);
-+
- 	err = ice_read_ptp_reg_eth56g(hw, port, PHY_REG_GLOBAL, &global_val);
- 	if (err) {
- 		ice_debug(hw, ICE_DBG_PTP, "Failed to read PHY_REG_GLOBAL for port %d, err %d\n",
-@@ -5794,6 +5805,11 @@ static int ice_get_pf_c827_idx(struct ice_hw *hw, u8 *idx)
- /**
-  * ice_ptp_reset_ts_memory - Reset timestamp memory for all blocks
-  * @hw: pointer to the HW struct
-+ *
-+ * Only E82X hardware can directly reset memory for all blocks. E825 hardware
-+ * can only safely reset timestamp memory as part of the soft reset, so is not
-+ * reset here. E810 and E830 also do not implement direct reset of the
-+ * timestamp memory region.
-  */
- void ice_ptp_reset_ts_memory(struct ice_hw *hw)
- {
-@@ -5801,10 +5817,6 @@ void ice_ptp_reset_ts_memory(struct ice_hw *hw)
- 	case ICE_MAC_GENERIC:
- 		ice_ptp_reset_ts_memory_e82x(hw);
- 		break;
--	case ICE_MAC_GENERIC_3K_E825:
--		ice_ptp_reset_ts_memory_eth56g(hw);
--		break;
--	case ICE_MAC_E810:
- 	default:
- 		return;
- 	}
-
--- 
-2.56.0.215.g47fdf2208c5b
 
