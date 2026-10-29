@@ -1,87 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.179
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793294757;
-	b=KZFNgicsMwm0+44YxZuuk+aUGLwb4PNUszhJRfhNKvY1pSqEiHGTaZmhseGilwsXXhMd
-	 65N97vXTctdKsXO9nPDSIK3PoVHMYCIP+j93K+U1P4+WuUuyrj0rH95dYril3z1XyxUH/
-	 BqX60lWTayuPbk2ZTOZKKVXwbeQgeIk4l4yOcShGZ6+C7SHWT7AcfDO933JR/s/Yi1Hnk
-	 +JpVQFEnRIV7RwPUNXQeRQKrSHZrxc4/HyZz/ZAXZpEFmgPb4I2JqygqZl7ZnDatHiQoz
-	 IZl+3atrwVUo1v27LxvirL36+jsCXkxQmxyPedoWp7HxC/BKr/Tv9vG5Pqj0OX+35Pg==
+	t=1793295086;
+	b=K3E4p2P3+hkCqMjR0BoVjrzEbhqHiPj1o8czKivWXc3Qj5lbir+O5SEURDpz7HaqwUkN
+	 H8aqsfvz/7PGe+QDi84EszAPkegxfrqguePjnw2lPWnR0U/BbL1JZIh8G50u9yS+WO38F
+	 p/3j4M+ODG9nK29ua7jtq0i/6FyXopVE+/X0EDuChSQIys1skVA93bx8FANh0qY6dquPR
+	 a4P7zDVvuYr3WYILHnaa8t9tW+rAsOLDOH0iKewF5THX7U+EdRf62y2m8lO1MWosWKYWn
+	 xsZ3ETzBLncrKWGgNoq0B//IfZHEv/C7l2jzWPhJt2aDX86EP7jQRpelGcPWMgsFaFQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793294757;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793295086;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=p1M8KQKZEZVrR5oiIhhEHbcY6wunX44CsSXTYXwSo8M=;
-	b=MA/3w+2uk8f6VywZXvu05VMFU8dT1d02esREmL7PQ0dtM/V+HzTqEY/dzmE/9h09reEB
-	 LmzxOcl5O59Xx63YJroH+dlnngAe0VUdLbaGvG6co7xPAe1Kg4rsfy1NczteStSqaQdBz
-	 TM9QVF/F8BKIY9uc3MSLn+aX9UcWt7WV8BnHC/jcUQvE9WEDm45NqjstgOO6P0aKAoNPp
-	 qEIR/sZLt+jnew1ufvkEhp9tIeLWvGisGjsAVNSZnl7bfNINzTX+iTVHusqXuDrzkaOsH
-	 m+KrFmqqek7Ar+LmI3N/ch5BycBVq1fEnmfMxihwUhCR98JjZwdUy+4ZyyHBDXqJbfQ==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=hSIslHYAdaXfJ/6/15cY4EI+1/izn+/DHEzPa9wprnI=;
+	b=rFKZ4GdoAdBx2sryDIPuldEerZLnC2ZA9h1SIPBNEtuJpt8nTJB/WwCDcBIXNybsqa0z
+	 l1S+XFVddyzqAMBLp3bnv2lIjEtlBXHlADl1DU4C1u60DCWW3nNt9FZyAIyMKoMfwydJC
+	 inf3w8kIkD5vQl5Owvbf7GZE/sdASdJhzVtd9fRqxXdE/ZUY6yTqdJqadpPzKO4HjHphU
+	 MsW7j2ulDsxEf1Qu4HB6sZu1reOxMf59D6gb2X4MWSSeOnG/kOjxKD1pmIvokDO5ZjM7p
+	 4U+KgsaOIxpHQWhZnh4uJ0vH4Swe9wGdrg/UG/dg2gvlZ4xxTbEm33aUYDTDlOS60+Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=MUCKVbgs;
-	arc=none smtp.remote-ip=209.85.216.46
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JY8XJOEJ;
+	arc=none smtp.remote-ip=209.85.210.179
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02564606A31C
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 17:25:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 02564606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2012D606A320
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 17:31:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2012D606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=MUCKVbgs
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3ace1f3897cso1379503a91.0
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 10:25:56 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JY8XJOEJ
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-8a06b436dffso1185635b3a.3
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 10:31:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793294756; x=1793899556; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=p1M8KQKZEZVrR5oiIhhEHbcY6wunX44CsSXTYXwSo8M=;
-        b=MUCKVbgsCF/1mRkGAftGIf6A9+mQOgMOrFVabDNzK4KU7JFWRz1meVdtnXTKzHDqEM
-         D++LX85ATaBnlRRvQ4xRTDhtF5cWOVoTkQ7reAKvlEohu0SjNNxwuD7+BXpNvMcRewJr
-         jnkOoqYxrj94KXWMyjQh16/h7/1u7yhIOe0JlaYZy/K0cNbiN00Q45vWQ9K6kDcKgChT
-         I4WhVF9yXcmVqrXP15gMA5Whs/weXzQ4iEOJc6rF4zq6zkKiawfqPsebqiM/X+AqJCVn
-         vg3Ku6rxyUCFwVc213pMr5vdjINrhG9uyycB6x3pSi2WxuGaO72Cy4IZeRG9HMjQ++bf
-         RJhQ==
+        d=gmail.com; s=20260707; t=1793295085; x=1793899885; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=hSIslHYAdaXfJ/6/15cY4EI+1/izn+/DHEzPa9wprnI=;
+        b=JY8XJOEJuBC9fU+YlQNtGGQzPiI9s6gIriGR0T0B4hin0I8UONoZaXa56WnmqfAMex
+         hmZ0TD1lJiySUIahM1XZEXp5CayPU1NRxOTxb0YDx6wc5FD7BbSGvRpsR/ktDd8PqwkL
+         a+n3VtSUlWOhrOPNgMIlz2ESzcFOmrkD594nd5nJmAqvjy8sKBTCM3VIrjmTg7LOiUKZ
+         HRGYc7sVDjcpR7hnlrj6n6RpFuI0FtuvkHAnw9mz2BzW7sm7N8hLbyMG5cptezEEcQbx
+         dSLGVn6LJROEVC7DcytCgpW673b81ntFsbKzgALbA1oS3AedMgeq1Ehn82aKRZ3/eDFs
+         DnAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793294756; x=1793899556;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1793295085; x=1793899885;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=p1M8KQKZEZVrR5oiIhhEHbcY6wunX44CsSXTYXwSo8M=;
-        b=CHM/h8Wg5p+B/lEPSyO6bUQ7yHqLHIZpRZudjxLAntSAuaGjQegqwGSVCCWLFShz22
-         ETzml8ifTtesuBHF75q75eSyvi2skabApNXosLbXx9egg/Uet6uGqrXtZkwxAVEoxh1a
-         /kJybs48IK1AoLXz2y8vrJR++a4xVGx4CkcKQH1vAyTW8roY3Gj/AvtFEjpvc06dFO4R
-         CTeqEodkZa/gsgFjG0AI0Vvklw/l/09FZ8h5jKRDpAzp+feYLsHN9VR3XYjfHQliDjtn
-         JfvsGF95P4eLe/78C9YgWtiNHIY2/k65EooQ4igmxPaqCzwAhpzFVfHaDKzRaAkkNFtV
-         +tpg==
-X-Gm-Message-State: AFq9FYItzK/rhJdaLyjX9xniEumPoZOHHtf986eXCyAHc0pzN1UhYt4O
-	/ZW/FiYCup5KbdTE+WswqIe8oJII6VbUo2/aNk5b51wsuHJArLy8pQN5
-X-Gm-Gg: AYBFou0PoCH6gXg1dLL+N7meemWpd0chUNTTsWqYomMdgLpVYq5blX5FR4P27LdSh9T
-	nc30Cwh8XRcyxqBkrEsrnaScJxQak016ZLU3f9JszjBo7vepGFDID1Pi52vWD35UKOWOVvhnzAw
-	1YYBqnJOaMYktskzsVN3ozrJSUscRS6+FOA0hDcafvWCltc6UKvnCHwe95CnZQmB2X+PUUpyonB
-	k1LFbngbNoEVRAYW3QHOZYlqKGDG3CATBMHGgWFhmZSBpuAjcnuONeGvrWDBxdOp9F+Q4gAvQ4d
-	8dm38IRIs89h4LraVyGx727SxqKl73rJ11PhsrReuFU+LhDJGEE//+YtRpRXlxce6dgZ9Atczk4
-	XXjUhh6AfctvpYF43EBEypByiga1KP/EmxmebPqTuKHLQKWKKtSW5HUvbOuPLCN9IelJBRQ6a/1
-	G1ZzgHJW8PDOrZwDHPCzkfkw+RTUT5aDzm+QF1GnkNCIfd6+mpJTgw/uOfp/NBhPit53gig3fjz
-	lVYLYnxXZksFndMr038QbJ5W0OYPoOJMIlpcv2cQrrO/Bp6WwR+ck5XGsQVD18BlMutW+3uV5Ej
-	cIb/x3QFtdk84oRjI/5FiU9H4/Hffma/DT45bjlZCsEIMNlwys6v5oGTBvzjOSGjdeDZv0I0Uu3
-	pfw==
-X-Received: by 2002:a17:90b:54cd:b0:3a4:6f38:f2a2 with SMTP id 98e67ed59e1d1-3ae580f1940mr5003657a91.25.1793294756239;
-        Thu, 29 Oct 2026 10:25:56 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae841dd1b9sm531417a91.0.2026.10.29.10.25.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Oct 2026 10:25:54 -0700 (PDT)
-Message-ID: <3f17be46-2d9d-4121-9cf8-66fe739f11f6@gmail.com>
-Date: Thu, 29 Oct 2026 10:25:50 -0700
+        bh=hSIslHYAdaXfJ/6/15cY4EI+1/izn+/DHEzPa9wprnI=;
+        b=Yseei5hVNO9/A31awXDgq6S3YzX9joA8MeIGs6n8Hvk823VPH6Qt+36dGzltlLD6PF
+         tj/a6pCHNCdqL/5sEU+KI0pQYZuGASHhwlfxu3DzOElBfbX/Teb0Poxe+4uyTHSHr/9k
+         mc7MCz5XJrCtBccmlT9QwXZhw6LRFAcC1zXlFJoJH9i1bbd/cYdYTeJZrrgeoJ264AYW
+         WP7LVjkFQRewwZ7fOubRgMST7oJsuA7xszsg3r+kJBz76Uo58V9+M18AC7KthO1JwXWD
+         LovDJrLB7FWwoK/MWZbMZOV1ZTNb+VWlsz2FXSkOHy+fzvXf4pueHZxXx9xlsh0Apkp6
+         3PQA==
+X-Gm-Message-State: AFq9FYJ/zgLXhY7q4xGLA1ENHHM/WcB/+tszzovJ5dzSecge5qTcIOLY
+	hj+17EQaOO6CaJ2Ibc9zTq6h4mkt+G8y0PiW/rYdNwaFfAMlaMhDJx3+YuMSSw==
+X-Gm-Gg: AYBFou38rt/ptDQz78dQjBuqCKzvHs8SJQpIhrnYgGZriMWwytQxFC+YtnklxkptpW8
+	xSofu7T9TkJv3QEfQE2AGBAe+RbdnJ6nybWR7IQAzJng2hKHevd4BOMnNpkEs8ZTJAIpvH9kMPn
+	GdFSWrs75KeEIeP+/GMR4NrLKfNOyUOGadtgPvFRm7zJJyAIYSQ4wV25R7j8rmosN0pLVpwlZto
+	kW0hTy5b+s6hYekH5RjT5IQPqXYgKrIi1r9uUUfI0hNb7VpDJY/gyOL3anF2xavKOg6RodKTNhK
+	Zv/Wd8o/AuvGA5Fy+lc0NsjUeLBickzBA2xlHEGZ5NGY3JAD5nekWw/mQET3rmPFR5XJm4RyXIl
+	6MdPK3YZ+dBpJAWHvsU3cRWSf3jOvMtVhs3RpsivbnRg0kdPkO3HcQ/2Zp5a67FED1tWUOR8JBd
+	i1flMhKdE41TY2rm4BxhkvFZ1/w2MUYUvZUxuhzTNo5u9iOzEGjp/ex5FWS4W+1TZ7gMqBpp93b
+	gR+cUE6hu7VeI7Xrgamc4Bz4L8R9uVzfa9mAyfjSSlT1//iRnhcFAOzfq7IJ/E1GeGfsF39sh9o
+	MHOAvo1HE7TFYVLiNNPQkWRYY6k1O1wisZQOX48tE1vM/Okc45I05aoirvCVHiHNNgHbnkpUueZ
+	ozaDlLBSBCjm5p+ZVsHBOfnLVVrp43BmKYfEly36/Sw24cWhqUZj1Hmf1wiLRlMF1DDoACqbRhS
+	hKNg==
+X-Received: by 2002:a05:6a20:431b:b0:3e2:7c10:d482 with SMTP id adf61e73a8af0-3e9022f304amr5613114637.16.1793295085422;
+        Thu, 29 Oct 2026 10:31:25 -0700 (PDT)
+Received: from ryzen.lan ([2601:644:8000:37f::e34])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdb0548fa57sm94180a12.13.2026.10.29.10.31.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 10:31:23 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: netdev@vger.kernel.org
+Cc: =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Felix Fietkau <nbd@openwrt.org>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net v3] net: bgmac: fix RX frame length check
+Date: Thu, 29 Oct 2026 10:31:22 -0700
+Message-ID: <20261029173122.29636-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -91,125 +101,59 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 04/11] net: au1000: report MDIO transaction timeouts
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- hkallweit1@gmail.com, linux@armlinux.org.uk, shaojijie@huawei.com,
- horms@kernel.org, runyu.xiao@seu.edu.cn, mmyangfl@gmail.com, hvr@gnu.org,
- jeff@garzik.org, danny.kukawka@bisect.de, mugunthanvnm@ti.com,
- sebastian.hesselbarth@gmail.com, linux-kernel@vger.kernel.org,
- manuel.lauss@gmail.com
-References: <20261027223140.3774570-5-f.fainelli@gmail.com>
- <179329051221.3134.18425968013165195410@kernel.org>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <179329051221.3134.18425968013165195410@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 10/29/26 09:15, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found more severe
-> issue(s) in other patches of this series. This mail is only an FYI, in case
-> you want to address the nit picks below when you respin.
-> 
-> Low priority / nit picks for your consideration:
-> 
-> - [Low] The new completion poll in au1000_mdio_write() reads MAC_MII_BUSY
->    right after `writel(mii_control, mii_control_reg)`.
-> 
-> Pre-existing issues:
-> - [Low] On success, au1000_mdio_read() returns the raw 32-bit
->    MAC_MII_DATA value (`return readl(mii_data_reg);`, au1000_eth.c:298)…
-> 
-> --
-> 
-> net: au1000: report MDIO transaction timeouts
-> 
-> This commit changes au1000_mdio_write() to return an int. Timeouts from
-> the busy wait before the transaction, and from a new completion poll after
-> the write, now go back to phylib through au1000_mdiobus_write(). The read
-> timeout paths in au1000_mdio_read() now return -ETIMEDOUT instead of -1.
-> 
->> diff --git a/drivers/net/ethernet/amd/au1000_eth.c b/drivers/net/ethernet/amd/au1000_eth.c
->> index 70319b432182f..a507a524370fd 100644
->> --- a/drivers/net/ethernet/amd/au1000_eth.c
->> +++ b/drivers/net/ethernet/amd/au1000_eth.c
-> 
-> [ ... ]
-> 
->> @@ -292,14 +292,14 @@ static int au1000_mdio_read(struct net_device *dev, int phy_addr, int reg)
->>   		mdelay(1);
->>   		if (--timedout == 0) {
->>   			netdev_err(dev, "mdio_read busy timeout!!\n");
->> -			return -1;
->> +			return -ETIMEDOUT;
->>   		}
->>   	}
->>   	return readl(mii_data_reg);
-> 
-> [Severity: Low]
-> This isn't a bug introduced by this patch, but should au1000_mdio_read()
-> mask the data register value to 16 bits before returning it?
-> 
-> On success the raw 32-bit MAC_MII_DATA value goes back through
-> au1000_mdiobus_read() to phylib. __mdiobus_read() expects either a
-> register value or a negative errno, and it passes the value through
-> without masking:
-> 
-> drivers/net/phy/mdio_bus.c:__mdiobus_read() {
->      ...
-> 	if (bus->read)
-> 		retval = bus->read(bus, addr, regnum);
->      ...
-> }
-> 
-> If bits 31:16 of mii_data ever read back non-zero, phylib would get a
-> value wider than 16 bits. If bit 31 were set, it would read as an error.
-> 
-> Nothing in the tree shows whether those upper bits are ever non-zero on
-> this hardware. Would something like readl(mii_data_reg) & 0xffff be
-> safer, now that negative values on this path are proper errnos?
-> 
->>   }
-> 
-> [ ... ]
-> 
->> @@ -320,6 +320,17 @@ static void au1000_mdio_write(struct net_device *dev, int phy_addr,
->>   
->>   	writel(value, mii_data_reg);
->>   	writel(mii_control, mii_control_reg);
->> +
->> +	timedout = 20;
->> +	while (readl(mii_control_reg) & MAC_MII_BUSY) {
->> +		mdelay(1);
-> 
-> [Severity: Low]
-> With this new completion poll, will every MDIO write now busy-wait for at
-> least 1 ms?
-> 
-> A clause 22 management frame is about 64 MDC cycles, which is roughly
-> 26 us at 2.5 MHz. So the first readl() right after
-> writel(mii_control, mii_control_reg) will almost always see MAC_MII_BUSY
-> set, and mdelay(1) will run at least once.
-> 
-> The mii_bus->write callback runs in process context under
-> bus->mdio_lock, which is a mutex. Could this use readl_poll_timeout()
-> with a sleep of a few tens of microseconds and the same ~20 ms timeout?
-> 
-> To be fair, before this patch the access that followed a write already
-> paid this mdelay(1) in its own BUSY wait before starting. So for
-> back-to-back sequences the cost mostly moves into the write. The new cost
-> falls on the last write of a burst and on isolated writes. The existing
-> completion poll in au1000_mdio_read() has the same 1 ms granularity.
+While reviewing commit 77dac783f113
+("net: bgmac: rate limit RX error messages"), Florian spotted that the RX
+length sanity check compares the length reported in the RX header against
+BGMAC_RX_ALLOC_SIZE. That is the size of the whole fragment, including the
+space reserved for struct skb_shared_info. The data area handed to the
+hardware is only BGMAC_RX_BUF_SIZE bytes, and the frame starts
+BGMAC_RX_FRAME_OFFSET bytes into it, so at most BGMAC_RX_MAX_FRAME_SIZE
+bytes of a frame fit in one RX buffer.
 
-Agreed on the completion polling. I’ll use readl_poll_timeout() for the 
-new write completion wait, retaining the 20 ms timeout.
+A corrupted length between those two limits passes the check, and the
+following skb_put() runs past the skb tailroom and calls
+skb_over_panic() instead of dropping the frame.
 
-The upper-bit concern is pre-existing and speculative without hardware 
-evidence, so I’ll leave that unchanged in this series.
+The check has no lower bound either. A length below ETH_FCS_LEN wraps
+when the FCS is subtracted, so skb_put() asks for almost 64 KiB and hits
+the same skb_over_panic(). A length that leaves less than an Ethernet
+header makes eth_type_trans() parse bytes the hardware never wrote.
 
-pw-bot: cr
+Reject lengths below ETH_HLEN + ETH_FCS_LEN or above
+BGMAC_RX_MAX_FRAME_SIZE, and print the bad length.
+
+Only compile tested. Not tested on hardware.
+
+Fixes: 6a6c708469c9 ("bgmac: add check for oversized packets")
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+---
+ v3: add a lower bound
+ v2: replace Suggested-by with description.
+ drivers/net/ethernet/broadcom/bgmac.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/ethernet/broadcom/bgmac.c b/drivers/net/ethernet/broadcom/bgmac.c
+index 669eb7ce7d40..b5e1d3c0003d 100644
+--- a/drivers/net/ethernet/broadcom/bgmac.c
++++ b/drivers/net/ethernet/broadcom/bgmac.c
+@@ -460,10 +460,11 @@ static int bgmac_dma_rx_read(struct bgmac *bgmac, struct bgmac_dma_ring *ring,
+ 				break;
+ 			}
+ 
+-			if (len > BGMAC_RX_ALLOC_SIZE) {
++			if (len < ETH_HLEN + ETH_FCS_LEN ||
++			    len > BGMAC_RX_MAX_FRAME_SIZE) {
+ 				if (net_ratelimit())
+-					netdev_err(bgmac->net_dev, "Found oversized packet at slot %d, DMA issue!\n",
+-						   ring->start);
++					netdev_err(bgmac->net_dev, "Found packet with invalid length %u at slot %d, DMA issue!\n",
++						   len, ring->start);
+ 				put_page(virt_to_head_page(buf));
+ 				bgmac->net_dev->stats.rx_length_errors++;
+ 				bgmac->net_dev->stats.rx_errors++;
 -- 
-Florian
+2.56.0
+
