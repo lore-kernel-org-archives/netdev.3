@@ -1,83 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793243893;
-	b=sRSUkceerD+JslY/09dNjt/L/i1G9+GB84A/vGvDfoSVybg78S1dilhM0+21kxurOwIx
-	 /xXpGMwDqOsumiZJHBO79Ewx27oD1Rh1EfbHk4UYqFL9Ol/YWf5sXdnW/nbS7wEy12nuN
-	 SaOF5eDeZU0A79D/vwNLYHxiYM3fbAixrxQFac6jjR5d2xY1FvvXixrT1jK/8R70DP/Kq
-	 2BUQA9v55bKEHpLHOBMdKKUrucPlSgZgL7d808Crq2p5WjOxXPMBxUNI0Lm0D9CNJ+x95
-	 qaVfL6eMFo3Lq7H5//TxeMXxYpU88OLcNeQULTr086RRfAWjnCZARAc4+TMrVXUJ1KA==
+	t=1793243959;
+	b=J2I3Yj4SvQ9EXrCXYJk5gKmTxzgvE+A859vOSSB9Ra59bqrnjk3gB6deeEZA5St3H+6q
+	 7+SHlh6GZGdm5876/ZNtWMiWmQERgtKI4CFga2xNBfM+qsFs2LBruxlV4a+lPb8inSzzs
+	 CvrFbyQuXF7zQzvdk6UcHl9rCQdIymRGW20N6rt8Vs50jVD+fxbcMnBTwaGvosLiEXN71
+	 6S75JBsie2RAuxZWGW+u/Xwe2c7lLfTQOcbbcEATkxzd/UVWIEDLgsU7wBC4CFhOAItGc
+	 3O0C5V1tVh8dqj8IxfqvWbU4/TZxc97TgRkXOdwu8DRQXOZC96KtB4+wxgW7DYiKGlg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793243893;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793243959;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=sVpMhQ7sjjPYMREctOOsXa7G2vPJRFVFewpef6DspX8=;
-	b=c6lPfr+SWDTJHImWaZC4sy9csEvH85CcgZPFB88CkRL6UqYnt5aqrriF1go209/N7BFa
-	 QAxXDWSU3qwchmLJ3FAPDANldykFqByD7j/Ph/x5Xu23CpacXOAJF3QhX08GaOhyp38V+
-	 j9qoQ5vCCHMddkEcGm643yEA+r1XL6oRr37QfUEi4ONYE4DIQShfrl7c9ViEQJ9m39qGk
-	 e9IZGLErvuw2QAqOGWZrBzMVSrKhsHvewaqtgRclm+UPm8YyGcQS5loOCCfeP8QY5H+Jp
-	 3shIGkPrYTcRk47nca4kFsda/wZ5LxjKDKxVzYM26SUshX1SOdEjmAr7D7Ura/hUQHA==
+	bh=XzKZl5NkU/e6R2gEUfTtxSpWsz1HqIcKsauez/M6DC4=;
+	b=BTfywLXb9TUi2bedIF/hefVCWm9zakHTgi3F01ePHxH83S8DNBZIOnXmc92TUTLUKvRP
+	 fWQ1fL3p2xd3reYYLoF9J0Gmt3Vrre1QyT6cCBaUSvWwKXH4cWiP87OaatggkFORAg9be
+	 dlGV6U4BZ4/WSwjOGW6c3l6NHUK7gi/didxCVmMKb+f1YXVbPy4qywyX1Slw4rJ4Mj4/1
+	 xjI/sLun50mgLU4MXo+btcKctzbOcGuWvXYGFobbgu9+89QnPBDIAnqj3kzXzAE0AJBfK
+	 GHeYRhn/LF1usjnZD4S4PT2HVXEuyQQCC9TP4t8TixCJ5/EsGPrSCwIuwUOPWjVxMlg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LyJ7QUHq;
-	arc=none smtp.remote-ip=209.85.214.176
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zPzYpA67;
+	arc=none smtp.remote-ip=209.85.214.174
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA22606A31A
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 03:18:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4CA22606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A70606A31A
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 03:19:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 20A70606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LyJ7QUHq
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2e608cd460eso9925105ad.3
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 20:18:13 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zPzYpA67
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2e8da6ef7ddso9238955ad.3
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 20:19:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793243892; x=1793848692; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793243958; x=1793848758; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=sVpMhQ7sjjPYMREctOOsXa7G2vPJRFVFewpef6DspX8=;
-        b=LyJ7QUHqFetBHNPOi7UdJZ5NT5h/pMYlKH1GF84cspaPr0ORv5XRi5jtTA/DR6i1T8
-         DlHPDG/5mpPthtIu+gSWBgXzJHYlOjKdXQ60SfDRx4Idd5BrsJv2Wi8AORe9a58QPddp
-         Ti02NkQXQICLl5WY42ZOFL2kBeZqf25vaE7Kh9ovcPIBTzK65GJiFF11+rCuLqgfhyjK
-         hd+r1IcLUW6Hve56AT6anZjhcTAW9Rt6c/LSBdHKk15vZ2MoUj5T7dtZgejvMucqAE7I
-         ZnL0Qm2geUz+pr+N3fqJyPslNivqVJrlUfUCdP2OX1hLesmtvkUEEX8YTbUyiX1X7FC8
-         EccA==
+        bh=XzKZl5NkU/e6R2gEUfTtxSpWsz1HqIcKsauez/M6DC4=;
+        b=zPzYpA677imnZd32/RwR1+ZUbuEcvL9IX9rzGIcgJNM/koSI6lsY5/sd8CUqPRRv4A
+         81rZa4NTxz+n1ZdGU/cTYF99b5IvmY79MQmZARsOSuROqpe+rS7K2kPlgczLc3O/HHGh
+         alPSRoLyFLOIil4uzY8NZqRQgMbQU13zl4w8YqFn1r65vVLfBcPDOo6GUC3n+JJk6ZMJ
+         DF7izwn0Wbm64hG5CY+QpO6gKcFJzhJHZYaGdThRG5+l2PLjvUPKicWNcWHcr/QR03w9
+         8XA1NJ8Jfgy1O0yBGn/kWV4NlN6pG30MP4usNUUTaC60EM+ReZr/OzD4bzWEhE+rK3FJ
+         nfgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793243892; x=1793848692;
+        d=1e100.net; s=20260707; t=1793243958; x=1793848758;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=sVpMhQ7sjjPYMREctOOsXa7G2vPJRFVFewpef6DspX8=;
-        b=LAPi8RijdPJXnsjC7PjQRfDGLCNDpTh8JuJEoWkF3t2sEJIP3EgDTkk2iq/20yDf+d
-         qoUAue3bXo55dkLzlHbwGV7ig6yEhAUVQ/U/3cq6tPCAI32WjgoJdnRYhkodWFEBptFV
-         3nh90bPPZ7QTuzFRoQmDbXkJdJtuUPRnxfgdx5OpO/PgR7hcbg9S3lPQUuAqqEuLdlCO
-         HfJLHrxZpesayCGWLEDTMvYMywuC/8ZUsSSOY+JKezXojJHMC7xUXvsa+247W1nyc20Q
-         VJ1Po+JNDypBH99scSMAElkrwOhEcdO+aW8Qmmp7KajZZRNHNlFrZLj+0jKYvB7jC1rs
-         S+sg==
-X-Forwarded-Encrypted: i=1; AKwUvBxCn6r5PFqPVdWHurGIcDQxqGBnpSQQgEn+PMsFcON1zK1Gi7ZmQCPZMjT3VS9KKGta/02BCcw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJdwHVV0l/EYkD9XLpytEGIXwcplIXvGxvUuSlPFzJqxqoSQbOl
-	nM7QLopvyIYlufjMLHuSx7VBUt7sUzYDE4Rvr6zgBuqIUTaegfBeYbao
-X-Gm-Gg: AYBFou1qaGfo/eShQ/2aFXz6Sd18CfAIgfPDMgu+ElZaSenlP3GJXEwReByVJvqetVz
-	CkW7DB8M7eg9cH94WbkCi/KvxDHznvQDMP8dSlLcx55AyktWBtwOaFzPf1DGebG4+HzZC1j7KAP
-	BxQsDmo+Ih2dkgC1rbTiKdzqcN8uP2w8Ko+PcbfUW2utb1uZehNW772zOhuloQiIign6oI15S0m
-	vezkHIlshxuYpwAdYesyosPc0mCmV6OgQM1fuI41FQpKRi/YG09mlUE1VNhHArV9K7jsyoTHtHz
-	J/LQjG2y+V4yG3bwTfbF60iJuxAfMOxpq5qYgZfhqWs4k8In+tEYrUPXN9Vl4Gke/OT5gfqvlpx
-	wuTDFg4cFSt3fv830JyyE8osOrrFPpiC1grSZNn26ltehWS2YuOtSeEnTziKWWRNh0IP9zXviFc
-	DYzhGr1fgAOMIa/rTPRlHanFr2ztNhIF6oxXYyJV+DkRO6GR5f81wAFKJ7YDmT4/UuCOn21oku1
-	xqt+Ve5SKBgtyoi4gsSi9h3f1FM4NtGv3QO5gAEJyV64GMbHIWb8B1v4z5GvMrKJRiHuXf7rCvU
-	PnMwDtePbS6UHRjPfYaDUh8Ljw==
-X-Received: by 2002:a17:903:3c43:b0:2e2:c55c:90c with SMTP id d9443c01a7336-2eb0052f293mr33111045ad.64.1793243892404;
-        Wed, 28 Oct 2026 20:18:12 -0700 (PDT)
+        bh=XzKZl5NkU/e6R2gEUfTtxSpWsz1HqIcKsauez/M6DC4=;
+        b=Clv1tC/qdAq/nP/4AopmWK/rD9Ush2I1LFQk/ttB1aq4dJJbqpV57oVPrcwrvZT4QO
+         jqC5c7yio1V99YYKKLkjR0GXL5XntWiPkphGBKkFK2dSKG5k/h9Tu0FlabTFAuDhcZhk
+         8VbMbBddHm+Kga1+437xJJ5vhbUogvZH+WUPaV/7N1/U3YT+No+DRn8Xee/bvbEjdt5w
+         c7IAaSW3iOPqI+ZDUrgQY/YzAz+55S+t0d04K+Q0AhNF+mXYjID7lUcVTQE2R4L2357b
+         /hnTe53kMaQH3ooLwJNPDIsMUN8vAEwZQauu2F3sLFHrFuhAk1Lk4OGhPTj6v6eOlJG4
+         G1qA==
+X-Forwarded-Encrypted: i=1; AKwUvBx8lGVxhHl9Iywy0n0BlC/HMMrtVgCnKEZod7NDbQ8VLhObJTdrwlnWJmNsHqh6XFgFtXnUsF0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIvQjVNoURCH65+a+ijr8a3AHp9c5HcrMUNWkz3STzTZ2XArpPK
+	TOQshTD2j5lBzW3RTp7BD3x/1rDJKDgjgZ5/2hUDcQ2SvgLbytvtJDv1
+X-Gm-Gg: AYBFou1k6okqhmup+n4IfiE04xZgmsCI1KAWl/rvF7aXz1VA0MrbRclJtfGyWcd3Jex
+	RAh5gle868AUvCHeysULgv30qOqtEGye5Mx/ubmdpnXQ6Gx5JQN6W+779h1lo883/9vZe3VlUEb
+	lp/6C+a4TT2sPxXBOV9JrWsJBv1pw5YCcAN0omzjSbnt7bHh7yuiGF1bZUjZQsYNEtsys5/+MDQ
+	dgzbI+cigd62WePQyXWVntgfJyRDWWf12mMANkrfyJWMMzIuiGilTdwaLzBEGFOsTCkGbmLnDnG
+	8SRwxG3O7syImyj+M1tERJ5WBvdZ3kRZoTPlViMOZyzT5Sd6z1VCcCzbauLoo7ZFJNaZaAmoNRD
+	9jQxO/WxizirAwRuFTZ/yZgVttx6DQP5kL7btEPXKNQpwxRI+spkvLNNPFCOhkL6oFIHK2FhLvP
+	B1Sa27nRBpyB4+euf5kWNeZquNC1MjiGEO8R+j/fzF9eih3Smowif479qHm3IfhmRbCBWcDbpdP
+	jb7fSrvUZAz9dXzF1+gIqreF3FwR9f21XXC9LCIb0JA3Al24RnWpoosbTAtUYKb5VaTqCbM+48l
+	Db5+LAZ4Azv/6qaUXqDgMhuD
+X-Received: by 2002:a17:903:4690:b0:2e5:dbbb:6c7f with SMTP id d9443c01a7336-2eb00158002mr39139165ad.1.1793243958250;
+        Wed, 28 Oct 2026 20:19:18 -0700 (PDT)
 Received: from localhost ([111.228.63.84])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eae6c34c1csm26620915ad.46.2026.10.28.20.18.08
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eae6c3362esm27767765ad.44.2026.10.28.20.19.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 20:18:11 -0700 (PDT)
+        Wed, 28 Oct 2026 20:19:17 -0700 (PDT)
 From: Cen Zhang <zzzccc427@gmail.com>
 To: steffen.klassert@secunet.com,
 	herbert@gondor.apana.org.au
@@ -86,9 +86,9 @@ Cc: davem@davemloft.net,
 	baijiaju1990@gmail.com,
 	jjzuming@gmail.com,
 	zzzccc427@gmail.com
-Subject: [PATCH ipsec] xfrm: protect offload statistics device access with RCU
-Date: Thu, 29 Oct 2026 11:18:05 +0800
-Message-Id: <pm-xfrm-core-objects-candidate-0050-v3-dbfb7194ffb750193d02@gmail.com>
+Subject: [PATCH ipsec] xfrm: keep the mode module pinned until destroy_state returns
+Date: Thu, 29 Oct 2026 11:19:11 +0800
+Message-Id: <pm-xfrm-core-objects-candidate-0003-v3-3f3e13b81234df0bb10f@gmail.com>
 X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -102,222 +102,138 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The offload device must remain alive while copy_to_user_state() reads
-its operation table through xfrm_dev_state_update_stats(). GETSA holds
-a reference to the xfrm_state, but device teardown can release the
-state's device reference before that state reference is dropped.
+An IPTFS state keeps its mode module referenced while mode_data exists.
+However, iptfs_destroy_state() drops that reference before returning to
+xfrm_state_gc_destroy(), which has no reference covering the callback's
+return path.
 
-With an offloaded SA, GETSA can sample xso.dev while another task takes
-the device down and unregisters it. For example, deleting a netdevsim
-port through sysfs can overlap a GETSA request for an accepted crypto
-offload SA. The XFRM configuration mutex does not serialize the request
-against the netdevice notifier:
+With CONFIG_XFRM_IPTFS=m and module unloading enabled, deleting the last
+IPTFS SA can overlap with ordinary module removal in this order:
 
-  GETSA                              Device teardown
-  -----                              ---------------
-  look up and reference x
-  copy_to_user_state(x)
-    sample dev = x->xso.dev
-                                     xfrm_dev_state_flush()
-                                       xfrm_state_delete(x)
-                                       xfrm_dev_state_free(x)
-                                         clear x->xso.dev
-                                         put device reference
-                                     synchronize_net()
-                                     finish unregister and free dev
-    read dev->xfrmdev_ops
+  XFRM GC worker                      rmmod xfrm_iptfs
+  iptfs_destroy_state()
+    free mode_data
+    module_put(owner)
+    <preempted>
+                                      delete_module()
+                                        xfrm_iptfs_fini()
+                                          unregister mode callbacks
+                                        free_module()
+    resume in freed module text
 
-The sampled pointer does not hold a device reference or participate in
-the unregister grace period, so the last read can access freed memory.
+An unload started after the put can finish before the callback resumes.
+GC invokes the callback outside an RCU read-side critical section, after
+its grace period. The RCU waits in mode unregistration and module
+freeing therefore do not protect the callback. The GC mutex only
+serializes GC with device state flushes. Resuming the callback can cause
+an instruction-fetch fault in the freed module text.
 
-Wrap the serializer's statistics update in an RCU read-side critical
-section. Device unregistration calls synchronize_net() after the XFRM
-notifier has cleared the binding and before releasing the device. A
-reader that sampled the old binding must therefore finish its device
-access before final release; a later reader finds the cleared binding.
-The helper already runs from atomic contexts, so this section does not
-add a sleeping operation.
+The Oops below was observed on an earlier kernel with scheduling probes
+holding the worker in module_put() after the decrement until ordinary
+rmmod completed. The fixture created and deleted the SA over
+NETLINK_XFRM.
 
-The report below was collected on an earlier kernel with a built-in
-pmbdxfrm test endpoint supplying no-op offload add/delete callbacks.
-Scheduling probes paused GETSA after sampling the device, then ran
-normal link-down and link-delete requests before resuming the read.
+Take an additional reference to the already pinned owner before calling
+destroy_state(), and release it in XFRM core after the callback returns.
+Cache the owner before the call so releasing the extra reference does
+not need to access the callback table after the callback has finished.
 
-KASAN report as below:
-
-    BUG: KASAN: slab-use-after-free in copy_to_user_state+0x6ce/0x6e0
-    Read of size 8 at addr ffff888104be0308 by task ip/446
-    
-    CPU: 3 UID: 0 PID: 446 Comm: ip Not tainted 7.2.0-rc5-pmb-xfrm-functional-v1+ #3 PREEMPT(lazy) 
+Oops report as below:
+    BUG: unable to handle page fault for address: ffffffffc0407455
+    #PF: supervisor instruction fetch in kernel mode
+    #PF: error_code(0x0010) - not-present page
+    PGD 80a9067 P4D 80a9067 PUD 80ab067 PMD 0 
+    Oops: Oops: 0010 [#1] SMP KASAN NOPTI
+    CPU: 3 UID: 0 PID: 53 Comm: kworker/3:1 Not tainted 7.2.0-rc5-pmb-xfrm-functional-v1+ #11 PREEMPT(lazy) 
     Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+    Workqueue: events xfrm_state_gc_task
+    RIP: 0010:0xffffffffc0407455
+    Code: Unable to access opcode bytes at 0xffffffffc040742b.
+    RSP: 0018:ffff8881013e7aa0 EFLAGS: 00010282
+    RAX: 0000000000000000 RBX: ffffffffc02199c0 RCX: ffffffff816fc84e
+    RDX: ffff8881013c0000 RSI: 0000000000000000 RDI: ffffffff86338344
+    RBP: ffff8881013e7ba8 R08: 0000000000000001 R09: 0000000000000001
+    R10: ffffffff893e0257 R11: ffff8881013c0000 R12: ffff888107e9ec00
+    R13: ffff888102b07980 R14: ffff888107412ec0 R15: ffff8881013e7ae0
+    FS:  0000000000000000(0000) GS:ffff8881fd929000(0000) knlGS:0000000000000000
+    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+    CR2: ffffffffc040742b CR3: 00000000080a6006 CR4: 0000000000770ef0
+    PKRU: 55555554
     Call Trace:
      <TASK>
-     dump_stack_lvl+0x93/0xd0
-     print_report+0xce/0x630
-     ? copy_to_user_state+0x6ce/0x6e0
-     ? srso_alias_return_thunk+0x5/0xfbef5
-     ? __virt_addr_valid+0x20d/0x410
-     ? copy_to_user_state+0x6ce/0x6e0
-     kasan_report+0xe0/0x110
-     ? copy_to_user_state+0x6ce/0x6e0
-     copy_to_user_state+0x6ce/0x6e0
-     copy_to_user_state_extra+0x8a/0x1450
-     ? __pfx_copy_to_user_state_extra+0x10/0x10
-     ? srso_alias_return_thunk+0x5/0xfbef5
-     ? __asan_memset+0x23/0x50
+     ? pmbd_gate_maybe+0x47/0x60
      ? srso_alias_return_thunk+0x5/0xfbef5
      ? srso_alias_return_thunk+0x5/0xfbef5
-     ? __asan_memset+0x23/0x50
+     ? lock_is_held_type+0x8f/0x100
+     xfrm_state_gc_task+0x17e/0x790
+     ? lock_acquire+0x17b/0x2f0
+     ? __pfx_xfrm_state_gc_task+0x10/0x10
      ? srso_alias_return_thunk+0x5/0xfbef5
-     ? __nlmsg_put+0x157/0x1c0
-     dump_one_state+0x1fd/0x440
-     xfrm_state_netlink+0xda/0x150
-     ? __pfx_xfrm_state_netlink+0x10/0x10
+     ? lock_release+0xc8/0x280
      ? srso_alias_return_thunk+0x5/0xfbef5
-     ? xfrm_user_state_lookup.constprop.0+0x28e/0x330
-     xfrm_get_sa+0x12d/0x320
-     ? __pfx_xfrm_get_sa+0x10/0x10
+     process_one_work+0x908/0x19c0
+     ? __pfx_process_one_work+0x10/0x10
      ? srso_alias_return_thunk+0x5/0xfbef5
-     ? __nla_parse+0x40/0x60
-     ? __pfx_xfrm_get_sa+0x10/0x10
-     xfrm_user_rcv_msg+0x3b3/0xc20
-     ? __pfx_xfrm_user_rcv_msg+0x10/0x10
+     ? lock_is_held_type+0x8f/0x100
      ? srso_alias_return_thunk+0x5/0xfbef5
-     ? stack_trace_save+0x93/0xd0
-     ? __pfx_stack_trace_save+0x10/0x10
+     worker_thread+0x65c/0xe40
      ? srso_alias_return_thunk+0x5/0xfbef5
-     ? stack_depot_save_flags+0x29/0x9a0
+     ? __kthread_parkme+0x175/0x220
      ? srso_alias_return_thunk+0x5/0xfbef5
-     ? __mutex_lock+0x182c/0x2590
-     netlink_rcv_skb+0x133/0x390
-     ? __netlink_lookup+0x5e4/0x7e0
-     ? __pfx_xfrm_user_rcv_msg+0x10/0x10
-     ? __pfx_netlink_rcv_skb+0x10/0x10
+     ? __pfx_worker_thread+0x10/0x10
+     kthread+0x34f/0x460
      ? srso_alias_return_thunk+0x5/0xfbef5
-     ? netlink_deliver_tap+0xdf/0xbd0
+     ? __pfx_kthread+0x10/0x10
+     ret_from_fork+0x659/0x940
+     ? __pfx_ret_from_fork+0x10/0x10
      ? srso_alias_return_thunk+0x5/0xfbef5
-     ? netlink_deliver_tap+0x173/0xbd0
-     xfrm_netlink_rcv+0x76/0x90
-     netlink_unicast+0x504/0x840
-     ? __pfx_netlink_unicast+0x10/0x10
-     netlink_sendmsg+0x7f7/0xcf0
-     ? __pfx_netlink_sendmsg+0x10/0x10
-     ? srso_alias_return_thunk+0x5/0xfbef5
-     ? selinux_socket_sendmsg+0x160/0x280
-     ? __pfx_netlink_sendmsg+0x10/0x10
-     ____sys_sendmsg+0x88b/0x9d0
-     ? __pfx_____sys_sendmsg+0x10/0x10
-     ? srso_alias_return_thunk+0x5/0xfbef5
-     ? __lock_acquire+0x466/0x2260
-     ___sys_sendmsg+0x125/0x1d0
-     ? __lock_acquire+0x466/0x2260
-     ? __pfx____sys_sendmsg+0x10/0x10
-     ? srso_alias_return_thunk+0x5/0xfbef5
-     ? srso_alias_return_thunk+0x5/0xfbef5
-     ? do_getsockname+0x130/0x1b0
-     ? __pfx_do_getsockname+0x10/0x10
-     __sys_sendmsg+0x13e/0x1e0
-     ? __pfx___sys_sendmsg+0x10/0x10
-     ? srso_alias_return_thunk+0x5/0xfbef5
-     ? __sys_getsockname+0xbc/0x110
-     do_syscall_64+0x115/0x6a0
-     entry_SYSCALL_64_after_hwframe+0x77/0x7f
-    RIP: 0033:0x7f74d2c0b687
-    Code: 48 89 fa 4c 89 df e8 58 b3 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
-    RSP: 002b:00007ffee6b82680 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
-    RAX: ffffffffffffffda RBX: 00007f74d29de840 RCX: 00007f74d2c0b687
-    RDX: 0000000000000000 RSI: 00007ffee6b82730 RDI: 0000000000000004
-    RBP: 00007ffee6b82730 R08: 0000000000000000 R09: 0000000000000000
-    R10: 0000000000000000 R11: 0000000000000202 R12: 000055cc4cbea909
-    R13: 00007ffee6b82870 R14: 00007ffee6b82800 R15: 00007ffee6b83e13
+     ? __switch_to+0x74f/0xf80
+     ? __pfx_kthread+0x10/0x10
+     ret_from_fork_asm+0x1a/0x30
      </TASK>
-    
-    Allocated by task 420:
-     kasan_save_stack+0x33/0x60
-     kasan_save_track+0x14/0x30
-     __kasan_kmalloc+0xaa/0xb0
-     __kvmalloc_node_noprof+0x353/0x930
-     alloc_netdev_mqs+0xa0/0x1250
-     rtnl_create_link+0xb8e/0xeb0
-     rtnl_newlink+0xb7b/0x1f40
-     rtnetlink_rcv_msg+0x7b9/0xce0
-     netlink_rcv_skb+0x133/0x390
-     netlink_unicast+0x504/0x840
-     netlink_sendmsg+0x7f7/0xcf0
-     ____sys_sendmsg+0x88b/0x9d0
-     ___sys_sendmsg+0x125/0x1d0
-     __sys_sendmsg+0x13e/0x1e0
-     do_syscall_64+0x115/0x6a0
-     entry_SYSCALL_64_after_hwframe+0x77/0x7f
-    
-    Freed by task 451:
-     kasan_save_stack+0x33/0x60
-     kasan_save_track+0x14/0x30
-     kasan_save_free_info+0x3b/0x60
-     __kasan_slab_free+0x5f/0x80
-     kfree+0x307/0x580
-     device_release+0xd7/0x280
-     kobject_put+0x1ad/0x610
-     netdev_run_todo+0x927/0x13d0
-     rtnl_dellink+0x3aa/0xa30
-     rtnetlink_rcv_msg+0x7b9/0xce0
-     netlink_rcv_skb+0x133/0x390
-     netlink_unicast+0x504/0x840
-     netlink_sendmsg+0x7f7/0xcf0
-     ____sys_sendmsg+0x88b/0x9d0
-     ___sys_sendmsg+0x125/0x1d0
-     __sys_sendmsg+0x13e/0x1e0
-     do_syscall_64+0x115/0x6a0
-     entry_SYSCALL_64_after_hwframe+0x77/0x7f
-    
-    The buggy address belongs to the object at ffff888104be0000
-     which belongs to the cache kmalloc-4k of size 4096
-    The buggy address is located 776 bytes inside of
-     freed 4096-byte region [ffff888104be0000, ffff888104be1000)
-    
-    The buggy address belongs to the physical page:
-    page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x104be0
-    head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-    flags: 0x200000000000040(head|node=0|zone=2)
-    page_type: f5(slab)
-    raw: 0200000000000040 ffff888100043040 dead000000000122 0000000000000000
-    raw: 0000000000000000 0000000000040004 00000000f5000000 0000000000000000
-    head: 0200000000000040 ffff888100043040 dead000000000122 0000000000000000
-    head: 0000000000000000 0000000000040004 00000000f5000000 0000000000000000
-    head: 0200000000000003 fffffffffffffe01 00000000ffffffff 00000000ffffffff
-    head: ffff888104be1f50 0000000000000000 00000000ffffffff 0000000000000000
-    page dumped because: kasan: bad access detected
-    
-    Memory state around the buggy address:
-     ffff888104be0200: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-     ffff888104be0280: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-    >ffff888104be0300: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                          ^
-     ffff888104be0380: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-     ffff888104be0400: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-    ==================================================================
+    Modules linked in: [last unloaded: xfrm_iptfs]
+    CR2: ffffffffc0407455
+    ---[ end trace 0000000000000000 ]---
+    RIP: 0010:0xffffffffc0407455
+    Code: Unable to access opcode bytes at 0xffffffffc040742b.
+    RSP: 0018:ffff8881013e7aa0 EFLAGS: 00010282
+    RAX: 0000000000000000 RBX: ffffffffc02199c0 RCX: ffffffff816fc84e
+    RDX: ffff8881013c0000 RSI: 0000000000000000 RDI: ffffffff86338344
+    RBP: ffff8881013e7ba8 R08: 0000000000000001 R09: 0000000000000001
+    R10: ffffffff893e0257 R11: ffff8881013c0000 R12: ffff888107e9ec00
+    R13: ffff888102b07980 R14: ffff888107412ec0 R15: ffff8881013e7ae0
+    FS:  0000000000000000(0000) GS:ffff8881fd929000(0000) knlGS:0000000000000000
+    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+    CR2: ffffffffc040742b CR3: 00000000080a6006 CR4: 0000000000770ef0
+    PKRU: 55555554
+    Kernel panic - not syncing: Fatal exception
+    Kernel Offset: disabled
 
-Fixes: 07b87f9eea0c ("xfrm: Fix unregister netdevice hang on hardware offload.")
+Fixes: 4b3faf610cc6 ("xfrm: iptfs: add new iptfs xfrm mode impl")
 Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
 Assisted-by: LLM
 
 ---
- net/xfrm/xfrm_user.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/xfrm/xfrm_state.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index a5fbe38839c4..e9dd98c387da 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -1179,8 +1179,11 @@ static void copy_to_user_state(struct xfrm_state *x, struct xfrm_usersa_info *p)
- 	memcpy(&p->id, &x->id, sizeof(p->id));
- 	memcpy(&p->sel, &x->sel, sizeof(p->sel));
- 	memcpy(&p->lft, &x->lft, sizeof(p->lft));
-+	/* Pairs with synchronize_net() in netdevice unregistration. */
-+	rcu_read_lock();
- 	if (x->xso.dev)
- 		xfrm_dev_state_update_stats(x);
-+	rcu_read_unlock();
- 	memcpy(&p->curlft, &x->curlft, sizeof(p->curlft));
- 	put_unaligned(x->stats.replay_window, &p->stats.replay_window);
- 	put_unaligned(x->stats.replay, &p->stats.replay);
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index 0555e5d796ed..45a52771796b 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -596,8 +596,14 @@ EXPORT_SYMBOL(xfrm_state_free);
+ static void xfrm_state_delete_tunnel(struct xfrm_state *x);
+ static void xfrm_state_gc_destroy(struct xfrm_state *x)
+ {
+-	if (x->mode_cbs && x->mode_cbs->destroy_state)
++	if (x->mode_cbs && x->mode_cbs->destroy_state) {
++		struct module *owner = x->mode_cbs->owner;
++
++		/* The callback may drop the last module reference. */
++		__module_get(owner);
+ 		x->mode_cbs->destroy_state(x);
++		module_put(owner);
++	}
+ 	hrtimer_cancel(&x->mtimer);
+ 	timer_delete_sync(&x->rtimer);
+ 	kfree_sensitive(x->aead);
