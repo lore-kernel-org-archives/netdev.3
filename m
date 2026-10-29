@@ -1,96 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793266163;
-	b=kNgf81G74rQhhbIVl4T/kOfsSnix0kBCy52O2D70MwLdiMYfFFcN81MJu5eDMx1tQ4L+
-	 GJuRfChulKl7ACZBX3t4WouTR3+9DMNfH40nEV2Ncug9/emDNZ/S5yXQ6heb3tvP5zx1V
-	 qsU5ZTg68u0VbBbIcwpZwl7XurXVlGHJLO3LJnJBgl0ksrZdFfG5seo18I8nRuUeaAhsX
-	 rCR0Jt5G7Tu4PAaHg4lv6qyk+aFgeQzfBxdm09VFtc0WijMoS/pQ6rp5gu59vhTtykMAO
-	 5TeR+ffzN2h8Ax0lBdooExEyJKE8F0VMW/qVBXcKsUuzIvDYK/tkIVvJ4pEPElzPrDw==
+	t=1793266241;
+	b=Ff8aRmFccMhyHWVZlNWmiXO6Qb5kcU/BjFqnG70gAr00xh3IAPysBy/b0TBbd+8h7pGH
+	 aZpJyFGabqPMt0q5a7YzUuPpUYmH4JOWKou9T3lfg2QJ+P1HrTK5WgkuAVws2agWjZskQ
+	 KmcXlvsbpQsf9yMllLmj0xLzGIbY2a15ADvPbJ279fkBWOJh0hlWy6sBs8V8C72Vy+Ooi
+	 4z+kARYJy16AbXmm4qpVqaXkbndARJAcC2gWefkZU4jvygrbgshXWMKALICqLoNczG6rr
+	 Hvkd5AUX6hn0vQ+Mop9azE+eVdR2TrlOWpzZFZ8ZOsof6C4XpO3njQsT9LyfLDIZ81A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793266163;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:In-Reply-To:References:Message-ID:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	bh=p2VFQ2YdVBVMlHGI8TnDXTz0Id7EK8o66F4F8DkIzGs=;
-	b=jfAMOOzrijy67rFFtVniCDqcYHWou26qrs+NdJL2QRYwj8ZLeCh7Jj5xAJTYjAB/nL0G
-	 aHwzkGIjHpagLfrBp0jv4Dv7X84lkVJ28wEtH/YEZVxSEsSk+nHC78EYCgnl4KqKEAgpd
-	 dGmAzQby3OR9zyl5QKV0gvkj2E78SlMm3JyBjhqzS4hsO+8wF1Euzzm8oufGRA9UIR3BO
-	 LSndkJz2zd9hpU4gySxRY5J74Y4334zhQiEIYh/XXSN0jFR825LF8XaUuc/jVLISxwoVq
-	 q8oSgllfcL28pT9RU5+A9nPrE3JFRalxiI5xv9bdBSsG40R9V0E8qFtlSb+JJ5ADS/g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793266241;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	b=vB9Rz2jyc9Z+bxkmPHTaZIsXYURfYfaDTCbiMfj16PQpNrrQw5VayncC5x7Q+z8J+997
+	 6e9iRlW+6cjjt1bRN6XgJjYB9wBY5Rl40nf/ogX7PFqWLzC8+jBYsV5vfO9Th+UBKiRIi
+	 a5pzJGDzngnUyX+NL+4TpftmMJKjzvNVVkvAOKH1gzDrbTwuUnIgssubB760sSUZ2NWV8
+	 thJSYyks3NbeL6yU6Sn5/CDCwnfIXqvfrQOSLzF24o6jw/4J+1XIXzAlC/VVmVJd6J0Ea
+	 FHmhV+1bbs3Cfkjq8y3uFhDQZdKgkecjiMHjRv7CicSWxaa8NlG64sOFbVpbL8/yLmQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=KPSgiyD9;
-	arc=none smtp.remote-ip=209.85.216.53
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZCaiuV5J;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D857606A31F
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 09:29:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8D857606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888B1606A31C;
+	Thu, 29 Oct 2026 09:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=KPSgiyD9
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3adf5f6833cso1160174a91.0
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 02:29:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793266163; x=1793870963; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:content-type:message-id
-         :references:in-reply-to:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=p2VFQ2YdVBVMlHGI8TnDXTz0Id7EK8o66F4F8DkIzGs=;
-        b=KPSgiyD92WSi6Fh9CUiZtRObKuwHvCYU1NDwm4cWnnIA7pEELX9rauOCJB43Fu3NOo
-         ZXv2LA/8civXM836gZzYBpGx09nCTwZsEJVvMtIl4pcX+uOalxW4hSFtDJ5OGK+owFPV
-         pErEqMwvM2w67A5uCdRV3XGUNwpXN0d3/vsvkYuGCLoGk1QQ8fuqpISbH9gnOYQdCB/I
-         qaKFdRL6/88+Rbg4x5fZSWnh8exyoidAKanO9FYBcvwXxKPryXFHIrvo/utQVuagAEeT
-         chx3n6P+yEbtnm34hjtup5ljzk3z3ZKY1mEbRqcKnGsSHk0f3feGGqoHVtJ6e2eKF+zY
-         PpJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793266163; x=1793870963;
-        h=mime-version:content-transfer-encoding:content-type:message-id
-         :references:in-reply-to:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=p2VFQ2YdVBVMlHGI8TnDXTz0Id7EK8o66F4F8DkIzGs=;
-        b=zde1rsu8z+2s6STT+STrJEzy8/7u/qSKzBR5IKUYGlPZdFjNZ+QDsBr3ryr6+cCg44
-         h0YqGAbXUTQT1cO7Yjxs5JNQLv89brXWhYXr4Pu/qIqffQTyW3UakcwPB4nAO68EblfO
-         AjEmA6UE/Se/8pTu2aARpTEf3zJGdLeKxSUc9IEJrM1lVp07+aE+eX2XJgZ3xLiYoxs5
-         +GpKc8r54oR+AcF0Nq982B95q6T1ggL61ZVeGc3/jcjou7LtC1enrmXEQZ7m2s1gyxXx
-         tyczmvxZJhW1iVObQ9tSXTHc2zvI4LEME20AoJX9zhyKepSfNFHgNi3v3dmtYH44BZgM
-         539g==
-X-Forwarded-Encrypted: i=1; AKwUvBxh646It6T6Lu8TH7P7OI5E0O3w6+RJnPm6d1g7fdxQgJe8xJtQ8HoR46joh1yUWnX16zshNMk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK3rWxJKBoMehOvptruWYrU21qt2vPc3OENujAFMiHql9QyO/jS
-	/JPxGf67YgBcebbh5n/euQpr2hAgdvbJqCjC9E5VRGfg4VwM061EPp53
-X-Gm-Gg: AYBFou3nAIsRfq+l0m3b1KpB8ETagRN7ozmOvIQwqfQPcbO3jCgyu8YbFgmrBlasYYE
-	e7205JiSUcavfAjckpCtGyibdkvlG853tMQkmEZJWekNAMH7j4CctxqGsWvPnt/HEt/EbHk7zZL
-	yENmsVYA0OzP6QcOnDqtfMNDXGysetilMcDb3RkUo9nA537zgu3vhrm3HuTQqA+gBI1B69l7xpg
-	eRBXyTi+jQNPSWCu3JaPq0OQ4VuQiMYVe9MeayIMP/pqvDlcFkjCKAMPR9ib9yPWHetjvfjNSaa
-	BJ6p9wr+IpYvw0Y9zFlYol/xEYNZA4uZXmfTeIoVOP7uantX5RAhr9OGotyx1oRxERK7Vh5Rvsj
-	GhxehxIRa0cWUrrAvHc01FTv1xO14dYgm9uc8+2ItNpp0F1AWS+1/VXfBSlPttAiLABQP3vQucz
-	rFWNm8TemGvvdIgLZM1Lp+DjL3hpw24+E2oBuuVgQPoSn8iS34na9c1HK1mc1JPMFNhI5TVMVGV
-	Q6yVcMgQHTU7KMwd4IcJI+Rcz+H7Oz//bMTqET3smxin8QIJqK671bubKEOfA==
-X-Received: by 2002:a17:90b:3c04:b0:3a7:a6bc:9d58 with SMTP id 98e67ed59e1d1-3ae581e8bd3mr3092891a91.54.1793266162773;
-        Thu, 29 Oct 2026 02:29:22 -0700 (PDT)
-Received: from [192.168.45.62] ([218.48.198.193])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae6e8fb1ddsm3540149a91.5.2026.10.29.02.29.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 02:29:22 -0700 (PDT)
-Date: Thu, 29 Oct 2026 02:29:22 -0700 (PDT)
-From: "Baek Kyu, Kim" <pocj8ur4in@gmail.com>
-To: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: Ido Schimmel <idosch@nvidia.com>, bridge@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject:
- Re: [PATCH net v2 0/2] bridge: cfm: correct CC receive monitoring transitions
-In-Reply-To: <12c35123-2c08-4d3a-b08f-c646b1a7b982@blackwall.org>
-References: <20261028164730.253238-1-pocj8ur4in@gmail.com>
- <12c35123-2c08-4d3a-b08f-c646b1a7b982@blackwall.org>
-Message-ID: <179326615954.265212.11556019462202036381@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZCaiuV5J
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA34E1F01825;
+	Thu, 29 Oct 2026 09:30:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793266241;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ZCaiuV5JSEsdIQcfy6fCgy51/0Pv65BOiQosFCtcGpdbZKaelap9FdpyNvOFwvLBT
+	 nZYjcQArHoSYDfZx9Uu86KYzWF0B+odrGkMT+5FQf9Z5wRYRBEY0ZtnEFSA4Yw8pls
+	 vIRhCd478rfi28wnrAYMFf/J3kWqbC+vzipSxQe0LHI+IsT10xaFLR53+4GKi+48+b
+	 kCRzwcgNJiWwEuSMNHJDqTVETquolqbiHffZLbpv+fLiweK0Rg9gaYBAebkTJIQb/7
+	 CfQSVsEC/GbgKksDQgabaPIpASWPZIxRgVYYy+1crhZq4X8ViRRf9ShpHTP9NGUAdM
+	 VFb8oQCD2/MPA==
+From: netdev-bot+sinfo@kernel.org
+To: Hongmei Xu <hongmei.xu@oss.qualcomm.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Sagar Cheluvegowda <sagar.cheluvegowda@oss.qualcomm.com>
+Subject: Re: [PATCH net-next] net: phy: aquantia: Poll global status register
+ for provision ID
+Date: Thu, 29 Oct 2026 09:30:40 +0000
+Message-ID: <179326624025.3327.5471427454050749790@kernel.org>
+In-Reply-To: =?utf-8?q?=3C20261029-aquantia-poll-global-status-register-v1-1?=
+ =?utf-8?q?-808089824a3d=40oss=2Equalcomm=2Ecom=3E?=
+References: =?utf-8?q?=3C20261029-aquantia-poll-global-status-register-v1-1-?=
+ =?utf-8?q?808089824a3d=40oss=2Equalcomm=2Ecom=3E?=
+Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,11 +69,24 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Hi Nik,
+Hi!
 
-I am not currently using bridge CFM in production. I found these issues while=
- inspecting the code, and I agree that the fixes can target net-next when it =
-opens.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Thanks,
-Baek Kyu
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
+
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
+
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
