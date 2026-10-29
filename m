@@ -1,58 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793255045;
-	b=N88YINdu2L6Pzz2AYAnMrdK6UmvM36Flxb4C80WGaSxdZL3orDuT7h1ET3EPJ29jjZaN
-	 TowRu6eHq30dLlQ+dSEOEWLEe+HKwo6kNTIuE55mDRd0iBZG4PahsaxzYfsVkee5N3E2n
-	 CcGLa/DERbH6Q0P7i/QVidxIp7XMA/pBqL6sLFOVPingl8VGDPm3eI6n3uEt0LUZ4zdYN
-	 V5Ruq6HQRGQzmCL16DVQyVwuyAFMe80J6Kz9GcGHpIOnErCaVxAhmGee+LvGB9r17Nym/
-	 6YEuqh1CpCHbC2MOxahR9j4qIZP6Wt0BkZSU38ntE7z7kZrYxzBC7ImnnqtmkyelJXA==
+	t=1793255235;
+	b=32SdZhDgwwxWcwOF8iuIiP/5qy4LYC7+RorswT3odkJQyR2x2nxsMcoOdDBtM/Zml0QG
+	 qpRbGiORmCB34uHYmPOV7H5h8kf8eoOuFTy+9/w7ntbArkZaRsSyMB4GCH9YMzBKZc2Ty
+	 DtA91xWuurBgfXx0B6OyfwajANz2yfGC0UORhcFm/SPAEjmZEuXLUafaxGa62H/EStwTI
+	 8rV6GJ6MCcF94SwEmwoypJCozmyt8T7QhINDg1oQoHJC/kWiFbPgE/5N7PLRz2PWhAMLP
+	 fhck0TSqgFsspWf2f1YQqPDGI4E/XBfygZTlhorddVJUpxaWBLXfKOfgt0g9FFvy0bQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793255045;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793255235;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=62zl3zv2d5JAkHiUi8pE4KR/NfZKfMMIyW7AuqAQ65k=;
-	b=t2MHKLw1tHkj/G5E6NpwEYXr/dzSP4Iee2V5DXGixGN0hFfQUO+pgoUuEXV0Sud9CbWS
-	 XTE9di4kn3MebTWceVfXClC+6kPJMKkv4cQ6ncd1+H4AKhtpQX0F3KDLqoM5EvbNpeHuJ
-	 nsNyVk7s9SDDmmfP4COppXlumVwV9KhlQK/gRuebc6D3bMRIZ86/zXlwZL9L31TRQ7DD1
-	 aZ7M00XBEOCzeAQy2Dhn1cizLIB/cSgYixJoUe7wn78B+957mv9Yg4a3HlymueFYXxGLF
-	 kTYG2JEXPq3SFjhHpT/yArzuHtZ2vKfRGpOzQ2FEQXiURWQmUK5VUBIBwdhOVtEQUaw==
+	bh=T+WOPL7ugio0CnPiiFKjTzuWTb6RYIj2i6lSZt0jIqU=;
+	b=SY1rLS2fzIIluqfM2b9LZmqvk0jE1zAAAwEQyincscaZcwIfdjQUGKjC/LfCvAknt8nq
+	 JJTmkSZQn/xxVQC5M4CuI90zUqrosNVH+FwRsDgyMbwEgb557THuTbjun0yGTsy3zz8/G
+	 9qypuotdDNapygXMkbg72FsrCKv3lrscYejWQXfmnJ6ph/KpvUT6ERFb9wnrrSEfm0Fao
+	 WSFUbCYLzFdu6GywBPJyU+dnfQL23DORak25FFwO9WmiBYZBNbXaexTkTv0lZYV//BIFt
+	 rwHP50nWtWkzBcLIbNJPAnq9JbpV+OYL/84lI0twn+TK47QkTB9AzOR1jddIdy0Zy8g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mF4lIu+t;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DEqBwpEO;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2261606A31A;
-	Thu, 29 Oct 2026 06:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE62606A31A;
+	Thu, 29 Oct 2026 06:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mF4lIu+t
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E6791F01825;
-	Thu, 29 Oct 2026 06:24:03 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DEqBwpEO
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F29351F01825;
+	Thu, 29 Oct 2026 06:27:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793255044;
-	bh=62zl3zv2d5JAkHiUi8pE4KR/NfZKfMMIyW7AuqAQ65k=;
+	s=k20260515; t=1793255234;
+	bh=T+WOPL7ugio0CnPiiFKjTzuWTb6RYIj2i6lSZt0jIqU=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=mF4lIu+tGM8htzhrd/5kvMqyF65tQpiuQ34e53o2G3K+UxilPphvpRhQKhkmmvDVe
-	 Jl+qu25/UYtV9GTQTv1wotIBgRz82g0V0f9HhEsV34eFNUdUyvpLWY8KoKee39i4S0
-	 n3HQ07ZfPw9QIQkTzL1wDesaN99GqcDdyr3qsjsq958Jc1PNVHTWswPol0SeLF+BUc
-	 lSc63C1OiCFLs1J+WEVtNaXNnPdMtCvOZb6qkIGQYrkM5dK9P5kLEWmPeXKFuDKeyO
-	 LW0OnaUSn3ebNL8qmx9v2HOyHNEhbNS/PA8oQOleDuwqf3c2A2MQVrm67B43+15jif
-	 1kxvd4LyJWDQA==
-Subject: Re: [PATCH net v4 2/2] selftests: net: packetdrill: add test for
- negative sk_forward_alloc in tcp_wmem_schedule()
+	b=DEqBwpEODspcghlxET5oXpH9XdezJOUt9k3ZQ6Ue1VoCoKs1NJm3AjX4vOLlvHNXs
+	 Y0/2u+DPS2XeY6S1PF18LxrzOKaztykJXR8eQ/+GaNgf0qulM36YtsOks7IawVDDUc
+	 +uPn61uzBw4qFIyQSRX54D2FNOiwAht9BFU3LWfjfurYZOxFdw/lAlpP3KlZrcgulP
+	 7M61xLhA6KUcb8N7wn7tvO8etpAf8hbk5dpl4sfoYuHgPBrWE1jtv8H9Av1MTq8w9X
+	 2dOm+m1ROVirYw6z2a7rPAced/8Qd/sdPw84/5V1ZxubZIA5o2HiSaLQKmdTELGvMb
+	 u/4C0f5QCxsww==
+Subject: Re: [PATCH] selftests: net: veth: check UDP GRO forwarding on
+ forwarded traffic
 From: netdev-bot+sashiko@kernel.org
-To: tavip@google.com
-Cc: edumazet@google.com, ncardwell@google.com, kuniyu@google.com,
- davem@davemloft.net, dsahern@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- shuah@kernel.org, horms@kernel.org, willemb@google.com,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Thu, 29 Oct 2026 06:24:03 +0000
-Message-ID: <179325504311.3134.4521422682926617403@kernel.org>
-In-Reply-To: <20261026032216.1145201-3-tavip@google.com>
-References: <20261026032216.1145201-3-tavip@google.com>
+To: eva.kurchatova@virtuozzo.com
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
+ linux-kernel@vger.kernel.org, willemdebruijn.kernel@gmail.com,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
+Date: Thu, 29 Oct 2026 06:27:13 +0000
+Message-ID: <179325523350.3134.7153020683562744025@kernel.org>
+In-Reply-To: <20261026122440.603302-1-eva.kurchatova@virtuozzo.com>
+References: <20261026122440.603302-1-eva.kurchatova@virtuozzo.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -66,10 +65,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 3 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 1 (1)
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -77,197 +76,151 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The REQUIRES_MEMCG check in ksft_runner.sh (lines 61-72) only
-  confirms that `+memory` can be written to the cgroup2 root…
-- [Medium] cleanup_memcg() in
-  tools/testing/selftests/net/packetdrill/ksft_runner.sh (lines 73-80)…
-- [Medium] Step 4 of tcp_wmem_schedule_negative_fwd_alloc.pkt (lines
-  98-101) depends on the two `echo 0 > memory.high` writes having…
+- [Medium] chk_gro() in tools/testing/selftests/net/veth.sh reads
+  IpInReceives for the whole NS_DST namespace.
+- [Low] create_ns() in tools/testing/selftests/net/veth.sh creates the
+  new veth pair in the invoking (host) netns under the fixed names…
+
+Pre-existing issues:
+- [Low] In tools/testing/selftests/net/veth.sh, chk_gro() now sends the
+  GRO check traffic NS_SRC -> NS_DST -> NS_RCV.
 
 --
 
-selftests: net: packetdrill: add test for negative sk_forward_alloc in tcp_wmem_schedule()
+selftests: net: veth: check UDP GRO forwarding on forwarded traffic
 
-This adds a packetdrill test that pushes sk_forward_alloc negative through
-tcp_collapse() while sk_wmem_queued is above tcp_wmem[0]. It then checks
-that a non-blocking write() under memcg pressure fails with EAGAIN. It also
-adds REQUIRES_PAGESIZE and REQUIRES_MEMCG directives to ksft_runner.sh. The
-REQUIRES_MEMCG directive enables the cgroup2 memory controller and installs
-an exit cleanup handler.
+The rx-udp-gro-forwarding checks in veth.sh fail when the host has a UDP
+tunnel socket. In that case GRO does a socket lookup and finds the local
+receiver. This patch adds a third namespace behind the destination, so
+the datagrams are forwarded instead of delivered locally, and keeps
+counting IpInReceives in the destination namespace.
 
-> diff --git a/tools/testing/selftests/net/packetdrill/ksft_runner.sh b/tools/testing/selftests/net/packetdrill/ksft_runner.sh
-> index 0a97d5ae34699..ba62f3840eb57 100755
-> --- a/tools/testing/selftests/net/packetdrill/ksft_runner.sh
-> +++ b/tools/testing/selftests/net/packetdrill/ksft_runner.sh
-> @@ -52,6 +52,34 @@ if [[ -n "${KSFT_MACHINE_SLOW}" ]]; then
+Link: https://lore.kernel.org/netdev/CAF=yD-LZSec9g_0bBgrcQvq2OO1BrxMSRHH=uU7eamCmWcTO_A@mail.gmail.com/
+
+> diff --git a/tools/testing/selftests/net/veth.sh b/tools/testing/selftests/net/veth.sh
+> index 17cfe412a2667..fef4ab587c91a 100755
+> --- a/tools/testing/selftests/net/veth.sh
+> +++ b/tools/testing/selftests/net/veth.sh
 
 [ ... ]
 
-> +if grep -q -E '^--define=REQUIRES_MEMCG=' $script; then
-> +	cgroot=$(mount -t cgroup2 | head -1 | awk '{print $3}')
-> +	memcg_was_enabled=0
-> +	if [[ -n "$cgroot" ]] &&
-> +	   grep -qw memory "${cgroot}/cgroup.subtree_control" 2>/dev/null; then
-> +		memcg_was_enabled=1
-> +	fi
-> +	if [[ -z "$cgroot" ]] ||
-> +	   ! echo +memory > "${cgroot}/cgroup.subtree_control" 2>/dev/null; then
-> +		ktap_skip_all "requires cgroup2 memory controller"
-> +		exit "$KSFT_SKIP"
-> +	fi
-
-[Severity: Medium]
-Is this check enough to decide that the test can run? It confirms that the
-memory controller can be enabled at the root. It does not confirm that
-socket memory is charged to the memcg.
-
-If the kernel boots with cgroup.memory=nosocket, cgroup_memory_nosocket is
-set. In that case mem_cgroup_css_online() never increments
-memcg_sockets_enabled_key:
-
-mm/memcontrol.c:mem_cgroup_css_online() {
-    ...
-    if (memcg_on_dfl && !cgroup_memory_nosocket)
-        static_branch_inc(&memcg_sockets_enabled_key);
-    ...
-}
-
-mem_cgroup_sk_alloc() then returns early:
-
-    if (!mem_cgroup_sockets_enabled)
-        return;
-
-So the accepted socket gets no sk_memcg. The memory.high and memory.max
-writes in step 4 of tcp_wmem_schedule_negative_fwd_alloc.pkt then have no
-effect on it.
-
-On such a kernel, wouldn't the final write(4, ..., 16384) succeed, so the
-test reports FAIL instead of SKIP?
-
-> +	cleanup_memcg() {
-> +		rmdir "${cgroot}"/pkt_* 2>/dev/null || true
-> +		if [[ "$memcg_was_enabled" -eq 0 ]]; then
-> +			echo -memory > "${cgroot}/cgroup.subtree_control" \
-> +				2>/dev/null || true
-> +		fi
-> +	}
-> +	trap cleanup_memcg EXIT
-> +fi
-
-[Severity: Medium]
-Can this rmdir remove cgroups that this runner did not create? The glob
-matches every empty cgroup named pkt_* at the cgroup2 root. That root is
-shared with the host, because the runner only does unshare -n.
-
-Even a single run would delete an existing empty pkt_* cgroup on the host,
-along with its configured limits.
-
-When runners overlap, one runner's EXIT trap can also remove another test's
-pkt_${PPID}. One example is kselftest's run_many() starting tests with
-run_in_netns &. That cgroup is empty, and so removable, in two windows:
-
-  - between the mkdir and the cgroup.procs write in the .pkt init command
-  - after packetdrill moves itself back to its original cgroup following
-    accept()
-
-In either case, the step 4 writes to memory.high and memory.max would fail.
-
-Could the cleanup be limited to the pkt_<pid> cgroups created by this
-runner's children? The .pkt cleanup command already removes its own
-"${cgroot}/pkt_${PPID}".
-
-There is a similar question about memcg_was_enabled. It is sampled once,
-before +memory is written. If another runner or another user starts using
-the root memory controller while this test runs, the exit trap still writes
--memory to the root cgroup.subtree_control.
-
-Is it intended to disable a shared controller based on that earlier
-snapshot? Any EBUSY from that write is also silently dropped by the
-|| true.
-
+> @@ -48,6 +53,17 @@ create_ns() {
+>  		ip -n $BASE$ns addr add dev veth$ns $BM_NET_V4$ns/24
+>  		ip -n $BASE$ns addr add dev veth$ns $BM_NET_V6$ns/64 nodad
+>  	done
 > +
->  ip_versions=$(grep -E '^--ip_version=' $script | cut -d '=' -f 2)
->  if [[ -z $ip_versions ]]; then
->  	ip_versions="ipv4 ipv6 ipv4-mapped-ipv6"
-> diff --git a/tools/testing/selftests/net/packetdrill/tcp_wmem_schedule_negative_fwd_alloc.pkt b/tools/testing/selftests/net/packetdrill/tcp_wmem_schedule_negative_fwd_alloc.pkt
-> new file mode 100644
-> index 0000000000000..e4d8d13144f0a
-> --- /dev/null
-> +++ b/tools/testing/selftests/net/packetdrill/tcp_wmem_schedule_negative_fwd_alloc.pkt
-> @@ -0,0 +1,116 @@
+> +	# Forwarded, the datagrams find no local socket, whatever tunnel the host has
+> +	ip netns add $NS_RCV
+> +	ip -n $NS_RCV link set dev lo up
+> +	ip link add name fwd$DST type veth peer name fwd$RCV
+> +	ip link set dev fwd$DST netns $NS_DST up
+> +	ip link set dev fwd$RCV netns $NS_RCV up
 
-[ ... ]
+[Severity: Low]
+This pair is created in the namespace the script runs in, under the fixed
+names fwd1 and fwd3, and none of these commands are checked. What happens
+if the host already has an interface named fwd1 or fwd3?
 
-> +`set -e
-> +./defaults.sh
-> +ip link set dev tun0 mtu 65535
-> +sysctl -q net.ipv4.tcp_rmem="4096 131072 6291456"
-> +sysctl -q net.ipv4.tcp_wmem="4096 16384 4194304"
-> +taskset -cp 0 $PPID >/dev/null 2>&1 || true
-> +cgroot=$(mount -t cgroup2 | head -1 | awk '{print $3}')
-> +[ -n "$cgroot" ]
-> +echo +memory > "${cgroot}/cgroup.subtree_control"
-> +rmdir "${cgroot}/pkt_${PPID}" 2>/dev/null || true
-> +mkdir "${cgroot}/pkt_${PPID}"
-> +echo 0 > "${cgroot}/pkt_${PPID}/memory.swap.max" 2>/dev/null || true
-> +echo $PPID > "${cgroot}/pkt_${PPID}/cgroup.procs"
-> +`
+In that case ip link add fails with EEXIST. The following "ip link set dev
+fwd$DST netns $NS_DST up" then looks the name up in the host netns and
+moves the host's own device into the test namespace.
 
-[ ... ]
+cleanup() later runs ip netns del on that namespace. A virtual device is
+destroyed, and a physical one goes back to init_net without its
+configuration.
 
-> +// 4. Drain per-CPU memcg stock via memory.high=0, cap memory.max=0 (O_NONBLOCK
-> +//    avoids synchronous reclaim/OOM), and expect -EAGAIN on a 16 KB non-blocking
-> +//    write. Because copy (16 KB) minus sk_forward_alloc (<= -16.4 KB) exceeds
-> +//    PAGE_ALLOC_COSTLY_ORDER (32 KB), try_charge_memcg() fails without invoking
-> +//    the memcg OOM killer.
-> ++0.010 `cgroot=$(mount -t cgroup2 | head -1 | awk '{print $3}')
-> +echo 0 > "${cgroot}/pkt_${PPID}/memory.high"
-> +echo 0 > "${cgroot}/pkt_${PPID}/memory.high"
-> +printf 0 | dd of="${cgroot}/pkt_${PPID}/memory.max" oflag=nonblock status=none`
-> ++0.000 fcntl(4, F_SETFL, O_RDWR|O_NONBLOCK) = 0
-> ++0.000 write(4, ..., 16384) = -1 EAGAIN (Resource temporarily unavailable)
+Also, if ip netns add $NS_RCV fails but the link creation succeeds, the
+moves fail and the pair stays in the host netns. cleanup() only deletes
+namespaces, so the pair would leak.
+
+The existing veth$SRC/veth$DST setup above uses the same pattern. Could the
+new pair be created directly inside the namespaces instead, for example:
+
+    ip -n $NS_DST link add fwd$DST type veth peer name fwd$RCV netns $NS_RCV
+
+> +	ip -n $NS_DST addr add dev fwd$DST $RCV_NET_V4$DST/24
+> +	ip -n $NS_RCV addr add dev fwd$RCV $RCV_NET_V4$RCV/24
+> +	ip netns exec $NS_DST sysctl -wq net.ipv4.ip_forward=1
+> +	ip -n $NS_RCV route add default via $RCV_NET_V4$DST
+>  }
+>  
+>  __chk_flag() {
+> @@ -134,15 +150,17 @@ chk_gro() {
+>  	local msg="$1"
+>  	local expected=$2
+>  
+> -	ip netns exec $BASE$SRC ping -qc 1 $BM_NET_V4$DST >/dev/null
+> +	# Taking veth$SRC down drops the route, so set it for every check
+> +	ip -n $NS_SRC route replace ${RCV_NET_V4}0/24 via $BM_NET_V4$DST
+> +	ip netns exec $BASE$SRC ping -qc 1 $RCV_NET_V4$RCV >/dev/null
+>  	NSTAT_HISTORY=$STATS ip netns exec $NS_DST nstat -n
+>  
+>  	printf "%-60s" "$msg"
+> -	ip netns exec $BASE$DST ./udpgso_bench_rx -C 1000 -R 10 &
+> +	ip netns exec $NS_RCV ./udpgso_bench_rx -C 1000 -R 10 &
+
+[Severity: Low]
+This isn't a bug introduced by this patch, but the receiver is still
+started without -n, so cfg_expected_pkt_nr stays 0. do_recv() in
+udpgso_bench_rx.c only checks the count when that is set:
+
+    if (cfg_expected_pkt_nr && (packets != cfg_expected_pkt_nr))
+
+On timeout the receiver just exits 0, even if nothing arrived.
+
+The only count chk_gro() compares is IpInReceives in NS_DST. ip_rcv_core()
+increments it before any routing decision:
+
+    __IP_UPD_PO_STATS(net, IPSTATS_MIB_IN, skb->len);
+
+With the new forwarding hop, nothing confirms that NS_DST actually
+forwarded the aggregated skb, or that NS_RCV received the 10 datagrams. If
+the GRO skb were dropped in ip_forward() or during egress segmentation, the
+aggregation checks would still pass.
+
+Would adding -n 10 to the receiver, or also checking IpForwDatagrams, close
+this gap?
+
+>  	local spid=$!
+>  	sleep 0.1
 
 [Severity: Medium]
-How reliably does this empty the memcg's per-CPU stock before the final
-write()?
+Can this sleep now cause a spurious GRO failure?
 
-If any stock for this memcg is left on the CPU running write(),
-try_charge_memcg()->consume_stock() can cover the charge (about 9 pages)
-without checking memory.max:
+Only sleep 0.1 makes the receiver bind() before the sender transmits. If
+udpgso_bench_rx in NS_RCV has not bound its port by the time the forwarded
+datagram arrives, the path would be:
 
-    if (nr_pages > MEMCG_CHARGE_BATCH ||
-        !local_trylock(&memcg_stock.lock))
-        return ret;
+NS_RCV:
+  __udp4_lib_rcv()
+    icmp_send(skb, ICMP_DEST_UNREACH, ICMP_PORT_UNREACH, 0);
 
-Each memory.high write calls drain_all_stock() once. drain_all_stock()
-returns early if percpu_charge_mutex is contended. It also skips CPUs that
-already have FLUSHING_CACHED_CHARGE set, and it drains only the current CPU
-synchronously:
+The ICMP then follows the default route added in create_ns() back into
+NS_DST on fwd1:
 
-    if (!mutex_trylock(&percpu_charge_mutex))
-        return;
-    ...
-            if (cpu == curcpu)
-                drain_local_memcg_stock(&memcg_st->work);
-            else
-                schedule_drain_work(cpu, &memcg_st->work);
+NS_DST:
+  ip_rcv_core()
+    __IP_UPD_PO_STATS(net, IPSTATS_MIB_IN, skb->len);
 
-Remote CPUs are drained asynchronously, and nothing waits for them.
+nstat reads IpInReceives for the whole NS_DST namespace, so this ICMP is
+counted along with the forward-direction datagrams on veth1.
 
-The memory.max write uses oflag=nonblock. That makes memory_max_write()
-take the O_NONBLOCK path, which skips draining entirely:
+Neither helper turns this into a non-zero exit. udpgso_bench_tx -M 1 sends
+one message and exits 0. udpgso_bench_rx without -n times out and exits 0.
+chk_gro() would then report "got 2 packets, expected 1" (or 11 vs 10).
 
-    if (of->file->f_flags & O_NONBLOCK)
-        goto out;
+Before this patch the receiver was in NS_DST, so the same race only produced
+an outgoing ICMP that IpInReceives does not count.
 
-The synchronous local drain only reaches the right CPU if the earlier
-taskset -cp 0 $PPID succeeded. A failure there is hidden by || true, for
-example when CPU 0 is not in the runner's cpuset.
+Would it be more robust to wait for the receiver socket to be bound, or to
+count only ingress on veth$DST?
 
-In those cases, could write() be served from leftover stock and succeed,
-making the test flaky?
-
-[ ... ]
+>  
+> -	ip netns exec $NS_SRC ./udpgso_bench_tx -4 -s 13000 -S 1300 -M 1 -D $BM_NET_V4$DST
+> +	ip netns exec $NS_SRC ./udpgso_bench_tx -4 -s 13000 -S 1300 -M 1 -D $RCV_NET_V4$RCV
+>  	local retc=$?
+>  	wait $spid
+>  	local rets=$?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261026032216.1145201-1-tavip%40google.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261026122440.603302-1-eva.kurchatova%40virtuozzo.com
