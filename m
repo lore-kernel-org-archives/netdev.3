@@ -1,57 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793248061;
-	b=Zgo6TflEPyXqXojOV98RU6pHw5BosHZ068OSJDIO5hYVpo5o61wBrrAr6hyKDUeEXCek
-	 hIvWzPL+sBAhzZXEXFxIwGF507iW7KQPkRzR/xf8TuAhK+pCqev3cJai7pUDTuEI9s2Z5
-	 uoDq047FiRnT7AXfx2I8BDpLDKsxgRnS9u9X5NLURUd+yx15YJFKcBIX++/yf8ZSo4R2v
-	 vtzyrcX2GMbu3vua7pKWgU/urghKqiavnSB05RCsnIRBhiLB6XceIdRHug7HbQNsMTjIL
-	 o8Q04AGjXK2a3ZlUKpf2MEv2IPXOs2GXbfcO/WBJwrhDOpl8VK+HdcVfrVGudUep9IQ==
+	t=1793248063;
+	b=HhLKQvTTK+aWoJkvvcZt5HKwWDznzcVLcgdUYZlbG6T9JeuziQFMOeruvEB1XKd5nKKx
+	 zVeFl31okF71tRKcypqpLo97OniOTMhA7trSfLAYN4rfOM86iEWnWdAosbLo6tnic/eu8
+	 K18M9f6KUYiv61GNAu2q/mMR51MqvZT9PFR55gJkt6i71Uk17vJOq2aj7Vx3xC60IP8Dm
+	 crypJNWDVcWVIB5GSaKKpmo99WqnPJ/1SDZAaqnhszIqb+MuxwCVnqwowK0oE7evYwuAK
+	 G9b5TC2OaafCwAsq0WjrCpXRfMC+sfK8LPzMB3DAFAucysqZrGvSx5jaMmrv1jiLK8Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793248061;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793248063;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=zRoJLJtdzSMp0vF6NxAkDF4KFWE1SYbcm7Ut9+3FXCg=;
-	b=pL0QCK1E5qcBs9tg1nkgMUNTTV5JuIF1Nj0ilKUxtrufV+fV1ceiRrF2D3552hxBhwoM
-	 rkUt2DKh34n62j/SB+zgBM27+mH6dzYfLQ+XRsMgCi/Ujlo5I3HcjUfTgZzB1Lw6Fr55E
-	 5a3ZS5faqbvRiSFNad6Tp6BJ81Dlx9YadrCZfkv06u12pdynd81VCQBHgSNzr1LoxyORf
-	 i6SNoIiqoBYEArDFU9CYqRiS6o7fGutz9HzSTEysndFBfC3mRMYjPjb3dDZqFH5pK61do
-	 3te3VAdIVW+Vyk/gPO6Ab9u2gUPFPPpIUnqZX7ixLy6hGH8skyfR3IW+G/rB4l7YcQQ==
+	bh=gqcoFML3qBTs9MfGY/GKJJpvF3WSMHHzWY7jOjJgKRo=;
+	b=fp5Q1VVewkgZ6hl2NCoJB/Rd5HIdXmQBS9cXmRSE6uxU2lAgTThiTxH4/SW3rZ1lTjNe
+	 uLgXa2ymomlfn92aD9qh0J7Pyn/Zr+HrKktFPrBREZ6HaeRiKzpM6fxR8r+iimEzfmoEI
+	 VuaBiic95lwM10qun5kmZBHk3MJG2yENaBMFVwtlG1Pd+XEhZlN4IZ1+dj7F4m1Km/xZ5
+	 937XEsiZMJFGdEtiqHHi2L7upDeQsZeBjLSVzG7kJmUI7E7zGOyNm6Vspv3XNw/yXsX+m
+	 ieLNMVGvqJoYuogZwH9nT6N5RbVC9z7mvLP+UTHpXdyEoSFpwgVpMAfWhJ8RzNMRFBw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N30Vm+bI;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mQ9+ON2G;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FDCA606A31F
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 04:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F96A60A2607
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 04:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N30Vm+bI
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81FAB1F031E5;
-	Thu, 29 Oct 2026 04:27:40 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mQ9+ON2G
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B7E61F01825;
+	Thu, 29 Oct 2026 04:27:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793248061;
-	bh=zRoJLJtdzSMp0vF6NxAkDF4KFWE1SYbcm7Ut9+3FXCg=;
+	s=k20260515; t=1793248062;
+	bh=gqcoFML3qBTs9MfGY/GKJJpvF3WSMHHzWY7jOjJgKRo=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=N30Vm+bIAAa8JppvPmg+3+3kim8JJwVPpB2TrUi2ickrowW1VRmnxgVH2eltjPwbM
-	 maVdKQwC1+LZuCY5NR2IDkRy8j3IILjRrda67ykIgr1ZZ7eheB+UxbrphfUiGDC/AY
-	 kCRhN4zIE641SKX3sbtmhcoG/fx8hR3nUGPgAlOUMUkPXQJMkclnKtmIC6OFzVY2ke
-	 xerPouJ02bWrLU9f9ChR35hoOMTg261pbv1uD+z8tcDtX+bNqIocapJs/hGUl6ODJK
-	 ucj7PsWlRxLncKblfxMm1gncIhWYR5rZdpHkPdGUlRTDJOCq4tTOHAs6mo9XLDop+f
-	 rgQjtwdqsnWtQ==
-Subject: Re: [PATCH net 1/2] tipc: fix self-deadlock in tipc_named_node_up
+	b=mQ9+ON2GZB6K1sWuJR3AZ4H2hqmVd7B1rfHHvn6lpuTVwSIIph3k/n5C0dwxqMewh
+	 ZCTqEU+A7zsT/igN9Ze6toiyCJej3ujNl8wKhEAofMFRZtsSQoNnDJEf/EW4aERFn/
+	 yfRzRYY2ckrqt7dppiP1c7VjpSv2pU4IGo4e49M7dNqvkuEy/ng0rsFdc6vG7LFdqP
+	 J1Gsmo71vPjLd6cOxzrjGo9yWNYfQJKXt/W1cILyc0GeK6kGyMEkSct2mANeXTtbPA
+	 KiAoHmPk0yhb3k/goEC0k38mfYK/54kXqhpBybcrZYdHNap8V4L/utuDt7WaiM8Zq0
+	 qo3ePmGBRTn5Q==
+Subject:
+ Re: [PATCH net 2/2] tipc: fix NULL pointer dereference in named_distribute()
 From: netdev-bot+sashiko@kernel.org
 To: tung.quang.nguyen@est.tech
 Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
  edumazet@kernel.org, pabeni@redhat.com, jmaloy@redhat.com, horms@kernel.org,
  tipc-discussion@lists.sourceforge.net,
  syzbot+64197f7577a09686ffdb@syzkaller.appspotmail.com
-Date: Thu, 29 Oct 2026 04:27:40 +0000
-Message-ID: <179324806006.3134.8900462366055369800@kernel.org>
-In-Reply-To: <20261028033722.125477-2-tung.quang.nguyen@est.tech>
-References: <20261028033722.125477-2-tung.quang.nguyen@est.tech>
-X-sashiko-severity: Medium
+Date: Thu, 29 Oct 2026 04:27:41 +0000
+Message-ID: <179324806118.3134.17988237576778799130@kernel.org>
+In-Reply-To: <20261028033722.125477-3-tung.quang.nguyen@est.tech>
+References: <20261028033722.125477-3-tung.quang.nguyen@est.tech>
+X-sashiko-severity: Critical
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -64,10 +65,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 6 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 (1) · Medium: 2 (2) · Low: 2
+Critical: 1 · High: 0 · Medium: 3 (2) · Low: 2
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -75,302 +76,459 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] At the target commit, the -ENOBUFS recovery for bulk name
-  distribution can reset a link other than the one that failed.
-- [Medium] tipc: leak of cloned skbs in xmitq on -ENOBUFS in
-  tipc_node_distribute()
-- [Low] The commit message leaves out several behaviour changes and
-  misdescribes the new helper.
-- [Low] The new kernel-doc for tipc_node_distribute() lists the return
-  value as `-ENOBUF` (net/tipc/node.c:1798).
+- [Critical] The fix is incomplete: a TIPC peer can still trigger the
+  NULL dereference in named_distribute() (buf_msg(skb_peek_tail(list))…
+- [Medium] The commit message lists "three major changes", all internal
+  refactoring.
+- [Medium] The new deferred-bulk flag n->dist_bulk can go stale and cause
+  a second bulk distribution within one node session.
+- [Medium] tipc: race in tipc_net_finalize() causes self-node publish to
+  fail with -EEXIST
+- [Low] The comment on the tn->nt_stop check in __tipc_named_distribute()
+  says it protects against the name table having been deleted at…
+- [Low] The new comment in tipc_service_delete() (net/tipc/name_table.c)
+  says "tipc_nametbl_withdraw() does not delete 'p->binding_node' with…
 
 Pre-existing issues:
-- [High] named_distribute() runs `hdr = buf_msg(skb_peek_tail(list));`
-  (name_distr.c:191) whether or not anything was queued.
-- [Medium] At the target commit named_distribute() is still `static
-  void`.
-- [Medium] This problem wasn't introduced by this patch, but it is copied
-  into the new code.
+- [Medium] tipc_named_reinit(), called from tipc_net_finalize(), sets
+  nt->rc_dests = 0 unconditionally.
+- [Medium] tipc_node_distribute() can leak SKBs, and the new timer path
+  tipc_named_distribute() now reaches it too.
 
 --
 
-tipc: fix self-deadlock in tipc_named_node_up
+tipc: fix NULL pointer dereference in named_distribute()
 
-This patch removes nt->cluster_scope_lock and uses tn->nametbl_lock to
-protect the cluster_scope list. That breaks a self-deadlock in which
-tipc_named_node_up() held the read lock across tipc_node_xmit() ->
-tipc_node_link_down() -> tipc_nametbl_withdraw().
+This patch fixes a syzbot-reported NULL dereference in named_distribute().
+The cause is a race between tipc_net_finalize() and the node-up bulk
+distribution. The patch inserts the node's self-address TIPC_NODE_STATE
+publication on demand from node-up or the node timer. It defers the bulk to
+the node timer when the address is not set yet, and it adds error
+propagation for allocation failures.
 
-It adds tipc_node_distribute(), which transmits like tipc_node_xmit() but
-does not reset the link, plus a shared helper, tipc_node_build_list().
-tipc_named_node_up() now returns an error code, and
-tipc_node_write_unlock() resets the link when that code is -ENOBUFS.
+Closes: https://syzkaller.appspot.com/bug?extid=64197f7577a09686ffdb
 
-> Fix this issue by:
-> - Removing cluster_scope_lock, which protects the name table's cluster_scope
->   list. Use nametbl_lock instead to protect the list against races when multiple
->   threads concurrently call tipc_named_publish(), tipc_named_withdraw(),
->   and tipc_named_node_up().
->
-> - Introducing a new function, tipc_node_distribute(), which is similar to
->   tipc_node_xmit() but does not call tipc_node_link_down(). Both functions call
->   the newly introduced tipc_node_build_list(), which builds a list of messages
->   in sequence.
+> To facilitate the implementation, three major changes are made:
+> - Move the sc->lock acquisition out of tipc_service_insert_publ() and into its
+>   callers.
+> - Add an output parameter (*err) to tipc_nametbl_publish() to detect memory
+>   allocation errors.
+> - Add three fields (nt_stop, nt_self_node_exist, and node_addr_set) to struct
+>   tipc_net to synchronize the insertion and deletion of the node's self-address
+>   publication.
 
-[Severity: Low]
-Could the commit message cover a few more of the behaviour changes in this
-patch?
+[Severity: Medium]
 
-The link reset on bulk failure is still there. It moved into
-tipc_node_write_unlock():
+These three items read as internal refactoring. The patch also changes
+behaviour in several ways that the commit message does not mention. Should
+these be described, or split into separate patches?
 
-	if (rc == -ENOBUFS)
-		tipc_node_link_down(n, bearer_id, false);
+tipc_update_nametbl() now drops every peer PUBLICATION or WITHDRAWAL of
+type TIPC_NODE_STATE whose range equals our address. It also logs "Can't
+update duplicate node-up pub".
 
-tipc_named_node_up() now also maps -EMSGSIZE to -ENOBUFS, so an oversized
-bulk now resets the link. Before this patch, tipc_node_xmit() returned
--EMSGSIZE and the void tipc_named_node_up() ignored it. The -ELINKCONG
-mapping has a comment, but this one does not.
+In tipc_node_write_unlock(), -ENOBUFS from tipc_named_node_up() now takes
+down every link to the peer through the new tipc_node_down(). In the
+parent commit ("tipc: fix self-deadlock in tipc_named_node_up") it only
+called tipc_node_link_down(n, bearer_id, false).
 
-The message says nametbl_lock now protects the cluster_scope list. In fact
-the whole transmit now runs under spin_lock_bh(&tn->nametbl_lock):
-tipc_node_find(), the node read lock, le->lock, tipc_link_xmit(), and
-tipc_bearer_xmit() all the way down to the media send_msg().
+An allocation failure while publishing the node-scope TIPC_LINK_STATE
+binding on LINK_UP used to be ignored. It now forces that link down, which
+seems unrelated to the named_distribute() race.
 
-Also, tipc_node_build_list() does more than build a list of messages. It
-either delivers to the peer namespace through tipc_lxc_xmit() or enqueues
-on the link through tipc_link_xmit().
+tipc_node_timeout() now forces every link to the peer down when the
+deferred bulk redistribution returns -ENOBUFS.
+
+Separately, can this new branch in tipc_nametbl_publish() ever run?
+
+	if (!skb && p->scope == TIPC_CLUSTER_SCOPE && err)
+		*err = -ENOBUFS;
+
+The only caller that passes a non-NULL err is tipc_node_write_unlock(), and
+it publishes TIPC_LINK_STATE with TIPC_NODE_SCOPE. tipc_net_finalize() and
+tipc_sk_publish() both pass NULL.
 
 > diff --git a/net/tipc/name_distr.c b/net/tipc/name_distr.c
-> index ba4f4906e13b7..a60f213ed1182 100644
+> index a60f213ed1182..345bd767983e9 100644
 > --- a/net/tipc/name_distr.c
 > +++ b/net/tipc/name_distr.c
 
 [ ... ]
 
-> @@ -202,25 +198,39 @@ static void named_distribute(struct net *net, struct sk_buff_head *list,
->   * @net: the associated network namespace
->   * @dnode: destination node
->   * @capabilities: peer node's capabilities
-> + *
-> + * Return:
-> + * * 0               - Success
-> + * * -ENOBUFS        - No buffer space is available
-> + * * -EHOSTUNREACH   - Destination node does not exist or cannot be reached
-> + *
->   */
-> -void tipc_named_node_up(struct net *net, u32 dnode, u16 capabilities)
-> +int tipc_named_node_up(struct net *net, u32 dnode, u16 capabilities)
->  {
->  	struct name_table *nt = tipc_name_table(net);
->  	struct tipc_net *tn = tipc_net(net);
->  	struct sk_buff_head head;
-> -	u16 seqno;
+> @@ -191,6 +197,94 @@ static void named_distribute(struct net *net, struct sk_buff_head *list,
+>  	hdr = buf_msg(skb_peek_tail(list));
+>  	msg_set_last_bulk(hdr);
+>  	msg_set_named_seqno(hdr, seqno);
+> +
+> +	return 0;
+> +}
+
+[ ... ]
+
+> +static int __tipc_named_distribute(struct net *net, u32 dnode,
+> +				   struct sk_buff_head *head)
+> +{
+> +	struct name_table *nt = tipc_name_table(net);
+> +	struct tipc_net *tn = tipc_net(net);
+> +
+> +	/* Name table has been deleted after namespace teardown or
+> +	 * TIPC module exit.
+> +	 */
+> +	if (unlikely(tn->nt_stop))
+> +		return 0;
+
+[Severity: Low]
+
+Can this check protect against a deleted name table? tipc_named_node_up()
+already dereferences nt before __tipc_named_distribute() reads nt_stop:
+
+	if (!(capabilities & TIPC_NAMED_BCAST))
+		nt->rc_dests++;
+	rc = __tipc_named_distribute(net, dnode, &head);
+
+The scenario also does not look reachable. tipc_exit_net() runs
+tipc_net_stop() first, which goes through
+tipc_node_stop()->tipc_node_delete()->timer_delete_sync(). It then runs
+cancel_work_sync(&tn->work), and only after that tipc_nametbl_stop().
+tipc_nametbl_stop() sets nt_stop just before kfree_rcu(nt).
+
+The only other caller of tipc_nametbl_stop() is the tipc_init_net() error
+path, and no nodes exist at that point.
+
+Is nt_stop needed at all? The commit message says it helps to "synchronize
+the insertion and deletion of the node's self-address publication", which
+does not seem accurate either.
+
+> +
+> +	/* Node's self-address is not set yet */
+> +	if (!atomic_read(&tn->node_addr_set)) {
+> +		/* Defer the distribution to node's timer */
+> +		tipc_node_set_dist_bulk(net, dnode);
+> +		return 0;
+> +	}
+
+[ ... ]
+
+> +int tipc_named_distribute(struct net *net, u32 dnode)
+> +{
+> +	struct tipc_net *tn = tipc_net(net);
+> +	struct sk_buff_head head;
 > +	int bearer_id = 0;
 > +	int rc = 0;
->  
->  	__skb_queue_head_init(&head);
->  	spin_lock_bh(&tn->nametbl_lock);
->  	if (!(capabilities & TIPC_NAMED_BCAST))
->  		nt->rc_dests++;
-> -	seqno = nt->snd_nxt;
-> +	named_distribute(net, &head, dnode, &nt->cluster_scope, nt->snd_nxt);
-> +	if (!skb_queue_empty(&head))
+> +
+> +	__skb_queue_head_init(&head);
+> +	spin_lock_bh(&tn->nametbl_lock);
+> +	rc = __tipc_named_distribute(net, dnode, &head);
+> +	if (!rc && !skb_queue_empty(&head))
 > +		rc = tipc_node_distribute(net, &head, dnode, &bearer_id, 0);
 
-[Severity: High]
-This is a pre-existing issue, but can named_distribute() dereference NULL
-here when nt->cluster_scope is empty?
+[Severity: Medium]
 
-named_distribute() runs this whether or not it queued anything:
+This is a pre-existing issue, not introduced by this patch, but the new
+timer path through tipc_named_distribute() now reaches it as well. Can
+tipc_node_distribute() leak skbs on its local xmitq?
 
-	hdr = buf_msg(skb_peek_tail(list));
-	msg_set_last_bulk(hdr);
+When tipc_link_xmit() sends a multi-packet bulk, earlier packets may
+already be cloned onto xmitq when a later skb_clone() fails:
 
-The list can be empty here. That happens if the TIPC_NOTIFY_NODE_UP event
-is handled before tipc_net_finalize() has published the self
-TIPC_NODE_STATE name, or if that publish failed. skb_peek_tail() then
-returns NULL, and buf_msg(NULL) is dereferenced in softirq context.
+	_skb = skb_clone(skb, GFP_ATOMIC);
+	if (!_skb) {
+		kfree_skb(skb);
+		__skb_queue_purge(list);
+		return -ENOBUFS;
+	}
 
-A remote peer bringing up a link can trigger this. A syzbot report shows
-the path tipc_rcv() -> tipc_node_write_unlock() -> tipc_named_node_up().
+tipc_node_distribute() then skips the transmit and never purges xmitq:
 
-The new skb_queue_empty() check only runs after the dereference.
+	if (likely(rc != -ENOBUFS))
+		tipc_bearer_xmit(net, *bearer_id, &xmitq, &maddr, n);
 
-The follow-up patch "tipc: fix NULL pointer dereference in
-named_distribute()" appears to fix this. It routes the call through
-__tipc_named_distribute(), which makes sure the self publication is on
-nt->cluster_scope, or defers the bulk, before named_distribute() runs.
+	tipc_node_put(n);
+
+tipc_node_xmit() had the same pattern, and tipc_named_node_up() used it
+before. tipc_node_distribute() was copied from it in the preceding commit
+"tipc: fix self-deadlock in tipc_named_node_up".
+
+> +	spin_unlock_bh(&tn->nametbl_lock);
+
+[ ... ]
+
+> @@ -426,5 +531,6 @@ void tipc_named_reinit(struct net *net)
+>  	list_for_each_entry_rcu(p, &nt->cluster_scope, binding_node)
+>  		p->sk.node = self;
+>  	nt->rc_dests = 0;
+> +	tn->nt_stop = false;
+>  	spin_unlock_bh(&tn->nametbl_lock);
+>  }
 
 [Severity: Medium]
-This isn't a bug introduced by this patch, but the new kernel-doc says
-tipc_named_node_up() returns -ENOBUFS when no buffer space is available.
-Can that happen for allocation failures?
 
-named_distribute() is still void. When named_prepare_buf() fails, it
-returns without purging the partial list and without setting last_bulk or
-the seqno:
+This is a pre-existing issue, not introduced by this patch. The patch now
+explicitly supports node-up before finalize, though, so it seems relevant
+here.
 
-			if (!skb) {
-				pr_warn("Bulk publication failure\n");
-				return;
-			}
+tipc_net_finalize() calls tipc_named_reinit(), which resets nt->rc_dests to
+0 unconditionally. That wipes out the increment tipc_named_node_up() has
+already made for any peer without TIPC_NAMED_BCAST that came up before
+finalize:
 
-rc is only set from tipc_node_distribute(), so this case returns 0. The
-new -ENOBUFS recovery in tipc_node_write_unlock() never runs. The peer's
-tipc_named_dequeue() never sees last_bulk, so the peer's name table stays
-stale.
+tipc_named_node_up()
+  nt->rc_dests++;
+  __tipc_named_distribute()
+    tipc_node_set_dist_bulk()     <- only the bulk is deferred
+...
+tipc_net_finalize()
+  tipc_named_reinit()
+    nt->rc_dests = 0;
 
-The follow-up patch "tipc: fix NULL pointer dereference in
-named_distribute()" seems to fix this. There, named_distribute() purges
-the list and returns -ENOBUFS, and tipc_named_node_up() passes that
-error up.
+Would later publications then see rc_dests == 0 and go out over the
+broadcast link? Legacy peers do not accept name distribution that way.
+
+When such a peer goes down, tipc_publ_notify() does nt->rc_dests--, which
+wraps the u32 to 0xFFFFFFFF. tipc_node_broadcast() receives that as int -1
+and stays in replicast from then on.
+
+> diff --git a/net/tipc/name_table.c b/net/tipc/name_table.c
+> index 8924bdb6a443f..3bcb8762bc9cc 100644
+> --- a/net/tipc/name_table.c
+> +++ b/net/tipc/name_table.c
+
+[ ... ]
+
+> +int tipc_nametb_insert_self_node_pub(struct net *net)
+> +{
+
+[ ... ]
+
+> +	spin_lock_bh(&sc->lock);
+> +	sr = tipc_service_find_range(sc, &ua);
+> +	/* 1. tipc_net_finalize_work() is not scheduled because of namespace
+> +	 *    teardown.
+> +	 * 2. Or tipc_net_finalize() ---> tipc_nametbl_publish() has failed
+> +	 *    to insert node self address publication into nt->cluster_scope
+> +	 *    due to memory allocation failure.
+> +	 * 3. Or tipc_net_finalize() ---> tipc_nametbl_publish() has not
+> +	 *    executed yet.
+> +	 */
+> +	if (!sr) {
+
+[ ... ]
+
+> +exit:
+> +	spin_unlock_bh(&sc->lock);
+> +	return 0;
+> +}
+
+[Severity: Medium]
+Is there a window between setting node_addr_set and the
+tipc_nametbl_publish() call that follows it? node_addr_set is written
+here without tn->nametbl_lock, but __tipc_named_distribute() reads it
+under that lock. A node-up, or the node timer, can run in between. That
+could be on another CPU, or in softirq on this one. It then does the
+self-node insert first:
+
+CPU0                          CPU1
+tipc_net_finalize()
+  atomic_set(node_addr_set)
+                              tipc_named_node_up() or
+                              tipc_node_timeout()
+                                __tipc_named_distribute()
+                                  tipc_nametb_insert_self_node_pub()
+                                  tn->nt_self_node_exist = true;
+                                  named_distribute()  <- dnode only
+  tipc_nametbl_publish()
+    tipc_nametbl_insert_publ()
+      tipc_service_insert_publ()  <- duplicate, -EEXIST
+
+tipc_nametb_insert_self_node_pub() builds the publication with the same
+key, sk.ref and sk.node that tipc_net_finalize() passes. The duplicate
+check in tipc_service_insert_publ() therefore rejects the second insert.
+That prints the non-ratelimited "Failed to bind to" pr_warn() for what
+is really an expected race. tipc_nametbl_publish() then returns NULL
+without calling tipc_named_publish() or tipc_node_broadcast().
+
+In that case the TIPC_NODE_STATE binding reaches only dnode, through
+its bulk. Peers that are already up never get the broadcast that
+finalize normally sends. They depend on their own deferred dist_bulk
+being processed later. Is that intended?
+
+The new comment above the call says the publication is redistributed
+if tipc_nametbl_publish() fails. The -EEXIST case is not really a
+failure, though, and it still warns.
+
+Would it work to set node_addr_set only after tipc_nametbl_publish()
+has returned? Alternatively, tipc_net_finalize() could insert the
+publication under tn->nametbl_lock and set nt_self_node_exist there, so
+both paths agree on which one owns the insert.
+
+[Severity: Critical]
+
+Can a [self,self] TIPC_NODE_STATE range that holds only a peer's entry make
+this function return 0 without adding anything to nt->cluster_scope? The
+function only checks that the range exists. It does not check that the
+range holds this node's own publication, or that anything is linked on
+nt->cluster_scope.
+
+The new filter in tipc_update_nametbl() is skipped while tn->node_addr is
+still 0:
+
+	if (unlikely(type == TIPC_NODE_STATE && tn->node_addr &&
+		     lower == tn->node_addr && upper == tn->node_addr)) {
+
+During the address trial, tipc_disc_addr_trial_msg() schedules tn->work but
+lets link setup continue while self == 0. The peer can see our trial
+address, because we put it in prevnode in our discovery messages.
+tipc_named_rcv() takes node = msg_orignode(hdr) without checking it against
+the link peer.
+
+So a peer could send an item like {type=TIPC_NODE_STATE,
+lower=upper=trial_addr, port=0, key=trial_addr} with orignode=trial_addr.
+orignode=0 would also work, because the !_p->sk.node test in
+tipc_service_insert_publ() treats it as a wildcard. The sequence would then
+be:
+
+tipc_net_finalize()
+  atomic_set(&tn->node_addr_set, 1);
+  tipc_nametbl_publish(net, &ua, &sk, addr, NULL)
+    tipc_service_insert_publ()   <- duplicate, -EEXIST, ignored
+
+tipc_named_node_up() or tipc_node_timeout()->tipc_named_distribute()
+  __tipc_named_distribute()
+    tipc_nametb_insert_self_node_pub()   <- range found, returns 0
+    tn->nt_self_node_exist = true;
+    named_distribute(net, head, dnode, &nt->cluster_scope, ...)
+      hdr = buf_msg(skb_peek_tail(list));   <- list is empty
+
+With no cluster-scope user bindings, nt->cluster_scope is empty at this
+point. The topology server binds with TIPC_NODE_SCOPE, so it does not add
+anything. Would this hit the same NULL dereference in buf_msg() that the
+patch sets out to fix, in softirq or timer context?
+
+Even with an honest orignode, a planted [self,self] range still makes this
+helper skip the insert. That reopens the window between
+atomic_set(&tn->node_addr_set, 1) and tipc_nametbl_publish() in
+tipc_net_finalize().
+
+Would it be safer to check that our own publication is actually on
+nt->cluster_scope? It might also help to have named_distribute() handle an
+empty list, for example by returning early when skb_peek_tail(list) is
+NULL.
+
+[ ... ]
+
+> @@ -940,6 +1043,15 @@ static void tipc_service_delete(struct net *net, struct tipc_service *sc)
+>  	rbtree_postorder_for_each_entry_safe(sr, tmpr, &sc->ranges, tree_node) {
+>  		list_for_each_entry_safe(p, tmp, &sr->all_publ, all_publ) {
+>  			tipc_service_remove_publ(sr, &p->sk, p->key);
+> +			/* tipc_nametbl_withdraw() does not delete
+> +			 * 'p->binding_node' with type TIPC_NODE_STATE and
+> +			 * range [tn->node_addr, tn->node_addr] from
+> +			 * 'tn->cluster_scope'. So, delete it here.
+> +			 */
+
+[Severity: Low]
+
+Is this comment accurate? tipc_nametbl_withdraw() calls
+tipc_named_withdraw() for each publication it removes, and
+tipc_named_withdraw() begins with an unconditional:
+
+	list_del(&p->binding_node);
+
+The self-node publication is still linked here only because nothing ever
+withdraws it. tipc_net_stop() just calls tipc_bearer_stop() and
+tipc_node_stop().
+
+cluster_scope is also a member of struct name_table, not struct tipc_net,
+so 'tn->cluster_scope' should probably read 'nt->cluster_scope'.
+
+If a later change follows this comment and adds a withdraw call, would this
+list_del() then remove the same entry twice?
+
+> +			if (p->sr.type == TIPC_NODE_STATE &&
+> +			    p->sr.lower == tn->node_addr &&
+> +			    p->sr.upper == tn->node_addr)
+> +				list_del(&p->binding_node);
+>  			kfree_rcu(p, rcu);
+>  		}
 
 [ ... ]
 
 > diff --git a/net/tipc/node.c b/net/tipc/node.c
-> index 53b0993c2c233..b19d6652dc731 100644
+> index b19d6652dc731..f566472a411fc 100644
 > --- a/net/tipc/node.c
 > +++ b/net/tipc/node.c
 
 [ ... ]
 
-> @@ -435,6 +436,9 @@ static void tipc_node_write_unlock(struct tipc_node *n)
->  		tipc_mon_peer_down(net, node, bearer_id);
->  		tipc_nametbl_withdraw(net, &ua, &sk, sk.ref);
->  	}
-> +
-> +	if (rc == -ENOBUFS)
-> +		tipc_node_link_down(n, bearer_id, false);
-
-[Severity: Medium]
-Can this reset a different link from the one the bulk failed on?
-
-Here bearer_id comes from n->link_id. It is saved before n->lock is
-dropped:
-
-	bearer_id = n->link_id & 0xffff;
-
-The bulk is sent on whichever bearer tipc_node_build_list() picks later,
-in a separate lock section:
-
-	*bearer_id = n->active_links[selector & 1];
-
-tipc_named_node_up() receives that bearer from tipc_node_distribute() in
-its local bearer_id, then discards it and returns only rc.
-
-Suppose a higher priority second link comes up in that window.
-__tipc_node_link_up() puts the new bearer in both active slots, and the
-bulk then fails on the new link. The old, healthy link is the one that
-gets reset, and the bulk is never resent. The old tipc_node_xmit() path
-reset the bearer it had actually used.
-
-In the follow-up patch "tipc: fix NULL pointer dereference in
-named_distribute()" this call becomes tipc_node_down(n), which brings
-down every bearer. So the problem seems to be gone by the end of the
-series.
-
-[ ... ]
-
-> @@ -1715,42 +1763,66 @@ int tipc_node_xmit(struct net *net, struct sk_buff_head *list,
-
-[ ... ]
-
-> +/**
-> + * tipc_node_distribute() - distribute list of messages to specific destination
-> + * @net: the applicable net namespace
-> + * @list: chain of buffers containing message
-> + * @dnode: address of destination node
-> + * @bearer_id: id of the bearer
-> + * @selector: a number used for deterministic link selection
-> + *
-> + * Return:
-> + * * 0              - Success
-> + * * -ELINKCONG     - Link is congested
-> + * * -EHOSTUNREACH  - Host is not reachable
-> + * * -EMSGSIZE      - Message's size is too big
-> + * * -ENOBUF        - No buffer space is available
-
-[Severity: Low]
-This isn't a bug, but -ENOBUF should be -ENOBUFS. The typo seems to have
-been copied from the tipc_node_xmit() comment, and it is still there at
-the end of the series.
-
-> + *
-> + */
-> +int tipc_node_distribute(struct net *net, struct sk_buff_head *list,
-> +			 u32 dnode, int *bearer_id, int selector)
-> +{
-
-[ ... ]
-
->  	__skb_queue_head_init(&xmitq);
-> -	le = &n->links[bearer_id];
-> -	spin_lock_bh(&le->lock);
-> -	rc = tipc_link_xmit(le->link, list, &xmitq);
-> -	spin_unlock_bh(&le->lock);
-> -	tipc_node_read_unlock(n);
-> +	rc = tipc_node_build_list(n, list, &xmitq, selector, &maddr,
-> +				  bearer_id, &lxc);
-> +	if (lxc) {
-> +		tipc_node_put(n);
-> +		return 0;
-> +	}
+> @@ -420,6 +430,8 @@ static void tipc_node_write_unlock(struct tipc_node *n)
+>  	n->action_flags &= ~(TIPC_NOTIFY_NODE_DOWN | TIPC_NOTIFY_NODE_UP |
+>  			     TIPC_NOTIFY_LINK_DOWN | TIPC_NOTIFY_LINK_UP);
 >  
-> -	if (unlikely(rc == -ENOBUFS))
-> -		tipc_node_link_down(n, bearer_id, false);
-> -	else
-> -		tipc_bearer_xmit(net, bearer_id, &xmitq, &le->maddr, n);
-> +	if (likely(rc != -ENOBUFS))
-> +		tipc_bearer_xmit(net, *bearer_id, &xmitq, &maddr, n);
+> +	if (flags & TIPC_NOTIFY_NODE_DOWN)
+> +		n->dist_bulk = false;
+>  	write_unlock_bh(&n->lock);
+
+[ ... ]
+
+> +void tipc_node_set_dist_bulk(struct net *net, u32 addr)
+> +{
+> +	struct tipc_node *node;
+> +
+> +	node = tipc_node_find(net, addr);
+> +	if (node) {
+> +		tipc_node_write_lock(node);
+> +		node->dist_bulk = true;
+> +		tipc_node_write_unlock_fast(node);
+> +		tipc_node_put(node);
+> +	}
+> +}
 
 [Severity: Medium]
-This is a pre-existing issue, but can the clones already queued on
-xmitq leak when tipc_link_xmit() returns -ENOBUFS here?
 
-tipc_link_xmit() takes each skb off list, puts it on l->transmq and
-puts a skb_clone() of it on the caller's xmitq. Suppose skb_clone()
-fails on a later skb in the list. It frees that skb, purges list and
-returns -ENOBUFS, but the clones from the earlier iterations stay on
-xmitq.
+Can n->dist_bulk go stale and trigger a second bulk within one node
+session?
 
-On -ENOBUFS, tipc_node_distribute() skips tipc_bearer_xmit() and
-returns. Nothing ever purges the stack-local xmitq, so those clones
-are lost.
+tipc_node_write_unlock() clears the flag on TIPC_NOTIFY_NODE_DOWN under
+n->lock. tipc_named_node_up() runs only after that lock is dropped, and
+tipc_node_set_dist_bulk() sets the flag without checking whether the node
+has gone down in the meantime:
 
-The refactored tipc_node_xmit() has the same problem. It calls
-tipc_node_link_down() instead. That only cleans up the link's own
-queues, not the caller's xmitq.
+CPU0                                  CPU1
+tipc_node_write_unlock() (NODE_UP)
+  write_unlock_bh(&n->lock);
+                                      link failure, NODE_DOWN
+                                        n->dist_bulk = false;
+  tipc_named_node_up()
+    __tipc_named_distribute()
+      node_addr_set == 0
+      tipc_node_set_dist_bulk()
+        node->dist_bulk = true;
 
-This needs a multi-buffer list, for example a bulk from
-named_distribute() when nt->cluster_scope spans more than one MTU. It
-also needs a GFP_ATOMIC failure in softirq context, so it is most
-likely under memory pressure.
+Suppose the peer comes back after finalize has set node_addr_set. The new
+NODE_UP sends a normal bulk right away. Later the node timer finds the
+stale flag and sends a second one.
 
-Both callers now go through tipc_node_build_list(). Would it make
-sense to purge xmitq there on -ENOBUFS? Or should tipc_link_xmit()
-clean up the clones it queued before returning the error?
+tipc_node_timeout() has a similar window. It reads and clears the flag
+under n->lock, but calls tipc_named_distribute() after unlocking without
+checking again.
 
-[Severity: Medium]
-This is a pre-existing issue, but are the skb clones on xmitq leaked when
-rc is -ENOBUFS?
+On the receiver, tipc_named_dequeue() advances rcv_nxt to the extra bulk's
+seqno and drops queued messages with a lower seqno:
 
-tipc_link_xmit() clones each skb onto xmitq. If skb_clone() fails on a
-later skb, it returns -ENOBUFS and the earlier clones stay queued:
+	if (msg_is_last_bulk(hdr)) {
+		*rcv_nxt = seqno;
+		*open = true;
+	}
+	...
+	if (less(seqno, *rcv_nxt)) {
+		__skb_unlink(skb, namedq);
+		kfree_skb(skb);
 
-			_skb = skb_clone(skb, GFP_ATOMIC);
-			if (!_skb) {
-				kfree_skb(skb);
-				__skb_queue_purge(list);
-				return -ENOBUFS;
-			}
+Could a withdrawal that has not been applied yet be lost this way, leaving
+a stale binding on the peer? The duplicate items would also trigger the
+non-ratelimited pr_warn() in tipc_service_insert_publ().
 
-On -ENOBUFS this function skips tipc_bearer_xmit() and never purges the
-stack-local xmitq. The refactored tipc_node_xmit() does the same, as did
-the original version.
-
-Would a __skb_queue_purge(xmitq) on -ENOBUFS in tipc_node_build_list()
-cover both callers? The leak is still present at the end of the series.
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261028033722.125477-1-tung.quang.nguyen%40est.tech
