@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793284808;
-	b=LxTjXKpvDyzaP2E5ZJRD5D7o3U2VpN1mfh8OKFKkQzEmXBgkSpQZ3xPCqerc7qzKXdiA
-	 DTQIh3gsvObjxG6lI1DbtqZokAX+FPBxjer9ZuHTjQP+01ce2P7nYF4zVyQicSpTO2m+i
-	 +AqB2Z8H0vO4o4SKfjy/AY/MjHFb4kKw50dQMQIGpRKaGTsZ3J0Y3L0m4xpBuro7h/OTp
-	 qZ6VB7MvsTFqAeZBXoQhgcbZG6NokGpinVxRMSBOB4ORitk64brfQQ6tvG7HMK/zflhV+
-	 3LR/yQcnlJUHgVqgt3qMBG/5mp2m4xhH0cOaWEvVpz+41wbTrbtWFXuWSuwqrjYTrMQ==
+	t=1793284806;
+	b=Z4tj4qnvn2M8qM5HuDrc2RD5s1mIKe7yXltt9DxoTWOCgVcoceI9qBsBKzpDc42TNOw0
+	 TCpX+FYFBLQW+ouKrBE3oprqRiJU5EzIz74tkBICwrC8dgD5t60iLM0FISDoo34xukGd6
+	 +JtSmTFOgWYnk0xPjgntoXhHdGT9iLfAjdwk2UC2hTbuxZ4rffrjOoxem91N4og4bE2WT
+	 +HWHZhEX4jm7rhauU2ciERJkVBqQDx5poVpUEfB0KlQMpkAZPg0KGgNlVJDgAJfCaBtA1
+	 cwf8AFHZp3N/X790QITpSJKTCqb8oxBXzjaS9R0Byn6PT72iUpTt/BLHbVaCHrso4NA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793284808;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793284806;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=3CRl88bTJmQgduOvxN9CZbKqQ7aP6JRqMXHjPcTRYYk=;
-	b=xsdmk15Ep7wY0Knzb6bGFiPlMtQBWtaBN25i9sG21D4/gKTFmNEN4d16hY96gKvGUhXf
-	 Vnf24BcK3A6kW0t89BgVzRM+XHzfRNPDFR6RrvhnbJl8VpcAgM+ZfbrUl3/L+4U2ELT9L
-	 g856KTZnIZui0Dw6QBLb+1sfHKYmVYkA9Em2mDyBU3U2zQBgma/QfCdHwg4suoFlvKyKD
-	 YmGoeTCaYRmzLkM/DU/6utBwdbEGCtccBsQL16gBg+xH4EoCV4oCv3aEKG5D6zeq7uYVA
-	 xOSbuk2OtKWOXssfxfJS9Q4lp1+SB+mhoZ1zsMOVtQPjlXdjH4rwDhmQ7FQz0E4JJwg==
+	bh=BJy8jN0yBfhdZXtjLtbSjYoRw/ncuFMRQddUFR4swPY=;
+	b=v6bXoCXZXQ8wraW48WeDgDgtbNzzwZhok08tlKx/i3WeelpZXNnzgnCmmTPrqzDT39Cc
+	 QPZY4VPjz4w3Eo8OQ5Rr69y2tMREuMTHszUC4J4RwQWlZ8YzBuyEUMVGUBcxWB3PBXSDh
+	 ziCunzgWJDN2623etQ7ElrwcrD2zMs8tGyiJDy8+wWO520qqxwLiHNLW2UHOyD69W/red
+	 93wJUzB95bZs9KoxABW1LKs3WCVzfCTbA5KG9pDjpHLPXeow/ta4V3sBf3fxaSCUyFJlG
+	 ojsGoPt6IQUGGZaHJcm4GCTVbqW4IVs7K2z+mmy/chd0UHaVxykfaXawXiOT543Dm7g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JRdnlKnc;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Fp3ufC/Q";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB0C606A320;
-	Thu, 29 Oct 2026 14:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD60606A31A;
+	Thu, 29 Oct 2026 14:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JRdnlKnc
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87C421F01825;
-	Thu, 29 Oct 2026 14:40:07 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Fp3ufC/Q
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DEE81F01825;
+	Thu, 29 Oct 2026 14:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793284807;
-	bh=3CRl88bTJmQgduOvxN9CZbKqQ7aP6JRqMXHjPcTRYYk=;
+	s=k20260515; t=1793284806;
+	bh=BJy8jN0yBfhdZXtjLtbSjYoRw/ncuFMRQddUFR4swPY=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=JRdnlKncV9NpTh2juO7SyPref4piGIyC6fnqrXlAwFuOI8nOCfT/86Rh0XJj6QF5S
-	 RHSnhrp+uP1j/ps9f4ALLxBGWGejlRQCWk2s4uZqyqYGlSRqRYUvKCQ5gCj2/ix0Ut
-	 aM2xJFFU7aoWACd1scD5h6EH5QjS0Kj4QoHtDW6En/Kg17xNp/AX7swL3uWTYzFPl6
-	 RrXk0S8rXHJ0M9YQ5pFxKwYW5E14Zgp7tlx1IQmAkabTOE6KjqaU3G09aQ79IidyaK
-	 k+ZnWII++2rIOb0SB2C9DEbM5GDz2u+tjEnlIzj0l8Vt6BcZNBjEiLyn4KIO5OxwAD
-	 GDmOcFNVkBuGA==
+	b=Fp3ufC/QrGFHMg7LnePVZdqzzwvMyr/qs5pFm1/JrrD4IOWSc/pFdkf2lZwk/fKu2
+	 K5vQz0Yp8SEa25USPt4emKJotAWJBAeeX/z4cKyYCsC4hN4GacWic0FjMtdTgBoK2a
+	 hvTbyHKnPiIvXcdp9QVUmkJn8RaQrKA6kMpPMVq46OlPWrsKhxGxdUjqTPtButNBvA
+	 Dd+l/u8Vdi9KRPpc5g2RfU0oEzqGrIQf5rrhlhHH7m2UV74jkQtxhfKINxHHXQx71P
+	 l7BYetbTk8/T9A/OeFJkxxNpA6puscM0H3L0leU/kjvwxNZfagUSXdO9ESv7wbslF8
+	 JkZY5puAu2cXQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7D1BF380821F;
-	Thu, 29 Oct 2026 14:40:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 031F5380821F;
+	Thu, 29 Oct 2026 14:40:06 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,45 +54,44 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2 1/1] tcp: check congestion control restriction
- first
+Subject: Re: [PATCH net] selftests: net: txtimestamp: fix out-of-bounds read
+ in
+ raw UDP checksum
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179328480605.499212.7041046412594690100.git-patchwork-notify@kernel.org>
-Date: Thu, 29 Oct 2026 14:40:06 +0000
-References: 
- <71c142b2d45af6a2fe7fc6cd4a5ca52c53afbe23.1793075984.git.zhilinz@nebusec.ai>
-In-Reply-To: 
- <71c142b2d45af6a2fe7fc6cd4a5ca52c53afbe23.1793075984.git.zhilinz@nebusec.ai>
-To: Zhiling Zou <zhilinz@nebusec.ai>
-Cc: edumazet@kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org,
- ncardwell@google.com, kuniyu@google.com, davem@davemloft.net,
- pabeni@redhat.com, horms@kernel.org, jonathon.reinhart@gmail.com,
- vega@nebusec.ai
+ <179328480480.499212.1458877940988302168.git-patchwork-notify@kernel.org>
+Date: Thu, 29 Oct 2026 14:40:04 +0000
+References: <20261027162945.2122306-1-jamien@nvidia.com>
+In-Reply-To: <20261027162945.2122306-1-jamien@nvidia.com>
+To: Jamie Nguyen <jamien@nvidia.com>
+Cc: willemdebruijn.kernel@gmail.com, netdev@vger.kernel.org,
+ kerneljasonxing@gmail.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Tue, 27 Oct 2026 12:46:49 +0800 you wrote:
-> tcp_set_default_congestion_control() takes a reference to an algorithm
-> before checking whether a non-init network namespace may select it. A
-> rejected request returns -EPERM without dropping the reference.
+On Tue, 27 Oct 2026 09:29:45 -0700 you wrote:
+> With -r (SOCK_RAW, IPPROTO_UDP) the test writes only the UDP header and
+> payload, and the kernel adds the IP header. get_udp_csum() still expects
+> the IP source and destination addresses to directly precede the UDP
+> header, and reads 2 * alen bytes before the start of the buffer: 8 bytes
+> for IPv4, 32 bytes for IPv6.
 > 
-> This affects module-backed algorithms too; BPF is not required. For
-> example, after root loads tcp_bbr, a user with CAP_NET_ADMIN in a
-> non-init network namespace can repeatedly request it as the default
-> although it is not in tcp_allowed_congestion_control. Each rejected
-> write leaks a module reference. Since module->refcnt is an atomic_t,
-> 2^31 such writes can make it negative; later module_put() calls warn,
-> and rmmod can hit the BUG_ON() in try_release_module_ref().
+> ASan reports a heap-buffer-overflow for both -4 -r and -6 -r. Without
+> ASan the read usually goes unnoticed, but it faults when the buffer is
+> the first chunk in the heap. That happens on Ubuntu 26.04, where the
+> kselftest runner wraps the test in uutils stdbuf, and txtimestamp.sh
+> fails with SIGSEGV on every run.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2,1/1] tcp: check congestion control restriction first
-    https://git.kernel.org/netdev/net/c/dda51b737216
+  - [net] selftests: net: txtimestamp: fix out-of-bounds read in raw UDP checksum
+    https://git.kernel.org/netdev/net/c/8daacee78b3d
 
 You are awesome, thank you!
 -- 
