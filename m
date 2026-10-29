@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793291409;
-	b=Vy3TAmseMnY3GhUkcDgXqUsIBMjoepTvRnsJM+5Aer1jtZIdKxVD3MxGbWv1JJ2Lv31O
-	 7XXNFHlAzv5ogJbL3LhKWdpMezfMn8Idq2oyl4aGo5gLBAhEa55ABFQUEmB3ksYzM/+ei
-	 O7hwmW4njCvN8ul7/tgSIjaCip3RphQJjxjaW2cSyjPvvoPRZIr7zFBUMoUuoDTQw2h1J
-	 hLiPvPws5HcFFIahj+ZJtT8POElLMvmgtbLjbNj7XiYmGE8iNuRwznMZTeyZXXNvdxduB
-	 jYRK6A6FR39HywdIGcJrdIWrB8aszIepQAa/pCqH2WxZJMvN+3UT6CJ2GdEWkt/Ghmg==
+	t=1793291415;
+	b=0wz5e5vxicdOb5cD9FKEvyUFzR+Eha2cuju9vJqO7IwWl1f8eobDaWe/pmWTz9b+6wTq
+	 OteazQRF0KTHKHC+8q8Jng0mNSVDVTFRGYPnQ6O/10TkMwLuSLDTzUuiXe8qNz61roF/s
+	 d5v0t/oKQ3VuTPk8HFR3JqYM79qlq+lCaS9EJOWWiHmyPz44FKviNLaNm5L1S/y9ZeCVS
+	 ujaszQ03Or2FNTGr/U+RHcrDclbBi+wtuolR8O3nWsZeM2YgXDa0VSBOIlwaVs0omrLju
+	 +jC8G5pdpcFBjGuJW4Mp/20cFGYKoyTJJQ4AnKqA4MdYr68tE51NGiqOECKbieXyjMg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793291409;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793291415;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=9sdoxOsij3ml0E4hBz0Uk1W+O3KE/Jevu63peRDA6+g=;
-	b=nibnCAR6UztfyS6rKyDcyVp89ARhbh3Ig9XmAycy79mk0X4WTEptqCDpdXCzBkN0K94h
-	 EJaSimUo1OjZKqPBDE5HGtHGLnzWBg5M1OgZNHq3h4+jUSlSwCeWqAdF29dfLeMOjs67j
-	 P93HQzlEBZFbP/ajVQcnzkZBLEdLOLRfPS+rgjs7Aku+NoDTYfuC+1s+eVD9mjLF7gyEd
-	 3sBBKXyonVDZ5wG1UWReaFGK9Nd/1aypv97Fa7J9rAGjJ2+Jlrg/4e+lGoamGxBZPEHXb
-	 eVftrbIq2nDPhW+if/cQp7MbRz32uwWGXTJLDGjMEohYHAKV1IXQuovOMRu72NUOU4A==
+	bh=PLt2EAzlaTKDNOPaD9JM/CvAsTFKXTYjF72tAbeUw5U=;
+	b=4SV2fpO8LY48/Pg4T62rUKwVMkG0V2x7KsGTQP55sXrKQ0ImiWGpoiWi1+E9Yr7nI/Nf
+	 6MclC4gQ7DNO4TvDFgC0fNhoSy10uDH85QY4r2CEfenHKcchSCDgWc4z81BjOpMGaj3sC
+	 7lplJRNY5E9SfdN6Zr0p64mleuqmgdtsnNZKbja0gTKrwD/pVeGQWBtME3AR0J32IsZrV
+	 DgUg4Ux3HL74Vac5UjcuLNvsbi7egTwQJJdIChqmlBjyGcY+qI0acqi3OoqICI7rBsiao
+	 8AGHcLx9okSdklV+S0lxBejUn2hhebZ7BLSE6GwjHjKywXInSWpCWtZyjsNBPE8nMeQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LuYpXVpz;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dyQUUzTT;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D3F606A320;
-	Thu, 29 Oct 2026 16:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E7060A262D
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 16:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LuYpXVpz
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C63D21F01816;
-	Thu, 29 Oct 2026 16:30:07 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dyQUUzTT
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4750E1F01825;
+	Thu, 29 Oct 2026 16:30:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793291407;
-	bh=9sdoxOsij3ml0E4hBz0Uk1W+O3KE/Jevu63peRDA6+g=;
+	s=k20260515; t=1793291414;
+	bh=PLt2EAzlaTKDNOPaD9JM/CvAsTFKXTYjF72tAbeUw5U=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=LuYpXVpzcgZf5I4egFlI4i+W1uV5kDaqKb6zxyn667htazDz/UY5voP6+zzEpXm80
-	 ioWwC0HW+4d/gANJuXS4MTqacHCbrVpK4gMBKRJdj+XgtgjC+Mx/+CO5DeCaVYL/J1
-	 Cf4iWG8Fd0kJDrHQrsfQ17eNGej57KeXNRkpKsVYksC98LjBXhLPUIPSqFEbcPjwp1
-	 SQPUBku2b8m6YljgP62sQ7XYU2ijiMmgXifT2DwJbYSusl6tjT35PPSv9RnOr+81tJ
-	 lxRDpXr7kcht53KRFVmgOLFvu3AwOqQHK9LfqfzdQW1d5kRmrEZ7lMXfXK8fY0PeUy
-	 GLpEJSB1STrjQ==
+	b=dyQUUzTT/6xa6EMEgaQV6wGjJu+oBk1CVlzI0FgQb+lr7HEE+cfIQtt+C9mF/lDwj
+	 akQe1C4X4Y4tLvYGq5uv8ad1n46FykGfhlz99HHwME5RIqjROOBBc8539cby/GXp2I
+	 yaUhTotPXFfT2ddpc9S3BCro3LMuUrh9d0AE/q+/cUpopFsaJ0kLYRNPgFHsu7OLJL
+	 Ab87uACYfgcxaj2iS8TTaPZArl+ihEMIx2lIxXgQzfCzqe1s5LVkMZJj/bXWMm+k8O
+	 PocflK3t1UOFNZLzvc1HySBrXTpfbrimkBse3d4f0m/dbpVoLiq74FB1vuVuMTGNS+
+	 Y1NEXbkQbSJLA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA3963808223;
-	Thu, 29 Oct 2026 16:30:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 401C73808223;
+	Thu, 29 Oct 2026 16:30:14 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,58 +54,36 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH bpf-next v5 0/6] bpf: Add syscall common attrs support for
- xdp
- link_create
+Subject: Re: [PATCH net] tun: drop batched packets while the device is down
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179329140655.559085.2587539582409074788.git-patchwork-notify@kernel.org>
-Date: Thu, 29 Oct 2026 16:30:06 +0000
-References: <20261026154948.99408-1-leon.hwang@linux.dev>
-In-Reply-To: <20261026154948.99408-1-leon.hwang@linux.dev>
-To: Leon Hwang <leon.hwang@linux.dev>
-Cc: bpf@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com,
- memxor@gmail.com, martin.lau@linux.dev, song@kernel.org,
- yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com,
- ihor.solodrai@linux.dev, hawk@kernel.org, john.fastabend@gmail.com,
- sdf@fomichev.me, rostedt@goodmis.org, mhiramat@kernel.org,
- mathieu.desnoyers@efficios.com, shuah@kernel.org, kuniyu@google.com,
- liuhangbin@gmail.com, mkarsten@uwaterloo.ca, masashi.honma@gmail.com,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+ <179329141279.559085.15478130548672944710.git-patchwork-notify@kernel.org>
+Date: Thu, 29 Oct 2026 16:30:12 +0000
+References: <20261027101830.85327-1-shaw.leon@gmail.com>
+In-Reply-To: <20261027101830.85327-1-shaw.leon@gmail.com>
+To: Xiao Liang <shaw.leon@gmail.com>
+Cc: willemdebruijn.kernel@gmail.com, jasowangio@gmail.com,
+ netdev@vger.kernel.org
 
 Hello:
 
-This series was applied to bpf/bpf-next.git (master)
-by Andrii Nakryiko <andrii@kernel.org>:
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 26 Oct 2026 23:49:41 +0800 you wrote:
-> I'm planning to add syscall common attrs support for LINK_CREATE cmd.
+On Tue, 27 Oct 2026 18:18:27 +0800 you wrote:
+> tun_sendmsg() handles TUN_MSG_PTR batches from vhost-net by calling
+> tun_xdp_one() instead of tun_get_user(). But this path does not check
+> IFF_UP, allowing packets from a guest to be injected into the host
+> receive path while the device is administratively down.
 > 
-> This is the first series for the plan, that adds syscall common attrs
-> support for xdp LINK_CREATE.
-> 
-> Thereafter, retire the tracepoint bpf_xdp_link_attach_failed, because
-> the underlying driver's error can be back-propagated to user space via
-> the syscall common attrs.
+> Check IFF_UP in tun_xdp_one() before running XDP or building an skb.
+> Drop the packet when the device is down, matching tun_get_user().
 > 
 > [...]
 
 Here is the summary with links:
-  - [bpf-next,v5,1/6] bpf: Add syscall common attrs support for link_create
-    https://git.kernel.org/bpf/bpf-next/c/b891bce3fe4d
-  - [bpf-next,v5,2/6] bpf: Add syscall common attrs support for xdp link_create
-    https://git.kernel.org/bpf/bpf-next/c/cbb143cc97b6
-  - [bpf-next,v5,3/6] bpf: Retire tracepoint bpf_xdp_link_attach_failed
-    https://git.kernel.org/bpf/bpf-next/c/d33d3ec8f730
-  - [bpf-next,v5,4/6] libbpf: Factor out __sys_bpf_fd helper
-    https://git.kernel.org/bpf/bpf-next/c/d6ef68efcece
-  - [bpf-next,v5,5/6] libbpf: Add log_opts support for bpf_link_create
-    https://git.kernel.org/bpf/bpf-next/c/0be729f9f030
-  - [bpf-next,v5,6/6] selftests/bpf: Add tests to verify link_create logs
-    https://git.kernel.org/bpf/bpf-next/c/a1a714b7e947
+  - [net] tun: drop batched packets while the device is down
+    https://git.kernel.org/netdev/net/c/8f44631ba02a
 
 You are awesome, thank you!
 -- 
