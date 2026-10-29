@@ -1,97 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793262578;
-	b=xQZ8QkfJLdDbSkVOxAe5U89tAL5n7Lysi8vI4HmjV40EzwfHXRviv00r9oIY8h5IwW/I
-	 qv2egWiVtRiOZyYtmwE9DHK0lWxv8rh5N34cEtxQ3sUiNuFjYmQNu7tGsBrFFpWWqIw52
-	 DRFIR4nkgtKzGrLpr+B7xu/FpsR3V/Bz5bE0nat2GEe3l19uhUiDOWgiygQJCweN3V+C0
-	 5iISg1xwnkygJ/Obw8ieaUsp3byNheYO0H57E82Q6r1F/oPLeFLvO/zDfMCIdHnvb0P5T
-	 jJ+IBMqJf0v1vsNEB8MkrAR0oubFbbJu6nwZF63DkhrrZvZ3N3GuZQWZABnFDeyJrVw==
+	t=1793262830;
+	b=TT0COR/iK7ENBXiuWgv3Du4Eqd32VYmwVMKOx9gwPhr81c8fdg+MgpiZ59bcIe1xQlxN
+	 WlpqlRX53a1GlJvNhHBxHy+ugIq07DiZfnF5dwe05jf66YYLE5NMnNWkivgGcVhpIS9+f
+	 DoyIzQiP8jMm3giiGC0/JH9ZFwFkebLpYo6Cw7z2EBAvLb/T0Auej7S0uHHB3k/weiweZ
+	 4dwK/y+YWZItlHz/HZqRfGa/UCeAoNJJWsGR5Bgs5qE6FiqgwqxgLcQFikO4kOoPqMKz5
+	 MjBvPY3feioQa7ROsOrD9y96n9IuEzMIXCsYXBGbdlyyprNQwd7X96Kb8lDZbS5Jo5w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793262578;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793262830;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=jOkt8eUrlOmCTGKi+IBj1g+BGAtzeO5q15Ol0c8Hric=;
-	b=k04HOEQ5FcV/nzluI5136wGI2Zv07vxs+YaC+Y/h9Oi8ux0qoKl1xWg5lumcaheTsmRd
-	 UwK3NjbmN2I+QHcQ/X97v6DUIFUH/qHYzMNYO+wldRJIj+DeKUiAMSVeJzfA0SuWh4GZ9
-	 F6gAMUT4dUebRDFQj15iZxba4wvuvjNXhRF1uxrpJRnqqD2VThn47EHN1B0e5Lkuha+Hz
-	 At/+lZijG64k2MBMpbyKB9CTPlGk0sgyvevUdcszwJhuoeWekrmsqasaFT3d8PGWImuaX
-	 z15t56D04PZRiaLmIkuWrh/YzAL/TBNGLSyQlOwLHxyc3wpNK5iUP3W1cO9MWi5GJRw==
+	bh=GF7UWaqzBHrRMqf1twL0Wkjov/Qdp3CO2Y5n8FNGgPQ=;
+	b=rMee7PlbY828lA2/z2sKnkPVuInMjhsbHFUjP5B3SWsf/hMQZKU4DdAhTFU7DvTHL26l
+	 LGYaizoPoHowCrGKuv9HrIJcRAYJbEIaocZmQtZHe6EEsMa7rwKLy8uPcemIoBH0jxSP/
+	 OMp03UpmEs/qhk7CRaSaqPkAJ3Z3cVHjA6hSQR4dakwyewAQ9X102/zEtp4D9JeNGWczc
+	 CSqqb7m7PwXE/5UuR+R2KfVt3uJPkOmg/iavYsJRBRo5KAj7T0oU/sBUd/X3Ub0/aBZha
+	 rTSIxnFnG14W4GQW7MKEK1znCuNnlDqAPe9j4JazD+iH7W7xPMYsbQCRq1gU8ShB4dA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=TxH2Nv9w;
-	arc=none smtp.remote-ip=209.85.128.50
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LfAUxfUi;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=j+WJNVJr;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06C1606A324
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 08:29:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A06C1606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51A3606A327
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 08:33:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A51A3606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=TxH2Nv9w
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a7a3b29c11so2029565e9.0
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 01:29:37 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LfAUxfUi;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=j+WJNVJr
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793262828;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GF7UWaqzBHrRMqf1twL0Wkjov/Qdp3CO2Y5n8FNGgPQ=;
+	b=LfAUxfUi5dU+9cIgSRWPxki4egR7f9zNbnQ27u0d1TcYQPehQ4qIGOZm7ftRN4V9Ua7yqd
+	8FGIT7eawBqxlsb0FrP8HtDNDTSd9DQyDj5qV3J4qtAnUF0Pih+cNcClcPHO5IhorhdUpa
+	SizD3z//Ri9TB8gWGZXU9Jq8lGMgsaY=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-149-h2ZeKV8oMiuRulPi-C8cSg-1; Thu, 29 Oct 2026 04:33:47 -0400
+X-MC-Unique: h2ZeKV8oMiuRulPi-C8cSg-1
+X-Mimecast-MFC-AGG-ID: h2ZeKV8oMiuRulPi-C8cSg_1793262826
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a359b714f8so17210375e9.2
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 01:33:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793262576; x=1793867376; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jOkt8eUrlOmCTGKi+IBj1g+BGAtzeO5q15Ol0c8Hric=;
-        b=TxH2Nv9wX4NId0No6LBCGfNvUZ2HHK0eY3XNMVsu1O+tTEDpVxoaU49a4T9NHpEg0w
-         tYscu3LoXDs+XsYbGgxclZiq1cfwRkWIXGyP5/F/8RsOcgW0Po0kDwvZE+7nRiikRyov
-         YBEdvhCfweiTytMstcule7eL2jqFC0pyE0hn1L0ZfcHLjr6AA8Ys/kbfbiCm+V7YWLPp
-         oSPeiGoHzkL0sxeTyan88jTN4c3NXVutjRC3uSHknp+U/VjfLhBRcM7nP/LngerK58pB
-         fu3Z9fBcgyRDx0Ho7D1XrlOw5r2mWdD8C3KWkM6bN0IOdScpZL05c92AgIYNw3XF0L/z
-         8UPA==
+        d=redhat.com; s=google; t=1793262826; x=1793867626; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GF7UWaqzBHrRMqf1twL0Wkjov/Qdp3CO2Y5n8FNGgPQ=;
+        b=j+WJNVJrJeOthrTpF7+ttqTv/8eiZafAYmXxM2ShcfqcTYuzqwOtB+Ud7rshGR9E0x
+         P87gFoqBvg4QLPSftqoJjYEFC6bKOFLJlngnT6ycGTXV1GUZx/J12BWPpZeWz7xT7F6d
+         WblF9GDbprO98YgMdbWEB5EW31AbHsahGeUuiNIEu2O4KZExcw6kg6nNXy9WaqQdL2i2
+         0rttuSTRNDra3E/gGmYhFUK2U04PhxkFPeLkCJ6VpTycixibpyTmCfzL3JIS9w+ln/ZQ
+         t1tpPu8IoLvp1n1Zm84/LYbaslfoLK3pfiUBGmpvLoafn7Vwz6Z/6s6fUqLtZtxG+pff
+         jnAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793262576; x=1793867376;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1793262826; x=1793867626;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=jOkt8eUrlOmCTGKi+IBj1g+BGAtzeO5q15Ol0c8Hric=;
-        b=R/TiJZO+2aatqhh2JcPYfY4S/OgWgVnOyU5v8Iy74sgQFv78843C2aLdknLbW0CPbt
-         ONEh4zUSrBUpHVXEmCYYRYuzdMsBUNL0KUXPbY7hKpugBXfNgHRJ/eNKCQgnUe9tqfG0
-         aBmN/nQ4XUAN+kbtADJKNs2/gHCTx4va4gQfNRV4dvlMmBc76itYLqOTGpG7GwtqX1Oq
-         5CVwrr+Gbc+/1A3evCbT0NAnjP8pw5m1s5hpTFch7hhyVY07XtTLGiT97j250bkGEtpS
-         2ubbEMEM4ZC+LczM9x7IiOKRn36kRLjmqH1skFgQD+VyxraLKoT1JwtdZ+THOYBvQkYU
-         hCiQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzcN7mA1NGPn9ClwrN42ABd8M8K80N2mPxt1EsmmU8b/9dU2bxVCA4izKtgSLyPsdm2ASmCp0k=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJvcn7mtmf2DgtqZnLyTneS7gXTPMSgcX2eU4jSPA03lxJKCR9p
-	UI0CKpW/itzt679pt7mtpgNrznXopIPZpMwNE5KOlj1p38WOIkXJyRZJ
-X-Gm-Gg: AYBFou1zWfcNvearPuzmo4m7Us0AdXuG+A3iRh2tEMeFBBoxYaNyWqOC6QtTMH+K00p
-	tV9ckapZ6aJdsBYZYgQHLs1Pu9WPhG5uC4JDFtOqApUoX8g/xB85oz91dP+2VD+LfsirA1vqlmP
-	lOV3jg4Nzu1TPNzvxIW5olBXfR8KQTmL+xTcjGUwoaN3D/jeM0cxkJld5xcVsa7GRxs6iSqs5b7
-	iqo9L/harhW2zkYtszY5UQsVWMJ/f2HOjDMo3BhyCDZoIRMnm/bc5HYBeMpEsH2cvAB9OColgrk
-	+HYy9GHOSb609xiYNd5PKgvL8YfhYvraI/PkCm9Hy5bsiN2197npY07KnpFp5Vk0Fm0uDfTUCJ0
-	60g8nCG+rQJhmaw+BrcqNGS8W6NuFKFrd2nDPR7HB1istx5oTY2l7+ZZZgIXiOfvhdhxgcTC9vV
-	c55XsBXGJO6XRfqXlpsbPCkBhM7AqjKw4KFklGJa/1urmmNLNOTQVKempStHo9pZEmsm05iFkGB
-	v9va+PrjAy3YomL3zDoEGAIfW56a0tTfKj8nJBnCiwx0cmRqFIxCzVzjPAF/RjXLU39BsZp8tyy
-	SmmSXNYOyjjtrifz98Ej9y7MFCy/rOMjbiXyXZFCnvLVAfm7F5U=
-X-Received: by 2002:a05:600c:c3cc:20b0:4a0:1f9e:5f78 with SMTP id 5b1f17b1804b1-4a96179c9d9mr77845395e9.0.1793262575720;
-        Thu, 29 Oct 2026 01:29:35 -0700 (PDT)
-Received: from thomas-precision3591 ([2a04:cec0:10c7:3c2b:5f0f:ba7f:8641:d1f0])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4aa7f7f4cdbsm55170455e9.7.2026.10.29.01.29.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 01:29:35 -0700 (PDT)
-From: Thomas Fourier <fourier.thomas@gmail.com>
-To: 
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
-	Alex Elder <elder@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org (open list:QCOM IPA DRIVER),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net,v2] net: ipa: Fix double free of the interrupt structure on  config error
-Date: Thu, 29 Oct 2026 09:20:55 +0100
-Message-ID: <20261029082100.17722-2-fourier.thomas@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        bh=GF7UWaqzBHrRMqf1twL0Wkjov/Qdp3CO2Y5n8FNGgPQ=;
+        b=szZGfm4YbCk4P7nwObbtPw34l7x397ad+Njbmo5AmGWKsSKsWCRRek9JOu5IRR2Usj
+         kGgNaYgKZJj5dHR1dFwNuD5FrYKaFzq5aTVU4r0iXGoWd3//eeHGMFoeX7tzYzdySDVM
+         J8LO7pc7C0zXaUoRFu4eOHaZ3eVv3ROpw3suTNiRSBqIv65VMxgxxHzrI/DwyZIq7+mo
+         KwX19gmEf5cJ5ixqhzykyKLr+q02FAbMAAE6Y54aD9mJobDOUgnw2qt//umbnzNBZsgk
+         9X+mWASYSgqrXwvHzrtVDQQn8CqjZERsjyUF9Ge5MMbNVQCGIG73f5viVlZ/jDsUM+qN
+         HUrQ==
+X-Forwarded-Encrypted: i=1; AKwUvByIoHrUjDoVjOTTgErSuwPlRiX06mGcLlmG855s0xj2Ar5gbwSrxhMcRQq/nyY8x5zGdWyxClg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYII5I3SYCBk3IFMaM1CLS24/kv71YY+HaFcXQ4itI8e2l+3T0iK
+	20trLQfwrSWu0332UQPcHU+aaepj4QEOLszjsW7B2/jg9vCN2J41eXUprh4c6lvXjfLfP3a2LSB
+	JSyDcXbYlVrJR/TtDNGtz7GrZt3VhDIgJIK9JW7AQDj2z/rmYxEH74l29+w==
+X-Gm-Gg: AYBFou1nfebiX/dYFz1WiszXF68TS9qzwHEOs6kuFIh+Xn1ba4MPN0HroDgqhafyJtY
+	nb4bExAPfiTXNpq0egTlFXcAWbHflEkfpW9zEA0sgekQSqilOj+AmPk2Pl9VaZARn92u/VnyhO8
+	IE4/0aDRQG8B1fA2gQdkxyToqaTQL+G9z5aIBgod7cNvapUnoS84KsyltIL7UFzLu2n7uQ3TkOt
+	SxE1Fm7ZM4ePgEUlbWg4jJNyi1edHQerM/hn/blhkbvk5LqEMtO0VmLwGkTg0pHZYAyGRoz+6xK
+	44CkGGLyw0Rw8GpTOsdwILPaHPYyx/sfTtSv+u0TxN2Fs1hxijI60w4RtUQjM4YHeNrSoNBCaKA
+	bZZMhBiz7IYdCNCXsQviC49kQVnHPkp88kTXCfWbp22eILjldtqc/vW+V7YxIK4yCjNzIpJhAdy
+	QEAgnT+FJoLPNQME5IDQPrb7oKH32wan3652a1OrKncFmhbJA=
+X-Received: by 2002:a05:600c:1f93:b0:4a1:6517:ccf1 with SMTP id 5b1f17b1804b1-4a9663997dfmr100806765e9.9.1793262825673;
+        Thu, 29 Oct 2026 01:33:45 -0700 (PDT)
+X-Received: by 2002:a05:600c:1f93:b0:4a1:6517:ccf1 with SMTP id 5b1f17b1804b1-4a9663997dfmr100806225e9.9.1793262825282;
+        Thu, 29 Oct 2026 01:33:45 -0700 (PDT)
+Received: from [192.168.188.234] (ip174-129-192-82.pool-bba.aruba.it. [82.192.129.174])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4aa7c5063e3sm50488775e9.0.2026.10.29.01.33.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Oct 2026 01:33:44 -0700 (PDT)
+Message-ID: <9024faed-854d-411d-96c1-7cefd4d68dc6@redhat.com>
+Date: Thu, 29 Oct 2026 09:33:43 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,73 +112,67 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: Backport request: Revert "softirq: Let ksoftirqd do its job"
+ (d15121be7485)
+To: Gyutae Bae <gyutae.opensource@navercorp.com>, stable@vger.kernel.org
+Cc: Thomas Gleixner <tglx@kernel.org>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Jason Xing <kerneljasonxing@gmail.com>, Peter Zijlstra
+ <peterz@infradead.org>, "Paul E. McKenney" <paulmck@kernel.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Minsu Jeon <minsu.jeon@navercorp.com>,
+ Jonghyeon Kim <jong-hyeon.kim@navercorp.com>,
+ Siwan Kim <siwan.kim@navercorp.com>, Gyutae Bae <gyutae.bae@navercorp.com>
+References: <20261029054200.97234-1-gyutae.opensource@navercorp.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261029054200.97234-1-gyutae.opensource@navercorp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Since ipa_interrupt_init() allocates struct ipa_interrupt in ipa_probe(),
-the structure is owned by ipa_probe() and released with
-ipa_interrupt_exit() on its error paths and in ipa_remove().  The error
-path of ipa_interrupt_config() still frees it with kfree().  If
-ipa_interrupt_config() fails (called from ipa_config() via ipa_setup()),
-ipa_probe() unwinds through err_interrupt_exit, which frees the same
-structure again.
+On 10/29/26 06:42, Gyutae Bae wrote:
+> Please backport the following upstream commit to 6.1.y and 5.15.y:
+> 
+>    d15121be7485655129101f3960ae6add40204463
+>    Revert "softirq: Let ksoftirqd do its job"
+> 
+> On a production 5.15 PREEMPT_NONE node, long-running overlayfs
+> getdents64() calls prevented ksoftirqd from running.  RPS IPIs
+> continued to arrive, but NET_RX processing on that CPU stalled for
+> up to about 3 seconds.  Over 15 days, the node logged about 1,000
+> bonding ARP monitor failovers, with no link-state changes recorded
+> during that period.  The failovers stopped after the workload was
+> removed.
+> 
+> On a 5.15.27 PREEMPT_NONE test node, we used a livepatch to make
+> ksoftirqd_running() always return false.  This removes the same
+> softirq deferral checks as the revert on this build.  Under the same
+> load, we measured three 10-minute windows: before patching, with the
+> livepatch active, and after removing it.  The number of HTTP requests
+> taking more than 200 ms was 17, 0 and 11, respectively.  TCPTimeouts
+> increased by 25, 1 and 21.
+> 
+> We verified with patch --dry-run that the revert applies cleanly
+> to v6.1.190 and v5.15.223.  Both already contain the related RCU
+> fix 1dd1eff161bd.  6.6.y and later already contain the revert.
+> 
+> The original commit was intended to prevent user-task starvation
+> under a softirq flood.  The revert's changelog points to threaded
+> NAPI as an alternative, but it is disabled by default.
+> 
+> The revert was merged in v6.5 without a Cc: stable tag.
+> Syzbot has also reported bisections to this revert [1].
+> Paolo, Thomas, Eric: I would appreciate your thoughts on whether
+> this revert is suitable for 6.1.y and 5.15.y.
+> 
+> [1] https://lore.kernel.org/all/000000000000a249880603717c15@google.com/
+IMHO such change should not land to stable lightly. It's a behavioural
+change with subtle side effects. The threaded napi feature is disabled
+by default for the same reason. Also the revert has some soft functional
+dependencies in napi threaded cleanup and improvements landed into v6.4,
+i.e. 6bb218b5a6e3f3c5e2e76faf8fc976f3f6f72496, likely more.
 
-Drop the kfree() from ipa_interrupt_config(); it should only undo what it
-set up itself. Drop the leftover initialization and cleanup of
-ipa->interrupt now managed in ipa_proble() and ipa_remove() of ipa_main.c.
-
-Fixes: ad1be80d7582 ("net: ipa: introduce ipa_interrupt_init()")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
----
-v1->v2:
-  - Drop ipa->interrupt initialization and cleanup.
-
- drivers/net/ipa/ipa_interrupt.c | 12 ++----------
- 1 file changed, 2 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/net/ipa/ipa_interrupt.c b/drivers/net/ipa/ipa_interrupt.c
-index 131b9cc94201..766b094eb069 100644
---- a/drivers/net/ipa/ipa_interrupt.c
-+++ b/drivers/net/ipa/ipa_interrupt.c
-@@ -260,10 +260,8 @@ int ipa_interrupt_config(struct ipa *ipa)
- 	interrupt->enabled = 0;
- 	interrupt->suspend_enabled = bitmap_zalloc(ipa->endpoint_count,
- 						   GFP_KERNEL);
--	if (!interrupt->suspend_enabled) {
--		ret = -ENOMEM;
--		goto err_kfree;
--	}
-+	if (!interrupt->suspend_enabled)
-+		return -ENOMEM;
- 
- 	/* Disable IPA interrupt types */
- 	reg = ipa_reg(ipa, IPA_IRQ_EN);
-@@ -289,8 +287,6 @@ int ipa_interrupt_config(struct ipa *ipa)
- 		goto err_disable_wakeup;
- 	}
- 
--	ipa->interrupt = interrupt;
--
- 	return 0;
- 
- err_disable_wakeup:
-@@ -299,8 +295,6 @@ int ipa_interrupt_config(struct ipa *ipa)
- 	free_irq(interrupt->irq, interrupt);
- err_free_bitmap:
- 	bitmap_free(interrupt->suspend_enabled);
--err_kfree:
--	kfree(interrupt);
- 
- 	return ret;
- }
-@@ -311,8 +305,6 @@ void ipa_interrupt_deconfig(struct ipa *ipa)
- 	struct ipa_interrupt *interrupt = ipa->interrupt;
- 	struct device *dev = ipa->dev;
- 
--	ipa->interrupt = NULL;
--
- 	dev_pm_clear_wake_irq(dev);
- 	(void)device_init_wakeup(dev, false);
- 	free_irq(interrupt->irq, interrupt);
--- 
-2.53.0
+/P
 
