@@ -1,61 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793242503;
-	b=4zjcjXw9MKdDlkUrphr/i3sAKGvFfRPFZQRP3/ANAcj49N4avkIOV/sJfxWLLsT5V4o6
-	 42rJZrkSMdSzeQVrksfpmiLyVJrul+ZhkFfPHdW2tkeazy2xZ2CfODR3C1HOaGDkBZTWK
-	 u0uKM/Sz+59KvJZEkxFKyMtgYVTphwwGCD3aNXiFHVlE595JKNUQF+k7eFNvGLQbTKM2U
-	 sH1mCm/QRpy79X48oOjFyg2Ukpo0WeWtuiBg4KZ3KCRFQKC2q1D9U/kMizt6C9kEdCXn+
-	 1hG/I+VzWseUbEvQSTPOxzH92ZpcinClfF01P2hZLzY3GAamCFdEt97cIfeX2+IWUcQ==
+	t=1793242976;
+	b=sS8aaVNlw8j2R1xWNZk6nPinY5lEHDS2Bf8PrvnWVH+9nI6jv8Enu1Up+/D8moMfUeuk
+	 FHk9nrIgRC7K857FyZaM4Tf/zAdEH6h8h2OnM+yJB66rHafGGXInxwFyqpgs/QpN3L3Kv
+	 Gt2G2i+CWX2Ay7e7/1ZZJYhzUpdUSOLORTYeNb2quCf4A0odsT0Pit5Z9MgTYOsEpM6Vr
+	 j+y1CPw+ZBm9Km7bj43R0TCaB1PEFX68hkgyTrnHeqwezvWx3A+nZs4uVGeayOOsr/DzT
+	 93pD1JwToLO0sPHVZv8DuGyMKQVYnMTMTEhAuf8vOCEnEQYPQzCNhROaD3O3mHTnGpg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793242503;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=HEq4Jj61Ut7T6iCIHykSxWuio60z3Qv+b3hJIk40gUY=;
-	b=uGe9VqIIU6WQ8ZGjoEApfyCooB4gKzS00nLLe+CcB1O9cVpGKi780Zbkog4ND36uBZ4W
-	 h4eSTdX28d81N45vMKy4HfKq/Xfa7SlMySdTl/t3Ll7bV+cqcpYGlOu2G6YyaHmmnvjh5
-	 /OLJlw6d3lXxFK+DoT+Xx0uwnjU/o49FV6TlVKmh4OdtHGlhoRV40rsUwfvbVbDYYO1bW
-	 yvDwL6id6IXFnYUfsziU+FmjDTqG9UQOKyF4P+WP3i2zVYvTGx3mcZfXUduHNyeo/RlmI
-	 JZjGPWUChzuSwDLuk4BIa1X9w5urlJ0yOaq5m5nleXhV/tCjeHytV0HAIJb76GOvFMg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793242976;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=MJTAFr/nct8BR2PWhY9m1x54UXhrbFHiuq7wCiirHbA=;
+	b=ElRYSQKcy8Pa+akV85D6AAfZOYNZB9uaXIGGtA8cHlEOkd5946Ma4UrdKE2YaSg/KKw2
+	 Fn8vFCVnIk7e24kj0WVTSC5QQycZzOiBr+GuuTDnuH32eNEbIjwKXXar/3YM4jwYtbI+q
+	 bPbyWENWHeyBflYCBbMoVNU8ywI7qzrIlLtbvmtzTyE7QjDZL+MMai1JoykDuMinw65Lv
+	 CnUlm+CM46c/ktSPvwjhKgE9tVGIp4Uh5XS+jCjp3yN57SO0AM7mpGyGO+hfwEPeueZnW
+	 6JYMVLANnVOX8dX7lWc1162ftF4hRCkvZjKG48EGXu1ezFbAuiKW2GsZTyXOpuy5DCA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=163.com;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=XilHLtcd;
-	arc=none smtp.remote-ip=117.135.210.5
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=i20N95rk;
+	arc=none smtp.remote-ip=209.85.217.46
+Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5789D606A31D
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 02:54:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5789D606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75AA1606A31A
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 03:02:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 75AA1606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=XilHLtcd
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=HE
-	q4Jj61Ut7T6iCIHykSxWuio60z3Qv+b3hJIk40gUY=; b=XilHLtcdes+AKFweS3
-	agBuGqtFHbP061SliHyAWrHz6YR4DFgRr8uw4zbKosF3Wsu2X+PoBZEgrN8nIfFs
-	6R3Op6dTYGY4+4NOdNPGecFkPQknr9uDjdskMLoxwgQyCg/Uw8K4gqwf+WD8wDeI
-	yhR2z4aQm1FCj95KDMrFCm3yU=
-Received: from kylin-ERAZER-H610M.. (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wDXn4RdteJqPV17Dg--.31995S2;
-	Thu, 29 Oct 2026 10:54:23 +0800 (CST)
-From: Yun Lu <luyun_611@163.com>
-To: jv@jvosburgh.net,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Cc: netdev@vger.kernel.org,
-	hangbin.liu@linux.dev
-Subject: [PATCH net v4] bonding: 3ad: update transmit arrays without waiting for RTNL
-Date: Thu, 29 Oct 2026 10:54:11 +0800
-Message-ID: <20261029025411.1087287-1-luyun_611@163.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=i20N95rk
+Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-7cc365db987so983394137.0
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 20:02:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793242975; x=1793847775; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:content-type:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=MJTAFr/nct8BR2PWhY9m1x54UXhrbFHiuq7wCiirHbA=;
+        b=i20N95rk6wxtdrQR+q3G5uzJPMIU4uWjvFTaKwCl1gislcnxgJsFidAdjdmOLPl110
+         49XDz9Ofu4cv/FmlQuzhOaMZWTxecTZMCl72NhkqzWL9N/fDjJ0uph1JjPH67cGWNEoE
+         ZKi+NDn23oEmvVHdLsKjaLAugggQI5mom5ZLq9mnMXgSws7QSRc8TnJdp2HmrDxHh//B
+         yERDj32KXG5VzjcmEVH8sGlpQLdginhb/P+D8Nsfp0SkM0XvBOKiYQR9FHGmB/6nv9VZ
+         KwEX9uW+MxZZmuXrxsVunrcLeXFXccx5uKysi8hwpBxS8lHE5KDALxN7JMkKO/2rZzLr
+         EeRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793242975; x=1793847775;
+        h=mime-version:content-transfer-encoding:content-type:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=MJTAFr/nct8BR2PWhY9m1x54UXhrbFHiuq7wCiirHbA=;
+        b=tzb9OQOmGuCu9d1qUs+SK++ex1u/3Fu4FwqhpBnKpaQ11VUMUfV7AYsD8DSAGAOx5d
+         Mu3M3cQW4R/LECmR9UdEVDZjiTEEOukpfCyD/8d3Fm1jVf7tgDJQpXHi8MPwObwq5bNh
+         2omkiK4aNY4DCkx10oc9rvg4qvuMCowlOj9c5uA3tDdfDNTBJZf+/VyUhl6pB52Kr3cD
+         mqBMkwWVM9srrisg1ay62HoS+ZFQhi1UsTVMB+7vL9ZYA7YrCu8Qu7GiIeFLQ8jsjob6
+         +zY3huuK8ZIxpOIdOfW3sok+vV3cGJhFFXeHezQXCmg3o3YyYT1IvRuCKEdsjAtVsINT
+         VCrQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxwFQcnhnwT0Ond1GSTGnXXJOHyE0OdjCWEX0zsRG1eUzv797BeLYYXuozASJwYiSSuS5BkJXs=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJU1fFj0U40mUwXw13Pla7vHgj0ZcxU9WnQHVrpLsbzA8xk5m/E
+	+sqqCJOeYIdZzOecpKN59v06O5ljrZS7/gzLEKNehl9QxoqwP0SdM/U3
+X-Gm-Gg: AYBFou3V+Vu1yYyT9eUW7kTU8ncFYifQm/XhmUyiKDtghJWy54AUiC+pvBkII+YjW8C
+	hu2sp9J6OHGLrFF7aPWyRkmlVl8r3lLkxOmWKfkqTw14rB8/xptVe/uGwBBZvcMFReHwrjgNjF3
+	V9fZJis5LSW2zXDAnFyZbsnXbB7zKgjerdN90NdZ/carlA4gsEso7CIMkr6fWPGbh1y3uLxB3qH
+	vsidJSwk/EBo6zDWv9sCT/Ke3wmFz0frcbNqahv3JXzUeuo47RsGfw9C9HYaEJW0MZDcmcA0EuB
+	aFLir6eATNSORKOMGUJSFR6AmFzu2m9y+Xa3/8i1ZCAKzbnWONrFqMzwE8N5376/mB6RehwlK0J
+	XGc0x/s2G2rj5qWzHP7YYwrFuK9gLYIFhSmwNqt/NbNeNwc4Odovu8c0PoRfKLRSSOAD6UfUO1j
+	mFtEagKcqNiFswIepY9xWnqCYKam+Yxn5VmKkH4an6DmbKvTt3B6QwL3fCFLDXcuE4KOOy6iEC8
+	XMldhmG3004j5U4ZSqPZlCHDHPm2TMMxXiU2goEJhzidYCAzbx6uUNt0bMYdWsTiSJ+XuKIB/+o
+	mPwPQPUashfGl3ZrS8FYljcVRLhzjlrWan1hpZ7sAGOi3Ap/9tX52BUGrzPHxHSg7OsQy0szGCB
+	HE56wZtdJZQqYvkLAZFY/Kpw+RQPX
+X-Received: by 2002:a05:6102:2906:b0:7cc:16e2:c1a8 with SMTP id ada2fe7eead31-7d03a4ba6femr2067670137.8.1793242975276;
+        Wed, 28 Oct 2026 20:02:55 -0700 (PDT)
+Received: from macbook-pro-de-joas.local ([2804:7f0:b101:c5e8:7d75:cb37:7054:6d4b])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec4f931911sm3939350e0c.10.2026.10.28.20.02.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Oct 2026 20:02:54 -0700 (PDT)
+From: Joas Antonio dos Santos <joasantonio108@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, David S. Miller <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>,
+ syzbot+88435e204734072bf39a@syzkaller.appspotmail.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: [PATCH net] netdevsim: delete ports added after a failed reload
+Date: Thu, 29 Oct 2026 00:02:45 -0300
+Message-ID: <179324296598.34505.11070163314749859668@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,386 +100,83 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDXn4RdteJqPV17Dg--.31995S2
-X-Coremail-Antispam: 1Uf129KBjvAXoW3CF48CFWftrW5uFW3Jw18Krg_yoW8GFyUWo
-	WxXw4fWr18tF1jy34DArnrCFZ2qFWkCryayr45Grn8uF1kXw12yF43J345CFy7XF1F9r4F
-	v34kJa90qaykJ3Wfn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
-	AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU7ku4UUUUU
-X-CM-SenderInfo: pox130jbwriqqrwthudrp/xtbC6wHYp2ritWFa4wAA3w
 
-From: Yun Lu <luyun@kylinos.cn>
+When a devlink reload fails, nsim_dev_reload_down() has already torn
+the device down through nsim_dev_reload_destroy(), and
+nsim_dev_reload_destroy() returns early on every later call because
+devlink_is_reload_failed() is set.  new_port still works in that state
+though: nsim_drv_port_add() does not look at the reload state and adds
+the port to nsim_dev->port_list.  Nothing ever deletes it.  When the
+device is removed, nsim_drv_remove() destroys the BPF offload device
+and frees the devlink instance while the port's netdev is still
+registered:
 
-During 802.3ad bring-up, packets can be dropped despite carrier being up
-and LACP having enabled ports for distribution. This was observed on a
-machine in real use.
+  WARNING: kernel/bpf/offload.c:794 at bpf_offload_dev_destroy+0x50/0x78
+   nsim_bpf_dev_exit+0x7c/0xbc
+  WARNING: net/devlink/core.c:557 at devlink_free+0x30c/0x3ec
 
-The LACP worker enables ports before queuing slave_arr_work to rebuild
-usable_slaves. The transmit path keeps using that array, which can remain
-empty while the array worker retries rtnl_trylock(). Unrelated RTNL
-contention can therefore prolong the packet loss.
+and the leftover netdev then points to freed memory.  Bringing it up
+afterwards:
 
-Use a per-bond mutex to serialize array writers with lower-list changes.
-Rebuild the arrays directly from the LACP worker after releasing
-mode_lock and RCU, and remove the retry worker's RTNL dependency. Retain
-delayed work to retry allocation failures.
+  BUG: KASAN: slab-use-after-free in devlink_bus_name+0xa0/0xac
+  Read of size 8 at addr fff000001a313118 by task ip/120
+   devlink_bus_name+0xa0/0xac
+   devlink_nl_port_handle_size+0x38/0x80
+   if_nlmsg_size+0x340/0x7a8
+   rtmsg_ifinfo_build_skb+0x74/0x218
+   rtmsg_ifinfo+0xa0/0x18c
+   __dev_notify_flags+0x1d8/0x2f4
+   netif_change_flags+0xe0/0x150
+   dev_change_flags+0x8c/0x1e4
+   devinet_ioctl+0x9c0/0x1360
 
-New slaves become visible in the lower list before all fallible setup
-has finished. Exclude them from both arrays until that setup, including
-XDP propagation, succeeds. Retry failed final updates for running bonds.
-Also rebuild broadcast arrays on open and retry failed open updates.
-Protect the peer-notification array reader with RCU now that RTNL no
-longer excludes writers. Updating the shared arrays also covers XDP and
-lower-device queries without changing their selection rules.
+A successful reload after the failed one has the same problem:
+nsim_dev_reload_destroy() skips the ports again and
+nsim_dev_reload_create() then reinitializes port_list over them.
 
-An RTNL-holding test module and userspace LACP peers reproduced the
-blocked update and verified array publication and packet delivery before
-RTNL release with this fix. All 16 bonding selftests passed.
+The ports are the only thing that can be created after the failed
+reload, so delete them on the early-return path too.  The port_list is
+valid there: the failed reload emptied it with nsim_dev_port_del_all()
+and nsim_dev_reload_up() fails before nsim_dev_reload_create().
 
-Fixes: ee6377147409 ("bonding: Simplify the xmit function for modes that use xmit_hash")
-Signed-off-by: Yun Lu <luyun@kylinos.cn>
+Fixes: 75ba029f3c07 ("netdevsim: implement proper devlink reload")
+Reported-by: syzbot+88435e204734072bf39a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=88435e204734072bf39a
+Cc: stable@vger.kernel.org
+Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
+Assisted-by: Yaga Agent HackerSec Claude:claude-opus-5-5
 ---
+Tested on net/main 94cea342e891 (arm64, QEMU, generic KASAN) with the
+syzbot C reproducer (sets fail_reload, does a devlink reload, adds a
+port with new_port, then del_device), followed by "ip link set <dev>
+up" on any netdev left behind.  Without this patch both WARNINGs above
+fire, the port's netdev survives del_device, and bringing it up gives
+the KASAN report above (2 of 2 boots).  With it, 3 of 3 boots show no
+WARNING or KASAN report and no netdev is left behind.
+drivers/net/netdevsim/dev.o builds cleanly with W=1.  The
+reload-after-failed-reload case was not tested separately.
 
-Changes in v4:
-- Replace the TX fallback with synchronous control-path array updates
-  using a per-bond mutex, following Paolo's and Jay's suggestions.
-- Serialize array writers with lower-list link/unlink and exclude new
-  slaves until all fallible enslave setup, including XDP, has completed.
-- Retain allocation-failure retries, retry failed enslave/open updates,
-  rebuild broadcast arrays on open, and protect the peer-notification
-  array reader with RCU.
+ drivers/net/netdevsim/dev.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-v3: https://lore.kernel.org/all/20261008024031.16224-1-luyun_611@163.com/
-
-Changes in v3:
-- Drop the pending latch and all TX-path locking (the mode_lock trylock
-  and the netpoll guard); the fallback is now lockless.
-- Pin one aggregator object per transmit, by pointer comparison within
-  the RCU section, for both hash selection and broadcast replication.
-  Never select across aggregator objects.
-- Replicate broadcast_neighbor packets to all eligible members of the
-  pinned object instead of sending a single copy.
-- Defer hashing until the fallback finds a non-empty eligible set.
-- Read aggregator is_active with READ_ONCE.
-
-v2: https://lore.kernel.org/all/20260918090137.66515-1-luyun_611@163.com/
-
-Changes in v2:
-- Track unpublished array updates with a boolean latch, limiting fallback
-  locking and list walks to the asynchronous update window.
-- Use spin_trylock_bh() so recursive TX keeps the existing drop or NULL
-  behavior instead of deadlocking on mode_lock.
-- Use the first eligible port if eligibility changes between the two list
-  walks.
-- Apply the fallback to ndo_get_xmit_slave and broadcast-neighbor skb
-  transmission. Keep control-path readers on the published array and leave
-  XDP for a separate follow-up patch.
-- Document why hash calculation is deferred until the array count is known.
-
-v1: https://lore.kernel.org/netdev/20260915090207.110987-1-luyun_611@163.com/
-
- drivers/net/bonding/bond_3ad.c  |  4 +-
- drivers/net/bonding/bond_main.c | 91 +++++++++++++++++++++------------
- include/net/bonding.h           | 10 ++--
- 3 files changed, 67 insertions(+), 38 deletions(-)
-
-diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad.c
-index d91533b80996..c260e2e45205 100644
---- a/drivers/net/bonding/bond_3ad.c
-+++ b/drivers/net/bonding/bond_3ad.c
-@@ -2616,8 +2616,8 @@ void bond_3ad_state_machine_handler(struct work_struct *work)
- 	rcu_read_unlock();
- 	spin_unlock_bh(&bond->mode_lock);
- 
--	if (update_slave_arr)
--		bond_slave_arr_work_rearm(bond, 0);
-+	if (update_slave_arr && bond_update_slave_arr(bond, NULL))
-+		bond_slave_arr_work_rearm(bond, 1);
- 
- 	if (should_notify_rtnl && rtnl_trylock()) {
- 		bond_slave_state_notify(bond);
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 09aa45d71fab..c3d97983916b 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -1175,7 +1175,6 @@ static struct slave *bond_find_best_slave(struct bonding *bond)
- /* must be called in RCU critical section or with RTNL held */
- static bool bond_should_notify_peers(struct bonding *bond)
+diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
+index feb88cc..a871790 100644
+--- a/drivers/net/netdevsim/dev.c
++++ b/drivers/net/netdevsim/dev.c
+@@ -1697,8 +1697,13 @@ static void nsim_dev_reload_destroy(struct nsim_dev *nsim_dev)
  {
--	struct bond_up_slave *usable;
- 	struct slave *slave = NULL;
+ 	struct devlink *devlink = priv_to_devlink(nsim_dev);
  
- 	if (!bond->send_peer_notif ||
-@@ -1189,8 +1188,14 @@ static bool bond_should_notify_peers(struct bonding *bond)
- 	 * It is safe to only check bond mode here.
- 	 */
- 	if (BOND_MODE(bond) == BOND_MODE_8023AD) {
--		usable = rcu_dereference_rtnl(bond->usable_slaves);
--		if (!usable || !READ_ONCE(usable->count))
-+		struct bond_up_slave *usable;
-+		bool can_notify;
-+
-+		rcu_read_lock();
-+		usable = rcu_dereference(bond->usable_slaves);
-+		can_notify = usable && READ_ONCE(usable->count);
-+		rcu_read_unlock();
-+		if (!can_notify)
- 			return false;
- 	} else {
- 		slave = rcu_dereference_rtnl(bond->curr_active_slave);
-@@ -1714,19 +1719,22 @@ static int bond_master_upper_dev_link(struct bonding *bond, struct slave *slave,
- 	lag_upper_info.tx_type = type;
- 	lag_upper_info.hash_type = bond_lag_hash_type(bond, type);
- 
-+	mutex_lock(&bond->slave_arr_lock);
- 	err = netdev_master_upper_dev_link(slave->dev, bond->dev, slave,
- 					   &lag_upper_info, extack);
--	if (err)
--		return err;
-+	if (!err)
-+		slave->dev->flags |= IFF_SLAVE;
-+	mutex_unlock(&bond->slave_arr_lock);
- 
--	slave->dev->flags |= IFF_SLAVE;
--	return 0;
-+	return err;
- }
- 
- static void bond_upper_dev_unlink(struct bonding *bond, struct slave *slave)
- {
-+	mutex_lock(&bond->slave_arr_lock);
- 	netdev_upper_dev_unlink(slave->dev, bond->dev);
- 	slave->dev->flags &= ~IFF_SLAVE;
-+	mutex_unlock(&bond->slave_arr_lock);
- }
- 
- static void slave_kobj_release(struct kobject *kobj)
-@@ -2332,10 +2340,17 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
- 			bpf_prog_inc(bond->xdp_prog);
- 	}
- 
-+	/* Publish only after all fallible setup, including XDP, is complete. */
-+	mutex_lock(&bond->slave_arr_lock);
-+	new_slave->array_ready = true;
-+	mutex_unlock(&bond->slave_arr_lock);
-+
- 	/* broadcast mode uses the all_slaves to loop through slaves. */
- 	if (bond_mode_can_use_xmit_hash(bond) ||
--	    BOND_MODE(bond) == BOND_MODE_BROADCAST)
--		bond_update_slave_arr(bond, NULL);
-+	    BOND_MODE(bond) == BOND_MODE_BROADCAST) {
-+		if (bond_update_slave_arr(bond, NULL) && netif_running(bond_dev))
-+			bond_slave_arr_work_rearm(bond, 1);
-+	}
- 
- 	bond_xdp_set_features(bond_dev);
- 
-@@ -4399,8 +4414,11 @@ static int bond_open(struct net_device *bond_dev)
- 			static_branch_inc(&bond_bcast_neigh_enabled);
- 	}
- 
--	if (bond_mode_can_use_xmit_hash(bond))
--		bond_update_slave_arr(bond, NULL);
-+	if (bond_mode_can_use_xmit_hash(bond) ||
-+	    BOND_MODE(bond) == BOND_MODE_BROADCAST) {
-+		if (bond_update_slave_arr(bond, NULL))
-+			bond_slave_arr_work_rearm(bond, 1);
-+	}
- 
- 	return 0;
- }
-@@ -5068,35 +5086,26 @@ static netdev_tx_t bond_xmit_activebackup(struct sk_buff *skb,
- 	return bond_tx_drop(bond_dev, skb);
- }
- 
--/* Use this to update slave_array when (a) it's not appropriate to update
-- * slave_array right away (note that update_slave_array() may sleep)
-- * and / or (b) RTNL is not held.
-+/* Retry array updates which failed, or defer them from atomic context.
-+ * bond_update_slave_arr() may sleep but does not require RTNL.
-  */
- void bond_slave_arr_work_rearm(struct bonding *bond, unsigned long delay)
- {
- 	queue_delayed_work(bond->wq, &bond->slave_arr_work, delay);
- }
- 
--/* Slave array work handler. Holds only RTNL */
-+/* Retry failed array updates; the builder acquires slave_arr_lock. */
- static void bond_slave_arr_handler(struct work_struct *work)
- {
- 	struct bonding *bond = container_of(work, struct bonding,
- 					    slave_arr_work.work);
- 	int ret;
- 
--	if (!rtnl_trylock())
--		goto err;
--
- 	ret = bond_update_slave_arr(bond, NULL);
--	rtnl_unlock();
- 	if (ret) {
- 		pr_warn_ratelimited("Failed to update slave array from WT\n");
--		goto err;
-+		bond_slave_arr_work_rearm(bond, 1);
- 	}
--	return;
--
--err:
--	bond_slave_arr_work_rearm(bond, 1);
- }
- 
- static void bond_skip_slave(struct bond_up_slave *slaves,
-@@ -5128,7 +5137,10 @@ static void bond_set_slave_arr(struct bonding *bond,
- {
- 	struct bond_up_slave *usable, *all;
- 
--	all = rtnl_dereference(bond->all_slaves);
-+	lockdep_assert_held(&bond->slave_arr_lock);
-+
-+	all = rcu_dereference_protected(bond->all_slaves,
-+					lockdep_is_held(&bond->slave_arr_lock));
- 	rcu_assign_pointer(bond->all_slaves, all_slaves);
- 	kfree_rcu(all, rcu);
- 
-@@ -5137,7 +5149,8 @@ static void bond_set_slave_arr(struct bonding *bond,
+-	if (devlink_is_reload_failed(devlink))
++	if (devlink_is_reload_failed(devlink)) {
++		/* The failed reload already tore everything down, but ports
++		 * can still be added through new_port after that.
++		 */
++		nsim_dev_port_del_all(nsim_dev);
  		return;
- 	}
++	}
+ 	debugfs_remove(nsim_dev->take_snapshot);
  
--	usable = rtnl_dereference(bond->usable_slaves);
-+	usable = rcu_dereference_protected(bond->usable_slaves,
-+					   lockdep_is_held(&bond->slave_arr_lock));
- 	rcu_assign_pointer(bond->usable_slaves, usable_slaves);
- 	kfree_rcu(usable, rcu);
- }
-@@ -5153,20 +5166,25 @@ static void bond_reset_slave_arr(struct bonding *bond)
-  * (b) BOND_MODE_XOR
-  * (c) (BOND_MODE_TLB || BOND_MODE_ALB) && tlb_dynamic_lb == 0
-  *
-- * The caller is expected to hold RTNL only and NO other lock!
-+ * Acquires slave_arr_lock to stabilize membership and serialize writers.
-+ * The caller must be in sleepable context without mode_lock or RCU held.
-  */
- int bond_update_slave_arr(struct bonding *bond, struct slave *skipslave)
- {
- 	struct bond_up_slave *usable_slaves = NULL, *all_slaves = NULL;
- 	struct slave *slave;
- 	struct list_head *iter;
-+	unsigned int count;
- 	int agg_id = 0;
- 	int ret = 0;
- 
- 	might_sleep();
-+	mutex_lock(&bond->slave_arr_lock);
- 
--	usable_slaves = kzalloc_flex(*usable_slaves, arr, bond->slave_cnt);
--	all_slaves = kzalloc_flex(*all_slaves, arr, bond->slave_cnt);
-+	/* Enslave counts before committing; release unlinks before uncounting. */
-+	count = READ_ONCE(bond->slave_cnt);
-+	usable_slaves = kzalloc_flex(*usable_slaves, arr, count);
-+	all_slaves = kzalloc_flex(*all_slaves, arr, count);
- 	if (!usable_slaves || !all_slaves) {
- 		ret = -ENOMEM;
- 		goto out;
-@@ -5189,7 +5207,7 @@ int bond_update_slave_arr(struct bonding *bond, struct slave *skipslave)
- 	}
- 	rcu_read_lock();
- 	bond_for_each_slave(bond, slave, iter) {
--		if (skipslave == slave)
-+		if (skipslave == slave || !slave->array_ready)
- 			continue;
- 
- 		all_slaves->arr[all_slaves->count++] = slave;
-@@ -5211,17 +5229,21 @@ int bond_update_slave_arr(struct bonding *bond, struct slave *skipslave)
- 	rcu_read_unlock();
- 
- 	bond_set_slave_arr(bond, usable_slaves, all_slaves);
--	return ret;
-+	goto out_unlock;
- out:
- 	if (ret != 0 && skipslave) {
--		bond_skip_slave(rtnl_dereference(bond->all_slaves),
-+		bond_skip_slave(rcu_dereference_protected(bond->all_slaves,
-+							  lockdep_is_held(&bond->slave_arr_lock)),
- 				skipslave);
--		bond_skip_slave(rtnl_dereference(bond->usable_slaves),
-+		bond_skip_slave(rcu_dereference_protected(bond->usable_slaves,
-+							  lockdep_is_held(&bond->slave_arr_lock)),
- 				skipslave);
- 	}
- 	kfree_rcu(all_slaves, rcu);
- 	kfree_rcu(usable_slaves, rcu);
- 
-+out_unlock:
-+	mutex_unlock(&bond->slave_arr_lock);
- 	return ret;
- }
- 
-@@ -5994,6 +6016,7 @@ void bond_setup(struct net_device *bond_dev)
- 	struct bonding *bond = netdev_priv(bond_dev);
- 
- 	spin_lock_init(&bond->mode_lock);
-+	mutex_init(&bond->slave_arr_lock);
- 	bond->params = bonding_defaults;
- 
- 	/* Initialize pointers */
-@@ -6073,7 +6096,9 @@ static void bond_uninit(struct net_device *bond_dev)
- 	mutex_destroy(&bond->ipsec_lock);
- #endif /* CONFIG_XFRM_OFFLOAD */
- 
-+	mutex_lock(&bond->slave_arr_lock);
- 	bond_set_slave_arr(bond, NULL, NULL);
-+	mutex_unlock(&bond->slave_arr_lock);
- 
- 	list_del_rcu(&bond->bond_list);
- 
-diff --git a/include/net/bonding.h b/include/net/bonding.h
-index 598d56b1bc97..90f7ace7be59 100644
---- a/include/net/bonding.h
-+++ b/include/net/bonding.h
-@@ -23,6 +23,7 @@
- #include <linux/etherdevice.h>
- #include <linux/reciprocal_div.h>
- #include <linux/if_link.h>
-+#include <linux/mutex.h>
- 
- #include <net/bond_3ad.h>
- #include <net/bond_alb.h>
-@@ -75,7 +76,7 @@
-  * @pos:	current slave
-  * @iter:	list_head * iterator
-  *
-- * Caller must hold RTNL
-+ * Caller must hold RTNL or slave_arr_lock to stabilize the lower list.
-  */
- #define bond_for_each_slave(bond, pos, iter) \
- 	netdev_for_each_lower_private((bond)->dev, pos, iter)
-@@ -177,6 +178,7 @@ struct slave {
- 	u32    speed;
- 	u16    queue_id;
- 	u8     perm_hwaddr[MAX_ADDR_LEN];
-+	bool   array_ready; /* Enslave complete; protected by slave_arr_lock. */
- 	int    prio;
- 	struct ad_slave_info *ad_info;
- 	struct tlb_slave_info tlb_info;
-@@ -210,8 +212,8 @@ struct bond_ipsec {
- };
- 
- /*
-- * Here are the locking policies for the two bonding locks:
-- * Get rcu_read_lock when reading or RTNL when writing slave list.
-+ * Slave list changes hold RTNL and slave_arr_lock. Readers hold RCU,
-+ * RTNL, or slave_arr_lock when only stabilizing the lower list.
-  */
- struct bonding {
- 	struct   net_device *dev; /* first - useful for panic debug */
-@@ -220,6 +222,8 @@ struct bonding {
- 	struct   slave __rcu *primary_slave;
- 	struct   bond_up_slave __rcu *usable_slaves;
- 	struct   bond_up_slave __rcu *all_slaves;
-+	/* Protects the lower list, array_ready and both TX arrays. */
-+	struct mutex slave_arr_lock;
- 	bool     force_primary;
- 	bool     notifier_ctx;
- 	s32      slave_cnt; /* never change this value outside the attach/detach wrappers */
+ 	if (nsim_dev_get_vfs(nsim_dev)) {
 -- 
-2.43.0
-
+2.39.5
