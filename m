@@ -1,72 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.150
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.171
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793260190;
-	b=HsHrg6GflvVncB33dIumOIBxsaEf5rKrs2UC+duhsACKTWKqTO/Tn3OZr+V9zd5aRelL
-	 3e6bY4/+4at7Yc5BStkzgKwgFNhiqk+QkeR0TNLVqss7+zAt8ljv1y1Juv3TW3jIcjvU9
-	 mEaxnlQMqMZdgGUrhy0WM7vmsD/C3DPbNqTcF1JMbYZtiCmBh/jUUGcPK2Xr+ZqgqfTU6
-	 ZBwitgvPHGXIGlgLu/3OKWgQdhX9rxC0t9ZYU6efSXh4V6PvX7rbfDyICCWh5D71ir02M
-	 zVPGTbyBobtKaCzyE/6zRIO53WDI6Nnzkk9Jj6xE3viX4bgMyF2upc66BX8Udy9BIOg==
+	t=1793260199;
+	b=Pz5l5vdApHT99kxtjLrHa3oUHxuLQFAvEf9vl7VbS2JdFa6fv6P6LgwpUzZPYPGAN/Sp
+	 bv2GoH98bmQUWpQsHH/Xhzt1rdXhBNUGdJnUdyMGCahrYOCc0Q2a2TsQRcxuGcj7qs2FH
+	 anoOGdHgvaoe/yCHg6RFQNZiIyhJczevk8LpzbSBe81bumrZ2oL5AA1dtZ0iEAFSx4pkK
+	 P/P6wYrE4zERr5HOvwk5iMwcUXpYaXtcbP+TDpzJjRxJkV/ZiC3PQzFaEWEdoRWxk3Su5
+	 4nSNr0kmu91mUrpsHlJadzeC/kdXkMHPDX7DzHqGyhJm6EGj0uPPUBt7Fn/CfeXbH1w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793260190;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Subject:Date:Message-ID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=wKcwn6Rk5lPeD1ZYuSyC9nozBY4N1b3MpNfJc6pFicQ=;
-	b=OJ70DxLqQQw1tA+uYdpCydms38t6zaA5WT26TdA6PtS/emG4V/fDgJZyHQkckPsMPxmo
-	 AHaScnP76zsuL2gvT6fnx5TGwDnkz2j53bgafgWCv/RXKxUVGjmz7+qLQakhNTbhSk5h0
-	 T4XL6VmxN4uPtwwCcJI6ZN99hjc8g2t4EdgFRqZJlvs+7QS3smK/rbqTPG8hTRMWXdPbd
-	 JgPX2na5nDOKkxHJ4FvBF510JJZ/70NZBNxjNMrmtpIRHSJYp2XARA47MnMkPIq8oJeWg
-	 LIFOXfhKO+uLDErhge85kN/4Hd8iKDnfhkpCtKkB/a45PgNUgkTXMXQ9R88gOR0SN/Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793260199;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=0Kx5T2Zh6GBBFVRGRo+yPdOYmemlYMbdnEqHarr3OXY=;
+	b=jgDQMP7geG3DxkCwlmxWYyya0YS9pkk4F0BfuZDNRFVvGbSDOJSnQEkllGiXicHe+9+2
+	 2Sm9cS9YOo+8i0QnXwrf8rbFW+m7uGvsSLNR1beh5mA8Jwc0JLl2z6uf2q9n/8gEFyuUA
+	 aMhpQq1a/SH4Tbfj9Azuib7uBjZ8Ak6tWgsB/926p+5a3H6Ax0jSE578mixVxtGwcMUmh
+	 +kAvoO4XGnJDoVWRnzQHBpyuE6ovRJ0gvwTapY2uF5LLlJIq3TQhtFxM4cTNLurYS7rhQ
+	 PIpNUJIHSpg/FGf5CQNJU4moczyfV0YWzcgeIkr9NnzAtK94gL8/66urP07kuCrZqDA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=mjhYPKAe;
-	arc=none smtp.remote-ip=95.215.58.150
-Received: from mta1.migadu.com (out-150.mta1.migadu.com [95.215.58.150])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tE8cC9v+;
+	arc=none smtp.remote-ip=74.125.82.171
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66F9606A31C
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 07:49:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D66F9606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5911E606A31C
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 07:49:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5911E606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=mjhYPKAe
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=ofXpdaB/7nB74dbgxFWLaiAeMu+4yAIU416lNX3BA6g=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793260186; v=1; x=1793864986;
- b=mjhYPKAejWK+RVReAHy+JkxcsJ13c4KJkbJC1rrrOqC6eBWYzHzKbW6GkDQSMMfHyUmQRfeS
- dSgIZbAOqpgOtt+RId04OkiFZZFa/QO/3q30HlaPVUB1lPBhJf8ZGqoRb3OvIWhswgRB1dL3r52
- eREOniOR0v9s7IvdLxmTaXm0=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id f7790a20ed431206;
-	Thu, 29 Oct 2026 07:49:46 +0000
-X-Mizu-Trace-ID: f7790a20ed431206
-X-Migadu-Flow: FLOW_OUT
-From: Qingfang Deng <qingfang.deng@linux.dev>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tE8cC9v+
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-369f33df08eso3428116eec.0
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 00:49:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793260198; x=1793864998; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0Kx5T2Zh6GBBFVRGRo+yPdOYmemlYMbdnEqHarr3OXY=;
+        b=tE8cC9v+vwT/2Loi4Wz9xzCZ/GZBX/8g+egr8DRZjNynMG2QjspTrw14jfWHyvtWtB
+         Qzo2kPj6EpVvC7wf26zBh2iN3aOWlXsn8FLdoyyOeh7r6qK1kH6QBz0BFmQy7BgkP7Am
+         bmLvfhKy2lJKjOwm42w6k5LKBB3CKSHnqvdjV30I+cFmds6wk7MzK517GuH+XV1FDNwT
+         gDX5tfpP2/rG+DcDXStCz5PcWho2PXzXBwFWbSN4995fw7a7ewLP7R+MAnFbxvWP8Wec
+         vLeDqPPHRhX+qvRRxFHhLN8I5+dTfU5L4We1xf1gj41s1Rm7dhQ7KuBMvQH26gm/njkz
+         arZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793260198; x=1793864998;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0Kx5T2Zh6GBBFVRGRo+yPdOYmemlYMbdnEqHarr3OXY=;
+        b=oWhav7rnO2J14oky/8OiftUiuGl0qjNMJO3qps3yX3tXfdjiztvVD/eks42weD9u30
+         3dhbAUmDM3aH/0TYBfsAI5SVBsYShDDDMPzYDnOZgNCEqWYqQ3NKs1rT7VvPrWrsUlKe
+         hyT8cRnvMR4V1h4ZSlQysFXPLA4U9KgsuPB4MdWVFbl/Z15WhzaaO5hxE/dv9GcKiKhA
+         TSOQqwX6ZEI9X9cvJGgyWsiJqIDb7j73PhC4clPD/cIzocusewSus2KnBVy403r2pV2u
+         NX2y6vxMYR+wIND2wco1mE5STfRrSzGN4ydvLvNldlUItbhwjj8rrfTNaO+kfIbDZwAE
+         mhmg==
+X-Gm-Message-State: AFq9FYIk2WOEPMXVJRILCm2UkGhLIxa3LXXobZmHb2DYP0vAC2mfWqx+
+	2iIwH7YGDkkQGB3sV0r0grlunUqDA17qt0RhAa7uXzQpfrBdq9aI8I29
+X-Gm-Gg: AYBFou1b90jzrx7E5s+OHSJoMS3W3pnLzaHNBHJLZRQ3Ntjjf3KvKY/GGwrepViumIH
+	DqDu+Jg3o6AQoEQj5w9g9ejfrNf3wPYCCGBslwI+zCJjpgsNKLmEYz66hge+OFOPGtw8MbwlUaT
+	poIaJ99e70ysghgKWSG9uIS5Zw1TQ90SF7921mV6mTCuZDrTEITezlOOud1gxtzrLc+oyu/PtEu
+	DseHOW9zK26lGvA0MfCymkO15U9VrlhMQxHE7j22EOFPGMqoPfDoms9H4m6yHzVR67kKx7Bg1wT
+	mxhMX1sfeY9S0jBVYMrAHUdZ+/ioZhXeb8xKID0NhAO+QTvzaODGYLFg4w5Y6RHRmw091sncE1d
+	L2lMmvjnohECDVvi1sfVlozoc/DD7mk52Bu+bJEU/0am0dIcepbGlVK1e0ddqcMWrHzgR2doZQu
+	G0wb+qBx1/D45x5zmUnckbz7CRU7jOqjJNP28m988hlsRX62PYvMEunBGSFBGuFcdTw/2sxFvTJ
+	JE2hqhFDGGpEDZbSP95RbrqEw8w3nFkKoHEnGXGQLjGZ5fjr6LP+XiIxWuexSzj/CgFVxcVo3Gh
+	u/1COcxxDnfcF4HNCRwbHpgSTU7GzE6lENt58k8K7bXsS6Mb75aZv+r5gzU8WF2yLoLN2hyIo9U
+	vzknGqQULEPwAkOKL8nvWCPD30UNIY43tUIKeEwRGWvde3+kT13IDQz79S2v1cfiA32G5MU68QA
+	==
+X-Received: by 2002:a05:701b:2304:b0:1a8:b566:80c2 with SMTP id a92af1059eb24-1a8b5668212mr3515852c88.17.1793260198198;
+        Thu, 29 Oct 2026 00:49:58 -0700 (PDT)
+Received: from ramen-dev-security-2.asia-south1-c.c.ramen-dev-345017.internal (90.156.200.35.bc.googleusercontent.com. [35.200.156.90])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1a75d4887easm12843583c88.9.2026.10.29.00.49.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 00:49:57 -0700 (PDT)
+From: Anil Kaushik <anilkaushikwireless@gmail.com>
+To: Jacob Keller <jacob.e.keller@intel.com>,
+	Jiri Pirko <jiri@resnulli.us>
+Cc: netdev@vger.kernel.org,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Qingfang Deng <qingfang.deng@linux.dev>,
-	Breno Leitao <leitao@debian.org>,
-	Norbert Szetei <norbert@doyensec.com>,
-	Taegu Ha <hataegu0826@gmail.com>,
-	Paul Mackerras <paulus@ozlabs.org>,
-	Brice Goglin <Brice.Goglin@ens-lyon.org>,
-	Andrew Morton <akpm@osdl.org>,
-	Matt Domsch <Matt_Domsch@dell.com>,
-	linux-ppp@vger.kernel.org,
-	netdev@vger.kernel.org,
+	Simon Horman <horms@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	XingWang Xiang <v3rdant.xiang@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net] ppp: remove SC_MUST_COMP
-Date: Thu, 29 Oct 2026 15:49:32 +0800
-Message-ID: <20261029074935.40509-1-qingfang.deng@linux.dev>
-X-Mailer: git-send-email 2.43.0
+Subject: Re: [PATCH net] genetlink: Reject joining multicast groups no family owns
+Date: Thu, 29 Oct 2026 07:49:51 +0000
+Message-Id: <20261029074951.3413609-1-anilkaushikwireless@gmail.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20261029062214.3407223-1-anilkaushikwireless@gmail.com>
+References: <20261029062214.3407223-1-anilkaushikwireless@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -78,114 +110,9 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-SC_MUST_COMP accidentally shares the same value with SC_DC_ERROR.
-PPPIOCGFLAGS combines configuration flags with transmit and receive
-state, so a userspace cannot distinguish them, and a read-modify-write
-sequence can promote a decompression error into SC_MUST_COMP.
+Adding Jacob and Jiri, I missed them on Cc.
 
-The flag entered Linux in 2005 with commit b3f9b92a6ec1 ("[PPP]: add PPP
-MPPE encryption module"). The original patch submission [1] said pppd
-would set it when CCP came up with MPPE enabled. That intended
-integration [2] appears never to have landed upstream.
-
-Remove the broken and unused SC_MUST_COMP from the UAPI, SC_MASK and
-SC_FLAG_BITS, and remove its transmit and receive drop checks.
-PPPIOCSFLAGS will discard this bit while PPPIOCGFLAGS can still report
-it as SC_DC_ERROR.
-
-Fixes: b3f9b92a6ec1 ("[PPP]: add PPP MPPE encryption module")
-[1] https://lore.kernel.org/netdev/20050814141046.GB20944@lists.us.dell.com/
-[2] https://lore.kernel.org/netdev/20050814190529.GA26802@lists.us.dell.com/
-Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
----
-Found and reproduced with LLM. Combined with the broken BSD-Compress on
-64-bit, it results in a broken link:
-
-1. First BSD failure: the kernel sets both SC_DC_FERROR and SC_DC_ERROR,
-   then passes the failed packet to userspace. pppd closes CCP. Traffic
-   falls back to uncompressed, but SC_MUST_COMP becomes accidentally
-   latched.
-
-2. Re-enable compression: send SIGUSR2 to pppd, to let BSD compression
-   renegotiate. This is a documented pppd operation (man 8 pppd). The
-   stale flag survives.
-
-3. Second BSD failure: the kernel sets both error flags again. Now the
-   receive check fires:
-
-	if (ppp->flags & SC_MUST_COMP && ppp->rstate & SC_DC_FERROR)
-	    goto err;
-
-   The kernel drops the failed packet before delivering it to pppd.
-   Consequently, pppd does not perform its normal CCP shutdown and
-   cleanup.
-
-4. Subsequent incoming IP and CCP packets hit the same drop check,
-   preventing normal recovery.
----
- drivers/net/ppp/ppp_generic.c  | 15 ++-------------
- include/uapi/linux/ppp-ioctl.h |  3 +--
- 2 files changed, 3 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
-index 1a610a18893b..84ca4e93ad9a 100644
---- a/drivers/net/ppp/ppp_generic.c
-+++ b/drivers/net/ppp/ppp_generic.c
-@@ -157,14 +157,13 @@ struct ppp {
- 
- /*
-  * Bits in flags: SC_NO_TCP_CCID, SC_CCP_OPEN, SC_CCP_UP, SC_LOOP_TRAFFIC,
-- * SC_MULTILINK, SC_MP_SHORTSEQ, SC_MP_XSHORTSEQ, SC_COMP_TCP, SC_REJ_COMP_TCP,
-- * SC_MUST_COMP
-+ * SC_MULTILINK, SC_MP_SHORTSEQ, SC_MP_XSHORTSEQ, SC_COMP_TCP, SC_REJ_COMP_TCP.
-  * Bits in rstate: SC_DECOMP_RUN, SC_DC_ERROR, SC_DC_FERROR.
-  * Bits in xstate: SC_COMP_RUN
-  */
- #define SC_FLAG_BITS	(SC_NO_TCP_CCID|SC_CCP_OPEN|SC_CCP_UP|SC_LOOP_TRAFFIC \
- 			 |SC_MULTILINK|SC_MP_SHORTSEQ|SC_MP_XSHORTSEQ \
--			 |SC_COMP_TCP|SC_REJ_COMP_TCP|SC_MUST_COMP)
-+			 |SC_COMP_TCP|SC_REJ_COMP_TCP)
- 
- /*
-  * Private data structure for each channel.
-@@ -1862,13 +1861,6 @@ ppp_prepare_tx_skb(struct ppp *ppp, struct sk_buff **pskb)
- 	/* try to do packet compression */
- 	if ((ppp->xstate & SC_COMP_RUN) && ppp->xc_state &&
- 	    proto != PPP_LCP && proto != PPP_CCP) {
--		if (!(ppp->flags & SC_CCP_UP) && (ppp->flags & SC_MUST_COMP)) {
--			if (net_ratelimit())
--				netdev_err(dev,
--					   "ppp: compression required but "
--					   "down - pkt dropped.\n");
--			goto drop;
--		}
- 		new_skb = pad_compress_skb(ppp, skb);
- 		if (!new_skb)
- 			goto drop;
-@@ -2416,9 +2408,6 @@ ppp_receive_nonmp_frame(struct ppp *ppp, struct sk_buff *skb)
- 	    (ppp->rstate & (SC_DC_FERROR | SC_DC_ERROR)) == 0)
- 		skb = ppp_decompress_frame(ppp, skb);
- 
--	if (ppp->flags & SC_MUST_COMP && ppp->rstate & SC_DC_FERROR)
--		goto err;
--
- 	/* At this point the "Protocol" field MUST be decompressed, either in
- 	 * ppp_input(), ppp_decompress_frame() or in ppp_receive_mp_frame().
- 	 */
-diff --git a/include/uapi/linux/ppp-ioctl.h b/include/uapi/linux/ppp-ioctl.h
-index 1cc5ce0ae062..672f7ac11a0b 100644
---- a/include/uapi/linux/ppp-ioctl.h
-+++ b/include/uapi/linux/ppp-ioctl.h
-@@ -39,8 +39,7 @@
- #define SC_LOG_RAWIN	0x00080000	/* log all chars received */
- #define SC_LOG_FLUSH	0x00100000	/* log all chars flushed */
- #define	SC_SYNC		0x00200000	/* synchronous serial mode */
--#define	SC_MUST_COMP    0x00400000	/* no uncompressed packets may be sent or received */
--#define	SC_MASK		0x0f600fff	/* bits that user can change */
-+#define	SC_MASK		0x0f200fff	/* bits that user can change */
- 
- /* state bits */
- #define SC_XMIT_BUSY	0x10000000	/* (used by isdn_ppp?) */
--- 
-2.43.0
-
+On Thu, Oct 29, 2026, Anil Kaushik wrote:
+> genl_bind() checks the GENL_MCAST_CAP_* flags of a group only when a
+> family owns it. For a group ID that no family owns, it returns 0, so any
+> user can join it.
