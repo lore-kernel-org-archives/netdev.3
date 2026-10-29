@@ -1,60 +1,62 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793235516;
-	b=MqF2ww09asQNpSWQlZfwNgqiil7+cC26dmigZ75E5r2MroNU2Zfuy/Xea06mCV4loj3g
-	 JNGHGBeRZjJ+MBA65szJVSfK+mZ9ApJG8GZfWx6p/xTyxz66xl6FtgqfFH9Ra2eJYv34b
-	 3wTGxFml3KAn1va3UQkDT2qIfQZnKEpQsV/kWAH5ybwgHgD4u4W2KzBoBn8I5orq/LgWx
-	 0LqYDuf8WFFui+nR9/63yY0oo4nMniarTek5wY/ChqJ934St4xy74G+BmCHZdCyV/9/Om
-	 8z5Z4cwHzc0EIzhU1Thpn9woz7C7oqKBKOzMHrnYREXFXo3y+6AgsiXHhUZeYw6ZIng==
+	t=1793235597;
+	b=TL8hdaOh2T6nkqp9vhUEVstknBSkKK4CccHrS/xZuNkO8f5uOrmphRLHhTXV0W6o01V3
+	 M8MCGlQBj5K/sa303SxEWq/lvZkYR0zjuz8fGCxJ77ROid1iU1Hr4WMAo8ZfXAsFz/uaA
+	 diXOMT/hcTW9hVKAO+XxcT83rqH3Dvx4BzgQ4mCmTfc90jJUM75YnD22hGaJYBkeCxUFt
+	 piBaCOkgXAO9SlxC0b2363ku1JFZiVwhz4hK9xDngzUwoOieptbxCO3afgODKUlgxcHM/
+	 LHn1HosRqgGhfEmTk+D4rznKyHzfFrP5gig30t8xecDI1oqO7FzTa1s07DBgUVlFuvg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793235516;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=W37NCMtlYKtvcwR2ZMCmGN79n9lPTYd/DwQrGovnkm8=;
-	b=XUILBnPdXw9CNEF3/v8NXuk3GA4jjLE+31NjU2f3fGRWTBPU7aMMwUC/7Nwuz4Oxq0uY
-	 xsTg71OhnA6cCpqlYFEwL6H6aNZumEyOA6j6HvgWGwFUJifaucWS3nFAG8Dg8ZOaacDPG
-	 QjKbuqw6PKQ2B4g53dabzYnAX3ojTKlDCS6b8EFZgETvE3BwYvdas6DZ6mWI7LQreho3l
-	 sPiWcBO+uWZN0aBS1FbM28dN7hXxQS3bIn7SrrLDA24/o0g7BIYYy17qsrefIJOjrE8U9
-	 OJfeBYaf0UNS4bopdwYEFanLk4hP9UYE6mR/nMiD91kGEP3uVFaZCFu9W46RKmKaNQA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793235597;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=oS0FmMc7AlJVVVUeRFYj25Bo+BdWrMabkFQ8UmhHdq4=;
+	b=ozmuMYvQuW5g+ZFZXIA3AYIl0vf5IiYm59AgMvANh8++Vf538bFMR3zX1O/a4+U0d4GM
+	 vuT4hrCMqH03bj5lsaayib7p9TVCTm5fnairDAKuH2YoBBAlC+b89BIf08V6wAbLz3QET
+	 RV3je5DfeeQEKbvfKbbdbjtB0jpgXVTtZqaNStlW2uMNFA+ulLYWpY8dd7E5y5mWoD99h
+	 Lly4jgHIg8ytOCN6lkyPXF0DHV7VB6F2G2sYLB8eQMQ2ipl0d5Ioa6u8C5Rr8MIMYEZDS
+	 AS9OPBp7pCwTKKIusG4SWYk8JyVpK2pyYpQql9/ck3DrmLrwXQsMCsGFY3d/bs+S+vg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KK4z4C7D;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WVuy9JUJ;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6496B606A31A
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 00:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51713606A31A;
+	Thu, 29 Oct 2026 00:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KK4z4C7D
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E831F01825;
-	Thu, 29 Oct 2026 00:58:35 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WVuy9JUJ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D8D31F01825;
+	Thu, 29 Oct 2026 00:59:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793235516;
-	bh=W37NCMtlYKtvcwR2ZMCmGN79n9lPTYd/DwQrGovnkm8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=KK4z4C7DsMW2eyV+ypT/gkSbd08JCP9lKS5+/7423TWxwU99/zXq4KaCROzQWC5Wv
-	 ui/e+mZKasfaDG5GYkcGEd/ADDbaVejE/PF43qcKZrg3c0Aod2FR6dJuRwq/mApyeP
-	 rWHbZjnyEk6AiGsA9nsRABQnbcy01bOaS7IPQLEbyrp0UT1MbVVVGkFNlri8k/9ykk
-	 gxuOK5LGS5zqT6H/0+AiUQGBJ0+mR/+Gt2JXq6be0q1305jHRspH+Eo2e9HK98wWbh
-	 zMal+A07bVbzPgsaEKcKxnhkEXaLjJzoIP9xiu2e2Z5teqQxcijGruvwDwbKuOXvJx
-	 YGQa0mSbs5lFg==
-Date: Wed, 28 Oct 2026 17:58:34 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- michael.chan@broadcom.com, pavan.chebbi@broadcom.com, hawk@kernel.org,
- john.fastabend@gmail.com, sdf@fomichev.me, eddie.wai@broadcom.com,
- prashant@broadcom.com, huangjw@broadcom.com, gospo@broadcom.com,
- brett.creeley@amd.com, ap420073@gmail.com, joe@dama.to
-Subject: Re: [PATCH net 2/5] eth: bnxt: resize Rx head buffers when
- rx-copybreak changes
-Message-ID: <20261028175834.3cbddb98@kernel.org>
-In-Reply-To: <179323156552.3134.8258354110964306785@kernel.org>
-References: <20261027234940.1267225-3-kuba@kernel.org>
-	<179323156552.3134.8258354110964306785@kernel.org>
+	s=k20260515; t=1793235597;
+	bh=oS0FmMc7AlJVVVUeRFYj25Bo+BdWrMabkFQ8UmhHdq4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=WVuy9JUJvVpnxgRolTlrO1MIZj20fkCl0H3mXHHgjQXpD2liErU9VCyFiPf8gewhV
+	 llC0VAnh+/2o13ZitUeepntk7dWSQmy6SHXnGnZ+Mx2N3a+MAhP+TidwG9FZS2CVsi
+	 8zNOIViOZL1WKKL7Mytanwerah70JXEq1PmuVYwgj5czZGj3EBYTFCGQOppEv1QN8p
+	 hAnUtMkfbOvQ5auIukcnf7AfJpGa6dCcUN8jWWfGYIFPgwpo/hx0UPCScJxnsgM24P
+	 E/8y72dp8s85s7iphCPWgVhP1Yw7HK/HiIpU96nhcQynvyTGBShEIzljYkA+HZKIMe
+	 /yky4ATwXN6Ow==
+Subject:
+ Re: [PATCH net v6 3/4] net: ethernet: mtk_wed: free up rings during detach
+From: netdev-bot+sashiko@kernel.org
+To: hujy652@gmail.com
+Cc: nbd@nbd.name, lorenzo@kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+ sujuan.chen@mediatek.com, rex.lu@mediatek.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, sashiko-bot@kernel.org
+Date: Thu, 29 Oct 2026 00:59:55 +0000
+Message-ID: <179323559576.3134.3581964797425462358@kernel.org>
+In-Reply-To: <20261026-wedfix-v6-3-a52f6b15d2fc@gmail.com>
+References: <20261026-wedfix-v6-3-a52f6b15d2fc@gmail.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,20 +66,99 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Wed, 28 Oct 2026 23:52:45 +0000 netdev-bot+sashiko@kernel.org wrote:
-> - [High] The fix is incomplete.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-:S Maaayybeee?  I think the bot is over-focusing on the DMA warning hit
-in the commit msg. It's true that we may not cover all the corner cases
-for that DMA warning. But I deferred the DMA syncing fixes as mentioned
-in the cover letter.
+Low priority / nit picks for your consideration:
 
-Here I was purely trying to fix the AFAICT obviously missing
-bnxt_set_ring_params() call after changing rx_copybreak.
+- [Low] After this patch, mtk_wed_free_rx_rings()
+  (drivers/net/ethernet/mediatek/mtk_wed.c:954-958) calls…
 
-But if anyone disagrees we can just skip this patch when applying, and
-put it to the DMA sync series. I included it here because without it
-I couldn't test patch 5 without triggering the splat first.
+--
+
+net: ethernet: mtk_wed: free up rings during detach
+
+This commit makes mtk_wed_free_rx_rings() also free the rx_ring[] and
+tx_wdma[] descriptor rings. Before this, __mtk_wed_detach() leaked them.
+The change comes from mtk-openwrt-feeds and was modified to check
+ring->desc instead of an extra flag.
+
+Link: https://github.com/mediatek/mtk-openwrt-feeds/blob/main/25.12/files/target/linux/mediatek/patches-6.12/999-wed-04-Fix-reinsert-wifi-module-cause-memory-leak-issue.patch
+Link: https://sashiko.dev/#/message/179000700034.2160803.10594281691384015089%40kernel.org
+
+> diff --git a/drivers/net/ethernet/mediatek/mtk_wed.c b/drivers/net/ethernet/mediatek/mtk_wed.c
+> index 3f0be70c3f145..3044a7a8ea03e 100644
+> --- a/drivers/net/ethernet/mediatek/mtk_wed.c
+> +++ b/drivers/net/ethernet/mediatek/mtk_wed.c
+> @@ -949,6 +949,14 @@ mtk_wed_free_ring(struct mtk_wed_device *dev, struct mtk_wed_ring *ring)
+>  static void
+>  mtk_wed_free_rx_rings(struct mtk_wed_device *dev)
+>  {
+> +	int i;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(dev->rx_ring); i++)
+> +		mtk_wed_free_ring(dev, &dev->rx_ring[i]);
+> +
+> +	for (i = 0; i < ARRAY_SIZE(dev->tx_wdma); i++)
+> +		mtk_wed_free_ring(dev, &dev->tx_wdma[i]);
+
+[Severity: Low]
+Could the WDMA engine still be writing to the tx_wdma[] descriptors when
+they are freed here?
+
+In __mtk_wed_detach(), these rings are freed right after
+mtk_wed_wo_reset(), which returns void:
+
+__mtk_wed_detach()
+    mtk_wed_wo_reset(dev);
+        mtk_wdma_tx_reset(dev);
+    mtk_wed_free_rx_rings(dev);
+        dma_free_coherent(..., tx_wdma[i].desc, ...)
+
+If the TX_DMA_BUSY poll in mtk_wdma_tx_reset() times out, the timeout is
+only logged:
+
+mtk_wdma_tx_reset() {
+    ...
+	wdma_clr(dev, MTK_WDMA_GLO_CFG, MTK_WDMA_GLO_CFG_TX_DMA_EN);
+	if (readx_poll_timeout(mtk_wdma_read_reset, dev, status,
+			       !(status & mask), 0, 10000))
+		dev_err(dev->hw->dev, "tx reset failed\n");
+    ...
+	for (i = 0; i < ARRAY_SIZE(dev->tx_wdma); i++)
+		wdma_w32(dev,
+			 MTK_WDMA_RING_TX(i) + MTK_WED_RING_OFS_CPU_IDX, 0);
+}
+
+mtk_wdma_v3_tx_reset() handles timeouts in its prefetch and writeback
+BUSY polls the same way.
+
+Only the CPU_IDX registers are cleared. The MTK_WDMA_RING_TX(i) BASE
+registers and the WED WDMA_RING_TX BASE registers still point at
+desc_phys.
+
+If the engine has not gone idle, can a late descriptor fetch or
+writeback land in coherent memory that has already gone back to the
+allocator? Before this patch the rings were leaked, so such a write
+could only reach memory that nothing else was using.
+
+This depends on a hardware timeout, and I could not confirm from the
+code that a late writeback really happens. TX_DMA_EN has already been
+cleared in mtk_wed_dma_disable(), and MTK_WED_RESET_WED has been
+asserted.
+
+The same function already frees rx_wdma[] in mtk_wed_free_tx_rings()
+right after mtk_wdma_rx_reset(), whose -ETIMEDOUT return is ignored, so
+this follows an existing pattern in the driver. Would it be worth either
+skipping the free on a reset timeout or clearing the ring BASE registers
+before freeing?
+
+> +
+>  	mtk_wed_free_rx_buffer(dev);
+>  	mtk_wed_free_ring(dev, &dev->rro.ring);
+>  }
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261026-wedfix-v6-0-a52f6b15d2fc%40gmail.com
