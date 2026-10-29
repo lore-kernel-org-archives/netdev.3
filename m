@@ -1,48 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793275539;
-	b=I6QP7ctOTveKF03F0fkmyG7Ffx1wjakXLCFichSvFs1LaQh/UIPOVbZFd7ZmR4nI1Dj5
-	 xkTbC7y4wf4iNuMyt6JLj5HHJBqJRGg5U3hk0iDqXgeLippAWclpAYQTX9Rw2CfAf6874
-	 1AQl3o9DpVz3imi66nL6LVBuJgRNFVQlOEzilprjGeO3v4R3hSDlFhy97OJ6Qlc9EL1IZ
-	 HrkQkG51rWsJj9bLHpu5fimwIN8whqhgDwmeY5XCzfd45K/hXTprth7db7SfwXGJ12kyV
-	 9GY5/UJjQSv6X7NOComA0OFMQHDb4C05oRWaDRu4hno6MyRPLK1ShoSMQOS4LZeLPQg==
+	t=1793275546;
+	b=cE+2m1g6saVuqqTW1gZ/fQ0LoZIbMnINDk5InnpGIqwHZyTXrEowzR1Bb879iRq7MiWi
+	 arqMX3haA7T/fMsxx2uL8hvzcOsj1f9zyneMrcV2qlCLy2Z3JDCaH02Xw0JqgVPJf5Fr7
+	 oeR+/6HR7XaiOtqFHgdX6tUY5Cg5J4jSmfOcwXCBnC7A7XbRvxsoZU+mex4pWE2WBFdlC
+	 m+fddfhpAmXfPpWME9q+bHSvo0mwGY5E6T/VO1D5OEVNzE/ag/NxMn57RKkqoyBLQ6Jax
+	 fQVitNQiCr9fRBv0L1cEYMH/11HbiLZ64bzn6VDl18B0dfLYJJA3lYGz7qYb54VK70g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793275539;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793275546;
 	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=DDpQS/2MouLyeQ5PB0RjcwYLaSPokQqoMqh62edPMfA=;
-	b=jb/2N/EQx9Rgd6rbQkJJEqIZopNB+vAQZpo0CVL+IWeqStaDxt9L546vlPGHUvLF6zaV
-	 w6tr15XUWsUqhKE0JMp6J3M5LQy8kQ/oSN39kfPSrQkkUCZr6qGBcflQuaTttnB6Iupkc
-	 5/LB0MoDqawlSinWC9FpcaypwoIfLKx57WMRwEzEnkVci1jvGva7VO34x7cnyCWkbhbXM
-	 Kl+WkQkdPvlaWGMvKYH8T41B6ZIxEkNXFzIVWQbXN3QHwxTuId/xyLtfndxF6z6QAXYx7
-	 85yatf4A101HmAYB47G7LhCDgK2DoW7weXTXhqsmqSALjgFRB/QjAMXDQxC6cu+cQLw==
+	bh=Xp5Z6NBRUna+X+Nwp4QLQcBmqe140nsg4kc2CEFfGXU=;
+	b=MpgnaJKYW8/t968d+i+UEx8hW1y7/4QdkJCLgsZiqRnIWnbsX4VSRzlK2dFwNh1HmCsM
+	 i8vbtM5qwOcxQ4xmKaJw7b5MewUZcX7nOZbODu7wFsTkVXFZXGDZzLsu27qz9xRdNgErh
+	 IsYx+Unxn5RohTdY4/SW/8aBujTPp/nAzpLAPsM/bLqyrCEfiZOsrvCw+1bEs+f5DaRyJ
+	 tkhOcFpK4x4+2fdu5dCWMtOVyraVMU+8RnksWXjCyrUuQAar0Frsg6N2h0WW6NTylnaGn
+	 2bvoKqnvSqfrOx5jERsmDUPCwnTduD0nJGA+pHjBoFr4ZUGx4QL0c1buMtSyXFLaEnw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BSTRaE1D;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DSBGjcZM;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2277606A323;
-	Thu, 29 Oct 2026 12:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F96606A31A;
+	Thu, 29 Oct 2026 12:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BSTRaE1D
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C451F031E0;
-	Thu, 29 Oct 2026 12:05:36 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DSBGjcZM
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E78B1F031E1;
+	Thu, 29 Oct 2026 12:05:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793275538;
-	bh=DDpQS/2MouLyeQ5PB0RjcwYLaSPokQqoMqh62edPMfA=;
+	s=k20260515; t=1793275545;
+	bh=Xp5Z6NBRUna+X+Nwp4QLQcBmqe140nsg4kc2CEFfGXU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=BSTRaE1DEDYjoQj4tEV8n2EptOntABflL8S6y9je/tl4O0SdxJFIaaYZryK1ynEO2
-	 xcOT8f8n5cwysH8xbDJWmqHOi9tMu0V1YKvw0RE1J6RNgExeh7t6FAZ69Zv4MHCodb
-	 mgrZ8dYXf+GG5RFlmNIp8ZLdqntUbrnTTJMQtGPzgr4wVKPdBwUjb9Fe/QCrKyD08N
-	 UPcihVHroNzGK5V3HdHUuT1cD/s/0N65PkftTf/bRg3DPl7e4sWr0qx4tm+EaMIWmU
-	 rLxNGB9iXWf4buBbCuxLNcJmgI9a8t8GCwqgPa76A6pWK/pwbd213RiTWDqPZnGgpO
-	 VL+AhbMtfEwhg==
+	b=DSBGjcZMksQW+jZTOZrOQfMChlkK72ylhLwqFrvZfW5jk/ax5rZbUeSbN0TgFfF3y
+	 cxuN4jcYH77zMYS+JxhUuX2rIP/q5yFKxrjLvayXGsA6IDKRCA9LCjSku9vBKhME+j
+	 bWjwr+mMxR+OE+PUuBo3pW6su9+PMohl06MR2wzBOM8gaVU+QvM0NdSoy7VJgGN49j
+	 ufGpHqWRYpVw8JxGKmJQKLFh4crx9u1AbKaMOxmHX/BIVUOvXZiizye4mSSx3JgUWq
+	 e8n/Mim2P4mKnGFLOL2FS7dnLGaxERn/C7Dk6BQgibOuxwvH1NNffN5WoKj5hN0aHj
+	 ffrj2pICXijnQ==
 From: Jeff Layton <jlayton@kernel.org>
-Date: Thu, 29 Oct 2026 08:05:14 -0400
-Subject: [PATCH v2 1/6] NFSD: Add per-export read/write I/O mode settings
+Date: Thu, 29 Oct 2026 08:05:18 -0400
+Subject: [PATCH v2 5/6] NFSD: Count the storage reads of each export's
+ READs
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -54,7 +55,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-export-iomode-v2-1-fe8ec6251a36@kernel.org>
+Message-Id: <20261029-export-iomode-v2-5-fe8ec6251a36@kernel.org>
 References: <20261029-export-iomode-v2-0-fe8ec6251a36@kernel.org>
 In-Reply-To: <20261029-export-iomode-v2-0-fe8ec6251a36@kernel.org>
 To: Donald Hunter <donald.hunter@gmail.com>, 
@@ -70,288 +71,203 @@ Cc: Steve Dickson <steved@redhat.com>, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
  linux-doc@vger.kernel.org, Jeff Layton <jlayton@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9776; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=rrkH0txb+eAU3x/Py2Gct7FNqaAD512XFVMEQpiIZqg=;
- b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBq4zaNf2IcIDCkyJLJ7qvVenos+H01jZy3XAib6
- P3n5SmtZMWJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCauM2jQAKCRAADmhBGVaC
- FWXIEAC0hoZznwPAYrdv13ADl4F2+nJwogAO93SWUYmEiVG0JyHK5Fnpwf95Fnik1YJT2nzz8fn
- 50WbpA+AHBd8KhkF8QHB1wLUQ+zkSO7QsCyJzx2nOchJ/j0vyK1E7RDh2za/7fpIW7gmmAezpc1
- rCRvjdVorPzrEHBwOtLl6d8hSzsgsgfCBRmVHRrVB9gTjcIC3bXRSiwB1gUPEDLF4AlzpV1Vta8
- koyVb6h4XWrHOqAdRdexXgYhJC0EdMZhXJGSryqdgROjy2xoBPEoW1wFl1GYz/9oTrwOvc++FRn
- b3MTPRDKepESb/DzQLZRXHX3y/7yo/tMDi48pEhiqyV88HgdZ16dYaMYGeJIJmsYzI4iqefUhR8
- 0Xxh6VtXu6/E+8X6pmF+OXltmyZTeiMovcLEEp7D9Ue9m99YzuBdc7GctwFghjdY9N0dtbL6jlx
- hRVS0ht3EKuyf//6zptin92YL1SILj7exHO+TKYLIxLe1r+0Fqd4m6MuxHjSC8ANsVpXDDhNv2L
- kS+oW3WAKZLr8OAutKmtpHxrbgXL46V25UEvpn8gFC1gtxSwHDg+E3DmuRJHAPzeH1ywWCg84C0
- s62grW4euIEErDzn8DGtXuQ7dik0vq1g5GBFIJ5jWPPhXqsYLU8O3wsL/NtVDrHxj0gzdcS50nl
- t7lk2N17ZbZTJlg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6660; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=dQERPU3OneW2TFDnT8M0DRvQJt9QKP7O5oyeTHTbcLA=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBq4zaOIU2AclDnmrsC/bX1K5gWNN64Ftl8rvy5d
+ b2zmDR7r3aJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCauM2jgAKCRAADmhBGVaC
+ FWy4EACTGnea+ZxGQRS3EiAhcdUdwKOhLrUuzsnopDjRJsckN6DxxLtmZFnf2rCv5r1OISsPose
+ i2z4ysEH+dfTXuUZg6wCAPUustABlM7l9fMf5DkR/j65FhWYXehkggHtlupaibInCkyrEhiaZFj
+ EbW28N+Qy1LeK3QJGK53lTg7WRrj7scyCdVnr1b0nORHOY7S4DLyK6SMXDcSoj/+9AjxPdimdGZ
+ 2N096LuXIU44pqXI3O1m0anWVyOJa3PRYx+a6XR0T4Mtdg+Tfh2AIdi1xf+39o1dKWMsqc6Zx6V
+ KyirMFLavFUumSZH4L8p7GqczCBv6M6buQL8zVs9QDbicHbjT24ZjYR/IzSHhpdqEbsNdwBcp04
+ pxxTQMGJUMEB/63Fudypf0LooMV8+bJYViGnWGkjrePCL2L4tjXkniXyVlBnzI3AyzK2cJeoeHW
+ Z9z1K5Y8buNFWhRwBa6YPuIlpKE3vdQmsubv9Sb1IWkxZARo6/9uvpMdi5UH4ns42hKy6T2BbC8
+ s/MH/YwqA13ROubrkh3FRXHZgN/8UZpI00N9UXFVFDi8zWiEukW+wF5q22hjihwFazfh8IrwW1B
+ Rcui/xuLBgK8pkg7GBO9VgJGSP17mF30piAZgJ+c5djYVRFQt0v8XOfyqdS064TU/yjHHICmLrb
+ 3FWUeQT47Z1kiQQ==
 X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
  fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
 
-Add ex_read_io/ex_write_io to struct svc_export along with a
-kernel-internal NFSD_IO_DEFAULT value meaning "follow the global debugfs
-knob".
+The page cache miss ratio of an export is the best indicator of the IO
+mode that suits it, but NFSD reports only the bytes that READ returned.
+Comparing that with the reads of the block device is approximate: the
+device can hold other exports or local data, the count includes every
+user of the device, and btrfs can span devices.
 
-Add an io-mode enum to the nfsd netlink spec so the mode values are
-uAPI (NFSD_IO_MODE_*), and define NFSD_IO_BUFFERED/DONTCACHE/DIRECT in
-terms of it. The generated NLA_POLICY_MAX policy range-checks the new
-read-io/write-io attributes.
-
-Parse those attributes, copy the settings on cache update, and report
-them in nfsd.export/content. The new options are netlink-only.
+submit_bio() charges read bytes to the submitting task. Take a snapshot
+of current->ioac.read_bytes when a READ starts, and add the difference
+to a new io_read_storage counter of the export when it finishes. This
+includes the readahead that the READ started and the metadata that it
+needed, and works the same for buffered, dontcache, direct and splice
+reads. export_stats shows the counter only with
+CONFIG_TASK_IO_ACCOUNTING, so a missing counter means it is not
+available.
 
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
 ---
- Documentation/netlink/specs/nfsd.yaml | 24 ++++++++++++++++++++++++
- fs/nfsd/export.c                      | 28 ++++++++++++++++++++++++++--
- fs/nfsd/export.h                      |  2 ++
- fs/nfsd/netlink.c                     |  4 +++-
- fs/nfsd/netlink.h                     |  2 +-
- fs/nfsd/nfsd.h                        | 17 +++++++++++++----
- include/uapi/linux/nfsd_netlink.h     | 12 ++++++++++++
- 7 files changed, 81 insertions(+), 8 deletions(-)
+ fs/nfsd/export.c |  4 ++++
+ fs/nfsd/export.h |  1 +
+ fs/nfsd/stats.h  | 33 +++++++++++++++++++++++++++++++++
+ fs/nfsd/vfs.c    | 20 ++++++++++++++------
+ 4 files changed, 52 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/netlink/specs/nfsd.yaml b/Documentation/netlink/specs/nfsd.yaml
-index a4991206b45e..8b11bda24f89 100644
---- a/Documentation/netlink/specs/nfsd.yaml
-+++ b/Documentation/netlink/specs/nfsd.yaml
-@@ -56,6 +56,16 @@ definitions:
-     name: nfsclnt-idmax
-     value: 1024
-     header: linux/nfsd/export.h
-+  -
-+    type: enum
-+    name: io-mode
-+    doc: >-
-+      NFS READ/WRITE I/O mode. These values match the global io_cache_read
-+      and io_cache_write debugfs settings.
-+    entries:
-+      - buffered
-+      - dontcache
-+      - direct
- 
- attribute-sets:
-   -
-@@ -302,6 +312,20 @@ attribute-sets:
-       -
-         name: fsid
-         type: s32
-+      -
-+        name: read-io
-+        type: u32
-+        enum: io-mode
-+        doc: >-
-+          Per-export NFS READ I/O mode. When absent, the export follows
-+          the global io_cache_read setting.
-+      -
-+        name: write-io
-+        type: u32
-+        enum: io-mode
-+        doc: >-
-+          Per-export NFS WRITE I/O mode. When absent, the export follows
-+          the global io_cache_write setting.
-   -
-     name: svc-export-reqs
-     attributes:
 diff --git a/fs/nfsd/export.c b/fs/nfsd/export.c
-index 265ea8fd31c6..a85aedc0c4c8 100644
+index 2b83f2836b0e..3971bcee4214 100644
 --- a/fs/nfsd/export.c
 +++ b/fs/nfsd/export.c
-@@ -838,14 +838,14 @@ static int check_export(const struct path *path, int *flags,
- static int nfsd_nl_parse_one_export(struct cache_detail *cd,
- 				    struct nlattr *attr)
- {
--	struct nlattr *tb[NFSD_A_SVC_EXPORT_FSID + 1];
-+	struct nlattr *tb[NFSD_A_SVC_EXPORT_WRITE_IO + 1];
- 	struct auth_domain *dom = NULL;
- 	struct svc_export exp = {}, *expp;
- 	struct nlattr *secinfo_attr;
- 	struct timespec64 boot;
- 	int err, rem;
- 
--	err = nla_parse_nested(tb, NFSD_A_SVC_EXPORT_FSID, attr,
-+	err = nla_parse_nested(tb, NFSD_A_SVC_EXPORT_WRITE_IO, attr,
- 			       nfsd_svc_export_nl_policy, NULL);
- 	if (err)
- 		return err;
-@@ -873,6 +873,8 @@ static int nfsd_nl_parse_one_export(struct cache_detail *cd,
- 	exp.cd = cd;
- 	exp.ex_devid_map = NULL;
- 	exp.ex_xprtsec_modes = NFSEXP_XPRTSEC_ALL;
-+	exp.ex_read_io = NFSD_IO_DEFAULT;
-+	exp.ex_write_io = NFSD_IO_DEFAULT;
- 
- 	/* expiry (required, wallclock seconds) */
- 	if (!tb[NFSD_A_SVC_EXPORT_EXPIRY]) {
-@@ -986,6 +988,12 @@ static int nfsd_nl_parse_one_export(struct cache_detail *cd,
- 			}
- 		}
- 
-+		/* read-io / write-io (optional u32) */
-+		if (tb[NFSD_A_SVC_EXPORT_READ_IO])
-+			exp.ex_read_io = nla_get_u32(tb[NFSD_A_SVC_EXPORT_READ_IO]);
-+		if (tb[NFSD_A_SVC_EXPORT_WRITE_IO])
-+			exp.ex_write_io = nla_get_u32(tb[NFSD_A_SVC_EXPORT_WRITE_IO]);
-+
- 		err = check_export(&exp.ex_path, &exp.ex_flags,
- 				   exp.ex_uuid);
- 		if (err)
-@@ -1342,6 +1350,8 @@ static int svc_export_parse(struct cache_detail *cd, char *mesg, int mlen)
- 	exp.cd = cd;
- 	exp.ex_devid_map = NULL;
- 	exp.ex_xprtsec_modes = NFSEXP_XPRTSEC_ALL;
-+	exp.ex_read_io = NFSD_IO_DEFAULT;
-+	exp.ex_write_io = NFSD_IO_DEFAULT;
- 
- 	/* expiry */
- 	err = get_expiry(&mesg, &exp.h.expiry_time);
-@@ -1462,6 +1472,12 @@ static int is_export_stats_file(struct seq_file *m)
- 	return !strcmp(m->file->f_path.dentry->d_name.name, "export_stats");
- }
- 
-+static const char * const nfsd_io_mode_names[] = {
-+	[NFSD_IO_BUFFERED]	= "buffered",
-+	[NFSD_IO_DONTCACHE]	= "dontcache",
-+	[NFSD_IO_DIRECT]	= "direct",
-+};
-+
- static int svc_export_show(struct seq_file *m,
- 			   struct cache_detail *cd,
- 			   struct cache_head *h)
-@@ -1498,6 +1514,12 @@ static int svc_export_show(struct seq_file *m,
- 	    !test_bit(CACHE_NEGATIVE, &h->flags)) {
- 		exp_flags(m, exp->ex_flags, exp->ex_fsid,
- 			  exp->ex_anon_uid, exp->ex_anon_gid, &exp->ex_fslocs);
-+		if (exp->ex_read_io != NFSD_IO_DEFAULT)
-+			seq_printf(m, ",read_io=%s",
-+				   nfsd_io_mode_names[exp->ex_read_io]);
-+		if (exp->ex_write_io != NFSD_IO_DEFAULT)
-+			seq_printf(m, ",write_io=%s",
-+				   nfsd_io_mode_names[exp->ex_write_io]);
- 		if (exp->ex_uuid) {
- 			int i;
- 			seq_puts(m, ",uuid=");
-@@ -1564,6 +1586,8 @@ static void export_update(struct cache_head *cnew, struct cache_head *citem)
- 		new->ex_flavors[i] = item->ex_flavors[i];
+@@ -1675,6 +1675,10 @@ static int svc_export_show(struct seq_file *m,
+ 			   export_stats_sum(stats, EXP_STATS_IO_READ));
+ 		seq_printf(m, "\tio_write: %lld\n",
+ 			   export_stats_sum(stats, EXP_STATS_IO_WRITE));
++		if (IS_ENABLED(CONFIG_TASK_IO_ACCOUNTING))
++			seq_printf(m, "\tio_read_storage: %lld\n",
++				   export_stats_sum(stats,
++						    EXP_STATS_IO_READ_STORAGE));
+ 		seq_putc(m, '\n');
+ 		return 0;
  	}
- 	new->ex_xprtsec_modes = item->ex_xprtsec_modes;
-+	new->ex_read_io = item->ex_read_io;
-+	new->ex_write_io = item->ex_write_io;
- }
- 
- static struct cache_head *svc_export_alloc(void)
 diff --git a/fs/nfsd/export.h b/fs/nfsd/export.h
-index 117fb28db1e0..1c020b53fd74 100644
+index b9306a360c19..dcff16618edf 100644
 --- a/fs/nfsd/export.h
 +++ b/fs/nfsd/export.h
-@@ -77,6 +77,8 @@ struct svc_export {
- 	struct cache_detail	*cd;
- 	struct rcu_head		ex_rcu;
- 	unsigned long		ex_xprtsec_modes;
-+	s8			ex_read_io;
-+	s8			ex_write_io;
- 	struct export_stats	*ex_stats;
+@@ -53,6 +53,7 @@ enum {
+ 	EXP_STATS_FH_STALE,
+ 	EXP_STATS_IO_READ,
+ 	EXP_STATS_IO_WRITE,
++	EXP_STATS_IO_READ_STORAGE,
+ 	EXP_STATS_COUNTERS_NUM
  };
  
-diff --git a/fs/nfsd/netlink.c b/fs/nfsd/netlink.c
-index 4ea6a7c1ce7f..0e60cab823eb 100644
---- a/fs/nfsd/netlink.c
-+++ b/fs/nfsd/netlink.c
-@@ -42,7 +42,7 @@ const struct nla_policy nfsd_sock_nl_policy[NFSD_A_SOCK_TRANSPORT_NAME + 1] = {
- 	[NFSD_A_SOCK_TRANSPORT_NAME] = { .type = NLA_NUL_STRING, },
- };
+diff --git a/fs/nfsd/stats.h b/fs/nfsd/stats.h
+index aabfbb1a9c71..d88d2229a4c7 100644
+--- a/fs/nfsd/stats.h
++++ b/fs/nfsd/stats.h
+@@ -9,6 +9,7 @@
  
--const struct nla_policy nfsd_svc_export_nl_policy[NFSD_A_SVC_EXPORT_FSID + 1] = {
-+const struct nla_policy nfsd_svc_export_nl_policy[NFSD_A_SVC_EXPORT_WRITE_IO + 1] = {
- 	[NFSD_A_SVC_EXPORT_SEQNO] = { .type = NLA_U64, },
- 	[NFSD_A_SVC_EXPORT_CLIENT] = { .type = NLA_NUL_STRING, },
- 	[NFSD_A_SVC_EXPORT_PATH] = { .type = NLA_NUL_STRING, },
-@@ -56,6 +56,8 @@ const struct nla_policy nfsd_svc_export_nl_policy[NFSD_A_SVC_EXPORT_FSID + 1] =
- 	[NFSD_A_SVC_EXPORT_XPRTSEC] = NLA_POLICY_MASK(NLA_U32, 0x7),
- 	[NFSD_A_SVC_EXPORT_FLAGS] = NLA_POLICY_MASK(NLA_U32, 0x3ffff),
- 	[NFSD_A_SVC_EXPORT_FSID] = { .type = NLA_S32, },
-+	[NFSD_A_SVC_EXPORT_READ_IO] = NLA_POLICY_MAX(NLA_U32, 2),
-+	[NFSD_A_SVC_EXPORT_WRITE_IO] = NLA_POLICY_MAX(NLA_U32, 2),
- };
+ #include <uapi/linux/nfsd/stats.h>
+ #include <linux/percpu_counter.h>
++#include <linux/sched.h>
  
- const struct nla_policy nfsd_version_nl_policy[NFSD_A_VERSION_ENABLED + 1] = {
-diff --git a/fs/nfsd/netlink.h b/fs/nfsd/netlink.h
-index 57fc86c63b1d..b4b04f7777a9 100644
---- a/fs/nfsd/netlink.h
-+++ b/fs/nfsd/netlink.h
-@@ -19,7 +19,7 @@ extern const struct nla_policy nfsd_expkey_nl_policy[NFSD_A_EXPKEY_PATH + 1];
- extern const struct nla_policy nfsd_fslocation_nl_policy[NFSD_A_FSLOCATION_PATH + 1];
- extern const struct nla_policy nfsd_fslocations_nl_policy[NFSD_A_FSLOCATIONS_LOCATION + 1];
- extern const struct nla_policy nfsd_sock_nl_policy[NFSD_A_SOCK_TRANSPORT_NAME + 1];
--extern const struct nla_policy nfsd_svc_export_nl_policy[NFSD_A_SVC_EXPORT_FSID + 1];
-+extern const struct nla_policy nfsd_svc_export_nl_policy[NFSD_A_SVC_EXPORT_WRITE_IO + 1];
- extern const struct nla_policy nfsd_version_nl_policy[NFSD_A_VERSION_ENABLED + 1];
+ #include "export.h"
+ #include "netns.h"
+@@ -97,6 +98,38 @@ static inline void nfsd_stats_io_write_add(struct nfsd_net *nn,
+ 					 amount);
+ }
  
- int nfsd_nl_rpc_status_get_dumpit(struct sk_buff *skb,
-diff --git a/fs/nfsd/nfsd.h b/fs/nfsd/nfsd.h
-index b520b51692b0..8b4bed37b46b 100644
---- a/fs/nfsd/nfsd.h
-+++ b/fs/nfsd/nfsd.h
-@@ -16,6 +16,7 @@
- #include <linux/sunrpc/svc_xprt.h>
- 
- #include <uapi/linux/nfsd/debug.h>
-+#include <uapi/linux/nfsd_netlink.h>
- 
- #undef ifdebug
- #ifdef CONFIG_SUNRPC_DEBUG
-@@ -134,10 +135,18 @@ extern bool nfsd_disable_splice_read __read_mostly;
- extern bool nfsd_delegts_enabled __read_mostly;
- 
- enum {
--	/* Any new NFSD_IO enum value must be added at the end */
--	NFSD_IO_BUFFERED,
--	NFSD_IO_DONTCACHE,
--	NFSD_IO_DIRECT,
-+	/* Values are uAPI: per-export modes are sent over netlink */
-+	NFSD_IO_BUFFERED	= NFSD_IO_MODE_BUFFERED,
-+	NFSD_IO_DONTCACHE	= NFSD_IO_MODE_DONTCACHE,
-+	NFSD_IO_DIRECT		= NFSD_IO_MODE_DIRECT,
-+	/*
-+	 * Kernel-internal only: a per-export mode of NFSD_IO_DEFAULT
-+	 * means "follow the global nfsd_io_cache_read/write knob".
-+	 * It is never sent across the kernel-userspace interface.
-+	 * It is -1 so that it stays distinct from all present and
-+	 * future mode values.
-+	 */
-+	NFSD_IO_DEFAULT = -1,
- };
- 
- extern u64 nfsd_io_cache_read __read_mostly;
-diff --git a/include/uapi/linux/nfsd_netlink.h b/include/uapi/linux/nfsd_netlink.h
-index dcd2126d848b..f67efa23997f 100644
---- a/include/uapi/linux/nfsd_netlink.h
-+++ b/include/uapi/linux/nfsd_netlink.h
-@@ -59,6 +59,16 @@ enum nfsd_rpcbind_flags {
- 	NFSD_RPCBIND_FLAGS_NO_UDP = 1,
- };
- 
-+/*
-+ * NFS READ/WRITE I/O mode. These values match the global io_cache_read and
-+ * io_cache_write debugfs settings.
++/**
++ * nfsd_storage_read_bytes - bytes the current task has read from storage
++ *
++ * submit_bio() charges read bytes to the submitting task, so the change
++ * across a READ is what that READ, including the readahead it starts,
++ * read from storage instead of the page cache.
++ *
++ * Return: the task's storage read byte count, or zero without
++ * CONFIG_TASK_IO_ACCOUNTING.
 + */
-+enum nfsd_io_mode {
-+	NFSD_IO_MODE_BUFFERED,
-+	NFSD_IO_MODE_DONTCACHE,
-+	NFSD_IO_MODE_DIRECT,
-+};
++static inline u64 nfsd_storage_read_bytes(void)
++{
++#ifdef CONFIG_TASK_IO_ACCOUNTING
++	return current->ioac.read_bytes;
++#else
++	return 0;
++#endif
++}
 +
- enum {
- 	NFSD_A_CACHE_NOTIFY_CACHE_TYPE = 1,
++/**
++ * nfsd_stats_io_read_storage_add - Count storage bytes read for an NFS READ
++ * @exp: target export
++ * @amount: byte count
++ */
++static inline void nfsd_stats_io_read_storage_add(struct svc_export *exp,
++						  s64 amount)
++{
++	if (exp && exp->ex_stats && amount > 0)
++		percpu_counter_add_local(&exp->ex_stats->counter[EXP_STATS_IO_READ_STORAGE],
++					 amount);
++}
++
+ static inline void nfsd_stats_payload_misses_inc(struct nfsd_net *nn)
+ {
+ 	percpu_counter_inc(&nn->counter[NFSD_STATS_PAYLOAD_MISSES]);
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index 779ad3a61172..a8cf41e4dfea 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -1113,8 +1113,11 @@ static u32 nfsd_eof_on_read(struct file *file, loff_t offset, ssize_t len,
  
-@@ -185,6 +195,8 @@ enum {
- 	NFSD_A_SVC_EXPORT_XPRTSEC,
- 	NFSD_A_SVC_EXPORT_FLAGS,
- 	NFSD_A_SVC_EXPORT_FSID,
-+	NFSD_A_SVC_EXPORT_READ_IO,
-+	NFSD_A_SVC_EXPORT_WRITE_IO,
+ static __be32 nfsd_finish_read(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 			       struct file *file, loff_t offset,
+-			       unsigned long *count, u32 *eof, ssize_t host_err)
++			       unsigned long *count, u32 *eof, ssize_t host_err,
++			       u64 storage_start)
+ {
++	nfsd_stats_io_read_storage_add(fhp->fh_export,
++				       nfsd_storage_read_bytes() - storage_start);
+ 	if (host_err >= 0) {
+ 		struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
  
- 	__NFSD_A_SVC_EXPORT_MAX,
- 	NFSD_A_SVC_EXPORT_MAX = (__NFSD_A_SVC_EXPORT_MAX - 1)
+@@ -1145,12 +1148,14 @@ __be32 nfsd_splice_read(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 			struct file *file, loff_t offset, unsigned long *count,
+ 			u32 *eof)
+ {
++	u64 storage_start = nfsd_storage_read_bytes();
+ 	ssize_t host_err;
+ 
+ 	trace_nfsd_read_splice(rqstp, fhp, offset, *count);
+ 	host_err = vfs_splice_to_actor(file, offset, *count,
+ 				       nfsd_direct_splice_actor, rqstp);
+-	return nfsd_finish_read(rqstp, fhp, file, offset, count, eof, host_err);
++	return nfsd_finish_read(rqstp, fhp, file, offset, count, eof, host_err,
++				storage_start);
+ }
+ 
+ /*
+@@ -1168,7 +1173,7 @@ __be32 nfsd_splice_read(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ static noinline_for_stack __be32
+ nfsd_direct_read(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 		 struct nfsd_file *nf, loff_t offset, unsigned long *count,
+-		 struct page **page, u32 *eof)
++		 struct page **page, u32 *eof, u64 storage_start)
+ {
+ 	u64 dio_start, dio_end;
+ 	unsigned long v, total;
+@@ -1226,7 +1231,7 @@ nfsd_direct_read(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	}
+ 
+ 	return nfsd_finish_read(rqstp, fhp, nf->nf_file, offset, count,
+-				eof, host_err);
++				eof, host_err, storage_start);
+ }
+ 
+ static bool nfsd_direct_read_ok(struct svc_rqst *rqstp, struct svc_fh *fhp,
+@@ -1324,6 +1329,7 @@ __be32 nfsd_iter_read(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	struct page **page = buf->pages + (buf->page_len >> PAGE_SHIFT);
+ 	unsigned int base = buf->page_len & ~PAGE_MASK;
+ 	struct file *file = nf->nf_file;
++	u64 storage_start = nfsd_storage_read_bytes();
+ 	unsigned long v, total;
+ 	struct iov_iter iter;
+ 	struct kiocb kiocb;
+@@ -1338,7 +1344,8 @@ __be32 nfsd_iter_read(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	case NFSD_IO_DIRECT:
+ 		if (nfsd_direct_read_ok(rqstp, fhp, nf, offset, *count))
+ 			return nfsd_direct_read(rqstp, fhp, nf, offset,
+-						count, page, eof);
++						count, page, eof,
++						storage_start);
+ 		fallthrough;
+ 	case NFSD_IO_DONTCACHE:
+ 		if (file->f_op->fop_flags & FOP_DONTCACHE)
+@@ -1367,7 +1374,8 @@ __be32 nfsd_iter_read(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 				  kiocb.ki_flags);
+ 	iov_iter_bvec(&iter, ITER_DEST, rqstp->rq_bvec, v, *count - total);
+ 	host_err = vfs_iocb_iter_read(file, &kiocb, &iter);
+-	return nfsd_finish_read(rqstp, fhp, file, offset, count, eof, host_err);
++	return nfsd_finish_read(rqstp, fhp, file, offset, count, eof, host_err,
++				storage_start);
+ }
+ 
+ /*
 
 -- 
 2.56.0
