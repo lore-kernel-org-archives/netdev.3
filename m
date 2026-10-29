@@ -1,72 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.179
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793244521;
-	b=DB0ez3R1itsPQT39iMoqS3tm8X/BAIJgoVtgTlt1/ac0gbtW/LLAdoibkIvz2kkrWYS0
-	 +402b8lSxeBS+MeZmpfFxsbMPcfn9SESr8yHUdY8Di6pcglJpR1IqQgO3w74ktrh0OgEO
-	 O7ooaGXfCQDgIA7k4lBujCXjxATrWJYtw+866hilpuSS0xWNoYxZ8Ld069mX01U8niiiM
-	 LUe9Wti78hk4TRZcNdFSj0sn29D7Wc7/3cT3mxAKgpokuszhSqB5wEO+7UemAF4AH2zOM
-	 oeK8Ox/nT8JrkgU+ZQJEtww8NejZSEx3b/2J/n03Y/AKNioHLXmorMi5GyvYvgOniPA==
+	t=1793245196;
+	b=QWPa4aPVcEma0bg/TlhaUbsO1Cs0Sky1RNuiGWYn3xG4iyNoOvtZCGSbXec4UsI5pP/Q
+	 MnCsVKPXcy++5sfT5OmskOVgJgh9mLJnnZSLUnWT/Qj7Jp1sUYi9mUzmc2mPYAHClFYB/
+	 z5FSOeuGts+pehydtDwDyIs88d16+pwLcI9m3cnr5nQKKxpFsQ5ETMgZ3Un+N2Fv7t1V2
+	 AxR2PNfUmNEU7tjTKn2k9KL2pwsgwB12xlr3kA7Mvr2JIPQxnh1DSCDAo+ObEr87wfKCh
+	 Apqz9f9/V0IannkgVbXxpoEDPidxQFo6ZIvuVv58GzAd8h5QuCCEPxmKwMuSKnWOzIg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793244521;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793245196;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
-	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=i4njzMDCwe0EBzmqxjvfeIpG9o+lOwEDSvxV46zSd2o=;
-	b=XyV+nVTAFtZCzuPp17ip/FQbJd5Bw5m0TY+w4aPuqPdvNOaMmU3MBVYuIL2QoSlBgUTE
-	 b+hgxq+nffWmbYyjLhwNAiIM6LVmAxOZQCKLcYHUC7F3bga05oVTlIt7phRF+9dfrKfyG
-	 9m8z924s8cj3QW2AfPJZ5K/f66WMz/Boeq9WwjpGC5a8Du1z+ayd43JUxHNO+n+Ae27v7
-	 W2Nj7pmY3q8w1eg0yl+MWlnmAsMCWYO7i2+RYrcdlhPASM6paVbiDEie0MFUk4lSGuMWh
-	 6bu1l4VA+uQSlknNUncuML3EDJ0wLweAnzAfkFfhcdpNa0DdsCTEgBCYa7z9LSdgn2w==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=AvvcKCfPVMD1PO+LNtg/bz0+Kp3wL3PLnEl4pzf6prs=;
+	b=v1lqJA1b77aw6urKXQ4v+6uMLb4H7fP7g2NlHPYlk+8r6ur5MoNQ8Ss0o626onDyMiUL
+	 in7y8LgBiClpLLoKoLlvIr++Sdgj1/BEqOi4AylP4kA6WpxRPVM7H53+sRkDgn4I+2Yug
+	 iHxHXgmMEEEIjAO7bZyb3J59fCDGW4azZVO4D550XWHfOWUJvist6xHBGjOFOaMjbXeU0
+	 JqXyQTsqIf+6EuYB3+X2nI87N5E4pX5RGC5PyhPXBoOdQulBxZHCskSbeTraqM7Pb+fEr
+	 craMt5J2NmDIwj1VIvyQKMWByVj8QEgKpBwC5Lg4p8mCSFztpUwN26/0sJh9lfP1agw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--bcochrane.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=OWZNVzVW;
-	arc=none smtp.remote-ip=74.125.82.199
-Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yv1xaFV1;
+	arc=none smtp.remote-ip=209.85.210.179
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B30606A31A
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 03:28:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E1B30606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--bcochrane.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFC6A606A324
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 03:39:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CFC6A606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=OWZNVzVW
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-30bcb065bfdso2685852eec.0
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 20:28:39 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yv1xaFV1
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-89d3a4c9fe6so246219b3a.1
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 20:39:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793244519; x=1793849319; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=i4njzMDCwe0EBzmqxjvfeIpG9o+lOwEDSvxV46zSd2o=;
-        b=OWZNVzVWG0OTdPxuQdpZXaCECPLqYjHA2Nw+gJ9UvDWnGTU3KVkiads99jx/4MVvOz
-         FjcOOBgefpAaiGW6RDkhG1UEO06jy8FdkRSr7imRET9H0T8YMN6OxUmAce37PqHLlI49
-         ZSCa5I75cJZXoeS9lNl6uRv0kvMzOL/WU9AZ1x6We1Y32aufTO/Mk0e0HgOC7BevMWQ7
-         vtwzR/ScxF2jaqxSybXa3dA/bqRgxj4neGx99Q+2aVEM7fUll4XtYk5a6HN7o85lYAN8
-         517p+oY8P5g3cpEzjllg7u0PNgIUV/4bKzH8iDEfuTsZ+O1L/wfBUwz/m2PD8unJLJtW
-         dICw==
+        d=gmail.com; s=20260707; t=1793245195; x=1793849995; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=AvvcKCfPVMD1PO+LNtg/bz0+Kp3wL3PLnEl4pzf6prs=;
+        b=yv1xaFV1JgIdj3pYONuZXPUadEphqo10zclxkGanXVfIo1jyBv5EDPfAKGxTzrG1UU
+         ClbtYmODiH4rju8A5h/c3AZiV7oydd459mCTJP0AC4BHZetZctvozhsB3BEhRt2SmgUs
+         WB0em3YY5qnPuKbGraNIjXthL/JiNBCKVBF5dqymbw0I428l68G+CNNCdmI0ojCoVlgQ
+         fD2QfWDNzpin9QgdOqT8eYR6hIkKYpb3e+LS9OFMa7L7WD6cKRvFmnAmkS3vqtCLlbCO
+         lKEyOuD9XflPiplp8/VmKqF18yluUuypt6WJt+MCfJ6m1aInpV9E8N7BExXK31e8Zbvb
+         TcEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793244519; x=1793849319;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=i4njzMDCwe0EBzmqxjvfeIpG9o+lOwEDSvxV46zSd2o=;
-        b=ZUJtJQ0nrVSPGx3ZMpvEU8ZRVWxaiQx93XfGD0ifJdcZX1/K6wfVK1qkwIb43AZh3t
-         U3Daxav72hljqiyw9eRvhphviGF+X65bc6HUtZSI+moSSa3i7hJlzQICEgjN9+Mg3xgw
-         /OLu2apc/y5NC304uZtjTfG5u9JBtzIlKFImRmZym6M8jShnd9T4NDLr2M2Lj7/bi8wb
-         nMf6ArULXJJBJgHw2cdLLi3sp/rvS0wWfY1rVgGc3nDY/P3BZcEX4ixDcLZNXpItggw0
-         Hl/6Jlv2HV0dctVmV9aMuOQPDBDNxslbE/S0opdJjO9vwor7Qwk/S4KFGlUB9k2C8Uhr
-         PmFw==
-X-Forwarded-Encrypted: i=1; AKwUvByL7JIxUu0Viq7KLjC0pRBGCmilCpwMP+0eraxuUcFj3dMmNVUcFiiK2njxEjbBtuEQuf3Tbv4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ93fqwwDpiiYcvjJjkPJDVqJJ16buQWqgKRFuhLwUVr10z7Sal
-	ORlfHnQNHleWMcO1fk0YbN6iGBfj8dBaS916dno0MUAIxX6hYjIXuCuD1+ocDCkbeoc4Y17hPGX
-	VtNAqlDKvBhs6zxcTew==
-X-Received: from dlbvv9.prod.google.com ([2002:a05:7022:5f09:b0:195:23bc:a608])
- (user=bcochrane job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7022:4396:b0:15c:20b8:796e with SMTP id a92af1059eb24-1a6ce208ad1mr7404810c88.22.1793244518347;
- Wed, 28 Oct 2026 20:28:38 -0700 (PDT)
-Date: Wed, 28 Oct 2026 20:28:32 -0700
+        d=1e100.net; s=20260707; t=1793245195; x=1793849995;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=AvvcKCfPVMD1PO+LNtg/bz0+Kp3wL3PLnEl4pzf6prs=;
+        b=JI2G60LQQLrI0S64tcU3legUlub0UCVHje8ShhciOxNK/3aXR18PsHhPtUP4cD6JaR
+         CbAfiCebhD9IDeWFQLLlFFToaRLaYyapv0HKDtZPiRu/G9jBb1+iK9TTnRz06PY3aQ5F
+         FmWq52JaAZXPFf9cGEMim8wf525rPIfisCusnU6o1OLIt1dyc7nFR40p/xpcNabhq8FW
+         FRtPun6gcTjkdTZWBMm7OyeyqsoHfWLxErQzHzEAU4AWoFJe2AY5sgxkqrUOQYDK4oBF
+         Fb5n2q0qljB0mfA9ibwTADaIeuw7EjmeYJHHUYe2p3K/h20mikzN8McGN3MFXEStAtUj
+         5EyQ==
+X-Gm-Message-State: AFq9FYL+uBFOP894KN0CaWoWGjSavA9aWV1G066TAd9kKH66raM+xvWA
+	97bzQq6P6GFYv0elm7au2mx7+V2WYHKnLuN55Qu7kwneICLA7Q6B0v8rYnfFPA==
+X-Gm-Gg: AYBFou3etXF2WXzbGxJA70QOgDXy5IvsvmADCtlSHQOaa5kpIsp93FFpMI0yUuiAF+h
+	ZWAkwrrMc75MFHAD0M9kLxPfjfJh7bwKcJtiNGs2hCRsepMDSq7qGcc+BiBE1NADZdc5K08iRG8
+	EcfRbY/J/8ebMSkRjdZBPo0W0MUo4di1HdexXej6kXkKoggqWUb0lULjlAwe+uQ8NzdLQp7OtY4
+	HCaEMxWNzohCFL6gAm+KNl88dH6fhygw3gUTWqWB1pxelmCx6Bg4ZZCpPIyzP1zm2LZ6Xt3f776
+	IoCEBR7VuMIblml3GvgFjJ7o9QuNh7AitfDw1uKEnYExeeDow6Mk9ZsmJqr3RHAZTVIkOwXYkd9
+	Xcse+vhVOp7e6L7GzghsybTdtfyHbIxj2sgatCn5fY14nEL94hiFDltPBsUFE+4WgrPbxBbn7Mn
+	+AP02fjC1Z+06TpFtlfnuLjg/eNUR166f0jw35lRoqX38dP9sFoKwT5VEtdP1ZutwhgODpTuVVb
+	wgGTa8CHtvB2zrbqwxQ5kTMZDa7+LlIDVVhz5lRqV6ZzVFUMQ9OPaENdahG+CQv62dub4tsHo20
+	Te1xWJUMvAZzvrm3WfXLDrkA37FdSnjLUDxowUaZFH0zQDsmlhlDE72+N0PJTHDlKdrkNm41vaP
+	/hpX+1XngUYfhZn1ZifQzWBV2IgprZzfhjFi3vQ==
+X-Received: by 2002:a17:90b:2f10:b0:398:bad2:c10 with SMTP id 98e67ed59e1d1-3ae58316577mr6084276a91.6.1793245195196;
+        Wed, 28 Oct 2026 20:39:55 -0700 (PDT)
+Received: from localhost.localdomain ([139.159.170.84])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae57a2a053sm2311009a91.4.2026.10.28.20.39.52
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 28 Oct 2026 20:39:54 -0700 (PDT)
+From: Qihang <q.h.hack.winter@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Paul Moore <paul@paul-moore.com>,
+	linux-security-module@vger.kernel.org,
+	=?UTF-8?q?Lucas=20Dupr=C3=A9--Rabinovici?= <omniameasunt@proton.me>
+Subject: [PATCH net v4] cipso: fix optlen corruption in cipso_v4_delopt()
+Date: Thu, 29 Oct 2026 11:39:42 +0800
+Message-ID: <20261029033942.3644-1-q.h.hack.winter@gmail.com>
+X-Mailer: git-send-email 2.54.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -75,126 +93,67 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.313.g2479322e68-goog
-Message-ID: <20261029032832.1511180-1-bcochrane@google.com>
-Subject: [PATCH net] bnxt_en: Take RTNL before netif_close() when aborting FW reset
-From: Bryan Cochrane <bcochrane@google.com>
-To: Michael Chan <michael.chan@broadcom.com>, Pavan Chebbi <pavan.chebbi@broadcom.com>, 
-	netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Joe Damato <joe@dama.to>, linux-kernel@vger.kernel.org, 
-	Bryan Cochrane <bcochrane@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-netif_close() must be called with RTNL held in addition to the netdev
-instance lock: __dev_close_many() asserts it, and the NETDEV_GOING_DOWN
-and NETDEV_DOWN notifier chains it runs rely on it for serialization.
+cipso_v4_delopt() recomputes the option length by walking the option
+buffer after the CIPSO option has been moved out.  The walk then reads
+the stale bytes at the tail of the buffer as option data, and a crafted
+setsockopt(IP_OPTIONS) buffer can make it treat one of them as an option
+length, increasing opt->opt.optlen beyond the valid option data.
 
-Commit 004b5008016a ("eth: bnxt: remove most dependencies on RTNL")
-replaced rtnl_lock() with netdev_lock() in bnxt_fw_reset_task() and
-bnxt_fw_reset(). That is sufficient for the paths that only tear the
-NIC down internally with __bnxt_close_nic(), but the abort paths close
-the netdev via bnxt_fw_reset_abort() -> netif_close(), and the error
-path in bnxt_fw_reset() calls netif_close() directly. Those now run
-without RTNL and trigger a WARN_ONCE() cascade when a firmware reset is
-aborted:
+The corrupted length stays on the socket and is later used as the copy
+length by getsockopt(IP_OPTIONS) and by the udp/raw/ping sendmsg paths,
+where it exceeds the size of the buffers they copy into.
 
-  RTNL: assertion failed at net/core/dev.c (1740)
-  WARNING: net/core/dev.c:1740 at __dev_close_many+0x1be/0x1f0
-  Workqueue: bnxt_pf_wq bnxt_fw_reset_task [bnxt_en]
-  Call Trace:
-   netif_close_many+0xb5/0x190
-   netif_close+0xa2/0xd0
-   bnxt_fw_reset_task.cold+0x8d/0x213 [bnxt_en]
-   process_one_work+0x19d/0x3a0
-   worker_thread+0x1af/0x320
-   kthread+0xe3/0x120
+Compute the new length from the intact options before the move and
+subtract the CIPSO length, and fill the padding with IPOPT_END.
 
-followed by the same assertion from call_netdevice_notifiers_info(),
-fib_rules_event(), inetdev_event(), rtnl_fill_ifinfo(),
-devlink_compat_phys_port_name_get() and ip_mc_down().
-
-This was observed on a machine in real use with a BCM57504 (4 PFs,
-FW 236.1.153.0) running v7.1.6: the firmware crashed, announced a
-"Fatal firmware reset event" and then failed to come back within the
-advertised max wait, so bnxt_fw_reset_task() aborted the reset on all
-ports:
-
-  bnxt_en 0000:c1:00.1 eno16905np1: Firmware reset aborted
-  bnxt_en 0000:c1:00.1 eno16905np1: fw_health_status 0x448100
-
-Take RTNL (before the netdev instance lock, matching the OPENING state
-which already uses rtnl_trylock()) in the fw_reset_abort path of
-bnxt_fw_reset_task() and route the POLL_VF abort through that same
-path. In bnxt_fw_reset() go back to bnxt_rtnl_lock_sp() so that its
-netif_close() error path is covered as well; bnxt_reset() and
-bnxt_rx_ring_reset() already take RTNL from bnxt_sp_task() the same
-way.
-
-The bug was found by inspecting the kernel log of the affected machine
-and the driver source; the fix was prepared with the help of an AI
-coding assistant (Gemini based) and reviewed by the submitter. It is
-build tested (allmodconfig with W=1, plus the same change on top of
-v7.1.6 built as a module for the affected BCM57504 host). The aborted
-reset path itself only runs when the firmware fails to return from a
-reset, which could not be reproduced on demand.
-
-Fixes: 004b5008016a ("eth: bnxt: remove most dependencies on RTNL")
+Assisted-by: LLM
+Fixes: 014ab19a69c32 ("selinux: Set socket NetLabel based on connection endpoint")
 Cc: stable@vger.kernel.org
-Signed-off-by: Bryan Cochrane <bcochrane@google.com>
+Signed-off-by: Qihang <q.h.hack.winter@gmail.com>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+v4:
+ - rebased onto net (fcc00b15cb21a)
+ - reworded the impact paragraph only, no functional change
+ - first public posting (v1-v3 were reviewed privately)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 0682060b048c..0f37639b70ba 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -14798,7 +14798,7 @@ static int bnxt_get_registered_vfs(struct bnxt *bp)
- void bnxt_fw_reset(struct bnxt *bp)
- {
- 	bnxt_ulp_stop(bp);
--	bnxt_lock_sp(bp);
-+	bnxt_rtnl_lock_sp(bp);
- 	if (test_bit(BNXT_STATE_OPEN, &bp->state) &&
- 	    !test_bit(BNXT_STATE_IN_FW_RESET, &bp->state)) {
- 		struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
-@@ -14844,7 +14844,7 @@ void bnxt_fw_reset(struct bnxt *bp)
- 		bnxt_queue_fw_reset_work(bp, tmo);
- 	}
- fw_reset_exit:
--	bnxt_unlock_sp(bp);
-+	bnxt_rtnl_unlock_sp(bp);
- }
+ net/ipv4/cipso_ipv4.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/net/ipv4/cipso_ipv4.c b/net/ipv4/cipso_ipv4.c
+index 1aacbbeffbc64..e65a3f29d2caf 100644
+--- a/net/ipv4/cipso_ipv4.c
++++ b/net/ipv4/cipso_ipv4.c
+@@ -2013,6 +2013,10 @@ static int cipso_v4_delopt(struct ip_options_rcu __rcu **opt_ptr)
+ 		cipso_ptr = &opt->opt.__data[cipso_off];
+ 		cipso_len = cipso_ptr[1];
  
- static void bnxt_chk_missed_irq(struct bnxt *bp)
-@@ -15495,9 +15495,8 @@ static void bnxt_fw_reset_task(struct work_struct *work)
- 		bp->fw_reset_timestamp = jiffies;
- 		netdev_lock(bp->dev);
- 		if (test_bit(BNXT_STATE_ABORT_ERR, &bp->state)) {
--			bnxt_fw_reset_abort(bp, rc);
- 			netdev_unlock(bp->dev);
--			goto ulp_start;
-+			goto fw_reset_abort;
- 		}
- 		bnxt_fw_reset_close(bp);
- 		if (bp->fw_cap & BNXT_FW_CAP_ERR_RECOVER_RELOAD) {
-@@ -15630,9 +15629,11 @@ static void bnxt_fw_reset_task(struct work_struct *work)
- 		netdev_err(bp->dev, "fw_health_status 0x%x\n", sts);
- 	}
- fw_reset_abort:
-+	rtnl_lock();
- 	netdev_lock(bp->dev);
- 	bnxt_fw_reset_abort(bp, rc);
- 	netdev_unlock(bp->dev);
-+	rtnl_unlock();
- ulp_start:
- 	if (!rc)
- 		bnxt_ulp_start(bp);
++		optlen_new = cipso_v4_get_actual_opt_len(opt->opt.__data,
++							 opt->opt.optlen);
++		optlen_new -= cipso_len;
++
+ 		if (opt->opt.srr > opt->opt.cipso)
+ 			opt->opt.srr -= cipso_len;
+ 		if (opt->opt.rr > opt->opt.cipso)
+@@ -2026,11 +2030,12 @@ static int cipso_v4_delopt(struct ip_options_rcu __rcu **opt_ptr)
+ 		memmove(cipso_ptr, cipso_ptr + cipso_len,
+ 			opt->opt.optlen - cipso_off - cipso_len);
+ 
+-		optlen_new = cipso_v4_get_actual_opt_len(opt->opt.__data,
+-							 opt->opt.optlen);
+ 		hdr_delta = opt->opt.optlen;
+ 		opt->opt.optlen = (optlen_new + 3) & ~3;
+ 		hdr_delta -= opt->opt.optlen;
++
++		memset(&opt->opt.__data[optlen_new], IPOPT_END,
++		       opt->opt.optlen - optlen_new);
+ 	} else {
+ 		/* only the cipso option was present on the socket so we can
+ 		 * remove the entire option struct */
 
 base-commit: fcc00b15cb21a6de76826e5012b2c758505f5e65
 -- 
-2.56.0.313.g2479322e68-goog
+2.54.0 (Apple Git-157)
 
