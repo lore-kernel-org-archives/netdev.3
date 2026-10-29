@@ -1,54 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.227
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793238435;
-	b=y2RsMOPNumIMNwZX57g5reRuOD76yb09MRSqXwSjDcDlso/3jfNOyM0M5CkpKVjrof3T
-	 QOY05bkhdbrUxlh9mNgOqqiG3GPgHdOYEHtKRiNEdbl67H9JfMcB+6VQuvgTHXxQbrP8h
-	 zJ2amkHFPZiI0YcKI4qzvWEeR7u0221fCXmBCiltSXfEwCqmyrmr8kgJ2hRlYqsTVHQRd
-	 adWRmBOuPulViIv1CiXduX2qGTKHHbSG1HPRDioqS9WtUuCfAZMiWB/F2NN9vLF7SXUSW
-	 91zI0ArMY+y/bNg0b8GR9qUoiisdt7y4GnelGY37bupEpkm4P7QCNKmao7u2EX5S7yA==
+	t=1793238610;
+	b=gdhtVcwfzuiNo26/UMqiO8d4aWx4iWpoh5u2EODLcbqqf+jWtfDL2yQEzXdd8OutVAui
+	 tRqFeQWVXXpRJFT9EIt4f/WjgjzP0OJf1QRo/DjjcIqKcNHWHEIFhf9nIZHhE2EMnGC5v
+	 yMowVeLnWUVO+lS/N86NfbelXfNUDEeAbJsAGFFs859X74Sc/TmKHon87aCa+kC3z4iNQ
+	 BkZ8hVLu40gqMWYfCNdb+QKKxgubYJqhQiNQo2+b5aERkTUGDX14/s0nSgGDBwqn2FBHt
+	 2k4GNvmU2F+1K74RXKxOIjDWJcAtgG8iwQaKOgptsyzoJIyEJFSP0zl9T2sGpIlERKQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793238435;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793238610;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=PFzIqZjHVXD411j1Xcb58DKmChpls4qJYNm7u9vlcyc=;
-	b=QHKnoM7ORFzMO+4tfmcojtD+g2wA6QHCMalpPNXBmnnzGp5Mg2Y3Qc5ofz7Pl13n/rtB
-	 nsmLUfjYU+yl7VNqJDskM9S5LLohCdVJpKwrRuekl2HGIKC+qSkRGxQcnexyxoMMz66UX
-	 sHmqLtv/Y6ndRAWadW0NvZylKwaqwiSi9LiTHmCKV9NPlBbWVa2nSEDNe9MvIClrxHmgw
-	 OIba8ymOEKyiPlafaQwhi9wgc+TwvFCZHWvGAc+6cp7e3k4vpVCPDoBzk/Wu1nHeRhd86
-	 FBKVRKU27VWCHoNYoRhCzAL68Tyf5T0FEjNpQHw/OukU+lPQKcHdaTJ8T5F+vgsjidQ==
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=sZZBpevcS9exsrSP43oxzD9Zj4JnPGWquROSBgpnzbg=;
+	b=OPKkOA2FTzWbKdflaD1grNZD4YYW9eXrj2fUM+LPqr0LG/rBhIQu7uEQEQwQ5WKeEB/V
+	 I3eWDdP9DNz2sxOZ8jvp01qyCoDm/z05ECDlEuytTjep7YMCCTz+eji8Ylt/17Ty7aTUa
+	 M0SJrVj+MLX9JrCjeY2xZRg0AQDlrqGhYziaAQ4TjwoAqFA0mpzpIZpTsBbriVThyl6AL
+	 DlUkVmjWqKmHfARGxiAoq2Wy2BiZBwICzHM8JW1i/Yo9XjgyJtLzY7Mj4U2R0J5YxDIyT
+	 mf+fRECQx5PKRzor6+TTq1TS9j5nGFQffPAbFOGa+nmFBhSMy9RVoYwzgsUrl2BgShA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=vrnL24sC;
-	arc=none smtp.remote-ip=91.218.175.227
-Received: from mta0.migadu.com (out-227.mta0.migadu.com [91.218.175.227])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=i2PpjwMG;
+	arc=none smtp.remote-ip=95.215.58.41
+Received: from mta1.migadu.com (out-41.mta1.migadu.com [95.215.58.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7AD606A31F
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 01:47:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EC7AD606A31F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F8C606A31C
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 01:50:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 63F8C606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=vrnL24sC
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=i2PpjwMG
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=aL4JAUADBNDogSZrrKOi77qTC3m8cP+9/JJH38fu0Ds=;
+DKIM-Signature: a=rsa-sha256; bh=wiwG9ToSHOr3fU9gexOdX6gsXe0wZeBMdWaLYbFvjxg=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793238423; v=1; x=1793843223;
- b=vrnL24sCvrdz5eM6eLcYpjzDHhRArkbtCiAJqlV1+p9l1dczM9szVe7E8AQIZt0ncC2ZlsCY
- beDZomxi3orugasFSp43DYLqYD0Hyouy2PAWASkfA+hQ22oa/hNXPxQPwyTkxTmuy0n8C6WIvxx
- V0nwsMrxnQghk4KhUh0zSuFw=
+ t=1793238607; v=1; x=1793843407;
+ b=i2PpjwMGANasD+VZYAYK94V7QCR7LRDLjAV2Q8SKpZP4qIOWs2Xm1vqSoUrz00vSqZXeL7k5
+ bd/qb0C0CgD4IlH3+sifllXvYcsiuunjastTA/x4zVk6YP+HbVv7DB9nupQxCe7ouDUvB8HTizO
+ re3P07ox+QfrAw4CWcd8HRM4=
 X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 714350141f370ecb;
-	Thu, 29 Oct 2026 01:47:03 +0000
-X-Mizu-Trace-ID: 714350141f370ecb
+Received: by mta11.migadu.com with ESMTPS id f4dc8f7a90c5f8c2;
+	Thu, 29 Oct 2026 01:50:07 +0000
+X-Mizu-Trace-ID: f4dc8f7a90c5f8c2
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <eb85d54b-778e-403e-a5a5-56805b23b560@linux.dev>
-Date: Thu, 29 Oct 2026 09:46:53 +0800
+Date: Thu, 29 Oct 2026 09:49:54 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Timur Stukan <timur.stukan.linux@gmail.com>
+Cc: netdev@vger.kernel.org, Nikolay Aleksandrov <razor@blackwall.org>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2] bonding: fix missing down path on speed/duplex
+ failure after FAIL->UP
+Message-ID: <auKmQjdgtgZTTbmJ@fedora>
+References: <20261028104758.299129-1-timur.stukan.linux@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,128 +70,188 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 1/5] ipv6: restrict gc_elasticity to 31
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
- Fernando Fernandez Mancera <fmancera@suse.de>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
- <rdunlap@infradead.org>, David Ahern <dsahern@kernel.org>,
- Ido Schimmel <idosch@nvidia.com>, Joel Granados <joel.granados@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
- Willem de Bruijn <willemb@google.com>, Maoyi Xie <maoyi.xie@ntu.edu.sg>,
- Jiri Wiesner <jwiesner@suse.de>, Gerd Rausch <gerd.rausch@oracle.com>,
- Zhan Xusheng <zhanxusheng1024@gmail.com>, Oleg Nesterov <oleg@redhat.com>,
- Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
- Yung Chih Su <yuuchihsu@gmail.com>, Wyatt Feng
- <bronzed_45_vested@icloud.com>,
- Hannes Frederic Sowa <hannes@stressinduktion.org>,
- Flavio Leitner <fbl@redhat.com>, "Paul E. McKenney" <paulmck@kernel.org>,
- Petr Mladek <pmladek@suse.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20261027104701.296240-1-jiayuan.chen@linux.dev>
- <20261027104701.296240-2-jiayuan.chen@linux.dev>
- <CAAVpQUCBBaVmaZUv+D+a4anSbGSR_pKukYVXvRJRzSGVnjb2kw@mail.gmail.com>
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <CAAVpQUCBBaVmaZUv+D+a4anSbGSR_pKukYVXvRJRzSGVnjb2kw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261028104758.299129-1-timur.stukan.linux@gmail.com>
 
+Hi Timur,
+On Wed, Oct 28, 2026 at 12:47:57PM +0200, Timur Stukan wrote:
+> In bond_miimon_commit(), when a slave is proposed as BOND_LINK_UP but
+> bond_update_speed_duplex() fails in bonding mode that needs speed/duplex
+> (802.3ad, tlb, alb), the slave is set to BOND_LINK_DOWN directly. This
+> bypasses bond_set_slave_link_state(), bond_miimon_link_change() and
+> failover.
+> 
+> This is fine for slave that coming from BOND_LINK_BACK, which was never
+> brought up and is not in use. But since commit 1899bb325149 ("bonding:
+> fix state transition issue in link monitoring") the commit phase also
+> handles BOND_LINK_FAIL -> BOND_LINK_UP which means a slave that is still
+> in use and may be curr_active_slave.
+> 
+> If the link recovers within downdelay and goes down again before the
+> commit phase reads speed/duplex, the slave is silently marked down while
+> remaining the active slave in worst cases. In alb/tlb the bond MAC stays
+> on the dead port, no failover happens and TLB/RLB state is not cleaned,
+> so the bond stops passing traffic until that link comes back even though
+> other slaves are up. A non-active slave is affected too, in alb, RLB
+> clients assigned to it are not reassigned and become unreachable.
+> 
+> Reproduced in tlb and alb mode with miimon=100 and downdelay=10000 by
+> flapping a slave within downdelay and dropping it again before commit
+> (a longer delay was added between inspect and commit to make window
+> wider and easier to test):
+>   bond0: (slave enp0s3): link status down for interface, disabling it in 10000 ms
+>   bond0: (slave enp0s3): link status up again after 3400 ms
+>   bond0: (slave enp0s3): failed to get link speed/duplex
+> 
+> procfs then shows the active slave with "MII Status: down" and "Link
+> Failure Count: 0", and all traffic is lost.
+> 
+> Fix this by not committing UP proposals in bond_mii_monitor(): UP is
+> already committed by bond_miimon_commit() once speed/duplex are valid, so
+> leaving it there means slave->link still holds the previous state at
+> that point. When speed/duplex update fails for a slave coming from
+> BOND_LINK_FAIL, take it through the regular down path, including
+> failover. Slaves coming from BACK/DOWN keep the current behaviour.
+> The down path is moved into bond_miimon_slave_down() so both callers share it.
+> 
+> After the fix:
+>   bond0: (slave enp0s3): failed to get link speed/duplex
+>   bond0: (slave enp0s3): link status definitely down, disabling slave
+>   bond0: (slave enp0s4): making interface the new active one
+> 
+> Fixes: 1899bb325149 ("bonding: fix state transition issue in link monitoring")
+> Signed-off-by: Timur Stukan <timur.stukan.linux@gmail.com>
+> ---
+> 
+> Notes:
+>     Changes in v2:
+>     - Drop link_prev_state. Instead, don't commit UP proposals in
+>       bond_mii_monitor() and let bond_miimon_commit() commit them after the
+>       speed/duplex check, so no extra state is needed (Jay)
+>     - v1: https://lore.kernel.org/netdev/20261022103821.89552-1-timur.stukan.linux@gmail.com/
+>     
+>     Sashiko pointed out on v1 that the 802.3ad netdev notifier can set
+>     BOND_LINK_FAIL on a slave that is already down, which then goes through
+>     the full down path again. That is pre-existing and reproducible on an
+>     unpatched net tree:
+>     
+>       ip link add bond0 type bond mode 802.3ad miimon 100 lacp_rate 1
+>       ip link set enp0s3 down
+>       ip link set enp0s4 down
+>       ip link set enp0s3 master bond0
+>       ip link set enp0s4 master bond0
+>       ip link set enp0s3 up
+>       ip link set enp0s4 up
+>       ip link set bond0 up
+>       (wait for LACP to settle)
+>       ip link set enp0s3 down
+>       ip link set enp0s3 up
+>     
+>     "link status definitely down" is logged twice and enp0s3 ends up with
+>     "Link Failure Count: 2" instead of 1. I will send a separate fix for it.
+> 
+>  drivers/net/bonding/bond_main.c | 58 +++++++++++++++++++++++----------
+>  1 file changed, 40 insertions(+), 18 deletions(-)
+> 
+> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+> index 7019e5d8fdc8..9bafcddbb453 100644
+> --- a/drivers/net/bonding/bond_main.c
+> +++ b/drivers/net/bonding/bond_main.c
+> @@ -2779,6 +2779,27 @@ static void bond_miimon_link_change(struct bonding *bond,
+>  	}
+>  }
+>  
+> +static bool bond_miimon_slave_down(struct bonding *bond,
+> +				   struct slave *slave)
+> +{
+> +	if (slave->link_failure_count < UINT_MAX)
+> +		slave->link_failure_count++;
+> +
+> +	bond_set_slave_link_state(slave, BOND_LINK_DOWN,
+> +				  BOND_SLAVE_NOTIFY_NOW);
+> +
+> +	if (BOND_MODE(bond) == BOND_MODE_ACTIVEBACKUP ||
+> +	    BOND_MODE(bond) == BOND_MODE_8023AD)
+> +		bond_set_slave_inactive_flags(slave,
+> +					      BOND_SLAVE_NOTIFY_NOW);
+> +
+> +	slave_info(bond->dev, slave->dev, "link status definitely down, disabling slave\n");
+> +
+> +	bond_miimon_link_change(bond, slave, BOND_LINK_DOWN);
+> +
+> +	return slave == rcu_access_pointer(bond->curr_active_slave);
+> +}
+> +
+>  static void bond_miimon_commit(struct bonding *bond)
+>  {
+>  	struct slave *slave, *primary, *active;
+> @@ -2807,10 +2828,21 @@ static void bond_miimon_commit(struct bonding *bond)
+>  			err = bond_update_speed_duplex(slave);
+>  			netdev_unlock_ops(slave->dev);
+>  			if (err && bond_needs_speed_duplex(bond)) {
+> -				slave->link = BOND_LINK_DOWN;
+>  				if (net_ratelimit())
+>  					slave_warn(bond->dev, slave->dev,
+>  						   "failed to get link speed/duplex\n");
+> +				/* Coming from FAIL, the slave is still in
+> +				 * use and may be curr_active_slave, so take
+> +				 * it through the full down path. Coming from
+> +				 * DOWN/BACK, it was never brought up, so just
+> +				 * revert it to DOWN.
+> +				 */
+> +				if (slave->link == BOND_LINK_FAIL) {
+> +					if (bond_miimon_slave_down(bond, slave))
+> +						do_failover = true;
+> +					continue;
+> +				}
+> +				slave->link = BOND_LINK_DOWN;
+>  				continue;
+>  			}
+>  			bond_set_slave_link_state(slave, BOND_LINK_UP,
+> @@ -2839,24 +2871,8 @@ static void bond_miimon_commit(struct bonding *bond)
+>  			continue;
+>  
+>  		case BOND_LINK_DOWN:
+> -			if (slave->link_failure_count < UINT_MAX)
+> -				slave->link_failure_count++;
+> -
+> -			bond_set_slave_link_state(slave, BOND_LINK_DOWN,
+> -						  BOND_SLAVE_NOTIFY_NOW);
+> -
+> -			if (BOND_MODE(bond) == BOND_MODE_ACTIVEBACKUP ||
+> -			    BOND_MODE(bond) == BOND_MODE_8023AD)
+> -				bond_set_slave_inactive_flags(slave,
+> -							      BOND_SLAVE_NOTIFY_NOW);
+> -
+> -			slave_info(bond->dev, slave->dev, "link status definitely down, disabling slave\n");
+> -
+> -			bond_miimon_link_change(bond, slave, BOND_LINK_DOWN);
+> -
+> -			if (slave == rcu_access_pointer(bond->curr_active_slave))
+> +			if (bond_miimon_slave_down(bond, slave))
+>  				do_failover = true;
+> -
+>  			continue;
+>  
+>  		case BOND_LINK_FAIL:
+> @@ -2919,6 +2935,12 @@ static void bond_mii_monitor(struct work_struct *work)
+>  
+>  		if (commit) {
+>  			bond_for_each_slave(bond, slave, iter) {
+> +				/* UP state is committed by bond_miimon_commit()
+> +				 * after the speed and duplex check, so that it
+> +				 * can still see the previous link state.
+> +				 */
+> +				if (slave->link_new_state == BOND_LINK_UP)
+> +					continue;
+>  				bond_commit_link_state(slave,
+>  						       BOND_SLAVE_NOTIFY_LATER);
+>  			}
+> -- 
+> 2.43.0
+> 
 
-On 10/29/26 7:58 AM, Kuniyuki Iwashima wrote:
-> On Tue, Oct 27, 2026 at 3:48 AM Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
->> Every counted IPv6 dst allocation runs ip6_dst_gc() once the number of
->> live dst goes over gc_thresh (1024 by default). ip6_dst_gc() decays
->> ip6_rt_gc_expire by gc_elasticity: the smaller gc_elasticity is, the
->> smaller ip6_rt_gc_expire gets, i.e. the more aggressive the gc.
->>
->> ip6_dst_gc() reads ip6_rt_gc_expire into a u32, but gc_elasticity has no
->> bounds at all, so writing >= 32 shifts a 32-bit value by >= 32 bits, and
->> a negative value gives a negative shift count. Both are UB:
->>
->>          val = atomic_read(&net->ipv6.ip6_rt_gc_expire);
->>          atomic_set(&net->ipv6.ip6_rt_gc_expire, val - (val >> rt_elasticity));
->>
->>    UBSAN: shift-out-of-bounds in net/ipv6/route.c:3369:53
->>    shift exponent 32 is too large for 32-bit type 'unsigned int'
->>    CPU: 2 UID: 0 PID: 615 Comm: ping6 Not tainted 7.3.0-rc7+ #364 PREEMPT
->>    Call Trace:
->>     <IRQ>
->>     dump_stack_lvl+0xc1/0xf0
->>     dump_stack+0x10/0x20
->>     __ubsan_handle_shift_out_of_bounds+0x1d1/0x390
->>     ip6_dst_gc.cold+0x15/0x1a
->>     dst_alloc+0x4e0/0x620
->>     ip6_rt_cache_alloc+0x189/0x7e0
->>     __ip6_rt_update_pmtu+0x68e/0x1160
->>     ip6_update_pmtu+0x30c/0x3a0
->>     icmpv6_err+0x1fa/0x330
->>     icmpv6_notify+0x303/0x770
->>     icmpv6_rcv+0xc12/0x1670
->>     ip6_protocol_deliver_rcu+0xb4a/0x1520
->>     ip6_input_finish+0x19c/0x400
->>     ip6_input+0xd4/0x240
->>     ipv6_rcv+0x1fd/0x330
->>     __netif_receive_skb_one_core+0x118/0x1c0
->>     __netif_receive_skb+0x21/0x150
->>     process_backlog+0x37e/0x1200
->>     __napi_poll.constprop.0+0xa5/0x5e0
->>     net_rx_action+0x4c0/0xf70
->>     handle_softirqs+0x204/0x9b0
->>     __do_softirq+0x10/0x18
->>
->> Make it a u8 and reject writes outside 0..31 with proc_dou8vec_minmax().
->>
->> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
->> Cc: stable@vger.kernel.org
->> Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
->> Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
->> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
->> ---
->> v2: switched to u8 and proc_dou8vec_minmax(), as suggested by Kuniyuki
->> Iwashima.
->> ---
->>   include/net/netns/ipv6.h | 2 +-
->>   net/ipv6/route.c         | 7 +++++--
->>   2 files changed, 6 insertions(+), 3 deletions(-)
->>
->> diff --git a/include/net/netns/ipv6.h b/include/net/netns/ipv6.h
->> index ffda15318be59..aefce37c04a4f 100644
->> --- a/include/net/netns/ipv6.h
->> +++ b/include/net/netns/ipv6.h
->> @@ -25,11 +25,11 @@ struct netns_sysctl_ipv6 {
->>          int ip6_rt_gc_min_interval;
->>          int ip6_rt_gc_timeout;
->>          int ip6_rt_gc_interval;
->> -       int ip6_rt_gc_elasticity;
->>          int ip6_rt_mtu_expires;
->>          int ip6_rt_min_advmss;
->>          u32 multipath_hash_fields;
->>          u8 multipath_hash_policy;
->> +       u8 ip6_rt_gc_elasticity;
->>
->>          __cacheline_group_begin(sysctl_ipv6_flowlabel);
->>          u8 flowlabel_consistency;
->> diff --git a/net/ipv6/route.c b/net/ipv6/route.c
->> index 94e5ef1c4f83e..abc8b811cd423 100644
->> --- a/net/ipv6/route.c
->> +++ b/net/ipv6/route.c
->> @@ -6579,6 +6579,8 @@ static int ipv6_sysctl_rtcache_flush(const struct ctl_table *ctl, int write,
->>          return 0;
->>   }
->>
->> +static int ip6_rt_gc_elasticity_max = 31;
-> as you need v3, s/int/u8/
->
+This version looks good to me. Thanks!
 
-Hi Kuniyuki,
-
-proc_dou8vec_minmax() put extra1/extra2 into proc_uint_conv(), which
-reads them as unsigned int, so the max has to stay an int like
-tcp_syn_retries_max and friends; a u8 there would read
-three bytes past the variable.
-
-
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
