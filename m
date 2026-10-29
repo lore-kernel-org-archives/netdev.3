@@ -1,98 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.42
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793257943;
-	b=soRoMu0m6DbBAaeeKYFoOzEzYXsfSLWtHOabIcmiQqODfuRd1D9StjnrDXbzyhyYyIOJ
-	 G3zb68wlfzl/UifjcM87DqgDr10TYrNMW37khb04jobo7ysh5157e3TqWU9NsYw5/Ov6Y
-	 /KvuNDb7asiEF9S04lnT3N6+gvOVTt5/szg9HfeOdfPdXVXhHvzF9PVdd6aN8J+QdLYrO
-	 gQo0WMZhMpX2WmgqUouA6XYSWXoCt1jTK7V8rLLjX7uB2L6D7XqhkyPLuZ8mQoBvrEgUu
-	 KCuGwIvml3rDMfC+cVYYXXz/AmEtq9Ur5kbJQIxH3tbsFvWBpI5z8Rpnp58o6wIkbBQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793257943;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type;
-	bh=OKTunFxy+QwpzleRwVzIIagIb2M+Uzm8Zh8ZKBDtS0U=;
-	b=WArFk5tdOvg4L1gb3dpeAmIrjPfa7qRzvIBZAkRlBsOrjHYG4be7oyWxb4oWsbRRR6NP
-	 CurBt0VE3LTWbV2QEx2KlwzTxYcxrZxTFRUeR+K9/LnNchDnbFI7GQsA5O/1tcRJZUqEo
-	 OJ36QPAHxA9svKU/MCgyCrNuvv/McN65JqzkE9c51RAilsGZe9+rKiWGyP91L0RREs2Il
-	 xB8LyGnsdf2vYkKmW2hJWPnPgp/8o1Xol5+ETRux3q+lPtfXtzQsWnz15TSwZKTBZjnjH
-	 GrOuVMI5zIXwo8Kxi/77w+O1b54A9th4zDY0F7iw/oWcZWGDS1gvg91U32EJWdMIT8w==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="w+dn/dwg";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.42
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.8
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793258046;
+	b=nFsA5ltz/ujF5K33JXZbep8odIK3G0oSpbnrvogmOrxJA407K5uAR5Z1Apa6EBJ07gax
+	 aDcF61E0Rl10+a1UHAMQtbUmVyCKrFmhhJThGI2mZCODncwYxD0tW8ETHtsJa14o3gqzV
+	 lI4ciL9UOZPmD+SEz/2/QLXGMFEdG8GRaLLR2DMz5fUBKEZ6jsA01ngVz9FXMK1jvbpFX
+	 B2ZyenoA323vooeBn9rve+5fG0xFKbTqAyhbTwdkUMAjk5xGAEE5RwqGG5PxiOQMtuAMh
+	 QxjOMJmIWNcGInsiwR/R/hN9P5VG+40NfF7VxOazsedfKRM7aTCz0LSLk6hX1sU4QwA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793258046;
+	h=DMARC-Filter:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-CM-TRANSID:
+	 X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=RbnMv4NDWsSfm6NxZli87tg/xVFmW0yI0I8tPFPNz/g=;
+	b=YcuWo4ZX1UlAdrenJp97+8sjz8FF68vfCYoJHBm94WbAVd+AAzArdzEmQ7Gn5ZjNbia4
+	 PfdZd5Ty87FOwTkqxppyZi5hh472mApf4PwYwJ7Q505etdYTQpl6nbKiNxkjFcsDFAFWR
+	 XbS7o6ls7vF3srW9nr+kWuM5JTVxhSFMPbCxQ/jcYJqmFFKib/DN6bLSc1NDQhAFF28rb
+	 B7uJy7N7S2n3Q/U6Yjeli+RgqNuk6YcsRNQKIne/ZwW0OZ1eEw7W2GqzSqIb3odMqxGjx
+	 l4r7cSjspwJVwzbkuANW5pKM5/DD4dsYY6VUrHYJXtj3jHQv6M8XsbTph+UP84WH2Tg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=126.com;
+	spf=pass smtp.mailfrom=126.com;
+	dkim=pass header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=n1ugxA1Y;
+	arc=none smtp.remote-ip=117.135.210.8
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.8])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15938606A32A
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 07:12:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 15938606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C9A606A31A;
+	Thu, 29 Oct 2026 07:14:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 74C9A606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=w+dn/dwg
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a5177d78c7so17232055e9.2
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 00:12:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793257941; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Ss/jBAhx+7iFpiYmkG+DRYkvC0YohdM76U5n+dsNOTHofAroSHJ508/XmHDXNOEU6B
-         xUvmuIvFovvxUAMC2/DKLxKZ21bTS4QiGMofszd1tXwF5+ow+vX16YLONz3vBLxE6Oli
-         LtF3P/MbMrsMAre/oslO2u/SbYBtBOcaXIdQPGHRxNepZhJZVBCPb1pYmNhYgYGPLWIF
-         dfQsUDRQrVdNdZLAGl5CrdF6xg6Lwt5vCPeEflFyyk8j+0Qd/k39Tmtgstj+9Fx3d/FA
-         0wLzq4HMwg2knmI1t+MzmFvV9NuhdrLZfRLFCkokZ9eHuLOYfrENiUGSGMlx25W0XuUK
-         uu5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=OKTunFxy+QwpzleRwVzIIagIb2M+Uzm8Zh8ZKBDtS0U=;
-        fh=J9zhibSnvYPl4aPKVDvB7Td+dNQMmSA4KwQI97Hcoo8=;
-        b=isSlDxHzCwidJzPgFLfyD5HUKK2KXLnVG3jOvdeAEziZgAuGfZyZqAdQc8G09pNdfV
-         +R1R2HgDVTGAWCJoCWO/CanMud6jZaqvPLICDwYHdu+hv8yLMsuGm1k5+LND1hpP8PXn
-         fl6Sgu7hIkhFCLHsZBJLmX1sXfdoV7ekAogM/bVk7F2hnSIBxTJZ4bQ+GmkGCoAocg0+
-         M4nflEcyI/+jPGvFPtWMKvosgUWT45+IEPhK4YfrCD8w++q8y6uJ+WjT3Vw2YUFJQMOc
-         u5YZIYF4wuI83xG53E/qHy0uAFHYIqQX/CcH9jBZUNaB9KQghpFgfKPXxXHmrYaJOVPy
-         FJxA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793257941; x=1793862741; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=OKTunFxy+QwpzleRwVzIIagIb2M+Uzm8Zh8ZKBDtS0U=;
-        b=w+dn/dwgtbrysHaAXv9ETJPfMsaFELE4gakBZpylLTZ5oGcJrz5KSTONKHRlOdE2I4
-         IWwoXJjpxNpfxrVO2kDMbcup7bpMDblzyW+qq7XJI/IJFjCe4wqkAHp8PB9Cy7oyNhOF
-         unwwH+zFYGfXrW7pOQHwxSYLXWpKmpbcLrGKBqh8OKO+bLeAU3dxFPBtGnFChn/8keYi
-         XVVkXjIP6SzJ3dv01NteeWbX91ClybUiHZT7/g/Ua9i9YO1VAI1S8Xd8/InCgNtdg0yv
-         rdsozN/MTriCUneq8he1ytUB8+ohVVoULeuVXz8xwsAMHAHhQXQo1AsAI4pQCorBJX27
-         KESA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793257941; x=1793862741;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=OKTunFxy+QwpzleRwVzIIagIb2M+Uzm8Zh8ZKBDtS0U=;
-        b=f2Kuwd0MXs22tCRmD2NLWvlS1cgZOQPj11oxkN8csQZA7wIECONUPpJRpLbHYLIgik
-         /00URfevnDoYAMnqNtGV1cY1nyskZAR5ZZ9OqePeq5Ceb4B54Xpt4hOlGpF8H1yVyU3l
-         Gb7gA7hte9izWCxM/yurQfYfk2c5JUim/g6OzKi4DSaG/AF4TeqSshx+KxF57wQAbpxM
-         Hb9a57lizFmTHxwBaojsF+fhxG9fVlmvBGNr9JPPngSmTi8/FuqRMkd/QTW/9HOf2wz8
-         v92nODgUmP78KNyIVkxGpQicOrYgR1CgSHbJhLsX7PH6fcKPfvoh27POrPkPM4+4T0M0
-         9ETA==
-X-Forwarded-Encrypted: i=1; AKwUvBy2TeXxei+EqUt/FY8EXUShEHS3DVyBNRGoE6O61HSVd4A6UF3P4B6JbecukfVHRHv9nQaMXZk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJJWGOFPm5eU+zKLS66mbpnay56UXioxuOGk55jzw1iOu38GU+L
-	4jPOpJA7jgRuRNG7sHGOWZDi0TsLSrX+/+55DLOJlMyZZ0U3GoKcK5hOKDryUEZrAfmi8hyLmb1
-	GfdzR59Q1O/TJnt6+ZYGEIJydYPD3FaU=
-X-Gm-Gg: AYBFou2k46cEbSns+GSRdK3ZMa/swriICgQRGL305LhSkHWu8HLTqIqMUFOHssnnDF6
-	ejtHlTyZd+MSFKlQs0XdOHqmpU2sqBQz4qouLhD7qNFXuZS7Z09p+YE23SdvJ/nVDwYzAsuosqL
-	e4rAVMiE4M13HpGq0B3no2GLj3wBrVyCAa1ghENAiNtrHbTh8fXtU//rqW6mMOi4CjDeyEAG3KD
-	FwAwkSsDU9wQw6VfBfSf3V2fJW4Ye4r5Q1X05hEXdh+6T420ZpGG6cqC7xDp9E6mw/iYtfTizGZ
-	KHc3b7phHd9pKnKCEvLDNgSi3UK9fteBZtqTZs8I3cqM2E2ntwicXMqsTVO4OBvZzhW5L+jWXsC
-	6VdVA35JmV2Vmf/7tSWzIPKzX4eEKrEcsbHZyNdkxCNf4KWEAJFj4jZHo8dv6apSAwhVPrByW1H
-	ENlIOEBKPnCnkH860jFw==
-X-Received: by 2002:a05:600c:1f94:b0:49f:fdca:c361 with SMTP id
- 5b1f17b1804b1-4a9663995a8mr105499305e9.12.1793257941322; Thu, 29 Oct 2026
- 00:12:21 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=n1ugxA1Y
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=RbnMv4NDWsSfm6NxZli87tg/xVFmW0yI0I8tPFPNz/g=;
+	b=n1ugxA1Y4FY/D66ZAf6vU6Da+o8xXcBIJ/SYYtkXRqDK9dQU8zKVH5SdC5rCOP
+	GZhonQzO9F+jboy+PzqS+s0aFtbOPy4vAh8KbVzqnHK0Lr3Paxd14rE8oIbnAXDR
+	oF1NpCctM8/muSuNfE0jYdyhL7CHRa24gYL8xZMdCkD/0=
+Message-ID: <ede3104a-7e14-40ac-b16c-9750d5b2a8a7@126.com>
+Date: Thu, 29 Oct 2026 15:12:24 +0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,70 +51,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-From: Ahmad AG <ahmadag1001@gmail.com>
-Date: Thu, 29 Oct 2026 10:12:08 +0300
-X-Gm-Features: AclHuK8oIQAbFPj51xALKq0pQMpaX8tYjUogaYqwbvGOzn7JupmqQ2AXYVRoUe8
-Message-ID: <CAASqGyZ-9hqZGWNJShxnrSiXDO==51SVsQW_x_mk993y1pNO8A@mail.gmail.com>
-Subject: [PATCH net] net/packet: charge fanout groups to the memory cgroup
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: kuba@kernel.org, davem@davemloft.net, edumazet@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] ipvs: annotate the lockless read of
+ sysctl_sync_threshold[0]
+To: Julian Anastasov <ja@ssi.bg>
+Cc: horms@verge.net.au, dsahern@kernel.org, idosch@nvidia.com,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, netdev@vger.kernel.org, lvs-devel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Linkui Xiao <xiaolinkui@kylinos.cn>
+References: <20261026083708.617278-1-xiaolinkui@126.com>
+ <45d598e6-3625-0879-59b0-51f649ebe509@ssi.bg>
+Content-Language: en-US
+From: Linkui Xiao <xiaolinkui@126.com>
+In-Reply-To: <45d598e6-3625-0879-59b0-51f649ebe509@ssi.bg>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:_____wD339LY8eJqcEnFBw--.42381S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7KFyrXr43JFWDKr1xXr43Jrb_yoW8Ar1kpa
+	9FkF4qyrWkJw4fZFZ7Cw47ZFZaqws7A3s0kwn8ArWDAa13Xrn2yrWSyay5GFyqkFn3u3ZY
+	vayUX3s5Aw4kZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UZZ2-UUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlRsG3Gri8dvnSQAA3Y
 
-fanout_add() allocates a new group with room for max_num_members
-socket pointers. Since commit 9c661b0b8544 ("net/packet: make
-packet_fanout.arr size configurable up to 64K") that is up to 64K
-pointers, 512 KB per group, from a single PACKET_FANOUT setsockopt().
-The allocation uses GFP_KERNEL, so it is not charged to the caller's
-memory cgroup.
+Hi Julian, Simon,
 
-Each packet socket can create its own group, so a process with
-CAP_NET_RAW in its own user and network namespace holds about 512 KB
-of kernel memory per open socket that its memory cgroup never sees.
-In a cgroup with memory.max set to 16M, 256 sockets each creating a
-group with max_num_members = 65536 took 264 MB of system memory while
-memory.current grew by 380 KB.
+Thanks for the reviews.
 
-Allocate the group with GFP_KERNEL_ACCOUNT, as other allocations a
-user can make on demand in the networking stack already do. With the
-change the same test in the 16M cgroup is stopped by the cgroup's OOM
-killer, and with memory.max at 512M the 256 groups charge 262656 KB
-for 264640 KB of system memory used.
+On Wed, Oct 28, 2026 at 07:15:34PM +0300, Julian Anastasov wrote:
+ > Yes, ACCESS_ONCE was used to solve possible division-by-zero problem,
+ > not to solve the data race. Even if memcpy is converted to 2 int copies
+ > on some archs (eg. x86) may be it is time to use 2 WRITE_ONCE instead of
+ > the last memcpy. Can you include this change in v2. Post it when net-next
+ > opens again by using nf-next tag.
 
-The missing charge was found by code inspection of net/packet/ with
-the help of an LLM and then triggered with a small test program that
-creates the sockets and groups and reads memory.current; the numbers
-above are from that run. Tested in a QEMU/KVM guest on this tree
-(x86_64_defconfig plus kvm_guest.config, KASAN, MEMCG, PACKET),
-running the test as uid 1000 in a cgroup v2 memory cgroup.
-tools/testing/selftests/net/psock_fanout passes before and after.
+Agreed. v2 replaces the last memcpy() in proc_do_sync_threshold() with
+two WRITE_ONCE() stores, one per element. The if/else branches gained
+braces to keep checkpatch --strict happy about the now multi-statement
+else.
 
-Fixes: 9c661b0b8544 ("net/packet: make packet_fanout.arr size
-configurable up to 64K")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude Code
-Signed-off-by: Ahmad AG <ahmadag1001@gmail.com>
----
- net/packet/af_packet.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+net-next is currently closed and is scheduled to reopen on November 9th
+(https://netdev.bots.linux.dev/net-next.html). I will post it as
+[PATCH nf-next v2] then.
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 823e0911c91..406397acc5c 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -1778,7 +1778,8 @@ static int fanout_add(struct sock *sk, struct
-fanout_args *args)
-  /* legacy PACKET_FANOUT_MAX */
-  args->max_num_members = 256;
-  err = -ENOMEM;
-- match = kvzalloc_flex(*match, arr, args->max_num_members);
-+ match = kvzalloc_flex(*match, arr, args->max_num_members,
-+      GFP_KERNEL_ACCOUNT);
-  if (!match)
-  goto out;
-  write_pnet(&match->net, sock_net(sk));
+On Tue, Oct 28, 2026 at 12:49:35PM +0000, Simon Horman wrote:
+ > I wonder if it would also be appropriate to call
+ > sysctl_sync_threshold() only once (per-packet) in
+ > ip_vs_sync_conn_needed(). Stashing the value in a local variable if
+ > appropriate.
 
-base-commit: c339f4010dea8b0d754f84ace70cd1b089878ef8
--- 
-2.43.0
+Agreed, and thank you. v2 reads the value once into a local variable,
+sync_threshold, before the branch and uses it in either branch.
+
+One precision while re-checking the code: the two call sites are on
+mutually exclusive branches of the same if/else, so a single packet
+never reads the value twice at runtime. My v1 commit message overstated
+this ("the two comparisons ... can observe different values for one and
+the same packet"); v2 rewords that paragraph and notes the rewording in
+Changes in v2. Stashing a single snapshot is still the cleaner shape, so
+the change is worthwhile regardless.
+
+Thanks,
+Linkui Xiao
+
