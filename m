@@ -1,123 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=205.220.180.131
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793269062;
-	b=PZC95H82pD0fYsHe9XBn2rrI7+UDrL7KrjzRtOvSZW3E2bti9kCG+eVa1mlOm5GhURq1
-	 EPmuT4ooQvegkT+nnKL/x8v6TZsu1o1U0d5FXWLga0iuR0ldiPq+2lOKa8xM4uAqdV6nc
-	 BZnsrjNAI0Qve9BxEMQSWLfLISmFqnTRJHfTcEEqqTrYr8Wxy/w7r5qxWpWMBI34BnRsp
-	 zsuEaqi67EFeepw06lGQhqOiV+66utNq1/MWOFYo0mcZ/mfOcwpQYt5iqrkNrY/T4y4JS
-	 ATvqSsgPth1WD57yn3Rs0S8abMSzeEXQTQmv6CsYoIfvvMPIbDW7RdpeVsXAiq3ZRcA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793269062;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:MIME-Version:
-	 References:In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:
-	 Cc:Content-Type:Content-Transfer-Encoding:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-GUID:X-Authority-Analysis:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=adbKXnkrj/Zj0MFQsrgS7CP9R8qw1nrS1ry1AUvfysk=;
-	b=phTOv0Xa3+AUW7stdhbTgjtzRO0Zk7+oPLazUAojq5rfiVdFnduaWOlm87xwAnHYaUHO
-	 Mf53M9cX/To+p2qij8R/cWLozR1kC54V8YnQKWfTy2J6Am01lAvi/c54d/nc99rWMHK4v
-	 Ik2stCapda3TrxA9UDeeim5O4cD4ydoFLqdMBSg1yvD8rNXdAaSTC3zJVMPyuobTqRwGs
-	 fc4VTVf1S0XzGeX646bJxEXOBapgcOfVnfUgQXzeyITc7yga6M1cCWoS+eqZ8HZXuVMjf
-	 4WRDtUc8KbgBOXSq2lDIa0u8h9kptd1RfZZZc/IRlPA9v3nXWccaCI7ylnoRk1raNBg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=HGKgjvO3;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=N1fpzKNl;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=205.220.180.131
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.53
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793269147;
+	b=IOIlliy62jIlIAi8fRdgKX1w3kw406VqnYAbwZV8lVWJXVgeUWatwlSYYWEy1Xv0Gb8N
+	 1tkBsLAQqno7MSzN6pJKjMFAl1EDlxyQ81mVQoI/qkdLhSqK9NboaIAWs0NdaWLynofeH
+	 f4RcbOO/4pXQX2NUcrrkmTBWwS7acCyrUaddTchfMMJC4RF0lfqfeOYGj49IBDfoTuME+
+	 qOuHkd2xQFBP6PCyDZ8OM8WsWzg8tXrJPRwGtQjUE2XyLyF6sYnDIdBiVyEPDmTMFfpRH
+	 q3/J/3bPMIHndCu3QWrgxCX5SjzN9Sfb6ZcKU8w0FxAWy2CQMoq0lcEEC/sOOmKCo7A==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793269147;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:X-Mailer:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=Vc0r3JbZbwBvUVapNGhL09kDmaTErdcaYY3i2MzSoa4=;
+	b=tV374DMqoPEGxt/xUG1jrl4RUHPmljAXK6r8GjoE+JSjGsKxvU+wjUzIZuvetqpxDO7k
+	 BzNtIisK/2vWz7khhbun87dfJh6W/01YHxlwhvB8r3Y6A53UwqjXy0MXoe180vrsKVA7h
+	 qMQYkOXt1W88GkmkuYJs7kHAlcdOwIU/2Z1vRlWJvplw6Ma+AqSZ1xKLUZ6pIczLK06oB
+	 L85eQAsG6TqTjfmb+ZZnS6xEE9j5in0dTJtsb+srUCmIw5jMYSnmojaNV/V88BnRHd/T1
+	 uPS4v2jWxLxetH/WziljN/FYL30wiOHOBRT/axxOWfMWF7GieDdBpLnDDchpbHegOWw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zH9z4kbb;
+	arc=none smtp.remote-ip=209.85.128.53
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40A5606A31A
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 10:17:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D40A5606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A85606A320
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 10:19:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C3A85606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=HGKgjvO3;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=N1fpzKNl
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69T8vBB92725114
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 10:17:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	adbKXnkrj/Zj0MFQsrgS7CP9R8qw1nrS1ry1AUvfysk=; b=HGKgjvO3Mmul6mYm
-	HXsndv9hvZ0Zx7kg2j9MQNzkelbImXc6UzBdBrI9yoyICak/R9oxwqfxch2oPpl3
-	kGSfDlwKb6YCMsjrvFyAcTk2kpu49mcjYlQnNZxxVvEaIBZpgTGN1xcPXxKMhCar
-	nHkkJu8UnM9QtHFfTOHVDU6E+dL+iNaamDLII2QF55NFVEjPX8A/A/0BYtp/86L2
-	xBXof97Tv6BPKwySquobaRqiSBITjy+5PUwNhtx643IQ3u8+5ahHyDMNfOYTPKFJ
-	bqUYfgrHbkY2OX3CDMkFfJGoa4rLovyk2cxPRi085aQfBfTaPYFLXNfDJ6rjNjfh
-	9N6CBg==
-Received: from mail-yx1-f70.google.com (mail-yx1-f70.google.com [74.125.224.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hky5s9736-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 10:17:40 +0000 (GMT)
-Received: by mail-yx1-f70.google.com with SMTP id 956f58d0204a3-6798c43a3bfso3535726d50.0
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 03:17:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793269060; cv=none;
-        d=google.com; s=arc-20260327;
-        b=oHnP16wRmnaKPCJ5mrz50UsCSeoxyf3fP0Cd4SZNCSzA2W6gegT684WNU8ttEKEcmt
-         xShMdXYPPQ9/7ARmoVI8fpLtM4xcFqW4mZnptG3N5r5O1xhSkHC+s4b2YD5/KQHWDRPY
-         AwupVUo0V2Ot0TWS6wsaTgZ08SMC/2kM/DO1UR2spQqz2RXAvsxxspJXx0IEBKyaNkHE
-         UXBJKygH+q4G1wuvRpNFK6yUsXHQ9xEYMxNmyrfZKW5jWmjL9ZM1UB9h9fZv1rx9yMlp
-         g3897ZK1DZDwM6pOe/W+1Op9+BWH6RJKxucmkQT1m/8cICPmNKVAk+Drylw74VzwHzC8
-         +F7w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=adbKXnkrj/Zj0MFQsrgS7CP9R8qw1nrS1ry1AUvfysk=;
-        fh=iPj/QxOKmYUbjH17nr3BzMCxDa14ZMf1bBhCF06IXZg=;
-        b=jLn9Wb/XjirOCmauhBlLW1KubcPSBR0zRZBxRfrTgYvwttvInjfWoyBrz9ix8weEhv
-         s4EqquyDyevjSsr648/8D2eNOCGLXixEJDFSroC65XQhSfnLvh79FUOIlaN0Ga28RmYT
-         g8BW16LYN4jYgwJUtE9QY0c++EWiCz+Smz+Iox+7Ls0gTPjqpZRC68PvGqpDozOc8HjI
-         4AgA2dS2b+Yjpd2Uq5oAZUfAjkHKINuXc9/+S7so2hRGJJWaJar5CYi/49ZSFMv4IKEG
-         26k33PredaQqJcL/uO3MZ6YacfpzXgwWMmXrHWUQyAjZ7tY8JoiyWQac91Ce01BN3L/t
-         vtZA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zH9z4kbb
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4a35d5d4a20so21237625e9.2
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 03:19:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1793269060; x=1793873860; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=gmail.com; s=20260707; t=1793269145; x=1793873945; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=adbKXnkrj/Zj0MFQsrgS7CP9R8qw1nrS1ry1AUvfysk=;
-        b=N1fpzKNl7vJKDYtFaQbbnn9QCb9ycrn3a06eCemsTzmwR1BOyWkoxBwF+jKNPELFYK
-         uD8g5bTBFUsqyVivQFV5UiSsa6OP7Uoz2gQYmbc7wFW9G0nvruNJElM5jAkedtDW8Ezw
-         lKqX3CHiza86WeqNADnz4C3cFVSqNVaWqRZrdJXlTIGGqqbgsw2hIocBgNeS/TyerJsO
-         F59/OK4o0IAAsif4XOlwf5jsZHqgeHMbX9EiihZzPE4LxyZtR6vSmUARIO+xTHxIyNW1
-         PaAUHGZwscxhezdSbhMo1764o1evdroD7EJ4Csj71SADcqVE8kpi+3TTGyWE/ZBB3wQe
-         8EVQ==
+        bh=Vc0r3JbZbwBvUVapNGhL09kDmaTErdcaYY3i2MzSoa4=;
+        b=zH9z4kbbMg0lkkb/HqgCLaFR9vONpMS7UnrW2ezQXaMot4yuVlvx8b5AsRhSxwcAbi
+         Q4V4plM0s/t0NDmjNPggc0m3ZhTaJqh16rAqpGi9MHj+RiOCp8gednbCJjh+al/OBh3J
+         k7dr5f93QI3uvgi5N70JgAPgUqm5BbmDSTg4+7OuWMyvYgfA37I5zYTduwmKcfRgttzJ
+         kjcY4e0V4EKRJbYh1+4WRLNTrxvUqyF0Wh6n+2CKqJa9D29js7cu4+6Z8dPMKadEGaoD
+         kMgHq+0nvRzb+a+PbaN9D/ZrUsU0nRFfB6YPncLGLwQk91Qn1/Z4TSQbNgEhroKs+9x9
+         ox+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793269060; x=1793873860;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1793269145; x=1793873945;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=adbKXnkrj/Zj0MFQsrgS7CP9R8qw1nrS1ry1AUvfysk=;
-        b=LXpLtcfKafSsSHQ2UtaQLH82E6JptHd1H0NQnfNqTvV9UaZrulcQvZ8BT75p64o3/I
-         AoUTfnEha3VwwTZmhLhJlP82eyf7WtlMqTX/S++SvaEt6I/J88ko/WmWsEl/m3EIcPBH
-         Ja5DHIKYkNYu1S5BsL3ER1W3BhZhIwedMUA8VxBucKMNRlNvQXG/nsigNm4KWnfVhntJ
-         nfBlb6nW21ay+vzlaypGVdPqk56ROHlm9cWYrz2AXZ95rAXVp6vnA8IZXoK9iJEARJmB
-         BBpYNDqkmIUixKEgM0DCdMNqsEpb866tS7O/Ko1h5b3P/QTC5PJSeumiiCyx3ZtNGXEj
-         jMOQ==
-X-Forwarded-Encrypted: i=1; AKwUvBylkXkz6SCWIRELD9liCRC2mEVR90nsQpCqbBW9qRJeBfbqYpw1fU68nBC13Ve+9EybL7Z+KIU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK+hhAPXYex7pR55auoNwHlTka3b5x1Rj9X+vpQ7zBpLc5Butzk
-	cxHQvD37gY64TCB9vZsL4kLd9mwdeznFfpHtxQMV3ORLGL2FvbZOtxBou7s0PuEbPc4h4R3gcvF
-	nxlFmbqDv4mzhwpFI9NEdbLetbmKe1i4zlEzoFM3/hLmXiKPF5zkmeolWIckgE3qjgIbTQV5q2e
-	mltRxQIJibpeEWvBSV6tXvqEW45MEtO6Do0w==
-X-Gm-Gg: AYBFou2MDGnoVUnp1y5niz6ANdFuLTmkzq4u664DKmxYaD3ClOXHiuBljeNtmWpZcCd
-	EpP8b/OGIGDfMUMm7TQW9Bj1IM6HfvvmVfEkPWaoEvCWcdRLOyFWF356O5+YsIg/kh1eNEUZ39V
-	8nLOBpBlujip+rrOagSwVJSpQPTdNVdTK1V9reby8LpnBS6dRZcZ68Qp/LTw==
-X-Received: by 2002:a53:ef8a:0:b0:679:3b0e:3e11 with SMTP id 956f58d0204a3-67a7bcfb0aemr2293240d50.109.1793269060131;
-        Thu, 29 Oct 2026 03:17:40 -0700 (PDT)
-X-Received: by 2002:a53:ef8a:0:b0:679:3b0e:3e11 with SMTP id
- 956f58d0204a3-67a7bcfb0aemr2293227d50.109.1793269059583; Thu, 29 Oct 2026
- 03:17:39 -0700 (PDT)
+        bh=Vc0r3JbZbwBvUVapNGhL09kDmaTErdcaYY3i2MzSoa4=;
+        b=oI/4hSSlL761haZHtnfa3j7xGhR2sHTbv3IaoshS4lzGdbo8SIz425D2Gq26pXg8Xw
+         sZdHu4xC/xm7asE1tRAhZoZ48qsWQga1mYh9vljyMTkGjGTKMEgXYG7N7KmkFUOQ4J0B
+         IlLJmN8hqXEI5J8paqKLtnZu+Y3lsIatU9nfOrv++hd2MPVcXnE85aMIvYFDJA+s5qSe
+         QHM+C9riaaSn/jHLPglTeUIxdCp2PASWmzSoC/e6DZAAn877QelchzOJJe3XcplsjJCD
+         B2yEsJP7cInPJbdhK2+Ha+ZlpPhpPCSdKdzI3Aocrcm45RcIbxTR7daK69pO9vpzWiLi
+         DlNA==
+X-Forwarded-Encrypted: i=1; AKwUvBwUdZvSc66QjEIUvnPncMjOMA9iVeiiaCcVMWK9mkvII4VogEmQ8j8827i07gOxAX0DhGVDBsA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJvMZj6WllhjMSaE6vs18n6c9EKriaNIyzV/aiGjNkuHLpXNOxJ
+	hRX2WrN8d529A90vDvopWzArBDO+4ig1w3Axk++ESMPVTnGv7WNbuCSO
+X-Gm-Gg: AYBFou2J6gYHow2Oh4F07c4QHdkr9HIdhAZzyN33lhY213Vry3w4bWfQLBZXfCLsI85
+	e1tkyBxzYmKN1NYWRUAMJ1Fhy+n2HdrULxL69IATQ6qa7ldeuWD7cOoSQZDB2XKASuC4CqDXI5H
+	fnx1T/5Qrf4FgrkPRX82fayDmpnOvhjoTY6A9JDsxjAWO+j2v/sPiA0Nnov/W1gU9B0P5gfNO9L
+	k72VHm1N5qSbEwZzlImEnFB5LgqIVLaHFIAeeNzEICLmHd7Eh0Fu3ki1OpqY+H5lt6Ek/5lnpua
+	nenGpQk1romXEFPFKATvxKyF67o0bsnyB8dE+EDaq5CyWYZqyH01VEZc+8V8dmaDIOKOaWWdBYW
+	MDAcTqk42mCLyb3wCN4XQ6w6sgQSW7cxAtjcCZQ925bC1UQVqb6jgqhz9Z6zejOmgvSDHJCT8lt
+	oOoAtk2biapQgFRKHYJxA4uoljzdSGwA+Bl6j7UwA6DmKwnrOyR7Xi863ChPpaYgphdKajWSQwq
+	0qua6uVvojZJoLSt6CZs3A5v9oS9ZxOS+vJb+mSuRRTScYOgIFB8ELEeWCg34sXZoUoBMevNMMT
+	ql1SFk477hGm5CIWIDbTTc1VokhYJPNEpUzgk4ryzIRMopmxIw+mSIgQsP8MtGJmcA==
+X-Received: by 2002:a05:600c:6088:b0:4a1:742e:3 with SMTP id 5b1f17b1804b1-4a9677ca203mr118445565e9.27.1793269145060;
+        Thu, 29 Oct 2026 03:19:05 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ecd354asm31946023f8f.43.2026.10.29.03.19.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 03:19:04 -0700 (PDT)
+Date: Thu, 29 Oct 2026 10:18:59 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: Esko Mobius via B4 Relay <devnull+echoowall.gmail.com@kernel.org>
+Cc: echoowall@gmail.com, netdev@vger.kernel.org, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, Simon Horman <horms@kernel.org>, David Ahern
+ <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, Jiayuan Chen
+ <jiayuan.chen@linux.dev>, Shuah Khan <shuah@kernel.org>, Thorsten Leemhuis
+ <regressions@leemhuis.info>, regressions@lists.linux.dev,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Eric Dumazet <edumazet@kernel.org>
+Subject: Re: [PATCH net 2/2] Revert "net: advertise TCP MSS from the
+ configured MTU, not the learned PMTU"
+Message-ID: <20261029101859.6893f1a0@pumpkin>
+In-Reply-To: <20261026-advmss-revert-v1-2-272fa4b7ecb6@gmail.com>
+References: <20261026-advmss-revert-v1-0-272fa4b7ecb6@gmail.com>
+	<20261026-advmss-revert-v1-2-272fa4b7ecb6@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -127,203 +106,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260923-aquantia-support-5gbaser-v2-1-4d789dc21418@oss.qualcomm.com>
- <179027194602.2160803.1483822531995612133@kernel.org>
-In-Reply-To: <179027194602.2160803.1483822531995612133@kernel.org>
-From: Hongmei Xu <hongmei.xu@oss.qualcomm.com>
-Date: Thu, 29 Oct 2026 18:17:27 +0800
-X-Gm-Features: AclHuK8qA7sT9aXyMK9MadwT18kA_k0cGovoEZRIA8-V0lCOv1JHPksIROlbU5U
-Message-ID: <CAPTcHHS7fckRfGzT-_n-GShsbaG7D1nV5=r8XgRbfV8vg7KK8Q@mail.gmail.com>
-Subject: Re: [PATCH v2] net: phy: aquantia: Add support for 5GbaseR
-To: netdev-bot+sashiko@kernel.org
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI5MDAzOSBTYWx0ZWRfX/7Fsn3bazSKB
- SXrfflesMfHQuvrbbLCO/JHWMHEw6L9YRS+caLLXN/8dWrDaIvHxSw1v2dxQpxHaYghqdwud6Tn
- rg2JVDHi/8rQX2W8IwoyoKZcPonmxzQKZghmgoosO8uLj8z55AEujN1LH6pgYO3Ff6gO9o17ckB
- sx4al13fKCiggcBvYBMlcJk124t1Ollt6/9YWFvVlgrTG3DJ84Mcr2q3ihrEvjC4zR0C6YmXXb8
- C2uQT2ycYavk9zLOgI96JjuoIfQXHZSmgvX/G4dqfMOvQdW4FapTp2D6NxBO0qqQkOajNBXYl13
- PM5m1euvlSKbqwAuaWExaHYKQAThel0qep0S/hbz9ONUNNW+uGqORXrlOE9la+fVT1+QwjBpzdz
- QOHxlug9AgHnMZe/ThLWiS38lZC0JA0xmkcu3C5KhEGP8XAqs/OYhw1dZd0XzLIwbpo1hoTpRKl
- QTZ1e4HS669htO4hsEw==
-X-Proofpoint-ORIG-GUID: WAgDEc0S5eNYo9Y5FYirF3vx6sVwvpmh
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI5MDAzOSBTYWx0ZWRfX5cDj/dakk+Bw
- KEtYfvAZnQZYP3oYUQGz4BcE/Qu91nJ6Yto7X6hL79Fmokr5jUZkAnLhB3MHyFAnb0iEiZiiGM7
- D9tQdJ8eoGv802NeKmIcbQAcqy3K4ng=
-X-Proofpoint-GUID: WAgDEc0S5eNYo9Y5FYirF3vx6sVwvpmh
-X-Authority-Analysis: v=2.4 cv=f/vdl+yM c=1 sm=1 tr=0 ts=6ae31d44 cx=c_pps
- a=S/uc88zpIJVNbziUnJ6G4Q==:117 a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=yx91gb_oNiZeI1HMLzn7:22 a=bC-a23v3AAAA:8 a=EUspDBNiAAAA:8 a=VwQbUJbxAAAA:8
- a=TrX7sf6gzCYKm8an2WsA:9 a=QEXdDO2ut3YA:10 a=nd2WpGr1bMy9NW-iytEl:22
- a=FO4_E8m0qiDe52t0p3_H:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-29_03,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0 priorityscore=1501 impostorscore=0
- malwarescore=0 bulkscore=0 spamscore=0 lowpriorityscore=0 phishscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610190000
- definitions=main-2610290039
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Sep 25, 2026 at 1:45=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wro=
-te:
->
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 1
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [Medium] The commit message does not mention a behaviour change in
->   aqr_gen2_get_rate_matching()=E2=80=A6
-> - [Low] The submission is incomplete.
->
-> --
->
-> net: phy: aquantia: Add support for 5GbaseR
->
-> This patch decodes PHYXS interface status code 12 as 5GBASER in
-> aqr_gen1_read_status(). It also makes aqr_gen1_config_init() accept
-> 5GBASER, and makes aqr_gen2_get_rate_matching() report pause rate
-> matching for 5GBASER.
->
-> > Add support for 5GbaseR within Aquantia phy driver.
-> >
-> > Signed-off-by: Hongmei Xu <hongmei.xu@oss.qualcomm.com>
-> >
-> > ---
-> > Changes in v2:
-> > - EDITME: describe what is new in this series revision.
-> > - EDITME: use bulletpoints and terse descriptions.
-> > - Link to v1: https://patch.msgid.link/20260923-aquantia-support-5gbase=
-r-v1-1-537d39bb8c35@oss.qualcomm.com
->
-> [Severity: Low]
-> This isn't a bug, but the v2 changelog is still the unedited b4 template.
-> That makes it hard to tell what changed since v1.
->
-This is a careless, it is fixed in new version now.
+On Mon, 26 Oct 2026 15:23:09 +0800
+Esko Mobius via B4 Relay <devnull+echoowall.gmail.com@kernel.org> wrote:
 
-> The commit body is also a single line. Could it describe the three
-> separate changes in the patch?
->
-Yes, will privide more accurate commit message for it.
+> From: Esko Mobius <echoowall@gmail.com>
+> 
+> This reverts commit 2640e6419594 ("net: advertise TCP MSS from the
+> configured MTU, not the learned PMTU").
+> 
+> That commit stopped the learned PMTU from lowering the MSS we advertise
+> in SYN and SYN-ACK. For symmetric paths it argued that "the peer runs
+> its own PMTU discovery and usually already knows the real path MTU".
+> That only holds if ICMP "fragmentation needed" can reach the peer. When
+> the peer sits behind a firewall that drops inbound ICMP, its PMTU
+> discovery is a black hole (RFC 2923, section 2.1), and the smaller MSS
+> we advertised was the only thing keeping its full-size segments off the
+> narrow hop.
+> 
+> Inbound ICMP filtering is very common in enterprise and carrier
+> networks, and it is pervasive in mainland China. We hit this in
+> production after the commit was backported to 6.12.111: TCP connections
+> that reach a server through a relay with a smaller-MTU hop complete the
+> handshake, then stall as soon as the client sends full-size segments.
+> Clients on networks that let ICMP through, and connections that bypass
+> the relay, are unaffected, which made it hard to trace back to the
+> kernel.
 
->   - aqr_gen1_read_status() now decodes interface status code 12.
->   - aqr_gen1_config_init() now accepts 5GBASER for all gen1 and later
->     PHYs, including AQR105.
->   - aqr_gen2_get_rate_matching() now returns RATE_MATCH_PAUSE for
->     5GBASER on existing gen2 and later PHYs.
->
-> Separately, the new define lines up its value with spaces:
->
->   #define MDIO_PHYXS_VEND_IF_STATUS_TYPE_USX_5G   12
->
-> The neighbouring MDIO_PHYXS_VEND_IF_STATUS_TYPE_* defines use tabs.
->
-OK, will use tabs.
+If it isn't a silly question, how to connections in the other direction
+work?
 
-> > diff --git a/drivers/net/phy/aquantia/aquantia_main.c b/drivers/net/phy=
-/aquantia/aquantia_main.c
-> > index e95d391a6dc23..0bcec88fcf727 100644
-> > --- a/drivers/net/phy/aquantia/aquantia_main.c
-> > +++ b/drivers/net/phy/aquantia/aquantia_main.c
->
-> [ ... ]
->
-> > @@ -1040,7 +1045,8 @@ static int aqr_gen2_get_rate_matching(struct phy_=
-device *phydev,
-> >                                     phy_interface_t iface)
-> >  {
-> >       if (iface =3D=3D PHY_INTERFACE_MODE_10GBASER ||
-> > -         iface =3D=3D PHY_INTERFACE_MODE_2500BASEX)
-> > +         iface =3D=3D PHY_INTERFACE_MODE_2500BASEX ||
-> > +         iface =3D=3D PHY_INTERFACE_MODE_5GBASER)
-> >               return RATE_MATCH_PAUSE;
->
-> [Severity: Medium]
-> Every PHY that uses aqr_gen2_get_rate_matching() now gets
-> RATE_MATCH_PAUSE for 5GBASER instead of RATE_MATCH_NONE. That covers
-> AQR107, AQCS109, AQR111/B0, AQR112, AQR412/C, AQR113/C, AQR114C,
-> AQR115/C and AQR813. Does this hold for every firmware provisioning?
->
-> aqr_gen2_read_global_syscfg() maps XFI5G to 5GBASER whatever the
-> provisioned rate adaptation mode is:
->
-> drivers/net/phy/aquantia/aquantia_main.c:aqr_gen2_read_global_syscfg() {
->     ...
->                 case VEND1_GLOBAL_CFG_SERDES_MODE_XFI5G:
->                         interface =3D PHY_INTERFACE_MODE_5GBASER;
->                         break;
->     ...
-> }
->
-> So 5GBASER can end up in possible_interfaces when firmware provisions
-> XFI5G with RATE_ADAPT_NONE or RATE_ADAPT_USX.
->
-> At runtime, aqr_gen2_read_status() still takes the provisioned value:
->
-> drivers/net/phy/aquantia/aquantia_main.c:aqr_gen2_read_status() {
->     ...
->                 if (syscfg->rate_adapt =3D=3D AQR_RATE_ADAPT_PAUSE)
->                         phydev->rate_matching =3D RATE_MATCH_PAUSE;
->                 else
->                         phydev->rate_matching =3D RATE_MATCH_NONE;
->     ...
-> }
->
-> phylink validation, however, uses the fixed answer:
->
-> phylink_validate_one()
->     tmp_state.rate_matching =3D phy_get_rate_matching(phy, interface);
->     ...
->     phylink_get_capabilities()
->
-> When 5GBASER returns PAUSE, phylink_get_capabilities() adds every speed
-> below 5G to the supported and advertised link modes over 5GBASE-R. The
-> fallback path in phylink_validate_phy() also stops widening validation to
-> all interfaces for c45 PHYs.
->
-> The get_rate_matching kernel-doc in include/linux/phy.h says:
->
->   It is assumed that if a rate matching mode is supported on an
->   interface, then that interface's rate can be adapted to all slower
->   link speeds supported by the phy.
->
-> Could phylink then advertise 10M to 2.5G over a 5GBASE-R host link that
-> the PHY won't pause-adapt? A MAC that only supports 5GBASE-R is one
-> example. Validation and runtime would then disagree about the same
-> interface.
->
-> The existing 10GBASER and 2500BASEX checks are just as unconditional, but
-> the 5GBASER case is new in this patch. Would it make sense to check the
-> provisioned rate_adapt in priv->global_cfg[] for the requested interface?
-> The commit message also doesn't mention this change in behaviour.
->
-> >       return RATE_MATCH_NONE;
-> >  }
->
-> --
+I'd have thought they'd need that ICMP message to get through.
 
-this is  a pre-existing concern, not caused by my change, can consider
-to address it
-in separate patch, this patch only focus on 5GBaseR mode enablement.
-
-pw-bot: cr
-
-
-Regards,
-Hongmei Xu
+David
