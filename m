@@ -1,113 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793266570;
-	b=UfzsacpMdQ9whYYisxxHNyTLPZ+Wyz9FaM10zYn0HnlwjVeAz2rhvhc6F/M6ZWDNN9/Q
-	 VTyGkHl6i+I4B2qpFCtY8ZhnWcVgaPzBYYPK6TSBKFw9k1Use2zTuZ7g6M4EIKzuEgPyj
-	 qYaDJO25wONisnCPW/kwXpqwfuxpbqtJWNVTKdqYjwdN//SPbC3TxVRKfL8Wv+0zoH5E/
-	 KqYoaEO2vCHMVxk8A4cRpgBoLc/fBpJ2lGI/ASRmktrN9/1UKNj+tHn1FssLzV+LNRN4F
-	 K3a473izpke7lk288F8ZnG2CZETXJ4g1QZ0+zCJ+TroOsMcgHdyI4kML6ntJF5Bu82w==
+	t=1793266806;
+	b=xolOurC1bpQ87Wz6Wob+lXugiIYGsBp/HBzItw7NfrG24Nz+NIAt9usI/0LPTFkSHH7H
+	 t1wyILpCT1B8DehaSWniZFGm6OBFrQb4yyQP3MsBcBtZZwWYEUoj91c8pzZETSwBIDfgu
+	 qRgdsXfoOjtgbWhmiHFqSXQm/3lXlU9oHriyj1i3Cg35jNMNjt318pMqxs9/7J6H0yhI0
+	 2uc3WsjscrbB8BQFVSNN6FHt3peAMi7DhkuE8JdZVm104S2QzykIrRH5EoRkNhcgrw2fb
+	 7Iefd4kXeB1b3XfTjpoUtvmd6aO6xTlgFhH8Gt6IHZI94sLDk56HVYBxN5paQ+n+3bQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793266570;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=hzOUhhpV11demFlh59Tft/tHrYohYb0/kBzwZWpxs64=;
-	b=yUPlrmIC+rSfpQ/Bcwc9So3/4M9QySNj/NsivhLnZndftG9QoJnf7NBCMV0RRiZNfvhJ
-	 El8B1SDgmgxNVLIOK5msX+k+avKoMK4xc36HBXx6olMO7zKiGzAJHJwQP5yb2qCq5bv9R
-	 MmlG1H4o/Ib3zwgN/OmObR53WytdDS0gJaQeX5aGa3SnK+LMLgUnvy+OAgeMVbS1d35x1
-	 fi4kWBbPEyph57C8ielyam7KPuwqvbOCcfk26Al2C5c0HZfkUQ/EBERsTbbdRT5fgVcUz
-	 MMEdhRtjUeuT17e0LKS+vqYbNLeqx/s+txW09RPjdkLTEPds4+wjRQDA9ZU5SaUbgAg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793266806;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=3eAv1cEdy32yYM8r6enZ9YmdYV3ELmvkNNHj5rXV/6E=;
+	b=lE/Es+WCKkknrEysTJp3TXkfcyJ3fQie00X6mZH8pze5p1jWzNoXhsEaBrQpvVpKCi6Y
+	 o+feT4BMQ7nzoat6oirPhxHXDh/TkvBA/t5nI3X24R1C/2QUUhzgpZ2Kd3+b89n5GIXE7
+	 nxIUK9fzmFOQoNKNMWeOUDDvoHCXdd+CSFo+wI2634z6Q1bRLwoF+6Q9uWCEgZq0VyoVm
+	 /sEBMaDNfq6GYELJCwsCsmaS2i5GYb/Wch7aoqWn0BjDUfxzXj9EAHSOvk4lalZD/KaaF
+	 kDB3/eZ+oBekrl67HOJoNU4CSVpMVQGdxYKoeNvxJfIbBSpSoNXoxxABVTEVkFG8nZQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mojatatu.com;
-	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b="ly/wfBfW";
-	arc=none smtp.remote-ip=74.125.224.41
-Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dm7HLKwg;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9AF606A31A
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 09:36:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4E9AF606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A006606A31A;
+	Thu, 29 Oct 2026 09:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=ly/wfBfW
-Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-679e86015e2so505024d50.1
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 02:36:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1793266568; x=1793871368; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hzOUhhpV11demFlh59Tft/tHrYohYb0/kBzwZWpxs64=;
-        b=ly/wfBfWMVEzWxCgsqsaGeWG9kaAy9McsBcfGXzxZ6JEl4eZFJztoAYNbUYnAtnQdT
-         kwWj7GOIxz1UP3KhSEJRd6XI+FjCMz661R7ylsTSIcQJPZejEfal/SKCX4Bx62Pdko/+
-         VX1mxT1xyAN6+sr3cOmLuDZrea2OHjRNdCFhw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793266568; x=1793871368;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=hzOUhhpV11demFlh59Tft/tHrYohYb0/kBzwZWpxs64=;
-        b=1HCZuVopHE+8eOjtOXkV2EY/fBKfwC7yKt/I9TbIgWMgs5qkFlDjiFTK+sjojcQo6E
-         zMmkfYGggLCL+GR1ianqN6A26jqknAxdjwwPJt5NhHrIxt8MF3jY/QhtZQm8ZuQ5MmWA
-         FgLwc5x83gjdwHsD71YRQz3e91xiSGhZjSUBwf6mLps1k2fecA0XT+stmzf7xJFD6mjn
-         BumPo9SFtw9kIvGucNn/ON+mElRwqljc9Vmogiolr3D/0KCoKAz00V/L5GgW4CxwyaxZ
-         wMsz0hwmB6mNVL1KjYex4MQgJmvTUfnEwRDVujPHvGxDA/55+yl9ExW+Czy5yqgemy6Z
-         wacw==
-X-Gm-Message-State: AFq9FYLf/tvT2x3ctvIJWwqW3h/f3mzgm42qEqihr8JhPFWa+r2JlFfW
-	JOgPyz/sGym21Rc2EeudGrq2bh9gwgUPBgsdIOCKnS/89gj/YTFIBz4DICgrKs9vZ57zmVKZhgm
-	PKPY=
-X-Gm-Gg: AYBFou0VaynPevWqJPYkKkhiv2Xnz6hbYVDjzhvavJGbrpVv0HaPJLJAtvTpTDtCmNY
-	uvl/zkXbm0d/SKZy7tItpuGfYt17HOsg6XWLiugUYKUdOTX39hb1fXIaQOyowD2ZvC1uL8oXIBY
-	oZ0ziiFBo8rLxFPRtlFMbFSZ+8esMwABEWOb3KkCmktSFbPRfi6iKN348/fIiGRBammpG1+jGLT
-	B1SPY4GtJnUGIgVlisXoX3N1vkDGe6afSNCYQIE9y1/kqx0Q7LlEnchbhiTw9xaXAIuGE/PjKOr
-	d3+Cfv2mm9JuBExgo8DYlYPx7YMwhAJh4Z8geM4wsbI/Yz7gu89WUMVP+ORrH6TPJuL9CcAzMYk
-	INKMjrYIkIC6PTgJ3UCvjBG38rnu94tANlQ5YkEHE4+/4IXnVY390klgbuzbXyPGu9nGBbuBEVP
-	Jrf220vNgwXTalgX91td76LTgLnR8IlQXegbtYELik0+8AL3IoZM/2bMqeB5jmmrcYU+AvTaeOw
-	F7QiD4FlWXxplvj8kxpEJUkULOuC8KGCzxogXcT2AUgagt0aLHVh/eKdCi1CPuz5sVpYttJ5fec
-	GQQNwzrRXAqj/MTkT+vvMxGPin1yRfiSBTS5MXdXOM/uuuuWWta9XqmCxT63RSukhaGtMMym2aC
-	wvPZAYOA+06xN2N8=
-X-Received: by 2002:a05:690e:1909:b0:677:b7c3:12c3 with SMTP id 956f58d0204a3-67a8d22eb63mr1824691d50.29.1793266568197;
-        Thu, 29 Oct 2026 02:36:08 -0700 (PDT)
-Received: from mbili.tail33bf8.ts.net ([64.203.83.2])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67a7a0c31cfsm3058873d50.9.2026.10.29.02.36.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 02:36:07 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Eric Dumazet <edumazet@kernel.org>,
-	bpf@vger.kernel.org,
-	bot+bpf-ci@kernel.org,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
-	David Ahern <dsahern@gmail.com>,
-	Martin KaFai Lau <kafai@fb.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Victor Nogueira <victor@mojatatu.com>,
-	linux-kselftest@vger.kernel.org,
-	Shuah Khan <shuah@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] bpf: Fix skb_pull() BUG in __bpf_redirect_neigh()
-Date: Thu, 29 Oct 2026 05:36:03 -0400
-Message-Id: <bpf_redirect_neigh_short_linear.v2.r0.20261028080316-1@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dm7HLKwg
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC151F01825;
+	Thu, 29 Oct 2026 09:40:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793266806;
+	bh=3eAv1cEdy32yYM8r6enZ9YmdYV3ELmvkNNHj5rXV/6E=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=dm7HLKwg3D6IephB+SDq+QcVxikrdJnWMIWS+JbRTSfoXSm860P4BjEIV0JVvVOwM
+	 hMua5vxWMBRQ2z+ydxHwYjgQL99fvyC4hBd4NI50tycIQ7xhTKYe6HrOa/t9xzgSkm
+	 I5wXVVXF5oA2CZCxlGgklYcp2P8fQBm/LhxRMZpHM/aCYOvVJLk93MjJjEOfqmJ+uQ
+	 w8M4wKsVx1ZZKEsT02gx0M4mcghRhXlvIWG8JqFg4pyHYuPXnbYTUupO4xVE51uCLt
+	 xQKngvQ9CXk0j2Y2bbx9w3VcTRI2r99ssB9QH05gliWALYjbbgB7MfXU2aAf6dJvDr
+	 S3d8w462QemUQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 073963AB1399;
+	Thu, 29 Oct 2026 09:40:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -118,163 +54,45 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net/mlx5: Only set num_doorbells on a fully
+ initialized
+ SF
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179326680482.1714515.15230223868854423149.git-patchwork-notify@kernel.org>
+Date: Thu, 29 Oct 2026 09:40:04 +0000
+References: <20261026084503.4122732-1-tariqt@nvidia.com>
+In-Reply-To: <20261026084503.4122732-1-tariqt@nvidia.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+ cratiu@nvidia.com, dtatulea@nvidia.com, gal@nvidia.com, leon@kernel.org,
+ linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, mbloch@nvidia.com,
+ saeedm@nvidia.com, horms@kernel.org
 
-The issue:
-This is a follow-up to the short link-layer header fixes from Eric.
-After vlan pop_eth, a privileged SCHED_ACT BPF program can call
-bpf_skb_change_head(skb, 1, 0) and then bpf_redirect_neigh().
+Hello:
 
-__bpf_redirect_neigh() calls skb_pull(skb, sizeof(*ethh)) after checking
-only that mac_header < network_header.  It does not check that the MAC
-header is long enough or that it is linear.
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-A SCHED_ACT BPF program can do:
+On Mon, 26 Oct 2026 10:45:03 +0200 you wrote:
+> From: Cosmin Ratiu <cratiu@nvidia.com>
+> 
+> The validation for the num_doorbells devlink param rejects values
+> greater than num_channels. For lightweight SFs, this ends up accessing
+> a NULL priv->eq_table, leading to a crash.
+> 
+> Fix that by rejecting setting num_doorbells on uninitialized SFs.
+> 
+> [...]
 
-    bpf_skb_change_head(skb, 1, 0);
-    bpf_redirect_neigh(lo, NULL, 0, 0);
+Here is the summary with links:
+  - [net] net/mlx5: Only set num_doorbells on a fully initialized SF
+    https://git.kernel.org/netdev/net/c/fa503935c2d6
 
-after vlan pop_eth.  The skb then has mac_len == 1 and only one byte of
-linear data; skb_pull(ETH_HLEN) trips the skb->len < skb->data_len BUG in
-__skb_pull():
-
-    kernel BUG at include/linux/skbuff.h:2839
-    RIP: skb_pull+0xc5/0x100
-    Call Trace: skb_do_redirect -> ...
-
-The Fix:
-Use skb_mac_header_len(), i.e. network_header - mac_header, rather than
-skb->mac_len.  mac_len is zero for locally generated tc egress and netkit
-packets, while skb_mac_header_len() still rejects the one-byte header
-produced by pop_eth + bpf_skb_change_head(skb, 1, 0).
-
-Also use pskb_may_pull() to ensure the Ethernet header is linear before
-reading or pulling it, and re-read ethh afterwards since pskb_may_pull()
-may reallocate skb->head.
-
-Add egress coverage to tc_redirect_neigh: the existing test only attaches
-redirect_neigh at ingress, where mac_len is populated.
-
-Conditions to recreate the bug:
-On x86-64 with 4 KiB pages, enable CONFIG_PACKET, CONFIG_BPF_SYSCALL,
-CONFIG_NET_SCH_INGRESS, CONFIG_NET_CLS_MATCHALL, CONFIG_NET_ACT_VLAN and
-CONFIG_NET_ACT_BPF.  Run as root with BPF loading, network administration
-and raw-packet privileges.  Bring lo up and attach a SCHED_ACT program
-that calls bpf_skb_change_head(skb, 1, 0), then returns
-bpf_redirect_neigh(skb->ifindex, NULL, 0, 0):
-
-  ip link set lo up
-  tc qdisc add dev lo clsact
-  tc filter add dev lo egress matchall action vlan pop_eth pipe \
-      action bpf object-file neigh_chghead.o section action
-
-Send an untagged ETH_P_IP frame of ETH_HLEN + 8192 bytes through an
-AF_PACKET/SOCK_RAW socket bound to lo, without PACKET_VNET_HDR or
-PACKET_QDISC_BYPASS.  Use a unicast destination MAC.  The sender's skb
-has a 14-byte linear Ethernet prefix and a fragmented payload; pop_eth
-removes that prefix and change_head restores only one linear byte.
-The unfixed neighbor redirect then tries to pull 14 bytes and BUGs.
-
-Fixes: b4ab31414970 ("bpf: Add redirect_neigh helper as redirect drop-in")
-Reported-by: BPF CI <bot+bpf-ci@kernel.org>
-Link: https://lore.kernel.org/all/2a0f5ff1d8db81b07fc4b344b8e68e3505fcbf36f72a471d1678b2f1cecd881b@mail.kernel.org/
-Link: https://lore.kernel.org/netdev/20261027082604.1485903-1-edumazet@kernel.org/
-Cc: stable@vger.kernel.org
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
----
-v2:
-- use skb_mac_header_len() instead of mac_len; mac_len is zero for
-  locally generated tc egress and netkit packets (BPF CI)
-- add tc-egress coverage to tc_redirect_neigh
-- document the nonlinear AF_PACKET reproduction conditions
-
- net/core/filter.c                             |  6 ++++-
- .../selftests/bpf/prog_tests/tc_redirect.c    | 26 +++++++++++++++++++
- .../selftests/bpf/progs/test_tc_neigh.c       | 10 +++++++
- 3 files changed, 41 insertions(+), 1 deletion(-)
-
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 70dc621672f2..4925f3e355d4 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2432,10 +2432,14 @@ static int __bpf_redirect_neigh_v4(struct sk_buff *skb, struct net_device *dev,
- static int __bpf_redirect_neigh(struct sk_buff *skb, struct net_device *dev,
- 				struct bpf_nh_params *nh)
- {
--	struct ethhdr *ethh = eth_hdr(skb);
-+	struct ethhdr *ethh;
- 
- 	if (unlikely(skb->mac_header >= skb->network_header))
- 		goto out;
-+	if (unlikely(skb_mac_header_len(skb) < ETH_HLEN ||
-+		     !pskb_may_pull(skb, ETH_HLEN)))
-+		goto out;
-+	ethh = eth_hdr(skb);
- 	bpf_push_mac_rcsum(skb);
- 	if (is_multicast_ether_addr(ethh->h_dest))
- 		goto out;
-diff --git a/tools/testing/selftests/bpf/prog_tests/tc_redirect.c b/tools/testing/selftests/bpf/prog_tests/tc_redirect.c
-index af8968b89ad7..829f84fb64a3 100644
---- a/tools/testing/selftests/bpf/prog_tests/tc_redirect.c
-+++ b/tools/testing/selftests/bpf/prog_tests/tc_redirect.c
-@@ -407,6 +407,26 @@ static int netns_load_bpf(const struct bpf_program *src_prog,
- 	return -1;
- }
- 
-+static int netns_load_egress_bpf(const struct bpf_program *prog,
-+				 const char *ns, int ifindex)
-+{
-+	LIBBPF_OPTS(bpf_tc_hook, qdisc);
-+	struct nstoken *nstoken;
-+	int err;
-+
-+	nstoken = open_netns(ns);
-+	if (!ASSERT_OK_PTR(nstoken, "setns egress"))
-+		return -1;
-+
-+	QDISC_CLSACT_CREATE(&qdisc, ifindex);
-+	XGRESS_FILTER_ADD(&qdisc, BPF_TC_EGRESS, prog, 0);
-+	close_netns(nstoken);
-+	return 0;
-+fail:
-+	close_netns(nstoken);
-+	return -1;
-+}
-+
- static struct bpf_link *netns_attach_nk(const char *ns, int ifindex,
- 					struct bpf_program *prog)
- {
-@@ -1055,6 +1075,12 @@ static void test_tc_redirect_neigh(struct netns_setup_result *setup_result)
- 			   skel->progs.tc_chk, setup_result))
- 		goto done;
- 
-+	if (netns_load_egress_bpf(skel->progs.tc_egress, NS_SRC,
-+				  setup_result->ifindex_src) ||
-+	    netns_load_egress_bpf(skel->progs.tc_egress, NS_DST,
-+				  setup_result->ifindex_dst))
-+		goto done;
-+
- 	if (!ASSERT_OK(set_forwarding(false), "disable forwarding"))
- 		goto done;
- 
-diff --git a/tools/testing/selftests/bpf/progs/test_tc_neigh.c b/tools/testing/selftests/bpf/progs/test_tc_neigh.c
-index de15155f2609..e0b6c14a3935 100644
---- a/tools/testing/selftests/bpf/progs/test_tc_neigh.c
-+++ b/tools/testing/selftests/bpf/progs/test_tc_neigh.c
-@@ -133,4 +133,14 @@ int tc_src(struct __sk_buff *skb)
- 	return bpf_redirect_neigh(IFINDEX_DST, NULL, 0, 0);
- }
- 
-+SEC("tc")
-+int tc_egress(struct __sk_buff *skb)
-+{
-+	if (skb->mark)
-+		return TC_ACT_OK;
-+
-+	skb->mark = 1;
-+	return bpf_redirect_neigh(skb->ifindex, NULL, 0, 0);
-+}
-+
- char __license[] SEC("license") = "GPL";
+You are awesome, thank you!
 -- 
-2.43.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
