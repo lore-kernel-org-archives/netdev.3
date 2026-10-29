@@ -1,101 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.218.53
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793290985;
-	b=RmODUCLdVMpLJoh3VDjc21RYpSMIHxyCiU45mQjV1Jqj1I4UY8OTltN1fZfhLOcxaWCX
-	 1lGdN/j/D/ebg+XXmwzBFfiNqAeM1jyzbDVW4t++vVrTle0o7SKpjAs+wxtQHPPVsrEzu
-	 NifUYZ7smtgIC3jLRnG64sEPx1E4xME3OvZ37z23BToU6GerCziyv3EOdLmk+QweVSevc
-	 mOjR49L7863h6+Olr/Gjz3fiAkXwYO/xxsipVU37drKE22KZT/nS89H03PzkXiI0EH/S2
-	 u/diY4g2UZFOhDf8ojG5Sj658qLOYGiNJoR8HTD52UBZrfN4GC4NcUJRGmdHMDmfM1Q==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793290985;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.45
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793291067;
+	b=BHgXISQuirQQcub5oN7afeE40RWD+bBjb9eQSKArwT8UvOvGvH4Z+fwByRL2lVedcC09
+	 4aZJbW8tyugDkykyEKBizeIklSgthyxcpLw8fAIxiQzbX0bAgwFSuaH5fPFbl0cNxAOV/
+	 aMLWWPK2G2XNfeDpqmvH6H5grZE//hznu2f/HhYry5W7+PFTATirKFQihLEVqoRhAr3fS
+	 AHz4X3nZtI6hH7RRX4t6Z7pAuzqPiM2WHFgQ0aqvo9GBvPpb2pN1zYOVYFEFaEysKlQMn
+	 JWDUIagWWTqMCcB9yaS2idvmFkeFL4ZRR0X6qons8kqBZ6jr7dLDpui/khFiCVlSt2g==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793291067;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=yVlt7H45FB16jm/ALidosmXiC35Hp/64GX3dy/IZRoo=;
-	b=YQFCjzYGMHVIMZQeIeDbRMrzxe1PsVPLxf5CGB78VJIvPLQLl2/4M1dodUUHFP+iclDb
-	 ZlJjH7V9cbgM4nsBprfb6UXKnblcT9bb2+G7NvQtfAyDvbGDY7+dbsL80HQNUsrcs3Ic6
-	 ETk2mVx3kRaGFc453grRvcngKOMaCXh/DlHRQGn+GFVpyxmZ4h8djj0flCWE/Y5Ub/SOO
-	 S+soCwGMxUfFWGZoljpH1GjOmlU9XMJWP0sMgPIRnKy79J4mjF4jOLJXpFfNHBH9RRBUU
-	 lQlM7sXsKcDbmAdX7L1+saj/KDztBF5osY3s9FEQdZhYliSBBexJV72EqigTaXn2nTw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=oNt+k5hd6gK3JHgbJpiRSUaj/zK/QDMMxaVigJ+IVv8=;
+	b=D+WHhie4sWKGA4xa41ZQmTdUynI7UgaAkAbFU5HLu3CXXAip5eoUB33FBgJw53P+4n0b
+	 zgdmjrvbC9SSpHAmg4zaPrM1FuXy4u4WsNUWaE+QgBG7TPvXoD57O/NATzwSA+eqs5qyo
+	 GTELjqzQcXImYHhGCNCZ59CtIoeb35N2vUvn5ZsWuU4UZixvRoN7jiHM+uwYx7q46of8N
+	 mdM2i60QuwHr1MdTlfa/UoSfcJ69Lcnr1iX8BYfgcdpqm5tXUiAV4mbSRd4zFauF4KVIU
+	 fOeFUCYsLGGRU+J1yrtNYTuHOX4ic8NbnvAxy9ZM0/VwgOufLpe6O4c39QjbbTUi14Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vl6h3FxT;
-	arc=fail smtp.remote-ip=209.85.218.53
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EGgcrtXQ;
+	arc=none smtp.remote-ip=209.85.221.45
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57C060A2628
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 16:23:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D57C060A2628
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D22606A31D
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 16:24:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 43D22606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vl6h3FxT
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c45551fa84eso288944566b.3
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 09:23:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793290983; cv=none;
-        d=google.com; s=arc-20260327;
-        b=mX6RzV92goHqX+PQ2THsQkKeJD3mV5MnKDT08FeJ14JPKQR0bPUBuZ166yRZC5a39d
-         8XMPnyl+muvMaGv2NIzP72N52I55eu3LVnLwY30gJKGBiUv1dwtI4SUKxd1Wj269u36z
-         ed0NNcIrDzSgF4lM9pP0u2P0AVHVepeAXUFB9ez27sAvMeU6rrn4kwLGjnKYkxJqJAHP
-         NF+PrOaomGyF10q+xifoR5P7KVABLL/kPZTsyjcChs9y07R71mEPPV2oVeP1ZQ32WVP+
-         CpYVlvr3/dD2/d6vNG5qvEcWA+2jj1sj6saViSBmIAl/hD1FdIqyWbRPubo11jgcu2jz
-         PSig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=yVlt7H45FB16jm/ALidosmXiC35Hp/64GX3dy/IZRoo=;
-        fh=EC+a6Hg2FddWedtBNROX+zxJSO2s+OWKxj9nXnYTqLA=;
-        b=cb4oSYqzgvoQ+jgy9cQ3dUmtdmRmvpuI42guXf3qIyGOPN+/S+U74gvE5grwVgb3/p
-         dnNkbp+jbPUHBrm0gBkrw+xTaeIE2/B9n6W+9WKNq6qqdhzA6aUFSOISZuP/Vg0Nf9Om
-         pZ+KGKpPAhiA20z7Y1wWSH3FhsmQqDeRwrKDekYGeLja1mdabEWwGwrDwWIrPYlGSqiI
-         8EMFUBDUUYkalnYU6ENzolVp3FVYz0PVEr9xlJcJKmyMS8kL544R6fLf6H28VUQ2Lmsi
-         DsEVleYvRLEBBMzHXbqbwrahaVcSYfn0ldMcH64w2F6/k+GC6fswh/O2oQemZ8etJITF
-         f77g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EGgcrtXQ
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-48e20edd106so1859389f8f.1
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 09:24:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793290983; x=1793895783; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=yVlt7H45FB16jm/ALidosmXiC35Hp/64GX3dy/IZRoo=;
-        b=vl6h3FxTysc9yet6D3Q0d2GO8gweert+j49hx6iOwi7wFPNTUWfuBL7fsyyfVvnyvZ
-         +Z1/kzcfRHuriJXExOiQjIZH32FZIEYk36Du+K2Qp+xNd/zW+Vw7+cZ+3sHCdKppJ5o8
-         eatU0GNm4EFgoeUQ+hg+aufwcL0fsR0bxtDwsqwYPSmTHeXFmK4DaWOmC6SqnWgBoZ3w
-         PCxuGBUd4CKVgczgjA3vYepQkhpbhYZnVWmJ7nhg0H7W7tE5tOgms8p4YL8rZwXyG2iI
-         Zc2yNh+LlvzPXc6XiXnDpdY/AAXfxq39EqGeUq5qFxEMHK/EKYejffUV2/LJ4wO5JK9I
-         JZlg==
+        d=gmail.com; s=20260707; t=1793291064; x=1793895864; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=oNt+k5hd6gK3JHgbJpiRSUaj/zK/QDMMxaVigJ+IVv8=;
+        b=EGgcrtXQdOXQe8Wg0+y8mCFeBHdwKIWFWLS/tzXhFxzxnqxJrzHwwWiZtPoBhrGyJ5
+         MJMiCdAOXmfo0PFLF8Gw6XXBHnFLiZx1RPVgWgOIayKgr5ex+ji6RJACXHIRA2UMfkUp
+         K94IctlgigFoTiFGSgNvWkZJwURBoPJ8ZOAXPv7ziW7TPFNd0rY8zBP8/sFl6i6HaLu9
+         TGAUU8LJZhRX+gcJnKV2J+GUnwrH/f8+XehiIAOGPRgYE/VmO2/uvWCsMyyDFz5kHlf/
+         kwp16+H7ZDGxYyLza2o5TJWPDlOpw3LGog5MqLTr0MGnczBNMJQ1jAlV2E+vyAkVSNmj
+         avbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793290983; x=1793895783;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yVlt7H45FB16jm/ALidosmXiC35Hp/64GX3dy/IZRoo=;
-        b=LzUq4tc1+Kc6RHuhWfvXdWfHfUN4bhcv71oZwaSgadWiNouwi2yoq3dtv3GNlJplHc
-         OCvx+7xCwrHiD1an2qfSRUvuoYZIZHZCyuTNJWHYvemVo0oH+GD6e0HLJZDhblMzCL4e
-         bl3bVyDcAZ1JD7Z8Kfep23ZS3vv8G0Ik/aFdOPG+NYO0AWWak952v3eO7aaK8IBoqt4t
-         KaFTZjlbda0Jfxs1vcNIuMHxpPHsSnssmLrhH7NCveUTK1Sqi0drmys/E1h9flg9mI1x
-         2kIkFwlwMkm2TzDf0ZGjGJdi/FdOSyarXmIRqsz7WnjXyph/yXqLzJ6ffski3auCjNb+
-         6sFQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzpSoKWLv9CQBEWiUtKLDpNaiZtM+XXQevfqJc9YpCAsSQGIhfLe803c8UyFcs5FYEWbNr2TMc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI55ZVVU8fz7NgFKVLZdxbNvEzDGlqce5giejN1H/8FAHlFGOsd
-	g+SEMec1/L30Ujm7vZk1S5Yxrr3t3u21hNuD7+ok2NtrH8VblH2auWaEzToPSY4ii885Zk8aS7h
-	rHWMhR39UtsH+OSo4wmowf1Y6nij7uTs=
-X-Gm-Gg: AYBFou18QiODYLkiLNXvSpDW7ftFXiMpNvekMxxBWe5fkRHSqjRBqyIi6ZeoJl8zphM
-	Ceru8CwBoOTUVT99cpgqiyX02sSMlSBC4dLupR4AyWakcyC5L1dbI3bQJHAxsicyYBokv6acC2v
-	g4e6GpdGIdPame7y3NHEelymz146dPOfFaxfXqYVMRqx95fv9/xA6vhtmYKBE0cDl+f7GCAecx2
-	sC3jvtexSAmGd0HScvv/TxKA8xhwrRsoIUEdfyKTuRz8IHnijzE/q6PqtZbob5vzWZUb8MccjDN
-	9MsG3uAG5hKuahXvbzpAc62yVTZSBdxtYudQeit5suNXbTkLExc5JVGBnAtGWsaHIVCrYLcfyzo
-	EmtVpFyUzNOCBnZSK0GKdbYlVDW5yMCInePK6vEZcT5NSUIEpzV6mDdHMYcNEYpEwHo4f39YRKs
-	ADQsRo/+eGsFzz1f3qSq2LMHkqgvPgK863TVSK3ji+ztE9MEhzyQrbasc=
-X-Received: by 2002:a17:907:2d10:b0:c31:91f9:60b7 with SMTP id
- a640c23a62f3a-c49bdf43869mr561025466b.34.1793290982774; Thu, 29 Oct 2026
- 09:23:02 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1793291064; x=1793895864;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=oNt+k5hd6gK3JHgbJpiRSUaj/zK/QDMMxaVigJ+IVv8=;
+        b=KKp7m2Hq87HGLVQowj1zpjBmczBS3eaMSBQq89sXe/szCZO4FWyc9GgakRQcLE5qcT
+         HhUrSH76ZcMPO3WCrgzH9DcMS8/LDYYMKGrVA7in4zuJDZTaB5zZ70JApZxWgqPjPFeb
+         YNX3gw/09upIwAzRbeEDWYKWirYH3R7Sa+/wxCMwvA8zsVC2e7IciTrRHQ88xRmp0bQ3
+         hEpPQxUogUEb50sEmi+0H2mKT4qfkV4rDIlzn6/h5mBYLRx9wc4FMKDwg6GEDdQ3b41F
+         eCCGv0Ai/8SGVZcHFBldGq+/4yFP0MRaECwEQfxknPbrkOVTclS9yYHCq4ditT/7bQPj
+         vtaA==
+X-Forwarded-Encrypted: i=1; AKwUvBxCUkvQzi5SrtLQAUk0ReYjKPXjJ5u8YX5Zyv4O7TqNMaKE+q8c+qDsjUFfI1H6J75OUgu3UtA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIQJCn+vYvNzfMiMwxDpim3ckJpD9vyq64UlLEuDXERk9SW1Xga
+	U5f8IJ/viflxVvTLcldUytwDUhfrZSEOucF0VdEEMz5Y2Z1F3fy43m8=
+X-Gm-Gg: AYBFou1+cZXnHCXND/7M/sVpqQ65mTKCiYzOIMUw8MCjk+yORst0qxdlFMlfTBsf0AX
+	UYMFNHN0KIwHMCZX2vUSAhuCKvY5ftAvjEO2wvncD2+7eTb6DqDXLSOoLwwPvRgYNvd+fBLalfz
+	L84aBgai6JU9rS+tS8YRE4cqkqQWIjoI4hvFoWzPqaz4SSEoaNhF4OixdBdDHSyeu0IvkHB3oWK
+	LzmzQ/DnoYrLTY1PCTprpaHkB6PdAXOz9JdcMOZQsKs41iGTH0NNGJhVdI1SkF7l5ueXdKvMk6b
+	EuYyHOGFHpL01THBBbImjicpd6DzAKHmfi6r0/nOkZyp1YSz0jjs4l9I0zA83Y/mUz+Z/g5/RyG
+	h/GwXjroW8xZxm+s8v9rYgW/UX+8q2lfpVJMY7er1Vw8KxJo/M1cLZFkCKZA9gy7l0yQpVqFruA
+	iq5wnzvFYOCIDEZeaw3wKha7xFzdw7wzVAkL1gS2bWGH1pjLtMbvlLoOeiuaSVXEaSBP8MmxkyI
+	7//4AXXCv/ifeYJDrzFs38vCjF8946AlllQKAmvvdM+kaE/hm0O11MZsx7ZRYSi73bZiCpmdQ==
+X-Received: by 2002:a05:6000:603:b0:48e:389:d2d5 with SMTP id ffacd0b85a97d-48e5d5b4a5emr14665720f8f.51.1793291064450;
+        Thu, 29 Oct 2026 09:24:24 -0700 (PDT)
+Received: from debian.. ([2001:41d0:303:db6b::])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e6dfaa4ccsm135494f8f.39.2026.10.29.09.24.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 09:24:21 -0700 (PDT)
+From: Tristan Madani <tristmd@gmail.com>
+To: David Heidelberg <david@ixit.cz>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	"John W . Linville" <linville@tuxdriver.com>,
+	Samuel Ortiz <sameo@linux.intel.com>,
+	oe-linux-nfc@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Tristan Madani <tristan@talencesecurity.com>
+Subject: [PATCH v2 net] nfc: llcp: use disable_work_sync and timer_shutdown_sync in local_cleanup
+Date: Thu, 29 Oct 2026 16:24:19 +0000
+Message-ID: <20261029162419.2420980-1-tristmd@gmail.com>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,157 +103,80 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261026154948.99408-1-leon.hwang@linux.dev> <20261026154948.99408-6-leon.hwang@linux.dev>
-In-Reply-To: <20261026154948.99408-6-leon.hwang@linux.dev>
-From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date: Thu, 29 Oct 2026 09:22:44 -0700
-X-Gm-Features: AclHuK8UvOBWlBbj0vfMh3zLVN3mKm1giM1eECBMPqUpu-79pHcpcFNIaDEnC_I
-Message-ID: <CAEf4BzbW4zwL-9j8e2B6KNXVNwsfWyMSAo_RsGCqv-nu_yGhTg@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v5 5/6] libbpf: Add log_opts support for bpf_link_create
-To: Leon Hwang <leon.hwang@linux.dev>
-Cc: bpf@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
-	Emil Tsalapatis <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Shuah Khan <shuah@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, Hangbin Liu <liuhangbin@gmail.com>, 
-	Martin Karsten <mkarsten@uwaterloo.ca>, Masashi Honma <masashi.honma@gmail.com>, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Oct 26, 2026 at 8:51=E2=80=AFAM Leon Hwang <leon.hwang@linux.dev> w=
-rote:
->
-> Since the iter_info and iter_info_len in struct bpf_link_create_opts are
-> legacy, reuse the slot of iter_info to place log_opts.
->
-> When adding log_opts support for iter link_create in the future, we will
-> move the iter_info and iter_info_len to the last union, see below. And,
-> keep the backward compatibility meanwhile, that uses iter_info if
-> iter_info_len is set.
->
-> struct bpf_link_create_opts {
->         /* ... */
->         union {
->                 /* ... */
->                 strut {
->                         struct bpf_iter_link_info *info;
->                         __u32 len;
->                 } iter;
->         };
-> };
->
-> Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
-> ---
->  tools/lib/bpf/bpf.c | 20 +++++++++++++++++---
->  tools/lib/bpf/bpf.h |  5 ++++-
->  2 files changed, 21 insertions(+), 4 deletions(-)
->
-> diff --git a/tools/lib/bpf/bpf.c b/tools/lib/bpf/bpf.c
-> index aea534764dfe..38dcb31e8c0e 100644
-> --- a/tools/lib/bpf/bpf.c
-> +++ b/tools/lib/bpf/bpf.c
-> @@ -794,6 +794,8 @@ int bpf_link_create(int prog_fd, int target_fd,
->  {
->         const size_t attr_sz =3D offsetofend(union bpf_attr, link_create)=
-;
->         __u32 target_btf_id, iter_info_len, relative_id;
-> +       union bpf_iter_link_info *iter_info =3D NULL;
-> +       struct bpf_log_opts *log_opts =3D NULL;
->         int fd, err, relative_fd;
->         union bpf_attr attr;
->
-> @@ -803,6 +805,14 @@ int bpf_link_create(int prog_fd, int target_fd,
->         iter_info_len =3D OPTS_GET(opts, iter_info_len, 0);
->         target_btf_id =3D OPTS_GET(opts, target_btf_id, 0);
->
-> +       if (iter_info_len && attach_type !=3D BPF_TRACE_ITER)
-> +               return libbpf_err(-EINVAL);
-> +
-> +       if (iter_info_len)
-> +               iter_info =3D OPTS_GET(opts, iter_info, (void *)0);
-> +       else
-> +               log_opts =3D OPTS_GET(opts, log_opts, (void *)0);
-> +
->         /* validate we don't have unexpected combinations of non-zero fie=
-lds */
->         if (iter_info_len || target_btf_id) {
->                 if (iter_info_len && target_btf_id)
-> @@ -824,7 +834,7 @@ int bpf_link_create(int prog_fd, int target_fd,
->
->         switch (attach_type) {
->         case BPF_TRACE_ITER:
-> -               attr.link_create.iter_info =3D ptr_to_u64(OPTS_GET(opts, =
-iter_info, (void *)0));
-> +               attr.link_create.iter_info =3D ptr_to_u64(iter_info);
->                 attr.link_create.iter_info_len =3D iter_info_len;
->                 break;
->         case BPF_PERF_EVENT:
-> @@ -960,12 +970,12 @@ int bpf_link_create(int prog_fd, int target_fd,
->                         return libbpf_err(-EINVAL);
->                 break;
->         default:
-> -               if (!OPTS_ZEROED(opts, flags))
-> +               if (!OPTS_ZEROED(opts, iter_info_len))
+From: Tristan Madani <tristan@talencesecurity.com>
 
-semantically cleaner would be to use log_opts here instead of
-iter_info_len, send in a follow up?
+local_cleanup() tears down timers and work items before
+local_release_work() frees the nfc_llcp_local structure.  The current
+code has two ordering problems:
 
->                         return libbpf_err(-EINVAL);
->                 break;
->         }
->  proceed:
-> -       fd =3D sys_bpf_fd(BPF_LINK_CREATE, &attr, attr_sz);
-> +       fd =3D __sys_bpf_fd(BPF_LINK_CREATE, &attr, attr_sz, log_opts);
->         if (fd >=3D 0)
->                 return fd;
->         /* we'll get EINVAL if LINK_CREATE doesn't support attaching fent=
-ry
-> @@ -975,6 +985,10 @@ int bpf_link_create(int prog_fd, int target_fd,
->         if (err !=3D -EINVAL)
->                 return libbpf_err(err);
->
-> +       /* bpf_raw_tracepoint_open() does not support log_opts */
-> +       if (log_opts)
-> +               return libbpf_err(err);
-> +
->         /* if user used features not supported by
->          * BPF_RAW_TRACEPOINT_OPEN command, then just give up immediately
->          */
-> diff --git a/tools/lib/bpf/bpf.h b/tools/lib/bpf/bpf.h
-> index 826d9cc9ab65..fe3b7fd8512b 100644
-> --- a/tools/lib/bpf/bpf.h
-> +++ b/tools/lib/bpf/bpf.h
-> @@ -422,7 +422,10 @@ union bpf_iter_link_info; /* defined in up-to-date l=
-inux/bpf.h */
->  struct bpf_link_create_opts {
->         size_t sz; /* size of this struct for forward/backward compatibil=
-ity */
->         __u32 flags;
-> -       union bpf_iter_link_info *iter_info;
-> +       union {
-> +               union bpf_iter_link_info *iter_info;
-> +               struct bpf_log_opts *log_opts;
-> +       };
->         __u32 iter_info_len;
+1) timer_delete_sync() does not prevent timer callbacks from re-arming
+   the timer via mod_timer().  nfc_llcp_tx_work() unconditionally
+   re-arms link_timer, and nfc_llcp_sdreq_timeout_work() conditionally
+   re-arms sdreq_timer.  A work callback that runs during
+   cancel_work_sync() and calls mod_timer() causes the timer to fire
+   after the structure is freed.
 
-in a follow up, let's add comment next to iter_info above and
-iter_info_len here that these are deprecated and that iter.info and
-iter.info_len should be used instead
+2) cancel_work_sync() does not prevent work items from being
+   re-queued.  nfc_llcp_rx_work() queues tx_work via
+   schedule_work(), and the timer callbacks queue their associated
+   work items.  Since tx_work is cancelled before rx_work, a
+   running rx_work instance can re-queue tx_work after its
+   cancel_work_sync() has returned.  The re-queued tx_work then
+   runs on the freed structure.
 
-applied series to bpf-next, thank you!
+Switch the timers to timer_shutdown_sync() which rejects subsequent
+mod_timer() calls.  Switch the work items to disable_work_sync()
+which rejects subsequent schedule_work() calls.
 
+Reorder the teardown sequence so that both timers are shut down
+first (their callbacks queue work items), rx_work is disabled
+before tx_work (rx_work queues tx_work), and data structures are
+freed only after all asynchronous callbacks are quiesced.
 
->         __u32 target_btf_id;
->         union {
-> --
-> 2.55.0
->
+Fixes: d646960f7986 ("NFC: Initial LLCP support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+---
+v2:
+  - Switch work items from cancel_work_sync() to disable_work_sync()
+    to prevent re-queuing after cancellation, as identified by the
+    automated review and confirmed by Simon Horman
+  - Reorder teardown: shut down both timers first (their callbacks
+    queue work items), then disable rx_work before tx_work (rx_work
+    queues tx_work), then disable remaining work items
+  - Move data structure cleanup (skb_queue_purge, kfree_skb) after
+    all asynchronous callbacks are quiesced
+ net/nfc/llcp_core.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
+index 74bf817007cf2..984e7088288f0 100644
+--- a/net/nfc/llcp_core.c
++++ b/net/nfc/llcp_core.c
+@@ -173,15 +173,15 @@ static struct nfc_llcp_local *nfc_llcp_local_get(struct nfc_llcp_local *local)
+ static void local_cleanup(struct nfc_llcp_local *local)
+ {
+ 	nfc_llcp_socket_release(local, false, ENXIO);
+-	timer_delete_sync(&local->link_timer);
++	timer_shutdown_sync(&local->link_timer);
++	timer_shutdown_sync(&local->sdreq_timer);
++	disable_work_sync(&local->rx_work);
++	disable_work_sync(&local->tx_work);
++	disable_work_sync(&local->timeout_work);
++	disable_work_sync(&local->sdreq_timeout_work);
+ 	skb_queue_purge(&local->tx_queue);
+-	cancel_work_sync(&local->tx_work);
+-	cancel_work_sync(&local->rx_work);
+-	cancel_work_sync(&local->timeout_work);
+ 	kfree_skb(local->rx_pending);
+ 	local->rx_pending = NULL;
+-	timer_delete_sync(&local->sdreq_timer);
+-	cancel_work_sync(&local->sdreq_timeout_work);
+ 	nfc_llcp_free_sdp_tlv_list(&local->pending_sdreqs);
+ }
+ 
+-- 
+2.47.3
+
