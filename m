@@ -1,64 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.196
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793239370;
-	b=gxMsC3rxEIiulXnRS+Y07a5Y7g5gup2L6oQ3XueEWDhrVNMobmELE1drPF8GdB5y5NnZ
-	 0qEqiAAhtO/xUXk2qTtVbs2db2AFdxrmEub9i3rq7TKmVkEGgMnDORYeZ6d1oVkGVCwJG
-	 mHJ64oF5b47dZYdZByEJkMtnGe5vPTrGeY9iTmj/evSG2in0SuwKpPvnV/BnwM+285Z7H
-	 QJ2zFWN+MLbCUPCrTehpes+z3Y9+aBNAcH6cNcHeHbUVZ4OWEw1O1Te21PKQTTI0q+8Zs
-	 e9ELTrHogVoX9R3mdte85k+dMsLnyzSOFbsJfz99L0V99Ih2CXS/lEQ0P8AaL4A1cbg==
+	t=1793239676;
+	b=VoQGzx6GFG2lErO3oNPdi7tOy3u4flC7/6JxESvz39Zdz7mJsK7buKkNNfokMbkAFuIt
+	 9xHvabVvUfO3VaFy9ZHvshWeyXTHTCrPoCTXf2MA/uhYnR+X/3mOjcdb0qloyIhjA7NX3
+	 MgtpJArn5JIg4lLeuI4sy1D4h2VovuYIOenPU+n8Eo7p8MLnBU4jIuaQ+AiV3oDaM2N5C
+	 KUGdPjnbY8E6BMdGU+7uJ9XxKAPYVJJXZXwF8l11w6FS0nJ5uaQZxzCGfXehWpBhbmXnM
+	 3o4jSdyopZQKpxasnK8e5XbBIFCjv39da+/o/S8lM5CzEbczWMzyr8bu9IJQJ9kA8SQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793239370;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=tmgA/zzSqwAj+KhU/5eMn9wiP0QhHj5jnCg6dxwSyVA=;
-	b=b8qBstzm0N19d2meOHnsjtBelmUhBjfUlmqwDt9Qrsb8WcFF7mHNAZHbCFz7xmLiIbLE
-	 c53A8MT0N53Y1gcsXox9TMoCqsydDq6H110dZl+IzTH4iTa+5chVc93wavhSWLefV2duA
-	 362OYoFTo7R+ADfNgMU2EMKKTfdxYtCUYIktezi3kVetiOYMPZDQ9YmZ+TkEi3hlQ7VHx
-	 b0Z8IwK+Nix2kZVIxowcRckc4C2BgYN7GguNDT77VLtmM/ZFG0Q2cSeDUd3KiVjxmWE1o
-	 YYBS9U2yNiVPR8jpu3vkYs4EG4G1wbj+1GOa/sPVLhyq1Xk8ObZnwe2sySfjuYZWWIg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793239676;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=xo31mvG/7p/5y5qelRls1EDLgAbdS/ONalz/GcY/xAc=;
+	b=vopj8GL9XsXKskOKs2IdkxzIhtCKcKFxcDqlPOXgcMKgqnEHNuGQeVMb0Xkfum49OJM6
+	 wYzNyfpX7TA9QTn5VXJ+8Ae0VTjNxjXmjQikUbRO7y/CZ4L3FtUDCVeUIIEqpSnO6reQJ
+	 CyCm+TQ4YZyYUfnkULpayggkkYqnjKe3LY0VDMdSaQKjU+wXSTxhz1o/OwmHXI+ypxAZz
+	 qvZ4XuCCGZU8EGZcfS+uJUBOkA7FL/ZfXWRzKyino+m7BqRidAeac575ArVmB93MGd21v
+	 C9MMMz+vTU9Iqq5jILNgWrmf40WiwSiqIk+rKHt43+WqggwzqU8WFD9chW8/0NRJeow==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cejqZiFg;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=JcDCMiHm;
+	arc=none smtp.remote-ip=91.218.175.196
+Received: from mta0.migadu.com (out-196.mta0.migadu.com [91.218.175.196])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B76260A2613;
-	Thu, 29 Oct 2026 02:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D80606A31A
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 02:07:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 68D80606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cejqZiFg
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C1D91F031E3;
-	Thu, 29 Oct 2026 02:02:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793239369;
-	bh=tmgA/zzSqwAj+KhU/5eMn9wiP0QhHj5jnCg6dxwSyVA=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=cejqZiFgygriIirPsdJjVvLSyLwEDdw4EYWqjzH/AYjTi32L1hUXPR9gIV1mBjNZD
-	 GNITtlR3Il1IAzpkXlRnA1acrLwPXhHHbPdghrrYapFmC1WtKCSoh2f7vWol7zWzL+
-	 Uu4e9roWHy6B/Lbuzbo5PRHzMHzGWP/c87Qy4mpPEgJdgc98sOLEd/68Ph5W3cQ36/
-	 0buUA3OExNfGkGiMeMre7pI/PZBjOGkuOfxSd45UqViYym9iDvoSHVMxNUGCZsyjLM
-	 E4cQYJ1bKzPqiVz/naeHvCnD7pMkcw7lgCE6SS3k1hacjYGLafGosglz47LQ/3XDwa
-	 C2E40XQRuC16g==
-Subject: Re: [PATCH v3 7/7] net: dsa: mediatek: support EN751221 switch
-From: netdev-bot+sashiko@kernel.org
-To: cjd@cjdns.fr
-Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
- chester.a.unal@arinc9.com, daniel@makrotopia.org, linux@armlinux.org.uk,
- arinc.unal@arinc9.com, Landen.Chao@mediatek.com, dqfext@gmail.com,
- sean.wang@mediatek.com, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, naseefkm@gmail.com, b.larsson@gmx.com
-Date: Thu, 29 Oct 2026 02:02:47 +0000
-Message-ID: <179323936770.3134.5820916344803363362@kernel.org>
-In-Reply-To: <20261028011317.1557238-8-cjd@cjdns.fr>
-References: <20261028011317.1557238-8-cjd@cjdns.fr>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=JcDCMiHm
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=xyLPSKnOyBeEPlunYayjcEhwkUZvZny8jBvv5fVbWJ4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793239672; v=1; x=1793844472;
+ b=JcDCMiHm338GyuYaxcnnbI/OssltPjIrrI+cL9sAo3SZySFe+JSAjicS/shmE7cUXSlM44MW
+ GQsDGSE/x456lV+l7JnY7fdtVdhTEWasSzlKHuuIXliRxz01/DnijQW0LrzPOlJqkNdrn92UdpP
+ E+z3JsQOrWzHqnoZzRgbCU1c=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 5da86a6bb385be24;
+	Thu, 29 Oct 2026 02:07:52 +0000
+X-Mizu-Trace-ID: 5da86a6bb385be24
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <cf2f4721-892d-4283-9354-84e7609e7034@linux.dev>
+Date: Thu, 29 Oct 2026 10:07:40 +0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,466 +58,137 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 1/5] ipv6: restrict gc_elasticity to 31
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
+ Fernando Fernandez Mancera <fmancera@suse.de>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
+ <rdunlap@infradead.org>, David Ahern <dsahern@kernel.org>,
+ Ido Schimmel <idosch@nvidia.com>, Joel Granados <joel.granados@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
+ Willem de Bruijn <willemb@google.com>, Maoyi Xie <maoyi.xie@ntu.edu.sg>,
+ Jiri Wiesner <jwiesner@suse.de>, Gerd Rausch <gerd.rausch@oracle.com>,
+ Zhan Xusheng <zhanxusheng1024@gmail.com>, Oleg Nesterov <oleg@redhat.com>,
+ Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
+ Yung Chih Su <yuuchihsu@gmail.com>, Wyatt Feng
+ <bronzed_45_vested@icloud.com>,
+ Hannes Frederic Sowa <hannes@stressinduktion.org>,
+ Flavio Leitner <fbl@redhat.com>, "Paul E. McKenney" <paulmck@kernel.org>,
+ Petr Mladek <pmladek@suse.com>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20261027104701.296240-1-jiayuan.chen@linux.dev>
+ <20261027104701.296240-2-jiayuan.chen@linux.dev>
+ <CAAVpQUCBBaVmaZUv+D+a4anSbGSR_pKukYVXvRJRzSGVnjb2kw@mail.gmail.com>
+ <eb85d54b-778e-403e-a5a5-56805b23b560@linux.dev>
+ <CAAVpQUCHeydud7_NkMuUyK3tdNYLD9GrCGJiGQO6gV+r0-GuHA@mail.gmail.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <CAAVpQUCHeydud7_NkMuUyK3tdNYLD9GrCGJiGQO6gV+r0-GuHA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+
+On 10/29/26 9:53 AM, Kuniyuki Iwashima wrote:
+> On Wed, Oct 28, 2026 at 6:47 PM Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
+>>
+>> On 10/29/26 7:58 AM, Kuniyuki Iwashima wrote:
+>>> On Tue, Oct 27, 2026 at 3:48 AM Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
+>>>> Every counted IPv6 dst allocation runs ip6_dst_gc() once the number of
+>>>> live dst goes over gc_thresh (1024 by default). ip6_dst_gc() decays
+>>>> ip6_rt_gc_expire by gc_elasticity: the smaller gc_elasticity is, the
+>>>> smaller ip6_rt_gc_expire gets, i.e. the more aggressive the gc.
+>>>>
+>>>> ip6_dst_gc() reads ip6_rt_gc_expire into a u32, but gc_elasticity has no
+>>>> bounds at all, so writing >= 32 shifts a 32-bit value by >= 32 bits, and
+>>>> a negative value gives a negative shift count. Both are UB:
+>>>>
+>>>>           val = atomic_read(&net->ipv6.ip6_rt_gc_expire);
+>>>>           atomic_set(&net->ipv6.ip6_rt_gc_expire, val - (val >> rt_elasticity));
+>>>>
+>>>>     UBSAN: shift-out-of-bounds in net/ipv6/route.c:3369:53
+>>>>     shift exponent 32 is too large for 32-bit type 'unsigned int'
+>>>>     CPU: 2 UID: 0 PID: 615 Comm: ping6 Not tainted 7.3.0-rc7+ #364 PREEMPT
+>>>>     Call Trace:
+>>>>      <IRQ>
+>>>>      dump_stack_lvl+0xc1/0xf0
+>>>>      dump_stack+0x10/0x20
+>>>>      __ubsan_handle_shift_out_of_bounds+0x1d1/0x390
+>>>>      ip6_dst_gc.cold+0x15/0x1a
+>>>>      dst_alloc+0x4e0/0x620
+>>>>      ip6_rt_cache_alloc+0x189/0x7e0
+>>>>      __ip6_rt_update_pmtu+0x68e/0x1160
+>>>>      ip6_update_pmtu+0x30c/0x3a0
+>>>>      icmpv6_err+0x1fa/0x330
+>>>>      icmpv6_notify+0x303/0x770
+>>>>      icmpv6_rcv+0xc12/0x1670
+>>>>      ip6_protocol_deliver_rcu+0xb4a/0x1520
+>>>>      ip6_input_finish+0x19c/0x400
+>>>>      ip6_input+0xd4/0x240
+>>>>      ipv6_rcv+0x1fd/0x330
+>>>>      __netif_receive_skb_one_core+0x118/0x1c0
+>>>>      __netif_receive_skb+0x21/0x150
+>>>>      process_backlog+0x37e/0x1200
+>>>>      __napi_poll.constprop.0+0xa5/0x5e0
+>>>>      net_rx_action+0x4c0/0xf70
+>>>>      handle_softirqs+0x204/0x9b0
+>>>>      __do_softirq+0x10/0x18
+>>>>
+>>>> Make it a u8 and reject writes outside 0..31 with proc_dou8vec_minmax().
+>>>>
+>>>> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+>>>> Cc: stable@vger.kernel.org
+>>>> Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+>>>> Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+>>>> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+>>>> ---
+>>>> v2: switched to u8 and proc_dou8vec_minmax(), as suggested by Kuniyuki
+>>>> Iwashima.
+>>>> ---
+>>>>    include/net/netns/ipv6.h | 2 +-
+>>>>    net/ipv6/route.c         | 7 +++++--
+>>>>    2 files changed, 6 insertions(+), 3 deletions(-)
+>>>>
+>>>> diff --git a/include/net/netns/ipv6.h b/include/net/netns/ipv6.h
+>>>> index ffda15318be59..aefce37c04a4f 100644
+>>>> --- a/include/net/netns/ipv6.h
+>>>> +++ b/include/net/netns/ipv6.h
+>>>> @@ -25,11 +25,11 @@ struct netns_sysctl_ipv6 {
+>>>>           int ip6_rt_gc_min_interval;
+>>>>           int ip6_rt_gc_timeout;
+>>>>           int ip6_rt_gc_interval;
+>>>> -       int ip6_rt_gc_elasticity;
+>>>>           int ip6_rt_mtu_expires;
+>>>>           int ip6_rt_min_advmss;
+>>>>           u32 multipath_hash_fields;
+>>>>           u8 multipath_hash_policy;
+>>>> +       u8 ip6_rt_gc_elasticity;
+>>>>
+>>>>           __cacheline_group_begin(sysctl_ipv6_flowlabel);
+>>>>           u8 flowlabel_consistency;
+>>>> diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+>>>> index 94e5ef1c4f83e..abc8b811cd423 100644
+>>>> --- a/net/ipv6/route.c
+>>>> +++ b/net/ipv6/route.c
+>>>> @@ -6579,6 +6579,8 @@ static int ipv6_sysctl_rtcache_flush(const struct ctl_table *ctl, int write,
+>>>>           return 0;
+>>>>    }
+>>>>
+>>>> +static int ip6_rt_gc_elasticity_max = 31;
+>>> as you need v3, s/int/u8/
+>>>
+>> Hi Kuniyuki,
+>>
+>> proc_dou8vec_minmax() put extra1/extra2 into proc_uint_conv(), which
+>> reads them as unsigned int, so the max has to stay an int like
+>> tcp_syn_retries_max and friends; a u8 there would read
+>> three bytes past the variable.
+> Ah exactly, then please use unsigned int.
+>
+> Thanks
+
+
+Makes sense, unsigned int in v3.
 
-Thank you for your contribution! Sashiko AI review found 13 potential
-issue(s) to consider.
-
-Critical: 0 · High: 2 · Medium: 5 · Low: 6
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The MCM (external) MT7530 is matched in mt7530-mdio.c with
-  compatible "econet,en751221" (ID_EN751221_EXT).
-- [High] net: dsa: mt7530: missing MT7530_CHG_TRAP when modifying
-  MT753X_MTRAP on ID_EN751221
-- [Medium] mt7530_setup_irq() still sets TOP_SIG_CTRL_NORMAL only for
-  ID_MT7530/ID_MT7621.
-- [Medium] en751221_trgmii_pair_setup() passes each switch's saved RX
-  taps to the calibration of the other switch's receiver.
-- [Medium] mt753x_phylink_mac_link_up() sets the resolved bits (including
-  PMCR_FORCE_TX_FC_EN / PMCR_FORCE_RX_FC_EN when tx_pause/rx_pause are…
-- [Medium] This commit makes core_write()/core_rmw() reachable on the
-  MMIO on-die EN751221 switch.
-- [Medium] This patch enables the topology described in commit "net: dsa:
-  mediatek: support MDIO switch downstream of MMIO switch": an MDIO…
-- [Low] The patch adds `TOP_SIG_CTRL_B0` (commented 'Undocumented') to
-  mt7530.h, but nothing in drivers/net/dsa/ uses it.
-- [Low] Concern: on the on-die EN751221 the TRGMII cascade is port 5, but
-  the TRGMII PLL/clock is programmed only from port 6's mac_config…
-- [Low] The binding description (from commit "dt-bindings: net: dsa:
-  mediatek,mt7530: add econet,en751221" in this series) says "EcoNet…
-- [Low] en751221_trgmii_pair_setup() runs from the MCM's port-6 phylink
-  resolve work.
-- [Low] en751221_trgmii_cal_ok() reads the RD register, writes
-  val|EDGE_CHK, immediately writes val&~EDGE_CHK, and only then reads…
-- [Low] Concern: in en751221_trgmii_pair_setup(), RX_RST has no explicit
-  hold time (unlike TX_RST's usleep_range(5000, 6000)), so the pulse…
-
---
-
-net: dsa: mediatek: support EN751221 switch
-
-This adds support for two switches. The first is the EcoNet EN751221
-on-die MT7530 (MMIO). The second is the optional MCM MT7530 (MDIO), which
-sits on the on-die switch's child MDIO bus. It also adds a calibration
-routine for the TRGMII link between port 5 of the on-die switch and port 6
-of the MCM switch, which mt753x_phylink_mac_link_up() triggers.
-
-> diff --git a/drivers/net/dsa/mt7530-mdio.c b/drivers/net/dsa/mt7530-mdio.c
-> index 0be107dc6759a..03ef6a9f2084e 100644
-> --- a/drivers/net/dsa/mt7530-mdio.c
-> +++ b/drivers/net/dsa/mt7530-mdio.c
-> @@ -139,6 +139,7 @@ mt7531_create_sgmii(struct mt7530_priv *priv)
->  }
->  
->  static const struct of_device_id mt7530_of_match[] = {
-> +	{ .compatible = "econet,en751221", .data = &mt753x_table[ID_EN751221_EXT], },
-
-[Severity: High]
-Should this compatible be "econet,en751221-gswitch"?
-
-The binding patch earlier in this series ("dt-bindings: net: dsa:
-mediatek,mt7530: add econet,en751221") documents the MCM switch as:
-
-    const: econet,en751221-gswitch
-
-It also attaches mt7530-passthrough-dsa-port and the required
-mediatek,mcm property to that string. "econet,en751221" is already the SoC
-root compatible in arch/mips/boot/dts/econet/en751221.dtsi and in
-Documentation/devicetree/bindings/mips/econet.yaml.
-
-With a DT that follows the binding, the MCM switch never binds. The
-on-die switch's port 5 has a link to the MCM, so the DSA tree never
-completes. Neither switch is set up, and mt7530_cal_interswitch_trgmii()
-never runs.
-
-A DT that uses the driver's string instead puts the SoC top-level
-compatible on a switch node, which fails dtbs_check.
-
-The on-die side uses "econet,en751221-switch" in both mt7530-mmio.c and
-the peer check in mt7530_cal_interswitch_trgmii().
-
-[Severity: Medium]
-With an MDIO MT7530 on the child MDIO bus of the MMIO on-die switch, can
-lockdep report recursive locking on reg_mutex?
-
-On the MCM, register accesses made under reg_mutex also take the on-die
-switch's reg_mutex:
-
-mt7530_port_enable()                        /* MCM */
-    mutex_lock(&priv->reg_mutex);
-    regmap_update_bits()
-        mt7530_mdio_regmap_lock()           /* child_bus->mdio_lock */
-        mt7530_regmap_write()
-            bus->write() == mt753x_phy_write_c22()
-                mt7531_ind_c22_phy_write()  /* on-die */
-                    mutex_lock(&priv->reg_mutex);
-
-Both reg_mutex instances come from the single mutex_init() in
-mt7530_probe_common(), so they share one lockdep class. The downstream
-switch has no mutex_lock_nested() or separate lock_class_key.
-
-These are distinct instances, so this is not a real deadlock. With
-CONFIG_PROVE_LOCKING, though, would the first such access during tree
-setup trigger a "possible recursive locking detected" splat and turn
-lockdep off for the rest of the boot?
-
-[ ... ]
-
-> diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-> index dbe3887097dbc..c44f2084b1730 100644
-> --- a/drivers/net/dsa/mt7530.c
-> +++ b/drivers/net/dsa/mt7530.c
-> @@ -49,6 +49,9 @@ static const struct mt7530_mib_desc mt7530_mib[] = {
->  static int
->  mt753x_ctrl_phy_addr(struct mt7530_priv *priv)
->  {
-> +	if (priv->id == ID_EN751221)
-> +		return 12;
-> +
-
-[Severity: Medium]
-This makes core_write() and core_rmw() reachable on the MMIO on-die
-switch. ID_EN751221 sets .mac_port_config = mt7530_mac_config, so port 6
-goes through mt7530_mac_config()->mt7530_setup_port6()->core_clear(),
-core_write() and core_set().
-
-On this switch priv->bus is NULL, so core_rmw() falls back to child_bus.
-The lock helper only does something when priv->bus is set:
-
-static void
-mt7530_mutex_lock(struct mt7530_priv *priv)
-{
-	if (priv->bus)
-		mutex_lock_nested(&priv->bus->mdio_lock, MDIO_MUTEX_NESTED);
-}
-
-As a result, the MMD sequence on child_bus address 12 (MII_MMD_CTRL,
-MII_MMD_DATA, MII_MMD_CTRL | NOINCR, MII_MMD_DATA) runs through direct
-bus->write() and bus->read() calls without child_bus->mdio_lock. Each op
-takes the on-die reg_mutex, but the transaction as a whole is not atomic.
-
-Could a concurrent phylib or PHY driver access to address 12 change the
-MMD devad or address between steps, so the PLL write lands in the wrong
-register? The MDIO-attached variant holds bus->mdio_lock for the whole
-sequence.
-
-The child_bus fallback came from "net: dsa: mediatek: support PLL setup
-on MMIO MT7530" earlier in this series. This patch is the first to make
-it reachable.
-
-> @@ -347,12 +350,19 @@ mt7530_setup_port6(struct dsa_switch *ds, phy_interface_t interface)
->  	regmap_read(priv->regmap, MT753X_MTRAP, &xtal);
->  	xtal &= MT7530_XTAL_MASK;
->  
-> +	/* EN751221 on-die does not report clock speed in MTRAP */
-> +	if (priv->id == ID_EN751221)
-> +		xtal = MT7530_XTAL_25MHZ;
-> +
->  	if (xtal == MT7530_XTAL_25MHZ)
->  		ssc_delta = 0x57;
->  	else
->  		ssc_delta = 0x87;
->  
-> -	if (priv->id == ID_MT7621) {
-> +	if (priv->id == ID_EN751221_EXT || priv->id == ID_EN751221) {
-> +		/* PLL frequency: 362.5Mhz */
-> +		ncpo1 = 0x1d00;
-
-[Severity: Low]
-This isn't a bug, but on the on-die EN751221 the TRGMII cascade is port
-5, while the TRGMII PLL is programmed only from port 6's mac_config. Port
-6 is PHY_INTERFACE_MODE_INTERNAL, and it also gets P6_INTF_MODE(1) here.
-
-This works today for two reasons. dsa_tree_setup_ports() sets up the
-on-die ports before the MCM, and phylink never does a major reconfig of
-this fixed-link CPU port.
-
-If port 6 were reconfigured later, would the TRGMII clock be gated and
-reprogrammed without recalibrating the port 5 link? Would it be clearer
-to tie the PLL setup to port 5?
-
-[ ... ]
-
-> @@ -469,6 +479,251 @@ mt7531_pll_setup(struct mt7530_priv *priv)
->  	usleep_range(25, 35);
->  }
->  
-> +static bool
-> +en751221_trgmii_cal_ok(struct mt7530_priv *rx, u32 reg)
-> +{
-> +	u32 val = 0;
-> +
-> +	regmap_read(rx->regmap, reg, &val);
-> +	regmap_write(rx->regmap, reg, val | EDGE_CHK);
-> +	regmap_write(rx->regmap, reg, val & ~EDGE_CHK);
-> +	regmap_read(rx->regmap, reg, &val);
-
-[Severity: Low]
-Does the hardware keep RD_VALUE and RD_ERR latched after EDGE_CHK is
-cleared?
-
-EDGE_CHK is set and cleared back to back, and the result is read only
-after it is deasserted. en751221_trgmii_calibrate_direction() also calls
-this right after changing RD_TAP, with no settle time. When the receiver
-is the MMIO on-die switch, EDGE_CHK stays asserted for only a few bus
-cycles.
-
-If the results are not latched, the pass/fail map would show bus timing
-rather than the data eye, and the chosen taps could be wrong.
-
-> +
-> +	return FIELD_GET(RD_VALUE_MASK, val) == TGMII_TD_PAT &&
-> +	       !FIELD_GET(RD_ERR_MASK, val);
-> +}
-
-[ ... ]
-
-> +static void
-> +en751221_trgmii_pair_setup(struct mt7530_priv *ext, int ext_port,
-> +			   struct mt7530_priv *ondie, int ondie_port)
-> +{
-> +	u8 default_taps_ondie[NUM_TRGMII_CTRL];
-> +	u8 default_taps_ext[NUM_TRGMII_CTRL];
-> +	u32 mcr_down, mcr_up;
-> +	int channel;
-> +	int reg_val;
-> +
-> +	/* BOTH: Put interfaces in a downed state */
-> +	mcr_down = PMCR_IFG_XMIT(PMCR_IFG_XMIT_64) | PMCR_MAC_MODE |
-> +		   MT7530_FORCE_MODE | PMCR_MAC_RX_EN | PMCR_BACKOFF_EN |
-> +		   PMCR_BACKPR_EN | PMCR_FORCE_SPEED_1000 | PMCR_FORCE_FDX;
-> +	regmap_write(ondie->regmap,  MT753X_PMCR_P(ondie_port), mcr_down);
-> +	regmap_write(ext->regmap, MT753X_PMCR_P(ext_port), mcr_down);
-
-[Severity: Low]
-Is anything serializing this against the on-die switch's own phylink
-instance for port 5?
-
-This runs from the MCM's port 6 phylink resolve work. It reprograms the
-on-die MT753X_PMCR_P(ondie_port) and TRGMII block in several steps: down,
-reset (with 5ms sleeps), up, then train.
-
-The on-die port 5 mt753x_phylink_mac_link_up() writes the same PMCR
-register from a separate resolve work item, under a different
-pl->state_mutex. That work is queued earlier, but nothing guarantees it
-has run before this sequence starts.
-
-If it is delayed, its regmap_set_bits() of PMCR_MAC_TX_EN |
-PMCR_FORCE_LNK could land inside the TX/RX reset window. On-die teardown
-through mt753x_phylink_mac_link_down() is also not serialized against a
-calibration in progress.
-
-> +	usleep_range(5000, 6000);
-> +
-> +	/* BOTH: Reset TX */
-> +	regmap_set_bits(ext->regmap, MT7530_TRGMII_TXCTRL, TX_RST);
-> +	regmap_set_bits(ondie->regmap, MT7530_TRGMII_TXCTRL, TX_RST);
-> +	usleep_range(5000, 6000);
-> +	regmap_clear_bits(ext->regmap, MT7530_TRGMII_TXCTRL, TX_RST);
-> +	regmap_clear_bits(ondie->regmap, MT7530_TRGMII_TXCTRL, TX_RST);
-> +
-> +	/* BOTH: Reset RX controllers down */
-> +	regmap_set_bits(ext->regmap, MT7530_TRGMII_RCK_CTRL, RX_RST);
-> +	regmap_set_bits(ondie->regmap, MT7530_TRGMII_RCK_CTRL, RX_RST);
-> +
-> +	/* BOTH: Set TX drive strength, MCM uses more */
-> +	en751221_set_tx_drive(ondie, 8, 8, 7, 7);
-> +	en751221_set_tx_drive(ext, 11, 11, 15, 15);
-> +
-> +	/* BOTH: Reset RX controllers up */
-> +	regmap_clear_bits(ext->regmap, MT7530_TRGMII_RCK_CTRL, RX_RST);
-> +	regmap_clear_bits(ondie->regmap, MT7530_TRGMII_RCK_CTRL, RX_RST);
-
-[Severity: Low]
-This isn't a bug, but RX_RST has no explicit hold time here, unlike
-TX_RST. The pulse width depends on how long the en751221_set_tx_drive()
-writes in between take.
-
-The MCM writes go over MDIO through the on-die indirect accessor, so the
-pulse is long in practice. Would an explicit delay be more robust in case
-this ordering changes?
-
-> +
-> +	/* BOTH: Ports up */
-> +	mcr_up = mcr_down | PMCR_MAC_TX_EN | PMCR_FORCE_LNK;
-> +	regmap_write(ondie->regmap, MT753X_PMCR_P(ondie_port), mcr_up);
-> +	regmap_write(ext->regmap, MT753X_PMCR_P(ext_port), mcr_up);
-
-[Severity: Medium]
-Does this drop the flow control settings that phylink just programmed?
-
-When tx_pause or rx_pause is set, mt753x_phylink_mac_link_up() sets
-PMCR_FORCE_TX_FC_EN and PMCR_FORCE_RX_FC_EN with regmap_set_bits(). It
-then calls mt7530_cal_interswitch_trgmii().
-
-The full regmap_write() calls of mcr_down and mcr_up here replace PMCR on
-both the MCM port and the on-die port, and mcr_up never includes the FC
-bits.
-
-Any pause configuration phylink resolved, such as a fixed-link with
-pause, would be cleared on both ends. The on-die port's PMCR, which its
-own phylink programmed, is overwritten too, so the hardware state no
-longer matches what phylink reported.
-
-[ ... ]
-
-> +	/* BOTH: Collect and then zero every RX TAP */
-> +	for (channel = 0; channel < NUM_TRGMII_CTRL; channel++) {
-> +		reg_val = 0;
-> +		regmap_read(ext->regmap, MT7530_TRGMII_RD(channel), &reg_val);
-> +		default_taps_ext[channel] = FIELD_GET(RD_TAP_MASK, reg_val);
-> +		regmap_clear_bits(ext->regmap, MT7530_TRGMII_RD(channel),
-> +				  RD_TAP_MASK);
-> +
-> +		reg_val = 0;
-> +		regmap_read(ondie->regmap, MT7530_TRGMII_RD(channel), &reg_val);
-> +		default_taps_ondie[channel] = FIELD_GET(RD_TAP_MASK, reg_val);
-> +		regmap_clear_bits(ondie->regmap, MT7530_TRGMII_RD(channel),
-> +				  RD_TAP_MASK);
-> +	}
-> +
-> +	en751221_trgmii_calibrate_direction(ondie, ext, default_taps_ondie);
-> +	en751221_trgmii_calibrate_direction(ext, ondie, default_taps_ext);
-
-[Severity: Medium]
-Are the default tap arrays swapped here?
-
-default_taps_ext[] is read from ext->regmap and default_taps_ondie[] from
-ondie->regmap. But the first call passes ext as rx with
-default_taps_ondie, and the second passes ondie as rx with
-default_taps_ext.
-
-The fallback in en751221_trgmii_calibrate_direction() writes default_taps
-into the rx switch:
-
-		} else {
-			regmap_update_bits(rx->regmap, rx_reg, RD_TAP_MASK,
-					   RD_TAP(default_taps[channel]));
-
-When a lane fails calibration, the MCM receiver would get the on-die
-switch's original tap, and the reverse, instead of keeping its own.
-
-The two sets can differ: mt7530_setup() programs RD_TAP(16) on the MCM,
-but mt7988_setup() does not set RD_TAP on the on-die switch. The "old %d"
-value in the success message would also come from the wrong switch.
-
-Should these be:
-
-	en751221_trgmii_calibrate_direction(ondie, ext, default_taps_ext);
-	en751221_trgmii_calibrate_direction(ext, ondie, default_taps_ondie);
-
-[ ... ]
-
-> @@ -3023,6 +3286,44 @@ static void en7528_mac_port_get_caps(struct dsa_switch *ds, int port,
->  	}
->  }
->  
-> +static void en751221_mac_port_get_caps(struct dsa_switch *ds, int port,
-> +				       struct phylink_config *config)
-> +{
-> +	switch (port) {
-> +	/* EN751221 ports 0..3 are connected to the integrated FE PHYs. */
-> +	case 0 ... 3:
-
-[Severity: Low]
-This isn't a bug, but the binding description added in "dt-bindings: net:
-dsa: mediatek,mt7530: add econet,en751221" says:
-
-  EcoNet EN751221 SoCs have a memory mapped MT7530 with 3x 10/100 PHYs and 1x
-  gigabit PHY.
-
-This function, this commit message ("4 FE ports and 1 GE port") and the
-binding commit message ("ports 0..3 are 10/100 only") all describe four FE
-ports. Should the binding text say 4x 10/100 PHYs?
-
-[ ... ]
-
-> @@ -3428,7 +3732,8 @@ mt753x_conduit_state_change(struct dsa_switch *ds,
->  	 * interface is up. NOTE: "CPU port" can also mean an upstream DSA link.
->  	 */
->  	if (priv->id != ID_MT7530 && priv->id != ID_MT7621 &&
-> -	    priv->id != ID_EN7528)
-> +	    priv->id != ID_EN7528 && priv->id != ID_EN751221 &&
-> +	    priv->id != ID_EN751221_EXT)
->  		return;
-
-[Severity: High]
-Does the on-die switch ever get MT7530_CHG_TRAP set?
-
-On MT7530, values written to MT753X_MTRAP only override the hardware
-straps in MT753X_TRAP while MT7530_CHG_TRAP is set. The driver relies
-on mt7530_setup() setting it once during setup. After that,
-mt7530_port_enable(), mt7530_port_disable() and mt7530_setup_port5()
-update MTRAP without setting it again.
-
-ID_EN751221 uses mt7988_setup() as its sw_setup. That resets the switch
-through priv->rstc and then calls mt7531_setup_common(). Neither of them
-touches MT753X_MTRAP.
-
-This patch still sends ID_EN751221 down the MTRAP paths:
-
-  - It adds ID_EN751221 to the MT7530_P5_DIS and MT7530_P6_DIS handling
-    in mt7530_port_enable() and mt7530_port_disable().
-  - Through .mac_port_config = mt7530_mac_config, port 5 reaches
-    mt7530_setup_port5(), which writes MT7530_P5_MAC_SEL into MTRAP.
-
-Without MT7530_CHG_TRAP, would those updates be silently ignored? Ports
-5 and 6 would then stay at whatever the straps select. Port 5 is the
-TRGMII cascade to the MCM, so if the straps disagree, the inter-switch
-link would not come up. The same would apply to any other MTRAP bits the
-series programs on the on-die switch, such as MT7530_LOOP_DET_DISABLE
-for passthrough mode.
-
-This may work on the tested boards because the EN751221 straps already
-match, or because the on-die block does not gate MTRAP writes on
-CHG_TRAP. If so, could that be stated in a comment? Otherwise, should
-the EN751221 setup path set MT7530_CHG_TRAP the way mt7530_setup() does?
-
-[Severity: Medium]
-The MT7530-family ID lists here and in mt7530_port_enable() and
-mt7530_port_disable() were extended. mt7530_setup_irq() still has only
-the old IDs:
-
-	/* This register must be set for MT7530 to properly fire interrupts */
-	if (priv->id == ID_MT7530 || priv->id == ID_MT7621)
-		regmap_set_bits(priv->regmap, MT7530_TOP_SIG_CTRL,
-				TOP_SIG_CTRL_NORMAL);
-
-ID_EN751221_EXT is an MCM MT7530 that uses mt7530_setup(), like the
-MT7621 MCM. If the MCM DT node has interrupt-controller, the IRQ chip is
-registered without TOP_SIG_CTRL being set.
-
-Would switch and PHY interrupts then never fire, leaving phylib waiting
-for link changes on the MCM user ports?
-
-The unused TOP_SIG_CTRL_B0 define added for this register suggests some
-TOP_SIG_CTRL handling may have been dropped.
-
-[ ... ]
-
-> diff --git a/drivers/net/dsa/mt7530.h b/drivers/net/dsa/mt7530.h
-> index c86bc4bca29b9..1a4329749c0f1 100644
-> --- a/drivers/net/dsa/mt7530.h
-> +++ b/drivers/net/dsa/mt7530.h
-
-[ ... ]
-
-> @@ -601,6 +607,8 @@ enum mt7531_xtal_fsel {
->  /* Register for TOP signal control */
->  #define MT7530_TOP_SIG_CTRL		0x7808
->  #define  TOP_SIG_CTRL_NORMAL		(BIT(17) | BIT(16))
-> +/* Undocumented */
-> +#define  TOP_SIG_CTRL_B0		BIT(0)
-
-[Severity: Low]
-This isn't a bug, but nothing in drivers/net/dsa/ uses TOP_SIG_CTRL_B0.
-Is it a leftover, or is some MT7530_TOP_SIG_CTRL programming for
-EN751221 missing?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261028011317.1557238-1-cjd%40cjdns.fr
