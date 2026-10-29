@@ -1,82 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.57.137
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.125.25.13
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793273146;
-	b=jKB48X+8bOdZyhgEhITFuhXa17VFVwEwxF2W8l96n6ybMRJxR/CRPc/6fUR9u/KcBgHp
-	 SWf+mibzspWvmQ7K2Ex84esEUANCRqBi5V4ogTnnAVcIFMnxPLBM+eh07OfHSCzZ6mszU
-	 Yt8p5u9tuRmg+X0F1OEGcpbGScV+T91P06cp0mnVApuPv2+rLc0WoRS/hVRR/NHAw3o5p
-	 pxlynOOiRnbyl6RU98Ulv3GP5PjJWXg/X1UEeThYpEtXl/X4r4KcrNRUT9SkrbXzIj2Sy
-	 nrB4wpg+avSRLurlYIVNxvzIfUeN7SqLAO8UC9WVQ+K6Ml18DZAnPLWpeLzj7WKv8zw==
+	t=1793273284;
+	b=pehw9vG3OV6tm0qUW517NB73eSO8IMDE2upUHtqdKR5+T2lQR1FcXKbwtnN7qde8P9xM
+	 MJNQutxV2PQSIwW5vbCLYPt5mKFRMLXKX69P+cxYH24/lUQ4YgP+cb/A2ZqiVxPgSvnz7
+	 /MvUcxZowveslbdNJ8Pig2ZFEc7/mh84OhVl/mid1AthRcQk4NiLZAQHMrgXxA1a20/wC
+	 7NoNe5JY5i6BKJsUoi3U7d0fntylbL8dcF23JKqbZrPS5TbxSkBTT0W/KWEoRDHrDCPFd
+	 aZkDnpVlEWsZoeiEHLobUKy6Dd2HE8Jxio1AcLpY2kYxEUrNxsJn9rVSMtjijsDziew==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793273146;
-	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
-	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=Zmpvpv5AziW/jsJVHh5ej1EELzXwiOShgDeV454QDo4=;
-	b=tl53lFgpqBAg/4lPrl7ubs0F3UGb8DxGgv6Pbxa+DLlFleCUOScUv9sC7smXW6TSi4dJ
-	 SBmBF60Yc4ZXv00AQSEAtDkv/zrk7/UBb6+nPwvnLzQDIzrIFNo8vDpNsaMgSXZ/MVzsz
-	 p/S/sovocbjt3sH7MvmhiFoG8ioO1CC+VUqPHChZ4P0ZFiZmDf2RXV+bEkNWKD9+tJjHG
-	 mPv01KwPNDUDEKVAw1qUkCos5ZvfR1ut1i0wVzqww8LnZ27vCOYeq27AxYUd/2kYzAS74
-	 TRockkC9e543gnMzK7uIEPjMmlCw0Pvzuj77Q2bZGJw2eshgRflCjJgb6jA9Ohz1bTg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793273284;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:X-Infomaniak-Routing;
+	bh=LaD9WrR+AACReb/Fw3idhuufgElFfvZMlx/OJIXbArA=;
+	b=agp4Z5rxkKVovLeqbnu5kvJOvI16tMI7mBxabSuJkRMcUSjG2IPSCoKHXDXSKBw8FMnW
+	 JTbclpHb+egyTi+VS0K+W3eHMP7mpLXi4DuV9Jy/4+QhH+f3yBIKxzatjcJ2X9vVCy444
+	 EtA4dSYIaXRgKqfHsGJTmzV65HJ32TplB8+H+KmR47kb1PRlWHl2MADtxsvTvM4wtu1t4
+	 WR7ZEypNkGwoN6BB6BHxNxgLO6cW9w7VUxfgtzVkDmMk9uNLmbiJNijKizAxhamyoDSzQ
+	 nLILsO264sG1bx8WjyZobxhZkGIroxTcQVNfnl73WBIhgpatxPkwvInVSEZHtl1lxsQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=foxmail.com;
-	spf=pass smtp.mailfrom=foxmail.com;
-	dkim=pass header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=KKr8PZSP;
-	arc=none smtp.remote-ip=162.62.57.137
-Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=none header.from=digikod.net;
+	spf=pass smtp.mailfrom=digikod.net;
+	dkim=pass header.d=digikod.net header.i=@digikod.net header.a=rsa-sha256 header.s=20191114 header.b=GzCpnY9w;
+	arc=none smtp.remote-ip=185.125.25.13
+Received: from smtp-190d.mail.infomaniak.ch (smtp-190d.mail.infomaniak.ch [185.125.25.13])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345A9606A31D
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 11:25:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 345A9606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99A0606A31C
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 11:28:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B99A0606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=KKr8PZSP
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1793273134;
-	bh=Zmpvpv5AziW/jsJVHh5ej1EELzXwiOShgDeV454QDo4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KKr8PZSPSfjZH4sJ8qUwv1OO4wVtHcglWg7aW2LDO7V4aNUyjrhc1k+QZ+Il8v9S6
-	 6Rr7CUk7/zDmDGqz2FsQfmS4hlJfc4bM29p3700YrC+4ee+/H/RcNvxRhEWyC+JAas
-	 o589dRp79NzVooDSPQopqlBYtTCO37w3BQZy4Nr8=
-Received: from localhost.localdomain ([240e:3bb:302c:4eb1:9b:594b:9d4d:93e4])
-	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
-	id 65DA727C; Thu, 29 Oct 2026 19:25:29 +0800
-X-QQ-mid: xmsmtpt1793273132t6ydkkukq
-Message-ID: <tencent_1AD6B5B7C296D319F828A281A2A65B95D609@qq.com>
-X-QQ-XMAILINFO: OATpkVjS499uBu+vAz7Hn2h/EL1LsJ58MpGyhOeVYrg/Oa96OhtqqafVvkj01S
-	 mmZJpUy3TFE2rq+LUQN+Tof8b7W20E8jWxu2k2vCBFKWtx3zCZI2Y7HFfprO47Qp8VwQeCBcs9mu
-	 5ppj/uTy43XMItLDxVowY9ItfTFkfApyeNsWKmVjly152ZVKyK31mSL57l4BOxsejnwIW+ZPzIVn
-	 YQKDSvqy3PwZoQKezx8E9OmgMfdMmH8e6d5h8PquswEz9dtvJGkzXi1iKpGtceK2n82Y7GsFy0T2
-	 oo5TMUUj0kS42A7lnO0DiBKOMLCKaVMyFrKNS8701Hwj5Cj82JUC1ZcmWdH83EW09JptBDQDtBAa
-	 6JXjl7SphkgyJ2ZD1MfEzNEQ64BqKUIRo+7SlS9SsF08UNdCyc8VkGkTFTszwa+3hRVjT5puFGCa
-	 8+OzOGa5zjeX2X/IhCArV0nrcMDLJwAeeH7m10qxb7jSGjOSlZe+zikdsHwmid34r5FMq/pASCbV
-	 WGuIvzBpluWG015zKUa34Oz6gb4dfsEwVV8fRDGloFvInTRaWOD7BgZrDm2eE7TIMq/eNYpwzQbq
-	 ITHR2X+9fL6g77A8d4maeTPkFs6879GGRjkX8fBLQATDGRfo6O8/O64UMu/9I2UyWM76/b6SUk7n
-	 P06f7asIrgTnwBE3t3KW71MDNy0E+VVaXpqoLbKjeMXdrUKPLHXeeJblwDXd6xHjv2KKY4ReI/cZ
-	 LzTnpRPBPm5peg17viRjoycXUayrKFvNRvfhTZZc732jFkCIAuAw9aKXbDr9g29IkyJgc5Ff0CK/
-	 HbcjCQ1mD9agl2hL9EUXknoJpyCoAHCrgVh7tlg0YJUfQXR/CSX3yz7g5AhkzuxpPHQQdf4PCa4o
-	 3dsD8a7heC4KsTyaVlkL2/jSrnDHrVEoNJ70FjcZ5fl92L08XyQeo5rDOR9feNaMiLV/16LvLOxB
-	 ZsEfek17dGEkF+3xIiEuyGBYFChcw2QuPsMfTEh8c5Lj+0MdbN5A7ZTK8NcctfHGKVtww17ouLmT
-	 qxBBSq7HuoLkAmoCZ3Jk7i0XPnxwk=
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
-From: memoriaru@foxmail.com
-To: netdev@vger.kernel.org
-Cc: daniel@makrotopia.org,
-	andrew@lunn.ch,
-	f.fainelli@gmail.com,
-	olteanv@gmail.com,
-	johan@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Subject: [PATCH net v3 1/2] net: dsa: mxl862xx: bound FDB dump walk with a read limit
-Date: Thu, 29 Oct 2026 19:25:27 +0800
-X-OQ-MSGID: <20261029112528.56652-2-memoriaru@foxmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20261029112528.56652-1-memoriaru@foxmail.com>
-References: <tencent_6030CC520C02054D1B2925AEEF6FA92DC30A@qq.com>
- <20261029112528.56652-1-memoriaru@foxmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=digikod.net header.i=@digikod.net header.a=rsa-sha256 header.s=20191114 header.b=GzCpnY9w
+Received: from smtp-3-0000.mail.infomaniak.ch (smtp-3-0000.mail.infomaniak.ch [10.4.36.107])
+	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4jFhmS6Y9lzn3b;
+	Thu, 29 Oct 2026 12:27:52 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
+	s=20191114; t=1793273272;
+	bh=LaD9WrR+AACReb/Fw3idhuufgElFfvZMlx/OJIXbArA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GzCpnY9wpDf60mcnYuroXbFa9YCakGFBrOjfurb2f7UxJM3jUmzmm71A+H/ex0U95
+	 Ezw0UDC5/DXLdfO9xfh2E7NHLu4mmTw+EV8TXVuVR5Zv2qJiAyasin7EDuqpetc/yo
+	 QmYhNWapgWaCBAEkibByaPzDgOQutFwZnHYo9qng=
+Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4jFhmR4mH2z8lf;
+	Thu, 29 Oct 2026 12:27:51 +0100 (CET)
+Date: Thu, 29 Oct 2026 12:27:47 +0100
+From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Paul Moore <paul@paul-moore.com>, netdev@vger.kernel.org, 
+	stable@kernel.org
+Subject: Re: [PATCH 4/8] landlock: pass the namespace id to log to
+ check_ns_type()
+Message-ID: <20261028.oonaisai0Doh@digikod.net>
+References: <20261026-work-security-namespace_free-v1-0-ffa3ebbf71bd@kernel.org>
+ <20261026-work-security-namespace_free-v1-4-ffa3ebbf71bd@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -86,78 +66,101 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261026-work-security-namespace_free-v1-4-ffa3ebbf71bd@kernel.org>
+X-Infomaniak-Routing: alpha
 
-From: Zhang Hewei <memoriaru@foxmail.com>
+On Mon, Oct 26, 2026 at 10:57:12AM +0100, Christian Brauner wrote:
+> Landlock logs the namespace id when it denies the use of a namespace.
+> check_ns_type() takes it from the namespace itself. When it is called
+> from the namespace_init hook the id is always zero as it is only
+> allocated after the hook has run.
+> 
+> A follow-up patch will allocate the id before the namespace_init hook is
+> called. But a namespace whose creation is denied never becomes visible
+> and the Landlock documentation says that namespace_id is zero for
+> namespace creation (cf. Documentation/admin-guide/LSM/landlock.rst and
+> Documentation/trace/events-landlock.rst). So pass the id to log to
+> check_ns_type() and keep passing zero from hook_namespace_init().
+> 
+> No functional changes.
+> 
+> Fixes: f675d2e95569 ("lsm: add LSM blob and hooks for namespaces")
+> Cc: <stable@kernel.org> # mainline only
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+> ---
+>  security/landlock/ns.c | 11 ++++++-----
+>  1 file changed, 6 insertions(+), 5 deletions(-)
+> 
+> diff --git a/security/landlock/ns.c b/security/landlock/ns.c
+> index cd44c927f83a..39795c4e1404 100644
+> --- a/security/landlock/ns.c
+> +++ b/security/landlock/ns.c
+> @@ -90,15 +90,16 @@ static const struct access_masks ns_permission = {
+>   * check_ns_type - Check namespace use permission
+>   *
+>   * @ns: The namespace being allocated or installed.
+> + * @ns_id: The namespace id to log.
+>   *
+>   * Shared check for namespace_init (creation via clone(2), unshare(2),
+>   * open_tree(2), or fsmount(2)) and namespace_install (use via setns(2)): denies
+>   * when the namespace type is not in the domain's allowed set.  At allocation
+> - * time @ns->ns_id is still zero and is logged as such.
+> + * time the namespace isn't visible yet so @ns_id is zero.
+>   *
+>   * Return: 0 if allowed, -EPERM if denied.
+>   */
+> -static int check_ns_type(struct ns_common *const ns)
+> +static int check_ns_type(struct ns_common *const ns, const u64 ns_id)
+>  {
+>  	const struct landlock_cred_security *subject;
+>  	size_t denied_layer;
+> @@ -121,7 +122,7 @@ static int check_ns_type(struct ns_common *const ns)
+>  				    .permission =
+>  					    LANDLOCK_PERMISSION_NAMESPACE_USE,
+>  				    .audit.u.ns.ns_type = ns->ns_type,
+> -				    .audit.u.ns.ns_id = ns->ns_id,
+> +				    .audit.u.ns.ns_id = ns_id,
+>  				    .layer_plus_one = denied_layer,
+>  			    });
+>  	return -EPERM;
+> @@ -129,13 +130,13 @@ static int check_ns_type(struct ns_common *const ns)
+>  
+>  static int hook_namespace_init(struct ns_common *const ns)
+>  {
+> -	return check_ns_type(ns);
+> +	return check_ns_type(ns, 0);
 
-mxl862xx_port_fdb_dump() walks the MAC table in a while (true) loop
-whose only exit is the device-controlled "last" flag. Entries whose
-port id does not match the dumped port are skipped without invoking
-the DSA callback, so the netlink dump buffer never fills either: a
-device (or its firmware) that keeps answering with entries for other
-ports and never sets last keeps the driver walking forever with RTNL
-held.
+The use of 0 as a namespace ID in logs was mainly a consequence of the
+hook implementation and the fact that no ID were visible to user space.
+This changes with this series: the kernel allocates a new ID and other
+LSMs see this newly created ID.  Landlock's logs should follow this
+change consistently and always reflect the real namespace ID instead of
+faking it with 0 for namespace creation.
 
-The exact MAC table capacity is not part of the public driver API.
-Use a conservative read limit (16k, well above any documented table
-size for this family) and return -EIO when it is exceeded. The limit
-is checked after the "last" test so that a correctly ended walk of a
-full table is not rejected: the walk needs one read more than the
-number of entries it reports.
+Could you please update the doc and tests instead?  The doc should still
+warn that when blocking a namespace creation, the logged namespace ID is
+still not *directly* visible from user space.
 
-Fixes: 340bdf984613c4a9 ("net: dsa: mxl862xx: implement bridge offloading")
-Signed-off-by: Zhang Hewei <memoriaru@foxmail.com>
----
- drivers/net/dsa/mxl862xx/mxl862xx.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+Being able to differentiate namespace creation (i.e. when a namespace is
+not yet reachable by user space) from a namespace enter operation is
+important for Landlock from an observability point of view.  We then
+need at least the Landlock tracepoints to make this possible.  I'm
+working alongside what you're doing and I'll send patches next week.
 
-diff --git a/drivers/net/dsa/mxl862xx/mxl862xx.c b/drivers/net/dsa/mxl862xx/mxl862xx.c
-index e05ad52cd..37e8c18f1 100644
---- a/drivers/net/dsa/mxl862xx/mxl862xx.c
-+++ b/drivers/net/dsa/mxl862xx/mxl862xx.c
-@@ -30,6 +30,11 @@
-  */
- #define MXL862XX_STATS_POLL_INTERVAL	(2 * HZ)
- 
-+/* Conservative bound for the MAC table read loop: the exact capacity is
-+ * not part of the public driver API (see mxl862xx_port_fdb_dump()).
-+ */
-+#define MXL862XX_MAC_TABLE_WALK_LIMIT	16384
-+
- struct mxl862xx_mib_desc {
- 	unsigned int size;
- 	unsigned int offset;
-@@ -1503,6 +1508,7 @@ static int mxl862xx_port_fdb_dump(struct dsa_switch *ds, int port,
- 	struct mxl862xx_mac_table_read param = { .initial = 1 };
- 	struct mxl862xx_priv *priv = ds->priv;
- 	u32 entry_port_id;
-+	int count = 0;
- 	int ret;
- 
- 	while (true) {
-@@ -1513,6 +1519,22 @@ static int mxl862xx_port_fdb_dump(struct dsa_switch *ds, int port,
- 		if (param.last)
- 			break;
- 
-+		/* The exact MAC table capacity is not part of the public
-+		 * driver API. Use a conservative read limit: 16k is well
-+		 * above any documented table size for this family, while a
-+		 * device that never sets last (or keeps answering with
-+		 * entries for other ports, which never reach the callback)
-+		 * would otherwise keep us walking forever with RTNL held.
-+		 * Checked after the "last" test so that a correctly ended
-+		 * walk of a full table is not rejected.
-+		 */
-+		if (count++ >= MXL862XX_MAC_TABLE_WALK_LIMIT) {
-+			dev_err(ds->dev,
-+				"FDB dump walk exceeded %d reads, aborting\n",
-+				MXL862XX_MAC_TABLE_WALK_LIMIT);
-+			return -EIO;
-+		}
-+
- 		entry_port_id = le32_to_cpu(param.port_id);
- 
- 		if (entry_port_id == port) {
--- 
-2.39.5 (Apple Git-154)
-
+>  }
+>  
+>  static int hook_namespace_install(const struct nsset *const nsset,
+>  				  struct ns_common *const ns)
+>  {
+> -	return check_ns_type(ns);
+> +	return check_ns_type(ns, ns->ns_id);
+>  }
+>  
+>  static struct security_hook_list landlock_hooks[] __ro_after_init = {
+> 
+> -- 
+> 2.53.0
+> 
+> 
