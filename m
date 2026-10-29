@@ -1,74 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793310925;
-	b=cYISepd9mlAcJXfU6ZQppxbOuTyxhZM0HVBNWEwca9tZyX71ODaR8X9zz2sWLNTRsd4S
-	 ULhaaGz1V79vCprOswg2oyl+SrEZpk6QW8e91GE8ssw8YO2eGvKBIEhZxo3TDudIqjzp8
-	 c8jaqMfcaGzqWjfvX6j6CbUMnQrzxUoC1xiDS6sig7c/AgX3Q79a3DcNpZGnxFG74vct1
-	 N0UMoWgsVuFDb+fH5qryUdAUV4AVOZDPzal4jr6302O16x4ZJT9n9WGPgtZcJHu6iqAby
-	 HPlzJ3Y4Go8UtEzF0RvM/3voH48jA6rgL2+PKwODqBdvPchErQRPakLX8ogBXRVBi0g==
+	t=1793311308;
+	b=HbkSxc+Dbg5fgmOiofx0yzU9YfA4WTQG+XGTIhDnIwsJrNAQFepi+UhG7JquSx1asvYZ
+	 MXLmpjg9YAame338V7PFVmBwrWTk/i5iAkcH1qrBiYzGjZWuZ0JU6qwOWDElE3E7IWvMx
+	 rzcnxqazl/dAo+6fQL8QoQjvZf0THoDmkaMsUALz/c4pPbgNyABnhz4pH8BAXbHNaHRw2
+	 wm3TIUWRSTSF1X22DgGf1Ok28eDk+3Lr9Snl7xB6LuJffuPKj9pVP+/yp6PIBob8MO1i2
+	 l4dSGwLhq0eZ2t+rJuxFi3z7c/1yvjEuFcSAJk59cUGgTWZ4w0K8qzZNLx47JfDQPMA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793310925;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793311308;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=ftlqZLP89MBtbSltOHsyj/D3xJMjzaj4uqQVSc1oH/Q=;
-	b=1a2XXvaWkmCSdkNoOBpfXv77TdQiv+J7P9RdUzhgXGvmQN2wT344Aflf9kRVYSxc5WLj
-	 iWYoOChsmuTji++iUk2SpxvVKFDpM6mV9DSms9RjwiPaa33onF4MIPxnZw9DgXrcI+fPS
-	 LxbDOfN1hBY/VUQ7rELJ7ACiPklMluDW7tuGpixz9skbMt/qOc/nXdSyfjd6v6ZwEwdQc
-	 e5+eExHK7YLI3XMAuPW5eeIV892bBuVTZCstMmKNALloCOpupt6POXji5THTvBUN7xCFV
-	 Rin2CVMs8W/g5Hfr+0fQ4xkgieccymIJm+MZrUWKJNA7UCDpR17JgSoa+2k9X4h/Shw==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=8Q/lW9fQYT21QznHQjvJzPQJl55ESH89M5aAdKeZYiU=;
+	b=GB32ufWRgSZuxj5kbiyAuEEhqPxmoC9P9dXh3xN4ThUwJhr5okPEn4Ae2izgkoCvbnJy
+	 kTnl08XrQeU0M6Kl7JlctlMnqmHqoy6FflHSqhO6VQmfiVU91BSIVnSFOHe7uGzm0tG6R
+	 MbnjOrPPh739JdNc/8l5kXef6EXczDNEx2nrAx2KTe7hJOKHewz+py22ujwNM07ALO0Z6
+	 LFxx2LkJwwhheHgebnN/TJhU8Ivuqp432h1WYyygZjXWeyGuCbqPGTYAOuOsEKaNwBDFp
+	 IDkhuOvv/mM3gDaZn40QHxyJBPl2HwVdNqYeOBSu5eQKaDMtZYy4xu+ltj7Scd70b/A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=WA7jJW+I;
-	arc=none smtp.remote-ip=209.85.215.197
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HCAjDS8P;
+	arc=none smtp.remote-ip=74.125.82.53
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5A3606A31A
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 21:55:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4F5A3606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C2F606A31A
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 22:01:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 13C2F606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=WA7jJW+I
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc7e92f36f9so18993a12.3
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 14:55:25 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HCAjDS8P
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-1a2af4c8d00so100445c88.0
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 15:01:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793310924; x=1793915724; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ftlqZLP89MBtbSltOHsyj/D3xJMjzaj4uqQVSc1oH/Q=;
-        b=WA7jJW+I5jF5wu5Zdeb7AVdLfzhelM2Iq6Irm2MN/1udk2BhY/Y8vBAHlESg5eLkvu
-         v1LCZllwoYwFtbyfglEcZWxvL1VXuQ0JaaqkCUWz0Iq6uNOC97lr2mS43ZxMMn5MyBcf
-         mBTAKhG+texc4RvMh6UMgClhJgdkrsmLCcQBZzMu+8JxOYVoMVtxZmNasWG/i6+a/LGo
-         MrOW29iKqAAHibCkAE3ICJIETu+eanUBa7qYNbLZuZnWbOBkw1ifmmGFoXK5xMHv8L+g
-         tPPP9tIDvzb7qtHBt9QczljviGWNzTuzzRdPfn8dSKP/y3IW2i7LpWh6xKtUHmgWth9H
-         J2lA==
+        d=gmail.com; s=20260707; t=1793311307; x=1793916107; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8Q/lW9fQYT21QznHQjvJzPQJl55ESH89M5aAdKeZYiU=;
+        b=HCAjDS8P9gVEmar346ebcMBuz87gARxPe/xf1qL6qqUQlhBC7UJUe7jLP9vJ6TJlKg
+         aM/BfEfx/2F5bUKpkKM1Uyuq9rP33tCJmw4gTpTVBll16BqX39cSCskD5GmBjIjffrZ9
+         2Bn8j+XR2vPmB5dQpovdQA87mUbQ+k4bmLF/+VisJ7d3RVvWRs0UqjIm4JwmxwhB2jCx
+         PNrLJLqcVuRt2v+jvb0kri90HYfx9o8eSuAy2N3pE+DpBA32DiHNvaixs19DWLB+jI/9
+         cs/dAolV6c01s5VO6/HXw78jtPSDFB/C2ZRs4J8Fi6WcWHR4PrBIq2IO77HrnkFg/FnG
+         4iXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793310924; x=1793915724;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1793311307; x=1793916107;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ftlqZLP89MBtbSltOHsyj/D3xJMjzaj4uqQVSc1oH/Q=;
-        b=Yuz/ainPiOyMLVCbtISl+qed0kX5OnmogxwKpFrComWlRRLFiwi/aFOIJ98sNcw4Ft
-         KDO8nBg8LYq9PdPKyZu25JXNN9h8fILq+/2/H/Z1tDAvXgBYxj6sTNdCeEjAoujUHRwM
-         KEu1+6diiFdFKYUrvxBa692GNOeHltgZb9ksTMH+vkQG0L+QdQeFV5uq51qZgrPp3B6d
-         cLibvmCeQqZEWwt6sP0Orgj8zXDhsp8Hm7Z+uPwKlSNwu1WohAAZAVB7tB2po50BMeiN
-         h/eADUzGcfsmDjSGoMsSX5nK0qW2mwZ0Nc+53Z+RTCUGOhIfu1t8w/vBeppWtE+kSvlf
-         uUAw==
-X-Forwarded-Encrypted: i=1; AKwUvBxTua8efHBpsJIMCl+EBWt4UHnDI5/Tx6TOUD7WfoYfsTBQ0vs6Dhx5c+QG62Fl5N27FQvUVZ4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIZTLCGHFcHLyN3lAF8l9ygupHTqHNOai7Ip42eFsAmsKZSw431
-	SL7E/3B2WEpOejOzEMiTHPxDWhIb4VbjkPsbNWH4xRLq+HAXHcOxJqGTJb1XHr7EWMzxc2Q6VMF
-	2O6pEtg==
-X-Received: from pfbgl11.prod.google.com ([2002:a05:6a00:84cb:b0:890:ac21:250c])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:4d91:b0:3e1:180b:402b
- with SMTP id adf61e73a8af0-3e9289ac4bbmr469413637.39.1793310924447; Thu, 29
- Oct 2026 14:55:24 -0700 (PDT)
-Date: Thu, 29 Oct 2026 21:55:23 +0000
-In-Reply-To: <20261029214219.1035176-3-imv4bel@gmail.com>
+        bh=8Q/lW9fQYT21QznHQjvJzPQJl55ESH89M5aAdKeZYiU=;
+        b=KzhJXi+DNm+LjTm2Y0b9W+rLJhBuxyqrtbvzHUuswyA340LtSD7SeDak7x/fqHiVB4
+         BFaHUIKdUVEfJgrxePcO7zadFXfDz5+JnmpsM8iswbBcc4Ldhk/OGyv3HR67EDv2qXnE
+         pNAnA5/xhXhyW7V+I6Tb3+Ibnhcr7W6JnwtHpc4ajqTuT9I9nXGlGpK3d4GGFkXKAdab
+         d9jx2q09mc9e47oKZPMSnG/GEX81kTJ4+HbOwceMYubrFc5j+gyTWBzE7GN3AJdYB5ia
+         CAqpL+1GMujiQ+sI18SsnoPF5N9XQobxcTzHvJrYF4JFfusZXr+tcJ8iQjUVD0O7Uw7j
+         09/w==
+X-Forwarded-Encrypted: i=1; AKwUvByo2mWE1z3lKp53mqdKMFOQjfxgpBnzHGesFsDjbNx2zGHsP4QjIymvRXJ7ITPYGvkfR6ClJ1k=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIdQYYnvYpns5IUbDPxtJvx3zeIn8sh4REiFNsEhz+uEzFVEO4M
+	YrakiF63GI4w4t2094gEhKNaMLeyeNYS+szSCRGYw1VczyP1EBciFpH4
+X-Gm-Gg: AYBFou00XcGAetb7Lpxj3T34S2ZRXEk24Yl1sZcUr3Jooz8SNvK3i9S2YDBeuX3e2g3
+	JdFDbixU8ax9B5bGSsoU1xHabamtd5zalw9Gf+qc6MpXGFVT5BNuZRVSDzU4dYbB16i3qvbxru/
+	Dyv2nf6zrUi6P6qco1Dq99VOZ3ffzCDexhrgYRVVXm3b4SuVb3p/N7cHTxUDMBswQoh8vUIi4Xm
+	s7UeVkG90vvQ7A1xb9co7GUE3iyMBY+6XIm8TNB+MvFP8eZJNa2neh4X23DZYtH76DQW4Q26Tcb
+	+zoLx0x/mFQ8HzRzpkrbp80n5+pZRwiV+xebzArkRqw9d3DDmdrSMcm2v+sIJDYQDK3Tnv4VANI
+	I2ozj8Mt3R7LzDrZK/yKwZmP1WkAaLwGFP6uZ6iTiZ5HFUo90ZyLF+qh/LdQ9SO4+w8xNjhevLy
+	x247HDOO1Y1cEnb/HJAP3EpAHm4nvWXIurFtGd2mdtayUkuvSwmJZNhfH8nGPRRwYbePyKpXqpn
+	hO9nitdvPV8Et85ThqP4LsAfo01p1E2tKxJprMSDjUFgIhPySWhW+MkpTDWPouAZJNaUVXuiwWY
+	i/PBkwJ5XrfI8jjysjtqt8P0bFVVOoPU1LjdAODnrSmkTEUV1J/pxwwFm04bmhY7V6TKh9FplG4
+	N
+X-Received: by 2002:a05:701b:4589:b0:187:eb7f:bb4 with SMTP id a92af1059eb24-1ac5d88c4e4mr385234c88.46.1793311306922;
+        Thu, 29 Oct 2026 15:01:46 -0700 (PDT)
+Received: from samniyama.tailbcd61.ts.net ([76.20.4.3])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1ac1abcd6f1sm1314661c88.20.2026.10.29.15.01.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 15:01:46 -0700 (PDT)
+From: Koral Ilgun <koralilgun@gmail.com>
+To: netfilter-devel@vger.kernel.org
+Cc: pablo@netfilter.org,
+	fw@strlen.de,
+	phil@nwl.cc,
+	fmancera@suse.de,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Koral Ilgun <koral.ilgun@adtran.com>
+Subject: [PATCH nf-next v2] netfilter: nft_flow_offload: do not offload multicast
+Date: Thu, 29 Oct 2026 15:01:44 -0700
+Message-ID: <20261029220144.2474139-1-koralilgun@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,45 +100,73 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261029214219.1035176-1-imv4bel@gmail.com> <20261029214219.1035176-3-imv4bel@gmail.com>
-Message-ID: <auPAvbIZ8XmOHKaE@google.com>
-Subject: Re: [PATCH net v5 2/2] net: restore refcount ordering for lockless
- socket access
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Hyunwoo Kim <imv4bel@gmail.com>
-Cc: edumazet@kernel.org, ncardwell@google.com, davem@davemloft.net, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, martin.lau@linux.dev, 
-	john.fastabend@gmail.com, weiwan@google.com, sd@queasysnail.net, 
-	jiayuan.chen@linux.dev, netdev@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Fri, 30 Oct 2026 06:42:17 +0900, Hyunwoo Kim wrote:
-> Before commit fb041bb7c0a9 ("locking/refcount: Consolidate implementations
-> of refcount_t"), default builds implemented refcount_inc_not_zero() using
-> atomic_add_unless(), which provided full memory ordering on success. The
-> commit removed that ordering on weakly ordered architectures, allowing
-> accesses after a successful reference acquisition to be reordered before
-> it.
-> 
-> Use refcount_inc_not_zero_acquire() in the IPv4 and IPv6 established
-> lookups and in inet_twsk_purge(), where the socket is validated again
-> after taking a reference.
-> 
-> bpf_sk_assign() can receive a socket pointer obtained through BTF
-> without a reference. Use acquire ordering when it takes its own reference
-> for a refcounted socket.
-> 
-> Use refcount_set_release() when setting refcounts in the SYN cookie,
-> TCP Fast Open, request migration, and TIME_WAIT paths. Keep the existing
-> TIME_WAIT smp_wmb(), which separately orders the refcount store before
-> ehash publication.
-> 
-> Fixes: fb041bb7c0a9 ("locking/refcount: Consolidate implementations of refcount_t")
-> Fixes: 27e5203bd9c5 ("bpf: Change bpf_sk_assign to accept ARG_PTR_TO_BTF_ID_SOCK_COMMON")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+From: Koral Ilgun <koral.ilgun@adtran.com>
 
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+A flow holds one output per direction, which it resolves when it is
+added. The outputs of a multicast route change when listeners join
+or leave. So a multicast flow in the flowtable continues to send to
+the output that it resolved, also after the last listener left, and
+the counters of the multicast routing stop.
 
-Thanks !
+A ruleset can keep multicast out with a match before the flow
+offload statement. Without one, IPv4 multicast stays out of the
+flowtable only because the reverse route lookup in nft_flow_route()
+refuses a multicast source address. The IPv6 route lookup has no such
+check, so IPv6 multicast that ip6mr forwards goes into the flowtable.
+
+Skip a multicast destination for both families in the flow offload
+expression itself, so that the result no longer depends on the
+ruleset or on the route lookup.
+
+Signed-off-by: Koral Ilgun <koral.ilgun@adtran.com>
+---
+v2:
+- Target nf-next, and drop the Fixes tag (Pablo).
+- Use the shorter form that Fernando suggested; the result is the same.
+- Say in the commit message that a ruleset can keep multicast out.
+v1: https://lore.kernel.org/all/20261028205938.662312-1-koralilgun@gmail.com/
+
+Tested with v1, which skips the same packets: on an arm64 router with
+Linux 6.18.54, with an inet flowtable that offloads forwarded flows,
+and IPv4 and IPv6 multicast routed from the WAN to one VLAN. Without
+this change, the IPv6 flow went into the flowtable after its first
+packets: the ip6mr vif counters showed 25 of 1,500 packets, and the
+receiver still got all 400 packets after its leave. With it, the vif
+counters showed 1,500 of 1,500, the flow stayed out of the flowtable,
+and the stream stopped about 2.5 s after the leave. Unicast IPv4 and
+IPv6 flows still went into the flowtable.
+
+ net/netfilter/nft_flow_offload.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/net/netfilter/nft_flow_offload.c b/net/netfilter/nft_flow_offload.c
+index d3c5651dd699..530e20c7fd45 100644
+--- a/net/netfilter/nft_flow_offload.c
++++ b/net/netfilter/nft_flow_offload.c
+@@ -10,6 +10,7 @@
+ #include <linux/netfilter/nf_conntrack_common.h>
+ #include <linux/netfilter/nf_tables.h>
+ #include <net/ip.h>
++#include <net/ipv6.h>
+ #include <net/flow.h>
+ #include <net/netfilter/nf_tables.h>
+ #include <net/netfilter/nf_tables_core.h>
+@@ -33,6 +34,10 @@ static bool nft_flow_offload_skip(struct sk_buff *skb, int family)
+ 
+ 		if (unlikely(opt->optlen))
+ 			return true;
++
++		return ipv4_is_multicast(ip_hdr(skb)->daddr);
++	} else if (family == NFPROTO_IPV6) {
++		return ipv6_addr_is_multicast(&ipv6_hdr(skb)->daddr);
+ 	}
+ 
+ 	return false;
+
+base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
+-- 
+2.43.0
+
