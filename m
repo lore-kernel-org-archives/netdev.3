@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793234411;
-	b=uE1e9EJe5tC8OvDm2ns+L0dPQYFKZAtLQnF0qNegZeLNNVr1WibmQF1RGGQOL8puCOvw
-	 aB6g8cdWP5KISPzi2w7S+QZxiBzSkFzsQhR55gCEml8UtGF7Pq3X1P5Pu0wF+5DOsC18Q
-	 yuC6aeWL/1CwETXMerBeyoRYn6gis0rTxYotyONCwEi1EbeOtsZinksJ+0Y/r8Cd/0v4g
-	 Sq3xPPkm6LYCFY5ayx+I9yvncJObqu8a7D+RDCnbXsAEEjg+gadxLqtJaD/vRd8B1dm2n
-	 dMgwzX7dbCZZtQsf9CdfQEqrf5RYcRkmt0NlX/wqgO10rDNn99lOSLJxuQquPpGXD7w==
+	t=1793234410;
+	b=cWcac+bT+gm7+FmYuIcmQA5trKQA6GkHmcJiHyJoxOEW27c+I1J/RDYGlUKAEysxCogH
+	 sx/EANVXeutzKmFLjvr/LKJC+TrXbuhliwOr2HjXGltIB+JmdYhbx0VgZ8WHZmj3GcC/l
+	 NpLcmXjowzpWDYTl68FTkWPEAAAreOh2cN/NuIiuRUxLryswTvlN1qXWvzRwtMr4O4+jU
+	 lSqHveBrcuczrzilY5anrpbblIU6g5fkZZ7zfW1nVjD5kgEC8TTmGf0faPwOaFovrJkn3
+	 le7O8CWX89BC/VXkBgHRl2rSTMzO6L0cINKsyhRBzgvtSZP7STYDN6mVkkjOFJaSAFA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793234411;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793234410;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=BxYehSGB4nYEl0EpZxvRehODttHkM705AEXj14ilP+8=;
-	b=g9MBfzGTfeXvDr6b34xI6bzvYIqaxJn9kOEr3I2bofz0CSwMCun8UehvG+2Pkwz7aNP8
-	 augq9dWowIH6WT2qF9ZFsHGfCjQRajmvu7hmKQ3ztjvn8r/grvpRG0joxAH0AKtKJUie4
-	 9EQRF3SLDm6N+MoKgAccbFmBRmLAikybvHDHDQIsPTegJ/KQe4o2vgHGKufj1RrhxWora
-	 Scj8bL/u4XXl90+gZWGu+nNhyedBasWqfaOOnrJiYB/Ch6iLnXRka94OKEnEwErmG+HLJ
-	 VCwrGDZNbkCen9WIsUaLeePdxEtFwmz3WsPRUqwIiLPEiPV2w/G6D22GS7Vo9yGdJ9w==
+	bh=c4iBQ+UwOFy4X5YPlks+jc2xwGHej55He1MgtpRs7Ko=;
+	b=ksW2oPbcNIyhhWaM0CqDmHBnGff0VJYzUxNVhbJrNzYgAZw6FDuSCgf3AKL9G31ptW5X
+	 89YSMxPpdi8ht4B8jx7qhCgzBcYin9sm6c3t9djL0teCc2aeLNhrldIoZ6Bin4PocQIiL
+	 KpsNrbh5j0EhR8mZ4J5qtn4c1w5bEx4pzGCbBxituKX/TnXHTX5vMXXIp6qO7hOJK+34h
+	 /d5BJ6pDRxGiW5yF/Fj9C7ZMTl8WzpKnuBYo2JPTw44biSzbhXsIPuEETp1TL+PjpSF37
+	 0i1shOf7JuqE/xa5ULXgLyva2oZeCdEZ6TlJgizKN95rn5cbhKD1m79Wmt0Ifpj2uOg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RZzAch5n;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=azihWin7;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85BF6606A33E;
-	Thu, 29 Oct 2026 00:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD443606A324;
+	Thu, 29 Oct 2026 00:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RZzAch5n
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 110CF1F01825;
-	Thu, 29 Oct 2026 00:40:11 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=azihWin7
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ACD41F01825;
+	Thu, 29 Oct 2026 00:40:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793234411;
-	bh=BxYehSGB4nYEl0EpZxvRehODttHkM705AEXj14ilP+8=;
+	s=k20260515; t=1793234409;
+	bh=c4iBQ+UwOFy4X5YPlks+jc2xwGHej55He1MgtpRs7Ko=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=RZzAch5n308zjdI4AHqz3Xw5Shk47z8WVwNXptmOgyuwCOGRugSDuOl+1WnI0NMN1
-	 2wg5/EtVw+WGRlxtgHsC27FX9H65bn9gSYizuAZgTBapAjwQg4M1Afdw9EmNiaCHM0
-	 CFrwUnRy8+47F+JkEoZqUYuTmpa+t1lWa4WOIkJi7xstPJwT7ghTCcdMTgV75WJKQZ
-	 ZseFp4coX+DcIsXn8+kWQLwsEeuEuF/KMest9teibpR2Tir7wxlJKJuqlSM3qskTHk
-	 oDsLYNgjSjGUEUD8U2xBBx2cPmvYxrDaunoLUOo//Zb7Ib+vu4WeyhLVoX6lKuZNnC
-	 u0G0J1FL+vG/w==
+	b=azihWin7Fnf/E+YT9dK3r8KdLbROgbTTQp0qkk0Eie87I4Q+6ux586RFYKY9Ge/W9
+	 Wi2xxteAwnF4wC/oT9FGHlCH+Cce/lH7ovEMDBKI1RKqRO4SN7QoWBlQpNR5s/YpYC
+	 pSS63mTXa8/g+gqoxuLcxd9/QSgh5LB1S+qFrDRymrNwZPdUt8DaauOZpWf5dS/mCf
+	 6VhcvGTeiPgVd0LPcHwccRafm6q2vy11vaWm8lwIFO831UHi52eo9zcw/sLT5qhsis
+	 GeA54/IP0mHQyb5n3WOm4dCHLroEBB17XTrmznYkCFV2oTXhJ6Bf3W8Bt7rjXRElha
+	 9cn795m3ZniGw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 073B13AAFC4C;
-	Thu, 29 Oct 2026 00:40:11 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 814FE3AAFC4C;
+	Thu, 29 Oct 2026 00:40:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,38 +54,46 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 net] ppp: linearize and segment bridged packets when
- required
+Subject: Re: [PATCH net v2 0/4] net: pcs: xpcs: fix runtime PM and clock
+ lifecycle
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179323440956.1500896.15333637748858681372.git-patchwork-notify@kernel.org>
-Date: Thu, 29 Oct 2026 00:40:09 +0000
-References: <20261026155927.707655-1-edumazet@kernel.org>
-In-Reply-To: <20261026155927.707655-1-edumazet@kernel.org>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, willemb@google.com, linux-ppp@vger.kernel.org,
- sashiko-bot@kernel.org, qingfang.deng@linux.dev, nbd@nbd.name,
- pablo@netfilter.org
+ <179323440806.1500896.10740339691705828424.git-patchwork-notify@kernel.org>
+Date: Thu, 29 Oct 2026 00:40:08 +0000
+References: <20261023075214.1793922-2-coiaprant@gmail.com>
+In-Reply-To: <20261023075214.1793922-2-coiaprant@gmail.com>
+To: Coia Prant <coiaprant@gmail.com>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, edumazet@kernel.org,
+ heiko@sntech.de, netdev@vger.kernel.org, linux-rockchip@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 26 Oct 2026 16:59:27 +0100 you wrote:
-> PPP channel bridging hands packets received on one channel directly to
-> the start_xmit() of another. Packets received by PPPoE can be
-> non-linear, GSO since commit 55a5d8fca836 ("net: pppoe: implement
-> GRO/GSO support"), or CHECKSUM_PARTIAL when injected with a
-> virtio_net_hdr. The regular transmit path never sees such packets, and
-> only PPPoE, which uses dev_queue_xmit(), handles them:
+On Fri, 23 Oct 2026 15:52:11 +0800 you wrote:
+> This series fixes the runtime PM and CSR clock lifecycle in the DW XPCS
+> platform driver, a misleading error message in the Rockchip glue driver,
+> and the MAINTAINERS coverage for the platform driver and its binding.
+> 
+> The issue was found while using pcs-xpcs-plat.c as a reference for the
+> Rockchip XPCS glue driver (pcs-xpcs-rk.c). On Rockchip the CSR clock
+> (PCLK_XPCS) is required for register access, which exposed two problems
+> in the generic platform driver:
 > 
 > [...]
 
 Here is the summary with links:
-  - [v2,net] ppp: linearize and segment bridged packets when required
-    https://git.kernel.org/netdev/net/c/0de4e69cd021
+  - [net,v2,1/4] net: pcs: xpcs-plat: fix runtime PM initialization
+    https://git.kernel.org/netdev/net/c/49d8bbc21244
+  - [net,v2,2/4] net: pcs: xpcs-plat: fix clock lifecycle for !CONFIG_PM builds
+    https://git.kernel.org/netdev/net/c/eea365ed283c
+  - [net,v2,3/4] net: pcs: xpcs-rk: fix cleanup action error message
+    https://git.kernel.org/netdev/net/c/e7cccfde6136
+  - [net,v2,4/4] MAINTAINERS: list DW XPCS platform driver and binding under XPCS entry
+    https://git.kernel.org/netdev/net/c/87b88b658b9b
 
 You are awesome, thank you!
 -- 
