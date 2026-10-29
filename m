@@ -1,59 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793283330;
-	b=BP7zThh4CGgDBZoi13adEO/G/vNYRzagBrbOGOaVg1+3aGaJHBG9L6TBkXdHs1+MBG90
-	 3UsA1G3KPwUwS9Z6ACi2fJB+bq9ElJPtrwDK+Va/m8RrTwNhrC7WNTQUdv0Xhrv+8YK/G
-	 qDWpW05YBQ4muGxNgrxCwHcSm5pYvAv8SocFvWgnkZ2xOgz7be8fALb/q9YqOrWT9Vvlw
-	 dha1foeqq5ZIFCUaONX5nbwE68orx07uzTFdRsb2hU0/bUGuqzAj7YNaYSAPOlj9cXFqJ
-	 qRJTOpzEe0Mhfl8QL9mNXWfGDUAUNDeWbi6RYgswHUUWKEiV6dLflN0+VdJFE+19S0w==
+	t=1793283342;
+	b=fd44Z5VpK6EG5hVK93C0qrKEJyn26iDvFYhiRBBLaTpjVVOL8SnX+tOurqyBkdvqr3Rs
+	 5Nfl3eyOjYXrMRfKZkfg7IpE1gNqd49OfoQBtjYZCOv/Lkpiz/H72+PGZYTAmr1ssQqbK
+	 ATUnAdNMg/nHuggA7nLfNCgHOhH93QlTc5VX2mfBN11bwcwjSNgzeqPe5ptRDvDigLphn
+	 M03QRu5kYg3g6bw/UyrHH+mFJrTheZL5AQogiBdtbp+W9AxYxLVZ5smL/3Rk7CVGlVZ9A
+	 sLfUPSzHLdWioGoKEvCgLNJ4PRNBhIjR6sU+5N+fKBCcWavaQmouXDq2vRQNxO0mCLQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793283330;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=dhmmahh06myYXbW5ESqbKUXDQqYYU0zo1kDmgyI/HsQ=;
-	b=Tfk1+Y+XmX0J5Ks4dDvajLuECxd1YOVnBbucejOwe9Rn57cnZJ+9n6T3o3foYrH+MNQx
-	 1xC3ASdKHHXt//XUZbOwbg95iA8PhlN1GK2byji57X1OGMqjuE6JsxCGD9tvFUXRsRm0K
-	 8ejo5tZfwMItQ2mVD0T4dRVlKw4/ZsJh2/YNB0CHL5wf9GtvfojPT6v6mF6wqTsdvFyrs
-	 BsHHyND3jrJE5PS7ctXIgcMFB3qYmDhU4VGPjGxMsxWhT3aDVkjHDeRC/mCUaUncU7aPt
-	 mkh5Y67wtAsuQgTt+KsFB6WIr6lUYiyTc9vo1pot6Z32JipKOx37FxK33Rkheg21Glw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793283342;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=YenbS62NAlWG6owZ+KD+JytwJQD+4kiAv8kfExfGsRY=;
+	b=VDZcjoob80Wzeypk6Q+V23mF1OEYx3f5MM2FzDALUaF6fLwDYHSI3fvsbyt9VWLqXHdX
+	 H7nb5ldEslOxiX//5v5KRQQnVOpDmPf/uIpHDLrYqyrmfRnYUQfSUv0CJiS/ckWopUVrH
+	 6a8CGSan+weQ/U5EG6G6QeouiDO3zZwrHJiPDgUXiaN8ooRMIhF4fI/53sUp/CON3O5HR
+	 kKCf2WqpNPR+ZKH8DTY556fqCpkkwjWsK8713hgcJoJtaI4Rl8ZwUtg0lrC9bhF1fU6S0
+	 jCjaw89rZTt9siLbBJqZMPn/pOCTdd0e8s0EZhf/N1zJUDBwfRAWzvtgc+oV1EKA2ow==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cmuL9FVe;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=QFk4WNJo;
+	arc=none smtp.remote-ip=209.85.217.45
+Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891BE606A324
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 14:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E8F606A32C
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 14:15:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06E8F606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cmuL9FVe
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B68DC1F01828;
-	Thu, 29 Oct 2026 14:15:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793283330;
-	bh=dhmmahh06myYXbW5ESqbKUXDQqYYU0zo1kDmgyI/HsQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=cmuL9FVel4ozzNYyyOWXqvkBhzS3MggsZj4Kg8ebX+7Ot8+XMp5hQMyWRf2c8zY8i
-	 P8+3QcUlJbL9LCbuxcwladbUQ7aFcMR9gIuKaIECb7vHhvqnatpviSPvj38nfIl3P8
-	 tNpqrbRx/XSFMq8QBW5GxAYNUuSn7tNbbNNRCv5C2OoRFCsrOMfBZNxlDNTXzuEDBJ
-	 i9OBY9ShpXGyRfE59R02gi1nofIBljWuOdOLmQ7yg83A6D46pctGeEwLX2yRmz0zAW
-	 BHUhuafyMB0VYHpevZkBJKWrPUpH9iLXyQ2jkG1GN5TteyZng+bc8KcRmfkYN9J9Ak
-	 s0jFARrTBm9gw==
-Subject: Re: [PATCH net 2/2] net: gro: invalidate frag0 after a pull
-From: netdev-bot+sashiko@kernel.org
-To: edumazet@kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- willemb@google.com, steffen.klassert@secunet.com,
- AutonomousCodeSecurity@microsoft.com, netdev@vger.kernel.org,
- tsgatesv@gmail.com, cenzhang@linux.microsoft.com
-Date: Thu, 29 Oct 2026 14:15:29 +0000
-Message-ID: <179328332931.3134.13112846034720235073@kernel.org>
-In-Reply-To: <20261028141325.2103814-3-edumazet@kernel.org>
-References: <20261028141325.2103814-3-edumazet@kernel.org>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=QFk4WNJo
+Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-7c2f48f3a96so774308137.1
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 07:15:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793283341; x=1793888141; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=YenbS62NAlWG6owZ+KD+JytwJQD+4kiAv8kfExfGsRY=;
+        b=QFk4WNJoAHOqN7jEl1daDZa9qTLze937RmcBLJS42hj1Z6E/BeDI/liQG1bWLW4aqX
+         C76kCqGDx/TIhvWStNrUrmw1Di4OOWVS29zMtMji6mjI3+Dl1q4P/QvgFyv3cgyWGYy1
+         RHL/uqwqCbLfXxoP5G/UIQegLphudaXJE6VgMfO5evPHN+nRSkjq8E7dvNNQh4a8TkEE
+         /vrg06Z1e3k1cy9sRmZ9omoXqrMmuXnVJYLKHc65rTiTwoEwShZMkX3AHCglKnLCj9bS
+         KSxBk+/6rGd7FbTps1hhm0Wk9fdbNK+srGDfaGTJUYvQGAGQhtwzPzV1lPqsSs//SEsE
+         VqXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793283341; x=1793888141;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YenbS62NAlWG6owZ+KD+JytwJQD+4kiAv8kfExfGsRY=;
+        b=b2JcRc7ngnaHqi3UIOwZvr6BegDhU+trMj4Vpw4zw4O/Bn5sbz7NCAOOaMOoFfSFRt
+         KM0D//Ns2di+PFrg6hCJF2vdBWUJMppLA7IJGBrfMuHVK2p7OZ3sbVgNFaVwab8649FW
+         PrqD9qMwAM2M4Ftq7eeVpVe0183hsdxIGyZCTlzU6YHMvs4LTUOLBFzzJViQzJauwNsA
+         06d3XMz4Fh80EGvGSqBLZ7vWEQtBAV82IVxMcZB90BEEDli8Y8XOTNJH6oEq/ZruNkqG
+         QnoOG2pnf92LznqKPEbonPKdDfM8/VDjUkNDR0VzRpaZZL4+NNCllIvqu8mZfuied1uv
+         W6tw==
+X-Forwarded-Encrypted: i=1; AKwUvBy1z5U9UFCnLszcEoYbpbCy8QoP1IeRfcTrAjfDkXKUAkXil0mOmPXxQ8f2my3QDLCO05v2Cfo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI47Pt3EogyknuED3foccPjrvSdDUJ17CXhx6MLFogMdqMtYGfZ
+	E8JL57ITCcq0eijWTyRdyNaT3Ty7hRg7PV4oga71YkHjxV75Kr9ogzQx
+X-Gm-Gg: AYBFou2k8axjJtYOfRhqm6wuHIOdkZUCRPrtp95FKkM/f8fL557luVZOocoDIedPN24
+	61+zQx6+bNFEztWabViUt9u/9hzDbyc1NCUg54EN6LoJ3Z3KdMKwyMDUl253sXsjIwH/CYx3fnu
+	ULF1EaGuuJcLIgYLslBebpeiACoSk1KrE3zRdcw+qptfaLsXfTvAYA+NVZ+pBNU4EalL5PXHB/8
+	HRwh/AXJfFk8vXIjhhBfosXpts3ycrkMcqOcxQpIzWnskYBcFeZPbHT2KaJQpiXSRCDHJZr20Y3
+	JmtideJE2jb4SR/LXAh9nepwXznPHDz8jyXW6nl9i2IYQduqFJ2A/ZT+brFiDn1//CSBKoHTJft
+	/84m9WnQ0pKL7nO6mm7T6qY+g/YYRiurw4oNjk9QiC+YbD0/WpcZT5Bim/42Lsr1Y9spzzd8rGt
+	0ojoGqtX9aBppdTc9tyOqTX9L3/zAbT6+B1zf8bQWL5+qQMlURe95R+nD+xec2Fn5X2QLx8CC8i
+	QzaniBFD9Kuz+foUfMDOxuKkmcqNtbo1kXILdGF3ajW6zdyZws4v+wQ7mzetebRn0S1lMVMleks
+	SthDki2FocCL4plsfMPpBVWFu/Gm3B7kr7dZtoMwnBOJZhBAI9VfghgxTrukBU7zyeXa5JO6+WF
+	UXs5MUn5TGpYwsqgGquQgE/An3kiil/E+TglSuQPa9zc3c/wCI/+9PKZij61AKdruyEuS
+X-Received: by 2002:a05:6102:578e:b0:7cc:25bc:3b20 with SMTP id ada2fe7eead31-7d03a509ee8mr2217292137.7.1793283340823;
+        Thu, 29 Oct 2026 07:15:40 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-991dea4e74bsm44272241.7.2026.10.29.07.15.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 07:15:40 -0700 (PDT)
+Date: Thu, 29 Oct 2026 10:15:39 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Eric Dumazet <edumazet@kernel.org>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: "David S . Miller" <davem@davemloft.net>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Willem de Bruijn <willemb@google.com>, 
+ netdev@vger.kernel.org, 
+ Kyle Zeng <kylebot@openai.com>
+Message-ID: <willemdebruijn.kernel.370d112bcff2a@gmail.com>
+In-Reply-To: <CAL4WiiqgTTAD_j_Djkec1RJj_wT4bE2V2=Wrk+a=FJ34cyA0vQ@mail.gmail.com>
+References: <20261028171350.2205175-1-edumazet@kernel.org>
+ <willemdebruijn.kernel.207a67bdeedc5@gmail.com>
+ <CAL4WiiqgTTAD_j_Djkec1RJj_wT4bE2V2=Wrk+a=FJ34cyA0vQ@mail.gmail.com>
+Subject: Re: [PATCH net] gro: do not GRO GSO packets with inconsistent payload
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,136 +106,101 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Eric Dumazet wrote:
+> Le jeu. 29 oct. 2026 =C3=A0 00:33, Willem de Bruijn
+> <willemdebruijn.kernel@gmail.com> a =C3=A9crit :
+> >
+> > Eric Dumazet wrote:
+> > > From: Kyle Zeng <kylebot@openai.com>
+> > >
+> > > tcp_gro_receive() excludes empty non-GSO packets with the unsigned
+> > > len - 1 check, but its GSO branch only checks that gso_size matches=
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+> > > the held packet's MSS. A trusted TCP GSO skb can reach GRO again wi=
+th
+> > > no payload after TC pedit increases its TCP data offset.
+> > >
+> > > If the skb is fully linear, skb_gro_receive() then enters its fragm=
+ent
+> > > transfer path with nr_frags =3D=3D 0. The do-while loop copies skb_=
+frag_t
+> > > entries backwards beyond both fragment arrays. An unprivileged proc=
+ess
+> > > using its own user and network namespaces can trigger a KASAN
+> > > slab-out-of-bounds write and panic through veth, pedit and GRE.
+> > >
+> > > More generally, the payload of such a packet can be shrunk to any
+> > > value, making it inconsistent with its gso_segs, and a GSO packet
+> > > with gso_segs =3D=3D 0 contributes no segment to the GRO packet.
+> > >
+> > > Do not aggregate GSO packets with gso_segs =3D=3D 0, and require th=
+e
+> > > payload of GSO packets to be consistent with gso_segs and gso_size,=
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> > > the last segment being allowed to be short. This rejects the empty
+> > > skb before either TCP merge helper, and covers both IPv4 and IPv6.
+> > >
+> > > Fixes: 5eddb24901ee ("gro: add support of (hw)gro packets to gro st=
+ack")
+> > > Signed-off-by: Kyle Zeng <kylebot@openai.com>
+> > > [edumazet: check payload against gso_segs, refuse gso_segs =3D=3D 0=
+]
+> > > Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+> > > ---
+> > >  net/core/gro.c         |  5 +++--
+> > >  net/ipv4/tcp_offload.c | 12 +++++++++---
+> > >  2 files changed, 12 insertions(+), 5 deletions(-)
+> > >
+> > > diff --git a/net/core/gro.c b/net/core/gro.c
+> > > index ff828a3dce3ca649e149a840bd6e3dfd9ddaf0c4..1b033855a20db6b8b99=
+6179f0b81e38393d3864a 100644
+> > > --- a/net/core/gro.c
+> > > +++ b/net/core/gro.c
+> > > @@ -513,9 +513,10 @@ static enum gro_result dev_gro_receive(struct =
+gro_node *gro,
+> > >       NAPI_GRO_CB(skb)->count =3D 1;
+> > >       if (unlikely(skb_is_gso(skb))) {
+> > >               NAPI_GRO_CB(skb)->count =3D skb_shinfo(skb)->gso_segs=
+;
+> > > -             /* Only support TCP and non DODGY users. */
+> > > +             /* Only support TCP and non DODGY users, with a sane =
+gso_segs. */
+> > >               if (!skb_is_gso_tcp(skb) ||
+> > > -                 (skb_shinfo(skb)->gso_type & SKB_GSO_DODGY))
+> > > +                 (skb_shinfo(skb)->gso_type & SKB_GSO_DODGY) ||
+> > > +                 !NAPI_GRO_CB(skb)->count)
+> >
+> > Or make tc_pedit set SKB_GSO_DODGY? BPF already does.
+> >
+> > In pedit_l4_skb_offset and pedit_l4_skb_offset.
+> =
 
-- [High] skb_gro_header_slow() (include/net/gro.h:172-180) calls
-  skb_gro_frag0_invalidate() only after pskb_may_pull() succeeds.
+> Good idea, this would also make sure gso_segs is recomputed if
+> such packets are later segmented.
+> =
 
---
+> I would still keep the !count check: ixgbe and libwx RSC packets reach
+> GRO with gso_segs =3D=3D 0, and the payload check in tcp_gro_receive()
+> relies on count being non zero.
 
-net: gro: invalidate frag0 after a pull
+Should those get fixed instead (eventually).
 
-The commit adds skb_gro_frag0_invalidate(), which clears
-NAPI_GRO_CB(skb)->frag0_len. It is called after the pulls in
-skb_gro_header_slow(), skb_gro_receive_list(), udp_gro_receive_segment(),
-esp4_gro_receive() and esp6_gro_receive(). The goal is to stop later
-skb_gro_header() and skb_gro_network_header() calls from using a frag0
-that points into a released page fragment or a freed skb->head.
+> pedit is also not the only way to change the TCP header of a GSO
+> packet (nft payload on older kernels, NFQUEUE with
+> NFQA_CFG_F_GSO, bpf_skb_store_bytes()), so I prefer GRO to stay
+> robust anyway.
 
-> diff --git a/include/net/gro.h b/include/net/gro.h
-> index b560e866683b0..78373e9caf68b 100644
-> --- a/include/net/gro.h
-> +++ b/include/net/gro.h
-> @@ -160,12 +160,22 @@ static inline bool skb_gro_may_pull(const struct sk_buff *skb,
->  	return likely(hlen <= NAPI_GRO_CB(skb)->frag0_len);
->  }
->  
-> +/* A pull can release the page fragment frag0 points to, or reallocate
-> + * skb->head. Make sure later skb_gro_header() and skb_gro_network_header()
-> + * calls no longer use frag0.
-> + */
-> +static inline void skb_gro_frag0_invalidate(struct sk_buff *skb)
-> +{
-> +	NAPI_GRO_CB(skb)->frag0_len = 0;
-> +}
-> +
->  static inline void *skb_gro_header_slow(struct sk_buff *skb, unsigned int hlen,
->  					unsigned int offset)
->  {
->  	if (!pskb_may_pull(skb, hlen))
->  		return NULL;
->  
-> +	skb_gro_frag0_invalidate(skb);
+Argh. Good point. In that case:
 
-[Severity: High]
-Should frag0 also be invalidated when pskb_may_pull() fails?
+Reviewed-by: Willem de Bruijn <willemb@google.com>
 
-pskb_may_pull() can fail after it has already reallocated skb->head. In
-__pskb_pull_tail(), pskb_expand_head() runs first, and the frag_list
-handling after it can still return NULL:
+> pedit can be changed later in net-next to set SKB_GSO_DODGY on
+> GSO packets it modifies. Note this needs skb_unclone(), which can
+> fail. pedit does not drop packets on allocation errors today, so
+> it would probably leave the packet unmarked, another reason for
+> GRO to not trust these packets.
 
-net/core/skbuff.c:__pskb_pull_tail() {
-    ...
-	if (eat > 0 || skb_cloned(skb)) {
-		if (pskb_expand_head(skb, 0, eat > 0 ? eat + 128 : 0,
-				     GFP_ATOMIC))
-			return NULL;
-	}
-    ...
-				if (skb_shared(list)) {
-					/* Sucks! We need to fork list. :-( */
-					clone = skb_clone(list, GFP_ATOMIC);
-					if (!clone)
-						return NULL;
-    ...
-				if (!pskb_pull(list, eat)) {
-					kfree_skb(clone);
-					return NULL;
-				}
-    ...
-}
-
-The kerneldoc for that function says the skb does not change on failure.
-That doesn't hold once pskb_expand_head() has freed the old head.
-
-If that happens, the early return NULL here skips
-skb_gro_frag0_invalidate(). NAPI_GRO_CB(skb)->frag0 then still points
-into the freed head, and frag0_len keeps the old headlen.
-
-The outer handlers keep running after the inner pull fails. With VXLAN
-RCO and VXLAN_F_REMCSUM_NOPARTIAL, for example:
-
-vxlan_gro_receive()
-  skb_gro_remcsum_process()      /* frag0 fast path, sets grc->delta */
-  eth_gro_receive() / inet_gro_receive() / udp_gro_receive_segment()
-    skb_gro_header_slow()
-      pskb_may_pull()            /* fails after pskb_expand_head() */
-  skb_gro_flush_final_remcsum()
-    skb_gro_remcsum_cleanup()
-
-include/net/gro.h:skb_gro_remcsum_cleanup() {
-    ...
-	size_t plen = grc->offset + sizeof(u16);
-    ...
-	ptr = skb_gro_header(skb, plen, grc->offset);
-	if (!ptr)
-		return;
-
-	remcsum_unadjust((__sum16 *)ptr, grc->delta);
-}
-
-plen falls inside the range that the remcsum fast path already checked,
-so it is no larger than the stale frag0_len. Would skb_gro_header() then
-return the stale frag0, so that remcsum_unadjust() writes 2 bytes into
-the freed head? gue_gro_receive() in net/ipv4/fou_core.c also calls
-this cleanup helper after its inner handlers.
-
-The new calls in skb_gro_receive_list() and udp_gro_receive_segment()
-have the same order, invalidating only when pskb_may_pull() succeeds.
-udp_gro_receive_segment() can run as the inner UDP handler under VXLAN.
-
-The helper before bd56a29c7a4e also invalidated only on success. Still,
-the commit message describes exactly this case: a stale frag0 after
-pskb_expand_head(), followed by the 2-byte write in
-skb_gro_remcsum_cleanup().
-
-Could these sites invalidate frag0 before calling pskb_may_pull(), or on
-both outcomes?
-
->  	return skb->data + offset;
->  }
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261028141325.2103814-1-edumazet%40kernel.org
