@@ -1,70 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793274501;
-	b=gbTxQsslXJRLDcceHY3BS7UUTTIk+beojpNhs/1kul0VP6tVfnCkTbdNG9q/S5Y2Pmat
-	 e0B9nK50ogFfIc7h2HUm1rJC+5ZDGyrB7XL3TiEHz4t1rG8aYlbgv6SAHPhFuaAuaXhQW
-	 gYLCkx95lFHLow7kuUjUn62XmW48N0wYcvy1GUFvY2mpbn5kl0XAgQAHyKvfTuGx4OjOs
-	 tkvs8mxLRKtIoa9ZJIcCS4ufEyvuRsUpV9sfVdF0E5GJXhdketH1yZ1YU8jPnNZvaU9tR
-	 kON4XMZKuC+cPL+i8GjbEaHqKDtu6ZM6BrmHu/F87E7Lvs9QcTcFoki/73wTn+MPUZA==
+	t=1793274740;
+	b=5dy0bkemJDM9iBdIyrasPRM8LsNwQkJpnpxPOXPpsinkfbCAa8b1PGt2On8DUKZ0yvHV
+	 groWa09732yV1gCoKLjsGLhhTplkTE6IaUdxKHuZ/yrx9pL1lOlvQZv8zRrEGklE8ZILe
+	 X9yJVVegpnI1ZkdXqG1WU+c+7K+nAUgI1GJmFY1GE7t9JqiZbYtsh4GoqL4RZ2p7zJbvo
+	 oPVET4AP/cuiBnXYkBaQ1st8Rzxr6oBydnIoIlHf/frnI5zxt9M4+8+z81o8DBaeChugw
+	 KH4z7HsxF4PXLisi4yJSAgHzDDw1yKYk4/y/eWUJEe6TI1zLa/iPoavRfvdSmhV3eaw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793274501;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:From:Date:
-	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-ID:X-B4-Tracking:X-Change-ID:To:CC:X-Mailer;
-	bh=wgRJiQVz8iSlUoLifug2XMB1d1PAGIF3uc3BCAEBSwQ=;
-	b=ff6JGpkTM4DaJWcN8bdv2+gB6Jlu7R0OM+1OxFEG9U9Y9aV4Yd4BDQOXDj0R+qf5rc6E
-	 QpVBYfPpwSXq1vRAcHGp7hCHfJfivR6gfLJQm1m/pQOzueKCrCfn6J/HoIvbA43Jcr9Ni
-	 x/POBZbDPuoOt8ij5Gg+U+NM7BXYwJWcTFdoNgxfGaHxpTdWmpYQIqDqsUzhNdPxVQh6Q
-	 mUvLhRAjQN/im87PVOL5UoZea+9oBNCevp/OtSRx+T/NACHZsag7PrJHglNevvHa2TZSL
-	 CQDc0nFuE/S2vk/RkM/yuVWYEm6g9d+kzX70g3TFRPoyWbKC8FdVGoeQ6SJt5tN2RHg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793274740;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=Hc905M9q4LEkI5HIdNGySZNyIziGO7ISCoqRtqFWyCE=;
+	b=mMJuEvZ1olml86KV/hpRRMWPBPr/qMQrU6AKGpNELnJkhyou1RYKMPchPkjuZ+Ajivbc
+	 eM3BuHR1nfK062/YFZj5aXVb19sZ3ZoHWgaRbu8qiZhaPlCikCfJjyIBE81DKeNdfZC/9
+	 lYZlY9qBrzfem5lwOwbfc25b9KgHaAVVHLGnzgnEfO7n/GAlLq4KcbBK/45wQ9KpyA1PA
+	 2MK9I9OM6cD1/OMC6gEoAmGQAUBALeGGttK3WRxBV5A79BRrvvJlqBWVwGV7YIwVVELdX
+	 a9lZP8k7JoWU73p1i/Ovc3TyQU6x6tye95EUI+6srnVA5kkl1F7NJlh/hNoQ4DlUTSQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=microchip.com;
-	spf=pass smtp.mailfrom=microchip.com;
-	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=pa0BmiFM;
-	arc=none smtp.remote-ip=68.232.153.233
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VQ6HLXwt;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=nH9A4HUf;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596D0606A322;
-	Thu, 29 Oct 2026 11:48:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 596D0606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E00606A31C
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 11:52:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 21E00606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=pa0BmiFM
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1793274502; x=1824810502;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:to:cc;
-  bh=NrWs0H/8FTS4htfLqAWNH4tb30RFLulr7f3QGcQV3Mc=;
-  b=pa0BmiFMG6VebalK26HYqasGS4aShKjH0RASJhT5cGoRKVh/DyJjuIQI
-   bbvaICFqmFzdBKWk3uGcLeK92ttr0N+0yMzNzjwhfbU3vMcarEd05gbB7
-   CGISIWq78vCtg/gY/Y8wKqPmgCFVnr0lQoPk4F32YfnAN4/NylWawBoje
-   W40+WzZMNiFQNbKLNlYybBEtPlXKzzMjY1WqYgGvnWZZTX5EJVcZT75Od
-   bqLNGDtUauITT5AwgTgADYZRo6XtvgWSKaYPWIn5TlJaqu1ALCWCgYonx
-   yr5HY+suBCv+X0XuUG5g/cixB2oN6wy/q5Ss65ePIUm2sq3zdDwsMgBDt
-   g==;
-X-CSE-ConnectionGUID: bmYkYbLbQBaaX2C6L6Wqqg==
-X-CSE-MsgGUID: xWvmY8vNSz67/E9Yt9TTDg==
-X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
-   d="scan'208";a="297149642"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 29 Oct 2026 04:48:21 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Thu, 29 Oct 2026 04:48:19 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Thu, 29 Oct 2026 04:48:17 -0700
-From: Daniel Machon <daniel.machon@microchip.com>
-Date: Thu, 29 Oct 2026 12:48:10 +0100
-Subject: [PATCH net] net: sparx5/lan969x: release the in-flight slot of a
- stale TX skb
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VQ6HLXwt;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=nH9A4HUf
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793274739;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Hc905M9q4LEkI5HIdNGySZNyIziGO7ISCoqRtqFWyCE=;
+	b=VQ6HLXwtnNGWou0kG5Z2UF1UA8o9FFMias2ZOl/hEET5jU3x/E5+SEwNoeX1nka0jhyiWy
+	dBbvqup6fIZrOkCsvgEZvEzHj+olIs88EghojLzV7WpG6mTduV5arW+wyDp/0s2G/YgL87
+	soLbmW5EaKP2lSEu090xtR0lmyw+Jqk=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-201-Elvr8EJTNPKpBxFUKlqv2Q-1; Thu, 29 Oct 2026 07:52:17 -0400
+X-MC-Unique: Elvr8EJTNPKpBxFUKlqv2Q-1
+X-Mimecast-MFC-AGG-ID: Elvr8EJTNPKpBxFUKlqv2Q_1793274736
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48afcecb035so194744f8f.0
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 04:52:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1793274736; x=1793879536; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Hc905M9q4LEkI5HIdNGySZNyIziGO7ISCoqRtqFWyCE=;
+        b=nH9A4HUfPNbHXYmr/mskVwAc2jYfk2GWFOZyvt+VdhPZcMomuWJxuR/BJU+LA/N7au
+         0I6wXoIBY8vqenSBfNadJffASNTwtfawEgRvIXyolNXu3XZ4pKY3A8flWvhUllEI92t5
+         KwxeDh0EKH2+3LvrJX1I9tCYzedkGyjm4zvCYmNXyWgTMtya6iPclP54fOh60lqSShb2
+         rfEbHvlSvjpmtfJ4dCvVdWb1MV+oGqB9aEw75wQEC8wg67B7tnCuMnVrpnPHnuFMBMAJ
+         d0yMmBW9lLh6P3D4KDP9aeqHiespHVxLnTikUlQaXUf2e6A7L08bClpJQ7eYOT9aN1wZ
+         yF/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793274736; x=1793879536;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Hc905M9q4LEkI5HIdNGySZNyIziGO7ISCoqRtqFWyCE=;
+        b=Jqk/KbyiIhQM3Zh4N9vpXZb06nBUcwxc5W3GCYECtj07rR5bm0XgrWjYpGOZOZ3ggQ
+         jKxIWVLk+wef1Dz0yL66GkrKInXfl74o4aqOpMCQwKgqyiJ49hDR2IHKMlfCSoHukEJr
+         yQvu73stOTltHdtWNsjMQHUIjVCgSF7ZiQQJC9408d79pJOnTk2g4QI0B8NfkfLMM82z
+         wvcaY5j9BZa5NaqvrO9JV/exI7U0PvbhZr7Z6GpYXikbCY4YCMRlumcKbpG5TXZlYP09
+         //ZpuaOb7FVadOnb9NR07tl/pRZ949IJLzUWsQDaoyF4KmHCaYAtOW1U/Qzsh2k/W8S7
+         WRLQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxWHaV8ytzi9JlBoVQFAFs+m5B7XSCxIH7vmUD6pfe8rEuV31NarbuLSBnKWJhCTDMd+lROFSM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJIO89D8Aqo0hS8BIVwjPQSh6oT9GYh3ooGkI9oswBSobLvWK+t
+	+576EkS5TbOIicVg7A+e9bIFa7vW7qV3thCsMkp9B9S4uWCPSy5L8qlq5TTOpkosFk79wjvia0O
+	XTCe4u68t9DzqxzOVh8NL7O5bfcfYP0vyrCp04yh6l4IGeovMma3Fq21Jxw==
+X-Gm-Gg: AYBFou2A6XVXen3iplvnuyccmPMcvtubyYUAC25Jsq3nUDILPnfmtxYtZ9mUsYQqxDf
+	bwOkdJtvXhxU9+sl6D1hz3Q/4kdkLlkJ6G6Qvi8u0KnKoYHFfoj6mX9pPRP+WYqMwMBPQ48N0Lo
+	31llYK41fLllp+K+UejhArStG9MxlL8vIpeEYmrfH3UvOdX8rxZ0qPRpbMxb8h5h+TtLBqgtu8T
+	/PBw6cvW8Zbszt9mDtpTwqKXBuW8bmJN31PolfoHm3z6dZ9z0MtzATyJWQDXl7w3IhK+eX8HBJi
+	cQEmQJ+6hOKCWTnm6zl2tNjamyqBdqZuAof0H51NqJ5SeHUeWFb8bAEoenfktoOO7PkmAeLdDbL
+	4hqVpTtzoNwq6qR7iTeNEFbkzwjfcjySAXXyWPrvebfU1zLwTqHbmUpJTVDu7jFqMk7PWEdyMQd
+	/qk5w1fEY7oOzttP0n9XWyffMZ9VhxVEDNdysT67Y/bag/64E=
+X-Received: by 2002:a5d:540c:0:b0:48a:fad8:52a2 with SMTP id ffacd0b85a97d-48e64ba60d3mr4693973f8f.23.1793274736356;
+        Thu, 29 Oct 2026 04:52:16 -0700 (PDT)
+X-Received: by 2002:a5d:540c:0:b0:48a:fad8:52a2 with SMTP id ffacd0b85a97d-48e64ba60d3mr4693928f8f.23.1793274735834;
+        Thu, 29 Oct 2026 04:52:15 -0700 (PDT)
+Received: from [192.168.188.234] (ip174-129-192-82.pool-bba.aruba.it. [82.192.129.174])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ecdfd8dsm32615874f8f.56.2026.10.29.04.52.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Oct 2026 04:52:15 -0700 (PDT)
+Message-ID: <bb202893-9fd5-4dad-ad69-9f86dfd91cc3@redhat.com>
+Date: Thu, 29 Oct 2026 12:52:13 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -74,108 +112,53 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] net/sched: sch_cake: skip redundant cake_mq rate
+ updates
+To: "Shubhang Kaushik (Ampere)" <sh@gentwo.org>,
+ =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+ Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+ =?UTF-8?Q?Jonas_K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>,
+ Shubhang Kaushik <shubhang@os.amperecomputing.com>,
+ "Christoph Lameter (Ampere)" <cl@gentwo.org>
+Cc: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+ cake@lists.bufferbloat.net, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20261026-net_sched_sch_cake-v2-1-cb1d4e6ed990@gentwo.org>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261026-net_sched_sch_cake-v2-1-cb1d4e6ed990@gentwo.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-ID: <20261029-sparx5-ptp-stale-tx-slot-v1-1-ec15f391bbb7@microchip.com>
-X-B4-Tracking: v=1; b=H4sIAHky42oC/x3MwQqDMAyA4VeRnBeogVq2Vxk71DVqQGppwiiI7
- 27Z8Tv8/wnKVVjhNZxQ+ScqR+4YHwN8t5hXRkndQI6m0ZFDLbE2j8UKqsWd0Rrqfhiyp2cIc0p
- pJuh5qbxI+6/fkNngc103jkfSgW8AAAA=
-X-Change-ID: 20261020-sparx5-ptp-stale-tx-slot-e52977bdddb2
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Steen Hegelund
-	<Steen.Hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>, "Richard
- Cochran" <richardcochran@gmail.com>, Horatiu Vultur
-	<horatiu.vultur@microchip.com>
-CC: <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>
-X-Mailer: b4 0.14.3
 
-sparx5_ptp_txtstamp_request() counts every two step TX skb waiting for
-its timestamp in sparx5->ptp_skbs, and refuses new ones once
-SPARX5_MAX_PTP_ID are in flight. sparx5_ptp_txtstamp_old_release()
-frees the skbs that have waited longer than SPARX5_PTP_TIMEOUT.
+On 10/27/26 05:32, Shubhang Kaushik (Ampere) wrote:
+> cake_mq periodically counts active child qdiscs in cake_dequeue() and
+> derives an effective per-child shaper rate. cake_dequeue() currently
+> reconfigures every tin after each scan, even when that effective rate
+> is unchanged.
+> 
+> The dequeue-time call chain is:
+> 
+>    cake_dequeue()
+>      -> cake_configure_rates(..., true)
+>        -> cake_config_*()
+>          -> cake_set_rate()
+> 
+> With rate_adjust=true, cake_set_rate() only refreshes rate-derived
+> state. Tin 0 records the unscaled rate argument in every supported
+> CAKE tin mode, so its installed rate identifies whether this call chain
+> would change any state.
+> 
+> Skip the reconfiguration when the effective rate is already installed,
+> while continuing to update the activity-sampling timestamp and
+> active-queue statistic.
+> 
+> Fixes: 1bddd758bac2 ("net/sched: sch_cake: share shaper state across sub-instances of cake_mq")
+> Signed-off-by: Shubhang Kaushik (Ampere) <sh@gentwo.org>
+IMHO this is borderline material for 'net'. Was any regression visible on
+top of 1bddd758bac2, e.g. in term of CPU usage?
 
-Before this patch, old_release() does not decrement ptp_skbs, so every
-skb whose timestamp never arrives, for example because the switch
-discarded the frame, keeps its slot forever. Once SPARX5_MAX_PTP_ID
-slots are lost, two step frames fail to transmit on every port of the
-switch.
-
-Return the number of released skbs from old_release() and subtract it
-from ptp_skbs in txtstamp_request(), under the ptp_ts_id_lock it already
-takes.
-
-This fixes the accounting only. A port's stale skbs are still aged out
-only when that port sends a two step frame, so a port that stops sending
-them keeps its stale skbs, and their slots, until it sends one again.
-That behaviour is unchanged by this patch.
-
-Found by an AI code review agent. Reproduced on a lan9696 board with a
-modified kernel that drops the TX timestamps of two step frames, after
-which two step timestamping stopped working on the port. With the fix,
-timestamping keeps working on that board and on a sparx5 PCB135 board.
-
-Fixes: 70dfe25cd866 ("net: sparx5: Update extraction/injection for timestamping")
-Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
----
- drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c b/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c
-index 2826e48af1033..9f61692b243b7 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c
-@@ -204,9 +204,10 @@ static void sparx5_ptp_classify(struct sparx5_port *port, struct sk_buff *skb,
- 	*rew_op = IFH_REW_OP_TWO_STEP_PTP;
- }
- 
--static void sparx5_ptp_txtstamp_old_release(struct sparx5_port *port)
-+static unsigned int sparx5_ptp_txtstamp_old_release(struct sparx5_port *port)
- {
- 	struct sk_buff *skb, *skb_tmp;
-+	unsigned int purged = 0;
- 	unsigned long flags;
- 
- 	spin_lock_irqsave(&port->tx_skbs.lock, flags);
-@@ -217,8 +218,11 @@ static void sparx5_ptp_txtstamp_old_release(struct sparx5_port *port)
- 
- 		__skb_unlink(skb, &port->tx_skbs);
- 		dev_kfree_skb_any(skb);
-+		purged++;
- 	}
- 	spin_unlock_irqrestore(&port->tx_skbs.lock, flags);
-+
-+	return purged;
- }
- 
- int sparx5_ptp_txtstamp_request(struct sparx5_port *port,
-@@ -226,6 +230,7 @@ int sparx5_ptp_txtstamp_request(struct sparx5_port *port,
- {
- 	struct sparx5 *sparx5 = port->sparx5;
- 	u8 rew_op, pdu_type, pdu_w16_offset;
-+	unsigned int purged;
- 	unsigned long flags;
- 
- 	sparx5_ptp_classify(port, skb, &rew_op, &pdu_type, &pdu_w16_offset);
-@@ -236,9 +241,10 @@ int sparx5_ptp_txtstamp_request(struct sparx5_port *port,
- 	if (rew_op != IFH_REW_OP_TWO_STEP_PTP)
- 		return 0;
- 
--	sparx5_ptp_txtstamp_old_release(port);
-+	purged = sparx5_ptp_txtstamp_old_release(port);
- 
- 	spin_lock_irqsave(&sparx5->ptp_ts_id_lock, flags);
-+	sparx5->ptp_skbs -= purged;
- 	if (sparx5->ptp_skbs == SPARX5_MAX_PTP_ID) {
- 		spin_unlock_irqrestore(&sparx5->ptp_ts_id_lock, flags);
- 		return -EBUSY;
-
----
-base-commit: 829a09df899dcce860dcf5f70e09c1b2d7d425ab
-change-id: 20261020-sparx5-ptp-stale-tx-slot-e52977bdddb2
-
-Best regards,
--- 
-Daniel Machon <daniel.machon@microchip.com>
+/P
 
