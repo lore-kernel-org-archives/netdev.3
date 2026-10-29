@@ -1,85 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793315889;
-	b=0nQGquqYAsPrz+akc1nRHcHFs6ntdEQ9FAjM+TNIKYrufBVWOcs/UmAumaIcaIr2e62h
-	 babssx6E85Uj6qkwje38xgXlYx+Dllp7x970bA0WwQRbe9ibbFOf8xmTYhd1NC+CdKgmc
-	 cNf6fJa1pfsGulKdMGcFmbd76fhAagy9ffpTDLUapfmiZH29b802/zM4bWrWN6L8BJmHp
-	 rhblTSJFMA/WC6EZ7eEdl8w9kAsZ1r5E3zyyIW3XnEvf30r6KNO4pRJPzuMFcFDRGGprD
-	 W/e3NwzvwnfVn12DsSp5DwheBncjS4lymsLxj762txPgey85zcfHWfTTCh2ZvloWFGA==
+	t=1793315895;
+	b=DdvQggNS/0r66bCenQ1mjxm6tMdB0cmzRnzSh31h9PPY6UqxmqrsmKdwDQv2UtpNn+eX
+	 v563eSghsbPqgizyU3VznTTePvnnsIKPnXlFEd1y+bWvrA9vaAZBgOzPeJecvs9Vfkf2C
+	 rC8RhkxWZUS18Gth/PnqRfK9kAgZt1GErqt0kwGKRNDYd/2GLHAMMVOhjhOxrkVMI6adp
+	 Vp2Wl1cj/JLql5I/lGdsUm4CV51tZRox8IP8FAyToWfaVHVVawI0c+pRvgSUSaFayJh8V
+	 IFDKjeF4c2td1t5EwwrBKNg8E1eqJ6bYZQr+10rTCWmO6jn2Z2X50qiJO6KDFZExiyA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793315889;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793315895;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
 	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	bh=Xpiy1fahTzksVX2ucGYHJCrX4DFe6BxdxTQ9XfdjhmY=;
-	b=183oWtibAOkpGwmcxyaSpGvsPoijysPgE05SOIfeph2DRchhngHbIGV7O2IyOZ7zEZwB
-	 AzARdoRqVsQfWwonADI4csHy36XM81q0gO7ZsN14FV8xgoqEDWk+IfBSrKdsagRWSWfXo
-	 n2WDKCjHxNL81Gyo2aar0py7DfdVosD3tmdRaMKExOxdxeQEyw6LHNnDP5+wi+X4St3hM
-	 R4S9JUPY6OufRnc2EDzhIqFhVbDzC8zvcpAI0BbQEI7dGOKz8TBfJIU/SbszIqQ1KWev5
-	 m4mVedE4X2Tq5Hwb3zUnB2moVmoGbwePYMzpT7KEkMLidZVbxLtorKSE+1zMs/zsUFg==
+	bh=lM+aGMHQoGHm+tWBHiCUU2JkCdwvd5cdpFbqD9BSPP4=;
+	b=z7undeHIfohdTmItIflA2fw3u/KUB+dQqFm6vC3gwTlfRD1R0lCjVzp20EfHh+G2/HGr
+	 XfmDNadXToBDBqwjm1Ja98DhGCYeo97UGqXJbMD+U33hGPQTHhlkfkP7nyCmR/lmqIQ05
+	 WTk+1lNA3C48956CgFirHHaB94o0pQ0+mtRdJL0K66hQHRhV0lZ4gPBNBJPUyWVlTstzN
+	 bpX5MYfmAO0xAHzYd+VZKYvpVH9Xd9cFW80vLGnQXRrFdvgQWTjP2q2xjKFUs//A1RQ+C
+	 d6e9Cfcw7SFDpJf3CivKGTwkHrSLL+Mfe5wWvjhoB0HpadkpU8cEPw6Y6jA3rN1+FZg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=g6YoL8+b;
-	arc=none smtp.remote-ip=209.85.222.44
-Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com [209.85.222.44])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zsMpCzh6;
+	arc=none smtp.remote-ip=209.85.222.45
+Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E6C606A320
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 23:18:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6E6C606A320
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE77606A31A
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 23:18:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7EE77606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=g6YoL8+b
-Received: by mail-ua1-f44.google.com with SMTP id a1e0cc1a2514c-990fbae94f5so74403241.3
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 16:18:08 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zsMpCzh6
+Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-99071945aa7so66392241.3
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 16:18:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793315888; x=1793920688; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793315894; x=1793920694; darn=vger.kernel.org;
         h=mime-version:content-transfer-encoding:content-type:references
          :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Xpiy1fahTzksVX2ucGYHJCrX4DFe6BxdxTQ9XfdjhmY=;
-        b=g6YoL8+bqk59iYQ7kof6bxfFfXCqXet9J+PNuvC4HunJFJAUPPkl7as0TIN+2aC20G
-         u3NZGt88u97DXe6wpqCYDfdW/5YmOCinYP31IupN+KFmNT3MO4nu4vEb+rMLGiTC+mCp
-         dLyiR+1lerwbua+0mmRpst10/cVCrpERoLL3eLctyl2PvUTau69TM0T39HbrbkWZwggW
-         /zc9ZHh0GXkWtz6QcMWFT0L9CF7oTq/7FzCcfip1Al8do5F0akyE3OIEJE2zGkQ5vsFs
-         X/G3MYE9Eekplv8D6SDXKUZUlUVlikQhHy/fl5zqDfh7osdLInZr1u1DWnsefSgbl9Q5
-         N67A==
+        bh=lM+aGMHQoGHm+tWBHiCUU2JkCdwvd5cdpFbqD9BSPP4=;
+        b=zsMpCzh62pJ8Qbji29nhDyEkEY1fOuZsobLLBw/2xJxlzB89AlkdbhfnytcFhhCBV5
+         9JhHi0eeXsZzlknjBuuFAP9e6MYmyYxL0maPn9WrnQc/pu4meVqfB4O+yjKkHZQgN8A5
+         Lp/wXFsC9DxW+CgpiGhJOvWLcKHvMN8koX9aKl88KgfkMkoMmOkBVxvXfrmCJTSxxf83
+         NysJscKl6MTOyeZUBdreIxwO4irVEI/hjSkeoIDi+CO8yvytYow8HQk5jpG8T63GaSCT
+         1p84tqPaSUXwmHOHrIjTrsGr4JummFT8s2PB459byNxe0Q5dneUBKa39ufjQWPNeRK0R
+         VwPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793315888; x=1793920688;
+        d=1e100.net; s=20260707; t=1793315894; x=1793920694;
         h=mime-version:content-transfer-encoding:content-type:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Xpiy1fahTzksVX2ucGYHJCrX4DFe6BxdxTQ9XfdjhmY=;
-        b=jOaiI/OpiD7y2TUn/jxguwAgepvHSa0qzKPSTJd/i0az1g+4/qMG4gyay9C0Op3yNS
-         NUtgDS3cd/Y+Yl+1IiIl6BGFi3I/YpYPw/yMWk+/PZhuQ8urAp9GourLAzYRgnfk0Y8q
-         uU7Mk8wshps3sIocZDXhz54Wx8JxsLGyFNE0vF4Ce2Giy588bJlCNv+aNGncct3FPFOr
-         PSNfLDh8zcWTy8i861KTEfn0c/wkPc7Seh71XRi1qCZxfOW2hc39OSgk8MOQMaqUWMGL
-         1MnBzTo5ugCCSO/8ti4ccyAXchXmgmBnnIF1ZdkzotAf9mtaWm9x59AZ+VOz/+F4uQjP
-         OPEA==
-X-Forwarded-Encrypted: i=1; AKwUvBxlPIETDcsH25iDRXEa5i/bclDymppQDyRWM7WBlsw6T5Nsfjf7poqyWunqW3O85MzX6ZIEdyY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI97Cc3FdG/h9GoDj8ZYSHZk4IEFEcf5/6bpiVyMCIRSfursI9l
-	zv452ptU2DF/lwZU0++fmHpoBew0xVIfw/62xjplrYFk9spKNv1l+n7E
-X-Gm-Gg: AYBFou0pOW93s1C00g5aJ7XpJb1KjUaoVjJAbpRKEGzBfy9mvMvs+p/1N6QYWmHH2HS
-	qrQd5cjwdLT/P6doIhiP106qFX4Arg4CvhgaaaLXDk1Ga3oHAK84Iu8yOs4MWNH8FtS/sLAJIgT
-	MlNF8CPAOKIkJAKyspsruajHRG7QNKtBCzFfxds7S7EHTadp5TPVVpCkVtVqSiqFOv1JtBhsllR
-	kNPTS7SvZPSd7r9fcyg4SKtZaKNZ007CIPwgRjeTAZWuVesShzQ7KnQjatBrYd0zaeaKd4neMw4
-	xwyte816XSZEJElBHBY91Ebn1nDPT13wsiTZ8Jug4q+aC3dpLju/Zh61vAh/P4WRJLTHPlZV6T6
-	TifB8WCB6nfurj62LEM2JERkkZnaxSPZDTQHVhuK5GAjikIVwseuuA1hGu9XYmEnU13+JieryFY
-	cKu35I9EuCf3XFv/shJrEoYDGQhZfLXXXIJy+h49jwUTJGpqJPHgbPlBxx14tRkJSTgRi5TUSal
-	l8AQ7tvBMFLboxj3cQ3CS256F26JnoC3H4t5QSNSgqbPWHZSTmKlelgkmieTVZOoXSMr2MoTEVu
-	eFzEc9rqLUDRgHl6jhPpspYiEg8ZDCWTCh81qyQhXgwyIDOFt+YJu1QE9dIkQ7EKsyOXp3DN1IF
-	+uuuySLy4i9pA3AjdSgWU16zuvCh6rtKJBg==
-X-Received: by 2002:a67:e112:0:b0:79e:2b00:b4da with SMTP id ada2fe7eead31-7d07262b7c0mr332764137.6.1793315887662;
-        Thu, 29 Oct 2026 16:18:07 -0700 (PDT)
+        bh=lM+aGMHQoGHm+tWBHiCUU2JkCdwvd5cdpFbqD9BSPP4=;
+        b=Zoazp4GtVXGW7ZTciBxeeF40b4146JNLP3+WXvVhxmAW0yYYOEunMARcwMioxmSCk8
+         lYib/7IbicbusEEdKmfE2TqCyrK2UQFxEbLYkajYJf+H5ZLOcRu/aA7ncyz7mld4nJly
+         Dy0E2XOWbCN35iNuO56wHT0LIwSR3jtchQ+b29G4ZSd1SZuvIL/pSlbDyjUvfxiNTpYY
+         0Cg743iBiJ89hfDtWU8sSz3vaglScM/nSyEPy4NigiKLUcA3rHabPKnYWJghk9RrMTrw
+         2AOQu7JaWJYXIJA6laBsmCZPigUGLOZMr2ceCjjpSaaBwTgURk8Zmg8UoteshZ7e2kEo
+         XWqg==
+X-Forwarded-Encrypted: i=1; AKwUvBzh4IXX/9/VE3k1z7d7mwYkkOfHyJ5jxtjLJHAmBaoz13vULAni7+m/r7qzAtD4+hEPdQYM3hs=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIycWzZvZsdAOMhtDxEw946Ff214db31Ydu6fmYx0zXlLVJyjd9
+	wVP6dtzAJghLHXUMEQP5w+ECWbXwfBKc1aTRjpvzUCv7SCDDzZ6kbwS/
+X-Gm-Gg: AYBFou2uqVbaOvtfN4XbCM+da1bIhFFTGf+cqvPC40bw1/oJp7hdHGCDda8tLAtYA00
+	KDoYDh/+3ZtKeBWChVutFIz/fO7UgFPcSH9H5IUpUu9yhC0HcycYyvhqKf54b/oatb8w4hWGVuj
+	sqDDexbjmgxKy7l5PXwk+zAn+N8U/uZM90fQM2eY1OM0hlML/2B+e9p+8cq3ek9ZLEizapbAPmF
+	fifWB3u+nQNbusJ5wjXJblgYr2lXRtjp+aXRDpqlCBGx/Xzy0aQEy9h3VOLeAexl8s7BCojx6zy
+	sx0NS375BZP4j57YsOjemeJLmzQzs7yedg1gV0xsudoK4Mr9WTwAWxgcdDX5WORKubejnjP1EV+
+	66rmvtS85JjQqRgqmBlsEOcZd4/R/K0svGE+wJGu9HbWeBMZsK5ZKdH8C9keBORhM3f71NaN62i
+	VMeuer+LFCo9zVYIQcqQbTS9wFWR+qzXeNdCy2x+kkUjaK7ar8uKihsS1nnij0M6dFKZykn10gW
+	i6502w8fVs+atgdtszyA3N9SgV8oWnNvl8WdiPabuszmA1N84tGNt9Ur8jHpygbr9wymeJdtA5c
+	gmFUs/adx1Fcw2SIU8SMRwI4e08DS3ygAwPWcmc5xl7zXnTrlm//hyPx0m0vLxq5XLW0LoAbi+Y
+	65BP12BE8VVt7
+X-Received: by 2002:a05:6102:3e85:b0:7c7:f976:ea9c with SMTP id ada2fe7eead31-7d072bc74fcmr439527137.13.1793315894465;
+        Thu, 29 Oct 2026 16:18:14 -0700 (PDT)
 Received: from [192.168.15.16] ([2804:1b3:a2c1:77a1:5cd:8fee:f3c:4da7])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-992ee4e7453sm319509241.11.2026.10.29.16.18.04
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-992ee4e7453sm319509241.11.2026.10.29.16.18.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 16:18:07 -0700 (PDT)
+        Thu, 29 Oct 2026 16:18:13 -0700 (PDT)
 From: Joas Antonio dos Santos <joasantonio108@gmail.com>
 To: David Heidelberg <david@ixit.cz>
 Cc: David S. Miller <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
@@ -87,9 +87,10 @@ Cc: David S. Miller <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
  Simon Horman <horms@kernel.org>, Zhenghang Xiao <kipreyyy@gmail.com>,
  Sanghyun Park <sanghyun.park.cnu@gmail.com>, oe-linux-nfc@lists.linux.dev,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH net 3/5] nfc: nci: consume the loopback response exactly once
+Subject: [PATCH net 4/5] nfc: st21nfca: validate pipe ids in
+ st21nfca_hci_load_session()
 Date: Thu, 29 Oct 2026 20:17:35 -0300
-Message-ID: <179331585573.30322.5511229003943288914@gmail.com>
+Message-ID: <179331585573.30322.2945646231359516234@gmail.com>
 In-Reply-To: <179331585573.30322.4049957541187612575@gmail.com>
 References: <179331585573.30322.4049957541187612575@gmail.com>
 Content-Type: text/plain; charset="utf-8"
@@ -104,71 +105,60 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-nci_nfcc_loopback_cb() stores the received data packet in
-conn_info->rx_skb and completes the request, and nci_nfcc_loopback()
-returns conn_info->rx_skb to the caller, which frees it.  The pointer
-is never cleared.
+st21nfca_hci_load_session() gets the list of open pipes from the
+controller and, for each pipe id in it, asks for the pipe information
+and records it in hdev->pipes[].  The pipe id is a byte from the
+controller and is used as an index into hdev->pipes[], which has
+NFC_HCI_MAX_PIPES (128) entries, without any check.  For a pipe id of
+128 or more that the controller reports as open on one of the known
+gates, the gate id and the controller supplied host id are written past
+the end of the array, over the rest of struct nfc_hci_dev (including
+the async_cb function pointer) and, for larger ids, past the end of the
+object.
 
-Any NCI response with a zero status also completes the request, as
-nci_req_complete() only checks NCI_REQ_PEND.  If the NFCC sends one
-instead of the data packet, nci_nfcc_loopback() returns the skb of the
-previous loopback, which was already freed, or NULL.  st_nci_loopback()
-then copies skb->data into its vendor command reply and frees the skb
-again.
+The pipe information response is not length checked either, so a
+short response is read past its end.
 
-With an emulated NFCC on virtual_ncidev answering the second loopback
-with an unsolicited CORE_SET_CONFIG_RSP, nci_nfcc_loopback() returns 0
-and the skb of the first loopback, and KASAN reports a
-slab-use-after-free as soon as the caller reads it.
+Skip pipe ids that do not fit in hdev->pipes[] and responses that are
+shorter than struct st21nfca_pipe_info.
 
-Detach the skb from conn_info when consuming it, free it when the
-caller does not want it, and return -EPROTO when the request was
-completed without a data packet.
+This was pointed out as a pre-existing issue by the sashiko review of an
+nfc_hci_create_pipe() fix.
 
-Fixes: 1c53855f6be2 ("nfc: nci: Add nci_nfcc_loopback to the nci core")
+Link: https://lore.kernel.org/all/178952042575.22033.9676833200303972344@kernel.org/
+Fixes: 2130fb97fecf ("NFC: st21nfca: Adding support for secure element")
 Cc: stable@vger.kernel.org
 Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
 Assisted-by: Yaga Agent HackerSec Claude:claude-opus-5-5
 ---
- net/nfc/nci/core.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ drivers/nfc/st21nfca/core.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-index 73e3a9647..8e2a755ce 100644
---- a/net/nfc/nci/core.c
-+++ b/net/nfc/nci/core.c
-@@ -428,7 +428,7 @@ int nci_nfcc_loopback(struct nci_dev *ndev, const void *data, size_t data_len,
- 	int r;
- 	struct nci_loopback_data loopback_data;
- 	struct nci_conn_info *conn_info;
--	struct sk_buff *skb;
-+	struct sk_buff *skb, *rx_skb;
- 	int conn_id = nci_get_conn_info_by_dest_type_params(ndev,
- 					NCI_DESTINATION_NFCC_LOOPBACK, NULL);
- 
-@@ -464,8 +464,20 @@ int nci_nfcc_loopback(struct nci_dev *ndev, const void *data, size_t data_len,
- 	ndev->cur_conn_id = conn_id;
- 	r = nci_request(ndev, nci_send_data_req, &loopback_data,
- 			msecs_to_jiffies(NCI_DATA_TIMEOUT));
--	if (r == NCI_STATUS_OK && resp)
--		*resp = conn_info->rx_skb;
-+	if (r == NCI_STATUS_OK) {
-+		/* Consume the stored data packet exactly once, see
-+		 * nci_nfcc_loopback_cb().
-+		 */
-+		rx_skb = conn_info->rx_skb;
-+		conn_info->rx_skb = NULL;
-+		if (!rx_skb)
-+			return -EPROTO;
+diff --git a/drivers/nfc/st21nfca/core.c b/drivers/nfc/st21nfca/core.c
+index b5c1ca3ac..88856c26c 100644
+--- a/drivers/nfc/st21nfca/core.c
++++ b/drivers/nfc/st21nfca/core.c
+@@ -147,12 +147,20 @@ static int st21nfca_hci_load_session(struct nfc_hci_dev *hdev)
+ 	/* Complete the existing gate_pipe table */
+ 	for (i = 0; i < skb_pipe_list->len; i++) {
+ 		pipe_info[2] = skb_pipe_list->data[i];
++		if (pipe_info[2] >= NFC_HCI_MAX_PIPES)
++			continue;
 +
-+		if (resp)
-+			*resp = rx_skb;
-+		else
-+			kfree_skb(rx_skb);
-+	}
+ 		r = nfc_hci_send_cmd(hdev, ST21NFCA_DEVICE_MGNT_GATE,
+ 					ST21NFCA_DM_GETINFO, pipe_info,
+ 					sizeof(pipe_info), &skb_pipe_info);
+ 		if (r)
+ 			continue;
  
- 	return r;
- }
++		if (skb_pipe_info->len < sizeof(*info)) {
++			kfree_skb(skb_pipe_info);
++			continue;
++		}
++
+ 		/*
+ 		 * Match pipe ID and gate ID
+ 		 * Output format from ST21NFC_DM_GETINFO is:
 -- 
 2.43.0
 
