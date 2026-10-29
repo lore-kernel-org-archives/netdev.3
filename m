@@ -1,47 +1,46 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793290521;
-	b=TQKxIqSCGBK/yJNxID+7gjw73n+BnNkaERmxdFWwhaUL2NB7ZTb5dJmaFfhycV0dC40J
-	 5xyPzgtAf0AD6Dj/Mb7Jwl3UioXXPkm/wJaazz9lYAKoHRWjaY1D1HWS+22oH4IJUre8/
-	 vbS3qLA9drjlsZvxRSrDTcKS+zT5ClF/eYjptpZMlgxipYPsw3q8jn+SN+cvXUACXXh0B
-	 R0B29h6LsjtXSz0SarwVDuMTGZw2zyB9efSHAA0QCtFGEDRe/RFLzHNsE0XxwchPwiPIP
-	 uh9N1V5+gmyO9h0wpuGS+x5g+EKJ7J4S6xZm0OxbLL4gwui1IeFoR9CbXMtOcbQGLcA==
+	t=1793290514;
+	b=GKIH54jglOKaOifsq6HWVj4AGiOMnJm1lmZka9p3FJOgrTmnB+Hic6z5XzfAq7nihXzM
+	 WPVHYW6y0xH0fNk1V3YnGgCtltPhInsBfzTsiKSBQFcPa1Agj07acBqizzfVwPNUAKbaH
+	 /Z+/PYJ0dTzO28E2/7MG8GikHHBQNvCWg3Mo558cO1n2cJhTm+rkqMqjMXdE48g58HBQd
+	 zLyZw/HcmogX5QqXThs3NKzaG3UKMFgkc+Kk8/JZ/sAdeFYPEMXZJy2gjXvF4ly9WCCPe
+	 xA4h+kgZFGhskK60E72c2xgX6ldo/l7wXgVbYNEEYmEiAam6yuhUkzMmcFxtjOFCEwQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793290521;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793290514;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=AFeCYnytubQBMNux7hziA4Q5Uj+lo/pqtiW7DuReXLs=;
-	b=xHYmFUiEJCr8YCsdDUoj2aA3ZTeNNlndrzg4rNtjapFGaRIXYwfx/J1Q2QphQSNyRq7d
-	 DUKAZmDPlT1u1fmW3E5FDhP8tqC3i8l5UWefPOFY6xcP9J8ywmhjvLcNFuJrP7KqSSACG
-	 dZeMpDfV5WwcIgi7bxc/Yqw442LVS//Moy72YZLKk40Tqwopo21MyUJTjV/AygS+ayxG5
-	 PtR4boygYLyFRR3hyvkCGiEA60AjENoJVmK1H0/GtEZTIwFwMPV+B6JpYoS5nhENKgCzK
-	 QrkpwHfqFyp5tkzmgj6ybrBKATuAsq+9PVX7zWQqVPE27FseGnICVPyQpk4dSJg8flA==
+	bh=A5I0sjiC3/tXoE6gD6LWbDqfY9ZN1us7CsjxWKvsGJ0=;
+	b=iBX2RqMJeQlwBHcQlnK7cUqOaNfhRv66nBF/IrKOCi1r07hKH+xG35NB/A+DtIseC6S9
+	 CPlWeese9MwbR+t+PKmhUEjMKMtB4QKaICuhz7TOxnPB38GJCDlpPikKqT9TiYfLD/gTH
+	 GfsNT7ONNQv/X548pIgA15+9w6/KVK+vkcn+PW6suKKXBO0N0KYrixLRuKO75+ATsnmi5
+	 FFpzy9KITQClroADzD0Qe8hLczcARrhOo/5Qth8OYCenf01PG9AjOE2PU8vzT1HVXvZ4y
+	 IKXQ0XxEXxM1m8giV01GHnPF6tvsxVWnKtm8X+WhbUj2WnarsAUSfWolmbjCxjZsSrA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="WI/aCo4d";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LgWUOrU1;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E197F606A31A;
-	Thu, 29 Oct 2026 16:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9CD9606A33C;
+	Thu, 29 Oct 2026 16:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WI/aCo4d
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD9A1F01816;
-	Thu, 29 Oct 2026 16:15:19 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LgWUOrU1
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A46351F031EB;
+	Thu, 29 Oct 2026 16:15:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793290520;
-	bh=AFeCYnytubQBMNux7hziA4Q5Uj+lo/pqtiW7DuReXLs=;
+	s=k20260515; t=1793290513;
+	bh=A5I0sjiC3/tXoE6gD6LWbDqfY9ZN1us7CsjxWKvsGJ0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=WI/aCo4dVN3XY4/jtSh/oLLQAAsO4qYH2uU/FSoecB0NOYpAguZcI7CziqIeYhG1g
-	 Y1ccxqmMEhYqruPGJoOw4zYT6RogrpramC1aAHh2+8yPdvpG4f6O0DiV4ZlSCth2zs
-	 nTO6jo1mkPGMbesRm9V8Gye07PWVMC9yZXGRGLF+qGsOATX6yJwTS1OVTTS45SBXjM
-	 p7PotTErS/DuxJD4KVhnkWVrKnIz6hOoqHzZIqmCscrH146SwZ86lR4G2dHrQA9rQq
-	 d59EYnFBjH2/QQCDISOZa+CEEsS7NZPlCfJtzJOeCzmwm1IOfXtH3eMEeGv6xmSCR+
-	 zNChM8QH0L3vA==
-Subject: Re: [PATCH net 08/11] net: au1000: restore receive filtering after
- MAC initialization
+	b=LgWUOrU1x3XohJOFevxR/w/0WuLroq8cLqXvzezz/1+GNgg9LQ2Oxo7OdgYg2OcXc
+	 X1hmO5/Y1kGLIAo+gfi654dravufUexHX1GseLOSdAxA8XZHCVmhFy+oKTHsQkqfls
+	 mv9v5sXnzfc64BFBaBLm/TutWPIKKwCcAaW4BHvVsS47Xqh5SY6YUTniSzPmYxAwHT
+	 aYYzJsUaQWqRVZoFc29tl6IudnW2Asaw6CPBsUUb+KxbliIy6xH49E/8OPQ8yXTZNi
+	 pDzAWxxW6JeyOhbzBdvS2OW1/LRbxeVGKnLroHuDy/GMs4aHnJXijz6NXnkkme9Gpr
+	 ueZIrTfg0+sLg==
+Subject: Re: [PATCH net 04/11] net: au1000: report MDIO transaction timeouts
 From: netdev-bot+sashiko@kernel.org
 To: f.fainelli@gmail.com
 Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
@@ -50,10 +49,10 @@ Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
  runyu.xiao@seu.edu.cn, mmyangfl@gmail.com, hvr@gnu.org, jeff@garzik.org,
  danny.kukawka@bisect.de, mugunthanvnm@ti.com, sebastian.hesselbarth@gmail.com,
  linux-kernel@vger.kernel.org, manuel.lauss@gmail.com
-Date: Thu, 29 Oct 2026 16:15:19 +0000
-Message-ID: <179329051912.3134.7644702434785244368@kernel.org>
-In-Reply-To: <20261027223140.3774570-9-f.fainelli@gmail.com>
-References: <20261027223140.3774570-9-f.fainelli@gmail.com>
+Date: Thu, 29 Oct 2026 16:15:12 +0000
+Message-ID: <179329051221.3134.18425968013165195410@kernel.org>
+In-Reply-To: <20261027223140.3774570-5-f.fainelli@gmail.com>
+References: <20261027223140.3774570-5-f.fainelli@gmail.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -73,65 +72,101 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] In au1000_init() (drivers/net/ethernet/amd/au1000_eth.c), the
-  control register is written with MAC_RX_ENABLE | MAC_TX_ENABLE and no…
+- [Low] The new completion poll in au1000_mdio_write() reads MAC_MII_BUSY
+  right after `writel(mii_control, mii_control_reg)`.
+
+Pre-existing issues:
+- [Low] On success, au1000_mdio_read() returns the raw 32-bit
+  MAC_MII_DATA value (`return readl(mii_data_reg);`, au1000_eth.c:298)…
 
 --
 
-net: au1000: restore receive filtering after MAC initialization
+net: au1000: report MDIO transaction timeouts
 
-This patch reapplies the current netdev receive mode at the end of
-au1000_init(). Promiscuous and multicast settings are then kept after a
-watchdog reset. It also takes aup->lock around the control register
-read-modify-write in au1000_multicast_list().
+This commit changes au1000_mdio_write() to return an int. Timeouts from
+the busy wait before the transaction, and from a new completion poll after
+the write, now go back to phylib through au1000_mdiobus_write(). The read
+timeout paths in au1000_mdio_read() now return -ETIMEDOUT instead of -1.
 
 > diff --git a/drivers/net/ethernet/amd/au1000_eth.c b/drivers/net/ethernet/amd/au1000_eth.c
-> index f8976e324f0e7..6b817d18329b2 100644
+> index 70319b432182f..a507a524370fd 100644
 > --- a/drivers/net/ethernet/amd/au1000_eth.c
 > +++ b/drivers/net/ethernet/amd/au1000_eth.c
 
 [ ... ]
 
-> @@ -742,6 +744,9 @@ static int au1000_init(struct net_device *dev)
->  	wmb(); /* drain writebuffer */
->  
->  	spin_unlock_irqrestore(&aup->lock, flags);
-> +	netif_addr_lock_bh(dev);
-> +	au1000_multicast_list(dev);
-> +	netif_addr_unlock_bh(dev);
+> @@ -292,14 +292,14 @@ static int au1000_mdio_read(struct net_device *dev, int phy_addr, int reg)
+>  		mdelay(1);
+>  		if (--timedout == 0) {
+>  			netdev_err(dev, "mdio_read busy timeout!!\n");
+> -			return -1;
+> +			return -ETIMEDOUT;
+>  		}
+>  	}
+>  	return readl(mii_data_reg);
 
 [Severity: Low]
-Is there a short window here where the receiver runs without the
-requested filter?
+This isn't a bug introduced by this patch, but should au1000_mdio_read()
+mask the data register value to 16 bits before returning it?
 
-A little earlier, au1000_init() enables RX and TX with none of the filter
-bits set:
+On success the raw 32-bit MAC_MII_DATA value goes back through
+au1000_mdiobus_read() to phylib. __mdiobus_read() expects either a
+register value or a negative errno, and it passes the value through
+without masking:
 
-	if (!dev->phydev || dev->phydev->link)
-		control |= MAC_RX_ENABLE | MAC_TX_ENABLE;
+drivers/net/phy/mdio_bus.c:__mdiobus_read() {
+    ...
+	if (bus->read)
+		retval = bus->read(bus, addr, regnum);
+    ...
+}
 
-	writel(control, &aup->mac->control);
+If bits 31:16 of mii_data ever read back non-zero, phylib would get a
+value wider than 16 bits. If bit 31 were set, it would read as an error.
 
-Then aup->lock is dropped. Only after that does au1000_multicast_list()
-program multi_hash_high/low and set MAC_HASH_MODE, MAC_PROMISCUOUS or
-MAC_PASS_ALL_MULTI, using a second read-modify-write.
+Nothing in the tree shows whether those upper bits are ever non-zero on
+this hardware. Would something like readl(mii_data_reg) & 0xffff be
+safer, now that negative values on this path are proper errnos?
 
-This can happen on the au1000_tx_timeout()->au1000_reset_mac()->au1000_init()
-path when the link is up, or on open when there is no PHY. In between the
-two writes, frames for joined multicast groups, or non-local frames in
-promiscuous mode, could be dropped.
+>  }
 
-The window is small next to the reset delays that come before it. On open
-it is also shorter than before, since __dev_open() calls dev_set_rx_mode()
-only after ndo_open. The window is still there at the end of the series in
-"net: au1000: keep the MAC stopped until the PHY link is ready" when there
-is no PHY or the link is up.
+[ ... ]
 
-Would it be worth computing the filter bits and adding them to control
-before the single writel()? Then enabling RX and programming the filter
-would happen in one step.
+> @@ -320,6 +320,17 @@ static void au1000_mdio_write(struct net_device *dev, int phy_addr,
+>  
+>  	writel(value, mii_data_reg);
+>  	writel(mii_control, mii_control_reg);
+> +
+> +	timedout = 20;
+> +	while (readl(mii_control_reg) & MAC_MII_BUSY) {
+> +		mdelay(1);
 
->  	return 0;
+[Severity: Low]
+With this new completion poll, will every MDIO write now busy-wait for at
+least 1 ms?
+
+A clause 22 management frame is about 64 MDC cycles, which is roughly
+26 us at 2.5 MHz. So the first readl() right after
+writel(mii_control, mii_control_reg) will almost always see MAC_MII_BUSY
+set, and mdelay(1) will run at least once.
+
+The mii_bus->write callback runs in process context under
+bus->mdio_lock, which is a mutex. Could this use readl_poll_timeout()
+with a sleep of a few tens of microseconds and the same ~20 ms timeout?
+
+To be fair, before this patch the access that followed a write already
+paid this mdelay(1) in its own BUSY wait before starting. So for
+back-to-back sequences the cost mostly moves into the write. The new cost
+falls on the last write of a burst and on isolated writes. The existing
+completion poll in au1000_mdio_read() has the same 1 ms granularity.
+
+> +		if (--timedout == 0) {
+> +			netdev_err(dev, "mdio_write busy timeout!!\n");
+> +			return -ETIMEDOUT;
+> +		}
+> +	}
+> +
+> +	return 0;
 >  }
 
 [ ... ]
