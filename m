@@ -1,74 +1,112 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.227
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793308599;
-	b=Fe2AkmDU+gjPnxZ4IlFB/dFZrT/ZSbuCwBg2KuNOMvnGe5X4SBnbVNgr32vZgZlUwipc
-	 r0vil1BcqCTWCMIkNqt/OO5uJZ1ZWtERWJI7wa4vNwlksRruNiguUafBf89LhKgADnRwM
-	 gl8KtwOCpK07LwYGwyZXIOOH+eP/4VCAxa3eaAYdLSIzDFX3ifO1mw5T4suMeB7izUVXW
-	 K+77VW6VlEDXqB9XhVZNszA3Ms2UlO8Oht5dIyzJAfHTwfPB6fB97JajEdbfVT3K+HioO
-	 2v8Dr2K1/SBpmV9/xxyd7LyVfb0ZP8fP+4Fe27/R8NtBOtkIM/UphoOEDAzXaAXva4Q==
+	t=1793308607;
+	b=f/l8MxLyck7c96OvHYT8UuP5fSHLYl5++DNmqEPsAj+x0om+e9of3VhOxzuD1AhlYEJJ
+	 hK5vbIuMcPIK8Xy+OniMRlXpsOj47z7huOK124t327dbS3stVagx0Tn/tA2cgjOZxstRu
+	 Xv2C16Z5YbOODz95xNwPujUafr+v55I+ezawZaOfxyAlSJY3QzVzr01s+1mi7hJrs22N9
+	 XF3Z7k6y+LWqcd96o0sO68yiAl9DzGz5fD9aOBesInQqv66xoVwlbQXf9BSH/c0h7F3U0
+	 yg3BKbEr4DrgXjJRnnSBu472/BT17WnldNNJ5C/1PMsam39tCvjWF/edbjlrFdMpGuw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793308599;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
-	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=PRu/TTlkge+Kkx5jvzfY99nUYMb0NBGl/h033Feyas8=;
-	b=doUFegKZHq4AMRUThOSXvqN0+3mOGkN1WXtb9nu5gb8/gXaAmyoPopXN/+dm7wPFkwwp
-	 YUmibN//FP4u/tZRAz1HefxGC3IyBlpBcTEqQGoTigXzBJ+KTOkUwyI9TJ2gYBzJpQEPg
-	 bDMdMNYLvQTq19B+sdYsxFDvDckHVFdHD9o0mob1XstEjTbNGaf4f7V3e66MN9M13YOe/
-	 mC1xBID/7/mV/8xX5jJqIaOAzcBRsVX83dRXf4zgCUWeiml+aUmw9cHo3qf+Cs51g+cHd
-	 hUPNEAmcBY2Iycj/CTTi6vK+hQkYGfwjYwZvXrlTsLwVCTB1EhI/lxozUeXIQWAK+Xg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793308607;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
+	 X-Gm-Gg:X-Received:Received:X-Relaying-Domain:X-CFilter-Loop:Received:
+	 DKIM-Signature:X-Received:X-Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-DetectorID-Processed;
+	bh=XcVbxki1OSdrt6E+6hFIYJvqQHCNUIOiEZn4LQ0BcbM=;
+	b=4shV/e2IAZ6Vh4e1OeGTeqFaAhUWBeIvb4x5yPZIIvBXKALgUHldL756vkZ6zLs1Bd6x
+	 u+pyOCRfrvD135CsDoonIFr60yAOmQKg6TQdc6HqTNwTEmUUUCVbKkq7e4GrvQOnPMnJH
+	 9IfqIOnJI4scOx9GcEuFN1f8VnKULuX2iFCC3mY0aiUq0eC+EbK/wZ7whkk0PQUsvYZY5
+	 zgikYRaBaOvS5tKxS2qiTC6VJ2I5RdZhJNFJIYM5BXDqP1Va6rTk6YILlB9S4zhsqGhgo
+	 iy/MWpQzfTJbH0VZx9hQq3/pZOq0hd0Tfz6ez5lHb2G/meBPetJ5keDBDCBbZh62Z4w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KD3q5UqV;
-	arc=none smtp.remote-ip=209.85.210.198
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	dmarc=pass header.from=broadcom.com;
+	spf=fail smtp.mailfrom=broadcom.com;
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=NPNKWNrG;
+	arc=none smtp.remote-ip=209.85.210.227
+Received: from mail-pf1-f227.google.com (mail-pf1-f227.google.com [209.85.210.227])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA7FD606A329
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 21:16:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AA7FD606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1D360A3806
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 21:16:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6C1D360A3806
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KD3q5UqV
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-88c768885b4so3969014b3a.0
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 14:16:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793308598; x=1793913398; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PRu/TTlkge+Kkx5jvzfY99nUYMb0NBGl/h033Feyas8=;
-        b=KD3q5UqV4UY3/nNZlqqdEizdXrchbTB3zKrDg+0tmEvqFNxMtLxCCNiyz3+hnSQ4VA
-         NaJ10mSussPZ2F1XVpuegI8DCV3j0YhCDIuoVinyTwnAE5FcRvfBiUdnhAv5DLuxOfAR
-         gYbfVbTDo/wIQ5HeImhVkmD5UWShE4S85HnMwqWTBqlLIbI3IkujpsYkWXzqOFWpfqMX
-         8KyyZOGfEfh0gnTYZSrBGyi0Sj0nn7oWiI+Nwrt6Nw8H1rAC4HJJYGfAAX1htvFfbFGi
-         IdecOXjgCxMprOzFVJnwTr+T46M0BQy5zklVL7o3w5QiD/QPuXks9JxpZxNyd9fb5lKW
-         Fn/g==
+	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=NPNKWNrG
+Received: by mail-pf1-f227.google.com with SMTP id d2e1a72fcca58-8a01cac8733so2050526b3a.2
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 14:16:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793308598; x=1793913398;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=PRu/TTlkge+Kkx5jvzfY99nUYMb0NBGl/h033Feyas8=;
-        b=DTEga2gmBuBgyae1Am57Ccfmr2MHg7iGUE/ErPUBYgwcYp6levn0Bvz77sSoTGZ/BJ
-         ptThDmM+JgMe6BrZF7FWmFgpFpATp9phKzK9BvlyfdkVxVRDuhOu1wb6msuZHMmbXM/e
-         MvuDaq1T5Y5KV9ud/ZCnso+hozLeIKOngBCBVqd+QmR20FFYj9x3sDED+mKuTkyaA1mo
-         C2KZ+Hk+iACExR45YyKEBAj9jQrg8Gr21eOYNmFH/V0l4HsZ3GJMNiigS6VA3iSFZR5P
-         jtBZV3ZFMNkb0WqpMyAd2bcVxhBFNvf3Ba2+/ra3qY6wbSiCqQsVHk4S7kQo7DMn6aBj
-         1pPw==
-X-Gm-Message-State: AFq9FYLL3QG+jfy8tKxgtflb5HGmpfBl+kze/HXqTvbSfeuFw3JCYRoJ
-	84ZgTpADFMKIY/stnXayPIBkqcFNY7zqTlc2lMuC0/P0wIIeZwwfd8BqDx+xvm0NgqIHwCYQmOx
-	quDnfYvqAd4ZOKYzkUHJ55LSfDPYqZfpfg+KaZGRT+5392YL/mEvHGxh98Dk19eaamyOv0sscFx
-	N82IN7Sr+XJ7NJ/fcEnlyVDUQstYYe56qJXEV7bAzFe/9kpYmOlCWHl7JRWN4XkEM=
-X-Received: from pgjy4.prod.google.com ([2002:a63:e244:0:b0:cc7:9d5b:c2a1])
- (user=hramamurthy job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:4323:b0:3da:b8b4:91d7 with SMTP id adf61e73a8af0-3e92878440bmr486900637.2.1793308597798;
- Thu, 29 Oct 2026 14:16:37 -0700 (PDT)
-Date: Thu, 29 Oct 2026 21:16:31 +0000
-In-Reply-To: <20261029211634.2232784-1-hramamurthy@google.com>
+        d=1e100.net; s=20260707; t=1793308607; x=1793913407;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=XcVbxki1OSdrt6E+6hFIYJvqQHCNUIOiEZn4LQ0BcbM=;
+        b=z3U30C6VntVoHVl48qOPMfPRVxr5PFmkYTNY64PTexysaplWv7qsCyF+BPGXUUWz18
+         8O/MG9dhmO1Zw3ad+LmER3WRuFYTmSUJIE8NSY0Mn3QY/ncFjIt7NnBX4YuJeEqLs5Fo
+         AF5KcK6twgbPbCGKAnIIAA2kGbMt+yitbIw87wHbf1r4RDt4RDazlivtJwH219Esqauk
+         x326wOEvhhRSbptJMwRPsUMCGRvbZ6+JOvQ+r0Z+4wmKRbV9nIgTo24PnUVz37CCnCkp
+         pEfQiHJe4lG5px1+2Wp3RW0b4EqF/Fic9E0nsFuZzvBWJeY/uCoeL3QxVNXFYH3XijA0
+         81FA==
+X-Gm-Message-State: AFq9FYJiQ6GMQR3LNt9hJM4Qr+F6OPPwlt4qAxs29iC/wfCn4dvZh6o5
+	wtzZjY05Fzr6KS5LuHeMArckk0YaRET+9qMK6Q4i3bIdK+CdoSY796I1HfV35TMhlzmyprSZ1iW
+	zpIdQAFDChOZsOTNNu4IAvKKcoiKeifhay9m1RpGtouJj9sxcNvNHY1vGsNmJqznhSO6diRVCRG
+	js/PQ7QpMU80WZljZXYm03ioSOAmRIkjeL+dHwdRosG+ZuI/qQ3i5iRHqpmc0avWpW7RrikMxej
+	vck5tZT8+4S0Xu9kc0=
+X-Gm-Gg: AYBFou0IeaerDYViVyK3zKkCMKCT3dwtX9ZqiJvRJ8u4XH2t56MFMiPYJg4FiwX5Hpy
+	asjV10F8LMVI/BWTSimi+TqBL/5lzO71imP1oKurxUk9MSlZQIcZdb77aiGRYAAQ67izj1gtcnQ
+	jz/0sRvtqU/sUIa9KGSlDZYD2wHscrUuECteTWjbGjO/GGfSZRRUopkpuAZMK+NnnI45u1INW0U
+	IETUxkSmukwoYjBoWuRenuCHLA++QkJwKQ7oMWgkHcrLvEHczqCdrwfnCSSprJO/QnczQlcR5TE
+	1t66zy7CCNNyflw236sKpKbsBESwKB2UUsioOctIAy1ErQUmGppijsieQIN0qDbLhuiMviqZ9E9
+	jotqbseLgK0XSSAvrs3GeWPhKEYmAYoC9y0A0Hm6siqmwgRPbNmJf2AkX8/xNxKli20uCdWwC5o
+	6TW5ISNJfKDa1wG6+IvUBTRfC9Qt6pJOcODYzOJpXr
+X-Received: by 2002:a05:6a00:288c:b0:89e:9c7e:fd5e with SMTP id d2e1a72fcca58-8a9bd1facdbmr267457b3a.9.1793308606580;
+        Thu, 29 Oct 2026 14:16:46 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-28.dlp.protect.broadcom.com. [144.49.247.28])
+        by smtp-relay.gmail.com with ESMTPS id d2e1a72fcca58-8a990954daesm30611b3a.19.2026.10.29.14.16.45
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 29 Oct 2026 14:16:46 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-91b937ecbb4so1523636d6.2
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 14:16:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1793308604; x=1793913404; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=XcVbxki1OSdrt6E+6hFIYJvqQHCNUIOiEZn4LQ0BcbM=;
+        b=NPNKWNrGzmTIkJnawvrQmx2RJp4gksjXTq42Es3+RCh8gTsfEHaRtsRsMu1JU8cp+M
+         uoyWUoMzpnEVIhIYlFM+/Alfb//NZBRySEBYMUbHKB7sJFOLAHDNpTTHtDZ7BJXEZE5U
+         uv7yO1NBBMbPZysKJfH+OhSY5qeBrPZnmX7ZA=
+X-Received: by 2002:a05:6214:1bcb:b0:91c:7b6e:e3ca with SMTP id 6a1803df08f44-91ca4a14e08mr3938736d6.1.1793308604154;
+        Thu, 29 Oct 2026 14:16:44 -0700 (PDT)
+X-Received: by 2002:a05:6214:1bcb:b0:91c:7b6e:e3ca with SMTP id 6a1803df08f44-91ca4a14e08mr3938186d6.1.1793308603468;
+        Thu, 29 Oct 2026 14:16:43 -0700 (PDT)
+Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ca314f888sm6326926d6.35.2026.10.29.14.16.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 14:16:42 -0700 (PDT)
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+To: netdev@vger.kernel.org
+Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Jon Mason <jon.mason@broadcom.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net v4 0/2] Fix TCP retransmissions on NS/NSP SoCs
+Date: Thu, 29 Oct 2026 14:15:38 -0700
+Message-ID: <20261029211540.4123250-1-florian.fainelli@broadcom.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,236 +115,65 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261029211634.2232784-1-hramamurthy@google.com>
-X-Mailer: git-send-email 2.56.0.317.g454f8302e1-goog
-Message-ID: <20261029211634.2232784-2-hramamurthy@google.com>
-Subject: [PATCH net v4 1/4] gve: Fix race between stats query and queue reconfig
-From: Harshitha Ramamurthy <hramamurthy@google.com>
-To: netdev@vger.kernel.org
-Cc: joshwash@google.com, hramamurthy@google.com, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
-	jordanrhee@google.com, willemb@google.com, przemyslaw.kitszel@intel.com, 
-	nktgrg@google.com, maolson@google.com, jacob.e.keller@intel.com, 
-	pkaligineedi@google.com, yangchun@google.com, patricion@google.com, 
-	awogbemila@google.com, stable@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Pin-yen Lin <treapking@google.com>, Debarghya Kundu <debarghyak@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-From: Pin-yen Lin <treapking@google.com>
+On Northstar and Northstar Plus SoCs we would see about 1000 TCP
+retransmissions per second due to a rate mismatch between bgmac and b53,
+make sure that we run at the same speed on both side to avoid dropping
+packets on the floor.
 
-Fix a concurrency bug where network statistics queries race with queue
-reconfiguration or interface teardown, causing a Use-After-Free (UAF) or
-NULL pointer dereference.
+This issue was found during testing on a Northstar Plus reference board
+(BCM958625HR) while running iperf3 to a test machine and noticing
+retranmsisions:
 
-Currently, statistics queries access priv->tx and priv->rx without
-locking. When an interface is brought down or reconfigured,
-gve_queues_mem_remove() frees these arrays. A concurrent stats query
-can dereference freed queue structures and crash the kernel.
-
-This issue was discovered and actually triggered by the
-drivers/net/stats.py selftest. When an interface was brought down,
-querying per-queue statistics via Netlink caused a kernel NULL pointer
-dereference in gve_get_rx_queue_stats():
-
-  BUG: kernel NULL pointer dereference, address: 00000000000000a0
-  RIP: 0010:gve_get_rx_queue_stats+0x17/0x50 [gve]
-  Call Trace:
-   <TASK>
-   netdev_stat_queue_sum+0x11c/0x250
-   netdev_nl_stats_by_netdev+0x21b/0x2d0
-   netdev_nl_qstats_get_dumpit+0xd2/0x220
-   genl_dumpit+0x32/0x90
-   netlink_dump+0x1d2/0x450
-   __netlink_dump_start+0x1db/0x2a0
-   genl_family_rcv_msg_dumpit+0x9b/0x100
-   ...
-
-The per-queue stats callbacks run under the netdev instance lock, so
-this NULL dereference is not a race; it happens on any query while the
-interface is down.
-
-Additionally, concurrent stats queries during queue reconfiguration can
-race with gve_queues_mem_remove(), causing a Use-After-Free.
-This affects gve_get_stats() and gve_handle_report_stats(), which do
-not hold the instance lock.
-
-Fix this by introducing stats_lock to serialize stats queries against
-queue teardown. In gve_queues_mem_remove(), queue pointers are set to
-NULL under stats_lock before freeing. Stats readers acquire the lock
-and verify pointers are non-NULL before reading counters.
-The per-queue stats callbacks also take stats_lock so that all readers
-follow the same locking rule.
-
-This change was tested using the DQO RDA queue format.
-
-Cc: stable@vger.kernel.org
-Fixes: f5cedc84a30d ("gve: Add transmit and receive support")
-Co-developed-by: Debarghya Kundu <debarghyak@google.com>
-Signed-off-by: Debarghya Kundu <debarghyak@google.com>
-Signed-off-by: Pin-yen Lin <treapking@google.com>
-Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
----
+# iperf3 -c 192.168.3.1
+Connecting to host 192.168.3.1, port 5201
+[  4] local 192.168.3.204 port 49856 connected to 192.168.3.1 port 5201
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  4]   0.00-1.00   sec   111 MBytes   933 Mbits/sec  915   99.0 KBytes
+[  4]   1.00-2.00   sec   111 MBytes   928 Mbits/sec  909    109 KBytes
+[  4]   2.00-3.00   sec   110 MBytes   925 Mbits/sec  1097   99.0 KBytes
+[  4]   3.00-4.00   sec   111 MBytes   928 Mbits/sec  814   58.0 KBytes
+[  4]   4.00-5.00   sec   111 MBytes   930 Mbits/sec  1187    109 KBytes
+[  4]   5.00-6.00   sec   110 MBytes   923 Mbits/sec  893   72.1 KBytes
+[  4]   6.00-7.00   sec   111 MBytes   929 Mbits/sec  843   67.9 KBytes
+[  4]   7.00-8.00   sec   111 MBytes   928 Mbits/sec  920   79.2 KBytes
+[  4]   8.00-9.00   sec   111 MBytes   929 Mbits/sec  1109   66.5 KBytes
+[  4]   9.00-10.00  sec   111 MBytes   930 Mbits/sec  1055   63.6 KBytes
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  4]   0.00-10.00  sec  1.09 GBytes   933 Mbits/sec  9742
+sender
+[  4]   0.00-10.01  sec  1.09 GBytes   933 Mbits/sec
+receiver
 
 Changes in v4:
-- Clarify in the commit message that the qstats NULL dereference is not
-  a race, and which readers race with queue teardown (Sashiko)
-- Change the Fixes tag to f5cedc84a30d (Sashiko)
+
+- make the bgmac change scoped specifically to Northstar Plus,
+  Hurricane2 also uses the compatible "brcm,nsp-amac" and so we need to
+  determine the machine type instead
 
 Changes in v3:
-- Retitled from "gve: Add NULL pointer checks for per-queue statistics"
-- Protect all stats queries and queue lifecycle updates with spinlock
-  (sashiko)
-- Refined the commit message
 
- drivers/net/ethernet/google/gve/gve.h      |  2 ++
- drivers/net/ethernet/google/gve/gve_main.c | 37 +++++++++++++++++++---
- 2 files changed, 35 insertions(+), 4 deletions(-)
+- correct commend in the second patch about what is being forced
+  on the CPU port, it's not just flow control, it's also speed
 
-diff --git a/drivers/net/ethernet/google/gve/gve.h b/drivers/net/ethernet/google/gve/gve.h
-index b7ce6e8632db..104468c2c07f 100644
---- a/drivers/net/ethernet/google/gve/gve.h
-+++ b/drivers/net/ethernet/google/gve/gve.h
-@@ -957,6 +957,8 @@ struct gve_priv {
- 	struct workqueue_struct *gve_wq;
- 	struct work_struct service_task;
- 	struct work_struct stats_report_task;
-+	/* Synchronizes stats accesses and queue teardown */
-+	spinlock_t stats_lock;
- 	unsigned long service_task_flags;
- 	unsigned long state_flags;
- 
-diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index 2437cd8ba633..26fdd22644f4 100644
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -69,6 +69,7 @@ static void gve_get_stats(struct net_device *dev, struct rtnl_link_stats64 *s)
- 	int num_tx_queues;
- 	int ring;
- 
-+	spin_lock_bh(&priv->stats_lock);
- 	num_tx_queues = gve_num_tx_queues(priv);
- 	if (priv->rx) {
- 		for (ring = 0; ring < priv->rx_cfg.num_queues; ring++) {
-@@ -96,6 +97,7 @@ static void gve_get_stats(struct net_device *dev, struct rtnl_link_stats64 *s)
- 			s->tx_bytes += bytes;
- 		}
- 	}
-+	spin_unlock_bh(&priv->stats_lock);
- }
- 
- static int gve_alloc_flow_rule_caches(struct gve_priv *priv)
-@@ -642,9 +644,13 @@ static void gve_queues_mem_remove(struct gve_priv *priv)
- 	struct gve_rx_alloc_rings_cfg rx_alloc_cfg = {0};
- 
- 	gve_get_curr_alloc_cfgs(priv, &tx_alloc_cfg, &rx_alloc_cfg);
--	gve_queues_mem_free(priv, &tx_alloc_cfg, &rx_alloc_cfg);
-+
-+	spin_lock_bh(&priv->stats_lock);
- 	priv->tx = NULL;
- 	priv->rx = NULL;
-+	spin_unlock_bh(&priv->stats_lock);
-+
-+	gve_queues_mem_free(priv, &tx_alloc_cfg, &rx_alloc_cfg);
- }
- 
- static void gve_free_control_plane_resources(struct gve_priv *priv)
-@@ -1383,6 +1389,7 @@ static int gve_queues_start(struct gve_priv *priv,
- 	int err;
- 
- 	/* Record new resources into priv */
-+	spin_lock_bh(&priv->stats_lock);
- 	priv->tx = tx_alloc_cfg->tx;
- 	priv->rx = rx_alloc_cfg->rx;
- 
-@@ -1396,10 +1403,11 @@ static int gve_queues_start(struct gve_priv *priv,
- 	priv->rx_pages_per_qpl = rx_alloc_cfg->pages_per_qpl;
- 	priv->header_split_enabled = rx_alloc_cfg->enable_header_split;
- 	priv->rx_cfg.packet_buffer_size = rx_alloc_cfg->packet_buffer_size;
-+	gve_init_sync_stats(priv);
-+	spin_unlock_bh(&priv->stats_lock);
- 
- 	gve_tx_start_rings(priv, gve_num_tx_queues(priv));
- 	gve_rx_start_rings(priv, rx_alloc_cfg->qcfg_rx->num_queues);
--	gve_init_sync_stats(priv);
- 
- 	err = netif_set_real_num_tx_queues(dev, priv->tx_cfg.num_queues);
- 	if (err)
-@@ -2266,6 +2274,7 @@ void gve_handle_report_stats(struct gve_priv *priv)
- 	if (!gve_get_report_stats(priv))
- 		return;
- 
-+	spin_lock_bh(&priv->stats_lock);
- 	be64_add_cpu(&priv->stats_report->written_count, 1);
- 	/* tx stats */
- 	if (priv->tx) {
-@@ -2330,6 +2339,7 @@ void gve_handle_report_stats(struct gve_priv *priv)
- 			};
- 		}
- 	}
-+	spin_unlock_bh(&priv->stats_lock);
- }
- 
- /* Handle NIC status register changes, reset requests and report stats */
-@@ -2786,9 +2796,15 @@ static void gve_get_rx_queue_stats(struct net_device *dev, int idx,
- 				   struct netdev_queue_stats_rx *rx_stats)
- {
- 	struct gve_priv *priv = netdev_priv(dev);
--	struct gve_rx_ring *rx = &priv->rx[idx];
-+	struct gve_rx_ring *rx;
- 	unsigned int start;
- 
-+	spin_lock_bh(&priv->stats_lock);
-+	if (!priv->rx)
-+		goto unlock;
-+
-+	rx = &priv->rx[idx];
-+
- 	do {
- 		start = u64_stats_fetch_begin(&rx->statss);
- 		rx_stats->packets = rx->rpackets;
-@@ -2796,20 +2812,32 @@ static void gve_get_rx_queue_stats(struct net_device *dev, int idx,
- 		rx_stats->alloc_fail = rx->rx_skb_alloc_fail +
- 				       rx->rx_buf_alloc_fail;
- 	} while (u64_stats_fetch_retry(&rx->statss, start));
-+
-+unlock:
-+	spin_unlock_bh(&priv->stats_lock);
- }
- 
- static void gve_get_tx_queue_stats(struct net_device *dev, int idx,
- 				   struct netdev_queue_stats_tx *tx_stats)
- {
- 	struct gve_priv *priv = netdev_priv(dev);
--	struct gve_tx_ring *tx = &priv->tx[idx];
-+	struct gve_tx_ring *tx;
- 	unsigned int start;
- 
-+	spin_lock_bh(&priv->stats_lock);
-+	if (!priv->tx)
-+		goto unlock;
-+
-+	tx = &priv->tx[idx];
-+
- 	do {
- 		start = u64_stats_fetch_begin(&tx->statss);
- 		tx_stats->packets = tx->pkt_done;
- 		tx_stats->bytes = tx->bytes_done;
- 	} while (u64_stats_fetch_retry(&tx->statss, start));
-+
-+unlock:
-+	spin_unlock_bh(&priv->stats_lock);
- }
- 
- static void gve_get_base_stats(struct net_device *dev,
-@@ -2935,6 +2963,7 @@ static int gve_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	}
- 	INIT_WORK(&priv->service_task, gve_service_task);
- 	INIT_WORK(&priv->stats_report_task, gve_stats_report_task);
-+	spin_lock_init(&priv->stats_lock);
- 	priv->tx_cfg.max_queues = max_tx_queues;
- 	priv->rx_cfg.max_queues = max_rx_queues;
- 
+Changes in v2:
+
+- make it apply cleanly to net/main
+
+
+Florian Fainelli (2):
+  net: ethernet: bgmac: preserve forced 2.5 Gbps link speed
+  net: dsa: b53: restore the NSP IMP port 2 Gbps mode
+
+ drivers/net/dsa/b53/b53_common.c               | 12 +++++++++---
+ drivers/net/ethernet/broadcom/bgmac-platform.c |  3 ++-
+ drivers/net/ethernet/broadcom/bgmac.c          |  8 ++++++--
+ 3 files changed, 17 insertions(+), 6 deletions(-)
+
 -- 
-2.56.0.313.g2479322e68-goog
+2.53.0
 
