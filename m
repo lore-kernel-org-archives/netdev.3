@@ -1,60 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793282952;
-	b=Zf91+7YkQa1wA7ppVAzHmk9IjVBNtAwbPzGj4U4GvIPIJc6grsS9WKWz/mclIlNMWaJC
-	 Tbt9iJcP+3qgwUTTLWA3vzy6Yn+AkhiCNm4vBju6+5IfoULa0U/zZyjsCqA9K+UXpXsGr
-	 rH3eBX0Pp4jrSJRnq/9h3+0CcU+1wNEc1np61RhMVTdhxKpOFGnx1ZMSKM8G2dygYFn+i
-	 KAo+XQCu+m0cZAzi5QDtn7yhqw+dVsHUD9duc92QFhjzHWbteYDLW8rn8hLNLnrXmVyDb
-	 g20cZsr+r8vf2Kls+0H4u3ysifXeSTTi31E4Yj2wslKSPxr5HSlIlvp5dyIhzNPl3pw==
+	t=1793283062;
+	b=mMnb5b1ciw6EAs3IS6Tx8BOM0xzIHhyV0+SJnX5b0mK9Hwd/PCRPjsBCOMvyQpgoBd4i
+	 xUTPxPfl0M09e13ChC4SWyABAbpqfqJ9l8eybRGgGfi7b6nuRQ8jeftbzSZ2/Q/6COrtv
+	 oDkB0hy5K1CEgtrtYvkw4ow2OKgm0GAMfpQPaxztdUPTeAsHsusGJiDZxjvFxb1s6N0zQ
+	 cvjC5eP7El2ySrR4PpzBMixtdlPA0BN4S1NtqqL78zaoikQBKtSr2P6WFohkUKzB6poLa
+	 1UgXao7GrXxp8+BGZi7HziZqAORfcLB1chrAf1ttpufofbh0X/Ytp+77sh0LWG0g+pA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793282952;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=glQgYs9RQWVkxE0C1hqBW6gO3DwVtg8MXWG3xBzwrVY=;
-	b=jkrk/JH/xrKeRomZGCOIwxO+LptpaROOM8WMWdVGjFFTERQDaeP9lYU+vR1IVFJgV+bv
-	 iAzmcNuQQxTFw9THofNIPsE07oFZyK8Mr1njVCS+1wUaNoYr7x4MQ8mvaqz3AKSO7ZRdz
-	 83Lo5+MBNyaXvau422nwR7PghqO1sQiqDw4LyImdL7g9hvpr9LBOD87/y/8Z4iI5fkVgU
-	 WHcgbh1IgRFMsbm1DV3eOkquvaAkMFOukqOS02BL2yxjoN7zcOL0FK1sQNv0S2S5Uusbl
-	 z6V6PaosZly9M5ARc11GJfpBmBld+Wv7A3JbyQIFBRnYJJmaKIQqNtdmsczOPeiOugw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793283062;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=S2ezqz0ZqnFURyg+DrMUvl/ZxfvgKHi+fzqaASqkQZU=;
+	b=EMjqTbMqkJYEOMsU1VC9r4s4xlkgpKOXMa86GrphqM+phEwaVQEpkIl+7XchKiJVOD+D
+	 beLu1kaJ9kVekMFZP+jv/oALT/lZPvFeU6pTFw/C2c2HYCGFdTRIBN0h/ScKYcnbmc5pW
+	 cO4w8/2cW+DGNW5ieXn4nf4/cyd1jpokhsvYi5yqW6MfzT4j3Vvuff2SebCPWYQlbgakD
+	 xymPJt2awDZLPURoUXvUD7i0ZQ1G9Z3pHzHgVZrB69w+Z1FAKlAhmBSdAunw2RajBDkgF
+	 6Q2h2O4MTtoDKofrmd1Qpwwk+79EwM5RdfcGEFCQFIMNZVx9U8ZfiInSaaVTDBRFDdw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dcOO8iXt;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IM6aY+Tl;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b="YVx4oR/n";
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A9B606A32A;
-	Thu, 29 Oct 2026 14:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33542606A31A
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 14:11:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 33542606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dcOO8iXt
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD051F01829;
-	Thu, 29 Oct 2026 14:09:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793282951;
-	bh=glQgYs9RQWVkxE0C1hqBW6gO3DwVtg8MXWG3xBzwrVY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=dcOO8iXtUcbvcHG+m5oxgFlsU/HJQj7GLi3W9Zz4mAMQaTVNGIpudmixMhci/aqXW
-	 jExSS76bAZwP4US9i5sH5hnAdIS+sSmgmRo1ixDdZ6w7GMb9+zNBf26wGenfjOnsz5
-	 1YV0/hYCxnhH7+qt0uFa1EEXfKk2D4Y2/CgjzFoj5wJ+nhi4D7u5FC67whRWMTot1F
-	 t/OrbRn7anlsdzOXmH5Fisy5YvczW9Xz+U9fRF7YfLjRjaN5aMuhtuJoaJ6Teo48ZN
-	 dF9P2eB37wQzmtQUEhpTB5ruqPSdyzeQaE5zVHBtHz1P/nKVDOCs1NEnY0NUzGCEyd
-	 wjrBXo3rfda1g==
-Subject: Re: [PATCH net v7 3/3] xfrm: hold the tunnel device reference across
- the input path
-From: netdev-bot+sashiko@kernel.org
-To: q.h.hack.winter@gmail.com
-Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com, chopps@labn.net,
- herbert@gondor.apana.org.au, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
- idosch@nvidia.com, linux-kernel@vger.kernel.org
-Date: Thu, 29 Oct 2026 14:09:10 +0000
-Message-ID: <179328295063.3134.16653525175454122290@kernel.org>
-In-Reply-To: <20261027105031.19928-4-q.h.hack.winter@gmail.com>
-References: <20261027105031.19928-4-q.h.hack.winter@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IM6aY+Tl;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=YVx4oR/n
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793283061;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S2ezqz0ZqnFURyg+DrMUvl/ZxfvgKHi+fzqaASqkQZU=;
+	b=IM6aY+TlVfz0gRvwoblt04nLvxoKSzs/C2ZxVo2cBhusYcCq7YdCrKWBDM0I6RLtywB0iw
+	BrGriwaMcxCwcPr4i+z9ZPxnkihTmj3pNy21MBUqct0ERmubiFha0TPIMGBP4L6Ywoj4MV
+	JAjrjXUpMp0QFuIhfDgvsT0u9UgzLw4=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-43-U3UVp8KCOmKWRMPsCjwamg-1; Thu, 29 Oct 2026 10:10:59 -0400
+X-MC-Unique: U3UVp8KCOmKWRMPsCjwamg-1
+X-Mimecast-MFC-AGG-ID: U3UVp8KCOmKWRMPsCjwamg_1793283059
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c3f88d2ff28so169034966b.0
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 07:10:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1793283058; x=1793887858; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=S2ezqz0ZqnFURyg+DrMUvl/ZxfvgKHi+fzqaASqkQZU=;
+        b=YVx4oR/n0LHUGCyD0QM7wgcb8iHCMqf/Wz0vat/jFRU484OMwPMXnSxJT2Gkg/DwqQ
+         aRoQu+0v7/caPt36fb+qv5Ib0FznxcMDafDP04mcoB4aBKcKq0Imezy7KajrfNe5p8PJ
+         9BbPISUAphAIsFvLcLZsrInIrRTvO6MqV8KeemnhbumBPm/RDoFv4JV6cxfLacB4U8yo
+         I5nL8pQW4yHAwfLO6NDq+yWnwUArOaVlUP4ntEAUlge/4/fEjThoguAkV8MQ5Y0t5EwV
+         g0YzdLuNoxB1bCsAuHYJO7vVjO39uO/WNFfX72zE8D13OSXk/bJ7wJiJbYbO6M72utWU
+         q/4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793283058; x=1793887858;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=S2ezqz0ZqnFURyg+DrMUvl/ZxfvgKHi+fzqaASqkQZU=;
+        b=HvOifuMnEnIEhCfWT0xuG8loAw6jvC1dqbT+biBcr5LrUoN/7NPwAN48oqN3HEZMPy
+         GfdHF0/sZyZ95WBvMWqhEREBByK3Fg+F+qwIsXfxyPkVbWXFxWTEv/YVMS9FfRDM5RLV
+         lvhritbDMycfnP4FC27XdLJE5Ij5xCsKCLX552BCULKWZ9Q4tiOiv8nJrupVn4o2ABpw
+         eyP12QjgGyGjzwGEw+N5D37hhNhMRL/tBPMBWUcHBoz41sLPQHuVnMHm4Q5PuCe6Jnu3
+         961CSatHSCG8kP2JmM5rT3aKZ+lAnaHlhbf0j3R3jZJtKQP1Pd8ItUR2kPWQ23/v7Ow4
+         7lDQ==
+X-Forwarded-Encrypted: i=1; AKwUvBy0QnEORB74GG6YflyUm1Yj5CEWwjylrk1qabqWs7ukAtQ0/+iOWX7ilx/qWztN70X69YgOuTA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLb4cKptN2Z29vMCiB16O2Rkqnhb4g9w/dO9UGxkAOojqc4YNAO
+	mEmljwfN1vYQRuE2qojNECOGCVXDksIMC8h5vtPBTNFiw+6AS0rjRymvtQXPSCCwP2As51OggOt
+	KQCnvBtYaXPmxG8XXLU8CllgwdUv+yo9NdhhsUh+IL0cPDO3ciH8yb2HH5Ve6Q1EzkQ==
+X-Gm-Gg: AYBFou0rW3VAaWhL6lpIO8U+z7FRYtuSfX9fNK6/FGUtYtNgqFB6Z30roynX0TWiYMC
+	2gTxGFVB/sD5w3kjDvqeA1RH6xfpFltqF3FPHtl2eSYD2TL3dP/xlQ2HeLW5Q78VU4X86SdfHRY
+	mfAfNmFlH0vJeDkPAlNNeRmcm9LyEp2wlNJzfakTp0VCIHCIRwCdGanSmg1so4RyWdx7HVA4IZ+
+	hO7vr34FAUwwTCHLzbQ6zCNw9CFPpqMdunTUWlJ04MFpc5m86btI7sAFuwJB/1UEw9v785FHfDx
+	JAm6C1hvaIZNDEntq1AY2j5qlCGc9nxXh6Y7YbMTlWRjlBP6cZaE0Z5y8mQB9MOq3rJRNSncuN3
+	mI5B9PAXC5I5wJL3TUlBNRS61d3EP6svYzIeUK0oVxnv0EV7BNmnoWMPdv+bZihhppCazuOmiLo
+	ERWumFUVTMx/UKbNsH1oB10u+p5M4Ha+5K0NuWAuqfbp9qd9Q=
+X-Received: by 2002:a17:906:eec5:b0:c2d:ca32:2176 with SMTP id a640c23a62f3a-c49bdf37849mr505713266b.8.1793283058561;
+        Thu, 29 Oct 2026 07:10:58 -0700 (PDT)
+X-Received: by 2002:a17:906:eec5:b0:c2d:ca32:2176 with SMTP id a640c23a62f3a-c49bdf37849mr505710166b.8.1793283058105;
+        Thu, 29 Oct 2026 07:10:58 -0700 (PDT)
+Received: from [192.168.188.234] (ip174-129-192-82.pool-bba.aruba.it. [82.192.129.174])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c46bd66e51fsm740498366b.64.2026.10.29.07.10.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Oct 2026 07:10:57 -0700 (PDT)
+Message-ID: <e0347015-0b0f-4a87-92ce-ea5e4868cf2a@redhat.com>
+Date: Thu, 29 Oct 2026 15:10:55 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,181 +112,84 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 2/2] tipc: fix NULL pointer dereference in
+ named_distribute()
+To: Tung Nguyen <tung.quang.nguyen@est.tech>, netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, edumazet@kernel.org,
+ jmaloy@redhat.com, horms@kernel.org, tipc-discussion@lists.sourceforge.net,
+ syzbot+64197f7577a09686ffdb@syzkaller.appspotmail.com
+References: <20261028033722.125477-1-tung.quang.nguyen@est.tech>
+ <20261028033722.125477-3-tung.quang.nguyen@est.tech>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261028033722.125477-3-tung.quang.nguyen@est.tech>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On 10/28/26 04:36, Tung Nguyen wrote:
+> +/**
+> + * tipc_nametb_insert_self_node_pub - insert publication of node's self address
+> + * @net: network namespace
+> + *
+> + * Return:
+> + * * 0          - Success
+> + * * -ENOBUFS   - No buffer space is available
+> + *
+> + */
+> +int tipc_nametb_insert_self_node_pub(struct net *net)
+> +{
+> +	struct name_table *nt = tipc_name_table(net);
+> +	struct tipc_net *tn = tipc_net(net);
+> +	struct tipc_socket_addr sk;
+> +	struct service_range *sr;
+> +	struct tipc_service *sc;
+> +	bool sc_created = false;
+> +	struct publication *p;
+> +	struct tipc_uaddr ua;
+> +	int err = 0;
+> +
+> +	sk.ref = 0;
+> +	sk.node = tn->node_addr;
+> +	tipc_uaddr(&ua, TIPC_SERVICE_RANGE, TIPC_CLUSTER_SCOPE,
+> +		   TIPC_NODE_STATE, tn->node_addr, tn->node_addr);
+> +	sc = tipc_service_find(net, &ua);
+> +	if (!sc) {
+> +		sc = tipc_service_create(net, &ua);
+> +		if (!sc)
+> +			return -ENOBUFS;
+> +		sc_created = true;
+> +	}
+> +
+> +	spin_lock_bh(&sc->lock);
+> +	sr = tipc_service_find_range(sc, &ua);
+> +	/* 1. tipc_net_finalize_work() is not scheduled because of namespace
+> +	 *    teardown.
+> +	 * 2. Or tipc_net_finalize() ---> tipc_nametbl_publish() has failed
+> +	 *    to insert node self address publication into nt->cluster_scope
+> +	 *    due to memory allocation failure.
+> +	 * 3. Or tipc_net_finalize() ---> tipc_nametbl_publish() has not
+> +	 *    executed yet.
+> +	 */
+> +	if (!sr) {
+> +		p = tipc_publ_create(&ua, &sk, tn->node_addr);
+> +		if (!p)
+> +			goto error;
+> +
+> +		if (!tipc_service_insert_publ(net, sc, p, &err)) {
+> +			kfree(p);
+> +			goto error;
+> +		}
+> +
+> +		list_add_tail(&p->binding_node, &nt->cluster_scope);
+> +		goto exit;
+> +error:
+> +		if (sc_created) {
 
-Critical: 0 · High: 1 (1) · Medium: 0 · Low: 0
+The above is a bit ugly. AFAICS you avoid the unneeded label `exit`
+moving this error path, label included, after the `return 0;` statement.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Also sashiko complains look legit.
 
-- [High] IPTFS outer skbs parked in the reorder window can now pin the
-  vti/vti6 net_device forever, so `ip link del` hangs and netns cleanup…
+/P
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but the vti netdev
-  can still be used after free on the decap path.
-
---
-
-xfrm: hold the tunnel device reference across the input path
-
-This patch takes a reference on the vti/vti6 tunnel net_device when the
-tunnel pointer is cached in the skb control buffer. xfrm_input() releases
-that reference after delivery or drop. It also adds xfrm_input_drop() and
-xfrm_input_consume() so the IPTFS outer-skb free paths release the
-reference too.
-
-> diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
-> index ab391258a5028..2797903d078dd 100644
-> --- a/net/xfrm/xfrm_input.c
-> +++ b/net/xfrm/xfrm_input.c
-
-[ ... ]
-
-> @@ -746,8 +797,11 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
->  			sp->olen = 0;
->  		if (skb_valid_dst(skb))
->  			skb_dst_drop(skb);
-> -		/* gro_cells_receive() reads skb->dev. */
-> +		/* gro_cells_receive() may free the skb. */
-> +		tdev = xfrm_input_take_tunnel_dev(skb, family);
->  		gro_cells_receive(&gro_cells, skb);
-> +		if (tdev)
-> +			dev_put(tdev);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but can the vti net_device
-still be used after it is freed on this decap path?
-
-The commit message mentions this window ("That window is pre-existing and
-is not changed here"). gro_cells_receive() usually just queues the skb on
-the per-CPU napi_skbs list of the global xfrm gro_cells and calls
-napi_schedule():
-
-net/core/gro_cells.c:gro_cells_receive() {
-    ...
-	__skb_queue_tail(&cell->napi_skbs, skb);
-	if (skb_queue_len(&cell->napi_skbs) == 1)
-		napi_schedule(&cell->napi);
-    ...
-}
-
-At this point skb->dev is the vti device, which vti_rcv_cb() set. Later,
-gro_cell_poll()->napi_gro_receive() dereferences it without holding a
-reference.
-
-These gro_cells are attached to the dummy xfrm_napi_dev, which is never
-unregistered, so deleting the vti device does not drain them.
-flush_all_backlogs() only drains the softnet backlogs. synchronize_net()
-does not wait for a NAPI poll that has been deferred to ksoftirqd.
-
-One possible race:
-
-CPU0                                   CPU1
-gro_cells_receive()
-  passes IFF_UP check, enqueues skb
-                                       unregister vti0
-                                       netdev_wait_allrefs_any()
-dev_put(tdev)  <- last reference
-                                       device and tstats freed
-gro_cell_poll()
-  reads freed skb->dev
-
-xfrm_trans_queue_net() in the same file holds skb->dev for the whole
-deferral:
-
-	if (skb->dev)
-		dev_hold(skb->dev);
-
-Does the gro_cells handoff need something similar? The same window seems
-to exist on the synchronous path and for xfrm interfaces.
-
->  		if (async)
->  			dev_put(dev);
->  		rcu_read_unlock();
-
-[ ... ]
-
-> diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-> index 103cf7c5dbfb9..d8e7f2052dfb3 100644
-> --- a/net/xfrm/xfrm_iptfs.c
-> +++ b/net/xfrm/xfrm_iptfs.c
-> @@ -708,8 +708,9 @@ static void __iptfs_reassem_done(struct xfrm_iptfs_data *xtfs, bool free)
->  
->  	/* We don't care if it works locking takes care of things */
->  	hrtimer_try_to_cancel(&xtfs->drop_timer);
-> -	if (free)
-> -		kfree_skb(xtfs->ra_newskb);
-> +	if (free && xtfs->ra_newskb)
-> +		xfrm_input_drop(xtfs->ra_newskb, xtfs->x->props.family,
-> +				SKB_DROP_REASON_NOT_SPECIFIED);
->  	xtfs->ra_newskb = NULL;
->  }
-
-[Severity: High]
-Can an outer skb parked in the IPTFS reorder window now hold the vti
-net_device forever?
-
-With the new dev_hold() in vti_input() and vti6_input_proto(), the outer
-skb holds a reference on the tunnel device until IPTFS frees it. The
-reorder window (xtfs->w_saved) and reassembly (xtfs->ra_newskb) share a
-single drop_timer. __iptfs_reassem_done() cancels that timer
-unconditionally and never checks xtfs->w_savedlen.
-
-With the default reorder window of 3, this sequence looks possible:
-
-  seq S arrives in order
-    __input_process_payload() starts reassembly, arms drop_timer
-
-  seq S+3 arrives
-    __reorder_future_fits() stores it in w_saved[1]
-    iptfs_set_window_drop_times() sees the timer queued, does not re-arm
-
-  seq S+1 arrives
-    __reorder_this() delivers only S+1 (slot 0 for S+2 is empty)
-    __vec_shift() moves S+3 into w_saved[0]
-    iptfs_input_ordered(S+1) completes the reassembly
-      iptfs_reassem_done()->__iptfs_reassem_done()
-        hrtimer_try_to_cancel(&xtfs->drop_timer)
-
-S+3 is now parked with no timer. Later in-window packets do not re-arm the
-timer either. iptfs_set_window_drop_times() either returns early or stops
-its walk at the filled slot 0:
-
-	while (index-- > 0 && !s[index].skb)
-		s[index].drop_time = drop_time;
-
-	if (index == -1 && !hrtimer_is_queued(&xtfs->drop_timer))
-		hrtimer_start(&xtfs->drop_timer, xtfs->drop_time_ns,
-			      IPTFS_HRTIMER_MODE);
-
-Only two things would release the skb: a window overflow through
-__reorder_future_shifts(), or the missing sequence number arriving. Once
-the vti device is being deleted, no more packets reach the SA, so neither
-happens.
-
-The parked skb also holds a sec_path reference on the xfrm_state.
-iptfs_destroy_state() only runs from xfrm_state_gc_destroy() after the
-state refcount reaches zero. That means the new xfrm_input_drop() call in
-iptfs_destroy_state() never runs for this skb.
-
-Before this patch, this case leaked the skb and the state. With the new
-reference, would unregistering vti0 block forever in
-netdev_wait_allrefs_any() ("waiting for vti0 to become free")? Would
-netns teardown then stall the cleanup_net worker?
-
-The commit message says:
-
-  The device reference is therefore always dropped after the skb is gone.
-
-In this case, though, the skb never seems to be freed.
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261027105031.19928-1-q.h.hack.winter%40gmail.com
