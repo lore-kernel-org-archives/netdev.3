@@ -1,60 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.161.100
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793265188;
-	b=Ch2ILLQouzFg1gPbmGv/gaR2wvOXvCeLDZQ7y4X+DjJ/0nuLXfoUAeaEcnqW6XA6GdaW
-	 /cf0IKe1x9bzMTHf/Eu+ijLoBx2bNN+pDJVEEYueu5FTN6Lsd4/qH7Wh6u+T87noHZAra
-	 qv+0bDr3M1gDIubbacL1oMVPdSpC1+CiyKdJI8vDH8PYl22/Iz1LMB4kfH2vhGiyiZyCp
-	 xWUmkt7vHcKQANGQZ/kqCD4ypYCqeVrIYtU//7JKriMWxHdGZpbiWGJ+8w++0OvbhvBHA
-	 LAhyRMpO/JpAZmK/mLRq5RxMnSQtD/3qyqfADBsGSYbhk9lFhdRvAtwAM03YTGzznIg==
+	t=1793265355;
+	b=G8+YGZN43bOfyVxyCSpbZ3oxABGYZ6MQD7mjed/l5NZ+cEF3p2ho3Fpejof0SgFLOLhV
+	 eEtvjkZA8LlscHMvD4b4RWBI39LJE2o2B8McfhwJ9+YEj0IF392We8rYQ1RqnyvFyaK/B
+	 RCSJmfkLCuBqdyVQ0VUbYly8K6HG+nf6wNcGftotOAlLYwOGlu3803oQ0Tq/S0XI1A3Io
+	 jiNUKHcE4iJQCb4EHUhMl1748mAK4A240sgcKq276GciRZAWzz+rNEF80NkWjwpsbQgcg
+	 QYH2DSwqylhJxsEHJnXL3ZFr+JYkfCa45rGEueTCGBJkVUzT2miFgdn4oDN1QtJtaxg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793265188;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=oRWZtpS99MTTHtzoW8VUxUtYuwvdUmP6KxYecfdsdzk=;
-	b=fbi4TcTsYz3cw6MnKgIwIT6VMV5N/wa46aguB7s9rVf+cBHVwU3Tm9Y91LPkmwx7l4Gq
-	 Sd4ZzX2Aepi2MdCLKMJy2xiLZLw/lcTZZZDi5ul0TE2ZQJHhqQNI2nWRadmYb/OLGGToE
-	 XWkl7ZsGl1crSn7hyv2MGV24Du5jSOw6eRXjZnx4atzz8M8npXYVlMcEQiTqmvuXW0ArP
-	 My0UPlgn4P8jwGCP6HcyFccjFSWhKsAegJndklCuEs/uIGKNHbj3uRcwhafucvKsIeBub
-	 AoE7kuXgTOkfKbi65xCoZvXtSeeYcKz9B889ksZAerHbN+TFkC8zShPYroZ4g/ABP3g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793265355;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
+	 X-CFilter-Loop:Received:DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Received:X-Received:MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gm-Features:Message-ID:Subject:To:Cc:X-DetectorID-Processed:
+	 Content-Type;
+	bh=IG3coSvH2rxonblcfd8xM/aTYWF217iDwaoPYy5Pq8o=;
+	b=YGRt3oGAh/ulzOpLV6O5aNs9Efx1CMQ5NPR03RVVebBfl3pSAMn4GJCEgOWxIlnQ83E4
+	 AEV4pzMWeOufaFuOCvX8xRODYGJwDUlvwTKF3wVHudTsxTIJmbMQ8nvKJvZNRzmJa0wcT
+	 nHZDPb19aqqV0ToCa9fCKsi1y2ziz2c75JCGvP8gBKSUTcAqnyf0gDs/KotKXHmOM1zkJ
+	 M86bN4ENa4zCc41h4kk/n0T6q11EIoaxgVSJ2mF6oPdcF7lqiKfymOwJ6Ypxol25vPjy5
+	 UNgNNoLCk6KG25rJE/jeaZ5NFuffpqgSnYJtihUMyGRrt7fNuasugHvfi7C9qIlFZ/Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="o0y+s/Qd";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=broadcom.com;
+	spf=fail smtp.mailfrom=broadcom.com;
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=TvgeSWwo;
+	arc=none smtp.remote-ip=209.85.161.100
+Received: from mail-oo1-f100.google.com (mail-oo1-f100.google.com [209.85.161.100])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E639D606A31A;
-	Thu, 29 Oct 2026 09:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF259606A325
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 09:15:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DF259606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=o0y+s/Qd
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCDED1F01828;
-	Thu, 29 Oct 2026 09:13:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793265187;
-	bh=oRWZtpS99MTTHtzoW8VUxUtYuwvdUmP6KxYecfdsdzk=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=o0y+s/QdbEDfuedDekZTMJCWvcZO20oL69jBLYTJlVI2yC5zcxUM9+7oqnIVRWuQK
-	 oHTHGQjAa2NdeNd+jvlppYSQTFYYkNN1bTtnJdiMnXeTPA4/vLSBYpLacCJuUplJiO
-	 +ktuLX+ZezAsWZ6xIlCnYC6mavPStQmwCGNaw/6rTs2ivOS7D7atgY04vxaEvHBKjY
-	 7Yu10/0/5ifDRmTTWkoXz3WnDXJ5qAQjMdPoYL85YeGS671Gq3PieEQURQ8wlCBM/M
-	 f+zbP8ANahg4jpROC62M2qUEbGNmjTN7ODzvczcHLxgX4Vg6WRKSYST4lZW+XVaaog
-	 OchmKawKUc4JQ==
-Subject: Re: [PATCH net] octeontx2-af: skip CPT ctx flush command when no CPT
- LFs are attached
-From: netdev-bot+sashiko@kernel.org
-To: kmahammadraf@marvell.com
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, sgoutham@marvell.com,
- rkannoth@marvell.com, gakula@marvell.com, sbhatta@marvell.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, schalla@marvell.com
-Date: Thu, 29 Oct 2026 09:13:06 +0000
-Message-ID: <179326518645.3134.9563547199607113486@kernel.org>
-In-Reply-To: <20261026091001.3421476-1-kmahammadraf@marvell.com>
-References: <20261026091001.3421476-1-kmahammadraf@marvell.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=TvgeSWwo
+Received: by mail-oo1-f100.google.com with SMTP id 006d021491bc7-6aa9606ddadso1523558eaf.0
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 02:15:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793265354; x=1793870154;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=IG3coSvH2rxonblcfd8xM/aTYWF217iDwaoPYy5Pq8o=;
+        b=ycA+NEDpPgM/LVC+Ce0/n16nFuBum4iYagDS+gJlC6M9J4y0WxPuyalOskOBk2CYXW
+         eRALVW7KXCNnA/RXuwsHCL0KCAieYH2rKb9aAkJHziTm8hOIYRBV7rLnoYvFcZsCNsEH
+         oAJ8KnHJovIgc+JGuryHZwh0VeHLq0jHCBpdjqOsySBoPuMwfxIxqSI72W/DgrGt4/vb
+         BYkeWknJBpqcjnvMz4iL1/oiF63ozKL269F/QX12blLcGIJSAwNzm+3gwBbXDJmdU1RM
+         zahzSXVZc44ydttH042mJwQhR0cPuKLzQXXPz1N1FtmLJQFp4eoor5p/QMIE3J4B4KIe
+         TTYg==
+X-Forwarded-Encrypted: i=1; AKwUvByXlKShcPeMSyrs/jkD0R8Lwl1sqYzdUPNRqmFckGEb05kRqoDg7+bTzWvFJBpODl+nfE6jEhk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKvHuGxnrjv9J8Zl6Ok4nr3hhAkkkXb9PelOAHrdfYmcMRsQyQH
+	rQBaykFtdFDzT0I6IPSpTLZTSJZ0tqqm2hSXFdwRrHA2USRqHJQNevFsGawOWklJY7DzHP3RfY9
+	6pTtQhc3ZwB1teA0WBzbRKcMQmPpVZb+cg84pt1wJB5NnNnUMTG80IvBf+8lnIjusDpw4m1BhPH
+	P0jlfETkcuCj1xGdcqGz9osGnyqW+h5gRE85UvPKHtEKGHtRNAHpt9sw/O7T8DhfVgqgGZ2Zfs+
+	y9mLk6sIKE=
+X-Gm-Gg: AYBFou2WCcZMc3G5BEEr7Kx7cqHNgkHfSN73Lx3fHOUEwLxckXLd5pO+4FbbI7MHpCG
+	fNFwVKbIA4zpVoQsTCwaS5km7Yoc+a+XIovaiADiU/RtJZgDPXvA+AcJ3yVwzASSsD+GanTGKPu
+	IpTMlLjkVBGGRxXmMe/GHlOh74+Er86JbvTYQaXfZm3b/dU5tIDJlaifcUO+guZBHHSgvp7LmQj
+	xNfKyu7X6VR1azzzZw2UrqeHHXFtVvPZXZUvrmra22JlDxx9LCmoToxyiw1bWT7Z2AQtQi2hIeV
+	It2AXM1X3DEACYHhQB1rhkiuBArQYj3gM61RQHUU97ux10kaVtxBrgKARy8TAPuDgFmMpZ6NyYC
+	rkYuhe+JDceQlAmfves3dSAOcTUNSEBDDGXna73svIxQIaHou/1sKDwL8w5WL1K1E7+VgPz1hjH
+	URkOVj7d0vybJ84aBkSHrc4LLMuhQzubgFRzA=
+X-Received: by 2002:a05:6820:c3c7:b0:6f8:2346:cd78 with SMTP id 006d021491bc7-713eb054edcmr1999367eaf.5.1793265353604;
+        Thu, 29 Oct 2026 02:15:53 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-13.dlp.protect.broadcom.com. [144.49.247.13])
+        by smtp-relay.gmail.com with ESMTPS id 586e51a60fabf-4a8b7724a96sm53590fac.6.2026.10.29.02.15.52
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 29 Oct 2026 02:15:53 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-89fb6a45c48so2461954b3a.1
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 02:15:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1793265352; x=1793870152; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IG3coSvH2rxonblcfd8xM/aTYWF217iDwaoPYy5Pq8o=;
+        b=TvgeSWwogyrqyFediFfpDAYJOJxQeGv5G5t3Lx7yjVxHD96T4DkFBBAYcGrPveStJI
+         ex0ZW8s6fIWWZ9zXkwwLLQgx4joLTKxPSccNCMJ1QrWpEamDIZCMRu6AYlTkfahTNuQO
+         8XxLfj/aDVpLR3JyeXgCJuUk052rJ+KRm7d0o=
+X-Forwarded-Encrypted: i=1; AKwUvBw80HilIpolr8stIw4WK+onHyBZk7/KnPNTQa6FYy15nzUVkLc+Zt24n6IHpl1LbkKhG0BJJqE=@vger.kernel.org
+X-Received: by 2002:a05:6a00:1393:b0:8a0:7677:c895 with SMTP id d2e1a72fcca58-8a6e85a106bmr4158000b3a.50.1793265351893;
+        Thu, 29 Oct 2026 02:15:51 -0700 (PDT)
+X-Received: by 2002:a05:6a00:1393:b0:8a0:7677:c895 with SMTP id
+ d2e1a72fcca58-8a6e85a106bmr4157983b3a.50.1793265351383; Thu, 29 Oct 2026
+ 02:15:51 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,208 +98,201 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+References: <DBBPR07MB73884DEF3976DAB7FB0713B1996E2@DBBPR07MB7388.eurprd07.prod.outlook.com>
+In-Reply-To: <DBBPR07MB73884DEF3976DAB7FB0713B1996E2@DBBPR07MB7388.eurprd07.prod.outlook.com>
+From: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Date: Thu, 29 Oct 2026 14:45:39 +0530
+X-Gm-Features: AclHuK_jE9ny3O5kBamHrWz63GUjOUdzoYCFzT5Avlg_MlzQEkkx--nwS6BvmVQ
+Message-ID: <CALs4sv15fD4j=j8EbNK_Oiyok70CEbYUrVw46EqdPEiiZDn29w@mail.gmail.com>
+Subject: Re: bnxt_en - ambiguous timeout warning
+To: =?UTF-8?B?RnLDqWTDqXJpYyBURU1QT1JFTExJ?= <frederic.temporelli@bull.com>
+Cc: "michael.chan@broadcom.com" <michael.chan@broadcom.com>, 
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="0000000000004ebb79065ef72062"
 
-Thank you for your contribution! Sashiko AI review found 5 potential
-issue(s) to consider.
+--0000000000004ebb79065ef72062
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Critical: 0 · High: 1 · Medium: 1 (1) · Low: 3
+On Thu, Oct 29, 2026 at 1:35=E2=80=AFPM Fr=C3=A9d=C3=A9ric TEMPORELLI
+<frederic.temporelli@bull.com> wrote:
+>
+> Hello Michael, Pavan,
+>
+> Using Debian Trixie, I can see the following ambiguous message when the b=
+nxt_en driver is loaded
+> (NIC is a P225 with latest 239.1.168.0 FW)
+>
+> [ 1381.294010] Broadcom NetXtreme-C/E/S driver bnxt_en v1.10.3-236.1.155.=
+0
+> [ 1381.310464] bnxt_en 0000:01:00.0 (unnamed net_device) (uninitialized):=
+ Device requests max timeout of 100 seconds, may trigger hung task watchdog=
+ (kernel default 120s)
+>
+> This warning is shown even if the FW requested timeout is lower than the =
+kernel watchdog.
+>
+> So, locking at bnxt.c (kernel 6.12.114) :
+>
+> #ifdef CONFIG_DETECT_HUNG_TASK
+>                if (bp->hwrm_cmd_max_timeout > HWRM_CMD_MAX_TIMEOUT ||
+>                    max_tmo_secs > CONFIG_DEFAULT_HUNG_TASK_TIMEOUT) {
+>                               netdev_warn(bp->dev, "Device requests max t=
+imeout of %d seconds, may trigger hung task watchdog (kernel default %ds)\n=
+",
+>                                                  max_tmo_secs, CONFIG_DEF=
+AULT_HUNG_TASK_TIMEOUT);
+>                }
+> #endif
+>
+> The warning can be shown in 2 cases
+>
+> 1st case:
+> when the FW timeout is greater than CONFIG_DEFAULT_HUNG_TASK_TIMEOUT
+> However, CONFIG_DEFAULT_HUNG_TASK_TIMEOUT is a kernel configuration param=
+eter.
+> The kernel watchdog can be modified at run time by using sysctl kernel.hu=
+ng_task_timeout_secs
+> Shouldn't the FW timeout be compared to this sysctl value ?
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+It can still change after the driver is installed, in which case it
+will still not be the exact value. Going with DEFAULT seems right to
+me.
 
-- [High] The new guard in cpt_inline_inb_lf_cmd_send()
-  (drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c:1157-1162) builds…
-- [Medium] rvu->cpt_pf_num comes from get_cpt_pf_num()
-  (rvu_cpt.c:387-406).
-- [Low] The patch fixes a user-visible defect but has no `Fixes:` tag,
-  and the commit message only says the mbox 'can lead to avoidable…
-- [Low] Sign-off chain and authorship are inconsistent.
-- [Low] The new guard reads rvu->pf[cpt_pf].cptlfs / cpt1_lfs through
-  rvu_get_rsrc_mapcount() without holding rvu->rsrc_lock.
+> In the same way, should be more relevant to display kernel.hung_task_time=
+out_secs in the warning than the default value.
+>
+> 2nd case:
+> when the FW timeout is greater than HWRM_CMD_MAX_TIMEOUT.
+> There is not detail about this test in the warning message (so the messag=
+e related to watchdog issue is shown event if there is no watchdog concern)
+> HWRM_CMD_MAX_TIMEOUT is set to 60000U (60 seconds) in bnxt_hwrm.h
+>
+> In my opinion, it should be more clear to have 2 distincts tests, with re=
+lated messages:
+> - One for the watchdog
+> - One for the driver internal HWRM CMD timeout
 
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but in
-  cpt_inline_inb_lf_cmd_send() the DMA result buffer `res` is mapped and…
+Yes but this is a low value change, is there anything getting impacted?
 
---
+>
+> A last point:
+> Why the Internal HWRM cmd timeout is not set with the FW required timeout=
+ ?
 
-octeontx2-af: skip CPT ctx flush command when no CPT LFs are attached
+bp->hwrm_cmd_max_timeout saves it, right?
 
-This commit adds a guard to cpt_inline_inb_lf_cmd_send(). The guard
-counts the CPT LFs mapped to the CPT PF and returns early when there are
-none, so the uplink mailbox message is not sent in that case.
+> (in a dedicated variable, with initial value =3D 60000U, then modified if=
+ the FW is requiring a longer timeout)
+>
+> Best regards
+>
+> --
+> Fred
+>
 
-> CPT inline inbound LF command submission was attempted even when no CPT
-> LFs were mapped to the CPT PF. In that case, sending the uplink mailbox
-> message is unnecessary and can lead to avoidable failures/timeouts during
-> CPT context flush flow.
+--0000000000004ebb79065ef72062
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-[Severity: Low]
-Should this have a Fixes: tag?
-
-When the CPT PF has no LFs, handle_msg_cpt_inst_lmtst() in
-drivers/crypto/marvell/octeontx2/otx2_cptpf_mbox.c skips the submission
-but still replies with success:
-
-	if (cptpf->lfs.lfs_num)
-		lfs->ops->send_cmd((union otx2_cpt_inst_s *)req->inst, 1,
-				   &lfs->lf[0]);
-
-*res then stays 0xFFFF. The AF busy-waits 3000 x mdelay(1) in
-cpt_inline_inb_lf_cmd_send() and logs "Poll for result hits hard loop
-counter". This happens on every NIX LF teardown with an IPsec SA base and
-on every cpt_ctx_cache_sync mbox.
-
-The unconditional submission came from commit 149f3b73cb66
-("octeontx2-af: Add support to flush full CPT CTX cache"), which looks
-like the right Fixes: target.
-
-Could the commit message also describe the roughly 3 second busy-wait
-and the warning, rather than just "failures/timeouts"?
-
-> Signed-off-by: kmahammadraf <kmahammadraf@marvell.com>
-> Signed-off-by: Srujana Challa <schalla@marvell.com>
-
-[Severity: Low]
-The commit author is Srujana Challa, but the first Signed-off-by is
-"kmahammadraf <kmahammadraf@marvell.com>" and there is no
-Co-developed-by: tag.
-
-Documentation/process/submitting-patches.rst asks for a real name. It
-also asks that a co-author's Signed-off-by come right after a
-Co-developed-by: tag. Could the trailers be fixed up to match?
-
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
-> index f404117bf6c8c..751643176c6d1 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
-> @@ -1144,15 +1144,23 @@ int rvu_cpt_lf_teardown(struct rvu *rvu, u16 pcifunc, int blkaddr, int lf, int s
->  static int cpt_inline_inb_lf_cmd_send(struct rvu *rvu, int blkaddr,
->  				      int nix_blkaddr)
->  {
-> -	int cpt_pf_num = rvu->cpt_pf_num;
-> +	int cpt_pf_num = rvu->cpt_pf_num, num_lfs;
-
-[ ... ]
-
-> +	pcifunc = (cpt_pf_num & RVU_OTX2_PFVF_PF_MASK) <<
-> +	      RVU_OTX2_PFVF_PF_SHIFT;
-
-[Severity: High]
-On CN20K, does this pcifunc still point at the CPT PF?
-
-This always encodes with the OTX2 layout (shift 10, mask 0x3F). But
-rvu_get_pfvf() decodes with rvu_get_pf(), which picks the layout based
-on the silicon:
-
-drivers/net/ethernet/marvell/octeontx2/af/rvu.h:rvu_get_pf() {
-	if (is_cn20k(pdev))
-		return (pcifunc >> RVU_CN20K_PFVF_PF_SHIFT) &
-			RVU_CN20K_PFVF_PF_MASK;
-	...
-}
-
-RVU_CN20K_PFVF_PF_SHIFT is 9, so this decodes to 2 * cpt_pf_num. The
-guard then reads cptlfs or cpt1_lfs from a different PF's rvu->pf[]
-entry.
-
-rvu_cpt_ctx_flush() only returns early for is_rvu_otx2(), so CN20K does
-reach this helper. If that other PF has no CPT LFs, the early return
-skips the CPT_INST_S drain barrier. rvu_cpt_ctx_flush() then goes on to
-cpt_rxc_teardown() and the CTX flush without waiting for in-flight
-inline inbound packets to drain.
-
-rvu->pf[] is also allocated with only hw->total_pfs entries. Can
-2 * cpt_pf_num index past the end of it?
-
-rvu_make_pcifunc(rvu->pdev, cpt_pf_num, 0) already handles both layouts.
-Would it be the right encoder here?
-
-[Severity: Medium]
-What happens here if rvu->cpt_pf_num is -1?
-
-get_cpt_pf_num() starts with cpt_pf_num = -1. It returns that value
-when no PCI_DEVID_OTX2_CPT_PF or PCI_DEVID_OTX2_CPT10K_PF device is
-found, and rvu_cpt_init() stores it without checking.
-
-(-1 & 0x3F) << 10 gives 0xFC00. rvu_get_pfvf() would then index
-rvu->pf[63], or rvu->pf[126] with the CN20K decode, and
-rvu_get_rsrc_mapcount() would dereference that entry. rvu->pf[] is sized
-to hw->total_pfs, and rvu_get_pfvf() has no bounds check.
-
-If the out-of-bounds count happens to be non-zero, execution continues
-into otx2_mbox_alloc_msg_rsp() and otx2_mbox_msg_send() with devid -1.
-
-It isn't clear whether a supported non-OTX2 platform can end up with no
-CPT PF here. Even so, should the guard check cpt_pf_num < 0 before it
-builds pcifunc?
-
-> +	num_lfs = rvu_get_rsrc_mapcount(rvu_get_pfvf(rvu, pcifunc),
-> +					blkaddr);
-
-[Severity: Low]
-Is it safe to read the CPT PF's cptlfs or cpt1_lfs here without holding
-rvu->rsrc_lock?
-
-These counters are updated in rvu_update_rsrc_map() under rsrc_lock. The
-callers are the attach handler and rvu_detach_rsrcs(), and the FLR
-worker __rvu_flr_handler() also reaches rvu_detach_rsrcs().
-
-The caller, rvu_cpt_ctx_flush(), does its own mapcount check under the
-lock a few lines later:
-
-	mutex_lock(&rvu->rsrc_lock);
-
-	num_lfs = rvu_get_rsrc_mapcount(rvu_get_pfvf(rvu, pcifunc),
-					blkaddr);
-
-Suppose the CPT PF detaches its last LF after this check has seen a
-non-zero count. The mbox is still sent, the CPT PF handler finds no
-LFs, and the AF waits out the full poll timeout this patch is meant to
-avoid.
-
-In the other direction, a concurrent attach could be missed and the
-barrier skipped.
-
-> +	if (num_lfs == 0)
-> +		return 0;
-> +
->  	res = kzalloc(CPT_RES_LEN, GFP_KERNEL);
->  	if (!res)
->  		return -ENOMEM;
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but further down in
-cpt_inline_inb_lf_cmd_send() the result buffer is unmapped and freed
-even when the mbox response failed or the poll timed out:
-
-drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c:cpt_inline_inb_lf_cmd_send() {
-    ...
-	rc = otx2_mbox_wait_for_rsp(&rvu->afpf_wq_info.mbox_up, cpt_pf_num);
-	if (rc)
-		dev_warn(rvu->dev, "notification to pf %d failed\n",
-			 cpt_pf_num);
-    ...
-	if (timeout == 0)
-		dev_warn(rvu->dev, "Poll for result hits hard loop counter\n");
-
-res_daddr_unmap:
-	dma_unmap_single(rvu->dev, res_daddr, CPT_RES_LEN, DMA_BIDIRECTIONAL);
-res_free:
-	kfree(res);
-    ...
-}
-
-res_daddr is passed to the hardware in inst[1] of the CPT_INST_S. If
-the CPT PF submits the instruction late, or CPT completes it after the
-3 second poll, could the hardware write the result into res after it
-has been freed?
-
-Without an IOMMU, or in passthrough mode, that memory may already have
-been reused.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261026091001.3421476-1-kmahammadraf%40marvell.com
+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
+/HTPxpDrr4vzZL0yoc9XefyCbdiwfyFl99oBekp+1ZxXc5bZsVhRPVyEWFtCys66nqu5cU2GPT3a
+ySQEHOtIKyGGgzMVvitOzO2suQkoMvu/swsftfgCY/PObdlBZhv0BD97+WwR6CQJh/YEuDDEHYCy
+NDeiVtF3/jwT04bHB7lR9n+AiCSLr9wlgBHGdBFIOmT/XMX3K8fuMMGLq9PpGQEMvYa9QTkE9+zc
+MddiNNh1xtCTG0+kC7KIttdXTnffisXKsX44B8ECAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
+oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
+Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
+BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
+IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
+FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
+hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
+BB0wG4EZcGF2YW4uY2hlYmJpQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
+HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUxJ6fps/yOGneJRYDWUKPuLPk
+miYwDQYJKoZIhvcNAQELBQADggIBAI2j2qBMKYV8SLK1ysjOOS54Lpm3geezjBYrWor/BAKGP7kT
+QN61VWg3QlZqiX21KLNeBWzJH7r+zWiS8ykHApTnBlTjfNGF8ihZz7GkpBTa3xDW5rT/oLfyVQ5k
+Wr2OZ268FfZPyAgHYnrfhmojupPS4c7bT9fQyep3P0sAm6TQxmhLDh/HcsloIn7w1QywGRyesbRw
+CFkRbTnhhTS9Tz3pYs5kHbphHY5oF3HNdKgFPrfpF9ei6dL4LlwvQgNlRB6PhdUBL80CJ0UlY2Oz
+jIAKPusiSluFH+NvwqsI8VuId34ug+B5VOM2dWXR/jY0as0Va5Fpjpn1G+jG2pzr1FQu2OHR5GAh
+6Uw50Yh3H77mYK67fCzQVcHrl0qdOLSZVsz/T3qjRGjAZlIDyFRjewxLNunJl/TGtu1jk1ij7Uzh
+PtF4nfZaVnWJowp/gE+Hr21BXA1nj+wBINHA0eufDHd/Y0/MLK+++i3gPTermGBIfadXUj8NGCGe
+eIj4fd2b29HwMCvfX78QR4JQM9dkDoD1ZFClV17bxRPtxhwEU8DzzcGlLfKJhj8IxkLoww9hqNul
+Md+LwA5kUTLPBBl9irP7Rn3jfftdK1MgrNyomyZUZSI1pisbv0Zn/ru3KD3QZLE17esvHAqCfXAZ
+a2vE+o+ZbomB5XkihtQpb/DYrfjAMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
+ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
+MjAyMwIMClwVCDIzIfrgd31IMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCCzJuPC
+uT6ptm384a4AQzZEUgpf+t+gDnC8HFsFgsXMQDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
+CSqGSIb3DQEJBTEPFw0yNjEwMjkwOTE1NTJaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
+MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
+SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQApHJ1nqTHa9JTaBLt4GBsYvVM/pKCDMEZk8915NNMK
+dcPIq0ILBVd0SB+pk/rbNSQzh/Zhs4XfcQWnURZNpn3aappqY7Bktu3qZ7AKhu9YBtr4TAugiTEt
+IVtjS6AyI2+mzwlsUnV3prqq0pmqvlSVHiFlp1jGsmlf0SW4iX6ExKDO2RSlQNxqNGaoJ7L8ziIK
+M058H6PebBxAZUiGJ1IHOal9vOW6GnjkvwDZze9X8fEvEboBR5rfrzLMBB7gPyN1WngQ6Z0eKMVF
+1YMAAwqW6SlqGJoOjKUoFn1W7zeYPGMLopzjdEWz8xQ7gym6nTsSLeOBsRb7PXN2DN5ZFXHh
+--0000000000004ebb79065ef72062--
