@@ -1,51 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.30
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=168.119.38.16
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793256753;
-	b=RZ8tWDnfvOv2SFKxVtBYxNqwpP3lDrr51waETEGkjyeh2yBvScKeGPwOalRPbn6FKTtz
-	 RsKZln5ajqLXoISJggYDunxyNxBvtbz26ZfXAZJLW9MFYD7AvAC7scidUKTB1QTDgTOHc
-	 pZNQtoatYJzZfOtjZkdlSKjJdpYx0I194pEkYO6X2aFW0mFlQg1So1uxR+2YcxpCyM5aO
-	 KvMdxf07EqJ30d9yyUQeA5AkfbS7TAJvarmQySORGOsW2RxVMYdJRc2xrFNxQgfPuCzPy
-	 jD7R4I2rMSebtXUeetAVZ8sAYDoz4ikjYbS0mKFK4nPSyLxdAOPri3ClRctmmR35InA==
+	t=1793257312;
+	b=cspoVEYo7hJf9dU66m/wBJiR9N/1gF24PYYz6z8Vx8Ewa6W0pl9D8/Czkd4bDAqohTSD
+	 6Mer+w6TRJC5yZOUP2pPMEqat+c6lwM2edCRVxfH6G6nT01SXjkcj+5Tnupn8JZe9YNOm
+	 EuMVkFs22vz1BWx+3XapWSBOA3p7hyJMv37bNSMMa0Cej513aXKCJR0ba8fCaypmnDH16
+	 AZl/j8pY96Q02NeXRAR1Ib8P6/gzUXdw57Irq/mR4epUpIfpZi2652t4zb4ah6SoI3Svl
+	 c3Iu7H3bZzUFNQM2shalp9wcJlis8T6SiFWYZjYx6WVlDeTHY8i3oDPhLLTGJTYIMmg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793256753;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=vcihILDAFgcDCuhSue5WNeTEF7sScUqqUKJXvqpr+l0=;
-	b=ot8aqmnIliPtBAd9gyb2RRIkp0UJKOukQLzFjGc+OeXzXaNTA1G+l+LfeJaoZBDf138V
-	 ++yhBTUDP5oM6ZAxxFnLx/YxvuHAjniw40qs21LU5d+VvstAs7zhHdCUcpEiZowgePBZu
-	 y7Esy0bI2uJzA5tKW5QH1dXhqO1iRo0GM7Gdmr2vOtodzDeJtZ8uGgxqNtdQ3wI5LrLlV
-	 4ZLbjhQzWY7wxwNTsh5AVG9G7GIZa6Y8mEnKoVqwj00FboX8jqZ5IWPgxJ1pTG5A1TahY
-	 TqKnCj/rFiowqT3DsMjNZE0HrDGMVaS9/rlu9mwYYzB1IjN0Xd4BwvgNArNfMlgeRaA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793257312;
+	h=DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:Date:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
+	 User-Agent:MIME-Version:X-malware-bazaar;
+	bh=nNh3+dC51ICKXx1gM8EqsdzIHJ7uG3P40rm777hpDF8=;
+	b=p5rDlM4u7mNK7vblbdO/FfM+BpVeZp+z1rPm7CYzNag0C9BfQ+4TqSknbDWoRy6NfhgF
+	 m0zhNn6u4xRx9Qe98iJVgcbHfoxO4L4/f2BK8ojn4IFu6h5MhradvxZbArVQlxcImJaHh
+	 SYICdKc6TvwH3sLaggQsDduxnNk+WSynNeAm6FsVMoJ7RnfOD0UFlUAhe3/YXHLMTTpqf
+	 u2lk3fYDMTwG5oZ97iMieD0DI8Wc1J/HkgRlhCCZaCbUnUBHQymSxerYV4cbU0osSyXU8
+	 pu5gkF0DfeD/vLkKAu8uO0eFSsavSr65fjWOHmcpcGv7H+Phe8hCnJP2sS+xu7LjaJg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	arc=none smtp.remote-ip=95.215.58.30
-Received: from mta1.migadu.com (out-30.mta1.migadu.com [95.215.58.30])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=permerror header.from=sipsolutions.net;
+	spf=pass smtp.mailfrom=sipsolutions.net;
+	dkim=pass header.d=sipsolutions.net header.i=@sipsolutions.net header.a=rsa-sha256 header.s=mail header.b=Fzs433BR;
+	arc=none smtp.remote-ip=168.119.38.16
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A5F606A31A
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 06:52:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B4A5F606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=vcihILDAFgcDCuhSue5WNeTEF7sScUqqUKJXvqpr+l0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793256739; v=1; x=1793861539;
- b=R19KnPYsPw8jj2qkg7t/SdlQ13ULp2eovF41diFFKQbTOE0Sp7/3EhRa8Ix1SFur98mfHZ+S
- /gKYr2BMudxHm1i8HJn9beb9g5MCrXC+hCvBksteMuoP/R/ESPs2zt1aHmgjbfRDQSNLKPZmF+M
- c/nL75x7cU2eP0ThiS0WZfLM=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 63eb0333a2af5555;
-	Thu, 29 Oct 2026 06:52:19 +0000
-X-Mizu-Trace-ID: 63eb0333a2af5555
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <5ae8a59a-93a1-4b51-85a6-17ccc07eda11@linux.dev>
-Date: Thu, 29 Oct 2026 14:52:08 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7B4606A31C;
+	Thu, 29 Oct 2026 07:01:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=sipsolutions.net header.i=@sipsolutions.net header.a=rsa-sha256 header.s=mail header.b=Fzs433BR
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=nNh3+dC51ICKXx1gM8EqsdzIHJ7uG3P40rm777hpDF8=;
+	t=1793257310; x=1794466910; b=Fzs433BR/NyYwt90J3zxwCsXO7P1DBK4Xmy3maspPZKLOwc
+	762UbDspsHeX71TeG3Azj30cM9shbnEoQj685UjH2bby4mMwrYA3cfmPEjSZpmflzkwSjmB3bJJ3i
+	jWZ0CbpWHtrx0HyJx8sDhn2PO8cZGnE41KUpzYA5IWdK6x7u3ij+6CtWHUoD1vqfReq4DvlN9ouyF
+	xfR9+V9Y6QKkPIjfjqzfmdb6BclVuXc4HZl4KMf9lZuuR3TQBRFX5HPkjUmCWXkA6iE5nqpMqMboN
+	tmL4m14ZKyswNuTW0Xv6/gn6rj1gd7IqM18Kt4/HAlv4ZQ/fzffp6NFlivZkf5Lg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1xMK8s-0000000GTTs-2BMV;
+	Thu, 29 Oct 2026 08:01:42 +0100
+Message-ID: <0198c9f52e6a4e3ee63ed6b9ee5c86673ef2e6f4.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless v2] wifi: wext: Limit notifier event flushes to
+ the device's netns
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Jakub Kicinski <kuba@kernel.org>, Cosmin Ratiu <cratiu@nvidia.com>
+Cc: linux-wireless@vger.kernel.org, Tariq Toukan <tariqt@nvidia.com>, 
+ Carolina Jubran <cjubran@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>,
+ netdev@vger.kernel.org
+Date: Thu, 29 Oct 2026 08:01:40 +0100
+In-Reply-To: <20261027162710.34e0e17c@kernel.org>
+References: <20261023081044.728500-1-cratiu@nvidia.com>
+	 <20261027162710.34e0e17c@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-3.fc44) 
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -55,52 +71,60 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] tcp: fix reordering addition overflow in MTU probing
-To: Eric Dumazet <edumazet@kernel.org>, "David S . Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Kuniyuki Iwashima <kuniyu@google.com>,
- Neal Cardwell <ncardwell@google.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
- Kyle Zeng <kylebot@openai.com>, stable@vger.kernel.org,
- Wyatt Feng <bronzed_45_vested@icloud.com>, Ren Wei <n05ec@lzu.edu.cn>
-References: <20261028160226.2170244-1-edumazet@kernel.org>
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <20261028160226.2170244-1-edumazet@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 
+On Tue, 2026-10-27 at 16:27 -0700, Jakub Kicinski wrote:
+> On Fri, 23 Oct 2026 11:10:44 +0300 Cosmin Ratiu wrote:
+> > With mlx5 netdev instance locking enabled, registering an IPoIB netdev
+> > calls the WEXT notifier while holding the instance mutex. Its call to
+> > wireless_nlevent_flush() takes net_rwsem to walk every namespace,
+> > completing the following lockdep dependency cycle:
+> >=20
+> >   netdev instance mutex -> net_rwsem (read) -> GID table mutex
+> >     -> event_handler_rwsem (read) -> netdev instance mutex =20
+> >=20
+> > RoCE GID enumeration takes the GID table mutex under net_rwsem. GID
+> > updates dispatch events under the table mutex, taking event_handler_rws=
+em.
+> > The IPoIB event handler takes the netdev instance mutex in
+> > ipoib_queue_work() to traverse child interfaces.
+> >=20
+> > The all-namespace walk originated in the single global worker servicing
+> > per-namespace WEXT queues. The ordering fixes later reused that routine
+> > in netdevice notifiers to prevent delayed WEXT RTM_NEWLINK messages fro=
+m
+> > following RTM_DELLINK or reporting stale interface flags. A notifier on=
+ly
+> > needs to drain the affected device's namespace; there is no reason for =
+it
+> > to walk and flush all namespaces.
+> >=20
+> > Pass dev_net(dev) from both notifier callers and make the flush helper
+> > operate on that namespace. Keep the all-namespace walk and net_rwsem in
+> > the existing worker. This removes the instance-mutex -> net_rwsem
+> > dependency while retaining synchronous flushing from the notifiers.
+> >=20
+> > It may seem strange that the fix for a lock cycle across multiple
+> > subsystems lies in a completely unrelated part of the code, but this
+> > seemed the most justified lock cycle edge to break.
+>=20
+> If Johannes thinks this scoping is good for other reasons - SGTM.
 
-On 10/29/26 12:02 AM, Eric Dumazet wrote:
-> From: Kyle Zeng <kylebot@openai.com>
->
-> Commit efb8763d7bbb ("net: ipv4: bound TCP reordering sysctl writes and
-> MTU probe sizes") widened size_needed and the MSS multiplication, but
-> tp->reordering + 1 is still evaluated as u32. RTAX_REORDERING accepts
-> an unrestricted u32, and tcp_init_metrics() can install U32_MAX.
->
-> In that case the extra-data requirement becomes zero. A write queue
-> with probe_size - 1 data bytes and a FIN satisfies the sequence-space
-> check. The coalescing walk can pass the queue head to
-> tcp_skb_can_collapse(), and tcp_clone_payload() can produce an skb
-> whose advertised payload exceeds the data in its fragments. Local
-> delivery followed by TCP_ZEROCOPY_RECEIVE can then walk beyond the
-> fragment array. KASAN reports a slab-out-of-bounds read in
-> can_map_frag().
->
-> Cast reordering before incrementing it so the arithmetic handles the
-> entire u32 metric range. For U32_MAX, the required size exceeds the
-> 32-bit queue and window limits, so the existing checks skip the probe.
-> The calculation is unchanged for all other reordering values.
->
-> Fixes: efb8763d7bbb ("net: ipv4: bound TCP reordering sysctl writes and MTU probe sizes")
-> Cc: stable@vger.kernel.org
-> Cc: Wyatt Feng <bronzed_45_vested@icloud.com>
-> Cc: Ren Wei <n05ec@lzu.edu.cn>
-> Signed-off-by: Kyle Zeng <kylebot@openai.com>
-> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+It seems reasonable, in truth roughly nobody [1] ever really runs WiFi
+in network namespaces.
 
+[1] except security LLM-babysitters trying to prove certain bugs are bad
 
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+> But my knee jerk fix would be to skip all the wifi processing
+> for ops-locked devices since no wifi device is ops locked.
 
+In wext_netdev_notifier_call()? I suppose these days we could also just
+skip that for non-wifi devices, somehow.
 
+But it's much easier for me now to just take this patch (in fact I
+already did), rather than try to break it in other ways and have Cosmin
+go back to test it. Maybe we'll just do both, the latter as an
+optimisation, we can likely do better than "ops-locked" as a
+discriminant too.
+
+johannes
