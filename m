@@ -1,59 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.228
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793294106;
-	b=PCZEkRZgQzN/Nx8QhhIxH5YZJze7e73q17wg/jvDk/cJ9V/VRDkWGpza5hiir22wbTnG
-	 hA4tiIIgtVST7Y6lnFG/cGSgQiu++HJv5B1Dr/BboBTE8LeuYjjgrY/l9LVZyq/QDd9Vd
-	 aEvR85XhlQtPFNE1QcNJ3J4FcRAOW37CYdC5J9LOKBGLUdqW56iqpQOr8R21nQboER53q
-	 uNDOa7ovbNEEG6DaTKVCLy2rJLmrJFYQxx7iS3WJyYWCYWFsz9si2CCsXRpz0NyCmuDPL
-	 2DFCSKLptL22943sfH4b38x8rZnF0Mhi58bHiLWYT1r7rIOsbCN1iJP99vmpMLaZELg==
+	t=1793294587;
+	b=VIAtJX9o+CEeb/8M3wT5eLZH69oyQasLJ77OdftNBJT+nJ67GgSXmlC69L/f6TeyNsz5
+	 zO2FwkpZjxnUKijfhzWLztVymhOs24CR4MNde0GpNVrCX41/qRMOAMFrlUEcTkJzqVwaC
+	 XG5ho7TzIY60+FoWI8bC7FNsLjKdM4wqp9aqhXw+GhE3EQXhLEvRJPe3f+Jc9ZjFz4vOX
+	 xaHgOeEUmF6cT+PYCgRqLMYPkhUS3IKYbQKhM8hXiEzGfNPCbjosgIVCqn2VcbraBax85
+	 mk2A5xED9hk1SWZ/WKL2qiH+Uts6xd/hMaU5lRY2UEQ3Ya/Ytqvc8JGPXBeC7kWIRow==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793294106;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=RB1Pk+9m7Z9vhYzC2pN1Rp1mzLzUovnJBnJ8agVboCA=;
-	b=XNcWUs52cpynAJQaruRheKOpEK3dP2XOQpj+1qFBkVC6QSMWOUDCpN2rE4WvzyaJbx+u
-	 Ol+fj20EEfOfwZeExfLrlrr0HKCMtmZWaZV+mG6Onng/9iPWLAG/Lgp4nvN7Tm7RejFaw
-	 j/LoC/UHAbiD5cR+ZsxW/vjWuX24Y9sPibGLCNrWNjmNgcCj4VQXAF/UjwQZEG7YVV8Qn
-	 I6Loat97+zLfHaFx5ZYJ8emUBhpF/XyJy9ahv8bbdJkSr4QKHt8SM2n5qlEKImt8HVus8
-	 Kpo9q+ut0qb72VyzuihnMfqpTWXqe4ktNsFbNCQ+iBRJlS8AfMzL1uQp238cA262cOA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793294587;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
+	 Received:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=2q8aiyZNu7WsOVILgK8CuohQb1g9BJN+Pm1TJ57mfvo=;
+	b=s3LfRsB+VjCwoGq8hBxSyBbnH2UBqvZP7Ob6WU36nVXRMnbf/9xxlLopxWMsubPkEYTV
+	 WB/9L7WU7eciWHnjdxN4usWM7ho6oP7Od1T/5GX+62aN70wFaB3jYURev8ag6ns/T+iM+
+	 LL9Cr8Ya9TNuJxw07E8Zd0bY+2jVaKZ8x9nn0U1vl4evuu7sV3Tg9vvxV7sRnYw4F35a/
+	 mxqrKH7vsxb0ski3oKcJmDPErkW5fKdWVdn/ENlzqmAmcBDlk3901wNZGUwj2pNLWoo0V
+	 qaF+GBdlv+vqfaUYIfGIZgFu7KXqPx4JRXvSmXC2gXSp2n9zuzcTxWk59CH5sCairxA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iUtQe3Jk;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=purestorage.com;
+	spf=pass smtp.mailfrom=purestorage.com;
+	dkim=pass header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=KWf1cPuI;
+	arc=none smtp.remote-ip=209.85.215.228
+Received: from mail-pg1-f228.google.com (mail-pg1-f228.google.com [209.85.215.228])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBEA4606A31D
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 17:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA47E606A31D
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 17:23:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BA47E606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iUtQe3Jk
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 123291F01816;
-	Thu, 29 Oct 2026 17:15:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793294105;
-	bh=RB1Pk+9m7Z9vhYzC2pN1Rp1mzLzUovnJBnJ8agVboCA=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=iUtQe3Jkghym49We05vmYBVQSnGf7qHgVfwTinpuTyC3V5UdMtmY6IJmPsb0HFFTb
-	 Y2YXcb6bmA1W3F5PDYhrNXa/4IKosMQqVBCWlhiaKC5N3EcdVNEswraJihxm0hMNt3
-	 sKNhpVt5Hnw7Ls7VaEuHNX0liOfkXSvZ/tu5JFKgr4E89aK51j6p7DRwwHHOUm2WBW
-	 EAM5gwuFpBOhdUM097rIk2sEsnMsQ/bvNRsibQvV3iFJALwGeesm5JxVLvgb2w/lN9
-	 oZuQlemrw723BdiDkH3RBDXyMXB/PCznXbgYTpg8pFJq8V1WN6M00uGyeAIYail1xE
-	 xbI290kUb12lg==
-Subject: Re: [PATCH net] tcp: wait for TIME_WAIT teardown before freeing
- per-netns ehash
-From: netdev-bot+sashiko@kernel.org
-To: edumazet@kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, kuniyu@google.com,
- ncardwell@google.com, horms@kernel.org, netdev@vger.kernel.org,
- kylebot@openai.com
-Date: Thu, 29 Oct 2026 17:15:04 +0000
-Message-ID: <179329410450.3134.7838743761467837570@kernel.org>
-In-Reply-To: <20261028162510.2180528-1-edumazet@kernel.org>
-References: <20261028162510.2180528-1-edumazet@kernel.org>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=KWf1cPuI
+Received: by mail-pg1-f228.google.com with SMTP id 41be03b00d2f7-cd69954c755so1703604a12.3
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 10:23:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=purestorage.com; s=google2022; t=1793294586; x=1793899386; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2q8aiyZNu7WsOVILgK8CuohQb1g9BJN+Pm1TJ57mfvo=;
+        b=KWf1cPuIggkZn92EwTkl/KvJ6hwWix4GVHBZ+DLMKXfuTvxLl70DB/JYAxMQ0/ScnM
+         FTs5qopv8mGr2ohtYJu1dvBeEqsP+8CWgutFKJuKcj+KkfFzP1rh6GLmEUZjLJaBuTKT
+         2DX2hw69+zlhM46HvRseXsqq6bzUMpLmLAOhYE++1G5Qs+0ACJ6ZiYACTI1jWL/RQLMb
+         wCXNU4GgMkXQ5J6eyO2kcwYAVA5gU7o6exSV+kcU2OzwI7NmDuWiEtEoqK94jElMUgtB
+         SER1e+WkA3Os3koIdvKdLyqJGojOmORnPTe2L5bknuryOY2yRt03/7Lz6EwgbI0RBdgq
+         4Rww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793294586; x=1793899386;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2q8aiyZNu7WsOVILgK8CuohQb1g9BJN+Pm1TJ57mfvo=;
+        b=GFp5ua4wG7/EPMgwZOVSjrpv/0u0gVo1E/0hTgIjboyv5J/9Eh+N/lDelTbA1wPhYJ
+         o2IW5K83KLEGV2WXNY53N5atb+6W74BbihOJ023axHORkLccu4TUcq5lPezgaOL3xxtT
+         wxln6k0fsnKpqcMQ7AaX6/6snlGBDbnoFewOAWJ9imSIxO8wHOOFSreRK9KdtxAs+K/5
+         AOqvHAV9YwlvEmfepQTkkyK/k0da9D2CW5EB886FoSxFZ8PRh1wiWtZe2LAw/ZLFGNPX
+         cHrlq4Z2sUjxcf+pfP8JmXShRynnODSBBObVX0B+Gz/k98dDVmzq5Ec9+s0Czf9Q5gu3
+         13gQ==
+X-Gm-Message-State: AFq9FYLlf+wm6+e9lhW6R3I9SxsnpbE4awF/+CDKcSgT5WOquraA7XNZ
+	hqpkQjjNLPoO+NOte8gTQxylzCexc+IghSFd/i7GYXxyGO0uUVa5/KQ0V2FMw3Cla2szMABt2Ql
+	S7xlyM5koTTh4343AMpOnoFBeA7atFE6iJGVp
+X-Gm-Gg: AYBFou1KTs3xxnV3WtbJ2SyesawsLvdISTNdpUI/z1ovwFW1OztozKlSuiFlKM8+Z5j
+	GpMFMKj23/BZhjD89h2A7hoE0N5RQ/kSiKa+ecQmi/nL3QEw2t0B+Cxc8v/whZPJLGnlAP9ZkLI
+	z09O3kwRNw21qcRdsMvxLc3VFVQYZXGKjEpneMzcKUWBnYz4fCRmBcyzANZsp2K1yYY5cEcCuK9
+	04mcPnGK1lbrlc3B5pzAjd4GQU1PXaa0LPkU2kYEsiG7oVDZXTQzgUIVj+oFXuC8JFGZVdET5cF
+	KHD1syzVr4I6XY7IBUKGDDU28Qz26g2KxecPUmFHE0Ei7pxnbIjAs7b0kyegFJYLIwkYFEUH6Ej
+	ppUC/t3m27XSkGSiXpZTSyUMKsrskRYWfMAc=
+X-Received: by 2002:a17:90b:3811:b0:3ad:ce34:f63c with SMTP id 98e67ed59e1d1-3ae582279a3mr5438437a91.30.1793294585949;
+        Thu, 29 Oct 2026 10:23:05 -0700 (PDT)
+Received: from c7-smtp-2026.dev.purestorage.com ([208.88.159.128])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ae85f56a85sm24253a91.1.2026.10.29.10.23.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 10:23:05 -0700 (PDT)
+X-Relaying-Domain: purestorage.com
+Received: from dev-rjethwani.dev.purestorage.com (dev-rjethwani.dev.purestorage.com [IPv6:2620:125:9025:23::2ea])
+	by c7-smtp-2026.dev.purestorage.com (Postfix) with ESMTP id 32BA743622;
+	Thu, 29 Oct 2026 11:23:05 -0600 (MDT)
+Received: by dev-rjethwani.dev.purestorage.com (Postfix, from userid 1557719937)
+	id 2D28ADCE139; Thu, 29 Oct 2026 11:23:05 -0600 (MDT)
+From: Rishikesh Jethwani <rjethwani@purestorage.com>
+To: netdev@vger.kernel.org
+Cc: Rishikesh Jethwani <rjethwani@purestorage.com>,
+	stable@vger.kernel.org,
+	John Fastabend <john.fastabend@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Ilya Lesokhin <ilyal@mellanox.com>,
+	Boris Pismenny <borisp@mellanox.com>,
+	Aviad Yehezkel <aviadye@mellanox.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v4 1/2] tls: only install push_pending_record for a TX context
+Date: Thu, 29 Oct 2026 11:23:00 -0600
+Message-ID: <20261029172302.2944955-1-rjethwani@purestorage.com>
+X-Mailer: git-send-email 2.50.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,200 +108,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+tls_set_sw_offload() assigns ctx->push_pending_record for both
+directions, but the hook is a TX-side dispatcher. On a socket whose TX
+side is HW offloaded, tls_set_device_offload() installs
+tls_device_push_pending_record(); any later TLS_RX setsockopt
+overwrites it with tls_sw_push_pending_record(), because
+tls_set_device_offload_rx() itself calls tls_set_sw_offload(sk, 0, NULL)
+for the software half of a successful HW RX offload, and so does the
+fallback when the RX offload is declined (NIC with TX-only offload,
+tls_dev_add() failure).
 
-Critical: 0 · High: 1 · Medium: 0 (1) · Low: 0
+From then on tls_handle_open_record() (a TLS_SET_RECORD_TYPE cmsg after
+a MSG_MORE send, or the close path with a pending writer) runs
+tls_sw_push_pending_record() against priv_ctx_tx, which is a
+struct tls_offload_context_tx, not a struct tls_sw_context_tx, and
+reads open_rec from inside the offload context. On x86_64 without lock
+debugging that field overlays sg_tx_data[2].dma_address, which is never
+set, so the push is silently skipped and the data buffered by the
+MSG_MORE send is later sent under the cmsg's record type, e.g.
+application data in a handshake or alert record. Enabling
+CONFIG_DEBUG_SPINLOCK, CONFIG_DEBUG_LOCK_ALLOC and CONFIG_LOCKDEP, but
+not CONFIG_LOCK_STAT, in the tested x86_64 configuration moves open_rec
+over sg_tx_data[5].page_link. Once populated, its page pointer and
+scatterlist flags are interpreted as a tls_rec pointer and dereferenced
+while reading msg_plaintext.sg.size.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Only set the hook when initialising the TX side.
 
-- [High] tcp: missing synchronize_net() in tcp_sk_exit_batch() for shared
-  ehash
+Found by code review while developing TLS 1.3 HW offload rekey support.
 
-Pre-existing issues:
-- [Medium] tcp_sk_exit_batch() (net/ipv4/tcp_ipv4.c) now calls
-  synchronize_net() only when some netns in the batch has a private…
+Tested with HW TLS TX and RX offload on Mellanox ConnectX-6 Dx (Crypto
+Enabled): after setting TLS_RX, send() "AAAA" with MSG_MORE, then
+sendmsg() "BBBB" with a TLS_SET_RECORD_TYPE cmsg for a handshake
+record. Without this patch the peer receives a single handshake record
+"AAAABBBB"; with it, an application data record "AAAA" followed by a
+handshake record "BBBB".
 
---
+Fixes: e8f69799810c ("net/tls: Add generic NIC offload infrastructure")
+Cc: stable@vger.kernel.org
+Signed-off-by: Rishikesh Jethwani <rjethwani@purestorage.com>
+---
+ net/tls/tls_sw.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-tcp: wait for TIME_WAIT teardown before freeing per-netns ehash
-
-This commit adds a synchronize_net() call in tcp_sk_exit_batch() after
-tcp_twsk_purge(). The goal is to wait for inet_twsk_kill() callers that
-unhashed their socket before the purge could see it. The wait runs only
-when at least one netns in the batch uses a private ehash, before the
-private hashinfo is freed.
-
-> diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-> index ebe5aa70374a3..3f8563a36db1e 100644
-> --- a/net/ipv4/tcp_ipv4.c
-> +++ b/net/ipv4/tcp_ipv4.c
-> @@ -3561,6 +3561,17 @@ static void __net_exit tcp_sk_exit_batch(struct list_head *net_exit_list)
->  
->  	tcp_twsk_purge(net_exit_list);
->  
-> +	/* inet_twsk_kill() can unhash a socket before the purge sees it.
-> +	 * Wait for such BH-disabled callers to finish before freeing a
-> +	 * private ehash. This is not needed for the shared tcp_hashinfo.
-> +	 */
-> +	list_for_each_entry(net, net_exit_list, exit_list) {
-> +		if (net->ipv4.tcp_death_row.hashinfo->pernet) {
-> +			synchronize_net();
-> +			break;
-> +		}
-> +	}
-> +
->  	list_for_each_entry(net, net_exit_list, exit_list) {
->  		inet_pernet_hashinfo_free(net->ipv4.tcp_death_row.hashinfo);
->  		WARN_ON_ONCE(!refcount_dec_and_test(&net->ipv4.tcp_death_row.tw_refcount));
-
-[Severity: High]
-Is the shared tcp_hashinfo case really safe to skip here?
-
-The new comment says the grace period is not needed for the shared
-tcp_hashinfo. That holds for the hashinfo memory. inet_twsk_kill()
-also touches per-netns state, though, and tcp_sk_exit_batch() checks
-that state for every netns in the batch.
-
-inet_twsk_kill() does three things in order:
-
-- unhashes the twsk with sk_nulls_del_node_init_rcu()
-- looks up the bhash and bhash2 buckets via twsk_net(tw)
-- calls refcount_dec(&tw->tw_dr->tw_refcount), where tw_dr is
-  &net->ipv4.tcp_death_row
-
-Every TIME_WAIT socket holds a tw_refcount reference, taken in
-__inet_twsk_schedule(), whether or not hashinfo->pernet is set.
-Consider a batch where every netns uses the default shared ehash
-(tcp_child_ehash_entries == 0). Can this still happen?
-
-CPU A
-tw_timer_handler()
-  inet_twsk_kill()
-    sk_nulls_del_node_init_rcu()   /* twsk of dying netns unhashed */
-
-CPU B
-tcp_sk_exit_batch()
-  tcp_twsk_purge()
-    inet_twsk_purge(&tcp_hashinfo) /* twsk already gone */
-  /* no pernet hashinfo, synchronize_net() skipped */
-  WARN_ON_ONCE(!refcount_dec_and_test(
-          &net->ipv4.tcp_death_row.tw_refcount))
-                                   /* 2 -> 1, WARN fires */
-
-CPU A
-    refcount_dec(&tw->tw_dr->tw_refcount)
-                                   /* 1 -> 0, REFCOUNT_DEC_LEAK */
-
-A BH caller can hit the same window. If tcp_v4_rcv() wins
-timer_shutdown_sync() in inet_twsk_deschedule_put(), it may still be
-inside inet_twsk_kill() when the purge runs. The purge then either
-fails to find the twsk, or gets false from its own
-timer_shutdown_sync(). In both cases it does not wait.
-
-The result is a WARN splat in tcp_sk_exit_batch(), then a
-refcount_warn_saturate() splat from inet_twsk_kill(). Systems with
-panic_on_warn would panic on the first one. inet_twsk_kill() can also
-keep dereferencing twsk_net(tw) and tw->tw_dr after
-tcp_sk_exit_batch() has returned for that netns. An unprivileged user
-with user and network namespaces can reach this setup, the same as in
-the reproducer in the commit message.
-
-The window predates this patch. However, the new comment documents the
-shared case as not needing the wait. That seems to contradict the
-invariant stated above the mutex_lock() in tcp_sk_exit_batch(): the
-thread dismantling a twsk must finish before another thread reaches
-refcount_dec_and_test() of tcp_death_row.tw_refcount.
-
-Should the wait cover the shared case too? It could run
-unconditionally. Or it could run when
-refcount_read(&net->ipv4.tcp_death_row.tw_refcount) != 1 for some net
-in the batch after tcp_twsk_purge(), which would keep the common
-no-TIME_WAIT case cheap.
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but is the shared tcp_hashinfo
-case really safe to skip?
-
-The hashinfo memory doesn't need the wait in that case. The per-netns
-tw_refcount, though, lives in struct net, and the WARN_ON_ONCE() above
-checks it for every netns, shared ehash or private.
-
-inet_twsk_kill() in net/ipv4/inet_timewait_sock.c unhashes first. It
-drops the death-row reference only after the bind table locking:
-
-net/ipv4/inet_timewait_sock.c:inet_twsk_kill() {
-    ...
-	spin_lock(lock);
-	sk_nulls_del_node_init_rcu((struct sock *)tw);
-	spin_unlock(lock);
-    ...
-	spin_lock(&bhead->lock);
-	spin_lock(&bhead2->lock);
-	inet_twsk_bind_unhash(tw, hashinfo);
-	spin_unlock(&bhead2->lock);
-	spin_unlock(&bhead->lock);
-
-	refcount_dec(&tw->tw_dr->tw_refcount);
-	inet_twsk_put(tw);
-}
-
-Take a batch where every netns uses the shared tcp_hashinfo (the default,
-tcp_child_ehash_entries == 0). Could this sequence happen?
-
-CPU A
-tw_timer_handler()
-  inet_twsk_kill()
-    sk_nulls_del_node_init_rcu()   /* twsk of dying netns N unhashed */
-
-CPU B
-tcp_sk_exit_batch()
-  tcp_twsk_purge()
-    inet_twsk_purge(&tcp_hashinfo) /* never sees the twsk, so no
-                                      timer_shutdown_sync() */
-  /* no pernet hashinfo, synchronize_net() skipped */
-  WARN_ON_ONCE(!refcount_dec_and_test(&net->ipv4.tcp_death_row.tw_refcount));
-                                   /* count is 2 -> 1, WARN fires */
-
-CPU A
-    refcount_dec(&tw->tw_dr->tw_refcount);
-                                   /* 1 -> 0, refcount_warn_saturate()
-                                      with REFCOUNT_DEC_LEAK */
-
-That would give two warning splats and leave tw_refcount saturated in the
-dying netns. On panic_on_warn systems, the first one would panic. An
-unprivileged user with user and network namespaces can reach this, the
-same setup as the reproducer in the commit message.
-
-The comment above mutex_lock() in tcp_sk_exit_batch() states the
-invariant:
-
-	 * tcp_twsk_purge() handles twsk in any dead netns, not just those in
-	 * net_exit_list, the thread that dismantles a particular twsk must
-	 * do so without other thread progressing to refcount_dec_and_test() of
-	 * tcp_death_row.tw_refcount.
-
-The commit message also says:
-
-    Wait for an RCU grace period after purging the whole batch.
-    TIME_WAIT removal runs with bottom halves disabled, so this also waits
-    for removers that were already invisible to the purge.
-
-With the pernet condition in place, that only holds for batches that
-contain at least one private-ehash netns. Mixed batches are covered only
-because the single synchronize_net() also covers the shared-ehash nets.
-
-This same window existed before this patch for both shared and private
-ehash. The shared-ehash path is unchanged here.
-
-Would it make sense to drop the pernet condition and wait for every batch
-before the refcount_dec_and_test() loop? If not, should the new comment
-say that the shared case still has this tw_refcount window?
-
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 771e02bff519..23eb94d9da6e 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -2594,7 +2594,8 @@ int tls_set_sw_offload(struct sock *sk, int tx,
+ 		}
+ 	}
+ 
+-	ctx->push_pending_record = tls_sw_push_pending_record;
++	if (tx)
++		ctx->push_pending_record = tls_sw_push_pending_record;
+ 
+ 	/* setkey is the last operation that could fail during a
+ 	 * rekey. if it succeeds, we can start modifying the
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261028162510.2180528-1-edumazet%40kernel.org
+2.50.1
+
