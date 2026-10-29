@@ -1,60 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793273894;
-	b=xyV3eRSuHvG+WMHpRq5Zwuq2berKpCJ6m2gaTYcdAcrQndlfhfWNqi4rc3veWO3O67Hn
-	 3srhdi9JJmRCjnp/ise7eUTIdZgOOqoN9LKQa5PT+Pb/aWbW+tyaXBD22+wToA0eyTF8U
-	 j64Q/mK20hJTyEkQJE95N+kTAorIgZSqymAQs0kMnODGKlPalyluh2YjghmM1T/Tl7fuB
-	 doEtnPWdAk1N4nM1s93HxWwpRlXX8aLKnyuDrQVyrWcia4m2Z3ZlDFW7BMOSugFjrb9nI
-	 EeRwQQIXqvkaywh5UsTaNSwaIX9MFws8miku2GEJdPaSPhDrUULBvgi016AQTmd61Sw==
+	t=1793274006;
+	b=xidZZl4iLRXovar+GNQqQVrSIw9Axd7YcwbawXh4qZcAysfPg8KqocLDBrHRoE7iIqcm
+	 DrgTuYVH/oREvCoekM49qM4Nsj1KLzzPH5HjTLR7bYwdwAB7BZFgK4jeePLp0TqBeOZXM
+	 smVqJZtYrQ4GjL7JwGwXFAywGGPhvX3Uo7KLUflr/CfV/hOwJw/uvXkkbduRPpDW8fsS5
+	 yklcKuZHBu0T27BsYtCi3vO8cjim220mP79BHjGqHQ9yGAg3ZdNegO9SoYTm1COaUumWd
+	 u6JR4qTfafbUg4UBZyXW30BEwApCOkCDtIJuOGg0T8UB8qfq5FvyUGe8nskWe1DiYAg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793273894;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Spam-Status:X-Spam-Checker-Version;
-	bh=cabK4srU/G66Ei8Wu76IfA6Yj6V4c/V/svODtFbiw4E=;
-	b=ZiOFSTCOGqkHvqHiRTmArxQDQNGGDriCCwK7t/9sKCcE2J0jK7WlFLi6iZ8w506JDTJX
-	 Jmh2We5jjVQ0BEDrgZo85BEe1a3zVt8JXuS5ODVt37am9UHXzskAWPLVPzeBQX1YwGeA0
-	 SkTaYoLaQ8marVpYeqSgamRHseeiikDQumny9qQHTe9pcDm/iC6nAmpTFKQBU6VCIbI53
-	 sqFOGBgFzc8m4jcM4euHKVFyO3bJ5q+BX2LiuHIrXKNhnodtAdCACxfVu0RHSshT35tMN
-	 zr6JP7yweKs7Nb9WBMDgcwlPWqJQy/HZNidxljHrH3YKpua874TTogV4afQjmPFyb/A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793274006;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=TBOcWCeRyE09SQV0o/JzcTqZh/y/wDE6C2jnFIHWhYc=;
+	b=bz5Be9sLlUbq20JDLxoO9VWjtTN5Ts3/EqucVpfPRoP5d0kzWDTuwXMsRfvkesv38wsI
+	 +ROy9qiLMdIE6ARz3Hil6oTfl0dZXX4lqLAoHsIGV2R7lLv1Hxyq3G0y0swlnJVGi+AM3
+	 Vlbzm2uWuNQUnu1p8ioR8ZpeDL8xge9c6ZEhF64u8CfDNTBuRFg1ZqyV3/nmNWVJXAeQF
+	 3mJTPzglT1k/SD38eDiBet0XLKCFkflcq+rLA/7zoRbEXHcSJRnWEq6pz23qTAV4c9THs
+	 OffxsePIyOm8FzTg/Y6aOEGpqJerDDNqY7cC35qP9LjZ8pqAlS6Rj1n6D2nZeoJQRLQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=netfilter.org;
-	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=Fv3G7Lam;
-	arc=none smtp.remote-ip=217.70.190.124
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ebtBqStV;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id B74D8606A31A;
-	Thu, 29 Oct 2026 11:38:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B74D8606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECDE9606A31A;
+	Thu, 29 Oct 2026 11:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=Fv3G7Lam
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1793273891;
-	bh=cabK4srU/G66Ei8Wu76IfA6Yj6V4c/V/svODtFbiw4E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Fv3G7Lam7o3OKJHPSDWdNyHvoNQeVpwMhyXaEdBYSlshEJjbWPkM9YfYJ3XZK3DmL
-	 Io2dhZcdeKhBSBG8tIeLRAEhfSZW2kHPNVtEiOWo5fhvMFVXMGcmwzfahfs3zh6Ybe
-	 27d7Kada/Vxs0eSyYXjX7LUM2quGpdSjNhCZkpxslgIIzKPPccPKjDkdAVaZy+Gizj
-	 5oFTdEEKuoeVMQ+0wyTCl+3rBMITcqRqeqse/XVT2JRgpP9RabqrIpm+6hHbztNEe+
-	 2hgNDwQTt7kQyUfnxDO78DL9457Uma50AwIfPpKM0ionPyBEmTZfEhs+Foh3jtcVa8
-	 SI3VH0AUuaXug==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 3679D60077;
-	Thu, 29 Oct 2026 12:38:11 +0100 (CET)
-Date: Thu, 29 Oct 2026 12:38:08 +0100
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Koral Ilgun <koralilgun@gmail.com>
-Cc: netfilter-devel@vger.kernel.org, fw@strlen.de, phil@nwl.cc,
-	coreteam@netfilter.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Koral Ilgun <koral.ilgun@adtran.com>
-Subject: Re: [PATCH nf] netfilter: nft_flow_offload: do not offload multicast
-Message-ID: <auMwIMerV-LQ-aNL@chamomile>
-References: <20261028205938.662312-1-koralilgun@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ebtBqStV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF4C01F01825;
+	Thu, 29 Oct 2026 11:40:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793274005;
+	bh=TBOcWCeRyE09SQV0o/JzcTqZh/y/wDE6C2jnFIHWhYc=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=ebtBqStVzefn5r9pL2B+YSX4ivaLjiFbAjHRIUHa2j1ZiKtKCxtR0PPeDxwshLvfI
+	 twUW6jLLjNClS63IE2sZCth9evRZSucCjrp0ZjLeNf77IVmqfsMNYUalKVtrQaWVOJ
+	 UVoHQYr0SIsTLn7DbM1Whw1E7C5/+ORYBBWcF7rBcWPpg1HeAsPqnud/PQB/VowmzS
+	 kzLacAKFIsJlh3SJ/5v0LAevl/LmMwzsLl9sl5Y6vvQvqhH/zz5ew6O7tb1S8fY9bk
+	 TXEC/rKGM17E1Vna76DgkbMZhJIrElH+XgK7i84kmlT6yuGYpdcUPV4prYboEF34vT
+	 kAsfI6IhHBXCg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BE5323ABD290;
+	Thu, 29 Oct 2026 11:40:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,79 +53,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261028205938.662312-1-koralilgun@gmail.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] tg3: Invert restart quirk logic to restrict SNP
+ power-down bypass
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179327400457.1773334.15430060848515366036.git-patchwork-notify@kernel.org>
+Date: Thu, 29 Oct 2026 11:40:04 +0000
+References: <20261026220955.473247-1-noam.d.eliyahu@gmail.com>
+In-Reply-To: <20261026220955.473247-1-noam.d.eliyahu@gmail.com>
+To: Noam D. Eliyahu <noam.d.eliyahu@gmail.com>
+Cc: netdev@vger.kernel.org, pavan.chebbi@broadcom.com,
+ michael.chan@broadcom.com, kuba@kernel.org, edumazet@kernel.org,
+ davem@davemloft.net, pabeni@redhat.com, andrew+netdev@lunn.ch,
+ horms@kernel.org, stable@vger.kernel.org
 
-On Wed, Oct 28, 2026 at 01:59:38PM -0700, Koral Ilgun wrote:
-> From: Koral Ilgun <koral.ilgun@adtran.com>
-> 
-> A flow holds one output per direction, which it resolves when it is
-> added. The outputs of a multicast route change when listeners join
-> or leave. So a multicast flow in the flowtable continues to send to
-> the output that it resolved, also after the last listener left, and
-> the counters of the multicast routing stop.
-> 
-> IPv4 multicast stays out of the flowtable only because the reverse
-> route lookup in nft_flow_route() refuses a multicast source address.
-> The IPv6 route lookup has no such check, so IPv6 multicast that
-> ip6mr forwards goes into the flowtable.
-> 
-> Skip a multicast destination for both families, so that the result
-> no longer depends on the route lookup.
+Hello:
 
-Please, target nf-next for this patch.
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-I agree this is convenient, but you can still restrict to unicast
-traffic via ruleset, so I don't think this qualify as a fix.
+On Tue, 27 Oct 2026 00:09:56 +0200 you wrote:
+> Commit 9fc3bc764334 ("tg3: power down device only on SYSTEM_POWER_OFF")
+> bypassed `tg3_power_down()` on system restarts to prevent reboot hangs and
+> NMIs on servers where NICs were initialized via SNP (such as Dell PowerEdge
+> R650 and R750).
+> 
+> However, skipping the power-down flow globally causes the ACPI _PTS method
+> to trigger fatal PCIe AER events and hangs on other models. Commit
+> e0efe83ed325 ("tg3: Disable tg3 PCIe AER on system reboot") attempted to
+> mitigate this by adding an AER-disable DMI quirk table. Maintaining a
+> growing list of models for a secondary symptom misses the root cause,
+> leaving systems like the PowerEdge T440 (sharing the BCM5720 NIC) exposed.
+> 
+> [...]
 
-> Fixes: a3c90f7a2323 ("netfilter: nf_tables: flow offload expression")
-> Signed-off-by: Koral Ilgun <koral.ilgun@adtran.com>
-> ---
-> Tested on an arm64 router with Linux 6.18.54, with an inet flowtable
-> that offloads forwarded flows, and IPv4 and IPv6 multicast routed from
-> the WAN to one VLAN. Without this change, the IPv6 flow went into the
-> flowtable after its first packets: the ip6mr vif counters showed 25 of
-> 1,500 packets, and the receiver still got all 400 packets after its
-> leave. With it, the vif counters showed 1,500 of 1,500, the flow stayed
-> out of the flowtable, and the stream stopped about 2.5 s after the
-> leave. IPv4 multicast stayed out of the flowtable before and after.
-> Unicast IPv4 and IPv6 flows still went into the flowtable.
-> 
->  net/netfilter/nft_flow_offload.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
-> 
-> diff --git a/net/netfilter/nft_flow_offload.c b/net/netfilter/nft_flow_offload.c
-> index d3c5651dd699..1fc755e594b0 100644
-> --- a/net/netfilter/nft_flow_offload.c
-> +++ b/net/netfilter/nft_flow_offload.c
-> @@ -10,6 +10,7 @@
->  #include <linux/netfilter/nf_conntrack_common.h>
->  #include <linux/netfilter/nf_tables.h>
->  #include <net/ip.h>
-> +#include <net/ipv6.h>
->  #include <net/flow.h>
->  #include <net/netfilter/nf_tables.h>
->  #include <net/netfilter/nf_tables_core.h>
-> @@ -35,6 +36,16 @@ static bool nft_flow_offload_skip(struct sk_buff *skb, int family)
->  			return true;
->  	}
->  
-> +	/* A flow keeps the output it resolved at offload time, but the
-> +	 * outputs of a multicast route change when listeners join or leave.
-> +	 */
-> +	switch (family) {
-> +	case NFPROTO_IPV4:
-> +		return ipv4_is_multicast(ip_hdr(skb)->daddr);
-> +	case NFPROTO_IPV6:
-> +		return ipv6_addr_is_multicast(&ipv6_hdr(skb)->daddr);
-> +	}
-> +
->  	return false;
->  }
->  
-> 
-> base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
-> -- 
-> 2.43.0
-> 
+Here is the summary with links:
+  - [net] tg3: Invert restart quirk logic to restrict SNP power-down bypass
+    https://git.kernel.org/netdev/net/c/d7314b51341c
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
