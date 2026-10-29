@@ -1,54 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793316109;
-	b=RiDh2l5EILKJuk2+0zPMf8sdP1/Qj/Xdi0nc5OS7vtbU9ziBrl8Hr+Y/c6MxmA9MKNrp
-	 xlwDSx0bDlJAsNBBV4+u3uWpTitXASCNR6+4ZZQR72F6K1DIX+ifFvhxFbmfzOxD1gNzb
-	 ZF/hl59CcSIrJ8OIDNXyXtnM1wfDYXVZ/SFvQe3j7Lz/ltfWW5W72RCD0MBN82VhdE+is
-	 0IgbcQ3Ou71L1OhOG8Q5K2sTnBA98BqFb1jiHnVnZdq6SI7rjRTbkDDQMKzgjSl2QYqpT
-	 gJJK5dFYN9MIiR0hdQDtKaqWCgY7Qz2hTCxy59izAGkR1PdEKrcgU7Q00xfbGnsGTWA==
+	t=1793316465;
+	b=sA/qG3QY2NJRzdB/nh5eb1VUB3SQbKacU/tRskrwTzoobhDRAJ4L57TYEMczg4AKTtHd
+	 KByF/WfyyRr4Pzwk0IVzi4Eo7oL3aqjYGVbUF/bktLRGs79feMZO5Y8lpkkR2jBSr+JSK
+	 I31L6I/VD/VyIhgcI20hCXvEZWw8PNdAAA1SQ6kS61T1v3412hZFHXkGm7RiUHBXn6njR
+	 to5YEtVSuiBqGMQYZAncUjoVX4p7ghKFVu4KssjwBmjyGOoZdspYyuZolHTmTjH5XWpEw
+	 BwgSW5eSHUZm6WqWd+++sxVhUDCkKud7tLHtLFK/astnduK3MxJtoF64UphaonJRkfQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793316109;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:MIME-Version:X-Received:Date:
-	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
-	 Subject:From:To:Content-Type;
-	bh=9KXT4dHagJhrc5RYxqkBMcxc0mqm0x3wYl4HY30il/o=;
-	b=iFuwqPTBdIxto6SBsE03eTBaoMmOd9DKynEuvSewJZJ4kOFPcYgLccLQaNXYpmpTn3X9
-	 xRUMLthzNEi5nbu8Vzc9+b0WQl4WDXSA88aZnxlOinUhCW42BSGh5wLZ4SlLkbIAm29vp
-	 I+wNTdnskywdpw/Hx7kAhbLmupPvuBgAQHaf5XO4hojONfvGjPi8LnaqqjGIFrqeMA2Cm
-	 8LzDz3XDja+X3s+HnW2eu5508Zn/p62O2A2kJu36SOpAV1AKZ37d6IdVEtiJjXzXMwyar
-	 YAfohNoWJxUDSzoB+mRzvCM7FYU8qnYJqYGkz+fnECeV/RJ4Pxw3SthZYcn5foo+8og==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793316465;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=VpNFSaEVPIgaitRWclY27M8HtMOzW/v4lrjfw3GGNTA=;
+	b=cOtTivGwqfJRsaLXV82Uwk1+89N19GNWUO0XnVtTKdymwTZ2J6egDB6UB/ysTkCLabzp
+	 trq0EC9m8J2CjlkIae+sT7CP9poSlxaDdZRpWtDL+WZ7o/wfsJE3FQ1h64PYUcTeCOpGv
+	 IvLTUXr8BbKlg7g6z3j94AGpOlqH3bE7kDWWmkMhRKAASZQEWVtKIJCyaIMyEPjLaE6Ka
+	 Ga5Xy+j5fzllYIuY+P3FcIlCOw8OkePrdnOXvPMvAgYBrLu+eVKqb7pBw7Goi/ILzsykp
+	 pvGr7zNsJMmnUoP6pU1FygA/g84J8LCrgikwWSN0AqTkNf6Cf4TGAjknhextbpozajg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=fail header.from=syzkaller.appspotmail.com;
-	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	arc=none smtp.remote-ip=209.85.167.198
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
+	dmarc=none header.from=mojatatu.com;
+	spf=none smtp.mailfrom=mojatatu.com;
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=D9aZ7Wzv;
+	arc=none smtp.remote-ip=209.85.222.174
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1E2606A31D
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 23:21:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1A1E2606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4c734afb8deso184363b6e.1
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 16:21:48 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9090D606A31E
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 23:27:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9090D606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=D9aZ7Wzv
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-93f269e335eso7662385a.3
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 16:27:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1793316463; x=1793921263; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=VpNFSaEVPIgaitRWclY27M8HtMOzW/v4lrjfw3GGNTA=;
+        b=D9aZ7Wzvfx0yphYngHaag3ODs+QTcnPjozdlmU3oIz2a6h97M4mZm8/YYLLzQfV7Cn
+         w05GuZxQxJeUaEtD1UXJWBdiR8GrpKIZhCdXgrU3hyFh56PPJT7nO9k3CxMsB8K2JLbD
+         jRwxfh2HBafByWOrgVlA5h1CrVf4CD161eMYA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793316108; x=1793920908;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9KXT4dHagJhrc5RYxqkBMcxc0mqm0x3wYl4HY30il/o=;
-        b=Yt0D89LNMLzlG2rbcwH5uu+rS9Qb9RtwnMpe2XrU2nSi1tZg+dkiutlQk3g+/q/sk2
-         jpA/sI8ChuljfnQcC8crK+rXXpMkwQke6X+0bz7IMFhLGLBnztcjIakMmOaDYWEU8orS
-         f/rCMFfD5OUMxN8r71ECukOTCEyD5gbtA4m7xGMeihVSqHydAmnVfQQGwMmbRBshRGXy
-         2m+sLjVe4SRfRodPpnw3Brt/mCw5z+1hbFWnFIAPRh7ZFn0ueXsHK8HXCYBTuvoTRs8F
-         HLWpIhbDHCB/oFfEhSg7LVjIAToHQqHHOxOmpn9YJS9lnXWPlZPiSTVkNvBKsjGoVr/N
-         dpUA==
-X-Forwarded-Encrypted: i=1; AKwUvBwzEAQaOYXjbBYvV0zn7oYwkZk+kUA5ZMIDZFLbtH1AHuk4xilx3XBHFqHQ+vtnPWtjTCzqBjk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYICZU75kmd702RZhnNItgaar8yrIskyFE7/snef0lWtfRqEj+lI
-	IMc0synwKjp2poOKS+9PAazYzLNk1lYg7zNYKWTylcXZ9dlZCnDV9O6g6iu9EFOGsjq9LQgbngP
-	8do3RUBLoj+tbn/mEZ4QbvqRdz8yllD2HE7P3zS5YGKg126bLJ/vT811mAhc=
+        d=1e100.net; s=20260707; t=1793316463; x=1793921263;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=VpNFSaEVPIgaitRWclY27M8HtMOzW/v4lrjfw3GGNTA=;
+        b=a0n4PN6oHBkCahKRDdj5TNYGZmL0C4eLzumSq/zeuDaeKPyUFi0mUujUNjqjqRD5Ho
+         3CiB3svuR9dTHNvj156gqixVj5+S49LBv3k74MiT3qvpprxxsuVG75dgoup1ZqX7Zf1Q
+         9PCoNmStU3Rum5heX2S+QcTwU3NXnyXpnIM1k3JgYEK3+JrL4atSLZ2KxztFRITYPTan
+         I6xSCqswAchQKZ+shZcOZaS5s5p2wBD1To2ApXKRe5Tz2cfH5+tpM1EwPb+EHom1Qtqn
+         ZiK7trC9pC6uUMuZPjL541rcjDXi0EAbcJxqFa6ClioZy2r+C9kHzY9iKT58HysTf/yd
+         Y1aQ==
+X-Gm-Message-State: AFq9FYJNLVlCT4+ceWR4NU6QDMviB3KtzJAKAG2n327HYzn+syje3vUY
+	k9SpSXwhWgeQu1bDmNy+sEQiH8p1PE11xX9BUnOd++H53Frfd2zTYiq7icNrV5gj6LgUWISr2s6
+	WB9g=
+X-Gm-Gg: AYBFou2dCh98Jlt2Maz6pUpvrNOR/Q168r7Cf/uZJK/NUjwVZzpQ0UStSytYY0s1B86
+	GvYk39Qc9WffHVGGoaKGnygz5KSRcjqB9+NmXl87I0129r64DXy1fVHcAoudA2IJbtqyZEQEMwP
+	5LwlsrAQFEIjzvaeg35ryaHh4032+hBLz5NzHoEJzZTmxM8X8HJu20wibmU/sKtO7VFZTUZkOs9
+	rvrFMJubJpV/fwji2q3ywbdp2z5B3GIZgLbhCHi4/0JGY0Gt5fpI8aMqkaWOZKH8h7vklfp64ut
+	KiDzvaGizAdA55CLHiXsnh3OU+CTDlfO2/8tovUwZKsWHtS+23w1aGdhkMNS81gTbN5KOXimewC
+	zDtiqcEnPDKBxq5R5nju3OJQgDUwMkb1f+ZRSZCPXPYZrQZAFBdpu9v9KGTFYcZ0Y6KzgroCfkg
+	SuTW8QLRZutlBnQsWaJBHNZm7VLJKgineQUsQ+K1fI8Eeo4GCod97Q2nXDFPKjGhmm7mdXlOafR
+	LHBm42sZehSzWWxldf2OJ0o6qr8ikSE3ps1PRwQAkj+mLWpQMpKklqxriGLpHiEjmYIPA4G1nzM
+	/IvLF7IdbGECoDgl/9DFeX+nbtQIm0e9wavNyR7rmo1v0imxTnY+I3XNkZoNmP8av8psi8Zzj4k
+	=
+X-Received: by 2002:a05:620a:8005:b0:93f:611d:a18e with SMTP id af79cd13be357-944216ed622mr140154385a.55.1793316463321;
+        Thu, 29 Oct 2026 16:27:43 -0700 (PDT)
+Received: from mbili.waya ([64.203.83.2])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-94424243823sm5384385a.21.2026.10.29.16.27.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 16:27:42 -0700 (PDT)
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+To: netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	stable@vger.kernel.org,
+	shaos <shawnq1@163.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Sashiko <sashiko-bot@kernel.org>,
+	Vega <vega@nebusec.ai>
+Subject: [PATCH net 0/3] net/sched: fix short-skb metadata and namespace boundaries
+Date: Thu, 29 Oct 2026 19:27:36 -0400
+Message-Id: <SER-NSBD.v1.r0.20261029191634@mojatatu.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,180 +101,44 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:23c2:b0:4fb:73e8:5a25 with SMTP id
- 5614622812f47-5640dee0b4bmr681041b6e.53.1793316107858; Thu, 29 Oct 2026
- 16:21:47 -0700 (PDT)
-Date: Thu, 29 Oct 2026 16:21:47 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6ae3d50b.9c6421ad.36baac.0003.GAE@google.com>
-Subject: [syzbot] [sctp?] kernel BUG in __pskb_pull_tail (2)
-From: syzbot <syzbot+f15a6eff7a53f6eb7dc3@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@kernel.org, horms@kernel.org, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-sctp@vger.kernel.org, 
-	lucien.xin@gmail.com, marcelo.leitner@gmail.com, netdev@vger.kernel.org, 
-	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+This series fixes three independent boundary problems in net/sched.
 
-syzbot found the following issue on:
+1/3 act_ife: encode a configured zero metadata value.  ife_check_meta_u32()
+reserves an 8-byte TLV for a configured zero value, but the encoder
+returned without writing it, leaking stale skb headroom bytes.
 
-HEAD commit:    21a7f44fd076 Merge tag 'devicetree-for-7.4' of git://git.k..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1299b469580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=b92e3106016c03ef
-dashboard link: https://syzkaller.appspot.com/bug?extid=f15a6eff7a53f6eb7dc3
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+2/3 act_ife: require a full Ethernet header on egress.  An undersized
+linear head can make the encoder read past the end of the skb data.
 
-Unfortunately, I don't have any reproducer for this issue yet.
+3/3 sch_teql: reject qdiscs from another network namespace.  The global
+TEQL master lives in the initial netns; a qdisc created in another netns
+could still mutate the master's MTU and flags.
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-21a7f44f.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/9b86d9af9ad5/vmlinux-21a7f44f.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/6f435992c0d2/bzImage-21a7f44f.xz
+Origins:
 
-AI-generated root cause summary:
-When receiving an SCTP packet that is nonlinear (such as an SCTP GSO packet
-constructed with fragments in frag_list), sctp_rcv attempts to linearize the
-packet using skb_linearize() if the sk_buff is cloned (e.g., tapped by a packet
-socket or shared) or not recognized as GSO. During linearization via
-__skb_linearize() and __pskb_pull_tail(), skb_copy_bits() fails with -EFAULT due
-to a discrepancy in frag_list fragment lengths or readable offsets, triggering a
-BUG_ON assertion failure. In production builds, this BUG() results in an invalid
-opcode oops and kernel panic, causing an immediate denial of service.
+1/3: reported by shaos <shawnq1@163.com> with a reproducer, which was
+reproduced and verified in our test environment.
+2/3: found by Sashiko (nipa and gemini) while reviewing Victor Nogueira's
+parent act_ife patchset; independently reported by shaos
+<shawnq1@163.com> with a reproducer, which was verified in our test
+environment.
+3/3: reported by shaos <shawnq1@163.com> with a reproducer, which was
+reproduced and verified in our test environment.
 
-full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=f15a6eff7a53f6eb7dc3
+The three patches are independent.  They target net and carry a stable
+nomination.  They are sent together because they share the short-skb and
+namespace-boundary review context.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+f15a6eff7a53f6eb7dc3@syzkaller.appspotmail.com
+Jamal Hadi Salim (3):
+  net/sched: act_ife: encode a configured zero metadata value
+  net/sched: act_ife: require a full Ethernet header on egress
+  net/sched: sch_teql: reject qdiscs from another network namespace
 
-------------[ cut here ]------------
-kernel BUG at net/core/skbuff.c:2903!
-Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-CPU: 0 UID: 0 PID: 8843 Comm: syz.2.816 Tainted: G             L       syzkaller #0 PREEMPT(full) 
-Tainted: [L]=SOFTLOCKUP
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:__pskb_pull_tail+0x1335/0x1920 net/core/skbuff.c:2903
-Code: 61 f8 48 89 df e8 6b 03 fe ff 31 ff 41 89 c4 89 c6 e8 af c5 61 f8 45 84 e4 0f 84 1c f2 ff ff e9 84 f2 ff ff e8 8c cb 61 f8 90 <0f> 0b e8 84 cb 61 f8 48 8b 54 24 30 48 b8 00 00 00 00 00 fc ff df
-RSP: 0018:ffffc90000007870 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 00000000fffffff2 RCX: 0000000000000101
-RDX: ffff888031daa580 RSI: ffffffff89ac4f84 RDI: ffff888031daa580
-RBP: ffffc900000078f0 R08: 0000000000000005 R09: 0000000000000000
-R10: 00000000fffffff2 R11: 0000000000000000 R12: 00000000000000e4
-R13: 0000000000000180 R14: 0000000000000000 R15: ffff88803a46bb80
-FS:  00007fa1c8fde6c0(0000) GS:ffff8880d44ac000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 0000000037f0f000 CR4: 0000000000352ef0
-Call Trace:
- <IRQ>
- __skb_linearize include/linux/skbuff.h:4025 [inline]
- skb_linearize include/linux/skbuff.h:4037 [inline]
- sctp_rcv+0x143e/0x3cc0 net/sctp/input.c:120
- ip_protocol_deliver_rcu+0x44c/0x4d0 net/ipv4/ip_input.c:207
- ip_local_deliver_finish+0x3fb/0x6e0 net/ipv4/ip_input.c:241
- NF_HOOK include/linux/netfilter.h:325 [inline]
- NF_HOOK include/linux/netfilter.h:319 [inline]
- ip_local_deliver+0x1a3/0x200 net/ipv4/ip_input.c:262
- dst_input include/net/dst.h:481 [inline]
- ip_rcv_finish net/ipv4/ip_input.c:492 [inline]
- NF_HOOK include/linux/netfilter.h:325 [inline]
- NF_HOOK include/linux/netfilter.h:319 [inline]
- ip_rcv+0x33a/0x3c0 net/ipv4/ip_input.c:612
- __netif_receive_skb_one_core+0x197/0x1e0 net/core/dev.c:6405
- __netif_receive_skb+0x1f/0x120 net/core/dev.c:6518
- process_backlog+0x487/0x1600 net/core/dev.c:6869
- __napi_poll.constprop.0+0xaf/0x450 net/core/dev.c:7938
- napi_poll net/core/dev.c:8001 [inline]
- net_rx_action+0xa40/0xf20 net/core/dev.c:8158
- handle_softirqs+0x216/0xa20 kernel/softirq.c:669
- do_softirq kernel/softirq.c:569 [inline]
- do_softirq+0xaf/0xf0 kernel/softirq.c:556
- </IRQ>
- <TASK>
- __local_bh_enable_ip+0xff/0x120 kernel/softirq.c:473
- local_bh_enable include/linux/bottom_half.h:33 [inline]
- rcu_read_unlock_bh include/linux/rcupdate.h:923 [inline]
- __dev_queue_xmit+0xa73/0x4a50 net/core/dev.c:5101
- dev_queue_xmit include/linux/netdevice.h:3483 [inline]
- neigh_hh_output include/net/neighbour.h:538 [inline]
- neigh_output include/net/neighbour.h:552 [inline]
- ip_finish_output2+0xfa4/0x2740 net/ipv4/ip_output.c:236
- __ip_finish_output.part.0+0x43b/0x6f0 net/ipv4/ip_output.c:314
- __ip_finish_output net/ipv4/ip_output.c:302 [inline]
- ip_finish_output net/ipv4/ip_output.c:324 [inline]
- NF_HOOK_COND include/linux/netfilter.h:314 [inline]
- ip_output+0x392/0xc00 net/ipv4/ip_output.c:437
- dst_output include/net/dst.h:471 [inline]
- ip_local_out+0x193/0x1f0 net/ipv4/ip_output.c:131
- __ip_queue_xmit+0x876/0x1f50 net/ipv4/ip_output.c:533
- sctp_v4_xmit+0x91a/0x1070 net/sctp/protocol.c:1061
- sctp_packet_transmit+0x22fe/0x30b0 net/sctp/output.c:659
- sctp_outq_flush_transports net/sctp/outqueue.c:1174 [inline]
- sctp_outq_flush+0xb2b/0x3380 net/sctp/outqueue.c:1222
- sctp_cmd_interpreter net/sctp/sm_sideeffect.c:1826 [inline]
- sctp_side_effects net/sctp/sm_sideeffect.c:1211 [inline]
- sctp_do_sm+0xce1/0x5c30 net/sctp/sm_sideeffect.c:1182
- sctp_assoc_bh_rcv+0x392/0x740 net/sctp/associola.c:1048
- sctp_inq_push+0x25c/0x320 net/sctp/inqueue.c:91
- sctp_backlog_rcv+0x169/0x590 net/sctp/input.c:331
- sk_backlog_rcv include/net/sock.h:1194 [inline]
- __release_sock+0x39d/0x440 net/core/sock.c:3341
- release_sock+0x1e5/0x280 net/core/sock.c:3940
- sctp_sendmsg+0x1166/0x22e0 net/sctp/socket.c:2091
- inet_sendmsg+0x11c/0x140 net/ipv4/af_inet.c:864
- sock_sendmsg_nosec net/socket.c:800 [inline]
- __sock_sendmsg net/socket.c:818 [inline]
- ____sys_sendmsg+0xa23/0xc30 net/socket.c:2715
- ___sys_sendmsg+0x190/0x1e0 net/socket.c:2769
- __sys_sendmmsg+0x20c/0x440 net/socket.c:2858
- __do_sys_sendmmsg net/socket.c:2885 [inline]
- __se_sys_sendmmsg net/socket.c:2882 [inline]
- __x64_sys_sendmmsg+0x9c/0x100 net/socket.c:2882
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fa1c819f559
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fa1c8fde028 EFLAGS: 00000246 ORIG_RAX: 0000000000000133
-RAX: ffffffffffffffda RBX: 00007fa1c8426180 RCX: 00007fa1c819f559
-RDX: 0000000000000001 RSI: 00002000000004c0 RDI: 0000000000000006
-RBP: 00007fa1c8236b20 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fa1c8426218 R14: 00007fa1c8426180 R15: 00007fff741e8248
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:__pskb_pull_tail+0x1335/0x1920 net/core/skbuff.c:2903
-Code: 61 f8 48 89 df e8 6b 03 fe ff 31 ff 41 89 c4 89 c6 e8 af c5 61 f8 45 84 e4 0f 84 1c f2 ff ff e9 84 f2 ff ff e8 8c cb 61 f8 90 <0f> 0b e8 84 cb 61 f8 48 8b 54 24 30 48 b8 00 00 00 00 00 fc ff df
-RSP: 0018:ffffc90000007870 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 00000000fffffff2 RCX: 0000000000000101
-RDX: ffff888031daa580 RSI: ffffffff89ac4f84 RDI: ffff888031daa580
-RBP: ffffc900000078f0 R08: 0000000000000005 R09: 0000000000000000
-R10: 00000000fffffff2 R11: 0000000000000000 R12: 00000000000000e4
-R13: 0000000000000180 R14: 0000000000000000 R15: ffff88803a46bb80
-FS:  00007fa1c8fde6c0(0000) GS:ffff8880d44ac000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 0000000037f0f000 CR4: 0000000000352ef0
+ net/sched/act_ife.c  | 8 +++++---
+ net/sched/sch_teql.c | 5 +++++
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
-
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
