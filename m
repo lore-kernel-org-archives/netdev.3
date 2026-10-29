@@ -1,101 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.48
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793290249;
-	b=CBhx7qLM20LjJPoQydK0YdpcmTf/vYjtZp3+U50gCZotpvSg7bMq0u3+suvVQw1kqtLe
-	 CTdxPPsmc3Cl9JzNyMRgkIhIwoofH6x6A5BhRI1aPTWl0Tf1KTmtkfNqRlyPduqFMkhME
-	 ZcO4Jpg1VbMQf+s7Fw8ASTO3NpoKxvb3b2Y9jGuodYE15zKb3fwd6YQf4tS87uH7CYrqO
-	 XGcwJR89AalHjW6wl6dM8vKhmj4qqB3Rm0a0XMFo2aL0wtRJs9pBdut4l3iCegtHHsvwI
-	 i2oRH6xGSNcFwPTQLV69IEPl0XwFEEElW7PGR70akyPJNKScU3L8/WbxzCr6ps3N+5w==
+	t=1793290516;
+	b=UlrBmuxYEFkGfvYp82zuqEsnEQGamRXNRtA0yPifvfJAm95U5uH1Zk9oieMFgm9OcbVy
+	 Wi4zcRdAsib31gsQw+0HyC4Rk7fRVgy2ORH66ZZbgAWzTU+Df9B4/jJsRfPMTJkx6P+1m
+	 9ppeEQo7xrQ0JltLaCv61sDcMH5xlsUgk2jbgr3BZCmUKREw9r20Hg3HDwCD5AG1VPGzL
+	 8zycRf2pyMrGa4uH4h1aW9nWn0GrjDL70kYhdw/AP7zAi/ONof3y7QNLKBmdUgR7cAGoI
+	 HplSuJXrHadVe8WiQ4vf8rUyp/PrUuPEwfzTJSAqTPHH3/l5PF4sgvOaGeuuGlo3Mpg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793290249;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=wGitExb5ASqG1hEb2tSa+iqDI3pMKELGUtvIGcSLDEQ=;
-	b=SmWii1vkmxo+yqlplWaVkKU23efasaSyodnGEXsFDTl1nk2d+H8h4Pm3Q+lT+SDhHKWn
-	 WfNx59726lZX5fGvqM9cKuFLG15EGJG8+GFyvDKbPFs1uHH73bmtYHZTmrsEoWo1ctXC0
-	 Ws4LfYBEziat0g21/7krR534fWPExKTTeHthS4UYDxoU3P2z91NeJV8EVvwzYzkZNbYyS
-	 c1/OGREuO06sOVlS+Yv2tlCeCNuYy2StcmEEFDe/uagg8jOr5N5hPSjUhaOaekPQFlgCG
-	 Zoj9Ke4mJSt9tg05i1mvbLgoGWmI0sVJ2+lbd8yAQnJ+H66dW5CC3EUiTcztoD/UUmA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793290516;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=k6NrO70p6SzlKRqmWvppOYWBQqrvnG6uRQVbixAqVsY=;
+	b=dKSvpEt/aT01NfwfiztZOql90z3INjF2KkCsbSXMMcsINO9Qj5o5ZfaNXQL4yB2Sk0kF
+	 ikRZHhiPmhZfizkbWidX85rFAZDHPrzpXwcXbplFYGPxf8KdVQosePTTF0NABKa67TNwS
+	 UN33dFt+BB86tEBHAvtKBttIQTP/jLJHlidx70360A80Q8f7zuOjd1MedI1JGMVuDgFY3
+	 /z0HolgqLqK9LsN62+fptExqNXjreCpWpvvqvARLwqK32XZJv1Ar7a7teKO1zXwGRQDHR
+	 lWr9U3gjam3KQxZ53FvSH8VVegbjQAgerJyZQfkmxC05b9/V0z14tUNzjKasBMH4/CQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BQ1HgAJB;
-	arc=none smtp.remote-ip=209.85.217.48
-Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MmKNS+xL;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B11606E017
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 16:10:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 50B11606E017
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D354560A2608;
+	Thu, 29 Oct 2026 16:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BQ1HgAJB
-Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-7ce6cb4c6faso311727137.0
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 09:10:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793290248; x=1793895048; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=wGitExb5ASqG1hEb2tSa+iqDI3pMKELGUtvIGcSLDEQ=;
-        b=BQ1HgAJBM52AsbQ7tfdFq3gPd99w/14A03ldC+9zCPotdgmBElhQocOdv+zPBbopv3
-         /sSlGYpgzZKxyUuURLiPcADtZ+/2b/+asX33xRM9nkV7swnjQ1JGfho3PNwvXQaAwdJm
-         OMUAq+L64oXGkKt9nBn83mEEBOjFSMoK8EVw+KnQS0okrCLOFV+xdBozRew+RlguxgDc
-         PBvEba/FY/XCihapa3YmOuVXiCd+JkdghOGo6l5oGUnyWfiPXd8kKr3RimsBeLA5EWSj
-         M1/wrs8KDYq46uodupnIcnbtKpg/EVX9S0WuBAizCBQnHosJN4Go+QXM7K21B12ID/yr
-         o+tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793290248; x=1793895048;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wGitExb5ASqG1hEb2tSa+iqDI3pMKELGUtvIGcSLDEQ=;
-        b=WXWmUYFepxhgdN/V3kDZVkWxDKjX4AzQBtZhUOdtXpe7+wjLNe7UAvyXdAwUQFS1Pt
-         i1EiDJuVV68N5FEr12EX23AX1jLxFLPegK6VVuJbG2f7RPfw6u8XAPczPJbKE5cChxV/
-         Kyf4h9eapJJ23SQVVVEUpDqoqQcF0/NX3MUflima60qzDyxxI3p6i6hMH3byrztf5Pwp
-         dfoBqxcwZdnQSCUj7FYKyQfmDzOH5WOm5vkBwKsb/JDcAKnah7jlmNZQc79ei14er+dC
-         ZW8FcdDE0I0ID/GzwcBCu2cPe3h58Eduv124QH717blwVDW1Hun3bQqxq/lifcoRVYGU
-         KYxg==
-X-Forwarded-Encrypted: i=1; AKwUvBxk4f3Du4azoNl6g0kSWjQjW1AG0h4v5PBJM7u1IG2rTHBmvgq27hdAqgouOCpV9OfG5xiWRgQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJvoRIJhVEq4l0dnIZyOWM1l37T7AhVedFNvzZuaLI4SgvYHNAP
-	SamHaapKytNHZ28M0+xvAv0DZVPkyE2eBiZESkf0WFDnmKA2McY0EcIM
-X-Gm-Gg: AYBFou2I55MMbbJjexGmBw2xJkU7hZwI4fIhe5pPSc84cXWzNFCobOvGJpKEjbRyOF7
-	DsRY/N9y25UQSPcM+dekv713KONkOrt25yy4w4Xn7hjzJHdruQ0+UXNMlvHDZDQ5NpdKn5gAAd0
-	kYIuOefH4m16gSucNnWSsPbU3K0322zxJUUJDTBonrWc4AURmdNJqULL4dZCBHilLpxQ4tjJct4
-	KZ8Ug6QdDVaOhhssv6PC7AJ4SDoal83zmblt3HwQUFLPsvnYJIa5q2itZTDXmRzu4Qhjzt28jY1
-	hXZIWa21Vu0B9fburHN1d9abupfcGs/K+YCLyASMFpnsR3n+v9S4RvybQGqr1jbRcyNI5jQCO/K
-	+RxnRiya6eCooX5E7ztdqq+5eQSlR2WB7Gb1zBhKQMLTE+fYcBzfGUcu6cojC/CVlVYyyWa2o8x
-	vFuOFJ/PIm0nX84/pFNhHo/pbiFmx+HxzJBHrhrwf4H9B3AYbmf7cJ+L7XlugBBGQpvf/W3E4W4
-	gxWmYeHlNFmbOfpAqFJQ+vFpx5GDnt40FBWa2/iuvaEgNJXGj5TXO+1Y4Qq8hHbbAZmVw+RG0MG
-	TecOU63sePuRNIRXkJTN6v1SCNkTL1FB81uIo3B18yzCFdIE9q2z6waTDnnFLfuCIG6dbmTmyPs
-	LJ7HfKtZltceq04QGVT8uA2pkOkO4hjNgyyCu9hQdfaBQJ+2wEzRj0lctu8/3sYoQFo7g
-X-Received: by 2002:a05:6102:6a92:b0:7cb:bda3:27ab with SMTP id ada2fe7eead31-7d03a504ad3mr3020376137.13.1793290248125;
-        Thu, 29 Oct 2026 09:10:48 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec4f8dfbddsm5953842e0c.6.2026.10.29.09.10.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 09:10:41 -0700 (PDT)
-Date: Thu, 29 Oct 2026 12:10:28 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Ahmad AG <ahmadag1001@gmail.com>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: kuba@kernel.org, 
- davem@davemloft.net, 
- edumazet@kernel.org, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.26e1d6a9b487@gmail.com>
-In-Reply-To: <CAASqGyZ-9hqZGWNJShxnrSiXDO==51SVsQW_x_mk993y1pNO8A@mail.gmail.com>
-References: <CAASqGyZ-9hqZGWNJShxnrSiXDO==51SVsQW_x_mk993y1pNO8A@mail.gmail.com>
-Subject: Re: [PATCH net] net/packet: charge fanout groups to the memory cgroup
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MmKNS+xL
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B6AD1F031E0;
+	Thu, 29 Oct 2026 16:15:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793290515;
+	bh=k6NrO70p6SzlKRqmWvppOYWBQqrvnG6uRQVbixAqVsY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=MmKNS+xLMhWpCX0yHiIQAFzVnPXx3QbBuEvveHVzBh6TPq75GX8q0uGJjivmQZArc
+	 N2iKqYvGiWUGZ3PYPY7GfOGkgPSgo0DBUXmu87J9e1w8HPHw9j3FGcSepV+ZMgxG2i
+	 jii1MK3OVxisaaWSK4aBMtnedcG87o6BkhjdCLx87NyvkB45pGPIBXaY+ItuYK8bEO
+	 P+orIrdz/Ds//ZvV5sG30PGtlcfmxShRHN2vTuwWrqWQ586/tuKRTXYFWzKq9aZicW
+	 qmq8I1yIjiuXaXvAhYs5BAvI0RsjJpAh5f24r+d/WJSF3uwMHT8RWlaQ/fpDJ7jL+r
+	 9PFXTn+0bcXlw==
+Subject: Re: [PATCH net 05/11] net: au1000: serialize TX completion with
+ packet submission
+From: netdev-bot+sashiko@kernel.org
+To: f.fainelli@gmail.com
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, hkallweit1@gmail.com,
+ linux@armlinux.org.uk, shaojijie@huawei.com, horms@kernel.org,
+ runyu.xiao@seu.edu.cn, mmyangfl@gmail.com, hvr@gnu.org, jeff@garzik.org,
+ danny.kukawka@bisect.de, mugunthanvnm@ti.com, sebastian.hesselbarth@gmail.com,
+ linux-kernel@vger.kernel.org, manuel.lauss@gmail.com
+Date: Thu, 29 Oct 2026 16:15:13 +0000
+Message-ID: <179329051390.3134.18192194876316281231@kernel.org>
+In-Reply-To: <20261027223140.3774570-6-f.fainelli@gmail.com>
+References: <20261027223140.3774570-6-f.fainelli@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,74 +66,186 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
 
-Ahmad AG wrote:
-> fanout_add() allocates a new group with room for max_num_members
-> socket pointers. Since commit 9c661b0b8544 ("net/packet: make
-> packet_fanout.arr size configurable up to 64K") that is up to 64K
-> pointers, 512 KB per group, from a single PACKET_FANOUT setsockopt().
-> The allocation uses GFP_KERNEL, so it is not charged to the caller's
-> memory cgroup.
->
-> Each packet socket can create its own group, so a process with
-> CAP_NET_RAW in its own user and network namespace holds about 512 KB
-> of kernel memory per open socket that its memory cgroup never sees.
-> In a cgroup with memory.max set to 16M, 256 sockets each creating a
-> group with max_num_members = 65536 took 264 MB of system memory while
-> memory.current grew by 380 KB.
-> 
-> Allocate the group with GFP_KERNEL_ACCOUNT, as other allocations a
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-This is not the only such allocation in packet sockets that does not
-account. If addressing that, probably scan all such allocations and
-update them in one go.
+Critical: 0 (1) · High: 0 · Medium: 2 · Low: 0
 
-> user can make on demand in the networking stack already do. With the
-> change the same test in the 16M cgroup is stopped by the cgroup's OOM
-> killer, and with memory.max at 512M the 256 groups charge 262656 KB
-> for 264640 KB of system memory used.
-> 
-> The missing charge was found by code inspection of net/packet/ with
-> the help of an LLM and then triggered with a small test program that
-> creates the sockets and groups and reads memory.current; the numbers
-> above are from that run. Tested in a QEMU/KVM guest on this tree
-> (x86_64_defconfig plus kvm_guest.config, KASAN, MEMCG, PACKET),
-> running the test as uid 1000 in a cgroup v2 memory cgroup.
-> tools/testing/selftests/net/psock_fanout passes before and after.
-> 
-> Fixes: 9c661b0b8544 ("net/packet: make packet_fanout.arr size
-> configurable up to 64K")
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Your email client corrupted the patch.
+- [Medium] au1000_tx() in drivers/net/ethernet/amd/au1000_eth.c now frees
+  the skb with hardware IRQs disabled.
+- [Medium] After this patch, au1000_tx()'s inline reclaim path leaves
+  aup->tx_tail permanently out of step with the hardware.
 
-> Cc: stable@vger.kernel.org
-> Assisted-by: Claude Code
-> Signed-off-by: Ahmad AG <ahmadag1001@gmail.com>
-> ---
->  net/packet/af_packet.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-> index 823e0911c91..406397acc5c 100644
-> --- a/net/packet/af_packet.c
-> +++ b/net/packet/af_packet.c
-> @@ -1778,7 +1778,8 @@ static int fanout_add(struct sock *sk, struct
-> fanout_args *args)
->   /* legacy PACKET_FANOUT_MAX */
->   args->max_num_members = 256;
->   err = -ENOMEM;
-> - match = kvzalloc_flex(*match, arr, args->max_num_members);
-> + match = kvzalloc_flex(*match, arr, args->max_num_members,
-> +      GFP_KERNEL_ACCOUNT);
->   if (!match)
->   goto out;
->   write_pnet(&match->net, sock_net(sk));
-> 
-> base-commit: c339f4010dea8b0d754f84ace70cd1b089878ef8
-> -- 
-> 2.43.0
+Pre-existing issues:
+- [Critical] This problem wasn't introduced by this patch, but
+  au1000_tx() copies skb->len bytes into a fixed MAX_BUF_SIZE…
 
+--
 
+net: au1000: serialize TX completion with packet submission
+
+This commit takes the existing IRQ-safe aup->lock in both au1000_tx_ack()
+and au1000_tx(). The goal is to serialize TX descriptor reclamation in hard
+IRQ context with packet submission in ndo_start_xmit. It also closes a
+missed-wakeup window between netif_stop_queue() and setting tx_full.
+
+> diff --git a/drivers/net/ethernet/amd/au1000_eth.c b/drivers/net/ethernet/amd/au1000_eth.c
+> index a507a524370fd..90887dac26bc9 100644
+> --- a/drivers/net/ethernet/amd/au1000_eth.c
+> +++ b/drivers/net/ethernet/amd/au1000_eth.c
+
+[ ... ]
+
+> @@ -973,17 +977,20 @@ static netdev_tx_t au1000_tx(struct sk_buff *skb, struct net_device *dev)
+>  	u32 buff_stat;
+>  	struct db_dest *pDB;
+>  	int i;
+> +	unsigned long flags;
+>  
+>  	netif_dbg(aup, tx_queued, dev, "tx: aup %x len=%d, data=%p, head %d\n",
+>  				(unsigned)aup, skb->len,
+>  				skb->data, aup->tx_head);
+>  
+> +	spin_lock_irqsave(&aup->lock, flags);
+>  	ptxd = aup->tx_dma_ring[aup->tx_head];
+>  	buff_stat = ptxd->buff_stat;
+>  	if (buff_stat & TX_DMA_ENABLE) {
+>  		/* We've wrapped around and the transmitter is still busy */
+>  		netif_stop_queue(dev);
+>  		aup->tx_full = 1;
+> +		spin_unlock_irqrestore(&aup->lock, flags);
+>  		return NETDEV_TX_BUSY;
+>  	} else if (buff_stat & TX_T_DONE) {
+>  		au1000_update_tx_stats(dev, ptxd->status);
+
+[Severity: Medium]
+
+Now that the lock is held here, can this inline reclaim leave aup->tx_tail
+permanently out of step with the hardware?
+
+If desc[tx_head] has TX_T_DONE set at this point, the ring is full
+(tx_head == tx_tail) and the oldest buffer has just completed. This branch
+updates stats and zeroes len. Later in au1000_tx() the code re-arms the
+descriptor, which clears the done bit, and advances tx_head:
+
+	ptxd->buff_stat = lower_32_bits(pDB->dma_addr) | TX_DMA_ENABLE;
+	...
+	aup->tx_head = (aup->tx_head + 1) & (NUM_TX_DMA - 1);
+
+tx_tail is never advanced on this path.
+
+Before this patch, on the uniprocessor Au1x00, the pending MAC DMA
+interrupt could run au1000_tx_ack() before the re-arm and move tx_tail
+forward. Now the ISR is held off until spin_unlock_irqrestore(). At that
+point au1000_tx_ack() finds desc[tx_tail] re-armed with no done bit:
+
+	while (ptxd->buff_stat & TX_T_DONE) {
+
+So it returns without moving tx_tail, which now points at the newest
+submitted descriptor.
+
+au1000_init() sets tx_head from the hardware's own buffer index, so the
+hardware completes descriptors in index order and that newest descriptor
+completes last. Wouldn't that leave the TX_T_DONE bits of older completed
+descriptors unacknowledged until then?
+
+It would also delay netif_wake_queue() in au1000_tx_ack() until the whole
+4-entry ring drains, rather than after one completion. The offset would
+then persist until au1000_init() resets head and tail.
+
+The same thing can happen when au1000_tx() is called with IRQs already
+disabled, for example from netpoll.
+
+The MAC DMA interrupt is IRQ_TYPE_LEVEL_HIGH, and au1000_interrupt() always
+returns IRQ_RETVAL(1). If unacknowledged done bits keep the line asserted,
+could this become an interrupt storm? That part depends on hardware
+behaviour that has not been confirmed.
+
+[ ... ]
+
+[Severity: Critical]
+
+This is a pre-existing issue, not one introduced by this patch.
+au1000_tx() copies skb->len bytes into a fixed MAX_BUF_SIZE (2048 byte)
+bounce buffer without checking the length:
+
+	pDB = aup->tx_db_inuse[aup->tx_head];
+	skb_copy_from_linear_data(skb, (void *)pDB->vaddr, skb->len);
+
+Can skb->len be larger than 2048 here? When po->vnet_hdr_sz is nonzero,
+tpacket_snd() in net/packet/af_packet.c skips both MTU checks:
+
+	if ((size_max > dev->mtu + reserve + VLAN_HLEN) && !vnet_hdr_sz)
+		size_max = dev->mtu + reserve + VLAN_HLEN;
+	...
+		if (likely(tp_len >= 0) &&
+		    tp_len > dev->mtu + reserve &&
+		    !vnet_hdr_sz &&
+		    !packet_extra_vlan_len_allowed(dev, skb))
+
+An all-zero virtio_net_hdr (GSO_NONE, no NEEDS_CSUM) is accepted without
+making the skb GSO. validate_xmit_skb() then only linearizes it, because
+au1000 does not advertise NETIF_F_SG, and applies no MTU check.
+
+With CAP_NET_RAW, this path could deliver a multi-kilobyte skb to
+au1000_tx():
+
+socket(AF_PACKET, SOCK_RAW)
+  setsockopt(PACKET_VNET_HDR)
+  setsockopt(PACKET_TX_RING) with tp_frame_size > 2048
+  tpacket_snd()
+    packet_xmit()
+      validate_xmit_skb()
+        au1000_tx()
+          skb_copy_from_linear_data(..., skb->len)
+
+au1000_probe() allocates a single 16 KiB region with dma_alloc_coherent().
+The TX buffers are at offsets 0-8K and the RX buffers at 8-16K. Would an
+oversized frame overwrite the neighbouring TX/RX DMA buffers? Beyond about
+10 KiB, would it write past the end of the coherent allocation?
+
+Should au1000_tx() drop frames larger than MAX_BUF_SIZE?
+
+> @@ -1012,6 +1019,7 @@ static netdev_tx_t au1000_tx(struct sk_buff *skb, struct net_device *dev)
+>  	wmb(); /* drain writebuffer */
+>  	dev_kfree_skb(skb);
+>  	aup->tx_head = (aup->tx_head + 1) & (NUM_TX_DMA - 1);
+> +	spin_unlock_irqrestore(&aup->lock, flags);
+>  	return NETDEV_TX_OK;
+>  }
+
+[Severity: Medium]
+
+With the new spin_lock_irqsave() in au1000_tx(), dev_kfree_skb(skb) now
+runs with hard IRQs disabled. dev_kfree_skb() is just consume_skb():
+
+include/linux/skbuff.h:
+#define dev_kfree_skb(a)	consume_skb(a)
+
+include/linux/netdevice.h says:
+
+ * It is not allowed to call kfree_skb() or consume_skb() from hardware
+ * interrupt context or with hardware interrupts being disabled.
+ * (in_hardirq() || irqs_disabled())
+
+Does this mean every transmitted packet now runs its skb destructors with
+IRQs off? That includes sock_wfree()/tcp_wfree(), zerocopy ubuf callbacks,
+and dst and conntrack puts.
+
+If any of those reach local_bh_enable(), lockdep_assert_irqs_enabled()
+would fire. With CONFIG_TRACE_IRQFLAGS, __local_bh_enable_ip() could also
+turn IRQs back on inside the aup->lock section, which would reopen the
+race this patch is closing.
+
+The data has already been copied into pDB->vaddr. Could the free move
+after spin_unlock_irqrestore(), or use dev_consume_skb_any() instead?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261027223140.3774570-1-f.fainelli%40gmail.com
