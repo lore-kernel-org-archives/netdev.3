@@ -1,129 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793300035;
-	b=0VidBvil/izGi0GKZNERdwdIu6FHfEYfIqS/+2S2lAUR+AFWiW3Y00b+QjLbmh//RRPP
-	 usC4R21ejua3MVwXXIz+zPFALAy+EQe316o1o17ctJaH4taWyFnVj4BOlE+C3g4YIAPx1
-	 im0fB8p4Q+cw9pMitw95zVK8/N0xONu3WQiRXtKLaabRCkI/QlPIYAaoViEaRNi9q5J15
-	 9bs6BT+CJ96BqErPiRQ7pYKLz4qBNTFxiX0+JeOPWJ+X9cOnmLPbMkQW8biIUED9FpeS1
-	 ilmsiavDpQQD1Sa7jxv4w568FIIBo5bY3SAaWyW4W2OokC1vy8/q5r6mwIANF/C337Q==
+	t=1793300107;
+	b=IomMKfbbriCJMCaFbin4X0aI5ZNeUx7A+l2oVZnSaLD7GZweDpd/gFuSat5BQquIkbEl
+	 Mo1Pfu2PTgRe8knHBuLZtipdLpi6b8cFu/uh3D50Yf9J/Qd1u691dYcWjWvZjvVVtabt0
+	 YQZqwUTixALJxeJ0bIwF+hQUNmD9rIjYx26O4+oLYzEZ0dQvxPPspgW04ss+Q+a0k34nK
+	 hbEzX8pz7hUwdt0Nuj6JK63+WCvSf1EnheDlbI8hI/eW+h+JW5t/dYpaE/LtGXl+v9CV/
+	 cJRtQE4+uIMbKDULOM00X1i1rDEsYyTQMDuLGlsm1i14rez3K4ikg6xvL10lLRYRWAw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793300035;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To:X-Mailer:X-Mutt-Fcc;
-	bh=bUVveIwGFo4/gN+IS0wmxK6pE4j+UVKCdppm7YRvY+E=;
-	b=uNHQEOaQfe1Dz0rhDbsKfgp2zy2MxJenSqxQkpdByDVGc9XNOWMQKlyxqsDdM+rIsTY7
-	 KQIrRM3LsBn2PX/krgHznOlhqzNyT0UjfLqoDbKfP+S2nmIGpQyqOf4a+T6RiLRfwLtdi
-	 FfI4tVELzOR2XFmTVP/4fMkJGkJjFXK5hS71CBe7HfjXU/UIvTJlzAG8cxn1Ezc6OSEBA
-	 pMbGaufnNYwSgM9Wl6ddAuQYdGjU8Up+m5/i3EILCba8ST/vYIVQTsdmlaYqOfsIArSKf
-	 soYSlRH31kbkMEYuUdYPOpwbPVVk269MyD1PT+j2KvRBtvP9TxWO7HMilLMpOhozXmg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793300107;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=4fltM5gdImjF1crZCIEyXf23oKVvuU4SjhacIgA9m38=;
+	b=wLHa84QF43fm7fpyOtr9fI268buWrGQ0fewtk6MqrXEpB7fsMfSxps3sB91QnEVB+MDN
+	 8iznYqwtupHOoCDMcykpBIn07G5Nk2FXwK94jtxVd48V+N5+O0DnhHeZmwRE9QGoxeJCf
+	 Zrt3y3srQ1xJYILl0jZkRhYcsr5scZTdKWWUO+8uwRPRfXNirDjr4lEqUy4pFkRdgLIjn
+	 eNH40HtAhwAD/3A8Vfu+sSUUzCADKO6GvdhVSfnppWy/VyhVbEiZDvnTzCgMT0RpsA31r
+	 PHye8zoGD+AtO/F60K2piANbyFprFR/kqSomfMVSI2otDSB60yg3OaEhA5W6nllGIfA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=W6oBMVi7;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=W7m8afxz;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E9kR+B6z;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71105606A320
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 18:53:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 71105606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF0C606A31C;
+	Thu, 29 Oct 2026 18:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=W6oBMVi7;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=W7m8afxz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793300033;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bUVveIwGFo4/gN+IS0wmxK6pE4j+UVKCdppm7YRvY+E=;
-	b=W6oBMVi7it7W1g5QDhBpO6q9Njm7x0+PMTnlfk5d3dSt/2EPqfA/kxgE/O0f0/LZSOloG1
-	bdFDdCw8NGOIwfaTHTJbz0EgsmzDz4Qxrz4yeW8otD2RBL8dl7hBstlPN9LTN2DAGT1Dgq
-	Bxu61CyR6Rak2L3G0/YwTsZknSQV6bc=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-687-xtR1YY0KNQqOtc54K2xaIA-1; Thu, 29 Oct 2026 14:53:46 -0400
-X-MC-Unique: xtR1YY0KNQqOtc54K2xaIA-1
-X-Mimecast-MFC-AGG-ID: xtR1YY0KNQqOtc54K2xaIA_1793300025
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-495689bfcc8so17795215e9.1
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 11:53:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793300025; x=1793904825; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bUVveIwGFo4/gN+IS0wmxK6pE4j+UVKCdppm7YRvY+E=;
-        b=W7m8afxzvrleQUtFz73iSTXIaMLH+b/2oVZRkHaC23QvQhwyGbz4MMIv1EJG0npheQ
-         FSYWUrs9KtHNyWuDxJQAoPPUplAvxRtK5TGMsK5M/BAePbJeaOCczS1JoEiDbcTC72Xz
-         eLtxSINNwSE7EyxUqf51loMYVbVAZU0QN8UtiVmw2S9rAP4omh7sWKpYGQK3TJwVXiW3
-         dp2L3Mn/Wn9MleNtS4+D35pLx69KakGRQ3g5Wv5ThlTiAukBMJxSE3FwB1U1tL1nBHFU
-         S+YyQGjHMTX/Y2+5EUrWH+lQFn5X5gUoomaC/aYBtdhPzaJV7EshzBHRJu7FO5ihAqKQ
-         XuRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793300025; x=1793904825;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=bUVveIwGFo4/gN+IS0wmxK6pE4j+UVKCdppm7YRvY+E=;
-        b=HTSg5qbixhUFa2VMzbS6iUpRw+W3I0jlfHRuJ+J6jBaesp5lBZWRcKoOJCqYGsZ8fR
-         aiMzXJNVa9MD5gabO8uasJ4A9JJoqw+ZqcSa8fyTucg1Seq2ExeQ0pYE9KMLhvr90McR
-         OCdsk76O2yUv6vjtl7/3nF7+Np6SCh3KuWCqA1uBbyYp1SelJV+kMPeSGF5RThQL980T
-         817TqdbB+550vWhvDhx33ByYYkxmpe/GsQbDV4GzA4KehDN35mu++7uvImfoaCnvZtRo
-         k1ZY0ub4oVoJpMdiFIU9wT3TMSwkm+6yVMz+Ij5qkEHAsIvLc5twYvY4ztFfcFAXDNZB
-         Vskw==
-X-Forwarded-Encrypted: i=1; AKwUvBwKNmiNx7igNDf+Y1jrr35LG1d6GW+WwR+ywbZsUnZRJwBqws56mcOuv0Zh9C9ttnK871GJ9Nw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJkGnsYYhyqFHHfqpZrF/xG8nuI0dpKDw+yMDyzo35q2cH8A8He
-	SVQhhogxpEcJk6p2yl+TtxkK2iaLuAtzW3TN6FBreC8w82siogB7d7YTmwfYC02KPNvoAAOAo0P
-	TuNSrHS5aHQ79VARrftqs6BxB5hctnSFJ9WK/Km7CrrSY5VaK13TV1HRyKw==
-X-Gm-Gg: AYBFou3hYxLyMn///8mDOZG/isyhPboYMkNFczGHZI6fRpuzZV0Xqj2E/7xg6L02vfr
-	SvGZ0+37EWGrQVS0lhoBKgJCWHsl31AsgycPLn8SslY+SZZKxWw1DFM1EYTHEInlVUlIkPNHt2i
-	F90IT4pFYPM1tIsGAYRFIBbqLf5pBrjX2clCEfeoWVhGhx0YzA4hWBE4AyJJyfnY/4+2uOLbK8C
-	1UCNr8Q0DINslx1eyK+yx4v6Qt5KIsgiRQpwapng6S9tbj3nE+DlS1gABRsaVi4pCHNvzUSn3ql
-	LMQcyiojTBP+KCDJa6JON2jdCc2pueKfvYthqlPe0oyHVRQQSXhWh4vBvAe2MRw4yWvUr5/r3v5
-	fE06ccbg5/ul86C7LCTyMDT8kILVqt8ua+DwG2iMr+5tu
-X-Received: by 2002:a05:600c:4e44:b0:4a3:2f35:38aa with SMTP id 5b1f17b1804b1-4a967f84817mr142656875e9.29.1793300024492;
-        Thu, 29 Oct 2026 11:53:44 -0700 (PDT)
-X-Received: by 2002:a05:600c:4e44:b0:4a3:2f35:38aa with SMTP id 5b1f17b1804b1-4a967f84817mr142656575e9.29.1793300023931;
-        Thu, 29 Oct 2026 11:53:43 -0700 (PDT)
-Received: from redhat.com ([2a06:c701:73c1:fd00:6c8e:5a61:f533:519d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e6eba32c1sm182535f8f.58.2026.10.29.11.53.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 11:53:42 -0700 (PDT)
-Date: Thu, 29 Oct 2026 14:53:38 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Chris Arges <carges@cloudflare.com>,
-	=?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
-	Phil Sutter <phil@nwl.cc>, Jason Wang <jasowangio@gmail.com>,
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, virtualization@lists.linux.dev,
-	Max Krasnyansky <maxk@qualcomm.com>,
-	Rusty Russell <rusty@rustcorp.com.au>,
-	Willem de Bruijn <willemb@google.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Simon Horman <horms@kernel.org>, linux-doc@vger.kernel.org
-Subject: [PATCH RFC v7 5/5] net: add a sysctl to opt out of virtio net hdr
- checksum validation
-Message-ID: <7ff59e838eba4b63768327dfe553d6d9cac6afbf.1793276116.git.mst@redhat.com>
-References: <cover.1793276116.git.mst@redhat.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E9kR+B6z
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C617E1F01825;
+	Thu, 29 Oct 2026 18:55:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793300106;
+	bh=4fltM5gdImjF1crZCIEyXf23oKVvuU4SjhacIgA9m38=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=E9kR+B6zd2TC56iOVx3LX/tayyHIrM5NuI2aKJ5/H4qRvNzBZBTEg5vvBBQdIWAOz
+	 xVqrQWXDdofchDu/3HVggZoiQv2YxNaBif6VpoCiB9FcYl73/xpZ+Ij5e2rTQ48MzI
+	 8xeLKMvlC8iOtrd34OfsLDTVoUtkQVgm4rX8eobo6m3YgR3f//9snSgIpYWn9zBtoJ
+	 J7Cq0shZ9AqQG2sH1RyzkKqoMfLaccSRN8+yBCmvNCi7xkeeobdEZ8iMtjIydw+L3x
+	 jI+Cqb7d1LLfIJ2QAWcLwjs7QRe2xtm6+mtbMK7blpOn98kW0TX7Cvh5jgESqC2GhT
+	 ecykRcT5hz+GQ==
+Subject: Re: [PATCH] netfilter: xt_policy: add NULL check for skb_dst() in
+ output policy match
+From: netdev-bot+sashiko@kernel.org
+To: fangxy@xiaopeng.com
+Cc: pablo@netfilter.org, fw@strlen.de, phil@nwl.cc, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, liuwb@xiaopeng.com
+Date: Thu, 29 Oct 2026 18:55:05 +0000
+Message-ID: <179330010531.3134.10986246344071690394@kernel.org>
+In-Reply-To: <20261026125313.14810-1-fangxy@xiaopeng.com>
+References: <20261026125313.14810-1-fangxy@xiaopeng.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -133,270 +64,157 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <cover.1793276116.git.mst@redhat.com>
-X-Mailer: git-send-email 2.51.2.2891.g4157995a80.dirty
-X-Mutt-Fcc: =sent
 
-The ingress validation as implemented by the previous
-patch is stricter than what it replaced: GSO
-packets whose checksum metadata matches no transport header are
-dropped, and non-GSO ones get their checksum completed in place.
-Such packets used to pass with the metadata unvalidated,
-and with no overhead.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-I judge that this should not affect any deployments, but there is still
-some risk that it does.  In case a deployment depends on them anyway,
-provide a per-netns switch to get the old behavior back:
+Critical: 0 · High: 0 (1) · Medium: 1 · Low: 1
 
-echo 0 > /proc/sys/net/core/virtio_net_hdr_validate
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-The default is validating.
+- [Medium] The commit message says the patch is defensive only ("No
+  reachable path that passes an skb with a NULL dst to…
+- [Low] The patch fixes a reachable NULL-pointer dereference in
+  match_policy_out() (net/netfilter/xt_policy.c) but has no Fixes: tag…
 
-Reviewed-by: Björn Töpel <bjorn@kernel.org>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but xt_realm has
+  the same unchecked skb_dst() dereference.
 
-Notes (changelog):
-    v4->v5:
-        document the netns lifetime requirement (sashiko)
+--
 
- Documentation/admin-guide/sysctl/net.rst | 19 +++++++++
- include/linux/virtio_net.h               | 25 ++++++++++++
- include/net/netns/core.h                 |  1 +
- net/core/dev.c                           |  7 ++++
- net/core/net_namespace.c                 |  1 +
- net/core/sysctl_net_core.c               | 50 ++++++++++++++++++++++++
- 6 files changed, 103 insertions(+)
+netfilter: xt_policy: add NULL check for skb_dst() in output policy match
 
-diff --git a/Documentation/admin-guide/sysctl/net.rst b/Documentation/admin-guide/sysctl/net.rst
-index fe43e8595958..3d89772cb7fe 100644
---- a/Documentation/admin-guide/sysctl/net.rst
-+++ b/Documentation/admin-guide/sysctl/net.rst
-@@ -246,6 +246,25 @@ processes are dropped unless socket option SOF_TIMESTAMPING_OPT_TSONLY is set.
- Default: 1 (on)
- 
- 
-+virtio_net_hdr_validate
-+-----------------------
-+
-+When processing packets with a virtio net header (through tun, tap, a
-+packet socket or a virtio network device) that request checksum offload
-+(VIRTIO_NET_HDR_F_NEEDS_CSUM), validate the packet: complete the checksum
-+in software, or drop the packet where the header does not match it.
-+
-+When disabled, the header is trusted not to corrupt the packet, and the
-+checksum is offloaded to hardware (or not verified if it never reaches
-+hardware). This is only safe if no protocol is processing the packets.
-+
-+The setting is per network namespace, but only writable by the host
-+root: root inside a network namespace created by an unprivileged user
-+cannot disable the validation.
-+
-+Default: 1 (on)
-+
-+
- wmem_default
- ------------
- 
-diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-index 54048759cc6e..b2bd5ab3fdb6 100644
---- a/include/linux/virtio_net.h
-+++ b/include/linux/virtio_net.h
-@@ -5,6 +5,7 @@
- #include <linux/if_vlan.h>
- #include <linux/ip.h>
- #include <linux/ipv6.h>
-+#include <linux/jump_label.h>
- #include <linux/netdevice.h>
- #include <linux/udp.h>
- #include <net/gso.h>
-@@ -87,6 +88,18 @@ static inline struct iphdr *virtio_net_ip4_parse(struct sk_buff *skb,
- 	return (struct iphdr *)(skb->data + nhoff);
- }
- 
-+/* Defined in net/core/dev.c, enabled while any network namespace
-+ * has net.core.virtio_net_hdr_validate set to 0.
-+ */
-+DECLARE_STATIC_KEY_FALSE(virtio_net_hdr_validate_disabled_key);
-+
-+/*The caller must keep the netns of skb->dev alive. */
-+static inline bool virtio_net_hdr_validate_disabled(struct sk_buff *skb)
-+{
-+	return static_branch_unlikely(&virtio_net_hdr_validate_disabled_key) &&
-+	       !READ_ONCE(dev_net(skb->dev)->core.sysctl_virtio_net_hdr_validate);
-+}
-+
- /* Where does the L3 header start, and what protocol is it?
-  * Handles Ethernet and VLAN headers; other devices use the
-  * network header offset the caller set up.
-@@ -200,6 +213,12 @@ virtio_net_csum_partial_ok_at_offset(struct sk_buff *skb, u8 hdr_gso_type,
- 	unsigned int thoff;
- 	int ip_proto;
- 
-+	/* Failsafe: a namespace opted out of the validation,
-+	 * trust the checksum metadata as before.
-+	 */
-+	if (virtio_net_hdr_validate_disabled(skb))
-+		return true;
-+
- 	if (!virtio_net_l4_start(skb, nhoff, proto, &thoff, &ip_proto))
- 		return false;
- 
-@@ -242,6 +261,9 @@ virtio_net_csum_partial_ok(struct sk_buff *skb, u8 hdr_gso_type)
- 	int nhoff;
- 	__be16 proto;
- 
-+	if (virtio_net_hdr_validate_disabled(skb))
-+		return true;
-+
- 	if (!virtio_net_l3_start(skb, &nhoff, &proto))
- 		return false;
- 
-@@ -533,6 +555,9 @@ virtio_net_tnl_offsets_ok(struct sk_buff *skb, bool outer_isv6,
- 	unsigned int thoff;
- 	int ip_proto;
- 
-+	if (virtio_net_hdr_validate_disabled(skb))
-+		return true;
-+
- 	if (!virtio_net_l3_start(skb, &nhoff, &proto))
- 		return false;
- 	if (outer_isv6 != (proto == htons(ETH_P_IPV6)))
-diff --git a/include/net/netns/core.h b/include/net/netns/core.h
-index 9ef3d70e5e9c..02ce232fe9a9 100644
---- a/include/net/netns/core.h
-+++ b/include/net/netns/core.h
-@@ -18,6 +18,7 @@ struct netns_core {
- 	u8	sysctl_txrehash;
- 	u8	sysctl_tstamp_allow_data;
- 	u8	sysctl_bypass_prot_mem;
-+	u8	sysctl_virtio_net_hdr_validate;
- 
- #ifdef CONFIG_PROC_FS
- 	struct prot_inuse __percpu *prot_inuse;
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 87a79d6004c8..960c97980544 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -128,6 +128,7 @@
- #include <linux/if_vlan.h>
- #include <linux/ip.h>
- #include <net/ip.h>
-+#include <linux/virtio_net.h>
- #include <net/mpls.h>
- #include <net/route.h>
- #include <linux/ipv6.h>
-@@ -2427,6 +2428,12 @@ EXPORT_SYMBOL(tcf_sw_enabled_key);
- 
- DEFINE_STATIC_KEY_FALSE(netstamp_needed_key);
- EXPORT_SYMBOL(netstamp_needed_key);
-+
-+/* Enabled while any network namespace has net.core.virtio_net_hdr_validate
-+ * set to 0.
-+ */
-+DEFINE_STATIC_KEY_FALSE(virtio_net_hdr_validate_disabled_key);
-+EXPORT_SYMBOL(virtio_net_hdr_validate_disabled_key);
- #ifdef CONFIG_JUMP_LABEL
- static atomic_t netstamp_needed_deferred;
- static atomic_t netstamp_wanted;
-diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
-index da5f881fbd3b..8a21baaa7e6d 100644
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -396,6 +396,7 @@ static __net_init void preinit_net_sysctl(struct net *net)
- 	net->core.sysctl_optmem_max = 128 * 1024;
- 	net->core.sysctl_txrehash = SOCK_TXREHASH_ENABLED;
- 	net->core.sysctl_tstamp_allow_data = 1;
-+	net->core.sysctl_virtio_net_hdr_validate = 1;
- 	net->core.sysctl_txq_reselection = msecs_to_jiffies(1000);
- }
- 
-diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
-index 473c162736d6..04cd2d758ccc 100644
---- a/net/core/sysctl_net_core.c
-+++ b/net/core/sysctl_net_core.c
-@@ -18,6 +18,8 @@
- #include <linux/slab.h>
- #include <linux/sched/isolation.h>
- #include <linux/hex.h>
-+#include <linux/virtio_net.h>
-+#include <linux/jump_label.h>
- 
- #include <net/ip.h>
- #include <net/sock.h>
-@@ -693,6 +695,43 @@ static struct ctl_table net_core_table[] = {
- 	},
- };
- 
-+/* Protects changes to virtio_net_hdr_validate_disabled_key and each
-+ * net->core.sysctl_virtio_net_hdr_validate.  The packet path reads
-+ * the value without a lock.
-+ */
-+static DEFINE_MUTEX(virtio_net_hdr_validate_mutex);
-+
-+static int virtio_net_hdr_validate_sysctl(const struct ctl_table *table,
-+					  int write, void *buffer,
-+					  size_t *lenp, loff_t *ppos)
-+{
-+	u8 *value = table->data;
-+	u8 old, new;
-+	int ret;
-+
-+	/* Root in a user namespace must not be able to weaken the
-+	 * validation for the network namespace it controls.
-+	 */
-+	if (write && !capable(CAP_NET_ADMIN))
-+		return -EPERM;
-+
-+	mutex_lock(&virtio_net_hdr_validate_mutex);
-+
-+	old = READ_ONCE(*value);
-+	ret = proc_dou8vec_minmax(table, write, buffer, lenp, ppos);
-+	new = READ_ONCE(*value);
-+	if (write && !ret && old != new) {
-+		if (new)
-+			static_branch_dec(&virtio_net_hdr_validate_disabled_key);
-+		else
-+			static_branch_inc(&virtio_net_hdr_validate_disabled_key);
-+	}
-+
-+	mutex_unlock(&virtio_net_hdr_validate_mutex);
-+
-+	return ret;
-+}
-+
- static const struct ctl_table netns_core_table[] = {
- #if IS_ENABLED(CONFIG_RPS)
- 	{
-@@ -752,6 +791,15 @@ static const struct ctl_table netns_core_table[] = {
- 		.extra1		= SYSCTL_ZERO,
- 		.extra2		= SYSCTL_ONE
- 	},
-+	{
-+		.procname	= "virtio_net_hdr_validate",
-+		.data		= &init_net.core.sysctl_virtio_net_hdr_validate,
-+		.maxlen		= sizeof(u8),
-+		.mode		= 0644,
-+		.proc_handler	= virtio_net_hdr_validate_sysctl,
-+		.extra1		= SYSCTL_ZERO,
-+		.extra2		= SYSCTL_ONE
-+	},
- 	/* sysctl_core_net_init() will set the values after this
- 	 * to readonly in network namespaces
- 	 */
-@@ -856,6 +904,8 @@ static __net_exit void sysctl_core_net_exit(struct net *net)
- 	tbl = net->core.sysctl_hdr->ctl_table_arg;
- 	unregister_net_sysctl_table(net->core.sysctl_hdr);
- 	BUG_ON(tbl == netns_core_table);
-+	if (!net->core.sysctl_virtio_net_hdr_validate)
-+		static_branch_dec(&virtio_net_hdr_validate_disabled_key);
- #if IS_ENABLED(CONFIG_RPS)
- 	kfree(net->core.rps_default_mask);
- #endif
+This commit adds a NULL check for skb_dst() in match_policy_out() before
+dst->xfrm is accessed. When no dst is attached, the function returns -1,
+the same as for a dst without XFRM state. The commit message says the
+change is defensive and that no reachable path is known.
+
+> Code review identified the unchecked dereference. No reachable path
+> that passes an skb with a NULL dst to match_policy_out() has been
+> identified in current kernels.
+
+[Severity: Medium]
+
+Is this statement accurate? There seems to be a reachable path through
+br_netfilter on a bridge port that has vlan_tunnel enabled.
+
+net/bridge/br_vlan_tunnel.c:br_handle_egress_vlan_tunnel() {
+    ...
+	tunnel_id = READ_ONCE(vlan->tinfo.tunnel_id);
+	if (!tunnel_id || unlikely(!skb_vlan_tag_present(skb)))
+		return 0;
+
+	skb_dst_drop(skb);
+    ...
+	tunnel_dst = rcu_dereference(vlan->tinfo.tunnel_dst);
+	if (tunnel_dst && dst_hold_safe(&tunnel_dst->dst))
+		skb_dst_set(skb, &tunnel_dst->dst);
+
+	return 0;
+}
+
+This drops the fake rtable that br_nf_pre_routing_finish() attached. If
+tunnel_dst is NULL or dst_hold_safe() fails, the skb continues with no
+dst.
+
+The delete side runs under RTNL, and nothing orders it against the
+softirq reader:
+
+net/bridge/br_vlan_tunnel.c:vlan_tunnel_info_release() {
+    ...
+	WRITE_ONCE(vlan->tinfo.tunnel_id, 0);
+	RCU_INIT_POINTER(vlan->tinfo.tunnel_dst, NULL);
+	dst_release(&tdst->dst);
+}
+
+So a forwarder can read the old non-zero tunnel_id and then find
+tunnel_dst NULL, or holding a dst that dst_hold_safe() rejects. The skb
+then goes on like this:
+
+__br_forward()
+  br_handle_vlan()
+    br_handle_egress_vlan_tunnel()   <- dst dropped, none attached
+  NF_HOOK(NFPROTO_BRIDGE, NF_BR_FORWARD, ...)
+    br_nf_forward()
+      br_nf_forward_ip()
+        NF_HOOK(pf, NF_INET_FORWARD, ...)
+          ipt_do_table() / ip6t_do_table()
+            policy_mt()
+              match_policy_out()     <- dst == NULL
+
+br_nf_post_routing() does the same for POSTROUTING, and
+policy_mt_check_hooks() allows --dir out in both hooks.
+
+The trigger needs a VLAN-filtering bridge with a vlan_tunnel port,
+bridge-nf-call-iptables (or ip6tables) enabled, a "-m policy --dir out"
+rule in FORWARD or POSTROUTING, and a tunnel mapping delete racing with
+forwarded traffic. Given that, the pre-patch code would oops in softirq
+context.
+
+Could the commit message describe this path, so the change is not taken
+as purely defensive?
+
+> Reviewed-by: Weibin Liu <liuwb@xiaopeng.com>
+> Signed-off-by: Fang Xieyan <fangxy@xiaopeng.com>
+
+[Severity: Low]
+
+Since the dereference looks reachable, should this patch carry a Fixes:
+tag and Cc: stable? Without them, stable tooling won't pick it up.
+
+The unchecked dst->xfrm dereference dates back to c4b885139203
+("[NETFILTER]: Add policy match").
+
+The behaviour of continuing with no dst after skb_dst_drop() in
+br_handle_egress_vlan_tunnel() came from 58e2071742e3 ("net: bridge: fix
+vlan tunnel dst null pointer dereference") and cfc579f9d89a ("net:
+bridge: fix vlan tunnel dst refcnt when egressing").
+
+Either one could be a candidate Fixes: target.
+
+> diff --git a/net/netfilter/xt_policy.c b/net/netfilter/xt_policy.c
+> index ff54e3a8581e1..6bbaf92f0cfc9 100644
+> --- a/net/netfilter/xt_policy.c
+> +++ b/net/netfilter/xt_policy.c
+> @@ -87,7 +87,7 @@ match_policy_out(const struct sk_buff *skb, const struct xt_policy_info *info,
+>  	int strict = info->flags & XT_POLICY_MATCH_STRICT;
+>  	int i, pos;
+>  
+> -	if (dst->xfrm == NULL)
+> +	if (!dst || dst->xfrm == NULL)
+>  		return -1;
+
+[Severity: High]
+
+This isn't a bug introduced by this patch, but realm_mt() in
+net/netfilter/xt_realm.c appears to have the same unchecked skb_dst()
+dereference:
+
+net/netfilter/xt_realm.c:realm_mt() {
+	const struct xt_realm_info *info = par->matchinfo;
+	const struct dst_entry *dst = skb_dst(skb);
+
+	return (info->id == (dst->tclassid & info->mask)) ^ info->invert;
+}
+
+realm_mt_reg registers it for NFPROTO_IPV4 in these hooks:
+
+	.hooks		= (1 << NF_INET_POST_ROUTING) | (1 << NF_INET_FORWARD) |
+			  (1 << NF_INET_LOCAL_OUT) | (1 << NF_INET_LOCAL_IN),
+
+Bridged IPv4 traffic reaches FORWARD through br_nf_forward_ip() and
+POSTROUTING through br_nf_post_routing(). The same
+br_handle_egress_vlan_tunnel() and vlan_tunnel_info_release() race
+described above can leave that skb with no dst.
+
+Would a "-m realm" rule in FORWARD or POSTROUTING then dereference
+NULL->tclassid in softirq context? This patch only covers
+match_policy_out(), not this sibling.
+
 -- 
-MST
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261026125313.14810-1-fangxy%40xiaopeng.com
