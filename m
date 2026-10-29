@@ -1,75 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.153
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793264564;
-	b=TiykYfZl9M6Urco8ZGEBRIU4rQF5JBdumkPfDRVDXXRNxeDw++TpdfYk7ba9v7y6PDH5
-	 lCPYhds262NVIqbgpYMtzg4vlHB0yZxSATCt6GUyrn+TERhWcXZXnmv/L3jI13z+ILUTx
-	 8PttSdUiwrs1rEaHhsX4fUrLBAwxFvIqkC2dOEwuVY4tVoG5N39g8YV+z+7rgkY1TSVeZ
-	 1fIy187Ql6fsa7R303aUPt2LbqYlNGT/eKqmDgSnDZH+lvwkqfJQagcZg8UWweyZVq2Ns
-	 xCkiItjaj/E90doLzqYs/3XKVdX14zlNCHyJ0CS2SbnDV76ztxW+TrmJKGpoLGfOqgw==
+	t=1793264592;
+	b=rvufgaSneax4aPwwseNsOxMOkBMuiV/VfWb+fObRTUERmx1iDR5UitshyRV56F48n6r7
+	 WezGOvEDNc8/rSQF9YD+0s7rbJg4hzl91hfyXFdf8wWL2iXRubml29AScrvoGO1K2oVOa
+	 GC/uyNpSP7SDxOZAWzfUMzK7CHNjAJJ1shkCFrpDCL/GGwiLUQUsxk8jQACbXd/DxyRg0
+	 8AncvRLQvqXLcEsicqRu8WSOM73r0tx05s7afNFSQASllJXTYdKBd5Tr78aCkseDs5EM4
+	 m2WmIEGRUg25CHxqh85/16lUDr8JUUfxU5IKdymKdVcXEi5icbmOsX9oOUMz1n/Nijw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793264564;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
-	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=0DuXaAUxf/NY45cWLigCoPU0pIq1flmIM/0SGX1XZtU=;
-	b=5LJM2/AP1Y9D6lk3yru6cBINmttw88SzgeIxO3NpgJni9lxHimBfjACvT8LOa5lBs1OV
-	 2t5sLULtlzQfOSq5z5xegY3IK/ASCLaXhdwCUwULl9Wsz3Nnqc/wufl2lh1Tl6UNaGy5H
-	 w7iGVef3TR+ajDru+iRBNLBQyT1PUmMzLy9LPkJVpH4NgXIiA+XE7DyEVUYYyT78i3LTK
-	 qo8vS3CNVv/+RqcUGPzvOprF/yi5XjI5ig/zWwN4uBXxFyo3k72kUt28atptR28YPbkiG
-	 2JN70750tnmA8AytQjJFyYis0CLrjumQGPGilTlc9ordZfnyIRlHF1TimJoLl8QGC7Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793264592;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=UFZCpBIooBFicB0DvgSTv3ZMKgKfwRuEH73crPEA3VQ=;
+	b=WmLTxjHrhD24zHIx4mRmt3yV/eSWA/Wwvl2YROUaMtOiorCiWBV5X6zD5xFZoCYvJnXd
+	 mcrXIH36OX+jMz3saoVUnelbpeMyf+1wLrF1MA9MgnnbU5HA0Kjbytm/gm4+vtxlRlaNZ
+	 PUtPfz83yxTg+kMnq7xXn2qIOmuzGnc1x1QpN0D+ax4TJMjSDXgbJjguKXfSHg4DGl+DF
+	 D7PwrYUY0HXQDjVATYa1FximCjkeOgeg1Uf7Z/1W4FaVre9UcFqrPvJ4+0kEDRJ6wLhq9
+	 w9TSGGTUGI96Y/BDwhUWytbfuqDh/HtVpkis0QemepZ4/qNAOsRnsc986CaHULomNQA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--starchang.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=elK1toSn;
-	arc=none smtp.remote-ip=209.85.210.198
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=kEPeHiBc;
+	arc=none smtp.remote-ip=95.215.58.153
+Received: from mta1.migadu.com (out-153.mta1.migadu.com [95.215.58.153])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6278860A261C
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 09:02:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6278860A261C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--starchang.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFB8606A324
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 09:03:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3DFB8606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=elK1toSn
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-88c768885b4so3241557b3a.0
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 02:02:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793264564; x=1793869364; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=0DuXaAUxf/NY45cWLigCoPU0pIq1flmIM/0SGX1XZtU=;
-        b=elK1toSnmEW0Kx6uUg36KLLjxw88v+fpbxeQXa4lgvRJs/bk6Frt3Ev8nfcPEj5mq2
-         kSzXF5wUJql9tDdwUoWx0XVAvspHNHjkHGysczIL18dIock4yXJKhfxDYkayuzldZkZI
-         b8MvFVLvLVk/DKVaczI5+Zij3AlKZELpn7kYOSqDdDov+YSeiyYAkkBDrcgI1dbeqxEz
-         1zYRR2y/F/v8CgeAinwozGvF0isrhvbjq8EauXuRT3rf55ccOgTq/5iVmIVAYN+uISdq
-         UITFUFZLCAUWaGMwI+rnCh+9MTMLR4U4eH9odekcvWJSB/dorsZEZZgGTnCaq+/p3110
-         4MhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793264564; x=1793869364;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0DuXaAUxf/NY45cWLigCoPU0pIq1flmIM/0SGX1XZtU=;
-        b=oPCRAFcFXV25klFek2VoyPGIUhZMaCFK+620GTaEX3J8X19DWwoFSJrSao0l/86iKW
-         9H5wA7p6qVWB2d8+qS35oMegBDTOIwbcmemXO7FcsVW10FRmIW3e9fP/8cQfyAUmxob2
-         dZ2u0swxS5kDvXrf5L8nqEI6Z7hiRbp5nHl8+WRWIEKGNBRdnibNzPkzr97LOhc40LXS
-         xsYhH/u+OHFVCY7jp0fk2UXNnuwGPBsNMqEfQUnz4RcwlwcNsJpfZgUo7NCp1ebEHIXc
-         aCgENbAj/pBTypDuxFzK+hInyJPrcNoz/7dPHqhQNQoLOVsph1oJTXu7Pu8XbB8fn/CF
-         15Eg==
-X-Gm-Message-State: AFq9FYI4IIdYYg1GQpp4kDACCO0nijB9RN486c9dJeJeg/QuwME9JW50
-	zKpoB2M6gpw/QDp4K0XqTrsdoAq0kAJhLRlhoSvJ4tr3l+WmhOMNI6kl2prv5BBQFgMGBQ1a+SV
-	R4i1I4oLS502cKTV5fg==
-X-Received: from pfh1.prod.google.com ([2002:a05:6a00:12c1:b0:885:756d:3709])
- (user=starchang job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:3a15:b0:899:465d:c8f4 with SMTP id d2e1a72fcca58-8a6e6efa7c5mr3950320b3a.14.1793264563489;
- Thu, 29 Oct 2026 02:02:43 -0700 (PDT)
-Date: Thu, 29 Oct 2026 09:02:41 +0000
-In-Reply-To: <f631e178-d9ec-f335-9163-c44a9e6c58af@ssi.bg>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=kEPeHiBc
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=MaoRXuZQ6JtSp1A0fSU4PHAxq4HR0lMZe1iC1l2Gt+U=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793264589; v=1; x=1793869389;
+ b=kEPeHiBcFJ6MqLDvdk679musMJlanpqMTGX3dcejyW4Vsb3Stn63Pm1k3TIxv7ZLbNC1JnXd
+ ABg0A/JtwajvqXjc2lo1tfdg3wyYzmi/u6sVEaxrwmPaqkny4qi0Vuw6lSQd3dYv2PG42it8dUl
+ O02+X887Y2BXcEFXc9guNpSA=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta12.migadu.com with ESMTPS id 62a73de914bba6f0;
+	Thu, 29 Oct 2026 09:03:09 +0000
+X-Mizu-Trace-ID: 62a73de914bba6f0
+X-Migadu-Flow: FLOW_OUT
+Date: Thu, 29 Oct 2026 17:02:50 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Justin Iurman <justin.iurman@gmail.com>,
+	Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	Hangbin Liu <liuhangbin@kylinos.cn>
+Subject: Re: [PATCH 0/3] net: ioam6: makes IOAM insertion transparent to IPv6
+ ECMP
+Message-ID: <auMLuvAuQZoOfAyc@fedora>
+References: <20261028-ipv6_ioam_ecmp-v1-0-9b6715b6f4c0@kylinos.cn>
+ <auGryXdPv2mx0qlp@fedora>
+ <20261028165812.1b40d1d4@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -78,52 +71,142 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261026150539.1357037-1-starchang@google.com>
- <20261027015619.1745984-1-starchang@google.com> <5c1fe870-39ff-e83e-e479-0e1f0fed6a83@ssi.bg>
- <20261028061644.2997812-1-starchang@google.com> <f631e178-d9ec-f335-9163-c44a9e6c58af@ssi.bg>
-X-Mailer: git-send-email 2.56.0.313.g2479322e68-goog
-Message-ID: <20261029090241.4070613-1-starchang@google.com>
-Subject: Re: [PATCH net v4] net: Fix Hole-196 vulnerability by dropping
- unicast ARP/IP in L2 BMC
-From: Star Chang <starchang@google.com>
-To: ja@ssi.bg
-Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	horms@kernel.org, johannes@sipsolutions.net, johannes.berg@intel.com, 
-	linux-kernel@vger.kernel.org, wangroger@google.com, starchang@google.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261028165812.1b40d1d4@kernel.org>
 
-Hi Julian,
+Hi Jakub,
+On Wed, Oct 28, 2026 at 04:58:12PM -0700, Jakub Kicinski wrote:
+> On Wed, 28 Oct 2026 16:01:13 +0800 Hangbin Liu wrote:
+> > On Wed, Oct 28, 2026 at 01:45:28PM +0800, Hangbin Liu wrote:
+> > > This series makes IOAM insertion transparent to IPv6 ECMP, as required
+> > > by RFC 9486 (C2): a packet carrying IOAM options must be forwarded
+> > > along the same path as the identical packet without them.  
+> > 
+> > Sorry, forgot to add target repo "net". I will add it in next version.
+> 
+> CI bot says:
+> 
+> The new selftest added alongside this series (tools/testing/selftests/net/ioam6_ecmp.sh)
+> is failing in our CI on the "Transit input ECMP with/without IOAM" scenario:
+> 
+>   TEST: Transit input ECMP with/without IOAM (diverged on seed 1: without IOAM via
+>         link A, with IOAM via link B)   [FAIL]
+>   TEST: Transit input ECMP with/without IOAM (seed 2..12)                [ OK ]
+>   TEST: Encapsulating node re-lookup ECMP with/without IOAM (seed 1..12) [ OK ]
+> 
+> 11 of the 12 "transit input" seeds pass, and the whole "encapsulating node re-lookup"
+> scenario passes on all seeds, so this looks like an edge case in the Hop-by-Hop
+> nexthdr-recovery logic used for the policy-0 multipath hash, rather than a test
+> infra/flake issue. Could you take a look at whether the recovered "virtual" nexthdr
+> (or the padding/option-length walk used to compute it) is correct for all IOAM option
+> layouts/trace sizes, since one specific packet still ends up hashed to a different ECMP
+> sibling than the equivalent packet without IOAM?
 
-Thank you for the prompt feedback!
+OK, after running the test 50 times on a debug kernel and over 70 times on a
+normal kernel, I've finally reproduced the issue and identified the root cause.
 
-On the ARP side:
-Glad to hear that dropping non-GARP ARP Replies (ar_op =3D=3D ARPOP_REPLY &=
-& sip !=3D tip) in L2 BMC sounds like the right direction.
+The reason is the ping `-w` parameter. I originally thought it set the maximum
+wait time, but it actually keeps sending packets regardless of how many packets
+have been sent or received. Combined with `-i 0.2`, it sometimes sends 10 packets,
+which carry over into the seed 1 test and affect the result.
 
-Regarding the points you raised:
-1. For GARP: Leaving it to DROP_GRATUITOUS_ARP to decide makes total sense.=
- Legitimate GARP (sip =3D=3D tip) will bypass our drop check and fall throu=
-gh to the existing IN_DEV_DROP_GRATUITOUS_ARP logic in arp_process().
-2. For RFC 3927 (169.254.0.0/16): I completely agree with your concern that=
- exempting it opens another door. Given that Hole-196 attacks typically tar=
-get the subnet gateway rather than link-local addresses, keeping it simple =
-without an exemption seems safer.
+That's why the debug kernel case worked and the normal kernel failed in Jakub's
+environment, while it always passed in my laptop test environment.
 
-Regarding your comment on the IP part ("But not sure for the IP part..."):
-Could you please elaborate on your concerns with the IP changes?
+After removing the "-W 1 -w 2" parameters, I ran the test 200 times and all
+passed. I will post the fix in the next version.
 
-The motivation for exempting UDP port 68 was that in our lab testing, we no=
-ticed certain DHCP servers responding with unicast IP addresses over L2 bro=
-adcast, which caused legitimate lease packets to be dropped by drop_unicast=
-_in_l2_multicast.
+TL;DR
+--------------------
 
-We would be very glad to adjust, simplify, or rethink the IP logic based on=
- your advice.
+Here are my testing steps. After reproducing the issue, I dumped the tc output
+and found 10 extra ICMPv6 echo requests.
 
-Thanks again for your time and guidance!
+filter protocol ipv6 pref 1 flower chain 0
+filter protocol ipv6 pref 1 flower chain 0 handle 0x1
+  eth_type ipv6
+  ip_proto icmpv6
+  src_ip 2001:db8:1::2
+  icmp_type 128
+  skip_hw
+  not_in_hw
+        action order 1: gact action pass
+         random type none pass val 0
+         index 1 ref 1 bind 1 installed 0 sec
+        Action statistics:
+        Sent 1040 bytes 10 pkt (dropped 0, overlimits 0 requeues 0)
+        backlog 0b 0p requeues 0
 
-Best regards,
-Star Chang
+on gamma veth0 at the start of seed 1 testing, but *a0* is 0. This means some
+echo requests are still in flight during this window. I then captured traffic
+with tcpdump and confirmed those echo requests are present on gamma veth0:
+
+15:47:09.161066 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3254, seq 1, length 64
+15:47:09.161083 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3254, seq 2, length 64
+15:47:09.161086 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3254, seq 3, length 64
+15:47:09.161088 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3254, seq 4, length 64
+15:47:09.161091 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3254, seq 5, length 64
+15:47:09.161093 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3254, seq 6, length 64
+15:47:09.161095 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3254, seq 7, length 64
+15:47:09.161097 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3254, seq 8, length 64
+15:47:09.161100 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3254, seq 9, length 64
+15:47:09.161102 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3254, seq 10, length 64
+
+The question is: where do these 10 packets come from, and why are they sent
+within this narrow window?
+
+We expect only 3 echo requests during the ECMP link warm-up, which does not
+match the tcpdump capture. The timestamps, however, show the traffic starts
+during the warm-up phase. The subsequent echo requests on veth1 are correctly
+sent as 3 packets with a 0.2s interval.
+
+15:47:09.221513 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3284, seq 1, length 64
+15:47:09.426247 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3284, seq 2, length 64
+15:47:09.633125 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3284, seq 3, length 64
+
+It looks like the skbs were held in the unresolved neighbour queue and flushed
+after receiving the NA, causing the packets to be delivered to gamma ingress later.
+
+Then I tried to send 1 packet on before the warm up.
+ip netns exec "$ns_alpha" ping -6 -q -c 1 -i 0.2 -W 1 -w 2 2001:db8:2:1::2  &> /dev/null
+
+Now the packet shows
+
+16:05:20.744986 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3765, seq 1, length 64
+16:05:20.744987 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3765, seq 2, length 64
+16:05:20.744988 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3765, seq 3, length 64
+16:05:20.744988 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3765, seq 4, length 64
+16:05:20.744989 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3765, seq 5, length 64
+16:05:20.744990 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3765, seq 6, length 64
+16:05:20.744990 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3765, seq 7, length 64
+16:05:20.744991 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3765, seq 8, length 64
+16:05:20.744992 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3765, seq 9, length 64
+16:05:20.744992 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3765, seq 10, length 64
+16:05:20.744992 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3774, seq 1, length 64
+16:05:20.936373 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3774, seq 2, length 64
+16:05:21.137153 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3774, seq 3, length 64
+
+The warm-up packets are correctly back to 3 with a 0.2s interval. However, the
+first `-c 1` ping still generates 10 packets. With set -x, it shows
+
++ ip netns exec ns_alpha-nBg602 ping -6 -q -c 1 -i 0.2 -W 1 -w 2 2001:db8:2:1::2
+PING 2001:db8:2:1::2 (2001:db8:2:1::2) 56 data bytes
+
+--- 2001:db8:2:1::2 ping statistics ---
+10 packets transmitted, 0 received, 100% packet loss, time 1865ms
+
+After checking, I finally got the answer:
+
+-w deadline: Specify a timeout, in seconds, before ping exits regardless of
+how many packets have been sent or received.
+
+When `-w` is used, the `-c` packet count no longer acts as a hard limit. Ping
+keeps sending packets until either the expected number of replies are received
+or the timeout expires. In our case, the timeout was hit. All 10 packets
+(sent at a 0.2s interval within the 2s window) got deferred and surfaced
+during the seed 1 test, corrupting the result.
+
+Thanks
+Hangbin
