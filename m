@@ -1,86 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.47
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793295219;
-	b=FjcSqoULNf8WwCWbMmOHW5+uhwQ9djE2smjiP0J0RmUyadWmXD45Bv13V41BwDF6A9Dx
-	 /I54l+GNLiQSAAUotdwecxp4ncl9LdFNQed7XVQONCcp1tUc4iyhxSLzSG15QHdlmqkqt
-	 V40UOsdgWijVoBvJxJWcOXngTnJX7XKSn+ZMwcucNiT+zTpqxFshMgYQcEqe/K3UGBSUV
-	 QdK8hU+J6AZ+DZn7yhRLSsV2Y9nkU/anOIxK8mXx6Pb4yo75WWEL8YaHaxQ0kmvKKkVJw
-	 cwoZpmdaGljpfDqqnPMOVYDCYSQhA/lWIKu9XEIVs3E6XTj9SKZ1o0BaWorK1BZUOFA==
+	t=1793295308;
+	b=BqebEEBwQrweukZG2ufBQLYr7jm31hpuhqKF7ZvYoLeRoMoX8kDmcu44AZ8g7udK9Ecr
+	 e+cm1RoagaO0ff/JLxdY3E4XoejaY86mxG+UkhFemaIioV7QAtBEVrNb4GG5OStdgBOZ5
+	 QW/9g3xpGYfXqAIzW7VfqoKPmbCsh1x1/HITjkVnR6acfqdYYbsGptFWPUjfYUGWcYlkK
+	 6b9yTSlIyZyTj4VSmiwUl+NA9BRB+INENIAIY9r3pEogeC5V34h266CeV/a2hima6hkDB
+	 K89r2IpyJp1S6nm04juIgYdBYoB/dTcSo1ahiV/flhIKZkPcMIUpR2swl+0DI5aeaIw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793295219;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793295308;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Message-ID:Date:
 	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
 	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=uuZVr2dDD8L7r8hiDqf/9pAQVEjMjpBKtDSDj+H9kVI=;
-	b=Txc2iFBzKLztMKwUGLyoA5wcLiZxM7EoeDmES8IXWrWaScJhx5zRE1j4WPBMcfNlaHyI
-	 vPHO9HHZi6tgkY1UajrH6z/ePdmZGEwGwQINjpWpx+MN5qZpbhctSn5UM7L7Dxs9VUfOe
-	 n5u0amLVyQxfdOHOjJSSa6HNUGkNQ+JwQWfta4Kh+hlW54ycsdVRPG3lu8Yv3unC8Vxc4
-	 F4rmoTDh7PWuA0tRgd04lon+J1WsO73LtCoGK3ODPZ4F5/wKWrx3PCXrAjY9zsPN3Ko83
-	 YCGH8dcWaOTrk6NIDfcyTuN/s69BtxRSOOcQrl33O94fxzbhSi50q+TEWEa904MtoVA==
+	bh=RmBXCpAEN/ZLhIS3rfNAZDYz2sNDq9Q0TKTm0QMgBPk=;
+	b=hrXzi3YGw1oSGd+Q6ZEwwAnDYKHT/cv9ZzIIv3uZht5tX/HZ4kgqM8TPTA3OlLx/NbQf
+	 FIdYjWi+6MGotbvKdVHQEI4C3jgmeGlmDsQHIbKE1UebYlfnSFq6srqu+NHkTuyfHb/rJ
+	 4fdUqmvwlex+Ofrp+iN+IlotqbDxap4fSy90h89W9gKm5sQZRezFfSc+l105R20N+Q03N
+	 TdjkbJG9Pp1fxOHHL93XREw+k2mXzWX0zCblkDunqlqcLxa/QBLlkPRm4yLsvHSzhtKee
+	 gq2bu1fJpxM+yqniK4mNDxLslpMFHezB9NvVyVIJVVIIL/7NYlhuTqA1mXYtmj9fmTQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="K9Lg2hR/";
-	arc=none smtp.remote-ip=209.85.214.178
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=inOVOqcy;
+	arc=none smtp.remote-ip=209.85.216.47
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9567C606A31C
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 17:33:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9567C606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16CE1606A31C
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 17:35:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 16CE1606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=K9Lg2hR/
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2e985106c0cso21811965ad.2
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 10:33:38 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=inOVOqcy
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3ae6b4c669fso682159a91.0
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 10:35:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793295218; x=1793900018; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793295307; x=1793900107; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=uuZVr2dDD8L7r8hiDqf/9pAQVEjMjpBKtDSDj+H9kVI=;
-        b=K9Lg2hR/BcJ3lcLhlIPYRwiKpVggLgPBY7jwOhmSKQBwZ8ZUmwigu084YPVxYiPJ39
-         W14DEurU0hHITVNzc0ooaUCuTFlJ/A4cB7VLjfO2t8tUk6tawb9Jr61kbcJkJHcG9EYW
-         /++a6lcYtlnEhP+e4ChCLdocYZhEpThs6tXBfATq9gZbfH2CVqNrchEzkByYr1tuUEjw
-         /EB21+Ztw6Uw4LBCfhivfX0/cQeanJUVc89i5c9EA4L9jQlU3n+Y2ZF8yhxrC5u+fVYj
-         gIGWJNkW+UB0pnvXA7lsERKUBGue+2tL6T5YvsI5BPd0PNEA51o/RqYWZIGGmYiVYpt5
-         5Jqw==
+        bh=RmBXCpAEN/ZLhIS3rfNAZDYz2sNDq9Q0TKTm0QMgBPk=;
+        b=inOVOqcybKyMjPOYFE6gu6IVOtsK5uwJhr8yfYKJIf+y8YnaotatogG2LbhV9p1p5R
+         Ev4xIGBwfdw7VKUqYY6tU6QLxHsEz0FMPI4Z8xCzMAf2zDNzfB0eSGd3JmqL/G7uF1Qu
+         VxdkXD3NjLolO4RM3KqFVVv4B2qRZUWAaMVrmfgIon+fmVgjHFUv7RAfySXBXsStS+1Q
+         i8DSt+JFXu/m2LpB/QUhqfPIRNhxTGZ7M4epRwaf09x98fEuY8XjVXeR0Watnv1x2fc+
+         FHaq4TTnuJoItB6yPXCfH42SiWK+ExwT1ZI4Yia9HGhJ7+KhyU98Mlapu7cRXth0NSQg
+         zKrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793295218; x=1793900018;
+        d=1e100.net; s=20260707; t=1793295307; x=1793900107;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=uuZVr2dDD8L7r8hiDqf/9pAQVEjMjpBKtDSDj+H9kVI=;
-        b=KwVrSQ/fxKPfh8buXIBrpSXP8LXUOmpqCSbA38E7ut6iUeOVGbVVVRU/HWBKQk6au8
-         uNHsgRKc8yKKYpfGJ23VNTOhyS9N1zn5ok+V+S+CcUk/VlRLVkrYiljejahcJ/ZJ1Gjf
-         nu0MHWO5qjgSCrggMOmiykv1muV7/wKHQutTaAM5SK7G/OpRyR3VSRf5B/iStKjolc/N
-         bUJHiMePg8uKWup3gCn211M5YL6OijVE4OBmChFsDDltLOtV5NWgg4AnwLt9BFzmxwc4
-         LV58m07dszaQzYLEzBx69IZeZlXNNsGlUFCtkSkpj1cMFgtFnnjhyF2BN5JI6monSOdw
-         4Q6g==
-X-Gm-Message-State: AFq9FYLFftdZYWHxYlhq6vkajh/YJ5gOZSKV5TRbnjUwFOqzN412pfSK
-	BU177WEmFjhYthbE8craAzAW56iqQH77qXnQUCSIGubFFRn8sWF6+fJ7
-X-Gm-Gg: AYBFou11Sx7Fk2+eG6wG6xcUuCUWcJm2dvCLaNhlNrLmJWbv+6a1v+c3BewpCZfll9x
-	bc2X+IO96Y4VIGVeake3yxvThvw61I7xLDcw9j0epEiUDDtwm7yCscws3GEoNS02FyPQzDhzCkw
-	KnBDF2ZdXVZnrlmC9tsCmuAAtrYgbFRf8A4AFeLWRs5lJ331Wq4EhKpOxaA1n8gGmrufyIcWRwc
-	fEKfE4i/xamoxMu+vBk0JljyPFG17A3VI2QZmnlsPKA25GDKr6uqz5S/HOAWjg3W/qOrneC46fy
-	QNcaWksrrGPrHrUZmds1qwfvYVwMmimCv7Kiq4arCDWLX7IxYX3KDjKCvjD7AuC8Yh5LI0Fw7t9
-	5r8J1zxY4EUmKi2ASNpyvGJHWZ5NKiumB3IgmqNQqcoVrEgtsnJeq0bCQ2mrrJ98Rozb9lT87d3
-	LUOXXkJl0m1sKKbCZ/O5zibc3M/QXF6N89gFmMwaYK0LgaBZh2XKnUPwlhQVoUTesqL4VY/pchm
-	o3FS/YtFfRT+DaLhBMYP5pBuFQVxgCHmJlRq1an9e/BQLw7h+58Hzoy00sgaP3zNhrdJ+b6qxHK
-	wA1Q4lSHKOdQuuRMTW28SL+33TQgp0ACzdGK+AnPBpeuKJb7+95TejzQ
-X-Received: by 2002:a17:903:37c7:b0:2e8:b5b2:a9f9 with SMTP id d9443c01a7336-2eb364e9f75mr553035ad.37.1793295217825;
-        Thu, 29 Oct 2026 10:33:37 -0700 (PDT)
+        bh=RmBXCpAEN/ZLhIS3rfNAZDYz2sNDq9Q0TKTm0QMgBPk=;
+        b=E3tqR0cU6qo/Lm2IuB8nAMvB40RFQ1V5dFXbvYPYTlhsDLZUp6iYdhTnuXZQDuztGj
+         zxDexCTi3ACkLdFqH85pmRQYHw3i2zxmYqlGggqyhXQXL4SXLcrJGb4BZKmtMxQwAopd
+         A8OOVdQtMTFxaO60HXOOavbcOSuptJJuMXZ75wPE3R04YYx6lcFT/1ZP6HP2TpELtB2F
+         h+tc48dsdIdSK+WdFMzvIHGxtUU0lwk7qGoF11V+PvI0YXdpu3eAZQ5UVljDH6Juvdmx
+         FbxifbBqxIuRb70u2XHoSg/CDefZS4ddwCi9XyOkvEQPanPhVtDhzgrfUGbEBnTFrUYb
+         y9Kg==
+X-Gm-Message-State: AFq9FYJbeq4z53d1yJlVT9nh6qj/Pb8Odug/QiUKDBEt3lQGy1L+AI+c
+	fWHKTYpqBeQfEuKzvvo9YVj9xynduKC/1/TZKY0z9UicR76n0tRBhhLJ
+X-Gm-Gg: AYBFou3HdoRgyMzdT5CI12Y224Kd+whJbBmLTT5Y9cdxLpxfhq2Lk3IQib/OQ7wdOGK
+	bHiQ3yIT6dRV75/RM8bPN9iDlgidlRcT8TIBeuCG8R/fJJQurIIpP1G4JtWU8H+bb43dW73kfrq
+	K6E28Au3sYBNxsHm+rWTCTpn+FWP8W0fsTx+2gxv+8SWqYfugVrtt6I1gFe0k1QOA6Es2XmS0xS
+	tyFMxmYjW6uRa2UseezimG/v6Ah65z/+OiQxIdABzUmdOlneXw2rVn5qNnF7ZcuCzfOhEJ1YckL
+	HHKPg5TpZNrZ+omRdXgvli9pTJqFQCiWI0N9M9VMlgcwgrBj+6aOf5dDCElycD6D5eOxmVkNxxc
+	NnNRZ03muEsTUTaoR81tokSSKhNpgN43EnDYeH+Frbx2gaWitSEySmoKRoCxVC6PtK/vd+gpkWA
+	CUtFq/nAuBVrxFy4mHgXfQrr2r68W0eCtLjOACCvXokY4nPHA4n/gkmbPzS84VzjWHSCGiBUyTz
+	c1wLPiPNtDpNGdoM0e6v8NdzNmqVs4aEngPaGWWhxnMwybScT8la2hL2qzVOljw3381UqlQ/vay
+	bgxfspuK5WHV+znebVhVwHXfv2UdRnVU+bHGeDDBNpHPniMOfONbicM3
+X-Received: by 2002:a17:90b:3ec8:b0:3ab:8288:b8ce with SMTP id 98e67ed59e1d1-3ae6ed47185mr2035559a91.24.1793295307219;
+        Thu, 29 Oct 2026 10:35:07 -0700 (PDT)
 Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb3630396asm295325ad.35.2026.10.29.10.33.35
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae6e973ac6sm5327703a91.11.2026.10.29.10.35.04
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Oct 2026 10:33:36 -0700 (PDT)
-Message-ID: <b3a52e91-170e-464d-b1fa-a545f6abe5a2@gmail.com>
-Date: Thu, 29 Oct 2026 10:33:32 -0700
+        Thu, 29 Oct 2026 10:35:05 -0700 (PDT)
+Message-ID: <3dfe3089-dd17-48d3-9ac1-5ee26b62e256@gmail.com>
+Date: Thu, 29 Oct 2026 10:35:02 -0700
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -91,8 +91,8 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 06/11] net: au1000: assign a valid MAC address without
- platform data
+Subject: Re: [PATCH net 07/11] net: au1000: fix buffer descriptor free list
+ insertion
 To: netdev-bot+sashiko@kernel.org
 Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
  edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
@@ -101,11 +101,11 @@ Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
  jeff@garzik.org, danny.kukawka@bisect.de, mugunthanvnm@ti.com,
  sebastian.hesselbarth@gmail.com, linux-kernel@vger.kernel.org,
  manuel.lauss@gmail.com
-References: <20261027223140.3774570-7-f.fainelli@gmail.com>
- <179329051563.3134.3476237104312720828@kernel.org>
+References: <20261027223140.3774570-8-f.fainelli@gmail.com>
+ <179329051744.3134.5754193683869445346@kernel.org>
 Content-Language: en-US, fr-FR
 From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <179329051563.3134.3476237104312720828@kernel.org>
+In-Reply-To: <179329051744.3134.5754193683869445346@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
@@ -116,66 +116,88 @@ On 10/29/26 09:15, netdev-bot+sashiko@kernel.org wrote:
 > 
 > Low priority / nit picks for your consideration:
 > 
-> - [Low] The code change is correct, but the commit message overstates its
->    impact.
+> - [Low] The commit message and Fixes: tag present this as a functional
+>    bug fix, but the bug never affects runtime behaviour.
 > 
 > --
 > 
-> net: au1000: assign a valid MAC address without platform data
+> net: au1000: fix buffer descriptor free list insertion
 > 
-> This commit adds a call to eth_hw_addr_random() in the no-platform-data
-> branch of au1000_probe(). Without it, dev_addr stays all zeroes and
-> eth_validate_addr() refuses to open the device.
+> The patch changes au1000_ReleaseDB() so the returned descriptor is pushed
+> onto the head of aup->pDBfree with its pnext pointing at the old head.
+> This matches au1000_GetFreeDB() and the list setup loop in au1000_probe().
+> It is tagged as fixing the initial git import.
 > 
->> The supported no-platform-data path leaves dev_addr as all zeroes. The
->> device can register but eth_validate_addr() prevents it from opening.
+>> ReleaseDB links the old head to the returned descriptor and makes the
+>> returned descriptor the new head without updating its stale next
+>> pointer. This loses free descriptors and can create cycles. Link the
+>> returned descriptor to the old head instead, matching GetFreeDB and the
+>> list initialization.
+>>
+>> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 > 
-> [ ... ]
-> 
->> Fixes: 7718f2c27dbd ("au1000_eth: use eth_hw_addr_random() instead of random_ether_addr()")
+>> diff --git a/drivers/net/ethernet/amd/au1000_eth.c b/drivers/net/ethernet/amd/au1000_eth.c
+>> index c0e38a507f892..f8976e324f0e7 100644
+>> --- a/drivers/net/ethernet/amd/au1000_eth.c
+>> +++ b/drivers/net/ethernet/amd/au1000_eth.c
+>> @@ -583,9 +583,7 @@ static struct db_dest *au1000_GetFreeDB(struct au1000_private *aup)
+>>
+>>   static void au1000_ReleaseDB(struct au1000_private *aup, struct db_dest *pDB)
+>>   {
+>> -	struct db_dest *pDBfree = aup->pDBfree;
+>> -	if (pDBfree)
+>> -		pDBfree->pnext = pDB;
+>> +	pDB->pnext = aup->pDBfree;
+>>   	aup->pDBfree = pDB;
+>>   }
 > 
 > [Severity: Low]
-> The code change itself looks fine. Is "supported" the right word for this
-> path, though, and does a Fixes: tag fit here?
+> The new linking looks correct. Can the old behaviour actually be seen at
+> runtime, though?
 > 
-> As far as I can tell, no in-tree configuration reaches the !pd branch in
-> au1000_probe(). The only "au1000-eth" platform devices in the tree are in
-> arch/mips/alchemy/common/platform.c, and both set platform data
-> statically:
+> au1000_GetFreeDB() is only called during the first ring fill in
+> au1000_probe(), before any au1000_ReleaseDB() call can happen.
 > 
-> au1xxx_eth0_device:
-> 	.platform_data          = &au1xxx_eth0_platform_data,
+> au1000_ReleaseDB() is only called from two teardown paths. In both, the
+> next steps free the descriptor buffers and the au1000_private that holds
+> pDBfree and db[]. The first is the au1000_probe() error path:
 > 
-> au1xxx_eth1_device:
-> 	.platform_data          = &au1xxx_eth1_platform_data,
+> au1000_probe() {
+>      ...
+> 	for (i = 0; i < NUM_RX_DMA; i++) {
+> 		if (aup->rx_db_inuse[i])
+> 			au1000_ReleaseDB(aup, aup->rx_db_inuse[i]);
+> 	}
+> 	for (i = 0; i < NUM_TX_DMA; i++) {
+> 		if (aup->tx_db_inuse[i])
+> 			au1000_ReleaseDB(aup, aup->tx_db_inuse[i]);
+> 	}
+>      ...
+> 	dma_free_coherent(&pdev->dev, MAX_BUF_SIZE * (NUM_TX_BUFFS + NUM_RX_BUFFS),
+> 			  aup->vaddr, aup->dma_addr);
+> err_vaddr:
+> 	free_netdev(dev);
+>      ...
+> }
 > 
-> board-mtx1.c only copies replacement pdata into those static structs
-> through au1xxx_override_eth_cfg(). au1000_eth_driver has no
-> of_match_table either, so device tree can't create an instance without
-> pdata.
+> The second is au1000_remove(), which runs the same release loops and then
+> calls dma_free_coherent() and free_netdev(dev).
 > 
-> On in-tree boards, a missing or invalid PROM MAC leaves pd->mac zeroed.
-> That case already takes the existing else branch:
+> So nothing ever walks or pops the list that the old code corrupted. The
+> lost descriptors and cycles in the commit message would not cause a leak,
+> a hang or a wrong DMA buffer.
 > 
-> 		if (is_valid_ether_addr(pd->mac)) {
-> 			eth_hw_addr_set(dev, pd->mac);
-> 		} else {
-> 			/* Set a random MAC since no valid provided by platform_data. */
-> 			eth_hw_addr_random(dev);
-> 		}
-> 
-> So it looks like only out-of-tree board code that registers the device
-> without platform data can hit the zero MAC failure.
-> 
-> Could the commit message describe this as a latent fix for users without
-> pdata? Without in-tree users, would net-next without the Fixes: tag be a
-> better fit than a stable backport?
+> Could the commit message say that there is no runtime impact, and could
+> the Fixes: tag be dropped so this does not go to stable and the net tree as
+> a functional fix? Another option is to remove the au1000_ReleaseDB() calls
+> from the teardown paths, since they have no effect.
 > 
 
-Agreed that “supported” overstates the in-tree impact. I’ll describe 
-this as a latent regression in the no-platform-data fallback.
+Agreed. The free list is never consumed after au1000_ReleaseDB() runs, 
+so the incorrect linking has no runtime impact. I’ll drop this patch 
+from the fixes series and leave removal of the redundant teardown 
+bookkeeping for separate cleanup.
 
-I’ll retain the Fixes tag because that commit removed the unconditional 
-random-address initialization, introducing this behavior.
+pw-bot: cr
 -- 
 Florian
