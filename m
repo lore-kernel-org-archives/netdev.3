@@ -1,100 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.198
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793315902;
-	b=ZwPITeDhVTjymTyHFIkFpg2k/j+Mb8g9BIqLH3aCkxy8Ct1slIDl4rNaXsnzOxsjUX1c
-	 OYlL4WpRkSWAgem7YRF9qIfQAlyPwi/CXkOZC2jaVZqwEqWf3OzNdAUSmzmhMLW8prHdU
-	 3rRis+ICPC4gq/Yc0KWzFzOMKz1TuyFxW02cYXYubS8twL5bekwApeXSoWD3+SzB486V7
-	 rsOCbPNLFuPueEuPkitwEDmx5a5m1AOJhNEdb3cB2KSEPvuAhHrgRNO26SWrqQgFNi+sp
-	 OkDOjO1oPNzadU1Y2z1zaAe0Ir21bbh5qFFf5tgg/aDtWyMzMKcwKPrMT1QdXUI24jw==
+	t=1793316109;
+	b=RiDh2l5EILKJuk2+0zPMf8sdP1/Qj/Xdi0nc5OS7vtbU9ziBrl8Hr+Y/c6MxmA9MKNrp
+	 xlwDSx0bDlJAsNBBV4+u3uWpTitXASCNR6+4ZZQR72F6K1DIX+ifFvhxFbmfzOxD1gNzb
+	 ZF/hl59CcSIrJ8OIDNXyXtnM1wfDYXVZ/SFvQe3j7Lz/ltfWW5W72RCD0MBN82VhdE+is
+	 0IgbcQ3Ou71L1OhOG8Q5K2sTnBA98BqFb1jiHnVnZdq6SI7rjRTbkDDQMKzgjSl2QYqpT
+	 gJJK5dFYN9MIiR0hdQDtKaqWCgY7Qz2hTCxy59izAGkR1PdEKrcgU7Q00xfbGnsGTWA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793315902;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	bh=QztNW8xCZa3I237qi38L8jVCSovnxhoFmR6AqIN/+uE=;
-	b=I/HpBhQUT5ErmepwHfyvk/qO8oKJ3RTjgCNtj21UB1vFYa+GtmUQjblkryDancqlZ3X+
-	 bzYBmgRAeAPbwHa6DJtPzW84gWHBasAkzlAsp/fss2fQ9nGmsix46KqjRRpJ1zCR61Jxe
-	 4K2VqXpsTB4mdDWsrtn3c1ld/Bp/+7U4kjEmSnlY5sP/uB2SNoTiTsCwISbhBxjXatNBT
-	 fC+vcNyPDuPHWMYp1w1RwUimSeU8c7cFyWbnis745ez1Jd3BbMnfVwxdtCrUOxWvre+Z6
-	 wzZfw5WOgSdoUdIC4lOPw+c4w36F3EnylPGoenI04Jsp2NP+WNXVD2KDT2ft8re8w3g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793316109;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:MIME-Version:X-Received:Date:
+	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
+	 Subject:From:To:Content-Type;
+	bh=9KXT4dHagJhrc5RYxqkBMcxc0mqm0x3wYl4HY30il/o=;
+	b=iFuwqPTBdIxto6SBsE03eTBaoMmOd9DKynEuvSewJZJ4kOFPcYgLccLQaNXYpmpTn3X9
+	 xRUMLthzNEi5nbu8Vzc9+b0WQl4WDXSA88aZnxlOinUhCW42BSGh5wLZ4SlLkbIAm29vp
+	 I+wNTdnskywdpw/Hx7kAhbLmupPvuBgAQHaf5XO4hojONfvGjPi8LnaqqjGIFrqeMA2Cm
+	 8LzDz3XDja+X3s+HnW2eu5508Zn/p62O2A2kJu36SOpAV1AKZ37d6IdVEtiJjXzXMwyar
+	 YAfohNoWJxUDSzoB+mRzvCM7FYU8qnYJqYGkz+fnECeV/RJ4Pxw3SthZYcn5foo+8og==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=pQfny9hg;
-	arc=none smtp.remote-ip=209.85.222.53
-Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
+	dmarc=fail header.from=syzkaller.appspotmail.com;
+	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	arc=none smtp.remote-ip=209.85.167.198
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448B1606A31C
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 23:18:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 448B1606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=pQfny9hg
-Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-99061e2171cso33984241.2
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 16:18:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793315901; x=1793920701; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:content-type:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=QztNW8xCZa3I237qi38L8jVCSovnxhoFmR6AqIN/+uE=;
-        b=pQfny9hgOyIecqE7ON3oxvCMVGRRj6Ck9jcI8edPD9+mQZDHxwjCs7CWA3ldoi1VmV
-         ZwYVZI3AOG4gulqAGuVu6rhdEZPQWqxY4ID14ggrhFJyveyoxlv+e6u3tR0KF1Owsimz
-         i9ugaM61DCRuIMTYlAjJmkBKXd4KjVBVZmau7bRpYQBH0z2tOwGXKQ60V/ajkI4tMUqH
-         opfdNwxd1IHhDqT3+dBg4GIvWsXX+LaatFS6B0Xc4SoVTFuFgS/trqICmwra2W4Vd97h
-         JzwSF4gTGij/bVMU7VCOJf4VfX95nvOyNO3eHSs+Z4eB00w2CITP7Q8H1FT12T/D8S6G
-         ZgNw==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1E2606A31D
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 23:21:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1A1E2606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4c734afb8deso184363b6e.1
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 16:21:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793315901; x=1793920701;
-        h=mime-version:content-transfer-encoding:content-type:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+        d=1e100.net; s=20260707; t=1793316108; x=1793920908;
+        h=content-type:to:from:subject:message-id:date:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=QztNW8xCZa3I237qi38L8jVCSovnxhoFmR6AqIN/+uE=;
-        b=e+M83hVr4dzDZzFr5ujB2bNIpL95leWfhgmGOlNxdcngl4j4viIhFDN6yfJftCV508
-         XcvZfDmtK9XAAbfpWhcwhAj8YZ82NnskYt/KppzLkqUTv/ZmncqnNjFLWdFvf1ACVmee
-         TqoftUZVP/rzWO5Ylf65qUvpZw4+p20ZQvKoRZT0DsjjEy+2gxlotHfjjkhYQJpGrgQ2
-         dwhh0+5+QtXGyxGKrjKdx4t6E7NkTUcSFTCmEhtvizFTx+y9p1hjcDGCq/YmzrltWMbV
-         ZQSvEMVAeKxuGc6wa03uCfk8rPgd4DUG+s6V8dICklaO3lTYd3a77A7z7jw0GKE98Aag
-         4YYA==
-X-Forwarded-Encrypted: i=1; AKwUvBx7gNa+lZnv7TZuG+pT4oikDkAn4EJEWBuZrmC4fOISQsx8GM8Tcr7VC5ijAPfSGhBXqqb7WC0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYISllyuaEf0e0NyKHUum17q5j9vjZpBcboaSbEQly9H0W6g90dW
-	2mMuhc4MbZjhg1bhkoUZnjm/72+Ie1S2qoB50d7Y8oHDIUTAapJ2Rx2W
-X-Gm-Gg: AYBFou0jnBy78sibWdAi1UDW/7JChnBzwgp3RSKykGCYvyrDbUQ7I3Cnkhce41vDlTd
-	pooBfpZEmm9JX0KKuG/VBiLRFlKd7AMV6zIA0tXnNkqDMdIffjBVrlMSqnsiE8iqeSX0JXrE3xS
-	5awrWRKflb60fnNUmlcoANXKH36Vsi173DjehjPAj34J6MojvomDZ5nVRBlWUflR8DlwNwtE1zf
-	rrtW5WFBZ1Gz8xmQ3yzdcPwS/wmdelaS1wsUPM6+edobx4m8WG6A3MLCCRgIpfvkXro74xRgqUp
-	HvX2zREmoKDsE1cXJ+4UYmk0AAcZdVYGyQ0rtyH2ElIh37Dy22W5qyrUmZel4tnm3mz2uoM8d18
-	H5Z0RxlRSL06MrokLEhIzFbQexc0XC5ivDazF5K4h4p+zpLoExK6V2BW3G7eqEfMXltkBhP9kcl
-	B94uksZ5jvCoIWEodKuFvn4o1mh57pL7Sf7ulPOCDYt9R9al8fWQ+OBpiIJwuWZBt6oKV8Mi+TB
-	rANotb8Xrv0Lw5to30gIa9v4v3/dXl+W/ebB1GHYSyM53rx1lNMRIb7fJXI8kftiEF92cL9COnr
-	wmmynXKHFZdoI8tXnYPtTX8yKVo4RZP0Pfh/d2W5ON388Tjly5aEJTZFyvUVHc/zgbGtTkufRxu
-	U3oOf9hjW2F9n40uNPlLBvzSMi1964GIXmQ==
-X-Received: by 2002:a05:6102:8099:b0:7c3:472d:be6b with SMTP id ada2fe7eead31-7d072d376admr338758137.33.1793315901228;
-        Thu, 29 Oct 2026 16:18:21 -0700 (PDT)
-Received: from [192.168.15.16] ([2804:1b3:a2c1:77a1:5cd:8fee:f3c:4da7])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-992ee4e7453sm319509241.11.2026.10.29.16.18.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 16:18:20 -0700 (PDT)
-From: Joas Antonio dos Santos <joasantonio108@gmail.com>
-To: David Heidelberg <david@ixit.cz>
-Cc: David S. Miller <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Zhenghang Xiao <kipreyyy@gmail.com>,
- Sanghyun Park <sanghyun.park.cnu@gmail.com>, oe-linux-nfc@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject:
- [PATCH net 5/5] nfc: st-nci: validate pipe ids in st_nci_hci_load_session()
-Date: Thu, 29 Oct 2026 20:17:35 -0300
-Message-ID: <179331585573.30322.9370333985353215726@gmail.com>
-In-Reply-To: <179331585573.30322.4049957541187612575@gmail.com>
-References: <179331585573.30322.4049957541187612575@gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        bh=9KXT4dHagJhrc5RYxqkBMcxc0mqm0x3wYl4HY30il/o=;
+        b=Yt0D89LNMLzlG2rbcwH5uu+rS9Qb9RtwnMpe2XrU2nSi1tZg+dkiutlQk3g+/q/sk2
+         jpA/sI8ChuljfnQcC8crK+rXXpMkwQke6X+0bz7IMFhLGLBnztcjIakMmOaDYWEU8orS
+         f/rCMFfD5OUMxN8r71ECukOTCEyD5gbtA4m7xGMeihVSqHydAmnVfQQGwMmbRBshRGXy
+         2m+sLjVe4SRfRodPpnw3Brt/mCw5z+1hbFWnFIAPRh7ZFn0ueXsHK8HXCYBTuvoTRs8F
+         HLWpIhbDHCB/oFfEhSg7LVjIAToHQqHHOxOmpn9YJS9lnXWPlZPiSTVkNvBKsjGoVr/N
+         dpUA==
+X-Forwarded-Encrypted: i=1; AKwUvBwzEAQaOYXjbBYvV0zn7oYwkZk+kUA5ZMIDZFLbtH1AHuk4xilx3XBHFqHQ+vtnPWtjTCzqBjk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYICZU75kmd702RZhnNItgaar8yrIskyFE7/snef0lWtfRqEj+lI
+	IMc0synwKjp2poOKS+9PAazYzLNk1lYg7zNYKWTylcXZ9dlZCnDV9O6g6iu9EFOGsjq9LQgbngP
+	8do3RUBLoj+tbn/mEZ4QbvqRdz8yllD2HE7P3zS5YGKg126bLJ/vT811mAhc=
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,60 +58,180 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+X-Received: by 2002:a05:6808:23c2:b0:4fb:73e8:5a25 with SMTP id
+ 5614622812f47-5640dee0b4bmr681041b6e.53.1793316107858; Thu, 29 Oct 2026
+ 16:21:47 -0700 (PDT)
+Date: Thu, 29 Oct 2026 16:21:47 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6ae3d50b.9c6421ad.36baac.0003.GAE@google.com>
+Subject: [syzbot] [sctp?] kernel BUG in __pskb_pull_tail (2)
+From: syzbot <syzbot+f15a6eff7a53f6eb7dc3@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@kernel.org, horms@kernel.org, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-sctp@vger.kernel.org, 
+	lucien.xin@gmail.com, marcelo.leitner@gmail.com, netdev@vger.kernel.org, 
+	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-st_nci_hci_load_session() gets the list of open pipes from the
-controller and, for each pipe id in it, asks for the pipe information
-and records it in ndev->hci_dev->pipes[].  The pipe id is a byte from
-the controller and is used as an index into pipes[], which has
-NCI_HCI_MAX_PIPES (128) entries, without any check.  For a pipe id of
-128 or more that the controller reports as open on one of the known
-gates, the gate id and the controller supplied host id are written past
-the end of the array, into gate2pipe[].
+Hello,
 
-The pipe information response is not length checked either, so a
-short response is read past its end.
+syzbot found the following issue on:
 
-Skip pipe ids that do not fit in pipes[] and responses that are
-shorter than struct st_nci_pipe_info.
+HEAD commit:    21a7f44fd076 Merge tag 'devicetree-for-7.4' of git://git.k..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=1299b469580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=b92e3106016c03ef
+dashboard link: https://syzkaller.appspot.com/bug?extid=f15a6eff7a53f6eb7dc3
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
 
-This was pointed out as a pre-existing issue by the sashiko review of an
-nfc_hci_create_pipe() fix.
+Unfortunately, I don't have any reproducer for this issue yet.
 
-Link: https://lore.kernel.org/all/178952042575.22033.9676833200303972344@kernel.org/
-Fixes: 8ae01f796771 ("NFC: st21nfcb: Add support for secure element")
-Cc: stable@vger.kernel.org
-Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
-Assisted-by: Yaga Agent HackerSec Claude:claude-opus-5-5
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-21a7f44f.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/9b86d9af9ad5/vmlinux-21a7f44f.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/6f435992c0d2/bzImage-21a7f44f.xz
+
+AI-generated root cause summary:
+When receiving an SCTP packet that is nonlinear (such as an SCTP GSO packet
+constructed with fragments in frag_list), sctp_rcv attempts to linearize the
+packet using skb_linearize() if the sk_buff is cloned (e.g., tapped by a packet
+socket or shared) or not recognized as GSO. During linearization via
+__skb_linearize() and __pskb_pull_tail(), skb_copy_bits() fails with -EFAULT due
+to a discrepancy in frag_list fragment lengths or readable offsets, triggering a
+BUG_ON assertion failure. In production builds, this BUG() results in an invalid
+opcode oops and kernel panic, causing an immediate denial of service.
+
+full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=f15a6eff7a53f6eb7dc3
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+f15a6eff7a53f6eb7dc3@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+kernel BUG at net/core/skbuff.c:2903!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+CPU: 0 UID: 0 PID: 8843 Comm: syz.2.816 Tainted: G             L       syzkaller #0 PREEMPT(full) 
+Tainted: [L]=SOFTLOCKUP
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:__pskb_pull_tail+0x1335/0x1920 net/core/skbuff.c:2903
+Code: 61 f8 48 89 df e8 6b 03 fe ff 31 ff 41 89 c4 89 c6 e8 af c5 61 f8 45 84 e4 0f 84 1c f2 ff ff e9 84 f2 ff ff e8 8c cb 61 f8 90 <0f> 0b e8 84 cb 61 f8 48 8b 54 24 30 48 b8 00 00 00 00 00 fc ff df
+RSP: 0018:ffffc90000007870 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 00000000fffffff2 RCX: 0000000000000101
+RDX: ffff888031daa580 RSI: ffffffff89ac4f84 RDI: ffff888031daa580
+RBP: ffffc900000078f0 R08: 0000000000000005 R09: 0000000000000000
+R10: 00000000fffffff2 R11: 0000000000000000 R12: 00000000000000e4
+R13: 0000000000000180 R14: 0000000000000000 R15: ffff88803a46bb80
+FS:  00007fa1c8fde6c0(0000) GS:ffff8880d44ac000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 0000000037f0f000 CR4: 0000000000352ef0
+Call Trace:
+ <IRQ>
+ __skb_linearize include/linux/skbuff.h:4025 [inline]
+ skb_linearize include/linux/skbuff.h:4037 [inline]
+ sctp_rcv+0x143e/0x3cc0 net/sctp/input.c:120
+ ip_protocol_deliver_rcu+0x44c/0x4d0 net/ipv4/ip_input.c:207
+ ip_local_deliver_finish+0x3fb/0x6e0 net/ipv4/ip_input.c:241
+ NF_HOOK include/linux/netfilter.h:325 [inline]
+ NF_HOOK include/linux/netfilter.h:319 [inline]
+ ip_local_deliver+0x1a3/0x200 net/ipv4/ip_input.c:262
+ dst_input include/net/dst.h:481 [inline]
+ ip_rcv_finish net/ipv4/ip_input.c:492 [inline]
+ NF_HOOK include/linux/netfilter.h:325 [inline]
+ NF_HOOK include/linux/netfilter.h:319 [inline]
+ ip_rcv+0x33a/0x3c0 net/ipv4/ip_input.c:612
+ __netif_receive_skb_one_core+0x197/0x1e0 net/core/dev.c:6405
+ __netif_receive_skb+0x1f/0x120 net/core/dev.c:6518
+ process_backlog+0x487/0x1600 net/core/dev.c:6869
+ __napi_poll.constprop.0+0xaf/0x450 net/core/dev.c:7938
+ napi_poll net/core/dev.c:8001 [inline]
+ net_rx_action+0xa40/0xf20 net/core/dev.c:8158
+ handle_softirqs+0x216/0xa20 kernel/softirq.c:669
+ do_softirq kernel/softirq.c:569 [inline]
+ do_softirq+0xaf/0xf0 kernel/softirq.c:556
+ </IRQ>
+ <TASK>
+ __local_bh_enable_ip+0xff/0x120 kernel/softirq.c:473
+ local_bh_enable include/linux/bottom_half.h:33 [inline]
+ rcu_read_unlock_bh include/linux/rcupdate.h:923 [inline]
+ __dev_queue_xmit+0xa73/0x4a50 net/core/dev.c:5101
+ dev_queue_xmit include/linux/netdevice.h:3483 [inline]
+ neigh_hh_output include/net/neighbour.h:538 [inline]
+ neigh_output include/net/neighbour.h:552 [inline]
+ ip_finish_output2+0xfa4/0x2740 net/ipv4/ip_output.c:236
+ __ip_finish_output.part.0+0x43b/0x6f0 net/ipv4/ip_output.c:314
+ __ip_finish_output net/ipv4/ip_output.c:302 [inline]
+ ip_finish_output net/ipv4/ip_output.c:324 [inline]
+ NF_HOOK_COND include/linux/netfilter.h:314 [inline]
+ ip_output+0x392/0xc00 net/ipv4/ip_output.c:437
+ dst_output include/net/dst.h:471 [inline]
+ ip_local_out+0x193/0x1f0 net/ipv4/ip_output.c:131
+ __ip_queue_xmit+0x876/0x1f50 net/ipv4/ip_output.c:533
+ sctp_v4_xmit+0x91a/0x1070 net/sctp/protocol.c:1061
+ sctp_packet_transmit+0x22fe/0x30b0 net/sctp/output.c:659
+ sctp_outq_flush_transports net/sctp/outqueue.c:1174 [inline]
+ sctp_outq_flush+0xb2b/0x3380 net/sctp/outqueue.c:1222
+ sctp_cmd_interpreter net/sctp/sm_sideeffect.c:1826 [inline]
+ sctp_side_effects net/sctp/sm_sideeffect.c:1211 [inline]
+ sctp_do_sm+0xce1/0x5c30 net/sctp/sm_sideeffect.c:1182
+ sctp_assoc_bh_rcv+0x392/0x740 net/sctp/associola.c:1048
+ sctp_inq_push+0x25c/0x320 net/sctp/inqueue.c:91
+ sctp_backlog_rcv+0x169/0x590 net/sctp/input.c:331
+ sk_backlog_rcv include/net/sock.h:1194 [inline]
+ __release_sock+0x39d/0x440 net/core/sock.c:3341
+ release_sock+0x1e5/0x280 net/core/sock.c:3940
+ sctp_sendmsg+0x1166/0x22e0 net/sctp/socket.c:2091
+ inet_sendmsg+0x11c/0x140 net/ipv4/af_inet.c:864
+ sock_sendmsg_nosec net/socket.c:800 [inline]
+ __sock_sendmsg net/socket.c:818 [inline]
+ ____sys_sendmsg+0xa23/0xc30 net/socket.c:2715
+ ___sys_sendmsg+0x190/0x1e0 net/socket.c:2769
+ __sys_sendmmsg+0x20c/0x440 net/socket.c:2858
+ __do_sys_sendmmsg net/socket.c:2885 [inline]
+ __se_sys_sendmmsg net/socket.c:2882 [inline]
+ __x64_sys_sendmmsg+0x9c/0x100 net/socket.c:2882
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fa1c819f559
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fa1c8fde028 EFLAGS: 00000246 ORIG_RAX: 0000000000000133
+RAX: ffffffffffffffda RBX: 00007fa1c8426180 RCX: 00007fa1c819f559
+RDX: 0000000000000001 RSI: 00002000000004c0 RDI: 0000000000000006
+RBP: 00007fa1c8236b20 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fa1c8426218 R14: 00007fa1c8426180 R15: 00007fff741e8248
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:__pskb_pull_tail+0x1335/0x1920 net/core/skbuff.c:2903
+Code: 61 f8 48 89 df e8 6b 03 fe ff 31 ff 41 89 c4 89 c6 e8 af c5 61 f8 45 84 e4 0f 84 1c f2 ff ff e9 84 f2 ff ff e8 8c cb 61 f8 90 <0f> 0b e8 84 cb 61 f8 48 8b 54 24 30 48 b8 00 00 00 00 00 fc ff df
+RSP: 0018:ffffc90000007870 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 00000000fffffff2 RCX: 0000000000000101
+RDX: ffff888031daa580 RSI: ffffffff89ac4f84 RDI: ffff888031daa580
+RBP: ffffc900000078f0 R08: 0000000000000005 R09: 0000000000000000
+R10: 00000000fffffff2 R11: 0000000000000000 R12: 00000000000000e4
+R13: 0000000000000180 R14: 0000000000000000 R15: ffff88803a46bb80
+FS:  00007fa1c8fde6c0(0000) GS:ffff8880d44ac000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 0000000037f0f000 CR4: 0000000000352ef0
+
+
 ---
- drivers/nfc/st-nci/se.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/drivers/nfc/st-nci/se.c b/drivers/nfc/st-nci/se.c
-index 607ec768e..909fb1493 100644
---- a/drivers/nfc/st-nci/se.c
-+++ b/drivers/nfc/st-nci/se.c
-@@ -191,6 +191,9 @@ int st_nci_hci_load_session(struct nci_dev *ndev)
- 	/* Complete the existing gate_pipe table */
- 	for (i = 0; i < skb_pipe_list->len; i++) {
- 		pipe_info[2] = skb_pipe_list->data[i];
-+		if (pipe_info[2] >= NCI_HCI_MAX_PIPES)
-+			continue;
-+
- 		r = nci_hci_send_cmd(ndev, ST_NCI_DEVICE_MGNT_GATE,
- 					ST_NCI_DM_GETINFO, pipe_info,
- 					sizeof(pipe_info), &skb_pipe_info);
-@@ -198,6 +201,11 @@ int st_nci_hci_load_session(struct nci_dev *ndev)
- 		if (r)
- 			continue;
- 
-+		if (skb_pipe_info->len < sizeof(*dm_pipe_info)) {
-+			kfree_skb(skb_pipe_info);
-+			continue;
-+		}
-+
- 		/*
- 		 * Match pipe ID and gate ID
- 		 * Output format from ST21NFC_DM_GETINFO is:
--- 
-2.43.0
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
