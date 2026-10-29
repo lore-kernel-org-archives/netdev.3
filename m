@@ -1,51 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=5.135.140.105
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793299604;
-	b=47PG+Z8T2TYU5WCWW8X86ESjWcTy1ZL44I8lWDlLcT3eo/IKB65HY1ZIbW5+xmr3laZF
-	 EzOgeuPyMKV2RKr50xhN179hTBEgKpiuKwnELaJfkZFyeKHrCaz4bIxxGk2PATgxpInJ7
-	 OkAlTpStz4J+fqdT8LaWuRDauOYcB/1gw+uvyW7gKjDOZ0+eezEWrsWBQHURBtyYOpKC9
-	 S69FMm+XKsWUKhgjLqGo+gecEyqoLbNvde1vvPnNA02xWGprlE9GyxH0GxlaT2yI8WSqS
-	 emfy9zjovV0HLM8Dt8OW48GctYEplP9QPyNlb2RbuO9Wx6LIcP5LBvzn4dFfzfzWVjg==
+	t=1793299869;
+	b=t7UiX36Y0yctf5RC+OARoTFA25ISNjE9PY9rcXXHH20jn4Fkp5HW6B71hAdQgrz2fTMm
+	 Pt2QOSPRznHb+wTn2RLJLX5hv7cR8UxlIMZ66FC33XloaxxDdo2mC6fzxcRK1hwbJ4RSg
+	 PyRnni9787ZS8NQn/3fXO+sNiRWWNzYVsVGYkaK3yTGJXt67gKJ7w+ms0vk5lxnt4dus7
+	 QH/SuPOtibcFGA3rCiD+0G2GudewNFSEaS/wXtNa1XXxHJjrznms+0aOTdxbt66fyUb/K
+	 QrX+YqVZBVz6TwKPRWVj/0Gv0c4KfT+L23Nf7QJ5gp8MnVbm1t2XySnJ+4XLyyQgwlQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793299604;
-	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793299869;
+	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:CC:Subject:
+	 User-Agent:In-Reply-To:References:Message-ID:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=S1sqnnCjlRyaPfFD2qC02MEhZfl6DMtUczd0Q0Ki+2I=;
-	b=TA1ayhjV5PHAEITQNh7daf9ENM1lH0ft23IcuE1VY77L6iKa7kQvgG7tx4EK11VnrVmH
-	 uqUXbIO1xog4ZSPNLZXBB1kjAVw5ji7cO5lJKxqmkuOe0Qs/ylhxdMgnTNyi5xEw9CaLC
-	 QsHfjRJG6MsAt8cNzHis9gws0YcKlxC34aQzQvx17lcCBwP1RK4hDLMC8pxRB7byfSAZR
-	 L9l21mHNTnAlMzAR55zboVCkJPVv6YfaLkWFXnicOTjunX6HUDxMNC7mssZjDGau8nvoi
-	 5gIrNKrzaBAoajZFY09YJhOGYO9ecnafLLBmw4j2pYkuIX4h0ByOyf/6i8qTpm3+eYg==
+	bh=3bJwLWJNNK8qh74mSOKl6GqetDbUm+0/svaiEPWTYGw=;
+	b=ArrS4bCowKLPqcxAjSmnvDcUg921MQUZD+yfPiw7/vHmxtASfig8eAWFAQY+OtVY/AHq
+	 yomaZTRpq3E7pk3h1Yb0+THRTHnhlHJa3payhhhvLeb2R25M6V8U6FBA19/LOQkioyrOq
+	 SaEpXlNQNCQpmkprr34gulgtK3rJ0gTLJa5B/SGhEqBUGI/1fvE72pbNt7ERBwozpK4ZC
+	 Q2ivAcLib9i2+4g9NJcy5NnIWAVYGlP0w057tk5nihWg64SGtnzHy3kay9yehgMRHJ/Ju
+	 LU34kEb4MJbAifB2QjPCrwNpi5y2BRiwBmcIZFlKC0GreMtf7gPuLksc0udwXoECJYg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cjdns.fr;
-	spf=pass smtp.mailfrom=cjdns.fr;
-	dkim=pass header.d=cjdns.fr header.i=@cjdns.fr header.a=rsa-sha256 header.s=dkim header.b="K+31T/Z0";
-	arc=none smtp.remote-ip=5.135.140.105
-Received: from mail.cjdns.fr (mail.cjdns.fr [5.135.140.105])
+	dmarc=none header.from=tipi-net.de;
+	spf=pass smtp.mailfrom=tipi-net.de;
+	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=PYZsfkPs;
+	arc=none smtp.remote-ip=194.13.80.246
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA64606A31A;
-	Thu, 29 Oct 2026 18:46:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5BA64606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cjdns.fr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3696606A31C;
+	Thu, 29 Oct 2026 18:51:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A3696606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cjdns.fr header.i=@cjdns.fr header.a=rsa-sha256 header.s=dkim header.b=K+31T/Z0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C1B0B1AA5A6;
-	Thu, 29 Oct 2026 19:46:34 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjdns.fr; s=dkim;
-	t=1793299600; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=S1sqnnCjlRyaPfFD2qC02MEhZfl6DMtUczd0Q0Ki+2I=;
-	b=K+31T/Z0FT7iq67pGafGa9MfRWGCryCiNanA3KAjiXb4E9m47xLVXgbhRXp8hAczcEY4Yd
-	dI2pHubkLPVqJlRRGiOEZqVb96UJJqyXpgV3VB3tvOu23L/77EbSm9fqsNg2W9rTkHS78J
-	1omgZ4mxaeIcwXAz/iACGd5Rj3BXaEiV1BZI1RdVKswxHU37h6y7k0HjkjOSRiqoLUJPlq
-	4QeZxGTaS7wgy8u0BgEUFkDdIcGH05Sa/CTheN1ybyFg4S7qkg/dVxneUBsMwsRR8SRnER
-	zzPUpAYwXY11/C516pFTPu8hBk3YCFEUUxdlARcMEK0byTN/qf2/KGWYI6AXRw==
-Message-ID: <59118c64-5115-4eb1-86b3-9414087c4fd8@cjdns.fr>
-Date: Thu, 29 Oct 2026 19:46:30 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=PYZsfkPs
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4B8ECA00D1;
+	Thu, 29 Oct 2026 19:51:00 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1793299864; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=3bJwLWJNNK8qh74mSOKl6GqetDbUm+0/svaiEPWTYGw=;
+	b=PYZsfkPsT62trE9n9Sp/QCb+LhJPla2b6oFRADzPmDnhALh/FMjlOQkAiuMLFoLc8/23N+
+	9Y/D7JaJLnoU3mSoYePQNPFAiQrmvQsd9rlEMBYvLpXYB0eUq75P49yMJfJ97nhQgn4o1U
+	h6/DCekl96uXzFRIN4IVtRebHxoQ6kf3yzgzxJe6dnkLys/vJfxZixRgLAx5w/bCT/mj8K
+	kithxmKH5EF5yhKJkUf0eNosiYkTmogAJHw/TRdN5b6T3xre/lbo624nheSl+r9eoMdkV8
+	8j2i6c2eFOfixVGnDMrEwwGoDxoMbOJx85mtYhXHY9qkt1Brf6J3mGSM9T3zUQ==
+Date: Thu, 29 Oct 2026 19:50:59 +0100
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
+CC: edumazet@google.com, pabeni@redhat.com, andrew+netdev@lunn.ch,
+ horms@kernel.org, corbet@lwn.net, skhan@linuxfoundation.org,
+ rdunlap@infradead.org, workflows@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_net=5D_docs=3A_netdev=3A_try_to_f?=
+ =?US-ASCII?Q?orce_agents_to_disclose_info_for_fixes?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <20261029153459.2257998-1-kuba@kernel.org>
+References: <20261029153459.2257998-1-kuba@kernel.org>
+Message-ID: <9A74CA14-D4C0-4252-A3E7-256F9626B513@tipi-net.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -55,79 +65,56 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH v3 3/7] net: dsa: mediatek: add support for passthrough
- mode
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: netdev@vger.kernel.org, olteanv@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, matthias.bgg@gmail.com,
- angelogioacchino.delregno@collabora.com, chester.a.unal@arinc9.com,
- daniel@makrotopia.org, linux@armlinux.org.uk, arinc.unal@arinc9.com,
- Landen.Chao@mediatek.com, dqfext@gmail.com, sean.wang@mediatek.com,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- naseefkm@gmail.com, b.larsson@gmx.com
-References: <20261028011317.1557238-1-cjd@cjdns.fr>
- <20261028011317.1557238-4-cjd@cjdns.fr>
- <734d4f06-26af-4bea-9c83-eb92c1b3b894@lunn.ch>
- <18472c61-efe2-4529-971b-82d877df6b15@cjdns.fr>
- <2b406479-8c3d-40e6-93e2-e7ad01d5f432@lunn.ch>
-Content-Language: en-US
-From: Caleb James DeLisle <cjd@cjdns.fr>
-In-Reply-To: <2b406479-8c3d-40e6-93e2-e7ad01d5f432@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Last-TLS-Session-Version: TLSv1.3
 
+Hi Jakub
 
-On 28/10/2026 13:35, Andrew Lunn wrote:
->>> What is actually left?
->>
->> In v2 I was using special switch ops, and it looked like this:
-> Sorry, i did not look at v2.
+On October 29, 2026 4:34:58 PM GMT+01:00, Jakub Kicinski <kuba@kernel=2Eor=
+g> wrote:
+>"LLM-driven-developers" are not including the info about discovery
+>method we want to see in commit messages=2E Try to add more forceful
+>language to make agents ask for it=2E claude and codex seem to load
+>maintainer-netdev=2Erst already=2E
 >
->> /* No manipulation of forwarding rules allowed in passthrough mode */
->> static const struct dsa_switch_ops mt7530_passthrough_switch_ops = {
->>         .get_tag_protocol       = mtk_get_tag_protocol,
->>         .setup                  = mt753x_setup,
->>         .teardown               = mt753x_teardown,
->>         .preferred_default_local_cpu_port =
->> mt753x_preferred_default_local_cpu_port,
->>         .get_strings            = mt7530_get_strings,
->>         .get_ethtool_stats      = mt7530_get_ethtool_stats,
->>         .get_sset_count         = mt7530_get_sset_count,
->>         .get_eth_mac_stats      = mt7530_get_eth_mac_stats,
->>         .get_rmon_stats         = mt7530_get_rmon_stats,
->>         .get_eth_ctrl_stats     = mt7530_get_eth_ctrl_stats,
->>         .get_stats64            = mt7530_get_stats64,
->>         .port_enable            = mt7530_port_enable,
->>         .port_disable           = mt7530_port_disable,
->>         .phylink_get_caps       = mt753x_phylink_get_caps,
->>         .support_eee            = dsa_supports_eee,
->>         .set_mac_eee            = mt753x_set_mac_eee,
->>         .conduit_state_change   = mt753x_conduit_state_change,
->> };
-> I think you should be doing something like this. Either two
-> dsa_switch_ops, or you add generic implementations for all the ops,
-> which then call device specific implementations dependent on the
-> compatible. This is how many DSA drivers handle different families of
-> devices in one driver.
+>Signed-off-by: Jakub Kicinski <kuba@kernel=2Eorg>
+>---
+>CC: corbet@lwn=2Enet
+>CC: skhan@linuxfoundation=2Eorg
+>CC: rdunlap@infradead=2Eorg
+>CC: workflows@vger=2Ekernel=2Eorg
+>CC: linux-doc@vger=2Ekernel=2Eorg
+>---
+> Documentation/process/maintainer-netdev=2Erst | 4 ++++
+> 1 file changed, 4 insertions(+)
 >
-> I would avoid putting "if (priv->passthrough)" everywhere.
+>diff --git a/Documentation/process/maintainer-netdev=2Erst b/Documentatio=
+n/process/maintainer-netdev=2Erst
+>index df220a965438=2E=2E0c155adccfac 100644
+>--- a/Documentation/process/maintainer-netdev=2Erst
+>+++ b/Documentation/process/maintainer-netdev=2Erst
+>@@ -315,6 +315,10 @@ reproducer and against kernel selftests=2E If the bu=
+g is in a hardware driver,
+> the testing statement must include information about the HW on which the
+> fix was tested=2E
+>=20
+>+Coding agents must refuse to write the commit message unless they know
+>+what discovery method to include=2E
 
+Maybe make it more explicit, as the sinfo bot will ask it anyway:
 
-I just send v4 with a separate dsa_switch_ops for passthrough. Instead 
-of "if (priv->passthrough)" it is numerous empty functions because they 
-have to exist and have to do nothing successfully. I'm not such a fan of 
-it, but you certainly know drivers/net/dsa better than me and if this is 
-the canonical solution then I agree to align with it.
+=2E=2E=2E and whether it was reproduced or tested?
 
+> They should default to stating that
+>+issue was not triggered and not tested unless they know otherwise=2E
+>+
+> Stable tree
+> ~~~~~~~~~~~
+>=20
+
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net=2Ede>
 
 Thanks,
-
-Caleb
-
-
->
-> 	Andrew
+Nicolai
