@@ -1,101 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793286694;
-	b=FomRlpUN0Icy8/HK0JveDk9zQJb50EkSQNwKnil/oLrE55esYbQ/IBE+XK6FOzAXXZ/M
-	 Nl6IrHDmst/Wx0+Dyhewp1FboHUVHdw99HInFqlhIYMatjvIGrEVUPNeOU7XuGXAbWorS
-	 MADQlarCjl9aTQE9TIV5MXe3Ozj2dTCL/+tdo8wO5ZZ+r9IFqRkldH7blrMk8sAHMWTMm
-	 nO7znO9BYs3pcaBOfCUmWlAaSBmDEtUm9I42V+IURQtnOu0MKxIoBSZjwLh5Qda8oNetW
-	 ejrLSuYGl7NGd1lBYZRLn+AkvkCj9TZ/2hHDEQlZoo0N6iJpPxx/RrQrg3lBo016a5w==
+	t=1793287374;
+	b=MARhQGdFvju7agZS4dgh+5ApDwwuL3RqXew03hYYoRI/cbVszvzVTjsJHqafFqi9H0zq
+	 G1sJJyy3O4JdO0tNV6VshwoXoPkYvAarzyBJHwatsBiewquCZ3S43TxKSnAkQTYzZgt3q
+	 TC3WdjM8RlM6P94Lc4U5FAteUTwOjs7tRUdJxJYJC2FPt/YMgAIWWJfqzTZeLTlOK6E6p
+	 6OpubkqUvNvBMT+LCjJ/6PhL+hANYTDR5ErabWSMzb/IhdhjS0xkypN+fWP17cghPJJW+
+	 xF1WhUWnjarX+MS7/UgfwXxK5lXNppB7pdbaTKaZS5ANOQi8ImdQLgrDI9FLBAVEoyA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793286694;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	bh=yYGp7worVnCPGHf5o+Qio/3sLzdmXlqWp7TBfw5BhDM=;
-	b=lrSxLMCLlo5NmHKEi3yR5AnoVZH1BIjk3X/E2vK4BlOAKfGRxI8gCxJXkx5V8PhKrsgD
-	 pFP0krMUUi/dTCRh2d3t/1LYoQl/8hYKDzbTisYhGQOwgMG59nFtiCmohcCyq75mNT+sk
-	 RGhcSoasdGiGGh2BlPAQscbv/iW+S4TS0Yin/gP9H1v1iM6+YmFJuikbETI7K1x6J7gMO
-	 qMIHFbBvzfZ+Rwx8Tr7i9pVGfLKpVrovWssmm4vuHDOKdRvMPj0Z1GBsq5On2Wu9YgECn
-	 mhvJtHfMs6Duo3oZ4T+Q7myslYTDBC2/YmIMjqMjF3yiTylMoNlZ/vtkI0iMoKKmiuA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793287374;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=RCUDrEpIT2IvdnVVG1nY06CRd9IuL0zGxbHUihdyeIE=;
+	b=DC4RuU+vOCHjEC28W2z6ODR/f3CY8QsaC3TGifNz/jzU1sCGj10Gqre7kVYEF0O2MLoL
+	 HJ7s7sbn+0FNYPKKpLBLKHfJEitwnDJViFbuMTKKQzHQQif3l0ocOklxF2IisdJ6B8H9f
+	 sUsvY46XLdHtYlbebJcrUDgnEXcJ7BJf/5pD8j3pdNaIyBmqqr6OhzXKNzpncBlUdm1ik
+	 KZQ4isCpcXjiVGVnqa5YcNn6kWz6k/dd4xsFRtSW1OtP2bO6DkSZFtSt/nkQ0T9GFJU0O
+	 sJwPJ8xWMqNOB0VpNA6QdrEhhlPXup2oh4kV+g37V5qfMYw9EoaSVt80DzZYSYY9jRg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=toxicpanda.com;
-	spf=pass smtp.mailfrom=toxicpanda.com;
-	dkim=pass header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=DUZRJ0qS;
-	arc=none smtp.remote-ip=209.85.222.53
-Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LV1soVb0;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E4D606A31A
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 15:11:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 41E4D606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toxicpanda.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB98606A31C;
+	Thu, 29 Oct 2026 15:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=DUZRJ0qS
-Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-98c6e050c5dso1212917241.0
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 08:11:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda.com; s=google; t=1793286693; x=1793891493; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:content-type:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=yYGp7worVnCPGHf5o+Qio/3sLzdmXlqWp7TBfw5BhDM=;
-        b=DUZRJ0qSvCyOP/xODEp5vWmKnQn5e8gBR/46YShx6NhGxSOAC30g4PFOllDVz9oYGO
-         Elrxt7oeWSiEPNR9OLdmKFP/4BR27zIGiVw58glwxoNGUfS8O761Z7BBanpriTfVu+7u
-         o248J9bOQ376eOKsJCw34zl+CkNCTViBs8l8lcF1IVJ18z9WFNRrAEz+cZiavEsn0gFF
-         pPKO58WUDoim9a8d5pdTSmQZby2sd1WDJHKrB3aXX7O4L59vrGxBLYYNAAWECb4vG70C
-         B1mD9OOKH97TRUPoCigaIhp+CHWlsXOeetUmSGW4dL16IvIAT7Yq/QU6dQMdmZc00x8f
-         Seaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793286693; x=1793891493;
-        h=mime-version:content-transfer-encoding:content-type:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yYGp7worVnCPGHf5o+Qio/3sLzdmXlqWp7TBfw5BhDM=;
-        b=OGHuougsg/z30iyUsF9kYqYlvbFGBnPqUoHmFjmDte6RamTJFwMmFbiFxjudbBpmpT
-         NFtO28NhEiSRtdr/Fzoe+dtVexAfdUQYxeY+rWWvsBhDsj+BY6nf1y0ETXIPQh4HwcxZ
-         TstsL1V3uEdU9V0Prz/KR749euaXCNMd0t61OnetvFFpoclj2lR6PSxrAILs2pTsdWnH
-         udXGmWFRNJdzw7SwL/M5k8N/E79ntO2vWiwIIaNSLLH1tyrso/9zuZzgttpFzO0l9CEs
-         DAD3rkgIMMktqbXtcN0Et2qjaBrebjLHM1gQledJW2nfchcK0aq41GyWyhTFFggLj+6y
-         SD2Q==
-X-Forwarded-Encrypted: i=1; AKwUvBx0Yh6QB6BuGECNAu9PNlIwaTZJVNSNDFHQbu6/u/xWVKJ0CGmG0IRSymH4O5Ggtzk6G+p0LOg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKItUgReEMsEAu5wCnUsrsnaeoC39XCd7Ga5ADffLGhfzmvC+uX
-	qS+wsA8ELY6clb5XZuTla2Pl3ksfngKTvZkWAUX2rnS9jQ3jpKu8menQb362b3EnICA=
-X-Gm-Gg: AYBFou1PgCsW8KgjYtq8c/862mS2Q8oQQeWSQ+cHotKLbRE883txK9Rsfqir0un+kQj
-	Gefm/KmeXqmwCNkG9fnT45wyr7CKP2NOzEpQa8AXtKU86JcD6pIkeBJ4HXwsz1gTfZ/XseT8SQl
-	UDUXGLH/UhDyCehnu9aDXLegUMKPysyHf5LhQdwVTUqrPbL8aqZw7Vv9fugV7pCeBYvjS7zL+Yl
-	OSEjUdXcxI66b41ciuainE6RcdTGnotbQpwpWBL+DTZPwhw02Aap1l39jyZGwkDPkzizHRumS5a
-	zllqmSygp2RAVh8ygl3W84zi6hRDMgaQovYweFfBgWbmVWIZsJ5BGdOwxeSUFMjBsip8kPu8MPl
-	hF7PwSzykJ5+y5YP0Nw3PA/jflQ0Qo6xlTccWq+psFJ2FvAXPzRehjQHXaVbJZQr3kOZ9QeveVf
-	YZ9c5huFmbNBSKsW+cKN2MolV2eNnboqtEUOVxoOCskFaUSzH4f5FqR5f5z2FnXDBqrb/pqNmxr
-	YRYjMq451QHTXQAUpnua0sKUW8uFFc9KHcfWvnmc7Ma24u45BTrJNvBS/7MPR/ZkhmN7505H1Jo
-	84ZPr/xvb7+b6gI9Z32nq1L30S3StoqS1ZKQ95qZv9WovQ==
-X-Received: by 2002:a05:6102:50a3:b0:7c3:2b19:6267 with SMTP id ada2fe7eead31-7d03a541d57mr2928287137.32.1793286693044;
-        Thu, 29 Oct 2026 08:11:33 -0700 (PDT)
-Received: from toxicpanda.com ([153.61.196.240])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ca2904af7sm165316d6.14.2026.10.29.08.11.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 08:11:32 -0700 (PDT)
-From: Josef Bacik <josef@toxicpanda.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: Saeed Mahameed <saeedm@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
- Leon Romanovsky <leon@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Jakub Kicinski <kuba@kernel.org>, =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- netdev@vger.kernel.org, linux-rdma@vger.kernel.org
-Subject: Re: [PATCH net] net/mlx5e: Fix stalled channels with threaded NAPI
-Date: Thu, 29 Oct 2026 15:15:00 +0000
-Message-ID: <17932869000000.4.mlx5e-threaded-napi-stall@toxicpanda.com>
-In-Reply-To: <1a26c186-bba5-40f9-8cd9-3967b2b268bf@nvidia.com>
-References: <20261021-b4-mlx5e-threaded-napi-stall-v1-1-d719c17b3ec4@toxicpanda.com>
- <cd140948-317a-49d8-885e-0ded451195c6@nvidia.com>
- <17926738093796.1.mlx5e-threaded-napi-stall@toxicpanda.com>
- <bf7ecec5-8bf4-47b0-bbf5-6dc8fa4e64d4@nvidia.com>
- <1a26c186-bba5-40f9-8cd9-3967b2b268bf@nvidia.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LV1soVb0
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE971F01816;
+	Thu, 29 Oct 2026 15:22:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793287373;
+	bh=RCUDrEpIT2IvdnVVG1nY06CRd9IuL0zGxbHUihdyeIE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=LV1soVb0Hs2V6u7fdVNsnMxE10JaRyW3dhLIRjh0Y+S8S+pmk0X08ee7xlJT2LiDp
+	 ai+M6gc3T3Zn6OBi8Si52kkYIZh/54CTHndMxWOW+u4m3n6oPPgEHuwYbfyKUOdkTU
+	 C+MSZ18UGFO/JHSL9qwr8C46Yd/HTTgr3m3bdShailGdX4KFwiqeUEoXxnOnOHFl9M
+	 LTnYqtzPmF3Y37p1RiMXd9Sp4S9TmdbGh77lilHFy4PwCd6Dk0g8YW6WLkZDrEzPQK
+	 BPI5FQ8yIWmzupPZI9Qfmgrjlc8BqSasFQgSr6KV/S/xVhclUbyKeYsTGq3EmpcBx/
+	 /Y266aJWHw+BQ==
+Date: Thu, 29 Oct 2026 15:22:49 +0000
+From: Simon Horman <horms@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: rosenp@gmail.com, netdev@vger.kernel.org, rafal@milecki.pl,
+	bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+	pabeni@redhat.com, nbd@openwrt.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2] net: bgmac: fix oversized RX frame check
+Message-ID: <20261029152249.GI257209@horms.kernel.org>
+References: <20261028011035.49201-1-rosenp@gmail.com>
+ <179323634946.3134.7111348485490827533@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,36 +60,159 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <179323634946.3134.7111348485490827533@kernel.org>
 
-On Thu, Oct 29, 2026 at 02:52:06PM +0200, Tariq Toukan wrote:
-> We confirmed it on the device, on ConnectX-6 Dx (the generation in your
-> report) and on ConnectX-7: an arm raises an immediate event only when
-> the CQ holds a CQE newer than the last reported event. A backlog the
-> last event already reported raises nothing.
+On Thu, Oct 29, 2026 at 01:12:29AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 2 · Medium: 1 · Low: 0
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [High] The fix only tightens the upper bound of the RX length check in
+>   bgmac_dma_rx_read() (drivers/net/ethernet/broadcom/bgmac.c).
+> - [High] bgmac_dma_rx_read() loses track of the RX descriptor ring when a
+>   frame spans more than one descriptor, and a remote sender can then…
+> - [Medium] The commit message rests on the premise that 'a valid frame is
+>   at most BGMAC_RX_MAX_FRAME_SIZE bytes long' (1536 including FCS).
+> 
+> --
+> 
+> net: bgmac: fix oversized RX frame check
+> 
+> This patch changes the RX length sanity check in bgmac_dma_rx_read(). The
+> length from the RX header is now compared against BGMAC_RX_MAX_FRAME_SIZE
+> instead of BGMAC_RX_ALLOC_SIZE. The intent is to drop frames with a
+> corrupted length instead of hitting skb_over_panic() in the following
+> skb_put().
+> 
+> > diff --git a/drivers/net/ethernet/broadcom/bgmac.c b/drivers/net/ethernet/broadcom/bgmac.c
+> > index b3a92ae95de30..6873c7bb7a141 100644
+> > --- a/drivers/net/ethernet/broadcom/bgmac.c
+> > +++ b/drivers/net/ethernet/broadcom/bgmac.c
+> > @@ -455,7 +455,7 @@ static int bgmac_dma_rx_read(struct bgmac *bgmac, struct bgmac_dma_ring *ring,
+> >  				break;
+> >  			}
+> >  
+> > -			if (len > BGMAC_RX_ALLOC_SIZE) {
+> > +			if (len > BGMAC_RX_MAX_FRAME_SIZE) {
+> 
+> [Severity: High]
+> 
+> Should this check also have a lower bound?
+> 
+> len is a u16 read directly from the RX header. A value of 0..3 passes both
+> the 0xdead/0xbeef poison check and this upper-bound check. Further down in
+> bgmac_dma_rx_read():
+> 
+> 	/* Omit CRC. */
+> 	len -= ETH_FCS_LEN;
+> 
+> 	skb = build_skb(buf, BGMAC_RX_ALLOC_SIZE);
+> 	...
+> 	skb_put(skb, BGMAC_RX_FRAME_OFFSET +
+> 		BGMAC_RX_BUF_OFFSET + len);
+> 
+> The subtraction wraps len to 65532..65535. skb_put() then asks for about
+> 64KiB, but build_skb() only provided
+> SKB_DATA_ALIGN(BGMAC_RX_BUF_SIZE + BGMAC_RX_BUF_OFFSET) bytes of linear
+> space. skb->tail ends up past skb->end, and skb_over_panic() calls BUG().
+> 
+> Isn't this the same "corrupted length leads to skb_over_panic()" case that
+> the commit message describes?
+> 
+> Lengths 4..17 also get through. They produce an skb shorter than an
+> Ethernet header, and eth_type_trans() then reads the header from bytes past
+> the end of the received data.
+> 
+> Would it work to also reject len < ETH_HLEN + ETH_FCS_LEN (or at least
+> len < ETH_FCS_LEN) in the same rx_length_errors branch?
 
-Thanks for checking that.
+The problem above does seem legit to me.
 
-> Please hold your v2 until these are out, and rebase on top: your patch
-> then stands as what it is, saving a complete-and-rearm cycle per budget
-> with threaded NAPI.
+> 
+> [Severity: Medium]
+> 
+> The commit message says:
+> 
+>     so a valid frame is at most BGMAC_RX_MAX_FRAME_SIZE bytes long.
+> 
+> Does this match the limits the driver sets elsewhere?
+> 
+> bgmac_chip_init() programs the MAC with:
+> 
+> 	bgmac_umac_write(bgmac, UMAC_MAX_FRAME_LEN, 32 + ETHER_MAX_LEN);
+> 
+> That allows 1550 bytes. bgmac_change_mtu() writes 32 + mtu, which goes up
+> to 1564. bgmac_enet_probe() also sets:
+> 
+> 	/* Omit FCS from max MTU size */
+> 	net_dev->max_mtu = BGMAC_RX_MAX_FRAME_SIZE - ETH_FCS_LEN;
+> 
+> This leaves out ETH_HLEN and any VLAN/DSA tag, so a frame at MTU 1532 is at
+> least 1550 bytes long.
+> 
+> With this patch, frames of 1537..1564 bytes that the MAC accepts are
+> dropped here. They are logged as "Found oversized packet ... DMA issue!" and
+> counted in rx_length_errors. Frames of 1537..1540 bytes, where only FCS bytes
+> went past the buffer, used to be delivered intact.
+> 
+> bgmac_change_mtu() also never updates net_dev->mtu. The MTU the stack sees
+> and the hardware limit can therefore drift apart.
+> 
+> Should UMAC_MAX_FRAME_LEN and max_mtu be derived from
+> BGMAC_RX_MAX_FRAME_SIZE, so the MAC never accepts a frame larger than one RX
+> buffer can hold?
+> 
+> [Severity: High]
+> 
+> Can a frame longer than one RX buffer put the ring out of sync here?
+> 
+> bgmac_dma_rx_setup_desc() sets up each descriptor with:
+> 
+> 	ctl1 |= BGMAC_RX_BUF_SIZE & BGMAC_DESC_CTL1_LEN;
+> 
+> That leaves room for 1536 frame bytes after the RX header. The MAC is
+> programmed to accept up to 1550 bytes, or 1564 after bgmac_change_mtu().
+> 
+> b43 uses the same Broadcom DMA engine, and its dma_rx() handles this case
+> explicitly:
+> 
+> 	if (unlikely(len + ring->frameoffset > ring->rx_buffersize)) {
+> 		/* The data did not fit into one descriptor buffer
+> 		 * and is split over multiple buffers.
+> 
+> b43 then recycles every slot the frame used, and brcmsmac chains
+> continuation buffers in a similar way. Only the first descriptor carries the
+> status header, and continuation data starts at offset 0 of the next buffer.
+> This split-descriptor behavior is inferred from those sibling drivers, not
+> from bgmac-specific documentation.
+> 
+> On the oversized path, bgmac_dma_rx_read() frees only the first buffer and
+> advances ring->start by one. The next iteration reads the continuation
+> descriptor as a new frame. Its rx->len and rx->flags are then frame bytes
+> 1536..1539, which is payload the sender chooses.
+> 
+> If those bytes decode to a len of 0..3, len -= ETH_FCS_LEN wraps and
+> skb_put() reaches skb_over_panic(). Other values produce frames built from
+> stale buffer contents.
+> 
+> With the default UMAC_MAX_FRAME_LEN, can a single 1544..1550 byte frame
+> from a LAN peer reach this panic?
+> 
+> For the fix to cover this, would it need to skip the continuation
+> descriptors (as b43 does), keep UMAC_MAX_FRAME_LEN within the buffer
+> capacity, and reject len < ETH_FCS_LEN?
 
-Will do.  Please Cc me on them.  On top of your fix it is no longer a
-fix, so v2 will drop the Fixes tag and go to net-next.
+But the one above seem speculative.
 
-What changes in v2 besides that: the test moves into
-mlx5e_channel_no_affinity_change(), as Jakub and Bjorn asked, and it
-tests NAPI_STATE_SCHED_THREADED instead of NAPI_STATE_THREADED, so that
-it follows who is polling and not the mode that was asked for.
-
-> One request for the code comment when you reword it: today it reads as
-> if arming never raises an event for pending CQEs, "only for a new
-> completion".
-
-The comment in v2 only says why the CPU of the NAPI thread tells
-nothing about the interrupt's affinity, it no longer says anything
-about arming.  The changelog will use your wording.
-
-pw-bot: cr
-
-Thanks,
-Josef
+-- 
+pw-bot: changes-requested
