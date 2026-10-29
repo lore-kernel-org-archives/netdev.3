@@ -1,47 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793294669;
-	b=vceiash4wEW9J5KAz12r5sAZdot/rj72gMmpyZN5DxsGHMu3q5ZGJjjFJ88BhYfaBB7o
-	 x92tOovlJj00irP6mCtzNb5JonkqXqLoEDm7qTxLR/vBV+OtAXK8qe9/O9jT3YLuRMdxm
-	 aO6ttKawvLNL574qKCiofP0oohMWitPOwxgpX1gXQBRxfrE/n3XZTU88b+vUBiEoMK3fI
-	 9S+CSoed7Ozj6GJnC1JSlL9+QT1+pC32PC60oM7eMGk8/y91G5p67HMInGJSN740VJE/v
-	 Zlhb7csJeF5abA+U9wk1x00AoVX7lFpdjRmlIVeo3iNjMadHb3no5uEFi890F+agV+Q==
+	t=1793294757;
+	b=KZFNgicsMwm0+44YxZuuk+aUGLwb4PNUszhJRfhNKvY1pSqEiHGTaZmhseGilwsXXhMd
+	 65N97vXTctdKsXO9nPDSIK3PoVHMYCIP+j93K+U1P4+WuUuyrj0rH95dYril3z1XyxUH/
+	 BqX60lWTayuPbk2ZTOZKKVXwbeQgeIk4l4yOcShGZ6+C7SHWT7AcfDO933JR/s/Yi1Hnk
+	 +JpVQFEnRIV7RwPUNXQeRQKrSHZrxc4/HyZz/ZAXZpEFmgPb4I2JqygqZl7ZnDatHiQoz
+	 IZl+3atrwVUo1v27LxvirL36+jsCXkxQmxyPedoWp7HxC/BKr/Tv9vG5Pqj0OX+35Pg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793294669;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:Content-Language:To:Cc:References:From:Autocrypt:Organization:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=f3BdBNh1o3iZmtSjlSRESQeyO7zMNUxkDS2xwUHCGWQ=;
-	b=rFiTC/BBi446K9FqdsVBezu41NV3C0u2WiKb5Y+m1+vjUNadr3qLXHi5HKwKeTDKe4tJ
-	 2Dg4Y5cr4rF7Qn6sQ/ryvBOfU+0Yq3Tl2I+ziq710wuLsvl/AjzTKigOcwZ4VjVPys1rV
-	 NT+lnWIOTo5eh2dJEWFa8Efg0z1rs9PN8yoExNRY8VCHWJBSXU9AvwZiKrT0IKKKN+GXe
-	 1QroByv/rBCWRVj0SgvjtxqxvHXs/afNsmjTEartnXbiXHZfru45X8JAGPoxhEc07Enpu
-	 E86usUmAaeosQiU1v/fSrKzoXwAtxk5/xLoLfG7jBa+F55UuwUlMW5667dKUMsMoHtw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793294757;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=p1M8KQKZEZVrR5oiIhhEHbcY6wunX44CsSXTYXwSo8M=;
+	b=MA/3w+2uk8f6VywZXvu05VMFU8dT1d02esREmL7PQ0dtM/V+HzTqEY/dzmE/9h09reEB
+	 LmzxOcl5O59Xx63YJroH+dlnngAe0VUdLbaGvG6co7xPAe1Kg4rsfy1NczteStSqaQdBz
+	 TM9QVF/F8BKIY9uc3MSLn+aX9UcWt7WV8BnHC/jcUQvE9WEDm45NqjstgOO6P0aKAoNPp
+	 qEIR/sZLt+jnew1ufvkEhp9tIeLWvGisGjsAVNSZnl7bfNINzTX+iTVHusqXuDrzkaOsH
+	 m+KrFmqqek7Ar+LmI3N/ch5BycBVq1fEnmfMxihwUhCR98JjZwdUy+4ZyyHBDXqJbfQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bd2LDDSH;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=MUCKVbgs;
+	arc=none smtp.remote-ip=209.85.216.46
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A65C606A31A;
-	Thu, 29 Oct 2026 17:24:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02564606A31C
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 17:25:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 02564606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bd2LDDSH
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51DF31F01816;
-	Thu, 29 Oct 2026 17:24:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793294668;
-	bh=f3BdBNh1o3iZmtSjlSRESQeyO7zMNUxkDS2xwUHCGWQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=bd2LDDSHr6Y/G0+CwJwadqfz54SDMq6uCYWqUFexGhACZgxfqF5JpvH/IM6Gp4msf
-	 Oyzi7gy6P8E0/8s0BaTptsViiP/4WGpe63QvhOPSFHkvuTspVVZ81bYQ0pb7vIBT2c
-	 8CW0N+sRRDpli9x6hGh43fIqfn1HEiRROsI/6tfzZgyK12eW0HQG63z1BZqRnq9xzB
-	 sPb2+2YiHaSi54G5GGT0r1kT8GJtI6zYWjsnGYOwPp226QRdCXY0Dy5f7ppIkYZo/X
-	 Df0EUcjFzgay5B4YWdDhmGTkinANd6w1MwlPau0XQiy6TFOkWY0aFz4So4Dp9fcCYF
-	 1V5EjIW/58+Ew==
-Message-ID: <48a15033-3e8f-4043-aa2b-eb7440bf3742@kernel.org>
-Date: Thu, 29 Oct 2026 18:24:25 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=MUCKVbgs
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3ace1f3897cso1379503a91.0
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 10:25:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793294756; x=1793899556; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=p1M8KQKZEZVrR5oiIhhEHbcY6wunX44CsSXTYXwSo8M=;
+        b=MUCKVbgsCF/1mRkGAftGIf6A9+mQOgMOrFVabDNzK4KU7JFWRz1meVdtnXTKzHDqEM
+         D++LX85ATaBnlRRvQ4xRTDhtF5cWOVoTkQ7reAKvlEohu0SjNNxwuD7+BXpNvMcRewJr
+         jnkOoqYxrj94KXWMyjQh16/h7/1u7yhIOe0JlaYZy/K0cNbiN00Q45vWQ9K6kDcKgChT
+         I4WhVF9yXcmVqrXP15gMA5Whs/weXzQ4iEOJc6rF4zq6zkKiawfqPsebqiM/X+AqJCVn
+         vg3Ku6rxyUCFwVc213pMr5vdjINrhG9uyycB6x3pSi2WxuGaO72Cy4IZeRG9HMjQ++bf
+         RJhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793294756; x=1793899556;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=p1M8KQKZEZVrR5oiIhhEHbcY6wunX44CsSXTYXwSo8M=;
+        b=CHM/h8Wg5p+B/lEPSyO6bUQ7yHqLHIZpRZudjxLAntSAuaGjQegqwGSVCCWLFShz22
+         ETzml8ifTtesuBHF75q75eSyvi2skabApNXosLbXx9egg/Uet6uGqrXtZkwxAVEoxh1a
+         /kJybs48IK1AoLXz2y8vrJR++a4xVGx4CkcKQH1vAyTW8roY3Gj/AvtFEjpvc06dFO4R
+         CTeqEodkZa/gsgFjG0AI0Vvklw/l/09FZ8h5jKRDpAzp+feYLsHN9VR3XYjfHQliDjtn
+         JfvsGF95P4eLe/78C9YgWtiNHIY2/k65EooQ4igmxPaqCzwAhpzFVfHaDKzRaAkkNFtV
+         +tpg==
+X-Gm-Message-State: AFq9FYItzK/rhJdaLyjX9xniEumPoZOHHtf986eXCyAHc0pzN1UhYt4O
+	/ZW/FiYCup5KbdTE+WswqIe8oJII6VbUo2/aNk5b51wsuHJArLy8pQN5
+X-Gm-Gg: AYBFou0PoCH6gXg1dLL+N7meemWpd0chUNTTsWqYomMdgLpVYq5blX5FR4P27LdSh9T
+	nc30Cwh8XRcyxqBkrEsrnaScJxQak016ZLU3f9JszjBo7vepGFDID1Pi52vWD35UKOWOVvhnzAw
+	1YYBqnJOaMYktskzsVN3ozrJSUscRS6+FOA0hDcafvWCltc6UKvnCHwe95CnZQmB2X+PUUpyonB
+	k1LFbngbNoEVRAYW3QHOZYlqKGDG3CATBMHGgWFhmZSBpuAjcnuONeGvrWDBxdOp9F+Q4gAvQ4d
+	8dm38IRIs89h4LraVyGx727SxqKl73rJ11PhsrReuFU+LhDJGEE//+YtRpRXlxce6dgZ9Atczk4
+	XXjUhh6AfctvpYF43EBEypByiga1KP/EmxmebPqTuKHLQKWKKtSW5HUvbOuPLCN9IelJBRQ6a/1
+	G1ZzgHJW8PDOrZwDHPCzkfkw+RTUT5aDzm+QF1GnkNCIfd6+mpJTgw/uOfp/NBhPit53gig3fjz
+	lVYLYnxXZksFndMr038QbJ5W0OYPoOJMIlpcv2cQrrO/Bp6WwR+ck5XGsQVD18BlMutW+3uV5Ej
+	cIb/x3QFtdk84oRjI/5FiU9H4/Hffma/DT45bjlZCsEIMNlwys6v5oGTBvzjOSGjdeDZv0I0Uu3
+	pfw==
+X-Received: by 2002:a17:90b:54cd:b0:3a4:6f38:f2a2 with SMTP id 98e67ed59e1d1-3ae580f1940mr5003657a91.25.1793294756239;
+        Thu, 29 Oct 2026 10:25:56 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae841dd1b9sm531417a91.0.2026.10.29.10.25.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Oct 2026 10:25:54 -0700 (PDT)
+Message-ID: <3f17be46-2d9d-4121-9cf8-66fe739f11f6@gmail.com>
+Date: Thu, 29 Oct 2026 10:25:50 -0700
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -51,194 +91,125 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH iproute2-net] mptcp: limits: fix JSON support
-Content-Language: fr
-To: Stephen Hemminger <stephen@networkplumber.org>
-Cc: David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org,
- mptcp@lists.linux.dev
-References: <20261029-mptcp-limits-json-v1-1-7ac73cdab054@kernel.org>
- <20261029100741.3cd38216@phoenix.local>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20261029100741.3cd38216@phoenix.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 04/11] net: au1000: report MDIO transaction timeouts
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ hkallweit1@gmail.com, linux@armlinux.org.uk, shaojijie@huawei.com,
+ horms@kernel.org, runyu.xiao@seu.edu.cn, mmyangfl@gmail.com, hvr@gnu.org,
+ jeff@garzik.org, danny.kukawka@bisect.de, mugunthanvnm@ti.com,
+ sebastian.hesselbarth@gmail.com, linux-kernel@vger.kernel.org,
+ manuel.lauss@gmail.com
+References: <20261027223140.3774570-5-f.fainelli@gmail.com>
+ <179329051221.3134.18425968013165195410@kernel.org>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <179329051221.3134.18425968013165195410@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Stephen,
-
-Thank you for the review!
-
-On 29/10/2026 18:07, Stephen Hemminger wrote:
-> On Thu, 29 Oct 2026 14:17:42 +0100
-> "Matthieu Baerts (NGI0)" <matttbe@kernel.org> wrote:
+On 10/29/26 09:15, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found more severe
+> issue(s) in other patches of this series. This mail is only an FYI, in case
+> you want to address the nit picks below when you respin.
 > 
->> print_mptcp_limit() was trying to open a JSON sub-object and closing it,
->> but no JSON object was actually created before.
->>
->> Because of that, JSON support was working with the MPTCP limits:
->>
->>   $ ip -j mptcp limits show
->>   add_addr_accepted 0 subflows 2
->>
->> Create a plain object before calling print_mptcp_limit: an array is not
->> needed here because all limits have a different name.
->>
->> After this modification, we now have:
->>
->>   $ ip -j mptcp limits show | jq
->>   {
->>     "add_addr_accepted": 0,
->>     "subflows": 2
+> Low priority / nit picks for your consideration:
+> 
+> - [Low] The new completion poll in au1000_mdio_write() reads MAC_MII_BUSY
+>    right after `writel(mii_control, mii_control_reg)`.
+> 
+> Pre-existing issues:
+> - [Low] On success, au1000_mdio_read() returns the raw 32-bit
+>    MAC_MII_DATA value (`return readl(mii_data_reg);`, au1000_eth.c:298)…
+> 
+> --
+> 
+> net: au1000: report MDIO transaction timeouts
+> 
+> This commit changes au1000_mdio_write() to return an int. Timeouts from
+> the busy wait before the transaction, and from a new completion poll after
+> the write, now go back to phylib through au1000_mdiobus_write(). The read
+> timeout paths in au1000_mdio_read() now return -ETIMEDOUT instead of -1.
+> 
+>> diff --git a/drivers/net/ethernet/amd/au1000_eth.c b/drivers/net/ethernet/amd/au1000_eth.c
+>> index 70319b432182f..a507a524370fd 100644
+>> --- a/drivers/net/ethernet/amd/au1000_eth.c
+>> +++ b/drivers/net/ethernet/amd/au1000_eth.c
+> 
+> [ ... ]
+> 
+>> @@ -292,14 +292,14 @@ static int au1000_mdio_read(struct net_device *dev, int phy_addr, int reg)
+>>   		mdelay(1);
+>>   		if (--timedout == 0) {
+>>   			netdev_err(dev, "mdio_read busy timeout!!\n");
+>> -			return -1;
+>> +			return -ETIMEDOUT;
+>>   		}
+>>   	}
+>>   	return readl(mii_data_reg);
+> 
+> [Severity: Low]
+> This isn't a bug introduced by this patch, but should au1000_mdio_read()
+> mask the data register value to 16 bits before returning it?
+> 
+> On success the raw 32-bit MAC_MII_DATA value goes back through
+> au1000_mdiobus_read() to phylib. __mdiobus_read() expects either a
+> register value or a negative errno, and it passes the value through
+> without masking:
+> 
+> drivers/net/phy/mdio_bus.c:__mdiobus_read() {
+>      ...
+> 	if (bus->read)
+> 		retval = bus->read(bus, addr, regnum);
+>      ...
+> }
+> 
+> If bits 31:16 of mii_data ever read back non-zero, phylib would get a
+> value wider than 16 bits. If bit 31 were set, it would read as an error.
+> 
+> Nothing in the tree shows whether those upper bits are ever non-zero on
+> this hardware. Would something like readl(mii_data_reg) & 0xffff be
+> safer, now that negative values on this path are proper errnos?
+> 
 >>   }
->>
->> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
->> ---
 > 
-> Should be the regular json_obj variants, not the _plain ones
-> here.
+> [ ... ]
+> 
+>> @@ -320,6 +320,17 @@ static void au1000_mdio_write(struct net_device *dev, int phy_addr,
+>>   
+>>   	writel(value, mii_data_reg);
+>>   	writel(mii_control, mii_control_reg);
+>> +
+>> +	timedout = 20;
+>> +	while (readl(mii_control_reg) & MAC_MII_BUSY) {
+>> +		mdelay(1);
+> 
+> [Severity: Low]
+> With this new completion poll, will every MDIO write now busy-wait for at
+> least 1 ms?
+> 
+> A clause 22 management frame is about 64 MDC cycles, which is roughly
+> 26 us at 2.5 MHz. So the first readl() right after
+> writel(mii_control, mii_control_reg) will almost always see MAC_MII_BUSY
+> set, and mdelay(1) will run at least once.
+> 
+> The mii_bus->write callback runs in process context under
+> bus->mdio_lock, which is a mutex. Could this use readl_poll_timeout()
+> with a sleep of a few tens of microseconds and the same ~20 ms timeout?
+> 
+> To be fair, before this patch the access that followed a write already
+> paid this mdelay(1) in its own BUSY wait before starting. So for
+> back-to-back sequences the cost mostly moves into the write. The new cost
+> falls on the last write of a burst and on isolated writes. The existing
+> completion poll in au1000_mdio_read() has the same 1 ms granularity.
 
-Mmh, can I disagree with AI? :)
+Agreed on the completion polling. I’ll use readl_poll_timeout() for the 
+new write completion wait, retaining the 20 ms timeout.
 
-> The AI response was:
-> 
-> On Thu, 29 Oct 2026 14:17:42 +0100, Matthieu Baerts (NGI0) wrote:
->> print_mptcp_limit() was trying to open a JSON sub-object and closing it,
->> but no JSON object was actually created before.
-> 
-> Right, and that part of the diagnosis is correct -- the open_json_object()
-> and close_json_object() calls in print_mptcp_limit() were silent no-ops
-> because no writer existed. Thanks for catching it.
-> 
->> Create a plain object before calling print_mptcp_limit: an array is not
->> needed here because all limits have a different name.
-> 
-> This is where I'd push back. An array isn't needed in the sense that there
-> is only ever one object, but it is what every other "ip" subcommand emits,
-> including the other three JSON sites in this same file:
-> 
-> 	ip/ipmptcp.c:317	new_json_obj(json)	mptcp_addr_dump()
-> 	ip/ipmptcp.c:345	new_json_obj(json)	mptcp_addr_show()
-> 	ip/ipmptcp.c:611	new_json_obj(json)	mptcp_monitor()
-> 
-> So after this patch "ip mptcp" is inconsistent with itself:
-> 
-> 	$ ip -j mptcp endpoint show
-> 	[]
-> 	$ ip -j mptcp limits show
-> 	{"add_addr_accepted":0,"subflows":2}
+The upper-bit concern is pre-existing and speculative without hardware 
+evidence, so I’ll leave that unchanged in this series.
 
-Mmh, yes that's "inconsistent", but that's a different output, for a
-different purpose:
-
- - for the first one, we have a list of endpoints: a dictionary with
-   the same keys. We need an extra object (an array, but that could have
-   been a dict with the ID as key) here to get the different endpoints.
-
- - for the limits, we have a bunch of key-values. Adding an extra array
-   doesn't make sense.
-
-> The _plain variant exists for the standalone utilities that have their own
-> output conventions -- dcb, devlink, dpll, nstat, ifstat, lnstat, vdpa. It
-> is not used anywhere else under ip/, and I'd rather it stayed that way.
-> 
->> +		new_json_obj_plain(json);
->>  		ret = print_mptcp_limit(answer, stdout);
->> +		delete_json_obj_plain();
-
-Each output has its own convention, no?
-
-> Please use the regular pair instead:
-> 
-> 		new_json_obj(json);
-> 		ret = print_mptcp_limit(answer, stdout);
-> 		delete_json_obj();
-> 
-> which gives
-> 
-> 	$ ip -j mptcp limits show
-> 	[{"add_addr_accepted":0,"subflows":2}]
-> 	$ ip -j -p mptcp limits show
-> 	[
-> 	    {
-> 	        "add_addr_accepted": 0,
-> 	        "subflows": 2
-> 	    }
-> 	]
-
-Here, we can see the array doesn't make sense. Are there other similar
-output in 'ip' adding an extra array just to present one dict?
-
-> No other change is needed: print_mptcp_limit() already calls
-> open_json_object(NULL), which is required either way -- under an array it
-> creates the element object, under _plain it created the root object. Plain
-> text output is unchanged in both versions.
-> 
-> Worth doing now rather than later: JSON output for the limits never worked,
-> so nothing can be depending on the current shape yet. I checked the mptcp
-> selftests as the likely consumer and they parse text only --
-> pm_netlink.sh:71 does
-> 
-> 	ip -n "${ns1}" mptcp limits | awk '{ print $2" "$4 }'
-> 
-> with no -j or --json use anywhere under selftests/net/mptcp/ (the only jq
-> there parses nft output in mptcp_sockopt.sh). So the shape is still free to
-> change; once it ships in a release it isn't.
-> 
-> One nit in the commit message while you're respinning:
-> 
->> Because of that, JSON support was working with the MPTCP limits:
-> 
-> Missing a negation -- "was not working". The example output just below makes
-> the intent clear, so this alone wouldn't be worth a v2.
-
-Indeed, I can add the missing "not" if a v2 is needed.
-
-Cheers,
-Matt
+pw-bot: cr
 -- 
-Sponsored by the NGI0 Core fund.
-
+Florian
