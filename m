@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793290212;
-	b=HJ29gzQmUfkHtOHGz21hxqUXiKwQZbc+xRgSx19NSwDB76jhEZnUPmjncs4cMcEkuPiO
-	 ULd9DA0/vCLEguJ49W50WqSIuvuAQpIuJJnlGl6NWdNniMBdJELIICWvctOuO6+5BCtRr
-	 aUZe1F9GMJs7B6IL5o66nklwy2zf5hq99g07Twten8S1kd82iAyv1J4XR8OVc7xP6aEzY
-	 MBjBlwVUP1T6CATWH9sfXNlMMBwrPg82yxi+22Y2vddL0vgWhEPu36GwyN27IHK9s5PnH
-	 mehxg9BFm6omK5+uv+IYh3/PzAOH6nG5sUiYLXXyXVt40rqdGl2o0X+Y25qxlmnJPlQ==
+	t=1793290214;
+	b=E9K1pFbDMheUxhaAULMjOt6Zyv3Q/KOPZviTFCxTFx891EDAoiNjayZ6cK8jx8y2U9+V
+	 YSqkGiGuereSxKAHAp13Ttv1Eb9sqAjf6bTdWf8n3R8tqdYAwTLZmIDsW2casrjVSd8Lm
+	 t+v/vUH5etslyzm7rvzs1lBWYDFQDsEx12F0mhhK/eQONmLB8U+V6PMKoQlo25bNwad3V
+	 +4GojscpjgdBFQqh6dhsU6DHrFIi8TVezvjKsgTmWthdlHx7g2esSSJDnzyr5rCKFjsyN
+	 naxpK0a1dh6u+u7Rl4vsxU5aXl44XIESfVf9e0zFsbEVINMD+/jF+wZVVHkzYqaYNVw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793290212;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793290214;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=gvdo6UhNV38uYbvU9MdvDPD33qtyP2Hg0RyJi2Ujyjg=;
-	b=A1mv/tYwPs/Q+2BP31Fp3v38G069XC35mseQ6W1cLjKG9BQnAgEbXivybLRcYWLKJv9/
-	 9hFfY3RjERIjNoqrJLsp8ZpJvH7M85ladLXkzHg/8aW+cv+jBTI/EQGfCOWspwrWV0Z+S
-	 /A/yUWVSO7XJuwBJAdjysnY0/JuI20Iqd9uzppmw6EFxzdbjjX/ZuYuZeWxZRbdrrPmdG
-	 b0bdwr1KXcKGvG3bcfXjuLcvMXdS5ptWt5mKUbI0QQVQgT0FdYhTzTFhALOQ5skwdZbKU
-	 xc/BmQSImSLIzVg7Di40Tw7SWCvwSuIoBSARll7UQHo8+0Uc3Fk4fFZ3n9JUJ6iHvtw==
+	bh=yaQqJmE/bdN8+eGSGKklAuxZN+lw+10q8P+DbsBhiG0=;
+	b=1cWP/rurA30GHheqPeEk07VEpKQCSSKPSZIwDB1Id0DuyOfnl/aVXNG41YIfVBq/qNgB
+	 LrNDBzklq7mMMA7fdtHVCtwZj/YoirUhb10qUPPBSp1KTcQBMTbn7ouBZFF6SAv9sxrEv
+	 9i7shoBrI2cR791VVzBC7XYAXlELZJJH94vxRdM+XNorcmlraKUf7NQYHm6i3LAcO0abm
+	 Dzch0rO0RPHQaCBSNLu4NbQ1NAWoYCs+GUUGdLAuqTLQr/xQdOcqAYhTp8Fve0SCGl7Mq
+	 JfufGI6GgmjgfR6PonWFQl5vps5xy5si8+vCDCZXU5ZSa4rrN8b43M+SwzdUdW467Lw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dX2Wy+57;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VNxZw7qk;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E892660A3809;
-	Thu, 29 Oct 2026 16:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D1E606A33A;
+	Thu, 29 Oct 2026 16:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dX2Wy+57
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C32321F01829;
-	Thu, 29 Oct 2026 16:10:11 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VNxZw7qk
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A13E1F01826;
+	Thu, 29 Oct 2026 16:10:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793290211;
-	bh=gvdo6UhNV38uYbvU9MdvDPD33qtyP2Hg0RyJi2Ujyjg=;
+	s=k20260515; t=1793290213;
+	bh=yaQqJmE/bdN8+eGSGKklAuxZN+lw+10q8P+DbsBhiG0=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=dX2Wy+57PJGLJwMrWBqUi9n9iC4SP11oZcFmTIeM04hN7V/l1a9JZ68ZUQF5TlXXt
-	 OTTStSNLuTSoKTuBBFcauLYg89DuYXpUpI2TZuGykGcZXa0CbGQWYDgFsZLoanu6IT
-	 D9PRJ5kM+wbiRTgJixJyRLir4fKFawXxnD90WTaZqUQyACFQlmkv8I+K428NZg4/Zs
-	 vHAMljodCwZGBqQzP/pRldNS1278FHnyg9cRVmQ4QLcIyDlbwiOstwnNIqdvKlWTTF
-	 wluWfux0xqay+BdQgHsTtHPO8Bl1s6yhazaQU73X/Ge4KUeYpStuAyendCbbfLF3e7
-	 kbk3tbm+LVPZg==
+	b=VNxZw7qkLvYeobcQq/vEwy9kprYLkv8G74Sjg7gyrUwTaFkmc74vDZdfpm4loZXl8
+	 JEJ2FeCWIyBzfKhGdO55ijXb7RRYOUWKKdzrnq2mHBP9ft797JnFs8WIwv6l8hS2A0
+	 UUHaoNQfA2E68gPG8cIjPF6hxnf+Ujs2c5y8Le9WLhCSLGD3KHGfSbgJn3ffcmHwp5
+	 t4iyc/Kx0pUjHNDl37IvOasdIgh0R4XWATRy2AHn+jRqcnapFB05HR4kz+TtujdufQ
+	 Xny8nt3tCCNSCMbFGOmy0uJ/CJKJumSPQem8aJoegxd+9iH0vf6yPMGC+if3ow7Pbs
+	 JKzHue8sSJTtw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA3163808221;
-	Thu, 29 Oct 2026 16:10:11 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 401C93808221;
+	Thu, 29 Oct 2026 16:10:13 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,37 +54,43 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net/packet: check TX_RING fragments before memory
- accounting
+Subject: Re: [PATCH net] netdev-genl: ignore NETDEV_UNREGISTER rebroadcasts
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179329021045.546068.359093054305133059.git-patchwork-notify@kernel.org>
-Date: Thu, 29 Oct 2026 16:10:10 +0000
-References: <20261028181450.2221013-1-edumazet@kernel.org>
-In-Reply-To: <20261028181450.2221013-1-edumazet@kernel.org>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- willemb@google.com, netdev@vger.kernel.org, kylebot@openai.com,
- stable@vger.kernel.org, willemdebruijn.kernel@gmail.com
+ <179329021180.546068.16729568713969066908.git-patchwork-notify@kernel.org>
+Date: Thu, 29 Oct 2026 16:10:11 +0000
+References: <20261026221306.3151025-1-namangulati@google.com>
+In-Reply-To: <20261026221306.3151025-1-namangulati@google.com>
+To: Naman Gulati <namangulati@google.com>
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, kuniyu@google.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ syzbot+1269fe6cc2016008124e@syzkaller.appspotmail.com
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 28 Oct 2026 19:14:50 +0100 you wrote:
-> From: Kyle Zeng <kylebot@openai.com>
+On Mon, 26 Oct 2026 22:13:06 +0000 you wrote:
+> netdev_wait_allrefs_any() re-sends NETDEV_UNREGISTER every second while
+> it waits for the last references on a device to be dropped. By then
+> netdev_run_todo() has already marked the device NETREG_UNREGISTERED and
+> RTNL has been dropped at least once since the initial notification sent
+> by unregister_netdevice_many_notify().
 > 
-> tpacket_fill_skb() adds the full non-linear payload length to
-> skb->truesize and sk_wmem_alloc before checking MAX_SKB_FRAGS. With
-> PACKET_VNET_HDR, userspace can submit a ring-sized frame even when it
-> greatly exceeds the device MTU.
+> netdev_genl_netdevice_event() does not tell these rebroadcasts apart
+> from the initial notification and sends a NETDEV_CMD_DEV_DEL_NTF
+> multicast for each of them. At best this spams NETDEV_NLGRP_MGMT
+> listeners with duplicate notifications; at worst the pernet state of
+> the netns the device belongs to is already gone and the handler
+> dereferences a NULL pointer.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net/packet: check TX_RING fragments before memory accounting
-    https://git.kernel.org/netdev/net/c/dc4dd12f80e4
+  - [net] netdev-genl: ignore NETDEV_UNREGISTER rebroadcasts
+    https://git.kernel.org/netdev/net/c/fd0909e963ed
 
 You are awesome, thank you!
 -- 
